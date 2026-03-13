@@ -62,6 +62,25 @@ project-root/
 │   │       ├── MVP-Phase-2/                 # MVP阶段2
 │   │       └── MVP-Phase-N/                 # MVP阶段N
 │   │
+│   ├── specs/                               # Spec 规约
+│   │   ├── {service-name}/                  # 服务名
+│   │   │   ├── service.yaml                 # 服务元信息
+│   │   │   ├── api/                         # API 规约
+│   │   │   ├── domain/                      # 领域规约
+│   │   │   ├── data/                        # 数据规约
+│   │   │   └── integration/                 # 集成规约
+│   │   │     
+│   │   └── REQUIREMENT-{ID}/                # 按需求编号组织
+│   │       ├── MVP-Phase-1/                 # MVP阶段1
+│   │       │   ├── {service-name}/          # 服务名
+│   │       │   │   ├── service.yaml         # 服务元信息
+│   │       │   │   ├── api/                 # API 规约
+│   │       │   │   ├── domain/              # 领域规约
+│   │       │   │   ├── data/                # 数据规约
+│   │       │   │   └── integration/         # 集成规约
+│   │       │   └── ...
+│   │       └── MVP-Phase-N/ 
+│   │   
 │   ├── instructions/
 │   │   ├── INDEX.md                         # 说明索引
 │   │   ├── GLOSSARY.md                      # 统一术语表
@@ -115,15 +134,6 @@ project-root/
 │       ├── CHANGELOG.md                     # 变更日志总览
 │       └── changes/                         # 变更明细
 │           └── CHANGE-{ID}-{date}.md        # 单次变更记录
-│
-├── specs/                                   # Spec 规约
-│   ├── {service-name}/
-│   │   ├── service.yaml                     # 服务元信息
-│   │   ├── api/                             # API 规约
-│   │   ├── domain/                          # 领域规约
-│   │   ├── data/                            # 数据规约
-│   │   └── integration/                     # 集成规约
-│   └── ...
 │
 ├── src/                                     # 源代码
 │
