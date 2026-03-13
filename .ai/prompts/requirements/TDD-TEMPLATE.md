@@ -18,8 +18,8 @@ tags: []
 ## 1. 概述
 
 ### 1.1 测试目标
-- 关联技术设计：[TDD-{ID}](./TDD-{ID}.md)
-- 关联产品需求：[PRD-{ID}](./PRD-{ID}.md)
+- 关联技术设计：[TDD-{ID}](docs/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}.md)
+- 关联产品需求：[PRD-{ID}](docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md)
 
 ### 1.2 测试范围
 

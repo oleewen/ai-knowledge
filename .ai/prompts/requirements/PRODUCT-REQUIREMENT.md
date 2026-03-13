@@ -8,12 +8,12 @@
 
 **输入**：
 
-- 需求分析文档中当前 MVP 章节（`../analysis/REQUIREMENT-{ID}.md`）
-- 产品文档（`../instructions/product/**`）
+- 需求分析文档中当前 MVP 章节（`docs/analysis/REQUIREMENT-{ID}.md`）
+- 产品文档（`docs/instructions/product/`）
 
 **输出**：
 
-- 产品需求文档（`REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`）
+- 产品需求文档（`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`）
 
 ## 3 Agent 工作流
 

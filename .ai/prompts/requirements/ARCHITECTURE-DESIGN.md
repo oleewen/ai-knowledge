@@ -8,17 +8,17 @@
 
 **输入**：
 
-- 需求分析文档中当前 MVP 章节（`../analysis/REQUIREMENT-{ID}.md`）
-- 产品需求文档（`REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`）
-- 系统架构文档（`../instructions/architecture/**`）
-- 领域模型文档（`../instructions/domain/**`）
-- 现有规约文件（`../../specs/**`）
+- 需求分析文档中当前 MVP 章节（`docs/analysis/REQUIREMENT-{ID}.md`）
+- 产品需求文档（`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`）
+- 系统架构文档（`docs/instructions/architecture/`）
+- 领域模型文档（`docs/instructions/domain/`）
+- 现有规约文件（`specs/`）
 
 **输出**：
 
-- 架构设计文档（`REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}.md`）
-- 测试计划文档（`REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}.md`）
-- 规约文件（`REQUIREMENT-{ID}/MVP-{N}/specs/**`）
+- 架构设计文档（`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}.md`）
+- 测试计划文档（`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}.md`）
+- 规约文件（`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/`）
 
 ## 3 Agent 工作流
 
@@ -129,21 +129,21 @@ flowchart LR
 
 根据架构设计和详细设计，按服务聚合，生成以下规约文件：
 
-1. **API规约**（`REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/api/`）：
+1. **API规约**（`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/api/`）：
    - 每个新增/变更API的规约文件
    - 包含：路径、方法、参数、响应、错误码、示例
 
-2. **领域规约**（`REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/domain/`）：
+2. **领域规约**（`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/domain/`）：
    - 新增/变更的领域模型规约
    - 领域事件规约
    - 业务规则规约
 
-3. **数据规约**（`REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/data/`）：
+3. **数据规约**（`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/data/`）：
    - 数据库变更规约（DDL）
    - 数据迁移规约
    - 缓存规约
 
-4. **集成规约**（`REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/integration/`）：
+4. **集成规约**（`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/integration/`）：
    - 消息/事件规约
    - 外部接口规约
 

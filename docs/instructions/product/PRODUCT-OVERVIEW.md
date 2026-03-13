@@ -6,7 +6,7 @@
 |------|-----|
 | 文档版本 | v{x.y} |
 | 最后更新 | {YYYY-MM-DD} |
-| 关联文档 | [功能地图](FEATURE-MAP.md), [用户旅程](USER-JOURNEY.md) |
+| 关联文档 | [功能地图](docs/instructions/product/FEATURE-MAP.md), [用户旅程](docs/instructions/product/USER-JOURNEY.md) |
 
 ## 产品定位
 
@@ -53,4 +53,4 @@ graph LR
     F --> G[评价]
 ```
 
-> 详细流程见 [用户旅程地图](USER-JOURNEY.md)
+> 详细流程见 [用户旅程地图](docs/instructions/product/USER-JOURNEY.md)

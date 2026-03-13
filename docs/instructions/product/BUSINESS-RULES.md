@@ -17,7 +17,7 @@ tags: ["product", "business-rules"]
 | 属性 | 值 |
 |------|-----|
 | 最后更新 | {YYYY-MM-DD} |
-| 关联文档 | [约束与不变量](CONSTRAINTS.md), [功能地图](FEATURE-MAP.md) |
+| 关联文档 | [约束与不变量](docs/instructions/product/CONSTRAINTS.md), [功能地图](docs/instructions/product/FEATURE-MAP.md) |
 
 ## 使用说明
 

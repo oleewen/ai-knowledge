@@ -58,6 +58,6 @@ tags: ["adr", "architecture"]
 - ⚠️ Token Payload不宜过大，避免增加网络开销
 
 ## 关联
-- 约束 [SC-003](../../product/CONSTRAINTS.md)
-- 系统架构 [横切关注点-鉴权方案](../SYSTEM-ARCHITECTURE.md)
+- 约束 [SC-003](docs/instructions/product/CONSTRAINTS.md)
+- 系统架构 [横切关注点-鉴权方案](docs/instructions/architecture/SYSTEM-ARCHITECTURE.md)
 ```

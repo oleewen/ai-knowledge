@@ -16,7 +16,7 @@ tags: ["dependency", "impact"]
 | 属性 | 值 |
 |------|-----|
 | 最后更新 | {YYYY-MM-DD} |
-| 关联文档 | [集成关系图](../architecture/INTEGRATION-MAP.md), [系统架构](../architecture/SYSTEM-ARCHITECTURE.md) |
+| 关联文档 | [集成关系图](docs/instructions/architecture/INTEGRATION-MAP.md), [系统架构](docs/instructions/architecture/SYSTEM-ARCHITECTURE.md) |
 
 ## 使用说明
 

@@ -14,27 +14,27 @@
 
 ### 我要理解一个业务需求
 
-1. 先看 [GLOSSARY.md](../domain/GLOSSARY.md) 理解术语
-2. 再看 [BUSINESS-RULES.md](../product/BUSINESS-RULES.md) 理解规则
-3. 查看 [CONSTRAINTS.md](../product/CONSTRAINTS.md) 了解约束
+1. 先看 [GLOSSARY.md](docs/instructions/GLOSSARY.md) 理解术语
+2. 再看 [BUSINESS-RULES.md](docs/instructions/product/BUSINESS-RULES.md) 理解规则
+3. 查看 [CONSTRAINTS.md](docs/instructions/product/CONSTRAINTS.md) 了解约束
 
 ### 我要开发一个新功能
 
-1. 确认功能属于哪个上下文 → [DOMAIN-MODEL.md](../domain/DOMAIN-MODEL.md)
-2. 了解涉及的服务 → [SYSTEM-ARCHITECTURE.md](../architecture/SYSTEM-ARCHITECTURE.md)
-3. 检查依赖关系 → [DEPENDENCY-MATRIX.md](../dependency/DEPENDENCY-MATRIX.md)
-4. 查看集成方式 → [INTEGRATION-MAP.md](../architecture/INTEGRATION-MAP.md)
+1. 确认功能属于哪个上下文 → [DOMAIN-MODEL.md](docs/instructions/domain/DOMAIN-MODEL.md)
+2. 了解涉及的服务 → [SYSTEM-ARCHITECTURE.md](docs/instructions/architecture/SYSTEM-ARCHITECTURE.md)
+3. 检查依赖关系 → [DEPENDENCY-MATRIX.md](docs/instructions/dependency/DEPENDENCY-MATRIX.md)
+4. 查看集成方式 → [INTEGRATION-MAP.md](docs/instructions/architecture/INTEGRATION-MAP.md)
 
 ### 我要修改一个已有接口
 
-1. 查看谁在调用此接口 → [INTEGRATION-MAP.md](../architecture/INTEGRATION-MAP.md)
-2. 确认影响范围 → [DEPENDENCY-MATRIX.md](../dependency/DEPENDENCY-MATRIX.md)
-3. 检查是否违反约束 → [CONSTRAINTS.md](../product/CONSTRAINTS.md)
+1. 查看谁在调用此接口 → [INTEGRATION-MAP.md](docs/instructions/architecture/INTEGRATION-MAP.md)
+2. 确认影响范围 → [DEPENDENCY-MATRIX.md](docs/instructions/dependency/DEPENDENCY-MATRIX.md)
+3. 检查是否违反约束 → [CONSTRAINTS.md](docs/instructions/product/CONSTRAINTS.md)
 
 ### 我要做架构决策
 
-1. 查看已有决策 → [DECISION-RECORDS/](../architecture/DECISION-RECORDS/)
-2. 参考架构约束 → [CONSTRAINTS.md](../product/CONSTRAINTS.md) 性能/安全约束部分
+1. 查看已有决策 → [DECISION-RECORDS/](docs/instructions/architecture/DECISION-RECORDS/)
+2. 参考架构约束 → [CONSTRAINTS.md](docs/instructions/product/CONSTRAINTS.md) 性能/安全约束部分
 3. 使用ADR模板记录新决策
 
 ## AI Agent 行为准则

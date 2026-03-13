@@ -50,5 +50,5 @@ tags: ["adr", "authentication", "jwt"]
 
 ## 关联
 
-- [系统架构 - 横切关注点-鉴权方案](../SYSTEM-ARCHITECTURE.md)
-- [业务约束](../../product/CONSTRAINTS.md)
+- [系统架构 - 横切关注点-鉴权方案](docs/instructions/architecture/SYSTEM-ARCHITECTURE.md)
+- [业务约束](docs/instructions/product/CONSTRAINTS.md)

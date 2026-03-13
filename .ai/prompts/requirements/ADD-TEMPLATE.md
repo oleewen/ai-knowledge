@@ -19,8 +19,8 @@ tags: []
 
 ### 1.1 设计目标
 
-- 关联需求分析：`../analysis/REQUIREMENT-{ID}.md`
-- 关联产品需求：`./PRD-{ID}.md`
+- 关联需求分析：`docs/analysis/REQUIREMENT-{ID}.md`
+- 关联产品需求：`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`
 - MVP阶段：MVP-{N}
 
 ### 1.2 设计约束
@@ -397,9 +397,9 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 
 | 规约类型 | 文件路径 | 描述 |
 | -------- | ------------------------------------------------- | ---- |
-| API规约 | `REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/api/xxx.yaml` | xx |
-| 领域规约 | `REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/domain/xxx.yaml` | xx |
-| 数据规约 | `REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/data/xxx.yaml` | xx |
+| API规约 | `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/api/xxx.yaml` | xx |
+| 领域规约 | `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/domain/xxx.yaml` | xx |
+| 数据规约 | `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/data/xxx.yaml` | xx |
 
 ### 4.2 变更历史
 

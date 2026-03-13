@@ -8,13 +8,13 @@
 
 **输入**：
 
-- 解决方案文档（`../solutions/*`）
-- 系统说明文档（`../instructions/*`）
-- 规约文件（`../../specs/**`）
+- 解决方案文档（`docs/solutions/`）
+- 系统说明文档（`docs/instructions/`）
+- 规约文件（`specs/`）
 
 **输出**：
 
-- 需求分析文档（`./REQUIREMENT-{ID}.md`）
+- 需求分析文档（`docs/analysis/REQUIREMENT-{ID}.md`）
 
 ### 3 Agent 工作流
 

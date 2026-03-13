@@ -6,7 +6,7 @@
 |------|-----|
 | 最后更新 | {YYYY-MM-DD} |
 | 架构风格 | 微服务 / 单体 / 模块化单体 |
-| 关联文档 | [集成关系图](INTEGRATION-MAP.md), [部署架构](DEPLOYMENT-ARCHITECTURE.md), [架构决策记录](DECISION-RECORDS/) |
+| 关联文档 | [集成关系图](docs/instructions/architecture/INTEGRATION-MAP.md), [部署架构](docs/instructions/architecture/DEPLOYMENT-ARCHITECTURE.md), [架构决策记录](docs/instructions/architecture/DECISION-RECORDS/) |
 
 ## 架构概览
 
@@ -96,7 +96,7 @@ graph TD
 - 方式：JWT Token
 - 签发：用户服务签发，Gateway统一验证
 - 刷新：Access Token 2h，Refresh Token 7d
-- 详见 [ADR-001](DECISION-RECORDS/ADR-001-jwt-authentication.md)
+- 详见 [ADR-001](docs/instructions/architecture/DECISION-RECORDS/ADR-001-jwt-authentication.md)
 
 ### 异常处理
 
@@ -117,4 +117,4 @@ graph TD
 
 - 策略：优先使用最终一致性（Saga模式）
 - 订单创建流程采用编排式Saga
-- 详见 [ADR-003](DECISION-RECORDS/ADR-003-saga-pattern.md)
+- 详见 [ADR-003](docs/instructions/architecture/DECISION-RECORDS/ADR-003-saga-pattern.md)

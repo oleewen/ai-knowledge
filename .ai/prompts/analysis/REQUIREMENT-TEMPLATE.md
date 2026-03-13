@@ -19,7 +19,7 @@ tags: []
 
 ### 1.1 需求背景
 <!-- 引用解决方案文档的核心内容 -->
-- 关联解决方案：[SOLUTION-{ID}](../solutions/SOLUTION-{ID}.md)
+- 关联解决方案：[SOLUTION-{ID}](docs/solutions/SOLUTION-{ID}.md)
 
 ### 1.2 需求目标
 <!-- 本需求要达成的具体目标 -->

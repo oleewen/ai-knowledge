@@ -12,7 +12,7 @@ tags: ["changelog", "instructions"]
 # 文档变更日志
 > 记录所有文档的变更历史，AI Agent 通过此文件快速了解系统演进。
 
-本文件记录 `instructions/` 目录下说明文档的变更摘要。单次需求/变更的详细记录见 [changelogs/changes/](../changelogs/changes/)。
+本文件记录 `instructions/` 目录下说明文档的变更摘要。单次需求/变更的详细记录见 [changelogs/changes/](docs/changelogs/changes/)。
 
 ## 格式说明
 

@@ -6,7 +6,7 @@
 |------|-----|
 | 最后更新 | {YYYY-MM-DD} |
 | 部署平台 | AWS / 阿里云 / 自建IDC |
-| 关联文档 | [系统架构](SYSTEM-ARCHITECTURE.md) |
+| 关联文档 | [系统架构](docs/instructions/architecture/SYSTEM-ARCHITECTURE.md) |
 
 ## 环境列表
 

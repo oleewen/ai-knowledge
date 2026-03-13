@@ -17,7 +17,7 @@ tags: ["product", "user-stories"]
 | 属性 | 值 |
 | ------ | ----- |
 | 最后更新 | {YYYY-MM-DD} |
-| 关联文档 | [产品概览](PRODUCT-OVERVIEW.md)、[功能地图](FEATURE-MAP.md)、[用户旅程](USER-JOURNEY.md)、 [业务规则](BUSINESS-RULES.md)、 [领域模型](../domain/DOMAIN-MODEL.md), |
+| 关联文档 | [产品概览](docs/instructions/product/PRODUCT-OVERVIEW.md)、[功能地图](docs/instructions/product/FEATURE-MAP.md)、[用户旅程](docs/instructions/product/USER-JOURNEY.md)、[业务规则](docs/instructions/product/BUSINESS-RULES.md)、[领域模型](docs/instructions/domain/DOMAIN-MODEL.md) |
 
 ## 使用说明
 

@@ -17,7 +17,7 @@ tags: ["product", "constraints"]
 | 属性 | 值 |
 |------|-----|
 | 最后更新 | {YYYY-MM-DD} |
-| 关联文档 | [业务规则](BUSINESS-RULES.md), [领域模型](../domain/DOMAIN-MODEL.md) |
+| 关联文档 | [业务规则](docs/instructions/product/BUSINESS-RULES.md), [领域模型](docs/instructions/domain/DOMAIN-MODEL.md) |
 
 ## 使用说明
 
@@ -32,7 +32,6 @@ tags: ["product", "constraints"]
 - **作用域**: 用户账户聚合
 - **检查时机**: 每次扣款操作前
 - **违反后果**: 事务回滚，操作失败
-- **实现方式**: 数据库层 CHECK 约束 + 应用层校验
 
 ### INV-002: 订单状态单向流转
 - **描述**: 订单状态只能按照预定义的状态机流转，不可逆向
@@ -66,7 +65,6 @@ tags: ["product", "constraints"]
 - **描述**: 任何商品的可用库存数量在任何时刻不得小于0
 - **作用域**: 库存聚合
 - **检查时机**: 库存扣减操作
-- **实现方式**: 数据库乐观锁 `UPDATE inventory SET qty = qty - #{amount} WHERE qty >= #{amount}`
 - **违反后果**: 更新失败，返回库存不足
 
 ### INV-004: 支付金额与订单金额一致
@@ -84,7 +82,6 @@ tags: ["product", "constraints"]
 | 用户 | email | 一个邮箱只能绑定一个账号 |
 | 商品 | sku_code | SKU编码全局唯一 |
 | 订单 | order_no | 订单编号全局唯一 |
-- **实现方式**: 数据库唯一索引 + 应用层预检查
 
 ## 性能约束
 
@@ -97,7 +94,7 @@ tags: ["product", "constraints"]
 
 ## 安全约束
 
-| ID | 约束描述 | 实现方式 |
+| ID | 约束描述 | 规格要求 |
 |----|---------|---------|
 | SC-001 | 用户密码不可明文存储 | bcrypt加密，cost factor ≥ 12 |
 | SC-002 | 敏感数据传输加密 | 全站HTTPS，TLS 1.2+ |

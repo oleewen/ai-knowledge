@@ -17,7 +17,7 @@ tags: ["architecture", "integration"]
 | 属性 | 值 |
 |------|-----|
 | 最后更新 | {YYYY-MM-DD} |
-| 关联文档 | [系统架构](SYSTEM-ARCHITECTURE.md), [依赖矩阵](../dependency/DEPENDENCY-MATRIX.md) |
+| 关联文档 | [系统架构](docs/instructions/architecture/SYSTEM-ARCHITECTURE.md), [依赖矩阵](docs/instructions/dependency/DEPENDENCY-MATRIX.md) |
 
 ## 使用说明
 

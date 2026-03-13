@@ -11,13 +11,13 @@
 **输入**：
 
 - 业务需求描述（可能是邮件、会议纪要、口头描述、工单等非结构化信息）
-- 现存系统说明文档（`../instructions/**`）
-- 现存规约文件（`../../specs/**`）
-- 历史解决方案文档（`../solutions/archive/**`，可选参考）
+- 现存系统说明文档（`docs/instructions/`）
+- 现存规约文件（`specs/`）
+- 历史解决方案文档（`docs/solutions/archive/`，可选参考）
 
 **输出**：
 
-- 解决方案文档（`./SOLUTION-{ID}.md`）
+- 解决方案文档（`docs/solutions/SOLUTION-{ID}.md`）
 
 ## 3. Agent 工作流
 

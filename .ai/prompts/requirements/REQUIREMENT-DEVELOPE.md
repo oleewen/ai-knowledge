@@ -8,16 +8,16 @@
 
 **输入**：
 
-- 架构设计文档（`REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}.md`）
-- 测试计划文档（`REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}.md`）
-- 变更规约文件（`REQUIREMENT-{ID}/MVP-{N}/specs/**`）
+- 架构设计文档（`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}.md`）
+- 测试计划文档（`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}.md`）
+- 变更规约文件（`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/`）
 - 现有代码库
 
 **输出**：
 
 - 生产代码、测试代码
-- 开发交付文档（`REQUIREMENT-{ID}/MVP-{N}/DEV-{ID}.md`）
-- 更新后的系统说明文档（`../instructions/**`）和需求规约文件（`../../specs/**`）
+- 开发交付文档（`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/DEV-{ID}.md`）
+- 更新后的系统说明文档（`docs/instructions/`）和需求规约文件（`specs/`）
 
 ## 3 Agent 工作流
 
@@ -122,7 +122,7 @@ flowchart LR
 
 4. **测试报告**：
    - 参考通用的测试报告模板
-   - 报告内容写入 `REQUIREMENT-{ID}/MVP-{N}/DEV-{ID}.md`
+   - 报告内容写入 `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/DEV-{ID}.md`
 
 ```
 
@@ -167,7 +167,7 @@ flowchart LR
 
 ### 审查结果
    - 参考通用的代码审查结果格式
-   - 报告内容写入 `REQUIREMENT-{ID}/MVP-{N}/DEV-{ID}.md`
+   - 报告内容写入 `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/DEV-{ID}.md`
 
 ```
 
@@ -189,7 +189,7 @@ flowchart LR
    - 更新API文档（如有API变更）
 
 2. **需求规约文件更新**
-   - 将交付规约中的内容同步到系统级规约（`../../specs/**`）
+   - 将交付规约中的内容同步到系统级规约（`specs/`）
    - 确保规约文件与实际代码一致
 
 3. **自动化变更日志**

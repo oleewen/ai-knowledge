@@ -49,4 +49,4 @@ tags: ["adr", "saga", "distributed-transaction"]
 
 ## 关联
 
-- [系统架构 - 横切关注点-分布式事务](../SYSTEM-ARCHITECTURE.md)
+- [系统架构 - 横切关注点-分布式事务](docs/instructions/architecture/SYSTEM-ARCHITECTURE.md)

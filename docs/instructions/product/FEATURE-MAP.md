@@ -5,7 +5,7 @@
 | 属性 | 值 |
 |------|-----|
 | 最后更新 | {YYYY-MM-DD} |
-| 关联文档 | [产品概览](PRODUCT-OVERVIEW.md), [业务规则](BUSINESS-RULES.md) |
+| 关联文档 | [产品概览](docs/instructions/product/PRODUCT-OVERVIEW.md), [业务规则](docs/instructions/product/BUSINESS-RULES.md) |
 
 ## 功能全景
 

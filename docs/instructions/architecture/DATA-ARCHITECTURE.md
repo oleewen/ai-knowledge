@@ -5,7 +5,7 @@
 | 属性 | 值 |
 |------|-----|
 | 最后更新 | {YYYY-MM-DD} |
-| 关联文档 | [领域模型](../domain/DOMAIN-MODEL.md), [系统架构](SYSTEM-ARCHITECTURE.md) |
+| 关联文档 | [领域模型](docs/instructions/domain/DOMAIN-MODEL.md), [系统架构](docs/instructions/architecture/SYSTEM-ARCHITECTURE.md) |
 
 ## 数据存储全景
 

@@ -17,7 +17,7 @@ tags: ["product", "user-journey"]
 | 属性 | 值 |
 |------|-----|
 | 最后更新 | {YYYY-MM-DD} |
-| 关联文档 | [功能地图](FEATURE-MAP.md), [业务规则](BUSINESS-RULES.md) |
+| 关联文档 | [功能地图](docs/instructions/product/FEATURE-MAP.md), [业务规则](docs/instructions/product/BUSINESS-RULES.md) |
 
 ## 旅程列表
 
