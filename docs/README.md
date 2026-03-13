@@ -27,34 +27,61 @@ project-root/
 │   │       ├── MVP-Phase-2/                 # MVP阶段2
 │   │       └── MVP-Phase-N/                 # MVP阶段N
 │   │
-│   ├── instructions/                        # 说明文档（持续维护）
+│   ├── instructions/
+│   │   ├── INDEX.md                         # 说明索引
+│   │   ├── GLOSSARY.md                      # 统一术语表
+│   │   ├── CHANGELOG.md                     # 文档变更日志
+│   │   │
 │   │   ├── product/                         # 产品文档
 │   │   │   ├── PRODUCT-OVERVIEW.md          # 产品概览
 │   │   │   ├── FEATURE-MAP.md               # 功能地图
+│   │   │   ├── USER-JOURNEY.md              # 用户旅程地图
+│   │   │   ├── USER-STORIES.md              # 用户故事
+│   │   │   ├── BUSINESS-RULES.md            # 业务规则清单
+│   │   │   ├── CONSTRAINTS.md               # 业务约束与不变量
 │   │   │   └── USER-GUIDE.md                # 用户指南
+│   │   │
 │   │   ├── architecture/                    # 架构文档
 │   │   │   ├── SYSTEM-ARCHITECTURE.md       # 系统架构
 │   │   │   ├── DATA-ARCHITECTURE.md         # 数据架构
-│   │   │   └── DEPLOYMENT-ARCHITECTURE.md   # 部署架构
-│   │   ├── domain/                          # 领域模型目录
+│   │   │   ├── DEPLOYMENT-ARCHITECTURE.md   # 部署架构
+│   │   │   ├── INTEGRATION-MAP.md           # 集成关系图
+│   │   │   └── DECISION-RECORDS/            # 架构决策记录
+│   │   │       └── ADR-{NNN}-{title}.md
+│   │   │
+│   │   ├── domain/                          # 领域模型
 │   │   │   ├── DOMAIN-OVERVIEW.md           # 领域模型总览
 │   │   │   ├── BOUNDED-CONTEXTS.md          # 限界上下文
-│   │   │   └── DOMAIN-MODEL.md              # 领域模型
+│   │   │   ├── DOMAIN-MODEL.md              # 领域模型
+│   │   │   ├── DOMAIN-EVENTS.md             # 领域事件目录
+│   │   │   └── CONTEXT-MAPPING.md           # 上下文映射关系
+│   │   │
 │   │   ├── api/                             # API文档
 │   │   │   ├── API-OVERVIEW.md              # API总览
-│   │   │   └── services/                    # 按服务组织
+│   │   │   ├── API-CONVENTIONS.md           # API设计约定
+│   │   │   └── services/
 │   │   │       └── {service-name}/
-│   │   │           └── API-SPEC.md          # 服务API规约
+│   │   │           ├── API-SPEC.md          # 服务API规约
+│   │   │           └── SERVICE-CONTRACT.md  # 服务契约
+│   │   │
+│   │   ├── dependency/                      # 依赖与影响面
+│   │   │   ├── DEPENDENCY-MATRIX.md         # 模块依赖矩阵
+│   │   │   ├── IMPACT-ANALYSIS-GUIDE.md     # 影响面分析指南
+│   │   │   └── CHANGE-RISK-MAP.md           # 变更风险地图
+│   │   │
 │   │   └── test/                            # 测试文档
 │   │       ├── TEST-STRATEGY.md             # 测试策略
-│   │       └── TEST-COVERAGE.md             # 测试覆盖报告
+│   │       ├── TEST-COVERAGE.md             # 测试覆盖报告
+│   │       └── TEST-SCENARIOS/              # 功能域测试场景
+│   │           └── {domain-name}/
+│   │               └── TEST-CASES.md
 │   │
 │   └── changelogs/                          # 变更记录
 │       ├── CHANGELOG.md                     # 变更日志总览
 │       └── changes/                         # 变更明细
 │           └── CHANGE-{ID}-{date}.md        # 单次变更记录
 │
-├── specs/                                   # Spec 规约（按服务聚合）
+├── specs/                                   # Spec 规约
 │   ├── {service-name}/
 │   │   ├── service.yaml                     # 服务元信息
 │   │   ├── api/                             # API 规约
