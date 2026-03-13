@@ -32,4 +32,4 @@
 ## 5. 参考
 
 - 文档总体结构：`docs/README.md`
-- Agent 指南：`AGENTS.md`
+- Agent 指南：`.ai/README.md`

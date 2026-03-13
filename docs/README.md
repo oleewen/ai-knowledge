@@ -130,27 +130,40 @@ project-root/
 │   │           └── {domain-name}/
 │   │               └── TEST-CASES.md
 │   │
-│   └── changelogs/                          # 变更记录
-│       ├── CHANGELOG.md                     # 变更日志总览
-│       └── changes/                         # 变更明细
-│           └── CHANGE-{ID}-{date}.md        # 单次变更记录
+│   ├── changelogs/                          # 变更记录
+│   │   ├── CHANGELOG.md                     # 变更日志总览
+│   │   └── changes/                         # 变更明细
+│   │       └── CHANGE-{ID}-{date}.md        # 单次变更记录
+│   └── README.md                            # 文档库使用指南
 │
 ├── src/                                     # 源代码
 │
-├── .ai/                                     # AI Agent 配置
+├── .ai/                                     # AI Agent 配置与规范
+│   ├── README.md                            # Agent 指南（工作流、参考规范）
+│   ├── CONVENTIONS.md                       # 项目开发约定（业务约束、技术规范）
+│   ├── PROJECT_AGENTS_INIT.md               # 逆向工程/知识库初始化指令
 │   ├── agents.yaml                          # Agent 注册与配置
 │   ├── workflows.yaml                       # 工作流定义
-│   ├── prompts/                             # Prompt 模板库
-│   │   ├── solutions/
-│   │   ├── requirements/
-│   │   ├── product/
-│   │   ├── design/
-│   │   ├── development/
-│   │   └── archive/
-│   └── context/                             # 上下文管理
-│       ├── project-context.yaml             # 项目上下文
-│       └── session/                         # 会话上下文
-└── AGENTS.md
+│   ├── prompts/                             # 阶段规范与 Prompt 模板库
+│   │   ├── solutions/                       # 解决方案阶段（README、SOLUTION-TEMPLATE）
+│   │   ├── analysis/                        # 需求分析阶段（README、REQUIREMENT-TEMPLATE）
+│   │   ├── requirements/                    # 需求交付阶段（PRD/ADD/TDD 规范与模板）
+│   │   ├── instructions/                    # 系统说明文档规范（README）
+│   │   └── archive/                         # 历史模板归档
+│   ├── rules/                               # 开发与设计规范
+│   │   ├── coding/                          # 代码、Git、Maven、项目结构等
+│   │   ├── design/                          # 架构、API、设计模板与指南
+│   │   ├── requirement/                     # 需求分析、PRD、用户旅程等
+│   │   ├── document/                        # 文档规范
+│   │   ├── testing/                         # 测试与 TDD 规范
+│   │   └── agents-template.md               # Agent 描述模板
+│   ├── context/                             # 上下文管理
+│   │   ├── project-context.yaml             # 项目上下文
+│   │   └── session/                         # 会话上下文
+│   ├── skills/                              # Agent 技能扩展
+│   └── mcps/                                # MCP 等集成配置（可选）
+│
+└── AGENTS.md                                # 工程级 Agent 指南（可选，与 .ai/README 二选一或互补）
 ```
 
 ## 编码引用规范
