@@ -112,7 +112,7 @@ for item in "$REPO_ROOT"/*; do
   [[ -e "$item" ]] || continue
   name="$(basename "$item")"
   case "$name" in
-    .ai|.cursor|.git) continue ;;
+    .ai|.cursor|.git|scripts) continue ;;
     *)
       cp_safe "$item" "$DOCS_ABS/$name"
       ;;

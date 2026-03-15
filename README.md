@@ -28,7 +28,7 @@ cd /path/to/your-project
 REPO_ROOT=/path/to/ai-sdd-docs /path/to/ai-sdd-docs/scripts/sdd-init.sh [选项]
 ```
 
-初始化将：① 把仓库内除 `.ai`、`.cursor` 外的内容拷贝到当前目录的 `docs/`（可改）；② 把 `.ai` 拷贝到当前目录的 `.ai/`；③ 按选择为 Cursor 生成 skills 与命令说明到 `.cursor/`。详见 [scripts/README.md](./scripts/README.md)。
+初始化将：① 把仓库内除 `.ai`、`.cursor`、`scripts` 外的内容拷贝到当前目录的 `docs/`（可改）；② 把 `.ai` 拷贝到当前目录的 `.ai/`；③ 按选择为 Cursor 生成 skills 与命令说明到 `.cursor/`。详见 [scripts/README.md](./scripts/README.md)。
 
 ## 目录结构
 
