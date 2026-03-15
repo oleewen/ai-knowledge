@@ -8,10 +8,10 @@
 
 **输入**：
 
-- 需求分析文档中当前 MVP 章节（`docs/analysis/REQUIREMENT-{ID}.md`）
+- 需求分析文档中当前 MVP 章节（`analysis/REQUIREMENT-{ID}.md`）
 - 产品需求文档（`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`）
-- 系统架构文档（`docs/instructions/architecture/`）
-- 领域模型文档（`docs/instructions/domain/`）
+- 系统架构文档（`knowledge/technical/`、`knowledge/constitution/adr/`）
+- 领域模型文档（`knowledge/business/`）
 - 现有规约文件（`specs/`）
 
 **输出**：

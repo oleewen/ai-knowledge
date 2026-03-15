@@ -25,34 +25,30 @@
 3. 确保 `docs/README.md` 存在并定义了文档体系
 
 - 第三阶段：构建结构化业务知识库
-1. **产品维度逆向 (`docs/instructions/product/`)**
-   - 生成 `PRODUCT-OVERVIEW.md` (产品概览)
-   - 生成 `FEATURE-MAP.md` (功能地图)
-   - 生成 `BUSINESS-RULES.md` (业务规则清单)
-   - 生成 `CONSTRAINTS.md` (业务约束与不变量)
-   - 生成 `USER-JOURNEY.md`（用户旅程）, `USER-STORIES.md`（用户故事）
+1. **产品维度逆向 (`knowledge/product/`)**
+   - 生成 `PL-ECOMMERCE/PRODUCT-OVERVIEW.md` (产品概览)
+   - 生成 `PL-ECOMMERCE/PM-SHOPPING-CART/FEATURE-MAP.md` (功能地图)
+   - 生成 `PL-ECOMMERCE/PM-SHOPPING-CART/BUSINESS-RULES.md` (业务规则清单)
+   - 生成 `PL-ECOMMERCE/PM-SHOPPING-CART/USER-STORIES.md`（用户故事）
 
-2. **架构与领域维度逆向 (`docs/instructions/architecture/` & `docs/instructions/domain/`)**
-   - 生成 `SYSTEM-ARCHITECTURE.md` (系统架构)
-   - 生成 `DATA-ARCHITECTURE.md` (数据架构)
-   - 生成 `DOMAIN-OVERVIEW.md` (领域模型总览)
-   - 生成 `DOMAIN-MODEL.md` (领域模型核心)
-   - 生成 `BOUNDED-CONTEXTS.md` (限界上下文)
+2. **架构与领域维度逆向 (`knowledge/technical/`、`knowledge/constitution/adr/` & `knowledge/business/`)**
+   - 生成 `knowledge/technical/SYS-ECOMMERCE-BACKEND/APPLICATION-ARCHITECTURE.md` (应用架构)
+   - 生成 `knowledge/data/DATA-ARCHITECTURE.md` (数据架构)
+   - 业务视角与限界上下文写入 `knowledge/business/` 对应层级
 
-3. **接口与依赖维度逆向 (`docs/instructions/api/` & `docs/instructions/dependency/`)**
-   - 生成 `API-OVERVIEW.md` (API总览)
-   - 生成 `DEPENDENCY-MATRIX.md` (模块依赖矩阵)
+3. **接口与依赖维度逆向 (`knowledge/technical/`)**
+   - API 与集成关系写入各应用/系统下的文档（如 INTEGRATION-MAP.md）
 
-4. **测试维度逆向 (`docs/instructions/test/`)**
-   - 生成 `TEST-STRATEGY.md` (测试策略)
+4. **测试维度**
+   - 测试策略与计划写入需求交付产物（TDD、specs）或 `knowledge/technical/` 下的应用说明
 
 - 第四阶段：执行检查和质量验证
 1. 检查清单：确认以下关键文档目录及文件已创建：
-  - `docs/instructions/product/` (产品文档)
-  - `docs/instructions/architecture/` (架构文档)
-  - `docs/instructions/domain/` (领域模型)
-  - `docs/instructions/api/` (API文档)
-  - `docs/instructions/test/` (测试文档)
+  - `knowledge/product/` (产品文档)
+  - `knowledge/technical/` (技术/架构文档)
+  - `knowledge/constitution/adr/` (架构决策记录)
+  - `knowledge/business/` (业务/领域)
+  - `knowledge/data/` (数据架构)
 2. 质量标准
   - **完整性**: 核心业务逻辑和架构模式被完整覆盖
   - **结构化**: 严格遵循 `docs/README.md` 的目录层级，不生成单一的大文件

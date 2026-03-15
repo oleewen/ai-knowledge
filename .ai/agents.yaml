@@ -1,5 +1,5 @@
 # AI SDD Agent 注册与配置
-# 与 docs/solutions/README、docs/analysis/README、docs/requirements/* 阶段规范对齐
+# 与 knowledge/solutions、knowledge/analysis、docs/requirements/* 阶段规范对齐
 
 agents:
   # ===== 核心协调 =====
@@ -26,11 +26,11 @@ agents:
       - solution_formulation
     input_context:
       - "业务描述/需求原文"
-      - "docs/instructions/**"
+      - "knowledge/**"
       - "specs/**"
-      - "docs/solutions/archive/**"
+      - "solutions/archive/**"
     output_artifacts:
-      - "docs/solutions/SOLUTION-{ID}.md"
+      - "solutions/SOLUTION-{ID}.md"
 
   # ===== 需求分析阶段 =====
   requirement_analyst:
@@ -44,11 +44,11 @@ agents:
       - priority_assessment
       - feasibility_validation
     input_context:
-      - "docs/solutions/SOLUTION-{ID}.md"
-      - "docs/instructions/**"
+      - "solutions/SOLUTION-{ID}.md"
+      - "knowledge/**"
       - "specs/**"
     output_artifacts:
-      - "docs/analysis/REQUIREMENT-{ID}.md"
+      - "analysis/REQUIREMENT-{ID}.md"
 
   # ===== 需求交付 - 产品需求 =====
   product_designer:
@@ -63,8 +63,8 @@ agents:
       - business_rule_definition
       - acceptance_criteria_def
     input_context:
-      - "docs/analysis/REQUIREMENT-{ID}.md"
-      - "docs/instructions/product/**"
+      - "analysis/REQUIREMENT-{ID}.md"
+      - "knowledge/product/**"
     output_artifacts:
       - "docs/requirements/REQUIREMENT-{ID}/MVP-Phase-{N}/PRD-{ID}.md"
 
@@ -82,8 +82,9 @@ agents:
       - distributed_arch_design
     input_context:
       - "docs/requirements/REQUIREMENT-{ID}/MVP-Phase-{N}/PRD-{ID}.md"
-      - "docs/instructions/architecture/**"
-      - "docs/instructions/domain/**"
+      - "knowledge/technical/**"
+      - "knowledge/constitution/adr/**"
+      - "knowledge/business/**"
     output_artifacts:
       - "docs/requirements/REQUIREMENT-{ID}/MVP-Phase-{N}/ADD-{ID}.md（架构部分）"
 
@@ -100,7 +101,8 @@ agents:
     input_context:
       - "docs/requirements/REQUIREMENT-{ID}/MVP-Phase-{N}/PRD-{ID}.md"
       - "docs/requirements/REQUIREMENT-{ID}/MVP-Phase-{N}/ADD-{ID}.md"
-      - "docs/instructions/architecture/**"
+      - "knowledge/technical/**"
+      - "knowledge/constitution/adr/**"
       - "specs/**"
       - "src/**"
     output_artifacts:
@@ -115,14 +117,14 @@ agents:
       - spec_generation
     input_context:
       - "各阶段 1～4 步分析/设计结果"
-      - "docs/solutions/SOLUTION-TEMPLATE.md"
-      - "docs/analysis/REQUIREMENT-TEMPLATE.md"
+      - ".ai/prompts/solutions/SOLUTION-TEMPLATE.md"
+      - ".ai/prompts/analysis/REQUIREMENT-TEMPLATE.md"
       - "docs/requirements/PRD-TEMPLATE.md"
       - "docs/requirements/ADD-TEMPLATE.md"
       - "docs/requirements/TDD-TEMPLATE.md"
     output_artifacts:
-      - "docs/solutions/SOLUTION-{ID}.md"
-      - "docs/analysis/REQUIREMENT-{ID}.md"
+      - "solutions/SOLUTION-{ID}.md"
+      - "analysis/REQUIREMENT-{ID}.md"
       - "docs/requirements/REQUIREMENT-{ID}/MVP-Phase-{N}/PRD-{ID}.md"
       - "docs/requirements/REQUIREMENT-{ID}/MVP-Phase-{N}/ADD-{ID}.md"
       - "docs/requirements/REQUIREMENT-{ID}/MVP-Phase-{N}/TDD-{ID}.md"
@@ -138,7 +140,7 @@ agents:
       - doc_quality_audit
     input_context:
       - "各阶段产出物"
-      - "docs/instructions/**"
+      - "knowledge/**"
       - "specs/**"
     output_artifacts:
       - "REQUIREMENT-{ID}/MVP-Phase-{N}/specs/{service-name}/api/**"
@@ -173,7 +175,8 @@ agents:
     input_context:
       - "docs/requirements/REQUIREMENT-{ID}/MVP-Phase-{N}/PRD-{ID}.md"
       - "docs/requirements/REQUIREMENT-{ID}/MVP-Phase-{N}/ADD-{ID}.md"
-      - "docs/instructions/test/**"
+      - "knowledge/technical/**"
+      - "REQUIREMENT-{ID}/MVP-Phase-{N}/specs/**"
       - "REQUIREMENT-{ID}/MVP-Phase-{N}/specs/**"
     output_artifacts:
       - "docs/requirements/REQUIREMENT-{ID}/MVP-Phase-{N}/TDD-{ID}.md"
@@ -264,11 +267,11 @@ agents:
       - doc_quality_audit
     input_context:
       - "docs/requirements/REQUIREMENT-{ID}/**"
-      - "docs/instructions/**"
+      - "knowledge/**"
       - "docs/changelog/**"
       - "specs/**"
       - "src/**"
     output_artifacts:
       - "docs/changelog/changes/CHANGE-{ID}.md"
       - "docs/changelog/CHANGELOG.md"
-      - "docs/instructions/**（更新）"
+      - "knowledge/**（更新）"

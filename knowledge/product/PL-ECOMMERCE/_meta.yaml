@@ -1,0 +1,8 @@
+# PL-ECOMMERCE 产品线元数据
+id: "PL-ECOMMERCE"
+name: "电商平台"
+description: "面向消费者的在线购物平台产品线"
+target_users:
+  - "普通消费者"
+  - "企业采购客户"
+product_owner: "王五 (wangwu@example.com)"

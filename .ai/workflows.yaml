@@ -1,5 +1,5 @@
 # AI SDD 工作流定义
-# 与 AGENTS.md、docs/solutions/README、docs/analysis/README、docs/requirements/* 阶段规范对齐
+# 与 AGENTS.md、knowledge/solutions、knowledge/analysis、docs/requirements/* 阶段规范对齐
 #
 # 主链路：解决方案 → 需求分析 → 需求交付（产品需求→方案设计→需求开发）×MVP → 需求归档
 
@@ -33,12 +33,12 @@ workflows:
       - name: requirement_extraction
         agent: solution_analyst
         description: "需求提取与结构化"
-        input: ["业务描述/需求原文", "docs/instructions/**", "specs/**"]
+        input: ["业务描述/需求原文", "knowledge/**", "specs/**"]
         output: ["结构化需求提取报告"]
       - name: impact_assessment
         agents: ["solution_analyst", "quality_guardian"]
         description: "影响面评估与分析"
-        input: ["结构化需求", "docs/instructions/**", "specs/**"]
+        input: ["结构化需求", "knowledge/**", "specs/**"]
         output: ["影响面评估报告"]
       - name: conflict_detection
         agent: solution_analyst
@@ -54,7 +54,7 @@ workflows:
         agents: ["technical_writer", "doc_updater"]
         description: "文档输出与评审"
         input: ["解决方案核心内容"]
-        output: ["docs/solutions/SOLUTION-{ID}.md"]
+        output: ["solutions/SOLUTION-{ID}.md"]
 
   # ----- 需求分析阶段 -----
   requirement_analysis_phase:
@@ -64,7 +64,7 @@ workflows:
       - name: deep_research
         agent: requirement_analyst
         description: "深度研究与探索"
-        input: ["docs/solutions/SOLUTION-{ID}.md", "docs/instructions/**", "specs/**"]
+        input: ["solutions/SOLUTION-{ID}.md", "knowledge/**", "specs/**"]
         output: ["深度研究报告"]
       - name: requirement_refinement
         agent: requirement_analyst
@@ -85,7 +85,7 @@ workflows:
         agents: ["technical_writer", "doc_updater"]
         description: "文档输出与评审"
         input: ["深度研究", "细化需求", "MVP 方案", "依赖风险"]
-        output: ["docs/analysis/REQUIREMENT-{ID}.md"]
+        output: ["analysis/REQUIREMENT-{ID}.md"]
 
   # ----- 需求交付 - 产品需求阶段 -----
   product_design_phase:
@@ -95,7 +95,7 @@ workflows:
       - name: business_flow_design
         agent: product_designer
         description: "业务流程设计"
-        input: ["docs/analysis/REQUIREMENT-{ID}.md（当前 MVP 章节）", "docs/instructions/product/**"]
+        input: ["analysis/REQUIREMENT-{ID}.md（当前 MVP 章节）", "knowledge/product/**"]
         output: ["核心/分支/异常/跨系统流程"]
       - name: user_story_scenarios
         agent: product_designer
@@ -126,12 +126,12 @@ workflows:
       - name: architecture_design
         agents: ["architect"]
         description: "架构设计"
-        input: ["PRD", "docs/instructions/architecture/**", "docs/instructions/domain/**"]
+        input: ["PRD", "knowledge/technical/**", "knowledge/constitution/adr/**", "knowledge/business/**"]
         output: ["系统架构、接口协议、领域模型、数据架构、发布方案"]
       - name: detailed_design
         agent: backend_architect
         description: "详细设计"
-        input: ["PRD", "ADD 架构部分", "docs/instructions/architecture/**", "specs/**", "src/**"]
+        input: ["PRD", "ADD 架构部分", "knowledge/technical/**", "knowledge/constitution/adr/**", "specs/**", "src/**"]
         output: ["集成设计、接口详细设计、逻辑设计、数据访问、非功能性设计"]
       - name: spec_generation
         agents: ["technical_writer", "doc_updater"]
@@ -177,8 +177,8 @@ workflows:
       - name: documentation_update
         agents: ["doc_updater", "developer"]
         description: "文档更新"
-        input: ["交付代码与规约", "docs/instructions/**", "specs/**"]
-        output: ["docs/instructions/** 更新", "specs/** 同步", "CHANGELOG", "DEV-{ID}.md 总结"]
+        input: ["交付代码与规约", "knowledge/**", "specs/**"]
+        output: ["knowledge/** 更新（如需要）", "specs/** 同步", "CHANGELOG", "DEV-{ID}.md 总结"]
 
   # ----- 需求归档阶段 -----
   documentation_curation_phase:
@@ -190,8 +190,8 @@ workflows:
         output: ["docs/changelog/changes/CHANGE-{ID}.md", "docs/changelog/CHANGELOG.md"]
       - name: doc_sync
         agent: documentation_curator
-        input: ["docs/instructions/**", "specs/**", "src/**"]
-        output: ["docs/instructions/product|architecture|api|test/** 更新"]
+        input: ["knowledge/**", "specs/**", "src/**"]
+        output: ["knowledge/product/** 或 knowledge/technical/** 更新"]
 
   # ----- 主链路顺序 -----
   main_pipeline:

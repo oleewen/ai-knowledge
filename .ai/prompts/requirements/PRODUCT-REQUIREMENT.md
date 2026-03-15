@@ -8,8 +8,8 @@
 
 **输入**：
 
-- 需求分析文档中当前 MVP 章节（`docs/analysis/REQUIREMENT-{ID}.md`）
-- 产品文档（`docs/instructions/product/`）
+- 需求分析文档中当前 MVP 章节（`analysis/REQUIREMENT-{ID}.md`）
+- 产品文档（`knowledge/product/`）
 
 **输出**：
 

@@ -17,7 +17,7 @@
 
 - 生产代码、测试代码
 - 开发交付文档（`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/DEV-{ID}.md`）
-- 更新后的系统说明文档（`docs/instructions/`）和需求规约文件（`specs/`）
+- 更新后的知识库（`knowledge/`）与需求规约文件（`specs/`）
 
 ## 3 Agent 工作流
 

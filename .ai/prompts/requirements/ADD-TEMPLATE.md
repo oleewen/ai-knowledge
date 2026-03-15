@@ -19,7 +19,7 @@ tags: []
 
 ### 1.1 设计目标
 
-- 关联需求分析：`docs/analysis/REQUIREMENT-{ID}.md`
+- 关联需求分析：`analysis/REQUIREMENT-{ID}.md`
 - 关联产品需求：`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`
 - MVP阶段：MVP-{N}
 

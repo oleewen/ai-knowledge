@@ -5,18 +5,13 @@ context_strategy:
   # 第一层：全局上下文（始终加载）
   global:
     - "docs/README.md"                                    # 文档体系与目录规范
-    - "docs/instructions/architecture/SYSTEM-ARCHITECTURE.md"
-    - "docs/instructions/architecture/DATA-ARCHITECTURE.md"
-    - "docs/instructions/architecture/DEPLOYMENT-ARCHITECTURE.md"
-    - "docs/instructions/domain/DOMAIN-OVERVIEW.md"
-    - "docs/instructions/domain/BOUNDED-CONTEXTS.md"
-    - "docs/instructions/domain/DOMAIN-MODEL.md"
-    - "docs/instructions/product/PRODUCT-OVERVIEW.md"
-    - "docs/instructions/product/FEATURE-MAP.md"
-    - "docs/instructions/product/USER-GUIDE.md"
-    - "docs/instructions/api/API-OVERVIEW.md"
-    - "docs/instructions/test/TEST-STRATEGY.md"
-    - "docs/instructions/test/TEST-COVERAGE.md"
+    - "knowledge/technical/SYS-ECOMMERCE-BACKEND/APPLICATION-ARCHITECTURE.md"
+    - "knowledge/data/DATA-ARCHITECTURE.md"
+    - "knowledge/business/README.md"
+    - "knowledge/product/README.md"
+    - "knowledge/product/PL-ECOMMERCE/PRODUCT-OVERVIEW.md"
+    - "knowledge/product/PL-ECOMMERCE/PM-SHOPPING-CART/FEATURE-MAP.md"
+    - "knowledge/technical/README.md"
     - ".ai/context/project-context.yaml"
 
   # 第二层：阶段上下文（按当前阶段加载）
@@ -25,36 +20,37 @@ context_strategy:
       description: "解决方案阶段"
       inputs:
         - "业务描述/需求原文"
-        - "docs/instructions/**"
+        - "knowledge/**"
         - "specs/**"
-        - "docs/solutions/archive/**"
+        - "solutions/archive/**"
       outputs:
-        - "docs/solutions/SOLUTION-{ID}.md"
+        - "solutions/SOLUTION-{ID}.md"
 
     requirement_analysis:
       description: "需求分析阶段"
       inputs:
-        - "docs/solutions/SOLUTION-{ID}.md"
-        - "docs/instructions/**"
+        - "solutions/SOLUTION-{ID}.md"
+        - "knowledge/**"
         - "specs/**"
       outputs:
-        - "docs/analysis/REQUIREMENT-{ID}.md"
+        - "analysis/REQUIREMENT-{ID}.md"
 
     product_design:
       description: "产品需求阶段（当前 MVP）"
       inputs:
         - "docs/analysis/REQUIREMENT-{ID}.md（当前 MVP 章节）"
-        - "docs/instructions/product/**"
+        - "knowledge/product/**"
       outputs:
         - "docs/requirements/REQUIREMENT-{ID}/MVP-Phase-{N}/PRD-{ID}.md"
 
     technical_design:
       description: "方案设计阶段（当前 MVP）"
       inputs:
-        - "docs/analysis/REQUIREMENT-{ID}.md"
+        - "analysis/REQUIREMENT-{ID}.md"
         - "docs/requirements/REQUIREMENT-{ID}/MVP-Phase-{N}/PRD-{ID}.md"
-        - "docs/instructions/architecture/**"
-        - "docs/instructions/domain/**"
+        - "knowledge/technical/**"
+        - "knowledge/constitution/adr/**"
+        - "knowledge/business/**"
         - "specs/**"
       outputs:
         - "docs/requirements/REQUIREMENT-{ID}/MVP-Phase-{N}/ADD-{ID}.md"
@@ -72,21 +68,21 @@ context_strategy:
       outputs:
         - "src/**"
         - "docs/requirements/REQUIREMENT-{ID}/MVP-Phase-{N}/DEV-{ID}.md"
-        - "docs/instructions/**（如有更新）"
+        - "knowledge/**（如有更新）"
         - "specs/**（同步）"
 
     documentation_curation:
       description: "需求归档阶段"
       inputs:
         - "docs/requirements/REQUIREMENT-{ID}/**"
-        - "docs/instructions/**"
+        - "knowledge/**"
         - "docs/changelog/**"
         - "specs/**"
         - "src/**"
       outputs:
         - "docs/changelog/changes/CHANGE-{ID}.md"
         - "docs/changelog/CHANGELOG.md"
-        - "docs/instructions/**（更新）"
+        - "knowledge/**（更新）"
 
   # 第三层：按需上下文（Agent 主动检索）
   on_demand:

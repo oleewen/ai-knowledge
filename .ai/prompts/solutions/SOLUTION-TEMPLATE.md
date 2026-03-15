@@ -165,7 +165,7 @@ tags: ["{标签列表}"]
 ### 9.2 参考文档
 
 <!-- 列出参考的指令文档、规约文件等 -->
-- `docs/instructions/`
+- `knowledge/`
 - `specs/`
 
 ### 9.3 质量自查表 (Self-Check)

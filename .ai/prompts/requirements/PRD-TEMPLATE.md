@@ -20,7 +20,7 @@ tags: []
 
 ### 1.1 产品目标
 <!-- 本MVP的核心交付目标 -->
-- 关联需求分析：`docs/analysis/REQUIREMENT-{ID}.md`
+- 关联需求分析：`analysis/REQUIREMENT-{ID}.md`
 - MVP阶段：MVP-{N}
 
 ### 1.2 需求范围
