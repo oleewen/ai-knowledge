@@ -15,6 +15,21 @@
 | [**需求规约**](./specs/) | 服务/接口等规格（供 solutions、analysis 引用） |
 | [**贡献指南**](./CONTRIBUTING.md) | 如何新增/修改条目与ADR |
 
+## 快速初始化 (sdd-init)
+
+在任意目录下执行以下命令，可从本仓库初始化 SDD 开发环境（文档模板、知识库结构、`.ai` 配置与 Agent 的 skills/命令）：
+
+```bash
+# 方式一：从 Git 拉取并初始化当前目录（需先设置 GIT_REPO_URL 为实际仓库地址）
+curl -sL "https://raw.githubusercontent.com/your-org/ai-sdd-docs/main/scripts/sdd-init-bootstrap.sh" | bash -s -- [选项]
+
+# 方式二：已克隆本仓库时，在目标目录执行
+cd /path/to/your-project
+REPO_ROOT=/path/to/ai-sdd-docs /path/to/ai-sdd-docs/scripts/sdd-init.sh [选项]
+```
+
+初始化将：① 把仓库内除 `.ai`、`.cursor` 外的内容拷贝到当前目录的 `docs/`（可改）；② 把 `.ai` 拷贝到当前目录的 `.ai/`；③ 按选择为 Cursor 生成 skills 与命令说明到 `.cursor/`。详见 [scripts/README.md](./scripts/README.md)。
+
 ## 目录结构
 
 ```text
