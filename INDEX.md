@@ -102,3 +102,39 @@
 
 - **输出**：`analysis/REQUIREMENT-{ID}.md`；文档内 `parent` 指向对应 SOLUTION。  
 - **输入**：解决方案 (solutions) 与知识库 (knowledge)。
+
+
+---
+
+## 四、需求交付 (requirements)
+
+MVP 阶段化需求交付文档，对应 AI SDD 的需求落地与分阶段交付产出。
+
+| 入口 | 说明 |
+|------|------|
+| [requirements/README.md](./requirements/README.md) | 需求交付阶段目标、结构说明 |
+| 示例结构 | [requirements/REQUIREMENT-EXAMPLE/](./requirements/REQUIREMENT-EXAMPLE/) |
+| 阶段规范 | [.ai/prompts/requirements/README.md](./.ai/prompts/requirements/README.md) |
+| 文档模板 | `.ai/prompts/requirements/` 下 PRD/ADD/TDD 各模板 |
+
+- **输出**：`requirements/REQUIREMENT-{ID}/MVP-Phase-*/` 按阶段组织，含 `PRD.md`、`ADD.md`、`TDD.md` 等交付物。  
+- **输入**：上游 analysis/REQUIREMENT-{ID}.md、solutions/SOLUTION-{ID}.md 及模板/规范。
+
+> 详见 [requirements/README.md](./requirements/README.md) 获悉推荐目录结构和工作流。
+
+---
+
+## 五、需求规约 (specs)
+
+服务/接口/数据等需求详细规约文档，供 solutions、analysis、requirements 阶段引用。
+
+| 入口 | 说明 |
+|------|------|
+| [specs/](./specs/) | 规约目录入口（接口、数据、协议等） |
+| 规范示例 | specs/ 下各类型子目录及 `README.md` |
+| 推荐结构 | 参考 `knowledge/constitution/standards/` 相关规范 |
+
+- **输出**：`specs/` 下按照接口、服务、实体等类型分目录组织的 `{xxx}.md` 或 `.yaml`。  
+- **输入**：由需求分析、方案设计或需求交付阶段提出的规约需求。
+
+> 需求规约有助于实现自动校验、映射追踪与下游交付标准化。

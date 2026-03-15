@@ -19,8 +19,6 @@
 | [technical/](./technical/) | 技术视角：系统、应用、微服务与接口 |
 | [data/](./data/) | 数据视角：数据存储、数据实体与字典 |
 
-**与 knowledge 平级**：仓库根目录下 [solutions/](../solutions/)（解决方案文档）、[analysis/](../analysis/)（需求分析文档）。
-
 ## 3. 入口
 
 - 仓库根目录 [INDEX.md](../INDEX.md) — 全局索引与映射速查

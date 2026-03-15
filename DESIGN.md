@@ -13,7 +13,8 @@
 | ---------------- | -------------------------------------------------------------------------------- |
 | **单一事实源 (SSOT)** | 每个知识实体（业务域、API、数据表等）仅在一处定义，其他地方通过 ID 引用。                                         |
 | **联邦治理**         | **系统级仓库**：集中管理宏观架构（业务域、产品线、系统边界）及跨域关系索引。**应用级仓库**：分散管理微观设计（API、Schema、代码），并向上注册。 |
-| **四大视角**         | 通过**业务、产品、技术、数据**四个维度描述系统，视角间通过显式 ID 映射关联。                                       |
+| **全链路闭环**         | **业务知识** -新的诉求-> **解决方案** -深度研究-> **需求分析** -分版交付-> **需求交付** -需求归档-> **业务知识**。每轮需求的提出、拆解、交付与归档均形成闭环反馈，实现持续演进。 |
+| **四大视角**         | 通过**业务、产品、技术、数据**四个维度描述系统业务知识，视角间通过显式 ID 映射关联。                                       |
 
 
 ### 1.2 总体架构
@@ -26,31 +27,68 @@
 
 ## 2. 目录结构与元模型规范
 
-元模型通过**目录结构**与 `**_meta.yaml`** 体现，节点属性与关联均在 YAML 中描述。
+元模型通过**目录结构**与 **`_meta.yaml`** 体现，节点属性与关联均在 YAML 中描述。仓库根目录与 [README.md](./README.md) 保持一致。
 
-### 2.1 业务视角 (business)
+### 2.1 根目录结构
+
+| 目录 | 说明 |
+|------|------|
+| **knowledge/** | 知识库（宪法层 + 业务/产品/技术/数据四视角） |
+| **solutions/** | 解决方案文档（SOLUTION-{ID}.md，含 archive/） |
+| **analysis/** | 需求分析文档（REQUIREMENT-{ID}.md） |
+| **requirements/** | 需求交付（REQUIREMENT-{ID}/ 按 MVP 阶段，PRD/ADD/TDD） |
+| **specs/** | 需求规约（服务/接口等规格，供 solutions、analysis 引用） |
+| **changelogs/** | 变更日志（CHANGELOG.md） |
+| **.ai/** | AI 助手配置（rules、prompts、context、workflows） |
+
+### 2.2 宪法层 (constitution)
+
+- **定位**：治理层使命、ADR、架构原则、命名规范与术语表。
+- **约定**：`adr/`、`principles/`、`standards/`；实体 ID 与命名遵循 `standards/naming-conventions.md`。
+
+### 2.3 业务视角 (business)
 
 - **定位**：业务版图、领域逻辑与规则，不依赖具体技术实现。
 - **层级**：`业务域 (BD)` → `子域 (BSD)` → `限界上下文 (BC)` → `聚合 (AGG)`。
 - **约定**：每层目录可有 `_meta.yaml`；聚合在 `aggregates/{agg_id}.yaml`，内容含聚合根、实体、不变量、`persisted_as_entity_ids` 等。
 
-### 2.2 产品视角 (product)
+### 2.4 产品视角 (product)
 
 - **定位**：产品功能、用户旅程与需求规格。
 - **层级**：`产品线 (PL)` → `模块 (PM)` → `功能 (FT)` → 用例 (UC)。
 - **约定**：功能点在 `features/{feature_id}.yaml`，含优先级、验收标准、`invokes_api_ids`、`realizes_use_case_ids` 等。
 
-### 2.3 技术视角 (technical)
+### 2.5 技术视角 (technical)
 
 - **定位**：物理实现、部署架构与服务接口。
 - **层级**：`系统 (SYS)` → `应用 (APP)` → 微服务 (MS)。
 - **约定**：应用以 `{app_id}.yaml` 登记，含 `repo_url`、`docs_manifest_path`、`service_ids` 等。
 
-### 2.4 数据视角 (data)
+### 2.6 数据视角 (data)
 
 - **定位**：数据存储结构、流向与治理属性。
 - **层级**：`数据存储 (DS)` → `数据实体 (ENT)`。
 - **约定**：存储目录含 `_meta.yaml`（类型、归属 app_id）；实体在 `schema/{entity_id}.yaml`，含字段、敏感级别、`maps_to_aggregate_id` 等。
+
+### 2.7 解决方案 (solutions)
+
+- **定位**：业务诉求的解决方案文档，对应 AI SDD 解决方案阶段产出；作为需求分析阶段的输入。
+- **约定**：`SOLUTION-{ID}.md` 命名；已完结方案可移入 `archive/`。
+
+### 2.8 需求分析 (analysis)
+
+- **定位**：需求分析文档与 MVP 拆分，对应 AI SDD 需求分析阶段产出；作为需求交付阶段的输入。
+- **约定**：`REQUIREMENT-{ID}.md` 命名；通过 frontmatter 的 `parent` 关联到 solutions。
+
+### 2.9 需求交付 (requirements)
+
+- **定位**：按 MVP 阶段组织的交付物（PRD/ADD/TDD 等），将分析阶段的高层次需求落地为可执行文档。
+- **约定**：`REQUIREMENT-{ID}/` 目录，其下按阶段建子目录（如 `MVP-Phase-1/`），内含 PRD.md、ADD.md、TDD.md 等。
+
+### 2.10 需求规约 (specs)
+
+- **定位**：服务/接口等规格定义，供 solutions、analysis 引用，与 knowledge/technical 可互补。
+- **约定**：按服务或规约类型建子目录（如 `example-service/`），具体格式由项目约定。
 
 ---
 
