@@ -4,16 +4,18 @@
 
 ## 快速导航
 
-| 文档 | 说明 |
-|------|------|
-| [**知识库全局索引**](./INDEX.md) | 各类文档入口、示例与映射速查 |
-| [**设计方案摘录**](./DESIGN.md) |  设计哲学、目录约定、映射机制与演进路线 |
-| [**业务知识**](./knowledge/README.md) | 宪法层、业务/产品/技术/数据四视角 |
-| [**解决方案**](./solutions/README.md) | 业务诉求的解决方案文档（SOLUTION-{ID}.md） |
-| [**需求分析**](./analysis/README.md) | 需求分析文档与 MVP 拆分（REQUIREMENT-{ID}.md） |
-| [**需求交付**](./requirements/README.md) | 按 MVP 阶段的 PRD/ADD/TDD 交付（REQUIREMENT-{ID}/） |
-| [**需求规约**](./specs/) | 服务/接口等规格（供 solutions、analysis 引用） |
-| [**贡献指南**](./CONTRIBUTING.md) | 如何新增/修改条目与ADR |
+
+| 文档                                   | 说明                                          |
+| ------------------------------------ | ------------------------------------------- |
+| **[知识库全局索引](./INDEX.md)**            | 各类文档入口、示例与映射速查                              |
+| **[设计方案摘录](./DESIGN.md)**            | 设计哲学、目录约定、映射机制与演进路线                         |
+| **[业务知识](./knowledge/README.md)**    | 宪法层、业务/产品/技术/数据四视角                          |
+| **[解决方案](./solutions/README.md)**    | 业务诉求的解决方案文档（SOLUTION-{ID}.md）               |
+| **[需求分析](./analysis/README.md)**     | 需求分析文档与 MVP 拆分（REQUIREMENT-{ID}.md）         |
+| **[需求交付](./requirements/README.md)** | 按 MVP 阶段的 PRD/ADD/TDD 交付（REQUIREMENT-{ID}/） |
+| **[需求规约](./specs/)**                 | 服务/接口等规格（供 solutions、analysis 引用）           |
+| **[贡献指南](./CONTRIBUTING.md)**        | 如何新增/修改条目与ADR                               |
+
 
 ## 快速初始化 (sdd-init)
 
@@ -21,7 +23,7 @@
 
 ```bash
 # 方式一：从 Git 拉取并初始化当前目录（需先设置 GIT_REPO_URL 为实际仓库地址）
-curl -sL "https://raw.githubusercontent.com/your-org/ai-sdd-docs/main/scripts/sdd-init-bootstrap.sh" | bash -s -- [选项]
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-docs/main/scripts/sdd-init-bootstrap.sh" | bash -s -- [选项]
 
 # 方式二：已克隆本仓库时，在目标目录执行
 cd /path/to/your-project
@@ -58,11 +60,13 @@ REPO_ROOT=/path/to/ai-sdd-docs /path/to/ai-sdd-docs/scripts/sdd-init.sh [选项]
 
 所有实体使用全局唯一 ID，格式 `{TYPE}-{NAME}`。常用前缀：
 
-| 前缀 | 含义 |
-|------|------|
+
+| 前缀                      | 含义               |
+| ----------------------- | ---------------- |
 | BD- / BSD- / BC- / AGG- | 业务域、子域、限界上下文、聚合根 |
-| PL- / PM- / FT- / UC- | 产品线、产品模块、功能点、用例 |
-| SYS- / APP- / MS- | 系统、应用、微服务 |
-| DS- / ENT- | 数据存储、数据实体 |
+| PL- / PM- / FT- / UC-   | 产品线、产品模块、功能点、用例  |
+| SYS- / APP- / MS-       | 系统、应用、微服务        |
+| DS- / ENT-              | 数据存储、数据实体        |
+
 
 完整规范见 [knowledge/constitution/standards/naming-conventions.md](./knowledge/constitution/standards/naming-conventions.md)。设计方案与演进路线见 [DESIGN.md](./DESIGN.md)。
