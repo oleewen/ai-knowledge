@@ -12,11 +12,12 @@ DOCS_DIR="${DOCS_DIR:-docs}"
 AI_DIR="${AI_DIR:-.ai}"
 CURSOR_DIR="${CURSOR_DIR:-.cursor}"
 TREA_DIR="${TREA_DIR:-.trea}"
-SKILLS_OPT="${SKILLS_OPT:-all}"
+# skills 默认行为：若未指定 --skills，则在 docs 范围为 knowledge-only 时仅安装 knowledge-build，full 时安装全部
+SKILLS_OPT="${SKILLS_OPT:-}"
 DRY_RUN="${DRY_RUN:-0}"
 # 要初始化的 Agent 列表：cursor,trea 或 all（仓库中存在的均初始化）
 AGENTS_OPT="${AGENTS_OPT:-cursor}"
-# 默认仅初始化知识库（docs 下只有 knowledge）；设为 full 则拷贝仓库内除 .ai/各 Agent 目录/.git/scripts 外全部
+# 默认：knowledge 目录 + 根目录同级所有文件（不含其他子目录）；设为 full 则拷贝仓库内除 .ai/各 Agent 目录/.git/scripts 外全部
 DOCS_SCOPE="${DOCS_SCOPE:-knowledge-only}"
 # 默认不包含 .ai/rules 下的 solution、analysis 模板
 AI_RULES_SCOPE="${AI_RULES_SCOPE:-no-solution-analysis}"
@@ -32,7 +33,7 @@ usage() {
 用法: sdd-init [选项] [目标目录]
 
 从 ai-sdd-docs 仓库初始化当前（或指定）目录的 SDD 开发环境：
-  1) 将仓库内知识库拷贝到目标目录的 docs（默认仅 knowledge 目录）
+  1) 将仓库内 knowledge 目录及同级所有文件（不含其他子目录）拷贝到目标目录的 docs
   2) 将 .ai 目录拷贝到目标目录的 {ai-dir}（默认不包含 rules 下的 solution、analysis）
   3) 将选定的 skills 安装到 {ai-dir}/skills，并为选定的 Agent（Cursor、Trea 等）生成/拷贝配置
 
@@ -45,7 +46,7 @@ usage() {
                       可选: cursor, trea（仓库中存在的才会处理）
   --cursor-dir=DIR    Cursor 配置目录（默认: .cursor）
   --trea-dir=DIR      Trea 配置目录（默认: .trea）
-  --skills=LIST       要安装的 skills，逗号分隔或 all（默认: all）
+  --skills=LIST       要安装的 skills，逗号分隔或 all；未指定时：ds=knowledge-only 默认仅安装 knowledge-build，ds=full 默认安装全部
   --dry-run           仅打印将要执行的操作，不实际拷贝
   -h, --help          显示此帮助
 
@@ -160,12 +161,28 @@ if [[ "$DOCS_SCOPE" == "full" ]]; then
     esac
   done
 else
-  # 默认：仅 knowledge
+  # 默认：knowledge 目录 + 同级所有文件（不含其他目录）
   if [[ -d "$REPO_ROOT/knowledge" ]]; then
     cp_safe "$REPO_ROOT/knowledge" "$DOCS_ABS/knowledge"
   else
     echo "  警告: 仓库内无 knowledge 目录，跳过." >&2
   fi
+  for item in "$REPO_ROOT"/*; do
+    [[ -e "$item" ]] || continue
+    [[ -f "$item" ]] || continue
+    name="$(basename "$item")"
+    cp_safe "$item" "$DOCS_ABS/$name"
+  done
+  for item in "$REPO_ROOT"/.*; do
+    [[ -e "$item" ]] || continue
+    [[ -f "$item" ]] || continue
+    name="$(basename "$item")"
+    [[ "$name" == "." || "$name" == ".." ]] && continue
+    case "$name" in
+      .ai|.cursor|.trea|.git) continue ;;
+      *) cp_safe "$item" "$DOCS_ABS/$name" ;;
+    esac
+  done
 fi
 echo "  完成."
 echo ""
@@ -204,42 +221,46 @@ fi
 echo "  完成."
 echo ""
 
-# 3) 安装 skills 到 .ai/skills，并为各 Agent 生成/拷贝配置
+# 3) 直接为各 Agent 安装 skills（从仓库 .ai/skills 复制到 .cursor/.trea 等）
 echo ">>> 3/3 安装 skills 并为 Agent（Cursor、Trea 等）生成/拷贝配置 ..."
-if [[ "$DRY_RUN" != "1" ]]; then
-  mkdir -p "$AI_ABS/skills"
-fi
 
-# 3a) 从仓库 .ai/skills 按 --skills 安装到目标 .ai/skills
+# 3a) 计算本次要安装的 skills 列表
+# 未显式指定 --skills 时，默认规则：
+#   - ds=knowledge-only: 仅安装 knowledge-build
+#   - ds=full: 安装 CURSOR_SKILLS 中的全部
 declare -a INSTALL_SKILLS
-if [[ "$SKILLS_OPT" == "all" ]]; then
-  INSTALL_SKILLS=("${CURSOR_SKILLS[@]}")
+if [[ -n "$SKILLS_OPT" ]]; then
+  if [[ "$SKILLS_OPT" == "all" ]]; then
+    INSTALL_SKILLS=("${CURSOR_SKILLS[@]}")
+  else
+    IFS=',' read -ra INSTALL_SKILLS <<< "$SKILLS_OPT"
+  fi
 else
-  IFS=',' read -ra INSTALL_SKILLS <<< "$SKILLS_OPT"
+  if [[ "$DOCS_SCOPE" == "knowledge-only" ]]; then
+    INSTALL_SKILLS=("knowledge-build")
+  else
+    INSTALL_SKILLS=("${CURSOR_SKILLS[@]}")
+  fi
 fi
 
-for skill in "${INSTALL_SKILLS[@]}"; do
-  skill="${skill// /}"
-  [[ -z "$skill" ]] && continue
-  src_skill="$REPO_ROOT/.ai/skills/$skill"
-  if [[ ! -d "$src_skill" ]]; then
-    echo "  跳过不存在的 skill: $skill"
-    continue
-  fi
-  cp_safe "$src_skill" "$AI_ABS/skills/$skill"
-  echo "  已安装 skill: $skill"
-done
-
-# 3b) 按 Agent 分别处理
+# 3b) 按 Agent 分别处理（直接安装到各 Agent 目录）
 for agent in "${ENABLED_AGENTS[@]}"; do
   agent="${agent// /}"
   [[ -z "$agent" ]] && continue
   case "$agent" in
     cursor)
-      # 生成 .cursor/README.md（Slash 命令索引，指向 .ai/skills）
+      # 为 Cursor 安装 skills 到 .cursor/skills，并生成 README（Slash 命令索引）
       CURSOR_README="$CURSOR_ABS/README.md"
       if [[ "$DRY_RUN" != "1" ]]; then
-        mkdir -p "$CURSOR_ABS"
+        mkdir -p "$CURSOR_ABS/skills"
+        for skill in "${INSTALL_SKILLS[@]}"; do
+          skill="${skill// /}"
+          [[ -z "$skill" ]] && continue
+          src_skill="$REPO_ROOT/.ai/skills/$skill"
+          if [[ -d "$src_skill" ]]; then
+            cp_safe "$src_skill" "$CURSOR_ABS/skills/$skill"
+          fi
+        done
         cat > "$CURSOR_README" <<'HEADER'
 # Cursor 项目配置
 
@@ -251,10 +272,10 @@ HEADER
         for skill in "${INSTALL_SKILLS[@]}"; do
           skill="${skill// /}"
           [[ -z "$skill" ]] && continue
-          skill_file="$AI_ABS/skills/$skill/SKILL.md"
+          skill_file="$CURSOR_ABS/skills/$skill/SKILL.md"
           if [[ -f "$skill_file" ]]; then
             desc=$(awk '/^description:/{getline; gsub(/^[ \t]+|[ \t]+$/,""); print; exit}' "$skill_file" 2>/dev/null)
-            [[ -z "$desc" ]] && desc="见 .ai/skills/$skill/SKILL.md"
+            [[ -z "$desc" ]] && desc="见 .cursor/skills/$skill/SKILL.md"
             echo "| \`/$skill\` | $desc |" >> "$CURSOR_README"
           fi
         done
@@ -264,13 +285,26 @@ HEADER
 FOOTER
         echo "  Cursor: 已生成 $CURSOR_DIR/README.md"
       else
-        echo "  [dry-run] Cursor: 将生成 $CURSOR_DIR/README.md"
+        echo "  [dry-run] Cursor: 将生成 $CURSOR_DIR/skills 及 README.md"
       fi
       ;;
     trea)
-      # 若仓库存在 .trea，整目录拷贝到目标
+      # 若仓库存在 .trea，整目录拷贝到目标，并直接安装 skills 到 .trea/skills，便于 Trea 直接使用
       if [[ -d "$REPO_ROOT/.trea" ]]; then
         cp_safe "$REPO_ROOT/.trea" "$TREA_ABS"
+        if [[ "$DRY_RUN" != "1" ]]; then
+          mkdir -p "$TREA_ABS/skills"
+          for skill in "${INSTALL_SKILLS[@]}"; do
+            skill="${skill// /}"
+            [[ -z "$skill" ]] && continue
+            src_skill="$REPO_ROOT/.ai/skills/$skill"
+            if [[ -d "$src_skill" ]]; then
+              cp_safe "$src_skill" "$TREA_ABS/skills/$skill"
+            fi
+          done
+        else
+          echo "  [dry-run] Trea: 将同步 skills 到 $TREA_DIR/skills"
+        fi
         echo "  Trea: 已拷贝 .trea -> $TREA_DIR"
       elif [[ "$DRY_RUN" == "1" ]]; then
         echo "  [dry-run] Trea: 仓库无 .trea，跳过"
@@ -296,5 +330,5 @@ echo ""
 echo "sdd-init 已完成。"
 echo "  - 文档与知识库: $DOCS_ABS"
 echo "  - AI 配置: $AI_ABS"
-echo "  - Skills: $AI_ABS/skills/"
+echo "  - Skills 已为以下 Agent 安装: ${ENABLED_AGENTS[*]}"
 echo "  - Agents: ${ENABLED_AGENTS[*]}"

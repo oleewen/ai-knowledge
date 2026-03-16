@@ -4,7 +4,7 @@
 
 ## 功能概述
 
-1. **文档与知识库**：默认仅将仓库内 **knowledge** 目录拷贝到执行目录的 **docs**（即 `docs/` 下只包含 `knowledge/`）。可选 `--ds=full` 拷贝除 `.ai`、`.cursor`、`.git`、`scripts` 外的全部内容。
+1. **文档与知识库**：默认将仓库内 **knowledge** 目录及**同级所有文件**（不含其他子目录）拷贝到执行目录的 **docs**，即 `docs/` 下包含 `knowledge/` 与根目录下的 README、INDEX、DESIGN 等文件。可选 `--ds=full` 拷贝除 `.ai`、各 Agent 目录、`.git`、`scripts` 外的全部内容。
 2. **AI 配置**：将仓库的 **.ai** 目录拷贝到执行目录的 **.ai**。默认**不**包含 `.ai/rules` 下的 **solution**、**analysis** 模板；可选 `--as=full` 包含全部 rules。
 3. **Agent 的 command 与 skill**：从仓库的 **.ai/skills** 按选择安装到执行目录的 **.ai/skills**；并为选定的 **Agent**（Cursor、Trea 等）生成或拷贝配置：
    - **Cursor**：在 `.cursor` 下生成 Slash 命令说明（README），指向 .ai/skills。
@@ -69,7 +69,7 @@ cd ai-sdd-docs
 | `--agents=LIST` | 要初始化的 Agent：`cursor`、`trea` 或 `all`（默认: cursor） | `cursor` |
 | `--cursor-dir=DIR` | Cursor 配置目录（相对目标目录） | `.cursor` |
 | `--trea-dir=DIR` | Trea 配置目录（相对目标目录） | `.trea` |
-| `--skills=LIST` | 要安装的 skills（写入 .ai/skills）：`all` 或逗号分隔，如 `sdd-solution,sdd-analysis,sdd-prd` | `all` |
+| `--skills=LIST` | 要安装的 skills（写入 .ai/skills）：`all` 或逗号分隔，如 `sdd-solution,sdd-analysis,sdd-prd`。未指定时：`ds=knowledge-only` 默认仅安装 `knowledge-build`，`ds=full` 默认安装全部 | 依 `ds` 而定 |
 | `--dry-run` | 仅打印将要执行的操作，不实际拷贝 | - |
 | `-h`, `--help` | 显示帮助 | - |
 
@@ -78,7 +78,7 @@ cd ai-sdd-docs
 ## 示例
 
 ```bash
-# 默认：仅 knowledge 到 docs，.ai 不含 solution/analysis rules，全部 skills
+# 默认：仅 knowledge + 根目录文件到 docs，.ai 不含 solution/analysis rules，skills 默认仅安装 knowledge-build
 curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-docs/main/scripts/sdd-init-bootstrap.sh" | bash -s
 
 # 同时初始化 Cursor 与 Trea
@@ -96,7 +96,7 @@ curl -sL "..." | bash -s -- --dry-run
 
 ## 初始化后的目录结构（目标目录，默认）
 
-- `docs/`：仅 **knowledge/**（知识库）。使用 `--ds=full` 时与仓库除 .ai/各 Agent 目录外一致。
+- `docs/`：**knowledge/** 与仓库根目录下所有**文件**（不含其他子目录）。使用 `--ds=full` 时与仓库除 .ai/各 Agent 目录外一致。
 - `.ai/`：规则、模板、agents、workflows、context 等；默认**不**包含 `rules/solution`、`rules/analysis`。**skills** 在 `.ai/skills/<name>/SKILL.md`，按 `--skills` 安装。
 - `.cursor/`：生成的 `README.md`（Slash 命令索引，指向 .ai/skills）。仅当 `--agents` 包含 cursor 时生成。
 - `.trea/`：从仓库拷贝的 Trea Agent 配置（仅当 `--agents` 包含 trea 且仓库存在 `.trea` 时）。
