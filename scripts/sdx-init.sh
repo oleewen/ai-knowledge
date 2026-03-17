@@ -9,6 +9,8 @@ set -euo pipefail
 REPO_ROOT="${REPO_ROOT:-}"
 TARGET_DIR="${TARGET_DIR:-$(pwd)}"
 DOCS_DIR="${DOCS_DIR:-docs/system}"
+# 独立模式：application（单目录，无 app-APPNAME）；联邦模式：applications/app-APPNAME
+SDX_MODE="${SDX_MODE:-standalone}"
 AI_DIR="${AI_DIR:-.ai}"
 CURSOR_DIR="${CURSOR_DIR:-.cursor}"
 TREA_DIR="${TREA_DIR:-.trea}"
@@ -18,7 +20,7 @@ DRY_RUN="${DRY_RUN:-0}"
 FORCE="${FORCE:-0}"
 # 要初始化的 Agent 列表：cursor,trea 或 all（仓库中存在的均初始化）
 AGENTS_OPT="${AGENTS_OPT:-cursor}"
-# 默认：knowledge 目录 + 根目录同级所有文件（不含其他子目录）；设为 full 则拷贝仓库内除 .ai/各 Agent 目录/.git/scripts 外全部
+# 默认：仅拷贝 knowledge 目录及 system 根目录同级文件到目标 docs/system；--ds=full 拷贝完整 system
 DOCS_SCOPE="${DOCS_SCOPE:-knowledge-only}"
 # 默认不包含 .ai/rules 下的 solution、analysis 模板
 AI_RULES_SCOPE="${AI_RULES_SCOPE:-no-solution-analysis}"
@@ -34,12 +36,13 @@ usage() {
 用法: sdx-init [选项] [目标目录]
 
 从 ai-sdd-docs 仓库初始化当前（或指定）目录的 SDD 开发环境：
-  1) 将仓库内 knowledge 目录及同级所有文件（不含其他子目录）拷贝到目标目录的 docs/system（可改）
+  1) 文档：仓库 system 拷贝到 docs/system（可改 --dd）；应用知识库按模式：独立模式为 docs/application（单目录），联邦模式为 docs/applications 并在其下新建 app-<工程目录名>；联邦模式还会在目标 .gitignore 中忽略文档根目录，并将当前仓库 .git 拷贝至文档根
   2) 将 .ai 目录拷贝到目标目录的 {ai-dir}（默认不包含 rules 下的 solution、analysis）
   3) 将选定的 skills 安装到 {ai-dir}/skills，并为选定的 Agent（Cursor、Trea 等）生成/拷贝配置
 
 选项:
-  --dd=DIR            文档根目录，相对目标目录（默认: docs/system）
+  --mode=MODE         初始化模式：standalone（独立，默认）| federation（联邦）
+  --dd=DIR            system 文档目录，相对目标目录（默认: docs/system）；应用目录为同级的 application 或 applications
   --ds=SCOPE          docs 范围：knowledge-only（默认）| full
   --ad=DIR            .ai 配置目录（默认: .ai）
   --as=SCOPE          .ai/rules 范围：no-solution-analysis（默认）| full
@@ -55,6 +58,7 @@ usage() {
 环境变量（供 bootstrap 使用）:
   REPO_ROOT           仓库根目录（克隆后的路径），必须设置
   TARGET_DIR          目标目录，未传参时也可由此指定
+  SDX_MODE            standalone | federation，与 --mode 等价
   DRY_RUN=1           与 --dry-run 等价
 USAGE
 }
@@ -66,12 +70,20 @@ cp_safe() {
     return 0
   fi
   mkdir -p "$(dirname "$dst")"
-  cp -R "$src" "$dst"
+  if [[ -d "$src" ]] && [[ -d "$dst" ]]; then
+    # 目标目录已存在：只合并，覆盖同名文件，不删除目标目录
+    rsync -a "$src"/ "$dst"/
+  else
+    # 目标为文件或不存在：删除后复制，避免 cp -R 产生嵌套
+    [[ -e "$dst" ]] && rm -rf "$dst"
+    cp -R "$src" "$dst"
+  fi
 }
 
 # 解析参数
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --mode=*)         SDX_MODE="${1#*=}"; SDX_MODE="${SDX_MODE// /}"; shift ;;
     --dd=*)           DOCS_DIR="${1#*=}"; shift ;;
     --ds=*)           DOCS_SCOPE="${1#*=}"; shift ;;
     --ad=*)           AI_DIR="${1#*=}"; shift ;;
@@ -130,6 +142,19 @@ fi
 mkdir -p "$TARGET_DIR"
 TARGET_DIR="$(cd "$TARGET_DIR" && pwd)"
 DOCS_ABS="$TARGET_DIR/$DOCS_DIR"
+DOCS_ROOT="$(dirname "$DOCS_DIR")"
+# 独立模式：application（单目录）；联邦模式：applications
+SDX_MODE="${SDX_MODE:-standalone}"
+case "${SDX_MODE}" in
+  standalone)  APPLICATIONS_DIR="$DOCS_ROOT/application" ;;
+  federation) APPLICATIONS_DIR="$DOCS_ROOT/applications" ;;
+  *)
+    echo "错误: --mode 必须为 standalone 或 federation，当前: $SDX_MODE" >&2
+    exit 1
+    ;;
+esac
+APPLICATIONS_DIR="${APPLICATIONS_DIR:-$DOCS_ROOT/application}"
+APPLICATIONS_ABS="$TARGET_DIR/$APPLICATIONS_DIR"
 AI_ABS="$TARGET_DIR/$AI_DIR"
 CURSOR_ABS="$TARGET_DIR/$CURSOR_DIR"
 TREA_ABS="$TARGET_DIR/$TREA_DIR"
@@ -148,9 +173,11 @@ else
   IFS=',' read -ra ENABLED_AGENTS <<< "$AGENTS_OPT"
 fi
 
-# 检查将要写入的路径是否已存在；无 --force 则警告并退出，有 --force 则确认后继续
+# 检查将要写入的路径是否已存在；交互模式下无论是否 --force 都提示是否覆盖；选 N 则跳过这些路径、继续其余初始化；非交互且无 --force 则退出
+SKIP_OVERWRITE_PATHS=()
 EXISTING_PATHS=()
 [[ -e "$DOCS_ABS" ]] && EXISTING_PATHS+=("$DOCS_ABS")
+[[ -e "$APPLICATIONS_ABS" ]] && EXISTING_PATHS+=("$APPLICATIONS_ABS")
 [[ -e "$AI_ABS" ]] && EXISTING_PATHS+=("$AI_ABS")
 for agent in "${ENABLED_AGENTS[@]}"; do
   agent="${agent// /}"
@@ -163,89 +190,172 @@ for agent in "${ENABLED_AGENTS[@]}"; do
 done
 
 if [[ ${#EXISTING_PATHS[@]} -gt 0 ]]; then
-  if [[ "$FORCE" != "1" ]]; then
-    echo "警告: 以下路径已存在，初始化将覆盖其内容。请使用 --force 强制覆盖，或先备份/移除后再执行。" >&2
-    printf '  - %s\n' "${EXISTING_PATHS[@]}" >&2
-    exit 1
-  fi
   if [[ "$DRY_RUN" == "1" ]]; then
-    echo "[dry-run] 已指定 --force，以下路径已存在、执行时将覆盖："
+    echo "[dry-run] 以下路径已存在、执行时将覆盖："
     printf '  - %s\n' "${EXISTING_PATHS[@]}"
   elif [[ -t 0 ]]; then
     echo "以下路径已存在，继续执行将覆盖：" >&2
     printf '  - %s\n' "${EXISTING_PATHS[@]}" >&2
-    echo -n "是否继续？(y/N) " >&2
+    echo -n "全部覆盖(Y) / 全部跳过(N) [y/N]: " >&2
     read -r reply
     case "$reply" in
-      [yY]|[yY][eE][sS]) ;;
-      *) echo "已取消。" >&2; exit 1 ;;
+      [yY]|[yY][eE][sS]|[aA]) ;;
+      *) SKIP_OVERWRITE_PATHS=("${EXISTING_PATHS[@]}"); echo "已跳过上述路径的覆盖，继续其余初始化。" >&2 ;;
     esac
   else
-    echo "已指定 --force，将覆盖已存在路径（非交互模式，跳过确认）。" >&2
+    if [[ "$FORCE" != "1" ]]; then
+      echo "警告: 以下路径已存在，且为非交互模式无法确认。请使用 --force 强制覆盖，或先备份/移除后再执行。" >&2
+      printf '  - %s\n' "${EXISTING_PATHS[@]}" >&2
+      exit 1
+    else
+      echo "已指定 --force，将覆盖已存在路径（非交互模式，跳过确认）。" >&2
+    fi
   fi
 fi
 
+# 判断某路径是否在「跳过覆盖」列表中
+skip_overwrite() {
+  local path="$1" p
+  for p in "${SKIP_OVERWRITE_PATHS[@]:-}"; do
+    [[ "$p" == "$path" ]] && return 0
+  done
+  return 1
+}
+
 echo "sdx-init 配置:"
+echo "  模式: $SDX_MODE"
 echo "  仓库根: $REPO_ROOT"
 echo "  目标目录: $TARGET_DIR"
 echo "  文档目录: $DOCS_DIR -> $DOCS_ABS (范围: $DOCS_SCOPE)"
+echo "  应用目录: $APPLICATIONS_DIR -> $APPLICATIONS_ABS"
 echo "  .ai 目录: $AI_DIR -> $AI_ABS (rules: $AI_RULES_SCOPE)"
 echo "  Agents: ${ENABLED_AGENTS[*]} (Cursor: $CURSOR_DIR, Trea: $TREA_DIR)"
 echo "  Skills: $SKILLS_OPT"
 [[ "$DRY_RUN" == "1" ]] && echo "  [dry-run 模式]"
 echo ""
 
-# 1) 拷贝到 docs：默认仅 knowledge，可选 full
-echo ">>> 1/3 拷贝文档与知识库到 $DOCS_DIR ..."
-if [[ "$DOCS_SCOPE" == "full" ]]; then
-  # 排除 .ai、各 Agent 目录、.git、scripts
-  for item in "$REPO_ROOT"/*; do
-    [[ -e "$item" ]] || continue
-    name="$(basename "$item")"
-    case "$name" in
-      .ai|.cursor|.trea|.git|scripts) continue ;;
-      *) cp_safe "$item" "$DOCS_ABS/$name" ;;
-    esac
-  done
-  for item in "$REPO_ROOT"/.*; do
-    [[ -e "$item" ]] || continue
-    name="$(basename "$item")"
-    [[ "$name" == "." || "$name" == ".." ]] && continue
-    case "$name" in
-      .ai|.cursor|.trea|.git) continue ;;
-      *) cp_safe "$item" "$DOCS_ABS/$name" ;;
-    esac
-  done
+# 1) 拷贝到文档：system -> DOCS_ABS；应用目录按模式（独立 application / 联邦 applications + app-APPNAME）；联邦模式追加 .gitignore 并拷贝 .git
+echo ">>> 1/3 拷贝文档与知识库（${DOCS_DIR:-} + ${APPLICATIONS_DIR:-}）..."
+if skip_overwrite "$DOCS_ABS"; then
+  echo "  已跳过（用户选择不覆盖）: $DOCS_ABS"
 else
-  # 默认：knowledge 目录 + 同级所有文件（不含其他目录）
-  if [[ -d "$REPO_ROOT/knowledge" ]]; then
-    cp_safe "$REPO_ROOT/knowledge" "$DOCS_ABS/knowledge"
-  else
-    echo "  警告: 仓库内无 knowledge 目录，跳过." >&2
+  mkdir -p "$DOCS_ABS"
+  # 1a) 仓库根 README.md -> system 文档根
+  if [[ -f "$REPO_ROOT/README.md" ]]; then
+    cp_safe "$REPO_ROOT/README.md" "$DOCS_ABS/README.md"
   fi
-  for item in "$REPO_ROOT"/*; do
-    [[ -e "$item" ]] || continue
-    [[ -f "$item" ]] || continue
-    name="$(basename "$item")"
-    cp_safe "$item" "$DOCS_ABS/$name"
-  done
-  for item in "$REPO_ROOT"/.*; do
-    [[ -e "$item" ]] || continue
-    [[ -f "$item" ]] || continue
-    name="$(basename "$item")"
-    [[ "$name" == "." || "$name" == ".." ]] && continue
-    case "$name" in
-      .ai|.cursor|.trea|.git) continue ;;
-      *) cp_safe "$item" "$DOCS_ABS/$name" ;;
-    esac
-  done
+  # 1b) system 目录 -> docs/system；默认仅 knowledge/ 与根目录同级文件，--ds=full 时拷贝完整
+  if [[ -d "$REPO_ROOT/system" ]]; then
+    if [[ "$DOCS_SCOPE" == "full" ]]; then
+      for item in "$REPO_ROOT/system"/*; do
+        [[ -e "$item" ]] || continue
+        name="$(basename "$item")"
+        cp_safe "$item" "$DOCS_ABS/$name"
+      done
+      for item in "$REPO_ROOT/system"/.*; do
+        [[ -e "$item" ]] || continue
+        name="$(basename "$item")"
+        [[ "$name" == "." || "$name" == ".." ]] && continue
+        cp_safe "$item" "$DOCS_ABS/$name"
+      done
+    else
+      # knowledge-only：仅 knowledge/ 目录及 system 根目录下所有文件（不含其他子目录）
+      if [[ -d "$REPO_ROOT/system/knowledge" ]]; then
+        cp_safe "$REPO_ROOT/system/knowledge" "$DOCS_ABS/knowledge"
+      fi
+      for item in "$REPO_ROOT/system"/*; do
+        [[ -e "$item" ]] || continue
+        [[ -f "$item" ]] || continue
+        name="$(basename "$item")"
+        cp_safe "$item" "$DOCS_ABS/$name"
+      done
+      for item in "$REPO_ROOT/system"/.*; do
+        [[ -e "$item" ]] || continue
+        [[ -f "$item" ]] || continue
+        name="$(basename "$item")"
+        [[ "$name" == "." || "$name" == ".." ]] && continue
+        cp_safe "$item" "$DOCS_ABS/$name"
+      done
+    fi
+  else
+    echo "  警告: 仓库内无 system 目录，跳过." >&2
+  fi
+fi
+# 1c) 应用目录：独立模式为 application（单目录）；联邦模式为 applications 并新建 app-<工程目录名>
+if skip_overwrite "$APPLICATIONS_ABS"; then
+  echo "  已跳过（用户选择不覆盖）: $APPLICATIONS_ABS"
+elif [[ -d "$REPO_ROOT/applications" ]]; then
+  cp_safe "$REPO_ROOT/applications" "$APPLICATIONS_ABS"
+fi
+if [[ "$SDX_MODE" == "federation" ]]; then
+  # 联邦模式：在 applications 下新建 app-<工程目录名>（已存在则不新建）
+  APPNAME="$(basename "$TARGET_DIR")"
+  APP_DIR="$APPLICATIONS_ABS/app-$APPNAME"
+  if [[ "$DRY_RUN" == "1" ]]; then
+    echo "  [dry-run] 确保存在: $APPLICATIONS_DIR/app-$APPNAME/"
+  else
+    mkdir -p "$APPLICATIONS_ABS"
+    if [[ ! -d "$APP_DIR" ]]; then
+      mkdir -p "$APP_DIR"
+      echo "  已新建应用知识库目录: $APPLICATIONS_DIR/app-$APPNAME/"
+    fi
+  fi
+fi
+# 1d) 联邦模式：目标 .gitignore 增加忽略文档根目录，并将当前仓库 .git 拷贝至文档根，使 docs 可与当前工程用 git 汇合
+if [[ "$SDX_MODE" == "federation" ]] && [[ "$DRY_RUN" != "1" ]]; then
+  GITIGNORE="$TARGET_DIR/.gitignore"
+  DOCS_ROOT_ABS="$TARGET_DIR/$DOCS_ROOT"
+  if [[ -n "$DOCS_ROOT" ]] && [[ "$DOCS_ROOT" != "." ]]; then
+    if [[ -f "$GITIGNORE" ]]; then
+      if ! grep -q "^${DOCS_ROOT%/}\$" "$GITIGNORE" 2>/dev/null && ! grep -q "^${DOCS_ROOT%/}/" "$GITIGNORE" 2>/dev/null; then
+        echo "" >> "$GITIGNORE"
+        echo "# sdx-init 联邦模式：忽略文档根目录" >> "$GITIGNORE"
+        echo "${DOCS_ROOT%/}" >> "$GITIGNORE"
+        echo "  已在 .gitignore 中忽略: $DOCS_ROOT"
+      fi
+    else
+      printf '%s\n' "# sdx-init 联邦模式：忽略文档根目录" "${DOCS_ROOT%/}" >> "$GITIGNORE"
+      echo "  已创建 .gitignore 并忽略: $DOCS_ROOT"
+    fi
+    # 拷贝当前仓库 .git 到文档根，使目标 docs 可作为独立工作区与当前工程同一远程汇合
+    if [[ -d "$REPO_ROOT/.git" ]]; then
+      mkdir -p "$DOCS_ROOT_ABS"
+      rm -rf "$DOCS_ROOT_ABS/.git"
+      cp -R "$REPO_ROOT/.git" "$DOCS_ROOT_ABS/.git"
+      # 将工作区指向目标文档根，使 docs 内 git 操作与当前工程同一远程汇合
+      (cd "$DOCS_ROOT_ABS" && git config core.worktree "$DOCS_ROOT_ABS" 2>/dev/null) || true
+      echo "  已拷贝当前仓库 .git 至文档根: $DOCS_ROOT/.git（可在 docs 内 git push/pull 与当前工程汇合）"
+    else
+      echo "  警告: 当前仓库无 .git（如从压缩包运行），无法拷贝至文档根；目标 docs 无法与当前工程 git 汇合。" >&2
+    fi
+  else
+    echo "  警告: 文档根为项目根（--dd 未指定子目录），跳过 .git 拷贝，避免覆盖目标工程 .git。" >&2
+  fi
+elif [[ "$SDX_MODE" == "standalone" ]] && [[ "$DRY_RUN" != "1" ]]; then
+  # 独立模式：删除文档根下的 .git，并移除 .gitignore 中忽略文档根的配置，使 docs 由目标工程统一版本管理
+  _docs_root_abs="$TARGET_DIR/$DOCS_ROOT"
+  if [[ -n "$DOCS_ROOT" ]] && [[ "$DOCS_ROOT" != "." ]]; then
+    if [[ -d "$_docs_root_abs/.git" ]]; then
+      rm -rf "$_docs_root_abs/.git"
+      echo "  已删除文档根下 .git: $DOCS_ROOT/.git"
+    fi
+    _gitignore="$TARGET_DIR/.gitignore"
+    _docs_glob="${DOCS_ROOT%/}"
+    if [[ -f "$_gitignore" ]] && (grep -q "^# sdx-init 联邦模式：忽略文档根目录" "$_gitignore" 2>/dev/null || grep -q "^${_docs_glob}\$" "$_gitignore" 2>/dev/null); then
+      _tmp_ignore="${_gitignore}.sdx-init.tmp"
+      grep -v "^# sdx-init 联邦模式：忽略文档根目录$" "$_gitignore" | grep -v "^${_docs_glob}\$" > "$_tmp_ignore" && mv "$_tmp_ignore" "$_gitignore"
+      echo "  已从 .gitignore 中移除对文档根的忽略: $_docs_glob"
+    fi
+  fi
 fi
 echo "  完成."
 echo ""
 
 # 2) 拷贝 .ai 到目标 .ai；默认排除 rules/solution、rules/analysis；不拷贝 skills（由步骤 3 按 --skills 安装）
 echo ">>> 2/3 拷贝 .ai 配置到 $AI_DIR ..."
-if [[ "$DRY_RUN" != "1" ]]; then
+if skip_overwrite "$AI_ABS"; then
+  echo "  已跳过（用户选择不覆盖）: $AI_ABS"
+elif [[ "$DRY_RUN" != "1" ]]; then
   for item in "$REPO_ROOT/.ai"/*; do
     [[ -e "$item" ]] || continue
     name="$(basename "$item")"
@@ -267,12 +377,14 @@ else
   done
   echo "  [dry-run] 实际执行时将排除 .ai/skills（由步骤 3 按 --skills 安装）"
 fi
-if [[ "$AI_RULES_SCOPE" == "no-solution-analysis" ]] && [[ "$DRY_RUN" != "1" ]]; then
-  [[ -d "$AI_ABS/rules/solution" ]] && rm -rf "$AI_ABS/rules/solution"
-  [[ -d "$AI_ABS/rules/analysis" ]] && rm -rf "$AI_ABS/rules/analysis"
-  echo "  已排除 .ai/rules/solution 与 .ai/rules/analysis"
-elif [[ "$AI_RULES_SCOPE" == "no-solution-analysis" ]] && [[ "$DRY_RUN" == "1" ]]; then
-  echo "  [dry-run] 将排除 .ai/rules/solution 与 .ai/rules/analysis"
+if ! skip_overwrite "$AI_ABS"; then
+  if [[ "$AI_RULES_SCOPE" == "no-solution-analysis" ]] && [[ "$DRY_RUN" != "1" ]]; then
+    [[ -d "$AI_ABS/rules/solution" ]] && rm -rf "$AI_ABS/rules/solution"
+    [[ -d "$AI_ABS/rules/analysis" ]] && rm -rf "$AI_ABS/rules/analysis"
+    echo "  已排除 .ai/rules/solution 与 .ai/rules/analysis"
+  elif [[ "$AI_RULES_SCOPE" == "no-solution-analysis" ]] && [[ "$DRY_RUN" == "1" ]]; then
+    echo "  [dry-run] 将排除 .ai/rules/solution 与 .ai/rules/analysis"
+  fi
 fi
 echo "  完成."
 echo ""
@@ -299,6 +411,9 @@ for agent in "${ENABLED_AGENTS[@]}"; do
   [[ -z "$agent" ]] && continue
   case "$agent" in
     cursor)
+      if skip_overwrite "$CURSOR_ABS"; then
+        echo "  Cursor: 已跳过（用户选择不覆盖）: $CURSOR_ABS"
+      else
       # 为 Cursor 安装 skills 到 .cursor/skills，并生成 README（Slash 命令索引）
       CURSOR_README="$CURSOR_ABS/README.md"
       if [[ "$DRY_RUN" != "1" ]]; then
@@ -337,10 +452,13 @@ FOOTER
       else
         echo "  [dry-run] Cursor: 将生成 $CURSOR_DIR/skills 及 README.md"
       fi
+      fi
       ;;
     trea)
+      if skip_overwrite "$TREA_ABS"; then
+        echo "  Trea: 已跳过（用户选择不覆盖）: $TREA_ABS"
+      elif [[ -d "$REPO_ROOT/.trea" ]]; then
       # 若仓库存在 .trea，整目录拷贝到目标，并直接安装 skills 到 .trea/skills，便于 Trea 直接使用
-      if [[ -d "$REPO_ROOT/.trea" ]]; then
         cp_safe "$REPO_ROOT/.trea" "$TREA_ABS"
         if [[ "$DRY_RUN" != "1" ]]; then
           mkdir -p "$TREA_ABS/skills"
@@ -356,16 +474,15 @@ FOOTER
           echo "  [dry-run] Trea: 将同步 skills 到 $TREA_DIR/skills"
         fi
         echo "  Trea: 已拷贝 .trea -> $TREA_DIR"
-      elif [[ "$DRY_RUN" == "1" ]]; then
-        echo "  [dry-run] Trea: 仓库无 .trea，跳过"
       else
         echo "  Trea: 仓库无 .trea，跳过"
       fi
       ;;
     *)
-      # 其他 Agent：若仓库有 .<agent> 则整目录拷贝
-      if [[ -d "$REPO_ROOT/.$agent" ]]; then
-        dst_agent_abs="$TARGET_DIR/.$agent"
+      dst_agent_abs="$TARGET_DIR/.$agent"
+      if skip_overwrite "$dst_agent_abs"; then
+        echo "  $agent: 已跳过（用户选择不覆盖）: $dst_agent_abs"
+      elif [[ -d "$REPO_ROOT/.$agent" ]]; then
         cp_safe "$REPO_ROOT/.$agent" "$dst_agent_abs"
         echo "  $agent: 已拷贝 .$agent -> .$agent"
       else
@@ -378,7 +495,8 @@ echo "  完成."
 echo ""
 
 echo "sdx-init 已完成。"
-echo "  - 文档与知识库: $DOCS_ABS"
+echo "  - 文档 system: $DOCS_ABS"
+echo "  - 应用目录 ($APPLICATIONS_DIR): $APPLICATIONS_ABS"
 echo "  - AI 配置: $AI_ABS"
 echo "  - Skills 已为以下 Agent 安装: ${ENABLED_AGENTS[*]}"
 echo "  - Agents: ${ENABLED_AGENTS[*]}"

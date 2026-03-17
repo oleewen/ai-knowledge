@@ -4,14 +4,16 @@
 
 ## 功能概述
 
-1. **文档与知识库**：默认将仓库内 **knowledge** 目录及**同级所有文件**（不含其他子目录）拷贝到执行目录的 **docs/system**，即 `docs/system/` 下包含 `knowledge/` 与根目录下的 README、INDEX、DESIGN 等文件。可选 `--ds=full` 拷贝除 `.ai`、各 Agent 目录、`.git`、`scripts` 外的全部内容。
+1. **文档与知识库**：支持两种模式（`--mode=standalone` | `federation`，默认 **standalone**）。
+   - **独立模式**：仓库 **system** 拷贝到 **docs/system**；应用知识库为 **docs/application**（单目录，无 `app-APPNAME`）。
+   - **联邦模式**：**system** 拷贝到 **docs/system**；**applications** 拷贝到 **docs/applications**，并在其下新建 `app-<工程目录名>`；在目标 **.gitignore** 中忽略文档根目录（如 `docs`），并将当前仓库 **.git** 拷贝至文档根。
 2. **AI 配置**：将仓库的 **.ai** 目录拷贝到执行目录的 **.ai**。默认**不**包含 `.ai/rules` 下的 **solution**、**analysis** 模板；可选 `--as=full` 包含全部 rules。
 3. **Agent 的 command 与 skill**：从仓库的 **.ai/skills** 按选择安装到各 Agent 目录的 skills；并为选定的 **Agent**（Cursor、Trea 等）生成或拷贝配置：
    - **Cursor**：在 `.cursor` 下生成 Slash 命令说明（README）及 skills。
    - **Trea**：若仓库存在 `.trea`，整目录拷贝到目标 `.trea` 并安装 skills。
    - 其他 Agent：若仓库存在 `.<agent>`，同样整目录拷贝。通过 `--agents=cursor,trea` 或 `--agents=all` 选择要初始化的 Agent。
 
-若目标路径（如 `docs/system`、`.ai`、`.cursor`、`.trea`）已存在，**默认会警告并退出**；使用 `--force` 会提示确认后覆盖。
+若目标路径（如 `docs/system`、`docs/applications`、`.ai`、`.cursor`、`.trea`）已存在，**默认会警告并退出**；使用 `--force` 会提示确认后覆盖。
 
 ## 使用方式
 
@@ -64,8 +66,9 @@ cd ai-sdd-docs
 
 | 选项 | 说明 | 默认 |
 |------|------|------|
-| `--dd=DIR` | 文档根目录（相对目标目录） | `docs/system` |
-| `--ds=SCOPE` | docs 范围：`knowledge-only`（仅 knowledge）\| `full`（仓库内除 .ai/.cursor/.git/scripts 外全部） | `knowledge-only` |
+| `--mode=MODE` | 初始化模式：`standalone`（独立，应用目录为 docs/application）\| `federation`（联邦，为 docs/applications + app-APPNAME，并写 .gitignore、拷贝 .git） | `standalone` |
+| `--dd=DIR` | system 文档目录（相对目标目录）；应用目录为同级的 `application` 或 `applications`（由 mode 决定） | `docs/system` |
+| `--ds=SCOPE` | docs 范围：`knowledge-only` \| `full`（均拷贝仓库 system 目录内容，保留以兼容） | `knowledge-only` |
 | `--ad=DIR` | .ai 配置目录（相对目标目录） | `.ai` |
 | `--as=SCOPE` | .ai/rules 范围：`no-solution-analysis`（不含 solution、analysis）\| `full` | `no-solution-analysis` |
 | `--agents=LIST` | 要初始化的 Agent：`cursor`、`trea` 或 `all`（默认: cursor） | `cursor` |
@@ -80,8 +83,11 @@ cd ai-sdd-docs
 ## 示例
 
 ```bash
-# 默认：仅 knowledge + 根目录文件到 docs/system，.ai 不含 solution/analysis rules，skills 仅安装 agent/knowledge（knowledge-*、agent-*）
+# 默认（独立模式）：仓库 system 到 docs/system、application 到 docs/application，.ai 不含 solution/analysis rules
 curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-docs/main/scripts/sdx-init-bootstrap.sh" | bash -s
+
+# 联邦模式：docs/applications + app-<工程名>，并忽略文档根、拷贝 .git
+curl -sL "..." | bash -s -- --mode=federation
 
 # 同时初始化 Cursor 与 Trea
 curl -sL "..." | bash -s -- --agents=cursor,trea
@@ -99,11 +105,18 @@ curl -sL "..." | bash -s -- --force
 curl -sL "..." | bash -s -- --dry-run
 ```
 
-## 初始化后的目录结构（目标目录，默认）
+## 初始化后的目录结构（目标目录）
 
-- `docs/system/`：**knowledge/** 与仓库根目录下所有**文件**（不含其他子目录）。使用 `--ds=full` 时与仓库除 .ai/各 Agent 目录外一致。
-- `.ai/`：规则、模板、agents、workflows、context 等；默认**不**包含 `rules/solution`、`rules/analysis`。**skills** 在 `.ai/skills/<name>/SKILL.md`，按 `--skills` 安装。
-- `.cursor/`：生成的 `README.md`（Slash 命令索引，指向 .ai/skills）。仅当 `--agents` 包含 cursor 时生成。
-- `.trea/`：从仓库拷贝的 Trea Agent 配置（仅当 `--agents` 包含 trea 且仓库存在 `.trea` 时）。
+**独立模式（默认 `--mode=standalone`）**
+
+- `docs/system/`：仓库 **system/** 目录内容（默认仅 knowledge 及根目录文件；`--ds=full` 时含 solutions、analysis、requirements、specs、changelogs 等）。
+- `docs/application/`：仓库 **applications/** 目录内容（单目录，无 app-APPNAME）。
+- `.ai/`、`.cursor/`、`.trea/`：同上。
+
+**联邦模式（`--mode=federation`）**
+
+- `docs/system/`：同上。
+- `docs/applications/`：仓库 **applications/** 及新建的 `app-<工程目录名>/`；目标 **.gitignore** 增加对文档根（如 `docs`）的忽略；**docs/.git** 为当前仓库 .git 的拷贝。
+- `.ai/`、`.cursor/`、`.trea/`：同上。
 
 Cursor 中可通过 `/命令名` 或 `@技能名` 使用已安装的 skills；Trea 等 Agent 使用各自目录下的配置。
