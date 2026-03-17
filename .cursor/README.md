@@ -4,6 +4,7 @@
 
 | 命令 | 说明 |
 |------|------|
+| `/agent-guide` | AGENT 能力/角色/上下游产物/输入输出等用法速查与指引。 |
 | `/knowledge-build` | 知识库构建 / 逆向工程知识库：项目探索 → 生成 AGENTS.md/README → 按 knowledge 目录结构构建知识库 → 质量验证。 |
 | `/sdx-solution` | 解决方案阶段：需求提取与结构化 → 影响面评估 → 冲突识别与化解 → 方案制定与评估 → 文档输出与评审；产出 `solutions/SOLUTION-{ID}.md`，模板见 `.ai/rules/solution/solution-template.md`。 |
 | `/sdx-analysis` | 需求分析阶段：深度研究与探索 → 需求细化与建模 → MVP 拆分与规划 → 依赖分析与风险评估 → 文档输出与评审；产出 `analysis/REQUIREMENT-{ID}.md`，模板见 `.ai/rules/analysis/requirement-template.md`。 |

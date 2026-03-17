@@ -8,13 +8,14 @@ set -euo pipefail
 # 默认值
 REPO_ROOT="${REPO_ROOT:-}"
 TARGET_DIR="${TARGET_DIR:-$(pwd)}"
-DOCS_DIR="${DOCS_DIR:-docs}"
+DOCS_DIR="${DOCS_DIR:-docs/system}"
 AI_DIR="${AI_DIR:-.ai}"
 CURSOR_DIR="${CURSOR_DIR:-.cursor}"
 TREA_DIR="${TREA_DIR:-.trea}"
-# skills 默认行为：若未指定 --skills，则在 docs 范围为 knowledge-only 时仅安装 knowledge-build，full 时安装全部
+# skills 默认行为：若未指定 --skills，仅安装 agent/knowledge 相关 skill（不含 sdx-*）；--skills=all 安装全部
 SKILLS_OPT="${SKILLS_OPT:-}"
 DRY_RUN="${DRY_RUN:-0}"
+FORCE="${FORCE:-0}"
 # 要初始化的 Agent 列表：cursor,trea 或 all（仓库中存在的均初始化）
 AGENTS_OPT="${AGENTS_OPT:-cursor}"
 # 默认：knowledge 目录 + 根目录同级所有文件（不含其他子目录）；设为 full 则拷贝仓库内除 .ai/各 Agent 目录/.git/scripts 外全部
@@ -25,20 +26,20 @@ GIT_REPO_URL="${GIT_REPO_URL:-https://github.com/oleewen/ai-sdd-docs.git}"
 
 # 支持的 Agent：目录名与仓库内 .<name> 对应
 SUPPORTED_AGENTS=(cursor trea)
-# 已知的 Skill 列表（与 .ai/skills 下目录名一致）
-CURSOR_SKILLS=(knowledge-build sdx-solution sdx-analysis sdx-prd sdx-design sdx-test)
+# 默认安装的 skill 列表（仅 agent、knowledge 相关，不含 sdx-*）；若仓库中无匹配则用此默认
+AGENT_KNOWLEDGE_SKILLS_DEFAULT=(knowledge-build agent-guide)
 
 usage() {
   cat <<'USAGE'
 用法: sdx-init [选项] [目标目录]
 
 从 ai-sdd-docs 仓库初始化当前（或指定）目录的 SDD 开发环境：
-  1) 将仓库内 knowledge 目录及同级所有文件（不含其他子目录）拷贝到目标目录的 docs
+  1) 将仓库内 knowledge 目录及同级所有文件（不含其他子目录）拷贝到目标目录的 docs/system（可改）
   2) 将 .ai 目录拷贝到目标目录的 {ai-dir}（默认不包含 rules 下的 solution、analysis）
   3) 将选定的 skills 安装到 {ai-dir}/skills，并为选定的 Agent（Cursor、Trea 等）生成/拷贝配置
 
 选项:
-  --dd=DIR            文档根目录，相对目标目录（默认: docs）
+  --dd=DIR            文档根目录，相对目标目录（默认: docs/system）
   --ds=SCOPE          docs 范围：knowledge-only（默认）| full
   --ad=DIR            .ai 配置目录（默认: .ai）
   --as=SCOPE          .ai/rules 范围：no-solution-analysis（默认）| full
@@ -46,7 +47,8 @@ usage() {
                       可选: cursor, trea（仓库中存在的才会处理）
   --cursor-dir=DIR    Cursor 配置目录（默认: .cursor）
   --trea-dir=DIR      Trea 配置目录（默认: .trea）
-  --skills=LIST       要安装的 skills，逗号分隔或 all；未指定时：ds=knowledge-only 默认仅安装 knowledge-build，ds=full 默认安装全部
+  --skills=LIST       要安装的 skills，逗号分隔或 all；未指定时仅安装 agent/knowledge 相关（knowledge-build、agent-guide），不含 sdx-*
+  --force             若目标路径已存在则提示确认后覆盖；未指定时若已存在则警告并退出
   --dry-run           仅打印将要执行的操作，不实际拷贝
   -h, --help          显示此帮助
 
@@ -78,6 +80,7 @@ while [[ $# -gt 0 ]]; do
     --cursor-dir=*)   CURSOR_DIR="${1#*=}"; shift ;;
     --trea-dir=*)     TREA_DIR="${1#*=}"; shift ;;
     --skills=*)       SKILLS_OPT="${1#*=}"; shift ;;
+    --force)          FORCE=1; shift ;;
     --dry-run)        DRY_RUN=1; shift ;;
     -h|--help)        usage; exit 0 ;;
     -*)
@@ -108,6 +111,22 @@ if [[ ! -d "$REPO_ROOT" ]]; then
   exit 1
 fi
 
+# 在 REPO_ROOT 确定后，根据仓库 .ai/skills 构建可安装列表（避免 set -u 下空 REPO_ROOT 导致 unbound）
+CURSOR_SKILLS=()
+AGENT_KNOWLEDGE_SKILLS=()
+if [[ -d "$REPO_ROOT/.ai/skills" ]]; then
+  for skilldir in "$REPO_ROOT/.ai/skills/"*; do
+    [[ -d "$skilldir" ]] || continue
+    skillname="$(basename "$skilldir")"
+    CURSOR_SKILLS+=("$skillname")
+    if [[ ! "$skillname" =~ ^sdx- ]] && { [[ "$skillname" == knowledge-* ]] || [[ "$skillname" == agent-* ]]; }; then
+      AGENT_KNOWLEDGE_SKILLS+=("$skillname")
+    fi
+  done
+fi
+# 若仓库中无 agent/knowledge 类 skill，使用默认列表
+[[ ${#AGENT_KNOWLEDGE_SKILLS[@]} -eq 0 ]] && AGENT_KNOWLEDGE_SKILLS=("${AGENT_KNOWLEDGE_SKILLS_DEFAULT[@]}")
+
 mkdir -p "$TARGET_DIR"
 TARGET_DIR="$(cd "$TARGET_DIR" && pwd)"
 DOCS_ABS="$TARGET_DIR/$DOCS_DIR"
@@ -127,6 +146,43 @@ if [[ "$AGENTS_OPT" == "all" ]]; then
   done
 else
   IFS=',' read -ra ENABLED_AGENTS <<< "$AGENTS_OPT"
+fi
+
+# 检查将要写入的路径是否已存在；无 --force 则警告并退出，有 --force 则确认后继续
+EXISTING_PATHS=()
+[[ -e "$DOCS_ABS" ]] && EXISTING_PATHS+=("$DOCS_ABS")
+[[ -e "$AI_ABS" ]] && EXISTING_PATHS+=("$AI_ABS")
+for agent in "${ENABLED_AGENTS[@]}"; do
+  agent="${agent// /}"
+  [[ -z "$agent" ]] && continue
+  case "$agent" in
+    cursor) [[ -e "$CURSOR_ABS" ]] && EXISTING_PATHS+=("$CURSOR_ABS") ;;
+    trea)   [[ -e "$TREA_ABS" ]] && EXISTING_PATHS+=("$TREA_ABS") ;;
+    *)      path="$TARGET_DIR/.$agent"; [[ -e "$path" ]] && EXISTING_PATHS+=("$path") ;;
+  esac
+done
+
+if [[ ${#EXISTING_PATHS[@]} -gt 0 ]]; then
+  if [[ "$FORCE" != "1" ]]; then
+    echo "警告: 以下路径已存在，初始化将覆盖其内容。请使用 --force 强制覆盖，或先备份/移除后再执行。" >&2
+    printf '  - %s\n' "${EXISTING_PATHS[@]}" >&2
+    exit 1
+  fi
+  if [[ "$DRY_RUN" == "1" ]]; then
+    echo "[dry-run] 已指定 --force，以下路径已存在、执行时将覆盖："
+    printf '  - %s\n' "${EXISTING_PATHS[@]}"
+  elif [[ -t 0 ]]; then
+    echo "以下路径已存在，继续执行将覆盖：" >&2
+    printf '  - %s\n' "${EXISTING_PATHS[@]}" >&2
+    echo -n "是否继续？(y/N) " >&2
+    read -r reply
+    case "$reply" in
+      [yY]|[yY][eE][sS]) ;;
+      *) echo "已取消。" >&2; exit 1 ;;
+    esac
+  else
+    echo "已指定 --force，将覆盖已存在路径（非交互模式，跳过确认）。" >&2
+  fi
 fi
 
 echo "sdx-init 配置:"
@@ -225,9 +281,7 @@ echo ""
 echo ">>> 3/3 安装 skills 并为 Agent（Cursor、Trea 等）生成/拷贝配置 ..."
 
 # 3a) 计算本次要安装的 skills 列表
-# 未显式指定 --skills 时，默认规则：
-#   - ds=knowledge-only: 仅安装 knowledge-build
-#   - ds=full: 安装 CURSOR_SKILLS 中的全部
+# 未显式指定 --skills 时：仅安装 agent/knowledge 相关（默认排除 sdx-*）；--skills=all 安装全部
 declare -a INSTALL_SKILLS
 if [[ -n "$SKILLS_OPT" ]]; then
   if [[ "$SKILLS_OPT" == "all" ]]; then
@@ -236,11 +290,7 @@ if [[ -n "$SKILLS_OPT" ]]; then
     IFS=',' read -ra INSTALL_SKILLS <<< "$SKILLS_OPT"
   fi
 else
-  if [[ "$DOCS_SCOPE" == "knowledge-only" ]]; then
-    INSTALL_SKILLS=("knowledge-build")
-  else
-    INSTALL_SKILLS=("${CURSOR_SKILLS[@]}")
-  fi
+  INSTALL_SKILLS=("${AGENT_KNOWLEDGE_SKILLS[@]}")
 fi
 
 # 3b) 按 Agent 分别处理（直接安装到各 Agent 目录）

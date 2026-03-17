@@ -4,12 +4,14 @@
 
 ## 功能概述
 
-1. **文档与知识库**：默认将仓库内 **knowledge** 目录及**同级所有文件**（不含其他子目录）拷贝到执行目录的 **docs**，即 `docs/` 下包含 `knowledge/` 与根目录下的 README、INDEX、DESIGN 等文件。可选 `--ds=full` 拷贝除 `.ai`、各 Agent 目录、`.git`、`scripts` 外的全部内容。
+1. **文档与知识库**：默认将仓库内 **knowledge** 目录及**同级所有文件**（不含其他子目录）拷贝到执行目录的 **docs/system**，即 `docs/system/` 下包含 `knowledge/` 与根目录下的 README、INDEX、DESIGN 等文件。可选 `--ds=full` 拷贝除 `.ai`、各 Agent 目录、`.git`、`scripts` 外的全部内容。
 2. **AI 配置**：将仓库的 **.ai** 目录拷贝到执行目录的 **.ai**。默认**不**包含 `.ai/rules` 下的 **solution**、**analysis** 模板；可选 `--as=full` 包含全部 rules。
-3. **Agent 的 command 与 skill**：从仓库的 **.ai/skills** 按选择安装到执行目录的 **.ai/skills**；并为选定的 **Agent**（Cursor、Trea 等）生成或拷贝配置：
-   - **Cursor**：在 `.cursor` 下生成 Slash 命令说明（README），指向 .ai/skills。
-   - **Trea**：若仓库存在 `.trea`，整目录拷贝到目标 `.trea`。
+3. **Agent 的 command 与 skill**：从仓库的 **.ai/skills** 按选择安装到各 Agent 目录的 skills；并为选定的 **Agent**（Cursor、Trea 等）生成或拷贝配置：
+   - **Cursor**：在 `.cursor` 下生成 Slash 命令说明（README）及 skills。
+   - **Trea**：若仓库存在 `.trea`，整目录拷贝到目标 `.trea` 并安装 skills。
    - 其他 Agent：若仓库存在 `.<agent>`，同样整目录拷贝。通过 `--agents=cursor,trea` 或 `--agents=all` 选择要初始化的 Agent。
+
+若目标路径（如 `docs/system`、`.ai`、`.cursor`、`.trea`）已存在，**默认会警告并退出**；使用 `--force` 会提示确认后覆盖。
 
 ## 使用方式
 
@@ -62,23 +64,23 @@ cd ai-sdd-docs
 
 | 选项 | 说明 | 默认 |
 |------|------|------|
-| `--dd=DIR` | 文档根目录（相对目标目录） | `docs` |
+| `--dd=DIR` | 文档根目录（相对目标目录） | `docs/system` |
 | `--ds=SCOPE` | docs 范围：`knowledge-only`（仅 knowledge）\| `full`（仓库内除 .ai/.cursor/.git/scripts 外全部） | `knowledge-only` |
 | `--ad=DIR` | .ai 配置目录（相对目标目录） | `.ai` |
 | `--as=SCOPE` | .ai/rules 范围：`no-solution-analysis`（不含 solution、analysis）\| `full` | `no-solution-analysis` |
 | `--agents=LIST` | 要初始化的 Agent：`cursor`、`trea` 或 `all`（默认: cursor） | `cursor` |
 | `--cursor-dir=DIR` | Cursor 配置目录（相对目标目录） | `.cursor` |
 | `--trea-dir=DIR` | Trea 配置目录（相对目标目录） | `.trea` |
-| `--skills=LIST` | 要安装的 skills（写入 Agent 目录的 skills/）：`all` 或逗号分隔，如 `sdx-solution,sdx-analysis,sdx-prd`。未指定时：`ds=knowledge-only` 默认仅安装 `knowledge-build`，`ds=full` 默认安装全部 | 依 `ds` 而定 |
+| `--skills=LIST` | 要安装的 skills（写入 Agent 目录的 skills/）：`all` 或逗号分隔。未指定时仅安装 agent/knowledge 相关（`knowledge-*`、`agent-*`），默认排除 sdx-*；`all` 安装全部 | 仅 agent/knowledge |
+| `--force` | 若目标路径（docs、.ai、.cursor、.trea 等）已存在，则提示确认后覆盖；未指定时若已存在则警告并退出 | - |
 | `--dry-run` | 仅打印将要执行的操作，不实际拷贝 | - |
 | `-h`, `--help` | 显示帮助 | - |
 
-可用的 skill 名称：`knowledge-build`, `sdx-solution`, `sdx-analysis`, `sdx-prd`, `sdx-design`, `sdx-test`。
 
 ## 示例
 
 ```bash
-# 默认：仅 knowledge + 根目录文件到 docs，.ai 不含 solution/analysis rules，skills 默认仅安装 knowledge-build
+# 默认：仅 knowledge + 根目录文件到 docs/system，.ai 不含 solution/analysis rules，skills 仅安装 agent/knowledge（knowledge-*、agent-*）
 curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-docs/main/scripts/sdx-init-bootstrap.sh" | bash -s
 
 # 同时初始化 Cursor 与 Trea
@@ -90,13 +92,16 @@ curl -sL "..." | bash -s -- --ds=full --as=full
 # 文档放到 content/，只安装部分 skills
 curl -sL "..." | bash -s -- --dd=content --skills=sdx-solution,sdx-analysis,sdx-prd
 
+# 目标目录已有 docs/system、.ai 等时强制覆盖（会提示确认）
+curl -sL "..." | bash -s -- --force
+
 # 先预览再执行
 curl -sL "..." | bash -s -- --dry-run
 ```
 
 ## 初始化后的目录结构（目标目录，默认）
 
-- `docs/`：**knowledge/** 与仓库根目录下所有**文件**（不含其他子目录）。使用 `--ds=full` 时与仓库除 .ai/各 Agent 目录外一致。
+- `docs/system/`：**knowledge/** 与仓库根目录下所有**文件**（不含其他子目录）。使用 `--ds=full` 时与仓库除 .ai/各 Agent 目录外一致。
 - `.ai/`：规则、模板、agents、workflows、context 等；默认**不**包含 `rules/solution`、`rules/analysis`。**skills** 在 `.ai/skills/<name>/SKILL.md`，按 `--skills` 安装。
 - `.cursor/`：生成的 `README.md`（Slash 命令索引，指向 .ai/skills）。仅当 `--agents` 包含 cursor 时生成。
 - `.trea/`：从仓库拷贝的 Trea Agent 配置（仅当 `--agents` 包含 trea 且仓库存在 `.trea` 时）。
