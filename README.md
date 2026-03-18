@@ -1,4 +1,4 @@
-# 软件系统知识文档库 (ai-sdd-docs)
+# 软件系统知识文档库 (ai-sdd-knowledge)
 
 本仓库是企业级软件系统的**全局知识底座**，采用「单一事实源」与「联邦治理」理念管理架构与知识体系。
 
@@ -7,19 +7,22 @@
 在任意目录下执行以下命令，可从本仓库初始化 SDD 开发环境（文档模板、知识库结构、`.ai` 配置与 Agent 的 skills/命令）：
 
 ```bash
-# 方式一：从 Git 拉取并初始化当前目录（需先设置 GIT_REPO_URL 为实际仓库地址）
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-docs/main/scripts/sdx-init-bootstrap.sh" | bash -s -- [选项]
+# 方式一：从 Git 拉取并初始化当前目录（可选通过环境变量覆盖仓库地址/分支）
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/sdx-init-bootstrap.sh" | bash -s -- [选项]
 
 # 方式二：已克隆本仓库时，在目标目录执行
 cd /path/to/your-project
-REPO_ROOT=/path/to/ai-sdd-docs /path/to/ai-sdd-docs/scripts/sdx-init.sh [选项]
+REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/sdx-init.sh [选项]
 ```
 
 **默认初始化**
 
-- ① 将仓库内 **system** 目录下文件拷贝到当前目录的 `docs/system/`（可改），默认仅拷贝 **knowledge** 及根目录同级文件，`--ds=full` 可拷贝完整文档；**applications** 拷贝到 `docs/applications/`（与 docs/system 同级）；
-- ② 将 `.ai` 拷贝到当前目录的 `.ai/`（默认不包含 `rules/solution`、`rules/analysis`）；
-- ③ 按 `--agents` 为 Cursor、Trea 等 Agent 生成或拷贝配置（`.cursor`、`.trea` 等）。详见 [scripts/README.md](scripts/README.md)。
+- ① 将仓库内 **system** 目录下文件拷贝到当前目录的 `docs/system/`（可改），默认仅拷贝 **knowledge** 及根目录同级文件，`--ds=full` 可拷贝完整文档；
+- ② 将仓库内 **applications** 目录拷贝到目标目录：
+  - `--mode=standalone`（默认）：`docs/application/`
+  - `--mode=federation`：`docs/applications/`，并创建 `docs/applications/app-<工程目录名>/`
+- ③ 将 `.ai` 拷贝到当前目录的 `.ai/`（默认不包含 `rules/solution`、`rules/analysis`）；
+- ④ 按 `--agents` 为 Cursor、Trea 等 Agent 生成或拷贝配置（`.cursor`、`.trea` 等）。详见 [scripts/README.md](scripts/README.md)。
 
 ## 功能简介
 
@@ -37,7 +40,7 @@ REPO_ROOT=/path/to/ai-sdd-docs /path/to/ai-sdd-docs/scripts/sdx-init.sh [选项]
 ## 目录结构
 
 ```text
-ai-sdd-docs/
+ai-sdd-knowledge/
 ├── README.md           # 本文件：总览、快速初始化、功能简介与文档索引
 ├── AGENTS.md           # AI Agents 开发指南（角色、关键路径、规范、命令）
 ├── system/             # 系统知识库
@@ -59,6 +62,7 @@ ai-sdd-docs/
 
 | 用途           | 文档 |
 |----------------|------|
+| AI 索引地图     | [INDEX.md](INDEX.md) |
 | 全局文档入口   | [system/INDEX.md](system/INDEX.md) |
 | 设计依据与约定 | [system/DESIGN.md](system/DESIGN.md)、[.ai/CONVENTIONS.md](.ai/CONVENTIONS.md) |
 | 贡献与新增约定 | [system/CONTRIBUTING.md](system/CONTRIBUTING.md) |

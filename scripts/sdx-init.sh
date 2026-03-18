@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# sdx-init：从 ai-sdd-docs 仓库初始化 SDD 开发环境
+# sdx-init：从 ai-sdd-knowledge 仓库初始化 SDD 开发环境
 # 运行要求：Bash 5+
 
 set -euo pipefail
@@ -162,7 +162,7 @@ usage() {
     cat <<'EOF'
 用法: sdx-init [选项] [目标目录]
 
-从 ai-sdd-docs 仓库初始化 SDD 开发环境
+从 ai-sdd-knowledge 仓库初始化 SDD 开发环境
 
 运行要求: Bash 5+
 

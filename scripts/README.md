@@ -2,7 +2,7 @@
 
 运行要求：`Bash 5+`。
 
-在任意目录执行 `sdx-init`，可从本仓库（ai-sdd-docs）拉取内容并对**当前目录**完成 SDD 开发初始化，无需先克隆整个仓库到本地。
+在任意目录执行 `sdx-init`，可从本仓库（ai-sdd-knowledge）拉取内容并对**当前目录**完成 SDD 开发初始化，无需先克隆整个仓库到本地。
 
 ## 功能概述
 
@@ -30,13 +30,13 @@ cd /path/to/your-project
 2、执行命令
 
 ```bash
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-docs/main/scripts/sdx-init-bootstrap.sh" | bash -s -- [sdx-init 选项]
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/sdx-init-bootstrap.sh" | bash -s -- [sdx-init 选项]
 ```
 
 - 脚本会先将仓库克隆到临时目录，再对**当前目录**执行初始化，完成后删除临时克隆。
 - 若仓库地址不同，可设置环境变量后再执行：
   ```bash
-  export GIT_REPO_URL=https://github.com/oleewen/ai-sdd-docs.git
+  export GIT_REPO_URL=https://github.com/oleewen/ai-sdd-knowledge.git
   export GIT_REF=main   # 可选，默认使用默认分支
   curl -sL "..." | bash -s -- [选项]
   ```
@@ -47,15 +47,15 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-docs/main/scripts/sdx
 
 ```bash
 cd /path/to/your-project
-REPO_ROOT=/path/to/ai-sdd-docs /path/to/ai-sdd-docs/scripts/sdx-init.sh [选项]
+REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/sdx-init.sh [选项]
 # 或指定目标目录
-/path/to/ai-sdd-docs/scripts/sdx-init.sh [选项] /path/to/your-project
+/path/to/ai-sdd-knowledge/scripts/sdx-init.sh [选项] /path/to/your-project
 ```
 
 1、进入需要初始化的项目目录
 
 ```bash
-cd ai-sdd-docs
+cd ai-sdd-knowledge
 ```
 
 2、执行命令
@@ -86,7 +86,7 @@ cd ai-sdd-docs
 
 ```bash
 # 默认（独立模式）：仓库 system 到 docs/system、application 到 docs/application，.ai 不含 solution/analysis rules
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-docs/main/scripts/sdx-init-bootstrap.sh" | bash -s
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/sdx-init-bootstrap.sh" | bash -s
 
 # 联邦模式：docs/applications + app-<工程名>，并忽略文档根、拷贝 .git
 curl -sL "..." | bash -s -- --mode=federation
