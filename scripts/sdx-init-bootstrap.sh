@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# sdx-init bootstrap：在任意目录执行，从 Git 拉取 ai-sdd-docs 到临时目录并对当前目录执行 sdx-init
-# 用法: curl -sL https://raw.githubusercontent.com/ORG/ai-sdd-docs/main/scripts/sdx-init-bootstrap.sh | bash -s -- [sdx-init 选项]
+# sdx-init bootstrap：在任意目录执行，从 Git 拉取 ai-sdd-knowledge 到临时目录并对当前目录执行 sdx-init
+# 用法: curl -sL https://raw.githubusercontent.com/ORG/ai-sdd-knowledge/main/scripts/sdx-init-bootstrap.sh | bash -s -- [sdx-init 选项]
 # 或: bash scripts/sdx-init-bootstrap.sh [选项]
 # 运行要求：Bash 5+
 
@@ -11,10 +11,10 @@ if (( BASH_VERSINFO[0] < 5 )); then
   exit 1
 fi
 
-GIT_REPO_URL="${GIT_REPO_URL:-https://github.com/oleewen/ai-sdd-docs.git}"
+GIT_REPO_URL="${GIT_REPO_URL:-https://github.com/oleewen/ai-sdd-knowledge.git}"
 GIT_REF="${GIT_REF:-HEAD}"
 TMP_DIR="${TMPDIR:-/tmp}"
-CLONE_DIR="$TMP_DIR/ai-sdd-docs-$$"
+CLONE_DIR="$TMP_DIR/ai-sdd-knowledge-$$"
 TARGET_DIR="$(pwd)"
 
 # 可选：通过环境变量指定仓库，例如 GIT_REPO_URL=... GIT_REF=main bash bootstrap.sh

@@ -14,7 +14,7 @@
 
 ```bash
 # step1: 按需指定应用仓库路径，初始化知识体系与AI配置
-REPO_ROOT=/path/to/ai-sdd-docs /path/to/ai-sdd-docs/scripts/sdx-init.sh --dd=applications/your-app/docs/system --ad=applications/your-app/.ai --agents=cursor,trea
+REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/sdx-init.sh --dd=applications/your-app/docs/system --ad=applications/your-app/.ai --agents=cursor,trea
 ```
 
 详见主库 [scripts/README.md](../../scripts/README.md)。

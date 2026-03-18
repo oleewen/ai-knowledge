@@ -12,12 +12,13 @@
 
 ## 项目概述
 
-**ai-sdd-docs** 是企业级软件系统的**全局知识底座**仓库，用于管理架构与知识体系（业务/产品/技术/数据四视角、解决方案、需求分析与需求交付文档）。本仓库不包含业务应用代码，以 Markdown、YAML 与 Shell 脚本为主。完整使用说明与初始化方式见 `README.md`。
+**ai-sdd-knowledge** 是企业级软件系统的**全局知识底座**仓库，用于管理架构与知识体系（业务/产品/技术/数据四视角、解决方案、需求分析与需求交付文档）。本仓库不包含业务应用代码，以 Markdown、YAML 与 Shell 脚本为主。完整使用说明与初始化方式见 `README.md`。
 
 ---
 
 ## 关键路径
 
+- **根索引（AI 首读地图）**：`INDEX.md`
 - **仓库入口与初始化：** `README.md`、`scripts/sdx-init.sh`、`scripts/README.md`
 - **系统知识库：** `system/README.md`、`system/INDEX.md`、`system/DESIGN.md`
 - **知识库主体：** `system/knowledge/`（constitution、business、product、technical、data）
@@ -39,11 +40,11 @@
 
 ```bash
 # 从 Git 拉取并对当前目录执行 SDD 初始化（需在目标项目目录执行）
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-docs/main/scripts/sdx-init-bootstrap.sh" | bash -s -- [选项]
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/sdx-init-bootstrap.sh" | bash -s -- [选项]
 
 # 已克隆本仓库时，在目标目录执行
 cd /path/to/your-project
-REPO_ROOT=/path/to/ai-sdd-docs /path/to/ai-sdd-docs/scripts/sdx-init.sh [选项]
+REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/sdx-init.sh [选项]
 
 # 常用选项：--mode=standalone|federation、--ds=knowledge|full、--as=no-solution-analysis|full、--agents=cursor,trea、--skills=all、--force、--dry-run
 ```

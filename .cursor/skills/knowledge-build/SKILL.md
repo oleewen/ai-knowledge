@@ -71,7 +71,7 @@ description: >
 
 ### 第二阶段：Agent 指引与 README（agent-guide）
 
-**完整遵循** `.cursor/skills/agent-guide/SKILL.md**，且 **以第一阶段 Index Guide 为探索地图**（agent-guide 第一阶段分支 A）。
+**完整遵循** `.cursor/skills/agent-guide/SKILL.md`，且 **以第一阶段 Index Guide 为探索地图**（agent-guide 第一阶段分支 A）。
 
 1. 生成或更新根目录 **`AGENTS.md`**（参考 `.ai/rules/agents-template.md`）。
 2. 生成或更新根目录 **`README.md`**（GitHub 常见结构）。

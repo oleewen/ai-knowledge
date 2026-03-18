@@ -23,11 +23,11 @@ declare -grA SDX_DEFAULTS=(
 )
 
 # 默认安装的技能命名前缀
-readonly SDX_DEFAULT_SKILL_PREFIXES=(knowledge- agent-)
-readonly SDX_DEFAULT_SKILLS=(knowledge-build agent-guide)
+readonly SDX_DEFAULT_SKILL_PREFIXES=(knowledge- agent- document-)
+readonly SDX_DEFAULT_SKILLS=(agent-guide document-indexing)
 
 # 供 bootstrap 脚本或外部引用（sdx-init.sh 本身不依赖它）
-readonly SDX_GIT_REPO_URL="https://github.com/oleewen/ai-sdd-docs.git"
+readonly SDX_GIT_REPO_URL="https://github.com/oleewen/ai-sdd-knowledge.git"
 
 # ----------------------------------------------------------------------------
 # 能力集
