@@ -20,12 +20,16 @@ description: >
 
 每阶段开始前：找不到模板则提示用户指定模板。阶段结束前：先确认是否需要调整内容，再进入下一阶段。
 
+**第一、二阶段**：与 **agent-guide** Skill（`../agent-guide/SKILL.md`）一致，执行其「项目探索」与「生成 AGENTS.md 与 README.md」；此处仅保留与 knowledge 相关的补充要求。
+
 ---
 
 ### 第一阶段：项目探索
 
+参见 **agent-guide** 第一阶段；本流程额外要求：深度研究 `knowledge/` 及根目录 `README.md` 定义的文档体系（agent-guide 为可选参考）。
+
 1. 扫描项目根目录，识别配置文件（`package.json`、`pom.xml`、`build.gradle`、`requirements.txt` 等）
-2. 分析目录结构，识别模块边界；深度研究 `knowledge/` 及根目录 `README.md` 定义的文档体系
+2. 分析目录结构，识别模块边界；**深度研究 `knowledge/` 及根目录 `README.md` 定义的文档体系**
 3. 加载 `.ai/rules/` 下现有开发规范和模板
 4. 统计代码规模（文件数、代码行数）
 
@@ -33,9 +37,11 @@ description: >
 
 ### 第二阶段：初始化项目知识库
 
+参见 **agent-guide** 第二阶段；本流程额外要求：README 必须明确定义文档体系。
+
 1. 在项目根目录生成 `AGENTS.md`，遵循或参考 `.ai/rules/agents-template.md` 结构（可不局限于模板）
 2. 在项目根目录生成或更新 `README.md`，遵循 GitHub 常见结构
-3. 确保根目录 `README.md` 存在且明确定义文档体系（含「目录结构」与「文档索引」）
+3. **确保根目录 `README.md` 存在且明确定义文档体系（含「目录结构」与「文档索引」）**
 
 ---
 
@@ -60,5 +66,6 @@ description: >
 
 ## 参考
 
+- **前置 Skill**：第一、二阶段与 `.cursor/skills/agent-guide/SKILL.md`（agent-guide）一致，可先加载该 Skill 执行探索与 AGENTS.md/README 生成
 - 文档体系与目录结构：根目录 `README.md`
 - 开发规范与模板：`.ai/rules/`、`.ai/CONVENTIONS.md`

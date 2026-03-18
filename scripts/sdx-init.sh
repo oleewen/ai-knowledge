@@ -1,334 +1,771 @@
 #!/usr/bin/env bash
-# sdx-init：从 ai-sdd-docs 仓库初始化当前目录的 SDD 开发环境
-# 用法（在仓库内）：REPO_ROOT=/path/to/ai-sdd-docs ./scripts/sdx-init.sh [选项] [目标目录]
-# 用法（bootstrap）：由 scripts/sdx-init-bootstrap.sh 拉取仓库后调用，目标目录默认为当前目录
+# sdx-init：从 ai-sdd-docs 仓库初始化 SDD 开发环境
+# 运行要求：Bash 5+
 
 set -euo pipefail
 
-# 默认值
+# ============================================================================
+# 配置与常量
+# ============================================================================
+
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+if [[ ! -f "$SCRIPT_DIR/sdx-config.sh" ]]; then
+    printf '错误: 缺少配置文件 %s\n' "$SCRIPT_DIR/sdx-config.sh" >&2
+    exit 1
+fi
+
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/sdx-config.sh"
+sdx_require_bash5
+
+readonly SUPPORTED_AGENTS=("${SDX_SUPPORTED_AGENTS[@]}")
+readonly DEFAULT_SKILLS=("${SDX_DEFAULT_SKILLS[@]}")
+
+# 配置变量
 REPO_ROOT="${REPO_ROOT:-}"
 TARGET_DIR="${TARGET_DIR:-$(pwd)}"
-DOCS_DIR="${DOCS_DIR:-docs}"
-AI_DIR="${AI_DIR:-.ai}"
-CURSOR_DIR="${CURSOR_DIR:-.cursor}"
-TREA_DIR="${TREA_DIR:-.trea}"
-# skills 默认行为：若未指定 --skills，则在 docs 范围为 knowledge-only 时仅安装 knowledge-build，full 时安装全部
+DOCS_DIR="${DOCS_DIR:-${SDX_DEFAULTS[DOCS_DIR]}}"
+SDX_MODE="${SDX_MODE:-${SDX_DEFAULTS[SDX_MODE]}}"
+AI_DIR="${AI_DIR:-${SDX_DEFAULTS[AI_DIR]}}"
 SKILLS_OPT="${SKILLS_OPT:-}"
 DRY_RUN="${DRY_RUN:-0}"
-# 要初始化的 Agent 列表：cursor,trea 或 all（仓库中存在的均初始化）
-AGENTS_OPT="${AGENTS_OPT:-cursor}"
-# 默认：knowledge 目录 + 根目录同级所有文件（不含其他子目录）；设为 full 则拷贝仓库内除 .ai/各 Agent 目录/.git/scripts 外全部
-DOCS_SCOPE="${DOCS_SCOPE:-knowledge-only}"
-# 默认不包含 .ai/rules 下的 solution、analysis 模板
-AI_RULES_SCOPE="${AI_RULES_SCOPE:-no-solution-analysis}"
-GIT_REPO_URL="${GIT_REPO_URL:-https://github.com/oleewen/ai-sdd-docs.git}"
+FORCE="${FORCE:-0}"
+AGENTS_OPT="${AGENTS_OPT:-${SDX_DEFAULTS[AGENTS_OPT]}}"
+DOCS_SCOPE="${DOCS_SCOPE:-${SDX_DEFAULTS[DOCS_SCOPE]}}"
+AI_RULES_SCOPE="${AI_RULES_SCOPE:-${SDX_DEFAULTS[AI_RULES_SCOPE]}}"
 
-# 支持的 Agent：目录名与仓库内 .<name> 对应
-SUPPORTED_AGENTS=(cursor trea)
-# 已知的 Skill 列表（与 .ai/skills 下目录名一致）
-CURSOR_SKILLS=(knowledge-build sdx-solution sdx-analysis sdx-prd sdx-design sdx-test)
+# 计算路径变量（在 init_paths 中设置）
+SYSTEM_DOCS_ABS=""
+APPS_ABS=""
+AI_ABS=""
+CURSOR_ABS=""
+TREA_ABS=""
+
+declare -a skip_paths=()
+declare -a enabled_agents=()
+declare -a install_skills=()
+
+# ============================================================================
+# 工具函数
+# ============================================================================
+
+# 日志函数
+log() { echo "$*" >&2; }
+error() { log "错误: $*"; exit 1; }
+warn() { log "警告: $*"; }
+info() { log "信息: $*"; }
+dry_run() {
+    if [[ "$DRY_RUN" == "1" ]]; then
+        log "[dry-run] $*"
+    fi
+}
+
+have_cmd() { command -v "$1" >/dev/null 2>&1; }
+
+assert_valid() {
+    local value="$1"
+    local validator="$2"
+    local label="$3"
+    local expected="$4"
+
+    if ! "$validator" "$value"; then
+        error "无效${label}: ${value}，必须是 ${expected}"
+    fi
+}
+
+# 路径工具
+expand_user_path() {
+    # 将以 ~ 开头的路径展开为 $HOME（注意：~ 在变量里不会自动展开）
+    local p="$1"
+    case "$p" in
+        "~") echo "$HOME" ;;
+        "~/"*) echo "$HOME/${p#~/}" ;;
+        *) echo "$p" ;;
+    esac
+}
+
+abs_path() {
+    local p
+    p="$(expand_user_path "$1")"
+    if [[ "$p" != /* ]]; then
+        p="$(pwd)/$p"
+    fi
+    if [[ -d "$p" ]]; then
+        (cd "$p" && pwd)
+    else
+        # dry-run 或目标目录尚未创建时允许不存在
+        echo "$p"
+    fi
+}
+ensure_dir() {
+    if [[ "$DRY_RUN" == "0" ]]; then
+        mkdir -p "$1"
+    fi
+}
+
+# 安全拷贝
+copy() {
+    local src="$1" dst="$2"
+    
+    if [[ "$DRY_RUN" == "1" ]]; then
+        dry_run "拷贝: $src -> $dst"
+        return 0
+    fi
+    
+    ensure_dir "$(dirname "$dst")"
+    
+    if [[ -d "$src" && -d "$dst" ]]; then
+        if have_cmd rsync; then
+            rsync -a "$src"/ "$dst"/
+        else
+            cp -R "$src"/. "$dst"/
+        fi
+    else
+        if [[ -e "$dst" ]]; then
+            rm -rf "$dst"
+        fi
+        cp -R "$src" "$dst"
+    fi
+}
+
+sync_dir_contents() {
+    local src="$1" dst="$2"
+    [[ -d "$src" ]] || return 0
+    if [[ "$DRY_RUN" == "1" ]]; then
+        dry_run "同步目录内容: $src/ -> $dst/"
+        return 0
+    fi
+    ensure_dir "$dst"
+    if have_cmd rsync; then
+        rsync -a "$src"/ "$dst"/
+    else
+        cp -R "$src"/. "$dst"/
+    fi
+}
+
+# 检查是否跳过路径
+should_skip() {
+    local path="$1"
+    local p
+    for p in "${skip_paths[@]:-}"; do
+        [[ "$p" == "$path" ]] && return 0
+    done
+    return 1
+}
+
+# ============================================================================
+# 参数解析
+# ============================================================================
 
 usage() {
-  cat <<'USAGE'
+    cat <<'EOF'
 用法: sdx-init [选项] [目标目录]
 
-从 ai-sdd-docs 仓库初始化当前（或指定）目录的 SDD 开发环境：
-  1) 将仓库内 knowledge 目录及同级所有文件（不含其他子目录）拷贝到目标目录的 docs
-  2) 将 .ai 目录拷贝到目标目录的 {ai-dir}（默认不包含 rules 下的 solution、analysis）
-  3) 将选定的 skills 安装到 {ai-dir}/skills，并为选定的 Agent（Cursor、Trea 等）生成/拷贝配置
+从 ai-sdd-docs 仓库初始化 SDD 开发环境
+
+运行要求: Bash 5+
 
 选项:
-  --dd=DIR            文档根目录，相对目标目录（默认: docs）
-  --ds=SCOPE          docs 范围：knowledge-only（默认）| full
-  --ad=DIR            .ai 配置目录（默认: .ai）
-  --as=SCOPE          .ai/rules 范围：no-solution-analysis（默认）| full
-  --agents=LIST       要初始化的 Agent，逗号分隔或 all（默认: cursor）
-                      可选: cursor, trea（仓库中存在的才会处理）
-  --cursor-dir=DIR    Cursor 配置目录（默认: .cursor）
-  --trea-dir=DIR      Trea 配置目录（默认: .trea）
-  --skills=LIST       要安装的 skills，逗号分隔或 all；未指定时：ds=knowledge-only 默认仅安装 knowledge-build，ds=full 默认安装全部
-  --dry-run           仅打印将要执行的操作，不实际拷贝
-  -h, --help          显示此帮助
+  --mode=MODE         初始化模式：standalone（默认）| federation
+  --dd=DIR            文档目录（默认: docs）
+  --ds=SCOPE          文档范围：knowledge（默认）| full
+  --ad=DIR            AI 配置目录（默认: .ai）
+  --as=SCOPE          AI 规则范围：no-solution-analysis（默认）| full
+  --agents=LIST       Agent 列表，逗号分隔或 all（默认: cursor）
+  --skills=LIST       技能列表，逗号分隔或 all
+  --force             强制覆盖
+  --dry-run           预览模式
+  -h, --help          显示帮助
 
-环境变量（供 bootstrap 使用）:
-  REPO_ROOT           仓库根目录（克隆后的路径），必须设置
-  TARGET_DIR          目标目录，未传参时也可由此指定
-  DRY_RUN=1           与 --dry-run 等价
-USAGE
+环境变量:
+  REPO_ROOT           仓库根目录
+  TARGET_DIR          目标目录
+  SDX_MODE            初始化模式
+  DRY_RUN=1           启用预览模式
+EOF
 }
 
-cp_safe() {
-  local src="$1" dst="$2"
-  if [[ "$DRY_RUN" == "1" ]]; then
-    echo "[dry-run] 拷贝: $src -> $dst"
-    return 0
-  fi
-  mkdir -p "$(dirname "$dst")"
-  cp -R "$src" "$dst"
+parse_args() {
+    while (( $# > 0 )); do
+        case "$1" in
+            --mode=*)         SDX_MODE="${1#*=}" ;;
+            --mode)           shift; SDX_MODE="${1:-}";;
+            --dd=*)           DOCS_DIR="${1#*=}" ;;
+            --dd)             shift; DOCS_DIR="${1:-}";;
+            --ds=*)           DOCS_SCOPE="${1#*=}" ;;
+            --ds)             shift; DOCS_SCOPE="${1:-}";;
+            --ad=*)           AI_DIR="${1#*=}" ;;
+            --ad)             shift; AI_DIR="${1:-}";;
+            --as=*)           AI_RULES_SCOPE="${1#*=}" ;;
+            --as)             shift; AI_RULES_SCOPE="${1:-}";;
+            --agents=*)       AGENTS_OPT="${1#*=}" ;;
+            --agents)         shift; AGENTS_OPT="${1:-}";;
+            --skills=*)       SKILLS_OPT="${1#*=}" ;;
+            --skills)         shift; SKILLS_OPT="${1:-}";;
+            --force)          FORCE=1 ;;
+            --dry-run)        DRY_RUN=1 ;;
+            -h|--help)        usage; exit 0 ;;
+            -*)               error "未知选项: $1" ;;
+            *)                TARGET_DIR="$1" ;;
+        esac
+        shift
+    done
 }
 
-# 解析参数
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-    --dd=*)           DOCS_DIR="${1#*=}"; shift ;;
-    --ds=*)           DOCS_SCOPE="${1#*=}"; shift ;;
-    --ad=*)           AI_DIR="${1#*=}"; shift ;;
-    --as=*)           AI_RULES_SCOPE="${1#*=}"; shift ;;
-    --agents=*)       AGENTS_OPT="${1#*=}"; shift ;;
-    --cursor-dir=*)   CURSOR_DIR="${1#*=}"; shift ;;
-    --trea-dir=*)     TREA_DIR="${1#*=}"; shift ;;
-    --skills=*)       SKILLS_OPT="${1#*=}"; shift ;;
-    --dry-run)        DRY_RUN=1; shift ;;
-    -h|--help)        usage; exit 0 ;;
-    -*)
-      echo "未知选项: $1" >&2
-      usage >&2
-      exit 1
-      ;;
-    *)
-      TARGET_DIR="$1"
-      shift
-      ;;
-  esac
-done
+validate_inputs() {
+    assert_valid "$SDX_MODE" sdx_validate_mode "模式" "standalone 或 federation"
+    assert_valid "$DOCS_SCOPE" sdx_validate_docs_scope "文档范围" "knowledge 或 full"
+    assert_valid "$AI_RULES_SCOPE" sdx_validate_ai_rules_scope "AI 规则范围" "no-solution-analysis 或 full"
+}
 
-# 若由 bootstrap 调用，REPO_ROOT 已设置；否则尝试用脚本所在目录推断仓库根
-if [[ -z "$REPO_ROOT" ]]; then
-  SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
-  REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-  if [[ ! -d "$REPO_ROOT/.ai" ]]; then
-    echo "错误: 未设置 REPO_ROOT 且当前推断的仓库根目录不存在 .ai: $REPO_ROOT" >&2
-    echo "请通过 bootstrap 方式运行，或设置 REPO_ROOT 后重试。" >&2
-    exit 1
-  fi
-fi
+# ============================================================================
+# 初始化与验证
+# ============================================================================
 
-if [[ ! -d "$REPO_ROOT" ]]; then
-  echo "错误: 仓库根目录不存在: $REPO_ROOT" >&2
-  exit 1
-fi
-
-mkdir -p "$TARGET_DIR"
-TARGET_DIR="$(cd "$TARGET_DIR" && pwd)"
-DOCS_ABS="$TARGET_DIR/$DOCS_DIR"
-AI_ABS="$TARGET_DIR/$AI_DIR"
-CURSOR_ABS="$TARGET_DIR/$CURSOR_DIR"
-TREA_ABS="$TARGET_DIR/$TREA_DIR"
-
-# 解析要启用的 Agent 列表
-declare -a ENABLED_AGENTS
-if [[ "$AGENTS_OPT" == "all" ]]; then
-  for a in "${SUPPORTED_AGENTS[@]}"; do
-    if [[ "$a" == "cursor" ]]; then
-      ENABLED_AGENTS+=("cursor")
-    else
-      [[ -d "$REPO_ROOT/.$a" ]] && ENABLED_AGENTS+=("$a")
-    fi
-  done
-else
-  IFS=',' read -ra ENABLED_AGENTS <<< "$AGENTS_OPT"
-fi
-
-echo "sdx-init 配置:"
-echo "  仓库根: $REPO_ROOT"
-echo "  目标目录: $TARGET_DIR"
-echo "  文档目录: $DOCS_DIR -> $DOCS_ABS (范围: $DOCS_SCOPE)"
-echo "  .ai 目录: $AI_DIR -> $AI_ABS (rules: $AI_RULES_SCOPE)"
-echo "  Agents: ${ENABLED_AGENTS[*]} (Cursor: $CURSOR_DIR, Trea: $TREA_DIR)"
-echo "  Skills: $SKILLS_OPT"
-[[ "$DRY_RUN" == "1" ]] && echo "  [dry-run 模式]"
-echo ""
-
-# 1) 拷贝到 docs：默认仅 knowledge，可选 full
-echo ">>> 1/3 拷贝文档与知识库到 $DOCS_DIR ..."
-if [[ "$DOCS_SCOPE" == "full" ]]; then
-  # 排除 .ai、各 Agent 目录、.git、scripts
-  for item in "$REPO_ROOT"/*; do
-    [[ -e "$item" ]] || continue
-    name="$(basename "$item")"
-    case "$name" in
-      .ai|.cursor|.trea|.git|scripts) continue ;;
-      *) cp_safe "$item" "$DOCS_ABS/$name" ;;
-    esac
-  done
-  for item in "$REPO_ROOT"/.*; do
-    [[ -e "$item" ]] || continue
-    name="$(basename "$item")"
-    [[ "$name" == "." || "$name" == ".." ]] && continue
-    case "$name" in
-      .ai|.cursor|.trea|.git) continue ;;
-      *) cp_safe "$item" "$DOCS_ABS/$name" ;;
-    esac
-  done
-else
-  # 默认：knowledge 目录 + 同级所有文件（不含其他目录）
-  if [[ -d "$REPO_ROOT/knowledge" ]]; then
-    cp_safe "$REPO_ROOT/knowledge" "$DOCS_ABS/knowledge"
-  else
-    echo "  警告: 仓库内无 knowledge 目录，跳过." >&2
-  fi
-  for item in "$REPO_ROOT"/*; do
-    [[ -e "$item" ]] || continue
-    [[ -f "$item" ]] || continue
-    name="$(basename "$item")"
-    cp_safe "$item" "$DOCS_ABS/$name"
-  done
-  for item in "$REPO_ROOT"/.*; do
-    [[ -e "$item" ]] || continue
-    [[ -f "$item" ]] || continue
-    name="$(basename "$item")"
-    [[ "$name" == "." || "$name" == ".." ]] && continue
-    case "$name" in
-      .ai|.cursor|.trea|.git) continue ;;
-      *) cp_safe "$item" "$DOCS_ABS/$name" ;;
-    esac
-  done
-fi
-echo "  完成."
-echo ""
-
-# 2) 拷贝 .ai 到目标 .ai；默认排除 rules/solution、rules/analysis；不拷贝 skills（由步骤 3 按 --skills 安装）
-echo ">>> 2/3 拷贝 .ai 配置到 $AI_DIR ..."
-if [[ "$DRY_RUN" != "1" ]]; then
-  for item in "$REPO_ROOT/.ai"/*; do
-    [[ -e "$item" ]] || continue
-    name="$(basename "$item")"
-    [[ "$name" == "skills" ]] && continue
-    cp_safe "$item" "$AI_ABS/$name"
-  done
-  for item in "$REPO_ROOT/.ai"/.*; do
-    [[ -e "$item" ]] || continue
-    name="$(basename "$item")"
-    [[ "$name" == "." || "$name" == ".." ]] && continue
-    cp_safe "$item" "$AI_ABS/$name"
-  done
-else
-  for item in "$REPO_ROOT/.ai"/*; do
-    [[ -e "$item" ]] || continue
-    name="$(basename "$item")"
-    [[ "$name" == "skills" ]] && continue
-    echo "  [dry-run] 拷贝: $item -> $AI_ABS/$name"
-  done
-  echo "  [dry-run] 实际执行时将排除 .ai/skills（由步骤 3 按 --skills 安装）"
-fi
-if [[ "$AI_RULES_SCOPE" == "no-solution-analysis" ]] && [[ "$DRY_RUN" != "1" ]]; then
-  [[ -d "$AI_ABS/rules/solution" ]] && rm -rf "$AI_ABS/rules/solution"
-  [[ -d "$AI_ABS/rules/analysis" ]] && rm -rf "$AI_ABS/rules/analysis"
-  echo "  已排除 .ai/rules/solution 与 .ai/rules/analysis"
-elif [[ "$AI_RULES_SCOPE" == "no-solution-analysis" ]] && [[ "$DRY_RUN" == "1" ]]; then
-  echo "  [dry-run] 将排除 .ai/rules/solution 与 .ai/rules/analysis"
-fi
-echo "  完成."
-echo ""
-
-# 3) 直接为各 Agent 安装 skills（从仓库 .ai/skills 复制到 .cursor/.trea 等）
-echo ">>> 3/3 安装 skills 并为 Agent（Cursor、Trea 等）生成/拷贝配置 ..."
-
-# 3a) 计算本次要安装的 skills 列表
-# 未显式指定 --skills 时，默认规则：
-#   - ds=knowledge-only: 仅安装 knowledge-build
-#   - ds=full: 安装 CURSOR_SKILLS 中的全部
-declare -a INSTALL_SKILLS
-if [[ -n "$SKILLS_OPT" ]]; then
-  if [[ "$SKILLS_OPT" == "all" ]]; then
-    INSTALL_SKILLS=("${CURSOR_SKILLS[@]}")
-  else
-    IFS=',' read -ra INSTALL_SKILLS <<< "$SKILLS_OPT"
-  fi
-else
-  if [[ "$DOCS_SCOPE" == "knowledge-only" ]]; then
-    INSTALL_SKILLS=("knowledge-build")
-  else
-    INSTALL_SKILLS=("${CURSOR_SKILLS[@]}")
-  fi
-fi
-
-# 3b) 按 Agent 分别处理（直接安装到各 Agent 目录）
-for agent in "${ENABLED_AGENTS[@]}"; do
-  agent="${agent// /}"
-  [[ -z "$agent" ]] && continue
-  case "$agent" in
-    cursor)
-      # 为 Cursor 安装 skills 到 .cursor/skills，并生成 README（Slash 命令索引）
-      CURSOR_README="$CURSOR_ABS/README.md"
-      if [[ "$DRY_RUN" != "1" ]]; then
-        mkdir -p "$CURSOR_ABS/skills"
-        for skill in "${INSTALL_SKILLS[@]}"; do
-          skill="${skill// /}"
-          [[ -z "$skill" ]] && continue
-          src_skill="$REPO_ROOT/.ai/skills/$skill"
-          if [[ -d "$src_skill" ]]; then
-            cp_safe "$src_skill" "$CURSOR_ABS/skills/$skill"
-          fi
-        done
-        cat > "$CURSOR_README" <<'HEADER'
-# Cursor 项目配置
-
-## Slash 命令（Skills，位于 .ai/skills）
-
-| 命令 | 说明 |
-|------|------|
-HEADER
-        for skill in "${INSTALL_SKILLS[@]}"; do
-          skill="${skill// /}"
-          [[ -z "$skill" ]] && continue
-          skill_file="$CURSOR_ABS/skills/$skill/SKILL.md"
-          if [[ -f "$skill_file" ]]; then
-            desc=$(awk '/^description:/{getline; gsub(/^[ \t]+|[ \t]+$/,""); print; exit}' "$skill_file" 2>/dev/null)
-            [[ -z "$desc" ]] && desc="见 .cursor/skills/$skill/SKILL.md"
-            echo "| \`/$skill\` | $desc |" >> "$CURSOR_README"
-          fi
-        done
-        cat >> "$CURSOR_README" <<'FOOTER'
-
-在 Chat 中输入 `/` 后选择对应命令即可调用；或使用 `@技能名` 将 Skill 作为上下文附加。
-FOOTER
-        echo "  Cursor: 已生成 $CURSOR_DIR/README.md"
-      else
-        echo "  [dry-run] Cursor: 将生成 $CURSOR_DIR/skills 及 README.md"
-      fi
-      ;;
-    trea)
-      # 若仓库存在 .trea，整目录拷贝到目标，并直接安装 skills 到 .trea/skills，便于 Trea 直接使用
-      if [[ -d "$REPO_ROOT/.trea" ]]; then
-        cp_safe "$REPO_ROOT/.trea" "$TREA_ABS"
-        if [[ "$DRY_RUN" != "1" ]]; then
-          mkdir -p "$TREA_ABS/skills"
-          for skill in "${INSTALL_SKILLS[@]}"; do
-            skill="${skill// /}"
-            [[ -z "$skill" ]] && continue
-            src_skill="$REPO_ROOT/.ai/skills/$skill"
-            if [[ -d "$src_skill" ]]; then
-              cp_safe "$src_skill" "$TREA_ABS/skills/$skill"
-            fi
-          done
-        else
-          echo "  [dry-run] Trea: 将同步 skills 到 $TREA_DIR/skills"
+init_repo() {
+    if [[ -z "$REPO_ROOT" ]]; then
+        REPO_ROOT="$(abs_path "$SCRIPT_DIR/..")"
+        if [[ ! -d "$REPO_ROOT/.ai" ]]; then
+            error "无法找到仓库根目录，请设置 REPO_ROOT 环境变量"
         fi
-        echo "  Trea: 已拷贝 .trea -> $TREA_DIR"
-      elif [[ "$DRY_RUN" == "1" ]]; then
-        echo "  [dry-run] Trea: 仓库无 .trea，跳过"
-      else
-        echo "  Trea: 仓库无 .trea，跳过"
-      fi
-      ;;
-    *)
-      # 其他 Agent：若仓库有 .<agent> 则整目录拷贝
-      if [[ -d "$REPO_ROOT/.$agent" ]]; then
-        dst_agent_abs="$TARGET_DIR/.$agent"
-        cp_safe "$REPO_ROOT/.$agent" "$dst_agent_abs"
-        echo "  $agent: 已拷贝 .$agent -> .$agent"
-      else
-        echo "  $agent: 仓库无 .$agent，跳过"
-      fi
-      ;;
-  esac
-done
-echo "  完成."
-echo ""
+    fi
+    
+    if [[ ! -d "$REPO_ROOT" ]]; then
+        error "仓库目录不存在: $REPO_ROOT"
+    fi
+}
 
-echo "sdx-init 已完成。"
-echo "  - 文档与知识库: $DOCS_ABS"
-echo "  - AI 配置: $AI_ABS"
-echo "  - Skills 已为以下 Agent 安装: ${ENABLED_AGENTS[*]}"
-echo "  - Agents: ${ENABLED_AGENTS[*]}"
+init_paths() {
+    TARGET_DIR="$(expand_user_path "$TARGET_DIR")"
+    ensure_dir "$TARGET_DIR"
+    TARGET_DIR="$(abs_path "$TARGET_DIR")"
+    
+    # 计算文档系统路径：docs_dir/system
+    local system_docs_dir="$DOCS_DIR/system"
+    local docs_root="$DOCS_DIR"
+    local apps_dir
+    if [[ "$SDX_MODE" == "federation" ]]; then
+        apps_dir="$docs_root/applications"
+    else
+        apps_dir="$docs_root/application"
+    fi
+    
+    # 设置绝对路径
+    SYSTEM_DOCS_ABS="$TARGET_DIR/$system_docs_dir"
+    APPS_ABS="$TARGET_DIR/$apps_dir"
+    AI_ABS="$TARGET_DIR/$AI_DIR"
+    CURSOR_ABS="$TARGET_DIR/.cursor"
+    TREA_ABS="$TARGET_DIR/.trea"
+}
+
+discover_skills() {
+    local all_skills=() default_skills=()
+    local skill_prefixes=("${SDX_DEFAULT_SKILL_PREFIXES[@]}")
+    
+    if [[ -d "$REPO_ROOT/.ai/skills" ]]; then
+        local -a skill_dirs=()
+        local skilldir
+        mapfile -d '' -t skill_dirs < <(find "$REPO_ROOT/.ai/skills" -mindepth 1 -maxdepth 1 -type d -print0)
+        for skilldir in "${skill_dirs[@]}"; do
+            local skill="$(basename "$skilldir")"
+            all_skills+=("$skill")
+            if [[ ! "$skill" =~ ^sdx- ]]; then
+                local prefix
+                for prefix in "${skill_prefixes[@]}"; do
+                    if [[ "$skill" == "$prefix"* ]]; then
+                        default_skills+=("$skill")
+                        break
+                    fi
+                done
+            fi
+        done
+    fi
+    
+    # 若无匹配技能，使用默认列表
+    if [[ ${#default_skills[@]} -eq 0 ]]; then
+        default_skills=("${DEFAULT_SKILLS[@]}")
+    fi
+    
+    ALL_SKILLS="${all_skills[*]}"
+    DEFAULT_SKILLS_LIST="${default_skills[*]}"
+}
+
+parse_agents() {
+    if [[ "$AGENTS_OPT" == "all" ]]; then
+        for agent in "${SUPPORTED_AGENTS[@]}"; do
+            if [[ "$agent" == "cursor" || -d "$REPO_ROOT/.$agent" ]]; then
+                enabled_agents+=("$agent")
+            fi
+        done
+    else
+        IFS=',' read -ra enabled_agents <<< "$AGENTS_OPT"
+    fi
+}
+
+parse_skills() {
+    if [[ -n "$SKILLS_OPT" ]]; then
+        if [[ "$SKILLS_OPT" == "all" ]]; then
+            IFS=' ' read -ra install_skills <<< "$ALL_SKILLS"
+        else
+            IFS=',' read -ra install_skills <<< "$SKILLS_OPT"
+        fi
+    else
+        IFS=' ' read -ra install_skills <<< "$DEFAULT_SKILLS_LIST"
+    fi
+}
+
+# ============================================================================
+# 覆盖检查
+# ============================================================================
+
+check_overwrites() {
+    local existing=()
+    
+    # 收集已存在的路径
+    for path in "$SYSTEM_DOCS_ABS" "$APPS_ABS" "$AI_ABS"; do
+        if [[ -e "$path" ]]; then
+            existing+=("$path")
+        fi
+    done
+    
+    for agent in "${enabled_agents[@]}"; do
+        local agent_path
+        case "$agent" in
+            cursor) agent_path="$CURSOR_ABS" ;;
+            trea)   agent_path="$TREA_ABS" ;;
+            *)      agent_path="$TARGET_DIR/.$agent" ;;
+        esac
+        if [[ -e "$agent_path" ]]; then
+            existing+=("$agent_path")
+        fi
+    done
+    
+    (( ${#existing[@]} == 0 )) && return 0
+    
+    handle_existing "${existing[@]}"
+}
+
+handle_existing() {
+    local existing=("$@")
+    
+    if [[ "$DRY_RUN" == "1" ]]; then
+        dry_run "以下路径已存在，执行时将覆盖："
+        printf '  - %s\n' "${existing[@]}"
+        return 0
+    fi
+    
+    if [[ -t 0 ]]; then
+        info "以下路径已存在："
+        printf '  - %s\n' "${existing[@]}"
+        read -p "覆盖所有(y) / 跳过所有(n) [y/N]: " -r reply
+        case "$reply" in
+            [yY]*) ;;
+            *) skip_paths=("${existing[@]}"); info "已跳过覆盖，继续其余操作。" ;;
+        esac
+    elif [[ "$FORCE" != "1" ]]; then
+        error "路径已存在且非交互模式，请使用 --force 或先清理路径"
+    fi
+}
+
+# ============================================================================
+# 核心功能
+# ============================================================================
+
+copy_docs() {
+    info ">>> 拷贝文档与知识库..."
+    
+    should_skip "$SYSTEM_DOCS_ABS" && { info "  跳过文档拷贝"; return 0; }
+    
+    ensure_dir "$SYSTEM_DOCS_ABS"
+    
+    # 拷贝 README
+    if [[ -f "$REPO_ROOT/README.md" ]]; then
+        copy "$REPO_ROOT/README.md" "$SYSTEM_DOCS_ABS/README.md"
+    fi
+    
+    copy_system
+    copy_apps
+    handle_git
+    
+    info "  文档拷贝完成"
+}
+
+copy_system() {
+    local system_dir="$REPO_ROOT/system"
+    if [[ ! -d "$system_dir" ]]; then
+        warn "无 system 目录"
+        return 0
+    fi
+    
+    local -a system_items=() system_files=()
+    local item
+    if [[ "$DOCS_SCOPE" == "full" ]]; then
+        # 完整拷贝
+        mapfile -d '' -t system_items < <(find "$system_dir" -mindepth 1 -maxdepth 1 -print0)
+        for item in "${system_items[@]}"; do
+            copy "$item" "$SYSTEM_DOCS_ABS/$(basename "$item")"
+        done
+    else
+        # 仅拷贝 knowledge 和文件
+        if [[ -d "$system_dir/knowledge" ]]; then
+            copy "$system_dir/knowledge" "$SYSTEM_DOCS_ABS/knowledge"
+        fi
+        mapfile -d '' -t system_files < <(find "$system_dir" -mindepth 1 -maxdepth 1 -type f -print0)
+        for item in "${system_files[@]}"; do
+            copy "$item" "$SYSTEM_DOCS_ABS/$(basename "$item")"
+        done
+    fi
+}
+
+copy_apps() {
+    should_skip "$APPS_ABS" && { info "  跳过应用目录拷贝"; return 0; }
+    
+    if [[ -d "$REPO_ROOT/applications" ]]; then
+        copy "$REPO_ROOT/applications" "$APPS_ABS"
+    fi
+    
+    local docs_root="$DOCS_DIR"
+    local app_name="$(basename "$TARGET_DIR")"
+
+    # 联邦模式：创建应用目录，并将原有 standalone 的 application/ 内容拷贝到 app-APPNAME/
+    if [[ "$SDX_MODE" == "federation" ]]; then
+        local app_dir="$APPS_ABS/app-$app_name"
+        
+        if [[ "$DRY_RUN" == "1" ]]; then
+            dry_run "创建应用目录: app-$app_name"
+        else
+            ensure_dir "$APPS_ABS"
+            if [[ ! -d "$app_dir" ]]; then
+                ensure_dir "$app_dir"
+                info "  创建应用目录: app-$app_name"
+            fi
+        fi
+
+        local legacy_application_dir="$TARGET_DIR/$docs_root/application"
+        if [[ -d "$legacy_application_dir" ]]; then
+            info "  检测到原 application 目录，迁移到 app-$app_name"
+            sync_dir_contents "$legacy_application_dir" "$app_dir"
+            if [[ "$DRY_RUN" == "1" ]]; then
+                dry_run "删除原 application 目录: $legacy_application_dir"
+            else
+                rm -rf "$legacy_application_dir"
+                info "  已删除原 application 目录"
+            fi
+        fi
+    else
+        # 独立模式：若存在 app-APPNAME/（联邦模式遗留），拷贝其内容到 application/
+        local legacy_app_dir="$TARGET_DIR/$docs_root/applications/app-$app_name"
+        if [[ -d "$legacy_app_dir" ]]; then
+            info "  检测到原 app-$app_name 目录，迁移到 application"
+            sync_dir_contents "$legacy_app_dir" "$APPS_ABS"
+            local legacy_applications_root="$TARGET_DIR/$docs_root/applications"
+            if [[ "$DRY_RUN" == "1" ]]; then
+                dry_run "删除原 applications 目录: $legacy_applications_root"
+            else
+                rm -rf "$legacy_applications_root"
+                info "  已删除原 applications 目录"
+            fi
+        fi
+    fi
+}
+
+handle_git() {
+    local docs_root="$DOCS_DIR"
+    if [[ -z "$docs_root" || "$docs_root" == "." ]]; then
+        return 0
+    fi
+    
+    if [[ "$SDX_MODE" == "federation" ]]; then
+        setup_federation_git "$docs_root"
+    else
+        cleanup_standalone_git "$docs_root"
+    fi
+}
+
+setup_federation_git() {
+    local docs_root="$1"
+    local gitignore="$TARGET_DIR/.gitignore"
+    local -a patterns=("docs")
+    local docs_abs="$TARGET_DIR/$docs_root"
+    
+    # 更新 .gitignore
+    if [[ "$DRY_RUN" == "1" ]]; then
+        if [[ -f "$gitignore" ]]; then
+            dry_run "更新 .gitignore：确保包含忽略规则 -> ${patterns[*]}"
+        else
+            dry_run "创建 .gitignore：写入忽略规则 -> ${patterns[*]}"
+        fi
+    else
+        local p
+        if [[ -f "$gitignore" ]]; then
+            local added=0
+            for p in "${patterns[@]}"; do
+                grep -q "^${p}\$" "$gitignore" || { 
+                    [[ $added -eq 0 ]] && printf '\n# sdx-init 联邦模式：忽略文档根目录\n' >> "$gitignore"
+                    printf '%s\n' "$p" >> "$gitignore"
+                    added=1
+                }
+            done
+            [[ $added -eq 1 ]] && info "  更新 .gitignore"
+        else
+            {
+                echo "# sdx-init 联邦模式：忽略文档根目录"
+                for p in "${patterns[@]}"; do
+                    echo "$p"
+                done
+            } > "$gitignore"
+            info "  创建 .gitignore"
+        fi
+    fi
+    
+    # 拷贝 .git
+    if [[ -d "$REPO_ROOT/.git" ]]; then
+        if [[ "$DRY_RUN" == "1" ]]; then
+            dry_run "拷贝 .git: $REPO_ROOT/.git -> $docs_abs/.git（会覆盖目标 .git）"
+            dry_run "设置文档 Git worktree: $docs_abs"
+        else
+            ensure_dir "$docs_abs"
+            rm -rf "$docs_abs/.git"
+            copy "$REPO_ROOT/.git" "$docs_abs/.git"
+            (cd "$docs_abs" && git config core.worktree "$docs_abs") &>/dev/null || true
+            info "  设置文档 Git 仓库"
+        fi
+    fi
+}
+
+cleanup_standalone_git() {
+    local docs_root="$1"
+    local docs_abs="$TARGET_DIR/$docs_root"
+    local gitignore="$TARGET_DIR/.gitignore"
+    local -a patterns=("docs")
+    local removed=0
+    
+    # 清理 .git
+    if [[ "$DRY_RUN" == "1" ]]; then
+        if [[ -d "$docs_abs/.git" ]]; then
+            dry_run "删除文档 .git: $docs_abs/.git"
+        fi
+    elif [[ -d "$docs_abs/.git" ]]; then
+        rm -rf "$docs_abs/.git"
+        info "  清理文档 .git"
+    fi
+    
+    # 清理 .gitignore
+    if [[ "$DRY_RUN" == "1" ]]; then
+        local p
+        for p in "${patterns[@]}"; do
+            if [[ -f "$gitignore" ]] && grep -q "^${p}\$" "$gitignore"; then
+                dry_run "清理 .gitignore：移除忽略规则 -> $p"
+            fi
+        done
+    else
+        local p
+        if [[ -f "$gitignore" ]]; then
+            for p in "${patterns[@]}"; do
+                if grep -q "^${p}\$" "$gitignore"; then
+                    removed=1
+                fi
+            done
+        fi
+    fi
+
+    if [[ "$DRY_RUN" == "0" && "$removed" -eq 1 ]]; then
+        local tmp="${gitignore}.tmp"
+        # grep 在“全部被过滤掉”时会返回 1；这里仍应写回空文件
+        {
+            grep -v "^# sdx-init 联邦模式：忽略文档根目录$" "$gitignore" | \
+            grep -v -e "^docs\$" > "$tmp"
+        } || true
+        mv "$tmp" "$gitignore"
+        info "  清理 .gitignore"
+    fi
+}
+
+copy_ai() {
+    info ">>> 拷贝 AI 配置..."
+    
+    should_skip "$AI_ABS" && { info "  跳过 AI 配置拷贝"; return 0; }
+    
+    if [[ "$DRY_RUN" == "1" ]]; then
+        dry_run "拷贝 .ai 配置（排除 skills）"
+        if [[ "$AI_RULES_SCOPE" == "no-solution-analysis" ]]; then
+            dry_run "排除 solution/analysis 规则"
+        fi
+        return 0
+    fi
+    
+    # 拷贝 .ai（排除 skills）
+    local -a ai_items=()
+    local item
+    mapfile -d '' -t ai_items < <(find "$REPO_ROOT/.ai" -mindepth 1 -maxdepth 1 ! -name 'skills' -print0)
+    for item in "${ai_items[@]}"; do
+        copy "$item" "$AI_ABS/$(basename "$item")"
+    done
+    
+    # 处理规则范围
+    if [[ "$AI_RULES_SCOPE" == "no-solution-analysis" ]]; then
+        rm -rf "$AI_ABS/rules/solution" "$AI_ABS/rules/analysis"
+        info "  排除 solution/analysis 规则"
+    fi
+    
+    info "  AI 配置拷贝完成"
+}
+
+install_agents() {
+    info ">>> 安装 Agent 和技能..."
+    
+    for agent in "${enabled_agents[@]}"; do
+        case "$agent" in
+            cursor) install_cursor ;;
+            trea)   install_trea ;;
+            *)      install_generic "$agent" ;;
+        esac
+    done
+    
+    info "  Agent 安装完成"
+}
+
+install_cursor() {
+    should_skip "$CURSOR_ABS" && { info "  跳过 Cursor"; return 0; }
+    
+    if [[ "$DRY_RUN" == "1" ]]; then
+        dry_run "安装 Cursor 技能和配置"
+        return 0
+    fi
+    
+    ensure_dir "$CURSOR_ABS/skills"
+    
+    # 安装技能
+    for skill in "${install_skills[@]}"; do
+        local src="$REPO_ROOT/.ai/skills/$skill"
+        if [[ -d "$src" ]]; then
+            copy "$src" "$CURSOR_ABS/skills/$skill"
+        fi
+    done
+    
+    # 生成 README
+    generate_cursor_readme
+    info "  安装 Cursor 完成"
+}
+
+generate_cursor_readme() {
+    local readme="$CURSOR_ABS/README.md"
+    
+    {
+        echo "# Cursor 项目配置"
+        echo ""
+        echo "## Slash 命令（Skills）"
+        echo ""
+        echo "| 命令 | 说明 |"
+        echo "|------|------|"
+        
+        for skill in "${install_skills[@]}"; do
+            local skill_file="$CURSOR_ABS/skills/$skill/SKILL.md"
+            if [[ -f "$skill_file" ]]; then
+                local desc
+                desc=$(awk '/^description:/{getline; gsub(/^[ \t]+|[ \t]+$/,""); print; exit}' "$skill_file" 2>/dev/null)
+                if [[ -z "$desc" ]]; then
+                    desc="见 .cursor/skills/$skill/SKILL.md"
+                fi
+                echo "| \`/$skill\` | $desc |"
+            fi
+        done
+        
+        echo ""
+        echo "在 Chat 中输入 \`/\` 后选择对应命令即可调用。"
+    } > "$readme"
+}
+
+install_trea() {
+    should_skip "$TREA_ABS" && { info "  跳过 Trea"; return 0; }
+    
+    if [[ ! -d "$REPO_ROOT/.trea" ]]; then
+        info "  无 Trea 配置"
+        return 0
+    fi
+    
+    if [[ "$DRY_RUN" == "1" ]]; then
+        dry_run "安装 Trea 配置和技能"
+        return 0
+    fi
+    
+    copy "$REPO_ROOT/.trea" "$TREA_ABS"
+    
+    ensure_dir "$TREA_ABS/skills"
+    for skill in "${install_skills[@]}"; do
+        local src="$REPO_ROOT/.ai/skills/$skill"
+        if [[ -d "$src" ]]; then
+            copy "$src" "$TREA_ABS/skills/$skill"
+        fi
+    done
+    
+    info "  安装 Trea 完成"
+}
+
+install_generic() {
+    local agent="$1"
+    local dst="$TARGET_DIR/.$agent"
+    
+    should_skip "$dst" && { info "  跳过 $agent"; return 0; }
+    
+    local src="$REPO_ROOT/.$agent"
+    if [[ ! -d "$src" ]]; then
+        info "  无 $agent 配置"
+        return 0
+    fi
+    
+    copy "$src" "$dst"
+    info "  安装 $agent 完成"
+}
+
+# ============================================================================
+# 主程序
+# ============================================================================
+
+show_config() {
+    info "配置信息:"
+    info "  模式: $SDX_MODE"
+    info "  仓库: $REPO_ROOT"
+    info "  目标: $TARGET_DIR"
+    info "  文档: $DOCS_DIR/system -> $SYSTEM_DOCS_ABS (范围: $DOCS_SCOPE)"
+    info "  应用: $APPS_ABS"
+    info "  AI: $AI_DIR -> $AI_ABS (规则: $AI_RULES_SCOPE)"
+    info "  Agents: ${enabled_agents[*]}"
+    info "  Skills: ${install_skills[*]}"
+    if [[ "$DRY_RUN" == "1" ]]; then
+        info "  [预览模式]"
+    fi
+    echo
+}
+
+show_summary() {
+    echo
+    info "初始化完成！"
+    info "  文档系统: $SYSTEM_DOCS_ABS"
+    info "  应用目录: $APPS_ABS"
+    info "  AI 配置: $AI_ABS"
+    info "  Agents: ${enabled_agents[*]}"
+}
+
+main() {
+    parse_args "$@"
+    init_repo
+    validate_inputs
+    init_paths
+    discover_skills
+    parse_agents
+    parse_skills
+    check_overwrites
+    
+    show_config
+    
+    copy_docs
+    copy_ai
+    install_agents
+    
+    show_summary
+}
+
+# 执行主程序
+main "$@"

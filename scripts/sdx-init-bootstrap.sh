@@ -2,8 +2,14 @@
 # sdx-init bootstrap：在任意目录执行，从 Git 拉取 ai-sdd-docs 到临时目录并对当前目录执行 sdx-init
 # 用法: curl -sL https://raw.githubusercontent.com/ORG/ai-sdd-docs/main/scripts/sdx-init-bootstrap.sh | bash -s -- [sdx-init 选项]
 # 或: bash scripts/sdx-init-bootstrap.sh [选项]
+# 运行要求：Bash 5+
 
 set -euo pipefail
+
+if (( BASH_VERSINFO[0] < 5 )); then
+  printf '错误: 需要 Bash 5+，当前版本: %s\n' "$BASH_VERSION" >&2
+  exit 1
+fi
 
 GIT_REPO_URL="${GIT_REPO_URL:-https://github.com/oleewen/ai-sdd-docs.git}"
 GIT_REF="${GIT_REF:-HEAD}"
