@@ -1,5 +1,7 @@
 # Trea Agent 配置
 
+运行要求：`Bash 5+`。执行 `sdx-init --agents=trea` 或 `--agents=all` 时，请确保当前 shell 满足要求。
+
 本目录为 **Trea Agent** 的 SDD 项目配置。执行 `sdx-init --agents=trea` 或 `--agents=all` 时，会将此处内容拷贝到目标项目的 `.trea/`。
 
 ## 使用方式

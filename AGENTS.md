@@ -30,7 +30,7 @@
 ## 技术栈
 
 - **文档格式：** Markdown、YAML（_meta.yaml、实体定义）
-- **脚本：** Bash（sdx-init、sdx-init-bootstrap）
+- **脚本：** Bash 5+（`sdx-init`、`sdx-init-bootstrap`）
 - **版本与协作：** Git；规范遵从 `.ai/rules/` 与 `.ai/CONVENTIONS.md`
 
 ---
@@ -45,7 +45,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-docs/main/scripts/sdx
 cd /path/to/your-project
 REPO_ROOT=/path/to/ai-sdd-docs /path/to/ai-sdd-docs/scripts/sdx-init.sh [选项]
 
-# 常用选项：--mode=standalone|federation、--ds=knowledge-only|full、--as=no-solution-analysis|full、--agents=cursor,trea、--skills=all、--force、--dry-run
+# 常用选项：--mode=standalone|federation、--ds=knowledge|full、--as=no-solution-analysis|full、--agents=cursor,trea、--skills=all、--force、--dry-run
 ```
 
 详见 `scripts/README.md`。

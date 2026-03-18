@@ -1,5 +1,7 @@
 # sdx-init：SDD 开发环境初始化
 
+运行要求：`Bash 5+`。
+
 在任意目录执行 `sdx-init`，可从本仓库（ai-sdd-docs）拉取内容并对**当前目录**完成 SDD 开发初始化，无需先克隆整个仓库到本地。
 
 ## 功能概述
@@ -68,7 +70,7 @@ cd ai-sdd-docs
 |------|------|------|
 | `--mode=MODE` | 初始化模式：`standalone`（独立，应用目录为 docs/application）\| `federation`（联邦，为 docs/applications + app-APPNAME，并写 .gitignore、拷贝 .git） | `standalone` |
 | `--dd=DIR` | system 文档目录（相对目标目录）；应用目录为同级的 `application` 或 `applications`（由 mode 决定） | `docs/system` |
-| `--ds=SCOPE` | docs 范围：`knowledge-only` \| `full`（均拷贝仓库 system 目录内容，保留以兼容） | `knowledge-only` |
+| `--ds=SCOPE` | docs 范围：`knowledge` \| `full`（均拷贝仓库 system 目录内容） | `knowledge` |
 | `--ad=DIR` | .ai 配置目录（相对目标目录） | `.ai` |
 | `--as=SCOPE` | .ai/rules 范围：`no-solution-analysis`（不含 solution、analysis）\| `full` | `no-solution-analysis` |
 | `--agents=LIST` | 要初始化的 Agent：`cursor`、`trea` 或 `all`（默认: cursor） | `cursor` |
