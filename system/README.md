@@ -1,6 +1,6 @@
 # 软件系统知识文档库 (Knowledge Repository)
 
-本仓库是企业级软件系统的**全局知识底座**。我们采用「单一事实源」和「联邦治理」的理念，将系统架构和知识体系划分为四大核心视角。
+本仓库是企业级软件系统的**全局知识底座**，用于沉淀架构与知识体系，并支撑 solutions → analysis → requirements 的交付闭环。
 
 ## 快速导航
 
@@ -16,42 +16,8 @@
 | **[需求规约](./specs/)**                 | 服务/接口等规格（供 solutions、analysis 引用）           |
 | **[贡献指南](./CONTRIBUTING.md)**        | 如何新增/修改条目与ADR                               |
 
+## 关键入口（建议阅读顺序）
 
-## 目录结构
-
-```text
-system/
-├── knowledge/         # 知识库（四视角 + 宪法层）
-│   ├── constitution/      # 宪法层：ADR、架构原则、命名规范与术语表
-│   ├── business/          # 业务视角：业务域、子域、限界上下文、聚合
-│   ├── product/           # 产品视角：产品线、模块、功能点与用例
-│   ├── technical/         # 技术视角：系统、应用、微服务与接口
-│   └── data/              # 数据视角：数据存储、数据实体与字典
-├── solutions/         # 解决方案文档（SOLUTION-{ID}.md，含 archive/）
-├── analysis/          # 需求分析文档（REQUIREMENT-{ID}.md）
-├── requirements/      # 需求交付文档（REQUIREMENT-{ID}/ 按 MVP 阶段，PRD/ADD/TDD）
-├── specs/             # 需求规约文档（服务/接口等规格，供 solutions、analysis 引用）
-├── changelogs/        # 变更日志（CHANGELOG.md）
-├── INDEX.md / DESIGN.md / CONTRIBUTING.md 等
-```
-
-## 设计原则
-
-- **单一事实源 (SSOT)**：每个知识点只在一处定义，其他地方通过 ID 引用。
-- **联邦治理**：本仓库（系统级）管理宏观架构与跨域引用；各应用代码库（应用级）管理 API/Schema，并通过 CI/CD 上报 `manifest.yaml` 更新索引。
-- **去中心化映射**：在 `_meta.yaml` 或实体 YAML 中通过 ID 字段（如 `implemented_by_app_id`、`persisted_as_entity_ids`）建立视角间关联。
-
-## 命名规范
-
-所有实体使用全局唯一 ID，格式 `{TYPE}-{NAME}`。常用前缀：
-
-
-| 前缀                      | 含义               |
-| ----------------------- | ---------------- |
-| BD- / BSD- / BC- / AGG- | 业务域、子域、限界上下文、聚合根 |
-| PL- / PM- / FT- / UC-   | 产品线、产品模块、功能点、用例  |
-| SYS- / APP- / MS-       | 系统、应用、微服务        |
-| DS- / ENT-              | 数据存储、数据实体        |
-
-
-完整规范见 [knowledge/constitution/standards/naming-conventions.md](./knowledge/constitution/standards/naming-conventions.md)。设计方案与演进路线见 [DESIGN.md](./DESIGN.md)。
+- **索引**：先看 [INDEX.md](./INDEX.md) 快速定位入口、示例与映射字段。
+- **设计**：再看 [DESIGN.md](./DESIGN.md) 理解目录结构、元模型与协同机制。
+- **命名与治理**：命名规范见 [knowledge/constitution/standards/naming-conventions.md](./knowledge/constitution/standards/naming-conventions.md)；贡献约定见 [CONTRIBUTING.md](./CONTRIBUTING.md)。

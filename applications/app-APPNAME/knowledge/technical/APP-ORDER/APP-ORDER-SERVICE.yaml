@@ -1,0 +1,10 @@
+# APP-ORDER-SERVICE 应用注册信息
+id: "APP-ORDER-SERVICE"
+name: "订单微服务"
+description: "处理订单核心逻辑的微服务应用"
+repo_url: "git@github.com:org/order-service.git"
+docs_manifest_path: "/docs/manifest.yaml" # 指向应用级文档入口
+service_ids:
+  - "MS-ORDER-COMMAND"
+  - "MS-ORDER-QUERY"
+owner_team: "订单研发组"

@@ -1,6 +1,6 @@
 # knowledge — 知识库目录
 
-本目录为知识库主体（SSOT）：宪法层 + 业务/产品/技术/数据四视角。
+本目录为 app-APPNAME 的应用级知识库：结构与命名对齐 system，沉淀本应用相关的事实与映射。
 
 ## 结构与入口
 
@@ -14,11 +14,11 @@
 
 推荐入口：
 
-- [INDEX.md](../INDEX.md)（全局索引与映射速查）
-- [DESIGN.md](../DESIGN.md)（目录结构与元模型规范）
-- `constitution/README.md` 与各视角 README（各自的索引表与字段约定）
+- [applications/INDEX.md](../../INDEX.md)
+- [system/DESIGN.md](../../../system/DESIGN.md)
+- [system/INDEX.md](../../../system/INDEX.md)
 
 ## 维护规则（最小集）
 
 - 文档间使用 **相对工程根目录** 的路径引用（如 `knowledge/...`），便于跨文件跳转与工具解析。
-- 更新任意知识条目后，需同步更新根目录 [INDEX.md](../INDEX.md)（必要时更新各视角 README）。
+- 更新条目后，必要时同步更新 applications 的索引与各视角 README（保持可追溯）。

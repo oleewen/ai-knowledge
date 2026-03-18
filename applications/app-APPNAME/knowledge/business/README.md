@@ -1,6 +1,6 @@
 # business — 业务视角
 
-本目录描述业务版图与领域规则（DDD），不依赖具体技术实现。
+本目录描述业务版图与领域规则（DDD），并通过 ID 与其他视角建立映射。
 
 ---
 
@@ -31,8 +31,8 @@
 
 ## 关键字段（用于映射）
 
-- **BC（限界上下文）**：`implemented_by_app_id`（→ technical APP）
-- **AGG（聚合）**：`persisted_as_entity_ids`（→ data ENT）
+- **BC（限界上下文）**：`implemented_by_app_id`（→ 本应用的 technical APP）
+- **AGG（聚合）**：`persisted_as_entity_ids`（→ 本应用的 data ENT）
 
 ---
 
@@ -41,4 +41,4 @@
 - **业务 → 技术**：限界上下文的 `implemented_by_app_id` 指向 technical 的 APP。
 - **业务 → 数据**：聚合的 `persisted_as_entity_ids` 指向 data 的 ENT。
 
-更多见仓库根目录 [INDEX.md](../../INDEX.md) 与 [DESIGN.md](../../DESIGN.md)。
+更多见仓库根目录 [INDEX.md](../../../INDEX.md) 与系统设计说明 [system/DESIGN.md](../../../system/DESIGN.md)。

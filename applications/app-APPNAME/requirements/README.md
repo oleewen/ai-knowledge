@@ -38,9 +38,19 @@ requirements/
 
 ## 4. 推荐工作流
 
-1. **建立需求目录**：以 `REQUIREMENT-{ID}/` 新建交付包目录，参考 `REQUIREMENT-EXAMPLE/`。
-2. **按阶段组织**：按交付节奏创建 `MVP-Phase-*` 子目录。
-3. **落盘交付物并保持追溯**：在每阶段补齐 `PRD.md` / `ADD.md` / `TDD.md` 等，并与 `analysis/REQUIREMENT-{ID}.md`、`solutions/SOLUTION-{ID}.md` 保持 ID 关联。
+1. **建立需求目录**  
+   - 按 `REQUIREMENT-{ID}/` 命名新建需求子目录。
+   - 复制 `REQUIREMENT-EXAMPLE/` 作为参考。
+
+2. **MVP 拆分与分阶段组织**  
+   - 将需求分析文档中 MVP 拆分，与实际交付节奏对应，按阶段新建子目录（如 `MVP-Phase-1/`）。
+
+3. **撰写阶段交付文档**  
+   - 每一阶段填写相应的 PRD、ADD、TDD 等文档。
+   - 可按需补充 API Spec、开发任务分解等支持交付的文档。
+
+4. **联动分析与解决方案**  
+   - 交付包应与 `analysis/REQUIREMENT-{ID}.md` 和 `solutions/SOLUTION-{ID}.md` 通过 ID 紧密关联，便于追溯和知识映射。
 
 ## 5. 示例参考
 
@@ -48,7 +58,7 @@ requirements/
 
 ## 6. 相关模板与规范
 
-- 模板：`.ai/rules/requirement/`（prd-template.md、add-template.md、tdd-template.md）
-- 阶段规范：`.ai/skills/sdx-prd/`、`.ai/skills/sdx-design/`、`.ai/skills/sdx-test/`
+- PRD/ADD/TDD 等文档模板统一位于 `.ai/rules/requirement/`（prd-template.md、add-template.md、tdd-template.md）；阶段规范见 `.ai/skills/sdx-prd/`、`sdx-design/`、`sdx-test/`。
+- 目录与命名示例可参见 `docs/README.md` 体系。
 
 > 阶段命令：`/sdx-prd`、`/sdx-design`、`/sdx-test`；详见 `.cursor/README.md`。

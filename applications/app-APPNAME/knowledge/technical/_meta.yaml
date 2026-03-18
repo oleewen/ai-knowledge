@@ -1,0 +1,63 @@
+# applications/app-APPNAME/knowledge/technical 目录元数据
+id: "DIR-APP-APPNAME-KNOWLEDGE-TECHNICAL"
+name: "技术视角（applications/app-APPNAME/knowledge/technical）"
+description: "app-APPNAME 应用级技术视角：沉淀该应用相关的应用注册、微服务边界、集成关系与接口入口（manifest），并与 system/knowledge/technical 保持一致。"
+
+role:
+  perspective: "technical"
+  is_system_level_index: false
+
+inputs:
+  - path: "../constitution/"
+    description: "命名规范、术语等治理约束（应用侧继承系统规范）"
+  - path: "(from-app-repos)"
+    description: "应用代码仓库与 /docs/manifest.yaml（CI/CD 或人工同步）"
+  - path: "../../../system/knowledge/technical/"
+    description: "系统级技术视角规范与索引参考"
+
+outputs:
+  primary_artifact:
+    pattern: "APP-*/APP-*.yaml"
+    description: "应用注册信息（含 repo_url、docs_manifest_path、service_ids 等）"
+  supporting_artifacts:
+    - pattern: "APP-*/INTEGRATION-MAP.md"
+      description: "应用集成关系图/说明（可选）"
+    - pattern: "SYSTEM-ARCHITECTURE.md"
+      description: "系统/子系统总览（如存在）"
+
+naming_conventions:
+  hierarchy:
+    description: "应用 (APP) → 微服务 (MS)"
+  directories:
+    pattern: "APP-{NAME}/"
+    description: "按应用建目录（例如 APP-ORDER/）"
+  registration_files:
+    pattern: "APP-{NAME}/{APP-ID}.yaml"
+    constraints:
+      - "文件内 id 与文件名中的 APP-ID 一致"
+  ids:
+    examples:
+      - "APP-ORDER-SERVICE"
+      - "MS-ORDER-COMMAND"
+
+indexing:
+  readme_index_table: true
+  rule: "新增/更新应用注册信息时，应同步维护 README.md 的技术索引表"
+
+integration:
+  mappings:
+    - "技术 ← 业务：business 限界上下文的 implemented_by_app_id 指向本层 APP"
+    - "技术 ← 产品：product 功能点的 invokes_api_ids 指向应用级 manifest 中登记的 API"
+  manifest:
+    field: "docs_manifest_path"
+    description: "指向应用级文档入口（通常为 /docs/manifest.yaml）"
+
+references:
+  - path: "./README.md"
+    description: "本视角说明、索引表与约定"
+  - path: "../../../system/knowledge/technical/README.md"
+    description: "系统级技术视角说明（层级与映射字段）"
+  - path: "../../INDEX.md"
+    description: "applications 全局索引与导航"
+  - path: "../../../system/DESIGN.md"
+    description: "系统级目录结构与元模型规范"

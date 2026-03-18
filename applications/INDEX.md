@@ -1,12 +1,12 @@
 # 应用知识库 — 索引
 
-本文件为具体应用或微服务的知识库与交付文档入口。结构、约定与管理方式参照主系统知识库（见 [../../system/INDEX.md](../../system/INDEX.md)），并结合应用自身需求，细化各核心交付物。
+本文件为 applications 的索引入口。结构与约定参照系统级知识库（见 `system/INDEX.md`、`system/DESIGN.md`），应用侧在此基础上做最小必要的补充。
 
 ---
 
-## 一、应用知识结构 
+## 一、应用知识结构
 
-> 建议与主库四视角（业务/产品/技术/数据）保持一致，如有特有视角、子域或模型可酌情扩展。
+> 与 system 侧四视角保持一致；如需扩展，优先补充到 system（可复用）或在应用侧注明差异。
 
 | 入口 | 说明 |
 |------|------|
@@ -29,24 +29,22 @@
 | [./requirements/README.md](./requirements/README.md) | 需求交付（PRD/ADD/TDD 等） |
 | [./specs/](./specs/) | 详细接口/服务/数据规约 |
 
-- 方案、分析与交付文档应按推荐命名与目录组织，方便与主知识库映射 & 自动化追踪。
-- 可直接采用主库模板或自定义 `.ai/rules/` 补充校验要求。
+- 方案、分析与交付文档应按推荐命名与目录组织，便于与 system 映射与追踪。
 
 ---
 
 ## 三、关联与治理信息
 
-- [application/_meta.yaml](./application/_meta.yaml)：应用基础元信息（含 id、命名、治理锚点等）
-- [application/manifest.yaml](./application/manifest.yaml)：应用知识清单、接口规约等
-- 如需补充联邦治理/命名规范/扩展知识字段，参考主库 constitution、standards、principles
+- 治理与命名：参考 `system/knowledge/constitution/`
+- 映射字段：参考 `system/INDEX.md`（映射速查）
 
 ---
 
 ## 四、快速导航与模板引用
 
-- [README.md](./README.md)：应用知识库总览及快速初始化教程
-- [system/DESIGN.md](../../system/DESIGN.md) — 知识库设计原则与结构说明
-- [scripts/sdx-init.sh](../../scripts/sdx-init.sh) — 初始化工具
-- [system/INDEX.md](../../system/INDEX.md) — 系统知识库映射与关系字段
+- [README.md](./README.md)：applications 总览与入口
+- [system/DESIGN.md](../system/DESIGN.md)
+- [system/INDEX.md](../system/INDEX.md)
+- [scripts/sdx-init.sh](../scripts/sdx-init.sh)
 
 ---
