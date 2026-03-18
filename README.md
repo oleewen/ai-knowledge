@@ -2,15 +2,19 @@
 
 本仓库是企业级软件系统的**全局知识底座**，采用「单一事实源」与「联邦治理」理念管理架构与知识体系。
 
-## 快速初始化 (sdx-init)
+## 快速启动
 
 在任意目录下执行以下命令，可从本仓库初始化 SDD 开发环境（文档模板、知识库结构、`.ai` 配置与 Agent 的 skills/命令）：
 
-```bash
-# 方式一：从 Git 拉取并初始化当前目录（可选通过环境变量覆盖仓库地址/分支）
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/sdx-init-bootstrap.sh" | bash -s -- [选项]
+方式一：从 Git 拉取并初始化当前目录（可选通过环境变量覆盖仓库地址/分支）
 
-# 方式二：已克隆本仓库时，在目标目录执行
+```bash
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/sdx-init-bootstrap.sh" | bash -s -- [选项]
+```
+
+方式二：已克隆本仓库时，在目标目录执行
+
+```bash
 cd /path/to/your-project
 REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/sdx-init.sh [选项]
 ```
@@ -24,18 +28,30 @@ REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/sdx-init.s
 - ③ 将 `.ai` 拷贝到当前目录的 `.ai/`（默认不包含 `rules/solution`、`rules/analysis`）；
 - ④ 按 `--agents` 为 Cursor、Trea 等 Agent 生成或拷贝配置（`.cursor`、`.trea` 等）。详见 [scripts/README.md](scripts/README.md)。
 
+## 命令简介
+
+
+| 命令                   | 说明                                                                                                                 |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `/document-indexing` | 文档索引：为代码库/文档库生成面向下游 AI 的 Index Guide（拓扑/结构/精读三模式，七段标准输出，零幻觉路径精确）。                                                  |
+| `/agent-guide`       | 生成/更新根目录 `AGENTS.md` 与 `README.md`；① document-indexing 产出 Index → ② agent-guide 产出 AGENTS/README                   |
+| `/knowledge-build`   | 知识库构建：① document-indexing 产出 Index → ② agent-guide 产出 AGENTS/README → ③ 按 Index 选择性阅读并写入 knowledge → ④ 验证。         |
+| `/knowledge-upgrade` | 应用级知识库增量升级：① 应用内 document-indexing → ③ 按 applications/INDEX 与应用 knowledge 格式选择性阅读并回写 → ④ 验证（无 AGENTS/README 第二阶段）。 |
+| `/knowledge-archive` | 归档 applications/ 知识库变更；将应用侧有效信息按 system/knowledge 与 CONTRIBUTING 规范上行补充系统库（联邦 SSOT、仅 ID 引用）。                       |
+
+
 ## 功能简介
 
 **系统知识库** 已统一放在 **[system](system/)** 目录下，包含：
 
 - [system/README.md](system/README.md) — 知识库说明与快速导航  
 - [system/INDEX.md](system/INDEX.md) — 全局索引（业务知识、解决方案、需求分析、需求交付、需求规约入口）  
-- [system/DESIGN.md](system/DESIGN.md) — 设计摘录与约定  
+- [system/DESIGN.md](system/DESIGN.md) — 设计摘录与约定
 
 **应用知识库** 已统一放在 **[applications](applications/)** 目录下，包含：
 
 - [applications/README.md](applications/README.md) — 应用知识库说明与初始化方式  
-- [applications/INDEX.md](applications/INDEX.md) — 应用知识结构、方案与需求、治理信息导航  
+- [applications/INDEX.md](applications/INDEX.md) — 应用知识结构、方案与需求、治理信息导航
 
 ## 目录结构
 
@@ -60,12 +76,15 @@ ai-sdd-knowledge/
 
 ## 文档索引
 
-| 用途           | 文档 |
-|----------------|------|
-| AI 索引地图     | [INDEX.md](INDEX.md) |
-| 全局文档入口   | [system/INDEX.md](system/INDEX.md) |
-| 设计依据与约定 | [system/DESIGN.md](system/DESIGN.md)、[.ai/CONVENTIONS.md](.ai/CONVENTIONS.md) |
-| 贡献与新增约定 | [system/CONTRIBUTING.md](system/CONTRIBUTING.md) |
-| 初始化与选项   | [scripts/README.md](scripts/README.md) |
-| Cursor 命令表  | [.cursor/README.md](.cursor/README.md) |
-| AI 开发指南    | [AGENTS.md](AGENTS.md) |
+
+| 用途         | 文档                                                                            |
+| ---------- | ----------------------------------------------------------------------------- |
+| AI 索引地图    | [INDEX.md](INDEX.md)                                                          |
+| 全局文档入口     | [system/INDEX.md](system/INDEX.md)                                            |
+| 设计依据与约定    | [system/DESIGN.md](system/DESIGN.md)、[.ai/CONVENTIONS.md](.ai/CONVENTIONS.md) |
+| 贡献与新增约定    | [system/CONTRIBUTING.md](system/CONTRIBUTING.md)                              |
+| 初始化与选项     | [scripts/README.md](scripts/README.md)                                        |
+| Cursor 命令表 | [.cursor/README.md](.cursor/README.md)                                        |
+| AI 开发指南    | [AGENTS.md](AGENTS.md)                                                        |
+
+
