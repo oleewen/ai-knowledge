@@ -7,6 +7,8 @@ created: "2025-03-13"
 updated: "2025-03-15"
 tags: ["glossary", "terminology", "constitution"]
 ---
+> **模板示例**：本文件为知识库模板示例，实际项目请按需替换内容与 ID。
+
 
 # 全局术语表
 

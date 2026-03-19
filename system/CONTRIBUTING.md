@@ -1,3 +1,5 @@
+> **模板示例**：本文件为知识库模板示例，实际项目请按需替换内容与 ID。
+
 # 贡献指南
 
 欢迎参与维护全局软件系统知识文档库。请遵循以下约定，以保持单一事实源与映射一致性。
@@ -36,7 +38,7 @@
 业务诉求的解决方案文档的新增与维护。
 
 - 在 **solutions/**（与 knowledge 平级）下创建 `SOLUTION-{ID}.md`，ID 建议为 `{YYYYMMDD}-{SEQ}` 或项目约定编号。
-- 参考模板 [.ai/rules/solution/solution-template.md](./.ai/rules/solution/solution-template.md)，阶段规范见 [.ai/skills/sdx-solution/SKILL.md](./.ai/skills/sdx-solution/SKILL.md)。
+- 参考模板 [.ai/rules/solution/solution-template.md](../.ai/rules/solution/solution-template.md)，阶段规范见 [.ai/skills/sdx-solution/SKILL.md](../.ai/skills/sdx-solution/SKILL.md)。
 - 已完结或废弃的解决方案可移入 **solutions/archive/**。
 
 ---
@@ -46,7 +48,7 @@
 需求分析文档的新增与维护。
 
 - 在 **analysis/**（与 knowledge 平级）下创建 `REQUIREMENT-{ID}.md`，文档 frontmatter 中 `parent` 指向对应的 SOLUTION。
-- 参考模板 [.ai/rules/analysis/requirement-template.md](./.ai/rules/analysis/requirement-template.md)，阶段规范见 [.ai/skills/sdx-analysis/SKILL.md](./.ai/skills/sdx-analysis/SKILL.md)。
+- 参考模板 [.ai/rules/analysis/requirement-template.md](../.ai/rules/analysis/requirement-template.md)，阶段规范见 [.ai/skills/sdx-analysis/SKILL.md](../.ai/skills/sdx-analysis/SKILL.md)。
 
 ---
 

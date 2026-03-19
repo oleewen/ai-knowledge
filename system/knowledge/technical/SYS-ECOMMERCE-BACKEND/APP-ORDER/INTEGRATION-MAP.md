@@ -5,6 +5,8 @@ version: "0.1.0"
 status: "draft"
 tags: ["architecture", "integration"]
 ---
+> **模板示例**：本文件为知识库模板示例，实际项目请按需替换内容与 ID。
+
 
 # 集成关系图
 

@@ -1,7 +1,7 @@
 ---
 name: knowledge-upgrade
 description: >
-  应用级知识库增量升级：在 applications/应用名 或 app-APPNAME 工程目录内，仿照 knowledge-build 的第一/三/四阶段——
+  应用级知识库增量升级：在 applications/应用名 或 app-APPNAME 工程目录内，更新应用知识库
   先做 document-indexing 索引，再按该应用 INDEX、knowledge 各 README 与模板格式选择性阅读工程代码/文档，
   提炼并回写更新现有知识文档。不含全库 AGENTS/README 初始化（无第二阶段）。使用 /knowledge-upgrade。
 ---
@@ -19,15 +19,6 @@ description: >
 | **命名约定** | `app-APPNAME` | 与业务约定的应用前缀一致即可；以用户给出的 **工作区根路径** 为准 |
 
 执行前须明确：**(1) 应用根路径**（代码与文档所在仓库根或 `applications/xxx`）**(2) 应用知识库根**（含 `INDEX.md`、`knowledge/` 或与 [applications/INDEX.md](../../../applications/INDEX.md) 结构等价的目录）。
-
-## 与 knowledge-build 的对应关系
-
-| 本 Skill 阶段 | 对齐 knowledge-build | 差异 |
-|---------------|----------------------|------|
-| **一** | 第一阶段（document-indexing） | 索引范围限定为 **当前应用工作区**；§2/§3 须覆盖 **应用知识库根**（`knowledge/`、`solutions/` 等）及 `INDEX.md` 所列入口 |
-| **二** | *跳过* | **不**执行 agent-guide；不强制本流程内新建根目录 `AGENTS.md`/`README.md`（应用仓库若已有则可顺带校对，非本 Skill 主目标） |
-| **三** | 第三阶段（选择性阅读 + 写知识文档） | **以「更新、完善」为主**：对照应用内已有 Markdown/YAML 的 **格式与章节要求**，合并工程现状，避免整库推倒重写 |
-| **四** | 第四阶段（质量验证） | 校验应用内 **INDEX、knowledge README、manifest/_meta** 与 Index §3 覆盖一致；**应用级 ID**（如 `APP-*`、`MS-*`）不断链、不擅自改 ID |
 
 ## 工作要求
 
@@ -64,7 +55,7 @@ description: >
 
 ---
 
-### 第三阶段：按应用格式归纳并回写
+### 第二阶段：按应用格式归纳并回写
 
 **不**对工程无差别通读。以 **阶段一 Index** 为主导航，并 **先读透应用侧格式契约**：
 
@@ -79,7 +70,7 @@ description: >
 
 ---
 
-### 第四阶段：检查与质量验证
+### 第三阶段：检查与质量验证
 
 - **结构**：产出仍符合应用 **INDEX.md** 导航与 **knowledge/** 目录约定。
 - **可追溯**：重要变更新增内容可注明依据路径（或 Index §3 条目）。

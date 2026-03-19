@@ -1,3 +1,5 @@
+> **模板示例**：本文件为知识库模板示例，实际项目请按需替换内容与 ID。
+
 # 软件系统知识文档库 (Knowledge Repository)
 
 本仓库是企业级软件系统的**全局知识底座**，用于沉淀架构与知识体系，并支撑 solutions → analysis → requirements 的交付闭环。
@@ -15,6 +17,7 @@
 | **[需求交付](./requirements/README.md)** | 按 MVP 阶段的 PRD/ADD/TDD 交付（REQUIREMENT-{ID}/） |
 | **[需求规约](./specs/)**                 | 服务/接口等规格（供 solutions、analysis 引用）           |
 | **[贡献指南](./CONTRIBUTING.md)**        | 如何新增/修改条目与ADR                               |
+| **全库构建（AI）** | [knowledge-build Skill](../.cursor/skills/knowledge-build/SKILL.md)；索引见 [INDEX.md](./INDEX.md) 第七节 |
 
 ## 关键入口（建议阅读顺序）
 

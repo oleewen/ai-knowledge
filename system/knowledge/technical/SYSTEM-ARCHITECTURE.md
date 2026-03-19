@@ -1,3 +1,5 @@
+> **模板示例**：本文件为知识库模板示例，实际项目请按需替换内容与 ID。
+
 # 系统架构
 
 描述技术视角下**系统与子系统**的职责、边界及相互关系。应用级实现细节见各系统目录下的 [应用架构](SYS-ECOMMERCE-BACKEND/APPLICATION-ARCHITECTURE.md) 与 [集成关系图](SYS-ECOMMERCE-BACKEND/APP-ORDER/INTEGRATION-MAP.md)。

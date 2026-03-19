@@ -1,156 +1,147 @@
 ---
 name: knowledge-build
 description: >
-  逆向理解系统并建立结构化知识库：第一阶段 document-indexing 产出 Index Guide；
-  第二阶段 agent-guide 产出 AGENTS.md/README；第三阶段以 Index 为指导选择性阅读源码与文档并写入 knowledge；
-  第四阶段质量验证。在执行 /knowledge-build、初始化知识库或逆向工程时使用。
+  四阶段建立结构化知识库：① document-indexing → Index Guide；② agent-guide → 根 README/AGENTS；
+  ③ 以 Index + README/AGENTS + SDD 规约（specs/openspec*）按需阅读，写入 Doc Root 下 knowledge/requirements，
+  更新 INDEX/README，追加 changelogs/changelog.md；④ 验收。用于 /knowledge-build、知识库初始化与逆向工程。
 ---
 
-# 知识库构建
+# 知识库构建（knowledge-build）
 
-作为专业的代码考古学家，按以下 **四阶段** 逆向理解当前系统文档和代码，并建立结构化知识库。**严格遵循项目根目录 `README.md` 定义的文档体系与知识库根路径（如 `system/knowledge/` 或 `knowledge/`）及其中层级进行输出。**
+在仓库内建立 **可导航、可追溯、与 SDD 目录一致** 的结构化知识：**Index → 人类/Agent 入口 → 知识实体与需求交付 → 验收**。
 
-## 阶段与 Skill 对应
+## 1. 何时使用 / 与 knowledge-upgrade 区分
+
+| 场景 | 使用本 Skill |
+|------|----------------|
+| 从零或大范围 **逆向** 理解系统并落 knowledge / requirements | ✅ |
+| 根目录尚缺可用的 **Index Guide** 或 **AGENTS/README** 需一并补齐 | ✅ |
+| **仅**某应用目录内增量更新应用知识库、且不跑 AGENTS/README 二阶段 | ❌ → 用 **knowledge-upgrade** |
+
+## 2. 核心概念
+
+- **文档根（Doc Root）**：知识库体系统辖的根路径，**以根 `README.md` 声明为准**（常见 `docs/`、`system/`、`docs/system/`）。所有 `{Doc Root}/...` 均相对仓库根。
+- **Index Guide**：七段《AI文档库精要索引指南》，常见落盘为根 **`INDEX.md`** 或 **`docs/INDEX.md`**（路径以 document-indexing 与用户约定为准）。
+- **硬性原则**：输出目录、视角、实体 ID 与 YAML 字段 **服从** `{Doc Root}/DESIGN.md`、`CONTRIBUTING.md`（或项目等价文件）；**禁止**用 Index §6 或未读路径编造实现细节。
+
+## 2.1 Doc Root 可指定（执行时规则）
+
+执行本 Skill 时，**允许用户指定要构建的知识库目录**（Doc Root）：
+
+- 若指定目录不存在：**直接报错**（停止流程，不进入阶段一～四）
+- 若用户未指定：查找有 `knowledge` 目录的文件夹进行推算，若同时检测到多个候选 Doc Root：**列出候选列表并要求用户选择**（不得默认）
+
+## 3. 前置门禁：防「双套知识库」
+
+> **未完成本节不得进入阶段一～四**，避免写错根、断链、Agent 误读。
+
+**Doc Root 解析**
+
+1. 读根 `README.md` 中的文档体系说明。  
+2. 若未写明：用 Index 落盘位置推断（如 Index 在 `docs/INDEX.md` → Doc Root 倾向 `docs/`），并在会话中 **写明依据**。
+
+## 4. 四阶段一览
 
 | 阶段 | 执行依据 | 主要产出 |
 |------|----------|----------|
-| **一** | `.cursor/skills/document-indexing/SKILL.md` | 《AI文档库精要索引指南》（Index Guide，建议落盘如 `docs/INDEX-GUIDE.md`） |
-| **二** | `.cursor/skills/agent-guide/SKILL.md` | 根目录 `AGENTS.md`、`README.md`（须含文档体系） |
-| **三** | 第一阶段 Index + 知识库根 README | 按视角分层的知识文档 |
-| **四** | 本阶段清单 | 一致性 / 完整性 / 可追溯性验证 |
+| **一** | `.cursor/skills/document-indexing/SKILL.md` | Index Guide（建议落盘；与仓库约定一致） |
+| **二** | `.cursor/skills/agent-guide/SKILL.md` | 根目录 `AGENTS.md`、`README.md`（须含文档体系与索引） |
+| **三** | 阶段一二产出 + 规约树 + Doc Root 内模板 | `{Doc Root}/knowledge/`、`requirements/` 及 YAML；更新 `{Doc Root}/INDEX.md` 与相关 `README.md`；**changelog** |
+| **四** | 本节清单 | 结构、链接、可追溯、零幻觉复核 |
 
-## 工作要求
+## 5. 入口：是否跳过阶段一、二
 
-- 模型要足够强，优先用 Claude Opus、Gemini、GPT 最强模型
-- 生成内容要细读精读，有问题及时纠正
-- 遵循推荐模板，不局限于模板，按实际情况调整
-- **输出必须与根目录 `README.md` 的目录结构、knowledge 层级一致**
-- **禁止**用 Index 未覆盖区域编造实现细节；§6 盲区若需写入知识库，须先补读该路径
+**快速检测**
 
-## 工作流程
+- **阶段一完成**：存在可用 Index（落盘或用户粘贴全文）。  
+- **阶段二完成**：根目录存在 `AGENTS.md` 与 `README.md`，且 README 描述 Doc Root 与目录体系。
 
-每阶段开始前：找不到模板则提示用户指定模板。阶段结束前：先确认是否需要调整内容，再进入下一阶段。
+**若一、二均已完成** → **须展示检测结果**并 **请用户选择**（禁止默认）：
 
-### 执行前强制步骤：知识库根外内容清理（防双套知识库）
+| 选择 | 动作 |
+|------|------|
+| 从阶段三继续 | Index + AGENTS/README 为输入；无落盘 Index 须 **粘贴或指定路径** |
+| 仅重做阶段一 | 重做后再问是否重做阶段二 |
+| 仅重做阶段二 | Index 过旧时建议先重做阶段一 |
+| 一、二重做 | 从阶段一起顺序执行 |
 
-> 目标：避免仓库内同时存在两套（或多套）“同名知识库/SDD 目录”，导致 Agent 误读与引用断链。
+**缺口**：仅有二无一 → 要求补阶段一或提供 Index；仅有一无二 → 建议补阶段二后再三。
 
-**定义：文档根目录（Doc Root）**
+## 6. 阶段一：document-indexing
 
-- 以 **项目根 `README.md`** 中定义的文档体系为准（常见为 `docs/` 或 `system/`）。
-- 若 README 未明确，则以已存在的 Index Guide 的落盘位置推断（例如 Index 在 `docs/INDEX.md`，则 Doc Root 为 `docs/`），并在执行日志中说明依据。
+完整遵循 **document-indexing** Skill。
 
-**清理原则（默认非破坏性）**
+- **Mode**：知识库逆向一般 **≥ Mode 2**；超大仓可先 Mode 1 再加深。  
+- **本流程附加**：§2/§3 **必须** 覆盖或标注 **`{Doc Root}/knowledge/`**、相关 **`requirements/`**、**`specs/`** 及项目约定的 **`openspec*`** 路径；未覆盖的标 **`[未索引]`**。  
+- **落盘**：强烈建议写入仓库约定路径，供阶段二、三与后续 Agent 复用。
 
-- **优先“归档迁移”**：将不在 Doc Root 内的知识文档库内容移动到 Doc Root 下的 `_trash/`（或 `_archive/`）中，保留原始内容以便回滚。
-- **禁止无依据删除**：只有在明确为生成物/临时物且不再需要时才可删除；其余一律迁移归档。
-- **迁移后修引用**：若 README/AGENTS/Index 中存在指向旧路径的引用，必须同步改为新路径或删除失效引用。
+## 7. 阶段二：agent-guide
 
-**需要清理的典型“同名体系目录”（示例）**
+完整遵循 **agent-guide** Skill（以阶段一 Index 为地图）。
 
-- 当 Doc Root 为 `docs/` 时：仓库根目录下若出现以下目录/文件，视为“根外知识库内容”应清理：
-  - `./knowledge/`、`./solutions/`、`./analysis/`、`./requirements/`、`./specs/`、`./system/`、`./INDEX.md`、`./INDEX-GUIDE.md`
-- 当 Doc Root 为 `system/` 时：`./docs/` 内若出现上述同名体系（如 `docs/knowledge/`）且与系统根冲突，也应清理。
+- 根 `README.md` **必须** 写清 Doc Root、目录结构、文档索引表。  
+- 可与 `AGENTS.md` 交叉注明 Index 路径，避免与阶段三检索顺序矛盾。
 
-**执行要求（必须做）**
+## 8. 阶段三：写入 knowledge / requirements（核心）
 
-1. **列出冲突清单**：输出“将清理的路径列表 + 归档目标路径”。
-2. **执行归档迁移**：将冲突路径迁移至 `{Doc Root}/_trash/{YYYYMMDD-HHMM}/...`（保持原相对结构）。
-3. **同步修复引用**：至少检查并修复：
-   - 根 `README.md`、根 `AGENTS.md`
-   - Index Guide（如 `docs/INDEX.md`）
-   - Doc Root 下的 `INDEX.md` / `README.md`（若存在）
+### 8.1 输入清单（齐套后再写）
 
-> 说明：该步骤是 **knowledge-build 的硬性前置门禁**；未完成清理不得进入阶段一～四，以避免后续知识写入落错根目录。
+| 输入 | 要求 |
+|------|------|
+| Index Guide | 七段可用；**无 Index 禁止盲写** |
+| 根 `AGENTS.md`、`README.md` | 文档体系、禁止项、规范入口与知识写入 **一致** |
+| SDD 规约 | `{Doc Root}/specs/`、根 `specs/`（若 README 约定）、`openspec/`、`openspecs/` 等——**按 Index + 用户范围按需打开** |
+| 结构准绳 | `{Doc Root}/knowledge/`、`requirements/` 下 README、模板、`_meta.yaml` / 实体 YAML 示例；`DESIGN.md`、`CONTRIBUTING.md` |
 
-### 入口判断：阶段一、二是否已完成
+### 8.2 阅读顺序（按需、不通读）
 
-**每次启动本流程时，优先做快速检测**（可结合用户说明）：
+1. **Index §1–§7** 定优先级；§6 仅在 **本条知识依赖** 时定向补读。  
+2. **规约树**：扫描后按 **服务/子目录** 精读；与交付强相关 → **`requirements/`** 既有 MVP/Phase 结构。  
+3. **源码/配置**：仅当 Index §3 或规约 **显式指向** 且 **必须** 核实时再读。  
+4. 产出不得与 **AGENTS 禁止项**、**CONTRIBUTING** 冲突。
 
-| 阶段 | 建议判定为「已完成」的条件 |
-|------|---------------------------|
-| **一** | 已存在落盘 Index（如 `docs/INDEX-GUIDE.md`、`docs/INDEX.md`、根目录 `INDEX-GUIDE.md` / `INDEX.md` 等），或用户确认当前会话/附件中有可用的《AI文档库精要索引指南》全文 |
-| **二** | 根目录已存在 **`AGENTS.md`** 与 **`README.md`**（且 README 含文档体系与目录说明） |
+**Index → 落点（简表）**
 
-当 **阶段一与阶段二均判定为已完成** 时：
+| Index | 落点思路 |
+|-------|----------|
+| §1 | 总览、技术栈 → 宪法层/总述 |
+| §2 | 模块边界、规约树位置 → 视角划分 |
+| §3 ⭐ | 领域/API/数据/规约行 → knowledge 子树或 requirements |
+| §4–§5 | 数据流、配置 → 技术/数据视角 |
+| §6 | 补读后写或标注范围外 |
+| §7 | 交叉引用与 AGENTS「查阅顺序」对齐 |
 
-1. **必须先向用户展示检测结果**（列出现有 Index 路径、AGENTS/README 是否存在）。
-2. **必须请用户明确选择，不得默认进入下一阶段**，例如：
+### 8.3 落盘四步（同一轮次内连续完成）
 
-| 用户选择 | 后续动作 |
-|----------|----------|
-| **跳过一、二，从阶段三继续** | 以已有 Index（落盘文件或用户粘贴）+ 现有 AGENTS/README 为输入，直接进入 **第三阶段**。若无落盘 Index，须请用户 **粘贴全文或指定路径**，否则阶段三不得盲写。 |
-| **仅重做阶段一** | 重新执行 **第一阶段**；结束后再次询问：重做阶段二还是沿用旧 AGENTS/README。 |
-| **仅重做阶段二** | 在现有 Index 基础上重新执行 **第二阶段**（若 Index 过时，应先建议重做阶段一）。 |
-| **阶段一、二全部重做** | 从 **第一阶段** 起顺序执行。 |
+1. **写实体**：更新/新建 `{Doc Root}/knowledge/**/*.md` 与 YAML；`{Doc Root}/requirements/**` 按目录与模板 **提炼** 规约/分析内容。**不改已有实体 ID**、不断裂 ID 引用。  
+2. **更导航**：更新 **`{Doc Root}/INDEX.md`**；必要时更新 `{Doc Root}/README.md` 导航段；受影响视角子目录 **`knowledge/*/README.md`** 索引表。  
+3. **changelog**：在 **`{Doc Root}/changelogs/changelog.md`** 追加一条（无则建目录）；若仓库已仅用 **`CHANGELOG.md`**，则 **追加到该文件**，避免双文件并行（除非项目规定小写文件名）。  
+4. **自检**：新增路径在 INDEX/子 README 中 **可点击**、无死链。
 
-若 **仅完成阶段一**（有 Index，无 AGENTS 或缺 README）：可询问 **只做阶段二** 还是 **连阶段一重做**。  
-若 **仅完成阶段二**（无 Index）：应提示阶段三依赖 Index，建议 **先补阶段一** 或提供 Index。
+## 9. 阶段四：验收
 
----
+**勾选**
 
-### 第一阶段：文档索引（document-indexing）
+- [ ] `knowledge/`、`requirements/` 路径与命名符合 README/模板  
+- [ ] `{Doc Root}/INDEX.md` 与子域 README 已更新  
+- [ ] Index §3 高相关项已覆盖或 **书面声明未纳入**  
+- [ ] 已打开规约/源码的论述有据；未读处无「已实现」式断言  
+- [ ] changelog 已记录本轮摘要  
 
-**完整遵循** `.cursor/skills/document-indexing/SKILL.md`：
+**反模式**
 
-1. 与用户确认 **Mode 1 / 2 / 3**（知识库逆向通常至少 **Mode 2**；超大仓可 Mode 1 迭代后再加深）。
-2. 按该 Skill 的读取范围与 **七段标准结构** 产出 Index Guide。
-3. **本流程附加要求**：
-   - **§2 架构拓扑** 与 **§3 详细索引字典** 须显式覆盖或标注 **知识库根目录**（以根 README 为准，如 `system/knowledge/`）及 **文档体系**相关路径，便于第三阶段对齐视角。
-   - 建议将 Index Guide **落盘**（如 `docs/INDEX-GUIDE.md`），供第二阶段 agent-guide 与后续 Agent 复用；若仅会话内产出，须在进入第二阶段前保留全文上下文。
+- Doc Root 未统一即写入 → 双 SSOT  
+- 无 Index 或跳过规约核对即大段编造  
+- 只加 `.md` 不更 INDEX/README → 孤儿文件  
+- 漏写 changelog → 无法审计  
 
----
+## 10. 参考
 
-### 第二阶段：Agent 指引与 README（agent-guide）
+- `.cursor/skills/document-indexing/SKILL.md`  
+- `.cursor/skills/agent-guide/SKILL.md`  
+- `.cursor/skills/knowledge-upgrade/SKILL.md`（应用内增量）  
+- 根 `README.md`；`{Doc Root}/DESIGN.md`、`CONTRIBUTING.md`；`.ai/rules/`、`.ai/CONVENTIONS.md`
 
-**完整遵循** `.cursor/skills/agent-guide/SKILL.md**，且 **以第一阶段 Index Guide 为探索地图**（agent-guide 第一阶段分支 A）。
+## 11. 执行节奏（可选）
 
-1. 生成或更新根目录 **`AGENTS.md`**（参考 `.ai/rules/agents-template.md`）。
-2. 生成或更新根目录 **`README.md`**（GitHub 常见结构）。
-3. **knowledge-build 硬性要求**：`README.md` **必须**明确定义文档体系（含「目录结构」与「文档索引」）；可在 README 或 AGENTS 中注明 Index Guide 路径。
-
----
-
-### 第三阶段：构建结构化业务知识库（由 Index 指导选择性阅读）
-
-**不**对全仓库无差别通读。以 **第一阶段 Index Guide** 为主导航，结合 **知识库根下 `README.md`** 与 **现有目录结构**（路径以根 README 为准），按视角 **选择性** 阅读源码/配置/文档后再撰写知识文档。
-
-#### 阅读策略（按 Index 节选用）
-
-| Index 章节 | 第三阶段用法 |
-|------------|----------------|
-| **§1 全局元信息** | 宪法层/总览类文档的定位、技术栈、入口与命令描述 |
-| **§2 架构拓扑** | 划分业务/产品/技术/数据视角文档的 **模块对应关系** |
-| **§3 详细索引字典** | **优先精读** ⭐⭐⭐、与领域模型/API/数据流相关的行；按标签（如 `Core-Logic`、`Model`、`API`、`Database`）拉齐到各 knowledge 视角；⭐⭐ 按需补充 |
-| **§4 核心数据流** | 业务流程、产品场景、技术链路类文档的 **事实来源** |
-| **§5 配置与环境变量** | 技术/数据视角中的配置与环境说明 |
-| **§6 未索引区域** | 仅当某条知识 **必须** 依赖该区域时，**定向补读**后再写；否则不在知识库中臆测 |
-| **§7 AI 查阅指北** | 与知识文档中的交叉引用策略一致，避免与 AGENTS 检索逻辑冲突 |
-
-#### 撰写要求
-
-- 以 **知识库根目录的 `README.md`** 及 **其实际子目录** 为唯一结构准绳，按视角与层级落笔，不在此 Skill 罗列具体子目录名。
-- 每条重要论述应能 **回溯** 到 Index §3 中的路径或本次补读的具体文件（可在文内或 _meta 中体现可追溯性）。
-- 遵守 `system/DESIGN.md` 与 `CONTRIBUTING.md`（若适用本仓）中关于实体 ID 与引用的约束，**不随意改 ID、不断链**。
-
----
-
-### 第四阶段：检查与质量验证
-
-**检查清单**：依据 **知识库根目录 README** 及各子目录现有结构，确认产出与之一致；对照 **Index §3**，核心模块是否在知识库中有对应覆盖或显式说明「未纳入范围」。
-
-**质量标准：**
-
-- **完整性**：核心业务逻辑与架构模式被覆盖；Index 中标记为高重要度且与领域相关的模块不宜整段缺席
-- **结构化**：严格遵循根目录 `README.md` 的 knowledge 层级（四视角+宪法层等），不堆成单一大文件
-- **可追溯性**：业务规则与领域模型能关联到 Index 所列或实际补读的路径
-- **准确性**：与代码/文档一致，**零幻觉**（未读区域不写死实现细节）
-
----
-
-## 参考
-
-- **第一阶段**：`.cursor/skills/document-indexing/SKILL.md`
-- **第二阶段**：`.cursor/skills/agent-guide/SKILL.md`
-- 文档体系与目录结构：根目录 `README.md`、知识库根 `README.md`（如 `system/knowledge/README.md`）
-- 开发规范与模板：`.ai/rules/`、`.ai/CONVENTIONS.md`、`system/DESIGN.md`、`system/CONTRIBUTING.md`（知识实体与 ID 时）
+每阶段前：缺模板则请用户指定或采用仓库默认。每阶段后：重大变更可简短确认再进入下一阶段。

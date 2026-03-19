@@ -1,3 +1,4 @@
+# 模板示例
 # ENT-T_ORDER 数据实体定义
 id: "ENT-T_ORDER"
 name: "订单表 (t_order)"

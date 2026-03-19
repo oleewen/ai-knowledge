@@ -1,3 +1,5 @@
+> **模板示例**：本文件为知识库模板示例，实际项目请按需替换内容与 ID。
+
 # DS-ORDER-MYSQL-PRIMARY — 订单主库
 
 对应数据架构中的 **order_db**，存储订单核心业务数据。归属应用见 [_meta.yaml](./_meta.yaml)。

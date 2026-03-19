@@ -1,7 +1,7 @@
 ---
 name: knowledge-archive
 description: >
-  知识归档与上行同步：① 汇总并归档 applications/ 下各应用知识库文件的更新记录；
+  知识归档与上行同步：① 汇总并归档 applications/ 或 application/ 下各应用知识库文件的更新记录；
   ② 将应用侧经核实的有效信息，按系统知识库格式（system/knowledge、CONTRIBUTING、INDEX）补充进系统级各视角文件。
   使用 /knowledge-archive。
 ---
@@ -32,7 +32,7 @@ description: >
 
 ### 1. 范围
 
-- 主库内：`applications/*/` 下各应用（排除仅模板说明用的空壳目录时以用户指定为准）。
+- 主库内：`applications/*/`（联邦模式）下各应用（排除仅模板说明用的空壳目录时以用户指定为准），或 `application/`（独立模式） 下应用文档。
 - 外仓：用户给出路径列表或 `app-APPNAME` 根目录时，仅处理用户声明的 **应用知识根**（与 `INDEX.md`、`knowledge/` 同级树）。
 
 ### 2. 发现变更的方式（择一或组合）

@@ -67,7 +67,7 @@ description: >
 
 **几乎总是要做的轻量校验（可与 Index 对照）**
 
-- **`.ai/CONVENTIONS.md`** 与 **`.ai/rules/`**（目录浏览 + 必要文件头）：规范入口、模板路径须 **真实存在**。
+- **`.cursor/rules/CONVENTIONS.md`**（常见 Cursor 布局）与 **`.ai/rules/CONVENTIONS.md`**、**`.ai/rules/`**：**择仓库实际存在者**做目录浏览与必要文件头校验；规范入口、模板路径须 **真实存在**。
 - **已有根 `README.md`**：更新时 **合并重复段落**，保留有效表格/命令块结构。
 - **`knowledge/` 或 `system/knowledge/`**：只读各层 **README / INDEX**，不通读实体文档。
 
@@ -141,4 +141,4 @@ description: >
 
 - Index 结构与模式：`.cursor/skills/document-indexing/SKILL.md`
 - Agent 文档模板：`.ai/rules/agents-template.md`
-- 规范索引：`.ai/CONVENTIONS.md`、`.ai/rules/`
+- 规范索引：`.cursor/rules/CONVENTIONS.md`（若存在）、`.ai/CONVENTIONS.md`（若存在）、`.ai/rules/`
