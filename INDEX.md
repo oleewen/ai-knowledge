@@ -1,5 +1,5 @@
 # 📘 AI文档库精要索引指南
-> 生成时间：2026-03-18  |  执行模式：Mode 3（精读模式，覆盖关键治理与视角说明）  |  索引覆盖率：已精读 22 个核心文件（其余路径按“未索引区域”声明）
+> 生成时间：2026-03-19 12:17:40.023  |  执行模式：Mode 3（精读模式，全量更新）  |  索引覆盖率：本次未执行增量裁剪（详见 `./system/changelogs/indexing-log.jsonl`）
 
 ## 1. 全局元信息
 
@@ -9,7 +9,7 @@
 - **技术栈**：
   - **主要格式**：Markdown、YAML（知识实体与 `_meta.yaml` 等）
   - **脚本**：Bash 5+（`sdx-init`、`sdx-init-bootstrap`）
-  - **协作**：Git（Conventional Commits，见 `AGENTS.md` 与 `.ai/CONVENTIONS.md`）
+  - **协作**：Git（Conventional Commits，见 `AGENTS.md` 与 `./.ai/rules/CONVENTIONS.md`）
 - **关键外部依赖（3–8）**：
   - `git`（bootstrap 克隆仓库）
   - `curl`（通过网络拉取 bootstrap 脚本）
@@ -21,7 +21,7 @@
   - 系统知识库入口：`./system/README.md`、`./system/INDEX.md`
   - 应用知识库入口：`./applications/INDEX.md`
   - 初始化入口：`./scripts/sdx-init.sh`、`./scripts/sdx-init-bootstrap.sh`、`./scripts/README.md`
-  - 规范入口：`./.ai/CONVENTIONS.md`、`./.ai/rules/`
+  - 规范入口：`./.ai/rules/CONVENTIONS.md`、`./.ai/rules/`
   - Cursor 命令入口：`./.cursor/README.md`
 - **构建/启动命令**（本仓库自身不包含服务端/应用启动）：
   - 在任意项目目录初始化（bootstrap）：
@@ -113,12 +113,13 @@
 | `./scripts/sdx-init.sh` | 拷贝 docs/.ai/Agent 技能的核心逻辑 | `初始化` `联邦治理` `Cursor` `Trea` | `sdx-config.sh` | 目标项目的 `docs/`、`.ai/`、`.cursor/` | ⭐⭐⭐ |
 | `./scripts/sdx-init-bootstrap.sh` | 临时 clone 仓库并执行初始化 | `bootstrap` `初始化` | `git` `bash` | `sdx-init.sh` | ⭐⭐ |
 | `./scripts/sdx-config.sh` | 默认值、校验函数、支持的 Agents/skills | `脚本` `初始化` | - | `sdx-init.sh` | ⭐⭐ |
+| `./scripts/knowledge-init.sh` | 初始化 applications/app-APPNAME 到目标工程 | `初始化` `联邦治理` `Agent技能` | `sdx-config.sh` | 目标工程的应用知识库模板 | ⭐⭐ |
 
 ### 3.5 规范与模板（.ai / .cursor）
 
 | 文件路径 | 功能精要 | 检索标签 | 上游依赖 | 下游被依赖 | 重要度 |
 |---|---|---|---|---|---|
-| `./.ai/CONVENTIONS.md` | 规范索引与关键摘要（编码/设计/测试/交付） | `规范` `模板` | `.ai/rules/*` | 人工/Agent 编写文档与交付物 | ⭐⭐⭐ |
+| `./.ai/rules/CONVENTIONS.md` | 规范索引与关键摘要（编码/设计/测试/交付） | `规范` `模板` | `.ai/rules/*` | 人工/Agent 编写文档与交付物 | ⭐⭐⭐ |
 | `./.cursor/README.md` | Cursor Slash 命令表与 skills 入口 | `Cursor` `Agent技能` | `.cursor/skills/*` | 用户交互入口 | ⭐⭐ |
 
 ### 3.6 knowledge 总入口与宪法层（system/knowledge）
@@ -172,6 +173,10 @@
 | `SKILLS_OPT` / `--skills` | `./scripts/sdx-init.sh` | 要安装的 skills 列表 | 默认仅 agent/knowledge 相关 | 低 |
 | `--force` | `./scripts/sdx-init.sh` | 覆盖已存在目录 | 关闭 | 中（可能覆盖文件） |
 | `--dry-run` | `./scripts/sdx-init.sh` | 仅打印不执行 | 关闭 | 低 |
+| `--mode` | `./scripts/knowledge-init.sh` | 应用知识库初始化模式：仅拷贝/中央登记 | `standalone` | 低 |
+| `--app-id` | `./scripts/knowledge-init.sh` | 中央模式写入技术视角 APP ID | 自动推导 | 低 |
+| `--agents` | `./scripts/knowledge-init.sh` | 安装 Agent（cursor/trea/all） | `cursor` | 低 |
+| `--dry-run` | `./scripts/knowledge-init.sh` | 仅预览，不落盘 | 关闭 | 低 |
 
 > 说明：默认值集中在 `./scripts/sdx-config.sh` 的 `SDX_DEFAULTS`；`sdx-init.sh` 允许用环境变量/参数覆盖。
 
@@ -179,6 +184,8 @@
 
 > 零幻觉原则：以下路径仅“发现存在”，但未精读其内容；因此不对其内部结构/语义做断言。
 
+- **docs/doc 目录**
+  - `./docs/**`、`./doc/**`（仓库内不存在）
 - **系统级未精读**
   - `./system/solutions/**`、`./system/analysis/**`、`./system/requirements/**`、`./system/specs/**`、`./system/changelogs/**`
 - **knowledge 未精读**
@@ -187,8 +194,8 @@
 - **应用级未精读**
   - `./applications/**` 的应用子目录（若存在）
 - **AI 规则与技能未精读**
-  - `./.ai/rules/**`（仅基于 `./.ai/CONVENTIONS.md` 的索引信息确认其存在）
-  - `./.ai/skills/**`、`./.cursor/skills/**`（仅确认 `./.cursor/README.md` 的命令索引）
+  - `./.ai/rules/**`（仅精读了 `./.ai/rules/CONVENTIONS.md`；其余规则模板未逐一精读）
+  - `./.ai/skills/**`、`./.cursor/skills/**`（已精读 `document-indexing`/`document-change`；并抽读 `agent-guide`、`knowledge-build`、`knowledge-upgrade` 的入口与阶段划分；其余技能未逐一精读）
 
 ## 7. AI 查阅指北（检索表 + Prompt 模板）
 
@@ -199,7 +206,7 @@
 | 全局索引与跨视角映射字段 | `索引` `映射字段` | `./system/INDEX.md` |
 | 应用侧知识库应如何对齐主库 | `联邦治理` `索引` | `./applications/INDEX.md` |
 | 如何在新项目中初始化 SDD 环境 | `初始化` `bootstrap` | `./scripts/README.md`、`./scripts/sdx-init*.sh` |
-| 规范/模板入口在哪里 | `规范` `模板` | `./.ai/CONVENTIONS.md`、`./.ai/rules/` |
+| 规范/模板入口在哪里 | `规范` `模板` | `./.ai/rules/CONVENTIONS.md`、`./.ai/rules/` |
 | Cursor 可用 Slash 命令有哪些 | `Cursor` `Agent技能` | `./.cursor/README.md` |
 
 ### 快速检索 Prompt 模板（面向仓库内搜索/阅读）
@@ -210,4 +217,9 @@
   - “在 `./system/INDEX.md` 中，列出所有关键映射字段及其关系方向，并指出对应的视角层级（BC/AGG/PM/FT/ENT 等）。”
 - **模板 3：扩展索引覆盖率（进入 Mode 3）**
   - “精读 `./system/knowledge/constitution/principles/` 与 `./system/knowledge/constitution/adr/`，补充原则与 ADR 决策，并将新增信息回填到 `./INDEX.md` 的 §3/§6/§7。”
+
+## 索引日志索引
+
+- **索引日志目录**：`./system/changelogs/`
+- **索引日志文件**：`./system/changelogs/indexing-log.jsonl`
 
