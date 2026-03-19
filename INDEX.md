@@ -20,7 +20,7 @@
   - 根索引（本文件）：`./INDEX.md`
   - 系统知识库入口：`./system/README.md`、`./system/INDEX.md`
   - 应用知识库入口：`./applications/INDEX.md`
-  - 初始化入口：`./scripts/sdx-init.sh`、`./scripts/sdx-init-bootstrap.sh`、`./scripts/README.md`
+  - 初始化入口：`./scripts/sdx-init.sh`、`./scripts/sdx-init-bootstrap.sh`、`./scripts/knowledge-init.sh`、`./scripts/README.md`
   - 规范入口：`./.ai/rules/CONVENTIONS.md`、`./.ai/rules/`
   - Cursor 命令入口：`./.cursor/README.md`
 - **构建/启动命令**（本仓库自身不包含服务端/应用启动）：
@@ -36,6 +36,7 @@
 ```text
 ./
 ├── README.md                     # 仓库总入口：定位、初始化、关键路径导航
+├── INDEX.md                      # AI 文档库精要索引指南（Index Guide）
 ├── AGENTS.md                     # AI Agents 开发指南（角色、约束、提交规范等）
 ├── system/                       # 系统级知识库（宪法层 + 四视角 + 交付阶段文档）
 │   ├── README.md                 # system 入口与导航
@@ -55,12 +56,14 @@
 │   ├── README.md                 # 初始化使用说明与选项
 │   ├── sdx-init.sh               # 核心初始化逻辑：复制 docs/.ai/Agent skills
 │   ├── sdx-init-bootstrap.sh     # bootstrap：临时 clone 并执行 sdx-init
+│   ├── knowledge-init.sh         # 将 applications/app-APPNAME 模板初始化到目标工程
 │   └── sdx-config.sh             # 默认值、校验函数、支持的 Agents/skills
 ├── .ai/                          # AI 规范与技能（CONVENTIONS、rules、skills）
 │   ├── CONVENTIONS.md            # 规范索引与关键摘要（编码/设计/测试/文档/交付）
 │   └── rules/                    # 规范与模板（solution/analysis/requirement 等）
-└── .cursor/                      # Cursor 配置与技能入口（Slash 命令表、skills）
-    └── README.md                 # Slash 命令与 skills 列表
+├── .cursor/                      # Cursor 配置与技能入口（Slash 命令表、skills）
+│   └── README.md                 # Slash 命令与 skills 列表
+└── .trea/                        # Trea Agent 配置（若存在）
 ```
 
 ### 2.2 模块依赖方向图（A → B）
