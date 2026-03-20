@@ -1,0 +1,21 @@
+# system/knowledge/constitution/adr 目录元数据（已采纳/进行中的 ADR 文集）
+id: "DIR-KNOWLEDGE-ADR-CORPUS"
+name: "架构决策记录文集（adr）"
+description: "已通过或进行中的 ADR Markdown；模板与状态约定见 ../standards/adr_meta.yaml 与 adr-template.md。"
+
+role:
+  perspective: "constitution"
+  is_subtree_index: true
+
+outputs:
+  primary_artifact:
+    pattern: "ADR-{序号}-{短标题}.md"
+    id_guidance: "与 standards/adr_meta、CONTRIBUTING 一致"
+
+references:
+  - path: "../README.md"
+    description: "宪法层组件与元数据索引"
+  - path: "../standards/adr_meta.yaml"
+    description: "ADR 模板、状态与文件命名"
+  - path: "../standards/adr-template.md"
+    description: "人类编写的 ADR 结构模板"

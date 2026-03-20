@@ -1,13 +1,17 @@
-> **模板示例**：本文件为知识库模板示例，实际项目请按需替换内容与 ID。
+# REQUIREMENT-EXAMPLE — 示例需求交付包
 
-# 需求示例 REQUIREMENT-EXAMPLE
+本目录为**结构示例**：复制后改名为 `REQUIREMENT-{ID}/`，与上游 `REQUIREMENT-{ID}.md`（analysis）及 `SOLUTION-{ID}.md`（solutions）通过 **ID** 对齐。目录级约定见上级 [requirements_meta.yaml](../requirements_meta.yaml)，**不**为本目录单独建 `*_meta.yaml`。
 
-本目录为按 `docs/README.md` 规范组织的需求交付结构示例，便于创建真实需求时参考。
+## 目录约定
 
-## MVP 规划
+```text
+REQUIREMENT-{ID}/
+├── MVP-Phase-1/
+│   ├── PRD.md
+│   ├── ADD.md
+│   └── TDD.md
+└── MVP-Phase-2/   # 按需
+    └── ...
+```
 
-| 阶段       | 说明     | 目录           |
-| ---------- | -------- | -------------- |
-| MVP-Phase-1 | 示例阶段 | `MVP-Phase-1/` |
-
-实际需求请复制本目录并重命名为 `REQUIREMENT-{ID}/`，再按阶段补充 PRD、ADD、TDD、SPEC、DEV 等文档。
+详见上级 [../README.md](../README.md)。

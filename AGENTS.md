@@ -26,15 +26,17 @@
 
 ## 关键路径（短列表）
 
-| 用途 | 路径 |
-|------|------|
-| Index Guide | `INDEX.md` |
-| 人类入口 / 可复制命令 | `README.md`、`scripts/README.md` |
-| 系统知识库 | `system/README.md`、`system/INDEX.md`、`system/DESIGN.md`、`system/CONTRIBUTING.md` |
-| 应用知识库 | `applications/README.md`、`applications/INDEX.md` |
-| 规范与模板 | `.ai/CONVENTIONS.md`、`.ai/rules/`（含 `agents-template.md`） |
-| Cursor 命令与 skills | `.cursor/README.md`、`.cursor/skills/` |
-| 索引/变更运维（可选） | `system/changelogs/indexing-log.jsonl`、`system/changelogs/changes-index.json` |
+
+| 用途           | 路径                                                                               |
+| ------------ | -------------------------------------------------------------------------------- |
+| Index Guide  | `INDEX.md`                                                                       |
+| 人类入口 / 可复制命令 | `README.md`、`scripts/README.md`                                                  |
+| 系统知识库        | `system/README.md`、`system/INDEX.md`、`system/DESIGN.md`、`system/CONTRIBUTING.md` |
+| 应用知识库        | `applications/README.md`、`applications/INDEX.md`                                 |
+| 规范与模板        | `.ai/CONVENTIONS.md`、`.ai/rules/`（含 `agents-template.md`）                        |
+| 命令与 skills   | `.ai/README.md`、`.ai/skills/`                                                    |
+| 索引/变更运维（可选）  | `system/changelogs/indexing-log.jsonl`、`system/changelogs/changes-index.json`    |
+
 
 > **不**在本文粘贴 `INDEX.md` §3 级字典；需要路径精要时直接打开 `INDEX.md`。
 
@@ -69,7 +71,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/script
 - SDD：澄清需求与设计优先；变更与设计见 `system/` 与 `.ai/rules/`。
 - 修改前读相关 README、INDEX、DESIGN、CONTRIBUTING；最小化 diff；knowledge 映射保持引用有效。
 - 阶段交付物模板：`.ai/rules/solution/`、`analysis/`、`requirement/`；Slash 命令见 `.cursor/README.md`。
-- **索引链路（按需）：** `/document-indexing` 见 `.cursor/skills/document-indexing/SKILL.md`；可与 `/document-change` 及 `system/changelogs/*` 配合，**非**本仓库日常编辑必跑项。
+- **索引链路（按需）：** `/document-indexing`、`/document-change` 均为 **Skill**（`.cursor/skills/document-indexing/SKILL.md`、`.cursor/skills/document-change/SKILL.md`，`.ai/skills/` 同构），**非** `scripts/` 脚本；产出 `indexing-log.jsonl`、`changes-index.*` 等于 `system/changelogs/` 等，见各 SKILL；**非**本仓库日常编辑必跑项。
 
 ---
 
@@ -77,15 +79,16 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/script
 
 - 禁止随意改 `system/knowledge/` 已有实体 **ID** 或破坏跨视角 **ID 引用**（如 `implemented_by_app_id`、`persisted_as_entity_ids`），除非同步更新全部引用。
 - 禁止未读 `system/DESIGN.md` 与 `CONTRIBUTING.md` 即新增 knowledge 实体或 ADR。
-- 禁止无约定变更即删改 `.ai/rules/`、`.ai/skills/`、`.cursor/skills/` 中模板与技能核心结构。
+- 禁止无约定变更即删改 `.ai/rules/`、`.ai/skills/`中模板与技能核心结构。
 - 禁止未评估影响面即改 `system/INDEX.md`、`system/README.md` 导航表导致断链或表格错位。
 
 ---
 
 ## 参考文档
 
-1. **`INDEX.md`**（权威地图与 §7 查阅指北）
+1. **INDEX.md**（权威地图与 §7 查阅指北）
 2. `README.md`、`scripts/README.md`
 3. `system/README.md`、`system/INDEX.md`、`system/DESIGN.md`、`system/CONTRIBUTING.md`
 4. `.ai/CONVENTIONS.md`、`.ai/rules/`
-5. `.cursor/README.md`、`.cursor/skills/`
+5. `.ai/README.md`、`.ai/skills/`
+

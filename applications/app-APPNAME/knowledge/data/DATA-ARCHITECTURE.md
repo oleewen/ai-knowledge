@@ -1,5 +1,3 @@
-> **模板示例**：本文件为知识库模板示例，实际项目请按需替换内容与 ID。
-
 # 数据架构
 
 ## 元信息
@@ -7,7 +5,7 @@
 | 属性 | 值 |
 |------|-----|
 | 最后更新 | {YYYY-MM-DD} |
-| 关联文档 | [业务视角（领域）](../business/README.md)、[技术架构总览](../technical/SYSTEM-ARCHITECTURE.md) |
+| 关联文档 | [业务视角（领域）](../business/README.md)、[应用架构](../technical/SYS-ECOMMERCE-BACKEND/APPLICATION-ARCHITECTURE.md) |
 
 ## 数据存储全景
 

@@ -1,5 +1,5 @@
 # 📘 AI文档库精要索引指南
-> 生成时间：2026-03-19 12:17:40.023  |  执行模式：Mode 3（精读模式，全量更新）  |  索引覆盖率：本次未执行增量裁剪（详见 `./system/changelogs/indexing-log.jsonl`）
+> 生成时间：2026-03-20 10:36:29.251  |  执行模式：Mode 3（精读模式，全量更新）  |  索引覆盖率：全量（与 `system/README.md`「快速导航」及 §3.2 对齐；运行记录见 `./system/changelogs/indexing-log.jsonl`）
 
 ## 1. 全局元信息
 
@@ -7,7 +7,7 @@
 - **核心定位**：企业级软件系统全局知识底座（SSOT + 联邦治理）
 - **项目形态**：纯文档库 + Bash 初始化脚本（用于向任意项目“注入”SDD 文档与 Agent 配置）
 - **技术栈**：
-  - **主要格式**：Markdown、YAML（知识实体与 `_meta.yaml` 等）
+  - **主要格式**：Markdown、YAML（知识实体与各视角元数据 YAML，如 `business_meta.yaml`、`*_meta.yaml` 等）
   - **脚本**：Bash 5+（`sdx-init`、`sdx-init-bootstrap`）
   - **协作**：Git（Conventional Commits，见 `AGENTS.md` 与 `./.ai/rules/CONVENTIONS.md`）
 - **关键外部依赖（3–8）**：
@@ -39,16 +39,16 @@
 ├── INDEX.md                      # AI 文档库精要索引指南（Index Guide）
 ├── AGENTS.md                     # AI Agents 开发指南（角色、约束、提交规范等）
 ├── system/                       # 系统级知识库（宪法层 + 四视角 + 交付阶段文档）
-│   ├── README.md                 # system 入口与导航
-│   ├── INDEX.md                  # system 全局索引：knowledge/solutions/analysis/requirements/specs
-│   ├── DESIGN.md                 # 设计哲学、元模型规范、映射机制、演进路线
-│   ├── CONTRIBUTING.md           # 新增/修改规则：ID 引用、模板与提交流程
+│   ├── README.md                 # 查阅顺序、SDD 五段主线、快速导航（与 AGENTS 对齐）
+│   ├── INDEX.md                  # system 树索引、SDD 文档流、映射速查、接入登记、AI 工作流
+│   ├── DESIGN.md                 # 原则、元模型、system/ 内目录、映射、演进
+│   ├── CONTRIBUTING.md           # 六步工作流、各阶段规则与模板指针
 │   ├── knowledge/                # 宪法层 + 业务/产品/技术/数据视角
-│   ├── solutions/                # 解决方案（SOLUTION-{ID}.md）
-│   ├── analysis/                 # 需求分析（REQUIREMENT-{ID}.md）
-│   ├── requirements/             # 需求交付（REQUIREMENT-{ID}/MVP-Phase-*/）
-│   ├── specs/                    # 需求规约（接口/服务/实体等）
-│   └── changelogs/               # 变更日志（未索引）
+│   ├── solutions/                # 解决方案（README + SOLUTION-{ID}.md）
+│   ├── analysis/                 # 需求分析（README + REQUIREMENT-{ID}.md）
+│   ├── requirements/             # 需求交付（README + REQUIREMENT-{ID}/…）
+│   ├── specs/                    # README + 按服务/类型分子目录（如 example-service/）
+│   └── changelogs/               # README、CHANGELOG、可选 changes-index / indexing-log
 ├── applications/                 # 应用级知识库模板与治理入口
 │   ├── README.md                 # 应用侧联邦单元说明与初始化示例
 │   └── INDEX.md                  # 应用知识结构/方案/需求/治理信息导航
@@ -56,7 +56,7 @@
 │   ├── README.md                 # 初始化使用说明与选项
 │   ├── sdx-init.sh               # 核心初始化逻辑：复制 docs/.ai/Agent skills
 │   ├── sdx-init-bootstrap.sh     # bootstrap：临时 clone 并执行 sdx-init
-│   ├── knowledge-init.sh         # 将 applications/app-APPNAME 模板初始化到目标工程
+│   ├── knowledge-init.sh         # 将应用知识库根目录模板（applications/app-APPNAME）初始化到目标工程
 │   └── sdx-config.sh             # 默认值、校验函数、支持的 Agents/skills
 ├── .ai/                          # AI 规范与技能（CONVENTIONS、rules、skills）
 │   ├── CONVENTIONS.md            # 规范索引与关键摘要（编码/设计/测试/文档/交付）
@@ -72,12 +72,13 @@
 - `scripts/` → `applications/`：初始化时拷贝应用知识库到目标项目（standalone 为 `docs/application`；federation 为 `docs/applications`）
 - `scripts/` → `.ai/`：初始化时拷贝 `.ai` 配置到目标项目 `.ai/`
 - `scripts/` → `.cursor/` / `.trea/`：按 `--agents` 生成/拷贝 Agent 配置与 skills
-- `system/DESIGN.md` → `system/knowledge/*`：定义四视角元模型、目录与 `_meta.yaml` 映射机制
+- `system/DESIGN.md` → `system/knowledge/*`：定义四视角元模型、目录与元数据 YAML 映射机制
 - `system/CONTRIBUTING.md` → `system/knowledge/*`：约束新增/修改的字段、文件命名与引用规则
 - `system/INDEX.md` → `system/knowledge/*`：提供宪法层与四视角入口与示例路径
 - `system/INDEX.md` → `.ai/rules/*`：连接阶段模板（solutions/analysis/requirements）与规范入口
+- `system/README.md` → `./INDEX.md`、`./README.md`、`./AGENTS.md`：查阅顺序与 SDD 主线对齐
 - `applications/INDEX.md` → `system/INDEX.md`：应用库结构与主库对齐，并引用系统级设计/规范
-- `system/knowledge/*/README.md` → `system/DESIGN.md` / `./INDEX.md`：各视角 README 明确映射字段与阅读入口
+- `system/knowledge/*/README.md` → `system/DESIGN.md`、`system/INDEX.md`：各视角 README 明确映射字段与阅读入口
 
 ## 3. 详细索引字典
 
@@ -94,12 +95,28 @@
 
 ### 3.2 系统知识库（system）
 
+与 [`system/README.md`](./system/README.md) 中「查阅顺序」「SDD 主线」「快速导航」**一一对应**（下列表格为根目录索引视角的检索字段补充）。
+
+#### 3.2.1 顶层与治理
+
 | 文件路径 | 功能精要 | 检索标签 | 上游依赖 | 下游被依赖 | 重要度 |
 |---|---|---|---|---|---|
-| `./system/README.md` | system 入口：结构说明与设计原则 | `入口` `知识库` `SSOT` | - | `system/INDEX.md` | ⭐⭐⭐ |
-| `./system/INDEX.md` | knowledge/solutions/analysis/requirements/specs 总索引 | `索引` `映射字段` | `system/README.md` | 各阶段/视角文档导航 | ⭐⭐⭐ |
-| `./system/DESIGN.md` | 设计哲学、元模型规范、映射机制、演进路线 | `元模型` `映射字段` | `system/README.md` | 全库目录与治理依据 | ⭐⭐⭐ |
-| `./system/CONTRIBUTING.md` | 新增/修改规则：字段、引用与模板入口 | `规范` `映射字段` | `system/DESIGN.md` | 知识条目新增/评审流程 | ⭐⭐⭐ |
+| `./system/README.md` | 查阅顺序（与 AGENTS 对齐）、SDD 五段主线、快速导航表 | `入口` `导航` `SSOT` | `./INDEX.md`、`./README.md`、`./AGENTS.md` | `system/INDEX.md` 及各子目录 README | ⭐⭐⭐ |
+| `./system/INDEX.md` | SDD 文档流、knowledge～specs 索引、映射速查、应用接入、AI 工作流指针 | `索引` `映射字段` | `./INDEX.md`、`system/README.md` | solutions～changelogs | ⭐⭐⭐ |
+| `./system/DESIGN.md` | 原则、元模型、`system/` 内目录、映射字段、演进 | `元模型` `映射字段` | `system/README.md` | knowledge 与各阶段 | ⭐⭐⭐ |
+| `./system/CONTRIBUTING.md` | 六步工作流、各阶段新增规则与模板指针 | `规范` `模板` | `system/DESIGN.md`、`AGENTS.md` | 贡献与评审 | ⭐⭐⭐ |
+
+#### 3.2.2 阶段与子目录入口（与 system/README「快速导航」一致）
+
+| 文件路径 | 功能精要 | 检索标签 | 上游依赖 | 下游被依赖 | 重要度 |
+|---|---|---|---|---|---|
+| `./system/knowledge/README.md` | knowledge 主体、三步维护、system/INDEX 与根 INDEX 指针 | `知识库` `入口` | `system/DESIGN.md`、`system/INDEX.md` | constitution 与四视角 README | ⭐⭐⭐ |
+| `./system/solutions/README.md` | 解决方案阶段三步流程与方案索引登记 | `解决方案` | `system/DESIGN.md`、`.ai/rules/solution` | `analysis/` | ⭐⭐⭐ |
+| `./system/analysis/README.md` | 需求分析阶段三步流程与分析索引登记 | `需求分析` | `solutions/`、`knowledge/`、`specs/` | `requirements/` | ⭐⭐⭐ |
+| `./system/requirements/README.md` | 需求交付四步主线与目录结构 | `需求交付` | `analysis/`、`solutions/`、`.ai/rules/requirement` | 阶段交付物 | ⭐⭐⭐ |
+| `./system/specs/README.md` | 规约目录用法；与 technical 互补 | `需求规约` | `system/DESIGN.md` | solutions～requirements | ⭐⭐ |
+| `./system/changelogs/README.md` | changelogs 说明；document-change / document-indexing **Skill** 产出物说明 | `变更` `运维` | `README.md`、`AGENTS.md` | 索引链路 | ⭐⭐ |
+| `./system/changelogs/CHANGELOG.md` | system 文档体系维护性变更记录 | `变更` | - | 审计与追溯 | ⭐⭐ |
 
 ### 3.3 应用知识库（applications）
 
@@ -107,6 +124,7 @@
 |---|---|---|---|---|---|
 | `./applications/INDEX.md` | 应用侧知识结构与治理信息入口 | `索引` `联邦治理` | `system/INDEX.md` | 应用目录下 knowledge/solutions/... | ⭐⭐⭐ |
 | `./applications/README.md` | 应用侧联邦单元说明与初始化示例 | `联邦治理` `初始化` | `scripts/sdx-init.sh` | 应用库落地参考 | ⭐⭐ |
+| `./applications/app-APPNAME/application_meta.yaml` | 应用知识库根目录模板级机器可读索引（对照 `system/system_meta.yaml`） | `联邦治理` `元数据` | `system/DESIGN.md` | `knowledge-init` 落地副本 | ⭐⭐ |
 
 ### 3.4 初始化脚本（scripts）
 
@@ -116,20 +134,19 @@
 | `./scripts/sdx-init.sh` | 拷贝 docs/.ai/Agent 技能的核心逻辑 | `初始化` `联邦治理` `Cursor` `Trea` | `sdx-config.sh` | 目标项目的 `docs/`、`.ai/`、`.cursor/` | ⭐⭐⭐ |
 | `./scripts/sdx-init-bootstrap.sh` | 临时 clone 仓库并执行初始化 | `bootstrap` `初始化` | `git` `bash` | `sdx-init.sh` | ⭐⭐ |
 | `./scripts/sdx-config.sh` | 默认值、校验函数、支持的 Agents/skills | `脚本` `初始化` | - | `sdx-init.sh` | ⭐⭐ |
-| `./scripts/knowledge-init.sh` | 初始化 applications/app-APPNAME 到目标工程 | `初始化` `联邦治理` `Agent技能` | `sdx-config.sh` | 目标工程的应用知识库模板 | ⭐⭐ |
+| `./scripts/knowledge-init.sh` | 初始化应用知识库根目录（applications/app-APPNAME）到目标工程 | `初始化` `联邦治理` `Agent技能` | `sdx-config.sh` | 目标工程的应用知识库模板 | ⭐⭐ |
 
 ### 3.5 规范与模板（.ai / .cursor）
 
 | 文件路径 | 功能精要 | 检索标签 | 上游依赖 | 下游被依赖 | 重要度 |
 |---|---|---|---|---|---|
 | `./.ai/rules/CONVENTIONS.md` | 规范索引与关键摘要（编码/设计/测试/交付） | `规范` `模板` | `.ai/rules/*` | 人工/Agent 编写文档与交付物 | ⭐⭐⭐ |
-| `./.cursor/README.md` | Cursor Slash 命令表与 skills 入口 | `Cursor` `Agent技能` | `.cursor/skills/*` | 用户交互入口 | ⭐⭐ |
+| `./.cursor/README.md` | Cursor Slash 与 `skills/` 入口；Skill 非 scripts 脚本 | `Cursor` `Agent技能` | `.cursor/skills/*`、`.ai/skills/README.md` | 用户交互入口 | ⭐⭐ |
 
-### 3.6 knowledge 总入口与宪法层（system/knowledge）
+### 3.6 knowledge 宪法层（system/knowledge；总入口见 §3.2.2）
 
 | 文件路径 | 功能精要 | 检索标签 | 上游依赖 | 下游被依赖 | 重要度 |
 |---|---|---|---|---|---|
-| `./system/knowledge/README.md` | knowledge 定位、入口与索引维护规则 | `知识库` `入口` | `./INDEX.md` | 各视角 README | ⭐⭐⭐ |
 | `./system/knowledge/constitution/README.md` | 宪法层组件入口：术语/原则/标准/ADR | `宪法层` `入口` | - | standards/adr 相关 | ⭐⭐⭐ |
 | `./system/knowledge/constitution/GLOSSARY.md` | 术语表：术语ID、映射字段速查 | `术语表` `映射字段` | - | 全库统一语言 | ⭐⭐⭐ |
 | `./system/knowledge/constitution/standards/naming-conventions.md` | ID 命名规范：TYPE 前缀与引用规则 | `命名规范` | `system/DESIGN.md` | 全库实体命名 | ⭐⭐⭐ |
@@ -151,7 +168,7 @@
 - **数据流 1：向目标项目注入 SDD 文档体系**
   - `./scripts/sdx-init-bootstrap.sh` → 临时 clone 仓库 → 执行 `./scripts/sdx-init.sh` → 将 `system/`、`applications/`、`.ai/`、Agent 配置复制到目标目录（默认 `docs/system`、`docs/application(s)`、`.ai`、`.cursor`/`.trea`）。
 - **数据流 2：系统知识库的跨视角引用（SSOT）**
-  - `./system/DESIGN.md` 定义四视角元模型与映射机制 → 具体实体在 `system/knowledge/**` 的 `_meta.yaml` / `*.yaml` 中写目标实体 ID。
+  - `./system/DESIGN.md` 定义四视角元模型与映射机制 → 具体实体在各视角元数据 YAML 与实体定义 `*.yaml` 中写目标实体 ID。
   - 常用映射字段（见 `system/DESIGN.md` 与 `system/knowledge/constitution/GLOSSARY.md`）：
     - `implemented_by_app_id`（BC → APP）
     - `relies_on_context_ids`（PM → BC）
@@ -189,11 +206,13 @@
 
 - **docs/doc 目录**
   - `./docs/**`、`./doc/**`（仓库内不存在）
-- **系统级未精读**
-  - `./system/solutions/**`、`./system/analysis/**`、`./system/requirements/**`、`./system/specs/**`、`./system/changelogs/**`
+- **系统级阶段目录（除各目录 README 入口外）**
+  - `./system/solutions/**`、`./system/analysis/**`、`./system/requirements/**` 内具体方案 / 分析 / 交付正文未逐一精读
+  - `./system/specs/**`（除 `README.md` 外）未精读
+  - `./system/changelogs/changes-index.*`、`./system/changelogs/indexing-log.jsonl` 等工具产出未精读（`README.md`、`CHANGELOG.md` 为入口说明，见 §3.2.2）
 - **knowledge 未精读**
   - `./system/knowledge/constitution/adr/**`、`./system/knowledge/constitution/principles/**`（仅精读了宪法层 README、术语表、标准与 ADR 模板）
-  - `./system/knowledge/**/_meta.yaml`、`./system/knowledge/**/*.yaml`（仅精读了四视角 README 与 DESIGN/CONTRIBUTING 约定；实体样例未逐一通读）
+  - `./system/knowledge/**/*_meta.yaml`、各阶段 `./system/{specs,solutions,analysis,requirements,changelogs}/*_meta.yaml`、`./system/knowledge/**/*.yaml`（仅精读了四视角 README 与 DESIGN/CONTRIBUTING 约定；实体样例未逐一通读）
 - **应用级未精读**
   - `./applications/**` 的应用子目录（若存在）
 - **AI 规则与技能未精读**
@@ -205,8 +224,9 @@
 | 要了解什么 | 优先标签 | 优先路径 |
 |---|---|---|
 | 仓库能解决什么问题/如何开始 | `入口` `导航` | `./README.md` |
-| system 知识库目录与四视角如何组织 | `知识库` `宪法层` | `./system/README.md` |
-| 全局索引与跨视角映射字段 | `索引` `映射字段` | `./system/INDEX.md` |
+| system 知识库目录、SDD 主线与四视角如何组织 | `知识库` `宪法层` | `./system/README.md` |
+| system 树内索引、映射字段与阶段入口 | `索引` `映射字段` | `./system/INDEX.md` |
+| system 变更日志与索引运维入口 | `变更` `运维` | `./system/changelogs/README.md` |
 | 应用侧知识库应如何对齐主库 | `联邦治理` `索引` | `./applications/INDEX.md` |
 | 如何在新项目中初始化 SDD 环境 | `初始化` `bootstrap` | `./scripts/README.md`、`./scripts/sdx-init*.sh` |
 | 规范/模板入口在哪里 | `规范` `模板` | `./.ai/rules/CONVENTIONS.md`、`./.ai/rules/` |

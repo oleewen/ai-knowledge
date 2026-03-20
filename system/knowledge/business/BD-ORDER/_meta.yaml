@@ -1,7 +1,0 @@
-# 模板示例
-# BD-ORDER 业务域元数据
-id: "BD-ORDER"
-name: "订单域"
-description: "处理所有与订单相关的业务，包括订单创建、支付、履约、售后等。"
-owner: "张三 (zhangsan@example.com)"
-strategic_classification: "core_domain" # 核心域

@@ -1,0 +1,5 @@
+# BSD-FULFILLMENT 子域元数据
+id: "BSD-FULFILLMENT"
+name: "履约子域"
+description: "负责订单支付成功后的履约流程，包括发货、物流跟踪等。"
+domain_expert: "李四 (lisi@example.com)"

@@ -1,0 +1,56 @@
+# 应用知识库根目录/knowledge — knowledge_meta.yaml（目录元数据）
+id: "DIR-APP-APPNAME-KNOWLEDGE"
+name: "应用知识库（应用知识库根目录/knowledge）"
+description: "应用级知识树：与中央库 system/knowledge 结构对齐，沉淀本应用联邦事实；SSOT 治理以 system 为准，可归档上行。"
+
+role:
+  is_single_source_of_truth: false
+  perspectives:
+    - "constitution"
+    - "business"
+    - "product"
+    - "technical"
+    - "data"
+
+inputs:
+  - path: "(from-delivery-and-operations)"
+    description: "交付与运维沉淀（归档阶段可回写 system/knowledge）"
+  - path: "../../../system/knowledge/"
+    description: "中央库知识体（命名、映射与 ID 约束）"
+
+outputs:
+  primary_artifact:
+    pattern: "*/README.md, *_meta.yaml, **/*.{yaml,md}"
+    description: "按视角组织的应用知识条目（命名见各视角 README）"
+
+naming_conventions:
+  ids:
+    description: "实体 ID 与 system 保持全局唯一前缀（BD/BSD/BC/AGG、PL/PM/FT/UC、SYS/APP/MS、DS/ENT 等）"
+    reference: "./constitution/standards/naming-conventions.md"
+
+indexing:
+  app_index:
+    path: "../INDEX.md"
+    rule: "变更条目后按需更新本应用 INDEX.md、各视角 README；重大事项同步中央库 system/INDEX.md（若适用）"
+  per_perspective_readmes:
+    - "./constitution/README.md"
+    - "./business/README.md"
+    - "./product/README.md"
+    - "./technical/README.md"
+    - "./data/README.md"
+
+integration:
+  consumed_by:
+    - path: "../requirements/"
+    - path: "../changelogs/"
+  central_system:
+    - path: "../../../system/INDEX.md"
+      description: "中央库索引与接入登记"
+
+references:
+  - path: "./README.md"
+  - path: "../INDEX.md"
+  - path: "../../../system/DESIGN.md"
+  - path: "../../../system/CONTRIBUTING.md"
+  - path: "../../../system/knowledge/knowledge_meta.yaml"
+    description: "中央库知识树元数据（对标）"

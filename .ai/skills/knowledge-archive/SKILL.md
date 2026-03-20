@@ -33,7 +33,7 @@ description: >
 ### 1. 范围
 
 - 主库内：`applications/*/`（联邦模式）下各应用（排除仅模板说明用的空壳目录时以用户指定为准），或 `application/`（独立模式） 下应用文档。
-- 外仓：用户给出路径列表或 `app-APPNAME` 根目录时，仅处理用户声明的 **应用知识根**（与 `INDEX.md`、`knowledge/` 同级树）。
+- 外仓：用户给出路径列表或 **应用知识库根目录**（模板目录名可仍为 `app-APPNAME/`）时，仅处理用户声明的 **应用知识根**（与 `INDEX.md`、`knowledge/` 同级树）。
 
 ### 2. 发现变更的方式（择一或组合）
 
@@ -66,7 +66,7 @@ description: >
 ### 1. 输入
 
 - （一）的归档清单或用户指定的应用文件列表。
-- 应用 **`manifest.yaml`**、**`application/_meta.yaml`**（若存在）、各视角下 **YAML/Markdown** 中与系统相关的 ID 与关系。
+- 应用 **`manifest.yaml`**、**`application/knowledge/knowledge_meta.yaml`** 等各 `{scope}_meta.yaml`（若存在）、各视角下 **YAML/Markdown** 中与系统相关的 ID 与关系。
 
 ### 2. 映射指引（按 CONTRIBUTING）
 
@@ -74,14 +74,14 @@ description: >
 |------------|------------|
 | 应用身份、仓库、manifest 路径 | `knowledge/technical/{SYS}/{APP-ID}.yaml`：`repo_url`、`docs_manifest_path`、`service_ids` |
 | 新微服务、API 清单（摘要级） | 更新对应 `{APP-ID}.yaml` 的 `service_ids`；API 细节以 manifest 为 SSOT，系统层只保留 ID 级关联 |
-| 限界上下文由本应用实现 | `business/.../BC` 的 `_meta.yaml` 中 `implemented_by_app_id` |
-| 数据实体归属应用 | `data/.../存储 _meta.yaml` 的 `app_id`；`schema/{ENT}.yaml` 与聚合的 `maps_to_aggregate_id` / `persisted_as_entity_ids` |
-| 产品功能调用本应用 API | `product/.../features/{FT}.yaml` 的 `invokes_api_ids` |
+| 限界上下文由本应用实现 | `knowledge/business/BC_meta.yaml` 中 `implemented_by_app_id` |
+| 数据实体归属应用 | `knowledge/data/DS_meta.yaml` 的 `owned_by_app_id` / `app_id`；`{ENT-ID}_ENT_meta.yaml` 与聚合的 `maps_to_aggregate_id` / `persisted_as_entity_ids` |
+| 产品功能调用本应用 API | `knowledge/product/FT_meta.yaml`（或同目录下按 ID 扩展的 FT 元数据 YAML）的 `invokes_api_ids` |
 | 跨域架构决策 | 必要时新增 `knowledge/constitution/adr/ADR-*.md` |
 
 ### 3. 撰写规则
 
-- **先读再写**：打开拟修改的系统文件与相邻 `_meta`，确认现有 ID。
+- **先读再写**：打开拟修改的系统文件与相邻元数据 YAML（各视角 `*_meta.yaml` 等），确认现有 ID。
 - **只增不改 ID**：已有实体 **禁止改 id**；新增实体 ID 须全局唯一且符合 [system/knowledge/constitution/standards/naming-conventions.md](../../../system/knowledge/constitution/standards/naming-conventions.md)（若存在）。
 - **交叉引用仅 ID**：正文与 YAML 关联字段只写 ID，不写重复长描述。
 - **更新索引**：变更影响全局导航时，同步 [system/INDEX.md](../../../system/INDEX.md) 或对应视角 `README.md`（见 system/knowledge/README.md §4）。

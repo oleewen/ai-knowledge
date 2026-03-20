@@ -1,35 +1,44 @@
-> **模板示例**：本文件为知识库模板示例，实际项目请按需替换内容与 ID。
+# solutions — 解决方案
 
-# solutions — 解决方案文档
+AI SDD **解决方案阶段**：从诉求抽象结构化需求、评估影响、消解冲突，输出 `SOLUTION-{ID}.md`。
 
-本目录记录 AI SDD **解决方案阶段**产出：从业务诉求中提取结构化需求、评估影响面、识别冲突并形成方案，输出 `SOLUTION-{ID}.md`。
+**元数据**：[solutions_meta.yaml](./solutions_meta.yaml)（目录级约定；字段以 YAML 为准）。
 
-## 定位与用途
+---
 
-- **输入**：业务需求描述（邮件、会议纪要、工单等）、知识库（`knowledge/`）、规约（`specs/`）。
-- **输出**：解决方案文档 `SOLUTION-{ID}.md`，作为需求分析阶段的输入。
-- **归档**：已完结或 superseded 的解决方案可移入 [archive/](./archive/) 便于检索历史。
+## 三步流程
 
-## 方案索引表
+1. **输入**：业务材料、`knowledge/`、`specs/`  
+2. **编写**：按模板产出 `SOLUTION-{ID}.md`  
+3. **登记**：在下表增加一行；完结可移入 [archive/](./archive/)  
 
-| 解决方案编号         | 标题               | 关联需求                | 状态     | 更新时间      |
-|---------------------|--------------------|------------------------|----------|--------------|
-| SOLUTION-20240601-01 | 示例方案标题（可替换） | REQUIREMENT-20240525-01 | 草稿     | 2024-06-01   |
+子目录 **[archive/](./archive/)** 仅存放已结案方案 Markdown；目录级约定仍以 [solutions_meta.yaml](./solutions_meta.yaml) 为准，**不**单建 `archive_meta.yaml`。
 
-> 注：如有新增解决方案，请在此表中登记，便于查阅与追溯。
+---
 
-## 命名与ID
+## 方案索引
 
-- **文件名**：`SOLUTION-{ID}.md`，其中 `{ID}` 建议为 `{YYYYMMDD}-{SEQ}` 或项目约定的唯一编号。
-- **文档内**：frontmatter 中 `id` 与文件名一致，可含 `parent`、`dependencies` 等关联字段。
+| 编号 | 标题 | 关联需求 | 状态 | 更新日期 |
+|------|------|----------|------|----------|
+| （有则填） | | | | |
 
-## 规范与模板
+---
 
-- **阶段目标与工作流**：见 [.ai/skills/sdx-solution/SKILL.md](../.ai/skills/sdx-solution/SKILL.md)（需求提取 → 影响面评估 → 冲突识别 → 方案制定 → 文档输出与评审）。
-- **文档模板**：见 [.ai/rules/solution/solution-template.md](../.ai/rules/solution/solution-template.md)。
+## 命名
 
-## 集成关系
+- 文件：`SOLUTION-{ID}.md`；`{ID}` 建议 `YYYYMMDD-SEQ` 或项目编号  
+- frontmatter：`id` 与文件名一致；可选 `parent`、`dependencies`  
 
-- 解决方案会引用或影响 **knowledge/** 下 business、product、technical、data 中的实体；影响面评估需与知识库保持一致。
-- 需求分析文档（`analysis/REQUIREMENT-{ID}.md`）通过 `parent` 关联到本目录下的 SOLUTION。
+---
 
+## 规范
+
+- Skill：[../../.ai/skills/sdx-solution/SKILL.md](../../.ai/skills/sdx-solution/SKILL.md)  
+- 模板：[../../.ai/rules/solution/solution-template.md](../../.ai/rules/solution/solution-template.md)  
+
+---
+
+## 与下游关系
+
+- 影响面须与 **knowledge** 实体一致  
+- **analysis** 中 `REQUIREMENT-{ID}.md` 的 `parent` 指向本目录对应 Solution  

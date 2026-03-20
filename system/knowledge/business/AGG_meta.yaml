@@ -1,0 +1,15 @@
+# AGG-ORDER 聚合根定义
+id: "AGG-ORDER"
+name: "订单聚合"
+description: "以订单实体为根的聚合，管理订单生命周期及一致性"
+root_entity: "Order"
+entities:
+  - "OrderItem"
+  - "OrderPayment"
+  - "OrderShipping"
+invariants:
+  - "订单总金额必须等于各订单项金额之和加上运费减去折扣"
+  - "订单状态变更为已支付时，必须有对应的成功支付记录"
+persisted_as_entity_ids:
+  - "ENT-T_ORDER"
+  - "ENT-T_ORDER_ITEMS"

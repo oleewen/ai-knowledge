@@ -2,6 +2,8 @@
 
 ## Slash 命令（Skills）
 
+上述命令均为 **Skill**（`SKILL.md` 工作流，由 Agent 执行）。**不是** 仓库 `scripts/` 下的 Bash 可执行脚本；与 `.cursor/skills/` 中同名目录镜像同步。
+
 | 命令 | 说明 |
 |------|------|
 | `/document-indexing` | 文档索引：为代码库/文档库生成面向下游 AI 的 Index Guide（拓扑/结构/精读三模式，七段标准输出，零幻觉路径精确）。 |
@@ -13,4 +15,4 @@
 
 在 Chat 中输入 `/` 后选择对应命令即可调用（如 `/agent-guide`）；或使用 `@技能名`（如 `@agent-guide`、`@sdx-solution`）将 Skill 作为上下文附加。
 
-**说明**：斜杠命令由 `.cursor/skills/<技能名>/SKILL.md` 提供，文件夹名即命令名（如 `skills/agent-guide` → `/agent-guide`）。
+**说明**：斜杠命令由 `.ai/skills/<技能名>/SKILL.md` 提供，文件夹名即命令名（如 `skills/agent-guide` → `/agent-guide`）。执行时按 SKILL 步骤落盘产物（如 `document-change` → `changes-index.*`，`document-indexing` → `INDEX.md` + `indexing-log.jsonl`），无独立 `document-change.sh` 一类脚本。

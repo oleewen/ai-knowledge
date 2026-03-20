@@ -1,9 +1,0 @@
-# 模板示例
-# DS-ORDER-MYSQL-PRIMARY 数据存储元数据
-id: "DS-ORDER-MYSQL-PRIMARY"
-name: "订单主库"
-description: "存储订单核心业务数据的关系型数据库"
-type: "MySQL"
-version: "8.0"
-owned_by_app_id: "APP-ORDER-SERVICE" # 数据归属应用
-data_classification: "transaction_data" # 交易数据

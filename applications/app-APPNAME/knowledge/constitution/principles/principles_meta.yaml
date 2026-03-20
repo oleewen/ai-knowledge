@@ -1,0 +1,20 @@
+# 应用知识库根目录/knowledge/constitution/principles 目录元数据
+id: "DIR-KNOWLEDGE-CONSTITUTION-PRINCIPLES"
+name: "架构原则（principles）"
+description: "可执行的架构原则条目（YAML/Markdown），支撑 constitution 治理与评审对照。"
+
+role:
+  perspective: "constitution"
+  is_subtree_index: true
+
+outputs:
+  primary_artifact:
+    pattern: "**/*.{yaml,md}"
+
+references:
+  - path: "../README.md"
+    description: "宪法层组件与元数据索引"
+  - path: "../constitution_meta.yaml"
+    description: "constitution 目录级元数据"
+  - path: "./architecture-principles.yaml"
+    description: "示例原则条目"

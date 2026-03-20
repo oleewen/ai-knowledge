@@ -428,7 +428,7 @@ copy_apps() {
     local docs_root="$DOCS_DIR"
     local app_name="$(basename "$TARGET_DIR")"
 
-    # 联邦模式：创建应用目录，并将原有 standalone 的 application/ 内容拷贝到 app-APPNAME/
+    # 联邦模式：创建应用目录，并将原有 standalone 的 application/ 内容拷贝到应用知识库根目录（app-APPNAME/）
     if [[ "$SDX_MODE" == "federation" ]]; then
         local app_dir="$APPS_ABS/app-$app_name"
         
@@ -454,7 +454,7 @@ copy_apps() {
             fi
         fi
     else
-        # 独立模式：若存在 app-APPNAME/（联邦模式遗留），拷贝其内容到 application/
+        # 独立模式：若存在应用知识库根目录 app-APPNAME/（联邦模式遗留），拷贝其内容到 application/
         local legacy_app_dir="$TARGET_DIR/$docs_root/applications/app-$app_name"
         if [[ -d "$legacy_app_dir" ]]; then
             info "  检测到原 app-$app_name 目录，迁移到 application"

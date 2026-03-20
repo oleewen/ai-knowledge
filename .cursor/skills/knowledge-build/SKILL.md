@@ -91,7 +91,7 @@ description: >
 | Index Guide | 七段可用；**无 Index 禁止盲写** |
 | 根 `AGENTS.md`、`README.md` | 文档体系、禁止项、规范入口与知识写入 **一致** |
 | SDD 规约 | `{Doc Root}/specs/`、根 `specs/`（若 README 约定）、`openspec/`、`openspecs/` 等——**按 Index + 用户范围按需打开** |
-| 结构准绳 | `{Doc Root}/knowledge/`、`requirements/` 下 README、模板、`_meta.yaml` / 实体 YAML 示例；`DESIGN.md`、`CONTRIBUTING.md` |
+| 结构准绳 | `{Doc Root}/knowledge/`、`requirements/` 下 README、模板；系统库为 `system/system_meta.yaml`、各阶段 `{dirname}_meta.yaml`、四视角 `{scope}_meta.yaml`；应用联邦单元根另见 `application_meta.yaml`（与本仓 `applications/app-APPNAME/application_meta.yaml` 同构）；`DESIGN.md`、`CONTRIBUTING.md` |
 
 ### 8.2 阅读顺序（按需、不通读）
 

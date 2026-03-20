@@ -1,0 +1,25 @@
+# 应用知识库根目录/knowledge/constitution/standards 目录元数据
+id: "DIR-KNOWLEDGE-CONSTITUTION-STANDARDS"
+name: "标准与模板（standards）"
+description: "命名规范、ADR 模板与 ADR 机器可读约定；已采纳 ADR 正文不在本树，在 ../adr/。"
+
+role:
+  perspective: "constitution"
+  is_subtree_index: true
+
+outputs:
+  primary_artifact:
+    pattern: "naming-conventions.md, adr-template.md, adr_meta.yaml, *.{md,yaml}"
+
+key_files:
+  naming_conventions: "./naming-conventions.md"
+  adr_template: "./adr-template.md"
+  adr_standard_meta: "./adr_meta.yaml"
+
+references:
+  - path: "../README.md"
+    description: "宪法层组件与元数据索引"
+  - path: "./adr_meta.yaml"
+    description: "ADR 结构与落盘约定"
+  - path: "../adr/adr_corpus_meta.yaml"
+    description: "ADR 文集目录元数据"

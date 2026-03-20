@@ -1,0 +1,36 @@
+# 应用知识库根目录 元数据（联邦单元模板）
+id: "DIR-APPLICATION-KNOWLEDGE-ROOT"
+name: "应用知识库根目录（应用级联邦单元）"
+description: "单应用文档根：knowledge（与中央库同构的联邦事实）+ requirements（交付包）+ changelogs（变更）；solutions / analysis / specs 多在中央库 system/。"
+
+role:
+  kind: "application_documentation_root"
+  template_directory: "applications/app-APPNAME/"
+
+child_directories:
+  knowledge:
+    meta: "knowledge/knowledge_meta.yaml"
+    description: "宪法层 + 四视角"
+  requirements:
+    meta: "requirements/requirements_meta.yaml"
+    description: "REQUIREMENT-{ID}/ 交付树"
+  changelogs:
+    meta: "changelogs/changelogs_meta.yaml"
+    description: "应用侧变更与可选索引运维"
+
+outputs:
+  primary_artifact:
+    pattern: "README.md, INDEX.md, application_meta.yaml, */{dirname}_meta.yaml, knowledge/**/*"
+    description: "根导航 + 各子目录目录索引 YAML + knowledge 树"
+
+integration:
+  description: "与中央库 system/ 以 ID 对齐；归档/上行见 system/DESIGN 与 knowledge-archive 类工作流"
+  upstream:
+    - path: "../../system/"
+      description: "中央库 SSOT、SDD 前段阶段与 specs"
+
+references:
+  - path: "./README.md"
+  - path: "./INDEX.md"
+  - path: "../../system/INDEX.md"
+  - path: "../../system/DESIGN.md"

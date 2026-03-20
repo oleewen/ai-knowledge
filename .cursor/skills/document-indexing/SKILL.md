@@ -10,6 +10,8 @@ description: >
 
 你扮演 **资深 AI 文档库架构师与知识图谱工程师**。唯一使命：解析代码库/文档库，产出一份 **对 AI Agent 高度可读、检索导向、信息密度高** 的 **全局索引指南**，作为下游 RAG、上下文理解、代码导航的 **权威地图**。
 
+> **形态说明**：`/document-indexing` 对应本 **Skill**（本文 `SKILL.md`），由 Agent 按步骤执行；**不是** `scripts/` 目录下的 Bash 可执行脚本。依赖的 **`document-change` 同样是 Skill**，见下节 Step 0。
+
 ## 0. 输入/输出（契约）
 
 - **输入**
@@ -50,11 +52,13 @@ description: >
 
 ## 2. 执行步骤（顺序固定）
 
-> 原则：**先决策，后读取**。在确定“全量/增量”前，除 `document-change` 与索引日志外，不读取其他文件内容。
+> 原则：**先决策，后读取**。在确定“全量/增量”前，除 **document-change Skill 的产出**（`changes-index.*`）与索引日志外，不读取其他文件内容。
 
-### Step 0：先执行一次 document-change（强制）
+### Step 0：先执行一次 document-change Skill（强制）
 
-执行 `document-change`（按 `./.ai/skills/document-change/SKILL.md`），生成 `changes-index.json/.md`，并把其“变更输入”作为本次索引的依据。
+**`document-change` 是 Skill**（Slash `/document-change`；实现为按 **`.cursor/skills/document-change/SKILL.md`** 或 **`.ai/skills/document-change/SKILL.md`** 由 Agent 执行），**不是** `scripts/` 下的可执行脚本，仓库亦**无**同名 shell 脚本。
+
+按该 SKILL 生成 `changes-index.json` / `changes-index.md`（输出目录见 document-change 的「目录判定」），并将其变更路径列表作为本次索引的输入依据。
 
 ### Step 1：仅读取索引日志最后一条记录（若存在）
 
@@ -92,7 +96,7 @@ description: >
 - `baseline_time`: `2026-03-19 10:09:57.000`
 - `baseline_time_ms`: `1773886197000`
 
-基线取值规则：以本次 `document-change` 产出的“最后一个变更内容时间”（epoch ms）为准；如无变更明细，则保持原基线不变。
+基线取值规则：以本次 **document-change Skill** 产出的“最后一个变更内容时间”（epoch ms）为准；如无变更明细，则保持原基线不变。
 
 ## 2. 读取策略（按 mode 执行）
 

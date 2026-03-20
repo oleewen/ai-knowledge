@@ -7,7 +7,7 @@
 ## 功能概述
 
 1. **文档与知识库**：支持两种模式（`--mode=standalone` | `federation`，默认 **standalone**）。
-   - **独立模式**：仓库 **system** 拷贝到 **docs/system**；应用知识库为 **docs/application**（单目录，无 `app-APPNAME`）。
+   - **独立模式**：仓库 **system** 拷贝到 **docs/system**；应用知识库为 **docs/application**（单目录，无 **应用知识库根目录** 模板子目录 `app-APPNAME/`）。
    - **联邦模式**：**system** 拷贝到 **docs/system**；**applications** 拷贝到 **docs/applications**，并在其下新建 `app-<工程目录名>`；在目标 **.gitignore** 中忽略文档根目录（如 `docs`），并将当前仓库 **.git** 拷贝至文档根。
 2. **AI 配置**：将仓库的 **.ai** 目录拷贝到执行目录的 **.ai**。默认**不**包含 `.ai/rules` 下的 **solution**、**analysis** 模板；可选 `--as=full` 包含全部 rules。
 3. **Agent 的 command 与 skill**：从仓库的 **.ai/skills** 按选择安装到各 Agent 目录的 skills；并为选定的 **Agent**（Cursor、Trea 等）生成或拷贝配置：
@@ -68,7 +68,7 @@ cd ai-sdd-knowledge
 
 | 选项 | 说明 | 默认 |
 |------|------|------|
-| `--mode=MODE` | 初始化模式：`standalone`（独立，应用目录为 docs/application）\| `federation`（联邦，为 docs/applications + app-APPNAME，并写 .gitignore、拷贝 .git） | `standalone` |
+| `--mode=MODE` | 初始化模式：`standalone`（独立，应用目录为 docs/application）\| `federation`（联邦，为 docs/applications + **应用知识库根目录**（模板 `app-APPNAME/`），并写 .gitignore、拷贝 .git） | `standalone` |
 | `--dd=DIR` | system 文档目录（相对目标目录）；应用目录为同级的 `application` 或 `applications`（由 mode 决定） | `docs/system` |
 | `--ds=SCOPE` | docs 范围：`knowledge` \| `full`（均拷贝仓库 system 目录内容） | `knowledge` |
 | `--ad=DIR` | .ai 配置目录（相对目标目录） | `.ai` |
@@ -113,7 +113,7 @@ curl -sL "..." | bash -s -- --dry-run
 
 运行要求：`Bash 5+`。
 
-将本仓库 `applications/app-APPNAME` 目录下所有目录和文件，拷贝到**目标工程**的文档目录下。
+将本仓库**应用知识库根目录**模板（物理路径 `applications/app-APPNAME/`）下所有目录和文件，拷贝到**目标工程**的文档目录下。
 
 目标工程与文档目录用一个参数表示，例如 `~/workspace/test/docs`：
 - 目标工程：`~/workspace/test`
@@ -148,7 +148,7 @@ curl -sL "..." | bash -s -- --dry-run
 
 ## 初始化后的目录结构（目标工程）
 
-- 在 `<目标工程>/<文档目录>/` 下同步 `applications/app-APPNAME/` 的目录和文件（作为应用知识库根）。
+- 在 `<目标工程>/<文档目录>/` 下同步**应用知识库根目录**模板（`applications/app-APPNAME/`）的目录和文件。
 - 若选择 `--agents=cursor`：在 `<目标工程>/.cursor/` 下安装 `skills/` 与 `rules/`（skills 仅安装 `agent-*`/`document-*`/`knowledge-*`），并拷贝 `.cursor/README.md`（如存在）。
 - 若选择 `--agents=trea`：在 `<目标工程>/.trea/` 下安装 `skills/` 与 `rules/`（skills 仅安装 `agent-*`/`document-*`/`knowledge-*`），并拷贝 `.trea/README.md`（如存在）。
 

@@ -1,24 +1,30 @@
-> **模板示例**：本文件为知识库模板示例，实际项目请按需替换内容与 ID。
-
 # constitution — 宪法与治理层
 
-## 使命
+使命：决策 **透明、一致、可追溯**，避免架构随口语漂移。
 
-确保架构决策的**透明性、一致性、可追溯性**，让架构随业务演进而非随意漂移。
+---
 
-## 核心组件
+## 组件
 
+| 组件 | 路径与元数据 |
+|------|----------------|
+| 本层 | [constitution_meta.yaml](./constitution_meta.yaml) |
+| 术语表 | [GLOSSARY.md](./GLOSSARY.md) |
+| 架构原则 | [principles/](./principles/) · [principles_meta.yaml](./principles/principles_meta.yaml) |
+| 标准与模板 | [standards/](./standards/) · [standards_meta.yaml](./standards/standards_meta.yaml)；ADR 约定 · [adr_meta.yaml](./standards/adr_meta.yaml) |
+| ADR 文集 | [adr/](./adr/) · [adr_corpus_meta.yaml](./adr/adr_corpus_meta.yaml) |
 
-| 组件               | 说明                 | 路径                           |
-| ---------------- | ------------------ | ---------------------------- |
-| **术语表**          | 全局统一术语，避免歧义        | [GLOSSARY](./GLOSSARY.md)    |
-| **架构原则**         | 指导架构决策的基本信条        | [principles/](./principles/architecture-principles.yaml) |
-| **规范与标准**        | 命名规范、ADR 模板、文档约定   | [standards/](./standards/)   |
-| **架构决策记录 (ADR)** | 记录重要架构决策的上下文、决定和后果 | [adr/](./adr/)               |
+---
 
+## 使用顺序
 
-## 使用说明
+1. 新词 / 歧义 → 先查或补 **GLOSSARY**  
+2. 新实体 / 文件 → 遵守 **standards/naming-conventions.md**  
+3. 跨域或长期后果的决策 → 新增 **adr/**，按 **standards/adr-template.md**  
 
-- 新增或修改架构决策时，在 `adr/` 下按 [standards/adr-template.md](./standards/adr-template.md) 编写 ADR。
-- 实体 ID 与文件命名请遵循 [standards/naming-conventions.md](./standards/naming-conventions.md)。
+---
 
+## 索引指针
+
+- 本树：[../../INDEX.md](../../INDEX.md)  
+- 全库：[../../../INDEX.md](../../../INDEX.md)  

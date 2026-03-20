@@ -1,0 +1,55 @@
+# 应用知识库根目录/knowledge/business 目录元数据
+id: "DIR-KNOWLEDGE-BUSINESS"
+name: "业务视角（knowledge/business）"
+description: "系统级业务视角：描述业务版图、领域逻辑与规则（DDD），不依赖具体技术实现；并通过显式 ID 字段与产品、技术、数据视角建立映射。"
+
+role:
+  perspective: "business"
+  is_system_level_index: true
+
+inputs:
+  - path: "../constitution/"
+    description: "命名规范、术语与治理约束"
+  - path: "(from-solution-analysis-delivery)"
+    description: "解决方案/需求分析/交付沉淀的领域事实与边界调整（归档回写）"
+
+outputs:
+  primary_artifact:
+    pattern: "business_meta.yaml, {BD-ID}_BD_meta.yaml, {BSD-ID}_BSD_meta.yaml, {BC-ID}_BC_meta.yaml, {AGG-ID}_AGG_meta.yaml；目录树 {BD-ID}/{BSD-ID}/{BC-ID}/ 作层级锚点"
+    description: "业务视角元数据与聚合定义（YAML）集中于本目录根；子目录仅作 DDD 层级导航"
+
+naming_conventions:
+  hierarchy:
+    description: "业务域 (BD) → 业务子域 (BSD) → 限界上下文 (BC) → 聚合 (AGG)"
+  directories:
+    bd: "{BD-ID}/"
+    bsd: "{BD-ID}/{BSD-ID}/"
+    bc: "{BD-ID}/{BSD-ID}/{BC-ID}/"
+  meta_files_in_business_root:
+    perspective: "business_meta.yaml"
+    bd: "{BD-ID}_BD_meta.yaml"
+    bsd: "{BSD-ID}_BSD_meta.yaml"
+    bc: "{BC-ID}_BC_meta.yaml"
+    aggregate: "{AGG-ID}_AGG_meta.yaml"
+
+indexing:
+  readme_index_table: true
+  rule: "新增/调整 BD/BSD/BC/AGG 时，应同步维护 README.md 的业务索引表与必要的全局索引"
+
+integration:
+  mappings:
+    - "业务 → 技术：BC 的 implemented_by_app_id 指向 technical 的 APP"
+    - "业务 → 数据：AGG 的 persisted_as_entity_ids 指向 data 的 ENT"
+  key_fields:
+    bounded_context:
+      - "implemented_by_app_id"
+    aggregate:
+      - "persisted_as_entity_ids"
+
+references:
+  - path: "./README.md"
+    description: "本视角说明、层级结构与映射字段约定"
+  - path: "../../INDEX.md"
+    description: "本应用索引与映射速查"
+  - path: "../../../../system/DESIGN.md"
+    description: "目录结构与元模型规范"

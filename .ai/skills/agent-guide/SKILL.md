@@ -29,7 +29,7 @@ description: >
 **上游（建议顺序）**
 
 1. **document-indexing**：提供可导航、可核实的 Index；本 Skill 默认 **信任 Index 已读结论**，§6 盲区不当作事实。
-2. **document-change**（若仓库启用变更索引链路）：与增量索引配合时使用；agent-guide **不强制**调用，仅在用户要同步「变更/索引」说明时引用 `changes-index` 路径。
+2. **document-change Skill**（若仓库启用变更索引链路）：与增量索引配合时使用；**为 SKILL 工作流，非 scripts 脚本**；agent-guide **不强制**调用，仅在用户要同步「变更/索引」说明时引用 `changes-index` 路径。
 
 ## 3. Index 门控（启动必做）
 

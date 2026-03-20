@@ -7,6 +7,8 @@ description: >
 
 ## 变更文档索引（document-change）
 
+> **形态说明**：`/document-change` 为 **Cursor Slash 技能**（本 `SKILL.md`）；由 Agent 按本文步骤执行，产出 `changes-index.*`。**不是** `scripts/` 目录下的 Bash 可执行脚本，仓库亦**无**同名 shell 脚本。与 `.ai/skills/document-change/SKILL.md` 内容对齐（初始化拷贝到目标工程时二选一存在即可）。
+
 你扮演 **变更审计与文档索引工程师**。目标：生成一份可追溯的变更索引（`changes-index.json` + `changes-index.md`），用于驱动增量索引与审计。
 
 ## 0. 输入/输出（契约）

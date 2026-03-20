@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# knowledge-init：将 applications/app-APPNAME 初始化到目标工程文档目录
+# knowledge-init：将应用知识库根目录模板（applications/app-APPNAME）初始化到目标工程文档目录
 # 运行要求：Bash 5+
 
 set -euo pipefail
@@ -19,6 +19,31 @@ log() { printf '%s\n' "$*" >&2; }
 error() { log "错误: $*"; exit 1; }
 warn() { log "警告: $*"; }
 info() { log "信息: $*"; }
+
+# 拷贝模板后的建议核对项（与 applications/app-APPNAME 内 README / *_meta.yaml 约定一致）
+post_init_checklist_text() {
+  cat <<'CHECKLIST'
+
+拷贝后建议核对（以目标文档目录内 README、*_meta.yaml 为准；字段含义以 YAML 为 SSOT）：
+  [ ] application_meta.yaml 已随模板落地；若实际目录名不再是 app-APPNAME，可酌情更新其中 template_directory 或描述，避免误导 Agent
+  [ ] INDEX.md、README.md 内相对链接在目标工程中可访问
+  [ ] knowledge/knowledge_meta.yaml、requirements/requirements_meta.yaml、changelogs/changelogs_meta.yaml 与各目录 README 首段「元数据」链一致
+  [ ] knowledge/constitution/：principles_meta.yaml、standards_meta.yaml、adr_corpus_meta.yaml 与 constitution/README.md 组件表互链
+  [ ] 正式需求包：自 REQUIREMENT-EXAMPLE 复制为 REQUIREMENT-{ID}/；REQUIREMENT-EXAMPLE 为结构示例，不单建 *_meta.yaml（见 requirements/README.md）
+  [ ] central 模式：核对本仓库 system/INDEX.md 接入登记行与 system/knowledge/technical/.../APP-*.yaml 是否反映当前工程与文档路径
+
+CHECKLIST
+}
+
+print_post_init_checklist() {
+  log ""
+  if [[ -n "${DOCS_ABS:-}" ]]; then
+    log "--- knowledge-init：拷贝后检查清单（目标: $DOCS_ABS） ---"
+  else
+    log "--- knowledge-init：拷贝后检查清单 ---"
+  fi
+  post_init_checklist_text >&2
+}
 
 have_cmd() { command -v "$1" >/dev/null 2>&1; }
 
@@ -169,7 +194,7 @@ usage() {
 用法: knowledge-init [选项] <目标工程文档目录>
 
 说明:
-  将本仓库 applications/app-APPNAME 目录下所有目录和文件，拷贝到目标工程的文档目录下。
+  将本仓库应用知识库根目录模板（applications/app-APPNAME/）下所有目录和文件，拷贝到目标工程的文档目录下。
 
   参数 <目标工程文档目录> 示例:
     ~/workspace/test/docs
@@ -191,7 +216,11 @@ usage() {
 
 环境变量:
   REPO_ROOT           本仓库根目录（默认自动探测）
+
+拷贝后检查清单:
+  成功执行后（含 --dry-run 预览结束）终端会输出建议核对项；完整列表见下方。
 EOF
+  post_init_checklist_text
 }
 
 REPO_ROOT="${REPO_ROOT:-}"
@@ -284,7 +313,7 @@ init_repo_root() {
   if [[ -z "$REPO_ROOT" ]]; then
     REPO_ROOT="$(abs_path "$SCRIPT_DIR/..")"
   fi
-  [[ -d "$REPO_ROOT/applications/app-APPNAME" ]] || error "未找到模板目录: $REPO_ROOT/applications/app-APPNAME"
+  [[ -d "$REPO_ROOT/applications/app-APPNAME" ]] || error "未找到应用知识库根目录模板: $REPO_ROOT/applications/app-APPNAME"
   [[ -d "$REPO_ROOT/system" ]] || error "未找到 system 目录: $REPO_ROOT/system"
 }
 
@@ -372,7 +401,7 @@ sync_dir_contents() {
 }
 
 sync_rules_filtered() {
-  # 同步 rules，过滤掉 solution/analysis 两个目录
+  # 逐个拷贝 rules 目录下文件或目录到目标工程对应 agent 的 rules，过滤 solution/analysis
   local src_rules="$1"
   local dst_rules="$2"
 
@@ -380,25 +409,9 @@ sync_rules_filtered() {
 
   if [[ "${DRY_RUN:-0}" == "1" ]]; then
     log "[dry-run] 同步规则（过滤 solution/analysis）：$src_rules/ -> $dst_rules/"
-    local item base
-    shopt -s nullglob
-    for item in "$src_rules"/*; do
-      base="$(basename "$item")"
-      if [[ "$base" == "solution" || "$base" == "analysis" ]]; then
-        continue
-      fi
-      if [[ -d "$item" ]]; then
-        log "[dry-run] 拷贝目录: $item -> $dst_rules/$base"
-      else
-        log "[dry-run] 拷贝文件: $item -> $dst_rules/$base"
-      fi
-    done
-    return 0
+  else
+    ensure_dir "$dst_rules"
   fi
-
-  # 覆盖目标 rules，确保过滤生效（避免历史残留 solution/analysis）
-  rm -rf "$dst_rules"
-  ensure_dir "$dst_rules"
 
   local item base
   shopt -s nullglob
@@ -408,9 +421,19 @@ sync_rules_filtered() {
       continue
     fi
     if [[ -d "$item" ]]; then
-      copy_dir "$item" "$dst_rules/$base"
+      if [[ "${DRY_RUN:-0}" == "1" ]]; then
+        log "[dry-run] 拷贝目录: $base -> $dst_rules/$base"
+      else
+        info "  [rules] 拷贝目录: $base -> $dst_rules/$base"
+        copy_dir "$item" "$dst_rules/$base"
+      fi
     else
-      copy_file "$item" "$dst_rules/$base"
+      if [[ "${DRY_RUN:-0}" == "1" ]]; then
+        log "[dry-run] 拷贝文件: $base -> $dst_rules/$base"
+      else
+        info "  [rules] 拷贝文件: $base -> $dst_rules/$base"
+        copy_file "$item" "$dst_rules/$base"
+      fi
     fi
   done
 }
@@ -535,6 +558,7 @@ main() {
   install_agent_skills_and_rules
 
   info "完成：knowledge-init"
+  print_post_init_checklist
 }
 
 main "$@"
