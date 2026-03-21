@@ -1,0 +1,59 @@
+# applications/app-APPNAME/knowledge/constitution/adr — adr_meta.yaml（ADR 模板与落盘约定元数据）
+id: "STD-ADR-TEMPLATE"
+name: "ADR 模板与编写约定"
+description: "架构决策记录（ADR）的结构模板、状态枚举与文件命名；产出物位于 constitution/adr/。"
+
+role:
+  kind: "document_standard"
+  template_file: "./adr-template.md"
+
+outputs:
+  primary_location:
+    path: "./"
+    description: "已采纳/评审中的 ADR Markdown 文件目录"
+  file_pattern:
+    pattern: "ADR-{序号}-{短标题}.md"
+    example: "ADR-002-api-versioning.md"
+    id_guidance: "序号建议三位或连续整数；短标题英文小写连字符，与 DESIGN / CONTRIBUTING 一致"
+
+structure:
+  sections:
+    - key: "title"
+      heading: "标题行"
+      format: "ADR-XXX: {标题}"
+    - key: "status"
+      heading: "状态"
+      allowed:
+        - "提议 (Proposed)"
+        - "已通过 (Accepted)"
+        - "已废弃 (Deprecated)"
+        - "已替代 (Superseded by ADR-YYY)"
+    - key: "context"
+      heading: "上下文 (Context)"
+    - key: "decision"
+      heading: "决策 (Decision)"
+    - key: "consequences"
+      heading: "后果 (Consequences)"
+      subsections:
+        - "正面"
+        - "负面"
+        - "后续行动（可选）"
+
+inputs:
+  - path: "../standards/NAMING-CONVENTIONS.md"
+    description: "全局 ID 与文件命名约束"
+  - path: "../GLOSSARY.md"
+    description: "术语一致性与新词登记"
+
+integration:
+  consumed_by:
+    - path: "../../../../../system/CONTRIBUTING.md"
+      description: "中央库 ADR 路径与登记说明"
+    - path: "../../../../../system/DESIGN.md"
+      description: "中央库演进与治理入口"
+
+references:
+  - path: "./adr-template.md"
+    description: "人类可读 Markdown 模板正文"
+  - path: "./ADR-001-knowledge-repo-structure.md"
+    description: "示例：已采纳 ADR"

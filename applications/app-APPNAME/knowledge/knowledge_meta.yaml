@@ -1,0 +1,68 @@
+# applications/app-APPNAME/knowledge — knowledge_meta.yaml（目录元数据）
+id: "DIR-KNOWLEDGE"
+name: "应用知识库（knowledge）"
+description: >
+  联邦单元内知识树：宪法层 + 四视角，与 ../../../system/knowledge 同构；可承载应用增量并与中央库 ID 对齐，归档时可回写。
+
+child_directories:
+  - "constitution"
+  - "business"
+  - "product"
+  - "technical"
+  - "data"
+child_files:
+  - "README.md"
+
+role:
+  is_single_source_of_truth: true
+  perspectives:
+    - "constitution"
+    - "business"
+    - "product"
+    - "technical"
+    - "data"
+
+inputs:
+  - path: "../../../system/solutions/"
+    description: "中央库解决方案文档（SOLUTION-{ID}.md）"
+  - path: "../../../system/analysis/"
+    description: "中央库需求分析文档（ANALYSIS-{ID}.md）"
+  - path: "../requirements/"
+    description: "本联邦单元需求交付（REQUIREMENT-{ID}/）"
+  - path: "../changelogs/"
+    description: "本联邦单元变更记录（可选）"
+
+outputs:
+  primary_artifact:
+    pattern: "*/README.md, *_meta.yaml, **/*.{yaml,md}"
+    description: "按视角组织的知识条目（命名见各视角 README）"
+
+naming_conventions:
+  ids:
+    description: "全局唯一前缀（BD/BSD/BC/AGG/AB、PL/PM/FT/UC、SYS/APP/MS/API、DS/ENT 等）"
+    reference: "./constitution/standards/NAMING-CONVENTIONS.md"
+
+indexing:
+  application_index:
+    path: "../INDEX.md"
+    rule: "变更条目后按需更新本联邦单元 INDEX.md、../../../system/INDEX.md（若影响全局导航）与各视角 README"
+  per_perspective_readmes:
+    - "./constitution/README.md"
+    - "./business/README.md"
+    - "./product/README.md"
+    - "./technical/README.md"
+    - "./data/README.md"
+
+integration:
+  consumed_by:
+    - path: "../requirements/"
+      description: "本应用需求交付"
+  central_library:
+    path: "../../../system/"
+    description: "中央库阶段文档与全局 knowledge 范本"
+
+references:
+  - path: "./README.md"
+  - path: "../INDEX.md"
+  - path: "../../../system/DESIGN.md"
+  - path: "../../../system/CONTRIBUTING.md"

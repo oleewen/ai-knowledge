@@ -1,0 +1,15 @@
+# 应用知识库根目录 — 机器可读清单（可选；与 application_meta.yaml 互补）
+schema_version: "1.0"
+template_id: "app-APPNAME"
+description: "联邦单元模板：目录布局与 system/ 下 changelogs、knowledge、requirements、INDEX、README、system_meta 对照"
+
+mirrors_system_paths:
+  - "system/changelogs/changelogs_meta.yaml → changelogs/changelogs_meta.yaml"
+  - "system/knowledge/** → knowledge/**（同构拷贝；路径已按联邦单元调整）"
+  - "system/requirements/requirements_meta.yaml → requirements/requirements_meta.yaml"
+  - "system/system_meta.yaml → application_meta.yaml（语义对照，非字节拷贝）"
+  - "system/INDEX.md / README.md → INDEX.md / README.md（应用域裁剪版）"
+
+central_library:
+  system_root: "../../system/"
+  repository_root: "../../"

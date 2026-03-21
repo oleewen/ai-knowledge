@@ -1,0 +1,58 @@
+# applications/app-APPNAME — application_meta.yaml（联邦单元根目录，与 system/system_meta.yaml 对照）
+id: "DIR-APPLICATION-APPNAME"
+name: "应用知识库根（联邦单元模板）"
+description: >
+  应用级联邦单元：知识树（knowledge）、本应用需求交付（requirements）、变更日志（changelogs）。
+  solutions / analysis 默认在中央库 ../../system/；命名与映射以 system/DESIGN.md、本目录 INDEX.md 为准。
+
+role:
+  kind: "federation_application_root"
+  template_directory: "app-APPNAME"
+  ssot_subdirectory: "knowledge/"
+
+child_directories:
+  knowledge:
+    meta: "knowledge/knowledge_meta.yaml"
+    description: "宪法层 + 四视角（与 system/knowledge 同构，可联邦增量）"
+  requirements:
+    meta: "requirements/requirements_meta.yaml"
+    description: "本应用需求交付包（REQUIREMENT-{ID}/）"
+  changelogs:
+    meta: "changelogs/changelogs_meta.yaml"
+    description: "应用侧变更与可选索引运维"
+
+child_files:
+  - "README.md"
+  - "INDEX.md"
+  - "manifest.yaml"
+
+inputs:
+  - path: "../../system/"
+    description: "中央库 system/（solutions、analysis、全局 DESIGN/INDEX、knowledge 范本）"
+  - path: "../../.ai/"
+    description: "规范、模板与 Agent 技能（相对仓库根）"
+
+outputs:
+  primary_artifact:
+    pattern: "README.md, INDEX.md, manifest.yaml, */{dirname}_meta.yaml, knowledge/**/*"
+    description: "联邦单元根目录与 knowledge 树、本应用 requirements/changelogs"
+
+naming_conventions:
+  directory_index:
+    description: "各一级子目录使用与目录同名的 {dirname}_meta.yaml；knowledge/ 根另见 knowledge_meta.yaml"
+    reference: "./knowledge/constitution/standards/NAMING-CONVENTIONS.md"
+
+integration:
+  central_system:
+    path: "../../system/"
+    description: "方案/分析阶段与全局知识索引（system/INDEX.md、system/DESIGN.md）"
+  traceability:
+    description: "阶段链以 system 为主；应用侧实体 ID 与中央库对齐，跨仓库仅写 ID 引用"
+
+references:
+  - path: "./README.md"
+  - path: "./INDEX.md"
+  - path: "../../system/README.md"
+  - path: "../../system/INDEX.md"
+  - path: "../../system/DESIGN.md"
+  - path: "../../INDEX.md"
