@@ -1,49 +1,69 @@
-# system/knowledge/data 目录元数据
-id: "DIR-KNOWLEDGE-DATA"
-name: "数据视角（knowledge/data）"
-description: "系统级数据视角：描述数据存储结构、数据实体与治理属性（如敏感级别、归属）；并与业务、技术视角通过显式 ID 字段建立映射。"
+# system/knowledge/data — 数据视角统一元数据（单文件 SSOT）
+# 对齐 business_meta：identity + repository + pipeline + integration + layers
+schema_version: "1.1"
+
+identity:
+  id: "DIR-KNOWLEDGE-DATA"
+  name: "数据视角（knowledge/data）"
+  description: >
+    系统级数据视角：描述数据存储、数据实体与治理属性（敏感级别、归属等）；
+    通过显式 ID 与业务、技术视角建立映射。本文件为数据视角唯一元数据入口。
 
 role:
   perspective: "data"
   is_system_level_index: true
 
-inputs:
-  - path: "../constitution/"
-    description: "命名规范、术语与治理约束（含敏感级别治理约定）"
-  - path: "(from-app-data-schemas)"
-    description: "应用侧数据结构与变更（通过交付与归档回写/同步）"
+repository:
+  root_relative: "knowledge/data"
+  child_directories:
+    - "DS-{ID}"
+  child_files:
+    - "README.md"
+    - "DATA-ARCHITECTURE.md"
+  hierarchy:
+    chain: "DS → ENT"
+    labels:
+      DS: "数据存储 (Data Store)"
+      ENT: "数据实体 (Entity / 表或集合)"
+  directory_patterns:
+    DS: "{DS-ID}/"
+    ENT: "元数据文件 `{ENT-ID}_ENT_meta.yaml` 位于根目录；逻辑归属 DS"
 
-outputs:
-  primary_artifact:
-    pattern: "data_meta.yaml, DS_meta.yaml, {ENT-ID}_ENT_meta.yaml；{DS-ID}/ 作数据存储层级锚点（可含 README）"
-    description: "数据视角元数据与 DS/ENT 定义（YAML）集中于本目录根；子目录仅作存储导航"
+pipeline:
+  inputs:
+    - path: "../constitution/"
+      description: "命名规范、术语与敏感数据治理"
+    - path: "(from-app-data-schemas)"
+      description: "应用侧 DDL/迁移/数据字典（交付与归档回写）"
+  outputs:
+    ssot_file: "data_meta.yaml"
+    narrative: "各层字段模板见 `layers`；子目录 `{DS-ID}/` 作存储锚点。"
+    directory_role: "DS 子目录可含 README、DDL 片段；不在子目录重复根级 ENT 索引。"
   architecture_docs:
     - path: "./DATA-ARCHITECTURE.md"
-      description: "数据架构总览（如存在）"
-
-naming_conventions:
-  hierarchy:
-    description: "数据存储 (DS) → 数据实体 (ENT)"
-  directories:
-    ds: "{DS-ID}/"
-  meta_files_in_data_root:
-    perspective: "data_meta.yaml"
-    data_store: "DS_meta.yaml"
-    entity: "{ENT-ID}_ENT_meta.yaml"
-
-indexing:
-  readme_index_table: true
-  rule: "新增/调整 DS 或 ENT 时，应同步维护 README.md 的数据索引表与必要的全局索引"
+      description: "数据架构总览（存储、表、缓存、分片等）"
 
 integration:
-  mappings:
-    - "数据 ← 业务：AGG 的 persisted_as_entity_ids 指向 ENT；ENT 的 maps_to_aggregate_id 指回 AGG"
-    - "数据 ← 技术：DS 的 owned_by_app_id（或 app_id）指向 technical 的 APP/MS"
+  cross_perspective:
+    - from: { perspective: "business", kind: "AGG", field: "persisted_as_entity_ids" }
+      to: { layer: "ent", field: "id" }
+      meaning: "聚合持久化落在哪些数据实体"
+    - from: { layer: "ent", field: "maps_to_aggregate_id" }
+      to: { perspective: "business", kind: "AGG" }
+      meaning: "数据实体对应哪个业务聚合"
+    - from: { layer: "ds", field: "owned_by_app_id" }
+      to: { perspective: "technical", kind: "APP" }
+      meaning: "存储实例归属应用"
+    - from: { layer: "ds", field: "owned_by_service_id" }
+      to: { perspective: "technical", kind: "MS" }
+      meaning: "存储实例归属微服务（可选）"
   key_fields:
-    data_store_meta:
+    data_store:
       - "owned_by_app_id"
+      - "owned_by_service_id"
     data_entity:
       - "maps_to_aggregate_id"
+      - "parent_ds_id"
 
 references:
   - path: "./README.md"
@@ -52,3 +72,50 @@ references:
     description: "全局索引与映射速查"
   - path: "../../DESIGN.md"
     description: "目录结构与元模型规范"
+
+layers:
+  - key: "ds"
+    code: "DS"
+    order: 1
+    entity_kind: "data_store"
+    id_pattern: "DS-{ID}"
+    parent: null
+    tree:
+      child_directory_glob: "（存储内部分库/分表文档，可选）"
+    artifacts:
+      readme: "{DS-ID}/README.md（可选）"
+    fields:
+      type: "MySQL / Redis / 等"
+      version: "引擎或版本（可选）"
+      owned_by_app_id: "APP-*"
+      owned_by_service_id: "MS-*（可选）"
+      data_classification: "数据分级（可选）"
+    indexing:
+      readme_index_table: true
+      rule: "新增/调整 DS 及其 ENT 时同步 README、DATA-ARCHITECTURE"
+
+  - key: "ent"
+    code: "ENT"
+    order: 2
+    entity_kind: "data_entity"
+    id_pattern: "ENT-{ID}"
+    file_naming: "{ENT-ID}_ENT_meta.yaml"
+    parent:
+      field: "parent_ds_id"
+      expects: "DS-{ID}"
+    tree:
+      child_directory_glob: null
+    artifacts:
+      ddl: "迁移脚本在应用仓库或本目录旁注（可选）"
+    fields:
+      logical_name: "逻辑表名"
+      physical_name: "物理表名（可选）"
+      maps_to_aggregate_id: "AGG-*"
+      sensitivity_level: "敏感级别（可选）"
+    indexing:
+      readme_index_table: true
+      rule: "变更实体时同步 AGG.persisted_as_entity_ids、迁移与 README"
+
+indexing:
+  readme_index_table: true
+  rule: "任一 layer 变更时，更新本文件、README.md 数据索引表与必要的根 INDEX"

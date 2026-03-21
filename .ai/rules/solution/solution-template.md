@@ -166,7 +166,7 @@ tags: ["{标签列表}"]
 
 <!-- 列出参考的指令文档、规约文件等 -->
 - `knowledge/`
-- `specs/`
+- 各 `requirements/.../specs/` 与 `knowledge/technical/`（若存在）
 
 ### 9.3 质量自查表 (Self-Check)
 

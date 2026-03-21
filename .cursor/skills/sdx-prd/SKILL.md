@@ -11,7 +11,7 @@ description: >
 
 ## 输入与输出
 
-**输入**：需求分析文档中当前 MVP 章节（`analysis/REQUIREMENT-{ID}.md`）、产品文档（`knowledge/product/`）  
+**输入**：需求分析文档中当前 MVP 章节（`analysis/ANALYSIS-{ID}.md`）、产品文档（`knowledge/product/`）  
 **输出**：`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`（结构遵循 [.ai/rules/requirement/prd-template.md](.ai/rules/requirement/prd-template.md)）
 
 ## 工作流（五步）
@@ -55,4 +55,4 @@ description: >
 ## 参考
 
 - 文档模板：`.ai/rules/requirement/prd-template.md`
-- 上游：`analysis/REQUIREMENT-{ID}.md`；产品视角：`knowledge/product/`
+- 上游：`analysis/ANALYSIS-{ID}.md`；产品视角：`knowledge/product/`

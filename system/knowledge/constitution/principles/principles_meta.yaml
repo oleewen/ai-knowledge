@@ -3,6 +3,9 @@ id: "DIR-KNOWLEDGE-CONSTITUTION-PRINCIPLES"
 name: "架构原则（principles）"
 description: "可执行的架构原则条目（YAML/Markdown），支撑 constitution 治理与评审对照。"
 
+child_directories: []
+child_files: []
+
 role:
   perspective: "constitution"
   is_subtree_index: true

@@ -1,9 +1,0 @@
-# PM-SHOPPING-CART 产品模块元数据
-id: "PM-SHOPPING-CART"
-name: "购物车模块"
-description: "提供用户挑选商品、暂存商品、结算前修改等功能的模块"
-module_type: "前台模块"
-relies_on_context_ids:
-  - "BC-ORDER-MGMT"
-  - "BC-INVENTORY"
-  - "BC-PRICING"

@@ -2,7 +2,7 @@
 
 本目录描述系统的物理实现、部署架构与服务接口，并维护系统级应用注册与索引。
 
-- **技术视角索引**：[technical_meta.yaml](./technical_meta.yaml)（本目录说明与索引约定）。
+- **统一元数据**：[technical_meta.yaml](./technical_meta.yaml) — 单文件 SSOT：`identity`、`repository`、`pipeline`、`integration`、`layers`（sys / app / ms / api）。
 - **系统架构总览**：[SYSTEM-ARCHITECTURE.md](./SYSTEM-ARCHITECTURE.md)（各系统/子系统职责、边界与关系）
 
 ---
@@ -11,8 +11,10 @@
 
 | 类型   | 名称                    | ID                     | 路径                                                           | 说明                |
 |--------|-------------------------|------------------------|----------------------------------------------------------------|---------------------|
-| 系统   | 电商后端                | SYS-ECOMMERCE-BACKEND  | [SYS-ECOMMERCE-BACKEND](./SYS-ECOMMERCE-BACKEND/)              | 电商业务核心系统；元数据 [SYS_meta.yaml](./SYS_meta.yaml)；[应用架构](SYS-ECOMMERCE-BACKEND/APPLICATION-ARCHITECTURE.md) |
-| 应用   | 订单服务                | APP-ORDER-SERVICE      | [APP-ORDER-SERVICE](./SYS-ECOMMERCE-BACKEND/APP-ORDER/APP-ORDER-SERVICE.yaml) | 订单领域服务       |
+| 系统   | 电商后端                | SYS-ECOMMERCE-BACKEND  | [SYS-ECOMMERCE-BACKEND](./SYS-ECOMMERCE-BACKEND/)              | [technical_meta.yaml](./technical_meta.yaml) `layers` → `key: sys`；[应用架构](SYS-ECOMMERCE-BACKEND/APPLICATION-ARCHITECTURE.md) |
+| 应用   | 订单服务                | APP-ORDER-SERVICE      | [APP-ORDER-SERVICE](./SYS-ECOMMERCE-BACKEND/APP-ORDER/APP-ORDER-SERVICE.yaml) | 同上 · `key: app` |
+| 微服务 | 订单核心服务            | MS-ORDER-CORE          | （见 APP.service_ids）                                         | 同上 · `key: ms` |
+| 接口   | 加入购物车              | API-CART-ADD-ITEM      | （见 manifest/OpenAPI）                                        | 同上 · `key: api` |
 
 
 ---
@@ -20,14 +22,11 @@
 ## 层级结构
 
 ```
-系统 (SYS) → 应用 (APP) → 微服务 (MS)
+系统 (SYS) → 应用 (APP) → 微服务 (MS) → API
 ```
 
-- **系统**：元数据为 **`SYS_meta.yaml`**（位于 `technical/` 根目录，与 `business` 视角下 `BD_meta.yaml` 等并列约定）；目录 `{SYS-ID}/` 作系统锚点，含 `APPLICATION-ARCHITECTURE.md` 等。
+- **系统 / 应用 / 微服务 / 接口**：字段模板见 **`technical_meta.yaml` → `layers`**（`key`: sys / app / ms / api）；目录 `{SYS-ID}/` 作系统锚点，含 `APPLICATION-ARCHITECTURE.md` 等。
 - **应用目录**：系统目录下按应用建目录（如 `APP-ORDER/`），存放该应用的注册 `{APP-ID}.yaml` 及集成关系图等。
-- **应用**：对应代码仓库/部署单元，文件 `{APP-ID}.yaml`（如 `APP-ORDER/APP-ORDER-SERVICE.yaml`）。
-- **微服务**：在应用 YAML 中通过 `service_ids` 列出，详细定义可在应用级仓库的 docs 中维护。
-
 ---
 
 ## 应用注册（最小字段）

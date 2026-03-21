@@ -1,7 +1,11 @@
 # system/knowledge/constitution/standards 目录元数据
 id: "DIR-KNOWLEDGE-CONSTITUTION-STANDARDS"
 name: "标准与模板（standards）"
-description: "命名规范、ADR 模板与 ADR 机器可读约定；已采纳 ADR 正文不在本树，在 ../adr/。"
+description: "命名规范与标准类说明；ADR 模板与 ADR 机器可读约定已迁移至 ../adr/。"
+
+child_directories: []
+child_files:
+  - "NAMING-CONVENTIONS.md"
 
 role:
   perspective: "constitution"
@@ -9,17 +13,13 @@ role:
 
 outputs:
   primary_artifact:
-    pattern: "naming-conventions.md, adr-template.md, adr_meta.yaml, *.{md,yaml}"
+    pattern: "NAMING-CONVENTIONS.md, standards_meta.yaml"
 
 key_files:
-  naming_conventions: "./naming-conventions.md"
-  adr_template: "./adr-template.md"
-  adr_standard_meta: "./adr_meta.yaml"
+  naming_conventions: "./NAMING-CONVENTIONS.md"
 
 references:
   - path: "../README.md"
     description: "宪法层组件与元数据索引"
-  - path: "./adr_meta.yaml"
-    description: "ADR 结构与落盘约定"
-  - path: "../adr/adr_corpus_meta.yaml"
-    description: "ADR 文集目录元数据"
+  - path: "../adr/adr_meta.yaml"
+    description: "ADR 结构与落盘约定（迁移后位置）"

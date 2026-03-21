@@ -1,4 +1,4 @@
-# 应用知识库根目录/knowledge/constitution/standards — adr_meta.yaml（ADR 模板与落盘约定元数据）
+# system/knowledge/constitution/adr — adr_meta.yaml（ADR 模板与落盘约定元数据）
 id: "STD-ADR-TEMPLATE"
 name: "ADR 模板与编写约定"
 description: "架构决策记录（ADR）的结构模板、状态枚举与文件命名；产出物位于 constitution/adr/。"
@@ -9,8 +9,8 @@ role:
 
 outputs:
   primary_location:
-    path: "../adr/"
-    description: "已采纳/评审中的 ADR  Markdown 文件目录"
+    path: "./"
+    description: "已采纳/评审中的 ADR Markdown 文件目录"
   file_pattern:
     pattern: "ADR-{序号}-{短标题}.md"
     example: "ADR-002-api-versioning.md"
@@ -40,20 +40,20 @@ structure:
         - "后续行动（可选）"
 
 inputs:
-  - path: "./naming-conventions.md"
+  - path: "../standards/NAMING-CONVENTIONS.md"
     description: "全局 ID 与文件命名约束"
   - path: "../GLOSSARY.md"
     description: "术语一致性与新词登记"
 
 integration:
   consumed_by:
-    - path: "../../../../../system/CONTRIBUTING.md"
-      description: "中央库贡献指南（ADR 路径与登记）"
-    - path: "../../../../../system/DESIGN.md"
-      description: "中央库演进与治理入口"
+    - path: "../../../CONTRIBUTING.md"
+      description: "system ADR 路径与登记说明"
+    - path: "../../../DESIGN.md"
+      description: "系统级演进与治理入口"
 
 references:
   - path: "./adr-template.md"
     description: "人类可读 Markdown 模板正文"
-  - path: "../adr/ADR-001-knowledge-repo-structure.md"
+  - path: "./ADR-001-knowledge-repo-structure.md"
     description: "示例：已采纳 ADR"

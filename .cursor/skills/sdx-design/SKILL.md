@@ -11,7 +11,7 @@ description: >
 
 ## 输入与输出
 
-**输入**：需求分析当前 MVP 章节（`analysis/REQUIREMENT-{ID}.md`）、产品需求（`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`）、系统架构与 ADR（`knowledge/technical/`、`knowledge/constitution/adr/`）、领域模型（`knowledge/business/`）、现有规约（`specs/`）  
+**输入**：需求分析当前 MVP 章节（`analysis/ANALYSIS-{ID}.md`）、产品需求（`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`）、系统架构与 ADR（`knowledge/technical/`、`knowledge/constitution/adr/`）、领域模型（`knowledge/business/`）、同包或历史规约（`.../specs/`、`knowledge/technical/`，按需）
 **输出**：ADD `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}.md`、规约 `.../specs/`
 
 ## 工作流（四步）
@@ -50,4 +50,4 @@ description: >
 ## 参考
 
 - ADD 模板：`.ai/rules/requirement/add-template.md`
-- 上游：PRD、`analysis/`、`knowledge/`、`specs/`
+- 上游：PRD、`analysis/`、`knowledge/`、同包 `specs/`（按需）

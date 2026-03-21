@@ -30,7 +30,7 @@
 
 ## 二、应用方案与需求 (solutions, analysis, requirements)
 
-**本仓库应用模板**仅在 **应用知识库根目录**（`app-APPNAME/`）内提供 **需求交付**；solutions / analysis / specs 一般在中央库 **system/**。
+**本仓库应用模板**仅在 **应用知识库根目录**（`app-APPNAME/`）内提供 **需求交付**；solutions / analysis 一般在中央库 **system/**。
 
 | 入口 | 说明 |
 |------|------|
@@ -39,9 +39,7 @@
 | [应用知识库根目录/requirements/README.md](./app-APPNAME/requirements/README.md) | 应用模板：需求交付（PRD/ADD/TDD 等） |
 | [应用知识库根目录/requirements/requirements_meta.yaml](./app-APPNAME/requirements/requirements_meta.yaml) | 需求交付目录元数据 |
 | [应用知识库根目录/changelogs/changelogs_meta.yaml](./app-APPNAME/changelogs/changelogs_meta.yaml) | 变更日志目录元数据 |
-| [../system/specs/README.md](../system/specs/README.md) | 中央库规约目录 |
-
-- 方案、分析与交付文档应按推荐命名与目录组织，便于与 system 映射与追踪。
+- 方案、分析与交付文档应按推荐命名与目录组织，便于与 system 映射与追踪；接口/数据规约放在各需求包 `specs/` 或 `knowledge/technical/`。
 
 ---
 

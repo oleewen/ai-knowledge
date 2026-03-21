@@ -50,7 +50,7 @@ description: >
 1. 与用户确认 **Mode 1 / 2 / 3**（升级场景建议 **Mode 2 及以上**，以便 §4/§5 支撑配置与数据流更新）。
 2. 产出标准 **七段 Index Guide**。
 3. **附加要求**：
-   - §2 / §3 显式包含 **应用知识库根** 下各视角与 `solutions/`、`analysis/`、`requirements/`、`specs/`（若存在）的路径与角色。
+   - §2 / §3 显式包含 **应用知识库根** 下各视角与 `solutions/`、`analysis/`、`requirements/`、各需求包内 `specs/`（若存在）的路径与角色。
    - Index 建议落盘至应用内便于复用路径（如 `docs/INDEX-GUIDE.md` 或应用约定目录），并在会话中保留全文供阶段三使用。
 
 ---

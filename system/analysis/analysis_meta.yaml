@@ -1,53 +1,117 @@
-# system/analysis — analysis_meta.yaml（目录元数据）
-id: "DIR-ANALYSIS"
-name: "需求分析（analysis）"
-description: "AI SDD 需求分析阶段产出目录：基于解决方案与知识库进行研究与细化，输出 REQUIREMENT-{ID}.md，作为需求交付阶段输入。"
+# system/analysis — 需求分析阶段统一元数据（单文件 SSOT）
+# 结构：identity + repository + pipeline + integration + layers（每层一条，无重复的全局 inputs）
+schema_version: "1.1"
 
-stage:
+# -----------------------------------------------------------------------------
+# 1. 阶段身份
+# -----------------------------------------------------------------------------
+identity:
+  id: "DIR-ANALYSIS"
+  name: "需求分析（analysis）"
+  description: >
+    AI SDD 需求分析阶段：基于解决方案与知识库进行研究与细化，输出 ANALYSIS-{ID}.md，
+    作为 requirements 阶段输入。本文件为 analysis/ 唯一元数据入口。
+
+role:
+  stage: "analysis"
   sdd_phase: "analysis"
+  is_system_level_index: true
   outputs_are_inputs_for: "requirements"
 
-inputs:
-  - path: "../solutions/"
-    description: "解决方案文档（SOLUTION-{ID}.md）"
-  - path: "../knowledge/"
-    description: "系统知识库（四视角 + 宪法层）"
-  - path: "../specs/"
-    description: "需求规约（服务/接口等规格）"
+# -----------------------------------------------------------------------------
+# 2. 仓库与目录约定（锚点 + 命名模式）
+# -----------------------------------------------------------------------------
+repository:
+  root_relative: "analysis"
+  child_directories: []
+  child_files:
+    - "README.md"
+    - "ANALYSIS-{ID}.md"
+  hierarchy:
+    chain: "ANALYSIS（根目录平铺单文件交付物）"
+    labels:
+      ANALYSIS: "需求分析文档（Analysis document）"
+  directory_patterns:
+    analysis: "ANALYSIS-{ID}.md"
 
-outputs:
-  primary_artifact:
-    pattern: "REQUIREMENT-{ID}.md"
-    description: "需求分析文档（需求细化、MVP 拆分、依赖/风险评估等）"
-
-naming_conventions:
-  file:
-    pattern: "REQUIREMENT-{ID}.md"
-    id_guidance: "{ID} 建议与解决方案或项目约定的唯一编号一致或可追溯"
-  frontmatter:
-    required_fields:
-      - "id"
-      - "parent"
-    constraints:
-      - "frontmatter.id 与文件名 REQUIREMENT-{ID}.md 保持一致"
-      - "frontmatter.parent 指向对应的 SOLUTION-{ID}"
-
-indexing:
-  readme_index_table: true
-  rule: "每新增/评审一份 REQUIREMENT-{ID}.md，应同步更新 README.md 的分析索引表"
-
-integration:
-  parent_points_to:
+# -----------------------------------------------------------------------------
+# 3. 阶段输入 / 产出（全层共享，不在各层重复声明）
+# -----------------------------------------------------------------------------
+pipeline:
+  inputs:
     - path: "../solutions/"
-      via: "frontmatter.parent"
-  traceability_notes:
-    - "可与 business、product 视角的功能/用例 ID 建立追溯关系"
-    - "实现方案与 technical、data 视角对齐"
+      description: "解决方案文档（SOLUTION-{ID}.md）"
+    - path: "../knowledge/"
+      description: "系统知识库（四视角 + 宪法层）"
+  outputs:
+    ssot_file: "analysis_meta.yaml"
+    narrative: "交付物形态与 frontmatter 约定见 `layers`；根目录平铺 Markdown，不并列子级 *_meta.yaml。"
+    directory_role: "README + 分析索引表 + ANALYSIS-{ID}.md 文件集。"
 
+# -----------------------------------------------------------------------------
+# 4. 追溯与下游
+# -----------------------------------------------------------------------------
+integration:
+  traceability:
+    - "可与 business、product 视角的功能/用例 ID 建立追溯关系"
+    - "结论与实现方案宜与 technical、data 视角对齐（ID 引用）"
+  upstream:
+    - path: "../solutions/"
+      via: "frontmatter.parent → SOLUTION-{ID}"
+  downstream:
+    - path: "../requirements/"
+      via: "REQUIREMENT-{ID} 与 ANALYSIS 编号对齐或可追溯（项目约定）"
+  key_fields:
+    analysis_document:
+      - "id"
+      - "parent（指向 SOLUTION）"
+
+# -----------------------------------------------------------------------------
+# 5. 文档引用
+# -----------------------------------------------------------------------------
 references:
   - path: "./README.md"
     description: "本目录说明与索引表"
+  - path: "../DESIGN.md"
+    description: "全局目录结构与阶段设计"
+  - path: "../INDEX.md"
+    description: "全局索引"
   - path: "../../.ai/skills/sdx-analysis/SKILL.md"
     description: "需求分析阶段目标与工作流"
-  - path: "../../.ai/rules/analysis/requirement-template.md"
+  - path: "../../.ai/rules/analysis/analysis-template.md"
     description: "需求分析文档模板"
+
+# -----------------------------------------------------------------------------
+# 6. 层级模型（单一层：需求分析文档）
+# -----------------------------------------------------------------------------
+layers:
+  - key: "an"
+    code: "ANALYSIS"
+    order: 1
+    entity_kind: "analysis_document"
+    id_pattern: "ANALYSIS-{ID}"
+    parent: null
+    tree:
+      child_directory_glob: null
+    artifacts:
+      markdown: "ANALYSIS-{ID}.md"
+    fields:
+      id_guidance: "{ID} 建议与解决方案或项目约定的唯一编号一致或可追溯；可与解决方案编号对齐"
+    frontmatter_constraints:
+      analysis_document:
+        required_fields:
+          - "id"
+          - "parent"
+        constraints:
+          - "frontmatter.id 与文件名 ANALYSIS-{ID}.md 保持一致"
+          - "frontmatter.parent 指向对应的 SOLUTION-{ID}"
+    indexing:
+      readme_index_table: true
+      rule: "每新增/评审一份 ANALYSIS-{ID}.md，应同步更新 README.md 的分析索引表"
+
+# -----------------------------------------------------------------------------
+# 7. 全局索引运维
+# -----------------------------------------------------------------------------
+indexing:
+  readme_index_table: true
+  rule: "任一 ANALYSIS 变更时，更新本文件（若扩展 layers）、README.md 与必要的根 INDEX"

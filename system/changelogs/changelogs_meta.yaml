@@ -1,35 +1,135 @@
-# system/changelogs — changelogs_meta.yaml（目录元数据）
-id: "DIR-CHANGELOGS"
-name: "变更日志（changelogs）"
-description: "系统级变更沉淀目录：记录知识库与阶段文档的关键演进与里程碑（CHANGELOG.md）。"
+# system/changelogs — 变更与索引运维统一元数据（单文件 SSOT）
+# 结构：identity + repository + pipeline + integration + layers（每层一类产物，无重复的全局 inputs）
+schema_version: "1.1"
 
-stage:
+# -----------------------------------------------------------------------------
+# 1. 目录身份
+# -----------------------------------------------------------------------------
+identity:
+  id: "DIR-CHANGELOGS"
+  name: "变更日志（changelogs）"
+  description: >
+    系统级变更沉淀与可选索引运维：人类可读的维护性变更记录（CHANGELOG.md），
+    以及与 document-change / document-indexing Skill 配套的机器可读索引文件（按需生成）。
+    本文件为 changelogs/ 唯一元数据入口。
+
+role:
+  stage: "changelogs"
   sdd_phase: "changelogs"
+  is_system_level_index: true
   supports_phases:
     - "knowledge"
     - "solution"
     - "analysis"
     - "requirements"
 
-inputs:
-  - path: "../knowledge/"
-    description: "知识库条目变更"
-  - path: "../solutions/"
-    description: "解决方案阶段关键决策与变更"
-  - path: "../analysis/"
-    description: "需求分析阶段关键结论与范围调整"
-  - path: "../requirements/"
-    description: "需求交付阶段里程碑与交付变更"
+# -----------------------------------------------------------------------------
+# 2. 仓库与目录约定（锚点 + 命名模式）
+# -----------------------------------------------------------------------------
+repository:
+  root_relative: "changelogs"
+  child_directories: []
+  child_files:
+    - "README.md"
+    - "CHANGELOG.md"
+  hierarchy:
+    chain: "人类可读日志 →（可选）机器索引产物"
+    labels:
+      CHANGELOG: "维护性变更日志（Markdown）"
+      INDEX_OPS: "索引/变动 Skill 产出（JSON/JSONL）"
+  directory_patterns:
+    human: "CHANGELOG.md"
+    optional_json: "changes-index.json"
+    optional_md: "changes-index.md"
+    optional_jsonl: "indexing-log.jsonl"
 
-outputs:
-  primary_artifact:
-    path: "./CHANGELOG.md"
-    description: "系统级变更日志"
+# -----------------------------------------------------------------------------
+# 3. 输入 / 产出（全层共享，不在各层重复声明）
+# -----------------------------------------------------------------------------
+pipeline:
+  inputs:
+    - path: "../knowledge/"
+      description: "知识库条目变更"
+    - path: "../solutions/"
+      description: "解决方案阶段关键决策与变更"
+    - path: "../analysis/"
+      description: "需求分析阶段关键结论与范围调整"
+    - path: "../requirements/"
+      description: "需求交付阶段里程碑与交付变更"
+  outputs:
+    ssot_file: "changelogs_meta.yaml"
+    narrative: "各层产物类型与用途见 `layers`；Skill 产出文件为可选，非日常编辑必跑。"
+    directory_role: "根目录集中 README、CHANGELOG 与可选索引文件；不并列子级 *_meta.yaml。"
 
+# -----------------------------------------------------------------------------
+# 4. 闭环与追溯
+# -----------------------------------------------------------------------------
 integration:
+  traceability:
+    - "在需求归档/知识回写时同步更新 CHANGELOG，形成可追溯记录"
   archive_feedback_loop:
-    description: "在需求归档/知识回写时同步更新 changelogs，形成闭环可追溯记录"
+    description: "与 knowledge-archive、knowledge-build 等流程对齐时，在此记录里程碑级变更摘要"
+  key_fields:
+    changelog_entry:
+      - "日期、变更类型、影响范围（人类可读，无强制 frontmatter）"
 
+# -----------------------------------------------------------------------------
+# 5. 文档引用
+# -----------------------------------------------------------------------------
 references:
+  - path: "./README.md"
+    description: "本目录说明与 Skill 对照表"
   - path: "../DESIGN.md"
     description: "全局目录结构与 changelogs 定位约定"
+  - path: "../INDEX.md"
+    description: "全局索引"
+  - path: "../../README.md"
+    description: "根目录命令表与 Skill 入口"
+  - path: "../../AGENTS.md"
+    description: "Agent 契约与 Skill 指针"
+
+# -----------------------------------------------------------------------------
+# 6. 层级模型（人类可读 → 可选机器索引）
+# -----------------------------------------------------------------------------
+layers:
+  - key: "human"
+    code: "CHANGELOG"
+    order: 1
+    entity_kind: "maintainability_changelog"
+    id_pattern: null
+    parent: null
+    tree:
+      child_directory_glob: null
+    artifacts:
+      markdown: "CHANGELOG.md"
+    fields:
+      purpose: "system/ 文档体系维护性变更（导航、约定、模板链接等）；业务实体变更可写在提交信息或 ADR"
+    indexing:
+      readme_index_table: false
+      rule: "重大导航或约定变更时更新 CHANGELOG.md 条目"
+
+  - key: "index_ops"
+    code: "INDEX_OPS"
+    order: 2
+    entity_kind: "skill_index_artifacts"
+    id_pattern: null
+    parent: null
+    tree:
+      child_directory_glob: null
+    artifacts:
+      optional:
+        - "changes-index.json"
+        - "changes-index.md"
+        - "indexing-log.jsonl"
+    fields:
+      purpose: "document-change / document-indexing Skill 产出；见 .ai/skills/ 与 .cursor/skills/ 同名 Skill"
+    indexing:
+      readme_index_table: false
+      rule: "运行对应 Skill 后更新或追加；与 README 中表格一致"
+
+# -----------------------------------------------------------------------------
+# 7. 全局索引运维
+# -----------------------------------------------------------------------------
+indexing:
+  readme_index_table: true
+  rule: "变更影响全局导航或元模型时，同步 README、CHANGELOG 与本文件（若扩展 layers）"

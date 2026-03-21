@@ -61,7 +61,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/script
 ## 开发规范
 
 - **规范索引：** `.ai/CONVENTIONS.md`
-- **知识库与 ID：** `system/DESIGN.md`、`knowledge/constitution/standards/naming-conventions.md`；跨视角仅 ID 引用，不重复定义。
+- **知识库与 ID：** `system/DESIGN.md`、`knowledge/constitution/standards/NAMING-CONVENTIONS.md`；跨视角仅 ID 引用，不重复定义。
 - **提交：** Conventional Commits，`<类型>: <描述>`（如 `docs: 更新 system/INDEX 索引`）。
 
 ---

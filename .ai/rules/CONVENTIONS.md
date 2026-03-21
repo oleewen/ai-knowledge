@@ -44,7 +44,7 @@
 
 | 文件 | 说明 |
 |------|------|
-| [requirement-template.md](.ai/rules/analysis/requirement-template.md) | 需求分析文档模板：需求概述、功能/非功能需求、业务规则、数据需求、MVP 拆分、依赖与风险；产出 `analysis/REQUIREMENT-{ID}.md` |
+| [analysis-template.md](.ai/rules/analysis/analysis-template.md) | 需求分析文档模板：需求概述、功能/非功能需求、业务规则、数据需求、MVP 拆分、依赖与风险；产出 `analysis/ANALYSIS-{ID}.md` |
 
 ### 6. 需求交付规范 (requirement/)
 
@@ -92,7 +92,7 @@
 ### AI SDD 文档类（solution / analysis / requirement）
 
 - **解决方案模板**：业务背景与动机、业务目标、需求概述、影响面、冲突与化解、方案与范围、MVP 拆分；frontmatter 含 id/title/status/parent/dependencies；产出 `solutions/SOLUTION-{ID}.md`。
-- **需求分析模板**：需求概述、功能/非功能需求、业务规则、数据需求、MVP 拆分方案、依赖与风险、质量自查表；parent 指向 SOLUTION；产出 `analysis/REQUIREMENT-{ID}.md`。
+- **需求分析模板**：需求概述、功能/非功能需求、业务规则、数据需求、MVP 拆分方案、依赖与风险、质量自查表；parent 指向 SOLUTION；产出 `analysis/ANALYSIS-{ID}.md`。
 - **PRD 模板**：产品概述、业务流程(mermaid)、用户故事与用例、功能模块、业务规则汇总、验收标准；产出 `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`。
 - **ADD 模板**：设计概述、架构设计、详细设计(API/逻辑/数据访问/非功能)、发布与回滚；产出 `.../ADD-{ID}.md`。
 - **TDD 模板**：测试目标与范围、测试策略、测试用例(功能/接口/规则/异常/回归)、测试数据与环境、进出标准；产出 `.../TDD-{ID}.md`。

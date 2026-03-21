@@ -1,49 +1,73 @@
-# system/knowledge/product 目录元数据
-id: "DIR-KNOWLEDGE-PRODUCT"
-name: "产品视角（knowledge/product）"
-description: "系统级产品视角：描述产品功能、用户故事与需求规格；以产品线/模块/功能点等结构沉淀需求，并通过显式 ID 与业务、技术视角建立映射。"
+# system/knowledge/product — 产品视角统一元数据（单文件 SSOT）
+# 对齐 business_meta：identity + repository + pipeline + integration + layers
+schema_version: "1.1"
+
+identity:
+  id: "DIR-KNOWLEDGE-PRODUCT"
+  name: "产品视角（knowledge/product）"
+  description: >
+    系统级产品视角：描述产品功能、用户故事与需求规格；
+    以 PL/PM/FT/UC 结构沉淀需求，并通过显式 ID 与业务、技术视角建立映射。本文件为产品视角唯一元数据入口。
 
 role:
   perspective: "product"
   is_system_level_index: true
 
-inputs:
-  - path: "../constitution/"
-    description: "命名规范、术语与治理约束"
-  - path: "(from-solution-analysis-delivery)"
-    description: "解决方案/需求分析/交付沉淀的产品能力与验收标准（归档回写）"
-
-outputs:
-  primary_artifact:
-    pattern: "product_meta.yaml, PL_meta.yaml, PM_meta.yaml, FT_meta.yaml；目录树 {PL-ID}/{PM-ID}/ 作层级锚点（可含 README、FEATURE-MAP 等）"
-    description: "产品视角元数据与 PL/PM/FT 定义（YAML）集中于本目录根；子目录仅作产品线/模块导航"
-
-naming_conventions:
+repository:
+  root_relative: "knowledge/product"
+  child_directories:
+    - "PL-{ID}"
+  child_files:
+    - "README.md"
   hierarchy:
-    description: "产品线 (PL) → 产品模块 (PM) → 功能 (FT) → 用例 (UC)"
-  directories:
-    pl: "{PL-ID}/"
-    pm: "{PL-ID}/{PM-ID}/"
-  meta_files_in_product_root:
-    perspective: "product_meta.yaml"
-    pl: "PL_meta.yaml"
-    pm: "PM_meta.yaml"
-    feature: "FT_meta.yaml"
+    chain: "PL → PM → FT → UC"
+    labels:
+      PL: "产品线 (Product Line)"
+      PM: "产品模块 (Product Module)"
+      FT: "功能 (Feature)"
+      UC: "用例 (Use Case)"
+  directory_patterns:
+    PL: "{PL-ID}/"
+    PM: "{PL-ID}/{PM-ID}/"
+    FT: "{PL-ID}/{PM-ID}/{FT-ID}/"
+    UC: "{PL-ID}/{PM-ID}/{FT-ID}/{UC-ID}/"
 
-indexing:
-  readme_index_table: true
-  rule: "新增/调整 PL/PM/FT 时，应同步维护 README.md 的产品索引表与必要的全局索引"
+pipeline:
+  inputs:
+    - path: "../constitution/"
+      description: "命名规范、术语与治理约束"
+    - path: "solutions、analysis、requirements"
+      description: "解决方案/需求分析/交付沉淀的产品能力与验收标准（归档回写）"
+    - path: "changelogs/"
+      description: "变更记录与索引运维（可选）"
+  outputs:
+    ssot_file: "product_meta.yaml"
+    narrative: "各层字段模板见 `layers`；子目录 `{PL-ID}/{PM-ID}/` 作导航与 FEATURE-MAP 等文档锚点。"
+    directory_role: "子目录与 `directory_patterns` 一致；不在子目录重复放置与根索引冲突的层级 meta。"
 
 integration:
-  mappings:
-    - "产品 → 业务：PM 的 relies_on_context_ids 指向 business 的 BC"
-    - "产品 → 技术：FT 的 invokes_api_ids 指向 technical 的 API（来自应用级 manifest）"
+  cross_perspective:
+    - from: { layer: "pm", field: "relies_on_context_ids" }
+      to: { perspective: "business", kind: "BC" }
+      meaning: "产品模块依赖哪些限界上下文"
+    - from: { layer: "ft", field: "invokes_api_ids" }
+      to: { perspective: "technical", kind: "API" }
+      meaning: "功能调用的接口（应用 manifest / OpenAPI 登记）"
+    - from: { layer: "ft", field: "realizes_use_case_ids" }
+      to: { perspective: "product", kind: "UC" }
+      meaning: "功能实现哪些用例（同视角内）"
+    - from: { layer: "uc", field: "map_to_api_id" }
+      to: { perspective: "technical", kind: "API" }
+      meaning: "用例到 API 的精细映射"
   key_fields:
     product_module:
       - "relies_on_context_ids"
     feature:
       - "invokes_api_ids"
       - "realizes_use_case_ids"
+      - "map_to_api_id"
+    use_case:
+      - "map_to_api_id"
 
 references:
   - path: "./README.md"
@@ -52,3 +76,94 @@ references:
     description: "全局索引与映射速查"
   - path: "../../DESIGN.md"
     description: "目录结构与元模型规范"
+
+layers:
+  - key: "pl"
+    code: "PL"
+    order: 1
+    entity_kind: "product_line"
+    id_pattern: "PL-{ID}"
+    parent: null
+    tree:
+      child_directory_glob: "PM-{ID}/"
+    artifacts:
+      markdown: "产品线概述等（可选）"
+    fields:
+      target_users: "目标用户列表（可选）"
+      product_owner: "产品负责人（可选）"
+    indexing:
+      readme_index_table: true
+      rule: "新增/调整 PL 及其下游时同步 README 与索引"
+
+  - key: "pm"
+    code: "PM"
+    order: 2
+    entity_kind: "product_module"
+    id_pattern: "PM-{ID}"
+    parent:
+      field: "parent_pl_id"
+      expects: "PL-{ID}"
+    tree:
+      child_directory_glob: "FT-{ID}/"
+    artifacts:
+      markdown: "FEATURE-MAP 等（可选）"
+    fields:
+      module_type: "模块类型（可选）"
+      relies_on_context_ids: "BC-* 列表，映射 business"
+    indexing:
+      readme_index_table: true
+      rule: "新增/调整 PM 及其 FT/UC 时同步 README 与索引"
+
+  - key: "ft"
+    code: "FT"
+    order: 3
+    entity_kind: "feature"
+    id_pattern: "FT-{ID}"
+    parent:
+      field: "parent_pm_id"
+      expects: "PM-{ID}"
+    additional_parent:
+      field: "parent_pl_id"
+      expects: "PL-{ID}"
+    tree:
+      child_directory_glob: "UC-{ID}/"
+    artifacts:
+      markdown: "用户故事/验收说明（可选）"
+    fields:
+      priority: "优先级 P0–P3（可选）"
+      status: "状态（可选）"
+      acceptance_criteria: "验收标准列表"
+      invokes_api_ids: "API-* 列表"
+      realizes_use_case_ids: "UC-* 列表"
+      map_to_api_id: "结构化 UC→API 映射（可与列表并存）"
+    indexing:
+      readme_index_table: true
+      rule: "新增/调整 FT 及其 UC 时同步 README、manifest 引用"
+
+  - key: "uc"
+    code: "UC"
+    order: 4
+    entity_kind: "use_case"
+    id_pattern: "UC-{ID}"
+    parent:
+      field: "parent_ft_id"
+      expects: "FT-{ID}"
+    additional_parent:
+      field: "parent_pm_id"
+      expects: "PM-{ID}"
+    tree:
+      child_directory_glob: null
+    artifacts:
+      markdown: "用例步骤（可选）"
+    fields:
+      map_to_api_id: "API-*，映射 technical"
+      actors: "参与者（可选）"
+      preconditions: "前置条件（可选）"
+      main_success_scenario: "主成功场景步骤（可选）"
+    indexing:
+      readme_index_table: true
+      rule: "新增/调整 UC 时同步 README、FT.realizes_use_case_ids 与 API 映射"
+
+indexing:
+  readme_index_table: true
+  rule: "任一 layer 变更时，更新本文件、README.md 产品索引表与必要的根 INDEX"

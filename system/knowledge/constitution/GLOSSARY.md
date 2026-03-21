@@ -69,10 +69,14 @@ tags: ["glossary", "terminology", "constitution"]
 | 关系 | 含义 |
 |------|------|
 | implemented_by_app_id | 限界上下文由哪个应用（代码库）实现。 |
+| implemented_by_service_ids | 聚合根由哪些微服务（service_ids / MS-*）实现。 |
 | relies_on_context_ids | 产品模块依赖哪些限界上下文。 |
 | invokes_api_ids | 功能点调用的 API 列表。 |
+| implemented_by_api_id | 能力（Ability）由哪个 API 实现。 |
+| map_to_api_id | 用例（UC）映射到 API 的关系。 |
 | persisted_as_entity_ids | 聚合持久化对应的数据实体 ID。 |
 | maps_to_aggregate_id | 数据实体对应的业务聚合根。 |
+| owned_by_service_id | 数据存储/数据实体归属到哪些微服务（MS-*）。 |
 
 ## 术语变更记录
 

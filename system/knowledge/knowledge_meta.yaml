@@ -3,6 +3,15 @@ id: "DIR-KNOWLEDGE"
 name: "系统知识库（knowledge）"
 description: "SSOT：宪法层 + 四视角。阶段文档以此为输入，归档时可回写。"
 
+child_directories:
+  - "constitution"
+  - "business"
+  - "product"
+  - "technical"
+  - "data"
+child_files:
+  - "README.md"
+
 role:
   is_single_source_of_truth: true
   perspectives:
@@ -13,8 +22,14 @@ role:
     - "data"
 
 inputs:
-  - path: "(from-delivery-and-operations)"
-    description: "交付与运维沉淀（归档阶段回写）"
+  - path: "solutions/"
+    description: "解决方案文档（SOLUTION-{ID}.md）"
+  - path: "analysis/"
+    description: "需求分析文档（ANALYSIS-{ID}.md）"
+  - path: "requirements/"
+    description: "需求交付文档（REQUIREMENT-{ID}.md）"
+  - path: "changelogs/"
+    description: "变更记录与索引运维（可选）"
 
 outputs:
   primary_artifact:
@@ -23,8 +38,8 @@ outputs:
 
 naming_conventions:
   ids:
-    description: "全局唯一前缀（BD/BSD/BC/AGG、PL/PM/FT/UC、SYS/APP/MS、DS/ENT 等）"
-    reference: "./constitution/standards/naming-conventions.md"
+    description: "全局唯一前缀（BD/BSD/BC/AGG/AB、PL/PM/FT/UC、SYS/APP/MS/API、DS/ENT 等）"
+    reference: "./constitution/standards/NAMING-CONVENTIONS.md"
 
 indexing:
   system_index:

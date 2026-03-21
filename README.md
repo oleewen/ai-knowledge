@@ -47,11 +47,11 @@ REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/sdx-init.s
 
 **系统知识库** 已统一放在 **[system](system/)** 目录下（查阅顺序与根目录 `INDEX.md` / `AGENTS.md` 对齐；SDD 主线见 [system/README.md](system/README.md)）：
 
-- [system/README.md](system/README.md) — 查阅顺序、SDD 五段主线、快速导航  
+- [system/README.md](system/README.md) — 查阅顺序、SDD 主线、快速导航  
 - [system/INDEX.md](system/INDEX.md) — system 树索引、映射速查、应用接入、AI 工作流指针  
 - [system/DESIGN.md](system/DESIGN.md) — 原则、元模型、目录与映射、演进  
 - [system/CONTRIBUTING.md](system/CONTRIBUTING.md) — 贡献工作流与各阶段模板入口  
-- [system/specs/README.md](system/specs/README.md)、[system/changelogs/README.md](system/changelogs/README.md) — 规约目录与变更日志入口
+- [system/changelogs/README.md](system/changelogs/README.md) — 变更日志入口（规约随各 `requirements/REQUIREMENT-*/…/specs/`）
 
 **应用知识库** 已统一放在 **[applications](applications/)** 目录下，包含：
 
@@ -69,9 +69,8 @@ ai-sdd-knowledge/
 │   ├── README.md, INDEX.md, DESIGN.md, CONTRIBUTING.md
 │   ├── knowledge/      # 四视角 + 宪法层（constitution, business, product, technical, data）
 │   ├── solutions/      # 解决方案（SOLUTION-{ID}.md）
-│   ├── analysis/       # 需求分析（REQUIREMENT-{ID}.md）
-│   ├── requirements/   # 需求交付（REQUIREMENT-{ID}/MVP-Phase-*/）
-│   ├── specs/          # 需求规约（README + 示例目录）
+│   ├── analysis/       # 需求分析（ANALYSIS-{ID}.md）
+│   ├── requirements/   # 需求交付（REQUIREMENT-{ID}/MVP-Phase-*；规约可在包内 specs/）
 │   └── changelogs/     # 变更日志（README、CHANGELOG、可选索引文件）
 ├── applications/       # 应用知识库（README、INDEX 及各应用子目录）
 ├── scripts/            # sdx-init、knowledge-init 等，详见 scripts/README.md

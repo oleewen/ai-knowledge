@@ -28,7 +28,7 @@ post_init_checklist_text() {
   [ ] application_meta.yaml 已随模板落地；若实际目录名不再是 app-APPNAME，可酌情更新其中 template_directory 或描述，避免误导 Agent
   [ ] INDEX.md、README.md 内相对链接在目标工程中可访问
   [ ] knowledge/knowledge_meta.yaml、requirements/requirements_meta.yaml、changelogs/changelogs_meta.yaml 与各目录 README 首段「元数据」链一致
-  [ ] knowledge/constitution/：principles_meta.yaml、standards_meta.yaml、adr_corpus_meta.yaml 与 constitution/README.md 组件表互链
+  [ ] knowledge/constitution/：principles_meta.yaml、standards_meta.yaml、adr/adr_meta.yaml（若存在）与 constitution/README.md 组件表互链
   [ ] 正式需求包：自 REQUIREMENT-EXAMPLE 复制为 REQUIREMENT-{ID}/；REQUIREMENT-EXAMPLE 为结构示例，不单建 *_meta.yaml（见 requirements/README.md）
   [ ] central 模式：核对本仓库 system/INDEX.md 接入登记行与 system/knowledge/technical/.../APP-*.yaml 是否反映当前工程与文档路径
 
@@ -38,7 +38,8 @@ CHECKLIST
 print_post_init_checklist() {
   log ""
   if [[ -n "${DOCS_ABS:-}" ]]; then
-    log "--- knowledge-init：拷贝后检查清单（目标: $DOCS_ABS） ---"
+    # 使用 ${DOCS_ABS} 明确变量边界：避免 bash 在 UTF-8 全角括号等紧邻字符时误解析变量名
+    log "--- knowledge-init：拷贝后检查清单（目标: ${DOCS_ABS}） ---"
   else
     log "--- knowledge-init：拷贝后检查清单 ---"
   fi
@@ -83,6 +84,95 @@ ensure_dir() {
   fi
 }
 
+# 处理“目标已存在”的冲突：询问覆盖/跳过，并在覆盖时将原路径备份到目录中。
+# 交互规则：
+# - 交互终端（stdin 是 TTY）且未设置 --force 时：询问 o 覆盖 / s 跳过 / a 全部覆盖 / b 全部跳过
+# - 非交互场景或已设置 --force：默认覆盖（但仍会备份旧内容，除非 DRY_RUN=1）
+CONFLICT_PROMPT_MODE="${CONFLICT_PROMPT_MODE:-}"  # overwrite_all | skip_all
+BACKUP_ROOT="${BACKUP_ROOT:-}" # set on demand
+
+get_backup_root() {
+  # 备份根目录：按“年月日”聚合
+  local base="${TARGET_DIR:-$PWD}/.knowledge-init"
+  local stamp
+  # 用“年月日_时分秒”且避免使用 ":" 以保证在常见文件系统可用
+  stamp="$(date +%Y-%m-%d_%H-%M-%S)"
+  if [[ -n "${BACKUP_ROOT:-}" ]]; then
+    echo "$BACKUP_ROOT"
+    return 0
+  fi
+  BACKUP_ROOT="${base}/${stamp}"
+  echo "$BACKUP_ROOT"
+}
+
+backup_existing_path() {
+  local existing="$1"
+  local backup_root
+  backup_root="$(get_backup_root)"
+
+  # 将备份内容按“原始相对路径”保留层级放入备份根目录：
+  # 目标工程下：
+  #   - 原 $TARGET_DIR/.cursor/rules/...  => 备份到 $TARGET_DIR/.knowledge-init/年月日时分秒/.cursor/rules/...
+  #   - 原 $TARGET_DIR/docs/...          => 备份到 $TARGET_DIR/.knowledge-init/年月日时分秒/docs/...
+  # 这样既满足按原目录结构备份，也避免把整个 docs 目录 mv 到其子目录内导致递归失败。
+  local rel
+  if [[ -n "${TARGET_DIR:-}" && "$existing" == "$TARGET_DIR/"* ]]; then
+    rel="${existing#"$TARGET_DIR"/}"
+  else
+    rel="${existing#/}"
+  fi
+
+  local backup_target="${backup_root}/${rel}"
+
+  # 同一天重复运行时，保证不会覆盖已有备份（添加递增后缀）
+  if [[ -e "$backup_target" ]]; then
+    local i=1
+    while [[ -e "${backup_target}.__${i}" ]]; do
+      i=$((i+1))
+    done
+    backup_target="${backup_target}.__${i}"
+  fi
+
+  mkdir -p "$(dirname "$backup_target")" 2>/dev/null || true
+  mv "$existing" "$backup_target"
+  info "已备份：$existing -> $backup_target"
+}
+
+should_overwrite_existing() {
+  local target="$1"
+
+  if [[ "${DRY_RUN:-0}" == "1" ]]; then
+    return 0
+  fi
+
+  if [[ "${FORCE:-0}" == "1" ]]; then
+    return 0
+  fi
+
+  case "${CONFLICT_PROMPT_MODE:-}" in
+    overwrite_all) return 0 ;;
+    skip_all) return 1 ;;
+  esac
+
+  # 非交互环境：保持“默认覆盖”的兼容行为
+  if [[ ! -t 0 ]]; then
+    return 0
+  fi
+
+  log "目标已存在：$target"
+  printf '选择操作：覆盖(o) / 跳过(s) / 全部覆盖(a) / 全部跳过(b) [默认 o]： ' >&2
+  local ans=""
+  read -r ans || ans="o"
+
+  case "$ans" in
+    s|S) return 1 ;;
+    a|A) CONFLICT_PROMPT_MODE="overwrite_all"; return 0 ;;
+    b|B) CONFLICT_PROMPT_MODE="skip_all"; return 1 ;;
+    o|O|"") return 0 ;;
+    *) log "无效选择：$ans，默认覆盖"; return 0 ;;
+  esac
+}
+
 copy_dir() {
   local src="$1" dst="$2"
   if [[ "${DRY_RUN:-0}" == "1" ]]; then
@@ -91,13 +181,17 @@ copy_dir() {
   fi
 
   if [[ -e "$dst" ]]; then
-    rm -rf "$dst"
+    if ! should_overwrite_existing "$dst"; then
+      log "[skip] 已存在目录，跳过：$dst"
+      return 0
+    fi
+    backup_existing_path "$dst"
   fi
   ensure_dir "$(dirname "$dst")"
+  ensure_dir "$dst"
   if have_cmd rsync; then
     rsync -a "$src"/ "$dst"/
   else
-    mkdir -p "$dst"
     cp -R "$src"/. "$dst"/
   fi
 }
@@ -210,7 +304,7 @@ usage() {
   --mode=MODE         模式：standalone（默认）| central（也支持缩写：s | c）
   --app-id=APP-ID     中央模式下写入技术视角的 APP ID（默认由工程目录推导）
   --agents=LIST      Agent 列表（支持多选）：cursor|trea|all，且可用逗号分隔如 cursor,trea（默认: cursor）
-  --force             若目标目录已存在则覆盖（默认覆盖；此开关仅用于显式表达）
+  --force             强制覆盖已存在内容（不提示）；未设置时若目标已存在将提示覆盖/跳过
   --dry-run           预览模式（不落盘）
   -h, --help          显示帮助
 
@@ -340,6 +434,15 @@ copy_file() {
     log "[dry-run] 拷贝文件: $src -> $dst"
     return 0
   fi
+
+  if [[ -e "$dst" ]]; then
+    if ! should_overwrite_existing "$dst"; then
+      log "[skip] 已存在文件，跳过：$dst"
+      return 0
+    fi
+    backup_existing_path "$dst"
+  fi
+
   ensure_dir "$(dirname "$dst")"
   cp "$src" "$dst"
 }
@@ -392,6 +495,16 @@ sync_dir_contents() {
     log "[dry-run] 同步目录内容: $src/ -> $dst/"
     return 0
   fi
+
+  # 仅在目标目录“非空”时才认为发生冲突（空目录无需备份）
+  if [[ -d "$dst" ]] && [[ -n "$(ls -A "$dst" 2>/dev/null || true)" ]]; then
+    if ! should_overwrite_existing "$dst"; then
+      log "[skip] 已存在且非空目录，跳过：$dst"
+      return 0
+    fi
+    backup_existing_path "$dst"
+  fi
+
   ensure_dir "$dst"
   if have_cmd rsync; then
     rsync -a "$src"/ "$dst"/

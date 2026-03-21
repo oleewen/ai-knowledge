@@ -17,10 +17,14 @@ child_directories:
     meta: "analysis/analysis_meta.yaml"
   requirements:
     meta: "requirements/requirements_meta.yaml"
-  specs:
-    meta: "specs/specs_meta.yaml"
   changelogs:
     meta: "changelogs/changelogs_meta.yaml"
+
+child_files:
+  - "README.md"
+  - "INDEX.md"
+  - "DESIGN.md"
+  - "CONTRIBUTING.md"
 
 inputs:
   - path: "(from-repository-and-delivery)"
@@ -28,20 +32,20 @@ inputs:
 
 outputs:
   primary_artifact:
-    pattern: "README.md, INDEX.md, DESIGN.md, CONTRIBUTING.md, system_meta.yaml, */{dirname}_meta.yaml, knowledge/**/*"
-    description: "根级导航与设计文档 + 各子目录目录索引 YAML + knowledge 树实体"
+    pattern: "README.md, INDEX.md, DESIGN.md, CONTRIBUTING.md, */{dirname}_meta.yaml, knowledge/**/*"
+    description: "child_files（根级）+ child_directories 的 {dirname}_meta.yaml + knowledge 树实体"
 
 naming_conventions:
   directory_index:
     description: "各一级子目录使用与目录同名的 {dirname}_meta.yaml；knowledge/ 根另见 knowledge_meta.yaml"
-    reference: "./knowledge/constitution/standards/naming-conventions.md"
+    reference: "./knowledge/constitution/standards/NAMING-CONVENTIONS.md"
 
 integration:
   upstream:
     - path: "../.ai/"
       description: "规范、模板与 Agent 技能（非 system 内必存路径）"
   traceability:
-    description: "阶段链 solutions → analysis → requirements（可引用 specs）；knowledge 为事实源，归档可回写"
+    description: "阶段链 solutions → analysis → requirements；规约落在需求包内 specs/ 或 knowledge/technical/；knowledge 为事实源，归档可回写"
 
 references:
   - path: "./README.md"

@@ -11,7 +11,7 @@ description: >
 
 ## 输入与输出
 
-**输入**：业务需求描述（邮件、会议纪要、工单等）、`knowledge/`、`specs/`、可选 `solutions/archive/`  
+**输入**：业务需求描述（邮件、会议纪要、工单等）、`knowledge/`；已有规约见各 `requirements/.../specs/` 或 `knowledge/technical/`（按需）  
 **输出**：`solutions/SOLUTION-{ID}.md`（结构遵循 [.ai/rules/solution/solution-template.md](.ai/rules/solution/solution-template.md)）
 
 ## 工作流（五步）
@@ -60,4 +60,4 @@ description: >
 ## 参考
 
 - 文档模板：`.ai/rules/solution/solution-template.md`
-- 现存知识库：`knowledge/`；规约：`specs/`；历史方案：`solutions/archive/`
+- 现存知识库：`knowledge/`；规约：`requirements/.../specs/` 或 `knowledge/technical/`（按需）

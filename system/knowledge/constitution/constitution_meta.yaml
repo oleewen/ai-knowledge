@@ -3,6 +3,14 @@ id: "DIR-KNOWLEDGE-CONSTITUTION"
 name: "宪法与治理层（knowledge/constitution）"
 description: "术语、原则、标准模板与 ADR：为四视角与阶段文档提供统一命名、可追溯决策与治理约束；不承载业务/产品/技术/数据实体定义。"
 
+child_directories:
+  - "principles"
+  - "standards"
+  - "adr"
+child_files:
+  - "README.md"
+  - "GLOSSARY.md"
+
 role:
   perspective: "constitution"
   is_system_level_index: true
@@ -13,16 +21,16 @@ inputs:
 
 outputs:
   primary_artifact:
-    pattern: "constitution_meta.yaml, principles/principles_meta.yaml, standards/{standards_meta,naming-conventions,adr-template,adr_meta}.*, adr/adr_corpus_meta.yaml, adr/ADR-*.md, GLOSSARY.md, principles/**/*.{yaml,md}"
-    description: "治理类产出；根级 constitution_meta + 子树 meta（principles/、standards/、adr/）；ADR 正文在 adr/；标准与模板在 standards/"
+    pattern: "constitution_meta.yaml, principles/principles_meta.yaml, standards/{standards_meta,NAMING-CONVENTIONS}.*, adr/{adr_meta,adr-template}.*, adr/ADR-*.md, GLOSSARY.md, principles/**/*.{yaml,md}"
+    description: "治理类产出；根级 constitution_meta + 子树 meta（principles/、standards/、adr/）；ADR 正文与模板标准在 adr/；命名规范在 standards/"
 
 naming_conventions:
   structure:
     glossary: "GLOSSARY.md"
     principles_tree: "principles/（含 principles_meta.yaml）"
-    standards_tree: "standards/（含 standards_meta.yaml、naming-conventions.md、adr-template.md、adr_meta.yaml）"
-    adr_corpus: "adr/（含 adr_corpus_meta.yaml、ADR-{序号}-{短标题}.md）"
-    adr_standard_meta: "standards/adr_meta.yaml"
+    standards_tree: "standards/（含 standards_meta.yaml、NAMING-CONVENTIONS.md）"
+    adr_corpus: "adr/（ADR-{序号}-{短标题}.md）"
+    adr_standard_meta: "adr/adr_meta.yaml"
 
 indexing:
   readme_index_table: true
@@ -42,9 +50,9 @@ integration:
 references:
   - path: "./README.md"
     description: "本层使命、组件与使用顺序"
-  - path: "./standards/naming-conventions.md"
+  - path: "./standards/NAMING-CONVENTIONS.md"
     description: "全局 ID 与文件命名"
-  - path: "./standards/adr_meta.yaml"
+  - path: "./adr/adr_meta.yaml"
     description: "ADR 模板结构与落盘约定（机器可读）"
   - path: "../../INDEX.md"
     description: "system 级索引"

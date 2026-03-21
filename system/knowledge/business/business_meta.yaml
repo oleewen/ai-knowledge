@@ -1,51 +1,92 @@
-# system/knowledge/business 目录元数据
-id: "DIR-KNOWLEDGE-BUSINESS"
-name: "业务视角（knowledge/business）"
-description: "系统级业务视角：描述业务版图、领域逻辑与规则（DDD），不依赖具体技术实现；并通过显式 ID 字段与产品、技术、数据视角建立映射。"
+# system/knowledge/business — 业务视角统一元数据（单文件 SSOT）
+# 结构：identity + repository + pipeline + integration + layers（每层一条，无重复的全局 inputs）
+schema_version: "1.1"
+
+# -----------------------------------------------------------------------------
+# 1. 视角身份
+# -----------------------------------------------------------------------------
+identity:
+  id: "DIR-KNOWLEDGE-BUSINESS"
+  name: "业务视角（knowledge/business）"
+  description: >
+    系统级业务视角：描述业务版图、领域逻辑与规则（DDD），不依赖具体技术实现；
+    通过显式 ID 与产品、技术、数据视角建立映射。本文件为业务视角唯一元数据入口。
 
 role:
   perspective: "business"
   is_system_level_index: true
 
-inputs:
-  - path: "../constitution/"
-    description: "命名规范、术语与治理约束"
-  - path: "(from-solution-analysis-delivery)"
-    description: "解决方案/需求分析/交付沉淀的领域事实与边界调整（归档回写）"
-
-outputs:
-  primary_artifact:
-    pattern: "business_meta.yaml, {BD-ID}_BD_meta.yaml, {BSD-ID}_BSD_meta.yaml, {BC-ID}_BC_meta.yaml, {AGG-ID}_AGG_meta.yaml；目录树 {BD-ID}/{BSD-ID}/{BC-ID}/ 作层级锚点"
-    description: "业务视角元数据与聚合定义（YAML）集中于本目录根；子目录仅作 DDD 层级导航"
-
-naming_conventions:
+# -----------------------------------------------------------------------------
+# 2. 仓库与目录约定（锚点 + 命名模式）
+# -----------------------------------------------------------------------------
+repository:
+  root_relative: "knowledge/business"
+  child_directories:
+    - "BD-{ID}"
+  child_files:
+    - "README.md"
   hierarchy:
-    description: "业务域 (BD) → 业务子域 (BSD) → 限界上下文 (BC) → 聚合 (AGG)"
-  directories:
-    bd: "{BD-ID}/"
-    bsd: "{BD-ID}/{BSD-ID}/"
-    bc: "{BD-ID}/{BSD-ID}/{BC-ID}/"
-  meta_files_in_business_root:
-    perspective: "business_meta.yaml"
-    bd: "{BD-ID}_BD_meta.yaml"
-    bsd: "{BSD-ID}_BSD_meta.yaml"
-    bc: "{BC-ID}_BC_meta.yaml"
-    aggregate: "{AGG-ID}_AGG_meta.yaml"
+    chain: "BD → BSD → BC → AGG → AB"
+    labels:
+      BD: "业务域 (Business Domain)"
+      BSD: "业务子域 (Business Subdomain)"
+      BC: "限界上下文 (Bounded Context)"
+      AGG: "聚合 (Aggregate)"
+      AB: "能力 (Ability)"
+  directory_patterns:
+    BD: "BD-{ID}/"
+    BSD: "BD-{ID}/BSD-{ID}/"
+    BC: "BD-{ID}/BSD-{ID}/BC-{ID}/"
+    AGG: "BD-{ID}/BSD-{ID}/BC-{ID}/AGG-{ID}/"
+    AB: "BD-{ID}/BSD-{ID}/BC-{ID}/AGG-{ID}/AB-{ID}/"
 
-indexing:
-  readme_index_table: true
-  rule: "新增/调整 BD/BSD/BC/AGG 时，应同步维护 README.md 的业务索引表与必要的全局索引"
+# -----------------------------------------------------------------------------
+# 3. 阶段输入 / 产出（全层实体共享，不在各层重复声明）
+# -----------------------------------------------------------------------------
+pipeline:
+  inputs:
+    - path: "../constitution/"
+      description: "命名规范、术语与治理约束"
+    - path: "solutions/"
+      description: "解决方案文档（SOLUTION-{ID}.md）"
+    - path: "analysis/"
+      description: "需求分析文档（ANALYSIS-{ID}.md）"
+    - path: "requirements/"
+      description: "需求交付文档（REQUIREMENT-{ID}.md）"
+  outputs:
+    ssot_file: "business_meta.yaml"
+    narrative: "各层实体字段模板与关系见 `layers`；物理目录仅作 DDD 导航锚点，可含各层 Markdown 说明文件。"
+    directory_role: "子目录树与 `directory_patterns` 一致，用于人类导航与文档落盘，不重复存放与根索引冲突的 *_meta.yaml。"
 
+# -----------------------------------------------------------------------------
+# 4. 跨视角映射（单一关系表）
+# -----------------------------------------------------------------------------
 integration:
-  mappings:
-    - "业务 → 技术：BC 的 implemented_by_app_id 指向 technical 的 APP"
-    - "业务 → 数据：AGG 的 persisted_as_entity_ids 指向 data 的 ENT"
+  cross_perspective:
+    - from: { layer: "BC", field: "implemented_by_app_id" }
+      to: { perspective: "technical", kind: "APP" }
+      meaning: "限界上下文由哪个应用实现"
+    - from: { layer: "AGG", field: "persisted_as_entity_ids" }
+      to: { perspective: "data", kind: "ENT" }
+      meaning: "聚合持久化落在哪些数据实体"
+    - from: { layer: "AGG", field: "implemented_by_service_ids" }
+      to: { perspective: "technical", kind: "MS" }
+      meaning: "聚合由哪些微服务实现（可选）"
+    - from: { layer: "AB", field: "implemented_by_api_id" }
+      to: { perspective: "technical", kind: "API" }
+      meaning: "能力由哪个 API 暴露"
   key_fields:
     bounded_context:
       - "implemented_by_app_id"
     aggregate:
       - "persisted_as_entity_ids"
+      - "implemented_by_service_ids"
+    ability:
+      - "implemented_by_api_id"
 
+# -----------------------------------------------------------------------------
+# 5. 文档引用
+# -----------------------------------------------------------------------------
 references:
   - path: "./README.md"
     description: "本视角说明、层级结构与映射字段约定"
@@ -53,3 +94,112 @@ references:
     description: "全局索引与映射速查"
   - path: "../../DESIGN.md"
     description: "目录结构与元模型规范"
+
+# -----------------------------------------------------------------------------
+# 6. DDD 层级模型（每层：标识模式、树、产物、字段模板、索引规则）
+# -----------------------------------------------------------------------------
+layers:
+  - key: "bd"
+    code: "BD"
+    order: 1
+    entity_kind: "business_domain"
+    id_pattern: "BD-{ID}"
+    parent: null
+    tree:
+      child_directory_glob: "BSD-{ID}/"
+    artifacts:
+      markdown: "BD-{ID}.md"
+    fields:
+      owner: "域负责人（可选）"
+      strategic_classification: "战略分类，如 core_domain / supporting_domain"
+    indexing:
+      readme_index_table: true
+      rule: "新增/调整 BD 时同步 README 与全局索引"
+
+  - key: "bsd"
+    code: "BSD"
+    order: 2
+    entity_kind: "business_subdomain"
+    id_pattern: "BSD-{ID}"
+    parent:
+      field: "parent_bd_id"
+      expects: "BD-{ID}"
+    tree:
+      child_directory_glob: "BC-{ID}/"
+    artifacts:
+      markdown: "BSD-{ID}.md"
+    fields:
+      owner: "子域负责人（可选）"
+      strategic_classification: "子域战略分类（可选）"
+      domain_expert: "领域专家（可选）"
+    indexing:
+      readme_index_table: true
+      rule: "新增/调整 BSD 及其下游 BC/AGG/AB 时同步 README 与索引"
+
+  - key: "bc"
+    code: "BC"
+    order: 3
+    entity_kind: "bounded_context"
+    id_pattern: "BC-{ID}"
+    parent:
+      field: "parent_bsd_id"
+      expects: "BSD-{ID}"
+    tree:
+      child_directory_glob: "AGG-{ID}/"
+    artifacts:
+      markdown: "BC-{ID}.md"
+    fields:
+      owner: "上下文负责人（可选）"
+      strategic_classification: "上下文分类（可选）"
+      implemented_by_app_id: "APP-*，映射 technical 应用"
+      ubiquitous_language: "术语表（map：概念 → 释义）"
+    indexing:
+      readme_index_table: true
+      rule: "新增/调整 BC 及其 AGG/AB 时同步 README 与索引"
+
+  - key: "agg"
+    code: "AGG"
+    order: 4
+    entity_kind: "aggregate"
+    id_pattern: "AGG-{ID}"
+    parent:
+      field: "parent_bc_id"
+      expects: "BC-{ID}"
+    tree:
+      child_directory_glob: "AB-{ID}/"
+    artifacts:
+      markdown: "AGG-{ID}.md"
+    fields:
+      root_entity: "聚合根逻辑名"
+      entities: "聚合内实体名列表"
+      invariants: "不变量列表（可选）"
+      persisted_as_entity_ids: "ENT-* 列表，映射 data"
+      implemented_by_service_ids: "MS-* 列表（可选）"
+    indexing:
+      readme_index_table: true
+      rule: "新增/调整 AGG 及其 AB 时同步 README、AGG↔ENT 与索引"
+
+  - key: "ab"
+    code: "AB"
+    order: 5
+    entity_kind: "ability"
+    id_pattern: "AB-{ID}"
+    parent:
+      field: "parent_agg_id"
+      expects: "AGG-{ID}"
+    tree:
+      child_directory_glob: null
+    artifacts:
+      markdown: "AB-{ID}.md"
+    fields:
+      implemented_by_api_id: "API-*，映射 technical 接口"
+    indexing:
+      readme_index_table: true
+      rule: "新增/调整 AB 时同步 README、API 映射与索引"
+
+# -----------------------------------------------------------------------------
+# 7. 全局索引运维（与 perspective 并列，避免与 layers 重复）
+# -----------------------------------------------------------------------------
+indexing:
+  readme_index_table: true
+  rule: "任一 layer 变更时，更新本文件（若扩展 layers）、README.md 业务索引表与必要的根 INDEX"

@@ -2,7 +2,7 @@
 name: sdx-analysis
 description: >
   需求分析：基于解决方案文档与知识库进行深度研究、需求细化、MVP 拆分与依赖/风险评估，输出需求分析文档。
-  在用户执行 /sdx-analysis、编写需求分析文档、或进行方案→需求分析时使用。输出至 analysis/REQUIREMENT-{ID}.md，模板见 .ai/rules/analysis/requirement-template.md。
+  在用户执行 /sdx-analysis、编写需求分析文档、或进行方案→需求分析时使用。输出至 analysis/ANALYSIS-{ID}.md，模板见 .ai/rules/analysis/analysis-template.md。
 ---
 
 # 需求分析阶段（sdx-analysis）
@@ -11,8 +11,8 @@ description: >
 
 ## 输入与输出
 
-**输入**：解决方案文档（`solutions/`）、知识库（`knowledge/`）、规约（`specs/`）  
-**输出**：`analysis/REQUIREMENT-{ID}.md`（结构遵循 [.ai/rules/analysis/requirement-template.md](.ai/rules/analysis/requirement-template.md)）
+**输入**：解决方案文档（`solutions/`）、知识库（`knowledge/`）；已有规约见各 `requirements/.../specs/` 或 `knowledge/technical/`（按需）  
+**输出**：`analysis/ANALYSIS-{ID}.md`（结构遵循 [.ai/rules/analysis/analysis-template.md](.ai/rules/analysis/analysis-template.md)）
 
 ## 工作流（五步）
 
@@ -45,8 +45,8 @@ description: >
 ### 步骤 5：文档输出与评审
 
 - **角色**：technical-writer + doc-updater
-- **任务**：将步骤 1–4 的产出整合为需求分析文档，严格采用 `.ai/rules/analysis/requirement-template.md` 的章节与格式；执行质量门禁自查。
-- **产出**：`analysis/REQUIREMENT-{ID}.md`。
+- **任务**：将步骤 1–4 的产出整合为需求分析文档，严格采用 `.ai/rules/analysis/analysis-template.md` 的章节与格式；执行质量门禁自查。
+- **产出**：`analysis/ANALYSIS-{ID}.md`。
 
 ## 质量门禁（requirement_quality_gate）
 
@@ -59,5 +59,5 @@ description: >
 
 ## 参考
 
-- 文档模板：`.ai/rules/analysis/requirement-template.md`
-- 上游方案：`solutions/`；知识库：`knowledge/`；规约：`specs/`
+- 文档模板：`.ai/rules/analysis/analysis-template.md`
+- 上游方案：`solutions/`；知识库：`knowledge/`；规约：`requirements/.../specs/` 或 `knowledge/technical/`（按需）

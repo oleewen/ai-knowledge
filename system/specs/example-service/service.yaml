@@ -1,6 +1,0 @@
-# 服务元信息（OpenSpec）
-# 按 README 规范：specs/{service-name}/service.yaml
-name: example-service
-description: ""
-version: "0.0.0"
-# api/、domain/、data/、integration/ 规约见同目录下对应子目录
