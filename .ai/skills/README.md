@@ -10,9 +10,9 @@
 | `/document-change` | 变更文档索引：检查最近变动内容，建立变动内容索引与变动时间（毫秒）；支持 git commit / CHANGELOG / 文件 mtime 三路合并。 |
 | `/agent-guide` | 生成/更新根目录 `AGENTS.md` 与 `README.md`；① document-indexing 产出 Index → ② agent-guide 产出 AGENTS/README |
 | `/knowledge-build` | 知识库构建：① document-indexing 产出 Index → ② agent-guide 产出 AGENTS/README → ③ 按 Index 选择性阅读并写入 knowledge → ④ 验证。 |
-| `/knowledge-upgrade` | 应用级知识库增量升级：① 应用内 document-indexing → ③ 按 applications/INDEX 与应用 knowledge 格式选择性阅读并回写 → ④ 验证（无 AGENTS/README 第二阶段）。 |
+| `/knowledge-upgrade` | 应用级知识库增量升级：① 应用内 document-indexing → ③ 按 applications/APPLICATIONS_INDEX 与应用 knowledge 格式选择性阅读并回写 → ④ 验证（无 AGENTS/README 第二阶段）。 |
 | `/knowledge-archive` | 归档 applications/ 知识库变更；将应用侧有效信息按 system/knowledge 与 CONTRIBUTING 规范上行补充系统库（联邦 SSOT、仅 ID 引用）。 |
 
 在 Chat 中输入 `/` 后选择对应命令即可调用（如 `/agent-guide`）；或使用 `@技能名`（如 `@agent-guide`、`@sdx-solution`）将 Skill 作为上下文附加。
 
-**说明**：斜杠命令由 `.ai/skills/<技能名>/SKILL.md` 提供，文件夹名即命令名（如 `skills/agent-guide` → `/agent-guide`）。执行时按 SKILL 步骤落盘产物（如 `document-change` → `changes-index.*`，`document-indexing` → `INDEX.md` + `indexing-log.jsonl`），无独立 `document-change.sh` 一类脚本。
+**说明**：斜杠命令由 `.ai/skills/<技能名>/SKILL.md` 提供，文件夹名即命令名（如 `skills/agent-guide` → `/agent-guide`）。执行时按 SKILL 步骤落盘产物（如 `document-change` → `changes-index.*`，`document-indexing` → 根 `INDEX_GUIDE.md`（`PROJECT_INDEX.md` 短入口）+ `indexing-log.jsonl`（以仓库约定为准）），无独立 `document-change.sh` 一类脚本。

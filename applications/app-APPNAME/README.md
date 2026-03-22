@@ -9,7 +9,7 @@
 1. 本目录 [INDEX.md](./INDEX.md)（应用内导航与中央库指针）
 2. [application_meta.yaml](./application_meta.yaml)（机器可读根索引，与 `system/system_meta.yaml` 对照）
 3. [knowledge/README.md](./knowledge/README.md) 与各视角 `README.md`、`*_meta.yaml`
-4. 中央库：[system/README.md](../../system/README.md)、[system/INDEX.md](../../system/INDEX.md)、[system/DESIGN.md](../../system/DESIGN.md)
+4. 中央库：[system/README.md](../../system/README.md)、[system/SYSTEM_INDEX.md](../../system/SYSTEM_INDEX.md)、[system/DESIGN.md](../../system/DESIGN.md)
 
 ---
 

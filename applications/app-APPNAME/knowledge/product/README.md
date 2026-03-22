@@ -52,4 +52,4 @@
 - **产品 → 业务**：产品模块的 `relies_on_context_ids` 指向 business 的 BC。
 - **产品 → 技术**：功能点的 `invokes_api_ids` 指向 technical 的 API（应用级 manifest 中登记）；用例的 `map_to_api_id` 指向具体 API。
 
-系统索引：[../../INDEX.md](../../INDEX.md)；全库 Index Guide：[../../../INDEX.md](../../../INDEX.md)；设计：[../../DESIGN.md](../../DESIGN.md)。
+系统索引：[../../INDEX.md](../../INDEX.md)；全库 Index Guide：[../../../INDEX_GUIDE.md](../../../INDEX_GUIDE.md)；设计：[../../DESIGN.md](../../DESIGN.md)。

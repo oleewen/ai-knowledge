@@ -44,4 +44,4 @@
 - **技术 ← 业务**：business 限界上下文的 `implemented_by_app_id` 指向本层 APP。
 - **技术 ← 产品**：product 功能点的 `invokes_api_ids` 指向应用级 manifest 中登记的 API。
 
-系统索引：[../../INDEX.md](../../INDEX.md)；全库 Index Guide：[../../../INDEX.md](../../../INDEX.md)；设计：[../../DESIGN.md](../../DESIGN.md)。
+系统索引：[../../SYSTEM_INDEX.md](../../SYSTEM_INDEX.md)；全库 Index Guide：[../../../INDEX_GUIDE.md](../../../INDEX_GUIDE.md)；设计：[../../DESIGN.md](../../DESIGN.md)。

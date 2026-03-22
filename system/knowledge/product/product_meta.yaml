@@ -72,7 +72,7 @@ integration:
 references:
   - path: "./README.md"
     description: "本视角说明、层级结构与映射字段约定"
-  - path: "../../INDEX.md"
+  - path: "../../SYSTEM_INDEX.md"
     description: "全局索引与映射速查"
   - path: "../../DESIGN.md"
     description: "目录结构与元模型规范"

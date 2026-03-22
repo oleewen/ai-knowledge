@@ -125,7 +125,7 @@ curl -sL "..." | bash -s -- --dry-run
 # 拷贝到 <目标工程>/<文档目录>/（示例：/path/to/your-project/docs）
 ./scripts/knowledge-init.sh /path/to/your-project/docs
 
-# 中央知识库模式：额外在本仓库 system/INDEX.md 登记工程接入信息，
+# 中央知识库模式：额外在本仓库 system/SYSTEM_INDEX.md 登记工程接入信息，
 # 并在 system/knowledge/technical/SYS-ECOMMERCE-BACKEND/ 下生成 APP-<工程名>/ 模板
 ./scripts/knowledge-init.sh --mode=central /path/to/your-project/docs
 
@@ -154,4 +154,4 @@ curl -sL "..." | bash -s -- --dry-run
 
 说明：rules 会过滤掉 `.ai/rules/solution/` 与 `.ai/rules/analysis/` 两个目录。
 
-中央模式（`--mode=central`）额外会更新本仓库 `system/INDEX.md`，并在 `system/knowledge/technical/SYS-ECOMMERCE-BACKEND/` 下生成 `APP-<工程名>/` 注册模板。
+中央模式（`--mode=central`）额外会更新本仓库 `system/SYSTEM_INDEX.md`，并在 `system/knowledge/technical/SYS-ECOMMERCE-BACKEND/` 下生成 `APP-<工程名>/` 注册模板。

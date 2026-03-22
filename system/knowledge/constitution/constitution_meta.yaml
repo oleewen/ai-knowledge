@@ -34,7 +34,7 @@ naming_conventions:
 
 indexing:
   readme_index_table: true
-  rule: "新增术语、原则文件、标准或 ADR 时，应维护 README.md 组件表与必要的 ../../INDEX.md 登记"
+  rule: "新增术语、原则文件、标准或 ADR 时，应维护 README.md 组件表与必要的 ../../SYSTEM_INDEX.md 登记"
 
 integration:
   description: "各视角与阶段文档须遵守本层命名与 ADR 结论"
@@ -54,7 +54,7 @@ references:
     description: "全局 ID 与文件命名"
   - path: "./adr/adr_meta.yaml"
     description: "ADR 模板结构与落盘约定（机器可读）"
-  - path: "../../INDEX.md"
+  - path: "../../SYSTEM_INDEX.md"
     description: "system 级索引"
   - path: "../../DESIGN.md"
     description: "system 元模型与目录设计"

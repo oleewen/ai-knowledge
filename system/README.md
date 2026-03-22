@@ -6,8 +6,8 @@
 
 ## 查阅顺序（与 AGENTS 对齐）
 
-1. 仓库级地图：[INDEX.md](../INDEX.md)（Index Guide）、[README.md](../README.md)（命令与总览）、[AGENTS.md](../AGENTS.md)（Agent 契约）
-2. 本树导航：[INDEX.md](./INDEX.md)
+1. 仓库级地图：[INDEX_GUIDE.md](../INDEX_GUIDE.md)（Index Guide；[PROJECT_INDEX.md](../PROJECT_INDEX.md) 短入口）、[README.md](../README.md)（命令与总览）、[AGENTS.md](../AGENTS.md)（Agent 契约）
+2. 本树导航：[SYSTEM_INDEX.md](./SYSTEM_INDEX.md)（`INDEX.md` 为短入口）
 3. 设计与贡献：[DESIGN.md](./DESIGN.md)、[CONTRIBUTING.md](./CONTRIBUTING.md)
 4. 各子目录 [knowledge/](./knowledge/)、[solutions/](./solutions/) 、[analysis/](./analysis/) 、[requirements/](./requirements/) （按需下钻）；接口/数据等规约落在各 `REQUIREMENT-{ID}/…/specs/` 或 [knowledge/technical/](./knowledge/technical/)
 
@@ -24,7 +24,7 @@
 | 3   | [requirements/](./requirements/) | `记录需求版本，REQUIREMENT-{ID}/MVP-Phase-*/`（PRD / ADD / TDD、按需 `specs/`） |
 
 
-闭环与运维：变更与里程碑记在 [changelogs/](./changelogs/)；应用向中央库登记见 [INDEX.md](./INDEX.md)「应用接入」；全库 AI 构建见 [INDEX.md](./INDEX.md)「AI 工作流」。
+闭环与运维：变更与里程碑记在 [changelogs/](./changelogs/)；应用向中央库登记见 [SYSTEM_INDEX.md](./SYSTEM_INDEX.md)「应用接入」；全库 AI 构建见 [SYSTEM_INDEX.md](./SYSTEM_INDEX.md)「AI 工作流」。
 
 ---
 
@@ -34,7 +34,7 @@
 | 文档                                                   | 说明                       |
 | ---------------------------------------------------- | ------------------------ |
 | [system_meta.yaml](./system_meta.yaml)               | `system/` 根目录索引（机器可读约定）  |
-| [INDEX.md](./INDEX.md)                               | 本目录索引、映射速查、接入登记、AI 工作流指针 |
+| [SYSTEM_INDEX.md](./SYSTEM_INDEX.md)                 | 本目录索引、映射速查、接入登记、AI 工作流指针 |
 | [DESIGN.md](./DESIGN.md)                             | 原则、元模型、目录约定、映射字段、演进      |
 | [CONTRIBUTING.md](./CONTRIBUTING.md)                 | 新增 / 修改规则与模板入口           |
 | [knowledge/README.md](./knowledge/README.md)         | 四视角 + 宪法层入口              |

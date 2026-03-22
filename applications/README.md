@@ -13,7 +13,7 @@
 ## 关键入口（建议阅读顺序）
 
 - [应用知识库根目录/INDEX.md](./app-APPNAME/INDEX.md)（应用模板索引）
-- [applications/INDEX.md](./INDEX.md)（应用域总览）
+- [applications/APPLICATIONS_INDEX.md](./APPLICATIONS_INDEX.md)（应用域总览；[短入口](./INDEX.md)）
 - [system/DESIGN.md](../system/DESIGN.md)（系统级目录结构与元模型）
-- [system/INDEX.md](../system/INDEX.md)（系统级索引与映射字段）
+- [system/SYSTEM_INDEX.md](../system/SYSTEM_INDEX.md)（系统级索引与映射字段）
 - 初始化脚本与说明：`scripts/sdx-init.sh`、`scripts/README.md`

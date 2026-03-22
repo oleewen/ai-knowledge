@@ -75,7 +75,7 @@ references:
     description: "本阶段目标、结构与工作流说明"
   - path: "../DESIGN.md"
     description: "全局目录结构与阶段设计"
-  - path: "../INDEX.md"
+  - path: "../SYSTEM_INDEX.md"
     description: "全局索引"
   - path: "../../.ai/rules/requirement/prd-template.md"
     description: "PRD 模板（frontmatter 字段约定）"

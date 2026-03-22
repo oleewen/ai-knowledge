@@ -26,11 +26,11 @@ post_init_checklist_text() {
 
 拷贝后建议核对（以目标文档目录内 README、*_meta.yaml 为准；字段含义以 YAML 为 SSOT）：
   [ ] application_meta.yaml 已随模板落地；若实际目录名不再是 app-APPNAME，可酌情更新其中 template_directory 或描述，避免误导 Agent
-  [ ] INDEX.md、README.md 内相对链接在目标工程中可访问
+  [ ] INDEX_GUIDE.md（或 PROJECT_INDEX.md 短入口 / 仓库约定的根 Index Guide）、README.md 内相对链接在目标工程中可访问
   [ ] knowledge/knowledge_meta.yaml、requirements/requirements_meta.yaml、changelogs/changelogs_meta.yaml 与各目录 README 首段「元数据」链一致
   [ ] knowledge/constitution/：principles_meta.yaml、standards_meta.yaml、adr/adr_meta.yaml（若存在）与 constitution/README.md 组件表互链
   [ ] 正式需求包：自 REQUIREMENT-EXAMPLE 复制为 REQUIREMENT-{ID}/；REQUIREMENT-EXAMPLE 为结构示例，不单建 *_meta.yaml（见 requirements/README.md）
-  [ ] central 模式：核对本仓库 system/INDEX.md 接入登记行与 system/knowledge/technical/.../APP-*.yaml 是否反映当前工程与文档路径
+  [ ] central 模式：核对本仓库 system/SYSTEM_INDEX.md 接入登记行与 system/knowledge/technical/.../APP-*.yaml 是否反映当前工程与文档路径
 
 CHECKLIST
 }
@@ -298,7 +298,7 @@ usage() {
 
   两种模式:
   - standalone（默认）：仅对目标工程做拷贝
-  - central：在本仓库 system/INDEX.md 记录目标工程路径与文档目录，并在 system/knowledge/technical/SYS-ECOMMERCE-BACKEND/ 下新建 APP-<工程名>/ 模板
+  - central：在本仓库 system/SYSTEM_INDEX.md 记录目标工程路径与文档目录，并在 system/knowledge/technical/SYS-ECOMMERCE-BACKEND/ 下新建 APP-<工程名>/ 模板
 
 选项:
   --mode=MODE         模式：standalone（默认）| central（也支持缩写：s | c）
@@ -611,8 +611,8 @@ EOF
 
 upsert_system_index_record() {
   local app_id="$1" repo_or_path="$2" docs_abs="$3"
-  local idx="$REPO_ROOT/system/INDEX.md"
-  [[ -f "$idx" ]] || error "未找到 system/INDEX.md: $idx"
+  local idx="$REPO_ROOT/system/SYSTEM_INDEX.md"
+  [[ -f "$idx" ]] || error "未找到 system/SYSTEM_INDEX.md: $idx"
 
   local marker_start="## 六、中央知识库接入工程"
   local marker_table_header="| APP ID | 工程路径（Git 或绝对路径） | 文档目录 |"

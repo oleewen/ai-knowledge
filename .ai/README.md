@@ -18,7 +18,7 @@
 ## 与仓库其他文档的关系
 
 - **人类与 Agent 总契约**：根目录 [`AGENTS.md`](../AGENTS.md)
-- **权威路径地图**：根目录 [`INDEX.md`](../INDEX.md)（七段 Index Guide）
+- **权威路径地图**：根目录 [`INDEX_GUIDE.md`](../INDEX_GUIDE.md)（七段 Index Guide；[`PROJECT_INDEX.md`](../PROJECT_INDEX.md) 为兼容短入口）
 - **系统知识库治理**：[`system/DESIGN.md`](../system/DESIGN.md)、[`system/CONTRIBUTING.md`](../system/CONTRIBUTING.md)
 - **编辑器侧入口**：Cursor 下见 [`.cursor/README.md`](../.cursor/README.md)，与 `skills/` 镜像；Slash 命令表以 [`skills/README.md`](skills/README.md) 为准。
 

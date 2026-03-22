@@ -6,7 +6,7 @@
 
 ## 先读这些入口
 
-1. [INDEX.md](./INDEX.md)：目录导航、阶段关系、映射速查与模板/Skill 入口  
+1. [SYSTEM_INDEX.md](./SYSTEM_INDEX.md)：目录导航、阶段关系、映射速查与模板/Skill 入口  
 2. [DESIGN.md](./DESIGN.md)：元模型、字段语义与跨视角映射  
 3. [AGENTS.md](../AGENTS.md)：仓库级约束与禁止项  
 4. 目标目录 `README.md` + 对应 `*_meta.yaml`：落盘与命名的最终约束
@@ -18,7 +18,7 @@
 1. **引用优先**：能链接到权威文档就不在本文件重复定义。  
 2. **ID 稳定**：禁止未评估影响面即修改已有实体 ID；若调整，必须同步全链路引用。  
 3. **仅写 ID**：跨文件、跨视角关联只写 ID 字符串，不复制目标定义正文。  
-4. **变更可检索**：新增/调整文档后，更新目标目录 `README.md` 索引表；必要时同步 [INDEX.md](./INDEX.md)。  
+4. **变更可检索**：新增/调整文档后，更新目标目录 `README.md` 索引表；必要时同步 [SYSTEM_INDEX.md](./SYSTEM_INDEX.md)。  
 5. **提交规范**：使用 Conventional Commits；跨目录/规则变更建议补 ADR。
 
 ---
@@ -33,4 +33,4 @@
 
 ---
 
-模板、阶段细则、技能入口统一见 [INDEX.md](./INDEX.md)。
+模板、阶段细则、技能入口统一见 [SYSTEM_INDEX.md](./SYSTEM_INDEX.md)。

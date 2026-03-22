@@ -26,5 +26,5 @@
 
 ## 索引指针
 
-- 本树：[../../INDEX.md](../../INDEX.md)  
-- 全库：[../../../INDEX.md](../../../INDEX.md)  
+- 本树：[../../SYSTEM_INDEX.md](../../SYSTEM_INDEX.md)  
+- 全库：[../../../INDEX_GUIDE.md](../../../INDEX_GUIDE.md)  

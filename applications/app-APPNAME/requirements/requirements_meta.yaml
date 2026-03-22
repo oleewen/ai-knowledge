@@ -151,4 +151,4 @@ layers:
 # -----------------------------------------------------------------------------
 indexing:
   readme_index_table: true
-  rule: "任一 layer 或交付包变更时，更新本文件（若扩展 layers）、requirements/README.md、本联邦单元 INDEX 与必要的 ../../../system/INDEX"
+  rule: "任一 layer 或交付包变更时，更新本文件（若扩展 layers）、requirements/README.md、本联邦单元 INDEX 与必要的 ../../../system/SYSTEM_INDEX.md"

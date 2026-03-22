@@ -48,4 +48,4 @@
 - **业务 → 技术**：见 `integration.cross_perspective`（BC/AGG/AB → APP/MS/API）。
 - **业务 → 数据**：AGG → ENT，见同段与 `DESIGN.md` 映射表。
 
-系统索引：[../../INDEX.md](../../INDEX.md)；全库 Index Guide：[../../../INDEX.md](../../../INDEX.md)；设计：[../../DESIGN.md](../../DESIGN.md)。
+系统索引：[../../SYSTEM_INDEX.md](../../SYSTEM_INDEX.md)；全库 Index Guide：[../../../INDEX_GUIDE.md](../../../INDEX_GUIDE.md)；设计：[../../DESIGN.md](../../DESIGN.md)。

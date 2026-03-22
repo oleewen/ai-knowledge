@@ -88,6 +88,5 @@
 
 不要凭空猜测项目结构或配置。请按需查阅以下文件：
 - **项目概述与启动：** 阅读 `README.md`
-- **产品说明书：**`docs/prd.md`
-- **设计文档：** 阅读 `docs/add.md`、`docs/tdd.md`、`docs/api/*`
-- **贡献指南：**`CONTRIBUTING.md`
+- **索引指引：**请优先查阅 `INDEX_GUIDE` 获取项目结构与目录说明。
+- **知识库说明：**关于知识库内容和维护，详见 `knowledge/README.md`。

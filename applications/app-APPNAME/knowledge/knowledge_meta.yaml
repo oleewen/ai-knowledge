@@ -45,7 +45,7 @@ naming_conventions:
 indexing:
   application_index:
     path: "../INDEX.md"
-    rule: "变更条目后按需更新本联邦单元 INDEX.md、../../../system/INDEX.md（若影响全局导航）与各视角 README"
+    rule: "变更条目后按需更新本联邦单元 INDEX.md、../../../INDEX_GUIDE.md（若影响全库 Index Guide）与 ../../../system/SYSTEM_INDEX.md（若影响中央库导航）及各视角 README"
   per_perspective_readmes:
     - "./constitution/README.md"
     - "./business/README.md"

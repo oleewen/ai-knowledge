@@ -2,7 +2,7 @@
 
 本仓库是企业级软件系统的**全局知识底座**，采用「单一事实源」与「联邦治理」理念管理架构与知识体系。
 
-**AI / RAG 导航：** 路径级精要与未读声明见根目录 [INDEX.md](INDEX.md)（Index Guide）；本文件面向人类快速上手与可复制命令。
+**AI / RAG 导航：** 路径级精要与未读声明见根目录 [INDEX_GUIDE.md](INDEX_GUIDE.md)（Index Guide；[PROJECT_INDEX.md](PROJECT_INDEX.md) 为兼容短入口）；本文件面向人类快速上手与可复制命令。
 
 ## 快速启动
 
@@ -40,15 +40,15 @@ REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/sdx-init.s
 | `/document-indexing` | **Skill**：为代码库/文档库生成面向下游 AI 的 Index Guide（拓扑/结构/精读三模式，七段标准输出，零幻觉路径精确）。                                                  |
 | `/agent-guide`       | 生成/更新根目录 `AGENTS.md` 与 `README.md`；① document-indexing 产出 Index → ② agent-guide 产出 AGENTS/README                   |
 | `/knowledge-build`   | 知识库构建：① document-indexing 产出 Index → ② agent-guide 产出 AGENTS/README → ③ 按 Index 选择性阅读并写入 knowledge → ④ 验证。         |
-| `/knowledge-upgrade` | 应用级知识库增量升级：① 应用内 document-indexing → ③ 按 applications/INDEX 与应用 knowledge 格式选择性阅读并回写 → ④ 验证（无 AGENTS/README 第二阶段）。 |
+| `/knowledge-upgrade` | 应用级知识库增量升级：① 应用内 document-indexing → ③ 按 applications/APPLICATIONS_INDEX 与应用 knowledge 格式选择性阅读并回写 → ④ 验证（无 AGENTS/README 第二阶段）。 |
 | `/knowledge-archive` | 归档 applications/ 知识库变更；将应用侧有效信息按 system/knowledge 与 CONTRIBUTING 规范上行补充系统库（联邦 SSOT、仅 ID 引用）。                       |
 
 ## 功能简介
 
-**系统知识库** 已统一放在 **[system](system/)** 目录下（查阅顺序与根目录 `INDEX.md` / `AGENTS.md` 对齐；SDD 主线见 [system/README.md](system/README.md)）：
+**系统知识库** 已统一放在 **[system](system/)** 目录下（查阅顺序与根目录 `INDEX_GUIDE.md` / `AGENTS.md` 对齐；SDD 主线见 [system/README.md](system/README.md)）：
 
 - [system/README.md](system/README.md) — 查阅顺序、SDD 主线、快速导航  
-- [system/INDEX.md](system/INDEX.md) — system 树索引、映射速查、应用接入、AI 工作流指针  
+- [system/SYSTEM_INDEX.md](system/SYSTEM_INDEX.md) — system 树索引、映射速查、应用接入、AI 工作流指针  
 - [system/DESIGN.md](system/DESIGN.md) — 原则、元模型、目录与映射、演进  
 - [system/CONTRIBUTING.md](system/CONTRIBUTING.md) — 贡献工作流与各阶段模板入口  
 - [system/changelogs/README.md](system/changelogs/README.md) — 变更日志入口（规约随各 `requirements/REQUIREMENT-*/…/specs/`）
@@ -56,23 +56,25 @@ REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/sdx-init.s
 **应用知识库** 已统一放在 **[applications](applications/)** 目录下，包含：
 
 - [applications/README.md](applications/README.md) — 应用知识库说明与初始化方式  
-- [applications/INDEX.md](applications/INDEX.md) — 应用知识结构、方案与需求、治理信息导航
+- [applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md) — 应用知识结构、方案与需求、治理信息导航（[短入口](applications/INDEX.md)）
 
 ## 目录结构
 
 ```text
 ai-sdd-knowledge/
 ├── README.md           # 本文件：总览、快速初始化、功能简介与文档索引
-├── INDEX.md            # AI 文档库精要索引指南（Index Guide，与 document-indexing 对齐）
+├── INDEX_GUIDE.md      # AI 文档库精要索引指南（Index Guide，与 document-indexing 对齐）
+├── PROJECT_INDEX.md    # 短入口：兼容旧名 → INDEX_GUIDE.md
+├── INDEX.md            # 根短文入口（指向 INDEX_GUIDE / 兼容说明）
 ├── AGENTS.md           # AI Agents 开发指南（角色、关键路径、规范、命令）
 ├── system/             # 系统知识库
-│   ├── README.md, INDEX.md, DESIGN.md, CONTRIBUTING.md
+│   ├── README.md, SYSTEM_INDEX.md, INDEX.md（短入口）, DESIGN.md, CONTRIBUTING.md
 │   ├── knowledge/      # 四视角 + 宪法层（constitution, business, product, technical, data）
 │   ├── solutions/      # 解决方案（SOLUTION-{ID}.md）
 │   ├── analysis/       # 需求分析（ANALYSIS-{ID}.md）
 │   ├── requirements/   # 需求交付（REQUIREMENT-{ID}/MVP-Phase-*；规约可在包内 specs/）
 │   └── changelogs/     # 变更日志（README、CHANGELOG、可选索引文件）
-├── applications/       # 应用知识库（README、INDEX 及各应用子目录）
+├── applications/       # 应用知识库（README、APPLICATIONS_INDEX、INDEX 短入口及各应用子目录）
 ├── scripts/            # sdx-init、knowledge-init 等，详见 scripts/README.md
 ├── .ai/                # AI 规范与技能（CONVENTIONS.md、rules/、skills/）
 ├── .cursor/            # Cursor 配置与 Slash 命令（README、skills/）
@@ -84,9 +86,9 @@ ai-sdd-knowledge/
 
 | 用途         | 文档                                                                            |
 | ---------- | ----------------------------------------------------------------------------- |
-| 文档索引地图    | [INDEX.md](INDEX.md)                                                          |
+| 文档索引地图    | [INDEX_GUIDE.md](INDEX_GUIDE.md)                                              |
 | 索引运行日志     | [system/changelogs/indexing-log.jsonl](system/changelogs/indexing-log.jsonl)  |
-| 系统知识库入口     | [system/README.md](system/README.md)、[system/INDEX.md](system/INDEX.md)      |
+| 系统知识库入口     | [system/README.md](system/README.md)、[system/SYSTEM_INDEX.md](system/SYSTEM_INDEX.md)      |
 | 知识库设计与约定    | [system/DESIGN.md](system/DESIGN.md)、[.ai/CONVENTIONS.md](.ai/CONVENTIONS.md) |
 | 贡献与新增约定    | [system/CONTRIBUTING.md](system/CONTRIBUTING.md)                              |
 | 初始化与选项     | [scripts/README.md](scripts/README.md)                                        |

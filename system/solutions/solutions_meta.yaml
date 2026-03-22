@@ -72,7 +72,7 @@ references:
     description: "本目录说明与方案索引表"
   - path: "../DESIGN.md"
     description: "全局目录结构与阶段设计"
-  - path: "../INDEX.md"
+  - path: "../SYSTEM_INDEX.md"
     description: "全局索引"
   - path: "../../.ai/skills/sdx-solution/SKILL.md"
     description: "解决方案阶段目标与工作流"

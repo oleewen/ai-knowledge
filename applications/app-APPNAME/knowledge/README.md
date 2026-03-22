@@ -22,7 +22,7 @@
 2. 只增删改 **ID** 与 YAML/Markdown 约定字段；跨视角不写重复叙述  
 3. 更新 [../INDEX.md](../INDEX.md) 或该视角 README 中的登记 / 示例（若影响导航）  
 
-**索引指针**：本联邦单元 [../INDEX.md](../INDEX.md)；全库 Index Guide [../../../INDEX.md](../../../INDEX.md)；中央库 [../../system/INDEX.md](../../system/INDEX.md)。
+**索引指针**：本联邦单元 [../INDEX.md](../INDEX.md)；全库 Index Guide [../../../INDEX_GUIDE.md](../../../INDEX_GUIDE.md)；中央库 [../../system/SYSTEM_INDEX.md](../../system/SYSTEM_INDEX.md)。
 
 ---
 

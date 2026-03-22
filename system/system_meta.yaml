@@ -22,6 +22,7 @@ child_directories:
 
 child_files:
   - "README.md"
+  - "SYSTEM_INDEX.md"
   - "INDEX.md"
   - "DESIGN.md"
   - "CONTRIBUTING.md"
@@ -32,7 +33,7 @@ inputs:
 
 outputs:
   primary_artifact:
-    pattern: "README.md, INDEX.md, DESIGN.md, CONTRIBUTING.md, */{dirname}_meta.yaml, knowledge/**/*"
+    pattern: "README.md, SYSTEM_INDEX.md, INDEX.md, DESIGN.md, CONTRIBUTING.md, */{dirname}_meta.yaml, knowledge/**/*"
     description: "child_files（根级）+ child_directories 的 {dirname}_meta.yaml + knowledge 树实体"
 
 naming_conventions:
@@ -49,6 +50,7 @@ integration:
 
 references:
   - path: "./README.md"
+  - path: "./SYSTEM_INDEX.md"
   - path: "./INDEX.md"
   - path: "./DESIGN.md"
   - path: "./CONTRIBUTING.md"

@@ -43,8 +43,8 @@ naming_conventions:
 
 indexing:
   system_index:
-    path: "../INDEX.md"
-    rule: "变更条目后按需更新 system/INDEX.md 与各视角 README"
+    path: "../SYSTEM_INDEX.md"
+    rule: "变更条目后按需更新 system/SYSTEM_INDEX.md 与各视角 README"
   per_perspective_readmes:
     - "./constitution/README.md"
     - "./business/README.md"
@@ -61,6 +61,6 @@ integration:
 
 references:
   - path: "./README.md"
-  - path: "../INDEX.md"
+  - path: "../SYSTEM_INDEX.md"
   - path: "../DESIGN.md"
   - path: "../CONTRIBUTING.md"

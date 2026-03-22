@@ -81,7 +81,7 @@ references:
     description: "本目录说明与 Skill 对照表"
   - path: "../DESIGN.md"
     description: "全局目录结构与 changelogs 定位约定"
-  - path: "../INDEX.md"
+  - path: "../SYSTEM_INDEX.md"
     description: "全局索引"
   - path: "../../README.md"
     description: "根目录命令表与 Skill 入口"

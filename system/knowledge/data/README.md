@@ -46,4 +46,4 @@
 - **数据 ← 业务**：聚合的 `persisted_as_entity_ids` 指向本层 ENT；ENT 的 `maps_to_aggregate_id` 指向 business 的 AGG。
 - **数据 ← 技术**：数据存储的 `owned_by_app_id` 指向 technical 的 APP/MS。
 
-系统索引：[../../INDEX.md](../../INDEX.md)；全库 Index Guide：[../../../INDEX.md](../../../INDEX.md)；设计：[../../DESIGN.md](../../DESIGN.md)。
+系统索引：[../../SYSTEM_INDEX.md](../../SYSTEM_INDEX.md)；全库 Index Guide：[../../../INDEX_GUIDE.md](../../../INDEX_GUIDE.md)；设计：[../../DESIGN.md](../../DESIGN.md)。

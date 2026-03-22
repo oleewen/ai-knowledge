@@ -1,166 +1,170 @@
 ---
 name: document-indexing
-description: >
-  为代码库/文档库生成面向下游 AI 的全局索引指南（Index Guide）：拓扑扫描、结构分析、精读提取；
-  零幻觉路径精确、MECE 分类、标准七段输出。在用户执行 /document-indexing、需要 RAG/导航地图、
-  或建立 Agent 可读的项目索引时使用。
+description: >-
+  为代码库或文档库生成全局索引指南（Index Guide）：拓扑扫描、结构分析、精读提取；
+  路径自根相对、MECE 分类；**本仓库**正文为 **九章 + 附录** 金字塔（见 §8）。
+  执行前须先显式确认 data_mode（全量/增量），再确认 read_mode（1/2/3）；无默认；两步都选定后一行复述即执行，不要求第三次确认。
+  在用户发起 /document-indexing、需要 RAG 导航地图、或建立 Agent 可读项目索引时使用。
 ---
 
 # 文档索引（Index Guide）
 
-你扮演 **资深 AI 文档库架构师与知识图谱工程师**。唯一使命：解析代码库/文档库，产出一份 **对 AI Agent 高度可读、检索导向、信息密度高** 的 **全局索引指南**，作为下游 RAG、上下文理解、代码导航的 **权威地图**。
+## 1. 角色与使命
 
-> **形态说明**：`/document-indexing` 对应本 **Skill**（本文 `SKILL.md`），由 Agent 按步骤执行；**不是** `scripts/` 目录下的 Bash 可执行脚本。依赖的 **`document-change` 同样是 Skill**，见下节 Step 0。
+扮演 **AI 文档库架构师**。解析仓库，产出 **单一权威**、**检索导向**、**信息密度高** 的 **Index Guide**（**默认**落盘为 `INDEX_GUIDE.md`；可通过 `output_path` 覆盖），供 RAG、上下文理解与代码导航使用。
 
-## 0. 输入/输出（契约）
+**Slash**：`/document-indexing` 指本 Skill（非 `scripts/` 下可执行文件）。**Step 3** 依赖 **document-change** Skill（[document-change/SKILL.md](../document-change/SKILL.md)），同样由 Agent 按步骤执行。
 
-- **输入**
-  - `mode`: `1|2|3`（拓扑/结构/精读）
-  - 可选：`output_path`（索引产物路径）
-- **输出**
-  - `INDEX.md`（索引正文；仅记录“索引日志索引”）
-  - `indexing-log.jsonl`（索引运行日志；逐行追加 JSONL；运行元信息只写这里）
+## 2. 何时使用
 
-## 硬性约束
+| 场景 | 使用本 Skill |
+|------|----------------|
+| 需要 **单一权威索引** 供多 Agent 共享 | ✅ |
+| 新项目 onboarding、Monorepo 导航、文档站地图 | ✅ |
+| 与 **knowledge-build** 区分 | 本 Skill 产出 **平面/分层索引与地图**；**四视角链上实体 ID**（BD/PL/SYS/DS，**不含** DIR 联邦/宪法/阶段）由 knowledge-build 写入 **`docs/knowledge/KNOWLEDGE_INDEX.md`** |
 
-1. **零幻觉**：只索引实际读取过的文件；未读文件必须标 `[未索引]`，禁止推测内容。
-2. **路径精确**：一律自项目根起的相对路径（如 `./scripts/sdx-init.sh`），禁止模糊描述。
-3. **MECE**：分类互斥且穷尽；同一文件不得重复出现在多模块（除非显式标为「跨模块共享」）。
-4. **信息密度**：每条功能精要 **15–30 个中文字符**；禁止「该文件用于…」等空话，直接陈述功能。
-5. **幂等性**：同输入多次执行，结构与语义层级应一致。
-6. **可追溯增量**：每次执行必须记录 **索引结束时间（epoch ms）**；下次执行若存在该时间，必须提示用户选择 **全量更新** 或 **增量更新**；选择增量更新时，只对该结束时间之后的变动做定向索引探索（见下节）。
+## 3. 输入 / 输出契约
 
-> 时间展示与落盘统一规则：所有对用户展示的时间、以及日志文件（`indexing-log.jsonl`）中的时间字段，均使用 `yyyy-MM-dd HH:mm:ss.SSS`。如需机器核对，可附带对应的 `*_ms` 字段（可选）。
+| 符号 | 含义 |
+|------|------|
+| `data_mode` | `full`（全量）或 `incremental`（增量）；**禁止默认**，须 Step 2 显式选定 |
+| `read_mode` | `1` 拓扑 / `2` 结构 / `3` 精读；与下文章「读取模式」对应 |
+| `output_path` | 可选；索引正文路径，未指定则按 §4.1 |
+| `since_time` | 增量时等于上次 `indexing_finished_at`；无历史则「不适用」 |
 
-## 1. 目录判定（输出路径与索引日志）
+**输出**：
 
-### 1.1 索引产物路径（INDEX.md）
+- **`INDEX_GUIDE.md`**（索引正文默认路径；若维护索引运行日志，路径可记在 **§2 文档结构** 树或附录；未指定 `output_path` 时见 §4.1）
+- `<索引日志目录>/indexing-log.jsonl`（运行元信息，逐行追加 JSONL）
 
-- 若用户指定 `output_path`：以用户指定为准
-- 否则：
-  - 存在 `./docs/` → `./docs/INDEX.md`
-  - 否则存在 `./doc/` → `./doc/INDEX.md`
-  - 否则 → `./INDEX.md`
+## 4. 目录判定
 
-### 1.2 索引日志目录（与 changelog 同目录）
+### 4.1 索引正文路径（默认 `INDEX_GUIDE.md`）
 
-- 若存在 `./changelogs/`：取 `./changelogs/`
-- 否则：搜索 `**/changelogs/`，若有多个取“路径最短（最接近根目录）”
-- 若不存在：创建 `./changelogs/`
+1. 用户指定 `output_path` → 从之  
+2. 否则：存在 `./docs/` → `./docs/INDEX_GUIDE.md`；否则 `./doc/` → `./doc/INDEX_GUIDE.md`；否则 `./INDEX_GUIDE.md`
 
-索引日志文件固定为：`<索引日志目录>/indexing-log.jsonl`
+### 4.2 索引日志目录
 
-## 2. 执行步骤（顺序固定）
+- 存在 `./changelogs/` → 用之；否则搜索 `**/changelogs/`（多个取路径最短）；不存在则创建 `./changelogs/`  
+- 日志文件：`<索引日志目录>/indexing-log.jsonl`
 
-> 原则：**先决策，后读取**。在确定“全量/增量”前，除 **document-change Skill 的产出**（`changes-index.*`）与索引日志外，不读取其他文件内容。
+## 5. 硬性约束（速查）
 
-### Step 0：先执行一次 document-change Skill（强制）
+1. **零幻觉**：只索引实际读过的文件；未读标 `[未索引]`。  
+2. **路径精确**：自项目根相对路径（如 `./policy-appeal-service/pom.xml`）。  
+3. **MECE**：分类互斥穷尽；同一文件不重复列入多模块（除非标「跨模块共享」）。  
+4. **信息密度**：每条功能精要 **15–30 字**；禁空话。  
+5. **幂等性**：同输入多次执行，层级语义一致。  
+6. **可追溯增量**：每次记录索引结束时间（epoch ms）；下次若存在该时间，须 Step 2 在 **全量 / 增量** 间**显式**选择（无默认）；增量仅对 `since_time` 之后变更定向索引（见 Step 4）。  
+7. **门禁**：未依次确定 `data_mode` 与 `read_mode` 前，**禁止** Step 3～6（含 document-change、按 read_mode 读文件、写索引正文（默认 `INDEX_GUIDE.md`）、追加日志、清理 changes-index）。**禁止**因「首次」「无日志」静默默认全量；首次也须先选 `data_mode`、再选 `read_mode`。用户仅说「开始索引」→ **停止并展示 Step 2.1**。  
 
-**`document-change` 是 Skill**（Slash `/document-change`；实现为按 **`.ai/skills/document-change/SKILL.md`** 或 **`.cursor/skills/document-change/SKILL.md`** 由 Agent 执行），**不是** `scripts/` 下的可执行脚本，仓库亦**无**同名 shell 脚本。
+**时间**：对用户与日志人类可读字段统一 `yyyy-MM-dd HH:mm:ss.SSS`；可选 `*_ms` 字段核对。
 
-按该 SKILL 生成 `changes-index.json` / `changes-index.md`（输出目录见 document-change 的「目录判定」），并将其变更路径列表作为本次索引的输入依据。
+## 6. 执行流程（顺序固定）
 
-### Step 1：仅读取索引日志最后一条记录（若存在）
+> **原则**：**先**定 `data_mode`，**再**定 `read_mode`，然后跑变更基线与索引。在二者未都确定前，**仅允许** Step 1（读日志末条）。
 
-读取 `<索引日志目录>/indexing-log.jsonl` 最后一条 JSON 记录，取得：
+### Step 1 — 读索引日志末条（若存在）
 
-- `indexing_finished_at`（上次结束时间，格式化）
-- `index_output_path`（上次产物路径）
+读 `indexing-log.jsonl` 最后一行，取得上次 `indexing_finished_at`、`index_output_path`（无则视为无历史）。
 
-### Step 2：提示用户选择执行方式（不得默认）
+### Step 2 — 强制选择（不得默认；先 `data_mode`，后 `read_mode`）
 
-- 若无上次记录：直接全量 `execution_mode="full"`
-- 若有上次记录：提示二选一
-  - **全量更新**：忽略上次时间，按本次 `mode` 重建索引
-  - **增量更新**：以 `since_time = indexing_finished_at` 为基准，仅覆盖变更路径（来自 `changes-index`）
+在 `data_mode` 与 `read_mode` 未都确定前 **不得进入 Step 3**。
 
-提示时统一展示：
+1. **展示上下文**：上次 `indexing_finished_at`、`since_time`（增量基准）或「无 / 不适用」。  
 
-- `indexing_finished_at`: `<yyyy-MM-dd HH:mm:ss.SSS>`
-- `since_time`: `<yyyy-MM-dd HH:mm:ss.SSS>`（与上次结束时间相同）
+#### Step 2.1 第一步：确认 `data_mode`
 
-### Step 3：执行索引（按 mode 读取策略）
+**仅本步**：请用户必选 **全量** 或 **增量**（无默认）。
 
-- **全量**：按 mode 的读取范围扫描/精读
-- **增量**：仅对 `changes-index` 中变更路径做定向索引探索，并在索引正文 §6 明示覆盖边界
+| 选项 | data_mode | 说明 |
+|------|-----------|------|
+| **1**（快捷） | `full` | 与「全量」等价；始终可选 |
+| **2**（快捷） | `incremental` | 与「增量」等价；**仅当** Step 1 有有效 `indexing_finished_at` |
+| **全量**（文字） | `full` | 同快捷 **1**；按后续选定的 `read_mode` **全量**扫描（忽略上次时间） |
+| **增量**（文字） | `incremental` | 同快捷 **2**；**仅当** Step 1 有有效 `indexing_finished_at`；无基准时说明「只能全量」并**仅**保留 **1** / 全量 |
 
-### Step 4：落盘索引日志 + 更新 INDEX.md 的“索引日志索引”
+用户可只回复 **`1`** 或 **`2`**，或用「全量 / 增量」、**`full` / `incremental`** 等明确文字。  
+> **与 Step 2.2 区分**：本步的 **`1`/`2`** 只表示 **data_mode**；下一步 **`1`/`2`/`3`** 才表示 **read_mode**，分两轮询问，不会混用。  
+**禁止**在本步询问或推断 `read_mode`；**禁止**用单键同时绑定两种模式。
 
-1. 在 `indexing-log.jsonl` 追加 1 行 JSONL（运行元信息，字段见 §4）
-2. 在 `INDEX.md` 末尾或固定区块写入“索引日志索引”（仅记录目录与文件路径）
+#### Step 2.2 第二步：确认 `read_mode`（仅 Step 2.1 已得到 `data_mode` 后）
 
-### Step 5：清理 changes-index（仅保留基线）
+**仅本步**：请用户必选 **read_mode 1 / 2 / 3**（与 §7 一致；无默认，可提示 **3** 为常见默认**推荐**，但仍须用户明确表态）。
 
-索引结束后，清理 `changes-index.json/.md`，只保留滚动基线时间，避免文件膨胀与重复索引输入：
+| read_mode | 说明 |
+|-----------|------|
+| **1** | 拓扑扫描（轻） |
+| **2** | 结构分析（中等） |
+| **3** | 精读提取（重；知识逆向常选） |
 
-- `baseline_time`: `2026-03-19 10:09:57.000`
-- `baseline_time_ms`: `1773886197000`
+用户回复 **`1` / `2` / `3`** 即选定对应 `read_mode`；也可用「拓扑 / 结构 / 精读」等同义表述。
 
-基线取值规则：以本次 **document-change Skill** 产出的“最后一个变更内容时间”（epoch ms）为准；如无变更明细，则保持原基线不变。
+3. **选定即生效**：Step 2.1 与 2.2 **均**完成后，Agent **一行复述** `将执行：data_mode=…，read_mode=…，since_time=…`，**立即** Step 3；**不要**在复述之外再索要单独「确认」「ok」。  
+4. **记录**供 Step 4～5 与 JSONL 使用。
 
-## 2. 读取策略（按 mode 执行）
+### Step 3 — document-change（强制；仅 Step 2 完成后）
 
-> 仍需遵守：只对**实际读取过的文件**下结论；未读路径统一放到 §6。
+按 [document-change](../document-change/SKILL.md) 生成 `changes-index.json` / `changes-index.md`。全量仍建议生成以便对照变更面；增量强依赖变更列表。
 
-### Mode 1：拓扑扫描
+### Step 4 — 按 read_mode 索引
 
-- 根目录配置：`README.*`、`package.json`、`pyproject.toml`、`pom.xml`、`go.mod`、`Cargo.toml`、`*.yaml`/`*.yml`、`Makefile`、`Dockerfile`、`docker-compose.*` 等。
-- `docs/` 或 `doc/` 下：`index.*`、`README.*`、`overview.*`。
-- **各目录第一层仅列文件名**（不读子文件内容）。
+| data_mode | 行为 |
+|-----------|------|
+| `full` | 按本次 `read_mode` **全量**扫描/精读（忽略上次时间） |
+| `incremental` | `since_time = 上次 indexing_finished_at`；**仅**对 changes-index 中变更路径定向探索；在 Index Guide **§8 索引边界**（或文首元信息）**明示本次增量覆盖边界** |
 
-**输出深度**：项目定位 + 技术栈 + 模块拓扑树（无函数级细节）。
+**读取模式**见 §7。
 
-### Mode 2：结构分析（在 Mode 1 基础上增加）
+### Step 5 — 落盘
 
-- 源码文件 **前 50 行**（imports、类头、模块 docstring）。
-- 入口完整通读：`**/index.*`、`**/mod.*`、`**/main.*`、`**/__init__.*`。
-- API：`openapi.*`、`swagger.*`、`*.proto`、`*.graphql`、`**/routes.*`、`**/router.*`。
-- 模型：`**/models.*`、`**/schema.*`、`**/types.*`、`**/entities.*`。
+1. 向 `indexing-log.jsonl` **追加 1 行**（字段见 [reference.md](reference.md) 第 1 节）。  
+2. 在索引正文（默认 `INDEX_GUIDE.md`）按仓库惯例更新 **索引运行日志** 的指向（如 **§2.4 文档结构** 中 `indexing-log.jsonl` 路径，或附录一行说明）。
 
-**输出深度**：模块功能 + 接口清单 + 数据结构概览 + 依赖方向图；**须输出 §4、§5**（见下文）。
+### Step 6 — 清理 changes-index
 
-### Mode 3：精读提取
+仅保留滚动基线，规则见 [reference.md](reference.md) 第 3 节。
 
-- 约定目录下 **文本文件尽量完整通读**（仍须对实在过大的树声明 §6）。
+## 7. 读取模式（read_mode）
 
-**输出深度**：函数级索引、业务规则分布、异常路径、配置语义、隐式约定；**§4–§7 填满**。
+仍遵守：只对**已读**文件下结论；**未读**或**浅索引**范围写入 Index Guide **§8.2**（未索引或浅索引），与 **§8.1** 对仗。
 
-## 3. 产出结构（固定 7 段，必填）
+| read_mode | 范围要点 | 输出深度 |
+|-----------|----------|----------|
+| **1** 拓扑 | 根配置、`docs/`/`doc/` 第一层文件名等 | 定位 + 技术栈 + **§1 快速导航 / 元信息** + **§2 项目结构**（模块、依赖、包树）；无函数级 |
+| **2** 结构 | read_mode 1 基础上 + 源码前 50 行、入口、HTTP/Dubbo/MQ/Job 声明 + **domain**、DO/Mapper/XML + **配置文件**、构建/启动 | 模块功能 + **§3 接口** + **§4 领域** + **§5 逻辑** + **§6 数据** + **§7 配置** 骨架；**须覆盖对外入口与数据落点** |
+| **3** 精读 | 约定目录与关键类尽量通读 | 函数级、业务规则、状态机/枚举、异常与配置语义；**§1～§9 正文**按深度填满；**附录**索引变更日志按需追加 |
 
-若某节信息不足，写：`[信息不足，需补充读取：<具体路径>]`。
+## 8. Index Guide 正文结构（本仓库落地：`docs/INDEX_GUIDE.md`）
 
-1. **全局元信息**：项目名称、定位（≤30 字）、技术栈、关键外部依赖（3–8）、入口、构建/启动命令、项目形态。
-2. **架构拓扑**：目录树 + **模块依赖方向图**（A → B）。
-3. **详细索引字典**：先给 **全局标签词表（≤30）**；再按模块表格列：`文件路径 | 功能精要 | 检索标签 | 上游依赖 | 下游被依赖 | 重要度（⭐~⭐⭐⭐）`。
-4. **核心数据流**（Mode 2/3）：命名数据流 + 路径简述。
-5. **配置与环境变量索引**（Mode 2/3）：配置项、所在文件、语义、默认值、敏感性。
-6. **未索引区域声明**：未读路径清单 + 原因 + 建议动作；增量模式需注明覆盖边界。
-7. **AI 查阅指北**：`要了解什么 → 优先标签/路径` 检索表，可附快速检索 Prompt 模板。
+以下为 **policy-appeal** 当前索引正文的 **九章金字塔 + 附录**；其它仓库可删减子节，但宜保持 **MECE** 与「速查 → 结构 → 接口 → 领域 → 逻辑 → 数据 → 配置 → 边界 → 分流」的阅读顺序。
 
-文首建议保留元行，例如：
+若某节不足：`[信息不足，需补充读取：<路径>]`。
 
-```markdown
-# 📘 AI文档库精要索引指南
-> 生成时间：[ISO 或可读时间戳]  |  执行模式：[Mode 1/2/3]  |  索引覆盖率：[已索引数/估算总数或说明]
-```
+| 章 | § 约定 | 要点（提炼） |
+|----|--------|----------------|
+| **一、快速导航** | §1.1 速查表；§1.2 元信息 | 入口表（链到 README、§3～§9 锚点）；项目名称、定位、技术栈、启动类、Doc Root |
+| **二、项目结构** | §2.1 模块；§2.2 依赖图；§2.3 包结构（含子模块包树）；§2.4 文档结构 | Maven 模块树、mermaid 依赖、各子模块 `java` 包分层、`docs/` 树（可含 `indexing-log.jsonl` 指针） |
+| **三、接口清单** | §3.1 HTTP（路径级）；§3.2 Dubbo；§3.3 定时任务；§3.4 MQ | 对外机器可读清单（与实现类绑定）；HTTP 常按路径前缀分子节 |
+| **四、领域模型** | §4.1 业务术语；§4.4 领域对象（充血模型清单） | 术语表；**不含**状态机/枚举（在第五章） |
+| **五、逻辑模型** | §5.1 状态机；§5.2 应用组件（Manager/Service/Repo）；§5.3 业务流程；§5.4 枚举 | 状态图、流程图；应用层组件与 **§6.3**（Mapper 索引 / XML 路径表）交叉引用 |
+| **六、数据模型** | §6.1 数据源；§6.2 实体表（按业务链分子表）；§6.3 Mapper 索引 | 库/分片/Doris；表 ↔ 实体；**XML 路径表**（条内 SQL 可不展开，见 **§8.2**；正文标题以仓库为准，如「Mapper索引」） |
+| **七、配置索引** | §7.1 配置中心 Key；§7.2 分布式锁等枚举；§7.3 其它 | Titans、锁前缀、本地 `application`/`mybatis` 等指针 |
+| **八、索引边界** | §8.1 已索引范围；§8.2 未索引/浅索引；§8.3 维护规则 | 与 **§1.1** 速查对账；声明 Mapper 条内 SQL、DTO 字段级等浅索引 |
+| **九、相关文档** | §9.1 核心文档；§9.2 文档分工（MECE）；§9.3 查阅建议 | README / AGENTS / KNOWLEDGE_INDEX 分流；与 knowledge-build 边界 |
+| **附录** | 索引变更日志 | 按日期记录章节重排、交叉引用同步 |
 
-## 4. 索引运行元信息（必须落盘到索引日志）
+**与 knowledge-build 分工**：四视角链上实体 ID（`PL-*`/`SYS-*`/`DS-*`…）**不**替代上表；登记见 **`docs/knowledge/KNOWLEDGE_INDEX.md`**，证据链可指回本章 **§3 / §6 / §2** 等。
 
-每次执行都必须在索引日志文件 `<索引日志目录>/indexing-log.jsonl` 追加 1 行 JSON（JSONL，稳定可解析）。
+可选文首元行见 [reference.md](reference.md) 第 2 节。
 
-字段要求：
+## 9. 相关 Skill
 
-- `indexing_started_at_ms`
-- `indexing_finished_at_ms`
-- `execution_mode`: `full|incremental`
-- `base_indexing_finished_at_ms`（仅增量）
-- `index_output_path`
-- `changed_inputs`（仅增量）
+- **document-change**：变更基线与 `changes-index.*`（Step 3 前置）。  
+- **knowledge-build**：结构化知识库、`docs/knowledge/**`；**`docs/knowledge/KNOWLEDGE_INDEX.md`** 仅登记 **四视角**链上 ID（见 knowledge-build §8.0.1），联邦 **DIR-*** / 宪法 / 阶段见主 **`INDEX_GUIDE.md`**（或由 `output_path` 指定的主 Index Guide）或 `*_meta.yaml`。与本文档索引 **分工**，不互相替代。
 
-说明：日志与提示的时间主展示使用 `yyyy-MM-dd HH:mm:ss.SSS`；`*_ms` 为可选核对字段。
+## 10. 延伸阅读
 
-## 何时使用
-
-- 需要 **单一权威索引** 供多 Agent 共享检索策略时。
-- 新项目 onboarding、Monorepo 导航、文档站地图。
-- 与 **knowledge-build** 区分：**document-indexing** 侧重「可检索的平面/分层索引与地图」；**knowledge-build** 侧重按 `knowledge/` 体系沉淀业务知识文档。
+- [reference.md](reference.md) — JSONL 字段；Index Guide 文首元行（本仓库 / 泛用模板）；基线清理；document-change 路径。

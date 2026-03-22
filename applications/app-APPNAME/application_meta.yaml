@@ -45,14 +45,16 @@ naming_conventions:
 integration:
   central_system:
     path: "../../system/"
-    description: "方案/分析阶段与全局知识索引（system/INDEX.md、system/DESIGN.md）"
+    description: "方案/分析阶段与全局知识索引（system/SYSTEM_INDEX.md、system/DESIGN.md）"
   traceability:
     description: "阶段链以 system 为主；应用侧实体 ID 与中央库对齐，跨仓库仅写 ID 引用"
 
 references:
   - path: "./README.md"
   - path: "./INDEX.md"
+  - path: "./knowledge/knowledge_meta.yaml"
+    description: "知识库树 SSOT；内含 **`knowledge`** 根键（knowledge_meta.yaml 机器契约：phases、ssot、symmetry、meta_read_order；供 /knowledge-build、/knowledge-extract）"
   - path: "../../system/README.md"
-  - path: "../../system/INDEX.md"
+  - path: "../../system/SYSTEM_INDEX.md"
   - path: "../../system/DESIGN.md"
-  - path: "../../INDEX.md"
+  - path: "../../INDEX_GUIDE.md"
