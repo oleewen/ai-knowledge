@@ -6,7 +6,7 @@
 
 | 命令 | 说明 |
 |------|------|
-| `/document-indexing` | 文档索引：为代码库/文档库生成面向下游 AI 的 Index Guide（拓扑/结构/精读三模式，七段标准输出，零幻觉路径精确）。 |
+| `/document-indexing` | 文档索引：为代码库/文档库生成面向下游 AI 的 Index Guide（拓扑/结构/精读三 `read_mode`，**九章 + 附录** 金字塔，零幻觉路径精确）。 |
 | `/document-change` | 变更文档索引：检查最近变动内容，建立变动内容索引与变动时间（毫秒）；支持 git commit / CHANGELOG / 文件 mtime 三路合并。 |
 | `/agent-guide` | 生成/更新根目录 `AGENTS.md` 与 `README.md`；① document-indexing 产出 Index → ② agent-guide 产出 AGENTS/README |
 | `/knowledge-build` | 知识库构建：① document-indexing 产出 Index → ② agent-guide 产出 AGENTS/README → ③ 按 Index 选择性阅读并写入 knowledge → ④ 验证。 |

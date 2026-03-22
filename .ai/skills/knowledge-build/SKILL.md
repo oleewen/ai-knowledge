@@ -96,7 +96,7 @@ description: >
 
 ## 5. 阶段一：document-indexing（按需）
 
-**仅**在 **§4.1** 判定需要时执行。完整遵循 **document-indexing** Skill（路径见 YAML `skill.upstream_skills`）。
+**仅**在 **§4.1** 判定需要时执行。完整遵循 **document-indexing** Skill（路径见 YAML `skill.upstream_skills`）；其 **符号约定**（本 Skill 节号 vs 产出物 `INDEX_GUIDE.md` 章号、`Step 1～7` vs document-change 的 Step）见该 Skill 文首表。
 
 - **read_mode**：逆向一般 **≥ 2**；超大仓可先 **1** 再加深。  
 - **附加**：主 Index **§2** 与 **文档/知识路径**（以 Index 实际章节为准，与 **§3 API 入口**分工；常见为 §6 或独立小节）须覆盖或标注 `{Doc Root}/knowledge/`、`requirements/`、`specs/`、`openspec*`；未覆盖标 **`[未索引]`**。  

@@ -1,6 +1,6 @@
 # document-indexing — 参考细则
 
-主流程见 [SKILL.md](SKILL.md)。本文档供按需精读：JSONL 全字段、Index Guide 文首模板、基线清理、document-change 路径。
+主流程见 [SKILL.md](SKILL.md)（文首 **符号约定**：本 Skill 节号 vs 产出物 `INDEX_GUIDE.md` 章号）。本文档供按需精读：JSONL 全字段、`INDEX_GUIDE.md` 文首模板、**Step 7** 基线清理、document-change 路径。
 
 **实体 ID**：知识库 **四视角链上** ID（`BD-*`/`PL-*`/`SYS-*`/`DS-*` 等，**不含** DIR 联邦/宪法/阶段）见 **knowledge-build** 与 **`docs/knowledge/KNOWLEDGE_INDEX.md`**。
 
@@ -17,9 +17,9 @@
 | `indexing_started_at_ms` | number | ✅ | 开始时刻 epoch ms |
 | `indexing_finished_at_ms` | number | ✅ | 结束时刻 epoch ms |
 | `data_mode` | `"full"` \| `"incremental"` | ✅ | 全量或增量 |
-| `read_mode` | `1` \| `2` \| `3` | 建议 | 读取策略，与 Step 2.2 / SKILL §7 read_mode 定义一致 |
+| `read_mode` | `1` \| `2` \| `3` | 建议 | 读取策略，与 SKILL **§6** Step 2.2 所选值及 Step 4「读取模式」表一致 |
 | `base_indexing_finished_at_ms` | number | 增量时 | 上次索引结束时间（增量基准） |
-| `index_output_path` | string | ✅ | 本次索引正文相对路径（默认 `./docs/INDEX_GUIDE.md` 等，见 SKILL §4.1） |
+| `index_output_path` | string | ✅ | 本次索引正文相对路径（默认 `./docs/INDEX_GUIDE.md` 等，见 document-indexing **SKILL §4.1**） |
 | `changed_inputs` | string[] | 增量时建议 | 变更输入路径列表 |
 
 **时间展示**：对用户展示及人类可读字段优先 `yyyy-MM-dd HH:mm:ss.SSS`；`*_ms` 供机器核对。
@@ -39,7 +39,7 @@
 > **文档定位**: AI Agent 与开发者的系统全景导航，按金字塔结构组织，遵循 MECE 原则
 ```
 
-其它仓库可保留下列精简模板（与 SKILL §8 九章结构独立，仅作生成时间/模式记录）：
+其它仓库可保留下列精简模板（与 document-indexing **SKILL §7** 所列 `INDEX_GUIDE.md` 九章模板独立，仅作生成时间/模式记录）：
 
 ```markdown
 # 📘 AI 文档库精要索引指南
@@ -49,7 +49,7 @@
 
 ---
 
-## 3. Step 6 基线清理（changes-index）
+## 3. Step 7 基线清理（changes-index）
 
 索引结束后清理 `changes-index.json` / `changes-index.md`，只保留滚动基线，避免文件膨胀：
 

@@ -46,10 +46,10 @@ description: >
 
 ### 第一阶段：文档索引（document-indexing）
 
-**完整遵循** `.cursor/skills/document-indexing/SKILL.md`，作用域为 **应用工作区**（代码 + 配置 + 应用文档）：
+**完整遵循** `.cursor/skills/document-indexing/SKILL.md`（文首 **符号约定**：Skill 节号 vs `INDEX_GUIDE.md` 章号），作用域为 **应用工作区**（代码 + 配置 + 应用文档）：
 
-1. 与用户确认 **read_mode 1 / 2 / 3**（升级场景建议 **read_mode ≥ 2**，以便 §4/§5 支撑配置与数据流更新）。
-2. 产出标准 **七段 Index Guide**。
+1. 与用户确认 **read_mode 1 / 2 / 3**（升级场景建议 **read_mode ≥ 2**，以便产出物 **`INDEX_GUIDE.md` §4/§5** 等支撑配置与数据流更新）。
+2. 产出标准 **九章 + 附录** Index Guide（与 document-indexing **§7** 模板对齐）。
 3. **附加要求**：
    - §2 / §3 显式包含 **应用知识库根** 下各视角与 `solutions/`、`analysis/`、`requirements/`、各需求包内 `specs/`（若存在）的路径与角色。
    - Index 建议落盘至应用内便于复用路径（如 `docs/INDEX-GUIDE.md` 或应用约定目录），并在会话中保留全文供阶段三使用。

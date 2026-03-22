@@ -17,7 +17,7 @@ description: >
 | 场景 | 行动 |
 |------|------|
 | 初始化仓库、onboarding、`/knowledge-build` **第二阶段** | **执行本 Skill** |
-| 仅要平面索引、七段 Index Guide | 用 **document-indexing**，不用本 Skill |
+| 仅要平面索引、**九章 + 附录** Index Guide | 用 **document-indexing**，不用本 Skill |
 | 用户只要改 `system/knowledge/` 实体 | 不强制跑本 Skill；若 AGENTS/README 路径过时再对齐 |
 
 ## 2. 输入 / 输出契约
