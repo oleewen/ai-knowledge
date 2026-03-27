@@ -12,14 +12,14 @@
           "id": "001",
           "full_id": "SYS-POLICY-APPEAL",
           "alias": "PolicyAppealSystem",
-          "name": "政策申诉系统",
-          "description": "中通快递费用申诉处理系统",
+          "name": "计费申诉系统",
+          "description": "XX公司快递费用申诉处理系统",
           "architecture": {
             "apps": [
               { "id": "APP-POLICY-APPEAL-SERVICE", "name": "申诉业务服务应用", "startup_class": "AppealServiceApp", "role": "HTTP+Dubbo+MQ 主服务" }
             ],
             "external_dependencies": [
-              { "system": "神州系统", "integration": "Dubbo RPC", "purpose": "费用计算、申诉结果上报" }
+              { "system": "网点系统", "integration": "Dubbo RPC", "purpose": "费用计算、申诉结果上报" }
             ],
             "ddd_layers": ["Gateway", "Application", "Domain", "Infrastructure"]
           },
@@ -53,7 +53,7 @@
           "hierarchy": "MS",
           "id": "001",
           "alias": "PolicyAppeal",
-          "name": "政策申诉服务",
+          "name": "计费申诉服务",
           "host_class": "PolicyAppealApiImpl, AppealServiceImpl",
           "host_module": "policy-appeal-service",
           "protocol": "HTTP+Dubbo",
@@ -69,7 +69,7 @@
           "hierarchy": "API",
           "id": "001",
           "alias": "PolicyAppeal.listPolicyAppeal",
-          "name": "政策申诉列表查询",
+          "name": "计费申诉列表查询",
           "service_id": "MS-001",
           "host_class": "PolicyAppealApiImpl",
           "host_module": "policy-appeal-service",
@@ -100,14 +100,14 @@
       {
         "hierarchy": "DS",
         "id": "001",
-        "full_id": "DS-PANGU-APPEAL-TIDB",
-        "alias": "PanguAppealTiDB",
+        "full_id": "DS-POLICY-APPEAL-TIDB",
+        "alias": "PolicyAppealTiDB",
         "name": "TiDB 主业务库",
-        "description": "政策申诉系统主业务数据库",
+        "description": "计费申诉系统主业务数据库",
         "type": "TiDB / MySQL 8.0+",
-        "config_key": "pangu_tidb",
+        "config_key": "policy_tidb",
         "owned_by_app_id": ["APP-POLICY-APPEAL-SERVICE"],
-        "notes": ["@MultiTransactional(\"pangu\")"],
+        "notes": ["@MultiTransactional(\"计费\")"],
         "evidence_chain": [
           { "source": "INDEX_GUIDE.md §6.1 数据源", "confidence": "high", "type": "document" }
         ],
@@ -117,7 +117,7 @@
         "hierarchy": "ENT",
         "id": "001",
         "full_id": "ENT-001",
-        "parent_id": "DS-PANGU-APPEAL-TIDB",
+        "parent_id": "DS-POLICY-APPEAL-TIDB",
         "alias": "PolicyAppeal",
         "name": "申诉单表",
         "logical_name": "PolicyAppeal",
@@ -154,7 +154,7 @@
         "strategic_classification": "core_domain",
         "children": ["BSD-POLICY-APPEAL"],
         "evidence_chain": [
-          { "source": "com.zto.policy.charging.appeal（顶层包路径）", "confidence": "high", "type": "code" }
+          { "source": "com.company.policy.charging.appeal（顶层包路径）", "confidence": "high", "type": "code" }
         ],
         "cross_references": { "technical": ["SYS-001"], "product": ["PL-001"] }
       },
@@ -164,8 +164,8 @@
         "full_id": "AGG-POLICY-APPEAL",
         "parent_id": "BC-POLICY-APPEAL-CORE",
         "alias": "PolicyAppealAgg",
-        "name": "政策申诉聚合",
-        "description": "政策申诉核心聚合",
+        "name": "计费申诉聚合",
+        "description": "计费申诉核心聚合",
         "root_entity": "PolicyAppeal",
         "entities": ["PolicyAppealItem", "PolicyAppealItemDraft"],
         "invariants": ["申诉主单提交后 24 小时未操作自动作废"],
@@ -184,8 +184,8 @@
         "parent_id": "AGG-POLICY-APPEAL",
         "alias": "AppealLifecycle",
         "name": "申诉生命周期能力",
-        "description": "提供政策申诉完整生命周期能力",
-        "capability": "提供政策申诉主单的创建、提交、取消、审核等完整生命周期能力",
+        "description": "提供计费申诉完整生命周期能力",
+        "capability": "提供计费申诉主单的创建、提交、取消、审核等完整生命周期能力",
         "apis": [
           { "id": "API-002", "method": "PolicyAppeal.create", "description": "创建申诉主单" },
           { "id": "API-005", "method": "PolicyAppeal.submit", "description": "提交申诉" }
@@ -220,8 +220,8 @@
         "id": "001",
         "full_id": "PL-POLICY-APPEAL",
         "alias": "PolicyAppealProduct",
-        "name": "政策申诉产品",
-        "description": "中通快递费用申诉处理平台产品线",
+        "name": "计费申诉产品",
+        "description": "XX公司快递费用申诉处理平台产品线",
         "target_users": ["快递网点操作员", "计费中心审核员"],
         "evidence_chain": [
           { "source": "README.md §功能特性", "confidence": "high", "type": "document" }
@@ -235,9 +235,9 @@
         "parent_id": "PM-POLICY-APPEAL-CORE",
         "alias": "PolicyAppealLifecycle",
         "name": "申诉单生命周期",
-        "description": "政策申诉主单的完整生命周期功能",
+        "description": "计费申诉主单的完整生命周期功能",
         "invokes_api_ids": ["API-001", "API-002", "API-003"],
-        "acceptance_criteria": ["申诉单创建后返回唯一申诉单号", "审核结果同步神州系统"],
+        "acceptance_criteria": ["申诉单创建后返回唯一申诉单号", "审核结果同步网点系统"],
         "realizes_use_case_ids": ["UC-001", "UC-002"],
         "evidence_chain": [
           { "source": "README.md §核心业务", "confidence": "high", "type": "document" }
@@ -248,7 +248,7 @@
         "hierarchy": "UC",
         "id": "001",
         "alias": "CreatePolicyAppeal",
-        "name": "发起政策申诉主单",
+        "name": "发起计费申诉主单",
         "evidence_chain": [
           { "source": "API-002 PolicyAppeal.create", "confidence": "high", "type": "api_reference" }
         ],
