@@ -18,7 +18,7 @@ sdx-solution 技能的完整设计约束。主文件 SKILL.md 中的「核心约
 |----------|------|------|
 | 知识库实体 | `{视角}-{ID}` | `BC-001 FeeAppealContext` |
 | 文档章节 | `{文件} §{章节}` | `INDEX_GUIDE.md §3.2` |
-| 代码位置 | `{类}:{方法}` | `PolicyAppealApi:create` |
+| 代码位置 | `{类}:{方法}` | `BillingAppealApi:create` |
 | 配置文件 | `{路径}:{键}` | `application.yml:spring.datasource` |
 
 ### 3. 按需加载

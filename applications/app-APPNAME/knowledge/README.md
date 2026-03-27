@@ -30,7 +30,7 @@
 
 **索引指针**：各视角实体 ID [KNOWLEDGE_INDEX.md](./KNOWLEDGE_INDEX.md)；本联邦单元 [../INDEX_GUIDE.md](../INDEX_GUIDE.md)；全库仓库入口 [../../../@docs/INDEX_GUIDE.md](../../../@docs/INDEX_GUIDE.md)；中央库 [../../system/INDEX.md](../../system/INDEX.md)。
 
-**实现侧（与 YAML 分层 ID 独立）**：网关 `@GatewayApi` 对外路径、调度模块 Job 类清单见 [../INDEX_GUIDE.md](../INDEX_GUIDE.md) **第三节 · 3.1**、**第三节 · 3.3**（与 `policy-appeal-service` / `policy-appeal-schedule` 源码一致）。
+**实现侧（与 YAML 分层 ID 独立）**：网关 `@GatewayApi` 对外路径、调度模块 Job 类清单见 [../INDEX_GUIDE.md](../INDEX_GUIDE.md) **第三节 · 3.1**、**第三节 · 3.3**（与 `billing-appeal-service` / `billing-appeal-schedule` 源码一致）。
 
 ---
 

@@ -77,6 +77,6 @@ meta_shapes 匹配流程：
 | 证据类型 | 格式 | 示例 |
 |----------|------|------|
 | 文档章节 | `{文件} §{章节}` | `INDEX_GUIDE.md §3.2` |
-| 代码位置 | `{类}#{行号}` 或 `{类}:{方法}` | `PolicyAppealApi:create` |
+| 代码位置 | `{类}#{行号}` 或 `{类}:{方法}` | `BillingAppealApi:create` |
 | 配置文件 | `{路径}:{键}` | `application.yml:spring.datasource` |
 | 工程事实 | `{文件}` | `pom.xml`、`AGENTS.md` |

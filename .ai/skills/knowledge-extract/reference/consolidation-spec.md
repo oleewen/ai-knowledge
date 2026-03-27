@@ -208,7 +208,7 @@ graph TD
 |------|------|
 | **层级** | 实体在知识库中的层次位置 |
 | **ID** | 数字编码，同一层级下按数字序列管理，格式如 001、002 |
-| **Full ID** | 目录风格规范 ID（如 `SYS-POLICY-APPEAL`），全知识库唯一 |
+| **Full ID** | 目录风格规范 ID（如 `SYS-BILLING-APPEAL`），全知识库唯一 |
 | **别名（英文名）** | 英文编码，机器可读标识 |
 | **名称** | 中文名称，面向业务/阅读的可理解名称 |
 | **能力概述** | 聚合边界对外暴露的核心业务能力（仅 AB 层级，其余用 `-`） |
@@ -221,10 +221,10 @@ graph TD
 | 证据类型 | 格式 | 示例 |
 |----------|------|------|
 | 文档章节 | `{文件} §{章节}` | `INDEX_GUIDE.md §3.2` |
-| 代码位置 | `{类}#{行号}` 或 `{类}:{方法}` | `PolicyAppealApiImpl#create:111` |
+| 代码位置 | `{类}#{行号}` 或 `{类}:{方法}` | `BillingAppealApiImpl#create:111` |
 | 配置文件 | `{路径}:{键}` | `application.yml:spring.datasource` |
 | 工程事实 | `{文件}` | `pom.xml`、`AGENTS.md` |
-| 技术实体引用 | `{前缀}-{ID} {名称}` | `MS-001 PolicyAppeal` |
-| API 引用 | `{API-ID} {别名}` | `API-002 PolicyAppeal.create` |
+| 技术实体引用 | `{前缀}-{ID} {名称}` | `MS-001 BillingAppeal` |
+| API 引用 | `{API-ID} {别名}` | `API-002 BillingAppeal.create` |
 
 完整输出模板见 [../assets/knowledge-index-template.md](../assets/knowledge-index-template.md)。

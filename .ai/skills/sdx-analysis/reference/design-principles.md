@@ -19,7 +19,7 @@ sdx-analysis 技能的完整设计约束。主文件 SKILL.md 中的「核心约
 | 解决方案目标 | `G-{N}` | `G-1 提升申诉处理效率` |
 | 知识库实体 | `{视角}-{ID}` | `BC-001 FeeAppealContext` |
 | 文档章节 | `{文件} §{章节}` | `INDEX_GUIDE.md §3.2` |
-| 代码位置 | `{类}:{方法}` | `PolicyAppealApi:create` |
+| 代码位置 | `{类}:{方法}` | `BillingAppealApi:create` |
 
 ### 3. 按需加载
 
