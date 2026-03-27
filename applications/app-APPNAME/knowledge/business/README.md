@@ -10,26 +10,52 @@
 业务域 (BD) → 业务子域 (BSD) → 限界上下文 (BC) → 聚合 (AGG) → 能力 (AB)
 ```
 
-- **统一元数据**：[business_meta.yaml](./business_meta.yaml) — 单文件 SSOT，包含：
-  - **`identity` / `role`**：视角身份；
-  - **`repository`**：目录锚点与 `directory_patterns`；
-  - **`pipeline`**：全视角共享的阶段 **inputs**（不在各层重复）；
-  - **`integration`**：跨视角 **cross_perspective** 边与 **key_fields**；
-  - **`layers`**：DDD 各层一条记录（`key` / `code` / `id_pattern` / `fields` / `tree` / `artifacts` / `indexing`）。
-- **按层查阅**：在 `layers` 数组中按 **`key`**（`bd` … `ab`）或 **`code`**（`BD` … `AB`）定位；例如 BC 层字段见 **`layers` 中 `key: bc` 的 `fields`**。
+| 层级 | 代码 | 物理形态 | 说明 |
+|------|------|----------|------|
+| 业务域 | `BD` | JSON 实体 | 顶层业务边界 |
+| 业务子域 | `BSD` | JSON 实体 | BD 下 0-N 个子域 |
+| 限界上下文 | `BC` | JSON 实体 | BSD 下 1-N 个上下文 |
+| 聚合 | `AGG` | JSON 实体 | BC 下多个聚合，每个含业务规则 |
+| 能力 | `AB` | JSON 实体 | AGG 下多个能力（含 API 列表） |
 
-### 业务索引表（示例）
+**关键设计决策**：本仓库将 BD→AB 全层级内容 **整合进** `business_knowledge.json`；以 JSON 扁平实体列表作为检索与引用的唯一事实来源。
 
-下表按 **BD → BSD → BC → AGG → AB** 链展开示例 ID；约定均见 [business_meta.yaml](./business_meta.yaml) 的 **`layers`**。实际项目请替换名称、ID，并在需要时为 `{BD-ID}/{BSD-ID}/{BC-ID}/` 等建立目录锚点。
+---
 
-| 链序 | 层级 | 类型 | 名称（示例） | ID（示例） | 元数据（YAML） | 说明 |
-|:----:|------|------|--------------|------------|----------------|------|
-| — | 索引 | 业务视角 | 业务视角（knowledge/business） | `DIR-KNOWLEDGE-BUSINESS` | [business_meta.yaml](./business_meta.yaml) | `identity` + `layers` + `integration` |
-| L1 | 业务域 | BD | 订单域 | `BD-ORDER` | 同上 · `layers` → `key: bd` | 锚点目录 `{BD-ID}/`；订单相关核心业务 |
-| L2 | 业务子域 | BSD | 履约子域 | `BSD-FULFILLMENT` | 同上 · `key: bsd` | 隶属 `BD-ORDER`，锚点 `{BD-ID}/{BSD-ID}/`；履约与配送 |
-| L3 | 限界上下文 | BC | 订单管理上下文 | `BC-ORDER-MGMT` | 同上 · `key: bc` | 隶属上一链；`fields.implemented_by_app_id` |
-| L4 | 聚合 | AGG | 订单聚合 | `AGG-ORDER` | 同上 · `key: agg` | `fields.persisted_as_entity_ids` 等 |
-| L5 | 能力 | AB | 取消订单能力 | `AB-CANCEL-ORDER` | 同上 · `key: ab` | `fields.implemented_by_api_id` |
+## 目录树（示例）
+
+```
+business/
+├── README.md                          # 本文件（人类导航）
+├── business_meta.yaml                 # 视角 SSOT（元模型、层级约定、跨视角映射）
+├── business_knowledge.json            # 扁平实体列表（AI 检索首选入口）
+```
+
+---
+
+## AI 检索指南
+
+| 检索需求 | 推荐入口 |
+|----------|----------|
+| 快速枚举全部业务实体 ID | [business_knowledge.json](./business_knowledge.json)（扁平 JSON，`hierarchy` 区分层级） |
+| 了解某聚合的业务规则与能力 | `business_knowledge.json` 中 `hierarchy=AGG` 实体的 `invariants / abilities / cross_references` |
+| 了解上下文边界与通用语言 | `business_knowledge.json` 中 `hierarchy=BC` 实体的 `implemented_by_app_id / ubiquitous_language / aggregates` |
+| 跨视角映射（业务→技术/数据） | [business_meta.yaml](./business_meta.yaml) → `integration.cross_perspective` |
+| 全库四视角索引 | [../KNOWLEDGE_INDEX.md §1](../KNOWLEDGE_INDEX.md) |
+
+---
+
+## 业务索引表（示例）
+
+本目录仅保留**示例**，用于演示 BD→AB 的层级与字段形状。完整 ID 清单以 `business_knowledge.json` 为准。
+
+| 链序 | 层级 | ID（示例） | 名称（示例） | 文件/目录 |
+|:----:|------|-----------|-------------|-----------|
+| L1 | 业务域 | BD-EXAMPLE | 示例业务域 | `business_knowledge.json`（`hierarchy=BD`） |
+| L2 | 业务子域 | BSD-EXAMPLE | 示例业务子域 | `business_knowledge.json`（`hierarchy=BSD`） |
+| L3 | 限界上下文 | BC-EXAMPLE | 示例限界上下文 | `business_knowledge.json`（`hierarchy=BC`） |
+| L4 | 聚合 | AGG-EXAMPLE | 示例聚合 | `business_knowledge.json`（`hierarchy=AGG`） |
+| L5 | 能力 | AB-EXAMPLE | 示例能力 | `business_knowledge.json`（`hierarchy=AB`） |
 
 ---
 
@@ -37,15 +63,15 @@
 
 - **BC（限界上下文）**：`implemented_by_app_id`（→ technical APP）
 - **AGG（聚合）**：`persisted_as_entity_ids`（→ data ENT）
-- **AB（能力）**：`implemented_by_api_id`（→ technical API）
+- **AB（能力）**：`apis[]`（含 API-ID，→ technical API）
 
-（字段说明以 `business_meta.yaml` → `layers[].fields` 与 `integration.key_fields` 为准。）
+（字段细则以 `business_knowledge.json` 为准；映射见 `business_meta.yaml` → `integration`。）
 
 ---
 
 ## 与其他视角的映射
 
 - **业务 → 技术**：见 `integration.cross_perspective`（BC/AGG/AB → APP/MS/API）。
-- **业务 → 数据**：AGG → ENT，见同段与 `DESIGN.md` 映射表。
+- **业务 → 数据**：AGG → ENT，见同段与 `data_knowledge.json`。
 
-系统索引：[../../INDEX.md](../../INDEX.md)；全库 Index Guide：[../../../INDEX_GUIDE.md](../../../INDEX_GUIDE.md)；设计：[../../DESIGN.md](../../DESIGN.md)。
+系统索引：[../../INDEX_GUIDE.md](../../INDEX_GUIDE.md)；全库 Index Guide：[../../../INDEX_GUIDE.md](../../../INDEX_GUIDE.md)。

@@ -4,6 +4,12 @@
 
 ---
 
+## 四视角实体 ID（SSOT）
+
+- **链上实体 ID 登记表**：[KNOWLEDGE_INDEX.md](./KNOWLEDGE_INDEX.md) — **仅** business / product / technical / data 四视角（**不含** `DIR-*` 联邦/阶段、**不含** constitution）。联邦目录速查见 [`../README.md`](../README.md) 应用联邦单元；系统元信息见 [`../INDEX_GUIDE.md`](../INDEX_GUIDE.md) **§1.2**。
+- **knowledge-extract 中间产物（机器 JSON，与物化锚点 `.md` 分离）**：各视角根目录 `technical_knowledge.json`、`business_knowledge.json`、`product_knowledge.json`、`data_knowledge.json`（字段约定见 [`.cursor/skills/knowledge-extract/SKILL.md`](../../.cursor/skills/knowledge-extract/SKILL.md)）。
+- **机器契约（SSOT）**：[`.cursor/skills/knowledge-extract/SKILL.md`](../../.cursor/skills/knowledge-extract/SKILL.md)（ssot、symmetry、meta_read_order）；[`knowledge_meta.yaml`](./knowledge_meta.yaml) 仅保留联邦/目录元数据。
+
 ## 子目录
 
 | 路径 | 说明 | 视角元数据（YAML） |
@@ -18,11 +24,13 @@
 
 ## 维护（三步）
 
-1. 改前读 [../../system/DESIGN.md](../../system/DESIGN.md)、本目录 [knowledge_meta.yaml](./knowledge_meta.yaml) 与目标视角 `README.md`、相关 `*_meta.yaml`  
+1. 改前读 **机器契约**（见上）、本目录 [knowledge_meta.yaml](./knowledge_meta.yaml)（目录元数据）与目标视角 `README.md`、相关 `*_meta.yaml`  
 2. 只增删改 **ID** 与 YAML/Markdown 约定字段；跨视角不写重复叙述  
-3. 更新 [../INDEX.md](../INDEX.md) 或该视角 README 中的登记 / 示例（若影响导航）  
+3. 更新 [../INDEX_GUIDE.md](../INDEX_GUIDE.md)（第三节 · 3.1 实现侧或联邦指针）、[KNOWLEDGE_INDEX.md](./KNOWLEDGE_INDEX.md)（各视角实体 ID）或该视角 README 中的登记 / 示例（若影响导航）  
 
-**索引指针**：本联邦单元 [../INDEX.md](../INDEX.md)；全库 Index Guide [../../../INDEX_GUIDE.md](../../../INDEX_GUIDE.md)；中央库 [../../system/SYSTEM_INDEX.md](../../system/SYSTEM_INDEX.md)。
+**索引指针**：各视角实体 ID [KNOWLEDGE_INDEX.md](./KNOWLEDGE_INDEX.md)；本联邦单元 [../INDEX_GUIDE.md](../INDEX_GUIDE.md)；全库仓库入口 [../../../@docs/INDEX_GUIDE.md](../../../@docs/INDEX_GUIDE.md)；中央库 [../../system/INDEX.md](../../system/INDEX.md)。
+
+**实现侧（与 YAML 分层 ID 独立）**：网关 `@GatewayApi` 对外路径、调度模块 Job 类清单见 [../INDEX_GUIDE.md](../INDEX_GUIDE.md) **第三节 · 3.1**、**第三节 · 3.3**（与 `policy-appeal-service` / `policy-appeal-schedule` 源码一致）。
 
 ---
 

@@ -1,32 +1,35 @@
 # technical — 技术视角
 
-本目录描述本应用的物理实现、部署架构与服务接口，并与中央库 `system/knowledge/technical/` 约定对齐；应用注册与索引见本目录 `technical_meta.yaml` 与 `../INDEX.md`。
+本目录描述本应用的物理实现、部署架构与服务接口；应用注册与索引见 **technical_meta.yaml** 与 **technical_knowledge.json**，以及 **[../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)**。
 
-- **统一元数据**：[technical_meta.yaml](./technical_meta.yaml) — 单文件 SSOT：`identity`、`repository`、`pipeline`、`integration`、`layers`（sys / app / ms / api）。
-- **系统架构总览**：[SYSTEM-ARCHITECTURE.md](./SYSTEM-ARCHITECTURE.md)（各系统/子系统职责、边界与关系）
+- **实现入口**：HTTP（`@GatewayApi`）与 ZSS Job 见 [../../INDEX_GUIDE.md](../../INDEX_GUIDE.md) **第三节 · 3.1**、**第三节 · 3.3**。
+- **统一元数据**：[technical_meta.yaml](./technical_meta.yaml) — `layers`（sys / app / ms / api）。
+- **系统架构总览/应用注册**：已整合进 [technical_knowledge.json](./technical_knowledge.json)（`entities.systems[].architecture` / `entities.applications[]`）
 
 ---
 
-## 技术索引表
+## 技术索引表（示例）
 
-| 类型   | 名称                    | ID                     | 路径                                                           | 说明                |
-|--------|-------------------------|------------------------|----------------------------------------------------------------|---------------------|
-| 系统   | 电商后端                | SYS-ECOMMERCE-BACKEND  | [SYS-ECOMMERCE-BACKEND](./SYS-ECOMMERCE-BACKEND/)              | [technical_meta.yaml](./technical_meta.yaml) `layers` → `key: sys`；[应用架构](SYS-ECOMMERCE-BACKEND/APPLICATION-ARCHITECTURE.md) |
-| 应用   | 订单服务                | APP-ORDER-SERVICE      | [APP-ORDER-SERVICE](./SYS-ECOMMERCE-BACKEND/APP-ORDER/APP-ORDER-SERVICE.yaml) | 同上 · `key: app` |
-| 微服务 | 订单核心服务            | MS-ORDER-CORE          | （见 APP.service_ids）                                         | 同上 · `key: ms` |
-| 接口   | 加入购物车              | API-CART-ADD-ITEM      | （见 manifest/OpenAPI）                                        | 同上 · `key: api` |
+| 类型 | 名称 | ID (KNOWLEDGE_INDEX) | 路径 / 说明 |
+|------|------|----------------------|-------------|
+| 系统 | 示例系统边界 | SYS-EXAMPLE | `technical_knowledge.json`（`hierarchy=SYS` / `full_id=SYS-EXAMPLE`） |
+| 应用 | 示例应用 | APP-EXAMPLE | `technical_knowledge.json`（`hierarchy=APP` / `full_id=APP-EXAMPLE`） |
+| 微服务（MS） | 示例微服务 | MS-EXAMPLE | `technical_knowledge.json`（`hierarchy=MS` / `id=MS-EXAMPLE`） |
+| 接口 | 示例 API | API-EXAMPLE-001 | `technical_knowledge.json`（`hierarchy=API` / `id=API-EXAMPLE-001`） |
 
+本目录仅保留**示例**，用于演示 SYS/APP/MS/API 的层级与字段形状。完整 ID 清单以 `technical_knowledge.json` 为准。
 
 ---
 
 ## 层级结构
 
 ```
-系统 (SYS) → 应用 (APP) → 微服务 (MS) → API
+系统 (SYS) → 应用 (APP) → 微服务 (MS) → API   （架构/注册内容整合于 technical_knowledge.json）
 ```
 
-- **系统 / 应用 / 微服务 / 接口**：字段模板见 **`technical_meta.yaml` → `layers`**（`key`: sys / app / ms / api）；目录 `{SYS-ID}/` 作系统锚点，含 `APPLICATION-ARCHITECTURE.md` 等。
-- **应用目录**：系统目录下按应用建目录（如 `APP-ORDER/`），存放该应用的注册 `{APP-ID}.yaml` 及集成关系图等。
+- **字段模板**：**`technical_meta.yaml` → `layers`**
+- **层级内容**：**`technical_knowledge.json`**（本目录不再物化 `SYS-*` 子目录与架构 Markdown/YAML 文件）。
+
 ---
 
 ## 应用注册（最小字段）
@@ -41,7 +44,7 @@
 
 ## 与其他视角的映射
 
-- **技术 ← 业务**：business 限界上下文的 `implemented_by_app_id` 指向本层 APP。
-- **技术 ← 产品**：product 功能点的 `invokes_api_ids` 指向应用级 manifest 中登记的 API。
+- **技术 ← 业务**：`implemented_by_app_id` → APP。
+- **技术 ← 产品**：`invokes_api_ids` → API。
 
-系统索引：[../../INDEX.md](../../INDEX.md)；全库 Index Guide：[../../../INDEX_GUIDE.md](../../../INDEX_GUIDE.md)；设计：[../../DESIGN.md](../../DESIGN.md)。
+系统索引：[../../INDEX_GUIDE.md](../../INDEX_GUIDE.md)；全库仓库入口：[../../../@docs/INDEX_GUIDE.md](../../../@docs/INDEX_GUIDE.md)；设计：[../../DESIGN.md](../../DESIGN.md)。

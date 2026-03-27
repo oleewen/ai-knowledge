@@ -6,13 +6,13 @@ set -euo pipefail
 
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-if [[ ! -f "$SCRIPT_DIR/sdx-config.sh" ]]; then
-  printf '错误: 缺少配置文件 %s\n' "$SCRIPT_DIR/sdx-config.sh" >&2
+if [[ ! -f "$SCRIPT_DIR/knowledge-config.sh" ]]; then
+  printf '错误: 缺少配置文件 %s\n' "$SCRIPT_DIR/knowledge-config.sh" >&2
   exit 1
 fi
 
 # shellcheck disable=SC1091
-source "$SCRIPT_DIR/sdx-config.sh"
+source "$SCRIPT_DIR/knowledge-config.sh"
 sdx_require_bash5
 
 log() { printf '%s\n' "$*" >&2; }

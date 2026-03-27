@@ -1,6 +1,6 @@
 # `.ai` — AI 规范与技能
 
-本目录存放 **SDD 阶段模板与工程规范**（`rules/`）以及 **Slash 技能**（`skills/`）。**Skills 为 `SKILL.md` 工作流，不是 `scripts/` 可执行脚本。** 根目录 `scripts/sdx-init.sh` 初始化目标工程时，会将 `.ai/` 一并拷贝到目标项目的 `.ai/`，便于在任意仓库复用同一套文档与 Agent 契约。
+本目录存放 **SDD 阶段模板与工程规范**（`rules/`）以及 **Slash 技能**（`skills/`）。**Skills 为 `SKILL.md` 工作流，不是 `scripts/` 可执行脚本。** 根目录 `scripts/knowledge-init.sh` 初始化目标工程时，会将 `.ai/` 一并拷贝到目标项目的 `.ai/`，便于在任意仓库复用同一套文档与 Agent 契约。
 
 ---
 

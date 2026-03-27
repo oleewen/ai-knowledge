@@ -1,6 +1,6 @@
 ---
 ```
-id: "PRD-{REQUIREMENT-ID}-MVP{N}"
+id: "PRD-{ID}-{N}"
 title: "{产品需求标题}"
 version: "1.0.0"
 status: "draft"

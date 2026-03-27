@@ -1,66 +1,54 @@
-# system/knowledge — knowledge_meta.yaml（目录元数据）
+# docs/knowledge — 知识树元数据（联邦单元）
+schema_version: "1.1"
+
 id: "DIR-KNOWLEDGE"
-name: "系统知识库（knowledge）"
-description: "SSOT：宪法层 + 四视角。阶段文档以此为输入，归档时可回写。"
+name: "应用知识库（knowledge）"
+description: "宪法层 + 四视角；与 knowledge-extract 产物对齐，可与中央库 ID 对齐。"
 
 child_directories:
-  - "constitution"
-  - "business"
-  - "product"
-  - "technical"
-  - "data"
+  - constitution
+  - business
+  - product
+  - technical
+  - data
 child_files:
-  - "README.md"
+  - README.md
 
 role:
   is_single_source_of_truth: true
   perspectives:
-    - "constitution"
-    - "business"
-    - "product"
-    - "technical"
-    - "data"
-
-inputs:
-  - path: "solutions/"
-    description: "解决方案文档（SOLUTION-{ID}.md）"
-  - path: "analysis/"
-    description: "需求分析文档（ANALYSIS-{ID}.md）"
-  - path: "requirements/"
-    description: "需求交付文档（REQUIREMENT-{ID}.md）"
-  - path: "changelogs/"
-    description: "变更记录与索引运维（可选）"
-
-outputs:
-  primary_artifact:
-    pattern: "*/README.md, *_meta.yaml, **/*.{yaml,md}"
-    description: "按视角组织的知识条目（命名见各视角 README）"
-
-naming_conventions:
-  ids:
-    description: "全局唯一前缀（BD/BSD/BC/AGG/AB、PL/PM/FT/UC、SYS/APP/MS/API、DS/ENT 等）"
-    reference: "./constitution/standards/NAMING-CONVENTIONS.md"
+    - constitution
+    - business
+    - product
+    - technical
+    - data
 
 indexing:
-  system_index:
-    path: "../SYSTEM_INDEX.md"
-    rule: "变更条目后按需更新 system/SYSTEM_INDEX.md 与各视角 README"
+  application_index:
+    path: ../INDEX_GUIDE.md
   per_perspective_readmes:
-    - "./constitution/README.md"
-    - "./business/README.md"
-    - "./product/README.md"
-    - "./technical/README.md"
-    - "./data/README.md"
-
-integration:
-  consumed_by:
-    - path: "../solutions/"
-    - path: "../analysis/"
-    - path: "../requirements/"
-    - path: "../changelogs/"
+    - ./constitution/README.md
+    - ./business/README.md
+    - ./product/README.md
+    - ./technical/README.md
+    - ./data/README.md
 
 references:
-  - path: "./README.md"
-  - path: "../SYSTEM_INDEX.md"
-  - path: "../DESIGN.md"
-  - path: "../CONTRIBUTING.md"
+  - ./README.md
+  - ../INDEX_GUIDE.md
+  - ../../README.md
+  - ../../AGENTS.md
+
+# knowledge-extract：项目级覆盖（可选）
+knowledge:
+  schema_version: "1.1"
+  meta_read_order:
+    paths:
+      - application_meta.yaml
+      - knowledge/knowledge_meta.yaml
+      - knowledge/business/business_meta.yaml
+      - knowledge/product/product_meta.yaml
+      - knowledge/technical/technical_meta.yaml
+      - knowledge/data/data_meta.yaml
+      - requirements/requirements_meta.yaml
+      - changelogs/changelogs_meta.yaml

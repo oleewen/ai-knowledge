@@ -30,7 +30,7 @@ cd /path/to/your-project
 2、执行命令
 
 ```bash
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/sdx-init-bootstrap.sh" | bash -s -- [sdx-init 选项]
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/knowledge-init-bootstrap.sh" | bash -s -- [knowledge-init 选项]
 ```
 
 - 脚本会先将仓库克隆到临时目录，再对**当前目录**执行初始化，完成后删除临时克隆。
@@ -47,9 +47,9 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/script
 
 ```bash
 cd /path/to/your-project
-REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/sdx-init.sh [选项]
+REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/knowledge-init.sh [选项]
 # 或指定目标目录
-/path/to/ai-sdd-knowledge/scripts/sdx-init.sh [选项] /path/to/your-project
+/path/to/ai-sdd-knowledge/scripts/knowledge-init.sh [选项] /path/to/your-project
 ```
 
 1、进入需要初始化的项目目录
@@ -61,7 +61,7 @@ cd ai-sdd-knowledge
 2、执行命令
 
 ```bash
-./scripts/sdx-init.sh [选项] project-path
+./scripts/knowledge-init.sh [选项] project-path
 ```
 
 ## 选项说明
@@ -86,7 +86,7 @@ cd ai-sdd-knowledge
 
 ```bash
 # 默认（独立模式）：仓库 system 到 docs/system、application 到 docs/application，.ai 不含 solution/analysis rules
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/sdx-init-bootstrap.sh" | bash -s
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/knowledge-init-bootstrap.sh" | bash -s
 
 # 联邦模式：docs/applications + app-<工程名>，并忽略文档根、拷贝 .git
 curl -sL "..." | bash -s -- --mode=federation

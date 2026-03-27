@@ -11,14 +11,14 @@
 方式一：从 Git 拉取并初始化当前目录（可选通过环境变量覆盖仓库地址/分支）
 
 ```bash
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/sdx-init-bootstrap.sh" | bash -s -- [选项]
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/knowledge-init-bootstrap.sh" | bash -s -- [选项]
 ```
 
 方式二：已克隆本仓库时，在目标目录执行
 
 ```bash
 cd /path/to/your-project
-REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/sdx-init.sh [选项]
+REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/knowledge-init.sh [选项]
 ```
 
 **默认初始化**

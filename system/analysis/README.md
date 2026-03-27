@@ -1,45 +1,35 @@
-# analysis — 需求分析
+# analysis — 需求分析文档
 
-AI SDD **需求分析阶段**：基于解决方案（solution）与知识库，做深度研究和分析、细化需求和功能、拆分MVP，输出 `ANALYSIS-{ID}.md`。
+本目录用于记录**需求分析文档**，对应 AI SDD 需求分析阶段产出。基于解决方案文档与知识库进行深度研究、需求细化、MVP 拆分与依赖/风险评估，输出以 `ANALYSIS-{ID}.md` 命名的文档。
 
-**元数据**：[analysis_meta.yaml](./analysis_meta.yaml) — 单文件 SSOT：`identity`、`repository`、`pipeline`、`integration`、`layers`（`key`: an）。
+## 定位与用途
 
----
+- **输入**：解决方案文档（[solutions/](../solutions/)）、知识库（[knowledge/](../knowledge/)）、规约（[specs/](../specs/)）。
+- **输出**：需求分析文档 `ANALYSIS-{ID}.md`，作为后续需求交付（PRD/ADD/TDD）的输入。
 
-## 三步流程
+## 分析索引表
 
-1. **输入**：[solutions/](../solutions/)、[knowledge/](../knowledge/)（已有规约见各 `requirements/.../specs/` 或 [technical](../knowledge/technical/)）
-2. **编写**：`ANALYSIS-{ID}.md`，`parent` → 对应 `SOLUTION-{ID}`
-3. **登记**：在下表增加一行
+| 文档文件名              | 标题                | 关联解决方案 | 简要说明       |
+|------------------------|---------------------|--------------|----------------|
+| ANALYSIS-01.md         | 核心业务需求分析    | SOLUTION-01  | 对核心业务场景的需求梳理与拆解。 |
+| ANALYSIS-02.md         | MVP 定义与范围界定  | SOLUTION-01  | MVP 目标、边界与最小可用方案定义。 |
+| ANALYSIS-03.md         | 风险与依赖评估      | SOLUTION-02  | 主要依赖、风险点与解决建议分析。 |
+| ...                    | ...                 | ...          | ...            |
 
----
-
-## 分析索引
-
-
-| 文件    | 标题  | parent（Solution） | 说明  |
-| ----- | --- | ---------------- | --- |
-| （有则填） |     |                  |     |
+> 📚 注：每新增/评审一份 `ANALYSIS-{ID}.md`，请同步补充本表格，便于快速检索与项目追溯。
 
 
----
+## 命名与ID
 
-## 命名
+- **文件名**：`ANALYSIS-{ID}.md`，其中 `{ID}` 建议与解决方案或项目约定的唯一编号一致或可追溯。
+- **文档内**：frontmatter 中 `id` 与文件名一致，`parent` 指向对应的 `SOLUTION-{ID}`。
 
-- 文件：`ANALYSIS-{ID}.md`；`{ID}` 与项目或 Solution 可追溯  
-- frontmatter：`id` 与文件名一致；**必填** `parent`
+## 规范与模板
 
----
+- **阶段目标与工作流**：见 [`.cursor/skills/sdx-analysis/SKILL.md`](../../.cursor/skills/sdx-analysis/SKILL.md)（深度研究 → 需求细化 → MVP 拆分与规划 → 依赖分析与风险评估 → 文档输出与评审）。
+- **文档模板**：见 [`.cursor/rules/analysis/analysis-template.md`](../../.cursor/rules/analysis/analysis-template.md)。
 
-## 规范
+## 集成关系
 
-- Skill：[.ai/skills/sdx-analysis/SKILL.md](.ai/skills/sdx-analysis/SKILL.md)  
-- 模板：[.ai/rules/analysis/analysis-template.md](.ai/rules/analysis/analysis-template.md)
-
----
-
-## 追溯
-
-- 可与 business / product 的用例、功能 ID 对齐  
-- 实现向 technical / data 对齐
-
+- 需求分析文档的 `parent` 指向 [solutions/](../solutions/) 下的解决方案。
+- 细化需求、MVP 范围可与 **business、product** 等功能/用例 ID 建立追溯；实现方案与 **technical、data** 对齐。

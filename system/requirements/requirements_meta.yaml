@@ -1,154 +1,82 @@
-# system/requirements — 需求交付阶段统一元数据（单文件 SSOT）
-# 结构：identity + repository + pipeline + integration + layers（每层一条，无重复的全局 inputs）
+# docs/requirements — 单文件 SSOT
 schema_version: "1.1"
 
-# -----------------------------------------------------------------------------
-# 1. 阶段身份
-# -----------------------------------------------------------------------------
 identity:
-  id: "DIR-REQUIREMENTS"
-  name: "需求交付（requirements）"
-  description: >
-    系统级 SDD 需求交付阶段：将 analysis 输出的高层次需求按 MVP/阶段拆分为可执行交付包
-    REQUIREMENT-{ID}/，沉淀 PRD/ADD/TDD 等文档。本文件为 requirements/ 阶段唯一元数据入口。
+  id: DIR-REQUIREMENTS
+  name: 需求交付
+  description: REQUIREMENT-{ID}/ 内 PRD/ADD/TDD 等；与中央库 analysis、solutions 以 ID 关联。
 
 role:
-  stage: "requirements"
-  sdd_phase: "requirements"
+  stage: requirements
+  sdd_phase: requirements
   is_system_level_index: true
 
-# -----------------------------------------------------------------------------
-# 2. 仓库与目录约定（锚点 + 命名模式）
-# -----------------------------------------------------------------------------
 repository:
-  root_relative: "requirements"
+  root_relative: requirements
   child_directories:
-    - "REQUIREMENT-{ID}"
+    - REQUIREMENT-{ID}
   child_files:
-    - "README.md"
-  hierarchy:
-    chain: "REQUIREMENT → MVP-Phase → {PRD,ADD,TDD}"
-    labels:
-      REQUIREMENT: "需求交付包（Requirement package）"
-      MVP_PHASE: "MVP 分阶段（MVP phase）"
+    - README.md
   directory_patterns:
-    REQUIREMENT: "REQUIREMENT-{ID}/"
-    MVP_PHASE: "REQUIREMENT-{ID}/MVP-Phase-{N}/"
+    REQUIREMENT: REQUIREMENT-{ID}/
+    MVP_PHASE: REQUIREMENT-{ID}/MVP-Phase-{N}/
 
-# -----------------------------------------------------------------------------
-# 3. 阶段输入 / 产出（全层共享，不在各层重复声明）
-# -----------------------------------------------------------------------------
 pipeline:
   inputs:
-    - path: "../analysis/"
-      description: "需求分析文档（ANALYSIS-{ID}.md）"
-    - path: "../solutions/"
-      description: "解决方案文档（SOLUTION-{ID}.md）"
-    - path: "../../.ai/rules/requirement/"
-      description: "PRD/ADD/TDD 等模板与规范"
+    - path: ../../system/analysis/
+      description: 中央库 ANALYSIS-{ID}.md（可选）
+    - path: ../../system/solutions/
+      description: 中央库 SOLUTION-{ID}.md（可选）
   outputs:
-    ssot_file: "requirements_meta.yaml"
-    narrative: "各层目录与 frontmatter 约定见 `layers`；不在子目录重复放置与根索引冲突的 *_meta.yaml。"
-    directory_role: "每包仅含 `REQUIREMENT-{ID}.md`、若干 `MVP-Phase-{N}/` 及阶段内 Markdown；规约 YAML 等可按 add-template 落在同包 `specs/`。"
+    ssot_file: requirements_meta.yaml
 
-# -----------------------------------------------------------------------------
-# 4. 上游追溯与阶段对齐
-# -----------------------------------------------------------------------------
 integration:
   traceability:
-    - "交付包应与 analysis/ANALYSIS-{ID}.md、solutions/SOLUTION-{ID}.md 通过 ID 关联"
-    - "PRD.md 的 parent 指向 REQUIREMENT-{ID}；ADD.md/TDD.md 的 parent 指向本阶段对应 PRD（见各层 frontmatter）"
-  upstream_dirs:
-    - "../analysis/"
-    - "../solutions/"
-  key_fields:
-    requirement_package:
-      - "frontmatter 与 analysis/solution 对齐的 id（REQUIREMENT-{ID}）"
-    mvp_phase:
-      - "mvp_phase（与 PRD frontmatter 一致）"
+    - 交付包与 ANALYSIS/SOLUTION 通过 ID 关联
+    - PRD parent → REQUIREMENT-{ID}；ADD/TDD parent → 对应 PRD
 
-# -----------------------------------------------------------------------------
-# 5. 文档引用
-# -----------------------------------------------------------------------------
 references:
-  - path: "./README.md"
-    description: "本阶段目标、结构与工作流说明"
-  - path: "../DESIGN.md"
-    description: "全局目录结构与阶段设计"
-  - path: "../SYSTEM_INDEX.md"
-    description: "全局索引"
-  - path: "../../.ai/rules/requirement/prd-template.md"
-    description: "PRD 模板（frontmatter 字段约定）"
-  - path: "../../.ai/rules/requirement/add-template.md"
-    description: "ADD 模板"
-  - path: "../../.ai/rules/requirement/tdd-template.md"
-    description: "TDD 模板"
+  - ./README.md
+  - ../INDEX_GUIDE.md
+  - ../../README.md
+  - ../../.cursor/rules/requirement/prd-template.md
+  - ../../.cursor/rules/requirement/add-template.md
+  - ../../.cursor/rules/requirement/tdd-template.md
 
-# -----------------------------------------------------------------------------
-# 6. 层级模型（交付包 → MVP 分阶段；每层：模式、树、产物、frontmatter 对齐）
-# -----------------------------------------------------------------------------
 layers:
-  - key: "req"
-    code: "REQUIREMENT"
+  - key: req
+    code: REQUIREMENT
     order: 1
-    entity_kind: "requirement_package"
-    id_pattern: "REQUIREMENT-{ID}"
+    entity_kind: requirement_package
+    id_pattern: REQUIREMENT-{ID}
     parent: null
     tree:
-      child_directory_glob: "MVP-Phase-{N}/"
+      child_directory_glob: MVP-Phase-{N}/
     artifacts:
-      markdown: "REQUIREMENT-{ID}.md"
-    fields:
-      description: "需求交付包总述（与 ANALYSIS 对齐；见 REQUIREMENT-{ID}.md）"
+      markdown: REQUIREMENT-{ID}.md
     indexing:
       readme_index_table: true
-      rule: "新增/调整 REQUIREMENT 包时同步 README 与全局索引"
 
-  - key: "mvp_phase"
-    code: "MVP_PHASE"
+  - key: mvp_phase
+    code: MVP_PHASE
     order: 2
-    entity_kind: "mvp_phase"
-    id_pattern: "MVP-Phase-{N}"
+    entity_kind: mvp_phase
+    id_pattern: MVP-Phase-{N}
     parent:
-      field: "requirement_id"
-      expects: "REQUIREMENT-{ID}"
-    tree:
-      child_directory_glob: null
+      field: requirement_id
+      expects: REQUIREMENT-{ID}
     artifacts:
       fixed_filenames:
-        - "PRD.md"
-        - "ADD.md"
-        - "TDD.md"
-    fields:
-      mvp_phase_label: "与 PRD frontmatter.mvp_phase 一致，如 MVP-1"
+        - PRD.md
+        - ADD.md
+        - TDD.md
     frontmatter_constraints:
-      PRD.md:
-        required_fields:
-          - "id"
-          - "parent"
-          - "mvp_phase"
-        constraints:
-          - "frontmatter.parent == \"REQUIREMENT-{ID}\""
-          - "frontmatter.mvp_phase == \"MVP-{N}\""
-      ADD.md:
-        required_fields:
-          - "id"
-          - "parent"
-        constraints:
-          - "frontmatter.parent == \"PRD-{对应产品需求编号}\""
-      TDD.md:
-        required_fields:
-          - "id"
-          - "parent"
-        constraints:
-          - "frontmatter.parent == \"PRD-{对应产品需求编号}\""
+      PRD.md: "需 id、parent、mvp_phase；parent 为 REQUIREMENT-{ID}"
+      ADD.md: "需 id、parent；parent 指向对应 PRD"
+      TDD.md: "需 id、parent；parent 指向对应 PRD"
     indexing:
       readme_index_table: false
-      rule: "新增阶段目录时同步包内索引与 PRD/ADD/TDD 父子关系"
 
-# -----------------------------------------------------------------------------
-# 7. 全局索引运维（与 stage 并列，避免与 layers 重复）
-# -----------------------------------------------------------------------------
 indexing:
   readme_index_table: true
-  rule: "任一 layer 或交付包变更时，更新本文件（若扩展 layers）、requirements/README.md 与必要的根 INDEX"
+  rule: 变更交付包或阶段时同步 README、INDEX_GUIDE（按需）

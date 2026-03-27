@@ -37,7 +37,7 @@ tags: ["glossary", "terminology", "constitution"]
 |------|------|
 | 业务视角 | 业务域、子域、限界上下文、聚合等，不依赖技术实现。 |
 | 产品视角 | 产品线、模块、功能点、用例、业务流程、业务规则。 |
-| 技术视角 | 系统、应用、微服务、API 等物理实现与部署。 |
+| 技术视角 | 系统、应用、**MS（入口能力簇）**、API；其中 **MS-*** 为 **对外入口宿主类聚类**，**不**等于 Maven 子模块（见 **knowledge-extract §8.1.2**）。 |
 | 数据视角 | 数据存储、数据实体、字段、敏感级别、数据流向。 |
 
 ## 业务术语（带 ID）
@@ -69,14 +69,14 @@ tags: ["glossary", "terminology", "constitution"]
 | 关系 | 含义 |
 |------|------|
 | implemented_by_app_id | 限界上下文由哪个应用（代码库）实现。 |
-| implemented_by_service_ids | 聚合根由哪些微服务（service_ids / MS-*）实现。 |
+| implemented_by_service_ids | 聚合根由哪些 **MS-*（入口簇）** 实现；**MS-*** 须可指回 **API 宿主类**，**非** artifactId。 |
 | relies_on_context_ids | 产品模块依赖哪些限界上下文。 |
 | invokes_api_ids | 功能点调用的 API 列表。 |
 | implemented_by_api_id | 能力（Ability）由哪个 API 实现。 |
 | map_to_api_id | 用例（UC）映射到 API 的关系。 |
 | persisted_as_entity_ids | 聚合持久化对应的数据实体 ID。 |
 | maps_to_aggregate_id | 数据实体对应的业务聚合根。 |
-| owned_by_service_id | 数据存储/数据实体归属到哪些微服务（MS-*）。 |
+| owned_by_service_id | 数据存储/数据实体归属到哪些 **MS-*（入口簇）**。 |
 
 ## 术语变更记录
 

@@ -9,7 +9,7 @@
 ## 1. 格式约定
 
 - **通用格式**：`{TYPE}-{NAME}`，其中 `TYPE` 为下表所列前缀，`NAME` 为英文短名（建议大写+连字符）。
-- **示例**：`BD-ORDER`、`BC-ORDER-MGMT`、`FT-ADD-TO-CART`、`APP-ORDER-SERVICE`、`ENT-T_ORDER`。
+- **示例（本仓库）**：`BD-CHARGING-APPEAL`、`BC-POLICY-APPEAL-CORE`、`FT-POLICY-APPEAL-LIFECYCLE`、`APP-POLICY-APPEAL-SERVICE`、`ENT-T_POLICY_APPEAL`。
 
 ---
 
@@ -41,7 +41,7 @@
 |------|----------|------|
 | SYS- | System | 系统 |
 | APP- | Application | 应用（代码仓库/部署单元） |
-| MS- | Microservice | 微服务 |
+| MS- | Microservice（技术视图 **入口簇**） | **对外入口**（HTTP/Dubbo/MQ/Job）**宿主类**按 **knowledge-extract §8.1.1** 聚类；**不**对应 Maven `artifactId`/子模块（**§8.1.2**） |
 | API- | API Endpoint | 接口端点 |
 
 ### 数据视角 (data)
@@ -55,8 +55,8 @@
 
 ## 3. 文件与目录命名
 
-- **目录**：与实体 ID 一致（如 `BD-ORDER`、`PL-ECOMMERCE`），或与 ID 中 NAME 部分对应（如 `order` 与 `BD-ORDER` 对应时，以 ID 为准在索引中查找）。
-- **实体定义文件**：应用注册等可为 `{id}.yaml`（如 `APP-ORDER-SERVICE.yaml`）；数据实体字段模板见 **`data_meta.yaml`** 的 **`layers`**（`key: ent`）；若需逐实体落盘（如应用侧增量），可采用 `{ENT-ID}_ENT_meta.yaml` 约定；业务各层字段模板收敛于 **`business_meta.yaml`** 的 **`layers`** 数组。
+- **目录**：与实体 ID 一致（如 `BD-CHARGING-APPEAL`、`PL-POLICY-APPEAL`），或以 ID 为准在索引中查找。
+- **实体定义文件**：应用注册等可为 `{id}.yaml`（如 `APP-POLICY-APPEAL-SERVICE.yaml`）；数据实体字段模板见 **`data_meta.yaml`** 的 **`layers`**（`key: ent`）；若需逐实体落盘（如应用侧增量），可采用 `{ENT-ID}_ENT_meta.yaml` 约定；业务各层字段模板收敛于 **`business_meta.yaml`** 的 **`layers`** 数组。
 - **元数据文件（目录索引）**：
   - **`system/` 根**：`system_meta.yaml`（阶段子目录与 `knowledge/` 指针、`INDEX`/`DESIGN` 等导航约定摘要）。
   - **`system/knowledge/` 根**：`knowledge_meta.yaml`（本树 SSOT 索引说明）。
@@ -80,7 +80,7 @@
 ## 4. 引用规则
 
 - 跨文件、跨视角引用**只写 ID 字符串**，不写名称或路径。
-- 例如：在聚合中写 `persisted_as_entity_ids: ["ENT-T_ORDER"]`，在功能中写 `invokes_api_ids: ["API-CART-ADD-ITEM"]`。
+- 例如：在聚合中写 `persisted_as_entity_ids: ["ENT-T_POLICY_APPEAL"]`，在功能中写 `invokes_api_ids: ["API-POLICY-APPEAL-CREATE"]`。
 
 ---
 

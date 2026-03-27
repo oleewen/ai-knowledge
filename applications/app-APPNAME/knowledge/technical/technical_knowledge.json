@@ -1,0 +1,87 @@
+{
+  "schema_version": "2.1",
+  "perspective": "technical",
+  "generated_at": "1970-01-01T00:00:00Z",
+  "confidence": "example",
+  "entities": {
+    "systems": [
+      {
+        "hierarchy": "SYS",
+        "id": "001",
+        "full_id": "SYS-EXAMPLE",
+        "alias": "ExampleSystem",
+        "name": "示例系统",
+        "description": "仅用于演示技术视角数据结构（示例）。",
+        "architecture": {
+          "apps": [
+            { "id": "APP-EXAMPLE", "name": "示例应用", "startup_class": "ExampleApp", "role": "示例角色" }
+          ],
+          "external_dependencies": [
+            { "system": "ExternalExample", "integration": "HTTP", "purpose": "示例外部依赖" }
+          ],
+          "ddd_layers": [
+            "Gateway（HTTP/Dubbo 合同）",
+            "Application（Manager 编排）",
+            "Domain（充血领域模型）",
+            "Infrastructure（Repository + Mapper + 外部 Adapter）"
+          ]
+        },
+        "evidence_chain": [],
+        "cross_references": { "business": [], "product": [], "technical": [], "data": [] }
+      }
+    ],
+    "applications": [
+      {
+        "hierarchy": "APP",
+        "id": "001",
+        "full_id": "APP-EXAMPLE",
+        "parent_sys_id": "SYS-EXAMPLE",
+        "alias": "ExampleApp",
+        "name": "示例应用",
+        "description": "仅用于演示技术视角数据结构（示例）。",
+        "repo_url": "git@example.com:org/example.git",
+        "docs_manifest_path": "/docs/manifest.yaml",
+        "startup_class": "ExampleApp",
+        "maven_module": "example-module",
+        "service_ids": ["MS-EXAMPLE"],
+        "mq_consumers": [],
+        "evidence_chain": [],
+        "cross_references": { "business": [], "product": [], "data": [] }
+      }
+    ],
+    "services": [
+      {
+        "hierarchy": "MS",
+        "id": "MS-EXAMPLE",
+        "alias": "ExampleService",
+        "name": "示例微服务",
+        "host_class": "ExampleApiImpl",
+        "host_module": "example-module",
+        "protocol": "HTTP",
+        "evidence_chain": [],
+        "cross_references": { "business": ["BC-EXAMPLE"], "product": ["PM-EXAMPLE"], "apis": ["API-EXAMPLE-001"] }
+      }
+    ],
+    "apis": [
+      {
+        "hierarchy": "API",
+        "id": "API-EXAMPLE-001",
+        "alias": "ExampleService.create",
+        "name": "示例 API：创建",
+        "service_id": "MS-EXAMPLE",
+        "host_class": "ExampleApiImpl",
+        "host_module": "example-module",
+        "method_signature": "create(ExampleReq req)",
+        "evidence_chain": []
+      }
+    ]
+  },
+  "metadata": {
+    "total_systems": 1,
+    "total_applications": 1,
+    "total_services": 1,
+    "total_apis": 1,
+    "total_entities": 4,
+    "changes_from_previous": "已裁剪为仅保留示例数据。"
+  }
+}

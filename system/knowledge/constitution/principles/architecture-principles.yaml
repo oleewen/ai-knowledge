@@ -1,182 +1,62 @@
-# 架构原则（完整版）
-# 摘录自设计文档第七部分，用于指导架构决策，与 constitution 治理层配套。
-
+# 架构原则条目（与 constitution 配套；细则以 ADR / 评审为准）
 architecture_principles:
   version: "2.0"
-  last_reviewed: null   # 建议填写评审日期，如 "2024-01-15"
-  next_review: null      # 建议填写下次评审日期，如 "2024-04-15"
-  approved_by: "Architecture Board"
+  last_reviewed: null
+  next_review: null
+  approved_by: Architecture Board
 
-  # ====================================================================
-  # 元原则：关于原则本身的原则
-  # ====================================================================
   meta_principles:
-    - id: "MP-01"
-      name: "原则数量克制"
-      statement: "核心原则不超过 12 条，每条必须可操作"
-      rationale: "过多原则等于没有原则"
+    - id: MP-01
+      name: 原则数量克制
+      statement: 核心原则可执行、数量克制，避免口号化。
+    - id: MP-02
+      name: 原则可验证
+      statement: 每条原则应有可操作的验证或评审方式。
 
-    - id: "MP-02"
-      name: "原则必须可验证"
-      statement: "每条原则至少有一种方式可以验证是否被遵守"
-      rationale: "不可验证的原则只是口号"
-
-  # ====================================================================
-  # 核心架构原则
-  # ====================================================================
   principles:
+    - id: AP-01
+      name: 业务能力驱动
+      category: business-alignment
+      statement: 系统边界与业务能力边界对齐，而非仅按技术层次划分。
+    - id: AP-02
+      name: 演进式架构
+      category: business-alignment
+      statement: 架构支持增量变更，重大变更需渐进路径与回滚预案。
+    - id: AP-03
+      name: 数据所有权明确
+      category: data-governance
+      statement: 每个数据实体有唯一权威来源服务。
+    - id: AP-04
+      name: 事件作为一等公民
+      category: data-governance
+      statement: 跨服务状态传播优先领域事件，配合幂等与契约版本。
+    - id: AP-05
+      name: API 优先
+      category: technical-excellence
+      statement: 服务能力通过定义良好的 API 暴露，契约先于实现。
+    - id: AP-06
+      name: 故障隔离
+      category: technical-excellence
+      statement: 单组件故障不导致全站不可用；限流、熔断、降级内建。
+    - id: AP-07
+      name: 可观测性内建
+      category: technical-excellence
+      statement: 服务内建日志、指标、链路追踪等可观测性。
+    - id: AP-08
+      name: 零信任安全
+      category: security
+      statement: 服务间默认不信任，认证授权与最小权限。
+    - id: AP-09
+      name: 团队自治与对齐
+      category: organization
+      statement: 团队在服务边界内自治，跨团队接口与标准对齐。
+    - id: AP-10
+      name: 文档即代码
+      category: organization
+      statement: 架构文档与代码同仓、版本化，关键一致性可 CI 校验。
 
-    # ------ 业务对齐 ------
-    - id: "AP-01"
-      name: "业务能力驱动"
-      category: "business-alignment"
-      statement: "系统边界应与业务能力边界对齐，而非按技术层次划分。"
-      rationale: "业务能力相对稳定，按此划分可减少跨团队协调成本，提高业务变更的局部性。"
-      implications:
-        - "微服务边界由限界上下文决定"
-        - "团队按业务领域而非技术栈组织"
-        - "数据库按服务隔离，不共享"
-      verification:
-        automated: true
-        method: "检查每个微服务是否映射到唯一限界上下文（CR-001/CR-002）"
-      exceptions:
-        - "纯技术基础设施服务（如 API Gateway）不受此约束"
-      related_adrs: ["ADR-001", "ADR-005"]
-
-    - id: "AP-02"
-      name: "演进式架构"
-      category: "business-alignment"
-      statement: "架构应支持增量变更，避免大爆炸式重构。"
-      rationale: "业务需求持续变化，架构必须能够安全地逐步演进。"
-      implications:
-        - "优先选择可逆决策"
-        - "使用 Feature Flag 控制新功能发布"
-        - "保持向后兼容的 API 版本策略"
-        - "拆分和合并服务都应有渐进方案"
-      verification:
-        automated: false
-        method: "架构评审时检查变更方案是否包含渐进路径和回滚计划"
-      related_adrs: ["ADR-003"]
-
-    # ------ 数据治理 ------
-    - id: "AP-03"
-      name: "数据所有权明确"
-      category: "data-governance"
-      statement: "每个数据实体有且仅有一个权威来源服务。"
-      rationale: "多源写入导致数据不一致，是分布式系统最常见的问题。"
-      implications:
-        - "其他服务通过 API 或事件获取数据副本"
-        - "副本数据标记为只读，允许最终一致"
-        - "数据实体的 Schema 变更由所有者服务负责"
-      verification:
-        automated: true
-        method: "一致性检查规则 CR-003"
-      related_adrs: ["ADR-007"]
-
-    - id: "AP-04"
-      name: "事件作为一等公民"
-      category: "data-governance"
-      statement: "跨服务的状态传播优先使用领域事件，而非同步调用或共享数据库。"
-      rationale: "事件驱动降低服务间耦合，提高系统弹性和可扩展性。"
-      implications:
-        - "领域事件需要有明确的 Schema 和版本"
-        - "事件存储需要保证至少一次投递"
-        - "消费者需要实现幂等处理"
-      verification:
-        automated: true
-        method: "检查跨服务调用中同步 API 与异步事件的比例"
-        threshold: "异步事件占跨服务通信 ≥ 60%"
-      related_adrs: ["ADR-004"]
-
-    # ------ 技术卓越 ------
-    - id: "AP-05"
-      name: "API 优先"
-      category: "technical-excellence"
-      statement: "所有服务能力必须通过定义良好的 API 暴露，API 设计先于实现。"
-      rationale: "API 是服务间的契约，先定义契约可以并行开发、提前集成测试。"
-      implications:
-        - "使用 OpenAPI/AsyncAPI 规范定义 API"
-        - "API 变更需要版本管理和兼容性评估"
-        - "内部服务间也需要正式 API 定义"
-      verification:
-        automated: true
-        method: "CI 检查所有服务是否有对应的 API 规范文件"
-
-    - id: "AP-06"
-      name: "故障隔离"
-      category: "technical-excellence"
-      statement: "单个组件的故障不应导致整个系统不可用。"
-      rationale: "分布式系统中故障是常态，必须设计容错机制。"
-      implications:
-        - "服务间调用必须有超时、重试、熔断"
-        - "关键路径需要有降级方案"
-        - "避免级联依赖超过 3 层"
-      verification:
-        automated: true
-        method: "适应度函数 FF-003（故障隔离度）"
-
-    - id: "AP-07"
-      name: "可观测性内建"
-      category: "technical-excellence"
-      statement: "每个服务必须内建日志、指标、链路追踪三大可观测性支柱。"
-      rationale: "分布式系统的调试依赖可观测性，事后补装成本极高。"
-      implications:
-        - "统一日志格式（JSON 结构化）"
-        - "标准指标暴露（Prometheus 格式）"
-        - "分布式链路追踪（OpenTelemetry）"
-        - "每个 API 端点有 SLI 指标"
-      verification:
-        automated: true
-        method: "部署检查清单自动验证"
-
-    # ------ 安全 ------
-    - id: "AP-08"
-      name: "零信任安全"
-      category: "security"
-      statement: "服务间通信默认不信任，必须经过认证和授权。"
-      rationale: "内网不等于安全网，横向移动是常见攻击路径。"
-      implications:
-        - "服务间使用 mTLS"
-        - "所有 API 调用携带身份令牌"
-        - "最小权限原则"
-      verification:
-        automated: true
-        method: "网络策略扫描 + API Gateway 配置检查"
-
-    # ------ 团队自治 ------
-    - id: "AP-09"
-      name: "团队自治与对齐"
-      category: "organization"
-      statement: "团队在服务边界内拥有技术选型自主权，但必须遵守跨团队接口标准。"
-      rationale: "自治提高效率和创新，标准化接口确保互操作性。"
-      implications:
-        - "团队可自选编程语言、框架、数据库"
-        - "但 API 格式、事件格式、监控标准必须统一"
-        - "共享库只限于接口定义和工具类"
-      verification:
-        automated: false
-        method: "季度架构评审检查"
-
-    - id: "AP-10"
-      name: "文档即代码"
-      category: "organization"
-      statement: "架构文档与代码同仓管理，使用版本控制，通过 CI 验证一致性。"
-      rationale: "分离的文档必然过时，与代码同步管理才能保持活力。"
-      implications:
-        - "架构仓库使用 Git 管理"
-        - "文档变更走 PR 评审流程"
-        - "自动化检查文档与实际系统的一致性"
-      verification:
-        automated: true
-        method: "CI 流水线中的一致性检查"
-      related_adrs: ["ADR-002"]
-
-  # ------ 知识库专属（与本仓库直接相关）------
   knowledge_repo_principles:
-    - id: "KP-01"
-      name: "单一事实源"
-      category: "knowledge-management"
-      statement: "每个知识实体只在一处定义，其他地方通过 ID 引用，杜绝重复与不一致。"
-      implications:
-        - "本知识库与各应用级文档通过 manifest 与 ID 关联"
-        - "映射关系写在源实体的 _meta 或 YAML 中"
+    - id: KP-01
+      name: 单一事实源
+      category: knowledge-management
+      statement: 知识实体单点定义，他处仅 ID 引用；映射写在源侧 meta 或 JSON。

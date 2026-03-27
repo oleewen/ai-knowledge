@@ -16,4 +16,4 @@
 - [applications/APPLICATIONS_INDEX.md](./APPLICATIONS_INDEX.md)（应用域总览；[短入口](./INDEX.md)）
 - [system/DESIGN.md](../system/DESIGN.md)（系统级目录结构与元模型）
 - [system/SYSTEM_INDEX.md](../system/SYSTEM_INDEX.md)（系统级索引与映射字段）
-- 初始化脚本与说明：`scripts/sdx-init.sh`、`scripts/README.md`
+- 初始化脚本与说明：`scripts/knowledge-init.sh`、`scripts/README.md`

@@ -1,60 +1,40 @@
-# system/knowledge/constitution 目录元数据
-id: "DIR-KNOWLEDGE-CONSTITUTION"
-name: "宪法与治理层（knowledge/constitution）"
-description: "术语、原则、标准模板与 ADR：为四视角与阶段文档提供统一命名、可追溯决策与治理约束；不承载业务/产品/技术/数据实体定义。"
+# docs/knowledge/constitution — 目录元数据
+schema_version: "1.1"
+
+id: DIR-KNOWLEDGE-CONSTITUTION
+name: 宪法与治理层
+description: 术语、原则、标准、ADR；不承载四视角实体定义。
 
 child_directories:
-  - "principles"
-  - "standards"
-  - "adr"
+  - principles
+  - standards
+  - adr
 child_files:
-  - "README.md"
-  - "GLOSSARY.md"
+  - README.md
+  - GLOSSARY.md
 
 role:
-  perspective: "constitution"
+  perspective: constitution
   is_system_level_index: true
-
-inputs:
-  - path: "(from-org-and-architecture-governance)"
-    description: "组织级架构治理、评审结论与术语演进（人工/A代理入）"
 
 outputs:
   primary_artifact:
-    pattern: "constitution_meta.yaml, principles/principles_meta.yaml, standards/{standards_meta,NAMING-CONVENTIONS}.*, adr/{adr_meta,adr-template}.*, adr/ADR-*.md, GLOSSARY.md, principles/**/*.{yaml,md}"
-    description: "治理类产出；根级 constitution_meta + 子树 meta（principles/、standards/、adr/）；ADR 正文与模板标准在 adr/；命名规范在 standards/"
-
-naming_conventions:
-  structure:
-    glossary: "GLOSSARY.md"
-    principles_tree: "principles/（含 principles_meta.yaml）"
-    standards_tree: "standards/（含 standards_meta.yaml、NAMING-CONVENTIONS.md）"
-    adr_corpus: "adr/（ADR-{序号}-{短标题}.md）"
-    adr_standard_meta: "adr/adr_meta.yaml"
+    pattern: "constitution_meta.yaml, principles/*, standards/*, adr/*"
 
 indexing:
   readme_index_table: true
-  rule: "新增术语、原则文件、标准或 ADR 时，应维护 README.md 组件表与必要的 ../../SYSTEM_INDEX.md 登记"
+  rule: 新增 ADR/术语时维护 README 与 ../../INDEX_GUIDE.md（按需）
 
 integration:
-  description: "各视角与阶段文档须遵守本层命名与 ADR 结论"
   consumed_by:
-    - path: "../business/"
-    - path: "../product/"
-    - path: "../technical/"
-    - path: "../data/"
-    - path: "../../solutions/"
-    - path: "../../analysis/"
-    - path: "../../requirements/"
+    - ../business/
+    - ../product/
+    - ../technical/
+    - ../data/
+    - ../../requirements/
 
 references:
-  - path: "./README.md"
-    description: "本层使命、组件与使用顺序"
-  - path: "./standards/NAMING-CONVENTIONS.md"
-    description: "全局 ID 与文件命名"
-  - path: "./adr/adr_meta.yaml"
-    description: "ADR 模板结构与落盘约定（机器可读）"
-  - path: "../../SYSTEM_INDEX.md"
-    description: "system 级索引"
-  - path: "../../DESIGN.md"
-    description: "system 元模型与目录设计"
+  - ./README.md
+  - ./standards/NAMING-CONVENTIONS.md
+  - ./adr/adr_meta.yaml
+  - ../../INDEX_GUIDE.md

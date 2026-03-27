@@ -55,6 +55,6 @@
 - [README.md](./README.md)：applications 总览与入口
 - [system/DESIGN.md](../system/DESIGN.md)
 - [system/SYSTEM_INDEX.md](../system/SYSTEM_INDEX.md)
-- [scripts/sdx-init.sh](../scripts/sdx-init.sh)
+- [scripts/knowledge-init.sh](../scripts/knowledge-init.sh)
 
 ---

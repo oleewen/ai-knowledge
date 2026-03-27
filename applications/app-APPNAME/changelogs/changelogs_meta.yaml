@@ -68,7 +68,7 @@ integration:
   traceability:
     - "在需求归档/知识回写时同步更新 CHANGELOG，形成可追溯记录"
   archive_feedback_loop:
-    description: "与 knowledge-archive、knowledge-build 等流程对齐时，在此记录里程碑级变更摘要"
+    description: "与知识库构建等流程对齐时，在此记录里程碑级变更摘要"
   key_fields:
     changelog_entry:
       - "日期、变更类型、影响范围（人类可读，无强制 frontmatter）"
@@ -81,7 +81,7 @@ references:
     description: "本目录说明与 Skill 对照表"
   - path: "../../../system/DESIGN.md"
     description: "中央库目录结构与 changelogs 定位约定"
-  - path: "../INDEX.md"
+  - path: "../INDEX_GUIDE.md"
     description: "本联邦单元索引"
   - path: "../../../README.md"
     description: "仓库根命令表与 Skill 入口"
