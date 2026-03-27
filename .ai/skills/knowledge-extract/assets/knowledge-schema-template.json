@@ -154,7 +154,7 @@
         "strategic_classification": "core_domain",
         "children": ["BSD-BILLING-APPEAL"],
         "evidence_chain": [
-          { "source": "com.company.policy.charging.appeal（顶层包路径）", "confidence": "high", "type": "code" }
+          { "source": "com.company.billing.charging.appeal（顶层包路径）", "confidence": "high", "type": "code" }
         ],
         "cross_references": { "technical": ["SYS-001"], "product": ["PL-001"] }
       },
