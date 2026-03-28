@@ -514,14 +514,14 @@ sync_dir_contents() {
 }
 
 sync_rules_filtered() {
-  # 逐个拷贝 rules 目录下文件或目录到目标工程对应 agent 的 rules，过滤 solution/analysis
+  # 逐个拷贝 rules 目录下文件或目录到目标工程对应 agent 的 rules
   local src_rules="$1"
   local dst_rules="$2"
 
   [[ -d "$src_rules" ]] || return 0
 
   if [[ "${DRY_RUN:-0}" == "1" ]]; then
-    log "[dry-run] 同步规则（过滤 solution/analysis）：$src_rules/ -> $dst_rules/"
+    log "[dry-run] 同步规则：$src_rules/ -> $dst_rules/"
   else
     ensure_dir "$dst_rules"
   fi
@@ -530,9 +530,6 @@ sync_rules_filtered() {
   shopt -s nullglob
   for item in "$src_rules"/*; do
     base="$(basename "$item")"
-    if [[ "$base" == "solution" || "$base" == "analysis" ]]; then
-      continue
-    fi
     if [[ -d "$item" ]]; then
       if [[ "${DRY_RUN:-0}" == "1" ]]; then
         log "[dry-run] 拷贝目录: $base -> $dst_rules/$base"

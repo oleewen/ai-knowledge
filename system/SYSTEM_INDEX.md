@@ -104,7 +104,7 @@ solutions ──→ analysis ──→ requirements
 |------|------|
 | [solutions/README.md](./solutions/README.md) | 解决方案说明、命名与阶段规范 |
 | 阶段规范 | [.ai/skills/sdx-solution/SKILL.md](../.ai/skills/sdx-solution/SKILL.md) |
-| 文档模板 | [.ai/rules/solution/solution-template.md](../.ai/rules/solution/solution-template.md) |
+| 文档模板 | [.ai/skills/sdx-solution/assets/solution-template.md](../.ai/skills/sdx-solution/assets/solution-template.md) |
 
 - **输出**：`solutions/SOLUTION-{ID}.md`。  
 - **输入**：业务描述与知识库 (knowledge)。
@@ -119,7 +119,7 @@ solutions ──→ analysis ──→ requirements
 |------|------|
 | [analysis/README.md](./analysis/README.md) | 需求分析说明、命名与阶段规范 |
 | 阶段规范 | [.ai/skills/sdx-analysis/SKILL.md](../.ai/skills/sdx-analysis/SKILL.md) |
-| 文档模板 | [.ai/rules/analysis/analysis-template.md](../.ai/rules/analysis/analysis-template.md) |
+| 文档模板 | [.ai/skills/sdx-analysis/assets/analysis-template.md](../.ai/skills/sdx-analysis/assets/analysis-template.md) |
 
 - **输出**：`analysis/ANALYSIS-{ID}.md`；文档内 `parent` 指向对应 SOLUTION。  
 - **输入**：解决方案 (solutions) 与知识库 (knowledge)。

@@ -120,7 +120,7 @@
 | 文件路径                               | 功能精要                                                              | 检索标签       | 上游依赖                                             | 下游被依赖                    | 重要度 |
 | ---------------------------------- | ----------------------------------------------------------------- | ---------- | ------------------------------------------------ | ------------------------ | --- |
 | `./system/knowledge/README.md`     | knowledge 主体、三步维护、system/SYSTEM_INDEX 与根 INDEX_GUIDE 指针                        | `知识库` `入口` | `system/DESIGN.md`、`system/SYSTEM_INDEX.md`             | constitution 与四视角 README | ⭐⭐⭐ |
-| `./system/solutions/README.md`     | 解决方案阶段三步流程与方案索引登记                                                 | `解决方案`     | `system/DESIGN.md`、`.ai/rules/solution`          | `analysis/`              | ⭐⭐⭐ |
+| `./system/solutions/README.md`     | 解决方案阶段三步流程与方案索引登记                                                 | `解决方案`     | `system/DESIGN.md`、`.ai/skills/sdx-solution`     | `analysis/`              | ⭐⭐⭐ |
 | `./system/analysis/README.md`      | 需求分析阶段三步流程与分析索引登记                                                 | `需求分析`     | `solutions/`、`knowledge/`                          | `requirements/`          | ⭐⭐⭐ |
 | `./system/requirements/README.md`  | 需求交付四步主线与目录结构（含各需求包内规约 specs/）                                       | `需求交付`     | `analysis/`、`solutions/`、`.ai/rules/requirement` | 阶段交付物                    | ⭐⭐⭐ |
 | `./system/changelogs/README.md`    | changelogs 说明；document-change / document-indexing **Skill** 产出物说明 | `变更` `运维`  | `README.md`、`AGENTS.md`                          | 索引链路                     | ⭐⭐  |

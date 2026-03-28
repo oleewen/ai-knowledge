@@ -78,7 +78,7 @@ references:
     description: "全局索引"
   - path: "../../.ai/skills/sdx-analysis/SKILL.md"
     description: "需求分析阶段目标与工作流"
-  - path: "../../.ai/rules/analysis/analysis-template.md"
+  - path: "../../.ai/skills/sdx-analysis/assets/analysis-template.md"
     description: "需求分析文档模板"
 
 # -----------------------------------------------------------------------------

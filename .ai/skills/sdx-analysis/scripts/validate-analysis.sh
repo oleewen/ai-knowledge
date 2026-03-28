@@ -25,7 +25,8 @@ while [[ $# -gt 0 ]]; do
 done
 
 ANALYSIS_DIR="${DOC_ROOT}/analysis"
-TEMPLATE=".cursor/rules/analysis/analysis-template.md"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+TEMPLATE="${SCRIPT_DIR}/../assets/analysis-template.md"
 
 info()    { echo "[INFO]  $1"; }
 warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }

@@ -27,7 +27,7 @@ REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/knowledge-
 - ② 将仓库内 **applications** 目录拷贝到目标目录：
   - `--mode=standalone`（默认）：`docs/application/`
   - `--mode=federation`：`docs/applications/`，并创建 `docs/applications/app-<工程目录名>/`
-- ③ 将 `.ai` 拷贝到当前目录的 `.ai/`（默认不包含 `rules/solution`、`rules/analysis`）；
+- ③ 将 `.ai` 拷贝到当前目录的 `.ai/`（解决方案/需求分析阶段模板在 `.ai/skills/sdx-solution`、`sdx-analysis` 的 `assets/`，不再置于 `.ai/rules/`）；
 - ④ 按 `--agents` 为 Cursor、Trea 等 Agent 生成或拷贝配置（`.cursor`、`.trea` 等）。详见 [scripts/README.md](scripts/README.md)。
 
 ## 命令简介

@@ -70,7 +70,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/script
 
 - SDD：澄清需求与设计优先；变更与设计见 `system/` 与 `.ai/rules/`。
 - 修改前读相关 README、INDEX、DESIGN、CONTRIBUTING；最小化 diff；knowledge 映射保持引用有效。
-- 阶段交付物模板：`.ai/rules/solution/`、`analysis/`、`requirement/`；Slash 命令见 `.cursor/README.md`。
+- 阶段交付物模板：`.ai/skills/sdx-solution/assets/`、`sdx-analysis/assets/`、`.ai/rules/requirement/`；Slash 命令见 `.cursor/README.md`。
 - **索引链路（按需）：** `/document-indexing`、`/document-change` 均为 **Skill**（`.cursor/skills/document-indexing/SKILL.md`、`.cursor/skills/document-change/SKILL.md`，`.ai/skills/` 同构），**非** `scripts/` 脚本；产出 `indexing-log.jsonl`、`changes-index.*` 等于 `system/changelogs/` 等，见各 SKILL；**非**本仓库日常编辑必跑项。
 
 ---

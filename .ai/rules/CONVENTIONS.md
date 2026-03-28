@@ -34,17 +34,17 @@
 | [testing-guidelines.md](.ai/rules/testing/testing-guidelines.md) | 测试规范：覆盖率门禁、分层策略、单元/集成测试、Mock、Jacoco |
 | [tdd-template.md](.ai/rules/testing/tdd-template.md) | 测试设计说明书(TDD)：现状分析、策略建议、用例清单、Mock 策略 |
 
-### 4. 解决方案规范 (solution/)
+### 4. 解决方案规范（sdx-solution）
 
 | 文件 | 说明 |
 |------|------|
 | [solution-template.md](../skills/sdx-solution/assets/solution-template.md) | 解决方案文档模板：业务背景、业务目标、需求概述、影响面、冲突与化解、方案与范围、MVP 拆分；产出 `solutions/SOLUTION-{ID}.md` |
 
-### 5. 需求分析规范 (analysis/)
+### 5. 需求分析规范（sdx-analysis）
 
 | 文件 | 说明 |
 |------|------|
-| [analysis-template.md](.cursor/skills/sdx-analysis/assets/analysis-template.md) | 需求分析文档模板：需求概述、功能/非功能需求、业务规则、数据需求、MVP 拆分、依赖与风险；产出 `analysis/ANALYSIS-{ID}.md` |
+| [analysis-template.md](../skills/sdx-analysis/assets/analysis-template.md) | 需求分析文档模板：需求概述、功能/非功能需求、业务规则、数据需求、MVP 拆分、依赖与风险；产出 `analysis/ANALYSIS-{ID}.md` |
 
 ### 6. 需求交付规范 (requirement/)
 

@@ -152,6 +152,4 @@ curl -sL "..." | bash -s -- --dry-run
 - 若选择 `--agents=cursor`：在 `<目标工程>/.cursor/` 下安装 `skills/` 与 `rules/`（skills 仅安装 `agent-*`/`document-*`/`knowledge-*`），并拷贝 `.cursor/README.md`（如存在）。
 - 若选择 `--agents=trea`：在 `<目标工程>/.trea/` 下安装 `skills/` 与 `rules/`（skills 仅安装 `agent-*`/`document-*`/`knowledge-*`），并拷贝 `.trea/README.md`（如存在）。
 
-说明：rules 会过滤掉 `.ai/rules/solution/` 与 `.ai/rules/analysis/` 两个目录。
-
 中央模式（`--mode=central`）额外会更新本仓库 `system/SYSTEM_INDEX.md`，并在 `system/knowledge/technical/SYS-ECOMMERCE-BACKEND/` 下生成 `APP-<工程名>/` 注册模板。

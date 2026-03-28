@@ -76,7 +76,7 @@ references:
     description: "全局索引"
   - path: "../../.ai/skills/sdx-solution/SKILL.md"
     description: "解决方案阶段目标与工作流"
-  - path: "../../.ai/rules/solution/solution-template.md"
+  - path: "../../.ai/skills/sdx-solution/assets/solution-template.md"
     description: "解决方案文档模板"
 
 # -----------------------------------------------------------------------------
