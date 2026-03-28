@@ -38,7 +38,7 @@
 
 | 文件 | 说明 |
 |------|------|
-| [solution-template.md](.ai/rules/solution/solution-template.md) | 解决方案文档模板：业务背景、业务目标、需求概述、影响面、冲突与化解、方案与范围、MVP 拆分；产出 `solutions/SOLUTION-{ID}.md` |
+| [solution-template.md](../skills/sdx-solution/assets/solution-template.md) | 解决方案文档模板：业务背景、业务目标、需求概述、影响面、冲突与化解、方案与范围、MVP 拆分；产出 `solutions/SOLUTION-{ID}.md` |
 
 ### 5. 需求分析规范 (analysis/)
 

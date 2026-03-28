@@ -5,11 +5,14 @@ set -euo pipefail
 # 用法: scripts/validate-solution.sh [--doc-root <path>] [--file <path>]
 #
 # 校验项:
-#   1. 文档目录存在
-#   2. frontmatter 完整性（id、title、version、status）
-#   3. 九章结构完整性
-#   4. 编号体系一致性（G-n、Q-n、C-n、R-n）
-#   5. 模板 solution-template.md 存在
+#   1. 模板文件存在
+#   2. 文档目录存在
+#   3. frontmatter 完整性（id、title、version、status、created、updated）
+#   4. id 格式符合 SOLUTION-{YYYYMMDD}-{SEQ}
+#   5. 九章结构完整性
+#   6. 空章节检测（无内容且未标注「不适用」或「待补充」）
+#   7. 编号体系一致性（G-n、Q-n、C-n、R-n）
+#   8. 技术语言检测（接口名、表名等技术词混入正文）
 
 DOC_ROOT="docs"
 TARGET_FILE=""
@@ -25,7 +28,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 SOLUTIONS_DIR="${DOC_ROOT}/solutions"
-TEMPLATE=".cursor/rules/solution/solution-template.md"
+TEMPLATE=".cursor/skills/sdx-solution/assets/solution-template.md"
 
 info()    { echo "[INFO]  $1"; }
 warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
@@ -90,13 +93,31 @@ for file in "${FILES[@]}"; do
   if head -5 "${file}" | grep -q "^---"; then
     success "${BASENAME}: frontmatter 存在"
 
-    for field in "id:" "title:" "version:" "status:"; do
-      if grep -q "${field}" "${file}"; then
+    for field in "id:" "title:" "version:" "status:" "created:" "updated:"; do
+      if grep -q "^${field}" "${file}"; then
         success "${BASENAME}: ${field} 字段存在"
       else
         warn "${BASENAME}: 缺少 ${field} 字段"
       fi
     done
+
+    # id 格式校验：SOLUTION-{YYYYMMDD}-{SEQ}
+    ID_LINE=$(grep "^id:" "${file}" 2>/dev/null || true)
+    if [[ -n "${ID_LINE}" ]]; then
+      if echo "${ID_LINE}" | grep -qE 'SOLUTION-[0-9]{8}-[0-9]+'; then
+        success "${BASENAME}: id 格式符合 SOLUTION-{YYYYMMDD}-{SEQ}"
+      else
+        warn "${BASENAME}: id 格式不符合 SOLUTION-{YYYYMMDD}-{SEQ}，实际: ${ID_LINE}"
+      fi
+    fi
+
+    # status 初始值检查
+    STATUS_LINE=$(grep "^status:" "${file}" 2>/dev/null || true)
+    if echo "${STATUS_LINE}" | grep -q "draft\|review\|approved"; then
+      success "${BASENAME}: status 值有效"
+    else
+      warn "${BASENAME}: status 值异常: ${STATUS_LINE}"
+    fi
   else
     warn "${BASENAME}: 缺少 frontmatter"
   fi
@@ -124,7 +145,35 @@ for file in "${FILES[@]}"; do
   done
   info "${BASENAME}: ${SECTION_COUNT}/9 个必需章节"
 
-  # 4. 编号体系检查
+  # 4. 空章节检测（有章节标题但无实质内容，且未标注「不适用」或「待补充」）
+  EMPTY_SECTION_COUNT=0
+  PREV_SECTION=""
+  PREV_LINE_NUM=0
+  LINE_NUM=0
+
+  while IFS= read -r line; do
+    LINE_NUM=$((LINE_NUM + 1))
+    if [[ "${line}" =~ ^##\  ]]; then
+      # 检查上一个章节是否为空
+      if [[ -n "${PREV_SECTION}" ]]; then
+        # 提取上一章节到当前章节之间的内容
+        SECTION_CONTENT=$(sed -n "$((PREV_LINE_NUM + 1)),$((LINE_NUM - 1))p" "${file}" 2>/dev/null || true)
+        # 去除空行和注释行后检查是否有实质内容
+        REAL_CONTENT=$(echo "${SECTION_CONTENT}" | grep -v "^$" | grep -v "^<!--" | grep -v "^-->" || true)
+        if [[ -z "${REAL_CONTENT}" ]]; then
+          warn "${BASENAME}: 章节 '${PREV_SECTION}' 无内容且未标注「不适用」或「待补充」"
+          EMPTY_SECTION_COUNT=$((EMPTY_SECTION_COUNT + 1))
+        fi
+      fi
+      PREV_SECTION="${line}"
+      PREV_LINE_NUM=${LINE_NUM}
+    fi
+  done < "${file}"
+  if [[ ${EMPTY_SECTION_COUNT} -eq 0 ]]; then
+    success "${BASENAME}: 无空章节"
+  fi
+
+  # 5. 编号体系检查
   G_COUNT=$(grep -c 'G-[0-9]' "${file}" 2>/dev/null || true)
   Q_COUNT=$(grep -c 'Q-[0-9]' "${file}" 2>/dev/null || true)
   C_COUNT=$(grep -c 'C-[0-9T]' "${file}" 2>/dev/null || true)
@@ -136,13 +185,21 @@ for file in "${FILES[@]}"; do
     warn "${BASENAME}: 未发现业务目标编号 (G-n)"
   fi
 
-  # 5. 空章节检查
-  EMPTY_SECTIONS=0
-  while IFS= read -r line; do
-    if [[ "${line}" =~ ^##\  ]]; then
-      SECTION_NAME="${line}"
+  # 6. 技术语言检测（常见技术词混入正文）
+  # 排除 §9.3 内部参考章节后检测
+  TECH_TERMS=("Spring Boot" "Kafka" "Redis" "TiDB" "MySQL" "Dubbo" "RPC" "MQ" "MyBatis" "Docker" "Kubernetes")
+  TECH_WARN=0
+  for term in "${TECH_TERMS[@]}"; do
+    # 简单检测：在正文中出现（排除注释行）
+    MATCH_COUNT=$(grep -v "^<!--" "${file}" | grep -c "${term}" 2>/dev/null || true)
+    if [[ ${MATCH_COUNT} -gt 0 ]]; then
+      warn "${BASENAME}: 正文中发现技术词「${term}」(${MATCH_COUNT} 处)，请确认是否已放入 §9.3 内部参考"
+      TECH_WARN=$((TECH_WARN + 1))
     fi
-  done < "${file}"
+  done
+  if [[ ${TECH_WARN} -eq 0 ]]; then
+    success "${BASENAME}: 未发现明显技术语言"
+  fi
 
   echo ""
 done
