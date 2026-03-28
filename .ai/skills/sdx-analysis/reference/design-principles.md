@@ -8,7 +8,7 @@ sdx-analysis 技能的完整设计约束。主文件 SKILL.md 中的「核心约
 
 ### 1. 模板驱动
 
-输出严格遵循 [analysis-template.md](../../../rules/analysis/analysis-template.md) 的八章结构（需求概述→功能需求→非功能需求→业务规则→数据需求→MVP 拆分方案→依赖与风险→附录）。章节顺序与编号不可调整；无内容的章节保留标题并标注「不适用」或「待补充」。
+输出严格遵循 [analysis-template.md](../assets/analysis-template.md) 的八章结构（需求概述→功能需求→非功能需求→业务规则→数据需求→MVP 拆分方案→依赖与风险→附录）。章节顺序与编号不可调整；无内容的章节保留标题并标注「不适用」或「待补充」。
 
 ### 2. 证据优先
 
@@ -19,7 +19,7 @@ sdx-analysis 技能的完整设计约束。主文件 SKILL.md 中的「核心约
 | 解决方案目标 | `G-{N}` | `G-1 提升申诉处理效率` |
 | 知识库实体 | `{视角}-{ID}` | `BC-001 FeeAppealContext` |
 | 文档章节 | `{文件} §{章节}` | `INDEX_GUIDE.md §3.2` |
-| 代码位置 | `{类}:{方法}` | `BillingAppealApi:create` |
+| 代码位置 | `{类}:{方法}` | `BillingAppealService:create` |
 
 ### 3. 按需加载
 
@@ -147,6 +147,6 @@ sdx-analysis 技能的完整设计约束。主文件 SKILL.md 中的「核心约
 | 解决方案文档不存在 | 终止，提示先执行 sdx-solution |
 | 解决方案文档结构不完整 | 发出警告，列出缺失章节，基于已有内容继续并标注风险 |
 | knowledge 目录缺失 | 发出警告，仅基于解决方案文档完成分析，标注缺少知识库基线 |
-| 模板文件不存在 | 终止，提示创建 `.cursor/rules/analysis/analysis-template.md` |
+| 模板文件不存在 | 终止，提示创建 `.cursor/skills/sdx-analysis/assets/analysis-template.md` |
 | MVP 拆分出现循环依赖 | 终止拆分，输出依赖图，请求用户确认调整方案 |
 | 输出目录不存在 | 自动创建 `docs/analysis/` 目录 |

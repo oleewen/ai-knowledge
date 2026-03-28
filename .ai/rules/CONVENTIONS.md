@@ -44,7 +44,7 @@
 
 | 文件 | 说明 |
 |------|------|
-| [analysis-template.md](.ai/rules/analysis/analysis-template.md) | 需求分析文档模板：需求概述、功能/非功能需求、业务规则、数据需求、MVP 拆分、依赖与风险；产出 `analysis/ANALYSIS-{ID}.md` |
+| [analysis-template.md](.cursor/skills/sdx-analysis/assets/analysis-template.md) | 需求分析文档模板：需求概述、功能/非功能需求、业务规则、数据需求、MVP 拆分、依赖与风险；产出 `analysis/ANALYSIS-{ID}.md` |
 
 ### 6. 需求交付规范 (requirement/)
 

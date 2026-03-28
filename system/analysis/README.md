@@ -11,9 +11,6 @@
 
 | 文档文件名              | 标题                | 关联解决方案 | 简要说明       |
 |------------------------|---------------------|--------------|----------------|
-| ANALYSIS-01.md         | 核心业务需求分析    | SOLUTION-01  | 对核心业务场景的需求梳理与拆解。 |
-| ANALYSIS-02.md         | MVP 定义与范围界定  | SOLUTION-01  | MVP 目标、边界与最小可用方案定义。 |
-| ANALYSIS-03.md         | 风险与依赖评估      | SOLUTION-02  | 主要依赖、风险点与解决建议分析。 |
 | ...                    | ...                 | ...          | ...            |
 
 > 📚 注：每新增/评审一份 `ANALYSIS-{ID}.md`，请同步补充本表格，便于快速检索与项目追溯。
@@ -27,7 +24,7 @@
 ## 规范与模板
 
 - **阶段目标与工作流**：见 [`.cursor/skills/sdx-analysis/SKILL.md`](../../.cursor/skills/sdx-analysis/SKILL.md)（深度研究 → 需求细化 → MVP 拆分与规划 → 依赖分析与风险评估 → 文档输出与评审）。
-- **文档模板**：见 [`.cursor/rules/analysis/analysis-template.md`](../../.cursor/rules/analysis/analysis-template.md)。
+- **文档模板**：见 [`.cursor/skills/sdx-analysis/assets/analysis-template.md`](../../.cursor/skills/sdx-analysis/assets/analysis-template.md)。
 
 ## 集成关系
 
