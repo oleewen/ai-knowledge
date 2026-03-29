@@ -2,7 +2,7 @@
 
 ## Slash 命令（Skills）
 
-上述命令均为 **Skill**（`SKILL.md` 工作流，由 Agent 执行）。**不是** 仓库 `scripts/` 下的 Bash 可执行脚本；与 `.cursor/skills/` 中同名目录镜像同步。
+上述命令均为 **Skill**（`SKILL.md` 工作流，由 Agent 执行）。**不是** 仓库 `scripts/` 下的 Bash 可执行脚本；权威路径为仓库根下 `.ai/skills/`（本文件所在树；初始化脚本可将子集同步到目标工程的 `.ai/`）。
 
 | 命令 | 说明 |
 |------|------|

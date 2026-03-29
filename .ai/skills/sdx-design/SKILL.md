@@ -2,7 +2,7 @@
 name: sdx-design
 description: >
   技术方案设计：基于产品需求与架构/领域文档进行技术方案设计，输出 ADD 与规约文件。
-  在用户执行 /sdx-design、编写 ADD 与规约时使用。产出 docs/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md，模板见 .cursor/rules/requirement/add-template.md。
+  在用户执行 /sdx-design、编写 ADD 与规约时使用。产出 docs/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md，模板见 .ai/skills/sdx-design/assets/add-template.md。
 ---
 
 # 方案设计阶段（sdx-design）
@@ -48,7 +48,7 @@ description: >
 - **架构设计**：系统/服务架构与调用关系、接口协议设计、领域模型与领域事件、数据架构与迁移方案、发布与回滚方案
 - **详细设计**：应用架构（集成与容器）、API 详细设计（签名、参数、容错、幂等）、核心类图与状态机、业务逻辑伪代码/流程图、一致性设计（事务与并发）、数据访问设计（DDL、索引、分页、缓存）、非功能性设计（安全、可观测）
 - **规约生成**：按服务生成 API / 领域 / 数据 / 集成规约（YAML），路径规范 `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/`
-- **ADD 文档**：遵循 [add-template.md](../../rules/requirement/add-template.md) 的四章结构（设计概述→架构设计→详细设计→附录）
+- **ADD 文档**：遵循 [add-template.md](assets/add-template.md) 的五章结构（设计概述→架构设计→详细设计→需求规约→附录）
 
 ## 工作流（四步）
 
@@ -68,7 +68,7 @@ description: >
 
 ### 步骤 4：文档输出与评审
 
-将步骤 1–3 的产出整合为 ADD 文档，严格采用 [add-template.md](../../rules/requirement/add-template.md) 的章节与格式；执行质量门禁自查。
+将步骤 1–3 的产出整合为 ADD 文档，严格采用 [add-template.md](assets/add-template.md) 的章节与格式；执行质量门禁自查。
 
 质量门禁清单见 [assets/quality-gate-checklist.md](assets/quality-gate-checklist.md)。
 
@@ -82,7 +82,7 @@ scripts/validate-design.sh --doc-root docs
 
 | 约束 | 说明 |
 |------|------|
-| 模板驱动 | 输出严格遵循 add-template.md 四章结构（设计概述→架构设计→详细设计→附录） |
+| 模板驱动 | 输出严格遵循 add-template.md 五章结构（设计概述→架构设计→详细设计→需求规约→附录） |
 | 证据优先 | 架构决策与设计须引用 PRD、需求分析与 `knowledge/` 事实，禁止臆测 |
 | 按需加载 | 仅在本轮需要时打开文件，禁止为完整性通读全仓 |
 | 歧义标注 | 不确定项标为待澄清，禁止自行假设 |
@@ -109,8 +109,8 @@ scripts/validate-design.sh --doc-root docs
 | 四步工作流详细规范 | [reference/workflow-spec.md](reference/workflow-spec.md) |
 | 质量门禁验收清单 | [assets/quality-gate-checklist.md](assets/quality-gate-checklist.md) |
 | 文档结构校验脚本 | [scripts/validate-design.sh](scripts/validate-design.sh) |
-| ADD 文档模板 | [.cursor/rules/requirement/add-template.md](../../rules/requirement/add-template.md) |
-| 上游：产品需求 | `.cursor/skills/sdx-prd/SKILL.md` |
-| 上游：需求分析 | `.cursor/skills/sdx-analysis/SKILL.md` |
-| 下游：测试设计 | `.cursor/skills/sdx-test/SKILL.md` |
+| ADD 文档模板 | [assets/add-template.md](assets/add-template.md) |
+| 上游：产品需求 | `.ai/skills/sdx-prd/SKILL.md` |
+| 上游：需求分析 | `.ai/skills/sdx-analysis/SKILL.md` |
+| 下游：测试设计 | `.ai/skills/sdx-test/SKILL.md` |
 | 知识库 | `knowledge/technical/`、`knowledge/business/`、`knowledge/constitution/adr/` |

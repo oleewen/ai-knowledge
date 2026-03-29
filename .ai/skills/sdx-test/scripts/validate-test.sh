@@ -24,7 +24,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-TEMPLATE=".cursor/rules/requirement/tdd-template.md"
+TEMPLATE=".ai/skills/sdx-test/assets/tdd-template.md"
 
 info()    { echo "[INFO]  $1"; }
 warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }

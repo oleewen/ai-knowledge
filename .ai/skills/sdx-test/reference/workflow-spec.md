@@ -249,7 +249,7 @@ technical-writer + doc-updater
 
 ### 输入
 
-步骤 1–4 全部产出 + [tdd-template.md](../../../rules/requirement/tdd-template.md)
+步骤 1–4 全部产出 + [tdd-template.md](../assets/tdd-template.md)
 
 ### 算法
 

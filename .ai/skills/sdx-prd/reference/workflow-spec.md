@@ -270,7 +270,7 @@ technical-writer + doc-updater
 
 ### 输入
 
-步骤 1–4 全部产出 + [prd-template.md](../../../rules/requirement/prd-template.md)
+步骤 1–4 全部产出 + [prd-template.md](../assets/prd-template.md)
 
 ### 算法
 

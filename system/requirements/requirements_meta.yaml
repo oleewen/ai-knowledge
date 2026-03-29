@@ -39,9 +39,9 @@ references:
   - ./README.md
   - ../INDEX_GUIDE.md
   - ../../README.md
-  - ../../.cursor/rules/requirement/prd-template.md
-  - ../../.cursor/rules/requirement/add-template.md
-  - ../../.cursor/rules/requirement/tdd-template.md
+  - ../../.cursor/skills/sdx-prd/assets/prd-template.md
+  - ../../.cursor/skills/sdx-design/assets/add-template.md
+  - ../../.cursor/skills/sdx-test/assets/tdd-template.md
 
 layers:
   - key: req

@@ -33,7 +33,7 @@ requirements/
 
 ## 模板与命令
 
-- 模板：[.ai/rules/requirement/](.ai/rules/requirement/)（prd / add / tdd）  
+- 模板：PRD → [.cursor/skills/sdx-prd/assets/prd-template.md](../../.cursor/skills/sdx-prd/assets/prd-template.md)；ADD → [.cursor/skills/sdx-design/assets/add-template.md](../../.cursor/skills/sdx-design/assets/add-template.md)；TDD → [.cursor/skills/sdx-test/assets/tdd-template.md](../../.cursor/skills/sdx-test/assets/tdd-template.md)  
 - Skills：sdx-prd、sdx-design、sdx-test（见 [.ai/README.md](.ai/README.md)）  
 
 ---

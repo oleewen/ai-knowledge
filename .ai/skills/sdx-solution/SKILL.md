@@ -72,7 +72,7 @@ description: >
 可使用辅助脚本验证文档结构（于**仓库根目录**执行）：
 
 ```bash
-.cursor/skills/sdx-solution/scripts/validate-solution.sh --doc-root docs
+.ai/skills/sdx-solution/scripts/validate-solution.sh --doc-root docs
 ```
 
 ## 核心约束
@@ -108,6 +108,6 @@ description: >
 | 质量门禁验收清单 | [assets/quality-gate-checklist.md](assets/quality-gate-checklist.md) |
 | 解决方案文档模板 | [assets/solution-template.md](assets/solution-template.md) |
 | 文档结构校验脚本 | [scripts/validate-solution.sh](scripts/validate-solution.sh) |
-| 下游：需求分析 | `.cursor/skills/sdx-analysis/SKILL.md` |
-| 下游：产品需求 | `.cursor/skills/sdx-prd/SKILL.md` |
-| 下游：技术设计 | `.cursor/skills/sdx-design/SKILL.md` |
+| 下游：需求分析 | `.ai/skills/sdx-analysis/SKILL.md` |
+| 下游：产品需求 | `.ai/skills/sdx-prd/SKILL.md` |
+| 下游：技术设计 | `.ai/skills/sdx-design/SKILL.md` |

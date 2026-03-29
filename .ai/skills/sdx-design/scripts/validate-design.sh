@@ -7,7 +7,7 @@ set -euo pipefail
 # 校验项:
 #   1. 文档目录存在
 #   2. frontmatter 完整性（id、title、version、status、parent、mvp_phase）
-#   3. 四章结构完整性
+#   3. 五章结构完整性
 #   4. 编号体系一致性（DD-n、API-n、LOGIC-n、TBL-n）
 #   5. 模板 add-template.md 存在
 #   6. specs 目录结构校验
@@ -26,7 +26,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 REQUIREMENTS_DIR="${DOC_ROOT}/requirements"
-TEMPLATE=".cursor/rules/requirement/add-template.md"
+TEMPLATE=".ai/skills/sdx-design/assets/add-template.md"
 
 info()    { echo "[INFO]  $1"; }
 warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
@@ -103,12 +103,13 @@ for file in "${FILES[@]}"; do
     warn "${BASENAME}: 缺少 frontmatter"
   fi
 
-  # 3. 四章结构检查
+  # 3. 五章结构检查
   REQUIRED_SECTIONS=(
     "## 1. 设计概述"
     "## 2. 架构设计"
     "## 3. 详细设计"
-    "## 4. 附录"
+    "## 4. 需求规约"
+    "## 5. 附录"
   )
 
   SECTION_COUNT=0
@@ -119,7 +120,7 @@ for file in "${FILES[@]}"; do
       warn "${BASENAME}: 缺少章节 '${section}'"
     fi
   done
-  info "${BASENAME}: ${SECTION_COUNT}/4 个必需章节"
+  info "${BASENAME}: ${SECTION_COUNT}/5 个必需章节"
 
   # 4. 编号体系检查
   DD_COUNT=$(grep -c 'DD-[0-9]' "${file}" 2>/dev/null || true)

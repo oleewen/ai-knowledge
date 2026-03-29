@@ -2,7 +2,7 @@
 name: sdx-test
 description: >
   测试方案设计：基于产品需求与技术设计制定测试策略与测试计划，输出测试设计文档（TDD）。
-  在用户执行 /sdx-test、编写测试设计/测试计划时使用。产出 docs/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md，模板见 .cursor/rules/requirement/tdd-template.md。
+  在用户执行 /sdx-test、编写测试设计/测试计划时使用。产出 docs/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md，模板见 .ai/skills/sdx-test/assets/tdd-template.md。
 ---
 
 # 测试设计阶段（sdx-test）
@@ -12,7 +12,7 @@ description: >
 ## 输入与输出
 
 **输入**：产品需求（`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`）、架构设计（`.../ADD-{ID}.md`）、规约（`.../specs/`）
-**输出**：`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md`（结构遵循 [tdd-template.md](../../rules/requirement/tdd-template.md)）
+**输出**：`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md`（结构遵循 [tdd-template.md](assets/tdd-template.md)）
 
 | 类型 | 内容 |
 |------|------|
@@ -48,7 +48,7 @@ description: >
 - **用例设计**：从用户故事验收标准、API 规约、业务规则三个维度设计测试用例，覆盖正常/异常/边界场景
 - **回归策略**：基于影响面分析确定回归范围，关联变更功能与受影响的已有功能
 - **进出标准**：定义测试进入条件（开发完成、环境就绪）与退出条件（用例通过率、缺陷标准）
-- **TDD 文档**：遵循 [tdd-template.md](../../rules/requirement/tdd-template.md) 的六章结构
+- **TDD 文档**：遵循 [tdd-template.md](assets/tdd-template.md) 的六章结构
 
 ## 工作流（五步）
 
@@ -72,7 +72,7 @@ description: >
 
 ### 步骤 5：文档输出与评审
 
-将步骤 1–4 的产出整合为测试设计文档，严格采用 [tdd-template.md](../../rules/requirement/tdd-template.md) 的章节与格式；执行质量门禁自查。
+将步骤 1–4 的产出整合为测试设计文档，严格采用 [tdd-template.md](assets/tdd-template.md) 的章节与格式；执行质量门禁自查。
 
 质量门禁清单见 [assets/quality-gate-checklist.md](assets/quality-gate-checklist.md)。
 
@@ -112,7 +112,7 @@ scripts/validate-test.sh --doc-root docs
 | 五步工作流详细规范 | [reference/workflow-spec.md](reference/workflow-spec.md) |
 | 质量门禁验收清单 | [assets/quality-gate-checklist.md](assets/quality-gate-checklist.md) |
 | 文档结构校验脚本 | [scripts/validate-test.sh](scripts/validate-test.sh) |
-| TDD 文档模板 | [.cursor/rules/requirement/tdd-template.md](../../rules/requirement/tdd-template.md) |
-| 上游：产品需求 | `.cursor/skills/sdx-prd/SKILL.md` |
-| 上游：技术设计 | `.cursor/skills/sdx-design/SKILL.md` |
+| TDD 文档模板 | [assets/tdd-template.md](assets/tdd-template.md) |
+| 上游：产品需求 | `.ai/skills/sdx-prd/SKILL.md` |
+| 上游：技术设计 | `.ai/skills/sdx-design/SKILL.md` |
 | 知识库 | `knowledge/`、`requirements/.../specs/` |

@@ -114,5 +114,5 @@ scripts/validate-extraction.sh --doc-root .
 | Knowledge JSON 输出模板 | [assets/knowledge-schema-template.json](assets/knowledge-schema-template.json) |
 | KNOWLEDGE_INDEX 输出模板 | [assets/knowledge-index-template.md](assets/knowledge-index-template.md) |
 | 提取结果验证脚本 | [scripts/validate-extraction.sh](scripts/validate-extraction.sh) |
-| 上游：文档索引 | `.cursor/skills/document-indexing/SKILL.md` |
-| 上游：Agent 指引 | `.cursor/skills/agent-guide/SKILL.md` |
+| 上游：文档索引 | `.ai/skills/document-indexing/SKILL.md` |
+| 上游：Agent 指引 | `.ai/skills/agent-guide/SKILL.md` |

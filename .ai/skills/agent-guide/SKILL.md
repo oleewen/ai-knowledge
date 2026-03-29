@@ -62,7 +62,7 @@ description: >
 
 ### 步骤 4：生成 AGENTS
 
-按 [assets/agents-skeleton.md](assets/agents-skeleton.md) 骨架生成，基准为项目 `.cursor/rules/agents-template.md`。
+按 [assets/agents-skeleton.md](assets/agents-skeleton.md) 骨架生成，基准为项目 `.ai/rules/agents-template.md`。
 
 三文件去重规则见 [reference/execution-spec.md §3](reference/execution-spec.md)。
 
@@ -100,4 +100,4 @@ scripts/validate-guide.sh --root .
 | README 输出骨架 | [assets/readme-skeleton.md](assets/readme-skeleton.md) |
 | AGENTS 输出骨架 | [assets/agents-skeleton.md](assets/agents-skeleton.md) |
 | 路径验证脚本 | [scripts/validate-guide.sh](scripts/validate-guide.sh) |
-| AGENTS 基准模板 | `.cursor/rules/agents-template.md` |
+| AGENTS 基准模板 | `.ai/rules/agents-template.md` |

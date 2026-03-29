@@ -32,27 +32,27 @@
 | 文件 | 说明 |
 |------|------|
 | [testing-guidelines.md](.ai/rules/testing/testing-guidelines.md) | 测试规范：覆盖率门禁、分层策略、单元/集成测试、Mock、Jacoco |
-| [tdd-template.md](.ai/rules/testing/tdd-template.md) | 测试设计说明书(TDD)：现状分析、策略建议、用例清单、Mock 策略 |
+| [tdd-template.md](.ai/skills/sdx-test/assets/tdd-template.md) | 测试设计说明书(TDD)：测试目标与范围、策略、用例、数据与环境、进出标准（与 sdx-test 技能、`docs/requirements/.../TDD-{ID}.md` 配套） |
 
 ### 4. 解决方案规范（sdx-solution）
 
 | 文件 | 说明 |
 |------|------|
-| [solution-template.md](../skills/sdx-solution/assets/solution-template.md) | 解决方案文档模板：业务背景、业务目标、需求概述、影响面、冲突与化解、方案与范围、MVP 拆分；产出 `solutions/SOLUTION-{ID}.md` |
+| [solution-template.md](.ai/skills/sdx-solution/assets/solution-template.md) | 解决方案文档模板：业务背景、业务目标、需求概述、影响面、冲突与化解、方案与范围、MVP 拆分；产出 `solutions/SOLUTION-{ID}.md` |
 
 ### 5. 需求分析规范（sdx-analysis）
 
 | 文件 | 说明 |
 |------|------|
-| [analysis-template.md](../skills/sdx-analysis/assets/analysis-template.md) | 需求分析文档模板：需求概述、功能/非功能需求、业务规则、数据需求、MVP 拆分、依赖与风险；产出 `analysis/ANALYSIS-{ID}.md` |
+| [analysis-template.md](.ai/skills/sdx-analysis/assets/analysis-template.md) | 需求分析文档模板：需求概述、功能/非功能需求、业务规则、数据需求、MVP 拆分、依赖与风险；产出 `analysis/ANALYSIS-{ID}.md` |
 
 ### 6. 需求交付规范 (requirement/)
 
 | 文件 | 说明 |
 |------|------|
-| [prd-template.md](.ai/rules/requirement/prd-template.md) | 产品需求说明书(PRD)：产品概述、业务流程、用户故事与用例、功能模块、业务规则、验收标准；产出 `docs/requirements/.../PRD-{ID}.md` |
-| [add-template.md](.ai/rules/requirement/add-template.md) | 架构设计说明书(ADD)：设计概述、架构与接口、领域与数据、详细设计、API/逻辑/数据访问、非功能性设计；产出 `.../ADD-{ID}.md` |
-| [tdd-template.md](.ai/rules/requirement/tdd-template.md) | 测试设计说明书(TDD)：测试目标与范围、测试策略、测试用例、测试数据与环境、进出标准；产出 `.../TDD-{ID}.md` |
+| [prd-template.md](.ai/skills/sdx-prd/assets/prd-template.md) | 产品需求说明书(PRD)：产品概述、业务流程、用户故事与用例、功能模块、业务规则、验收标准；产出 `docs/requirements/.../PRD-{ID}.md` |
+| [add-template.md](.ai/skills/sdx-design/assets/add-template.md) | 架构设计说明书(ADD)：设计概述、架构设计、详细设计、需求规约、附录；产出 `.../ADD-{ID}.md`（与 sdx-design 技能配套） |
+| [tdd-template.md](.ai/skills/sdx-test/assets/tdd-template.md) | 测试设计说明书(TDD)：测试目标与范围、测试策略、测试用例、测试数据与环境、进出标准；产出 `.../TDD-{ID}.md`（与 sdx-test 技能配套） |
 
 ### 7. 文档规范 (document/)
 

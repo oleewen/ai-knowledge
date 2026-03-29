@@ -1,6 +1,6 @@
 # AGENTS.md 推荐骨架
 
-> 基准为项目 `.cursor/rules/agents-template.md`，可裁剪但禁止与模板语义冲突。
+> 基准为项目 `.ai/rules/agents-template.md`，可裁剪但禁止与模板语义冲突。
 > 占位符 `{...}` 需替换为实际内容；`<!-- optional -->` 标记可选段。
 
 ---

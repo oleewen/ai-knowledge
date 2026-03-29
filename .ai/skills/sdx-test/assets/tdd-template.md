@@ -1,25 +1,9 @@
----
-```
-id: "TDD-{REQUIREMENT-ID}-MVP{N}"
-title: "{测试设计标题}"
-version: "1.0.0"
-status: "draft"
-created: "{YYYY-MM-DD}"
-updated: "{YYYY-MM-DD}"
-author: "quality-engineer"
-reviewers: []
-parent: "PRD-{对应产品需求编号}"
-mvp_phase: "MVP-{N}"
-tags: []
-```
----
-
 # {测试设计标题}
 
 ## 1. 概述
 
 ### 1.1 测试目标
-- 关联技术设计：[TDD-{ID}](docs/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}.md)
+- 关联技术设计：[ADD-{ID}](docs/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}.md)
 - 关联产品需求：[PRD-{ID}](docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md)
 
 ### 1.2 测试范围
@@ -117,3 +101,18 @@ tags: []
 | 版本 | 日期 | 变更说明 | 作者 |
 |------|------|---------|------|
 | 1.0.0 | | 初始版本 | quality_guardian |
+
+## 文档元数据
+```yaml
+id: "TDD-{REQUIREMENT-ID}-MVP{N}"
+title: "{测试设计标题}"
+version: "1.0.0"
+status: "draft"
+created: "{YYYY-MM-DD}"
+updated: "{YYYY-MM-DD}"
+author: "quality-engineer"
+reviewers: []
+parent: "PRD-{对应产品需求编号}"
+mvp_phase: "MVP-{N}"
+tags: []
+```

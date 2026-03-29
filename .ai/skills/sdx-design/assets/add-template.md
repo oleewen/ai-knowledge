@@ -1,18 +1,3 @@
----
-id: "ADD-{REQUIREMENT-ID}-MVP{N}"
-title: "{技术设计标题}"
-version: "1.0.0"
-status: "draft"
-created: "{YYYY-MM-DD}"
-updated: "{YYYY-MM-DD}"
-author: "architect"
-reviewers: []
-parent: "PRD-{对应产品需求编号}"
-mvp_phase: "MVP-{N}"
-tags: []
----
----
-
 # {架构设计标题}
 
 ## 1. 设计概述
@@ -391,23 +376,25 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 
 <!-- 告警规则、通知渠道、收敛策略等 -->
 
-## 4. 附录
+## 4. 需求规约
 
-### 4.1 参考文档
+<!-- 规约术语：与规约文件名或 OpenAPI/领域名一致的可读简称；应用实体 ID、服务实体 ID 须与 `docs/knowledge/KNOWLEDGE_INDEX.md` / `knowledge/technical/` 中 APP-*、MS-* 对齐。 -->
 
-| 规约类型 | 文件路径 | 描述 |
-| -------- | ------------------------------------------------- | ---- |
-| API规约 | `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/api/xxx.yaml` | xx |
-| 领域规约 | `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/domain/xxx.yaml` | xx |
-| 数据规约 | `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/data/xxx.yaml` | xx |
+| 规约类型 | 规约术语 | 应用 | 服务| 文件路径 | 描述 |
+| -------- | -------- | ------------------ | ------------------ | ------------------------------------------------- | ---- |
+| API规约 | `{api-spec-name}` | `APP-{ID}` | `MS-{ID}` | `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/api/xxx.yaml` | xx |
+| 领域规约 | `{domain-spec-name}` | `APP-{ID}` | `MS-{ID}` | `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/domain/xxx.yaml` | xx |
+| 数据规约 | `{data-spec-name}` | `APP-{ID}` | `MS-{ID}` | `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/data/xxx.yaml` | xx |
 
-### 4.2 变更历史
+## 5. 附录
+
+### 5.1 变更历史
 
 | 版本  | 日期 | 变更说明 | 作者      |
 | ----- | ---- | -------- | --------- |
 | 1.0.0 |      | 初始版本 | architect |
 
-### 4.3 质量自查表 (Self-Check)
+### 5.2 质量自查表 (Self-Check)
 
 <!-- 在提交评审前，请根据以下自查项逐一核查文档质量 -->
 
@@ -419,3 +406,19 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 - [ ] **风险识别**：已充分识别关键技术/依赖风险，提供相应应对建议。
 - [ ] **术语清晰**：关键术语、缩略词及数据字典清晰准确。
 - [ ] **格式规范**：表格、编号、结构、用词等格式规范，易于维护。
+
+## 文档元数据
+```
+id: "ADD-{REQUIREMENT-ID}-MVP{N}"
+title: "{技术设计标题}"
+version: "1.0.0"
+status: "draft"
+created: "{YYYY-MM-DD}"
+updated: "{YYYY-MM-DD}"
+author: "architect"
+reviewers: []
+parent: "PRD-{对应产品需求编号}"
+mvp_phase: "MVP-{N}"
+tags: []
+```
+

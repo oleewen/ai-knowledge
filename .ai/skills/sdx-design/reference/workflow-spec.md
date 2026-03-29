@@ -188,21 +188,21 @@ technical-writer + doc-updater
 
 ### 输入
 
-步骤 1–3 全部产出 + [add-template.md](../../../rules/requirement/add-template.md)
+步骤 1–3 全部产出 + [add-template.md](../assets/add-template.md)
 
 ### 算法
 
-1. **整合**：将步骤 1–2 产出按模板四章结构编排
+1. **整合**：将步骤 1–2 产出按模板五章结构编排
 2. **填充 frontmatter**：
    - `id`: 按 `ADD-{REQUIREMENT-ID}-MVP{N}` 格式
    - `status`: `draft`
    - `created` / `updated`: 当前日期
    - `parent`: 关联的 PRD 编号
    - `mvp_phase`: `MVP-{N}`
-3. **补充附录**：
+3. **补充需求规约与附录**：
    - 参考文档（§4.1）：列出规约文件路径
-   - 变更历史（§4.2）
-   - 质量自查表（§4.3）
+   - 变更历史（§5.1）
+   - 质量自查表（§5.2）
 4. **质量门禁自查**：逐项检查 [quality-gate-checklist.md](../assets/quality-gate-checklist.md)
 5. **输出**：
    - ADD 写入 `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`

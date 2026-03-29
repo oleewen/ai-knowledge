@@ -26,7 +26,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 REQUIREMENTS_DIR="${DOC_ROOT}/requirements"
-TEMPLATE=".cursor/rules/requirement/prd-template.md"
+TEMPLATE=".ai/skills/sdx-prd/assets/prd-template.md"
 
 info()    { echo "[INFO]  $1"; }
 warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }

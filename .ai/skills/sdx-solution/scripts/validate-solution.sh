@@ -28,7 +28,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 SOLUTIONS_DIR="${DOC_ROOT}/solutions"
-TEMPLATE=".cursor/skills/sdx-solution/assets/solution-template.md"
+TEMPLATE=".ai/skills/sdx-solution/assets/solution-template.md"
 
 info()    { echo "[INFO]  $1"; }
 warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
