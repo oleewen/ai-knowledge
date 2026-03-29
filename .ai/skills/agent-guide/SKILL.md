@@ -2,7 +2,7 @@
 name: agent-guide
 description: >
   生成/更新根目录 README.md（GitHub 惯例）与 AGENTS.md（Agent 契约）。
-  仅以当前落盘的 Index Guide（常见为 `docs/INDEX_GUIDE.md`）为唯一地图按需补读，
+  仅以当前落盘的 Index Guide（常见为仓库根 `INDEX_GUIDE.md`，或 `docs/INDEX_GUIDE.md`）为唯一地图按需补读，
   README 承载命令与文档表，AGENTS 引用之，三文件不重复堆叠。
   在用户执行 /agent-guide 或仓库 onboarding 时使用。
 ---
@@ -36,12 +36,11 @@ description: >
 
 按优先级查找落盘 Index Guide（命中即停）：
 
-1. `docs/INDEX_GUIDE.md`
-2. `INDEX.md`、`INDEX-GUIDE.md`
-3. `docs/INDEX-GUIDE.md`
+1. 仓库根 `INDEX_GUIDE.md`、`PROJECT_INDEX.md`（短入口）、`INDEX.md`、`INDEX-GUIDE.md`
+2. `docs/INDEX_GUIDE.md`、`docs/INDEX-GUIDE.md`
 
 未命中 → 终止并提示用户运行 `/document-indexing`。
-详细规则见 [reference/execution-spec.md §1](reference/execution-spec.md)。
+详细规则见 [.ai/skills/agent-guide/reference/execution-spec.md](reference/execution-spec.md)。
 
 ### 步骤 2：最小阅读集探索
 
@@ -52,23 +51,23 @@ description: >
 - §3 API → **不**粘贴进 AGENTS，仅指针
 - 已有 README → 合并而非覆盖
 
-详细策略见 [reference/execution-spec.md §2](reference/execution-spec.md)。
+详细策略见 [.ai/skills/agent-guide/reference/execution-spec.md](reference/execution-spec.md)。
 
 ### 步骤 3：生成 README
 
-按 [assets/readme-skeleton.md](assets/readme-skeleton.md) 骨架生成，先 README 后 AGENTS。
+按 [.ai/skills/agent-guide/assets/readme-skeleton.md](assets/readme-skeleton.md) 骨架生成，先 README 后 AGENTS。
 
 合格线：新读者 30 秒内知道「是什么、下一步点哪」；相对路径可点、表格不空洞。
 
 ### 步骤 4：生成 AGENTS
 
-按 [assets/agents-skeleton.md](assets/agents-skeleton.md) 骨架生成，基准为项目 `.ai/rules/agents-template.md`。
+按 [.ai/skills/agent-guide/assets/agents-skeleton.md](assets/agents-skeleton.md) 骨架生成，基准为项目 `.ai/rules/agents-template.md`。
 
-三文件去重规则见 [reference/execution-spec.md §3](reference/execution-spec.md)。
+三文件去重规则见 [.ai/skills/agent-guide/reference/execution-spec.md](reference/execution-spec.md)。
 
 ### 步骤 5：验证
 
-按 [reference/execution-spec.md §5](reference/execution-spec.md) 验收清单执行。可使用辅助脚本：
+按 [.ai/skills/agent-guide/reference/execution-spec.md](reference/execution-spec.md) 验收清单执行。可使用辅助脚本：
 
 ```bash
 scripts/validate-guide.sh --root .
@@ -96,8 +95,8 @@ scripts/validate-guide.sh --root .
 
 | 资源 | 路径 |
 |------|------|
-| 执行规范与验证清单 | [reference/execution-spec.md](reference/execution-spec.md) |
-| README 输出骨架 | [assets/readme-skeleton.md](assets/readme-skeleton.md) |
-| AGENTS 输出骨架 | [assets/agents-skeleton.md](assets/agents-skeleton.md) |
-| 路径验证脚本 | [scripts/validate-guide.sh](scripts/validate-guide.sh) |
+| 执行规范与验证清单 | [.ai/skills/agent-guide/reference/execution-spec.md](reference/execution-spec.md) |
+| README 输出骨架 | [.ai/skills/agent-guide/assets/readme-skeleton.md](assets/readme-skeleton.md) |
+| AGENTS 输出骨架 | [.ai/skills/agent-guide/assets/agents-skeleton.md](assets/agents-skeleton.md) |
+| 路径验证脚本 | [.ai/skills/agent-guide/scripts/validate-guide.sh](scripts/validate-guide.sh) |
 | AGENTS 基准模板 | `.ai/rules/agents-template.md` |

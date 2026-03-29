@@ -2,7 +2,7 @@
 
 sdx-analysis 技能的核心工作流算法。主文件 SKILL.md 中的工作流为摘要，本文件为完整规范。
 
-**文档语言原则**：主要读者为**产品经理与需求分析师**（及业务评审方）。Agent **可以**查阅 `knowledge/`、`knowledge/technical/`、INDEX_GUIDE 等做事实核对；写入 `ANALYSIS-{ID}.md` 时**必须**将工程事实转写为**场景、规则、验收与协作**表述。细则见 [sdx-solution · 受众与文档语言规范](../sdx-solution/reference/audience-language-spec.md)。
+**文档语言原则**：主要读者为**产品经理与需求分析师**（及业务评审方）。Agent **可以**查阅 `knowledge/`、`knowledge/technical/`、INDEX_GUIDE 等做事实核对；写入 `ANALYSIS-{ID}.md` 时**必须**将工程事实转写为**场景、规则、验收与协作**表述。细则见 [.ai/skills/sdx-solution/reference/audience-language-spec.md](../../sdx-solution/reference/audience-language-spec.md)。
 
 ---
 
@@ -35,7 +35,7 @@ graph TD
 
 ## 待澄清项交互确认协议
 
-与 **sdx-solution** 技能一致：**不得**对 Q-n 自行假设后继续。交互格式、选项设计、用户回答处理与确认后动作，全文见 [sdx-solution/workflow-spec.md · 待澄清项交互确认协议](../sdx-solution/reference/workflow-spec.md) 中「### 待澄清项交互确认协议」一节。
+与 **sdx-solution** 技能一致：**不得**对 Q-n 自行假设后继续。交互格式、选项设计、用户回答处理与确认后动作，全文见 [.ai/skills/sdx-solution/reference/workflow-spec.md](../../sdx-solution/reference/workflow-spec.md) 中「### 待澄清项交互确认协议」一节。
 
 ### 本技能中的触发时机
 
@@ -233,19 +233,19 @@ requirements-analyst + technical-writer（可选）
 
 ### 输入
 
-步骤 1–4 全部产出 + [analysis-template.md](../assets/analysis-template.md)
+步骤 1–4 全部产出 + [.ai/skills/sdx-analysis/assets/analysis-template.md](../assets/analysis-template.md)
 
 ### 算法
 
 1. **整合**：按模板八章结构编排，字段与表格遵循模板中的**业务语言**提示
-2. **语言审读**：通读全文，对照 [audience-language-spec.md](../sdx-solution/reference/audience-language-spec.md) 去除不当技术术语；确需保留的工程线索集中至模板 §8.4
+2. **语言审读**：通读全文，对照 [.ai/skills/sdx-solution/reference/audience-language-spec.md](../../sdx-solution/reference/audience-language-spec.md) 去除不当技术术语；确需保留的工程线索集中至模板 §8.4
 3. **填充 frontmatter**：
    - `id`: `ANALYSIS-{YYYYMMDD}-{SEQ}`
    - `status`: `draft`
    - `created` / `updated`: 当前日期
    - `parent`: 关联的解决方案编号 `SOL-{ID}`
 4. **补充附录**：术语表（§8.1）、参考文档（§8.2）、变更历史（§8.3）；§8.4 按需
-5. **质量门禁自查**：逐项检查 [quality-gate-checklist.md](../assets/quality-gate-checklist.md) 与模板 §8.5
+5. **质量门禁自查**：逐项检查 [.ai/skills/sdx-analysis/assets/quality-gate-checklist.md](../assets/quality-gate-checklist.md) 与模板 §8.5
 6. **输出**：写入 `docs/analysis/ANALYSIS-{ID}.md`
 
 ### 输出目录

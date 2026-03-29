@@ -43,13 +43,13 @@ description: >
 
 ## 工作流（五步）
 
-按顺序执行，每步产出作为下一步输入；最终文档需通过质量门禁。详细算法与决策点见 [reference/workflow-spec.md](reference/workflow-spec.md)。
+按顺序执行，每步产出作为下一步输入；最终文档需通过质量门禁。详细算法与决策点见 [.ai/skills/sdx-solution/reference/workflow-spec.md](reference/workflow-spec.md)。
 
 ### 步骤 1：诉求提取与结构化
 
 从业务描述中萃取：背景与动机、目标与期望价值、核心场景、用户角色、关键约束、时间与优先级。标注歧义与待澄清项（Q-n），区分新增/变更/修复类诉求；**不在此步骤展开实现手段**。
 
-提取完 Q-n 列表后，**逐一向用户提问**，每题提供 3–4 个具体选项（含「其他，请说明」兜底），等待用户确认后再继续。交互格式与处理规则见 [reference/workflow-spec.md § 待澄清项交互确认协议](reference/workflow-spec.md)。
+提取完 Q-n 列表后，**逐一向用户提问**，每题提供 3–4 个具体选项（含「其他，请说明」兜底），等待用户确认后再继续。交互格式与处理规则见 [.ai/skills/sdx-solution/reference/workflow-spec.md](reference/workflow-spec.md)。
 
 ### 步骤 2：影响面评估与分析
 
@@ -65,9 +65,9 @@ description: >
 
 ### 步骤 5：文档输出与评审
 
-将步骤 1–4 产出整合为解决方案文档，严格采用 [assets/solution-template.md](assets/solution-template.md) 的九章结构；通读全文去除技术术语；执行质量门禁自查。
+将步骤 1–4 产出整合为解决方案文档，严格采用 [.ai/skills/sdx-solution/assets/solution-template.md](assets/solution-template.md) 的九章结构；通读全文去除技术术语；执行质量门禁自查。
 
-质量门禁清单见 [assets/quality-gate-checklist.md](assets/quality-gate-checklist.md)。
+质量门禁清单见 [.ai/skills/sdx-solution/assets/quality-gate-checklist.md](assets/quality-gate-checklist.md)。
 
 可使用辅助脚本验证文档结构（于**仓库根目录**执行）：
 
@@ -80,14 +80,14 @@ description: >
 | 约束 | 说明 |
 |------|------|
 | 模板驱动 | 输出严格遵循 `assets/solution-template.md` 九章结构，无内容章节保留标题并标注「不适用」 |
-| 业务可读 | 正文不出现具体技术术语；受众与语言规范见 [reference/audience-language-spec.md](reference/audience-language-spec.md) |
+| 业务可读 | 正文不出现具体技术术语；受众与语言规范见 [.ai/skills/sdx-solution/reference/audience-language-spec.md](reference/audience-language-spec.md) |
 | 证据优先 | 影响面与冲突分析可依据 `knowledge/` 或工程事实校准，禁止臆测；写入文档时转为业务表述 |
 | 按需加载 | 仅在本轮需要时打开文件，禁止为完整性通读全仓 |
 | 歧义标注 | 不确定项标为 Q-n，**逐一向用户提问确认**（每题 3–4 个选项 + 「其他」兜底），禁止自行假设 |
 | 范围清晰 | 仅产出解决方案文档，不涉及 PRD、技术设计、代码 |
 | 可追溯 | 每个 G-n 可追溯到原始需求；每个影响点可追溯到具体业务能力或协作环节 |
 
-设计原则完整版与反模式清单见 [reference/design-principles.md](reference/design-principles.md)。
+设计原则完整版与反模式清单见 [.ai/skills/sdx-solution/reference/design-principles.md](reference/design-principles.md)。
 
 ## 依赖关系
 
@@ -102,12 +102,12 @@ description: >
 
 | 资源 | 路径 |
 |------|------|
-| 受众与文档语言规范 | [reference/audience-language-spec.md](reference/audience-language-spec.md) |
-| 设计原则与反模式 | [reference/design-principles.md](reference/design-principles.md) |
-| 五步工作流详细规范 | [reference/workflow-spec.md](reference/workflow-spec.md) |
-| 质量门禁验收清单 | [assets/quality-gate-checklist.md](assets/quality-gate-checklist.md) |
-| 解决方案文档模板 | [assets/solution-template.md](assets/solution-template.md) |
-| 文档结构校验脚本 | [scripts/validate-solution.sh](scripts/validate-solution.sh) |
+| 受众与文档语言规范 | [.ai/skills/sdx-solution/reference/audience-language-spec.md](reference/audience-language-spec.md) |
+| 设计原则与反模式 | [.ai/skills/sdx-solution/reference/design-principles.md](reference/design-principles.md) |
+| 五步工作流详细规范 | [.ai/skills/sdx-solution/reference/workflow-spec.md](reference/workflow-spec.md) |
+| 质量门禁验收清单 | [.ai/skills/sdx-solution/assets/quality-gate-checklist.md](assets/quality-gate-checklist.md) |
+| 解决方案文档模板 | [.ai/skills/sdx-solution/assets/solution-template.md](assets/solution-template.md) |
+| 文档结构校验脚本 | [.ai/skills/sdx-solution/scripts/validate-solution.sh](scripts/validate-solution.sh) |
 | 下游：需求分析 | `.ai/skills/sdx-analysis/SKILL.md` |
 | 下游：产品需求 | `.ai/skills/sdx-prd/SKILL.md` |
 | 下游：技术设计 | `.ai/skills/sdx-design/SKILL.md` |

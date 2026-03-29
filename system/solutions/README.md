@@ -6,7 +6,7 @@
 
 - **输入**：业务需求描述（邮件、会议纪要、工单等）、知识库（`knowledge/`）、规约（`specs/`）。
 - **输出**：解决方案文档 `SOLUTION-{ID}.md`，作为需求分析阶段的输入。
-- **归档**：已完结或 superseded 的解决方案可移入 [archive/](./archive/) 便于检索历史。
+- **归档**：已完结或 superseded 的解决方案可移入 [system/solutions/archive/](archive) 便于检索历史。
 
 ## 方案索引表
 

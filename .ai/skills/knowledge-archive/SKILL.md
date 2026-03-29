@@ -108,5 +108,5 @@ description: >
 
 - [applications/README.md](../../../applications/README.md)、[applications/INDEX.md](../../../applications/INDEX.md)
 - [system/knowledge/README.md](../../../system/knowledge/README.md)、[system/CONTRIBUTING.md](../../../system/CONTRIBUTING.md)、[system/DESIGN.md](../../../system/DESIGN.md)、[system/INDEX.md](../../../system/INDEX.md)
-- 应用内增量维护：`.ai/skills/knowledge-upgrade/SKILL.md`
-- 系统库从零构建：`.ai/skills/knowledge-build/SKILL.md`
+- 应用内增量维护：视项目而定（可配合 `knowledge-extract` 等）
+- 系统库从零构建：[.ai/skills/knowledge-build/SKILL.md](../knowledge-build/SKILL.md)（编排说明，组合 document-indexing / agent-guide / knowledge-extract 等）

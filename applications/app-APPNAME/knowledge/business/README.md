@@ -37,11 +37,11 @@ business/
 
 | 检索需求 | 推荐入口 |
 |----------|----------|
-| 快速枚举全部业务实体 ID | [business_knowledge.json](./business_knowledge.json)（扁平 JSON，`hierarchy` 区分层级） |
+| 快速枚举全部业务实体 ID | [applications/app-APPNAME/knowledge/business/business_knowledge.json](business_knowledge.json)（扁平 JSON，`hierarchy` 区分层级） |
 | 了解某聚合的业务规则与能力 | `business_knowledge.json` 中 `hierarchy=AGG` 实体的 `invariants / abilities / cross_references` |
 | 了解上下文边界与通用语言 | `business_knowledge.json` 中 `hierarchy=BC` 实体的 `implemented_by_app_id / ubiquitous_language / aggregates` |
-| 跨视角映射（业务→技术/数据） | [business_meta.yaml](./business_meta.yaml) → `integration.cross_perspective` |
-| 全库四视角索引 | [../KNOWLEDGE_INDEX.md §1](../KNOWLEDGE_INDEX.md) |
+| 跨视角映射（业务→技术/数据） | [applications/app-APPNAME/knowledge/business/business_meta.yaml](business_meta.yaml) → `integration.cross_perspective` |
+| 全库四视角索引 | [applications/app-APPNAME/knowledge/KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) |
 
 ---
 
@@ -74,4 +74,4 @@ business/
 - **业务 → 技术**：见 `integration.cross_perspective`（BC/AGG/AB → APP/MS/API）。
 - **业务 → 数据**：AGG → ENT，见同段与 `data_knowledge.json`。
 
-系统索引：[../../INDEX_GUIDE.md](../../INDEX_GUIDE.md)；全库 Index Guide：[../../../INDEX_GUIDE.md](../../../INDEX_GUIDE.md)。
+仓库根 Index Guide：[INDEX_GUIDE.md](../../../../INDEX_GUIDE.md)。

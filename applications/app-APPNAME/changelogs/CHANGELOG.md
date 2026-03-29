@@ -2,7 +2,7 @@
 
 记录 **`applications/app-APPNAME/`** 内维护性变更（导航、元数据、模板链接等）。业务实体与领域内容变更请写在提交说明、ADR 或中央库 `system/` 对应目录。
 
-**中央库**维护性变更见 [`system/changelogs/CHANGELOG.md`](system/changelogs/CHANGELOG.md)。
+**中央库**维护性变更见 [system/changelogs/CHANGELOG.md](../../../system/changelogs/CHANGELOG.md)。
 
 ---
 

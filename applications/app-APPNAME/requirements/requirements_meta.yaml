@@ -40,8 +40,8 @@ references:
   - ../INDEX_GUIDE.md
   - ../../README.md
   - ../../.ai/skills/sdx-prd/assets/prd-template.md
-  - ../../.cursor/rules/requirement/add-template.md
-  - ../../.cursor/rules/requirement/tdd-template.md
+  - ../../../.ai/skills/sdx-design/assets/add-template.md
+  - ../../../.ai/skills/sdx-test/assets/tdd-template.md
 
 layers:
   - key: req

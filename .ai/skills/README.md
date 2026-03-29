@@ -12,4 +12,4 @@
 
 在 Chat 中输入 `/` 后选择对应命令即可调用（如 `/agent-guide`）；或使用 `@技能名`（如 `@agent-guide`、`@sdx-solution`）将 Skill 作为上下文附加。
 
-**说明**：斜杠命令由 `.ai/skills/<技能名>/SKILL.md` 提供，文件夹名即命令名（如 `skills/agent-guide` → `/agent-guide`）。执行时按 SKILL 步骤落盘产物（如 `document-change` → `changes-index.*`，`document-indexing` → 根 `INDEX_GUIDE.md`（`@docs/INDEX_GUIDE.md` 短入口）+ `indexing-log.jsonl`（以仓库约定为准）），无独立 `document-change.sh` 一类脚本。
+**说明**：斜杠命令由 `.ai/skills/<技能名>/SKILL.md` 提供，文件夹名即命令名（如 `skills/agent-guide` → `/agent-guide`）。执行时按 SKILL 步骤落盘产物（如 `document-change` → `changes-index.*`，`document-indexing` → 根 `INDEX_GUIDE.md`（`@docs/INDEX_GUIDE.md`）+ `indexing-log.jsonl`（以仓库约定为准）），无独立 `document-change.sh` 一类脚本。

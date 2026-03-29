@@ -112,7 +112,7 @@ backup_existing_path() {
 
   # 将备份内容按“原始相对路径”保留层级放入备份根目录：
   # 目标工程下：
-  #   - 原 $TARGET_DIR/.cursor/rules/...  => 备份到 $TARGET_DIR/.knowledge-init/年月日时分秒/.cursor/rules/...
+  #   - 原 $TARGET_DIR/.ai/rules/...  => 备份到 $TARGET_DIR/.knowledge-init/年月日时分秒/.ai/rules/...
   #   - 原 $TARGET_DIR/docs/...          => 备份到 $TARGET_DIR/.knowledge-init/年月日时分秒/docs/...
   # 这样既满足按原目录结构备份，也避免把整个 docs 目录 mv 到其子目录内导致递归失败。
   local rel
@@ -451,7 +451,7 @@ install_agent_skills_and_rules() {
   local agent agent_dir
   for agent in "${enabled_agents[@]}"; do
     case "$agent" in
-      cursor) agent_dir="$TARGET_DIR/.cursor" ;;
+      cursor) agent_dir="$TARGET_DIR/.ai" ;;
       trea)   agent_dir="$TARGET_DIR/.trea" ;;
       *) error "未知 agent: $agent" ;;
     esac

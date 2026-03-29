@@ -4,7 +4,7 @@
 
 ## 定位与用途
 
-- **输入**：解决方案文档（[solutions/](../solutions/)）、知识库（[knowledge/](../knowledge/)）、规约（[specs/](../specs/)）。
+- **输入**：解决方案文档（[system/solutions/](../solutions)）、知识库（[system/knowledge/](../knowledge)）、规约（各需求包内 `specs/` 或 [system/specs/README.md](../specs/README.md) 说明）。
 - **输出**：需求分析文档 `ANALYSIS-{ID}.md`，作为后续需求交付（PRD/ADD/TDD）的输入。
 
 ## 分析索引表
@@ -23,10 +23,10 @@
 
 ## 规范与模板
 
-- **阶段目标与工作流**：见 [`.ai/skills/sdx-analysis/SKILL.md`](../../.ai/skills/sdx-analysis/SKILL.md)（深度研究 → 需求细化 → MVP 拆分与规划 → 依赖分析与风险评估 → 文档输出与评审）。
-- **文档模板**：见 [`.ai/skills/sdx-analysis/assets/analysis-template.md`](../../.ai/skills/sdx-analysis/assets/analysis-template.md)。
+- **阶段目标与工作流**：见 [.ai/skills/sdx-analysis/SKILL.md](../../.ai/skills/sdx-analysis/SKILL.md)（深度研究 → 需求细化 → MVP 拆分与规划 → 依赖分析与风险评估 → 文档输出与评审）。
+- **文档模板**：见 [.ai/skills/sdx-analysis/assets/analysis-template.md](../../.ai/skills/sdx-analysis/assets/analysis-template.md)。
 
 ## 集成关系
 
-- 需求分析文档的 `parent` 指向 [solutions/](../solutions/) 下的解决方案。
+- 需求分析文档的 `parent` 指向 [system/solutions/](../solutions) 下的解决方案。
 - 细化需求、MVP 范围可与 **business、product** 等功能/用例 ID 建立追溯；实现方案与 **technical、data** 对齐。

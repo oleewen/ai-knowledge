@@ -6,14 +6,14 @@
 
 | 文档                                   | 说明                                              |
 | -------------------------------------- | ------------------------------------------------- |
-| **[知识索引](./INDEX.md)**                  | 应用内知识与交付全局导航，索引各核心文档               |
-| **[应用知识库根目录 · 模板索引](./app-APPNAME/INDEX.md)** | 单应用联邦单元示例（`knowledge/`、`requirements/`、`changelogs/`；物理路径 `applications/app-APPNAME/`） |
-| **[application_meta.yaml](./app-APPNAME/application_meta.yaml)** | 模板根 `*_meta.yaml`（与 `system/system_meta.yaml` 对照） |
+| **[applications/INDEX.md](INDEX.md)**                  | 应用内知识与交付全局导航，索引各核心文档               |
+| **[applications/app-APPNAME/INDEX.md](app-APPNAME/INDEX.md)** | 单应用联邦单元示例（`knowledge/`、`requirements/`、`changelogs/`；物理路径 `applications/app-APPNAME/`） |
+| **[applications/app-APPNAME/application_meta.yaml](app-APPNAME/application_meta.yaml)** | 模板根 `*_meta.yaml`（与 `system/system_meta.yaml` 对照） |
 
 ## 关键入口（建议阅读顺序）
 
-- [应用知识库根目录/INDEX.md](./app-APPNAME/INDEX.md)（应用模板索引）
-- [applications/APPLICATIONS_INDEX.md](./APPLICATIONS_INDEX.md)（应用域总览；[短入口](./INDEX.md)）
+- [applications/app-APPNAME/INDEX.md](app-APPNAME/INDEX.md)（应用模板索引）
+- [applications/APPLICATIONS_INDEX.md](APPLICATIONS_INDEX.md)（应用域总览；[applications/INDEX.md](INDEX.md)）
 - [system/DESIGN.md](../system/DESIGN.md)（系统级目录结构与元模型）
 - [system/SYSTEM_INDEX.md](../system/SYSTEM_INDEX.md)（系统级索引与映射字段）
 - 初始化脚本与说明：`scripts/knowledge-init.sh`、`scripts/README.md`

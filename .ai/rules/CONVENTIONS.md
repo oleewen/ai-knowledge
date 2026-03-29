@@ -12,59 +12,59 @@
 
 | 文件 | 说明 |
 |------|------|
-| [java-guidelines.md](.ai/rules/coding/java-guidelines.md) | Java 开发规范：技术栈、命名、类设计、异常、Repository、日志 |
-| [project-structure.md](.ai/rules/coding/project-structure.md) | 项目结构规范：DDD 六边形架构、分层与模块职责 |
-| [git-guidelines.md](.ai/rules/coding/git-guidelines.md) | Git 提交规范：Conventional Commits、原子提交、检查清单 |
-| [maven-guidelines.md](.ai/rules/coding/maven-guidelines.md) | Maven 规范：多模块结构、依赖管理、构建与质量门禁 |
+| [.ai/rules/coding/java-guidelines.md](coding/java-guidelines.md) | Java 开发规范：技术栈、命名、类设计、异常、Repository、日志 |
+| [.ai/rules/coding/project-structure.md](coding/project-structure.md) | 项目结构规范：DDD 六边形架构、分层与模块职责 |
+| [.ai/rules/coding/git-guidelines.md](coding/git-guidelines.md) | Git 提交规范：Conventional Commits、原子提交、检查清单 |
+| [.ai/rules/coding/maven-guidelines.md](coding/maven-guidelines.md) | Maven 规范：多模块结构、依赖管理、构建与质量门禁 |
 
 ### 2. 设计规范 (design/)
 
 | 文件 | 说明 |
 |------|------|
-| [design-guidelines.md](.ai/rules/design/design-guidelines.md) | 设计规范总纲：DDD 原则、架构原则、评审标准、术语与文档规范 |
-| [design-template.md](.ai/rules/design/design-template.md) | 详细设计模板：业务分析、应用架构、API/逻辑/数据模型 |
-| [architecture-template.md](.ai/rules/design/architecture-template.md) | 概要设计模板：业务分析、系统架构、能力定义、VALET 技术选型 |
-| [add-template.md](.ai/rules/design/add-template.md) | 架构设计说明书(ADD)：应用/技术/工程/数据架构、C4 与 mermaid |
-| [api-readme-template.md](.ai/rules/design/api-readme-template.md) | API 文档索引模板：版本、认证、响应格式、错误码、模块索引 |
+| [.ai/rules/design/design-guidelines.md](design/design-guidelines.md) | 设计规范总纲：DDD 原则、架构原则、评审标准、术语与文档规范 |
+| [.ai/rules/design/design-template.md](design/design-template.md) | 详细设计模板：业务分析、应用架构、API/逻辑/数据模型 |
+| [.ai/rules/design/architecture-template.md](design/architecture-template.md) | 概要设计模板：业务分析、系统架构、能力定义、VALET 技术选型 |
+| [.ai/skills/sdx-design/assets/add-template.md](../skills/sdx-design/assets/add-template.md) | 架构设计说明书(ADD)：与 **sdx-design** 配套；设计概述、架构设计、详细设计、需求规约、附录 |
+| [.ai/rules/design/api-readme-template.md](design/api-readme-template.md) | API 文档索引模板：版本、认证、响应格式、错误码、模块索引 |
 
 ### 3. 测试规范 (testing/)
 
 | 文件 | 说明 |
 |------|------|
-| [testing-guidelines.md](.ai/rules/testing/testing-guidelines.md) | 测试规范：覆盖率门禁、分层策略、单元/集成测试、Mock、Jacoco |
-| [tdd-template.md](.ai/skills/sdx-test/assets/tdd-template.md) | 测试设计说明书(TDD)：测试目标与范围、策略、用例、数据与环境、进出标准（与 sdx-test 技能、`docs/requirements/.../TDD-{ID}.md` 配套） |
+| [.ai/rules/testing/testing-guidelines.md](testing/testing-guidelines.md) | 测试规范：覆盖率门禁、分层策略、单元/集成测试、Mock、Jacoco |
+| [.ai/skills/sdx-test/assets/tdd-template.md](../skills/sdx-test/assets/tdd-template.md) | 测试设计说明书(TDD)：测试目标与范围、策略、用例、数据与环境、进出标准（与 sdx-test 技能、`docs/requirements/.../TDD-{ID}.md` 配套） |
 
 ### 4. 解决方案规范（sdx-solution）
 
 | 文件 | 说明 |
 |------|------|
-| [solution-template.md](.ai/skills/sdx-solution/assets/solution-template.md) | 解决方案文档模板：业务背景、业务目标、需求概述、影响面、冲突与化解、方案与范围、MVP 拆分；产出 `solutions/SOLUTION-{ID}.md` |
+| [.ai/skills/sdx-solution/assets/solution-template.md](../skills/sdx-solution/assets/solution-template.md) | 解决方案文档模板：业务背景、业务目标、需求概述、影响面、冲突与化解、方案与范围、MVP 拆分；产出 `solutions/SOLUTION-{ID}.md` |
 
 ### 5. 需求分析规范（sdx-analysis）
 
 | 文件 | 说明 |
 |------|------|
-| [analysis-template.md](.ai/skills/sdx-analysis/assets/analysis-template.md) | 需求分析文档模板：需求概述、功能/非功能需求、业务规则、数据需求、MVP 拆分、依赖与风险；产出 `analysis/ANALYSIS-{ID}.md` |
+| [.ai/skills/sdx-analysis/assets/analysis-template.md](../skills/sdx-analysis/assets/analysis-template.md) | 需求分析文档模板：需求概述、功能/非功能需求、业务规则、数据需求、MVP 拆分、依赖与风险；产出 `analysis/ANALYSIS-{ID}.md` |
 
 ### 6. 需求交付规范 (requirement/)
 
 | 文件 | 说明 |
 |------|------|
-| [prd-template.md](.ai/skills/sdx-prd/assets/prd-template.md) | 产品需求说明书(PRD)：产品概述、业务流程、用户故事与用例、功能模块、业务规则、验收标准；产出 `docs/requirements/.../PRD-{ID}.md` |
-| [add-template.md](.ai/skills/sdx-design/assets/add-template.md) | 架构设计说明书(ADD)：设计概述、架构设计、详细设计、需求规约、附录；产出 `.../ADD-{ID}.md`（与 sdx-design 技能配套） |
-| [tdd-template.md](.ai/skills/sdx-test/assets/tdd-template.md) | 测试设计说明书(TDD)：测试目标与范围、测试策略、测试用例、测试数据与环境、进出标准；产出 `.../TDD-{ID}.md`（与 sdx-test 技能配套） |
+| [.ai/skills/sdx-prd/assets/prd-template.md](../skills/sdx-prd/assets/prd-template.md) | 产品需求说明书(PRD)：产品概述、业务流程、用户故事与用例、功能模块、业务规则、验收标准；产出 `docs/requirements/.../PRD-{ID}.md` |
+| [.ai/skills/sdx-design/assets/add-template.md](../skills/sdx-design/assets/add-template.md) | 架构设计说明书(ADD)：设计概述、架构设计、详细设计、需求规约、附录；产出 `.../ADD-{ID}.md`（与 sdx-design 技能配套） |
+| [.ai/skills/sdx-test/assets/tdd-template.md](../skills/sdx-test/assets/tdd-template.md) | 测试设计说明书(TDD)：测试目标与范围、测试策略、测试用例、测试数据与环境、进出标准；产出 `.../TDD-{ID}.md`（与 sdx-test 技能配套） |
 
 ### 7. 文档规范 (document/)
 
 | 文件 | 说明 |
 |------|------|
-| [document-guidelines.md](.ai/rules/document/document-guidelines.md) | 文档与注释规范：JavaDoc、类/包文档、代码注释、TODO 约定 |
+| [.ai/rules/document/document-guidelines.md](document/document-guidelines.md) | 文档与注释规范：JavaDoc、类/包文档、代码注释、TODO 约定 |
 
 ### 8. 根目录
 
 | 文件 | 说明 |
 |------|------|
-| [agents-template.md](.ai/rules/agents-template.md) | AI Agents 开发指南模板：角色、关键路径、技术栈、命令、工作流与禁止事项 |
+| [.ai/rules/agents-template.md](agents-template.md) | AI Agents 开发指南模板：角色、关键路径、技术栈、命令、工作流与禁止事项 |
 
 ---
 
@@ -134,5 +134,5 @@
 
 - **项目概述与启动**：`README.md`
 - **文档结构**：`docs/README.md`
-- **开发规范索引与摘要**：本文档（`.ai/CONVENTIONS.md`）
+- **开发规范索引与摘要**：本文档（`.ai/rules/CONVENTIONS.md`）
 - **规范源文件**：`.ai/rules/`（详见上文索引）

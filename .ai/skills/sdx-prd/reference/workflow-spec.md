@@ -270,7 +270,7 @@ technical-writer + doc-updater
 
 ### 输入
 
-步骤 1–4 全部产出 + [prd-template.md](../assets/prd-template.md)
+步骤 1–4 全部产出 + [.ai/skills/sdx-prd/assets/prd-template.md](../assets/prd-template.md)
 
 ### 算法
 
@@ -285,7 +285,7 @@ technical-writer + doc-updater
    - 原型/线框图链接（§10.1）
    - 变更历史（§10.2）
    - 质量自查表（§10.3）
-4. **质量门禁自查**：逐项检查 [quality-gate-checklist.md](../assets/quality-gate-checklist.md)
+4. **质量门禁自查**：逐项检查 [.ai/skills/sdx-prd/assets/quality-gate-checklist.md](../assets/quality-gate-checklist.md)
 5. **输出**：写入 `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`
 
 ### 输出目录

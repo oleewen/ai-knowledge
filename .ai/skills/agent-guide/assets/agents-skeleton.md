@@ -6,6 +6,7 @@
 ---
 
 ```markdown
+<!-- 以下示例路径均相对仓库根；落盘到根目录 AGENTS.md 时再将「去读」列改为 Markdown 链接 -->
 # {项目名} AI Agent 指南
 
 > **契约定位**：本文件仅承载 Agent 必读约束、文档分流、会话约定与维护清单。
@@ -18,9 +19,9 @@
 
 | 需求 | 去读 |
 |------|------|
-| 项目概况、技术栈、编译启动 | [README.md](README.md) |
-| 术语、领域模型、API 入口、数据模型 | [{INDEX 相对路径}]({INDEX 相对路径}) |
-| 知识库实体导航 | [docs/knowledge/KNOWLEDGE_INDEX.md](docs/knowledge/KNOWLEDGE_INDEX.md) |
+| 项目概况、技术栈、编译启动 | `README.md` |
+| 术语、领域模型、API 入口、数据模型 | `INDEX_GUIDE.md`（或 `docs/INDEX_GUIDE.md`） |
+| 知识库实体导航 | `system/knowledge/KNOWLEDGE_INDEX.md`（应用联邦：`applications/<app>/knowledge/KNOWLEDGE_INDEX.md`） |
 
 ---
 

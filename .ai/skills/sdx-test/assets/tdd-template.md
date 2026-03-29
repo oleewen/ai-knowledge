@@ -3,8 +3,8 @@
 ## 1. 概述
 
 ### 1.1 测试目标
-- 关联技术设计：[ADD-{ID}](docs/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}.md)
-- 关联产品需求：[PRD-{ID}](docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md)
+- 关联技术设计：`system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}.md`（或目标工程 `docs/requirements/...`；落盘后改为可点击链接）
+- 关联产品需求：`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`（同上）
 
 ### 1.2 测试范围
 

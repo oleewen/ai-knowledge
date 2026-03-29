@@ -23,5 +23,5 @@
 
 ## API 模块索引
 
-- [模块1 API](docs/api/module1.md)
-- [模块2 API](docs/api/module2.md)
+- 模块1 API：`module1.md`（与同目录 `README.md` 并列）
+- 模块2 API：`module2.md`

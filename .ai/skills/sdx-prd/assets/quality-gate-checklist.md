@@ -21,7 +21,7 @@
 ## 一致性
 
 - [ ] US-n 与需求分析 FR-n 一一对应，无遗漏
-- [ ] BR-n 与需求分析 BR-n 及 `knowledge/business/` 无矛盾
+- [ ] BR-n 与需求分析 BR-n 及 `system/knowledge/business/` 无矛盾
 - [ ] 业务流程与需求分析中的核心场景描述一致
 - [ ] US-n / UC-n / BR-n / EX-n / AC-n / NAC-n 编号连续无断号
 - [ ] 各章节交叉引用自洽（故事→用例→规则→验收）

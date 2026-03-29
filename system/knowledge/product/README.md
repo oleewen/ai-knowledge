@@ -2,7 +2,7 @@
 
 本目录描述产品功能、用户故事与需求规格，并通过 ID 与其他视角建立映射。
 
-- **统一元数据**：[product_meta.yaml](./product_meta.yaml) — 单文件 SSOT：`identity`、`repository`、`integration`、`layers`（pl / pm / ft / uc）。
+- **统一元数据**：[system/knowledge/product/product_meta.yaml](product_meta.yaml) — 单文件 SSOT：`identity`、`repository`、`integration`、`layers`（pl / pm / ft / uc）。
 
 ---
 
@@ -10,7 +10,7 @@
 
 | 链序 | 层级 | 类型 | 名称 | 锚点目录 |
 |:----:|------|------|------|----------|
-| — | 索引 | 产品视角 | 产品视角 | [product_meta.yaml](./product_meta.yaml) |
+| — | 索引 | 产品视角 | 产品视角 | [system/knowledge/product/product_meta.yaml](product_meta.yaml) |
 | L1 | 产品线 | PL | 示例产品线 | `product_knowledge.json`（`hierarchy=PL`） |
 | L2 | 产品模块 | PM | 示例产品模块 | `product_knowledge.json`（`hierarchy=PM`） |
 | L3 | 功能 | FT | 示例功能 | `product_knowledge.json`（`hierarchy=FT`） |
@@ -24,8 +24,8 @@
 
 | 推荐入口 | 说明 |
 |---------|------|
-| [product_knowledge.json](./product_knowledge.json) | **本仓库产品层级（PL/PM/FT/UC）唯一事实来源**（含 `description / acceptance_criteria / invokes_api_ids / realizes_use_case_ids` 等字段） |
-| [product_meta.yaml](./product_meta.yaml) | 元模型与跨视角映射（字段模板、integration） |
+| [system/knowledge/product/product_knowledge.json](product_knowledge.json) | **本仓库产品层级（PL/PM/FT/UC）唯一事实来源**（含 `description / acceptance_criteria / invokes_api_ids / realizes_use_case_ids` 等字段） |
+| [system/knowledge/product/product_meta.yaml](product_meta.yaml) | 元模型与跨视角映射（字段模板、integration） |
 
 ---
 
@@ -53,4 +53,4 @@
 - **产品 → 业务**：`relies_on_context_ids` → BC。
 - **产品 → 技术**：`invokes_api_ids` / `map_to_api_id` → API（manifest）。
 
-系统索引：[../../INDEX_GUIDE.md](../../INDEX_GUIDE.md)；全库仓库入口：[../../../@docs/INDEX_GUIDE.md](../../../@docs/INDEX_GUIDE.md)；设计：[../../DESIGN.md](../../DESIGN.md)。
+仓库根 Index Guide：[INDEX_GUIDE.md](../../../INDEX_GUIDE.md)；设计：[system/DESIGN.md](../../DESIGN.md)。

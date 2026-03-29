@@ -61,11 +61,11 @@ scripts/change-indexing.sh --since "2026-03-20 00:00:00.000" --output ./changelo
 
 - 合并三源数据，统一时间格式（`yyyy-MM-dd HH:mm:ss.SSS` + 13 位 ms）
 - 按时间倒序排列
-- 按模板生成 JSON 和 Markdown（见 [assets/](assets/)）
+- 按模板生成 JSON 和 Markdown（见 [.ai/skills/document-change/assets/](assets)）
 
 ### 步骤 5：验证
 
-按 [reference/execution-spec.md](reference/execution-spec.md) 中的验证清单执行：
+按 [.ai/skills/document-change/reference/execution-spec.md](reference/execution-spec.md) 中的验证清单执行：
 
 - 文件存在性、JSON 格式有效性
 - 必需字段完整性
@@ -93,7 +93,7 @@ scripts/change-indexing.sh --since "2026-03-20 00:00:00.000" --output ./changelo
 
 | 资源 | 路径 |
 |------|------|
-| 执行规范与验证清单 | [reference/execution-spec.md](reference/execution-spec.md) |
-| JSON 输出模板 | [assets/changes-index-template.json](assets/changes-index-template.json) |
-| Markdown 输出模板 | [assets/changes-index-template.md](assets/changes-index-template.md) |
-| 辅助脚本 | [scripts/change-indexing.sh](scripts/change-indexing.sh) |
+| 执行规范与验证清单 | [.ai/skills/document-change/reference/execution-spec.md](reference/execution-spec.md) |
+| JSON 输出模板 | [.ai/skills/document-change/assets/changes-index-template.json](assets/changes-index-template.json) |
+| Markdown 输出模板 | [.ai/skills/document-change/assets/changes-index-template.md](assets/changes-index-template.md) |
+| 辅助脚本 | [.ai/skills/document-change/scripts/change-indexing.sh](scripts/change-indexing.sh) |

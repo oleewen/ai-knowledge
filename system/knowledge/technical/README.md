@@ -1,10 +1,10 @@
 # technical — 技术视角
 
-本目录描述本应用的物理实现、部署架构与服务接口；应用注册与索引见 **technical_meta.yaml** 与 **technical_knowledge.json**，以及 **[../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)**。
+本目录描述本应用的物理实现、部署架构与服务接口；应用注册与索引见 **technical_meta.yaml** 与 **technical_knowledge.json**，以及 **[system/knowledge/KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)**。
 
-- **实现入口**：HTTP（`@GatewayApi`）与 ZSS Job 见 [../../INDEX_GUIDE.md](../../INDEX_GUIDE.md) **第三节 · 3.1**、**第三节 · 3.3**。
-- **统一元数据**：[technical_meta.yaml](./technical_meta.yaml) — `layers`（sys / app / ms / api）。
-- **系统架构总览/应用注册**：已整合进 [technical_knowledge.json](./technical_knowledge.json)（`entities.systems[].architecture` / `entities.applications[]`）
+- **实现入口**：HTTP（`@GatewayApi`）与 ZSS Job 见 [INDEX_GUIDE.md](../../../INDEX_GUIDE.md) **第三节 · 3.1**、**第三节 · 3.3**。
+- **统一元数据**：[system/knowledge/technical/technical_meta.yaml](technical_meta.yaml) — `layers`（sys / app / ms / api）。
+- **系统架构总览/应用注册**：已整合进 [system/knowledge/technical/technical_knowledge.json](technical_knowledge.json)（`entities.systems[].architecture` / `entities.applications[]`）
 
 ---
 
@@ -47,4 +47,4 @@
 - **技术 ← 业务**：`implemented_by_app_id` → APP。
 - **技术 ← 产品**：`invokes_api_ids` → API。
 
-系统索引：[../../INDEX_GUIDE.md](../../INDEX_GUIDE.md)；全库仓库入口：[../../../@docs/INDEX_GUIDE.md](../../../@docs/INDEX_GUIDE.md)；设计：[../../DESIGN.md](../../DESIGN.md)。
+仓库根 Index Guide：[INDEX_GUIDE.md](../../../INDEX_GUIDE.md)；设计：[system/DESIGN.md](../../DESIGN.md)。

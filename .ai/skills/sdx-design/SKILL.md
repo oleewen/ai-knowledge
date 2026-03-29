@@ -48,11 +48,11 @@ description: >
 - **架构设计**：系统/服务架构与调用关系、接口协议设计、领域模型与领域事件、数据架构与迁移方案、发布与回滚方案
 - **详细设计**：应用架构（集成与容器）、API 详细设计（签名、参数、容错、幂等）、核心类图与状态机、业务逻辑伪代码/流程图、一致性设计（事务与并发）、数据访问设计（DDL、索引、分页、缓存）、非功能性设计（安全、可观测）
 - **规约生成**：按服务生成 API / 领域 / 数据 / 集成规约（YAML），路径规范 `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/`
-- **ADD 文档**：遵循 [add-template.md](assets/add-template.md) 的五章结构（设计概述→架构设计→详细设计→需求规约→附录）
+- **ADD 文档**：遵循 [.ai/skills/sdx-design/assets/add-template.md](assets/add-template.md) 的五章结构（设计概述→架构设计→详细设计→需求规约→附录）
 
 ## 工作流（四步）
 
-按顺序执行，每步产出作为下一步输入；最终文档需通过质量门禁。详细算法与决策点见 [reference/workflow-spec.md](reference/workflow-spec.md)。
+按顺序执行，每步产出作为下一步输入；最终文档需通过质量门禁。详细算法与决策点见 [.ai/skills/sdx-design/reference/workflow-spec.md](reference/workflow-spec.md)。
 
 ### 步骤 1：架构设计
 
@@ -68,9 +68,9 @@ description: >
 
 ### 步骤 4：文档输出与评审
 
-将步骤 1–3 的产出整合为 ADD 文档，严格采用 [add-template.md](assets/add-template.md) 的章节与格式；执行质量门禁自查。
+将步骤 1–3 的产出整合为 ADD 文档，严格采用 [.ai/skills/sdx-design/assets/add-template.md](assets/add-template.md) 的章节与格式；执行质量门禁自查。
 
-质量门禁清单见 [assets/quality-gate-checklist.md](assets/quality-gate-checklist.md)。
+质量门禁清单见 [.ai/skills/sdx-design/assets/quality-gate-checklist.md](assets/quality-gate-checklist.md)。
 
 可使用辅助脚本验证文档结构：
 
@@ -90,7 +90,7 @@ scripts/validate-design.sh --doc-root docs
 | 可追溯 | API / 数据变更可追溯到产品需求与功能需求；规约可追溯到技术设计 |
 | MVP 聚焦 | 仅覆盖目标 MVP 范围内的功能需求，不超越 MVP 边界 |
 
-设计原则完整版与反模式清单见 [reference/design-principles.md](reference/design-principles.md)。
+设计原则完整版与反模式清单见 [.ai/skills/sdx-design/reference/design-principles.md](reference/design-principles.md)。
 
 ## 依赖关系
 
@@ -105,11 +105,11 @@ scripts/validate-design.sh --doc-root docs
 
 | 资源 | 路径 |
 |------|------|
-| 设计原则与反模式 | [reference/design-principles.md](reference/design-principles.md) |
-| 四步工作流详细规范 | [reference/workflow-spec.md](reference/workflow-spec.md) |
-| 质量门禁验收清单 | [assets/quality-gate-checklist.md](assets/quality-gate-checklist.md) |
-| 文档结构校验脚本 | [scripts/validate-design.sh](scripts/validate-design.sh) |
-| ADD 文档模板 | [assets/add-template.md](assets/add-template.md) |
+| 设计原则与反模式 | [.ai/skills/sdx-design/reference/design-principles.md](reference/design-principles.md) |
+| 四步工作流详细规范 | [.ai/skills/sdx-design/reference/workflow-spec.md](reference/workflow-spec.md) |
+| 质量门禁验收清单 | [.ai/skills/sdx-design/assets/quality-gate-checklist.md](assets/quality-gate-checklist.md) |
+| 文档结构校验脚本 | [.ai/skills/sdx-design/scripts/validate-design.sh](scripts/validate-design.sh) |
+| ADD 文档模板 | [.ai/skills/sdx-design/assets/add-template.md](assets/add-template.md) |
 | 上游：产品需求 | `.ai/skills/sdx-prd/SKILL.md` |
 | 上游：需求分析 | `.ai/skills/sdx-analysis/SKILL.md` |
 | 下游：测试设计 | `.ai/skills/sdx-test/SKILL.md` |

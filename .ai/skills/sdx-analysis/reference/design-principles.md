@@ -8,7 +8,7 @@ sdx-analysis 技能的完整设计约束。主文件 SKILL.md 中的「核心约
 
 ### 1. 模板驱动
 
-输出严格遵循 [analysis-template.md](../assets/analysis-template.md) 的八章结构（需求概述→功能需求→非功能需求→业务规则→数据需求→MVP 拆分方案→依赖与风险→附录）。章节顺序与编号不可调整；无内容的章节保留标题并标注「不适用」或「待补充」。
+输出严格遵循 [.ai/skills/sdx-analysis/assets/analysis-template.md](../assets/analysis-template.md) 的八章结构（需求概述→功能需求→非功能需求→业务规则→数据需求→MVP 拆分方案→依赖与风险→附录）。章节顺序与编号不可调整；无内容的章节保留标题并标注「不适用」或「待补充」。
 
 ### 2. 证据优先
 

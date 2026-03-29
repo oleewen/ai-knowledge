@@ -8,11 +8,11 @@
 
 | 组件 | 路径与元数据 |
 |------|----------------|
-| 本层 | [constitution_meta.yaml](./constitution_meta.yaml) |
-| 术语表 | [GLOSSARY.md](./GLOSSARY.md) |
-| 架构原则 | [principles/](./principles/) · [principles_meta.yaml](./principles/principles_meta.yaml) |
-| 标准与模板 | [standards/](./standards/) · [standards_meta.yaml](./standards/standards_meta.yaml) |
-| ADR | [adr/](./adr/) · [adr_meta.yaml](./adr/adr_meta.yaml) · [adr-template.md](./adr/adr-template.md)；正文 `ADR-{序号}-{短标题}.md` |
+| 本层 | [system/knowledge/constitution/constitution_meta.yaml](constitution_meta.yaml) |
+| 术语表 | [system/knowledge/constitution/GLOSSARY.md](GLOSSARY.md) |
+| 架构原则 | [system/knowledge/constitution/principles/](principles) · [system/knowledge/constitution/principles/principles_meta.yaml](principles/principles_meta.yaml) |
+| 标准与模板 | [system/knowledge/constitution/standards/](standards) · [system/knowledge/constitution/standards/standards_meta.yaml](standards/standards_meta.yaml) |
+| ADR | [system/knowledge/constitution/adr/](adr) · [system/knowledge/constitution/adr/adr_meta.yaml](adr/adr_meta.yaml) · [system/knowledge/constitution/adr/adr-template.md](adr/adr-template.md)；正文 `ADR-{序号}-{短标题}.md` |
 
 ---
 
@@ -26,5 +26,5 @@
 
 ## 索引指针
 
-- 本树：[../../INDEX_GUIDE.md](../../INDEX_GUIDE.md)  
-- 全库（仓库根入口）：[../../../@docs/INDEX_GUIDE.md](../../../@docs/INDEX_GUIDE.md)  
+- 本知识树入口：[system/knowledge/README.md](../README.md)  
+- 仓库根 Index Guide：[INDEX_GUIDE.md](../../../INDEX_GUIDE.md)  

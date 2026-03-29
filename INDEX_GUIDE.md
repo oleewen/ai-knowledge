@@ -23,7 +23,7 @@
   - 应用知识库入口：`./applications/APPLICATIONS_INDEX.md`（`./applications/INDEX.md` 短入口）
   - 初始化入口：`./scripts/knowledge-init.sh`、`./scripts/README.md`
   - 规范入口：`./.ai/rules/CONVENTIONS.md`、`./.ai/rules/`
-  - Cursor 命令入口：`./.cursor/README.md`
+  - Slash 命令一览：`./.ai/skills/README.md`
 - **构建/启动命令**（本仓库自身不包含服务端/应用启动）：
   - 在任意项目目录初始化（bootstrap）：
     - `curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/knowledge-init-bootstrap.sh" | bash -s -- [选项]`
@@ -62,11 +62,11 @@
 │   ├── knowledge-init-bootstrap.sh # bootstrap：临时 clone 并执行 knowledge-init
 │   ├── knowledge-init.sh         # 将应用知识库根目录模板（applications/app-APPNAME）初始化到目标工程
 │   └── knowledge-config.sh       # 默认值、校验函数、支持的 Agents/skills
-├── .ai/                          # AI 规范与技能（CONVENTIONS、rules、skills）
-│   ├── CONVENTIONS.md            # 规范索引与关键摘要（编码/设计/测试/文档/交付）
-│   └── rules/                    # 规范与模板（solution/analysis/requirement 等）
-├── .cursor/                      # Cursor 配置与技能入口（Slash 命令表、skills）
-│   └── README.md                 # Slash 命令与 skills 列表
+├── .ai/                          # AI 规范与技能（README、rules、skills）
+│   ├── README.md                 # .ai 目录说明与上游文档指针
+│   ├── rules/                    # 规范与模板（CONVENTIONS、各子域 rules）
+│   └── skills/                   # Slash 技能（SKILL.md）
+│       └── README.md             # Slash 命令一览
 └── .trea/                        # Trea Agent 配置（若存在）
 ```
 
@@ -75,7 +75,7 @@
 - `scripts/` → `system/`：初始化时拷贝 `system/` 到目标项目文档根（默认 `docs/system`）
 - `scripts/` → `applications/`：初始化时拷贝应用知识库到目标项目（standalone 为 `docs/application`；federation 为 `docs/applications`）
 - `scripts/` → `.ai/`：初始化时拷贝 `.ai` 配置到目标项目 `.ai/`
-- `scripts/` → `.cursor/` / `.trea/`：按 `--agents` 生成/拷贝 Agent 配置与 skills
+- `scripts/` → `.ai/`（`--agents=cursor` 时向目标 `.ai/skills`、`rules` 增量安装）/ `.trea/`：按 `--agents` 生成/拷贝 Agent 配置与 skills
 - `system/DESIGN.md` → `system/knowledge/*`：定义四视角元模型、目录与元数据 YAML 映射机制
 - `system/CONTRIBUTING.md` → `system/knowledge/*`：约束新增/修改的字段、文件命名与引用规则
 - `system/SYSTEM_INDEX.md` → `system/knowledge/*`：提供宪法层与四视角入口与示例路径
@@ -95,13 +95,13 @@
 
 | 文件路径          | 功能精要               | 检索标签                       | 上游依赖 | 下游被依赖                                      | 重要度 |
 | ------------- | ------------------ | -------------------------- | ---- | ------------------------------------------ | --- |
-| `./README.md` | 仓库定位与初始化入口总导航      | `入口` `导航` `初始化`            | -    | `system/*` `scripts/*` `.ai/*` `.cursor/*` | ⭐⭐⭐ |
+| `./README.md` | 仓库定位与初始化入口总导航      | `入口` `导航` `初始化`            | -    | `system/*` `scripts/*` `.ai/*` | ⭐⭐⭐ |
 | `./AGENTS.md` | Agent 角色、关键路径与提交规范 | `规范` `ConventionalCommits` | -    | 人工/Agent 开发流程                              | ⭐⭐  |
 
 
 ### 3.2 系统知识库（system）
 
-与 `[system/README.md](./system/README.md)` 中「查阅顺序」「SDD 主线」「快速导航」**一一对应**（下列表格为根目录索引视角的检索字段补充）。
+与 `[system/README.md](system/README.md)` 中「查阅顺序」「SDD 主线」「快速导航」**一一对应**（下列表格为根目录索引视角的检索字段补充）。
 
 #### 3.2.1 顶层与治理
 
@@ -122,7 +122,7 @@
 | `./system/knowledge/README.md`     | knowledge 主体、三步维护、system/SYSTEM_INDEX 与根 INDEX_GUIDE 指针                        | `知识库` `入口` | `system/DESIGN.md`、`system/SYSTEM_INDEX.md`             | constitution 与四视角 README | ⭐⭐⭐ |
 | `./system/solutions/README.md`     | 解决方案阶段三步流程与方案索引登记                                                 | `解决方案`     | `system/DESIGN.md`、`.ai/skills/sdx-solution`     | `analysis/`              | ⭐⭐⭐ |
 | `./system/analysis/README.md`      | 需求分析阶段三步流程与分析索引登记                                                 | `需求分析`     | `solutions/`、`knowledge/`                          | `requirements/`          | ⭐⭐⭐ |
-| `./system/requirements/README.md`  | 需求交付四步主线与目录结构（含各需求包内规约 specs/）                                       | `需求交付`     | `analysis/`、`solutions/`、`.ai/rules/requirement` | 阶段交付物                    | ⭐⭐⭐ |
+| `./system/requirements/README.md`  | 需求交付四步主线与目录结构（含各需求包内规约 specs/）                                       | `需求交付`     | `analysis/`、`solutions/`、`.ai/skills/sdx-prd` / `sdx-design` / `sdx-test` | 阶段交付物                    | ⭐⭐⭐ |
 | `./system/changelogs/README.md`    | changelogs 说明；document-change / document-indexing **Skill** 产出物说明 | `变更` `运维`  | `README.md`、`AGENTS.md`                          | 索引链路                     | ⭐⭐  |
 | `./system/changelogs/CHANGELOG.md` | system 文档体系维护性变更记录                                                | `变更`       | -                                                | 审计与追溯                    | ⭐⭐  |
 
@@ -143,18 +143,18 @@
 | 文件路径                              | 功能精要                                       | 检索标签                         | 上游依赖            | 下游被依赖                           | 重要度 |
 | --------------------------------- | ------------------------------------------ | ---------------------------- | --------------- | ------------------------------- | --- |
 | `./scripts/README.md`             | knowledge-init 用法、模式与选项清单                 | `初始化` `脚本`                   | -               | `knowledge-init.sh`            | ⭐⭐⭐ |
-| `./scripts/knowledge-init.sh`     | 拷贝 docs/.ai/Agent 技能的核心逻辑                  | `初始化` `联邦治理` `Cursor` `Trea` | `knowledge-config.sh` | 目标项目的 `docs/`、`.ai/`、`.cursor/` | ⭐⭐⭐ |
+| `./scripts/knowledge-init.sh`     | 拷贝 docs/.ai/Agent 技能的核心逻辑                  | `初始化` `联邦治理` `Cursor` `Trea` | `knowledge-config.sh` | 目标项目的 `docs/`、`.ai/` | ⭐⭐⭐ |
 | `./scripts/knowledge-config.sh`   | 默认值、校验函数、支持的 Agents/skills                 | `脚本` `初始化`                   | -               | `knowledge-init.sh`            | ⭐⭐  |
 | `./scripts/knowledge-init.sh`     | 初始化应用知识库根目录（applications/app-APPNAME）到目标工程 | `初始化` `联邦治理` `Agent技能`       | `knowledge-config.sh` | 目标工程的应用知识库模板                    | ⭐⭐  |
 
 
-### 3.5 规范与模板（.ai / .cursor）
+### 3.5 规范与模板（.ai）
 
 
 | 文件路径                         | 功能精要                                           | 检索标签               | 上游依赖                                      | 下游被依赖             | 重要度 |
 | ---------------------------- | ---------------------------------------------- | ------------------ | ----------------------------------------- | ----------------- | --- |
 | `./.ai/rules/CONVENTIONS.md` | 规范索引与关键摘要（编码/设计/测试/交付）                         | `规范` `模板`          | `.ai/rules/*`                             | 人工/Agent 编写文档与交付物 | ⭐⭐⭐ |
-| `./.cursor/README.md`        | Cursor Slash 与 `skills/` 入口；Skill 非 scripts 脚本 | `Cursor` `Agent技能` | `.cursor/skills/*`、`.ai/skills/README.md` | 用户交互入口            | ⭐⭐  |
+| `./.ai/skills/README.md`     | Slash 命令与 `skills/` 入口；Skill 非 scripts 脚本 | `Cursor` `Agent技能` | `.ai/skills/*` | 用户交互入口            | ⭐⭐  |
 
 
 ### 3.6 knowledge 宪法层（system/knowledge；总入口见 §3.2.2）
@@ -184,7 +184,7 @@
 > 说明：本仓库主要“数据流”是初始化与知识引用流，而非运行时请求流。
 
 - **数据流 1：向目标项目注入 SDD 文档体系**
-  - `./scripts/knowledge-init.sh` → 将 `system/`、`applications/`、`.ai/`、Agent 配置复制到目标目录（默认 `docs/system`、`docs/application(s)`、`.ai`、`.cursor`/`.trea`）。
+  - `./scripts/knowledge-init.sh` → 将 `system/`、`applications/`、`.ai/`、Agent 配置复制到目标目录（默认 `docs/system`、`docs/application(s)`、`.ai`、`.trea`）。
 - **数据流 2：系统知识库的跨视角引用（SSOT）**
   - `./system/DESIGN.md` 定义四视角元模型与映射机制 → 具体实体在各视角元数据 YAML 与实体定义 `*.yaml` 中写目标实体 ID。
   - 常用映射字段（见 `system/DESIGN.md` 与 `system/knowledge/constitution/GLOSSARY.md`）：
@@ -236,7 +236,7 @@
   - `./applications/`** 的应用子目录（若存在）
 - **AI 规则与技能未精读**
   - `./.ai/rules/`**（仅精读了 `./.ai/rules/CONVENTIONS.md`；其余规则模板未逐一精读）
-  - `./.ai/skills/**`、`./.cursor/skills/**`（已精读 `document-indexing`/`document-change`；并抽读 `agent-guide`、`knowledge-build`、`knowledge-upgrade` 的入口与阶段划分；其余技能未逐一精读）
+  - `./.ai/skills/**`（已精读 `document-indexing`/`document-change`；并抽读 `agent-guide`、`knowledge-build`、`knowledge-upgrade` 的入口与阶段划分；其余技能未逐一精读）
 
 ## 7. AI 查阅指北（检索表 + Prompt 模板）
 
@@ -249,7 +249,7 @@
 | 应用侧知识库应如何对齐主库               | `联邦治理` `索引`        | `./applications/APPLICATIONS_INDEX.md`         |
 | 如何在新项目中初始化 SDD 环境           | `初始化` `bootstrap`  | `./scripts/README.md`、`./scripts/sdx-init*.sh` |
 | 规范/模板入口在哪里                  | `规范` `模板`          | `./.ai/rules/CONVENTIONS.md`、`./.ai/rules/`    |
-| 可用 Slash 命令有哪些       | `Agent技能` | `./.ai/README.md`                          |
+| 可用 Slash 命令有哪些       | `Agent技能` | `./.ai/skills/README.md`                          |
 
 
 ### 快速检索 Prompt 模板（面向仓库内搜索/阅读）

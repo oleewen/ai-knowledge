@@ -11,11 +11,11 @@
    - **联邦模式**：**system** 拷贝到 **docs/system**；**applications** 拷贝到 **docs/applications**，并在其下新建 `app-<工程目录名>`；在目标 **.gitignore** 中忽略文档根目录（如 `docs`），并将当前仓库 **.git** 拷贝至文档根。
 2. **AI 配置**：将仓库的 **.ai** 目录拷贝到执行目录的 **.ai**。默认**不**包含 `.ai/rules` 下的 **solution**、**analysis** 模板；可选 `--as=full` 包含全部 rules。
 3. **Agent 的 command 与 skill**：从仓库的 **.ai/skills** 按选择安装到各 Agent 目录的 skills；并为选定的 **Agent**（Cursor、Trea 等）生成或拷贝配置：
-   - **Cursor**：在 `.cursor` 下生成 Slash 命令说明（README）及 skills。
+   - **Cursor**：在 `.ai` 下安装 Slash 相关 `skills/` 与 `rules/`（与整仓 `.ai` 拷贝协同；命令一览见 `.ai/skills/README.md`）。
    - **Trea**：若仓库存在 `.trea`，整目录拷贝到目标 `.trea` 并安装 skills。
    - 其他 Agent：若仓库存在 `.<agent>`，同样整目录拷贝。通过 `--agents=cursor,trea` 或 `--agents=all` 选择要初始化的 Agent。
 
-若目标路径（如 `docs/system`、`docs/applications`、`.ai`、`.cursor`、`.trea`）已存在，**默认会警告并退出**；使用 `--force` 会提示确认后覆盖。
+若目标路径（如 `docs/system`、`docs/applications`、`.ai`、`.trea`）已存在，**默认会警告并退出**；使用 `--force` 会提示确认后覆盖。
 
 ## 使用方式
 
@@ -74,10 +74,10 @@ cd ai-sdd-knowledge
 | `--ad=DIR` | .ai 配置目录（相对目标目录） | `.ai` |
 | `--as=SCOPE` | .ai/rules 范围：`no-solution-analysis`（不含 solution、analysis）\| `full` | `no-solution-analysis` |
 | `--agents=LIST` | 要初始化的 Agent：`cursor`、`trea` 或 `all`（默认: cursor） | `cursor` |
-| `--cursor-dir=DIR` | Cursor 配置目录（相对目标目录） | `.cursor` |
+| `--cursor-dir=DIR` | Cursor 技能/rules 安装目录（相对目标目录；与 `.ai` 同源时与 `--ad` 一致） | `.ai` |
 | `--trea-dir=DIR` | Trea 配置目录（相对目标目录） | `.trea` |
 | `--skills=LIST` | 要安装的 skills（写入 Agent 目录的 skills/）：`all` 或逗号分隔。未指定时仅安装 agent/knowledge 相关（`knowledge-*`、`agent-*`），默认排除 sdx-*；`all` 安装全部 | 仅 agent/knowledge |
-| `--force` | 若目标路径（docs、.ai、.cursor、.trea 等）已存在，则提示确认后覆盖；未指定时若已存在则警告并退出 | - |
+| `--force` | 若目标路径（docs、.ai、.trea 等）已存在，则提示确认后覆盖；未指定时若已存在则警告并退出 | - |
 | `--dry-run` | 仅打印将要执行的操作，不实际拷贝 | - |
 | `-h`, `--help` | 显示帮助 | - |
 
@@ -149,7 +149,7 @@ curl -sL "..." | bash -s -- --dry-run
 ## 初始化后的目录结构（目标工程）
 
 - 在 `<目标工程>/<文档目录>/` 下同步**应用知识库根目录**模板（`applications/app-APPNAME/`）的目录和文件。
-- 若选择 `--agents=cursor`：在 `<目标工程>/.cursor/` 下安装 `skills/` 与 `rules/`（skills 仅安装 `agent-*`/`document-*`/`knowledge-*`），并拷贝 `.cursor/README.md`（如存在）。
+- 若选择 `--agents=cursor`：在 `<目标工程>/.ai/` 下安装 `skills/` 与 `rules/`（skills 仅安装 `agent-*`/`document-*`/`knowledge-*`），并拷贝 `.ai/skills/README.md`（如存在）。
 - 若选择 `--agents=trea`：在 `<目标工程>/.trea/` 下安装 `skills/` 与 `rules/`（skills 仅安装 `agent-*`/`document-*`/`knowledge-*`），并拷贝 `.trea/README.md`（如存在）。
 
 中央模式（`--mode=central`）额外会更新本仓库 `system/SYSTEM_INDEX.md`，并在 `system/knowledge/technical/SYS-ECOMMERCE-BACKEND/` 下生成 `APP-<工程名>/` 注册模板。

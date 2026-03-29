@@ -122,7 +122,7 @@ layers:
         - "changes-index.md"
         - "indexing-log.jsonl"
     fields:
-      purpose: "document-change / document-indexing Skill 产出；见 .ai/skills/ 与 .cursor/skills/ 同名 Skill"
+      purpose: "document-change / document-indexing Skill 产出；见 .ai/skills/"
     indexing:
       readme_index_table: false
       rule: "运行对应 Skill 后更新或追加；与 README 中表格一致"

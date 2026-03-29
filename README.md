@@ -28,11 +28,11 @@ REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/knowledge-
   - `--mode=standalone`（默认）：`docs/application/`
   - `--mode=federation`：`docs/applications/`，并创建 `docs/applications/app-<工程目录名>/`
 - ③ 将 `.ai` 拷贝到当前目录的 `.ai/`（解决方案/需求分析阶段模板在 `.ai/skills/sdx-solution`、`sdx-analysis` 的 `assets/`，不再置于 `.ai/rules/`）；
-- ④ 按 `--agents` 为 Cursor、Trea 等 Agent 生成或拷贝配置（`.cursor`、`.trea` 等）。详见 [scripts/README.md](scripts/README.md)。
+- ④ 按 `--agents` 为 Cursor、Trea 等 Agent 安装 skills/rules（默认并入目标 `.ai/`，及 `.trea` 等）。详见 [scripts/README.md](scripts/README.md)。
 
 ## 命令简介
 
-下表为 **Cursor Slash 命令**，对应 **Skill**（`.cursor/skills/<name>/SKILL.md`，与 `.ai/skills/` 同步），由 Agent 按文档执行；**不是** `scripts/` 下的 Bash 可执行文件。
+下表为 **Cursor Slash 命令**，对应 **Skill**（`.ai/skills/<name>/SKILL.md`），由 Agent 按文档执行；**不是** `scripts/` 下的 Bash 可执行文件。
 
 | 命令                   | 说明                                                                                                                 |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------ |
@@ -45,7 +45,7 @@ REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/knowledge-
 
 ## 功能简介
 
-**系统知识库** 已统一放在 **[system](system/)** 目录下（查阅顺序与根目录 `INDEX_GUIDE.md` / `AGENTS.md` 对齐；SDD 主线见 [system/README.md](system/README.md)）：
+**系统知识库** 已统一放在 **[system/](system)** 目录下（查阅顺序与根目录 `INDEX_GUIDE.md` / `AGENTS.md` 对齐；SDD 主线见 [system/README.md](system/README.md)）：
 
 - [system/README.md](system/README.md) — 查阅顺序、SDD 主线、快速导航  
 - [system/SYSTEM_INDEX.md](system/SYSTEM_INDEX.md) — system 树索引、映射速查、应用接入、AI 工作流指针  
@@ -53,10 +53,10 @@ REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/knowledge-
 - [system/CONTRIBUTING.md](system/CONTRIBUTING.md) — 贡献工作流与各阶段模板入口  
 - [system/changelogs/README.md](system/changelogs/README.md) — 变更日志入口（规约随各 `requirements/REQUIREMENT-*/…/specs/`）
 
-**应用知识库** 已统一放在 **[applications](applications/)** 目录下，包含：
+**应用知识库** 已统一放在 **[applications/](applications)** 目录下，包含：
 
 - [applications/README.md](applications/README.md) — 应用知识库说明与初始化方式  
-- [applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md) — 应用知识结构、方案与需求、治理信息导航（[短入口](applications/INDEX.md)）
+- [applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md) — 应用知识结构、方案与需求、治理信息导航（[applications/INDEX.md](applications/INDEX.md)）
 
 ## 目录结构
 
@@ -76,8 +76,7 @@ ai-sdd-knowledge/
 │   └── changelogs/     # 变更日志（README、CHANGELOG、可选索引文件）
 ├── applications/       # 应用知识库（README、APPLICATIONS_INDEX、INDEX 短入口及各应用子目录）
 ├── scripts/            # sdx-init、knowledge-init 等，详见 scripts/README.md
-├── .ai/                # AI 规范与技能（CONVENTIONS.md、rules/、skills/）
-├── .cursor/            # Cursor 配置与 Slash 命令（README、skills/）
+├── .ai/                # AI 规范与技能（README、rules/、skills/README.md Slash 一览）
 └── .trea/             # Trea Agent 配置
 ```
 
@@ -89,10 +88,10 @@ ai-sdd-knowledge/
 | 文档索引地图    | [INDEX_GUIDE.md](INDEX_GUIDE.md)                                              |
 | 索引运行日志     | [system/changelogs/indexing-log.jsonl](system/changelogs/indexing-log.jsonl)  |
 | 系统知识库入口     | [system/README.md](system/README.md)、[system/SYSTEM_INDEX.md](system/SYSTEM_INDEX.md)      |
-| 知识库设计与约定    | [system/DESIGN.md](system/DESIGN.md)、[.ai/CONVENTIONS.md](.ai/CONVENTIONS.md) |
+| 知识库设计与约定    | [system/DESIGN.md](system/DESIGN.md)、[.ai/rules/CONVENTIONS.md](.ai/rules/CONVENTIONS.md) |
 | 贡献与新增约定    | [system/CONTRIBUTING.md](system/CONTRIBUTING.md)                              |
 | 初始化与选项     | [scripts/README.md](scripts/README.md)                                        |
-| Cursor 命令表 | [.cursor/README.md](.cursor/README.md)                                        |
+| Cursor 命令表 | [.ai/skills/README.md](.ai/skills/README.md)                                        |
 | AI 开发指南    | [AGENTS.md](AGENTS.md)                                                        |
 | 变更索引（滚动基线） | [system/changelogs/changes-index.json](system/changelogs/changes-index.json) |
 

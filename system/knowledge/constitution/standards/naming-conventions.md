@@ -73,7 +73,7 @@
 - **中央库 · solutions 阶段**（`system/solutions/`）：`solutions_meta.yaml`（含 `layers`：SOLUTION）；根目录平铺 `SOLUTION-{ID}.md`。
 - **中央库 · analysis 阶段**（`system/analysis/`）：`analysis_meta.yaml`（含 `layers`：ANALYSIS）；根目录平铺 `ANALYSIS-{ID}.md`。
 - **中央库 · changelogs**（`system/changelogs/`）：`changelogs_meta.yaml`（含 `layers`：CHANGELOG / INDEX_OPS）；`CHANGELOG.md` 与可选 Skill 索引文件同目录。
-- **宪法层 ADR 标准**：`constitution/adr/adr_meta.yaml` 与 [../adr/adr-template.md](../adr/adr-template.md) 配套，描述模板结构、状态值与 `adr/ADR-{序号}-{短标题}.md` 落盘约定。
+- **宪法层 ADR 标准**：`constitution/adr/adr_meta.yaml` 与 [system/knowledge/constitution/adr/adr-template.md](../adr/adr-template.md) 配套，描述模板结构、状态值与 `adr/ADR-{序号}-{短标题}.md` 落盘约定。
 
 ---
 
@@ -84,4 +84,4 @@
 
 ---
 
-*本规范与中央库 [system/DESIGN.md](../../../../system/DESIGN.md) 中的「ID 命名规范」一致。*
+*本规范与中央库 [system/DESIGN.md](../../../DESIGN.md) 中的「ID 命名规范」一致。*

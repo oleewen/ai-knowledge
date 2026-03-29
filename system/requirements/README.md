@@ -2,7 +2,7 @@
 
 将 **analysis** 中的高层次需求按 MVP / 阶段落为可执行交付版本（PRD / ADD / TDD 等）。
 
-**元数据**：[requirements_meta.yaml](./requirements_meta.yaml) — 单文件 SSOT：`identity`、`repository`、`pipeline`、`integration`、`layers`（`key`: req → mvp_phase）。不在各 `REQUIREMENT-{ID}/` 内复制根级 meta。
+**元数据**：[system/requirements/requirements_meta.yaml](requirements_meta.yaml) — 单文件 SSOT：`identity`、`repository`、`pipeline`、`integration`、`layers`（`key`: req → mvp_phase）。不在各 `REQUIREMENT-{ID}/` 内复制根级 meta。
 
 ---
 
@@ -33,11 +33,11 @@ requirements/
 
 ## 模板与命令
 
-- 模板：PRD → [.cursor/skills/sdx-prd/assets/prd-template.md](../../.cursor/skills/sdx-prd/assets/prd-template.md)；ADD → [.cursor/skills/sdx-design/assets/add-template.md](../../.cursor/skills/sdx-design/assets/add-template.md)；TDD → [.cursor/skills/sdx-test/assets/tdd-template.md](../../.cursor/skills/sdx-test/assets/tdd-template.md)  
-- Skills：sdx-prd、sdx-design、sdx-test（见 [.ai/README.md](.ai/README.md)）  
+- 模板：PRD → [.ai/skills/sdx-prd/assets/prd-template.md](../../.ai/skills/sdx-prd/assets/prd-template.md)；ADD → [.ai/skills/sdx-design/assets/add-template.md](../../.ai/skills/sdx-design/assets/add-template.md)；TDD → [.ai/skills/sdx-test/assets/tdd-template.md](../../.ai/skills/sdx-test/assets/tdd-template.md)  
+- Skills：sdx-prd、sdx-design、sdx-test（见 [.ai/README.md](../../.ai/README.md)）  
 
 ---
 
 ## 示例
 
-结构说明见 [REQUIREMENT-EXAMPLE/README.md](./REQUIREMENT-EXAMPLE/README.md)。
+结构说明见 [system/requirements/REQUIREMENT-EXAMPLE/README.md](REQUIREMENT-EXAMPLE/README.md)。
