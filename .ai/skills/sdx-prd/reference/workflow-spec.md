@@ -24,7 +24,7 @@ graph TD
 
 ### 算法
 
-1. **定位需求分析文档**：按 `--requirement` 参数或最新 `system/analysis/REQUIREMENT-*.md` 定位
+1. **定位需求分析文档**：按 `--requirement` 传入的分析文档 ID 定位 `system/analysis/ANALYSIS-{ID}.md`；未指定时取 `system/analysis/` 下按文件名排序最新的 `ANALYSIS-*.md`（**勿**与需求包目录 `system/requirements/REQUIREMENT-{ID}/` 混淆）
 2. **提取 MVP 范围**：从文档 §6 MVP 拆分方案中提取目标 MVP（`--mvp` 参数指定）的功能需求列表
 3. **加载基线数据**：
    - 功能需求清单（FR-n）及其优先级、验收标准

@@ -1,0 +1,77 @@
+# applications/app-APPNAME/requirements — 单文件 SSOT（模板；对照 system/requirements/requirements_meta.yaml）
+schema_version: "1.1"
+
+identity:
+  id: DIR-REQUIREMENTS-APP
+  name: 需求交付（应用）
+  description: REQUIREMENT-{ID}/ 内 PRD/ADD/TDD 等；与中央库 analysis、solutions 以 ID 关联。
+
+role:
+  stage: requirements
+  sdd_phase: requirements
+  is_system_level_index: false
+
+repository:
+  root_relative: requirements
+  child_directories:
+    - REQUIREMENT-{ID}
+  child_files:
+    - README.md
+  directory_patterns:
+    REQUIREMENT: REQUIREMENT-{ID}/
+    MVP_PHASE: REQUIREMENT-{ID}/MVP-Phase-{N}/
+
+pipeline:
+  inputs:
+    - path: ../../../system/analysis/
+      description: 中央库 ANALYSIS-{ID}.md（可选）
+    - path: ../../../system/solutions/
+      description: 中央库 SOLUTION-{ID}.md（可选）
+  outputs:
+    ssot_file: requirements_meta.yaml
+
+integration:
+  traceability:
+    - 交付包与 ANALYSIS/SOLUTION 通过 ID 关联
+
+references:
+  - ./README.md
+  - ../../../INDEX_GUIDE.md
+  - ../../../README.md
+  - ../../../.ai/skills/sdx-prd/assets/prd-template.md
+  - ../../../.ai/skills/sdx-design/assets/add-template.md
+  - ../../../.ai/skills/sdx-test/assets/tdd-template.md
+
+layers:
+  - key: req
+    code: REQUIREMENT
+    order: 1
+    entity_kind: requirement_package
+    id_pattern: REQUIREMENT-{ID}
+    parent: null
+    tree:
+      child_directory_glob: MVP-Phase-{N}/
+    artifacts:
+      markdown: REQUIREMENT-{ID}.md
+    indexing:
+      readme_index_table: true
+
+  - key: mvp_phase
+    code: MVP_PHASE
+    order: 2
+    entity_kind: mvp_phase
+    id_pattern: MVP-Phase-{N}
+    parent:
+      field: requirement_id
+      expects: REQUIREMENT-{ID}
+    artifacts:
+      fixed_filenames:
+        - PRD.md
+        - ADD.md
+        - TDD.md
+    indexing:
+      readme_index_table: false
+
+indexing:
+  readme_index_table: true
+  rule: 变更交付包或阶段时同步 README（按需）

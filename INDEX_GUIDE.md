@@ -18,9 +18,9 @@
   - `rsync`（可选：用于更安全/高效同步；脚本自动 fallback 到 `cp`）
 - **入口**：
   - 总入口：`./README.md`
-  - 根索引（本文件）：`./INDEX_GUIDE.md`（`./INDEX.md` 为根短文入口）
+  - 根索引（本文件）：`./INDEX_GUIDE.md`
   - 系统知识库入口：`./system/README.md`、`./system/SYSTEM_INDEX.md`
-  - 应用知识库入口：`./applications/APPLICATIONS_INDEX.md`（`./applications/INDEX.md` 短入口）
+  - 应用知识库入口：`./applications/APPLICATIONS_INDEX.md`
   - 初始化入口：`./scripts/knowledge-init.sh`、`./scripts/README.md`
   - 规范入口：`./.ai/rules/CONVENTIONS.md`、`./.ai/rules/`
   - Slash 命令一览：`./.ai/skills/README.md`
@@ -38,12 +38,10 @@
 ./
 ├── README.md                     # 仓库总入口：定位、初始化、关键路径导航
 ├── INDEX_GUIDE.md                # AI 文档库精要索引指南（Index Guide，权威）
-├── INDEX.md                      # 根短文入口（指向 INDEX_GUIDE / 兼容说明）
 ├── AGENTS.md                     # AI Agents 开发指南（角色、约束、提交规范等）
 ├── system/                       # 系统级知识库（宪法层 + 四视角 + 交付阶段文档）
 │   ├── README.md                 # 查阅顺序、SDD 主线、快速导航（与 AGENTS 对齐）
 │   ├── SYSTEM_INDEX.md           # system 树索引、SDD 文档流、映射速查、接入登记、AI 工作流
-│   ├── INDEX.md                  # 短入口：指向 SYSTEM_INDEX.md
 │   ├── DESIGN.md                 # 原则、元模型、system/ 内目录、映射、演进
 │   ├── CONTRIBUTING.md           # 六步工作流、各阶段规则与模板指针
 │   ├── knowledge/                # 宪法层 + 业务/产品/技术/数据视角
@@ -53,8 +51,7 @@
 │   └── changelogs/               # README、CHANGELOG、可选 changes-index / indexing-log
 ├── applications/                 # 应用级知识库模板与治理入口
 │   ├── README.md                 # 应用侧联邦单元说明与初始化示例
-│   ├── APPLICATIONS_INDEX.md     # 应用知识结构/方案/需求/治理信息导航（权威）
-│   └── INDEX.md                  # applications 短入口 → APPLICATIONS_INDEX.md
+│   └── APPLICATIONS_INDEX.md     # 应用知识结构/方案/需求/治理信息导航（权威）
 ├── scripts/                      # sdx-init 初始化工具链（Bash 5+）
 │   ├── README.md                 # 初始化使用说明与选项
 │   ├── knowledge-init.sh         # 核心初始化：将中央库 `system/` 模板拷至目标文档根（默认 `docs/`）、安装 .ai/ 与 Agent skills
@@ -80,7 +77,7 @@
 - `system/SYSTEM_INDEX.md` → `system/knowledge/*`：提供宪法层与四视角入口与示例路径
 - `system/SYSTEM_INDEX.md` → `.ai/rules/*`：连接阶段模板（solutions/analysis/requirements）与规范入口
 - `system/README.md` → `./INDEX_GUIDE.md`、`./README.md`、`./AGENTS.md`：查阅顺序与 SDD 主线对齐
-- `applications/APPLICATIONS_INDEX.md` → `system/SYSTEM_INDEX.md`：应用库结构与主库对齐，并引用系统级设计/规范（`applications/INDEX.md` 短入口）
+- `applications/APPLICATIONS_INDEX.md` → `system/SYSTEM_INDEX.md`：应用库结构与主库对齐，并引用系统级设计/规范
 - `system/knowledge/*/README.md` → `system/DESIGN.md`、`system/SYSTEM_INDEX.md`：各视角 README 明确映射字段与阅读入口
 
 ## 3. 详细索引字典

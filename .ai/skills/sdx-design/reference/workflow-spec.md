@@ -32,7 +32,7 @@ architect + system-architect
 
 ### 输入
 
-产品需求文档（`PRD-{ID}.md`）+ 需求分析文档（`REQUIREMENT-{ID}.md`）当前 MVP 章节 + `knowledge/technical/`（按需）+ `knowledge/business/`（按需）
+产品需求文档（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`）+ 需求分析文档（`system/analysis/ANALYSIS-{ID}.md`）当前 MVP 章节 + `knowledge/technical/`（按需）+ `knowledge/business/`（按需）
 
 ### 算法
 

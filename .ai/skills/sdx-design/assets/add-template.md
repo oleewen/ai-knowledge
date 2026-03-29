@@ -4,8 +4,8 @@
 
 ### 1.1 设计目标
 
-- 关联需求分析：`analysis/ANALYSIS-{ID}.md`
-- 关联产品需求：`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`
+- 关联需求分析：`system/analysis/ANALYSIS-{ID}.md`
+- 关联产品需求：`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`（与 sdx-prd 产出命名一致）
 - MVP阶段：MVP-{N}
 
 ### 1.2 设计约束

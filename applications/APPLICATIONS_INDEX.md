@@ -2,7 +2,7 @@
 
 本文件为 applications 的索引入口。结构与约定参照系统级知识库（见 `system/SYSTEM_INDEX.md`、`system/DESIGN.md`），应用侧在此基础上做最小必要的补充。
 
-**单应用模板（本仓库）**：[applications/app-APPNAME/INDEX.md](app-APPNAME/INDEX.md) — 内含完整 `knowledge/`、`requirements/`、`changelogs/` 树，与 `system/` 对齐后可由 `knowledge-init` 拷贝到目标工程（模板目录名 `applications/app-APPNAME/`）。
+**单应用模板（本仓库）**：[applications/app-APPNAME/APPNAME_INDEX.md](app-APPNAME/APPNAME_INDEX.md) — 内含完整 `knowledge/`、`requirements/`、`changelogs/` 树，与 `system/` 对齐后可由 `knowledge-init` 拷贝到目标工程（模板目录名 `applications/app-APPNAME/`）。
 
 | 模板根元数据 | 说明 |
 |--------------|------|

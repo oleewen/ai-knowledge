@@ -28,7 +28,7 @@
   - `knowledge/knowledge_meta.yaml` 描述知识树；
   - `knowledge/constitution/constitution_meta.yaml` 描述宪法层组件与产出；
   - `solutions/`、`analysis/`、`requirements/`、`changelogs/` 各阶段目录根使用与目录同名的 `{dirname}_meta.yaml`（如 `solutions_meta.yaml`）。
-- **应用知识库根目录**：使用 [applications/app-APPNAME/application_meta.yaml](../applications/app-APPNAME/application_meta.yaml) 概括 `knowledge/`、`requirements/`、`changelogs/` 与中央库指针对照（模板路径以本仓为准；落地时可拷贝更名）。
+- **应用知识库根目录**：使用 [applications/app-APPNAME/application_meta.yaml](../applications/app-APPNAME/application_meta.yaml)（及同目录 [APPNAME_manifest.yaml](../applications/app-APPNAME/APPNAME_manifest.yaml)）概括 `knowledge/`、`requirements/`、`changelogs/` 与中央库指针对照（模板路径以本仓为准；落地时可拷贝更名）。
 - 细则见 [system/knowledge/constitution/standards/NAMING-CONVENTIONS.md](knowledge/constitution/standards/NAMING-CONVENTIONS.md)。
 
 **协同（目标态）**：应用仓维护 `/docs` 与 `manifest.yaml`；系统侧可抓取 manifest 更新 `knowledge` 并做一致性检查。

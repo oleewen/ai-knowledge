@@ -6,8 +6,8 @@
 
 <!-- 本MVP的核心交付目标 -->
 
-- 关联解决方案：`solutions/SOLUTIONS-{ID}.md`
-- 关联需求分析：`analysis/ANALYSIS-{ID}.md`
+- 关联解决方案：`system/solutions/SOLUTION-{ID}.md`
+- 关联需求分析：`system/analysis/ANALYSIS-{ID}.md`
 - MVP阶段：MVP-{N}
 
 ### 1.2 需求范围

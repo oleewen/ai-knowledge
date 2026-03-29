@@ -47,7 +47,7 @@ REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/knowledge-
 **应用知识库** 已统一放在 **[applications/](applications)** 目录下，包含：
 
 - [applications/README.md](applications/README.md) — 应用知识库说明与初始化方式  
-- [applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md) — 应用知识结构、方案与需求、治理信息导航（[applications/INDEX.md](applications/INDEX.md)）
+- [applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md) — 应用知识结构、方案与需求、治理信息导航（权威入口）
 
 ## 目录结构
 
@@ -55,16 +55,15 @@ REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/knowledge-
 ai-sdd-knowledge/
 ├── README.md           # 本文件：总览、快速初始化、功能简介与文档索引
 ├── INDEX_GUIDE.md      # AI 文档库精要索引指南（Index Guide，与 document-indexing 对齐）
-├── INDEX.md            # 根短文入口（指向 INDEX_GUIDE / 兼容说明）
 ├── AGENTS.md           # AI Agents 开发指南（角色、关键路径、规范、命令）
 ├── system/             # 系统知识库
-│   ├── README.md, SYSTEM_INDEX.md, INDEX.md（短入口）, DESIGN.md, CONTRIBUTING.md
+│   ├── README.md, SYSTEM_INDEX.md, DESIGN.md, CONTRIBUTING.md
 │   ├── knowledge/      # 四视角 + 宪法层（constitution, business, product, technical, data）
 │   ├── solutions/      # 解决方案（SOLUTION-{ID}.md）
 │   ├── analysis/       # 需求分析（ANALYSIS-{ID}.md）
 │   ├── requirements/   # 需求交付（REQUIREMENT-{ID}/MVP-Phase-*；规约可在包内 specs/）
 │   └── changelogs/     # 变更日志（README、CHANGELOG、可选索引文件）
-├── applications/       # 应用知识库（README、APPLICATIONS_INDEX、INDEX 短入口及各应用子目录）
+├── applications/       # 应用知识库（README、APPLICATIONS_INDEX 及各应用子目录）
 ├── scripts/            # sdx-init、knowledge-init 等，详见 scripts/README.md
 ├── .ai/                # AI 规范与技能（README、rules/、skills/README.md Slash 一览）
 └── .trea/             # Trea Agent 配置

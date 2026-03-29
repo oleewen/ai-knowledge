@@ -4,6 +4,12 @@
 
 ## [未发布]
 
+### 2026-03-29
+
+- **导航**：删除仓库根 `INDEX.md`；全库以根目录 **`INDEX_GUIDE.md`** 为唯一根索引说明；已同步 `INDEX_GUIDE.md` 目录树、`README`、`AGENTS`、`agent-guide`（含 `validate-guide.sh`）、`knowledge-archive`、`knowledge-config` 校验项与 `indexing-log.jsonl` 中的 `index_output_path` 表述。
+- **导航**：删除 `applications/INDEX.md`；应用域统一入口为 **`applications/APPLICATIONS_INDEX.md`**；已同步 `INDEX_GUIDE`、`README`、`AGENTS`、`applications/README`、`knowledge-archive`。
+- **导航**：删除 `system/INDEX.md`；`system/` 树内统一入口为 **`system/SYSTEM_INDEX.md`**；已同步 `system_meta.yaml`、`INDEX_GUIDE`、`README`、`AGENTS`、`system/README`、`knowledge-archive`。
+
 ### 2026-03-22
 
 - **导航**：根目录索引以 **`INDEX_GUIDE.md`** 为准；根 `INDEX.md`、`README`、`AGENTS`、`system/`、applications 模板与相关 Skill 链接已对齐。

@@ -355,7 +355,7 @@ sdx_post_init_checklist() {
 [ ] application_meta.yaml 已随模板落地；若目录名不再是 app-APPNAME，
     可酌情更新其中 template_directory 或描述，避免误导 Agent
 
-[ ] INDEX.md（或 INDEX_GUIDE.md）内相对链接在目标工程中可访问
+[ ] INDEX_GUIDE.md 内相对链接在目标工程中可访问
 
 [ ] knowledge/knowledge_meta.yaml、requirements/requirements_meta.yaml、
     changelogs/changelogs_meta.yaml 与各目录 README 首段「元数据」链一致

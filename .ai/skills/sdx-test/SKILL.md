@@ -11,13 +11,13 @@ description: >
 
 ## 输入与输出
 
-**输入**：产品需求（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`）、架构设计（`.../ADD-{ID}.md`）、规约（`.../specs/`）
+**输入**：产品需求（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`）、架构设计（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`）、规约（`.../specs/`）
 **输出**：`system/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md`（结构遵循 [.ai/skills/sdx-test/assets/tdd-template.md](assets/tdd-template.md)）
 
 | 类型 | 内容 |
 |------|------|
-| 硬输入 | 产品需求文档（`PRD-{ID}.md`）|
-| 可选输入 | 架构设计（`ADD-{ID}.md`）、规约（`specs/`）、`knowledge/`、AGENTS.md |
+| 硬输入 | 产品需求文档（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`） |
+| 可选输入 | 架构设计（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`）、规约（`specs/`）、`knowledge/`、AGENTS.md |
 | 固定输出 | `system/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md` |
 | 不产出 | 代码、自动化测试脚本（开发阶段产出）|
 
@@ -26,7 +26,7 @@ description: >
 | 参数 | 必需 | 默认值 | 说明 |
 |------|------|--------|------|
 | `--id` | 否 | `{REQUIREMENT-ID}-MVP{N}` | TDD 文档编号 |
-| `--doc-root` | 否 | `docs` | 文档根目录 |
+| `--doc-root` | 否 | `system` | 文档根目录；校验脚本在 `${DOC_ROOT}` 下递归查找 `TDD-*.md`；旧布局可用 `docs` |
 | `--prd` | 否 | — | 上游 PRD 编号，自动定位对应文件 |
 | `--mvp` | 否 | `1` | 目标 MVP 阶段编号 |
 | `--depth` | 否 | `standard` | 设计深度（quick / standard / deep），影响步骤 2–3 粒度 |
@@ -79,7 +79,8 @@ description: >
 可使用辅助脚本验证文档结构：
 
 ```bash
-scripts/validate-test.sh --doc-root docs
+# 于仓库根目录执行；默认 doc-root 为 system
+.ai/skills/sdx-test/scripts/validate-test.sh
 ```
 
 ## 核心约束

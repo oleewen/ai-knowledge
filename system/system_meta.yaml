@@ -1,7 +1,7 @@
 # system 目录元数据
 id: "DIR-SYSTEM"
 name: "系统文档库根（system）"
-description: "企业级知识库 system/ 根目录：人类与 Agent 的主导航（INDEX、README）、设计约束（DESIGN、CONTRIBUTING）及 SDD 各阶段与 knowledge SSOT。"
+description: "企业级知识库 system/ 根目录：人类与 Agent 的主导航（README、SYSTEM_INDEX）、设计约束（DESIGN、CONTRIBUTING）及 SDD 各阶段与 knowledge SSOT。"
 
 role:
   kind: "documentation_root"
@@ -23,7 +23,6 @@ child_directories:
 child_files:
   - "README.md"
   - "SYSTEM_INDEX.md"
-  - "INDEX.md"
   - "DESIGN.md"
   - "CONTRIBUTING.md"
 
@@ -33,7 +32,7 @@ inputs:
 
 outputs:
   primary_artifact:
-    pattern: "README.md, SYSTEM_INDEX.md, INDEX.md, DESIGN.md, CONTRIBUTING.md, */{dirname}_meta.yaml, knowledge/**/*"
+    pattern: "README.md, SYSTEM_INDEX.md, DESIGN.md, CONTRIBUTING.md, */{dirname}_meta.yaml, knowledge/**/*"
     description: "child_files（根级）+ child_directories 的 {dirname}_meta.yaml + knowledge 树实体"
 
 naming_conventions:
@@ -51,6 +50,5 @@ integration:
 references:
   - path: "./README.md"
   - path: "./SYSTEM_INDEX.md"
-  - path: "./INDEX.md"
   - path: "./DESIGN.md"
   - path: "./CONTRIBUTING.md"

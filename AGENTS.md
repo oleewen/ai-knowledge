@@ -20,7 +20,7 @@
 
 ## 查阅顺序（固定）
 
-`INDEX_GUIDE.md` → `README.md` → 子域 `**/INDEX.md` 或 `.ai/rules/` 等规范路径。
+`INDEX_GUIDE.md` → `README.md` → 子域索引（如 `system/SYSTEM_INDEX.md`、`applications/APPLICATIONS_INDEX.md`）或 `.ai/rules/` 等规范路径。
 
 ---
 
@@ -32,7 +32,7 @@
 | Index Guide  | `INDEX_GUIDE.md`                                                                 |
 | 人类入口 / 可复制命令 | `README.md`、`scripts/README.md`                                                  |
 | 系统知识库        | `system/README.md`、`system/SYSTEM_INDEX.md`、`system/DESIGN.md`、`system/CONTRIBUTING.md` |
-| 应用知识库        | `applications/README.md`、`applications/APPLICATIONS_INDEX.md`（`applications/INDEX.md` 短入口） |
+| 应用知识库        | `applications/README.md`、`applications/APPLICATIONS_INDEX.md` |
 | 规范与模板        | `.ai/rules/CONVENTIONS.md`、`.ai/rules/`；`AGENTS.md` 骨架见 `.ai/skills/agent-guide/assets/agents-skeleton.md` |
 | 命令与 skills   | `.ai/README.md`、`.ai/skills/`                                                    |
 | 索引/变更运维（可选）  | `system/changelogs/indexing-log.jsonl`、`system/changelogs/changes-index.json`    |
@@ -72,7 +72,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/script
 - 修改前读相关 README、INDEX、DESIGN、CONTRIBUTING；最小化 diff；knowledge 映射保持引用有效。
 - 阶段交付物模板：`.ai/skills/sdx-solution/assets/`、`.ai/skills/sdx-analysis/assets/`、`.ai/skills/sdx-prd/assets/`（PRD）、`.ai/skills/sdx-design/assets/`（ADD）、`.ai/skills/sdx-test/assets/`（TDD）；Slash 命令见 `.ai/skills/README.md`。
 - **索引链路（按需）：** `/document-indexing`、`/document-change` 均为 **Skill**（`.ai/skills/document-indexing/SKILL.md`、`.ai/skills/document-change/SKILL.md`），**非** `scripts/` 脚本；产出 `indexing-log.jsonl`、`changes-index.*` 等于 `system/changelogs/` ，见各 SKILL；**非**本仓库日常编辑必跑项。
-- **站内 Markdown 链接：** `[显示文本](href)` 的**显示文本**统一为**仓库根相对路径**（如 `system/knowledge/README.md`、`.ai/skills/document-indexing/SKILL.md`）；`href` 仍须为相对**当前 `.md` 文件**的合法路径，保证在 GitHub 上可点击。
+- **站内 Markdown 链接：** 显示文本统一为**仓库根相对路径**（如 `system/knowledge/README.md`、`.ai/skills/document-indexing/SKILL.md`）；**目标地址**须为标准 Markdown 链接里、相对**当前 `.md` 文件**的合法路径，保证在 GitHub 上可点击（勿在正文使用会被解析成链接的占位字面量）。
 
 ---
 

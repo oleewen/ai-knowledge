@@ -40,7 +40,7 @@ quality-engineer
 
 ### 输入
 
-产品需求文档（`PRD-{ID}.md`）+ 架构设计文档（`ADD-{ID}.md`，如存在）
+产品需求文档（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`）+ 架构设计文档（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`，如存在）
 
 ### 算法
 
@@ -258,7 +258,7 @@ technical-writer + doc-updater
    - `id`: 按 `TDD-{REQUIREMENT-ID}-MVP{N}` 格式
    - `status`: `draft`
    - `created` / `updated`: 当前日期
-   - `parent`: 关联的 PRD 编号 `PRD-{ID}`
+   - `parent`: 关联的 PRD 编号（与文件名一致）`PRD-{ID}-{N}`
    - `mvp_phase`: `MVP-{N}`
 3. **补充附录**：变更历史（§6.1）
 4. **质量门禁自查**：逐项检查 [.ai/skills/sdx-test/assets/quality-gate-checklist.md](../assets/quality-gate-checklist.md)

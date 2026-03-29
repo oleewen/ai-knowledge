@@ -36,7 +36,7 @@ description: >
 
 按优先级查找落盘 Index Guide（命中即停）：
 
-1. 仓库根 `INDEX_GUIDE.md`、`INDEX.md`（兼容别名）、`INDEX-GUIDE.md`
+1. 仓库根 `INDEX_GUIDE.md`、`INDEX-GUIDE.md`
 2. `system/INDEX_GUIDE.md`、`system/INDEX-GUIDE.md`
 
 未命中 → 终止并提示用户运行 `/document-indexing`。

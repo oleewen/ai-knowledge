@@ -3,6 +3,7 @@ set -euo pipefail
 
 # 解决方案文档结构校验脚本
 # 用法: scripts/validate-solution.sh [--doc-root <path>] [--file <path>]
+# 默认 --doc-root 为 docs，与 SKILL 约定路径 docs/solutions/SOLUTION-*.md 一致
 #
 # 校验项:
 #   1. 模板文件存在

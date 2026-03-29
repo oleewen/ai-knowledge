@@ -12,8 +12,8 @@ description: >
 
 ## 适用前提
 
-- **应用侧约定**：以 [applications/README.md](../../../applications/README.md)、[applications/INDEX.md](../../../applications/INDEX.md) 为准——联邦单元、`manifest.yaml`、全局唯一 ID（`APP-*`、`MS-*`、`ENT-*` 等）。
-- **系统侧约定**：以 [system/knowledge/README.md](../../../system/knowledge/README.md)、[system/CONTRIBUTING.md](../../../system/CONTRIBUTING.md)、[system/DESIGN.md](../../../system/DESIGN.md)、[system/INDEX.md](../../../system/INDEX.md) 为准——四视角 YAML/_meta、跨视角仅 ID 引用、单一事实源（SSOT）。
+- **应用侧约定**：以 [applications/README.md](../../../applications/README.md)、[applications/APPLICATIONS_INDEX.md](../../../applications/APPLICATIONS_INDEX.md) 为准——联邦单元、`manifest.yaml`、全局唯一 ID（`APP-*`、`MS-*`、`ENT-*` 等）。
+- **系统侧约定**：以 [system/knowledge/README.md](../../../system/knowledge/README.md)、[system/CONTRIBUTING.md](../../../system/CONTRIBUTING.md)、[system/DESIGN.md](../../../system/DESIGN.md)、[system/SYSTEM_INDEX.md](../../../system/SYSTEM_INDEX.md) 为准——四视角 YAML/_meta、跨视角仅 ID 引用、单一事实源（SSOT）。
 
 ## 联邦原则（必须遵守）
 
@@ -33,13 +33,13 @@ description: >
 ### 1. 范围
 
 - 主库内：`applications/*/`（联邦模式）下各应用（排除仅模板说明用的空壳目录时以用户指定为准），或 `application/`（独立模式） 下应用文档。
-- 外仓：用户给出路径列表或 **应用知识库根目录**（模板目录名可仍为 `app-APPNAME/`）时，仅处理用户声明的 **应用知识根**（与 `INDEX_GUIDE.md` / `INDEX.md`、`knowledge/` 同级树）。
+- 外仓：用户给出路径列表或 **应用知识库根目录**（模板目录名可仍为 `app-APPNAME/`）时，仅处理用户声明的 **应用知识根**（与 `INDEX_GUIDE.md`、`knowledge/` 同级树）。
 
 ### 2. 发现变更的方式（择一或组合）
 
 - **Git**：自上次归档标签/提交或用户给定区间，对 `applications/**`（或各应用知识路径）做 `git diff` / 文件列表统计。
 - **清单驱动**：用户粘贴「已修改文件路径」列表。
-- **全量快照**：无基线时，记录当前各应用 `INDEX_GUIDE.md` / `INDEX.md`、`knowledge/` 下主要文件清单与哈希或行数摘要（轻量索引，非通读）。
+- **全量快照**：无基线时，记录当前各应用 `INDEX_GUIDE.md`、`knowledge/` 下主要文件清单与哈希或行数摘要（轻量索引，非通读）。
 
 ### 3. 归档产物（建议）
 
@@ -84,7 +84,7 @@ description: >
 - **先读再写**：打开拟修改的系统文件与相邻元数据 YAML（各视角 `*_meta.yaml` 等），确认现有 ID。
 - **只增不改 ID**：已有实体 **禁止改 id**；新增实体 ID 须全局唯一且符合 [system/knowledge/constitution/standards/NAMING-CONVENTIONS.md](../../../system/knowledge/constitution/standards/NAMING-CONVENTIONS.md)（若存在）。
 - **交叉引用仅 ID**：正文与 YAML 关联字段只写 ID，不写重复长描述。
-- **更新索引**：变更影响全局导航时，同步 [system/INDEX.md](../../../system/INDEX.md) 或对应视角 `README.md`（见 system/knowledge/README.md §4）。
+- **更新索引**：变更影响全局导航时，同步 [system/SYSTEM_INDEX.md](../../../system/SYSTEM_INDEX.md) 或对应视角 `README.md`（见 system/knowledge/README.md §4）。
 
 ### 4. 质量自检（与 knowledge-build 第四阶段对齐）
 
@@ -106,7 +106,7 @@ description: >
 
 ## 参考
 
-- [applications/README.md](../../../applications/README.md)、[applications/INDEX.md](../../../applications/INDEX.md)
-- [system/knowledge/README.md](../../../system/knowledge/README.md)、[system/CONTRIBUTING.md](../../../system/CONTRIBUTING.md)、[system/DESIGN.md](../../../system/DESIGN.md)、[system/INDEX.md](../../../system/INDEX.md)
+- [applications/README.md](../../../applications/README.md)、[applications/APPLICATIONS_INDEX.md](../../../applications/APPLICATIONS_INDEX.md)
+- [system/knowledge/README.md](../../../system/knowledge/README.md)、[system/CONTRIBUTING.md](../../../system/CONTRIBUTING.md)、[system/DESIGN.md](../../../system/DESIGN.md)、[system/SYSTEM_INDEX.md](../../../system/SYSTEM_INDEX.md)
 - 应用内增量维护：视项目而定（可配合 `knowledge-extract` 等）
 - 系统库从零构建：[.ai/skills/knowledge-build/SKILL.md](../knowledge-build/SKILL.md)（编排说明，组合 document-indexing / agent-guide / knowledge-extract 等）

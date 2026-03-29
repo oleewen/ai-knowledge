@@ -7,7 +7,7 @@
 ## 查阅顺序（与 AGENTS 对齐）
 
 1. 仓库级地图：[INDEX_GUIDE.md](../INDEX_GUIDE.md)（Index Guide）、[README.md](../README.md)（命令与总览）、[AGENTS.md](../AGENTS.md)（Agent 契约）
-2. 本树导航：[system/SYSTEM_INDEX.md](SYSTEM_INDEX.md)（`INDEX.md` 为短入口）
+2. 本树导航：[system/SYSTEM_INDEX.md](SYSTEM_INDEX.md)
 3. 设计与贡献：[system/DESIGN.md](DESIGN.md)、[system/CONTRIBUTING.md](CONTRIBUTING.md)
 4. 各子目录 [system/knowledge/](knowledge)、[system/solutions/](solutions) 、[system/analysis/](analysis) 、[system/requirements/](requirements) （按需下钻）；接口/数据等规约落在各 `REQUIREMENT-{ID}/…/specs/` 或 [system/knowledge/technical/](knowledge/technical)
 

@@ -11,12 +11,12 @@ description: >
 
 ## 输入与输出
 
-**输入**：产品需求（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`）、需求分析当前 MVP 章节（`system/analysis/ANALYSIS-{ID}.md`）、系统架构与 ADR（`knowledge/technical/`、`knowledge/constitution/adr/`）、领域模型（`knowledge/business/`）
+**输入**：产品需求（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`）、需求分析当前 MVP 章节（`system/analysis/ANALYSIS-{ID}.md`）、系统架构与 ADR（`knowledge/technical/`、`knowledge/constitution/adr/`）、领域模型（`knowledge/business/`）
 **输出**：ADD `system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`、规约 `.../specs/`
 
 | 类型 | 内容 |
 |------|------|
-| 硬输入 | 产品需求文档（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`） |
+| 硬输入 | 产品需求文档（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`） |
 | 可选输入 | 需求分析文档、`knowledge/technical/`、`knowledge/business/`、`knowledge/constitution/adr/`、同包 `specs/`、AGENTS.md |
 | 固定输出 | `system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`、`system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/` |
 | 不产出 | 测试设计、代码（使用下游 sdx-test / dev） |
@@ -26,7 +26,7 @@ description: >
 | 参数 | 必需 | 默认值 | 说明 |
 |------|------|--------|------|
 | `--id` | 否 | `{REQUIREMENT-ID}-MVP{N}` | ADD 文档编号 |
-| `--doc-root` | 否 | `docs` | 文档根目录 |
+| `--doc-root` | 否 | `system` | 文档根目录；校验脚本在 `${DOC_ROOT}/requirements` 下查找 ADD；旧布局可用 `docs` |
 | `--prd` | 否 | — | 上游 PRD 编号，自动定位对应文件 |
 | `--mvp` | 否 | `1` | 目标 MVP 阶段编号 |
 | `--depth` | 否 | `standard` | 设计深度（quick / standard / deep），影响步骤 1–2 粒度 |
@@ -75,7 +75,8 @@ description: >
 可使用辅助脚本验证文档结构：
 
 ```bash
-scripts/validate-design.sh --doc-root docs
+# 于仓库根目录执行；默认 doc-root 为 system
+.ai/skills/sdx-design/scripts/validate-design.sh
 ```
 
 ## 核心约束

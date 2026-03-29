@@ -113,4 +113,4 @@ layers:
 # -----------------------------------------------------------------------------
 indexing:
   readme_index_table: true
-  rule: "任一 SOLUTION 变更时，更新本文件（若扩展 layers）、README.md 与必要的根 INDEX"
+  rule: "任一 SOLUTION 变更时，更新本文件（若扩展 layers）、README.md 与必要的根 INDEX_GUIDE"
