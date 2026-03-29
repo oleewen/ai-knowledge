@@ -273,12 +273,12 @@ D. 其他（请说明）
 3. **语言审查**：通读全文，将技术术语转写为业务表述（参照 [.ai/skills/sdx-solution/reference/audience-language-spec.md](audience-language-spec.md)）
 4. **补充附录**：术语表（§9.1）、参考文档（§9.2）
 5. **质量门禁自查**：逐项检查 [.ai/skills/sdx-solution/assets/quality-gate-checklist.md](../assets/quality-gate-checklist.md)
-6. **输出**：写入 `docs/solutions/SOLUTION-{ID}.md`
+6. **输出**：写入 `system/solutions/SOLUTION-{ID}.md`
 
 ### 输出目录
 
 ```
-docs/solutions/
+system/solutions/
 └── SOLUTION-{YYYYMMDD}-{SEQ}.md
 ```
 

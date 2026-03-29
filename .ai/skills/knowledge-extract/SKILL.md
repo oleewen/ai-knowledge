@@ -95,7 +95,7 @@ scripts/validate-extraction.sh --doc-root .
 
 ```
 必需文件：
-└── {doc_root}/INDEX_GUIDE.md（或 {doc_root}/docs/INDEX_GUIDE.md，以项目约定为准）
+└── {doc_root}/INDEX_GUIDE.md（或 {doc_root}/system/INDEX_GUIDE.md，以项目约定为准）
 
 可选文件：
 ├── {doc_root}/README.md

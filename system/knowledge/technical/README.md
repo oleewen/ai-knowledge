@@ -36,7 +36,7 @@
 
 - `id`, `name`, `description`
 - `repo_url`
-- `docs_manifest_path`（如 `/docs/manifest.yaml`）
+- `docs_manifest_path`（如 `/system/manifest.yaml`）
 - `service_ids`（MS-*）
 - `owner_team`（可选）
 

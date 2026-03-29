@@ -40,7 +40,7 @@
         "name": "示例应用",
         "description": "仅用于演示技术视角数据结构（示例）。",
         "repo_url": "git@example.com:org/example.git",
-        "docs_manifest_path": "/docs/manifest.yaml",
+        "docs_manifest_path": "/system/manifest.yaml",
         "startup_class": "ExampleApp",
         "maven_module": "example-module",
         "service_ids": ["MS-EXAMPLE"],

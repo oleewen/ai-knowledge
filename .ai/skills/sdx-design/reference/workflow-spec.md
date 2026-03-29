@@ -153,7 +153,7 @@ technical-writer + doc-updater
 1. **规约目录规划**：
 
 ```
-docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/
+system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/
 └── {service-name}/
     ├── api/
     │   └── {api-name}.yaml
@@ -205,13 +205,13 @@ technical-writer + doc-updater
    - 质量自查表（§5.2）
 4. **质量门禁自查**：逐项检查 [.ai/skills/sdx-design/assets/quality-gate-checklist.md](../assets/quality-gate-checklist.md)
 5. **输出**：
-   - ADD 写入 `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`
-   - specs 写入 `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/`
+   - ADD 写入 `system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`
+   - specs 写入 `system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/`
 
 ### 输出目录
 
 ```
-docs/requirements/REQUIREMENT-{ID}/MVP-{N}/
+system/requirements/REQUIREMENT-{ID}/MVP-{N}/
 ├── ADD-{ID}-{N}.md
 └── specs/
     └── {service-name}/

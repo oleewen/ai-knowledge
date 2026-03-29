@@ -1,6 +1,6 @@
 # AGENTS.md 推荐骨架
 
-> 基准为项目 `.ai/rules/agents-template.md`，可裁剪但禁止与模板语义冲突。
+> 权威基准即本文件（`.ai/skills/agent-guide/assets/agents-skeleton.md`），可裁剪但禁止与语义冲突。
 > 占位符 `{...}` 需替换为实际内容；`<!-- optional -->` 标记可选段。
 
 ---
@@ -20,8 +20,8 @@
 | 需求 | 去读 |
 |------|------|
 | 项目概况、技术栈、编译启动 | `README.md` |
-| 术语、领域模型、API 入口、数据模型 | `INDEX_GUIDE.md`（或 `docs/INDEX_GUIDE.md`） |
-| 知识库实体导航 | `system/knowledge/KNOWLEDGE_INDEX.md`（应用联邦：`applications/<app>/knowledge/KNOWLEDGE_INDEX.md`） |
+| 术语、领域模型、API 入口、数据模型 | `INDEX_GUIDE.md`（或 `system/INDEX_GUIDE.md`） |
+| 知识库实体导航 | `system/knowledge/KNOWLEDGE_INDEX.md` |
 
 ---
 
@@ -72,7 +72,7 @@
 
 1. 读 README.md 与本文件。
 2. 业务细节查 {INDEX 相对路径}。
-3. 按任务打开 docs/ 其他文档。
+3. 按任务打开 system/ 其他文档。
 
 ### 会话中
 
@@ -82,7 +82,7 @@
 
 ### 会话结束
 
-- 新规则 → 确认后写入 docs/ 相应处。
+- 新规则 → 确认后写入 system/ 相应处。
 - 新约束 → 确认后更新本文件或 README。
 - 更新 changelogs；标注未完成项。
 ```

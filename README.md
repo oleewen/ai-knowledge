@@ -2,7 +2,7 @@
 
 本仓库是企业级软件系统的**全局知识底座**，采用「单一事实源」与「联邦治理」理念管理架构与知识体系。
 
-**AI / RAG 导航：** 路径级精要与未读声明见根目录 [INDEX_GUIDE.md](INDEX_GUIDE.md)（Index Guide；[PROJECT_INDEX.md](PROJECT_INDEX.md) 为兼容短入口）；本文件面向人类快速上手与可复制命令。
+**AI / RAG 导航：** 路径级精要与未读声明见根目录 [INDEX_GUIDE.md](INDEX_GUIDE.md)（Index Guide）；本文件面向人类快速上手与可复制命令。
 
 ## 快速启动
 
@@ -20,15 +20,6 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/script
 cd /path/to/your-project
 REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/knowledge-init.sh [选项]
 ```
-
-**默认初始化**
-
-- ① 将仓库内 **system** 目录下文件拷贝到当前目录的 `docs/system/`（可改），默认仅拷贝 **knowledge** 及根目录同级文件，`--ds=full` 可拷贝完整文档；
-- ② 将仓库内 **applications** 目录拷贝到目标目录：
-  - `--mode=standalone`（默认）：`docs/application/`
-  - `--mode=federation`：`docs/applications/`，并创建 `docs/applications/app-<工程目录名>/`
-- ③ 将 `.ai` 拷贝到当前目录的 `.ai/`（解决方案/需求分析阶段模板在 `.ai/skills/sdx-solution`、`sdx-analysis` 的 `assets/`，不再置于 `.ai/rules/`）；
-- ④ 按 `--agents` 为 Cursor、Trea 等 Agent 安装 skills/rules（默认并入目标 `.ai/`，及 `.trea` 等）。详见 [scripts/README.md](scripts/README.md)。
 
 ## 命令简介
 
@@ -64,7 +55,6 @@ REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/knowledge-
 ai-sdd-knowledge/
 ├── README.md           # 本文件：总览、快速初始化、功能简介与文档索引
 ├── INDEX_GUIDE.md      # AI 文档库精要索引指南（Index Guide，与 document-indexing 对齐）
-├── PROJECT_INDEX.md    # 短入口：兼容旧名 → INDEX_GUIDE.md
 ├── INDEX.md            # 根短文入口（指向 INDEX_GUIDE / 兼容说明）
 ├── AGENTS.md           # AI Agents 开发指南（角色、关键路径、规范、命令）
 ├── system/             # 系统知识库

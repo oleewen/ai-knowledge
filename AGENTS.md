@@ -8,7 +8,7 @@
 - **保持简洁：** 直接输出内容，少客套；仅在逻辑复杂时补充说明。
 - **先阅读：** 修改任何被引用的文件前，务必先阅读其内容或通过本仓库文档/索引定位。
 
-**与 Index 一致：** 平面检索与路径级精要以根目录 `INDEX_GUIDE.md`（七段 Index Guide）为准；`INDEX_GUIDE.md` §6 未索引区域不得写成已核实事实，须补读或标注待核实（`PROJECT_INDEX.md` 为兼容短入口）。
+**与 Index 一致：** 平面检索与路径级精要以根目录 `INDEX_GUIDE.md`（七段 Index Guide）为准；`INDEX_GUIDE.md` §6 未索引区域不得写成已核实事实，须补读或标注待核实。
 
 ---
 
@@ -29,11 +29,11 @@
 
 | 用途           | 路径                                                                               |
 | ------------ | -------------------------------------------------------------------------------- |
-| Index Guide  | `INDEX_GUIDE.md`（`PROJECT_INDEX.md` 短入口）                                      |
+| Index Guide  | `INDEX_GUIDE.md`                                                                 |
 | 人类入口 / 可复制命令 | `README.md`、`scripts/README.md`                                                  |
 | 系统知识库        | `system/README.md`、`system/SYSTEM_INDEX.md`、`system/DESIGN.md`、`system/CONTRIBUTING.md` |
 | 应用知识库        | `applications/README.md`、`applications/APPLICATIONS_INDEX.md`（`applications/INDEX.md` 短入口） |
-| 规范与模板        | `.ai/rules/CONVENTIONS.md`、`.ai/rules/`（含 `agents-template.md`）                        |
+| 规范与模板        | `.ai/rules/CONVENTIONS.md`、`.ai/rules/`；`AGENTS.md` 骨架见 `.ai/skills/agent-guide/assets/agents-skeleton.md` |
 | 命令与 skills   | `.ai/README.md`、`.ai/skills/`                                                    |
 | 索引/变更运维（可选）  | `system/changelogs/indexing-log.jsonl`、`system/changelogs/changes-index.json`    |
 

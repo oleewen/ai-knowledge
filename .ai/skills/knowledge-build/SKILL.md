@@ -11,7 +11,7 @@ description: >
 
 | 步骤 | Skill | 说明 |
 |------|--------|------|
-| 文档索引 | [.ai/skills/document-indexing/SKILL.md](../document-indexing/SKILL.md) | 产出根目录 `INDEX_GUIDE.md`（或 `docs/INDEX_GUIDE.md`）与 `system/changelogs/indexing-log.jsonl` 等 |
+| 文档索引 | [.ai/skills/document-indexing/SKILL.md](../document-indexing/SKILL.md) | 产出根目录 `INDEX_GUIDE.md`（或 `system/INDEX_GUIDE.md`）与 `system/changelogs/indexing-log.jsonl` 等 |
 | Agent 入口 | [.ai/skills/agent-guide/SKILL.md](../agent-guide/SKILL.md) | 产出根目录 `README.md`、`AGENTS.md`（须已有落盘 Index） |
 | 四视角提取（可选） | [.ai/skills/knowledge-extract/SKILL.md](../knowledge-extract/SKILL.md) | 产出各视角 `*_knowledge.json` 等 |
 

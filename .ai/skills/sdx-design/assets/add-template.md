@@ -5,7 +5,7 @@
 ### 1.1 设计目标
 
 - 关联需求分析：`analysis/ANALYSIS-{ID}.md`
-- 关联产品需求：`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`
+- 关联产品需求：`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`
 - MVP阶段：MVP-{N}
 
 ### 1.2 设计约束
@@ -378,13 +378,13 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 
 ## 4. 需求规约
 
-<!-- 规约术语：与规约文件名或 OpenAPI/领域名一致的可读简称；应用实体 ID、服务实体 ID 须与 `docs/knowledge/KNOWLEDGE_INDEX.md` / `knowledge/technical/` 中 APP-*、MS-* 对齐。 -->
+<!-- 规约术语：与规约文件名或 OpenAPI/领域名一致的可读简称；应用实体 ID、服务实体 ID 须与 `system/knowledge/KNOWLEDGE_INDEX.md` / `knowledge/technical/` 中 APP-*、MS-* 对齐。 -->
 
 | 规约类型 | 规约术语 | 应用 | 服务| 文件路径 | 描述 |
 | -------- | -------- | ------------------ | ------------------ | ------------------------------------------------- | ---- |
-| API规约 | `{api-spec-name}` | `APP-{ID}` | `MS-{ID}` | `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/api/xxx.yaml` | xx |
-| 领域规约 | `{domain-spec-name}` | `APP-{ID}` | `MS-{ID}` | `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/domain/xxx.yaml` | xx |
-| 数据规约 | `{data-spec-name}` | `APP-{ID}` | `MS-{ID}` | `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/data/xxx.yaml` | xx |
+| API规约 | `{api-spec-name}` | `APP-{ID}` | `MS-{ID}` | `system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/api/xxx.yaml` | xx |
+| 领域规约 | `{domain-spec-name}` | `APP-{ID}` | `MS-{ID}` | `system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/domain/xxx.yaml` | xx |
+| 数据规约 | `{data-spec-name}` | `APP-{ID}` | `MS-{ID}` | `system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/data/xxx.yaml` | xx |
 
 ## 5. 附录
 

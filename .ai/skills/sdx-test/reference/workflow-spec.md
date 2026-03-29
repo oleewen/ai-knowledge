@@ -262,12 +262,12 @@ technical-writer + doc-updater
    - `mvp_phase`: `MVP-{N}`
 3. **补充附录**：变更历史（§6.1）
 4. **质量门禁自查**：逐项检查 [.ai/skills/sdx-test/assets/quality-gate-checklist.md](../assets/quality-gate-checklist.md)
-5. **输出**：写入 `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md`
+5. **输出**：写入 `system/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md`
 
 ### 输出目录
 
 ```
-docs/requirements/REQUIREMENT-{ID}/
+system/requirements/REQUIREMENT-{ID}/
 └── MVP-{N}/
     └── TDD-{REQUIREMENT-ID}-MVP{N}.md
 ```

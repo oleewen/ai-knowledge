@@ -149,4 +149,4 @@ sdx-analysis 技能的完整设计约束。主文件 SKILL.md 中的「核心约
 | knowledge 目录缺失 | 发出警告，仅基于解决方案文档完成分析，标注缺少知识库基线 |
 | 模板文件不存在 | 终止，提示创建 `.ai/skills/sdx-analysis/assets/analysis-template.md` |
 | MVP 拆分出现循环依赖 | 终止拆分，输出依赖图，请求用户确认调整方案 |
-| 输出目录不存在 | 自动创建 `docs/analysis/` 目录 |
+| 输出目录不存在 | 自动创建 `system/analysis/` 目录 |

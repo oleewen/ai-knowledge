@@ -2,7 +2,7 @@
 name: sdx-test
 description: >
   测试方案设计：基于产品需求与技术设计制定测试策略与测试计划，输出测试设计文档（TDD）。
-  在用户执行 /sdx-test、编写测试设计/测试计划时使用。产出 docs/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md，模板见 .ai/skills/sdx-test/assets/tdd-template.md。
+  在用户执行 /sdx-test、编写测试设计/测试计划时使用。产出 system/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md，模板见 .ai/skills/sdx-test/assets/tdd-template.md。
 ---
 
 # 测试设计阶段（sdx-test）
@@ -11,14 +11,14 @@ description: >
 
 ## 输入与输出
 
-**输入**：产品需求（`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`）、架构设计（`.../ADD-{ID}.md`）、规约（`.../specs/`）
-**输出**：`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md`（结构遵循 [.ai/skills/sdx-test/assets/tdd-template.md](assets/tdd-template.md)）
+**输入**：产品需求（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`）、架构设计（`.../ADD-{ID}.md`）、规约（`.../specs/`）
+**输出**：`system/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md`（结构遵循 [.ai/skills/sdx-test/assets/tdd-template.md](assets/tdd-template.md)）
 
 | 类型 | 内容 |
 |------|------|
 | 硬输入 | 产品需求文档（`PRD-{ID}.md`）|
 | 可选输入 | 架构设计（`ADD-{ID}.md`）、规约（`specs/`）、`knowledge/`、AGENTS.md |
-| 固定输出 | `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md` |
+| 固定输出 | `system/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md` |
 | 不产出 | 代码、自动化测试脚本（开发阶段产出）|
 
 ## 参数

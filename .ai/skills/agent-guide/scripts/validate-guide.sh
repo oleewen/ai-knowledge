@@ -26,10 +26,10 @@ log_ok()    { echo "[OK]    $1"; }
 
 INDEX_PATH=""
 for candidate in \
-    "docs/INDEX_GUIDE.md" \
+    "system/INDEX_GUIDE.md" \
     "INDEX.md" \
     "INDEX-GUIDE.md" \
-    "docs/INDEX-GUIDE.md"; do
+    "system/INDEX-GUIDE.md"; do
     if [[ -f "$ROOT/$candidate" ]]; then
         INDEX_PATH="$candidate"
         break
@@ -39,7 +39,7 @@ done
 if [[ -n "$INDEX_PATH" ]]; then
     log_ok "INDEX 落盘路径: $INDEX_PATH"
 else
-    log_error "未找到 INDEX 落盘文件（docs/INDEX_GUIDE.md、INDEX.md、INDEX-GUIDE.md）"
+    log_error "未找到 INDEX 落盘文件（system/INDEX_GUIDE.md、INDEX.md、INDEX-GUIDE.md）"
 fi
 
 # --- 2. README.md 路径校验 ---

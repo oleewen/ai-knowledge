@@ -24,7 +24,7 @@ graph TD
 
 ### 算法
 
-1. **定位需求分析文档**：按 `--requirement` 参数或最新 `docs/analysis/REQUIREMENT-*.md` 定位
+1. **定位需求分析文档**：按 `--requirement` 参数或最新 `system/analysis/REQUIREMENT-*.md` 定位
 2. **提取 MVP 范围**：从文档 §6 MVP 拆分方案中提取目标 MVP（`--mvp` 参数指定）的功能需求列表
 3. **加载基线数据**：
    - 功能需求清单（FR-n）及其优先级、验收标准
@@ -286,12 +286,12 @@ technical-writer + doc-updater
    - 变更历史（§10.2）
    - 质量自查表（§10.3）
 4. **质量门禁自查**：逐项检查 [.ai/skills/sdx-prd/assets/quality-gate-checklist.md](../assets/quality-gate-checklist.md)
-5. **输出**：写入 `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`
+5. **输出**：写入 `system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`
 
 ### 输出目录
 
 ```
-docs/requirements/
+system/requirements/
 └── REQUIREMENT-{ID}/
     └── MVP-{N}/
         └── PRD-{ID}-{N}.md

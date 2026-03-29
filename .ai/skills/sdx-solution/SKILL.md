@@ -3,7 +3,7 @@ name: sdx-solution
 description: >
   解决方案制定：从业务描述提取结构化诉求，评估影响面，识别并化解冲突，形成共识级解决方案文档。
   在用户执行 /sdx-solution、编写解决方案文档、或进行需求→方案分析时使用。
-  输出至 docs/solutions/SOLUTION-{YYYYMMDD}-{SEQ}.md；九章结构，完整骨架见 assets/solution-template.md；
+  输出至 system/solutions/SOLUTION-{YYYYMMDD}-{SEQ}.md；九章结构，完整骨架见 assets/solution-template.md；
   正文使用业务语言，技术细节留给下游 sdx-analysis / sdx-design。
 ---
 
@@ -14,13 +14,13 @@ description: >
 ## 输入与输出
 
 **输入**：业务需求描述（邮件、会议纪要、工单等原始来源）；内部对齐可按需查阅 `knowledge/`、`requirements/.../specs/`（**勿将技术细节原样写入正文**）  
-**输出**：`docs/solutions/SOLUTION-{YYYYMMDD}-{SEQ}.md`
+**输出**：`system/solutions/SOLUTION-{YYYYMMDD}-{SEQ}.md`
 
 | 类型 | 内容 |
 |------|------|
 | 硬输入 | 业务需求描述（至少一种原始来源） |
 | 可选输入 | `knowledge/`、`requirements/.../specs/`、`knowledge/technical/`、AGENTS.md |
-| 固定输出 | `docs/solutions/SOLUTION-{YYYYMMDD}-{SEQ}.md` |
+| 固定输出 | `system/solutions/SOLUTION-{YYYYMMDD}-{SEQ}.md` |
 | 不产出 | PRD、ADD、测试设计、代码（使用下游 sdx-analysis / sdx-prd / sdx-design） |
 
 ## 参数

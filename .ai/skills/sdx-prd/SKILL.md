@@ -2,7 +2,7 @@
 name: sdx-prd
 description: >
   产品需求说明：将需求分析中当前 MVP 的需求转化为详细产品方案与功能设计（业务流程、用户故事、用例、功能模块、交互与业务规则）。
-  在用户执行 /sdx-prd、编写 PRD 文档时使用。产出 docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md，模板见 assets/prd-template.md。
+  在用户执行 /sdx-prd、编写 PRD 文档时使用。产出 system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md，模板见 assets/prd-template.md。
   主要读者为产品；研发团队参与评审。产出物使用业务语言与产品语言，技术实现细节留给下游 sdx-design。
 ---
 
@@ -14,14 +14,14 @@ description: >
 
 ## 输入与输出
 
-**输入**：需求分析文档中当前 MVP 章节（`docs/analysis/ANALYSIS-{ID}.md`）、产品文档（`knowledge/product/`）；内部分析可按需查阅 `knowledge/`、`requirements/.../specs/`（**勿将实现向技术细节原样写入 PRD 正文**）  
-**输出**：`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`（结构遵循 [.ai/skills/sdx-prd/assets/prd-template.md](assets/prd-template.md)；语言以业务 + 产品为主，供产品主导、研发评审）
+**输入**：需求分析文档中当前 MVP 章节（`system/analysis/ANALYSIS-{ID}.md`）、产品文档（`knowledge/product/`）；内部分析可按需查阅 `knowledge/`、`requirements/.../specs/`（**勿将实现向技术细节原样写入 PRD 正文**）  
+**输出**：`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`（结构遵循 [.ai/skills/sdx-prd/assets/prd-template.md](assets/prd-template.md)；语言以业务 + 产品为主，供产品主导、研发评审）
 
 | 类型 | 内容 |
 |------|------|
-| 硬输入 | 需求分析文档（`docs/analysis/ANALYSIS-{ID}.md`）中当前 MVP 章节 |
+| 硬输入 | 需求分析文档（`system/analysis/ANALYSIS-{ID}.md`）中当前 MVP 章节 |
 | 可选输入 | `knowledge/product/`、`knowledge/business/`、`requirements/.../specs/`、AGENTS.md |
-| 固定输出 | `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md` |
+| 固定输出 | `system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md` |
 | 不产出 | ADD、TDD、代码（使用下游 sdx-design / sdx-test） |
 
 ## 参数

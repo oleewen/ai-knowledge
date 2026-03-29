@@ -6,9 +6,9 @@
 set -e
 
 # 配置变量
-DEFAULT_OUTPUT="./docs/INDEX_GUIDE.md"
-LOG_FILE="./docs/changelogs/indexing-log.jsonl"
-CHANGES_INDEX="./docs/changelogs/changes-index.json"
+DEFAULT_OUTPUT="./system/INDEX_GUIDE.md"
+LOG_FILE="./system/changelogs/indexing-log.jsonl"
+CHANGES_INDEX="./system/changelogs/changes-index.json"
 
 # 显示帮助信息
 show_help() {

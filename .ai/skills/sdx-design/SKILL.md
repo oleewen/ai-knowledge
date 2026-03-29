@@ -2,7 +2,7 @@
 name: sdx-design
 description: >
   技术方案设计：基于产品需求与架构/领域文档进行技术方案设计，输出 ADD 与规约文件。
-  在用户执行 /sdx-design、编写 ADD 与规约时使用。产出 docs/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md，模板见 .ai/skills/sdx-design/assets/add-template.md。
+  在用户执行 /sdx-design、编写 ADD 与规约时使用。产出 system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md，模板见 .ai/skills/sdx-design/assets/add-template.md。
 ---
 
 # 方案设计阶段（sdx-design）
@@ -11,14 +11,14 @@ description: >
 
 ## 输入与输出
 
-**输入**：产品需求（`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`）、需求分析当前 MVP 章节（`docs/analysis/ANALYSIS-{ID}.md`）、系统架构与 ADR（`knowledge/technical/`、`knowledge/constitution/adr/`）、领域模型（`knowledge/business/`）
-**输出**：ADD `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`、规约 `.../specs/`
+**输入**：产品需求（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`）、需求分析当前 MVP 章节（`system/analysis/ANALYSIS-{ID}.md`）、系统架构与 ADR（`knowledge/technical/`、`knowledge/constitution/adr/`）、领域模型（`knowledge/business/`）
+**输出**：ADD `system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`、规约 `.../specs/`
 
 | 类型 | 内容 |
 |------|------|
-| 硬输入 | 产品需求文档（`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`） |
+| 硬输入 | 产品需求文档（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`） |
 | 可选输入 | 需求分析文档、`knowledge/technical/`、`knowledge/business/`、`knowledge/constitution/adr/`、同包 `specs/`、AGENTS.md |
-| 固定输出 | `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`、`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/` |
+| 固定输出 | `system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`、`system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/` |
 | 不产出 | 测试设计、代码（使用下游 sdx-test / dev） |
 
 ## 参数
@@ -47,7 +47,7 @@ description: >
 
 - **架构设计**：系统/服务架构与调用关系、接口协议设计、领域模型与领域事件、数据架构与迁移方案、发布与回滚方案
 - **详细设计**：应用架构（集成与容器）、API 详细设计（签名、参数、容错、幂等）、核心类图与状态机、业务逻辑伪代码/流程图、一致性设计（事务与并发）、数据访问设计（DDL、索引、分页、缓存）、非功能性设计（安全、可观测）
-- **规约生成**：按服务生成 API / 领域 / 数据 / 集成规约（YAML），路径规范 `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/`
+- **规约生成**：按服务生成 API / 领域 / 数据 / 集成规约（YAML），路径规范 `system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/`
 - **ADD 文档**：遵循 [.ai/skills/sdx-design/assets/add-template.md](assets/add-template.md) 的五章结构（设计概述→架构设计→详细设计→需求规约→附录）
 
 ## 工作流（四步）

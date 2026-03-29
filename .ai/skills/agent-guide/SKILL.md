@@ -2,7 +2,7 @@
 name: agent-guide
 description: >
   生成/更新根目录 README.md（GitHub 惯例）与 AGENTS.md（Agent 契约）。
-  仅以当前落盘的 Index Guide（常见为仓库根 `INDEX_GUIDE.md`，或 `docs/INDEX_GUIDE.md`）为唯一地图按需补读，
+  仅以当前落盘的 Index Guide（常见为仓库根 `INDEX_GUIDE.md`，或 `system/INDEX_GUIDE.md`）为唯一地图按需补读，
   README 承载命令与文档表，AGENTS 引用之，三文件不重复堆叠。
   在用户执行 /agent-guide 或仓库 onboarding 时使用。
 ---
@@ -36,8 +36,8 @@ description: >
 
 按优先级查找落盘 Index Guide（命中即停）：
 
-1. 仓库根 `INDEX_GUIDE.md`、`PROJECT_INDEX.md`（短入口）、`INDEX.md`、`INDEX-GUIDE.md`
-2. `docs/INDEX_GUIDE.md`、`docs/INDEX-GUIDE.md`
+1. 仓库根 `INDEX_GUIDE.md`、`INDEX.md`（兼容别名）、`INDEX-GUIDE.md`
+2. `system/INDEX_GUIDE.md`、`system/INDEX-GUIDE.md`
 
 未命中 → 终止并提示用户运行 `/document-indexing`。
 详细规则见 [.ai/skills/agent-guide/reference/execution-spec.md](reference/execution-spec.md)。
@@ -61,7 +61,7 @@ description: >
 
 ### 步骤 4：生成 AGENTS
 
-按 [.ai/skills/agent-guide/assets/agents-skeleton.md](assets/agents-skeleton.md) 骨架生成，基准为项目 `.ai/rules/agents-template.md`。
+按 [.ai/skills/agent-guide/assets/agents-skeleton.md](assets/agents-skeleton.md) 骨架生成（该文件即权威基准）。
 
 三文件去重规则见 [.ai/skills/agent-guide/reference/execution-spec.md](reference/execution-spec.md)。
 
@@ -97,6 +97,5 @@ scripts/validate-guide.sh --root .
 |------|------|
 | 执行规范与验证清单 | [.ai/skills/agent-guide/reference/execution-spec.md](reference/execution-spec.md) |
 | README 输出骨架 | [.ai/skills/agent-guide/assets/readme-skeleton.md](assets/readme-skeleton.md) |
-| AGENTS 输出骨架 | [.ai/skills/agent-guide/assets/agents-skeleton.md](assets/agents-skeleton.md) |
+| AGENTS 输出骨架与基准 | [.ai/skills/agent-guide/assets/agents-skeleton.md](assets/agents-skeleton.md) |
 | 路径验证脚本 | [.ai/skills/agent-guide/scripts/validate-guide.sh](scripts/validate-guide.sh) |
-| AGENTS 基准模板 | `.ai/rules/agents-template.md` |

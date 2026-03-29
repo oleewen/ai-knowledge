@@ -53,7 +53,7 @@ requirements-analyst（面向产品/需求产出）
 
 ### 输入
 
-解决方案文档（`docs/solutions/SOLUTION-{ID}.md`）+ `knowledge/`（按需加载）
+解决方案文档（`system/solutions/SOLUTION-{ID}.md`）+ `knowledge/`（按需加载）
 
 ### 算法
 
@@ -246,12 +246,12 @@ requirements-analyst + technical-writer（可选）
    - `parent`: 关联的解决方案编号 `SOL-{ID}`
 4. **补充附录**：术语表（§8.1）、参考文档（§8.2）、变更历史（§8.3）；§8.4 按需
 5. **质量门禁自查**：逐项检查 [.ai/skills/sdx-analysis/assets/quality-gate-checklist.md](../assets/quality-gate-checklist.md) 与模板 §8.5
-6. **输出**：写入 `docs/analysis/ANALYSIS-{ID}.md`
+6. **输出**：写入 `system/analysis/ANALYSIS-{ID}.md`
 
 ### 输出目录
 
 ```
-docs/analysis/
+system/analysis/
 └── ANALYSIS-{YYYYMMDD}-{SEQ}.md
 ```
 

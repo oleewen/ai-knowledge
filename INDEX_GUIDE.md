@@ -18,7 +18,7 @@
   - `rsync`（可选：用于更安全/高效同步；脚本自动 fallback 到 `cp`）
 - **入口**：
   - 总入口：`./README.md`
-  - 根索引（本文件）：`./INDEX_GUIDE.md`（`./PROJECT_INDEX.md` 为兼容旧名短入口，`./INDEX.md` 为根短文入口）
+  - 根索引（本文件）：`./INDEX_GUIDE.md`（`./INDEX.md` 为根短文入口）
   - 系统知识库入口：`./system/README.md`、`./system/SYSTEM_INDEX.md`
   - 应用知识库入口：`./applications/APPLICATIONS_INDEX.md`（`./applications/INDEX.md` 短入口）
   - 初始化入口：`./scripts/knowledge-init.sh`、`./scripts/README.md`
@@ -38,7 +38,6 @@
 ./
 ├── README.md                     # 仓库总入口：定位、初始化、关键路径导航
 ├── INDEX_GUIDE.md                # AI 文档库精要索引指南（Index Guide，权威）
-├── PROJECT_INDEX.md              # 短入口：指向 INDEX_GUIDE.md（兼容旧名）
 ├── INDEX.md                      # 根短文入口（指向 INDEX_GUIDE / 兼容说明）
 ├── AGENTS.md                     # AI Agents 开发指南（角色、约束、提交规范等）
 ├── system/                       # 系统级知识库（宪法层 + 四视角 + 交付阶段文档）
@@ -58,7 +57,7 @@
 │   └── INDEX.md                  # applications 短入口 → APPLICATIONS_INDEX.md
 ├── scripts/                      # sdx-init 初始化工具链（Bash 5+）
 │   ├── README.md                 # 初始化使用说明与选项
-│   ├── knowledge-init.sh         # 核心初始化逻辑：复制 docs/.ai/Agent skills
+│   ├── knowledge-init.sh         # 核心初始化：将中央库 `system/` 模板拷至目标文档根（默认 `docs/`）、安装 .ai/ 与 Agent skills
 │   ├── knowledge-init-bootstrap.sh # bootstrap：临时 clone 并执行 knowledge-init
 │   ├── knowledge-init.sh         # 将应用知识库根目录模板（applications/app-APPNAME）初始化到目标工程
 │   └── knowledge-config.sh       # 默认值、校验函数、支持的 Agents/skills
@@ -72,8 +71,8 @@
 
 ### 2.2 模块依赖方向图（A → B）
 
-- `scripts/` → `system/`：初始化时拷贝 `system/` 到目标项目文档根（默认 `docs/system`）
-- `scripts/` → `applications/`：初始化时拷贝应用知识库到目标项目（standalone 为 `docs/application`；federation 为 `docs/applications`）
+- `scripts/` → 目标文档根：初始化时拷贝中央库 `system/` 模板至目标仓库（默认文档根目录名为 `docs/`）
+- `scripts/` → `applications/`：初始化时拷贝应用知识库到目标项目（standalone 为 `system/application`；federation 为 `system/applications`）
 - `scripts/` → `.ai/`：初始化时拷贝 `.ai` 配置到目标项目 `.ai/`
 - `scripts/` → `.ai/`（`--agents=cursor` 时向目标 `.ai/skills`、`rules` 增量安装）/ `.trea/`：按 `--agents` 生成/拷贝 Agent 配置与 skills
 - `system/DESIGN.md` → `system/knowledge/*`：定义四视角元模型、目录与元数据 YAML 映射机制
@@ -143,7 +142,7 @@
 | 文件路径                              | 功能精要                                       | 检索标签                         | 上游依赖            | 下游被依赖                           | 重要度 |
 | --------------------------------- | ------------------------------------------ | ---------------------------- | --------------- | ------------------------------- | --- |
 | `./scripts/README.md`             | knowledge-init 用法、模式与选项清单                 | `初始化` `脚本`                   | -               | `knowledge-init.sh`            | ⭐⭐⭐ |
-| `./scripts/knowledge-init.sh`     | 拷贝 docs/.ai/Agent 技能的核心逻辑                  | `初始化` `联邦治理` `Cursor` `Trea` | `knowledge-config.sh` | 目标项目的 `docs/`、`.ai/` | ⭐⭐⭐ |
+| `./scripts/knowledge-init.sh`     | 将中央库 `system/`、`.ai/`、Agent skills 安装至目标工程 | `初始化` `联邦治理` `Cursor` `Trea` | `knowledge-config.sh` | 目标项目的文档根（默认 `docs/`）、`.ai/` | ⭐⭐⭐ |
 | `./scripts/knowledge-config.sh`   | 默认值、校验函数、支持的 Agents/skills                 | `脚本` `初始化`                   | -               | `knowledge-init.sh`            | ⭐⭐  |
 | `./scripts/knowledge-init.sh`     | 初始化应用知识库根目录（applications/app-APPNAME）到目标工程 | `初始化` `联邦治理` `Agent技能`       | `knowledge-config.sh` | 目标工程的应用知识库模板                    | ⭐⭐  |
 
@@ -184,7 +183,7 @@
 > 说明：本仓库主要“数据流”是初始化与知识引用流，而非运行时请求流。
 
 - **数据流 1：向目标项目注入 SDD 文档体系**
-  - `./scripts/knowledge-init.sh` → 将 `system/`、`applications/`、`.ai/`、Agent 配置复制到目标目录（默认 `docs/system`、`docs/application(s)`、`.ai`、`.trea`）。
+  - `./scripts/knowledge-init.sh` → 将中央库 `system/` 模板、`applications/`、`.ai/`、Agent 配置复制到目标目录（默认为 `docs/`；standalone 另含 `system/application/`，federation 为 `system/applications/` 等；并安装 `.ai`、`.trea`）。
 - **数据流 2：系统知识库的跨视角引用（SSOT）**
   - `./system/DESIGN.md` 定义四视角元模型与映射机制 → 具体实体在各视角元数据 YAML 与实体定义 `*.yaml` 中写目标实体 ID。
   - 常用映射字段（见 `system/DESIGN.md` 与 `system/knowledge/constitution/GLOSSARY.md`）：
@@ -204,9 +203,9 @@
 | `GIT_REF`                 | `./scripts/knowledge-init-bootstrap.sh` | 指定克隆分支/标签                       | `HEAD`                                            | 低         |
 | `REPO_ROOT`               | `./scripts/knowledge-init.sh`     | 指定本仓库根目录                        | 自动推导 `SCRIPT_DIR/..`                              | 低         |
 | `TARGET_DIR`              | `./scripts/knowledge-init.sh`     | 初始化目标目录                         | 当前目录 `pwd`                                        | 低         |
-| `DOCS_DIR` / `--dd`       | `./scripts/knowledge-config.sh`   | 目标文档根目录                         | `docs`                                            | 低         |
+| `DOCS_DIR` / `--dd`       | `./scripts/knowledge-config.sh`   | 目标文档根目录                         | `docs`                                          | 低         |
 | `SDX_MODE` / `--mode`     | `./scripts/knowledge-init.sh`     | 初始化模式：`standalone`/`federation` | `standalone`                                      | 低         |
-| `DOCS_SCOPE` / `--ds`     | `./scripts/knowledge-init.sh`     | docs 范围：`knowledge`/`full`      | `knowledge`                                       | 低         |
+| `DOCS_SCOPE` / `--ds`     | `./scripts/knowledge-init.sh`     | 模板拷贝范围：`knowledge`/`full`      | `knowledge`                                       | 低         |
 | `AI_RULES_SCOPE` / `--as` | `./scripts/knowledge-init.sh`     | `.ai/rules` 范围控制                | `no-solution-analysis`                            | 低         |
 | `AGENTS_OPT` / `--agents` | `./scripts/knowledge-config.sh`   | 要初始化的 Agent 列表                  | `cursor`                                          | 低         |
 | `SKILLS_OPT` / `--skills` | `./scripts/knowledge-init.sh`     | 要安装的 skills 列表                  | 默认仅 agent/knowledge 相关                            | 低         |
@@ -224,8 +223,8 @@
 
 > 零幻觉原则：以下路径仅“发现存在”，但未精读其内容；因此不对其内部结构/语义做断言。
 
-- **docs/doc 目录**
-  - `./docs/`**、`./doc/**`（仓库内不存在）
+- **根目录其它文档约定**
+  - `./doc/**`（少数项目用作文档根；本仓库未使用）
 - **系统级阶段目录（除各目录 README 入口外）**
   - `./system/solutions/`**、`./system/analysis/**`、`./system/requirements/**` 内具体方案 / 分析 / 交付正文未逐一精读
   - `./system/changelogs/changes-index.*`、`./system/changelogs/indexing-log.jsonl` 等工具产出未精读（`README.md`、`CHANGELOG.md` 为入口说明，见 §3.2.2）

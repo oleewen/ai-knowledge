@@ -9,7 +9,7 @@
 ### 1.1 无需求分析文档直接开始编写 PRD
 **陷阱**：用户描述业务需求，Agent 跳过 `sdx-analysis` 直接输出 PRD。  
 **后果**：缺少 FR-n / BR-n 编号作为追溯锚点，用户故事无法追溯到业务目标，可追溯性链条从根部断裂。  
-**正确做法**：需求分析文档（`docs/analysis/ANALYSIS-{ID}.md`）是硬输入；不存在时终止并提示先执行 `sdx-analysis`。
+**正确做法**：需求分析文档（`system/analysis/ANALYSIS-{ID}.md`）是硬输入；不存在时终止并提示先执行 `sdx-analysis`。
 
 ### 1.2 未限定目标 MVP 范围
 **陷阱**：未读取需求分析文档中的 MVP 拆分章节，将所有 MVP 的功能需求一并纳入 PRD。  

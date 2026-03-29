@@ -21,7 +21,7 @@ description: >
 |------|------|--------|------|
 | `--mode` | 是 | - | `f`/`full`（全量）或 `i`/`incremental`（增量） |
 | `--depth` | 是 | - | `1`（拓扑）、`2`（结构）、`3`（精读） |
-| `--output` | 否 | `./docs/INDEX_GUIDE.md` | 输出路径（优先级：用户指定 > `./docs/` > `./doc/` > `./INDEX_GUIDE.md`） |
+| `--output` | 否 | `./system/INDEX_GUIDE.md` | 输出路径（优先级：用户指定 > `./system/` > `./doc/` > `./INDEX_GUIDE.md`） |
 | `--since` | 否 | 自动 | 增量起始时间（epoch ms，自动从日志获取） |
 
 ### 深度级别
@@ -87,7 +87,7 @@ scripts/indexing.sh --mode full --depth 3
   "timestamp": "ISO-8601",
   "data_mode": "full|incremental",
   "read_mode": 1,
-  "output_path": "./docs/INDEX_GUIDE.md",
+  "output_path": "./system/INDEX_GUIDE.md",
   "indexed_files": 156,
   "duration_ms": 45230,
   "indexing_finished_at": 1704115200000

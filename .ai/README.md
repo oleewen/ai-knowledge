@@ -9,7 +9,7 @@
 | 路径 | 说明 |
 |------|------|
 | [.ai/rules/CONVENTIONS.md](rules/CONVENTIONS.md) | 规范总索引：编码、设计、测试、解决方案/分析/需求/文档等子目录入口与摘要 |
-| [.ai/rules/agents-template.md](rules/agents-template.md) | Agent 说明模板参考 |
+| [.ai/skills/agent-guide/assets/agents-skeleton.md](skills/agent-guide/assets/agents-skeleton.md) | 根目录 `AGENTS.md` 推荐骨架（agent-guide） |
 | [.ai/skills/](skills) | 各 Skill 的 `SKILL.md`（Slash 命令实现与流程说明） |
 | [.ai/skills/README.md](skills/README.md) | **Slash 命令一览**（`/document-indexing`、`/knowledge-build` 等） |
 
@@ -18,7 +18,7 @@
 ## 与仓库其他文档的关系
 
 - **人类与 Agent 总契约**：根目录 [AGENTS.md](../AGENTS.md)
-- **权威路径地图**：根目录 [INDEX_GUIDE.md](../INDEX_GUIDE.md)（七段 Index Guide；[PROJECT_INDEX.md](../PROJECT_INDEX.md) 为兼容短入口）
+- **权威路径地图**：根目录 [INDEX_GUIDE.md](../INDEX_GUIDE.md)（七段 Index Guide）
 - **系统知识库治理**：[system/DESIGN.md](../system/DESIGN.md)、[system/CONTRIBUTING.md](../system/CONTRIBUTING.md)
 - **Slash 命令表**：以 [.ai/skills/README.md](skills/README.md) 为准（本仓库权威路径为 `.ai/skills/`）。
 

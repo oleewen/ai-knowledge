@@ -83,9 +83,9 @@
 ## 5. 与下游 Skill 的协作
 
 ### 5.1 输出目录路径与下游约定不一致
-**陷阱**：用户未指定 `--output` 时输出到 `./docs/changelogs/`，但下游 `document-indexing` 默认从 `./changelogs/` 读取。  
+**陷阱**：用户未指定 `--output` 时输出到 `./system/changelogs/`，但下游 `document-indexing` 默认从 `./changelogs/` 读取。  
 **后果**：下游 Skill 找不到 `changes-index.json`，增量模式降级为全量。  
-**正确做法**：严格按优先级：用户指定 > `./changelogs/` > `./docs/changelogs/`；与下游 Skill 约定保持一致。
+**正确做法**：严格按优先级：用户指定 > `./changelogs/` > `./system/changelogs/`；与下游 Skill 约定保持一致。
 
 ### 5.2 `source` 字段缺失导致下游无法分流
 **陷阱**：`changes` 数组中的条目未标注 `source` 字段（`git` / `changelog` / `local`）。  

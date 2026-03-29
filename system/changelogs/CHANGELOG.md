@@ -6,7 +6,7 @@
 
 ### 2026-03-22
 
-- **导航**：根目录 **`PROJECT_INDEX.md`** 正文迁至 **`INDEX_GUIDE.md`**；保留 `PROJECT_INDEX.md` 为兼容短入口；根 `INDEX.md`、`README`、`AGENTS`、`system/`、applications 模板与相关 Skill 链接已对齐。
+- **导航**：根目录索引以 **`INDEX_GUIDE.md`** 为准；根 `INDEX.md`、`README`、`AGENTS`、`system/`、applications 模板与相关 Skill 链接已对齐。
 - **导航**：`applications/INDEX.md` 正文迁至 **`applications/APPLICATIONS_INDEX.md`**；保留 `applications/INDEX.md` 短入口；根 `INDEX`/`README`/`AGENTS` 与相关 Skill 链接已对齐。
 - **导航**：`system/INDEX.md` 正文迁至 **`system/SYSTEM_INDEX.md`**；根目录保留 `system/INDEX.md` 短入口；全库与脚本、meta、Skill 链接已对齐。
 

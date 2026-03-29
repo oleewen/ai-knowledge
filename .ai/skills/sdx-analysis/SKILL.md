@@ -3,7 +3,7 @@ name: sdx-analysis
 description: >
   需求分析：基于解决方案文档与知识库进行深度研究、需求细化、MVP 拆分与依赖/风险评估，输出需求分析文档。
   在用户执行 /sdx-analysis、编写需求分析文档、或进行方案→需求分析时使用。
-  输出至 docs/analysis/ANALYSIS-{ID}.md，模板见 assets/analysis-template.md。
+  输出至 system/analysis/ANALYSIS-{ID}.md，模板见 assets/analysis-template.md。
   主要面向产品经理与需求分析师；正文使用产品/需求分析通用表述，技术实现细节留给 sdx-design。
 ---
 
@@ -13,14 +13,14 @@ description: >
 
 ## 输入与输出
 
-**输入**：解决方案文档（`docs/solutions/`）；为校准范围与事实可**按需**查阅 `knowledge/`、各 `requirements/.../specs/` 或 `knowledge/technical/`（**勿将工程细节原样写入需求分析正文**）。  
-**输出**：`docs/analysis/ANALYSIS-{ID}.md`（结构遵循 [.ai/skills/sdx-analysis/assets/analysis-template.md](assets/analysis-template.md)）
+**输入**：解决方案文档（`system/solutions/`）；为校准范围与事实可**按需**查阅 `knowledge/`、各 `requirements/.../specs/` 或 `knowledge/technical/`（**勿将工程细节原样写入需求分析正文**）。  
+**输出**：`system/analysis/ANALYSIS-{ID}.md`（结构遵循 [.ai/skills/sdx-analysis/assets/analysis-template.md](assets/analysis-template.md)）
 
 | 类型 | 内容 |
 |------|------|
-| 硬输入 | 解决方案文档（`docs/solutions/SOLUTION-{ID}.md`） |
+| 硬输入 | 解决方案文档（`system/solutions/SOLUTION-{ID}.md`） |
 | 可选输入 | `knowledge/`、`requirements/.../specs/`、`knowledge/technical/`、AGENTS.md |
-| 固定输出 | `docs/analysis/ANALYSIS-{ID}.md` |
+| 固定输出 | `system/analysis/ANALYSIS-{ID}.md` |
 | 不产出 | PRD、ADD、测试设计、代码（使用下游 sdx-prd / sdx-design / sdx-test） |
 
 ## 参数
