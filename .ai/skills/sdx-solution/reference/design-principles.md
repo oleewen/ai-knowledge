@@ -8,7 +8,7 @@ sdx-solution 技能的完整设计约束。主文件 SKILL.md 中的「核心约
 
 ### 1. 模板驱动
 
-输出严格遵循 [.ai/skills/sdx-solution/assets/solution-template.md](../assets/solution-template.md) 的九章结构：
+输出严格遵循 [../assets/solution-template.md](../assets/solution-template.md) 的九章结构：
 
 ```
 §1 业务背景 → §2 业务目标 → §3 需求概述 → §4 影响面评估
@@ -19,7 +19,7 @@ sdx-solution 技能的完整设计约束。主文件 SKILL.md 中的「核心约
 
 ### 2. 业务可读
 
-正文使用业务语言，面向业务方与产品可读。完整语言规范见 [.ai/skills/sdx-solution/reference/audience-language-spec.md](audience-language-spec.md)。
+正文使用业务语言，面向业务方与产品可读。完整语言规范见 [audience-language-spec.md](audience-language-spec.md)。
 
 核心原则：用「谁能做什么」「流程如何变」「对外承诺是什么」代替系统内部构造。
 

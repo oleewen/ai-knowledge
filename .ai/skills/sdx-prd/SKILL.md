@@ -10,12 +10,12 @@ description: >
 
 将需求分析中当前 MVP 阶段的需求转化为详细的产品方案和功能设计，涵盖完整的业务流程、用户故事、用例建模、功能模块划分、交互设计和业务规则定义。
 
-**受众与产出物语言**（对齐 [.ai/skills/sdx-solution/SKILL.md](../sdx-solution/SKILL.md) 的分工思路）：PRD **主要供产品经理**撰写、维护与验收对齐；**研发团队参与评审**（可行性、范围边界、依赖与风险），但不以研发实现说明替代产品表述。**正文须使用业务语言与产品语言**——用角色/能力/旅程、用户故事与验收标准、信息架构与交互规则、业务规则与数据含义等表述；**实现向技术细节**（接口/表/中间件/模块名等）留在下游 **sdx-design（ADD）**，勿在 PRD 正文替代产品可读表述。内部分析可查阅 `knowledge/`、`requirements/.../specs/`，写入 PRD 时须转写为业务/产品表述。
+**受众与产出物语言**（对齐 [../sdx-solution/SKILL.md](../sdx-solution/SKILL.md) 的分工思路）：PRD **主要供产品经理**撰写、维护与验收对齐；**研发团队参与评审**（可行性、范围边界、依赖与风险），但不以研发实现说明替代产品表述。**正文须使用业务语言与产品语言**——用角色/能力/旅程、用户故事与验收标准、信息架构与交互规则、业务规则与数据含义等表述；**实现向技术细节**（接口/表/中间件/模块名等）留在下游 **sdx-design（ADD）**，勿在 PRD 正文替代产品可读表述。内部分析可查阅 `knowledge/`、`requirements/.../specs/`，写入 PRD 时须转写为业务/产品表述。
 
 ## 输入与输出
 
 **输入**：需求分析文档中当前 MVP 章节（`system/analysis/ANALYSIS-{ID}.md`）、产品文档（`knowledge/product/`）；内部分析可按需查阅 `knowledge/`、`requirements/.../specs/`（**勿将实现向技术细节原样写入 PRD 正文**）  
-**输出**：`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`（结构遵循 [.ai/skills/sdx-prd/assets/prd-template.md](assets/prd-template.md)；语言以业务 + 产品为主，供产品主导、研发评审）
+**输出**：`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`（结构遵循 [assets/prd-template.md](assets/prd-template.md)；语言以业务 + 产品为主，供产品主导、研发评审）
 
 | 类型 | 内容 |
 |------|------|
@@ -50,11 +50,11 @@ description: >
 - **用户故事建模**：按 INVEST 原则编写用户故事，含 Given-When-Then 验收标准，覆盖正常/备选/异常/边界场景
 - **用例建模**：绘制用例图，编写用例描述（参与者、前后置条件、主成功场景、扩展场景、业务规则引用）
 - **功能模块设计**：划分功能模块与模块间关系，定义信息架构、操作流程、校验与反馈
-- **PRD 文档**：遵循 [.ai/skills/sdx-prd/assets/prd-template.md](assets/prd-template.md) 的十章结构
+- **PRD 文档**：遵循 [assets/prd-template.md](assets/prd-template.md) 的十章结构
 
 ## 工作流（五步）
 
-按顺序执行，每步产出作为下一步输入；最终文档需通过质量门禁。详细算法与决策点见 [.ai/skills/sdx-prd/reference/workflow-spec.md](reference/workflow-spec.md)。
+按顺序执行，每步产出作为下一步输入；最终文档需通过质量门禁。详细算法与决策点见 [reference/workflow-spec.md](reference/workflow-spec.md)。
 
 ### 步骤 1：业务流程设计
 
@@ -74,9 +74,9 @@ description: >
 
 ### 步骤 5：文档输出与评审
 
-将步骤 1–4 的产出整合为 PRD 文档，严格采用 [.ai/skills/sdx-prd/assets/prd-template.md](assets/prd-template.md) 的章节与格式；通读全文，确保**产品读者可独立理解**（业务语言 + 产品语言），并便于**研发评审**时快速抓住范围与规则；去除或下移至附录的实现向技术术语；执行质量门禁自查。
+将步骤 1–4 的产出整合为 PRD 文档，严格采用 [assets/prd-template.md](assets/prd-template.md) 的章节与格式；通读全文，确保**产品读者可独立理解**（业务语言 + 产品语言），并便于**研发评审**时快速抓住范围与规则；去除或下移至附录的实现向技术术语；执行质量门禁自查。
 
-质量门禁清单见 [.ai/skills/sdx-prd/assets/quality-gate-checklist.md](assets/quality-gate-checklist.md)。
+质量门禁清单见 [assets/quality-gate-checklist.md](assets/quality-gate-checklist.md)。
 
 可使用辅助脚本验证文档结构：
 
@@ -89,7 +89,7 @@ scripts/validate-prd.sh --doc-root docs
 | 约束 | 说明 |
 |------|------|
 | 模板驱动 | 输出严格遵循 prd-template.md 十章结构 |
-| 受众与语言 | **主要读者为产品**；**研发参与评审**。正文用业务语言与产品语言；技术实现、接口与存储细节归 **sdx-design**；技术事实转写原则见 [.ai/skills/sdx-solution/reference/audience-language-spec.md](../sdx-solution/reference/audience-language-spec.md)（PRD 侧重「谁能做什么、规则是什么、如何验收」，可保留故事/用例/IA 等产品侧用语） |
+| 受众与语言 | **主要读者为产品**；**研发参与评审**。正文用业务语言与产品语言；技术实现、接口与存储细节归 **sdx-design**；技术事实转写原则见 [../sdx-solution/reference/audience-language-spec.md](../sdx-solution/reference/audience-language-spec.md)（PRD 侧重「谁能做什么、规则是什么、如何验收」，可保留故事/用例/IA 等产品侧用语） |
 | 证据优先 | 用户故事与业务规则须引用需求分析文档与 `knowledge/` 事实，禁止臆测 |
 | 按需加载 | 仅在本轮需要时打开文件，禁止为完整性通读全仓 |
 | 歧义标注 | 不确定项标为待澄清，禁止自行假设 |
@@ -97,7 +97,7 @@ scripts/validate-prd.sh --doc-root docs
 | 可追溯 | 每个用户故事可追溯到需求分析 FR-n，每个业务规则可追溯到需求分析 BR-n |
 | MVP 聚焦 | 仅覆盖目标 MVP 范围内的功能需求，不超越 MVP 边界 |
 
-设计原则完整版与反模式清单见 [.ai/skills/sdx-prd/reference/design-principles.md](reference/design-principles.md)。
+设计原则完整版与反模式清单见 [reference/design-principles.md](reference/design-principles.md)。
 
 ## 依赖关系
 
@@ -112,12 +112,12 @@ scripts/validate-prd.sh --doc-root docs
 
 | 资源 | 路径 |
 |------|------|
-| 受众与语言（业务 vs 技术转写，可与 PRD 对照使用） | [.ai/skills/sdx-solution/reference/audience-language-spec.md](../sdx-solution/reference/audience-language-spec.md) |
-| 设计原则与反模式 | [.ai/skills/sdx-prd/reference/design-principles.md](reference/design-principles.md) |
-| 五步工作流详细规范 | [.ai/skills/sdx-prd/reference/workflow-spec.md](reference/workflow-spec.md) |
-| 质量门禁验收清单 | [.ai/skills/sdx-prd/assets/quality-gate-checklist.md](assets/quality-gate-checklist.md) |
-| 文档结构校验脚本 | [.ai/skills/sdx-prd/scripts/validate-prd.sh](scripts/validate-prd.sh) |
-| PRD 文档模板 | [.ai/skills/sdx-prd/assets/prd-template.md](assets/prd-template.md) |
+| 受众与语言（业务 vs 技术转写，可与 PRD 对照使用） | [../sdx-solution/reference/audience-language-spec.md](../sdx-solution/reference/audience-language-spec.md) |
+| 设计原则与反模式 | [reference/design-principles.md](reference/design-principles.md) |
+| 五步工作流详细规范 | [reference/workflow-spec.md](reference/workflow-spec.md) |
+| 质量门禁验收清单 | [assets/quality-gate-checklist.md](assets/quality-gate-checklist.md) |
+| 文档结构校验脚本 | [scripts/validate-prd.sh](scripts/validate-prd.sh) |
+| PRD 文档模板 | [assets/prd-template.md](assets/prd-template.md) |
 | 上游：需求分析 | `.ai/skills/sdx-analysis/SKILL.md` |
 | 下游：技术设计 | `.ai/skills/sdx-design/SKILL.md` |
 | 下游：测试设计 | `.ai/skills/sdx-test/SKILL.md` |

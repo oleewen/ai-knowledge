@@ -188,7 +188,7 @@ technical-writer + doc-updater
 
 ### 输入
 
-步骤 1–3 全部产出 + [.ai/skills/sdx-design/assets/add-template.md](../assets/add-template.md)
+步骤 1–3 全部产出 + [../assets/add-template.md](../assets/add-template.md)
 
 ### 算法
 
@@ -203,7 +203,7 @@ technical-writer + doc-updater
    - 参考文档（§4.1）：列出规约文件路径
    - 变更历史（§5.1）
    - 质量自查表（§5.2）
-4. **质量门禁自查**：逐项检查 [.ai/skills/sdx-design/assets/quality-gate-checklist.md](../assets/quality-gate-checklist.md)
+4. **质量门禁自查**：逐项检查 [../assets/quality-gate-checklist.md](../assets/quality-gate-checklist.md)
 5. **输出**：
    - ADD 写入 `system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`
    - specs 写入 `system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/`

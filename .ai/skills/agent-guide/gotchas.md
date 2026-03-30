@@ -19,7 +19,7 @@
 ### 1.3 把 `INDEX_GUIDE.md` 根目录版本与 `system/` 版本混淆
 **陷阱**：仓库同时存在根目录 `INDEX_GUIDE.md` 与 `system/INDEX_GUIDE.md`，Agent 随机选一个。  
 **后果**：引用路径错误，AGENTS 首条参考指向不存在的文件。  
-**正确做法**：严格按 [.ai/skills/agent-guide/reference/execution-spec.md](reference/execution-spec.md) 优先级（根目录 `INDEX_GUIDE.md` 等先于 `system/`）命中即停，记录**磁盘上实际相对路径**（相对仓库根，写入 AGENTS 链接时再从 `AGENTS.md` 所在目录换算为可点击的相对路径）。
+**正确做法**：严格按 [reference/execution-spec.md](reference/execution-spec.md) 优先级（根目录 `INDEX_GUIDE.md` 等先于 `system/`）命中即停，记录**磁盘上实际相对路径**（相对仓库根，写入 AGENTS 链接时再从 `AGENTS.md` 所在目录换算为可点击的相对路径）。
 
 ---
 

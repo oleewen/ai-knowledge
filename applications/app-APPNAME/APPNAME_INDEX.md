@@ -8,4 +8,4 @@
 | [application_meta.yaml](application_meta.yaml) | 根目录元数据（与 `system/system_meta.yaml` 对照） |
 | [APPNAME_manifest.yaml](APPNAME_manifest.yaml) | 机器可读目录清单与中央库路径镜像 |
 
-**中央库：** [system/README.md](../../system/README.md)、[system/SYSTEM_INDEX.md](../../system/SYSTEM_INDEX.md)
+**中央库：** [../../system/README.md](../../system/README.md)、[../../system/SYSTEM_INDEX.md](../../system/SYSTEM_INDEX.md)

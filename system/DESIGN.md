@@ -1,15 +1,15 @@
 # 系统知识文档库 — 设计方案摘录
 
-本文件是《全局软件系统知识文档库设计方案》的**精简版**：治理依据与演进参考。细节与入口仍以 [system/README.md](README.md)、[system/SYSTEM_INDEX.md](SYSTEM_INDEX.md) 为准。
+本文件是《全局软件系统知识文档库设计方案》的**精简版**：治理依据与演进参考。细节与入口仍以 [README.md](README.md)、[SYSTEM_INDEX.md](SYSTEM_INDEX.md) 为准。
 
 ---
 
 ## 阅读顺序
 
-1. [system/README.md](README.md) — `system/` 定位与 SDD 主线
+1. [README.md](README.md) — `system/` 定位与 SDD 主线
 2. 本文 — 原则、元模型、映射、演进
-3. [system/knowledge/constitution/standards/NAMING-CONVENTIONS.md](knowledge/constitution/standards/NAMING-CONVENTIONS.md) — ID 规则
-4. 各视角 [system/knowledge/README.md](knowledge/README.md) — 落盘与字段
+3. [knowledge/constitution/standards/NAMING-CONVENTIONS.md](knowledge/constitution/standards/NAMING-CONVENTIONS.md) — ID 规则
+4. 各视角 [knowledge/README.md](knowledge/README.md) — 落盘与字段
 
 ---
 
@@ -24,12 +24,12 @@
 
 **目录索引 YAML（约定）**：
 
-- ***系统知识库根目录**：使用[system/system_meta.yaml](system_meta.yaml) 概括 `system/` 树与子目录 meta 指针
+- ***系统知识库根目录**：使用[system_meta.yaml](system_meta.yaml) 概括 `system/` 树与子目录 meta 指针
   - `knowledge/knowledge_meta.yaml` 描述知识树；
   - `knowledge/constitution/constitution_meta.yaml` 描述宪法层组件与产出；
   - `solutions/`、`analysis/`、`requirements/`、`changelogs/` 各阶段目录根使用与目录同名的 `{dirname}_meta.yaml`（如 `solutions_meta.yaml`）。
-- **应用知识库根目录**：使用 [applications/app-APPNAME/application_meta.yaml](../applications/app-APPNAME/application_meta.yaml)（及同目录 [APPNAME_manifest.yaml](../applications/app-APPNAME/APPNAME_manifest.yaml)）概括 `knowledge/`、`requirements/`、`changelogs/` 与中央库指针对照（模板路径以本仓为准；落地时可拷贝更名）。
-- 细则见 [system/knowledge/constitution/standards/NAMING-CONVENTIONS.md](knowledge/constitution/standards/NAMING-CONVENTIONS.md)。
+- **应用知识库根目录**：使用 [../applications/app-APPNAME/application_meta.yaml](../applications/app-APPNAME/application_meta.yaml)（及同目录 [APPNAME_manifest.yaml](../applications/app-APPNAME/APPNAME_manifest.yaml)）概括 `knowledge/`、`requirements/`、`changelogs/` 与中央库指针对照（模板路径以本仓为准；落地时可拷贝更名）。
+- 细则见 [knowledge/constitution/standards/NAMING-CONVENTIONS.md](knowledge/constitution/standards/NAMING-CONVENTIONS.md)。
 
 **协同（目标态）**：应用仓维护 `/docs` 与 `manifest.yaml`；系统侧可抓取 manifest 更新 `knowledge` 并做一致性检查。
 

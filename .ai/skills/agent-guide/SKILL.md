@@ -40,7 +40,7 @@ description: >
 2. `system/INDEX_GUIDE.md`、`system/INDEX-GUIDE.md`
 
 未命中 → 终止并提示用户运行 `/document-indexing`。
-详细规则见 [.ai/skills/agent-guide/reference/execution-spec.md](reference/execution-spec.md)。
+详细规则见 [reference/execution-spec.md](reference/execution-spec.md)。
 
 ### 步骤 2：最小阅读集探索
 
@@ -51,23 +51,23 @@ description: >
 - §3 API → **不**粘贴进 AGENTS，仅指针
 - 已有 README → 合并而非覆盖
 
-详细策略见 [.ai/skills/agent-guide/reference/execution-spec.md](reference/execution-spec.md)。
+详细策略见 [reference/execution-spec.md](reference/execution-spec.md)。
 
 ### 步骤 3：生成 README
 
-按 [.ai/skills/agent-guide/assets/readme-skeleton.md](assets/readme-skeleton.md) 骨架生成，先 README 后 AGENTS。
+按 [assets/readme-skeleton.md](assets/readme-skeleton.md) 骨架生成，先 README 后 AGENTS。
 
 合格线：新读者 30 秒内知道「是什么、下一步点哪」；相对路径可点、表格不空洞。
 
 ### 步骤 4：生成 AGENTS
 
-按 [.ai/skills/agent-guide/assets/agents-skeleton.md](assets/agents-skeleton.md) 骨架生成（该文件即权威基准）。
+按 [assets/agents-skeleton.md](assets/agents-skeleton.md) 骨架生成（该文件即权威基准）。
 
-三文件去重规则见 [.ai/skills/agent-guide/reference/execution-spec.md](reference/execution-spec.md)。
+三文件去重规则见 [reference/execution-spec.md](reference/execution-spec.md)。
 
 ### 步骤 5：验证
 
-按 [.ai/skills/agent-guide/reference/execution-spec.md](reference/execution-spec.md) 验收清单执行。可使用辅助脚本：
+按 [reference/execution-spec.md](reference/execution-spec.md) 验收清单执行。可使用辅助脚本：
 
 ```bash
 scripts/validate-guide.sh --root .
@@ -95,7 +95,7 @@ scripts/validate-guide.sh --root .
 
 | 资源 | 路径 |
 |------|------|
-| 执行规范与验证清单 | [.ai/skills/agent-guide/reference/execution-spec.md](reference/execution-spec.md) |
-| README 输出骨架 | [.ai/skills/agent-guide/assets/readme-skeleton.md](assets/readme-skeleton.md) |
-| AGENTS 输出骨架与基准 | [.ai/skills/agent-guide/assets/agents-skeleton.md](assets/agents-skeleton.md) |
-| 路径验证脚本 | [.ai/skills/agent-guide/scripts/validate-guide.sh](scripts/validate-guide.sh) |
+| 执行规范与验证清单 | [reference/execution-spec.md](reference/execution-spec.md) |
+| README 输出骨架 | [assets/readme-skeleton.md](assets/readme-skeleton.md) |
+| AGENTS 输出骨架与基准 | [assets/agents-skeleton.md](assets/agents-skeleton.md) |
+| 路径验证脚本 | [scripts/validate-guide.sh](scripts/validate-guide.sh) |

@@ -61,57 +61,91 @@
 
 ---
 
-## 4. 提取阶段：字段完整性
+## 4. 提取阶段：API 四类入口覆盖
 
-### 4.1 缺少 evidence_chain 字段
+### 4.1 只提取 Dubbo/HTTP 接口，遗漏 MQ 消息监听和 Job
+**陷阱**：只关注传统 RPC/REST 接口，忽略 MQ Consumer 和定时任务入口。  
+**后果**：API 清单不完整，消息驱动和调度驱动的业务逻辑无法追溯，产品视角 FT/UC 绑定的 API 缺失。  
+**正确做法**：API 层级必须覆盖 Dubbo 接口、HTTP 接口、MQ 消息监听、Job 四类入口，每条 API 标注 `api_type`（`DUBBO` / `HTTP` / `MQ_CONSUMER` / `JOB`）。
+
+### 4.2 将 Dubbo Consumer 引用误提取为 Provider 接口
+**陷阱**：扫描到 `@DubboReference` / `@Reference` 注解的接口，将其作为本应用暴露的 Dubbo 接口提取。  
+**后果**：API 清单混入外部系统接口，跨视角引用指向非本应用实体，知识库边界混乱。  
+**正确做法**：只提取 **Provider 端**（`@DubboService` / `@Service`），Consumer 端引用的外部接口记为 `external_dependencies`，不生成 API-ID。
+
+### 4.3 MQ Consumer 未按 Tag 拆分
+**陷阱**：一个 Consumer 类监听同一 Topic 下多个 Tag（如 `DEAL_RESULT || CANCEL_RESULT`），只生成一条 API。  
+**后果**：不同 Tag 对应不同业务语义，合并为一条导致 FT/UC 无法精确绑定 API。  
+**正确做法**：同一 Consumer 类监听多个 Tag 时，按 Tag 拆分为多条 API，每条标注独立的 `tag` 字段和业务描述。
+
+### 4.4 Job 缺少 handler 名称或调度信息
+**陷阱**：提取到 `@XxlJob` 或 `@Scheduled` 标注的方法，但未记录 `job_handler` 名称和 `cron_expression`。  
+**后果**：无法区分不同调度任务，无法追溯调度频率与触发方式。  
+**正确做法**：Job 类型 API 必须填写 `job_handler`（调度平台注册的处理器名称）；`cron_expression` 若可从注解或配置获取则填写，否则标注 `confidence: medium` 并说明来源缺失。
+
+### 4.5 MQ/Job 入口未关联 MS-ID
+**陷阱**：MQ Consumer 或 Job 类未归属到任何 MS-ID，`service_id` 为空。  
+**后果**：跨视角引用断链——业务视角的 AGG 无法通过 MS-ID 追溯到 MQ/Job 入口。  
+**正确做法**：MQ Consumer 和 Job 必须归属到一个 MS-ID；若宿主类与现有 MS 宿主类不同，可新建 MS-ID 或归入同业务域最近的 MS-ID，并在 `merge_note` 中说明归属理由。
+
+### 4.6 缺少 api_type 字段
+**陷阱**：生成 API 实体时沿用旧 schema，未添加 `api_type` 字段。  
+**后果**：无法按类型筛选和统计 API，归并阶段无法校验四类入口完整性。  
+**正确做法**：所有 API 实体必须包含 `api_type` 字段，取值限 `DUBBO` / `HTTP` / `MQ_CONSUMER` / `JOB`。
+
+---
+
+## 5. 提取阶段：字段完整性
+
+### 5.1 缺少 evidence_chain 字段
 **陷阱**：实体 ID 生成后未填写 `evidence_chain`，或只写 `"source": "推断"`。  
 **后果**：归并阶段证据链验证失败；后续 Agent 无法核实 ID 来源，可信度为零。  
 **正确做法**：每个实体必须有至少一条可验证证据，格式为 `{ source, confidence, type }`；`high` 置信度须来自代码或配置直接确认。
 
-### 4.2 技术视角 entities 使用扁平数组
+### 5.2 技术视角 entities 使用扁平数组
 **陷阱**：技术视角输出时将 `entities` 写成扁平数组 `[...]`，与其他三视角格式一致。  
 **后果**：归并阶段解析 `entities.systems`、`entities.services` 等字段时报错，索引更新失败。  
 **正确做法**：技术视角 `entities` 必须是分类对象 `{ systems, applications, services, apis }`；其余三视角才使用扁平数组。
 
-### 4.3 metadata 节缺失或字段不完整
+### 5.3 metadata 节缺失或字段不完整
 **陷阱**：`*_knowledge.json` 尾部未包含 `metadata` 节，或缺少 `total_entities`、`extraction_basis` 等字段。  
 **后果**：归并阶段统计数无法校验，`changes_from_previous` 缺失导致增量追踪断链。  
 **正确做法**：每个 `*_knowledge.json` 必须包含完整 `metadata` 节，含各层级数量统计、`extraction_basis`、`schema_notes`、`changes_from_previous`。
 
 ---
 
-## 5. 归并阶段
+## 6. 归并阶段
 
-### 5.1 跳过前缀验证直接写入索引
+### 6.1 跳过前缀验证直接写入索引
 **陷阱**：归并时未校验实体 ID 前缀是否在 `contains_prefixes` 定义范围内，直接写入 `KNOWLEDGE_INDEX.md`。  
 **后果**：非法前缀（如 `SVC-`、`MOD-`）混入索引，破坏全知识库唯一性约束。  
 **正确做法**：归并前必须执行前缀验证，仅接受内置 `contains_prefixes` 所列前缀；冲突项跳过并记录日志。
 
-### 5.2 跳过对称性检查
+### 6.2 跳过对称性检查
 **陷阱**：四视角提取完毕后直接更新 `KNOWLEDGE_INDEX.md`，未检查 §1～§4 是否同轮维护。  
 **后果**：某视角（如产品视角）为空模板，其他视角已有实质内容，索引四节严重不对称。  
 **正确做法**：归并前执行 `same_round_four_sections` 规则检查；`bc_agg_linkage` 规则要求 §1 已登记 BC/AGG 时 §3 或 §4 必须有证据行。
 
-### 5.3 更改已有实体 ID 或破坏跨视角引用
+### 6.3 更改已有实体 ID 或破坏跨视角引用
 **陷阱**：发现某 ID 命名不规范，直接在 `KNOWLEDGE_INDEX.md` 中改名，未同步更新所有 `cross_references`。  
 **后果**：`implemented_by_service_ids`、`persisted_as_entity_ids`、`invokes_api_ids` 等引用字段指向已失效 ID，知识库引用链断裂。  
 **正确做法**：禁止单独修改已有 ID；需重命名时必须同步更新全部跨视角引用，或重跑受影响视角。
 
-### 5.4 以模板占位行作为索引唯一内容
+### 6.4 以模板占位行作为索引唯一内容
 **陷阱**：某视角无实质提取结果，直接将模板示例行（如 `SYS-EXAMPLE`）保留在 `KNOWLEDGE_INDEX.md` 中。  
 **后果**：违反 `no_template_only` 规则，索引内容为虚假数据，误导后续 Agent。  
 **正确做法**：无实质内容时该节留空并标注「待补充」，禁止以非本应用模板 ID 作为索引唯一内容。
 
 ---
 
-## 6. 增量提取
+## 7. 增量提取
 
-### 6.1 `--skip-existing true` 时漏更新变更实体
+### 7.1 `--skip-existing true` 时漏更新变更实体
 **陷阱**：增量提取时跳过所有已有 ID，包括因代码重构而发生变化的实体。  
 **后果**：已变更实体的 `method_signature`、`physical_table`、`cross_references` 等字段未更新，索引与代码不同步。  
 **正确做法**：`--skip-existing` 仅跳过确认未变更的实体；基于 `document-change` 的变更文件列表，对变更文件涉及的实体强制重提取。
 
-### 6.2 增量提取后未填写 `changes_from_previous`
+### 7.2 增量提取后未填写 `changes_from_previous`
 **陷阱**：增量更新后 `metadata.changes_from_previous` 仍为空或写「无变化」。  
 **后果**：无法追踪知识库演进历史，审计和回溯困难。  
 **正确做法**：每次增量提取必须在 `metadata.changes_from_previous` 中描述新增、修改、删除的实体 ID 及原因。
@@ -125,6 +159,12 @@
 - [ ] 主 Index Guide 已落盘且可用
 - [ ] 四视角按技术 → 数据 → 业务 → 产品顺序执行
 - [ ] 技术视角 `entities` 为分类对象，其余三视角为扁平数组
+- [ ] API 层级覆盖 Dubbo、HTTP、MQ Consumer、Job 四类入口
+- [ ] 每条 API 含 `api_type` 字段（`DUBBO` / `HTTP` / `MQ_CONSUMER` / `JOB`）
+- [ ] 仅提取 Dubbo Provider 端，未混入 Consumer 引用
+- [ ] MQ Consumer 按 Tag 拆分为独立 API（多 Tag 场景）
+- [ ] Job 含 `job_handler` 名称
+- [ ] MQ/Job 入口均关联到 MS-ID
 - [ ] 每个实体含完整 `evidence_chain`，无无证据写入
 - [ ] MS-ID 按宿主类聚类，非 Maven 模块名
 - [ ] 同一物理表只有一个 ENT-ID

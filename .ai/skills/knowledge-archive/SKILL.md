@@ -12,8 +12,8 @@ description: >
 
 ## 适用前提
 
-- **应用侧约定**：以 [applications/README.md](../../../applications/README.md)、[applications/APPLICATIONS_INDEX.md](../../../applications/APPLICATIONS_INDEX.md) 为准——联邦单元、`manifest.yaml`、全局唯一 ID（`APP-*`、`MS-*`、`ENT-*` 等）。
-- **系统侧约定**：以 [system/knowledge/README.md](../../../system/knowledge/README.md)、[system/CONTRIBUTING.md](../../../system/CONTRIBUTING.md)、[system/DESIGN.md](../../../system/DESIGN.md)、[system/SYSTEM_INDEX.md](../../../system/SYSTEM_INDEX.md) 为准——四视角 YAML/_meta、跨视角仅 ID 引用、单一事实源（SSOT）。
+- **应用侧约定**：以 [../../../applications/README.md](../../../applications/README.md)、[../../../applications/APPLICATIONS_INDEX.md](../../../applications/APPLICATIONS_INDEX.md) 为准——联邦单元、`manifest.yaml`、全局唯一 ID（`APP-*`、`MS-*`、`ENT-*` 等）。
+- **系统侧约定**：以 [../../../system/knowledge/README.md](../../../system/knowledge/README.md)、[../../../system/CONTRIBUTING.md](../../../system/CONTRIBUTING.md)、[../../../system/DESIGN.md](../../../system/DESIGN.md)、[../../../system/SYSTEM_INDEX.md](../../../system/SYSTEM_INDEX.md) 为准——四视角 YAML/_meta、跨视角仅 ID 引用、单一事实源（SSOT）。
 
 ## 联邦原则（必须遵守）
 
@@ -82,11 +82,11 @@ description: >
 ### 3. 撰写规则
 
 - **先读再写**：打开拟修改的系统文件与相邻元数据 YAML（各视角 `*_meta.yaml` 等），确认现有 ID。
-- **只增不改 ID**：已有实体 **禁止改 id**；新增实体 ID 须全局唯一且符合 [system/knowledge/constitution/standards/NAMING-CONVENTIONS.md](../../../system/knowledge/constitution/standards/NAMING-CONVENTIONS.md)（若存在）。
+- **只增不改 ID**：已有实体 **禁止改 id**；新增实体 ID 须全局唯一且符合 [../../../system/knowledge/constitution/standards/NAMING-CONVENTIONS.md](../../../system/knowledge/constitution/standards/NAMING-CONVENTIONS.md)（若存在）。
 - **交叉引用仅 ID**：正文与 YAML 关联字段只写 ID，不写重复长描述。
-- **更新索引**：变更影响全局导航时，同步 [system/SYSTEM_INDEX.md](../../../system/SYSTEM_INDEX.md) 或对应视角 `README.md`（见 system/knowledge/README.md §4）。
+- **更新索引**：变更影响全局导航时，同步 [../../../system/SYSTEM_INDEX.md](../../../system/SYSTEM_INDEX.md) 或对应视角 `README.md`（见 system/knowledge/README.md §4）。
 
-### 4. 质量自检（与 knowledge-build 第四阶段对齐）
+### 4. 质量自检（与全库知识落盘末段验证思路对齐）
 
 - 新增/修改的 YAML 可被解析；无断链 ID。
 - 应用独有细节仍保留在应用库；系统库无大段与 manifest 重复的冗余正文。
@@ -106,7 +106,7 @@ description: >
 
 ## 参考
 
-- [applications/README.md](../../../applications/README.md)、[applications/APPLICATIONS_INDEX.md](../../../applications/APPLICATIONS_INDEX.md)
-- [system/knowledge/README.md](../../../system/knowledge/README.md)、[system/CONTRIBUTING.md](../../../system/CONTRIBUTING.md)、[system/DESIGN.md](../../../system/DESIGN.md)、[system/SYSTEM_INDEX.md](../../../system/SYSTEM_INDEX.md)
+- [../../../applications/README.md](../../../applications/README.md)、[../../../applications/APPLICATIONS_INDEX.md](../../../applications/APPLICATIONS_INDEX.md)
+- [../../../system/knowledge/README.md](../../../system/knowledge/README.md)、[../../../system/CONTRIBUTING.md](../../../system/CONTRIBUTING.md)、[../../../system/DESIGN.md](../../../system/DESIGN.md)、[../../../system/SYSTEM_INDEX.md](../../../system/SYSTEM_INDEX.md)
 - 应用内增量维护：视项目而定（可配合 `knowledge-extract` 等）
-- 系统库从零构建：[.ai/skills/knowledge-build/SKILL.md](../knowledge-build/SKILL.md)（编排说明，组合 document-indexing / agent-guide / knowledge-extract 等）
+- 系统库从零构建：按序组合 [../document-indexing/SKILL.md](../document-indexing/SKILL.md)、[../agent-guide/SKILL.md](../agent-guide/SKILL.md)、[../knowledge-extract/SKILL.md](../knowledge-extract/SKILL.md)（无单独编排 Skill）

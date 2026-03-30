@@ -66,7 +66,7 @@ scripts/indexing.sh --mode full --depth 3
 
 ### 步骤 5：质量验证
 
-按 [.ai/skills/document-indexing/reference/quality-standards.md](reference/quality-standards.md) 执行验证：
+按 [reference/quality-standards.md](reference/quality-standards.md) 执行验证：
 
 - 九章结构完整性
 - 信息密度（15-30 字/条目）
@@ -75,8 +75,8 @@ scripts/indexing.sh --mode full --depth 3
 
 ### 步骤 6：输出生成
 
-- 按九章规范（详见 [.ai/skills/document-indexing/reference/nine-chapter-spec.md](reference/nine-chapter-spec.md)）生成文档
-- 输出模板骨架参见 [.ai/skills/document-indexing/assets/index-guide-template.md](assets/index-guide-template.md)
+- 按九章规范（详见 [reference/nine-chapter-spec.md](reference/nine-chapter-spec.md)）生成文档
+- 输出模板骨架参见 [assets/index-guide-template.md](assets/index-guide-template.md)
 - 追加日志到 `changelogs/indexing-log.jsonl`
 - 清理临时文件
 
@@ -117,7 +117,7 @@ scripts/indexing.sh --mode full --depth 3
 
 | 资源 | 路径 |
 |------|------|
-| 九章文档结构规范 | [.ai/skills/document-indexing/reference/nine-chapter-spec.md](reference/nine-chapter-spec.md) |
-| 质量标准与扫描规则 | [.ai/skills/document-indexing/reference/quality-standards.md](reference/quality-standards.md) |
-| INDEX_GUIDE 输出模板 | [.ai/skills/document-indexing/assets/index-guide-template.md](assets/index-guide-template.md) |
-| 辅助脚本 | [.ai/skills/document-indexing/scripts/indexing.sh](scripts/indexing.sh) |
+| 九章文档结构规范 | [reference/nine-chapter-spec.md](reference/nine-chapter-spec.md) |
+| 质量标准与扫描规则 | [reference/quality-standards.md](reference/quality-standards.md) |
+| INDEX_GUIDE 输出模板 | [assets/index-guide-template.md](assets/index-guide-template.md) |
+| 辅助脚本 | [scripts/indexing.sh](scripts/indexing.sh) |

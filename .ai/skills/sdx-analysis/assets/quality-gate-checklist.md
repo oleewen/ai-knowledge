@@ -16,7 +16,7 @@
 
 ## 受众与语言
 
-- [ ] 正文符合 [.ai/skills/sdx-solution/reference/audience-language-spec.md](../../sdx-solution/reference/audience-language-spec.md)：产品/需求分析师与业务方可独立理解主流程
+- [ ] 正文符合 [../../sdx-solution/reference/audience-language-spec.md](../../sdx-solution/reference/audience-language-spec.md)：产品/需求分析师与业务方可独立理解主流程
 - [ ] 接口名、表名、中间件、服务/模块名**未出现在正文**（或仅集中在模板 §8.4 并标注待研发确认）
 
 ## 一致性

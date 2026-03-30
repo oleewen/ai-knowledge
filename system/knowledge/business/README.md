@@ -37,11 +37,11 @@ business/
 
 | 检索需求 | 推荐入口 |
 |----------|----------|
-| 快速枚举全部业务实体 ID | [system/knowledge/business/business_knowledge.json](business_knowledge.json)（扁平 JSON，`hierarchy` 区分层级） |
+| 快速枚举全部业务实体 ID | [business_knowledge.json](business_knowledge.json)（扁平 JSON，`hierarchy` 区分层级） |
 | 了解某聚合的业务规则与能力 | `business_knowledge.json` 中 `hierarchy=AGG` 实体的 `invariants / abilities / cross_references` |
 | 了解上下文边界与通用语言 | `business_knowledge.json` 中 `hierarchy=BC` 实体的 `implemented_by_app_id / ubiquitous_language / aggregates` |
-| 跨视角映射（业务→技术/数据） | [system/knowledge/business/business_meta.yaml](business_meta.yaml) → `integration.cross_perspective` |
-| 全库四视角索引 | [system/knowledge/KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) |
+| 跨视角映射（业务→技术/数据） | [business_meta.yaml](business_meta.yaml) → `integration.cross_perspective` |
+| 全库四视角索引 | [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) |
 
 ---
 

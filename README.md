@@ -30,13 +30,12 @@ REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/knowledge-
 | `/document-change`   | **Skill**：合并 git / CHANGELOG / 文件 mtime，生成 `system/changelogs/changes-index.*`（供增量索引与审计）。                          |
 | `/document-indexing` | **Skill**：为代码库/文档库生成面向下游 AI 的 Index Guide（拓扑/结构/精读三模式，七段标准输出，零幻觉路径精确）。                                                  |
 | `/agent-guide`       | 生成/更新根目录 `AGENTS.md` 与 `README.md`；① document-indexing 产出 Index → ② agent-guide 产出 AGENTS/README                   |
-| `/knowledge-build`   | 知识库构建：① document-indexing 产出 Index → ② agent-guide 产出 AGENTS/README → ③ 按 Index 选择性阅读并写入 knowledge → ④ 验证。         |
 | `/knowledge-upgrade` | 应用级知识库增量升级：① 应用内 document-indexing → ③ 按 applications/APPLICATIONS_INDEX 与应用 knowledge 格式选择性阅读并回写 → ④ 验证（无 AGENTS/README 第二阶段）。 |
 | `/knowledge-archive` | 归档 applications/ 知识库变更；将应用侧有效信息按 system/knowledge 与 CONTRIBUTING 规范上行补充系统库（联邦 SSOT、仅 ID 引用）。                       |
 
 ## 功能简介
 
-**系统知识库** 已统一放在 **[system/](system)** 目录下（查阅顺序与根目录 `INDEX_GUIDE.md` / `AGENTS.md` 对齐；SDD 主线见 [system/README.md](system/README.md)）：
+**系统知识库** 已统一放在 **[system](system)** 目录下（查阅顺序与根目录 `INDEX_GUIDE.md` / `AGENTS.md` 对齐；SDD 主线见 [system/README.md](system/README.md)）：
 
 - [system/README.md](system/README.md) — 查阅顺序、SDD 主线、快速导航  
 - [system/SYSTEM_INDEX.md](system/SYSTEM_INDEX.md) — system 树索引、映射速查、应用接入、AI 工作流指针  
@@ -44,7 +43,7 @@ REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/knowledge-
 - [system/CONTRIBUTING.md](system/CONTRIBUTING.md) — 贡献工作流与各阶段模板入口  
 - [system/changelogs/README.md](system/changelogs/README.md) — 变更日志入口（规约随各 `requirements/REQUIREMENT-*/…/specs/`）
 
-**应用知识库** 已统一放在 **[applications/](applications)** 目录下，包含：
+**应用知识库** 已统一放在 **[applications](applications)** 目录下，包含：
 
 - [applications/README.md](applications/README.md) — 应用知识库说明与初始化方式  
 - [applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md) — 应用知识结构、方案与需求、治理信息导航（权威入口）

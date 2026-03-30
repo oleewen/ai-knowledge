@@ -196,7 +196,7 @@ graph TD
 }
 ```
 
-完整示例模板见 [.ai/skills/knowledge-extract/assets/knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
+完整示例模板见 [../assets/knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
 
 ---
 
@@ -227,4 +227,4 @@ graph TD
 | 技术实体引用 | `{前缀}-{ID} {名称}` | `MS-001 BillingAppeal` |
 | API 引用 | `{API-ID} {别名}` | `API-002 BillingAppeal.create` |
 
-完整输出模板见 [.ai/skills/knowledge-extract/assets/knowledge-index-template.md](../assets/knowledge-index-template.md)。
+完整输出模板见 [../assets/knowledge-index-template.md](../assets/knowledge-index-template.md)。

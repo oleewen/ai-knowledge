@@ -4,6 +4,10 @@
 
 ## [未发布]
 
+### 2026-03-30
+
+- **Skill**：删除 `.ai/skills/knowledge-build/SKILL.md`；全库构建改为按序组合 `document-indexing`、`agent-guide`、`knowledge-extract`（无单独编排 Skill）。已同步根 `README`、`INDEX_GUIDE`、`system/SYSTEM_INDEX` §六、`knowledge-archive`、`.ai/README`。
+
 ### 2026-03-29
 
 - **导航**：删除仓库根 `INDEX.md`；全库以根目录 **`INDEX_GUIDE.md`** 为唯一根索引说明；已同步 `INDEX_GUIDE.md` 目录树、`README`、`AGENTS`、`agent-guide`（含 `validate-guide.sh`）、`knowledge-archive`、`knowledge-config` 校验项与 `indexing-log.jsonl` 中的 `index_output_path` 表述。

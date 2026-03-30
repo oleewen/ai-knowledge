@@ -12,56 +12,56 @@
 
 | 文件 | 说明 |
 |------|------|
-| [.ai/rules/coding/java-guidelines.md](coding/java-guidelines.md) | Java 开发规范：技术栈、命名、类设计、异常、Repository、日志 |
-| [.ai/rules/coding/project-structure.md](coding/project-structure.md) | 项目结构规范：DDD 六边形架构、分层与模块职责 |
-| [.ai/rules/coding/git-guidelines.md](coding/git-guidelines.md) | Git 提交规范：Conventional Commits、原子提交、检查清单 |
-| [.ai/rules/coding/maven-guidelines.md](coding/maven-guidelines.md) | Maven 规范：多模块结构、依赖管理、构建与质量门禁 |
+| [coding/java-guidelines.md](coding/java-guidelines.md) | Java 开发规范：技术栈、命名、类设计、异常、Repository、日志 |
+| [coding/project-structure.md](coding/project-structure.md) | 项目结构规范：DDD 六边形架构、分层与模块职责 |
+| [coding/git-guidelines.md](coding/git-guidelines.md) | Git 提交规范：Conventional Commits、原子提交、检查清单 |
+| [coding/maven-guidelines.md](coding/maven-guidelines.md) | Maven 规范：多模块结构、依赖管理、构建与质量门禁 |
 
 ### 2. 设计规范 (design/)
 
 | 文件 | 说明 |
 |------|------|
-| [.ai/rules/design/design-guidelines.md](design/design-guidelines.md) | 设计规范总纲：DDD 原则、架构原则、评审标准、术语与文档规范 |
-| [.ai/skills/sdx-design/assets/add-template.md](../skills/sdx-design/assets/add-template.md) | 架构设计说明书(ADD)：与 **sdx-design** 配套；设计概述；架构设计（概要：业务/系统架构、能力、VALET）；详细设计（名词定义、流程与领域模型、应用 C4、API/逻辑/数据模型）；API 文档索引（如 `system/api/README.md`：版本、认证、响应、错误码、模块索引）见模板第 3 章「API 详细设计」与 `specs/` 规约；需求规约、附录 |
+| [design/design-guidelines.md](design/design-guidelines.md) | 设计规范总纲：DDD 原则、架构原则、评审标准、术语与文档规范 |
+| [../skills/sdx-design/assets/add-template.md](../skills/sdx-design/assets/add-template.md) | 架构设计说明书(ADD)：与 **sdx-design** 配套；设计概述；架构设计（概要：业务/系统架构、能力、VALET）；详细设计（名词定义、流程与领域模型、应用 C4、API/逻辑/数据模型）；API 文档索引（如 `system/api/README.md`：版本、认证、响应、错误码、模块索引）见模板第 3 章「API 详细设计」与 `specs/` 规约；需求规约、附录 |
 
 ### 3. 测试规范 (testing/)
 
 | 文件 | 说明 |
 |------|------|
-| [.ai/rules/testing/testing-guidelines.md](testing/testing-guidelines.md) | 测试规范：覆盖率门禁、分层策略、单元/集成测试、Mock、Jacoco |
-| [.ai/skills/sdx-test/assets/tdd-template.md](../skills/sdx-test/assets/tdd-template.md) | 测试设计说明书(TDD)：测试目标与范围、策略、用例、数据与环境、进出标准（与 sdx-test 技能、`system/requirements/.../TDD-{ID}.md` 配套） |
+| [testing/testing-guidelines.md](testing/testing-guidelines.md) | 测试规范：覆盖率门禁、分层策略、单元/集成测试、Mock、Jacoco |
+| [../skills/sdx-test/assets/tdd-template.md](../skills/sdx-test/assets/tdd-template.md) | 测试设计说明书(TDD)：测试目标与范围、策略、用例、数据与环境、进出标准（与 sdx-test 技能、`system/requirements/.../TDD-{ID}.md` 配套） |
 
 ### 4. 解决方案规范（sdx-solution）
 
 | 文件 | 说明 |
 |------|------|
-| [.ai/skills/sdx-solution/assets/solution-template.md](../skills/sdx-solution/assets/solution-template.md) | 解决方案文档模板：业务背景、业务目标、需求概述、影响面、冲突与化解、方案与范围、MVP 拆分；产出 `system/solutions/SOLUTION-{ID}.md` |
+| [../skills/sdx-solution/assets/solution-template.md](../skills/sdx-solution/assets/solution-template.md) | 解决方案文档模板：业务背景、业务目标、需求概述、影响面、冲突与化解、方案与范围、MVP 拆分；产出 `system/solutions/SOLUTION-{ID}.md` |
 
 ### 5. 需求分析规范（sdx-analysis）
 
 | 文件 | 说明 |
 |------|------|
-| [.ai/skills/sdx-analysis/assets/analysis-template.md](../skills/sdx-analysis/assets/analysis-template.md) | 需求分析文档模板：需求概述、功能/非功能需求、业务规则、数据需求、MVP 拆分、依赖与风险；产出 `system/analysis/ANALYSIS-{ID}.md` |
+| [../skills/sdx-analysis/assets/analysis-template.md](../skills/sdx-analysis/assets/analysis-template.md) | 需求分析文档模板：需求概述、功能/非功能需求、业务规则、数据需求、MVP 拆分、依赖与风险；产出 `system/analysis/ANALYSIS-{ID}.md` |
 
 ### 6. 需求交付规范 (requirement/)
 
 | 文件 | 说明 |
 |------|------|
-| [.ai/skills/sdx-prd/assets/prd-template.md](../skills/sdx-prd/assets/prd-template.md) | 产品需求说明书(PRD)：产品概述、业务流程、用户故事与用例、功能模块、业务规则、验收标准；产出 `system/requirements/.../PRD-{ID}-{N}.md` |
-| [.ai/skills/sdx-design/assets/add-template.md](../skills/sdx-design/assets/add-template.md) | 架构设计说明书(ADD)：设计概述、架构设计、详细设计（原独立详细设计模板范畴）、需求规约、附录；产出 `system/requirements/.../ADD-{ID}-{N}.md`（与 sdx-design 技能配套） |
-| [.ai/skills/sdx-test/assets/tdd-template.md](../skills/sdx-test/assets/tdd-template.md) | 测试设计说明书(TDD)：测试目标与范围、测试策略、测试用例、测试数据与环境、进出标准；产出 `system/requirements/.../TDD-{ID}-{N}.md`（与 sdx-test 技能配套） |
+| [../skills/sdx-prd/assets/prd-template.md](../skills/sdx-prd/assets/prd-template.md) | 产品需求说明书(PRD)：产品概述、业务流程、用户故事与用例、功能模块、业务规则、验收标准；产出 `system/requirements/.../PRD-{ID}-{N}.md` |
+| [../skills/sdx-design/assets/add-template.md](../skills/sdx-design/assets/add-template.md) | 架构设计说明书(ADD)：设计概述、架构设计、详细设计（原独立详细设计模板范畴）、需求规约、附录；产出 `system/requirements/.../ADD-{ID}-{N}.md`（与 sdx-design 技能配套） |
+| [../skills/sdx-test/assets/tdd-template.md](../skills/sdx-test/assets/tdd-template.md) | 测试设计说明书(TDD)：测试目标与范围、测试策略、测试用例、测试数据与环境、进出标准；产出 `system/requirements/.../TDD-{ID}-{N}.md`（与 sdx-test 技能配套） |
 
 ### 7. 文档规范 (document/)
 
 | 文件 | 说明 |
 |------|------|
-| [.ai/rules/document/document-guidelines.md](document/document-guidelines.md) | 文档与注释规范：JavaDoc、类/包文档、代码注释、TODO 约定 |
+| [document/document-guidelines.md](document/document-guidelines.md) | 文档与注释规范：JavaDoc、类/包文档、代码注释、TODO 约定 |
 
 ### 8. AGENTS规范
 
 | 文件 | 说明 |
 |------|------|
-| [.ai/skills/agent-guide/assets/agents-skeleton.md](../skills/agent-guide/assets/agents-skeleton.md) | 根目录 `AGENTS.md` 推荐骨架与语义基准（agent-guide） |
+| [../skills/agent-guide/assets/agents-skeleton.md](../skills/agent-guide/assets/agents-skeleton.md) | 根目录 `AGENTS.md` 推荐骨架与语义基准（agent-guide） |
 
 ---
 
@@ -77,7 +77,7 @@
 ### 设计类
 
 - **设计指南**：DDD 统一语言、限界上下文、聚合根、领域事件；六边形/整洁架构、CQRS；SOLID/KISS/DRY/YAGNI；术语编码（业务流程 a.b → 业务活动 a.b.c → 任务 a.b.c.d）；图表用 Mermaid。
-- **架构设计(ADD)**：模版 [.ai/skills/sdx-design/assets/add-template.md](../skills/sdx-design/assets/add-template.md)。与 **sdx-design** 配套。含概要层（主流程/子流程编码、领域对象表、系统 C4、能力与 SLA、VALET）；详细设计侧（名词定义、业务流程编码、领域模型、能力与应用架构 C4、API、类图/状态机/时序、数据模型）；以及应用/技术/工程/数据架构、职责边界、核心组件、API 清单、数据库选型等 ADD 结构项。
+- **架构设计(ADD)**：模版 [../skills/sdx-design/assets/add-template.md](../skills/sdx-design/assets/add-template.md)。与 **sdx-design** 配套。含概要层（主流程/子流程编码、领域对象表、系统 C4、能力与 SLA、VALET）；详细设计侧（名词定义、业务流程编码、领域模型、能力与应用架构 C4、API、类图/状态机/时序、数据模型）；以及应用/技术/工程/数据架构、职责边界、核心组件、API 清单、数据库选型等 ADD 结构项。
 
 ### 测试类
 

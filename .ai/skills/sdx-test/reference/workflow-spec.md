@@ -249,7 +249,7 @@ technical-writer + doc-updater
 
 ### 输入
 
-步骤 1–4 全部产出 + [.ai/skills/sdx-test/assets/tdd-template.md](../assets/tdd-template.md)
+步骤 1–4 全部产出 + [../assets/tdd-template.md](../assets/tdd-template.md)
 
 ### 算法
 
@@ -261,7 +261,7 @@ technical-writer + doc-updater
    - `parent`: 关联的 PRD 编号（与文件名一致）`PRD-{ID}-{N}`
    - `mvp_phase`: `MVP-{N}`
 3. **补充附录**：变更历史（§6.1）
-4. **质量门禁自查**：逐项检查 [.ai/skills/sdx-test/assets/quality-gate-checklist.md](../assets/quality-gate-checklist.md)
+4. **质量门禁自查**：逐项检查 [../assets/quality-gate-checklist.md](../assets/quality-gate-checklist.md)
 5. **输出**：写入 `system/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md`
 
 ### 输出目录

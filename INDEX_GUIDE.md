@@ -232,7 +232,7 @@
   - `./applications/`** 的应用子目录（若存在）
 - **AI 规则与技能未精读**
   - `./.ai/rules/`**（仅精读了 `./.ai/rules/CONVENTIONS.md`；其余规则模板未逐一精读）
-  - `./.ai/skills/**`（已精读 `document-indexing`/`document-change`；并抽读 `agent-guide`、`knowledge-build`、`knowledge-upgrade` 的入口与阶段划分；其余技能未逐一精读）
+  - `./.ai/skills/**`（已精读 `document-indexing`/`document-change`；并抽读 `agent-guide`、`knowledge-upgrade` 的入口与阶段划分；其余技能未逐一精读）
 
 ## 7. AI 查阅指北（检索表 + Prompt 模板）
 

@@ -12,7 +12,7 @@ description: >
 ## 输入与输出
 
 **输入**：产品需求（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`）、架构设计（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`）、规约（`.../specs/`）
-**输出**：`system/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md`（结构遵循 [.ai/skills/sdx-test/assets/tdd-template.md](assets/tdd-template.md)）
+**输出**：`system/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md`（结构遵循 [assets/tdd-template.md](assets/tdd-template.md)）
 
 | 类型 | 内容 |
 |------|------|
@@ -48,11 +48,11 @@ description: >
 - **用例设计**：从用户故事验收标准、API 规约、业务规则三个维度设计测试用例，覆盖正常/异常/边界场景
 - **回归策略**：基于影响面分析确定回归范围，关联变更功能与受影响的已有功能
 - **进出标准**：定义测试进入条件（开发完成、环境就绪）与退出条件（用例通过率、缺陷标准）
-- **TDD 文档**：遵循 [.ai/skills/sdx-test/assets/tdd-template.md](assets/tdd-template.md) 的六章结构
+- **TDD 文档**：遵循 [assets/tdd-template.md](assets/tdd-template.md) 的六章结构
 
 ## 工作流（五步）
 
-按顺序执行，每步产出作为下一步输入；最终文档需通过质量门禁。详细算法与决策点见 [.ai/skills/sdx-test/reference/workflow-spec.md](reference/workflow-spec.md)。
+按顺序执行，每步产出作为下一步输入；最终文档需通过质量门禁。详细算法与决策点见 [reference/workflow-spec.md](reference/workflow-spec.md)。
 
 ### 步骤 1：测试策略与范围分析
 
@@ -72,9 +72,9 @@ description: >
 
 ### 步骤 5：文档输出与评审
 
-将步骤 1–4 的产出整合为测试设计文档，严格采用 [.ai/skills/sdx-test/assets/tdd-template.md](assets/tdd-template.md) 的章节与格式；执行质量门禁自查。
+将步骤 1–4 的产出整合为测试设计文档，严格采用 [assets/tdd-template.md](assets/tdd-template.md) 的章节与格式；执行质量门禁自查。
 
-质量门禁清单见 [.ai/skills/sdx-test/assets/quality-gate-checklist.md](assets/quality-gate-checklist.md)。
+质量门禁清单见 [assets/quality-gate-checklist.md](assets/quality-gate-checklist.md)。
 
 可使用辅助脚本验证文档结构：
 
@@ -95,7 +95,7 @@ description: >
 | 可追溯 | 每个测试用例可追溯到用户故事、API 规约或业务规则 |
 | MVP 聚焦 | 仅覆盖目标 MVP 范围内的测试需求，不超越 MVP 边界 |
 
-设计原则完整版与反模式清单见 [.ai/skills/sdx-test/reference/design-principles.md](reference/design-principles.md)。
+设计原则完整版与反模式清单见 [reference/design-principles.md](reference/design-principles.md)。
 
 ## 依赖关系
 
@@ -109,11 +109,11 @@ description: >
 
 | 资源 | 路径 |
 |------|------|
-| 设计原则与反模式 | [.ai/skills/sdx-test/reference/design-principles.md](reference/design-principles.md) |
-| 五步工作流详细规范 | [.ai/skills/sdx-test/reference/workflow-spec.md](reference/workflow-spec.md) |
-| 质量门禁验收清单 | [.ai/skills/sdx-test/assets/quality-gate-checklist.md](assets/quality-gate-checklist.md) |
-| 文档结构校验脚本 | [.ai/skills/sdx-test/scripts/validate-test.sh](scripts/validate-test.sh) |
-| TDD 文档模板 | [.ai/skills/sdx-test/assets/tdd-template.md](assets/tdd-template.md) |
+| 设计原则与反模式 | [reference/design-principles.md](reference/design-principles.md) |
+| 五步工作流详细规范 | [reference/workflow-spec.md](reference/workflow-spec.md) |
+| 质量门禁验收清单 | [assets/quality-gate-checklist.md](assets/quality-gate-checklist.md) |
+| 文档结构校验脚本 | [scripts/validate-test.sh](scripts/validate-test.sh) |
+| TDD 文档模板 | [assets/tdd-template.md](assets/tdd-template.md) |
 | 上游：产品需求 | `.ai/skills/sdx-prd/SKILL.md` |
 | 上游：技术设计 | `.ai/skills/sdx-design/SKILL.md` |
 | 知识库 | `knowledge/`、`requirements/.../specs/` |
