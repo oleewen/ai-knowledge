@@ -1,4 +1,4 @@
-# AI AGENTS 开发指南
+# AI AGENTS 开发约定
 
 ## 开发规范说明
 
@@ -22,10 +22,7 @@
 | 文件 | 说明 |
 |------|------|
 | [.ai/rules/design/design-guidelines.md](design/design-guidelines.md) | 设计规范总纲：DDD 原则、架构原则、评审标准、术语与文档规范 |
-| [.ai/rules/design/design-template.md](design/design-template.md) | 详细设计模板：业务分析、应用架构、API/逻辑/数据模型 |
-| [.ai/rules/design/architecture-template.md](design/architecture-template.md) | 概要设计模板：业务分析、系统架构、能力定义、VALET 技术选型 |
-| [.ai/skills/sdx-design/assets/add-template.md](../skills/sdx-design/assets/add-template.md) | 架构设计说明书(ADD)：与 **sdx-design** 配套；设计概述、架构设计、详细设计、需求规约、附录 |
-| [.ai/rules/design/api-readme-template.md](design/api-readme-template.md) | API 文档索引模板：版本、认证、响应格式、错误码、模块索引 |
+| [.ai/skills/sdx-design/assets/add-template.md](../skills/sdx-design/assets/add-template.md) | 架构设计说明书(ADD)：与 **sdx-design** 配套；设计概述；架构设计（概要：业务/系统架构、能力、VALET）；详细设计（名词定义、流程与领域模型、应用 C4、API/逻辑/数据模型）；API 文档索引（如 `system/api/README.md`：版本、认证、响应、错误码、模块索引）见模板第 3 章「API 详细设计」与 `specs/` 规约；需求规约、附录 |
 
 ### 3. 测试规范 (testing/)
 
@@ -51,7 +48,7 @@
 | 文件 | 说明 |
 |------|------|
 | [.ai/skills/sdx-prd/assets/prd-template.md](../skills/sdx-prd/assets/prd-template.md) | 产品需求说明书(PRD)：产品概述、业务流程、用户故事与用例、功能模块、业务规则、验收标准；产出 `system/requirements/.../PRD-{ID}-{N}.md` |
-| [.ai/skills/sdx-design/assets/add-template.md](../skills/sdx-design/assets/add-template.md) | 架构设计说明书(ADD)：设计概述、架构设计、详细设计、需求规约、附录；产出 `system/requirements/.../ADD-{ID}-{N}.md`（与 sdx-design 技能配套） |
+| [.ai/skills/sdx-design/assets/add-template.md](../skills/sdx-design/assets/add-template.md) | 架构设计说明书(ADD)：设计概述、架构设计、详细设计（原独立详细设计模板范畴）、需求规约、附录；产出 `system/requirements/.../ADD-{ID}-{N}.md`（与 sdx-design 技能配套） |
 | [.ai/skills/sdx-test/assets/tdd-template.md](../skills/sdx-test/assets/tdd-template.md) | 测试设计说明书(TDD)：测试目标与范围、测试策略、测试用例、测试数据与环境、进出标准；产出 `system/requirements/.../TDD-{ID}-{N}.md`（与 sdx-test 技能配套） |
 
 ### 7. 文档规范 (document/)
@@ -60,7 +57,7 @@
 |------|------|
 | [.ai/rules/document/document-guidelines.md](document/document-guidelines.md) | 文档与注释规范：JavaDoc、类/包文档、代码注释、TODO 约定 |
 
-### 8. 根目录
+### 8. AGENTS规范
 
 | 文件 | 说明 |
 |------|------|
@@ -80,9 +77,7 @@
 ### 设计类
 
 - **设计指南**：DDD 统一语言、限界上下文、聚合根、领域事件；六边形/整洁架构、CQRS；SOLID/KISS/DRY/YAGNI；术语编码（业务流程 a.b → 业务活动 a.b.c → 任务 a.b.c.d）；图表用 Mermaid。
-- **详细设计模板**：名词定义 → 业务流程(编码 a.b) → 领域模型(聚合根/实体/值对象/事件) → 能力定义 → 应用架构(C4) → API 设计 → 逻辑模型(类图/状态机/时序) → 数据模型(ER/表结构)。
-- **概要设计模板**：主流程/子流程编码、领域对象表、系统 C4、能力与 SLA、VALET 技术选型（Volume/Availability/Latency/Error/Ticket）。
-- **ADD**：应用/技术/工程/数据架构；C4 + mermaid；职责边界表、核心组件、API 清单、数据库选型决策图。
+- **架构设计(ADD)**：模版 [.ai/skills/sdx-design/assets/add-template.md](../skills/sdx-design/assets/add-template.md)。与 **sdx-design** 配套。含概要层（主流程/子流程编码、领域对象表、系统 C4、能力与 SLA、VALET）；详细设计侧（名词定义、业务流程编码、领域模型、能力与应用架构 C4、API、类图/状态机/时序、数据模型）；以及应用/技术/工程/数据架构、职责边界、核心组件、API 清单、数据库选型等 ADD 结构项。
 
 ### 测试类
 

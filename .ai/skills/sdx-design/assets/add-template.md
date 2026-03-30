@@ -1,27 +1,29 @@
-# {架构设计标题}
+#  {架构设计标题}
 
 ## 1. 设计概述
 
 ### 1.1 设计目标
 
 - 关联需求分析：`system/analysis/ANALYSIS-{ID}.md`
-- 关联产品需求：`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`（与 sdx-prd 产出命名一致）
+- 关联产品需求：`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`
 - MVP阶段：MVP-{N}
 
 ### 1.2 设计约束
+
 <!-- 技术约束、架构约束、兼容性约束等 -->
 
 ### 1.3 关键设计决策
 
+
 | 决策编号 | 决策点 | 决策结果 | 决策理由 | 备选方案 |
-| --------- | ------- | --------- | --------- | --------- |
-| DD-001 | | | | |
+| ---------- | -------- | ---------- | ---------- | ---------- |
+| DD-001   |        |          |          |          |
 
 ## 2. 架构设计
 
 ### 2.1 系统架构设计
 
-#### 系统架构图
+#### 系统架构
 
 ```mermaid
 graph TD
@@ -35,10 +37,11 @@ graph TD
 
 #### 服务变更
 
-| 服务名称  | 变更类型 | 变更说明    |
-| --------- | -------- | ----------- |
-| service-a | 变更     | 新增xxx功能 |
-| service-b | 新增     | 新服务      |
+
+| 服务名称  | 所属应用   | 变更类型 | 变更说明    |
+| ----------- | ------------ | ---------- | ------------- |
+| service-a | xx-service | 变更     | 新增xxx功能 |
+| service-b | yy-service | 新增     | 新服务      |
 
 #### 服务交互
 
@@ -48,7 +51,7 @@ sequenceDiagram
     participant ServiceA
     participant ServiceB
     participant DB
-    
+  
     Client->>ServiceA: POST /api/xxx
     ServiceA->>ServiceB: gRPC call
     ServiceB->>DB: Query
@@ -59,9 +62,10 @@ sequenceDiagram
 
 ### 2.2 接口协议设计
 
-| 接口名称 | 所属服务 | 能力说明 | 输入输出 |
-| --------------- | -------- | -------- | ------ |
-| XX接口 | serivice-a | 提供XX能力 | 输入：XX <br/> 输出：YY |
+
+| 接口名称    | 所属服务      | 能力说明      | 输入输出                   | 关键步骤     |
+| ---------- | ------------ | ------------ | ------------------------ | ----------- | 
+| XX接口     | serivice-a   | 提供XX能力    | 输入：XX<br/> 输出：YY      |             |
 
 ### 2.3 领域模型设计
 
@@ -88,11 +92,35 @@ classDiagram
 
 #### 领域事件
 
+
 | 事件名称        | 触发条件 | 携带数据 | 消费者 |
-| --------------- | -------- | -------- | ------ |
+| ----------------- | ---------- | ---------- | -------- |
 | XxxCreatedEvent |          |          |        |
 
 ### 2.4 数据架构设计
+
+#### 数据存储选型
+
+```mermaid
+flowchart LR
+    Start(["🚀 存储选型开始"]) --> Q1{"数据是否结构化<br/>且需要复杂事务？"}
+
+    Q1 -->|"是"| Q3{"<b>数据量大吗？</b>"}
+		Q3-->|"累计不超5千万，单表存储"|SQL["🗄️ <b>RDB</b><br/>MySQL<br/>PostgreSQL"]
+		Q3-->|"累计超5千万，分表存储"|SQL
+		Q3-->|"累计超5千万，不分表"|OB["🗄️ <b>RDB</b><br/>OceanBase<br/>TiDB"]
+
+    Q1 -->|"否"| Q2{"核心访问模式是什么？"}
+
+    Q2 -->|"高并发KV读写"| A_KV["⚡ <b>缓存/KV 存储</b><br/>KVRocks<br/>Redis<br/>Memcached"]
+    Q2 -->|"文档型灵活Schema"| A_DOC["📄 <b>文档数据库</b><br/>MongoDB"]
+    Q2 -->|"海量日志/全文检索"| A_LOG["🔍 <b>搜索引擎</b><br/>Elasticsearch"]
+    Q2 -->|"时序数据"| A_TS["⏱️ <b>时序数据库</b><br/>InfluxDB<br/>TDengine<br/>TimescaleDB"]
+    Q2 -->|"海量列式分析"| A_COL["📊 <b>列式存储/分析</b><br/>Doris<br/>ClickHouse<br/>HBase"]
+    Q2 -->|"图关系查询"| A_GRAPH["🕸️ <b>图数据库</b><br/>Neo4j<br/>JanusGraph"]
+    Q2 -->|"对象/文件存储"| A_OBJ["📦 <b>对象/文件存储</b><br/>MinIO<br/>S3<br/>HDFS"]
+    Q2 -->|"消息/事件流"| A_MSG["📨 <b>消息/事件流</b><br/>Kafka<br/>RockitMQ<br/>RabbitMQ"]
+```
 
 #### 数据库表设计
 
@@ -124,6 +152,7 @@ erDiagram
 ### 2.5 发布方案设计
 
 #### 发布步骤
+
 <!-- 明确本次变更涉及的部署与环境变更，按顺序列出操作项（例如：容器/服务升级、数据库迁移、配置/环境变量调整、接口切换等） -->
 
 #### 发布检查
@@ -133,7 +162,7 @@ erDiagram
 - 回滚/兜底策略是否有预案
 - 数据迁移是否有验证脚本
 - 三方验证、全链路验证是否已准备好
-  
+
 #### 回滚方案
 
 - 回滚前需备份相关数据库与配置
@@ -159,7 +188,7 @@ graph TD
 
 ### 3.2 API详细设计
 
-#### API-001：{API名称}
+#### API-001： {API名称}
 
 - 能力描述：提供XX能力
 
@@ -193,11 +222,13 @@ graph TD
 
 **错误码**：
 
+
 | 错误码 | 错误信息 | 触发条件 | HTTP状态码 |
-| ------ | -------- | -------- | ---------- |
-| 40001  |          |          | 400        |
+| -------- | ---------- | ---------- | ------------ |
+| 400001 |          |          | 400        |
 
 **幂等性**：
+
 <!-- 描述幂等性保障方案 -->
 
 ### 3.3 业务逻辑设计
@@ -288,25 +319,25 @@ sequenceDiagram
 function processXxx(request):
     // 1. 参数校验
     validate(request)
-    
+  
     // 2. 业务规则检查
     checkBusinessRules(request)
-    
+  
     // 3. 执行业务逻辑
     result = executeLogic(request)
-    
+  
     // 4. 持久化
     save(result)
-    
+  
     // 5. 发布领域事件
     publishEvent(XxxCreatedEvent(result))
-    
+  
     return result
 ```
 
 #### 一致性设计
-<!-- 乐观锁/悲观锁/分布式锁方案 -->
-<!-- 本地事务/分布式事务/最终一致性方案 -->
+
+<!-- 乐观锁/悲观锁/分布式锁方案、本地事务/分布式事务/最终一致性方案 -->
 
 ### 3.4 数据访问设计
 
@@ -353,11 +384,12 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 
 #### 缓存策略
 
-| 缓存Key模式               | 数据类型    | 过期时间 | 更新策略 | 用途               |
-|--------------------------|------------|----------|----------|--------------------|
-| table_name1:{id}         | hash/object| 1h       | 写后更新 | 单条主数据缓存     |
-| table_name2:{id}         | hash/object| 1h       | 写后更新 | 单条附属数据缓存   |
-| table_name1:list:page:{n}| list       | 10min    | 定期刷新 | 列表分页缓存       |
+
+| 缓存Key模式               | 数据类型    | 过期时间 | 更新策略 | 用途             |
+| --------------------------- | ------------- | ---------- | ---------- | ------------------ |
+| table_name1:{id}          | hash/object | 1h       | 写后更新 | 单条主数据缓存   |
+| table_name2:{id}          | hash/object | 1h       | 写后更新 | 单条附属数据缓存 |
+| table_name1:list:page:{n} | list        | 10min    | 定期刷新 | 列表分页缓存     |
 
 - 删除/更新数据时需同步刷新缓存
 - 缓存雪崩可加随机抖动过期
@@ -365,9 +397,11 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 ### 3.5 非功能性设计
 
 #### 安全设计
+
 <!-- 认证授权、数据脱敏、审计日志等 -->
 
 #### 可观测设计
+
 <!-- 考虑该记录什么日志，增加什么监控，什么情况下报警 -->
 
 **日志** ：
@@ -380,18 +414,20 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 
 <!-- 规约术语：与规约文件名或 OpenAPI/领域名一致的可读简称；应用实体 ID、服务实体 ID 须与 `system/knowledge/KNOWLEDGE_INDEX.md` / `knowledge/technical/` 中 APP-*、MS-* 对齐。 -->
 
-| 规约类型 | 规约术语 | 应用 | 服务| 文件路径 | 描述 |
-| -------- | -------- | ------------------ | ------------------ | ------------------------------------------------- | ---- |
-| API规约 | `{api-spec-name}` | `APP-{ID}` | `MS-{ID}` | `system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/api/xxx.yaml` | xx |
-| 领域规约 | `{domain-spec-name}` | `APP-{ID}` | `MS-{ID}` | `system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/domain/xxx.yaml` | xx |
-| 数据规约 | `{data-spec-name}` | `APP-{ID}` | `MS-{ID}` | `system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/data/xxx.yaml` | xx |
+
+| 规约类型 | 规约术语             | 应用       | 服务      | 文件路径                                                                            | 描述 |
+| ---------- | ---------------------- | ------------ | ----------- | ------------------------------------------------------------------------------------- | ------ |
+| API规约  | `{api-spec-name}`    | `APP-{ID}` | `MS-{ID}` | `system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/api/xxx.yaml`    | xx   |
+| 领域规约 | `{domain-spec-name}` | `APP-{ID}` | `MS-{ID}` | `system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/domain/xxx.yaml` | xx   |
+| 数据规约 | `{data-spec-name}`   | `APP-{ID}` | `MS-{ID}` | `system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/data/xxx.yaml`   | xx   |
 
 ## 5. 附录
 
 ### 5.1 变更历史
 
+
 | 版本  | 日期 | 变更说明 | 作者      |
-| ----- | ---- | -------- | --------- |
+| ------- | ------ | ---------- | ----------- |
 | 1.0.0 |      | 初始版本 | architect |
 
 ### 5.2 质量自查表 (Self-Check)
@@ -408,6 +444,7 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 - [ ] **格式规范**：表格、编号、结构、用词等格式规范，易于维护。
 
 ## 文档元数据
+
 ```
 id: "ADD-{REQUIREMENT-ID}-MVP{N}"
 title: "{技术设计标题}"
@@ -421,4 +458,3 @@ parent: "PRD-{对应产品需求编号}"
 mvp_phase: "MVP-{N}"
 tags: []
 ```
-

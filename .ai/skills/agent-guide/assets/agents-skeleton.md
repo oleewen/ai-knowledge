@@ -1,6 +1,5 @@
 # AGENTS.md 推荐骨架
 
-> 权威基准即本文件（`.ai/skills/agent-guide/assets/agents-skeleton.md`），可裁剪但禁止与语义冲突。
 > 占位符 `{...}` 需替换为实际内容；`<!-- optional -->` 标记可选段。
 
 ---
@@ -70,9 +69,9 @@
 
 ### 会话开始
 
-1. 读 README.md 与本文件。
-2. 业务细节查 {INDEX 相对路径}。
-3. 按任务打开 system/ 其他文档。
+1. 读 `README.md` 与本文件。
+2. 业务细节查 `INDEX_GUIDE.md`（或 `system/INDEX_GUIDE.md`）。
+3. 按任务打开 `system/` 其他文档。
 
 ### 会话中
 
@@ -82,7 +81,7 @@
 
 ### 会话结束
 
-- 新规则 → 确认后写入 system/ 相应处。
-- 新约束 → 确认后更新本文件或 README。
+- 新规则 → 确认后写入 `system/` 相应处。
+- 新约束 → 确认后更新本文件或 `README.md`。
 - 更新 changelogs；标注未完成项。
 ```
