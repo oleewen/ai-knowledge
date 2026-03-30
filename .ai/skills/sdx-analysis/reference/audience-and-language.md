@@ -1,0 +1,22 @@
+# 受众与文档语言（sdx-analysis）
+
+主要读者为**产品经理、需求分析师**与参与范围评审的**业务方**。与 [../../sdx-solution/reference/audience-and-language.md](../../sdx-solution/reference/audience-and-language.md) **同一原则**：写**谁能做什么、流程如何变、验收与对外承诺是什么**，而不是系统内部如何调用。
+
+Agent **可以**查阅 `knowledge/`、`knowledge/technical/`、INDEX_GUIDE 等核对事实；写入 `ANALYSIS-{ID}.md` 时**必须**将工程事实转写为**场景、规则、验收与协作**表述。转写示例见解决方案侧 [audience-and-language.md](../../sdx-solution/reference/audience-and-language.md)。
+
+## 正文宜写 / 宜弱化
+
+| 宜写入正文（产品/需求分析通用语） | 宜弱化或避免（留给下游技术设计） |
+|----------------------------------|----------------------------------|
+| 角色、场景、用户故事或主流程 | 类名、接口名、方法名 |
+| 业务规则、异常与边界（业务话术） | 表名、字段名、消息队列/缓存等中间件名 |
+| 验收标准、优先级、MVP 边界 | 具体技术栈、框架、部署形态 |
+| 协作依赖（与哪个团队/环节对齐） | 服务模块名、协议类型（REST/gRPC 等） |
+
+## 用词说明
+
+需求工程常用词（用户故事、验收标准、MVP、非功能需求）**可以**使用，但释义须保持业务可读。非功能项优先用「高峰时段仍须流畅」「关键操作须可追责」等**带业务语境**的表述；若需研发侧量化指标（P99、QPS 等），可写「须与研发共拟可度量指标」或集中在模板 §8.4，避免裸指标堆砌。
+
+## 与模板的关系
+
+产出结构见 [../assets/analysis-template.md](../assets/analysis-template.md)；模板内对读者与语言的提示与本文件一致，以本文件与解决方案侧 [audience-and-language.md](../../sdx-solution/reference/audience-and-language.md) 为规范层说明。

@@ -63,11 +63,11 @@ description: >
 
 按 [assets/agents-skeleton.md](assets/agents-skeleton.md) 骨架生成（该文件即权威基准）。
 
-三文件去重规则见 [reference/execution-spec.md](reference/execution-spec.md)。
+三文件去重规则见 [reference/three-file-spec.md](reference/three-file-spec.md)。
 
 ### 步骤 5：验证
 
-按 [reference/execution-spec.md](reference/execution-spec.md) 验收清单执行。可使用辅助脚本：
+按 [reference/quality-standards.md](reference/quality-standards.md) 验收清单执行。可使用辅助脚本：
 
 ```bash
 scripts/validate-guide.sh --root .
@@ -95,7 +95,10 @@ scripts/validate-guide.sh --root .
 
 | 资源 | 路径 |
 |------|------|
-| 执行规范与验证清单 | [reference/execution-spec.md](reference/execution-spec.md) |
+| 执行规范（Index 解析 + 探索策略 + 错误处理） | [reference/execution-spec.md](reference/execution-spec.md) |
+| 三文件分工去重与产出规范 | [reference/three-file-spec.md](reference/three-file-spec.md) |
+| 验收清单与反模式 | [reference/quality-standards.md](reference/quality-standards.md) |
 | README 输出骨架 | [assets/readme-skeleton.md](assets/readme-skeleton.md) |
 | AGENTS 输出骨架与基准 | [assets/agents-skeleton.md](assets/agents-skeleton.md) |
+| 常见陷阱与防错规则 | [gotchas.md](gotchas.md) |
 | 路径验证脚本 | [scripts/validate-guide.sh](scripts/validate-guide.sh) |

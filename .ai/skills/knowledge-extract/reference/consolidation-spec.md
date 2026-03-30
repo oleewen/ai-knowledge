@@ -43,7 +43,7 @@ graph TD
 
 ### 3. 对称性检查
 
-遵守内置 `symmetry.rules`：
+遵守内置 `symmetry.rules`（完整定义见 [builtin-config.md](builtin-config.md)）：
 
 | 规则 ID | 说明 |
 |---------|------|
@@ -54,149 +54,18 @@ graph TD
 
 ---
 
-## 各视角 JSON 结构差异
+## 各视角 entities 结构差异
 
-四个视角共享 `schema_version: "2.1"` 和 `metadata` 节，但 `entities` 结构有差异：
+四个视角共享 `schema_version: "2.1"` 和 `metadata` 节，但 `entities` 结构不同：
 
 | 视角 | entities 结构 | 说明 |
 |------|-------------|------|
-| technical | **分类对象**：`{ systems: [], applications: [], services: [], apis: [] }` | 按层级分组，便于索引 |
+| technical | **分类对象**：`{ systems[], applications[], services[], apis[] }` | 按层级分组 |
 | data | **扁平数组**：`[...]` | DS 和 ENT 通过 `parent_id` 关联 |
 | business | **扁平数组**：`[...]` | BD→BSD→BC→AGG→AB 通过 `parent_id`/`children` 关联 |
 | product | **扁平数组**：`[...]` | PL→PM→FT→UC 通过 `parent_id` 关联 |
 
-### technical_knowledge.json
-
-```json
-{
-  "schema_version": "2.1",
-  "perspective": "technical",
-  "generated_at": "ISO-8601",
-  "entities": {
-    "systems": [{
-      "hierarchy": "SYS", "id": "001", "full_id": "SYS-{NAME}",
-      "alias": "...", "name": "...", "description": "...",
-      "architecture": {
-        "apps": [{ "id": "APP-...", "name": "...", "startup_class": "...", "role": "..." }],
-        "external_dependencies": [{ "system": "...", "integration": "...", "purpose": "..." }],
-        "ddd_layers": ["Gateway", "Application", "Domain", "Infrastructure"]
-      },
-      "evidence_chain": [{ "source": "...", "confidence": "high|medium|low", "type": "document|code_location|config" }],
-      "cross_references": { "business": [...], "product": [...] }
-    }],
-    "applications": [{
-      "hierarchy": "APP", "id": "001", "full_id": "APP-{NAME}",
-      "parent_sys_id": "SYS-{NAME}",
-      "alias": "...", "name": "...", "description": "...",
-      "startup_class": "...", "maven_module": "...",
-      "service_ids": ["MS-001", ...],
-      "mq_consumers": ["..."],
-      "jobs": ["..."], "jobs_count": 0,
-      "evidence_chain": [...], "cross_references": { ... }
-    }],
-    "services": [{
-      "hierarchy": "MS", "id": "001",
-      "alias": "...", "name": "...",
-      "host_class": "...", "host_module": "...", "protocol": "HTTP|Dubbo|HTTP+Dubbo",
-      "merge_note": "...",
-      "evidence_chain": [...],
-      "cross_references": { "business": [...], "product": [...], "apis": [...] }
-    }],
-    "apis": [{
-      "hierarchy": "API", "id": "001",
-      "alias": "{MS别名}.{method}", "name": "...",
-      "service_id": "MS-001",
-      "host_class": "...", "host_module": "...",
-      "method_signature": "methodName(ParamType param)",
-      "evidence_chain": [{ "source": "Class#method:line", "confidence": "high", "type": "code_location" }]
-    }]
-  },
-  "metadata": {
-    "total_systems": 0, "total_applications": 0, "total_services": 0, "total_apis": 0, "total_entities": 0,
-    "extraction_basis": "...", "schema_notes": "...", "changes_from_previous": "..."
-  }
-}
-```
-
-### data_knowledge.json
-
-```json
-{
-  "schema_version": "2.1",
-  "perspective": "data",
-  "generated_at": "ISO-8601",
-  "entities": [
-    {
-      "hierarchy": "DS", "id": "001", "full_id": "DS-{NAME}",
-      "alias": "...", "name": "...", "description": "...",
-      "type": "TiDB / MySQL 8.0+",
-      "config_key": "...",
-      "owned_by_app_id": ["APP-..."],
-      "notes": ["..."],
-      "evidence_chain": [...],
-      "cross_references": { "business": [...] }
-    },
-    {
-      "hierarchy": "ENT", "id": "001", "full_id": "ENT-001",
-      "parent_id": "DS-{NAME}",
-      "alias": "...", "name": "...",
-      "logical_name": "JavaClassName",
-      "physical_table": "table_name",
-      "evidence_chain": [...],
-      "cross_references": { "datasource": "DS-001", "business": [...], "technical": [...] }
-    }
-  ],
-  "metadata": {
-    "total_datasources": 0, "total_entities": 0, "total_items": 0,
-    "extraction_basis": "...", "schema_notes": "...", "changes_from_previous": "..."
-  }
-}
-```
-
-### business_knowledge.json
-
-```json
-{
-  "schema_version": "2.1",
-  "perspective": "business",
-  "generated_at": "ISO-8601",
-  "confidence": "high",
-  "entities": [
-    { "hierarchy": "BD", "full_id": "BD-{NAME}", "strategic_classification": "core_domain", "children": ["BSD-..."], ... },
-    { "hierarchy": "BSD", "full_id": "BSD-{NAME}", "parent_id": "BD-{NAME}", "bounded_contexts": ["BC-..."], ... },
-    { "hierarchy": "BC", "full_id": "BC-{NAME}", "parent_id": "BSD-{NAME}", "implemented_by_app_id": "APP-...", "aggregates": ["AGG-..."], "ubiquitous_language": { ... }, ... },
-    { "hierarchy": "AGG", "full_id": "AGG-{NAME}", "parent_id": "BC-{NAME}", "root_entity": "...", "entities": [...], "invariants": [...], "persisted_as_entity_ids": [...], "implemented_by_service_ids": [...], "abilities": ["AB-..."], ... },
-    { "hierarchy": "AB", "full_id": "AB-{NAME}", "parent_id": "AGG-{NAME}", "capability": "...", "apis": [{ "id": "API-...", "method": "...", "description": "..." }], ... }
-  ],
-  "metadata": {
-    "total_business_domains": 0, "total_business_subdomains": 0, "total_bounded_contexts": 0, "total_aggregates": 0, "total_abilities": 0, "total_entities": 0,
-    "extraction_basis": "...", "schema_notes": "...", "changes_from_previous": "..."
-  }
-}
-```
-
-### product_knowledge.json
-
-```json
-{
-  "schema_version": "2.1",
-  "perspective": "product",
-  "generated_at": "ISO-8601",
-  "confidence": "high",
-  "entities": [
-    { "hierarchy": "PL", "full_id": "PL-{NAME}", "target_users": [...], ... },
-    { "hierarchy": "PM", "full_id": "PM-{NAME}", "parent_id": "PL-{NAME}", ... },
-    { "hierarchy": "FT", "full_id": "FT-{NAME}", "parent_id": "PM-{NAME}", "invokes_api_ids": [...], "acceptance_criteria": [...], "realizes_use_case_ids": [...], ... },
-    { "hierarchy": "UC", ... }
-  ],
-  "metadata": {
-    "total_products": 0, "total_modules": 0, "total_features": 0, "total_use_cases": 0, "total_entities": 0,
-    "extraction_basis": "...", "schema_notes": "...", "changes_from_previous": "..."
-  }
-}
-```
-
-完整示例模板见 [../assets/knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
+完整 JSON 结构与示例见 [../assets/knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
 
 ---
 

@@ -1,6 +1,6 @@
 # 设计原则与反模式
 
-sdx-design 技能的完整设计约束。主文件 SKILL.md 中的「核心约束」为精简版，本文件为完整规范。
+sdx-design 技能的完整设计约束。[SKILL.md](../SKILL.md) 中的「核心约束」为精简版，本文件为完整规范。验收勾选项见 [quality-checklist.md](quality-checklist.md)。
 
 ---
 

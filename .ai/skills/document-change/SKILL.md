@@ -15,6 +15,13 @@ description: >
 **输入**：时间基准 + 输出目录 + 代码库
 **输出**：`{output_dir}/changes-index.json`（结构化数据）、`{output_dir}/changes-index.md`（可读摘要）
 
+| 类型 | 内容 |
+|------|------|
+| 硬输入 | 代码库根目录 |
+| 可选输入 | 时间基准（`--since`）、输出目录（`--output`）、已有 `changes-index.json`（增量模式） |
+| 固定输出 | `{output_dir}/changes-index.json`、`{output_dir}/changes-index.md` |
+| 不产出 | 不生成 INDEX_GUIDE、不修改知识实体、不更新 README/AGENTS |
+
 ## 参数
 
 | 参数 | 必需 | 默认值 | 说明 |
@@ -22,11 +29,7 @@ description: >
 | `--since` | 否 | 自动 | 变更起始时间（`yyyy-MM-dd HH:mm:ss.SSS` 或 epoch ms） |
 | `--output` | 否 | `./changelogs/` | 输出目录（优先级：用户指定 > `./changelogs/` > `./system/changelogs/`） |
 
-### 时间基准优先级
-
-1. 命令行 `--since` 参数
-2. 已有 `changes-index.json` 中的 `baseline_time`
-3. 默认值 `2020-01-01 00:00:00.000`
+时间基准按优先级：`--since` 参数 > 已有 JSON 的 `baseline_time` > 默认值 `2020-01-01`。详见 [reference/execution-spec.md](reference/execution-spec.md)。
 
 ## 工作流（五步）
 
@@ -38,18 +41,14 @@ description: >
 
 ### 步骤 2：时间基准计算
 
-- 读取或计算 `baseline_time`、`cutoff_time`
-- `cutoff_time = max(baseline_time, latest_git_commit_time)`
+- 按优先级确定 `baseline_time`
+- 计算 `cutoff_time = max(baseline_time, latest_git_commit_time)`
+
+详细计算逻辑见 [reference/execution-spec.md](reference/execution-spec.md)。
 
 ### 步骤 3：数据采集
 
-三源并行采集，各自按时间阈值过滤：
-
-| 来源 | 过滤规则 | 采集内容 |
-|------|----------|----------|
-| Git 提交 | `commit_time > baseline_time` | hash、作者、信息、变更文件列表 |
-| CHANGELOG | `entry_time > cutoff_time` | 版本号、日期、条目内容 |
-| 本地文件 | `mtime > cutoff_time` | 文件路径、修改时间 |
+三源并行采集，各自按时间阈值过滤：Git 提交（`> baseline_time`）、CHANGELOG 条目（`> cutoff_time`）、本地文件（`> cutoff_time`）。采集规则、过滤条件与排除列表见 [reference/execution-spec.md](reference/execution-spec.md)。
 
 可使用辅助脚本：
 
@@ -60,17 +59,12 @@ scripts/change-indexing.sh --since "2026-03-20 00:00:00.000" --output ./changelo
 ### 步骤 4：数据处理与输出
 
 - 合并三源数据，统一时间格式（`yyyy-MM-dd HH:mm:ss.SSS` + 13 位 ms）
-- 按时间倒序排列
-- 按模板生成 JSON 和 Markdown（见 `assets`）
+- 按 `time_ms` 倒序排列
+- 按模板生成 JSON 和 Markdown（见 [assets](assets)）
 
 ### 步骤 5：验证
 
-按 [reference/execution-spec.md](reference/execution-spec.md) 中的验证清单执行：
-
-- 文件存在性、JSON 格式有效性
-- 必需字段完整性
-- 时间一致性（所有变更 > cutoff_time）
-- JSON 与 MD 统计数一致
+按 [reference/execution-spec.md](reference/execution-spec.md) 中的验证清单执行：文件存在性、JSON 格式有效性、必需字段完整性、时间一致性、双格式统计数一致。
 
 ## 核心约束
 
@@ -96,4 +90,5 @@ scripts/change-indexing.sh --since "2026-03-20 00:00:00.000" --output ./changelo
 | 执行规范与验证清单 | [reference/execution-spec.md](reference/execution-spec.md) |
 | JSON 输出模板 | [assets/changes-index-template.json](assets/changes-index-template.json) |
 | Markdown 输出模板 | [assets/changes-index-template.md](assets/changes-index-template.md) |
+| 常见陷阱与防错规则 | [gotchas.md](gotchas.md) |
 | 辅助脚本 | [scripts/change-indexing.sh](scripts/change-indexing.sh) |

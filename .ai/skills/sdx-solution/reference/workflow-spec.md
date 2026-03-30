@@ -270,9 +270,9 @@ D. 其他（请说明）
 | `created` / `updated` | 当前日期（YYYY-MM-DD） |
 | `author` | Agent 名称 |
 
-3. **语言审查**：通读全文，将技术术语转写为业务表述（参照 [audience-language-spec.md](audience-language-spec.md)）
+3. **语言审查**：通读全文，将技术术语转写为业务表述（参照 [audience-and-language.md](audience-and-language.md)）
 4. **补充附录**：术语表（§9.1）、参考文档（§9.2）
-5. **质量门禁自查**：逐项检查 [../assets/quality-gate-checklist.md](../assets/quality-gate-checklist.md)
+5. **质量门禁自查**：逐项检查 [quality-checklist.md](quality-checklist.md)
 6. **输出**：写入 `system/solutions/SOLUTION-{ID}.md`
 
 ### 输出目录

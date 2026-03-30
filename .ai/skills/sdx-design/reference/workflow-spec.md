@@ -1,6 +1,6 @@
 # 四步工作流详细规范
 
-sdx-design 技能的核心工作流算法。主文件 SKILL.md 中的工作流为摘要，本文件为完整规范。
+sdx-design 技能的核心工作流算法。[SKILL.md](../SKILL.md) 中的工作流为摘要，本文件为完整规范。
 
 ---
 
@@ -203,7 +203,7 @@ technical-writer + doc-updater
    - 参考文档（§4.1）：列出规约文件路径
    - 变更历史（§5.1）
    - 质量自查表（§5.2）
-4. **质量门禁自查**：逐项检查 [../assets/quality-gate-checklist.md](../assets/quality-gate-checklist.md)
+4. **质量门禁自查**：逐项检查 [quality-checklist.md](quality-checklist.md)
 5. **输出**：
    - ADD 写入 `system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`
    - specs 写入 `system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/`

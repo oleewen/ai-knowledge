@@ -90,13 +90,16 @@
 
 ## 快速检查清单
 
-执行完毕后，对照以下项目快速自查：
+完整验收清单与反模式见 [reference/quality-standards.md](reference/quality-standards.md)。以下为本文所列陷阱的快速自查：
 
-- [ ] Index 来自磁盘落盘文件，非对话粘贴
-- [ ] README 与 AGENTS 无大段重复内容
-- [ ] AGENTS 未堆叠 INDEX §3 API 入口表
-- [ ] README 目录树与 INDEX §2 一致
-- [ ] AGENTS 项目概述 ≤3 行
-- [ ] AGENTS 首条参考路径可跳转
-- [ ] 未索引区域未写成已核实事实
-- [ ] 未在本 Skill 内调用 document-indexing
+- [ ] Index 来自磁盘落盘文件，非对话粘贴（§1.1）
+- [ ] 未命中 Index 时已终止，未编造结构（§1.2）
+- [ ] 以 INDEX 为地图最小阅读，未通读全仓（§2.1）
+- [ ] AGENTS 未粘贴 INDEX §3 API 入口表（§2.2）
+- [ ] 未索引区域未写成已核实事实（§2.3）
+- [ ] 先 README 后 AGENTS，命令块未重复（§3.1）
+- [ ] README 目录树与 INDEX §2 一致（§3.2）
+- [ ] AGENTS 项目概述 ≤3 行（§3.3）
+- [ ] 更新模式下合并而非覆盖（§3.4）
+- [ ] AGENTS 首条参考路径可跳转（§4.2）
+- [ ] 未在本 Skill 内调用 document-indexing（§5）

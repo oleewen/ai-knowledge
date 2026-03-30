@@ -2,6 +2,8 @@
 
 sdx-prd 技能的完整设计约束。主文件 SKILL.md 中的「核心约束」为精简版，本文件为完整规范。
 
+定稿前逐项勾选见 [quality-checklist.md](quality-checklist.md)（与本文件「质量标准」互补：本文件讲原则，清单可执行）。
+
 ---
 
 ## 设计原则

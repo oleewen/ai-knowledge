@@ -285,7 +285,7 @@ technical-writer + doc-updater
    - 原型/线框图链接（§10.1）
    - 变更历史（§10.2）
    - 质量自查表（§10.3）
-4. **质量门禁自查**：逐项检查 [../assets/quality-gate-checklist.md](../assets/quality-gate-checklist.md)
+4. **质量门禁自查**：逐项检查 [quality-checklist.md](quality-checklist.md)
 5. **输出**：写入 `system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`
 
 ### 输出目录

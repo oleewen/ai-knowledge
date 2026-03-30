@@ -1,8 +1,8 @@
 # 五步工作流详细规范
 
-sdx-analysis 技能的核心工作流算法。主文件 SKILL.md 中的工作流为摘要，本文件为完整规范。
+sdx-analysis 技能的核心工作流算法。[SKILL.md](../SKILL.md) 中的工作流为摘要，本文件为完整规范。
 
-**文档语言原则**：主要读者为**产品经理与需求分析师**（及业务评审方）。Agent **可以**查阅 `knowledge/`、`knowledge/technical/`、INDEX_GUIDE 等做事实核对；写入 `ANALYSIS-{ID}.md` 时**必须**将工程事实转写为**场景、规则、验收与协作**表述。细则见 [../../sdx-solution/reference/audience-language-spec.md](../../sdx-solution/reference/audience-language-spec.md)。
+**文档语言原则**：主要读者为**产品经理与需求分析师**（及业务评审方）。Agent **可以**查阅 `knowledge/`、`knowledge/technical/`、INDEX_GUIDE 等做事实核对；写入 `ANALYSIS-{ID}.md` 时**必须**将工程事实转写为**场景、规则、验收与协作**表述。细则见 [../../sdx-solution/reference/audience-and-language.md](../../sdx-solution/reference/audience-and-language.md)。
 
 ---
 
@@ -238,14 +238,14 @@ requirements-analyst + technical-writer（可选）
 ### 算法
 
 1. **整合**：按模板八章结构编排，字段与表格遵循模板中的**业务语言**提示
-2. **语言审读**：通读全文，对照 [../../sdx-solution/reference/audience-language-spec.md](../../sdx-solution/reference/audience-language-spec.md) 去除不当技术术语；确需保留的工程线索集中至模板 §8.4
+2. **语言审读**：通读全文，对照 [../../sdx-solution/reference/audience-and-language.md](../../sdx-solution/reference/audience-and-language.md) 去除不当技术术语；确需保留的工程线索集中至模板 §8.4
 3. **填充 frontmatter**：
    - `id`: `ANALYSIS-{YYYYMMDD}-{SEQ}`
    - `status`: `draft`
    - `created` / `updated`: 当前日期
    - `parent`: 关联的解决方案编号 `SOL-{ID}`
 4. **补充附录**：术语表（§8.1）、参考文档（§8.2）、变更历史（§8.3）；§8.4 按需
-5. **质量门禁自查**：逐项检查 [../assets/quality-gate-checklist.md](../assets/quality-gate-checklist.md) 与模板 §8.5
+5. **质量门禁自查**：逐项检查 [quality-checklist.md](quality-checklist.md) 与模板 §8.5
 6. **输出**：写入 `system/analysis/ANALYSIS-{ID}.md`
 
 ### 输出目录

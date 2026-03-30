@@ -1,6 +1,20 @@
 # sdx-prd 常见陷阱（Gotchas）
 
-本文记录执行 `sdx-prd` Skill 时高频踩坑点，供 Agent 与人类开发者参考。
+本文记录执行 `sdx-prd` 时高频踩坑点。入口与工作流摘要见 [SKILL.md](SKILL.md)；算法细节见 [reference/workflow-spec.md](reference/workflow-spec.md)；步骤 5 逐项验收见 [reference/quality-checklist.md](reference/quality-checklist.md)。
+
+## 与本 Skill 其他文件的关系
+
+| 文件 | 何时读 |
+|------|--------|
+| `SKILL.md` | 每次任务：IO、参数、五步摘要、约束与索引 |
+| `gotchas.md`（本文件） | 开始前扫一眼；卡顿时按步骤查陷阱 |
+| `assets/prd-template.md` | 撰写/整合 `PRD-{ID}-{N}.md` 时 |
+| `reference/workflow-spec.md` | 需明确步骤算法、决策点、步间产出时 |
+| `reference/audience-and-language.md` | 不确定正文能否写某类技术词时 |
+| `reference/core-concepts.md` | 核对术语口径时 |
+| `reference/design-principles.md` | 编号体系、反模式、错误处理 |
+| `reference/quality-checklist.md` | 定稿前门禁 |
+| `scripts/validate-prd.sh` | 本地校验结构时 |
 
 ---
 
@@ -137,33 +151,12 @@
 **正确做法**：输出前验证 Mermaid 语法；流程图用 `flowchart`，时序图用 `sequenceDiagram`，状态机用 `stateDiagram-v2`，用例图用 `graph`。
 
 ### 6.6 跳过质量门禁自查
-**陷阱**：PRD 写完后直接输出，未逐项检查 `quality-gate-checklist.md`。  
+**陷阱**：PRD 写完后直接输出，未逐项检查 `reference/quality-checklist.md`。  
 **后果**：编号断号、追溯链断裂、章节缺失等问题流入下游，被 `sdx-design` 或评审发现时返工成本高。  
 **正确做法**：步骤 5 必须执行质量门禁自查，所有检查项通过后才输出文档。
 
 ---
 
-## 快速检查清单
+## 定稿前核对
 
-执行完毕后，对照以下项目快速自查：
-
-- [ ] 需求分析文档已落盘且可用，`parent` 字段已填写
-- [ ] PRD 严格聚焦目标 MVP 范围，未超越 MVP 边界
-- [ ] 业务流程主流程与分支/异常流程分层描述
-- [ ] 跨系统交互已标注系统名称、交互方式与关键输入输出
-- [ ] 业务规则独立编号为 BR-n，流程节点通过 `[BR-n]` 引用
-- [ ] 每个用户故事含 Given-When-Then 验收标准，覆盖正常/备选/异常/边界场景
-- [ ] 每个用户故事标注 `关联 FR-n` 和 `关联 BR-n`
-- [ ] 用户故事符合 INVEST 原则，可独立交付
-- [ ] 用例描述含前置条件、后置条件、主成功场景、扩展场景
-- [ ] US-n ↔ UC-n 双向映射完整
-- [ ] 功能模块按业务能力域划分，非技术层次
-- [ ] 每条 BR-n 含优先级，互斥规则有冲突处理策略
-- [ ] 数据字典每个字段含类型、约束、枚举值（如适用）
-- [ ] 状态机标注终态，关键非法转换有拦截策略说明
-- [ ] 章节结构与 `prd-template.md` 十章结构完全一致，无删除章节
-- [ ] frontmatter 八个字段完整，含 `mvp_phase`
-- [ ] PRD 中无技术实现细节（无服务名、框架名、中间件名）
-- [ ] 歧义项已标注「待澄清」，未自行假设
-- [ ] 所有 Mermaid 图表语法正确可渲染
-- [ ] 质量门禁清单已逐项勾选
+完整可勾选项见 [reference/quality-checklist.md](reference/quality-checklist.md)。此处仅记三条最易漏项：`parent` / `mvp_phase` 与需求分析一致；十章不删只标「不适用」；MVP 范围与 `--mvp` 严格一致。

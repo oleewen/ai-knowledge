@@ -1,6 +1,6 @@
-# 需求分析质量门禁清单
+# 需求分析质量验收清单
 
-步骤 5 验收模板。Agent 在执行文档输出与评审时复制本清单并逐项勾选。
+步骤 5 门禁：Agent 在文档输出与评审时**打开本文件**逐项勾选（可与模板 §8.5 内嵌自查一并使用）。规范层原则与反模式见 [design-principles.md](design-principles.md)。
 
 ## 完整性
 
@@ -16,7 +16,7 @@
 
 ## 受众与语言
 
-- [ ] 正文符合 [../../sdx-solution/reference/audience-language-spec.md](../../sdx-solution/reference/audience-language-spec.md)：产品/需求分析师与业务方可独立理解主流程
+- [ ] 正文符合 [../../sdx-solution/reference/audience-and-language.md](../../sdx-solution/reference/audience-and-language.md)：产品/需求分析师与业务方可独立理解主流程
 - [ ] 接口名、表名、中间件、服务/模块名**未出现在正文**（或仅集中在模板 §8.4 并标注待研发确认）
 
 ## 一致性
@@ -44,7 +44,7 @@
 ## 格式规范
 
 - [ ] frontmatter 完整（id、title、version、status、created、updated、parent）
-- [ ] 章节结构与 analysis-template.md 一致，编号连续
+- [ ] 章节结构与 [../assets/analysis-template.md](../assets/analysis-template.md) 一致，编号连续
 - [ ] 表格格式规范，列宽合理
 - [ ] 术语表（§8.1）涵盖本文档专用术语
 - [ ] 参考文档（§8.2）列出引用的解决方案/知识库文件

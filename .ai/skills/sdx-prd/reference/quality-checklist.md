@@ -1,6 +1,8 @@
 # PRD 质量门禁清单
 
-步骤 5 验收模板。Agent 在执行文档输出与评审时复制本清单并逐项勾选。
+步骤 5 验收用。Agent 在文档输出与评审时复制本清单并逐项勾选。
+
+产出结构须与 [../assets/prd-template.md](../assets/prd-template.md) 十章一致。
 
 ## 完整性
 

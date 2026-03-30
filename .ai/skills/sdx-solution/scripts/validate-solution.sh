@@ -3,7 +3,7 @@ set -euo pipefail
 
 # 解决方案文档结构校验脚本
 # 用法: scripts/validate-solution.sh [--doc-root <path>] [--file <path>]
-# 默认 --doc-root 为 docs，与 SKILL 约定路径 docs/solutions/SOLUTION-*.md 一致
+# 默认 --doc-root 为 system，与 SKILL 约定路径 system/solutions/SOLUTION-*.md 一致；旧布局可传 --doc-root docs
 #
 # 校验项:
 #   1. 模板文件存在
@@ -15,7 +15,7 @@ set -euo pipefail
 #   7. 编号体系一致性（G-n、Q-n、C-n、R-n）
 #   8. 技术语言检测（接口名、表名等技术词混入正文）
 
-DOC_ROOT="docs"
+DOC_ROOT="system"
 TARGET_FILE=""
 ERRORS=0
 WARNINGS=0

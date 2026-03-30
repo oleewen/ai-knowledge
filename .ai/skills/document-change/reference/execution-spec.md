@@ -164,10 +164,4 @@ git log --since="$BASELINE_TIME" \
 - **版本控制**：索引文件纳入 git
 - **基线备份**：定期备份 `changes-index.json` 以防丢失
 
-### 与其他技能配合
-
-| 场景 | 下游技能 |
-|------|----------|
-| 基于变更重建文档索引 | `document-indexing` |
-| 仅对变更文件执行知识提取 | `knowledge-extract` |
-| 基于变更更新知识库 | `knowledge-extract` |
+下游协作关系见 [SKILL.md](../SKILL.md) 依赖关系表。

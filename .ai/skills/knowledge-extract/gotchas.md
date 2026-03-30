@@ -150,28 +150,6 @@
 **后果**：无法追踪知识库演进历史，审计和回溯困难。  
 **正确做法**：每次增量提取必须在 `metadata.changes_from_previous` 中描述新增、修改、删除的实体 ID 及原因。
 
----
 
-## 快速检查清单
 
-执行完毕后，对照以下项目快速自查：
-
-- [ ] 主 Index Guide 已落盘且可用
-- [ ] 四视角按技术 → 数据 → 业务 → 产品顺序执行
-- [ ] 技术视角 `entities` 为分类对象，其余三视角为扁平数组
-- [ ] API 层级覆盖 Dubbo、HTTP、MQ Consumer、Job 四类入口
-- [ ] 每条 API 含 `api_type` 字段（`DUBBO` / `HTTP` / `MQ_CONSUMER` / `JOB`）
-- [ ] 仅提取 Dubbo Provider 端，未混入 Consumer 引用
-- [ ] MQ Consumer 按 Tag 拆分为独立 API（多 Tag 场景）
-- [ ] Job 含 `job_handler` 名称
-- [ ] MQ/Job 入口均关联到 MS-ID
-- [ ] 每个实体含完整 `evidence_chain`，无无证据写入
-- [ ] MS-ID 按宿主类聚类，非 Maven 模块名
-- [ ] 同一物理表只有一个 ENT-ID
-- [ ] AGG-ID 均有对应 MS-* 服务
-- [ ] FT/UC-ID 均绑定至少一个 API-ID
-- [ ] 所有 ID 前缀在 `contains_prefixes` 范围内
-- [ ] `KNOWLEDGE_INDEX.md` §1～§4 同轮维护，无模板占位行
-- [ ] 已有 ID 未被单独改名（跨视角引用完整）
-- [ ] 每个 `*_knowledge.json` 含完整 `metadata` 节
-- [ ] 增量提取已填写 `changes_from_previous`
+> **质量自查清单**已独立至 [reference/quality-checklist.md](reference/quality-checklist.md)，提取完毕后逐项核对。

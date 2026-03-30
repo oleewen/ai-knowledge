@@ -1,6 +1,6 @@
-# 测试设计质量门禁清单
+# 测试设计质量验收清单（sdx-test）
 
-步骤 5 验收模板。Agent 在执行文档输出与评审时复制本清单并逐项勾选。
+步骤 5 验收用：Agent 在文档输出与评审时复制本清单并逐项勾选。原则与反模式见 [design-principles.md](design-principles.md)；模板结构见 [../assets/tdd-template.md](../assets/tdd-template.md)。
 
 ## 完整性
 

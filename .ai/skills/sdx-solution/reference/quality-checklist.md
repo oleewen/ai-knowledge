@@ -1,6 +1,6 @@
-# 解决方案质量门禁清单
+# 解决方案质量验收清单（sdx-solution）
 
-步骤 5 验收模板。Agent 在执行文档输出与评审时复制本清单并逐项勾选，**所有项通过后才输出文档**。
+步骤 5 验收用：Agent 在文档输出与评审时复制本清单并逐项勾选，**所有项通过后才输出文档**。原则与反模式见 [design-principles.md](design-principles.md)；模板结构见 [../assets/solution-template.md](../assets/solution-template.md)。
 
 ---
 

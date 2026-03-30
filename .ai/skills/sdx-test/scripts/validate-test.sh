@@ -11,7 +11,7 @@ set -euo pipefail
 #   4. 编号体系一致性（TC-*）
 #   5. 模板 tdd-template.md 存在
 
-DOC_ROOT="docs"
+DOC_ROOT="system"
 TARGET_FILE=""
 ERRORS=0
 WARNINGS=0

@@ -1,6 +1,19 @@
 # sdx-analysis 常见陷阱（Gotchas）
 
-本文记录执行 `sdx-analysis` Skill 时高频踩坑点，供 Agent 与人类开发者参考。
+本文记录执行 `sdx-analysis` 时高频踩坑点。入口与工作流摘要见 [SKILL.md](SKILL.md)；算法细节见 [reference/workflow-spec.md](reference/workflow-spec.md)；步骤 5 逐项验收见 [reference/quality-checklist.md](reference/quality-checklist.md)。
+
+## 与本 Skill 其他文件的关系
+
+| 文件 | 何时读 |
+|------|--------|
+| `SKILL.md` | 每次任务：IO、参数、五步摘要、约束与索引 |
+| `gotchas.md`（本文件） | 开始前扫一眼；卡顿时按步骤查陷阱 |
+| `assets/analysis-template.md` | 撰写/整合 `ANALYSIS-{ID}.md` 时 |
+| `reference/workflow-spec.md` | 需明确 depth、Q-n、步间产出时 |
+| `reference/audience-and-language.md` | 不确定正文能否写某类技术词时 |
+| `reference/design-principles.md` | 编号体系、反模式、错误处理 |
+| `reference/quality-checklist.md` | 定稿前门禁 |
+| `scripts/validate-analysis.sh` | 本地校验结构时 |
 
 ---
 
@@ -122,9 +135,9 @@
 **正确做法**：需求分析只描述「做什么」和「验收标准」，不描述「怎么做」；用户故事和技术方案留给下游 Skill。
 
 ### 6.4 跳过质量门禁自查
-**陷阱**：文档写完后直接输出，未逐项检查 `quality-gate-checklist.md`。  
+**陷阱**：文档写完后直接输出，未逐项检查 [reference/quality-checklist.md](reference/quality-checklist.md)。  
 **后果**：编号断号、章节缺失、追溯链断裂等问题流入下游，被 `sdx-prd` 或评审发现时返工成本高。  
-**正确做法**：步骤 5 必须执行质量门禁自查，所有检查项通过后才输出文档。
+**正确做法**：步骤 5 必须执行质量门禁自查（见 [reference/quality-checklist.md](reference/quality-checklist.md)），所有检查项通过后才输出文档。
 
 ---
 
@@ -146,4 +159,4 @@
 - [ ] 章节结构与 `analysis-template.md` 完全一致，无删除章节
 - [ ] frontmatter 七个字段完整
 - [ ] 文档中无 PRD 级用户故事或技术实现细节
-- [ ] 质量门禁清单已逐项勾选
+- [ ] [reference/quality-checklist.md](reference/quality-checklist.md) 已逐项勾选

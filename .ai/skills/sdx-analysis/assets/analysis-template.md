@@ -1,6 +1,6 @@
 # {需求标题}
 
-> **读者与语言**：主要读者为**产品经理、需求分析师**与参与范围评审的**业务方**。正文用**谁能做什么、规则如何、如何验收、与谁协作**来表述；避免接口名、表名字段名、中间件、框架与服务/模块名。细则与转写示例见 [../../sdx-solution/reference/audience-language-spec.md](../../sdx-solution/reference/audience-language-spec.md)。Agent 可查阅工程材料核对事实，写入本文时须转写为产品/需求可读表述。
+> **读者与语言**：主要读者为**产品经理、需求分析师**与参与范围评审的**业务方**。正文用**谁能做什么、规则如何、如何验收、与谁协作**来表述；避免接口名、表名字段名、中间件、框架与服务/模块名。细则与转写示例见 [../../sdx-solution/reference/audience-and-language.md](../../sdx-solution/reference/audience-and-language.md)。Agent 可查阅工程材料核对事实，写入本文时须转写为产品/需求可读表述。
 
 ## 1. 需求概述
 

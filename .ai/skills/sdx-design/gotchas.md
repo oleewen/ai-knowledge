@@ -123,7 +123,7 @@
 **正确做法**：输出前验证 Mermaid 语法；时序图用 `sequenceDiagram`，状态机用 `stateDiagram-v2`，ER 图用 `erDiagram`，类图用 `classDiagram`。
 
 ### 5.5 跳过质量门禁自查
-**陷阱**：ADD 写完后直接输出，未逐项检查 `quality-gate-checklist.md`。  
+**陷阱**：ADD 写完后直接输出，未逐项检查 `reference/quality-checklist.md`。  
 **后果**：编号断号、规约脱钩、追溯链断裂等问题流入下游，被 `sdx-test` 或代码评审发现时返工成本高。  
 **正确做法**：步骤 4 必须执行质量门禁自查，所有检查项通过后才输出文档。
 

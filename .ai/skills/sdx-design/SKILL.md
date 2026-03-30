@@ -1,25 +1,29 @@
 ---
 name: sdx-design
 description: >
-  技术方案设计：基于产品需求与架构/领域文档进行技术方案设计，输出 ADD 与规约文件。
-  在用户执行 /sdx-design、编写 ADD 与规约时使用。产出 system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md，模板见 .ai/skills/sdx-design/assets/add-template.md。
+  技术方案设计：基于 PRD 与需求分析，结合架构/领域/ADR 进行 ADD 与 specs 规约设计。
+  在用户执行 /sdx-design、编写 ADD 与 YAML 规约时使用。
+  产出 system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md 与同包 specs/；模板见 assets/add-template.md；
+  工作流与门禁见 reference/；常见陷阱见 gotchas.md。
 ---
 
 # 方案设计阶段（sdx-design）
 
-基于产品需求文档，结合系统架构与领域模型，进行技术方案设计，输出架构设计文档（ADD）和规约文件（Spec），为后续测试设计与开发阶段提供技术蓝图。
+基于产品需求文档，结合系统架构与领域模型，输出**架构设计说明书（ADD）**与**规约文件（specs）**，为测试设计与开发提供技术蓝图。**主要读者为研发与架构**；业务验收口径仍以 PRD 为准，见 [reference/audience-and-language.md](reference/audience-and-language.md)。
+
+**执行顺序建议**：先读本文件与 [gotchas.md](gotchas.md) → 步骤 1–4 按需打开 [reference/workflow-spec.md](reference/workflow-spec.md) → 输出前打开 [assets/add-template.md](assets/add-template.md) 与 [reference/quality-checklist.md](reference/quality-checklist.md)。
 
 ## 输入与输出
 
-**输入**：产品需求（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`）、需求分析当前 MVP 章节（`system/analysis/ANALYSIS-{ID}.md`）、系统架构与 ADR（`knowledge/technical/`、`knowledge/constitution/adr/`）、领域模型（`knowledge/business/`）
-**输出**：ADD `system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`、规约 `.../specs/`
+**输入**：PRD（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`）、需求分析当前 MVP 上下文（`system/analysis/ANALYSIS-{ID}.md`）、按需 `knowledge/technical/`、`knowledge/business/`、`knowledge/constitution/adr/`。  
+**输出**：ADD、规约目录 `.../specs/{service-name}/`（api / domain / data / integration）。
 
 | 类型 | 内容 |
 |------|------|
 | 硬输入 | 产品需求文档（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`） |
 | 可选输入 | 需求分析文档、`knowledge/technical/`、`knowledge/business/`、`knowledge/constitution/adr/`、同包 `specs/`、AGENTS.md |
 | 固定输出 | `system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`、`system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/` |
-| 不产出 | 测试设计、代码（使用下游 sdx-test / dev） |
+| 不产出 | 测试设计、可执行代码（使用下游 sdx-test / 开发流程） |
 
 ## 参数
 
@@ -43,55 +47,34 @@ description: >
 | 已有需求分析，需编写 PRD | 否 → **sdx-prd** |
 | 已有 PRD 与 ADD，需测试设计 | 否 → **sdx-test** |
 
-## 核心概念
-
-- **架构设计**：系统/服务架构与调用关系、接口协议设计、领域模型与领域事件、数据架构与迁移方案、发布与回滚方案
-- **详细设计**：应用架构（集成与容器）、API 详细设计（签名、参数、容错、幂等）、核心类图与状态机、业务逻辑伪代码/流程图、一致性设计（事务与并发）、数据访问设计（DDL、索引、分页、缓存）、非功能性设计（安全、可观测）
-- **规约生成**：按服务生成 API / 领域 / 数据 / 集成规约（YAML），路径规范 `system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/`
-- **ADD 文档**：遵循 [assets/add-template.md](assets/add-template.md) 的五章结构（设计概述→架构设计→详细设计→需求规约→附录）
-
 ## 工作流（四步）
 
-按顺序执行，每步产出作为下一步输入；最终文档需通过质量门禁。详细算法与决策点见 [reference/workflow-spec.md](reference/workflow-spec.md)。
+按顺序执行；每步算法、角色、`--depth` 与产出落位见 [reference/workflow-spec.md](reference/workflow-spec.md)。概念口径见 [reference/core-concepts.md](reference/core-concepts.md)。
 
-### 步骤 1：架构设计
+1. **架构设计** — 系统/服务变更与交互、接口协议概要、领域模型、数据架构、发布与回滚；DD-n 与 Mermaid；对照 `knowledge/` 与 INDEX_GUIDE 中的架构索引。
+2. **详细设计** — 应用架构、API 详设、业务逻辑与一致性、数据访问、非功能（安全、可观测）。
+3. **规约生成** — 按服务写入 `specs/{service-name}/` 下四类 YAML，头部可追溯 ADD 与 FR-n。
+4. **文档输出与评审** — 按 [assets/add-template.md](assets/add-template.md) 整合；按 [reference/quality-checklist.md](reference/quality-checklist.md) 自查。
 
-从 PRD 的业务流程与功能模块出发，设计系统架构（服务变更与交互）、接口协议、领域模型（聚合/实体/值对象/领域事件）、数据架构（ER 图、分片、迁移）、发布与回滚方案；使用 Mermaid 可视化；记录关键设计决策（DD-n）。
-
-### 步骤 2：详细设计
-
-应用架构（集成与容器关系）；API 详细设计（签名、参数、响应、错误码、幂等性）；核心类图（DDD 分层）与状态机；业务逻辑流程图与伪代码；一致性设计（锁、事务）；数据访问设计（DDL、索引、分页、缓存）；非功能性设计（安全、可观测）。
-
-### 步骤 3：规约生成
-
-按服务生成 YAML 规约文件：API 规约（`specs/{service}/api/`）、领域规约（`specs/{service}/domain/`）、数据规约（`specs/{service}/data/`）、集成规约（`specs/{service}/integration/`）。每个规约须可追溯到 ADD 中的设计条目。
-
-### 步骤 4：文档输出与评审
-
-将步骤 1–3 的产出整合为 ADD 文档，严格采用 [assets/add-template.md](assets/add-template.md) 的章节与格式；执行质量门禁自查。
-
-质量门禁清单见 [assets/quality-gate-checklist.md](assets/quality-gate-checklist.md)。
-
-可使用辅助脚本验证文档结构：
+辅助校验（于**仓库根**执行，`--doc-root` 与仓库布局一致即可）：
 
 ```bash
-# 于仓库根目录执行；默认 doc-root 为 system
-.ai/skills/sdx-design/scripts/validate-design.sh
+.ai/skills/sdx-design/scripts/validate-design.sh --doc-root system
 ```
 
 ## 核心约束
 
 | 约束 | 说明 |
 |------|------|
-| 模板驱动 | 输出严格遵循 add-template.md 五章结构（设计概述→架构设计→详细设计→需求规约→附录） |
-| 证据优先 | 架构决策与设计须引用 PRD、需求分析与 `knowledge/` 事实，禁止臆测 |
+| 模板驱动 | 输出严格遵循 add-template.md 五章结构 |
+| 证据优先 | 架构与设计须引用 PRD、需求分析与 `knowledge/` 事实，禁止臆测 |
 | 按需加载 | 仅在本轮需要时打开文件，禁止为完整性通读全仓 |
 | 歧义标注 | 不确定项标为待澄清，禁止自行假设 |
-| 范围清晰 | 仅产出 ADD 与规约文件，不涉及测试设计 / 代码 |
-| 可追溯 | API / 数据变更可追溯到产品需求与功能需求；规约可追溯到技术设计 |
-| MVP 聚焦 | 仅覆盖目标 MVP 范围内的功能需求，不超越 MVP 边界 |
+| 范围清晰 | 仅产出 ADD 与规约，不涉及测试用例与可执行代码 |
+| 可追溯 | 设计条目、规约与 PRD 功能需求可互查 |
+| MVP 聚焦 | 仅覆盖目标 MVP 范围内的功能需求 |
 
-设计原则完整版与反模式清单见 [reference/design-principles.md](reference/design-principles.md)。
+完整原则、反模式、编号体系与错误处理见 [reference/design-principles.md](reference/design-principles.md)。
 
 ## 依赖关系
 
@@ -106,11 +89,14 @@ description: >
 
 | 资源 | 路径 |
 |------|------|
-| 设计原则与反模式 | [reference/design-principles.md](reference/design-principles.md) |
-| 四步工作流详细规范 | [reference/workflow-spec.md](reference/workflow-spec.md) |
-| 质量门禁验收清单 | [assets/quality-gate-checklist.md](assets/quality-gate-checklist.md) |
-| 文档结构校验脚本 | [scripts/validate-design.sh](scripts/validate-design.sh) |
+| 四步工作流（算法、depth、数据流） | [reference/workflow-spec.md](reference/workflow-spec.md) |
+| 核心概念口径 | [reference/core-concepts.md](reference/core-concepts.md) |
+| 受众与文档语言 | [reference/audience-and-language.md](reference/audience-and-language.md) |
+| 设计原则、反模式、错误处理 | [reference/design-principles.md](reference/design-principles.md) |
+| 质量验收清单 | [reference/quality-checklist.md](reference/quality-checklist.md) |
 | ADD 文档模板 | [assets/add-template.md](assets/add-template.md) |
+| 常见陷阱与防错 | [gotchas.md](gotchas.md) |
+| 文档结构校验脚本 | [scripts/validate-design.sh](scripts/validate-design.sh) |
 | 上游：产品需求 | `.ai/skills/sdx-prd/SKILL.md` |
 | 上游：需求分析 | `.ai/skills/sdx-analysis/SKILL.md` |
 | 下游：测试设计 | `.ai/skills/sdx-test/SKILL.md` |
