@@ -1,4 +1,4 @@
-# 软件系统知识文档库（ai-sdd-knowledge）
+# 软件系统知识文档库（ai-knowledge）
 
 本仓库是系统级知识底座，核心目标是以 **SSOT（单一事实源）+ 联邦治理** 管理架构与交付文档。  
 本文件只提供入口导航与初始化方式，细节规则分散在各子域 README 中，避免重复维护。
@@ -8,14 +8,14 @@
 远程初始化（推荐）：
 
 ```bash
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/knowledge-init-bootstrap.sh" | bash -s -- [选项]
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/knowledge-init-bootstrap.sh" | bash -s -- [选项]
 ```
 
 本地初始化（已克隆仓库）：
 
 ```bash
 cd /path/to/your-project
-REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/knowledge-init.sh [选项]
+REPO_ROOT=/path/to/ai-knowledge /path/to/ai-knowledge/scripts/knowledge-init.sh [选项]
 ```
 
 初始化参数与模式说明见 [scripts/README.md](scripts/README.md)。
@@ -35,7 +35,7 @@ REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/knowledge-
 ## 最小目录视图
 
 ```text
-ai-sdd-knowledge/
+ai-knowledge/
 ├── INDEX_GUIDE.md
 ├── AGENTS.md
 ├── system/
