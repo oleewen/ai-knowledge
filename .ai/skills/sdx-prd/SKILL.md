@@ -50,8 +50,8 @@ description: >
 按顺序执行；每步算法、决策点与步间数据流见 [reference/workflow-spec.md](reference/workflow-spec.md)。术语口径见 [reference/core-concepts.md](reference/core-concepts.md)。
 
 1. **业务流程设计** — 主/分支/异常流程，角色与 BR-n 引用，跨系统交互（Mermaid）。
-2. **用户故事与场景** — INVEST、Given-When-Then，关联 FR-n / BR-n，覆盖正常与异常/边界。
-3. **用例建模** — 用例图与 UC-n 描述；US-n ↔ UC-n 双向映射。
+2. **用例建模** — 用例图与 UC-n 描述；与业务流程、FR-n 对齐。
+3. **用户故事与场景** — INVEST、Given-When-Then，关联 FR-n / BR-n，覆盖正常与异常/边界；US-n ↔ UC-n 双向映射。
 4. **功能模块与交互设计** — 按业务能力域划分模块；IA、操作流程、规则汇总、数据字典与状态。
 5. **文档输出与评审** — 套 [assets/prd-template.md](assets/prd-template.md)；按 [reference/quality-checklist.md](reference/quality-checklist.md) 自查。
 
