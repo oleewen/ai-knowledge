@@ -37,11 +37,12 @@ declare -A CFG=(
   [docs_abs]=""
   [target_dir]=""
   [mode]="${MODE:-standalone}"
+  [scope]="${SCOPE:-all}"
   [agents_opt]="${AGENTS_OPT:-cursor}"
   [app_id_opt]="${APP_ID_OPT:-}"
   [dry_run]="${DRY_RUN:-0}"
   [force]="${FORCE:-0}"
-  [create_project_root]="${CREATE_PROJECT_ROOT:-1}"
+  [create_project_root]="${CREATE_PROJECT_ROOT:-0}"
   # 运行时填充
   [primary_agent_slash]=""
   [docs_slash]=""
@@ -524,7 +525,7 @@ usage() {
     目标工程内的文档子目录，例如：
       ~/workspace/my-app/system
       ~/workspace/my-app/docs
-    父目录（工程根）默认自动创建；使用 --no-create-root 可要求其必须已存在。
+    父目录（工程根）默认不已存在；使用 -r 可允许自动创建。
 
   替换规则
     文件名  : system（不区分大小写）→ application
@@ -540,22 +541,30 @@ usage() {
 
 选项
   --mode=MODE           standalone | central（或缩写 s | c）  [默认: standalone]
+  --scope=SCOPE         all(a) | skills(s) | knowledge(k)      [默认: all]
+                        注：central 模式不支持 skills/s（仅技能）范围
   --app-id=APP-ID       central 模式下的 APP ID               [默认: 由工程目录名推导]
   --agents=LIST         cursor | trea | claude | all，逗号分隔 [默认: cursor]
-  --no-create-root      要求工程根目录必须已存在
+  -r                    允许工程根目录不存在时自动创建
   --force               强制覆盖，不提示
   --dry-run             预览模式，不写入任何文件
   -h, --help            显示此帮助
 
 环境变量
   REPO_ROOT             本仓库根目录（默认自动探测）
-  CREATE_PROJECT_ROOT   1=自动创建工程根（默认）| 0=等同 --no-create-root
+  CREATE_PROJECT_ROOT   1=允许自动创建工程根（等同 -r）| 0=要求工程根已存在（默认）
   DRY_RUN               1=预览模式
   FORCE                 1=强制覆盖
 
 示例
   # 最简用法（standalone + cursor）
   knowledge-init ~/workspace/my-app/system
+
+  # 仅同步知识库（不安装 Agent skills/rules）
+  knowledge-init --scope=knowledge ~/workspace/my-app/system
+
+  # 仅同步 Agent skills/rules（不落地 system 文档）
+  knowledge-init --scope=skills ~/workspace/my-app/system
 
   # central 模式，指定 APP ID，安装 cursor 和 trea
   knowledge-init --mode=central --app-id=APP-MYAPP --agents=cursor,trea ~/workspace/my-app/system
@@ -571,6 +580,8 @@ parse_args() {
     case "$1" in
       --mode=*)           CFG[mode]="${1#*=}";       shift ;;
       --mode)             shift; CFG[mode]="${1:-}";  shift ;;
+      --scope=*)          CFG[scope]="${1#*=}"; shift ;;
+      --scope)            shift; CFG[scope]="${1:-}"; shift ;;
       --app-id=*)         CFG[app_id_opt]="${1#*=}"; shift ;;
       --app-id)           shift; CFG[app_id_opt]="${1:-}"; shift ;;
       --agents=*)         CFG[agents_opt]="${1#*=}"; shift ;;
@@ -585,7 +596,7 @@ parse_args() {
         ;;
       --dry-run)          CFG[dry_run]=1;            shift ;;
       --force)            CFG[force]=1;              shift ;;
-      --no-create-root)   CFG[create_project_root]=0; shift ;;
+      -r)                 CFG[create_project_root]=1; shift ;;
       -h|--help)          usage; exit 0 ;;
       -*)                 error "未知选项: $1" ;;
       *)
@@ -624,7 +635,7 @@ _validate_docs_and_target() {
       run_or_dry mkdir -p "$target_dir"
       [[ "${CFG[dry_run]}" == "0" ]] && info "已创建工程根目录: $target_dir"
     else
-      error "工程根目录不存在: $target_dir（请先创建，或去掉 --no-create-root）"
+      error "工程根目录不存在: ${target_dir}（请先创建，或使用 -r 自动创建）"
     fi
   fi
 }
@@ -632,6 +643,25 @@ _validate_docs_and_target() {
 _validate_mode() {
   CFG[mode]="$(sdx_normalize_mode "${CFG[mode]}")"
   sdx_validate_mode "${CFG[mode]}" || error "无效模式: ${CFG[mode]}（standalone/central 或 s/c）"
+}
+
+_validate_sync_scope() {
+  case "${CFG[scope]}" in
+    a) CFG[scope]="all" ;;
+    s) CFG[scope]="skills" ;;
+    k) CFG[scope]="knowledge" ;;
+  esac
+
+  case "${CFG[scope]}" in
+    all|skills|knowledge) ;;
+    *)
+      error "无效 --scope: ${CFG[scope]}（支持 all/a、skills/s、knowledge/k）"
+      ;;
+  esac
+
+  if [[ "${CFG[mode]}" == "central" && "${CFG[scope]}" == "skills" ]]; then
+    error "central 模式需要同步知识库（--scope 不能为 skills/s）"
+  fi
 }
 
 _validate_agents() {
@@ -664,14 +694,20 @@ main() {
   _init_repo_root
   _validate_docs_and_target
   _validate_mode
+  _validate_sync_scope
   _validate_agents
   _compute_derived_paths
 
   have_perl || warn "未检测到 perl：文件内容替换将被跳过，建议安装 perl。"
 
-  install_system_to_docs
-  [[ "${CFG[mode]}" == "central" ]] && install_central
-  install_agent_skills_and_rules
+  if [[ "${CFG[scope]}" == "all" || "${CFG[scope]}" == "knowledge" ]]; then
+    install_system_to_docs
+    [[ "${CFG[mode]}" == "central" ]] && install_central
+  fi
+
+  if [[ "${CFG[scope]}" == "all" || "${CFG[scope]}" == "skills" ]]; then
+    install_agent_skills_and_rules
+  fi
 
   info "完成：knowledge-init"
   _print_checklist

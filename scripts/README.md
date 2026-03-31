@@ -6,7 +6,7 @@
 
 ## 功能概述
 
-1. **文档与知识库**：使用 `system/` 目录作为模板，支持两种模式（**工程根默认自动创建**：`<目标工程文档目录>` 的父目录若不存在会 `mkdir -p`；可用 `--no-create-root` 或 `CREATE_PROJECT_ROOT=0` 要求父目录须已存在；`docs` 等子目录可在拷贝时自动创建）：
+1. **文档与知识库**：使用 `system/` 目录作为模板，支持两种模式（**工程根默认要求已存在**：可用 `-r` 或 `CREATE_PROJECT_ROOT=1` 允许父目录不存在时自动创建；`docs` 等子目录可在拷贝时自动创建）：
    - **standalone（默认）**：将 `system/` 内容拷贝到目标工程的 `docs/` 目录
      - 排除治理文档：`DESIGN.md` 和 `CONTRIBUTING.md`（应用侧无需）
      - 内容替换：`system` → `application`，`系统` → `应用`
@@ -26,6 +26,11 @@
 
 3. **冲突处理**：若目标路径已存在，默认会交互式提示；使用 `--force` 强制覆盖，或 `--dry-run` 预览操作。
 
+4. **同步范围控制**：通过 `--scope` 控制执行范围
+   - `all`（默认）：同步知识库 + 安装 Agent skills/rules
+   - `knowledge`：仅同步知识库（`system/`）
+   - `skills`：仅安装 Agent skills/rules（不落地知识库文档）
+
 ## 使用方式
 
 ### 方式一：远程执行（无需克隆仓库）
@@ -42,6 +47,12 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/script
 
 # 多 Agent 支持
 curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/knowledge-init-bootstrap.sh" | bash -s -- --agents=cursor,trea ./docs
+
+# 仅同步知识库
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/knowledge-init-bootstrap.sh" | bash -s -- --scope=knowledge ./docs
+
+# 仅同步 Agent skills/rules
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/knowledge-init-bootstrap.sh" | bash -s -- --scope=skills ./docs
 
 # 指定 APP ID（central 模式）
 curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/knowledge-init-bootstrap.sh" | bash -s -- --mode=central --app-id=APP-MYSERVICE ./docs
@@ -72,6 +83,12 @@ cd ai-sdd-knowledge
 # 多 Agent
 ./scripts/knowledge-init.sh --agents=cursor,trea,claude /path/to/your-project/docs
 
+# 仅同步知识库
+./scripts/knowledge-init.sh --scope=knowledge /path/to/your-project/docs
+
+# 仅同步 Agent skills/rules
+./scripts/knowledge-init.sh --scope=skills /path/to/your-project/docs
+
 # 指定环境变量
 REPO_ROOT=/path/to/ai-sdd-knowledge ./scripts/knowledge-init.sh /path/to/your-project/docs
 ```
@@ -82,11 +99,15 @@ REPO_ROOT=/path/to/ai-sdd-knowledge ./scripts/knowledge-init.sh /path/to/your-pr
 |------|------|------|
 | `<目标工程文档目录>` | 目标工程下的文档目录路径，如 `~/project/docs` | - |
 | `--mode=MODE` | 模式：`standalone`（独立）\| `central`（中央登记）；缩写：`s` \| `c` | `standalone` |
+| `--scope=SCOPE` | 同步范围：`all(a)` \| `knowledge(k)` \| `skills(s)` | `all` |
+| `-r` | 允许工程根目录不存在时自动创建（等同 `CREATE_PROJECT_ROOT=1`） | 关闭 |
 | `--app-id=APP-ID` | Central 模式下使用的 APP ID（如 `APP-MYSERVICE`），不传则从工程目录名推导 | - |
 | `--agents=LIST` | 要安装的 Agent：`cursor` \| `trea` \| `claude` \| `all`；可多选，逗号分隔 | `cursor` |
 | `--force` | 强制覆盖已存在内容，不提示 | - |
 | `--dry-run` | 预览模式，仅打印将要执行的操作 | - |
 | `-h`, `--help` | 显示帮助信息 | - |
+
+注意：`--mode=central` 需要同步知识库，因此不支持 `--scope=skills`（或 `--scope=s`）。
 
 ## 初始化后的目录结构（目标工程）
 

@@ -257,10 +257,15 @@ sdx_abs_path() {
         (cd -P "$p" 2>/dev/null && pwd)
     else
         # 对于文件，获取其所在目录的绝对路径，再拼接文件名
-        local dir base
+        local dir base orig_dir
         dir="$(dirname "$p")"
+        orig_dir="$dir"
         base="$(basename "$p")"
-        dir="$(cd -P "$dir" 2>/dev/null && pwd)" || dir="$dir"
+        if dir="$(cd -P "$dir" 2>/dev/null && pwd)"; then
+            :
+        else
+            dir="$orig_dir"
+        fi
         echo "$dir/$base"
     fi
 }
