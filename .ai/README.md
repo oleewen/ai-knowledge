@@ -1,34 +1,36 @@
-# `.ai` — AI 规范与技能
+# `.ai` 目录说明
 
-本目录存放 **SDD 阶段模板与工程规范**（`rules/`）以及 **Slash 技能**（`skills/`）。**Skills 为 `SKILL.md` 工作流，不是 `scripts/` 可执行脚本。** 根目录 `scripts/knowledge-init.sh` 初始化目标工程时，会将 `.ai/` 一并拷贝到目标项目的 `.ai/`，便于在任意仓库复用同一套文档与 Agent 契约。
+`.ai/` 是本仓库的 AI 协作控制层，负责沉淀可复用的规则、模板与技能工作流。  
+它回答的是“如何协作与交付”，而不是“业务知识本体”。
 
----
+## 职责边界
 
-## 目录结构
+- `rules/`：规范与模板入口，约束文档结构、命名、提交流程与阶段产物格式。
+- `skills/`：以 `SKILL.md` 为核心的工作流定义，由 Agent 按步骤执行并生成产物。
+- `scripts/`（仓库根）：初始化与分发工具链，负责把 `.ai/` 与知识库模板同步到目标项目。
 
-| 路径 | 说明 |
+> `skills/` 是“流程定义”，`scripts/` 是“环境初始化”，二者职责不同。
+
+## 结构导览
+
+| 路径 | 用途 |
 |------|------|
-| [rules/CONVENTIONS.md](rules/CONVENTIONS.md) | 规范总索引：编码、设计、测试、解决方案/分析/需求/文档等子目录入口与摘要 |
-| [skills/agent-guide/assets/agents-skeleton.md](skills/agent-guide/assets/agents-skeleton.md) | 根目录 `AGENTS.md` 推荐骨架（agent-guide） |
-| [skills](skills) | 各 Skill 的 `SKILL.md`（Slash 命令实现与流程说明） |
-| [skills/README.md](skills/README.md) | **Slash 命令一览**（`/document-indexing`、`/knowledge-archive` 等） |
+| [rules/CONVENTIONS.md](rules/CONVENTIONS.md) | 规则总入口（编码/设计/测试/文档交付规范） |
+| [rules](rules) | 分域规则与模板集合 |
+| [skills](skills) | Skill 工作流目录（每个子目录对应一个能力域） |
+| [skills/README.md](skills/README.md) | Skills 使用入口与命令清单（权威） |
+| [skills/agent-guide/assets/agents-skeleton.md](skills/agent-guide/assets/agents-skeleton.md) | `AGENTS.md` 推荐骨架模板 |
 
----
+## 与全仓库文档关系
 
-## 与仓库其他文档的关系
+- 总体协作契约见 [AGENTS.md](../AGENTS.md)。
+- 全局路径与检索地图见 [INDEX_GUIDE.md](../INDEX_GUIDE.md)。
+- 知识库建模与维护流程见 [system/DESIGN.md](../system/DESIGN.md) 与 [system/CONTRIBUTING.md](../system/CONTRIBUTING.md)。
 
-- **人类与 Agent 总契约**：根目录 [AGENTS.md](../AGENTS.md)
-- **权威路径地图**：根目录 [INDEX_GUIDE.md](../INDEX_GUIDE.md)（七段 Index Guide）
-- **系统知识库治理**：[../system/DESIGN.md](../system/DESIGN.md)、[../system/CONTRIBUTING.md](../system/CONTRIBUTING.md)
-- **Slash 命令表**：以 [skills/README.md](skills/README.md) 为准（本仓库权威路径为 `.ai/skills/`）。
+## 维护原则
 
-> **路径说明**：历史文档或旧拷贝可能写作「`.ai/CONVENTIONS.md`」；本仓库规范索引的权威路径为 **`.ai/rules/CONVENTIONS.md`**（与上表 [rules/CONVENTIONS.md](rules/CONVENTIONS.md) 一致）。
+- 优先保持稳定：尽量增量更新，不破坏既有目录语义与引用路径。
+- 规则先于内容：新增工作流前先确认是否已有规则或模板可复用。
+- 入口单一：Slash 命令与技能说明统一维护在 [skills/README.md](skills/README.md)，避免在本文件重复定义。
 
----
-
-## 修改约定（精要）
-
-- 勿在未评估影响面的情况下大改模板结构；与 `system/knowledge` 的 **ID 引用链** 保持一致。
-- 提交信息建议遵循 Conventional Commits，描述用中文或中英文均可，与团队习惯一致（见 [rules/coding/git-guidelines.md](rules/coding/git-guidelines.md)）。
-
-更完整的禁止项与查阅顺序见 [AGENTS.md](../AGENTS.md)。
+> 历史文档若出现 `.ai/CONVENTIONS.md`，请以当前路径 [rules/CONVENTIONS.md](rules/CONVENTIONS.md) 为准。

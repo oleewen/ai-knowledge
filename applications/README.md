@@ -1,19 +1,26 @@
-# 应用知识库 (Applications Knowledge Repository)
+# applications — 应用知识库
 
-本目录存放各应用/微服务的**应用级知识库与交付文档**，结构与命名遵循系统级规范，并与系统总库协同更新。
+`applications/` 用于承载应用的联邦知识单元。  
+它强调“与系统总库对齐并可独立演进”，不重复 `system/` 的全局规则描述。
 
-## 快速导航
+## 你在这里要做什么
 
-| 文档                                   | 说明                                              |
-| -------------------------------------- | ------------------------------------------------- |
-| **[APPLICATIONS_INDEX.md](APPLICATIONS_INDEX.md)** | 应用知识结构、方案与需求、治理信息导航（权威入口） |
-| **[app-APPNAME/APPNAME_INDEX.md](app-APPNAME/APPNAME_INDEX.md)** | 单应用联邦单元示例（`knowledge/`、`requirements/`、`changelogs/`；物理路径 `applications/app-APPNAME/`） |
-| **[app-APPNAME/application_meta.yaml](app-APPNAME/application_meta.yaml)** | 模板根 `*_meta.yaml`（与 `system/system_meta.yaml` 对照） |
+- 为应用建立或维护独立知识目录（`knowledge/`、`requirements/`、`changelogs/`）
+- 通过统一命名与映射字段接入系统总库
+- 在应用侧沉淀增量，再按治理流程回收至系统级知识库
 
-## 关键入口（建议阅读顺序）
+## 核心入口
 
-- [APPLICATIONS_INDEX.md](APPLICATIONS_INDEX.md)（应用域总览与索引）
-- [app-APPNAME/APPNAME_INDEX.md](app-APPNAME/APPNAME_INDEX.md)（应用模板索引）
-- [../system/DESIGN.md](../system/DESIGN.md)（系统级目录结构与元模型）
-- [../system/SYSTEM_INDEX.md](../system/SYSTEM_INDEX.md)（系统级索引与映射字段）
-- 初始化脚本与说明：`scripts/knowledge-init.sh`、`scripts/README.md`
+| 入口 | 用途 |
+|------|------|
+| [APPLICATIONS_INDEX.md](APPLICATIONS_INDEX.md) | 应用域总索引（权威） |
+| [app-APPNAME/APPNAME_INDEX.md](app-APPNAME/APPNAME_INDEX.md) | 单应用模板索引与目录示例 |
+| [app-APPNAME/application_meta.yaml](app-APPNAME/application_meta.yaml) | 应用根元数据样例 |
+
+## 与系统库关系
+
+- 系统级结构与映射原则： [../system/DESIGN.md](../system/DESIGN.md)
+- 系统级接入与索引位置： [../system/SYSTEM_INDEX.md](../system/SYSTEM_INDEX.md)
+- 应用初始化方式： [../scripts/README.md](../scripts/README.md)
+
+> 应用侧文档可按业务节奏更新，但跨视角实体引用需保持与系统库一致。

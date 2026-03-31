@@ -1,58 +1,38 @@
 # system — 系统知识库
 
-`system/` 是本仓库的**系统级知识体**：维护全局稳定事实（knowledge）与 SDD 阶段文档（solutions → analysis → requirements），保持同层存放。
+`system/` 负责维护系统层面的稳定事实与阶段交付物，是全仓库的知识中枢。  
+本文件仅回答“在 `system/` 里按什么顺序读、到哪里写”，避免重复仓库根导航内容。
 
----
+## 推荐阅读路径
 
-## 查阅顺序（与 AGENTS 对齐）
+1. [SYSTEM_INDEX.md](SYSTEM_INDEX.md)：先看目录总览、映射字段和接入位置
+2. [DESIGN.md](DESIGN.md)：再看元模型与跨视角关系
+3. [CONTRIBUTING.md](CONTRIBUTING.md)：最后看新增/修改流程与模板约束
 
-1. 仓库级地图：[INDEX_GUIDE.md](../INDEX_GUIDE.md)（Index Guide）、[README.md](../README.md)（命令与总览）、[AGENTS.md](../AGENTS.md)（Agent 契约）
-2. 本树导航：[SYSTEM_INDEX.md](SYSTEM_INDEX.md)
-3. 设计与贡献：[DESIGN.md](DESIGN.md)、[CONTRIBUTING.md](CONTRIBUTING.md)
-4. 各子目录 [knowledge](knowledge)、[solutions](solutions) 、[analysis](analysis) 、[requirements](requirements) （按需下钻）；接口/数据等规约落在各 `REQUIREMENT-{ID}/…/specs/` 或 [knowledge/technical](knowledge/technical)
+## 阶段流转（SDD）
 
----
+| 阶段 | 目录 | 主要产物 |
+|------|------|----------|
+| 知识基线 | [knowledge](knowledge) | 四视角与宪法层实体 |
+| 方案阶段 | [solutions](solutions) | `SOLUTION-{ID}.md` |
+| 分析阶段 | [analysis](analysis) | `ANALYSIS-{ID}.md` |
+| 交付阶段 | [requirements](requirements) | `REQUIREMENT-{ID}/MVP-Phase-*`（PRD/ADD/TDD/`specs/`） |
 
-## SDD 主线（四段 + 规约落位）
+变更留痕与索引运维见 [changelogs/README.md](changelogs/README.md)。
 
+## 子目录入口
 
-| 步骤 | 目录                                 | 产出 / 作用                                                                     |
-| ------ | -------------------------------------- | --------------------------------------------------------------------------------- |
-| 0    | [knowledge](knowledge)       | SSOT：宪法层 + 业务 / 产品 / 技术 / 数据四视角                                  |
-| 1    | [solutions](solutions)       | `记录解决方案，SOLUTION-{ID}.md`                                                |
-| 2    | [analysis](analysis)         | `记录需求分析，ANALYSIS-{ID}.md`（`parent` → Solution）                        |
-| 3    | [requirements](requirements) | `记录需求版本，REQUIREMENT-{ID}/MVP-Phase-*/`（PRD / ADD / TDD、按需 `specs/`） |
+| 目录 | 入口说明 |
+|------|----------|
+| [knowledge/README.md](knowledge/README.md) | 知识实体组织与映射规则 |
+| [solutions/README.md](solutions/README.md) | 方案阶段编写规则 |
+| [analysis/README.md](analysis/README.md) | 分析阶段编写规则 |
+| [requirements/README.md](requirements/README.md) | 交付阶段结构与产物规则 |
+| [changelogs/README.md](changelogs/README.md) | 变更记录与索引运维文件 |
 
-闭环与运维：变更与里程碑记在 [changelogs](changelogs)；应用向中央库登记见 [SYSTEM_INDEX.md](SYSTEM_INDEX.md)「应用接入」；全库 AI 构建见 [SYSTEM_INDEX.md](SYSTEM_INDEX.md)「AI 工作流」。
+## 机器可读元数据
 
----
+- 根元数据：`system_meta.yaml`
+- 子目录元数据：`knowledge_meta.yaml`、`solutions_meta.yaml`、`analysis_meta.yaml`、`requirements_meta.yaml`、`changelogs_meta.yaml`
 
-## 快速导航
-
-
-| 文档                                                      | 说明                                          |
-| ----------------------------------------------------------- | ----------------------------------------------- |
-| [system_meta.yaml](system_meta.yaml)               | `system/` 根目录索引（机器可读约定）          |
-| [SYSTEM_INDEX.md](SYSTEM_INDEX.md)                 | 本目录索引、映射速查、接入登记、AI 工作流指针 |
-| [DESIGN.md](DESIGN.md)                             | 原则、元模型、目录约定、映射字段、演进        |
-| [CONTRIBUTING.md](CONTRIBUTING.md)                 | 新增 / 修改规则与模板入口                     |
-| [knowledge/README.md](knowledge/README.md)         | 四视角 + 宪法层入口                           |
-| [solutions/README.md](solutions/README.md)         | 解决方案阶段                                  |
-| [analysis/README.md](analysis/README.md)           | 需求分析阶段                                  |
-| [requirements/README.md](requirements/README.md)   | 需求交付阶段（含各需求包内规约`specs/`）      |
-| [changelogs/CHANGELOG.md](changelogs/CHANGELOG.md) | system 侧维护性变更记录                       |
-
----
-
-## 各一级子目录元数据（YAML）
-
-细节以各文件为准；README 仅作导航引用。
-
-
-| 目录                                 | 元数据                                                                            |
-| -------------------------------------- | ----------------------------------------------------------------------------------- |
-| [knowledge](knowledge)       | [knowledge/knowledge_meta.yaml](knowledge/knowledge_meta.yaml)             |
-| [solutions](solutions)       | [solutions/solutions_meta.yaml](solutions/solutions_meta.yaml)             |
-| [analysis](analysis)         | [analysis/analysis_meta.yaml](analysis/analysis_meta.yaml)                 |
-| [requirements](requirements) | [requirements/requirements_meta.yaml](requirements/requirements_meta.yaml) |
-| [changelogs](changelogs)     | [changelogs/changelogs_meta.yaml](changelogs/changelogs_meta.yaml)         |
+> 约束细则以对应 YAML 与 `DESIGN.md` 为准，本文件不复写字段定义。
