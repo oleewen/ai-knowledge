@@ -61,7 +61,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/script
 ## 开发规范
 
 - **规范索引：** `.ai/rules/CONVENTIONS.md`
-- **知识库与 ID：** `system/DESIGN.md`、`system/knowledge/constitution/standards/NAMING-CONVENTIONS.md`；跨视角仅 ID 引用，不重复定义。
+- **知识库与 ID：** `system/DESIGN.md`、`system/knowledge/constitution/standards/naming-conventions.md`；跨视角仅 ID 引用，不重复定义。
 - **提交：** Conventional Commits，`<类型>: <描述>`（如 `docs: 更新 system/SYSTEM_INDEX 索引`）。
 
 ---
@@ -71,8 +71,8 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/script
 - SDD：澄清需求与设计优先；变更与设计见 `system/` 与 `.ai/rules/`。
 - 修改前读相关 README、INDEX、DESIGN、CONTRIBUTING；最小化 diff；knowledge 映射保持引用有效。
 - 阶段交付物模板：`.ai/skills/sdx-solution/assets/`、`.ai/skills/sdx-analysis/assets/`、`.ai/skills/sdx-prd/assets/`（PRD）、`.ai/skills/sdx-design/assets/`（ADD）、`.ai/skills/sdx-test/assets/`（TDD）；Slash 命令见 `.ai/skills/README.md`。
-- **索引链路（按需）：** `/document-indexing`、`/document-change` 均为 **Skill**（`.ai/skills/document-indexing/SKILL.md`、`.ai/skills/document-change/SKILL.md`），**非** `scripts/` 脚本；产出 `indexing-log.jsonl`、`changes-index.*` 等于 `system/changelogs/` ，见各 SKILL；**非**本仓库日常编辑必跑项。
-- **站内 Markdown 链接：** 显示文本统一为**仓库根相对路径**（如 `system/knowledge/README.md`、`.ai/skills/document-indexing/SKILL.md`）；**目标地址**须为标准 Markdown 链接里、相对**当前 `.md` 文件**的合法路径，保证在 GitHub 上可点击（勿在正文使用会被解析成链接的占位字面量）。
+- **索引链路（按需）：** `/docs-indexing`、`/docs-change` 均为 **Skill**（`.ai/skills/docs-indexing/SKILL.md`、`.ai/skills/docs-change/SKILL.md`），**非** `scripts/` 脚本；产出 `indexing-log.jsonl`、`changes-index.*` 等于 `system/changelogs/` ，见各 SKILL；**非**本仓库日常编辑必跑项。
+- **站内 Markdown 链接：** 显示文本统一为**仓库根相对路径**（如 `system/knowledge/README.md`、`.ai/skills/docs-indexing/SKILL.md`）；**目标地址**须为标准 Markdown 链接里、相对**当前 `.md` 文件**的合法路径，保证在 GitHub 上可点击（勿在正文使用会被解析成链接的占位字面量）。
 
 ---
 

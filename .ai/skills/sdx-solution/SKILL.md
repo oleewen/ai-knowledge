@@ -91,7 +91,7 @@ description: >
 
 | 类型 | 技能/组件 | 说明 |
 |------|-----------|------|
-| 上游（可选） | `knowledge-extract` | 提供 `knowledge/*/*_knowledge.json` 与 `knowledge/KNOWLEDGE_INDEX.md` 基线 |
+| 上游（可选） | `knowledge-build` | 提供 `knowledge/*/*_knowledge.json` 与 `knowledge/KNOWLEDGE_INDEX.md` 基线 |
 | 下游 | `sdx-analysis` | 基于解决方案进行需求分析与 MVP 拆分 |
 | 下游 | `sdx-prd` | 将需求分析转化为 PRD |
 | 下游 | `sdx-design` | 基于 PRD 进行技术方案设计 |

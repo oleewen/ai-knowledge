@@ -102,8 +102,8 @@ readonly -a SDX_DEFAULT_SKILL_PREFIXES=(
 # 默认安装的技能列表
 readonly -a SDX_DEFAULT_SKILLS=(
     'agent-guide'
-    'document-indexing'
-    'document-change'
+    'docs-indexing'
+    'docs-change'
     'sdx-solution'
     'sdx-analysis'
     'sdx-prd'

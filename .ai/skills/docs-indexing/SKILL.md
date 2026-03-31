@@ -87,7 +87,7 @@ scripts/indexing.sh --mode full --depth 3
 | 类型 | 技能/组件 | 说明 |
 |------|-----------|------|
 | 前置 | `document-change` | 生成变更索引 `changes-index.json` |
-| 下游 | `knowledge-extract` | 以主 INDEX 作为提取证据来源 |
+| 下游 | `knowledge-build` | 以主 INDEX 作为提取证据来源 |
 | 关联 | `agent-guide` | 维护 README.md / AGENTS.md 与 INDEX 交叉引用 |
 
 ## 参考

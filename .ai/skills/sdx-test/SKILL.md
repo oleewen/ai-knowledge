@@ -82,7 +82,7 @@ description: >
 |------|-----------|------|
 | 上游（必需） | `sdx-prd` | 提供产品需求文档（用户故事、业务规则） |
 | 上游（推荐） | `sdx-design` | 提供架构设计文档（接口规约、组件设计） |
-| 上游（可选） | `knowledge-extract` | 提供 `knowledge/*/*_knowledge.json` 与 `knowledge/KNOWLEDGE_INDEX.md` 基线 |
+| 上游（可选） | `knowledge-build` | 提供 `knowledge/*/*_knowledge.json` 与 `knowledge/KNOWLEDGE_INDEX.md` 基线 |
 
 ## 参考
 

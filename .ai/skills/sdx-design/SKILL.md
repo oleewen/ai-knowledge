@@ -87,7 +87,7 @@ scripts/validate-design.sh --doc-root docs
 |------|-----------|------|
 | 上游（必需） | `sdx-prd` | 提供产品需求文档作为核心输入 |
 | 上游（必需） | `sdx-analysis` | 提供需求分析文档与 MVP 上下文 |
-| 上游（可选） | `knowledge-extract` | 提供 `knowledge/*/*_knowledge.json` 与 `knowledge/KNOWLEDGE_INDEX.md` 基线 |
+| 上游（可选） | `knowledge-build` | 提供 `knowledge/*/*_knowledge.json` 与 `knowledge/KNOWLEDGE_INDEX.md` 基线 |
 | 下游 | `sdx-test` | 基于 PRD 与 ADD 进行测试设计 |
 
 ## 参考

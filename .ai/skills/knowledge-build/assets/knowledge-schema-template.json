@@ -1,5 +1,5 @@
 {
-  "$comment": "knowledge-extract *_knowledge.json 输出模板（schema 2.1）。展示各视角的典型结构与字段。",
+  "$comment": "knowledge-build *_knowledge.json 输出模板（schema 2.1）。展示各视角的典型结构与字段。",
 
   "technical_knowledge_example": {
     "schema_version": "2.1",

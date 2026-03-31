@@ -81,7 +81,7 @@ scripts/change-indexing.sh --since "2026-03-20 00:00:00.000" --output ./changelo
 | 类型 | 技能/组件 | 说明 |
 |------|-----------|------|
 | 下游 | `document-indexing` | 消费 `changes-index.json` 驱动增量索引 |
-| 下游 | `knowledge-extract` | 基于变更文件列表执行增量提取 |
+| 下游 | `knowledge-build` | 基于变更文件列表执行增量提取 |
 
 ## 参考
 

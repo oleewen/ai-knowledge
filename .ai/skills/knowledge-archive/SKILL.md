@@ -73,7 +73,7 @@ description: >
 | 应用侧信息 | 系统侧落点 |
 |------------|------------|
 | 应用身份、仓库、manifest 路径 | `knowledge/technical/{SYS}/{APP-ID}.yaml`：`repo_url`、`docs_manifest_path`、`service_ids` |
-| 新 **MS-***（入口簇）、API 清单（摘要级） | 更新 `{APP-ID}.yaml` 的 `service_ids`；**MS-*** 须与 **knowledge-extract §8.1.2** 一致（**仅** apis 宿主聚类，**非** Maven 模块名）；API 细节以 manifest 为 SSOT |
+| 新 **MS-***（入口簇）、API 清单（摘要级） | 更新 `{APP-ID}.yaml` 的 `service_ids`；**MS-*** 须与 **knowledge-build §8.1.2** 一致（**仅** apis 宿主聚类，**非** Maven 模块名）；API 细节以 manifest 为 SSOT |
 | 限界上下文由本应用实现 | `knowledge/business/business_meta.yaml` → `layers` 中 `key: bc` 的 `fields.implemented_by_app_id` |
 | 数据实体归属应用 | `knowledge/data/data_meta.yaml` → `layers`（`key: ds` / `key: ent`）中 `owned_by_app_id` / `app_id` 等约定；与聚合的 `maps_to_aggregate_id` / `persisted_as_entity_ids` |
 | 产品功能调用本应用 API | `knowledge/product/product_meta.yaml` → `layers`（`key: ft`）的 `invokes_api_ids` |
@@ -108,5 +108,5 @@ description: >
 
 - [../../../applications/README.md](../../../applications/README.md)、[../../../applications/APPLICATIONS_INDEX.md](../../../applications/APPLICATIONS_INDEX.md)
 - [../../../system/knowledge/README.md](../../../system/knowledge/README.md)、[../../../system/CONTRIBUTING.md](../../../system/CONTRIBUTING.md)、[../../../system/DESIGN.md](../../../system/DESIGN.md)、[../../../system/SYSTEM_INDEX.md](../../../system/SYSTEM_INDEX.md)
-- 应用内增量维护：视项目而定（可配合 `knowledge-extract` 等）
-- 系统库从零构建：按序组合 [../document-indexing/SKILL.md](../document-indexing/SKILL.md)、[../agent-guide/SKILL.md](../agent-guide/SKILL.md)、[../knowledge-extract/SKILL.md](../knowledge-extract/SKILL.md)（无单独编排 Skill）
+- 应用内增量维护：视项目而定（可配合 `knowledge-build` 等）
+- 系统库从零构建：按序组合 [../document-indexing/SKILL.md](../document-indexing/SKILL.md)、[../agent-guide/SKILL.md](../agent-guide/SKILL.md)、[../knowledge-build/SKILL.md](../knowledge-build/SKILL.md)（无单独编排 Skill）
