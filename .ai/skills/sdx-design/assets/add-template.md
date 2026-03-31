@@ -1,4 +1,4 @@
-#  {架构设计标题}
+# {架构设计标题}
 
 ## 1. 设计概述
 
@@ -9,21 +9,19 @@
 - MVP阶段：MVP-{N}
 
 ### 1.2 设计约束
-
 <!-- 技术约束、架构约束、兼容性约束等 -->
 
 ### 1.3 关键设计决策
 
-
 | 决策编号 | 决策点 | 决策结果 | 决策理由 | 备选方案 |
-| ---------- | -------- | ---------- | ---------- | ---------- |
-| DD-001   |        |          |          |          |
+| --------- | ------- | --------- | --------- | --------- |
+| DD-001 | | | | |
 
 ## 2. 架构设计
 
 ### 2.1 系统架构设计
 
-#### 系统架构
+#### 系统架构图
 
 ```mermaid
 graph TD
@@ -36,7 +34,6 @@ graph TD
 ```
 
 #### 服务变更
-
 
 | 服务名称  | 所属应用   | 变更类型 | 变更说明    |
 | ----------- | ------------ | ---------- | ------------- |
@@ -51,7 +48,7 @@ sequenceDiagram
     participant ServiceA
     participant ServiceB
     participant DB
-  
+    
     Client->>ServiceA: POST /api/xxx
     ServiceA->>ServiceB: gRPC call
     ServiceB->>DB: Query
@@ -62,10 +59,9 @@ sequenceDiagram
 
 ### 2.2 接口协议设计
 
-
-| 接口名称    | 所属服务      | 能力说明      | 输入输出                   | 关键步骤     |
-| ---------- | ------------ | ------------ | ------------------------ | ----------- | 
-| XX接口     | serivice-a   | 提供XX能力    | 输入：XX<br/> 输出：YY      |             |
+| 接口名称 | 所属服务 | 能力说明 | 输入输出 |
+| --------------- | -------- | -------- | ------ |
+| XX接口 | serivice-a | 提供XX能力 | 输入：XX <br/> 输出：YY |
 
 ### 2.3 领域模型设计
 
@@ -92,9 +88,8 @@ classDiagram
 
 #### 领域事件
 
-
 | 事件名称        | 触发条件 | 携带数据 | 消费者 |
-| ----------------- | ---------- | ---------- | -------- |
+| --------------- | -------- | -------- | ------ |
 | XxxCreatedEvent |          |          |        |
 
 ### 2.4 数据架构设计
@@ -188,7 +183,7 @@ graph TD
 
 ### 3.2 API详细设计
 
-#### API-001： {API名称}
+#### API-001：{API名称}
 
 - 能力描述：提供XX能力
 
@@ -222,13 +217,11 @@ graph TD
 
 **错误码**：
 
-
 | 错误码 | 错误信息 | 触发条件 | HTTP状态码 |
-| -------- | ---------- | ---------- | ------------ |
-| 400001 |          |          | 400        |
+| ------ | -------- | -------- | ---------- |
+| 400001  |          |          | 400        |
 
 **幂等性**：
-
 <!-- 描述幂等性保障方案 -->
 
 ### 3.3 业务逻辑设计
@@ -319,25 +312,25 @@ sequenceDiagram
 function processXxx(request):
     // 1. 参数校验
     validate(request)
-  
+    
     // 2. 业务规则检查
     checkBusinessRules(request)
-  
+    
     // 3. 执行业务逻辑
     result = executeLogic(request)
-  
+    
     // 4. 持久化
     save(result)
-  
+    
     // 5. 发布领域事件
     publishEvent(XxxCreatedEvent(result))
-  
+    
     return result
 ```
 
 #### 一致性设计
-
-<!-- 乐观锁/悲观锁/分布式锁方案、本地事务/分布式事务/最终一致性方案 -->
+<!-- 乐观锁/悲观锁/分布式锁方案 -->
+<!-- 本地事务/分布式事务/最终一致性方案 -->
 
 ### 3.4 数据访问设计
 
@@ -384,12 +377,11 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 
 #### 缓存策略
 
-
-| 缓存Key模式               | 数据类型    | 过期时间 | 更新策略 | 用途             |
-| --------------------------- | ------------- | ---------- | ---------- | ------------------ |
-| table_name1:{id}          | hash/object | 1h       | 写后更新 | 单条主数据缓存   |
-| table_name2:{id}          | hash/object | 1h       | 写后更新 | 单条附属数据缓存 |
-| table_name1:list:page:{n} | list        | 10min    | 定期刷新 | 列表分页缓存     |
+| 缓存Key模式               | 数据类型    | 过期时间 | 更新策略 | 用途               |
+|--------------------------|------------|----------|----------|--------------------|
+| table_name1:{id}         | hash/object| 1h       | 写后更新 | 单条主数据缓存     |
+| table_name2:{id}         | hash/object| 1h       | 写后更新 | 单条附属数据缓存   |
+| table_name1:list:page:{n}| list       | 10min    | 定期刷新 | 列表分页缓存       |
 
 - 删除/更新数据时需同步刷新缓存
 - 缓存雪崩可加随机抖动过期
@@ -397,11 +389,9 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 ### 3.5 非功能性设计
 
 #### 安全设计
-
 <!-- 认证授权、数据脱敏、审计日志等 -->
 
 #### 可观测设计
-
 <!-- 考虑该记录什么日志，增加什么监控，什么情况下报警 -->
 
 **日志** ：
@@ -414,20 +404,16 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 
 <!-- 规约术语：与规约文件名或 OpenAPI/领域名一致的可读简称；应用实体 ID、服务实体 ID 须与 `system/knowledge/KNOWLEDGE_INDEX.md` / `knowledge/technical/` 中 APP-*、MS-* 对齐。 -->
 
-
-| 规约类型 | 规约术语             | 应用       | 服务      | 文件路径                                                                            | 描述 |
-| ---------- | ---------------------- | ------------ | ----------- | ------------------------------------------------------------------------------------- | ------ |
-| API规约  | `{api-spec-name}`    | `APP-{ID}` | `MS-{ID}` | `system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/api/xxx.yaml`    | xx   |
-| 领域规约 | `{domain-spec-name}` | `APP-{ID}` | `MS-{ID}` | `system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/domain/xxx.yaml` | xx   |
-| 数据规约 | `{data-spec-name}`   | `APP-{ID}` | `MS-{ID}` | `system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/{service-name}/data/xxx.yaml`   | xx   |
+| 应用 | 规约文件 | 规约描述 |
+| ---- | -------- | -------- |
+| `{APP-ID}` | `./specs/spec-{ID}-{N}-{service-name}.md` | 核心改动点：... |
 
 ## 5. 附录
 
 ### 5.1 变更历史
 
-
 | 版本  | 日期 | 变更说明 | 作者      |
-| ------- | ------ | ---------- | ----------- |
+| ----- | ---- | -------- | --------- |
 | 1.0.0 |      | 初始版本 | architect |
 
 ### 5.2 质量自查表 (Self-Check)
