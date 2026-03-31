@@ -1,12 +1,12 @@
 ---
-name: knowledge-extract
+name: knowledge-build
 description: >
   从代码库中按四视角（技术/数据/业务/产品）提取链上实体 ID，
   生成 *_knowledge.json（schema 2.1）中间文件并归并到 KNOWLEDGE_INDEX.md。
-  在用户执行 /knowledge-extract、知识库初始化、代码重构后同步 ID 时使用。
+  在用户执行 /knowledge-build、知识库初始化、代码重构后同步 ID 时使用。
 ---
 
-# 知识实体提取（knowledge-extract）
+# 知识实体提取（knowledge-build）
 
 从工程代码与文档中按四视角（技术→数据→业务→产品）提取链上实体，生成 `*_knowledge.json`（schema 2.1）中间文件并归并到 `knowledge/KNOWLEDGE_INDEX.md`。技术视角 API 层级统一覆盖四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监听、定时任务（Job）**。
 
@@ -112,5 +112,5 @@ scripts/validate-extraction.sh --doc-root .
 | KNOWLEDGE_INDEX 输出模板 | [assets/knowledge-index-template.md](assets/knowledge-index-template.md) |
 | 常见陷阱与防错 | [gotchas.md](gotchas.md) |
 | 提取结果验证脚本 | [scripts/validate-extraction.sh](scripts/validate-extraction.sh) |
-| 上游：文档索引 | `.ai/skills/document-indexing/SKILL.md` |
+| 上游：文档索引 | `.ai/skills/docs-indexing/SKILL.md` |
 | 上游：Agent 指引 | `.ai/skills/agent-guide/SKILL.md` |

@@ -1,6 +1,6 @@
 # 归并阶段规范
 
-阶段三是 knowledge-extract 的收口阶段。读取四视角 `*_knowledge.json`（schema 2.1）中间文件，执行前缀验证、跨视角对称性检查，最终更新 `knowledge/KNOWLEDGE_INDEX.md`。
+阶段三是 knowledge-build 的收口阶段。读取四视角 `*_knowledge.json`（schema 2.1）中间文件，执行前缀验证、跨视角对称性检查，最终更新 `knowledge/KNOWLEDGE_INDEX.md`。
 
 ---
 

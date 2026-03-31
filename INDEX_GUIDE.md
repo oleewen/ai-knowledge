@@ -119,7 +119,7 @@
 | `./system/solutions/README.md`     | 解决方案阶段三步流程与方案索引登记                                                 | `解决方案`     | `system/DESIGN.md`、`.ai/skills/sdx-solution`     | `analysis/`              | ⭐⭐⭐ |
 | `./system/analysis/README.md`      | 需求分析阶段三步流程与分析索引登记                                                 | `需求分析`     | `solutions/`、`knowledge/`                          | `requirements/`          | ⭐⭐⭐ |
 | `./system/requirements/README.md`  | 需求交付四步主线与目录结构（含各需求包内规约 specs/）                                       | `需求交付`     | `analysis/`、`solutions/`、`.ai/skills/sdx-prd` / `sdx-design` / `sdx-test` | 阶段交付物                    | ⭐⭐⭐ |
-| `./system/changelogs/README.md`    | changelogs 说明；document-change / document-indexing **Skill** 产出物说明 | `变更` `运维`  | `README.md`、`AGENTS.md`                          | 索引链路                     | ⭐⭐  |
+| `./system/changelogs/README.md`    | changelogs 说明；docs-change / docs-indexing **Skill** 产出物说明 | `变更` `运维`  | `README.md`、`AGENTS.md`                          | 索引链路                     | ⭐⭐  |
 | `./system/changelogs/CHANGELOG.md` | system 文档体系维护性变更记录                                                | `变更`       | -                                                | 审计与追溯                    | ⭐⭐  |
 
 
@@ -232,7 +232,7 @@
   - `./applications/`** 的应用子目录（若存在）
 - **AI 规则与技能未精读**
   - `./.ai/rules/`**（仅精读了 `./.ai/rules/CONVENTIONS.md`；其余规则模板未逐一精读）
-  - `./.ai/skills/**`（已精读 `document-indexing`/`document-change`；并抽读 `agent-guide`、`knowledge-upgrade` 的入口与阶段划分；其余技能未逐一精读）
+  - `./.ai/skills/**`（已精读 `docs-indexing`/`docs-change`；并抽读 `agent-guide`、`knowledge-upgrade` 的入口与阶段划分；其余技能未逐一精读）
 
 ## 7. AI 查阅指北（检索表 + Prompt 模板）
 

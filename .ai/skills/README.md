@@ -1,15 +1,30 @@
-# Cursor 项目配置
+# Cursor Skills 指南
 
 ## Slash 命令（Skills）
 
-上述命令均为 **Skill**（`SKILL.md` 工作流，由 Agent 执行）。**不是** 仓库 `scripts/` 下的 Bash 可执行脚本；权威路径为仓库根下 `.ai/skills/`（本文件所在树；初始化脚本可将子集同步到目标工程的 `.ai/`）。
+本目录下的命令均为 **Skill**（`SKILL.md` 工作流，由 Agent 执行），不是仓库 `scripts/` 下的 Bash 脚本。
+
+- Skill 路径：`.ai/skills/<skill-name>/SKILL.md`
+- 命令名约定：目录名即 Slash 命令（如 `docs-indexing` -> `/docs-indexing`）
+- 调用方式：在 Chat 输入 `/` 选择命令，或使用 `@<skill-name>` 作为上下文附加
+
+## 当前可用技能
 
 | 命令 | 说明 |
 |------|------|
-| `/document-indexing` | 文档索引：为代码库/文档库生成面向下游 AI 的 Index Guide（拓扑/结构/精读三 `read_mode`，**九章 + 附录** 金字塔，零幻觉路径精确）。 |
-| `/document-change` | 变更文档索引：检查最近变动内容，建立变动内容索引与变动时间（毫秒）；支持 git commit / CHANGELOG / 文件 mtime 三路合并。 |
-| `/agent-guide` | 生成/更新根目录 `AGENTS.md` 与 `README.md`；① document-indexing 产出 Index → ② agent-guide 产出 AGENTS/README |
+| `/docs-indexing` | 生成面向 AI 的仓库索引（`INDEX_GUIDE.md`），支持分层检索与路径精确引用。 |
+| `/docs-change` | 聚合 git/CHANGELOG/文件 mtime 生成变更索引（如 `changes-index.*`）。 |
+| `/agent-guide` | 生成/更新根目录 `AGENTS.md` 与 `README.md`，对齐仓库导航与约束。 |
+| `/knowledge-archive` | 将应用侧有效知识回收至系统知识库，保持联邦治理与 SSOT。 |
+| `/knowledge-build` | 按知识工程流程构建/补全知识资产与关联结构。 |
+| `/sdx-solution` | 产出解决方案阶段文档（Solution 阶段）。 |
+| `/sdx-analysis` | 产出需求分析阶段文档（Analysis 阶段）。 |
+| `/sdx-prd` | 产出 PRD 阶段文档（Requirements 阶段）。 |
+| `/sdx-design` | 产出架构/设计阶段文档（Architecture Design 阶段）。 |
+| `/sdx-test` | 产出测试设计与验证阶段文档（Test 阶段）。 |
 
-在 Chat 中输入 `/` 后选择对应命令即可调用（如 `/agent-guide`）；或使用 `@技能名`（如 `@agent-guide`、`@sdx-solution`）将 Skill 作为上下文附加。
+## 使用说明
 
-**说明**：斜杠命令由 `.ai/skills/<技能名>/SKILL.md` 提供，文件夹名即命令名（如 `skills/agent-guide` → `/agent-guide`）。执行时按 SKILL 步骤落盘产物（如 `document-change` → `changes-index.*`，`document-indexing` → 根 `INDEX_GUIDE.md`（`@system/INDEX_GUIDE.md`）+ `indexing-log.jsonl`（以仓库约定为准）），无独立 `document-change.sh` 一类脚本。
+- 这些命令由 Agent 依据对应 `SKILL.md` 执行并落盘产物。
+- `scripts/` 目录负责项目初始化（如 `knowledge-init*.sh`），不等同于 Skill 命令。
+- 若命令输出涉及索引或变更记录，请以仓库约定路径为准（如 `INDEX_GUIDE.md`、`system/changelogs/`）。

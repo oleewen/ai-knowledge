@@ -6,7 +6,7 @@
 
 ### 2026-03-30
 
-- **Skill**：删除 `.ai/skills/knowledge-build/SKILL.md`；全库构建改为按序组合 `document-indexing`、`agent-guide`、`knowledge-extract`（无单独编排 Skill）。已同步根 `README`、`INDEX_GUIDE`、`system/SYSTEM_INDEX` §六、`knowledge-archive`、`.ai/README`。
+- **Skill**：删除 `.ai/skills/knowledge-build/SKILL.md`；全库构建改为按序组合 `docs-indexing`、`agent-guide`、`knowledge-build`（无单独编排 Skill）。已同步根 `README`、`INDEX_GUIDE`、`system/SYSTEM_INDEX` §六、`knowledge-archive`、`.ai/README`。
 
 ### 2026-03-29
 
@@ -26,9 +26,9 @@
 
 ### 2026-03-20（Skill 表述修正）
 
-- **约定**：明确 `/document-change`、`/document-indexing` 为 **Skill**（`.ai/skills/<name>/SKILL.md`），**非** `scripts/` 可执行脚本；已同步 `document-indexing`、`document-change` SKILL、根 `README`/`AGENTS`/`INDEX`、`system/changelogs/README`、`system/SYSTEM_INDEX` §七。
+- **约定**：明确 `/docs-change`、`/docs-indexing` 为 **Skill**（`.ai/skills/<name>/SKILL.md`），**非** `scripts/` 可执行脚本；已同步 `docs-indexing`、`docs-change` SKILL、根 `README`/`AGENTS`/`INDEX`、`system/changelogs/README`、`system/SYSTEM_INDEX` §七。
 
-### 2026-03-20（document-indexing 重跑）
+### 2026-03-20（docs-indexing 重跑）
 
 - **索引**：根目录 `INDEX.md` 文首元信息按技能约定更新（生成时间、Mode 3 全量、`indexing-log.jsonl` 指针）；追加 `system/changelogs/indexing-log.jsonl` 运行记录一行。
 

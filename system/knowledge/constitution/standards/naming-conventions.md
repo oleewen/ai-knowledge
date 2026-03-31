@@ -41,7 +41,7 @@
 |------|----------|------|
 | SYS- | System | 系统 |
 | APP- | Application | 应用（代码仓库/部署单元） |
-| MS- | Microservice（技术视图 **入口簇**） | **对外入口**（HTTP/Dubbo/MQ/Job）**宿主类**按 **knowledge-extract §8.1.1** 聚类；**不**对应 Maven `artifactId`/子模块（**§8.1.2**） |
+| MS- | Microservice（技术视图 **入口簇**） | **对外入口**（HTTP/Dubbo/MQ/Job）**宿主类**按 **knowledge-build §8.1.1** 聚类；**不**对应 Maven `artifactId`/子模块（**§8.1.2**） |
 | API- | API Endpoint | 接口端点 |
 
 ### 数据视角 (data)

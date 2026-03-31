@@ -7,8 +7,8 @@
 ## 四视角实体 ID（SSOT）
 
 - **链上实体 ID 登记表**：[KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md) — **仅** business / product / technical / data 四视角（**不含** `DIR-*` 联邦/阶段、**不含** constitution）。`system/` 入口见 [../README.md](../README.md)；仓库根 Index Guide 见 [INDEX_GUIDE.md](../../INDEX_GUIDE.md) **§1.2**。
-- **knowledge-extract 中间产物（机器 JSON，与物化锚点 `.md` 分离）**：各视角根目录 `technical_knowledge.json`、`business_knowledge.json`、`product_knowledge.json`、`data_knowledge.json`（字段约定见 [../../.ai/skills/knowledge-extract/SKILL.md](../../.ai/skills/knowledge-extract/SKILL.md)）。
-- **机器契约（SSOT）**：[../../.ai/skills/knowledge-extract/SKILL.md](../../.ai/skills/knowledge-extract/SKILL.md)（ssot、symmetry、meta_read_order）；[knowledge_meta.yaml](knowledge_meta.yaml) 仅保留联邦/目录元数据。
+- **knowledge-build 中间产物（机器 JSON，与物化锚点 `.md` 分离）**：各视角根目录 `technical_knowledge.json`、`business_knowledge.json`、`product_knowledge.json`、`data_knowledge.json`（字段约定见 [../../.ai/skills/knowledge-build/SKILL.md](../../.ai/skills/knowledge-build/SKILL.md)）。
+- **机器契约（SSOT）**：[../../.ai/skills/knowledge-build/SKILL.md](../../.ai/skills/knowledge-build/SKILL.md)（ssot、symmetry、meta_read_order）；[knowledge_meta.yaml](knowledge_meta.yaml) 仅保留联邦/目录元数据。
 
 ## 子目录
 

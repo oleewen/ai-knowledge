@@ -3,7 +3,7 @@ schema_version: "1.1"
 
 id: "DIR-KNOWLEDGE"
 name: "应用知识库（knowledge）"
-description: "宪法层 + 四视角；与 knowledge-extract 产物对齐，可与中央库 ID 对齐。"
+description: "宪法层 + 四视角；与 knowledge-build 产物对齐，可与中央库 ID 对齐。"
 
 child_directories:
   - constitution
@@ -39,7 +39,7 @@ references:
   - ../../README.md
   - ../../AGENTS.md
 
-# knowledge-extract：项目级覆盖（可选）
+# knowledge-build：项目级覆盖（可选）
 knowledge:
   schema_version: "1.1"
   meta_read_order:

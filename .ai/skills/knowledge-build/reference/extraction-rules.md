@@ -1,6 +1,6 @@
 # 四视角提取规则详解
 
-knowledge-extract 的核心提取规则。按固定顺序执行：技术 → 数据 → 业务 → 产品。每个视角独立提取，后续视角可引用前序视角已提取的 ID。
+knowledge-build 的核心提取规则。按固定顺序执行：技术 → 数据 → 业务 → 产品。每个视角独立提取，后续视角可引用前序视角已提取的 ID。
 
 输出文件统一使用 `{perspective}_knowledge.json`（schema_version 2.1）。完整 JSON 结构见 [../assets/knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
 

@@ -1,8 +1,9 @@
-# knowledge-init：知识库初始化脚本
+# knowledge-init：初始化脚本说明
 
 运行要求：`Bash 5+`。
 
-将本仓库**系统知识库模板**（`system/` 目录）初始化到目标工程的文档目录下，同时安装 Agent skills 和 rules。
+本文档仅说明 `knowledge-init` 脚本的参数、模式和落地产物。  
+Slash 技能命令请查看 [.ai/skills/README.md](../.ai/skills/README.md)，不在此重复。
 
 ## 功能概述
 
@@ -132,7 +133,7 @@ your-project/
 │   ├── requirements/              # 需求交付阶段
 │   └── changelogs/                # 变更日志
 ├── .cursor/                       # Cursor Agent 配置
-│   ├── skills/                    # Skills（agent-*, document-*, knowledge-*, sdx-*）
+│   ├── skills/                    # Skills（agent-*、docs-*、knowledge-*、sdx-*）
 │   └── rules/                     # Rules（编码、设计、测试规范）
 └── .knowledge-init/               # 备份目录（自动创建）
 ```
@@ -161,7 +162,7 @@ ai-sdd-knowledge/
 
 ### Agent 安装
 
-1. 从 `.ai/skills/` 筛选 `agent-*`、`document-*`、`knowledge-*`、`sdx-*` 前缀的技能目录
+1. 从 `.ai/skills/` 筛选 `agent-*`、`docs-*`、`knowledge-*`、`sdx-*` 前缀的技能目录
 2. 拷贝到 `{agent_dir}/skills/`，同时拷贝 `.ai/skills/README.md`
 3. 从 `.ai/rules/` 同步所有规则到 `{agent_dir}/rules/`
 4. 改写路径引用：`.ai/` → `.cursor/`（或 `.trea/`、`.claude/`）；`system/` → 目标文档相对路径（如 `system/`）

@@ -4,7 +4,7 @@ schema_version: "1.1"
 identity:
   id: DIR-CHANGELOGS-APP
   name: 变更日志（应用）
-  description: CHANGELOG.md 与可选 document-change / document-indexing 产物。
+  description: CHANGELOG.md 与可选 docs-change / docs-indexing 产物。
 
 role:
   stage: changelogs

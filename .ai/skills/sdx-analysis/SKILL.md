@@ -79,7 +79,7 @@ description: >
 | 类型 | 技能/组件 | 说明 |
 |------|-----------|------|
 | 上游（必需） | `sdx-solution` | 提供解决方案文档作为核心输入 |
-| 上游（可选） | `knowledge-extract` | 提供 `knowledge/*/*_knowledge.json` 与 `knowledge/KNOWLEDGE_INDEX.md` 基线 |
+| 上游（可选） | `knowledge-build` | 提供 `knowledge/*/*_knowledge.json` 与 `knowledge/KNOWLEDGE_INDEX.md` 基线 |
 | 下游 | `sdx-prd` | 基于需求分析转化为产品需求文档 |
 | 下游 | `sdx-design` | 基于 PRD 进行技术方案设计 |
 | 下游 | `sdx-test` | 基于 PRD 与 ADD 进行测试设计 |
