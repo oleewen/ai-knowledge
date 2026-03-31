@@ -69,6 +69,17 @@ refactor(domain): 优化订单状态机实现
 - 减少领域模型的复杂度
 ```
 
+### 紧急修复
+```
+hotfix(security): 修复SQL注入漏洞
+
+- 更新MyBatis参数绑定方式
+- 添加输入验证
+- 补充安全测试用例
+
+Security: CVE-2023-XXXX
+```
+
 ## 提交原则
 
 ### 核心原则
@@ -106,15 +117,4 @@ git commit -m "feature(large): 第三部分实现"
 git checkout main
 git merge --squash feature/large-feature
 git commit -m "feature(large): 完整功能实现"
-```
-
-### 紧急修复
-```
-hotfix(security): 修复SQL注入漏洞
-
-- 更新MyBatis参数绑定方式
-- 添加输入验证
-- 补充安全测试用例
-
-Security: CVE-2023-XXXX
 ```

@@ -1,0 +1,44 @@
+{
+  "metadata": {
+    "generated_at": "{yyyy-MM-dd HH:mm:ss.SSS}",
+    "generated_at_ms": "{13位毫秒戳}",
+    "baseline_time": "{yyyy-MM-dd HH:mm:ss.SSS}",
+    "baseline_time_ms": "{13位毫秒戳}",
+    "cutoff_time": "{yyyy-MM-dd HH:mm:ss.SSS}",
+    "cutoff_time_ms": "{13位毫秒戳}",
+    "latest_git_commit_time": "{yyyy-MM-dd HH:mm:ss.SSS | 空串}",
+    "is_git_repo": true
+  },
+  "statistics": {
+    "total_changes": 0,
+    "git_commits": 0,
+    "changelog_entries": 0,
+    "local_files": 0
+  },
+  "changes": [
+    {
+      "source": "git",
+      "time": "{yyyy-MM-dd HH:mm:ss.SSS}",
+      "time_ms": "{13位毫秒戳}",
+      "commit_hash": "{40位 SHA}",
+      "author": "{作者名}",
+      "message": "{提交信息}",
+      "files": [
+        "{相对路径}"
+      ]
+    },
+    {
+      "source": "changelog",
+      "time": "{yyyy-MM-dd HH:mm:ss.SSS}",
+      "time_ms": "{13位毫秒戳}",
+      "file": "{CHANGELOG 文件路径}",
+      "content": "{条目内容摘要}"
+    },
+    {
+      "source": "local",
+      "time": "{yyyy-MM-dd HH:mm:ss.SSS}",
+      "time_ms": "{13位毫秒戳}",
+      "file": "{文件相对路径}"
+    }
+  ]
+}

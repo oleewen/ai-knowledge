@@ -1,0 +1,68 @@
+{
+  "schema_version": "2.1",
+  "perspective": "product",
+  "generated_at": "1970-01-01T00:00:00Z",
+  "confidence": "example",
+  "entities": [
+    {
+      "hierarchy": "PL",
+      "id": "001",
+      "full_id": "PL-EXAMPLE",
+      "alias": "ExampleProductLine",
+      "name": "示例产品线",
+      "description": "仅用于演示产品视角数据结构（示例）。",
+      "target_users": ["示例用户"],
+      "evidence_chain": [],
+      "cross_references": { "technical": [], "product": [], "business": [], "data": [] }
+    },
+    {
+      "hierarchy": "PM",
+      "id": "001",
+      "full_id": "PM-EXAMPLE",
+      "parent_id": "PL-EXAMPLE",
+      "alias": "ExampleProductModule",
+      "name": "示例产品模块",
+      "evidence_chain": [],
+      "cross_references": { "technical": [], "product": ["PL-001"], "business": [], "data": [] }
+    },
+    {
+      "hierarchy": "FT",
+      "id": "001",
+      "full_id": "FT-EXAMPLE",
+      "parent_id": "PM-EXAMPLE",
+      "alias": "ExampleFeature",
+      "name": "示例功能",
+      "description": "仅用于演示产品视角数据结构（示例）。",
+      "invokes_api_ids": ["API-EXAMPLE-001"],
+      "acceptance_criteria": [
+        "示例验收标准A",
+        "示例验收标准B"
+      ],
+      "realizes_use_case_ids": ["UC-EXAMPLE-001"],
+      "evidence_chain": [],
+      "cross_references": { "product": ["PM-EXAMPLE"], "business": [], "technical": [], "data": [] }
+    },
+    {
+      "hierarchy": "UC",
+      "id": "001",
+      "full_id": "UC-EXAMPLE-001",
+      "alias": "ExampleUseCase",
+      "name": "示例用例",
+      "description": "仅用于演示产品视角数据结构（示例）。",
+      "map_to_api_id": "API-EXAMPLE-001",
+      "evidence_chain": [],
+      "cross_references": { "technical": ["API-EXAMPLE-001"], "product": ["PM-EXAMPLE"], "business": [], "data": [] }
+    }
+  ],
+  "metadata": {
+    "total_products": 1,
+    "total_modules": 1,
+    "total_features": 1,
+    "total_use_cases": 1,
+    "total_entities": 4,
+    "ms_coverage": "示例数据（非覆盖统计）。",
+    "extraction_basis": "示例数据（非从代码/文档提取）。",
+    "schema_notes": "schema 2.1：entities 扁平数组，hierarchy 区分层级；各层字段形状以本示例为演示用途。",
+    "changes_from_previous": "已裁剪为仅保留示例数据。"
+  }
+}

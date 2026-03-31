@@ -1,52 +1,101 @@
 ---
 name: sdx-test
 description: >
-  测试方案设计：基于产品需求与技术设计制定测试策略与测试计划，输出测试设计文档（TDD）。
-  在用户执行 /sdx-test、编写测试设计/测试计划时使用。产出 docs/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}.md，模板见 .ai/rules/requirement/tdd-template.md。
+  测试方案设计：基于 PRD 与 ADD 制定测试策略与计划，输出测试设计文档（TDD）。
+  在用户执行 /sdx-test、编写测试设计/测试计划时使用。
+  产出 system/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md；模板见 assets/tdd-template.md；
+  工作流与门禁见 reference/；陷阱见 gotchas.md。
 ---
 
 # 测试设计阶段（sdx-test）
 
 基于产品需求文档与技术设计文档，制定当前 MVP 的测试策略与测试计划，设计测试用例、测试数据与回归范围，输出测试设计文档（TDD），为后续开发与测试验证提供依据。
 
+**执行顺序建议**：先读本文件与 [gotchas.md](gotchas.md) → 步骤 1–5 的算法与 depth 见 [reference/workflow-spec.md](reference/workflow-spec.md) → 输出前打开 [assets/tdd-template.md](assets/tdd-template.md) 与 [reference/quality-checklist.md](reference/quality-checklist.md)。
+
 ## 输入与输出
 
-**输入**：产品需求（`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`）、架构设计（`.../ADD-{ID}.md`）、规约（`.../specs/`）  
-**输出**：`docs/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}.md`（结构遵循 [.ai/rules/requirement/tdd-template.md](.ai/rules/requirement/tdd-template.md)）
+**输入**：产品需求（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`）、架构设计（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`）、规约（`.../specs/`）  
+**输出**：`system/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md`（结构遵循 [assets/tdd-template.md](assets/tdd-template.md)）
 
-## 工作流
+| 类型 | 内容 |
+|------|------|
+| 硬输入 | 产品需求文档（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`） |
+| 可选输入 | 架构设计（`.../ADD-{ID}-{N}.md`）、规约（`specs/`）、`knowledge/`、AGENTS.md |
+| 固定输出 | `system/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md` |
+| 不产出 | 代码、自动化测试脚本、测试执行报告（实现与执行阶段产出） |
 
-### 步骤 1：测试策略与范围
+## 参数
 
-- **角色**：quality-guardian / quality-engineer
-- **任务**：确定测试层次（单元、集成、端到端）；确定测试范围与重点；确定测试环境要求；明确覆盖率目标（如单测行覆盖 ≥ 80%、接口覆盖 100%、核心场景 100%）。
-- **产出**：测试策略与范围。
+| 参数 | 必需 | 默认值 | 说明 |
+|------|------|--------|------|
+| `--id` | 否 | `{REQUIREMENT-ID}-MVP{N}` | TDD 文档编号 |
+| `--doc-root` | 否 | `system` | 文档根目录；校验脚本在 `${DOC_ROOT}` 下递归查找 `TDD-*.md`；旧布局可用 `docs` |
+| `--prd` | 否 | — | 上游 PRD 编号，自动定位对应文件 |
+| `--mvp` | 否 | `1` | 目标 MVP 阶段编号 |
+| `--depth` | 否 | `standard` | 设计深度（quick / standard / deep），影响步骤 2–3 粒度 |
 
-### 步骤 2：测试用例设计
+## 适用场景
 
-- **角色**：quality-guardian / quality-engineer
-- **任务**：基于用户故事的验收测试用例；基于 API 规约的接口测试用例；基于业务规则的规则测试用例；异常场景与边界条件测试用例；性能测试用例（如需）；基于影响面的回归测试用例清单。
-- **产出**：测试用例清单。
+| 场景 | 使用本技能 |
+|------|-----------|
+| 已有 PRD 与 ADD，需制定测试方案 | 是 |
+| 需设计测试用例、测试数据与回归策略 | 是 |
+| 收到业务需求/工单，需先输出解决方案文档 | 否 → **sdx-solution** |
+| 已有解决方案，需进行需求分析 | 否 → **sdx-analysis** |
+| 已有需求分析，需编写 PRD | 否 → **sdx-prd** |
+| 已有 PRD，需技术方案设计 | 否 → **sdx-design** |
 
-### 步骤 3：测试数据与环境
+## 工作流（五步）
 
-- **角色**：quality-engineer
-- **任务**：测试数据需求与准备方式（脚本生成/手工/生产脱敏）；测试环境要求（服务版本、数据库、中间件、外部依赖）。
-- **产出**：测试数据与环境说明。
+按顺序执行；每步角色、算法、ADD 缺失分支、depth 差异与步间数据流见 [reference/workflow-spec.md](reference/workflow-spec.md)。
 
-### 步骤 4：文档输出与评审
+1. **测试策略与范围分析** — 层次与覆盖目标；新增/变更/回归；风险与重点区域。
+2. **测试用例设计** — 功能 / 接口 / 规则 / 异常 /（deep 时）性能与安全；回归用例与影响面对齐。
+3. **测试数据与环境规划** — 数据需求、准备方式、环境依赖与 Mock 策略。
+4. **进出标准与回归策略** — 进入/退出可度量条件；回归执行顺序。
+5. **文档输出与评审** — 套 [assets/tdd-template.md](assets/tdd-template.md)；按 [reference/quality-checklist.md](reference/quality-checklist.md) 自查。
 
-- **角色**：technical-writer + doc-updater
-- **任务**：将步骤 1–3 整合为测试设计文档，严格采用 `.ai/rules/requirement/tdd-template.md` 的章节与格式；执行质量门禁自查。
-- **产出**：`TDD-{ID}.md`。
+辅助校验（于**仓库根**执行）：
 
-## 质量门禁（test_design_quality_gate）
+```bash
+.ai/skills/sdx-test/scripts/validate-test.sh --doc-root system
+```
 
-- **可追溯性**：测试用例可追溯到用户故事、API 规约与业务规则；回归范围可追溯到影响面。
-- **完整性**：功能与非功能需求均有对应测试覆盖；进出标准明确。
-- **一致性**：测试策略与产品需求、技术设计一致；用例与验收标准对齐。
+## 核心约束
+
+| 约束 | 说明 |
+|------|------|
+| 模板驱动 | 输出严格遵循 tdd-template.md 六章结构 |
+| 证据优先 | 用例须引用 PRD 用户故事、ADD 接口规约与业务规则，禁止臆测 |
+| 按需加载 | 仅在本轮需要时打开文件，禁止为完整性通读全仓 |
+| 歧义标注 | 不确定项标为待澄清，禁止自行假设 |
+| 范围清晰 | 仅产出测试设计文档，不涉及自动化测试代码 |
+| 可追溯 | 每个用例可追溯到用户故事、API 规约或业务规则 |
+| MVP 聚焦 | 仅覆盖目标 MVP 范围，不超越 MVP 边界 |
+
+术语口径见 [reference/core-concepts.md](reference/core-concepts.md)；著文语气见 [reference/audience-and-language.md](reference/audience-and-language.md)。完整原则、反模式、编号体系与错误处理见 [reference/design-principles.md](reference/design-principles.md)。
+
+## 依赖关系
+
+| 类型 | 技能/组件 | 说明 |
+|------|-----------|------|
+| 上游（必需） | `sdx-prd` | 提供产品需求文档（用户故事、业务规则） |
+| 上游（推荐） | `sdx-design` | 提供架构设计文档（接口规约、组件设计） |
+| 上游（可选） | `knowledge-extract` | 提供 `knowledge/*/*_knowledge.json` 与 `knowledge/KNOWLEDGE_INDEX.md` 基线 |
 
 ## 参考
 
-- 文档模板：`.ai/rules/requirement/tdd-template.md`
-- 上游：PRD、ADD、specs/
+| 资源 | 路径 |
+|------|------|
+| 五步工作流（算法、depth、数据流） | [reference/workflow-spec.md](reference/workflow-spec.md) |
+| 受众与文档语言 | [reference/audience-and-language.md](reference/audience-and-language.md) |
+| 核心概念口径 | [reference/core-concepts.md](reference/core-concepts.md) |
+| 设计原则、反模式、错误处理 | [reference/design-principles.md](reference/design-principles.md) |
+| 质量验收清单 | [reference/quality-checklist.md](reference/quality-checklist.md) |
+| 常见陷阱与防错 | [gotchas.md](gotchas.md) |
+| TDD 文档模板 | [assets/tdd-template.md](assets/tdd-template.md) |
+| 文档结构校验脚本 | [scripts/validate-test.sh](scripts/validate-test.sh) |
+| 上游：产品需求 | `.ai/skills/sdx-prd/SKILL.md` |
+| 上游：技术设计 | `.ai/skills/sdx-design/SKILL.md` |
+| 知识库 | `knowledge/`、`requirements/.../specs/` |

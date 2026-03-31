@@ -1,9 +1,0 @@
-# SYS-ECOMMERCE-BACKEND 系统元数据
-id: "SYS-ECOMMERCE-BACKEND"
-name: "电商后端核心系统"
-description: "支撑整个电商平台业务运行的后端微服务系统群"
-architecture_style: "Microservices"
-tech_stack_summary:
-  language: ["Java", "Go", "Node.js"]
-  framework: ["Spring Boot", "Gin", "NestJS"]
-  infrastructure: ["Kubernetes", "Istio", "Kafka", "Redis", "MySQL"]

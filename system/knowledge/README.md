@@ -1,45 +1,40 @@
-# knowledge — 知识库目录
+# knowledge — 应用知识库主体
 
-本目录为全局软件系统知识文档库的主体，包含四视角与宪法层。本文档定义知识库的定位、结构及维护规则，供 Agent 在解决方案、需求分析、需求交付与归档阶段读写时遵循。
+**应用知识库**（联邦单元内 `knowledge/`）：**宪法层** + **业务 / 产品 / 技术 / 数据** 四视角，与中央库 `system/knowledge/` 同构。中央库阶段文档（solutions、analysis）见 `../../system/`；本应用 requirements 以本树及中央库为事实源；归档时可回写。
 
-## 1. 定位与用途
+---
 
-- **knowledge** 是系统当前状态的「单源真相」说明，随需求交付动态更新。
-- 知识库包含四视角与宪法层：constitution、business、product、technical、data。
-- 需求归档阶段由 Agent 根据变更更新产品、架构、领域、API、依赖、测试等说明文档。
-- 解决方案与需求分析阶段以 knowledge 为输入，评估影响面与一致性。
+## 四视角实体 ID（SSOT）
 
-## 2. 结构
+- **链上实体 ID 登记表**：[KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md) — **仅** business / product / technical / data 四视角（**不含** `DIR-*` 联邦/阶段、**不含** constitution）。`system/` 入口见 [../README.md](../README.md)；仓库根 Index Guide 见 [INDEX_GUIDE.md](../../INDEX_GUIDE.md) **§1.2**。
+- **knowledge-extract 中间产物（机器 JSON，与物化锚点 `.md` 分离）**：各视角根目录 `technical_knowledge.json`、`business_knowledge.json`、`product_knowledge.json`、`data_knowledge.json`（字段约定见 [../../.ai/skills/knowledge-extract/SKILL.md](../../.ai/skills/knowledge-extract/SKILL.md)）。
+- **机器契约（SSOT）**：[../../.ai/skills/knowledge-extract/SKILL.md](../../.ai/skills/knowledge-extract/SKILL.md)（ssot、symmetry、meta_read_order）；[knowledge_meta.yaml](knowledge_meta.yaml) 仅保留联邦/目录元数据。
 
-| 路径 | 说明 |
-|------|------|
-| [constitution/](./constitution/) | 宪法与治理层：ADR、架构原则、命名规范、术语表 |
-| [business/](./business/) | 业务视角：业务域、子域、限界上下文、聚合 |
-| [product/](./product/) | 产品视角：产品线、模块、功能点与用例 |
-| [technical/](./technical/) | 技术视角：系统、应用、微服务与接口 |
-| [data/](./data/) | 数据视角：数据存储、数据实体与字典 |
+## 子目录
 
-## 3. 入口
+| 路径 | 说明 | 视角元数据（YAML） |
+|------|------|------------------|
+| [constitution](constitution) | 术语、原则、标准、ADR | [constitution/constitution_meta.yaml](constitution/constitution_meta.yaml)（子树见该目录 README） |
+| [business](business) | BD → BSD → BC → AGG | [business/business_meta.yaml](business/business_meta.yaml) |
+| [product](product) | PL → PM → FT → UC | [product/product_meta.yaml](product/product_meta.yaml) |
+| [technical](technical) | SYS → APP → MS | [technical/technical_meta.yaml](technical/technical_meta.yaml) |
+| [data](data) | DS → ENT | [data/data_meta.yaml](data/data_meta.yaml) |
 
-- 仓库根目录 [INDEX.md](../INDEX.md) — 全局索引与映射速查
-- 仓库根目录 [DESIGN.md](../DESIGN.md) — 设计方案与演进路线
-- 本目录 [constitution/README.md](./constitution/README.md) 及各视角 README（constitution、business、product、technical、data）— Agent 阅读系统文档时以此为索引。
+---
 
-## 4. 引用与可追溯
+## 维护（三步）
 
-- 文档间使用 **相对工程根目录** 的路径引用（如 `knowledge/...`），便于跨文件跳转与工具解析。
-- 更新任意知识条目后，需同步更新根目录 [INDEX.md](../INDEX.md)（必要时更新各视角 README）。
+1. 改前读 **机器契约**（见上）、本目录 [knowledge_meta.yaml](knowledge_meta.yaml)（目录元数据）与目标视角 `README.md`、相关 `*_meta.yaml`  
+2. 只增删改 **ID** 与 YAML/Markdown 约定字段；跨视角不写重复叙述  
+3. 更新 [INDEX_GUIDE.md](../../INDEX_GUIDE.md)（第三节 · 3.1 实现侧或联邦指针）、[KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md)（各视角实体 ID）或该视角 README 中的登记 / 示例（若影响导航）  
 
-## 5. 与其它阶段的关系
+**索引指针**：各视角实体 ID [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md)；仓库根 [INDEX_GUIDE.md](../../INDEX_GUIDE.md)；中央库导航 [../SYSTEM_INDEX.md](../SYSTEM_INDEX.md)。
 
-| 阶段         | 与 knowledge 的关系 |
-|--------------|----------------------|
-| 解决方案     | 读取 knowledge 评估现状与影响面 |
-| 需求分析     | 读取 knowledge 做深度研究与 MVP 拆分 |
-| 需求交付     | PRD/ADD/TDD 可引用 knowledge 中术语与架构 |
-| 需求归档     | 根据交付结果自动更新 knowledge 与 changelogs |
+**实现侧（与 YAML 分层 ID 独立）**：网关 `@GatewayApi` 对外路径、调度模块 Job 类清单见 [INDEX_GUIDE.md](../../INDEX_GUIDE.md) **第三节 · 3.1**、**第三节 · 3.3**（与 `billing-appeal-service` / `billing-appeal-schedule` 源码一致）。
 
-## 6. 参考
+---
 
-- 知识库索引与设计：根目录 [README.md](../README.md)、[INDEX.md](../INDEX.md)、[DESIGN.md](../DESIGN.md)
-- Agent 指南： [.ai/README.md](../.ai/README.md)
+## 约定（最小集）
+
+- 文内路径优先可解析的相对路径（如自 `knowledge/` 起）  
+- PL/PM/FT、SYS、DS/ENT 等元数据 **集中在各视角根目录**，细则见各 `README.md` 与 DESIGN §2  

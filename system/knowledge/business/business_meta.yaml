@@ -1,0 +1,47 @@
+# knowledge/business — 视角元数据（SSOT，供 Agent 导航）
+schema_version: "1.1"
+
+identity:
+  id: "DIR-KNOWLEDGE-BUSINESS"
+  name: "业务视角（knowledge/business）"
+  description: "DDD 业务版图：BD→BSD→BC→AGG→AB；实体落盘于 business_knowledge.json。"
+
+role:
+  perspective: "business"
+  is_system_level_index: true
+
+repository:
+  root_relative: "knowledge/business"
+  child_files:
+    - "README.md"
+    - "business_knowledge.json"
+  hierarchy:
+    chain: "BD → BSD → BC → AGG → AB"
+    storage: "virtual_json"
+
+integration:
+  cross_perspective:
+    - { from: "BC.implemented_by_app_id", to: "technical.APP" }
+    - { from: "AGG.persisted_as_entity_ids", to: "data.ENT" }
+    - { from: "AGG.implemented_by_service_ids", to: "technical.MS" }
+    - { from: "AB.apis[].id", to: "technical.API" }
+  key_fields:
+    BC: ["implemented_by_app_id"]
+    AGG: ["persisted_as_entity_ids", "implemented_by_service_ids"]
+    AB: ["apis"]
+
+references:
+  - { path: "./README.md", note: "人类可读说明" }
+  - { path: "./business_knowledge.json", note: "扁平实体与 evidence_chain" }
+  - { path: "../../INDEX_GUIDE.md", note: "联邦索引" }
+
+layers:
+  - { key: bd, code: BD, order: 1, id_pattern: "BD-{NAME}", parent: null }
+  - { key: bsd, code: BSD, order: 2, id_pattern: "BSD-{NAME}", parent: BD }
+  - { key: bc, code: BC, order: 3, id_pattern: "BC-{NAME}", parent: BSD }
+  - { key: agg, code: AGG, order: 4, id_pattern: "AGG-{NAME}", parent: BC }
+  - { key: ab, code: AB, order: 5, id_pattern: "AB-{NAME}", parent: AGG }
+
+indexing:
+  readme_index_table: true
+  sync: "变更 ID 时同步 README、KNOWLEDGE_INDEX.md、INDEX_GUIDE.md（按需）"

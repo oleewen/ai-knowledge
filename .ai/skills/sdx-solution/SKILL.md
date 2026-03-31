@@ -1,63 +1,113 @@
 ---
 name: sdx-solution
 description: >
-  解决方案制定：从业务描述提取结构化需求，评估影响面，识别并化解冲突，制定解决方案并输出解决方案文档。
-  在用户执行 /sdx-solution、编写解决方案文档、或进行需求→方案分析时使用。输出至 solutions/SOLUTION-{ID}.md，模板见 .ai/rules/solution/solution-template.md。
+  解决方案制定：从业务描述提取结构化诉求，评估影响面，识别并化解冲突，形成共识级解决方案文档。
+  在用户执行 /sdx-solution、编写解决方案文档、或进行需求→方案分析时使用。
+  输出至 system/solutions/SOLUTION-{YYMMDD}-{IDEA}.md；九章模板见 assets/solution-template.md；
+  工作流与门禁见 reference/；常见陷阱见 gotchas.md。
 ---
 
 # 解决方案阶段（sdx-solution）
 
-从海量、模糊甚至矛盾的业务描述中提取结构化需求，结合现存系统状态，评估业务影响面，识别潜在冲突，确立业务目标和解决思路，输出高质量的解决方案文档。
+从海量、模糊甚至矛盾的业务描述中提取结构化诉求，评估业务影响面，识别潜在冲突，确立业务目标与解决思路，输出**可供业务与产品评审、对齐共识**的解决方案文档。**主要读者为业务方与产品**；技术实现留给下游 **sdx-analysis** / **sdx-prd** / **sdx-design**，见 [reference/audience-and-language.md](reference/audience-and-language.md)。
+
+**执行顺序建议**：先读本文件与 [gotchas.md](gotchas.md) → 步骤 1–5 按需打开 [reference/workflow-spec.md](reference/workflow-spec.md) → 口径对齐可打开 [reference/core-concepts.md](reference/core-concepts.md) → 输出前打开 [assets/solution-template.md](assets/solution-template.md) 与 [reference/quality-checklist.md](reference/quality-checklist.md)。
+
+## 各层职责（按需加载）
+
+| 层 | 路径 | 职责 |
+|----|------|------|
+| **SKILL** | 本文件 | 边界、参数、五步摘要、约束表、依赖与索引 |
+| **gotchas** | [gotchas.md](gotchas.md) | 高频陷阱与正确做法 |
+| **assets** | [assets/solution-template.md](assets/solution-template.md) | 交付物骨架（九章），写作时打开 |
+| **reference** | [reference/workflow-spec.md](reference/workflow-spec.md) | 算法、Q-n 协议、`--depth` / `--skip-conflict`、步间数据流 |
+| | [reference/core-concepts.md](reference/core-concepts.md) | 术语、编号、与下游分工 |
+| | [reference/audience-and-language.md](reference/audience-and-language.md) | 受众与业务语言、转写规则 |
+| | [reference/design-principles.md](reference/design-principles.md) | 完整原则、反模式、错误处理 |
+| | [reference/quality-checklist.md](reference/quality-checklist.md) | 步骤 5 验收勾选 |
+| **scripts** | [scripts/validate-solution.sh](scripts/validate-solution.sh) | 结构与前缀校验（可选） |
 
 ## 输入与输出
 
-**输入**：业务需求描述（邮件、会议纪要、工单等）、`knowledge/`、`specs/`、可选 `solutions/archive/`  
-**输出**：`solutions/SOLUTION-{ID}.md`（结构遵循 [.ai/rules/solution/solution-template.md](.ai/rules/solution/solution-template.md)）
+**输入**：业务需求描述（邮件、会议纪要、工单等原始来源）；内部对齐可按需查阅 `knowledge/`、`requirements/.../specs/`（**勿将技术细节原样写入正文**）  
+**输出**：`system/solutions/SOLUTION-{YYMMDD}-{IDEA}.md`
+
+| 类型 | 内容 |
+|------|------|
+| 硬输入 | 业务需求描述（至少一种原始来源） |
+| 可选输入 | `knowledge/`、`requirements/.../specs/`、`knowledge/technical/`、AGENTS.md |
+| 固定输出 | `system/solutions/SOLUTION-{YYMMDD}-{IDEA}.md` |
+| 不产出 | PRD、ADD、测试设计、代码（使用下游 sdx-analysis / sdx-prd / sdx-design） |
+
+## 参数
+
+| 参数 | 必需 | 默认值 | 说明 |
+|------|------|--------|------|
+| `--id` | 否 | `YYMMDD-IDEA` | 解决方案文档编号（`IDEA` 取原始需求摘要要领，长度不超过 10 个字） |
+| `--doc-root` | 否 | `system` | 文档根目录；校验脚本在 `${DOC_ROOT}/solutions` 下查找；旧布局可用 `docs` |
+| `--depth` | 否 | `standard` | 分析深度（quick / standard / deep），影响步骤 2–3 粒度 |
+| `--skip-conflict` | 否 | `false` | 跳过冲突分析（仅当需求与现有规则/协作基本无交叉时） |
+
+## 适用场景
+
+| 场景 | 使用本技能 |
+|------|-----------|
+| 收到业务需求/工单，需输出解决方案文档 | 是 |
+| 需求模糊或矛盾，需结构化提取与冲突分析 | 是 |
+| 已有解决方案，需做需求分析或 PRD | 否 → **sdx-analysis** / **sdx-prd** |
+| 已有 PRD，需技术方案设计 | 否 → **sdx-design** |
 
 ## 工作流（五步）
 
-按顺序执行以下步骤，每步产出作为下一步输入；最终文档需通过质量门禁。
+按顺序执行，每步产出作为下一步输入；最终文档需通过质量门禁。详细算法与决策点见 [reference/workflow-spec.md](reference/workflow-spec.md)。概念口径见 [reference/core-concepts.md](reference/core-concepts.md)。
 
-### 步骤 1：需求提取与结构化
+1. **诉求提取与结构化** — 背景、目标、场景、角色、约束、排期；Q-n 与需求类型/优先级；**不在此步骤展开实现手段**。Q-n 交互格式见 workflow-spec。
+2. **影响面评估与分析** — 业务能力与用户旅程、直接/间接、四维度（功能/数据/接口承诺/下游）；`--depth=quick` 时合并入步骤 4。
+3. **冲突识别与化解** — 规则、流程、数据、协作与资源节奏；化解思路与成本/残余风险；`--skip-conflict` 时慎用（见 gotchas）。
+4. **方案制定与评估** — G-n 可度量、思路与关键决策（含备选）、R-n、范围与 MVP 拆分建议。
+5. **文档输出与评审** — 按 [assets/solution-template.md](assets/solution-template.md) 九章整合；语言审查；按 [reference/quality-checklist.md](reference/quality-checklist.md) 自查。
 
-- **角色**：solution-analyst 或 requirements-analyst
-- **任务**：从业务描述中萃取——业务背景与动机、业务目标与期望价值、核心业务场景、用户角色、关键约束、时间与优先级；标注歧义与待澄清项；区分功能/非功能、新增/变更/修复、业务/技术需求。
-- **产出**：结构化需求提取报告。
+辅助校验（于**仓库根**执行，`--doc-root` 与产出目录一致即可）：
 
-### 步骤 2：影响面评估与分析
+```bash
+.ai/skills/sdx-solution/scripts/validate-solution.sh --doc-root system
+```
 
-- **角色**：solution-analyst/requirements-analyst + quality-guardian/quality-engineer
-- **任务**：列出受影响功能及影响程度（高/中/低），标注影响传播路径（直接→间接）。
-- **产出**：影响面评估报告。
+## 核心约束
 
-### 步骤 3：冲突识别与化解
+| 约束 | 说明 |
+|------|------|
+| 模板驱动 | 输出严格遵循 `assets/solution-template.md` 九章结构，无内容章节保留标题并标注「不适用」 |
+| 业务可读 | 正文不出现具体技术术语；见 [reference/audience-and-language.md](reference/audience-and-language.md) |
+| 证据优先 | 影响面与冲突分析可依据 `knowledge/` 或工程事实校准，禁止臆测；写入文档时转为业务表述 |
+| 按需加载 | 仅在本轮需要时打开文件，禁止为完整性通读全仓 |
+| 歧义标注 | 不确定项标为 Q-n，**逐一向用户提问确认**（每题 3–4 个选项 + 「其他」兜底），禁止自行假设 |
+| 范围清晰 | 仅产出解决方案文档，不涉及 PRD、技术设计、代码 |
+| 可追溯 | 每个 G-n 可追溯到原始需求；每个影响点可追溯到具体业务能力或协作环节 |
 
-- **角色**：solution-analyst 或 requirements-analyst
-- **任务**：识别业务冲突（与现有规则、进行中需求、上下游流程）与系统冲突（模型、契约、资源竞争）；对每项冲突给出化解方案及成本/风险评估。
-- **产出**：冲突分析报告。
+完整原则、反模式与错误处理见 [reference/design-principles.md](reference/design-principles.md)。
 
-### 步骤 4：方案制定与评估
+## 依赖关系
 
-- **角色**：solution-analyst 或 requirements-analyst
-- **任务**：明确可度量业务目标与价值；阐述整体解决思路、关键决策与备选对比；评估技术/资源可行性及风险；界定范围边界与 MVP-Phase 拆分建议。
-- **产出**：解决方案核心内容。
-
-### 步骤 5：文档输出与评审
-
-- **角色**：technical-writer + doc-updater
-- **任务**：将步骤 1–4 的产出整合为解决方案文档，严格采用 `.ai/rules/solution/solution-template.md` 的章节与格式；执行质量门禁自查。
-- **产出**：`solutions/SOLUTION-{ID}.md`。
-
-## 质量门禁（solution_quality_gate）
-
-提交前必须满足：
-
-- **完整性**：业务背景与动机清晰，目标可度量，影响面覆盖所有受影响服务，冲突分析完整，解决思路明确，范围边界清晰。
-- **一致性**：需求与现有系统文档无矛盾，影响面与架构文档一致。
-- **可行性**：技术方案在现有架构下可实现，资源估算合理。
-- **可追溯性**：每个业务目标可追溯到原始需求，每个影响点可追溯到具体服务/模块。
+| 类型 | 技能/组件 | 说明 |
+|------|-----------|------|
+| 上游（可选） | `knowledge-extract` | 提供 `knowledge/*/*_knowledge.json` 与 `knowledge/KNOWLEDGE_INDEX.md` 基线 |
+| 下游 | `sdx-analysis` | 基于解决方案进行需求分析与 MVP 拆分 |
+| 下游 | `sdx-prd` | 将需求分析转化为 PRD |
+| 下游 | `sdx-design` | 基于 PRD 进行技术方案设计 |
 
 ## 参考
 
-- 文档模板：`.ai/rules/solution/solution-template.md`
-- 现存知识库：`knowledge/`；规约：`specs/`；历史方案：`solutions/archive/`
+| 资源 | 路径 |
+|------|------|
+| 五步工作流（算法、depth、Q-n 协议、数据流） | [reference/workflow-spec.md](reference/workflow-spec.md) |
+| 核心概念与下游分工 | [reference/core-concepts.md](reference/core-concepts.md) |
+| 受众与文档语言 | [reference/audience-and-language.md](reference/audience-and-language.md) |
+| 设计原则、反模式、错误处理 | [reference/design-principles.md](reference/design-principles.md) |
+| 质量验收清单 | [reference/quality-checklist.md](reference/quality-checklist.md) |
+| 解决方案文档模板 | [assets/solution-template.md](assets/solution-template.md) |
+| 常见陷阱与防错 | [gotchas.md](gotchas.md) |
+| 文档结构校验脚本 | [scripts/validate-solution.sh](scripts/validate-solution.sh) |
+| 下游：需求分析 | `.ai/skills/sdx-analysis/SKILL.md` |
+| 下游：产品需求 | `.ai/skills/sdx-prd/SKILL.md` |
+| 下游：技术设计 | `.ai/skills/sdx-design/SKILL.md` |

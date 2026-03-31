@@ -1,9 +1,0 @@
-# BC-ORDER-MGMT 限界上下文元数据
-id: "BC-ORDER-MGMT"
-name: "订单管理上下文"
-description: "订单生命周期管理的核心逻辑边界"
-implemented_by_app_id: "APP-ORDER-SERVICE" # 关联的技术应用
-ubiquitous_language:
-  Order: "订单，用户购买商品或服务的凭证"
-  OrderItem: "订单项，订单内包含的具体商品信息"
-  OrderState: "订单状态（如：待支付、已支付、已发货、已完成、已取消）"

@@ -1,57 +1,58 @@
-# 软件系统知识文档库 (Knowledge Repository)
+# system — 系统知识库
 
-本仓库是企业级软件系统的**全局知识底座**。我们采用「单一事实源」和「联邦治理」的理念，将系统架构和知识体系划分为四大核心视角。
+`system/` 是本仓库的**系统级知识体**：维护全局稳定事实（knowledge）与 SDD 阶段文档（solutions → analysis → requirements），保持同层存放。
+
+---
+
+## 查阅顺序（与 AGENTS 对齐）
+
+1. 仓库级地图：[INDEX_GUIDE.md](../INDEX_GUIDE.md)（Index Guide）、[README.md](../README.md)（命令与总览）、[AGENTS.md](../AGENTS.md)（Agent 契约）
+2. 本树导航：[SYSTEM_INDEX.md](SYSTEM_INDEX.md)
+3. 设计与贡献：[DESIGN.md](DESIGN.md)、[CONTRIBUTING.md](CONTRIBUTING.md)
+4. 各子目录 [knowledge](knowledge)、[solutions](solutions) 、[analysis](analysis) 、[requirements](requirements) （按需下钻）；接口/数据等规约落在各 `REQUIREMENT-{ID}/…/specs/` 或 [knowledge/technical](knowledge/technical)
+
+---
+
+## SDD 主线（四段 + 规约落位）
+
+
+| 步骤 | 目录                                 | 产出 / 作用                                                                     |
+| ------ | -------------------------------------- | --------------------------------------------------------------------------------- |
+| 0    | [knowledge](knowledge)       | SSOT：宪法层 + 业务 / 产品 / 技术 / 数据四视角                                  |
+| 1    | [solutions](solutions)       | `记录解决方案，SOLUTION-{ID}.md`                                                |
+| 2    | [analysis](analysis)         | `记录需求分析，ANALYSIS-{ID}.md`（`parent` → Solution）                        |
+| 3    | [requirements](requirements) | `记录需求版本，REQUIREMENT-{ID}/MVP-Phase-*/`（PRD / ADD / TDD、按需 `specs/`） |
+
+闭环与运维：变更与里程碑记在 [changelogs](changelogs)；应用向中央库登记见 [SYSTEM_INDEX.md](SYSTEM_INDEX.md)「应用接入」；全库 AI 构建见 [SYSTEM_INDEX.md](SYSTEM_INDEX.md)「AI 工作流」。
+
+---
 
 ## 快速导航
 
 
-| 文档                                   | 说明                                          |
-| ------------------------------------ | ------------------------------------------- |
-| **[知识库全局索引](./INDEX.md)**            | 各类文档入口、示例与映射速查                              |
-| **[设计方案摘录](./DESIGN.md)**            | 设计哲学、目录约定、映射机制与演进路线                         |
-| **[业务知识](./knowledge/README.md)**    | 宪法层、业务/产品/技术/数据四视角                          |
-| **[解决方案](./solutions/README.md)**    | 业务诉求的解决方案文档（SOLUTION-{ID}.md）               |
-| **[需求分析](./analysis/README.md)**     | 需求分析文档与 MVP 拆分（REQUIREMENT-{ID}.md）         |
-| **[需求交付](./requirements/README.md)** | 按 MVP 阶段的 PRD/ADD/TDD 交付（REQUIREMENT-{ID}/） |
-| **[需求规约](./specs/)**                 | 服务/接口等规格（供 solutions、analysis 引用）           |
-| **[贡献指南](./CONTRIBUTING.md)**        | 如何新增/修改条目与ADR                               |
+| 文档                                                      | 说明                                          |
+| ----------------------------------------------------------- | ----------------------------------------------- |
+| [system_meta.yaml](system_meta.yaml)               | `system/` 根目录索引（机器可读约定）          |
+| [SYSTEM_INDEX.md](SYSTEM_INDEX.md)                 | 本目录索引、映射速查、接入登记、AI 工作流指针 |
+| [DESIGN.md](DESIGN.md)                             | 原则、元模型、目录约定、映射字段、演进        |
+| [CONTRIBUTING.md](CONTRIBUTING.md)                 | 新增 / 修改规则与模板入口                     |
+| [knowledge/README.md](knowledge/README.md)         | 四视角 + 宪法层入口                           |
+| [solutions/README.md](solutions/README.md)         | 解决方案阶段                                  |
+| [analysis/README.md](analysis/README.md)           | 需求分析阶段                                  |
+| [requirements/README.md](requirements/README.md)   | 需求交付阶段（含各需求包内规约`specs/`）      |
+| [changelogs/CHANGELOG.md](changelogs/CHANGELOG.md) | system 侧维护性变更记录                       |
+
+---
+
+## 各一级子目录元数据（YAML）
+
+细节以各文件为准；README 仅作导航引用。
 
 
-## 目录结构
-
-```text
-system/
-├── knowledge/         # 知识库（四视角 + 宪法层）
-│   ├── constitution/      # 宪法层：ADR、架构原则、命名规范与术语表
-│   ├── business/          # 业务视角：业务域、子域、限界上下文、聚合
-│   ├── product/           # 产品视角：产品线、模块、功能点与用例
-│   ├── technical/         # 技术视角：系统、应用、微服务与接口
-│   └── data/              # 数据视角：数据存储、数据实体与字典
-├── solutions/         # 解决方案文档（SOLUTION-{ID}.md，含 archive/）
-├── analysis/          # 需求分析文档（REQUIREMENT-{ID}.md）
-├── requirements/      # 需求交付文档（REQUIREMENT-{ID}/ 按 MVP 阶段，PRD/ADD/TDD）
-├── specs/             # 需求规约文档（服务/接口等规格，供 solutions、analysis 引用）
-├── changelogs/        # 变更日志（CHANGELOG.md）
-├── INDEX.md / DESIGN.md / CONTRIBUTING.md 等
-```
-
-## 设计原则
-
-- **单一事实源 (SSOT)**：每个知识点只在一处定义，其他地方通过 ID 引用。
-- **联邦治理**：本仓库（系统级）管理宏观架构与跨域引用；各应用代码库（应用级）管理 API/Schema，并通过 CI/CD 上报 `manifest.yaml` 更新索引。
-- **去中心化映射**：在 `_meta.yaml` 或实体 YAML 中通过 ID 字段（如 `implemented_by_app_id`、`persisted_as_entity_ids`）建立视角间关联。
-
-## 命名规范
-
-所有实体使用全局唯一 ID，格式 `{TYPE}-{NAME}`。常用前缀：
-
-
-| 前缀                      | 含义               |
-| ----------------------- | ---------------- |
-| BD- / BSD- / BC- / AGG- | 业务域、子域、限界上下文、聚合根 |
-| PL- / PM- / FT- / UC-   | 产品线、产品模块、功能点、用例  |
-| SYS- / APP- / MS-       | 系统、应用、微服务        |
-| DS- / ENT-              | 数据存储、数据实体        |
-
-
-完整规范见 [knowledge/constitution/standards/naming-conventions.md](./knowledge/constitution/standards/naming-conventions.md)。设计方案与演进路线见 [DESIGN.md](./DESIGN.md)。
+| 目录                                 | 元数据                                                                            |
+| -------------------------------------- | ----------------------------------------------------------------------------------- |
+| [knowledge](knowledge)       | [knowledge/knowledge_meta.yaml](knowledge/knowledge_meta.yaml)             |
+| [solutions](solutions)       | [solutions/solutions_meta.yaml](solutions/solutions_meta.yaml)             |
+| [analysis](analysis)         | [analysis/analysis_meta.yaml](analysis/analysis_meta.yaml)                 |
+| [requirements](requirements) | [requirements/requirements_meta.yaml](requirements/requirements_meta.yaml) |
+| [changelogs](changelogs)     | [changelogs/changelogs_meta.yaml](changelogs/changelogs_meta.yaml)         |

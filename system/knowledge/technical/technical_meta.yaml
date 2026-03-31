@@ -1,0 +1,47 @@
+# knowledge/technical — 视角元数据（SSOT）
+schema_version: "1.1"
+
+identity:
+  id: "DIR-KNOWLEDGE-TECHNICAL"
+  name: "技术视角（knowledge/technical）"
+  description: "实现版图：SYS→APP→MS→API；技术视角 entities 为分类结构，见 technical_knowledge.json。"
+
+role:
+  perspective: "technical"
+  is_system_level_index: true
+
+repository:
+  root_relative: "knowledge/technical"
+  child_files:
+    - "README.md"
+    - "technical_knowledge.json"
+  hierarchy:
+    chain: "SYS → APP → MS → API"
+    storage: "virtual_json"
+    technical_entities_shape: "entities.{systems,applications,services,apis}"
+
+integration:
+  cross_perspective:
+    - { from: "business.BC.implemented_by_app_id", to: "APP.full_id" }
+    - { from: "business.AB.apis[].id", to: "API.id" }
+    - { from: "product.FT.invokes_api_ids", to: "API.id" }
+    - { from: "data.DS.owned_by_app_id", to: "APP.full_id" }
+  key_fields:
+    APP: ["service_ids", "startup_class", "maven_module"]
+    MS: ["host_class", "protocol", "cross_references.apis"]
+    API: ["service_id", "alias", "method_signature"]
+
+references:
+  - { path: "./README.md", note: "人类可读说明" }
+  - { path: "./technical_knowledge.json", note: "分类实体（SYS/APP/MS/API）" }
+  - { path: "../../INDEX_GUIDE.md", note: "联邦索引" }
+
+layers:
+  - { key: sys, code: SYS, order: 1, id_pattern: "SYS-{NAME}", parent: null }
+  - { key: app, code: APP, order: 2, id_pattern: "APP-{NAME}", parent: SYS }
+  - { key: ms, code: MS, order: 3, id_pattern: "MS-{NNN}", parent: APP }
+  - { key: api, code: API, order: 4, id_pattern: "API-{NNN}", parent: MS }
+
+indexing:
+  readme_index_table: true
+  sync: "变更 ID 时同步 README、KNOWLEDGE_INDEX.md、manifest/OpenAPI（按需）"

@@ -1,0 +1,269 @@
+{
+  "$comment": "knowledge-extract *_knowledge.json 输出模板（schema 2.1）。展示各视角的典型结构与字段。",
+
+  "technical_knowledge_example": {
+    "schema_version": "2.1",
+    "perspective": "technical",
+    "generated_at": "2026-03-27T00:00:00Z",
+    "entities": {
+      "systems": [
+        {
+          "hierarchy": "SYS",
+          "id": "001",
+          "full_id": "SYS-BILLING-APPEAL",
+          "alias": "BillingAppealSystem",
+          "name": "计费申诉系统",
+          "description": "XX公司快递费用申诉处理系统",
+          "architecture": {
+            "apps": [
+              { "id": "APP-BILLING-APPEAL-SERVICE", "name": "申诉业务服务应用", "startup_class": "AppealServiceApp", "role": "HTTP+Dubbo+MQ 主服务" }
+            ],
+            "external_dependencies": [
+              { "system": "网点系统", "integration": "Dubbo RPC", "purpose": "费用计算、申诉结果上报" }
+            ],
+            "ddd_layers": ["Gateway", "Application", "Domain", "Infrastructure"]
+          },
+          "evidence_chain": [
+            { "source": "README.md §项目结构", "confidence": "high", "type": "document" }
+          ],
+          "cross_references": { "business": ["BD-001"], "product": ["PL-001"] }
+        }
+      ],
+      "applications": [
+        {
+          "hierarchy": "APP",
+          "id": "001",
+          "full_id": "APP-BILLING-APPEAL-SERVICE",
+          "parent_sys_id": "SYS-BILLING-APPEAL",
+          "alias": "AppealServiceApp",
+          "name": "申诉业务服务应用",
+          "description": "HTTP + Dubbo + MQ 主服务",
+          "startup_class": "AppealServiceApp",
+          "maven_module": "billing-appeal-service",
+          "service_ids": ["MS-001", "MS-002"],
+          "mq_consumers": ["BillingAppealDealConsumer"],
+          "evidence_chain": [
+            { "source": "AppealServiceApp.java", "confidence": "high", "type": "code_location", "location": "billing-appeal-service/src/.../AppealServiceApp.java" }
+          ],
+          "cross_references": {}
+        }
+      ],
+      "services": [
+        {
+          "hierarchy": "MS",
+          "id": "001",
+          "alias": "BillingAppeal",
+          "name": "计费申诉服务",
+          "host_class": "BillingAppealApiImpl, AppealServiceImpl",
+          "host_module": "billing-appeal-service",
+          "protocol": "HTTP+Dubbo",
+          "merge_note": "same_name_merge: BillingAppealApiImpl + AppealServiceImpl → BillingAppeal",
+          "evidence_chain": [
+            { "source": "BillingAppealApiImpl", "confidence": "high", "type": "code_location" }
+          ],
+          "cross_references": { "business": ["BC-001", "AGG-001"], "product": ["PM-001"], "apis": ["API-001", "API-002"] }
+        }
+      ],
+      "apis": [
+        {
+          "hierarchy": "API",
+          "id": "001",
+          "alias": "BillingAppeal.listBillingAppeal",
+          "name": "计费申诉列表查询",
+          "service_id": "MS-001",
+          "host_class": "BillingAppealApiImpl",
+          "host_module": "billing-appeal-service",
+          "method_signature": "listBillingAppeal(BillingAppealReq req)",
+          "evidence_chain": [
+            { "source": "BillingAppealApiImpl#listBillingAppeal:73", "confidence": "high", "type": "code_location" }
+          ]
+        }
+      ]
+    },
+    "metadata": {
+      "total_systems": 1,
+      "total_applications": 1,
+      "total_services": 1,
+      "total_apis": 1,
+      "total_entities": 4,
+      "extraction_basis": "INDEX_GUIDE.md + 源代码",
+      "schema_notes": "schema 2.1 技术视角使用分类 entities 对象",
+      "changes_from_previous": ""
+    }
+  },
+
+  "data_knowledge_example": {
+    "schema_version": "2.1",
+    "perspective": "data",
+    "generated_at": "2026-03-27T00:00:00Z",
+    "entities": [
+      {
+        "hierarchy": "DS",
+        "id": "001",
+        "full_id": "DS-BILLING-APPEAL-TIDB",
+        "alias": "BillingAppealTiDB",
+        "name": "TiDB 主业务库",
+        "description": "计费申诉系统主业务数据库",
+        "type": "TiDB / MySQL 8.0+",
+        "config_key": "billing_tidb",
+        "owned_by_app_id": ["APP-BILLING-APPEAL-SERVICE"],
+        "notes": ["@MultiTransactional(\"计费\")"],
+        "evidence_chain": [
+          { "source": "INDEX_GUIDE.md §6.1 数据源", "confidence": "high", "type": "document" }
+        ],
+        "cross_references": { "business": ["BD-001"] }
+      },
+      {
+        "hierarchy": "ENT",
+        "id": "001",
+        "full_id": "ENT-001",
+        "parent_id": "DS-BILLING-APPEAL-TIDB",
+        "alias": "BillingAppeal",
+        "name": "申诉单表",
+        "logical_name": "BillingAppeal",
+        "physical_table": "billing_appeal",
+        "evidence_chain": [
+          { "source": "@Table(name=\"billing_appeal\")", "confidence": "high", "type": "code" }
+        ],
+        "cross_references": { "datasource": "DS-001", "business": ["AGG-001"], "technical": ["MS-001"] }
+      }
+    ],
+    "metadata": {
+      "total_datasources": 1,
+      "total_entities": 1,
+      "total_items": 2,
+      "extraction_basis": "INDEX_GUIDE.md §6",
+      "schema_notes": "schema 2.1 扁平 entities 数组",
+      "changes_from_previous": ""
+    }
+  },
+
+  "business_knowledge_example": {
+    "schema_version": "2.1",
+    "perspective": "business",
+    "generated_at": "2026-03-27T00:00:00Z",
+    "confidence": "high",
+    "entities": [
+      {
+        "hierarchy": "BD",
+        "id": "001",
+        "full_id": "BD-CHARGING-APPEAL",
+        "alias": "ChargingAppealDomain",
+        "name": "计费申诉域",
+        "description": "顶层业务域",
+        "strategic_classification": "core_domain",
+        "children": ["BSD-BILLING-APPEAL"],
+        "evidence_chain": [
+          { "source": "com.company.billing.charging.appeal（顶层包路径）", "confidence": "high", "type": "code" }
+        ],
+        "cross_references": { "technical": ["SYS-001"], "product": ["PL-001"] }
+      },
+      {
+        "hierarchy": "AGG",
+        "id": "001",
+        "full_id": "AGG-BILLING-APPEAL",
+        "parent_id": "BC-BILLING-APPEAL-CORE",
+        "alias": "BillingAppealAgg",
+        "name": "计费申诉聚合",
+        "description": "计费申诉核心聚合",
+        "root_entity": "BillingAppeal",
+        "entities": ["BillingAppealItem", "BillingAppealItemDraft"],
+        "invariants": ["申诉主单提交后 24 小时未操作自动作废"],
+        "persisted_as_entity_ids": ["ENT-001", "ENT-002", "ENT-003"],
+        "implemented_by_service_ids": ["MS-001", "MS-002"],
+        "abilities": ["AB-APPEAL-LIFECYCLE"],
+        "evidence_chain": [
+          { "source": "MS-001 BillingAppeal; MS-002 BillingAppealItem", "confidence": "high", "type": "technical_entity" }
+        ],
+        "cross_references": { "technical": ["MS-001", "MS-002"], "business": ["BC-001"], "data": ["ENT-001", "ENT-002", "ENT-003"] }
+      },
+      {
+        "hierarchy": "AB",
+        "id": "001",
+        "full_id": "AB-APPEAL-LIFECYCLE",
+        "parent_id": "AGG-BILLING-APPEAL",
+        "alias": "AppealLifecycle",
+        "name": "申诉生命周期能力",
+        "description": "提供计费申诉完整生命周期能力",
+        "capability": "提供计费申诉主单的创建、提交、取消、审核等完整生命周期能力",
+        "apis": [
+          { "id": "API-002", "method": "BillingAppeal.create", "description": "创建申诉主单" },
+          { "id": "API-005", "method": "BillingAppeal.submit", "description": "提交申诉" }
+        ],
+        "evidence_chain": [
+          { "source": "API-002 BillingAppeal.create; API-005 BillingAppeal.submit", "confidence": "high", "type": "api_reference" }
+        ],
+        "cross_references": { "technical": ["MS-001", "MS-002"], "business": ["AGG-001"] }
+      }
+    ],
+    "metadata": {
+      "total_business_domains": 1,
+      "total_business_subdomains": 0,
+      "total_bounded_contexts": 0,
+      "total_aggregates": 1,
+      "total_abilities": 1,
+      "total_entities": 3,
+      "extraction_basis": "FQCN 包路径分析 + MS-* 技术实体对齐",
+      "schema_notes": "schema 2.1 扁平 entities 数组，hierarchy 区分层级",
+      "changes_from_previous": ""
+    }
+  },
+
+  "product_knowledge_example": {
+    "schema_version": "2.1",
+    "perspective": "product",
+    "generated_at": "2026-03-27T00:00:00Z",
+    "confidence": "high",
+    "entities": [
+      {
+        "hierarchy": "PL",
+        "id": "001",
+        "full_id": "PL-BILLING-APPEAL",
+        "alias": "BillingAppealProduct",
+        "name": "计费申诉产品",
+        "description": "XX公司快递费用申诉处理平台产品线",
+        "target_users": ["快递网点操作员", "计费中心审核员"],
+        "evidence_chain": [
+          { "source": "README.md §功能特性", "confidence": "high", "type": "document" }
+        ],
+        "cross_references": { "technical": ["SYS-001"], "business": ["BD-001"] }
+      },
+      {
+        "hierarchy": "FT",
+        "id": "001",
+        "full_id": "FT-BILLING-APPEAL-LIFECYCLE",
+        "parent_id": "PM-BILLING-APPEAL-CORE",
+        "alias": "BillingAppealLifecycle",
+        "name": "申诉单生命周期",
+        "description": "计费申诉主单的完整生命周期功能",
+        "invokes_api_ids": ["API-001", "API-002", "API-003"],
+        "acceptance_criteria": ["申诉单创建后返回唯一申诉单号", "审核结果同步网点系统"],
+        "realizes_use_case_ids": ["UC-001", "UC-002"],
+        "evidence_chain": [
+          { "source": "README.md §核心业务", "confidence": "high", "type": "document" }
+        ],
+        "cross_references": { "product": ["PM-001"], "business": ["AB-001"] }
+      },
+      {
+        "hierarchy": "UC",
+        "id": "001",
+        "alias": "CreateBillingAppeal",
+        "name": "发起计费申诉主单",
+        "evidence_chain": [
+          { "source": "API-002 BillingAppeal.create", "confidence": "high", "type": "api_reference" }
+        ],
+        "cross_references": { "technical": ["API-002"], "product": ["PM-001"], "business": ["AB-001"] }
+      }
+    ],
+    "metadata": {
+      "total_products": 1,
+      "total_modules": 0,
+      "total_features": 1,
+      "total_use_cases": 1,
+      "total_entities": 3,
+      "extraction_basis": "README 功能特性 + INDEX_GUIDE §3 + MS-* 技术实体",
+      "schema_notes": "schema 2.1 扁平 entities 数组",
+      "changes_from_previous": ""
+    }
+  }
+}

@@ -1,109 +1,104 @@
 ---
 name: agent-guide
 description: >
-  项目探索并生成 AGENTS.md、README.md，供 AI 与开发者快速理解项目与规范。
-  若已有 Index Guide 落盘须先询问重新执行阶段一或跳过；优先以 Index 为地图做选择性探索；无索引时先拓扑扫描再精读要点。
-  在用户需要初始化/更新 Agent 指引与项目说明时使用。
+  生成/更新根目录 README.md（GitHub 惯例）与 AGENTS.md（Agent 契约）。
+  仅以当前落盘的 Index Guide（常见为仓库根 `INDEX_GUIDE.md`，或 `system/INDEX_GUIDE.md`）为唯一地图按需补读，
+  README 承载命令与文档表，AGENTS 引用之，三文件不重复堆叠。
+  在用户执行 /agent-guide 或仓库 onboarding 时使用。
 ---
 
-# Agent 指引生成
+# Agent 指引生成（agent-guide）
 
-作为项目文档专家，按以下三阶段完成探索并生成 **AGENTS.md** 与 **README.md**。精读时可先把阅读内容记到临时笔记，再汇总进最终产出。
+面向 **人类开发者（README）** 与 **AI Agent（AGENTS）** 各一份入口文档；平面检索与路径级精要留在 Index Guide。
 
-## 工作要求
+## 输入与输出
 
-- 模型要足够强，优先用 Claude Opus、Gemini、GPT 最强模型
-- 生成内容要细读精读，有问题及时纠正
-- 遵循推荐模板，不局限于模板，按实际情况调整
-- 产出仅限根目录 `AGENTS.md` 与 `README.md`，并与项目现状一致
+**输入**：落盘 INDEX + 代码库（可选：用户指定 output 范围）
+**输出**：仓库根 `README.md`、`AGENTS.md`
 
-## 与 document-indexing 的分工
-
-| 产物 | 作用 |
+| 类型 | 内容 |
 |------|------|
-| **Index Guide**（见 `.cursor/skills/document-indexing/SKILL.md`） | 七段结构：全局元信息、架构拓扑、详细索引字典、数据流、配置索引、未索引声明、AI 查阅指北——作为 **第一阶段探索的权威地图**，避免盲扫全库。 |
-| **AGENTS.md / README.md**（本 Skill） | 面向 Agent 与开发者的 **操作指引、规范入口、上手命令**；内容须与 Index 一致，并吸收 Index 中已核实的事实。 |
+| 硬输入 | 仅落盘 INDEX 单一路径（§1 解析）；无落盘 Index 不编造 |
+| 可选输入 | 用户目标（新建/增量）、output 范围（仅 README / 仅 AGENTS / 两者） |
+| 固定输出 | 仓库根 `README.md`、`AGENTS.md` |
+| 不产出 | 不替代主 Index Guide；不把 Index 全文合并进 AGENTS |
 
-**原则**：Index 中未实际读取的路径（§6 或未标精要）不得写入 AGENTS/README 为「已确认事实」；需补读或标为待核实。
+## 参数
 
-## 工作流程
+| 参数 | 必需 | 默认值 | 说明 |
+|------|------|--------|------|
+| `--output` | 否 | `both` | `readme` / `agents` / `both` |
+| `--mode` | 否 | `update` | `create`（初始化）或 `update`（增量合并） |
 
-每阶段开始前：找不到模板则提示用户指定模板。阶段结束前：先确认是否需要调整内容，再进入下一阶段。
+## 工作流（五步）
 
-### 入口：阶段一产物（Index Guide）已存在时
+### 步骤 1：Index 解析
 
-**启动本 Skill 或进入第一阶段前**，先检测是否存在 **阶段一产物**（Index Guide）：
+按优先级查找落盘 Index Guide（命中即停）：
 
-- 落盘文件：`docs/INDEX-GUIDE.md`、`docs/INDEX.md`、项目根 `INDEX-GUIDE.md`、`INDEX.md` 等，或
-- 用户指定/附件中的《AI文档库精要索引指南》全文。
+1. 仓库根 `INDEX_GUIDE.md`、`INDEX-GUIDE.md`
+2. `system/INDEX_GUIDE.md`、`system/INDEX-GUIDE.md`
 
-**若检测到上述产物已存在**（且用户未在一开始就声明「必须全量重做索引」）：
+未命中 → 终止并提示用户运行 `/document-indexing`。
+详细规则见 [reference/execution-spec.md](reference/execution-spec.md)。
 
-1. **向用户展示检测结果**（路径或「已有 Index」摘要）。
-2. **必须先询问用户并等待明确选择，不得默认进入后续步骤**：
+### 步骤 2：最小阅读集探索
 
-| 用户选择 | 行为 |
-|----------|------|
-| **重新执行阶段一** | 按 `.cursor/skills/document-indexing/SKILL.md` 与用户选定 Mode **重新生成** Index Guide（可更新落盘），再进入 **分支 A**。 |
-| **跳过阶段一（沿用现有 Index）** | **不**再执行 document-indexing；以 **现有** Index 为地图，直接进入 **分支 A**。 |
+以 INDEX 为地图，仅打开与 README 首屏 / AGENTS 契约相关的文件：
 
-若无落盘/粘贴的 Index，则无需本询问，进入 **分支 B**。
+- §1 元信息 → 技术栈、入口、命令
+- §2 拓扑 → 目录边界、依赖方向
+- §3 API → **不**粘贴进 AGENTS，仅指针
+- 已有 README → 合并而非覆盖
 
----
+详细策略见 [reference/execution-spec.md](reference/execution-spec.md)。
 
-### 第一阶段：项目探索（结合 Index Guide，选择性精读）
+### 步骤 3：生成 README
 
-#### 分支 A：已有 Index Guide（沿用或刚重新生成）
+按 [assets/readme-skeleton.md](assets/readme-skeleton.md) 骨架生成，先 README 后 AGENTS。
 
-以 Index 为索引，**不再**对全仓库做无差别逐文件精读，按下面 **选择性** 补读：
+合格线：新读者 30 秒内知道「是什么、下一步点哪」；相对路径可点、表格不空洞。
 
-| Index 章节 | 如何用于探索 | 与 AGENTS/README 的衔接 |
-|------------|-------------|------------------------|
-| **§1 全局元信息** | 作为技术栈、入口、构建命令、项目形态的 **首选事实源**；若与当前文件冲突，以 **实际读取配置文件** 为准并修正认知。 | 直接映射到 AGENTS「技术栈/命令」与 README「简介与快速开始」。 |
-| **§2 架构拓扑** | 锁定 **关键目录与模块边界**；只深入与「Agent 必知路径」相关的子树。 | AGENTS「关键路径」、README「目录结构」。 |
-| **§3 详细索引字典** | **优先精读**：`重要度 ⭐⭐⭐`、模块入口、带 `Config`/`Router`/`API` 等与规范相关的行；**次选**：⭐⭐ 及与 `.ai/rules/`、`README` 引用链相关的路径。 | AGENTS 中的路径、命令、规范引用须与这些文件一致。 |
-| **§4 / §5**（若有） | 数据流与配置项用于理解 **运行方式与环境**；AGENTS 需写清命令与环境时查阅。 | README 环境说明、AGENTS 禁止事项中的敏感配置提示。 |
-| **§6 未索引区域** | 若 AGENTS 必须描述某未索引路径，则 **仅对该路径追加阅读**；否则在 AGENTS 可注明「详见索引 §6」。 | 避免幻觉覆盖盲区。 |
-| **§7 AI 查阅指北** | 与 AGENTS 内「如何查阅本项目」对齐，避免两套矛盾检索逻辑。 | 可在 AGENTS 中简写并指向 Index 或 README 文档索引。 |
+### 步骤 4：生成 AGENTS
 
-**仍须执行（轻量、可与 Index 交叉验证）**：
+按 [assets/agents-skeleton.md](assets/agents-skeleton.md) 骨架生成（该文件即权威基准）。
 
-1. **`.ai/rules/`** 与 **`.ai/CONVENTIONS.md`**：若 AGENTS 需列规范入口，必须实际浏览目录/读取摘要，不完全依赖 Index 转述。
-2. **根目录 `README.md`**（若已存在）：作为文档体系与「目录结构」的 **人类约定**，与 Index §2 对照后写入新版 README。
-3. **`knowledge/`**（若存在）：结合 Index 模块表，只精读与「文档体系说明」相关的 `README` / 索引文件，不必通读全部实体文档。
+三文件去重规则见 [reference/three-file-spec.md](reference/three-file-spec.md)。
 
-**规模统计**：可用 Index §1 与 §3 已列文件估算；若用户需要精确数字，再对关键目录做 `find`/行数统计，非强制全仓扫描。
+### 步骤 5：验证
 
-#### 分支 B：无 Index Guide
+按 [reference/quality-standards.md](reference/quality-standards.md) 验收清单执行。可使用辅助脚本：
 
-1. **先执行 document-indexing 至少 Mode 1（拓扑模式）**，在会话内生成一份 Index Guide（可选落盘到 `docs/INDEX-GUIDE.md` 供后续复用），再 **按分支 A** 做选择性精读。
-2. 若用户明确不要求 Index：则采用 **传统全量摸底**——扫描根目录配置（`package.json`、`pom.xml`、`build.gradle`、`requirements.txt` 等）、目录结构与模块边界、`knowledge/` 与根 `README` 文档体系、加载 `.ai/rules/`、统计代码规模；**仍建议**在结束前用 Mode 1 要点整理成简要「模块拓扑」笔记，便于第二阶段写 AGENTS 时不遗漏大块。
+```bash
+scripts/validate-guide.sh --root .
+```
 
----
+检查项：路径一致性、无大段重复、INDEX 引用正确。
 
-### 第二阶段：生成 AGENTS.md 与 README.md
+## 核心约束
 
-1. 在项目根目录生成 `AGENTS.md`，遵循或参考 `.ai/rules/agents-template.md` 结构（可不局限于模板）
-2. 在项目根目录生成或更新 `README.md`，遵循 GitHub 常见结构
-3. 确保 `README.md` 中若涉及文档体系，则明确「目录结构」与「文档索引」
-4. **可选**：在 README 或 AGENTS 中增加一行，说明 **Index Guide** 路径（若已落盘），便于下游 Agent 与 document-indexing 链路一致
+| 约束 | 说明 |
+|------|------|
+| 零幻觉 | 无落盘 INDEX 不编造结构；未读路径不写成已核实结论 |
+| 单一事实源 | 命令块只在 README；AGENTS 概述 ≤3 行；不复制 INDEX §3 表 |
+| 先 README 后 AGENTS | 避免 AGENTS 写满命令后 README 重复粘贴 |
+| INDEX 只读 | 禁止在本 Skill 内调用 document-indexing 或重做索引 |
+| 合并优先 | 更新已有 README 时合并重复段落，保留有效表格/命令块 |
 
----
+## 依赖关系
 
-### 第三阶段：检查与质量验证
-
-**检查清单**：针对 **AGENTS.md** 与 **README.md** 两项产出；若存在 Index Guide，抽查 **AGENTS 中的路径、命令、技术栈是否与 Index §1/§3 及实际文件一致**。
-
-**质量标准：**
-
-- **完整性**：AGENTS.md 覆盖关键路径、技术栈、命令与开发规范；README.md 能让人快速上手与定位文档
-- **一致性**：与当前代码结构、配置、入口一致，无过时描述；与 Index Guide 无未解释的冲突
-- **可操作性**：命令与步骤可直接复制执行
-
----
+| 类型 | 技能/组件 | 说明 |
+|------|-----------|------|
+| 前置 | `document-indexing` | INDEX 须已落盘；更新 INDEX 请单独运行 |
 
 ## 参考
 
-- **索引地图**：`.cursor/skills/document-indexing/SKILL.md`（Index Guide 结构与三模式）
-- 开发规范与模板：`.ai/rules/`、`.ai/CONVENTIONS.md`
-- 若项目已有根目录 `README.md`：以其文档体系描述为准，本 Skill 仅更新/生成该文件与 AGENTS.md
+| 资源 | 路径 |
+|------|------|
+| 执行规范（Index 解析 + 探索策略 + 错误处理） | [reference/execution-spec.md](reference/execution-spec.md) |
+| 三文件分工去重与产出规范 | [reference/three-file-spec.md](reference/three-file-spec.md) |
+| 验收清单与反模式 | [reference/quality-standards.md](reference/quality-standards.md) |
+| README 输出骨架 | [assets/readme-skeleton.md](assets/readme-skeleton.md) |
+| AGENTS 输出骨架与基准 | [assets/agents-skeleton.md](assets/agents-skeleton.md) |
+| 常见陷阱与防错规则 | [gotchas.md](gotchas.md) |
+| 路径验证脚本 | [scripts/validate-guide.sh](scripts/validate-guide.sh) |

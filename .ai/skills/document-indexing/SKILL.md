@@ -1,106 +1,102 @@
 ---
 name: document-indexing
 description: >
-  为代码库/文档库生成面向下游 AI 的全局索引指南（Index Guide）：拓扑扫描、结构分析、精读提取；
-  零幻觉路径精确、MECE 分类、标准七段输出。在用户执行 /document-indexing、需要 RAG/导航地图、
-  或建立 Agent 可读的项目索引时使用。
+  为代码库生成结构化文档索引（INDEX_GUIDE.md），支持全量/增量扫描与三级深度（拓扑/结构/精读）。
+  产出标准化九章文档索引，为 Agent 导航与 RAG 上下文提供权威文档地图。
+  在用户执行 /document-indexing、需要生成或更新项目索引文档、或进行项目 Onboarding 时使用。
 ---
 
-# 文档索引（Index Guide）
+# 文档索引生成器（document-indexing）
 
-你扮演 **资深 AI 文档库架构师与知识图谱工程师**。唯一使命：解析代码库/文档库，产出一份 **对 AI Agent 高度可读、检索导向、信息密度高** 的 **全局索引指南**，作为下游 RAG、上下文理解、代码导航的 **权威地图**。
+将代码库解析为结构化、可检索的文档索引 INDEX_GUIDE.md，作为 Agent 与开发者的系统全景导航。
 
-## 消费者与原则
+## 输入与输出
 
-- **消费者**：其他 AI/Agent（优先机器可解析：结构化、标签化、路径精确）。
-- **形态自适应**：单体、Monorepo、纯文档库、混合均需自适应。
-- **超大仓库**：无法通读时须声明覆盖边界，并标注未索引区域。
+**输入**：扫描模式 + 扫描深度 + 代码库
+**输出**：`{Doc Root}/INDEX_GUIDE.md`（九章结构）、`changelogs/indexing-log.jsonl`（操作日志）
 
-## 硬性约束
+| 类型 | 内容 |
+|------|------|
+| 硬输入 | 代码库根目录、扫描模式（full/incremental）、扫描深度（1/2/3） |
+| 可选输入 | 输出路径、增量起始时间、`changes-index.json`（增量模式） |
+| 固定输出 | `{Doc Root}/INDEX_GUIDE.md`、`changelogs/indexing-log.jsonl` |
+| 不产出 | 不生成知识实体 ID、不修改 README/AGENTS、不产出 CHANGELOG |
 
-1. **零幻觉**：只索引实际读取过的文件；未读文件必须标 `[未索引]`，禁止推测内容。
-2. **路径精确**：一律自项目根起的相对路径（如 `./scripts/sdx-init.sh`），禁止模糊描述。
-3. **MECE**：分类互斥且穷尽；同一文件不得重复出现在多模块（除非显式标为「跨模块共享」）。
-4. **信息密度**：每条功能精要 **15–30 个中文字符**；禁止「该文件用于…」等空话，直接陈述功能。
-5. **幂等性**：同输入多次执行，结构与语义层级应一致。
+## 参数
 
-## 执行前：确认模式
+| 参数 | 必需 | 默认值 | 说明 |
+|------|------|--------|------|
+| `--mode` | 是 | - | `f`/`full`（全量）或 `i`/`incremental`（增量） |
+| `--depth` | 是 | - | `1`（拓扑）、`2`（结构）、`3`（精读） |
+| `--output` | 否 | `./system/INDEX_GUIDE.md` | 输出路径 |
+| `--since` | 否 | 自动 | 增量起始时间（epoch ms，自动从日志获取） |
 
-与用户确认或根据任务自选其一：
+深度级别与模式的详细定义见 [reference/scan-spec.md](reference/scan-spec.md)。
 
-| 模式 | 名称 | 目标 | 典型耗时认知 |
-|------|------|------|----------------|
-| **Mode 1** | 拓扑模式 (Topology Scan) | 快速建立项目全貌 | ~5 分钟量级阅读 |
-| **Mode 2** | 结构模式 (Structural Analysis) | 模块交互、API 边界、数据流 | Mode 1 + 抽样/入口/API/模型 |
-| **Mode 3** | 精读模式 (Deep Knowledge Extraction) | 细粒度知识、业务规则与异常路径 | 目录下文本尽量通读 |
+## 工作流（六步）
 
-### Mode 1 — 读取范围
+### 步骤 1：环境准备
 
-- 根目录配置：`README.*`、`package.json`、`pyproject.toml`、`pom.xml`、`go.mod`、`Cargo.toml`、`*.yaml`/`*.yml`、`Makefile`、`Dockerfile`、`docker-compose.*` 等。
-- `docs/` 或 `doc/` 下：`index.*`、`README.*`、`overview.*`。
-- **各目录第一层仅列文件名**（不读子文件内容）。
+- 读取历史日志 `changelogs/indexing-log.jsonl`
+- 无历史记录时强制 full 模式
+- 验证输出路径可写
 
-**输出深度**：项目定位 + 技术栈 + 模块拓扑树（无函数级细节）。
+### 步骤 2：扫描配置
 
-### Mode 2 — 在 Mode 1 基础上增加
+- 获取用户确认：mode + depth
+- 增量模式下从 `indexing-log.jsonl` 读取基线时间戳
 
-- 源码文件 **前 50 行**（imports、类头、模块 docstring）。
-- 入口完整通读：`**/index.*`、`**/mod.*`、`**/main.*`、`**/__init__.*`。
-- API：`openapi.*`、`swagger.*`、`*.proto`、`*.graphql`、`**/routes.*`、`**/router.*`。
-- 模型：`**/models.*`、`**/schema.*`、`**/types.*`、`**/entities.*`。
+### 步骤 3：变更分析
 
-**输出深度**：模块功能 + 接口清单 + 数据结构概览 + 依赖方向图；**须输出 §4、§5**（见下文）。
+- 调用 `document-change` 技能生成变更索引
+- 解析变更文件列表，建立扫描路径集
+- 全量模式下跳过变更过滤
 
-### Mode 3 — 读取范围
+### 步骤 4：执行扫描
 
-- 约定目录下 **文本文件尽量完整通读**（仍须对实在过大的树声明 §6）。
+按深度级别扫描代码库。扫描规则（文件过滤、深度控制、路径解析）见 [reference/scan-spec.md](reference/scan-spec.md)。可使用辅助脚本：
 
-**输出深度**：函数级索引、业务规则分布、异常路径、配置语义、隐式约定；**§4–§7 填满**。
-
-## 生成索引前的思考步骤（内部草稿）
-
-在最终输出前于内心完成（可向用户展示为简短「清点摘要」）：
-
-1. **文件清点**：已读路径 + 规模（行数/字节可选）。
-2. **技术栈**：从配置提取语言、框架、构建、运行时。
-3. **模块边界**：目录 + import 关系。
-4. **依赖方向**：A → B 表示 A 依赖/调用 B。
-5. **核心文件**：每模块信息密度最高的若干文件（建议 Top 3）。
-6. **标签词表**：全局统一、**≤30 个** 受控标签。
-7. **覆盖盲区**：未读或未理解路径列表。
-
-## 标准输出结构（必填）
-
-若某节信息不足，写：`[信息不足，需补充读取：<具体路径>]`。
-
-输出一份 Markdown，包含以下 **7 个 Section**：
-
-1. **全局元信息**：项目名称、核心定位（≤30 字）、技术栈、关键外部依赖（3–8）、入口、构建/启动命令、项目形态。
-2. **架构拓扑**：带语义注释的目录树；**§2.2 模块依赖方向图**（A → B）。
-3. **详细索引字典**：**§3.0 全局标签词表**；再按模块表格列：**文件路径 | 功能精要 | 检索标签 | 上游依赖 | 下游被依赖 | 重要度（⭐~⭐⭐⭐）**。
-4. **核心数据流**（Mode 2/3）：命名数据流 + 简述路径。
-5. **配置与环境变量索引**（Mode 2/3）：配置项、所在文件、语义、默认值、敏感性。
-6. **未索引区域声明**：路径/模式、原因、建议后续动作。
-7. **AI 查阅指北**：按「要了解什么 → 优先标签/路径」的检索表；可附 **快速检索 Prompt 模板**。
-
-文首建议保留元行，例如：
-
-```markdown
-# 📘 AI文档库精要索引指南
-> 生成时间：[ISO 或可读时间戳]  |  执行模式：[Mode 1/2/3]  |  索引覆盖率：[已索引数/估算总数或说明]
+```bash
+scripts/indexing.sh --mode full --depth 3
 ```
 
-## 与本仓库的衔接
+### 步骤 5：质量验证
 
-- 若目标为 **ai-sdd-knowledge** 本体：优先索引 `README.md`、`AGENTS.md`、`system/`、`scripts/`、`.ai/`、`.cursor/skills/`，勿臆造 `system/knowledge/` 实体 ID。
-- 产物默认建议写入用户指定路径（如 `docs/INDEX.md` 或项目根 `INDEX.md`）；**本 Skill 不强制改仓库**，除非用户要求落盘。
+按 [reference/quality-standards.md](reference/quality-standards.md) 执行验证：结构完整性、信息密度、准确度、交叉引用。
 
-## 何时使用
+### 步骤 6：输出生成
 
-- 需要 **单一权威索引** 供多 Agent 共享检索策略时。
-- 新项目 onboarding、Monorepo 导航、文档站地图。
-- 与 **knowledge-build** 区分：**document-indexing** 侧重「可检索的平面/分层索引与地图」；**knowledge-build** 侧重按 `knowledge/` 体系沉淀业务知识文档。
+- 按九章规范（详见 [reference/nine-chapter-spec.md](reference/nine-chapter-spec.md)）生成文档
+- 输出模板骨架参见 [assets/index-guide-template.md](assets/index-guide-template.md)
+- 追加日志到 `changelogs/indexing-log.jsonl`（日志格式见 [reference/scan-spec.md](reference/scan-spec.md)）
+- 清理临时文件
 
-## 参考来源
+## 核心约束
 
-角色与输出模板完整定义见仓库内：`# Role_ 资深AI文档库架构师与知识图谱专家....md`（若文件名不同，以「资深AI文档库架构师与知识图谱」角色文档为准）。
+| 约束 | 说明 |
+|------|------|
+| 零幻觉 | 只索引实际读取的内容，禁止臆测 |
+| 路径精确 | 使用项目根相对路径 |
+| 幂等性 | 相同输入产出一致结果 |
+| 增量一致性 | 增量索引保持与全量索引结构一致 |
+| MECE 原则 | 分类互斥穷尽，避免重复索引 |
+| 版本追溯 | 每次索引记录完整元数据到日志 |
+
+## 依赖关系
+
+| 类型 | 技能/组件 | 说明 |
+|------|-----------|------|
+| 前置 | `document-change` | 生成变更索引 `changes-index.json` |
+| 下游 | `knowledge-extract` | 以主 INDEX 作为提取证据来源 |
+| 关联 | `agent-guide` | 维护 README.md / AGENTS.md 与 INDEX 交叉引用 |
+
+## 参考
+
+| 资源 | 路径 |
+|------|------|
+| 扫描执行规范（深度/模式/过滤/日志/错误处理） | [reference/scan-spec.md](reference/scan-spec.md) |
+| 九章文档结构规范 | [reference/nine-chapter-spec.md](reference/nine-chapter-spec.md) |
+| 质量验证清单 | [reference/quality-standards.md](reference/quality-standards.md) |
+| INDEX_GUIDE 输出模板 | [assets/index-guide-template.md](assets/index-guide-template.md) |
+| 常见陷阱与防错规则 | [gotchas.md](gotchas.md) |
+| 辅助脚本 | [scripts/indexing.sh](scripts/indexing.sh) |
