@@ -42,7 +42,7 @@ readonly SDX_VERSION='2.0.0'
 readonly SDX_MIN_BASH_VERSION=5
 
 # Git 仓库地址（供 bootstrap 引用）
-readonly SDX_GIT_REPO_URL='https://github.com/oleewen/ai-sdd-knowledge.git'
+readonly SDX_GIT_REPO_URL='https://github.com/oleewen/ai-knowledge.git'
 
 # 支持的模式
 readonly -a SDX_SUPPORTED_MODES=(standalone central)

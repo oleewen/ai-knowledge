@@ -3,7 +3,7 @@
 # knowledge-init-bootstrap.sh — SDX 知识库初始化引导脚本
 #
 # 目的:
-#   允许用户无需预先克隆 ai-sdd-knowledge 仓库即可执行初始化。
+#   允许用户无需预先克隆 ai-knowledge 仓库即可执行初始化。
 #   自动从 Git 拉取仓库到临时目录，然后调用 knowledge-init.sh 完成初始化。
 #
 # 意图:
@@ -18,28 +18,28 @@
 #
 # Usage:
 #   # 远程执行（推荐）
-#   curl -sL https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/knowledge-init-bootstrap.sh | bash -s -- [选项] <目标工程文档目录>
+#   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/knowledge-init-bootstrap.sh | bash -s -- [选项] <目标工程文档目录>
 #
 #   # 本地执行
 #   bash scripts/knowledge-init-bootstrap.sh [选项] <目标工程文档目录>
 #
 # 环境变量:
-#   GIT_REPO_URL    Git 仓库地址（默认: https://github.com/oleewen/ai-sdd-knowledge.git）
+#   GIT_REPO_URL    Git 仓库地址（默认: https://github.com/oleewen/ai-knowledge.git）
 #   GIT_REF         Git 分支或标签（默认: HEAD，即默认分支）
 #   TMPDIR          临时目录（默认: /tmp）
 #
 # Example:
 #   # 基础用法：初始化到 ~/myproject/docs 目录
-#   curl -sL https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/knowledge-init-bootstrap.sh | bash -s -- ~/myproject/docs
+#   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/knowledge-init-bootstrap.sh | bash -s -- ~/myproject/docs
 #
 #   # Central 模式：同时登记到中央知识库
-#   curl -sL https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/knowledge-init-bootstrap.sh | bash -s -- --mode=central ~/myproject/docs
+#   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/knowledge-init-bootstrap.sh | bash -s -- --mode=central ~/myproject/docs
 #
 #   # 多 Agent 支持：安装 cursor 和 trea 的 Agent 配置
-#   curl -sL https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/knowledge-init-bootstrap.sh | bash -s -- --agents=cursor,trea ~/myproject/docs
+#   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/knowledge-init-bootstrap.sh | bash -s -- --agents=cursor,trea ~/myproject/docs
 #
 #   # 指定分支
-#   GIT_REF=develop curl -sL https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/knowledge-init-bootstrap.sh | bash -s -- ~/myproject/docs
+#   GIT_REF=develop curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/knowledge-init-bootstrap.sh | bash -s -- ~/myproject/docs
 #
 
 set -euo pipefail
@@ -52,7 +52,7 @@ readonly SDX_BS_VERSION='2.0.0'
 readonly SDX_BS_MIN_BASH=5
 
 # 默认配置
-readonly SDX_BS_DEFAULT_REPO='https://github.com/oleewen/ai-sdd-knowledge.git'
+readonly SDX_BS_DEFAULT_REPO='https://github.com/oleewen/ai-knowledge.git'
 readonly SDX_BS_DEFAULT_REF='HEAD'
 readonly SDX_BS_DEFAULT_TMPDIR='${TMPDIR:-/tmp}'
 
@@ -123,7 +123,7 @@ sdx_bs_get_tmpdir() {
 sdx_bs_gen_clone_dir() {
     local tmpdir="$1"
     local pid="${2:-$$}"
-    echo "${tmpdir}/ai-sdd-knowledge-${pid}"
+    echo "${tmpdir}/ai-knowledge-${pid}"
 }
 
 # -----------------------------------------------------------------------------

@@ -4,7 +4,7 @@
 
 ## 1. 全局元信息
 
-- **项目名称**：`ai-sdd-knowledge`
+- **项目名称**：`ai-knowledge`
 - **核心定位**：企业级软件系统全局知识底座（SSOT + 联邦治理）
 - **项目形态**：纯文档库 + Bash 初始化脚本（用于向任意项目“注入”SDD 文档与 Agent 配置）
 - **技术栈**：
@@ -26,9 +26,9 @@
   - Slash 命令一览：`./.ai/skills/README.md`
 - **构建/启动命令**（本仓库自身不包含服务端/应用启动）：
   - 在任意项目目录初始化（bootstrap）：
-    - `curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-knowledge/main/scripts/knowledge-init-bootstrap.sh" | bash -s -- [选项]`
+    - `curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/knowledge-init-bootstrap.sh" | bash -s -- [选项]`
   - 已克隆本仓库时对目标目录初始化：
-    - `REPO_ROOT=/path/to/ai-sdd-knowledge /path/to/ai-sdd-knowledge/scripts/knowledge-init.sh [选项]`
+    - `REPO_ROOT=/path/to/ai-knowledge /path/to/ai-knowledge/scripts/knowledge-init.sh [选项]`
 
 ## 2. 架构拓扑
 
@@ -196,7 +196,7 @@
 
 | 配置项/环境变量                  | 所在文件                              | 语义                              | 默认值                                               | 敏感性       |
 | ------------------------- | --------------------------------- | ------------------------------- | ------------------------------------------------- | --------- |
-| `GIT_REPO_URL`            | `./scripts/knowledge-init-bootstrap.sh` | bootstrap 拉取仓库地址                | `https://github.com/oleewen/ai-sdd-knowledge.git` | 低         |
+| `GIT_REPO_URL`            | `./scripts/knowledge-init-bootstrap.sh` | bootstrap 拉取仓库地址                | `https://github.com/oleewen/ai-knowledge.git` | 低         |
 | `GIT_REF`                 | `./scripts/knowledge-init-bootstrap.sh` | 指定克隆分支/标签                       | `HEAD`                                            | 低         |
 | `REPO_ROOT`               | `./scripts/knowledge-init.sh`     | 指定本仓库根目录                        | 自动推导 `SCRIPT_DIR/..`                              | 低         |
 | `TARGET_DIR`              | `./scripts/knowledge-init.sh`     | 初始化目标目录                         | 当前目录 `pwd`                                        | 低         |
