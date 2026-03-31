@@ -9,7 +9,7 @@ set -euo pipefail
 #   1. 模板文件存在
 #   2. 文档目录存在
 #   3. frontmatter 完整性（id、title、version、status、created、updated）
-#   4. id 格式符合 SOLUTION-{YYYYMMDD}-{SEQ}
+#   4. id 格式符合 SOLUTION-{YYMMDD}-{IDEA}
 #   5. 九章结构完整性
 #   6. 空章节检测（无内容且未标注「不适用」或「待补充」）
 #   7. 编号体系一致性（G-n、Q-n、C-n、R-n）
@@ -102,13 +102,13 @@ for file in "${FILES[@]}"; do
       fi
     done
 
-    # id 格式校验：SOLUTION-{YYYYMMDD}-{SEQ}
+    # id 格式校验：SOLUTION-{YYMMDD}-{IDEA}
     ID_LINE=$(grep "^id:" "${file}" 2>/dev/null || true)
     if [[ -n "${ID_LINE}" ]]; then
       if echo "${ID_LINE}" | grep -qE 'SOLUTION-[0-9]{8}-[0-9]+'; then
-        success "${BASENAME}: id 格式符合 SOLUTION-{YYYYMMDD}-{SEQ}"
+        success "${BASENAME}: id 格式符合 SOLUTION-{YYMMDD}-{IDEA}"
       else
-        warn "${BASENAME}: id 格式不符合 SOLUTION-{YYYYMMDD}-{SEQ}，实际: ${ID_LINE}"
+        warn "${BASENAME}: id 格式不符合 SOLUTION-{YYMMDD}-{IDEA}，实际: ${ID_LINE}"
       fi
     fi
 

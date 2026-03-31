@@ -263,7 +263,7 @@ D. 其他（请说明）
 
 | 字段 | 规则 |
 |------|------|
-| `id` | 格式 `SOLUTION-{YYYYMMDD}-{SEQ}`，如 `SOLUTION-20260327-001` |
+| `id` | 格式 `SOLUTION-{YYMMDD}-{IDEA}`，如 `SOLUTION-260327-申诉处理提效` |
 | `title` | 解决方案标题 |
 | `version` | 初始为 `1.0.0` |
 | `status` | 初始为 `draft` |
@@ -279,7 +279,7 @@ D. 其他（请说明）
 
 ```
 system/solutions/
-└── SOLUTION-{YYYYMMDD}-{SEQ}.md
+└── SOLUTION-{YYMMDD}-{IDEA}.md
 ```
 
 目录不存在时自动创建。

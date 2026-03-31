@@ -172,7 +172,7 @@ MVP-1 ──▶ MVP-2 ──▶ MVP-3
 
 ## 文档元数据
 ```yaml
-id: "ANALYSIS-{YYYYMMDD}-{SEQ}"
+id: "ANALYSIS-{ID}"
 title: "{需求标题}"
 version: "1.0.0"
 status: "draft"

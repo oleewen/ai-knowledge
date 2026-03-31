@@ -240,10 +240,10 @@ requirements-analyst + technical-writer（可选）
 1. **整合**：按模板八章结构编排，字段与表格遵循模板中的**业务语言**提示
 2. **语言审读**：通读全文，对照 [../../sdx-solution/reference/audience-and-language.md](../../sdx-solution/reference/audience-and-language.md) 去除不当技术术语；确需保留的工程线索集中至模板 §8.4
 3. **填充 frontmatter**：
-   - `id`: `ANALYSIS-{YYYYMMDD}-{SEQ}`
+  - `id`: `ANALYSIS-{ID}`
    - `status`: `draft`
    - `created` / `updated`: 当前日期
-   - `parent`: 关联的解决方案编号 `SOL-{ID}`
+   - `parent`: 关联的解决方案编号 `SOLUTION-{ID}`
 4. **补充附录**：术语表（§8.1）、参考文档（§8.2）、变更历史（§8.3）；§8.4 按需
 5. **质量门禁自查**：逐项检查 [quality-checklist.md](quality-checklist.md) 与模板 §8.5
 6. **输出**：写入 `system/analysis/ANALYSIS-{ID}.md`
@@ -252,7 +252,7 @@ requirements-analyst + technical-writer（可选）
 
 ```
 system/analysis/
-└── ANALYSIS-{YYYYMMDD}-{SEQ}.md
+└── ANALYSIS-{ID}.md
 ```
 
 目录不存在时自动创建。

@@ -18,7 +18,7 @@
 
 ## 命名与ID
 
-- **文件名**：`SOLUTION-{ID}.md`，其中 `{ID}` 建议为 `{YYYYMMDD}-{SEQ}` 或项目约定的唯一编号。
+- **文件名**：`SOLUTION-{ID}.md`，其中 `{ID}` 建议为 `{YYMMDD}-{IDEA}` 或项目约定的唯一编号。
 - **文档内**：frontmatter 中 `id` 与文件名一致，可含 `parent`、`dependencies` 等关联字段。
 
 ## 规范与模板

@@ -156,7 +156,7 @@
 
 ## 文档元数据
 ```yaml
-id: "SOLUTION-{YYYYMMDD}-{SEQ}"
+id: "SOLUTION-{YYMMDD}-{IDEA}"
 title: "{解决方案标题}"
 version: "1.0.0"
 status: "draft"

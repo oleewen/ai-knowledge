@@ -3,7 +3,7 @@ name: sdx-solution
 description: >
   解决方案制定：从业务描述提取结构化诉求，评估影响面，识别并化解冲突，形成共识级解决方案文档。
   在用户执行 /sdx-solution、编写解决方案文档、或进行需求→方案分析时使用。
-  输出至 system/solutions/SOLUTION-{YYYYMMDD}-{SEQ}.md；九章模板见 assets/solution-template.md；
+  输出至 system/solutions/SOLUTION-{YYMMDD}-{IDEA}.md；九章模板见 assets/solution-template.md；
   工作流与门禁见 reference/；常见陷阱见 gotchas.md。
 ---
 
@@ -30,20 +30,20 @@ description: >
 ## 输入与输出
 
 **输入**：业务需求描述（邮件、会议纪要、工单等原始来源）；内部对齐可按需查阅 `knowledge/`、`requirements/.../specs/`（**勿将技术细节原样写入正文**）  
-**输出**：`system/solutions/SOLUTION-{YYYYMMDD}-{SEQ}.md`
+**输出**：`system/solutions/SOLUTION-{YYMMDD}-{IDEA}.md`
 
 | 类型 | 内容 |
 |------|------|
 | 硬输入 | 业务需求描述（至少一种原始来源） |
 | 可选输入 | `knowledge/`、`requirements/.../specs/`、`knowledge/technical/`、AGENTS.md |
-| 固定输出 | `system/solutions/SOLUTION-{YYYYMMDD}-{SEQ}.md` |
+| 固定输出 | `system/solutions/SOLUTION-{YYMMDD}-{IDEA}.md` |
 | 不产出 | PRD、ADD、测试设计、代码（使用下游 sdx-analysis / sdx-prd / sdx-design） |
 
 ## 参数
 
 | 参数 | 必需 | 默认值 | 说明 |
 |------|------|--------|------|
-| `--id` | 否 | `YYYYMMDD-SEQ` | 解决方案文档编号 |
+| `--id` | 否 | `YYMMDD-IDEA` | 解决方案文档编号（`IDEA` 取原始需求摘要要领，长度不超过 10 个字） |
 | `--doc-root` | 否 | `system` | 文档根目录；校验脚本在 `${DOC_ROOT}/solutions` 下查找；旧布局可用 `docs` |
 | `--depth` | 否 | `standard` | 分析深度（quick / standard / deep），影响步骤 2–3 粒度 |
 | `--skip-conflict` | 否 | `false` | 跳过冲突分析（仅当需求与现有规则/协作基本无交叉时） |

@@ -117,7 +117,7 @@
 **正确做法**：章节结构与 `solution-template.md` 九章结构完全一致；无内容的章节保留标题并标注「不适用」或「待补充」。
 
 ### 6.3 frontmatter 字段缺失或格式错误
-**陷阱**：输出文档缺少 `status` 或 `id` 字段，或 `id` 格式不符合 `SOLUTION-{YYYYMMDD}-{SEQ}` 规范。  
+**陷阱**：输出文档缺少 `status` 或 `id` 字段，或 `id` 格式不符合 `SOLUTION-{YYMMDD}-{IDEA}` 规范。  
 **后果**：文档管理混乱，下游 `sdx-analysis` 的 `parent` 字段无法正确引用，追溯链断裂。  
 **正确做法**：frontmatter 必须包含 `id`、`title`、`version`、`status`、`created`、`updated` 六个字段，初始 `status` 为 `draft`。
 

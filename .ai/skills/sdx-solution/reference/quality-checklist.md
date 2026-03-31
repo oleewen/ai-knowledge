@@ -55,7 +55,7 @@
 ## 五、格式规范
 
 - [ ] frontmatter 完整（id、title、version、status、created、updated）
-- [ ] `id` 格式符合 `SOLUTION-{YYYYMMDD}-{SEQ}`，`status` 初始为 `draft`
+- [ ] `id` 格式符合 `SOLUTION-{YYMMDD}-{IDEA}`，`status` 初始为 `draft`
 - [ ] 章节结构与 solution-template.md 九章一致，无删除章节
 - [ ] 无内容章节已标注「不适用」或「待补充」，未留空
 - [ ] 表格格式规范，列宽合理
