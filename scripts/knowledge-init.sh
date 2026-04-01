@@ -87,7 +87,7 @@ map_path_system_to_application() {
   local out="" sep="" p newp
   for p in "${parts[@]}"; do
     [[ -z "$p" ]] && continue
-    newp="$(perl -CSD -pe 's/SYSTEM_INDEX/INDEX_GUIDE/gi; s/system/application/gi' <<< "$p")"
+    newp="$(perl -CSD -pe 's/SYSTEM_INDEX/APPLICATION_INDEX/gi; s/system/application/gi' <<< "$p")"
     out="${out}${sep}${newp}"
     sep="/"
   done
@@ -261,7 +261,7 @@ _rewrite_doc_file() {
     perl -CSD -i -pe '
       s{\.ai/}{$ENV{SDX_AGENT_SLASH}}g;
       s{system/}{$ENV{SDX_DOCS_SLASH}}gi;
-      s{SYSTEM_INDEX}{INDEX_GUIDE}gi;
+      s{SYSTEM_INDEX}{APPLICATION_INDEX}gi;
       s{system_meta}{application_meta}gi;
       s{\bsystem\b}{application}gi;
       s{系统}{应用}g;
@@ -528,12 +528,11 @@ usage() {
     父目录（工程根）默认不已存在；使用 -r 可允许自动创建。
 
   替换规则
-    文件名  : system（不区分大小写）→ application；SYSTEM_INDEX → INDEX_GUIDE（如 SYSTEM_INDEX.md → INDEX_GUIDE.md）
+    文件名  : system（不区分大小写）→ application
     文件内容: .ai/        → 首个 Agent 目录（如 .cursor/）
               system/     → 文档根相对路径（如 system/）
               系统        → 应用
               词界 system → application
-              SYSTEM_INDEX  → INDEX_GUIDE（与根目录 INDEX_GUIDE 对齐）
 
   模式
     standalone（默认）  仅目标工程落盘
