@@ -1,13 +1,13 @@
 ---
-name: knowledge-build
+name: docs-build
 description: >
   从代码库中按四视角（技术/数据/业务/产品）提取链上实体 ID，
   生成 *_knowledge.json（schema 2.1）；再按各视角 README 既有版式填充 README.md，
   最后归并生成 system/knowledge/KNOWLEDGE_INDEX.md。
-  在用户执行 /knowledge-build、知识库初始化、代码重构后同步 ID 时使用。
+  在用户执行 /docs-build、知识库初始化、代码重构后同步 ID 时使用。
 ---
 
-# 知识实体提取（knowledge-build）
+# 知识实体提取（docs-build）
 
 从工程代码与文档中按四视角（技术→数据→业务→产品）提取链上实体，生成 `*_knowledge.json`（schema 2.1）；**随后**按各视角目录下 **现有 `README.md` 的表格与章节结构**，用 JSON 实体行替换索引表；**最后**归并更新 `system/knowledge/KNOWLEDGE_INDEX.md`。技术视角 API 层级统一覆盖四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监听、定时任务（Job）**。
 

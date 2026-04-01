@@ -15,8 +15,8 @@
 | `/docs-indexing` | 生成面向 AI 的仓库索引（`INDEX_GUIDE.md`），支持分层检索与路径精确引用。 |
 | `/docs-change` | 聚合 git/CHANGELOG/文件 mtime 生成变更索引（如 `changes-index.*`）。 |
 | `/agent-guide` | 生成/更新根目录 `AGENTS.md` 与 `README.md`，对齐仓库导航与约束。 |
-| `/knowledge-archive` | 将应用侧有效知识回收至系统知识库，保持联邦治理与 SSOT。 |
-| `/knowledge-build` | 按知识工程流程构建/补全知识资产与关联结构。 |
+| `/docs-archive` | 将应用侧有效知识回收至系统知识库，保持联邦治理与 SSOT。 |
+| `/docs-build` | 按知识工程流程构建/补全知识资产与关联结构。 |
 | `/sdx-solution` | 产出解决方案阶段文档（Solution 阶段）。 |
 | `/sdx-analysis` | 产出需求分析阶段文档（Analysis 阶段）。 |
 | `/sdx-prd` | 产出 PRD 阶段文档（Requirements 阶段）。 |
@@ -26,5 +26,5 @@
 ## 使用说明
 
 - 这些命令由 Agent 依据对应 `SKILL.md` 执行并落盘产物。
-- `scripts/` 目录负责项目初始化（如 `knowledge-init*.sh`），不等同于 Skill 命令。
+- `scripts/` 目录负责项目初始化（如 `docs-*.sh`），不等同于 Skill 命令。
 - 若命令输出涉及索引或变更记录，请以仓库约定路径为准（如 `INDEX_GUIDE.md`、`system/changelogs/`）。

@@ -68,7 +68,7 @@
 ### 3) Skills 与脚本边界
 
 - `skills/` 中 `SKILL.md` 是工作流定义，不是可执行脚本。
-- `scripts/knowledge-init*.sh` 负责初始化与分发，不负责替代 Skill 语义。
+- `scripts/docs-*.sh` 负责初始化与分发，不负责替代 Skill 语义。
 - Slash 命令清单与用法以 `../skills/README.md` 为准，本文件不重复维护命令详情。
 
 ### 4) 变更与提交

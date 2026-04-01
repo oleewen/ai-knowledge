@@ -1,6 +1,6 @@
-# knowledge-build 常见陷阱（Gotchas）
+# docs-build 常见陷阱（Gotchas）
 
-本文记录执行 `knowledge-build` Skill 时高频踩坑点，供 Agent 与人类开发者参考。
+本文记录执行 `docs-build` Skill 时高频踩坑点，供 Agent 与人类开发者参考。
 
 ---
 

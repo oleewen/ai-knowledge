@@ -1,3 +1,0 @@
-{"indexing_started_at":"2026-03-20 10:34:29.251","indexing_started_at_ms":1773974069251,"indexing_finished_at":"2026-03-20 10:36:29.251","indexing_finished_at_ms":1773974189251,"execution_mode":"full","index_output_path":"./INDEX_GUIDE.md","index_mode":3,"notes":"精读模式全量更新；根 INDEX_GUIDE.md 文首元信息与 §索引日志索引 同步"}
-{"indexing_started_at_ms": 17749573773N, "indexing_finished_at_ms": 17749573773N, "data_mode": "full", "read_mode": 3, "base_indexing_finished_at_ms": 0, "index_output_path": "./system/INDEX_GUIDE.md"}
-{"timestamp":"2026-03-31T11:46:29Z","data_mode":"full","read_mode":3,"output_path":"./system/INDEX_GUIDE.md","indexed_files":69,"duration_ms":66,"indexing_finished_at":1774957589741}

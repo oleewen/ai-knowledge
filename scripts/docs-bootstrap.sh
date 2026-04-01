@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 #
-# knowledge-init-bootstrap.sh — SDX 知识库初始化引导脚本
+# docs-bootstrap.sh — SDX 知识库初始化引导脚本
 #
 # 目的:
 #   允许用户无需预先克隆 ai-knowledge 仓库即可执行初始化。
-#   自动从 Git 拉取仓库到临时目录，然后调用 knowledge-init.sh 完成初始化。
+#   自动从 Git 拉取仓库到临时目录，然后调用 docs-init.sh 完成初始化。
 #
 # 意图:
 #   - 零依赖启动：仅需 bash 和 git，无需预先下载任何文件
 #   - 一键体验：单条 curl 命令即可在任意目录初始化知识库
-#   - 透传参数：所有额外参数原样传递给 knowledge-init.sh
+#   - 透传参数：所有额外参数原样传递给 docs-init.sh
 #
 # 依赖:
 #   - Bash 5+ (用于高级参数处理和错误捕获)
@@ -18,10 +18,10 @@
 #
 # Usage:
 #   # 远程执行（推荐）
-#   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/knowledge-init-bootstrap.sh | bash -s -- [选项] <目标工程文档目录>
+#   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh | bash -s -- [选项] <目标工程文档目录>
 #
 #   # 本地执行
-#   bash scripts/knowledge-init-bootstrap.sh [选项] <目标工程文档目录>
+#   bash scripts/docs-bootstrap.sh [选项] <目标工程文档目录>
 #
 # 环境变量:
 #   GIT_REPO_URL    Git 仓库地址（默认: https://github.com/oleewen/ai-knowledge.git）
@@ -30,16 +30,16 @@
 #
 # Example:
 #   # 基础用法：初始化到 ~/myproject/docs 目录
-#   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/knowledge-init-bootstrap.sh | bash -s -- ~/myproject/docs
+#   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh | bash -s -- ~/myproject/docs
 #
 #   # Central 模式：同时登记到中央知识库
-#   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/knowledge-init-bootstrap.sh | bash -s -- --mode=central ~/myproject/docs
+#   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh | bash -s -- --mode=central ~/myproject/docs
 #
 #   # 多 Agent 支持：安装 cursor 和 trea 的 Agent 配置
-#   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/knowledge-init-bootstrap.sh | bash -s -- --agents=cursor,trea ~/myproject/docs
+#   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh | bash -s -- --agents=cursor,trea ~/myproject/docs
 #
 #   # 指定分支
-#   GIT_REF=develop curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/knowledge-init-bootstrap.sh | bash -s -- ~/myproject/docs
+#   GIT_REF=develop curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh | bash -s -- ~/myproject/docs
 #
 
 set -euo pipefail
@@ -224,7 +224,7 @@ sdx_bs_main() {
     # 输出启动信息
     sdx_bs_info ""
     sdx_bs_info "=========================================="
-    sdx_bs_info "knowledge-init bootstrap v${SDX_BS_VERSION}"
+    sdx_bs_info "docs-bootstrap v${SDX_BS_VERSION}"
     sdx_bs_info "=========================================="
     sdx_bs_info "仓库: $repo_url"
     sdx_bs_info "引用: $ref"
@@ -236,17 +236,17 @@ sdx_bs_main() {
     sdx_bs_clone_repo "$repo_url" "$ref" "$SDX_BS_CLONE_DIR" || exit 1
 
     # 验证主脚本存在
-    local init_script="${SDX_BS_CLONE_DIR}/scripts/knowledge-init.sh"
-    [[ -f "$init_script" ]] || sdx_bs_die "仓库中未找到 scripts/knowledge-init.sh"
+    local init_script="${SDX_BS_CLONE_DIR}/scripts/docs-init.sh"
+    [[ -f "$init_script" ]] || sdx_bs_die "仓库中未找到 scripts/docs-init.sh"
 
     # 验证配置脚本存在
-    local config_script="${SDX_BS_CLONE_DIR}/scripts/knowledge-config.sh"
-    [[ -f "$config_script" ]] || sdx_bs_die "仓库中未找到 scripts/knowledge-config.sh"
+    local config_script="${SDX_BS_CLONE_DIR}/scripts/docs-config.sh"
+    [[ -f "$config_script" ]] || sdx_bs_die "仓库中未找到 scripts/docs-config.sh"
 
     # 设置环境变量并执行主脚本
     # 额外参数 ($@) 原样透传
     sdx_bs_info ""
-    sdx_bs_info ">>> 执行 knowledge-init.sh..."
+    sdx_bs_info ">>> 执行 docs-init.sh..."
     sdx_bs_info ""
 
     export REPO_ROOT="$SDX_BS_CLONE_DIR"

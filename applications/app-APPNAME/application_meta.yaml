@@ -1,7 +1,7 @@
 # 应用知识库根目录元数据（与 system/system_meta.yaml 对照；机器可读清单见 APPNAME_manifest.yaml）
 id: "DIR-APPLICATION-TEMPLATE"
 name: "应用文档库根（联邦单元模板）"
-description: "企业级知识库应用侧根目录：README、APPNAME_INDEX、需求交付与 knowledge SSOT；由 knowledge-init 拷贝后替换 APP 标识。"
+description: "企业级知识库应用侧根目录：README、APPNAME_INDEX、需求交付与 knowledge SSOT；由 docs-init 拷贝后替换 APP 标识。"
 
 role:
   kind: "application_documentation_root"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# knowledge-config.sh — SDX 知识库初始化配置模块
+# docs-config.sh — SDX 知识库初始化配置模块
 #
 # 目的:
 #   提供知识库初始化脚本的共享常量、默认值与校验函数。
@@ -15,7 +15,7 @@
 #   - Bash 5+ (使用关联数组)
 #
 # Usage (被 source，不直接执行):
-#   source "$(dirname "$0")/knowledge-config.sh"
+#   source "$(dirname "$0")/docs-config.sh"
 #
 
 # -----------------------------------------------------------------------------
