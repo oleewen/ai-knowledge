@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# knowledge-init：将本仓库 system/ 模板初始化到目标工程文档目录，并安装 Agent skills/rules
+# docs-init：将本仓库 system/ 模板初始化到目标工程文档目录，并安装 Agent skills/rules
 #
 # 步骤：
 #   1. system/ → 目标文档目录（排除 DESIGN.md、CONTRIBUTING.md）
@@ -17,11 +17,11 @@ set -euo pipefail
 
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-[[ -f "$SCRIPT_DIR/knowledge-config.sh" ]] \
-  || { printf '错误: 缺少配置文件 %s\n' "$SCRIPT_DIR/knowledge-config.sh" >&2; exit 1; }
+[[ -f "$SCRIPT_DIR/docs-config.sh" ]] \
+  || { printf '错误: 缺少配置文件 %s\n' "$SCRIPT_DIR/docs-config.sh" >&2; exit 1; }
 
 # shellcheck disable=SC1091
-source "$SCRIPT_DIR/knowledge-config.sh"
+source "$SCRIPT_DIR/docs-config.sh"
 
 # ─── 日志 ────────────────────────────────────────────────────────────────────
 
@@ -163,12 +163,12 @@ _get_backup_root() {
   if [[ -z "$_BACKUP_ROOT" ]]; then
     local stamp
     stamp="$(date +%Y-%m-%d_%H-%M-%S)"
-    _BACKUP_ROOT="${CFG[target_dir]:-$PWD}/.knowledge-init/${stamp}"
+    _BACKUP_ROOT="${CFG[target_dir]:-$PWD}/.docs-init/${stamp}"
   fi
   printf '%s' "$_BACKUP_ROOT"
 }
 
-# 将已存在的路径备份到 .knowledge-init/<timestamp>/
+# 将已存在的路径备份到 .docs-init/<timestamp>/
 backup_path() {
   local existing="$1"
   local backup_root rel backup_target
@@ -191,7 +191,7 @@ backup_path() {
 }
 
 # 询问用户是否覆盖已存在目标（支持全局策略）
-# 返回 0=覆盖，1=跳过
+# 返回 0=覆盖，1=跳过，2=用户取消（Esc 等）——调用方应对 2 作 exit
 should_overwrite() {
   local target="$1"
   [[ "${CFG[dry_run]}" == "1" ]] && return 0
@@ -204,14 +204,25 @@ should_overwrite() {
   [[ ! -t 0 ]] && return 0
 
   log "目标已存在：$target"
-  printf '覆盖(o) / 跳过(s) / 全部覆盖(a) / 全部跳过(b) [默认 o]：' >&2
-  local ans=""
-  read -r ans || ans="o"
-  case "$ans" in
-    s|S) return 1 ;;
-    a|A) _CONFLICT_MODE="overwrite_all"; return 0 ;;
-    b|B) _CONFLICT_MODE="skip_all";      return 1 ;;
-    o|O|"") return 0 ;;
+  printf '1) 覆盖 / 2) 跳过 / 3) 全部覆盖 / 4) 全部跳过 [默认 1，Esc 退出]：' >&2
+  local key="" key2=""
+  IFS= read -rsn1 key || { log "已取消"; return 2; }
+
+  # 单独按 Esc：超时内无后续字节则为 lone ESC；否则视为终端转义序列，按无效处理
+  if [[ "$key" == $'\e' ]]; then
+    if IFS= read -rsn1 -t 0.05 key2 2>/dev/null; then
+      log "无效选择，默认覆盖"; return 0
+    fi
+    log "已取消（Esc）" >&2
+    return 2
+  fi
+
+  case "$key" in
+    $'\n'|$'\r') return 0 ;;
+    2) return 1 ;;
+    3) _CONFLICT_MODE="overwrite_all"; return 0 ;;
+    4) _CONFLICT_MODE="skip_all";      return 1 ;;
+    1) return 0 ;;
     *) log "无效选择，默认覆盖"; return 0 ;;
   esac
 }
@@ -223,7 +234,10 @@ copy_file() {
     log "[dry-run] 拷贝文件: $src → $dst"; return 0
   fi
   if [[ -e "$dst" ]]; then
-    should_overwrite "$dst" || { log "[skip] $dst"; return 0; }
+    local _ow=0
+    should_overwrite "$dst" || _ow=$?
+    [[ "$_ow" -eq 2 ]] && exit 130
+    [[ "$_ow" -eq 1 ]] && { log "[skip] $dst"; return 0; }
     backup_path "$dst"
   fi
   ensure_dir "$(dirname "$dst")"
@@ -237,7 +251,10 @@ copy_dir() {
     log "[dry-run] 拷贝目录: $src → $dst"; return 0
   fi
   if [[ -e "$dst" ]]; then
-    should_overwrite "$dst" || { log "[skip] $dst"; return 0; }
+    local _ow=0
+    should_overwrite "$dst" || _ow=$?
+    [[ "$_ow" -eq 2 ]] && exit 130
+    [[ "$_ow" -eq 1 ]] && { log "[skip] $dst"; return 0; }
     backup_path "$dst"
   fi
   ensure_dir "$(dirname "$dst")"
@@ -323,7 +340,10 @@ install_system_to_docs() {
     fi
 
     if [[ -e "$dst_f" ]]; then
-      should_overwrite "$dst_f" || { log "[skip] $dst_f"; continue; }
+      local _ow=0
+      should_overwrite "$dst_f" || _ow=$?
+      [[ "$_ow" -eq 2 ]] && exit 130
+      [[ "$_ow" -eq 1 ]] && { log "[skip] $dst_f"; continue; }
       backup_path "$dst_f"
     fi
     ensure_dir "$(dirname "$dst_f")"
@@ -334,8 +354,8 @@ install_system_to_docs() {
   info "    system/ 同步完成"
 }
 
-# 步骤 2：.ai/skills + .ai/rules → 各 Agent 目录
-install_agent_skills_and_rules() {
+# 步骤 2a：.ai/skills → 各 Agent 目录
+install_agent_skills() {
   local docs_slash="${CFG[docs_slash]}"
   local agent agent_dir agent_slash
 
@@ -343,12 +363,11 @@ install_agent_skills_and_rules() {
     agent_dir="${CFG[target_dir]}/$(sdx_get_agent_dir "$agent")"
     agent_slash="$(sdx_get_agent_dir "$agent")/"
 
-    info ">>> 安装 ${agent} Agent skills/rules"
+    info ">>> 安装 ${agent} Agent skills"
     info "    目录: $agent_dir"
     info "    .ai/ → ${agent_slash}  |  system/ → ${docs_slash}"
 
     ensure_dir "$agent_dir/skills"
-    ensure_dir "$agent_dir/rules"
 
     # 安装所有 skill 子目录
     local -a skill_dirs=()
@@ -370,6 +389,28 @@ install_agent_skills_and_rules() {
     [[ -f "${CFG[repo_root]}/.ai/skills/README.md" ]] \
       && copy_file "${CFG[repo_root]}/.ai/skills/README.md" "$agent_dir/skills/README.md"
 
+    # 内容替换（非 dry-run）
+    if [[ "${CFG[dry_run]}" == "0" ]]; then
+      rewrite_agent_tree "$agent_dir/skills" "$agent_slash" "$docs_slash"
+    fi
+  done
+}
+
+# 步骤 2b：.ai/rules → 各 Agent 目录
+install_agent_rules() {
+  local docs_slash="${CFG[docs_slash]}"
+  local agent agent_dir agent_slash
+
+  for agent in "${ENABLED_AGENTS[@]}"; do
+    agent_dir="${CFG[target_dir]}/$(sdx_get_agent_dir "$agent")"
+    agent_slash="$(sdx_get_agent_dir "$agent")/"
+
+    info ">>> 安装 ${agent} Agent rules"
+    info "    目录: $agent_dir"
+    info "    .ai/ → ${agent_slash}  |  system/ → ${docs_slash}"
+
+    ensure_dir "$agent_dir/rules"
+
     # 安装 rules（目录和文件分别处理）
     local rules_src="${CFG[repo_root]}/.ai/rules"
     if [[ -d "$rules_src" ]]; then
@@ -388,7 +429,6 @@ install_agent_skills_and_rules() {
 
     # 内容替换（非 dry-run）
     if [[ "${CFG[dry_run]}" == "0" ]]; then
-      rewrite_agent_tree "$agent_dir/skills" "$agent_slash" "$docs_slash"
       rewrite_agent_tree "$agent_dir/rules"  "$agent_slash" "$docs_slash"
     fi
   done
@@ -472,7 +512,7 @@ _ensure_app_mirror() {
       SDX_SLUG="$slug" SDX_PN="$project_name" SDX_AID="$app_id" \
         perl -i -CSD -pe '
           s/^template_id:.*/template_id: app-$ENV{SDX_SLUG}/;
-          s/^description:.*/description: 联邦单元 $ENV{SDX_PN}（$ENV{SDX_AID}），由 knowledge-init central 模式生成/;
+          s/^description:.*/description: 联邦单元 $ENV{SDX_PN}（$ENV{SDX_AID}），由 docs-init central 模式生成/;
         ' "$dest/APPNAME_manifest.yaml" 2>/dev/null || true
     fi
   fi
@@ -515,7 +555,7 @@ install_central() {
 usage() {
   cat >&2 <<'EOF'
 用法
-  knowledge-init [选项] <目标工程文档目录>
+  docs-init [选项] <目标工程文档目录>
 
 说明
   将本仓库 system/ 目录同步到目标工程的文档目录，并将 .ai/skills、.ai/rules
@@ -541,8 +581,11 @@ usage() {
 
 选项
   --mode=MODE           standalone | central（或缩写 s | c）  [默认: standalone]
-  --scope=SCOPE         all(a) | skills(s) | knowledge(k)      [默认: all]
-                        注：central 模式不支持 skills/s（仅技能）范围
+  --scope=SCOPE         all(a) | knowledge(k) | skills(s) | rules(r) | rs  [默认: all]
+                        - skills(s) 仅安装 Agent skills
+                        - rules(r)  仅安装 Agent rules
+                        - rs        同时安装 skills + rules（等同 r + s）
+                        注：central 模式不支持 skills/rules/rs（仅 Agent 安装）范围
   --app-id=APP-ID       central 模式下的 APP ID               [默认: 由工程目录名推导]
   --agents=LIST         cursor | trea | claude | all，逗号分隔 [默认: cursor]
   -r                    允许工程根目录不存在时自动创建
@@ -558,19 +601,25 @@ usage() {
 
 示例
   # 最简用法（standalone + cursor）
-  knowledge-init ~/workspace/my-app/system
+  docs-init ~/workspace/my-app/system
 
   # 仅同步知识库（不安装 Agent skills/rules）
-  knowledge-init --scope=knowledge ~/workspace/my-app/system
+  docs-init --scope=knowledge ~/workspace/my-app/system
 
-  # 仅同步 Agent skills/rules（不落地 system 文档）
-  knowledge-init --scope=skills ~/workspace/my-app/system
+  # 仅安装 Agent skills（不落地 system 文档）
+  docs-init --scope=skills ~/workspace/my-app/system
+
+  # 仅安装 Agent rules（不落地 system 文档）
+  docs-init --scope=rules ~/workspace/my-app/system
+
+  # 同时安装 Agent skills + rules（不落地 system 文档）
+  docs-init --scope=rs ~/workspace/my-app/system
 
   # central 模式，指定 APP ID，安装 cursor 和 trea
-  knowledge-init --mode=central --app-id=APP-MYAPP --agents=cursor,trea ~/workspace/my-app/system
+  docs-init --mode=central --app-id=APP-MYAPP --agents=cursor,trea ~/workspace/my-app/system
 
   # 预览，不实际写入
-  knowledge-init --dry-run ~/workspace/my-app/system
+  docs-init --dry-run ~/workspace/my-app/system
 
 EOF
 }
@@ -646,21 +695,27 @@ _validate_mode() {
 }
 
 _validate_sync_scope() {
+  # 允许组合：rs / sr
+  case "${CFG[scope]}" in
+    rs|sr) CFG[scope]="rs" ;;
+  esac
+
   case "${CFG[scope]}" in
     a) CFG[scope]="all" ;;
     s) CFG[scope]="skills" ;;
+    r) CFG[scope]="rules" ;;
     k) CFG[scope]="knowledge" ;;
   esac
 
   case "${CFG[scope]}" in
-    all|skills|knowledge) ;;
+    all|skills|rules|rs|knowledge) ;;
     *)
-      error "无效 --scope: ${CFG[scope]}（支持 all/a、skills/s、knowledge/k）"
+      error "无效 --scope: ${CFG[scope]}（支持 all/a、knowledge/k、skills/s、rules/r、rs）"
       ;;
   esac
 
-  if [[ "${CFG[mode]}" == "central" && "${CFG[scope]}" == "skills" ]]; then
-    error "central 模式需要同步知识库（--scope 不能为 skills/s）"
+  if [[ "${CFG[mode]}" == "central" && ( "${CFG[scope]}" == "skills" || "${CFG[scope]}" == "rules" || "${CFG[scope]}" == "rs" ) ]]; then
+    error "central 模式需要同步知识库（--scope 不能为 skills/s、rules/r、rs）"
   fi
 }
 
@@ -681,7 +736,7 @@ _compute_derived_paths() {
 _print_checklist() {
   log ""
   log "─────────────────────────────────────────────────────────────────────────"
-  log "knowledge-init 完成  目标: ${CFG[docs_abs]}"
+  log "docs-init 完成  目标: ${CFG[docs_abs]}"
   log "─────────────────────────────────────────────────────────────────────────"
   sdx_post_init_checklist "${CFG[docs_abs]}" >&2
 }
@@ -705,11 +760,24 @@ main() {
     [[ "${CFG[mode]}" == "central" ]] && install_central
   fi
 
-  if [[ "${CFG[scope]}" == "all" || "${CFG[scope]}" == "skills" ]]; then
-    install_agent_skills_and_rules
-  fi
+  case "${CFG[scope]}" in
+    all)
+      install_agent_skills
+      install_agent_rules
+      ;;
+    skills)
+      install_agent_skills
+      ;;
+    rules)
+      install_agent_rules
+      ;;
+    rs)
+      install_agent_rules
+      install_agent_skills
+      ;;
+  esac
 
-  info "完成：knowledge-init"
+  info "完成：docs-init"
   _print_checklist
 }
 

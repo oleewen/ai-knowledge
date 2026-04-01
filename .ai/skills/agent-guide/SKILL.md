@@ -39,7 +39,7 @@ description: >
 1. 仓库根 `INDEX_GUIDE.md`、`INDEX-GUIDE.md`
 2. `system/INDEX_GUIDE.md`、`system/INDEX-GUIDE.md`
 
-未命中 → 终止并提示用户运行 `/document-indexing`。
+未命中 → 终止并提示用户运行 `/docs-indexing`。
 详细规则见 [reference/execution-spec.md](reference/execution-spec.md)。
 
 ### 步骤 2：最小阅读集探索
@@ -82,14 +82,14 @@ scripts/validate-guide.sh --root .
 | 零幻觉 | 无落盘 INDEX 不编造结构；未读路径不写成已核实结论 |
 | 单一事实源 | 命令块只在 README；AGENTS 概述 ≤3 行；不复制 INDEX §3 表 |
 | 先 README 后 AGENTS | 避免 AGENTS 写满命令后 README 重复粘贴 |
-| INDEX 只读 | 禁止在本 Skill 内调用 document-indexing 或重做索引 |
+| INDEX 只读 | 禁止在本 Skill 内调用 docs-indexing 或重做索引 |
 | 合并优先 | 更新已有 README 时合并重复段落，保留有效表格/命令块 |
 
 ## 依赖关系
 
 | 类型 | 技能/组件 | 说明 |
 |------|-----------|------|
-| 前置 | `document-indexing` | INDEX 须已落盘；更新 INDEX 请单独运行 |
+| 前置 | `docs-indexing` | INDEX 须已落盘；更新 INDEX 请单独运行 |
 
 ## 参考
 

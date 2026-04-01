@@ -1,6 +1,6 @@
 # 应用知识库模板 — 索引
 
-物理路径：`applications/app-APPNAME/`。由 `scripts/knowledge-init.sh` 拷贝到目标工程后可按需更名。
+物理路径：`applications/app-APPNAME/`。由 `scripts/docs-init.sh` 拷贝到目标工程后可按需更名。
 
 | 文档 | 说明 |
 |------|------|

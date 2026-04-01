@@ -8,14 +8,14 @@
 远程初始化（推荐）：
 
 ```bash
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/knowledge-init-bootstrap.sh" | bash -s -- [选项]
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- [选项]
 ```
 
 本地初始化（已克隆仓库）：
 
 ```bash
 cd /path/to/your-project
-REPO_ROOT=/path/to/ai-knowledge /path/to/ai-knowledge/scripts/knowledge-init.sh [选项]
+REPO_ROOT=/path/to/ai-knowledge /path/to/ai-knowledge/scripts/docs-init.sh [选项]
 ```
 
 初始化参数与模式说明见 [scripts/README.md](scripts/README.md)。

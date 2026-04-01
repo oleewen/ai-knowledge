@@ -21,14 +21,14 @@
   - 根索引（本文件）：`./INDEX_GUIDE.md`
   - 系统知识库入口：`./system/README.md`、`./system/SYSTEM_INDEX.md`
   - 应用知识库入口：`./applications/APPLICATIONS_INDEX.md`
-  - 初始化入口：`./scripts/knowledge-init.sh`、`./scripts/README.md`
+  - 初始化入口：`./scripts/docs-init.sh`、`./scripts/README.md`
   - 规范入口：`./.ai/rules/CONVENTIONS.md`、`./.ai/rules/`
   - Slash 命令一览：`./.ai/skills/README.md`
 - **构建/启动命令**（本仓库自身不包含服务端/应用启动）：
   - 在任意项目目录初始化（bootstrap）：
-    - `curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/knowledge-init-bootstrap.sh" | bash -s -- [选项]`
+    - `curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- [选项]`
   - 已克隆本仓库时对目标目录初始化：
-    - `REPO_ROOT=/path/to/ai-knowledge /path/to/ai-knowledge/scripts/knowledge-init.sh [选项]`
+    - `REPO_ROOT=/path/to/ai-knowledge /path/to/ai-knowledge/scripts/docs-init.sh [选项]`
 
 ## 2. 架构拓扑
 
@@ -54,10 +54,9 @@
 │   └── APPLICATIONS_INDEX.md     # 应用知识结构/方案/需求/治理信息导航（权威）
 ├── scripts/                      # sdx-init 初始化工具链（Bash 5+）
 │   ├── README.md                 # 初始化使用说明与选项
-│   ├── knowledge-init.sh         # 核心初始化：将中央库 `system/` 模板拷至目标文档根（默认 `docs/`）、安装 .ai/ 与 Agent skills
-│   ├── knowledge-init-bootstrap.sh # bootstrap：临时 clone 并执行 knowledge-init
-│   ├── knowledge-init.sh         # 将应用知识库根目录模板（applications/app-APPNAME）初始化到目标工程
-│   └── knowledge-config.sh       # 默认值、校验函数、支持的 Agents/skills
+│   ├── docs-init.sh              # 核心：`system/`、应用模板、`applications/`、`.ai/`、Agent skills → 目标工程
+│   ├── docs-bootstrap.sh         # 远程 curl：clone 本仓库并执行 docs-init
+│   └── docs-config.sh            # 配置模块（默认值、校验、支持的 Agents/skills）
 ├── .ai/                          # AI 规范与技能（README、rules、skills）
 │   ├── README.md                 # .ai 目录说明与上游文档指针
 │   ├── rules/                    # 规范与模板（CONVENTIONS、各子域 rules）
@@ -129,8 +128,8 @@
 | 文件路径                                               | 功能精要                                            | 检索标签         | 上游依赖                  | 下游被依赖                         | 重要度 |
 | -------------------------------------------------- | ----------------------------------------------- | ------------ | --------------------- | ----------------------------- | --- |
 | `./applications/APPLICATIONS_INDEX.md`             | 应用侧知识结构与治理信息入口                                  | `索引` `联邦治理`  | `system/SYSTEM_INDEX.md`     | 应用目录下 knowledge/solutions/... | ⭐⭐⭐ |
-| `./applications/README.md`                         | 应用侧联邦单元说明与初始化示例                                 | `联邦治理` `初始化` | `scripts/knowledge-init.sh` | 应用库落地参考                       | ⭐⭐  |
-| `./applications/app-APPNAME/application_meta.yaml` | 应用知识库根目录模板级机器可读索引（对照 `system/system_meta.yaml`） | `联邦治理` `元数据` | `system/DESIGN.md`    | `knowledge-init` 落地副本         | ⭐⭐  |
+| `./applications/README.md`                         | 应用侧联邦单元说明与初始化示例                                 | `联邦治理` `初始化` | `scripts/docs-init.sh` | 应用库落地参考                       | ⭐⭐  |
+| `./applications/app-APPNAME/application_meta.yaml` | 应用知识库根目录模板级机器可读索引（对照 `system/system_meta.yaml`） | `联邦治理` `元数据` | `system/DESIGN.md`    | `docs-init` 落地副本         | ⭐⭐  |
 
 
 ### 3.4 初始化脚本（scripts）
@@ -138,10 +137,10 @@
 
 | 文件路径                              | 功能精要                                       | 检索标签                         | 上游依赖            | 下游被依赖                           | 重要度 |
 | --------------------------------- | ------------------------------------------ | ---------------------------- | --------------- | ------------------------------- | --- |
-| `./scripts/README.md`             | knowledge-init 用法、模式与选项清单                 | `初始化` `脚本`                   | -               | `knowledge-init.sh`            | ⭐⭐⭐ |
-| `./scripts/knowledge-init.sh`     | 将中央库 `system/`、`.ai/`、Agent skills 安装至目标工程 | `初始化` `联邦治理` `Cursor` `Trea` | `knowledge-config.sh` | 目标项目的文档根（默认 `docs/`）、`.ai/` | ⭐⭐⭐ |
-| `./scripts/knowledge-config.sh`   | 默认值、校验函数、支持的 Agents/skills                 | `脚本` `初始化`                   | -               | `knowledge-init.sh`            | ⭐⭐  |
-| `./scripts/knowledge-init.sh`     | 初始化应用知识库根目录（applications/app-APPNAME）到目标工程 | `初始化` `联邦治理` `Agent技能`       | `knowledge-config.sh` | 目标工程的应用知识库模板                    | ⭐⭐  |
+| `./scripts/README.md`             | docs-init 用法、模式与选项清单                 | `初始化` `脚本`                   | -               | `docs-init.sh`            | ⭐⭐⭐ |
+| `./scripts/docs-init.sh`     | 将中央库 `system/`、`.ai/`、Agent skills 安装至目标工程 | `初始化` `联邦治理` `Cursor` `Trea` | `docs-config.sh` | 目标项目的文档根（默认 `docs/`）、`.ai/` | ⭐⭐⭐ |
+| `./scripts/docs-config.sh`   | 默认值、校验函数、支持的 Agents/skills                 | `脚本` `初始化`                   | -               | `docs-init.sh`            | ⭐⭐  |
+| `./scripts/docs-init.sh`     | 初始化应用知识库根目录（applications/app-APPNAME）到目标工程 | `初始化` `联邦治理` `Agent技能`       | `docs-config.sh` | 目标工程的应用知识库模板                    | ⭐⭐  |
 
 
 ### 3.5 规范与模板（.ai）
@@ -180,7 +179,7 @@
 > 说明：本仓库主要“数据流”是初始化与知识引用流，而非运行时请求流。
 
 - **数据流 1：向目标项目注入 SDD 文档体系**
-  - `./scripts/knowledge-init.sh` → 将中央库 `system/` 模板、`applications/`、`.ai/`、Agent 配置复制到目标目录（默认为 `docs/`；standalone 另含 `system/application/`，federation 为 `system/applications/` 等；并安装 `.ai`、`.trea`）。
+  - `./scripts/docs-init.sh` → 将中央库 `system/` 模板、`applications/`、`.ai/`、Agent 配置复制到目标目录（默认为 `docs/`；standalone 另含 `system/application/`，federation 为 `system/applications/` 等；并安装 `.ai`、`.trea`）。
 - **数据流 2：系统知识库的跨视角引用（SSOT）**
   - `./system/DESIGN.md` 定义四视角元模型与映射机制 → 具体实体在各视角元数据 YAML 与实体定义 `*.yaml` 中写目标实体 ID。
   - 常用映射字段（见 `system/DESIGN.md` 与 `system/knowledge/constitution/GLOSSARY.md`）：
@@ -196,25 +195,25 @@
 
 | 配置项/环境变量                  | 所在文件                              | 语义                              | 默认值                                               | 敏感性       |
 | ------------------------- | --------------------------------- | ------------------------------- | ------------------------------------------------- | --------- |
-| `GIT_REPO_URL`            | `./scripts/knowledge-init-bootstrap.sh` | bootstrap 拉取仓库地址                | `https://github.com/oleewen/ai-knowledge.git` | 低         |
-| `GIT_REF`                 | `./scripts/knowledge-init-bootstrap.sh` | 指定克隆分支/标签                       | `HEAD`                                            | 低         |
-| `REPO_ROOT`               | `./scripts/knowledge-init.sh`     | 指定本仓库根目录                        | 自动推导 `SCRIPT_DIR/..`                              | 低         |
-| `TARGET_DIR`              | `./scripts/knowledge-init.sh`     | 初始化目标目录                         | 当前目录 `pwd`                                        | 低         |
-| `DOCS_DIR` / `--dd`       | `./scripts/knowledge-config.sh`   | 目标文档根目录                         | `docs`                                          | 低         |
-| `SDX_MODE` / `--mode`     | `./scripts/knowledge-init.sh`     | 初始化模式：`standalone`/`federation` | `standalone`                                      | 低         |
-| `DOCS_SCOPE` / `--ds`     | `./scripts/knowledge-init.sh`     | 模板拷贝范围：`knowledge`/`full`      | `knowledge`                                       | 低         |
-| `AI_RULES_SCOPE` / `--as` | `./scripts/knowledge-init.sh`     | `.ai/rules` 范围控制                | `no-solution-analysis`                            | 低         |
-| `AGENTS_OPT` / `--agents` | `./scripts/knowledge-config.sh`   | 要初始化的 Agent 列表                  | `cursor`                                          | 低         |
-| `SKILLS_OPT` / `--skills` | `./scripts/knowledge-init.sh`     | 要安装的 skills 列表                  | 默认仅 agent/knowledge 相关                            | 低         |
-| `--force`                 | `./scripts/knowledge-init.sh`     | 覆盖已存在目录                         | 关闭                                                | 中（可能覆盖文件） |
-| `--dry-run`               | `./scripts/knowledge-init.sh`     | 仅打印不执行                          | 关闭                                                | 低         |
-| `--mode`                  | `./scripts/knowledge-init.sh`     | 应用知识库初始化模式：仅拷贝/中央登记             | `standalone`                                      | 低         |
-| `--app-id`                | `./scripts/knowledge-init.sh`     | 中央模式写入技术视角 APP ID               | 自动推导                                              | 低         |
-| `--agents`                | `./scripts/knowledge-init.sh`     | 安装 Agent（cursor/trea/all）       | `cursor`                                          | 低         |
-| `--dry-run`               | `./scripts/knowledge-init.sh`     | 仅预览，不落盘                         | 关闭                                                | 低         |
+| `GIT_REPO_URL`            | `./scripts/docs-bootstrap.sh` | bootstrap 拉取仓库地址                | `https://github.com/oleewen/ai-knowledge.git` | 低         |
+| `GIT_REF`                 | `./scripts/docs-bootstrap.sh` | 指定克隆分支/标签                       | `HEAD`                                            | 低         |
+| `REPO_ROOT`               | `./scripts/docs-init.sh`     | 指定本仓库根目录                        | 自动推导 `SCRIPT_DIR/..`                              | 低         |
+| `TARGET_DIR`              | `./scripts/docs-init.sh`     | 初始化目标目录                         | 当前目录 `pwd`                                        | 低         |
+| `DOCS_DIR` / `--dd`       | `./scripts/docs-config.sh`   | 目标文档根目录                         | `docs`                                          | 低         |
+| `SDX_MODE` / `--mode`     | `./scripts/docs-init.sh`     | 初始化模式：`standalone`/`federation` | `standalone`                                      | 低         |
+| `DOCS_SCOPE` / `--ds`     | `./scripts/docs-init.sh`     | 模板拷贝范围：`knowledge`/`full`      | `knowledge`                                       | 低         |
+| `AI_RULES_SCOPE` / `--as` | `./scripts/docs-init.sh`     | `.ai/rules` 范围控制                | `no-solution-analysis`                            | 低         |
+| `AGENTS_OPT` / `--agents` | `./scripts/docs-config.sh`   | 要初始化的 Agent 列表                  | `cursor`                                          | 低         |
+| `SKILLS_OPT` / `--skills` | `./scripts/docs-init.sh`     | 要安装的 skills 列表                  | 默认仅 agent/knowledge 相关                            | 低         |
+| `--force`                 | `./scripts/docs-init.sh`     | 覆盖已存在目录                         | 关闭                                                | 中（可能覆盖文件） |
+| `--dry-run`               | `./scripts/docs-init.sh`     | 仅打印不执行                          | 关闭                                                | 低         |
+| `--mode`                  | `./scripts/docs-init.sh`     | 应用知识库初始化模式：仅拷贝/中央登记             | `standalone`                                      | 低         |
+| `--app-id`                | `./scripts/docs-init.sh`     | 中央模式写入技术视角 APP ID               | 自动推导                                              | 低         |
+| `--agents`                | `./scripts/docs-init.sh`     | 安装 Agent（cursor/trea/all）       | `cursor`                                          | 低         |
+| `--dry-run`               | `./scripts/docs-init.sh`     | 仅预览，不落盘                         | 关闭                                                | 低         |
 
 
-> 说明：默认值集中在 `./scripts/knowledge-config.sh` 的 `SDX_DEFAULTS`；`knowledge-init.sh` 允许用环境变量/参数覆盖。
+> 说明：默认值集中在 `./scripts/docs-config.sh` 的 `SDX_DEFAULTS`；`docs-init.sh` 允许用环境变量/参数覆盖。
 
 ## 6. 未索引区域声明
 
@@ -251,7 +250,7 @@
 ### 快速检索 Prompt 模板（面向仓库内搜索/阅读）
 
 - **模板 1：定位“初始化输出目录与模式差异”**
-  - “在 `./scripts/knowledge-init.sh` 中，`standalone` 与 `federation` 模式分别会创建哪些目标目录？涉及哪些参数（`--dd`、`--ds`、`--as`）？”
+  - “在 `./scripts/docs-init.sh` 中，`standalone` 与 `federation` 模式分别会创建哪些目标目录？涉及哪些参数（`--dd`、`--ds`、`--as`）？”
 - **模板 2：定位“system 知识映射字段与关系”**
   - “在 `./system/SYSTEM_INDEX.md` 中，列出所有关键映射字段及其关系方向，并指出对应的视角层级（BC/AGG/PM/FT/ENT 等）。”
 - **模板 3：扩展索引覆盖率（进入 Mode 3）**

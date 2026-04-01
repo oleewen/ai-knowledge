@@ -1,6 +1,6 @@
 # 内置配置与设计原则
 
-knowledge-build 的硬约束：内置配置、设计原则与错误处理。SKILL.md「核心约束」为精简版，本文件为完整规范。
+docs-build 的硬约束：内置配置、设计原则与错误处理。SKILL.md「核心约束」为精简版，本文件为完整规范。
 
 ---
 
@@ -62,7 +62,7 @@ symmetry:
   description: "避免仅业务视角有物化 ID、其它视角空白或仅模板"
   rules:
     - id: "same_round_four_sections"
-      text: "knowledge/KNOWLEDGE_INDEX.md 的 §1～§4 同一轮维护"
+      text: "system/knowledge/KNOWLEDGE_INDEX.md 的 §1～§4 同一轮维护"
     - id: "no_template_only"
       text: "forbid_foreign_template_rows 为 true 时，禁止以非本应用模板 ID 作为 INDEX/README 唯一内容"
     - id: "index_over_template"
@@ -104,7 +104,7 @@ symmetry:
 
 | 错误类型 | 处理方式 | 示例 |
 |----------|----------|------|
-| 主 INDEX 缺失 | 终止，提示先运行 `document-indexing` | Index Guide 未落盘 |
+| 主 INDEX 缺失 | 终止，提示先运行 `docs-indexing` | Index Guide 未落盘 |
 | 证据不足 | 标记 `confidence: low`，继续执行 | MS-* 无宿主类证据 |
 | 前缀冲突 | 跳过冲突项，记录日志 | PL-* 无对应 SYS-* |
 | 文件不可写 | 终止，提示权限 | KNOWLEDGE_INDEX.md 只读 |

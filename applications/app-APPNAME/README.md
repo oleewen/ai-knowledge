@@ -1,6 +1,6 @@
 # 应用知识库根目录（联邦单元模板）
 
-物理路径：`applications/app-APPNAME/`。由 `scripts/knowledge-init.sh` 拷贝到目标工程的文档目录后，可将目录名改为实际应用名，并更新 `application_meta.yaml` 中 `template_directory` 等字段。
+物理路径：`applications/app-APPNAME/`。由 `scripts/docs-init.sh` 拷贝到目标工程的文档目录后，可将目录名改为实际应用名，并更新 `application_meta.yaml` 中 `template_directory` 等字段。
 
 ---
 
@@ -38,5 +38,5 @@
 
 ## 初始化
 
-- 从本仓库注入到目标工程：`scripts/knowledge-init.sh`（见 [scripts/README.md](../../scripts/README.md)）
+- 从本仓库注入到目标工程：`scripts/docs-init.sh`（见 [scripts/README.md](../../scripts/README.md)）
 - 拷贝后核对清单见脚本输出的 `post_init_checklist`
