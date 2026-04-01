@@ -1,6 +1,6 @@
 # 归并阶段规范
 
-阶段三是 knowledge-build 的收口阶段。读取四视角 `*_knowledge.json`（schema 2.1）中间文件，执行前缀验证、跨视角对称性检查，最终更新 `knowledge/KNOWLEDGE_INDEX.md`。
+阶段 **四** 是 knowledge-build 的收口阶段（在 [阶段 3：各视角 README 填充](readme-fill-spec.md) 之后）。读取四视角 `*_knowledge.json`（schema 2.1）中间文件，执行前缀验证、跨视角对称性检查，最终更新 **`system/knowledge/KNOWLEDGE_INDEX.md`**。
 
 ---
 
@@ -10,7 +10,7 @@
 graph TD
     A[读取中间文件] --> B[实体 ID 合并]
     B --> C[跨视角验证]
-    C --> D[更新索引文件]
+    C --> D[更新 KNOWLEDGE_INDEX.md]
 
     A --> A1[technical_knowledge.json]
     A --> A2[data_knowledge.json]
@@ -21,6 +21,8 @@ graph TD
     C --> C2[前缀验证]
     C --> C3[证据链验证]
 ```
+
+**前置条件**：各视角 `README.md` 索引表已与 JSON 同步（见 [readme-fill-spec.md](readme-fill-spec.md)），避免人类从视角目录阅读时与主索引不一致。
 
 ## 归并规则
 

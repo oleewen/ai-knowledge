@@ -62,7 +62,7 @@ symmetry:
   description: "避免仅业务视角有物化 ID、其它视角空白或仅模板"
   rules:
     - id: "same_round_four_sections"
-      text: "knowledge/KNOWLEDGE_INDEX.md 的 §1～§4 同一轮维护"
+      text: "system/knowledge/KNOWLEDGE_INDEX.md 的 §1～§4 同一轮维护"
     - id: "no_template_only"
       text: "forbid_foreign_template_rows 为 true 时，禁止以非本应用模板 ID 作为 INDEX/README 唯一内容"
     - id: "index_over_template"

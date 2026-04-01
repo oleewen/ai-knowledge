@@ -114,38 +114,47 @@
 
 ---
 
-## 6. 归并阶段
+## 6. README 与归并阶段
 
-### 6.1 跳过前缀验证直接写入索引
+### 6.0 跳过 README 填充直接写 KNOWLEDGE_INDEX
+**陷阱**：`*_knowledge.json` 生成后，直接更新 `KNOWLEDGE_INDEX.md`，未按各视角 `README.md` 版式刷新索引表。  
+**后果**：`README.md` 仍为示例行或与 JSON 不一致，人类从 `system/knowledge/{perspective}/` 进入时与主索引、JSON 三方脱节。  
+**正确做法**：先执行 [reference/readme-fill-spec.md](reference/readme-fill-spec.md)，再归并 `KNOWLEDGE_INDEX.md`。
+
+---
+
+## 7. 归并阶段（KNOWLEDGE_INDEX）
+
+### 7.1 跳过前缀验证直接写入索引
 **陷阱**：归并时未校验实体 ID 前缀是否在 `contains_prefixes` 定义范围内，直接写入 `KNOWLEDGE_INDEX.md`。  
 **后果**：非法前缀（如 `SVC-`、`MOD-`）混入索引，破坏全知识库唯一性约束。  
 **正确做法**：归并前必须执行前缀验证，仅接受内置 `contains_prefixes` 所列前缀；冲突项跳过并记录日志。
 
-### 6.2 跳过对称性检查
+### 7.2 跳过对称性检查
 **陷阱**：四视角提取完毕后直接更新 `KNOWLEDGE_INDEX.md`，未检查 §1～§4 是否同轮维护。  
 **后果**：某视角（如产品视角）为空模板，其他视角已有实质内容，索引四节严重不对称。  
 **正确做法**：归并前执行 `same_round_four_sections` 规则检查；`bc_agg_linkage` 规则要求 §1 已登记 BC/AGG 时 §3 或 §4 必须有证据行。
 
-### 6.3 更改已有实体 ID 或破坏跨视角引用
+### 7.3 更改已有实体 ID 或破坏跨视角引用
 **陷阱**：发现某 ID 命名不规范，直接在 `KNOWLEDGE_INDEX.md` 中改名，未同步更新所有 `cross_references`。  
 **后果**：`implemented_by_service_ids`、`persisted_as_entity_ids`、`invokes_api_ids` 等引用字段指向已失效 ID，知识库引用链断裂。  
 **正确做法**：禁止单独修改已有 ID；需重命名时必须同步更新全部跨视角引用，或重跑受影响视角。
 
-### 6.4 以模板占位行作为索引唯一内容
+### 7.4 以模板占位行作为索引唯一内容
 **陷阱**：某视角无实质提取结果，直接将模板示例行（如 `SYS-EXAMPLE`）保留在 `KNOWLEDGE_INDEX.md` 中。  
 **后果**：违反 `no_template_only` 规则，索引内容为虚假数据，误导后续 Agent。  
 **正确做法**：无实质内容时该节留空并标注「待补充」，禁止以非本应用模板 ID 作为索引唯一内容。
 
 ---
 
-## 7. 增量提取
+## 8. 增量提取
 
-### 7.1 `--skip-existing true` 时漏更新变更实体
+### 8.1 `--skip-existing true` 时漏更新变更实体
 **陷阱**：增量提取时跳过所有已有 ID，包括因代码重构而发生变化的实体。  
 **后果**：已变更实体的 `method_signature`、`physical_table`、`cross_references` 等字段未更新，索引与代码不同步。  
 **正确做法**：`--skip-existing` 仅跳过确认未变更的实体；基于 `document-change` 的变更文件列表，对变更文件涉及的实体强制重提取。
 
-### 7.2 增量提取后未填写 `changes_from_previous`
+### 8.2 增量提取后未填写 `changes_from_previous`
 **陷阱**：增量更新后 `metadata.changes_from_previous` 仍为空或写「无变化」。  
 **后果**：无法追踪知识库演进历史，审计和回溯困难。  
 **正确做法**：每次增量提取必须在 `metadata.changes_from_previous` 中描述新增、修改、删除的实体 ID 及原因。
