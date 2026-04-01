@@ -36,12 +36,23 @@
 
 ### 2.2 依赖关系
 
-```
-{上层模块}
-    ↓
-{中间层模块}
-    ↓
-{底层模块}
+```mermaid
+flowchart TD
+    boot["{project-name}-boot"]
+    service["{project-name}-service"]
+    client["{project-name}-client"]
+    api["{project-name}-api"]
+    application["{project-name}-application"]
+    domain["{project-name}-domain"]
+    common["{project-name}-common"]
+    infrastructure["{project-name}-infrastructure"]
+
+    client --> api
+    service --> api --> common
+    boot --> service --> application --> domain --> common
+    boot --> infrastructure
+    infrastructure ---> domain
+  
 ```
 
 ### 2.3 包结构
