@@ -10,7 +10,7 @@
 提示词：
 
 ```text
-按 https://github.com/oleewen/ai-knowledge 的初始化方法二或三，初始化知识库到 ./docs
+按 https://github.com/oleewen/ai-knowledge README.md 的快速启动方法二或三，初始化知识库到 ./docs
 ```
 
 2、方式二：远程初始化：
