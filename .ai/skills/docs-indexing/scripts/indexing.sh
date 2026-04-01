@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# document-indexing - 文档索引生成器
-# 基于 document-indexing Skill 的实现
+# docs-indexing - 文档索引生成器
+# 基于 docs-indexing Skill 的实现
 
 set -euo pipefail
 
@@ -236,7 +236,7 @@ cat > "$CHANGES_INDEX" << EOF
 {
   "baseline_time": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
   "baseline_time_ms": $CURRENT_TIME_MS,
-  "note": "document-indexing 索引更新：模式=${DATA_MODE}，深度=${READ_MODE}，输出=${OUTPUT}"
+  "note": "docs-indexing 索引更新：模式=${DATA_MODE}，深度=${READ_MODE}，输出=${OUTPUT}"
 }
 EOF
 

@@ -40,7 +40,7 @@ description: >
 
 ### 阶段 1：初始化
 
-- 验证主 Index Guide 可用（不可用则终止，提示先运行 `/document-indexing`）
+- 验证主 Index Guide 可用（不可用则终止，提示先运行 `/docs-indexing`）
 - 验证输出目录可写（含 `system/knowledge/` 及各视角子目录）
 - 加载内置配置（见 [reference/builtin-config.md](reference/builtin-config.md)）
 
@@ -95,7 +95,7 @@ scripts/validate-extraction.sh --doc-root .
 
 | 类型 | 技能/组件 | 说明 |
 |------|-----------|------|
-| 上游 | `document-indexing` | 生成主 Index Guide |
+| 上游 | `docs-indexing` | 生成主 Index Guide |
 | 上游（可选） | `agent-guide` | 维护 AGENTS.md 文档 |
 
 ### 文件依赖

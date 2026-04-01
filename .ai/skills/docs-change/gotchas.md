@@ -1,6 +1,6 @@
-# document-change 常见陷阱（Gotchas）
+# docs-change 常见陷阱（Gotchas）
 
-本文记录执行 `document-change` Skill 时高频踩坑点，供 Agent 与人类开发者参考。
+本文记录执行 `docs-change` Skill 时高频踩坑点，供 Agent 与人类开发者参考。
 
 ---
 
@@ -8,7 +8,7 @@
 
 ### 1.1 忽略已有 changes-index.json 中的 baseline_time
 **陷阱**：增量执行时直接使用默认值 `2020-01-01`，未读取已有 `changes-index.json` 中的 `baseline_time`。  
-**后果**：重复收录历史变更，产物膨胀，下游 `document-indexing` 重复处理。  
+**后果**：重复收录历史变更，产物膨胀，下游 `docs-indexing` 重复处理。  
 **正确做法**：严格按优先级：命令行 `--since` > 已有 JSON 的 `baseline_time` > 默认值。
 
 ### 1.2 混淆 baseline_time 与 cutoff_time
@@ -70,7 +70,7 @@
 
 ### 4.1 跳过 JSON 格式有效性校验
 **陷阱**：生成后未执行 `jq empty` 或等效校验，直接交付。  
-**后果**：下游 `document-indexing` 解析 JSON 时报错，增量索引中断。  
+**后果**：下游 `docs-indexing` 解析 JSON 时报错，增量索引中断。  
 **正确做法**：输出后必须验证 JSON 格式有效性，以及 `metadata`、`statistics`、`changes` 三个顶层字段存在。
 
 ### 4.2 时间一致性校验遗漏
@@ -83,7 +83,7 @@
 ## 5. 与下游 Skill 的协作
 
 ### 5.1 输出目录路径与下游约定不一致
-**陷阱**：用户未指定 `--output` 时输出到 `./system/changelogs/`，但下游 `document-indexing` 默认从 `./changelogs/` 读取。  
+**陷阱**：用户未指定 `--output` 时输出到 `./system/changelogs/`，但下游 `docs-indexing` 默认从 `./changelogs/` 读取。  
 **后果**：下游 Skill 找不到 `changes-index.json`，增量模式降级为全量。  
 **正确做法**：严格按优先级：用户指定 > `./changelogs/` > `./system/changelogs/`；与下游 Skill 约定保持一致。
 

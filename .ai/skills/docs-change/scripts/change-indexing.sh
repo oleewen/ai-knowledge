@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# document-change - 文档变更索引生成器
+# docs-change - 文档变更索引生成器
 # 多源采集（Git / CHANGELOG / 本地文件），输出 changes-index.json + changes-index.md
 
 set -e
@@ -85,7 +85,7 @@ else
     CUTOFF_MS="$BASELINE_MS"
 fi
 
-echo "=== document-change ==="
+echo "=== docs-change ==="
 echo "  baseline_time : $BASELINE_TIME ($BASELINE_MS)"
 echo "  is_git_repo   : $IS_GIT_REPO"
 echo "  latest_git    : ${LATEST_GIT_TIME:-N/A}"

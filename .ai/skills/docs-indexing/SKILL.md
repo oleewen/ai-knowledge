@@ -1,14 +1,14 @@
 ---
-name: document-indexing
+name: docs-indexing
 description: >
   为代码库生成结构化文档索引（INDEX_GUIDE.md），支持全量/增量扫描与三级深度（拓扑/结构/精读）。
   执行前必须由用户显式确认扫描模式（全量/增量）与深度（1/2/3）；禁止在未获确认时代为选定参数。
   深度 3（精读）须在过滤规则内应读尽读、尽量遍历目录与读全文件，并在九章结构下尽可能多地建立索引条目。
   产出标准化九章文档索引，为 Agent 导航与 RAG 上下文提供权威文档地图。
-  在用户执行 /document-indexing、需要生成或更新项目索引文档、或进行项目 Onboarding 时使用。
+  在用户执行 /docs-indexing、需要生成或更新项目索引文档、或进行项目 Onboarding 时使用。
 ---
 
-# 文档索引生成器（document-indexing）
+# 文档索引生成器（docs-indexing）
 
 将代码库解析为结构化、可检索的文档索引 INDEX_GUIDE.md，作为 Agent 与开发者的系统全景导航。
 
@@ -65,7 +65,7 @@ description: >
 
 ### 步骤 3：变更分析
 
-- 调用 `document-change` 技能生成变更索引
+- 调用 `docs-change` 技能生成变更索引
 - 解析变更文件列表，建立扫描路径集
 - 全量模式下跳过变更过滤
 
@@ -111,7 +111,7 @@ scripts/indexing.sh --mode <用户已确认的 mode> --depth <用户已确认的
 
 | 类型 | 技能/组件 | 说明 |
 |------|-----------|------|
-| 前置 | `document-change` | 生成变更索引 `changes-index.json` |
+| 前置 | `docs-change` | 生成变更索引 `changes-index.json` |
 | 下游 | `docs-build` | 以主 INDEX 作为提取证据来源 |
 | 关联 | `agent-guide` | 维护 README.md / AGENTS.md 与 INDEX 交叉引用 |
 

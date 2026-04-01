@@ -104,7 +104,7 @@ symmetry:
 
 | 错误类型 | 处理方式 | 示例 |
 |----------|----------|------|
-| 主 INDEX 缺失 | 终止，提示先运行 `document-indexing` | Index Guide 未落盘 |
+| 主 INDEX 缺失 | 终止，提示先运行 `docs-indexing` | Index Guide 未落盘 |
 | 证据不足 | 标记 `confidence: low`，继续执行 | MS-* 无宿主类证据 |
 | 前缀冲突 | 跳过冲突项，记录日志 | PL-* 无对应 SYS-* |
 | 文件不可写 | 终止，提示权限 | KNOWLEDGE_INDEX.md 只读 |

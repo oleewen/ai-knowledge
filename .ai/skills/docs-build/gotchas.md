@@ -9,7 +9,7 @@
 ### 1.1 主 Index Guide 不可用时仍继续提取
 **陷阱**：主 Index Guide 未落盘或路径错误，Agent 仍尝试从目录结构猜测实体。  
 **后果**：无权威地图驱动，提取结果充斥幻觉 ID，证据链无法验证。  
-**正确做法**：主 Index Guide 不可用时立即终止，提示用户先运行 `/document-indexing`。
+**正确做法**：主 Index Guide 不可用时立即终止，提示用户先运行 `/docs-indexing`。
 
 ### 1.2 通读全仓源码再开始提取
 **陷阱**：为求「完整」，一次性打开全部源码文件再动笔。  
@@ -152,7 +152,7 @@
 ### 8.1 `--skip-existing true` 时漏更新变更实体
 **陷阱**：增量提取时跳过所有已有 ID，包括因代码重构而发生变化的实体。  
 **后果**：已变更实体的 `method_signature`、`physical_table`、`cross_references` 等字段未更新，索引与代码不同步。  
-**正确做法**：`--skip-existing` 仅跳过确认未变更的实体；基于 `document-change` 的变更文件列表，对变更文件涉及的实体强制重提取。
+**正确做法**：`--skip-existing` 仅跳过确认未变更的实体；基于 `docs-change` 的变更文件列表，对变更文件涉及的实体强制重提取。
 
 ### 8.2 增量提取后未填写 `changes_from_previous`
 **陷阱**：增量更新后 `metadata.changes_from_previous` 仍为空或写「无变化」。  

@@ -14,7 +14,7 @@
 ### 1.2 未命中 Index 仍继续生成
 **陷阱**：四个候选路径均不存在，Agent 仍凭印象或目录猜测生成 README/AGENTS。  
 **后果**：编造模块结构，产出与实际仓库严重偏差。  
-**正确做法**：未命中时立即终止，提示用户先运行 `/document-indexing`。
+**正确做法**：未命中时立即终止，提示用户先运行 `/docs-indexing`。
 
 ### 1.3 把 `INDEX_GUIDE.md` 根目录版本与 `system/` 版本混淆
 **陷阱**：仓库同时存在根目录 `INDEX_GUIDE.md` 与 `system/INDEX_GUIDE.md`，Agent 随机选一个。  
@@ -80,11 +80,11 @@
 
 ---
 
-## 5. 禁止在本 Skill 内调用 document-indexing
+## 5. 禁止在本 Skill 内调用 docs-indexing
 
-**陷阱**：发现 Index 过时或缺失，在 agent-guide 执行流程内自动触发 document-indexing。  
+**陷阱**：发现 Index 过时或缺失，在 agent-guide 执行流程内自动触发 docs-indexing。  
 **后果**：职责混淆，执行链不可预期，可能覆盖用户未提交的 Index 变更。  
-**正确做法**：agent-guide 只读 Index，不写 Index；需要更新 Index 时，单独运行 `/document-indexing`。
+**正确做法**：agent-guide 只读 Index，不写 Index；需要更新 Index 时，单独运行 `/docs-indexing`。
 
 ---
 
@@ -102,4 +102,4 @@
 - [ ] AGENTS 项目概述 ≤3 行（§3.3）
 - [ ] 更新模式下合并而非覆盖（§3.4）
 - [ ] AGENTS 首条参考路径可跳转（§4.2）
-- [ ] 未在本 Skill 内调用 document-indexing（§5）
+- [ ] 未在本 Skill 内调用 docs-indexing（§5）

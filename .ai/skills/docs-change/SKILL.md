@@ -1,12 +1,12 @@
 ---
-name: document-change
+name: docs-change
 description: >
   生成可追溯的文档变更索引，支持增量索引与审计。从 git commit、CHANGELOG 文件和文件修改时间三个维度收集变更信息，
   按时间阈值过滤后输出结构化 JSON 和可读 Markdown 两种格式。
-  在用户执行 /document-change、需要生成变更索引、或进行增量文档更新时使用。
+  在用户执行 /docs-change、需要生成变更索引、或进行增量文档更新时使用。
 ---
 
-# 文档变更索引（document-change）
+# 文档变更索引（docs-change）
 
 多源融合的文档变更追踪工具，从 Git 提交、CHANGELOG 条目、本地文件修改时间三个维度采集变更，输出机器可读 JSON 与人类可读 Markdown 双格式索引。
 
@@ -80,7 +80,7 @@ scripts/change-indexing.sh --since "2026-03-20 00:00:00.000" --output ./changelo
 
 | 类型 | 技能/组件 | 说明 |
 |------|-----------|------|
-| 下游 | `document-indexing` | 消费 `changes-index.json` 驱动增量索引 |
+| 下游 | `docs-indexing` | 消费 `changes-index.json` 驱动增量索引 |
 | 下游 | `docs-build` | 基于变更文件列表执行增量提取 |
 
 ## 参考

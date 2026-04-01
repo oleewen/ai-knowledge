@@ -34,7 +34,7 @@ scripts/validate-guide.sh --root .
 | 反模式 | 说明 |
 |--------|------|
 | AGENTS 重写文档索引表 | 在 AGENTS 里重写一份「完整文档索引表」 |
-| Skill 内调用 document-indexing | 在本 Skill 执行流程内调用 document-indexing 或等待用户选择是否重做索引 |
+| Skill 内调用 docs-indexing | 在本 Skill 执行流程内调用 docs-indexing 或等待用户选择是否重做索引 |
 | 无 Index 编造细节 | 无落盘 Index 且用户未授权例外时编造目录/模块细节 |
 | 目录树矛盾 | README 与 INDEX §2 目录树互相矛盾 |
 | 未索引写成已读 | 把「未索引」区域写死为已读事实 |

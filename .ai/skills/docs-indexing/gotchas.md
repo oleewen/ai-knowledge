@@ -1,6 +1,6 @@
-# document-indexing 常见陷阱（Gotchas）
+# docs-indexing 常见陷阱（Gotchas）
 
-本文记录执行 `document-indexing` Skill 时高频踩坑点，供 Agent 与人类开发者参考。
+本文记录执行 `docs-indexing` Skill 时高频踩坑点，供 Agent 与人类开发者参考。
 
 **与 SKILL 一致**：模式（全量/增量）、深度（1/2/3）及影响行为的参数（如 `--output`、`--since`）须满足 `SKILL.md` 中的「用户确认门禁」——禁止未经用户确认自动定参。下文陷阱条款是对该门禁的补充场景说明。
 
@@ -104,10 +104,10 @@
 
 ## 5. 与上下游 Skill 的协作
 
-### 5.1 在本 Skill 内跳过 document-change 直接扫描
-**陷阱**：增量模式下未调用 `document-change` 获取变更文件列表，直接扫描全部文件。  
+### 5.1 在本 Skill 内跳过 docs-change 直接扫描
+**陷阱**：增量模式下未调用 `docs-change` 获取变更文件列表，直接扫描全部文件。  
 **后果**：增量模式退化为全量扫描，失去增量价值。  
-**正确做法**：增量模式必须先通过 `document-change` 获取 `changes-index.json`，以变更文件列表驱动扫描范围。
+**正确做法**：增量模式必须先通过 `docs-change` 获取 `changes-index.json`，以变更文件列表驱动扫描范围。
 
 ### 5.2 与 agent-guide 产出的目录树矛盾
 **陷阱**：INDEX_GUIDE.md §二目录树与 README.md 中的目录树描述不一致。  
