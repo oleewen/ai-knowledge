@@ -2,6 +2,8 @@
 
 本文记录执行 `sdx-analysis` 时高频踩坑点。入口与工作流摘要见 [SKILL.md](SKILL.md)；算法细节见 [reference/workflow-spec.md](reference/workflow-spec.md)；步骤 5 逐项验收见 [reference/quality-checklist.md](reference/quality-checklist.md)。
 
+**与 `analysis-template.md` 的分工**：模板只给章节结构与文末 YAML 示例；**勿在产出文首**使用 `---` YAML、**编号/版本/`parent` 等仅写在文末「## 文档元数据」** 的规则见下文「步骤 6」；**读者与语言**（产品/需求可读、避免工程标识）见 [reference/audience-and-language.md](reference/audience-and-language.md)。
+
 ## 与本 Skill 其他文件的关系
 
 | 文件 | 何时读 |
@@ -124,10 +126,10 @@
 **后果**：下游 `sdx-prd` 按固定章节引用需求分析文档，章节缺失或错位导致引用失效。  
 **正确做法**：章节结构与 `analysis-template.md` 完全一致；无内容的章节保留标题并标注「不适用」或「待补充」，不得删除。
 
-### 6.2 frontmatter 字段缺失
-**陷阱**：输出文档缺少 `parent`（关联解决方案编号）或 `status` 字段。  
-**后果**：文档与上游解决方案的追溯链断裂；`status` 缺失导致文档管理混乱。  
-**正确做法**：frontmatter 必须包含 `id`、`title`、`version`、`status`、`created`、`updated`、`parent` 七个字段，初始 `status` 为 `draft`。
+### 6.2 文档元数据位置错误或字段缺失
+**陷阱**：在文件开头使用 `---` YAML，或与模板不一致；或文末「## 文档元数据」内缺少 `parent`、`status` 等字段。  
+**后果**：与技能约定不一致；文档与上游解决方案的追溯链断裂；`status` 缺失导致文档管理混乱。  
+**正确做法**：**勿**在文件开头写 YAML frontmatter；仅在文末「## 文档元数据」标题下的 YAML 代码块填写元数据，须包含 `id`、`title`、`version`、`status`、`created`、`updated`、`parent` 等字段（与 [assets/analysis-template.md](assets/analysis-template.md) 一致），初始 `status` 为 `draft`。
 
 ### 6.3 在需求分析中写入 PRD 级内容
 **陷阱**：在 FR-n 详述中写出用户故事（As a... I want... So that...）或技术实现细节（如「使用 Redis 缓存」）。  
@@ -157,6 +159,6 @@
 - [ ] 每个 MVP 有可度量验收标准
 - [ ] 每个风险编号为 R-n，高风险有应对策略
 - [ ] 章节结构与 `analysis-template.md` 完全一致，无删除章节
-- [ ] frontmatter 七个字段完整
+- [ ] 文末文档元数据 YAML 字段完整；文件开头无 `---` YAML
 - [ ] 文档中无 PRD 级用户故事或技术实现细节
 - [ ] [reference/quality-checklist.md](reference/quality-checklist.md) 已逐项勾选

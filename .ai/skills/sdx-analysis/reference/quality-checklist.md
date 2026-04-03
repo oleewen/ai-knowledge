@@ -43,7 +43,7 @@
 
 ## 格式规范
 
-- [ ] frontmatter 完整（id、title、version、status、created、updated、parent）
+- [ ] 文末「## 文档元数据」内 YAML 完整（id、title、version、status、created、updated、parent）；文件开头无 `---` YAML
 - [ ] 章节结构与 [../assets/analysis-template.md](../assets/analysis-template.md) 一致，编号连续
 - [ ] 表格格式规范，列宽合理
 - [ ] 术语表（§8.1）涵盖本文档专用术语
