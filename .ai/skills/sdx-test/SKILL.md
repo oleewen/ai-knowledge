@@ -3,8 +3,8 @@ name: sdx-test
 description: >
   测试方案设计：基于 PRD 与 ADD 制定测试策略与计划，输出测试设计文档（TDD）。
   在用户执行 /sdx-test、编写测试设计/测试计划时使用。
-  产出 system/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md；模板见 assets/tdd-template.md；
-  工作流与门禁见 reference/；陷阱见 gotchas.md。
+  产出 system/requirements/REQUIREMENT-{REQ_KEY}/MVP-Phase-{N}/TDD-{YYMMDD}-{主题slug}.md；模板见 assets/tdd-template.md；
+  工作流与门禁见 reference/；陷阱见 gotchas.md。交付文档元数据仅在文末，勿用文件头 frontmatter。
 ---
 
 # 测试设计阶段（sdx-test）
@@ -13,26 +13,32 @@ description: >
 
 **执行顺序建议**：先读本文件与 [gotchas.md](gotchas.md) → 步骤 1–5 的算法与 depth 见 [reference/workflow-spec.md](reference/workflow-spec.md) → 输出前打开 [assets/tdd-template.md](assets/tdd-template.md) 与 [reference/quality-checklist.md](reference/quality-checklist.md)。
 
+## 命名与落盘约定
+
+- **主交付文件名**：`TDD-{YYMMDD}-{主题slug}.md`，与同一阶段 PRD/ADD 的 `{YYMMDD}-{主题slug}` **完全一致**（即 `*-{YYMMDD}-{主题slug}.md` 中前缀为 `TDD`）。
+- **路径**：`system/requirements/REQUIREMENT-{REQ_KEY}/MVP-Phase-{N}/`，`{REQ_KEY}` 与上游 `ANALYSIS-{REQ_KEY}.md`、PRD/ADD 文件名一致；阶段目录为 `MVP-Phase-{N}/`（**不是** `MVP-{N}/`），见 [system/requirements/README.md](../../../system/requirements/README.md)。
+- **元数据位置**：TDD 正文从标题起；`id`、`title`、`parent` 等 **仅** 放在全文末尾「## 文档元数据」下的 fenced YAML（与 [assets/tdd-template.md](assets/tdd-template.md)），**禁止**文件头 `---` YAML。
+
 ## 输入与输出
 
-**输入**：产品需求（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`）、架构设计（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`）、规约（`.../specs/`）  
-**输出**：`system/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md`（结构遵循 [assets/tdd-template.md](assets/tdd-template.md)）
+**输入**：产品需求（`system/requirements/REQUIREMENT-{REQ_KEY}/MVP-Phase-{N}/PRD-{YYMMDD}-{主题slug}.md`）、架构设计（`system/requirements/REQUIREMENT-{REQ_KEY}/MVP-Phase-{N}/ADD-{YYMMDD}-{主题slug}.md`）、规约（`.../specs/`）  
+**输出**：`system/requirements/REQUIREMENT-{REQ_KEY}/MVP-Phase-{N}/TDD-{YYMMDD}-{主题slug}.md`（结构遵循 [assets/tdd-template.md](assets/tdd-template.md)）
 
 | 类型 | 内容 |
 |------|------|
-| 硬输入 | 产品需求文档（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`） |
-| 可选输入 | 架构设计（`.../ADD-{ID}-{N}.md`）、规约（`specs/`）、`knowledge/`、AGENTS.md |
-| 固定输出 | `system/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md` |
+| 硬输入 | 产品需求文档（`system/requirements/REQUIREMENT-{REQ_KEY}/MVP-Phase-{N}/PRD-{YYMMDD}-{主题slug}.md`） |
+| 可选输入 | 架构设计（`.../ADD-{YYMMDD}-{主题slug}.md`）、规约（`specs/`）、`knowledge/`、AGENTS.md |
+| 固定输出 | `system/requirements/REQUIREMENT-{REQ_KEY}/MVP-Phase-{N}/TDD-{YYMMDD}-{主题slug}.md` |
 | 不产出 | 代码、自动化测试脚本、测试执行报告（实现与执行阶段产出） |
 
 ## 参数
 
 | 参数 | 必需 | 默认值 | 说明 |
 |------|------|--------|------|
-| `--id` | 否 | `{REQUIREMENT-ID}-MVP{N}` | TDD 文档编号 |
+| `--id` | 否 | `{REQ_KEY}` | 与 PRD/ADD 一致的 `{YYMMDD}-{主题slug}` |
 | `--doc-root` | 否 | `system` | 文档根目录；校验脚本在 `${DOC_ROOT}` 下递归查找 `TDD-*.md`；旧布局可用 `docs` |
-| `--prd` | 否 | — | 上游 PRD 编号，自动定位对应文件 |
-| `--mvp` | 否 | `1` | 目标 MVP 阶段编号 |
+| `--prd` | 否 | — | 上游 PRD 或 `PRD-*.md` stem，自动定位对应文件 |
+| `--mvp` | 否 | `1` | 目标 MVP 阶段编号（`MVP-Phase-{N}`） |
 | `--depth` | 否 | `standard` | 设计深度（quick / standard / deep），影响步骤 2–3 粒度 |
 
 ## 适用场景

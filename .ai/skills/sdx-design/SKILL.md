@@ -2,7 +2,7 @@
 name: sdx-design
 description: >
   技术方案设计：基于产品需求与架构/领域文档进行技术方案设计，输出 ADD 与规约摘录文档。
-  在用户执行 /sdx-design、编写 ADD 与规约摘录时使用。产出 system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md，模板见 .ai/skills/sdx-design/assets/add-template.md。
+  在用户执行 /sdx-design、编写 ADD 与规约摘录时使用。产出 system/requirements/REQUIREMENT-{REQ_KEY}/MVP-Phase-{N}/ADD-{YYMMDD}-{主题slug}.md；规约见同目录 specs/；模板见 assets/add-template.md。交付文档元数据仅在文末，勿用文件头 frontmatter。
 ---
 
 # 方案设计阶段（sdx-design）
@@ -11,26 +11,33 @@ description: >
 
 **执行顺序建议**：先读本文件与 [gotchas.md](gotchas.md) → 步骤 1–4 按需打开 [reference/workflow-spec.md](reference/workflow-spec.md) → 输出前打开 [assets/add-template.md](assets/add-template.md) 与 [reference/quality-checklist.md](reference/quality-checklist.md)。
 
+## 命名与落盘约定
+
+- **主交付文件名**：`ADD-{YYMMDD}-{主题slug}.md`，与同一阶段 PRD 的 `{YYMMDD}-{主题slug}` **完全一致**（即 `*-{YYMMDD}-{主题slug}.md` 中的前缀为 `ADD`）。
+- **路径**：`system/requirements/REQUIREMENT-{REQ_KEY}/MVP-Phase-{N}/`，其中 `{REQ_KEY}` 为 `{YYMMDD}-{主题slug}`，与 [system/requirements/README.md](../../../system/requirements/README.md) 中 `REQUIREMENT-{ID}/` 及上游 `ANALYSIS-{REQ_KEY}.md` 对齐。
+- **规约摘录**：`.../specs/spec-{YYMMDD}-{主题slug}-{service-name}.md`（服务名段用 ASCII slug，与前两段同一需求键）。
+- **元数据位置**：ADD 与规约摘录的正文 **不** 使用文件头 `---` YAML；若模板含「## 文档元数据」则 **仅** 置于全文末尾（与 [assets/add-template.md](assets/add-template.md) 一致）。
+
 ## 输入与输出
 
-**输入**：PRD（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`）、需求分析当前 MVP 上下文（`system/analysis/ANALYSIS-{ID}.md`）、按需 `knowledge/technical/`、`knowledge/business/`、`knowledge/constitution/adr/`。  
-**输出**：ADD、规约文件 `.../specs/spec-{ID}-{N}-{service-name}.md`。
+**输入**：PRD（`system/requirements/REQUIREMENT-{REQ_KEY}/MVP-Phase-{N}/PRD-{YYMMDD}-{主题slug}.md`）、需求分析（`system/analysis/ANALYSIS-{REQ_KEY}.md`）、按需 `knowledge/technical/`、`knowledge/business/`、`knowledge/constitution/adr/`。  
+**输出**：`ADD-{YYMMDD}-{主题slug}.md`、规约 `.../specs/spec-{YYMMDD}-{主题slug}-{service-name}.md`。
 
 | 类型 | 内容 |
 |------|------|
-| 硬输入 | 产品需求文档（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`） |
+| 硬输入 | 产品需求文档（`system/requirements/REQUIREMENT-{REQ_KEY}/MVP-Phase-{N}/PRD-{YYMMDD}-{主题slug}.md`） |
 | 可选输入 | 需求分析文档、`knowledge/technical/`、`knowledge/business/`、`knowledge/constitution/adr/`、同包 `specs/`、AGENTS.md |
-| 固定输出 | `system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`、基于 `spec-template.md` 的规约摘录文档（如 `system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/spec-{ID}-{N}-{service-name}.md`） |
+| 固定输出 | `system/requirements/REQUIREMENT-{REQ_KEY}/MVP-Phase-{N}/ADD-{YYMMDD}-{主题slug}.md`、基于 [spec-template.md](assets/spec-template.md) 的规约摘录（如 `.../specs/spec-{YYMMDD}-{主题slug}-{service-name}.md`） |
 | 不产出 | 测试设计、代码（使用下游 sdx-test / dev） |
 
 ## 参数
 
 | 参数 | 必需 | 默认值 | 说明 |
 |------|------|--------|------|
-| `--id` | 否 | `{REQUIREMENT-ID}-MVP{N}` | ADD 文档编号 |
+| `--id` | 否 | `{REQ_KEY}` | 与 PRD/需求分析一致的 `{YYMMDD}-{主题slug}` |
 | `--doc-root` | 否 | `system` | 文档根目录 |
-| `--prd` | 否 | — | 上游 PRD 编号，自动定位对应文件 |
-| `--mvp` | 否 | `1` | 目标 MVP 阶段编号 |
+| `--prd` | 否 | — | 上游 PRD 或 `PRD-*.md` stem，自动定位对应文件 |
+| `--mvp` | 否 | `1` | 目标 MVP 阶段编号（`MVP-Phase-{N}`） |
 | `--depth` | 否 | `standard` | 设计深度（quick / standard / deep），影响步骤 1–2 粒度 |
 
 ## 适用场景
@@ -58,7 +65,7 @@ description: >
 
 1. **架构设计** — 系统/服务变更与交互、接口协议概要、领域模型、数据架构、发布与回滚；DD-n 与 Mermaid；对照 `knowledge/` 与 INDEX_GUIDE 中的架构索引。
 2. **详细设计** — 应用架构、API 详设、业务逻辑与一致性、数据访问、非功能（安全、可观测）。
-3. **规约生成** — 按服务写入 `specs/spec-{ID}-{N}-{service-name}.md` 。
+3. **规约生成** — 按服务写入 `specs/spec-{YYMMDD}-{主题slug}-{service-name}.md`（与 `ADD-{YYMMDD}-{主题slug}.md` 同需求键）。
 4. **文档输出与评审** — 按 [assets/add-template.md](assets/add-template.md) 整合；按 [reference/quality-checklist.md](reference/quality-checklist.md) 自查。
 
 可使用辅助脚本验证文档结构：

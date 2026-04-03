@@ -3,8 +3,8 @@ name: sdx-prd
 description: >
   产品需求说明：将需求分析中当前 MVP 的需求转化为详细产品方案与功能设计（业务流程、用户故事、用例、功能模块、交互与业务规则）。
   在用户执行 /sdx-prd、编写 PRD 文档时使用。
-  产出 system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md；模板见 assets/prd-template.md；工作流、概念与门禁见 reference/。
-  主要读者为产品；研发参与评审。技术实现细节留给下游 sdx-design。
+  产出 system/requirements/REQUIREMENT-{REQ_KEY}/MVP-Phase-{N}/PRD-{YYMMDD}-{主题slug}.md（REQ_KEY 与上游 ANALYSIS 文件名中段一致）；模板见 assets/prd-template.md；工作流、概念与门禁见 reference/。
+  主要读者为产品；研发参与评审。技术实现细节留给下游 sdx-design。交付文档元数据仅在文末 YAML 块，勿在文件开头使用 frontmatter。
 ---
 
 # 产品需求阶段（sdx-prd）
@@ -13,26 +13,33 @@ description: >
 
 **执行顺序建议**：先读本文件与 [gotchas.md](gotchas.md) → 步骤 1–5 按需打开 [reference/workflow-spec.md](reference/workflow-spec.md) → 定稿前打开 [assets/prd-template.md](assets/prd-template.md) 与 [reference/quality-checklist.md](reference/quality-checklist.md)。
 
+## 命名与落盘约定
+
+- **与上游对齐**：需求分析落盘为 `system/analysis/ANALYSIS-{YYMMDD}-{主题slug}.md`（见 `sdx-analysis`）。本阶段交付文件名须为 **`PRD-{YYMMDD}-{主题slug}.md`**，其中 **`{YYMMDD}`** 与 **`{主题slug}`** 与对应 `ANALYSIS-*.md` 文件名中两段一致，**不得**只写日期而省略 slug。
+- **需求包目录**：`system/requirements/REQUIREMENT-{REQ_KEY}/`，`{REQ_KEY}` 与 `ANALYSIS-{REQ_KEY}.md` 中的 `{REQ_KEY}` 相同（即 `{YYMMDD}-{主题slug}`），与 [system/requirements/README.md](../../../system/requirements/README.md) 及 `requirements_meta.yaml` 一致。
+- **阶段目录**：`MVP-Phase-{N}/`（**不是** `MVP-{N}/`），`{N}` 为正整数阶段号，与仓库 requirements 约定一致。
+- **元数据位置**：生成/修改的 PRD **正文从标题 `#` 起笔**；`id`、`title`、`parent` 等元数据 **仅** 放在全文末尾「## 文档元数据」下的 fenced YAML 中（与 [assets/prd-template.md](assets/prd-template.md)），**禁止**在文件开头使用 `---` YAML frontmatter。
+
 ## 输入与输出
 
-**输入**：需求分析文档中当前 MVP 章节（`system/analysis/ANALYSIS-{ID}.md`）、产品文档（`knowledge/product/`）；内部分析可按需查阅 `knowledge/`、`requirements/.../specs/`（**勿将实现向技术细节原样写入 PRD 正文**）。  
-**输出**：`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`（结构遵循 [assets/prd-template.md](assets/prd-template.md)）
+**输入**：需求分析文档中当前 MVP 章节（`system/analysis/ANALYSIS-{REQ_KEY}.md`）、产品文档（`knowledge/product/`）；内部分析可按需查阅 `knowledge/`、`requirements/.../specs/`（**勿将实现向技术细节原样写入 PRD 正文**）。  
+**输出**：`system/requirements/REQUIREMENT-{REQ_KEY}/MVP-Phase-{N}/PRD-{YYMMDD}-{主题slug}.md`（结构遵循 [assets/prd-template.md](assets/prd-template.md)；同一 `{REQ_KEY}` 下 `{YYMMDD}-{主题slug}` 与文件名一致）
 
 | 类型 | 内容 |
 |------|------|
-| 硬输入 | 需求分析文档（`system/analysis/ANALYSIS-{ID}.md`）中当前 MVP 章节 |
+| 硬输入 | 需求分析文档（`system/analysis/ANALYSIS-{REQ_KEY}.md`）中当前 MVP 章节 |
 | 可选输入 | `knowledge/product/`、`knowledge/business/`、`requirements/.../specs/`、AGENTS.md |
-| 固定输出 | `system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md` |
+| 固定输出 | `system/requirements/REQUIREMENT-{REQ_KEY}/MVP-Phase-{N}/PRD-{YYMMDD}-{主题slug}.md` |
 | 不产出 | ADD、TDD、代码（使用下游 sdx-design / sdx-test） |
 
 ## 参数
 
 | 参数 | 必需 | 默认值 | 说明 |
 |------|------|--------|------|
-| `--id` | 否 | `{ID}-{N}` | PRD 文档编号（{ID} 为需求分析编号中的 ID 部分，{N} 为 MVP 序号） |
+| `--id` | 否 | `{REQ_KEY}` | 与上游需求分析一致的主题键 `{YYMMDD}-{主题slug}`，用于定位目录与文件名，**非**仅日期六位 |
 | `--doc-root` | 否 | `docs` | 文档根目录 |
-| `--requirement` | 否 | — | 上游需求分析编号，自动定位对应文件 |
-| `--mvp` | 否 | `1` | 目标 MVP 阶段编号 |
+| `--requirement` | 否 | — | 上游需求分析编号或 `ANALYSIS-*.md`  stem，自动定位对应文件 |
+| `--mvp` | 否 | `1` | 目标 MVP 阶段编号（对应 `MVP-Phase-{N}`） |
 
 ## 适用场景
 
