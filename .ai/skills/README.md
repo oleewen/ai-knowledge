@@ -14,6 +14,7 @@
 |------|------|
 | `/docs-indexing` | 生成面向 AI 的仓库索引（`INDEX_GUIDE.md`），支持分层检索与路径精确引用。 |
 | `/docs-change` | 聚合 git/CHANGELOG/文件 mtime 生成变更索引（如 `changes-index.*`）。 |
+| `/docs-upgrade` | 新增仅改指定文件；修改可含任意指定文件并链式同步引用/被引用处同类表述；支持 `a - b` / `a > b` / `a 2 b` 替换简写。 |
 | `/agent-guide` | 生成/更新根目录 `AGENTS.md` 与 `README.md`，对齐仓库导航与约束。 |
 | `/docs-archive` | 将应用侧有效知识回收至系统知识库，保持联邦治理与 SSOT。 |
 | `/docs-build` | 按知识工程流程构建/补全知识资产与关联结构。 |
@@ -22,6 +23,7 @@
 | `/sdx-prd` | 产出 PRD 阶段文档（Requirements 阶段）。 |
 | `/sdx-design` | 产出架构/设计阶段文档（Architecture Design 阶段）。 |
 | `/sdx-test` | 产出测试设计与验证阶段文档（Test 阶段）。 |
+| `/skill-creator` | 创建或更新技能的工作流指南（含 `scripts/` 脚手架与校验）。来源：本机 Codex `~/.codex/skills/.system/skill-creator`，与 `/create-skill` 可互补使用。 |
 
 ## 使用说明
 

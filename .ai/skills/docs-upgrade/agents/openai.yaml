@@ -1,0 +1,4 @@
+interface:
+  display_name: "文档升级"
+  short_description: "新增仅改指定文件；修改时可链式同步双向引用同类表述"
+  default_prompt: "/docs-upgrade 请更新 docs/solutions/example.md，并把术语 X 改为 Y；同步引用处。"
