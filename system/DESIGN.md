@@ -44,9 +44,9 @@
 | 目录                | 说明                          |
 | ----------------- | --------------------------- |
 | **knowledge/**    | 宪法层 + 业务 / 产品 / 技术 / 数据     |
-| **solutions/**    | `SOLUTION-{ID}.md`          |
-| **analysis/**     | `ANALYSIS-{ID}.md`          |
-| **requirements/** | `REQUIREMENT-{ID}/` 按阶段交付（规约可在各包内 `specs/`）   |
+| **solutions/**    | `SOLUTION-{IDEA-ID}.md`          |
+| **analysis/**     | `ANALYSIS-{IDEA-ID}.md`          |
+| **requirements/** | `REQUIREMENT-{IDEA-ID}/` 按阶段交付（规约可在各包内 `specs/`）   |
 | **changelogs/**   | 变更记录与索引运维（可选）               |
 
 ### 2.2 系统知识库
@@ -79,9 +79,9 @@
 
 | 阶段               | 约定                                                |
 | ---------------- | ------------------------------------------------- |
-| **solutions**    | `solutions_meta.yaml`（`layers`：SOLUTION）；根目录 `SOLUTION-{ID}.md` |
-| **analysis**     | `analysis_meta.yaml`（`layers`：ANALYSIS）；`ANALYSIS-{ID}.md`；`parent` → Solution |
-| **requirements** | `requirements_meta.yaml`（`layers`：交付包 → MVP 分阶段）；`REQUIREMENT-{ID}/MVP-Phase-*/` 下 PRD / ADD / TDD；规约 YAML 等见同包 `specs/`（按 add-template） |
+| **solutions**    | `solutions_meta.yaml`（`layers`：SOLUTION）；根目录 `SOLUTION-{IDEA-ID}.md` |
+| **analysis**     | `analysis_meta.yaml`（`layers`：ANALYSIS）；`ANALYSIS-{IDEA-ID}.md`；`parent` → Solution |
+| **requirements** | `requirements_meta.yaml`（`layers`：交付包 → MVP 分阶段）；`REQUIREMENT-{IDEA-ID}/MVP-Phase-*/` 下 PRD / ADD / TDD；规约 YAML 等见同包 `specs/`（按 add-template） |
 | **changelogs**   | `changelogs_meta.yaml`（`layers`：人类 CHANGELOG → 可选索引产物）；`CHANGELOG.md`；可选 `changes-index.*`、`indexing-log.jsonl`（Skill） |
 
 ---

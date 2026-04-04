@@ -40,7 +40,7 @@ quality-engineer
 
 ### 输入
 
-产品需求文档（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`）+ 架构设计文档（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`，如存在）
+产品需求文档（`system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/PRD-{YYMMDD}-{主题slug}.md`）+ 架构设计文档（`system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/ADD-{YYMMDD}-{主题slug}.md`，如存在）
 
 ### 算法
 
@@ -254,22 +254,22 @@ technical-writer + doc-updater
 ### 算法
 
 1. **整合**：将步骤 1–4 产出按模板六章结构编排
-2. **填充 frontmatter**：
-   - `id`: 按 `TDD-{REQUIREMENT-ID}-MVP{N}` 格式
+2. **填充文末元数据**（模板「## 文档元数据」YAML，**禁止**文件头 frontmatter）：
+   - `id`: `TDD-{YYMMDD}-{主题slug}`（与 PRD/ADD 同 `{YYMMDD}-{主题slug}`）
    - `status`: `draft`
    - `created` / `updated`: 当前日期
-   - `parent`: 关联的 PRD 编号（与文件名一致）`PRD-{ID}-{N}`
-   - `mvp_phase`: `MVP-{N}`
+   - `parent`: 关联的 PRD 编号（与 `PRD-{YYMMDD}-{主题slug}.md` 一致）
+   - `mvp_phase`: `MVP-Phase-{N}`
 3. **补充附录**：变更历史（§6.1）
 4. **质量门禁自查**：逐项检查 [quality-checklist.md](quality-checklist.md)
-5. **输出**：写入 `system/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}-{N}.md`
+5. **输出**：写入 `system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/TDD-{YYMMDD}-{主题slug}.md`
 
 ### 输出目录
 
 ```
-system/requirements/REQUIREMENT-{ID}/
-└── MVP-{N}/
-    └── TDD-{REQUIREMENT-ID}-MVP{N}.md
+system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/
+└── MVP-Phase-{N}/
+    └── TDD-{YYMMDD}-{主题slug}.md
 ```
 
 目录不存在时自动创建。

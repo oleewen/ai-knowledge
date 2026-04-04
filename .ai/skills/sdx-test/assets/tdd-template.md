@@ -3,8 +3,8 @@
 ## 1. 概述
 
 ### 1.1 测试目标
-- 关联技术设计：`system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`（或目标工程 `system/requirements/...`；落盘后改为可点击链接）
-- 关联产品需求：`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`（同上）
+- 关联技术设计：`system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/ADD-{YYMMDD}-{主题slug}.md`（或目标工程 `system/requirements/...`；落盘后改为可点击链接）
+- 关联产品需求：`system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/PRD-{YYMMDD}-{主题slug}.md`（同上）
 
 ### 1.2 测试范围
 
@@ -104,7 +104,7 @@
 
 ## 文档元数据
 ```yaml
-id: "TDD-{REQUIREMENT-ID}-MVP{N}"
+id: "TDD-{YYMMDD}-{主题slug}"
 title: "{测试设计标题}"
 version: "1.0.0"
 status: "draft"
@@ -112,7 +112,7 @@ created: "{YYYY-MM-DD}"
 updated: "{YYYY-MM-DD}"
 author: "quality-engineer"
 reviewers: []
-parent: "PRD-{对应产品需求编号}"
-mvp_phase: "MVP-{N}"
+parent: "PRD-{YYMMDD}-{主题slug}"
+mvp_phase: "MVP-Phase-{N}"
 tags: []
 ```

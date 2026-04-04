@@ -45,9 +45,9 @@
 │   ├── DESIGN.md                 # 原则、元模型、system/ 内目录、映射、演进
 │   ├── CONTRIBUTING.md           # 六步工作流、各阶段规则与模板指针
 │   ├── knowledge/                # 宪法层 + 业务/产品/技术/数据视角
-│   ├── solutions/                # 解决方案（README + SOLUTION-{ID}.md）
-│   ├── analysis/                 # 需求分析（README + ANALYSIS-{ID}.md）
-│   ├── requirements/             # 需求交付（README + REQUIREMENT-{ID}/…；规约可在各需求包内 specs/）
+│   ├── solutions/                # 解决方案（README + SOLUTION-{IDEA-ID}.md）
+│   ├── analysis/                 # 需求分析（README + ANALYSIS-{IDEA-ID}.md）
+│   ├── requirements/             # 需求交付（README + REQUIREMENT-{IDEA-ID}/…；规约可在各需求包内 specs/）
 │   └── changelogs/               # README、CHANGELOG、可选 changes-index / indexing-log
 ├── applications/                 # 应用级知识库模板与治理入口
 │   ├── README.md                 # 应用侧联邦单元说明与初始化示例

@@ -16,7 +16,7 @@ sdx-design 技能的完整设计约束。[SKILL.md](../SKILL.md) 中的「核心
 
 | 证据类型 | 格式 | 示例 |
 |----------|------|------|
-| 产品需求 | `PRD-{ID} US-{N}` | `PRD-20260327-MVP1 US-003` |
+| 产品需求 | `PRD-{YYMMDD}-{主题slug} US-{N}` | `PRD-260403-管区分钱分量 US-003` |
 | 功能需求 | `FR-{NNN}` | `FR-001 创建申诉单` |
 | 知识库实体 | `{视角}-{ID}` | `BC-001 FeeAppealContext` |
 | 文档章节 | `{文件} §{章节}` | `INDEX_GUIDE.md §3.2` |
@@ -167,4 +167,4 @@ sdx-design 技能的完整设计约束。[SKILL.md](../SKILL.md) 中的「核心
 | knowledge 目录缺失 | 发出警告，仅基于 PRD 和 AGENTS.md 完成设计，标注缺少知识库基线 |
 | ADD 模板不存在 | 终止，提示创建 `.ai/skills/sdx-design/assets/add-template.md` |
 | 现有架构冲突 | 记录为设计决策（DD-n），标注冲突点与化解方案 |
-| 输出目录不存在 | 自动创建 `system/requirements/REQUIREMENT-{ID}/MVP-{N}/` 目录 |
+| 输出目录不存在 | 自动创建 `system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/` 目录 |

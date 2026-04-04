@@ -10,7 +10,7 @@ identity:
   name: "解决方案（solutions）"
   description: >
     AI SDD 解决方案阶段：从业务诉求中提取结构化需求，评估影响面、识别冲突并形成解决方案，
-    输出 SOLUTION-{ID}.md，作为 analysis 阶段输入。本文件为 solutions/ 唯一元数据入口。
+    输出 SOLUTION-{IDEA-ID}.md，作为 analysis 阶段输入。本文件为 solutions/ 唯一元数据入口。
 
 role:
   stage: "solution"
@@ -26,13 +26,13 @@ repository:
   child_directories: []
   child_files:
     - "README.md"
-    - "SOLUTION-{ID}.md"
+    - "SOLUTION-{IDEA-ID}.md"
   hierarchy:
     chain: "SOLUTION（根目录平铺单文件交付物）"
     labels:
       SOLUTION: "解决方案文档（Solution document）"
   directory_patterns:
-    solution: "SOLUTION-{ID}.md"
+    solution: "SOLUTION-{IDEA-ID}.md"
 
 # -----------------------------------------------------------------------------
 # 3. 阶段输入 / 产出（全层共享，不在各层重复声明）
@@ -46,7 +46,7 @@ pipeline:
   outputs:
     ssot_file: "solutions_meta.yaml"
     narrative: "交付物形态与 frontmatter 约定见 `layers`；根目录平铺 Markdown，不并列子级 *_meta.yaml。"
-    directory_role: "README + 方案索引表 + SOLUTION-{ID}.md 文件集。"
+    directory_role: "README + 方案索引表 + SOLUTION-{IDEA-ID}.md 文件集。"
 
 # -----------------------------------------------------------------------------
 # 4. 追溯与下游
@@ -56,7 +56,7 @@ integration:
     - "可与 knowledge 四视角实体 ID 建立引用（正文与 frontmatter，不重复定义实体）"
   downstream:
     - path: "../analysis/"
-      via: "ANALYSIS-{ID}.md 的 frontmatter.parent → SOLUTION-{ID}"
+      via: "ANALYSIS-{IDEA-ID}.md 的 frontmatter.parent → SOLUTION-{IDEA-ID}"
       description: "需求分析文档关联到本目录对应解决方案"
   key_fields:
     solution_document:
@@ -87,14 +87,14 @@ layers:
     code: "SOLUTION"
     order: 1
     entity_kind: "solution_document"
-    id_pattern: "SOLUTION-{ID}"
+    id_pattern: "SOLUTION-{IDEA-ID}"
     parent: null
     tree:
       child_directory_glob: null
     artifacts:
-      markdown: "SOLUTION-{ID}.md"
+      markdown: "SOLUTION-{IDEA-ID}.md"
     fields:
-      id_guidance: "{ID} 建议为 {YYYYMMDD}-{业务诉求概述} 或项目约定的唯一编号；概述可由 Agent 从描述系统提取"
+      id_guidance: "{IDEA-ID} 为需求链统一标识（六位日期 + ASCII kebab-case 主题段），见 system/knowledge/constitution/standards/naming-conventions.md"
     frontmatter_constraints:
       solution_document:
         required_fields:
@@ -103,7 +103,7 @@ layers:
           - "parent"
           - "dependencies"
         constraints:
-          - "frontmatter.id 与文件名 SOLUTION-{ID}.md 保持一致"
+          - "frontmatter.id 与文件名 SOLUTION-{IDEA-ID}.md 保持一致"
     indexing:
       readme_index_table: true
       rule: "新增解决方案文档应登记到 README.md 的方案索引表"

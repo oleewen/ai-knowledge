@@ -8,7 +8,7 @@
 |------|--------|
 | `SKILL.md` | 每次任务：IO、参数、五步摘要、约束与索引 |
 | `gotchas.md`（本文件） | 开始前扫一眼；卡顿时按步骤查陷阱 |
-| `assets/prd-template.md` | 撰写/整合 `PRD-{ID}-{N}.md` 时 |
+| `assets/prd-template.md` | 撰写/整合 `PRD-{YYMMDD}-{主题slug}.md` 时 |
 | `reference/workflow-spec.md` | 需明确步骤算法、决策点、步间产出时 |
 | `reference/audience-and-language.md` | 不确定正文能否写某类技术词时 |
 | `reference/core-concepts.md` | 核对术语口径时 |

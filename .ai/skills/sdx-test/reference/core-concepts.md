@@ -2,6 +2,12 @@
 
 与主文件 [../SKILL.md](../SKILL.md) 配合使用：需要统一术语或向人类解释「测什么、测到哪」时打开本文。
 
+## IDEA-ID
+
+**IDEA-ID** 的定义见 [../sdx-solution/reference/core-concepts.md#idea-id](../sdx-solution/reference/core-concepts.md#idea-id)。
+
+本阶段路径示例：`system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/TDD-{IDEA-ID}-{N}.md`；须与同目录 `PRD-{IDEA-ID}-{N}.md`、`ADD-{IDEA-ID}-{N}.md` 的 **IDEA-ID** 完全一致。
+
 | 概念 | 口径 |
 |------|------|
 | **测试策略** | 确定测试层次（单元、集成、端到端）与覆盖率目标，按风险优先级分配测试资源 |

@@ -4,9 +4,9 @@
 
 ### 1.1 设计目标
 
-- 关联需求分析：`system/analysis/ANALYSIS-{ID}.md`
-- 关联产品需求：`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`
-- MVP阶段：MVP-{N}
+- 关联需求分析：`system/analysis/ANALYSIS-{YYMMDD}-{主题slug}.md`
+- 关联产品需求：`system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/PRD-{YYMMDD}-{主题slug}.md`
+- MVP阶段：MVP-Phase-{N}
 
 ### 1.2 设计约束
 <!-- 技术约束、架构约束、兼容性约束等 -->
@@ -431,8 +431,8 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 
 ## 文档元数据
 
-```
-id: "ADD-{REQUIREMENT-ID}-MVP{N}"
+```yaml
+id: "ADD-{YYMMDD}-{主题slug}"
 title: "{技术设计标题}"
 version: "1.0.0"
 status: "draft"
@@ -440,7 +440,7 @@ created: "{YYYY-MM-DD}"
 updated: "{YYYY-MM-DD}"
 author: "architect"
 reviewers: []
-parent: "PRD-{对应产品需求编号}"
-mvp_phase: "MVP-{N}"
+parent: "PRD-{YYMMDD}-{主题slug}"
+mvp_phase: "MVP-Phase-{N}"
 tags: []
 ```

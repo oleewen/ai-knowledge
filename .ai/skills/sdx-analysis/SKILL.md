@@ -3,7 +3,7 @@ name: sdx-analysis
 description: >
   需求分析：基于解决方案文档与知识库进行深度研究、需求细化、MVP 拆分与依赖/风险评估，输出需求分析文档。
   在用户执行 /sdx-analysis、编写需求分析文档、或进行方案→需求分析时使用。
-  产出 system/analysis/ANALYSIS-{ID}.md；模板见 assets/analysis-template.md；工作流与门禁见 reference/。
+  产出 system/analysis/ANALYSIS-{IDEA-ID}.md（**IDEA-ID** 见 reference/core-concepts.md 与 ../sdx-solution/reference/core-concepts.md#idea-id）；模板见 assets/analysis-template.md；工作流与门禁见 reference/。
   主要面向产品经理与需求分析师；技术实现细节留给 sdx-design。
 ---
 
@@ -15,21 +15,23 @@ description: >
 
 ## 输入与输出
 
-**输入**：解决方案文档（`system/solutions/`）；为校准范围与事实可**按需**查阅 `knowledge/`、各 `requirements/.../specs/` 或 `knowledge/technical/`（**勿将工程细节原样写入需求分析正文**）。  
-**输出**：`system/analysis/ANALYSIS-{ID}.md`（结构遵循 [assets/analysis-template.md](assets/analysis-template.md)）
+**IDEA-ID**：需求链统一标识，定义见 [../sdx-solution/reference/core-concepts.md#idea-id](../sdx-solution/reference/core-concepts.md#idea-id)；本阶段路径示例见 [reference/core-concepts.md#idea-id](reference/core-concepts.md#idea-id)。
+
+**输入**：解决方案文档（`system/solutions/SOLUTION-{IDEA-ID}.md`）；为校准范围与事实可**按需**查阅 `knowledge/`、各 `requirements/.../specs/` 或 `knowledge/technical/`（**勿将工程细节原样写入需求分析正文**）。  
+**输出**：`system/analysis/ANALYSIS-{IDEA-ID}.md`（结构遵循 [assets/analysis-template.md](assets/analysis-template.md)）
 
 | 类型 | 内容 |
 |------|------|
-| 硬输入 | 解决方案文档（`system/solutions/SOLUTION-{ID}.md`） |
+| 硬输入 | 解决方案文档（`system/solutions/SOLUTION-{IDEA-ID}.md`） |
 | 可选输入 | `knowledge/`、`requirements/.../specs/`、`knowledge/technical/`、AGENTS.md |
-| 固定输出 | `system/analysis/ANALYSIS-{ID}.md` |
+| 固定输出 | `system/analysis/ANALYSIS-{IDEA-ID}.md` |
 | 不产出 | PRD、ADD、测试设计、代码（使用下游 sdx-prd / sdx-design / sdx-test） |
 
 ## 参数
 
 | 参数 | 必需 | 默认值 | 说明 |
 |------|------|--------|------|
-| `--id` | 否 | `YYYYMMDD-SEQ` | 需求分析文档编号 |
+| `--id` | 否 | `IDEA-ID` | 与 `ANALYSIS-{IDEA-ID}.md` 及上游 `SOLUTION-{IDEA-ID}.md`、下游 `REQUIREMENT-{IDEA-ID}/` 同链对齐；定义见 [../sdx-solution/reference/core-concepts.md#idea-id](../sdx-solution/reference/core-concepts.md#idea-id) |
 | `--doc-root` | 否 | `docs` | 文档根目录 |
 | `--depth` | 否 | `standard` | 分析深度（quick / standard / deep），影响步骤 1–2 粒度 |
 | `--solution` | 否 | — | 上游解决方案编号，自动定位对应文件 |
@@ -90,7 +92,8 @@ description: >
 |------|------|
 | 五步工作流（算法、depth、Q-n、数据流） | [reference/workflow-spec.md](reference/workflow-spec.md) |
 | 受众与文档语言 | [reference/audience-and-language.md](reference/audience-and-language.md) |
-| 核心概念口径 | [reference/core-concepts.md](reference/core-concepts.md) |
+| 核心概念口径（含本阶段 **IDEA-ID** 落盘示例） | [reference/core-concepts.md#idea-id](reference/core-concepts.md#idea-id) |
+| **IDEA-ID**（权威定义） | [../sdx-solution/reference/core-concepts.md#idea-id](../sdx-solution/reference/core-concepts.md#idea-id) |
 | 设计原则、反模式、错误处理 | [reference/design-principles.md](reference/design-principles.md) |
 | 质量验收清单 | [reference/quality-checklist.md](reference/quality-checklist.md) |
 | 需求分析文档模板 | [assets/analysis-template.md](assets/analysis-template.md) |

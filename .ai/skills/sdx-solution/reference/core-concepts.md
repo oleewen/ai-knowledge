@@ -2,9 +2,18 @@
 
 面向业务与产品评审语境的术语与产出边界，供步骤 1–5 对齐口径。算法、`--depth` / `--skip-conflict` 与数据流见 [workflow-spec.md](workflow-spec.md)。
 
+## IDEA-ID
+
+**IDEA-ID** 为需求链统一标识，对应统一命名格式 **`*-{YYMMDD}-{主题slug}`** 中的 **`{YYMMDD}-{主题slug}`** 段：
+
+- **`{YYMMDD}`**：六位日期（年两位 + 月两位 + 日两位）。
+- **`{主题slug}`**：ASCII `kebab-case` 短标识。
+
+与下游 `ANALYSIS-*`、`REQUIREMENT-*` 等同链一致。本技能与其它文档中凡写 **`{IDEA-ID}`**，均指该段（不含类型前缀）。示例文件名：`SOLUTION-{IDEA-ID}.md`。
+
 ## 解决方案文档
 
-本阶段唯一固定产出：`system/solutions/SOLUTION-{YYMMDD}-{IDEA}.md`。九章结构见 [../assets/solution-template.md](../assets/solution-template.md)；用于**共识级**范围、目标、影响、冲突化解与 MVP 建议，**不**替代 PRD、ADD 或测试设计。
+本阶段唯一固定产出：`system/solutions/SOLUTION-{IDEA-ID}.md`（**IDEA-ID** 见上节）。九章结构见 [../assets/solution-template.md](../assets/solution-template.md)；用于**共识级**范围、目标、影响、冲突化解与 MVP 建议，**不**替代 PRD、ADD 或测试设计。
 
 ## 诉求结构化
 

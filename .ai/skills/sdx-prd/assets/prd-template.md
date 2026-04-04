@@ -6,9 +6,9 @@
 
 <!-- 本MVP的核心交付目标 -->
 
-- 关联解决方案：`system/solutions/SOLUTION-{ID}.md`
-- 关联需求分析：`system/analysis/ANALYSIS-{ID}.md`
-- MVP阶段：MVP-{N}
+- 关联解决方案：`system/solutions/SOLUTION-{YYMMDD}-{主题slug}.md`（或与解决方案约定一致的 ID）
+- 关联需求分析：`system/analysis/ANALYSIS-{YYMMDD}-{主题slug}.md`
+- MVP阶段：MVP-Phase-{N}
 
 ### 1.2 需求范围
 
@@ -261,7 +261,7 @@ graph TD
 ## 文档元数据
 
 ```yaml
-id: "PRD-{ID}-{N}"
+id: "PRD-{YYMMDD}-{主题slug}"
 title: "{产品需求标题}"
 version: "1.0.0"
 status: "draft"
@@ -269,5 +269,6 @@ created: "{YYYY-MM-DD}"
 updated: "{YYYY-MM-DD}"
 author: "product-designer"
 reviewers: []
-parent: "ANALYSIS-{对应需求分析编号}"
+parent: "ANALYSIS-{YYMMDD}-{主题slug}"
+mvp_phase: "MVP-Phase-{N}"
 ```

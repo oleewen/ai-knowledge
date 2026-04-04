@@ -2,6 +2,12 @@
 
 技术方案设计阶段的术语与产出口径，供步骤 1–4 对齐。算法、`--depth` 差异与角色分工见 [workflow-spec.md](workflow-spec.md)。
 
+## IDEA-ID
+
+**IDEA-ID** 的定义见 [../sdx-solution/reference/core-concepts.md#idea-id](../sdx-solution/reference/core-concepts.md#idea-id)。
+
+本阶段路径示例：`system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ADD-{IDEA-ID}.md`；规约摘录 `.../specs/spec-{IDEA-ID}-{service-name}.md`（`{service-name}` 为 ASCII slug，与 **IDEA-ID** 拼接为完整需求键）。
+
 ## 架构设计
 
 系统与服务架构、调用关系、接口协议概要、领域模型（聚合/实体/值对象/领域事件）、数据架构（ER、分片、迁移）、发布与回滚方案；关键决策以 DD-n 记录，须可关联 PRD 的 US-n / FR-n。

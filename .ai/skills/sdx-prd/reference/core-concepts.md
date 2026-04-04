@@ -2,6 +2,12 @@
 
 与五步工作流中的术语一致；算法与产出落位见 [workflow-spec.md](workflow-spec.md)。
 
+## IDEA-ID
+
+**IDEA-ID** 的定义见 [../sdx-solution/reference/core-concepts.md#idea-id](../sdx-solution/reference/core-concepts.md#idea-id)。
+
+本阶段路径示例：`system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}.md`；上游 `system/analysis/ANALYSIS-{IDEA-ID}.md`。目录名、文件名须共用同一 **IDEA-ID**，不得仅日期而无 slug。
+
 | 概念 | 口径 |
 |------|------|
 | **业务流程设计** | 主流程与分支/异常流程；参与角色、输入输出、业务规则；跨系统交互（可 Mermaid） |

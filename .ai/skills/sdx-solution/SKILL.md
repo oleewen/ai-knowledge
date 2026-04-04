@@ -3,7 +3,7 @@ name: sdx-solution
 description: >
   解决方案制定：从业务描述提取结构化诉求，评估影响面，识别并化解冲突，形成共识级解决方案文档。
   在用户执行 /sdx-solution、编写解决方案文档、或进行需求→方案分析时使用。
-  输出至 system/solutions/SOLUTION-{YYMMDD}-{IDEA}.md；九章模板见 assets/solution-template.md；
+  输出至 system/solutions/SOLUTION-{IDEA-ID}.md（**IDEA-ID** 见 reference/core-concepts.md）；九章模板见 assets/solution-template.md；
   工作流与门禁见 reference/；常见陷阱见 gotchas.md。
 ---
 
@@ -21,7 +21,7 @@ description: >
 | **gotchas** | [gotchas.md](gotchas.md) | 高频陷阱与正确做法 |
 | **assets** | [assets/solution-template.md](assets/solution-template.md) | 交付物骨架（九章），写作时打开 |
 | **reference** | [reference/workflow-spec.md](reference/workflow-spec.md) | 算法、Q-n 协议、`--depth` / `--skip-conflict`、步间数据流 |
-| | [reference/core-concepts.md](reference/core-concepts.md) | 术语、编号、与下游分工 |
+| | [reference/core-concepts.md](reference/core-concepts.md) | **IDEA-ID** 定义、术语、编号、与下游分工 |
 | | [reference/audience-and-language.md](reference/audience-and-language.md) | 受众与业务语言、转写规则 |
 | | [reference/design-principles.md](reference/design-principles.md) | 完整原则、反模式、错误处理 |
 | | [reference/quality-checklist.md](reference/quality-checklist.md) | 步骤 5 验收勾选 |
@@ -29,21 +29,24 @@ description: >
 
 ## 输入与输出
 
-**输入**：业务需求描述（邮件、会议纪要、工单等原始来源）；内部对齐可按需查阅 `knowledge/`、`requirements/.../specs/`（**勿将技术细节原样写入正文**）  
-**输出**：`system/solutions/SOLUTION-{YYMMDD}-{IDEA}.md`
+**输入**：业务需求描述（邮件、会议纪要、工单等原始来源）；内部对齐可按需查阅 `knowledge/`、`requirements/.../specs/`（**勿将技术细节原样写入正文**）
+
+**输出**：
+- **IDEA-ID**：需求链统一标识，完整定义见 [reference/core-concepts.md#idea-id](reference/core-concepts.md#idea-id)。
+- 落盘：`system/solutions/SOLUTION-{IDEA-ID}.md`（类型前缀 **`SOLUTION`** + **IDEA-ID**）。
 
 | 类型 | 内容 |
 |------|------|
 | 硬输入 | 业务需求描述（至少一种原始来源） |
 | 可选输入 | `knowledge/`、`requirements/.../specs/`、`knowledge/technical/`、AGENTS.md |
-| 固定输出 | `system/solutions/SOLUTION-{YYMMDD}-{IDEA}.md` |
+| 固定输出 | `system/solutions/SOLUTION-{IDEA-ID}.md` |
 | 不产出 | PRD、ADD、测试设计、代码（使用下游 sdx-analysis / sdx-prd / sdx-design） |
 
 ## 参数
 
 | 参数 | 必需 | 默认值 | 说明 |
 |------|------|--------|------|
-| `--id` | 否 | `YYMMDD-IDEA` | 解决方案文档编号（`IDEA` 取原始需求摘要要领，长度不超过 10 个字） |
+| `--id` | 否 | `IDEA-ID` | 与 `SOLUTION-{IDEA-ID}.md` 中段一致；定义见 [reference/core-concepts.md#idea-id](reference/core-concepts.md#idea-id) |
 | `--doc-root` | 否 | `system` | 文档根目录；校验脚本在 `${DOC_ROOT}/solutions` 下查找；旧布局可用 `docs` |
 | `--depth` | 否 | `standard` | 分析深度（quick / standard / deep），影响步骤 2–3 粒度 |
 | `--skip-conflict` | 否 | `false` | 跳过冲突分析（仅当需求与现有规则/协作基本无交叉时） |

@@ -24,7 +24,7 @@ graph TD
 
 ### 算法
 
-1. **定位需求分析文档**：按 `--requirement` 传入的分析文档 ID 定位 `system/analysis/ANALYSIS-{ID}.md`；未指定时取 `system/analysis/` 下按文件名排序最新的 `ANALYSIS-*.md`（**勿**与需求包目录 `system/requirements/REQUIREMENT-{ID}/` 混淆）
+1. **定位需求分析文档**：按 `--requirement` 传入的分析文档 ID 定位 `system/analysis/ANALYSIS-{YYMMDD}-{主题slug}.md`；未指定时取 `system/analysis/` 下按文件名排序最新的 `ANALYSIS-*.md`（**勿**与需求包目录 `system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/` 混淆）
 2. **提取 MVP 范围**：从文档 §6 MVP 拆分方案中提取目标 MVP（`--mvp` 参数指定）的功能需求列表
 3. **加载基线数据**：
    - 功能需求清单（FR-n）及其优先级、验收标准
@@ -276,26 +276,26 @@ technical-writer + doc-updater
 ### 算法
 
 1. **整合**：将步骤 1–4 产出按模板十章结构编排
-2. **填充 frontmatter**：
-   - `id`: 按 `PRD-{ID}-{N}` 格式（{ID} 为需求分析编号中的 ID 部分，{N} 为 MVP 序号）
+2. **填充文末元数据**（模板「## 文档元数据」YAML，**禁止**文件头 frontmatter）：
+   - `id`: `PRD-{YYMMDD}-{主题slug}`，与 `ANALYSIS-{YYMMDD}-{主题slug}.md` 及目录 `REQUIREMENT-{YYMMDD}-{主题slug}/` 共用 `{YYMMDD}-{主题slug}` 段
    - `status`: `draft`
    - `created` / `updated`: 当前日期
-   - `parent`: 关联的需求分析编号
-   - `mvp_phase`: `MVP-{N}`
+   - `parent`: 关联的需求分析编号（如 `ANALYSIS-{YYMMDD}-{主题slug}`）
+   - `mvp_phase`: `MVP-Phase-{N}`
 3. **补充附录**（§10）：
    - 原型/线框图链接（§10.1）
    - 变更历史（§10.2）
    - 质量自查表（§10.3）
 4. **质量门禁自查**：逐项检查 [quality-checklist.md](quality-checklist.md)
-5. **输出**：写入 `system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`
+5. **输出**：写入 `system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/PRD-{YYMMDD}-{主题slug}.md`
 
 ### 输出目录
 
 ```
 system/requirements/
-└── REQUIREMENT-{ID}/
-    └── MVP-{N}/
-        └── PRD-{ID}-{N}.md
+└── REQUIREMENT-{YYMMDD}-{主题slug}/
+    └── MVP-Phase-{N}/
+        └── PRD-{YYMMDD}-{主题slug}.md
 ```
 
 目录不存在时自动创建。

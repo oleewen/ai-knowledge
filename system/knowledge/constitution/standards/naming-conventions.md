@@ -69,9 +69,10 @@
 - **中央库 · 产品视角**（`system/knowledge/product/`）：`product_meta.yaml`（含 `layers`：PL/PM/FT/UC）；`{PL-ID}/{PM-ID}/` 作层级锚点。
 - **中央库 · 技术视角**（`system/knowledge/technical/`）：`technical_meta.yaml`（含 `layers`：SYS/APP/MS/API）；`{SYS-ID}/` 为系统锚点，其下为应用注册 YAML。
 - **中央库 · 数据视角**（`system/knowledge/data/`）：`data_meta.yaml`（含 `layers`：DS/ENT）；`{DS-ID}/` 作存储锚点。
-- **中央库 · requirements 阶段**（`system/requirements/`）：`requirements_meta.yaml`（含 `layers`：REQ / MVP_PHASE）；`REQUIREMENT-{ID}/` 为交付包锚点，不在包内并列根级 `*_meta.yaml` 拷贝。
-- **中央库 · solutions 阶段**（`system/solutions/`）：`solutions_meta.yaml`（含 `layers`：SOLUTION）；根目录平铺 `SOLUTION-{ID}.md`。
-- **中央库 · analysis 阶段**（`system/analysis/`）：`analysis_meta.yaml`（含 `layers`：ANALYSIS）；根目录平铺 `ANALYSIS-{ID}.md`。
+- **IDEA-ID（需求链统一标识）**：统一命名格式 `*-{YYMMDD}-{主题slug}` 中的 `{YYMMDD}-{主题slug}` 段；各阶段类型前缀为 `SOLUTION` / `ANALYSIS` / `REQUIREMENT`（目录）/ `PRD` / `ADD` / `TDD` 等。
+- **中央库 · requirements 阶段**（`system/requirements/`）：`requirements_meta.yaml`（含 `layers`：REQ / MVP_PHASE）；`REQUIREMENT-{IDEA-ID}/` 为交付包锚点（与 `ANALYSIS-{IDEA-ID}.md` 共用同一 **IDEA-ID**），不在包内并列根级 `*_meta.yaml` 拷贝。
+- **中央库 · solutions 阶段**（`system/solutions/`）：`solutions_meta.yaml`（含 `layers`：SOLUTION）；根目录平铺 `SOLUTION-{IDEA-ID}.md`。
+- **中央库 · analysis 阶段**（`system/analysis/`）：`analysis_meta.yaml`（含 `layers`：ANALYSIS）；根目录平铺 `ANALYSIS-{IDEA-ID}.md`。
 - **中央库 · changelogs**（`system/changelogs/`）：`changelogs_meta.yaml`（含 `layers`：CHANGELOG / INDEX_OPS）；`CHANGELOG.md` 与可选 Skill 索引文件同目录。
 - **宪法层 ADR 标准**：`constitution/adr/adr_meta.yaml` 与 [../adr/adr-template.md](../adr/adr-template.md) 配套，描述模板结构、状态值与 `adr/ADR-{序号}-{短标题}.md` 落盘约定。
 
