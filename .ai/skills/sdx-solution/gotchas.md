@@ -116,10 +116,10 @@
 **后果**：下游 `sdx-analysis` 按固定章节引用解决方案文档，章节缺失或错位导致引用失效。  
 **正确做法**：章节结构与 `solution-template.md` 九章结构完全一致；无内容的章节保留标题并标注「不适用」或「待补充」。
 
-### 6.3 frontmatter 字段缺失或格式错误
-**陷阱**：输出文档缺少 `status` 或 `id` 字段，或 `id` 格式不符合 `SOLUTION-{YYMMDD}-{IDEA}` 规范。  
+### 6.3 文档元数据位置错误或字段缺失
+**陷阱**：在文件开头使用 `---` YAML frontmatter，或文末「## 文档元数据」内缺少 `status`、`id` 等字段，或 `id` 不符合 `SOLUTION-{IDEA-ID}`。  
 **后果**：文档管理混乱，下游 `sdx-analysis` 的 `parent` 字段无法正确引用，追溯链断裂。  
-**正确做法**：frontmatter 必须包含 `id`、`title`、`version`、`status`、`created`、`updated` 六个字段，初始 `status` 为 `draft`。
+**正确做法**：**勿**在文件开头写 YAML frontmatter；仅在文末「## 文档元数据」标题下的 fenced `yaml` 中填写 `id`、`title`、`version`、`status`、`created`、`updated` 等字段（与 [assets/solution-template.md](assets/solution-template.md) 一致），初始 `status` 为 `draft`。
 
 ### 6.4 在解决方案文档中写入 PRD 或 ADD 级内容
 **陷阱**：在方案制定章节中写出用户故事（As a... I want...）或技术实现细节。  

@@ -8,8 +8,8 @@ set -euo pipefail
 # 校验项:
 #   1. 模板文件存在
 #   2. 文档目录存在
-#   3. frontmatter 完整性（id、title、version、status、created、updated）
-#   4. id 格式符合 SOLUTION-{YYMMDD}-{IDEA}
+#   3. 文末「文档元数据」YAML 完整性（id、title、version、status、created、updated）；禁止文件头 ---
+#   4. id 格式符合 SOLUTION-{IDEA-ID}
 #   5. 九章结构完整性
 #   6. 空章节检测（无内容且未标注「不适用」或「待补充」）
 #   7. 编号体系一致性（G-n、Q-n、C-n、R-n）
@@ -90,37 +90,38 @@ for file in "${FILES[@]}"; do
   BASENAME=$(basename "${file}")
   echo "--- 校验: ${BASENAME} ---"
 
-  # 2. frontmatter 检查
+  # 2. 文档元数据（文末 YAML，非文件头 frontmatter）
   if head -5 "${file}" | grep -q "^---"; then
-    success "${BASENAME}: frontmatter 存在"
+    warn "${BASENAME}: 文件开头存在 ---（应移除）；元数据须仅在文末「## 文档元数据」的 yaml 代码块中"
+  fi
 
+  if grep -qF "## 文档元数据" "${file}"; then
+    success "${BASENAME}: 「文档元数据」章节存在"
     for field in "id:" "title:" "version:" "status:" "created:" "updated:"; do
-      if grep -q "^${field}" "${file}"; then
+      if grep -q "${field}" "${file}"; then
         success "${BASENAME}: ${field} 字段存在"
       else
         warn "${BASENAME}: 缺少 ${field} 字段"
       fi
     done
 
-    # id 格式校验：SOLUTION-{YYMMDD}-{IDEA}
-    ID_LINE=$(grep "^id:" "${file}" 2>/dev/null || true)
+    ID_LINE=$(grep "id:" "${file}" 2>/dev/null | head -1 || true)
     if [[ -n "${ID_LINE}" ]]; then
-      if echo "${ID_LINE}" | grep -qE 'SOLUTION-[0-9]{8}-[0-9]+'; then
-        success "${BASENAME}: id 格式符合 SOLUTION-{YYMMDD}-{IDEA}"
+      if echo "${ID_LINE}" | grep -qE 'SOLUTION-[0-9]{6}-'; then
+        success "${BASENAME}: id 含 SOLUTION- 前缀与日期段"
       else
-        warn "${BASENAME}: id 格式不符合 SOLUTION-{YYMMDD}-{IDEA}，实际: ${ID_LINE}"
+        warn "${BASENAME}: id 建议符合 SOLUTION-{IDEA-ID}，实际: ${ID_LINE}"
       fi
     fi
 
-    # status 初始值检查
-    STATUS_LINE=$(grep "^status:" "${file}" 2>/dev/null || true)
+    STATUS_LINE=$(grep "status:" "${file}" 2>/dev/null | head -1 || true)
     if echo "${STATUS_LINE}" | grep -q "draft\|review\|approved"; then
       success "${BASENAME}: status 值有效"
     else
       warn "${BASENAME}: status 值异常: ${STATUS_LINE}"
     fi
   else
-    warn "${BASENAME}: 缺少 frontmatter"
+    warn "${BASENAME}: 缺少「## 文档元数据」章节（须在文末放置 YAML 元数据）"
   fi
 
   # 3. 九章结构检查

@@ -259,11 +259,11 @@ D. 其他（请说明）
 ### 算法
 
 1. **整合**：将步骤 1–4 产出按模板九章结构编排
-2. **填充 frontmatter**：
+2. **填充文末文档元数据**（模板「## 文档元数据」内 fenced `yaml` 代码块；**禁止**在文件开头写 `---` YAML frontmatter）：
 
 | 字段 | 规则 |
 |------|------|
-| `id` | 格式 `SOLUTION-{YYMMDD}-{IDEA}`，如 `SOLUTION-260327-申诉处理提效` |
+| `id` | 格式 `SOLUTION-{IDEA-ID}`，与文件名一致 |
 | `title` | 解决方案标题 |
 | `version` | 初始为 `1.0.0` |
 | `status` | 初始为 `draft` |
@@ -273,13 +273,13 @@ D. 其他（请说明）
 3. **语言审查**：通读全文，将技术术语转写为业务表述（参照 [audience-and-language.md](audience-and-language.md)）
 4. **补充附录**：术语表（§9.1）、参考文档（§9.2）
 5. **质量门禁自查**：逐项检查 [quality-checklist.md](quality-checklist.md)
-6. **输出**：写入 `system/solutions/SOLUTION-{ID}.md`
+6. **输出**：写入 `system/solutions/SOLUTION-{IDEA-ID}.md`
 
 ### 输出目录
 
 ```
 system/solutions/
-└── SOLUTION-{YYMMDD}-{IDEA}.md
+└── SOLUTION-{IDEA-ID}.md
 ```
 
 目录不存在时自动创建。

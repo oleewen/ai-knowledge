@@ -155,8 +155,11 @@
 <!-- 可选：记录分析过程中引用的技术事实，标注「待研发确认」 -->
 
 ## 文档元数据
+
+<!-- 唯一元数据位置：须为 fenced yaml，且位于全文末尾；禁止在文件开头使用 --- YAML frontmatter -->
+
 ```yaml
-id: "SOLUTION-{YYMMDD}-{IDEA}"
+id: "SOLUTION-{IDEA-ID}"
 title: "{解决方案标题}"
 version: "1.0.0"
 status: "draft"

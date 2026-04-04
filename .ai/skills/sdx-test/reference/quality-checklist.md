@@ -44,7 +44,7 @@
 
 ## 格式规范
 
-- [ ] frontmatter 完整（id、title、version、status、created、updated、parent、mvp_phase）
+- [ ] 文末「## 文档元数据」内 fenced YAML 完整（id、title、version、status、created、updated、parent、mvp_phase）；**文件开头无** `---` YAML frontmatter
 - [ ] 章节结构与 tdd-template.md 一致，编号连续
 - [ ] 表格格式规范，列宽合理
 - [ ] 变更历史（§6.1）记录初始版本

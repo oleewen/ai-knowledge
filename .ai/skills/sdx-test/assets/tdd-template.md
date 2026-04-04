@@ -3,8 +3,8 @@
 ## 1. 概述
 
 ### 1.1 测试目标
-- 关联技术设计：`system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/ADD-{YYMMDD}-{主题slug}.md`（或目标工程 `system/requirements/...`；落盘后改为可点击链接）
-- 关联产品需求：`system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/PRD-{YYMMDD}-{主题slug}.md`（同上）
+- 关联技术设计：`system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ADD-{IDEA-ID}-{N}.md`（或目标工程 `system/requirements/...`；落盘后改为可点击链接）
+- 关联产品需求：`system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`（同上）
 
 ### 1.2 测试范围
 
@@ -103,8 +103,11 @@
 | 1.0.0 | | 初始版本 | quality_guardian |
 
 ## 文档元数据
+
+<!-- 唯一元数据位置：须为 fenced yaml，且位于全文末尾；禁止在文件开头使用 --- YAML frontmatter -->
+
 ```yaml
-id: "TDD-{YYMMDD}-{主题slug}"
+id: "TDD-{IDEA-ID}"
 title: "{测试设计标题}"
 version: "1.0.0"
 status: "draft"
@@ -112,7 +115,7 @@ created: "{YYYY-MM-DD}"
 updated: "{YYYY-MM-DD}"
 author: "quality-engineer"
 reviewers: []
-parent: "PRD-{YYMMDD}-{主题slug}"
+parent: "PRD-{IDEA-ID}"
 mvp_phase: "MVP-Phase-{N}"
 tags: []
 ```

@@ -46,7 +46,7 @@
 
 ## 格式规范
 
-- [ ] frontmatter 完整（id、title、version、status、created、updated、parent、mvp_phase）
+- [ ] 文末「## 文档元数据」内 fenced YAML 完整（id、title、version、status、created、updated、parent、mvp_phase）；**文件开头无** `---` YAML frontmatter
 - [ ] 章节结构与 prd-template.md 一致，编号连续
 - [ ] Mermaid 图表语法正确，可正常渲染
 - [ ] 表格格式规范，列宽合理

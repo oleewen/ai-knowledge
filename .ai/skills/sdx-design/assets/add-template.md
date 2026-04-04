@@ -4,8 +4,8 @@
 
 ### 1.1 设计目标
 
-- 关联需求分析：`system/analysis/ANALYSIS-{YYMMDD}-{主题slug}.md`
-- 关联产品需求：`system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/PRD-{YYMMDD}-{主题slug}.md`
+- 关联需求分析：`system/analysis/ANALYSIS-{IDEA-ID}.md`
+- 关联产品需求：`system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`
 - MVP阶段：MVP-Phase-{N}
 
 ### 1.2 设计约束
@@ -431,8 +431,10 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 
 ## 文档元数据
 
+<!-- 唯一元数据位置：须为 fenced yaml，且位于全文末尾；禁止在文件开头使用 --- YAML frontmatter -->
+
 ```yaml
-id: "ADD-{YYMMDD}-{主题slug}"
+id: "ADD-{IDEA-ID}"
 title: "{技术设计标题}"
 version: "1.0.0"
 status: "draft"
@@ -440,7 +442,7 @@ created: "{YYYY-MM-DD}"
 updated: "{YYYY-MM-DD}"
 author: "architect"
 reviewers: []
-parent: "PRD-{YYMMDD}-{主题slug}"
+parent: "PRD-{IDEA-ID}"
 mvp_phase: "MVP-Phase-{N}"
 tags: []
 ```

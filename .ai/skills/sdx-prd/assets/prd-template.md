@@ -6,8 +6,8 @@
 
 <!-- 本MVP的核心交付目标 -->
 
-- 关联解决方案：`system/solutions/SOLUTION-{YYMMDD}-{主题slug}.md`（或与解决方案约定一致的 ID）
-- 关联需求分析：`system/analysis/ANALYSIS-{YYMMDD}-{主题slug}.md`
+- 关联解决方案：`system/solutions/SOLUTION-{IDEA-ID}.md`
+- 关联需求分析：`system/analysis/ANALYSIS-{IDEA-ID}.md`
 - MVP阶段：MVP-Phase-{N}
 
 ### 1.2 需求范围
@@ -260,8 +260,10 @@ graph TD
 
 ## 文档元数据
 
+<!-- 唯一元数据位置：须为 fenced yaml，且位于全文末尾；禁止在文件开头使用 --- YAML frontmatter -->
+
 ```yaml
-id: "PRD-{YYMMDD}-{主题slug}"
+id: "PRD-{IDEA-ID}"
 title: "{产品需求标题}"
 version: "1.0.0"
 status: "draft"
@@ -269,6 +271,6 @@ created: "{YYYY-MM-DD}"
 updated: "{YYYY-MM-DD}"
 author: "product-designer"
 reviewers: []
-parent: "ANALYSIS-{YYMMDD}-{主题slug}"
+parent: "ANALYSIS-{IDEA-ID}"
 mvp_phase: "MVP-Phase-{N}"
 ```

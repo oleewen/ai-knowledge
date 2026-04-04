@@ -171,10 +171,10 @@ MVP-1 ──▶ MVP-2 ──▶ MVP-3
 
 ## 文档元数据
 
-<!-- 唯一元数据位置：须为 fenced yaml，且位于全文末尾 -->
+<!-- 唯一元数据位置：须为 fenced yaml，且位于全文末尾；禁止在文件开头使用 --- YAML frontmatter -->
 
 ```yaml
-id: "ANALYSIS-{ID}"
+id: "ANALYSIS-{IDEA-ID}"
 title: "{需求标题}"
 version: "1.0.0"
 status: "draft"
@@ -182,6 +182,6 @@ created: "{YYYY-MM-DD}"
 updated: "{YYYY-MM-DD}"
 author: "requirement_analyst"
 reviewers: []
-parent: "SOL-{对应解决方案编号}"
+parent: "SOLUTION-{IDEA-ID}"
 tags: []
 ```

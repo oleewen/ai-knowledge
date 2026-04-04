@@ -107,10 +107,10 @@
 **后果**：下游 `sdx-test` 按固定章节引用 ADD，章节缺失或错位导致引用失效。  
 **正确做法**：章节结构与 `add-template.md` 完全一致；无内容的章节保留标题并标注「不适用」或「待补充」。
 
-### 5.2 frontmatter 缺少 `mvp_phase` 字段
-**陷阱**：frontmatter 只填写通用字段，遗漏 `mvp_phase`。  
+### 5.2 文末元数据缺少 `mvp_phase` 或误用文件头 frontmatter
+**陷阱**：在文件开头使用 `---` YAML，或文末「## 文档元数据」内只填通用字段、遗漏 `mvp_phase`。  
 **后果**：无法从文档元数据判断本 ADD 对应哪个 MVP 阶段，多 MVP 场景下管理混乱。  
-**正确做法**：frontmatter 必须包含 `id`、`title`、`version`、`status`、`created`、`updated`、`parent`、`mvp_phase` 八个字段。
+**正确做法**：**勿**在文件开头写 YAML frontmatter；仅在文末「## 文档元数据」fenced `yaml` 中填写 `id`、`title`、`version`、`status`、`created`、`updated`、`parent`、`mvp_phase` 等字段（与 [assets/add-template.md](assets/add-template.md) 一致）。
 
 ### 5.3 在 ADD 中编写测试用例或实现代码
 **陷阱**：在业务逻辑设计（§3.3）中写出完整 Java 实现代码，或在 §3.2 中写出测试用例。  
@@ -146,7 +146,7 @@
 - [ ] 每个规约文件头部含 `source` 和 `requirement` 追溯标注
 - [ ] 规约内容与 ADD 对应章节一致
 - [ ] 章节结构与 `add-template.md` 完全一致，无删除章节
-- [ ] frontmatter 八个字段完整，含 `mvp_phase`
+- [ ] 文末「## 文档元数据」YAML 八个字段完整，含 `mvp_phase`；文件开头无 `---` YAML
 - [ ] ADD 中无可执行代码或测试用例
 - [ ] 所有 Mermaid 图表语法正确可渲染
 - [ ] 质量门禁清单已逐项勾选
