@@ -12,7 +12,7 @@ set -euo pipefail
 #   5. 模板 add-template.md 存在
 #   6. specs 目录结构校验
 
-DOC_ROOT="docs"
+DOC_ROOT="system"
 TARGET_FILE=""
 ERRORS=0
 WARNINGS=0
