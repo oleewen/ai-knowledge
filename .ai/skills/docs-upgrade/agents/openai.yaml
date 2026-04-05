@@ -1,4 +1,5 @@
 interface:
   display_name: "文档升级"
-  short_description: "新增仅改指定文件；修改时可链式同步双向引用同类表述"
-  default_prompt: "/docs-upgrade 请更新 docs/solutions/example.md，并把术语 X 改为 Y；同步引用处。"
+  short_description: >
+    定向增改文档与代码注释；默认沿引用链并辅以关键词检索（同义/近义/中英文）对齐同类表述；支持 a - b / a > b / a 2 b；显式路径或引用片段时自动执行；不确定项列选项由用户决策。
+  default_prompt: "/docs-upgrade 请更新 docs/example.md 与相关注释，将术语 X 统一为 Y，并同步引用该路径的文件及全库同类表述。"

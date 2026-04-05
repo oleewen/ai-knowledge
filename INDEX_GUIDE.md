@@ -181,7 +181,7 @@
 
 | 文件路径                                      | 功能精要                                                                | 检索标签               | 上游依赖                | 下游被依赖     | 重要度 |
 | ----------------------------------------- | ------------------------------------------------------------------- | ------------------ | ------------------- | --------- | --- |
-| `./.cursor/skills/skill-creator/SKILL.md` | 技能创建指南（YAML 元数据、渐进披露、`scripts/` 初始化与校验、`references/openai_yaml.md`） | `Cursor` `Agent技能` | OpenAI/Codex 技能目录惯例 | 本仓库本地扩展技能 | ⭐⭐  |
+| `./.cursor/skills/skill-creator/SKILL.md` | Anthropic 官方 Skill-Creator（创建/评测/迭代；`scripts/`、`eval-viewer/`、`references/schemas.md`） | `Cursor` `Agent技能` | [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) `plugins/skill-creator` | 本仓库本地扩展技能 | ⭐⭐  |
 
 
 ## 4. 核心数据流（Mode 3）
@@ -243,7 +243,7 @@
   - `./.ai/rules/`**（仅精读了 `./.ai/rules/CONVENTIONS.md`；其余规则模板未逐一精读）
   - `./.ai/skills/`**（已精读 `docs-indexing`/`docs-change`；并抽读 `agent-guide`、`knowledge-upgrade` 的入口与阶段划分；其余技能未逐一精读）
 - **Cursor 工作区技能**
-  - `./.cursor/skills/skill-creator/`**（本次精读 `SKILL.md`、`references/openai_yaml.md`；`scripts/*.py` 未逐行精读；`scripts/__pycache__`、二进制图片等不纳入语义断言）
+  - `./.cursor/skills/skill-creator/`**（本次精读 `SKILL.md`、`references/schemas.md`；`eval-viewer/`、`scripts/*.py` 未逐行精读；缓存与二进制资源不纳入语义断言）
 
 ## 7. AI 查阅指北（检索表 + Prompt 模板）
 
