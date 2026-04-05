@@ -17,6 +17,7 @@
 | `/docs-upgrade` | 定向增改文档与代码注释；默认沿引用链并辅以关键词检索（同义/近义/中英文）对齐同类表述；显式路径或引用片段时自动执行；支持 `a - b` / `a > b` / `a 2 b`；不确定项列选项由用户决策。 |
 | `/agent-guide` | 生成/更新根目录 `AGENTS.md` 与 `README.md`，对齐仓库导航与约束。 |
 | `/docs-archive` | 将应用侧有效知识回收至系统知识库，保持联邦治理与 SSOT。 |
+| `/docs-fetch` | 从已注册的应用知识库（central 模式）拉取最新文档内容，更新 `applications/app-{APPNAME}/` 联邦镜像，并记录同步 changelog。 |
 | `/docs-build` | 按知识工程流程构建/补全知识资产与关联结构。 |
 | `/sdx-solution` | 产出解决方案阶段文档（Solution 阶段）。 |
 | `/sdx-analysis` | 产出需求分析阶段文档（Analysis 阶段）。 |
