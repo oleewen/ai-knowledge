@@ -12,6 +12,12 @@
 
 ---
 
+## 项目概述（精要）
+
+全局知识底座仓库：Markdown/YAML 知识库与 Bash 初始化脚本；无业务应用运行时。四视角与阶段文档见 [system/](system/)；人类入口与可复制命令见 [README.md](README.md)。
+
+---
+
 ## 核心契约
 
 ### 行为准则
@@ -41,12 +47,6 @@
 - 禁止无约定变更即删改 [.ai/rules/](.ai/rules/)、[.ai/skills/](.ai/skills/) 中模板与技能核心结构。
 - 禁止未评估影响面即改 [system/SYSTEM_INDEX.md](system/SYSTEM_INDEX.md)、[system/README.md](system/README.md) 导航表导致断链或错位。
 - **不在本文粘贴** [INDEX_GUIDE.md](INDEX_GUIDE.md) 第 3 节级 API/字典全表；需要时直接打开该文件。
-
----
-
-## 项目概述（精要）
-
-全局知识底座仓库：Markdown/YAML 知识库与 Bash 初始化脚本；无业务应用运行时。四视角与阶段文档见 [system/](system/)；人类入口与可复制命令见 [README.md](README.md)。
 
 ---
 
