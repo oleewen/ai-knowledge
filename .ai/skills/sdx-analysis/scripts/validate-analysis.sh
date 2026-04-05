@@ -11,7 +11,7 @@ set -euo pipefail
 #   4. 编号体系一致性（FR-n、BR-n、R-n、MVP-n）
 #   5. 模板 analysis-template.md 存在
 
-DOC_ROOT="docs"
+DOC_ROOT="system"
 TARGET_FILE=""
 ERRORS=0
 WARNINGS=0
