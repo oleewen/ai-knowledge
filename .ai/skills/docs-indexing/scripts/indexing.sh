@@ -7,8 +7,8 @@ set -euo pipefail
 
 # 配置变量
 DEFAULT_OUTPUT="./system/INDEX_GUIDE.md"
-LOG_FILE="./system/changelogs/indexing-log.jsonl"
-CHANGES_INDEX="./system/changelogs/changes-index.json"
+LOG_FILE="./changelogs/indexing-log.jsonl"
+CHANGES_INDEX="./changelogs/changes-index.json"
 
 now_ms() {
     python3 - <<'PY'
@@ -110,8 +110,8 @@ if [[ "$DATA_MODE" == "incremental" ]]; then
     if [[ -n "$SINCE" ]]; then
         BASE_INDEXING_TIME_MS="$SINCE"
     elif [[ -f "$LOG_FILE" ]]; then
-        BASE_INDEXING_TIME_MS=$(jq -r 'select(.indexing_finished_at != null) | .indexing_finished_at' "$LOG_FILE" 2>/dev/null | tail -n 1)
-        BASE_INDEXING_TIME_MS=${BASE_INDEXING_TIME_MS:-0}
+        # jsonl 每行是独立 JSON，取最后一行的 indexing_finished_at
+        BASE_INDEXING_TIME_MS=$(tail -n 1 "$LOG_FILE" 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('indexing_finished_at',0))" 2>/dev/null || echo "0")
     fi
 
     if [[ "$BASE_INDEXING_TIME_MS" == "0" ]] || [[ -z "$BASE_INDEXING_TIME_MS" ]]; then
@@ -254,6 +254,7 @@ EOF
 
 # 确保日志目录存在
 mkdir -p "$(dirname "$LOG_FILE")"
+mkdir -p "$(dirname "$CHANGES_INDEX")"
 
 # 写入日志
 FINISHED_TIME_MS=$(now_ms)
