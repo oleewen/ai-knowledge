@@ -530,6 +530,15 @@ _ensure_app_mirror() {
   info "    镜像初始化完成"
 }
 
+# Central 前置：目标文档目录下须已有 knowledge/（模板中的知识库树）
+# dry-run 且本次会执行 install_system_to_docs 时，视为执行后将存在 knowledge/，允许中央预览
+_central_knowledge_ready() {
+  local k="${CFG[docs_abs]}/knowledge"
+  [[ -d "$k" ]] && return 0
+  [[ "${CFG[dry_run]}" == "1" && ( "${CFG[scope]}" == "all" || "${CFG[scope]}" == "knowledge" ) ]] && return 0
+  return 1
+}
+
 # 步骤 3（central）：登记 + 建镜像
 install_central() {
   _resolve_central_ids
@@ -578,6 +587,7 @@ usage() {
     standalone（默认）  仅目标工程落盘
     central             同时在本仓库注册应用（更新 system/SYSTEM_INDEX.md）
                         并在 applications/app-<slug>/ 建立镜像
+                        要求：目标文档目录下已存在 knowledge/ 子目录（未满足则跳过登记）
 
 选项
   --mode=MODE           standalone | central（或缩写 s | c）  [默认: standalone]
@@ -585,7 +595,7 @@ usage() {
                         - skills(s) 仅安装 Agent skills
                         - rules(r)  仅安装 Agent rules
                         - rs        同时安装 skills + rules（等同 r + s）
-                        注：central 模式不支持 skills/rules/rs（仅 Agent 安装）范围
+                        注：central 可与任意 scope 组合；仅 skills/rules/rs 时仍会登记本仓库索引与联邦镜像
   --app-id=APP-ID       central 模式下的 APP ID               [默认: 由工程目录名推导]
   --agents=LIST         cursor | trea | claude | all，逗号分隔 [默认: cursor]
   -r                    允许工程根目录不存在时自动创建
@@ -714,9 +724,6 @@ _validate_sync_scope() {
       ;;
   esac
 
-  if [[ "${CFG[mode]}" == "central" && ( "${CFG[scope]}" == "skills" || "${CFG[scope]}" == "rules" || "${CFG[scope]}" == "rs" ) ]]; then
-    error "central 模式需要同步知识库（--scope 不能为 skills/s、rules/r、rs）"
-  fi
 }
 
 _validate_agents() {
@@ -757,7 +764,14 @@ main() {
 
   if [[ "${CFG[scope]}" == "all" || "${CFG[scope]}" == "knowledge" ]]; then
     install_system_to_docs
-    [[ "${CFG[mode]}" == "central" ]] && install_central
+  fi
+
+  if [[ "${CFG[mode]}" == "central" ]]; then
+    if _central_knowledge_ready; then
+      install_central
+    else
+      warn "central 模式已跳过：目标文档目录下须存在 knowledge/ 子目录（${CFG[docs_abs]}/knowledge）"
+    fi
   fi
 
   case "${CFG[scope]}" in

@@ -108,7 +108,7 @@ REPO_ROOT=/path/to/ai-knowledge ./scripts/docs-init.sh /path/to/your-project/doc
 | `--dry-run` | 预览模式，仅打印将要执行的操作 | - |
 | `-h`, `--help` | 显示帮助信息 | - |
 
-注意：`--mode=central` 需要同步知识库，因此不支持 `--scope=skills`（或 `--scope=s`）。
+注意：`--mode=central` 可与任意 `--scope` 组合。**中央登记仅在目标文档目录下已存在 `knowledge/` 时生效**（通常为此前已用 `--scope=all|knowledge` 落地模板）；若仅安装 skills/rules/rs 且尚无 `knowledge/`，将跳过登记并给出警告。`--dry-run` 且本次 scope 为 `all`/`knowledge` 时，仍可按预览输出 central 步骤。
 
 ## 初始化后的目录结构（目标工程）
 
