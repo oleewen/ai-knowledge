@@ -12,7 +12,7 @@ set -euo pipefail
 #   5. 模板 prd-template.md 存在
 #   6. 需求分析关联检查
 
-DOC_ROOT="docs"
+DOC_ROOT="system"
 TARGET_FILE=""
 ERRORS=0
 WARNINGS=0
