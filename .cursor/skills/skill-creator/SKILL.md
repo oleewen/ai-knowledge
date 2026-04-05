@@ -67,6 +67,7 @@ skill-name/
 ├── agents/ (recommended)
 │   └── openai.yaml - UI metadata for skill lists and chips
 └── Bundled Resources (optional)
+    ├── gotchas.md        - Common pitfalls and caveats
     ├── scripts/          - Executable code (Python/Bash/etc.)
     ├── references/       - Documentation intended to be loaded into context as needed
     └── assets/           - Files used in output (templates, icons, fonts, etc.)

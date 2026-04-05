@@ -129,11 +129,23 @@ echo "Generating change index..."
 # 执行扫描（根据深度级别）
 echo "Starting scan with mode: $DATA_MODE, depth: $READ_MODE"
 
+# 枚举仓库内待扫描文件（优先 ripgrep；否则 git ls-files；再否则 find）
+collect_all_files() {
+    ALL_FILES=()
+    if command -v rg >/dev/null 2>&1; then
+        while IFS= read -r line; do ALL_FILES+=("$line"); done < <(rg --files)
+    elif git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        while IFS= read -r line; do ALL_FILES+=("$line"); done < <(git ls-files)
+    else
+        while IFS= read -r line; do ALL_FILES+=("$line"); done < <(find . -type f -not -path './.git/*' 2>/dev/null | sed 's|^\./||')
+    fi
+}
+
 # 扫描函数
 scan_project() {
     local depth=$1
     local mode=$2
-    mapfile -t ALL_FILES < <(rg --files)
+    collect_all_files
     INDEXED_FILES=0
     SCANNED_FILES=()
     case $depth in
