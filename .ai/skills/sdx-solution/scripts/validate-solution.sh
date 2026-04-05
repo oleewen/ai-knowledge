@@ -149,28 +149,36 @@ for file in "${FILES[@]}"; do
 
   # 4. 空章节检测（有章节标题但无实质内容，且未标注「不适用」或「待补充」）
   EMPTY_SECTION_COUNT=0
-  PREV_SECTION=""
-  PREV_LINE_NUM=0
-  LINE_NUM=0
+  TOTAL_LINES=$(wc -l < "${file}" | tr -d ' ')
 
+  # 收集所有 ## 章节的行号，末尾追加一个哨兵行号（文件总行数+1）
+  SECTION_LINES=()
+  SECTION_NAMES=()
+  LINE_NUM=0
   while IFS= read -r line; do
     LINE_NUM=$((LINE_NUM + 1))
     if [[ "${line}" =~ ^##\  ]]; then
-      # 检查上一个章节是否为空
-      if [[ -n "${PREV_SECTION}" ]]; then
-        # 提取上一章节到当前章节之间的内容
-        SECTION_CONTENT=$(sed -n "$((PREV_LINE_NUM + 1)),$((LINE_NUM - 1))p" "${file}" 2>/dev/null || true)
-        # 去除空行和注释行后检查是否有实质内容
-        REAL_CONTENT=$(echo "${SECTION_CONTENT}" | grep -v "^$" | grep -v "^<!--" | grep -v "^-->" || true)
-        if [[ -z "${REAL_CONTENT}" ]]; then
-          warn "${BASENAME}: 章节 '${PREV_SECTION}' 无内容且未标注「不适用」或「待补充」"
-          EMPTY_SECTION_COUNT=$((EMPTY_SECTION_COUNT + 1))
-        fi
-      fi
-      PREV_SECTION="${line}"
-      PREV_LINE_NUM=${LINE_NUM}
+      SECTION_LINES+=("${LINE_NUM}")
+      SECTION_NAMES+=("${line}")
     fi
   done < "${file}"
+
+  # 检查每个章节（包括最后一个）
+  for i in "${!SECTION_LINES[@]}"; do
+    START=${SECTION_LINES[$i]}
+    if [[ $((i + 1)) -lt ${#SECTION_LINES[@]} ]]; then
+      END=$((SECTION_LINES[$((i + 1))] - 1))
+    else
+      END=${TOTAL_LINES}
+    fi
+    SECTION_CONTENT=$(sed -n "$((START + 1)),${END}p" "${file}" 2>/dev/null || true)
+    REAL_CONTENT=$(echo "${SECTION_CONTENT}" | grep -v "^[[:space:]]*$" | grep -v "^<!--" | grep -v "^-->" || true)
+    if [[ -z "${REAL_CONTENT}" ]]; then
+      warn "${BASENAME}: 章节 '${SECTION_NAMES[$i]}' 无内容且未标注「不适用」或「待补充」"
+      EMPTY_SECTION_COUNT=$((EMPTY_SECTION_COUNT + 1))
+    fi
+  done
+
   if [[ ${EMPTY_SECTION_COUNT} -eq 0 ]]; then
     success "${BASENAME}: 无空章节"
   fi
