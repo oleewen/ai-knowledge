@@ -1,82 +1,109 @@
 ---
 name: docs-archive
 description: >
-  应用知识库归档与系统知识库上行同步：汇总应用侧变更记录（归档），并将经核实的有效信息按联邦原则补充进系统级知识库（上行）。
-  当用户执行 /docs-archive、需要归档应用知识变更、将应用侧实体同步到系统库、
-  做知识库上行同步、或应用代码更新后需要更新系统知识索引时，务必使用本技能。
-  即使用户只说"同步一下应用知识"、"归档一下变更"、"把应用的实体更新到系统库"，也应触发本技能。
+  将应用知识库 applications/app-{APPNAME}/ 上行归档到系统侧 system/ 全树。
+  支持增量锚点（archive-log.yaml）、按 scope 筛选、dry-run 与全量 --full。
+  当用户执行 /docs-archive、说「归档」「同步应用知识到系统库」「上行」「把实体/SDD 同步到 system」、
+  或应用更新后需刷新系统侧索引与契约时，务必使用本技能；
+  即使用户只说「同步一下」「把应用侧内容推上去」「更新系统库」，也应触发本技能。
 ---
 
-# 知识归档与系统库同步（docs-archive）
+# 应用 → 系统归档（docs-archive）
 
-两件事：**（一）应用知识库变更归档**；**（二）应用有效信息上行补充系统知识库**。可同一次执行，也可分步。
+把 `applications/app-{APPNAME}/` 里已核实、允许进入系统侧的内容，按联邦规则写入 `system/` 下约定路径。成功后更新应用侧增量锚点，使下次从 changelog 断点继续。
 
-## 适用前提
-
-- **应用侧**：以 `applications/README.md`、`applications/APPLICATIONS_INDEX.md` 为准——联邦单元、`manifest.yaml`、全局唯一 ID（`APP-*`、`MS-*`、`ENT-*` 等）
-- **系统侧**：以 `system/knowledge/README.md`、`system/CONTRIBUTING.md`、`system/DESIGN.md`、`system/SYSTEM_INDEX.md` 为准——四视角 YAML/_meta、跨视角仅 ID 引用、单一事实源（SSOT）
+> **系统知识库 = `system/` 全树中有归档职责的区域**，不是 `system/knowledge/` 的同义词。
 
 ## 输入与输出
 
 | 类型 | 内容 |
 |------|------|
-| 硬输入 | 应用知识库路径（联邦模式：`applications/*/`；独立模式：`application/`） |
-| 可选输入 | Git 基线（提交号/标签）、用户指定变更文件列表、应用 `manifest.yaml`、各视角 `*_meta.yaml` |
-| 步骤一产出 | `system/changelogs/upstream-from-applications/ARCHIVE-{YYYYMMDD}-{简述}.md`；应用内 `CHANGELOG.md` 或 `promotion-notes.md` |
-| 步骤二产出 | 更新后的 `system/knowledge/` 各视角文件；必要时更新 `system/SYSTEM_INDEX.md` |
-| 不产出 | 不生成 INDEX_GUIDE、不修改应用侧 manifest、不重建知识库结构 |
+| 硬输入 | `applications/app-{APPNAME}/`（含可归档内容之一：`knowledge/`、`solutions/`、`requirements/`、`analysis/` 等） |
+| 可选输入 | `--app`、`--scope`、`--since`、`--full`、`--dry-run` 参数 |
+| 固定输出 | `system/` 下本次涉及文件；`system/changelogs/upstream-from-applications/ARCHIVE-{YYYYMMDD}-{简述}.md` |
+| 增量产出 | 更新 `applications/app-{APPNAME}/changelogs/archive-log.yaml` |
+| 不产出 | 不生成根目录 `INDEX_GUIDE.md`；不擅自改应用 manifest 结构；不默认全量重写 `SYSTEM_INDEX.md` |
+
+## 参数
+
+| 参数 | 默认 | 说明 |
+|------|------|------|
+| `--app` | 全部 | 仅处理 `applications/app-{NAME}/` |
+| `--scope` | `all` | `all` \| `knowledge` \| `solutions` \| `analysis` \| `requirements` |
+| `--since` | 锚点 | 手动指定 changelog 起点（覆盖锚点） |
+| `--full` | 否 | 全量重扫；可能覆盖系统侧已有内容，需人工确认 |
+| `--dry-run` | 否 | 只列出将执行的动作，不落盘 |
+
+各 scope 对应的应用侧扫描路径与系统侧落点见 [reference/archive-spec.md](reference/archive-spec.md)。
 
 ## 工作流（四步）
 
-### 步骤 0：确认执行范围
+### 步骤 0：确认范围
 
-与用户确认：**仅归档** / **仅上行** / **归档 + 上行**；确认应用列表与可选 Git 基线。
+读取各应用 `changelogs/archive-log.yaml` 与 `CHANGELOG.md`，确定本次条目区间；无新条目且非 `--full` 则可跳过。
 
-### 步骤 1：归档——汇总应用知识变更
+增量逻辑与锚点格式见 [reference/archive-log-spec.md](reference/archive-log-spec.md)。
 
-发现变更（Git diff / 用户清单 / 全量快照，择一或组合），按应用分节生成批次归档文档。
+### 步骤 1：提取
 
-归档范围、变更发现方式与产物格式见 [reference/archive-spec.md](reference/archive-spec.md)。
+按 changelog 区间与 `--scope`，从应用目录收集待上行项（路径级即可，不必通读全库）。
 
-### 步骤 2：上行——补充系统知识库
+变更发现方式（git diff / 清单驱动 / 全量快照）见 [reference/archive-spec.md](reference/archive-spec.md)。
 
-以步骤一的归档清单或用户指定文件为输入，按联邦映射表将应用侧有效信息写入系统库对应文件。
+### 步骤 2：写入 system/
 
-**先读再写**：打开拟修改的系统文件与相邻 `*_meta.yaml`，确认现有 ID，再写入。
+- **先读再写**：打开将修改的系统侧文件及相邻 `*_meta.yaml`，确认已有 ID 与结构。
+- **多类型同一批次**：严格按 `knowledge → solutions → analysis → requirements` 顺序，避免 `parent` 断链。
+- knowledge 用**提炼**规则；SDD 目录用**直接/整包**规则。
 
-联邦原则、映射表与撰写规则见 [reference/federation-spec.md](reference/federation-spec.md)。
+字段级映射、操作细则与归档顺序原因见 [reference/federation-spec.md](reference/federation-spec.md)。
 
-### 步骤 3：质量自检
+### 步骤 3：记录与锚点
 
-- 新增/修改的 YAML 可被解析；无断链 ID
-- 应用独有细节仍保留在应用库；系统库无大段与 manifest 重复的冗余正文
-- 变更影响全局导航时，已同步更新 `system/SYSTEM_INDEX.md` 或对应视角 `README.md`
+1. 生成批次文档 `system/changelogs/upstream-from-applications/ARCHIVE-{YYYYMMDD}-{简述}.md`（格式见 [reference/archive-spec.md](reference/archive-spec.md)）。
+2. **上述写入与批次文档均已成功后**，调用锚点更新脚本：
 
-完整自查清单见 [gotchas.md](gotchas.md)。
+```bash
+.ai/skills/docs-archive/scripts/update-archive-log.sh \
+  --app APPNAME \
+  --app-id APP-ID \
+  --changelog-id v1.3.0 \
+  --changelog-time "2026-04-05 10:00" \
+  --archive-file "system/changelogs/upstream-from-applications/ARCHIVE-20260405-xxx.md"
+```
+
+锚点原子性规则见 [reference/archive-log-spec.md](reference/archive-log-spec.md)。
+
+### 步骤 4：自检
+
+执行 [reference/federation-spec.md](reference/federation-spec.md) §六质量自检；对照 [gotchas.md](gotchas.md) 完整清单。
 
 ## 核心约束
 
 | 约束 | 说明 |
 |------|------|
-| 联邦边界 | 应用库放细节，系统库放契约与 ID 映射；禁止整段复制 |
-| 只增不改 ID | 已有实体禁止改 id；新增 ID 须全局唯一 |
-| 交叉引用仅 ID | 关联字段只写 ID，不写重复长描述 |
-| 冲突以 manifest 为准 | 应用侧与系统侧冲突时，以代码与 manifest 为准或标为待人工确认 |
-| 先读再写 | 打开系统文件确认现有 ID 后再写入，禁止盲写 |
+| 增量默认 | 以锚点为准，避免重复晋升同一 changelog 区间 |
+| 锚点原子性 | system 侧写入失败则不更新 `archive-log.yaml` |
+| knowledge 边界 | 契约与 ID，不整段复制应用侧长文 |
+| ID 不可变 | 禁止改已有实体 id；新增须全局唯一 |
+| 归档顺序 | knowledge → solutions → analysis → requirements，不可乱序 |
+| 导航同步 | 变更影响全局入口时，同步 `SYSTEM_INDEX.md` 或相关 `README.md` |
 
 ## 依赖关系
 
 | 类型 | 技能/组件 | 说明 |
 |------|-----------|------|
-| 协作 | `docs-build` | 应用侧知识实体提取；上行前可先运行 docs-build 确保应用侧 JSON 最新 |
-| 协作 | `docs-indexing` | 系统库从零构建时的前置步骤 |
+| 可选前置 | `docs-fetch` | 先拉应用镜像再归档 |
+| 可选前置 | `docs-build` | 先强化应用侧资产再归档 |
+| 无关联 | `docs-indexing` | 本技能不替代根目录 INDEX_GUIDE 生成 |
 
 ## 参考
 
 | 资源 | 路径 | 何时读 |
 |------|------|--------|
-| 联邦原则与映射规范 | [reference/federation-spec.md](reference/federation-spec.md) | 步骤 2 上行时，不确定映射落点时 |
-| 归档范围与产物格式 | [reference/archive-spec.md](reference/archive-spec.md) | 步骤 1 归档时 |
-| 常见陷阱与防错 | [gotchas.md](gotchas.md) | 遇到 ID/引用/联邦边界相关问题时 |
-| 应用侧约定 | `applications/README.md`、`applications/APPLICATIONS_INDEX.md` | 确认联邦单元与 manifest 约定时 |
-| 系统侧约定 | `system/CONTRIBUTING.md`、`system/DESIGN.md` | 确认系统库写入规范时 |
+| 系统侧范围、scope 落点、变更发现、批次文档格式 | [reference/archive-spec.md](reference/archive-spec.md) | 步骤 0–1 定范围、步骤 3 写批次文档时 |
+| 联邦层级、knowledge 提炼、SDD 直接归档、归档顺序、操作细则、质量自检 | [reference/federation-spec.md](reference/federation-spec.md) | 步骤 2 写入时，多类型顺序不确定时 |
+| archive-log.yaml 格式、增量逻辑、锚点更新时机 | [reference/archive-log-spec.md](reference/archive-log-spec.md) | 步骤 0 读锚点、步骤 3 更新锚点时 |
+| 锚点/ID/联邦边界陷阱与完整自查清单 | [gotchas.md](gotchas.md) | 步骤 4 自检，遇到异常时 |
+| 参考文档总览 | [reference/README.md](reference/README.md) | 不确定去哪找规范时 |
+| 锚点更新脚本 | [scripts/update-archive-log.sh](scripts/update-archive-log.sh) | 步骤 3 更新锚点时 |

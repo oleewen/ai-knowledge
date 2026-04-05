@@ -16,7 +16,7 @@
 | `/docs-change` | 聚合 git/CHANGELOG/文件 mtime 生成变更索引（如 `changes-index.*`）。 |
 | `/docs-upgrade` | 定向增改文档与代码注释；默认沿引用链并辅以关键词检索（同义/近义/中英文）对齐同类表述；显式路径或引用片段时自动执行；支持 `a - b` / `a > b` / `a 2 b`；不确定项列选项由用户决策。 |
 | `/agent-guide` | 生成/更新根目录 `AGENTS.md` 与 `README.md`，对齐仓库导航与约束。 |
-| `/docs-archive` | 将应用侧有效知识回收至系统知识库，保持联邦治理与 SSOT。 |
+| `/docs-archive` | 将应用侧有效知识归档到系统库 `system/` 全目录（含 knowledge、solutions、analysis、requirements、specs、上行批次 changelogs 及受影响的系统导航/契约文件），支持增量归档（changelog 锚点），可指定应用或处理所有未归档内容。 |
 | `/docs-fetch` | 从已注册的应用知识库（central 模式）拉取最新文档内容，更新 `applications/app-{APPNAME}/` 联邦镜像，并记录同步 changelog。 |
 | `/docs-build` | 按知识工程流程构建/补全知识资产与关联结构。 |
 | `/sdx-solution` | 产出解决方案阶段文档（Solution 阶段）。 |
