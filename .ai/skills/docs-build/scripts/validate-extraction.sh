@@ -23,7 +23,8 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-KNOWLEDGE_DIR="${DOC_ROOT}/knowledge"
+# 路径约定：system/knowledge/（与 SKILL.md 一致）
+KNOWLEDGE_DIR="${DOC_ROOT}/system/knowledge"
 INDEX_FILE="${KNOWLEDGE_DIR}/KNOWLEDGE_INDEX.md"
 
 info()    { echo "[INFO]  $1"; }
