@@ -178,6 +178,7 @@ for file in "${FILES[@]}"; do
     "### 7.1 术语表"
     "### 7.2 参考文档"
     "### 7.3 内部参考（仅供研发接力）"
+    "### 7.4 质量自查表 (Self-Check)"
   )
   SUB_COUNT=0
   SUB_TOTAL=${#REQUIRED_SUBHEADINGS[@]}

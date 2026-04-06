@@ -109,7 +109,7 @@ for file in "${FILES[@]}"; do
 
   # 六章结构（与 assets/analysis-template.md 一致）
   REQUIRED_SECTIONS=(
-    "## 1. 背景与目标"
+    "## 1. 背景目标"
     "## 2. 功能需求"
     "## 3. 非功能需求"
     "## 4. 交付计划"

@@ -10,7 +10,7 @@ description: >
 
 # 需求分析阶段（sdx-analysis）
 
-在解决方案与事实材料基础上，将共识级方案细化为**可评审、可排期、可验收**的需求分析：划清范围、拆 MVP、标优先级与依赖，并识别风险。产出结构以 [assets/analysis-template.md](assets/analysis-template.md) 为准：**六章**（背景与目标 → 功能需求「含 FR 节内规则与业务对象」→ 非功能需求 → 交付计划 → 依赖与风险 → 附录含变更历史与质量自查）。
+在解决方案与事实材料基础上，将共识级方案细化为**可评审、可排期、可验收**的需求分析：划清范围、拆 MVP、标优先级与依赖，并识别风险。产出结构以 [assets/analysis-template.md](assets/analysis-template.md) 为准：**六章**（**§1 背景目标** → 功能需求「含 FR 节内规则与业务对象」→ 非功能需求 → 交付计划 → 依赖与风险 → 附录含 **§6.4 质量自查**）。
 
 主要读者为**产品经理与需求分析师**（业务方参与范围与验收对齐）；研发以本阶段产出为输入编写 PRD/技术方案。
 
@@ -50,7 +50,7 @@ description: >
 2. **需求细化与建模** — §2 按 **FR-n** 分节（描述、规则 BR、业务对象、验收）；§3 非功能；歧义标 Q-n 并交互确认，结果融入 §1.3 / 各 FR，**不再单独设「业务规则」「数据需求」章**
 3. **MVP 拆分与规划** — §4.1–§4.3（总览、分 MVP 详述、依赖图）
 4. **依赖分析与风险评估** — §5.1 依赖表、§5.2 风险 R-n
-5. **文档输出与评审** — 严格套 [assets/analysis-template.md](assets/analysis-template.md)；§6 附录（含 §6.4 质量自查）；语言审查；按 [reference/quality-checklist.md](reference/quality-checklist.md) 自查
+5. **文档输出与评审** — 严格套 [assets/analysis-template.md](assets/analysis-template.md)；§6 附录（含 §6.4 质量自查）；语言审查；按 [reference/quality-checklist.md](reference/quality-checklist.md) **逐项**自查；**凡已满足通过标准的条目**，在写入 `ANALYSIS-*.md` 时须将该项由 `- [ ]` 改为 `- [x]`，未满足的保持 `- [ ]` 并先修复或说明，不得虚假勾选
 
 辅助校验：
 
@@ -69,6 +69,7 @@ description: >
 | 歧义标注 | 不确定项标 Q-n，逐一向用户提问确认（每题 3–4 个选项 + 「其他」）；澄清结果写入 §1.3 或对应 **FR-n**，模板无单独 Q 表 |
 | 范围清晰 | 仅产出需求分析文档，不涉及 PRD / ADD / 代码 |
 | 可追溯 | FR→G、BR→FR（规则表置于 FR 节内）、MVP→FR、R→依赖或影响面 |
+| 自查勾选 | 质量门禁通过后，交付物 **§6.4** 中已通过项须为 `- [x]`；未通过项保持 `- [ ]` 直至修复（禁止未达标而全选） |
 
 完整原则、反模式、编号体系与错误处理见 [reference/design-principles.md](reference/design-principles.md)。
 
