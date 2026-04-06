@@ -3,7 +3,8 @@ set -euo pipefail
 
 # 解决方案文档结构校验脚本
 # 用法: scripts/validate-solution.sh [--doc-root <path>] [--file <path>]
-# 默认 --doc-root 为 system，与 SKILL 约定路径 system/solutions/SOLUTION-*.md 一致；旧布局可传 --doc-root docs
+# doc_root 解析顺序（方案 A）：--doc-root > SDX_DOC_ROOT > .sdx-doc-root > 目录探测 > system
+# 详见 scripts/sdx-doc-root.sh
 #
 # 校验项:
 #   1. 模板文件存在
@@ -16,18 +17,27 @@ set -euo pipefail
 #   8. 编号体系一致性（G-n、Q-n、C-n、R-n）
 #   9. 技术语言检测（接口名、表名等技术词混入正文）
 
-DOC_ROOT="system"
+DOC_ROOT_ARG=""
 TARGET_FILE=""
 ERRORS=0
 WARNINGS=0
 
 while [[ $# -gt 0 ]]; do
   case $1 in
-    --doc-root) DOC_ROOT="$2"; shift 2 ;;
+    --doc-root) DOC_ROOT_ARG="$2"; shift 2 ;;
     --file) TARGET_FILE="$2"; shift 2 ;;
     *) echo "未知参数: $1"; exit 1 ;;
   esac
 done
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/../../../../scripts/sdx-validate-bootstrap.sh"
+sdx_validate_load_doc_root "$SCRIPT_DIR"
+
+REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || pwd)"
+DOC_ROOT="$(sdx_resolve_doc_root_segment "$DOC_ROOT_ARG" "$REPO_ROOT")"
+cd "$REPO_ROOT" || exit 1
 
 SOLUTIONS_DIR="${DOC_ROOT}/solutions"
 TEMPLATE=".ai/skills/sdx-solution/assets/solution-template.md"

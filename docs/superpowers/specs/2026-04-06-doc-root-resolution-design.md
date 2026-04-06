@@ -1,8 +1,8 @@
 # doc_root 是否可由「执行 Skill / 目标工程 rules 上下文」决定
 
 **日期**: 2026-04-06  
-**状态**: 待审阅  
-**范围**: 概念与约定层；可选后续在 `.ai/skills/`、`scripts/docs-init.sh`、工程侧元数据上落地。
+**状态**: 已实现（解析逻辑见 `scripts/sdx-doc-root.sh`；validate 脚本已接入）  
+**范围**: 概念与约定层；可选后续在 `AGENTS.md` 等入口强化指针。
 
 ---
 
@@ -54,10 +54,10 @@
 ## 6. 自检
 
 - 无 TBD：已区分 rules「间接」与 Skill「直接」机制。
-- 范围：本文件为**约定与设计**，不强制立即改代码。
+- 范围：已实现 `scripts/sdx-doc-root.sh`、`scripts/sdx-validate-bootstrap.sh` 与各 `validate-*.sh` 接入。
 
 ---
 
-## 7. 后续（可选实现）
+## 7. 后续（可选）
 
-用户审阅通过后，可再开 **writing-plans**：择一工程侧元数据或最小 `doc-root` 声明文件、或仅更新 `.ai/README` / `AGENTS.md` 指针与若干 SKILL 前置条件。
+按需更新 `AGENTS.md` / 各 SKILL 前置条件中对 `SDX_DOC_ROOT`、`.sdx-doc-root` 的说明。

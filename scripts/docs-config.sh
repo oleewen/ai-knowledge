@@ -38,7 +38,7 @@ sdx_require_bash5
 # -----------------------------------------------------------------------------
 
 # 版本信息
-readonly SDX_VERSION='2.1.1'
+readonly SDX_VERSION='2.1.2'
 readonly SDX_MIN_BASH_VERSION=5
 
 # Git 仓库地址（供 bootstrap 引用）

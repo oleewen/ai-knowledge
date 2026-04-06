@@ -3,6 +3,7 @@ set -euo pipefail
 
 # 技术设计文档结构校验脚本
 # 用法: scripts/validate-design.sh [--doc-root <path>] [--file <path>]
+# doc_root：--doc-root > SDX_DOC_ROOT > .sdx-doc-root > 探测 > system（见 scripts/sdx-doc-root.sh）
 #
 # 校验项:
 #   1. 文档目录存在
@@ -12,18 +13,27 @@ set -euo pipefail
 #   5. 模板 add-template.md 存在
 #   6. specs 目录结构校验
 
-DOC_ROOT="system"
+DOC_ROOT_ARG=""
 TARGET_FILE=""
 ERRORS=0
 WARNINGS=0
 
 while [[ $# -gt 0 ]]; do
   case $1 in
-    --doc-root) DOC_ROOT="$2"; shift 2 ;;
+    --doc-root) DOC_ROOT_ARG="$2"; shift 2 ;;
     --file) TARGET_FILE="$2"; shift 2 ;;
     *) echo "未知参数: $1"; exit 1 ;;
   esac
 done
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/../../../../scripts/sdx-validate-bootstrap.sh"
+sdx_validate_load_doc_root "$SCRIPT_DIR"
+
+REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || pwd)"
+DOC_ROOT="$(sdx_resolve_doc_root_segment "$DOC_ROOT_ARG" "$REPO_ROOT")"
+cd "$REPO_ROOT" || exit 1
 
 REQUIREMENTS_DIR="${DOC_ROOT}/requirements"
 TEMPLATE=".ai/skills/sdx-design/assets/add-template.md"

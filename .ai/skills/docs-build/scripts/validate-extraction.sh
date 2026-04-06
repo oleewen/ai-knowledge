@@ -3,6 +3,8 @@ set -euo pipefail
 
 # 知识实体提取结果验证脚本
 # 用法: scripts/validate-extraction.sh [--doc-root <path>]
+# doc_root 首段：--doc-root > SDX_DOC_ROOT > .sdx-doc-root > 探测 > system（见 scripts/sdx-doc-root.sh）
+# 知识库目录：优先 {seg}/knowledge；否则 {seg}/system/knowledge
 #
 # 校验项:
 #   1. KNOWLEDGE_INDEX.md 存在且非空
@@ -12,19 +14,32 @@ set -euo pipefail
 #   5. 证据链非空
 #   6. metadata 节存在
 
-DOC_ROOT="."
+DOC_ROOT_ARG=""
 ERRORS=0
 WARNINGS=0
 
 while [[ $# -gt 0 ]]; do
   case $1 in
-    --doc-root) DOC_ROOT="$2"; shift 2 ;;
+    --doc-root) DOC_ROOT_ARG="$2"; shift 2 ;;
     *) echo "未知参数: $1"; exit 1 ;;
   esac
 done
 
-# 路径约定：system/knowledge/（与 SKILL.md 一致）
-KNOWLEDGE_DIR="${DOC_ROOT}/system/knowledge"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/../../../../scripts/sdx-validate-bootstrap.sh"
+sdx_validate_load_doc_root "$SCRIPT_DIR"
+
+REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || pwd)"
+DOC_ROOT="$(sdx_resolve_doc_root_segment "$DOC_ROOT_ARG" "$REPO_ROOT")"
+cd "$REPO_ROOT" || exit 1
+
+# 路径约定：{doc_root}/system/knowledge/ 或 {doc_root}/knowledge/（与 SKILL.md 一致）
+if [[ -d "${DOC_ROOT}/knowledge" && ! -d "${DOC_ROOT}/system/knowledge" ]]; then
+  KNOWLEDGE_DIR="${DOC_ROOT}/knowledge"
+else
+  KNOWLEDGE_DIR="${DOC_ROOT}/system/knowledge"
+fi
 INDEX_FILE="${KNOWLEDGE_DIR}/KNOWLEDGE_INDEX.md"
 
 info()    { echo "[INFO]  $1"; }
