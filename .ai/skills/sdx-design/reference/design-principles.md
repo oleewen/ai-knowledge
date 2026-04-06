@@ -16,7 +16,7 @@ sdx-design 技能的完整设计约束。[SKILL.md](../SKILL.md) 中的「核心
 
 | 证据类型 | 格式 | 示例 |
 |----------|------|------|
-| 产品需求 | `PRD-{ID} US-{N}` | `PRD-20260327-MVP1 US-003` |
+| 产品需求 | `PRD-{YYMMDD}-{主题slug} US-{N}` | `PRD-260403-管区分钱分量 US-003` |
 | 功能需求 | `FR-{NNN}` | `FR-001 创建申诉单` |
 | 知识库实体 | `{视角}-{ID}` | `BC-001 FeeAppealContext` |
 | 文档章节 | `{文件} §{章节}` | `INDEX_GUIDE.md §3.2` |
@@ -83,77 +83,7 @@ sdx-design 技能的完整设计约束。[SKILL.md](../SKILL.md) 中的「核心
 
 ---
 
-## 质量标准
-
-### 完整性
-
-- 设计概述包含设计目标、约束与关键决策
-- 架构设计覆盖系统架构、接口协议、领域模型、数据架构、发布方案
-- 详细设计覆盖应用架构、API 详设、业务逻辑、数据访问、非功能性设计
-- 每个 API 有完整的签名、参数、响应、错误码、幂等性说明
-- 数据设计有完整的 DDL、索引策略、缓存策略
-- 规约文件按服务维度完整生成
-
-### 一致性
-
-- 架构设计与现有系统架构（`knowledge/technical/`）一致
-- 领域模型与现有领域模型（`knowledge/business/`）一致
-- API 设计与项目 API 规范一致
-- 数据设计遵循项目数据库约束（`gmt_create` / `gmt_modified`、表名前缀等）
-- 规约文件与 ADD 设计条目双向对应
-
-### 可行性
-
-- 技术方案在现有基础设施上可实现
-- 性能设计满足非功能需求（响应时间、吞吐量）
-- 安全设计满足认证授权要求
-- 发布方案可执行，回滚方案可回退
-
-### 可追溯性
-
-- DD-n → PRD 用户故事 / FR-n
-- API-n → PRD 业务流程 / 用例
-- TBL-n → FR-n（功能需求）
-- 规约 → ADD 设计条目
-- 非功能设计 → 需求分析非功能需求
-
----
-
-## 最佳实践
-
-### 架构设计
-
-- 从 PRD 的业务流程出发，沿调用链识别受影响的服务与模块
-- 优先复用现有架构模式（参考 `knowledge/technical/` 与 ADR）
-- 新增服务交互需绘制时序图，标注同步/异步与超时策略
-- 关键设计决策记录推荐方案、备选方案与决策理由
-
-### 接口设计
-
-- 遵循项目 API 命名规范，RESTful 语义清晰
-- 每个 API 必须包含幂等性设计（参考项目分布式锁键前缀）
-- 错误码设计区分 BusinessException / SystemException / ValidationException
-- 批量接口需设计分页策略，避免全量查询
-
-### 领域模型
-
-- 优先采用充血模型（参考 `WaybillTrackModel`）
-- 聚合边界清晰，聚合内强一致性、聚合间最终一致性
-- 领域事件用于聚合间解耦，标注事件名称、携带数据与消费者
-
-### 数据设计
-
-- 表名遵循 `policy_appeal_` 前缀约束
-- 必含 `gmt_create`（insert 时填充）和 `gmt_modified`（insert/update 均填充）
-- 分片表设计参考现有分片策略
-- 索引设计结合实际查询场景，避免冗余索引
-
-### 发布方案
-
-- 明确发布步骤的先后顺序与依赖关系
-- 数据迁移方案需包含验证脚本
-- 回滚方案需包含数据备份步骤
-- 灰度/金丝雀策略（若适用）
+> 完整验收清单见 [quality-checklist.md](quality-checklist.md)。
 
 ---
 
@@ -167,4 +97,4 @@ sdx-design 技能的完整设计约束。[SKILL.md](../SKILL.md) 中的「核心
 | knowledge 目录缺失 | 发出警告，仅基于 PRD 和 AGENTS.md 完成设计，标注缺少知识库基线 |
 | ADD 模板不存在 | 终止，提示创建 `.ai/skills/sdx-design/assets/add-template.md` |
 | 现有架构冲突 | 记录为设计决策（DD-n），标注冲突点与化解方案 |
-| 输出目录不存在 | 自动创建 `system/requirements/REQUIREMENT-{ID}/MVP-{N}/` 目录 |
+| 输出目录不存在 | 自动创建 `system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/` 目录 |

@@ -1,11 +1,11 @@
 # solutions — 解决方案文档
 
-本目录用于记录**业务诉求的解决方案文档**，对应 AI SDD 解决方案阶段产出。从业务描述中提取结构化需求、评估影响面、识别冲突并形成解决方案，输出以 `SOLUTION-{ID}.md` 命名的文档。
+本目录用于记录**业务诉求的解决方案文档**，对应 AI SDD 解决方案阶段产出。从业务描述中提取结构化需求、评估影响面、识别冲突并形成解决方案，输出以 `SOLUTION-{IDEA-ID}.md` 命名的文档。
 
 ## 定位与用途
 
 - **输入**：业务需求描述（邮件、会议纪要、工单等）、知识库（`knowledge/`）、规约（`specs/`）。
-- **输出**：解决方案文档 `SOLUTION-{ID}.md`，作为需求分析阶段的输入。
+- **输出**：解决方案文档 `SOLUTION-{IDEA-ID}.md`，作为需求分析阶段的输入。
 - **归档**：已完结或 superseded 的解决方案可移入 [archive](archive) 便于检索历史。
 
 ## 方案索引表
@@ -18,8 +18,8 @@
 
 ## 命名与ID
 
-- **文件名**：`SOLUTION-{ID}.md`，其中 `{ID}` 建议为 `{YYMMDD}-{IDEA}` 或项目约定的唯一编号。
-- **文档内**：frontmatter 中 `id` 与文件名一致，可含 `parent`、`dependencies` 等关联字段。
+- **文件名**：`SOLUTION-{IDEA-ID}.md`，其中 **IDEA-ID** 为需求链统一标识（见 [../knowledge/constitution/standards/naming-conventions.md](../knowledge/constitution/standards/naming-conventions.md)）。
+- **文档内**：文末「## 文档元数据」中 `id` 与文件名一致，可含 `parent`、`dependencies`、`tags` 等关联字段（勿在文件开头使用 `---` YAML frontmatter）。
 
 ## 规范与模板
 
@@ -29,5 +29,5 @@
 ## 集成关系
 
 - 解决方案会引用或影响 **knowledge/** 下 business、product、technical、data 中的实体；影响面评估需与知识库保持一致。
-- 需求分析文档（`analysis/ANALYSIS-{ID}.md`）通过 `parent` 关联到本目录下的 SOLUTION。
+- 需求分析文档（`analysis/ANALYSIS-{IDEA-ID}.md`）通过 `parent` 关联到本目录下的 SOLUTION。
 

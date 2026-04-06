@@ -24,18 +24,23 @@ graph TD
 
 ### 算法
 
-1. **定位需求分析文档**：按 `--requirement` 传入的分析文档 ID 定位 `system/analysis/ANALYSIS-{ID}.md`；未指定时取 `system/analysis/` 下按文件名排序最新的 `ANALYSIS-*.md`（**勿**与需求包目录 `system/requirements/REQUIREMENT-{ID}/` 混淆）
+1. **定位需求分析文档**：按 `--requirement` 传入的分析文档 ID 定位 `system/analysis/ANALYSIS-{YYMMDD}-{主题slug}.md`；未指定时取 `system/analysis/` 下按文件名排序最新的 `ANALYSIS-*.md`（**勿**与需求包目录 `system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/` 混淆）
 2. **提取 MVP 范围**：从文档 §6 MVP 拆分方案中提取目标 MVP（`--mvp` 参数指定）的功能需求列表
 3. **加载基线数据**：
    - 功能需求清单（FR-n）及其优先级、验收标准
    - 业务规则清单（BR-n）及其触发条件与执行逻辑
    - 非功能需求（§3）中与当前 MVP 相关的约束
    - 涉及角色列表
+4. **愿景 / 成功标准 / 非功能加载检查**（步骤 1 前必做）：
+   - 从 ANALYSIS 中定位**产品愿景、目标用户/价值主张、成功标准或可量化目标**（常见位置：概述、目标、成功指标等章节）；用于填充 PRD §1.1 / §1.2
+   - 摘录或引用 **SMART 指标**；若 ANALYSIS 未写，在 §1.2 标「待澄清」并列入风险
+   - 梳理与本 MVP 相关的 **NFR 条目**（性能、安全、合规等），供步骤 4–5 写入 **§9**，并与 **§10.2 NAC** 对齐
 
 ### 决策点
 
 - **目标 MVP 章节不存在** → 终止，提示检查 MVP 编号
 - **MVP 章节无功能需求列表** → 发出警告，基于全文档 FR-n 继续并标注风险
+- **愿景或成功标准缺失** → 警告，§1.2 标待澄清，不阻断流程
 
 ---
 
@@ -108,7 +113,7 @@ product-designer
 1. **用例图绘制**：
    - 使用 Mermaid graph 绘制参与者与用例关系
    - 标注包含（include）与扩展（extend）关系
-   - 确保所有角色（§1.3）均出现在用例图中
+   - 确保所有角色（§1.4）均出现在用例图中
 
 2. **用例描述编写**：
 
@@ -253,13 +258,14 @@ product-designer / ux-designer
    - 业务术语定义（§8.1）
    - 状态定义与状态流转（§8.2）
 
-5. **验收标准汇总**：
-   - 功能验收标准（AC-n）：关联 US-n
-   - 非功能验收标准（NAC-n）：关联非功能需求
+5. **非功能需求（NFR）与验收标准汇总**：
+   - **§9 NFR**：仅写与本 MVP 相关的类别；从 ANALYSIS 摘录；**选择性类别 + 指标/阈值 + 度量方法**（最小模板见 [prd-template.md](../assets/prd-template.md) §9）；无依据则标待澄清
+   - **§10.1 功能验收标准（AC-n）**：关联 US-n
+   - **§10.2 非功能验收标准（NAC-n）**：与 §9 NFR 互链，确保可测
 
 ### 产出
 
-功能模块与交互设计 + 业务规则汇总 + 数据字典 + 验收标准（对应文档 §3、§6–§9）。
+功能模块与交互设计 + 业务规则汇总 + 数据字典 + NFR 与验收标准（对应文档 §3、§6–§10）。
 
 ---
 
@@ -275,27 +281,27 @@ technical-writer + doc-updater
 
 ### 算法
 
-1. **整合**：将步骤 1–4 产出按模板十章结构编排
-2. **填充 frontmatter**：
-   - `id`: 按 `PRD-{ID}-{N}` 格式（{ID} 为需求分析编号中的 ID 部分，{N} 为 MVP 序号）
+1. **整合**：将步骤 1–4 产出按模板十一章结构编排（§1 含 §1.2 成功标准、§1.3 需求范围与后续阶段表；**§9** 为 NFR；**§10** 为 AC/NAC）
+2. **填充文末元数据**（模板「## 文档元数据」YAML，**禁止**文件头 frontmatter）：
+   - `id`: `PRD-{YYMMDD}-{主题slug}`，与 `ANALYSIS-{YYMMDD}-{主题slug}.md` 及目录 `REQUIREMENT-{YYMMDD}-{主题slug}/` 共用 `{YYMMDD}-{主题slug}` 段
    - `status`: `draft`
    - `created` / `updated`: 当前日期
-   - `parent`: 关联的需求分析编号
-   - `mvp_phase`: `MVP-{N}`
-3. **补充附录**（§10）：
-   - 原型/线框图链接（§10.1）
-   - 变更历史（§10.2）
-   - 质量自查表（§10.3）
-4. **质量门禁自查**：逐项检查 [quality-checklist.md](quality-checklist.md)
-5. **输出**：写入 `system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`
+   - `parent`: 关联的需求分析编号（如 `ANALYSIS-{YYMMDD}-{主题slug}`）
+   - `mvp_phase`: `MVP-Phase-{N}`
+3. **补充附录**（§11）：
+   - 原型/线框图链接（§11.1）
+   - 变更历史（§11.2）
+   - 质量自查表（§11.3）
+4. **质量门禁**：对照 [quality-checklist.md](quality-checklist.md) 与模板 **§11.3** **逐项**判定；**完整通过标准**以模板 §11.3 正文为准（每条下 *通过标准* 为最低放行条件）。**仅当**某条通过标准已满足，方在交付物 **§11.3** 中将该项由 `- [ ]` 改为 `- [x]`；未满足的保持 `- [ ]`，先修复或记录例外后再勾选。**禁止**未达标而全部勾选
+5. **输出**：写入 `system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/PRD-{YYMMDD}-{主题slug}.md`
 
 ### 输出目录
 
 ```
 system/requirements/
-└── REQUIREMENT-{ID}/
-    └── MVP-{N}/
-        └── PRD-{ID}-{N}.md
+└── REQUIREMENT-{YYMMDD}-{主题slug}/
+    └── MVP-Phase-{N}/
+        └── PRD-{YYMMDD}-{主题slug}.md
 ```
 
 目录不存在时自动创建。
@@ -312,7 +318,7 @@ system/requirements/
 前置: 加载需求分析
   ├─→ FR-n 清单（当前 MVP 范围）
   ├─→ BR-n 清单
-  ├─→ 非功能需求
+  ├─→ 非功能需求（及愿景/成功标准，供 §1.2、§9）
   └─→ 角色列表
 
 步骤 1 产出
@@ -328,13 +334,14 @@ system/requirements/
   └─→ [传递到步骤 4]
 
 步骤 4 产出
-  ├─→ §1 产品概述
+  ├─→ §1 产品概述（含 §1.2 成功标准、§1.3 范围与后续阶段）
   ├─→ §3 产品交互
   ├─→ §6 功能模块设计
   ├─→ §7 业务规则汇总
   ├─→ §8 数据字典
-  └─→ §9 验收标准汇总
+  ├─→ §9 非功能需求（NFR）
+  └─→ §10 验收标准汇总（§10.1 AC、§10.2 NAC）
 
 步骤 5 整合
-  └─→ §1–§10 完整文档
+  └─→ §1–§11 完整文档
 ```

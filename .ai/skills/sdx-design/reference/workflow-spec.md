@@ -32,7 +32,7 @@ architect + system-architect
 
 ### 输入
 
-产品需求文档（`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`）+ 需求分析文档（`system/analysis/ANALYSIS-{ID}.md`）当前 MVP 章节 + `knowledge/technical/`（按需）+ `knowledge/business/`（按需）
+产品需求文档（`system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/PRD-{YYMMDD}-{主题slug}.md`）+ 需求分析文档（`system/analysis/ANALYSIS-{YYMMDD}-{主题slug}.md`）当前 MVP 章节 + `knowledge/technical/`（按需）+ `knowledge/business/`（按需）
 
 ### 算法
 
@@ -153,7 +153,7 @@ technical-writer + doc-updater
 1. **规约目录规划**：
 
 ```
-system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/
+system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/specs/
 └── {service-name}/
     ├── api/
     │   └── {api-name}.yaml
@@ -193,26 +193,26 @@ technical-writer + doc-updater
 ### 算法
 
 1. **整合**：将步骤 1–2 产出按模板五章结构编排
-2. **填充 frontmatter**：
-   - `id`: 按 `ADD-{REQUIREMENT-ID}-MVP{N}` 格式
+2. **填充文末元数据**（模板「## 文档元数据」YAML，**禁止**文件头 frontmatter）：
+   - `id`: `ADD-{YYMMDD}-{主题slug}`（与 PRD 同 `{YYMMDD}-{主题slug}`）
    - `status`: `draft`
    - `created` / `updated`: 当前日期
    - `parent`: 关联的 PRD 编号
-   - `mvp_phase`: `MVP-{N}`
+   - `mvp_phase`: `MVP-Phase-{N}`
 3. **补充需求规约与附录**：
    - 参考文档（§4.1）：列出规约文件路径
    - 变更历史（§5.1）
    - 质量自查表（§5.2）
-4. **质量门禁自查**：逐项检查 [quality-checklist.md](quality-checklist.md)
+4. **质量门禁**：对照 [quality-checklist.md](quality-checklist.md) 与模板 **§5.2** **逐项**判定（以模板 §5.2 每条下 *通过标准* 为最低放行条件）。**仅当**某条通过标准已满足，方在交付物 **§5.2** 中将该项由 `- [ ]` 改为 `- [x]`；未满足的保持 `- [ ]`，先修复或记录例外后再勾选。**禁止**未达标而全部勾选
 5. **输出**：
-   - ADD 写入 `system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`
-   - specs 写入 `system/requirements/REQUIREMENT-{ID}/MVP-{N}/specs/`
+   - ADD 写入 `system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/ADD-{YYMMDD}-{主题slug}.md`
+   - specs 写入 `system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/specs/`
 
 ### 输出目录
 
 ```
-system/requirements/REQUIREMENT-{ID}/MVP-{N}/
-├── ADD-{ID}-{N}.md
+system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/
+├── ADD-{YYMMDD}-{主题slug}.md
 └── specs/
     └── {service-name}/
         ├── api/

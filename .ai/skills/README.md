@@ -14,14 +14,17 @@
 |------|------|
 | `/docs-indexing` | 生成面向 AI 的仓库索引（`INDEX_GUIDE.md`），支持分层检索与路径精确引用。 |
 | `/docs-change` | 聚合 git/CHANGELOG/文件 mtime 生成变更索引（如 `changes-index.*`）。 |
+| `/docs-upgrade` | 定向增改文档与代码注释；默认沿引用链并辅以关键词检索（同义/近义/中英文）对齐同类表述；显式路径或引用片段时自动执行；支持 `a - b` / `a > b` / `a 2 b`；不确定项列选项由用户决策。 |
 | `/agent-guide` | 生成/更新根目录 `AGENTS.md` 与 `README.md`，对齐仓库导航与约束。 |
-| `/docs-archive` | 将应用侧有效知识回收至系统知识库，保持联邦治理与 SSOT。 |
+| `/docs-archive` | 将应用侧有效知识归档到系统库 `system/` 全目录（含 knowledge、solutions、analysis、requirements、specs、上行批次 changelogs 及受影响的系统导航/契约文件），支持增量归档（changelog 锚点），可指定应用或处理所有未归档内容。 |
+| `/docs-fetch` | 从已注册的应用知识库（central 模式）拉取最新文档内容，更新 `applications/app-{APPNAME}/` 联邦镜像，并记录同步 changelog。 |
 | `/docs-build` | 按知识工程流程构建/补全知识资产与关联结构。 |
 | `/sdx-solution` | 产出解决方案阶段文档（Solution 阶段）。 |
 | `/sdx-analysis` | 产出需求分析阶段文档（Analysis 阶段）。 |
 | `/sdx-prd` | 产出 PRD 阶段文档（Requirements 阶段）。 |
 | `/sdx-design` | 产出架构/设计阶段文档（Architecture Design 阶段）。 |
 | `/sdx-test` | 产出测试设计与验证阶段文档（Test 阶段）。 |
+| `/skill-creator` | 创建、评测与迭代技能的官方工作流（含 `scripts/`、`eval-viewer/`）。来源：Anthropic 仓库 [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) 中 `plugins/skill-creator/skills/skill-creator`；本仓库副本在 `.cursor/skills/skill-creator/`。 |
 
 ## 使用说明
 

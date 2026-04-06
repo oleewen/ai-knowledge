@@ -1,112 +1,120 @@
 ---
-name: docs-archive
-description: >
-  知识归档与上行同步：① 汇总并归档 applications/ 或 application/ 下各应用知识库文件的更新记录；
-  ② 将应用侧经核实的有效信息，按系统知识库格式（system/knowledge、CONTRIBUTING、INDEX）补充进系统级各视角文件。
-  使用 /docs-archive。
----
 
-# 知识归档与系统库同步（docs-archive）
+## name: docs-archive  
+description: >  
+  将应用知识库上行归档到系统知识库。  
+  支持增量锚点（archive-log.yaml）、按 scope 筛选、dry-run 与全量 --full。  
+  当用户执行 /docs-archive、说「归档」「同步应用知识到系统库」「上行」「把实体/SDD 同步到 system」、  
+  或应用更新后需刷新系统侧索引与契约时，务必使用本技能；  
+  即使用户只说「同步一下」「把应用侧内容推上去」「更新系统库」，也应触发本技能。
 
-本 Skill 做两件事：**（一）应用知识库变更归档**；**（二）应用有效信息上行补充系统知识库**。二者可同一次执行，也可分步。
+# 应用 → 系统归档（docs-archive）
 
-## 适用前提
+把 `applications/app-{APPNAME}/` 里已核实、允许进入系统侧的内容，按联邦规则写入 `system/` 下约定路径。成功后更新应用侧增量锚点，使下次从 changelog 断点继续。
 
-- **应用侧约定**：以 [../../../applications/README.md](../../../applications/README.md)、[../../../applications/APPLICATIONS_INDEX.md](../../../applications/APPLICATIONS_INDEX.md) 为准——联邦单元、`manifest.yaml`、全局唯一 ID（`APP-*`、`MS-*`、`ENT-*` 等）。
-- **系统侧约定**：以 [../../../system/knowledge/README.md](../../../system/knowledge/README.md)、[../../../system/CONTRIBUTING.md](../../../system/CONTRIBUTING.md)、[../../../system/DESIGN.md](../../../system/DESIGN.md)、[../../../system/SYSTEM_INDEX.md](../../../system/SYSTEM_INDEX.md) 为准——四视角 YAML/_meta、跨视角仅 ID 引用、单一事实源（SSOT）。
+> **系统知识库 = `system/` 全树中有归档职责的区域**，不是 `system/knowledge/` 的同义词。
 
-## 联邦原则（必须遵守）
+## 输入与输出
 
-| 层级 | 适合放什么 | 不适合 |
-|------|------------|--------|
-| **应用知识库** | 接口细节、本仓 Schema、部署参数、manifest、应用内四视角实例 | 把全系统业务域再在应用里当唯一权威重复定义 |
-| **系统知识库** | 跨应用映射、系统边界、应用注册（`technical/{SYS}/{APP}.yaml`）、聚合与实体 ID 契约、产品/API 关联字段 | 大段复制应用内 OpenAPI 全文（应保留 `docs_manifest_path` 与 ID 引用） |
 
-上行时：**提炼有效信息**（新服务 ID、新 API 契约摘要、归属 `app_id`、与 product/business 的 ID 链接），改写为 **系统文件要求的字段与结构**，禁止破坏已有 ID 与引用链。
+| 类型   | 内容                                                                                              |
+| ---- | ----------------------------------------------------------------------------------------------- |
+| 硬输入  | `applications/app-{APPNAME}/`（含可归档内容之一：`knowledge/`、`solutions/`、`requirements/`、`analysis/` 等） |
+| 可选输入 | `--app`、`--scope`、`--since`、`--full`、`--dry-run` 参数                                             |
+| 固定输出 | `system/` 下本次涉及文件；`system/changelogs/upstream-from-applications/ARCHIVE-{YYYYMMDD}-{简述}.md`     |
+| 增量产出 | 更新 `applications/app-{APPNAME}/changelogs/archive-log.yaml`                                     |
+| 不产出  | 不生成根目录 `INDEX_GUIDE.md`；不擅自改应用 manifest 结构；不默认全量重写 `SYSTEM_INDEX.md`                            |
 
----
 
-## （一）归档：所有应用知识库文件的更新
+## 参数
 
-**目标**：形成可追溯的「本轮/本批」应用知识变更记录，便于审计与后续同步系统库。
 
-### 1. 范围
+| 参数          | 默认    | 说明                                                              |
+| ----------- | ----- | --------------------------------------------------------------- |
+| `--app`     | 全部    | 仅处理 `applications/app-{NAME}/`                                  |
+| `--scope`   | `all` | `all` | `knowledge` | `solutions` | `analysis` | `requirements` |
+| `--since`   | 锚点    | 手动指定 changelog 起点（覆盖锚点）                                         |
+| `--full`    | 否     | 全量重扫；可能覆盖系统侧已有内容，需人工确认                                          |
+| `--dry-run` | 否     | 只列出将执行的动作，不落盘                                                   |
 
-- 主库内：`applications/*/`（联邦模式）下各应用（排除仅模板说明用的空壳目录时以用户指定为准），或 `application/`（独立模式） 下应用文档。
-- 外仓：用户给出路径列表或 **应用知识库根目录**（模板目录名可仍为 `app-APPNAME/`）时，仅处理用户声明的 **应用知识根**（与 `INDEX_GUIDE.md`、`knowledge/` 同级树）。
 
-### 2. 发现变更的方式（择一或组合）
+各 scope 对应的应用侧扫描路径与系统侧落点见 [reference/archive-spec.md](reference/archive-spec.md)。
 
-- **Git**：自上次归档标签/提交或用户给定区间，对 `applications/**`（或各应用知识路径）做 `git diff` / 文件列表统计。
-- **清单驱动**：用户粘贴「已修改文件路径」列表。
-- **全量快照**：无基线时，记录当前各应用 `INDEX_GUIDE.md`、`knowledge/` 下主要文件清单与哈希或行数摘要（轻量索引，非通读）。
+## 工作流（四步）
 
-### 3. 归档产物（建议）
+### 步骤 0：确认范围
 
-| 产物 | 路径建议 | 内容 |
-|------|----------|------|
-| **批次归档** | `changelogs/upstream-from-applications/ARCHIVE-{YYYYMMDD}-{批次简述}.md`（目录不存在则创建） | 按应用分节：变更文件路径、变更类型（新增/修改/删除）、一句话摘要、可选提交号 |
-| **应用内留痕** | `applications/<app>/CHANGELOG.md` 或 `applications/<app>/archive/promotion-notes.md` | 追加本节同步摘要，与应用 README 中联邦说明一致 |
+读取各应用 `changelogs/archive-log.yaml` 与 `CHANGELOG.md`，确定本次条目区间；无新条目且非 `--full` 则可跳过。
 
-**归档文档必备字段示例**：
+增量逻辑与锚点格式见 [reference/archive-log-spec.md](reference/archive-log-spec.md)。
 
-```markdown
-## 应用 your-app（APP-XXX）
-| 路径 | 动作 | 摘要 |
-|------|------|------|
-| knowledge/technical/... | 修改 | 新增 MS-YYY 接口登记 |
+### 步骤 1：提取
+
+按 changelog 区间与 `--scope`，从应用目录收集待上行项（路径级即可，不必通读全库）。
+
+变更发现方式（git diff / 清单驱动 / 全量快照）见 [reference/archive-spec.md](reference/archive-spec.md)。
+
+### 步骤 2：写入 system/
+
+- **先读再写**：打开将修改的系统侧文件及相邻 `*_meta.yaml`，确认已有 ID 与结构。
+- **多类型同一批次**：严格按 `knowledge → solutions → analysis → requirements` 顺序，避免 `parent` 断链。
+- knowledge 用**提炼**规则；SDD 目录用**直接/整包**规则。
+
+字段级映射、操作细则与归档顺序原因见 [reference/federation-spec.md](reference/federation-spec.md)。
+
+### 步骤 3：记录与锚点
+
+1. 生成批次文档 `system/changelogs/upstream-from-applications/ARCHIVE-{YYYYMMDD}-{简述}.md`（格式见 [reference/archive-spec.md](reference/archive-spec.md)）。
+2. **上述写入与批次文档均已成功后**，调用锚点更新脚本：
+
+```bash
+.ai/skills/docs-archive/scripts/update-archive-log.sh \
+  --app APPNAME \
+  --app-id APP-ID \
+  --changelog-id v1.3.0 \
+  --changelog-time "2026-04-05 10:00" \
+  --archive-file "system/changelogs/upstream-from-applications/ARCHIVE-20260405-xxx.md"
 ```
 
----
+锚点原子性规则见 [reference/archive-log-spec.md](reference/archive-log-spec.md)。
 
-## （二）上行：应用有效信息 → 系统知识库
+### 步骤 4：自检
 
-**目标**：依据应用侧已核实内容，**补充、完善** `system/knowledge/` 下对应文件，不违背 CONTRIBUTING 与 DESIGN。
+执行 [reference/federation-spec.md](reference/federation-spec.md) §六质量自检；对照 [gotchas.md](gotchas.md) 完整清单。
 
-### 1. 输入
+## 核心约束
 
-- （一）的归档清单或用户指定的应用文件列表。
-- 应用 **`manifest.yaml`**、**`application/knowledge/knowledge_meta.yaml`** 等各 `{scope}_meta.yaml`（若存在）、各视角下 **YAML/Markdown** 中与系统相关的 ID 与关系。
 
-### 2. 映射指引（按 CONTRIBUTING）
+| 约束           | 说明                                                   |
+| ------------ | ---------------------------------------------------- |
+| 增量默认         | 以锚点为准，避免重复晋升同一 changelog 区间                          |
+| 锚点原子性        | system 侧写入失败则不更新 `archive-log.yaml`                  |
+| knowledge 边界 | 契约与 ID，不整段复制应用侧长文                                    |
+| ID 不可变       | 禁止改已有实体 id；新增须全局唯一                                   |
+| 归档顺序         | knowledge → solutions → analysis → requirements，不可乱序 |
+| 导航同步         | 变更影响全局入口时，同步 `SYSTEM_INDEX.md` 或相关 `README.md`       |
 
-| 应用侧信息 | 系统侧落点 |
-|------------|------------|
-| 应用身份、仓库、manifest 路径 | `knowledge/technical/{SYS}/{APP-ID}.yaml`：`repo_url`、`docs_manifest_path`、`service_ids` |
-| 新 **MS-***（入口簇）、API 清单（摘要级） | 更新 `{APP-ID}.yaml` 的 `service_ids`；**MS-*** 须与 **docs-build §8.1.2** 一致（**仅** apis 宿主聚类，**非** Maven 模块名）；API 细节以 manifest 为 SSOT |
-| 限界上下文由本应用实现 | `knowledge/business/business_meta.yaml` → `layers` 中 `key: bc` 的 `fields.implemented_by_app_id` |
-| 数据实体归属应用 | `knowledge/data/data_meta.yaml` → `layers`（`key: ds` / `key: ent`）中 `owned_by_app_id` / `app_id` 等约定；与聚合的 `maps_to_aggregate_id` / `persisted_as_entity_ids` |
-| 产品功能调用本应用 API | `knowledge/product/product_meta.yaml` → `layers`（`key: ft`）的 `invokes_api_ids` |
-| 跨域架构决策 | 必要时新增 `knowledge/constitution/adr/ADR-*.md` |
 
-### 3. 撰写规则
+## 依赖关系
 
-- **先读再写**：打开拟修改的系统文件与相邻元数据 YAML（各视角 `*_meta.yaml` 等），确认现有 ID。
-- **只增不改 ID**：已有实体 **禁止改 id**；新增实体 ID 须全局唯一且符合 [../../../system/knowledge/constitution/standards/NAMING-CONVENTIONS.md](../../../system/knowledge/constitution/standards/NAMING-CONVENTIONS.md)（若存在）。
-- **交叉引用仅 ID**：正文与 YAML 关联字段只写 ID，不写重复长描述。
-- **更新索引**：变更影响全局导航时，同步 [../../../system/SYSTEM_INDEX.md](../../../system/SYSTEM_INDEX.md) 或对应视角 `README.md`（见 system/knowledge/README.md §4）。
 
-### 4. 质量自检（与全库知识落盘末段验证思路对齐）
+| 类型   | 技能/组件           | 说明                       |
+| ---- | --------------- | ------------------------ |
+| 可选前置 | `docs-fetch`    | 先拉应用镜像再归档                |
+| 可选前置 | `docs-build`    | 先强化应用侧资产再归档              |
+| 无关联  | `docs-indexing` | 本技能不替代根目录 INDEX_GUIDE 生成 |
 
-- 新增/修改的 YAML 可被解析；无断链 ID。
-- 应用独有细节仍保留在应用库；系统库无大段与 manifest 重复的冗余正文。
-- 若某条信息应用侧与系统侧冲突，**以代码与 manifest 为准**或标为待人工确认，不强行覆盖系统权威域定义。
-
----
-
-## 执行顺序建议
-
-1. 与用户确认：**仅归档** / **仅上行** / **归档 + 上行**。
-2. 确认应用列表与（可选）Git 基线。
-3. 执行（一），落盘归档文件。
-4. 执行（二），按映射表改系统库，最后跑自检。
-5. Git 提交信息建议：`docs: 应用知识归档与系统库同步（<应用名>）` 或拆分两笔提交。
-
----
 
 ## 参考
 
-- [../../../applications/README.md](../../../applications/README.md)、[../../../applications/APPLICATIONS_INDEX.md](../../../applications/APPLICATIONS_INDEX.md)
-- [../../../system/knowledge/README.md](../../../system/knowledge/README.md)、[../../../system/CONTRIBUTING.md](../../../system/CONTRIBUTING.md)、[../../../system/DESIGN.md](../../../system/DESIGN.md)、[../../../system/SYSTEM_INDEX.md](../../../system/SYSTEM_INDEX.md)
-- 应用内增量维护：视项目而定（可配合 `docs-build` 等）
-- 系统库从零构建：按序组合 [../docs-indexing/SKILL.md](../docs-indexing/SKILL.md)、[../agent-guide/SKILL.md](../agent-guide/SKILL.md)、[../docs-build/SKILL.md](../docs-build/SKILL.md)（无单独编排 Skill）
+
+| 资源                                        | 路径                                                             | 何时读                    |
+| ----------------------------------------- | -------------------------------------------------------------- | ---------------------- |
+| 系统侧范围、scope 落点、变更发现、批次文档格式                | [reference/archive-spec.md](reference/archive-spec.md)         | 步骤 0–1 定范围、步骤 3 写批次文档时 |
+| 联邦层级、knowledge 提炼、SDD 直接归档、归档顺序、操作细则、质量自检 | [reference/federation-spec.md](reference/federation-spec.md)   | 步骤 2 写入时，多类型顺序不确定时     |
+| archive-log.yaml 格式、增量逻辑、锚点更新时机           | [reference/archive-log-spec.md](reference/archive-log-spec.md) | 步骤 0 读锚点、步骤 3 更新锚点时    |
+| 锚点/ID/联邦边界陷阱与完整自查清单                       | [gotchas.md](gotchas.md)                                       | 步骤 4 自检，遇到异常时          |
+| 参考文档总览                                    | [reference/README.md](reference/README.md)                     | 不确定去哪找规范时              |
+| 锚点更新脚本                                    | [scripts/update-archive-log.sh](scripts/update-archive-log.sh) | 步骤 3 更新锚点时             |
+
+

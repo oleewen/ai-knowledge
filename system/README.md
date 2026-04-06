@@ -14,9 +14,9 @@
 | 阶段 | 目录 | 主要产物 |
 |------|------|----------|
 | 知识基线 | [knowledge](knowledge) | 四视角与宪法层实体 |
-| 方案阶段 | [solutions](solutions) | `SOLUTION-{ID}.md` |
-| 分析阶段 | [analysis](analysis) | `ANALYSIS-{ID}.md` |
-| 交付阶段 | [requirements](requirements) | `REQUIREMENT-{ID}/MVP-Phase-*`（PRD/ADD/TDD/`specs/`） |
+| 方案阶段 | [solutions](solutions) | `SOLUTION-{IDEA-ID}.md` |
+| 分析阶段 | [analysis](analysis) | `ANALYSIS-{IDEA-ID}.md` |
+| 交付阶段 | [requirements](requirements) | `REQUIREMENT-{IDEA-ID}/MVP-Phase-*`（PRD/ADD/TDD/`specs/`） |
 
 变更留痕与索引运维见 [changelogs/README.md](changelogs/README.md)。
 

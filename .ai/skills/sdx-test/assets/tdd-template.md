@@ -3,8 +3,8 @@
 ## 1. 概述
 
 ### 1.1 测试目标
-- 关联技术设计：`system/requirements/REQUIREMENT-{ID}/MVP-{N}/ADD-{ID}-{N}.md`（或目标工程 `system/requirements/...`；落盘后改为可点击链接）
-- 关联产品需求：`system/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}-{N}.md`（同上）
+- 关联技术设计：`system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ADD-{IDEA-ID}-{N}.md`（或目标工程 `system/requirements/...`；落盘后改为可点击链接）
+- 关联产品需求：`system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`（同上）
 
 ### 1.2 测试范围
 
@@ -102,9 +102,49 @@
 |------|------|---------|------|
 | 1.0.0 | | 初始版本 | quality_guardian |
 
+### 6.2 质量自查表 (Self-Check)
+
+<!-- 提交评审前逐项判定：已满足通过标准的条目由 Agent 将 `- [ ]` 改为 `- [x]` 写入终稿；未满足项保持 `- [ ]`。「通过标准」为最低放行条件；执行摘要另见技能 `reference/quality-checklist.md`。 -->
+
+- [ ] **结构与占位**  
+  *通过标准*：`## 1`–`## 6` 主章节齐全；模板内 `###` 若暂无内容，已写「不适用」「待补充」或已填占位；表格列完整；无整章空白未标注。
+- [ ] **§1.1 测试目标**  
+  *通过标准*：已引用 **PRD**、**ADD** 路径或 ID，且 **MVP-Phase-{N}** 与 `--mvp` 一致；测试对象与当前迭代范围一致。
+- [ ] **§1.2–§1.3 测试范围与策略**  
+  *通过标准*：§1.2 新增/变更/回归范围与 PRD 当前 MVP 对齐；§1.3 单元/集成/E2E（或项目约定层次）覆盖目标可度量、与 §5 进出标准可互证。
+- [ ] **§2.1 功能测试用例**  
+  *通过标准*：当前 MVP 内每个 **US-n** 至少有一条 **TC-{NNN}** 覆盖其验收标准（含正常+关键异常/边界）；优先级与 US 一致。
+- [ ] **§2.2 接口测试用例**  
+  *通过标准*：ADD 中每个需测 **API-n**（或规约中对外接口）有正常+至少一条代表性异常路径；**TC-API-*** 与错误码/幂等等设计一致。
+- [ ] **§2.3 业务规则测试用例**  
+  *通过标准*：PRD/ANALYSIS 中本 MVP 涉及的 **BR-n** 均有对应 **TC-BR-*** 或已说明「由功能用例覆盖」并标注映射。
+- [ ] **§2.4 异常场景测试用例**  
+  *通过标准*：系统异常、数据异常、并发/竞态等已按风险覆盖；**TC-EX-*** 可指回 PRD 异常说明或 ADD 容错设计。
+- [ ] **§2.5 性能测试用例**  
+  *通过标准*：PRD/ANALYSIS **NFR** 中与本 MVP 相关的性能指标有对应用例或已标「不适用」及原因。
+- [ ] **§2.6 回归测试用例**  
+  *通过标准*：回归范围与影响面分析一致；**TC-REG-*** 可说明「防什么回归」；与 §1.2 回归范围无矛盾。
+- [ ] **§3 测试数据**  
+  *通过标准*：每类数据有准备方式、数据量/脱敏要求；与 BR/状态机边界可构造。
+- [ ] **§4 测试环境**  
+  *通过标准*：服务/库/中间件/外部依赖版本与 ADD 一致或已说明差异；Mock/Stub 策略可执行。
+- [ ] **§5.1–§5.2 进出标准**  
+  *通过标准*：进入条件（代码、单测、环境、数据）可检查；退出条件（通过率、缺陷等级、覆盖率、性能）可度量，与 §1.3 策略一致。
+- [ ] **一致性**  
+  *通过标准*：与 **PRD**、**ADD** 在范围、优先级、接口命名上无未说明冲突；**TC-*** 编号在文内连续可辨。
+- [ ] **可追溯**  
+  *通过标准*：**TC-{NNN}→US-n**；**TC-API-***→API 规约；**TC-BR-***→**BR-n**；**TC-REG-***→影响面；**TC-EX-***→设计中的异常处理。
+- [ ] **术语与引用**  
+  *通过标准*：§6.1 变更历史已落位；文内术语与 PRD §8 / ADD 一致。
+- [ ] **格式与元数据**  
+  *通过标准*：文末「## 文档元数据」内 fenced `yaml` 含 `id`、`title`、`version`、`status`、`created`、`updated`、`author`、`reviewers`、`parent`、`mvp_phase`、`tags`；**文件第一行不是** `---`；`id` 与 `TDD-{IDEA-ID}-{N}.md` 及目录 **REQUIREMENT-{IDEA-ID}** 一致。
+
 ## 文档元数据
+
+<!-- 唯一元数据位置：须为 fenced yaml，且位于全文末尾；禁止在文件开头使用 --- YAML frontmatter -->
+
 ```yaml
-id: "TDD-{REQUIREMENT-ID}-MVP{N}"
+id: "TDD-{IDEA-ID}"
 title: "{测试设计标题}"
 version: "1.0.0"
 status: "draft"
@@ -112,7 +152,7 @@ created: "{YYYY-MM-DD}"
 updated: "{YYYY-MM-DD}"
 author: "quality-engineer"
 reviewers: []
-parent: "PRD-{对应产品需求编号}"
-mvp_phase: "MVP-{N}"
+parent: "PRD-{IDEA-ID}"
+mvp_phase: "MVP-Phase-{N}"
 tags: []
 ```

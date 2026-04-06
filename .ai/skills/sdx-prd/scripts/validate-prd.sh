@@ -6,13 +6,13 @@ set -euo pipefail
 #
 # 校验项:
 #   1. 文档目录存在
-#   2. frontmatter 完整性（id、title、version、status、parent、mvp_phase）
-#   3. 十章结构完整性
+#   2. 文末「文档元数据」YAML 完整性（id、title、version、status、parent、mvp_phase）；禁止文件头 ---
+#   3. 十一章结构完整性（及 §1.2 / §9 NFR 小节软校验）
 #   4. 编号体系一致性（US-n、UC-n、BR-n、EX-n、AC-n）
 #   5. 模板 prd-template.md 存在
 #   6. 需求分析关联检查
 
-DOC_ROOT="docs"
+DOC_ROOT="system"
 TARGET_FILE=""
 ERRORS=0
 WARNINGS=0
@@ -87,10 +87,13 @@ for file in "${FILES[@]}"; do
   BASENAME=$(basename "${file}")
   echo "--- 校验: ${BASENAME} ---"
 
-  # 2. frontmatter 检查
+  # 2. 文档元数据（文末 YAML，非文件头 frontmatter）
   if head -5 "${file}" | grep -q "^---"; then
-    success "${BASENAME}: frontmatter 存在"
+    warn "${BASENAME}: 文件开头存在 ---（应移除）；元数据须仅在文末「## 文档元数据」的 yaml 代码块中"
+  fi
 
+  if grep -qF "## 文档元数据" "${file}"; then
+    success "${BASENAME}: 「文档元数据」章节存在"
     for field in "id:" "title:" "version:" "status:" "parent:" "mvp_phase:"; do
       if grep -q "${field}" "${file}"; then
         success "${BASENAME}: ${field} 字段存在"
@@ -99,10 +102,10 @@ for file in "${FILES[@]}"; do
       fi
     done
   else
-    warn "${BASENAME}: 缺少 frontmatter"
+    warn "${BASENAME}: 缺少「## 文档元数据」章节（须在文末放置 YAML 元数据）"
   fi
 
-  # 3. 十章结构检查
+  # 3. 十一章结构检查
   REQUIRED_SECTIONS=(
     "## 1. 产品概述"
     "## 2. 业务流程"
@@ -112,8 +115,9 @@ for file in "${FILES[@]}"; do
     "## 6. 功能模块设计"
     "## 7. 业务规则汇总"
     "## 8. 数据字典"
-    "## 9. 验收标准汇总"
-    "## 10. 附录"
+    "## 9. 非功能需求（NFR）"
+    "## 10. 验收标准汇总"
+    "## 11. 附录"
   )
 
   SECTION_COUNT=0
@@ -124,7 +128,15 @@ for file in "${FILES[@]}"; do
       warn "${BASENAME}: 缺少章节 '${section}'"
     fi
   done
-  info "${BASENAME}: ${SECTION_COUNT}/10 个必需章节"
+  info "${BASENAME}: ${SECTION_COUNT}/11 个必需章节"
+
+  # 3b. 方案 B 模板小节（缺失时仅警告，兼容旧 PRD）
+  if ! grep -qF "### 1.2 成功标准与价值度量" "${file}"; then
+    warn "${BASENAME}: 未找到「### 1.2 成功标准与价值度量」（建议按当前 prd-template 补全 §1.2）"
+  fi
+  if ! grep -qF "## 9. 非功能需求（NFR）" "${file}"; then
+    warn "${BASENAME}: 未找到「## 9. 非功能需求（NFR）」（建议按当前 prd-template 补全独立 §9）"
+  fi
 
   # 4. 编号体系检查
   US_COUNT=$(grep -c 'US-[0-9]' "${file}" 2>/dev/null || true)

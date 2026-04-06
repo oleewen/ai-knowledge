@@ -4,7 +4,8 @@ schema_version: "1.1"
 identity:
   id: DIR-REQUIREMENTS
   name: 需求交付
-  description: REQUIREMENT-{ID}/ 内 PRD/ADD/TDD 等；与中央库 analysis、solutions 以 ID 关联。
+  description: >
+    REQUIREMENT-{IDEA-ID}/ 内 PRD/ADD/TDD 等；目录名与 ANALYSIS-{IDEA-ID}.md、PRD-* 同属 *-{IDEA-ID}（IDEA-ID 定义见 ../knowledge/constitution/standards/naming-conventions.md）。
 
 role:
   stage: requirements
@@ -14,26 +15,26 @@ role:
 repository:
   root_relative: requirements
   child_directories:
-    - REQUIREMENT-{ID}
+    - REQUIREMENT-{IDEA-ID}
   child_files:
     - README.md
   directory_patterns:
-    REQUIREMENT: REQUIREMENT-{ID}/
-    MVP_PHASE: REQUIREMENT-{ID}/MVP-Phase-{N}/
+    REQUIREMENT: REQUIREMENT-{IDEA-ID}/
+    MVP_PHASE: REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/
 
 pipeline:
   inputs:
     - path: ../../system/analysis/
-      description: 中央库 ANALYSIS-{ID}.md（可选）
+      description: 中央库 ANALYSIS-{IDEA-ID}.md（可选）
     - path: ../../system/solutions/
-      description: 中央库 SOLUTION-{ID}.md（可选）
+      description: 中央库 SOLUTION-{IDEA-ID}.md（可选）
   outputs:
     ssot_file: requirements_meta.yaml
 
 integration:
   traceability:
-    - 交付包与 ANALYSIS/SOLUTION 通过 ID 关联
-    - PRD parent → REQUIREMENT-{ID}；ADD/TDD parent → 对应 PRD
+    - 交付包目录 REQUIREMENT-{IDEA-ID} 与 ANALYSIS-{IDEA-ID}.md 共用同一 IDEA-ID
+    - PRD parent → 对应 ANALYSIS 或 REQUIREMENT 标识；ADD/TDD parent → 对应 PRD
 
 references:
   - ./README.md
@@ -48,12 +49,12 @@ layers:
     code: REQUIREMENT
     order: 1
     entity_kind: requirement_package
-    id_pattern: REQUIREMENT-{ID}
+    id_pattern: REQUIREMENT-{IDEA-ID}
     parent: null
     tree:
       child_directory_glob: MVP-Phase-{N}/
     artifacts:
-      markdown: REQUIREMENT-{ID}.md
+      markdown: REQUIREMENT-{IDEA-ID}.md
     indexing:
       readme_index_table: true
 
@@ -64,14 +65,14 @@ layers:
     id_pattern: MVP-Phase-{N}
     parent:
       field: requirement_id
-      expects: REQUIREMENT-{ID}
+      expects: REQUIREMENT-{IDEA-ID}
     artifacts:
       fixed_filenames:
         - PRD.md
         - ADD.md
         - TDD.md
     frontmatter_constraints:
-      PRD.md: "需 id、parent、mvp_phase；parent 为 REQUIREMENT-{ID}"
+      PRD.md: "需 id、parent、mvp_phase；parent 与 REQUIREMENT-{IDEA-ID} 或 ANALYSIS-{IDEA-ID} 可追溯一致"
       ADD.md: "需 id、parent；parent 指向对应 PRD"
       TDD.md: "需 id、parent；parent 指向对应 PRD"
     indexing:
