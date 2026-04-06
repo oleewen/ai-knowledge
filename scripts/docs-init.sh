@@ -605,7 +605,7 @@ install_central() {
 usage() {
   cat >&2 <<'EOF'
 用法
-  docs-init [选项] <目标工程文档目录>
+  docs-init [选项] [<目标工程文档目录>]
 
 说明
   将本仓库 system/ 目录同步到目标工程的文档目录，并将 .ai/skills、.ai/rules
@@ -616,6 +616,8 @@ usage() {
       ~/workspace/my-app/system
       ~/workspace/my-app/docs
     父目录（工程根）默认不已存在；使用 -r 可允许自动创建。
+    在 standalone 模式下，若 --scope 仅为 skills / rules / rs，可省略本参数（不落地工程文档时）。
+    central 模式、或 scope 为 all / knowledge 时，必须提供本参数。
 
   替换规则
     文件名  : system（不区分大小写）→ application
@@ -658,13 +660,16 @@ usage() {
   # 仅同步知识库（不安装 Agent skills/rules）
   docs-init --scope=knowledge ~/workspace/my-app/system
 
-  # 仅安装 Agent skills（不落地 system 文档）
+  # 仅安装 Agent skills（不落地 system 文档；可省略文档目录）
+  docs-init --scope=skills
   docs-init --scope=skills ~/workspace/my-app/system
 
-  # 仅安装 Agent rules（不落地 system 文档）
+  # 仅安装 Agent rules（不落地 system 文档；可省略文档目录）
+  docs-init --scope=rules
   docs-init --scope=rules ~/workspace/my-app/system
 
-  # 同时安装 Agent skills + rules（不落地 system 文档）
+  # 同时安装 skills + rules（可省略文档目录）
+  docs-init --scope=rs
   docs-init --scope=rs ~/workspace/my-app/system
 
   # central 模式，指定 APP ID，安装 cursor 和 trea
@@ -722,7 +727,8 @@ _init_repo_root() {
 }
 
 _validate_docs_and_target() {
-  [[ -n "${CFG[docs_abs]}" ]] || { usage; exit 2; }
+  [[ -n "${CFG[docs_abs]}" ]] \
+    || error "内部错误：应在提供 <目标工程文档目录> 后调用文档路径校验"
 
   CFG[docs_abs]="$(sdx_strip_trailing_slash "$(sdx_abs_path "${CFG[docs_abs]}")")"
   CFG[target_dir]="$(sdx_abs_path "$(dirname "${CFG[docs_abs]}")")"
@@ -777,7 +783,12 @@ _validate_agents() {
 
 _compute_derived_paths() {
   CFG[primary_agent_slash]="$(sdx_get_agent_dir "${ENABLED_AGENTS[0]}")/"
-  CFG[docs_slash]="$(compute_docs_rel_slash "${CFG[target_dir]}" "${CFG[docs_abs]}")"
+  if [[ -n "${CFG[docs_abs]}" ]]; then
+    CFG[docs_slash]="$(compute_docs_rel_slash "${CFG[target_dir]}" "${CFG[docs_abs]}")"
+  else
+    # standalone + scope 为 s/r/rs 且未传文档目录时：无法计算相对工程根前缀，采用约定默认值
+    CFG[docs_slash]='docs/'
+  fi
 }
 
 # ─── 完成提示 ─────────────────────────────────────────────────────────────────
@@ -785,9 +796,17 @@ _compute_derived_paths() {
 _print_checklist() {
   log ""
   log "─────────────────────────────────────────────────────────────────────────"
-  log "docs-init 完成  目标: ${CFG[docs_abs]}"
+  if [[ -n "${CFG[docs_abs]}" ]]; then
+    log "docs-init 完成  目标: ${CFG[docs_abs]}"
+  else
+    log "docs-init 完成  目标: （未指定工程文档目录，仅更新用户主目录 Agent 配置）"
+  fi
   log "─────────────────────────────────────────────────────────────────────────"
-  sdx_post_init_checklist "${CFG[docs_abs]}" >&2
+  if [[ -n "${CFG[docs_abs]}" ]]; then
+    sdx_post_init_checklist "${CFG[docs_abs]}" >&2
+  else
+    sdx_post_init_checklist "<未指定工程文档目录>" >&2
+  fi
 }
 
 # ─── 入口 ─────────────────────────────────────────────────────────────────────
@@ -796,9 +815,26 @@ main() {
   parse_args "$@"
 
   _init_repo_root
-  _validate_docs_and_target
-  _validate_mode
   _validate_sync_scope
+  _validate_mode
+
+  # 未提供 <目标工程文档目录> 时的合法性（方案 A：s/r/rs + standalone 可省略）
+  if [[ -z "${CFG[docs_abs]}" ]]; then
+    if [[ "${CFG[mode]}" == "central" ]]; then
+      error "central 模式必须指定 <目标工程文档目录>"
+    fi
+    case "${CFG[scope]}" in
+      all|knowledge)
+        usage
+        exit 2
+        ;;
+    esac
+  fi
+
+  if [[ -n "${CFG[docs_abs]}" ]]; then
+    _validate_docs_and_target
+  fi
+
   _validate_agents
   _compute_derived_paths
 
@@ -807,6 +843,10 @@ main() {
   if _needs_agent_install; then
     [[ -n "${HOME:-}" ]] || error "需要 HOME 环境变量以安装 Agent skills/rules"
     CFG[home_abs]="$(sdx_abs_path "$HOME")"
+  fi
+
+  if [[ -z "${CFG[docs_abs]}" ]] && _needs_agent_install; then
+    warn "未指定工程文档目录：Agent 配置中 system/ → 文档前缀将默认替换为 docs/（相对工程根）；若需与真实目录一致请传入 <目标工程文档目录>"
   fi
 
   have_perl || warn "未检测到 perl：文件内容替换将被跳过，建议安装 perl。"

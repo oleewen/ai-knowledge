@@ -1,7 +1,7 @@
 # docs-init：`scope` 为 s/r/rs 时可选工程文档目录
 
 **日期**: 2026-04-06  
-**状态**: 待审阅  
+**状态**: 已实现  
 **范围**: `scripts/docs-init.sh`，必要时 `scripts/README.md`、`scripts/docs-config.sh`（清单文案）。
 
 ---

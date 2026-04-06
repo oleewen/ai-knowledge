@@ -98,7 +98,7 @@ REPO_ROOT=/path/to/ai-knowledge ./scripts/docs-init.sh /path/to/your-project/doc
 
 | 选项 | 说明 | 默认 |
 |------|------|------|
-| `<目标工程文档目录>` | 目标工程下的文档目录路径，如 `~/project/docs` | - |
+| `<目标工程文档目录>` | 目标工程下的文档目录路径，如 `~/project/docs`。`standalone` 且 `--scope` 为 `skills` / `rules` / `rs` 时可省略；`central` 或 `all` / `knowledge` 时必须提供 | - |
 | `--mode=MODE` | 模式：`standalone`（独立）\| `central`（中央登记）；缩写：`s` \| `c` | `standalone` |
 | `--scope=SCOPE` | 同步范围：`all(a)` \| `knowledge(k)` \| `skills(s)` | `all` |
 | `-r` | 允许工程根目录不存在时自动创建（等同 `CREATE_PROJECT_ROOT=1`） | 关闭 |
@@ -188,6 +188,7 @@ ai-knowledge/
 
 | 版本 | 变更 |
 |------|------|
+| 2.1.1 | `standalone` 下 `--scope` 为 skills/rules/rs 时，`<目标工程文档目录>` 可省略；未指定时 Agent 内 `system/` → 文档前缀替换默认为 `docs/` |
 | 2.1.0 | Agent skills/rules 安装目录由「目标工程根下」改为「用户主目录 `$HOME` 下」；备份对应使用 `~/.docs-init/` |
 | 2.0.0 | 重构：使用 `system/` 作为模板源；新增文件名/内容替换；支持多 Agent（cursor、trea、claude）；Agent 目录改为 `.cursor/`、`.trea/`、`.claude/`；standalone 模式排除 DESIGN.md 和 CONTRIBUTING.md |
 | 1.0.0 | 初始版本：使用 `applications/app-APPNAME/` 作为模板源；支持 standalone 和 central 模式；Agent 配置安装在 `.ai/` 目录 |
