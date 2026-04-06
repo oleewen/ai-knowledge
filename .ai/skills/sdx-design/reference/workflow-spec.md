@@ -203,7 +203,7 @@ technical-writer + doc-updater
    - 参考文档（§4.1）：列出规约文件路径
    - 变更历史（§5.1）
    - 质量自查表（§5.2）
-4. **质量门禁自查**：逐项检查 [quality-checklist.md](quality-checklist.md)
+4. **质量门禁**：对照 [quality-checklist.md](quality-checklist.md) 与模板 **§5.2** **逐项**判定（以模板 §5.2 每条下 *通过标准* 为最低放行条件）。**仅当**某条通过标准已满足，方在交付物 **§5.2** 中将该项由 `- [ ]` 改为 `- [x]`；未满足的保持 `- [ ]`，先修复或记录例外后再勾选。**禁止**未达标而全部勾选
 5. **输出**：
    - ADD 写入 `system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/ADD-{YYMMDD}-{主题slug}.md`
    - specs 写入 `system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/specs/`

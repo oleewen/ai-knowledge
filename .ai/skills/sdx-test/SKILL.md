@@ -10,7 +10,7 @@ description: >
 
 # 测试设计阶段（sdx-test）
 
-基于产品需求文档与技术设计文档，制定当前 MVP 的测试策略与测试计划，设计测试用例、测试数据与回归范围，输出测试设计文档（TDD），为后续开发与测试验证提供依据。
+基于产品需求文档与技术设计文档，制定当前 MVP 的测试策略与测试计划，设计测试用例、测试数据与回归范围，输出测试设计文档（TDD），为后续开发与测试验证提供依据。产出结构以 [assets/tdd-template.md](assets/tdd-template.md) 为准：**六章附录**（含 **§6.2 质量自查**）。**§6.2** 内逐条 *通过标准* 为质量门禁权威正文，与 [reference/quality-checklist.md](reference/quality-checklist.md) 摘要配合使用。
 
 ## 命名约定
 
@@ -55,7 +55,7 @@ description: >
 2. **测试用例设计** — 功能 / 接口 / 规则 / 异常 /（deep 时）性能与安全；回归用例与影响面对齐
 3. **测试数据与环境规划** — 数据需求、准备方式、环境依赖与 Mock 策略
 4. **进出标准与回归策略** — 进入/退出可度量条件；回归执行顺序
-5. **文档输出与评审** — 套 [assets/tdd-template.md](assets/tdd-template.md)；按 [reference/quality-checklist.md](reference/quality-checklist.md) 自查
+5. **文档输出与评审** — 套 [assets/tdd-template.md](assets/tdd-template.md)（含 **§6.2 质量自查**）；按 [reference/quality-checklist.md](reference/quality-checklist.md) **逐项**自查；**凡已满足通过标准的条目**，在写入 `TDD-*.md` 时须将模板 **§6.2** 中该项由 `- [ ]` 改为 `- [x]`，未满足的保持 `- [ ]` 并先修复或说明，不得虚假勾选
 
 辅助校验：
 
@@ -74,6 +74,7 @@ description: >
 | 范围清晰 | 仅产出测试设计文档，不涉及自动化测试代码 |
 | MVP 聚焦 | 仅覆盖目标 MVP 范围，不超越 MVP 边界 |
 | 可追溯 | 每个用例可追溯到用户故事、API 规约或业务规则 |
+| 自查勾选 | 质量门禁通过后，交付物 **§6.2** 中已通过项须为 `- [x]`；未通过项保持 `- [ ]` 直至修复（禁止未达标而全选） |
 
 完整原则、反模式、编号体系与错误处理见 [reference/design-principles.md](reference/design-principles.md)。
 

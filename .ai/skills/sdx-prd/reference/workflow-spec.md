@@ -292,7 +292,7 @@ technical-writer + doc-updater
    - 原型/线框图链接（§11.1）
    - 变更历史（§11.2）
    - 质量自查表（§11.3）
-4. **质量门禁自查**：逐项检查 [quality-checklist.md](quality-checklist.md)
+4. **质量门禁**：对照 [quality-checklist.md](quality-checklist.md) 与模板 **§11.3** **逐项**判定；**完整通过标准**以模板 §11.3 正文为准（每条下 *通过标准* 为最低放行条件）。**仅当**某条通过标准已满足，方在交付物 **§11.3** 中将该项由 `- [ ]` 改为 `- [x]`；未满足的保持 `- [ ]`，先修复或记录例外后再勾选。**禁止**未达标而全部勾选
 5. **输出**：写入 `system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/PRD-{YYMMDD}-{主题slug}.md`
 
 ### 输出目录

@@ -10,7 +10,7 @@ description: >
 
 # 产品需求阶段（sdx-prd）
 
-将需求分析中**当前 MVP** 细化为可评审、可验收的 PRD：业务流程、用户故事与用例、功能模块与交互、业务规则与数据字典。
+将需求分析中**当前 MVP** 细化为可评审、可验收的 PRD：业务流程、用户故事与用例、功能模块与交互、业务规则与数据字典。产出结构以 [assets/prd-template.md](assets/prd-template.md) 为准：**十一章**（含 **§11.3 质量自查**）。**§11.3** 内逐条 *通过标准* 为质量门禁权威正文，与 [reference/quality-checklist.md](reference/quality-checklist.md) 摘要配合使用。
 
 主要读者为**产品经理**（撰写与验收对齐）；**研发团队参与评审**（可行性、范围边界）。技术实现细节留给下游 sdx-design。
 
@@ -58,7 +58,7 @@ description: >
 2. **用例建模** — 用例图与 UC-n 描述；与业务流程、FR-n 对齐；前后置条件
 3. **用户故事与场景** — INVEST、Given-When-Then，关联 FR-n / BR-n，覆盖正常与异常/边界；US-n ↔ UC-n 双向映射
 4. **功能模块与交互设计** — 按业务能力域划分模块；IA、操作流程、规则汇总、数据字典与状态；**§9 NFR**（选择性类别 + 度量方法，与 ANALYSIS 对齐）及 **§10.1 / §10.2** 验收表（NAC 与 §9 互链）
-5. **文档输出与评审** — 套 [assets/prd-template.md](assets/prd-template.md)（§1.2 成功标准、§1.3 后续阶段表、**§9**、**§10**、§11）；语言审查；按 [reference/quality-checklist.md](reference/quality-checklist.md) 自查
+5. **文档输出与评审** — 套 [assets/prd-template.md](assets/prd-template.md)（§1.2 成功标准、§1.3 后续阶段表、**§9**、**§10**、§11 含 **§11.3 质量自查**）；语言审查；按 [reference/quality-checklist.md](reference/quality-checklist.md) **逐项**自查；**凡已满足通过标准的条目**，在写入 `PRD-*.md` 时须将模板 **§11.3** 中该项由 `- [ ]` 改为 `- [x]`，未满足的保持 `- [ ]` 并先修复或说明，不得虚假勾选
 
 辅助校验：
 
@@ -78,6 +78,7 @@ description: >
 | 范围清晰 | 仅产出 PRD，不涉及 ADD / 测试设计 / 代码 |
 | MVP 聚焦 | 仅覆盖 `--mvp` 对应范围，不混入后续 MVP |
 | 可追溯 | US-n→FR-n，BR-n 与需求分析一致，UC-n 与 US-n 映射完整；§1.2 / §9 与 ANALYSIS 愿景/成功标准/NFR 对齐（见 [reference/core-concepts.md](reference/core-concepts.md) 可追溯链） |
+| 自查勾选 | 质量门禁通过后，交付物 **§11.3** 中已通过项须为 `- [x]`；未通过项保持 `- [ ]` 直至修复（禁止未达标而全选） |
 
 完整原则、**FR 句式**、反模式、编号体系与错误处理见 [reference/design-principles.md](reference/design-principles.md)。
 
@@ -98,7 +99,7 @@ description: >
 | 受众与文档语言 | [reference/audience-and-language.md](reference/audience-and-language.md) | 步骤 5 语言审查时 |
 | 核心概念与 IDEA-ID 落盘示例 | [reference/core-concepts.md](reference/core-concepts.md) | 口径对齐、编号规则不确定时 |
 | 设计原则、反模式、错误处理 | [reference/design-principles.md](reference/design-principles.md) | 遇到边界判断、错误场景时 |
-| 质量门禁验收清单 | [reference/quality-checklist.md](reference/quality-checklist.md) | 步骤 5 自查时 |
+| 质量验收清单 | [reference/quality-checklist.md](reference/quality-checklist.md) | 步骤 5 自查时 |
 | PRD 文档模板 | [assets/prd-template.md](assets/prd-template.md) | 步骤 5 生成文档时 |
 | 常见陷阱与防错 | [gotchas.md](gotchas.md) | 遇到流程设计、用户故事、MVP 范围相关问题时 |
 | 文档结构校验脚本 | [scripts/validate-prd.sh](scripts/validate-prd.sh) | 步骤 5 自动验证时 |
