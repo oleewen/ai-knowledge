@@ -34,11 +34,11 @@ Agent 树仍会执行 `_rewrite_agent_file`：将字面量 `system/` 替换为 `
 
 | 方案 | 做法 | 优点 | 缺点 |
 |------|------|------|------|
-| **A（推荐）** | 未传文档目录时固定 `CFG[docs_slash]='system/'` | 与仓库模板常用前缀一致，实现简单 | 与用户真实工程目录名不一致时，技能内链接需后续手动改或使用带路径的再跑一遍 |
-| **B** | 新增 `--docs-prefix=` 仅在 s/r/rs 无路径时生效 | 可一次指定 `docs/` 等 | 多一个选项与文档成本 |
+| **A（推荐）** | 未传文档目录时固定 `CFG[docs_slash]='docs/'` | 与常见工程约定（文档在 `docs/`）一致，实现简单 | 与用户真实文档目录名不一致时，技能内链接需后续手动改或带路径再执行 |
+| **B** | 新增 `--docs-prefix=` 仅在 s/r/rs 无路径时生效 | 可一次指定 `system/` 等 | 多一个选项与文档成本 |
 | **C** | 要求环境变量 `SDX_DOCS_SLASH` | 自动化友好 | 隐式、易忘 |
 
-**推荐**：**方案 A**，并在日志中 **warn 一次**：未指定工程文档目录，`system/` → 替换前缀默认为 `system/`，若需与真实文档树一致请传入 `<目标工程文档目录>` 或使用后续文档中的可选参数（若将来增加 B）。
+**推荐**：**方案 A**，并在日志中 **warn 一次**：未指定工程文档目录时，模板中的 `system/` → 替换前缀默认为 **`docs/`**（相对工程根），若需与真实文档树一致请传入 `<目标工程文档目录>` 或使用后续可选参数（若将来增加 B）。
 
 ---
 
@@ -54,7 +54,7 @@ Agent 树仍会执行 `_rewrite_agent_file`：将字面量 `system/` 替换为 `
 ### 4.2 `_compute_derived_paths`
 
 - 若 `CFG[docs_abs]` 非空：现有逻辑 `CFG[docs_slash]="$(compute_docs_rel_slash "${CFG[target_dir]}" "${CFG[docs_abs]}")"`。
-- 若为空：`CFG[docs_slash]='system/'`（或带尾斜杠形式与现 `compute_docs_rel_slash` 输出风格一致，建议统一为 `system/`）。
+- 若为空：`CFG[docs_slash]='docs/'`（与现 `compute_docs_rel_slash` 输出风格一致，统一带尾斜杠）。
 
 ### 4.3 `central` 与无路径组合
 
@@ -79,14 +79,14 @@ Agent 树仍会执行 `_rewrite_agent_file`：将字面量 `system/` 替换为 `
 
 - `scope=all|knowledge` 且无路径 → 报错并 `usage`。
 - `mode=central` 且无路径 → 报错（明确与 standalone s/r/rs 区分）。
-- `scope=skills` 且无路径 → 成功，`docs_slash` 为默认 `system/`，有一条 warn（推荐）。
+- `scope=skills` 且无路径 → 成功，`docs_slash` 为默认 `docs/`，有一条 warn（推荐）。
 
 ---
 
 ## 6. 自检
 
 - 与既有「Agent 安装在 `$HOME`」行为兼容，不冲突。
-- 无 TBD：默认前缀取 `system/`。
+- 无 TBD：无工程文档路径时默认前缀取 **`docs/`**。
 - 单实现批次可完成。
 
 ---
