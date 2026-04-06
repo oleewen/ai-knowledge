@@ -25,9 +25,9 @@
 
 ## 与全仓库文档关系
 
-- 总体协作契约见 [AGENTS.md](../AGENTS.md)。
-- 全局路径与检索地图见 [INDEX_GUIDE.md](../INDEX_GUIDE.md)。
-- 知识库建模与维护流程见 [system/DESIGN.md](../system/DESIGN.md) 与 [system/CONTRIBUTING.md](../system/CONTRIBUTING.md)。
+- 总体协作契约见仓库根 `AGENTS.md`。
+- 全局路径与检索地图见仓库根 `INDEX_GUIDE.md`。
+- 知识库建模与维护流程见 `system/DESIGN.md` 与 `system/CONTRIBUTING.md`。
 
 ## 维护原则
 

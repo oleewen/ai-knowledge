@@ -8,9 +8,7 @@
 
 ## 1. 显式指向 `.ai` 之外的仓库相对路径（Markdown 链接）
 
-| 文件 | 引用目标 |
-|------|----------|
-| `.ai/README.md` | `../AGENTS.md`、`../INDEX_GUIDE.md`、`../system/DESIGN.md`、`../system/CONTRIBUTING.md` |
+**已处理（2026-04-06）**：`.ai/README.md` 中上述关系改为 **纯文本路径**（`` `AGENTS.md` `` 等），**不再**使用 `](../…)` 形式的仓库根外链。
 
 其余 `.ai/skills/**`、`rules/CONVENTIONS.md` 中的 `../` 链接多在 **`.ai` 内部**（如 `../skills/...`、`../assets/...`），**不**算出 `.ai` 树。
 
