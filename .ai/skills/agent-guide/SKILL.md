@@ -63,7 +63,7 @@ description: >
 ### 步骤 5：验证
 
 ```bash
-scripts/validate-guide.sh --root .
+bash .ai/skills/agent-guide/scripts/validate-guide.sh --root .
 ```
 
 完整验收清单与反模式见 [reference/quality-standards.md](reference/quality-standards.md)。
@@ -94,4 +94,4 @@ scripts/validate-guide.sh --root .
 | README 输出骨架 | [assets/readme-skeleton.md](assets/readme-skeleton.md) | 生成 README 时 |
 | AGENTS 输出骨架 | [assets/agents-skeleton.md](assets/agents-skeleton.md) | 生成 AGENTS 时 |
 | 常见陷阱与防错规则 | [gotchas.md](gotchas.md) | 遇到 Index/生成/验证相关问题时 |
-| 路径验证脚本 | [scripts/validate-guide.sh](scripts/validate-guide.sh) | 步骤 5 自动验证时 |
+| 路径验证脚本 | [.ai/skills/agent-guide/scripts/validate-guide.sh](scripts/validate-guide.sh) | 步骤 5 自动验证时 |

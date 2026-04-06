@@ -36,7 +36,7 @@
 
 ## 验收阶段
 
-**跳过路径一致性校验**：生成后必须验证 AGENTS 中的路径引用在磁盘上存在，否则 Agent 按指引打开文件时报 404，工作流中断。运行 `scripts/validate-guide.sh --root .` 可自动检查。
+**跳过路径一致性校验**：生成后必须验证 AGENTS 中的路径引用在磁盘上存在，否则 Agent 按指引打开文件时报 404，工作流中断。运行 `bash .ai/skills/agent-guide/scripts/validate-guide.sh --root .` 可自动检查。
 
 **AGENTS 首条参考路径写错**：AGENTS「先读什么」表格中 INDEX 路径必须与步骤 1 记录的实际落盘路径完全一致，否则 Agent 启动时找不到地图。
 
