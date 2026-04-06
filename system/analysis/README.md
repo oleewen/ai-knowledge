@@ -19,7 +19,7 @@
 ## 命名与ID
 
 - **文件名**：`ANALYSIS-{IDEA-ID}.md`，其中 **IDEA-ID** 须与上游 `SOLUTION-{IDEA-ID}.md` 及下游 `REQUIREMENT-{IDEA-ID}/` 同链一致（见 [../knowledge/constitution/standards/naming-conventions.md](../knowledge/constitution/standards/naming-conventions.md)）。
-- **文档内**：frontmatter 中 `id` 与文件名一致，`parent` 指向对应的 `SOLUTION-{IDEA-ID}`。
+- **文档内**：文末「## 文档元数据」中 `id` 与文件名一致，`parent` 指向对应的 `SOLUTION-{IDEA-ID}`（勿在文件开头使用 `---` YAML frontmatter）。
 
 ## 规范与模板
 

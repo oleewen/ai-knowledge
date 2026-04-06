@@ -10,7 +10,7 @@ description: >
 
 # 需求分析阶段（sdx-analysis）
 
-在解决方案与事实材料基础上，将共识级方案细化为**可评审、可排期、可验收**的需求分析：划清范围、拆 MVP、标优先级与依赖，并识别风险。
+在解决方案与事实材料基础上，将共识级方案细化为**可评审、可排期、可验收**的需求分析：划清范围、拆 MVP、标优先级与依赖，并识别风险。产出结构以 [assets/analysis-template.md](assets/analysis-template.md) 为准：**六章**（背景与目标 → 功能需求「含 FR 节内规则与业务对象」→ 非功能需求 → 交付计划 → 依赖与风险 → 附录含变更历史与质量自查）。
 
 主要读者为**产品经理与需求分析师**（业务方参与范围与验收对齐）；研发以本阶段产出为输入编写 PRD/技术方案。
 
@@ -46,11 +46,11 @@ description: >
 
 按顺序执行；每步算法、depth 差异与 Q-n 处理见 [reference/workflow-spec.md](reference/workflow-spec.md)。
 
-1. **深度研究与探索** — 领域边界、核心规则、跨域协作与风险；按影响面按需读库，禁止通读全仓
-2. **需求细化与建模** — FR/BR/非功能/数据对象（业务语义）；歧义标 Q-n，逐一交互确认后再进步骤 3
-3. **MVP 拆分与规划** — 独立业务价值、单向依赖、P0 进首包
-4. **依赖分析与风险评估** — R-n、协作与外部依赖，业务影响表述
-5. **文档输出与评审** — 严格套 [assets/analysis-template.md](assets/analysis-template.md)；语言审查；按 [reference/quality-checklist.md](reference/quality-checklist.md) 自查
+1. **深度研究与探索** — §1.3「研究与分析」及范围/假设；领域边界、核心规则、跨域协作；按影响面按需读库，禁止通读全仓
+2. **需求细化与建模** — §2 按 **FR-n** 分节（描述、规则 BR、业务对象、验收）；§3 非功能；歧义标 Q-n 并交互确认，结果融入 §1.3 / 各 FR，**不再单独设「业务规则」「数据需求」章**
+3. **MVP 拆分与规划** — §4.1–§4.3（总览、分 MVP 详述、依赖图）
+4. **依赖分析与风险评估** — §5.1 依赖表、§5.2 风险 R-n
+5. **文档输出与评审** — 严格套 [assets/analysis-template.md](assets/analysis-template.md)；§6 附录（含 §6.4 质量自查）；语言审查；按 [reference/quality-checklist.md](reference/quality-checklist.md) 自查
 
 辅助校验：
 
@@ -62,13 +62,13 @@ description: >
 
 | 约束 | 说明 |
 |------|------|
-| 模板驱动 | 输出严格遵循 `analysis-template.md` 八章结构；无内容章节保留标题并标注「不适用」 |
-| 受众可读 | 正文以产品/需求语言为主；细则见 [reference/audience-and-language.md](reference/audience-and-language.md) |
+| 模板驱动 | 输出严格遵循 `analysis-template.md` **六章**及模板内小节标题；无内容章节保留标题并标注「不适用」 |
+| 受众可读 | 正文以产品/需求语言为主；工程线索集中 **§6.3 变更历史**（须标注「待研发确认」）；细则见 [reference/audience-and-language.md](reference/audience-and-language.md) |
 | 证据优先 | 须引用解决方案与 `knowledge/` 等校准，禁止臆测；写入时转为需求/业务表述 |
 | 按需加载 | 仅在本轮需要时打开文件，禁止为完整性通读全仓 |
-| 歧义标注 | 不确定项标 Q-n，逐一向用户提问确认（每题 3–4 个选项 + 「其他」）；交互格式见 workflow-spec |
+| 歧义标注 | 不确定项标 Q-n，逐一向用户提问确认（每题 3–4 个选项 + 「其他」）；澄清结果写入 §1.3 或对应 **FR-n**，模板无单独 Q 表 |
 | 范围清晰 | 仅产出需求分析文档，不涉及 PRD / ADD / 代码 |
-| 可追溯 | FR→G、BR→FR、MVP→FR、R→依赖或影响面 |
+| 可追溯 | FR→G、BR→FR（规则表置于 FR 节内）、MVP→FR、R→依赖或影响面 |
 
 完整原则、反模式、编号体系与错误处理见 [reference/design-principles.md](reference/design-principles.md)。
 

@@ -6,10 +6,11 @@ set -euo pipefail
 #
 # 校验项:
 #   1. 文档目录存在
-#   2. 文末「文档元数据」YAML 完整性（id、title、version、status、parent）；禁止文件头 ---
-#   3. 八章结构完整性
-#   4. 编号体系一致性（FR-n、BR-n、R-n、MVP-n）
-#   5. 模板 analysis-template.md 存在
+#   2. 文末「文档元数据」YAML 完整性；禁止首行 --- 作为 frontmatter
+#   3. 六章 ## 结构完整性（与当前 analysis-template.md 一致）
+#   4. 关键模板小节（### / ####）标题完整性
+#   5. 编号体系一致性（FR-n、BR-n、R-n、MVP-n）
+#   6. 模板 analysis-template.md 存在
 
 DOC_ROOT="system"
 TARGET_FILE=""
@@ -87,9 +88,9 @@ for file in "${FILES[@]}"; do
   BASENAME=$(basename "${file}")
   echo "--- 校验: ${BASENAME} ---"
 
-  # 2. 文档元数据（文末 YAML，非文件头 frontmatter）
-  if head -5 "${file}" | grep -q "^---"; then
-    warn "${BASENAME}: 文件开头存在 ---（应移除）；元数据须仅在文末「## 文档元数据」的 yaml 代码块中"
+  FIRST_LINE=$(head -1 "${file}" 2>/dev/null || true)
+  if [[ "${FIRST_LINE}" == "---" ]]; then
+    warn "${BASENAME}: 首行为 ---（疑似 YAML frontmatter，应移除）；元数据须仅在文末「## 文档元数据」的 yaml 代码块中"
   fi
 
   if grep -qF "## 文档元数据" "${file}"; then
@@ -98,7 +99,7 @@ for file in "${FILES[@]}"; do
     warn "${BASENAME}: 缺少「## 文档元数据」章节（须在文末放置 YAML 元数据）"
   fi
 
-  for field in "id:" "title:" "version:" "status:" "parent:"; do
+  for field in "id:" "title:" "version:" "status:" "created:" "updated:" "author:" "reviewers:" "parent:" "tags:"; do
     if grep -q "${field}" "${file}"; then
       success "${BASENAME}: ${field} 字段存在"
     else
@@ -106,16 +107,14 @@ for file in "${FILES[@]}"; do
     fi
   done
 
-  # 3. 八章结构检查
+  # 六章结构（与 assets/analysis-template.md 一致）
   REQUIRED_SECTIONS=(
-    "## 1. 需求概述"
+    "## 1. 背景与目标"
     "## 2. 功能需求"
     "## 3. 非功能需求"
-    "## 4. 业务规则"
-    "## 5. 数据需求"
-    "## 6. MVP拆分方案"
-    "## 7. 依赖与风险"
-    "## 8. 附录"
+    "## 4. 交付计划"
+    "## 5. 依赖与风险"
+    "## 6. 附录"
   )
 
   SECTION_COUNT=0
@@ -126,25 +125,57 @@ for file in "${FILES[@]}"; do
       warn "${BASENAME}: 缺少章节 '${section}'"
     fi
   done
-  info "${BASENAME}: ${SECTION_COUNT}/8 个必需章节"
+  info "${BASENAME}: ${SECTION_COUNT}/6 个必需章节"
 
-  # 4. 编号体系检查
-  FR_COUNT=$(grep -c 'FR-[0-9]' "${file}" 2>/dev/null || true)
+  REQUIRED_SUBHEADINGS=(
+    "### 1.1 需求背景"
+    "### 1.2 需求目标"
+    "### 1.3 范围约束"
+    "#### 范围与边界"
+    "#### 假设与约束"
+    "#### 研究与分析"
+    "### 概览"
+    "### 3.1 体验与性能"
+    "### 3.2 可用性与连续性"
+    "### 3.3 安全与合规"
+    "### 3.4 可追溯与问题定位"
+    "### 3.5 兼容与升级"
+    "### 4.1 MVP 总览"
+    "### 4.2 MVP 详细规划"
+    "### 4.3 MVP 依赖关系"
+    "### 5.1 依赖关系"
+    "### 5.2 风险评估"
+    "### 6.1 术语表"
+    "### 6.2 参考文档"
+    "### 6.3 变更历史"
+    "### 6.4 质量自查表 (Self-Check)"
+  )
+  SUB_COUNT=0
+  SUB_TOTAL=${#REQUIRED_SUBHEADINGS[@]}
+  for h in "${REQUIRED_SUBHEADINGS[@]}"; do
+    if grep -qF "${h}" "${file}"; then
+      SUB_COUNT=$((SUB_COUNT + 1))
+    else
+      warn "${BASENAME}: 缺少小节标题 '${h}'"
+    fi
+  done
+  info "${BASENAME}: 模板小节 ${SUB_COUNT}/${SUB_TOTAL} 个标题命中"
+
+  FR_COUNT=$(grep -cE 'FR-[0-9]{3}|FR-[0-9][0-9]' "${file}" 2>/dev/null || true)
   BR_COUNT=$(grep -c 'BR-[0-9]' "${file}" 2>/dev/null || true)
   R_COUNT=$(grep -c 'R-[0-9]' "${file}" 2>/dev/null || true)
   MVP_COUNT=$(grep -c 'MVP-[0-9]' "${file}" 2>/dev/null || true)
 
-  info "${BASENAME}: FR-n=${FR_COUNT} BR-n=${BR_COUNT} R-n=${R_COUNT} MVP-n=${MVP_COUNT}"
+  info "${BASENAME}: FR 引用=${FR_COUNT} BR-n=${BR_COUNT} R-n=${R_COUNT} MVP-n=${MVP_COUNT}"
 
-  if [[ ${FR_COUNT} -eq 0 ]]; then
-    warn "${BASENAME}: 未发现功能需求编号 (FR-n)"
+  if ! grep -qE '### FR-[0-9]' "${file}" 2>/dev/null; then
+    warn "${BASENAME}: 未发现「### FR-n」功能需求分节标题"
   fi
 
   if [[ ${MVP_COUNT} -eq 0 ]]; then
     warn "${BASENAME}: 未发现 MVP 阶段编号 (MVP-n)"
   fi
 
-  # 5. 解决方案关联检查
   if grep -q 'SOLUTION-' "${file}"; then
     success "${BASENAME}: 关联解决方案文档"
   else

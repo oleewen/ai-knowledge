@@ -22,4 +22,4 @@
 
 ## 需求分析文档
 
-遵循 [../assets/analysis-template.md](../assets/analysis-template.md) 的章节结构；语言规范见 [audience-and-language.md](audience-and-language.md) 与 [design-principles.md](design-principles.md)。
+遵循 [../assets/analysis-template.md](../assets/analysis-template.md) 的**六章**结构：功能需求以 **FR-n** 分节，**BR-n** 与业务对象表写在对应 FR 节内；非功能、交付计划、依赖与风险、附录（含 **§6.3 变更历史**、**§6.4 质量自查**）。语言规范见 [audience-and-language.md](audience-and-language.md) 与 [design-principles.md](design-principles.md)。
