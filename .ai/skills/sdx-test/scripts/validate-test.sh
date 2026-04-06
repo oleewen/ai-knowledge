@@ -3,7 +3,7 @@ set -euo pipefail
 
 # 测试设计文档结构校验脚本
 # 用法: scripts/validate-test.sh [--doc-root <path>] [--file <path>]
-# doc_root：--doc-root > SDX_DOC_ROOT > .sdx-doc-root > 探测 > system（见 scripts/sdx-doc-root.sh）
+# doc_root：--doc-root > SDX_DOC_ROOT > .sdx-doc-root > 探测 > system（见 .ai/skills/sdx-doc-root.sh）
 #
 # 校验项:
 #   1. 文档目录存在

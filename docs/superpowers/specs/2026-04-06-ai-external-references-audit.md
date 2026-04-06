@@ -8,17 +8,17 @@
 
 ## 1. 显式指向 `.ai` 之外的仓库相对路径（Markdown 链接）
 
-**已处理（2026-04-06）**：`.ai/README.md` 中上述关系改为 **纯文本路径**（`` `AGENTS.md` `` 等），**不再**使用 `](../…)` 形式的仓库根外链。
+**已处理（2026-04-06）**：`.ai/README.md` 中上述关系改为 **纯文本路径**（如 `AGENTS.md`），**不再**使用 `](../…)` 形式的仓库根外链。
 
-其余 `.ai/skills/**`、`rules/CONVENTIONS.md` 中的 `../` 链接多在 **`.ai` 内部**（如 `../skills/...`、`../assets/...`），**不**算出 `.ai` 树。
+其余 `.ai/skills/`、`rules/CONVENTIONS.md` 中的 `../` 链接多在 **`.ai` 内部**（如 `../skills/...`、`../assets/...`），**不**算出 `.ai` 树。
 
 ---
 
-## 2. Shell 脚本对仓库根 `scripts/` 的依赖（运行时 source）
+## 2. Shell 与 doc_root 加载链（运行时 source）
 
 **已调整（2026-04-06）**：`validate-*.sh` 改为 **source** `.ai/skills/sdx-validate-bootstrap.sh`（与仓库根 `scripts/sdx-validate-bootstrap.sh` 语义一致，根目录文件为转发）。
 
-仍会在运行时 **加载** 仓库根 `scripts/sdx-doc-root.sh`（解析 doc_root）；若目标工程 **仅** 同步技能树而无 `scripts/sdx-doc-root.sh`，需一并提供或复制，否则封装内的 **stub** `sdx_resolve_doc_root_segment` 生效。
+**已调整（方案丙，2026-04-06）**：`sdx-doc-root` 实现迁至 **`.ai/skills/sdx-doc-root.sh`**（单一事实来源）；仓库根 `scripts/sdx-doc-root.sh` 为转发。校验链在仅同步 `.ai/skills/`（含 `sdx-doc-root.sh` 与 `sdx-validate-bootstrap.sh`）时即可解析 doc_root，**无需**单独复制仓库根 `scripts/` 下的实现文件。
 
 涉及校验入口：
 
@@ -33,9 +33,9 @@
 
 ## 3. 约定式引用（非必须存在的链接，文本/指令中的工程布局）
 
-大量 SKILL、reference、模板中出现 **系统知识库根目录**（路径前缀 **`system/`**）、**`knowledge/`**、**`AGENTS.md`**、**`INDEX_GUIDE.md`** 等，含义是 **目标工程文档树** 或 **协作契约**，不是 `.ai` 内可点击的相对文件路径；`docs-init` 会将部分字面量改写为 `docs/` 等。
+大量 SKILL、reference、模板中出现 **系统知识库根目录**（路径前缀 `system/`）、`knowledge/`、`AGENTS.md`、`INDEX_GUIDE.md` 等，含义是 **目标工程文档树** 或 **协作契约**，不是 `.ai` 内可点击的相对文件路径；`docs-init` 会将部分字面量改写为 `docs/` 等。
 
-**联邦**：`docs-fetch` 等提及 **应用知识库根目录**（如 **`applications/app-{APPNAME}/`**）、manifest——指向中央库目录结构。
+**联邦**：`docs-fetch` 等提及 **应用知识库根目录**（如 `applications/app-{APPNAME}/`）、manifest——指向中央库目录结构。
 
 ---
 
@@ -48,3 +48,4 @@
 ## 5. 自检
 
 - 与「仅统计磁盘上 `.ai` 外显式路径」一致；**不**将「系统知识库根目录 / `system/` 字面量」全部计为外链文件依赖。
+

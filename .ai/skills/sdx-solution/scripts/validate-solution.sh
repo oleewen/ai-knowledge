@@ -4,7 +4,7 @@ set -euo pipefail
 # 解决方案文档结构校验脚本
 # 用法: scripts/validate-solution.sh [--doc-root <path>] [--file <path>]
 # doc_root 解析顺序（方案 A）：--doc-root > SDX_DOC_ROOT > .sdx-doc-root > 目录探测 > system
-# 详见 scripts/sdx-doc-root.sh
+# 详见 .ai/skills/sdx-doc-root.sh
 #
 # 校验项:
 #   1. 模板文件存在

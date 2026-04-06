@@ -3,7 +3,7 @@ set -euo pipefail
 
 # 知识实体提取结果验证脚本
 # 用法: scripts/validate-extraction.sh [--doc-root <path>]
-# doc_root 首段：--doc-root > SDX_DOC_ROOT > .sdx-doc-root > 探测 > system（见 scripts/sdx-doc-root.sh）
+# doc_root 首段：--doc-root > SDX_DOC_ROOT > .sdx-doc-root > 探测 > system（见 .ai/skills/sdx-doc-root.sh）
 # 知识库目录：优先 {seg}/knowledge；否则 {seg}/system/knowledge
 #
 # 校验项:
