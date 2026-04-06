@@ -16,9 +16,9 @@
 
 ## 2. Shell 与 doc_root 加载链（运行时 source）
 
-**已调整（2026-04-06）**：`validate-*.sh` 改为 **source** `.ai/skills/sdx-validate-bootstrap.sh`（与仓库根 `scripts/sdx-validate-bootstrap.sh` 语义一致，根目录文件为转发）。
+**已调整（2026-04-06）**：`validate-*.sh` 改为 **source** `.ai/scripts/sdx-validate-bootstrap.sh`（与仓库根 `scripts/sdx-validate-bootstrap.sh` 语义一致，根目录文件为转发）。
 
-**已调整（方案丙，2026-04-06）**：`sdx-doc-root` 实现迁至 **`.ai/skills/sdx-doc-root.sh`**（单一事实来源）；仓库根 `scripts/sdx-doc-root.sh` 为转发。校验链在仅同步 `.ai/skills/`（含 `sdx-doc-root.sh` 与 `sdx-validate-bootstrap.sh`）时即可解析 doc_root，**无需**单独复制仓库根 `scripts/` 下的实现文件。
+**已调整（方案丙，2026-04-06）**：`sdx-doc-root` 实现迁至 **`.ai/scripts/sdx-doc-root.sh`**（单一事实来源）；仓库根 `scripts/sdx-doc-root.sh` 为转发。**已迁移（2026-04-06）**：上述两文件从 `.ai/skills/` 迁至 **`.ai/scripts/`**，与 `skills/` 并列。校验链在同步 **`.ai/scripts/`**（及相应 skill 脚本）时即可解析 doc_root，**无需**单独复制仓库根 `scripts/` 下的实现文件。
 
 涉及校验入口：
 

@@ -3,7 +3,7 @@ set -euo pipefail
 
 # PRD 文档结构校验脚本
 # 用法: scripts/validate-prd.sh [--doc-root <path>] [--file <path>]
-# doc_root：--doc-root > SDX_DOC_ROOT > .sdx-doc-root > 探测 > system（见 .ai/skills/sdx-doc-root.sh）
+# doc_root：--doc-root > SDX_DOC_ROOT > .sdx-doc-root > 探测 > system（见 .ai/scripts/sdx-doc-root.sh）
 #
 # 校验项:
 #   1. 文档目录存在
@@ -28,7 +28,7 @@ done
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck disable=SC1091
-source "$SCRIPT_DIR/../../sdx-validate-bootstrap.sh"
+source "$SCRIPT_DIR/../../../scripts/sdx-validate-bootstrap.sh"
 sdx_validate_load_doc_root "$SCRIPT_DIR"
 
 REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || pwd)"

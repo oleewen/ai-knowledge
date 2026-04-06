@@ -10,7 +10,7 @@
 #   5) 无匹配目录时默认 docs
 #
 # Usage（由其它脚本 source）：
-#   source ".../.ai/skills/sdx-doc-root.sh"
+#   source ".../.ai/scripts/sdx-doc-root.sh"
 #   seg="$(sdx_resolve_doc_root_segment "$CLI_OVERRIDE" "$PROBE_BASE")"
 #
 # PROBE_BASE 一般为仓库根（含 system/、docs/ 的目录）。
@@ -99,7 +99,7 @@ sdx_resolve_doc_root_segment() {
   sdx_probe_doc_root_segment "$probe_base"
 }
 
-# 自任意路径向上查找仓库根：存在 .ai/skills/sdx-doc-root.sh（副本）或 scripts/sdx-doc-root.sh（转发）
+# 自任意路径向上查找仓库根：存在 .ai/scripts/sdx-doc-root.sh（副本）或 scripts/sdx-doc-root.sh（转发）
 # Usage: sdx_find_repo_root_from_path <start_dir>
 sdx_find_repo_root_from_path() {
   local d="${1:-}"
@@ -107,7 +107,7 @@ sdx_find_repo_root_from_path() {
   [[ -d "$d" ]] && d="$(cd "$d" && pwd)" || d="$(cd "$(dirname "$d")" && pwd)/$(basename "$d")"
   local _
   for _ in $(seq 1 16); do
-    if [[ -f "$d/.ai/skills/sdx-doc-root.sh" || -f "$d/scripts/sdx-doc-root.sh" ]]; then
+    if [[ -f "$d/.ai/scripts/sdx-doc-root.sh" || -f "$d/scripts/sdx-doc-root.sh" ]]; then
       printf '%s' "$d"
       return 0
     fi

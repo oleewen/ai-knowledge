@@ -4,7 +4,7 @@ set -euo pipefail
 # 解决方案文档结构校验脚本
 # 用法: scripts/validate-solution.sh [--doc-root <path>] [--file <path>]
 # doc_root 解析顺序（方案 A）：--doc-root > SDX_DOC_ROOT > .sdx-doc-root > 目录探测 > system
-# 详见 .ai/skills/sdx-doc-root.sh
+# 详见 .ai/scripts/sdx-doc-root.sh
 #
 # 校验项:
 #   1. 模板文件存在
@@ -32,7 +32,7 @@ done
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck disable=SC1091
-source "$SCRIPT_DIR/../../sdx-validate-bootstrap.sh"
+source "$SCRIPT_DIR/../../../scripts/sdx-validate-bootstrap.sh"
 sdx_validate_load_doc_root "$SCRIPT_DIR"
 
 REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || pwd)"

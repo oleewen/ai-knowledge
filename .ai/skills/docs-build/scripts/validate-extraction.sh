@@ -3,7 +3,7 @@ set -euo pipefail
 
 # 知识实体提取结果验证脚本
 # 用法: scripts/validate-extraction.sh [--doc-root <path>]
-# doc_root 首段：--doc-root > SDX_DOC_ROOT > .sdx-doc-root > 探测 > system（见 .ai/skills/sdx-doc-root.sh）
+# doc_root 首段：--doc-root > SDX_DOC_ROOT > .sdx-doc-root > 探测 > system（见 .ai/scripts/sdx-doc-root.sh）
 # 知识库目录：优先 {seg}/knowledge；否则 {seg}/system/knowledge
 #
 # 校验项:
@@ -27,7 +27,7 @@ done
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck disable=SC1091
-source "$SCRIPT_DIR/../../sdx-validate-bootstrap.sh"
+source "$SCRIPT_DIR/../../../scripts/sdx-validate-bootstrap.sh"
 sdx_validate_load_doc_root "$SCRIPT_DIR"
 
 REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || pwd)"

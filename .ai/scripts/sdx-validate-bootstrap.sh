@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # sdx-validate-bootstrap.sh — 供 .ai/skills/*/scripts/validate-*.sh source
-# 位于 .ai/skills/；优先加载同目录 sdx-doc-root.sh（方案丙：单一事实来源）。
+# 位于 .ai/scripts/；优先加载同目录 sdx-doc-root.sh（方案丙：单一事实来源）。
 
 sdx_validate_load_doc_root() {
   local script_dir="${1:?script_dir}"
@@ -9,11 +9,11 @@ sdx_validate_load_doc_root() {
   boot_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
   s="$boot_dir/sdx-doc-root.sh"
   if [[ ! -f "$s" ]]; then
-    s="$(cd "$script_dir/../../../../.ai/skills" 2>/dev/null && pwd)/sdx-doc-root.sh"
+    s="$(cd "$script_dir/../../../../.ai/scripts" 2>/dev/null && pwd)/sdx-doc-root.sh"
   fi
   if [[ ! -f "$s" ]]; then
     gr="$(git -C "$script_dir" rev-parse --show-toplevel 2>/dev/null || true)"
-    [[ -n "$gr" && -f "$gr/.ai/skills/sdx-doc-root.sh" ]] && s="$gr/.ai/skills/sdx-doc-root.sh"
+    [[ -n "$gr" && -f "$gr/.ai/scripts/sdx-doc-root.sh" ]] && s="$gr/.ai/scripts/sdx-doc-root.sh"
   fi
   if [[ ! -f "$s" ]]; then
     [[ -n "$gr" && -f "$gr/scripts/sdx-doc-root.sh" ]] && s="$gr/scripts/sdx-doc-root.sh"
