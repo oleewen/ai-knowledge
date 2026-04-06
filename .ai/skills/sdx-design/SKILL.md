@@ -6,10 +6,12 @@ description: >
   生成 API/数据/领域规约、需要技术蓝图供研发实现、或需要将 PRD 转化为可落地的技术方案时，务必使用本技能。
   即使用户只说"帮我写个技术方案"、"设计一下接口"、"出一份 ADD"、"把 PRD 转成技术设计"、
   "设计一下数据库表"、"画一下架构图"，也应触发本技能。
-  输出至 system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ADD-{IDEA-ID}-{N}.md。
+  输出至系统知识库根目录 system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ADD-{IDEA-ID}-{N}.md。
 ---
 
 # 方案设计阶段（sdx-design）
+
+**术语**：**系统知识库根目录**指路径前缀 `system/`（与 `--doc-root` 默认一致时）。
 
 基于产品需求文档，结合系统架构与领域模型，输出**架构设计说明书（ADD）**与**规约文件（specs）**，为测试设计与开发提供技术蓝图。
 
@@ -21,7 +23,7 @@ description: >
 
 | 类型 | 内容 |
 |------|------|
-| 硬输入 | 产品需求文档（`system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`） |
+| 硬输入 | 产品需求文档（系统知识库根目录 `system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`） |
 | 可选输入 | 需求分析文档、`knowledge/technical/`、`knowledge/business/`、`knowledge/constitution/adr/`（按需加载，禁止通读全仓） |
 | 固定输出 | `ADD-{IDEA-ID}-{N}.md`、`specs/{service-name}/{type}/*.yaml` |
 | 不产出 | 测试设计、代码（使用下游 sdx-test / dev） |
@@ -94,7 +96,7 @@ description: >
 
 ## 命名约定
 
-- ADD 路径：`system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ADD-{IDEA-ID}-{N}.md`
+- ADD 路径（系统知识库根目录）：`system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ADD-{IDEA-ID}-{N}.md`
 - 规约路径：`.../specs/{service-name}/{type}/`（`type` 为 `api/`、`domain/`、`data/`、`integration/`）
 - IDEA-ID 与上游 `PRD-{IDEA-ID}-{N}.md` 完全一致
 - 元数据位置：文末「## 文档元数据」下的 fenced YAML；**禁止**在文件开头使用 `---` frontmatter

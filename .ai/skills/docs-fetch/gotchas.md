@@ -4,7 +4,7 @@
 
 ## 前置条件
 
-**应用未注册就直接拉取**：`applications/app-{APPNAME}/` 目录或 `{APPNAME}_manifest.yaml` 不存在时，终止并提示先执行 `docs-init --mode=central`。不要尝试从 manifest 缺失的目录推断仓库地址。
+**应用未注册就直接拉取**：**应用知识库根目录**下 `applications/app-{APPNAME}/` 目录或 `{APPNAME}_manifest.yaml` 不存在时，终止并提示先执行 `docs-init --mode=central`。不要尝试从 manifest 缺失的目录推断仓库地址。
 
 **manifest 中 `repo_url` 为空或缺失**：读取 manifest 后必须验证 `repo_url` 字段存在且非空；缺失时终止并提示用户手动补充 manifest 中的 `repo_url` 字段。
 
@@ -20,11 +20,11 @@
 
 ## 文件覆盖
 
-**changelog 目录被远端内容覆盖**：同步前必须备份 `applications/app-{APPNAME}/changelogs/` 目录；同步完成后恢复本地 changelog，不允许远端内容覆盖本地同步记录。
+**changelog 目录被远端内容覆盖**：同步前必须备份应用知识库根目录下 `applications/app-{APPNAME}/changelogs/` 目录；同步完成后恢复本地 changelog，不允许远端内容覆盖本地同步记录。
 
 **manifest 文件被远端内容覆盖**：`{APPNAME}_manifest.yaml` 是本仓库的联邦登记文件，不属于目标工程内容；同步后若发现被覆盖，立即从 Git 恢复（`git checkout -- applications/app-{APPNAME}/{APPNAME}_manifest.yaml`）。
 
-**`docs_root` 路径映射错误**：目标工程的知识库根目录可能是 `docs/`、`system/` 或其他路径，必须从 manifest 的 `docs_root` 字段读取，不硬编码假设路径。
+**`docs_root` 路径映射错误**：目标工程的知识库根目录可能是 `docs/`、系统知识库根目录前缀 `system/` 或其他路径，必须从 manifest 的 `docs_root` 字段读取，不硬编码假设路径。
 
 ---
 
@@ -42,5 +42,5 @@
 - [ ] 目标分支已确认（用户指定或自动探测成功）
 - [ ] `changelogs/` 目录已备份，同步后已恢复
 - [ ] `{APPNAME}_manifest.yaml` 未被覆盖（或已恢复）
-- [ ] `applications/app-{APPNAME}/` 目录结构完整（含 `knowledge/`、`requirements/`、`changelogs/`）
+- [ ] 应用知识库根目录下 `applications/app-{APPNAME}/` 目录结构完整（含 `knowledge/`、`requirements/`、`changelogs/`）
 - [ ] `fetch-log.md` 已追加同步记录（含分支、提交号、文件统计）

@@ -25,7 +25,7 @@ description: >
 | 参数 | 必需 | 默认值 | 说明 |
 |------|------|--------|------|
 | `--since` | 否 | 自动 | 变更起始时间（`yyyy-MM-dd HH:mm:ss.SSS` 或 epoch ms） |
-| `--output` | 否 | `./changelogs/` | 输出目录（优先级：用户指定 > `./changelogs/` > `./system/changelogs/`） |
+| `--output` | 否 | `./changelogs/` | 输出目录（优先级：用户指定 > `./changelogs/` > 系统知识库根目录下 `./system/changelogs/`） |
 
 时间基准优先级：`--since` 参数 > 已有 JSON 的 `baseline_time` > 默认值 `2020-01-01`。
 

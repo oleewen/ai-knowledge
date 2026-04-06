@@ -2,7 +2,7 @@
 name: docs-fetch
 description: >
   从已注册的应用知识库（central 模式登记的目标工程）拉取最新文档内容，
-  更新本仓库 applications/app-{APPNAME}/ 目录，并记录同步 changelog。
+  更新本仓库应用知识库根目录下 applications/app-{APPNAME}/ 目录，并记录同步 changelog。
   当用户执行 /docs-fetch、需要同步应用知识库内容、更新联邦镜像、
   或应用侧文档有更新需要拉取到中央库时，务必使用本技能。
   即使用户只说"同步一下应用文档"、"拉取最新知识库"、"更新应用镜像"，也应触发本技能。
@@ -10,12 +10,14 @@ description: >
 
 # 应用知识库拉取（docs-fetch）
 
-从已通过 `docs-init --mode=central` 注册的目标工程知识库，拉取指定分支的文档内容，覆盖更新本仓库 `applications/app-{APPNAME}/` 联邦镜像目录，并在 `applications/app-{APPNAME}/changelogs/` 下追加同步记录。
+**术语**：**应用知识库根目录**指本仓库内联邦应用镜像所在区域（路径前缀 `applications/`，单应用为 `applications/app-{APPNAME}/`）。**系统知识库根目录**指路径前缀 `system/`（本技能默认不修改）。
+
+从已通过 `docs-init --mode=central` 注册的目标工程知识库，拉取指定分支的文档内容，覆盖更新本仓库应用知识库根目录下 `applications/app-{APPNAME}/` 联邦镜像目录，并在 `applications/app-{APPNAME}/changelogs/` 下追加同步记录。
 
 ## 前置条件
 
 目标应用必须已通过 `docs-init --mode=central` 注册，即：
-- `applications/app-{APPNAME}/` 目录存在
+- 应用知识库根目录下 `applications/app-{APPNAME}/` 目录存在
 - `applications/app-{APPNAME}/{APPNAME}_manifest.yaml` 存在且包含 `repo_url` 字段
 
 未注册的应用须先执行 `docs-init --mode=central` 完成登记。
@@ -24,17 +26,17 @@ description: >
 
 | 类型 | 内容 |
 |------|------|
-| 硬输入 | `applications/app-{APPNAME}/{APPNAME}_manifest.yaml`（含 `repo_url`、`docs_root`） |
+| 硬输入 | 应用知识库根目录下 `applications/app-{APPNAME}/{APPNAME}_manifest.yaml`（含 `repo_url`、`docs_root`） |
 | 可选输入 | `--branch` 目标分支（默认 `main` 或 `master`）、`--app` 应用名称 |
-| 固定输出 | 更新后的 `applications/app-{APPNAME}/` 目录内容 |
+| 固定输出 | 更新后的应用知识库根目录 `applications/app-{APPNAME}/` 目录内容 |
 | 附加产出 | `applications/app-{APPNAME}/changelogs/fetch-log.md`（同步记录，追加） |
-| 不产出 | 不修改 `system/` 目录、不触发 `docs-archive`、不修改 `APPLICATIONS_INDEX.md` |
+| 不产出 | 不修改系统知识库根目录 `system/`、不触发 `docs-archive`、不修改 `APPLICATIONS_INDEX.md` |
 
 ## 参数
 
 | 参数 | 必需 | 默认值 | 说明 |
 |------|------|--------|------|
-| `--app` | 否 | 自动发现 | 应用名称（对应 `applications/app-{APPNAME}/`）；未指定时列出已注册应用供选择 |
+| `--app` | 否 | 自动发现 | 应用名称（对应应用知识库根目录下 `applications/app-{APPNAME}/`）；未指定时列出已注册应用供选择 |
 | `--branch` | 否 | `main` 或 `master` | 目标工程分支；自动探测主干（先尝试 `main`，再尝试 `master`） |
 | `--dry-run` | 否 | `false` | 预览模式，仅打印将要执行的操作，不实际拉取 |
 | `--force` | 否 | `false` | 强制覆盖，跳过冲突确认 |
@@ -43,10 +45,10 @@ description: >
 
 ### 步骤 1：应用发现与 manifest 解析
 
-1. 若未指定 `--app`，扫描 `applications/` 下所有 `app-*/` 目录，列出已注册应用（含 manifest 的目录）供用户选择
+1. 若未指定 `--app`，扫描应用知识库根目录 `applications/` 下所有 `app-*/` 目录，列出已注册应用（含 manifest 的目录）供用户选择
 2. 读取 `applications/app-{APPNAME}/{APPNAME}_manifest.yaml`，提取：
    - `repo_url`：目标工程 Git 仓库地址
-   - `docs_root`：目标工程知识库根目录（默认 `docs/` 或 `system/`）
+   - `docs_root`：目标工程知识库根目录（默认 `docs/` 或系统知识库根目录前缀 `system/`）
    - `app_id`：应用 ID（如 `APP-MYSERVICE`）
 3. 确认目标分支：用户指定 `--branch` > manifest 中 `default_branch` > 自动探测（`main` → `master`）
 
@@ -67,7 +69,7 @@ scripts/fetch-docs.sh \
 
 脚本职责：
 - `git clone --depth=1 --branch {branch} {repo_url}` 到临时目录
-- 将 `{docs_root}/` 内容同步到 `applications/app-{APPNAME}/`（rsync 或 cp -r）
+- 将 `{docs_root}/` 内容同步到应用知识库根目录下 `applications/app-{APPNAME}/`（rsync 或 cp -r）
 - 保留 `applications/app-{APPNAME}/changelogs/` 目录（不覆盖本地 changelog）
 - 清理临时目录
 
@@ -75,7 +77,7 @@ scripts/fetch-docs.sh \
 
 ### 步骤 3：生成同步 changelog
 
-在 `applications/app-{APPNAME}/changelogs/fetch-log.md` 末尾追加一条同步记录：
+在应用知识库根目录 `applications/app-{APPNAME}/changelogs/fetch-log.md` 末尾追加一条同步记录：
 
 ```markdown
 ## {YYYY-MM-DD HH:mm} 同步 — {branch}@{short_commit}
@@ -96,7 +98,7 @@ changelog 格式规范见 [assets/fetch-log-template.md](assets/fetch-log-templa
 
 ### 步骤 4：验证与收尾
 
-- 验证 `applications/app-{APPNAME}/` 目录结构完整（含 `knowledge/`、`requirements/`、`changelogs/`）
+- 验证应用知识库根目录下 `applications/app-{APPNAME}/` 目录结构完整（含 `knowledge/`、`requirements/`、`changelogs/`）
 - 验证 `{APPNAME}_manifest.yaml` 未被覆盖（若被覆盖则从 Git 恢复）
 - 输出同步摘要：分支、提交号、文件变更统计
 

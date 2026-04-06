@@ -33,9 +33,9 @@
 
 ## 3. 约定式引用（非必须存在的链接，文本/指令中的工程布局）
 
-大量 SKILL、reference、模板中出现 **`system/`**、**`knowledge/`**、**`AGENTS.md`**、**`INDEX_GUIDE.md`** 等，含义是 **目标工程文档树** 或 **协作契约**，不是 `.ai` 内可点击的相对文件路径；`docs-init` 会将部分字面量改写为 `docs/` 等。
+大量 SKILL、reference、模板中出现 **系统知识库根目录**（路径前缀 **`system/`**）、**`knowledge/`**、**`AGENTS.md`**、**`INDEX_GUIDE.md`** 等，含义是 **目标工程文档树** 或 **协作契约**，不是 `.ai` 内可点击的相对文件路径；`docs-init` 会将部分字面量改写为 `docs/` 等。
 
-**联邦**：`docs-fetch` 等提及 `applications/app-{APPNAME}/`、manifest——指向中央库目录结构。
+**联邦**：`docs-fetch` 等提及 **应用知识库根目录**（如 **`applications/app-{APPNAME}/`**）、manifest——指向中央库目录结构。
 
 ---
 
@@ -47,4 +47,4 @@
 
 ## 5. 自检
 
-- 与「仅统计磁盘上 `.ai` 外显式路径」一致；**不**将「`system/` 字面量」全部计为外链文件依赖。
+- 与「仅统计磁盘上 `.ai` 外显式路径」一致；**不**将「系统知识库根目录 / `system/` 字面量」全部计为外链文件依赖。

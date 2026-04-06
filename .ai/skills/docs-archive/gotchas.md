@@ -10,7 +10,7 @@
 
 **锚点 changelog_id 在 CHANGELOG.md 中找不到**：CHANGELOG.md 可能被重写或条目被删除。此时不能静默降级为全量归档，须警告并请用户确认，否则可能重复归档已归档内容。
 
-**归档写入失败后仍更新锚点**：锚点必须在 **`system/` 下本次归档涉及的全部写入**（含 knowledge/、solutions/、analysis/、requirements/、specs/、changelogs/upstream-from-applications/ 及需更新的导航文件等）均成功，且批次归档文档已生成后，才更新。任一目标写入失败则不更新锚点，保证下次重试从同一位置开始。
+**归档写入失败后仍更新锚点**：锚点必须在**系统知识库根目录 `system/` 下本次归档涉及的全部写入**（含 knowledge/、solutions/、analysis/、requirements/、specs/、changelogs/upstream-from-applications/ 及需更新的导航文件等）均成功，且批次归档文档已生成后，才更新。任一目标写入失败则不更新锚点，保证下次重试从同一位置开始。
 
 **`--full` 参数误用**：`--full` 会忽略锚点重新归档所有内容，可能产生重复 ID 或覆盖系统库已有内容。使用前须确认系统库当前状态，或先备份。
 
@@ -60,7 +60,7 @@
 
 ## 多应用归档
 
-**未指定 `--app` 时通读全部应用**：扫描 `applications/app-*/` 时只做轻量检查（读 `archive-log.yaml` 和 `CHANGELOG.md` 条目数），不通读全部知识库内容，按需加载。
+**未指定 `--app` 时通读全部应用**：扫描应用知识库根目录 `applications/app-*/` 时只做轻量检查（读 `archive-log.yaml` 和 `CHANGELOG.md` 条目数），不通读全部知识库内容，按需加载。
 
 **多应用归档时锚点混淆**：每个应用独立维护 `changelogs/archive-log.yaml`，不共用锚点文件。
 
@@ -79,5 +79,5 @@
 - [ ] SDD 文档归档：solutions/analysis 索引表已更新
 - [ ] SDD 文档归档：requirements 需求包目录结构完整
 - [ ] 变更影响导航时已同步更新 SYSTEM_INDEX 或视角 README
-- [ ] 批次归档文档已写入 `system/changelogs/upstream-from-applications/`
+- [ ] 批次归档文档已写入系统知识库根目录 `system/changelogs/upstream-from-applications/`
 - [ ] 归档锚点已在写入成功后更新（`archive-log.yaml` 已追加新记录）

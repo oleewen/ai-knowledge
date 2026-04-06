@@ -27,7 +27,7 @@
 
 - 总体协作契约见仓库根 `AGENTS.md`。
 - 全局路径与检索地图见仓库根 `INDEX_GUIDE.md`。
-- 知识库建模与维护流程见 `system/DESIGN.md` 与 `system/CONTRIBUTING.md`。
+- 知识库建模与维护流程见**系统知识库根目录**（路径前缀 `system/`）下 `DESIGN.md` 与 `CONTRIBUTING.md`。
 
 ## 维护原则
 

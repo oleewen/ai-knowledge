@@ -5,10 +5,12 @@ description: >
   当用户执行 /sdx-solution、需要编写解决方案文档、收到业务需求需要结构化分析、
   需求模糊或矛盾需要冲突识别、或需要制定 MVP 与里程碑时，务必使用本技能。
   即使用户只说"帮我写个方案"、"分析一下这个需求"、"整理一下业务目标"，也应触发本技能。
-  输出至 system/solutions/SOLUTION-{IDEA-ID}.md。
+  输出至系统知识库根目录 system/solutions/SOLUTION-{IDEA-ID}.md。
 ---
 
 # 解决方案阶段（sdx-solution）
+
+**术语**：**系统知识库根目录**指路径前缀 `system/`（与 `--doc-root` 默认一致时）。
 
 从海量、模糊甚至矛盾的业务描述中提取结构化诉求，评估业务影响面，识别冲突，确立目标与解决思路，输出**可供业务与产品评审、对齐共识**的解决方案文档。文档骨架以 [assets/solution-template.md](assets/solution-template.md) 为准：**七章**（背景与目标 → 范围与约束 → 影响与冲突 → 思路与方案 → 风险与待定 → 交付计划 → 附录）；**§3.4** 统一承载业务冲突（C-n，含以业务后果表述的协作/契约影响）；**§5.2** 为待澄清问题（Q-n）；文末 **文档元数据** 为 fenced `yaml`（含 `author`、`parent`、`dependencies`、`tags` 等）。
 
@@ -20,7 +22,7 @@ description: >
 |------|------|
 | 硬输入 | 业务需求描述（至少一种原始来源：邮件/会议纪要/工单等） |
 | 可选输入 | `knowledge/`、`requirements/.../specs/`、AGENTS.md（内部分析用，写入文档时转为业务表述） |
-| 固定输出 | `system/solutions/SOLUTION-{IDEA-ID}.md` |
+| 固定输出 | 系统知识库根目录下 `system/solutions/SOLUTION-{IDEA-ID}.md` |
 | 不产出 | PRD、ADD、测试设计、代码（使用下游 sdx-analysis / sdx-prd / sdx-design） |
 
 ## 参数

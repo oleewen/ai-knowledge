@@ -10,19 +10,21 @@ description: >
 
 # 应用 → 系统归档（docs-archive）
 
-把 `applications/app-{APPNAME}/` 里已核实、允许进入系统侧的内容，按联邦规则写入 `system/` 下约定路径。成功后更新应用侧增量锚点，使下次从 changelog 断点继续。
+**术语**：**应用知识库根目录**指路径前缀 `applications/`（单应用为 `applications/app-{APPNAME}/`）。**系统知识库根目录**指路径前缀 `system/`。
 
-> **系统知识库 = `system/` 全树中有归档职责的区域**，不是 `system/knowledge/` 的同义词。
+把应用知识库根目录下 `applications/app-{APPNAME}/` 里已核实、允许进入系统侧的内容，按联邦规则写入系统知识库根目录 `system/` 下约定路径。成功后更新应用侧增量锚点，使下次从 changelog 断点继续。
+
+> **系统知识库根目录**下与归档职责相关的 `system/` 全树区域，不是 `system/knowledge/` 的同义词。
 
 ## 输入与输出
 
 
 | 类型   | 内容                                                                                              |
 | ---- | ----------------------------------------------------------------------------------------------- |
-| 硬输入  | `applications/app-{APPNAME}/`（含可归档内容之一：`knowledge/`、`solutions/`、`requirements/`、`analysis/` 等） |
+| 硬输入  | 应用知识库根目录下 `applications/app-{APPNAME}/`（含可归档内容之一：`knowledge/`、`solutions/`、`requirements/`、`analysis/` 等） |
 | 可选输入 | `--app`、`--scope`、`--since`、`--full`、`--dry-run` 参数                                             |
-| 固定输出 | `system/` 下本次涉及文件；`system/changelogs/upstream-from-applications/ARCHIVE-{YYYYMMDD}-{简述}.md`     |
-| 增量产出 | 更新 `applications/app-{APPNAME}/changelogs/archive-log.yaml`                                     |
+| 固定输出 | 系统知识库根目录 `system/` 下本次涉及文件；`system/changelogs/upstream-from-applications/ARCHIVE-{YYYYMMDD}-{简述}.md`     |
+| 增量产出 | 更新应用知识库根目录下 `applications/app-{APPNAME}/changelogs/archive-log.yaml`                                     |
 | 不产出  | 不生成根目录 `INDEX_GUIDE.md`；不擅自改应用 manifest 结构；不默认全量重写 `SYSTEM_INDEX.md`                            |
 
 
@@ -31,7 +33,7 @@ description: >
 
 | 参数          | 默认    | 说明                                                              |
 | ----------- | ----- | --------------------------------------------------------------- |
-| `--app`     | 全部    | 仅处理 `applications/app-{NAME}/`                                  |
+| `--app`     | 全部    | 仅处理应用知识库根目录下 `applications/app-{NAME}/`                                  |
 | `--scope`   | `all` | `all` | `knowledge` | `solutions` | `analysis` | `requirements` |
 | `--since`   | 锚点    | 手动指定 changelog 起点（覆盖锚点）                                         |
 | `--full`    | 否     | 全量重扫；可能覆盖系统侧已有内容，需人工确认                                          |
@@ -54,7 +56,7 @@ description: >
 
 变更发现方式（git diff / 清单驱动 / 全量快照）见 [reference/archive-spec.md](reference/archive-spec.md)。
 
-### 步骤 2：写入 system/
+### 步骤 2：写入系统知识库根目录（`system/`）
 
 - **先读再写**：打开将修改的系统侧文件及相邻 `*_meta.yaml`，确认已有 ID 与结构。
 - **多类型同一批次**：严格按 `knowledge → solutions → analysis → requirements` 顺序，避免 `parent` 断链。
@@ -88,7 +90,7 @@ description: >
 | 约束           | 说明                                                   |
 | ------------ | ---------------------------------------------------- |
 | 增量默认         | 以锚点为准，避免重复晋升同一 changelog 区间                          |
-| 锚点原子性        | system 侧写入失败则不更新 `archive-log.yaml`                  |
+| 锚点原子性        | 系统知识库根目录侧写入失败则不更新 `archive-log.yaml`                  |
 | knowledge 边界 | 契约与 ID，不整段复制应用侧长文                                    |
 | ID 不可变       | 禁止改已有实体 id；新增须全局唯一                                   |
 | 归档顺序         | knowledge → solutions → analysis → requirements，不可乱序 |
