@@ -19,7 +19,7 @@
 ## 命名与ID
 
 - **文件名**：`SOLUTION-{IDEA-ID}.md`，其中 **IDEA-ID** 为需求链统一标识（见 [../knowledge/constitution/standards/naming-conventions.md](../knowledge/constitution/standards/naming-conventions.md)）。
-- **文档内**：frontmatter 中 `id` 与文件名一致，可含 `parent`、`dependencies` 等关联字段。
+- **文档内**：文末「## 文档元数据」中 `id` 与文件名一致，可含 `parent`、`dependencies`、`tags` 等关联字段（勿在文件开头使用 `---` YAML frontmatter）。
 
 ## 规范与模板
 

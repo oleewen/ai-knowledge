@@ -8,12 +8,13 @@ set -euo pipefail
 # 校验项:
 #   1. 模板文件存在
 #   2. 文档目录存在
-#   3. 文末「文档元数据」YAML 完整性（id、title、version、status、created、updated）；禁止文件头 ---
+#   3. 文末「文档元数据」YAML 完整性（与 solution-template 一致）；禁止文件头 YAML frontmatter（首行 ---）
 #   4. id 格式符合 SOLUTION-{IDEA-ID}
-#   5. 九章结构完整性
-#   6. 空章节检测（无内容且未标注「不适用」或「待补充」）
-#   7. 编号体系一致性（G-n、Q-n、C-n、R-n）
-#   8. 技术语言检测（接口名、表名等技术词混入正文）
+#   5. 七章 ## 结构完整性
+#   6. 模板小节（### / ####）标题完整性
+#   7. 空章节检测（无内容且未标注「不适用」或「待补充」）
+#   8. 编号体系一致性（G-n、Q-n、C-n、R-n）
+#   9. 技术语言检测（接口名、表名等技术词混入正文）
 
 DOC_ROOT="system"
 TARGET_FILE=""
@@ -90,14 +91,15 @@ for file in "${FILES[@]}"; do
   BASENAME=$(basename "${file}")
   echo "--- 校验: ${BASENAME} ---"
 
-  # 2. 文档元数据（文末 YAML，非文件头 frontmatter）
-  if head -5 "${file}" | grep -q "^---"; then
-    warn "${BASENAME}: 文件开头存在 ---（应移除）；元数据须仅在文末「## 文档元数据」的 yaml 代码块中"
+  # 2. 文档元数据（文末 YAML）；禁止首行 --- 作为 frontmatter（模板内分隔线通常在第 3 行及以后）
+  FIRST_LINE=$(head -1 "${file}" 2>/dev/null || true)
+  if [[ "${FIRST_LINE}" == "---" ]]; then
+    warn "${BASENAME}: 首行为 ---（疑似 YAML frontmatter，应移除）；元数据须仅在文末「## 文档元数据」的 yaml 代码块中"
   fi
 
   if grep -qF "## 文档元数据" "${file}"; then
     success "${BASENAME}: 「文档元数据」章节存在"
-    for field in "id:" "title:" "version:" "status:" "created:" "updated:"; do
+    for field in "id:" "title:" "version:" "status:" "created:" "updated:" "author:" "parent:" "dependencies:" "tags:"; do
       if grep -q "${field}" "${file}"; then
         success "${BASENAME}: ${field} 字段存在"
       else
@@ -124,17 +126,15 @@ for file in "${FILES[@]}"; do
     warn "${BASENAME}: 缺少「## 文档元数据」章节（须在文末放置 YAML 元数据）"
   fi
 
-  # 3. 九章结构检查
+  # 3. 七章结构检查（与当前 solution-template.md 一致）
   REQUIRED_SECTIONS=(
-    "## 1. 业务背景"
-    "## 2. 业务目标"
-    "## 3. 需求概述"
-    "## 4. 影响面评估"
-    "## 5. 冲突分析"
-    "## 6. 解决方案"
-    "## 7. 可行性评估"
-    "## 8. MVP拆分建议"
-    "## 9. 附录"
+    "## 1. 背景与目标"
+    "## 2. 范围与约束"
+    "## 3. 影响与冲突"
+    "## 4. 思路与方案"
+    "## 5. 风险与待定"
+    "## 6. 交付计划"
+    "## 7. 附录"
   )
 
   SECTION_COUNT=0
@@ -145,13 +145,55 @@ for file in "${FILES[@]}"; do
       warn "${BASENAME}: 缺少章节 '${section}'"
     fi
   done
-  info "${BASENAME}: ${SECTION_COUNT}/9 个必需章节"
+  info "${BASENAME}: ${SECTION_COUNT}/7 个必需章节"
+
+  # 3b. 模板小节标题（与 assets/solution-template.md 对齐）
+  REQUIRED_SUBHEADINGS=(
+    "### 1.1 业务现状"
+    "### 1.2 存在问题"
+    "### 1.3 业务目标"
+    "### 1.4 业务价值"
+    "### 2.1 核心场景"
+    "### 2.2 涉及角色"
+    "### 2.3 范围边界"
+    "#### 范围内（In Scope）"
+    "#### 范围外（Out of Scope）"
+    "#### 成功标准"
+    "### 2.4 关键约束"
+    "#### 业务约束"
+    "#### 资源约束"
+    "#### 技术约束"
+    "#### 交付约束"
+    "### 3.1 影响面"
+    "### 3.2 影响业务能力"
+    "### 3.3 影响传播路径"
+    "### 3.4 业务冲突"
+    "### 4.1 解决思路"
+    "### 4.2 方案对比（如有多种方案）"
+    "### 4.3 关键决策"
+    "### 5.1 风险评估"
+    "### 5.2 待澄清问题"
+    "### 6.1 MVP 拆分"
+    "### 6.2 关键里程碑"
+    "### 7.1 术语表"
+    "### 7.2 参考文档"
+    "### 7.3 内部参考（仅供研发接力）"
+  )
+  SUB_COUNT=0
+  SUB_TOTAL=${#REQUIRED_SUBHEADINGS[@]}
+  for h in "${REQUIRED_SUBHEADINGS[@]}"; do
+    if grep -qF "${h}" "${file}"; then
+      SUB_COUNT=$((SUB_COUNT + 1))
+    else
+      warn "${BASENAME}: 缺少小节标题 '${h}'"
+    fi
+  done
+  info "${BASENAME}: 模板小节 ${SUB_COUNT}/${SUB_TOTAL} 个标题命中"
 
   # 4. 空章节检测（有章节标题但无实质内容，且未标注「不适用」或「待补充」）
   EMPTY_SECTION_COUNT=0
   TOTAL_LINES=$(wc -l < "${file}" | tr -d ' ')
 
-  # 收集所有 ## 章节的行号，末尾追加一个哨兵行号（文件总行数+1）
   SECTION_LINES=()
   SECTION_NAMES=()
   LINE_NUM=0
@@ -163,7 +205,6 @@ for file in "${FILES[@]}"; do
     fi
   done < "${file}"
 
-  # 检查每个章节（包括最后一个）
   for i in "${!SECTION_LINES[@]}"; do
     START=${SECTION_LINES[$i]}
     if [[ $((i + 1)) -lt ${#SECTION_LINES[@]} ]]; then
@@ -186,7 +227,7 @@ for file in "${FILES[@]}"; do
   # 5. 编号体系检查
   G_COUNT=$(grep -c 'G-[0-9]' "${file}" 2>/dev/null || true)
   Q_COUNT=$(grep -c 'Q-[0-9]' "${file}" 2>/dev/null || true)
-  C_COUNT=$(grep -c 'C-[0-9T]' "${file}" 2>/dev/null || true)
+  C_COUNT=$(grep -c 'C-[0-9]' "${file}" 2>/dev/null || true)
   R_COUNT=$(grep -c 'R-[0-9]' "${file}" 2>/dev/null || true)
 
   info "${BASENAME}: G-n=${G_COUNT} Q-n=${Q_COUNT} C-n=${C_COUNT} R-n=${R_COUNT}"
@@ -196,14 +237,12 @@ for file in "${FILES[@]}"; do
   fi
 
   # 6. 技术语言检测（常见技术词混入正文）
-  # 排除 §9.3 内部参考章节后检测
   TECH_TERMS=("Spring Boot" "Kafka" "Redis" "TiDB" "MySQL" "Dubbo" "RPC" "MQ" "MyBatis" "Docker" "Kubernetes")
   TECH_WARN=0
   for term in "${TECH_TERMS[@]}"; do
-    # 简单检测：在正文中出现（排除注释行）
     MATCH_COUNT=$(grep -v "^<!--" "${file}" | grep -c "${term}" 2>/dev/null || true)
     if [[ ${MATCH_COUNT} -gt 0 ]]; then
-      warn "${BASENAME}: 正文中发现技术词「${term}」(${MATCH_COUNT} 处)，请确认是否已放入 §9.3 内部参考"
+      warn "${BASENAME}: 正文中发现技术词「${term}」(${MATCH_COUNT} 处)，请确认是否已放入 §7.3 内部参考"
       TECH_WARN=$((TECH_WARN + 1))
     fi
   done
