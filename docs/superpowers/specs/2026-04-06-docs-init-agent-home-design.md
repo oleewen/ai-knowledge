@@ -1,7 +1,7 @@
 # docs-init：Agent（.ai/skills、.ai/rules）仅安装至用户主目录
 
 **日期**: 2026-04-06  
-**状态**: 待实现  
+**状态**: 已实现  
 **范围**: `scripts/docs-init.sh`，必要时同步 `scripts/docs-config.sh`、 `scripts/README.md` 中与安装路径相关的说明。
 
 ---

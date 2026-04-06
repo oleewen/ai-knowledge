@@ -5,7 +5,7 @@
 #   1. system/ → 目标文档目录（排除 DESIGN.md、CONTRIBUTING.md）
 #      - 文件名：system（不区分大小写）→ application
 #      - 文件内容：.ai/ → Agent 目录；system/ → 文档根相对路径；系统 → 应用
-#   2. .ai/skills + .ai/rules → 所选 Agent 目录
+#   2. .ai/skills + .ai/rules → 用户主目录下所选 Agent 目录（如 ~/.cursor、~/.trea）
 #      - 文件内容：.ai/ → Agent 目录；system/ → 文档根相对路径
 #   3. central 模式：注册应用到系统知识库索引 + 建立 app-APPNAME 镜像
 #
@@ -48,6 +48,7 @@ declare -A CFG=(
   [docs_slash]=""
   [central_app_id]=""
   [central_app_slug]=""
+  [home_abs]=""
 )
 
 declare -a ENABLED_AGENTS=()
@@ -55,6 +56,9 @@ declare -a ENABLED_AGENTS=()
 # 冲突处理模式（交互状态，不放入 CFG 避免混淆）
 _CONFLICT_MODE="${CONFLICT_PROMPT_MODE:-}"
 _BACKUP_ROOT="${BACKUP_ROOT:-}"
+_BACKUP_ROOT_AGENT="${BACKUP_ROOT_AGENT:-}"
+# 单次运行共用时间戳（工程侧与 $HOME 侧 .docs-init 备份一致）
+DOC_INIT_STAMP=""
 
 
 # ─── 工具函数（纯函数，无副作用）────────────────────────────────────────────
@@ -158,25 +162,62 @@ ensure_dir() {
   run_or_dry mkdir -p "$1"
 }
 
-# 获取（或初始化）本次运行的备份根目录
+# 本次运行是否需要安装 Agent skills/rules
+_needs_agent_install() {
+  case "${CFG[scope]}" in
+    all|skills|rules|rs) return 0 ;;
+    *)                     return 1 ;;
+  esac
+}
+
+# 判断绝对路径是否落在用户主目录下的 Agent 安装树（.cursor / .trea / .claude）
+_path_is_under_agent_home() {
+  local p="$1" home="${CFG[home_abs]:-}"
+  [[ -z "$home" ]] && return 1
+  p="$(sdx_abs_path "$p")"
+  local d
+  for d in .cursor .trea .claude; do
+    [[ "$p" == "$home/$d" || "$p" == "$home/$d/"* ]] && return 0
+  done
+  return 1
+}
+
+# 获取（或初始化）本次运行的备份根目录（工程文档 / system 模板落盘）
 _get_backup_root() {
   if [[ -z "$_BACKUP_ROOT" ]]; then
-    local stamp
-    stamp="$(date +%Y-%m-%d_%H-%M-%S)"
+    local stamp="${DOC_INIT_STAMP:-$(date +%Y-%m-%d_%H-%M-%S)}"
     _BACKUP_ROOT="${CFG[target_dir]:-$PWD}/.docs-init/${stamp}"
   fi
   printf '%s' "$_BACKUP_ROOT"
+}
+
+# 获取（或初始化）Agent 安装目录的备份根（~/.docs-init/<同一时间戳>/）
+_get_backup_root_agent() {
+  if [[ -z "$_BACKUP_ROOT_AGENT" ]]; then
+    local stamp="${DOC_INIT_STAMP:-$(date +%Y-%m-%d_%H-%M-%S)}"
+    local home="${CFG[home_abs]:-}"
+    [[ -n "$home" ]] || { printf '%s' ""; return 0; }
+    _BACKUP_ROOT_AGENT="${home}/.docs-init/${stamp}"
+  fi
+  printf '%s' "$_BACKUP_ROOT_AGENT"
 }
 
 # 将已存在的路径备份到 .docs-init/<timestamp>/
 backup_path() {
   local existing="$1"
   local backup_root rel backup_target
-  backup_root="$(_get_backup_root)"
-  if [[ -n "${CFG[target_dir]}" && "$existing" == "${CFG[target_dir]}/"* ]]; then
-    rel="${existing#"${CFG[target_dir]}"/}"
+  existing="$(sdx_abs_path "$existing")"
+  if _path_is_under_agent_home "$existing"; then
+    backup_root="$(_get_backup_root_agent)"
+    [[ -n "$backup_root" ]] || error "无法解析 Agent 备份根（缺少 HOME？）"
+    rel="${existing#"${CFG[home_abs]}"/}"
   else
-    rel="${existing#/}"
+    backup_root="$(_get_backup_root)"
+    if [[ -n "${CFG[target_dir]}" && "$existing" == "${CFG[target_dir]}/"* ]]; then
+      rel="${existing#"${CFG[target_dir]}"/}"
+    else
+      rel="${existing#/}"
+    fi
   fi
   backup_target="${backup_root}/${rel}"
   # 避免同名冲突
@@ -360,11 +401,11 @@ install_agent_skills() {
   local agent agent_dir agent_slash
 
   for agent in "${ENABLED_AGENTS[@]}"; do
-    agent_dir="${CFG[target_dir]}/$(sdx_get_agent_dir "$agent")"
+    agent_dir="${CFG[home_abs]}/$(sdx_get_agent_dir "$agent")"
     agent_slash="$(sdx_get_agent_dir "$agent")/"
 
     info ">>> 安装 ${agent} Agent skills"
-    info "    目录: $agent_dir"
+    info "    目录: ${agent_dir}；用户主目录下 Agent 配置（非工程目录）"
     info "    .ai/ → ${agent_slash}  |  system/ → ${docs_slash}"
 
     ensure_dir "$agent_dir/skills"
@@ -402,11 +443,11 @@ install_agent_rules() {
   local agent agent_dir agent_slash
 
   for agent in "${ENABLED_AGENTS[@]}"; do
-    agent_dir="${CFG[target_dir]}/$(sdx_get_agent_dir "$agent")"
+    agent_dir="${CFG[home_abs]}/$(sdx_get_agent_dir "$agent")"
     agent_slash="$(sdx_get_agent_dir "$agent")/"
 
     info ">>> 安装 ${agent} Agent rules"
-    info "    目录: $agent_dir"
+    info "    目录: ${agent_dir}；用户主目录下 Agent 配置（非工程目录）"
     info "    .ai/ → ${agent_slash}  |  system/ → ${docs_slash}"
 
     ensure_dir "$agent_dir/rules"
@@ -568,7 +609,7 @@ usage() {
 
 说明
   将本仓库 system/ 目录同步到目标工程的文档目录，并将 .ai/skills、.ai/rules
-  安装到所选 Agent 目录。
+  安装到用户主目录下所选 Agent 目录（如 ~/.cursor、~/.trea），不写入目标工程根目录。
 
   <目标工程文档目录>
     目标工程内的文档子目录，例如：
@@ -605,6 +646,7 @@ usage() {
 
 环境变量
   REPO_ROOT             本仓库根目录（默认自动探测）
+  HOME                  用户主目录；安装 Agent skills/rules 时必需（解析为 Agent 安装根）
   CREATE_PROJECT_ROOT   1=允许自动创建工程根（等同 -r）| 0=要求工程根已存在（默认）
   DRY_RUN               1=预览模式
   FORCE                 1=强制覆盖
@@ -759,6 +801,13 @@ main() {
   _validate_sync_scope
   _validate_agents
   _compute_derived_paths
+
+  DOC_INIT_STAMP="$(date +%Y-%m-%d_%H-%M-%S)"
+
+  if _needs_agent_install; then
+    [[ -n "${HOME:-}" ]] || error "需要 HOME 环境变量以安装 Agent skills/rules"
+    CFG[home_abs]="$(sdx_abs_path "$HOME")"
+  fi
 
   have_perl || warn "未检测到 perl：文件内容替换将被跳过，建议安装 perl。"
 

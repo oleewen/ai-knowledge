@@ -38,7 +38,7 @@ sdx_require_bash5
 # -----------------------------------------------------------------------------
 
 # 版本信息
-readonly SDX_VERSION='2.0.0'
+readonly SDX_VERSION='2.1.0'
 readonly SDX_MIN_BASH_VERSION=5
 
 # Git 仓库地址（供 bootstrap 引用）
@@ -374,7 +374,7 @@ sdx_post_init_checklist() {
 [ ] central 模式：核对本仓库 system/SYSTEM_INDEX.md「五、中央知识库接入工程」登记行与
     applications/app-<后缀>/APPNAME_manifest.yaml 是否反映当前工程与文档路径
 
-[ ] Agent 配置：检查 .cursor/ 或 .trea/ 目录下 skills 和 rules 是否正确安装
+[ ] Agent 配置：检查用户主目录下 ~/.cursor/ 或 ~/.trea/ 等目录中 skills 和 rules 是否正确安装（非工程目录）
 
 ================================================================================
 CHECKLIST
