@@ -16,7 +16,11 @@
 
 ## 2. Shell 脚本对仓库根 `scripts/` 的依赖（运行时 source）
 
-以下脚本通过相对路径 **source 仓库根** `scripts/sdx-validate-bootstrap.sh`（再加载 `scripts/sdx-doc-root.sh`），路径在 **`.ai` 之外**：
+**已调整（2026-04-06）**：`validate-*.sh` 改为 **source** `.ai/skills/sdx-validate-bootstrap.sh`（与仓库根 `scripts/sdx-validate-bootstrap.sh` 语义一致，根目录文件为转发）。
+
+仍会在运行时 **加载** 仓库根 `scripts/sdx-doc-root.sh`（解析 doc_root）；若目标工程 **仅** 同步技能树而无 `scripts/sdx-doc-root.sh`，需一并提供或复制，否则封装内的 **stub** `sdx_resolve_doc_root_segment` 生效。
+
+涉及校验入口：
 
 - `.ai/skills/sdx-solution/scripts/validate-solution.sh`
 - `.ai/skills/sdx-analysis/scripts/validate-analysis.sh`
@@ -24,8 +28,6 @@
 - `.ai/skills/sdx-design/scripts/validate-design.sh`
 - `.ai/skills/sdx-test/scripts/validate-test.sh`
 - `.ai/skills/docs-build/scripts/validate-extraction.sh`
-
-若目标工程 **仅** 同步了 `~/.cursor/skills` 而无 `scripts/`，需单独提供或复制上述脚本，否则走 **stub** 逻辑。
 
 ---
 
