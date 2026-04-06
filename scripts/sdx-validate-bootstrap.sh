@@ -19,7 +19,7 @@ sdx_validate_load_doc_root() {
       local o="${1:-}"
       [[ -n "$o" ]] && { printf '%s' "${o%%/*}"; return; }
       [[ -n "${SDX_DOC_ROOT:-}" ]] && { printf '%s' "${SDX_DOC_ROOT%%/*}"; return; }
-      printf 'system'
+      printf 'docs'
     }
   fi
 }
