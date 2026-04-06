@@ -57,8 +57,8 @@ description: >
 1. **业务流程设计** — 主/分支/异常流程，角色与 BR-n 引用，跨系统交互（Mermaid）
 2. **用例建模** — 用例图与 UC-n 描述；与业务流程、FR-n 对齐；前后置条件
 3. **用户故事与场景** — INVEST、Given-When-Then，关联 FR-n / BR-n，覆盖正常与异常/边界；US-n ↔ UC-n 双向映射
-4. **功能模块与交互设计** — 按业务能力域划分模块；IA、操作流程、规则汇总、数据字典与状态
-5. **文档输出与评审** — 套 [assets/prd-template.md](assets/prd-template.md)；语言审查；按 [reference/quality-checklist.md](reference/quality-checklist.md) 自查
+4. **功能模块与交互设计** — 按业务能力域划分模块；IA、操作流程、规则汇总、数据字典与状态；**§9 NFR**（选择性类别 + 度量方法，与 ANALYSIS 对齐）及 **§10.1 / §10.2** 验收表（NAC 与 §9 互链）
+5. **文档输出与评审** — 套 [assets/prd-template.md](assets/prd-template.md)（§1.2 成功标准、§1.3 后续阶段表、**§9**、**§10**、§11）；语言审查；按 [reference/quality-checklist.md](reference/quality-checklist.md) 自查
 
 辅助校验：
 
@@ -70,16 +70,16 @@ description: >
 
 | 约束 | 说明 |
 |------|------|
-| 模板驱动 | 输出严格遵循 `prd-template.md` 十章结构；无内容章节保留标题并标注「不适用」 |
+| 模板驱动 | 输出严格遵循 `prd-template.md` 十一章结构；无内容章节保留标题并标注「不适用」 |
 | 受众与语言 | 产品主导、研发评审；业务/产品语言为主；细则见 [reference/audience-and-language.md](reference/audience-and-language.md) |
 | 证据优先 | 用户故事与业务规则须引用需求分析 FR-n / BR-n，禁止臆测 |
 | 按需加载 | 仅在本轮需要时打开文件，禁止为完整性通读全仓 |
 | 歧义标注 | 不确定项标为待澄清，禁止自行假设 |
 | 范围清晰 | 仅产出 PRD，不涉及 ADD / 测试设计 / 代码 |
 | MVP 聚焦 | 仅覆盖 `--mvp` 对应范围，不混入后续 MVP |
-| 可追溯 | US-n→FR-n，BR-n 与需求分析一致，UC-n 与 US-n 映射完整 |
+| 可追溯 | US-n→FR-n，BR-n 与需求分析一致，UC-n 与 US-n 映射完整；§1.2 / §9 与 ANALYSIS 愿景/成功标准/NFR 对齐（见 [reference/core-concepts.md](reference/core-concepts.md) 可追溯链） |
 
-完整原则、反模式、编号体系与错误处理见 [reference/design-principles.md](reference/design-principles.md)。
+完整原则、**FR 句式**、反模式、编号体系与错误处理见 [reference/design-principles.md](reference/design-principles.md)。
 
 ## 依赖关系
 
