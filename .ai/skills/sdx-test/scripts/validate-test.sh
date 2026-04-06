@@ -26,8 +26,9 @@ while [[ $# -gt 0 ]]; do
 done
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+_AI_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck disable=SC1091
-source "$SCRIPT_DIR/../../../scripts/sdx-validate-bootstrap.sh"
+source "$_AI_HOME/scripts/sdx-validate-bootstrap.sh"
 sdx_validate_load_doc_root "$SCRIPT_DIR"
 
 REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || pwd)"

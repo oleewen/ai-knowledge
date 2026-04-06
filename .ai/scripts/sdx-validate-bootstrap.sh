@@ -15,9 +15,6 @@ sdx_validate_load_doc_root() {
     gr="$(git -C "$script_dir" rev-parse --show-toplevel 2>/dev/null || true)"
     [[ -n "$gr" && -f "$gr/.ai/scripts/sdx-doc-root.sh" ]] && s="$gr/.ai/scripts/sdx-doc-root.sh"
   fi
-  if [[ ! -f "$s" ]]; then
-    [[ -n "$gr" && -f "$gr/scripts/sdx-doc-root.sh" ]] && s="$gr/scripts/sdx-doc-root.sh"
-  fi
   if [[ -f "$s" ]]; then
     # shellcheck disable=SC1090
     source "$s"
