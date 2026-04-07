@@ -8,6 +8,7 @@
 
 | 路径 | 说明 |
 |------|------|
+| [`constitution/`](constitution/README.md) | 系统级宪法与治理：术语边界、槽位约定；与 `application/constitution/` 职责划分见该目录 README |
 | [`architecture/`](architecture/README.md) | 业务 / 产品 / 系统 / 数据 架构文档（子结构可演进） |
 | [`application-APPNAME/`](application-APPNAME/README.md) | 占位槽位；真实应用名替换 `APPNAME`，内容可由 fetch 填入 |
 

@@ -3,10 +3,9 @@ schema_version: "1.1"
 
 id: "DIR-KNOWLEDGE"
 name: "应用知识库（knowledge）"
-description: "宪法层 + 四视角；与 docs-build 产物对齐，可与中央库 ID 对齐。"
+description: "四视角（宪法层物理目录见同级的 ../constitution/）；与 docs-build 产物对齐，可与中央库 ID 对齐。"
 
 child_directories:
-  - constitution
   - business
   - product
   - technical
@@ -27,7 +26,7 @@ indexing:
   application_index:
     path: ../INDEX_GUIDE.md
   per_perspective_readmes:
-    - ./constitution/README.md
+    - ../constitution/README.md
     - ./business/README.md
     - ./product/README.md
     - ./technical/README.md
@@ -44,7 +43,8 @@ knowledge:
   schema_version: "1.1"
   meta_read_order:
     paths:
-      - application_meta.yaml
+      - docs_meta.yaml
+      - constitution/constitution_meta.yaml
       - knowledge/knowledge_meta.yaml
       - knowledge/business/business_meta.yaml
       - knowledge/product/product_meta.yaml

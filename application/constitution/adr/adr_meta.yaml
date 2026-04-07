@@ -25,7 +25,7 @@ structure:
     - consequences
 
 inputs:
-  - ../standards/NAMING-CONVENTIONS.md
+  - ../standards/naming-conventions.md
   - ../GLOSSARY.md
 
 references:

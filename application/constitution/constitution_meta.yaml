@@ -1,9 +1,9 @@
-# application/knowledge/constitution — 目录元数据
+# application/constitution — 目录元数据
 schema_version: "1.1"
 
 id: DIR-KNOWLEDGE-CONSTITUTION
 name: 宪法与治理层
-description: 术语、原则、标准、ADR；不承载四视角实体定义。
+description: 术语、原则、标准、ADR；不承载四视角实体定义。物理目录与 knowledge/ 平级。
 
 child_directories:
   - principles
@@ -23,18 +23,18 @@ outputs:
 
 indexing:
   readme_index_table: true
-  rule: 新增 ADR/术语时维护 README 与 ../../INDEX_GUIDE.md（按需）
+  rule: 新增 ADR/术语时维护 README 与 ../INDEX_GUIDE.md（按需）
 
 integration:
   consumed_by:
-    - ../business/
-    - ../product/
-    - ../technical/
-    - ../data/
-    - ../../requirements/
+    - ../knowledge/business/
+    - ../knowledge/product/
+    - ../knowledge/technical/
+    - ../knowledge/data/
+    - ../requirements/
 
 references:
   - ./README.md
-  - ./standards/NAMING-CONVENTIONS.md
+  - ./standards/naming-conventions.md
   - ./adr/adr_meta.yaml
-  - ../../INDEX_GUIDE.md
+  - ../INDEX_GUIDE.md

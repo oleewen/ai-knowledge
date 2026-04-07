@@ -7,14 +7,19 @@ Slash 技能命令请查看 [.agent/skills/README.md](../.agent/skills/README.md
 
 ## 功能概述
 
-1. **文档与知识库**：使用 `application/` 目录作为模板，支持两种模式（**工程根默认要求已存在**：可用 `-r` 或 `CREATE_PROJECT_ROOT=1` 允许父目录不存在时自动创建；`docs` 等子目录可在拷贝时自动创建）：
-   - **standalone（默认）**：将 `application/` 内容拷贝到目标工程的 `docs/` 目录
-     - 排除治理文档：`DESIGN.md` 和 `CONTRIBUTING.md`（应用侧无需）
-     - 内容替换：`system` → `application`，`系统` → `应用`
-     - 文件名替换：`system_meta.yaml` → `application_meta.yaml`，`SYSTEM_INDEX.md` → `APPLICATION_INDEX.md`（`SYSTEM_INDEX` 先整体替换；其余路径段中 `system` 不区分大小写 → `application`）
-   - **central**：在 standalone 基础上，额外在本仓库登记目标工程信息
-     - 在 `application/SYSTEM_INDEX.md` 中记录应用接入信息
-     - 在 `applications/app-<后缀>/` 下生成联邦镜像（后缀为 APP ID 去掉 `APP-` 后的部分）与 `APPNAME_manifest.yaml`
+1. **文档与知识库**：按 **`--type` × `--mode`** 从中央库多根目录同步到目标文档目录（**工程根**默认可用 `-r` 创建；详见 [知识库 v2 设计](../docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md) §6）：
+
+   | 模式 | 未传 `--type` 时默认 | 源目录 | 行为摘要 |
+   |------|---------------------|--------|----------|
+   | **standalone** | `application` | `application/` | 全量拷贝（排除 `DESIGN.md`、`CONTRIBUTING.md`）；内容替换见 `docs-init` |
+   | **central** | **`system`**（例外） | 默认 **`system/`** | 组织级系统知识库模板同步到目标；**不**执行应用登记 |
+   | **standalone** | `application`（显式可省略） | `application/` | 同上 |
+   | **central** + **`--type=application`**（须显式） | — | `application/` **§2.1 子集** | 仅 `changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs_meta.yaml`、`manifest.yaml` + 本仓库 `application/INDEX_GUIDE.md`「十」登记 + `system/application-<slug>/` 槽位 |
+   | 任意 + **`--type=system`** | — | 仓库 `system/` | 组织级模板同步 |
+   | 任意 + **`--type=company`** | — | 仓库 `company/` | 公司级模板同步 |
+
+   - **内容替换（application 类型）**：`system` → `application`，`系统` → `应用`；文件名/内容：`system_meta` → `docs_meta`，`SYSTEM_INDEX`/`APPLICATION_INDEX` → `INDEX_GUIDE`（见 `docs-init` `_rewrite_doc_file`）。
+   - **system/company 类型**：仅做路径前缀类替换（`_rewrite_doc_file_minimal`），避免把「组织级 system」语义整体替换为「应用」。
 
 2. **Agent 配置**：为多 Agent 安装 skills 和 rules（**安装根为用户主目录 `$HOME`**，不写入目标工程根）
    - 支持 Agent：`cursor`、`trea`、`claude`，可多选（如 `--agents=cursor,trea`）
@@ -39,7 +44,7 @@ Slash 技能命令请查看 [.agent/skills/README.md](../.agent/skills/README.md
 1. 命令行 **`--doc-root`**（若脚本支持）
 2. 环境变量 **`SDX_DOC_ROOT`**
 3. 仓库根目录下文件 **`.sdx-doc-root`**（首行非注释内容，单行）
-4. **目录探测**：优先 `docs/knowledge`、`docs/solutions` 等 → `docs`；其次 `application/knowledge` 等 → `system`；`application/knowledge` 等 → `application`
+4. **目录探测**：优先 `docs/knowledge`、`docs/solutions` 等 → `docs`；其次 `application/knowledge` 等 → `application`；旧布局 `system/knowledge` 等 → `system`
 5. 无匹配子目录时默认 **`docs`**
 
 实现文件：**`.agent/scripts/sdx-doc-root.sh`**（单一事实来源）。各 skill 下 `validate-*.sh` 经 **`.agent/scripts/sdx-validate-bootstrap.sh`** 加载上述逻辑。
@@ -132,12 +137,12 @@ REPO_ROOT=/path/to/ai-knowledge ./scripts/docs-init.sh /path/to/your-project/doc
 your-project/
 ├── application/                          # 文档目录（application/ 模板拷贝，已替换 system→application）
 │   ├── README.md                  # 应用知识库 README
-│   ├── APPLICATION_INDEX.md       # 应用索引（原 SYSTEM_INDEX.md）
-│   ├── application_meta.yaml      # 根目录元数据（原 system_meta.yaml）
-│   ├── knowledge/                 # 知识库（四视角 + 宪法层）
+│   ├── INDEX_GUIDE.md             # 九章索引（docs-indexing）；central 登记见「十」
+│   ├── docs_meta.yaml             # 根目录元数据
+│   ├── constitution/            # 宪法层（原则、标准、ADR；与 knowledge/ 平级）
+│   ├── knowledge/                 # 知识库（四视角）
 │   │   ├── README.md
 │   │   ├── knowledge_meta.yaml
-│   │   ├── constitution/          # 宪法层（原则、标准、ADR）
 │   │   ├── business/              # 业务视角
 │   │   ├── product/               # 产品视角
 │   │   ├── technical/             # 技术视角
@@ -159,27 +164,29 @@ your-project/
 └── .docs-init/                    # 用户主目录侧备份（与工程侧备份共用同一时间戳目录名）
 ```
 
-**注意**：standalone 模式下自动排除 `DESIGN.md` 和 `CONTRIBUTING.md`（应用侧无需系统治理文档），并自动替换内容中的 `system` → `application`，`系统` → `应用`。
+**注意**：standalone + `type=application`（默认）下自动排除 `DESIGN.md` 和 `CONTRIBUTING.md`，并替换内容中的 `system` → `application`，`系统` → `应用`。
 
-## Central 模式额外产物
+## Central 模式额外产物（仅 `--type=application`）
 
-使用 `--mode=central` 时，在本仓库（ai-knowledge）额外生成：
+使用 `--mode=central --type=application` 时，在本仓库（ai-knowledge）额外写入：
 
 ```
 ai-knowledge/
-├── application/SYSTEM_INDEX.md         # 更新：追加接入工程登记记录
-└── applications/app-<后缀>/       # 中央模式：本仓库内新建联邦镜像目录
-    └── {APP-ID}_manifest.yaml     # 应用 manifest 文件
+├── application/INDEX_GUIDE.md          # 「十、中央知识库接入工程」登记行
+└── system/application-<后缀>/         # 联邦槽位（v2.3 起；旧 `applications/app-*` 已废弃）
+    └── README.md                      # 首次登记时生成占位说明
 ```
 
 ## 工作原理
 
 ### 模板来源
 
-| 模式 | 模板源 | 目标路径 | 替换规则 |
-|------|--------|----------|----------|
-| standalone | `application/` | `application/` | 文件名/内容：`system`→`application`，`系统`→`应用`；排除 `DESIGN.md`、`CONTRIBUTING.md` |
-| central | `application/` | `application/` | 同上，额外登记到 `application/SYSTEM_INDEX.md`「五、中央知识库接入工程」与 `applications/app-<后缀>/` |
+| 模式 × type | 模板源 | 目标路径 | 替换规则 / 附加步骤 |
+|-------------|--------|----------|---------------------|
+| standalone，默认 type=application | `application/` | 目标文档目录 | 全量；`system`→`application`；排除 `DESIGN.md`、`CONTRIBUTING.md` |
+| central，默认 type=system | `system/` | 目标文档目录 | 最小替换（`_rewrite_doc_file_minimal`） |
+| central，`--type=application` | `application/` §2.1 子集 | 目标文档目录 | 全量替换 + 登记 `application/INDEX_GUIDE.md`「十」+ `system/application-<slug>/` |
+| `--type=company` | `company/` | 目标文档目录 | 最小替换 |
 
 ### Agent 安装
 

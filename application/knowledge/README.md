@@ -1,6 +1,6 @@
 # knowledge — 应用知识库主体
 
-**应用知识库**（联邦单元内 `knowledge/`）：**宪法层** + **业务 / 产品 / 技术 / 数据** 四视角，与中央库 `application/knowledge/` 同构。中央库阶段文档（solutions、analysis）见 [`../solutions`](../solutions/README.md)、[`../analysis`](../analysis/README.md)；本应用 requirements 以本树及中央库为事实源；归档时可回写。
+**应用知识库**（联邦单元内 `knowledge/`）：**业务 / 产品 / 技术 / 数据** 四视角；**宪法层**（术语、原则、标准、ADR）与 `knowledge/` **平级**，见 [`../constitution/`](../constitution/README.md)。与中央库 `application/knowledge/` 同构。中央库阶段文档（solutions、analysis）见 [`../solutions`](../solutions/README.md)、[`../analysis`](../analysis/README.md)；本应用 requirements 以本树及中央库为事实源；归档时可回写。
 
 ---
 
@@ -14,7 +14,6 @@
 
 | 路径 | 说明 | 视角元数据（YAML） |
 |------|------|------------------|
-| [constitution](constitution) | 术语、原则、标准、ADR | [constitution/constitution_meta.yaml](constitution/constitution_meta.yaml)（子树见该目录 README） |
 | [business](business) | BD → BSD → BC → AGG | [business/business_meta.yaml](business/business_meta.yaml) |
 | [product](product) | PL → PM → FT → UC | [product/product_meta.yaml](product/product_meta.yaml) |
 | [technical](technical) | SYS → APP → MS | [technical/technical_meta.yaml](technical/technical_meta.yaml) |
@@ -28,7 +27,7 @@
 2. 只增删改 **ID** 与 YAML/Markdown 约定字段；跨视角不写重复叙述  
 3. 更新 [INDEX_GUIDE.md](../../INDEX_GUIDE.md)（第三节 · 3.1 实现侧或联邦指针）、[KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md)（各视角实体 ID）或该视角 README 中的登记 / 示例（若影响导航）  
 
-**索引指针**：各视角实体 ID [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md)；仓库根 [INDEX_GUIDE.md](../../INDEX_GUIDE.md)；中央库导航 [../SYSTEM_INDEX.md](../SYSTEM_INDEX.md)。
+**索引指针**：各视角实体 ID [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md)；仓库根 [INDEX_GUIDE.md](../../INDEX_GUIDE.md)；`application/` 九章索引与 central 登记 [../INDEX_GUIDE.md](../INDEX_GUIDE.md)。
 
 **实现侧（与 YAML 分层 ID 独立）**：网关 `@GatewayApi` 对外路径、调度模块 Job 类清单见 [INDEX_GUIDE.md](../../INDEX_GUIDE.md) **第三节 · 3.1**、**第三节 · 3.3**（与 `billing-appeal-service` / `billing-appeal-schedule` 源码一致）。
 

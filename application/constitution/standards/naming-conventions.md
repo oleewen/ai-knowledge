@@ -2,7 +2,7 @@
 
 知识库中所有**知识实体**必须拥有**全局唯一**的 ID，用于跨视角引用与追溯。本规范为必遵项。
 
-**适用范围（应用模板）**：本文件位于应用知识库模板 `applications/app-APPNAME/knowledge/constitution/standards/` 时，下文**路径**中的 **`application/`** 指仓库内**中央库目录**（不可改名为 `application/`）；**当前联邦单元**下的 `knowledge/` 即**应用知识库**，与 `application/knowledge/` 同构、命名规则一致。
+**适用范围（应用模板）**：本文件位于应用知识库模板 `applications/app-APPNAME/constitution/standards/`（与 `knowledge/` **平级**）时，下文**路径**中的 `**application/`** 指仓库内**中央库目录**（不可改名为 `application/`）；**当前联邦单元**下的 `knowledge/` 即**应用知识库**，与 `application/knowledge/` 同构、命名规则一致。
 
 ---
 
@@ -17,53 +17,61 @@
 
 ### 业务视角 (business)
 
-| 前缀 | 英文全称 | 含义 |
-|------|----------|------|
-| BD- | Business Domain | 业务域 |
-| BSD- | Business Subdomain | 业务子域 |
-| BC- | Bounded Context | 限界上下文 |
-| AGG- | Aggregate | 聚合根 |
+
+| 前缀   | 英文全称               | 含义    |
+| ---- | ------------------ | ----- |
+| BD-  | Business Domain    | 业务域   |
+| BSD- | Business Subdomain | 业务子域  |
+| BC-  | Bounded Context    | 限界上下文 |
+| AGG- | Aggregate          | 聚合根   |
+
 
 ### 产品视角 (product)
 
-| 前缀 | 英文全称 | 含义 |
-|------|----------|------|
-| PL- | Product Line | 产品线 |
-| PM- | Product Module | 产品模块 |
-| FT- | Feature | 功能点 |
-| UC- | Use Case | 用例 |
+
+| 前缀  | 英文全称             | 含义   |
+| --- | ---------------- | ---- |
+| PL- | Product Line     | 产品线  |
+| PM- | Product Module   | 产品模块 |
+| FT- | Feature          | 功能点  |
+| UC- | Use Case         | 用例   |
 | BP- | Business Process | 业务流程 |
-| BR- | Business Rule | 业务规则 |
+| BR- | Business Rule    | 业务规则 |
+
 
 ### 技术视角 (technical)
 
-| 前缀 | 英文全称 | 含义 |
-|------|----------|------|
-| SYS- | System | 系统 |
-| APP- | Application | 应用（代码仓库/部署单元） |
-| MS- | Microservice（技术视图 **入口簇**） | **对外入口**（HTTP/Dubbo/MQ/Job）**宿主类**按 **docs-build §8.1.1** 聚类；**不**对应 Maven `artifactId`/子模块（**§8.1.2**） |
-| API- | API Endpoint | 接口端点 |
+
+| 前缀   | 英文全称                       | 含义                                                                                                      |
+| ---- | -------------------------- | ------------------------------------------------------------------------------------------------------- |
+| SYS- | System                     | 系统                                                                                                      |
+| APP- | Application                | 应用（代码仓库/部署单元）                                                                                           |
+| MS-  | Microservice（技术视图 **入口簇**） | **对外入口**（HTTP/Dubbo/MQ/Job）**宿主类**按 **docs-build §8.1.1** 聚类；**不**对应 Maven `artifactId`/子模块（**§8.1.2**） |
+| API- | API Endpoint               | 接口端点                                                                                                    |
+
 
 ### 数据视角 (data)
 
-| 前缀 | 英文全称 | 含义 |
-|------|----------|------|
-| DS- | Data Store | 数据存储 |
-| ENT- | Entity | 数据实体（表/集合） |
+
+| 前缀   | 英文全称       | 含义         |
+| ---- | ---------- | ---------- |
+| DS-  | Data Store | 数据存储       |
+| ENT- | Entity     | 数据实体（表/集合） |
+
 
 ---
 
 ## 3. 文件与目录命名
 
 - **目录**：与实体 ID 一致（如 `BD-CHARGING-APPEAL`、`PL-BILLING-APPEAL`），或以 ID 为准在索引中查找。
-- **实体定义文件**：应用注册等可为 `{id}.yaml`（如 `APP-BILLING-APPEAL-SERVICE.yaml`）；数据实体字段模板见 **`data_meta.yaml`** 的 **`layers`**（`key: ent`）；若需逐实体落盘（如应用侧增量），可采用 `{ENT-ID}_ENT_meta.yaml` 约定；业务各层字段模板收敛于 **`business_meta.yaml`** 的 **`layers`** 数组。
+- **实体定义文件**：应用注册等可为 `{id}.yaml`（如 `APP-BILLING-APPEAL-SERVICE.yaml`）；数据实体字段模板见 `**data_meta.yaml`** 的 `**layers`**（`key: ent`）；若需逐实体落盘（如应用侧增量），可采用 `{ENT-ID}_ENT_meta.yaml` 约定；业务各层字段模板收敛于 `**business_meta.yaml**` 的 `**layers**` 数组。
 - **元数据文件（目录索引）**：
-  - **`application/` 根**：`system_meta.yaml`（阶段子目录与 `knowledge/` 指针、`INDEX`/`DESIGN` 等导航约定摘要）。
-  - **`application/knowledge/` 根**：`knowledge_meta.yaml`（本树 SSOT 索引说明）。
-  - **`application/knowledge/constitution/` 根**：`constitution_meta.yaml`（宪法层总索引，与四视角根目录 `business_meta.yaml` 等并列）。
+  - `**application/` 根**：`docs_meta.yaml`（阶段子目录与 `knowledge/` 指针、`INDEX_GUIDE`/`DESIGN` 等导航约定摘要）。
+  - `**application/knowledge/` 根**：`knowledge_meta.yaml`（本树 SSOT 索引说明）。
+  - `**application/constitution/` 根**：`constitution_meta.yaml`（宪法层总索引，与四视角根目录 `business_meta.yaml` 等并列）。
   - **宪法层一级子树**（与根 meta 分工、避免重复）：`principles/principles_meta.yaml`、`standards/standards_meta.yaml`、`adr/adr_meta.yaml`（及同目录 `adr-template.md`）；ADR 正文为 `adr/ADR-{序号}-{短标题}.md`。
-  - **`application/` 下阶段目录**：与目录名一致的 `{dirname}_meta.yaml`（含 `schema_version`、`layers` 等 SSOT 结构），例如 `solutions/solutions_meta.yaml`、`analysis/analysis_meta.yaml`、`requirements/requirements_meta.yaml`、`changelogs/changelogs_meta.yaml`。
-  - **应用知识库根目录**（`applications/{app}/`）：`application_meta.yaml`（联邦单元根索引）；子目录同模式，如 `knowledge/knowledge_meta.yaml`、`requirements/requirements_meta.yaml`、`changelogs/changelogs_meta.yaml`；`knowledge/constitution/` 子树 meta 与中央库同构。
+  - `**application/` 下阶段目录**：与目录名一致的 `{dirname}_meta.yaml`（含 `schema_version`、`layers` 等 SSOT 结构），例如 `solutions/solutions_meta.yaml`、`analysis/analysis_meta.yaml`、`requirements/requirements_meta.yaml`、`changelogs/changelogs_meta.yaml`。
+  - **应用知识库根目录**（`applications/{app}/`）：`application_meta.yaml`（联邦单元根索引）；子目录同模式，如 `constitution/constitution_meta.yaml`、`knowledge/knowledge_meta.yaml`、`requirements/requirements_meta.yaml`、`changelogs/changelogs_meta.yaml`；`constitution/` 与中央库同构。
   - **中央库四视角**（`application/knowledge/{perspective}/`）：与**应用知识库** `applications/{app}/knowledge/{perspective}/` 同构；采用「视角索引 + 层级实体」命名（`business_meta.yaml`、`product_meta.yaml`、`technical_meta.yaml`、`data_meta.yaml` 等单文件 SSOT），**集中放在该视角根目录**（子目录仅作导航锚点）。
 - **中央库 · 业务视角**（`application/knowledge/business/`）：`business_meta.yaml`（含 `layers`：BD/BSD/BC/AGG/AB）；`{BD-ID}/` 等子目录作层级锚点。
 - **中央库 · 产品视角**（`application/knowledge/product/`）：`product_meta.yaml`（含 `layers`：PL/PM/FT/UC）；`{PL-ID}/{PM-ID}/` 作层级锚点。

@@ -72,7 +72,7 @@ references:
     description: "本目录说明与方案索引表"
   - path: "../DESIGN.md"
     description: "全局目录结构与阶段设计"
-  - path: "../SYSTEM_INDEX.md"
+  - path: "../INDEX_GUIDE.md"
     description: "全局索引"
   - path: "../../.agent/skills/sdx-solution/SKILL.md"
     description: "解决方案阶段目标与工作流"
@@ -94,7 +94,7 @@ layers:
     artifacts:
       markdown: "SOLUTION-{IDEA-ID}.md"
     fields:
-      id_guidance: "{IDEA-ID} 为需求链统一标识（六位日期 + ASCII kebab-case 主题段），见 application/knowledge/constitution/standards/naming-conventions.md"
+      id_guidance: "{IDEA-ID} 为需求链统一标识（六位日期 + ASCII kebab-case 主题段），见 application/constitution/standards/naming-conventions.md"
     frontmatter_constraints:
       solution_document:
         required_fields:

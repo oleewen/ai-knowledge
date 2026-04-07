@@ -5,7 +5,7 @@ identity:
   id: DIR-REQUIREMENTS
   name: 需求交付
   description: >
-    REQUIREMENT-{IDEA-ID}/ 内 PRD/ADD/TDD 等；目录名与 ANALYSIS-{IDEA-ID}.md、PRD-* 同属 *-{IDEA-ID}（IDEA-ID 定义见 ../knowledge/constitution/standards/naming-conventions.md）。
+    REQUIREMENT-{IDEA-ID}/ 内 PRD/ADD/TDD 等；目录名与 ANALYSIS-{IDEA-ID}.md、PRD-* 同属 *-{IDEA-ID}（IDEA-ID 定义见 ../constitution/standards/naming-conventions.md）。
 
 role:
   stage: requirements

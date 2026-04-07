@@ -24,7 +24,7 @@ description: >
 | 类型 | 内容 |
 |------|------|
 | 硬输入 | 产品需求文档（系统知识库根目录 `application/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`） |
-| 可选输入 | 需求分析文档、`knowledge/technical/`、`knowledge/business/`、`knowledge/constitution/adr/`（按需加载，禁止通读全仓） |
+| 可选输入 | 需求分析文档、`knowledge/technical/`、`knowledge/business/`、`constitution/adr/`（按需加载，禁止通读全仓） |
 | 固定输出 | `ADD-{IDEA-ID}-{N}.md`、`specs/{service-name}/{type}/*.yaml` |
 | 不产出 | 测试设计、代码（使用下游 sdx-test / dev） |
 

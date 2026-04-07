@@ -38,7 +38,7 @@ sdx_require_bash5
 # -----------------------------------------------------------------------------
 
 # 版本信息
-readonly SDX_VERSION='2.2.0'
+readonly SDX_VERSION='2.3.0'
 readonly SDX_MIN_BASH_VERSION=5
 
 # Git 仓库地址（供 bootstrap 引用）
@@ -46,6 +46,9 @@ readonly SDX_GIT_REPO_URL='https://github.com/oleewen/ai-knowledge.git'
 
 # 支持的模式
 readonly -a SDX_SUPPORTED_MODES=(standalone central)
+
+# 支持的 docs-init --type（知识库 v2，见 docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md §6）
+readonly -a SDX_SUPPORTED_TYPES=(application system company)
 
 # 支持的 Agent 类型
 readonly -a SDX_SUPPORTED_AGENTS=(cursor trea claude)
@@ -87,7 +90,8 @@ readonly -a SDX_TEXT_REPLACEMENTS=(
 # 文件名替换规则：用于目录和文件名替换
 declare -A SDX_FILENAME_REPLACEMENTS=(
     ['system']='application'
-    ['system_meta']='application_meta'
+    ['system_meta']='docs_meta'
+    ['application_meta']='docs_meta'
     ['SYSTEM']='APPLICATION'
 )
 
@@ -148,6 +152,27 @@ sdx_normalize_mode() {
         s|standalone) echo 'standalone' ;;
         c|central)    echo 'central' ;;
         *)            echo 'standalone' ;;  # 默认回退
+    esac
+}
+
+# 验证 --type 是否合法
+# Usage: sdx_validate_type <type>
+sdx_validate_type() {
+    local t="${1:-}"
+    [[ "$t" =~ ^(application|system|company)$ ]] && return 0
+    return 1
+}
+
+# 规范化 --type（别名 → 标准值）
+# Usage: sdx_normalize_type <type>
+# stdout: application | system | company
+sdx_normalize_type() {
+    local raw="${1:-}"
+    case "${raw,,}" in
+        application|app) echo 'application' ;;
+        system|sys)      echo 'system' ;;
+        company|comp)    echo 'company' ;;
+        *)               printf '%s' "$raw" ;;
     esac
 }
 
@@ -357,7 +382,7 @@ sdx_post_init_checklist() {
 初始化完成！建议核对清单
 ================================================================================
 
-[ ] application_meta.yaml 已随模板落地；若目录名不再是 app-APPNAME，
+[ ] docs_meta.yaml 已随模板落地；若目录名不再是 app-APPNAME，
     可酌情更新其中 template_directory 或描述，避免误导 Agent
 
 [ ] INDEX_GUIDE.md 内相对链接在目标工程中可访问
@@ -365,14 +390,14 @@ sdx_post_init_checklist() {
 [ ] knowledge/knowledge_meta.yaml、requirements/requirements_meta.yaml、
     changelogs/changelogs_meta.yaml 与各目录 README 首段「元数据」链一致
 
-[ ] knowledge/constitution/：principles_meta.yaml、standards_meta.yaml、
+[ ] constitution/：principles_meta.yaml、standards_meta.yaml、
     adr/adr_meta.yaml（若存在）与 constitution/README.md 组件表互链
 
 [ ] 正式需求包：自 REQUIREMENT-EXAMPLE 复制为 REQUIREMENT-{ID}/；
     REQUIREMENT-EXAMPLE 为结构示例，不单建 *_meta.yaml（见 requirements/README.md）
 
-[ ] central 模式：核对本仓库 system/SYSTEM_INDEX.md「五、中央知识库接入工程」登记行与
-    applications/app-<后缀>/APPNAME_manifest.yaml 是否反映当前工程与文档路径
+[ ] central + type=application：核对本仓库 application/INDEX_GUIDE.md「十、中央知识库接入工程」登记行与
+    system/application-<后缀>/ 槽位是否与目标工程一致（v2.3 起联邦槽位在 system/ 下）
 
 [ ] Agent 配置：检查用户主目录下 ~/.cursor/ 或 ~/.trea/ 等目录中 skills 和 rules 是否正确安装（非工程目录）
 

@@ -1,0 +1,18 @@
+# system/constitution — 目录元数据
+schema_version: "1.1"
+
+id: DIR-SYSTEM-CONSTITUTION
+name: 系统知识库宪法与治理层
+description: 组织级 system/ 树下术语边界、槽位与治理入口；实体命名 SSOT 在中央库 application/constitution/。
+
+child_directories: []
+child_files:
+  - README.md
+
+role:
+  kind: system_constitution_index
+  is_system_level_index: true
+
+references:
+  - ./README.md
+  - ../README.md
