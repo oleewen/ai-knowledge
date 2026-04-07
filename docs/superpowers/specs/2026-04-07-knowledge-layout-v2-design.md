@@ -6,9 +6,11 @@
 
 **已决议**：
 
-1. **§2.1（核心子集落盘范围）**：当选择**仅同步「核心子集」**（相对 `application/` 全量而言）时，**源根为 `application/`**，且仅包含  
-`changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs_meta.yaml`、`manifest.yaml`（迁名后以实际文件为准）。**不**从新建顶层 `system/` 拷贝上述目录。**该维度与下文 `mode` 无关**，建议用独立参数表达，见 §2.2 与 §6（避免与 **central** 的字母 **c** 混淆）。  
-2. **§2.2**：**`mode=s|c` 即 `--mode=standalone|central`**：**`s` = standalone**，**`c` = central**（联邦登记 + 镜像等），语义与**当前** `docs-init` 一致；**不**再引入 `--init-mode`。
+1. **无须**单独参数 **`--sync=full|core`**。  
+2. **需求 5.1**（`application/` **全量** vs **核心子集**）**仅由** **`--mode=standalone|central`**（简写 **`mode=s|c`**）表达：  
+   - **`s` / standalone**：将 **`application/`** 下**全部文档**同步到目标工程文档目录（在原需求表述中对应 **5.1 的「全量」**）。  
+   - **`c` / central**：仅同步 **`application/`** 下 **§2.1 所列核心子集**（在原需求表述中对应 **5.1 的「子集」**），并叠加 **既有 central 语义**（联邦登记、镜像等，细节以实现为准）。  
+3. **§2.1** 所列路径为核心子集的**枚举**（源根均为 `application/`），**仅在 `mode=central`（`c`）时**作为落盘范围；**不**从新建顶层 `system/` 拷贝这些目录作为源。
 
 ---
 
@@ -25,6 +27,8 @@
 
 **要点**：`DESIGN.md` 中「系统知识库根目录」与 `system_meta.yaml`、`system/knowledge` 实体 **ID** 约束、以及全库数千处 `system/` 字面路径，均建立在上述结构上。
 
+**目标态注意**：若当前 **`central`** 对 `system/` 的拷贝范围与「仅核心子集」不一致，则 **`mode=central` 下对 `application/` 的落盘范围**将按本 spec **收紧为 §2.1**，属**行为变更**，须在 `SDX_VERSION` 与 README **显式说明**。
+
 ---
 
 ## 1. 需求复述（你的 5 点）
@@ -36,37 +40,31 @@
    - `architecture/`（业务/产品/系统/数据架构文档）  
 4. **新建顶层 `company/`**：其下含 `system-{system-name}/`（占位/后续从他系统知识库 fetch）  
 5. **`docs-init.sh`**  
-   - **5.1 同步体量**：**全量** vs **核心子集**（路径列表见 §2.1）。**不得**再用单独字母 `c` 表示「核心子集」，以免与 **`mode=c` = central** 冲突；建议参数名如 **`--sync=full|core`**（或 `--payload=full|core`）。  
-   - **5.2 `mode=s|c`**：**即** **`--mode=standalone|central`**（**s**=standalone，**c**=central），与现有联邦/初始化语义对齐。  
-   - **5.3 `type`**：`a|application` 同步 application；`s|system` 同步 system；`c|company` 同步 company（注意：`type` 里的 `c` 表示 company，与 `mode=c` 的 central 不同语境）。
+   - **5.1**：**即** **`--mode=standalone|central`**（**`mode=s|c`**）。**全量 vs 核心子集**见文首「已决议」与 §2.1；**不**再增加 `--sync` 等第二参数。  
+   - **5.2 `type`**：`a|application` 同步 application；`s|system` 同步 system；`c|company` 同步 company（**`type` 的 c = company**，与 **`mode=c` = central** 不同语境）。
 
 ---
 
 ## 2. 关键歧义（实施前必须拍板）
 
-### 2.1 「核心子集」的源目录 — **已拍板**
+### 2.1 「核心子集」路径枚举 — **已拍板**
 
-你最初列出的路径在**当前仓库**里写在 `system/` 下；迁移后 **SSOT 主体**在 **`application/`**。
+在 **`mode=central`（`c`）** 且同步对象为 **`application/`** 时，**仅**落盘下列相对 **`application/`** 的内容（迁名后以实际文件为准）：
 
-| 理解 | 状态 |
-|------|------|
-| **A. 核心子集从新顶层 `system/` 拷贝** | **已否决** |
-| **B. 核心子集从 `application/` 取上述子树** | **已采纳**（维护者选项 **1**） |
+`changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs_meta.yaml`、`manifest.yaml`
 
-**实施注意**：帮助文与 CI 须写 **`REPO_ROOT/application/changelogs`** 等。**四视角与阶段文档的 SSOT** 在 **`application/`**；新建 **`system/`** 仅承载架构与联邦槽位，**不**与 `application/knowledge` 争 SSOT。
+**源根**：均为 **`application/`**，**不**使用新建顶层 `system/` 作为上述子集的源。
 
 ### 2.2 `mode=s|c` 与 `--mode=standalone|central` — **已拍板**
 
-**决议**：**`mode=s|c` 即 `--mode=standalone|central`**，一一对应：
+**决议**：**`mode=s|c` 即 `--mode=standalone|central`**：
 
-| 简写 | 完整值 | 含义（与当前 `docs-init` 一致） |
-|------|--------|--------------------------------|
-| **`s`** | **standalone** | 仅目标工程落盘等，不跑 central 登记/镜像（细节以实现为准） |
-| **`c`** | **central** | 含联邦登记、建应用镜像等 central 行为 |
+| 简写 | 完整值 | 对 `type=application` 时的含义（与需求 5.1 对齐） |
+|------|--------|--------------------------------------------------|
+| **`s`** | **standalone** | **`application/` 全量**同步至目标文档目录 |
+| **`c`** | **central** | **仅 §2.1 核心子集** + **central 既有行为**（登记/镜像等） |
 
-**与 §2.1 的区分**：**`mode` 不负责「全量 vs 核心子集」**；后者用 **§1 的 5.1** 单独参数（如 **`--sync=full|core`**）。否则 **`c`** 同时表示 central 与 core（核心子集）会无法读。
-
-**文档要求**：README 中应用表格同时列出 **`--mode=standalone|central`** 与 **`mode=s|c` 简写对照**，避免运维误读。
+**文档要求**：README 用表格列出 **`--mode=standalone|central`** 与 **`s|c` 简写**，并说明 **central 在 application 知识库上的落盘范围**（§2.1），避免与旧版「central 拷贝整棵 system」假设混淆。
 
 ### 2.3 删除 `applications/` 与 central 模式
 
@@ -140,24 +138,23 @@
 
 ---
 
-## 6. `docs-init` 参数建议（与 §2.2 一致）
+## 6. `docs-init` 参数建议
 
 | 参数 | 含义 |
 |------|------|
-| **`--mode=standalone\|central`** | 与现网一致；**简写**：**`s`** → standalone，**`c`** → central（**即用户所述 `mode=s|c` = 本行**） |
-| **`--sync=full\|core`**（建议名） | **full**：`type=application` 时同步 `application/` 全量；**core**：仅 §2.1 所列子集（源根 `application/`）。**勿**用单独字母 `c` 表示 core，以免与 **`mode=c`（central）** 混淆。 |
-| **`--type=…`** | `application` / `system` / `company`（与需求 5.3 的 type 对齐） |
+| **`--mode=standalone\|central`** | **简写 `s|c`**。**standalone**：`type=application` 时 **`application/` 全量**；**central**：`type=application` 时 **仅 §2.1 核心子集** + central 行为。 |
+| **`--type=…`** | `application` / `system` / `company`（与需求 5.2 对齐） |
 
 **校验规则（示例）**：
 
-- **`sync=core` 且 `type=application`**：源根 **`application/`**，路径集合见 §2.1。  
+- **`mode=central` 且 `type=application`**：落盘范围 **§2.1**，源根 **`application/`**。  
 - **`type=company`**：默认同步 `company/` 下哪些子树（是否含所有 `system-*`）需定义。
 
 ---
 
 ## 7. 测试与验收（建议）
 
-- `docs-init --dry-run` 覆盖：`type` × `sync=full|core` × `mode=standalone|central`（及 `s|c` 简写）合法组合。  
+- `docs-init --dry-run` 覆盖：`type` × `mode=standalone|central`（含 **`s|c` 简写**）合法组合。  
 - 安装后：`validate-guide.sh`、关键 `validate-*.sh`、`rg` 检查断链。  
 - 可选：快照对比目标目录文件清单（golden list）。
 
@@ -166,7 +163,7 @@
 ## 8. 自审
 
 - **范围**：本文仅为评估与设计草案，**不**包含具体 `git mv` 列表与 PR 任务拆分。  
-- **待确认**：§2.3（central 去向）。§2.1、§2.2 已按最新口径确认。  
+- **待确认**：§2.3（central 去向）。§2.1、§2.2 已与「5.1 = mode」口径对齐。  
 - **一致性**：若采纳「`application` = 原 system 主体」，则对外叙述「应用知识库」与旧文档「系统知识库」需统一迁移说明。
 
 ---
