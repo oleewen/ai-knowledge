@@ -12,7 +12,7 @@
    - **`s` / standalone**：将 **`application/`** **全部**同步至目标工程文档目录（**全量**）。  
    - **`c` / central 且 `type=application`（显式）**：仅 **`application/`** 下 **§2.1 核心子集** + **central 既有行为**（**子集**）。  
 4. **`type=system`**：目标工程**文档目录**即 **系统知识库根**；其下 **`application-{name}/`** 供后续 **fetch** 同步应用镜像。  
-5. **`type=company`**：目标工程**文档目录**即 **公司知识库根**；其下 **`system-{name}/`** 供后续 **fetch** 同步系统镜像。  
+5. **`type=company`**：目标工程**文档目录**即 **公司知识库根**；其下 **`system-{name}/`** 供 fetch 同步系统镜像，**`architecture/`** 承载公司级架构文档（与系统知识库侧 `architecture/` 对照）。  
 6. **§2.1** 仅在 **`mode=central` 且 `type=application`** 时适用；**不**用新建顶层 `system/` 作为该子集之源。
 
 ---
@@ -41,7 +41,7 @@
 3. **新建顶层 `system/`（新语义）**：其下含  
    - `application-{app-name}/`（占位/后续从其他应用知识库 fetch）  
    - `architecture/`（业务/产品/系统/数据架构文档）  
-4. **新建顶层 `company/`**：其下含 `system-{system-name}/`（占位/后续从他系统知识库 fetch）  
+4. **新建顶层 `company/`**：其下含 `system-{system-name}/`（占位/fetch）、**`architecture/`**（公司级架构文档，与 `system/architecture/` 对照）  
 5. **`docs-init.sh`**  
    - **5.1**：**即** **`--mode=standalone|central`**（**`mode=s|c`**）。**在 `type=application` 时**，**全量 vs 核心子集**见文首「已决议」与 §2.1；**不**增加 `--sync`。  
    - **5.2 `type`**：`application` / `system` / `company`。**`--mode=central` 且省略 `type` 时默认 `type=system`**；目标目录与 fetch 槽位见 §2.3、§6。
@@ -77,7 +77,7 @@
 | `type` | 中央库源目录（目标态） | **目标工程文档目录**语义 | 子目录与后续 fetch |
 |--------|------------------------|---------------------------|---------------------|
 | **`system`**（central 默认） | 仓库顶层 **`system/`**（新语义：含 `architecture/`、`application-{app-name}/` 等） | **即「系统知识库根目录」**（该路径即用户传入的文档目录） | 其下 **`application-{name}/`** 内内容后续可通过 **fetch** 等方式同步为各应用知识库镜像 |
-| **`company`** | 仓库顶层 **`company/`** | **即「公司知识库根目录」** | 其下 **`system-{name}/`** 内内容后续可通过 **fetch** 等方式同步为各系统知识库镜像 |
+| **`company`** | 仓库顶层 **`company/`**（含 **`architecture/`** 与 **`system-{name}/`**） | **即「公司知识库根目录」** | **`system-{name}/`**：fetch 同步各系统镜像；**`architecture/`**：公司级架构文档（与 **`system/architecture/`** 对照） |
 | **`application`** | **`application/`** | 由现有约定/参数解析（通常为应用知识库落点） | **§2.1** 在 **`mode=central` + `type=application`** 时定义核心子集 |
 
 **删除 `applications/`**：联邦/镜像落点改为 **`system/application-{name}/`**（在**目标**系统知识库根下）或依赖 **fetch** 填入，不再依赖已删除的 `applications/app-APPNAME` 模板目录；**`APP_ID`、登记行**写入文件需随 **`application/` 内索引**（如迁入后的 `APPLICATION_INDEX.md` 或专用 manifest）**另行定稿**（实现阶段补全）。
@@ -141,8 +141,9 @@
 ├── system/                      # 新语义：组织级/多应用视图（与 application/ 的 SSOT 分工见 §2.1）
 │   ├── application-{app-name}/  # 联邦槽位（fetch 目标）
 │   └── architecture/            # 业务/产品/系统/数据 架构文档（子结构需另表）
-├── company/
-│   └── system-{system-name}/    # 公司视角下的系统镜像槽位
+├── company/                     # 公司知识库（与顶层 system/ 对照）
+│   ├── system-{system-name}/    # 公司视角下的系统镜像槽位（fetch）
+│   └── architecture/            # 公司级架构文档（业务/产品/系统/数据等；与 system/architecture 对照，子结构需另表）
 ├── scripts/
 └── README.md | AGENTS.md | INDEX_GUIDE.md
 ```
@@ -165,13 +166,13 @@
 | standalone | **application**（建议默认） | `application/` 全量 | 应用知识库落点（与现网 standalone 对齐） |
 | central | **system**（**省略 type 时**） | 顶层 `system/` | **系统知识库根**；其下 `application-{name}/` 供后续 fetch 填镜像 |
 | central | **application**（须显式） | `application/` §2.1 子集 | 应用知识库落点 + central 行为 |
-| central | **company** | 顶层 `company/` | **公司知识库根**；其下 `system-{name}/` 供后续 fetch 填镜像 |
+| central | **company** | 顶层 `company/`（含 `architecture/`） | **公司知识库根**；`system-{name}/` 为 fetch 槽位，`architecture/` 为公司级架构文档 |
 
 **校验规则（示例）**：
 
 - **`mode=central` + 默认 `type=system`**：源 **`system/`**，目标目录 = **系统知识库根**。  
 - **`mode=central` + `type=application`**：源 **`application/`**，落盘 **§2.1**。  
-- **`type=company`**：源 **`company/`**，目标目录 = **公司知识库根**。
+- **`type=company`**：源 **`company/`**（含 **`architecture/`** 与 **`system-{name}/`**），目标目录 = **公司知识库根**。
 
 ---
 
