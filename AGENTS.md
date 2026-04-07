@@ -36,7 +36,7 @@
 ### 工作约定
 
 - **与 Index 一致**：平面检索与路径级精要以根目录 [INDEX_GUIDE.md](INDEX_GUIDE.md) 为准；未索引区域须补读或标注待核实。
-- **会话开始**：读 [README.md](README.md) 与本文件；业务与路径细节查 [INDEX_GUIDE.md](INDEX_GUIDE.md)；按任务打开 [application/README.md](application/README.md)、[application/SYSTEM_INDEX.md](application/SYSTEM_INDEX.md) 或 [.agent/rules/](.agent/rules/) 下具体规范。
+- **会话开始**：读 [README.md](README.md) 与本文件；业务与路径细节查 [INDEX_GUIDE.md](INDEX_GUIDE.md)；按任务打开 [application/README.md](application/README.md)、[application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) 或 [.agent/rules/](.agent/rules/) 下具体规范。
 - **会话中**：业务规则不明 → 列出待确认项；新增技术债务可登记 [application/knowledge/technical/technical-debt.md](application/knowledge/technical/technical-debt.md)；重大结构或治理变更遵循 SDD，并核对 [application/DESIGN.md](application/DESIGN.md)、[application/CONTRIBUTING.md](application/CONTRIBUTING.md)。
 - **会话结束**：新增规则或约束需经确认后写入 `application/`、`system/`、`company/` 或本文件；索引类变更按需记录于 [application/changelogs/](application/changelogs/)（见 [application/changelogs/README.md](application/changelogs/README.md)）。
 
@@ -45,14 +45,14 @@
 - 禁止随意修改 `application/knowledge/` 已有实体 **ID** 或破坏跨视角 **ID 引用**（如 `implemented_by_app_id`、`persisted_as_entity_ids`），除非同步更新全部引用。
 - 禁止未读 [application/DESIGN.md](application/DESIGN.md) 与 [application/CONTRIBUTING.md](application/CONTRIBUTING.md) 即新增 knowledge 实体或 ADR。
 - 禁止无约定变更即删改 [.agent/rules/](.agent/rules/)、[.agent/skills/](.agent/skills/) 中模板与技能核心结构。
-- 禁止未评估影响面即改 [application/SYSTEM_INDEX.md](application/SYSTEM_INDEX.md)、[application/README.md](application/README.md) 导航表导致断链或错位。
+- 禁止未评估影响面即改 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[application/README.md](application/README.md) 导航表导致断链或错位。
 - **不在本文粘贴** [INDEX_GUIDE.md](INDEX_GUIDE.md) 第 3 节级 API/字典全表；需要时直接打开该文件。
 
 ---
 
 ## 查阅顺序（固定）
 
-[README.md](README.md) → [INDEX_GUIDE.md](INDEX_GUIDE.md) → 子域索引（如 [application/SYSTEM_INDEX.md](application/SYSTEM_INDEX.md)、[system/README.md](system/README.md)、[company/README.md](company/README.md)、[applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md)）或 [.agent/rules/](.agent/rules/) 等规范路径。
+[README.md](README.md) → [INDEX_GUIDE.md](INDEX_GUIDE.md) → 子域索引（如 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[system/README.md](system/README.md)、[company/README.md](company/README.md)、[applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md)）或 [.agent/rules/](.agent/rules/) 等规范路径。
 
 ---
 
@@ -63,13 +63,13 @@
 | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 项目概况、快速启动、技术架构、Skill 流程、文档导航、开发指南 | [README.md](README.md)                                                                                                                                  |
 | 速查表、元信息、目录树、模块依赖、详细索引字典、索引边界      | [INDEX_GUIDE.md](INDEX_GUIDE.md)                                                                                                                        |
-| 应用知识库主线、SDD 查阅顺序                  | [application/README.md](application/README.md)、[application/SYSTEM_INDEX.md](application/SYSTEM_INDEX.md)                                               |
+| 应用知识库主线、SDD 查阅顺序                  | [application/README.md](application/README.md)、[application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)                                               |
 | 组织级系统知识库（架构、联邦槽位）                 | [system/README.md](system/README.md)                                                                                                                    |
 | 公司知识库                             | [company/README.md](company/README.md)                                                                                                                  |
 | 设计原则、元模型、映射与演进                    | [application/DESIGN.md](application/DESIGN.md)                                                                                                          |
 | 贡献流程与阶段规则                         | [application/CONTRIBUTING.md](application/CONTRIBUTING.md)                                                                                              |
 | 知识库实体导航、四视角                       | [application/knowledge/KNOWLEDGE_INDEX.md](application/knowledge/KNOWLEDGE_INDEX.md)、[application/knowledge/README.md](application/knowledge/README.md) |
-| 联邦模板迁移说明（原 `applications/app-`*）  | [applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md)、[applications/README.md](applications/README.md)                               |
+| 联邦模板迁移说明（原 `applications/app-*`）     | [applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md)、[applications/README.md](applications/README.md)                               |
 | 全局约定与命名                           | [.agent/rules/CONVENTIONS.md](.agent/rules/CONVENTIONS.md)                                                                                              |
 | Slash 技能                          | [.agent/skills/README.md](.agent/skills/README.md)                                                                                                      |
 | 初始化脚本参数与产物                        | [scripts/README.md](scripts/README.md)                                                                                                                  |
@@ -157,7 +157,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 
 1. [INDEX_GUIDE.md](INDEX_GUIDE.md)（权威地图与查阅指北）
 2. [README.md](README.md)、[scripts/README.md](scripts/README.md)
-3. [application/README.md](application/README.md)、[application/SYSTEM_INDEX.md](application/SYSTEM_INDEX.md)、[application/DESIGN.md](application/DESIGN.md)、[application/CONTRIBUTING.md](application/CONTRIBUTING.md)
+3. [application/README.md](application/README.md)、[application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[application/DESIGN.md](application/DESIGN.md)、[application/CONTRIBUTING.md](application/CONTRIBUTING.md)、[system/README.md](system/README.md)、[company/README.md](company/README.md)
 4. [.agent/rules/CONVENTIONS.md](.agent/rules/CONVENTIONS.md)、[.agent/rules/](.agent/rules/)
 5. [.agent/README.md](.agent/README.md)、[.agent/skills/README.md](.agent/skills/README.md)
 

@@ -74,7 +74,7 @@ references:
     description: "本目录说明与索引表"
   - path: "../DESIGN.md"
     description: "全局目录结构与阶段设计"
-  - path: "../SYSTEM_INDEX.md"
+  - path: "../INDEX_GUIDE.md"
     description: "全局索引"
   - path: "../../.agent/skills/sdx-analysis/SKILL.md"
     description: "需求分析阶段目标与工作流"

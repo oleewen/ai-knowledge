@@ -44,8 +44,8 @@ Slash 技能命令请查看 [.agent/skills/README.md](../.agent/skills/README.md
 1. 命令行 **`--doc-root`**（若脚本支持）
 2. 环境变量 **`SDX_DOC_ROOT`**
 3. 仓库根目录下文件 **`.sdx-doc-root`**（首行非注释内容，单行）
-4. **目录探测**：优先 `docs/knowledge`、`docs/solutions` 等 → `docs`；其次 `application/knowledge` 等 → `application`；旧布局 `system/knowledge` 等 → `system`
-5. 无匹配子目录时默认 **`docs`**
+4. **目录探测**：优先 `docs/` 下知识树标记 → `docs`；其次应用知识库 `application/knowledge/*` → `application`；再者系统知识库 `system/knowledge/*` → `system`；然后公司知识库 `company/knowledge/*` → `company`；最后其他顶层 `*/knowledge/*` → 该目录名
+5. 上述目录探测均无命中时默认 **`docs`**
 
 实现文件：**`.agent/scripts/sdx-doc-root.sh`**（单一事实来源）。各 skill 下 `validate-*.sh` 经 **`.agent/scripts/sdx-validate-bootstrap.sh`** 加载上述逻辑。
 

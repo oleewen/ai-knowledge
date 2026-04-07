@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# docs-init：将本仓库 application/ 模板初始化到目标工程文档目录，并安装 Agent skills/rules
+# docs-init：按 type×mode 将本仓库模板同步到目标工程文档目录，并安装 Agent skills/rules
 #
 # 步骤：
-#   1. application/ → 目标文档目录（排除 DESIGN.md、CONTRIBUTING.md）
-#      - 文件名：system（不区分大小写）→ application
-#      - 文件内容：.agent/ → Agent 目录；system/ → 文档根相对路径；系统 → 应用
-#   2. .agent/skills + .agent/rules → 用户主目录下所选 Agent 目录（如 ~/.cursor、~/.trea）
-#      - 文件内容：.agent/ → Agent 目录；system/ → 文档根相对路径
-#   3. central 模式：注册应用到系统知识库索引 + 建立 app-APPNAME 镜像
+#   1. 模板 → 目标文档目录（见 install_system_to_docs）
+#      - type=application：standalone 全量 application/；central 仅 §2.1 子集
+#      - type=system|company：同步仓库顶层 system/ 或 company/
+#      - 文件名/内容替换见 _rewrite_doc_file / _rewrite_doc_file_minimal
+#   2. .agent/skills + .agent/rules → 用户主目录下所选 Agent 目录
+#   3. central + type=application：登记 application/INDEX_GUIDE.md「十」+ system/application-<slug>/ 槽位
 #
 # 运行要求：Bash 5+；内容替换依赖 perl（UTF-8）
 
@@ -37,6 +37,8 @@ declare -A CFG=(
   [docs_abs]=""
   [target_dir]=""
   [mode]="${MODE:-standalone}"
+  [type]="${TYPE:-}"
+  [type_explicit]=0
   [scope]="${SCOPE:-all}"
   [agents_opt]="${AGENTS_OPT:-cursor}"
   [app_id_opt]="${APP_ID_OPT:-}"
@@ -91,7 +93,7 @@ map_path_system_to_application() {
   local out="" sep="" p newp
   for p in "${parts[@]}"; do
     [[ -z "$p" ]] && continue
-    newp="$(perl -CSD -pe 's/SYSTEM_INDEX/APPLICATION_INDEX/gi; s/system/application/gi' <<< "$p")"
+    newp="$(perl -CSD -pe 's/SYSTEM_INDEX/INDEX_GUIDE/gi; s/APPLICATION_INDEX/INDEX_GUIDE/gi; s/system/application/gi' <<< "$p")"
     out="${out}${sep}${newp}"
     sep="/"
   done
@@ -319,10 +321,24 @@ _rewrite_doc_file() {
     perl -CSD -i -pe '
       s{\.agent/}{$ENV{SDX_AGENT_SLASH}}g;
       s{system/}{$ENV{SDX_DOCS_SLASH}}gi;
-      s{SYSTEM_INDEX}{APPLICATION_INDEX}gi;
-      s{system_meta}{application_meta}gi;
+      s{SYSTEM_INDEX}{INDEX_GUIDE}gi;
+      s{APPLICATION_INDEX}{INDEX_GUIDE}gi;
+      s{system_meta}{docs_meta}gi;
+      s{application_meta}{docs_meta}gi;
       s{\bsystem\b}{application}gi;
       s{系统}{应用}g;
+    ' "$file" 2>/dev/null || true
+}
+
+# 组织级 system/、company/ 模板：仅替换路径前缀，不将词「system」整体改为「application」（避免破坏「组织级 system」语义）
+_rewrite_doc_file_minimal() {
+  local file="$1" agent_slash="$2" docs_slash="$3"
+  [[ -f "$file" ]] && is_text_file "$file" || return 0
+  have_perl || { warn "未安装 perl，跳过内容替换：$file"; return 0; }
+  SDX_AGENT_SLASH="$agent_slash" SDX_DOCS_SLASH="$docs_slash" \
+    perl -CSD -i -pe '
+      s{\.agent/}{$ENV{SDX_AGENT_SLASH}}g;
+      s{system/}{$ENV{SDX_DOCS_SLASH}}gi;
     ' "$file" 2>/dev/null || true
 }
 
@@ -351,8 +367,27 @@ rewrite_agent_tree() {
 
 # ─── 核心安装步骤 ─────────────────────────────────────────────────────────────
 
-# 步骤 1：application/ → 目标文档目录
-install_system_to_docs() {
+# 将单个文件从 application/ 树复制到目标文档根，并做全文替换
+_application_copy_one() {
+  local src_f="$1" dst_f="$2" agent_slash="$3" docs_slash="$4"
+  if [[ "${CFG[dry_run]}" == "1" ]]; then
+    log "[dry-run] $src_f → $dst_f"
+    return 0
+  fi
+  if [[ -e "$dst_f" ]]; then
+    local _ow=0
+    should_overwrite "$dst_f" || _ow=$?
+    [[ "$_ow" -eq 2 ]] && exit 130
+    [[ "$_ow" -eq 1 ]] && { log "[skip] $dst_f"; return 0; }
+    backup_path "$dst_f"
+  fi
+  ensure_dir "$(dirname "$dst_f")"
+  cp "$src_f" "$dst_f"
+  _rewrite_doc_file "$dst_f" "$agent_slash" "$docs_slash"
+}
+
+# 步骤 1a：application/ 全量 → 目标（standalone 或默认）
+install_application_full_to_docs() {
   local src_root="${CFG[repo_root]}/application"
   local dst_root="${CFG[docs_abs]}"
   local agent_slash="${CFG[primary_agent_slash]}"
@@ -360,26 +395,84 @@ install_system_to_docs() {
 
   [[ -d "$src_root" ]] || error "未找到 application 目录: $src_root"
 
-  info ">>> 初始化 application/ → 目标文档目录"
+  info ">>> 初始化 application/（全量）→ 目标文档目录"
   info "    源:   $src_root"
   info "    目标: $dst_root"
-  info "    .agent/ → ${agent_slash}  |  system/ → ${docs_slash}"
+  info "    type: application  |  .agent/ → ${agent_slash}  |  system/ → ${docs_slash}"
 
   local rel src_f dst_f base
   while IFS= read -r -d '' rel; do
     rel="${rel#./}"
     [[ -z "$rel" ]] && continue
     base="${rel##*/}"
-    # 排除不需要分发的文件
     [[ "$base" == "DESIGN.md" || "$base" == "CONTRIBUTING.md" ]] && continue
 
     src_f="$src_root/$rel"
     dst_f="$dst_root/$(map_path_system_to_application "$rel")"
+    _application_copy_one "$src_f" "$dst_f" "$agent_slash" "$docs_slash"
+  done < <(cd "$src_root" && find . -type f -print0)
+
+  info "    application/ 全量同步完成"
+}
+
+# 步骤 1b：application/ §2.1 核心子集（仅 central + type=application 显式）
+install_application_subset_to_docs() {
+  local src_root="${CFG[repo_root]}/application"
+  local dst_root="${CFG[docs_abs]}"
+  local agent_slash="${CFG[primary_agent_slash]}"
+  local docs_slash="${CFG[docs_slash]}"
+
+  [[ -d "$src_root" ]] || error "未找到 application 目录: $src_root"
+
+  info ">>> 初始化 application/（§2.1 核心子集，central + type=application）→ 目标"
+  info "    源:   $src_root"
+  info "    目标: $dst_root"
+
+  local d rel src_f dst_f
+  for d in changelogs knowledge specs; do
+    [[ -d "$src_root/$d" ]] || { warn "§2.1 子集：跳过缺失目录 application/$d"; continue; }
+    while IFS= read -r -d '' rel; do
+      rel="${rel#./}"
+      [[ -z "$rel" ]] && continue
+      src_f="$src_root/$d/$rel"
+      dst_f="$dst_root/$d/$(map_path_system_to_application "$rel")"
+      _application_copy_one "$src_f" "$dst_f" "$agent_slash" "$docs_slash"
+    done < <(cd "$src_root/$d" && find . -type f -print0)
+  done
+
+  for base in INDEX_GUIDE.md README.md docs_meta.yaml manifest.yaml; do
+    [[ -f "$src_root/$base" ]] || continue
+    _application_copy_one "$src_root/$base" "$dst_root/$(map_path_system_to_application "$base")" "$agent_slash" "$docs_slash"
+  done
+
+  info "    application/ §2.1 子集同步完成"
+}
+
+# 步骤 1c：仓库顶层 system/ 或 company/ → 目标（组织级 / 公司级知识库根）
+install_org_template_to_docs() {
+  local label="$1"
+  local src_root="$2"
+  local dst_root="${CFG[docs_abs]}"
+  local agent_slash="${CFG[primary_agent_slash]}"
+  local docs_slash="${CFG[docs_slash]}"
+
+  [[ -d "$src_root" ]] || error "未找到 ${label}/ 目录: $src_root"
+
+  info ">>> 初始化 ${label}/ → 目标文档目录（${label} 知识库根）"
+  info "    源:   $src_root"
+  info "    目标: $dst_root"
+
+  local rel src_f dst_f
+  while IFS= read -r -d '' rel; do
+    rel="${rel#./}"
+    [[ -z "$rel" ]] && continue
+    src_f="$src_root/$rel"
+    dst_f="$dst_root/$(map_path_system_to_application "$rel")"
 
     if [[ "${CFG[dry_run]}" == "1" ]]; then
-      log "[dry-run] $src_f → $dst_f"; continue
+      log "[dry-run] $src_f → $dst_f"
+      continue
     fi
-
     if [[ -e "$dst_f" ]]; then
       local _ow=0
       should_overwrite "$dst_f" || _ow=$?
@@ -389,10 +482,32 @@ install_system_to_docs() {
     fi
     ensure_dir "$(dirname "$dst_f")"
     cp "$src_f" "$dst_f"
-    _rewrite_doc_file "$dst_f" "$agent_slash" "$docs_slash"
+    _rewrite_doc_file_minimal "$dst_f" "$agent_slash" "$docs_slash"
   done < <(cd "$src_root" && find . -type f -print0)
 
-  info "    application/ 同步完成"
+  info "    ${label}/ 同步完成"
+}
+
+# 步骤 1：按 type × mode 分发
+install_system_to_docs() {
+  case "${CFG[type]}" in
+    application)
+      if [[ "${CFG[mode]}" == "central" ]]; then
+        install_application_subset_to_docs
+      else
+        install_application_full_to_docs
+      fi
+      ;;
+    system)
+      install_org_template_to_docs "system" "${CFG[repo_root]}/system"
+      ;;
+    company)
+      install_org_template_to_docs "company" "${CFG[repo_root]}/company"
+      ;;
+    *)
+      error "内部错误：未知 type=${CFG[type]}"
+      ;;
+  esac
 }
 
 # 步骤 2a：.agent/skills → 各 Agent 目录
@@ -491,13 +606,13 @@ _resolve_central_ids() {
   [[ -n "${CFG[central_app_slug]}" ]] || CFG[central_app_slug]="APPNAME"
 }
 
-# 在 application/SYSTEM_INDEX.md 中插入或更新应用登记行
+# 在 application/INDEX_GUIDE.md 中插入或更新应用登记行（「十、中央知识库接入工程」）
 _upsert_system_index() {
   local app_id="$1" repo_or_path="$2" docs_path="$3"
-  local idx="${CFG[repo_root]}/application/SYSTEM_INDEX.md"
-  [[ -f "$idx" ]] || error "未找到 application/SYSTEM_INDEX.md: $idx"
+  local idx="${CFG[repo_root]}/application/INDEX_GUIDE.md"
+  [[ -f "$idx" ]] || error "未找到 application/INDEX_GUIDE.md: $idx"
 
-  local section="## 五、中央知识库接入工程"
+  local section="## 十、中央知识库接入工程"
   local header="| APP ID | 工程路径（Git 或绝对路径） | 文档目录 |"
   local sep="|--------|---------------------------|----------|"
   local row="| ${app_id} | ${repo_or_path} | ${docs_path} |"
@@ -526,49 +641,36 @@ _upsert_system_index() {
   mv "$tmp" "$idx"
 }
 
-# 建立 applications/app-<slug>/ 镜像并初始化 manifest
+# 在本仓库 system/application-<slug>/ 建立联邦槽位（applications/app-* 模板已移除时的目标态）
 _ensure_app_mirror() {
-  local tmpl="${CFG[repo_root]}/applications/app-APPNAME"
-  local dest="${CFG[repo_root]}/applications/app-${CFG[central_app_slug]}"
+  local dest="${CFG[repo_root]}/system/application-${CFG[central_app_slug]}"
   local project_name
   project_name="$(basename "${CFG[target_dir]}")"
 
-  [[ -d "$tmpl" ]] || error "未找到联邦模板目录: $tmpl"
-
-  info ">>> 中央模式：建立应用知识库镜像"
+  info ">>> 中央模式：建立 system/application-${CFG[central_app_slug]}/ 联邦槽位"
   info "    目录:   $dest"
   info "    APP ID: ${CFG[central_app_id]}"
 
   if [[ "${CFG[dry_run]}" == "1" ]]; then
-    log "[dry-run] 创建镜像: $tmpl → $dest"; return 0
+    log "[dry-run] 创建/更新联邦槽位: $dest"
+    return 0
   fi
 
   ensure_dir "$dest"
 
   local slug="${CFG[central_app_slug]}" app_id="${CFG[central_app_id]}"
 
-  if [[ -f "$tmpl/APPNAME_manifest.yaml" ]]; then
-    copy_file "$tmpl/APPNAME_manifest.yaml" "$dest/APPNAME_manifest.yaml"
-    if have_perl && [[ -f "$dest/APPNAME_manifest.yaml" ]]; then
-      SDX_SLUG="$slug" SDX_PN="$project_name" SDX_AID="$app_id" \
-        perl -i -CSD -pe '
-          s/^template_id:.*/template_id: app-$ENV{SDX_SLUG}/;
-          s/^description:.*/description: 联邦单元 $ENV{SDX_PN}（$ENV{SDX_AID}），由 docs-init central 模式生成/;
-        ' "$dest/APPNAME_manifest.yaml" 2>/dev/null || true
-    fi
+  if [[ ! -f "$dest/README.md" ]]; then
+    {
+      printf '# application-%s\n\n' "$slug"
+      printf '本目录由 `docs-init --mode=central --type=application` 在中央库 `%s` 下生成，作为应用联邦槽位（知识库 v2）。\n\n' "$(basename "${CFG[repo_root]}")"
+      printf '- **APP ID**：`%s`\n' "$app_id"
+      printf '- **目标工程**：`%s`\n' "$project_name"
+      printf '- 同步文档镜像见 `docs-fetch` / 设计文档 `docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md`。\n'
+    } >"$dest/README.md"
   fi
 
-  if [[ -f "$tmpl/README.md" ]]; then
-    copy_file "$tmpl/README.md" "$dest/README.md"
-    if have_perl && [[ -f "$dest/README.md" ]]; then
-      perl -i -CSD -pe "
-        s{applications/app-APPNAME}{applications/app-${slug}}g;
-        s{app-APPNAME}{app-${slug}}g;
-      " "$dest/README.md" 2>/dev/null || true
-    fi
-  fi
-
-  info "    镜像初始化完成"
+  info "    联邦槽位就绪"
 }
 
 # Central 前置：目标文档目录下须已有 knowledge/（模板中的知识库树）
@@ -590,7 +692,7 @@ install_central() {
   repo_or_path="${repo_ref:-${CFG[target_dir]}}"
   docs_path="$(docs_rel_to_git_root "$git_root" "${CFG[docs_abs]}")"
 
-  info ">>> 中央模式：登记应用到系统知识库索引"
+  info ">>> 中央模式：登记到本仓库 application/INDEX_GUIDE.md（十）并建立联邦槽位"
   info "    APP ID: ${CFG[central_app_id]}"
   info "    工程:   $repo_or_path"
   info "    文档:   ${CFG[docs_abs]}"
@@ -608,7 +710,7 @@ usage() {
   docs-init [选项] [<目标工程文档目录>]
 
 说明
-  将本仓库 system/ 目录同步到目标工程的文档目录，并将 .agent/skills、.agent/rules
+  按 --type 从本仓库 application/、system/ 或 company/ 同步到目标工程文档目录，并将 .agent/skills、.agent/rules
   安装到用户主目录下所选 Agent 目录（如 ~/.cursor、~/.trea），不写入目标工程根目录。
 
   <目标工程文档目录>
@@ -626,19 +728,27 @@ usage() {
               系统        → 应用
               词界 system → application
 
-  模式
+  模式（--mode）
     standalone（默认）  仅目标工程落盘
-    central             同时在本仓库注册应用（更新 system/SYSTEM_INDEX.md）
-                        并在 applications/app-<slug>/ 建立镜像
-                        要求：目标文档目录下已存在 knowledge/ 子目录（未满足则跳过登记）
+    central               可额外在本仓库登记（见下「type」）
+
+  类型（--type，知识库 v2）
+    未指定时：standalone → application（全量 application/）；central → system（仓库 system/ → 目标，作为组织级系统知识库根）
+    application           应用知识库：standalone 全量同步 application/；central 仅 §2.1 子集 + 登记 + system/application-<slug>/ 槽位
+    system                仓库顶层 system/ → 目标（显式）
+    company               仓库顶层 company/ → 目标（显式）
+    别名：app→application，sys→system，comp→company
+
+  central + type=application 时：目标须已有 knowledge/（或未 dry-run 时将由 §2.1 子集拷贝生成），否则跳过登记。
 
 选项
   --mode=MODE           standalone | central（或缩写 s | c）  [默认: standalone]
+  --type=TYPE           application | system | company（或 app | sys | comp） [默认：见上表]
   --scope=SCOPE         all(a) | knowledge(k) | skills(s) | rules(r) | rs  [默认: all]
                         - skills(s) 仅安装 Agent skills
                         - rules(r)  仅安装 Agent rules
                         - rs        同时安装 skills + rules（等同 r + s）
-                        注：central 可与任意 scope 组合；仅 skills/rules/rs 时仍会登记本仓库索引与联邦镜像
+                        注：central 可与任意 scope 组合；仅 skills/rules/rs 时若同时满足 central+type=application 仍会执行登记与联邦槽位
   --app-id=APP-ID       central 模式下的 APP ID               [默认: 由工程目录名推导]
   --agents=LIST         cursor | trea | claude | all，逗号分隔 [默认: cursor]
   -r                    允许工程根目录不存在时自动创建
@@ -688,6 +798,8 @@ parse_args() {
       --mode)             shift; CFG[mode]="${1:-}";  shift ;;
       --scope=*)          CFG[scope]="${1#*=}"; shift ;;
       --scope)            shift; CFG[scope]="${1:-}"; shift ;;
+      --type=*)           CFG[type]="${1#*=}"; CFG[type_explicit]=1; shift ;;
+      --type)             shift; CFG[type]="${1:-}"; CFG[type_explicit]=1; shift ;;
       --app-id=*)         CFG[app_id_opt]="${1#*=}"; shift ;;
       --app-id)           shift; CFG[app_id_opt]="${1:-}"; shift ;;
       --agents=*)         CFG[agents_opt]="${1#*=}"; shift ;;
@@ -781,6 +893,34 @@ _validate_agents() {
   (( ${#ENABLED_AGENTS[@]} > 0 )) || error "未解析到任何 Agent"
 }
 
+# 解析 --type：未指定时 standalone → application；central → system（见知识库 v2 设计 §2.3）
+_resolve_type() {
+  if [[ "${CFG[type_explicit]}" == "1" ]]; then
+    CFG[type]="$(sdx_normalize_type "${CFG[type]}")"
+    sdx_validate_type "${CFG[type]}" || error "无效 --type: ${CFG[type]}（application|system|company；别名 app、sys、comp）"
+  else
+    if [[ "${CFG[mode]}" == "central" ]]; then
+      CFG[type]=system
+    else
+      CFG[type]=application
+    fi
+  fi
+}
+
+_validate_type_sources() {
+  case "${CFG[type]}" in
+    application)
+      [[ -d "${CFG[repo_root]}/application" ]] || error "未找到 application/: ${CFG[repo_root]}/application"
+      ;;
+    system)
+      [[ -d "${CFG[repo_root]}/system" ]] || error "未找到 system/: ${CFG[repo_root]}/system（type=system）"
+      ;;
+    company)
+      [[ -d "${CFG[repo_root]}/company" ]] || error "未找到 company/: ${CFG[repo_root]}/company（type=company）"
+      ;;
+  esac
+}
+
 _compute_derived_paths() {
   CFG[primary_agent_slash]="$(sdx_get_agent_dir "${ENABLED_AGENTS[0]}")/"
   if [[ -n "${CFG[docs_abs]}" ]]; then
@@ -817,6 +957,8 @@ main() {
   _init_repo_root
   _validate_sync_scope
   _validate_mode
+  _resolve_type
+  _validate_type_sources
 
   # 未提供 <目标工程文档目录> 时的合法性（方案 A：s/r/rs + standalone 可省略）
   if [[ -z "${CFG[docs_abs]}" ]]; then
@@ -852,14 +994,17 @@ main() {
   have_perl || warn "未检测到 perl：文件内容替换将被跳过，建议安装 perl。"
 
   if [[ "${CFG[scope]}" == "all" || "${CFG[scope]}" == "knowledge" ]]; then
+    if [[ "${CFG[mode]}" == "central" && "${CFG[type_explicit]}" == "0" && "${CFG[type]}" == "system" ]]; then
+      info "提示：central 且未传 --type 时默认 type=system（同步仓库 system/ → 目标）。若需应用知识库 §2.1 子集并登记，请使用 --type=application"
+    fi
     install_system_to_docs
   fi
 
-  if [[ "${CFG[mode]}" == "central" ]]; then
+  if [[ "${CFG[mode]}" == "central" && "${CFG[type]}" == "application" ]]; then
     if _central_knowledge_ready; then
       install_central
     else
-      warn "central 模式已跳过：目标文档目录下须存在 knowledge/ 子目录（${CFG[docs_abs]}/knowledge）"
+      warn "central + type=application 已跳过登记：目标文档目录下须存在 knowledge/（${CFG[docs_abs]}/knowledge）"
     fi
   fi
 

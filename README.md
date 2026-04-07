@@ -4,7 +4,7 @@
 
 ## 简介
 
-`ai-knowledge` 是**纯文档型**中央库：提供 **`application/`** 应用知识库 SSOT、**`system/`** / **`company/`** 组织与公司级槽位骨架、**`applications/`** 联邦迁移说明入口、**`.agent/`** 规范与 Slash 技能，以及 **`scripts/`** 下的 `docs-init` / `docs-bootstrap` 初始化链。业务细节、路径级精要与检索字段以 **[INDEX_GUIDE.md](INDEX_GUIDE.md)** 为权威地图（与 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) 互为补充说明时以前者落地路径为准）。**破坏性变更（v2.2 起）**：原顶层 `system/` 知识树已迁至 **`application/`**；详见 [applications/README.md](applications/README.md) 与 [docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md](docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md)。
+`ai-knowledge` 是**纯文档型**中央库：提供 `**application/`** 应用知识库 SSOT、`**system/**` / `**company/**` 组织与公司级槽位骨架、`**applications/**` 联邦迁移说明入口、`**.agent/**` 规范与 Slash 技能，以及 `**scripts/**` 下的 `docs-init` / `docs-bootstrap` 初始化链。业务细节、路径级精要与检索字段以 **[INDEX_GUIDE.md](INDEX_GUIDE.md)** 为权威地图（与 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) 互为补充说明时以前者落地路径为准）。**破坏性变更**：**v2.2** 起原顶层 `system/` 知识树已迁至 `**application/`**；**v2.3** 起 `docs-init` 支持 `--type=application|system|company`，且 **`--mode=central` 且未传 `--type` 时默认同步仓库 `system/`（组织级）**，若需旧式「central 全量 application + 登记」请使用 **`--mode=central --type=application`**。详见 [scripts/README.md](scripts/README.md) 与 [docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md](docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md)。
 
 人类上手、可复制命令与协作入口以本文件为准；Agent 行为约束见 **[AGENTS.md](AGENTS.md)**。
 
@@ -92,27 +92,27 @@ ai-knowledge/
 ## 文档导航
 
 
-| 文档                                                                       | 用途                      |
-| ------------------------------------------------------------------------ | ----------------------- |
-| [INDEX_GUIDE.md](INDEX_GUIDE.md)                                         | 全库路径地图与检索精要（权威索引）       |
-| [AGENTS.md](AGENTS.md)                                                   | AI Agent 契约、约束与关键路径     |
-| [application/README.md](application/README.md)                           | 应用知识库主线与查阅顺序            |
-| [application/SYSTEM_INDEX.md](application/SYSTEM_INDEX.md)               | 树索引、SDD 文档流与映射速查 |
-| [system/README.md](system/README.md)                                   | 组织级系统知识库与联邦槽位说明         |
-| [company/README.md](company/README.md)                                 | 公司知识库与槽位说明              |
-| [applications/README.md](applications/README.md)                         | 联邦路径迁移说明                |
-| [applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md) | 应用联邦入口（迁移后）             |
-| [.agent/README.md](.agent/README.md)                                     | AI 协作规则与目录说明            |
-| [.agent/skills/README.md](.agent/skills/README.md)                       | Slash 技能命令一览            |
-| [scripts/README.md](scripts/README.md)                                   | 初始化脚本参数、模式与落地产物         |
-| [application/changelogs/README.md](application/changelogs/README.md)     | 变更记录与索引运维说明             |
+| 文档                                                                       | 用途                  |
+| ------------------------------------------------------------------------ | ------------------- |
+| [INDEX_GUIDE.md](INDEX_GUIDE.md)                                         | 全库路径地图与检索精要（权威索引）   |
+| [AGENTS.md](AGENTS.md)                                                   | AI Agent 契约、约束与关键路径 |
+| [application/README.md](application/README.md)                           | 应用知识库主线与查阅顺序        |
+| [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)                   | 九章索引（docs-indexing）、central 登记见「十」 |
+| [system/README.md](system/README.md)                                     | 组织级系统知识库与联邦槽位说明     |
+| [company/README.md](company/README.md)                                   | 公司知识库与槽位说明          |
+| [applications/README.md](applications/README.md)                         | 联邦路径迁移说明            |
+| [applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md) | 应用联邦入口（迁移后）         |
+| [.agent/README.md](.agent/README.md)                                     | AI 协作规则与目录说明        |
+| [.agent/skills/README.md](.agent/skills/README.md)                       | Slash 技能命令一览        |
+| [scripts/README.md](scripts/README.md)                                   | 初始化脚本参数、模式与落地产物     |
+| [application/changelogs/README.md](application/changelogs/README.md)     | 变更记录与索引运维说明         |
 
 
 ## 开发指南
 
 - **规范索引**：[.agent/rules/CONVENTIONS.md](.agent/rules/CONVENTIONS.md)
 - **系统设计、元模型与贡献流程**：[application/DESIGN.md](application/DESIGN.md)、[application/CONTRIBUTING.md](application/CONTRIBUTING.md)
-- **提交信息**：Conventional Commits，`<类型>: <描述>`（示例：`docs: 更新 application/SYSTEM_INDEX 索引`）
+- **提交信息**：Conventional Commits，`<类型>: <描述>`（示例：`docs: 更新 application/INDEX_GUIDE 登记`）
 
 ## 贡献指南
 

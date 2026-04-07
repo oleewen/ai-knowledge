@@ -1,4 +1,4 @@
-# 机器可读目录清单（与 application_meta.yaml 互补）
+# 机器可读目录清单（与 docs_meta.yaml 互补）
 schema_version: "1.1"
 template_id: app-APPNAME
 description: 联邦单元目录布局与中央库 application/ 下对应物对照
@@ -7,7 +7,7 @@ mirrors_system_paths:
   - application/changelogs/changelogs_meta.yaml → changelogs/changelogs_meta.yaml
   - application/knowledge/** → knowledge/**
   - application/requirements/requirements_meta.yaml → requirements/requirements_meta.yaml
-  - application/system_meta.yaml → application_meta.yaml（语义对照）
+  - application/docs_meta.yaml → docs_meta.yaml（目标工程内文件名；安装时内容替换见 docs-init）
 
 central_library:
   system_root: ../../application/

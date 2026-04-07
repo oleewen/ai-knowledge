@@ -78,3 +78,11 @@
 
 - 生成器：`.agent/skills/docs-indexing/scripts/indexing.sh`
 - 规范参考：`.agent/skills/docs-indexing/reference/scan-spec.md`
+
+## 十、中央知识库接入工程
+
+本节用于在本仓库（中央知识库）登记各目标工程的接入信息，便于追溯与映射。由 `scripts/docs-init.sh --mode=central` 维护本表。
+
+| APP ID | 工程路径（Git 或绝对路径） | 文档目录 |
+|--------|---------------------------|----------|
+| APP-TEST | /private/tmp/test-central | /private/tmp/test-central/docs |

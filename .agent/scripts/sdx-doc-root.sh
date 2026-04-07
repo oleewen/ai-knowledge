@@ -2,11 +2,11 @@
 # sdx-doc-root.sh — 文档树首段路径（doc_root segment）解析
 # 单一事实来源：本文件（路径 `.agent/scripts/sdx-doc-root.sh`）。
 #
-# 方案 A 顺序：
+# 推断顺序：
 #   1) 显式传入 override（如 --doc-root）
 #   2) 环境变量 SDX_DOC_ROOT
 #   3) 工程根目录下文件 .sdx-doc-root（git 根优先，其次当前探测基目录）
-#   4) 目录探测：优先 docs/*，其次中央库 `application/*`，再兼容旧布局 `system/knowledge`（见 sdx_probe_doc_root_segment）
+#   4) 目录探测：优先 `docs/`，其次应用知识库 `application/knowledge/*`，再者系统知识库 `system/knowledge/*`，然后公司知识库 `company/knowledge/*`，最后探测知识库 `*/knowledge/*`（见 sdx_probe_doc_root_segment）
 #   5) 无匹配目录时默认 docs
 #
 # Usage（由其它脚本 source）：
@@ -65,6 +65,21 @@ sdx_probe_doc_root_segment() {
     printf 'system'
     return
   fi
+  # 公司知识库
+  if [[ -d "$b/company/knowledge" || -d "$b/company/solutions" || -d "$b/company/analysis" ]]; then
+    printf 'company'
+    return
+  fi
+  # 其余任意顶层目录下的 knowledge/（前述均未命中时）
+  local _top
+  shopt -s nullglob
+  for _top in "$b"/*/; do
+    [[ -d "${_top}knowledge" ]] || continue
+    printf '%s' "$(basename "${_top%/}")"
+    shopt -u nullglob
+    return
+  done
+  shopt -u nullglob
   printf 'docs'
 }
 
