@@ -7,10 +7,13 @@
 **已决议**：
 
 1. **无须**单独参数 **`--sync=full|core`**。  
-2. **需求 5.1**（`application/` **全量** vs **核心子集**）**仅由** **`--mode=standalone|central`**（简写 **`mode=s|c`**）表达：  
-   - **`s` / standalone**：将 **`application/`** 下**全部文档**同步到目标工程文档目录（在原需求表述中对应 **5.1 的「全量」**）。  
-   - **`c` / central**：仅同步 **`application/`** 下 **§2.1 所列核心子集**（在原需求表述中对应 **5.1 的「子集」**），并叠加 **既有 central 语义**（联邦登记、镜像等，细节以实现为准）。  
-3. **§2.1** 所列路径为核心子集的**枚举**（源根均为 `application/`），**仅在 `mode=central`（`c`）时**作为落盘范围；**不**从新建顶层 `system/` 拷贝这些目录作为源。
+2. **`--mode=central` 时，若未指定 `type`，默认 `type=system`**（见 §2.3）。  
+3. **需求 5.1**（针对 **`type=application`** 的 `application/` **全量** vs **核心子集**）**仅由** **`--mode=standalone|central`**（**`mode=s|c`**）表达：  
+   - **`s` / standalone**：将 **`application/`** **全部**同步至目标工程文档目录（**全量**）。  
+   - **`c` / central 且 `type=application`（显式）**：仅 **`application/`** 下 **§2.1 核心子集** + **central 既有行为**（**子集**）。  
+4. **`type=system`**：目标工程**文档目录**即 **系统知识库根**；其下 **`application-{name}/`** 供后续 **fetch** 同步应用镜像。  
+5. **`type=company`**：目标工程**文档目录**即 **公司知识库根**；其下 **`system-{name}/`** 供后续 **fetch** 同步系统镜像。  
+6. **§2.1** 仅在 **`mode=central` 且 `type=application`** 时适用；**不**用新建顶层 `system/` 作为该子集之源。
 
 ---
 
@@ -27,7 +30,7 @@
 
 **要点**：`DESIGN.md` 中「系统知识库根目录」与 `system_meta.yaml`、`system/knowledge` 实体 **ID** 约束、以及全库数千处 `system/` 字面路径，均建立在上述结构上。
 
-**目标态注意**：若当前 **`central`** 对 `system/` 的拷贝范围与「仅核心子集」不一致，则 **`mode=central` 下对 `application/` 的落盘范围**将按本 spec **收紧为 §2.1**，属**行为变更**，须在 `SDX_VERSION` 与 README **显式说明**。
+**目标态注意**：**`mode=central` 且 `type=application`** 时，对中央库 **`application/`** 的落盘范围按 **§2.1**（与旧版「整库拷贝」可能不一致），须在 `SDX_VERSION` 与 README **显式说明**。**默认 `type=system`** 时的 central 行为见 **§2.3**。
 
 ---
 
@@ -40,16 +43,16 @@
    - `architecture/`（业务/产品/系统/数据架构文档）  
 4. **新建顶层 `company/`**：其下含 `system-{system-name}/`（占位/后续从他系统知识库 fetch）  
 5. **`docs-init.sh`**  
-   - **5.1**：**即** **`--mode=standalone|central`**（**`mode=s|c`**）。**全量 vs 核心子集**见文首「已决议」与 §2.1；**不**再增加 `--sync` 等第二参数。  
-   - **5.2 `type`**：`a|application` 同步 application；`s|system` 同步 system；`c|company` 同步 company（**`type` 的 c = company**，与 **`mode=c` = central** 不同语境）。
+   - **5.1**：**即** **`--mode=standalone|central`**（**`mode=s|c`**）。**在 `type=application` 时**，**全量 vs 核心子集**见文首「已决议」与 §2.1；**不**增加 `--sync`。  
+   - **5.2 `type`**：`application` / `system` / `company`。**`--mode=central` 且省略 `type` 时默认 `type=system`**；目标目录与 fetch 槽位见 §2.3、§6。
 
 ---
 
 ## 2. 关键歧义（实施前必须拍板）
 
-### 2.1 「核心子集」路径枚举 — **已拍板**
+### 2.1 「核心子集」路径枚举 — **已拍板**（**仅 `type=application` + `mode=central`**）
 
-在 **`mode=central`（`c`）** 且同步对象为 **`application/`** 时，**仅**落盘下列相对 **`application/`** 的内容（迁名后以实际文件为准）：
+在 **`mode=central`（`c`）** 且 **`type=application`**（须**显式**传入；因 central 默认 **`type=system`**，见 §2.3）时，**仅**将下列相对 **`application/`** 的内容同步到目标（迁名后以实际文件为准）：
 
 `changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs_meta.yaml`、`manifest.yaml`
 
@@ -61,17 +64,27 @@
 
 | 简写 | 完整值 | 对 `type=application` 时的含义（与需求 5.1 对齐） |
 |------|--------|--------------------------------------------------|
-| **`s`** | **standalone** | **`application/` 全量**同步至目标文档目录 |
-| **`c`** | **central** | **仅 §2.1 核心子集** + **central 既有行为**（登记/镜像等） |
+| **`s`** | **standalone** | 在 **`type=application`** 时：**`application/` 全量**同步至目标文档目录 |
+| **`c`** | **central** | **默认 `type=system`**（§2.3）。若显式 **`type=application`**：**§2.1 核心子集** + central 既有行为 |
 
-**文档要求**：README 用表格列出 **`--mode=standalone|central`** 与 **`s|c` 简写**，并说明 **central 在 application 知识库上的落盘范围**（§2.1），避免与旧版「central 拷贝整棵 system」假设混淆。
+**文档要求**：README 用表格列出 **`--mode=standalone|central`** 与 **`s|c` 简写**；并分表说明 **`type=application` + central** 与 **默认 `type=system` + central** 的差异。
 
-### 2.3 删除 `applications/` 与 central 模式
+### 2.3 central 模式、`type` 默认值与目标目录语义 — **已拍板**
 
-`docs-config.sh` 仍引用 `applications/app-APPNAME`，`docs-init` central 流程会建联邦镜像。删除 `applications/` 后需定义：
+- **central 模式继续沿用**（`--mode=central` / `c`），不废弃。  
+- **`--mode=central` 时，若未指定 `type`，则 `type` 默认为 `system`。**
 
-- central 是否**废弃**，或改为在 **`system/application-{name}/` 或 `company/system-{name}/`** 下建镜像；  
-- `APP_ID`、登记行写入哪个索引文件（原 `system/SYSTEM_INDEX.md` 将随目录迁移而改名/换路径）。
+| `type` | 中央库源目录（目标态） | **目标工程文档目录**语义 | 子目录与后续 fetch |
+|--------|------------------------|---------------------------|---------------------|
+| **`system`**（central 默认） | 仓库顶层 **`system/`**（新语义：含 `architecture/`、`application-{app-name}/` 等） | **即「系统知识库根目录」**（该路径即用户传入的文档目录） | 其下 **`application-{name}/`** 内内容后续可通过 **fetch** 等方式同步为各应用知识库镜像 |
+| **`company`** | 仓库顶层 **`company/`** | **即「公司知识库根目录」** | 其下 **`system-{name}/`** 内内容后续可通过 **fetch** 等方式同步为各系统知识库镜像 |
+| **`application`** | **`application/`** | 由现有约定/参数解析（通常为应用知识库落点） | **§2.1** 在 **`mode=central` + `type=application`** 时定义核心子集 |
+
+**删除 `applications/`**：联邦/镜像落点改为 **`system/application-{name}/`**（在**目标**系统知识库根下）或依赖 **fetch** 填入，不再依赖已删除的 `applications/app-APPNAME` 模板目录；**`APP_ID`、登记行**写入文件需随 **`application/` 内索引**（如迁入后的 `APPLICATION_INDEX.md` 或专用 manifest）**另行定稿**（实现阶段补全）。
+
+### 2.4 删除 `applications/`（模板移除）
+
+中央库内 **`applications/`** 目录按需求删除；与 §2.3 中 **目标侧** `application-{name}/`、`system-{name}/` **槽位**区分：后者为**目标工程文档树**上的目录名模式，**不是**旧模板路径 `applications/app-APPNAME/`。
 
 ---
 
@@ -142,19 +155,29 @@
 
 | 参数 | 含义 |
 |------|------|
-| **`--mode=standalone\|central`** | **简写 `s|c`**。**standalone**：`type=application` 时 **`application/` 全量**；**central**：`type=application` 时 **仅 §2.1 核心子集** + central 行为。 |
-| **`--type=…`** | `application` / `system` / `company`（与需求 5.2 对齐） |
+| **`--mode=standalone\|central`** | **简写 `s|c`**。与 **`type`** 组合见下表。 |
+| **`--type=application\|system\|company`** | 未传时：**仅当 `mode=central` 默认 `type=system`**；`mode=standalone` 须显式或约定默认（建议实现：**standalone 默认 `type=application`**，以免与 central 混淆）。 |
+
+**组合语义（摘要）**：
+
+| mode | type（默认行为） | 中央库源 | 目标工程文档目录语义 |
+|------|------------------|----------|----------------------|
+| standalone | **application**（建议默认） | `application/` 全量 | 应用知识库落点（与现网 standalone 对齐） |
+| central | **system**（**省略 type 时**） | 顶层 `system/` | **系统知识库根**；其下 `application-{name}/` 供后续 fetch 填镜像 |
+| central | **application**（须显式） | `application/` §2.1 子集 | 应用知识库落点 + central 行为 |
+| central | **company** | 顶层 `company/` | **公司知识库根**；其下 `system-{name}/` 供后续 fetch 填镜像 |
 
 **校验规则（示例）**：
 
-- **`mode=central` 且 `type=application`**：落盘范围 **§2.1**，源根 **`application/`**。  
-- **`type=company`**：默认同步 `company/` 下哪些子树（是否含所有 `system-*`）需定义。
+- **`mode=central` + 默认 `type=system`**：源 **`system/`**，目标目录 = **系统知识库根**。  
+- **`mode=central` + `type=application`**：源 **`application/`**，落盘 **§2.1**。  
+- **`type=company`**：源 **`company/`**，目标目录 = **公司知识库根**。
 
 ---
 
 ## 7. 测试与验收（建议）
 
-- `docs-init --dry-run` 覆盖：`type` × `mode=standalone|central`（含 **`s|c` 简写**）合法组合。  
+- `docs-init --dry-run` 覆盖：`type` × `mode=standalone|central`（含 **`s|c` 简写**）；**重点**：`central` **无 type**（应默认 **system**）、`central`+`application`、`central`+`company`、`standalone`+`application`。  
 - 安装后：`validate-guide.sh`、关键 `validate-*.sh`、`rg` 检查断链。  
 - 可选：快照对比目标目录文件清单（golden list）。
 
@@ -163,13 +186,13 @@
 ## 8. 自审
 
 - **范围**：本文仅为评估与设计草案，**不**包含具体 `git mv` 列表与 PR 任务拆分。  
-- **待确认**：§2.3（central 去向）。§2.1、§2.2 已与「5.1 = mode」口径对齐。  
+- **待确认**：无（§2.3、§2.4 已按最新口径写入）；实现阶段补全 **standalone 默认 type**、**登记文件路径** 等细节。  
 - **一致性**：若采纳「`application` = 原 system 主体」，则对外叙述「应用知识库」与旧文档「系统知识库」需统一迁移说明。
 
 ---
 
 ## 9. 后续步骤
 
-1. ~~§2.1、§2.2~~（已完成）。待确认 §2.3。  
+1. ~~§2.1～§2.4~~（已写入）。  
 2. 评审通过后，使用 **writing-plans** 拆分为可执行子任务（目录迁移、脚本、Skill、全库链接、版本与 README）。  
 3. **禁止**在未批准前批量修改 `system/knowledge` 实体 ID 或删除 `applications/` 内仍被引用的模板路径。
