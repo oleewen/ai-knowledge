@@ -4,8 +4,11 @@
 **状态**：设计评估（**未实施**）  
 **范围**：`applications/` 删除、`system`↔`application` 语义调整、新增 `system/`（架构与联邦槽位）、新增 `company/`、`docs-init.sh` 参数模型扩展
 
-**已决议**：`sync=core`（原需求中的 `mode=c`）的**源根为 `application/`**（选项 **1** / 上文理解 **B**）。即仅同步  
-`application/changelogs/`、`application/knowledge/`、`application/specs/`、`application/INDEX_GUIDE.md`、`application/README.md`、`application/docs_meta.yaml`、`application/manifest.yaml`（若某文件迁名后不叫 `system_meta.yaml`，以实现为准）。**不**从新建顶层 `system/` 拷贝上述目录作为 core 源。
+**已决议**：
+
+1. **`mode=c`**（核心子集）的**源根为 `application/`**（选项 **1** / §2.1 理解 **B**）。即仅同步  
+`application/changelogs/`、`application/knowledge/`、`application/specs/`、`application/INDEX_GUIDE.md`、`application/README.md`、`application/docs_meta.yaml`、`application/manifest.yaml`（若迁名后以实际文件名为准）。**不**从新建顶层 `system/` 拷贝上述目录作为 core 源。  
+2. **§2.2**：同步粒度**沿用参数名 `mode`**，取值为 **`s`**（全量）与 **`c`**（核心子集）；原 `docs-init` 的 **`--mode=standalone|central`** 让出符号，**改挂新参数名**（建议 **`--init-mode=standalone|central`**，实现时可保留短选项映射一期）。见 §2.2 正文。
 
 ---
 
@@ -33,7 +36,7 @@
    - `architecture/`（业务/产品/系统/数据架构文档）  
 4. **新建顶层 `company/`**：其下含 `system-{system-name}/`（占位/后续从他系统知识库 fetch）  
 5. **`docs-init.sh`**  
-   - **5.1 `mode`（建议实现名：`--sync=full|core`）**：`s`（full）→ 同步 **`application/`** 下全部文档到目标工程文档目录；`c`（core）→ 仅同步 **`application/`** 下子集：`changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs_meta.yaml`、`manifest.yaml`（**非**新建顶层 `system/` 下的同名路径）  
+   - **5.1 `mode=s|c`（已决议）**：`s` → 同步 **`application/`** 下全部文档到目标工程文档目录；`c` → 仅同步 **`application/`** 下子集：`changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs_meta.yaml`、`manifest.yaml`（**非**新建顶层 `system/` 下的同名路径）。与现有脚本冲突及新参数名见 §2.2。  
    - **5.2 `type`**：`a|application` 同步 application；`s|system` 同步 system；`c|company` 同步 company  
 
 ---
@@ -51,15 +54,20 @@
 
 **实施注意**：`docs-init` 帮助文与 CI 示例须写 **`REPO_ROOT/application/changelogs`** 等，避免与新建 **`system/architecture`**、`system/application-{name}/` 混淆。**四视角与阶段文档的 SSOT** 在 **`application/`**；新建 **`system/`** 仅承载架构文档与联邦槽位（及后续 fetch 落点），**不**再复制一套 `knowledge/` 与 `application/` 争 SSOT。
 
-### 2.2 与现有 `docs-init` 的 `--mode` 冲突
+### 2.2 `mode=s|c` 与旧版 `docs-init` 的 `--mode` — **已拍板**
 
-当前 `--mode` 表示 **standalone | central**（联邦登记 + 建 `applications/app-*` 镜像）。  
-若再引入 **sync 模式 `s|c`**，必须：
+**决议**：同步粒度**沿用 `mode`**，取值 **`s`**（全量）、**`c`**（核心子集，源根见 §2.1）。
 
-- **改名**：例如 `--sync=full|core` 或 `--payload=application-full|system-core`，保留 `--mode=standalone|central` 表示**业务语义**；或  
-- **合并矩阵**：用一张表写清 `(layout_mode, central_flag, type)` 的所有合法组合。
+当前实现里 **`--mode=standalone|central`** 已占用 `mode` 关键字（standalone / central 表示是否联邦登记 + 镜像）。与新语义冲突，**必须拆分**：
 
-否则脚本与文档会出现两个都叫 `mode` 的概念，运维与 CI 极易误用。
+| 概念 | 建议参数名 | 取值 | 说明 |
+|------|------------|------|------|
+| 同步粒度（新） | **`--mode=s\|c`** | `s` 全量 · `c` 核心 | 与需求 5.1 一致 |
+| 初始化/联邦策略（旧） | **`--init-mode=standalone\|central`**（建议） | 同现行为 | 替代原 `--mode`；README 与 `docs-bootstrap` 需同步迁移说明 |
+
+**兼容性**：属**破坏性变更**；升级 `SDX_VERSION`，并在 `scripts/README.md` 给出「旧 `--mode` → 新 `--init-mode`」对照表。若需过渡期，可实现：检测到仅传旧 `--mode` 且无新 `--mode=s|c` 时告警并映射到 `--init-mode`（不推荐长期保留）。
+
+**合法组合示例**（实现时校验）：`(type, mode=s|c, init-mode, …)`，例如 `type=application` 且 `mode=c` 且 `init-mode=standalone` 表示仅落盘 application 核心子集且不跑 central 登记。
 
 ### 2.3 删除 `applications/` 与 central 模式
 
@@ -133,26 +141,25 @@
 
 ---
 
-## 6. `docs-init` 行为建议（避免与现有 `mode` 撞名）
-
-建议引入独立参数（示例）：
+## 6. `docs-init` 参数建议（与 §2.2 一致）
 
 | 参数 | 含义 |
 |------|------|
-| `--kb-type=application\|system\|company` | 对应你的 `type=a|s|c` |
-| `--sync=full\|core` | 对应你的 `mode=s|c`（`full`=application 全量；`core`=约定子集） |
-| 保留 `--mode=standalone\|central` | 是否执行登记/镜像（若仍需要） |
+| `--type=…` | `application` / `system` / `company`（与需求 5.2 的 `a|s|c` 对齐；长名以实现为准） |
+| **`--mode=s\|c`** | **`s`**：所选 `type` 对应根下全量；**`c`**：在 `type=application` 时仅为 §2.1 所列子集（源根 `application/`） |
+| **`--init-mode=standalone\|central`** | 取代旧 **`--mode`**：是否执行联邦登记、镜像等（行为对齐当前 standalone/central） |
 
 **校验规则（示例）**：
 
-- `sync=core` 时，**源根固定为 `application/`**（已决议，见文首「已决议」与 §2.1）。  
-- `kb-type=company` 时，默认同步 `company/` 下哪些子树（是否含所有 `system-*`）需定义。
+- **`mode=c` 且 `type=application`** 时，**源根固定为 `application/`**（§2.1）。  
+- **`type=company`** 时，默认同步 `company/` 下哪些子树（是否含所有 `system-*`）需定义。  
+- 旧参数 **`--mode=standalone|central`** 删除或仅作弃用别名，避免与 **`--mode=s|c`** 混读。
 
 ---
 
 ## 7. 测试与验收（建议）
 
-- `docs-init --dry-run` 覆盖：`kb-type` × `sync` × `standalone|central` 合法组合。  
+- `docs-init --dry-run` 覆盖：`type` × `mode=s|c` × `init-mode=standalone|central` 合法组合。  
 - 安装后：`validate-guide.sh`、关键 `validate-*.sh`、`rg` 检查断链。  
 - 可选：快照对比目标目录文件清单（golden list）。
 
@@ -161,13 +168,13 @@
 ## 8. 自审
 
 - **范围**：本文仅为评估与设计草案，**不**包含具体 `git mv` 列表与 PR 任务拆分。  
-- **待确认**：§2.2（CLI 命名）、§2.3（central 去向）。§2.1 已确认。  
+- **待确认**：§2.3（central 去向）。§2.1、§2.2 已确认。  
 - **一致性**：若采纳「`application` = 原 system 主体」，则对外叙述「应用知识库」与旧文档「系统知识库」需统一迁移说明。
 
 ---
 
 ## 9. 后续步骤
 
-1. ~~维护者确认 §2.1~~（已完成）。待确认 §2.2、§2.3。  
+1. ~~§2.1、§2.2~~（已完成）。待确认 §2.3。  
 2. 评审通过后，使用 **writing-plans** 拆分为可执行子任务（目录迁移、脚本、Skill、全库链接、版本与 README）。  
 3. **禁止**在未批准前批量修改 `system/knowledge` 实体 ID 或删除 `applications/` 内仍被引用的模板路径。
