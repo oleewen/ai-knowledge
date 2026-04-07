@@ -7,7 +7,7 @@
 **已决议**：
 
 1. **无须**单独参数 **`--sync=full|core`**。  
-2. **`--mode=central` 时，若未指定 `type`，默认 `type=system`**（见 §2.3）。  
+2. **未指定 `type` 时，默认 `type=application`**；**例外**：**`--mode=central` 且未指定 `type`** 时，默认 **`type=system`**（见 §2.3）。  
 3. **需求 5.1**（针对 **`type=application`** 的 `application/` **全量** vs **核心子集**）**仅由** **`--mode=standalone|central`**（**`mode=s|c`**）表达：  
    - **`s` / standalone**：将 **`application/`** **全部**同步至目标工程文档目录（**全量**）。  
    - **`c` / central 且 `type=application`（显式）**：仅 **`application/`** 下 **§2.1 核心子集** + **central 既有行为**（**子集**）。  
@@ -30,7 +30,7 @@
 
 **要点**：`DESIGN.md` 中「系统知识库根目录」与 `system_meta.yaml`、`system/knowledge` 实体 **ID** 约束、以及全库数千处 `system/` 字面路径，均建立在上述结构上。
 
-**目标态注意**：**`mode=central` 且 `type=application`** 时，对中央库 **`application/`** 的落盘范围按 **§2.1**（与旧版「整库拷贝」可能不一致），须在 `SDX_VERSION` 与 README **显式说明**。**默认 `type=system`** 时的 central 行为见 **§2.3**。
+**目标态注意**：**`mode=central` 且 `type=application`** 时，对中央库 **`application/`** 的落盘范围按 **§2.1**（与旧版「整库拷贝」可能不一致），须在 `SDX_VERSION` 与 README **显式说明**。**`mode=central` 且未传 `type`**（故为 **`type=system`**）时的行为见 **§2.3**。
 
 ---
 
@@ -44,7 +44,7 @@
 4. **新建顶层 `company/`**：其下含 `system-{system-name}/`（占位/fetch）、**`architecture/`**（公司级架构文档，与 `system/architecture/` 对照）  
 5. **`docs-init.sh`**  
    - **5.1**：**即** **`--mode=standalone|central`**（**`mode=s|c`**）。**在 `type=application` 时**，**全量 vs 核心子集**见文首「已决议」与 §2.1；**不**增加 `--sync`。  
-   - **5.2 `type`**：`application` / `system` / `company`。**`--mode=central` 且省略 `type` 时默认 `type=system`**；目标目录与 fetch 槽位见 §2.3、§6。
+   - **5.2 `type`**：`application` / `system` / `company`。**未传时默认 `type=application`**；**例外**：**`--mode=central` 且省略 `type`** 时默认 **`type=system`**。目标目录与 fetch 槽位见 §2.3、§6。
 
 ---
 
@@ -52,7 +52,7 @@
 
 ### 2.1 「核心子集」路径枚举 — **已拍板**（**仅 `type=application` + `mode=central`**）
 
-在 **`mode=central`（`c`）** 且 **`type=application`**（须**显式**传入；因 central 默认 **`type=system`**，见 §2.3）时，**仅**将下列相对 **`application/`** 的内容同步到目标（迁名后以实际文件为准）：
+在 **`mode=central`（`c`）** 且 **`type=application`**（须**显式**传入：因 **`mode=central` 且未传 `type`** 时默认为 **`type=system`**，见 §2.3、§6）时，**仅**将下列相对 **`application/`** 的内容同步到目标（迁名后以实际文件为准）：
 
 `changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs_meta.yaml`、`manifest.yaml`
 
@@ -65,18 +65,19 @@
 | 简写 | 完整值 | 对 `type=application` 时的含义（与需求 5.1 对齐） |
 |------|--------|--------------------------------------------------|
 | **`s`** | **standalone** | 在 **`type=application`** 时：**`application/` 全量**同步至目标文档目录 |
-| **`c`** | **central** | **默认 `type=system`**（§2.3）。若显式 **`type=application`**：**§2.1 核心子集** + central 既有行为 |
+| **`c`** | **central** | **未传 `type` 时默认 `type=system`**（§2.3，覆盖全局默认 `application`）。若显式 **`type=application`**：**§2.1 核心子集** + central 既有行为 |
 
 **文档要求**：README 用表格列出 **`--mode=standalone|central`** 与 **`s|c` 简写**；并分表说明 **`type=application` + central** 与 **默认 `type=system` + central** 的差异。
 
 ### 2.3 central 模式、`type` 默认值与目标目录语义 — **已拍板**
 
 - **central 模式继续沿用**（`--mode=central` / `c`），不废弃。  
-- **`--mode=central` 时，若未指定 `type`，则 `type` 默认为 `system`。**
+- **全局**：未指定 `type` 时，**默认 `type=application`**（§6）。  
+- **例外**：**`--mode=central` 且未指定 `type`** 时，**默认 `type=system`**（仅此组合覆盖上述全局默认）。
 
 | `type` | 中央库源目录（目标态） | **目标工程文档目录**语义 | 子目录与后续 fetch |
 |--------|------------------------|---------------------------|---------------------|
-| **`system`**（central 默认） | 仓库顶层 **`system/`**（新语义：含 `architecture/`、`application-{app-name}/` 等） | **即「系统知识库根目录」**（该路径即用户传入的文档目录） | 其下 **`application-{name}/`** 内内容后续可通过 **fetch** 等方式同步为各应用知识库镜像 |
+| **`system`**（**`mode=central` 且未传 `type` 时的默认**，或显式指定） | 仓库顶层 **`system/`**（新语义：含 `architecture/`、`application-{app-name}/` 等） | **即「系统知识库根目录」**（该路径即用户传入的文档目录） | 其下 **`application-{name}/`** 内内容后续可通过 **fetch** 等方式同步为各应用知识库镜像 |
 | **`company`** | 仓库顶层 **`company/`**（含 **`architecture/`** 与 **`system-{name}/`**） | **即「公司知识库根目录」** | **`system-{name}/`**：fetch 同步各系统镜像；**`architecture/`**：公司级架构文档（与 **`system/architecture/`** 对照） |
 | **`application`** | **`application/`** | 由现有约定/参数解析（通常为应用知识库落点） | **§2.1** 在 **`mode=central` + `type=application`** 时定义核心子集 |
 
@@ -156,15 +157,15 @@
 
 | 参数 | 含义 |
 |------|------|
-| **`--mode=standalone\|central`** | **简写 `s|c`**。与 **`type`** 组合见下表。 |
-| **`--type=application\|system\|company`** | 未传时：**仅当 `mode=central` 默认 `type=system`**；`mode=standalone` 须显式或约定默认（建议实现：**standalone 默认 `type=application`**，以免与 central 混淆）。 |
+| **`--mode=standalone\|central`** | **简写 `s\|c`**。与 **`type`** 组合见下表。 |
+| **`--type=application\|system\|company`** | **未传时默认 `type=application`**；**例外**：**`mode=central` 且未传 `type`** 时，默认 **`type=system`**（§2.3）。 |
 
 **组合语义（摘要）**：
 
 | mode | type（默认行为） | 中央库源 | 目标工程文档目录语义 |
 |------|------------------|----------|----------------------|
-| standalone | **application**（建议默认） | `application/` 全量 | 应用知识库落点（与现网 standalone 对齐） |
-| central | **system**（**省略 type 时**） | 顶层 `system/` | **系统知识库根**；其下 `application-{name}/` 供后续 fetch 填镜像 |
+| standalone | **application**（**未传 type 时即此**，见上表默认） | `application/` 全量 | 应用知识库落点（与现网 standalone 对齐） |
+| central | **system**（**未传 `type` 时由 §2.3 例外默认**） | 顶层 `system/` | **系统知识库根**；其下 `application-{name}/` 供后续 fetch 填镜像 |
 | central | **application**（须显式） | `application/` §2.1 子集 | 应用知识库落点 + central 行为 |
 | central | **company** | 顶层 `company/`（含 `architecture/`） | **公司知识库根**；`system-{name}/` 为 fetch 槽位，`architecture/` 为公司级架构文档 |
 
@@ -187,7 +188,7 @@
 ## 8. 自审
 
 - **范围**：本文仅为评估与设计草案，**不**包含具体 `git mv` 列表与 PR 任务拆分。  
-- **待确认**：无（§2.3、§2.4 已按最新口径写入）；实现阶段补全 **standalone 默认 type**、**登记文件路径** 等细节。  
+- **待确认**：无（§2.3、§2.4 已按最新口径写入）；实现阶段补全 **登记文件路径** 等细节。  
 - **一致性**：若采纳「`application` = 原 system 主体」，则对外叙述「应用知识库」与旧文档「系统知识库」需统一迁移说明。
 
 ---
