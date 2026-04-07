@@ -33,8 +33,8 @@ requirements/
 
 ## 模板与命令
 
-- 模板：PRD → [../../.ai/skills/sdx-prd/assets/prd-template.md](../../.ai/skills/sdx-prd/assets/prd-template.md)；ADD → [../../.ai/skills/sdx-design/assets/add-template.md](../../.ai/skills/sdx-design/assets/add-template.md)；TDD → [../../.ai/skills/sdx-test/assets/tdd-template.md](../../.ai/skills/sdx-test/assets/tdd-template.md)  
-- Skills：sdx-prd、sdx-design、sdx-test（见 [../../.ai/README.md](../../.ai/README.md)）  
+- 模板：PRD → [../../.agent/skills/sdx-prd/assets/prd-template.md](../../.agent/skills/sdx-prd/assets/prd-template.md)；ADD → [../../.agent/skills/sdx-design/assets/add-template.md](../../.agent/skills/sdx-design/assets/add-template.md)；TDD → [../../.agent/skills/sdx-test/assets/tdd-template.md](../../.agent/skills/sdx-test/assets/tdd-template.md)  
+- Skills：sdx-prd、sdx-design、sdx-test（见 [../../.agent/README.md](../../.agent/README.md)）  
 
 ---
 

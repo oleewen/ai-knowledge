@@ -4,9 +4,9 @@
 # 步骤：
 #   1. system/ → 目标文档目录（排除 DESIGN.md、CONTRIBUTING.md）
 #      - 文件名：system（不区分大小写）→ application
-#      - 文件内容：.ai/ → Agent 目录；system/ → 文档根相对路径；系统 → 应用
-#   2. .ai/skills + .ai/rules → 用户主目录下所选 Agent 目录（如 ~/.cursor、~/.trea）
-#      - 文件内容：.ai/ → Agent 目录；system/ → 文档根相对路径
+#      - 文件内容：.agent/ → Agent 目录；system/ → 文档根相对路径；系统 → 应用
+#   2. .agent/skills + .agent/rules → 用户主目录下所选 Agent 目录（如 ~/.cursor、~/.trea）
+#      - 文件内容：.agent/ → Agent 目录；system/ → 文档根相对路径
 #   3. central 模式：注册应用到系统知识库索引 + 建立 app-APPNAME 镜像
 #
 # 运行要求：Bash 5+；内容替换依赖 perl（UTF-8）
@@ -310,14 +310,14 @@ copy_dir() {
 
 # ─── 内容替换 ─────────────────────────────────────────────────────────────────
 
-# 文档树替换：.ai/ → agent_slash；system/ → docs_slash；系统→应用；词界 system→application
+# 文档树替换：.agent/ → agent_slash；system/ → docs_slash；系统→应用；词界 system→application
 _rewrite_doc_file() {
   local file="$1" agent_slash="$2" docs_slash="$3"
   [[ -f "$file" ]] && is_text_file "$file" || return 0
   have_perl || { warn "未安装 perl，跳过内容替换：$file"; return 0; }
   SDX_AGENT_SLASH="$agent_slash" SDX_DOCS_SLASH="$docs_slash" \
     perl -CSD -i -pe '
-      s{\.ai/}{$ENV{SDX_AGENT_SLASH}}g;
+      s{\.agent/}{$ENV{SDX_AGENT_SLASH}}g;
       s{system/}{$ENV{SDX_DOCS_SLASH}}gi;
       s{SYSTEM_INDEX}{APPLICATION_INDEX}gi;
       s{system_meta}{application_meta}gi;
@@ -326,14 +326,14 @@ _rewrite_doc_file() {
     ' "$file" 2>/dev/null || true
 }
 
-# Agent 树替换：.ai/ → agent_slash；system/ → docs_slash（不做 system→application 词替换）
+# Agent 树替换：.agent/ → agent_slash；system/ → docs_slash（不做 system→application 词替换）
 _rewrite_agent_file() {
   local file="$1" agent_slash="$2" docs_slash="$3"
   [[ -f "$file" ]] && is_text_file "$file" || return 0
   have_perl || return 0
   SDX_AGENT_SLASH="$agent_slash" SDX_DOCS_SLASH="$docs_slash" \
     perl -CSD -i -pe '
-      s{\.ai/}{$ENV{SDX_AGENT_SLASH}}g;
+      s{\.agent/}{$ENV{SDX_AGENT_SLASH}}g;
       s{system/}{$ENV{SDX_DOCS_SLASH}}gi;
     ' "$file" 2>/dev/null || true
 }
@@ -363,7 +363,7 @@ install_system_to_docs() {
   info ">>> 初始化 system/ → 目标文档目录"
   info "    源:   $src_root"
   info "    目标: $dst_root"
-  info "    .ai/ → ${agent_slash}  |  system/ → ${docs_slash}"
+  info "    .agent/ → ${agent_slash}  |  system/ → ${docs_slash}"
 
   local rel src_f dst_f base
   while IFS= read -r -d '' rel; do
@@ -395,7 +395,7 @@ install_system_to_docs() {
   info "    system/ 同步完成"
 }
 
-# 步骤 2a：.ai/skills → 各 Agent 目录
+# 步骤 2a：.agent/skills → 各 Agent 目录
 install_agent_skills() {
   local docs_slash="${CFG[docs_slash]}"
   local agent agent_dir agent_slash
@@ -406,7 +406,7 @@ install_agent_skills() {
 
     info ">>> 安装 ${agent} Agent skills"
     info "    目录: ${agent_dir}；用户主目录下 Agent 配置（非工程目录）"
-    info "    .ai/ → ${agent_slash}  |  system/ → ${docs_slash}"
+    info "    .agent/ → ${agent_slash}  |  system/ → ${docs_slash}"
 
     ensure_dir "$agent_dir/skills"
 
@@ -414,12 +414,12 @@ install_agent_skills() {
     local -a skill_dirs=()
     local sd skill
     shopt -s nullglob
-    for sd in "${CFG[repo_root]}/.ai/skills"/*/; do
+    for sd in "${CFG[repo_root]}/.agent/skills"/*/; do
       [[ -d "$sd" ]] && skill_dirs+=("$sd")
     done
 
     if (( ${#skill_dirs[@]} == 0 )); then
-      warn "未找到 .ai/skills 下的技能子目录"
+      warn "未找到 .agent/skills 下的技能子目录"
     else
       for sd in "${skill_dirs[@]}"; do
         skill="$(basename "$sd")"
@@ -427,8 +427,8 @@ install_agent_skills() {
       done
     fi
 
-    [[ -f "${CFG[repo_root]}/.ai/skills/README.md" ]] \
-      && copy_file "${CFG[repo_root]}/.ai/skills/README.md" "$agent_dir/skills/README.md"
+    [[ -f "${CFG[repo_root]}/.agent/skills/README.md" ]] \
+      && copy_file "${CFG[repo_root]}/.agent/skills/README.md" "$agent_dir/skills/README.md"
 
     # 内容替换（非 dry-run）
     if [[ "${CFG[dry_run]}" == "0" ]]; then
@@ -437,7 +437,7 @@ install_agent_skills() {
   done
 }
 
-# 步骤 2b：.ai/rules → 各 Agent 目录
+# 步骤 2b：.agent/rules → 各 Agent 目录
 install_agent_rules() {
   local docs_slash="${CFG[docs_slash]}"
   local agent agent_dir agent_slash
@@ -448,12 +448,12 @@ install_agent_rules() {
 
     info ">>> 安装 ${agent} Agent rules"
     info "    目录: ${agent_dir}；用户主目录下 Agent 配置（非工程目录）"
-    info "    .ai/ → ${agent_slash}  |  system/ → ${docs_slash}"
+    info "    .agent/ → ${agent_slash}  |  system/ → ${docs_slash}"
 
     ensure_dir "$agent_dir/rules"
 
     # 安装 rules（目录和文件分别处理）
-    local rules_src="${CFG[repo_root]}/.ai/rules"
+    local rules_src="${CFG[repo_root]}/.agent/rules"
     if [[ -d "$rules_src" ]]; then
       ensure_dir "$agent_dir/rules"
       local item base
@@ -608,7 +608,7 @@ usage() {
   docs-init [选项] [<目标工程文档目录>]
 
 说明
-  将本仓库 system/ 目录同步到目标工程的文档目录，并将 .ai/skills、.ai/rules
+  将本仓库 system/ 目录同步到目标工程的文档目录，并将 .agent/skills、.agent/rules
   安装到用户主目录下所选 Agent 目录（如 ~/.cursor、~/.trea），不写入目标工程根目录。
 
   <目标工程文档目录>
@@ -621,7 +621,7 @@ usage() {
 
   替换规则
     文件名  : system（不区分大小写）→ application
-    文件内容: .ai/        → 首个 Agent 目录（如 .cursor/）
+    文件内容: .agent/        → 首个 Agent 目录（如 .cursor/）
               system/     → 文档根相对路径（如 system/）
               系统        → 应用
               词界 system → application
@@ -722,8 +722,8 @@ _init_repo_root() {
     CFG[repo_root]="$(sdx_abs_path "$SCRIPT_DIR/..")"
   fi
   [[ -d "${CFG[repo_root]}/system"     ]] || error "未找到 system 目录: ${CFG[repo_root]}/system"
-  [[ -d "${CFG[repo_root]}/.ai/skills" ]] || error "未找到 .ai/skills: ${CFG[repo_root]}/.ai/skills"
-  [[ -d "${CFG[repo_root]}/.ai/rules"  ]] || error "未找到 .ai/rules: ${CFG[repo_root]}/.ai/rules"
+  [[ -d "${CFG[repo_root]}/.agent/skills" ]] || error "未找到 .agent/skills: ${CFG[repo_root]}/.agent/skills"
+  [[ -d "${CFG[repo_root]}/.agent/rules"  ]] || error "未找到 .agent/rules: ${CFG[repo_root]}/.agent/rules"
 }
 
 _validate_docs_and_target() {

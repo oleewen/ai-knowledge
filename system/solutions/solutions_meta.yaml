@@ -74,9 +74,9 @@ references:
     description: "全局目录结构与阶段设计"
   - path: "../SYSTEM_INDEX.md"
     description: "全局索引"
-  - path: "../../.ai/skills/sdx-solution/SKILL.md"
+  - path: "../../.agent/skills/sdx-solution/SKILL.md"
     description: "解决方案阶段目标与工作流"
-  - path: "../../.ai/skills/sdx-solution/assets/solution-template.md"
+  - path: "../../.agent/skills/sdx-solution/assets/solution-template.md"
     description: "解决方案文档模板"
 
 # -----------------------------------------------------------------------------

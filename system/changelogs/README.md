@@ -18,7 +18,7 @@
 
 | 文件 | 用途 |
 |------|------|
-| `changes-index.json` / `changes-index.md` | **docs-change Skill**（[../../.ai/skills/docs-change/SKILL.md](../../.ai/skills/docs-change/SKILL.md)）产出汇总 |
-| `indexing-log.jsonl` | **docs-indexing Skill**（[../../.ai/skills/docs-indexing/SKILL.md](../../.ai/skills/docs-indexing/SKILL.md)）运行记录 |
+| `changes-index.json` / `changes-index.md` | **docs-change Skill**（[../../.agent/skills/docs-change/SKILL.md](../../.agent/skills/docs-change/SKILL.md)）产出汇总 |
+| `indexing-log.jsonl` | **docs-indexing Skill**（[../../.agent/skills/docs-indexing/SKILL.md](../../.agent/skills/docs-indexing/SKILL.md)）运行记录 |
 
-命令清单与执行入口统一见 [../../.ai/skills/README.md](../../.ai/skills/README.md)。
+命令清单与执行入口统一见 [../../.agent/skills/README.md](../../.agent/skills/README.md)。

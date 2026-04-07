@@ -76,9 +76,9 @@ references:
     description: "全局目录结构与阶段设计"
   - path: "../SYSTEM_INDEX.md"
     description: "全局索引"
-  - path: "../../.ai/skills/sdx-analysis/SKILL.md"
+  - path: "../../.agent/skills/sdx-analysis/SKILL.md"
     description: "需求分析阶段目标与工作流"
-  - path: "../../.ai/skills/sdx-analysis/assets/analysis-template.md"
+  - path: "../../.agent/skills/sdx-analysis/assets/analysis-template.md"
     description: "需求分析文档模板"
 
 # -----------------------------------------------------------------------------

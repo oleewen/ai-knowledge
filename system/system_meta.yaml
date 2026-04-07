@@ -42,7 +42,7 @@ naming_conventions:
 
 integration:
   upstream:
-    - path: "../.ai/"
+    - path: "../.agent/"
       description: "规范、模板与 Agent 技能（非 system 内必存路径）"
   traceability:
     description: "阶段链 solutions → analysis → requirements；规约落在需求包内 specs/ 或 knowledge/technical/；knowledge 为事实源，归档可回写"

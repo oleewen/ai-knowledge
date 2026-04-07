@@ -39,9 +39,9 @@ references:
   - ./README.md
   - ../../../INDEX_GUIDE.md
   - ../../../README.md
-  - ../../../.ai/skills/sdx-prd/assets/prd-template.md
-  - ../../../.ai/skills/sdx-design/assets/add-template.md
-  - ../../../.ai/skills/sdx-test/assets/tdd-template.md
+  - ../../../.agent/skills/sdx-prd/assets/prd-template.md
+  - ../../../.agent/skills/sdx-design/assets/add-template.md
+  - ../../../.agent/skills/sdx-test/assets/tdd-template.md
 
 layers:
   - key: req

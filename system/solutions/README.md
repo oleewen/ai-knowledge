@@ -23,8 +23,8 @@
 
 ## 规范与模板
 
-- **阶段目标与工作流**：见 [../../.ai/skills/sdx-solution/SKILL.md](../../.ai/skills/sdx-solution/SKILL.md)（需求提取 → 影响面评估 → 冲突识别 → 方案制定 → 文档输出与评审）。
-- **文档模板**：见 [../../.ai/skills/sdx-solution/assets/solution-template.md](../../.ai/skills/sdx-solution/assets/solution-template.md)。
+- **阶段目标与工作流**：见 [../../.agent/skills/sdx-solution/SKILL.md](../../.agent/skills/sdx-solution/SKILL.md)（需求提取 → 影响面评估 → 冲突识别 → 方案制定 → 文档输出与评审）。
+- **文档模板**：见 [../../.agent/skills/sdx-solution/assets/solution-template.md](../../.agent/skills/sdx-solution/assets/solution-template.md)。
 
 ## 集成关系
 

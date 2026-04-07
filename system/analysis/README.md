@@ -23,8 +23,8 @@
 
 ## 规范与模板
 
-- **阶段目标与工作流**：见 [../../.ai/skills/sdx-analysis/SKILL.md](../../.ai/skills/sdx-analysis/SKILL.md)（深度研究 → 需求细化 → MVP 拆分与规划 → 依赖分析与风险评估 → 文档输出与评审）。
-- **文档模板**：见 [../../.ai/skills/sdx-analysis/assets/analysis-template.md](../../.ai/skills/sdx-analysis/assets/analysis-template.md)。
+- **阶段目标与工作流**：见 [../../.agent/skills/sdx-analysis/SKILL.md](../../.agent/skills/sdx-analysis/SKILL.md)（深度研究 → 需求细化 → MVP 拆分与规划 → 依赖分析与风险评估 → 文档输出与评审）。
+- **文档模板**：见 [../../.agent/skills/sdx-analysis/assets/analysis-template.md](../../.agent/skills/sdx-analysis/assets/analysis-template.md)。
 
 ## 集成关系
 
