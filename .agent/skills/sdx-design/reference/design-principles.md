@@ -97,4 +97,4 @@ sdx-design 技能的完整设计约束。[SKILL.md](../SKILL.md) 中的「核心
 | knowledge 目录缺失 | 发出警告，仅基于 PRD 和 AGENTS.md 完成设计，标注缺少知识库基线 |
 | ADD 模板不存在 | 终止，提示创建 `.agent/skills/sdx-design/assets/add-template.md` |
 | 现有架构冲突 | 记录为设计决策（DD-n），标注冲突点与化解方案 |
-| 输出目录不存在 | 自动创建 `system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/` 目录 |
+| 输出目录不存在 | 自动创建 `application/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/` 目录 |

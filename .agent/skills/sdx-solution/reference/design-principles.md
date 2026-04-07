@@ -140,4 +140,4 @@ sdx-solution 技能的完整设计约束。主文件 SKILL.md 中的「核心约
 | knowledge 目录缺失 | 发出警告，仅基于业务描述和 AGENTS.md 完成分析，在文档中标注「缺少知识库基线，影响面评估存在分析盲区」 |
 | 模板文件不存在 | 终止，提示创建 `.agent/skills/sdx-solution/assets/solution-template.md` |
 | 冲突无法化解 | 记录为高风险（R-n），标注需升级决策，列出各方案利弊 |
-| 输出目录不存在 | 自动创建 `system/solutions/` 目录 |
+| 输出目录不存在 | 自动创建 `application/solutions/` 目录 |

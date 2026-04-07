@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# docs-init：将本仓库 system/ 模板初始化到目标工程文档目录，并安装 Agent skills/rules
+# docs-init：将本仓库 application/ 模板初始化到目标工程文档目录，并安装 Agent skills/rules
 #
 # 步骤：
-#   1. system/ → 目标文档目录（排除 DESIGN.md、CONTRIBUTING.md）
+#   1. application/ → 目标文档目录（排除 DESIGN.md、CONTRIBUTING.md）
 #      - 文件名：system（不区分大小写）→ application
 #      - 文件内容：.agent/ → Agent 目录；system/ → 文档根相对路径；系统 → 应用
 #   2. .agent/skills + .agent/rules → 用户主目录下所选 Agent 目录（如 ~/.cursor、~/.trea）
@@ -351,16 +351,16 @@ rewrite_agent_tree() {
 
 # ─── 核心安装步骤 ─────────────────────────────────────────────────────────────
 
-# 步骤 1：system/ → 目标文档目录
+# 步骤 1：application/ → 目标文档目录
 install_system_to_docs() {
-  local src_root="${CFG[repo_root]}/system"
+  local src_root="${CFG[repo_root]}/application"
   local dst_root="${CFG[docs_abs]}"
   local agent_slash="${CFG[primary_agent_slash]}"
   local docs_slash="${CFG[docs_slash]}"
 
-  [[ -d "$src_root" ]] || error "未找到 system 目录: $src_root"
+  [[ -d "$src_root" ]] || error "未找到 application 目录: $src_root"
 
-  info ">>> 初始化 system/ → 目标文档目录"
+  info ">>> 初始化 application/ → 目标文档目录"
   info "    源:   $src_root"
   info "    目标: $dst_root"
   info "    .agent/ → ${agent_slash}  |  system/ → ${docs_slash}"
@@ -392,7 +392,7 @@ install_system_to_docs() {
     _rewrite_doc_file "$dst_f" "$agent_slash" "$docs_slash"
   done < <(cd "$src_root" && find . -type f -print0)
 
-  info "    system/ 同步完成"
+  info "    application/ 同步完成"
 }
 
 # 步骤 2a：.agent/skills → 各 Agent 目录
@@ -491,11 +491,11 @@ _resolve_central_ids() {
   [[ -n "${CFG[central_app_slug]}" ]] || CFG[central_app_slug]="APPNAME"
 }
 
-# 在 system/SYSTEM_INDEX.md 中插入或更新应用登记行
+# 在 application/SYSTEM_INDEX.md 中插入或更新应用登记行
 _upsert_system_index() {
   local app_id="$1" repo_or_path="$2" docs_path="$3"
-  local idx="${CFG[repo_root]}/system/SYSTEM_INDEX.md"
-  [[ -f "$idx" ]] || error "未找到 system/SYSTEM_INDEX.md: $idx"
+  local idx="${CFG[repo_root]}/application/SYSTEM_INDEX.md"
+  [[ -f "$idx" ]] || error "未找到 application/SYSTEM_INDEX.md: $idx"
 
   local section="## 五、中央知识库接入工程"
   local header="| APP ID | 工程路径（Git 或绝对路径） | 文档目录 |"
@@ -721,7 +721,7 @@ _init_repo_root() {
   if [[ -z "${CFG[repo_root]}" ]]; then
     CFG[repo_root]="$(sdx_abs_path "$SCRIPT_DIR/..")"
   fi
-  [[ -d "${CFG[repo_root]}/system"     ]] || error "未找到 system 目录: ${CFG[repo_root]}/system"
+  [[ -d "${CFG[repo_root]}/application" ]] || error "未找到 application 目录: ${CFG[repo_root]}/application"
   [[ -d "${CFG[repo_root]}/.agent/skills" ]] || error "未找到 .agent/skills: ${CFG[repo_root]}/.agent/skills"
   [[ -d "${CFG[repo_root]}/.agent/rules"  ]] || error "未找到 .agent/rules: ${CFG[repo_root]}/.agent/rules"
 }

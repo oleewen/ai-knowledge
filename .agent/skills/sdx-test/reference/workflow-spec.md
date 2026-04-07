@@ -40,7 +40,7 @@ quality-engineer
 
 ### 输入
 
-产品需求文档（`system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/PRD-{YYMMDD}-{主题slug}.md`）+ 架构设计文档（`system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/ADD-{YYMMDD}-{主题slug}.md`，如存在）
+产品需求文档（`application/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/PRD-{YYMMDD}-{主题slug}.md`）+ 架构设计文档（`application/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/ADD-{YYMMDD}-{主题slug}.md`，如存在）
 
 ### 算法
 
@@ -262,12 +262,12 @@ technical-writer + doc-updater
    - `mvp_phase`: `MVP-Phase-{N}`
 3. **补充附录**：变更历史（§6.1）；质量自查表（§6.2）
 4. **质量门禁**：对照 [quality-checklist.md](quality-checklist.md) 与模板 **§6.2** **逐项**判定；**完整通过标准**以模板 §6.2 正文为准（每条下 *通过标准* 为最低放行条件）。**仅当**某条通过标准已满足，方在交付物 **§6.2** 中将该项由 `- [ ]` 改为 `- [x]`；未满足的保持 `- [ ]`，先修复或记录例外后再勾选。**禁止**未达标而全部勾选
-5. **输出**：写入 `system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/TDD-{YYMMDD}-{主题slug}.md`
+5. **输出**：写入 `application/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/TDD-{YYMMDD}-{主题slug}.md`
 
 ### 输出目录
 
 ```
-system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/
+application/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/
 └── MVP-Phase-{N}/
     └── TDD-{YYMMDD}-{主题slug}.md
 ```

@@ -7,13 +7,13 @@ Slash 技能命令请查看 [.agent/skills/README.md](../.agent/skills/README.md
 
 ## 功能概述
 
-1. **文档与知识库**：使用 `system/` 目录作为模板，支持两种模式（**工程根默认要求已存在**：可用 `-r` 或 `CREATE_PROJECT_ROOT=1` 允许父目录不存在时自动创建；`docs` 等子目录可在拷贝时自动创建）：
-   - **standalone（默认）**：将 `system/` 内容拷贝到目标工程的 `docs/` 目录
+1. **文档与知识库**：使用 `application/` 目录作为模板，支持两种模式（**工程根默认要求已存在**：可用 `-r` 或 `CREATE_PROJECT_ROOT=1` 允许父目录不存在时自动创建；`docs` 等子目录可在拷贝时自动创建）：
+   - **standalone（默认）**：将 `application/` 内容拷贝到目标工程的 `docs/` 目录
      - 排除治理文档：`DESIGN.md` 和 `CONTRIBUTING.md`（应用侧无需）
      - 内容替换：`system` → `application`，`系统` → `应用`
      - 文件名替换：`system_meta.yaml` → `application_meta.yaml`，`SYSTEM_INDEX.md` → `APPLICATION_INDEX.md`（`SYSTEM_INDEX` 先整体替换；其余路径段中 `system` 不区分大小写 → `application`）
    - **central**：在 standalone 基础上，额外在本仓库登记目标工程信息
-     - 在 `system/SYSTEM_INDEX.md` 中记录应用接入信息
+     - 在 `application/SYSTEM_INDEX.md` 中记录应用接入信息
      - 在 `applications/app-<后缀>/` 下生成联邦镜像（后缀为 APP ID 去掉 `APP-` 后的部分）与 `APPNAME_manifest.yaml`
 
 2. **Agent 配置**：为多 Agent 安装 skills 和 rules（**安装根为用户主目录 `$HOME`**，不写入目标工程根）
@@ -23,13 +23,13 @@ Slash 技能命令请查看 [.agent/skills/README.md](../.agent/skills/README.md
      - `trea` → `.trea/`
      - `claude` → `.claude/`
    - 安装内容：`.agent/skills/*` → `$HOME/{agent}/skills/`，`.agent/rules/*` → `$HOME/{agent}/rules/`
-   - 路径改写：文件中的 `.agent/` 替换为对应 Agent 目录前缀（如 `.cursor/`），`system/` 替换为相对工程根的文档目录（如 `system/`）
+   - 路径改写：文件中的 `.agent/` 替换为对应 Agent 目录前缀（如 `.cursor/`），`application/` 替换为相对工程根的文档目录（如 `application/`）
 
 3. **冲突处理**：若目标路径已存在，默认会交互式提示；使用 `--force` 强制覆盖，或 `--dry-run` 预览操作。
 
 4. **同步范围控制**：通过 `--scope` 控制执行范围
    - `all`（默认）：同步知识库 + 安装 Agent skills/rules
-   - `knowledge`：仅同步知识库（`system/`）
+   - `knowledge`：仅同步知识库（`application/`）
    - `skills`：仅安装 Agent skills/rules（不落地知识库文档）
 
 ## doc_root 解析（`.agent/scripts/sdx-doc-root.sh`）
@@ -39,7 +39,7 @@ Slash 技能命令请查看 [.agent/skills/README.md](../.agent/skills/README.md
 1. 命令行 **`--doc-root`**（若脚本支持）
 2. 环境变量 **`SDX_DOC_ROOT`**
 3. 仓库根目录下文件 **`.sdx-doc-root`**（首行非注释内容，单行）
-4. **目录探测**：优先 `docs/knowledge`、`docs/solutions` 等 → `docs`；其次 `system/knowledge` 等 → `system`；`application/knowledge` 等 → `application`
+4. **目录探测**：优先 `docs/knowledge`、`docs/solutions` 等 → `docs`；其次 `application/knowledge` 等 → `system`；`application/knowledge` 等 → `application`
 5. 无匹配子目录时默认 **`docs`**
 
 实现文件：**`.agent/scripts/sdx-doc-root.sh`**（单一事实来源）。各 skill 下 `validate-*.sh` 经 **`.agent/scripts/sdx-validate-bootstrap.sh`** 加载上述逻辑。
@@ -130,7 +130,7 @@ REPO_ROOT=/path/to/ai-knowledge ./scripts/docs-init.sh /path/to/your-project/doc
 
 ```
 your-project/
-├── system/                          # 文档目录（system/ 模板拷贝，已替换 system→application）
+├── application/                          # 文档目录（application/ 模板拷贝，已替换 system→application）
 │   ├── README.md                  # 应用知识库 README
 │   ├── APPLICATION_INDEX.md       # 应用索引（原 SYSTEM_INDEX.md）
 │   ├── application_meta.yaml      # 根目录元数据（原 system_meta.yaml）
@@ -167,7 +167,7 @@ your-project/
 
 ```
 ai-knowledge/
-├── system/SYSTEM_INDEX.md         # 更新：追加接入工程登记记录
+├── application/SYSTEM_INDEX.md         # 更新：追加接入工程登记记录
 └── applications/app-<后缀>/       # 中央模式：本仓库内新建联邦镜像目录
     └── {APP-ID}_manifest.yaml     # 应用 manifest 文件
 ```
@@ -178,15 +178,15 @@ ai-knowledge/
 
 | 模式 | 模板源 | 目标路径 | 替换规则 |
 |------|--------|----------|----------|
-| standalone | `system/` | `system/` | 文件名/内容：`system`→`application`，`系统`→`应用`；排除 `DESIGN.md`、`CONTRIBUTING.md` |
-| central | `system/` | `system/` | 同上，额外登记到 `system/SYSTEM_INDEX.md`「五、中央知识库接入工程」与 `applications/app-<后缀>/` |
+| standalone | `application/` | `application/` | 文件名/内容：`system`→`application`，`系统`→`应用`；排除 `DESIGN.md`、`CONTRIBUTING.md` |
+| central | `application/` | `application/` | 同上，额外登记到 `application/SYSTEM_INDEX.md`「五、中央知识库接入工程」与 `applications/app-<后缀>/` |
 
 ### Agent 安装
 
 1. 从 `.agent/skills/` 筛选 `agent-*`、`docs-*`、`knowledge-*`、`sdx-*` 前缀的技能目录
 2. 拷贝到 `$HOME/{agent_dir}/skills/`（`{agent_dir}` 为 `.cursor`、`.trea`、`.claude` 之一），同时拷贝 `.agent/skills/README.md`
 3. 从 `.agent/rules/` 同步所有规则到 `$HOME/{agent_dir}/rules/`
-4. 改写路径引用：`.agent/` → `.cursor/`（或 `.trea/`、`.claude/`）；`system/` → 目标文档相对路径（如 `system/`）
+4. 改写路径引用：`.agent/` → `.cursor/`（或 `.trea/`、`.claude/`）；`application/` → 目标文档相对路径（如 `application/`）
 
 ## 脚本组成
 
@@ -202,7 +202,7 @@ ai-knowledge/
 |------|------|
 | 2.1.3 | `sdx-doc-root` 默认首段改为 `docs`；目录探测优先 `docs/` 下标记 |
 | 2.1.2 | 落地方案 A：`SDX_DOC_ROOT`、`.sdx-doc-root` 与目录探测统一由 `.agent/scripts/sdx-doc-root.sh` 提供；各 `validate-*.sh` 接入 |
-| 2.1.1 | `standalone` 下 `--scope` 为 skills/rules/rs 时，`<目标工程文档目录>` 可省略；未指定时 Agent 内 `system/` → 文档前缀替换默认为 `docs/` |
+| 2.1.1 | `standalone` 下 `--scope` 为 skills/rules/rs 时，`<目标工程文档目录>` 可省略；未指定时 Agent 内 `application/` → 文档前缀替换默认为 `docs/` |
 | 2.1.0 | Agent skills/rules 安装目录由「目标工程根下」改为「用户主目录 `$HOME` 下」；备份对应使用 `~/.docs-init/` |
-| 2.0.0 | 重构：使用 `system/` 作为模板源；新增文件名/内容替换；支持多 Agent（cursor、trea、claude）；Agent 目录改为 `.cursor/`、`.trea/`、`.claude/`；standalone 模式排除 DESIGN.md 和 CONTRIBUTING.md |
+| 2.0.0 | 重构：使用 `application/` 作为模板源；新增文件名/内容替换；支持多 Agent（cursor、trea、claude）；Agent 目录改为 `.cursor/`、`.trea/`、`.claude/`；standalone 模式排除 DESIGN.md 和 CONTRIBUTING.md |
 | 1.0.0 | 初始版本：使用 `applications/app-APPNAME/` 作为模板源；支持 standalone 和 central 模式；Agent 配置安装在 `.agent/` 目录 |

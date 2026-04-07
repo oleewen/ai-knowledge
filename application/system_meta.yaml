@@ -1,0 +1,54 @@
+# system 目录元数据
+id: "DIR-SYSTEM"
+name: "系统文档库根（system）"
+description: "企业级知识库 application/ 根目录：人类与 Agent 的主导航（README、SYSTEM_INDEX）、设计约束（DESIGN、CONTRIBUTING）及 SDD 各阶段与 knowledge SSOT。"
+
+role:
+  kind: "documentation_root"
+  ssot_subdirectory: "knowledge/"
+
+child_directories:
+  knowledge:
+    meta: "knowledge/knowledge_meta.yaml"
+    description: "宪法层 + 四视角（SSOT）"
+  solutions:
+    meta: "solutions/solutions_meta.yaml"
+  analysis:
+    meta: "analysis/analysis_meta.yaml"
+  requirements:
+    meta: "requirements/requirements_meta.yaml"
+  changelogs:
+    meta: "changelogs/changelogs_meta.yaml"
+
+child_files:
+  - "README.md"
+  - "SYSTEM_INDEX.md"
+  - "DESIGN.md"
+  - "CONTRIBUTING.md"
+
+inputs:
+  - path: "(from-repository-and-delivery)"
+    description: "仓库治理、方案/分析/交付产出与归档回写"
+
+outputs:
+  primary_artifact:
+    pattern: "README.md, SYSTEM_INDEX.md, DESIGN.md, CONTRIBUTING.md, */{dirname}_meta.yaml, knowledge/**/*"
+    description: "child_files（根级）+ child_directories 的 {dirname}_meta.yaml + knowledge 树实体"
+
+naming_conventions:
+  directory_index:
+    description: "各一级子目录使用与目录同名的 {dirname}_meta.yaml；knowledge/ 根另见 knowledge_meta.yaml"
+    reference: "./knowledge/constitution/standards/NAMING-CONVENTIONS.md"
+
+integration:
+  upstream:
+    - path: "../.agent/"
+      description: "规范、模板与 Agent 技能（非 system 内必存路径）"
+  traceability:
+    description: "阶段链 solutions → analysis → requirements；规约落在需求包内 specs/ 或 knowledge/technical/；knowledge 为事实源，归档可回写"
+
+references:
+  - path: "./README.md"
+  - path: "./SYSTEM_INDEX.md"
+  - path: "./DESIGN.md"
+  - path: "./CONTRIBUTING.md"

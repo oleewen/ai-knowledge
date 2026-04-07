@@ -1,6 +1,6 @@
 # 各视角 README 填充规范
 
-在全部目标视角的 `*_knowledge.json`（schema 2.1）已生成后、写入 **`system/knowledge/KNOWLEDGE_INDEX.md` 之前**，按本规范更新各视角目录下的 `README.md`。**不得**用占位示例行冒充真实提取结果；无实体时保留说明句并标注待补充，与 [quality-checklist.md](quality-checklist.md)、[gotchas.md](../gotchas.md)（「以模板占位行作为索引唯一内容」）一致。
+在全部目标视角的 `*_knowledge.json`（schema 2.1）已生成后、写入 **`application/knowledge/KNOWLEDGE_INDEX.md` 之前**，按本规范更新各视角目录下的 `README.md`。**不得**用占位示例行冒充真实提取结果；无实体时保留说明句并标注待补充，与 [quality-checklist.md](quality-checklist.md)、[gotchas.md](../gotchas.md)（「以模板占位行作为索引唯一内容」）一致。
 
 ---
 
@@ -19,10 +19,10 @@
 
 | 视角 | README 路径 | JSON 来源 |
 |------|-------------|-----------|
-| technical | `system/knowledge/technical/README.md` | `technical/technical_knowledge.json` |
-| data | `system/knowledge/data/README.md` | `data/data_knowledge.json` |
-| business | `system/knowledge/business/README.md` | `business/business_knowledge.json` |
-| product | `system/knowledge/product/README.md` | `product/product_knowledge.json` |
+| technical | `application/knowledge/technical/README.md` | `technical/technical_knowledge.json` |
+| data | `application/knowledge/data/README.md` | `data/data_knowledge.json` |
+| business | `application/knowledge/business/README.md` | `business/business_knowledge.json` |
+| product | `application/knowledge/product/README.md` | `product/product_knowledge.json` |
 
 ---
 
@@ -87,6 +87,6 @@
 
 1. 四视角 `*_knowledge.json` 就绪  
 2. **本规范**更新各视角 `README.md`  
-3. 再执行 [consolidation-spec.md](consolidation-spec.md) 更新 `system/knowledge/KNOWLEDGE_INDEX.md`  
+3. 再执行 [consolidation-spec.md](consolidation-spec.md) 更新 `application/knowledge/KNOWLEDGE_INDEX.md`  
 
 这样人类从视角目录进入时，README 与 JSON、主索引三者一致。

@@ -27,7 +27,7 @@ app_name: "{APPNAME}"
 last_archive:
   changelog_id: "{changelog 条目 ID 或标题锚点}"
   changelog_time: "{YYYY-MM-DD HH:mm}"
-  archive_file: "system/changelogs/upstream-from-applications/ARCHIVE-{YYYYMMDD}-{简述}.md"
+  archive_file: "application/changelogs/upstream-from-applications/ARCHIVE-{YYYYMMDD}-{简述}.md"
   archived_at: "{ISO-8601}"
   archived_entities:
     technical: {count}   # 本次归档的技术视角实体数
@@ -81,8 +81,8 @@ else:
 
 **归档写入成功后才更新锚点**（原子性保证）：
 
-1. 完成 **`system/` 下本次批次涉及的全部写入**（不限于 `system/knowledge/`，须覆盖本次 `--scope` 与变更所触及的 solutions/analysis/requirements/specs、批次 changelog、以及需同步的 `SYSTEM_INDEX` / 各 `README` 等）
-2. 生成批次归档文档（`system/changelogs/upstream-from-applications/ARCHIVE-*.md`）
+1. 完成 **`application/` 下本次批次涉及的全部写入**（不限于 `application/knowledge/`，须覆盖本次 `--scope` 与变更所触及的 solutions/analysis/requirements/specs、批次 changelog、以及需同步的 `SYSTEM_INDEX` / 各 `README` 等）
+2. 生成批次归档文档（`application/changelogs/upstream-from-applications/ARCHIVE-*.md`）
 3. **最后**更新 `applications/.../archive-log.yaml`
 
 若步骤 1–2 任一失败，不更新锚点，下次重试时从同一位置开始，避免漏归档。
@@ -99,7 +99,7 @@ app_name: "billing-appeal"
 last_archive:
   changelog_id: "v1.3.0"
   changelog_time: "2026-04-05 10:00"
-  archive_file: "system/changelogs/upstream-from-applications/ARCHIVE-20260405-billing-appeal.md"
+  archive_file: "application/changelogs/upstream-from-applications/ARCHIVE-20260405-billing-appeal.md"
   archived_at: "2026-04-05T10:30:00+08:00"
   archived_entities:
     technical: 3
@@ -110,6 +110,6 @@ last_archive:
 history:
   - changelog_id: "v1.2.0"
     changelog_time: "2026-03-20 14:00"
-    archive_file: "system/changelogs/upstream-from-applications/ARCHIVE-20260320-billing-appeal.md"
+    archive_file: "application/changelogs/upstream-from-applications/ARCHIVE-20260320-billing-appeal.md"
     archived_at: "2026-03-20T15:00:00+08:00"
 ```

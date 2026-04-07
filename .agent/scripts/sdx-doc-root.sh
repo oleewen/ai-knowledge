@@ -6,14 +6,14 @@
 #   1) 显式传入 override（如 --doc-root）
 #   2) 环境变量 SDX_DOC_ROOT
 #   3) 工程根目录下文件 .sdx-doc-root（git 根优先，其次当前探测基目录）
-#   4) 目录探测：优先 docs/*，其次 system/*、application/*（见 sdx_probe_doc_root_segment）
+#   4) 目录探测：优先 docs/*，其次 application/*、application/*（见 sdx_probe_doc_root_segment）
 #   5) 无匹配目录时默认 docs
 #
 # Usage（由其它脚本 source）：
 #   source ".../.agent/scripts/sdx-doc-root.sh"
 #   seg="$(sdx_resolve_doc_root_segment "$CLI_OVERRIDE" "$PROBE_BASE")"
 #
-# PROBE_BASE 一般为仓库根（含 system/、docs/ 的目录）。
+# PROBE_BASE 一般为仓库根（含 application/、docs/ 的目录）。
 
 sdx_normalize_doc_root_segment() {
   local s="${1:-docs}"
@@ -51,16 +51,18 @@ sdx_probe_doc_root_segment() {
     printf 'docs'
     return
   fi
-  if [[ -d "$b/docs/system/knowledge" ]]; then
+  if [[ -d "$b/docs/application/knowledge" ]]; then
     printf 'docs'
     return
   fi
-  if [[ -d "$b/system/knowledge" || -d "$b/system/solutions" || -d "$b/system/analysis" ]]; then
-    printf 'system'
+  # 中央库新布局：application/ 为应用知识库 SSOT
+  if [[ -d "$b/application/knowledge" || -d "$b/application/solutions" || -d "$b/application/analysis" ]]; then
+    printf 'application'
     return
   fi
-  if [[ -d "$b/application/knowledge" || -d "$b/application/solutions" ]]; then
-    printf 'application'
+  # 旧布局：application/（仍用于已落地工程探测）
+  if [[ -d "$b/application/knowledge" || -d "$b/application/solutions" || -d "$b/application/analysis" ]]; then
+    printf 'system'
     return
   fi
   printf 'docs'

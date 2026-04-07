@@ -1,0 +1,117 @@
+# application/analysis — 需求分析阶段统一元数据（单文件 SSOT）
+# 结构：identity + repository + pipeline + integration + layers（每层一条，无重复的全局 inputs）
+schema_version: "1.1"
+
+# -----------------------------------------------------------------------------
+# 1. 阶段身份
+# -----------------------------------------------------------------------------
+identity:
+  id: "DIR-ANALYSIS"
+  name: "需求分析（analysis）"
+  description: >
+    AI SDD 需求分析阶段：基于解决方案与知识库进行研究与细化，输出 ANALYSIS-{IDEA-ID}.md，
+    作为 requirements 阶段输入。本文件为 analysis/ 唯一元数据入口。
+
+role:
+  stage: "analysis"
+  sdd_phase: "analysis"
+  is_system_level_index: true
+  outputs_are_inputs_for: "requirements"
+
+# -----------------------------------------------------------------------------
+# 2. 仓库与目录约定（锚点 + 命名模式）
+# -----------------------------------------------------------------------------
+repository:
+  root_relative: "analysis"
+  child_directories: []
+  child_files:
+    - "README.md"
+    - "ANALYSIS-{IDEA-ID}.md"
+  hierarchy:
+    chain: "ANALYSIS（根目录平铺单文件交付物）"
+    labels:
+      ANALYSIS: "需求分析文档（Analysis document）"
+  directory_patterns:
+    analysis: "ANALYSIS-{IDEA-ID}.md"
+
+# -----------------------------------------------------------------------------
+# 3. 阶段输入 / 产出（全层共享，不在各层重复声明）
+# -----------------------------------------------------------------------------
+pipeline:
+  inputs:
+    - path: "../solutions/"
+      description: "解决方案文档（SOLUTION-{IDEA-ID}.md）"
+    - path: "../knowledge/"
+      description: "系统知识库（四视角 + 宪法层）"
+  outputs:
+    ssot_file: "analysis_meta.yaml"
+    narrative: "交付物形态与 frontmatter 约定见 `layers`；根目录平铺 Markdown，不并列子级 *_meta.yaml。"
+    directory_role: "README + 分析索引表 + ANALYSIS-{IDEA-ID}.md 文件集。"
+
+# -----------------------------------------------------------------------------
+# 4. 追溯与下游
+# -----------------------------------------------------------------------------
+integration:
+  traceability:
+    - "可与 business、product 视角的功能/用例 ID 建立追溯关系"
+    - "结论与实现方案宜与 technical、data 视角对齐（ID 引用）"
+  upstream:
+    - path: "../solutions/"
+      via: "frontmatter.parent → SOLUTION-{IDEA-ID}"
+  downstream:
+    - path: "../requirements/"
+      via: "REQUIREMENT-{IDEA-ID} 与 ANALYSIS-{IDEA-ID}.md 共用同一 IDEA-ID（或项目约定可追溯别名）"
+  key_fields:
+    analysis_document:
+      - "id"
+      - "parent（指向 SOLUTION）"
+
+# -----------------------------------------------------------------------------
+# 5. 文档引用
+# -----------------------------------------------------------------------------
+references:
+  - path: "./README.md"
+    description: "本目录说明与索引表"
+  - path: "../DESIGN.md"
+    description: "全局目录结构与阶段设计"
+  - path: "../SYSTEM_INDEX.md"
+    description: "全局索引"
+  - path: "../../.agent/skills/sdx-analysis/SKILL.md"
+    description: "需求分析阶段目标与工作流"
+  - path: "../../.agent/skills/sdx-analysis/assets/analysis-template.md"
+    description: "需求分析文档模板"
+
+# -----------------------------------------------------------------------------
+# 6. 层级模型（单一层：需求分析文档）
+# -----------------------------------------------------------------------------
+layers:
+  - key: "an"
+    code: "ANALYSIS"
+    order: 1
+    entity_kind: "analysis_document"
+    id_pattern: "ANALYSIS-{IDEA-ID}"
+    parent: null
+    tree:
+      child_directory_glob: null
+    artifacts:
+      markdown: "ANALYSIS-{IDEA-ID}.md"
+    fields:
+      id_guidance: "{IDEA-ID} 为需求链统一标识，须与对应 SOLUTION-{IDEA-ID}.md 及下游 REQUIREMENT-{IDEA-ID}/ 同链一致"
+    frontmatter_constraints:
+      analysis_document:
+        required_fields:
+          - "id"
+          - "parent"
+        constraints:
+          - "frontmatter.id 与文件名 ANALYSIS-{IDEA-ID}.md 保持一致"
+          - "frontmatter.parent 指向对应的 SOLUTION-{IDEA-ID}"
+    indexing:
+      readme_index_table: true
+      rule: "每新增/评审一份 ANALYSIS-{IDEA-ID}.md，应同步更新 README.md 的分析索引表"
+
+# -----------------------------------------------------------------------------
+# 7. 全局索引运维
+# -----------------------------------------------------------------------------
+indexing:
+  readme_index_table: true
+  rule: "任一 ANALYSIS 变更时，更新本文件（若扩展 layers）、README.md 与必要的根 INDEX_GUIDE"

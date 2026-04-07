@@ -38,7 +38,7 @@ sdx_require_bash5
 # -----------------------------------------------------------------------------
 
 # 版本信息
-readonly SDX_VERSION='2.1.3'
+readonly SDX_VERSION='2.2.0'
 readonly SDX_MIN_BASH_VERSION=5
 
 # Git 仓库地址（供 bootstrap 引用）
@@ -58,8 +58,8 @@ declare -A SDX_AGENT_DIR_MAP=(
 )
 
 # 源模板路径（相对于 REPO_ROOT）
-# 现在使用 system/ 作为模板源（取代了原来的 applications/app-APPNAME）
-readonly SDX_SYSTEM_TEMPLATE_PATH='system'
+# 现在使用 application/ 作为应用知识库模板源（取代了原来的 applications/app-APPNAME）
+readonly SDX_SYSTEM_TEMPLATE_PATH='application'
 
 # 应用模板注册路径（central 模式下使用）
 readonly SDX_APP_TEMPLATE_PATH='applications/app-APPNAME'

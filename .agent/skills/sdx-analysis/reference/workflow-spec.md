@@ -54,7 +54,7 @@ requirements-analyst（面向产品/需求产出）
 
 ### 输入
 
-解决方案文档（`system/solutions/SOLUTION-{ID}.md`）+ `knowledge/`（按需加载）
+解决方案文档（`application/solutions/SOLUTION-{ID}.md`）+ `knowledge/`（按需加载）
 
 ### 算法
 
@@ -181,12 +181,12 @@ requirements-analyst + technical-writer（可选）
    - `id`: `ANALYSIS-{IDEA-ID}`
    - `title`、`version`、`status`、`created`、`updated`、`author`、`reviewers`、`parent`: `SOLUTION-{IDEA-ID}`、`tags`
 4. **质量门禁**：对照 [quality-checklist.md](quality-checklist.md) 与模板 **§6.4** **逐项**判定；**仅当**某条通过标准已满足，方在交付物中将该项由 `- [ ]` 改为 `- [x]`；未满足的保持 `- [ ]`，先修复或记录例外后再勾选。**禁止**未达标而全部勾选。
-5. **输出**：将含已勾选 **§6.4** 的终稿写入 `system/analysis/ANALYSIS-{IDEA-ID}.md`
+5. **输出**：将含已勾选 **§6.4** 的终稿写入 `application/analysis/ANALYSIS-{IDEA-ID}.md`
 
 ### 输出目录
 
 ```
-system/analysis/
+application/analysis/
 └── ANALYSIS-{IDEA-ID}.md
 ```
 

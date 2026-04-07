@@ -14,7 +14,7 @@ set -euo pipefail
 #     --app-id APP-MYSERVICE \
 #     --changelog-id v1.3.0 \
 #     --changelog-time "2026-04-05 10:00" \
-#     --archive-file "system/changelogs/upstream-from-applications/ARCHIVE-20260405-xxx.md" \
+#     --archive-file "application/changelogs/upstream-from-applications/ARCHIVE-20260405-xxx.md" \
 #     --entities-technical 3 \
 #     --entities-data 2 \
 #     --entities-business 1 \

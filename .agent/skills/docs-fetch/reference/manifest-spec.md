@@ -39,12 +39,12 @@ last_fetched_branch: "main"
 last_fetched_commit: "a1b2c3d"
 
 mirrors_system_paths:
-  - system/changelogs/changelogs_meta.yaml → changelogs/changelogs_meta.yaml
-  - system/knowledge/** → knowledge/**
-  - system/requirements/requirements_meta.yaml → requirements/requirements_meta.yaml
+  - application/changelogs/changelogs_meta.yaml → changelogs/changelogs_meta.yaml
+  - application/knowledge/** → knowledge/**
+  - application/requirements/requirements_meta.yaml → requirements/requirements_meta.yaml
 
 central_library:
-  system_root: ../../system/
+  system_root: ../../application/
   repository_root: ../../
 ```
 

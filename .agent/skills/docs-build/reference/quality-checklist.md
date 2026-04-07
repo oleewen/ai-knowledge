@@ -32,14 +32,14 @@ docs-build 提取完毕后的自查清单。阶段 4 归并完成后结合阶段
 
 ## 各视角 README（阶段 3）
 
-- [ ] 已读取 `system/knowledge/{technical,data,business,product}/README.md` 既有表头与章节，未臆造列名
+- [ ] 已读取 `application/knowledge/{technical,data,business,product}/README.md` 既有表头与章节，未臆造列名
 - [ ] 各视角「索引表」数据行与对应 `*_knowledge.json` 一致，无示例占位冒充真实 ID（无实质内容时按规范标注待补充）
 - [ ] 静态段（层级结构、关键字段、跨视角映射、Index Guide 链接）保留且未被误删
 
 ## 归并与索引（阶段 4）
 
 - [ ] 所有 ID 前缀在 `contains_prefixes` 范围内
-- [ ] `system/knowledge/KNOWLEDGE_INDEX.md` §1～§4 同轮维护，无模板占位行
+- [ ] `application/knowledge/KNOWLEDGE_INDEX.md` §1～§4 同轮维护，无模板占位行
 - [ ] 已有 ID 未被单独改名（跨视角引用完整）
 
 ## metadata 完整性

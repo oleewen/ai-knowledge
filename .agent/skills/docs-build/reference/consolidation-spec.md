@@ -1,6 +1,6 @@
 # 归并阶段规范
 
-阶段 **四** 是 docs-build 的收口阶段（在 [阶段 3：各视角 README 填充](readme-fill-spec.md) 之后）。读取四视角 `*_knowledge.json`（schema 2.1）中间文件，执行前缀验证、跨视角对称性检查，最终更新 **`system/knowledge/KNOWLEDGE_INDEX.md`**。
+阶段 **四** 是 docs-build 的收口阶段（在 [阶段 3：各视角 README 填充](readme-fill-spec.md) 之后）。读取四视角 `*_knowledge.json`（schema 2.1）中间文件，执行前缀验证、跨视角对称性检查，最终更新 **`application/knowledge/KNOWLEDGE_INDEX.md`**。
 
 ---
 

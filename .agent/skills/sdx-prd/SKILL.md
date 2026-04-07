@@ -7,12 +7,12 @@ description: >
   设计业务流程和功能模块、或需要产出可评审可验收的产品需求时，务必使用本技能。
   即使用户只说"帮我写个 PRD"、"细化一下用户故事"、"设计一下业务流程"、
   "把需求分析转成 PRD"，也应触发本技能。
-  输出至系统知识库根目录 system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md。
+  输出至系统知识库根目录 application/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md。
 ---
 
 # 产品需求阶段（sdx-prd）
 
-**术语**：**系统知识库根目录**指路径前缀 `system/`（与 `--doc-root` 默认一致时）。
+**术语**：**系统知识库根目录**指路径前缀 `application/`（与 `--doc-root` 默认一致时）。
 
 将需求分析中**当前 MVP** 细化为可评审、可验收的 PRD：业务流程、用户故事与用例、功能模块与交互、业务规则与数据字典。
 
@@ -24,9 +24,9 @@ description: >
 
 | 类型 | 内容 |
 |------|------|
-| 硬输入 | 需求分析文档（系统知识库根目录 `system/analysis/ANALYSIS-{IDEA-ID}.md`）中当前 MVP 章节 |
+| 硬输入 | 需求分析文档（系统知识库根目录 `application/analysis/ANALYSIS-{IDEA-ID}.md`）中当前 MVP 章节 |
 | 可选输入 | `knowledge/product/`、`knowledge/business/`（按需加载，禁止通读全仓） |
-| 固定输出 | 系统知识库根目录下 `system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md` |
+| 固定输出 | 系统知识库根目录下 `application/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md` |
 | 不产出 | ADD、TDD、代码（使用下游 sdx-design / sdx-test） |
 
 ## 参数
@@ -101,7 +101,7 @@ description: >
 
 ## 命名约定
 
-- 落盘路径（系统知识库根目录）：`system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`
+- 落盘路径（系统知识库根目录）：`application/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`
 - 阶段目录：`MVP-Phase-{N}`（不是 `MVP-{N}/`），`{N}` 为正整数
 - IDEA-ID 与上游 `ANALYSIS-{IDEA-ID}.md` 完全一致，不得只写日期而省略 slug
 - 元数据位置：文末「## 文档元数据」下的 fenced YAML；**禁止**在文件开头使用 `---` frontmatter

@@ -35,7 +35,7 @@ description: >
 按优先级查找落盘 Index Guide，命中即停，记录实际相对路径：
 
 1. 仓库根 `INDEX_GUIDE.md`、`INDEX-GUIDE.md`
-2. 系统知识库根目录 `system/INDEX_GUIDE.md`、`system/INDEX-GUIDE.md`
+2. 系统知识库根目录 `application/INDEX_GUIDE.md`、`application/INDEX-GUIDE.md`
 
 未命中 → 终止，提示用户先运行 `/docs-indexing`。详细规则与降级例外见 [reference/execution-spec.md](reference/execution-spec.md)。
 

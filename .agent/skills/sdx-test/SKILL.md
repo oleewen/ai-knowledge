@@ -6,12 +6,12 @@ description: >
   需要测试进出标准、需要将 PRD/ADD 转化为可执行的测试方案、或需要覆盖功能/接口/业务规则/异常/性能测试时，务必使用本技能。
   即使用户只说"帮我写个测试方案"、"设计一下测试用例"、"出一份 TDD"、"把 PRD 转成测试用例"、
   "设计一下回归范围"、"制定一下进出标准"，也应触发本技能。
-  输出至系统知识库根目录 system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/TDD-{IDEA-ID}-{N}.md。
+  输出至系统知识库根目录 application/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/TDD-{IDEA-ID}-{N}.md。
 ---
 
 # 测试设计阶段（sdx-test）
 
-**术语**：**系统知识库根目录**指路径前缀 `system/`（与 `--doc-root` 默认一致时）。
+**术语**：**系统知识库根目录**指路径前缀 `application/`（与 `--doc-root` 默认一致时）。
 
 基于产品需求文档与技术设计文档，制定当前 MVP 的测试策略与测试计划，设计测试用例、测试数据与回归范围，输出测试设计文档（TDD），为后续开发与测试验证提供依据。
 
@@ -23,9 +23,9 @@ description: >
 
 | 类型 | 内容 |
 |------|------|
-| 硬输入 | 产品需求文档（系统知识库根目录 `system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`） |
+| 硬输入 | 产品需求文档（系统知识库根目录 `application/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`） |
 | 可选输入 | 架构设计（`ADD-{IDEA-ID}-{N}.md`）、规约（`specs/`）、`knowledge/`（按需加载，禁止通读全仓） |
-| 固定输出 | 系统知识库根目录下 `system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/TDD-{IDEA-ID}-{N}.md` |
+| 固定输出 | 系统知识库根目录下 `application/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/TDD-{IDEA-ID}-{N}.md` |
 | 不产出 | 代码、自动化测试脚本、测试执行报告（实现与执行阶段产出） |
 
 ## 参数
@@ -100,7 +100,7 @@ description: >
 
 ## 命名约定
 
-- 落盘路径（系统知识库根目录）：`system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/TDD-{IDEA-ID}-{N}.md`
+- 落盘路径（系统知识库根目录）：`application/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/TDD-{IDEA-ID}-{N}.md`
 - IDEA-ID 与上游 `PRD-{IDEA-ID}-{N}.md`、`ADD-{IDEA-ID}-{N}.md` 完全一致
 - 元数据位置：文末「## 文档元数据」下的 fenced YAML；**禁止**在文件开头使用 `---` frontmatter
 

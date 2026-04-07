@@ -32,7 +32,7 @@ log_ok()    { echo "[OK]    $1"; }
 # --- 1. INDEX 落盘检测 ---
 
 INDEX_PATH=""
-for candidate in "INDEX_GUIDE.md" "system/INDEX_GUIDE.md" "INDEX-GUIDE.md" "system/INDEX-GUIDE.md"; do
+for candidate in "INDEX_GUIDE.md" "application/INDEX_GUIDE.md" "INDEX-GUIDE.md" "application/INDEX-GUIDE.md"; do
     if [[ -f "$ROOT/$candidate" ]]; then
         INDEX_PATH="$candidate"
         break
@@ -42,7 +42,7 @@ done
 if [[ -n "$INDEX_PATH" ]]; then
     log_ok "INDEX 落盘路径: $INDEX_PATH"
 else
-    log_error "未找到 INDEX 落盘文件（INDEX_GUIDE.md、system/INDEX_GUIDE.md 等）"
+    log_error "未找到 INDEX 落盘文件（INDEX_GUIDE.md、application/INDEX_GUIDE.md 等）"
 fi
 
 # --- 提取 markdown 文件中的相对路径链接 ---

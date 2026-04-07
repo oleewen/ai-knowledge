@@ -117,4 +117,4 @@ PRD 文档使用以下 ID 编号体系：
 | knowledge 目录缺失 | 发出警告，仅基于需求分析文档完成 PRD，标注缺少知识库基线 |
 | 模板文件不存在 | 终止，提示确认 `.agent/skills/sdx-prd/assets/prd-template.md` 存在 |
 | FR-n 与 US-n 映射不完整 | 暂停，输出未覆盖的 FR-n 清单，请求用户确认是否遗漏 |
-| 输出目录不存在 | 自动创建 `system/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/` 目录 |
+| 输出目录不存在 | 自动创建 `application/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/` 目录 |

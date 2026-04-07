@@ -6,7 +6,7 @@
 set -euo pipefail
 
 # 配置变量
-DEFAULT_OUTPUT="./system/INDEX_GUIDE.md"
+DEFAULT_OUTPUT="./application/INDEX_GUIDE.md"
 LOG_FILE="./changelogs/indexing-log.jsonl"
 CHANGES_INDEX="./changelogs/changes-index.json"
 
@@ -217,12 +217,12 @@ ${TOP_FILES}
 
 ## 四、核心流程（Core Flows）
 - docs-indexing 扫描仓库文件并生成 \`INDEX_GUIDE.md\`
-- 结果写入 \`system/changelogs/indexing-log.jsonl\` 以支持增量基线
+- 结果写入 \`application/changelogs/indexing-log.jsonl\` 以支持增量基线
 
 ## 五、配置与环境（Config & Environment）
 - \`--mode\`: \`full\` / \`incremental\`
 - \`--depth\`: \`1\` / \`2\` / \`3\`
-- \`--output\`: 输出文件路径（默认 \`./system/INDEX_GUIDE.md\`）
+- \`--output\`: 输出文件路径（默认 \`./application/INDEX_GUIDE.md\`）
 - \`--since\`: 增量扫描起始时间戳（epoch ms）
 
 ## 六、未索引区域声明（Unindexed Scope）
@@ -235,8 +235,8 @@ ${TOP_FILES}
 - 增量模式在无有效基线时自动降级为全量
 
 ## 八、日志与追溯（Traceability）
-- 执行日志：\`./system/changelogs/indexing-log.jsonl\`
-- 变更基线：\`./system/changelogs/changes-index.json\`
+- 执行日志：\`./application/changelogs/indexing-log.jsonl\`
+- 变更基线：\`./application/changelogs/changes-index.json\`
 
 ## 九、附录（Appendix）
 - 生成器：\`.agent/skills/docs-indexing/scripts/indexing.sh\`

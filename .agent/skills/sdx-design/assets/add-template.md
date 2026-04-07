@@ -4,8 +4,8 @@
 
 ### 1.1 设计目标
 
-- 关联需求分析：`system/analysis/ANALYSIS-{IDEA-ID}.md`
-- 关联产品需求：`system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`
+- 关联需求分析：`application/analysis/ANALYSIS-{IDEA-ID}.md`
+- 关联产品需求：`application/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`
 - MVP阶段：MVP-Phase-{N}
 
 ### 1.2 设计约束
@@ -402,7 +402,7 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 
 ## 4. 需求规约
 
-<!-- 规约术语：与规约文件名或 OpenAPI/领域名一致的可读简称；应用实体 ID、服务实体 ID 须与 `system/knowledge/KNOWLEDGE_INDEX.md` / `knowledge/technical/` 中 APP-*、MS-* 对齐。 -->
+<!-- 规约术语：与规约文件名或 OpenAPI/领域名一致的可读简称；应用实体 ID、服务实体 ID 须与 `application/knowledge/KNOWLEDGE_INDEX.md` / `knowledge/technical/` 中 APP-*、MS-* 对齐。 -->
 
 | 应用 | 规约文件 | 规约描述 |
 | ---- | -------- | -------- |

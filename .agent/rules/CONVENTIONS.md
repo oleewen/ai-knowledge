@@ -42,11 +42,11 @@
 
 | 文件 | 说明 |
 |------|------|
-| [../skills/sdx-solution/assets/solution-template.md](../skills/sdx-solution/assets/solution-template.md) | 解决方案模板（系统知识库根目录 `system/solutions/`） |
-| [../skills/sdx-analysis/assets/analysis-template.md](../skills/sdx-analysis/assets/analysis-template.md) | 需求分析模板（系统知识库根目录 `system/analysis/`） |
-| [../skills/sdx-prd/assets/prd-template.md](../skills/sdx-prd/assets/prd-template.md) | PRD 模板（系统知识库根目录 `system/requirements/`） |
-| [../skills/sdx-design/assets/add-template.md](../skills/sdx-design/assets/add-template.md) | ADD 模板（系统知识库根目录 `system/requirements/`） |
-| [../skills/sdx-test/assets/tdd-template.md](../skills/sdx-test/assets/tdd-template.md) | TDD 模板（系统知识库根目录 `system/requirements/`） |
+| [../skills/sdx-solution/assets/solution-template.md](../skills/sdx-solution/assets/solution-template.md) | 解决方案模板（系统知识库根目录 `application/solutions/`） |
+| [../skills/sdx-analysis/assets/analysis-template.md](../skills/sdx-analysis/assets/analysis-template.md) | 需求分析模板（系统知识库根目录 `application/analysis/`） |
+| [../skills/sdx-prd/assets/prd-template.md](../skills/sdx-prd/assets/prd-template.md) | PRD 模板（系统知识库根目录 `application/requirements/`） |
+| [../skills/sdx-design/assets/add-template.md](../skills/sdx-design/assets/add-template.md) | ADD 模板（系统知识库根目录 `application/requirements/`） |
+| [../skills/sdx-test/assets/tdd-template.md](../skills/sdx-test/assets/tdd-template.md) | TDD 模板（系统知识库根目录 `application/requirements/`） |
 | [../skills/agent-guide/assets/agents-skeleton.md](../skills/agent-guide/assets/agents-skeleton.md) | `AGENTS.md` 推荐骨架 |
 
 ---
@@ -55,14 +55,14 @@
 
 ### 1) 路径与查阅顺序
 
-- 修改前先读：`INDEX_GUIDE.md` -> `README.md` -> 子域索引（如系统知识库根目录 `system/SYSTEM_INDEX.md`）。
+- 修改前先读：`INDEX_GUIDE.md` -> `README.md` -> 子域索引（如系统知识库根目录 `application/SYSTEM_INDEX.md`）。
 - 对未精读区域不得写成已核实事实；需补读或明确标注“待核实”。
 - 所有站内链接必须可点击，显示文本建议使用仓库根相对路径。
 
 ### 2) 知识库一致性
 
 - 保持跨视角 ID 引用稳定，禁止只改局部而不更新引用链。
-- 涉及系统知识库根目录 `system/knowledge/` 实体新增或结构变更时，先对齐 `system/DESIGN.md` 与 `system/CONTRIBUTING.md`。
+- 涉及系统知识库根目录 `application/knowledge/` 实体新增或结构变更时，先对齐 `application/DESIGN.md` 与 `application/CONTRIBUTING.md`。
 - 采用“单一事实源（SSOT）+ 联邦治理”原则，避免重复定义同一事实。
 
 ### 3) Skills 与脚本边界
@@ -83,7 +83,7 @@
 
 - 本仓库以文档与脚本为主，新增规则应优先覆盖文档结构、索引维护、链接有效性与引用一致性。
 - 语言/框架专项规范（如 Java、Maven）仅在下游项目实际使用对应技术栈时启用。
-- 若规则与仓库现状冲突，以 `AGENTS.md`、`INDEX_GUIDE.md`、系统知识库根目录 `system/DESIGN.md` 的当前约束为准。
+- 若规则与仓库现状冲突，以 `AGENTS.md`、`INDEX_GUIDE.md`、系统知识库根目录 `application/DESIGN.md` 的当前约束为准。
 
 ---
 
@@ -91,6 +91,6 @@
 
 - 项目总入口：`README.md`
 - 路径级索引：`INDEX_GUIDE.md`
-- 系统知识库根目录入口：`system/README.md`、`system/SYSTEM_INDEX.md`
-- 设计与贡献规范（系统知识库根目录）：`system/DESIGN.md`、`system/CONTRIBUTING.md`
+- 系统知识库根目录入口：`application/README.md`、`application/SYSTEM_INDEX.md`
+- 设计与贡献规范（系统知识库根目录）：`application/DESIGN.md`、`application/CONTRIBUTING.md`
 - AI 协作说明：`.agent/README.md`

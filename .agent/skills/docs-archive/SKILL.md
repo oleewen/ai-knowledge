@@ -10,11 +10,11 @@ description: >
 
 # 应用 → 系统归档（docs-archive）
 
-**术语**：**应用知识库根目录**指路径前缀 `applications/`（单应用为 `applications/app-{APPNAME}/`）。**系统知识库根目录**指路径前缀 `system/`。
+**术语**：**应用知识库根目录**指路径前缀 `applications/`（单应用为 `applications/app-{APPNAME}/`）。**系统知识库根目录**指路径前缀 `application/`。
 
-把应用知识库根目录下 `applications/app-{APPNAME}/` 里已核实、允许进入系统侧的内容，按联邦规则写入系统知识库根目录 `system/` 下约定路径。成功后更新应用侧增量锚点，使下次从 changelog 断点继续。
+把应用知识库根目录下 `applications/app-{APPNAME}/` 里已核实、允许进入系统侧的内容，按联邦规则写入系统知识库根目录 `application/` 下约定路径。成功后更新应用侧增量锚点，使下次从 changelog 断点继续。
 
-> **系统知识库根目录**下与归档职责相关的 `system/` 全树区域，不是 `system/knowledge/` 的同义词。
+> **系统知识库根目录**下与归档职责相关的 `application/` 全树区域，不是 `application/knowledge/` 的同义词。
 
 ## 输入与输出
 
@@ -23,7 +23,7 @@ description: >
 | ---- | ----------------------------------------------------------------------------------------------- |
 | 硬输入  | 应用知识库根目录下 `applications/app-{APPNAME}/`（含可归档内容之一：`knowledge/`、`solutions/`、`requirements/`、`analysis/` 等） |
 | 可选输入 | `--app`、`--scope`、`--since`、`--full`、`--dry-run` 参数                                             |
-| 固定输出 | 系统知识库根目录 `system/` 下本次涉及文件；`system/changelogs/upstream-from-applications/ARCHIVE-{YYYYMMDD}-{简述}.md`     |
+| 固定输出 | 系统知识库根目录 `application/` 下本次涉及文件；`application/changelogs/upstream-from-applications/ARCHIVE-{YYYYMMDD}-{简述}.md`     |
 | 增量产出 | 更新应用知识库根目录下 `applications/app-{APPNAME}/changelogs/archive-log.yaml`                                     |
 | 不产出  | 不生成根目录 `INDEX_GUIDE.md`；不擅自改应用 manifest 结构；不默认全量重写 `SYSTEM_INDEX.md`                            |
 
@@ -56,7 +56,7 @@ description: >
 
 变更发现方式（git diff / 清单驱动 / 全量快照）见 [reference/archive-spec.md](reference/archive-spec.md)。
 
-### 步骤 2：写入系统知识库根目录（`system/`）
+### 步骤 2：写入系统知识库根目录（`application/`）
 
 - **先读再写**：打开将修改的系统侧文件及相邻 `*_meta.yaml`，确认已有 ID 与结构。
 - **多类型同一批次**：严格按 `knowledge → solutions → analysis → requirements` 顺序，避免 `parent` 断链。
@@ -66,7 +66,7 @@ description: >
 
 ### 步骤 3：记录与锚点
 
-1. 生成批次文档 `system/changelogs/upstream-from-applications/ARCHIVE-{YYYYMMDD}-{简述}.md`（格式见 [reference/archive-spec.md](reference/archive-spec.md)）。
+1. 生成批次文档 `application/changelogs/upstream-from-applications/ARCHIVE-{YYYYMMDD}-{简述}.md`（格式见 [reference/archive-spec.md](reference/archive-spec.md)）。
 2. **上述写入与批次文档均已成功后**，调用锚点更新脚本：
 
 ```bash
@@ -75,7 +75,7 @@ description: >
   --app-id APP-ID \
   --changelog-id v1.3.0 \
   --changelog-time "2026-04-05 10:00" \
-  --archive-file "system/changelogs/upstream-from-applications/ARCHIVE-20260405-xxx.md"
+  --archive-file "application/changelogs/upstream-from-applications/ARCHIVE-20260405-xxx.md"
 ```
 
 锚点原子性规则见 [reference/archive-log-spec.md](reference/archive-log-spec.md)。

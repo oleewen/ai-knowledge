@@ -10,7 +10,7 @@ description: >
 
 # 应用知识库拉取（docs-fetch）
 
-**术语**：**应用知识库根目录**指本仓库内联邦应用镜像所在区域（路径前缀 `applications/`，单应用为 `applications/app-{APPNAME}/`）。**系统知识库根目录**指路径前缀 `system/`（本技能默认不修改）。
+**术语**：**应用知识库根目录**指本仓库内联邦应用镜像所在区域（路径前缀 `applications/`，单应用为 `applications/app-{APPNAME}/`）。**系统知识库根目录**指路径前缀 `application/`（本技能默认不修改）。
 
 从已通过 `docs-init --mode=central` 注册的目标工程知识库，拉取指定分支的文档内容，覆盖更新本仓库应用知识库根目录下 `applications/app-{APPNAME}/` 联邦镜像目录，并在 `applications/app-{APPNAME}/changelogs/` 下追加同步记录。
 
@@ -30,7 +30,7 @@ description: >
 | 可选输入 | `--branch` 目标分支（默认 `main` 或 `master`）、`--app` 应用名称 |
 | 固定输出 | 更新后的应用知识库根目录 `applications/app-{APPNAME}/` 目录内容 |
 | 附加产出 | `applications/app-{APPNAME}/changelogs/fetch-log.md`（同步记录，追加） |
-| 不产出 | 不修改系统知识库根目录 `system/`、不触发 `docs-archive`、不修改 `APPLICATIONS_INDEX.md` |
+| 不产出 | 不修改系统知识库根目录 `application/`、不触发 `docs-archive`、不修改 `APPLICATIONS_INDEX.md` |
 
 ## 参数
 
@@ -48,7 +48,7 @@ description: >
 1. 若未指定 `--app`，扫描应用知识库根目录 `applications/` 下所有 `app-*/` 目录，列出已注册应用（含 manifest 的目录）供用户选择
 2. 读取 `applications/app-{APPNAME}/{APPNAME}_manifest.yaml`，提取：
    - `repo_url`：目标工程 Git 仓库地址
-   - `docs_root`：目标工程知识库根目录（默认 `docs/` 或系统知识库根目录前缀 `system/`）
+   - `docs_root`：目标工程知识库根目录（默认 `docs/` 或系统知识库根目录前缀 `application/`）
    - `app_id`：应用 ID（如 `APP-MYSERVICE`）
 3. 确认目标分支：用户指定 `--branch` > manifest 中 `default_branch` > 自动探测（`main` → `master`）
 

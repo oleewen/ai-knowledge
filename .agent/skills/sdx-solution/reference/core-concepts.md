@@ -13,7 +13,7 @@
 
 ## 解决方案文档
 
-本阶段唯一固定产出：`system/solutions/SOLUTION-{IDEA-ID}.md`（**IDEA-ID** 见上节）。**七章**结构见 [../assets/solution-template.md](../assets/solution-template.md)；用于**共识级**范围、目标、影响、冲突化解与交付计划，**不**替代 PRD、ADD 或测试设计。
+本阶段唯一固定产出：`application/solutions/SOLUTION-{IDEA-ID}.md`（**IDEA-ID** 见上节）。**七章**结构见 [../assets/solution-template.md](../assets/solution-template.md)；用于**共识级**范围、目标、影响、冲突化解与交付计划，**不**替代 PRD、ADD 或测试设计。
 
 ## 诉求结构化
 
