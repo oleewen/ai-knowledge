@@ -6,7 +6,7 @@
 #   1) 显式传入 override（如 --doc-root）
 #   2) 环境变量 SDX_DOC_ROOT
 #   3) 工程根目录下文件 .sdx-doc-root（git 根优先，其次当前探测基目录）
-#   4) 目录探测：优先 docs/*，其次 application/*、application/*（见 sdx_probe_doc_root_segment）
+#   4) 目录探测：优先 docs/*，其次中央库 `application/*`，再兼容旧布局 `system/knowledge`（见 sdx_probe_doc_root_segment）
 #   5) 无匹配目录时默认 docs
 #
 # Usage（由其它脚本 source）：
@@ -60,8 +60,8 @@ sdx_probe_doc_root_segment() {
     printf 'application'
     return
   fi
-  # 旧布局：application/（仍用于已落地工程探测）
-  if [[ -d "$b/application/knowledge" || -d "$b/application/solutions" || -d "$b/application/analysis" ]]; then
+  # 旧工程：顶层仍为 system/ 知识树（迁移前中央库布局；与新建语义化 system/ 壳目录无 knowledge/ 不冲突）
+  if [[ -d "$b/system/knowledge" || -d "$b/system/solutions" || -d "$b/system/analysis" ]]; then
     printf 'system'
     return
   fi

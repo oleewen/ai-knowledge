@@ -55,7 +55,7 @@
 
 ### 1) 路径与查阅顺序
 
-- 修改前先读：`INDEX_GUIDE.md` -> `README.md` -> 子域索引（如系统知识库根目录 `application/SYSTEM_INDEX.md`）。
+- 修改前先读：`INDEX_GUIDE.md` -> `README.md` -> 子域索引（如应用知识库 `application/INDEX_GUIDE.md`）。
 - 对未精读区域不得写成已核实事实；需补读或明确标注“待核实”。
 - 所有站内链接必须可点击，显示文本建议使用仓库根相对路径。
 
@@ -91,6 +91,6 @@
 
 - 项目总入口：`README.md`
 - 路径级索引：`INDEX_GUIDE.md`
-- 系统知识库根目录入口：`application/README.md`、`application/SYSTEM_INDEX.md`
+- 应用知识库根目录入口：`application/README.md`、`application/INDEX_GUIDE.md`
 - 设计与贡献规范（系统知识库根目录）：`application/DESIGN.md`、`application/CONTRIBUTING.md`
 - AI 协作说明：`.agent/README.md`

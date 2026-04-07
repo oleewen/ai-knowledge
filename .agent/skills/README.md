@@ -16,8 +16,8 @@
 | `/docs-change` | 聚合 git/CHANGELOG/文件 mtime 生成变更索引（如 `changes-index.*`）。 |
 | `/docs-upgrade` | 定向增改文档与代码注释；默认沿引用链并辅以关键词检索（同义/近义/中英文）对齐同类表述；显式路径或引用片段时自动执行；支持 `a - b` / `a > b` / `a 2 b`；不确定项列选项由用户决策。 |
 | `/agent-guide` | 生成/更新根目录 `AGENTS.md` 与 `README.md`，对齐仓库导航与约束。 |
-| `/docs-archive` | 将应用侧有效知识归档到**系统知识库根目录**（`application/`）全目录（含 knowledge、solutions、analysis、requirements、specs、上行批次 changelogs 及受影响的系统导航/契约文件），支持增量归档（changelog 锚点），可指定应用或处理所有未归档内容。 |
-| `/docs-fetch` | 从已注册的应用知识库（central 模式）拉取最新文档内容，更新**应用知识库根目录**下 `applications/app-{APPNAME}/` 联邦镜像，并记录同步 changelog。 |
+| `/docs-archive` | 将联邦镜像（`applications/app-*`）中已核实内容归档到**应用知识库 SSOT**（`application/`）约定路径；支持增量锚点与 scope；目标态槽位见 `system/application-{name}/` 设计文档。 |
+| `/docs-fetch` | 从已注册目标工程拉取文档，更新本仓库 **`applications/app-{APPNAME}/`** 联邦镜像（与 `docs-init central` 一致）；目标态槽位见知识库 v2 设计。 |
 | `/docs-build` | 按知识工程流程构建/补全知识资产与关联结构。 |
 | `/sdx-solution` | 产出解决方案阶段文档（Solution 阶段）。 |
 | `/sdx-analysis` | 产出需求分析阶段文档（Analysis 阶段）。 |
@@ -30,4 +30,4 @@
 
 - 这些命令由 Agent 依据对应 `SKILL.md` 执行并落盘产物。
 - `scripts/` 目录负责项目初始化（如 `docs-*.sh`），不等同于 Skill 命令。
-- 若命令输出涉及索引或变更记录，请以仓库约定路径为准（如 `INDEX_GUIDE.md`、系统知识库根目录下 `application/changelogs/`）。
+- 若命令输出涉及索引或变更记录，请以仓库约定路径为准（如 `INDEX_GUIDE.md`、`application/changelogs/`）。

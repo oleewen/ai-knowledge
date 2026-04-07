@@ -81,7 +81,7 @@ else:
 
 **归档写入成功后才更新锚点**（原子性保证）：
 
-1. 完成 **`application/` 下本次批次涉及的全部写入**（不限于 `application/knowledge/`，须覆盖本次 `--scope` 与变更所触及的 solutions/analysis/requirements/specs、批次 changelog、以及需同步的 `SYSTEM_INDEX` / 各 `README` 等）
+1. 完成 **`application/` 下本次批次涉及的全部写入**（不限于 `application/knowledge/`，须覆盖本次 `--scope` 与变更所触及的 solutions/analysis/requirements/specs、批次 changelog、以及需同步的 `INDEX_GUIDE` / 各 `README` 等）
 2. 生成批次归档文档（`application/changelogs/upstream-from-applications/ARCHIVE-*.md`）
 3. **最后**更新 `applications/.../archive-log.yaml`
 

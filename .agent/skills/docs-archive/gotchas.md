@@ -54,7 +54,7 @@
 
 **应用侧与系统侧冲突时强行覆盖**：冲突时以代码与 manifest 为准，或标为待人工确认，不强行覆盖系统权威域定义。
 
-**变更影响全局导航但未更新索引**：变更影响 `application/SYSTEM_INDEX.md` 或视角 `README.md` 时，必须同步更新，否则导航断链。
+**变更影响全局导航但未更新索引**：变更影响 `application/INDEX_GUIDE.md` 或视角 `README.md` 时，必须同步更新，否则导航断链。
 
 ---
 
@@ -78,6 +78,6 @@
 - [ ] SDD 文档归档：仅归档 approved/review 状态文档（或草稿已标注）
 - [ ] SDD 文档归档：solutions/analysis 索引表已更新
 - [ ] SDD 文档归档：requirements 需求包目录结构完整
-- [ ] 变更影响导航时已同步更新 SYSTEM_INDEX 或视角 README
+- [ ] 变更影响导航时已同步更新 application/INDEX_GUIDE 或视角 README
 - [ ] 批次归档文档已写入系统知识库根目录 `application/changelogs/upstream-from-applications/`
 - [ ] 归档锚点已在写入成功后更新（`archive-log.yaml` 已追加新记录）

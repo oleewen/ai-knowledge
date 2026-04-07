@@ -2,7 +2,7 @@
 name: docs-fetch
 description: >
   从已注册的应用知识库（central 模式登记的目标工程）拉取最新文档内容，
-  更新本仓库应用知识库根目录下 applications/app-{APPNAME}/ 目录，并记录同步 changelog。
+  更新本仓库联邦镜像 applications/app-{APPNAME}/（目标态槽位见 system/application-{name}/ 设计），并记录同步 changelog。
   当用户执行 /docs-fetch、需要同步应用知识库内容、更新联邦镜像、
   或应用侧文档有更新需要拉取到中央库时，务必使用本技能。
   即使用户只说"同步一下应用文档"、"拉取最新知识库"、"更新应用镜像"，也应触发本技能。
@@ -10,7 +10,9 @@ description: >
 
 # 应用知识库拉取（docs-fetch）
 
-**术语**：**应用知识库根目录**指本仓库内联邦应用镜像所在区域（路径前缀 `applications/`，单应用为 `applications/app-{APPNAME}/`）。**系统知识库根目录**指路径前缀 `application/`（本技能默认不修改）。
+> **路径约定（知识库 v2）**：`docs-init --mode=central` 仍可能在仓库根 **`applications/app-<后缀>/`** 维护联邦镜像（与 `scripts/docs-init.sh` 一致）。**目标态**组织级槽位为 **`system/application-{name}/`**（见 [`docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md`](../../../docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md)）。下文以当前 central 落盘路径为准；迁移期两种叙述可能并存。
+
+**术语**：**应用联邦镜像根**指本仓库内由 central 登记的应用文档镜像（路径前缀 `applications/`，单应用为 `applications/app-{APPNAME}/`）。**应用知识库 SSOT**指路径前缀 `application/`（本技能默认不修改）。
 
 从已通过 `docs-init --mode=central` 注册的目标工程知识库，拉取指定分支的文档内容，覆盖更新本仓库应用知识库根目录下 `applications/app-{APPNAME}/` 联邦镜像目录，并在 `applications/app-{APPNAME}/changelogs/` 下追加同步记录。
 

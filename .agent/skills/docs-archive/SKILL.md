@@ -1,20 +1,22 @@
 ---
+name: docs-archive
+description: >
+  将联邦应用镜像（applications/app-*）中已核实内容上行归档到应用知识库 SSOT（application/）。
+  支持增量锚点（archive-log.yaml）、按 scope 筛选、dry-run 与全量 --full。
+  当用户执行 /docs-archive、说「归档」「同步应用知识到主库」「上行」「把实体/SDD 同步到 application」、
+  或应用更新后需刷新主库索引与契约时，务必使用本技能；
+  即使用户只说「同步一下」「把应用侧内容推上去」「更新主库」，也应触发本技能。
+---
 
-## name: docs-archive  
-description: >  
-  将应用知识库上行归档到系统知识库。  
-  支持增量锚点（archive-log.yaml）、按 scope 筛选、dry-run 与全量 --full。  
-  当用户执行 /docs-archive、说「归档」「同步应用知识到系统库」「上行」「把实体/SDD 同步到 system」、  
-  或应用更新后需刷新系统侧索引与契约时，务必使用本技能；  
-  即使用户只说「同步一下」「把应用侧内容推上去」「更新系统库」，也应触发本技能。
+# 应用 → 主库归档（docs-archive）
 
-# 应用 → 系统归档（docs-archive）
+> **路径约定（知识库 v2）**：归档目标为 **`application/`**（应用知识库 SSOT）。源侧当前仍以 **`applications/app-{APPNAME}/`** 联邦镜像为主（与 `docs-init --mode=central` 一致）；**目标态**组织级槽位见 **`system/application-{name}/`**（[`docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md`](../../../docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md)）。
 
-**术语**：**应用知识库根目录**指路径前缀 `applications/`（单应用为 `applications/app-{APPNAME}/`）。**系统知识库根目录**指路径前缀 `application/`。
+**术语**：**应用联邦镜像根**指路径前缀 `applications/`（单应用为 `applications/app-{APPNAME}/`）。**应用知识库 SSOT**指路径前缀 `application/`。
 
-把应用知识库根目录下 `applications/app-{APPNAME}/` 里已核实、允许进入系统侧的内容，按联邦规则写入系统知识库根目录 `application/` 下约定路径。成功后更新应用侧增量锚点，使下次从 changelog 断点继续。
+把应用联邦镜像根下 `applications/app-{APPNAME}/` 里已核实、允许进入主库的内容，按联邦规则写入 `application/` 下约定路径。成功后更新应用侧增量锚点，使下次从 changelog 断点继续。
 
-> **系统知识库根目录**下与归档职责相关的 `application/` 全树区域，不是 `application/knowledge/` 的同义词。
+> **`application/`** 下与归档职责相关的全树区域，不是 `application/knowledge/` 的同义词。
 
 ## 输入与输出
 
@@ -23,9 +25,9 @@ description: >
 | ---- | ----------------------------------------------------------------------------------------------- |
 | 硬输入  | 应用知识库根目录下 `applications/app-{APPNAME}/`（含可归档内容之一：`knowledge/`、`solutions/`、`requirements/`、`analysis/` 等） |
 | 可选输入 | `--app`、`--scope`、`--since`、`--full`、`--dry-run` 参数                                             |
-| 固定输出 | 系统知识库根目录 `application/` 下本次涉及文件；`application/changelogs/upstream-from-applications/ARCHIVE-{YYYYMMDD}-{简述}.md`     |
+| 固定输出 | 应用知识库 SSOT（`application/`）下本次涉及文件；`application/changelogs/upstream-from-applications/ARCHIVE-{YYYYMMDD}-{简述}.md`     |
 | 增量产出 | 更新应用知识库根目录下 `applications/app-{APPNAME}/changelogs/archive-log.yaml`                                     |
-| 不产出  | 不生成根目录 `INDEX_GUIDE.md`；不擅自改应用 manifest 结构；不默认全量重写 `SYSTEM_INDEX.md`                            |
+| 不产出  | 不生成根目录 `INDEX_GUIDE.md`；不擅自改应用 manifest 结构；不默认全量重写 `application/INDEX_GUIDE.md`                            |
 
 
 ## 参数
@@ -56,7 +58,7 @@ description: >
 
 变更发现方式（git diff / 清单驱动 / 全量快照）见 [reference/archive-spec.md](reference/archive-spec.md)。
 
-### 步骤 2：写入系统知识库根目录（`application/`）
+### 步骤 2：写入应用知识库 SSOT（`application/`）
 
 - **先读再写**：打开将修改的系统侧文件及相邻 `*_meta.yaml`，确认已有 ID 与结构。
 - **多类型同一批次**：严格按 `knowledge → solutions → analysis → requirements` 顺序，避免 `parent` 断链。
@@ -90,11 +92,11 @@ description: >
 | 约束           | 说明                                                   |
 | ------------ | ---------------------------------------------------- |
 | 增量默认         | 以锚点为准，避免重复晋升同一 changelog 区间                          |
-| 锚点原子性        | 系统知识库根目录侧写入失败则不更新 `archive-log.yaml`                  |
+| 锚点原子性        | `application/` 侧写入失败则不更新 `archive-log.yaml`                  |
 | knowledge 边界 | 契约与 ID，不整段复制应用侧长文                                    |
 | ID 不可变       | 禁止改已有实体 id；新增须全局唯一                                   |
 | 归档顺序         | knowledge → solutions → analysis → requirements，不可乱序 |
-| 导航同步         | 变更影响全局入口时，同步 `SYSTEM_INDEX.md` 或相关 `README.md`       |
+| 导航同步         | 变更影响全局入口时，同步 `application/INDEX_GUIDE.md` 或相关 `README.md`       |
 
 
 ## 依赖关系
