@@ -4,6 +4,9 @@
 **状态**：设计评估（**未实施**）  
 **范围**：`applications/` 删除、`system`↔`application` 语义调整、新增 `system/`（架构与联邦槽位）、新增 `company/`、`docs-init.sh` 参数模型扩展
 
+**已决议**：`sync=core`（原需求中的 `mode=c`）的**源根为 `application/`**（选项 **1** / 上文理解 **B**）。即仅同步  
+`application/changelogs/`、`application/knowledge/`、`application/specs/`、`application/INDEX_GUIDE.md`、`application/README.md`、`application/docs_meta.yaml`、`application/manifest.yaml`（若某文件迁名后不叫 `system_meta.yaml`，以实现为准）。**不**从新建顶层 `system/` 拷贝上述目录作为 core 源。
+
 ---
 
 ## 0. 与当前仓库的差异（基线）
@@ -30,25 +33,23 @@
    - `architecture/`（业务/产品/系统/数据架构文档）  
 4. **新建顶层 `company/`**：其下含 `system-{system-name}/`（占位/后续从他系统知识库 fetch）  
 5. **`docs-init.sh`**  
-   - **5.1 `mode`**：`s` → 同步 **application** 下全部文档到目标工程文档目录；`c` → 仅同步 `system/` 下子集：`changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs_meta.yaml`、`manifest.yaml`  
+   - **5.1 `mode`（建议实现名：`--sync=full|core`）**：`s`（full）→ 同步 **`application/`** 下全部文档到目标工程文档目录；`c`（core）→ 仅同步 **`application/`** 下子集：`changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs_meta.yaml`、`manifest.yaml`（**非**新建顶层 `system/` 下的同名路径）  
    - **5.2 `type`**：`a|application` 同步 application；`s|system` 同步 system；`c|company` 同步 company  
 
 ---
 
 ## 2. 关键歧义（实施前必须拍板）
 
-### 2.1 `mode=c` 的源目录与内容
+### 2.1 `mode=c` 的源目录与内容 — **已拍板**
 
-你列出的路径（`system/changelogs`、`system/knowledge`、…）在**当前仓库**里属于**现有 `system/`（即拟改名为 `application/` 的那棵树）**。
+你最初列出的路径在**当前仓库**里写在 `system/` 下；迁移后 **SSOT 主体**在 **`application/`**。
 
-若按字面搬到**新** `system/`，则有两种互斥理解：
+| 理解 | 状态 |
+|------|------|
+| **A. `mode=c` 指向新顶层 `system/`** | **已否决** |
+| **B. `mode=c` 指向 `application/` 子集** | **已采纳**（维护者选项 **1**） |
 
-| 理解 | 含义 | 后果 |
-|------|------|------|
-| **A. `mode=c` 指向新 `system/`** | 新 `system/` 必须自建一套 `knowledge/`、`changelogs/`、`specs/`…（可与 `architecture/` 并存） | 与「原 `system` 改名 `application`」并行存在两套「knowledge 树」，需明确 **SSOT** 与文档职责边界，避免与 `application/` 重复 |
-| **B. `mode=c` 指向 `application/` 子集** | 「核心切片」仍来自原中央库主体，只是命名已改为 `application/` | 文案里不宜再写 `@system/...`，应写 `@application/...`，否则与顶层新 `system/` 混淆 |
-
-**建议**：在规范中显式写清 **B** 或 **A**，并在 `docs-init` 帮助文中用**绝对源路径示例**固化。
+**实施注意**：`docs-init` 帮助文与 CI 示例须写 **`REPO_ROOT/application/changelogs`** 等，避免与新建 **`system/architecture`**、`system/application-{name}/` 混淆。**四视角与阶段文档的 SSOT** 在 **`application/`**；新建 **`system/`** 仅承载架构文档与联邦槽位（及后续 fetch 落点），**不**再复制一套 `knowledge/` 与 `application/` 争 SSOT。
 
 ### 2.2 与现有 `docs-init` 的 `--mode` 冲突
 
@@ -119,10 +120,9 @@
 │   ├── changelogs/ | specs/
 │   ├── README.md | INDEX_GUIDE.md | DESIGN.md | …
 │   └── …
-├── system/                      # 新语义：组织级/多应用视图
+├── system/                      # 新语义：组织级/多应用视图（与 application/ 的 SSOT 分工见 §2.1）
 │   ├── application-{app-name}/  # 联邦槽位（fetch 目标）
-│   ├── architecture/            # 业务/产品/系统/数据 架构文档（子结构需另表）
-│   └── （若 mode=c 采用理解 A：此处再建 knowledge/changelogs/specs…，需与 application 分工）
+│   └── architecture/            # 业务/产品/系统/数据 架构文档（子结构需另表）
 ├── company/
 │   └── system-{system-name}/    # 公司视角下的系统镜像槽位
 ├── scripts/
@@ -145,7 +145,7 @@
 
 **校验规则（示例）**：
 
-- `sync=core` 时，必须明确 **源根**是 `application/` 还是新 `system/`（见 §2.1）。  
+- `sync=core` 时，**源根固定为 `application/`**（已决议，见文首「已决议」与 §2.1）。  
 - `kb-type=company` 时，默认同步 `company/` 下哪些子树（是否含所有 `system-*`）需定义。
 
 ---
@@ -161,13 +161,13 @@
 ## 8. 自审
 
 - **范围**：本文仅为评估与设计草案，**不**包含具体 `git mv` 列表与 PR 任务拆分。  
-- **待确认**：§2.1（`mode=c` 源根）、§2.2（CLI 命名）、§2.3（central 去向）。  
+- **待确认**：§2.2（CLI 命名）、§2.3（central 去向）。§2.1 已确认。  
 - **一致性**：若采纳「`application` = 原 system 主体」，则对外叙述「应用知识库」与旧文档「系统知识库」需统一迁移说明。
 
 ---
 
 ## 9. 后续步骤
 
-1. 维护者确认 §2 中歧义项。  
+1. ~~维护者确认 §2.1~~（已完成）。待确认 §2.2、§2.3。  
 2. 评审通过后，使用 **writing-plans** 拆分为可执行子任务（目录迁移、脚本、Skill、全库链接、版本与 README）。  
 3. **禁止**在未批准前批量修改 `system/knowledge` 实体 ID 或删除 `applications/` 内仍被引用的模板路径。
