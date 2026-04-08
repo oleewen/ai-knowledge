@@ -3,8 +3,8 @@ set -euo pipefail
 
 # 解决方案文档结构校验脚本
 # 用法: scripts/validate-solution.sh [--doc-root <path>] [--file <path>]
-# REPO_DOC_ROOT：sdx_resolve_repo_doc_root（--doc-root > SDX_DOC_ROOT > .sdx-doc-root > 目录探测）
-# 详见 .agent/scripts/sdx-doc-root.sh
+# 文档根路径：resolve_repo_doc_root（优先 --doc-root；否则沿用 .docsconfig 已加载的 DOC_ROOT）
+# 先 validate_bootstrap_docsconfig，详见 .agent/scripts/docsconfig-bootstrap.sh
 #
 # 校验项:
 #   1. 模板文件存在
@@ -33,14 +33,13 @@ done
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _AI_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck disable=SC1091
-source "$_AI_HOME/scripts/sdx-validate-bootstrap.sh"
-sdx_validate_load_doc_root "$SCRIPT_DIR"
+source "$_AI_HOME/scripts/docsconfig-bootstrap.sh"
+validate_bootstrap_docsconfig "$SCRIPT_DIR"
 
-REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || pwd)"
-REPO_DOC_ROOT="$(sdx_resolve_repo_doc_root "$DOC_ROOT_ARG" "$REPO_ROOT")"
+DOC_ROOT="$(resolve_repo_doc_root "$DOC_ROOT_ARG" "$REPO_ROOT")"
 cd "$REPO_ROOT" || exit 1
 
-SOLUTIONS_DIR="${REPO_DOC_ROOT}/solutions"
+SOLUTIONS_DIR="${DOC_ROOT}/solutions"
 TEMPLATE=".agent/skills/sdx-solution/assets/solution-template.md"
 
 info()    { echo "[INFO]  $1"; }
@@ -49,7 +48,7 @@ error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
 
 echo "=== 解决方案文档结构校验 ==="
-echo "REPO_DOC_ROOT: ${REPO_DOC_ROOT}"
+echo "DOC_ROOT: ${DOC_ROOT}"
 echo ""
 
 # 0. 模板文件

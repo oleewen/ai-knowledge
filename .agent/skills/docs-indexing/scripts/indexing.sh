@@ -8,16 +8,16 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _AI_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck disable=SC1091
-source "$_AI_HOME/scripts/sdx-validate-bootstrap.sh"
-sdx_validate_load_doc_root "$SCRIPT_DIR"
-REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || pwd)"
-REPO_DOC_ROOT="$(sdx_resolve_repo_doc_root "" "$REPO_ROOT")"
+source "$_AI_HOME/scripts/docsconfig-bootstrap.sh"
+validate_bootstrap_docsconfig "$SCRIPT_DIR"
+
+DOC_ROOT="$(resolve_repo_doc_root "" "$REPO_ROOT")"
 cd "$REPO_ROOT" || exit 1
 
-# 配置变量（cwd=仓库根；路径由 sdx_resolve_repo_doc_root 与 REPO_DOC_ROOT 统一）
-DEFAULT_OUTPUT="${REPO_DOC_ROOT}/INDEX_GUIDE.md"
-LOG_FILE="${REPO_DOC_ROOT}/changelogs/indexing-log.jsonl"
-CHANGES_INDEX="${REPO_DOC_ROOT}/changelogs/changes-index.json"
+# 配置变量（cwd=仓库根；路径由 resolve_repo_doc_root / .docsconfig 与 DOC_ROOT 统一）
+DEFAULT_OUTPUT="${DOC_ROOT}/INDEX_GUIDE.md"
+LOG_FILE="${DOC_ROOT}/changelogs/indexing-log.jsonl"
+CHANGES_INDEX="${DOC_ROOT}/changelogs/changes-index.json"
 
 now_ms() {
     python3 - <<'PY'
@@ -34,7 +34,7 @@ show_help() {
     echo "Options:"
     echo "  --mode MODE           扫描模式：f/full（全量）或 i/incremental（增量）"
     echo "  --depth DEPTH         扫描深度：1（拓扑）、2（结构）、3（精读）"
-    echo "  --output OUTPUT       输出文件路径（默认：文档根下 INDEX_GUIDE.md，见 sdx_resolve_repo_doc_root）"
+    echo "  --output OUTPUT       输出文件路径（默认：文档根下 INDEX_GUIDE.md，见 .docsconfig / resolve_repo_doc_root）"
     echo "  --since TIMESTAMP     增量模式起始时间（epoch ms）"
     echo "  -h, --help            显示帮助信息"
     echo ""

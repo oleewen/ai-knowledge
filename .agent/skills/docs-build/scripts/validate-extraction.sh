@@ -3,7 +3,7 @@ set -euo pipefail
 
 # 知识实体提取结果验证脚本
 # 用法: scripts/validate-extraction.sh [--doc-root <path>]
-# REPO_DOC_ROOT：sdx_resolve_repo_doc_root（见 .agent/scripts/sdx-doc-root.sh）
+# DOC_ROOT：resolve_repo_doc_root；见 .agent/scripts/docsconfig-bootstrap.sh
 # 知识库目录：优先 {seg}/knowledge；否则 {seg}/application/knowledge
 #
 # 校验项:
@@ -28,18 +28,17 @@ done
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _AI_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck disable=SC1091
-source "$_AI_HOME/scripts/sdx-validate-bootstrap.sh"
-sdx_validate_load_doc_root "$SCRIPT_DIR"
+source "$_AI_HOME/scripts/docsconfig-bootstrap.sh"
+validate_bootstrap_docsconfig "$SCRIPT_DIR"
 
-REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || pwd)"
-REPO_DOC_ROOT="$(sdx_resolve_repo_doc_root "$DOC_ROOT_ARG" "$REPO_ROOT")"
+DOC_ROOT="$(resolve_repo_doc_root "$DOC_ROOT_ARG" "$REPO_ROOT")"
 cd "$REPO_ROOT" || exit 1
 
-# 路径约定：{REPO_DOC_ROOT}/application/knowledge/ 或 {REPO_DOC_ROOT}/knowledge/（与 SKILL.md 一致）
-if [[ -d "${REPO_DOC_ROOT}/knowledge" && ! -d "${REPO_DOC_ROOT}/application/knowledge" ]]; then
-  KNOWLEDGE_DIR="${REPO_DOC_ROOT}/knowledge"
+# 路径约定：{DOC_ROOT}/application/knowledge/ 或 {DOC_ROOT}/knowledge/（与 SKILL.md 一致）
+if [[ -d "${DOC_ROOT}/knowledge" && ! -d "${DOC_ROOT}/application/knowledge" ]]; then
+  KNOWLEDGE_DIR="${DOC_ROOT}/knowledge"
 else
-  KNOWLEDGE_DIR="${REPO_DOC_ROOT}/application/knowledge"
+  KNOWLEDGE_DIR="${DOC_ROOT}/application/knowledge"
 fi
 INDEX_FILE="${KNOWLEDGE_DIR}/KNOWLEDGE_INDEX.md"
 
@@ -49,7 +48,7 @@ error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
 
 echo "=== 知识实体提取结果验证 ==="
-echo "REPO_DOC_ROOT: ${REPO_DOC_ROOT}"
+echo "DOC_ROOT: ${DOC_ROOT}"
 echo ""
 
 # 1. KNOWLEDGE_INDEX.md

@@ -3,7 +3,7 @@ set -euo pipefail
 
 # 需求分析文档结构校验脚本
 # 用法: scripts/validate-analysis.sh [--doc-root <path>] [--file <path>]
-# REPO_DOC_ROOT：sdx_resolve_repo_doc_root（见 .agent/scripts/sdx-doc-root.sh）
+# DOC_ROOT：resolve_repo_doc_root；见 .agent/scripts/docsconfig-bootstrap.sh
 #
 # 校验项:
 #   1. 文档目录存在
@@ -29,14 +29,13 @@ done
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _AI_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck disable=SC1091
-source "$_AI_HOME/scripts/sdx-validate-bootstrap.sh"
-sdx_validate_load_doc_root "$SCRIPT_DIR"
+source "$_AI_HOME/scripts/docsconfig-bootstrap.sh"
+validate_bootstrap_docsconfig "$SCRIPT_DIR"
 
-REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || pwd)"
-REPO_DOC_ROOT="$(sdx_resolve_repo_doc_root "$DOC_ROOT_ARG" "$REPO_ROOT")"
+DOC_ROOT="$(resolve_repo_doc_root "$DOC_ROOT_ARG" "$REPO_ROOT")"
 cd "$REPO_ROOT" || exit 1
 
-ANALYSIS_DIR="${REPO_DOC_ROOT}/analysis"
+ANALYSIS_DIR="${DOC_ROOT}/analysis"
 TEMPLATE="${SCRIPT_DIR}/../assets/analysis-template.md"
 
 info()    { echo "[INFO]  $1"; }
@@ -45,7 +44,7 @@ error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
 
 echo "=== 需求分析文档结构校验 ==="
-echo "REPO_DOC_ROOT: ${REPO_DOC_ROOT}"
+echo "DOC_ROOT: ${DOC_ROOT}"
 echo ""
 
 # 0. 模板文件

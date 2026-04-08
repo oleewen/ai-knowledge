@@ -1,29 +1,32 @@
 #!/usr/bin/env bash
 # validate-agent-md-links.sh — 校验 .agent 下 Markdown 链接：.agent 内互链须存在；跨出 .agent 须落在
-# REPO_ROOT 或 REPO_DOC_ROOT 下（且非 .git），落实 link-reachability §1.1 强校验。
+# REPO_ROOT 或 DOC_ROOT 下（且非 .git），落实 link-reachability §1.1 强校验。
 # 在仓库根执行：bash .agent/scripts/validate-agent-md-links.sh
+# 文档根路径来自目标仓库根 .docsconfig（见 docsconfig-bootstrap.sh；§2.2.2 不向子进程 export，仅前缀传参）。
 
 set -euo pipefail
 
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || true)"
-[[ -n "$REPO_ROOT" ]] || { echo "[ERROR] 请在 git 仓库内执行"; exit 1; }
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/docsconfig-bootstrap.sh"
+validate_bootstrap_docsconfig "$SCRIPT_DIR"
 
 AGENT_DIR="$REPO_ROOT/.agent"
-[[ -d "$AGENT_DIR" ]] || { echo "[ERROR] 未找到 $AGENT_DIR"; exit 1; }
+[[ -d "$AGENT_DIR" ]] || {
+  echo "[ERROR] 未找到 $AGENT_DIR（REPO_ROOT=$REPO_ROOT）"
+  exit 1
+}
 
-# shellcheck disable=SC1091
-source "$AGENT_DIR/scripts/sdx-doc-root.sh"
-REPO_DOC_ROOT="$(sdx_resolve_repo_doc_root "" "$REPO_ROOT")"
-
-export REPO_ROOT AGENT_DIR REPO_DOC_ROOT
-exec python3 << 'PY'
+# §2.2.2：不 export；仅对本次 python3 进程传入环境变量
+DOC_ROOT="$DOC_ROOT" REPO_ROOT="$REPO_ROOT" DOC_DIR="${DOC_DIR:-}" AGENT_DIR="$AGENT_DIR" \
+  python3 <<'PY'
 import os
 import re
 import sys
 
 repo = os.environ["REPO_ROOT"]
 agent = os.environ["AGENT_DIR"]
-doc_root = os.environ["REPO_DOC_ROOT"]
+doc_root = os.environ["DOC_ROOT"]
 link_re = re.compile(r"\]\(([^)]+)\)")
 
 errs = []
@@ -70,11 +73,10 @@ for dirpath, _, files in os.walk(agent):
                 if not os.path.exists(joined):
                     errs.append(f"{rel_md}: 目标不存在 → ({target})")
             else:
-                # 跨出 .agent：须落在 REPO_ROOT 或 REPO_DOC_ROOT 目录树内（后者通常为前者子树），
-                # Agent 语义可达即可，不要求 IDE/浏览器可点击。
+                # 跨出 .agent：须落在 REPO_ROOT 或 DOC_ROOT 目录树内
                 if not (is_under(joined, repo) or is_under(joined, doc_root)):
                     errs.append(
-                        f"{rel_md}: 跨出 .agent 的链接须指向 REPO_ROOT 或 REPO_DOC_ROOT 下路径 → ({target})"
+                        f"{rel_md}: 跨出 .agent 的链接须指向 REPO_ROOT 或 DOC_ROOT 下路径 → ({target})"
                     )
                     continue
                 if is_under(joined, git_dir):
@@ -100,7 +102,7 @@ if errs:
         print(" ", e, file=sys.stderr)
     sys.exit(1)
 print(
-    "[OK] .agent Markdown 链接检查通过（.agent 内互链 + 跨边界须 REPO_ROOT/REPO_DOC_ROOT；REPO_DOC_ROOT=",
+    "[OK] .agent Markdown 链接检查通过（.agent 内互链 + 跨边界须 REPO_ROOT/DOC_ROOT；DOC_ROOT=",
     doc_root,
     "）",
 )
