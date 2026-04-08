@@ -11,7 +11,7 @@
 ### 1.1 语义/约定层面的路径（多为正文中的仓库根相对表述）
 
 - **根入口**：`README.md`、`AGENTS.md`、`INDEX_GUIDE.md`（例：`.agent/README.md`、`rules/CONVENTIONS.md`、agent-guide 资产）。
-- **系统知识库**：`application/` 下 `DESIGN.md`、`CONTRIBUTING.md`、`INDEX_GUIDE.md`、`knowledge/`、`changelogs/` 等（联邦、archive、docs-build 等技能规范中大量出现）。
+- **应用知识库**：`{DOC_DIR}/` 下 `DESIGN.md`、`CONTRIBUTING.md`、`INDEX_GUIDE.md`、`knowledge/`、`changelogs/` 等（联邦、archive、docs-build 等技能规范中大量出现；默认 `DOC_DIR` 常为 `application`）。
 - **联邦与初始化**：`applications/`、`scripts/docs-init.sh`、`docs-init`。
 - **说明性路径**：`.agent/skills/README.md` 中 skill-creator 副本位置指向 `.agent/skills/skill-creator/`。
 
@@ -19,9 +19,9 @@
 
 - **`validate-guide.sh`**：解析 `REPO_ROOT`、`DOC_ROOT`；默认 `--root` 为 git 顶层；校验 `README.md` / `AGENTS.md` / `INDEX`（含 `$(basename "$DOC_ROOT")/INDEX_GUIDE.md` 等候选）。
 - **`docs-indexing/scripts/indexing.sh`**：`cd "$REPO_ROOT"`；默认输出与 changelog 路径基于 **`DOC_ROOT`**（`${DOC_ROOT}/INDEX_GUIDE.md`、`${DOC_ROOT}/changelogs/...`）。
-- **各 `sdx-*/scripts/validate-*.sh`**：`source` **`.agent/scripts/docsconfig-bootstrap.sh`**，**`validate_bootstrap_docsconfig`** 后 **`DOC_ROOT="$(resolve_repo_doc_root …)"`**（与 `.docsconfig` 一致；绝对路径）。
+- **各 `sdx-*/scripts/validate-*.sh`**、**`docs-build/scripts/validate-extraction.sh`**：`source` **`.agent/scripts/docsconfig-bootstrap.sh`**，**`validate_bootstrap_docsconfig`** 后 **`DOC_ROOT="$(resolve_repo_doc_root)"`**（仅 `.docsconfig`；**`resolve_repo_doc_root` 无 override**；绝对路径）。
 
-**说明**：`_AI_HOME` 解析为 **`.agent` 目录**（自 `skills/.../scripts` 向上三级），加载 **`.agent/scripts/docsconfig-bootstrap.sh`** 等。
+**说明**：`_AGENT_HOME` 解析为 **`.agent` 目录**（自 `skills/.../scripts` 向上三级），加载 **`.agent/scripts/docsconfig-bootstrap.sh`** 等。
 
 ---
 
@@ -30,7 +30,7 @@
 ### 2.1 已有机制（单一事实来源）
 
 - **目标工程仓库根 `.docsconfig`**（由 **`docs-init`** 写入 **`DOC_ROOT`** / **`REPO_ROOT`** / **`DOC_DIR`**）。
-- **`.agent/scripts/docsconfig-bootstrap.sh`**：**`validate_bootstrap_docsconfig`** 加载三键；**`resolve_repo_doc_root`** 供 CLI `--doc-root` 覆盖或与文件内 **`DOC_ROOT`** 对齐。
+- **`.agent/scripts/docsconfig-bootstrap.sh`**：**`validate_bootstrap_docsconfig`** 加载三键；**`resolve_repo_doc_root`** 仅返回已加载的 **`DOC_ROOT`**（无 override）。
 - **历史**：旧首段探测链 **`sdx-doc-root.sh`** / **`sdx-validate-bootstrap.sh`** 已由 **`.docsconfig`** + **`docsconfig-bootstrap.sh`** 取代；上述脚本已移除。
 
 ### 2.2 `project-root`（仓库根）
@@ -41,13 +41,13 @@
 
 ### 2.3 `doc-root` 与 `DOC_ROOT`
 
-- **脚本变量 `DOC_ROOT`**：与 `.docsconfig` 中 **`DOC_ROOT`** 键一致；可选经 **`resolve_repo_doc_root`** 与 `--doc-root` 合成。各 `validate-*.sh` 在 **`validate_bootstrap_docsconfig`** 之后使用上述变量。
+- **脚本变量 `DOC_ROOT`**：与 `.docsconfig` 中 **`DOC_ROOT`** 键一致；技能侧 `validate-*.sh` 在 **`validate_bootstrap_docsconfig`** 之后执行 **`DOC_ROOT="$(resolve_repo_doc_root)"`**。
 
 ### 2.4 Markdown 链接（落地说明）
 
 - **仓库根入口文档**（如根目录 `README.md`、`AGENTS.md`）：链接目标可使用 **`.agent/...`**（相对仓库根）。
 - **`.agent/` 内部文件**：链接目标宜为**相对当前文件**的路径（如 `reference/foo.md`、`../../sdx-solution/...`），以便 GitHub 正确解析；规则入口 **`.agent/README.md`**、**`.agent/rules/CONVENTIONS.md`** 使用相对 `.agent/` 子目录的短路径（`rules/`、`../skills/`）。
-- 正文中的 `application/...` 等仍可为**仓库根相对表述**（文字），与 shell 变量分工不变。
+- 正文中的 `{DOC_DIR}/...`（默认常为 `application/...`）等仍可为**仓库根相对表述**（文字），与 shell 变量分工不变。
 
 ### 2.5 强校验（`.agent` 内 Markdown 链接边界）
 

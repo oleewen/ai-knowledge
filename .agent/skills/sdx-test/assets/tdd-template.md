@@ -3,8 +3,8 @@
 ## 1. 概述
 
 ### 1.1 测试目标
-- 关联技术设计：`application/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ADD-{IDEA-ID}-{N}.md`（或目标工程 `application/requirements/...`；落盘后改为可点击链接）
-- 关联产品需求：`application/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`（同上）
+- 关联技术设计：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ADD-{IDEA-ID}-{N}.md`（或目标工程 `{DOC_DIR}/requirements/...`；落盘后改为可点击链接）
+- 关联产品需求：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`（同上）
 
 ### 1.2 测试范围
 

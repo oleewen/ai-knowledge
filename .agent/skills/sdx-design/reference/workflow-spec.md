@@ -32,7 +32,7 @@ architect + system-architect
 
 ### 输入
 
-产品需求文档（`application/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/PRD-{YYMMDD}-{主题slug}.md`）+ 需求分析文档（`application/analysis/ANALYSIS-{YYMMDD}-{主题slug}.md`）当前 MVP 章节 + `knowledge/technical/`（按需）+ `knowledge/business/`（按需）
+产品需求文档（`{DOC_DIR}/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/PRD-{YYMMDD}-{主题slug}.md`）+ 需求分析文档（`{DOC_DIR}/analysis/ANALYSIS-{YYMMDD}-{主题slug}.md`）当前 MVP 章节 + `knowledge/technical/`（按需）+ `knowledge/business/`（按需）
 
 ### 算法
 
@@ -153,7 +153,7 @@ technical-writer + doc-updater
 1. **规约目录规划**：
 
 ```
-application/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/specs/
+{DOC_DIR}/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/specs/
 └── {service-name}/
     ├── api/
     │   └── {api-name}.yaml
@@ -205,13 +205,13 @@ technical-writer + doc-updater
    - 质量自查表（§5.2）
 4. **质量门禁**：对照 [quality-checklist.md](quality-checklist.md) 与模板 **§5.2** **逐项**判定（以模板 §5.2 每条下 *通过标准* 为最低放行条件）。**仅当**某条通过标准已满足，方在交付物 **§5.2** 中将该项由 `- [ ]` 改为 `- [x]`；未满足的保持 `- [ ]`，先修复或记录例外后再勾选。**禁止**未达标而全部勾选
 5. **输出**：
-   - ADD 写入 `application/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/ADD-{YYMMDD}-{主题slug}.md`
-   - specs 写入 `application/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/specs/`
+   - ADD 写入 `{DOC_DIR}/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/ADD-{YYMMDD}-{主题slug}.md`
+   - specs 写入 `{DOC_DIR}/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/specs/`
 
 ### 输出目录
 
 ```
-application/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/
+{DOC_DIR}/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/
 ├── ADD-{YYMMDD}-{主题slug}.md
 └── specs/
     └── {service-name}/

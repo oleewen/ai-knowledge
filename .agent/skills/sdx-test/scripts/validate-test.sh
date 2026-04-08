@@ -2,8 +2,8 @@
 set -euo pipefail
 
 # 测试设计文档结构校验脚本
-# 用法: scripts/validate-test.sh [--doc-root <path>] [--file <path>]
-# DOC_ROOT：resolve_repo_doc_root；见 .agent/scripts/docsconfig-bootstrap.sh
+# 用法: scripts/validate-test.sh [--file <path>]
+# DOC_ROOT：resolve_repo_doc_root（仅 .docsconfig）；见 .agent/scripts/docsconfig-bootstrap.sh
 #
 # 校验项:
 #   1. 文档目录存在
@@ -12,26 +12,24 @@ set -euo pipefail
 #   4. 编号体系一致性（TC-*）
 #   5. 模板 tdd-template.md 存在
 
-DOC_ROOT_ARG=""
 TARGET_FILE=""
 ERRORS=0
 WARNINGS=0
 
 while [[ $# -gt 0 ]]; do
   case $1 in
-    --doc-root) DOC_ROOT_ARG="$2"; shift 2 ;;
     --file) TARGET_FILE="$2"; shift 2 ;;
     *) echo "未知参数: $1"; exit 1 ;;
   esac
 done
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-_AI_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+_AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck disable=SC1091
-source "$_AI_HOME/scripts/docsconfig-bootstrap.sh"
+source "$_AGENT_HOME/scripts/docsconfig-bootstrap.sh"
 validate_bootstrap_docsconfig "$SCRIPT_DIR"
 
-DOC_ROOT="$(resolve_repo_doc_root "$DOC_ROOT_ARG" "$REPO_ROOT")"
+DOC_ROOT="$(resolve_repo_doc_root)"
 cd "$REPO_ROOT" || exit 1
 
 TEMPLATE=".agent/skills/sdx-test/assets/tdd-template.md"

@@ -24,7 +24,7 @@
 
 **manifest 文件被远端内容覆盖**：`{APPNAME}_manifest.yaml` 是本仓库的联邦登记文件，不属于目标工程内容；同步后若发现被覆盖，立即从 Git 恢复（`git checkout -- applications/app-{APPNAME}/{APPNAME}_manifest.yaml`）。
 
-**`docs_root` 路径映射错误**：目标工程的知识库根目录可能是 `docs/`、系统知识库根目录前缀 `application/` 或其他路径，必须从 manifest 的 `docs_root` 字段读取，不硬编码假设路径。
+**`docs_root` 路径映射错误**：目标工程文档目录可能是 `docs/`、`{DOC_DIR}/` 或其他路径，必须从 manifest 的 `docs_root` 字段读取，不硬编码假设路径。
 
 ---
 

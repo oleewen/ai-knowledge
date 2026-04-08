@@ -59,7 +59,7 @@
 {root}/
 ├── {module-a}/         # {简述}
 ├── {module-b}/         # {简述}
-├── application/               # 文档
+├── {DOC_DIR}/               # 文档
 │   └── INDEX_GUIDE.md  # AI 文档索引
 └── ...
 ```

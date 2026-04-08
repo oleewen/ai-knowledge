@@ -2,7 +2,7 @@
 name: docs-build
 description: >
   从代码库按四视角（技术→数据→业务→产品）提取链上实体 ID，生成 *_knowledge.json（schema 2.1）；
-  按各视角 README 既有版式填充索引表；归并生成系统知识库根目录 application/knowledge/KNOWLEDGE_INDEX.md。
+  按各视角 README 既有版式填充索引表；归并生成应用知识库 {DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md。
   当用户执行 /docs-build、需要初始化或同步知识库、代码重构后更新实体 ID、
   需要生成四视角知识索引、或下游 docs-indexing 需要知识实体输入时，务必使用本技能。
   即使用户只说"同步一下知识库"、"提取一下实体"、"更新知识索引"，也应触发本技能。
@@ -10,11 +10,11 @@ description: >
 
 # 知识实体提取（docs-build）
 
-**术语**：**系统知识库根目录**指路径前缀 `application/`（与 doc_root 首段一致时）。
+**术语**：**应用知识库**指应用知识库目录 `DOC_DIR`（见 `.docsconfig`），对应路径前缀 `{DOC_DIR}/`。
 
-从工程代码与文档中按四视角（技术→数据→业务→产品）提取链上实体，生成 `*_knowledge.json`（schema 2.1）；按各视角 `README.md` 既有版式填充索引表；归并更新系统知识库根目录下 `application/knowledge/KNOWLEDGE_INDEX.md`。
+从工程代码与文档中按四视角（技术→数据→业务→产品）提取链上实体，生成 `*_knowledge.json`（schema 2.1）；按各视角 `README.md` 既有版式填充索引表；归并更新应用知识库下 `{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md`。
 
-> 路径约定：四视角与主索引落在系统知识库根目录 `application/knowledge/`；`{doc_root}` 指定时写入 `{doc_root}/application/knowledge/`。
+> 路径约定：四视角与主索引落在 `DOC_ROOT/knowledge/`（相对 `REPO_ROOT` 为 `{DOC_DIR}/knowledge/`）。
 
 ## 输入与输出
 
@@ -22,8 +22,8 @@ description: >
 |------|------|
 | 硬输入 | 主 Index Guide（必须可用） |
 | 可选输入 | README.md、AGENTS.md、PRD 文档、源代码 |
-| 固定输出 | 系统知识库根目录下 `application/knowledge/{perspective}/{perspective}_knowledge.json`；各视角 `README.md`（索引表刷新）；`application/knowledge/KNOWLEDGE_INDEX.md` |
-| 可选输出 | 系统知识库根目录下 `application/knowledge/{perspective}/extraction_report.md`（仅 `--emit-report` 时） |
+| 固定输出 | 应用知识库下 `{DOC_DIR}/knowledge/{perspective}/{perspective}_knowledge.json`；各视角 `README.md`（索引表刷新）；`{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md` |
+| 可选输出 | 应用知识库下 `{DOC_DIR}/knowledge/{perspective}/extraction_report.md`（仅 `--emit-report` 时） |
 | 不产出 | 锚点文档、CHANGELOG、目录树 |
 
 ## 参数
@@ -31,7 +31,6 @@ description: >
 | 参数 | 必需 | 默认值 | 说明 |
 |------|------|--------|------|
 | `--perspectives` | 否 | `technical,data,business,product` | 提取视角（逗号分隔） |
-| `--doc-root` | 否 | `.` | 文档根目录 |
 | `--skip-existing` | 否 | `true` | 跳过已处理实体（变更文件涉及的实体仍强制重提取） |
 | `--confidence-threshold` | 否 | `medium` | 最低置信度（high/medium/low） |
 | `--emit-report` | 否 | `false` | 生成提取报告 |
@@ -65,7 +64,7 @@ description: >
 
 ### 阶段 4：归并（KNOWLEDGE_INDEX）
 
-读取四视角 JSON → 前缀验证 → 跨视角对称性检查 → 证据链验证 → 更新系统知识库根目录下 `application/knowledge/KNOWLEDGE_INDEX.md`。
+读取四视角 JSON → 前缀验证 → 跨视角对称性检查 → 证据链验证 → 更新应用知识库下 `{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md`。
 
 **执行顺序**：阶段 3 完成后再执行本阶段，保证 README、JSON、主索引三者一致。
 
@@ -74,7 +73,7 @@ description: >
 验证：
 
 ```bash
-scripts/validate-extraction.sh --doc-root .
+scripts/validate-extraction.sh
 ```
 
 完整质量清单见 [reference/quality-checklist.md](reference/quality-checklist.md)。

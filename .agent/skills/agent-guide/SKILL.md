@@ -41,10 +41,10 @@ description: >
 
 ```bash
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-_AI_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
-source "$_AI_HOME/scripts/docsconfig-bootstrap.sh"
+_AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+source "$_AGENT_HOME/scripts/docsconfig-bootstrap.sh"
 validate_bootstrap_docsconfig "$SCRIPT_DIR"
-DOC_ROOT="$(resolve_repo_doc_root "" "$REPO_ROOT")"
+DOC_ROOT="$(resolve_repo_doc_root)"
 ```
 
 按优先级查找落盘 Index Guide，命中即停，记录实际相对路径：

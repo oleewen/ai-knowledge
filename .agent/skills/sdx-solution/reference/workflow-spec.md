@@ -265,12 +265,12 @@ D. 其他（请说明）
 3. **语言审查**：通读全文，将技术术语转写为业务表述（参照 [audience-and-language.md](audience-and-language.md)）；确需保留的线索集中至 **§7.3** 并标注「待研发确认」
 4. **补充附录**：术语表（§7.1）、参考文档（§7.2）；§7.3 按需填写
 5. **质量门禁自查**：对照模板 **§7.4** 与 [quality-checklist.md](quality-checklist.md) **逐项**判定；**仅当**某条通过标准已满足，方在交付物中将该项由 `- [ ]` 改为 `- [x]`；未满足的保持 `- [ ]`，先修复或记录例外后再勾选。**禁止**未达标而全部勾选。
-6. **输出**：将含已勾选 **§7.4** 的终稿写入 `application/solutions/SOLUTION-{IDEA-ID}.md`
+6. **输出**：将含已勾选 **§7.4** 的终稿写入 `{DOC_DIR}/solutions/SOLUTION-{IDEA-ID}.md`
 
 ### 输出目录
 
 ```
-application/solutions/
+{DOC_DIR}/solutions/
 └── SOLUTION-{IDEA-ID}.md
 ```
 

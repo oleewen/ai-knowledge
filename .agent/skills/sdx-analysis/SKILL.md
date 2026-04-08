@@ -5,12 +5,12 @@ description: >
   当用户执行 /sdx-analysis、需要编写需求分析文档、将解决方案细化为可排期的功能需求、
   做 MVP 拆分规划、或需要识别需求依赖与风险时，务必使用本技能。
   即使用户只说"帮我分析一下需求"、"拆一下 MVP"、"细化一下方案"，也应触发本技能。
-  输出至系统知识库根目录 application/analysis/ANALYSIS-{IDEA-ID}.md。
+  输出至应用知识库 {DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md。
 ---
 
 # 需求分析阶段（sdx-analysis）
 
-**术语**：**系统知识库根目录**指路径前缀 `application/`（与 `--doc-root` 默认一致时）。
+**术语**：**应用知识库**指应用知识库目录 `DOC_DIR`（见 `.docsconfig`），对应路径前缀 `{DOC_DIR}/`。
 
 在解决方案与事实材料基础上，将共识级方案细化为**可评审、可排期、可验收**的需求分析：划清范围、拆 MVP、标优先级与依赖，并识别风险。产出结构以 [assets/analysis-template.md](assets/analysis-template.md) 为准：**六章**（**§1 背景目标** → 功能需求「含 FR 节内规则与业务对象」→ 非功能需求 → 交付计划 → 依赖与风险 → 附录含 **§6.4 质量自查**）。
 
@@ -20,9 +20,9 @@ description: >
 
 | 类型 | 内容 |
 |------|------|
-| 硬输入 | 解决方案文档（系统知识库根目录 `application/solutions/SOLUTION-{IDEA-ID}.md`） |
+| 硬输入 | 解决方案文档（应用知识库 `{DOC_DIR}/solutions/SOLUTION-{IDEA-ID}.md`） |
 | 可选输入 | `knowledge/`、`requirements/.../specs/`、AGENTS.md（内部分析用，写入时转为需求/业务表述） |
-| 固定输出 | 系统知识库根目录下 `application/analysis/ANALYSIS-{IDEA-ID}.md` |
+| 固定输出 | 应用知识库下 `{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md` |
 | 不产出 | PRD、ADD、测试设计、代码（使用下游 sdx-prd / sdx-design / sdx-test） |
 
 ## 参数
@@ -30,7 +30,6 @@ description: >
 | 参数 | 必需 | 默认值 | 说明 |
 |------|------|--------|------|
 | `--id` | 否 | `IDEA-ID` | 与上游 `SOLUTION-{IDEA-ID}.md`、下游 `REQUIREMENT-{IDEA-ID}/` 同链对齐 |
-| `--doc-root` | 否 | `system` | 文档根目录 |
 | `--depth` | 否 | `standard` | 分析深度（quick / standard / deep），影响步骤 1–2 粒度 |
 | `--solution` | 否 | — | 上游解决方案编号，自动定位对应文件 |
 
@@ -57,7 +56,7 @@ description: >
 辅助校验：
 
 ```bash
-.agent/skills/sdx-analysis/scripts/validate-analysis.sh --doc-root system
+.agent/skills/sdx-analysis/scripts/validate-analysis.sh
 ```
 
 ## 核心约束

@@ -6,7 +6,7 @@
 
 **IDEA-ID** 的定义见 [sdx-solution：core-concepts §IDEA-ID](../../sdx-solution/reference/core-concepts.md#idea-id)。
 
-本阶段路径示例：`application/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ADD-{IDEA-ID}.md`；规约摘录 `.../specs/spec-{IDEA-ID}-{service-name}.md`（`{service-name}` 为 ASCII slug，与 **IDEA-ID** 拼接为完整需求键）。
+本阶段路径示例：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ADD-{IDEA-ID}.md`；规约摘录 `.../specs/spec-{IDEA-ID}-{service-name}.md`（`{service-name}` 为 ASCII slug，与 **IDEA-ID** 拼接为完整需求键）。
 
 ## 架构设计
 

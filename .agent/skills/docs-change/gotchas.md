@@ -36,7 +36,7 @@
 
 ## 与下游协作
 
-**输出路径与下游约定不一致**：未指定 `--output` 时默认输出到 `./changelogs/`，下游 `docs-indexing` 也从此路径读取。若输出到系统知识库根目录下 `./application/changelogs/` 而下游期望 `./changelogs/`，增量模式会降级为全量。
+**输出路径与下游约定不一致**：未指定 `--output` 时默认输出到 `./changelogs/`，下游 `docs-indexing` 也从此路径读取。若输出到应用知识库下 `./{DOC_DIR}/changelogs/` 而下游期望 `./changelogs/`，增量模式会降级为全量。
 
 ---
 

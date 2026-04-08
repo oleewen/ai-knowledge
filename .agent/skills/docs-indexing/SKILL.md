@@ -20,7 +20,7 @@ description: >
 | ---- | ----------------------------------------------------------------------- |
 | 硬输入  | 代码库根目录、**用户确认的**扫描模式（full/incremental）、**用户确认的**扫描深度（1/2/3）             |
 | 可选输入 | 输出路径、增量起始时间、`changes-index.json`（增量模式）；凡影响索引行为的取值均须用户确认                 |
-| 固定输出 | `{Doc Root}/INDEX_GUIDE.md`（九章结构）、`changelogs/indexing-log.jsonl`（操作日志） |
+| 固定输出 | `DOC_ROOT/INDEX_GUIDE.md`（九章结构）、`changelogs/indexing-log.jsonl`（操作日志；相对 `DOC_ROOT`） |
 | 不产出  | 不生成知识实体 ID、不修改 README/AGENTS、不产出 CHANGELOG                              |
 
 

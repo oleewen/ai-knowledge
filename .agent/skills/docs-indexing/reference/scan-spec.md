@@ -55,7 +55,7 @@ docs-indexing 技能的执行细节：深度级别定义、模式逻辑、文件
 ## 路径解析
 
 - 基于项目根目录的相对路径
-- 输出路径优先级：用户指定 > `./application/` > `./doc/` > `./INDEX_GUIDE.md`
+- 输出路径优先级：用户指定 > `./{DOC_DIR}/` > `./doc/` > `./INDEX_GUIDE.md`
 
 ---
 
@@ -83,7 +83,7 @@ docs-indexing 技能的执行细节：深度级别定义、模式逻辑、文件
   "timestamp": "ISO-8601",
   "data_mode": "full|incremental",
   "read_mode": 1,
-  "output_path": "./application/INDEX_GUIDE.md",
+  "output_path": "./{DOC_DIR}/INDEX_GUIDE.md",
   "indexed_files": 156,
   "duration_ms": 45230,
   "indexing_finished_at": 1704115200000

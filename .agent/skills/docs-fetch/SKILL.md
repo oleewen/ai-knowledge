@@ -12,7 +12,7 @@ description: >
 
 > **路径约定（知识库 v2）**：`docs-init --mode=central` 仍可能在仓库根 `**applications/app-<后缀>/`** 维护联邦镜像（与 `scripts/docs-init.sh` 一致）。**目标态**组织级槽位为 `**system/application-{name}/`**。下文以当前 central 落盘路径为准；迁移期两种叙述可能并存。
 
-**术语**：**应用联邦镜像根**指本仓库内由 central 登记的应用文档镜像（路径前缀 `applications/`，单应用为 `applications/app-{APPNAME}/`）。**应用知识库 SSOT**指路径前缀 `application/`（本技能默认不修改）。
+**术语**：**应用联邦镜像根**指本仓库内由 central 登记的应用文档镜像（路径前缀 `applications/`，单应用为 `applications/app-{APPNAME}/`）。**应用知识库 SSOT**指路径前缀 `{DOC_DIR}/`（本技能默认不修改）。
 
 从已通过 `docs-init --mode=central` 注册的目标工程知识库，拉取指定分支的文档内容，覆盖更新本仓库应用知识库根目录下 `applications/app-{APPNAME}/` 联邦镜像目录，并在 `applications/app-{APPNAME}/changelogs/` 下追加同步记录。
 
@@ -34,7 +34,7 @@ description: >
 | 可选输入 | `--branch` 目标分支（默认 `main` 或 `master`）、`--app` 应用名称                                       |
 | 固定输出 | 更新后的应用知识库根目录 `applications/app-{APPNAME}/` 目录内容                                          |
 | 附加产出 | `applications/app-{APPNAME}/changelogs/fetch-log.md`（同步记录，追加）                            |
-| 不产出  | 不修改系统知识库根目录 `application/`、不触发 `docs-archive`、不修改 `APPLICATIONS_INDEX.md`                |
+| 不产出  | 不修改应用知识库 `{DOC_DIR}/`、不触发 `docs-archive`、不修改 `APPLICATIONS_INDEX.md`                |
 
 
 ## 参数
@@ -55,7 +55,7 @@ description: >
 1. 若未指定 `--app`，扫描应用知识库根目录 `applications/` 下所有 `app-*/` 目录，列出已注册应用（含 manifest 的目录）供用户选择
 2. 读取 `applications/app-{APPNAME}/{APPNAME}_manifest.yaml`，提取：
   - `repo_url`：目标工程 Git 仓库地址
-  - `docs_root`：目标工程知识库根目录（默认 `docs/` 或系统知识库根目录前缀 `application/`）
+  - `docs_root`：目标工程文档目录（默认 `docs/` 或 `{DOC_DIR}/`，依对方仓库约定）
   - `app_id`：应用 ID（如 `APP-MYSERVICE`）
 3. 确认目标分支：用户指定 `--branch` > manifest 中 `default_branch` > 自动探测（`main` → `master`）
 

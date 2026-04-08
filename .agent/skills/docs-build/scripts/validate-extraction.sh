@@ -2,9 +2,9 @@
 set -euo pipefail
 
 # 知识实体提取结果验证脚本
-# 用法: scripts/validate-extraction.sh [--doc-root <path>]
-# DOC_ROOT：resolve_repo_doc_root；见 .agent/scripts/docsconfig-bootstrap.sh
-# 知识库目录：优先 {seg}/knowledge；否则 {seg}/application/knowledge
+# 用法: scripts/validate-extraction.sh
+# DOC_ROOT / DOC_DIR：validate_bootstrap_docsconfig；见 .agent/scripts/docsconfig-bootstrap.sh
+# 知识库目录：{DOC_DIR}/knowledge（即 REPO_ROOT/DOC_DIR/knowledge，与 DOC_ROOT/knowledge 等价）
 #
 # 校验项:
 #   1. KNOWLEDGE_INDEX.md 存在且非空
@@ -14,32 +14,25 @@ set -euo pipefail
 #   5. 证据链非空
 #   6. metadata 节存在
 
-DOC_ROOT_ARG=""
 ERRORS=0
 WARNINGS=0
 
-while [[ $# -gt 0 ]]; do
-  case $1 in
-    --doc-root) DOC_ROOT_ARG="$2"; shift 2 ;;
-    *) echo "未知参数: $1"; exit 1 ;;
-  esac
-done
+if [[ $# -gt 0 ]]; then
+  echo "未知参数: $*（本脚本不支持额外参数，路径仅来自 .docsconfig）"
+  exit 1
+fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-_AI_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+_AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck disable=SC1091
-source "$_AI_HOME/scripts/docsconfig-bootstrap.sh"
+source "$_AGENT_HOME/scripts/docsconfig-bootstrap.sh"
 validate_bootstrap_docsconfig "$SCRIPT_DIR"
 
-DOC_ROOT="$(resolve_repo_doc_root "$DOC_ROOT_ARG" "$REPO_ROOT")"
+DOC_ROOT="$(resolve_repo_doc_root)"
 cd "$REPO_ROOT" || exit 1
 
-# 路径约定：{DOC_ROOT}/application/knowledge/ 或 {DOC_ROOT}/knowledge/（与 SKILL.md 一致）
-if [[ -d "${DOC_ROOT}/knowledge" && ! -d "${DOC_ROOT}/application/knowledge" ]]; then
-  KNOWLEDGE_DIR="${DOC_ROOT}/knowledge"
-else
-  KNOWLEDGE_DIR="${DOC_ROOT}/application/knowledge"
-fi
+# 路径约定：知识库在 {DOC_DIR}/knowledge（DOC_ROOT 已为 REPO_ROOT/DOC_DIR 时等价于 DOC_ROOT/knowledge）
+KNOWLEDGE_DIR="${REPO_ROOT}/${DOC_DIR}/knowledge"
 INDEX_FILE="${KNOWLEDGE_DIR}/KNOWLEDGE_INDEX.md"
 
 info()    { echo "[INFO]  $1"; }
@@ -48,7 +41,10 @@ error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
 
 echo "=== 知识实体提取结果验证 ==="
+echo "REPO_ROOT: ${REPO_ROOT}"
 echo "DOC_ROOT: ${DOC_ROOT}"
+echo "DOC_DIR:  ${DOC_DIR}"
+echo "KNOWLEDGE_DIR: ${KNOWLEDGE_DIR}"
 echo ""
 
 # 1. KNOWLEDGE_INDEX.md

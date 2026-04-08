@@ -8,27 +8,9 @@
 #   DOC_DIR    — 相对 REPO_ROOT 的文档路径段
 
 # -----------------------------------------------------------------------------
-# 若 override 非空，返回该路径（目录则规范化绝对路径）；否则返回已加载的 DOC_ROOT。
+# 返回 validate_bootstrap_docsconfig 已加载的 DOC_ROOT（与 .docsconfig 一致）；无 override。
 # -----------------------------------------------------------------------------
 resolve_repo_doc_root() {
-  local override="${1:-}"
-  # shellcheck disable=SC2034
-  local _probe_base="${2:-}"
-  if [[ -n "$override" ]]; then
-    if [[ -d "$override" ]]; then
-      (cd "$override" && pwd)
-      return 0
-    fi
-    if [[ -e "$override" ]]; then
-      local dir base
-      dir="$(dirname "$override")"
-      base="$(basename "$override")"
-      printf '%s/%s' "$(cd "$dir" && pwd)" "$base"
-      return 0
-    fi
-    printf '%s' "$override"
-    return 0
-  fi
   printf '%s' "${DOC_ROOT:-}"
 }
 

@@ -6,12 +6,12 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-_AI_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+_AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck disable=SC1091
-source "$_AI_HOME/scripts/docsconfig-bootstrap.sh"
+source "$_AGENT_HOME/scripts/docsconfig-bootstrap.sh"
 validate_bootstrap_docsconfig "$SCRIPT_DIR"
 
-DOC_ROOT="$(resolve_repo_doc_root "" "$REPO_ROOT")"
+DOC_ROOT="$(resolve_repo_doc_root)"
 cd "$REPO_ROOT" || exit 1
 
 # 配置变量（cwd=仓库根；路径由 resolve_repo_doc_root / .docsconfig 与 DOC_ROOT 统一）

@@ -42,7 +42,7 @@ Slash 技能命令请查看 [.agent/skills/README.md](../.agent/skills/README.md
 目标工程仓库根落盘 **`.docsconfig`**（由 **`docs-init`** 写入 **`DOC_ROOT`** / **`REPO_ROOT`** / **`DOC_DIR`**）。部分 `.agent/skills/*/scripts/validate-*.sh` 与 **`docs-indexing/scripts/indexing.sh`** 经 **`.agent/scripts/docsconfig-bootstrap.sh`**：
 
 - **`validate_bootstrap_docsconfig`**：按规格 §4.1.1 定位仓库根、加载三键（不 `export`）；缺文件或缺 `DOC_DIR` 时走策略 D / §4.2.1。
-- **`resolve_repo_doc_root [override]`**：若传入 `--doc-root` 对应 override 则规范化返回；否则返回已加载的 **`DOC_ROOT`**。脚本内典型写法：**`DOC_ROOT="$(resolve_repo_doc_root "$DOC_ROOT_ARG" "$REPO_ROOT")"`**（在 `validate_bootstrap_docsconfig` 之后覆盖/确认文档根）。
+- **`resolve_repo_doc_root`**：返回 **`validate_bootstrap_docsconfig`** 已加载的 **`DOC_ROOT`**（与 `.docsconfig` 一致），**无参数、不支持 override**。典型写法：**`DOC_ROOT="$(resolve_repo_doc_root)"`**。
 
 规格与迁移说明见 [docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md](../docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md)。首段目录探测与 validate 引导已由 **`.docsconfig`** + **`docsconfig-bootstrap.sh`** 取代；旧版 **`sdx-doc-root.sh`** / **`sdx-validate-bootstrap.sh`** 已移除。
 

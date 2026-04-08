@@ -24,7 +24,7 @@ graph TD
 
 ### 算法
 
-1. **定位需求分析文档**：按 `--requirement` 传入的分析文档 ID 定位 `application/analysis/ANALYSIS-{YYMMDD}-{主题slug}.md`；未指定时取 `application/analysis/` 下按文件名排序最新的 `ANALYSIS-*.md`（**勿**与需求包目录 `application/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/` 混淆）
+1. **定位需求分析文档**：按 `--requirement` 传入的分析文档 ID 定位 `{DOC_DIR}/analysis/ANALYSIS-{YYMMDD}-{主题slug}.md`；未指定时取 `{DOC_DIR}/analysis/` 下按文件名排序最新的 `ANALYSIS-*.md`（**勿**与需求包目录 `{DOC_DIR}/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/` 混淆）
 2. **提取 MVP 范围**：从文档 §6 MVP 拆分方案中提取目标 MVP（`--mvp` 参数指定）的功能需求列表
 3. **加载基线数据**：
    - 功能需求清单（FR-n）及其优先级、验收标准
@@ -293,12 +293,12 @@ technical-writer + doc-updater
    - 变更历史（§11.2）
    - 质量自查表（§11.3）
 4. **质量门禁**：对照 [quality-checklist.md](quality-checklist.md) 与模板 **§11.3** **逐项**判定；**完整通过标准**以模板 §11.3 正文为准（每条下 *通过标准* 为最低放行条件）。**仅当**某条通过标准已满足，方在交付物 **§11.3** 中将该项由 `- [ ]` 改为 `- [x]`；未满足的保持 `- [ ]`，先修复或记录例外后再勾选。**禁止**未达标而全部勾选
-5. **输出**：写入 `application/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/PRD-{YYMMDD}-{主题slug}.md`
+5. **输出**：写入 `{DOC_DIR}/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/PRD-{YYMMDD}-{主题slug}.md`
 
 ### 输出目录
 
 ```
-application/requirements/
+{DOC_DIR}/requirements/
 └── REQUIREMENT-{YYMMDD}-{主题slug}/
     └── MVP-Phase-{N}/
         └── PRD-{YYMMDD}-{主题slug}.md

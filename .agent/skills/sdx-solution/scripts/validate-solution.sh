@@ -2,8 +2,8 @@
 set -euo pipefail
 
 # 解决方案文档结构校验脚本
-# 用法: scripts/validate-solution.sh [--doc-root <path>] [--file <path>]
-# 文档根路径：resolve_repo_doc_root（优先 --doc-root；否则沿用 .docsconfig 已加载的 DOC_ROOT）
+# 用法: scripts/validate-solution.sh [--file <path>]
+# 文档根路径：resolve_repo_doc_root（仅 .docsconfig）
 # 先 validate_bootstrap_docsconfig，详见 .agent/scripts/docsconfig-bootstrap.sh
 #
 # 校验项:
@@ -17,26 +17,24 @@ set -euo pipefail
 #   8. 编号体系一致性（G-n、Q-n、C-n、R-n）
 #   9. 技术语言检测（接口名、表名等技术词混入正文）
 
-DOC_ROOT_ARG=""
 TARGET_FILE=""
 ERRORS=0
 WARNINGS=0
 
 while [[ $# -gt 0 ]]; do
   case $1 in
-    --doc-root) DOC_ROOT_ARG="$2"; shift 2 ;;
     --file) TARGET_FILE="$2"; shift 2 ;;
     *) echo "未知参数: $1"; exit 1 ;;
   esac
 done
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-_AI_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+_AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck disable=SC1091
-source "$_AI_HOME/scripts/docsconfig-bootstrap.sh"
+source "$_AGENT_HOME/scripts/docsconfig-bootstrap.sh"
 validate_bootstrap_docsconfig "$SCRIPT_DIR"
 
-DOC_ROOT="$(resolve_repo_doc_root "$DOC_ROOT_ARG" "$REPO_ROOT")"
+DOC_ROOT="$(resolve_repo_doc_root)"
 cd "$REPO_ROOT" || exit 1
 
 SOLUTIONS_DIR="${DOC_ROOT}/solutions"
