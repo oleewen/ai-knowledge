@@ -174,6 +174,57 @@ ensure_dir() {
   run_or_dry mkdir -p "$1"
 }
 
+# 本次运行是否应在同步前重置 DOC_DIR（仅知识库同步）
+should_reset_docs_dir_before_sync() {
+  [[ -n "${CFG[docs_abs]:-}" ]] || return 1
+  case "${CFG[scope]}" in
+    all|knowledge|ck) return 0 ;;
+    *)                return 1 ;;
+  esac
+}
+
+# 备份并清空 DOC_DIR（保留目录本身）
+reset_docs_dir_with_backup() {
+  local docs_dir="${CFG[docs_abs]}"
+  local -a entries=()
+  local p
+
+  [[ -n "$docs_dir" && "$docs_dir" != "/" ]] || error "拒绝清空非法 DOC_DIR: ${docs_dir:-<empty>}"
+
+  if [[ ! -d "$docs_dir" ]]; then
+    info "DOC_DIR 不存在，创建空目录后继续: $docs_dir"
+    ensure_dir "$docs_dir"
+    return 0
+  fi
+
+  while IFS= read -r -d '' p; do
+    entries+=("$p")
+  done < <(find "$docs_dir" -mindepth 1 -maxdepth 1 -print0 2>/dev/null || true)
+
+  if (( ${#entries[@]} == 0 )); then
+    info "DOC_DIR 已为空，无需清理: $docs_dir"
+    return 0
+  fi
+
+  info ">>> 知识库同步前备份并清空 DOC_DIR: $docs_dir"
+
+  if [[ "${CFG[dry_run]}" == "1" ]]; then
+    local e
+    for e in "${entries[@]}"; do
+      log "[dry-run] 备份并移出: $e -> $(get_backup_root)/..."
+    done
+    return 0
+  fi
+
+  local e
+  for e in "${entries[@]}"; do
+    backup_path "$e"
+  done
+
+  ensure_dir "$docs_dir"
+  info "DOC_DIR 已清空（目录保留）: $docs_dir"
+}
+
 # 本次运行是否需要安装 Agent skills/rules
 needs_agent_install() {
   case "${CFG[scope]}" in
@@ -334,6 +385,23 @@ copy_dir() {
 
 # ─── 内容替换 ─────────────────────────────────────────────────────────────────
 
+# 将文档前缀统一归一为 ${DOC_DIR}/（保持幂等）
+rewrite_docs_prefix_to_doc_dir() {
+  local file="$1" docs_slash="$2"
+  [[ -f "$file" ]] && is_text_file "$file" || return 0
+  have_perl || return 0
+  SDX_DOCS_SLASH="$docs_slash" \
+    perl -CSD -i -pe '
+      # 幂等保护：已是 ${DOC_DIR}/ 的路径不重复替换
+      next if /\$\{DOC_DIR\}\//;
+      if ($ENV{SDX_DOCS_SLASH} ne "./") {
+        my $needle = quotemeta($ENV{SDX_DOCS_SLASH});
+        s{$needle}{\${DOC_DIR}/}gi;
+      }
+      s{system/}{\${DOC_DIR}/}gi;
+    ' "$file" 2>/dev/null || true
+}
+
 # 文档树替换：.agent/ → agent_slash；system/ → docs_slash；系统→应用；词界 system→application
 rewrite_doc_file() {
   local file="$1" agent_slash="$2" docs_slash="$3"
@@ -350,6 +418,7 @@ rewrite_doc_file() {
       s{\bsystem\b}{application}gi;
       s{系统}{应用}g;
     ' "$file" 2>/dev/null || true
+  rewrite_docs_prefix_to_doc_dir "$file" "$docs_slash"
 }
 
 # 组织级 system/、company/ 模板：仅替换路径前缀，不将词「system」整体改为「application」（避免破坏「组织级 system」语义）
@@ -362,6 +431,7 @@ rewrite_doc_file_minimal() {
       s{\.agent/}{$ENV{SDX_AGENT_SLASH}}g;
       s{system/}{$ENV{SDX_DOCS_SLASH}}gi;
     ' "$file" 2>/dev/null || true
+  rewrite_docs_prefix_to_doc_dir "$file" "$docs_slash"
 }
 
 # Agent 树替换：.agent/ → agent_slash；system/ → docs_slash（不做 system→application 词替换）
@@ -374,6 +444,7 @@ rewrite_agent_file() {
       s{\.agent/}{$ENV{SDX_AGENT_SLASH}}g;
       s{system/}{$ENV{SDX_DOCS_SLASH}}gi;
     ' "$file" 2>/dev/null || true
+  rewrite_docs_prefix_to_doc_dir "$file" "$docs_slash"
 }
 
 # 对目录树下所有文件执行 Agent 树替换
@@ -775,6 +846,8 @@ usage() {
                         - rules(r)  仅安装 Agent rules
                         - rs        同时安装 skills + rules（等同 r + s）
                         - all(a)    全量：知识库 + .docsconfig + Agent skills/rules
+                        - all/knowledge/ck：同步前会将 DOC_DIR 现有内容备份到 .docs-init/<timestamp>/，并清空 DOC_DIR 后再写入
+                        - config/skills/rules/rs：不触发 DOC_DIR 清空；config 仅重算并写入（已存在则覆盖）.docsconfig
   --app-id=APP-ID       central 模式下的 APP ID [默认: 由工程目录名推导]
   --agents=LIST         cursor | trea | claude | all，逗号分隔 [默认: cursor]
   -r                    允许工程根目录不存在时自动创建
@@ -964,13 +1037,24 @@ validate_type_sources() {
 # 写入目标工程仓库根 .docsconfig（DOC_ROOT / REPO_ROOT / DOC_DIR）；dry-run 时仅预览
 # 见 docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md §2.3 / §3.3
 write_target_docsconfig() {
-  local doc_root repo_target dd
+  local doc_root repo_target dd cfg_file existed=0
   doc_root="${CFG[docs_abs]}"
   repo_target="$(docsconfig_repo_root_from_doc_root "$doc_root")"
-  [[ -n "$repo_target" ]] \
-    || error "无法写入 .docsconfig：DOC_ROOT 不在 Git 仓库内或 git 不可用: $doc_root"
+  if [[ -z "$repo_target" ]]; then
+    repo_target="$(docsconfig_repo_root_fallback_from_doc_root "$doc_root")"
+    [[ -n "$repo_target" ]] \
+      || error "无法写入 .docsconfig：DOC_ROOT 父目录不可解析: $doc_root"
+    warn "未检测到 DOC_ROOT 所在 Git 仓库，已回退使用父目录作为 REPO_ROOT: $repo_target"
+  fi
   dd="$(docsconfig_doc_dir_from_roots "$repo_target" "$doc_root")" \
-    || error "无法计算 DOC_DIR（DOC_ROOT 须位于该 Git 仓库根目录之下）"
+    || error "无法计算 DOC_DIR（DOC_ROOT 须位于 REPO_ROOT 目录下）"
+  cfg_file="$repo_target/.docsconfig"
+  [[ -f "$cfg_file" ]] && existed=1
+  if [[ "$existed" == "1" ]]; then
+    info ".docsconfig 已存在，将按当前路径重算并覆盖写入: $cfg_file"
+  else
+    info ".docsconfig 不存在，将创建并写入: $cfg_file"
+  fi
   docsconfig_write "$repo_target" "$doc_root" "$dd" "${CFG[dry_run]}"
 }
 
@@ -1069,6 +1153,10 @@ main() {
   fi
 
   have_perl || warn "未检测到 perl：文件内容替换将被跳过，建议安装 perl。"
+
+  if should_reset_docs_dir_before_sync; then
+    reset_docs_dir_with_backup
+  fi
 
   if [[ "${CFG[scope]}" == "all" || "${CFG[scope]}" == "knowledge" || "${CFG[scope]}" == "ck" ]]; then
     if [[ "${CFG[mode]}" == "central" && "${CFG[type_explicit]}" == "0" && "${CFG[type]}" == "system" ]]; then

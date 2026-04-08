@@ -379,6 +379,16 @@ docsconfig_repo_root_from_doc_root() {
     git -C "$doc_root" rev-parse --show-toplevel 2>/dev/null || true
 }
 
+# 由 DOC_ROOT 兜底推导 REPO_ROOT（取父目录，绝对规范化）
+# Usage: docsconfig_repo_root_fallback_from_doc_root <doc_root_abs>
+# stdout: REPO_ROOT 绝对路径；失败返回空
+docsconfig_repo_root_fallback_from_doc_root() {
+    local doc_root="${1:?doc_root}"
+    local parent
+    parent="$(dirname "$doc_root")"
+    cd -P "$parent" 2>/dev/null && pwd || true
+}
+
 # 由 REPO_ROOT + DOC_ROOT 推算 DOC_DIR（相对段；重合时为 "."）
 # Usage: docsconfig_doc_dir_from_roots <repo_root_abs> <doc_root_abs>
 # stdout: DOC_DIR（无前导 /）
