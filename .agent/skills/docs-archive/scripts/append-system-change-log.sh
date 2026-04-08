@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # append-system-change-log.sh
-# 作用：向系统侧 CHANGE-LOG.md 追加归档批次记录
+# 作用：向 .agent 侧 CHANGE-LOG.md 追加归档批次记录
 #
 # 用法：
 #   .agent/skills/docs-archive/scripts/append-system-change-log.sh \
@@ -18,7 +18,7 @@ Usage:
   append-system-change-log.sh --app APP --changelog-id ID --changelog-time TIME [--archived-at ISO_TIME] [--summary TEXT]
 
 Required:
-  --app             应用名（对应 system/application-{app}/）
+  --app             应用名（用于 .agent 日志分组）
   --changelog-id    本次归档对应的应用变更 ID
   --changelog-time  应用变更时间（原始记录时间）
 
@@ -90,12 +90,12 @@ escape_md_cell() {
     printf '%s' "${raw}"
 }
 
-LOG_FILE="system/changelogs/CHANGE-LOG.md"
+LOG_FILE=".agent/skills/docs-archive/logs/CHANGE-LOG.md"
 mkdir -p "$(dirname "${LOG_FILE}")"
 
 if [[ ! -f "${LOG_FILE}" ]]; then
     {
-        echo "# CHANGE LOG - system"
+        echo "# CHANGE LOG - docs-archive"
         echo
         echo "| app | changelog_id | changelog_time | archived_at | summary |"
         echo "|---|---|---|---|---|"
@@ -104,4 +104,4 @@ fi
 
 echo "| $(escape_md_cell "${APP}") | $(escape_md_cell "${CHANGELOG_ID}") | $(escape_md_cell "${CHANGELOG_TIME}") | $(escape_md_cell "${ARCHIVED_AT}") | $(escape_md_cell "${SUMMARY}") |" >> "${LOG_FILE}"
 
-echo "[OK] 已追加系统变更总账: ${LOG_FILE}"
+echo "[OK] 已追加 .agent 变更总账: ${LOG_FILE}"

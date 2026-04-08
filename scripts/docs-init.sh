@@ -436,7 +436,9 @@ log_rewrite_hits() {
   fi
 }
 
-# 文档树替换：.agent/ → agent_slash；system/ → docs_slash；系统→应用；词界 system→application
+# 文档树替换：仅 .agent/ → agent_slash。
+# 以下规则不执行，仅打印日志：system/→docs_slash、SYSTEM_INDEX/APPLICATION_INDEX→INDEX_GUIDE、
+# system_meta/application_meta→docs_meta、词界 system→application（忽略大小写）、系统→应用。
 rewrite_doc_file() {
   local file="$1" agent_slash="$2" docs_slash="$3"
   [[ -f "$file" ]] && is_text_file "$file" || return 0
@@ -444,28 +446,19 @@ rewrite_doc_file() {
   SDX_AGENT_SLASH="$agent_slash" SDX_DOCS_SLASH="$docs_slash" \
     perl -CSD -i -pe '
       s{\.agent/}{$ENV{SDX_AGENT_SLASH}}g;
-      s{system/}{$ENV{SDX_DOCS_SLASH}}gi;
-      s{SYSTEM_INDEX}{INDEX_GUIDE}gi;
-      s{APPLICATION_INDEX}{INDEX_GUIDE}gi;
-      s{system_meta}{docs_meta}gi;
-      s{application_meta}{docs_meta}gi;
-      s{\bsystem\b}{application}gi;
-      s{系统}{应用}g;
     ' "$file" 2>/dev/null || true
-  rewrite_docs_prefix_to_doc_dir "$file" "$docs_slash"
+  info "rewrite_doc_file 已跳过规则: system/->docs_slash, SYSTEM_INDEX/APPLICATION_INDEX->INDEX_GUIDE, system_meta/application_meta->docs_meta, word-boundary system->application(case-insensitive), 系统->应用; file=${file}"
 }
 
-# Agent 树替换：.agent/ → agent_slash；system/ → docs_slash（不做 system→application 词替换）
+# Agent 树替换：仅处理 .agent/ → agent_slash
 rewrite_agent_file() {
   local file="$1" agent_slash="$2" docs_slash="$3"
   [[ -f "$file" ]] && is_text_file "$file" || return 0
   have_perl || return 0
-  SDX_AGENT_SLASH="$agent_slash" SDX_DOCS_SLASH="$docs_slash" \
+  SDX_AGENT_SLASH="$agent_slash" \
     perl -CSD -i -pe '
       s{\.agent/}{$ENV{SDX_AGENT_SLASH}}g;
-      s{system/}{$ENV{SDX_DOCS_SLASH}}gi;
     ' "$file" 2>/dev/null || true
-  rewrite_docs_prefix_to_doc_dir "$file" "$docs_slash"
 }
 
 # 对目录树下所有文件执行 Agent 树替换
@@ -839,9 +832,8 @@ usage() {
   替换规则
     文件名  : system（不区分大小写）→ application
     文件内容: .agent/        → 首个 Agent 目录（如 .cursor/）
-              system/     → 文档根相对路径（如 system/）
-              系统        → 应用
-              词界 system → application
+              其余规则（system/、SYSTEM_INDEX/APPLICATION_INDEX、system_meta/application_meta、
+                       词界 system、系统）在 rewrite_doc_file 中均跳过，并打印日志
 
   模式（--mode）
     standalone（默认）  仅目标工程落盘
