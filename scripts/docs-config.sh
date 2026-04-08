@@ -493,27 +493,7 @@ post_init_checklist() {
     cat <<CHECKLIST
 
 ================================================================================
-初始化完成！建议核对清单
-================================================================================
-
-[ ] docs_meta.yaml 已随模板落地
-
-[ ] INDEX_GUIDE.md 内相对链接在目标工程中可访问
-
-[ ] knowledge/knowledge_meta.yaml、requirements/requirements_meta.yaml、
-    changelogs/changelogs_meta.yaml 与各目录 README 首段「元数据」链一致
-
-[ ] constitution/：principles_meta.yaml、standards_meta.yaml、
-    adr/adr_meta.yaml（若存在）与 constitution/README.md 组件表互链
-
-[ ] 正式需求包：自 REQUIREMENT-EXAMPLE 复制为 REQUIREMENT-{ID}/；
-    REQUIREMENT-EXAMPLE 为结构示例，不单建 *_meta.yaml（见 requirements/README.md）
-
-[ ] central + type=application：核对本仓库 application/INDEX_GUIDE.md「十、中央知识库接入工程」登记行与
-    system/application-<后缀>/ 槽位是否与目标工程一致（v2.3 起联邦槽位在 system/ 下）
-
-[ ] Agent 配置：检查用户主目录下 ~/.cursor/ 或 ~/.trea/ 等目录中 skills 和 rules 是否正确安装（非工程目录）
-
+初始化完成！建议核对
 ================================================================================
 CHECKLIST
 }
