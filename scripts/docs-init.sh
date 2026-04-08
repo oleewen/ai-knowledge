@@ -402,6 +402,40 @@ rewrite_docs_prefix_to_doc_dir() {
     ' "$file" 2>/dev/null || true
 }
 
+# 输出规则命中明细（行号 + 片段，片段最大 160 字符）
+# 用法：log_rewrite_hits <level> <rule> <file> <pattern> [i]
+# 说明：第 5 个参数为 i 时按不区分大小写匹配
+log_rewrite_hits() {
+  local level="$1" rule="$2" file="$3" pattern="$4" ci="${5:-}"
+  [[ -f "$file" ]] || return 0
+  have_perl || return 0
+  [[ -n "$pattern" ]] || return 0
+
+  if [[ "$ci" == "i" ]]; then
+    SDX_LOG_LEVEL="$level" SDX_LOG_RULE="$rule" SDX_LOG_FILE="$file" SDX_LOG_PATTERN="$pattern" \
+      perl -CSD -ne '
+        my $pat = $ENV{SDX_LOG_PATTERN};
+        if (/$pat/i) {
+          my $line = $_;
+          chomp $line;
+          $line = substr($line, 0, 160);
+          print "$ENV{SDX_LOG_LEVEL} [$ENV{SDX_LOG_RULE}] file=$ENV{SDX_LOG_FILE} line=$. text=$line\n";
+        }
+      ' "$file" 2>/dev/null || true
+  else
+    SDX_LOG_LEVEL="$level" SDX_LOG_RULE="$rule" SDX_LOG_FILE="$file" SDX_LOG_PATTERN="$pattern" \
+      perl -CSD -ne '
+        my $pat = $ENV{SDX_LOG_PATTERN};
+        if (/$pat/) {
+          my $line = $_;
+          chomp $line;
+          $line = substr($line, 0, 160);
+          print "$ENV{SDX_LOG_LEVEL} [$ENV{SDX_LOG_RULE}] file=$ENV{SDX_LOG_FILE} line=$. text=$line\n";
+        }
+      ' "$file" 2>/dev/null || true
+  fi
+}
+
 # 文档树替换：.agent/ → agent_slash；system/ → docs_slash；系统→应用；词界 system→application
 rewrite_doc_file() {
   local file="$1" agent_slash="$2" docs_slash="$3"
