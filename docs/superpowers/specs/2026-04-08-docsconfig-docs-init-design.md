@@ -27,7 +27,7 @@
 
 - 不改变 `docs-init` 对 **模板仓库根**（现 **`CFG[repo_root]`**，指向 ai-knowledge 克隆）的职责；本设计在叙述中用 **「模板仓库根」** 与 **「目标工程 REPO_ROOT」** 区分，避免混淆。
 - 不在本规格中规定下游 Python/其他语言的重写，仅约定 **`.docsconfig` 文件内字段**与导出变量语义一致。
-- **运行时**（`validate-*.sh`、`.docsconfig` 引导逻辑）**不支持**通过**显式环境变量**指定「`.docsconfig` 路径」或「目标仓库根」——必须以 §4.1 的算法从 **`$PWD` / `$SCRIPT_DIR` / 向上查找** 解析，避免与「文件即 SSOT」双轨并存。（**`docs-init` 写入** `.docsconfig` 时的推断链仍可按 §3.2 读取 `REPO_DOC_ROOT` / `SDX_DOC_ROOT` / `.sdx-doc-root`，属一次性初始化与迁移，与运行时读取分离。）
+- **运行时**（`validate-*.sh`、`.docsconfig` 引导逻辑）**不支持**通过**显式环境变量**指定「`.docsconfig` 路径」或「目标仓库根」——必须以 §4.1 的算法从 **`$PWD` / `$SCRIPT_DIR` / 向上查找** 解析，避免与「文件即 SSOT」双轨并存。**`docs-init` 写入**时的推断顺序见 §3.2（**不再**依赖 `REPO_DOC_ROOT` / `SDX_DOC_ROOT` / `.sdx-doc-root`；改由 **CLI → 既有 `.docsconfig` → 目录探测 → 默认 `docs`**）。
 
 ---
 
@@ -63,17 +63,18 @@
 - **参数要求**：必须提供 **`<目标工程文档目录>`**（作为 **`probe_base`**）。
 - **与 central / type**：`--scope=config` 下**不**要求完成 central 登记或 `knowledge/` 存在性等；若与 `--mode=central` 等同场传入，以「仅写配置」为优先，**不**执行登记（建议在实现中拒绝组合或明确文档说明，推荐 **拒绝非法组合** 以免误读）。
 
-### 3.2 推断顺序（与现 `sdx-doc-root.sh` 对齐）
+### 3.2 推断顺序（写入 `.docsconfig` 时）
 
-在写入 `.docsconfig` 时，解析 **`DOC_ROOT`** 的首段与绝对路径时使用以下顺序：
+在已按 §3.3 得到 **`TARGET_REPO_ROOT`** 的前提下，确定本次落盘的 **`REPO_ROOT`** 与 **`DOC_ROOT`**（均为绝对路径；**`REPO_ROOT`** 与 **`TARGET_REPO_ROOT`** 应一致）：
 
-1. CLI **`--doc-root=`**（**须**在 `docs-init` 中新增；语义等同现 **`sdx_resolve_repo_doc_root`** 的第一参数 `override`）。
-2. 环境变量 **`REPO_DOC_ROOT`**（取首段语义）与兼容 **`SDX_DOC_ROOT`**。
-3. 文件 **`.sdx-doc-root`**：在 **`git -C probe_base rev-parse --show-toplevel`** 与 **`probe_base`** 上按现逻辑优先顺序读取首行非注释内容（迁移期兼容）。
-4. **`sdx_probe_doc_root_segment(probe_base)`**（目录探测）。
-5. 默认首段 **`docs`**。
+1. **CLI `--doc-root=`**（**须**在 `docs-init` 中新增）：若指定，则按首段规范化后得到文档树首段 **`seg`**，令 **`REPO_ROOT=$TARGET_REPO_ROOT`**，**`DOC_ROOT=$TARGET_REPO_ROOT/$seg`**（路径规范化）；**不再**执行下列 2–4。
+2. **既有 `$TARGET_REPO_ROOT/.docsconfig`**：若 **未** 使用步骤 1，且该文件**已存在**、可解析，则读取其中的 **`REPO_ROOT`**、**`DOC_ROOT`**；二者均合法时**直接采用**为本次推断结果，**不再**执行下列 3–4。若文件内 **`REPO_ROOT`** 与 §3.3 的 **`TARGET_REPO_ROOT`** 不一致，**推荐**落盘时以 **`TARGET_REPO_ROOT`** 为准校正 `REPO_ROOT` 字段。
+3. **`sdx_probe_doc_root_segment(probe_base)`**（目录探测）；**`probe_base`** 为规范化后的 **`<目标工程文档目录>`**。得到首段 **`seg`** 后：**`REPO_ROOT=$TARGET_REPO_ROOT`**，**`DOC_ROOT=$TARGET_REPO_ROOT/$seg`**（规范化）。
+4. **默认首段 `docs`**：在步骤 3 中若需回退默认首段，则 **`seg=docs`**，同上拼接得 **`DOC_ROOT`**。
 
-**`DOC_ROOT` 绝对路径**：`sdx_resolve_repo_doc_root` 等价结果，即 **`$TARGET_REPO_ROOT/<首段>`** 规范化（与现实现一致）；**`probe_base`** 为规范化后的 **`<目标工程文档目录>`**。
+**摘要**：**`--doc-root` > 既有 `.docsconfig` 内 `REPO_ROOT`/`DOC_ROOT` > 目录探测 > 默认 `docs`**。
+
+**说明**：旧版 **`REPO_DOC_ROOT` / `SDX_DOC_ROOT` / `.sdx-doc-root`** 不再参与本链；迁移依赖 **步骤 2** 的既有 **`.docsconfig`**，或 **`--doc-root`**，或重新执行 **`docs-init`** 生成新文件。
 
 ### 3.3 `REPO_ROOT`（目标工程）解析
 
