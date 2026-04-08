@@ -479,6 +479,7 @@ application_copy_one() {
   local src_f="$1" dst_f="$2" agent_slash="$3" docs_slash="$4"
   if [[ "${CFG[dry_run]}" == "1" ]]; then
     log "[dry-run] $src_f → $dst_f"
+    log "[dry-run] rewrite_doc_file 已跳过规则：system/->docs_slash；SYSTEM_INDEX/APPLICATION_INDEX->INDEX_GUIDE；system_meta/application_meta->docs_meta；word-boundary system->application(case-insensitive)；系统->应用（文件: ${dst_f}）"
     return 0
   fi
   if [[ -e "$dst_f" ]]; then
