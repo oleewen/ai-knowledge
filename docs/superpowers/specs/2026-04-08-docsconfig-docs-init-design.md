@@ -26,7 +26,8 @@
 ### 1.3 非目标
 
 - 不改变 `docs-init` 对 **模板仓库根**（现 **`CFG[repo_root]`**，指向 ai-knowledge 克隆）的职责；本设计在叙述中用 **「模板仓库根」** 与 **「目标工程 REPO_ROOT」** 区分，避免混淆。
-- 不在本规格中规定下游 Python/其他语言的重写，仅约定环境变量与文件字段的语义一致性。
+- 不在本规格中规定下游 Python/其他语言的重写，仅约定 **`.docsconfig` 文件内字段**与导出变量语义一致。
+- **运行时**（`validate-*.sh`、`.docsconfig` 引导逻辑）**不支持**通过**显式环境变量**指定「`.docsconfig` 路径」或「目标仓库根」——必须以 §4.1 的算法从 **`$PWD` / `$SCRIPT_DIR` / 向上查找** 解析，避免与「文件即 SSOT」双轨并存。（**`docs-init` 写入** `.docsconfig` 时的推断链仍可按 §3.2 读取 `REPO_DOC_ROOT` / `SDX_DOC_ROOT` / `.sdx-doc-root`，属一次性初始化与迁移，与运行时读取分离。）
 
 ---
 
@@ -90,8 +91,20 @@
 
 ### 4.1 正常路径
 
-- 自 **`validate-*.sh` 当前工作上下文**解析 **目标工程 `TARGET_REPO_ROOT`**（默认：对 skill 脚本常用 **`git rev-parse --show-toplevel`**，在**目标工程仓库内**执行）。
-- **若存在 `$TARGET_REPO_ROOT/.docsconfig`**：source 或逐行解析，导出 **`REPO_ROOT`**、**`DOC_ROOT`**（并 **`export REPO_DOC_ROOT="$DOC_ROOT"`** 以兼容 Python 与旧注释）。
+#### 4.1.1 解析 `TARGET_REPO_ROOT`（多宿主 `.agent`）
+
+技能脚本可能位于 **`REPO_ROOT/.agent/skills/...`**（仓内），也可能位于 **`~/.../skills/...`**（用户目录安装）。**不得**仅用 `git -C "$SCRIPT_DIR"` 取顶：装在 `~/` 时常不在业务仓库内，须以**工作区**为主。
+
+**不支持**通过环境变量（如 `DOCS_CONFIG_FILE`、`DOCS_CONFIG_ROOT` 等）显式指定路径或仓库根。
+
+**建议解析顺序**（实现须与此等价）：
+
+1. **`git -C "${PWD}" rev-parse --show-toplevel 2>/dev/null`** — Agent 执行 Skill 时 **`$PWD` 多为工作区根**，与「技能装在 `~/`」场景一致。
+2. **`git -C "${SCRIPT_DIR}" rev-parse --show-toplevel 2>/dev/null`** — 技能在 **`REPO_ROOT/.agent/...`** 时通常有效。
+3. **自 `$PWD` 向上**（逐层父目录，上限 N 层）查找 **`/.docsconfig`**，命中则所在目录即为 **`TARGET_REPO_ROOT`**。
+4. 仍无法确定 → **§4.2** 策略 D。
+
+得到 **`TARGET_REPO_ROOT`** 后：**若存在 `$TARGET_REPO_ROOT/.docsconfig`**：source 或逐行解析，导出 **`REPO_ROOT`**、**`DOC_ROOT`**（并 **`export REPO_DOC_ROOT="$DOC_ROOT"`** 以兼容 Python 与旧注释）。文件内 **`REPO_ROOT`** 可与步骤 1–3 解析结果交叉校验（不一致时以实现约定为准：或警告、或以文件为准，须在实现 PR 中写死一种）。
 
 ### 4.2 缺失 `.docsconfig`（策略 D）
 
@@ -129,6 +142,7 @@
 - [ ] `--scope=config` 与 `--mode=central` / `install_central` 组合行为已定义。
 - [ ] 非交互失败码与 CI 文档一致。
 - [ ] 删除脚本后无残留 `source` 路径。
+- [ ] 运行时解析 `.docsconfig` 未引入「显式环境变量覆盖路径」能力；与 §4.1.1 一致。
 
 ---
 
