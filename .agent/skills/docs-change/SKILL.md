@@ -59,7 +59,7 @@ scripts/change-indexing.sh --since "2026-03-20 00:00:00.000" --output ./changelo
 1. 三源数据各自标记 `source` 字段（`git` / `changelog` / `local`）
 2. 统一时间格式：字符串 `yyyy-MM-dd HH:mm:ss.SSS` + 13 位毫秒戳（`*_ms` 字段）
 3. 按 `time_ms` 倒序排列
-4. 按模板生成双格式产物（见 [assets/](assets/)）
+4. 按模板生成双格式产物（见 [assets/](assets)）
 5. 增量模式：将新变更**追加**到已有 `changes` 数组，更新 `metadata`，不清空历史
 
 ### 步骤 5：验证

@@ -4,16 +4,17 @@
 #
 # 推断顺序：
 #   1) 显式传入 override（如 --doc-root）
-#   2) 环境变量 SDX_DOC_ROOT
+#   2) 环境变量 REPO_DOC_ROOT
 #   3) 工程根目录下文件 .sdx-doc-root（git 根优先，其次当前探测基目录）
 #   4) 目录探测：优先 `docs/`，其次应用知识库 `application/knowledge/*`，再者系统知识库 `system/knowledge/*`，然后公司知识库 `company/knowledge/*`，最后探测知识库 `*/knowledge/*`（见 sdx_probe_doc_root_segment）
 #   5) 无匹配目录时默认 docs
 #
 # Usage（由其它脚本 source）：
 #   source ".../.agent/scripts/sdx-doc-root.sh"
-#   seg="$(sdx_resolve_doc_root_segment "$CLI_OVERRIDE" "$PROBE_BASE")"
+#   REPO_DOC_ROOT="$(sdx_resolve_repo_doc_root "$CLI_OVERRIDE" "$PROBE_BASE")"   # 文档树根目录绝对路径
 #
 # PROBE_BASE 一般为仓库根（含 application/、docs/ 的目录）。
+# 对外仅导出 sdx_resolve_repo_doc_root；首段名解析为内部实现（_sdx_doc_root_segment）。
 
 sdx_normalize_doc_root_segment() {
   local s="${1:-docs}"
@@ -83,8 +84,9 @@ sdx_probe_doc_root_segment() {
   printf 'docs'
 }
 
-# Usage: sdx_resolve_doc_root_segment [override] [probe_base]
-sdx_resolve_doc_root_segment() {
+# 内部：解析文档树首段名（不单独对外导出）。
+# Usage: _sdx_doc_root_segment [override] [probe_base]
+_sdx_doc_root_segment() {
   local override="${1:-}"
   local probe_base="${2:-}"
 
@@ -92,6 +94,13 @@ sdx_resolve_doc_root_segment() {
     sdx_normalize_doc_root_segment "$override"
     return
   fi
+  if [[ -n "${REPO_DOC_ROOT:-}" ]]; then
+    local seg="${REPO_DOC_ROOT%/}"
+    seg="${seg##*/}"
+    sdx_normalize_doc_root_segment "$seg"
+    return
+  fi
+  # 兼容历史环境变量：SDX_DOC_ROOT（仅首段名）
   if [[ -n "${SDX_DOC_ROOT:-}" ]]; then
     sdx_normalize_doc_root_segment "${SDX_DOC_ROOT}"
     return
@@ -114,6 +123,21 @@ sdx_resolve_doc_root_segment() {
   done
 
   sdx_probe_doc_root_segment "$probe_base"
+}
+
+# Usage: sdx_resolve_repo_doc_root [override] [probe_base]
+# 输出：文档树根目录的绝对路径（规范化后的 probe_base + / + 首段）。
+# 供各 validate-*.sh 设置 REPO_DOC_ROOT。
+sdx_resolve_repo_doc_root() {
+  local override="${1:-}"
+  local probe_base="${2:-}"
+  local seg base
+  seg="$(_sdx_doc_root_segment "$override" "$probe_base")"
+  if [[ -z "$probe_base" ]]; then
+    probe_base="$(pwd)"
+  fi
+  base="$(cd "$probe_base" 2>/dev/null && pwd || printf '%s' "$probe_base")"
+  printf '%s/%s' "$base" "$seg"
 }
 
 # 自任意路径向上查找仓库根：存在 .agent/scripts/sdx-doc-root.sh

@@ -14,7 +14,7 @@ set -euo pipefail
 #     --app-id APP-MYSERVICE \
 #     --changelog-id v1.3.0 \
 #     --changelog-time "2026-04-05 10:00" \
-#     --archive-file "application/changelogs/upstream-from-applications/ARCHIVE-20260405-xxx.md" \
+#     --archive-file "system/architecture/changelogs/upstream-from-applications/ARCHIVE-20260405-xxx.md" \
 #     --entities-technical 3 \
 #     --entities-data 2 \
 #     --entities-business 1 \
@@ -57,7 +57,7 @@ if [[ -z "$APP" || -z "$CHANGELOG_ID" || -z "$ARCHIVE_FILE" ]]; then
     exit 1
 fi
 
-LOG_FILE="applications/app-${APP}/changelogs/archive-log.yaml"
+LOG_FILE="system/application-${APP}/changelogs/archive-log.yaml"
 NOW_ISO=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 # ── 更新锚点文件 ──────────────────────────────────────────────────────────────

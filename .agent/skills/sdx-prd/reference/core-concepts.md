@@ -4,7 +4,7 @@
 
 ## IDEA-ID
 
-**IDEA-ID** 的定义见 [../sdx-solution/reference/core-concepts.md#idea-id](../sdx-solution/reference/core-concepts.md#idea-id)。
+**IDEA-ID** 的定义见 [sdx-solution：core-concepts §IDEA-ID](../../sdx-solution/reference/core-concepts.md#idea-id)。
 
 本阶段路径示例：`application/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}.md`；上游 `application/analysis/ANALYSIS-{IDEA-ID}.md`。目录名、文件名须共用同一 **IDEA-ID**，不得仅日期而无 slug。
 

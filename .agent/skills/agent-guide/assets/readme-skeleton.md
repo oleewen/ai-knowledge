@@ -17,7 +17,7 @@
 
 {2–5 句，细节链到主 INDEX 或子文档}
 
-详细文档索引请参阅 `INDEX_GUIDE.md`（或 `application/INDEX_GUIDE.md`）；落盘到根目录 README 时将该句改为指向实际 Index 文件的可点击链接。
+详细文档索引请参阅 `INDEX_GUIDE.md`；落盘到根目录 README 时将该句改为指向实际 Index 文件的可点击链接。
 
 ## 快速开始
 
@@ -68,7 +68,7 @@
 
 | 文档 | 用途 |
 |------|------|
-| `INDEX_GUIDE.md`（根目录或 `application/`） | AI 文档索引（九章结构）；落盘后写为可点击链接 |
+| `INDEX_GUIDE.md`（根目录或 `docs/`） | AI 文档索引（九章结构）；落盘后写为可点击链接 |
 | `AGENTS.md` | AI Agent 契约与约束 |
 | {其他关键文档} | {用途} |
 

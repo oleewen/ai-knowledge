@@ -3,7 +3,7 @@ set -euo pipefail
 
 # 解决方案文档结构校验脚本
 # 用法: scripts/validate-solution.sh [--doc-root <path>] [--file <path>]
-# doc_root 解析顺序（方案 A）：--doc-root > SDX_DOC_ROOT > .sdx-doc-root > 目录探测 > system
+# REPO_DOC_ROOT：sdx_resolve_repo_doc_root（--doc-root > SDX_DOC_ROOT > .sdx-doc-root > 目录探测）
 # 详见 .agent/scripts/sdx-doc-root.sh
 #
 # 校验项:
@@ -37,10 +37,10 @@ source "$_AI_HOME/scripts/sdx-validate-bootstrap.sh"
 sdx_validate_load_doc_root "$SCRIPT_DIR"
 
 REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || pwd)"
-DOC_ROOT="$(sdx_resolve_doc_root_segment "$DOC_ROOT_ARG" "$REPO_ROOT")"
+REPO_DOC_ROOT="$(sdx_resolve_repo_doc_root "$DOC_ROOT_ARG" "$REPO_ROOT")"
 cd "$REPO_ROOT" || exit 1
 
-SOLUTIONS_DIR="${DOC_ROOT}/solutions"
+SOLUTIONS_DIR="${REPO_DOC_ROOT}/solutions"
 TEMPLATE=".agent/skills/sdx-solution/assets/solution-template.md"
 
 info()    { echo "[INFO]  $1"; }
@@ -49,7 +49,7 @@ error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
 
 echo "=== 解决方案文档结构校验 ==="
-echo "Doc Root: ${DOC_ROOT}"
+echo "REPO_DOC_ROOT: ${REPO_DOC_ROOT}"
 echo ""
 
 # 0. 模板文件

@@ -4,7 +4,7 @@
 
 ## IDEA-ID
 
-**IDEA-ID** 的定义（统一格式 `*-{YYMMDD}-{主题slug}` 中的 `{YYMMDD}-{主题slug}` 段）见 [../sdx-solution/reference/core-concepts.md#idea-id](../sdx-solution/reference/core-concepts.md#idea-id)。
+**IDEA-ID** 的定义（统一格式 `*-{YYMMDD}-{主题slug}` 中的 `{YYMMDD}-{主题slug}` 段）见 [sdx-solution：core-concepts §IDEA-ID](../../sdx-solution/reference/core-concepts.md#idea-id)。
 
 本阶段路径示例：输出 `application/analysis/ANALYSIS-{IDEA-ID}.md`；上游 `application/solutions/SOLUTION-{IDEA-ID}.md`；下游需求包目录 `application/requirements/REQUIREMENT-{IDEA-ID}/`（与 **sdx-prd** 等一致）。
 

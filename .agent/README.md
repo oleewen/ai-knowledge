@@ -15,14 +15,14 @@
 ## 结构导览
 
 
-| 路径                                                                                           | 用途                        |
-| -------------------------------------------------------------------------------------------- | ------------------------- |
-| [rules/CONVENTIONS.md](rules/CONVENTIONS.md)                                                 | 规则总入口（编码/设计/测试/文档交付规范）    |
-| [rules](rules)                                                                               | 分域规则与模板集合                 |
-| [skills](skills)                                                                             | Skill 工作流目录（每个子目录对应一个能力域） |
-| [scripts/](scripts)                                                                          | 共享 Bash 库（doc_root 解析、校验 bootstrap） |
-| [skills/README.md](skills/README.md)                                                         | Skills 使用入口与命令清单（权威）      |
-| [skills/agent-guide/assets/agents-skeleton.md](skills/agent-guide/assets/agents-skeleton.md) | `AGENTS.md` 推荐骨架模板        |
+| 路径                                                                                           | 用途                                                                    |
+| -------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| [rules/CONVENTIONS.md](rules/CONVENTIONS.md)                                                 | 规则总入口（编码/设计/测试/文档交付规范）                                                |
+| [rules](rules)                                                                               | 分域规则与模板集合                                                             |
+| [skills](skills)                                                                             | Skill 工作流目录（每个子目录对应一个能力域）                                             |
+| [scripts/](scripts)                                                                          | 共享 Bash 库（`sdx_resolve_repo_doc_root`、`validate-agent-md-links.sh` 等） |
+| [skills/README.md](skills/README.md)                                                         | Skills 使用入口与命令清单（权威）                                                  |
+| [skills/agent-guide/assets/agents-skeleton.md](skills/agent-guide/assets/agents-skeleton.md) | `AGENTS.md` 推荐骨架模板                                                    |
 
 
 ## 与全仓库文档关系
@@ -37,4 +37,3 @@
 - 规则先于内容：新增工作流前先确认是否已有规则或模板可复用。
 - 入口单一：Slash 命令与技能说明统一维护在 [skills/README.md](skills/README.md)，避免在本文件重复定义。
 
-> 历史文档若仍写仓库根 `.ai/`（已更名为 `.agent/`），请以当前路径 [rules/CONVENTIONS.md](rules/CONVENTIONS.md) 为准。

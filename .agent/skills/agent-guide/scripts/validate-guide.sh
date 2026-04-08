@@ -14,13 +14,27 @@
 
 set -euo pipefail
 
-ROOT="."
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+_AI_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+# shellcheck disable=SC1091
+source "$_AI_HOME/scripts/sdx-validate-bootstrap.sh"
+sdx_validate_load_doc_root "$SCRIPT_DIR"
+REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || pwd)"
+REPO_DOC_ROOT="$(sdx_resolve_repo_doc_root "" "$REPO_ROOT")"
+
+ROOT=""
 while [[ $# -gt 0 ]]; do
     case $1 in
         --root) ROOT="$2"; shift 2 ;;
         *) echo "Unknown option: $1"; exit 1 ;;
     esac
 done
+
+if [[ -z "$ROOT" ]]; then
+    ROOT="$REPO_ROOT"
+else
+    ROOT="$(cd "$ROOT" && pwd)"
+fi
 
 ERRORS=0
 WARNINGS=0
@@ -29,10 +43,18 @@ log_error() { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 log_warn()  { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
 log_ok()    { echo "[OK]    $1"; }
 
-# --- 1. INDEX 落盘检测 ---
+# --- 1. INDEX 落盘检测（REPO_ROOT 优先，再 REPO_DOC_ROOT）---
 
+DOC_SEG="${REPO_DOC_ROOT#"$REPO_ROOT"/}"
 INDEX_PATH=""
-for candidate in "INDEX_GUIDE.md" "application/INDEX_GUIDE.md" "INDEX-GUIDE.md" "application/INDEX-GUIDE.md"; do
+for candidate in \
+    "INDEX_GUIDE.md" \
+    "INDEX-GUIDE.md" \
+    "${DOC_SEG}/INDEX_GUIDE.md" \
+    "${DOC_SEG}/INDEX-GUIDE.md" \
+    "application/INDEX_GUIDE.md" \
+    "application/INDEX-GUIDE.md"; do
+    [[ -z "$candidate" ]] && continue
     if [[ -f "$ROOT/$candidate" ]]; then
         INDEX_PATH="$candidate"
         break
@@ -51,10 +73,12 @@ extract_links() {
     local file="$1"
     # 提取 [text](path) 中的 path，排除外链和锚点
     grep -oE '\]\([^)]+\)' "$file" 2>/dev/null \
-        | sed 's/^](//' | sed 's/)$//' \
+        | sed 's/^\]//' \
+        | sed 's/^(//' \
+        | sed 's/)$//' \
         | grep -vE '^(https?://|mailto:|#|ftp://)' \
         | sed 's/#.*//' \
-        | grep -v '^$' \
+        | grep -v '^[[:space:]]*$' \
         | sort -u
 }
 

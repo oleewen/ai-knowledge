@@ -24,7 +24,7 @@
 | `/sdx-prd` | 产出 PRD 阶段文档（Requirements 阶段）。 |
 | `/sdx-design` | 产出架构/设计阶段文档（Architecture Design 阶段）。 |
 | `/sdx-test` | 产出测试设计与验证阶段文档（Test 阶段）。 |
-| `/skill-creator` | 创建、评测与迭代技能的官方工作流（含 `scripts/`、`eval-viewer/`）。来源：Anthropic 仓库 [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) 中 `plugins/skill-creator/skills/skill-creator`；本仓库副本在 `.cursor/skills/skill-creator/`。 |
+| `/skill-creator` | 创建、评测与迭代技能的官方工作流（含 `scripts/`、`eval-viewer/`）。来源：Anthropic 仓库 [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) 中 `plugins/skill-creator/skills/skill-creator`；本仓库副本在 `.agent/skills/skill-creator/`。 |
 
 ## 使用说明
 

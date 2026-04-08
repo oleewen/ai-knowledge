@@ -18,7 +18,7 @@ description: >
 |------|------|
 | 硬输入 | 落盘 INDEX（§1 解析）；无落盘 Index 不编造 |
 | 可选输入 | 用户目标（新建/增量）、`--output` 范围（readme / agents / both） |
-| 固定输出 | 仓库根 `README.md`、`AGENTS.md` |
+| 固定输出 | `{REPO_ROOT}` 下 `README.md`、`AGENTS.md` |
 | 不产出 | 不替代 Index Guide；不把 Index 全文合并进 AGENTS |
 
 ## 参数
@@ -32,10 +32,17 @@ description: >
 
 ### 步骤 1：Index 解析
 
+先推断 `REPO_DOC_ROOT`（知识库根目录绝对路径），再推断 `REPO_ROOT`（仓库根绝对路径）。
+
+```bash
+REPO_DOC_ROOT="$(sdx_resolve_repo_doc_root)"
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+```
+
 按优先级查找落盘 Index Guide，命中即停，记录实际相对路径：
 
-1. 仓库根 `INDEX_GUIDE.md`、`INDEX-GUIDE.md`
-2. 系统知识库根目录 `application/INDEX_GUIDE.md`、`application/INDEX-GUIDE.md`
+1. `REPO_ROOT` 下 `INDEX_GUIDE.md`、`INDEX-GUIDE.md`
+2. `REPO_DOC_ROOT` 下 `INDEX_GUIDE.md`、`INDEX-GUIDE.md`
 
 未命中 → 终止，提示用户先运行 `/docs-indexing`。详细规则与降级例外见 [reference/execution-spec.md](reference/execution-spec.md)。
 
@@ -94,4 +101,4 @@ bash .agent/skills/agent-guide/scripts/validate-guide.sh --root .
 | README 输出骨架 | [assets/readme-skeleton.md](assets/readme-skeleton.md) | 生成 README 时 |
 | AGENTS 输出骨架 | [assets/agents-skeleton.md](assets/agents-skeleton.md) | 生成 AGENTS 时 |
 | 常见陷阱与防错规则 | [gotchas.md](gotchas.md) | 遇到 Index/生成/验证相关问题时 |
-| 路径验证脚本 | [.agent/skills/agent-guide/scripts/validate-guide.sh](scripts/validate-guide.sh) | 步骤 5 自动验证时 |
+| 路径验证脚本 | [scripts/validate-guide.sh](scripts/validate-guide.sh) | 步骤 5 自动验证时 |

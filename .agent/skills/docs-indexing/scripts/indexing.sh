@@ -5,10 +5,19 @@
 
 set -euo pipefail
 
-# 配置变量
-DEFAULT_OUTPUT="./application/INDEX_GUIDE.md"
-LOG_FILE="./changelogs/indexing-log.jsonl"
-CHANGES_INDEX="./changelogs/changes-index.json"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+_AI_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+# shellcheck disable=SC1091
+source "$_AI_HOME/scripts/sdx-validate-bootstrap.sh"
+sdx_validate_load_doc_root "$SCRIPT_DIR"
+REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || pwd)"
+REPO_DOC_ROOT="$(sdx_resolve_repo_doc_root "" "$REPO_ROOT")"
+cd "$REPO_ROOT" || exit 1
+
+# 配置变量（cwd=仓库根；路径由 sdx_resolve_repo_doc_root 与 REPO_DOC_ROOT 统一）
+DEFAULT_OUTPUT="${REPO_DOC_ROOT}/INDEX_GUIDE.md"
+LOG_FILE="${REPO_DOC_ROOT}/changelogs/indexing-log.jsonl"
+CHANGES_INDEX="${REPO_DOC_ROOT}/changelogs/changes-index.json"
 
 now_ms() {
     python3 - <<'PY'
@@ -25,7 +34,7 @@ show_help() {
     echo "Options:"
     echo "  --mode MODE           扫描模式：f/full（全量）或 i/incremental（增量）"
     echo "  --depth DEPTH         扫描深度：1（拓扑）、2（结构）、3（精读）"
-    echo "  --output OUTPUT       输出文件路径（默认：$DEFAULT_OUTPUT）"
+    echo "  --output OUTPUT       输出文件路径（默认：文档根下 INDEX_GUIDE.md，见 sdx_resolve_repo_doc_root）"
     echo "  --since TIMESTAMP     增量模式起始时间（epoch ms）"
     echo "  -h, --help            显示帮助信息"
     echo ""
@@ -192,6 +201,10 @@ if [[ -z "$TOP_FILES" ]]; then
     TOP_FILES="- 无"
 fi
 
+REL_LOG="./${LOG_FILE#"$REPO_ROOT"/}"
+REL_CHANGES="./${CHANGES_INDEX#"$REPO_ROOT"/}"
+REL_DEFAULT_OUT="./${DEFAULT_OUTPUT#"$REPO_ROOT"/}"
+
 cat > "$OUTPUT" << EOF
 # ${PROJECT_NAME} 索引指南
 
@@ -217,12 +230,12 @@ ${TOP_FILES}
 
 ## 四、核心流程（Core Flows）
 - docs-indexing 扫描仓库文件并生成 \`INDEX_GUIDE.md\`
-- 结果写入 \`application/changelogs/indexing-log.jsonl\` 以支持增量基线
+- 结果写入 \`${REL_LOG}\` 以支持增量基线
 
 ## 五、配置与环境（Config & Environment）
 - \`--mode\`: \`full\` / \`incremental\`
 - \`--depth\`: \`1\` / \`2\` / \`3\`
-- \`--output\`: 输出文件路径（默认 \`./application/INDEX_GUIDE.md\`）
+- \`--output\`: 输出文件路径（默认 \`${REL_DEFAULT_OUT}\`）
 - \`--since\`: 增量扫描起始时间戳（epoch ms）
 
 ## 六、未索引区域声明（Unindexed Scope）
@@ -235,8 +248,8 @@ ${TOP_FILES}
 - 增量模式在无有效基线时自动降级为全量
 
 ## 八、日志与追溯（Traceability）
-- 执行日志：\`./application/changelogs/indexing-log.jsonl\`
-- 变更基线：\`./application/changelogs/changes-index.json\`
+- 执行日志：\`${REL_LOG}\`
+- 变更基线：\`${REL_CHANGES}\`
 
 ## 九、附录（Appendix）
 - 生成器：\`.agent/skills/docs-indexing/scripts/indexing.sh\`

@@ -19,12 +19,19 @@ sdx_validate_load_doc_root() {
     # shellcheck disable=SC1090
     source "$s"
   fi
-  if ! declare -F sdx_resolve_doc_root_segment >/dev/null 2>&1; then
-    sdx_resolve_doc_root_segment() {
-      local o="${1:-}"
-      [[ -n "$o" ]] && { printf '%s' "${o%%/*}"; return; }
-      [[ -n "${SDX_DOC_ROOT:-}" ]] && { printf '%s' "${SDX_DOC_ROOT%%/*}"; return; }
-      printf 'docs'
+  if ! declare -F sdx_resolve_repo_doc_root >/dev/null 2>&1; then
+    sdx_resolve_repo_doc_root() {
+      local o="${1:-}" pb="${2:-}" seg b
+      [[ -z "$pb" ]] && pb="$(pwd)"
+      b="$(cd "$pb" 2>/dev/null && pwd || printf '%s' "$pb")"
+      if [[ -n "$o" ]]; then
+        seg="${o%%/*}"
+      elif [[ -n "${SDX_DOC_ROOT:-}" ]]; then
+        seg="${SDX_DOC_ROOT%%/*}"
+      else
+        seg="docs"
+      fi
+      printf '%s/%s' "$b" "$seg"
     }
   fi
 }
