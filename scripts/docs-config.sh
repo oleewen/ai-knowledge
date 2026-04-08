@@ -23,7 +23,7 @@
 # -----------------------------------------------------------------------------
 
 # 要求 Bash 5+，用于关联数组、nameref 等特性
-sdx_require_bash5() {
+require_bash5() {
     if (( BASH_VERSINFO[0] < 5 )); then
         printf '[FATAL] 需要 Bash 5+，当前版本: %s\n' "$BASH_VERSION" >&2
         exit 1
@@ -31,7 +31,7 @@ sdx_require_bash5() {
 }
 
 # 确保已满足环境要求
-sdx_require_bash5
+require_bash5
 
 # -----------------------------------------------------------------------------
 # 常量定义
@@ -135,18 +135,18 @@ declare -A SDX_DEFAULTS=(
 # -----------------------------------------------------------------------------
 
 # 验证运行模式是否合法
-# Usage: sdx_validate_mode <mode>
+# Usage: validate_mode <mode>
 # Returns: 0=合法, 1=非法
-sdx_validate_mode() {
+validate_mode() {
     local mode="${1:-}"
     [[ "$mode" =~ ^(standalone|central|s|c)$ ]] && return 0
     return 1
 }
 
 # 规范化运行模式（统一为完整名称）
-# Usage: sdx_normalize_mode <mode>
+# Usage: normalize_mode <mode>
 # stdout: standalone | central
-sdx_normalize_mode() {
+normalize_mode() {
     local mode="${1:-}"
     case "$mode" in
         s|standalone) echo 'standalone' ;;
@@ -156,31 +156,31 @@ sdx_normalize_mode() {
 }
 
 # 验证 --type 是否合法
-# Usage: sdx_validate_type <type>
-sdx_validate_type() {
+# Usage: validate_type <type>
+validate_type() {
     local t="${1:-}"
     [[ "$t" =~ ^(application|system|company)$ ]] && return 0
     return 1
 }
 
 # 规范化 --type（别名 → 标准值）
-# Usage: sdx_normalize_type <type>
+# Usage: normalize_type <type>
 # stdout: application | system | company
-sdx_normalize_type() {
+normalize_type() {
     local raw="${1:-}"
     case "${raw,,}" in
-        application|app) echo 'application' ;;
-        system|sys)      echo 'system' ;;
-        company|comp)    echo 'company' ;;
-        *)               printf '%s' "$raw" ;;
+        application|a) echo 'application' ;;
+        system|s)      echo 'system' ;;
+        company|c)    echo 'company' ;;
+        *)                 printf '%s' "$raw" ;;
     esac
 }
 
 # 验证 Agent 列表是否合法
-# Usage: sdx_validate_agents <agents>
+# Usage: validate_agents <agents>
 # <agents>: 逗号分隔或空格分隔的列表，如 "cursor,trea" 或 "cursor trea"
 # Returns: 0=全部合法, 1=存在非法
-sdx_validate_agents() {
+validate_agents() {
     local agents_str="${1:-}"
     local -a agents
 
@@ -201,9 +201,9 @@ sdx_validate_agents() {
 }
 
 # 规范化 Agent 列表（展开 all，去重）
-# Usage: sdx_normalize_agents <agents>
+# Usage: normalize_agents <agents>
 # stdout: 空格分隔的 Agent 列表
-sdx_normalize_agents() {
+normalize_agents() {
     local agents_str="${1:-}"
 
     if [[ "$agents_str" == 'all' ]]; then
@@ -227,9 +227,9 @@ sdx_normalize_agents() {
 }
 
 # 获取 Agent 对应的目录名
-# Usage: sdx_get_agent_dir <agent>
+# Usage: get_agent_dir <agent>
 # stdout: Agent 目录名（如 .cursor）
-sdx_get_agent_dir() {
+get_agent_dir() {
     local agent="${1:-}"
     echo "${SDX_AGENT_DIR_MAP[$agent]:-.agent}"
 }
@@ -239,9 +239,9 @@ sdx_get_agent_dir() {
 # -----------------------------------------------------------------------------
 
 # 获取配置项的默认值
-# Usage: sdx_default <key>
+# Usage: cfg_default <key>
 # stdout: 默认值
-sdx_default() {
+cfg_default() {
     local key="${1:-}"
     printf '%s' "${SDX_DEFAULTS[$key]:-}"
 }
@@ -251,9 +251,9 @@ sdx_default() {
 # -----------------------------------------------------------------------------
 
 # 展开路径中的 ~ 为用户主目录
-# Usage: sdx_expand_tilde <path>
+# Usage: expand_tilde <path>
 # stdout: 展开后的路径
-sdx_expand_tilde() {
+expand_tilde() {
     local p="${1:-}"
     case "$p" in
         '~')           echo "$HOME" ;;
@@ -266,11 +266,11 @@ sdx_expand_tilde() {
 }
 
 # 获取绝对路径（不检查存在性）
-# Usage: sdx_abs_path <path>
+# Usage: abs_path <path>
 # stdout: 绝对路径
-sdx_abs_path() {
+abs_path() {
     local p
-    p="$(sdx_expand_tilde "${1:-}")"
+    p="$(expand_tilde "${1:-}")"
 
     if [[ "$p" != /* ]]; then
         p="$PWD/$p"
@@ -296,9 +296,9 @@ sdx_abs_path() {
 }
 
 # 去除路径末尾的斜杠（保留根目录 /）
-# Usage: sdx_strip_trailing_slash <path>
+# Usage: strip_trailing_slash <path>
 # stdout: 处理后的路径
-sdx_strip_trailing_slash() {
+strip_trailing_slash() {
     local p="${1:-}"
     while [[ "$p" != '/' && "$p" == */ ]]; do
         p="${p%/}"
@@ -307,14 +307,14 @@ sdx_strip_trailing_slash() {
 }
 
 # 计算相对路径（从 base 到 target）
-# Usage: sdx_rel_path <base> <target>
+# Usage: rel_path <base> <target>
 # stdout: target 相对于 base 的路径
-sdx_rel_path() {
+rel_path() {
     local base="${1:-}"
     local target="${2:-}"
 
-    base="$(sdx_strip_trailing_slash "$base")"
-    target="$(sdx_strip_trailing_slash "$target")"
+    base="$(strip_trailing_slash "$base")"
+    target="$(strip_trailing_slash "$target")"
 
     case "$target" in
         "$base")     echo '.' ;;
@@ -329,9 +329,9 @@ sdx_rel_path() {
 
 # 从目录名生成合法的应用 ID
 # 规则: 大写，非字母数字转 -，去重连续 -， trim 首尾 -
-# Usage: sdx_sanitize_app_id <raw_name>
+# Usage: sanitize_app_id <raw_name>
 # stdout: APP-XXXX 格式 ID
-sdx_sanitize_app_id() {
+sanitize_app_id() {
     local raw="${1:-}"
 
     # 提取目录名（去除路径）
@@ -354,9 +354,9 @@ sdx_sanitize_app_id() {
 }
 
 # 替换文件名中的 system 为 application
-# Usage: sdx_replace_filename <filename>
+# Usage: replace_filename <filename>
 # stdout: 替换后的文件名
-sdx_replace_filename() {
+replace_filename() {
     local filename="${1:-}"
 
     for key in "${!SDX_FILENAME_REPLACEMENTS[@]}"; do
@@ -368,12 +368,108 @@ sdx_replace_filename() {
 }
 
 # -----------------------------------------------------------------------------
+# `.docsconfig`（目标工程仓库根，见 docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md）
+# -----------------------------------------------------------------------------
+
+# 由 DOC_ROOT 解析 Git 仓库根（§3.3 推荐失败则返回空）
+# Usage: docsconfig_repo_root_from_doc_root <doc_root_abs>
+# stdout: REPO_ROOT 绝对路径
+docsconfig_repo_root_from_doc_root() {
+    local doc_root="${1:?doc_root}"
+    git -C "$doc_root" rev-parse --show-toplevel 2>/dev/null || true
+}
+
+# 由 REPO_ROOT + DOC_ROOT 推算 DOC_DIR（相对段；重合时为 "."）
+# Usage: docsconfig_doc_dir_from_roots <repo_root_abs> <doc_root_abs>
+# stdout: DOC_DIR（无前导 /）
+# 失败：stderr 说明并返回 1
+docsconfig_doc_dir_from_roots() {
+    local repo_root="${1:?repo_root}"
+    local doc_root="${2:?doc_root}"
+    local rr dr
+    rr="$(cd -P "$repo_root" 2>/dev/null && pwd)" || {
+        printf '%s\n' "[docsconfig] 无法解析 REPO_ROOT: $repo_root" >&2
+        return 1
+    }
+    dr="$(cd -P "$doc_root" 2>/dev/null && pwd)" || {
+        printf '%s\n' "[docsconfig] 无法解析 DOC_ROOT: $doc_root" >&2
+        return 1
+    }
+    case "$dr" in
+        "$rr") printf '%s\n' '.' ;;
+        "$rr"/*) printf '%s\n' "${dr#"$rr"/}" ;;
+        *)
+            printf '%s\n' "[docsconfig] DOC_ROOT 不在 REPO_ROOT 下: $dr vs $rr" >&2
+            return 1
+            ;;
+    esac
+}
+
+# 写入 $REPO_ROOT/.docsconfig（三键，UTF-8）
+# Usage: docsconfig_write <repo_root> <doc_root> <doc_dir> [dry_run:0|1]
+docsconfig_write() {
+    local repo_root="${1:?repo_root}"
+    local doc_root="${2:?doc_root}"
+    local doc_dir="${3:?doc_dir}"
+    local dry="${4:-0}"
+    local out="$repo_root/.docsconfig"
+    if [[ "$dry" == "1" ]]; then
+        printf 'Would write %s:\nDOC_ROOT=%s\nREPO_ROOT=%s\nDOC_DIR=%s\n' \
+            "$out" "$doc_root" "$repo_root" "$doc_dir"
+        return 0
+    fi
+    umask 022
+    printf 'DOC_ROOT=%s\nREPO_ROOT=%s\nDOC_DIR=%s\n' \
+        "$doc_root" "$repo_root" "$doc_dir" >"$out"
+}
+
+# 自文件解析 DOC_ROOT / REPO_ROOT / DOC_DIR（nameref 输出，Bash 5+）
+# 某键缺失则对应变量为空（用于缺 DOC_DIR 等迁移场景）。
+# Usage: docsconfig_read_into <path> <nameref_doc_root> <nameref_repo_root> <nameref_doc_dir>
+# Returns: 0 文件存在且已解析；1 文件不存在或不可读
+docsconfig_read_into() {
+    local path="${1:?path}"
+    local -n _doc="${2:?}"
+    local -n _repo="${3:?}"
+    local -n _ddir="${4:?}"
+    _doc=""
+    _repo=""
+    _ddir=""
+    [[ -f "$path" ]] || return 1
+    local line k v
+    while IFS= read -r line || [[ -n "$line" ]]; do
+        [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
+        case "$line" in
+            DOC_ROOT=* | REPO_ROOT=* | DOC_DIR=*)
+                k="${line%%=*}"
+                v="${line#*=}"
+                v="${v%$'\r'}"
+                case "$k" in
+                    DOC_ROOT) _doc="$v" ;;
+                    REPO_ROOT) _repo="$v" ;;
+                    DOC_DIR) _ddir="$v" ;;
+                esac
+                ;;
+        esac
+    done <"$path"
+    return 0
+}
+
+# 输出文件中匹配 KEY= 的行（调试用或简单管道）
+# Usage: docsconfig_grep_keys <path>
+docsconfig_grep_keys() {
+    local path="${1:?path}"
+    [[ -f "$path" ]] || return 1
+    grep -E '^(DOC_ROOT|REPO_ROOT|DOC_DIR)=' "$path" 2>/dev/null
+}
+
+# -----------------------------------------------------------------------------
 # 检查清单文本（纯数据）
 # -----------------------------------------------------------------------------
 
 # 输出初始化后的建议核对项
-# Usage: sdx_post_init_checklist [target_docs_dir]
-sdx_post_init_checklist() {
+# Usage: post_init_checklist [target_docs_dir]
+post_init_checklist() {
     local target_docs="${1:-<目标文档目录>}"
 
     cat <<CHECKLIST

@@ -1,13 +1,23 @@
 #!/usr/bin/env bash
-# docs-init：按 type×mode 将本仓库模板同步到目标工程文档目录，并安装 Agent skills/rules
+# docs-init：按 --type×--mode 从本仓库 application/、system/、company/ 同步到目标工程文档目录；
+# 按 --scope 选择知识库同步、.docsconfig、Agent skills/rules 及（可选）central 登记（默认 scope=ck）。
 #
-# 步骤：
-#   1. 模板 → 目标文档目录（见 install_system_to_docs）
+# 功能摘要（与 usage 一致）：
+#   - 来源与替换：由 --type 决定拷贝哪棵模板树；模板内 system/、文件名与字面量替换见 rewrite_doc_file*
+#   - --mode：standalone 仅目标落盘；central 另在本仓库（源知识库）登记目标工程（常配合 type=application）
+#   - --scope：ck（默认）= 同步知识库 + 文末写目标 .docsconfig；config = 仅登记 .docsconfig（可 central 后退出）；
+#     knowledge = 仅同步知识库；skills / rules / rs = 仅 Agent；all = 知识库 + .docsconfig + skills/rules
+#   - Agent：.agent/skills、.agent/rules → 未传文档目录时装到 ~/.cursor 等；传入 <目标工程文档目录> 时装到 <工程根>/.cursor 等
+#   - central + type=application：登记 application/INDEX_GUIDE.md「十」+ system/application-<slug>/ 槽位；不要求目标 DOC_ROOT 下已有 knowledge/
+#
+# 步骤（主流程）：
+#   0. --scope=config：write_target_docsconfig（+ 可选 install_central）后退出
+#   1. 模板 → 目标文档目录（install_system_to_docs；scope 为 all / knowledge / ck 时）
 #      - type=application：standalone 全量 application/；central 仅 §2.1 子集
 #      - type=system|company：同步仓库顶层 system/ 或 company/
-#      - 文件名/内容替换见 _rewrite_doc_file / _rewrite_doc_file_minimal
-#   2. .agent/skills + .agent/rules → 用户主目录下所选 Agent 目录
-#   3. central + type=application：登记 application/INDEX_GUIDE.md「十」+ system/application-<slug>/ 槽位
+#   2. central + type=application：install_central（登记 + 联邦槽位）
+#   3. scope 含 skills/rules/rs/all：install_agent_skills / install_agent_rules
+#   4. 已提供文档目录：write_target_docsconfig（config 早退路径已在步骤 0）
 #
 # 运行要求：Bash 5+；内容替换依赖 perl（UTF-8）
 
@@ -39,7 +49,7 @@ declare -A CFG=(
   [mode]="${MODE:-standalone}"
   [type]="${TYPE:-}"
   [type_explicit]=0
-  [scope]="${SCOPE:-all}"
+  [scope]="${SCOPE:-ck}"
   [agents_opt]="${AGENTS_OPT:-cursor}"
   [app_id_opt]="${APP_ID_OPT:-}"
   [dry_run]="${DRY_RUN:-0}"
@@ -104,8 +114,8 @@ map_path_system_to_application() {
 # 用于将模板中字面量 system/ 替换为实际文档前缀
 compute_docs_rel_slash() {
   local root docs
-  root="$(sdx_strip_trailing_slash "$1")"
-  docs="$(sdx_strip_trailing_slash "$2")"
+  root="$(strip_trailing_slash "$1")"
+  docs="$(strip_trailing_slash "$2")"
   if   [[ "$docs" == "$root"   ]]; then printf './\n'
   elif [[ "$docs" == "$root"/* ]]; then printf '%s/\n' "${docs#"$root"/}"
   else                                   printf '%s/\n' "$docs"
@@ -122,7 +132,7 @@ git_repo_ref() {
   if [[ -n "$url" ]]; then printf '%s' "$url"; return 0; fi
   local root
   root="$(git -C "$target" rev-parse --show-toplevel 2>/dev/null || true)"
-  [[ -n "$root" ]] && printf '%s' "$(sdx_abs_path "$root")" || printf ''
+  [[ -n "$root" ]] && printf '%s' "$(abs_path "$root")" || printf ''
 }
 
 # 探测目标目录所在 Git 仓库根路径
@@ -132,14 +142,14 @@ git_root_path() {
   git -C "$target" rev-parse --is-inside-work-tree >/dev/null 2>&1 || { printf ''; return 0; }
   local root
   root="$(git -C "$target" rev-parse --show-toplevel 2>/dev/null || true)"
-  [[ -n "$root" ]] && printf '%s' "$(sdx_abs_path "$root")" || printf ''
+  [[ -n "$root" ]] && printf '%s' "$(abs_path "$root")" || printf ''
 }
 
 # 返回 docs_abs 相对于 git_root 的路径（或绝对路径）
 docs_rel_to_git_root() {
   local git_root docs_abs
-  git_root="$(sdx_strip_trailing_slash "$1")"
-  docs_abs="$(sdx_strip_trailing_slash "$2")"
+  git_root="$(strip_trailing_slash "$1")"
+  docs_abs="$(strip_trailing_slash "$2")"
   [[ -z "$git_root" ]] && { printf '%s' "$docs_abs"; return 0; }
   case "$docs_abs" in
     "$git_root")   printf '/' ;;
@@ -165,18 +175,30 @@ ensure_dir() {
 }
 
 # 本次运行是否需要安装 Agent skills/rules
-_needs_agent_install() {
+needs_agent_install() {
   case "${CFG[scope]}" in
     all|skills|rules|rs) return 0 ;;
     *)                     return 1 ;;
   esac
 }
 
+# Agent skills/rules 安装根：未指定文档目录 → ~/.cursor；指定文档目录 → <工程根>/.cursor（工程根 = 文档目录父目录）
+agent_install_root() {
+  local agent="$1"
+  local rel
+  rel="$(get_agent_dir "$agent")"
+  if [[ -n "${CFG[docs_abs]:-}" ]]; then
+    abs_path "${CFG[target_dir]}/$rel"
+  else
+    abs_path "${CFG[home_abs]}/$rel"
+  fi
+}
+
 # 判断绝对路径是否落在用户主目录下的 Agent 安装树（.cursor / .trea / .claude）
-_path_is_under_agent_home() {
+path_is_under_agent_home() {
   local p="$1" home="${CFG[home_abs]:-}"
   [[ -z "$home" ]] && return 1
-  p="$(sdx_abs_path "$p")"
+  p="$(abs_path "$p")"
   local d
   for d in .cursor .trea .claude; do
     [[ "$p" == "$home/$d" || "$p" == "$home/$d/"* ]] && return 0
@@ -185,7 +207,7 @@ _path_is_under_agent_home() {
 }
 
 # 获取（或初始化）本次运行的备份根目录（工程文档 / system 模板落盘）
-_get_backup_root() {
+get_backup_root() {
   if [[ -z "$_BACKUP_ROOT" ]]; then
     local stamp="${DOC_INIT_STAMP:-$(date +%Y-%m-%d_%H-%M-%S)}"
     _BACKUP_ROOT="${CFG[target_dir]:-$PWD}/.docs-init/${stamp}"
@@ -194,7 +216,7 @@ _get_backup_root() {
 }
 
 # 获取（或初始化）Agent 安装目录的备份根（~/.docs-init/<同一时间戳>/）
-_get_backup_root_agent() {
+get_backup_root_agent() {
   if [[ -z "$_BACKUP_ROOT_AGENT" ]]; then
     local stamp="${DOC_INIT_STAMP:-$(date +%Y-%m-%d_%H-%M-%S)}"
     local home="${CFG[home_abs]:-}"
@@ -208,13 +230,13 @@ _get_backup_root_agent() {
 backup_path() {
   local existing="$1"
   local backup_root rel backup_target
-  existing="$(sdx_abs_path "$existing")"
-  if _path_is_under_agent_home "$existing"; then
-    backup_root="$(_get_backup_root_agent)"
+  existing="$(abs_path "$existing")"
+  if path_is_under_agent_home "$existing"; then
+    backup_root="$(get_backup_root_agent)"
     [[ -n "$backup_root" ]] || error "无法解析 Agent 备份根（缺少 HOME？）"
     rel="${existing#"${CFG[home_abs]}"/}"
   else
-    backup_root="$(_get_backup_root)"
+    backup_root="$(get_backup_root)"
     if [[ -n "${CFG[target_dir]}" && "$existing" == "${CFG[target_dir]}/"* ]]; then
       rel="${existing#"${CFG[target_dir]}"/}"
     else
@@ -313,7 +335,7 @@ copy_dir() {
 # ─── 内容替换 ─────────────────────────────────────────────────────────────────
 
 # 文档树替换：.agent/ → agent_slash；system/ → docs_slash；系统→应用；词界 system→application
-_rewrite_doc_file() {
+rewrite_doc_file() {
   local file="$1" agent_slash="$2" docs_slash="$3"
   [[ -f "$file" ]] && is_text_file "$file" || return 0
   have_perl || { warn "未安装 perl，跳过内容替换：$file"; return 0; }
@@ -331,7 +353,7 @@ _rewrite_doc_file() {
 }
 
 # 组织级 system/、company/ 模板：仅替换路径前缀，不将词「system」整体改为「application」（避免破坏「组织级 system」语义）
-_rewrite_doc_file_minimal() {
+rewrite_doc_file_minimal() {
   local file="$1" agent_slash="$2" docs_slash="$3"
   [[ -f "$file" ]] && is_text_file "$file" || return 0
   have_perl || { warn "未安装 perl，跳过内容替换：$file"; return 0; }
@@ -343,7 +365,7 @@ _rewrite_doc_file_minimal() {
 }
 
 # Agent 树替换：.agent/ → agent_slash；system/ → docs_slash（不做 system→application 词替换）
-_rewrite_agent_file() {
+rewrite_agent_file() {
   local file="$1" agent_slash="$2" docs_slash="$3"
   [[ -f "$file" ]] && is_text_file "$file" || return 0
   have_perl || return 0
@@ -360,7 +382,7 @@ rewrite_agent_tree() {
   [[ -d "$root" ]] || return 0
   local f
   while IFS= read -r -d '' f; do
-    _rewrite_agent_file "$f" "$agent_slash" "$docs_slash"
+    rewrite_agent_file "$f" "$agent_slash" "$docs_slash"
   done < <(find "$root" -type f -print0 2>/dev/null || true)
 }
 
@@ -368,7 +390,7 @@ rewrite_agent_tree() {
 # ─── 核心安装步骤 ─────────────────────────────────────────────────────────────
 
 # 将单个文件从 application/ 树复制到目标文档根，并做全文替换
-_application_copy_one() {
+application_copy_one() {
   local src_f="$1" dst_f="$2" agent_slash="$3" docs_slash="$4"
   if [[ "${CFG[dry_run]}" == "1" ]]; then
     log "[dry-run] $src_f → $dst_f"
@@ -383,7 +405,7 @@ _application_copy_one() {
   fi
   ensure_dir "$(dirname "$dst_f")"
   cp "$src_f" "$dst_f"
-  _rewrite_doc_file "$dst_f" "$agent_slash" "$docs_slash"
+  rewrite_doc_file "$dst_f" "$agent_slash" "$docs_slash"
 }
 
 # 步骤 1a：application/ 全量 → 目标（standalone 或默认）
@@ -409,7 +431,7 @@ install_application_full_to_docs() {
 
     src_f="$src_root/$rel"
     dst_f="$dst_root/$(map_path_system_to_application "$rel")"
-    _application_copy_one "$src_f" "$dst_f" "$agent_slash" "$docs_slash"
+    application_copy_one "$src_f" "$dst_f" "$agent_slash" "$docs_slash"
   done < <(cd "$src_root" && find . -type f -print0)
 
   info "    application/ 全量同步完成"
@@ -436,13 +458,13 @@ install_application_subset_to_docs() {
       [[ -z "$rel" ]] && continue
       src_f="$src_root/$d/$rel"
       dst_f="$dst_root/$d/$(map_path_system_to_application "$rel")"
-      _application_copy_one "$src_f" "$dst_f" "$agent_slash" "$docs_slash"
+      application_copy_one "$src_f" "$dst_f" "$agent_slash" "$docs_slash"
     done < <(cd "$src_root/$d" && find . -type f -print0)
   done
 
   for base in INDEX_GUIDE.md README.md docs_meta.yaml manifest.yaml; do
     [[ -f "$src_root/$base" ]] || continue
-    _application_copy_one "$src_root/$base" "$dst_root/$(map_path_system_to_application "$base")" "$agent_slash" "$docs_slash"
+    application_copy_one "$src_root/$base" "$dst_root/$(map_path_system_to_application "$base")" "$agent_slash" "$docs_slash"
   done
 
   info "    application/ §2.1 子集同步完成"
@@ -482,7 +504,7 @@ install_org_template_to_docs() {
     fi
     ensure_dir "$(dirname "$dst_f")"
     cp "$src_f" "$dst_f"
-    _rewrite_doc_file_minimal "$dst_f" "$agent_slash" "$docs_slash"
+    rewrite_doc_file_minimal "$dst_f" "$agent_slash" "$docs_slash"
   done < <(cd "$src_root" && find . -type f -print0)
 
   info "    ${label}/ 同步完成"
@@ -516,11 +538,15 @@ install_agent_skills() {
   local agent agent_dir agent_slash
 
   for agent in "${ENABLED_AGENTS[@]}"; do
-    agent_dir="${CFG[home_abs]}/$(sdx_get_agent_dir "$agent")"
-    agent_slash="$(sdx_get_agent_dir "$agent")/"
+    agent_dir="$(agent_install_root "$agent")"
+    agent_slash="$(get_agent_dir "$agent")/"
 
     info ">>> 安装 ${agent} Agent skills"
-    info "    目录: ${agent_dir}；用户主目录下 Agent 配置（非工程目录）"
+    if [[ -n "${CFG[docs_abs]:-}" ]]; then
+      info "    目录: ${agent_dir}；目标工程根下（${CFG[target_dir]}）"
+    else
+      info "    目录: ${agent_dir}；用户主目录下 Agent 配置"
+    fi
     info "    .agent/ → ${agent_slash}  |  system/ → ${docs_slash}"
 
     ensure_dir "$agent_dir/skills"
@@ -558,11 +584,15 @@ install_agent_rules() {
   local agent agent_dir agent_slash
 
   for agent in "${ENABLED_AGENTS[@]}"; do
-    agent_dir="${CFG[home_abs]}/$(sdx_get_agent_dir "$agent")"
-    agent_slash="$(sdx_get_agent_dir "$agent")/"
+    agent_dir="$(agent_install_root "$agent")"
+    agent_slash="$(get_agent_dir "$agent")/"
 
     info ">>> 安装 ${agent} Agent rules"
-    info "    目录: ${agent_dir}；用户主目录下 Agent 配置（非工程目录）"
+    if [[ -n "${CFG[docs_abs]:-}" ]]; then
+      info "    目录: ${agent_dir}；目标工程根下（${CFG[target_dir]}）"
+    else
+      info "    目录: ${agent_dir}；用户主目录下 Agent 配置"
+    fi
     info "    .agent/ → ${agent_slash}  |  system/ → ${docs_slash}"
 
     ensure_dir "$agent_dir/rules"
@@ -594,20 +624,20 @@ install_agent_rules() {
 # ─── Central 模式 ─────────────────────────────────────────────────────────────
 
 # 解析 central 模式的 APP ID 与 slug
-_resolve_central_ids() {
+resolve_central_ids() {
   local project_name
   project_name="$(basename "${CFG[target_dir]}")"
   if [[ -n "${CFG[app_id_opt]}" ]]; then
     CFG[central_app_id]="${CFG[app_id_opt]}"
   else
-    CFG[central_app_id]="$(sdx_sanitize_app_id "$project_name")"
+    CFG[central_app_id]="$(sanitize_app_id "$project_name")"
   fi
   CFG[central_app_slug]="${CFG[central_app_id]#APP-}"
   [[ -n "${CFG[central_app_slug]}" ]] || CFG[central_app_slug]="APPNAME"
 }
 
 # 在 application/INDEX_GUIDE.md 中插入或更新应用登记行（「十、中央知识库接入工程」）
-_upsert_system_index() {
+upsert_system_index() {
   local app_id="$1" repo_or_path="$2" docs_path="$3"
   local idx="${CFG[repo_root]}/application/INDEX_GUIDE.md"
   [[ -f "$idx" ]] || error "未找到 application/INDEX_GUIDE.md: $idx"
@@ -618,7 +648,8 @@ _upsert_system_index() {
   local row="| ${app_id} | ${repo_or_path} | ${docs_path} |"
 
   if [[ "${CFG[dry_run]}" == "1" ]]; then
-    log "[dry-run] 更新 $idx：$row"; return 0
+    log "[dry-run] 更新 ${idx} : ${row}"
+    return 0
   fi
 
   # 节不存在 → 追加整节
@@ -642,7 +673,7 @@ _upsert_system_index() {
 }
 
 # 在本仓库 system/application-<slug>/ 建立联邦槽位（applications/app-* 模板已移除时的目标态）
-_ensure_app_mirror() {
+ensure_app_mirror() {
   local dest="${CFG[repo_root]}/system/application-${CFG[central_app_slug]}"
   local project_name
   project_name="$(basename "${CFG[target_dir]}")"
@@ -673,18 +704,10 @@ _ensure_app_mirror() {
   info "    联邦槽位就绪"
 }
 
-# Central 前置：目标文档目录下须已有 knowledge/（模板中的知识库树）
-# dry-run 且本次会执行 install_system_to_docs 时，视为执行后将存在 knowledge/，允许中央预览
-_central_knowledge_ready() {
-  local k="${CFG[docs_abs]}/knowledge"
-  [[ -d "$k" ]] && return 0
-  [[ "${CFG[dry_run]}" == "1" && ( "${CFG[scope]}" == "all" || "${CFG[scope]}" == "knowledge" ) ]] && return 0
-  return 1
-}
-
 # 步骤 3（central）：登记 + 建镜像
+# 推荐顺序：先 --scope=config 写 .docsconfig → 再同步知识库（默认 --scope=ck 或 knowledge / all）→ 最后 central 登记；不强制要求目标侧已有 knowledge/ 目录。
 install_central() {
-  _resolve_central_ids
+  resolve_central_ids
 
   local repo_ref git_root repo_or_path docs_path
   repo_ref="$(git_repo_ref  "${CFG[target_dir]}")"
@@ -697,8 +720,8 @@ install_central() {
   info "    工程:   $repo_or_path"
   info "    文档:   ${CFG[docs_abs]}"
 
-  _upsert_system_index "${CFG[central_app_id]}" "$repo_or_path" "${CFG[docs_abs]}"
-  _ensure_app_mirror
+  upsert_system_index "${CFG[central_app_id]}" "$repo_or_path" "${CFG[docs_abs]}"
+  ensure_app_mirror
 }
 
 
@@ -710,16 +733,16 @@ usage() {
   docs-init [选项] [<目标工程文档目录>]
 
 说明
-  按 --type 从本仓库 application/、system/ 或 company/ 同步到目标工程文档目录，并将 .agent/skills、.agent/rules
-  安装到用户主目录下所选 Agent 目录（如 ~/.cursor、~/.trea），不写入目标工程根目录。
+  按 --type 从本仓库 application/、system/ 或 company/ 同步到目标工程文档目录，并安装 .agent/skills、.agent/rules。
+  未指定 <目标工程文档目录> 时，安装到用户主目录下 ~/.cursor、~/.trea 等；指定时，安装到工程根目录下的 .cursor、.trea 等（工程根为文档目录的父目录）。
 
   <目标工程文档目录>
     目标工程内的文档子目录，例如：
       ~/workspace/my-app/system
       ~/workspace/my-app/docs
     父目录（工程根）默认不已存在；使用 -r 可允许自动创建。
-    在 standalone 模式下，若 --scope 仅为 skills / rules / rs，可省略本参数（不落地工程文档时）。
-    central 模式、或 scope 为 all / knowledge 时，必须提供本参数。
+    在 standalone 模式下，若 --scope 仅为 s / r / rs，可省略本参数（不落地工程文档时）。
+    central 模式、或 scope 为 all / knowledge / ck 时，必须提供本参数。
 
   替换规则
     文件名  : system（不区分大小写）→ application
@@ -737,19 +760,22 @@ usage() {
     application           应用知识库：standalone 全量同步 application/；central 仅 §2.1 子集 + 登记 + system/application-<slug>/ 槽位
     system                仓库顶层 system/ → 目标（显式）
     company               仓库顶层 company/ → 目标（显式）
-    别名：app→application，sys→system，comp→company
+    别名：a|application，s|system，c|company
 
-  central + type=application 时：目标须已有 knowledge/（或未 dry-run 时将由 §2.1 子集拷贝生成），否则跳过登记。
+  central + type=application 时：在源知识库登记目标工程；推荐先 config、再同步知识库、最后 central；不要求目标 DOC_ROOT 下已存在 knowledge/。
 
 选项
-  --mode=MODE           standalone | central（或缩写 s | c）  [默认: standalone]
-  --type=TYPE           application | system | company（或 app | sys | comp） [默认：见上表]
-  --scope=SCOPE         all(a) | knowledge(k) | skills(s) | rules(r) | rs  [默认: all]
+  --mode=MODE           standalone(s 默认) | central(c）  [默认: s]
+  --type=TYPE           application(a) | system(s) | company(c) [默认 a]
+  --scope=SCOPE         ck | config(c) | knowledge(k) | skills(s) | rules(r) | rs | all(a)  [默认: ck]
+                        - ck（默认）同步知识库 + 写入目标 .docsconfig
+                        - config(c) 仅登记文档路径 .docsconfig（DOC_ROOT/REPO_ROOT/DOC_DIR）
+                        - knowledge(k) 仅同步知识库
                         - skills(s) 仅安装 Agent skills
                         - rules(r)  仅安装 Agent rules
                         - rs        同时安装 skills + rules（等同 r + s）
-                        注：central 可与任意 scope 组合；仅 skills/rules/rs 时若同时满足 central+type=application 仍会执行登记与联邦槽位
-  --app-id=APP-ID       central 模式下的 APP ID               [默认: 由工程目录名推导]
+                        - all(a)    全量：知识库 + .docsconfig + Agent skills/rules
+  --app-id=APP-ID       central 模式下的 APP ID [默认: 由工程目录名推导]
   --agents=LIST         cursor | trea | claude | all，逗号分隔 [默认: cursor]
   -r                    允许工程根目录不存在时自动创建
   --force               强制覆盖，不提示
@@ -758,35 +784,45 @@ usage() {
 
 环境变量
   REPO_ROOT             本仓库根目录（默认自动探测）
-  HOME                  用户主目录；安装 Agent skills/rules 时必需（解析为 Agent 安装根）
+  HOME                  用户主目录；安装 Agent skills/rules 时必需（未指定文档目录时作为 ~/.cursor 等安装根）
   CREATE_PROJECT_ROOT   1=允许自动创建工程根（等同 -r）| 0=要求工程根已存在（默认）
+  SCOPE                 未传 --scope 时默认 ck（见上）
   DRY_RUN               1=预览模式
   FORCE                 1=强制覆盖
 
 示例
-  # 最简用法（standalone + cursor）
-  docs-init ~/workspace/my-app/system
+  # 最简用法（默认 scope=ck：知识库 + .docsconfig，不装 skills）
+  docs-init ~/workspace/my-app/docs
 
-  # 仅同步知识库（不安装 Agent skills/rules）
-  docs-init --scope=knowledge ~/workspace/my-app/system
+  # 全量（含 Agent skills/rules，等同旧默认 all）
+  docs-init --scope=all ~/workspace/my-app/docs
 
-  # 仅安装 Agent skills（不落地 system 文档；可省略文档目录）
-  docs-init --scope=skills
-  docs-init --scope=skills ~/workspace/my-app/system
+  # 仅同步知识库
+  docs-init --scope=knowledge ~/workspace/my-app/docs
+  docs-init --scope=k ~/workspace/my-app/docs
 
-  # 仅安装 Agent rules（不落地 system 文档；可省略文档目录）
+  # 仅登记文档路径 .docsconfig（DOC_ROOT/REPO_ROOT/DOC_DIR）
+  docs-init --scope=config ~/workspace/my-app/docs
+  docs-init --scope=c ~/workspace/my-app/docs
+
+  # 仅安装 Agent skills（未指定文档目录 → ~/.cursor 等；指定文档目录 → <工程根>/.cursor 等）
+  docs-init --scope=skills 
+  docs-init --scope=skills ~/workspace/my-app/docs
+  docs-init --scope=s ~/workspace/my-app/docs
+
+  # 仅安装 Agent rules（路径规则同上；不落地 docs 文档时可省略文档目录）
   docs-init --scope=rules
-  docs-init --scope=rules ~/workspace/my-app/system
+  docs-init --scope=rules ~/workspace/my-app/docs
 
   # 同时安装 skills + rules（可省略文档目录）
   docs-init --scope=rs
-  docs-init --scope=rs ~/workspace/my-app/system
+  docs-init --scope=rs ~/workspace/my-app/docs
 
   # central 模式，指定 APP ID，安装 cursor 和 trea
-  docs-init --mode=central --app-id=APP-MYAPP --agents=cursor,trea ~/workspace/my-app/system
+  docs-init --mode=central --app-id=APP-MYAPP --agents=cursor,trea ~/workspace/my-app/docs
 
   # 预览，不实际写入
-  docs-init --dry-run ~/workspace/my-app/system
+  docs-init --dry-run ~/workspace/my-app/docs
 
 EOF
 }
@@ -829,21 +865,21 @@ parse_args() {
 
 # ─── 初始化与校验 ─────────────────────────────────────────────────────────────
 
-_init_repo_root() {
+init_repo_root() {
   if [[ -z "${CFG[repo_root]}" ]]; then
-    CFG[repo_root]="$(sdx_abs_path "$SCRIPT_DIR/..")"
+    CFG[repo_root]="$(abs_path "$SCRIPT_DIR/..")"
   fi
   [[ -d "${CFG[repo_root]}/application" ]] || error "未找到 application 目录: ${CFG[repo_root]}/application"
   [[ -d "${CFG[repo_root]}/.agent/skills" ]] || error "未找到 .agent/skills: ${CFG[repo_root]}/.agent/skills"
   [[ -d "${CFG[repo_root]}/.agent/rules"  ]] || error "未找到 .agent/rules: ${CFG[repo_root]}/.agent/rules"
 }
 
-_validate_docs_and_target() {
+validate_docs_and_target() {
   [[ -n "${CFG[docs_abs]}" ]] \
     || error "内部错误：应在提供 <目标工程文档目录> 后调用文档路径校验"
 
-  CFG[docs_abs]="$(sdx_strip_trailing_slash "$(sdx_abs_path "${CFG[docs_abs]}")")"
-  CFG[target_dir]="$(sdx_abs_path "$(dirname "${CFG[docs_abs]}")")"
+  CFG[docs_abs]="$(strip_trailing_slash "$(abs_path "${CFG[docs_abs]}")")"
+  CFG[target_dir]="$(abs_path "$(dirname "${CFG[docs_abs]}")")"
 
   local target_dir="${CFG[target_dir]}"
   if [[ -e "$target_dir" && ! -d "$target_dir" ]]; then
@@ -859,45 +895,49 @@ _validate_docs_and_target() {
   fi
 }
 
-_validate_mode() {
-  CFG[mode]="$(sdx_normalize_mode "${CFG[mode]}")"
-  sdx_validate_mode "${CFG[mode]}" || error "无效模式: ${CFG[mode]}（standalone/central 或 s/c）"
+apply_mode() {
+  CFG[mode]="$(normalize_mode "${CFG[mode]}")"
+  validate_mode "${CFG[mode]}" || error "无效模式: ${CFG[mode]}（standalone/central 或 s/c）"
 }
 
-_validate_sync_scope() {
+validate_sync_scope() {
   # 允许组合：rs / sr
   case "${CFG[scope]}" in
     rs|sr) CFG[scope]="rs" ;;
   esac
 
+  # ck = 登记 .docsconfig + 同步知识库（同 knowledge），不含 skills/rules；须在 c / config 之前匹配，避免被 c 截断
+  # c / config / cfg → config（仅写 .docsconfig）；其余单字母缩写
   case "${CFG[scope]}" in
+    ck) ;;
     a) CFG[scope]="all" ;;
+    c|config|cfg) CFG[scope]="config" ;;
     s) CFG[scope]="skills" ;;
     r) CFG[scope]="rules" ;;
     k) CFG[scope]="knowledge" ;;
   esac
 
   case "${CFG[scope]}" in
-    all|skills|rules|rs|knowledge) ;;
+    all|skills|rules|rs|knowledge|config|ck) ;;
     *)
-      error "无效 --scope: ${CFG[scope]}（支持 all/a、knowledge/k、skills/s、rules/r、rs）"
+      error "无效 --scope: ${CFG[scope]}（支持 ck、all/a、knowledge/k、skills/s、rules/r、rs、config/c）"
       ;;
   esac
 
 }
 
-_validate_agents() {
-  sdx_validate_agents "${CFG[agents_opt]}" \
+apply_agents() {
+  validate_agents "${CFG[agents_opt]}" \
     || error "无效 --agents: ${CFG[agents_opt]}（支持 cursor、trea、claude、all 及逗号分隔组合）"
-  read -ra ENABLED_AGENTS <<< "$(sdx_normalize_agents "${CFG[agents_opt]}")"
+  read -ra ENABLED_AGENTS <<< "$(normalize_agents "${CFG[agents_opt]}")"
   (( ${#ENABLED_AGENTS[@]} > 0 )) || error "未解析到任何 Agent"
 }
 
 # 解析 --type：未指定时 standalone → application；central → system（见知识库 v2 设计 §2.3）
-_resolve_type() {
+resolve_type() {
   if [[ "${CFG[type_explicit]}" == "1" ]]; then
-    CFG[type]="$(sdx_normalize_type "${CFG[type]}")"
-    sdx_validate_type "${CFG[type]}" || error "无效 --type: ${CFG[type]}（application|system|company；别名 app、sys、comp）"
+    CFG[type]="$(normalize_type "${CFG[type]}")"
+    validate_type "${CFG[type]}" || error "无效 --type: ${CFG[type]}（application(a)|system(s)|company(c)；别名 app、sys、comp）"
   else
     if [[ "${CFG[mode]}" == "central" ]]; then
       CFG[type]=system
@@ -907,7 +947,7 @@ _resolve_type() {
   fi
 }
 
-_validate_type_sources() {
+validate_type_sources() {
   case "${CFG[type]}" in
     application)
       [[ -d "${CFG[repo_root]}/application" ]] || error "未找到 application/: ${CFG[repo_root]}/application"
@@ -921,8 +961,21 @@ _validate_type_sources() {
   esac
 }
 
-_compute_derived_paths() {
-  CFG[primary_agent_slash]="$(sdx_get_agent_dir "${ENABLED_AGENTS[0]}")/"
+# 写入目标工程仓库根 .docsconfig（DOC_ROOT / REPO_ROOT / DOC_DIR）；dry-run 时仅预览
+# 见 docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md §2.3 / §3.3
+write_target_docsconfig() {
+  local doc_root repo_target dd
+  doc_root="${CFG[docs_abs]}"
+  repo_target="$(docsconfig_repo_root_from_doc_root "$doc_root")"
+  [[ -n "$repo_target" ]] \
+    || error "无法写入 .docsconfig：DOC_ROOT 不在 Git 仓库内或 git 不可用: $doc_root"
+  dd="$(docsconfig_doc_dir_from_roots "$repo_target" "$doc_root")" \
+    || error "无法计算 DOC_DIR（DOC_ROOT 须位于该 Git 仓库根目录之下）"
+  docsconfig_write "$repo_target" "$doc_root" "$dd" "${CFG[dry_run]}"
+}
+
+compute_derived_paths() {
+  CFG[primary_agent_slash]="$(get_agent_dir "${ENABLED_AGENTS[0]}")/"
   if [[ -n "${CFG[docs_abs]}" ]]; then
     CFG[docs_slash]="$(compute_docs_rel_slash "${CFG[target_dir]}" "${CFG[docs_abs]}")"
   else
@@ -933,7 +986,7 @@ _compute_derived_paths() {
 
 # ─── 完成提示 ─────────────────────────────────────────────────────────────────
 
-_print_checklist() {
+print_checklist() {
   log ""
   log "─────────────────────────────────────────────────────────────────────────"
   if [[ -n "${CFG[docs_abs]}" ]]; then
@@ -943,9 +996,9 @@ _print_checklist() {
   fi
   log "─────────────────────────────────────────────────────────────────────────"
   if [[ -n "${CFG[docs_abs]}" ]]; then
-    sdx_post_init_checklist "${CFG[docs_abs]}" >&2
+    post_init_checklist "${CFG[docs_abs]}" >&2
   else
-    sdx_post_init_checklist "<未指定工程文档目录>" >&2
+    post_init_checklist "<未指定工程文档目录>" >&2
   fi
 }
 
@@ -954,11 +1007,35 @@ _print_checklist() {
 main() {
   parse_args "$@"
 
-  _init_repo_root
-  _validate_sync_scope
-  _validate_mode
-  _resolve_type
-  _validate_type_sources
+  init_repo_root
+  validate_sync_scope
+  apply_mode
+  resolve_type
+
+  # config + central 且未显式 --type：默认 application（与「向源知识库登记应用知识库」一致）
+  if [[ "${CFG[scope]}" == "config" && "${CFG[mode]}" == "central" && "${CFG[type_explicit]}" == "0" ]]; then
+    CFG[type]=application
+  fi
+
+  validate_type_sources
+
+  # 仅写目标工程 .docsconfig；可选 --mode=central 在本仓库（源知识库）登记目标工程
+  if [[ "${CFG[scope]}" == "config" ]]; then
+    [[ -n "${CFG[docs_abs]}" ]] \
+      || error "必须提供 <目标工程文档目录>（--scope=config）"
+    validate_docs_and_target
+    write_target_docsconfig
+    if [[ "${CFG[mode]}" == "central" ]]; then
+      if [[ "${CFG[type]}" == "application" ]]; then
+        install_central
+      else
+        warn "central 向源知识库登记需 --type=application（当前为 ${CFG[type]}），已仅写入 .docsconfig"
+      fi
+    fi
+    info "完成：docs-init（--scope=config）"
+    print_checklist
+    exit 0
+  fi
 
   # 未提供 <目标工程文档目录> 时的合法性（方案 A：s/r/rs + standalone 可省略）
   if [[ -z "${CFG[docs_abs]}" ]]; then
@@ -966,7 +1043,7 @@ main() {
       error "central 模式必须指定 <目标工程文档目录>"
     fi
     case "${CFG[scope]}" in
-      all|knowledge)
+      all|knowledge|ck)
         usage
         exit 2
         ;;
@@ -974,26 +1051,26 @@ main() {
   fi
 
   if [[ -n "${CFG[docs_abs]}" ]]; then
-    _validate_docs_and_target
+    validate_docs_and_target
   fi
 
-  _validate_agents
-  _compute_derived_paths
+  apply_agents
+  compute_derived_paths
 
   DOC_INIT_STAMP="$(date +%Y-%m-%d_%H-%M-%S)"
 
-  if _needs_agent_install; then
+  if needs_agent_install; then
     [[ -n "${HOME:-}" ]] || error "需要 HOME 环境变量以安装 Agent skills/rules"
-    CFG[home_abs]="$(sdx_abs_path "$HOME")"
+    CFG[home_abs]="$(abs_path "$HOME")"
   fi
 
-  if [[ -z "${CFG[docs_abs]}" ]] && _needs_agent_install; then
+  if [[ -z "${CFG[docs_abs]}" ]] && needs_agent_install; then
     warn "未指定工程文档目录：Agent 配置中 system/ → 文档前缀将默认替换为 docs/（相对工程根）；若需与真实目录一致请传入 <目标工程文档目录>"
   fi
 
   have_perl || warn "未检测到 perl：文件内容替换将被跳过，建议安装 perl。"
 
-  if [[ "${CFG[scope]}" == "all" || "${CFG[scope]}" == "knowledge" ]]; then
+  if [[ "${CFG[scope]}" == "all" || "${CFG[scope]}" == "knowledge" || "${CFG[scope]}" == "ck" ]]; then
     if [[ "${CFG[mode]}" == "central" && "${CFG[type_explicit]}" == "0" && "${CFG[type]}" == "system" ]]; then
       info "提示：central 且未传 --type 时默认 type=system（同步仓库 system/ → 目标）。若需应用知识库 §2.1 子集并登记，请使用 --type=application"
     fi
@@ -1001,11 +1078,7 @@ main() {
   fi
 
   if [[ "${CFG[mode]}" == "central" && "${CFG[type]}" == "application" ]]; then
-    if _central_knowledge_ready; then
-      install_central
-    else
-      warn "central + type=application 已跳过登记：目标文档目录下须存在 knowledge/（${CFG[docs_abs]}/knowledge）"
-    fi
+    install_central
   fi
 
   case "${CFG[scope]}" in
@@ -1025,8 +1098,13 @@ main() {
       ;;
   esac
 
+  # §2.3：已提供文档根且非 dry-run（或 dry-run 预览）时同步 .docsconfig
+  if [[ -n "${CFG[docs_abs]}" ]]; then
+    write_target_docsconfig
+  fi
+
   info "完成：docs-init"
-  _print_checklist
+  print_checklist
 }
 
 main "$@"
