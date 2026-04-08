@@ -22,9 +22,9 @@
 4. `**docs-init.sh` 与确认**：执行 `**docs-init.sh`** 时，若目标工程侧**尚无** `.docsconfig`，只要本次调用满足 §2.3 的写入条件（非 dry-run、已提供 `<目标工程文档目录>` 等），则按 §3.2 **直接**推断并写入，**无须**用户二次确认；**不**适用策略 D 的交互确认条款。
 5. **语义确认（已采纳）**：
   - **`REPO_ROOT`**：**目标工程 Git 仓库根**的**绝对路径**。
-  - **`DOC_ROOT`**：**目标工程知识库**（文档树根）的**绝对路径**（语义上对应历史上的 **`REPO_DOC_ROOT`** 含义）。**禁止**使用 **`export REPO_DOC_ROOT`**、**`export DOC_ROOT`** 等将路径写入**用户/全局环境**，以免多仓库、多会话并行时串变量；见 §2.2.2。
+  - **`DOC_ROOT`**：即 **`docs-init.sh`** 调用时传入的 **`<目标工程文档目录>`**（目标工程知识库目录）经规范化后的**绝对路径**；语义上对应历史上的 **`REPO_DOC_ROOT`**。**若**使用 **`--doc-root=`** 覆盖首段，则 **`DOC_ROOT`** 按 §3.2 步骤 1 计算，**不再**等于该传入路径本身。**禁止** **`export REPO_DOC_ROOT`** / **`export DOC_ROOT`** 等污染用户/全局环境；见 §2.2.2。
   - **`DOC_DIR`**：**知识库目录相对于 `REPO_ROOT` 的路径**（相对路径，POSIX 风格，**无**前导 `/`；如 `docs`、`application`、`system/foo`；由 §2.2 / §3.2 与 **`DOC_ROOT`** 互算校验）。用于模板中「相对工程根」前缀（如原 `docs_slash`）时以 **`DOC_DIR`**（及约定尾斜杠）为准，**不再**单独依赖 `basename "$DOC_ROOT"` 作为唯一来源。
-  - **`<目标工程文档目录>`**（`CFG[docs_abs]`）规范化后与 **`DOC_ROOT` 一致**。**废弃** **`probe_base`** 与 **`probe_doc_segment`** 目录探测。
+  - **`<目标工程文档目录>`**（`CFG[docs_abs]`）经规范化即为落盘之 **`DOC_ROOT`**（除非 §3.2 步骤 1 **`--doc-root`** 覆盖）。**废弃** **`probe_base`** 与 **`probe_doc_segment`** 目录探测。
   - 新增 **`--scope=config`**（缩写 **`c`**，与 `all|knowledge|skills|rules|rs` 并列）：**仅**初始化/更新 `.docsconfig`，不拷贝模板、不安装 Agent skills/rules。
 
 ### 1.3 非目标
@@ -46,12 +46,12 @@
 - **推荐**：每行 `KEY=value`，`#` 行首为注释；使用 UTF-8。
 - **必填键**：
   - **`REPO_ROOT`**：**仓库根**的绝对路径（与 `git rev-parse --show-toplevel` 语义对齐）。
-  - **`DOC_ROOT`**：**目标工程知识库**（文档树根）的绝对路径。
+  - **`DOC_ROOT`**：与 **`docs-init.sh`** 传入的 **目标工程知识库目录**一致，为规范化后的**绝对路径**（与 **`CFG[docs_abs]`** 对齐；**`--doc-root`** 覆盖时见 §3.2）。
   - **`DOC_DIR`**：**目标工程知识库目录**相对于 **`REPO_ROOT`** 的相对路径（无前导 `/`）。须与 **`DOC_ROOT`** 成对满足：`realpath "$REPO_ROOT/$DOC_DIR"` 与 `realpath "$DOC_ROOT"` 相同（或实现等价校验）。若知识库根与仓库根重合（少见），**`DOC_DIR`** 为 **`.`**（实现须统一，禁止与空字符串混用）。
 
 ### 2.2.1 三者关系
 
-- **`DOC_ROOT`** = 知识库根的**绝对**表达；**`DOC_DIR`** = 同一知识库根在仓库内的**相对**表达。
+- **`DOC_ROOT`** = **`docs-init`** 所指向的知识库根目录的**绝对**表达（默认即 positional **`<目标工程文档目录>`** 的规范化结果）；**`DOC_DIR`** = 同一目录相对于 **`REPO_ROOT`** 的**相对**表达。
 - 写入 `.docsconfig` 时：**`REPO_ROOT`**、**`DOC_ROOT`** 由 §3.2 确定后，**`DOC_DIR`** 由 **`REPO_ROOT`** 与 **`DOC_ROOT`** 推算并一并落盘（避免手填不一致）。
 
 ### 2.2.2 禁止使用 `export`（避免多仓库环境串扰）
@@ -85,7 +85,7 @@
 
 ### 3.2 推断顺序（写入 `.docsconfig` 时）
 
-先按 §3.3 由 **`<目标工程文档目录>`**（若已传）解析 **`TARGET_REPO_ROOT`**。再确定本次落盘的 **`REPO_ROOT`**、**`DOC_ROOT`**、**`DOC_DIR`**（**`REPO_ROOT`** 与 **`TARGET_REPO_ROOT`** 应一致；**`DOC_ROOT`** 为知识库绝对路径；**`DOC_DIR`** 由 **`REPO_ROOT`** 与 **`DOC_ROOT`** 推算，见 §2.2.1）：
+先按 §3.3 由 **`<目标工程文档目录>`**（若已传）解析 **`TARGET_REPO_ROOT`**。再确定本次落盘的 **`REPO_ROOT`**、**`DOC_ROOT`**、**`DOC_DIR`**（**`REPO_ROOT`** 与 **`TARGET_REPO_ROOT`** 应一致；**`DOC_ROOT`** 在无 **`--doc-root`** 覆盖时**即**传入目录的规范化绝对路径，见 §1.2；**`DOC_DIR`** 由 **`REPO_ROOT`** 与 **`DOC_ROOT`** 推算，见 §2.2.1）：
 
 1. **CLI `--doc-root=`**（**须**在 `docs-init` 中新增）：若指定，则按首段规范化得 **`seg`**，令 **`REPO_ROOT=$TARGET_REPO_ROOT`**，**`DOC_ROOT=$TARGET_REPO_ROOT/$seg`**（规范化）；**`DOC_DIR=$seg`**（或与 §2.2.1 由 `REPO_ROOT`+`DOC_ROOT` 互算一致）；**不再**执行下列 2–4。
 2. **既有 `$TARGET_REPO_ROOT/.docsconfig`**：若 **未** 使用步骤 1，且该文件**已存在**、可解析，则读取 **`REPO_ROOT`**、**`DOC_ROOT`**、**`DOC_DIR`**（若缺 **`DOC_DIR`** 则仅由 **`REPO_ROOT`**+**`DOC_ROOT`** 补算）。三者与 §2.2.1 一致时**直接采用**；**不再**执行步骤 3。若文件内 **`REPO_ROOT`** 与 §3.3 的 **`TARGET_REPO_ROOT`** 不一致，**推荐**以 **`TARGET_REPO_ROOT`** 为准校正 **`REPO_ROOT`** 并**重算** **`DOC_DIR`**。
