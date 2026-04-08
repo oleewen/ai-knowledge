@@ -69,7 +69,7 @@
 
 1. **CLI `--doc-root=`**（**须**在 `docs-init` 中新增）：若指定，则按首段规范化后得到文档树首段 **`seg`**，令 **`REPO_ROOT=$TARGET_REPO_ROOT`**，**`DOC_ROOT=$TARGET_REPO_ROOT/$seg`**（路径规范化）；**不再**执行下列 2–4。
 2. **既有 `$TARGET_REPO_ROOT/.docsconfig`**：若 **未** 使用步骤 1，且该文件**已存在**、可解析，则读取其中的 **`REPO_ROOT`**、**`DOC_ROOT`**；二者均合法时**直接采用**为本次推断结果，**不再**执行下列 3–4。若文件内 **`REPO_ROOT`** 与 §3.3 的 **`TARGET_REPO_ROOT`** 不一致，**推荐**落盘时以 **`TARGET_REPO_ROOT`** 为准校正 `REPO_ROOT` 字段。
-3. **`sdx_probe_doc_root_segment(probe_base)`**（目录探测）；**`probe_base`** 为规范化后的 **`<目标工程文档目录>`**。得到首段 **`seg`** 后：**`REPO_ROOT=$TARGET_REPO_ROOT`**，**`DOC_ROOT=$TARGET_REPO_ROOT/$seg`**（规范化）。
+3. **`probe_doc_segment(probe_base)`**（目录探测）；**`probe_base`** 为规范化后的 **`<目标工程文档目录>`**。得到首段 **`seg`** 后：**`REPO_ROOT=$TARGET_REPO_ROOT`**，**`DOC_ROOT=$TARGET_REPO_ROOT/$seg`**（规范化）。
 4. **默认首段 `docs`**：在步骤 3 中若需回退默认首段，则 **`seg=docs`**，同上拼接得 **`DOC_ROOT`**。
 
 **摘要**：**`--doc-root` > 既有 `.docsconfig` 内 `REPO_ROOT`/`DOC_ROOT` > 目录探测 > 默认 `docs`**。
@@ -83,7 +83,7 @@
 
 ### 3.4 实现位置（方案甲）
 
-- **推断与探测**：实现为 **`scripts/docs-config.sh` 内的函数**（如 `sdx_normalize_doc_root_segment`、`sdx_probe_doc_root_segment`、`sdx_resolve_repo_doc_root` 等，命名以实现为准），与既有配置/校验函数同文件维护；**不**另建 `sdx-doc-root-resolve.sh` 等平行文件；**不**留在 `.agent/scripts/`。**`docs-init.sh`** 已 `source docs-config.sh`，写入 `.docsconfig` 时直接调用上述函数。
+- **推断与探测**：实现为 **`scripts/docs-config.sh` 内的函数**（如 `sdx_normalize_doc_root_segment`、`probe_doc_segment`、`sdx_resolve_repo_doc_root` 等，命名以实现为准），与既有配置/校验函数同文件维护；**不**另建 `sdx-doc-root-resolve.sh` 等平行文件；**不**留在 `.agent/scripts/`。**`docs-init.sh`** 已 `source docs-config.sh`，写入 `.docsconfig` 时直接调用上述函数。
 - **`.agent`**：仅保留「**读取** `.docsconfig`」的薄封装（见 §4），不再保留完整推断链。
 
 ---

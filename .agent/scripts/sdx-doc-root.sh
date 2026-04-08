@@ -6,7 +6,7 @@
 #   1) 显式传入 override（如 --doc-root）
 #   2) 环境变量 REPO_DOC_ROOT
 #   3) 工程根目录下文件 .sdx-doc-root（git 根优先，其次当前探测基目录）
-#   4) 目录探测：优先 `docs/`，其次应用知识库 `application/knowledge/*`，再者系统知识库 `system/knowledge/*`，然后公司知识库 `company/knowledge/*`，最后探测知识库 `*/knowledge/*`（见 sdx_probe_doc_root_segment）
+#   4) 目录探测：优先 `docs/`，其次应用知识库 `application/knowledge/*`，再者系统知识库 `system/knowledge/*`，然后公司知识库 `company/knowledge/*`，最后探测知识库 `*/knowledge/*`（见 probe_doc_segment）
 #   5) 无匹配目录时默认 docs
 #
 # Usage（由其它脚本 source）：
@@ -39,8 +39,8 @@ sdx_read_sdx_doc_root_file() {
   printf '%s' "$line"
 }
 
-# Usage: sdx_probe_doc_root_segment <probe_base>
-sdx_probe_doc_root_segment() {
+# Usage: probe_doc_segment <probe_base>
+probe_doc_segment() {
   local b="${1:-.}"
   if [[ "$b" != /* ]]; then
     b="$(cd "$b" 2>/dev/null && pwd || printf '%s' "$b")"
@@ -122,7 +122,7 @@ _sdx_doc_root_segment() {
     return
   done
 
-  sdx_probe_doc_root_segment "$probe_base"
+  probe_doc_segment "$probe_base"
 }
 
 # Usage: sdx_resolve_repo_doc_root [override] [probe_base]
