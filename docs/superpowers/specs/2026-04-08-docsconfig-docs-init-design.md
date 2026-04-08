@@ -2,7 +2,7 @@
 
 **日期**: 2026-04-08  
 **状态**: 待实施  
-**范围**: 将原 `.agent/scripts/sdx-doc-root.sh` 的文档根推断合并入 `scripts/docs-init.sh`；在目标工程仓库根落盘 `.docsconfig`；运行时各 `validate-*.sh` 仅从 `.docsconfig` 读取 `REPO_ROOT` 与 `DOC_ROOT`；删除 `sdx-doc-root.sh` 与 `sdx-validate-bootstrap.sh`；**运行时**缺失 `.docsconfig` 时采用策略 **D**（见 §4.2）；**`docs-init.sh` 执行时**若缺少 `.docsconfig`，在符合写入条件时**直接**落盘，**无须**用户确认（见 §3.0）。
+**范围**: 将原 `.agent/scripts/sdx-doc-root.sh` 的文档根推断合并入 `scripts/docs-init.sh`；在目标工程仓库根落盘 `.docsconfig`；运行时各 `validate-*.sh` 从 `.docsconfig` 读取 **`REPO_ROOT`**、**`DOC_ROOT`**、**`DOC_DIR`**；删除 `sdx-doc-root.sh` 与 `sdx-validate-bootstrap.sh`；**运行时**缺失 `.docsconfig` 时采用策略 **D**（见 §4.2）；**`docs-init.sh` 执行时**若缺少 `.docsconfig`，在符合写入条件时**直接**落盘，**无须**用户确认（见 §3.0）。
 
 ---
 
@@ -21,7 +21,10 @@
 3. **策略 D（仅 `validate-*` / 运行时 bootstrap）**：若缺少 `.docsconfig`，**提示用户**并**确认**是否代为执行 `docs-init` 的「仅写 `.docsconfig`」模式；非交互环境打印可复制的命令并失败退出（§4.2）。
 4. `**docs-init.sh` 与确认**：执行 `**docs-init.sh`** 时，若目标工程侧**尚无** `.docsconfig`，只要本次调用满足 §2.3 的写入条件（非 dry-run、已提供 `<目标工程文档目录>` 等），则按 §3.2 **直接**推断并写入，**无须**用户二次确认；**不**适用策略 D 的交互确认条款。
 5. **语义确认（已采纳）**：
-  - **`DOC_ROOT`** 由 §3.2 推断链确定。**`<目标工程文档目录>`**（`CFG[docs_abs]`）规范化后**即文档树根绝对路径**，与 **`DOC_ROOT` 一致**；用于路径替换等语义的「文档目录最后一级」取 **`DOC_ROOT` 的最后一级目录名**（`basename "$DOC_ROOT"`）。**废弃**独立概念 **`probe_base`** 及对 **`probe_doc_segment`** 的目录探测调用。
+  - **`REPO_ROOT`**：**目标工程 Git 仓库根**的**绝对路径**。
+  - **`DOC_ROOT`**：**目标工程知识库**（文档树根）的**绝对路径**；语义上即既有 **`REPO_DOC_ROOT`**（脚本可 `export REPO_DOC_ROOT="$DOC_ROOT"`）。
+  - **`DOC_DIR`**：**知识库目录相对于 `REPO_ROOT` 的路径**（相对路径，POSIX 风格，**无**前导 `/`；如 `docs`、`application`、`system/foo`；由 §2.2 / §3.2 与 **`DOC_ROOT`** 互算校验）。用于模板中「相对工程根」前缀（如原 `docs_slash`）时以 **`DOC_DIR`**（及约定尾斜杠）为准，**不再**单独依赖 `basename "$DOC_ROOT"` 作为唯一来源。
+  - **`<目标工程文档目录>`**（`CFG[docs_abs]`）规范化后与 **`DOC_ROOT` 一致**。**废弃** **`probe_base`** 与 **`probe_doc_segment`** 目录探测。
   - 新增 **`--scope=config`**（缩写 **`c`**，与 `all|knowledge|skills|rules|rs` 并列）：**仅**初始化/更新 `.docsconfig`，不拷贝模板、不安装 Agent skills/rules。
 
 ### 1.3 非目标
@@ -42,8 +45,14 @@
 
 - **推荐**：每行 `KEY=value`，`#` 行首为注释；使用 UTF-8。
 - **必填键**：
-  - `**REPO_ROOT`**：目标工程仓库根绝对路径（与现各 `validate-*.sh` 中 `git rev-parse --show-toplevel` 语义对齐）。
-  - `**DOC_ROOT**`：文档树根目录绝对路径；**语义等同于**既有 `**REPO_DOC_ROOT`**（脚本可继续 `export REPO_DOC_ROOT="$DOC_ROOT"` 以兼容现有代码）。
+  - **`REPO_ROOT`**：**仓库根**的绝对路径（与 `git rev-parse --show-toplevel` 语义对齐）。
+  - **`DOC_ROOT`**：**目标工程知识库**（文档树根）的绝对路径；兼容导出 **`REPO_DOC_ROOT="$DOC_ROOT"`**。
+  - **`DOC_DIR`**：**目标工程知识库目录**相对于 **`REPO_ROOT`** 的相对路径（无前导 `/`）。须与 **`DOC_ROOT`** 成对满足：`realpath "$REPO_ROOT/$DOC_DIR"` 与 `realpath "$DOC_ROOT"` 相同（或实现等价校验）。若知识库根与仓库根重合（少见），**`DOC_DIR`** 为 **`.`**（实现须统一，禁止与空字符串混用）。
+
+### 2.2.1 三者关系
+
+- **`DOC_ROOT`** = 知识库根的**绝对**表达；**`DOC_DIR`** = 同一知识库根在仓库内的**相对**表达。
+- 写入 `.docsconfig` 时：**`REPO_ROOT`**、**`DOC_ROOT`** 由 §3.2 确定后，**`DOC_DIR`** 由 **`REPO_ROOT`** 与 **`DOC_ROOT`** 推算并一并落盘（避免手填不一致）。
 
 ### 2.3 写入与更新策略
 
@@ -70,15 +79,15 @@
 
 ### 3.2 推断顺序（写入 `.docsconfig` 时）
 
-先按 §3.3 由 **`<目标工程文档目录>`**（若已传）解析 **`TARGET_REPO_ROOT`**。再确定本次落盘的 **`REPO_ROOT`** 与 **`DOC_ROOT`**（均为绝对路径；**`REPO_ROOT`** 与 **`TARGET_REPO_ROOT`** 应一致）：
+先按 §3.3 由 **`<目标工程文档目录>`**（若已传）解析 **`TARGET_REPO_ROOT`**。再确定本次落盘的 **`REPO_ROOT`**、**`DOC_ROOT`**、**`DOC_DIR`**（**`REPO_ROOT`** 与 **`TARGET_REPO_ROOT`** 应一致；**`DOC_ROOT`** 为知识库绝对路径；**`DOC_DIR`** 由 **`REPO_ROOT`** 与 **`DOC_ROOT`** 推算，见 §2.2.1）：
 
-1. **CLI `--doc-root=`**（**须**在 `docs-init` 中新增）：若指定，则按首段规范化得文档树首段 **`seg`**，令 **`REPO_ROOT=$TARGET_REPO_ROOT`**，**`DOC_ROOT=$TARGET_REPO_ROOT/$seg`**（路径规范化）；**不再**执行下列 2–4。
-2. **既有 `$TARGET_REPO_ROOT/.docsconfig`**：若 **未** 使用步骤 1，且该文件**已存在**、可解析，则读取其中的 **`REPO_ROOT`**、**`DOC_ROOT`**；二者均合法时**直接采用**为本次推断结果，**不再**执行步骤 3。若文件内 **`REPO_ROOT`** 与 §3.3 的 **`TARGET_REPO_ROOT`** 不一致，**推荐**落盘时以 **`TARGET_REPO_ROOT`** 为准校正 **`REPO_ROOT`** 字段。
-3. **否则**：将规范化后的 **`<目标工程文档目录>`** **直接作为** **`DOC_ROOT`**（用户传入路径即文档树根）；**`REPO_ROOT=$TARGET_REPO_ROOT`**（§3.3 已由 Git 解析）。若本次调用**未**提供 `<目标工程文档目录>` 且须写入 `.docsconfig`，则 **`DOC_ROOT=$TARGET_REPO_ROOT/docs`**（默认最后一级为 **`docs`**）。**不**再使用 **`probe_base`**，**不**调用 **`probe_doc_segment`** 做目录探测。
+1. **CLI `--doc-root=`**（**须**在 `docs-init` 中新增）：若指定，则按首段规范化得 **`seg`**，令 **`REPO_ROOT=$TARGET_REPO_ROOT`**，**`DOC_ROOT=$TARGET_REPO_ROOT/$seg`**（规范化）；**`DOC_DIR=$seg`**（或与 §2.2.1 由 `REPO_ROOT`+`DOC_ROOT` 互算一致）；**不再**执行下列 2–4。
+2. **既有 `$TARGET_REPO_ROOT/.docsconfig`**：若 **未** 使用步骤 1，且该文件**已存在**、可解析，则读取 **`REPO_ROOT`**、**`DOC_ROOT`**、**`DOC_DIR`**（若缺 **`DOC_DIR`** 则仅由 **`REPO_ROOT`**+**`DOC_ROOT`** 补算）。三者与 §2.2.1 一致时**直接采用**；**不再**执行步骤 3。若文件内 **`REPO_ROOT`** 与 §3.3 的 **`TARGET_REPO_ROOT`** 不一致，**推荐**以 **`TARGET_REPO_ROOT`** 为准校正 **`REPO_ROOT`** 并**重算** **`DOC_DIR`**。
+3. **否则**：将规范化后的 **`<目标工程文档目录>`** **直接作为** **`DOC_ROOT`**；**`REPO_ROOT=$TARGET_REPO_ROOT`**。再按 §2.2.1 由 **`REPO_ROOT`**、**`DOC_ROOT`** 计算 **`DOC_DIR`**。若本次调用**未**提供 `<目标工程文档目录>` 且须写入 `.docsconfig`，则 **`DOC_ROOT=$TARGET_REPO_ROOT/docs`**，**`DOC_DIR=docs`**（默认）。**不**使用 **`probe_base`** / **`probe_doc_segment`**。
 
-**摘要**：**`--doc-root` > 既有 `.docsconfig` 内 `REPO_ROOT`/`DOC_ROOT` > 用户传入文档目录即 `DOC_ROOT`（或默认 `$REPO_ROOT/docs`）**。
+**摘要**：**`--doc-root` > 既有 `.docsconfig` > 用户传入路径即 `DOC_ROOT`（或默认 `docs`）**；**`DOC_DIR`** 始终与 **`REPO_ROOT`+`DOC_ROOT`** 对齐。
 
-**与「目标工程文档目录」**：落地与校验均以 **`DOC_ROOT`** 为准；其**最后一级目录名**为 **`basename "$DOC_ROOT"`**，供 `docs_slash` 等相对工程根替换使用。
+**与模板替换**：相对工程根的知识库前缀以 **`DOC_DIR`** 为准（实现可导出为带尾斜杠形式，如 `docs/`，与 **`docs_slash`** 一类变量对齐）。
 
 **说明**：旧版 **`REPO_DOC_ROOT` / `SDX_DOC_ROOT` / `.sdx-doc-root`** 不再参与本链；迁移依赖 **步骤 2** 的既有 **`.docsconfig`**，或 **`--doc-root`**，或重新执行 **`docs-init`** 生成新文件。
 
@@ -111,7 +120,7 @@
 3. **自 `$PWD` 向上**（逐层父目录，上限 N 层）查找 `**/.docsconfig`**，命中则所在目录即为 `**TARGET_REPO_ROOT**`。
 4. 仍无法确定 → **§4.2** 策略 D。
 
-得到 `**TARGET_REPO_ROOT`** 后：**若存在 `$TARGET_REPO_ROOT/.docsconfig`**：source 或逐行解析，导出 `**REPO_ROOT**`、`**DOC_ROOT**`（并 `**export REPO_DOC_ROOT="$DOC_ROOT"**` 以兼容 Python 与旧注释）。文件内 `**REPO_ROOT**` 可与步骤 1–3 解析结果交叉校验（不一致时以实现约定为准：或警告、或以文件为准，须在实现 PR 中写死一种）。
+得到 **`TARGET_REPO_ROOT`** 后：**若存在 `$TARGET_REPO_ROOT/.docsconfig`**：source 或逐行解析，导出 **`REPO_ROOT`**、**`DOC_ROOT`**、**`DOC_DIR`**（并 **`export REPO_DOC_ROOT="$DOC_ROOT"`** 以兼容既有脚本）。若文件缺 **`DOC_DIR`**，由 **`REPO_ROOT`** 与 **`DOC_ROOT`** 按 §2.2.1 补算。文件内 **`REPO_ROOT`** 可与步骤 1–3 解析结果交叉校验（不一致时以实现约定为准）。
 
 ### 4.2 缺失 `.docsconfig`（策略 D，仅运行时）
 
@@ -131,7 +140,7 @@
 
 ### 4.4 `validate-agent-md-links.sh`
 
-- 先按 §4.1 加载 `**REPO_ROOT`**、`**DOC_ROOT`/`REPO_DOC_ROOT**`；缺失则 §4.2。
+- 先按 §4.1 加载 **`REPO_ROOT`**、**`DOC_ROOT`** / **`REPO_DOC_ROOT`**、**`DOC_DIR`**；缺失则 §4.2。
 - 跨 `.agent` 链接判定逻辑不变，仅变量来源改为 `**.docsconfig**`。
 
 ---
@@ -147,7 +156,7 @@
 
 ## 6. 实施自检（占位符与一致性）
 
-- `.docsconfig` 键名与 `export REPO_DOC_ROOT` 兼容路径已全部核对。
+- `.docsconfig` 中 **`REPO_ROOT`** / **`DOC_ROOT`** / **`DOC_DIR`** 与 §2.2.1 一致；`export REPO_DOC_ROOT="$DOC_ROOT"` 兼容路径已全部核对。
 - `docs-init` 中模板 `**CFG[repo_root]`** 与目标 `**REPO_ROOT**` 变量命名在代码中无混用。
 - `--scope=config` 与 `--mode=central` / `install_central` 组合行为已定义。
 - 非交互失败码与 CI 文档一致。
