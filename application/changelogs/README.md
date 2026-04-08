@@ -7,7 +7,7 @@
 
 ## 人类可读文件
 
-- [CHANGELOG.md](CHANGELOG.md) — 知识库层面的维护性变更记录（导航、规范、模板链路）
+- [CHANGELOG.md](CHANGELOG.md) — `application/` 层面的维护性变更记录（导航、规范、模板链路）
 - 细粒度变更可放在提交信息或 ADR，不要求在此重复抄录
 
 ---

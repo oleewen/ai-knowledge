@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # update-application-archive-log.sh
-# 作用：向 .agent 侧 ARCHIVE-LOG.md 追加归档锚点记录
+# 作用：向应用侧 ARCHIVE-LOG.md 追加归档锚点记录
 #
 # 用法：
 #   .agent/skills/docs-archive/scripts/update-application-archive-log.sh \
@@ -17,7 +17,7 @@ Usage:
   update-application-archive-log.sh --app APP --changelog-id ID --changelog-time TIME [--archived-at ISO_TIME]
 
 Required:
-  --app             应用名（用于 .agent 日志分组）
+  --app             应用名（对应 system/application-{app}/）
   --changelog-id    变更唯一标识
   --changelog-time  变更时间（原始记录时间）
 
@@ -83,7 +83,7 @@ escape_md_cell() {
     printf '%s' "${raw}"
 }
 
-LOG_FILE=".agent/skills/docs-archive/logs/application-${APP}/ARCHIVE-LOG.md"
+LOG_FILE="system/application-${APP}/changelogs/ARCHIVE-LOG.md"
 mkdir -p "$(dirname "${LOG_FILE}")"
 
 if [[ ! -f "${LOG_FILE}" ]]; then
@@ -97,4 +97,4 @@ fi
 
 echo "| $(escape_md_cell "${CHANGELOG_ID}") | $(escape_md_cell "${CHANGELOG_TIME}") | $(escape_md_cell "${ARCHIVED_AT}") |" >> "${LOG_FILE}"
 
-echo "[OK] 已追加 .agent 应用归档锚点: ${LOG_FILE}"
+echo "[OK] 已追加应用归档锚点: ${LOG_FILE}"

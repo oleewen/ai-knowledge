@@ -4,4 +4,4 @@
 
 ---
 
-- [CHANGE-LOG.md](CHANGE-LOG.md) — 知识库层面的维护性变更记录（导航、规范、模板链路与归档批次）
+- [CHANGE-LOG.md](CHANGE-LOG.md) — 系统知识库 `system/` 层面的维护性变更记录（导航、规范、模板链路与归档批次）

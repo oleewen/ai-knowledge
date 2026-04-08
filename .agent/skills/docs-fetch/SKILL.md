@@ -3,7 +3,7 @@
 ## name: docs-fetch
 description: >
   从已注册的应用知识库（central 模式登记的目标工程）拉取最新文档内容，
-  更新本仓库联邦镜像（目标态槽位见 system/application-{name}/ 设计），并记录同步 changelog。
+  更新本仓库联邦镜像 applications/app-{APPNAME}/（目标态槽位见 system/application-{name}/ 设计），并记录同步 changelog。
   当用户执行 /docs-fetch、需要同步应用知识库内容、更新联邦镜像、
   或应用侧文档有更新需要拉取到中央库时，务必使用本技能。
   即使用户只说"同步一下应用文档"、"拉取最新知识库"、"更新应用镜像"，也应触发本技能。
