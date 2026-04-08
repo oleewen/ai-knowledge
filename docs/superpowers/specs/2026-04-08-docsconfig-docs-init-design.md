@@ -20,7 +20,7 @@
 2. **推断写入合并进 `docs-init`**：实现放在 **`scripts/`** 侧（方案甲），由 `docs-init` 在适当时机调用并写入；删除 `.agent` 下两脚本。
 3. **策略 D**：若运行时缺少 `.docsconfig`，**提示用户**并**确认**是否执行 `docs-init` 的「仅写 `.docsconfig`」模式；非交互环境打印可复制的命令并失败退出。
 4. **语义确认（已采纳）**：
-   - **`DOC_ROOT`** 与现 **`sdx_resolve_repo_doc_root(override, probe_base)`** 一致；**`<目标工程文档目录>`** 仅作为 **`probe_base`**，**不**强制等于最终 `DOC_ROOT`。
+   - **`DOC_ROOT`** 由 §3.2 推断链确定；**`<目标工程文档目录>`** 仅作为 **`probe_base`**（目录探测），**不**强制等于最终 `DOC_ROOT`。
    - 新增 **`--scope=config`**（缩写 **`c`**，与 `all|knowledge|skills|rules|rs` 并列）：**仅**初始化/更新 `.docsconfig`，不拷贝模板、不安装 Agent skills/rules。
 
 ### 1.3 非目标
