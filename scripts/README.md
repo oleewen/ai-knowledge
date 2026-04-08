@@ -19,7 +19,7 @@ Slash 技能命令请查看 [.agent/skills/README.md](../.agent/skills/README.md
    | 任意 + **`--type=company`** | — | 仓库 `company/` | 公司级模板同步 |
 
    - **内容替换（application 类型）**：`system` → `application`，`系统` → `应用`；文件名/内容：`system_meta` → `docs_meta`，`SYSTEM_INDEX`/`APPLICATION_INDEX` → `INDEX_GUIDE`（见 `docs-init` `_rewrite_doc_file`）。
-   - **system/company 类型**：仅做路径前缀类替换（`_rewrite_doc_file_minimal`），避免把「组织级 system」语义整体替换为「应用」。
+   - **system/company 类型**：仅做路径前缀类替换（`rewrite_agent_file`），不做词界 `system`→`application` 与中文「系统」→「应用」替换。
 
 2. **Agent 配置**：为多 Agent 安装 skills 和 rules（**安装根为用户主目录 `$HOME`**，不写入目标工程根）
    - 支持 Agent：`cursor`、`trea`、`claude`，可多选（如 `--agents=cursor,trea`）
@@ -183,7 +183,7 @@ ai-knowledge/
 | 模式 × type | 模板源 | 目标路径 | 替换规则 / 附加步骤 |
 |-------------|--------|----------|---------------------|
 | standalone，默认 type=application | `application/` | 目标文档目录 | 全量；`system`→`application`；排除 `DESIGN.md`、`CONTRIBUTING.md` |
-| central，默认 type=system | `system/` | 目标文档目录 | 最小替换（`_rewrite_doc_file_minimal`） |
+| central，默认 type=system | `system/` | 目标文档目录 | 最小替换（`rewrite_agent_file`） |
 | central，`--type=application` | `application/` §2.1 子集 | 目标文档目录 | 全量替换 + 登记 `application/INDEX_GUIDE.md`「十」+ `system/application-<slug>/` |
 | `--type=company` | `company/` | 目标文档目录 | 最小替换 |
 

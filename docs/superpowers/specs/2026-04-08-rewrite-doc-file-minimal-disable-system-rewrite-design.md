@@ -1,14 +1,14 @@
-# `rewrite_doc_file_minimal` 定向替换与日志行为设计
+# `rewrite_agent_file` 定向替换与日志行为设计
 
 日期：2026-04-08  
-范围：`scripts/docs-init.sh`（仅 `rewrite_doc_file_minimal`）  
+范围：`scripts/docs-init.sh`（仅 `rewrite_agent_file`）  
 状态：已确认（待实现）
 
 ---
 
 ## 1. 背景与目标
 
-当前 `rewrite_doc_file_minimal` 会执行两类替换：
+当前 `rewrite_agent_file` 会执行两类替换：
 
 - `.agent/ -> agent_slash`
 - `system/ -> docs_slash`（不区分大小写）
@@ -23,7 +23,7 @@
 
 ## 2. 变更边界
 
-- 仅修改 `scripts/docs-init.sh` 中 `rewrite_doc_file_minimal`
+- 仅修改 `scripts/docs-init.sh` 中 `rewrite_agent_file`
 - 不修改 `rewrite_doc_file`、`rewrite_agent_file`
 - 不新增 CLI 参数，不变更 `--type` / `--mode` / `--scope` 语义
 - 不调整调用链路与其他安装流程逻辑
@@ -34,7 +34,7 @@
 
 ### 3.1 非 dry-run 行为
 
-`rewrite_doc_file_minimal` 在非 dry-run 分支中：
+`rewrite_agent_file` 在非 dry-run 分支中：
 
 1. 执行 `.agent/ -> agent_slash`（保持大小写敏感）
 2. 仅检测 `system/` 命中（不区分大小写），不执行替换
@@ -42,7 +42,7 @@
 
 ### 3.2 dry-run 行为
 
-`rewrite_doc_file_minimal` 在 dry-run 分支中：
+`rewrite_agent_file` 在 dry-run 分支中：
 
 1. 不落盘修改文件
 2. `.agent/`：输出“将替换”明细日志（文件、行号、片段）
@@ -98,4 +98,4 @@
 
 ## 7. 结论
 
-本设计以最小改动将 `rewrite_doc_file_minimal` 调整为“仅执行 `.agent/` 替换 + 对 `system/` 命中告警”，并在 dry-run 下提供可审计的明细日志，从而兼顾稳定性与可观测性。
+本设计以最小改动将 `rewrite_agent_file` 调整为“仅执行 `.agent/` 替换 + 对 `system/` 命中告警”，并在 dry-run 下提供可审计的明细日志，从而兼顾稳定性与可观测性。

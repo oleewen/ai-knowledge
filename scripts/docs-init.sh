@@ -455,31 +455,6 @@ rewrite_doc_file() {
   rewrite_docs_prefix_to_doc_dir "$file" "$docs_slash"
 }
 
-# 组织级 system/、company/ 模板：仅替换路径前缀，不将词「system」整体改为「application」（避免破坏「组织级 system」语义）
-rewrite_doc_file_minimal() {
-  local file="$1" agent_slash="$2" docs_slash="$3"
-  [[ -f "$file" ]] && is_text_file "$file" || return 0
-  have_perl || { warn "未安装 perl，跳过内容替换：$file"; return 0; }
-
-  # dry-run：仅打印明细，不修改文件
-  if [[ "${CFG[dry_run]:-0}" == "1" ]]; then
-    log_rewrite_hits "INFO" ".agent->agent_slash(dry-run)" "$file" '\.agent/'
-    log_rewrite_hits "WARN" "system-rewrite-disabled(dry-run)" "$file" 'system/' "i" \
-      | while IFS= read -r line; do warn "$line"; done
-    return 0
-  fi
-
-  # 非 dry-run：仅保留 .agent/ 替换
-  SDX_AGENT_SLASH="$agent_slash" \
-    perl -CSD -i -pe '
-      s{\.agent/}{$ENV{SDX_AGENT_SLASH}}g;
-    ' "$file" 2>/dev/null || true
-
-  # system/ 命中仅告警，不执行替换
-  log_rewrite_hits "WARN" "system-rewrite-disabled" "$file" 'system/' "i" \
-    | while IFS= read -r line; do warn "$line"; done
-}
-
 # Agent 树替换：.agent/ → agent_slash；system/ → docs_slash（不做 system→application 词替换）
 rewrite_agent_file() {
   local file="$1" agent_slash="$2" docs_slash="$3"
@@ -621,7 +596,7 @@ install_org_template_to_docs() {
     fi
     ensure_dir "$(dirname "$dst_f")"
     cp "$src_f" "$dst_f"
-    rewrite_doc_file_minimal "$dst_f" "$agent_slash" "$docs_slash"
+    rewrite_agent_file "$dst_f" "$agent_slash" "$docs_slash"
   done < <(cd "$src_root" && find . -type f -print0)
 
   info "    ${label}/ 同步完成"

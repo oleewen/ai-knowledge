@@ -96,7 +96,7 @@
 
 ## 7. 非目标
 
-- 不变更 `rewrite_doc_file()` / `rewrite_doc_file_minimal()` 的替换逻辑
+- 不变更 `rewrite_doc_file()` / `rewrite_agent_file()` 的替换逻辑
 - 不新增 CLI 参数、环境变量或兼容开关
 - 不调整 `install_agent_skills()` / `install_agent_rules()` 调用时序
 
