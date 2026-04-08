@@ -376,7 +376,15 @@ replace_filename() {
 # stdout: REPO_ROOT 绝对路径
 docsconfig_repo_root_from_doc_root() {
     local doc_root="${1:?doc_root}"
-    git -C "$doc_root" rev-parse --show-toplevel 2>/dev/null || true
+    local dr gr
+    dr="$(cd -P "$doc_root" 2>/dev/null && pwd)" || return 0
+    gr="$(git -C "$dr" rev-parse --show-toplevel 2>/dev/null || true)"
+    [[ -n "$gr" ]] || return 0
+    # 仅在 DOC_ROOT 形如 <REPO_ROOT>/docs（直接子目录）时采用 Git 根；
+    # 避免被更上层父仓库“吸走”到非目标工程目录。
+    if [[ "$(dirname "$dr")" == "$gr" ]]; then
+        printf '%s\n' "$gr"
+    fi
 }
 
 # 由 DOC_ROOT 兜底推导 REPO_ROOT（取父目录，绝对规范化）
@@ -488,8 +496,7 @@ post_init_checklist() {
 初始化完成！建议核对清单
 ================================================================================
 
-[ ] docs_meta.yaml 已随模板落地；若目录名不再是 app-APPNAME，
-    可酌情更新其中 template_directory 或描述，避免误导 Agent
+[ ] docs_meta.yaml 已随模板落地
 
 [ ] INDEX_GUIDE.md 内相对链接在目标工程中可访问
 
