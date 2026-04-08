@@ -7,19 +7,14 @@ Slash 技能命令请查看 [.agent/skills/README.md](../.agent/skills/README.md
 
 ## 功能概述
 
-1. **文档与知识库**：按 **`--type` × `--mode`** 从中央库多根目录同步到目标文档目录（**工程根**默认可用 `-r` 创建；详见 [知识库 v2 设计](../docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md) §6）：
+1. **文档与知识库**：按 **`--type` × `--mode`** 从中央库多根目录同步到目标文档目录（**工程根**默认可用 `-r` 创建；
 
-   | 模式 | 未传 `--type` 时默认 | 源目录 | 行为摘要 |
-   |------|---------------------|--------|----------|
-   | **standalone** | `application` | `application/` | 全量拷贝（排除 `DESIGN.md`、`CONTRIBUTING.md`）；内容替换见 `docs-init` |
-   | **central** | **`system`**（例外） | 默认 **`system/`** | 组织级系统知识库模板同步到目标；**不**执行应用登记 |
-   | **standalone** | `application`（显式可省略） | `application/` | 同上 |
-   | **central** + **`--type=application`**（须显式） | — | `application/` **§2.1 子集** | 仅 `changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs_meta.yaml`、`manifest.yaml` + 本仓库 `application/INDEX_GUIDE.md`「十」登记 + `system/application-<slug>/` 槽位 |
-   | 任意 + **`--type=system`** | — | 仓库 `system/` | 组织级模板同步 |
-   | 任意 + **`--type=company`** | — | 仓库 `company/` | 公司级模板同步 |
-
-   - **内容替换（application 类型）**：`system` → `application`，`系统` → `应用`；文件名/内容：`system_meta` → `docs_meta`，`SYSTEM_INDEX`/`APPLICATION_INDEX` → `INDEX_GUIDE`（见 `docs-init` `_rewrite_doc_file`）。
-   - **system/company 类型**：仅做路径前缀类替换（`rewrite_agent_file`），不做词界 `system`→`application` 与中文「系统」→「应用」替换。
+| `mode` | `type` | 源目录 | 行为摘要 |
+|------|---------------------|--------|----------|
+| **standalone** | `application` | `application/` | 全量拷贝（排除 `DESIGN.md`、`CONTRIBUTING.md`）；内容替换见 `docs-init` |
+| **central**  | `application` | `application/` **子集** | 仅 `changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs_meta.yaml`、`manifest.yaml` + 执行应用知识库登记 `system/application-<slug>/`  |
+| **central**  | **`system`** | **`system/`** | 系统知识库同步到；执行系统知识库登记 `company/system-<slug>/` |
+| **central** | **`company`** | **`company/`** | 公司级模板同步；  |
 
 2. **Agent 配置**：为多 Agent 安装 skills 和 rules（**安装根为用户主目录 `$HOME`**，不写入目标工程根）
    - 支持 Agent：`cursor`、`trea`、`claude`，可多选（如 `--agents=cursor,trea`）
@@ -44,9 +39,7 @@ Slash 技能命令请查看 [.agent/skills/README.md](../.agent/skills/README.md
 - **`validate_bootstrap_docsconfig`**：按规格 §4.1.1 定位仓库根、加载三键（不 `export`）；缺文件或缺 `DOC_DIR` 时走策略 D / §4.2.1。
 - **`resolve_repo_doc_root`**：返回 **`validate_bootstrap_docsconfig`** 已加载的 **`DOC_ROOT`**（与 `.docsconfig` 一致），**无参数、不支持 override**。典型写法：**`DOC_ROOT="$(resolve_repo_doc_root)"`**。
 
-规格与迁移说明见 [docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md](../docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md)。首段目录探测与 validate 引导已由 **`.docsconfig`** + **`docsconfig-bootstrap.sh`** 取代；旧版 **`sdx-doc-root.sh`** / **`sdx-validate-bootstrap.sh`** 已移除。
-
-**`.agent` 内 Markdown 链接自检**（可选，在仓库根执行）：`bash .agent/scripts/validate-agent-md-links.sh` —— 校验 `.agent/**/*.md` 中链接：`.agent` 内互链须存在；跨出 `.agent` 须落在 `REPO_ROOT`/`DOC_ROOT` 下且存在（Agent 语义可达）。落实 [链接可达性要求](../docs/superpowers/specs/2026-04-07-agent-doc-link-reachability-requirements.md)。
+**`.agent` 内 Markdown 链接自检**（可选，在仓库根执行）：`bash .agent/scripts/validate-agent-md-links.sh` —— 校验 `.agent/**/*.md` 中链接：`.agent` 内互链须存在；跨出 `.agent` 须落在 `REPO_ROOT`/`DOC_ROOT` 下且存在（Agent 语义可达）。
 
 ## 使用方式
 

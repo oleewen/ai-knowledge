@@ -1,6 +1,7 @@
 # changelogs — 变更留痕与索引运维
 
 本目录聚焦“变更可追溯性”，只记录日志与索引产物入口，不重复阶段文档写作规范。  
+**元数据**： [changelogs_meta.yaml](changelogs_meta.yaml)
 
 ---
 

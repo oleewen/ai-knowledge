@@ -514,11 +514,17 @@ install_application_full_to_docs() {
     [[ -z "$rel" ]] && continue
     base="${rel##*/}"
     [[ "$base" == "DESIGN.md" || "$base" == "CONTRIBUTING.md" ]] && continue
+    [[ "$base" == "README.md" || "$base" == "README-s.md" || "$base" == "README-c.md" ]] && continue
 
     src_f="$src_root/$rel"
     dst_f="$dst_root/$(map_path_system_to_application "$rel")"
     application_copy_one "$src_f" "$dst_f" "$agent_slash" "$docs_slash"
   done < <(cd "$src_root" && find . -type f -print0)
+
+  # mode=s 使用 README-s.md 作为目标 README.md；若缺失则回退 README.md
+  local readme_src="$src_root/README-s.md"
+  [[ -f "$readme_src" ]] || readme_src="$src_root/README.md"
+  [[ -f "$readme_src" ]] && application_copy_one "$readme_src" "$dst_root/README.md" "$agent_slash" "$docs_slash"
 
   info "    application/ 全量同步完成"
 }
@@ -548,10 +554,15 @@ install_application_subset_to_docs() {
     done < <(cd "$src_root/$d" && find . -type f -print0)
   done
 
-  for base in INDEX_GUIDE.md README.md docs_meta.yaml manifest.yaml; do
+  for base in INDEX_GUIDE.md docs_meta.yaml manifest.yaml; do
     [[ -f "$src_root/$base" ]] || continue
     application_copy_one "$src_root/$base" "$dst_root/$(map_path_system_to_application "$base")" "$agent_slash" "$docs_slash"
   done
+
+  # mode=c 使用 README-c.md 作为目标 README.md；若缺失则回退 README.md
+  local readme_src="$src_root/README-c.md"
+  [[ -f "$readme_src" ]] || readme_src="$src_root/README.md"
+  [[ -f "$readme_src" ]] && application_copy_one "$readme_src" "$dst_root/README.md" "$agent_slash" "$docs_slash"
 
   info "    application/ §2.1 子集同步完成"
 }

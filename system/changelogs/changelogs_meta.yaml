@@ -1,0 +1,51 @@
+# system/changelogs — 目录级元数据（SSOT）
+schema_version: "1.1"
+
+identity:
+  id: "DIR-SYSTEM-CHANGELOGS"
+  name: "变更日志（system/changelogs）"
+  description: "system 层 changelogs 目录元数据。本文件为该目录唯一元数据入口。"
+  updated_at: "2026-04-08"
+  owner: "docs"
+  status: "active"
+
+role:
+  scope: "system"
+  type: "changelogs"
+  is_system_level_index: true
+
+repository:
+  root_relative: "changelogs"
+  child_directories: []
+  child_files:
+    - "README.md"
+    - "CHANGE-LOG.md"
+    - "changelogs_meta.yaml"
+
+pipeline:
+  outputs:
+    ssot_file: "changelogs_meta.yaml"
+    directory_role: "system 侧变更留痕入口目录"
+
+integration:
+  consumed_by:
+    - "../INDEX_GUIDE.md"
+    - "../../INDEX_GUIDE.md"
+  key_fields:
+    changelogs_directory:
+      - "identity.id"
+      - "role.scope"
+      - "repository.root_relative"
+
+layers:
+  - key: "chg"
+    code: "CHANGELOGS"
+    order: 1
+    entity_kind: "directory_meta"
+    id_pattern: "DIR-SYSTEM-CHANGELOGS"
+    artifacts:
+      metadata: "changelogs_meta.yaml"
+
+indexing:
+  readme_index_table: false
+  rule: "目录结构或文件约定发生变化时，更新本文件与 README.md。"
