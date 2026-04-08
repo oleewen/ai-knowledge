@@ -460,12 +460,24 @@ rewrite_doc_file_minimal() {
   local file="$1" agent_slash="$2" docs_slash="$3"
   [[ -f "$file" ]] && is_text_file "$file" || return 0
   have_perl || { warn "未安装 perl，跳过内容替换：$file"; return 0; }
-  SDX_AGENT_SLASH="$agent_slash" SDX_DOCS_SLASH="$docs_slash" \
+
+  # dry-run：仅打印明细，不修改文件
+  if [[ "${CFG[dry_run]:-0}" == "1" ]]; then
+    log_rewrite_hits "INFO" ".agent->agent_slash(dry-run)" "$file" '\.agent/'
+    log_rewrite_hits "WARN" "system-rewrite-disabled(dry-run)" "$file" 'system/' "i" \
+      | while IFS= read -r line; do warn "$line"; done
+    return 0
+  fi
+
+  # 非 dry-run：仅保留 .agent/ 替换
+  SDX_AGENT_SLASH="$agent_slash" \
     perl -CSD -i -pe '
       s{\.agent/}{$ENV{SDX_AGENT_SLASH}}g;
-      s{system/}{$ENV{SDX_DOCS_SLASH}}gi;
     ' "$file" 2>/dev/null || true
-  rewrite_docs_prefix_to_doc_dir "$file" "$docs_slash"
+
+  # system/ 命中仅告警，不执行替换
+  log_rewrite_hits "WARN" "system-rewrite-disabled" "$file" 'system/' "i" \
+    | while IFS= read -r line; do warn "$line"; done
 }
 
 # Agent 树替换：.agent/ → agent_slash；system/ → docs_slash（不做 system→application 词替换）
