@@ -22,7 +22,7 @@
 4. `**docs-init.sh` 与确认**：执行 `**docs-init.sh`** 时，若目标工程侧**尚无** `.docsconfig`，只要本次调用满足 §2.3 的写入条件（非 dry-run、已提供 `<目标工程文档目录>` 等），则按 §3.2 **直接**推断并写入，**无须**用户二次确认；**不**适用策略 D 的交互确认条款。
 5. **语义确认（已采纳）**：
   - **`REPO_ROOT`**：**目标工程 Git 仓库根**的**绝对路径**。
-  - **`DOC_ROOT`**：**目标工程知识库**（文档树根）的**绝对路径**；语义上即既有 **`REPO_DOC_ROOT`**（脚本可 `export REPO_DOC_ROOT="$DOC_ROOT"`）。
+  - **`DOC_ROOT`**：**目标工程知识库**（文档树根）的**绝对路径**（语义上对应历史上的 **`REPO_DOC_ROOT`** 含义）。**禁止**使用 **`export REPO_DOC_ROOT`**、**`export DOC_ROOT`** 等将路径写入**用户/全局环境**，以免多仓库、多会话并行时串变量；见 §2.2.2。
   - **`DOC_DIR`**：**知识库目录相对于 `REPO_ROOT` 的路径**（相对路径，POSIX 风格，**无**前导 `/`；如 `docs`、`application`、`system/foo`；由 §2.2 / §3.2 与 **`DOC_ROOT`** 互算校验）。用于模板中「相对工程根」前缀（如原 `docs_slash`）时以 **`DOC_DIR`**（及约定尾斜杠）为准，**不再**单独依赖 `basename "$DOC_ROOT"` 作为唯一来源。
   - **`<目标工程文档目录>`**（`CFG[docs_abs]`）规范化后与 **`DOC_ROOT` 一致**。**废弃** **`probe_base`** 与 **`probe_doc_segment`** 目录探测。
   - 新增 **`--scope=config`**（缩写 **`c`**，与 `all|knowledge|skills|rules|rs` 并列）：**仅**初始化/更新 `.docsconfig`，不拷贝模板、不安装 Agent skills/rules。
@@ -30,7 +30,7 @@
 ### 1.3 非目标
 
 - 不改变 `docs-init` 对 **模板仓库根**（现 `**CFG[repo_root]`**，指向 ai-knowledge 克隆）的职责；本设计在叙述中用 **「模板仓库根」** 与 **「目标工程 REPO_ROOT」** 区分，避免混淆。
-- 不在本规格中规定下游 Python/其他语言的重写，仅约定 `**.docsconfig` 文件内字段**与导出变量语义一致。
+- 不在本规格中规定下游 Python/其他语言的重写，仅约定 **`.docsconfig` 文件内字段语义**与 §2.2.2 的传参约定。
 - **运行时**（`validate-*.sh`、`.docsconfig` 引导逻辑）**不支持**通过**显式环境变量**指定「`.docsconfig` 路径」或「目标仓库根」——必须以 §4.1 的算法从 **`$PWD` / `$SCRIPT_DIR` / 向上查找** 解析，避免与「文件即 SSOT」双轨并存。**`docs-init` 写入**时的推断顺序见 §3.2（**不再**依赖 `REPO_DOC_ROOT` / `SDX_DOC_ROOT` / `.sdx-doc-root`；改由 **CLI `--doc-root` → 既有 `.docsconfig` → 否则以用户传入文档目录为 `DOC_ROOT` / 默认 `docs`**；**无** `probe_base` / **`probe_doc_segment`** 探测）。
 
 ---
@@ -46,13 +46,19 @@
 - **推荐**：每行 `KEY=value`，`#` 行首为注释；使用 UTF-8。
 - **必填键**：
   - **`REPO_ROOT`**：**仓库根**的绝对路径（与 `git rev-parse --show-toplevel` 语义对齐）。
-  - **`DOC_ROOT`**：**目标工程知识库**（文档树根）的绝对路径；兼容导出 **`REPO_DOC_ROOT="$DOC_ROOT"`**。
+  - **`DOC_ROOT`**：**目标工程知识库**（文档树根）的绝对路径。
   - **`DOC_DIR`**：**目标工程知识库目录**相对于 **`REPO_ROOT`** 的相对路径（无前导 `/`）。须与 **`DOC_ROOT`** 成对满足：`realpath "$REPO_ROOT/$DOC_DIR"` 与 `realpath "$DOC_ROOT"` 相同（或实现等价校验）。若知识库根与仓库根重合（少见），**`DOC_DIR`** 为 **`.`**（实现须统一，禁止与空字符串混用）。
 
 ### 2.2.1 三者关系
 
 - **`DOC_ROOT`** = 知识库根的**绝对**表达；**`DOC_DIR`** = 同一知识库根在仓库内的**相对**表达。
 - 写入 `.docsconfig` 时：**`REPO_ROOT`**、**`DOC_ROOT`** 由 §3.2 确定后，**`DOC_DIR`** 由 **`REPO_ROOT`** 与 **`DOC_ROOT`** 推算并一并落盘（避免手填不一致）。
+
+### 2.2.2 禁止使用 `export`（避免多仓库环境串扰）
+
+- **不**将 **`REPO_ROOT`** / **`DOC_ROOT`** / **`DOC_DIR`**（及历史上的 **`REPO_DOC_ROOT`** 别名）通过 **`export`** 写入继承给交互式 Shell 或跨会话全局环境。
+- **允许**：在**当前脚本进程**内使用普通赋值；调用子进程（如 `python3`）时使用**单次命令前缀**：`REPO_ROOT=... DOC_ROOT=... DOC_DIR=... python3 ...`，或让子进程**自行读取** `.docsconfig`。
+- **迁移**：既有脚本若仍出现符号 **`REPO_DOC_ROOT`**，应在实现中逐步改为读取 **`DOC_ROOT`** 字段或上述前缀传参，**不**再依赖已 export 的环境变量。
 
 ### 2.3 写入与更新策略
 
@@ -120,7 +126,7 @@
 3. **自 `$PWD` 向上**（逐层父目录，上限 N 层）查找 `**/.docsconfig`**，命中则所在目录即为 `**TARGET_REPO_ROOT**`。
 4. 仍无法确定 → **§4.2** 策略 D。
 
-得到 **`TARGET_REPO_ROOT`** 后：**若存在 `$TARGET_REPO_ROOT/.docsconfig`**：source 或逐行解析，导出 **`REPO_ROOT`**、**`DOC_ROOT`**、**`DOC_DIR`**（并 **`export REPO_DOC_ROOT="$DOC_ROOT"`** 以兼容既有脚本）。若文件缺 **`DOC_DIR`**，由 **`REPO_ROOT`** 与 **`DOC_ROOT`** 按 §2.2.1 补算。文件内 **`REPO_ROOT`** 可与步骤 1–3 解析结果交叉校验（不一致时以实现约定为准）。
+得到 **`TARGET_REPO_ROOT`** 后：**若存在 `$TARGET_REPO_ROOT/.docsconfig`**：source 或逐行解析，在**当前脚本**内赋值 **`REPO_ROOT`**、**`DOC_ROOT`**、**`DOC_DIR`**（**不** `export`，见 §2.2.2）。若文件缺 **`DOC_DIR`**，由 **`REPO_ROOT`** 与 **`DOC_ROOT`** 按 §2.2.1 补算。文件内 **`REPO_ROOT`** 可与步骤 1–3 解析结果交叉校验（不一致时以实现约定为准）。
 
 ### 4.2 缺失 `.docsconfig`（策略 D，仅运行时）
 
@@ -135,12 +141,12 @@
 ### 4.3 替换已删除脚本
 
 - **删除**：`**.agent/scripts/sdx-doc-root.sh`**、`**.agent/scripts/sdx-validate-bootstrap.sh**`。
-- **新增**：`**.agent/scripts/sdx-docsconfig-bootstrap.sh`**（名称可调整）：仅负责 **定位 `.docsconfig`**、**导出变量**、**§4.2 的 D 流程**；**不含** `sdx_resolve_repo_doc_root` 的完整推断实现。
+- **新增**：`**.agent/scripts/sdx-docsconfig-bootstrap.sh`**（名称可调整）：仅负责 **定位 `.docsconfig`**、**加载变量（不 export）**、**§4.2 的 D 流程**；**不含** `sdx_resolve_repo_doc_root` 的完整推断实现。
 - `**sdx_find_repo_root_from_path`**：不再以「存在 `sdx-doc-root.sh`」为锚；改为向上查找 `**.docsconfig**`，或 `**.git` + 仓库根**（与各 validate 默认一致）。具体锚点以**实现 PR** 为准，但须在 **§6** 自检清单中列明。
 
 ### 4.4 `validate-agent-md-links.sh`
 
-- 先按 §4.1 加载 **`REPO_ROOT`**、**`DOC_ROOT`** / **`REPO_DOC_ROOT`**、**`DOC_DIR`**；缺失则 §4.2。
+- 先按 §4.1 加载 **`REPO_ROOT`**、**`DOC_ROOT`**、**`DOC_DIR`**（**不** `export`）；缺失则 §4.2。Python 段使用 §2.2.2 的**前缀赋值**或读文件传入路径。
 - 跨 `.agent` 链接判定逻辑不变，仅变量来源改为 `**.docsconfig**`。
 
 ---
@@ -156,7 +162,7 @@
 
 ## 6. 实施自检（占位符与一致性）
 
-- `.docsconfig` 中 **`REPO_ROOT`** / **`DOC_ROOT`** / **`DOC_DIR`** 与 §2.2.1 一致；`export REPO_DOC_ROOT="$DOC_ROOT"` 兼容路径已全部核对。
+- `.docsconfig` 中 **`REPO_ROOT`** / **`DOC_ROOT`** / **`DOC_DIR`** 与 §2.2.1 一致；运行时**无** `export` 泄漏，与 §2.2.2 一致。
 - `docs-init` 中模板 `**CFG[repo_root]`** 与目标 `**REPO_ROOT**` 变量命名在代码中无混用。
 - `--scope=config` 与 `--mode=central` / `install_central` 组合行为已定义。
 - 非交互失败码与 CI 文档一致。
