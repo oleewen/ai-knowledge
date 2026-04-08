@@ -8,7 +8,7 @@
 
 **未命中 Index 仍继续生成**：四个候选路径均不存在时，立即终止并提示用户运行 `/docs-indexing`，不要凭印象或目录猜测生成文档。
 
-**REPO_ROOT 与 REPO_DOC_ROOT 优先级混淆**：查找顺序是 REPO_ROOT 先、REPO_DOC_ROOT 后。仓库同时存在两个 Index 时，严格按此优先级命中即停，记录实际落盘相对路径，写入 AGENTS 链接时再换算为可点击的相对路径。
+**REPO_ROOT 与 DOC_ROOT 优先级混淆**：查找顺序是 REPO_ROOT 先、DOC_ROOT 后。仓库同时存在两个 Index 时，严格按此优先级命中即停，记录实际落盘相对路径，写入 AGENTS 链接时再换算为可点击的相对路径。
 
 ---
 
@@ -52,7 +52,7 @@
 
 - [ ] Index 来自磁盘落盘文件，非对话粘贴
 - [ ] 未命中 Index 时已终止，未编造结构
-- [ ] Index 查找顺序：REPO_ROOT 先，REPO_DOC_ROOT 后
+- [ ] Index 查找顺序：REPO_ROOT 先，DOC_ROOT 后
 - [ ] 以 INDEX 为地图最小阅读，未通读全仓
 - [ ] AGENTS 未粘贴 INDEX §3 API 入口表
 - [ ] 未索引区域未写成已核实事实

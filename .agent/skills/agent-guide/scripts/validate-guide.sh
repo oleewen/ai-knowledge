@@ -17,10 +17,10 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _AI_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck disable=SC1091
-source "$_AI_HOME/scripts/sdx-validate-bootstrap.sh"
-sdx_validate_load_doc_root "$SCRIPT_DIR"
-REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || pwd)"
-REPO_DOC_ROOT="$(sdx_resolve_repo_doc_root "" "$REPO_ROOT")"
+source "$_AI_HOME/scripts/docsconfig-bootstrap.sh"
+validate_bootstrap_docsconfig "$SCRIPT_DIR"
+
+DOC_ROOT="$(resolve_repo_doc_root "" "$REPO_ROOT")"
 
 ROOT=""
 while [[ $# -gt 0 ]]; do
@@ -43,9 +43,9 @@ log_error() { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 log_warn()  { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
 log_ok()    { echo "[OK]    $1"; }
 
-# --- 1. INDEX 落盘检测（REPO_ROOT 优先，再 REPO_DOC_ROOT）---
+# --- 1. INDEX 落盘检测（REPO_ROOT 优先，再 DOC_ROOT）---
 
-DOC_SEG="${REPO_DOC_ROOT#"$REPO_ROOT"/}"
+DOC_SEG="${DOC_ROOT#"$REPO_ROOT"/}"
 INDEX_PATH=""
 for candidate in \
     "INDEX_GUIDE.md" \
