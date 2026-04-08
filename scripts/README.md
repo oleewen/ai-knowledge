@@ -37,23 +37,16 @@ Slash 技能命令请查看 [.agent/skills/README.md](../.agent/skills/README.md
    - `knowledge`：仅同步知识库（`application/`）
    - `skills`：仅安装 Agent skills/rules（不落地知识库文档）
 
-## doc_root 解析（`.agent/scripts/sdx-doc-root.sh`）
+## doc_root 与 `.docsconfig`（`.agent/scripts/docsconfig-bootstrap.sh`）
 
-部分 `.agent/skills/*/scripts/validate-*.sh` 与 **`docs-indexing/scripts/indexing.sh`** 使用统一的 **`REPO_ROOT`**（`git rev-parse --show-toplevel`）与 **`REPO_DOC_ROOT`**（文档树根目录**绝对路径**）。
+目标工程仓库根落盘 **`.docsconfig`**（由 **`docs-init`** 写入 **`DOC_ROOT`** / **`REPO_ROOT`** / **`DOC_DIR`**）。部分 `.agent/skills/*/scripts/validate-*.sh` 与 **`docs-indexing/scripts/indexing.sh`** 经 **`.agent/scripts/docsconfig-bootstrap.sh`**：
 
-- **`sdx_resolve_repo_doc_root`**：返回文档树根目录**绝对路径**（内部经 `_sdx_doc_root_segment` 解析首段后拼接至 `probe_base`）。脚本内赋值 **`REPO_DOC_ROOT="$(sdx_resolve_repo_doc_root "$override" "$REPO_ROOT")"`**。
+- **`validate_bootstrap_docsconfig`**：按规格 §4.1.1 定位仓库根、加载三键（不 `export`）；缺文件或缺 `DOC_DIR` 时走策略 D / §4.2.1。
+- **`resolve_repo_doc_root [override]`**：若传入 `--doc-root` 对应 override 则规范化返回；否则返回已加载的 **`DOC_ROOT`**。脚本内典型写法：**`DOC_ROOT="$(resolve_repo_doc_root "$DOC_ROOT_ARG" "$REPO_ROOT")"`**（在 `validate_bootstrap_docsconfig` 之后覆盖/确认文档根）。
 
-解析顺序为：
+规格与迁移说明见 [docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md](../docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md)。首段目录探测与 validate 引导已由 **`.docsconfig`** + **`docsconfig-bootstrap.sh`** 取代；旧版 **`sdx-doc-root.sh`** / **`sdx-validate-bootstrap.sh`** 已移除。
 
-1. 命令行 **`--doc-root`**（若脚本支持）
-2. 环境变量 **`REPO_DOC_ROOT`**（可传绝对路径或首段名；兼容旧变量 `SDX_DOC_ROOT`）
-3. 仓库根目录下文件 **`.sdx-doc-root`**（首行非注释内容，单行）
-4. **目录探测**：优先 `docs/` 下知识树标记 → `docs`；其次应用知识库 `application/knowledge/*` → `application`；再者系统知识库 `system/knowledge/*` → `system`；然后公司知识库 `company/knowledge/*` → `company`；最后其他顶层 `*/knowledge/*` → 该目录名
-5. 上述目录探测均无命中时默认 **`docs`**
-
-实现文件：**`.agent/scripts/sdx-doc-root.sh`**（单一事实来源）。各 skill 下 `validate-*.sh` 经 **`.agent/scripts/sdx-validate-bootstrap.sh`** 加载上述逻辑。
-
-**`.agent` 内 Markdown 链接自检**（可选，在仓库根执行）：`bash .agent/scripts/validate-agent-md-links.sh` —— 校验 `.agent/**/*.md` 中链接：`.agent` 内互链须存在；跨出 `.agent` 须落在 `REPO_ROOT`/`REPO_DOC_ROOT` 下且存在（Agent 语义可达）。落实 [链接可达性要求](../docs/superpowers/specs/2026-04-07-agent-doc-link-reachability-requirements.md)。
+**`.agent` 内 Markdown 链接自检**（可选，在仓库根执行）：`bash .agent/scripts/validate-agent-md-links.sh` —— 校验 `.agent/**/*.md` 中链接：`.agent` 内互链须存在；跨出 `.agent` 须落在 `REPO_ROOT`/`DOC_ROOT` 下且存在（Agent 语义可达）。落实 [链接可达性要求](../docs/superpowers/specs/2026-04-07-agent-doc-link-reachability-requirements.md)。
 
 ## 使用方式
 
