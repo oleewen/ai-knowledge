@@ -81,7 +81,7 @@
 
 ### 3.4 实现位置（方案甲）
 
-- **推断与探测函数**：迁入 **`scripts/`** 下单一模块（例如由 `docs-config.sh` 引入，或 `scripts/sdx-doc-root-resolve.sh`），由 **`docs-init.sh` source**；**不**留在 `.agent/scripts/`。
+- **推断与探测**：实现为 **`scripts/docs-config.sh` 内的函数**（如 `sdx_normalize_doc_root_segment`、`sdx_probe_doc_root_segment`、`sdx_resolve_repo_doc_root` 等，命名以实现为准），与既有配置/校验函数同文件维护；**不**另建 `sdx-doc-root-resolve.sh` 等平行文件；**不**留在 `.agent/scripts/`。**`docs-init.sh`** 已 `source docs-config.sh`，写入 `.docsconfig` 时直接调用上述函数。
 - **`.agent`**：仅保留「**读取** `.docsconfig`」的薄封装（见 §4），不再保留完整推断链。
 
 ---
