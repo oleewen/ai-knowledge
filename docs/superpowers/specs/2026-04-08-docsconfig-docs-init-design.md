@@ -21,7 +21,7 @@
 3. **策略 D**：若运行时缺少 `.docsconfig`，**提示用户**并**确认**是否执行 `docs-init` 的「仅写 `.docsconfig`」模式；非交互环境打印可复制的命令并失败退出。
 4. **语义确认（已采纳）**：
    - **`DOC_ROOT`** 与现 **`sdx_resolve_repo_doc_root(override, probe_base)`** 一致；**`<目标工程文档目录>`** 仅作为 **`probe_base`**，**不**强制等于最终 `DOC_ROOT`。
-   - 新增 **`--scope=config`**（与 `all|knowledge|skills|rules|rs` 并列）：**仅**初始化/更新 `.docsconfig`，不拷贝模板、不安装 Agent skills/rules。
+   - 新增 **`--scope=config`**（缩写 **`c`**，与 `all|knowledge|skills|rules|rs` 并列）：**仅**初始化/更新 `.docsconfig`，不拷贝模板、不安装 Agent skills/rules。
 
 ### 1.3 非目标
 
@@ -47,7 +47,7 @@
 
 - **`docs-init` 在同时满足以下条件时写入或覆盖 `.docsconfig`**（非 dry-run）：
   - 本次调用提供了 **`<目标工程文档目录>`**（即 **`CFG[docs_abs]`** 非空）；且
-  - **`--scope`** 为 **`config`**，或 **`all` / `knowledge`** 等会落地工程文档的 scope（与「本次安装的文档根」保持一致）。
+  - **`--scope`** 为 **`config`**（或 **`c`**），或 **`all` / `knowledge`** 等会落地工程文档的 scope（与「本次安装的文档根」保持一致）。
 - **仅 **`--scope=skills` / `rules` / `rs`** 且未提供 `<目标工程文档目录>`**：**不写** `.docsconfig`（与现逻辑一致：无稳定文档根）。
 - **`--dry-run`**：**不写** `.docsconfig`。
 
@@ -57,6 +57,7 @@
 
 ### 3.1 新增 `--scope=config`
 
+- **CLI**：**`--scope=config`** 与 **`--scope=c`** 等价（`c` 仅表示 **config**，与其它 scope 首字母不冲突）。
 - **含义**：只执行 **§3.2** 的推断与 **`.docsconfig` 落盘**，不执行 `install_system_to_docs`、`install_agent_skills`、`install_agent_rules`、`install_central`。
 - **参数要求**：必须提供 **`<目标工程文档目录>`**（作为 **`probe_base`**）。
 - **与 central / type**：`--scope=config` 下**不**要求完成 central 登记或 `knowledge/` 存在性等；若与 `--mode=central` 等同场传入，以「仅写配置」为优先，**不**执行登记（建议在实现中拒绝组合或明确文档说明，推荐 **拒绝非法组合** 以免误读）。
@@ -96,8 +97,8 @@
 
 | 场景 | 行为 |
 |------|------|
-| **交互式 TTY** | 打印说明：缺少 `.docsconfig`，建议运行 `docs-init --scope=config <目标工程文档目录>`；询问是否**立即执行**。用户确认后，以非 dry-run 调用上述命令（需能定位 `docs-init.sh`：相对模板仓库、`PATH` 或文档约定）。**不得**在无人确认时静默写盘。 |
-| **非交互（无 TTY / CI）** | 打印**完整可复制**的 `docs-init` 示例命令；**退出非 0**；不等待输入。 |
+| **交互式 TTY** | 打印说明：缺少 `.docsconfig`，建议运行 `docs-init --scope=config <目标工程文档目录>`（或 **`--scope=c`**）；询问是否**立即执行**。用户确认后，以非 dry-run 调用上述命令（需能定位 `docs-init.sh`：相对模板仓库、`PATH` 或文档约定）。**不得**在无人确认时静默写盘。 |
+| **非交互（无 TTY / CI）** | 打印**完整可复制**的 `docs-init` 示例命令（含 `config` / `c`）；**退出非 0**；不等待输入。 |
 
 ### 4.3 替换已删除脚本
 
