@@ -21,14 +21,14 @@
 3. **策略 D（仅 `validate-*` / 运行时 bootstrap）**：若缺少 `.docsconfig`，**提示用户**并**确认**是否代为执行 `docs-init` 的「仅写 `.docsconfig`」模式；非交互环境打印可复制的命令并失败退出（§4.2）。
 4. `**docs-init.sh` 与确认**：执行 `**docs-init.sh`** 时，若目标工程侧**尚无** `.docsconfig`，只要本次调用满足 §2.3 的写入条件（非 dry-run、已提供 `<目标工程文档目录>` 等），则按 §3.2 **直接**推断并写入，**无须**用户二次确认；**不**适用策略 D 的交互确认条款。
 5. **语义确认（已采纳）**：
-  - `**DOC_ROOT`** 由 §3.2 推断链确定；`**<目标工程文档目录>**` 仅作为 `**probe_base**`（目录探测），**不**强制等于最终 `DOC_ROOT`。
-  - 新增 `**--scope=config`**（缩写 `**c**`，与 `all|knowledge|skills|rules|rs` 并列）：**仅**初始化/更新 `.docsconfig`，不拷贝模板、不安装 Agent skills/rules。
+  - **`DOC_ROOT`** 由 §3.2 推断链确定。**`<目标工程文档目录>`**（`CFG[docs_abs]`）规范化后**即文档树根绝对路径**，与 **`DOC_ROOT` 一致**；用于路径替换等语义的「文档目录最后一级」取 **`DOC_ROOT` 的最后一级目录名**（`basename "$DOC_ROOT"`）。**废弃**独立概念 **`probe_base`** 及对 **`probe_doc_segment`** 的目录探测调用。
+  - 新增 **`--scope=config`**（缩写 **`c`**，与 `all|knowledge|skills|rules|rs` 并列）：**仅**初始化/更新 `.docsconfig`，不拷贝模板、不安装 Agent skills/rules。
 
 ### 1.3 非目标
 
 - 不改变 `docs-init` 对 **模板仓库根**（现 `**CFG[repo_root]`**，指向 ai-knowledge 克隆）的职责；本设计在叙述中用 **「模板仓库根」** 与 **「目标工程 REPO_ROOT」** 区分，避免混淆。
 - 不在本规格中规定下游 Python/其他语言的重写，仅约定 `**.docsconfig` 文件内字段**与导出变量语义一致。
-- **运行时**（`validate-*.sh`、`.docsconfig` 引导逻辑）**不支持**通过**显式环境变量**指定「`.docsconfig` 路径」或「目标仓库根」——必须以 §4.1 的算法从 `**$PWD` / `$SCRIPT_DIR` / 向上查找** 解析，避免与「文件即 SSOT」双轨并存。`**docs-init` 写入**时的推断顺序见 §3.2（**不再**依赖 `REPO_DOC_ROOT` / `SDX_DOC_ROOT` / `.sdx-doc-root`；改由 **CLI → 既有 `.docsconfig` → 目录探测 → 默认 `docs`**）。
+- **运行时**（`validate-*.sh`、`.docsconfig` 引导逻辑）**不支持**通过**显式环境变量**指定「`.docsconfig` 路径」或「目标仓库根」——必须以 §4.1 的算法从 **`$PWD` / `$SCRIPT_DIR` / 向上查找** 解析，避免与「文件即 SSOT」双轨并存。**`docs-init` 写入**时的推断顺序见 §3.2（**不再**依赖 `REPO_DOC_ROOT` / `SDX_DOC_ROOT` / `.sdx-doc-root`；改由 **CLI `--doc-root` → 既有 `.docsconfig` → 否则以用户传入文档目录为 `DOC_ROOT` / 默认 `docs`**；**无** `probe_base` / **`probe_doc_segment`** 探测）。
 
 ---
 
@@ -65,30 +65,31 @@
 
 - **CLI**：`**--scope=config`** 与 `**--scope=c**` 等价（`c` 仅表示 **config**，与其它 scope 首字母不冲突）。
 - **含义**：只执行 **§3.2** 的推断与 `**.docsconfig` 落盘**，不执行 `install_system_to_docs`、`install_agent_skills`、`install_agent_rules`、`install_central`。
-- **参数要求**：必须提供 `**<目标工程文档目录>`**（作为 `**probe_base**`）。
+- **参数要求**：必须提供 **`<目标工程文档目录>`**（规范化后为文档树根绝对路径，与 **`DOC_ROOT`** 对齐；见 §3.2）。
 - **与 central / type**：`--scope=config` 下**不**要求完成 central 登记或 `knowledge/` 存在性等；若与 `--mode=central` 等同场传入，以「仅写配置」为优先，**不**执行登记（建议在实现中拒绝组合或明确文档说明，推荐 **拒绝非法组合** 以免误读）。
 
 ### 3.2 推断顺序（写入 `.docsconfig` 时）
 
-在已按 §3.3 得到 `**TARGET_REPO_ROOT`** 的前提下，确定本次落盘的 `**REPO_ROOT**` 与 `**DOC_ROOT**`（均为绝对路径；`**REPO_ROOT**` 与 `**TARGET_REPO_ROOT**` 应一致）：
+先按 §3.3 由 **`<目标工程文档目录>`**（若已传）解析 **`TARGET_REPO_ROOT`**。再确定本次落盘的 **`REPO_ROOT`** 与 **`DOC_ROOT`**（均为绝对路径；**`REPO_ROOT`** 与 **`TARGET_REPO_ROOT`** 应一致）：
 
-1. **CLI `--doc-root=`**（**须**在 `docs-init` 中新增）：若指定，则按首段规范化后得到文档树首段 `**seg`**，令 `**REPO_ROOT=$TARGET_REPO_ROOT**`，`**DOC_ROOT=$TARGET_REPO_ROOT/$seg**`（路径规范化）；**不再**执行下列 2–4。
-2. **既有 `$TARGET_REPO_ROOT/.docsconfig`**：若 **未** 使用步骤 1，且该文件**已存在**、可解析，则读取其中的 `**REPO_ROOT`**、`**DOC_ROOT**`；二者均合法时**直接采用**为本次推断结果，**不再**执行下列 3–4。若文件内 `**REPO_ROOT`** 与 §3.3 的 `**TARGET_REPO_ROOT**` 不一致，**推荐**落盘时以 `**TARGET_REPO_ROOT`** 为准校正 `REPO_ROOT` 字段。
-3. `**probe_doc_segment(probe_base)**`（目录探测）；`**probe_base**` 为规范化后的 `**<目标工程文档目录>**`。得到首段 `**seg**` 后：`**REPO_ROOT=$TARGET_REPO_ROOT**`，`**DOC_ROOT=$TARGET_REPO_ROOT/$seg**`（规范化）。
-4. **默认首段 `docs`**：在步骤 3 中若需回退默认首段，则 `**seg=docs**`，同上拼接得 `**DOC_ROOT**`。
+1. **CLI `--doc-root=`**（**须**在 `docs-init` 中新增）：若指定，则按首段规范化得文档树首段 **`seg`**，令 **`REPO_ROOT=$TARGET_REPO_ROOT`**，**`DOC_ROOT=$TARGET_REPO_ROOT/$seg`**（路径规范化）；**不再**执行下列 2–4。
+2. **既有 `$TARGET_REPO_ROOT/.docsconfig`**：若 **未** 使用步骤 1，且该文件**已存在**、可解析，则读取其中的 **`REPO_ROOT`**、**`DOC_ROOT`**；二者均合法时**直接采用**为本次推断结果，**不再**执行步骤 3。若文件内 **`REPO_ROOT`** 与 §3.3 的 **`TARGET_REPO_ROOT`** 不一致，**推荐**落盘时以 **`TARGET_REPO_ROOT`** 为准校正 **`REPO_ROOT`** 字段。
+3. **否则**：将规范化后的 **`<目标工程文档目录>`** **直接作为** **`DOC_ROOT`**（用户传入路径即文档树根）；**`REPO_ROOT=$TARGET_REPO_ROOT`**（§3.3 已由 Git 解析）。若本次调用**未**提供 `<目标工程文档目录>` 且须写入 `.docsconfig`，则 **`DOC_ROOT=$TARGET_REPO_ROOT/docs`**（默认最后一级为 **`docs`**）。**不**再使用 **`probe_base`**，**不**调用 **`probe_doc_segment`** 做目录探测。
 
-**摘要**：`**--doc-root` > 既有 `.docsconfig` 内 `REPO_ROOT`/`DOC_ROOT` > 目录探测 > 默认 `docs`**。
+**摘要**：**`--doc-root` > 既有 `.docsconfig` 内 `REPO_ROOT`/`DOC_ROOT` > 用户传入文档目录即 `DOC_ROOT`（或默认 `$REPO_ROOT/docs`）**。
 
-**说明**：旧版 `**REPO_DOC_ROOT` / `SDX_DOC_ROOT` / `.sdx-doc-root`** 不再参与本链；迁移依赖 **步骤 2** 的既有 `**.docsconfig`**，或 `**--doc-root**`，或重新执行 `**docs-init**` 生成新文件。
+**与「目标工程文档目录」**：落地与校验均以 **`DOC_ROOT`** 为准；其**最后一级目录名**为 **`basename "$DOC_ROOT"`**，供 `docs_slash` 等相对工程根替换使用。
+
+**说明**：旧版 **`REPO_DOC_ROOT` / `SDX_DOC_ROOT` / `.sdx-doc-root`** 不再参与本链；迁移依赖 **步骤 2** 的既有 **`.docsconfig`**，或 **`--doc-root`**，或重新执行 **`docs-init`** 生成新文件。
 
 ### 3.3 `REPO_ROOT`（目标工程）解析
 
-- **默认**：`TARGET_REPO_ROOT="$(git -C "<目标工程文档目录>" rev-parse --show-toplevel 2>/dev/null)"`。
-- **若不在 Git 仓库内或命令失败**：规范可二选一并在实现中写死：**(a)** 失败并提示；或 **(b)** 回退为 `**dirname` 链**至含 `.docsconfig` 预定位置——**推荐 (a)**，与「仓库根」定义一致。
+- **默认**：由调用方传入的 **`<目标工程文档目录>`**（将等于或用于推导 **`DOC_ROOT`**）解析：`TARGET_REPO_ROOT="$(git -C "<目标工程文档目录>" rev-parse --show-toplevel 2>/dev/null)"`。
+- **若不在 Git 仓库内或命令失败**：规范可二选一并在实现中写死：**(a)** 失败并提示；或 **(b)** 回退为 **`dirname` 链**至含 `.docsconfig` 预定位置——**推荐 (a)**，与「仓库根」定义一致。
 
 ### 3.4 实现位置（方案甲）
 
-- **推断与探测**：实现为 `**scripts/docs-config.sh` 内的函数**（如 `sdx_normalize_doc_root_segment`、`probe_doc_segment`、`sdx_resolve_repo_doc_root` 等，命名以实现为准），与既有配置/校验函数同文件维护；**不**另建 `sdx-doc-root-resolve.sh` 等平行文件；**不**留在 `.agent/scripts/`。`**docs-init.sh`** 已 `source docs-config.sh`，写入 `.docsconfig` 时直接调用上述函数。
+- **推断**：实现为 **`scripts/docs-config.sh` 内的函数**（如首段规范化、`sdx_resolve_repo_doc_root` 中与 **`--doc-root`** 拼接相关的逻辑等；**不再**将 **`probe_doc_segment`** 纳入写入链，该函数可删除或仅保留给遗留脚本直至移除），与既有配置/校验函数同文件维护；**不**另建 `sdx-doc-root-resolve.sh` 等平行文件；**不**留在 `.agent/scripts/`。**`docs-init.sh`** 已 `source docs-config.sh`，写入 `.docsconfig` 时直接调用上述函数。
 - `**.agent**`：仅保留「**读取** `.docsconfig`」的薄封装（见 §4），不再保留完整推断链。
 
 ---
