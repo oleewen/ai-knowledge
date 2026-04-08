@@ -23,7 +23,7 @@
 5. **语义确认（已采纳）**：
   - **`DOC_ROOT`**：即 **`docs-init.sh`** 调用时传入的 **`<目标工程文档目录>`**（目标工程知识库目录）经规范化后的**绝对路径**；语义上对应历史上的 **`REPO_DOC_ROOT`**。**若**使用 **`--doc-root=`** 覆盖首段，则 **`DOC_ROOT`** 按 §3.2 步骤 1 计算，**不再**等于该传入路径本身。**禁止** **`export REPO_DOC_ROOT`** / **`export DOC_ROOT`** 等污染用户/全局环境；见 §2.2.2。
   - **`REPO_ROOT`**：**在 `DOC_ROOT` 之后确定**，由 **`DOC_ROOT`** **推算**得到的**目标工程 Git 仓库根**绝对路径（典型：`git -C "$DOC_ROOT" rev-parse --show-toplevel`）；与 **`.docsconfig` 文件所在仓库根**一致。
-  - **`DOC_DIR`**：**知识库目录相对于 `REPO_ROOT` 的路径**（相对路径，POSIX 风格，**无**前导 `/`；如 `docs`、`application`、`system/foo`；在 **`REPO_ROOT`**、**`DOC_ROOT`** 已知后推算）。用于模板中「相对工程根」前缀（如原 `docs_slash`）时以 **`DOC_DIR`**（及约定尾斜杠）为准。
+  - **`DOC_DIR`**：由 **`DOC_ROOT`** 与已确定的 **`REPO_ROOT`** **推算**——满足 **`REPO_ROOT` + `DOC_DIR` = `DOC_ROOT`**（路径语义：`realpath "$REPO_ROOT/$DOC_DIR"` = `realpath "$DOC_ROOT"`）。POSIX 相对段、**无**前导 `/`（如 `docs`、`application`）。用于模板「相对工程根」前缀（如原 `docs_slash`）时以 **`DOC_DIR`**（及约定尾斜杠）为准。
   - **`<目标工程文档目录>`**（`CFG[docs_abs]`）经规范化即为落盘之 **`DOC_ROOT`**（除非 §3.2 步骤 1 **`--doc-root`** 覆盖）。**废弃** **`probe_base`** 与 **`probe_doc_segment`** 目录探测。
   - 新增 **`--scope=config`**（缩写 **`c`**，与 `all|knowledge|skills|rules|rs` 并列）：**仅**初始化/更新 `.docsconfig`，不拷贝模板、不安装 Agent skills/rules。
 
@@ -47,11 +47,11 @@
 - **必填键**（逻辑顺序：**先 `DOC_ROOT`，再由此推算 `REPO_ROOT` 与 `DOC_DIR`**）：
   - **`DOC_ROOT`**：与 **`docs-init.sh`** 传入的 **目标工程知识库目录**一致，为规范化后的**绝对路径**（**`CFG[docs_abs]`**；**`--doc-root`** 覆盖时见 §3.2）。
   - **`REPO_ROOT`**：由 **`DOC_ROOT`** 推算的**仓库根**绝对路径（与 `git -C "$DOC_ROOT" rev-parse --show-toplevel` 语义对齐）。
-  - **`DOC_DIR`**：由 **`REPO_ROOT`** 与 **`DOC_ROOT`** 推算的相对路径（无前导 `/`）。须满足：`realpath "$REPO_ROOT/$DOC_DIR"` 与 `realpath "$DOC_ROOT"` 相同（或实现等价校验）。若知识库根与仓库根重合（少见），**`DOC_DIR`** 为 **`.`**（实现须统一，禁止与空字符串混用）。
+  - **`DOC_DIR`**：由 **`DOC_ROOT`** 与 **`REPO_ROOT`** 推算，使 **`REPO_ROOT` + `DOC_DIR` = `DOC_ROOT`**（`realpath "$REPO_ROOT/$DOC_DIR"` 与 `realpath "$DOC_ROOT"` 一致）。相对路径、无前导 `/`。若知识库根与仓库根重合（少见），**`DOC_DIR`** 为 **`.`**（实现须统一，禁止与空字符串混用）。
 
 ### 2.2.1 三者关系
 
-- **推导顺序**：**`DOC_ROOT`**（主输入，来自 **`docs-init`** 传入目录或 §3.2 步骤 1）→ **`REPO_ROOT`** = 由 **`DOC_ROOT`** 解析 Git 顶层 → **`DOC_DIR`** = **`DOC_ROOT`** 相对于 **`REPO_ROOT`** 的相对路径。
+- **推导顺序**：**`DOC_ROOT`**（主输入）→ **`REPO_ROOT`** = 由 **`DOC_ROOT`** 解析 Git 顶层 → **`DOC_DIR`** 由二者推算，满足 **`REPO_ROOT` + `DOC_DIR` = `DOC_ROOT`**（路径上等价于 **`DOC_ROOT`** 在仓库内的相对段）。
 - 写入 `.docsconfig` 时：按 §3.2 先定 **`DOC_ROOT`**，再算 **`REPO_ROOT`**、**`DOC_DIR`** 并一并落盘（避免手填不一致）。
 
 ### 2.2.2 禁止使用 `export`（避免多仓库环境串扰）
