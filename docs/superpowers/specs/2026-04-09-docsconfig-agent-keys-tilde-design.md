@@ -61,8 +61,12 @@
 
 ### 4.4 消费方（与 `DOC_ROOT` 一致）
 
-- **`AGENT_ROOT` / `AGENT_DIRS` 写入目标仓库 `.docsconfig` 之后**，凡运行时需要与上述语义相同的量（「Agent 安装根」与「已登记 Agent 目录名列表」，对应安装路径为 `$AGENT_ROOT/<dir>` 且 `<dir>` 取自 `AGENT_DIRS`），**应自 `.docsconfig` 读取**（经 §5 对 `AGENT_ROOT` 做 `~` 展开后使用），**不以**各处重复推导 `agent_install_root` / `--agents` 为长期事实源——与 **`DOC_ROOT` 由 `.docsconfig` 提供、通过 `docsconfig-bootstrap` / `resolve_repo_doc_root` 消费** 的方式对齐。
+- **`AGENT_ROOT` / `AGENT_DIRS` 写入目标仓库 `.docsconfig` 之后**，凡运行时需要与上述语义相同的量（「Agent 安装根」与「已登记 Agent 目录名列表」，对应安装路径为 `$AGENT_ROOT/AGENT_DIR` 且 **`AGENT_DIR`** 为 **`AGENT_DIRS`** 中的某一目录名），**应自 `.docsconfig` 读取**（经 §5 对 `AGENT_ROOT` 做 `~` 展开后使用），**不以**各处重复推导 `agent_install_root` / `--agents` 为长期事实源——与 **`DOC_ROOT` 由 `.docsconfig` 提供、通过 `docsconfig-bootstrap` / `resolve_repo_doc_root` 消费** 的方式对齐。
 - **例外**：`docs-init` 在**尚未存在**或**正在首次写入** `.docsconfig` 的路径上，仍可按 CLI（`--agents`）与 `agent_install_root` 计算并写入；**其它**脚本、Skill、校验与索引流程在已存在 `.docsconfig` 时，应优先经 **`docsconfig_parse_into_globals` / `docsconfig_read_into`**（或等价）加载 **`AGENT_ROOT` / `AGENT_DIRS`**，避免与落盘配置漂移。
+- **文档与脚本表述（术语替换范围）**：下列路径中的 **Markdown、注释与可执行脚本**，凡出现与 **`AGENT_ROOT` 相同语义**（Agent 配置树所在父路径：工程根或用户主目录下的「安装根」），或 **`AGENT_DIRS` 中任一目录名相同语义**（如字面 `.cursor`、`.claude`、`.trea` 等作为「已选 Agent 根目录名」而非仓库内 `.agent/` 模板路径时），**应改为统一用 `AGENT_ROOT` / `AGENT_DIRS` 表述**；指**单个**目录名时写作 **`AGENT_DIR`**（表示 **`AGENT_DIRS` 中的某项**，**不是** `.docsconfig` 文件里的键名——文件键名仍为 **`AGENT_DIRS`**）。
+  - **目录**：`.agent/`、`application/`、`system/`、`company/`、`scripts/`（含递归子路径）。
+  - **文件**：仓库根 **`README.md`**、**`AGENTS.md`**、**`INDEX_GUIDE.md`**，以及子域内同名 **`INDEX_GUIDE.md`**（如 `application/INDEX_GUIDE.md` 等）中涉及上述语义者，一并按上款替换。
+- **边界**：本款**不**要求把仓库内**源模板目录** `.agent/`（ai-knowledge 内 skills/rules 路径）改名为变量名；仅当正文描述的是**目标工程侧**「安装根 / `~/.cursor` 等」与 **`.docsconfig` 一致**的语义时，改用 **`AGENT_ROOT` / `AGENT_DIR`**；若须特指本仓库路径，可保留「本仓库 `.agent/`」等字面说明以免歧义。
 
 ---
 
@@ -70,7 +74,7 @@
 
 - **`docsconfig_read_into`**（`scripts/docs-config.sh`）：在解析出 `DOC_ROOT`、`REPO_ROOT`、`AGENT_ROOT` 的值后，若值以 **`~/`** 开头，则展开为 **`$HOME/` + 余下路径**；单独一个 **`~`** 视为 **`$HOME`**。若值已为绝对路径，则不变。`AGENT_DIRS` 按 §4.2 解析为可迭代列表。
 - **`docsconfig_parse_into_globals`**（`.agent/scripts/docsconfig-bootstrap.sh`）：对 **`DOC_ROOT`、`REPO_ROOT`、`AGENT_ROOT`** 在赋值后做**相同展开**；`AGENT_DIRS` 的解析与 §4.2 一致，供 §4.4 消费。
-- 展开后，**`resolve_repo_doc_root`** 等返回的仍是 **绝对路径**（与现有注释「文档树根绝对路径」一致，可微调注释为「由 `.docsconfig` 解析并展开 `~` 后」）。
+- 展开后，**`resolve_repo_doc_root`** 等返回的是 `.docsconfig` 解析并展开 `~` 后的值。
 
 ---
 
@@ -93,6 +97,7 @@
 - `docs-init.sh`：`scope=config` 分支在写配置前调用 `apply_agents`；向 `docsconfig_write` 传入 Agent 元数据。
 - `docsconfig-bootstrap.sh`：`docsconfig_parse_into_globals` 支持新键并对 `*_ROOT` 展开 `~`。
 - **消费方**：凡需与 `AGENT_ROOT` / `AGENT_DIRS` 同语义的逻辑（见 §4.4），在目标仓库已有 `.docsconfig` 时改为从该文件读取并对齐 `DOC_ROOT` 用法；盘点并更新相关 Skill 脚本 / 校验脚本等。
+- **术语替换**：按 §4.4 第三节，扫描 `.agent/`、`application/`、`system/`、`company/`、`scripts/` 及根 / 子域 `INDEX_GUIDE.md`、`README.md`、`AGENTS.md`，将符合边界说明的表述改为 `AGENT_ROOT` / `AGENT_DIRS` / `AGENT_DIR`。
 - `scripts/README.md`：简要说明 `.docsconfig` 键与 `~` 约定（若该节已存在则增量补一句）。
 - 自测：`--scope=config`、`--agents=cursor,claude`、dry-run 与实写各一次；`HOME` 下与非 `HOME` 路径各一种（若可测）。
 
@@ -105,5 +110,6 @@
 | ---------- | ------------------------------------------ |
 | 2026-04-09 | 初稿：方案 A + C 策略 + `AGENT_ROOT`/`AGENT_DIRS` |
 | 2026-04-09 | 增补 §4.4：消费方与 `DOC_ROOT` 一致、自 `.docsconfig` 读取 |
+| 2026-04-09 | §4.4：约定 `.agent/` 等目录与入口 MD 中术语向 `AGENT_ROOT`/`AGENT_DIRS`/`AGENT_DIR` 对齐 |
 
 
