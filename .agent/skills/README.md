@@ -29,5 +29,6 @@
 ## 使用说明
 
 - 这些命令由 Agent 依据对应 `SKILL.md` 执行并落盘产物。
+- **`git commit` / `git push`**：须遵守仓库 **[git-guidelines.md](../rules/coding/git-guidelines.md)**「提交前用户确认」— **禁止**在未经用户明确同意时提交；步骤中若写「Commit」，意为**经用户确认后再提交**。
 - `scripts/` 目录负责项目初始化（如 `docs-*.sh`），不等同于 Skill 命令。
 - 若命令输出涉及索引或变更记录，请以仓库约定路径为准（如 `INDEX_GUIDE.md`、`{DOC_DIR}/changelogs/`）。

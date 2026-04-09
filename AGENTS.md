@@ -2,7 +2,7 @@
 
 > **契约定位**：本文件仅承载 Agent 角色定位、核心契约、文档索引、流程规范等关键索引和必读内容。
 
-**最后更新**: 2026-04-07
+**最后更新**: 2026-04-09
 
 ---
 
@@ -26,6 +26,7 @@
 - **最小变更**：只改该改的，不做未经要求的重构
 - **保持一致**：遵循项目现有的代码风格、命名规范和架构模式
 - **不假设，要验证**：不确定时读代码/文档，不编造 API、路径或配置
+- **提交前确认**：执行 `git commit` / `git push` 前须征得用户明确同意；说明变更摘要与建议提交说明后再请求确认。详见 [.agent/rules/coding/git-guidelines.md](.agent/rules/coding/git-guidelines.md)「提交前用户确认」；**任意 Skill 工作流**亦同。
 
 ### 沟通协议
 
@@ -47,6 +48,7 @@
 - 禁止无约定变更即删改 [.agent/rules/](.agent/rules/)、[.agent/skills/](.agent/skills/) 中模板与技能核心结构。
 - 禁止未评估影响面即改 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[application/README.md](application/README.md) 导航表导致断链或错位。
 - **不在本文粘贴** [INDEX_GUIDE.md](INDEX_GUIDE.md) 第 3 节级 API/字典全表；需要时直接打开该文件。
+- **禁止未经用户确认即提交代码**：不得自动执行 `git commit`（含 Skill 步骤中的「Commit」）；须经用户确认后提交。例外：用户在同一会话中明确指令可以提交并认可说明。细则见 [.agent/rules/coding/git-guidelines.md](.agent/rules/coding/git-guidelines.md)。
 
 ---
 
