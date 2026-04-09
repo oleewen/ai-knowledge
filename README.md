@@ -40,7 +40,7 @@ git clone https://github.com/oleewen/ai-knowledge
 ./ai-knowledge/scripts/docs-init.sh [--选项] ./your-project/docs
 ```
 
-初始化参数、模式与落地产物说明见 **[scripts/README.md](scripts/README.md)**。
+初始化参数、模式与落地产物说明见 **[scripts/README.md](scripts/README.md)**。在**目标工程**侧，`docs-init` 会在该工程 Git 仓库根写入 **`.docsconfig`**（必选 **`DOC_ROOT`/`REPO_ROOT`/`DOC_DIR`**；`--scope=config` 时另含 **`AGENT_ROOT`/`AGENT_DIRS`**；路径在 `$HOME` 下时常为 **`~/...`**），供 Skill 与脚本通过 **`docsconfig-bootstrap`** 解析。
 
 ## 常见 Skill 与推荐流程
 
@@ -104,7 +104,7 @@ ai-knowledge/
 | [applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md) | 应用联邦入口（迁移后）         |
 | [.agent/README.md](.agent/README.md)                                     | AI 协作规则与目录说明        |
 | [.agent/skills/README.md](.agent/skills/README.md)                       | Slash 技能命令一览        |
-| [scripts/README.md](scripts/README.md)                                   | 初始化脚本参数、模式与落地产物     |
+| [scripts/README.md](scripts/README.md)                                   | 初始化脚本参数、模式与落地产物；目标工程 **`.docsconfig`** 键（`DOC_*` / `AGENT_*`）与 `~` 约定     |
 | [application/changelogs/README.md](application/changelogs/README.md)     | 变更记录与索引运维说明         |
 
 
