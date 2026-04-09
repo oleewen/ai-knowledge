@@ -27,7 +27,7 @@
 - `.agent` 内文件引用，避免误用仅能在根目录解析的短链：
     - Agent 语义可达
     - `.agent/` 内文件引用，须以相对当前文件为准。
-    - `.agent/` 外文件引用，须用仓库根 `REPO_ROOT` 相对路径。
+    - `.agent/` 外文件引用，须用仓库根 **`REPO_ROOT`** 相对路径（目标工程侧与 `.docsconfig` 之 **`REPO_ROOT`** 语义一致，见 [scripts/README.md](../../scripts/README.md)）。
     - 仓库根执行自检：`bash .agent/scripts/validate-agent-md-links.sh`。
 
 ### 2) Skills 与脚本边界

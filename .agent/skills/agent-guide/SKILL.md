@@ -37,7 +37,7 @@ description: >
 
 ### 步骤 1：Index 解析
 
-先 `source` `.agent/scripts/docsconfig-bootstrap.sh` 并执行 `validate_bootstrap_docsconfig`（以当前脚本目录为参），从 `.docsconfig` 得到 `REPO_ROOT`（目标工程仓库根）与 `DOC_ROOT`（文档树根绝对路径）。
+先 `source` `.agent/scripts/docsconfig-bootstrap.sh` 并执行 `validate_bootstrap_docsconfig`（以当前脚本目录为参），从 `.docsconfig` 得到 **`REPO_ROOT`**（目标工程仓库根）、**`DOC_ROOT`**（文档树根绝对路径），以及可选的 **`AGENT_ROOT`** / **`AGENT_DIRS`**（与 `docs-init --scope=config` 落盘一致）。
 
 ```bash
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

@@ -29,7 +29,7 @@
   - 在任意项目目录初始化（bootstrap）：
     - `curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- [选项]`
   - 已克隆本仓库时对目标目录初始化：
-    - `REPO_ROOT=/path/to/ai-knowledge /path/to/ai-knowledge/scripts/docs-init.sh [选项]`
+    - `REPO_ROOT=/path/to/ai-knowledge /path/to/ai-knowledge/scripts/docs-init.sh [选项]`（此处 **`REPO_ROOT`** 为**环境变量**，指向**本中央库**克隆根；**目标工程**侧由 `docs-init` 写入的 `.docsconfig` 文件内亦有键名 **`REPO_ROOT`**，表示**该目标仓库** Git 根，二者同名不同义）
 
 ## 2. 架构拓扑
 
@@ -220,7 +220,7 @@
 | ------------------------- | ----------------------------- | ------------------------------- | --------------------------------------------- | --------- |
 | `GIT_REPO_URL`            | `./scripts/docs-bootstrap.sh` | bootstrap 拉取仓库地址                | `https://github.com/oleewen/ai-knowledge.git` | 低         |
 | `GIT_REF`                 | `./scripts/docs-bootstrap.sh` | 指定克隆分支/标签                       | `HEAD`                                        | 低         |
-| `REPO_ROOT`               | `./scripts/docs-init.sh`      | 指定本仓库根目录                        | 自动推导 `SCRIPT_DIR/..`                          | 低         |
+| `REPO_ROOT`               | `./scripts/docs-init.sh`      | **环境变量**：指定**本中央库**根目录（运行 `docs-init` 时） | 自动推导 `SCRIPT_DIR/..`                          | 低         |
 | `TARGET_DIR`              | `./scripts/docs-init.sh`      | 初始化目标目录                         | 当前目录 `pwd`                                    | 低         |
 | `DOCS_DIR` / `--dd`       | `./scripts/docs-config.sh`    | 目标文档根目录                         | `docs`                                        | 低         |
 | `SDX_MODE` / `--mode`     | `./scripts/docs-init.sh`      | 初始化模式：`standalone`/`central`（或 `s`/`c`） | `standalone`                                  | 低         |
@@ -235,6 +235,8 @@
 
 
 > 说明：默认值集中在 `./scripts/docs-config.sh` 的 `SDX_DEFAULTS`；`docs-init.sh` 允许用环境变量/参数覆盖。
+
+> **目标工程 `.docsconfig`**（由 `docs-init` 落在**目标仓库根**）：键 **`DOC_ROOT`** / **`REPO_ROOT`** / **`DOC_DIR`** 及可选 **`AGENT_ROOT`** / **`AGENT_DIRS`** 表示该工程的文档根、仓库根、相对文档段与 Agent 安装根；路径在 `$HOME` 下时常为 **`~/...`**。与上表 **环境变量 `REPO_ROOT`**（指向本中央库）区分。详见 [scripts/README.md](scripts/README.md)。
 
 ## 6. 未索引区域声明
 

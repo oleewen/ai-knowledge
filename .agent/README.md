@@ -20,7 +20,7 @@
 | [rules/CONVENTIONS.md](rules/CONVENTIONS.md)                                                 | 规则总入口（编码/设计/测试/文档交付规范）                                                |
 | [rules](rules)                                                                               | 分域规则与模板集合                                                             |
 | [skills](skills)                                                                             | Skill 工作流目录（每个子目录对应一个能力域）                                             |
-| [scripts/](scripts)                                                                          | 共享 Bash 库（`docsconfig-bootstrap.sh`、`DOC_ROOT`/`resolve_repo_doc_root`、`validate-agent-md-links.sh` 等） |
+| [scripts/](scripts)                                                                          | 共享 Bash 库（`docsconfig-bootstrap.sh`：加载 **`DOC_ROOT`/`REPO_ROOT`/`DOC_DIR`** 及可选 **`AGENT_ROOT`/`AGENT_DIRS`**、`resolve_repo_doc_root`、`validate-agent-md-links.sh` 等） |
 | [skills/README.md](skills/README.md)                                                         | Skills 使用入口与命令清单（权威）                                                  |
 | [skills/agent-guide/assets/agents-skeleton.md](skills/agent-guide/assets/agents-skeleton.md) | `AGENTS.md` 推荐骨架模板                                                    |
 

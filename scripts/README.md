@@ -16,14 +16,12 @@ Slash 技能命令请查看 [.agent/skills/README.md](../.agent/skills/README.md
 | **central**  | **`system`** | **`system/`** | 系统知识库同步到；执行系统知识库登记 `company/system-<slug>/` |
 | **central** | **`company`** | **`company/`** | 公司级模板同步；  |
 
-2. **Agent 配置**：为多 Agent 安装 skills 和 rules（**安装根为用户主目录 `$HOME`**，不写入目标工程根）
-   - 支持 Agent：`cursor`、`trea`、`claude`，可多选（如 `--agents=cursor,trea`）
-   - 安装目录映射（相对于 `$HOME`）：
-     - `cursor` → `.cursor/`
-     - `trea` → `.trea/`
-     - `claude` → `.claude/`
-   - 安装内容：`.agent/skills/*` → `$HOME/{agent}/skills/`，`.agent/rules/*` → `$HOME/{agent}/rules/`
-   - 路径改写：文件中的 `.agent/` 替换为对应 Agent 目录前缀（如 `.cursor/`），`application/` 替换为相对工程根的文档目录（如 `application/`）
+2. **Agent 配置**：为多 Agent 安装 skills 和 rules；**安装根**与是否传入 `<目标工程文档目录>` 一致（与 `docs-init` 内 `agent_install_root` 及目标工程 `.docsconfig` 中 **`AGENT_ROOT`** 语义对齐）：
+   - **已传入** `<目标工程文档目录>`：**`AGENT_ROOT`** 为目标工程根（与 **`REPO_ROOT`** 同义），各 Agent 目录为 **`AGENT_ROOT`/AGENT_DIR**（**`AGENT_DIR`** 取自 **`AGENT_DIRS`**，如 `.cursor`、`.trea`、`.claude`）。
+   - **未传入**（仅 `--scope=skills`/`rules`/`rs` 等）：**`AGENT_ROOT`** 为 **`$HOME`**，安装到 `~/.cursor/` 等。
+   - 支持 Agent：`cursor`、`trea`、`claude`，可多选（如 `--agents=cursor,trea`）。**`--scope=config`** 时会把当前 CLI 推导的 **`AGENT_ROOT`** 与 **`AGENT_DIRS`** 一并写入 `.docsconfig`。
+   - 安装内容：中央库 `.agent/skills/*`、`.agent/rules/*` → 各 **`$AGENT_ROOT/AGENT_DIR/skills|rules/`**。
+   - 路径改写：文件中的 `.agent/` → 对应 Agent 目录前缀；`application/` → 相对工程根的文档前缀。
 
 3. **冲突处理**：若目标路径已存在，默认会交互式提示；使用 `--force` 强制覆盖，或 `--dry-run` 预览操作。
 
@@ -123,12 +121,13 @@ REPO_ROOT=/path/to/ai-knowledge ./scripts/docs-init.sh /path/to/your-project/doc
 
 ## 初始化后的目录结构
 
-以 `--mode=standalone --agents=cursor` 为例：文档模板落在**目标工程**，Agent 配置落在**用户主目录**。
+以 `--mode=standalone --agents=cursor` 为例：文档模板落在**目标工程**。Agent 配置落在 **`AGENT_ROOT`**：若本次命令**传入了** `<目标工程文档目录>`，则 **`AGENT_ROOT`** 与工程根一致（与 `.docsconfig` 之 **`REPO_ROOT`** 同目录）；若**未传入**（仅装 skills/rules），则 **`AGENT_ROOT`=`$HOME`**。
 
-**目标工程**（参数 `<目标工程文档目录>` 及其父目录）：
+**目标工程**（参数 `<目标工程文档目录>` 及其父目录；含 `.docsconfig` 五键中的 **`DOC_ROOT`/`REPO_ROOT`/`DOC_DIR`**，以及 **`--scope=config`** 时的 **`AGENT_ROOT`/`AGENT_DIRS`**）：
 
 ```
 your-project/
+├── .docsconfig                    # 可选：由 docs-init 写入（必选三键；config 时含 AGENT_*）
 ├── application/                          # 文档目录（application/ 模板拷贝，已替换 system→application）
 │   ├── README.md                  # 应用知识库 README
 │   ├── INDEX_GUIDE.md             # 九章索引（docs-indexing）；central 登记见「十」
@@ -148,7 +147,7 @@ your-project/
 └── .docs-init/                    # 工程侧备份（覆盖已有文档模板时自动创建）
 ```
 
-**用户主目录 `$HOME`**（Agent skills/rules；覆盖已有配置时可在 `~/.docs-init/` 下备份）：
+**用户主目录 `$HOME`**（**仅当未指定** `<目标工程文档目录>` 而安装 Agent 时；此时 **`AGENT_ROOT`=`$HOME`**；覆盖已有配置时可在 `~/.docs-init/` 下备份）：
 
 ```
 ~/
@@ -184,10 +183,10 @@ ai-knowledge/
 
 ### Agent 安装
 
-1. 从 `.agent/skills/` 筛选 `agent-*`、`docs-*`、`knowledge-*`、`sdx-*` 前缀的技能目录
-2. 拷贝到 `$HOME/{agent_dir}/skills/`（`{agent_dir}` 为 `.cursor`、`.trea`、`.claude` 之一），同时拷贝 `.agent/skills/README.md`
-3. 从 `.agent/rules/` 同步所有规则到 `$HOME/{agent_dir}/rules/`
-4. 改写路径引用：`.agent/` → `.cursor/`（或 `.trea/`、`.claude/`）；`application/` → 目标文档相对路径（如 `application/`）
+1. 从中央库 `.agent/skills/` 筛选 `agent-*`、`docs-*`、`knowledge-*`、`sdx-*` 前缀的技能目录
+2. 拷贝到 **`$AGENT_ROOT`/`AGENT_DIR`/skills/**（**`AGENT_DIR`** 为 `.cursor`、`.trea`、`.claude` 之一；**`AGENT_ROOT`** 见上文「功能概述」节），同时拷贝 `.agent/skills/README.md`
+3. 从 `.agent/rules/` 同步所有规则到 **`$AGENT_ROOT`/`AGENT_DIR`/rules/**
+4. 改写路径引用：`.agent/` → **`AGENT_DIR/`**（如 `.cursor/`）；`application/` → 目标文档相对路径（如 `application/`）
 
 ## 脚本组成
 

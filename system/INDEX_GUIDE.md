@@ -9,7 +9,7 @@
 - 扫描模式：`full`
 - 扫描深度：`3`
 - 索引文件总数：`166`
-- 输出路径：`${DOC_DIR}/INDEX_GUIDE.md`（见 `.docsconfig`）
+- 输出路径：`${DOC_DIR}/INDEX_GUIDE.md`（目标工程 `.docsconfig` 之 **`DOC_DIR`**；同文件另有 **`DOC_ROOT`/`REPO_ROOT`**，可选 **`AGENT_ROOT`/`AGENT_DIRS`**）
 
 ## 二、架构视图（Architecture View）
 

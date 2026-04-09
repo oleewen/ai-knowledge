@@ -240,15 +240,15 @@ git commit -m "docs(scripts): 说明 .docsconfig 五键与 ~ 约定"
 **Files:**
 - 可能涉及：根目录 `README.md`、`AGENTS.md`、`INDEX_GUIDE.md`，`.agent/`、`application/`、`system/`、`company/`、`scripts/` 下符合 spec **边界**的段落
 
-- [ ] **Step 1：检索**
+- [x] **Step 1：检索**
 
 ```bash
 rg -n "工程根|文档根|\\.cursor|\\.claude|REPO_ROOT|DOC_ROOT" --glob '*.md' .agent application system company scripts README.md AGENTS.md INDEX_GUIDE.md 2>/dev/null | head -80
 ```
 
-- [ ] **Step 2：按 spec §4.4「边界」逐条判断是否替换**，避免把「本仓库 `application/` 模板」改成 `DOC_ROOT`。
+- [x] **Step 2：按 spec §4.4「边界」逐条判断是否替换**，避免把「本仓库 `application/` 模板」改成 `DOC_ROOT`。
 
-- [ ] **Step 3：提交**（可多条 commit）
+- [x] **Step 3：提交**（可多条 commit）
 
 ```bash
 git add -p

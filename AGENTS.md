@@ -72,7 +72,7 @@
 | 联邦模板迁移说明（原 `applications/app-*`）     | [applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md)、[applications/README.md](applications/README.md)                               |
 | 全局约定与命名                           | [.agent/rules/CONVENTIONS.md](.agent/rules/CONVENTIONS.md)                                                                                              |
 | Slash 技能                          | [.agent/skills/README.md](.agent/skills/README.md)                                                                                                      |
-| 初始化脚本参数与产物                        | [scripts/README.md](scripts/README.md)                                                                                                                  |
+| 初始化脚本参数与产物、`.docsconfig` 键（`DOC_*` / `AGENT_*`） | [scripts/README.md](scripts/README.md)                                                                                                                  |
 | 索引运行记录与变更聚合（按需）                   | [application/changelogs/](application/changelogs/)（说明见 [application/changelogs/README.md](application/changelogs/README.md)）                            |
 
 
