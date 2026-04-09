@@ -1,6 +1,6 @@
 # 📘 AI文档库精要索引指南
 
-> 生成时间：2026-04-07（与知识库 v2 布局对齐的手工修订；文件份数未重扫；全量请执行 `/docs-indexing`）  |  执行模式：Mode 3（精读模式，全量更新）  |  索引覆盖率：见 `docs-indexing` 枚举（无 `rg` 时回退 `git ls-files`）；九章骨架见 `./application/INDEX_GUIDE.md`；与 `application/README.md`「快速导航」及 §3.2 对齐；运行记录见 `./application/changelogs/indexing-log.jsonl`
+> 生成时间：2026-04-07（与知识库 v2 布局对齐的手工修订；文件份数未重扫；全量请执行 `/docs-indexing`）  |  执行模式：Mode 3（精读模式，全量更新）  |  索引覆盖率：见 `docs-indexing` 枚举（无 `rg` 时回退 `git ls-files`）；九章骨架见 `./application/INDEX_GUIDE.md`；与 `application/README.md`「快速导航」及 §3.2 对齐；运行记录见 `./application/changelogs/INDEXING-LOG.md`
 
 ## 1. 全局元信息
 
@@ -49,7 +49,7 @@
 │   ├── solutions/                # 解决方案（README + SOLUTION-{IDEA-ID}.md）
 │   ├── analysis/                 # 需求分析（README + ANALYSIS-{IDEA-ID}.md）
 │   ├── requirements/             # 需求交付（README + REQUIREMENT-{IDEA-ID}/…；规约可在各需求包内 specs/）
-│   └── changelogs/               # README、CHANGELOG、可选 changes-index / indexing-log
+│   └── changelogs/               # README、CHANGE-LOG.md、INDEXING-LOG.md（Markdown 日志）
 ├── applications/                 # 联邦模板已迁移；仅存迁移说明与索引入口
 │   ├── README.md
 │   └── APPLICATIONS_INDEX.md
@@ -127,7 +127,7 @@
 | `./application/analysis/README.md`      | 需求分析阶段三步流程与分析索引登记                                            | `需求分析`     | `solutions/`、`knowledge/`                                                    | `requirements/`          | ⭐⭐⭐ |
 | `./application/requirements/README.md`  | 需求交付四步主线与目录结构（含各需求包内规约 specs/）                               | `需求交付`     | `analysis/`、`solutions/`、`.agent/skills/sdx-prd` / `sdx-design` / `sdx-test` | 阶段交付物                    | ⭐⭐⭐ |
 | `./application/changelogs/README.md`    | changelogs 说明；docs-change / docs-indexing **Skill** 产出物说明    | `变更` `运维`  | `README.md`、`AGENTS.md`                                                      | 索引链路                     | ⭐⭐  |
-| `./application/changelogs/CHANGELOG.md` | 应用知识库（application）文档体系维护性变更记录                              | `变更`       | -                                                                            | 审计与追溯                    | ⭐⭐  |
+| `./application/changelogs/CHANGE-LOG.md` | 应用知识库（application）维护性变更与 docs-change 聚合（Markdown）                              | `变更`       | -                                                                            | 审计与追溯                    | ⭐⭐  |
 
 
 #### 3.2.3 组织级与公司级壳目录（system / company）
@@ -244,7 +244,7 @@
   - `./doc/`**（少数项目用作文档根；本仓库未使用）
 - **系统级阶段目录（除各目录 README 入口外）**
   - `./application/solutions/`**、`./application/analysis/`**、`./application/requirements/**` 内具体方案 / 分析 / 交付正文未逐一精读
-  - `./application/changelogs/changes-index.json` / `changes-index.md` 为本次索引流程写入的基线摘要（非逐条审计精读）；`./application/changelogs/indexing-log.jsonl` 为追加式执行日志（已追加全量 depth3 记录）
+  - `./application/changelogs/CHANGE-LOG.md` 为 docs-change 维护的变更聚合日志；`./application/changelogs/INDEXING-LOG.md` 为 docs-indexing 追加式运行日志（非逐条审计精读）
 - **knowledge 未精读**
   - `./application/constitution/adr/`**、`./application/constitution/principles/`**（仅精读了宪法层 README、术语表、标准与 ADR 模板）
   - `./application/knowledge/**/*_meta.yaml`、各阶段 `./application/{solutions,analysis,requirements,changelogs}/*_meta.yaml`、`./application/knowledge/**/*.yaml`（仅精读了四视角 README 与 DESIGN/CONTRIBUTING 约定；实体样例未逐一通读）
@@ -284,5 +284,5 @@
 ## 索引日志索引
 
 - **索引日志目录**：`./application/changelogs/`
-- **索引日志文件**：`./application/changelogs/indexing-log.jsonl`
+- **索引运行日志**：`./application/changelogs/INDEXING-LOG.md`
 

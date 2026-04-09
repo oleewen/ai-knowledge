@@ -2,8 +2,8 @@
 
 # docs-change - 原始变更数据采集器
 #
-# 职责：采集三源原始数据并输出到临时目录，供 Agent 解析生成最终 JSON/MD 产物。
-# 不负责：JSON/MD 生成、时间格式统一、数据合并排序（由 Agent 完成）。
+# 职责：采集三源原始数据并输出到临时目录，供 Agent 解析并写入 CHANGE-LOG.md（Markdown）。
+# 不负责：CHANGE-LOG 正文排版、时间格式统一、数据合并排序（由 Agent 完成）。
 #
 # 输出文件（写入 {output_dir}/.raw/）：
 #   git_commits.txt     - git log 原始输出（格式：HASH|ISO_TIME|AUTHOR|MESSAGE\nFILE\n...）
@@ -54,7 +54,7 @@ mkdir -p "$OUTPUT"
 RAW_DIR="$OUTPUT/.raw"
 mkdir -p "$RAW_DIR"
 
-INDEX_JSON="$OUTPUT/changes-index.json"
+CHANGE_LOG_MD="$OUTPUT/CHANGE-LOG.md"
 
 # ── 步骤 1：时间基准计算 ──────────────────────────────────────────────────────
 
@@ -76,17 +76,34 @@ to_ms() {
 if [[ -n "$SINCE" ]]; then
     BASELINE_TIME="$SINCE"
     BASELINE_MS=$(to_ms "$SINCE")
-elif [[ -f "$INDEX_JSON" ]]; then
-    BASELINE_TIME=$(python3 -c "
-import json, sys
-d = json.load(open('$INDEX_JSON'))
-print(d.get('metadata', {}).get('baseline_time', '$DEFAULT_SINCE'))
-" 2>/dev/null || echo "$DEFAULT_SINCE")
-    BASELINE_MS=$(python3 -c "
-import json, sys
-d = json.load(open('$INDEX_JSON'))
-print(d.get('metadata', {}).get('baseline_time_ms', '$DEFAULT_SINCE_MS'))
-" 2>/dev/null || echo "$DEFAULT_SINCE_MS")
+elif [[ -f "$CHANGE_LOG_MD" ]]; then
+    # 从 CHANGE-LOG.md 文末 HTML 注释读取：<!-- docs-change:baseline_time_ms=... -->
+    readarray -t _BL < <(python3 - <<PY
+import re
+from datetime import datetime
+
+path = r"""$CHANGE_LOG_MD"""
+default_ms = "$DEFAULT_SINCE_MS"
+default_time = "$DEFAULT_SINCE"
+try:
+    text = open(path, encoding="utf-8").read()
+except OSError:
+    print(default_time)
+    print(default_ms)
+    raise SystemExit
+ms_list = re.findall(r"<!-- docs-change:baseline_time_ms=(\d+) -->", text)
+if not ms_list:
+    print(default_time)
+    print(default_ms)
+    raise SystemExit
+ms = ms_list[-1]
+dt = datetime.utcfromtimestamp(int(ms) / 1000.0)
+print(dt.strftime("%Y-%m-%d %H:%M:%S.000"))
+print(ms)
+PY
+)
+    BASELINE_TIME="${_BL[0]}"
+    BASELINE_MS="${_BL[1]}"
 else
     BASELINE_TIME="$DEFAULT_SINCE"
     BASELINE_MS="$DEFAULT_SINCE_MS"
@@ -133,7 +150,7 @@ fi
 
 # 3.2 CHANGELOG 文件（过滤：entry_time > cutoff_time，由 Agent 解析）
 echo "[INFO] Scanning CHANGELOG files ..."
-find . -maxdepth 3 -type f \( -iname "CHANGELOG*" -o -iname "changes*" \) \
+find . -maxdepth 3 -type f \( -iname "CHANGELOG*" -o -iname "CHANGE-LOG.md" -o -iname "changes*" \) \
     ! -path "./$OUTPUT/*" \
     ! -path "./.git/*" \
     > "$RAW_DIR/changelog_files.txt" 2>/dev/null || true
@@ -221,6 +238,5 @@ echo "  local_files.txt      - 本地变更文件路径列表"
 echo "  meta.env             - 时间基准与统计元信息"
 echo ""
 echo "下一步：Agent 读取以上文件，解析 CHANGELOG 条目（过滤 entry_time > cutoff_time），"
-echo "        合并三源数据，按 time_ms 倒序排列，生成："
-echo "  $OUTPUT/changes-index.json"
-echo "  $OUTPUT/changes-index.md"
+echo "        合并三源数据，按 time_ms 倒序排列，写入/更新："
+echo "  $OUTPUT/CHANGE-LOG.md（Markdown；文末须更新 <!-- docs-change:baseline_time_ms=... -->）"

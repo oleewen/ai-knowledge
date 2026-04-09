@@ -85,20 +85,14 @@ git log --since="$BASELINE_TIME" \
 ## 验证清单
 
 ### 文件存在性
-- [ ] `changes-index.json` 存在
-- [ ] `changes-index.md` 存在
+- [ ] `CHANGE-LOG.md` 存在且为有效 Markdown
 
-### JSON 格式
-- [ ] `jq empty` 通过
-- [ ] `metadata.generated_at` 字段存在
-- [ ] `metadata.baseline_time` 字段存在
-- [ ] `changes` 数组存在
+### 基线与内容
+- [ ] 文末存在 `<!-- docs-change:baseline_time_ms=... -->`，且与本轮聚合后的基线一致
+- [ ] 收录条目均标注来源（git / changelog / local）且时间可核对
 
 ### 时间一致性
-- [ ] 所有 `changes[].time_ms > metadata.cutoff_time_ms`
-
-### 双格式一致
-- [ ] JSON `statistics.total_changes` == MD 中的"总变更数"
+- [ ] 条目时间均在约定的 `baseline_time` / `cutoff_time` 规则下（见 [gotchas.md](../gotchas.md)）
 
 ---
 
@@ -106,4 +100,4 @@ git log --since="$BASELINE_TIME" \
 
 - **定时执行**：每日或每次提交后运行，保持索引新鲜
 - **CI 集成**：在 CI/CD 流程中自动生成，产物纳入 git
-- **基线备份**：定期备份 `changes-index.json` 以防 `baseline_time` 丢失
+- **基线备份**：定期备份 `CHANGE-LOG.md` 以防文末基线注释丢失

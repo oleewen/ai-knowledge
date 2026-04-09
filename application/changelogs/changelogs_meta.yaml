@@ -19,10 +19,8 @@ repository:
   child_directories: []
   child_files:
     - "README.md"
-    - "CHANGELOG.md"
-    - "changes-index.json"
-    - "changes-index.md"
-    - "indexing-log.jsonl"
+    - "CHANGE-LOG.md"
+    - "INDEXING-LOG.md"
     - "changelogs_meta.yaml"
 
 pipeline:

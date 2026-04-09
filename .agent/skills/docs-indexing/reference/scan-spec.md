@@ -39,9 +39,9 @@ docs-indexing 技能的执行细节：深度级别定义、模式逻辑、文件
 
 ### incremental（增量）
 
-基于 `indexing-log.jsonl` 上次完成时间戳，仅处理变更文件：
+基于 `INDEXING-LOG.md` 文末最近一次 `indexing_finished_ms`（HTML 注释），仅处理变更文件：
 
-1. 从 `indexing-log.jsonl` 读取最后一条记录的 `indexing_finished_at` 作为基线
+1. 从 `INDEXING-LOG.md` 读取最后一次 `<!-- sdx-indexing:indexing_finished_ms=... -->` 作为基线
 2. 仅扫描基线时间之后变更的文件
 3. 对已有章节：合并更新，不清空未变更部分
 4. 对新增文件：归入对应章节
@@ -76,21 +76,23 @@ docs-indexing 技能的执行细节：深度级别定义、模式逻辑、文件
 
 ## 日志格式
 
-每次执行完毕后追加（append）一条到 `changelogs/indexing-log.jsonl`：
+每次执行完毕后向 `changelogs/INDEXING-LOG.md` **追加**一节 Markdown（表格字段 + 文末基线注释），例如：
 
-```json
-{
-  "timestamp": "ISO-8601",
-  "data_mode": "full|incremental",
-  "read_mode": 1,
-  "output_path": "./{DOC_DIR}/INDEX_GUIDE.md",
-  "indexed_files": 156,
-  "duration_ms": 45230,
-  "indexing_finished_at": 1704115200000
-}
+```markdown
+## 运行记录 — 2026-04-09T12:00:00Z
+
+| 字段 | 值 |
+|------|-----|
+| 模式 | full |
+| 深度 | 3 |
+| 索引文件数 | 156 |
+| 输出路径 | `./docs/INDEX_GUIDE.md` |
+| 耗时 (ms) | 120 |
+
+<!-- sdx-indexing:indexing_finished_ms=1704115200000 -->
 ```
 
-必需字段：`timestamp`、`data_mode`、`read_mode`、`output_path`、`indexed_files`、`duration_ms`、`indexing_finished_at`。
+必需信息：运行节标题（ISO 时间）、表格内模式/深度/索引文件数/输出路径/耗时，以及文末 `<!-- sdx-indexing:indexing_finished_ms=... -->`（供增量基线解析）。
 
 ---
 
@@ -99,7 +101,7 @@ docs-indexing 技能的执行细节：深度级别定义、模式逻辑、文件
 | 场景 | 处理 |
 |------|------|
 | 无历史日志 | 说明增量前提不满足，请用户确认改走全量或中止 |
-| 变更索引缺失 | 说明增量前提不满足，请用户确认改走全量或中止 |
+| 变更驱动数据缺失（增量联动） | 须配合 docs-change 与 `CHANGE-LOG.md`；详见 Skill 门禁 |
 | 输出目录不存在 | 自动创建目录 |
 | 文件不可读 | 跳过并记录到索引边界（§八） |
 | 增量基线无效 | 说明基线无效，请用户确认改走全量或中止 |

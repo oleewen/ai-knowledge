@@ -81,7 +81,7 @@
 - **中央库 · requirements 阶段**（`application/requirements/`）：`requirements_meta.yaml`（含 `layers`：REQ / MVP_PHASE）；`REQUIREMENT-{IDEA-ID}/` 为交付包锚点（与 `ANALYSIS-{IDEA-ID}.md` 共用同一 **IDEA-ID**），不在包内并列根级 `*_meta.yaml` 拷贝。
 - **中央库 · solutions 阶段**（`application/solutions/`）：`solutions_meta.yaml`（含 `layers`：SOLUTION）；根目录平铺 `SOLUTION-{IDEA-ID}.md`。
 - **中央库 · analysis 阶段**（`application/analysis/`）：`analysis_meta.yaml`（含 `layers`：ANALYSIS）；根目录平铺 `ANALYSIS-{IDEA-ID}.md`。
-- **中央库 · changelogs**（`application/changelogs/`）：`changelogs_meta.yaml`（含 `layers`：CHANGELOG / INDEX_OPS）；`CHANGELOG.md` 与可选 Skill 索引文件同目录。
+- **中央库 · changelogs**（`application/changelogs/`）：`changelogs_meta.yaml`（含 `layers`：CHANGELOG / INDEX_OPS）；`CHANGE-LOG.md`（变更聚合）；`INDEXING-LOG.md`（索引运行日志）。
 - **宪法层 ADR 标准**：`constitution/adr/adr_meta.yaml` 与 [../adr/adr-template.md](../adr/adr-template.md) 配套，描述模板结构、状态值与 `adr/ADR-{序号}-{短标题}.md` 落盘约定。
 
 ---

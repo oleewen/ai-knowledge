@@ -792,9 +792,9 @@ ensure_app_mirror() {
     {
       printf '# application-%s\n\n' "$slug"
       printf '本目录由 `docs-init --mode=central --type=application` 在中央库 `%s` 下生成，作为应用联邦槽位（知识库 v2）。\n\n' "$(basename "${CFG[repo_root]}")"
-      printf '- **APP ID**：`%s`\n' "$app_id"
-      printf '- **目标工程**：`%s`\n' "$project_name"
-      printf '- 同步文档镜像见 `docs-fetch` / 设计文档 `docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md`。\n'
+      printf -- '- **APP ID**：`%s`\n' "$app_id"
+      printf -- '- **目标工程**：`%s`\n' "$project_name"
+      printf -- '- 同步文档镜像见 `docs-fetch` / 设计文档 `docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md`。\n'
     } >"$dest/README.md"
   fi
 

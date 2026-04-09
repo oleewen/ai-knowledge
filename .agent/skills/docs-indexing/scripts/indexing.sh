@@ -16,8 +16,9 @@ cd "$REPO_ROOT" || exit 1
 
 # 配置变量（cwd=仓库根；路径由 resolve_repo_doc_root / .docsconfig 与 DOC_ROOT 统一）
 DEFAULT_OUTPUT="${DOC_ROOT}/INDEX_GUIDE.md"
-LOG_FILE="${DOC_ROOT}/changelogs/indexing-log.jsonl"
-CHANGES_INDEX="${DOC_ROOT}/changelogs/changes-index.json"
+LOG_FILE="${DOC_ROOT}/changelogs/INDEXING-LOG.md"
+CHANGE_LOG_FILE="${DOC_ROOT}/changelogs/CHANGE-LOG.md"
+mkdir -p "${DOC_ROOT}/changelogs"
 
 now_ms() {
     python3 - <<'PY'
@@ -119,8 +120,19 @@ if [[ "$DATA_MODE" == "incremental" ]]; then
     if [[ -n "$SINCE" ]]; then
         BASE_INDEXING_TIME_MS="$SINCE"
     elif [[ -f "$LOG_FILE" ]]; then
-        # jsonl 每行是独立 JSON，取最后一行的 indexing_finished_at
-        BASE_INDEXING_TIME_MS=$(tail -n 1 "$LOG_FILE" 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('indexing_finished_at',0))" 2>/dev/null || echo "0")
+        # Markdown 追加日志：取文末最近一次 <!-- sdx-indexing:indexing_finished_ms=... -->
+        BASE_INDEXING_TIME_MS=$(python3 - <<PY
+import re
+path = r"""$LOG_FILE"""
+try:
+    text = open(path, encoding="utf-8").read()
+except OSError:
+    print("0")
+    raise SystemExit
+ms = re.findall(r"<!-- sdx-indexing:indexing_finished_ms=(\d+) -->", text)
+print(ms[-1] if ms else "0")
+PY
+)
     fi
 
     if [[ "$BASE_INDEXING_TIME_MS" == "0" ]] || [[ -z "$BASE_INDEXING_TIME_MS" ]]; then
@@ -202,7 +214,7 @@ if [[ -z "$TOP_FILES" ]]; then
 fi
 
 REL_LOG="./${LOG_FILE#"$REPO_ROOT"/}"
-REL_CHANGES="./${CHANGES_INDEX#"$REPO_ROOT"/}"
+REL_CHANGE_LOG="./${CHANGE_LOG_FILE#"$REPO_ROOT"/}"
 REL_DEFAULT_OUT="./${DEFAULT_OUTPUT#"$REPO_ROOT"/}"
 
 cat > "$OUTPUT" << EOF
@@ -248,33 +260,43 @@ ${TOP_FILES}
 - 增量模式在无有效基线时自动降级为全量
 
 ## 八、日志与追溯（Traceability）
-- 执行日志：\`${REL_LOG}\`
-- 变更基线：\`${REL_CHANGES}\`
+- 索引运行日志（Markdown）：\`${REL_LOG}\`
+- 变更聚合日志（Markdown）：\`${REL_CHANGE_LOG}\`（docs-change）
 
 ## 九、附录（Appendix）
 - 生成器：\`.agent/skills/docs-indexing/scripts/indexing.sh\`
 - 规范参考：\`.agent/skills/docs-indexing/reference/scan-spec.md\`
 EOF
 
-# 更新变更索引
-cat > "$CHANGES_INDEX" << EOF
-{
-  "baseline_time": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
-  "baseline_time_ms": $CURRENT_TIME_MS,
-  "note": "docs-indexing 索引更新：模式=${DATA_MODE}，深度=${READ_MODE}，输出=${OUTPUT}"
-}
-EOF
-
-# 确保日志目录存在
-mkdir -p "$(dirname "$LOG_FILE")"
-mkdir -p "$(dirname "$CHANGES_INDEX")"
-
-# 写入日志
+# 写入索引运行日志（Markdown 追加）
 FINISHED_TIME_MS=$(now_ms)
 DURATION_MS=$((FINISHED_TIME_MS - CURRENT_TIME_MS))
 TIMESTAMP_ISO="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+
+if [[ ! -f "$LOG_FILE" ]]; then
+    cat > "$LOG_FILE" << EOF
+# INDEXING-LOG
+
+本文件由 **docs-indexing** 按运行追加记录（Markdown）；增量模式基线取自文末最近一次 \`<!-- sdx-indexing:indexing_finished_ms=... -->\`。
+
+---
+
+EOF
+fi
+
 cat >> "$LOG_FILE" << EOF
-{"timestamp":"$TIMESTAMP_ISO","data_mode":"$DATA_MODE","read_mode":$READ_MODE,"output_path":"$OUTPUT","indexed_files":$INDEXED_FILES,"duration_ms":$DURATION_MS,"indexing_finished_at":$FINISHED_TIME_MS}
+
+## 运行记录 — ${TIMESTAMP_ISO}
+
+| 字段 | 值 |
+|------|-----|
+| 模式 | ${DATA_MODE} |
+| 深度 | ${READ_MODE} |
+| 索引文件数 | ${INDEXED_FILES} |
+| 输出路径 | \`${OUTPUT}\` |
+| 耗时 (ms) | ${DURATION_MS} |
+
+<!-- sdx-indexing:indexing_finished_ms=${FINISHED_TIME_MS} -->
 EOF
 
 # 完成时间

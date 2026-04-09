@@ -1,25 +1,24 @@
 # changelogs — 变更留痕与索引运维
 
-本目录聚焦“变更可追溯性”，只记录日志与索引产物入口，不重复阶段文档写作规范。  
+本目录聚焦「变更可追溯性」，只约定 **Markdown 形态**的日志与索引产物入口，不重复阶段文档写作规范。  
 **元数据**： [changelogs_meta.yaml](changelogs_meta.yaml)
 
 ---
 
-## 人类可读文件
+## 日志文件（仅下列 Markdown）
 
-- [CHANGELOG.md](CHANGELOG.md) — `application/` 层面的维护性变更记录（导航、规范、模板链路）
-- 细粒度变更可放在提交信息或 ADR，不要求在此重复抄录
+| 文件 | 用途 |
+|------|------|
+| [CHANGE-LOG.md](CHANGE-LOG.md) | 维护性变更记录与 **docs-change** 聚合结果；文末 `<!-- docs-change:baseline_time_ms=... -->` 为增量基线 |
+| [INDEXING-LOG.md](INDEXING-LOG.md) | **docs-indexing** 运行记录（按次追加）；文末 `<!-- sdx-indexing:indexing_finished_ms=... -->` 为增量基线 |
 
 ---
 
-## 机器产物（可选）
+## Skill 指针
 
-以下文件通常由 Skill 生成，非日常编辑必跑：
-
-| 文件                                        | 用途                                                                                                                    |
-| ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `changes-index.json` / `changes-index.md` | **docs-change Skill**（[../../.agent/skills/docs-change/SKILL.md](../../.agent/skills/docs-change/SKILL.md)）产出汇总       |
-| `indexing-log.jsonl`                      | **docs-indexing Skill**（[../../.agent/skills/docs-indexing/SKILL.md](../../.agent/skills/docs-indexing/SKILL.md)）运行记录 |
-
+| Skill | 说明 |
+|-------|------|
+| [docs-change](../../.agent/skills/docs-change/SKILL.md) | 聚合 git / CHANGELOG / 本地 mtime，**写入/更新** `CHANGE-LOG.md`（Markdown） |
+| [docs-indexing](../../.agent/skills/docs-indexing/SKILL.md) | 生成 `INDEX_GUIDE.md`，**追加** `INDEXING-LOG.md`（Markdown） |
 
 命令清单与执行入口统一见 [../../.agent/skills/README.md](../../.agent/skills/README.md)。

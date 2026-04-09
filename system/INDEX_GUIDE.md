@@ -62,7 +62,7 @@
 ## 四、核心流程（Core Flows）
 
 - docs-indexing 扫描仓库文件并生成 `INDEX_GUIDE.md`
-- 结果写入 `${DOC_DIR}/changelogs/indexing-log.jsonl` 以支持增量基线
+- 结果写入 `${DOC_DIR}/changelogs/INDEXING-LOG.md` 以支持增量基线
 
 ## 五、配置与环境（Config & Environment）
 
@@ -84,8 +84,8 @@
 
 ## 八、日志与追溯（Traceability）
 
-- 执行日志：`${DOC_DIR}/changelogs/indexing-log.jsonl`
-- 变更基线：`${DOC_DIR}/changelogs/changes-index.json`
+- 索引运行日志：`${DOC_DIR}/changelogs/INDEXING-LOG.md`
+- 变更聚合日志：`${DOC_DIR}/changelogs/CHANGE-LOG.md`
 
 ## 九、附录（Appendix）
 

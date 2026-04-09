@@ -6,7 +6,7 @@
 
 **baseline vs cutoff 混淆**：这是最高频的错误。`baseline_time` 和 `cutoff_time` 是两个不同的值——Git 来源用 `baseline_time` 过滤，CHANGELOG 和本地文件用 `cutoff_time`（= `max(baseline, latest_git_commit)`）。用错会导致冗余条目或漏收。
 
-**增量时忘读已有 JSON**：增量执行时必须先读 `changes-index.json` 的 `metadata.baseline_time`，否则会用默认值 `2020-01-01` 重复收录全量历史。
+**增量时忘读已有基线**：增量执行时必须先读 `CHANGE-LOG.md` 文末 `<!-- docs-change:baseline_time_ms=... -->`（或由 `change-indexing.sh` 解析），否则会用默认值 `2020-01-01` 重复收录全量历史。
 
 **时间格式不统一**：不同来源的时间格式各异，比较时一律用 `*_ms`（13 位毫秒戳）字段，不要用字符串比较。
 
@@ -14,7 +14,7 @@
 
 ## 数据采集
 
-**输出目录自引用**：扫描本地文件 mtime 时，必须将 `{output_dir}` 加入排除列表，否则每次执行都会把上次生成的 `changes-index.json` 收录为变更，形成循环。
+**输出目录自引用**：扫描本地文件 mtime 时，必须将 `{output_dir}` 加入排除列表，否则每次执行都会把上次写入的 `CHANGE-LOG.md` / `INDEXING-LOG.md` 等收录为变更，形成循环。
 
 **Git 不可用时终止**：Git 检测失败应优雅降级（输出 `[WARN]`，跳过 git 来源），不应终止整个流程。CHANGELOG 和本地文件来源仍需继续采集。
 

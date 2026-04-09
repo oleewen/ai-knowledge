@@ -13,7 +13,7 @@
 | 命令 | 说明 |
 |------|------|
 | `/docs-indexing` | 生成面向 AI 的仓库索引（`INDEX_GUIDE.md`），支持分层检索与路径精确引用。 |
-| `/docs-change` | 聚合 git/CHANGELOG/文件 mtime 生成变更索引（如 `changes-index.*`）。 |
+| `/docs-change` | 聚合 git/CHANGELOG/文件 mtime，写入 `changelogs/CHANGE-LOG.md`（Markdown）。 |
 | `/docs-upgrade` | 定向增改文档与代码注释；默认沿引用链并辅以关键词检索（同义/近义/中英文）对齐同类表述；显式路径或引用片段时自动执行；支持 `a - b` / `a > b` / `a 2 b`；不确定项列选项由用户决策。 |
 | `/agent-guide` | 生成/更新根目录 `AGENTS.md` 与 `README.md`，对齐仓库导航与约束。 |
 | `/docs-archive` | 将联邦镜像（`applications/app-*`）中已核实内容归档到**应用知识库 SSOT**（`{DOC_DIR}/`）约定路径；支持增量锚点与 scope；目标态槽位见 `system/application-{name}/` 设计文档。 |

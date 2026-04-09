@@ -20,6 +20,7 @@ repository:
   child_files:
     - "README.md"
     - "CHANGE-LOG.md"
+    - "INDEXING-LOG.md"
     - "changelogs_meta.yaml"
 
 pipeline:

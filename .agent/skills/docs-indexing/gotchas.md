@@ -6,13 +6,13 @@
 
 ## 参数门禁
 
-**无历史日志仍强行增量，或 Agent 擅自改为全量**：`indexing-log.jsonl` 不存在或为空时，说明增量前提不满足，请用户确认改走全量或中止。禁止在未确认时执行任一种模式，也禁止 Agent 自动降级为 full。
+**无历史日志仍强行增量，或 Agent 擅自改为全量**：`INDEXING-LOG.md` 不存在或无法解析有效 `indexing_finished_ms` 时，说明增量前提不满足，请用户确认改走全量或中止。禁止在未确认时执行任一种模式，也禁止 Agent 自动降级为 full。
 
 **深度由 Agent 代选或未确认即执行**：可向用户转述常见取舍（大库初扫往往先选 1，全量精读选 3），但不得替用户勾选；用户选定后再执行。
 
 **未确认即采用 `--since` 或默认输出路径**：候选时间戳与默认路径须展示并请用户确认（或用户显式给出字面量）后再写入命令；禁止静默采用。
 
-**增量基线时间戳来源错误**：增量模式的基线时间戳唯一来源是 `indexing-log.jsonl` 最后一条记录的 `indexing_finished_at`，不是 `changes-index.json` 的 `baseline_time`。
+**增量基线时间戳来源错误**：索引增量模式的基线时间戳唯一来源是 `INDEXING-LOG.md` 文末最近一次 `<!-- sdx-indexing:indexing_finished_ms=... -->`。`CHANGE-LOG.md` 文末的 `docs-change:baseline_time_ms` 用于 **docs-change** 采集基线，二者不可混用。
 
 ---
 
@@ -46,15 +46,15 @@
 
 **输出路径未确认或优先级混淆**：若需使用约定优先级（用户指定 > `./{DOC_DIR}/` > `./doc/` > `./INDEX_GUIDE.md`），须将解析结果展示给用户并获确认后再写入；用户已显式给出路径则以用户路径为准。
 
-**未追加操作日志**：每次执行完毕必须追加（append）一条完整日志记录到 `changelogs/indexing-log.jsonl`，包含 `indexing_finished_at`；不得覆盖历史记录。
+**未追加操作日志**：每次执行完毕必须向 `changelogs/INDEXING-LOG.md` **追加**一节 Markdown，并包含文末 `<!-- sdx-indexing:indexing_finished_ms=... -->`；不得覆盖历史记录。
 
-**日志字段缺失**：严格按日志格式输出所有必需字段：`timestamp`、`data_mode`、`read_mode`、`output_path`、`indexed_files`、`duration_ms`、`indexing_finished_at`。
+**日志节缺失关键信息**：须包含模式、深度、索引文件数、输出路径、耗时与上述基线注释（见 [reference/scan-spec.md](reference/scan-spec.md)「日志格式」）。
 
 ---
 
 ## 与上下游协作
 
-**增量模式跳过 docs-change**：增量模式必须先通过 `docs-change` 获取 `changes-index.json`，以变更文件列表驱动扫描范围，不能直接扫描全部文件。
+**增量模式跳过 docs-change**：增量模式必须先通过 `docs-change` 维护 `CHANGE-LOG.md`（及采集结果），以变更文件列表驱动扫描范围，不能直接扫描全部文件。
 
 **与 agent-guide 产出的目录树矛盾**：agent-guide 生成 README 时以本 INDEX §二为唯一来源；本 Skill 更新 §二后需通知 agent-guide 同步，保持两处一致。
 
@@ -69,7 +69,7 @@
 - [ ] 所有路径为项目根相对路径，可访问
 - [ ] 版本号、配置值来自实际读取的文件
 - [ ] 每个文件只归入一个章节（MECE）
-- [ ] 操作日志已追加到 `changelogs/indexing-log.jsonl`，字段完整
+- [ ] 操作日志已追加到 `changelogs/INDEXING-LOG.md`（Markdown），基线注释完整
 - [ ] 增量模式未清空未变更章节
 - [ ] 构建产物目录已排除
 - [ ] 未读内容未写成已核实事实（零幻觉）

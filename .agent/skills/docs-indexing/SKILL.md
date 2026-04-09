@@ -4,7 +4,7 @@
 
 description: >
   为代码库生成结构化文档索引（INDEX_GUIDE.md），支持全量/增量扫描与三级深度（拓扑/结构/精读）。
-  产出标准化九章文档索引，为 Agent 导航与 RAG 上下文提供权威文档地图。
+  产出标准化九章文档索引，为 Agent 导航与 RAG 上下文提供权威文档地图；索引运行日志写入 changelogs/INDEXING-LOG.md（Markdown）。
   当用户执行 /docs-indexing、需要生成或更新项目索引、建立文档地图、做项目 Onboarding、
   或下游 docs-build/agent-guide 需要 INDEX_GUIDE.md 时，务必使用本技能。
   即使用户只说"帮我建个索引"、"生成一下项目文档"、"更新一下 INDEX"，也应触发本技能。
@@ -19,8 +19,8 @@ description: >
 | 类型   | 内容                                                                      |
 | ---- | ----------------------------------------------------------------------- |
 | 硬输入  | 代码库根目录、**用户确认的**扫描模式（full/incremental）、**用户确认的**扫描深度（1/2/3）             |
-| 可选输入 | 输出路径、增量起始时间、`changes-index.json`（增量模式）；凡影响索引行为的取值均须用户确认                 |
-| 固定输出 | `DOC_ROOT/INDEX_GUIDE.md`（九章结构）、`changelogs/indexing-log.jsonl`（操作日志；相对 `DOC_ROOT`） |
+| 可选输入 | 输出路径、增量起始时间；增量基线亦可来自 `changelogs/INDEXING-LOG.md` 文末注释（仅作候选展示）；凡影响索引行为的取值均须用户确认                 |
+| 固定输出 | `DOC_ROOT/INDEX_GUIDE.md`（九章结构）、`changelogs/INDEXING-LOG.md`（索引运行日志，Markdown；相对 `DOC_ROOT`） |
 | 不产出  | 不生成知识实体 ID、不修改 README/AGENTS、不产出 CHANGELOG                              |
 
 
@@ -32,7 +32,7 @@ description: >
 - **深度**：`1`（拓扑）、`2`（结构）或 `3`（精读）——不得根据仓库大小或 Agent 判断自动升降级
 - `**--since` / `--output`**：若流程需要读取这些值，须用户确认或显式给出字面量；禁止从日志「自动取最近时间戳」等隐式行为
 
-增量前提不满足（如无 `indexing-log.jsonl`）时，须向用户说明并**重新请用户确认**是否改走全量或中止，不得自动降级。
+增量前提不满足（如 `INDEXING-LOG.md` 无有效 `indexing_finished_ms` 基线）时，须向用户说明并**重新请用户确认**是否改走全量或中止，不得自动降级。
 
 ## 参数
 
@@ -51,7 +51,7 @@ description: >
 
 ### 步骤 1：环境准备
 
-读取历史日志 `changelogs/indexing-log.jsonl`（若存在），仅用于向用户展示信息或提供候选 `--since`，不据此自动锁定模式或时间戳。验证输出路径可写。
+读取历史日志 `changelogs/INDEXING-LOG.md`（若存在），仅用于向用户展示信息或提供候选 `--since`，不据此自动锁定模式或时间戳。验证输出路径可写。
 
 ### 步骤 2：扫描配置（门禁）
 
@@ -79,7 +79,7 @@ scripts/indexing.sh --mode <用户已确认的 mode> --depth <用户已确认的
 
 ### 步骤 6：输出生成
 
-按九章规范（见 [reference/nine-chapter-spec.md](reference/nine-chapter-spec.md)）生成文档；输出模板见 [assets/index-guide-template.md](assets/index-guide-template.md)；追加日志到 `changelogs/indexing-log.jsonl`。
+按九章规范（见 [reference/nine-chapter-spec.md](reference/nine-chapter-spec.md)）生成文档；输出模板见 [assets/index-guide-template.md](assets/index-guide-template.md)；追加日志到 `changelogs/INDEXING-LOG.md`（Markdown）。
 
 ## 核心约束
 
@@ -100,7 +100,7 @@ scripts/indexing.sh --mode <用户已确认的 mode> --depth <用户已确认的
 
 | 类型  | 技能/组件         | 说明                                    |
 | --- | ------------- | ------------------------------------- |
-| 前置  | `docs-change` | 生成变更索引 `changes-index.json`           |
+| 前置  | `docs-change` | 维护变更聚合 `CHANGE-LOG.md`（Markdown）           |
 | 下游  | `docs-build`  | 以主 INDEX 作为提取证据来源                     |
 | 关联  | `agent-guide` | 维护 README.md / AGENTS.md 与 INDEX 交叉引用 |
 
