@@ -52,7 +52,7 @@ declare -A CFG=(
   [scope]="${SCOPE:-ck}"
   [agents_opt]="${AGENTS_OPT:-cursor}"
   [app_id_opt]="${APP_ID_OPT:-}"
-  [dry_run]="${DRY_RUN:-0}"
+  [dry_run]="0"
   [force]="${FORCE:-0}"
   [create_project_root]="${CREATE_PROJECT_ROOT:-0}"
   # 运行时填充
@@ -885,7 +885,6 @@ usage() {
   HOME                  用户主目录；安装 Agent skills/rules 时必需（未指定文档目录时作为 ~/.cursor 等安装根）
   CREATE_PROJECT_ROOT   1=允许自动创建工程根（等同 -r）| 0=要求工程根已存在（默认）
   SCOPE                 未传 --scope 时默认 ck（见上）
-  DRY_RUN               1=预览模式
   FORCE                 1=强制覆盖
 
 示例
