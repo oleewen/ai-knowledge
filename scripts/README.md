@@ -34,9 +34,11 @@ Slash 技能命令请查看 [.agent/skills/README.md](../.agent/skills/README.md
 
 ## doc_root 与 `.docsconfig`（`.agent/scripts/docsconfig-bootstrap.sh`）
 
-目标工程仓库根落盘 **`.docsconfig`**（由 **`docs-init`** 写入 **`DOC_ROOT`** / **`REPO_ROOT`** / **`DOC_DIR`**）。部分 `.agent/skills/*/scripts/validate-*.sh` 与 **`docs-indexing/scripts/indexing.sh`** 经 **`.agent/scripts/docsconfig-bootstrap.sh`**：
+目标工程仓库根落盘 **`.docsconfig`**（由 **`docs-init`** 写入）。**必选键**：**`DOC_ROOT`**、**`REPO_ROOT`**、**`DOC_DIR`**。**可选键**（`--scope=config` 时写入）：**`AGENT_ROOT`**、**`AGENT_DIRS`**（引号内空格分隔目录名，如 `.cursor .claude`）。凡 **`DOC_ROOT` / `REPO_ROOT` / `AGENT_ROOT`** 的路径若位于用户主目录下，文件中为 **`~/...`** 形式；运行时应按 shell 规则展开 **`~`**（**`validate_bootstrap_docsconfig`** 会将 **`DOC_ROOT` / `REPO_ROOT` / `AGENT_ROOT`** 解析为绝对路径）。
 
-- **`validate_bootstrap_docsconfig`**：按规格 §4.1.1 定位仓库根、加载三键（不 `export`）；缺文件或缺 `DOC_DIR` 时走策略 D / §4.2.1。
+部分 `.agent/skills/*/scripts/validate-*.sh` 与 **`docs-indexing/scripts/indexing.sh`** 经 **`.agent/scripts/docsconfig-bootstrap.sh`**：
+
+- **`validate_bootstrap_docsconfig`**：按规格 §4.1.1 定位仓库根、加载上述键（不 `export`）；缺文件或缺 `DOC_DIR` 时走策略 D / §4.2.1。
 - **`resolve_repo_doc_root`**：返回 **`validate_bootstrap_docsconfig`** 已加载的 **`DOC_ROOT`**（与 `.docsconfig` 一致），**无参数、不支持 override**。典型写法：**`DOC_ROOT="$(resolve_repo_doc_root)"`**。
 
 **`.agent` 内 Markdown 链接自检**（可选，在仓库根执行）：`bash .agent/scripts/validate-agent-md-links.sh` —— 校验 `.agent/**/*.md` 中链接：`.agent` 内互链须存在；跨出 `.agent` 须落在 `REPO_ROOT`/`DOC_ROOT` 下且存在（Agent 语义可达）。

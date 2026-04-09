@@ -251,18 +251,22 @@ cfg_default() {
 # -----------------------------------------------------------------------------
 
 # 展开路径中的 ~ 为用户主目录
+# 注意：不可用 case '~/'*) — bash 会对 case 模式做 tilde 展开，导致无法匹配字面 ~/。
 # Usage: expand_tilde <path>
 # stdout: 展开后的路径
 expand_tilde() {
     local p="${1:-}"
-    case "$p" in
-        '~')           echo "$HOME" ;;
-        '~/'*)         echo "$HOME/${p#~/}" ;;
-        '~'/*)         echo "$HOME${p#~}" ;;
-        '~'[a-zA-Z]*)  # 不支持其他用户的 ~username
-            echo "$p" ;;  # 原样返回
-        *)             echo "$p" ;;
-    esac
+    # 使用 =~：[[ == '~'/* ]] 右侧模式会经 tilde 展开，无法匹配字面 ~/。
+    if [[ "$p" == "~" ]]; then
+        printf '%s\n' "${HOME:-}"
+    elif [[ "$p" =~ ^~/ ]]; then
+        # 不可用 ${p#~/}：pattern 中 ~ 会经 tilde 展开，导致去前缀失败
+        printf '%s\n' "${HOME:-}/${p:2}"
+    elif [[ "$p" =~ ^~[a-zA-Z] ]]; then
+        printf '%s\n' "$p"
+    else
+        printf '%s\n' "$p"
+    fi
 }
 
 # 获取绝对路径（不检查存在性）
@@ -371,6 +375,33 @@ replace_filename() {
 # `.docsconfig`（目标工程仓库根，见 docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md）
 # -----------------------------------------------------------------------------
 
+# 将绝对路径格式化为写入 .docsconfig 的 *_ROOT 值（C 策略：位于 $HOME 下则 ~/...）
+# Usage: docsconfig_format_root_for_write <abs_path>
+# stdout: ~/... 或不在 $HOME 下时为绝对路径
+docsconfig_format_root_for_write() {
+    local p home
+    p="$(strip_trailing_slash "$(abs_path "${1:?}")")"
+    [[ -n "${HOME:-}" ]] || { printf '%s\n' "$p"; return 0; }
+    home="$(strip_trailing_slash "$(abs_path "$HOME")")"
+    [[ -n "$home" ]] || { printf '%s\n' "$p"; return 0; }
+    if [[ "$p" == "$home" ]]; then
+        printf '~\n'
+    elif [[ "$p" == "$home"/* ]]; then
+        printf '~/%s\n' "${p#"$home"/}"
+    else
+        printf '%s\n' "$p"
+    fi
+}
+
+# 读入的 *_ROOT 原始值 → 绝对路径（abs_path 内含 expand_tilde）
+# Usage: docsconfig_normalize_root_value <raw>
+# stdout: 绝对路径
+docsconfig_normalize_root_value() {
+    local v="${1:-}"
+    v="${v%$'\r'}"
+    printf '%s' "$(abs_path "$v")"
+}
+
 # 由 DOC_ROOT 解析 Git 仓库根（§3.3 推荐失败则返回空）
 # Usage: docsconfig_repo_root_from_doc_root <doc_root_abs>
 # stdout: REPO_ROOT 绝对路径
@@ -423,33 +454,50 @@ docsconfig_doc_dir_from_roots() {
     esac
 }
 
-# 写入 $REPO_ROOT/.docsconfig（三键，UTF-8）
-# Usage: docsconfig_write <repo_root> <doc_root> <doc_dir> [dry_run:0|1]
+# 写入 $REPO_ROOT/.docsconfig（至少三键；可选 AGENT_*）
+# Usage: docsconfig_write <repo_root_abs> <doc_root_abs> <doc_dir> <dry_run:0|1> [agent_root_abs] [agent_dirs_space_separated]
+# agent_root_abs 非空时追加 AGENT_ROOT=、AGENT_DIRS="..."
 docsconfig_write() {
     local repo_root="${1:?repo_root}"
     local doc_root="${2:?doc_root}"
     local doc_dir="${3:?doc_dir}"
     local dry="${4:-0}"
-    local out="$repo_root/.docsconfig"
+    local agent_root_in="${5:-}"
+    local agent_dirs_in="${6:-}"
+    local out rr dr ar
+    out="$(strip_trailing_slash "$(abs_path "$repo_root")")/.docsconfig"
+    rr="$(docsconfig_format_root_for_write "$repo_root")"
+    dr="$(docsconfig_format_root_for_write "$doc_root")"
     if [[ "$dry" == "1" ]]; then
         printf 'Would write %s:\nDOC_ROOT=%s\nREPO_ROOT=%s\nDOC_DIR=%s\n' \
-            "$out" "$doc_root" "$repo_root" "$doc_dir"
+            "$out" "$dr" "$rr" "$doc_dir"
+        if [[ -n "$agent_root_in" ]]; then
+            ar="$(docsconfig_format_root_for_write "$agent_root_in")"
+            printf 'AGENT_ROOT=%s\nAGENT_DIRS="%s"\n' "$ar" "$agent_dirs_in"
+        fi
         return 0
     fi
     umask 022
-    printf 'DOC_ROOT=%s\nREPO_ROOT=%s\nDOC_DIR=%s\n' \
-        "$doc_root" "$repo_root" "$doc_dir" >"$out"
+    {
+        printf 'DOC_ROOT=%s\nREPO_ROOT=%s\nDOC_DIR=%s\n' "$dr" "$rr" "$doc_dir"
+        if [[ -n "$agent_root_in" ]]; then
+            ar="$(docsconfig_format_root_for_write "$agent_root_in")"
+            printf 'AGENT_ROOT=%s\nAGENT_DIRS="%s"\n' "$ar" "$agent_dirs_in"
+        fi
+    } >"$out"
 }
 
-# 自文件解析 DOC_ROOT / REPO_ROOT / DOC_DIR（nameref 输出，Bash 5+）
+# 自文件解析 DOC_ROOT / REPO_ROOT / DOC_DIR（nameref 输出，Bash 5+）；可选 AGENT_ROOT / AGENT_DIRS
 # 某键缺失则对应变量为空（用于缺 DOC_DIR 等迁移场景）。
-# Usage: docsconfig_read_into <path> <nameref_doc_root> <nameref_repo_root> <nameref_doc_dir>
+# *_ROOT 读入后展开为绝对路径；DOC_DIR、AGENT_DIRS 保持文件中的相对段 / 空格分隔目录名。
+# Usage: docsconfig_read_into <path> <nameref_doc_root> <nameref_repo_root> <nameref_doc_dir> [<nameref_agent_root> <nameref_agent_dirs>]
 # Returns: 0 文件存在且已解析；1 文件不存在或不可读
 docsconfig_read_into() {
     local path="${1:?path}"
     local -n _doc="${2:?}"
     local -n _repo="${3:?}"
     local -n _ddir="${4:?}"
+    local raw_doc="" raw_repo="" raw_ddir="" raw_ar="" raw_ads=""
     _doc=""
     _repo=""
     _ddir=""
@@ -458,18 +506,40 @@ docsconfig_read_into() {
     while IFS= read -r line || [[ -n "$line" ]]; do
         [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
         case "$line" in
-            DOC_ROOT=* | REPO_ROOT=* | DOC_DIR=*)
+            DOC_ROOT=* | REPO_ROOT=* | DOC_DIR=* | AGENT_ROOT=* | AGENT_DIRS=*)
                 k="${line%%=*}"
                 v="${line#*=}"
                 v="${v%$'\r'}"
+                if [[ "$k" == "AGENT_DIRS" && ${#v} -ge 2 && "${v:0:1}" == '"' && "${v: -1}" == '"' ]]; then
+                    v="${v:1:${#v}-2}"
+                fi
                 case "$k" in
-                    DOC_ROOT) _doc="$v" ;;
-                    REPO_ROOT) _repo="$v" ;;
-                    DOC_DIR) _ddir="$v" ;;
+                    DOC_ROOT) raw_doc="$v" ;;
+                    REPO_ROOT) raw_repo="$v" ;;
+                    DOC_DIR) raw_ddir="$v" ;;
+                    AGENT_ROOT) raw_ar="$v" ;;
+                    AGENT_DIRS) raw_ads="$v" ;;
                 esac
                 ;;
         esac
     done <"$path"
+    if [[ -n "$raw_doc" ]]; then
+        _doc="$(docsconfig_normalize_root_value "$raw_doc")"
+    fi
+    if [[ -n "$raw_repo" ]]; then
+        _repo="$(docsconfig_normalize_root_value "$raw_repo")"
+    fi
+    _ddir="$raw_ddir"
+    if [[ "$#" -ge 6 ]]; then
+        local -n _aroot="${5:?}"
+        local -n _adirs="${6:?}"
+        if [[ -n "$raw_ar" ]]; then
+            _aroot="$(docsconfig_normalize_root_value "$raw_ar")"
+        else
+            _aroot=""
+        fi
+        _adirs="$raw_ads"
+    fi
     return 0
 }
 
@@ -478,7 +548,7 @@ docsconfig_read_into() {
 docsconfig_grep_keys() {
     local path="${1:?path}"
     [[ -f "$path" ]] || return 1
-    grep -E '^(DOC_ROOT|REPO_ROOT|DOC_DIR)=' "$path" 2>/dev/null
+    grep -E '^(DOC_ROOT|REPO_ROOT|DOC_DIR|AGENT_ROOT|AGENT_DIRS)=' "$path" 2>/dev/null
 }
 
 # -----------------------------------------------------------------------------

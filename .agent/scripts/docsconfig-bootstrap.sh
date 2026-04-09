@@ -1,11 +1,59 @@
 #!/usr/bin/env bash
 # docsconfig-bootstrap.sh — 运行时装载目标工程根 .docsconfig（§4）
-# 禁止 export DOC_ROOT / REPO_ROOT / DOC_DIR（§2.2.2）；仅当前 shell 赋值。
+# 禁止 export DOC_ROOT / REPO_ROOT / DOC_DIR / AGENT_*（§2.2.2）；仅当前 shell 赋值。
 
 # Source 成功后由本文件设置的变量（供 validate-*.sh 使用）：
-#   DOC_ROOT   — 文档树根绝对路径
-#   REPO_ROOT  — 目标工程 Git 仓库根
-#   DOC_DIR    — 相对 REPO_ROOT 的文档路径段
+#   DOC_ROOT    — 文档树根绝对路径（由 .docsconfig 解析并展开 ~/）
+#   REPO_ROOT   — 目标工程 Git 仓库根绝对路径
+#   DOC_DIR     — 相对 REPO_ROOT 的文档路径段
+#   AGENT_ROOT  — Agent 安装父目录绝对路径（可选键；与 .docsconfig 一致）
+#   AGENT_DIRS  — 空格分隔的 Agent 目录名（如 .cursor .claude，可选键）
+
+# -----------------------------------------------------------------------------
+# 路径：与 scripts/docs-config.sh 行为一致（目标工程未必附带该文件，故内联）
+# -----------------------------------------------------------------------------
+# 与 scripts/docs-config.sh expand_tilde 一致
+_docsconfig_expand_tilde() {
+  local p="${1:-}"
+  if [[ "$p" == "~" ]]; then
+    printf '%s\n' "${HOME:-}"
+  elif [[ "$p" =~ ^~/ ]]; then
+    printf '%s\n' "${HOME:-}/${p:2}"
+  elif [[ "$p" =~ ^~[a-zA-Z] ]]; then
+    printf '%s\n' "$p"
+  else
+    printf '%s\n' "$p"
+  fi
+}
+
+_docsconfig_abs_path() {
+  local p
+  p="$(_docsconfig_expand_tilde "${1:-}")"
+  if [[ "$p" != /* ]]; then
+    p="${PWD}/$p"
+  fi
+  if [[ -d "$p" ]]; then
+    (cd -P "$p" 2>/dev/null && pwd)
+  else
+    local dir base orig_dir
+    dir="$(dirname "$p")"
+    orig_dir="$dir"
+    base="$(basename "$p")"
+    if dir="$(cd -P "$dir" 2>/dev/null && pwd)"; then
+      :
+    else
+      dir="$orig_dir"
+    fi
+    echo "$dir/$base"
+  fi
+}
+
+# *_ROOT 原始行值 → 绝对路径（_docsconfig_abs_path 内含 ~ 展开）
+_docsconfig_normalize_root_value() {
+  local v="${1:-}"
+  v="${v%$'\r'}"
+  printf '%s' "$(_docsconfig_abs_path "$v")"
+}
 
 # -----------------------------------------------------------------------------
 # 返回 validate_bootstrap_docsconfig 已加载的 DOC_ROOT（与 .docsconfig 一致）；无 override。
@@ -44,23 +92,39 @@ docsconfig_parse_into_globals() {
   DOC_ROOT=""
   REPO_ROOT=""
   DOC_DIR=""
+  AGENT_ROOT=""
+  AGENT_DIRS=""
   while IFS= read -r line || [[ -n "$line" ]]; do
     [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
     case "$line" in
-      DOC_ROOT=* | REPO_ROOT=* | DOC_DIR=*)
+      DOC_ROOT=* | REPO_ROOT=* | DOC_DIR=* | AGENT_ROOT=* | AGENT_DIRS=*)
         k="${line%%=*}"
         v="${line#*=}"
         v="${v%$'\r'}"
         v="${v#"${v%%[![:space:]]*}"}"
         v="${v%"${v##*[![:space:]]}"}"
+        if [[ "$k" == "AGENT_DIRS" && ${#v} -ge 2 && "${v:0:1}" == '"' && "${v: -1}" == '"' ]]; then
+          v="${v:1:${#v}-2}"
+        fi
         case "$k" in
           DOC_ROOT) DOC_ROOT="$v" ;;
           REPO_ROOT) REPO_ROOT="$v" ;;
           DOC_DIR) DOC_DIR="$v" ;;
+          AGENT_ROOT) AGENT_ROOT="$v" ;;
+          AGENT_DIRS) AGENT_DIRS="$v" ;;
         esac
         ;;
     esac
   done <"$path"
+  if [[ -n "${DOC_ROOT:-}" ]]; then
+    DOC_ROOT="$(_docsconfig_normalize_root_value "$DOC_ROOT")"
+  fi
+  if [[ -n "${REPO_ROOT:-}" ]]; then
+    REPO_ROOT="$(_docsconfig_normalize_root_value "$REPO_ROOT")"
+  fi
+  if [[ -n "${AGENT_ROOT:-}" ]]; then
+    AGENT_ROOT="$(_docsconfig_normalize_root_value "$AGENT_ROOT")"
+  fi
 }
 
 # 定位本仓库 scripts/docs-init.sh（模板库根下），供 §4.2 / §4.2.1 代为执行

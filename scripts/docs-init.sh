@@ -1059,10 +1059,11 @@ validate_type_sources() {
   esac
 }
 
-# 写入目标工程仓库根 .docsconfig（DOC_ROOT / REPO_ROOT / DOC_DIR）；dry-run 时仅预览
+# 写入目标工程仓库根 .docsconfig（DOC_ROOT / REPO_ROOT / DOC_DIR；scope=config 时追加 AGENT_*）；dry-run 时仅预览
 # 见 docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md §2.3 / §3.3
 write_target_docsconfig() {
   local doc_root repo_target dd cfg_file existed=0
+  local agent_root_in="" agent_dirs_str="" a d
   doc_root="${CFG[docs_abs]}"
   repo_target="$(docsconfig_repo_root_from_doc_root "$doc_root")"
   if [[ -z "$repo_target" ]]; then
@@ -1080,7 +1081,16 @@ write_target_docsconfig() {
   else
     info ".docsconfig 不存在，将创建并写入: $cfg_file"
   fi
-  docsconfig_write "$repo_target" "$doc_root" "$dd" "${CFG[dry_run]}"
+  if [[ "${CFG[scope]}" == "config" ]]; then
+    agent_root_in="$(abs_path "${CFG[target_dir]}")"
+    for a in "${ENABLED_AGENTS[@]}"; do
+      d="$(get_agent_dir "$a")"
+      agent_dirs_str="${agent_dirs_str:+$agent_dirs_str }$d"
+    done
+    docsconfig_write "$repo_target" "$doc_root" "$dd" "${CFG[dry_run]}" "$agent_root_in" "$agent_dirs_str"
+  else
+    docsconfig_write "$repo_target" "$doc_root" "$dd" "${CFG[dry_run]}"
+  fi
 }
 
 compute_derived_paths() {
@@ -1133,6 +1143,7 @@ main() {
     [[ -n "${CFG[docs_abs]}" ]] \
       || error "必须提供 <目标工程文档目录>（--scope=config）"
     validate_docs_and_target
+    apply_agents
     write_target_docsconfig
     if [[ "${CFG[mode]}" == "central" ]]; then
       if [[ "${CFG[type]}" == "application" ]]; then
