@@ -1,5 +1,5 @@
 # application/ 目录元数据（根导航与 SSOT 指针）
-id: "DIR-SYSTEM"
+id: "DIR-APPLICATION"
 name: "应用知识库根（application）"
 description: "企业级知识库 application/ 根目录：人类与 Agent 的主导航（README、INDEX_GUIDE）、设计约束（DESIGN、CONTRIBUTING）及 SDD 各阶段与 knowledge SSOT。"
 

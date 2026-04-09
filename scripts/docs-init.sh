@@ -101,25 +101,6 @@ is_text_file() {
   return 1
 }
 
-# 路径各段文件名中的 system（不区分大小写）→ application
-map_path_system_to_application() {
-  local rel="${1#./}"
-  [[ -z "$rel" ]] && { printf ''; return 0; }
-  local IFS='/'
-  local -a parts
-  read -ra parts <<< "$rel"
-  local out='' sep='' p newp
-  for p in "${parts[@]}"; do
-    [[ -z "$p" ]] && continue
-    newp="$(perl -CSD -pe \
-      's/SYSTEM_INDEX/INDEX_GUIDE/gi; s/APPLICATION_INDEX/INDEX_GUIDE/gi; s/system/application/gi' \
-      <<< "$p")"
-    out="${out}${sep}${newp}"
-    sep='/'
-  done
-  printf '%s' "$out"
-}
-
 # 计算目标工程根相对文档目录路径（带尾斜杠）
 compute_docs_rel_slash() {
   local root docs
@@ -519,7 +500,7 @@ install_application_full_to_docs() {
     [[ "$base" == 'README.md' || "$base" == 'README-s.md' || "$base" == 'README-c.md' ]] && continue
 
     src_f="$src_root/$rel"
-    dst_f="$dst_root/$(map_path_system_to_application "$rel")"
+    dst_f="$dst_root/$rel"
     application_copy_one "$src_f" "$dst_f" "$agent_slash" "$docs_slash"
   done < <(cd "$src_root" && find . -type f -print0)
 
@@ -550,7 +531,7 @@ install_application_subset_to_docs() {
       rel="${rel#./}"
       [[ -z "$rel" ]] && continue
       src_f="$src_root/$d/$rel"
-      dst_f="$dst_root/$d/$(map_path_system_to_application "$rel")"
+      dst_f="$dst_root/$d/$rel"
       application_copy_one "$src_f" "$dst_f" "$agent_slash" "$docs_slash"
     done < <(cd "$src_root/$d" && find . -type f -print0)
   done
@@ -559,7 +540,7 @@ install_application_subset_to_docs() {
   for base in INDEX_GUIDE.md docs_meta.yaml manifest.yaml; do
     [[ -f "$src_root/$base" ]] || continue
     application_copy_one "$src_root/$base" \
-      "$dst_root/$(map_path_system_to_application "$base")" "$agent_slash" "$docs_slash"
+      "$dst_root/$base" "$agent_slash" "$docs_slash"
   done
 
   # central 使用 README-c.md 作为目标 README.md；缺失则回退 README.md
@@ -587,7 +568,7 @@ install_org_template_to_docs() {
     rel="${rel#./}"
     [[ -z "$rel" ]] && continue
     src_f="$src_root/$rel"
-    dst_f="$dst_root/$(map_path_system_to_application "$rel")"
+    dst_f="$dst_root/$rel"
 
     if [[ "${CFG[dry_run]}" == '1' ]]; then
       log "[dry-run] $src_f → $dst_f"; continue

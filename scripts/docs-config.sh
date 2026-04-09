@@ -365,7 +365,10 @@ docsconfig_repo_root_from_doc_root() {
   gr="$(git -C "$dr" rev-parse --show-toplevel 2>/dev/null || true)"
   [[ -n "$gr" ]] || return 0
   # 仅在 DOC_ROOT 是 Git 根的直接子目录时采用，避免被上层父仓库"吸走"
-  [[ "$(dirname "$dr")" == "$gr" ]] && printf '%s\n' "$gr"
+  if [[ "$(dirname "$dr")" == "$gr" ]]; then
+    printf '%s\n' "$gr"
+  fi
+  return 0
 }
 
 # 由 DOC_ROOT 兜底推导 REPO_ROOT（取父目录）

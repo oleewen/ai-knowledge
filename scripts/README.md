@@ -133,7 +133,7 @@ REPO_ROOT=/path/to/ai-knowledge ./scripts/docs-init.sh /path/to/your-project/doc
 ```
 your-project/
 ├── .docsconfig                    # 可选：由 docs-init 写入（必选三键；相关 scope 下可含 AGENT_*）
-├── application/                          # 文档目录（application/ 模板拷贝，已替换 system→application）
+├── application/                          # 文档目录（application/ 模板拷贝）
 │   ├── README.md                  # 应用知识库 README
 │   ├── INDEX_GUIDE.md             # 九章索引（docs-indexing）；central 登记见「十」
 │   ├── docs_meta.yaml             # 根目录元数据
@@ -181,7 +181,7 @@ ai-knowledge/
 
 | 模式 × type | 模板源 | 目标路径 | 替换规则 / 附加步骤 |
 |-------------|--------|----------|---------------------|
-| standalone，默认 type=application | `application/` | 目标文档目录 | 全量；路径名中的 `system` 会映射为 `application`；排除 `DESIGN.md`、`CONTRIBUTING.md` |
+| standalone，默认 type=application | `application/` | 目标文档目录 | 全量；排除 `DESIGN.md`、`CONTRIBUTING.md` |
 | central，默认 type=system | `system/` | 目标文档目录 | 最小替换（`rewrite_agent_file`） |
 | central，`--type=application` | `application/` §2.1 子集 | 目标文档目录 | 全量替换 + 登记 `application/INDEX_GUIDE.md`「十」+ `system/application-<slug>/` |
 | `--type=company` | `company/` | 目标文档目录 | 最小替换 |
