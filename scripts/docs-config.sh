@@ -2,565 +2,508 @@
 #
 # docs-config.sh — SDX 知识库初始化配置模块
 #
-# 目的:
-#   提供知识库初始化脚本的共享常量、默认值与校验函数。
+# 职责：
+#   提供知识库初始化脚本的共享常量、默认值与校验/工具函数。
 #   作为配置层，集中管理所有可配置参数及其合法取值。
 #
-# 意图:
+# 设计原则：
 #   - 单一事实源：所有默认值、支持的模式、校验逻辑集中在此
 #   - 可扩展：新增配置只需修改此处，无需改动业务脚本
 #   - 可验证：提供校验函数确保外部输入合法
+#   - 纯函数优先：路径/校验函数无副作用，便于测试
 #
-# 依赖:
-#   - Bash 5+ (使用关联数组)
+# 依赖：Bash 5+（关联数组、nameref）
 #
-# Usage (被 source，不直接执行):
+# 使用方式（被 source，不直接执行）：
 #   source "$(dirname "$0")/docs-config.sh"
 #
 
-# -----------------------------------------------------------------------------
-# 环境检查
-# -----------------------------------------------------------------------------
+# =============================================================================
+# § 0  环境前置检查
+# =============================================================================
 
 # 要求 Bash 5+，用于关联数组、nameref 等特性
-require_bash5() {
-    if (( BASH_VERSINFO[0] < 5 )); then
-        printf '[FATAL] 需要 Bash 5+，当前版本: %s\n' "$BASH_VERSION" >&2
-        exit 1
-    fi
+_require_bash5() {
+  if (( BASH_VERSINFO[0] < 5 )); then
+    printf '[FATAL] 需要 Bash 5+，当前版本: %s\n' "$BASH_VERSION" >&2
+    exit 1
+  fi
 }
+_require_bash5
 
-# 确保已满足环境要求
-require_bash5
+# =============================================================================
+# § 1  版本与仓库常量
+# =============================================================================
 
-# -----------------------------------------------------------------------------
-# 常量定义
-# -----------------------------------------------------------------------------
-
-# 版本信息
 readonly SDX_VERSION='2.3.0'
 readonly SDX_MIN_BASH_VERSION=5
 
 # Git 仓库地址（供 bootstrap 引用）
 readonly SDX_GIT_REPO_URL='https://github.com/oleewen/ai-knowledge.git'
 
-# 支持的模式
+# =============================================================================
+# § 2  支持的枚举值
+# =============================================================================
+
+# 支持的运行模式
 readonly -a SDX_SUPPORTED_MODES=(standalone central)
 
-# 支持的 docs-init --type（知识库 v2，见 docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md §6）
+# 支持的知识库类型（--type，知识库 v2）
 readonly -a SDX_SUPPORTED_TYPES=(application system company)
 
 # 支持的 Agent 类型
 readonly -a SDX_SUPPORTED_AGENTS=(cursor trea claude)
 
-# Agent 到目录名的映射（使用命名数组）
+# Agent 名称 → 目录名映射
 declare -A SDX_AGENT_DIR_MAP=(
-    [cursor]='.cursor'
-    [trea]='.trea'
-    [claude]='.claude'
+  [cursor]='.cursor'
+  [trea]='.trea'
+  [claude]='.claude'
 )
 
-# 源模板路径（相对于 REPO_ROOT）
-# 现在使用 application/ 作为应用知识库模板源（取代了原来的 applications/app-APPNAME）
+# =============================================================================
+# § 3  模板路径与排除规则
+# =============================================================================
+
+# 应用知识库模板源（相对于 REPO_ROOT）
 readonly SDX_SYSTEM_TEMPLATE_PATH='application'
 
-# 应用模板注册路径（central 模式下使用）
-readonly SDX_APP_TEMPLATE_PATH='applications/app-APPNAME'
-
-# standalone 模式下需要从 system/ 模板中排除的文件
+# standalone 模式下从 application/ 模板中排除的顶层文件
 readonly -a SDX_STANDALONE_EXCLUDE_FILES=(
-    'DESIGN.md'
-    'CONTRIBUTING.md'
+  'DESIGN.md'
+  'CONTRIBUTING.md'
 )
 
-# standalone 模式下需要排除的目录
+# standalone 模式下排除的顶层目录
 readonly -a SDX_STANDALONE_EXCLUDE_DIRS=(
-    'specs'
+  'specs'
 )
 
-# 文本替换规则：应用模板时内容替换的映射
-# 格式: '原文本|替换文本'
-# 注：system/ → 实际文档目录（如system/）的替换在脚本运行时动态添加
+# =============================================================================
+# § 4  替换规则（文本 / 文件名）
+# =============================================================================
+
+# 文本替换规则，格式：'原文本|替换文本'
+# 注：system/ → 实际文档目录的替换在运行时动态添加
 readonly -a SDX_TEXT_REPLACEMENTS=(
-    'system_|application_'
-    '系统知识库|应用知识库'
-    '系统|应用'
+  'system_|application_'
+  '系统知识库|应用知识库'
+  '系统|应用'
 )
 
-# 文件名替换规则：用于目录和文件名替换
+# 文件名替换规则
 declare -A SDX_FILENAME_REPLACEMENTS=(
-    ['system']='application'
-    ['system_meta']='docs_meta'
-    ['application_meta']='docs_meta'
-    ['SYSTEM']='APPLICATION'
+  ['system']='application'
+  ['system_meta']='docs_meta'
+  ['application_meta']='docs_meta'
+  ['SYSTEM']='APPLICATION'
 )
 
-# 默认安装的技能前缀（用于 skills 目录筛选）
+# =============================================================================
+# § 5  默认技能列表
+# =============================================================================
+
+# 默认安装的技能目录前缀（用于筛选）
 readonly -a SDX_DEFAULT_SKILL_PREFIXES=(
-    'agent-'
-    'document-'
-    'knowledge-'
-    'sdx-'
+  'agent-'
+  'document-'
+  'knowledge-'
+  'sdx-'
 )
 
 # 默认安装的技能列表
 readonly -a SDX_DEFAULT_SKILLS=(
-    'agent-guide'
-    'docs-indexing'
-    'docs-change'
-    'sdx-solution'
-    'sdx-analysis'
-    'sdx-prd'
-    'sdx-design'
-    'sdx-test'
+  'agent-guide'
+  'docs-indexing'
+  'docs-change'
+  'sdx-solution'
+  'sdx-analysis'
+  'sdx-prd'
+  'sdx-design'
+  'sdx-test'
 )
 
-# -----------------------------------------------------------------------------
-# 默认配置关联数组
-# -----------------------------------------------------------------------------
+# =============================================================================
+# § 6  默认配置关联数组
+# =============================================================================
 #
-# 说明:
-#   这些默认值可被环境变量或命令行参数覆盖。
-#   键名即为对应的环境变量名（小写）。
+# 这些默认值可被环境变量或命令行参数覆盖；键名即对应的环境变量名（小写）。
 #
-
 declare -A SDX_DEFAULTS=(
-    [docs_dir]='docs'                       # 目标文档目录名
-    [mode]='standalone'                     # 运行模式: standalone | s | central | c
-    [agents]='cursor'                       # Agent 类型: cursor | trea | claude | all
+  [docs_dir]='docs'        # 目标文档目录名
+  [mode]='standalone'      # 运行模式: standalone | central
+  [agents]='cursor'        # Agent 类型: cursor | trea | claude | all
 )
 
-# -----------------------------------------------------------------------------
-# 验证函数（返回 0 表示合法，1 表示非法）
-# -----------------------------------------------------------------------------
+# =============================================================================
+# § 7  枚举校验与规范化函数
+# =============================================================================
 
-# 验证运行模式是否合法
-# Usage: validate_mode <mode>
-# Returns: 0=合法, 1=非法
+# 校验运行模式是否合法
+# 用法：validate_mode <mode>
+# 返回：0=合法，1=非法
 validate_mode() {
-    local mode="${1:-}"
-    [[ "$mode" =~ ^(standalone|central|s|c)$ ]] && return 0
-    return 1
+  [[ "${1:-}" =~ ^(standalone|central|s|c)$ ]]
 }
 
-# 规范化运行模式（统一为完整名称）
-# Usage: normalize_mode <mode>
-# stdout: standalone | central
+# 规范化运行模式（别名 → 完整名称）
+# 用法：normalize_mode <mode>
+# 输出：standalone | central
 normalize_mode() {
-    local mode="${1:-}"
-    case "$mode" in
-        s|standalone) echo 'standalone' ;;
-        c|central)    echo 'central' ;;
-        *)            echo 'standalone' ;;  # 默认回退
-    esac
+  case "${1:-}" in
+    s|standalone) printf 'standalone' ;;
+    c|central)    printf 'central'    ;;
+    *)            printf 'standalone' ;;  # 默认回退
+  esac
 }
 
-# 验证 --type 是否合法
-# Usage: validate_type <type>
+# 校验 --type 是否合法
+# 用法：validate_type <type>
+# 返回：0=合法，1=非法
 validate_type() {
-    local t="${1:-}"
-    [[ "$t" =~ ^(application|system|company)$ ]] && return 0
-    return 1
+  [[ "${1:-}" =~ ^(application|system|company)$ ]]
 }
 
 # 规范化 --type（别名 → 标准值）
-# Usage: normalize_type <type>
-# stdout: application | system | company
+# 用法：normalize_type <type>
+# 输出：application | system | company
 normalize_type() {
-    local raw="${1:-}"
-    case "${raw,,}" in
-        application|a) echo 'application' ;;
-        system|s)      echo 'system' ;;
-        company|c)    echo 'company' ;;
-        *)                 printf '%s' "$raw" ;;
-    esac
+  case "${1,,}" in
+    application|a) printf 'application' ;;
+    system|s)      printf 'system'      ;;
+    company|c)     printf 'company'     ;;
+    *)             printf '%s' "${1:-}" ;;
+  esac
 }
 
-# 验证 Agent 列表是否合法
-# Usage: validate_agents <agents>
-# <agents>: 逗号分隔或空格分隔的列表，如 "cursor,trea" 或 "cursor trea"
-# Returns: 0=全部合法, 1=存在非法
+# 校验 Agent 列表是否合法（逗号或空格分隔）
+# 用法：validate_agents <agents_str>
+# 返回：0=全部合法，1=存在非法值
 validate_agents() {
-    local agents_str="${1:-}"
-    local -a agents
+  local agents_str="${1:-}"
+  local -a agents
+  IFS=', ' read -ra agents <<< "$agents_str"
 
-    # 支持逗号或空格分隔
-    IFS=', ' read -ra agents <<< "$agents_str"
+  local agent supported
+  for agent in "${agents[@]}"; do
+    [[ -z "$agent" ]] && continue
+    [[ "$agent" == 'all' ]] && return 0
 
-    for agent in "${agents[@]}"; do
-        [[ -z "$agent" ]] && continue  # 跳过空值
-        [[ "$agent" == 'all' ]] && return 0  # all 表示全部合法
-
-        local valid=0
-        for supported in "${SDX_SUPPORTED_AGENTS[@]}"; do
-            [[ "$agent" == "$supported" ]] && { valid=1; break; }
-        done
-        (( valid == 0 )) && return 1
+    local valid=0
+    for supported in "${SDX_SUPPORTED_AGENTS[@]}"; do
+      [[ "$agent" == "$supported" ]] && { valid=1; break; }
     done
-    return 0
+    (( valid == 0 )) && return 1
+  done
+  return 0
 }
 
 # 规范化 Agent 列表（展开 all，去重）
-# Usage: normalize_agents <agents>
-# stdout: 空格分隔的 Agent 列表
+# 用法：normalize_agents <agents_str>
+# 输出：空格分隔的 Agent 列表
 normalize_agents() {
-    local agents_str="${1:-}"
+  local agents_str="${1:-}"
 
-    if [[ "$agents_str" == 'all' ]]; then
-        echo "${SDX_SUPPORTED_AGENTS[*]}"
-        return 0
-    fi
+  if [[ "$agents_str" == 'all' ]]; then
+    printf '%s' "${SDX_SUPPORTED_AGENTS[*]}"
+    return 0
+  fi
 
-    local -a agents normalized
-    local -A seen
+  local -a agents normalized
+  local -A seen
+  IFS=', ' read -ra agents <<< "$agents_str"
 
-    IFS=', ' read -ra agents <<< "$agents_str"
+  local agent
+  for agent in "${agents[@]}"; do
+    [[ -z "$agent" ]] && continue
+    [[ -n "${seen[$agent]+x}" ]] && continue
+    seen["$agent"]=1
+    normalized+=("$agent")
+  done
 
-    for agent in "${agents[@]}"; do
-        [[ -z "$agent" ]] && continue
-        [[ -v seen["$agent"] ]] && continue  # 去重
-        seen["$agent"]=1
-        normalized+=("$agent")
-    done
-
-    echo "${normalized[*]}"
+  printf '%s' "${normalized[*]}"
 }
 
 # 获取 Agent 对应的目录名
-# Usage: get_agent_dir <agent>
-# stdout: Agent 目录名（如 .cursor）
+# 用法：get_agent_dir <agent>
+# 输出：Agent 目录名（如 .cursor）；未知 agent 回退 .agent
 get_agent_dir() {
-    local agent="${1:-}"
-    echo "${SDX_AGENT_DIR_MAP[$agent]:-.agent}"
+  printf '%s' "${SDX_AGENT_DIR_MAP[${1:-}]:-.agent}"
 }
-
-# -----------------------------------------------------------------------------
-# 默认值获取函数
-# -----------------------------------------------------------------------------
 
 # 获取配置项的默认值
-# Usage: cfg_default <key>
-# stdout: 默认值
+# 用法：cfg_default <key>
 cfg_default() {
-    local key="${1:-}"
-    printf '%s' "${SDX_DEFAULTS[$key]:-}"
+  printf '%s' "${SDX_DEFAULTS[${1:-}]:-}"
 }
 
-# -----------------------------------------------------------------------------
-# 路径处理函数（纯函数，无副作用）
-# -----------------------------------------------------------------------------
+# =============================================================================
+# § 8  路径处理函数（纯函数，无副作用）
+# =============================================================================
 
 # 展开路径中的 ~ 为用户主目录
-# 注意：不可用 case '~/'*) — bash 会对 case 模式做 tilde 展开，导致无法匹配字面 ~/。
-# Usage: expand_tilde <path>
-# stdout: 展开后的路径
+# 注意：不可用 case '~/'*) — bash 会对 case 模式做 tilde 展开，导致无法匹配字面 ~/
+# 用法：expand_tilde <path>
 expand_tilde() {
-    local p="${1:-}"
-    # 使用 =~：[[ == '~'/* ]] 右侧模式会经 tilde 展开，无法匹配字面 ~/。
-    if [[ "$p" == "~" ]]; then
-        printf '%s\n' "${HOME:-}"
-    elif [[ "$p" =~ ^~/ ]]; then
-        # 不可用 ${p#~/}：pattern 中 ~ 会经 tilde 展开，导致去前缀失败
-        printf '%s\n' "${HOME:-}/${p:2}"
-    elif [[ "$p" =~ ^~[a-zA-Z] ]]; then
-        printf '%s\n' "$p"
-    else
-        printf '%s\n' "$p"
-    fi
+  local p="${1:-}"
+  if [[ "$p" == '~' ]]; then
+    printf '%s\n' "${HOME:-}"
+  elif [[ "$p" =~ ^~/ ]]; then
+    # 不可用 ${p#~/}：pattern 中 ~ 会经 tilde 展开，导致去前缀失败
+    printf '%s\n' "${HOME:-}/${p:2}"
+  else
+    printf '%s\n' "$p"
+  fi
 }
 
-# 获取绝对路径（不检查存在性）
-# Usage: abs_path <path>
-# stdout: 绝对路径
+# 获取绝对路径（不要求路径已存在；解析符号链接）
+# 用法：abs_path <path>
 abs_path() {
-    local p
-    p="$(expand_tilde "${1:-}")"
+  local p
+  p="$(expand_tilde "${1:-}")"
+  [[ "$p" == /* ]] || p="$PWD/$p"
 
-    if [[ "$p" != /* ]]; then
-        p="$PWD/$p"
-    fi
-
-    # 清理路径中的 .. 和 .
-    # 使用 cd -P 获取物理路径（解析符号链接）
-    if [[ -d "$p" ]]; then
-        (cd -P "$p" 2>/dev/null && pwd)
-    else
-        # 对于文件，获取其所在目录的绝对路径，再拼接文件名
-        local dir base orig_dir
-        dir="$(dirname "$p")"
-        orig_dir="$dir"
-        base="$(basename "$p")"
-        if dir="$(cd -P "$dir" 2>/dev/null && pwd)"; then
-            :
-        else
-            dir="$orig_dir"
-        fi
-        echo "$dir/$base"
-    fi
+  if [[ -d "$p" ]]; then
+    (cd -P "$p" 2>/dev/null && pwd)
+  else
+    local dir base
+    dir="$(dirname "$p")"
+    base="$(basename "$p")"
+    dir="$(cd -P "$dir" 2>/dev/null && pwd || printf '%s' "$dir")"
+    printf '%s/%s\n' "$dir" "$base"
+  fi
 }
 
 # 去除路径末尾的斜杠（保留根目录 /）
-# Usage: strip_trailing_slash <path>
-# stdout: 处理后的路径
+# 用法：strip_trailing_slash <path>
 strip_trailing_slash() {
-    local p="${1:-}"
-    while [[ "$p" != '/' && "$p" == */ ]]; do
-        p="${p%/}"
-    done
-    echo "$p"
+  local p="${1:-}"
+  while [[ "$p" != '/' && "$p" == */ ]]; do
+    p="${p%/}"
+  done
+  printf '%s\n' "$p"
 }
 
 # 计算相对路径（从 base 到 target）
-# Usage: rel_path <base> <target>
-# stdout: target 相对于 base 的路径
+# 用法：rel_path <base> <target>
 rel_path() {
-    local base="${1:-}"
-    local target="${2:-}"
-
-    base="$(strip_trailing_slash "$base")"
-    target="$(strip_trailing_slash "$target")"
-
-    case "$target" in
-        "$base")     echo '.' ;;
-        "$base"/*)   echo "${target#$base/}" ;;
-        *)           echo "$target" ;;
-    esac
+  local base target
+  base="$(strip_trailing_slash "${1:-}")"
+  target="$(strip_trailing_slash "${2:-}")"
+  case "$target" in
+    "$base")   printf '.\n'                    ;;
+    "$base"/*) printf '%s\n' "${target#"$base"/}" ;;
+    *)         printf '%s\n' "$target"         ;;
+  esac
 }
 
-# -----------------------------------------------------------------------------
-# 应用 ID 处理函数
-# -----------------------------------------------------------------------------
+# =============================================================================
+# § 9  应用 ID 处理函数
+# =============================================================================
 
 # 从目录名生成合法的应用 ID
-# 规则: 大写，非字母数字转 -，去重连续 -， trim 首尾 -
-# Usage: sanitize_app_id <raw_name>
-# stdout: APP-XXXX 格式 ID
+# 规则：大写，非字母数字转 -，合并连续 -，去除首尾 -
+# 用法：sanitize_app_id <raw_name>
+# 输出：APP-XXXX 格式 ID
 sanitize_app_id() {
-    local raw="${1:-}"
+  local raw="${1##*/}"  # 去除路径前缀，只保留目录名
 
-    # 提取目录名（去除路径）
-    raw="${raw##*/}"
+  # 转大写，非字母数字替换为 -
+  raw="$(printf '%s' "$raw" | tr '[:lower:]' '[:upper:]' | tr -c '[:alnum:]' '-')"
+  # 合并连续 -，去除首尾 -
+  raw="$(printf '%s' "$raw" | tr -s '-' | sed 's/^-//;s/-$//')"
 
-    # 转为大写，非字母数字替换为 -
-    raw="$(printf '%s' "$raw" | tr '[:lower:]' '[:upper:]' | tr -c '[:alnum:]' '-')"
-
-    # 去重连续 -，trim 首尾 -
-    while [[ "$raw" == --* ]]; do raw="${raw#-}"; done
-    while [[ "$raw" == *-- ]]; do raw="${raw%-}"; done
-    raw="$(printf '%s' "$raw" | tr -s '-')"
-
-    # 确保非空
-    if [[ -z "$raw" ]]; then
-        raw='APPNAME'
-    fi
-
-    echo "APP-${raw}"
+  printf 'APP-%s\n' "${raw:-APPNAME}"
 }
 
-# 替换文件名中的 system 为 application
-# Usage: replace_filename <filename>
-# stdout: 替换后的文件名
+# 替换文件名中的 system → application（按 SDX_FILENAME_REPLACEMENTS 映射）
+# 用法：replace_filename <filename>
 replace_filename() {
-    local filename="${1:-}"
-
-    for key in "${!SDX_FILENAME_REPLACEMENTS[@]}"; do
-        local value="${SDX_FILENAME_REPLACEMENTS[$key]}"
-        filename="${filename//$key/$value}"
-    done
-
-    echo "$filename"
+  local filename="${1:-}" key
+  for key in "${!SDX_FILENAME_REPLACEMENTS[@]}"; do
+    filename="${filename//$key/${SDX_FILENAME_REPLACEMENTS[$key]}}"
+  done
+  printf '%s\n' "$filename"
 }
 
-# -----------------------------------------------------------------------------
-# `.docsconfig`（目标工程仓库根，见 docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md）
-# -----------------------------------------------------------------------------
+# =============================================================================
+# § 10  .docsconfig 读写函数
+#
+# 规范见 docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md
+# =============================================================================
 
-# 将绝对路径格式化为写入 .docsconfig 的 *_ROOT 值（C 策略：位于 $HOME 下则 ~/...）
-# Usage: docsconfig_format_root_for_write <abs_path>
-# stdout: ~/... 或不在 $HOME 下时为绝对路径
+# 将绝对路径格式化为写入 .docsconfig 的值（位于 $HOME 下则输出 ~/...）
+# 用法：docsconfig_format_root_for_write <abs_path>
 docsconfig_format_root_for_write() {
-    local p home
-    p="$(strip_trailing_slash "$(abs_path "${1:?}")")"
-    [[ -n "${HOME:-}" ]] || { printf '%s\n' "$p"; return 0; }
-    home="$(strip_trailing_slash "$(abs_path "$HOME")")"
-    [[ -n "$home" ]] || { printf '%s\n' "$p"; return 0; }
-    if [[ "$p" == "$home" ]]; then
-        printf '~\n'
-    elif [[ "$p" == "$home"/* ]]; then
-        printf '~/%s\n' "${p#"$home"/}"
-    else
-        printf '%s\n' "$p"
-    fi
+  local p home
+  p="$(strip_trailing_slash "$(abs_path "${1:?}")")"
+  [[ -n "${HOME:-}" ]] || { printf '%s\n' "$p"; return 0; }
+  home="$(strip_trailing_slash "$(abs_path "$HOME")")"
+  [[ -n "$home" ]] || { printf '%s\n' "$p"; return 0; }
+
+  if   [[ "$p" == "$home"   ]]; then printf '~\n'
+  elif [[ "$p" == "$home"/* ]]; then printf '~/%s\n' "${p#"$home"/}"
+  else                               printf '%s\n' "$p"
+  fi
 }
 
-# 读入的 *_ROOT 原始值 → 绝对路径（abs_path 内含 expand_tilde）
-# Usage: docsconfig_normalize_root_value <raw>
-# stdout: 绝对路径
+# 将 .docsconfig 中读入的 *_ROOT 原始值展开为绝对路径
+# 用法：docsconfig_normalize_root_value <raw>
 docsconfig_normalize_root_value() {
-    local v="${1:-}"
-    v="${v%$'\r'}"
-    printf '%s' "$(abs_path "$v")"
+  local v="${1:-}"
+  v="${v%$'\r'}"  # 去除 Windows 换行符
+  printf '%s' "$(abs_path "$v")"
 }
 
-# 由 DOC_ROOT 解析 Git 仓库根（§3.3 推荐失败则返回空）
-# Usage: docsconfig_repo_root_from_doc_root <doc_root_abs>
-# stdout: REPO_ROOT 绝对路径
+# 由 DOC_ROOT 解析所在 Git 仓库根（§3.3；仅当 DOC_ROOT 是仓库根的直接子目录时采用）
+# 用法：docsconfig_repo_root_from_doc_root <doc_root_abs>
+# 输出：REPO_ROOT 绝对路径；无法解析时输出空
 docsconfig_repo_root_from_doc_root() {
-    local doc_root="${1:?doc_root}"
-    local dr gr
-    dr="$(cd -P "$doc_root" 2>/dev/null && pwd)" || return 0
-    gr="$(git -C "$dr" rev-parse --show-toplevel 2>/dev/null || true)"
-    [[ -n "$gr" ]] || return 0
-    # 仅在 DOC_ROOT 形如 <REPO_ROOT>/docs（直接子目录）时采用 Git 根；
-    # 避免被更上层父仓库“吸走”到非目标工程目录。
-    if [[ "$(dirname "$dr")" == "$gr" ]]; then
-        printf '%s\n' "$gr"
-    fi
+  local doc_root="${1:?doc_root}"
+  local dr gr
+  dr="$(cd -P "$doc_root" 2>/dev/null && pwd)" || return 0
+  gr="$(git -C "$dr" rev-parse --show-toplevel 2>/dev/null || true)"
+  [[ -n "$gr" ]] || return 0
+  # 仅在 DOC_ROOT 是 Git 根的直接子目录时采用，避免被上层父仓库"吸走"
+  [[ "$(dirname "$dr")" == "$gr" ]] && printf '%s\n' "$gr"
 }
 
-# 由 DOC_ROOT 兜底推导 REPO_ROOT（取父目录，绝对规范化）
-# Usage: docsconfig_repo_root_fallback_from_doc_root <doc_root_abs>
-# stdout: REPO_ROOT 绝对路径；失败返回空
+# 由 DOC_ROOT 兜底推导 REPO_ROOT（取父目录）
+# 用法：docsconfig_repo_root_fallback_from_doc_root <doc_root_abs>
+# 输出：REPO_ROOT 绝对路径；失败返回空
 docsconfig_repo_root_fallback_from_doc_root() {
-    local doc_root="${1:?doc_root}"
-    local parent
-    parent="$(dirname "$doc_root")"
-    cd -P "$parent" 2>/dev/null && pwd || true
+  local doc_root="${1:?doc_root}"
+  cd -P "$(dirname "$doc_root")" 2>/dev/null && pwd || true
 }
 
 # 由 REPO_ROOT + DOC_ROOT 推算 DOC_DIR（相对段；重合时为 "."）
-# Usage: docsconfig_doc_dir_from_roots <repo_root_abs> <doc_root_abs>
-# stdout: DOC_DIR（无前导 /）
-# 失败：stderr 说明并返回 1
+# 用法：docsconfig_doc_dir_from_roots <repo_root_abs> <doc_root_abs>
+# 输出：DOC_DIR（无前导 /）；失败时 stderr 说明并返回 1
 docsconfig_doc_dir_from_roots() {
-    local repo_root="${1:?repo_root}"
-    local doc_root="${2:?doc_root}"
-    local rr dr
-    rr="$(cd -P "$repo_root" 2>/dev/null && pwd)" || {
-        printf '%s\n' "[docsconfig] 无法解析 REPO_ROOT: $repo_root" >&2
-        return 1
-    }
-    dr="$(cd -P "$doc_root" 2>/dev/null && pwd)" || {
-        printf '%s\n' "[docsconfig] 无法解析 DOC_ROOT: $doc_root" >&2
-        return 1
-    }
-    case "$dr" in
-        "$rr") printf '%s\n' '.' ;;
-        "$rr"/*) printf '%s\n' "${dr#"$rr"/}" ;;
-        *)
-            printf '%s\n' "[docsconfig] DOC_ROOT 不在 REPO_ROOT 下: $dr vs $rr" >&2
-            return 1
-            ;;
-    esac
+  local repo_root="${1:?repo_root}" doc_root="${2:?doc_root}"
+  local rr dr
+  rr="$(cd -P "$repo_root" 2>/dev/null && pwd)" \
+    || { printf '[docsconfig] 无法解析 REPO_ROOT: %s\n' "$repo_root" >&2; return 1; }
+  dr="$(cd -P "$doc_root"  2>/dev/null && pwd)" \
+    || { printf '[docsconfig] 无法解析 DOC_ROOT: %s\n'  "$doc_root"  >&2; return 1; }
+
+  case "$dr" in
+    "$rr")   printf '.\n' ;;
+    "$rr"/*) printf '%s\n' "${dr#"$rr"/}" ;;
+    *)
+      printf '[docsconfig] DOC_ROOT 不在 REPO_ROOT 下: %s vs %s\n' "$dr" "$rr" >&2
+      return 1
+      ;;
+  esac
 }
 
 # 写入 $REPO_ROOT/.docsconfig（至少三键；可选 AGENT_*）
-# Usage: docsconfig_write <repo_root_abs> <doc_root_abs> <doc_dir> <dry_run:0|1> [agent_root_abs] [agent_dirs_space_separated]
-# agent_root_abs 非空时追加 AGENT_ROOT=、AGENT_DIRS="..."
+# 用法：docsconfig_write <repo_root_abs> <doc_root_abs> <doc_dir> <dry_run:0|1> \
+#                        [agent_root_abs] [agent_dirs_space_separated]
+# 说明：agent_root_abs 非空时追加 AGENT_ROOT= 与 AGENT_DIRS="..."
 docsconfig_write() {
-    local repo_root="${1:?repo_root}"
-    local doc_root="${2:?doc_root}"
-    local doc_dir="${3:?doc_dir}"
-    local dry="${4:-0}"
-    local agent_root_in="${5:-}"
-    local agent_dirs_in="${6:-}"
-    local out rr dr ar
-    out="$(strip_trailing_slash "$(abs_path "$repo_root")")/.docsconfig"
-    rr="$(docsconfig_format_root_for_write "$repo_root")"
-    dr="$(docsconfig_format_root_for_write "$doc_root")"
-    if [[ "$dry" == "1" ]]; then
-        printf 'Would write %s:\nDOC_ROOT=%s\nREPO_ROOT=%s\nDOC_DIR=%s\n' \
-            "$out" "$dr" "$rr" "$doc_dir"
-        if [[ -n "$agent_root_in" ]]; then
-            ar="$(docsconfig_format_root_for_write "$agent_root_in")"
-            printf 'AGENT_ROOT=%s\nAGENT_DIRS="%s"\n' "$ar" "$agent_dirs_in"
-        fi
-        return 0
-    fi
-    umask 022
-    {
-        printf 'DOC_ROOT=%s\nREPO_ROOT=%s\nDOC_DIR=%s\n' "$dr" "$rr" "$doc_dir"
-        if [[ -n "$agent_root_in" ]]; then
-            ar="$(docsconfig_format_root_for_write "$agent_root_in")"
-            printf 'AGENT_ROOT=%s\nAGENT_DIRS="%s"\n' "$ar" "$agent_dirs_in"
-        fi
-    } >"$out"
-}
+  local repo_root="${1:?repo_root}"
+  local doc_root="${2:?doc_root}"
+  local doc_dir="${3:?doc_dir}"
+  local dry="${4:-0}"
+  local agent_root_in="${5:-}"
+  local agent_dirs_in="${6:-}"
 
-# 自文件解析 DOC_ROOT / REPO_ROOT / DOC_DIR（nameref 输出，Bash 5+）；可选 AGENT_ROOT / AGENT_DIRS
-# 某键缺失则对应变量为空（用于缺 DOC_DIR 等迁移场景）。
-# *_ROOT 读入后展开为绝对路径；DOC_DIR、AGENT_DIRS 保持文件中的相对段 / 空格分隔目录名。
-# Usage: docsconfig_read_into <path> <nameref_doc_root> <nameref_repo_root> <nameref_doc_dir> [<nameref_agent_root> <nameref_agent_dirs>]
-# Returns: 0 文件存在且已解析；1 文件不存在或不可读
-docsconfig_read_into() {
-    local path="${1:?path}"
-    local -n _doc="${2:?}"
-    local -n _repo="${3:?}"
-    local -n _ddir="${4:?}"
-    local raw_doc="" raw_repo="" raw_ddir="" raw_ar="" raw_ads=""
-    _doc=""
-    _repo=""
-    _ddir=""
-    [[ -f "$path" ]] || return 1
-    local line k v
-    while IFS= read -r line || [[ -n "$line" ]]; do
-        [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
-        case "$line" in
-            DOC_ROOT=* | REPO_ROOT=* | DOC_DIR=* | AGENT_ROOT=* | AGENT_DIRS=*)
-                k="${line%%=*}"
-                v="${line#*=}"
-                v="${v%$'\r'}"
-                if [[ "$k" == "AGENT_DIRS" && ${#v} -ge 2 && "${v:0:1}" == '"' && "${v: -1}" == '"' ]]; then
-                    v="${v:1:${#v}-2}"
-                fi
-                case "$k" in
-                    DOC_ROOT) raw_doc="$v" ;;
-                    REPO_ROOT) raw_repo="$v" ;;
-                    DOC_DIR) raw_ddir="$v" ;;
-                    AGENT_ROOT) raw_ar="$v" ;;
-                    AGENT_DIRS) raw_ads="$v" ;;
-                esac
-                ;;
-        esac
-    done <"$path"
-    if [[ -n "$raw_doc" ]]; then
-        _doc="$(docsconfig_normalize_root_value "$raw_doc")"
-    fi
-    if [[ -n "$raw_repo" ]]; then
-        _repo="$(docsconfig_normalize_root_value "$raw_repo")"
-    fi
-    _ddir="$raw_ddir"
-    if [[ "$#" -ge 6 ]]; then
-        local -n _aroot="${5:?}"
-        local -n _adirs="${6:?}"
-        if [[ -n "$raw_ar" ]]; then
-            _aroot="$(docsconfig_normalize_root_value "$raw_ar")"
-        else
-            _aroot=""
-        fi
-        _adirs="$raw_ads"
+  local out rr dr ar
+  out="$(strip_trailing_slash "$(abs_path "$repo_root")")/.docsconfig"
+  rr="$(docsconfig_format_root_for_write "$repo_root")"
+  dr="$(docsconfig_format_root_for_write "$doc_root")"
+
+  # dry-run：仅预览，不写入
+  if [[ "$dry" == '1' ]]; then
+    printf 'Would write %s:\nDOC_ROOT=%s\nREPO_ROOT=%s\nDOC_DIR=%s\n' "$out" "$dr" "$rr" "$doc_dir"
+    if [[ -n "$agent_root_in" ]]; then
+      ar="$(docsconfig_format_root_for_write "$agent_root_in")"
+      printf 'AGENT_ROOT=%s\nAGENT_DIRS="%s"\n' "$ar" "$agent_dirs_in"
     fi
     return 0
+  fi
+
+  umask 022
+  {
+    printf 'DOC_ROOT=%s\nREPO_ROOT=%s\nDOC_DIR=%s\n' "$dr" "$rr" "$doc_dir"
+    if [[ -n "$agent_root_in" ]]; then
+      ar="$(docsconfig_format_root_for_write "$agent_root_in")"
+      printf 'AGENT_ROOT=%s\nAGENT_DIRS="%s"\n' "$ar" "$agent_dirs_in"
+    fi
+  } >"$out"
 }
 
-# 输出文件中匹配 KEY= 的行（调试用或简单管道）
-# Usage: docsconfig_grep_keys <path>
+# 从文件解析 DOC_ROOT / REPO_ROOT / DOC_DIR（nameref 输出，Bash 5+）；可选 AGENT_ROOT / AGENT_DIRS
+# 某键缺失则对应变量为空（兼容迁移场景）。
+# *_ROOT 读入后展开为绝对路径；DOC_DIR、AGENT_DIRS 保持文件中的原始值。
+#
+# 用法：docsconfig_read_into <path> <nameref_doc_root> <nameref_repo_root> <nameref_doc_dir> \
+#                            [<nameref_agent_root> <nameref_agent_dirs>]
+# 返回：0=文件存在且已解析；1=文件不存在或不可读
+docsconfig_read_into() {
+  local path="${1:?path}"
+  local -n _doc="${2:?}"
+  local -n _repo="${3:?}"
+  local -n _ddir="${4:?}"
+  _doc=''; _repo=''; _ddir=''
+  [[ -f "$path" ]] || return 1
+
+  local raw_doc='' raw_repo='' raw_ddir='' raw_ar='' raw_ads=''
+  local line k v
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
+    case "$line" in
+      DOC_ROOT=*|REPO_ROOT=*|DOC_DIR=*|AGENT_ROOT=*|AGENT_DIRS=*)
+        k="${line%%=*}"
+        v="${line#*=}"
+        v="${v%$'\r'}"
+        # 去除 AGENT_DIRS 的外层引号
+        if [[ "$k" == 'AGENT_DIRS' && ${#v} -ge 2 && "${v:0:1}" == '"' && "${v: -1}" == '"' ]]; then
+          v="${v:1:${#v}-2}"
+        fi
+        case "$k" in
+          DOC_ROOT)   raw_doc="$v"  ;;
+          REPO_ROOT)  raw_repo="$v" ;;
+          DOC_DIR)    raw_ddir="$v" ;;
+          AGENT_ROOT) raw_ar="$v"   ;;
+          AGENT_DIRS) raw_ads="$v"  ;;
+        esac
+        ;;
+    esac
+  done <"$path"
+
+  [[ -n "$raw_doc"  ]] && _doc="$(docsconfig_normalize_root_value "$raw_doc")"
+  [[ -n "$raw_repo" ]] && _repo="$(docsconfig_normalize_root_value "$raw_repo")"
+  _ddir="$raw_ddir"
+
+  # 可选：解析 AGENT_ROOT / AGENT_DIRS（需传入第 5、6 个 nameref）
+  if (( $# >= 6 )); then
+    local -n _aroot="${5:?}"
+    local -n _adirs="${6:?}"
+    _aroot=''
+    [[ -n "$raw_ar" ]] && _aroot="$(docsconfig_normalize_root_value "$raw_ar")"
+    _adirs="$raw_ads"
+  fi
+  return 0
+}
+
+# 输出文件中匹配 KEY= 的行（调试 / 管道用）
+# 用法：docsconfig_grep_keys <path>
 docsconfig_grep_keys() {
-    local path="${1:?path}"
-    [[ -f "$path" ]] || return 1
-    grep -E '^(DOC_ROOT|REPO_ROOT|DOC_DIR|AGENT_ROOT|AGENT_DIRS)=' "$path" 2>/dev/null
+  local path="${1:?path}"
+  [[ -f "$path" ]] || return 1
+  grep -E '^(DOC_ROOT|REPO_ROOT|DOC_DIR|AGENT_ROOT|AGENT_DIRS)=' "$path" 2>/dev/null
 }
 
-# -----------------------------------------------------------------------------
-# 检查清单文本（纯数据）
-# -----------------------------------------------------------------------------
+# =============================================================================
+# § 11  完成检查清单
+# =============================================================================
 
-# 输出初始化后的建议核对项
-# Usage: post_init_checklist [target_docs_dir]
+# 输出初始化后的建议核对提示
+# 用法：post_init_checklist [target_docs_dir]
 post_init_checklist() {
-    local target_docs="${1:-<目标文档目录>}"
-
-    cat <<CHECKLIST
+  cat <<CHECKLIST
 
 ================================================================================
 初始化完成！建议核对
