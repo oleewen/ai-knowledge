@@ -6,11 +6,11 @@
 #   按 --scope 选择知识库同步、.docsconfig 写入、Agent skills/rules 安装及（可选）central 登记。
 #
 # 主流程（步骤）：
-#   0. --scope=config：install_docsconfig 后退出（不执行 install_central；见 spec §5.1）
+#   0. --scope=config：install_docsconfig 后退出（不执行 central 登记）
 #   1. 模板 → 目标文档目录（scope 为 knowledge/ck 时，install_docs）
 #      - type=application：standalone 全量；central 仅 §2.1 子集
 #      - type=system|company：同步仓库顶层对应目录
-#   2. central + type=application：登记 INDEX_GUIDE.md + 建联邦槽位（install_central）
+#   2. central：按 type 登记 application 或 system 的 INDEX_GUIDE「十」+ 对应联邦槽位（install_central）
 #   3. scope 含 skills/rules/rs：install_agent
 #   4. 已提供文档目录（或 scope=ck 无目录）：install_docsconfig
 #
@@ -56,7 +56,6 @@ declare -A CFG=(
   [type_explicit]=0
   [scope]="${SCOPE:-ck}"
   [agents_opt]="${AGENTS_OPT:-cursor}"
-  [app_id_opt]="${APP_ID_OPT:-}"
   [dry_run]="0"
   [force]="${FORCE:-0}"
   [create_project_root]="${CREATE_PROJECT_ROOT:-0}"
@@ -64,6 +63,7 @@ declare -A CFG=(
   [primary_agent_slash]=""
   [docs_slash]=""
   [central_app_id]=""
+  [central_sys_id]=""
   [central_app_slug]=""
   [home_abs]=""
 )
@@ -146,6 +146,25 @@ docs_rel_to_git_root() {
     "$git_root"/*) printf '%s' "${docs_abs#"$git_root"}" ;;
     *)             printf '%s' "$docs_abs" ;;
   esac
+}
+
+# 从 git remote URL（或本地路径）提取仓库名（不含 .git）
+git_remote_repo_basename() {
+  local ref="$1"
+  [[ -z "$ref" ]] && return 1
+  # 已像本地路径无协议则当作目录名
+  if [[ "$ref" == /* ]]; then
+    printf '%s\n' "$(basename "$ref")"
+    return 0
+  fi
+  # ssh: git@host:org/repo.git
+  if [[ "$ref" =~ ^[a-zA-Z0-9._-]+@.*: ]]; then
+    ref="${ref##*:}"
+  fi
+  # https://host/org/repo.git → repo
+  ref="${ref##*/}"
+  ref="${ref%.git}"
+  printf '%s\n' "$ref"
 }
 
 
@@ -686,21 +705,23 @@ install_agent() {
 # § 7  Central 模式
 # =============================================================================
 
-# 解析 central 模式的 APP ID 与 slug，写入 CFG
+# 解析 central 模式标识：优先 git remote 仓库名，否则工程目录名 → APP ID / slug / SYS ID
 resolve_central_ids() {
-  local project_name
-  project_name="$(basename "${CFG[target_dir]}")"
-  if [[ -n "${CFG[app_id_opt]}" ]]; then
-    CFG[central_app_id]="${CFG[app_id_opt]}"
-  else
-    CFG[central_app_id]="$(sanitize_app_id "$project_name")"
+  local ref name
+  ref="$(git_repo_ref "${CFG[target_dir]}")"
+  name=""
+  if [[ -n "$ref" ]]; then
+    name="$(git_remote_repo_basename "$ref")" || name=""
   fi
+  [[ -z "$name" ]] && name="$(basename "${CFG[target_dir]}")"
+  CFG[central_app_id]="$(sanitize_app_id "$name")"
   CFG[central_app_slug]="${CFG[central_app_id]#APP-}"
   [[ -n "${CFG[central_app_slug]}" ]] || CFG[central_app_slug]='APPNAME'
+  CFG[central_sys_id]="SYS-${CFG[central_app_slug]}"
 }
 
 # 在 application/INDEX_GUIDE.md 中插入或更新应用登记行（「十、中央知识库接入工程」）
-upsert_system_index() {
+upsert_application_central_index() {
   local app_id="$1" repo_or_path="$2" docs_path="$3"
   local idx="${CFG[repo_root]}/application/INDEX_GUIDE.md"
   [[ -f "$idx" ]] || error "未找到 application/INDEX_GUIDE.md: $idx"
@@ -736,6 +757,40 @@ upsert_system_index() {
   mv "$tmp" "$idx"
 }
 
+# 在 system/INDEX_GUIDE.md 中插入或更新系统知识库登记行（「十、中央系统知识库接入工程」）
+upsert_system_central_index() {
+  local sys_id="$1" repo_or_path="$2" docs_path="$3"
+  local idx="${CFG[repo_root]}/system/INDEX_GUIDE.md"
+  [[ -f "$idx" ]] || error "未找到 system/INDEX_GUIDE.md: $idx"
+
+  local section='## 十、中央系统知识库接入工程'
+  local header='| SYSTEM ID | 工程路径（Git 或绝对路径） | 文档目录 |'
+  local sep='|--------|---------------------------|----------|'
+  local row="| ${sys_id} | ${repo_or_path} | ${docs_path} |"
+
+  if [[ "${CFG[dry_run]}" == '1' ]]; then
+    log "[dry-run] 更新 ${idx} : ${row}"; return 0
+  fi
+
+  if ! grep -qF "$section" "$idx"; then
+    {
+      printf '\n%s\n\n本节用于在本仓库（中央知识库）登记各目标系统知识库工程的接入信息。\n\n%s\n%s\n%s\n\n' \
+        "$section" "$header" "$sep" "$row"
+    } >>"$idx"
+    return 0
+  fi
+
+  local tmp="${idx}.tmp"
+  if grep -qF "| ${sys_id} |" "$idx"; then
+    awk -v app="| ${sys_id} |" -v newrow="$row" \
+      'index($0, app)==1 { print newrow; next } { print }' "$idx" >"$tmp"
+  else
+    awk -v sep="$sep" -v newrow="$row" \
+      '{ print } $0==sep { print newrow }' "$idx" >"$tmp"
+  fi
+  mv "$tmp" "$idx"
+}
+
 # 在本仓库 system/application-<slug>/ 建立联邦槽位
 ensure_app_mirror() {
   local dest="${CFG[repo_root]}/system/application-${CFG[central_app_slug]}"
@@ -767,7 +822,38 @@ ensure_app_mirror() {
   info "    联邦槽位就绪"
 }
 
-# 步骤 2（central）：登记 INDEX_GUIDE.md + 建联邦槽位
+# 在本仓库 company/system-<slug>/ 建立联邦槽位（central + type=system）
+ensure_system_mirror() {
+  local dest="${CFG[repo_root]}/company/system-${CFG[central_app_slug]}"
+  local project_name
+  project_name="$(basename "${CFG[target_dir]}")"
+
+  info ">>> 中央模式：建立 company/system-${CFG[central_app_slug]}/ 联邦槽位"
+  info "    目录:   $dest"
+  info "    SYSTEM ID: ${CFG[central_sys_id]}"
+
+  if [[ "${CFG[dry_run]}" == '1' ]]; then
+    log "[dry-run] 创建/更新联邦槽位: $dest"; return 0
+  fi
+
+  ensure_dir "$dest"
+
+  if [[ ! -f "$dest/README.md" ]]; then
+    local slug="${CFG[central_app_slug]}" sys_id="${CFG[central_sys_id]}"
+    {
+      printf '# system-%s\n\n' "$slug"
+      printf '本目录由 `docs-init --mode=central --type=system` 在中央库 `%s` 下生成，作为系统知识库联邦槽位（知识库 v2）。\n\n' \
+        "$(basename "${CFG[repo_root]}")"
+      printf -- '- **SYSTEM ID**：`%s`\n' "$sys_id"
+      printf -- '- **目标工程**：`%s`\n' "$project_name"
+      printf -- '- 同步文档镜像见 `docs-fetch` / 设计文档 `docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md`。\n'
+    } >"$dest/README.md"
+  fi
+
+  info "    联邦槽位就绪"
+}
+
+# 步骤 2（central）：按 type 登记对应 INDEX_GUIDE + 建联邦槽位
 # 推荐顺序：先 --scope=config 写 .docsconfig → 再同步知识库 → 最后 central 登记
 install_central() {
   resolve_central_ids
@@ -778,13 +864,25 @@ install_central() {
   repo_or_path="${repo_ref:-${CFG[target_dir]}}"
   docs_path="$(docs_rel_to_git_root "$git_root" "${CFG[docs_abs]}")"
 
-  info ">>> 中央模式：登记到本仓库 application/INDEX_GUIDE.md（十）并建立联邦槽位"
-  info "    APP ID: ${CFG[central_app_id]}"
-  info "    工程:   $repo_or_path"
-  info "    文档:   ${CFG[docs_abs]}"
-
-  upsert_system_index "${CFG[central_app_id]}" "$repo_or_path" "${CFG[docs_abs]}"
-  ensure_app_mirror
+  case "${CFG[type]}" in
+    application)
+      info ">>> 中央模式：登记到本仓库 application/INDEX_GUIDE.md（十）并建立联邦槽位"
+      info "    APP ID: ${CFG[central_app_id]}"
+      info "    工程:   $repo_or_path"
+      info "    文档:   $docs_path"
+      upsert_application_central_index "${CFG[central_app_id]}" "$repo_or_path" "$docs_path"
+      ensure_app_mirror
+      ;;
+    system)
+      info ">>> 中央模式：登记到本仓库 system/INDEX_GUIDE.md（十）并建立联邦槽位"
+      info "    SYSTEM ID: ${CFG[central_sys_id]}"
+      info "    工程:   $repo_or_path"
+      info "    文档:   $docs_path"
+      upsert_system_central_index "${CFG[central_sys_id]}" "$repo_or_path" "$docs_path"
+      ensure_system_mirror
+      ;;
+    *) error "内部错误：central 不支持的 type=${CFG[type]}" ;;
+  esac
 }
 
 
@@ -960,10 +1058,10 @@ usage() {
 
   类型（--type，知识库 v2）
     仅在 scope=ck、knowledge 时生效；其它 scope 若传入则忽略并提示
-    未指定时：standalone → application；central → system
-    application  应用知识库：standalone 全量；central §2.1 子集 + 登记 + 联邦槽位
-    system       仓库顶层 system/ → 目标
-    company      仓库顶层 company/ → 目标
+    未指定时默认 application（含 central）
+    application  应用知识库：standalone 全量；central §2.1 子集 + application/INDEX_GUIDE 登记 + system/application-<slug>/ 槽位
+    system       仓库顶层 system/ → 目标；central 另登记 system/INDEX_GUIDE + company/system-<slug>/ 槽位
+    company      仓库顶层 company/ → 目标（central 模式不支持）
     别名：a|application，s|system，c|company
 
 选项
@@ -976,7 +1074,6 @@ usage() {
                   skills    仅安装 Agent skills
                   rules     仅安装 Agent rules
                   rs        安装 skills + rules
-  --app-id=ID     central 模式下的 APP ID  [默认: 由工程目录名推导]
   --agents=LIST   cursor | trea | claude | all，逗号分隔  [默认: cursor]
   -r              允许工程根目录不存在时自动创建
   --force         强制覆盖，不提示
@@ -996,7 +1093,8 @@ usage() {
   docs-init --scope=config ~/workspace/my-app/docs
   docs-init --scope=skills
   docs-init --scope=rs ~/workspace/my-app/docs
-  docs-init --mode=central --app-id=APP-MYAPP --agents=cursor,trea ~/workspace/my-app/docs
+  docs-init --mode=central --type=application --agents=cursor,trea ~/workspace/my-app/docs
+  docs-init --mode=central --type=system ~/workspace/my-app/docs
   docs-init --dry-run ~/workspace/my-app/docs
 EOF
 }
@@ -1010,8 +1108,9 @@ parse_args() {
       --scope)    shift; CFG[scope]="${1:-}";                 shift ;;
       --type=*)   CFG[type]="${1#*=}"; CFG[type_explicit]=1;  shift ;;
       --type)     shift; CFG[type]="${1:-}"; CFG[type_explicit]=1; shift ;;
-      --app-id=*) CFG[app_id_opt]="${1#*=}";                  shift ;;
-      --app-id)   shift; CFG[app_id_opt]="${1:-}";            shift ;;
+      --app-id=*|--app-id)
+        error "--app-id 已移除：请使用 --mode=central --type=application|system（slug 自动推导）"
+        ;;
       --agents=*) CFG[agents_opt]="${1#*=}";                  shift ;;
       --agents)
         shift
@@ -1071,6 +1170,10 @@ validate_docs_and_target() {
     else
       error "工程根目录不存在: ${target_dir}（请先创建，或使用 -r 自动创建）"
     fi
+  fi
+  # DOC_ROOT 须为已存在目录，否则 .docsconfig 推导失败
+  if [[ ! -d "${CFG[docs_abs]}" ]]; then
+    run_or_dry mkdir -p "${CFG[docs_abs]}"
   fi
 }
 
@@ -1134,15 +1237,21 @@ apply_type_scope_policy() {
   esac
 }
 
-# 解析 --type（未显式指定时按 mode 推导默认值）
+# 解析 --type（未显式指定时默认 application；central 仅允许 application|system）
 resolve_type() {
   if [[ "${CFG[type_explicit]}" == '1' ]]; then
     CFG[type]="$(normalize_type "${CFG[type]}")"
     validate_type "${CFG[type]}" \
       || error "无效 --type: ${CFG[type]}（application(a)|system(s)|company(c)）"
   else
-    # standalone → application；central → system（知识库 v2 §2.3）
-    CFG[type]="$( [[ "${CFG[mode]}" == 'central' ]] && printf 'system' || printf 'application' )"
+    CFG[type]='application'
+  fi
+
+  if [[ "${CFG[mode]}" == 'central' ]]; then
+    case "${CFG[type]}" in
+      application|system) ;;
+      *) error "central 模式仅支持 --type=application|system（当前：${CFG[type]}）" ;;
+    esac
   fi
 }
 
@@ -1253,14 +1362,11 @@ main() {
   fi
 
   if [[ -n "${CFG[docs_abs]}" && ( "${CFG[scope]}" == 'knowledge' || "${CFG[scope]}" == 'ck' ) ]]; then
-    if [[ "${CFG[mode]}" == 'central' && "${CFG[type_explicit]}" == '0' && "${CFG[type]}" == 'system' ]]; then
-      info "提示：central 且未传 --type 时默认 type=system。若需应用知识库 §2.1 子集并登记，请使用 --type=application"
-    fi
     install_docs
   fi
 
   # ── 步骤 2：central 登记 ──────────────────────────────────────────────────
-  if [[ "${CFG[mode]}" == 'central' && "${CFG[type]}" == 'application' ]]; then
+  if [[ "${CFG[mode]}" == 'central' ]]; then
     install_central
   fi
 
