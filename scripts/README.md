@@ -30,6 +30,7 @@ Slash 技能命令请查看 [.agent/skills/README.md](../.agent/skills/README.md
 4. **同步范围控制**：通过 `--scope` 控制执行范围
    - `ck`（默认）：同步知识库 + 写入 `.docsconfig`
      - 未传 `<目标工程文档目录>` 时，`ck` 仅写入 `~/.docsconfig`（不执行知识库同步）
+   - `config`：仅写入 `.docsconfig`（不执行中央登记；`--mode=central` / `--type` 在此 scope 下不驱动登记）
    - `knowledge`：仅同步知识库（`application/`）
    - `skills`：仅安装 Agent skills（不落地知识库文档）
    - `rules`：仅安装 Agent rules（不落地知识库文档）
@@ -77,6 +78,22 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- --force ./docs
 ```
 
+## 测试（docs-init）
+
+集成测试设计见 [docs/superpowers/specs/2026-04-10-docs-init-testing-design.md](../../docs/superpowers/specs/2026-04-10-docs-init-testing-design.md)。
+
+在仓库根执行（默认 CI 子集，不修改当前克隆的登记文件）：
+
+```bash
+bash scripts/tests/docs-init/run.sh
+```
+
+含整库副本与 Central 登记类用例（Spec §6.5 / §6.8；耗时与磁盘占用更高）：
+
+```bash
+DOCS_INIT_TEST_FULL=1 bash scripts/tests/docs-init/run.sh
+```
+
 环境变量（可选）：
 ```bash
 export GIT_REPO_URL=https://github.com/oleewen/ai-knowledge.git  # 仓库地址
@@ -113,7 +130,7 @@ REPO_ROOT=/path/to/ai-knowledge ./scripts/docs-init.sh /path/to/your-project/doc
 | 选项 | 说明 | 默认 |
 |------|------|------|
 | `<目标工程文档目录>` | 目标工程下的文档目录路径，如 `~/project/docs`。`standalone` 且 `--scope` 为 `skills` / `rules` / `rs` / `config` / `ck` 时可省略；`central` 或 `knowledge` 时必须提供 | - |
-| `--mode=MODE` | 模式：`standalone`（独立）\| `central`（中央登记）；缩写：`s` \| `c` | `standalone` |
+| `--mode=MODE` | 模式：`standalone`（独立）\| `central`（中央登记，**仅** `scope=ck` / `knowledge` 时生效）；缩写：`s` \| `c` | `standalone` |
 | `--scope=SCOPE` | 同步范围：`ck` \| `config(c)` \| `knowledge(k)` \| `skills(s)` \| `rules(r)` \| `rs`；传 docs 时会写 `.docsconfig`（含 `skills/rules/rs`）；`ck/config/knowledge`（传 docs）已有 `AGENT_ROOT` 保留，否则补 REPO_ROOT | `ck` |
 | `-r` | 允许工程根目录不存在时自动创建（等同 `CREATE_PROJECT_ROOT=1`） | 关闭 |
 | `--app-id=APP-ID` | Central 模式下使用的 APP ID（如 `APP-MYSERVICE`），不传则从工程目录名推导 | - |
@@ -122,7 +139,7 @@ REPO_ROOT=/path/to/ai-knowledge ./scripts/docs-init.sh /path/to/your-project/doc
 | `--dry-run` | 预览模式，仅打印将要执行的操作 | - |
 | `-h`, `--help` | 显示帮助信息 | - |
 
-注意：`--mode=central` 可与任意 `--scope` 组合。中央登记能力依赖 `--type=application` 与目标文档目录参数。
+注意：`--mode=central` 与 `--type` **仅在** `scope=ck` 或 `knowledge` 时参与中央登记与知识库模板选型；其它 `scope` 传入时会忽略并提示。`scope=config` 仅写入 `.docsconfig`（`install_docsconfig`），**不**执行中央登记。应用知识库中央登记依赖 `mode=central`、`type=application` 与目标文档目录（见上表）。
 
 ## 初始化后的目录结构
 
@@ -166,7 +183,7 @@ your-project/
 
 ## Central 模式额外产物（仅 `--type=application`）
 
-使用 `--mode=central --type=application` 时，在本仓库（ai-knowledge）额外写入：
+在 **`scope=ck` 或 `knowledge`** 的前提下，使用 `--mode=central --type=application` 时，在本仓库（ai-knowledge）额外写入：
 
 ```
 ai-knowledge/

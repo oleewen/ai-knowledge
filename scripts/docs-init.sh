@@ -6,13 +6,13 @@
 #   按 --scope 选择知识库同步、.docsconfig 写入、Agent skills/rules 安装及（可选）central 登记。
 #
 # 主流程（步骤）：
-#   0. --scope=config：写 .docsconfig（+ 可选 install_central）后退出
-#   1. 模板 → 目标文档目录（scope 为 knowledge/ck 时）
+#   0. --scope=config：install_docsconfig 后退出（不执行 install_central；见 spec §5.1）
+#   1. 模板 → 目标文档目录（scope 为 knowledge/ck 时，install_docs）
 #      - type=application：standalone 全量；central 仅 §2.1 子集
 #      - type=system|company：同步仓库顶层对应目录
-#   2. central + type=application：登记 INDEX_GUIDE.md + 建联邦槽位
-#   3. scope 含 skills/rules/rs：安装 Agent skills/rules
-#   4. 已提供文档目录（或 scope=ck 无目录）：写 .docsconfig
+#   2. central + type=application：登记 INDEX_GUIDE.md + 建联邦槽位（install_central）
+#   3. scope 含 skills/rules/rs：install_agent
+#   4. 已提供文档目录（或 scope=ck 无目录）：install_docsconfig
 #
 # 依赖：Bash 5+；内容替换依赖 perl（UTF-8）
 #
@@ -581,8 +581,8 @@ install_org_template_to_docs() {
   info "    ${label}/ 同步完成"
 }
 
-# 步骤 1 分发：按 type × mode 选择安装函数
-install_system_to_docs() {
+# 步骤 1 分发：按 type × mode 将知识库模板安装至目标文档目录
+install_docs() {
   case "${CFG[type]}" in
     application)
       if [[ "${CFG[mode]}" == 'central' ]]; then
@@ -631,7 +631,10 @@ install_agent_skills() {
     [[ -f "${CFG[repo_root]}/.agent/skills/README.md" ]] \
       && copy_file "${CFG[repo_root]}/.agent/skills/README.md" "$agent_dir/skills/README.md"
 
-    [[ "${CFG[dry_run]}" == '0' ]] && rewrite_agent_tree "$agent_dir/skills" "$agent_slash"
+    # 勿用 [[ ]] && rewrite：dry-run 时 [[ ]] 失败会使函数返回 1，触发 set -e 退出主流程
+    if [[ "${CFG[dry_run]}" == '0' ]]; then
+      rewrite_agent_tree "$agent_dir/skills" "$agent_slash"
+    fi
   done
 }
 
@@ -663,8 +666,19 @@ install_agent_rules() {
       done
     fi
 
-    [[ "${CFG[dry_run]}" == '0' ]] && rewrite_agent_tree "$agent_dir/rules" "$agent_slash"
+    if [[ "${CFG[dry_run]}" == '0' ]]; then
+      rewrite_agent_tree "$agent_dir/rules" "$agent_slash"
+    fi
   done
+}
+
+# 步骤 3 调度：按 scope 安装 Agent skills / rules
+install_agent() {
+  case "${CFG[scope]}" in
+    skills) install_agent_skills ;;
+    rules)  install_agent_rules  ;;
+    rs)     install_agent_rules; install_agent_skills ;;
+  esac
 }
 
 
@@ -809,7 +823,7 @@ _resolve_docsconfig_roots() {
 
 # 写入目标工程仓库根 .docsconfig（按 scope 分支处理 DOC_* / AGENT_*）
 # dry-run 时仅预览，不写入
-write_target_docsconfig() {
+install_docsconfig() {
   local doc_root='' repo_target='' dd=''
   local agent_root_in='' agent_dirs_str=''
   local old_doc_root='' old_repo_root='' old_doc_dir='' old_agent_root='' old_agent_dirs=''
@@ -933,7 +947,7 @@ usage() {
       ~/workspace/my-app/docs
     父目录（工程根）默认须已存在；使用 -r 可允许自动创建。
     standalone 模式下，--scope 为 s/r/rs/config/ck 时可省略本参数。
-    central 模式或 scope=knowledge/ck 时，必须提供本参数。
+    scope=knowledge 时、或 scope=ck/knowledge 且 --mode=central 时，必须提供本参数。
 
   替换规则
     文件名  : system（不区分大小写）→ application
@@ -941,9 +955,11 @@ usage() {
 
   模式（--mode）
     standalone（默认）  仅目标工程落盘
-    central             另在本仓库登记目标工程（见 type）
+    central             另在本仓库登记目标工程（需 scope=ck 或 knowledge，见 type）
+    说明：central 仅在 scope=ck、knowledge 时生效；其它 scope 传入时视为 standalone 并提示
 
   类型（--type，知识库 v2）
+    仅在 scope=ck、knowledge 时生效；其它 scope 若传入则忽略并提示
     未指定时：standalone → application；central → system
     application  应用知识库：standalone 全量；central §2.1 子集 + 登记 + 联邦槽位
     system       仓库顶层 system/ → 目标
@@ -1092,6 +1108,32 @@ apply_agents() {
   (( ${#ENABLED_AGENTS[@]} > 0 )) || error "未解析到任何 Agent"
 }
 
+# 文档约定：--mode=central 仅在 scope=ck、knowledge 时参与中央登记与默认 --type 推导
+apply_mode_scope_policy() {
+  case "${CFG[scope]}" in
+    ck|knowledge) ;;
+    *)
+      if [[ "${CFG[mode]}" == 'central' ]]; then
+        warn "提示：--mode=central 仅在 scope=ck、knowledge 时生效（中央登记）；当前 scope=${CFG[scope]}，已按 standalone 处理"
+        CFG[mode]='standalone'
+      fi
+      ;;
+  esac
+}
+
+# 文档约定：--type 仅在 scope=ck、knowledge 时生效（与 install_docs 选型相关）
+apply_type_scope_policy() {
+  case "${CFG[scope]}" in
+    ck|knowledge) ;;
+    *)
+      if [[ "${CFG[type_explicit]}" == '1' ]]; then
+        warn "提示：--type 仅在 scope=ck、knowledge 时生效；已忽略"
+        CFG[type_explicit]=0
+      fi
+      ;;
+  esac
+}
+
 # 解析 --type（未显式指定时按 mode 推导默认值）
 resolve_type() {
   if [[ "${CFG[type_explicit]}" == '1' ]]; then
@@ -1154,16 +1196,13 @@ main() {
   init_repo_root
   validate_sync_scope
   apply_mode
+  apply_mode_scope_policy
+  apply_type_scope_policy
   resolve_type
-
-  # config + central 且未显式 --type：默认 application（登记应用知识库）
-  if [[ "${CFG[scope]}" == 'config' && "${CFG[mode]}" == 'central' && "${CFG[type_explicit]}" == '0' ]]; then
-    CFG[type]='application'
-  fi
 
   validate_type_sources
 
-  # ── scope=config：仅写 .docsconfig，可选 central 登记后退出 ──────────────
+  # ── scope=config：仅 install_docsconfig，后退出 ─────────────────────────
   if [[ "${CFG[scope]}" == 'config' ]]; then
     [[ -n "${HOME:-}" ]] || error "需要 HOME 环境变量以写入默认 .docsconfig"
     CFG[home_abs]="$(abs_path "$HOME")"
@@ -1173,15 +1212,7 @@ main() {
       info "未提供 <目标工程文档目录>：将默认写入 ~/.docsconfig（DOC_ROOT=~，REPO_ROOT=~，DOC_DIR=.）"
     fi
     apply_agents
-    write_target_docsconfig
-    if [[ "${CFG[mode]}" == 'central' ]]; then
-      [[ -n "${CFG[docs_abs]}" ]] || error "central 模式下未提供 <目标工程文档目录>，无法执行登记"
-      if [[ "${CFG[type]}" == 'application' ]]; then
-        install_central
-      else
-        warn "central 向源知识库登记需 --type=application（当前为 ${CFG[type]}），已仅写入 .docsconfig"
-      fi
-    fi
+    install_docsconfig
     info "完成：docs-init（--scope=config）"
     print_checklist
     exit 0
@@ -1225,7 +1256,7 @@ main() {
     if [[ "${CFG[mode]}" == 'central' && "${CFG[type_explicit]}" == '0' && "${CFG[type]}" == 'system' ]]; then
       info "提示：central 且未传 --type 时默认 type=system。若需应用知识库 §2.1 子集并登记，请使用 --type=application"
     fi
-    install_system_to_docs
+    install_docs
   fi
 
   # ── 步骤 2：central 登记 ──────────────────────────────────────────────────
@@ -1234,17 +1265,13 @@ main() {
   fi
 
   # ── 步骤 3：Agent skills/rules 安装 ──────────────────────────────────────
-  case "${CFG[scope]}" in
-    skills) install_agent_skills ;;
-    rules)  install_agent_rules  ;;
-    rs)     install_agent_rules; install_agent_skills ;;
-  esac
+  install_agent
 
   # ── 步骤 4：写 .docsconfig ────────────────────────────────────────────────
   # 有文档根时写入；无文档根时仅 ck scope 回退写入 ~/.docsconfig
   if [[ -n "${CFG[docs_abs]}" || ( -z "${CFG[docs_abs]}" && "${CFG[scope]}" == 'ck' ) ]]; then
     [[ -n "${CFG[home_abs]:-}" ]] || { [[ -n "${HOME:-}" ]] && CFG[home_abs]="$(abs_path "$HOME")"; }
-    write_target_docsconfig
+    install_docsconfig
   fi
 
   info "完成：docs-init"
