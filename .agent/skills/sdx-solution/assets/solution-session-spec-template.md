@@ -5,7 +5,6 @@
 **IDEA-ID**：`{IDEA-ID}`（`{YYMMDD}-{主题}`，主题**以中文为主**；若用 ASCII slug，本行备注中文题名）  
 **DOC_DIR**（自 `.docsconfig`）：`{DOC_DIR}`  
 **--depth**：`quick | standard | deep`  
-**--skip-conflict**：`true | false`  
 **闸门粒度**：`7 闸 | 精简 5 闸`  
 **spec 版本**：`1.0.0`
 
@@ -40,7 +39,7 @@
 
 本人确认：本 spec 可作为生成 `SOLUTION-{IDEA-ID}.md` 的唯一素材来源。
 
-- 确认人：
+- 确认人：`$HOME` 路径的**末级目录名**（即本机登录用户名；例：`/Users/alice` → `alice`；勿填显示名或占位词）
 - 日期：YYYY-MM-DD
 
 <!-- sdx-solution-gate: PENDING -->
