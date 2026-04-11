@@ -33,6 +33,24 @@ test_SC_A_RS() {
     bash "$init" --scope=rs --dry-run --force "$proj/docs" 2>&1
 }
 
+# --scope=skills 非 dry-run：$AGENT_HOME/scripts 含 docs-config.sh（SSOT 拷贝）与 docsconfig-bootstrap
+test_SC_A_SCRIPTS_INSTALLED() {
+  local tmp proj home init
+  tmp="$(mktemp -d)"
+  trap "rm -rf \"$tmp\"" EXIT
+  proj="$tmp/p"
+  mkdir -p "$proj/docs"
+  git -C "$proj" init -q
+  home="${tmp}/h"
+  mkdir -p "$home"
+  init="${DOCS_INIT_TEST_REPO_ROOT}/scripts/docs-init.sh"
+  run_expect_exit 0 -- env REPO_ROOT="${DOCS_INIT_TEST_REPO_ROOT}" HOME="$home" \
+    bash "$init" --scope=skills --force "$proj/docs" 2>&1
+  assert_file_exists "$proj/.cursor/scripts/docs-config.sh"
+  assert_file_exists "$proj/.cursor/scripts/docsconfig-bootstrap.sh"
+  assert_file_contains "$proj/.cursor/scripts/docs-config.sh" "SDX_VERSION"
+}
+
 test_SC_X_M() {
   local tmp home init out
   tmp="$(mktemp -d)"

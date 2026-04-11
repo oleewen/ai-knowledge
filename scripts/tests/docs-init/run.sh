@@ -1,5 +1,20 @@
 #!/usr/bin/env bash
+# docs-init 依赖 Bash 5+；macOS /usr/bin/bash 常为 3.2，优先升级到 Homebrew Bash 5
+if (( BASH_VERSINFO[0] < 5 )); then
+  for _docs_init_test_bash in /opt/homebrew/bin/bash /usr/local/bin/bash; do
+    if [[ -x "$_docs_init_test_bash" ]]; then
+      exec "$_docs_init_test_bash" "$0" "$@"
+    fi
+  done
+fi
 set -euo pipefail
+
+# 子测试中的 `bash docs-init.sh` 须使用 Bash 5+（与上款 exec 一致）
+case "${BASH:-}" in
+  /opt/homebrew/bin/bash|/usr/local/bin/bash)
+    export PATH="${BASH%/*}:$PATH"
+    ;;
+esac
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOCS_INIT_TEST_REPO_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
@@ -43,6 +58,7 @@ test_SC_K_D
 test_SC_K_E
 
 test_SC_A_S
+test_SC_A_SCRIPTS_INSTALLED
 
 test_SC_CK_D
 test_SC_CK_H

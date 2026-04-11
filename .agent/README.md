@@ -7,7 +7,7 @@
 
 - `rules/`：规范与模板入口，约束文档结构、命名、提交流程与阶段产物格式。
 - `skills/`：以 `SKILL.md` 为核心的工作流定义，由 Agent 按步骤执行并生成产物。
-- `.agent/scripts/`：与 Skill 配套的共享 Bash 库（如 `docsconfig-bootstrap.sh`、`validate-agent-md-links.sh`），供各 skill 下 `validate-*.sh` 引用。
+- `.agent/scripts/`：与 Skill 配套的共享 Bash 库（如 `docsconfig-bootstrap.sh`、`validate-agent-md-links.sh`）；`docs-init --scope=skills|rules|rs` 时连同根目录 **`scripts/docs-config.sh`** 一并安装到目标 **`$AGENT_DIR/scripts/`**，供 `docsconfig-bootstrap` 与 `docs-init` 共用 SSOT。
 - `scripts/`（仓库根）：初始化与分发工具链，负责把 `.agent/` 与知识库模板同步到目标项目。
 
 > `skills/` 是“流程定义”；仓库根 `scripts/` 是“环境初始化”；`.agent/scripts/` 是「技能脚本共享库」，二者职责不同。
@@ -20,7 +20,7 @@
 | [rules/CONVENTIONS.md](rules/CONVENTIONS.md)                                                 | 规则总入口（编码/设计/测试/文档交付规范）                                                |
 | [rules](rules)                                                                               | 分域规则与模板集合                                                             |
 | [skills](skills)                                                                             | Skill 工作流目录（每个子目录对应一个能力域）                                             |
-| [scripts/](scripts)                                                                          | 共享 Bash 库（`docsconfig-bootstrap.sh`：加载 **`DOC_ROOT`/`REPO_ROOT`/`DOC_DIR`** 及可选 **`AGENT_ROOT`/`AGENT_DIRS`**、`resolve_repo_doc_root`、`validate-agent-md-links.sh` 等） |
+| [scripts/](scripts)                                                                          | 共享 Bash 库（`docsconfig-bootstrap.sh` 依赖同目录 **`docs-config.sh`**；加载 **`DOC_ROOT`/`REPO_ROOT`/`DOC_DIR`** 及可选 **`AGENT_ROOT`/`AGENT_DIRS`**、`resolve_repo_doc_root`、`validate-agent-md-links.sh` 等） |
 | [skills/README.md](skills/README.md)                                                         | Skills 使用入口与命令清单（权威）                                                  |
 | [skills/agent-guide/assets/agents-skeleton.md](skills/agent-guide/assets/agents-skeleton.md) | `AGENTS.md` 推荐骨架模板                                                    |
 

@@ -616,7 +616,49 @@ install_docs() {
   esac
 }
 
-# 步骤 2a：.agent/skills → 各 Agent 目录
+# 步骤 2a：.agent/scripts/* + scripts/docs-config.sh → $agent_dir/scripts/
+#   先拷贝 .agent/scripts（含 docs-config 转加载 stub），再用完整 SSOT 覆盖 docs-config.sh。
+install_agent_scripts() {
+  local agent agent_dir agent_slash
+  local src_scripts src_docs_ssot dst_scripts
+
+  src_scripts="${CFG[repo_root]}/.agent/scripts"
+  src_docs_ssot="${CFG[repo_root]}/scripts/docs-config.sh"
+
+  [[ -d "$src_scripts" ]] || { warn "未找到 .agent/scripts，跳过 Agent scripts"; return 0; }
+  [[ -f "$src_docs_ssot" ]] || error "未找到 scripts/docs-config.sh: $src_docs_ssot"
+
+  for agent in "${ENABLED_AGENTS[@]}"; do
+    agent_dir="$(agent_install_root "$agent")"
+    agent_slash="$(get_agent_dir "$agent")/"
+
+    info ">>> 安装 ${agent} Agent scripts（共享库）"
+    info "    目录: ${agent_dir}/scripts"
+    info "    .agent/ → ${agent_slash}"
+
+    dst_scripts="${agent_dir}/scripts"
+    ensure_dir "$dst_scripts"
+
+    local item base
+    shopt -s nullglob
+    for item in "$src_scripts"/*; do
+      base="$(basename "$item")"
+      if [[ -d "$item" ]]; then
+        copy_dir "$item" "$dst_scripts/$base"
+      else
+        copy_file "$item" "$dst_scripts/$base"
+      fi
+    done
+
+    copy_file "$src_docs_ssot" "$dst_scripts/docs-config.sh"
+
+    if [[ "${CFG[dry_run]}" == '0' ]]; then
+      rewrite_agent_tree "$dst_scripts" "$agent_slash"
+    fi
+  done
+}
+
+# 步骤 2b：.agent/skills → 各 Agent 目录
 install_agent_skills() {
   local agent agent_dir agent_slash
 
@@ -657,7 +699,7 @@ install_agent_skills() {
   done
 }
 
-# 步骤 2b：.agent/rules → 各 Agent 目录
+# 步骤 2c：.agent/rules → 各 Agent 目录
 install_agent_rules() {
   local agent agent_dir agent_slash
 
@@ -691,12 +733,12 @@ install_agent_rules() {
   done
 }
 
-# 步骤 3 调度：按 scope 安装 Agent skills / rules
+# 步骤 3 调度：按 scope 安装 Agent scripts / skills / rules
 install_agent() {
   case "${CFG[scope]}" in
-    skills) install_agent_skills ;;
-    rules)  install_agent_rules  ;;
-    rs)     install_agent_rules; install_agent_skills ;;
+    skills) install_agent_scripts; install_agent_skills ;;
+    rules)  install_agent_scripts; install_agent_rules  ;;
+    rs)     install_agent_scripts; install_agent_rules; install_agent_skills ;;
   esac
 }
 

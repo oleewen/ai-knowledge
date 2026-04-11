@@ -217,17 +217,18 @@ ai-knowledge/
 
 ### Agent 安装
 
-1. 从中央库 `.agent/skills/` 筛选 `agent-*`、`docs-*`、`knowledge-*`、`sdx-*` 前缀的技能目录
-2. 拷贝到 **`$AGENT_ROOT`/`AGENT_DIR`/skills/**（**`AGENT_DIR`** 为 `.cursor`、`.trea`、`.claude` 之一；**`AGENT_ROOT`** 见上文「功能概述」节），同时拷贝 `.agent/skills/README.md`
-3. 从 `.agent/rules/` 同步所有规则到 **`$AGENT_ROOT`/`AGENT_DIR`/rules/**
-4. 改写路径引用：当前仅改写 `.agent/` → **`AGENT_DIR/`**（如 `.cursor/`）
+1. **`--scope=skills|rules|rs` 时**：先将 **`.agent/scripts/`** 下全部条目与 **`scripts/docs-config.sh`（SSOT）** 安装到 **`$AGENT_ROOT`/`AGENT_DIR`/scripts/**（先拷目录内文件，再用完整 `docs-config.sh` 覆盖同名文件）；并对 `scripts/` 下树执行 `.agent/` → **`AGENT_DIR/`** 的路径改写。供 `docsconfig-bootstrap.sh` 运行时 `source` 与共享脚本使用。
+2. 从中央库 `.agent/skills/` 筛选 `agent-*`、`docs-*`、`knowledge-*`、`sdx-*` 前缀的技能目录
+3. 拷贝到 **`$AGENT_ROOT`/`AGENT_DIR`/skills/**（**`AGENT_DIR`** 为 `.cursor`、`.trea`、`.claude` 之一；**`AGENT_ROOT`** 见上文「功能概述」节），同时拷贝 `.agent/skills/README.md`
+4. 从 `.agent/rules/` 同步所有规则到 **`$AGENT_ROOT`/`AGENT_DIR`/rules/**
+5. 改写路径引用：当前仅改写 `.agent/` → **`AGENT_DIR/`**（如 `.cursor/`）
 
 ## 脚本组成
 
 | 脚本 | 说明 |
 |------|------|
 | `docs-bootstrap.sh` | 引导脚本，远程执行时克隆仓库后加载克隆体内的 `docs-config.sh`（与 `docs-init` 共用 `SDX_VERSION` 等），再调用 `docs-init.sh`；首次 clone 前默认仓库 URL 须与 `docs-config.sh` 中 `SDX_GIT_REPO_URL` 保持一致 |
-| `docs-init.sh` | 主初始化脚本，执行模板拷贝、Agent 安装、Central 模式登记 |
+| `docs-init.sh` | 主初始化脚本，执行模板拷贝、Agent 安装（含 `.agent/scripts/*` 与 `docs-config.sh` 至 `$AGENT_DIR/scripts/`）、Central 模式登记 |
 | `docs-config.sh` | 配置模块，定义常量、默认值、校验函数 |
 
 ## 版本历史
