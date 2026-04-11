@@ -18,6 +18,7 @@
 | 设计（`design/`） | [design/design-guidelines.md](design/design-guidelines.md) | 设计规则总纲：术语一致性、架构表达、评审基线 |
 | 测试（`testing/`） | [testing/testing-guidelines.md](testing/testing-guidelines.md) | 测试策略与质量门槛总则 |
 | 文档（`document/`） | [document/document-guidelines.md](document/document-guidelines.md) | 文档写作与注释规范（结构、可读性、可追溯） |
+| SDD / sdx-solution | [sdx-solution.md](sdx-solution.md) | 解决方案阶段：中间 spec 闸门、`SOLUTION-*` 产出路径与 Cursor 钩子指针 |
 
 ---
 

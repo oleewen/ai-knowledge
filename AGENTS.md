@@ -2,7 +2,7 @@
 
 > **契约定位**：本文件仅承载 Agent 角色定位、核心契约、文档索引、流程规范等关键索引和必读内容。
 
-**最后更新**: 2026-04-09
+**最后更新**: 2026-04-11
 
 ---
 
@@ -39,6 +39,8 @@
 - **与 Index 一致**：平面检索与路径级精要以根目录 [INDEX_GUIDE.md](INDEX_GUIDE.md) 为准；未索引区域须补读或标注待核实。
 - **会话开始**：读 [README.md](README.md) 与本文件；业务与路径细节查 [INDEX_GUIDE.md](INDEX_GUIDE.md)；按任务打开 [application/README.md](application/README.md)、[application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) 或 [.agent/rules/](.agent/rules/) 下具体规范。
 - **会话中**：业务规则不明 → 列出待确认项；新增技术债务可登记 [application/knowledge/technical/technical-debt.md](application/knowledge/technical/technical-debt.md)；重大结构或治理变更遵循 SDD，并核对 [application/DESIGN.md](application/DESIGN.md)、[application/CONTRIBUTING.md](application/CONTRIBUTING.md)。
+- **sdx-solution 闸门**：执行 `/sdx-solution` 或写入 `{DOC_DIR}/solutions/SOLUTION-*.md` 前须完成中间会话 spec 与用户总确认（标记与工程化约束见 [.cursor/skills/sdx-solution/SKILL.md](.cursor/skills/sdx-solution/SKILL.md)、[.cursor/rules/sdx-solution.md](.cursor/rules/sdx-solution.md)）。
+- **sdx-analysis 闸门**：执行 `/sdx-analysis` 或写入 `{DOC_DIR}/analysis/ANALYSIS-*.md` 前须完成中间会话 spec 与用户总确认（标记与工程化约束见 [.cursor/skills/sdx-analysis/SKILL.md](.cursor/skills/sdx-analysis/SKILL.md)、[.cursor/rules/sdx-analysis.md](.cursor/rules/sdx-analysis.md)）。
 - **会话结束**：新增规则或约束需经确认后写入 `application/`、`system/`、`company/` 或本文件；索引类变更按需记录于 [application/changelogs/](application/changelogs/)（见 [application/changelogs/README.md](application/changelogs/README.md)）。
 
 ### 禁止事项

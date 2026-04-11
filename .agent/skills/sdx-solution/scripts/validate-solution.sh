@@ -6,6 +6,8 @@ set -euo pipefail
 # 文档根路径：resolve_repo_doc_root（仅 .docsconfig）
 # 先 validate_bootstrap_docsconfig，详见 .agent/scripts/docsconfig-bootstrap.sh
 #
+# 说明：闸门式工作流仅改变产出过程，不改变 SOLUTION 文档结构要求；校验项仍以七章模板为准。
+#
 # 校验项:
 #   1. 模板文件存在
 #   2. 文档目录存在
@@ -16,14 +18,21 @@ set -euo pipefail
 #   7. 空章节检测（无内容且未标注「不适用」或「待补充」）
 #   8. 编号体系一致性（G-n、Q-n、C-n、R-n）
 #   9. 技术语言检测（接口名、表名等技术词混入正文）
+#  10. 可选 --gate-check：是否存在含 <!-- sdx-solution-gate: CONFIRMED --> 且引用该文件名的会话 spec（见 SKILL HARD-GATE）
+#
+# 用法补充: [--gate-check] [--gate-strict] 需与 --file 或全量扫描联用；--gate-strict 时未通过记为错误。
 
 TARGET_FILE=""
 ERRORS=0
 WARNINGS=0
+GATE_CHECK=false
+GATE_STRICT=false
 
 while [[ $# -gt 0 ]]; do
   case $1 in
     --file) TARGET_FILE="$2"; shift 2 ;;
+    --gate-check) GATE_CHECK=true; shift ;;
+    --gate-strict) GATE_CHECK=true; GATE_STRICT=true; shift ;;
     *) echo "未知参数: $1"; exit 1 ;;
   esac
 done
@@ -38,12 +47,43 @@ DOC_ROOT="$(resolve_repo_doc_root)"
 cd "$REPO_ROOT" || exit 1
 
 SOLUTIONS_DIR="${DOC_ROOT}/solutions"
-TEMPLATE=".agent/skills/sdx-solution/assets/solution-template.md"
+_TEMPLATE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+TEMPLATE="${_TEMPLATE_DIR}/assets/solution-template.md"
 
 info()    { echo "[INFO]  $1"; }
 warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
 error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
+
+# 会话 spec 闸门：docs/superpowers/specs/**/*.md 须同时包含 CONFIRMED 标记与目标文件名
+check_solution_gate() {
+  local file="$1"
+  local base
+  base=$(basename "${file}")
+  local specs_dir="${REPO_ROOT}/docs/superpowers/specs"
+  if [[ ! -d "${specs_dir}" ]]; then
+    warn "闸门：未找到 ${specs_dir}，跳过 gate 检查"
+    return
+  fi
+  local found=0
+  local spec
+  while IFS= read -r -d '' spec; do
+    if grep -qF "<!-- sdx-solution-gate: CONFIRMED -->" "${spec}" 2>/dev/null && grep -qF "${base}" "${spec}" 2>/dev/null; then
+      found=1
+      break
+    fi
+  done < <(find "${specs_dir}" -name "*.md" -print0 2>/dev/null)
+  if [[ ${found} -eq 1 ]]; then
+    success "闸门：已找到引用 ${base} 且 CONFIRMED 的会话 spec"
+  else
+    local msg="闸门：未找到引用 ${base} 且 <!-- sdx-solution-gate: CONFIRMED --> 的会话 spec（见 .cursor/skills/sdx-solution/SKILL.md）"
+    if [[ "${GATE_STRICT}" == true ]]; then
+      error "${msg}"
+    else
+      warn "${msg}"
+    fi
+  fi
+}
 
 echo "=== 解决方案文档结构校验 ==="
 echo "DOC_ROOT: ${DOC_ROOT}"
@@ -257,6 +297,10 @@ for file in "${FILES[@]}"; do
   done
   if [[ ${TECH_WARN} -eq 0 ]]; then
     success "${BASENAME}: 未发现明显技术语言"
+  fi
+
+  if [[ "${GATE_CHECK}" == true ]]; then
+    check_solution_gate "${file}"
   fi
 
   echo ""

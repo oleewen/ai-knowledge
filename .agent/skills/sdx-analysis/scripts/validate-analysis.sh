@@ -2,8 +2,10 @@
 set -euo pipefail
 
 # 需求分析文档结构校验脚本
-# 用法: scripts/validate-analysis.sh [--file <path>]
+# 用法: scripts/validate-analysis.sh [--file <path>] [--gate-check] [--gate-strict]
 # DOC_ROOT：resolve_repo_doc_root（仅 .docsconfig）；见 .agent/scripts/docsconfig-bootstrap.sh
+#
+# 说明：闸门式工作流仅改变产出过程，不改变 ANALYSIS 文档结构要求；校验项仍以六章模板为准。
 #
 # 校验项:
 #   1. 文档目录存在
@@ -12,14 +14,19 @@ set -euo pipefail
 #   4. 关键模板小节（### / ####）标题完整性
 #   5. 编号体系一致性（FR-n、BR-n、R-n、MVP-n）
 #   6. 模板 analysis-template.md 存在
+#   7. 可选 --gate-check：是否存在含 <!-- sdx-analysis-gate: CONFIRMED --> 且引用该文件名的会话 spec（见 SKILL HARD-GATE）
 
 TARGET_FILE=""
 ERRORS=0
 WARNINGS=0
+GATE_CHECK=false
+GATE_STRICT=false
 
 while [[ $# -gt 0 ]]; do
   case $1 in
     --file) TARGET_FILE="$2"; shift 2 ;;
+    --gate-check) GATE_CHECK=true; shift ;;
+    --gate-strict) GATE_CHECK=true; GATE_STRICT=true; shift ;;
     *) echo "未知参数: $1"; exit 1 ;;
   esac
 done
@@ -40,6 +47,36 @@ info()    { echo "[INFO]  $1"; }
 warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
 error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
+
+# 会话 spec 闸门：docs/superpowers/specs/**/*.md 须同时包含 CONFIRMED 标记与目标文件名
+check_analysis_gate() {
+  local file="$1"
+  local base
+  base=$(basename "${file}")
+  local specs_dir="${REPO_ROOT}/docs/superpowers/specs"
+  if [[ ! -d "${specs_dir}" ]]; then
+    warn "闸门：未找到 ${specs_dir}，跳过 gate 检查"
+    return
+  fi
+  local found=0
+  local spec
+  while IFS= read -r -d '' spec; do
+    if grep -qF "<!-- sdx-analysis-gate: CONFIRMED -->" "${spec}" 2>/dev/null && grep -qF "${base}" "${spec}" 2>/dev/null; then
+      found=1
+      break
+    fi
+  done < <(find "${specs_dir}" -name "*.md" -print0 2>/dev/null)
+  if [[ ${found} -eq 1 ]]; then
+    success "闸门：已找到引用 ${base} 且 CONFIRMED 的会话 spec"
+  else
+    local msg="闸门：未找到引用 ${base} 且 <!-- sdx-analysis-gate: CONFIRMED --> 的会话 spec（见 .cursor/skills/sdx-analysis/SKILL.md）"
+    if [[ "${GATE_STRICT}" == true ]]; then
+      error "${msg}"
+    else
+      warn "${msg}"
+    fi
+  fi
+}
 
 echo "=== 需求分析文档结构校验 ==="
 echo "DOC_ROOT: ${DOC_ROOT}"
@@ -187,6 +224,10 @@ for file in "${FILES[@]}"; do
     success "${BASENAME}: 关联解决方案文档"
   else
     warn "${BASENAME}: 未发现关联解决方案编号 (SOLUTION-*)"
+  fi
+
+  if [[ "${GATE_CHECK}" == true ]]; then
+    check_analysis_gate "${file}"
   fi
 
   echo ""

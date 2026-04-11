@@ -23,8 +23,8 @@
 
 ## 规范与模板
 
-- **阶段目标与工作流**：见 [../../.agent/skills/sdx-solution/SKILL.md](../../.agent/skills/sdx-solution/SKILL.md)（需求提取 → 影响面评估 → 冲突识别 → 方案制定 → 文档输出与评审）。
-- **文档模板**：见 [../../.agent/skills/sdx-solution/assets/solution-template.md](../../.agent/skills/sdx-solution/assets/solution-template.md)。
+- **阶段目标与工作流**：见 [../../.cursor/skills/sdx-solution/SKILL.md](../../.cursor/skills/sdx-solution/SKILL.md)（阶段 1 会话参数 → 阶段 2 中间 spec → 阶段 3.1 骨架 / 3.2 分块填充 → 终检）；若技能安装于 `.agent/skills/`，以目标工程内实际路径为准。
+- **文档模板**：见 [../../.cursor/skills/sdx-solution/assets/solution-template.md](../../.cursor/skills/sdx-solution/assets/solution-template.md)。
 
 ## 集成关系
 

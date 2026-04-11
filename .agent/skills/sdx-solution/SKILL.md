@@ -5,94 +5,219 @@ description: >
   当用户执行 /sdx-solution、需要编写解决方案文档、收到业务需求需要结构化分析、
   需求模糊或矛盾需要冲突识别、或需要制定 MVP 与里程碑时，务必使用本技能。
   即使用户只说"帮我写个方案"、"分析一下这个需求"、"整理一下业务目标"，也应触发本技能。
-  输出至应用知识库 {DOC_DIR}/solutions/SOLUTION-{IDEA-ID}.md。
+  须遵守正文 HARD-GATE：默认禁止在「中间 spec 用户总确认」之前写入 {DOC_DIR}/solutions/SOLUTION-*.md。
+  输出：先会话 spec（docs/superpowers/specs/），经总确认后再落 SOLUTION-{IDEA-ID}.md。
 ---
 
 # 解决方案阶段（sdx-solution）
 
-**术语**：**应用知识库**指应用知识库目录 `DOC_DIR`（见 `.docsconfig`），对应路径前缀 `{DOC_DIR}/`。
+从业务描述中提取结构化诉求，评估影响面并化解冲突，产出**可供业务与产品评审**的共识级解决方案。主要读者为业务方与产品；技术实现留给下游 sdx-analysis / sdx-prd / sdx-design。
 
-从海量、模糊甚至矛盾的业务描述中提取结构化诉求，评估业务影响面，识别冲突，确立目标与解决思路，输出**可供业务与产品评审、对齐共识**的解决方案文档。文档骨架以 [assets/solution-template.md](assets/solution-template.md) 为准：**七章**（背景与目标 → 范围与约束 → 影响与冲突 → 思路与方案 → 风险与待定 → 交付计划 → 附录）；**§3.4** 统一承载业务冲突（C-n，含以业务后果表述的协作/契约影响）；**§5.2** 为待澄清问题（Q-n）；文末 **文档元数据** 为 fenced `yaml`（含 `author`、`parent`、`dependencies`、`tags` 等）。
+---
 
-主要读者为**业务方与产品**；技术实现留给下游 sdx-analysis / sdx-prd / sdx-design。
+## HARD-GATE（写入禁令）
+
+在「中间 spec 已完成且用户总确认」之前，**禁止**新建或覆盖 `{DOC_DIR}/solutions/SOLUTION-*.md`。
+
+这条规则存在的原因：业务冲突与待澄清问题（Q-n）若未在闸内收敛，终稿往往与评审预期不一致，造成大量返工。「用户说快点」不是默认例外。
+
+**合法例外**（须在对话中留下明确依据）：
+- 用户在同一轮对话中明示可跳过闸门、仅要草稿、或紧急直写终稿
+- 环境变量 `SDX_SOLUTION_ALLOW_SOLUTION_WRITE=1`（自动化/CI 场景，视为授权写入）
+
+**闸门标记**：会话 spec 中使用 `<!-- sdx-solution-gate: PENDING -->`，总确认后改为 `<!-- sdx-solution-gate: CONFIRMED -->`，且正文须出现目标 `SOLUTION-*.md` 文件名，供钩子与 `validate-solution.sh --gate-check` 识别。
+
+---
+
+## 执行流程
+
+整个流程分三个阶段，每个阶段都有明确的进入条件和产出。
+
+### 全阶段交互选项（C / M / F / S）
+
+各阶段**每一道**指向用户的提问（阶段 1 的 Q1-n、阶段 2 的闸内草案/待确认点/Q-n 单题/分闸摘要、Qclose-1、阶段 3 的每 chunk 结束）**末尾**均须附下列**四选一**。**推荐**面向用户时收束为一句：「请选择 确认（C）/ 修改（M）/ S（跳过）/ F（直接生成终稿）」；亦可仅并列 **C / M / F / S** 并指向上文表格。含义以**通用列**为准；**F**/**S** 在各阶段的具体效果以下表「阶段 / 场景」为准；若与阶段特例列冲突，以**阶段特例**为准。
+
+| 选项 | 通用含义 |
+|------|----------|
+| **C** | **确认**：采纳本题/本步结论或助手建议，按流程进入**下一题、下一闸、下一 chunk** 或收口。 |
+| **M** | **修改**：不采纳——用户给出修改意图或最终取值；澄清仍 **一次一问**。 |
+| **F** | **跳过后续全部闸门**：结束**余下**阶段 2 逐闸交互（及阶段 1 尚未完成的 Q1 题）；须请用户再选 **草稿** / **终稿**（终稿须授权），与 HARD-GATE 合法例外一致。阶段 3 特例见下表。 |
+| **S** | **跳过本阶段确认**：本**阶段**内对「尚须用户确认才推进」的剩余步骤**不再逐项收口**，改按技能规定的**默认值、待补、或最小占位**推进（须在对话或中间 spec 中留下可追溯说明，如 `已跳过本阶段确认：默认参数` / `本闸待补`）。 |
+
+| 阶段 / 场景 | **C** | **M** | **F** | **S** |
+|-------------|-------|-------|-------|-------|
+| **阶段 1**（Q1-1～Q1-4） | 采纳本题，下一题 | 用户给出本题最终取值 | 同通用 **F**（余下 Q1 + 全部 G 闸） | **余下 Q1-2～Q1-4 不再逐题询问**，全部采用上表默认参数，**进入阶段 2**（当前已答题仍有效） |
+| **阶段 2**（闸内每一问、分闸摘要） | 确认本段/本闸，收口 | 澄清后重问 | 同通用 **F** | **等同原「跳过本闸门」**：本闸在 spec 记 **已跳过** 或 **待补**（可一句理由），**进入下一闸**；最后一闸则进入总确认前收尾 |
+| **阶段 2**（Q-n 单题，可选） | 确认本题答案 | 修改答案 | **F** | **余下 Q-n 不再逐题确认**，未答题项标为待澄清并摘要 |
+| **Qclose-1** | 总确认，改 `gate: CONFIRMED`，进阶段 3 | 返回修订中间 spec | **不经总确认直写** → 草稿/终稿 | **跳过总确认环节的冗长复述**；**直接**视为同意以当前 spec 为素材**进入阶段 3**（效果与 **C** 一致，由用户显式选 **S** 时助手可省略长摘要） |
+| **阶段 3**（每 chunk 结束） | 确认本块，下一 chunk | 本块微调 | **余下 chunk 不再逐块轻确认**，助手一次性填充至可终检前状态（须说明填充策略） | **本 chunk 跳过轻确认**，按最小必要占位写入并**下一 chunk** |
+
+**快捷键**：**F** 可与写出「跳过后续全部闸门」全称等价；**S** 勿与 **F** 混用（**S** 仍进入流程下一节点，**F** 退出闸门链改走草稿/终稿）。
+
+### 阶段 1：会话参数解析
+
+**交互规则（强制）**
+
+- **每次仅一问**：向用户确认阶段 1 参数时，**单条助手消息只包含一道题**；收到答复后再发下一题。禁止把多道阶段 1 题目合并为「1、2、3」同屏罗列（与 [reference/workflow-spec.md](reference/workflow-spec.md)「阶段 1 序列」一致）。
+- **末尾四选项**：每条阶段 1 提问末尾附四选一（推荐句见「全阶段交互选项」首段），含义见上表「阶段 1」行；**不得**使用与上表冲突的阶段 2 专有长句替代四键语义。
+
+**Q1-1 文案示例**：在给出建议 `IDEA-ID` 与目标文件名后收束为：「请选择 确认（C）/ 修改（M）/ S（跳过）/ F（直接生成终稿）。」
+
+默认参数见下表；**须按「阶段 1 问题序列」逐问**，勿跳步合并。
+
+| 参数 | 默认值 | 说明 |
+|------|--------|------|
+| `--id` | `IDEA-ID` | 文件名中段，格式 `{YYMMDD}-{主题}`，**主题以中文为主**，规则见 [reference/core-concepts.md](reference/core-concepts.md) |
+| `--depth` | `standard` | `quick`（压缩 G3）/ `standard` / `deep`（含数据影响） |
+| `--skip-conflict` | `false` | 仅全新场景且确认无已有逻辑时合法；G3 §3.4 须记录原因 |
+| 闸门粒度 | 7 闸 | **7 闸**（G1–G7）或**精简 5 闸**（G(1–2)、G3、G4、G(5–6)、G7） |
+
+**阶段 1 问题序列（顺序执行，每步一条消息）**
+
+1. **Q1-1 — IDEA-ID / 目标文件名**：给出建议的 `IDEA-ID`（`{YYMMDD}-{中文主题短名}`）与对应 `SOLUTION-{IDEA-ID}.md`；**附 C / M / F / S**。
+2. **Q1-2 — 闸门粒度**：**7 闸** 还是 **精简 5 闸**？若选 5 闸，须在后续同一份 spec 中写清章节映射（见 workflow-spec）。**附 C / M / F / S**。
+3. **Q1-3 — `--depth`**：是否采用默认 `standard`？若要改，请用户指定 `quick` / `standard` / `deep`。**附 C / M / F / S**。
+4. **Q1-4 — `--skip-conflict`**：是否保持默认 `false`？若改为 `true`，提醒 G3 §3.4 记录原因。**附 C / M / F / S**。
+
+阶段 1 完成后进入阶段 2；**中间 spec 定稿后的「用户总确认」**在**全部闸门交互结束**后单独逐问，见阶段 2 **Qclose-1**，**附 C / M / F / S**（见上表「Qclose-1」行）。
+
+> 闸门 G{n} 是流程步骤编号；模板 §1.3 的业务目标 G-n 是需求条目编号，二者不可混读。
+
+### 阶段 2：中间 spec（逐闸交互，须用户总确认）
+
+**路径**：`docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`（`<topic>` 建议含 `sdx-solution` 与 IDEA-ID）
+
+可选用 [assets/solution-session-spec-template.md](assets/solution-session-spec-template.md) 作为骨架。
+
+**闸门与 G 的一一对应**
+
+- **7 闸**模式下：**G1–G7 各为独立闸门**，一次会话中 **Gn 未收口前不并行展开 G(n+1)**（回跳除外）。
+- **精简 5 闸**模式下：**G(1–2)、G3、G4、G(5–6)、G7** 各为独立闸门；逻辑上与上相同，仅一章覆盖多节模板。
+
+**闸内节奏（强制：闸内亦每次一问）**
+
+在同一闸门 Gn 内：
+
+1. **草案正文**：按小节/论据拆成多轮呈现，**每一轮仅一道题或一块待读内容**，**禁止**单条消息堆叠多段互无关卡的正文。
+2. **待确认点**：由本闸草案归纳出的每一条待确认项，**须各用单独一条助手消息**逐题询问，**一条消息只对应一个待确认点**。
+3. **每一道**指向用户的提问（无论是呈现某段草案、还是某一个待确认点）**末尾**均须附 **C / M / F / S**（含义见上文「全阶段交互选项」阶段 2 行）。其中 **S** 等同原「跳过本闸门」；**F** 为「跳过后续全部闸门」→ 须再选草稿/终稿。
+
+闸内用户选择 **M** 或回跳时，后续澄清仍遵守 **一次一问**；**回跳到 G{k}** 后，从 G{k} 起按上款重新执行。
+
+除用户已选 **S** 将本闸记为已跳过/待补并直接进下一闸外，本闸在 **C** 路径下全部必答题与待确认点均处理完毕后，**一条消息**收口：**确认本闸结论并写入 spec、标记本闸已确认**，再开下一闸。
+
+**可选强化：中间 spec 草案已定稿后的「Q-n 优先 + 分闸 C/M/F/S」**
+
+当同一份中间 spec 中登记了多条 **Q-n**（含跨闸、或 IDEA 输入中留白处），且用户希望**先收敛歧义再锁闸**时，可采用下列顺序（与上款「逐闸草案→闸内待确认」二选一或衔接使用；若采用本款，**Q-n 全量确认完毕前**不进入分闸摘要）：
+
+1. **Q-n 全量先行**：从 spec（及扉页登记）中枚举全部 **Q-n**，按编号 **每次一条消息** 逐题确认；每条末尾附 **C / M / F / S**（**S** 见上表「Q-n 单题」行）；格式仍沿用 [reference/workflow-spec.md](reference/workflow-spec.md)「待澄清项交互确认协议」。全部已确认或用户显式「跳过/保留待澄清」后，输出 **Q-n 确认摘要** 并回写 spec 对应表项。
+2. **分闸摘要**：自 **G1→G7**（或精简 5 闸映射），**每闸单独一条消息**：给出该闸已对齐正文的**简短结论摘要**（可列 3–7 条要点），末尾 **C / M / F / S**（含义见「全阶段交互选项」）。用户选 **M** 时，澄清后仅重跑**该闸**摘要，除非新产生歧义须增录 **Q-n**。
+3. 上述两轮完成后，再进入下文 **Qclose-1**（中间 spec 总确认）。
+
+**全部闸「已确认」或中间 spec 已达可总确认状态之后**（仍**每次一问**）：
+
+- **Qclose-1**：是否同意以当前中间 spec 为**唯一素材**生成目标 `SOLUTION-{IDEA-ID}.md`？**末尾**附 **C / M / F / S**（含义见「全阶段交互选项」**Qclose-1** 行）：**C** 与 **S** 均进入阶段 3（**S** 可省略长摘要）；**M** 返回修订 spec；**F** → 草稿/终稿（不经总确认）。
+- 用户选 **C** 或 **S** 后，将会话 spec 中 `<!-- sdx-solution-gate: PENDING -->` 改为 `CONFIRMED`，再进入阶段 3。
+
+**回跳影响面**：用户回跳到 G{k} 并修改结论后，按强/弱依赖评估后续闸门是否需要重审，而非全部作废。详见 [reference/workflow-spec.md](reference/workflow-spec.md)。
+
+**闸门与模板映射**（7 闸）：
+
+| 闸门 | 对应模板 |
+|------|----------|
+| G1 | `## 1` 背景与目标 |
+| G2 | `## 2` 范围与约束 |
+| G3 | `## 3` 影响与冲突（含 §3.4 业务冲突 C-n） |
+| G4 | `## 4` 思路与方案 |
+| G5 | `## 5` 风险与待定 |
+| G6 | `## 6` 交付计划 |
+| G7 | `## 7` 附录 + 文末 yaml |
+
+### 阶段 3：SOLUTION-{IDEA-ID}.md（仅在总确认后）
+
+**阶段 3.1 — 骨架**：在 `{DOC_DIR}/solutions/` 新建文件，按 [assets/solution-template.md](assets/solution-template.md) 落七章标题、表架、§7.4（`- [ ]`）、文末 fenced yaml；标注「草稿填充中」。
+
+**阶段 3.2 — 分块填充**（默认 5 chunk）：
+
+| Chunk | 覆盖章节 |
+|-------|----------|
+| 1 | §1、§2 |
+| 2 | §3 |
+| 3 | §4 |
+| 4 | §5、§6 |
+| 5 | §7（含 §7.4 勾选） |
+
+每块结束附 **C / M / F / S**（含义见「全阶段交互选项」阶段 3 行）；**暂停**仍可由用户明示「暂停」触发，不限于四键。
+
+**终检**：对照 [reference/quality-checklist.md](reference/quality-checklist.md) 逐项判定，已达标项在 §7.4 中将 `- [ ]` 改为 `- [x]`，未达标项保持 `- [ ]`，禁止虚假勾选。
+
+运行校验脚本：
+
+```bash
+.cursor/skills/sdx-solution/scripts/validate-solution.sh
+# 可选：检查闸门标记
+.cursor/skills/sdx-solution/scripts/validate-solution.sh --file path/to/SOLUTION-xxx.md --gate-check
+```
+
+---
+
+## 核心约束
+
+这些约束的存在是为了让解决方案文档真正服务于业务评审，而不是成为技术文档的变体：
+
+| 约束 | 原因 |
+|------|------|
+| 模板驱动（七章结构） | 下游 sdx-analysis 按固定章节引用，章节缺失导致引用失效 |
+| 业务可读（无技术语言） | 主要读者是业务方，技术词会造成理解障碍和评审失焦 |
+| 证据优先（引用 knowledge/） | 影响面臆测会在开发阶段暴露，进度风险被严重低估 |
+| 歧义标注为 Q-n | 自行假设缺失信息会导致方案与实际需求偏离 |
+| 按需加载文件 | 通读全库浪费时间且引入无关噪声 |
+| 可追溯（G/C/R 编号） | 无编号引用导致评审时无法定位问题来源 |
+
+完整原则与反模式见 [reference/design-principles.md](reference/design-principles.md)；语言规范见 [reference/audience-and-language.md](reference/audience-and-language.md)。
+
+---
 
 ## 输入与输出
 
 | 类型 | 内容 |
 |------|------|
 | 硬输入 | 业务需求描述（至少一种原始来源：邮件/会议纪要/工单等） |
-| 可选输入 | `knowledge/`、`requirements/.../specs/`、AGENTS.md（内部分析用，写入文档时转为业务表述） |
-| 固定输出 | 应用知识库下 `{DOC_DIR}/solutions/SOLUTION-{IDEA-ID}.md` |
-| 不产出 | PRD、ADD、测试设计、代码（使用下游 sdx-analysis / sdx-prd / sdx-design） |
+| 可选输入 | `knowledge/`、`requirements/.../specs/`（按需加载） |
+| 固定输出 | `{DOC_DIR}/solutions/SOLUTION-{IDEA-ID}.md` |
+| 不产出 | PRD、ADD、测试设计、代码（留给下游技能） |
 
-## 参数
+---
 
-| 参数 | 必需 | 默认值 | 说明 |
-|------|------|--------|------|
-| `--id` | 否 | `IDEA-ID` | 与文件名中段一致；定义见 [reference/core-concepts.md](reference/core-concepts.md) |
-| `--depth` | 否 | `standard` | 分析深度（quick / standard / deep），影响步骤 2–3 粒度 |
-| `--skip-conflict` | 否 | `false` | 跳过冲突分析（仅全新场景且确认无已有逻辑时合法） |
+## 参考资源
 
-## 适用场景
+按需打开，不要预先通读：
 
-| 场景 | 使用本技能 |
-|------|-----------|
-| 收到业务需求/工单，需输出解决方案文档 | 是 |
-| 需求模糊或矛盾，需结构化提取与冲突分析 | 是 |
-| 已有解决方案，需做需求分析或 PRD | 否 → sdx-analysis / sdx-prd |
-| 已有 PRD，需技术方案设计 | 否 → sdx-design |
+| 资源 | 路径 | 何时读 |
+|------|------|--------|
+| 闸门状态机、回跳影响面、chunk 边界、Q-n 协议 | [reference/workflow-spec.md](reference/workflow-spec.md) | 执行任一阶段不确定时 |
+| 核心概念与 IDEA-ID 定义 | [reference/core-concepts.md](reference/core-concepts.md) | 编号规则不确定时 |
+| 受众定位与语言转写规则 | [reference/audience-and-language.md](reference/audience-and-language.md) | 终检或语言审查时 |
+| 设计原则、反模式、错误处理 | [reference/design-principles.md](reference/design-principles.md) | 遇到边界判断或错误场景时 |
+| 质量验收清单 | [reference/quality-checklist.md](reference/quality-checklist.md) | 终检、§7.4 逐项勾选时 |
+| 解决方案文档模板（七章） | [assets/solution-template.md](assets/solution-template.md) | 阶段 3 生成终稿时 |
+| 会话 spec 骨架（可选） | [assets/solution-session-spec-template.md](assets/solution-session-spec-template.md) | 阶段 2 落中间 spec 时 |
+| 常见陷阱与防错 | [gotchas.md](gotchas.md) | 遇到歧义处理、冲突分析问题时 |
+| 文档结构校验脚本 | [scripts/validate-solution.sh](scripts/validate-solution.sh) | 终检运行校验时 |
 
-## 工作流（五步）
+---
 
-按顺序执行，每步产出作为下一步输入；最终文档需通过质量门禁。
+## 工程化支持
 
-1. **诉求提取与结构化** — §1（1.1 现状 → 1.2 问题 → 1.3 业务目标 **G-n** → 1.4 业务价值）、§2（场景、角色、范围边界、成功标准、关键约束）；交互澄清 **Q-n**，确认摘要最终落入 **§5.2**；**不在此步骤展开实现手段**
-2. **影响面评估与分析** — §3.1 叙述性影响面、§3.2 影响业务能力表、§3.3 传播路径；覆盖功能/数据/对外承诺/下游四维度；`--depth=quick` 时合并入步骤 4
-3. **冲突识别与化解** — §3.4 业务冲突表（C-n）；模型/接口/资源类冲突以**业务后果**写入同一表，避免纯技术栈表述；`--skip-conflict` 慎用（见 gotchas）
-4. **方案制定与评估** — §4.1–§4.3（思路、方案对比、关键决策）、§5.1 风险（R-n）、§6.1 MVP、§6.2 里程碑
-5. **文档输出与评审** — 按模板七章整合 **§7** 附录（含 **§7.4 质量自查表**）；语言审查（技术词转业务表述或落入 §7.3）；对照模板 §7.4 与 [reference/quality-checklist.md](reference/quality-checklist.md) **逐项**自查；**凡已满足通过标准的条目**，在写入 `SOLUTION-*.md` 时须将该项由 `- [ ]` 改为 `- [x]`，未满足的保持 `- [ ]` 并先修复或说明，不得虚假勾选
+仓库 [`.cursor/hooks.json`](../../hooks.json) 注册了 `preToolUse` 钩子（`Write` / `StrReplace`），脚本见 [`.cursor/hooks/sdx-solution-gate-write.py`](../../hooks/sdx-solution-gate-write.py)；Cursor 需启用 Hooks 方生效。编辑 `application/solutions/` 时建议加载 [`.cursor/rules/sdx-solution.md`](../../rules/sdx-solution.md)。
 
-详细算法、Q-n 交互协议、`--depth` / `--skip-conflict` 规则、步间数据流见 [reference/workflow-spec.md](reference/workflow-spec.md)。
-
-辅助校验：
-
-```bash
-.agent/skills/sdx-solution/scripts/validate-solution.sh
-```
-
-## 核心约束
-
-| 约束 | 说明 |
-|------|------|
-| 模板驱动 | 输出严格遵循 solution-template.md **七章**及模板内 `###`/`####` 小节标题；无内容小节保留标题并标注「不适用」或「待补充」 |
-| 业务可读 | 正文不出现具体技术术语；见 [reference/audience-and-language.md](reference/audience-and-language.md) |
-| 证据优先 | 影响面与冲突分析可依据 `knowledge/` 校准，禁止臆测；写入文档时转为业务表述 |
-| 按需加载 | 仅在本轮需要时打开文件，禁止为完整性通读全仓 |
-| 歧义标注 | 不确定项标为 Q-n，逐一向用户提问确认（每题 3–4 个选项 + 「其他」兜底），禁止自行假设；定稿写入 **§5.2** |
-| 范围清晰 | 仅产出解决方案文档，不涉及 PRD、技术设计、代码 |
-| 可追溯 | 每个 G-n 可追溯到原始需求；每个影响点与 C-n 可追溯到业务能力或协作环节 |
-| 自查勾选 | 质量门禁通过后，交付物 **§7.4** 中已通过项须为 `- [x]`；未通过项保持 `- [ ]` 直至修复（禁止未达标而全选） |
-
-完整原则、反模式与错误处理见 [reference/design-principles.md](reference/design-principles.md)。
+---
 
 ## 依赖关系
 
-| 类型 | 技能/组件 | 说明 |
-|------|-----------|------|
+| 类型 | 技能 | 说明 |
+|------|------|------|
 | 上游（可选） | `docs-build` | 提供 `knowledge/` 基线 |
 | 下游 | `sdx-analysis` | 基于解决方案进行需求分析与 MVP 拆分 |
 | 下游 | `sdx-prd` | 将需求分析转化为 PRD |
 | 下游 | `sdx-design` | 基于 PRD 进行技术方案设计 |
-
-## 参考
-
-| 资源 | 路径 | 何时读 |
-|------|------|--------|
-| 五步工作流（算法、Q-n 协议、depth、数据流） | [reference/workflow-spec.md](reference/workflow-spec.md) | 步骤执行时，规则不确定时 |
-| 核心概念与 IDEA-ID 定义 | [reference/core-concepts.md](reference/core-concepts.md) | 口径对齐、编号规则不确定时 |
-| 受众与文档语言 | [reference/audience-and-language.md](reference/audience-and-language.md) | 步骤 5 语言审查时 |
-| 设计原则、反模式、错误处理 | [reference/design-principles.md](reference/design-principles.md) | 遇到边界判断、错误场景时 |
-| 质量验收清单 | [reference/quality-checklist.md](reference/quality-checklist.md) | 步骤 5 自查时 |
-| 解决方案文档模板 | [assets/solution-template.md](assets/solution-template.md) | 步骤 5 生成文档时 |
-| 常见陷阱与防错 | [gotchas.md](gotchas.md) | 遇到歧义处理、冲突分析、语言审查相关问题时 |
-| 文档结构校验脚本 | [scripts/validate-solution.sh](scripts/validate-solution.sh) | 步骤 5 自动验证时 |

@@ -5,7 +5,8 @@ description: >
   当用户执行 /sdx-analysis、需要编写需求分析文档、将解决方案细化为可排期的功能需求、
   做 MVP 拆分规划、或需要识别需求依赖与风险时，务必使用本技能。
   即使用户只说"帮我分析一下需求"、"拆一下 MVP"、"细化一下方案"，也应触发本技能。
-  输出至应用知识库 {DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md。
+  须遵守正文 HARD-GATE：默认禁止在「中间 spec 用户总确认」之前写入 {DOC_DIR}/analysis/ANALYSIS-*.md。
+  输出：先会话 spec（docs/superpowers/specs/），经总确认后再落 ANALYSIS-{IDEA-ID}.md。
 ---
 
 # 需求分析阶段（sdx-analysis）
@@ -15,6 +16,21 @@ description: >
 在解决方案与事实材料基础上，将共识级方案细化为**可评审、可排期、可验收**的需求分析：划清范围、拆 MVP、标优先级与依赖，并识别风险。产出结构以 [assets/analysis-template.md](assets/analysis-template.md) 为准：**六章**（**§1 背景目标** → 功能需求「含 FR 节内规则与业务对象」→ 非功能需求 → 交付计划 → 依赖与风险 → 附录含 **§6.4 质量自查**）。
 
 主要读者为**产品经理与需求分析师**（业务方参与范围与验收对齐）；研发以本阶段产出为输入编写 PRD/技术方案。
+
+---
+
+## HARD-GATE（写入禁令）
+
+在「中间 spec 已完成且用户总确认」之前，**禁止**新建或覆盖 `{DOC_DIR}/analysis/ANALYSIS-*.md`。
+
+**合法例外**（须在对话中留下明确依据）：
+
+- 用户在同一轮对话中明示可跳过闸门、仅要草稿、或紧急直写终稿
+- 环境变量 `SDX_ANALYSIS_ALLOW_ANALYSIS_WRITE=1`（自动化/CI 场景，视为授权写入）
+
+**闸门标记**：会话 spec 中使用 `<!-- sdx-analysis-gate: PENDING -->`，总确认后改为 `<!-- sdx-analysis-gate: CONFIRMED -->`，且正文须出现目标 `ANALYSIS-*.md` 文件名，供钩子与 `validate-analysis.sh --gate-check` 识别。
+
+---
 
 ## 输入与输出
 
@@ -56,7 +72,9 @@ description: >
 辅助校验：
 
 ```bash
-.agent/skills/sdx-analysis/scripts/validate-analysis.sh
+.cursor/skills/sdx-analysis/scripts/validate-analysis.sh
+# 可选：检查闸门标记（须与 --file 或全量扫描联用）
+.cursor/skills/sdx-analysis/scripts/validate-analysis.sh --file path/to/ANALYSIS-xxx.md --gate-check
 ```
 
 ## 核心约束
@@ -84,6 +102,10 @@ description: >
 | 下游 | `sdx-design` | 基于 PRD 进行技术方案设计 |
 | 下游 | `sdx-test` | 基于 PRD 与 ADD 进行测试设计 |
 
+## 工程化支持
+
+仓库 [`.cursor/hooks.json`](../../hooks.json) 注册了 `preToolUse` 钩子（`Write` / `StrReplace`），脚本见 [`.cursor/hooks/sdx-analysis-gate-write.py`](../../hooks/sdx-analysis-gate-write.py)；Cursor 需启用 Hooks 方生效。编辑 `application/analysis/` 时建议加载 [`.cursor/rules/sdx-analysis.md`](../../rules/sdx-analysis.md)。
+
 ## 参考
 
 | 资源 | 路径 | 何时读 |
@@ -94,5 +116,6 @@ description: >
 | 设计原则、反模式、错误处理 | [reference/design-principles.md](reference/design-principles.md) | 遇到边界判断、错误场景时 |
 | 质量验收清单 | [reference/quality-checklist.md](reference/quality-checklist.md) | 步骤 5 自查时 |
 | 需求分析文档模板 | [assets/analysis-template.md](assets/analysis-template.md) | 步骤 5 生成文档时 |
+| 会话 spec 骨架（可选） | [assets/analysis-session-spec-template.md](assets/analysis-session-spec-template.md) | 阶段 1 落中间 spec 时 |
 | 常见陷阱与防错 | [gotchas.md](gotchas.md) | 遇到输入缺失、需求细化、MVP 拆分相关问题时 |
 | 文档结构校验脚本 | [scripts/validate-analysis.sh](scripts/validate-analysis.sh) | 步骤 5 自动验证时 |
