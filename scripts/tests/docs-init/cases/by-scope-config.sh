@@ -43,35 +43,41 @@ test_SC_C_W() {
 }
 
 test_SC_C_H() {
-  local tmp home init cfg
+  local tmp home init out code
   tmp="$(mktemp -d)"
   trap "rm -rf \"$tmp\"" EXIT
   home="${tmp}/h"
   mkdir -p "$home"
   init="${DOCS_INIT_TEST_REPO_ROOT}/scripts/docs-init.sh"
-  run_expect_exit 0 -- env REPO_ROOT="${DOCS_INIT_TEST_REPO_ROOT}" HOME="$home" \
-    bash "$init" --scope=config --force
-  cfg="$home/.docsconfig"
-  assert_file_exists "$cfg"
+  set +e
+  out="$(env REPO_ROOT="${DOCS_INIT_TEST_REPO_ROOT}" HOME="$home" \
+    bash "$init" --scope=config --force 2>&1)"
+  code=$?
+  set -e
+  assert_eq 1 "$code" "SC-C-H config 无文档目录应失败"
+  assert_output_contains "$out" "必须指定"
 }
 
 test_SC_C_M() {
-  local tmp home init out code cfg idx_before idx_after copy
+  local tmp home init out code cfg idx_before idx_after copy proj
   tmp="$(mktemp -d)"
   trap "rm -rf \"$tmp\"" EXIT
   home="${tmp}/h"
   mkdir -p "$home"
+  proj="$tmp/p"
+  mkdir -p "$proj/docs"
+  git -C "$proj" init -q
   copy="$(docs_init_test_copy_repo "$tmp/central_copy")"
   idx_before="$(docs_init_test_file_sha "$copy/application/INDEX_GUIDE.md")"
   init="${DOCS_INIT_TEST_REPO_ROOT}/scripts/docs-init.sh"
   set +e
   out="$(env REPO_ROOT="$copy" HOME="$home" \
-    bash "$init" --scope=config --mode=central --force 2>&1)"
+    bash "$init" --scope=config --mode=central --force "$proj/docs" 2>&1)"
   code=$?
   set -e
   assert_eq 0 "$code" "SC-C-M"
-  assert_output_contains "$out" "仅在 scope=ck、knowledge 时生效"
-  cfg="$home/.docsconfig"
+  assert_output_contains "$out" "仅在 scope=knowledge 时生效"
+  cfg="$proj/.docsconfig"
   assert_file_exists "$cfg"
   idx_after="$(docs_init_test_file_sha "$copy/application/INDEX_GUIDE.md")"
   assert_eq "$idx_before" "$idx_after" "SC-C-M 不应改副本 INDEX_GUIDE"

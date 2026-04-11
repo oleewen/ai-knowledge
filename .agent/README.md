@@ -7,7 +7,7 @@
 
 - `rules/`：规范与模板入口，约束文档结构、命名、提交流程与阶段产物格式。
 - `skills/`：以 `SKILL.md` 为核心的工作流定义，由 Agent 按步骤执行并生成产物。
-- `.agent/scripts/`：与 Skill 配套的共享 Bash 库（如 `docsconfig-bootstrap.sh`、`validate-agent-md-links.sh`）；`docs-init --scope=skills|rules|rs` 时连同根目录 **`scripts/docs-config.sh`** 一并安装到目标 **`$AGENT_DIR/scripts/`**，供 `docsconfig-bootstrap` 与 `docs-init` 共用 SSOT。
+- `.agent/scripts/`：与 Skill 配套的共享 Bash 库（如 `docsconfig-bootstrap.sh`、`validate-agent-md-links.sh`）；`docs-init --scope=agent` 时连同根目录 **`scripts/docs-config.sh`** 一并安装到目标 **`$AGENT_DIR/scripts/`**，供 `docsconfig-bootstrap` 与 `docs-init` 共用 SSOT。
 - `scripts/`（仓库根）：初始化与分发工具链，负责把 `.agent/` 与知识库模板同步到目标项目。
 
 > `skills/` 是“流程定义”；仓库根 `scripts/` 是“环境初始化”；`.agent/scripts/` 是「技能脚本共享库」，二者职责不同。

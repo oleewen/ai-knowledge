@@ -11,7 +11,7 @@ test_SC_A_S() {
   init="${DOCS_INIT_TEST_REPO_ROOT}/scripts/docs-init.sh"
   set +e
   out="$(env REPO_ROOT="${DOCS_INIT_TEST_REPO_ROOT}" HOME="$home" \
-    bash "$init" --scope=skills --dry-run 2>&1)"
+    bash "$init" --scope=agent --dry-run 2>&1)"
   code=$?
   set -e
   assert_eq 0 "$code" "SC-A-S"
@@ -30,10 +30,10 @@ test_SC_A_RS() {
   mkdir -p "$home"
   init="${DOCS_INIT_TEST_REPO_ROOT}/scripts/docs-init.sh"
   run_expect_exit 0 -- env REPO_ROOT="${DOCS_INIT_TEST_REPO_ROOT}" HOME="$home" \
-    bash "$init" --scope=rs --dry-run --force "$proj/docs" 2>&1
+    bash "$init" --scope=agent --dry-run --force "$proj/docs" 2>&1
 }
 
-# --scope=skills 非 dry-run：$AGENT_HOME/scripts 含 docs-config.sh（SSOT 拷贝）与 docsconfig-bootstrap
+# --scope=agent 非 dry-run：$AGENT_HOME/scripts 含 docs-config.sh（SSOT 拷贝）与 docsconfig-bootstrap
 test_SC_A_SCRIPTS_INSTALLED() {
   local tmp proj home init
   tmp="$(mktemp -d)"
@@ -45,7 +45,7 @@ test_SC_A_SCRIPTS_INSTALLED() {
   mkdir -p "$home"
   init="${DOCS_INIT_TEST_REPO_ROOT}/scripts/docs-init.sh"
   run_expect_exit 0 -- env REPO_ROOT="${DOCS_INIT_TEST_REPO_ROOT}" HOME="$home" \
-    bash "$init" --scope=skills --force "$proj/docs" 2>&1
+    bash "$init" --scope=agent --force "$proj/docs" 2>&1
   assert_file_exists "$proj/.cursor/scripts/docs-config.sh"
   assert_file_exists "$proj/.cursor/scripts/docsconfig-bootstrap.sh"
   assert_file_contains "$proj/.cursor/scripts/docs-config.sh" "SDX_VERSION"
@@ -59,7 +59,7 @@ test_SC_X_M() {
   mkdir -p "$home"
   init="${DOCS_INIT_TEST_REPO_ROOT}/scripts/docs-init.sh"
   out="$(env REPO_ROOT="${DOCS_INIT_TEST_REPO_ROOT}" HOME="$home" \
-    bash "$init" --scope=skills --mode=central --dry-run 2>&1 || true)"
-  assert_output_contains "$out" "仅在 scope=ck、knowledge 时生效"
+    bash "$init" --scope=agent --mode=central --dry-run 2>&1 || true)"
+  assert_output_contains "$out" "仅在 scope=knowledge 时生效"
 }
 

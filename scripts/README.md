@@ -17,9 +17,9 @@ Slash 技能命令请查看 [.agent/skills/README.md](../.agent/skills/README.md
 | **central**  | **`system`** | **`system/`** | 同步 `system/`；登记 `system/INDEX_GUIDE.md`「十」+ 联邦槽位 `company/system-<slug>/` |
 
 2. **Agent 配置**：为多 Agent 安装 skills、rules、scripts 等；**安装根**与是否传入 `<目标工程文档目录>` 一致（与 `docs-init` 内 `agent_install_root` 语义对齐）：
-   - `--scope=skills|rules|rs` 时：执行 Agent 安装；若传入 `<目标工程文档目录>`，会同步写入 `.docsconfig`。
-   - `--scope=ck|config|knowledge` 且传入文档目录：会推导 `DOC_ROOT/REPO_ROOT/DOC_DIR`。
-     - 若目标 `.docsconfig` 已有 `AGENT_ROOT` 则保留，否则补为 `REPO_ROOT`。
+   - `--scope=agent`（缩写 `a`）时：执行 Agent 安装（.agent/*）；若传入 `<目标工程文档目录>`，会同步推导 `.docsconfig` 的 `AGENT_ROOT`、`AGENT_DIRS`。
+   - `--scope=k|knowledge|config`：**必须**传入 `<目标工程文档目录>`（`k` 与 `knowledge` 等价）；会推导 `DOC_ROOT/REPO_ROOT/DOC_DIR`。
+     - 若目标 `.docsconfig` 已有 `AGENT_ROOT` 则保留，否则默认为 `$HOME`（文件中常写 `~`）。
    - 支持 Agent：`cursor`、`trea`、`claude`，可多选（如 `--agents=cursor,trea`）；`AGENT_DIRS` 会按当前 `--agents` 写入。
     - 安装内容：中央库 `.agent/*`  → 各 **`$AGENT_ROOT/AGENT_DIR/skills|rules|scripts/`**。
     - 路径改写：当前仅改写文件中的 `.agent/` → 对应 Agent 目录前缀。
@@ -27,13 +27,9 @@ Slash 技能命令请查看 [.agent/skills/README.md](../.agent/skills/README.md
 3. **冲突处理**：若目标路径已存在，默认会交互式提示；使用 `--force` 强制覆盖，或 `--dry-run` 预览操作。
 
 4. **同步范围控制**：通过 `--scope` 控制执行范围
-   - `ck`（默认）：同步知识库 + 写入 `.docsconfig`
-     - 未传 `<目标工程文档目录>` 时，`ck` 仅写入 `~/.docsconfig`（不执行知识库同步）
-   - `config`：仅写入 `.docsconfig`（不执行中央登记；`--mode=central` / `--type` 在此 scope 下不驱动登记）
-   - `knowledge`：仅同步知识库（`application/`）
-   - `skills`：仅安装 Agent skills（不落地知识库文档）
-   - `rules`：仅安装 Agent rules（不落地知识库文档）
-   - `rs`：同时安装 Agent skills + rules（不落地知识库文档）
+   - `knowledge`（`k`，**默认**）：同步知识库 + 写入 `.docsconfig`（须传 `<目标工程文档目录>`）
+   - `config`：仅写入 `.docsconfig`（须传 `<目标工程文档目录>`；不执行中央登记；`--mode=central` / `--type` 在此 scope 下不驱动登记）
+   - `agent`（`a`）：安装 Agent scripts、rules、skills（不落地知识库文档）
 
 ## doc_root 与 `.docsconfig`（`.agent/scripts/docsconfig-bootstrap.sh`）
 
@@ -66,8 +62,8 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 # 仅同步知识库
 curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- --scope=knowledge ./docs
 
-# 仅同步 Agent skills/rules
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- --scope=skills ./docs
+# 仅安装 Agent（scripts + rules + skills）
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- --scope=agent ./docs
 
 # Central + 系统知识库（登记 system/INDEX_GUIDE + company/system-<slug>/）
 curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- --mode=central --type=system ./docs
@@ -118,8 +114,8 @@ cd ai-knowledge
 # 仅同步知识库
 ./scripts/docs-init.sh --scope=knowledge /path/to/your-project/docs
 
-# 仅同步 Agent skills/rules
-./scripts/docs-init.sh --scope=skills /path/to/your-project/docs
+# 仅安装 Agent（scripts + rules + skills）
+./scripts/docs-init.sh --scope=agent /path/to/your-project/docs
 
 # 指定环境变量
 REPO_ROOT=/path/to/ai-knowledge ./scripts/docs-init.sh /path/to/your-project/docs
@@ -129,21 +125,21 @@ REPO_ROOT=/path/to/ai-knowledge ./scripts/docs-init.sh /path/to/your-project/doc
 
 | 选项 | 说明 | 默认 |
 |------|------|------|
-| `<目标工程文档目录>` | 目标工程下的文档目录路径，如 `~/project/docs`。`standalone` 且 `--scope` 为 `skills` / `rules` / `rs` / `config` / `ck` 时可省略；`central` 或 `knowledge` 时必须提供 | - |
-| `--mode=MODE` | 模式：`standalone`（独立）\| `central`（中央登记，**仅** `scope=ck` / `knowledge` 时生效）；缩写：`s` \| `c` | `standalone` |
+| `<目标工程文档目录>` | 目标工程下的文档目录路径，如 `~/project/docs`。`standalone` 且 `--scope` 为 `agent` 时可省略；**`config` / `knowledge`（`k`）时必须提供**；`central` 时必须提供 | - |
+| `--mode=MODE` | 模式：`standalone`（独立）\| `central`（中央登记，**仅** `scope=knowledge` 时生效）；缩写：`s` \| `c` | `standalone` |
 | `--type=TYPE` | `application` \| `system` \| `company`；**`central` 仅允许 `application` \| `system`**；未指定时默认 `application` | `application` |
-| `--scope=SCOPE` | 同步范围：`ck` \| `config(c)` \| `knowledge(k)` \| `skills(s)` \| `rules(r)` \| `rs`；传 docs 时会写 `.docsconfig`（含 `skills/rules/rs`）；`ck/config/knowledge`（传 docs）已有 `AGENT_ROOT` 保留，否则补 REPO_ROOT | `ck` |
+| `--scope=SCOPE` | 同步范围：`knowledge(k)` \| `config(c)` \| `agent(a)`；**`config`/`knowledge` 须传 `<目标工程文档目录>`**；传 docs 时会写 `.docsconfig`；**`config`/`knowledge` 下** 已有 `AGENT_ROOT` 则保留，否则默认为 `~`（**`agent` 且传入 docs** 时 `AGENT_ROOT` 与 `REPO_ROOT` 一致） | `knowledge` |
 | `-r` | 允许工程根目录不存在时自动创建（等同 `CREATE_PROJECT_ROOT=1`）；若文档目录不存在会一并创建 | 关闭 |
 | `--agents=LIST` | 要安装的 Agent：`cursor` \| `trea` \| `claude` \| `all`；可多选，逗号分隔 | `cursor` |
 | `--force` | 强制覆盖已存在内容，不提示 | - |
 | `--dry-run` | 预览模式，仅打印将要执行的操作 | - |
 | `-h`, `--help` | 显示帮助信息 | - |
 
-注意：`--mode=central` 与 `--type` **仅在** `scope=ck` 或 `knowledge` 时参与中央登记与知识库模板选型；其它 `scope` 传入时会忽略并提示。`scope=config` 仅写入 `.docsconfig`（`install_docsconfig`），**不**执行中央登记。中央登记依赖 `mode=central`、目标文档目录，以及 `type=application`（默认）或 `type=system`（见上表）。旧参数 `--app-id` 已移除，传入将报错并提示迁移。
+注意：`--mode=central` 与 `--type` **仅在** `scope=knowledge` 时参与中央登记与知识库模板选型；其它 `scope` 传入时会忽略并提示。`scope=config` 仅写入 `.docsconfig`（`install_docsconfig`），**不**执行中央登记。中央登记依赖 `mode=central`、目标文档目录，以及 `type=application`（默认）或 `type=system`（见上表）。旧参数 `--app-id` 已移除，传入将报错并提示迁移。
 
 ## 初始化后的目录结构
 
-以 `--mode=standalone --agents=cursor` 为例：文档模板落在**目标工程**。Agent 配置落在 **`AGENT_ROOT`**：若本次命令**传入了** `<目标工程文档目录>`，则 **`AGENT_ROOT`** 与工程根一致（与 `.docsconfig` 之 **`REPO_ROOT`** 同目录）；若**未传入**（仅装 skills/rules），则 **`AGENT_ROOT`=`$HOME`**。
+以 `--mode=standalone --agents=cursor` 为例：文档模板落在**目标工程**。**`--scope=agent` 且传入 `<目标工程文档目录>`** 时，写入的 **`AGENT_ROOT`** 与工程根一致（与 **`REPO_ROOT`** 同目录）。**`--scope=config|knowledge`** 时：若 `.docsconfig` 已有 **`AGENT_ROOT`** 则保留；否则 **`AGENT_ROOT`=`$HOME`**（与仅装 Agent 未传文档目录时一致）。若**未传入**文档目录（仅 **`agent`** 允许），则 **`AGENT_ROOT`=`$HOME`**。
 
 **目标工程**（参数 `<目标工程文档目录>` 及其父目录；含 `.docsconfig` 五键中的 **`DOC_ROOT`/`REPO_ROOT`/`DOC_DIR`**，以及在相关 scope 下写入的 **`AGENT_ROOT`/`AGENT_DIRS`**）：
 
@@ -183,7 +179,7 @@ your-project/
 
 ## Central 模式额外产物
 
-在 **`scope=ck` 或 `knowledge`** 的前提下，使用 **`--mode=central`** 时，在本仓库（`REPO_ROOT`，即 ai-knowledge 克隆根）额外写入：
+在 **`scope=knowledge`** 的前提下，使用 **`--mode=central`** 时，在本仓库（`REPO_ROOT`，即 ai-knowledge 克隆根）额外写入：
 
 **`--type=application`（默认）**
 
@@ -217,7 +213,7 @@ ai-knowledge/
 
 ### Agent 安装
 
-1. **`--scope=skills|rules|rs` 时**：先将 **`.agent/scripts/`** 下全部条目与 **`scripts/docs-config.sh`（SSOT）** 安装到 **`$AGENT_ROOT`/`AGENT_DIR`/scripts/**（先拷目录内文件，再用完整 `docs-config.sh` 覆盖同名文件）；并对 `scripts/` 下树执行 `.agent/` → **`AGENT_DIR/`** 的路径改写。供 `docsconfig-bootstrap.sh` 运行时 `source` 与共享脚本使用。
+1. **`--scope=agent` 时**：先将 **`.agent/scripts/`** 下全部条目与 **`scripts/docs-config.sh`（SSOT）** 安装到 **`$AGENT_ROOT`/`AGENT_DIR`/scripts/**（先拷目录内文件，再用完整 `docs-config.sh` 覆盖同名文件）；并对 `scripts/` 下树执行 `.agent/` → **`AGENT_DIR/`** 的路径改写。供 `docsconfig-bootstrap.sh` 运行时 `source` 与共享脚本使用。
 2. 从中央库 `.agent/skills/` 筛选 `agent-*`、`docs-*`、`knowledge-*`、`sdx-*` 前缀的技能目录
 3. 拷贝到 **`$AGENT_ROOT`/`AGENT_DIR`/skills/**（**`AGENT_DIR`** 为 `.cursor`、`.trea`、`.claude` 之一；**`AGENT_ROOT`** 见上文「功能概述」节），同时拷贝 `.agent/skills/README.md`
 4. 从 `.agent/rules/` 同步所有规则到 **`$AGENT_ROOT`/`AGENT_DIR`/rules/**
@@ -235,10 +231,12 @@ ai-knowledge/
 
 | 版本 | 变更 |
 |------|------|
+| 2.6.0 | **`--scope`**：**移除 `ck`**；**`k`/`knowledge`** 表示原 `ck` 行为（同步知识库 + `.docsconfig`）；默认 **`SCOPE`** 改为 **`knowledge`** |
+| 2.5.0 | **`--scope`**：新增 **`agent`/`a`**，一次安装 scripts + rules + skills；**移除** scope **`skills`/`s`、`rules`/`r`、`rs`**（请改用 **`--scope=agent`**） |
 | 2.4.0 | `central`：`--type` 仅 `application`\|`system`，默认 `application`；移除 `--app-id`；`system` 中央登记写入 `system/INDEX_GUIDE.md` 与 `company/system-<slug>/`；`-r` 时自动创建文档目录 |
 | 2.1.3 | `sdx-doc-root` 默认首段改为 `docs`；目录探测优先 `docs/` 下标记 |
 | 2.1.2 | 落地方案 A：`SDX_DOC_ROOT`、`.sdx-doc-root` 与目录探测统一由 `.agent/scripts/sdx-doc-root.sh` 提供；各 `validate-*.sh` 接入 |
-| 2.1.1 | `standalone` 下 `--scope` 为 skills/rules/rs 时，`<目标工程文档目录>` 可省略；未指定时 Agent 内 `application/` → 文档前缀替换默认为 `docs/` |
+| 2.1.1 | `standalone` 下 `--scope` 为 `agent` 时，`<目标工程文档目录>` 可省略；未指定时 Agent 内 `application/` → 文档前缀替换默认为 `docs/` |
 | 2.1.0 | Agent skills/rules 安装目录由「目标工程根下」改为「用户主目录 `$HOME` 下」；备份对应使用 `~/.docs-init/` |
 | 2.0.0 | 重构：使用 `application/` 作为模板源；新增文件名/内容替换；支持多 Agent（cursor、trea、claude）；Agent 目录改为 `.cursor/`、`.trea/`、`.claude/`；standalone 模式排除 DESIGN.md 和 CONTRIBUTING.md |
 | 1.0.0 | 初始版本：使用 `applications/app-APPNAME/` 作为模板源；支持 standalone 和 central 模式；Agent 配置安装在 `.agent/` 目录 |

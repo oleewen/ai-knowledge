@@ -3,16 +3,16 @@
 #
 # 职责：
 #   按 --type × --mode 从本仓库 application/、system/、company/ 同步到目标工程文档目录；
-#   按 --scope 选择知识库同步、.docsconfig 写入、Agent skills/rules 安装及（可选）central 登记。
+#   按 --scope 选择知识库同步、.docsconfig 写入、Agent（scripts/skills/rules）安装及（可选）central 登记。
 #
 # 主流程（步骤）：
 #   0. --scope=config：install_docsconfig 后退出（不执行 central 登记）
-#   1. 模板 → 目标文档目录（scope 为 knowledge/ck 时，install_docs）
+#   1. 模板 → 目标文档目录（scope 为 knowledge 时，install_docs）
 #      - type=application：standalone 全量；central 仅 §2.1 子集
 #      - type=system|company：同步仓库顶层对应目录
 #   2. central：按 type 登记 application 或 system 的 INDEX_GUIDE「十」+ 对应联邦槽位（install_central）
-#   3. scope 含 skills/rules/rs：install_agent
-#   4. 已提供文档目录（或 scope=ck 无目录）：install_docsconfig
+#   3. scope=agent：install_agent（scripts + rules + skills）
+#   4. 已提供文档目录：install_docsconfig（--scope=config|knowledge 时文档目录为必选）
 #
 # 依赖：Bash 5+；内容替换依赖 perl（UTF-8）
 #
@@ -54,7 +54,7 @@ declare -A CFG=(
   [mode]="${MODE:-standalone}"
   [type]="${TYPE:-}"
   [type_explicit]=0
-  [scope]="${SCOPE:-ck}"
+  [scope]="${SCOPE:-knowledge}"
   [agents_opt]="${AGENTS_OPT:-cursor}"
   [dry_run]="0"
   [force]="${FORCE:-0}"
@@ -187,20 +187,20 @@ ensure_dir() { run_or_dry mkdir -p "$1"; }
 should_reset_docs_dir_before_sync() {
   [[ -n "${CFG[docs_abs]:-}" ]] || return 1
   case "${CFG[scope]}" in
-    knowledge|ck) return 0 ;;
+    knowledge) return 0 ;;
     *)            return 1 ;;
   esac
 }
 
-# 判断本次运行是否需要安装 Agent skills/rules
+# 判断本次运行是否需要安装 Agent（scripts / rules / skills）
 needs_agent_install() {
   case "${CFG[scope]}" in
-    skills|rules|rs) return 0 ;;
-    *)               return 1 ;;
+    agent) return 0 ;;
+    *)     return 1 ;;
   esac
 }
 
-# Agent skills/rules 安装根目录
+# Agent 安装根目录（scripts/skills/rules）
 #   未指定文档目录 → ~/.cursor 等
 #   指定文档目录   → <工程根>/.cursor 等（工程根 = 文档目录父目录）
 agent_install_root() {
@@ -733,12 +733,14 @@ install_agent_rules() {
   done
 }
 
-# 步骤 3 调度：按 scope 安装 Agent scripts / skills / rules
+# 步骤 3 调度：安装 Agent scripts、rules、skills（--scope=agent）
 install_agent() {
   case "${CFG[scope]}" in
-    skills) install_agent_scripts; install_agent_skills ;;
-    rules)  install_agent_scripts; install_agent_rules  ;;
-    rs)     install_agent_scripts; install_agent_rules; install_agent_skills ;;
+    agent)
+      install_agent_scripts
+      install_agent_rules
+      install_agent_skills
+      ;;
   esac
 }
 
@@ -936,7 +938,7 @@ install_central() {
 # 用法：resolve_docsconfig_roots <nameref_repo_target> <nameref_doc_root> <nameref_dd>
 # 说明：
 #   - 有 docs_abs：从 docs_abs 推导 repo_target 与 dd
-#   - 无 docs_abs：回退到 HOME（仅 ck/config/knowledge scope 时调用）
+#   - 无 docs_abs：回退到 HOME（仅 config/knowledge scope 时调用）
 resolve_docsconfig_roots() {
   local -n _rt="${1:?}"   # repo_target（输出）
   local -n _dr="${2:?}"   # doc_root（输出）
@@ -973,8 +975,8 @@ install_docsconfig() {
   # 判断 scope 类别
   local is_agent_scope=0 is_knowledge_scope=0
   case "${CFG[scope]}" in
-    skills|rules|rs)     is_agent_scope=1     ;;
-    ck|config|knowledge) is_knowledge_scope=1 ;;
+    agent)               is_agent_scope=1     ;;
+    config|knowledge) is_knowledge_scope=1 ;;
   esac
 
   # ── 推导 repo_target / doc_root / dd ──────────────────────────────────────
@@ -983,7 +985,7 @@ install_docsconfig() {
     resolve_docsconfig_roots repo_target doc_root dd
     agent_root_in="$repo_target"
   else
-    # knowledge / ck / config scope
+    # knowledge / config scope
     resolve_docsconfig_roots repo_target doc_root dd
   fi
 
@@ -992,7 +994,7 @@ install_docsconfig() {
   if [[ -f "$cfg_file" ]]; then
     existed=1
     docsconfig_read_into "$cfg_file" old_doc_root old_repo_root old_doc_dir old_agent_root old_agent_dirs || true
-    # 保留原始行，供 ck + 已存在 AGENT_ROOT 时原样写回
+    # 保留原始行，供 knowledge + 已存在 AGENT_ROOT 时原样写回
     local _line
     while IFS= read -r _line || [[ -n "$_line" ]]; do
       [[ -z "$_line" || "$_line" =~ ^[[:space:]]*# ]] && continue
@@ -1009,16 +1011,16 @@ install_docsconfig() {
     info ".docsconfig 不存在，将创建并写入: $cfg_file"
   fi
 
-  # ── 确定 AGENT_ROOT（knowledge/ck/config scope）──────────────────────────
+  # ── 确定 AGENT_ROOT（knowledge/config scope）──────────────────────────
   if [[ "$is_knowledge_scope" == '1' ]]; then
     if [[ -n "${CFG[docs_abs]}" ]]; then
-      # 已有 AGENT_ROOT 则保留；否则补为 REPO_ROOT
+      # config|knowledge：已有 AGENT_ROOT 则保留；否则默认为 ~（与仅装 Agent 未传文档目录时一致）
       if [[ -n "$old_agent_root" ]]; then
         agent_root_in="$old_agent_root"
-        # ck scope：同时保留旧 AGENT_DIRS
-        [[ "${CFG[scope]}" == 'ck' ]] && agent_dirs_str="$old_agent_dirs"
+        [[ "${CFG[scope]}" == 'knowledge' ]] && agent_dirs_str="$old_agent_dirs"
       else
-        agent_root_in="$repo_target"
+        [[ -n "${CFG[home_abs]:-}" ]] || error "无法写入 AGENT_ROOT：HOME 未就绪"
+        agent_root_in="${CFG[home_abs]}"
       fi
     elif [[ "${CFG[scope]}" == 'config' ]]; then
       agent_root_in="${CFG[home_abs]}"
@@ -1032,16 +1034,16 @@ install_docsconfig() {
       d="$(get_agent_dir "$a")"
       agent_dirs_str="${agent_dirs_str:+$agent_dirs_str }$d"
     done
-    # ck + docs + 旧文件存在时，优先保留旧 AGENT_DIRS，不按当前 --agents 覆盖
-    if [[ "${CFG[scope]}" == 'ck' && -n "${CFG[docs_abs]}" && -n "$old_agent_root" ]]; then
+    # knowledge + docs + 旧文件存在时，优先保留旧 AGENT_DIRS，不按当前 --agents 覆盖
+    if [[ "${CFG[scope]}" == 'knowledge' && -n "${CFG[docs_abs]}" && -n "$old_agent_root" ]]; then
       agent_dirs_str="$old_agent_dirs"
     fi
   fi
 
   # ── 写入 ──────────────────────────────────────────────────────────────────
   if [[ "$is_agent_scope" == '1' || "$is_knowledge_scope" == '1' ]]; then
-    if [[ "${CFG[scope]}" == 'ck' && -n "${CFG[docs_abs]}" && -n "$old_agent_root_line" ]]; then
-      # ck + docs + 旧 AGENT_ROOT：AGENT_* 行原样保留，仅更新 DOC_*
+    if [[ "${CFG[scope]}" == 'knowledge' && -n "${CFG[docs_abs]}" && -n "$old_agent_root_line" ]]; then
+      # knowledge + docs + 旧 AGENT_ROOT：AGENT_* 行原样保留，仅更新 DOC_*
       local out dr rr
       out="$(strip_trailing_slash "$(abs_path "$repo_target")")/.docsconfig"
       dr="$(docsconfig_format_root_for_write "$doc_root")"
@@ -1086,8 +1088,8 @@ usage() {
       ~/workspace/my-app/system
       ~/workspace/my-app/docs
     父目录（工程根）默认须已存在；使用 -r 可允许自动创建。
-    standalone 模式下，--scope 为 s/r/rs/config/ck 时可省略本参数。
-    scope=knowledge 时、或 scope=ck/knowledge 且 --mode=central 时，必须提供本参数。
+    --scope 为 config(c)、knowledge(k) 时**必须**提供本参数。
+    standalone 模式下，--scope 为 agent(a) 时可省略本参数（Agent 装入 $HOME 侧并写 ~/.docsconfig）。
 
   替换规则
     文件名  : system（不区分大小写）→ application
@@ -1095,11 +1097,11 @@ usage() {
 
   模式（--mode）
     standalone（默认）  仅目标工程落盘
-    central             另在本仓库登记目标工程（需 scope=ck 或 knowledge，见 type）
-    说明：central 仅在 scope=ck、knowledge 时生效；其它 scope 传入时视为 standalone 并提示
+    central             另在本仓库登记目标工程（需 scope=knowledge，见 type）
+    说明：central 仅在 scope=knowledge 时生效；其它 scope 传入时视为 standalone 并提示
 
   类型（--type，知识库 v2）
-    仅在 scope=ck、knowledge 时生效；其它 scope 若传入则忽略并提示
+    仅在 scope=knowledge 时生效；其它 scope 若传入则忽略并提示
     未指定时默认 application（含 central）
     application  应用知识库：standalone 全量；central §2.1 子集 + application/INDEX_GUIDE 登记 + system/application-<slug>/ 槽位
     system       仓库顶层 system/ → 目标；central 另登记 system/INDEX_GUIDE + company/system-<slug>/ 槽位
@@ -1109,13 +1111,10 @@ usage() {
 选项
   --mode=MODE     standalone(s) | central(c)  [默认: s]
   --type=TYPE     application(a) | system(s) | company(c)  [默认: a]
-  --scope=SCOPE   ck | config(c) | knowledge(k) | skills(s) | rules(r) | rs  [默认: ck]
-                  ck        同步知识库 + 写 .docsconfig
-                  config    仅写 .docsconfig
-                  knowledge 仅同步知识库
-                  skills    仅安装 Agent skills
-                  rules     仅安装 Agent rules
-                  rs        安装 skills + rules
+  --scope=SCOPE   knowledge(k) | config(c) | agent(a)  [默认: knowledge]
+                  k|knowledge  同步知识库 + 写 .docsconfig（须传 `<目标工程文档目录>`）
+                  config       仅写 .docsconfig
+                  agent        安装 Agent：scripts + rules + skills（至各 AGENT_DIR）
   --agents=LIST   cursor | trea | claude | all，逗号分隔  [默认: cursor]
   -r              允许工程根目录不存在时自动创建
   --force         强制覆盖，不提示
@@ -1131,10 +1130,11 @@ usage() {
 
 示例
   docs-init ~/workspace/my-app/docs
+  docs-init --scope=k ~/workspace/my-app/docs
   docs-init --scope=knowledge ~/workspace/my-app/docs
   docs-init --scope=config ~/workspace/my-app/docs
-  docs-init --scope=skills
-  docs-init --scope=rs ~/workspace/my-app/docs
+  docs-init --scope=agent
+  docs-init --scope=a ~/workspace/my-app/docs
   docs-init --mode=central --type=application --agents=cursor,trea ~/workspace/my-app/docs
   docs-init --mode=central --type=system ~/workspace/my-app/docs
   docs-init --dry-run ~/workspace/my-app/docs
@@ -1227,21 +1227,27 @@ apply_mode() {
 
 # 规范化并校验 --scope
 validate_sync_scope() {
-  # 允许 rs/sr 组合
-  case "${CFG[scope]}" in rs|sr) CFG[scope]='rs' ;; esac
-
-  # 单字母缩写展开（ck 须在 c/config 之前匹配，避免被截断）
   case "${CFG[scope]}" in
-    ck)              ;;
+    ck)
+      error "无效 --scope: ck（已移除，请使用 --scope=k 或 --scope=knowledge）" ;;
     c|config|cfg)    CFG[scope]='config'   ;;
-    s)               CFG[scope]='skills'   ;;
-    r)               CFG[scope]='rules'    ;;
-    k)               CFG[scope]='knowledge' ;;
+    a|agent)         CFG[scope]='agent'    ;;
+    k|knowledge)     CFG[scope]='knowledge' ;;
   esac
 
   case "${CFG[scope]}" in
-    skills|rules|rs|knowledge|config|ck) ;;
-    *) error "无效 --scope: ${CFG[scope]}（支持 ck、knowledge/k、skills/s、rules/r、rs、config/c）" ;;
+    agent|knowledge|config) ;;
+    *) error "无效 --scope: ${CFG[scope]}（支持 knowledge/k、agent/a、config/c）" ;;
+  esac
+}
+
+# --scope=config|knowledge 时必须提供 <目标工程文档目录>
+validate_docs_arg_for_scope() {
+  case "${CFG[scope]}" in
+    config|knowledge)
+      [[ -n "${CFG[docs_abs]:-}" ]] \
+        || error "--scope=${CFG[scope]} 时必须指定 <目标工程文档目录>（例：docs-init --scope=${CFG[scope]} ~/project/docs）"
+      ;;
   esac
 }
 
@@ -1253,26 +1259,26 @@ apply_agents() {
   (( ${#ENABLED_AGENTS[@]} > 0 )) || error "未解析到任何 Agent"
 }
 
-# 文档约定：--mode=central 仅在 scope=ck、knowledge 时参与中央登记与默认 --type 推导
+# 文档约定：--mode=central 仅在 scope=knowledge 时参与中央登记与默认 --type 推导
 apply_mode_scope_policy() {
   case "${CFG[scope]}" in
-    ck|knowledge) ;;
+    knowledge) ;;
     *)
       if [[ "${CFG[mode]}" == 'central' ]]; then
-        warn "提示：--mode=central 仅在 scope=ck、knowledge 时生效（中央登记）；当前 scope=${CFG[scope]}，已按 standalone 处理"
+        warn "提示：--mode=central 仅在 scope=knowledge 时生效（中央登记）；当前 scope=${CFG[scope]}，已按 standalone 处理"
         CFG[mode]='standalone'
       fi
       ;;
   esac
 }
 
-# 文档约定：--type 仅在 scope=ck、knowledge 时生效（与 install_docs 选型相关）
+# 文档约定：--type 仅在 scope=knowledge 时生效（与 install_docs 选型相关）
 apply_type_scope_policy() {
   case "${CFG[scope]}" in
-    ck|knowledge) ;;
+    knowledge) ;;
     *)
       if [[ "${CFG[type_explicit]}" == '1' ]]; then
-        warn "提示：--type 仅在 scope=ck、knowledge 时生效；已忽略"
+        warn "提示：--type 仅在 scope=knowledge 时生效；已忽略"
         CFG[type_explicit]=0
       fi
       ;;
@@ -1346,6 +1352,7 @@ main() {
 
   init_repo_root
   validate_sync_scope
+  validate_docs_arg_for_scope
   apply_mode
   apply_mode_scope_policy
   apply_type_scope_policy
@@ -1355,13 +1362,9 @@ main() {
 
   # ── scope=config：仅 install_docsconfig，后退出 ─────────────────────────
   if [[ "${CFG[scope]}" == 'config' ]]; then
-    [[ -n "${HOME:-}" ]] || error "需要 HOME 环境变量以写入默认 .docsconfig"
+    [[ -n "${HOME:-}" ]] || error "需要 HOME 环境变量"
     CFG[home_abs]="$(abs_path "$HOME")"
-    if [[ -n "${CFG[docs_abs]}" ]]; then
-      validate_docs_and_target
-    else
-      info "未提供 <目标工程文档目录>：将默认写入 ~/.docsconfig（DOC_ROOT=~，REPO_ROOT=~，DOC_DIR=.）"
-    fi
+    validate_docs_and_target
     apply_agents
     install_docsconfig
     info "完成：docs-init（--scope=config）"
@@ -1372,9 +1375,6 @@ main() {
   # ── 未提供文档目录时的合法性校验 ─────────────────────────────────────────
   if [[ -z "${CFG[docs_abs]}" ]]; then
     [[ "${CFG[mode]}" != 'central' ]] || error "central 模式必须指定 <目标工程文档目录>"
-    if [[ "${CFG[scope]}" == 'knowledge' ]]; then
-      usage; exit 2
-    fi
   fi
 
   [[ -n "${CFG[docs_abs]}" ]] && validate_docs_and_target
@@ -1383,17 +1383,14 @@ main() {
   compute_derived_paths
   DOC_INIT_STAMP="$(date +%Y-%m-%d_%H-%M-%S)"
 
-  # 初始化 HOME（Agent 安装 / ck 无目录回退时需要）
-  if needs_agent_install || [[ -z "${CFG[docs_abs]}" && "${CFG[scope]}" == 'ck' ]]; then
+  # 初始化 HOME（Agent 安装 / 无文档目录写 ~/.docsconfig 时需要）
+  if needs_agent_install || [[ -z "${CFG[docs_abs]}" ]]; then
     [[ -n "${HOME:-}" ]] || error "需要 HOME 环境变量"
     CFG[home_abs]="$(abs_path "$HOME")"
   fi
 
   if [[ -z "${CFG[docs_abs]}" ]] && needs_agent_install; then
     warn "未指定工程文档目录：Agent 配置中的文档前缀将按默认值处理；若需与真实目录一致请传入 <目标工程文档目录>"
-  fi
-  if [[ -z "${CFG[docs_abs]}" && "${CFG[scope]}" == 'ck' ]]; then
-    warn "未指定工程文档目录：--scope=ck 将跳过知识库同步，仅写入 ~/.docsconfig"
   fi
 
   have_perl || warn "未检测到 perl：文件内容替换将被跳过，建议安装 perl。"
@@ -1403,7 +1400,7 @@ main() {
     reset_docs_dir_with_backup
   fi
 
-  if [[ -n "${CFG[docs_abs]}" && ( "${CFG[scope]}" == 'knowledge' || "${CFG[scope]}" == 'ck' ) ]]; then
+  if [[ -n "${CFG[docs_abs]}" && "${CFG[scope]}" == 'knowledge' ]]; then
     install_docs
   fi
 
@@ -1412,12 +1409,12 @@ main() {
     install_central
   fi
 
-  # ── 步骤 3：Agent skills/rules 安装 ──────────────────────────────────────
+  # ── 步骤 3：Agent 安装（--scope=agent）───────────────────────────────────
   install_agent
 
   # ── 步骤 4：写 .docsconfig ────────────────────────────────────────────────
-  # 有文档根时写入；无文档根时仅 ck scope 回退写入 ~/.docsconfig
-  if [[ -n "${CFG[docs_abs]}" || ( -z "${CFG[docs_abs]}" && "${CFG[scope]}" == 'ck' ) ]]; then
+  # 有文档根时写入；无文档根时仅 --scope=agent 回退写入 ~/.docsconfig
+  if [[ -n "${CFG[docs_abs]}" ]] || needs_agent_install; then
     [[ -n "${CFG[home_abs]:-}" ]] || { [[ -n "${HOME:-}" ]] && CFG[home_abs]="$(abs_path "$HOME")"; }
     install_docsconfig
   fi

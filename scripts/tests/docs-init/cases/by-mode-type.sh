@@ -9,7 +9,7 @@ test_MD_N04() {
   init="${DOCS_INIT_TEST_REPO_ROOT}/scripts/docs-init.sh"
   set +e
   env REPO_ROOT="${DOCS_INIT_TEST_REPO_ROOT}" HOME="$th" \
-    bash "$init" --mode=central --scope=ck --force 2>&1
+    bash "$init" --mode=central --scope=knowledge --force 2>&1
   code=$?
   set -e
   assert_eq 1 "$code" "MD-N04 central 无文档"
@@ -22,7 +22,7 @@ test_MD_APP_ID_REMOVED() {
   init="${DOCS_INIT_TEST_REPO_ROOT}/scripts/docs-init.sh"
   set +e
   out="$(env REPO_ROOT="${DOCS_INIT_TEST_REPO_ROOT}" HOME="$th" \
-    bash "$init" --mode=central --scope=ck --app-id=APP-OLD "$th/p/docs" 2>&1)"
+    bash "$init" --mode=central --scope=knowledge --app-id=APP-OLD "$th/p/docs" 2>&1)"
   code=$?
   set -e
   assert_eq 1 "$code" "APP-ID 参数应失败"
@@ -89,7 +89,7 @@ test_MD_CENTRAL_SYSTEM_SLOT() {
   git -C "$proj" init -q
   init="$copy/scripts/docs-init.sh"
   run_expect_exit 0 -- env REPO_ROOT="$copy" HOME="${tmp}/h" \
-    bash "$init" --mode=central --type=system --scope=ck --force "$proj/docs" 2>&1
+    bash "$init" --mode=central --type=system --scope=knowledge --force "$proj/docs" 2>&1
   assert_file_contains "$copy/system/INDEX_GUIDE.md" "| SYS-PLATFORM-CORE |"
   assert_file_exists "$copy/company/system-PLATFORM-CORE/README.md"
 }

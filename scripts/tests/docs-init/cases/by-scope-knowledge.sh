@@ -26,6 +26,6 @@ test_SC_K_E() {
     bash "$init" --scope=knowledge --force 2>/dev/null
   code=$?
   set -e
-  assert_eq 2 "$code" "SC-K-E"
+  assert_eq 1 "$code" "SC-K-E knowledge 无文档目录应失败"
 }
 

@@ -19,16 +19,18 @@ test_SC_CK_D() {
 }
 
 test_SC_CK_H() {
-  local tmp home init out cfg
+  local tmp home init out code
   tmp="$(mktemp -d)"
   trap "rm -rf \"$tmp\"" EXIT
   home="${tmp}/h"
   mkdir -p "$home"
   init="${DOCS_INIT_TEST_REPO_ROOT}/scripts/docs-init.sh"
+  set +e
   out="$(env REPO_ROOT="${DOCS_INIT_TEST_REPO_ROOT}" HOME="$home" \
-    bash "$init" --force 2>&1 || true)"
-  assert_output_contains "$out" "未指定工程文档目录"
-  cfg="$home/.docsconfig"
-  assert_file_exists "$cfg"
+    bash "$init" --force 2>&1)"
+  code=$?
+  set -e
+  assert_eq 1 "$code" "SC-CK-H 默认 scope=knowledge 无文档目录应失败"
+  assert_output_contains "$out" "必须指定"
 }
 
