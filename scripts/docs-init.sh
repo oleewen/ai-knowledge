@@ -316,9 +316,9 @@ should_overwrite() {
 }
 
 # 带冲突处理的单文件拷贝（内部公共实现）
-# 用法：_copy_with_conflict <src> <dst>
+# 用法：copy_with_conflict <src> <dst>
 # 说明：dry-run / force / 交互策略均在此统一处理；调用方负责后续内容替换
-_copy_with_conflict() {
+copy_with_conflict() {
   local src="$1" dst="$2"
   if [[ "${CFG[dry_run]}" == '1' ]]; then
     log "[dry-run] 拷贝: $src → $dst"; return 0
@@ -338,7 +338,7 @@ _copy_with_conflict() {
 # 拷贝单个文件（含冲突处理）
 copy_file() {
   local src="$1" dst="$2"
-  _copy_with_conflict "$src" "$dst" || return 0  # skip 时静默返回
+  copy_with_conflict "$src" "$dst" || return 0  # skip 时静默返回
 }
 
 # 拷贝目录（含冲突处理）
@@ -492,7 +492,7 @@ application_copy_one() {
     log "[dry-run] $src_f → $dst_f"
     return 0
   fi
-  _copy_with_conflict "$src_f" "$dst_f" || return 0  # skip 时静默返回
+  copy_with_conflict "$src_f" "$dst_f" || return 0  # skip 时静默返回
   rewrite_doc_file "$dst_f" "$agent_slash"
 }
 
@@ -593,7 +593,7 @@ install_org_template_to_docs() {
       log "[dry-run] $src_f → $dst_f"; continue
     fi
     # 复用统一冲突处理；跳过时 continue
-    _copy_with_conflict "$src_f" "$dst_f" || continue
+    copy_with_conflict "$src_f" "$dst_f" || continue
     rewrite_agent_file "$dst_f" "$agent_slash"
   done < <(cd "$src_root" && find . -type f -print0)
 
@@ -891,11 +891,11 @@ install_central() {
 # =============================================================================
 
 # 推导 .docsconfig 所需的 repo_target / doc_root / dd（DOC_DIR）三元组
-# 用法：_resolve_docsconfig_roots <nameref_repo_target> <nameref_doc_root> <nameref_dd>
+# 用法：resolve_docsconfig_roots <nameref_repo_target> <nameref_doc_root> <nameref_dd>
 # 说明：
 #   - 有 docs_abs：从 docs_abs 推导 repo_target 与 dd
 #   - 无 docs_abs：回退到 HOME（仅 ck/config/knowledge scope 时调用）
-_resolve_docsconfig_roots() {
+resolve_docsconfig_roots() {
   local -n _rt="${1:?}"   # repo_target（输出）
   local -n _dr="${2:?}"   # doc_root（输出）
   local -n _dd="${3:?}"   # doc_dir（输出）
@@ -938,11 +938,11 @@ install_docsconfig() {
   # ── 推导 repo_target / doc_root / dd ──────────────────────────────────────
   if [[ "$is_agent_scope" == '1' ]]; then
     [[ -n "${CFG[home_abs]}" ]] || error "无法写入 .docsconfig：HOME 未就绪"
-    _resolve_docsconfig_roots repo_target doc_root dd
+    resolve_docsconfig_roots repo_target doc_root dd
     agent_root_in="$repo_target"
   else
     # knowledge / ck / config scope
-    _resolve_docsconfig_roots repo_target doc_root dd
+    resolve_docsconfig_roots repo_target doc_root dd
   fi
 
   # ── 读取已有 .docsconfig（若存在）────────────────────────────────────────

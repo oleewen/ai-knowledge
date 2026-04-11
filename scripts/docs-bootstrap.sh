@@ -77,7 +77,7 @@ sdx_bs_die() {
 # § 4  环境检查（纯函数）
 # =============================================================================
 
-# 预克隆阶段校验 Bash 5+（克隆后再次由 docs-config.sh 的 _require_bash5 校验）
+# 预克隆阶段校验 Bash 5+（克隆后再次由 docs-config.sh 的 require_bash5 校验）
 sdx_bs_check_bash() {
   (( BASH_VERSINFO[0] >= 5 )) \
     || sdx_bs_die "需要 Bash 5+，当前版本: ${BASH_VERSION}"
