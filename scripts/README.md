@@ -226,7 +226,7 @@ ai-knowledge/
 
 | 脚本 | 说明 |
 |------|------|
-| `docs-bootstrap.sh` | 引导脚本，远程执行时自动克隆仓库并调用 `docs-init.sh` |
+| `docs-bootstrap.sh` | 引导脚本，远程执行时克隆仓库后加载克隆体内的 `docs-config.sh`（与 `docs-init` 共用 `SDX_VERSION` 等），再调用 `docs-init.sh`；首次 clone 前默认仓库 URL 须与 `docs-config.sh` 中 `SDX_GIT_REPO_URL` 保持一致 |
 | `docs-init.sh` | 主初始化脚本，执行模板拷贝、Agent 安装、Central 模式登记 |
 | `docs-config.sh` | 配置模块，定义常量、默认值、校验函数 |
 

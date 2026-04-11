@@ -39,6 +39,8 @@ readonly SDX_VERSION='2.3.0'
 readonly SDX_MIN_BASH_VERSION=5
 
 # Git 仓库地址（供 bootstrap 引用）
+# 注意：`docs-bootstrap.sh` 在首次 clone 前无法 source 本文件；若使用预克隆后备 URL（`SDX_BS_FALLBACK_REPO`），
+# 其字符串必须与下列赋值完全一致（集成测试 `test_BS_URL_SYNC` 会校验）。
 readonly SDX_GIT_REPO_URL='https://github.com/oleewen/ai-knowledge.git'
 
 # =============================================================================

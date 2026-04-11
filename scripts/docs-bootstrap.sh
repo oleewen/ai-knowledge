@@ -10,6 +10,7 @@
 #   - 零依赖启动：仅需 bash 和 git，无需预先下载任何文件
 #   - 一键体验：单条 curl 命令即可在任意目录初始化知识库
 #   - 透传参数：所有额外参数原样传递给 docs-init.sh
+#   - 克隆后加载克隆体内的 scripts/docs-config.sh，与 docs-init 共用 SDX_VERSION 等 SSOT
 #
 # 依赖：Bash 5+、Git、网络连接（可访问 GitHub）
 #
@@ -22,7 +23,7 @@
 #   bash scripts/docs-bootstrap.sh [选项] <目标工程文档目录>
 #
 # 环境变量：
-#   GIT_REPO_URL    Git 仓库地址（默认: https://github.com/oleewen/ai-knowledge.git）
+#   GIT_REPO_URL    Git 仓库地址（默认与 scripts/docs-config.sh 中 SDX_GIT_REPO_URL 一致）
 #   GIT_REF         Git 分支或标签（默认: HEAD，即默认分支）
 #   TMPDIR          临时目录（默认: /tmp）
 #
@@ -43,13 +44,11 @@
 set -euo pipefail
 
 # =============================================================================
-# § 1  常量
+# § 1  常量（预克隆阶段；须与 docs-config.sh 中 SDX_GIT_REPO_URL 一致，见集成测试）
 # =============================================================================
 
-readonly SDX_BS_VERSION='2.0.0'
-readonly SDX_BS_MIN_BASH=5
-
-readonly SDX_BS_DEFAULT_REPO='https://github.com/oleewen/ai-knowledge.git'
+# 须与 scripts/docs-config.sh 中 SDX_GIT_REPO_URL 完全一致（集成测试会校验）。
+readonly SDX_BS_FALLBACK_REPO='https://github.com/oleewen/ai-knowledge.git'
 readonly SDX_BS_DEFAULT_REF='HEAD'
 
 # =============================================================================
@@ -78,10 +77,10 @@ sdx_bs_die() {
 # § 4  环境检查（纯函数）
 # =============================================================================
 
-# 校验 Bash 版本 ≥ SDX_BS_MIN_BASH
+# 预克隆阶段校验 Bash 5+（克隆后再次由 docs-config.sh 的 _require_bash5 校验）
 sdx_bs_check_bash() {
-  (( BASH_VERSINFO[0] >= SDX_BS_MIN_BASH )) \
-    || sdx_bs_die "需要 Bash ${SDX_BS_MIN_BASH}+，当前版本: ${BASH_VERSION}"
+  (( BASH_VERSINFO[0] >= 5 )) \
+    || sdx_bs_die "需要 Bash 5+，当前版本: ${BASH_VERSION}"
 }
 
 # 检查命令是否存在
@@ -99,11 +98,11 @@ sdx_bs_check_deps() {
 # § 5  配置读取（纯函数）
 # =============================================================================
 
-# 获取 Git 仓库 URL（优先环境变量）
-sdx_bs_get_repo_url() { printf '%s' "${GIT_REPO_URL:-${SDX_BS_DEFAULT_REPO}}"; }
+# 获取 Git 仓库 URL（优先环境变量；否则与 docs-config SDX_GIT_REPO_URL 一致的后备）
+sdx_bs_get_repo_url() { printf '%s' "${GIT_REPO_URL:-$SDX_BS_FALLBACK_REPO}"; }
 
 # 获取 Git 引用（优先环境变量）
-sdx_bs_get_ref()      { printf '%s' "${GIT_REF:-${SDX_BS_DEFAULT_REF}}"; }
+sdx_bs_get_ref()      { printf '%s' "${GIT_REF:-$SDX_BS_DEFAULT_REF}"; }
 
 # 获取有效的临时目录
 sdx_bs_get_tmpdir() {
@@ -192,11 +191,10 @@ sdx_bs_main() {
   SDX_BS_CLONE_DIR="$(sdx_bs_gen_clone_dir "$tmpdir")"
   trap sdx_bs_cleanup EXIT
 
-  # 启动信息
+  # 启动信息（预克隆）
   sdx_bs_log ''
   sdx_bs_log '=========================================='
-  sdx_bs_log "docs-bootstrap v${SDX_BS_VERSION}"
-  sdx_bs_log '=========================================='
+  sdx_bs_log 'docs-bootstrap'
   sdx_bs_info "仓库: $repo_url"
   sdx_bs_info "引用: $ref"
   sdx_bs_info "目标: $SDX_BS_TARGET_DIR"
@@ -206,11 +204,16 @@ sdx_bs_main() {
   # 克隆仓库
   sdx_bs_clone_repo "$repo_url" "$ref" "$SDX_BS_CLONE_DIR" || exit 1
 
-  # 校验必要脚本存在
+  # 校验必要脚本存在并加载配置模块（与 docs-init 共用 SSOT）
   local init_script="${SDX_BS_CLONE_DIR}/scripts/docs-init.sh"
   local config_script="${SDX_BS_CLONE_DIR}/scripts/docs-config.sh"
   [[ -f "$init_script"   ]] || sdx_bs_die "仓库中未找到 scripts/docs-init.sh"
   [[ -f "$config_script" ]] || sdx_bs_die "仓库中未找到 scripts/docs-config.sh"
+
+  # shellcheck disable=SC1090
+  source "$config_script"
+
+  sdx_bs_info "已加载模板库 SDX_VERSION=${SDX_VERSION}"
 
   # 透传所有参数给 docs-init.sh
   sdx_bs_log ''

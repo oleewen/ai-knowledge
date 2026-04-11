@@ -8,6 +8,8 @@ export DOCS_INIT_TEST_REPO_ROOT
 # shellcheck source=/dev/null
 source "$SCRIPT_DIR/lib/assert.sh"
 # shellcheck source=/dev/null
+source "$SCRIPT_DIR/cases/bootstrap-config-sync.sh"
+# shellcheck source=/dev/null
 source "$SCRIPT_DIR/cases/cross-cut.sh"
 # shellcheck source=/dev/null
 source "$SCRIPT_DIR/cases/by-scope-config.sh"
@@ -24,6 +26,8 @@ source "$SCRIPT_DIR/cases/by-mode-type.sh"
 
 printf 'DOCS_INIT_TEST_REPO_ROOT=%s\n' "$DOCS_INIT_TEST_REPO_ROOT"
 echo ">>> CI 子集"
+
+test_BS_URL_SYNC
 
 test_XC_H
 test_XC_N01
