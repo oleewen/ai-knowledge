@@ -617,7 +617,7 @@ install_docs() {
 }
 
 # 步骤 2a：.agent/scripts/* + scripts/docs-config.sh → $agent_dir/scripts/
-#   先拷贝 .agent/scripts（含 docs-config 转加载 stub），再用完整 SSOT 覆盖 docs-config.sh。
+#   拷贝 .agent/scripts 下除 docs-config.sh 外的条目；docs-config.sh 仅从 scripts/docs-config.sh（SSOT）安装一次，避免与占位 stub 重复拷贝及二次冲突提示。
 install_agent_scripts() {
   local agent agent_dir agent_slash
   local src_scripts src_docs_ssot dst_scripts
@@ -643,6 +643,8 @@ install_agent_scripts() {
     shopt -s nullglob
     for item in "$src_scripts"/*; do
       base="$(basename "$item")"
+      # 与下方 SSOT 合并安装同一目标，跳过以免重复 copy 与重复「目标已存在」提示
+      [[ "$base" == 'docs-config.sh' ]] && continue
       if [[ -d "$item" ]]; then
         copy_dir "$item" "$dst_scripts/$base"
       else

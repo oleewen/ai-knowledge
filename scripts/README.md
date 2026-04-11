@@ -213,7 +213,7 @@ ai-knowledge/
 
 ### Agent 安装
 
-1. **`--scope=agent` 时**：先将 **`.agent/scripts/`** 下全部条目与 **`scripts/docs-config.sh`（SSOT）** 安装到 **`$AGENT_ROOT`/`AGENT_DIR`/scripts/**（先拷目录内文件，再用完整 `docs-config.sh` 覆盖同名文件）；并对 `scripts/` 下树执行 `.agent/` → **`AGENT_DIR/`** 的路径改写。供 `docsconfig-bootstrap.sh` 运行时 `source` 与共享脚本使用。
+1. **`--scope=agent` 时**：将 **`.agent/scripts/`** 下条目（**不含** 与 SSOT 同名的 `docs-config.sh`，避免重复拷贝）与 **`scripts/docs-config.sh`（SSOT）** 安装到 **`$AGENT_ROOT`/`AGENT_DIR`/scripts/**；并对 `scripts/` 下树执行 `.agent/` → **`AGENT_DIR/`** 的路径改写。供 `docsconfig-bootstrap.sh` 运行时 `source` 与共享脚本使用。
 2. 从中央库 `.agent/skills/` 筛选 `agent-*`、`docs-*`、`knowledge-*`、`sdx-*` 前缀的技能目录
 3. 拷贝到 **`$AGENT_ROOT`/`AGENT_DIR`/skills/**（**`AGENT_DIR`** 为 `.cursor`、`.trea`、`.claude` 之一；**`AGENT_ROOT`** 见上文「功能概述」节），同时拷贝 `.agent/skills/README.md`
 4. 从 `.agent/rules/` 同步所有规则到 **`$AGENT_ROOT`/`AGENT_DIR`/rules/**
