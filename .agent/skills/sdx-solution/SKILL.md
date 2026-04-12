@@ -24,6 +24,8 @@ description: >
 
 **门禁标记**：Spec 中使用 `<!-- sdx-solution-gate: PENDING -->`，总确认后改为 `<!-- sdx-solution-gate: CONFIRMED -->`，且正文须出现目标 `SOLUTION-*.md` 文件名。
 
+**与 `/brainstorming` 的差异**：本技能会话的默认主产物是 `...-sdx-solution.md` 与 `SOLUTION-*.md`，**不以**独立 brainstorming 常见的 `*-design.md` + `writing-plans` 作为默认终态。阶段二若需 brainstorming 式交互，遵循 [reference/brainstorming-integration.md](reference/brainstorming-integration.md)。
+
 ---
 
 ## 阶段一：准备工作
@@ -74,6 +76,13 @@ F：跳过全部门禁，直接拟定草稿、撰写终稿
 - 进入本阶段后，**禁止**以「已在 `…/specs/….md` 中补充 G{n} 草案，要点如下：」起首；直接给出要点或提问
 - 回跳到 G{k} 后，按强/弱依赖评估后续门禁是否需重审（详见 [reference/workflow-spec.md](reference/workflow-spec.md)）
 
+### brainstorming 嵌入层（阶段二）
+
+阶段二在门禁交互上**对齐** brainstorming 的可复用节奏，但以本会话 spec 与 `SOLUTION-*.md` 为唯一交付主线。细则见 [reference/brainstorming-integration.md](reference/brainstorming-integration.md)。
+
+- **单题澄清**：与 **Q-n** 协议一致（见 [reference/workflow-spec.md](reference/workflow-spec.md)）。
+- **任意 G{n} 内多套可取舍方案**：当存在两条及以上真实可选路径时，**须在本门禁内**先完成 brainstorming 式对比（2–3 套、业务语义命名、利弊与推荐），再写入「本门禁结论」并收口该 Gn。**不限于 G4**（G2 边界、G3 化解路径、G5 应对、G6 切分等均可触发）。
+
 ### 总确认（Qclose-1）
 
 全部门禁收口后：
@@ -118,6 +127,7 @@ F：跳过全部门禁，直接拟定草稿、撰写终稿
 
 | 资源 | 路径 | 何时读 |
 |------|------|--------|
+| brainstorming 嵌入、与独立 `/brainstorming` 的差异、Gn 内多方案子流程 | [reference/brainstorming-integration.md](reference/brainstorming-integration.md) | 阶段二对话节奏、多方案取舍时 |
 | 门禁状态机、回跳影响面、Q-n 协议 | [reference/workflow-spec.md](reference/workflow-spec.md) | 流程不确定时 |
 | 核心概念与 IDEA-ID / 编号规则 | [reference/core-concepts.md](reference/core-concepts.md) | 编号规则不确定时 |
 | 受众定位与语言转写规则 | [reference/audience-and-language.md](reference/audience-and-language.md) | 终检或语言审查时 |
