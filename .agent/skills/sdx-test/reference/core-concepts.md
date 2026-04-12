@@ -1,19 +1,57 @@
-# 核心概念口径（sdx-test）
+# 核心概念（sdx-test）
 
-与主文件 [../SKILL.md](../SKILL.md) 配合使用：需要统一术语或向人类解释「测什么、测到哪」时打开本文。
+---
 
 ## IDEA-ID
 
-**IDEA-ID** 的定义见 [sdx-solution：core-concepts §IDEA-ID](../../sdx-solution/reference/core-concepts.md#idea-id)。
+与上游 PRD/ADD 完全一致，格式：`{YYMMDD}-{主题}`。
 
-本阶段路径示例：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/TDD-{IDEA-ID}-{N}.md`；须与同目录 `PRD-{IDEA-ID}-{N}.md`、`ADD-{IDEA-ID}-{N}.md` 的 **IDEA-ID** 完全一致。
+**路径示例**：
 
-| 概念 | 口径 |
+| 产物 | 路径 |
 |------|------|
-| **测试策略** | 确定测试层次（单元、集成、端到端）与覆盖率目标，按风险优先级分配测试资源 |
-| **用例设计** | 从用户故事验收标准、API 规约、业务规则三个维度设计用例，覆盖正常/异常/边界 |
-| **回归策略** | 基于影响面分析确定回归范围，关联变更功能与受影响的已有功能 |
-| **进出标准** | 进入：开发完成、环境就绪、数据就绪等；退出：用例通过率、缺陷标准、覆盖达标等 |
-| **TDD 文档** | 测试设计说明书；章节骨架见 [../assets/tdd-template.md](../assets/tdd-template.md) |
+| 会话 spec | `docs/superpowers/specs/2026-04-12-审批提效-sdx-test.md` |
+| TDD | `{DOC_DIR}/requirements/REQUIREMENT-260412-审批提效/MVP-Phase-1/TDD-260412-审批提效-1.md` |
+| 上游 PRD | `…/PRD-260412-审批提效-1.md` |
+| 上游 ADD | `…/ADD-260412-审批提效-1.md` |
 
-编号体系（TC-*、TDD-*）与证据引用格式见 [design-principles.md](design-principles.md)。
+---
+
+## 编号体系
+
+| 前缀 | 用途 | 示例 |
+|------|------|------|
+| `TDD-{REQUIREMENT-ID}-MVP{N}` | 文档编号 | `TDD-20260327-001-MVP1` |
+| `TC-{NNN}` | 功能测试用例 | `TC-001` |
+| `TC-API-{NNN}` | 接口测试用例 | `TC-API-001` |
+| `TC-BR-{NNN}` | 业务规则测试用例 | `TC-BR-001` |
+| `TC-EX-{NNN}` | 异常场景测试用例 | `TC-EX-001` |
+| `TC-PERF-{NNN}` | 性能测试用例 | `TC-PERF-001` |
+| `TC-REG-{NNN}` | 回归测试用例 | `TC-REG-001` |
+
+---
+
+## 深度参数（--depth）
+
+| 值 | 行为 |
+|----|------|
+| `quick` | 仅 P0 功能与核心接口；从简异常/回归 |
+| `standard` | 完整六类用例（默认） |
+| `deep` | 增加性能与安全、详细并发场景 |
+
+---
+
+## TDD 文档六章结构
+
+遵循 [../assets/tdd-template.md](../assets/tdd-template.md)：
+
+| 章节 | 内容 |
+|------|------|
+| §1 概述 | 测试目标、测试范围、测试策略 |
+| §2 测试用例 | 功能/接口/业务规则/异常/性能/回归（§2.1–§2.6） |
+| §3 测试数据 | 数据类型、准备方式、边界值与特殊数据 |
+| §4 测试环境 | 服务版本、外部依赖、Mock/Stub 策略 |
+| §5 测试进出标准 | 进入条件、退出条件、回归执行顺序 |
+| §6 附录 | 变更历史、质量自查（§6.2） |
+
+**元数据**：仅在文末「## 文档元数据」内的 fenced `yaml` 中，禁止文件开头写 `---` YAML frontmatter。
