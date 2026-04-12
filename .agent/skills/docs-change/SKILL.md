@@ -29,9 +29,44 @@ description: >
 
 时间基准优先级：`--since` 参数 > `CHANGE-LOG.md` 文末 `baseline_time_ms` > 默认值 `2020-01-01`。
 
+## 前置确认（可选）
+
+本技能以**快速落盘** `CHANGE-LOG.md` 为主路径：**默认不阻断执行**。仅当存在**歧义或高风险**时，先完成下面确认再进入「工作流（五步）」。这不是 superpowers `brainstorming` 的全量 HARD-GATE（不要求先写设计文档再执行），也**不**替代 SDD/`sdx-*` 闸门；仅用于澄清**范围与参数**。
+
+### 触发条件（满足任一条即可考虑前置确认）
+
+| 条件 | 说明 |
+|------|------|
+| 时间基准不清 | 用户未给出 `--since`，且不存在可读的既有 `CHANGE-LOG.md` 文末基线，或首次在本仓库运行 |
+| 输出目录不清 | 用户未指定 `--output`，且存在多个候选 `changelogs/`（或需在应用知识库 `{DOC_DIR}/changelogs/` 与仓库根 `./changelogs/` 之间取舍） |
+| 采集源与默认不一致 | 用户明确要求「只要 Git」或「不要本地 mtime」等，与默认三源并行采集不一致 |
+| 仓库根不明 | 多工作区、子模块、当前工作目录与预期不符，影响路径与 Git 范围 |
+| 输出不可写或需约定 | 目标目录不可写、需新建，或用户需指定统一落点供下游 `docs-indexing` / `docs-build` 读取 |
+
+未触发时：**直接执行五步工作流**，不必为问答而问答。
+
+### 确认方式
+
+- **一次只问一个关键点**，优先给出选项（例如 A/B/C）便于快速选。
+- 需要取舍时，给出 **2～3 种方案**（含利弊），并标明推荐项（通常为默认：三源 + 既有输出目录优先级规则）。
+
+**建议问题顺序**（按需跳过已明确的项）：① 仓库根是否当前工作区根 → ② `--output` → ③ 时间范围（`--since` 或沿用/新建基线）→ ④ 采集源是否保持默认三源。
+
+**采集源取舍示例**（与用户确认后执行）：
+
+| 方案 | 适用 | 注意 |
+|------|------|------|
+| **默认三源**（推荐） | 与 `execution-spec` 一致，下游信息最全 | 需理解 `baseline_time` 与 `cutoff_time` 差异，见 [gotchas.md](gotchas.md) |
+| **仅 Git** | 用户只关心提交历史 | 仍写 `CHANGE-LOG.md`；CHANGELOG 与本地 mtime 不采集 |
+| **Git 不可用时的降级** | 已跳过 git | 向用户确认是否接受仅 CHANGELOG + 本地（见 [reference/execution-spec.md](reference/execution-spec.md)） |
+
+确认完成后，将**已确认的** `--output`、`--since`（或基线来源）与采集源策略固定，再进入步骤 1。
+
 ## 工作流（五步）
 
 ### 步骤 1：环境准备
+
+若已执行「前置确认」，以已确认的仓库根、`--output`、`--since`、采集源策略为准。否则按默认参数与 [reference/execution-spec.md](reference/execution-spec.md) 中的输出目录优先级执行。
 
 定位输出目录并确认可写；检测 Git 可用性（不可用则跳过 git 来源，不终止流程）；扫描 `CHANGELOG*` / `CHANGE-LOG.md` / `changes*` 文件。
 
@@ -46,7 +81,7 @@ cutoff_time   = max(baseline_time, latest_git_commit_time)   # Git 不可用时 
 
 ### 步骤 3：数据采集
 
-三源并行采集，可使用辅助脚本完成原始数据收集：
+默认**三源并行**采集；若「前置确认」约定仅 Git，则只采集 Git 来源，CHANGELOG 与本地 mtime 跳过。可使用辅助脚本完成原始数据收集：
 
 ```bash
 scripts/change-indexing.sh --since "2026-03-20 00:00:00.000" --output ./changelogs/
@@ -90,7 +125,7 @@ scripts/change-indexing.sh --since "2026-03-20 00:00:00.000" --output ./changelo
 
 | 资源 | 路径 | 何时读 |
 |------|------|--------|
-| 执行规范与验证清单 | [reference/execution-spec.md](reference/execution-spec.md) | 采集规则不确定、验证失败时 |
+| 执行规范与验证清单 | [reference/execution-spec.md](reference/execution-spec.md) | 采集规则不确定、验证失败时；歧义确认后的执行约定见「前置确认与歧义处理」 |
 | 结构参考（可选） | [assets/changes-index-template.md](assets/changes-index-template.md) | 组织 CHANGE-LOG 章节时 |
 | 常见陷阱与防错规则 | [gotchas.md](gotchas.md) | 遇到时间/增量/来源相关问题时 |
 | 辅助脚本 | [scripts/change-indexing.sh](scripts/change-indexing.sh) | 执行原始数据采集时 |
