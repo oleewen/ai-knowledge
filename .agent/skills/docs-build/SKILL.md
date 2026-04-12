@@ -35,7 +35,15 @@ description: >
 | `--confidence-threshold` | 否 | `medium` | 最低置信度（high/medium/low） |
 | `--emit-report` | 否 | `false` | 生成提取报告 |
 
-## 工作流（四阶段）
+## 工作流（预检 + 四阶段）
+
+### 预检（默认自动）
+
+**策略**：偏自动——**不**为常规 `/docs-build` 逐项追问参数；直接采用上表默认值（四视角、`--skip-existing` 默认、`--confidence-threshold` medium、`--emit-report` false），进入阶段 1。
+
+**仅在异常或指令冲突时**再分步澄清，**一次只问一个点**，例如：用户显式指定某参数或多视角子集；`DOC_DIR` 或应用知识库路径存在歧义需选定；阶段 2～4 校验失败需选择「跳过该项 / 修复证据后重跑某视角 / 全量重跑」；`reference/extraction-rules.md` 未覆盖的边界需在**有限选项**（通常 2～3 个）中拍板并记入 `merge_note` 或 `metadata`。
+
+**硬门闩**：主 Index Guide 不可用时不展开讨论，直接终止并提示先运行 `/docs-indexing`（见 [gotchas.md](gotchas.md) 初始化节）。
 
 ### 阶段 1：初始化
 
