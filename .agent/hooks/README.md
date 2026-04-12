@@ -8,6 +8,12 @@
 | [sdx-prd-gate-write.py](sdx-prd-gate-write.py) | `preToolUse`（`Write` / `StrReplace`） | 拦截在未完成中间 spec 总确认前对 `**/requirements/**/PRD-*.md` 的写入；详见 [.agent/skills/sdx-prd/SKILL.md](../skills/sdx-prd/SKILL.md) |
 | [sdx-test-gate-write.py](sdx-test-gate-write.py) | `preToolUse`（`Write` / `StrReplace`） | 拦截在未完成中间 spec 总确认前对 `**/requirements/**/TDD-*.md` 的写入；详见 [.agent/skills/sdx-test/SKILL.md](../skills/sdx-test/SKILL.md) |
 
+### 同构闸门语义、尚无 preToolUse 脚本
+
+| 技能 | 说明 |
+|------|------|
+| docs-archive | 与 sdx-* 相同「中间会话 spec + `PENDING`/`CONFIRMED` + 用户总确认」话语体系；规范见 [.agent/skills/docs-archive/reference/interaction-gate.md](../skills/docs-archive/reference/interaction-gate.md)，规则见 [.agent/rules/docs-archive.md](../rules/docs-archive.md)。当前**未**提供写入拦截脚本，以技能与会话执行为准。 |
+
 ## 如何自动生效（无需单独「Hooks 总开关」）
 
 Cursor 会加载仓库根目录下的 [hooks.json](../hooks.json)：保存该文件后会重载钩子配置。本仓库已包含工作区设置 [.vscode/settings.json](../../.vscode/settings.json)（为 `hooks.json` 提供 JSON Schema，便于校验与补全）。

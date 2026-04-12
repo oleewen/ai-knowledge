@@ -32,6 +32,9 @@ description: >
 | `--full`    | `false`                   | 全量重建归档内容，但**仅覆盖目标文件中的受管区块**，区块外内容保持不变                 |
 | `--dry-run` | `false`                   | 仅预览不落盘，输出三层预览：候选变更区间、受影响目标文件/区块、将写入三日志的条目摘要           |
 
+## 交互与确认闸门
+
+与 **sdx-*-gate** 对齐：中间会话 spec（`docs/superpowers/specs/`）、**用户总确认**、`PENDING`/`CONFIRMED` 标记、同会话明示例外与环境变量知情绕过；触发 HARD-GATE 时默认先 `--dry-run` 再落盘。完整触发条件表、会话 spec 要求与推荐问答节奏见 [reference/interaction-gate.md](reference/interaction-gate.md)；编辑归档目标路径时的规则指针见 [.agent/rules/docs-archive.md](../../rules/docs-archive.md)。
 
 ## 原子顺序（严格执行）
 
@@ -82,6 +85,7 @@ description: >
 
 ## 参考
 
+- [reference/interaction-gate.md](reference/interaction-gate.md)（闸门、与 sdx-*-gate 对齐、会话 spec 标记）
 - [reference/archive-spec.md](reference/archive-spec.md)
 - [reference/archive-log-spec.md](reference/archive-log-spec.md)
 - [reference/federation-spec.md](reference/federation-spec.md)

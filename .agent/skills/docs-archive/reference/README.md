@@ -4,6 +4,7 @@
 
 | 文档 | 内容 | 何时打开 |
 |------|------|----------|
+| [interaction-gate.md](interaction-gate.md) | 与 sdx-*-gate 对齐的 HARD-GATE、中间会话 spec、`docs-archive-gate` 标记、触发条件表、推荐交互节奏 | 任意写入前；`--full` / 锚点异常 / 草稿 SDD / 冲突 / 多应用 |
 | [archive-spec.md](archive-spec.md) | 系统侧归档目标目录根目录（`system/architecture/`）全树范围、扫描落点规则、变更发现方式、批次 `CHANGE-LOG.md` 格式（含 `*-ARCHITECTURE.md` 命名） | 定归档范围、写批次文档 |
 | [federation-spec.md](federation-spec.md) | 联邦层级、knowledge 提炼与 SDD 直接归档、**归档顺序**、各目录操作细则、质量自检 | 步骤 2 上行写入、多类型同批顺序 |
 | [archive-log-spec.md](archive-log-spec.md) | `CHANGE-LOG.md` / `ARCHIVE-LOG.md` 格式、增量优先级（`--full > --since > ARCHIVE-LOG last marker`）、锚点更新时机、`dry-run` 约束 | 步骤 0 读锚点、步骤 3 更新锚点 |
