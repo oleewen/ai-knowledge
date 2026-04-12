@@ -31,9 +31,3 @@
 Agent **可以**查阅 `knowledge/`、`knowledge/technical/`、INDEX_GUIDE 等核对事实；写入 `SOLUTION-*.md` 时**必须**将工程事实转写为业务表述。
 
 确需保留的技术线索（如系统边界、集成约束）集中放入 **§7.3 内部参考**，并标注「待研发确认」。
-
----
-
-## 与模板的关系
-
-产出结构见 [../assets/solution-template.md](../assets/solution-template.md)。模板仅保留章节骨架与文末元数据示例，不在文首重复「读者与语言」说明。本文件为语言规范的权威来源。
