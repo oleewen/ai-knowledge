@@ -4,6 +4,23 @@ docs-build 的核心提取规则。按固定顺序执行：技术 → 数据 →
 
 输出文件统一使用 `{perspective}_knowledge.json`（schema_version 2.1）。完整 JSON 结构见 [../assets/knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
 
+## 目录
+
+- [1. 技术视角（Technical）](#1-技术视角technical)
+  - [SYS（系统层级）](#sys系统层级)
+  - [APP（应用层级）](#app应用层级)
+  - [MS（微服务层级）](#ms微服务层级)
+  - [API（接口层级）](#api接口层级)
+- [2. 数据视角（Data）](#2-数据视角data)
+  - [DS（数据源层级）](#ds数据源层级)
+  - [ENT（实体层级）](#ent实体层级)
+- [3. 业务视角（Business）](#3-业务视角business)
+  - [BD / BSD / BC / AGG / AB](#bd--bsd--bc--agg--ab)
+- [4. 产品视角（Product）](#4-产品视角product)
+  - [PL / PM / FT / UC](#pl--pm--ft--uc)
+- [跨视角依赖](#跨视角依赖)
+- [通用字段说明](#通用字段说明)
+
 ---
 
 ## 1. 技术视角（Technical）
