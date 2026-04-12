@@ -6,7 +6,7 @@ set -euo pipefail
 # 文档根路径：resolve_repo_doc_root（仅 .docsconfig）
 # 先 validate_bootstrap_docsconfig，详见 .agent/scripts/docsconfig-bootstrap.sh
 #
-# 说明：闸门式工作流仅改变产出过程，不改变 SOLUTION 文档结构要求；校验项仍以七章模板为准。
+# 说明：门禁式工作流仅改变产出过程，不改变 SOLUTION 文档结构要求；校验项仍以七章模板为准。
 #
 # 校验项:
 #   1. 模板文件存在
@@ -55,14 +55,14 @@ warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
 error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
 
-# 会话 spec 闸门：docs/superpowers/specs/**/*.md 须同时包含 CONFIRMED 标记与目标文件名
+# 会话 spec 门禁：docs/superpowers/specs/**/*.md 须同时包含 CONFIRMED 标记与目标文件名
 check_solution_gate() {
   local file="$1"
   local base
   base=$(basename "${file}")
   local specs_dir="${REPO_ROOT}/docs/superpowers/specs"
   if [[ ! -d "${specs_dir}" ]]; then
-    warn "闸门：未找到 ${specs_dir}，跳过 gate 检查"
+    warn "门禁：未找到 ${specs_dir}，跳过 gate 检查"
     return
   fi
   local found=0
@@ -74,9 +74,9 @@ check_solution_gate() {
     fi
   done < <(find "${specs_dir}" -name "*.md" -print0 2>/dev/null)
   if [[ ${found} -eq 1 ]]; then
-    success "闸门：已找到引用 ${base} 且 CONFIRMED 的会话 spec"
+    success "门禁：已找到引用 ${base} 且 CONFIRMED 的会话 spec"
   else
-    local msg="闸门：未找到引用 ${base} 且 <!-- sdx-solution-gate: CONFIRMED --> 的会话 spec（见 .cursor/skills/sdx-solution/SKILL.md）"
+    local msg="门禁：未找到引用 ${base} 且 <!-- sdx-solution-gate: CONFIRMED --> 的会话 spec（见 .cursor/skills/sdx-solution/SKILL.md）"
     if [[ "${GATE_STRICT}" == true ]]; then
       error "${msg}"
     else
