@@ -16,6 +16,8 @@ description: >
 
 从已通过 `docs-init --mode=central` 注册的目标工程知识库，拉取指定分支的文档内容，覆盖更新本仓库应用知识库根目录下 `applications/app-{APPNAME}/` 联邦镜像目录，并在 `applications/app-{APPNAME}/changelogs/` 下追加同步记录。
 
+**协作式预检**：遇多应用、分支不明、强制覆盖等情形时，按 [reference/preflight.md](reference/preflight.md) 分步确认；**真正写盘前**须满足该页「写盘闸门（HARD-GATE）」。例行且参数已齐的同步可直接执行。
+
 ## 前置条件
 
 目标应用必须已通过 `docs-init --mode=central` 注册，即：
@@ -52,7 +54,7 @@ description: >
 
 ### 步骤 1：应用发现与 manifest 解析
 
-1. 若未指定 `--app`，扫描应用知识库根目录 `applications/` 下所有 `app-*/` 目录，列出已注册应用（含 manifest 的目录）供用户选择
+1. 若未指定 `--app`，扫描应用知识库根目录 `applications/` 下所有 `app-*/` 目录，列出已注册应用（含 manifest 的目录）供用户选择（多候选时的提问顺序与写盘确认见 [reference/preflight.md](reference/preflight.md)）
 2. 读取 `applications/app-{APPNAME}/{APPNAME}_manifest.yaml`，提取：
   - `repo_url`：目标工程 Git 仓库地址
   - `docs_root`：目标工程文档目录（默认 `docs/` 或 `{DOC_DIR}/`，依对方仓库约定）
@@ -137,6 +139,7 @@ changelog 格式规范见 [assets/fetch-log-template.md](assets/fetch-log-templa
 
 | 资源            | 路径                                                           | 何时读                       |
 | ------------- | ------------------------------------------------------------ | ------------------------- |
+| 预检与写盘闸门      | [reference/preflight.md](reference/preflight.md)             | 多应用/分支歧义/强制覆盖前、实跑前确认时   |
 | manifest 字段规范 | [reference/manifest-spec.md](reference/manifest-spec.md)     | 解析 manifest 时，字段不确定时      |
 | 拉取脚本          | [scripts/fetch-docs.sh](scripts/fetch-docs.sh)               | 步骤 2 执行拉取时                |
 | changelog 模板  | [assets/fetch-log-template.md](assets/fetch-log-template.md) | 步骤 3 生成记录时                |
