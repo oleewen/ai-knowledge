@@ -69,7 +69,7 @@ check_analysis_gate() {
   if [[ ${found} -eq 1 ]]; then
     success "闸门：已找到引用 ${base} 且 CONFIRMED 的会话 spec"
   else
-    local msg="闸门：未找到引用 ${base} 且 <!-- sdx-analysis-gate: CONFIRMED --> 的会话 spec（见 .cursor/skills/sdx-analysis/SKILL.md）"
+    local msg="闸门：未找到引用 ${base} 且 <!-- sdx-analysis-gate: CONFIRMED --> 的会话 spec（见 .agent/skills/sdx-analysis/SKILL.md）"
     if [[ "${GATE_STRICT}" == true ]]; then
       error "${msg}"
     else

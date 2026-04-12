@@ -1,6 +1,6 @@
 # 核心概念（sdx-analysis）
 
-面向产品/需求分析语境的术语与目标，供步骤 1–5 对齐口径。算法与决策点见 [workflow-spec.md](workflow-spec.md)。
+面向产品/需求分析语境的术语与目标，供阶段二 **G1–G6** 对齐口径。算法与决策点见 [workflow-spec.md](workflow-spec.md)。
 
 ## IDEA-ID
 

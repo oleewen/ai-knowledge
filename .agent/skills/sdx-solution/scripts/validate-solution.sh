@@ -76,7 +76,7 @@ check_solution_gate() {
   if [[ ${found} -eq 1 ]]; then
     success "门禁：已找到引用 ${base} 且 CONFIRMED 的会话 spec"
   else
-    local msg="门禁：未找到引用 ${base} 且 <!-- sdx-solution-gate: CONFIRMED --> 的会话 spec（见 .cursor/skills/sdx-solution/SKILL.md）"
+    local msg="门禁：未找到引用 ${base} 且 <!-- sdx-solution-gate: CONFIRMED --> 的会话 spec（见 .agent/skills/sdx-solution/SKILL.md）"
     if [[ "${GATE_STRICT}" == true ]]; then
       error "${msg}"
     else

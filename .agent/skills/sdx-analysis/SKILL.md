@@ -5,30 +5,131 @@ description: >
   当用户执行 /sdx-analysis、需要编写需求分析文档、将解决方案细化为可排期的功能需求、
   做 MVP 拆分规划、或需要识别需求依赖与风险时，务必使用本技能。
   即使用户只说"帮我分析一下需求"、"拆一下 MVP"、"细化一下方案"，也应触发本技能。
-  须遵守正文 HARD-GATE：默认禁止在「中间 spec 用户总确认」之前写入 {DOC_DIR}/analysis/ANALYSIS-*.md。
-  输出：先会话 spec（docs/superpowers/specs/），经总确认后再落 ANALYSIS-{IDEA-ID}.md。
+  须遵守正文 HARD-GATE：默认禁止在「草稿用户总确认」之前写入 {DOC_DIR}/analysis/ANALYSIS-*.md。
+  输出：先会话 spec（docs/superpowers/specs/…-sdx-analysis.md），经总确认后再落 ANALYSIS-{IDEA-ID}.md。
 ---
 
 # 需求分析阶段（sdx-analysis）
 
 **术语**：**应用知识库**指应用知识库目录 `DOC_DIR`（见 `.docsconfig`），对应路径前缀 `{DOC_DIR}/`。
 
-在解决方案与事实材料基础上，将共识级方案细化为**可评审、可排期、可验收**的需求分析：划清范围、拆 MVP、标优先级与依赖，并识别风险。产出结构以 [assets/analysis-template.md](assets/analysis-template.md) 为准：**六章**（**§1 背景目标** → 功能需求「含 FR 节内规则与业务对象」→ 非功能需求 → 交付计划 → 依赖与风险 → 附录含 **§6.4 质量自查**）。
+在解决方案与事实材料基础上，将共识级方案细化为**可评审、可排期、可验收**的需求分析：划清范围、拆 MVP、标优先级与依赖，并识别风险。产出结构以 [assets/analysis-template.md](assets/analysis-template.md) 为准：**六章**（§1 → §2 功能需求「含 FR 节内规则与业务对象」→ §3 非功能 → §4 交付计划 → §5 依赖与风险 → §6 附录含 **§6.4 质量自查**）。
 
 主要读者为**产品经理与需求分析师**（业务方参与范围与验收对齐）；研发以本阶段产出为输入编写 PRD/技术方案。
 
 ---
 
-## HARD-GATE（写入禁令）
+## HARD-GATE
 
-在「中间 spec 已完成且用户总确认」之前，**禁止**新建或覆盖 `{DOC_DIR}/analysis/ANALYSIS-*.md`。
+草稿总确认前，**禁止**写入 `{DOC_DIR}/analysis/ANALYSIS-*.md`。
 
 **合法例外**（须在对话中留下明确依据）：
 
-- 用户在同一轮对话中明示可跳过闸门、仅要草稿、或紧急直写终稿
-- 环境变量 `SDX_ANALYSIS_ALLOW_ANALYSIS_WRITE=1`（自动化/CI 场景，视为授权写入）
+- 用户在同一轮对话中明示可跳过门禁、仅要草稿、或紧急直写终稿
+- 环境变量 `SDX_ANALYSIS_ALLOW_ANALYSIS_WRITE=1`
 
-**闸门标记**：会话 spec 中使用 `<!-- sdx-analysis-gate: PENDING -->`，总确认后改为 `<!-- sdx-analysis-gate: CONFIRMED -->`，且正文须出现目标 `ANALYSIS-*.md` 文件名，供钩子与 `validate-analysis.sh --gate-check` 识别。
+**门禁标记**：Spec 中使用 `<!-- sdx-analysis-gate: PENDING -->`，总确认后改为 `<!-- sdx-analysis-gate: CONFIRMED -->`，且正文须出现目标 `ANALYSIS-*.md` 文件名。
+
+**与 `/brainstorming` 的差异**：本技能会话的默认主产物是 `...-sdx-analysis.md` 与 `ANALYSIS-*.md`，**不以**独立 brainstorming 常见的 `*-design.md` + `writing-plans` 作为默认终态。阶段二若需 brainstorming 式交互，遵循 [reference/brainstorming-integration.md](reference/brainstorming-integration.md)。
+
+---
+
+## 阶段一：准备工作
+
+**一次性**抛出以下三项参数供用户选择（支持快捷修改，如 `1.1 M IDEA-ID=XXX`）：
+
+1. **IDEA-ID 主题**
+   - 默认：`{YYMMDD}-{中文主题}`（规则见 [reference/core-concepts.md](reference/core-concepts.md)）；须与上游 `SOLUTION-{IDEA-ID}.md`、下游需求包同链对齐
+2. **门禁粒度**
+   - 2.1 全量 **6G（G1–G6）**（与 `analysis-template` 六章一一对应）
+   - 2.2 **精简 4G**：G(1–2)、G3、G4、G(5–6)（映射见 [reference/workflow-spec.md](reference/workflow-spec.md)）
+3. **分析深度**
+   - 3.1 `standard`（默认）
+   - 3.2 `quick` 压缩叙述版
+   - 3.3 `deep` 含对标与可行性要点（写入仍须业务表述）
+
+CLI 语义（若用户提及）：`--depth` 等同本节深度；`--id` / `--solution` 与 **IDEA-ID**、上游 `SOLUTION-*.md` 对齐。
+
+---
+
+## 阶段二：草稿确认
+
+**路径**：`docs/superpowers/specs/YYYY-MM-DD-<topic>-sdx-analysis.md`，骨架见 [assets/analysis-session-spec-template.md](assets/analysis-session-spec-template.md)。
+
+### 标准四选项（每个门禁末尾附上）
+
+```
+C：确认，进入下一步
+M：修改，格式 "M 旧内容 - 新内容"
+S：跳过本门禁，按默认值推进
+F：跳过全部门禁，直接拟定草稿、撰写终稿
+```
+
+### 门禁与模板映射（全量 6G）
+
+| 门禁 | 对应模板章节 |
+|------|----------------|
+| G1 | §1 背景目标 |
+| G2 | §2 功能需求 |
+| G3 | §3 非功能需求 |
+| G4 | §4 交付计划 |
+| G5 | §5 依赖与风险 |
+| G6 | §6 附录（含 §6.4 质量自查、文末 yaml） |
+
+**精简 4G** 时，同一逻辑门覆盖多章，见 [reference/workflow-spec.md](reference/workflow-spec.md)「精简 4 门禁映射」。
+
+### 门禁节奏（强制）
+
+- 每次只呈现一段草案或一个待确认点，末尾附标准四选项
+- Gn 未收口前不展开 G(n+1)（回跳除外）
+- 进入本阶段后，**禁止**以「已在 `…/specs/….md` 中补充 G{n} 草案，要点如下：」起首；直接给出要点或提问
+- 回跳到 G{k} 后，按强/弱依赖评估后续门禁是否需重审（详见 [reference/workflow-spec.md](reference/workflow-spec.md)）
+
+### brainstorming 嵌入层（阶段二）
+
+阶段二在门禁交互上**对齐** brainstorming 的可复用节奏，但以本会话 spec 与 `ANALYSIS-*.md` 为唯一交付主线。细则见 [reference/brainstorming-integration.md](reference/brainstorming-integration.md)。
+
+- **单题澄清**：与 **Q-n** 协议一致（见 [reference/workflow-spec.md](reference/workflow-spec.md)）。
+- **任意 G{n} 内多套可取舍方案**：当存在两条及以上真实可选路径时，**须在本门禁内**先完成 brainstorming 式对比（2–3 套、业务语义命名、利弊与推荐），再写入「本门禁结论」并收口该 Gn。**不限于 G2/G4**（G1 范围、G3 非功能、G5 风险应对等均可触发）。
+
+### 总确认（Qclose-1）
+
+全部门禁收口后：
+
+> 是否同意以当前草稿为唯一素材生成 `ANALYSIS-{IDEA-ID}.md`？（附标准四选项）
+
+- C / S → 将 `PENDING` 改为 `CONFIRMED`，进入阶段三
+- M → 返回修订 spec
+- F → 不经总确认直写草稿（须符合 HARD-GATE 例外）
+
+**确认人**：填写 `$HOME` 路径末级目录名（本机用户名），勿填显示名或占位词。
+
+---
+
+## 阶段三：草稿定稿
+
+**3.1 骨架**：在 `{DOC_DIR}/analysis/` 新建文件，按 [assets/analysis-template.md](assets/analysis-template.md) 落六章标题、表架、§6.4（`- [ ]`）、文末 fenced yaml；标注「草稿填充中」。
+
+**3.2 分块填充**（默认 6 chunk，与 G1–G6 对齐）：
+
+| Chunk | 覆盖章节 |
+|-------|----------|
+| 1 | §1 |
+| 2 | §2 |
+| 3 | §3 |
+| 4 | §4 |
+| 5 | §5 |
+| 6 | §6（含 §6.4 勾选与 yaml） |
+
+每块结束附标准四选项；用户可随时说「暂停」。
+
+**终检**：对照 [reference/quality-checklist.md](reference/quality-checklist.md) 逐项判定，已达标项将 `- [ ]` 改为 `- [x]`，未达标项保持 `- [ ]`，禁止虚假勾选。
+
+```bash
+.agent/skills/sdx-analysis/scripts/validate-analysis.sh
+# 可选：检查门禁标记
+.agent/skills/sdx-analysis/scripts/validate-analysis.sh --file path/to/ANALYSIS-xxx.md --gate-check
+```
 
 ---
 
@@ -36,18 +137,10 @@ description: >
 
 | 类型 | 内容 |
 |------|------|
-| 硬输入 | 解决方案文档（应用知识库 `{DOC_DIR}/solutions/SOLUTION-{IDEA-ID}.md`） |
+| 硬输入 | 解决方案文档（`{DOC_DIR}/solutions/SOLUTION-{IDEA-ID}.md`） |
 | 可选输入 | `knowledge/`、`requirements/.../specs/`、AGENTS.md（内部分析用，写入时转为需求/业务表述） |
-| 固定输出 | 应用知识库下 `{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md` |
+| 固定输出 | `{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md` |
 | 不产出 | PRD、ADD、测试设计、代码（使用下游 sdx-prd / sdx-design / sdx-test） |
-
-## 参数
-
-| 参数 | 必需 | 默认值 | 说明 |
-|------|------|--------|------|
-| `--id` | 否 | `IDEA-ID` | 与上游 `SOLUTION-{IDEA-ID}.md`、下游 `REQUIREMENT-{IDEA-ID}/` 同链对齐 |
-| `--depth` | 否 | `standard` | 分析深度（quick / standard / deep），影响步骤 1–2 粒度 |
-| `--solution` | 否 | — | 上游解决方案编号，自动定位对应文件 |
 
 ## 适用场景
 
@@ -59,24 +152,6 @@ description: >
 | 已有需求分析，需要编写 PRD | 否 → sdx-prd |
 | 已有 PRD，需技术方案设计 | 否 → sdx-design |
 
-## 工作流（五步）
-
-按顺序执行；每步算法、depth 差异与 Q-n 处理见 [reference/workflow-spec.md](reference/workflow-spec.md)。
-
-1. **深度研究与探索** — §1.3「研究与分析」及范围/假设；领域边界、核心规则、跨域协作；按影响面按需读库，禁止通读全仓
-2. **需求细化与建模** — §2 按 **FR-n** 分节（描述、规则 BR、业务对象、验收）；§3 非功能；歧义标 Q-n 并交互确认，结果融入 §1.3 / 各 FR，**不再单独设「业务规则」「数据需求」章**
-3. **MVP 拆分与规划** — §4.1–§4.3（总览、分 MVP 详述、依赖图）
-4. **依赖分析与风险评估** — §5.1 依赖表、§5.2 风险 R-n
-5. **文档输出与评审** — 严格套 [assets/analysis-template.md](assets/analysis-template.md)；§6 附录（含 §6.4 质量自查）；语言审查；按 [reference/quality-checklist.md](reference/quality-checklist.md) **逐项**自查；**凡已满足通过标准的条目**，在写入 `ANALYSIS-*.md` 时须将该项由 `- [ ]` 改为 `- [x]`，未满足的保持 `- [ ]` 并先修复或说明，不得虚假勾选
-
-辅助校验：
-
-```bash
-.cursor/skills/sdx-analysis/scripts/validate-analysis.sh
-# 可选：检查闸门标记（须与 --file 或全量扫描联用）
-.cursor/skills/sdx-analysis/scripts/validate-analysis.sh --file path/to/ANALYSIS-xxx.md --gate-check
-```
-
 ## 核心约束
 
 | 约束 | 说明 |
@@ -85,7 +160,7 @@ description: >
 | 受众可读 | 正文以产品/需求语言为主；工程线索集中 **§6.3 变更历史**（须标注「待研发确认」）；细则见 [reference/audience-and-language.md](reference/audience-and-language.md) |
 | 证据优先 | 须引用解决方案与 `knowledge/` 等校准，禁止臆测；写入时转为需求/业务表述 |
 | 按需加载 | 仅在本轮需要时打开文件，禁止为完整性通读全仓 |
-| 歧义标注 | 不确定项标 Q-n，逐一向用户提问确认（每题 3–4 个选项 + 「其他」）；澄清结果写入 §1.3 或对应 **FR-n**，模板无单独 Q 表 |
+| 歧义标注 | 不确定项标 Q-n，逐一向用户提问确认；澄清结果写入 §1.3 或对应 **FR-n**，模板无单独 Q 表 |
 | 范围清晰 | 仅产出需求分析文档，不涉及 PRD / ADD / 代码 |
 | 可追溯 | FR→G、BR→FR（规则表置于 FR 节内）、MVP→FR、R→依赖或影响面 |
 | 自查勾选 | 质量门禁通过后，交付物 **§6.4** 中已通过项须为 `- [x]`；未通过项保持 `- [ ]` 直至修复（禁止未达标而全选） |
@@ -102,20 +177,24 @@ description: >
 | 下游 | `sdx-design` | 基于 PRD 进行技术方案设计 |
 | 下游 | `sdx-test` | 基于 PRD 与 ADD 进行测试设计 |
 
-## 工程化支持
+---
 
-仓库 [`.cursor/hooks.json`](../../hooks.json) 注册了 `preToolUse` 钩子（`Write` / `StrReplace`），脚本见 [`.cursor/hooks/sdx-analysis-gate-write.py`](../../hooks/sdx-analysis-gate-write.py)；Cursor 需启用 Hooks 方生效。编辑 `application/analysis/` 时建议加载 [`.cursor/rules/sdx-analysis.md`](../../rules/sdx-analysis.md)。
-
-## 参考
+## 参考资源（按需打开）
 
 | 资源 | 路径 | 何时读 |
 |------|------|--------|
-| 五步工作流（算法、depth、Q-n、数据流） | [reference/workflow-spec.md](reference/workflow-spec.md) | 步骤执行时，规则不确定时 |
-| 受众与文档语言 | [reference/audience-and-language.md](reference/audience-and-language.md) | 步骤 5 语言审查时 |
-| 核心概念与 IDEA-ID 落盘示例 | [reference/core-concepts.md](reference/core-concepts.md) | 口径对齐、编号规则不确定时 |
-| 设计原则、反模式、错误处理 | [reference/design-principles.md](reference/design-principles.md) | 遇到边界判断、错误场景时 |
-| 质量验收清单 | [reference/quality-checklist.md](reference/quality-checklist.md) | 步骤 5 自查时 |
-| 需求分析文档模板 | [assets/analysis-template.md](assets/analysis-template.md) | 步骤 5 生成文档时 |
-| 会话 spec 骨架（可选） | [assets/analysis-session-spec-template.md](assets/analysis-session-spec-template.md) | 阶段 1 落中间 spec 时 |
-| 常见陷阱与防错 | [gotchas.md](gotchas.md) | 遇到输入缺失、需求细化、MVP 拆分相关问题时 |
-| 文档结构校验脚本 | [scripts/validate-analysis.sh](scripts/validate-analysis.sh) | 步骤 5 自动验证时 |
+| brainstorming 嵌入、与独立 `/brainstorming` 的差异、Gn 内多方案子流程 | [reference/brainstorming-integration.md](reference/brainstorming-integration.md) | 阶段二对话节奏、多方案取舍时 |
+| 门禁状态机、精简 4G、回跳影响面、Q-n 协议、G1–G6 填充算法 | [reference/workflow-spec.md](reference/workflow-spec.md) | 流程不确定时 |
+| 核心概念与 IDEA-ID / 编号规则 | [reference/core-concepts.md](reference/core-concepts.md) | 编号规则不确定时 |
+| 受众定位与语言转写规则 | [reference/audience-and-language.md](reference/audience-and-language.md) | 终检或语言审查时 |
+| 设计原则与错误处理 | [reference/design-principles.md](reference/design-principles.md) | 遇到边界判断或错误场景时 |
+| 反模式与常见陷阱 | [gotchas.md](gotchas.md) | 遇到歧义处理、MVP 拆分等问题时 |
+| 质量验收清单 | [reference/quality-checklist.md](reference/quality-checklist.md) | 终检、§6.4 逐项勾选时 |
+| 需求分析文档模板（六章） | [assets/analysis-template.md](assets/analysis-template.md) | 阶段三生成终稿时 |
+| 会话草稿骨架 | [assets/analysis-session-spec-template.md](assets/analysis-session-spec-template.md) | 阶段二落草稿时 |
+
+---
+
+## 工程化支持
+
+仓库 [.agent/hooks.json](../../hooks.json) 注册了 `preToolUse` 钩子（`Write` / `StrReplace`），脚本见 [.agent/hooks/sdx-analysis-gate-write.py](../../hooks/sdx-analysis-gate-write.py)；需启用 Hooks 方生效。编辑 `application/analysis/` 时建议加载 [.agent/rules/sdx-analysis.md](../../rules/sdx-analysis.md)。

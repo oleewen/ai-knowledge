@@ -67,8 +67,8 @@
 │   ├── rules/                    # 规范与模板（CONVENTIONS、各子域 rules）
 │   └── skills/                   # Slash 技能（SKILL.md）
 │       └── README.md             # Slash 命令一览
-├── .cursor/                      # Cursor 工作区（若纳入版本库；非 docs-init 默认下发）
-│   └── skills/                   # 本地 Agent 技能（如 skill-creator）
+├── .cursor/                      # 可选：Cursor IDE 工作区配置（若纳入版本库；Slash 技能以 `.agent/skills/` 为准）
+│   └── …                         # 插件缓存等；与 `.agent/` 职责不同
 └── .trea/                        # Trea Agent 配置（若存在）
 ```
 
@@ -189,12 +189,12 @@
 | `./application/knowledge/data/README.md`      | DS→ENT 分层与敏感级别/映射字段   | `数据视角` `映射字段` | `application/DESIGN.md` | 数据实体目录 | ⭐⭐⭐ |
 
 
-### 3.8 Cursor 工作区技能（.cursor/skills）
+### 3.8 Slash 技能（.agent/skills）
 
 
 | 文件路径                                      | 功能精要                                                                                   | 检索标签               | 上游依赖                                                                                                                | 下游被依赖     | 重要度 |
 | ----------------------------------------- | -------------------------------------------------------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------- | --------- | --- |
-| `./.cursor/skills/skill-creator/SKILL.md` | Anthropic 官方 Skill-Creator（创建/评测/迭代；`scripts/`、`eval-viewer/`、`references/schemas.md`） | `Cursor` `Agent技能` | [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) `plugins/skill-creator` | 本仓库本地扩展技能 | ⭐⭐  |
+| `./.agent/skills/skill-creator/SKILL.md` | Anthropic 官方 Skill-Creator（创建/评测/迭代；`scripts/`、`eval-viewer/`、`references/schemas.md`）；本仓库副本见 [`.agent/skills/README.md`](./.agent/skills/README.md) | `Cursor` `Agent技能` | [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) `plugins/skill-creator` | 本仓库本地扩展技能 | ⭐⭐  |
 
 
 ## 4. 核心数据流（Mode 3）
@@ -255,8 +255,8 @@
 - **AI 规则与技能未精读**
   - `./.agent/rules/`**（仅精读了 `./.agent/rules/CONVENTIONS.md`；其余规则模板未逐一精读）
   - `./.agent/skills/`**（已精读 `docs-indexing`/`docs-change`；并抽读 `agent-guide`、`knowledge-upgrade` 的入口与阶段划分；其余技能未逐一精读）
-- **Cursor 工作区技能**
-  - `./.cursor/skills/skill-creator/`**（本次精读 `SKILL.md`、`references/schemas.md`；`eval-viewer/`、`scripts/*.py` 未逐行精读；缓存与二进制资源不纳入语义断言）
+- **skill-creator（.agent/skills）**
+  - `./.agent/skills/skill-creator/`**（本次精读 `SKILL.md`、`references/schemas.md`；`eval-viewer/`、`scripts/*.py` 未逐行精读；缓存与二进制资源不纳入语义断言）
 
 ## 7. AI 查阅指北（检索表 + Prompt 模板）
 

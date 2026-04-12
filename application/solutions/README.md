@@ -13,8 +13,6 @@
 
 | 解决方案编号               | 标题                          | 关联需求                               | 状态  | 更新时间       |
 | -------------------- | --------------------------- | ------------------------------------ | --- | ---------- |
-| SOLUTION-260411-sdx-analysis-gate-workflow | 需求分析技能（sdx-analysis）对齐闸门式协作与两阶段交付 | （待链 ANALYSIS-260411-sdx-analysis-gate-workflow） | 草稿  | 2026-04-11 |
-| SOLUTION-260411-sdx-solution-workflow | 解决方案阶段：闸门式协作与「先共识稿、后定稿」工作方式 | SPEC-2026-04-11-sdx-solution-workflow | 草稿  | 2026-04-11 |
 | SOLUTION-20240601-01 | 示例方案标题（可替换）                | ANALYSIS-20240525-01                 | 草稿  | 2024-06-01 |
 
 
@@ -27,8 +25,8 @@
 
 ## 规范与模板
 
-- **阶段目标与工作流**：见 [../../.cursor/skills/sdx-solution/SKILL.md](../../.cursor/skills/sdx-solution/SKILL.md)（闸门确认 → 中间 spec → `SOLUTION-*` 骨架与分块填充 → 终检）；若技能安装于 `.agent/skills/`，以目标工程内实际路径为准。
-- **文档模板**：见 [../../.cursor/skills/sdx-solution/assets/solution-template.md](../../.cursor/skills/sdx-solution/assets/solution-template.md)。
+- **阶段目标与工作流**：见 [../../.agent/skills/sdx-solution/SKILL.md](../../.agent/skills/sdx-solution/SKILL.md)（闸门确认 → 中间 spec → `SOLUTION-*` 骨架与分块填充 → 终检）；若技能安装于 `.agent/skills/`，以目标工程内实际路径为准。
+- **文档模板**：见 [../../.agent/skills/sdx-solution/assets/solution-template.md](../../.agent/skills/sdx-solution/assets/solution-template.md)。
 
 ## 集成关系
 

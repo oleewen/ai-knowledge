@@ -25,7 +25,7 @@ MARKER_CONFIRMED = "<!-- sdx-solution-gate: CONFIRMED -->"
 
 def _repo_root() -> Path:
     here = Path(__file__).resolve()
-    # .cursor/hooks/script.py -> parents[2] == repo root
+    # .agent/hooks/script.py -> parents[2] == repo root
     return here.parents[2]
 
 

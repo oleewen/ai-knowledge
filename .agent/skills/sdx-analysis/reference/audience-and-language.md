@@ -24,4 +24,4 @@ Agent **可以**查阅 `knowledge/`、`knowledge/technical/`、INDEX_GUIDE 等�
 产出结构见 [../assets/analysis-template.md](../assets/analysis-template.md)。模板**仅保留章节骨架与文末元数据示例**，不在文首重复「读者与语言」或「元数据位置」说明。
 
 - **读者与语言**（含上表与 Agent 转写要求）：以**本文件**与解决方案侧 [audience-and-language.md](../../sdx-solution/reference/audience-and-language.md) 为准。
-- **元数据**（禁止文件头 `---`、`parent`/`reviewers`/`tags` 等仅文末 fenced YAML）：以 [../gotchas.md](../gotchas.md)「步骤 5：文档输出」及模板文末「## 文档元数据」示例为准。
+- **元数据**（禁止文件头 `---`、`parent`/`reviewers`/`tags` 等仅文末 fenced YAML）：以 [../gotchas.md](../gotchas.md)「G6：§6 附录与定稿」及模板文末「## 文档元数据」示例为准。

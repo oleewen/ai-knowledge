@@ -3,12 +3,12 @@
   "hooks": {
     "preToolUse": [
       {
-        "command": ".cursor/hooks/sdx-solution-gate-write.py",
+        "command": ".agent/hooks/sdx-solution-gate-write.py",
         "matcher": "Write|StrReplace",
         "failClosed": false
       },
       {
-        "command": ".cursor/hooks/sdx-analysis-gate-write.py",
+        "command": ".agent/hooks/sdx-analysis-gate-write.py",
         "matcher": "Write|StrReplace",
         "failClosed": false
       }
