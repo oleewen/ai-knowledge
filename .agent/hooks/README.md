@@ -5,6 +5,7 @@
 | [sdx-solution-gate-write.py](sdx-solution-gate-write.py) | `preToolUse`（`Write` / `StrReplace`） | 拦截在未完成中间 spec 总确认前对 `**/solutions/SOLUTION-*.md` 的写入；详见 [.agent/skills/sdx-solution/SKILL.md](../skills/sdx-solution/SKILL.md) |
 | [sdx-analysis-gate-write.py](sdx-analysis-gate-write.py) | `preToolUse`（`Write` / `StrReplace`） | 拦截在未完成中间 spec 总确认前对 `**/analysis/ANALYSIS-*.md` 的写入；详见 [.agent/skills/sdx-analysis/SKILL.md](../skills/sdx-analysis/SKILL.md) |
 | [sdx-prd-gate-write.py](sdx-prd-gate-write.py) | `preToolUse`（`Write` / `StrReplace`） | 拦截在未完成中间 spec 总确认前对 `**/requirements/**/PRD-*.md` 的写入；详见 [.agent/skills/sdx-prd/SKILL.md](../skills/sdx-prd/SKILL.md) |
+| [sdx-test-gate-write.py](sdx-test-gate-write.py) | `preToolUse`（`Write` / `StrReplace`） | 拦截在未完成中间 spec 总确认前对 `**/requirements/**/TDD-*.md` 的写入；详见 [.agent/skills/sdx-test/SKILL.md](../skills/sdx-test/SKILL.md) |
 
 ## 如何自动生效（无需单独「Hooks 总开关」）
 

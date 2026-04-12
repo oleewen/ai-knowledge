@@ -16,6 +16,11 @@
         "command": ".agent/hooks/sdx-prd-gate-write.py",
         "matcher": "Write|StrReplace",
         "failClosed": false
+      },
+      {
+        "command": ".agent/hooks/sdx-test-gate-write.py",
+        "matcher": "Write|StrReplace",
+        "failClosed": false
       }
     ]
   }
