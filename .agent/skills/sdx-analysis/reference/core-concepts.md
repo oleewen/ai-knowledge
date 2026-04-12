@@ -1,25 +1,58 @@
 # 核心概念（sdx-analysis）
 
-面向产品/需求分析语境的术语与目标，供阶段二 **G1–G6** 对齐口径。算法与决策点见 [workflow-spec.md](workflow-spec.md)。
+---
 
 ## IDEA-ID
 
-**IDEA-ID** 的定义（统一格式 `*-{YYMMDD}-{主题slug}` 中的 `{YYMMDD}-{主题slug}` 段）见 [sdx-solution：core-concepts §IDEA-ID](../../sdx-solution/reference/core-concepts.md#idea-id)。
+统一格式：`{YYMMDD}-{主题}`（与上游 sdx-solution 保持一致）
 
-本阶段路径示例：输出 `{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md`；上游 `{DOC_DIR}/solutions/SOLUTION-{IDEA-ID}.md`；下游需求包目录 `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/`（与 **sdx-prd** 等一致）。
+- `YYMMDD`：创建日期，如 `260412`
+- `主题`：以中文为主的短名，2–6 字，如 `审批提效`、`费用申诉优化`
+- 须与上游 `SOLUTION-{IDEA-ID}.md` 同链对齐
 
-## 深度研究
+**路径示例**：
+- 会话 spec：`docs/superpowers/specs/2026-04-12-审批提效-sdx-analysis.md`
+- 需求分析：`{DOC_DIR}/analysis/ANALYSIS-260412-审批提效.md`
+- 上游解决方案：`{DOC_DIR}/solutions/SOLUTION-260412-审批提效.md`
 
-从业务边界、核心规则、跨部门/跨系统协作、行业惯例等维度澄清「做什么、不做什么」。内部分析可对照知识库识别**现有能力缺口与历史约束**；写入文档时改为**对业务与协作的影响**表述，不罗列模块或栈名。
+---
 
-## 需求细化
+## 编号体系
 
-把方案目标拆成带优先级（P0–P3）的功能诉求与非功能诉求。功能用**输入信息—处理规则—产出与验收**描述；非功能用**用户可感知的体验与承诺**（时效、可用场景、合规要求等）描述，避免接口与存储细节。
+| 前缀 | 用途 | 示例 |
+|------|------|------|
+| `G-n` | 业务目标（来自上游 SOLUTION，§1.2 对齐） | `G-1 提升审批效率` |
+| `FR-nnn` | 功能需求（§2） | `FR-001` |
+| `BR-nnn` | 业务规则（落在对应 FR 节内） | `BR-001` |
+| `R-n` | 风险（§5.2） | `R-1` |
+| `MVP-n` | 交付阶段（§4） | `MVP-1` |
+| `Q-n` | 待澄清问题（阶段二门禁交互） | `Q-1` |
 
-## MVP 拆分
+> **G{n}**（大括号）= 流程门禁编号；**G-n**（连字符）= 业务目标编号，二者不可混用。
 
-按独立业务价值、可独立交付、依赖尽量单向等原则划分阶段；每个 MVP 写清范围、清单与**可验证的验收要点**。
+---
 
-## 需求分析文档
+## 深度参数（--depth）
 
-遵循 [../assets/analysis-template.md](../assets/analysis-template.md) 的**六章**结构：功能需求以 **FR-n** 分节，**BR-n** 与业务对象表写在对应 FR 节内；非功能、交付计划、依赖与风险、附录（含 **§6.3 变更历史**、**§6.4 质量自查**）。语言规范见 [audience-and-language.md](audience-and-language.md) 与 [design-principles.md](design-principles.md)。
+| 值 | 行为 |
+|----|------|
+| `quick` | 仅研究领域边界与核心规则；仅细化 P0/P1 功能需求 |
+| `standard` | 完整四维度研究；完整功能需求细化（默认） |
+| `deep` | 增加对标与可行性要点；工程数值可收敛至 §6.3 并标注「待研发确认」；写入正文仍须业务表述 |
+
+---
+
+## 需求分析文档（ANALYSIS）六章结构
+
+遵循 [../assets/analysis-template.md](../assets/analysis-template.md)：
+
+| 章节 | 内容 |
+|------|------|
+| §1 背景目标 | 需求背景、目标（G-n 对齐）、范围与边界、假设与约束、研究与分析 |
+| §2 功能需求 | FR-n 分节（含 BR、业务对象、验收标准）+ 概览表 |
+| §3 非功能需求 | 体验与性能、可用性、安全合规、可追溯、兼容升级 |
+| §4 交付计划 | MVP 总览、分 MVP 详述、依赖关系图 |
+| §5 依赖与风险 | 依赖关系表、风险 R-n |
+| §6 附录 | 术语、参考、变更历史、质量自查（§6.4） |
+
+**元数据**：仅在文末「## 文档元数据」内的 fenced `yaml` 中，禁止文件开头写 `---` YAML frontmatter。
