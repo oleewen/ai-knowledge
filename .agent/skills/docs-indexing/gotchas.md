@@ -6,6 +6,8 @@
 
 ## 参数门禁
 
+**一次性汇总提问与便捷预设**：允许在一条消息中列出 mode、depth、output、since 并附预设（如 A/B/C…），见 [reference/scan-config-onboarding.md](reference/scan-config-onboarding.md)。**门禁完整性不变**：进入步骤 3 前，上述影响行为的参数须均已由用户明确确认；选中预设后仍须复述最终字面量，禁止「默认按预设执行」。
+
 **无历史日志仍强行增量，或 Agent 擅自改为全量**：`INDEXING-LOG.md` 不存在或无法解析有效 `indexing_finished_ms` 时，说明增量前提不满足，请用户确认改走全量或中止。禁止在未确认时执行任一种模式，也禁止 Agent 自动降级为 full。
 
 **深度由 Agent 代选或未确认即执行**：可向用户转述常见取舍（大库初扫往往先选 1，全量精读选 3），但不得替用户勾选；用户选定后再执行。

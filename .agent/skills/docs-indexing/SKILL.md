@@ -51,11 +51,13 @@ description: >
 
 ### 步骤 1：环境准备
 
-读取历史日志 `changelogs/INDEXING-LOG.md`（若存在），仅用于向用户展示信息或提供候选 `--since`，不据此自动锁定模式或时间戳。验证输出路径可写。
+读取历史日志 `changelogs/INDEXING-LOG.md`（若存在），仅用于向用户展示信息或提供候选 `--since`，不据此自动锁定模式或时间戳。验证输出路径可写。建议按 [reference/scan-config-onboarding.md](reference/scan-config-onboarding.md)「上下文探索」核对事实后再进入步骤 2。
 
 ### 步骤 2：扫描配置（门禁）
 
 完成用户确认：`mode` + `depth`（以及本流程需要的 `--output` / `--since`）。**未完成确认前禁止进入步骤 3。**
+
+引导方式：可将待确认项**一次性列出**，并附**便捷预设**（如 full+1、incremental+2 等），降低来回成本；预设与话术见 [reference/scan-config-onboarding.md](reference/scan-config-onboarding.md)。无论单条还是多轮沟通，**凡影响索引行为的取值均须用户明确确认**；选中预设后仍须**复述完整参数**再执行。
 
 ### 步骤 3：变更分析
 
@@ -110,6 +112,7 @@ scripts/indexing.sh --mode <用户已确认的 mode> --depth <用户已确认的
 
 | 资源                       | 路径                                                               | 何时读                  |
 | ------------------------ | ---------------------------------------------------------------- | -------------------- |
+| 扫描配置引导与便捷预设（门禁前汇总提问） | [reference/scan-config-onboarding.md](reference/scan-config-onboarding.md) | 步骤 1～2，需对齐上下文或一次性确认参数时 |
 | 扫描执行规范（深度/模式/过滤/日志/错误处理） | [reference/scan-spec.md](reference/scan-spec.md)                 | 步骤 4 扫描时，深度/模式规则不确定时 |
 | 九章文档结构规范                 | [reference/nine-chapter-spec.md](reference/nine-chapter-spec.md) | 步骤 6 生成文档时           |
 | 质量验证清单                   | [reference/quality-standards.md](reference/quality-standards.md) | 步骤 5 验证时             |
