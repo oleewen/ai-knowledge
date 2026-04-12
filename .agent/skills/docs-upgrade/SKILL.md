@@ -30,6 +30,8 @@ description: >
 
 范围明显过大（如无边界全库术语替换）时，先与用户确认批次或排除目录，再继续。
 
+意图不清、多策略取舍或大范围同步前需澄清时，可按 [reference/brainstorming-preflight.md](reference/brainstorming-preflight.md) 做 **brainstorming 式预检**（分步提问、方案比选、同步前 HARD-GATE）；路径与指令已明确的小改仍走快路径、直接执行主流程。
+
 ## 替换简写
 
 以下三种形式等价，trim 后把 `a` 替换为 `b`，分隔符与 `a`、`b` 之间可以有空格：
@@ -46,13 +48,15 @@ description: >
 
 ### 步骤 1：锁定目标
 
-解析用户给出的路径；无路径时用搜索定位候选，多候选则列出选项后再编辑。
+解析用户给出的路径；无路径时用搜索定位候选，多候选则列出选项后再编辑。预检指引见 [reference/brainstorming-preflight.md](reference/brainstorming-preflight.md)。
 
 ### 步骤 2：主修改
 
 按用户意图完成增写、改写或替换（含注释与字符串中的文档性表述）。
 
 ### 步骤 3：关联与语义同步
+
+大范围同步或命中数/概念边界存疑时，先完成 [reference/brainstorming-preflight.md](reference/brainstorming-preflight.md) 中的 **同步前闸门** 再扩展检索与改写。
 
 **默认**（用户未声明「只改本文件」时）对本轮已修改的每个文件同时做：
 
@@ -67,7 +71,7 @@ description: >
 
 ### 步骤 5：不确定项门禁
 
-无法在仓库内核实的内容 → **停止并输出编号选项**，待用户选择后再改。
+无法在仓库内核实的内容 → **停止并输出编号选项**，待用户选择后再改。复杂项可拆成多轮单问，见 [reference/brainstorming-preflight.md](reference/brainstorming-preflight.md)。
 
 ## 须由用户决策的情形
 
@@ -92,6 +96,7 @@ description: >
 
 | 资源 | 路径 | 何时读 |
 |------|------|--------|
+| brainstorming 式预检（快路径/同步前闸门/分步提问） | [reference/brainstorming-preflight.md](reference/brainstorming-preflight.md) | 意图不清、多方案取舍、步骤 3 前需确认范围时 |
 | 关联发现（入站/出站/链式深度） | [reference/related-doc-discovery.md](reference/related-doc-discovery.md) | 步骤 3 引用链检索时 |
 | 关键词与语义对齐策略 | [reference/semantic-keyword-discovery.md](reference/semantic-keyword-discovery.md) | 步骤 3 关键词检索时 |
 | 常见误判与范围控制 | [gotchas.md](gotchas.md) | 遇到范围过大、近义词误判、替换歧义时 |
