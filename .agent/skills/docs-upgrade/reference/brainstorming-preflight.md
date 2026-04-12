@@ -1,6 +1,8 @@
 # docs-upgrade：brainstorming 式前置（预检）
 
-本页说明如何在**不替代**本技能「定向改文件」主路径的前提下，借用 brainstorming 的**机制**（上下文探索、分步提问、方案比选、门禁）。**不是** superpowers 中「先写设计文档到 `docs/superpowers/specs/` 再实现」的完整 brainstorming；那是独立工作流，与本技能默认行为分开。
+意图不清、多策略取舍、或步骤 3 大范围同步前需确认范围时读本文件。说明何时走快路径、何时做预检、以及写盘前的 HARD-GATE 条件。
+
+本页借用 brainstorming 的**机制**（上下文探索、分步提问、方案比选、门禁），**不是** superpowers 中「先写设计文档到 `docs/superpowers/specs/` 再实现」的完整 brainstorming 工作流。
 
 ---
 

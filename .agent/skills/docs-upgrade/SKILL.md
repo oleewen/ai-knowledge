@@ -3,9 +3,10 @@ name: docs-upgrade
 description: >
   定向增改仓库内 Markdown、源代码注释与配置文本；落盘后自动做链式同步：沿引用链查找关联处，
   并辅以关键词检索（同义/近义/中英文同义表述）定位需对齐的内容后替换。
-  当用户执行 /docs-upgrade、列出待改文件路径、粘贴或引用具体文件片段并要求修改/对齐/替换术语、
-  或需要统一文档表述、更新注释、同步引用链时，务必使用本技能并直接改文件。
-  即使用户只说"帮我改一下这个文档"、"把 X 统一成 Y"、"更新一下注释"，也应触发本技能。
+  只要用户提到以下任意场景，就应立即使用本技能，不要等用户明确说"/docs-upgrade"：
+  改文档、改注释、统一术语、对齐表述、替换词语、更新说明、同步引用链、
+  "帮我改一下这个文档"、"把 X 统一成 Y"、"更新一下注释"、"这里的说法不一致"、
+  "把这段改成..."、"文档里有个错别字"、"注释过时了"、"把所有 X 改成 Y"。
   支持替换简写：a - b、a > b、a 2 b 均表示将 a 替换为 b。
 ---
 
@@ -24,13 +25,11 @@ description: >
 
 ## 能力边界
 
-包含：文档、纯文本、代码与配置中的注释、字符串内文档路径；链式引用检索 + 关键词检索（同义/近义/中英文对应）。
+**包含**：文档、纯文本、代码与配置中的注释、字符串内文档路径；链式引用检索 + 关键词检索（同义/近义/中英文对应）。
 
-不包含（除非用户明确要求同步文档/注释）：纯业务逻辑重构、与文档无关的大规模代码改写。
+**不包含**（除非用户明确要求）：纯业务逻辑重构、与文档无关的大规模代码改写。
 
-范围明显过大（如无边界全库术语替换）时，先与用户确认批次或排除目录，再继续。
-
-意图不清、多策略取舍或大范围同步前需澄清时，可按 [reference/brainstorming-preflight.md](reference/brainstorming-preflight.md) 做 **brainstorming 式预检**（分步提问、方案比选、同步前 HARD-GATE）；路径与指令已明确的小改仍走快路径、直接执行主流程。
+范围明显过大（如无边界全库术语替换）时，先与用户确认批次或排除目录再继续。意图不清、多策略取舍或大范围同步前需澄清时，按 [reference/brainstorming-preflight.md](reference/brainstorming-preflight.md) 做预检；路径与指令已明确的小改走快路径直接执行。
 
 ## 替换简写
 
@@ -56,12 +55,12 @@ description: >
 
 ### 步骤 3：关联与语义同步
 
-大范围同步或命中数/概念边界存疑时，先完成 [reference/brainstorming-preflight.md](reference/brainstorming-preflight.md) 中的 **同步前闸门** 再扩展检索与改写。
+大范围同步或命中数/概念边界存疑时，先完成 [reference/brainstorming-preflight.md](reference/brainstorming-preflight.md) 中的**同步前闸门**再扩展。
 
 **默认**（用户未声明「只改本文件」时）对本轮已修改的每个文件同时做：
 
-- **引用链检索**：出站（本文件引用了谁）与入站（谁引用了本文件），将关联处与本次变更同一概念、重复表述、需对齐的句子或术语一并修订。细则见 [reference/related-doc-discovery.md](reference/related-doc-discovery.md)。
-- **关键词/语义检索**：当文件间无直接链接但存在同义/近义/中英文对应表述、复制粘贴段或同一术语散落多处时，分轮检索各候选词面，按 [reference/semantic-keyword-discovery.md](reference/semantic-keyword-discovery.md) 判断是否应改。
+- **引用链检索**：出站（本文件引用了谁）与入站（谁引用了本文件），将关联处与本次变更同一概念、需对齐的术语或表述一并修订。细则见 [reference/related-doc-discovery.md](reference/related-doc-discovery.md)。
+- **关键词/语义检索**：文件间无直接链接但存在同义/近义/中英文对应表述、复制段或同一术语散落多处时，按 [reference/semantic-keyword-discovery.md](reference/semantic-keyword-discovery.md) 判断是否应改。
 
 **例外**：用户明确说「只改本文件」「不要同步关联文档」「不要全库搜」时，跳过扩展检索。
 
