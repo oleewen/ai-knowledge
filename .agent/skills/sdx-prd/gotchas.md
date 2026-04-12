@@ -1,5 +1,7 @@
 # sdx-prd 常见陷阱
 
+下文「步骤 1–5」为 [workflow-spec.md](reference/workflow-spec.md) 中的**填充算法**（历史依赖顺序）；**阶段二**按门禁 Gn 收口，**阶段三**按 §1–§11 分块定稿。流程与闸门总览见 [SKILL.md](SKILL.md)。
+
 ---
 
 ## 前置与输入
