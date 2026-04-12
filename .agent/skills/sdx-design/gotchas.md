@@ -2,6 +2,12 @@
 
 ---
 
+## 闸门与会话 spec
+
+**未完成 Qclose-1 即写入 ADD**：须先在 `docs/superpowers/specs/` 维护 `...-sdx-design.md`，全部门禁收口后将 `<!-- sdx-design-gate: PENDING -->` 改为 `CONFIRMED`，且正文包含目标 `ADD-*.md` 文件名。跳过此步骤会导致钩子拦截或评审口径不一致。例外仅见 [SKILL.md](../SKILL.md) **HARD-GATE** 与 `SDX_DESIGN_ALLOW_ADD_WRITE=1`。
+
+---
+
 ## 前置与输入
 
 **无 PRD 直接开始技术设计**：PRD 是硬输入，不存在时终止并提示先执行 `sdx-prd`。跳过这一步会导致 DD-n / API-n 无法追溯到 US-n / FR-n，可追溯链从根部断裂，开发阶段无法对齐需求边界。

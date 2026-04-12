@@ -13,6 +13,11 @@
         "failClosed": false
       },
       {
+        "command": ".agent/hooks/sdx-design-gate-write.py",
+        "matcher": "Write|StrReplace",
+        "failClosed": false
+      },
+      {
         "command": ".agent/hooks/sdx-prd-gate-write.py",
         "matcher": "Write|StrReplace",
         "failClosed": false

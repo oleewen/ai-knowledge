@@ -1,6 +1,6 @@
 # 核心概念（sdx-design）
 
-技术方案设计阶段的术语与产出口径，供步骤 1–4 对齐。算法、`--depth` 差异与角色分工见 [workflow-spec.md](workflow-spec.md)。
+技术方案设计阶段的术语与产出口径，供阶段三内容生成（下篇原四步）对齐。三阶段与门禁见 [SKILL.md](../SKILL.md)；算法、`--depth` 差异与角色分工见 [workflow-spec.md](workflow-spec.md)。
 
 ## IDEA-ID
 
@@ -23,3 +23,7 @@
 ## ADD 文档
 
 架构设计说明书，严格遵循 [../assets/add-template.md](../assets/add-template.md) 的五章结构（设计概述→架构设计→详细设计→需求规约→附录）。受众与用语见 [audience-and-language.md](audience-and-language.md)。
+
+## 会话 spec 与目标文件名
+
+阶段二会话 spec 路径：`docs/superpowers/specs/YYYY-MM-DD-<topic>-sdx-design.md`。文末须含 `<!-- sdx-design-gate: PENDING | CONFIRMED -->`，且正文至少出现一次与落盘一致的 **`ADD-*.md` 完整文件名**，供钩子与 `validate-design.sh --gate-check` 匹配。

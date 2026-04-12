@@ -1,5 +1,7 @@
 # 技术设计质量验收清单（sdx-design）
 
+> **闸门式工作流**：终检前须已完成会话 spec 用户总确认（见 [SKILL.md](../SKILL.md)）；`validate-design.sh --file <path> --gate-check` 可核对 `CONFIRMED` 与会话 spec 是否引用该 ADD 文件名。
+
 步骤 4 门禁：Agent 在文档输出与评审时**打开本文件**并对照模板 **§5.2** 逐项落实。**完整通过标准**以 [../assets/add-template.md](../assets/add-template.md) **§5.2 质量自查表** 正文为准（每条下的 *通过标准* 为最低放行条件）；下表为快速执行摘要。**定稿写入 `ADD-*.md` 时**：对已达标的条目，须在正文 **§5.2** 将 `- [ ]` 改为 `- [x]`；未达标项保持 `- [ ]` 直至修复，不得虚假勾选。
 
 规范层原则与反模式见 [design-principles.md](design-principles.md)。
