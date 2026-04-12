@@ -33,7 +33,18 @@ description: >
 | `--mode`   | 否   | `update` | `create`（初始化）或 `update`（增量合并） |
 
 
-## 工作流（五步）
+## 工作流（步骤 0 + 五步）
+
+### 步骤 0：范围对齐（快速路径 / 澄清路径）
+
+默认走**快速路径**：用户已通过参数或自然语言明确 **`--output`**（`readme` / `agents` / `both`）与 **`--mode`**（`create` / `update`），且任务指向本仓库的 README/AGENTS、范围无歧义 → **不强制**多轮提问，直接进入步骤 1。
+
+**澄清路径**（条件触发）：意图模糊（例如仅说「整理文档」「写个入口」而未说明新建或增量、是否只更新其一）→ **HARD-GATE**：在确认以下两项**之前**不得写入或覆盖根目录 `README.md` / `AGENTS.md`：
+
+- **输出范围**：`readme` / `agents` / `both`（若建议默认 `both`，须用户确认或明示接受）
+- **模式**：`create`（初始化）或 `update`（增量合并）
+
+**分步提问**：一次只问一个澄清点；可先给出推荐选项请用户确认。触发条件与执行细节见 [reference/execution-spec.md](reference/execution-spec.md) §0。
 
 ### 步骤 1：Index 解析
 
@@ -91,6 +102,7 @@ bash .agent/skills/agent-guide/scripts/validate-guide.sh --root .
 | 约束                | 说明                                         |
 | ----------------- | ------------------------------------------ |
 | 零幻觉               | 无落盘 INDEX 不编造结构；未读路径不写成已核实结论               |
+| 意图未清不落盘           | 符合步骤 0「澄清路径」时，确认输出范围与模式前不写 README/AGENTS        |
 | 单一事实源             | 命令块只在 README；AGENTS 概述 ≤3 行；不复制 INDEX §3 表 |
 | 先 README 后 AGENTS | 避免命令块在两处重复                                 |
 | INDEX 只读          | 禁止在本 Skill 内调用 docs-indexing 或重做索引         |
@@ -110,7 +122,7 @@ bash .agent/skills/agent-guide/scripts/validate-guide.sh --root .
 
 | 资源                           | 路径                                                               | 何时读                   |
 | ---------------------------- | ---------------------------------------------------------------- | --------------------- |
-| 执行规范（Index 解析 + 探索策略 + 错误处理） | [reference/execution-spec.md](reference/execution-spec.md)       | Index 解析规则不确定、遇到降级场景时 |
+| 执行规范（§0 范围对齐 + Index 解析 + 探索策略 + 错误处理） | [reference/execution-spec.md](reference/execution-spec.md)       | 步骤 0 触发条件、Index 解析、降级场景时 |
 | 三文件分工去重与产出规范                 | [reference/three-file-spec.md](reference/three-file-spec.md)     | 不确定某内容该放哪个文件时         |
 | 验收清单与反模式                     | [reference/quality-standards.md](reference/quality-standards.md) | 步骤 5 验证时              |
 | README 输出骨架                  | [assets/readme-skeleton.md](assets/readme-skeleton.md)           | 生成 README 时           |
