@@ -20,6 +20,23 @@
 
 ## 提交格式规范
 
+### 语言与适用范围（含 IDE 生成提交说明）
+
+在本仓库编写或生成 **任意** Git commit message（含 **Cursor / VS Code 源代码管理**中的「生成提交说明」「Generate Commit Message」）时：
+
+1. **语言**：`subject` 与 `body`、列表要点均使用**中文**；Conventional Commits 的 **type** 使用小写英文（如 `feature`、`fix`、`docs`、`refactor`、`chore`），与下表一致；`scope` 可使用英文或项目约定缩写。
+2. **格式**：首行 `<type>(<scope>): <中文主题>`，必要时空行后接正文与页脚。
+3. **禁止**：除类型前缀外，勿仅用英文撰写 subject/body。
+
+示例：
+
+```
+docs(sdx-solution): 补充工作流说明与易错点
+
+- 同步 audience 与 workflow 章节
+- 明确用户确认闸门表述
+```
+
 ### 标准格式
 ```
 <type>(<scope>): <subject>
