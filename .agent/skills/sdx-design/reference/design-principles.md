@@ -1,6 +1,6 @@
-# 设计原则与反模式
+# 设计原则与反模式（sdx-design）
 
-sdx-design 技能的完整设计约束。[SKILL.md](../SKILL.md) 中的「核心约束」为精简版，本文件为完整规范。验收勾选项见 [quality-checklist.md](quality-checklist.md)。
+[SKILL.md](../SKILL.md) 为主干；本文件为完整设计约束规范。验收勾选项见 [quality-checklist.md](quality-checklist.md)。
 
 ---
 
@@ -12,7 +12,7 @@ sdx-design 技能的完整设计约束。[SKILL.md](../SKILL.md) 中的「核心
 
 ### 2. 证据优先
 
-架构决策与设计须引用 PRD、需求分析、`knowledge/` 或工程事实，禁止凭空臆测。引用格式遵循项目规范：
+架构决策与设计须引用 PRD、需求分析、`knowledge/` 或工程事实，禁止凭空臆测。引用格式：
 
 | 证据类型 | 格式 | 示例 |
 |----------|------|------|
@@ -25,14 +25,7 @@ sdx-design 技能的完整设计约束。[SKILL.md](../SKILL.md) 中的「核心
 
 ### 3. 按需加载
 
-仅在本轮任务需要时打开文件：
-
-- 步骤 1 读 PRD + 需求分析 + 对应知识库视角（技术/业务）
-- 步骤 2 按设计需要打开具体代码位置、现有规约、ADR
-- 步骤 3 基于步骤 1–2 产出生成规约
-- 步骤 4 综合已有内容整合文档
-
-禁止为「完整性」通读 `knowledge/**` 或全仓源码。
+仅在本轮任务需要时打开文件：步骤 1 读 PRD + 需求分析 + 对应知识库视角；步骤 2 按设计需要打开具体代码位置、现有规约、ADR；步骤 3 基于步骤 1–2 产出生成规约。**禁止**为「完整性」通读 `knowledge/**` 或全仓源码。
 
 ### 4. 歧义标注
 
@@ -52,15 +45,13 @@ sdx-design 技能的完整设计约束。[SKILL.md](../SKILL.md) 中的「核心
 
 ### 7. ID 编号规范
 
-技术设计文档使用以下 ID 编号体系：
-
 | 前缀 | 用途 | 示例 |
 |------|------|------|
 | `ADD-{REQUIREMENT-ID}-MVP{N}` | 文档编号 | `ADD-20260327-001-MVP1` |
-| `DD-{NNN}` | 设计决策编号 | `DD-001`、`DD-002` |
-| `API-{NNN}` | API 接口编号 | `API-001`、`API-002` |
-| `LOGIC-{NNN}` | 业务逻辑编号 | `LOGIC-001`、`LOGIC-002` |
-| `TBL-{NNN}` | 数据表编号 | `TBL-001`、`TBL-002` |
+| `DD-{NNN}` | 设计决策编号 | `DD-001` |
+| `API-{NNN}` | API 接口编号 | `API-001` |
+| `LOGIC-{NNN}` | 业务逻辑编号 | `LOGIC-001` |
+| `TBL-{NNN}` | 数据表编号 | `TBL-001` |
 
 ---
 
@@ -83,10 +74,6 @@ sdx-design 技能的完整设计约束。[SKILL.md](../SKILL.md) 中的「核心
 
 ---
 
-> 完整验收清单见 [quality-checklist.md](quality-checklist.md)。
-
----
-
 ## 错误处理
 
 | 错误场景 | 处理方式 |
@@ -97,4 +84,4 @@ sdx-design 技能的完整设计约束。[SKILL.md](../SKILL.md) 中的「核心
 | knowledge 目录缺失 | 发出警告，仅基于 PRD 和 AGENTS.md 完成设计，标注缺少知识库基线 |
 | ADD 模板不存在 | 终止，提示创建 `.agent/skills/sdx-design/assets/add-template.md` |
 | 现有架构冲突 | 记录为设计决策（DD-n），标注冲突点与化解方案 |
-| 输出目录不存在 | 自动创建 `{DOC_DIR}/requirements/REQUIREMENT-{YYMMDD}-{主题slug}/MVP-Phase-{N}/` 目录 |
+| 输出目录不存在 | 自动创建 `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/` 目录 |
