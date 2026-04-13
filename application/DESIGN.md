@@ -38,7 +38,7 @@
 
 ## 2. `application/` 目录与元模型
 
-> 规范与 Agent 配置在仓库根目录 `.agent/` 等，**不在** `application/` 内。
+> 规范与 Agent 配置在仓库根目录 `agent/` 等，**不在** `application/` 内。
 
 ### 2.1 `application/` 内目录
 

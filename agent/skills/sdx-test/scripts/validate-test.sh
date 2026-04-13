@@ -1,0 +1,223 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# 测试设计文档结构校验脚本
+# 用法: scripts/validate-test.sh [--file <path>] [--gate-check] [--gate-strict]
+# DOC_ROOT：resolve_repo_doc_root（仅 .docsconfig）；见 agent/scripts/docsconfig-bootstrap.sh
+#
+# 说明：闸门式工作流仅改变产出过程，不改变 TDD 文档结构要求；校验项仍以六章模板为准。
+#
+# 校验项:
+#   1. 文档目录存在
+#   2. 文末「文档元数据」YAML 完整性（id、title、version、status、parent、mvp_phase）；禁止文件头 ---
+#   3. 六章结构完整性
+#   4. 编号体系一致性（TC-*）
+#   5. 模板 tdd-template.md 存在
+#   6. 可选 --gate-check：是否存在含 <!-- sdx-test-gate: CONFIRMED --> 且引用该文件名的会话 spec（见 SKILL HARD-GATE）
+
+TARGET_FILE=""
+ERRORS=0
+WARNINGS=0
+GATE_CHECK=false
+GATE_STRICT=false
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --file) TARGET_FILE="$2"; shift 2 ;;
+    --gate-check) GATE_CHECK=true; shift ;;
+    --gate-strict) GATE_CHECK=true; GATE_STRICT=true; shift ;;
+    *) echo "未知参数: $1"; exit 1 ;;
+  esac
+done
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+_AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+# shellcheck disable=SC1091
+source "$_AGENT_HOME/scripts/docsconfig-bootstrap.sh"
+validate_bootstrap_docsconfig "$SCRIPT_DIR"
+
+DOC_ROOT="$(resolve_repo_doc_root)"
+cd "$REPO_ROOT" || exit 1
+
+TEMPLATE="${SCRIPT_DIR}/../assets/tdd-template.md"
+
+info()    { echo "[INFO]  $1"; }
+warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
+error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
+success() { echo "[OK]    $1"; }
+
+# 会话 spec 闸门：docs/superpowers/specs/**/*.md 须同时包含 CONFIRMED 标记与目标文件名
+check_test_gate() {
+  local file="$1"
+  local base
+  base=$(basename "${file}")
+  local specs_dir="${REPO_ROOT}/docs/superpowers/specs"
+  if [[ ! -d "${specs_dir}" ]]; then
+    warn "闸门：未找到 ${specs_dir}，跳过 gate 检查"
+    return
+  fi
+  local found=0
+  local spec
+  while IFS= read -r -d '' spec; do
+    if grep -qF "<!-- sdx-test-gate: CONFIRMED -->" "${spec}" 2>/dev/null && grep -qF "${base}" "${spec}" 2>/dev/null; then
+      found=1
+      break
+    fi
+  done < <(find "${specs_dir}" -name "*.md" -print0 2>/dev/null)
+  if [[ ${found} -eq 1 ]]; then
+    success "闸门：已找到引用 ${base} 且 CONFIRMED 的会话 spec"
+  else
+    local msg="闸门：未找到引用 ${base} 且 <!-- sdx-test-gate: CONFIRMED --> 的会话 spec（见 agent/skills/sdx-test/SKILL.md）"
+    if [[ "${GATE_STRICT}" == true ]]; then
+      error "${msg}"
+    else
+      warn "${msg}"
+    fi
+  fi
+}
+
+echo "=== 测试设计文档结构校验 ==="
+echo "DOC_ROOT: ${DOC_ROOT}"
+echo ""
+
+# 0. 模板文件
+if [[ -f "${TEMPLATE}" ]]; then
+  success "tdd-template.md 存在"
+else
+  warn "tdd-template.md 不存在: ${TEMPLATE}"
+fi
+
+# 收集要校验的文件
+if [[ -n "${TARGET_FILE}" ]]; then
+  if [[ -f "${TARGET_FILE}" ]]; then
+    FILES=("${TARGET_FILE}")
+  else
+    error "指定文件不存在: ${TARGET_FILE}"
+    echo ""
+    echo "=== 校验结果 ==="
+    echo "错误: ${ERRORS}  警告: ${WARNINGS}"
+    exit 1
+  fi
+else
+  FILES=()
+  while IFS= read -r -d '' f; do
+    FILES+=("$f")
+  done < <(find "${DOC_ROOT}" -name "TDD-*.md" -print0 2>/dev/null)
+fi
+
+if [[ ${#FILES[@]} -eq 0 ]]; then
+  info "未找到测试设计文档"
+  echo ""
+  echo "=== 校验结果 ==="
+  echo "错误: ${ERRORS}  警告: ${WARNINGS}"
+  exit 0
+fi
+
+# 校验每个文档
+for file in "${FILES[@]}"; do
+  BASENAME=$(basename "${file}")
+  echo "--- 校验: ${BASENAME} ---"
+
+  # 1. 文档元数据（文末 YAML，非文件头 frontmatter）
+  if head -5 "${file}" | grep -q "^---"; then
+    warn "${BASENAME}: 文件开头存在 ---（应移除）；元数据须仅在文末「## 文档元数据」的 yaml 代码块中"
+  fi
+
+  if grep -qF "## 文档元数据" "${file}"; then
+    success "${BASENAME}: 「文档元数据」章节存在"
+    for field in "id:" "title:" "version:" "status:" "parent:" "mvp_phase:"; do
+      if grep -q "${field}" "${file}"; then
+        success "${BASENAME}: ${field} 字段存在"
+      else
+        warn "${BASENAME}: 缺少 ${field} 字段"
+      fi
+    done
+  else
+    warn "${BASENAME}: 缺少「## 文档元数据」章节（须在文末放置 YAML 元数据）"
+  fi
+
+  # 2. 六章结构检查
+  REQUIRED_SECTIONS=(
+    "## 1. 概述"
+    "## 2. 测试用例"
+    "## 3. 测试数据"
+    "## 4. 测试环境"
+    "## 5. 测试进出标准"
+    "## 6. 附录"
+  )
+
+  SECTION_COUNT=0
+  for section in "${REQUIRED_SECTIONS[@]}"; do
+    if grep -qF "${section}" "${file}"; then
+      SECTION_COUNT=$((SECTION_COUNT + 1))
+    else
+      warn "${BASENAME}: 缺少章节 '${section}'"
+    fi
+  done
+  info "${BASENAME}: ${SECTION_COUNT}/6 个必需章节"
+
+  # 3. 子章节检查
+  SUB_SECTIONS=(
+    "### 1.1 测试目标"
+    "### 1.2 测试范围"
+    "### 1.3 测试策略"
+    "### 2.1 功能测试用例"
+    "### 2.2 接口测试用例"
+    "### 2.3 业务规则测试用例"
+    "### 5.1 进入标准"
+    "### 5.2 退出标准"
+    "### 6.2 质量自查表"
+  )
+
+  SUB_COUNT=0
+  for sub in "${SUB_SECTIONS[@]}"; do
+    if grep -qF "${sub}" "${file}"; then
+      SUB_COUNT=$((SUB_COUNT + 1))
+    fi
+  done
+  info "${BASENAME}: ${SUB_COUNT}/${#SUB_SECTIONS[@]} 个关键子章节"
+
+  # 4. 编号体系检查
+  TC_COUNT=$(grep -c 'TC-[0-9]' "${file}" 2>/dev/null || true)
+  TC_API_COUNT=$(grep -c 'TC-API-[0-9]' "${file}" 2>/dev/null || true)
+  TC_BR_COUNT=$(grep -c 'TC-BR-[0-9]' "${file}" 2>/dev/null || true)
+  TC_EX_COUNT=$(grep -c 'TC-EX-[0-9]' "${file}" 2>/dev/null || true)
+  TC_REG_COUNT=$(grep -c 'TC-REG-[0-9]' "${file}" 2>/dev/null || true)
+
+  info "${BASENAME}: TC=${TC_COUNT} TC-API=${TC_API_COUNT} TC-BR=${TC_BR_COUNT} TC-EX=${TC_EX_COUNT} TC-REG=${TC_REG_COUNT}"
+
+  if [[ ${TC_COUNT} -eq 0 ]]; then
+    warn "${BASENAME}: 未发现功能测试用例编号 (TC-*)"
+  fi
+
+  # 5. PRD 关联检查
+  if grep -q 'PRD-' "${file}"; then
+    success "${BASENAME}: 关联产品需求文档"
+  else
+    warn "${BASENAME}: 未发现关联 PRD 编号 (PRD-*)"
+  fi
+
+  # 6. 用户故事关联检查
+  if grep -q 'US-[0-9]' "${file}"; then
+    success "${BASENAME}: 关联用户故事"
+  else
+    warn "${BASENAME}: 未发现关联用户故事编号 (US-*)"
+  fi
+
+  if [[ "${GATE_CHECK}" == true ]]; then
+    check_test_gate "${file}"
+  fi
+
+  echo ""
+done
+
+echo "=== 校验结果 ==="
+echo "错误: ${ERRORS}  警告: ${WARNINGS}"
+
+if [[ ${ERRORS} -gt 0 ]]; then
+  echo "校验失败，请修复以上错误。"
+  exit 1
+else
+  echo "校验通过。"
+  exit 0
+fi

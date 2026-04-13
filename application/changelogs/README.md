@@ -18,7 +18,7 @@
 
 | Skill | 说明 |
 |-------|------|
-| [docs-change](../../.agent/skills/docs-change/SKILL.md) | 聚合 git / CHANGELOG / 本地 mtime，**写入/更新** `CHANGE-LOG.md`（Markdown） |
-| [docs-indexing](../../.agent/skills/docs-indexing/SKILL.md) | 生成 `INDEX_GUIDE.md`，**追加** `INDEXING-LOG.md`（Markdown） |
+| [docs-change](../../agent/skills/docs-change/SKILL.md) | 聚合 git / CHANGELOG / 本地 mtime，**写入/更新** `CHANGE-LOG.md`（Markdown） |
+| [docs-indexing](../../agent/skills/docs-indexing/SKILL.md) | 生成 `INDEX_GUIDE.md`，**追加** `INDEXING-LOG.md`（Markdown） |
 
-命令清单与执行入口统一见 [../../.agent/skills/README.md](../../.agent/skills/README.md)。
+命令清单与执行入口统一见 [../../agent/skills/README.md](../../agent/skills/README.md)。

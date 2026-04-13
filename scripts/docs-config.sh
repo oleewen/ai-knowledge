@@ -35,7 +35,7 @@ require_bash5
 # § 1  版本与仓库常量
 # =============================================================================
 
-readonly SDX_VERSION='2.3.0'
+readonly SDX_VERSION='2.9.0'
 readonly SDX_MIN_BASH_VERSION=5
 
 # Git 仓库地址（供 bootstrap 引用）
@@ -52,6 +52,9 @@ readonly -a SDX_SUPPORTED_MODES=(standalone central)
 
 # 支持的知识库类型（--type，知识库 v2）
 readonly -a SDX_SUPPORTED_TYPES=(application system company)
+
+# .docsconfig 中 KNOWLEDGE_TYPE 取值（与 SDX_SUPPORTED_TYPES 一致）
+readonly -a SDX_SUPPORTED_KNOWLEDGE_TYPES=(application system company)
 
 # 支持的 Agent 类型
 readonly -a SDX_SUPPORTED_AGENTS=(cursor trea claude)
@@ -228,9 +231,9 @@ normalize_agents() {
 
 # 获取 Agent 对应的目录名
 # 用法：get_agent_dir <agent>
-# 输出：Agent 目录名（如 .cursor）；未知 agent 回退 .agent
+# 输出：Agent 目录名（如 .cursor）；未知 agent 回退 agent
 get_agent_dir() {
-  printf '%s' "${SDX_AGENT_DIR_MAP[${1:-}]:-.agent}"
+  printf '%s' "${SDX_AGENT_DIR_MAP[${1:-}]:-agent}"
 }
 
 # 获取配置项的默认值
@@ -402,10 +405,23 @@ docsconfig_doc_dir_from_roots() {
   esac
 }
 
-# 写入 $REPO_ROOT/.docsconfig（至少三键；可选 AGENT_*）
+# 校验 KNOWLEDGE_TYPE 取值；合法返回 0，否则 stderr 并返回 1（空值视为非法，调用方勿传空）
+docsconfig_validate_knowledge_type() {
+  local v="${1:-}"
+  local t
+  for t in "${SDX_SUPPORTED_KNOWLEDGE_TYPES[@]}"; do
+    [[ "$v" == "$t" ]] && return 0
+  done
+  printf '[docsconfig] 非法 KNOWLEDGE_TYPE: %s（允许: %s）\n' \
+    "$v" "${SDX_SUPPORTED_KNOWLEDGE_TYPES[*]}" >&2
+  return 1
+}
+
+# 写入 $REPO_ROOT/.docsconfig（至少三键；可选 KNOWLEDGE_TYPE；可选 AGENT_*）
 # 用法：docsconfig_write <repo_root_abs> <doc_root_abs> <doc_dir> <dry_run:0|1> \
-#                        [agent_root_abs] [agent_dirs_space_separated]
-# 说明：agent_root_abs 非空时追加 AGENT_ROOT= 与 AGENT_DIRS="..."
+#                        [agent_root_abs] [agent_dirs_space_separated] [knowledge_type]
+# 说明：knowledge_type 非空时须为 SDX_SUPPORTED_KNOWLEDGE_TYPES 之一；追加 KNOWLEDGE_TYPE=
+#       agent_root_abs 非空时追加 AGENT_ROOT= 与 AGENT_DIRS="..."
 docsconfig_write() {
   local repo_root="${1:?repo_root}"
   local doc_root="${2:?doc_root}"
@@ -413,15 +429,23 @@ docsconfig_write() {
   local dry="${4:-0}"
   local agent_root_in="${5:-}"
   local agent_dirs_in="${6:-}"
+  local knowledge_type_in="${7:-}"
 
   local out rr dr ar
   out="$(strip_trailing_slash "$(abs_path "$repo_root")")/.docsconfig"
   rr="$(docsconfig_format_root_for_write "$repo_root")"
   dr="$(docsconfig_format_root_for_write "$doc_root")"
 
+  if [[ -n "$knowledge_type_in" ]]; then
+    docsconfig_validate_knowledge_type "$knowledge_type_in" || return 1
+  fi
+
   # dry-run：仅预览，不写入
   if [[ "$dry" == '1' ]]; then
     printf 'Would write %s:\nDOC_ROOT=%s\nREPO_ROOT=%s\nDOC_DIR=%s\n' "$out" "$dr" "$rr" "$doc_dir"
+    if [[ -n "$knowledge_type_in" ]]; then
+      printf 'KNOWLEDGE_TYPE=%s\n' "$knowledge_type_in"
+    fi
     if [[ -n "$agent_root_in" ]]; then
       ar="$(docsconfig_format_root_for_write "$agent_root_in")"
       printf 'AGENT_ROOT=%s\nAGENT_DIRS="%s"\n' "$ar" "$agent_dirs_in"
@@ -432,6 +456,9 @@ docsconfig_write() {
   umask 022
   {
     printf 'DOC_ROOT=%s\nREPO_ROOT=%s\nDOC_DIR=%s\n' "$dr" "$rr" "$doc_dir"
+    if [[ -n "$knowledge_type_in" ]]; then
+      printf 'KNOWLEDGE_TYPE=%s\n' "$knowledge_type_in"
+    fi
     if [[ -n "$agent_root_in" ]]; then
       ar="$(docsconfig_format_root_for_write "$agent_root_in")"
       printf 'AGENT_ROOT=%s\nAGENT_DIRS="%s"\n' "$ar" "$agent_dirs_in"
@@ -444,8 +471,9 @@ docsconfig_write() {
 # *_ROOT 读入后展开为绝对路径；DOC_DIR、AGENT_DIRS 保持文件中的原始值。
 #
 # 用法：docsconfig_read_into <path> <nameref_doc_root> <nameref_repo_root> <nameref_doc_dir> \
-#                            [<nameref_agent_root> <nameref_agent_dirs>]
+#                            [<nameref_agent_root> <nameref_agent_dirs> [<nameref_knowledge_type>]]
 # 返回：0=文件存在且已解析；1=文件不存在或不可读
+# 说明：传入第 7 个 nameref 时写入 KNOWLEDGE_TYPE（无键则为空字符串）
 docsconfig_read_into() {
   local path="${1:?path}"
   local -n _doc="${2:?}"
@@ -454,12 +482,12 @@ docsconfig_read_into() {
   _doc=''; _repo=''; _ddir=''
   [[ -f "$path" ]] || return 1
 
-  local raw_doc='' raw_repo='' raw_ddir='' raw_ar='' raw_ads=''
+  local raw_doc='' raw_repo='' raw_ddir='' raw_ar='' raw_ads='' raw_kt=''
   local line k v
   while IFS= read -r line || [[ -n "$line" ]]; do
     [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
     case "$line" in
-      DOC_ROOT=*|REPO_ROOT=*|DOC_DIR=*|AGENT_ROOT=*|AGENT_DIRS=*)
+      DOC_ROOT=*|REPO_ROOT=*|DOC_DIR=*|AGENT_ROOT=*|AGENT_DIRS=*|KNOWLEDGE_TYPE=*)
         k="${line%%=*}"
         v="${line#*=}"
         v="${v%$'\r'}"
@@ -468,11 +496,12 @@ docsconfig_read_into() {
           v="${v:1:${#v}-2}"
         fi
         case "$k" in
-          DOC_ROOT)   raw_doc="$v"  ;;
-          REPO_ROOT)  raw_repo="$v" ;;
-          DOC_DIR)    raw_ddir="$v" ;;
-          AGENT_ROOT) raw_ar="$v"   ;;
-          AGENT_DIRS) raw_ads="$v"  ;;
+          DOC_ROOT)         raw_doc="$v"  ;;
+          REPO_ROOT)        raw_repo="$v" ;;
+          DOC_DIR)          raw_ddir="$v" ;;
+          AGENT_ROOT)       raw_ar="$v"   ;;
+          AGENT_DIRS)       raw_ads="$v"  ;;
+          KNOWLEDGE_TYPE)   raw_kt="$v"   ;;
         esac
         ;;
     esac
@@ -490,6 +519,11 @@ docsconfig_read_into() {
     [[ -n "$raw_ar" ]] && _aroot="$(docsconfig_normalize_root_value "$raw_ar")"
     _adirs="$raw_ads"
   fi
+  # 可选：KNOWLEDGE_TYPE（需传入第 7 个 nameref）
+  if (( $# >= 7 )); then
+    local -n _ktype="${7:?}"
+    _ktype="$raw_kt"
+  fi
   return 0
 }
 
@@ -498,7 +532,7 @@ docsconfig_read_into() {
 docsconfig_grep_keys() {
   local path="${1:?path}"
   [[ -f "$path" ]] || return 1
-  grep -E '^(DOC_ROOT|REPO_ROOT|DOC_DIR|AGENT_ROOT|AGENT_DIRS)=' "$path" 2>/dev/null
+  grep -E '^(DOC_ROOT|REPO_ROOT|DOC_DIR|AGENT_ROOT|AGENT_DIRS|KNOWLEDGE_TYPE)=' "$path" 2>/dev/null
 }
 
 # =============================================================================

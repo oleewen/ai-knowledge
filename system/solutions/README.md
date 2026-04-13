@@ -23,8 +23,8 @@
 
 ## 规范与模板
 
-- **阶段目标与工作流**：见 [../../.agent/skills/sdx-solution/SKILL.md](../../.agent/skills/sdx-solution/SKILL.md)（阶段 1 会话参数 → 阶段 2 中间 spec → 阶段 3.1 骨架 / 3.2 分块填充 → 终检）；若目标工程经 `docs-init` 将技能装到 `.cursor/skills/` 等目录，以该工程内实际路径为准。
-- **文档模板**：见 [../../.agent/skills/sdx-solution/assets/solution-template.md](../../.agent/skills/sdx-solution/assets/solution-template.md)。
+- **阶段目标与工作流**：见 [../../agent/skills/sdx-solution/SKILL.md](../../agent/skills/sdx-solution/SKILL.md)（阶段 1 会话参数 → 阶段 2 中间 spec → 阶段 3.1 骨架 / 3.2 分块填充 → 终检）；若目标工程经 `agent-init` / `knowledge-init` 将技能装到 `.cursor/skills/` 等目录，以该工程内实际路径为准。
+- **文档模板**：见 [../../agent/skills/sdx-solution/assets/solution-template.md](../../agent/skills/sdx-solution/assets/solution-template.md)。
 
 ## 集成关系
 

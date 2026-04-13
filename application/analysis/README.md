@@ -23,8 +23,8 @@
 
 ## 规范与模板
 
-- **阶段目标与工作流**：见 [../../.agent/skills/sdx-analysis/SKILL.md](../../.agent/skills/sdx-analysis/SKILL.md)（三阶段：参数确认 → 逐门禁草稿与会话 spec → 分块定稿与终检）。
-- **文档模板**：见 [../../.agent/skills/sdx-analysis/assets/analysis-template.md](../../.agent/skills/sdx-analysis/assets/analysis-template.md)。
+- **阶段目标与工作流**：见 [../../agent/skills/sdx-analysis/SKILL.md](../../agent/skills/sdx-analysis/SKILL.md)（三阶段：参数确认 → 逐门禁草稿与会话 spec → 分块定稿与终检）。
+- **文档模板**：见 [../../agent/skills/sdx-analysis/assets/analysis-template.md](../../agent/skills/sdx-analysis/assets/analysis-template.md)。
 
 ## 集成关系
 

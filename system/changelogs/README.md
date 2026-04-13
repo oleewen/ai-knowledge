@@ -18,5 +18,5 @@
 
 | Skill | 说明 |
 |-------|------|
-| [docs-change](../../.agent/skills/docs-change/SKILL.md) | 聚合变更，**写入/更新** `CHANGE-LOG.md`（Markdown） |
-| [docs-indexing](../../.agent/skills/docs-indexing/SKILL.md) | 生成 `INDEX_GUIDE.md`，**追加** `INDEXING-LOG.md`（Markdown） |
+| [docs-change](../../agent/skills/docs-change/SKILL.md) | 聚合变更，**写入/更新** `CHANGE-LOG.md`（Markdown） |
+| [docs-indexing](../../agent/skills/docs-indexing/SKILL.md) | 生成 `INDEX_GUIDE.md`，**追加** `INDEXING-LOG.md`（Markdown） |

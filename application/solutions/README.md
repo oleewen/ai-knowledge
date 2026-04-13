@@ -25,8 +25,8 @@
 
 ## 规范与模板
 
-- **阶段目标与工作流**：见 [../../.agent/skills/sdx-solution/SKILL.md](../../.agent/skills/sdx-solution/SKILL.md)（闸门确认 → 中间 spec → `SOLUTION-*` 骨架与分块填充 → 终检）；若技能安装于 `.agent/skills/`，以目标工程内实际路径为准。
-- **文档模板**：见 [../../.agent/skills/sdx-solution/assets/solution-template.md](../../.agent/skills/sdx-solution/assets/solution-template.md)。
+- **阶段目标与工作流**：见 [../../agent/skills/sdx-solution/SKILL.md](../../agent/skills/sdx-solution/SKILL.md)（闸门确认 → 中间 spec → `SOLUTION-*` 骨架与分块填充 → 终检）；若技能安装于 `agent/skills/`，以目标工程内实际路径为准。
+- **文档模板**：见 [../../agent/skills/sdx-solution/assets/solution-template.md](../../agent/skills/sdx-solution/assets/solution-template.md)。
 
 ## 集成关系
 

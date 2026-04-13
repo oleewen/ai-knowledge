@@ -26,7 +26,7 @@
 - **最小变更**：只改该改的，不做未经要求的重构
 - **保持一致**：遵循项目现有的代码风格、命名规范和架构模式
 - **不假设，要验证**：不确定时读代码/文档，不编造 API、路径或配置
-- **提交前确认**：执行 `git commit` / `git push` 前须征得用户明确同意；说明变更摘要与建议提交说明后再请求确认。详见 [.agent/rules/coding/git-guidelines.md](.agent/rules/coding/git-guidelines.md)「提交前用户确认」；**任意 Skill 工作流**亦同。
+- **提交前确认**：执行 `git commit` / `git push` 前须征得用户明确同意；说明变更摘要与建议提交说明后再请求确认。详见 [agent/rules/coding/git-guidelines.md](agent/rules/coding/git-guidelines.md)「提交前用户确认」；**任意 Skill 工作流**亦同。
 
 ### 沟通协议
 
@@ -37,28 +37,28 @@
 ### 工作约定
 
 - **与 Index 一致**：平面检索与路径级精要以根目录 [INDEX_GUIDE.md](INDEX_GUIDE.md) 为准；未索引区域须补读或标注待核实。
-- **会话开始**：读 [README.md](README.md) 与本文件；业务与路径细节查 [INDEX_GUIDE.md](INDEX_GUIDE.md)；按任务打开 [application/README.md](application/README.md)、[application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) 或 [.agent/rules/](.agent/rules/) 下具体规范。
+- **会话开始**：读 [README.md](README.md) 与本文件；业务与路径细节查 [INDEX_GUIDE.md](INDEX_GUIDE.md)；按任务打开 [application/README.md](application/README.md)、[application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) 或 [agent/rules/](agent/rules/) 下具体规范。
 - **会话中**：业务规则不明 → 列出待确认项；新增技术债务可登记 [application/knowledge/technical/technical-debt.md](application/knowledge/technical/technical-debt.md)；重大结构或治理变更遵循 SDD，并核对 [application/DESIGN.md](application/DESIGN.md)、[application/CONTRIBUTING.md](application/CONTRIBUTING.md)。
-- **sdx-solution 闸门**：执行 `/sdx-solution` 或写入 `{DOC_DIR}/solutions/SOLUTION-*.md` 前须完成中间会话 spec 与用户总确认（标记与工程化约束见 [.agent/skills/sdx-solution/SKILL.md](.agent/skills/sdx-solution/SKILL.md)、[.agent/rules/sdx-solution.md](.agent/rules/sdx-solution.md)）。
-- **sdx-analysis 闸门**：执行 `/sdx-analysis` 或写入 `{DOC_DIR}/analysis/ANALYSIS-*.md` 前须完成中间会话 spec 与用户总确认（标记与工程化约束见 [.agent/skills/sdx-analysis/SKILL.md](.agent/skills/sdx-analysis/SKILL.md)、[.agent/rules/sdx-analysis.md](.agent/rules/sdx-analysis.md)）。
-- **sdx-design 闸门**：执行 `/sdx-design` 或写入 `{DOC_DIR}/requirements/**/ADD-*.md` 前须完成中间会话 spec 与用户总确认（标记与工程化约束见 [.agent/skills/sdx-design/SKILL.md](.agent/skills/sdx-design/SKILL.md)、[.agent/rules/sdx-design.md](.agent/rules/sdx-design.md)）。
-- **sdx-test 闸门**：执行 `/sdx-test` 或写入 `{DOC_DIR}/requirements/**/TDD-*.md` 前须完成中间会话 spec 与用户总确认（标记与工程化约束见 [.agent/skills/sdx-test/SKILL.md](.agent/skills/sdx-test/SKILL.md)、[.agent/rules/sdx-test.md](.agent/rules/sdx-test.md)）。
+- **sdx-solution 闸门**：执行 `/sdx-solution` 或写入 `{DOC_DIR}/solutions/SOLUTION-*.md` 前须完成中间会话 spec 与用户总确认（标记与工程化约束见 [agent/skills/sdx-solution/SKILL.md](agent/skills/sdx-solution/SKILL.md)、[agent/rules/sdx-solution.md](agent/rules/sdx-solution.md)）。
+- **sdx-analysis 闸门**：执行 `/sdx-analysis` 或写入 `{DOC_DIR}/analysis/ANALYSIS-*.md` 前须完成中间会话 spec 与用户总确认（标记与工程化约束见 [agent/skills/sdx-analysis/SKILL.md](agent/skills/sdx-analysis/SKILL.md)、[agent/rules/sdx-analysis.md](agent/rules/sdx-analysis.md)）。
+- **sdx-design 闸门**：执行 `/sdx-design` 或写入 `{DOC_DIR}/requirements/**/ADD-*.md` 前须完成中间会话 spec 与用户总确认（标记与工程化约束见 [agent/skills/sdx-design/SKILL.md](agent/skills/sdx-design/SKILL.md)、[agent/rules/sdx-design.md](agent/rules/sdx-design.md)）。
+- **sdx-test 闸门**：执行 `/sdx-test` 或写入 `{DOC_DIR}/requirements/**/TDD-*.md` 前须完成中间会话 spec 与用户总确认（标记与工程化约束见 [agent/skills/sdx-test/SKILL.md](agent/skills/sdx-test/SKILL.md)、[agent/rules/sdx-test.md](agent/rules/sdx-test.md)）。
 - **会话结束**：新增规则或约束需经确认后写入 `application/`、`system/`、`company/` 或本文件；索引类变更按需记录于 [application/changelogs/](application/changelogs/)（见 [application/changelogs/README.md](application/changelogs/README.md)）。
 
 ### 禁止事项
 
 - 禁止随意修改 `application/knowledge/` 已有实体 **ID** 或破坏跨视角 **ID 引用**（如 `implemented_by_app_id`、`persisted_as_entity_ids`），除非同步更新全部引用。
 - 禁止未读 [application/DESIGN.md](application/DESIGN.md) 与 [application/CONTRIBUTING.md](application/CONTRIBUTING.md) 即新增 knowledge 实体或 ADR。
-- 禁止无约定变更即删改 [.agent/rules/](.agent/rules/)、[.agent/skills/](.agent/skills/) 中模板与技能核心结构。
+- 禁止无约定变更即删改 [agent/rules/](agent/rules/)、[agent/skills/](agent/skills/) 中模板与技能核心结构。
 - 禁止未评估影响面即改 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[application/README.md](application/README.md) 导航表导致断链或错位。
 - **不在本文粘贴** [INDEX_GUIDE.md](INDEX_GUIDE.md) 第 3 节级 API/字典全表；需要时直接打开该文件。
-- **禁止未经用户确认即提交代码**：不得自动执行 `git commit`（含 Skill 步骤中的「Commit」）；须经用户确认后提交。例外：用户在同一会话中明确指令可以提交并认可说明。细则见 [.agent/rules/coding/git-guidelines.md](.agent/rules/coding/git-guidelines.md)。
+- **禁止未经用户确认即提交代码**：不得自动执行 `git commit`（含 Skill 步骤中的「Commit」）；须经用户确认后提交。例外：用户在同一会话中明确指令可以提交并认可说明。细则见 [agent/rules/coding/git-guidelines.md](agent/rules/coding/git-guidelines.md)。
 
 ---
 
 ## 查阅顺序（固定）
 
-[README.md](README.md) → [INDEX_GUIDE.md](INDEX_GUIDE.md) → 子域索引（如 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[system/README.md](system/README.md)、[company/README.md](company/README.md)、[applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md)）或 [.agent/rules/](.agent/rules/) 等规范路径。
+[README.md](README.md) → [INDEX_GUIDE.md](INDEX_GUIDE.md) → 子域索引（如 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[system/README.md](system/README.md)、[company/README.md](company/README.md)、[applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md)）或 [agent/rules/](agent/rules/) 等规范路径。
 
 ---
 
@@ -76,8 +76,8 @@
 | 贡献流程与阶段规则                         | [application/CONTRIBUTING.md](application/CONTRIBUTING.md)                                                                                              |
 | 知识库实体导航、四视角                       | [application/knowledge/KNOWLEDGE_INDEX.md](application/knowledge/KNOWLEDGE_INDEX.md)、[application/knowledge/README.md](application/knowledge/README.md) |
 | 联邦模板迁移说明（原 `applications/app-*`）     | [applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md)、[applications/README.md](applications/README.md)                               |
-| 全局约定与命名                           | [.agent/rules/CONVENTIONS.md](.agent/rules/CONVENTIONS.md)                                                                                              |
-| Slash 技能                          | [.agent/skills/README.md](.agent/skills/README.md)                                                                                                      |
+| 全局约定与命名                           | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)                                                                                              |
+| Slash 技能                          | [agent/skills/README.md](agent/skills/README.md)                                                                                                      |
 | 初始化脚本参数与产物、`.docsconfig` 键（`DOC_*` / `AGENT_*`） | [scripts/README.md](scripts/README.md)                                                                                                                  |
 | 索引运行记录与变更聚合（按需）                   | [application/changelogs/](application/changelogs/)（说明见 [application/changelogs/README.md](application/changelogs/README.md)）                            |
 
@@ -92,27 +92,29 @@ Markdown、YAML；**Bash 5+**；Git。可选 `rsync`（脚本可回退 `cp`）�
 
 ## 命令（指针）
 
-完整选项、多命令与 **docs-init** 说明见 [README.md](README.md)「快速开始」与 [scripts/README.md](scripts/README.md)。常用 bootstrap 示例（勿在本文展开选项表）：
+完整选项、多命令与初始化说明见 [README.md](README.md)「快速开始」与 [scripts/README.md](scripts/README.md)。常用示例（勿在本文展开选项表）：
 
 ```bash
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- [选项]
+git clone https://github.com/oleewen/ai-knowledge.git && cd ai-knowledge
+./scripts/knowledge-init.sh [选项] /path/to/your-project/docs
+# 或（未先 clone）：curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- ./docs
 ```
 
 ---
 
 ## 流程规范
 
-以下规范与 [README.md](README.md)「开发指南」叠加执行；**索引链路**（`/docs-indexing`、`/docs-change`）为 [.agent/skills/](.agent/skills/) 中的 Skill，产出 `application/changelogs/` 下运维文件，**非**日常编辑必跑项，详见各 SKILL 与 [application/changelogs/README.md](application/changelogs/README.md)。
+以下规范与 [README.md](README.md)「开发指南」叠加执行；**索引链路**（`/docs-indexing`、`/docs-change`）为 [agent/skills/](agent/skills/) 中的 Skill，产出 `application/changelogs/` 下运维文件，**非**日常编辑必跑项，详见各 SKILL 与 [application/changelogs/README.md](application/changelogs/README.md)。
 
 ### 编码与协作规范
 
 
 | 文件                                                                                   | 说明                                 |
 | ------------------------------------------------------------------------------------ | ---------------------------------- |
-| [.agent/rules/coding/git-guidelines.md](.agent/rules/coding/git-guidelines.md)       | Git：Conventional Commits、原子提交、检查清单 |
-| [.agent/rules/coding/project-structure.md](.agent/rules/coding/project-structure.md) | 项目结构与分层职责（文档与工程目录组织）               |
-| [.agent/rules/coding/java-guidelines.md](.agent/rules/coding/java-guidelines.md)     | Java 专项（仅在对应技术栈落地时启用）              |
-| [.agent/rules/coding/maven-guidelines.md](.agent/rules/coding/maven-guidelines.md)   | Maven 专项（仅在 Maven 工程落地时启用）         |
+| [agent/rules/coding/git-guidelines.md](agent/rules/coding/git-guidelines.md)       | Git：Conventional Commits、原子提交、检查清单 |
+| [agent/rules/coding/project-structure.md](agent/rules/coding/project-structure.md) | 项目结构与分层职责（文档与工程目录组织）               |
+| [agent/rules/coding/java-guidelines.md](agent/rules/coding/java-guidelines.md)     | Java 专项（仅在对应技术栈落地时启用）              |
+| [agent/rules/coding/maven-guidelines.md](agent/rules/coding/maven-guidelines.md)   | Maven 专项（仅在 Maven 工程落地时启用）         |
 
 
 ### 设计规则
@@ -120,8 +122,8 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 
 | 文件                                                                                                 | 说明                     |
 | -------------------------------------------------------------------------------------------------- | ---------------------- |
-| [.agent/rules/design/design-guidelines.md](.agent/rules/design/design-guidelines.md)               | 设计规则总纲：术语一致性、架构表达、评审基线 |
-| [.agent/skills/sdx-design/assets/add-template.md](.agent/skills/sdx-design/assets/add-template.md) | ADD 模板：架构设计阶段标准产物      |
+| [agent/rules/design/design-guidelines.md](agent/rules/design/design-guidelines.md)               | 设计规则总纲：术语一致性、架构表达、评审基线 |
+| [agent/skills/sdx-design/assets/add-template.md](agent/skills/sdx-design/assets/add-template.md) | ADD 模板：架构设计阶段标准产物      |
 
 
 ### 测试规则
@@ -129,8 +131,8 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 
 | 文件                                                                                             | 说明                |
 | ---------------------------------------------------------------------------------------------- | ----------------- |
-| [.agent/rules/testing/testing-guidelines.md](.agent/rules/testing/testing-guidelines.md)       | 测试策略与质量门槛总则       |
-| [.agent/skills/sdx-test/assets/tdd-template.md](.agent/skills/sdx-test/assets/tdd-template.md) | TDD 模板：测试设计阶段标准产物 |
+| [agent/rules/testing/testing-guidelines.md](agent/rules/testing/testing-guidelines.md)       | 测试策略与质量门槛总则       |
+| [agent/skills/sdx-test/assets/tdd-template.md](agent/skills/sdx-test/assets/tdd-template.md) | TDD 模板：测试设计阶段标准产物 |
 
 
 ### 文档规则
@@ -138,7 +140,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 
 | 文件                                                                                           | 说明        |
 | -------------------------------------------------------------------------------------------- | --------- |
-| [.agent/rules/document/document-guidelines.md](.agent/rules/document/document-guidelines.md) | 文档写作与注释规范 |
+| [agent/rules/document/document-guidelines.md](agent/rules/document/document-guidelines.md) | 文档写作与注释规范 |
 
 
 ### 关键技能（Slash）
@@ -149,8 +151,8 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 | `/docs-indexing`                                                     | 生成或更新根目录 `INDEX_GUIDE.md`                                       |
 | `/docs-change`                                                       | 聚合文档变更至 `application/changelogs/`                               |
 | `/agent-guide`                                                       | 更新本文件与 `README.md`                                              |
-| `/docs-build`                                                        | 知识构建与资产补全（见 [.agent/skills/README.md](.agent/skills/README.md)） |
-| `/sdx-solution` `/sdx-analysis` `/sdx-prd` `/sdx-design` `/sdx-test` | SDD 各阶段产物（见 [.agent/skills/README.md](.agent/skills/README.md)） |
+| `/docs-build`                                                        | 知识构建与资产补全（见 [agent/skills/README.md](agent/skills/README.md)） |
+| `/sdx-solution` `/sdx-analysis` `/sdx-prd` `/sdx-design` `/sdx-test` | SDD 各阶段产物（见 [agent/skills/README.md](agent/skills/README.md)） |
 
 
 ### 站内 Markdown 链接
@@ -164,6 +166,6 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 1. [INDEX_GUIDE.md](INDEX_GUIDE.md)（权威地图与查阅指北）
 2. [README.md](README.md)、[scripts/README.md](scripts/README.md)
 3. [application/README.md](application/README.md)、[application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[application/DESIGN.md](application/DESIGN.md)、[application/CONTRIBUTING.md](application/CONTRIBUTING.md)、[system/README.md](system/README.md)、[company/README.md](company/README.md)
-4. [.agent/rules/CONVENTIONS.md](.agent/rules/CONVENTIONS.md)、[.agent/rules/](.agent/rules/)
-5. [.agent/README.md](.agent/README.md)、[.agent/skills/README.md](.agent/skills/README.md)
+4. [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/rules/](agent/rules/)
+5. [agent/README.md](agent/README.md)、[agent/skills/README.md](agent/skills/README.md)
 

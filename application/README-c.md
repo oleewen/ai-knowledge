@@ -1,11 +1,11 @@
 # application — 应用知识库（mode=c）
 
 `application/` 维护应用层面的稳定事实与治理线索，是全仓库的知识中枢。  
-本文件面向 `docs-init --mode=central`（`mode=c`）阅读与维护场景，聚焦「按什么顺序读、到哪里写」；九章机器索引与 **central 登记**见 [INDEX_GUIDE.md](INDEX_GUIDE.md)。
+本文件面向 `knowledge-init --mode=central`（`mode=c`）阅读与维护场景，聚焦「按什么顺序读、到哪里写」；九章机器索引与 **central 登记**见 [INDEX_GUIDE.md](INDEX_GUIDE.md)。
 
 ## 推荐阅读路径
 
-1. [INDEX_GUIDE.md](INDEX_GUIDE.md)：九章索引（docs-indexing 产出）、文末 **「十、中央知识库接入工程」** 为 `docs-init central` 登记
+1. [INDEX_GUIDE.md](INDEX_GUIDE.md)：九章索引（docs-indexing 产出）、文末 **「十、中央知识库接入工程」** 为 `knowledge-init central` 登记
 2. [DESIGN.md](DESIGN.md)：元模型与跨视角关系
 3. [CONTRIBUTING.md](CONTRIBUTING.md)：新增/修改流程与模板约束
 
