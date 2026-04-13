@@ -59,8 +59,11 @@ Skill 由 Agent 执行的流程化指令承载，用于文档治理、索引维�
 | 场景          | 推荐 Skill                                                             | 说明                                      |
 | ----------- | -------------------------------------------------------------------- | --------------------------------------- |
 | 生成全库索引与检索入口 | `/docs-indexing`                                                     | 产出或更新 `INDEX_GUIDE.md`，用于路径检索与知识定位      |
+| 定向增改与表述对齐   | `/docs-upgrade`                                                      | 沿引用链与关键词对齐同类表述；显式路径时自动执行                  |
 | 构建或补全文档资产   | `/docs-build`                                                        | 按知识工程流程补全结构、关系与资产                       |
 | 同步仓库协作入口    | `/agent-guide`                                                       | 更新 `AGENTS.md` 与本 `README.md` 的导航与约束说明  |
+| 联邦镜像拉取      | `/docs-fetch`                                                        | 从已注册目标工程拉取文档，更新 `applications/app-{APPNAME}/` 镜像 |
+| 联邦镜像归档      | `/docs-archive`                                                      | 将联邦镜像中已核实内容归档至应用知识库 SSOT 约定路径              |
 | 阶段化交付（SDD）  | `/sdx-solution` `/sdx-analysis` `/sdx-prd` `/sdx-design` `/sdx-test` | 方案、分析、需求、设计、测试阶段产物                      |
 | 维护文档变更追踪    | `/docs-change`                                                       | 聚合变更到 `application/changelogs/`，便于审计与回溯 |
 

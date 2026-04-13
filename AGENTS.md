@@ -2,7 +2,7 @@
 
 > **契约定位**：本文件仅承载 Agent 角色定位、核心契约、文档索引、流程规范等关键索引和必读内容。
 
-**最后更新**: 2026-04-11
+**最后更新**: 2026-04-13
 
 ---
 
@@ -37,7 +37,7 @@
 ### 工作约定
 
 - **与 Index 一致**：平面检索与路径级精要以根目录 [INDEX_GUIDE.md](INDEX_GUIDE.md) 为准；未索引区域须补读或标注待核实。
-- **会话开始**：读 [README.md](README.md) 与本文件；业务与路径细节查 [INDEX_GUIDE.md](INDEX_GUIDE.md)；按任务打开 [application/README.md](application/README.md)、[application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) 或 [.agent/rules/](.agent/rules/) 下具体规范。
+- **会话开始**：读 [INDEX_GUIDE.md](INDEX_GUIDE.md)（路径地图与平面检索）、[README.md](README.md) 与本文件；业务与路径细节以 Index 为准并按任务打开 [application/README.md](application/README.md)、[application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) 或 [.agent/rules/](.agent/rules/) 下具体规范。
 - **会话中**：业务规则不明 → 列出待确认项；新增技术债务可登记 [application/knowledge/technical/technical-debt.md](application/knowledge/technical/technical-debt.md)；重大结构或治理变更遵循 SDD，并核对 [application/DESIGN.md](application/DESIGN.md)、[application/CONTRIBUTING.md](application/CONTRIBUTING.md)。
 - **sdx-solution 闸门**：执行 `/sdx-solution` 或写入 `{DOC_DIR}/solutions/SOLUTION-*.md` 前须完成中间会话 spec 与用户总确认（标记与工程化约束见 [.cursor/skills/sdx-solution/SKILL.md](.cursor/skills/sdx-solution/SKILL.md)、[.cursor/rules/sdx-solution.md](.cursor/rules/sdx-solution.md)）。
 - **sdx-analysis 闸门**：执行 `/sdx-analysis` 或写入 `{DOC_DIR}/analysis/ANALYSIS-*.md` 前须完成中间会话 spec 与用户总确认（标记与工程化约束见 [.cursor/skills/sdx-analysis/SKILL.md](.cursor/skills/sdx-analysis/SKILL.md)、[.cursor/rules/sdx-analysis.md](.cursor/rules/sdx-analysis.md)）。
@@ -56,7 +56,7 @@
 
 ## 查阅顺序（固定）
 
-[README.md](README.md) → [INDEX_GUIDE.md](INDEX_GUIDE.md) → 子域索引（如 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[system/README.md](system/README.md)、[company/README.md](company/README.md)、[applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md)）或 [.agent/rules/](.agent/rules/) 等规范路径。
+[INDEX_GUIDE.md](INDEX_GUIDE.md) → [README.md](README.md) → 子域索引（如 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[system/README.md](system/README.md)、[company/README.md](company/README.md)、[applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md)）或 [.agent/rules/](.agent/rules/) 等规范路径。
 
 ---
 
@@ -90,11 +90,7 @@ Markdown、YAML；**Bash 5+**；Git。可选 `rsync`（脚本可回退 `cp`）�
 
 ## 命令（指针）
 
-完整选项、多命令与 **docs-init** 说明见 [README.md](README.md)「快速开始」与 [scripts/README.md](scripts/README.md)。常用 bootstrap 示例（勿在本文展开选项表）：
-
-```bash
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- [选项]
-```
+可复制命令与 **docs-init** / **docs-bootstrap** 选项见 [README.md](README.md)「快速开始」与 [scripts/README.md](scripts/README.md)；勿在本文重复命令块。
 
 ---
 
@@ -146,7 +142,10 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 | -------------------------------------------------------------------- | --------------------------------------------------------------- |
 | `/docs-indexing`                                                     | 生成或更新根目录 `INDEX_GUIDE.md`                                       |
 | `/docs-change`                                                       | 聚合文档变更至 `application/changelogs/`                               |
+| `/docs-upgrade`                                                      | 定向增改与表述对齐（沿引用链与关键词）                                            |
 | `/agent-guide`                                                       | 更新本文件与 `README.md`                                              |
+| `/docs-archive`                                                      | 联邦镜像内容归档至应用知识库 SSOT 约定路径                                      |
+| `/docs-fetch`                                                        | 从已注册目标工程拉取文档，更新 `applications/app-{APPNAME}/` 联邦镜像        |
 | `/docs-build`                                                        | 知识构建与资产补全（见 [.agent/skills/README.md](.agent/skills/README.md)） |
 | `/sdx-solution` `/sdx-analysis` `/sdx-prd` `/sdx-design` `/sdx-test` | SDD 各阶段产物（见 [.agent/skills/README.md](.agent/skills/README.md)） |
 
