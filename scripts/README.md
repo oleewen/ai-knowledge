@@ -12,7 +12,7 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 | 脚本 | 用途 |
 |------|------|
 | `agent-install.sh` | 仅安装 Agent（`hooks` / `scripts` / `rules` / `skills`）；`--scope`=`a`/`r`/`s`/`h`/`sh`，`--target`（默认 `$HOME`），`--agents`（默认 `cursor`，可 `all` 或多选），`--dry-run`。 |
-| `docs-install.sh` | 知识库同步与配置分流；默认 `--scope=config`。仅 `--scope=config` 处理 `.docsconfig`（含 **`KNOWLEDGE_TYPE`**）；`--scope=knowledge` 只安装知识库。 |
+| `docs-install.sh` | 知识库同步与配置分流；默认 `--scope=k`（knowledge）。`--scope=knowledge` 同步知识库并写 `.docsconfig`（含 **`KNOWLEDGE_TYPE`**）；`--scope=config` 仅更新 `.docsconfig` 的路径与 `AGENT_*`，不写 `KNOWLEDGE_TYPE`。两种 scope 都会调用 `install_agent_path`，但仅当 `AGENT_ROOT` 为空时补默认 `AGENT_*`。 |
 | `docs-link.sh` | 在**当前 Git 仓库（源知识库）**内维护 `company/knowledge-links.yaml` 或 `system/knowledge-links.yaml`，登记/注销目标库（`link` / `unlink`，`--target`）；`link` 校验目标 `.docsconfig`，`unlink` 支持目标失联按路径注销。 |
 
 `docs-install.sh` 仅负责 knowledge 与 `.docsconfig`（不安装 Agent 文件）；Agent 安装仅由 `agent-install.sh` 负责。
@@ -26,23 +26,23 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 | `mode` | `type` | 源目录 | 行为摘要 |
 |------|---------------------|--------|----------|
 | **standalone** | `application`（默认） | `application/` | 全量拷贝（排除 `DESIGN.md`、`CONTRIBUTING.md`）；内容替换见 `docs-install` |
-| **standalone** | `system` / `company` | `system/` / `company/` | 组织级 / 公司级模板同步 |
+| **standalone** | `system` / `company` | `system/` / `company/` | 组织级 / 公司级模板同步；并在目标工程根 **`scripts/`** 安装 **`docs-link.sh`**、**`link-config.sh`**（`link-config` 会按 `.docsconfig` 之 **`AGENT_*`** 解析 **`docs-core.sh`**） |
 | **中央知识库挂载建联**（`central`） | `application`（默认） | `application/` **子集** | 仅 `changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs_meta.yaml`、`manifest.yaml`；**不执行中央知识库挂载建联登记/联邦槽位写入** |
 | **中央知识库挂载建联**（`central`） | `system` / `company` | - | **不支持**（报错） |
 
-2. **Agent 配置**（**`agent-install.sh`**）：在 **`--target`**（默认 **`$HOME`**）下按 **`--agents`**（默认 **`cursor`**，可 **`all`** 或多选）安装到 **`${TARGET}/.{.cursor|.trea|.claude}/`** 中对应目录；按 **`--scope`** 选择同步 **`hooks`**、**`scripts`**、**`rules`**、**`skills`**。当 **`--target` 不是 `$HOME`** 且 **`${TARGET}/.docsconfig`** 已存在时，可更新 **`AGENT_ROOT`** 与 **`AGENT_DIRS`**。`docs-install` 不处理 `AGENT_*`。
+2. **Agent 配置**（**`agent-install.sh`**）：在 **`--target`**（默认 **`$HOME`**）下按 **`--agents`**（默认 **`cursor`**，可 **`all`** 或多选）安装到 **`${TARGET}/.{.cursor|.trea|.claude}/`** 中对应目录；按 **`--scope`** 选择同步 **`hooks`**、**`scripts`**、**`rules`**、**`skills`**。当 **`--target` 不是 `$HOME`** 且 **`${TARGET}/.docsconfig`** 已存在时，所有 scope 都会按本次参数重算并覆盖 **`AGENT_ROOT`** 与 **`AGENT_DIRS`**。`docs-install` 在 `scope=config|knowledge` 下都会处理 `AGENT_*`：仅当 `.docsconfig` 中 **`AGENT_ROOT`** 为空时写默认 **`AGENT_ROOT=$HOME`** 与 **`AGENT_DIRS=.cursor`**；`AGENT_ROOT` 非空时保留原值。
 
 3. **冲突处理**：**`docs-install`** 若目标路径已存在，默认会交互式提示；使用 `--force` 强制覆盖，或 `--dry-run` 预览。**`agent-install`** 对安装树采用同步覆盖（可用 `--dry-run` 预览）。
 
 4. **同步范围控制（docs-install）**：通过 **`--scope`** 控制执行范围
-   - `knowledge`（`k`）：仅同步知识库（须传 `--target=<目标工程文档目录>`），不处理 `.docsconfig`
-   - `config`（`c`，**默认**）：仅写入 `.docsconfig`（须传 `--target=<目标工程文档目录>`）
+   - `knowledge`（`k`，**默认**）：同步知识库并写入 `.docsconfig`（须传 `--target=<目标工程文档目录>`）；写 `KNOWLEDGE_TYPE`，并在 `AGENT_ROOT` 为空时补默认 `AGENT_*`
+   - `config`（`c`）：仅写入 `.docsconfig`（须传 `--target=<目标工程文档目录>`）；不写 `KNOWLEDGE_TYPE`，并在 `AGENT_ROOT` 为空时补默认 `AGENT_*`
 
    **Agent 安装**请使用 **`agent-install.sh`**（见上表与「agent-install.sh」选项节）。
 
 ## doc_root 与 `.docsconfig`（`agent/scripts/config-bootstrap.sh`）
 
-目标工程仓库根落盘 **`.docsconfig`**：`docs-install --scope=config` 写入 **`DOC_ROOT`**、**`REPO_ROOT`**、**`DOC_DIR`** 与 **`KNOWLEDGE_TYPE`**；`docs-install --scope=knowledge` 不处理 `.docsconfig`。`agent-install` 在其约束下可更新 **`AGENT_ROOT`**、**`AGENT_DIRS`**。凡 **`DOC_ROOT` / `REPO_ROOT` / `AGENT_ROOT`** 位于用户主目录下时，文件中可能使用 **`~/...`**。
+目标工程仓库根落盘 **`.docsconfig`**：`docs-install --scope=knowledge` 写入 **`DOC_ROOT`**、**`REPO_ROOT`**、**`DOC_DIR`**、**`KNOWLEDGE_TYPE`**；`docs-install --scope=config` 写入 **`DOC_ROOT`**、**`REPO_ROOT`**、**`DOC_DIR`**（不写 `KNOWLEDGE_TYPE`）。两种 scope 都会在 **`AGENT_ROOT`** 为空时补写默认 **`AGENT_ROOT`** / **`AGENT_DIRS`**。`agent-install` 在 `--target` 非 `$HOME` 且目标存在 `.docsconfig` 时，会按本次参数重算并覆盖 **`AGENT_ROOT`**、**`AGENT_DIRS`**。凡 **`DOC_ROOT` / `REPO_ROOT` / `AGENT_ROOT`** 位于用户主目录下时，文件中可能使用 **`~/...`**。
 
 部分 `agent/skills/*/scripts/validate-*.sh` 与 **`docs-indexing/scripts/indexing.sh`** 经 **`agent/scripts/config-bootstrap.sh`**：
 
@@ -114,7 +114,7 @@ export GIT_REF=main                                                  # 分支或
 | 选项 | 说明 | 默认 |
 |------|------|------|
 | `--scope=SCOPE` | `a`：全部；`r`：rules；`s`：skills；`h`：hooks；`sh`：scripts（含复制 `agent/scripts/docs-core.sh`） | `a` |
-| `--target=PATH` | 安装父目录，其下仅为**已选 agent** 创建 **`${TARGET}/.cursor`** 等；**非 `$HOME`** 时若存在 `PATH/.docsconfig` 则更新 `AGENT_ROOT`/`AGENT_DIRS` | `$HOME` |
+| `--target=PATH` | 安装父目录，其下仅为**已选 agent** 创建 **`${TARGET}/.cursor`** 等；**非 `$HOME`** 且存在 `PATH/.docsconfig` 时，任意 scope 都会按本次参数重算并覆盖 `AGENT_ROOT`/`AGENT_DIRS` | `$HOME` |
 | `--agents=LIST` | `cursor` \| `trea` \| `claude` \| `all`；逗号或空格分隔多选 | `cursor` |
 | `--dry-run` | 预览，不写入 | - |
 | `-h`, `--help` | 显示帮助 | - |
@@ -126,23 +126,23 @@ export GIT_REF=main                                                  # 分支或
 | `--target=PATH` | 目标工程文档目录路径（如 `~/project/docs`）；`config` / `knowledge` 均必填 | - |
 | `--mode=MODE` | 模式：`standalone`（独立）\| **中央知识库挂载建联**（`central`，仅应用子集分发）；缩写：`s` \| `c` | `standalone` |
 | `--type=TYPE` | `application` \| `system` \| `company`；**中央知识库挂载建联（`central`）仅允许 `application`**；未指定时默认 `application` | `application` |
-| `--scope=SCOPE` | 同步范围：`knowledge(k)` \| `config(c)`；**须传 `--target`**；仅 `config` 写 `.docsconfig`，`knowledge` 不写 | `config` |
+| `--scope=SCOPE` | 同步范围：`knowledge(k)` \| `config(c)`；**须传 `--target`**；`knowledge` 写 `.docsconfig`（含 `KNOWLEDGE_TYPE`），`config` 不写 `KNOWLEDGE_TYPE`；两者均在 `AGENT_ROOT` 为空时补默认 `AGENT_*` | `k`（knowledge） |
 | `-r` | 允许工程根目录不存在时自动创建（等同 `CREATE_PROJECT_ROOT=1`）；若文档目录不存在会一并创建 | 关闭 |
 | `--force` | 强制覆盖已存在内容，不提示（docs-install） | - |
 | `--dry-run` | 预览模式，仅打印将要执行的操作 | - |
 | `-h`, `--help` | 显示帮助信息 | - |
 
-注意：`scope=config` 仅写入 `.docsconfig`；`scope=knowledge` 仅安装知识库，不处理 `.docsconfig`。**Agent 安装与 `--scope=a|r|s|h|sh` 仅适用于 `agent-install.sh`。**
+注意：`scope=knowledge` 同步知识库并写 `.docsconfig`（含 `KNOWLEDGE_TYPE`）；`scope=config` 仅写 `.docsconfig` 路径键（不写 `KNOWLEDGE_TYPE`）。两者都会在 `AGENT_ROOT` 为空时补默认 `AGENT_*`。**Agent 安装与 `--scope=a|r|s|h|sh` 仅适用于 `agent-install.sh`。**
 
 ## 初始化后的目录结构
 
-以 `--mode=standalone` 为例：文档模板落在**目标工程**。仅 **`--scope=config`** 会写入/更新 `.docsconfig`；`--scope=knowledge` 不处理 `.docsconfig`。`agent-install` 是否更新 `AGENT_*` 取决于其自身参数与目标路径状态。
+以 `--mode=standalone` 为例：文档模板落在**目标工程**。**`--scope=knowledge`** 会写入/更新 `.docsconfig`（含 `KNOWLEDGE_TYPE`）；**`--scope=config`** 会写入/更新 `.docsconfig` 的路径键（不写 `KNOWLEDGE_TYPE`）。两种 scope 都在 `AGENT_ROOT` 为空时补默认 `AGENT_*`。`agent-install` 在 `--target` 非 `$HOME` 且存在 `.docsconfig` 时，会按本次参数重算并覆盖 `AGENT_*`。
 
-**目标工程**（参数 `--target=<目标工程文档目录>` 及其父目录；`.docsconfig` 至少包含 **`DOC_ROOT`/`REPO_ROOT`/`DOC_DIR`**，`scope=config` 时含 **`KNOWLEDGE_TYPE`**）：
+**目标工程**（参数 `--target=<目标工程文档目录>` 及其父目录；`.docsconfig` 至少包含 **`DOC_ROOT`/`REPO_ROOT`/`DOC_DIR`**；`scope=knowledge` 时含 **`KNOWLEDGE_TYPE`**）：
 
 ```
 your-project/
-├── .docsconfig                    # 可选：由 docs-install/agent-install 写入（至少 DOC_*；scope=config 含 KNOWLEDGE_TYPE）
+├── .docsconfig                    # 可选：由 docs-install/agent-install 写入（至少 DOC_*；scope=knowledge 含 KNOWLEDGE_TYPE）
 ├── application/                          # 文档目录（application/ 模板拷贝）
 │   ├── README.md                  # 应用知识库 README
 │   ├── INDEX_GUIDE.md             # 九章索引（docs-indexing）；中央知识库挂载建联登记见「十」
@@ -209,8 +209,8 @@ your-project/
 | `agent-install.sh` | **`source` `agent-config.sh`** + Agent 安装；不 `source` `lib/*.sh` |
 | `agent-config.sh` | Agent CLI 默认值与校验；`source agent/scripts/docs-core.sh` 复用路径/`.docsconfig` 工具；仅供 **`agent-install.sh`** `source` |
 | `docs-config.sh` | docs-install 配置层；`source agent/scripts/docs-core.sh` 复用路径/`.docsconfig` 工具 |
-| `docs-install.sh` | knowledge 安装编排入口；默认 `--scope=config`，并 `source` `docs-config.sh` |
-| `link-config.sh` | docs-link 配置层；`source agent/scripts/docs-core.sh` 复用路径/`.docsconfig` 工具 |
+| `docs-install.sh` | knowledge 安装编排入口；默认 `--scope=k`（knowledge），并 `source` `docs-config.sh` |
+| `link-config.sh` | docs-link 配置层；优先 `../agent/scripts/docs-core.sh`，否则按目标工程 `.docsconfig` 之 **AGENT_ROOT** / **AGENT_DIRS** 定位 **`scripts/docs-core.sh`** |
 | `docs-link.sh` | 登记/注销目标知识库；`source link-config.sh`；`link` 校验源/目标 `.docsconfig` 与边关系，`unlink` 支持失联目标注销 |
 | `docs-bootstrap.sh` | 临时 clone 后直接执行 **`docs-install.sh`**（纯链路：clone → docs-install，参数透传） |
 

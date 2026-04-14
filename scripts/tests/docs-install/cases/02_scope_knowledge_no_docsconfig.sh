@@ -20,8 +20,13 @@ git -C "$PROJECT_DIR" init -q
 
 bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target="$DOCS_DIR" >"$OUT_FILE" 2>&1
 
-# 新契约目标：scope=knowledge 不应写 .docsconfig。
 DOCS_CONFIG_PATH="$PROJECT_DIR/.docsconfig"
-assert_file_not_exists "$DOCS_CONFIG_PATH"
+assert_file_exists "$DOCS_CONFIG_PATH"
+assert_contains "DOC_ROOT=" "$DOCS_CONFIG_PATH"
+assert_contains "REPO_ROOT=" "$DOCS_CONFIG_PATH"
+assert_contains "DOC_DIR=" "$DOCS_CONFIG_PATH"
+assert_contains "KNOWLEDGE_TYPE=application" "$DOCS_CONFIG_PATH"
+assert_contains "AGENT_ROOT=" "$DOCS_CONFIG_PATH"
+assert_contains "AGENT_DIRS=\".cursor\"" "$DOCS_CONFIG_PATH"
 
-pass "scope=knowledge 不写 .docsconfig（新契约）"
+pass "scope=knowledge 写 .docsconfig（含 KNOWLEDGE_TYPE）"

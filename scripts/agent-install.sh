@@ -275,6 +275,15 @@ install_agent() {
   install_agent_hooks
 }
 
+# 计算 agent-install 写回 .docsconfig 所需 AGENT_*
+# 用法：install_agent_path <nameref_agent_root_out> <nameref_agent_dirs_out>
+install_agent_path() {
+  local -n _ar_out="${1:?}"
+  local -n _ads_out="${2:?}"
+  _ar_out="$(strip_trailing_slash "${CFG[target_abs]}")"
+  _ads_out="$(agent_dirs_space_separated_for "${ENABLED_AGENTS[@]}")"
+}
+
 # =============================================================================
 # install config：target ≠ $HOME 时更新 AGENT_ROOT / AGENT_DIRS
 # =============================================================================
@@ -296,11 +305,11 @@ install_agent_config() {
   [[ -n "$doc_root" && -n "$repo_root" && -n "$doc_dir" ]] \
     || error ".docsconfig 缺少 DOC_ROOT/REPO_ROOT/DOC_DIR，请重新执行 docs-install。"
 
-  local ads
-  ads="$(agent_dirs_space_separated_for "${ENABLED_AGENTS[@]}")"
+  local ar ads
+  install_agent_path ar ads
 
-  info ">>> 更新 .docsconfig 中的 AGENT_ROOT / AGENT_DIRS: $cfg"
-  docsconfig_write "$t" "$doc_root" "$doc_dir" "${CFG[dry_run]}" "$t" "$ads" "${kt:-}"
+  info ">>> 更新 .docsconfig 中的 AGENT_ROOT / AGENT_DIRS（按本次参数重算）: $cfg"
+  docsconfig_write "$t" "$doc_root" "$doc_dir" "${CFG[dry_run]}" "$ar" "$ads" "${kt:-}"
 }
 
 # =============================================================================

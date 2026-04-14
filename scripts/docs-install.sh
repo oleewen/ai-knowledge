@@ -31,7 +31,7 @@ declare -A CFG=(
   [mode]="${MODE:-${KINIT_DEFAULT_MODE:-$(cfg_default mode)}}"
   [type]="${TYPE:-}"
   [type_explicit]=0
-  [scope]="${SCOPE:-${KINIT_DEFAULT_SCOPE:-config}}"
+  [scope]="${SCOPE:-${KINIT_DEFAULT_SCOPE:-k}}"
   [dry_run]="0"
   [force]="${FORCE:-0}"
   [create_project_root]="${CREATE_PROJECT_ROOT:-0}"
@@ -419,6 +419,19 @@ install_org_template_to_docs() {
   info "    ${label}/ 同步完成"
 }
 
+# 步骤 1d：type=system|company 时，将 docs-link.sh / link-config.sh 安装至目标工程根 scripts/
+install_docs_link_scripts_to_target_repo() {
+  case "${CFG[type]}" in
+    system|company) ;;
+    *) return 0 ;;
+  esac
+  local dst_dir="${CFG[target_dir]}/scripts"
+  info ">>> 安装建联脚本至目标工程: ${dst_dir}（docs-link.sh、link-config.sh）"
+  ensure_dir "$dst_dir"
+  copy_file "${CFG[repo_root]}/scripts/docs-link.sh" "$dst_dir/docs-link.sh"
+  copy_file "${CFG[repo_root]}/scripts/link-config.sh" "$dst_dir/link-config.sh"
+}
+
 # 步骤 1 分发：按 type × mode 将知识库模板安装至目标文档目录
 install_docs() {
   case "${CFG[type]}" in
@@ -468,21 +481,65 @@ resolve_docsconfig_roots() {
   fi
 }
 
-# 写入目标工程仓库根 .docsconfig（仅 DOC_* 与 KNOWLEDGE_TYPE）
+# 计算 docsconfig 写入所需 DOC_* 路径
+# 用法：install_doc_path <nameref_repo_target> <nameref_doc_root> <nameref_dd>
+install_doc_path() {
+  resolve_docsconfig_roots "${1:?}" "${2:?}" "${3:?}"
+}
+
+# 计算 docsconfig 写入所需 KNOWLEDGE_TYPE
+# 用法：install_knowledge_type <nameref_kt_out>
+install_knowledge_type() {
+  local -n _kt="${1:?}"   # knowledge_type（输出）
+
+  case "${CFG[scope]}" in
+    knowledge) _kt="${CFG[type]}" ;;
+    config) _kt='' ;;
+  esac
+}
+
+# 计算 docsconfig 写入所需 AGENT_*
+# 用法：install_agent_path <nameref_agent_root_out> <nameref_agent_dirs_out> <old_agent_root> <old_agent_dirs>
+install_agent_path() {
+  local -n _ar_out="${1:?}"  # agent_root（输出）
+  local -n _ads_out="${2:?}" # agent_dirs（输出）
+  local old_agent_root="${3:-}"
+  local old_agent_dirs="${4:-}"
+
+  _ar_out=''
+  _ads_out=''
+
+  [[ -n "${CFG[home_abs]:-}" ]] || error "无法补全 AGENT_*：HOME 未就绪"
+
+  if [[ -n "${old_agent_root:-}" ]]; then
+    _ar_out="$old_agent_root"
+    _ads_out="${old_agent_dirs:-}"
+    return 0
+  fi
+
+  _ar_out="$(strip_trailing_slash "$(abs_path "${CFG[home_abs]}")")"
+  _ads_out='.cursor'
+  info "未配置 AGENT_ROOT 或配置为空，已写入默认: ${_ar_out}（AGENT_DIRS=\"${_ads_out}\"）"
+}
+
+# 写入目标工程仓库根 .docsconfig（DOC_*、KNOWLEDGE_TYPE；scope=config|knowledge 均按需补全 AGENT_*）
 # dry-run 时仅预览，不写入
 install_docsconfig() {
   local doc_root='' repo_target='' dd=''
   local old_doc_root='' old_repo_root='' old_doc_dir=''
+  local old_agent_root='' old_agent_dirs=''
   local old_knowledge_type=''
   local cfg_file existed=0
   local kt_out=''
-  resolve_docsconfig_roots repo_target doc_root dd
+  local ar_out='' ads_out=''
+  install_doc_path repo_target doc_root dd
 
   # ── 读取已有 .docsconfig（若存在）────────────────────────────────────────
   cfg_file="$repo_target/.docsconfig"
   if [[ -f "$cfg_file" ]]; then
     existed=1
-    docsconfig_read_into "$cfg_file" old_doc_root old_repo_root old_doc_dir old_knowledge_type || true
+    docsconfig_read_into "$cfg_file" old_doc_root old_repo_root old_doc_dir \
+      old_agent_root old_agent_dirs old_knowledge_type || true
   fi
 
   if [[ "$existed" == '1' ]]; then
@@ -491,20 +548,18 @@ install_docsconfig() {
     info ".docsconfig 不存在，将创建并写入: $cfg_file"
   fi
 
-  # ── KNOWLEDGE_TYPE（knowledge / config scope）──────────────────────────────
-  case "${CFG[scope]}" in
-    knowledge) kt_out="${CFG[type]}" ;;
-    config)
-      if [[ -n "${old_knowledge_type:-}" ]]; then
-        kt_out="$old_knowledge_type"
-      else
-        kt_out='application'
-      fi
-      ;;
-  esac
+  install_knowledge_type kt_out
+  if [[ "${CFG[scope]}" == 'config' || "${CFG[scope]}" == 'knowledge' ]]; then
+    install_agent_path ar_out ads_out "$old_agent_root" "$old_agent_dirs"
+  fi
 
   # ── 写入 ──────────────────────────────────────────────────────────────────
-  docsconfig_write "$repo_target" "$doc_root" "$dd" "${CFG[dry_run]}" "${kt_out:-}"
+  if [[ -n "$ar_out" ]]; then
+    docsconfig_write "$repo_target" "$doc_root" "$dd" "${CFG[dry_run]}" \
+      "$ar_out" "$ads_out" "${kt_out:-}"
+  else
+    docsconfig_write "$repo_target" "$doc_root" "$dd" "${CFG[dry_run]}" "${kt_out:-}"
+  fi
 }
 
 
@@ -523,8 +578,8 @@ usage() {
     ~/workspace/my-app/system
     
   --scope：同步范围
-    knowledge|k        从本仓库按 --type 同步 knowledge 目录到 --target
-    config|c（默认）   仅在目标工程仓库根写入/更新 .docsconfig（不同步 knowledge）
+    knowledge|k（默认） 从本仓库按 --type 同步 knowledge 目录到 --target，并写入 .docsconfig（含 KNOWLEDGE_TYPE）
+    config|c           仅在目标工程仓库根写入/更新 .docsconfig（仅路径键与 AGENT_*，不同步 knowledge）
   
   --type：知识库类型，仅在 scope=knowledge 时有效
     application|a（默认）  应用知识库：standalone 全量；central §2.1 子集
@@ -537,9 +592,9 @@ usage() {
   
 选项
   --target=PATH   目标工程文档目录（必填）
-  --scope=SCOPE   knowledge(k) | config(c)  [默认: config]
-                  k|knowledge  仅同步知识库（须传 --target）
-                  config       仅写 .docsconfig
+  --scope=SCOPE   knowledge(k) | config(c)  [默认: k]
+                  k|knowledge  同步知识库并写 .docsconfig（含 KNOWLEDGE_TYPE）
+                  config       仅写 .docsconfig（不写 KNOWLEDGE_TYPE）
   --type=TYPE     application(a) | system(s) | company(c)  [默认: a]
   --mode=MODE     standalone(s) | central(c)  [默认: s]
   -r              允许工程根目录不存在时自动创建
@@ -578,6 +633,9 @@ parse_args() {
       --force)    CFG[force]=1;                               shift ;;
       -r)         CFG[create_project_root]=1;                 shift ;;
       -h|--help)  usage; exit 0 ;;
+      *)
+        error "未知参数: $1（使用 -h 或 --help 查看帮助）"
+        ;;
     esac
   done
 
@@ -775,17 +833,19 @@ docs_init_run() {
 
   if [[ -n "${CFG[docs_abs]}" && "${CFG[scope]}" == 'knowledge' ]]; then
     install_docs
+    install_docs_link_scripts_to_target_repo
+    install_docsconfig
   fi
 
-  # ── 步骤 2：scope=knowledge 不写 .docsconfig（新契约）──────────────────────
+  # ── 步骤 2：scope=knowledge 写 .docsconfig（含 KNOWLEDGE_TYPE）──────────────
 
   info "完成：初始化"
   print_checklist
 }
 
-# ========== 入口（默认 --scope=config）==========
+# ========== 入口（默认 --scope=k，即 knowledge）==========
 if [[ "$#" -eq 0 ]]; then
-  parse_args --scope="${KINIT_DEFAULT_SCOPE:-config}"
+  parse_args --scope="${KINIT_DEFAULT_SCOPE:-k}"
 else
   parse_args "$@"
 fi

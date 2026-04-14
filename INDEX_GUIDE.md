@@ -156,7 +156,7 @@ stateDiagram-v2
 | 名称 | 取值 | 说明 |
 |------|------|------|
 | `docs-install --mode` | `standalone` / `central`（中央知识库挂载建联） | 见 [scripts/README.md](scripts/README.md) 功能概述表 |
-| `docs-install --scope` | `config` / `knowledge` | 默认 `config`；`knowledge` 不处理 `.docsconfig` |
+| `docs-install --scope` | `config` / `knowledge` | 默认 `k`（knowledge）；`knowledge` 不处理 `.docsconfig` |
 | `docs-install --type` | `application` / `system` / `company` | 与 `scope=knowledge` 组合 |
 
 ---

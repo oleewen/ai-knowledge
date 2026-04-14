@@ -4,7 +4,7 @@
 
 ## 简介
 
-`ai-knowledge` 是**纯文档型**中央库：提供 `**application/`** 应用知识库 SSOT、`**system/**` / `**company/**` 组织与公司级槽位骨架、`**/agent/**` 规范与 Slash 技能，以及 `**scripts/**` 下的 **`agent-install` / `docs-install` / `docs-link`** 初始化链。业务细节、路径级精要与检索字段以 **[INDEX_GUIDE.md](INDEX_GUIDE.md)** 为权威地图（与 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) 互为补充说明时以前者落地路径为准）。当前 `docs-install` 契约：`--target` 必填、默认 `--scope=config`、`--scope=knowledge` 不处理 `.docsconfig`，且 **中央知识库挂载建联**（`--mode=central`）仅用于 `type=application` 的安装范围切换（无中央知识库挂载建联登记副作用）。详见 [scripts/README.md](scripts/README.md) 。
+`ai-knowledge` 是**纯文档型**中央库：提供 `**application/`** 应用知识库 SSOT、`**system/**` / `**company/**` 组织与公司级槽位骨架、`**/agent/**` 规范与 Slash 技能，以及 `**scripts/**` 下的 **`agent-install` / `docs-install` / `docs-link`** 初始化链。业务细节、路径级精要与检索字段以 **[INDEX_GUIDE.md](INDEX_GUIDE.md)** 为权威地图（与 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) 互为补充说明时以前者落地路径为准）。当前 `docs-install` 契约：`--target` 必填、默认 `--scope=k`（knowledge）、`--scope=knowledge` 会写入 `.docsconfig`（含 `KNOWLEDGE_TYPE`）、`--scope=config` 不写 `KNOWLEDGE_TYPE`；两种 scope 都会在 `AGENT_ROOT` 为空时补默认 `AGENT_*`。`agent-install` 在 `--target` 非 `$HOME` 且目标存在 `.docsconfig` 时，会按本次参数重算并覆盖 `AGENT_*`。且 **中央知识库挂载建联**（`--mode=central`）仅用于 `type=application` 的安装范围切换（无中央知识库挂载建联登记副作用）。详见 [scripts/README.md](scripts/README.md) 。
 
 人类上手、可复制命令与协作入口以本文件为准；Agent 行为约束见 **[AGENTS.md](AGENTS.md)**。
 
@@ -43,7 +43,7 @@ cd /path/to/your-project
 curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- [选项] --target ./docs
 ```
 
-参数、模式与落地产物见 **[scripts/README.md](scripts/README.md)**。在**目标工程**侧，**仅 `docs-install --scope=config`** 会写入 **`.docsconfig`**（**`DOC_ROOT`/`REPO_ROOT`/`DOC_DIR`/`KNOWLEDGE_TYPE`**）；`--scope=knowledge` 仅安装知识库内容，不处理 `.docsconfig`。`docs-install` 通过 **`--target`** 指定目标文档目录；**`agent-install`** 使用 **`--target`**（默认 **`$HOME`**）在 **`${TARGET}/.cursor` 等**安装，并按其自身规则处理 `AGENT_*`。**bootstrap 仅走 `docs-install`**；仅装 Agent 请 clone 后用 **`agent-install`**。供 Skill 与脚本通过 **`config-bootstrap`** 解析。
+参数、模式与落地产物见 **[scripts/README.md](scripts/README.md)**。在**目标工程**侧，`docs-install --scope=knowledge` 会写入 **`.docsconfig`**（**`DOC_ROOT`/`REPO_ROOT`/`DOC_DIR`/`KNOWLEDGE_TYPE`**）；`docs-install --scope=config` 不写 `KNOWLEDGE_TYPE`。两种 scope 都会在 `AGENT_ROOT` 为空时补默认 `AGENT_*`。`docs-install` 通过 **`--target`** 指定目标文档目录；**`agent-install`** 使用 **`--target`**（默认 **`$HOME`**）在 **`${TARGET}/.cursor` 等**安装，并在 `--target` 非 `$HOME` 且目标存在 `.docsconfig` 时重算并覆盖 `AGENT_*`。**bootstrap 仅走 `docs-install`**；仅装 Agent 请 clone 后用 **`agent-install`**。供 Skill 与脚本通过 **`config-bootstrap`** 解析。
 
 ## 常见 Skill 与推荐流程
 

@@ -23,7 +23,7 @@ declare -A SDX_DEFAULTS=(
 )
 
 # docs-install 语义默认值（供入口编排层使用）
-readonly KINIT_DEFAULT_SCOPE='config'
+readonly KINIT_DEFAULT_SCOPE='k'
 readonly KINIT_DEFAULT_TYPE='application'
 readonly KINIT_DEFAULT_MODE='standalone'
 

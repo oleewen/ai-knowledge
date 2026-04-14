@@ -3,6 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 DOCS_INSTALL_SCRIPT="$ROOT_DIR/scripts/docs-install.sh"
+AGENT_INSTALL_SCRIPT="$ROOT_DIR/scripts/agent-install.sh"
 
 fail() {
   printf 'FAIL: %s\n' "$*" >&2
