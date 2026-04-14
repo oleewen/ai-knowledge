@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# agent-config.sh — 仅供 agent-init.sh source：Agent 安装 CLI 的默认值、校验与 .docsconfig 工具
+# agent-config.sh — 仅供 agent-install.sh source：Agent 安装 CLI 的默认值、校验与 .docsconfig 工具
 #
 # 职责：参数默认值、合法性校验、路径与 .docsconfig 读写（与 agent/scripts/docs-config.sh 语义对齐）。
 # 不 source lib/*.sh；不承载 knowledge-init 专用常量。

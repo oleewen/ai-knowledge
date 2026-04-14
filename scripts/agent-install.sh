@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# agent-init.sh — 安装 Agent（scripts / rules / skills / hooks）并按需更新 .docsconfig 中的 AGENT_*
+# agent-install.sh — 安装 Agent（scripts / rules / skills / hooks）并按需更新 .docsconfig 中的 AGENT_*
 #
 # 配置面：source 同目录 agent-config.sh。
 #
@@ -310,7 +310,7 @@ install_agent_config() {
 usage() {
   cat >&2 <<'EOF'
 用法
-  agent-init.sh [选项]
+  agent-install.sh [选项]
 
 说明
   将本仓库 agent/{scripts,rules,skills,hooks} 安装到 --target 下、按 --agents 选定的多分根：
@@ -332,10 +332,10 @@ usage() {
   AGENTS_OPT      未传 --agents 时作为默认值（否则以命令行 --agents 为准）
 
 示例
-  ./scripts/agent-init.sh
-  ./scripts/agent-init.sh --agents=cursor,claude
-  ./scripts/agent-init.sh --scope=sh --dry-run
-  ./scripts/agent-init.sh --target ~/workspace/my-repo --agents=all
+  ./scripts/agent-install.sh
+  ./scripts/agent-install.sh --agents=cursor,claude
+  ./scripts/agent-install.sh --scope=sh --dry-run
+  ./scripts/agent-install.sh --target ~/workspace/my-repo --agents=all
 EOF
 }
 
@@ -390,7 +390,7 @@ parse_args() {
   done
 }
 
-agent_init_run() {
+agent_install_run() {
   init_repo_root
   [[ -n "${HOME:-}" ]] || error "需要 HOME 环境变量"
   CFG[home_abs]="$(abs_path "$HOME")"
@@ -409,12 +409,12 @@ agent_init_run() {
   install_agent
   install_agent_config
 
-  info "完成：agent-init"
+  info "完成：agent-install"
 }
 
 main() {
   parse_args "$@"
-  agent_init_run
+  agent_install_run
 }
 
 main "$@"

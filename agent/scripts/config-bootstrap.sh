@@ -10,12 +10,12 @@
 #   AGENT_DIRS  — 可选
 #
 # -----------------------------------------------------------------------------
-# 依赖同目录 docs-config.sh（由 agent-init 安装）
+# 依赖同目录 docs-config.sh（由 agent-install 安装）
 # -----------------------------------------------------------------------------
 _BOOTSTRAP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _CFG_SH="${_BOOTSTRAP_DIR}/docs-config.sh"
 if [[ ! -f "$_CFG_SH" ]]; then
-  printf '[config] 未找到同目录 docs-config.sh（请执行 agent-init 并安装 Agent：--scope=agent）: %s\n' "$_CFG_SH" >&2
+  printf '[config] 未找到同目录 docs-config.sh（请执行 agent-install.sh 安装 Agent）: %s\n' "$_CFG_SH" >&2
   if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then exit 1; else return 1; fi
 fi
 # shellcheck source=/dev/null

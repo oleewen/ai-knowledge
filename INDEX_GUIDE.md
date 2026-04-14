@@ -22,7 +22,7 @@
   - 应用知识库 SSOT：`./application/README.md`、`./application/INDEX_GUIDE.md`
   - 组织级 / 公司级壳目录：`./system/README.md`、`./company/README.md`
   - 联邦迁移与对齐入口：`./applications/APPLICATIONS_INDEX.md`
-  - 初始化入口：`./scripts/knowledge-init.sh`、`./scripts/agent-init.sh`、`./scripts/knowledge-link.sh`、`./scripts/README.md`
+  - 初始化入口：`./scripts/knowledge-init.sh`、`./scripts/agent-install.sh`、`./scripts/knowledge-link.sh`、`./scripts/README.md`
   - 规范入口：`./agent/rules/CONVENTIONS.md`、`./agent/rules/`
   - Slash 命令一览：`./agent/skills/README.md`
 - **构建/启动命令**（本仓库自身不包含服务端/应用启动）：
@@ -61,7 +61,7 @@
 │   ├── README.md                 # 初始化使用说明与选项
 │   ├── knowledge-init.sh         # 知识库 + .docsconfig（推荐）
 │   ├── agent-config.sh           # Agent CLI 默认值与校验；路径/.docsconfig 工具复用 agent/scripts/docs-config.sh
-│   ├── agent-init.sh             # 仅 Agent 安装（source agent-config；多分根 .cursor/.trea/.claude）
+│   ├── agent-install.sh          # 仅 Agent 安装（source agent-config；多分根 .cursor/.trea/.claude）
 │   ├── knowledge-link.sh         # 知识库建联清单
 │   └── docs-bootstrap.sh         # curl：临时 clone 后执行 knowledge-init.sh
 ├── agent/                          # AI 规范与技能（README、rules、skills）
@@ -79,7 +79,7 @@
 - `scripts/` → 目标文档根：初始化时拷贝中央库 `application/` 模板至目标仓库（默认文档根目录名为 `docs/`）
 - `scripts/` → `applications/`：legacy；模板已迁出（见 `applications/README.md`）
 - `scripts/` → 目标 `system/`、`company/`：按 `knowledge-init` 的 `type` / `mode` 约定同步（见 `docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md`）
-- `scripts/` → `agent/`：`agent-init` 按 `--agents` 将 Agent 配置安装到目标 `.${agent}/` 目录
+- `scripts/` → `agent/`：`agent-install` 按 `--agents` 将 Agent 配置安装到目标 `.${agent}/` 目录
 - `application/DESIGN.md` → `application/knowledge/*`：定义四视角元模型、目录与元数据 YAML 映射机制
 - `application/CONTRIBUTING.md` → `application/knowledge/*`：约束新增/修改的字段、文件命名与引用规则
 - `application/INDEX_GUIDE.md` → `application/knowledge/*`：提供宪法层与四视角入口与示例路径
@@ -154,7 +154,7 @@
 
 | 文件路径                       | 功能精要                                               | 检索标签                         | 上游依赖             | 下游被依赖                          | 重要度 |
 | -------------------------- | -------------------------------------------------- | ---------------------------- | ---------------- | ------------------------------ | --- |
-| `./scripts/README.md`      | knowledge-init / agent-init 用法、`standalone`/`central`、scope 与选项清单 | `初始化` `脚本`                   | -                | `knowledge-init.sh`、`agent-init.sh`                 | ⭐⭐⭐ |
+| `./scripts/README.md`      | knowledge-init / agent-install 用法、`standalone`/`central`、scope 与选项清单 | `初始化` `脚本`                   | -                | `knowledge-init.sh`、`agent-install.sh`                 | ⭐⭐⭐ |
 | `./scripts/knowledge-init.sh`   | 将中央库 `application/` 等同步至目标；`central` 模式另更新本仓库登记及联邦镜像路径（见脚本内说明） | `初始化` `联邦治理` `Cursor` `Trea` | `knowledge-config.sh`（并复用 `agent/scripts/docs-config.sh`） | 目标项目的文档根（默认 `docs/`）、`agent/` | ⭐⭐⭐ |
 
 
@@ -202,7 +202,7 @@
 > 说明：本仓库主要“数据流”是初始化与知识引用流，而非运行时请求流。
 
 - **数据流 1：向目标项目注入 SDD 文档体系**
-  - `./scripts/knowledge-init.sh` / `./scripts/agent-init.sh` → 将中央库 `application/`（应用知识库 SSOT）、`agent/`、按需 skills 等复制/安装到目标目录（默认文档根 `docs/`）；`central` 模式另在本仓库更新 `application/INDEX_GUIDE.md` 登记并维护目标工程内联邦镜像路径（详见 `scripts/README.md`）。
+  - `./scripts/knowledge-init.sh` / `./scripts/agent-install.sh` → 将中央库 `application/`（应用知识库 SSOT）、`agent/`、按需 skills 等复制/安装到目标目录（默认文档根 `docs/`）；`central` 模式另在本仓库更新 `application/INDEX_GUIDE.md` 登记并维护目标工程内联邦镜像路径（详见 `scripts/README.md`）。
 - **数据流 2：应用知识库（application）内的跨视角引用（SSOT）**
   - `./application/DESIGN.md` 定义四视角元模型与映射机制 → 具体实体在各视角元数据 YAML 与实体定义 `*.yaml` 中写目标实体 ID。
   - 常用映射字段（见 `application/DESIGN.md` 与 `application/constitution/GLOSSARY.md`）：
@@ -230,9 +230,9 @@
 | `--dry-run`               | `./scripts/knowledge-init.sh`      | 仅打印不执行（预览）                     | 关闭                                            | 低         |
 
 
-> 说明：`knowledge-init` 默认值与校验位于 `./scripts/knowledge-config.sh`；`agent-init` 见 `./scripts/agent-config.sh` 与 [scripts/README.md](scripts/README.md)。
+> 说明：`knowledge-init` 默认值与校验位于 `./scripts/knowledge-config.sh`；`agent-install` 见 `./scripts/agent-config.sh` 与 [scripts/README.md](scripts/README.md)。
 
-> **目标工程 `.docsconfig`**（**三键**由 `knowledge-init` 落在**目标仓库根**；**`AGENT_*`** 可由 **`agent-init --target=<工程根>`** 在已有文件上更新）：键 **`DOC_ROOT`** / **`REPO_ROOT`** / **`DOC_DIR`** 及可选 **`AGENT_ROOT`** / **`AGENT_DIRS`**；路径在 `$HOME` 下时常为 **`~/...`**。与上表 **环境变量 `REPO_ROOT`**（指向本中央库）区分。详见 [scripts/README.md](scripts/README.md)。
+> **目标工程 `.docsconfig`**（**三键**由 `knowledge-init` 落在**目标仓库根**；**`AGENT_*`** 可由 **`agent-install --target=<工程根>`** 在已有文件上更新）：键 **`DOC_ROOT`** / **`REPO_ROOT`** / **`DOC_DIR`** 及可选 **`AGENT_ROOT`** / **`AGENT_DIRS`**；路径在 `$HOME` 下时常为 **`~/...`**。与上表 **环境变量 `REPO_ROOT`**（指向本中央库）区分。详见 [scripts/README.md](scripts/README.md)。
 
 ## 6. 未索引区域声明
 
