@@ -141,4 +141,4 @@ agent/skills/sdx-solution/scripts/validate-solution.sh --file path/to/SOLUTION-x
 
 ## 工程化支持
 
-仓库 `agent/hooks.json` 注册了 `preToolUse` 钩子（`Write` / `StrReplace`），脚本见 `agent/hooks/sdx-solution-gate-write.py`；需启用 Hooks 方生效。
+仓库 `agent/hooks/hooks.json` 注册了 `preToolUse` 钩子（`Write` / `StrReplace`），脚本见 `agent/hooks/sdx_gate_common.py`（`python3 agent/hooks/sdx_gate_common.py --gate solution`）；需启用 Hooks 方生效。

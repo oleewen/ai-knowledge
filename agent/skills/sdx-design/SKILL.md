@@ -142,4 +142,4 @@ agent/skills/sdx-design/scripts/validate-design.sh --file path/to/ADD-xxx.md --g
 
 ## 工程化支持
 
-仓库 [agent/hooks.json](../../hooks.json) 注册了 `preToolUse` 钩子（`Write` / `StrReplace`），脚本见 [agent/hooks/sdx-design-gate-write.py](../../hooks/sdx-design-gate-write.py)；需启用 Hooks 方生效。
+仓库 [agent/hooks/hooks.json](../../hooks/hooks.json) 注册了 `preToolUse` 钩子（`Write` / `StrReplace`），脚本见 [agent/hooks/sdx_gate_common.py](../../hooks/sdx_gate_common.py)（`python3 agent/hooks/sdx_gate_common.py --gate design`）；需启用 Hooks 方生效。

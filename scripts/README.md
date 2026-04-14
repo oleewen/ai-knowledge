@@ -167,7 +167,7 @@ your-project/
 ```
 ~/
 ├── .cursor/                       # Cursor（另有 .trea/、.claude/ 下同构）
-│   ├── hooks.json                 # 自仓库 agent/hooks.json
+│   ├── hooks.json                 # 自仓库 agent/hooks/hooks.json
 │   ├── hooks/                     # 自仓库 agent/hooks/
 │   ├── scripts/                   # 含 docs-core.sh（自仓库 agent/scripts/ 复制）与 config-bootstrap 等
 │   ├── skills/                    # Skills（不含各层 README）
@@ -199,7 +199,7 @@ your-project/
 1. **`--scope` 含 `sh` 时**：将 **`agent/scripts/`** 下条目（**不含** `docs-core.sh`）与 **`agent/scripts/docs-core.sh`（共享实现）** 安装到 **`${TARGET}/.cursor| .trea| .claude/scripts/`**；并对 `scripts/` 下树执行 `agent/` → **`AGENT_DIR/`** 的路径改写。
 2. **`--scope` 含 `s` 时**：将 **`agent/skills/`** 下各技能子目录同步到三处 **`skills/`**（排除各层 **README**；不再依赖前缀筛选）。
 3. **`--scope` 含 `r` 时**：同步 **`agent/rules/`** 到三处 **`rules/`**。
-4. **`--scope` 含 `h` 时**：同步 **`agent/hooks/`** 与 **`agent/hooks.json`**。
+4. **`--scope` 含 `h` 时**：同步 **`agent/hooks/`**（含同目录下的 **`hooks.json`** SSOT）。
 5. 改写路径引用：`agent/` → **`.cursor/`** 等对应前缀。
 
 ## 脚本组成

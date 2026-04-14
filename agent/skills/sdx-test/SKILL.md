@@ -139,4 +139,4 @@ agent/skills/sdx-test/scripts/validate-test.sh --file path/to/TDD-xxx.md --gate-
 
 ## 工程化支持
 
-仓库 [agent/hooks.json](../../hooks.json) 注册了 `preToolUse` 钩子（`Write` / `StrReplace`），脚本见 [agent/hooks/sdx-test-gate-write.py](../../hooks/sdx-test-gate-write.py)；需启用 Hooks 方生效。
+仓库 [agent/hooks/hooks.json](../../hooks/hooks.json) 注册了 `preToolUse` 钩子（`Write` / `StrReplace`），脚本见 [agent/hooks/sdx_gate_common.py](../../hooks/sdx_gate_common.py)（`python3 agent/hooks/sdx_gate_common.py --gate test`）；需启用 Hooks 方生效。
