@@ -14,7 +14,7 @@
 set -euo pipefail
 
 # =============================================================================
-# § 1  常量（预克隆阶段；须与 docs-config.sh 中 SDX_GIT_REPO_URL 一致，见集成测试）
+# § 1  常量（预克隆阶段）
 # =============================================================================
 
 readonly SDX_BS_FALLBACK_REPO='https://github.com/oleewen/ai-knowledge.git'
@@ -150,16 +150,15 @@ sdx_bs_main() {
   sdx_bs_clone_repo "$repo_url" "$ref" "$SDX_BS_CLONE_DIR" || exit 1
 
   local knowledge_init="${SDX_BS_CLONE_DIR}/scripts/knowledge-init.sh"
-  local config_script="${SDX_BS_CLONE_DIR}/scripts/docs-config.sh"
+  local shared_config="${SDX_BS_CLONE_DIR}/agent/scripts/docs-config.sh"
   [[ -f "$knowledge_init" ]] || sdx_bs_die "仓库中未找到 scripts/knowledge-init.sh"
-  [[ -f "$config_script" ]] || sdx_bs_die "仓库中未找到 scripts/docs-config.sh"
+  [[ -f "$shared_config" ]] || sdx_bs_die "仓库中未找到 agent/scripts/docs-config.sh"
 
   # shellcheck disable=SC1090
-  source "$config_script"
-
-  sdx_bs_info "已加载模板库 SDX_VERSION=${SDX_VERSION}"
+  source "$shared_config"
 
   sdx_bs_log ''
+  sdx_bs_info "已加载共享配置（agent/scripts/docs-config.sh）"
   sdx_bs_info '>>> 执行 knowledge-init.sh...'
   sdx_bs_log ''
 

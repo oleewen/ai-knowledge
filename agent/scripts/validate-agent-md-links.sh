@@ -2,13 +2,13 @@
 # validate-agent-md-links.sh — 校验 agent 下 Markdown 链接：agent 内互链须存在；跨出 agent 须落在
 # REPO_ROOT 或 DOC_ROOT 下（且非 .git），落实 link-reachability §1.1 强校验。
 # 在仓库根执行：bash agent/scripts/validate-agent-md-links.sh
-# 文档根路径来自目标仓库根 .docsconfig（见 docsconfig-bootstrap.sh；§2.2.2 不向子进程 export，仅前缀传参）。
+# 文档根路径来自目标仓库根 .docsconfig（见 config-bootstrap.sh；§2.2.2 不向子进程 export，仅前缀传参）。
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck disable=SC1091
-source "$SCRIPT_DIR/docsconfig-bootstrap.sh"
+source "$SCRIPT_DIR/config-bootstrap.sh"
 validate_bootstrap_docsconfig "$SCRIPT_DIR"
 
 AGENT_DIR="$REPO_ROOT/agent"

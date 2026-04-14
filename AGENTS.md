@@ -96,8 +96,8 @@ Markdown、YAML；**Bash 5+**；Git。可选 `rsync`（脚本可回退 `cp`）�
 
 ```bash
 git clone https://github.com/oleewen/ai-knowledge.git && cd ai-knowledge
-./scripts/knowledge-init.sh [选项] /path/to/your-project/docs
-# 或（未先 clone）：curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- ./docs
+./scripts/knowledge-init.sh [选项] --target=/path/to/your-project/docs
+# 或（未先 clone）：curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- --target=./docs
 ```
 
 ---

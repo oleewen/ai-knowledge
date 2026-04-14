@@ -4,7 +4,7 @@
 
 ## 简介
 
-`ai-knowledge` 是**纯文档型**中央库：提供 `**application/`** 应用知识库 SSOT、`**system/**` / `**company/**` 组织与公司级槽位骨架、`**applications/**` 联邦迁移说明入口、`**/agent/**` 规范与 Slash 技能，以及 `**scripts/**` 下的 **`agent-init` / `knowledge-init` / `knowledge-link`** 初始化链。业务细节、路径级精要与检索字段以 **[INDEX_GUIDE.md](INDEX_GUIDE.md)** 为权威地图（与 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) 互为补充说明时以前者落地路径为准）。**破坏性变更**：**v2.2** 起原顶层 `system/` 知识树已迁至 `**application/`**；**v2.3** 起 `knowledge-init` 支持 `--type=application|system|company`，且 **`--mode=central` 且未传 `--type` 时默认同步仓库 `system/`（组织级）**，若需旧式「central 全量 application + 登记」请使用 **`--mode=central --type=application`**。详见 [scripts/README.md](scripts/README.md) 与 [docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md](docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md)。
+`ai-knowledge` 是**纯文档型**中央库：提供 `**application/`** 应用知识库 SSOT、`**system/**` / `**company/**` 组织与公司级槽位骨架、`**applications/**` 联邦迁移说明入口、`**/agent/**` 规范与 Slash 技能，以及 `**scripts/**` 下的 **`agent-init` / `knowledge-init` / `knowledge-link`** 初始化链。业务细节、路径级精要与检索字段以 **[INDEX_GUIDE.md](INDEX_GUIDE.md)** 为权威地图（与 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) 互为补充说明时以前者落地路径为准）。当前 `knowledge-init` 契约：`--target` 必填、默认 `--scope=config`、`--scope=knowledge` 不处理 `.docsconfig`，且 `--mode=central` 仅用于 `type=application` 的安装范围切换（无 central 登记副作用）。详见 [scripts/README.md](scripts/README.md) 与 [docs/superpowers/specs/2026-04-13-knowledge-config-design.md](docs/superpowers/specs/2026-04-13-knowledge-config-design.md)。
 
 人类上手、可复制命令与协作入口以本文件为准；Agent 行为约束见 **[AGENTS.md](AGENTS.md)**。
 
@@ -32,18 +32,18 @@
 cd /path/to/your-workspaces
 git clone https://github.com/oleewen/ai-knowledge
 cd ai-knowledge
-./scripts/knowledge-init.sh [--选项] /path/to/your-project/docs
-# 或仅安装 Agent： ./scripts/agent-init.sh [选项] [<目标工程文档目录>]
+./scripts/knowledge-init.sh [--选项] --target=/path/to/your-project/docs
+# 或仅安装 Agent： ./scripts/agent-init.sh [--scope=...] [--target=...] [--dry-run]
 ```
 
 **方式三：远程 bootstrap（无需先 clone，等同 clone 后执行 `knowledge-init`）**
 
 ```bash
 cd /path/to/your-project
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- [选项] ./docs
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- [选项] --target ./docs
 ```
 
-参数、模式与落地产物见 **[scripts/README.md](scripts/README.md)**。在**目标工程**侧会写入 **`.docsconfig`**（必选 **`DOC_ROOT`/`REPO_ROOT`/`DOC_DIR`**；知识库流程可含 **`KNOWLEDGE_TYPE`**；相关 scope 可含 **`AGENT_ROOT`/`AGENT_DIRS`**）。**`knowledge-init` / `--scope=knowledge|config`** 须提供 `<目标工程文档目录>`；**`agent-init`** 可省略文档目录（Agent 装入 `$HOME` 侧）。**bootstrap 仅走 `knowledge-init`**；仅装 Agent 请 clone 后用 **`agent-init`**。供 Skill 与脚本通过 **`docsconfig-bootstrap`** 解析。
+参数、模式与落地产物见 **[scripts/README.md](scripts/README.md)**。在**目标工程**侧，**仅 `knowledge-init --scope=config`** 会写入 **`.docsconfig`**（**`DOC_ROOT`/`REPO_ROOT`/`DOC_DIR`/`KNOWLEDGE_TYPE`**）；`--scope=knowledge` 仅安装知识库内容，不处理 `.docsconfig`。`knowledge-init` 通过 **`--target`** 指定目标文档目录；**`agent-init`** 使用 **`--target`**（默认 **`$HOME`**）在 **`${TARGET}/.cursor` 等**安装，并按其自身规则处理 `AGENT_*`。**bootstrap 仅走 `knowledge-init`**；仅装 Agent 请 clone 后用 **`agent-init`**。供 Skill 与脚本通过 **`config-bootstrap`** 解析。
 
 ## 常见 Skill 与推荐流程
 
@@ -107,7 +107,7 @@ ai-knowledge/
 | [applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md) | 应用联邦入口（迁移后）         |
 | [agent/README.md](agent/README.md)                                     | AI 协作规则与目录说明        |
 | [agent/skills/README.md](agent/skills/README.md)                       | Slash 技能命令一览        |
-| [scripts/README.md](scripts/README.md)                                   | 初始化脚本参数、模式与落地产物；目标工程 **`.docsconfig`** 键（`DOC_*` / `AGENT_*`）与 `~` 约定     |
+| [scripts/README.md](scripts/README.md)                                   | 初始化脚本参数、模式与落地产物；目标工程 **`.docsconfig`** 键与 `~` 约定     |
 | [application/changelogs/README.md](application/changelogs/README.md)     | 变更记录与索引运维说明         |
 
 

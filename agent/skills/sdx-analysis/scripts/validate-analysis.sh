@@ -3,7 +3,7 @@ set -euo pipefail
 
 # 需求分析文档结构校验脚本
 # 用法: scripts/validate-analysis.sh [--file <path>] [--gate-check] [--gate-strict]
-# DOC_ROOT：resolve_repo_doc_root（仅 .docsconfig）；见 agent/scripts/docsconfig-bootstrap.sh
+# DOC_ROOT：resolve_repo_doc_root（仅 .docsconfig）；见 agent/scripts/config-bootstrap.sh
 #
 # 说明：闸门式工作流仅改变产出过程，不改变 ANALYSIS 文档结构要求；校验项仍以六章模板为准。
 #
@@ -34,7 +34,7 @@ done
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck disable=SC1091
-source "$_AGENT_HOME/scripts/docsconfig-bootstrap.sh"
+source "$_AGENT_HOME/scripts/config-bootstrap.sh"
 validate_bootstrap_docsconfig "$SCRIPT_DIR"
 
 DOC_ROOT="$(resolve_repo_doc_root)"

@@ -48,12 +48,12 @@ description: >
 
 ### 步骤 1：Index 解析
 
-先 `source` `agent/scripts/docsconfig-bootstrap.sh` 并执行 `validate_bootstrap_docsconfig`（以当前脚本目录为参），从 `.docsconfig` 得到 **`REPO_ROOT`**（目标工程仓库根）、**`DOC_ROOT`**（文档树根绝对路径），以及可选的 **`AGENT_ROOT`** / **`AGENT_DIRS`**。
+先 `source` `agent/scripts/config-bootstrap.sh` 并执行 `validate_bootstrap_docsconfig`（以当前脚本目录为参），从 `.docsconfig` 得到 **`REPO_ROOT`**（目标工程仓库根）、**`DOC_ROOT`**（文档树根绝对路径），以及可选的 **`AGENT_ROOT`** / **`AGENT_DIRS`**。
 
 ```bash
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
-source "$_AGENT_HOME/scripts/docsconfig-bootstrap.sh"
+source "$_AGENT_HOME/scripts/config-bootstrap.sh"
 validate_bootstrap_docsconfig "$SCRIPT_DIR"
 DOC_ROOT="$(resolve_repo_doc_root)"
 ```

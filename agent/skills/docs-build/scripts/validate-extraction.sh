@@ -3,7 +3,7 @@ set -euo pipefail
 
 # 知识实体提取结果验证脚本
 # 用法: scripts/validate-extraction.sh
-# DOC_ROOT / DOC_DIR：validate_bootstrap_docsconfig；见 agent/scripts/docsconfig-bootstrap.sh
+# DOC_ROOT / DOC_DIR：validate_bootstrap_docsconfig；见 agent/scripts/config-bootstrap.sh
 # 知识库目录：{DOC_DIR}/knowledge（即 REPO_ROOT/DOC_DIR/knowledge，与 DOC_ROOT/knowledge 等价）
 #
 # 校验项:
@@ -25,7 +25,7 @@ fi
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck disable=SC1091
-source "$_AGENT_HOME/scripts/docsconfig-bootstrap.sh"
+source "$_AGENT_HOME/scripts/config-bootstrap.sh"
 validate_bootstrap_docsconfig "$SCRIPT_DIR"
 
 DOC_ROOT="$(resolve_repo_doc_root)"
