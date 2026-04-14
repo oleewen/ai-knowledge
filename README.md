@@ -4,7 +4,7 @@
 
 ## 简介
 
-`ai-knowledge` 是**纯文档型**中央库：提供 `**application/`** 应用知识库 SSOT、`**system/**` / `**company/**` 组织与公司级槽位骨架、`**applications/**` 联邦迁移说明入口、`**/agent/**` 规范与 Slash 技能，以及 `**scripts/**` 下的 **`agent-install` / `docs-install` / `docs-link`** 初始化链。业务细节、路径级精要与检索字段以 **[INDEX_GUIDE.md](INDEX_GUIDE.md)** 为权威地图（与 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) 互为补充说明时以前者落地路径为准）。当前 `docs-install` 契约：`--target` 必填、默认 `--scope=config`、`--scope=knowledge` 不处理 `.docsconfig`，且 **中央知识库挂载建联**（`--mode=central`）仅用于 `type=application` 的安装范围切换（无中央知识库挂载建联登记副作用）。详见 [scripts/README.md](scripts/README.md) 与 [docs/superpowers/specs/2026-04-13-knowledge-config-design.md](docs/superpowers/specs/2026-04-13-knowledge-config-design.md)。
+`ai-knowledge` 是**纯文档型**中央库：提供 `**application/`** 应用知识库 SSOT、`**system/**` / `**company/**` 组织与公司级槽位骨架、`**applications/**` 联邦迁移说明入口、`**/agent/**` 规范与 Slash 技能，以及 `**scripts/**` 下的 **`agent-install` / `docs-install` / `docs-link`** 初始化链。业务细节、路径级精要与检索字段以 **[INDEX_GUIDE.md](INDEX_GUIDE.md)** 为权威地图（与 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) 互为补充说明时以前者落地路径为准）。当前 `docs-install` 契约：`--target` 必填、默认 `--scope=config`、`--scope=knowledge` 不处理 `.docsconfig`，且 **中央知识库挂载建联**（`--mode=central`）仅用于 `type=application` 的安装范围切换（无中央知识库挂载建联登记副作用）。详见 [scripts/README.md](scripts/README.md) 。
 
 人类上手、可复制命令与协作入口以本文件为准；Agent 行为约束见 **[AGENTS.md](AGENTS.md)**。
 
@@ -84,12 +84,14 @@ ai-knowledge/
 ├── README.md
 ├── INDEX_GUIDE.md
 ├── AGENTS.md
+├── .gitignore
 ├── application/                 # 应用知识库 SSOT（宪法层、四视角、阶段文档、changelogs）
+├── applications/                # 联邦迁移说明与索引入口（见 APPLICATIONS_INDEX.md）
 ├── system/                      # 组织级系统知识库壳（architecture、application-{name}/）
 ├── company/                     # 公司知识库壳（architecture、system-{name}/）
-├── applications/                # 联邦模板已迁出；仅存迁移说明与索引入口
 ├── scripts/                     # agent-install / docs-install / docs-link（Bash 5+）
-└── agent/                      # 规范（rules）与 Slash 技能（skills）
+├── agent/                       # 规范（rules）与 Slash 技能（skills）
+└── docs/                        # 设计备忘与 superpowers 规格等（若存在）
 ```
 
 ## 文档导航

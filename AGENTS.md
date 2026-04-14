@@ -2,7 +2,7 @@
 
 > **契约定位**：本文件仅承载 Agent 角色定位、核心契约、文档索引、流程规范等关键索引和必读内容。
 
-**最后更新**: 2026-04-12
+**最后更新**: 2026-04-14
 
 ---
 
@@ -55,7 +55,7 @@
 
 ## 查阅顺序（固定）
 
-[README.md](README.md) → [INDEX_GUIDE.md](INDEX_GUIDE.md) → 子域索引（如 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[system/README.md](system/README.md)、[company/README.md](company/README.md)、[applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md)）或 [agent/rules/](agent/rules/) 等规范路径。
+[INDEX_GUIDE.md](INDEX_GUIDE.md) → [README.md](README.md) → 子域索引（如 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[system/README.md](system/README.md)、[company/README.md](company/README.md)、[applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md)）或 [agent/rules/](agent/rules/) 等规范路径。
 
 ---
 
@@ -89,13 +89,7 @@ Markdown、YAML；**Bash 5+**；Git。可选 `rsync`（脚本可回退 `cp`）�
 
 ## 命令（指针）
 
-完整选项、多命令与初始化说明见 [README.md](README.md)「快速开始」与 [scripts/README.md](scripts/README.md)。常用示例（勿在本文展开选项表）：
-
-```bash
-git clone https://github.com/oleewen/ai-knowledge.git && cd ai-knowledge
-./scripts/docs-install.sh [选项] --target=/path/to/your-project/docs
-# 或（未先 clone）：curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- --target=./docs
-```
+完整命令示例、选项与初始化说明见 [README.md](README.md)「快速开始」与 [scripts/README.md](scripts/README.md)；勿在本文展开选项表或与 README 重复命令块。
 
 ---
 
