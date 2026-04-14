@@ -4,17 +4,13 @@
 
 ## 提交前用户确认（强制，全仓库）
 
-**适用范围**：本仓库内 **AI Agent**、**任意 Slash Skill**、以及 **`agent/skills/` 工作流**（含步骤中写明的「Commit」）均须遵守；与 [AGENTS.md](../../../AGENTS.md) 核心契约一致。
+**适用范围**：本仓库内 AI Agent、Slash Skill、`agent/skills/` 工作流（含步骤中的「Commit」）；与 [AGENTS.md](../../../AGENTS.md) 核心契约一致。
 
-**规则**：
-
-1. **禁止**在未经用户明确同意的情况下执行 `git commit`（含带 `-m` 的提交、批量提交、`git add`+`commit` 组合）。
-2. 拟提交前须向用户说明：**变更摘要**、**建议的提交说明**（Conventional Commits，中文）、**将纳入提交的文件路径**（或 `git status` 要点）。
-3. 仅在用户**明确确认可以提交**（例如回复「可以提交」「确认」）后，再执行 `git commit` / `git push`。
-4. 若用户表示「先不提交」「仅保留工作区」，则只保留已编辑文件，不执行提交。
-5. **例外**：用户在同一会话中**逐条明确指令**「请提交」「直接 commit」并给出或认可提交说明时，视为已授权，可执行一次对应提交。
-
-**与 Skill 步骤的关系**：各 `SKILL.md` 中若存在「Step N：Commit」类步骤，应理解为「完成前述修改后，**经用户确认再执行提交**」，不得自动提交。
+- **禁止**未经用户同意执行 `git commit` / `git push`（含 `-m`、批量、`add`+`commit`）。
+- **提交前**说明：变更摘要、建议提交说明（Conventional Commits，中文）、待提交路径或 `git status` 要点；用户**明确确认**（如「可以提交」「确认」）后再执行。
+- 用户要求「先不提交」「仅保留工作区」时，不执行提交。
+- **例外**：同一会话中用户明确指令「请提交」「直接 commit」并认可说明时，可执行一次对应提交。
+- **`SKILL.md` 中「Step N：Commit」**：改完后**经用户确认再提交**，不自动执行。
 
 ---
 
@@ -22,11 +18,10 @@
 
 ### 语言与适用范围（含 IDE 生成提交说明）
 
-在本仓库编写或生成 **任意** Git commit message（含 **Cursor / VS Code 源代码管理**中的「生成提交说明」「Generate Commit Message」）时：
+编写或生成任意 commit message（含 Cursor / VS Code「生成提交说明」）时：
 
-1. **语言**：`subject` 与 `body`、列表要点均使用**中文**；Conventional Commits 的 **type** 使用小写英文（如 `feature`、`fix`、`docs`、`refactor`、`chore`），与下表一致；`scope` 可使用英文或项目约定缩写。
-2. **格式**：首行 `<type>(<scope>): <中文主题>`，必要时空行后接正文与页脚。
-3. **禁止**：除类型前缀外，勿仅用英文撰写 subject/body。
+- **格式**：首行 `<type>(<scope>): <中文主题>`，必要时空行后接正文；**type** 小写英文（与下表一致），**scope** 可用英文或项目缩写；subject、body、列表用**中文**。
+- **禁止**：除类型前缀外，勿仅用英文撰写 subject/body。
 
 示例：
 
