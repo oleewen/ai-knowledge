@@ -5,7 +5,7 @@
 本文档说明知识库与 Agent 初始化脚本的参数、模式和落地产物。  
 Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览 `README.md` 可一并查阅）；不在此重复。
 
-**维护策略（当前）**：`docs-install.sh` / `knowledge-link.sh` / `agent-install.sh` 分别 `source` 对应 `*-config.sh`；三者中路径与 `.docsconfig` 相关能力统一复用 `agent/scripts/docs-config.sh`。改对应脚本行为时需同步其 config 脚本与本文档。
+**维护策略（当前）**：`docs-install.sh` / `knowledge-link.sh` / `agent-install.sh` 分别 `source` 对应 `*-config.sh`；三者中路径与 `.docsconfig` 相关能力统一复用 `agent/scripts/docs-core.sh`。改对应脚本行为时需同步其 config 脚本与本文档。
 
 ## 推荐入口（一分为三）
 
@@ -113,7 +113,7 @@ export GIT_REF=main                                                  # 分支或
 
 | 选项 | 说明 | 默认 |
 |------|------|------|
-| `--scope=SCOPE` | `a`：全部；`r`：rules；`s`：skills；`h`：hooks；`sh`：scripts（含复制 `agent/scripts/docs-config.sh`） | `a` |
+| `--scope=SCOPE` | `a`：全部；`r`：rules；`s`：skills；`h`：hooks；`sh`：scripts（含复制 `agent/scripts/docs-core.sh`） | `a` |
 | `--target=PATH` | 安装父目录，其下仅为**已选 agent** 创建 **`${TARGET}/.cursor`** 等；**非 `$HOME`** 时若存在 `PATH/.docsconfig` 则更新 `AGENT_ROOT`/`AGENT_DIRS` | `$HOME` |
 | `--agents=LIST` | `cursor` \| `trea` \| `claude` \| `all`；逗号或空格分隔多选 | `cursor` |
 | `--dry-run` | 预览，不写入 | - |
@@ -169,7 +169,7 @@ your-project/
 ├── .cursor/                       # Cursor（另有 .trea/、.claude/ 下同构）
 │   ├── hooks.json                 # 自仓库 agent/hooks.json
 │   ├── hooks/                     # 自仓库 agent/hooks/
-│   ├── scripts/                   # 含 docs-config.sh（自仓库 agent/scripts/ 复制）与 config-bootstrap 等
+│   ├── scripts/                   # 含 docs-core.sh（自仓库 agent/scripts/ 复制）与 config-bootstrap 等
 │   ├── skills/                    # Skills（不含各层 README）
 │   └── rules/                     # Rules
 ├── .trea/
@@ -196,7 +196,7 @@ your-project/
 
 ### Agent 安装（agent-install.sh）
 
-1. **`--scope` 含 `sh` 时**：将 **`agent/scripts/`** 下条目（**不含** `docs-config.sh`）与 **`agent/scripts/docs-config.sh`（共享实现）** 安装到 **`${TARGET}/.cursor| .trea| .claude/scripts/`**；并对 `scripts/` 下树执行 `agent/` → **`AGENT_DIR/`** 的路径改写。
+1. **`--scope` 含 `sh` 时**：将 **`agent/scripts/`** 下条目（**不含** `docs-core.sh`）与 **`agent/scripts/docs-core.sh`（共享实现）** 安装到 **`${TARGET}/.cursor| .trea| .claude/scripts/`**；并对 `scripts/` 下树执行 `agent/` → **`AGENT_DIR/`** 的路径改写。
 2. **`--scope` 含 `s` 时**：将 **`agent/skills/`** 下各技能子目录同步到三处 **`skills/`**（排除各层 **README**；不再依赖前缀筛选）。
 3. **`--scope` 含 `r` 时**：同步 **`agent/rules/`** 到三处 **`rules/`**。
 4. **`--scope` 含 `h` 时**：同步 **`agent/hooks/`** 与 **`agent/hooks.json`**。
@@ -207,10 +207,10 @@ your-project/
 | 脚本 | 说明 |
 |------|------|
 | `agent-install.sh` | **`source` `agent-config.sh`** + Agent 安装；不 `source` `lib/*.sh` |
-| `agent-config.sh` | Agent CLI 默认值与校验；`source agent/scripts/docs-config.sh` 复用路径/`.docsconfig` 工具；仅供 **`agent-install.sh`** `source` |
-| `knowledge-config.sh` | docs-install 配置层；`source agent/scripts/docs-config.sh` 复用路径/`.docsconfig` 工具 |
+| `agent-config.sh` | Agent CLI 默认值与校验；`source agent/scripts/docs-core.sh` 复用路径/`.docsconfig` 工具；仅供 **`agent-install.sh`** `source` |
+| `knowledge-config.sh` | docs-install 配置层；`source agent/scripts/docs-core.sh` 复用路径/`.docsconfig` 工具 |
 | `docs-install.sh` | knowledge 安装编排入口；默认 `--scope=config`，并 `source` `knowledge-config.sh` |
-| `link-config.sh` | knowledge-link 配置层；`source agent/scripts/docs-config.sh` 复用路径/`.docsconfig` 工具 |
+| `link-config.sh` | knowledge-link 配置层；`source agent/scripts/docs-core.sh` 复用路径/`.docsconfig` 工具 |
 | `knowledge-link.sh` | 登记/注销目标知识库；`source link-config.sh`；`link` 校验源/目标 `.docsconfig` 与边关系，`unlink` 支持失联目标注销 |
 | `docs-bootstrap.sh` | 临时 clone 后直接执行 **`docs-install.sh`**（纯链路：clone → docs-install，参数透传） |
 
@@ -218,12 +218,12 @@ your-project/
 
 | 版本 | 变更 |
 |------|------|
-| 3.0.0 | **`agent-install`** / **`agent-config`** 重构：仅 **`--scope`/`--target`/`--dry-run`**；多分根 **`${TARGET}/.cursor|.trea|.claude`**；含 **hooks**；排除 **README**；**`agent/scripts/docs-config.sh`** 复制至各 Agent **`scripts/docs-config.sh`**；**`--target`≠`$HOME`** 时更新 **`.docsconfig`** 之 **`AGENT_*`**（无文件则提示先 **docs-install**） |
+| 3.0.0 | **`agent-install`** / **`agent-config`** 重构：仅 **`--scope`/`--target`/`--dry-run`**；多分根 **`${TARGET}/.cursor|.trea|.claude`**；含 **hooks**；排除 **README**；**`agent/scripts/docs-core.sh`** 复制至各 Agent **`scripts/docs-core.sh`**；**`--target`≠`$HOME`** 时更新 **`.docsconfig`** 之 **`AGENT_*`**（无文件则提示先 **docs-install**） |
 | 2.9.4 | **移除** **`maintain-agent-init.sh`**；**`agent-install.sh`** 与 core 重叠段改由**人工**与 **`lib/docs-init-core.sh`** / **`docs-install`** 对齐 |
-| 2.9.3 | 新增 **`agent-config.sh`**（初版自 **`docs-config.sh`** 复制，独立维护）；**`agent-install.sh`** 改为 **`source` `agent-config.sh`**；**`maintain-agent-init.sh`** 不再内联整段 docs-config，并修正对 core 的切片行号 |
-| 2.9.2 | **`docs-install.sh`** 改为**自包含**（内联 **`docs-config.sh`** 与 **`lib/docs-init-core.sh`** 主体，不 `source` 其它脚本）；**`lib/docs-init-core.sh`** 作对照 SSOT（彼时 **`agent-install`** 由 **`maintain-agent-init.sh`** 生成） |
-| 2.9.1 | **`knowledge-link.sh`** 不再 `source` **`docs-config.sh`**，内联 `.docsconfig` 读入最小子集（与 **`docs-config.sh`** 并行维护） |
-| 2.9.0 | **`agent-install.sh`** 改为**自包含单文件**（内联 docs-config / core 子集 / 原 Agent 安装逻辑），**不** `source` 其它脚本；删除 **`lib/agent-init-install.sh`** |
+| 2.9.3 | 新增 **`agent-config.sh`**（初版自 **`docs-core.sh`** 复制，独立维护）；**`agent-install.sh`** 改为 **`source` `agent-config.sh`**；**`maintain-agent-init.sh`** 不再内联整段 docs-core，并修正对 core 的切片行号 |
+| 2.9.2 | **`docs-install.sh`** 改为**自包含**（内联 **`docs-core.sh`** 与 **`lib/docs-init-core.sh`** 主体，不 `source` 其它脚本）；**`lib/docs-init-core.sh`** 作对照 SSOT（彼时 **`agent-install`** 由 **`maintain-agent-init.sh`** 生成） |
+| 2.9.1 | **`knowledge-link.sh`** 不再 `source` **`docs-core.sh`**，内联 `.docsconfig` 读入最小子集（与 **`docs-core.sh`** 并行维护） |
+| 2.9.0 | **`agent-install.sh`** 改为**自包含单文件**（内联 docs-core / core 子集 / 原 Agent 安装逻辑），**不** `source` 其它脚本；删除 **`lib/agent-init-install.sh`** |
 | 2.8.0 | 移除 **`docs-init.sh`** 兼容入口；统一使用 **`docs-install.sh`** / **`agent-install.sh`** |
 | 2.7.0 | 拆分 **`agent-install.sh`** / **`docs-install.sh`** / **`knowledge-link.sh`**；核心逻辑迁至 **`lib/docs-init-core.sh`**；`.docsconfig` 增加 **`KNOWLEDGE_TYPE`**；**`docs-bootstrap.sh`** 改为调用 **`docs-install.sh`** |
 | 2.6.0 | **`--scope`**：**移除 `ck`**；**`k`/`knowledge`** 表示原 `ck` 行为（同步知识库 + `.docsconfig`）；默认 **`SCOPE`** 改为 **`knowledge`** |

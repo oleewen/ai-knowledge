@@ -4,12 +4,12 @@
 #
 # 职责：
 # - 承载 docs-install 的默认值、枚举校验与规范化、路径函数、.docsconfig 工具
-# - 自闭环实现；路径与 .docsconfig 工具统一复用 agent/scripts/docs-config.sh
+# - 自闭环实现；路径与 .docsconfig 工具统一复用 agent/scripts/docs-core.sh
 #
 
 readonly KNOWLEDGE_CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=../agent/scripts/docs-config.sh
-source "${KNOWLEDGE_CONFIG_DIR}/../agent/scripts/docs-config.sh"
+# shellcheck source=../agent/scripts/docs-core.sh
+source "${KNOWLEDGE_CONFIG_DIR}/../agent/scripts/docs-core.sh"
 
 # =============================================================================
 # § 1  版本与常量

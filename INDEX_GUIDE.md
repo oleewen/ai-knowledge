@@ -60,7 +60,7 @@
 ├── scripts/                      # 初始化工具链（Bash 5+）
 │   ├── README.md                 # 初始化使用说明与选项
 │   ├── docs-install.sh         # 知识库 + .docsconfig（推荐）
-│   ├── agent-config.sh           # Agent CLI 默认值与校验；路径/.docsconfig 工具复用 agent/scripts/docs-config.sh
+│   ├── agent-config.sh           # Agent CLI 默认值与校验；路径/.docsconfig 工具复用 agent/scripts/docs-core.sh
 │   ├── agent-install.sh          # 仅 Agent 安装（source agent-config；多分根 .cursor/.trea/.claude）
 │   ├── knowledge-link.sh         # 知识库建联清单
 │   └── docs-bootstrap.sh         # curl：临时 clone 后执行 docs-install.sh
@@ -155,7 +155,7 @@
 | 文件路径                       | 功能精要                                               | 检索标签                         | 上游依赖             | 下游被依赖                          | 重要度 |
 | -------------------------- | -------------------------------------------------- | ---------------------------- | ---------------- | ------------------------------ | --- |
 | `./scripts/README.md`      | docs-install / agent-install 用法、`standalone` / 中央知识库挂载建联（`central`）、scope 与选项清单 | `初始化` `脚本`                   | -                | `docs-install.sh`、`agent-install.sh`                 | ⭐⭐⭐ |
-| `./scripts/docs-install.sh`   | 将中央库 `application/` 等同步至目标；**中央知识库挂载建联**（`--mode=central`）另更新本仓库登记及联邦镜像路径（见脚本内说明） | `初始化` `联邦治理` `Cursor` `Trea` | `knowledge-config.sh`（并复用 `agent/scripts/docs-config.sh`） | 目标项目的文档根（默认 `docs/`）、`agent/` | ⭐⭐⭐ |
+| `./scripts/docs-install.sh`   | 将中央库 `application/` 等同步至目标；**中央知识库挂载建联**（`--mode=central`）另更新本仓库登记及联邦镜像路径（见脚本内说明） | `初始化` `联邦治理` `Cursor` `Trea` | `knowledge-config.sh`（并复用 `agent/scripts/docs-core.sh`） | 目标项目的文档根（默认 `docs/`）、`agent/` | ⭐⭐⭐ |
 
 
 ### 3.5 规范与模板（agent）

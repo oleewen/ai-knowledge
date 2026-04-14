@@ -130,7 +130,7 @@ init_repo_root() {
   [[ -d "$rr/agent/skills"  ]] || error "未找到 agent/skills: $rr/agent/skills"
   [[ -d "$rr/agent/hooks"   ]] || error "未找到 agent/hooks: $rr/agent/hooks"
   [[ -d "$rr/agent/scripts" ]] || error "未找到 agent/scripts: $rr/agent/scripts"
-  [[ -f "$rr/agent/scripts/docs-config.sh" ]] || error "未找到 agent/scripts/docs-config.sh: $rr/agent/scripts/docs-config.sh"
+  [[ -f "$rr/agent/scripts/docs-core.sh" ]] || error "未找到 agent/scripts/docs-core.sh: $rr/agent/scripts/docs-core.sh"
 }
 
 apply_scope() {
@@ -157,7 +157,7 @@ install_agent_scripts() {
   (( INSTALL_SCRIPTS == 1 )) || return 0
   local agent agent_dir agent_slash
   local src_scripts="${CFG[repo_root]}/agent/scripts"
-  local src_docs_ssot="${CFG[repo_root]}/agent/scripts/docs-config.sh"
+  local src_docs_ssot="${CFG[repo_root]}/agent/scripts/docs-core.sh"
   local item base dst_scripts
 
   [[ -d "$src_scripts" ]] || { warn "未找到 agent/scripts，跳过"; return 0; }
@@ -173,14 +173,14 @@ install_agent_scripts() {
     for item in "$src_scripts"/*; do
       base="$(basename "$item")"
       [[ "$base" == 'README' || "$base" == 'README.md' || "$base" == 'readme.md' ]] && continue
-      [[ "$base" == 'docs-config.sh' ]] && continue
+      [[ "$base" == 'docs-core.sh' ]] && continue
       if [[ -d "$item" ]]; then
         sync_tree_excluding_readme "$item" "$dst_scripts/$base"
       else
         copy_file_plain "$item" "$dst_scripts/$base"
       fi
     done
-    copy_file_plain "$src_docs_ssot" "$dst_scripts/docs-config.sh"
+    copy_file_plain "$src_docs_ssot" "$dst_scripts/docs-core.sh"
 
     if [[ "${CFG[dry_run]}" == '0' ]]; then
       rewrite_agent_tree "$dst_scripts" "$agent_slash"
@@ -315,7 +315,7 @@ usage() {
 说明
   将本仓库 agent/{scripts,rules,skills,hooks} 安装到 --target 下、按 --agents 选定的多分根：
     ${TARGET}/.{.cursor|.trea|.claude}/...
-  scripts 阶段会从本仓库复制 agent/scripts/docs-config.sh 到各选中 Agent 的 scripts/docs-config.sh。
+  scripts 阶段会从本仓库复制 agent/scripts/docs-core.sh 到各选中 Agent 的 scripts/docs-core.sh。
   不安装README。
   当 --target 不是 $HOME 时，更新 <target>/.docsconfig 的 AGENT_ROOT 与 AGENT_DIRS（与当前 --agents 一致）；
   若该文件不存在，请先对目标工程执行 docs-install。

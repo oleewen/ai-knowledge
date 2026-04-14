@@ -11,7 +11,7 @@
 #   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh \
 #     | bash -s -- [选项] <目标工程文档目录>
 #
-# 配置项（默认值、GIT_REPO_URL/GIT_REF 读取）：**agent/scripts/docs-config.sh**
+# 配置项（默认值、GIT_REPO_URL/GIT_REF 读取）：**agent/scripts/docs-core.sh**
 # —— 从本仓库根执行时可预载；**curl | bash** 时于下方内联回退（须与该文件保持一致）。
 #
 set -euo pipefail
@@ -24,9 +24,9 @@ _BOOTSTRAP_SCRIPT_DIR=''
 if [[ -n "${BASH_SOURCE[0]:-}" && "${BASH_SOURCE[0]}" != '-' ]]; then
   _BOOTSTRAP_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)" || true
 fi
-if [[ -n "$_BOOTSTRAP_SCRIPT_DIR" && -f "${_BOOTSTRAP_SCRIPT_DIR}/../agent/scripts/docs-config.sh" ]]; then
+if [[ -n "$_BOOTSTRAP_SCRIPT_DIR" && -f "${_BOOTSTRAP_SCRIPT_DIR}/../agent/scripts/docs-core.sh" ]]; then
   # shellcheck source=/dev/null
-  source "${_BOOTSTRAP_SCRIPT_DIR}/../agent/scripts/docs-config.sh"
+  source "${_BOOTSTRAP_SCRIPT_DIR}/../agent/scripts/docs-core.sh"
 fi
 
 if ! declare -F require_bash5 >/dev/null 2>&1; then
@@ -77,7 +77,7 @@ sdx_bs_die() {
 }
 
 # =============================================================================
-# § 4  环境检查（Bash 版本见 docs-config.sh 之 require_bash5；预载失败时 §1 回退已定义）
+# § 4  环境检查（Bash 版本见 docs-core.sh 之 require_bash5；预载失败时 §1 回退已定义）
 # =============================================================================
 
 sdx_bs_has_cmd() {
@@ -164,16 +164,16 @@ sdx_bs_main() {
   sdx_bs_clone_repo "$repo_url" "$ref" "$SDX_BS_CLONE_DIR" || exit 1
 
   local docs_install="${SDX_BS_CLONE_DIR}/scripts/docs-install.sh"
-  local shared_config="${SDX_BS_CLONE_DIR}/agent/scripts/docs-config.sh"
+  local shared_config="${SDX_BS_CLONE_DIR}/agent/scripts/docs-core.sh"
   [[ -f "$docs_install" ]] || sdx_bs_die "仓库中未找到 scripts/docs-install.sh"
-  [[ -f "$shared_config" ]] || sdx_bs_die "仓库中未找到 agent/scripts/docs-config.sh"
+  [[ -f "$shared_config" ]] || sdx_bs_die "仓库中未找到 agent/scripts/docs-core.sh"
 
   # 克隆后统一加载 SSOT（若预载阶段已 source，此处因 _AGENT_SHARED_DOCS_CONFIG_LOADED 短路）
   # shellcheck disable=SC1090
   source "$shared_config"
 
   sdx_bs_log ''
-  sdx_bs_info "已加载共享配置（agent/scripts/docs-config.sh）"
+  sdx_bs_info "已加载共享配置（agent/scripts/docs-core.sh）"
   sdx_bs_info '>>> 执行 docs-install.sh...'
   sdx_bs_log ''
 

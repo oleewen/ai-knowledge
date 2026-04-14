@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# docs-config.sh — 共享路径与 .docsconfig 工具（供 scripts/*-config.sh source）
+# docs-core.sh — 共享路径与 .docsconfig 工具（供 scripts/*-config.sh source）
 #
 
 if [[ -n "${_AGENT_SHARED_DOCS_CONFIG_LOADED:-}" ]]; then

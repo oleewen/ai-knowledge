@@ -2,7 +2,7 @@
 #
 # agent-config.sh — 仅供 agent-install.sh source：Agent 安装 CLI 的默认值、校验与 .docsconfig 工具
 #
-# 职责：参数默认值、合法性校验、路径与 .docsconfig 读写（与 agent/scripts/docs-config.sh 语义对齐）。
+# 职责：参数默认值、合法性校验、路径与 .docsconfig 读写（与 agent/scripts/docs-core.sh 语义对齐）。
 # 不 source lib/*.sh；不承载 docs-install 专用常量。
 #
 # 依赖：Bash 5+（关联数组、nameref）
@@ -12,8 +12,8 @@
 #
 
 readonly AGENT_CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=../agent/scripts/docs-config.sh
-source "${AGENT_CONFIG_DIR}/../agent/scripts/docs-config.sh"
+# shellcheck source=../agent/scripts/docs-core.sh
+source "${AGENT_CONFIG_DIR}/../agent/scripts/docs-core.sh"
 
 # =============================================================================
 # § 1  版本与 Agent 常量
