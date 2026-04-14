@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# knowledge-link.sh — 在源知识库登记 / 注销目标知识库（仅本地 path）
-# 用法: ./scripts/knowledge-link.sh link|unlink --target=<目标仓库根> [--dry-run]
+# docs-link.sh — 在源知识库登记 / 注销目标知识库（仅本地 path）
+# 用法: ./scripts/docs-link.sh link|unlink --target=<目标仓库根> [--dry-run]
 # 须在源 Git 仓库内执行；link 需校验源、目标 .docsconfig 与 KNOWLEDGE_TYPE；
 # unlink 支持目标失联场景（仅按登记 path 注销）。
 set -euo pipefail
@@ -40,7 +40,7 @@ knowledge_links_write_file() {
   mkdir -p "$d"
   umask 022
   {
-    printf '%s\n' '# 知识库建联清单（可由 knowledge-link.sh 维护）'
+    printf '%s\n' '# 知识库建联清单（可由 docs-link.sh 维护）'
     printf '%s\n' 'links:'
     local p
     for p in "${paths[@]}"; do
@@ -82,7 +82,7 @@ while (( $# > 0 )); do
       ;;
     -h|--help)
       cat >&2 <<'EOF'
-用法: ./scripts/knowledge-link.sh link|unlink --target=<目标知识库仓库根> [--dry-run]
+用法: ./scripts/docs-link.sh link|unlink --target=<目标知识库仓库根> [--dry-run]
 
   须在「源」知识库 Git 仓库内执行（git rev-parse 取根）。登记文件：
     公司源（KNOWLEDGE_TYPE=company）→ company/knowledge-links.yaml
@@ -95,8 +95,8 @@ while (( $# > 0 )); do
   --target   目标知识库仓库根；兼容旧参数 --path（已弃用）。
 
 示例:
-  ./scripts/knowledge-link.sh link --target=/abs/path/to/target-system-repo
-  ./scripts/knowledge-link.sh unlink --target=/abs/path/to/target-app-repo --dry-run
+  ./scripts/docs-link.sh link --target=/abs/path/to/target-system-repo
+  ./scripts/docs-link.sh unlink --target=/abs/path/to/target-app-repo --dry-run
 EOF
       exit 0
       ;;
@@ -107,7 +107,7 @@ done
 validate_link_command "$CMD" || error "请指定子命令: link | unlink"
 [[ -n "$TARGET_RAW" ]] || error "请指定 --target=<目标仓库根>"
 
-SRC_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || error "请在 Git 仓库内执行 knowledge-link"
+SRC_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || error "请在 Git 仓库内执行 docs-link"
 SRC_CFG="$SRC_ROOT/.docsconfig"
 [[ -f "$SRC_CFG" ]] || error "源仓库缺少 .docsconfig: $SRC_CFG"
 

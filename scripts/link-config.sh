@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #
-# link-config.sh — 仅供 knowledge-link.sh source
+# link-config.sh — 仅供 docs-link.sh source
 #
 # 职责：
-# - 承载 knowledge-link 的默认值、参数校验、路径函数、.docsconfig 读入工具
+# - 承载 docs-link 的默认值、参数校验、路径函数、.docsconfig 读入工具
 # - 自闭环实现；路径与 .docsconfig 工具统一复用 agent/scripts/docs-core.sh
 #
 

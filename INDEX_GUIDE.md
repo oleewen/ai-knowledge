@@ -22,7 +22,7 @@
   - 应用知识库 SSOT：`./application/README.md`、`./application/INDEX_GUIDE.md`
   - 组织级 / 公司级壳目录：`./system/README.md`、`./company/README.md`
   - 联邦迁移与对齐入口：`./applications/APPLICATIONS_INDEX.md`
-  - 初始化入口：`./scripts/docs-install.sh`、`./scripts/agent-install.sh`、`./scripts/knowledge-link.sh`、`./scripts/README.md`
+  - 初始化入口：`./scripts/docs-install.sh`、`./scripts/agent-install.sh`、`./scripts/docs-link.sh`、`./scripts/README.md`
   - 规范入口：`./agent/rules/CONVENTIONS.md`、`./agent/rules/`
   - Slash 命令一览：`./agent/skills/README.md`
 - **构建/启动命令**（本仓库自身不包含服务端/应用启动）：
@@ -63,7 +63,7 @@
 │   ├── docs-config.sh            # docs-install 配置层（source agent/scripts/docs-core.sh）
 │   ├── agent-config.sh           # Agent CLI 默认值与校验；路径/.docsconfig 工具复用 agent/scripts/docs-core.sh
 │   ├── agent-install.sh          # 仅 Agent 安装（source agent-config；多分根 .cursor/.trea/.claude）
-│   ├── knowledge-link.sh         # 知识库建联清单
+│   ├── docs-link.sh         # 知识库建联清单
 │   └── docs-bootstrap.sh         # curl：临时 clone 后执行 docs-install.sh
 ├── agent/                          # AI 规范与技能（README、rules、skills）
 │   ├── README.md                 # agent 目录说明与上游文档指针
