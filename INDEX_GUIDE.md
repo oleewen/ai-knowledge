@@ -15,7 +15,6 @@
 | Agent 契约 | [AGENTS.md](AGENTS.md) | 角色、索引查阅顺序、提交闸门与禁止事项 |
 | 应用知识库 SSOT | [application/README.md](application/README.md) | SDD 主线、四视角与阶段文档中枢 |
 | 应用侧索引与建联 | [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) | 应用目录九章索引、中央知识库挂载建联登记 |
-| 联邦迁移入口 | [applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md) | 联邦路径与主库对齐说明 |
 | 组织级槽位 | [system/README.md](system/README.md) | `architecture/`、`application-{name}/` 联邦槽位 |
 | 公司级槽位 | [company/README.md](company/README.md) | `architecture/`、`system-{name}/` 槽位 |
 | 初始化脚本 | [scripts/README.md](scripts/README.md) | `docs-install`/`agent-install`/`docs-link`/`docs-bootstrap` |
@@ -40,7 +39,6 @@
 ./
 ├── README.md / AGENTS.md / INDEX_GUIDE.md    # 人类与 Agent 入口、本索引
 ├── application/                              # 应用知识库 SSOT：knowledge、阶段、solutions～requirements、changelogs
-├── applications/                             # 联邦迁移说明（非 app-* 模板树）
 ├── system/ / company/                        # 组织级 / 公司级槽位骨架
 ├── scripts/                                  # 向目标工程注入知识库与 .docsconfig；bootstrap
 ├── agent/                                    # rules/、skills/、scripts/（config-bootstrap、校验）
@@ -97,7 +95,7 @@ flowchart LR
 |------|------|----------|
 | SSOT | 单一事实源，`application/` 为应用知识稳定事实中枢 | 与联邦镜像、目标工程对齐 |
 | 四视角 | 业务 / 产品 / 技术 / 数据 知识分层与映射字段 | 见 [application/DESIGN.md](application/DESIGN.md) |
-| 联邦治理 | `system/`、`company/`、`applications/` 槽位与迁移叙事 | 多库协作与 docs-install 模式 |
+| 联邦治理 | `system/`、`company/`槽位与迁移叙事 | 多库协作与 docs-install 模式 |
 | SDD | 方案 → 分析 → PRD/设计/测试 阶段交付链 | `sdx-*` Skill 与 `application/` 阶段目录 |
 | 中央知识库挂载建联 | `docs-install --mode=central` 等约定 | 见 [README.md](README.md)、[scripts/README.md](scripts/README.md) |
 

@@ -55,7 +55,7 @@
 
 ## 查阅顺序（固定）
 
-[INDEX_GUIDE.md](INDEX_GUIDE.md) → [README.md](README.md) → 子域索引（如 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[system/README.md](system/README.md)、[company/README.md](company/README.md)、[applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md)）或 [agent/rules/](agent/rules/) 等规范路径。
+[INDEX_GUIDE.md](INDEX_GUIDE.md) → [README.md](README.md) → 子域索引（如 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[system/README.md](system/README.md)、[company/README.md](company/README.md)）或 [agent/rules/](agent/rules/) 等规范路径。
 
 ---
 
@@ -72,7 +72,6 @@
 | 设计原则、元模型、映射与演进                    | [application/DESIGN.md](application/DESIGN.md)                                                                                                          |
 | 贡献流程与阶段规则                         | [application/CONTRIBUTING.md](application/CONTRIBUTING.md)                                                                                              |
 | 知识库实体导航、四视角                       | [application/knowledge/KNOWLEDGE_INDEX.md](application/knowledge/KNOWLEDGE_INDEX.md)、[application/knowledge/README.md](application/knowledge/README.md) |
-| 联邦模板迁移说明（原 `applications/app-*`）     | [applications/APPLICATIONS_INDEX.md](applications/APPLICATIONS_INDEX.md)、[applications/README.md](applications/README.md)                               |
 | 全局约定与命名                           | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)                                                                                              |
 | Slash 技能                          | [agent/skills/README.md](agent/skills/README.md)                                                                                                      |
 | 初始化脚本参数与产物、`.docsconfig` 键（`DOC_*` / `AGENT_*`） | [scripts/README.md](scripts/README.md)                                                                                                                  |
