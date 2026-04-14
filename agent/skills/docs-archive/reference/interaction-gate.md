@@ -1,6 +1,6 @@
 # docs-archive 交互与确认闸门
 
-与 SDD 各阶段的 **sdx-*-gate**（见 [agent/hooks/README.md](../../../hooks/README.md)、`agent/rules/sdx-*.md`）采用**同一话语体系**，便于在会话中复用「中间会话 spec → 用户总确认 → 落盘」的节奏；**差异**在于：sdx 已提供 `preToolUse` 写入拦截，**docs-archive 当前不设独立钩子**，执行者须在对话中遵守下表（IDE 不代为拦截）。
+与 SDD 各阶段的 **sdx-*-gate**（见 [agent/hooks/README.md](../../../hooks/README.md)；规则总表 [agent/rules/CONVENTIONS.md](../../../rules/CONVENTIONS.md#artifact-gates) 第三节）采用**同一话语体系**，便于在会话中复用「中间会话 spec → 用户总确认 → 落盘」的节奏；**差异**在于：sdx 已提供 `preToolUse` 写入拦截，**docs-archive 当前不设独立钩子**，执行者须在对话中遵守下表（IDE 不代为拦截）。
 
 ---
 

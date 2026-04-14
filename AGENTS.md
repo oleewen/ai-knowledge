@@ -39,10 +39,7 @@
 - **与 Index 一致**：平面检索与路径级精要以根目录 [INDEX_GUIDE.md](INDEX_GUIDE.md) 为准；未索引区域须补读或标注待核实。
 - **会话开始**：读 [README.md](README.md) 与本文件；业务与路径细节查 [INDEX_GUIDE.md](INDEX_GUIDE.md)；按任务打开 [application/README.md](application/README.md)、[application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) 或 [agent/rules/](agent/rules/) 下具体规范。
 - **会话中**：业务规则不明 → 列出待确认项；新增技术债务可登记 [application/knowledge/technical/technical-debt.md](application/knowledge/technical/technical-debt.md)；重大结构或治理变更遵循 SDD，并核对 [application/DESIGN.md](application/DESIGN.md)、[application/CONTRIBUTING.md](application/CONTRIBUTING.md)。
-- **sdx-solution 闸门**：执行 `/sdx-solution` 或写入 `{DOC_DIR}/solutions/SOLUTION-*.md` 前须完成中间会话 spec 与用户总确认（标记与工程化约束见 [agent/skills/sdx-solution/SKILL.md](agent/skills/sdx-solution/SKILL.md)、[agent/rules/sdx-solution.md](agent/rules/sdx-solution.md)）。
-- **sdx-analysis 闸门**：执行 `/sdx-analysis` 或写入 `{DOC_DIR}/analysis/ANALYSIS-*.md` 前须完成中间会话 spec 与用户总确认（标记与工程化约束见 [agent/skills/sdx-analysis/SKILL.md](agent/skills/sdx-analysis/SKILL.md)、[agent/rules/sdx-analysis.md](agent/rules/sdx-analysis.md)）。
-- **sdx-design 闸门**：执行 `/sdx-design` 或写入 `{DOC_DIR}/requirements/**/ADD-*.md` 前须完成中间会话 spec 与用户总确认（标记与工程化约束见 [agent/skills/sdx-design/SKILL.md](agent/skills/sdx-design/SKILL.md)、[agent/rules/sdx-design.md](agent/rules/sdx-design.md)）。
-- **sdx-test 闸门**：执行 `/sdx-test` 或写入 `{DOC_DIR}/requirements/**/TDD-*.md` 前须完成中间会话 spec 与用户总确认（标记与工程化约束见 [agent/skills/sdx-test/SKILL.md](agent/skills/sdx-test/SKILL.md)、[agent/rules/sdx-test.md](agent/rules/sdx-test.md)）。
+- **文档产出闸门（SDD + docs-archive）**：执行 `/sdx-solution`、`/sdx-analysis`、`/sdx-prd`、`/sdx-design`、`/sdx-test`、`/docs-archive` 或写入对应受管终稿（`{DOC_DIR}` 下 `SOLUTION-*`、`ANALYSIS-*`、`PRD-*`、`ADD-*`、`TDD-*`，以及 `system/architecture/` 等，见总表）前，须完成中间会话 spec 与用户总确认。规则总表见 [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md#artifact-gates) 第三节；各阶段技能见 `agent/skills/sdx-*/SKILL.md` 与 [agent/skills/docs-archive/SKILL.md](agent/skills/docs-archive/SKILL.md)。
 - **会话结束**：新增规则或约束需经确认后写入 `application/`、`system/`、`company/` 或本文件；索引类变更按需记录于 [application/changelogs/](application/changelogs/)（见 [application/changelogs/README.md](application/changelogs/README.md)）。
 
 ### 禁止事项
