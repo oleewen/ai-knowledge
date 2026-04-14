@@ -208,8 +208,8 @@ your-project/
 |------|------|
 | `agent-install.sh` | **`source` `agent-config.sh`** + Agent 安装；不 `source` `lib/*.sh` |
 | `agent-config.sh` | Agent CLI 默认值与校验；`source agent/scripts/docs-core.sh` 复用路径/`.docsconfig` 工具；仅供 **`agent-install.sh`** `source` |
-| `knowledge-config.sh` | docs-install 配置层；`source agent/scripts/docs-core.sh` 复用路径/`.docsconfig` 工具 |
-| `docs-install.sh` | knowledge 安装编排入口；默认 `--scope=config`，并 `source` `knowledge-config.sh` |
+| `docs-config.sh` | docs-install 配置层；`source agent/scripts/docs-core.sh` 复用路径/`.docsconfig` 工具 |
+| `docs-install.sh` | knowledge 安装编排入口；默认 `--scope=config`，并 `source` `docs-config.sh` |
 | `link-config.sh` | knowledge-link 配置层；`source agent/scripts/docs-core.sh` 复用路径/`.docsconfig` 工具 |
 | `knowledge-link.sh` | 登记/注销目标知识库；`source link-config.sh`；`link` 校验源/目标 `.docsconfig` 与边关系，`unlink` 支持失联目标注销 |
 | `docs-bootstrap.sh` | 临时 clone 后直接执行 **`docs-install.sh`**（纯链路：clone → docs-install，参数透传） |

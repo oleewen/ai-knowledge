@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# docs-install.sh — 知识库初始化 + .docsconfig（入口脚本，source knowledge-config.sh）
-# 语义应与 scripts/knowledge-config.sh 对齐；修改时请同步。
+# docs-install.sh — 知识库初始化 + .docsconfig（入口脚本，source docs-config.sh）
+# 语义应与 scripts/docs-config.sh 对齐；修改时请同步。
 set -euo pipefail
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# 配置层与 .docsconfig 工具统一下沉到 knowledge-config.sh
-# shellcheck source=./knowledge-config.sh
-source "$SCRIPT_DIR/knowledge-config.sh"
+# 配置层与 .docsconfig 工具统一下沉到 docs-config.sh
+# shellcheck source=./docs-config.sh
+source "$SCRIPT_DIR/docs-config.sh"
 
 # ========== docs-install 内联主体（knowledge 路径）==========
 # =============================================================================
