@@ -50,14 +50,14 @@ fi
 
 if [[ ! -d "$TARGET" ]]; then
     echo "[ERROR] 目标目录不存在: $TARGET"
-    echo "        请先执行知识库安装central（模式） 完成应用注册"
+    echo "        请先执行中央知识库挂载建联，完成应用注册"
     exit 1
 fi
 
 MANIFEST="${TARGET}/${APP}_manifest.yaml"
 if [[ ! -f "$MANIFEST" ]]; then
     echo "[ERROR] manifest 文件不存在: $MANIFEST"
-    echo "        请先执行知识库安装central（模式）完成应用注册"
+    echo "        请先执行中央知识库挂载建联，完成应用注册"
     exit 1
 fi
 

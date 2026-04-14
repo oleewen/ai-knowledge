@@ -6,7 +6,7 @@
 
 ## 先读这些入口
 
-1. [INDEX_GUIDE.md](INDEX_GUIDE.md)：九章索引（含 central 登记）、与仓库根 [INDEX_GUIDE.md](../INDEX_GUIDE.md) 分工见各文件说明
+1. [INDEX_GUIDE.md](INDEX_GUIDE.md)：九章索引（含中央知识库挂载建联登记）、与仓库根 [INDEX_GUIDE.md](../INDEX_GUIDE.md) 分工见各文件说明
 2. [DESIGN.md](DESIGN.md)：元模型、字段语义与跨视角映射
 3. [AGENTS.md](../AGENTS.md)：仓库级约束与禁止项
 4. 目标目录 `README.md` + 对应 `*_meta.yaml`：落盘与命名的最终约束

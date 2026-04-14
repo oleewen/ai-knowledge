@@ -4,6 +4,6 @@
 按初始化模式读取对应入口：
 
 - `mode=s`（`--mode=standalone`）：请读 [README-s.md](README-s.md)
-- `mode=c`（`--mode=central`）：请读 [README-c.md](README-c.md)
+- `mode=c`（`--mode=central`，**中央知识库挂载建联**）：请读 [README-c.md](README-c.md)
 
-九章机器索引与 **central 登记**见 [INDEX_GUIDE.md](INDEX_GUIDE.md)。
+九章机器索引与 **中央知识库挂载建联登记**见 [INDEX_GUIDE.md](INDEX_GUIDE.md)。

@@ -4,7 +4,7 @@
 
 ## 简介
 
-`ai-knowledge` 是**纯文档型**中央库：提供 `**application/`** 应用知识库 SSOT、`**system/**` / `**company/**` 组织与公司级槽位骨架、`**applications/**` 联邦迁移说明入口、`**/agent/**` 规范与 Slash 技能，以及 `**scripts/**` 下的 **`agent-install` / `docs-install` / `knowledge-link`** 初始化链。业务细节、路径级精要与检索字段以 **[INDEX_GUIDE.md](INDEX_GUIDE.md)** 为权威地图（与 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) 互为补充说明时以前者落地路径为准）。当前 `docs-install` 契约：`--target` 必填、默认 `--scope=config`、`--scope=knowledge` 不处理 `.docsconfig`，且 `--mode=central` 仅用于 `type=application` 的安装范围切换（无 central 登记副作用）。详见 [scripts/README.md](scripts/README.md) 与 [docs/superpowers/specs/2026-04-13-knowledge-config-design.md](docs/superpowers/specs/2026-04-13-knowledge-config-design.md)。
+`ai-knowledge` 是**纯文档型**中央库：提供 `**application/`** 应用知识库 SSOT、`**system/**` / `**company/**` 组织与公司级槽位骨架、`**applications/**` 联邦迁移说明入口、`**/agent/**` 规范与 Slash 技能，以及 `**scripts/**` 下的 **`agent-install` / `docs-install` / `knowledge-link`** 初始化链。业务细节、路径级精要与检索字段以 **[INDEX_GUIDE.md](INDEX_GUIDE.md)** 为权威地图（与 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) 互为补充说明时以前者落地路径为准）。当前 `docs-install` 契约：`--target` 必填、默认 `--scope=config`、`--scope=knowledge` 不处理 `.docsconfig`，且 **中央知识库挂载建联**（`--mode=central`）仅用于 `type=application` 的安装范围切换（无中央知识库挂载建联登记副作用）。详见 [scripts/README.md](scripts/README.md) 与 [docs/superpowers/specs/2026-04-13-knowledge-config-design.md](docs/superpowers/specs/2026-04-13-knowledge-config-design.md)。
 
 人类上手、可复制命令与协作入口以本文件为准；Agent 行为约束见 **[AGENTS.md](AGENTS.md)**。
 
@@ -100,7 +100,7 @@ ai-knowledge/
 | [INDEX_GUIDE.md](INDEX_GUIDE.md)                                         | 全库路径地图与检索精要（权威索引）   |
 | [AGENTS.md](AGENTS.md)                                                   | AI Agent 契约、约束与关键路径 |
 | [application/README.md](application/README.md)                           | 应用知识库主线与查阅顺序        |
-| [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)                   | 九章索引（docs-indexing）、central 登记见「十」 |
+| [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)                   | 九章索引（docs-indexing）、中央知识库挂载建联登记见「十」 |
 | [system/README.md](system/README.md)                                     | 组织级系统知识库与联邦槽位说明     |
 | [company/README.md](company/README.md)                                   | 公司知识库与槽位说明          |
 | [applications/README.md](applications/README.md)                         | 联邦路径迁移说明            |

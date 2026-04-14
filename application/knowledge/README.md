@@ -27,7 +27,7 @@
 2. 只增删改 **ID** 与 YAML/Markdown 约定字段；跨视角不写重复叙述  
 3. 更新 [INDEX_GUIDE.md](../../INDEX_GUIDE.md)（第三节 · 3.1 实现侧或联邦指针）、[KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md)（各视角实体 ID）或该视角 README 中的登记 / 示例（若影响导航）  
 
-**索引指针**：各视角实体 ID [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md)；仓库根 [INDEX_GUIDE.md](../../INDEX_GUIDE.md)；`application/` 九章索引与 central 登记 [../INDEX_GUIDE.md](../INDEX_GUIDE.md)。
+**索引指针**：各视角实体 ID [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md)；仓库根 [INDEX_GUIDE.md](../../INDEX_GUIDE.md)；`application/` 九章索引与中央知识库挂载建联登记 [../INDEX_GUIDE.md](../INDEX_GUIDE.md)。
 
 **实现侧（与 YAML 分层 ID 独立）**：网关 `@GatewayApi` 对外路径、调度模块 Job 类清单见 [INDEX_GUIDE.md](../../INDEX_GUIDE.md) **第三节 · 3.1**、**第三节 · 3.3**（与 `billing-appeal-service` / `billing-appeal-schedule` 源码一致）。
 

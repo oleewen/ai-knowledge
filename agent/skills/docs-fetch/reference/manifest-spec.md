@@ -1,6 +1,6 @@
 # manifest 字段规范
 
-`{APPNAME}_manifest.yaml` 是知识库安装 central（模式）生成的联邦登记文件，docs-fetch 依赖其中的字段定位目标工程仓库。
+`{APPNAME}_manifest.yaml` 是中央知识库挂载建联生成的联邦登记文件，docs-fetch 依赖其中的字段定位目标工程仓库。
 ---
 
 ## 必需字段

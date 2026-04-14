@@ -42,7 +42,7 @@
 ├── AGENTS.md                     # AI Agents 开发指南（角色、约束、提交规范等）
 ├── application/                 # 应用知识库 SSOT（宪法层 + 四视角 + 交付阶段文档）
 │   ├── README.md                 # 查阅顺序、SDD 主线、快速导航（与 AGENTS 对齐）
-│   ├── INDEX_GUIDE.md            # docs-indexing 九章索引、central 登记（「十」）、映射与运维说明
+│   ├── INDEX_GUIDE.md            # docs-indexing 九章索引、中央知识库挂载建联登记（「十」）、映射与运维说明
 │   ├── DESIGN.md                 # 原则、元模型、application/ 内目录、映射、演进
 │   ├── CONTRIBUTING.md           # 六步工作流、各阶段规则与模板指针
 │   ├── knowledge/                # 宪法层 + 业务/产品/技术/数据视角
@@ -154,8 +154,8 @@
 
 | 文件路径                       | 功能精要                                               | 检索标签                         | 上游依赖             | 下游被依赖                          | 重要度 |
 | -------------------------- | -------------------------------------------------- | ---------------------------- | ---------------- | ------------------------------ | --- |
-| `./scripts/README.md`      | docs-install / agent-install 用法、`standalone`/`central`、scope 与选项清单 | `初始化` `脚本`                   | -                | `docs-install.sh`、`agent-install.sh`                 | ⭐⭐⭐ |
-| `./scripts/docs-install.sh`   | 将中央库 `application/` 等同步至目标；`central` 模式另更新本仓库登记及联邦镜像路径（见脚本内说明） | `初始化` `联邦治理` `Cursor` `Trea` | `knowledge-config.sh`（并复用 `agent/scripts/docs-config.sh`） | 目标项目的文档根（默认 `docs/`）、`agent/` | ⭐⭐⭐ |
+| `./scripts/README.md`      | docs-install / agent-install 用法、`standalone` / 中央知识库挂载建联（`central`）、scope 与选项清单 | `初始化` `脚本`                   | -                | `docs-install.sh`、`agent-install.sh`                 | ⭐⭐⭐ |
+| `./scripts/docs-install.sh`   | 将中央库 `application/` 等同步至目标；**中央知识库挂载建联**（`--mode=central`）另更新本仓库登记及联邦镜像路径（见脚本内说明） | `初始化` `联邦治理` `Cursor` `Trea` | `knowledge-config.sh`（并复用 `agent/scripts/docs-config.sh`） | 目标项目的文档根（默认 `docs/`）、`agent/` | ⭐⭐⭐ |
 
 
 ### 3.5 规范与模板（agent）
@@ -202,7 +202,7 @@
 > 说明：本仓库主要“数据流”是初始化与知识引用流，而非运行时请求流。
 
 - **数据流 1：向目标项目注入 SDD 文档体系**
-  - `./scripts/docs-install.sh` / `./scripts/agent-install.sh` → 将中央库 `application/`（应用知识库 SSOT）、`agent/`、按需 skills 等复制/安装到目标目录（默认文档根 `docs/`）；`central` 模式另在本仓库更新 `application/INDEX_GUIDE.md` 登记并维护目标工程内联邦镜像路径（详见 `scripts/README.md`）。
+  - `./scripts/docs-install.sh` / `./scripts/agent-install.sh` → 将中央库 `application/`（应用知识库 SSOT）、`agent/`、按需 skills 等复制/安装到目标目录（默认文档根 `docs/`）；**中央知识库挂载建联**（`--mode=central`）另在本仓库更新 `application/INDEX_GUIDE.md` 登记并维护目标工程内联邦镜像路径（详见 `scripts/README.md`）。
 - **数据流 2：应用知识库（application）内的跨视角引用（SSOT）**
   - `./application/DESIGN.md` 定义四视角元模型与映射机制 → 具体实体在各视角元数据 YAML 与实体定义 `*.yaml` 中写目标实体 ID。
   - 常用映射字段（见 `application/DESIGN.md` 与 `application/constitution/GLOSSARY.md`）：
@@ -222,7 +222,7 @@
 | `GIT_REF`                 | —                             | 手动 `git clone` 时选用分支/标签         | 默认分支                                     | 低         |
 | `REPO_ROOT`               | `./scripts/docs-install.sh` 等    | **环境变量**：指定**本中央库**根目录（运行初始化脚本时） | 自动推导 `scripts/` 所在仓库根                | 低         |
 | `TARGET_DIR`              | `./scripts/docs-install.sh`      | 初始化目标目录                         | 当前目录 `pwd`                                    | 低         |
-| `SDX_MODE` / `--mode`     | `./scripts/docs-install.sh`      | 初始化模式：`standalone`/`central`（或 `s`/`c`） | `standalone`                                  | 低         |
+| `SDX_MODE` / `--mode`     | `./scripts/docs-install.sh`      | 初始化模式：`standalone` / **中央知识库挂载建联**（`central`，或 `s`/`c`） | `standalone`                                  | 低         |
 | `--target`                | `./scripts/docs-install.sh`      | 目标工程文档目录（必填，`--target=PATH`） | 无默认（必须显式传入）                              | 低         |
 | `--scope`                 | `./scripts/docs-install.sh`      | `knowledge`（安装知识库）/`config`（仅写 `.docsconfig`） | `config`                                   | 低         |
 | `--type`                  | `./scripts/docs-install.sh`      | `application`/`system`/`company`（仅 `scope=knowledge` 生效） | `application`                        | 低         |
@@ -247,7 +247,7 @@
   - `./application/constitution/adr/`**、`./application/constitution/principles/`**（仅精读了宪法层 README、术语表、标准与 ADR 模板）
   - `./application/knowledge/**/*_meta.yaml`、各阶段 `./application/{solutions,analysis,requirements,changelogs}/*_meta.yaml`、`./application/knowledge/**/*.yaml`（仅精读了四视角 README 与 DESIGN/CONTRIBUTING 约定；实体样例未逐一通读）
 - **应用级未精读**
-  - `./applications/`** 已无 `app-*` 模板子树；目标工程内若存在 `applications/app-*` 则为 docs-install `central` 等行为生成物，非本中央库模板
+  - `./applications/`** 已无 `app-*` 模板子树；目标工程内若存在 `applications/app-*` 则为 docs-install **中央知识库挂载建联**（`central`）等行为生成物，非本中央库模板
 - **AI 规则与技能未精读**
   - `./agent/rules/`**（仅精读了 `./agent/rules/CONVENTIONS.md`；其余规则模板未逐一精读）
   - `./agent/skills/`**（已精读 `docs-indexing`/`docs-change`；并抽读 `agent-guide`、`knowledge-upgrade` 的入口与阶段划分；其余技能未逐一精读）
@@ -273,7 +273,7 @@
 ### 快速检索 Prompt 模板（面向仓库内搜索/阅读）
 
 - **模板 1：定位“初始化输出目录与模式差异”**
-  - “在 `./scripts/docs-install.sh` 中，`standalone` 与 `central`（`s`/`c`）模式分别会创建哪些目标目录？`--scope`、`--type`、`--mode`、`--target` 分别如何影响行为？”
+  - “在 `./scripts/docs-install.sh` 中，`standalone` 与 **中央知识库挂载建联**（`central`，`s`/`c`）分别会创建哪些目标目录？`--scope`、`--type`、`--mode`、`--target` 分别如何影响行为？”
 - **模板 2：定位“应用知识库映射字段与关系”**
   - “在 `./application/DESIGN.md` 与 `./application/knowledge/KNOWLEDGE_INDEX.md` 中，列出所有关键映射字段及其关系方向，并指出对应的视角层级（BC/AGG/PM/FT/ENT 等）。”
 - **模板 3：扩展索引覆盖率（进入 Mode 3）**

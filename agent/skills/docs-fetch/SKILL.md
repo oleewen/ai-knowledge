@@ -1,7 +1,7 @@
 ---
 name: docs-fetch
 description: >
-  从已通过知识库安装central（模式）注册的目标工程拉取最新文档，覆盖更新本仓库联邦镜像
+  从已通过中央知识库挂载建联注册的目标工程拉取最新文档，覆盖更新本仓库联邦镜像
   applications/app-{APPNAME}/，并追加同步 changelog。
   只要用户提到以下任意场景，就应立即使用本技能，不要等用户明确说"/docs-fetch"：
   同步应用文档、拉取最新知识库、更新联邦镜像、应用侧有更新要拉到中央库、
@@ -11,16 +11,16 @@ description: >
 
 # 应用知识库拉取（docs-fetch）
 
-**术语**：**联邦镜像**指本仓库内 `applications/app-{APPNAME}/`（由知识库安装central（模式）登记）。**应用知识库 SSOT** 指 `{DOC_DIR}/`，本技能默认不修改。
+**术语**：**联邦镜像**指本仓库内 `applications/app-{APPNAME}/`（由中央知识库挂载建联登记）。**应用知识库 SSOT** 指 `{DOC_DIR}/`，本技能默认不修改。
 
 ## 前置条件
 
-目标应用必须已通过知识库安装central（模式）注册：
+目标应用必须已通过中央知识库挂载建联注册：
 
 - `applications/app-{APPNAME}/` 目录存在
 - `applications/app-{APPNAME}/{APPNAME}_manifest.yaml` 存在且含 `repo_url` 字段
 
-未注册的应用须先执行知识库安装central（模式）。
+未注册的应用须先执行中央知识库挂载建联。
 
 ## 输入与输出
 
@@ -100,6 +100,6 @@ scripts/fetch-docs.sh \
 
 | 类型 | 技能 | 说明 |
 |------|------|------|
-| 前置 | 知识库安装central（模式） | 应用须已注册，manifest 须存在 |
+| 前置 | 中央知识库挂载建联 | 应用须已注册，manifest 须存在 |
 | 协作 | `docs-archive` | 同步后可将应用侧有效信息上行到系统库 |
 | 协作 | `docs-change` | 同步后可生成变更索引 |

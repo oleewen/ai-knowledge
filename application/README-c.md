@@ -1,11 +1,11 @@
 # application — 应用知识库（mode=c）
 
 `application/` 维护应用层面的稳定事实与治理线索，是全仓库的知识中枢。  
-本文件面向知识库安装central（模式）（`mode=c`）阅读与维护场景，聚焦「按什么顺序读、到哪里写」；九章机器索引与 **central 登记**见 [INDEX_GUIDE.md](INDEX_GUIDE.md)。
+本文件面向中央知识库挂载建联（`mode=c`）阅读与维护场景，聚焦「按什么顺序读、到哪里写」；九章机器索引与 **中央知识库挂载建联登记**见 [INDEX_GUIDE.md](INDEX_GUIDE.md)。
 
 ## 推荐阅读路径
 
-1. [INDEX_GUIDE.md](INDEX_GUIDE.md)：九章索引（docs-indexing 产出）、文末 **「十、中央知识库接入工程」** 为知识库安装central（模式）登记
+1. [INDEX_GUIDE.md](INDEX_GUIDE.md)：九章索引（docs-indexing 产出）、文末 **「十、中央知识库接入工程」** 为中央知识库挂载建联之登记
 2. [DESIGN.md](DESIGN.md)：元模型与跨视角关系
 3. [CONTRIBUTING.md](CONTRIBUTING.md)：新增/修改流程与模板约束
 
@@ -23,7 +23,7 @@ constitution（治理基线：术语/原则/标准/ADR）
 
 **推荐落地顺序**：先核对 **constitution** 治理约束，再查 / 补 **knowledge** 实体与 ID（读 [DESIGN.md](DESIGN.md)、[CONTRIBUTING.md](CONTRIBUTING.md)），最后在 **changelogs** 留痕并维护索引链路。
 
-## central 维护主线
+## 中央知识库挂载建联维护主线
 
 | 主线 | 目录 | 主要内容 |
 |------|------|----------|

@@ -27,8 +27,8 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 |------|---------------------|--------|----------|
 | **standalone** | `application`（默认） | `application/` | 全量拷贝（排除 `DESIGN.md`、`CONTRIBUTING.md`）；内容替换见 `docs-install` |
 | **standalone** | `system` / `company` | `system/` / `company/` | 组织级 / 公司级模板同步 |
-| **central**  | `application`（默认） | `application/` **子集** | 仅 `changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs_meta.yaml`、`manifest.yaml`；**不执行 central 登记/联邦槽位写入** |
-| **central**  | `system` / `company` | - | **不支持**（报错） |
+| **中央知识库挂载建联**（`central`） | `application`（默认） | `application/` **子集** | 仅 `changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs_meta.yaml`、`manifest.yaml`；**不执行中央知识库挂载建联登记/联邦槽位写入** |
+| **中央知识库挂载建联**（`central`） | `system` / `company` | - | **不支持**（报错） |
 
 2. **Agent 配置**（**`agent-install.sh`**）：在 **`--target`**（默认 **`$HOME`**）下按 **`--agents`**（默认 **`cursor`**，可 **`all`** 或多选）安装到 **`${TARGET}/.{.cursor|.trea|.claude}/`** 中对应目录；按 **`--scope`** 选择同步 **`hooks`**、**`scripts`**、**`rules`**、**`skills`**。当 **`--target` 不是 `$HOME`** 且 **`${TARGET}/.docsconfig`** 已存在时，可更新 **`AGENT_ROOT`** 与 **`AGENT_DIRS`**。`docs-install` 不处理 `AGENT_*`。
 
@@ -59,7 +59,7 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 git clone https://github.com/oleewen/ai-knowledge.git
 cd ai-knowledge
 
-# 知识库 + .docsconfig（默认 standalone；central 加 --mode=central）
+# 知识库 + .docsconfig（默认 standalone；中央知识库挂载建联加 --mode=central）
 ./scripts/docs-install.sh --target=/path/to/your-project/docs
 ./scripts/docs-install.sh --mode=central --type=application --target=/path/to/your-project/docs
 
@@ -95,7 +95,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 bash scripts/tests/docs-init/run.sh
 ```
 
-含整库副本与 Central 登记类用例（Spec §6.5 / §6.8；耗时与磁盘占用更高）：
+含整库副本与中央知识库挂载建联登记类用例（Spec §6.5 / §6.8；耗时与磁盘占用更高）：
 
 ```bash
 DOCS_INIT_TEST_FULL=1 bash scripts/tests/docs-init/run.sh
@@ -124,8 +124,8 @@ export GIT_REF=main                                                  # 分支或
 | 选项 | 说明 | 默认 |
 |------|------|------|
 | `--target=PATH` | 目标工程文档目录路径（如 `~/project/docs`）；`config` / `knowledge` 均必填 | - |
-| `--mode=MODE` | 模式：`standalone`（独立）\| `central`（仅应用子集分发）；缩写：`s` \| `c` | `standalone` |
-| `--type=TYPE` | `application` \| `system` \| `company`；**`central` 仅允许 `application`**；未指定时默认 `application` | `application` |
+| `--mode=MODE` | 模式：`standalone`（独立）\| **中央知识库挂载建联**（`central`，仅应用子集分发）；缩写：`s` \| `c` | `standalone` |
+| `--type=TYPE` | `application` \| `system` \| `company`；**中央知识库挂载建联（`central`）仅允许 `application`**；未指定时默认 `application` | `application` |
 | `--scope=SCOPE` | 同步范围：`knowledge(k)` \| `config(c)`；**须传 `--target`**；仅 `config` 写 `.docsconfig`，`knowledge` 不写 | `config` |
 | `-r` | 允许工程根目录不存在时自动创建（等同 `CREATE_PROJECT_ROOT=1`）；若文档目录不存在会一并创建 | 关闭 |
 | `--force` | 强制覆盖已存在内容，不提示（docs-install） | - |
@@ -145,7 +145,7 @@ your-project/
 ├── .docsconfig                    # 可选：由 docs-install/agent-install 写入（至少 DOC_*；scope=config 含 KNOWLEDGE_TYPE）
 ├── application/                          # 文档目录（application/ 模板拷贝）
 │   ├── README.md                  # 应用知识库 README
-│   ├── INDEX_GUIDE.md             # 九章索引（docs-indexing）；central 登记见「十」
+│   ├── INDEX_GUIDE.md             # 九章索引（docs-indexing）；中央知识库挂载建联登记见「十」
 │   ├── docs_meta.yaml             # 根目录元数据
 │   ├── constitution/            # 宪法层（原则、标准、ADR；与 knowledge/ 平级）
 │   ├── knowledge/                 # 知识库（四视角）
@@ -178,9 +178,9 @@ your-project/
 
 **注意**：standalone + `type=application`（默认）下自动排除 `DESIGN.md` 和 `CONTRIBUTING.md`。
 
-## Central 模式说明
+## 中央知识库挂载建联说明
 
-在 **`scope=knowledge`** + **`type=application`** 下，`--mode=central` 仅切换为 application 子集分发。
+在 **`scope=knowledge`** + **`type=application`** 下，`--mode=central`（中央知识库挂载建联）仅切换为 application 子集分发。
 不会更新本仓库 `application/INDEX_GUIDE.md` / `system/INDEX_GUIDE.md`，也不会创建联邦槽位目录。
 
 ## 工作原理
@@ -190,7 +190,7 @@ your-project/
 | 模式 × type | 模板源 | 目标路径 | 替换规则 / 附加步骤 |
 |-------------|--------|----------|---------------------|
 | standalone，默认 type=application | `application/` | 目标文档目录 | 全量；排除 `DESIGN.md`、`CONTRIBUTING.md` |
-| central，`--type=application` | `application/` §2.1 子集 | 目标文档目录 | 子集分发（无中央登记、无联邦槽位写入） |
+| 中央知识库挂载建联（`central`），`--type=application` | `application/` §2.1 子集 | 目标文档目录 | 子集分发（不产生中央知识库挂载建联登记、无联邦槽位写入） |
 | standalone，`--type=system` / `company` | `system/` / `company/` | 目标文档目录 | 全量同步 |
 | `--type=company` | `company/` | 目标文档目录 | 最小替换 |
 
@@ -234,4 +234,4 @@ your-project/
 | 2.1.1 | `standalone` 下 `--scope` 为 `agent` 时，`<目标工程文档目录>` 可省略；未指定时 Agent 内 `application/` → 文档前缀替换默认为 `docs/` |
 | 2.1.0 | Agent skills/rules 安装目录由「目标工程根下」改为「用户主目录 `$HOME` 下」；备份对应使用 `~/.docs-init/` |
 | 2.0.0 | 重构：使用 `application/` 作为模板源；新增文件名/内容替换；支持多 Agent（cursor、trea、claude）；Agent 目录改为 `.cursor/`、`.trea/`、`.claude/`；standalone 模式排除 DESIGN.md 和 CONTRIBUTING.md |
-| 1.0.0 | 初始版本：使用 `applications/app-APPNAME/` 作为模板源；支持 standalone 和 central 模式；Agent 配置安装在 `agent/` 目录 |
+| 1.0.0 | 初始版本：使用 `applications/app-APPNAME/` 作为模板源；支持 standalone 与中央知识库挂载建联（`central`）；Agent 配置安装在 `agent/` 目录 |
