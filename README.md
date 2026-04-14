@@ -4,7 +4,7 @@
 
 ## 简介
 
-`ai-knowledge` 是**纯文档型**中央库：提供 `**application/`** 应用知识库 SSOT、`**system/**` / `**company/**` 组织与公司级槽位骨架、`**applications/**` 联邦迁移说明入口、`**/agent/**` 规范与 Slash 技能，以及 `**scripts/**` 下的 **`agent-install` / `knowledge-init` / `knowledge-link`** 初始化链。业务细节、路径级精要与检索字段以 **[INDEX_GUIDE.md](INDEX_GUIDE.md)** 为权威地图（与 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) 互为补充说明时以前者落地路径为准）。当前 `knowledge-init` 契约：`--target` 必填、默认 `--scope=config`、`--scope=knowledge` 不处理 `.docsconfig`，且 `--mode=central` 仅用于 `type=application` 的安装范围切换（无 central 登记副作用）。详见 [scripts/README.md](scripts/README.md) 与 [docs/superpowers/specs/2026-04-13-knowledge-config-design.md](docs/superpowers/specs/2026-04-13-knowledge-config-design.md)。
+`ai-knowledge` 是**纯文档型**中央库：提供 `**application/`** 应用知识库 SSOT、`**system/**` / `**company/**` 组织与公司级槽位骨架、`**applications/**` 联邦迁移说明入口、`**/agent/**` 规范与 Slash 技能，以及 `**scripts/**` 下的 **`agent-install` / `docs-install` / `knowledge-link`** 初始化链。业务细节、路径级精要与检索字段以 **[INDEX_GUIDE.md](INDEX_GUIDE.md)** 为权威地图（与 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) 互为补充说明时以前者落地路径为准）。当前 `docs-install` 契约：`--target` 必填、默认 `--scope=config`、`--scope=knowledge` 不处理 `.docsconfig`，且 `--mode=central` 仅用于 `type=application` 的安装范围切换（无 central 登记副作用）。详见 [scripts/README.md](scripts/README.md) 与 [docs/superpowers/specs/2026-04-13-knowledge-config-design.md](docs/superpowers/specs/2026-04-13-knowledge-config-design.md)。
 
 人类上手、可复制命令与协作入口以本文件为准；Agent 行为约束见 **[AGENTS.md](AGENTS.md)**。
 
@@ -32,18 +32,18 @@
 cd /path/to/your-workspaces
 git clone https://github.com/oleewen/ai-knowledge
 cd ai-knowledge
-./scripts/knowledge-init.sh [--选项] --target=/path/to/your-project/docs
+./scripts/docs-install.sh [--选项] --target=/path/to/your-project/docs
 # 或仅安装 Agent： ./scripts/agent-install.sh [--scope=...] [--target=...] [--dry-run]
 ```
 
-**方式三：远程 bootstrap（无需先 clone，等同 clone 后执行 `knowledge-init`）**
+**方式三：远程 bootstrap（无需先 clone，等同 clone 后执行 `docs-install`）**
 
 ```bash
 cd /path/to/your-project
 curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- [选项] --target ./docs
 ```
 
-参数、模式与落地产物见 **[scripts/README.md](scripts/README.md)**。在**目标工程**侧，**仅 `knowledge-init --scope=config`** 会写入 **`.docsconfig`**（**`DOC_ROOT`/`REPO_ROOT`/`DOC_DIR`/`KNOWLEDGE_TYPE`**）；`--scope=knowledge` 仅安装知识库内容，不处理 `.docsconfig`。`knowledge-init` 通过 **`--target`** 指定目标文档目录；**`agent-install`** 使用 **`--target`**（默认 **`$HOME`**）在 **`${TARGET}/.cursor` 等**安装，并按其自身规则处理 `AGENT_*`。**bootstrap 仅走 `knowledge-init`**；仅装 Agent 请 clone 后用 **`agent-install`**。供 Skill 与脚本通过 **`config-bootstrap`** 解析。
+参数、模式与落地产物见 **[scripts/README.md](scripts/README.md)**。在**目标工程**侧，**仅 `docs-install --scope=config`** 会写入 **`.docsconfig`**（**`DOC_ROOT`/`REPO_ROOT`/`DOC_DIR`/`KNOWLEDGE_TYPE`**）；`--scope=knowledge` 仅安装知识库内容，不处理 `.docsconfig`。`docs-install` 通过 **`--target`** 指定目标文档目录；**`agent-install`** 使用 **`--target`**（默认 **`$HOME`**）在 **`${TARGET}/.cursor` 等**安装，并按其自身规则处理 `AGENT_*`。**bootstrap 仅走 `docs-install`**；仅装 Agent 请 clone 后用 **`agent-install`**。供 Skill 与脚本通过 **`config-bootstrap`** 解析。
 
 ## 常见 Skill 与推荐流程
 
@@ -51,7 +51,7 @@ Skill 由 Agent 执行的流程化指令承载，用于文档治理、索引维�
 
 **从初始化到交付的推荐顺序：**
 
-1. 按上文完成环境初始化（克隆后 `knowledge-init.sh` / `agent-install.sh`，或 **`docs-bootstrap.sh`**）。
+1. 按上文完成环境初始化（克隆后 `docs-install.sh` / `agent-install.sh`，或 **`docs-bootstrap.sh`**）。
 2. 需要可检索入口时执行 `/docs-indexing`，生成或更新根目录 **[INDEX_GUIDE.md](INDEX_GUIDE.md)**。
 3. 协作入口或约束变化时执行 `/agent-guide`，更新本文件与 **[AGENTS.md](AGENTS.md)**。
 4. 按知识工程需要执行 `/docs-build`，维护 **[application/knowledge/](application/knowledge/)** 与相关索引。
@@ -88,7 +88,7 @@ ai-knowledge/
 ├── system/                      # 组织级系统知识库壳（architecture、application-{name}/）
 ├── company/                     # 公司知识库壳（architecture、system-{name}/）
 ├── applications/                # 联邦模板已迁出；仅存迁移说明与索引入口
-├── scripts/                     # agent-install / knowledge-init / knowledge-link（Bash 5+）
+├── scripts/                     # agent-install / docs-install / knowledge-link（Bash 5+）
 └── agent/                      # 规范（rules）与 Slash 技能（skills）
 ```
 

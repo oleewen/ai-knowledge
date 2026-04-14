@@ -3,7 +3,7 @@
 # docs-bootstrap.sh — SDX 知识库初始化引导脚本
 #
 # 职责：
-#   无需预先克隆 ai-knowledge：克隆到临时目录后调用 **knowledge-init.sh** 完成初始化。
+#   无需预先克隆 ai-knowledge：克隆到临时目录后调用 **docs-install.sh** 完成初始化。
 #
 # 依赖：Bash 5+、Git、网络连接（可访问 GitHub）
 #
@@ -163,9 +163,9 @@ sdx_bs_main() {
 
   sdx_bs_clone_repo "$repo_url" "$ref" "$SDX_BS_CLONE_DIR" || exit 1
 
-  local knowledge_init="${SDX_BS_CLONE_DIR}/scripts/knowledge-init.sh"
+  local docs_install="${SDX_BS_CLONE_DIR}/scripts/docs-install.sh"
   local shared_config="${SDX_BS_CLONE_DIR}/agent/scripts/docs-config.sh"
-  [[ -f "$knowledge_init" ]] || sdx_bs_die "仓库中未找到 scripts/knowledge-init.sh"
+  [[ -f "$docs_install" ]] || sdx_bs_die "仓库中未找到 scripts/docs-install.sh"
   [[ -f "$shared_config" ]] || sdx_bs_die "仓库中未找到 agent/scripts/docs-config.sh"
 
   # 克隆后统一加载 SSOT（若预载阶段已 source，此处因 _AGENT_SHARED_DOCS_CONFIG_LOADED 短路）
@@ -174,11 +174,11 @@ sdx_bs_main() {
 
   sdx_bs_log ''
   sdx_bs_info "已加载共享配置（agent/scripts/docs-config.sh）"
-  sdx_bs_info '>>> 执行 knowledge-init.sh...'
+  sdx_bs_info '>>> 执行 docs-install.sh...'
   sdx_bs_log ''
 
   export REPO_ROOT="$SDX_BS_CLONE_DIR"
-  bash "$knowledge_init" "$@"
+  bash "$docs_install" "$@"
 }
 
 sdx_bs_main "$@"

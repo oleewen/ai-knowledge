@@ -18,7 +18,7 @@ trap cleanup EXIT
 mkdir -p "$DOCS_DIR"
 git -C "$PROJECT_DIR" init -q
 
-bash "$KNOWLEDGE_INIT_SCRIPT" --scope=knowledge --type=application --target="$DOCS_DIR" >"$OUT_FILE" 2>&1
+bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target="$DOCS_DIR" >"$OUT_FILE" 2>&1
 
 # 新契约目标：scope=knowledge 不应写 .docsconfig。
 DOCS_CONFIG_PATH="$PROJECT_DIR/.docsconfig"

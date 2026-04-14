@@ -19,7 +19,7 @@ mkdir -p "$DOCS_DIR"
 git -C "$PROJECT_DIR" init -q
 
 set +e
-bash "$KNOWLEDGE_INIT_SCRIPT" \
+bash "$DOCS_INSTALL_SCRIPT" \
   --scope=knowledge \
   --mode=central \
   --type=system \

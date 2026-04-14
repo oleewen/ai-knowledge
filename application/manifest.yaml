@@ -7,7 +7,7 @@ mirrors_system_paths:
   - application/changelogs/changelogs_meta.yaml → changelogs/changelogs_meta.yaml
   - application/knowledge/** → knowledge/**
   - application/requirements/requirements_meta.yaml → requirements/requirements_meta.yaml
-  - application/docs_meta.yaml → docs_meta.yaml（目标工程内文件名；安装时内容替换见 knowledge-init）
+  - application/docs_meta.yaml → docs_meta.yaml（目标工程内文件名；安装时内容替换见知识库安装）
 
 central_library:
   system_root: ../../application/

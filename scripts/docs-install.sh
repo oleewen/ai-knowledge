@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# knowledge-init.sh — 知识库初始化 + .docsconfig（入口脚本，source knowledge-config.sh）
+# docs-install.sh — 知识库初始化 + .docsconfig（入口脚本，source knowledge-config.sh）
 # 语义应与 scripts/knowledge-config.sh 对齐；修改时请同步。
 set -euo pipefail
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -8,7 +8,7 @@ readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=./knowledge-config.sh
 source "$SCRIPT_DIR/knowledge-config.sh"
 
-# ========== knowledge-init 内联主体（knowledge 路径）==========
+# ========== docs-install 内联主体（knowledge 路径）==========
 # =============================================================================
 # § 1  日志函数
 # =============================================================================
@@ -515,7 +515,7 @@ install_docsconfig() {
 usage() {
   cat >&2 <<'EOF'
 用法
-  knowledge-init.sh [选项] --target=<目标工程文档目录>
+  docs-install.sh [选项] --target=<目标工程文档目录>
 
 说明
   --target：目标工程文档目录（必填）。例如：
@@ -555,12 +555,12 @@ usage() {
   FORCE                 1=强制覆盖
 
 示例
-  ./scripts/knowledge-init.sh --target=~/workspace/my-app/docs
-  ./scripts/knowledge-init.sh --scope=knowledge --target=~/workspace/my-app/docs
-  ./scripts/knowledge-init.sh --scope=config --target=~/workspace/my-app/docs
-  ./scripts/knowledge-init.sh --mode=central --type=application --target=~/workspace/my-app/docs
-  ./scripts/knowledge-init.sh --mode=standalone --type=system --target=~/workspace/my-app/system
-  ./scripts/knowledge-init.sh --dry-run --target=~/workspace/my-app/docs
+  ./scripts/docs-install.sh --target=~/workspace/my-app/docs
+  ./scripts/docs-install.sh --scope=knowledge --target=~/workspace/my-app/docs
+  ./scripts/docs-install.sh --scope=config --target=~/workspace/my-app/docs
+  ./scripts/docs-install.sh --mode=central --type=application --target=~/workspace/my-app/docs
+  ./scripts/docs-install.sh --mode=standalone --type=system --target=~/workspace/my-app/system
+  ./scripts/docs-install.sh --dry-run --target=~/workspace/my-app/docs
 EOF
 }
 
@@ -753,7 +753,7 @@ docs_init_run() {
     CFG[home_abs]="$(abs_path "$HOME")"
     validate_docs_and_target
     install_docsconfig
-    info "完成：knowledge-init（--scope=config）"
+    info "完成：docs-install（--scope=config）"
     print_checklist
     exit 0
   fi

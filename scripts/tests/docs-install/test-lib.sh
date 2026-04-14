@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
-KNOWLEDGE_INIT_SCRIPT="$ROOT_DIR/scripts/knowledge-init.sh"
+DOCS_INSTALL_SCRIPT="$ROOT_DIR/scripts/docs-install.sh"
 
 fail() {
   printf 'FAIL: %s\n' "$*" >&2
@@ -38,5 +38,5 @@ assert_not_contains() {
 }
 
 new_tmp_dir() {
-  mktemp -d "${TMPDIR:-/tmp}/knowledge-init-tests.XXXXXX"
+  mktemp -d "${TMPDIR:-/tmp}/docs-install-tests.XXXXXX"
 }

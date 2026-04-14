@@ -6,7 +6,7 @@
 
 ## 前置条件
 
-**应用未注册就直接拉取**：**应用知识库根目录**下 `applications/app-{APPNAME}/` 目录或 `{APPNAME}_manifest.yaml` 不存在时，终止并提示先执行 `knowledge-init --mode=central`。不要尝试从 manifest 缺失的目录推断仓库地址。
+**应用未注册就直接拉取**：**应用知识库根目录**下 `applications/app-{APPNAME}/` 目录或 `{APPNAME}_manifest.yaml` 不存在时，终止并提示先执行知识库安装central（模式）。不要尝试从 manifest 缺失的目录推断仓库地址。
 
 **manifest 中 `repo_url` 为空或缺失**：读取 manifest 后必须验证 `repo_url` 字段存在且非空；缺失时终止并提示用户手动补充 manifest 中的 `repo_url` 字段。
 

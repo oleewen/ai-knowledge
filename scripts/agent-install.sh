@@ -287,14 +287,14 @@ install_agent_config() {
 
   local cfg="$t/.docsconfig"
   [[ -f "$cfg" ]] \
-    || error "未找到 $cfg。请先在该工程执行 knowledge-init（或 knowledge-init --scope=config <目标工程文档目录>）生成 .docsconfig。"
+    || error "未找到 $cfg。请先在该工程执行 docs-install（或 docs-install --scope=config <目标工程文档目录>）生成 .docsconfig。"
 
   local doc_root repo_root doc_dir _ar_old _ads_old kt
   docsconfig_read_into "$cfg" doc_root repo_root doc_dir _ar_old _ads_old kt \
     || error "无法解析: $cfg"
 
   [[ -n "$doc_root" && -n "$repo_root" && -n "$doc_dir" ]] \
-    || error ".docsconfig 缺少 DOC_ROOT/REPO_ROOT/DOC_DIR，请重新执行 knowledge-init。"
+    || error ".docsconfig 缺少 DOC_ROOT/REPO_ROOT/DOC_DIR，请重新执行 docs-install。"
 
   local ads
   ads="$(agent_dirs_space_separated_for "${ENABLED_AGENTS[@]}")"
@@ -318,7 +318,7 @@ usage() {
   scripts 阶段会从本仓库复制 agent/scripts/docs-config.sh 到各选中 Agent 的 scripts/docs-config.sh。
   不安装README。
   当 --target 不是 $HOME 时，更新 <target>/.docsconfig 的 AGENT_ROOT 与 AGENT_DIRS（与当前 --agents 一致）；
-  若该文件不存在，请先对目标工程执行 knowledge-init。
+  若该文件不存在，请先对目标工程执行 docs-install。
 
 选项
   --scope=SCOPE   a=全部 | r=rules | s=skills | h=hooks | sh=scripts  [默认: a]

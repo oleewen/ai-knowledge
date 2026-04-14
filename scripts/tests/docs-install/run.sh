@@ -20,7 +20,7 @@ total=0
 passed=0
 failed=0
 
-printf '== knowledge-init 基线测试 ==\n'
+printf '== docs-install 基线测试 ==\n'
 
 for case_file in "${CASES[@]}"; do
   total=$((total + 1))

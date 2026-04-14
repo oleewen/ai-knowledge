@@ -58,10 +58,10 @@ docsconfig_parse_into_globals() {
     || return 1
 }
 
-_config_bootstrap_hint_knowledge_init() {
+config_bootstrap_hint_docs_install() {
   cat >&2 <<'EOF'
-[config] 请使用 knowledge-init.sh 初始化并写入 .docsconfig，例如：
-  bash scripts/knowledge-init.sh --scope=config <目标工程文档目录>
+[config] 请使用 docs-install.sh 初始化并写入 .docsconfig，例如：
+  bash scripts/docs-install.sh --scope=config <目标工程文档目录>
 （在已克隆 ai-knowledge 的仓库根执行；路径请按实际工程调整。）
 EOF
 }
@@ -75,7 +75,7 @@ validate_bootstrap_docsconfig() {
 
   if ! rr="$(find_repo_root_for_docsconfig "$script_dir")"; then
     echo "[config] 未找到目标仓库根下的 .docsconfig。" >&2
-    _config_bootstrap_hint_knowledge_init
+    config_bootstrap_hint_docs_install
     exit 1
   fi
 
@@ -86,13 +86,13 @@ validate_bootstrap_docsconfig() {
   }
 
   docsconfig_parse_into_globals "$cfg" || {
-    _config_bootstrap_hint_knowledge_init
+    config_bootstrap_hint_docs_install
     exit 1
   }
 
   if [[ -z "${DOC_ROOT:-}" || -z "${REPO_ROOT:-}" || -z "${DOC_DIR:-}" ]]; then
     echo "[config] .docsconfig 缺少必需的 DOC_ROOT、REPO_ROOT 或 DOC_DIR。" >&2
-    _config_bootstrap_hint_knowledge_init
+    config_bootstrap_hint_docs_install
     exit 1
   fi
 }

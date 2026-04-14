@@ -40,7 +40,7 @@ SYS_INDEX_SUM_BEFORE="$(cksum "$SYS_INDEX" | awk '{print $1":"$2}')"
 APP_SLOT_COUNT_BEFORE="$(count_glob_matches "$APP_SLOT_GLOB")"
 SYS_SLOT_COUNT_BEFORE="$(count_glob_matches "$SYS_SLOT_GLOB")"
 
-bash "$KNOWLEDGE_INIT_SCRIPT" \
+bash "$DOCS_INSTALL_SCRIPT" \
   --scope=knowledge \
   --mode=central \
   --type=application \

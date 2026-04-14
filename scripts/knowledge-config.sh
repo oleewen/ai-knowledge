@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #
-# knowledge-config.sh — 仅供 knowledge-init.sh source
+# knowledge-config.sh — 仅供 docs-install.sh source
 #
 # 职责：
-# - 承载 knowledge-init 的默认值、枚举校验与规范化、路径函数、.docsconfig 工具
+# - 承载 docs-install 的默认值、枚举校验与规范化、路径函数、.docsconfig 工具
 # - 自闭环实现；路径与 .docsconfig 工具统一复用 agent/scripts/docs-config.sh
 #
 
@@ -22,7 +22,7 @@ declare -A SDX_DEFAULTS=(
   [mode]='standalone'
 )
 
-# knowledge-init 语义默认值（供入口编排层使用）
+# docs-install 语义默认值（供入口编排层使用）
 readonly KINIT_DEFAULT_SCOPE='config'
 readonly KINIT_DEFAULT_TYPE='application'
 readonly KINIT_DEFAULT_MODE='standalone'
