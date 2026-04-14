@@ -12,10 +12,9 @@ readonly LINK_CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${LINK_CONFIG_DIR}/../agent/scripts/docs-config.sh"
 
 # =============================================================================
-# § 1  常量与校验
+# § 1  常量与校验（SDX_SUPPORTED_KNOWLEDGE_TYPES 见已 source 的 docs-config.sh）
 # =============================================================================
 
-readonly -a SDX_SUPPORTED_KNOWLEDGE_TYPES=(application system company)
 readonly KLINK_DEFAULT_DRY_RUN='0'
 
 validate_link_command() {

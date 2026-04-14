@@ -20,9 +20,6 @@ source "${AGENT_CONFIG_DIR}/../agent/scripts/docs-config.sh"
 # =============================================================================
 
 readonly SDX_VERSION='3.0.0'
-readonly SDX_MIN_BASH_VERSION=5
-
-readonly SDX_GIT_REPO_URL='https://github.com/oleewen/ai-knowledge.git'
 
 # 安装目标：多 IDE 根（cursor / trea / claude）
 readonly -a SDX_SUPPORTED_AGENTS=(cursor trea claude)

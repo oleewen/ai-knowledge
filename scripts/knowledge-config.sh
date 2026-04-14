@@ -16,7 +16,6 @@ source "${KNOWLEDGE_CONFIG_DIR}/../agent/scripts/docs-config.sh"
 # =============================================================================
 
 readonly -a SDX_SUPPORTED_MODES=(standalone central)
-readonly -a SDX_SUPPORTED_KNOWLEDGE_TYPES=(application system company)
 
 declare -A SDX_DEFAULTS=(
   [docs_dir]='docs'
@@ -45,7 +44,7 @@ normalize_mode() {
 }
 
 validate_type() {
-  [[ "${1:-}" =~ ^(application|system|company)$ ]]
+  docsconfig_knowledge_type_is_valid "${1:-}"
 }
 
 normalize_type() {

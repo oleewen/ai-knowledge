@@ -11,14 +11,50 @@
 #   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh \
 #     | bash -s -- [选项] <目标工程文档目录>
 #
+# 配置项（默认值、GIT_REPO_URL/GIT_REF 读取）：**agent/scripts/docs-config.sh**
+# —— 从本仓库根执行时可预载；**curl | bash** 时于下方内联回退（须与该文件保持一致）。
+#
 set -euo pipefail
 
 # =============================================================================
-# § 1  常量（预克隆阶段）
+# § 1  预载共享配置（仅从已克隆仓库运行时）
 # =============================================================================
 
-readonly SDX_BS_FALLBACK_REPO='https://github.com/oleewen/ai-knowledge.git'
-readonly SDX_BS_DEFAULT_REF='HEAD'
+_BOOTSTRAP_SCRIPT_DIR=''
+if [[ -n "${BASH_SOURCE[0]:-}" && "${BASH_SOURCE[0]}" != '-' ]]; then
+  _BOOTSTRAP_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)" || true
+fi
+if [[ -n "$_BOOTSTRAP_SCRIPT_DIR" && -f "${_BOOTSTRAP_SCRIPT_DIR}/../agent/scripts/docs-config.sh" ]]; then
+  # shellcheck source=/dev/null
+  source "${_BOOTSTRAP_SCRIPT_DIR}/../agent/scripts/docs-config.sh"
+fi
+
+if ! declare -F require_bash5 >/dev/null 2>&1; then
+  require_bash5() {
+    if (( BASH_VERSINFO[0] < 5 )); then
+      printf '[FATAL] 需要 Bash %s+，当前版本: %s\n' 5 "$BASH_VERSION" >&2
+      exit 1
+    fi
+  }
+fi
+if ! declare -F sdx_docs_bootstrap_get_repo_url >/dev/null 2>&1; then
+  _SDX_GIT_REPO_URL_FALLBACK='https://github.com/oleewen/ai-knowledge.git'
+  _SDX_GIT_DEFAULT_REF_FALLBACK='HEAD'
+  sdx_docs_bootstrap_get_repo_url() {
+    printf '%s' "${GIT_REPO_URL:-$_SDX_GIT_REPO_URL_FALLBACK}"
+  }
+  sdx_docs_bootstrap_get_ref() {
+    printf '%s' "${GIT_REF:-$_SDX_GIT_DEFAULT_REF_FALLBACK}"
+  }
+  sdx_docs_bootstrap_get_tmpdir() {
+    local tmpdir="${TMPDIR:-/tmp}"
+    [[ -d "$tmpdir" ]] || tmpdir='/tmp'
+    printf '%s' "$tmpdir"
+  }
+  sdx_docs_bootstrap_gen_clone_dir() {
+    printf '%s/ai-knowledge-%s' "${1:?tmpdir}" "$$"
+  }
+fi
 
 # =============================================================================
 # § 2  运行时状态
@@ -41,13 +77,8 @@ sdx_bs_die() {
 }
 
 # =============================================================================
-# § 4  环境检查
+# § 4  环境检查（Bash 版本见 docs-config.sh 之 require_bash5；预载失败时 §1 回退已定义）
 # =============================================================================
-
-sdx_bs_check_bash() {
-  (( BASH_VERSINFO[0] >= 5 )) \
-    || sdx_bs_die "需要 Bash 5+，当前版本: ${BASH_VERSION}"
-}
 
 sdx_bs_has_cmd() {
   command -v "$1" >/dev/null 2>&1
@@ -58,24 +89,7 @@ sdx_bs_check_deps() {
 }
 
 # =============================================================================
-# § 5  配置读取
-# =============================================================================
-
-sdx_bs_get_repo_url() { printf '%s' "${GIT_REPO_URL:-$SDX_BS_FALLBACK_REPO}"; }
-sdx_bs_get_ref()      { printf '%s' "${GIT_REF:-$SDX_BS_DEFAULT_REF}"; }
-
-sdx_bs_get_tmpdir() {
-  local tmpdir="${TMPDIR:-/tmp}"
-  [[ -d "$tmpdir" ]] || tmpdir='/tmp'
-  printf '%s' "$tmpdir"
-}
-
-sdx_bs_gen_clone_dir() {
-  printf '%s/ai-knowledge-%s' "$1" "$$"
-}
-
-# =============================================================================
-# § 6  Git
+# § 5  Git
 # =============================================================================
 
 sdx_bs_clone_repo() {
@@ -106,7 +120,7 @@ sdx_bs_cleanup() {
 }
 
 # =============================================================================
-# § 7  参数解析（展示用）
+# § 6  参数解析（展示用）
 # =============================================================================
 
 sdx_bs_parse_target_dir() {
@@ -121,21 +135,21 @@ sdx_bs_parse_target_dir() {
 }
 
 # =============================================================================
-# § 8  主流程
+# § 7  主流程
 # =============================================================================
 
 sdx_bs_main() {
-  sdx_bs_check_bash
+  require_bash5
   sdx_bs_check_deps
 
   SDX_BS_TARGET_DIR="$(sdx_bs_parse_target_dir "$@")"
 
   local repo_url ref tmpdir
-  repo_url="$(sdx_bs_get_repo_url)"
-  ref="$(sdx_bs_get_ref)"
-  tmpdir="$(sdx_bs_get_tmpdir)"
+  repo_url="$(sdx_docs_bootstrap_get_repo_url)"
+  ref="$(sdx_docs_bootstrap_get_ref)"
+  tmpdir="$(sdx_docs_bootstrap_get_tmpdir)"
 
-  SDX_BS_CLONE_DIR="$(sdx_bs_gen_clone_dir "$tmpdir")"
+  SDX_BS_CLONE_DIR="$(sdx_docs_bootstrap_gen_clone_dir "$tmpdir")"
   trap sdx_bs_cleanup EXIT
 
   sdx_bs_log ''
@@ -154,6 +168,7 @@ sdx_bs_main() {
   [[ -f "$knowledge_init" ]] || sdx_bs_die "仓库中未找到 scripts/knowledge-init.sh"
   [[ -f "$shared_config" ]] || sdx_bs_die "仓库中未找到 agent/scripts/docs-config.sh"
 
+  # 克隆后统一加载 SSOT（若预载阶段已 source，此处因 _AGENT_SHARED_DOCS_CONFIG_LOADED 短路）
   # shellcheck disable=SC1090
   source "$shared_config"
 

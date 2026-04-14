@@ -8,13 +8,40 @@ if [[ -n "${_AGENT_SHARED_DOCS_CONFIG_LOADED:-}" ]]; then
 fi
 readonly _AGENT_SHARED_DOCS_CONFIG_LOADED=1
 
+readonly SDX_MIN_BASH_VERSION=5
+
 require_bash5() {
-  if (( BASH_VERSINFO[0] < 5 )); then
-    printf '[FATAL] 需要 Bash 5+，当前版本: %s\n' "$BASH_VERSION" >&2
+  if (( BASH_VERSINFO[0] < SDX_MIN_BASH_VERSION )); then
+    printf '[FATAL] 需要 Bash %s+，当前版本: %s\n' "$SDX_MIN_BASH_VERSION" "$BASH_VERSION" >&2
     exit 1
   fi
 }
 require_bash5
+
+# =============================================================================
+# § 中央库 Git 与 docs-bootstrap（curl | bash）克隆参数
+# 环境变量 GIT_REPO_URL / GIT_REF 可覆盖；由 sdx_docs_bootstrap_get_* 读取。
+# =============================================================================
+readonly SDX_GIT_REPO_URL='https://github.com/oleewen/ai-knowledge.git'
+readonly SDX_GIT_DEFAULT_REF='HEAD'
+
+sdx_docs_bootstrap_get_repo_url() {
+  printf '%s' "${GIT_REPO_URL:-$SDX_GIT_REPO_URL}"
+}
+
+sdx_docs_bootstrap_get_ref() {
+  printf '%s' "${GIT_REF:-$SDX_GIT_DEFAULT_REF}"
+}
+
+sdx_docs_bootstrap_get_tmpdir() {
+  local tmpdir="${TMPDIR:-/tmp}"
+  [[ -d "$tmpdir" ]] || tmpdir='/tmp'
+  printf '%s' "$tmpdir"
+}
+
+sdx_docs_bootstrap_gen_clone_dir() {
+  printf '%s/ai-knowledge-%s' "${1:?tmpdir}" "$$"
+}
 
 expand_tilde() {
   local p="${1:-}"
@@ -111,12 +138,23 @@ docsconfig_doc_dir_from_roots() {
   esac
 }
 
+# 静默：是否为合法 KNOWLEDGE_TYPE（与 validate_type / docsconfig_write 一致）
+docsconfig_knowledge_type_is_valid() {
+  local v="${1:-}"
+  [[ "$v" == 'application' || "$v" == 'system' || "$v" == 'company' ]]
+}
+
 docsconfig_validate_knowledge_type() {
   local v="${1:-}"
-  [[ "$v" == 'application' || "$v" == 'system' || "$v" == 'company' ]] && return 0
+  if docsconfig_knowledge_type_is_valid "$v"; then
+    return 0
+  fi
   printf '[docsconfig] 非法 KNOWLEDGE_TYPE: %s（允许: application system company）\n' "$v" >&2
   return 1
 }
+
+# 与 docsconfig_knowledge_type_is_valid 允许集合一致（供 *-config 枚举/文档对齐）
+readonly -a SDX_SUPPORTED_KNOWLEDGE_TYPES=(application system company)
 
 docsconfig_write() {
   local repo_root="${1:?repo_root}"
