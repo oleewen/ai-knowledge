@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
-# docs-link.sh — 在源知识库登记 / 注销目标知识库（仅本地 path）
+# docs-link.sh — 在源知识库登记 / 注销目标知识库（path 字段）
 # 用法: ./scripts/docs-link.sh --link|--unlink --target=<目标仓库根> [--dry-run]
 # 须在源 Git 仓库内执行；link 需校验源、目标 .docsconfig 与 KNOWLEDGE_TYPE；
 # unlink 支持目标失联场景（仅按登记 path 注销）。
+# 登记值：目标为 Git 仓库时优先 remote URL（origin，否则第一个 remote），
+#       若无可用 remote 则使用 git 仓库根绝对路径；非 Git 目标为规范化绝对路径。
 set -euo pipefail
 
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -47,6 +49,71 @@ knowledge_links_write_file() {
       printf '  - path: "%s"\n' "${p//\"/\\\"}"
     done
   } >"$f"
+}
+
+# -----------------------------------------------------------------------------
+# 登记 path：Git 优先 remote URL，否则仓库根路径 / 文件系统路径
+# -----------------------------------------------------------------------------
+
+# 打印 origin 或第一个可用的 remote URL；若无则返回 1 且无输出
+knowledge_link_git_remote_url_prefer_origin() {
+  local top="${1:?}" url r
+  url="$(git -C "$top" remote get-url origin 2>/dev/null || true)"
+  [[ -n "$url" ]] && { printf '%s\n' "$url"; return 0; }
+  while IFS= read -r r; do
+    [[ -z "$r" ]] && continue
+    url="$(git -C "$top" remote get-url "$r" 2>/dev/null || true)"
+    [[ -n "$url" ]] && { printf '%s\n' "$url"; return 0; }
+  done < <(git -C "$top" remote 2>/dev/null)
+  return 1
+}
+
+# 给定已存在的本地目录：得到与 link 时一致的登记字符串（用于去重 / unlink）
+knowledge_link_register_value_from_dir() {
+  local dir="${1:?}" resolved top url
+  resolved="$(cd -P "$dir" 2>/dev/null && pwd)" || {
+    printf '%s\n' "$dir"
+    return 0
+  }
+  if ! git -C "$resolved" rev-parse --is-inside-work-tree &>/dev/null; then
+    printf '%s\n' "$resolved"
+    return 0
+  fi
+  top="$(git -C "$resolved" rev-parse --show-toplevel 2>/dev/null)" || {
+    printf '%s\n' "$resolved"
+    return 0
+  }
+  url="$(knowledge_link_git_remote_url_prefer_origin "$top" || true)"
+  if [[ -n "$url" ]]; then
+    printf '%s\n' "$(strip_trailing_slash "$url")"
+    return 0
+  fi
+  printf '%s\n' "$(strip_trailing_slash "$top")"
+}
+
+# 将「用户传入的 --target」规范为与已登记项可比对的身份串
+knowledge_link_identity_from_raw_target() {
+  local raw="${1:?}" p
+  if [[ "$raw" =~ ^(git@|ssh://|https://|http://) ]]; then
+    printf '%s\n' "$(strip_trailing_slash "$raw")"
+    return 0
+  fi
+  p="$(normalize_target_repo_root "$raw")" || return 1
+  if [[ -d "$p" ]]; then
+    knowledge_link_register_value_from_dir "$p"
+  else
+    printf '%s\n' "$(strip_trailing_slash "$p")"
+  fi
+}
+
+# 将「已登记的一条 path」规范为身份串（目录则按 Git 规则，否则原样）
+knowledge_link_identity_from_stored_path() {
+  local stored="${1:?}"
+  if [[ -d "$stored" ]]; then
+    knowledge_link_register_value_from_dir "$stored"
+  else
+    printf '%s\n' "$(strip_trailing_slash "$stored")"
+  fi
 }
 
 # =============================================================================
@@ -103,7 +170,8 @@ while (( $# > 0 )); do
   unlink 支持目标失联（路径不存在或目标仓库配置缺失）时按登记 path 注销。
 
   --dry-run  仅打印将执行的操作，不写文件。
-  --target   目标知识库仓库根；兼容旧参数 --path（已弃用）。
+  --target   目标知识库仓库根（或已登记的 remote URL）；兼容旧参数 --path（已弃用）。
+  登记 path：Git 仓库优先 remote URL，否则为 git 仓库根绝对路径；非 Git 为绝对路径。
 
 示例:
   ./scripts/docs-link.sh --target=~/workspaces/target-repo --link
@@ -137,6 +205,7 @@ case "$_skt" in
 esac
 
 TARGET_KEY="$(normalize_target_repo_root "$TARGET_RAW")" || error "目标路径非法: $TARGET_RAW"
+REGISTER_KEY=''
 
 if [[ "$CMD" == 'link' ]]; then
   TGT_ROOT="$(cd -P "$TARGET_KEY" 2>/dev/null && pwd)" || error "目标路径不存在或不可进入: $TARGET_KEY"
@@ -148,32 +217,35 @@ if [[ "$CMD" == 'link' ]]; then
   [[ -n "$_tkt" ]] || error "目标 .docsconfig 缺少 KNOWLEDGE_TYPE"
   docsconfig_validate_knowledge_type "$_tkt" || exit 1
   [[ "$_tkt" == "$expect_target" ]] || error "目标须为 ${expect_target} 知识库（KNOWLEDGE_TYPE=${_tkt}）"
-  TARGET_KEY="$TGT_ROOT"
+  REGISTER_KEY="$(knowledge_link_register_value_from_dir "$TGT_ROOT")"
+else
+  REGISTER_KEY="$(knowledge_link_identity_from_raw_target "$TARGET_RAW")" || error "目标路径非法: $TARGET_RAW"
 fi
 
 declare -a paths=()
 while IFS= read -r p; do paths+=("$p"); done < <(knowledge_links_paths_from_file "$LIST_FILE")
 
 have=0
+new_identity="${REGISTER_KEY}"
 for p in "${paths[@]}"; do
-  [[ "$p" == "$TARGET_KEY" ]] && { have=1; break; }
+  [[ "$(knowledge_link_identity_from_stored_path "$p")" == "$new_identity" ]] && { have=1; break; }
 done
 
 case "$CMD" in
   link)
-    [[ "$have" -eq 1 ]] && { printf '提示: 已登记，跳过: %s\n' "$TARGET_KEY" >&2; exit 0; }
-    paths+=("$TARGET_KEY")
+    [[ "$have" -eq 1 ]] && { printf '提示: 已登记，跳过: %s\n' "$REGISTER_KEY" >&2; exit 0; }
+    paths+=("$REGISTER_KEY")
     knowledge_links_write_file "$LIST_FILE" "${paths[@]}"
-    printf '已登记: %s → %s\n' "$LIST_FILE" "$TARGET_KEY"
+    printf '已登记: %s → %s\n' "$LIST_FILE" "$REGISTER_KEY"
     ;;
   unlink)
-    [[ "$have" -eq 0 ]] && { printf '提示: 未找到登记项，跳过: %s\n' "$TARGET_KEY" >&2; exit 0; }
+    [[ "$have" -eq 0 ]] && { printf '提示: 未找到登记项，跳过: %s\n' "$REGISTER_KEY" >&2; exit 0; }
     declare -a newp=()
     for p in "${paths[@]}"; do
-      [[ "$p" == "$TARGET_KEY" ]] && continue
+      [[ "$(knowledge_link_identity_from_stored_path "$p")" == "$new_identity" ]] && continue
       newp+=("$p")
     done
     knowledge_links_write_file "$LIST_FILE" "${newp[@]}"
-    printf '已注销: %s 中的 %s\n' "$LIST_FILE" "$TARGET_KEY"
+    printf '已注销: %s 中的 %s\n' "$LIST_FILE" "$REGISTER_KEY"
     ;;
 esac
