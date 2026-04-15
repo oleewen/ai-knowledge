@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
-# docs-link.sh — 在源知识库登记 / 注销目标知识库（path 字段）
-# 用法: ./scripts/docs-link.sh --link|--unlink --target=<目标仓库根> [--dry-run]
+# docs-link.sh — 在源知识库登记 / 注销目标知识库（path + 目标 DOC_DIR + app_name）
+# application 建联时 app_name：--app-name > 登记文件已有 > Git 仓库根目录名推断
+# 同一 target 重复 link：合并更新同一条记录，不追加重复 path
+# 用法: ./scripts/docs-link.sh --link|--unlink --target=<目标仓库根> [--app-name=名] [--dry-run]
 # 须在源 Git 仓库内执行；link 需校验源、目标 .docsconfig 与 KNOWLEDGE_TYPE；
-# unlink 支持目标失联场景（仅按登记 path 注销）。
+# unlink 支持目标失联场景（按登记 path 注销）；system 源注销 application 建联时同步删除
+# DOC_ROOT 下 application-<APPNAME>/（若存在）。
 # 登记值：目标为 Git 仓库时优先 remote URL（origin，否则第一个 remote），
 #       若无可用 remote 则使用 git 仓库根绝对路径；非 Git 目标为规范化绝对路径。
 set -euo pipefail
@@ -18,35 +21,59 @@ warn() { printf '警告: %s\n' "$*" >&2; }
 # knowledge-links.yaml
 # =============================================================================
 
-# 从 knowledge-links.yaml 收集已有 path（最小解析）
-knowledge_links_paths_from_file() {
+# 从 knowledge-links.yaml 解析每条 link：path、可选 doc_dir、可选 app_name（application 槽位）
+# 输出每行：path<TAB>doc_dir<TAB>app_name（后两者可为空）
+knowledge_links_parse_entries_stream() {
   local f="${1:?}"
   [[ -f "$f" ]] || return 0
+  local path="" doc_dir="" app_name="" v w z
   while IFS= read -r line || [[ -n "$line" ]]; do
-    [[ "$line" =~ ^[[:space:]]*-[[:space:]]*path:[[:space:]]*(.*)$ ]] || continue
-    local v="${BASH_REMATCH[1]}"
-    v="${v#\"}"; v="${v%\"}"
-    v="${v#\'}"; v="${v%\'}"
-    [[ -n "$v" ]] && printf '%s\n' "$v"
+    if [[ "$line" =~ ^[[:space:]]*-[[:space:]]*path:[[:space:]]*(.*)$ ]]; then
+      [[ -n "$path" ]] && printf '%s\t%s\t%s\n' "$path" "$doc_dir" "$app_name"
+      v="${BASH_REMATCH[1]}"
+      v="${v#\"}"; v="${v%\"}"
+      v="${v#\'}"; v="${v%\'}"
+      path="$v"
+      doc_dir=""
+      app_name=""
+    elif [[ -n "$path" && "$line" =~ ^[[:space:]]*doc_dir:[[:space:]]*(.*)$ ]]; then
+      w="${BASH_REMATCH[1]}"
+      w="${w#\"}"; w="${w%\"}"
+      w="${w#\'}"; w="${w%\'}"
+      doc_dir="$w"
+    elif [[ -n "$path" && "$line" =~ ^[[:space:]]*app_name:[[:space:]]*(.*)$ ]]; then
+      z="${BASH_REMATCH[1]}"
+      z="${z#\"}"; z="${z%\"}"
+      z="${z#\'}"; z="${z%\'}"
+      app_name="$z"
+    fi
   done <"$f"
+  [[ -n "$path" ]] && printf '%s\t%s\t%s\n' "$path" "$doc_dir" "$app_name"
 }
 
-# 写出 knowledge-links.yaml（覆盖）
-knowledge_links_write_file() {
+# 覆盖写出 knowledge-links.yaml（path、doc_dir、app_name 三组数组下标对齐）
+knowledge_links_write_triples() {
   local f="${1:?}"
-  shift
-  local -a paths=( "$@" )
-  local d
+  local -n _paths="${2:?}"
+  local -n _dirs="${3:?}"
+  local -n _apps="${4:?}"
+  local d i n
   d="$(dirname "$f")"
-  [[ "$DRY" == '1' ]] && { printf '[dry-run] 将写入 %s（%d 条 path）\n' "$f" "${#paths[@]}" >&2; return 0; }
+  n="${#_paths[@]}"
+  [[ "$DRY" == '1' ]] && { printf '[dry-run] 将写入 %s（%d 条 links）\n' "$f" "$n" >&2; return 0; }
   mkdir -p "$d"
   umask 022
   {
     printf '%s\n' '# 知识库建联清单（可由 docs-link.sh 维护）'
     printf '%s\n' 'links:'
-    local p
-    for p in "${paths[@]}"; do
-      printf '  - path: "%s"\n' "${p//\"/\\\"}"
+    for ((i = 0; i < n; i++)); do
+      printf '  - path: "%s"\n' "${_paths[i]//\"/\\\"}"
+      if [[ -n "${_dirs[i]:-}" ]]; then
+        printf '    doc_dir: "%s"\n' "${_dirs[i]//\"/\\\"}"
+      fi
+      if [[ -n "${_apps[i]:-}" ]]; then
+        printf '    app_name: "%s"\n' "${_apps[i]//\"/\\\"}"
+      fi
     done
   } >"$f"
 }
@@ -116,6 +143,116 @@ knowledge_link_identity_from_stored_path() {
   fi
 }
 
+# -----------------------------------------------------------------------------
+# 应用槽位 application-${APPNAME}（自 DOC_ROOT 下 application-APPNAME 模板生成）
+# -----------------------------------------------------------------------------
+
+# 校验并规范化 app_name（小写）；非法则报错
+knowledge_link_validate_app_name() {
+  local raw="${1:?}" base
+  base="$(printf '%s' "$raw" | tr '[:upper:]' '[:lower:]')"
+  [[ -n "$base" ]] || {
+    printf '错误: app_name 不能为空\n' >&2
+    return 1
+  }
+  if [[ ! "$base" =~ ^[a-z0-9][a-z0-9_.-]*$ ]]; then
+    printf '错误: 非法 app_name: %s（仅允许 a-z0-9._-）\n' "$raw" >&2
+    return 1
+  fi
+  printf '%s\n' "$base"
+}
+
+# 从目标仓库根推断应用标识：优先 Git 仓库根目录名，否则为路径 basename（无用户指定时用）
+knowledge_link_guess_app_name() {
+  local root="${1:?}" top base
+  if git -C "$root" rev-parse --show-toplevel &>/dev/null; then
+    top="$(git -C "$root" rev-parse --show-toplevel)"
+    base="$(basename "$top")"
+  else
+    base="$(basename "$(cd -P "$root" 2>/dev/null && pwd)")"
+  fi
+  knowledge_link_validate_app_name "$base"
+}
+
+# 将模板目录中的占位符替换为实际 APPNAME（仅处理常见文本后缀）
+knowledge_link_apply_app_slot_substitutions() {
+  local dest="${1:?}" app="${2:?}" f tmp
+  while IFS= read -r f; do
+    [[ -f "$f" ]] || continue
+    case "$f" in
+      *.md|*.yaml|*.yml) ;;
+      *) continue ;;
+    esac
+    tmp="${f}.tmp.$$"
+    sed \
+      -e "s/CHANGE LOG - APPNAME/CHANGE LOG - ${app}/g" \
+      -e "s/application-{app-name}/application-${app}/g" \
+      -e "s/{app-name}/${app}/g" \
+      -e "s/\`APPNAME\`/\`${app}\`/g" \
+      "$f" >"$tmp" && mv "$tmp" "$f"
+  done < <(find "$dest" -type f 2>/dev/null)
+}
+
+# 在源 DOC_ROOT 下生成 application-${APPNAME}（参考 application-APPNAME 模板）
+knowledge_link_ensure_application_slot() {
+  local doc_root="${1:?}" app="${2:?}"
+  local tpl dest
+  tpl="$(strip_trailing_slash "$(abs_path "$doc_root")")/application-APPNAME"
+  dest="$(strip_trailing_slash "$(abs_path "$doc_root")")/application-${app}"
+  if [[ "$app" == 'APPNAME' ]]; then
+    warn "推断的 APPNAME 为 APPNAME，跳过槽位目录生成（与模板同名）"
+    return 0
+  fi
+  [[ -d "$tpl" ]] || error "源 DOC_ROOT 下缺少模板目录: $tpl"
+  if [[ -d "$dest" ]]; then
+    return 0
+  fi
+  if [[ "$DRY" == '1' ]]; then
+    printf '[dry-run] 将自模板创建目录: %s → %s\n' "$tpl" "$dest" >&2
+    return 0
+  fi
+  cp -R "$tpl" "$dest"
+  knowledge_link_apply_app_slot_substitutions "$dest" "$app"
+}
+
+# 从已登记的 path（URL 或本地路径）推断 APPNAME，供旧数据或无 app_name 字段时 unlink 删槽位
+knowledge_link_app_name_from_register_key() {
+  local key="${1:?}" base
+  if [[ -d "$key" ]]; then
+    knowledge_link_guess_app_name "$key"
+    return
+  fi
+  base="${key##*/}"
+  base="${base%.git}"
+  base="${base%%\?*}"
+  base="${base%%#*}"
+  base="$(printf '%s' "$base" | tr '[:upper:]' '[:lower:]')"
+  [[ -n "$base" ]] || return 1
+  [[ "$base" =~ ^[a-z0-9][a-z0-9_.-]*$ ]] || return 1
+  printf '%s\n' "$base"
+}
+
+# 删除源 DOC_ROOT 下 application-${app}/（unlink 时调用；dry-run 仅打印）
+knowledge_link_remove_application_slot() {
+  local doc_root="${1:?}" app="${2:?}"
+  local dest
+  [[ -n "$app" ]] || return 0
+  if [[ "$app" == 'APPNAME' ]]; then
+    warn "APPNAME 为保留名，跳过删除槽位目录"
+    return 0
+  fi
+  dest="$(strip_trailing_slash "$(abs_path "$doc_root")")/application-${app}"
+  if [[ ! -d "$dest" ]]; then
+    return 0
+  fi
+  if [[ "$DRY" == '1' ]]; then
+    printf '[dry-run] 将删除目录: %s\n' "$dest" >&2
+    return 0
+  fi
+  rm -rf "$dest"
+  printf '已删除槽位目录: %s\n' "$dest" >&2
+}
+
 # =============================================================================
 # CLI
 # =============================================================================
@@ -123,6 +260,7 @@ knowledge_link_identity_from_stored_path() {
 DRY="${KLINK_DEFAULT_DRY_RUN}"
 CMD=''
 TARGET_RAW=''
+CLI_APP_NAME=''
 
 while (( $# > 0 )); do
   case "$1" in
@@ -139,6 +277,16 @@ while (( $# > 0 )); do
       shift
       ;;
     --dry-run)   DRY=1; shift ;;
+    --app-name=*)
+      CLI_APP_NAME="${1#*=}"
+      shift
+      ;;
+    --app-name)
+      shift
+      [[ -n "${1:-}" ]] || error "缺少 --app-name 值"
+      CLI_APP_NAME="$1"
+      shift
+      ;;
     --target=*)  TARGET_RAW="${1#*=}"; shift ;;
     --target)
       shift
@@ -160,7 +308,7 @@ while (( $# > 0 )); do
       ;;
     -h|--help)
       cat >&2 <<'EOF'
-用法: ./scripts/docs-link.sh --link|--unlink --target=<目标知识库仓库根> [--dry-run]
+用法: ./scripts/docs-link.sh --link|--unlink --target=<目标知识库仓库根> [--app-name=名] [--dry-run]
 
   --link / --unlink 二选一，不得同时出现。
 
@@ -169,12 +317,18 @@ while (( $# > 0 )); do
   允许边：company→system、system→application（源/目标 .docsconfig 须含合法 KNOWLEDGE_TYPE）。
   unlink 支持目标失联（路径不存在或目标仓库配置缺失）时按登记 path 注销。
 
-  --dry-run  仅打印将执行的操作，不写文件。
-  --target   目标知识库仓库根（或已登记的 remote URL）；兼容旧参数 --path（已弃用）。
-  登记 path：Git 仓库优先 remote URL，否则为 git 仓库根绝对路径；非 Git 为绝对路径。
+  --dry-run     仅打印将执行的操作，不写文件。
+  --target      目标知识库仓库根（或已登记的 remote URL）；兼容旧参数 --path（已弃用）。
+  --app-name    仅 system→application 建联有效：显式指定 YAML 中的 app_name 及槽位目录名。
+                若省略：登记文件中该 path 已有 app_name 则沿用、不再推断；否则由目标本地 Git 仓库根目录名推断。
+  每条 link 记录：path、目标 doc_dir（DOC_DIR）、以及 application 时的 app_name。
+  system→application：在源 DOC_ROOT 下自 application-APPNAME 模板生成 application-<APPNAME>/（已存在则跳过）。
+  同一 target 重复 link：不新增行，只更新已存在且 identity 相同的那条记录（path/doc_dir/app_name）。
+  unlink 时：注销该 path 的同时删除对应的 application-<APPNAME>/（若目录存在）。
 
 示例:
   ./scripts/docs-link.sh --target=~/workspaces/target-repo --link
+  ./scripts/docs-link.sh --target=~/workspaces/target-repo --link --app-name=my-app
   ./scripts/docs-link.sh --target=~/workspaces/target-repo --unlink --dry-run
 EOF
       exit 0
@@ -206,6 +360,9 @@ esac
 
 TARGET_KEY="$(normalize_target_repo_root "$TARGET_RAW")" || error "目标路径非法: $TARGET_RAW"
 REGISTER_KEY=''
+TARGET_DOC_DIR=''
+TARGET_APP_NAME=''
+matched_idx=-1
 
 if [[ "$CMD" == 'link' ]]; then
   TGT_ROOT="$(cd -P "$TARGET_KEY" 2>/dev/null && pwd)" || error "目标路径不存在或不可进入: $TARGET_KEY"
@@ -218,34 +375,102 @@ if [[ "$CMD" == 'link' ]]; then
   docsconfig_validate_knowledge_type "$_tkt" || exit 1
   [[ "$_tkt" == "$expect_target" ]] || error "目标须为 ${expect_target} 知识库（KNOWLEDGE_TYPE=${_tkt}）"
   REGISTER_KEY="$(knowledge_link_register_value_from_dir "$TGT_ROOT")"
+  TARGET_DOC_DIR="${_tdd:-}"
 else
   REGISTER_KEY="$(knowledge_link_identity_from_raw_target "$TARGET_RAW")" || error "目标路径非法: $TARGET_RAW"
+  [[ -z "$CLI_APP_NAME" ]] || warn "--app-name 仅在 --link 时有效，已忽略"
 fi
 
-declare -a paths=()
-while IFS= read -r p; do paths+=("$p"); done < <(knowledge_links_paths_from_file "$LIST_FILE")
+declare -a paths=() doc_dirs=() app_names=()
+while IFS=$'\t' read -r p d a || [[ -n "${p:-}" ]]; do
+  [[ -z "${p:-}" ]] && continue
+  paths+=("$p")
+  doc_dirs+=("${d:-}")
+  app_names+=("${a:-}")
+done < <(knowledge_links_parse_entries_stream "$LIST_FILE")
 
 have=0
 new_identity="${REGISTER_KEY}"
-for p in "${paths[@]}"; do
-  [[ "$(knowledge_link_identity_from_stored_path "$p")" == "$new_identity" ]] && { have=1; break; }
+for i in "${!paths[@]}"; do
+  if [[ "$(knowledge_link_identity_from_stored_path "${paths[i]}")" == "$new_identity" ]]; then
+    have=1
+    matched_idx=$i
+    break
+  fi
 done
+
+# application 槽位：app_name 优先级为 --app-name > 登记文件中已有 app_name > Git 路径推断
+if [[ "$CMD" == 'link' && "$expect_target" == 'application' ]]; then
+  if [[ -n "$CLI_APP_NAME" ]]; then
+    TARGET_APP_NAME="$(knowledge_link_validate_app_name "$CLI_APP_NAME")" || exit 1
+  elif [[ "$have" -eq 1 && "$matched_idx" -ge 0 && -n "${app_names[matched_idx]:-}" ]]; then
+    TARGET_APP_NAME="$(knowledge_link_validate_app_name "${app_names[matched_idx]}")" || exit 1
+  else
+    TARGET_APP_NAME="$(knowledge_link_guess_app_name "$TGT_ROOT")" || exit 1
+  fi
+  knowledge_link_ensure_application_slot "$_sdoc" "$TARGET_APP_NAME"
+elif [[ "$CMD" == 'link' && "$expect_target" != 'application' && -n "$CLI_APP_NAME" ]]; then
+  warn "--app-name 仅用于 system→application 建联，已忽略"
+fi
 
 case "$CMD" in
   link)
-    [[ "$have" -eq 1 ]] && { printf '提示: 已登记，跳过: %s\n' "$REGISTER_KEY" >&2; exit 0; }
-    paths+=("$REGISTER_KEY")
-    knowledge_links_write_file "$LIST_FILE" "${paths[@]}"
-    printf '已登记: %s → %s\n' "$LIST_FILE" "$REGISTER_KEY"
+    link_is_update=0
+    [[ "$have" -eq 1 ]] && link_is_update=1
+    if [[ "$have" -eq 1 ]]; then
+      paths[matched_idx]="$REGISTER_KEY"
+      doc_dirs[matched_idx]="$TARGET_DOC_DIR"
+      app_names[matched_idx]="${TARGET_APP_NAME:-}"
+    else
+      paths+=("$REGISTER_KEY")
+      doc_dirs+=("$TARGET_DOC_DIR")
+      app_names+=("${TARGET_APP_NAME:-}")
+    fi
+    knowledge_links_write_triples "$LIST_FILE" paths doc_dirs app_names
+    if [[ "$link_is_update" -eq 1 ]]; then
+      if [[ -n "$TARGET_APP_NAME" ]]; then
+        if [[ -n "$TARGET_DOC_DIR" ]]; then
+          printf '已更新登记: %s → %s (doc_dir=%s, application-%s)\n' "$LIST_FILE" "$REGISTER_KEY" "$TARGET_DOC_DIR" "$TARGET_APP_NAME"
+        else
+          printf '已更新登记: %s → %s (application-%s)\n' "$LIST_FILE" "$REGISTER_KEY" "$TARGET_APP_NAME"
+        fi
+      elif [[ -n "$TARGET_DOC_DIR" ]]; then
+        printf '已更新登记: %s → %s (doc_dir=%s)\n' "$LIST_FILE" "$REGISTER_KEY" "$TARGET_DOC_DIR"
+      else
+        printf '已更新登记: %s → %s\n' "$LIST_FILE" "$REGISTER_KEY"
+      fi
+    elif [[ -n "$TARGET_APP_NAME" ]]; then
+      if [[ -n "$TARGET_DOC_DIR" ]]; then
+        printf '已登记: %s → %s (doc_dir=%s, application-%s)\n' "$LIST_FILE" "$REGISTER_KEY" "$TARGET_DOC_DIR" "$TARGET_APP_NAME"
+      else
+        printf '已登记: %s → %s (application-%s)\n' "$LIST_FILE" "$REGISTER_KEY" "$TARGET_APP_NAME"
+      fi
+    elif [[ -n "$TARGET_DOC_DIR" ]]; then
+      printf '已登记: %s → %s (doc_dir=%s)\n' "$LIST_FILE" "$REGISTER_KEY" "$TARGET_DOC_DIR"
+    else
+      printf '已登记: %s → %s\n' "$LIST_FILE" "$REGISTER_KEY"
+    fi
     ;;
   unlink)
     [[ "$have" -eq 0 ]] && { printf '提示: 未找到登记项，跳过: %s\n' "$REGISTER_KEY" >&2; exit 0; }
-    declare -a newp=()
-    for p in "${paths[@]}"; do
-      [[ "$(knowledge_link_identity_from_stored_path "$p")" == "$new_identity" ]] && continue
-      newp+=("$p")
+    UNLINK_APP_NAME=''
+    if [[ "$matched_idx" -ge 0 && "$_skt" == 'system' ]]; then
+      UNLINK_APP_NAME="${app_names[matched_idx]:-}"
+      if [[ -z "$UNLINK_APP_NAME" ]]; then
+        UNLINK_APP_NAME="$(knowledge_link_app_name_from_register_key "${paths[matched_idx]}")" || UNLINK_APP_NAME=''
+      fi
+    fi
+    declare -a newp=() newd=() newa=()
+    for i in "${!paths[@]}"; do
+      [[ "$(knowledge_link_identity_from_stored_path "${paths[i]}")" == "$new_identity" ]] && continue
+      newp+=("${paths[i]}")
+      newd+=("${doc_dirs[i]:-}")
+      newa+=("${app_names[i]:-}")
     done
-    knowledge_links_write_file "$LIST_FILE" "${newp[@]}"
+    knowledge_links_write_triples "$LIST_FILE" newp newd newa
+    if [[ -n "$UNLINK_APP_NAME" ]]; then
+      knowledge_link_remove_application_slot "$_sdoc" "$UNLINK_APP_NAME"
+    fi
     printf '已注销: %s 中的 %s\n' "$LIST_FILE" "$REGISTER_KEY"
     ;;
 esac
