@@ -4,8 +4,8 @@
 # 同一 target 重复 link：合并更新同一条记录，不追加重复 path
 # 用法: ./scripts/docs-link.sh --link|--unlink --target=<目标仓库根> [--app-name=名] [--dry-run]
 # 须在源 Git 仓库内执行；link 需校验源、目标 .docsconfig 与 KNOWLEDGE_TYPE；
-# unlink 支持目标失联场景（按登记 path 注销）；system 源注销 application 建联时同步删除
-# DOC_ROOT 下 application-<APPNAME>/（若存在）。
+# unlink 支持目标失联场景（按登记 path 注销）；system 源注销 application 建联时先将
+# DOC_ROOT 下 application-<APPNAME>/ 备份至 REPO_ROOT/.docs-init/<时间戳>/（与 docs-install 一致）再移除。
 # 登记值：目标为 Git 仓库时优先 remote URL（origin，否则第一个 remote），
 #       若无可用 remote 则使用 git 仓库根绝对路径；非 Git 目标为规范化绝对路径。
 set -euo pipefail
@@ -232,10 +232,20 @@ knowledge_link_app_name_from_register_key() {
   printf '%s\n' "$base"
 }
 
-# 删除源 DOC_ROOT 下 application-${app}/（unlink 时调用；dry-run 仅打印）
+# 解析工程根（与 docs-install 写入 .docsconfig 的 REPO_ROOT 推导一致，供 .docs-init 备份路径）
+knowledge_link_repo_root_for_backup() {
+  local doc_root="${1:?}" dr rr
+  dr="$(strip_trailing_slash "$(abs_path "$doc_root")")"
+  rr="$(docsconfig_repo_root_from_doc_root "$dr")"
+  [[ -n "$rr" ]] || rr="$(docsconfig_repo_root_fallback_from_doc_root "$dr")"
+  [[ -n "$rr" ]] || return 1
+  printf '%s\n' "$(strip_trailing_slash "$rr")"
+}
+
+# 备份至 REPO_ROOT/.docs-init/<stamp>/ 后移除 application-${app}/（与 docs-install 的 backup_path 同源：sdx_docs_backup_path_to_init）
 knowledge_link_remove_application_slot() {
   local doc_root="${1:?}" app="${2:?}"
-  local dest
+  local dest repo_root
   [[ -n "$app" ]] || return 0
   if [[ "$app" == 'APPNAME' ]]; then
     warn "APPNAME 为保留名，跳过删除槽位目录"
@@ -245,12 +255,17 @@ knowledge_link_remove_application_slot() {
   if [[ ! -d "$dest" ]]; then
     return 0
   fi
-  if [[ "$DRY" == '1' ]]; then
-    printf '[dry-run] 将删除目录: %s\n' "$dest" >&2
+  repo_root="$(knowledge_link_repo_root_for_backup "$doc_root")" || {
+    warn "无法解析 REPO_ROOT，跳过备份，将直接删除: $dest"
+    if [[ "$DRY" == '1' ]]; then
+      printf '[dry-run] 将删除目录: %s\n' "$dest" >&2
+      return 0
+    fi
+    rm -rf "$dest"
+    printf '已删除槽位目录: %s\n' "$dest" >&2
     return 0
-  fi
-  rm -rf "$dest"
-  printf '已删除槽位目录: %s\n' "$dest" >&2
+  }
+  sdx_docs_backup_path_to_init "$repo_root" "$dest" "" "$DRY"
 }
 
 # =============================================================================
@@ -324,7 +339,7 @@ while (( $# > 0 )); do
   每条 link 记录：path、目标 doc_dir（DOC_DIR）、以及 application 时的 app_name。
   system→application：在源 DOC_ROOT 下自 application-APPNAME 模板生成 application-<APPNAME>/（已存在则跳过）。
   同一 target 重复 link：不新增行，只更新已存在且 identity 相同的那条记录（path/doc_dir/app_name）。
-  unlink 时：注销该 path 的同时删除对应的 application-<APPNAME>/（若目录存在）。
+  unlink 时：注销该 path 的同时将 application-<APPNAME>/ 备份到工程根 .docs-init/ 再移除（若目录存在）。
 
 示例:
   ./scripts/docs-link.sh --target=~/workspaces/target-repo --link

@@ -13,7 +13,7 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 |------|------|
 | `agent-install.sh` | 仅安装 Agent（`hooks` / `scripts` / `rules` / `skills`）；`--scope`=`a`/`r`/`s`/`h`/`sh`，`--target`（默认 `$HOME`），`--agents`（默认 `cursor`，可 `all` 或多选），`--dry-run`。 |
 | `docs-install.sh` | 知识库同步与配置分流；默认 `--scope=k`（knowledge）。`--scope=knowledge` 同步知识库并写 `.docsconfig`（含 **`KNOWLEDGE_TYPE`**）；`--scope=config` 仅更新 `.docsconfig` 的路径与 `AGENT_*`，不写 `KNOWLEDGE_TYPE`。两种 scope 都会调用 `install_agent_path`，但仅当 `AGENT_ROOT` 为空时补默认 `AGENT_*`。 |
-| `docs-link.sh` | 在**当前 Git 仓库（源知识库）**内维护 `company/knowledge-links.yaml` 或 `system/knowledge-links.yaml`，登记/注销目标库（`--link` / `--unlink` 二选一，`--target`）；`--link` 校验目标 `.docsconfig`，`--unlink` 支持目标失联按路径注销。 |
+| `docs-link.sh` | 在**当前 Git 仓库（源知识库）**内维护 `company/knowledge-links.yaml` 或 `system/knowledge-links.yaml`，登记/注销目标库（`--link` / `--unlink` 二选一，`--target`）；`--link` 校验目标 `.docsconfig`，`--unlink` 支持目标失联按路径注销；**system→application** 注销时将 `application-<APPNAME>/` 先备份至工程根 **`.docs-init/<时间戳>/`**（与 `docs-install` 备份同源逻辑）再移除。 |
 
 `docs-install.sh` 仅负责 knowledge 与 `.docsconfig`（不安装 Agent 文件）；Agent 安装仅由 `agent-install.sh` 负责。
 

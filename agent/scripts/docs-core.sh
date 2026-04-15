@@ -138,6 +138,44 @@ docsconfig_doc_dir_from_roots() {
   esac
 }
 
+# =============================================================================
+# § .docs-init 备份（docs-install 清空 DOC_DIR、docs-link 注销槽位等共用）
+# =============================================================================
+
+# 将已存在的文件或目录移至 repo_root/.docs-init/<stamp>/rel，rel 规则与 docs-install 的 backup_path 一致。
+# 参数：repo_root、existing、stamp（可选，空则每次调用自生成时间戳）、dry_run（可选，1 则只打印不移动）
+sdx_docs_backup_path_to_init() {
+  local repo_root="${1:?}" existing="${2:?}" stamp="${3:-}" dry_run="${4:-0}"
+  local backup_root rel backup_target
+  existing="$(abs_path "$existing")"
+  repo_root="$(strip_trailing_slash "$(abs_path "$repo_root")")"
+  [[ -e "$existing" ]] || return 0
+  [[ -n "$stamp" ]] || stamp="$(date +%Y-%m-%d_%H-%M-%S)"
+  backup_root="${repo_root}/.docs-init/${stamp}"
+
+  if [[ "$existing" == "$repo_root"/* ]]; then
+    rel="${existing#"$repo_root"/}"
+  else
+    rel="${existing#/}"
+  fi
+
+  backup_target="${backup_root}/${rel}"
+  if [[ -e "$backup_target" ]]; then
+    local i=1
+    while [[ -e "${backup_target}.__${i}" ]]; do (( i++ )); done
+    backup_target="${backup_target}.__${i}"
+  fi
+
+  if [[ "$dry_run" == '1' ]]; then
+    printf '信息: [dry-run] 将备份：%s → %s\n' "$existing" "$backup_target" >&2
+    return 0
+  fi
+
+  mkdir -p "$(dirname "$backup_target")" 2>/dev/null || true
+  mv "$existing" "$backup_target"
+  printf '信息: 已备份：%s → %s\n' "$existing" "$backup_target" >&2
+}
+
 # 静默：是否为合法 KNOWLEDGE_TYPE（与 validate_type / docsconfig_write 一致）
 docsconfig_knowledge_type_is_valid() {
   local v="${1:-}"

@@ -98,29 +98,10 @@ get_backup_root() {
   printf '%s' "$_BACKUP_ROOT"
 }
 
-# 将已存在的路径备份到 .docs-init/<timestamp>/
+# 实现见 docs-core.sh：sdx_docs_backup_path_to_init
 backup_path() {
   local existing="$1"
-  local backup_root rel backup_target
-  existing="$(abs_path "$existing")"
-  backup_root="$(get_backup_root)"
-  if [[ -n "${CFG[target_dir]}" && "$existing" == "${CFG[target_dir]}/"* ]]; then
-    rel="${existing#"${CFG[target_dir]}"/}"
-  else
-    rel="${existing#/}"
-  fi
-
-  backup_target="${backup_root}/${rel}"
-  # 避免同名冲突：追加 .__N 后缀
-  if [[ -e "$backup_target" ]]; then
-    local i=1
-    while [[ -e "${backup_target}.__${i}" ]]; do (( i++ )); done
-    backup_target="${backup_target}.__${i}"
-  fi
-
-  mkdir -p "$(dirname "$backup_target")" 2>/dev/null || true
-  mv "$existing" "$backup_target"
-  info "已备份：$existing → $backup_target"
+  sdx_docs_backup_path_to_init "${CFG[target_dir]:-$PWD}" "$existing" "${DOC_INIT_STAMP:-}" "${CFG[dry_run]:-0}"
 }
 
 # 询问用户是否覆盖已存在目标（支持全局策略）
