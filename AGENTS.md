@@ -67,7 +67,7 @@
 | 项目概况、快速启动、技术架构、Skill 流程、文档导航、开发指南 | [README.md](README.md)                                                                                                                                  |
 | 速查表、元信息、目录树、模块依赖、详细索引字典、索引边界      | [INDEX_GUIDE.md](INDEX_GUIDE.md)                                                                                                                        |
 | 应用知识库主线、SDD 查阅顺序                  | [application/README.md](application/README.md)、[application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)                                               |
-| 组织级系统知识库（架构、联邦槽位）                 | [system/README.md](system/README.md)                                                                                                                    |
+| 系统知识库（架构、联邦槽位）                    | [system/README.md](system/README.md)                                                                                                                    |
 | 公司知识库                             | [company/README.md](company/README.md)                                                                                                                  |
 | 设计原则、元模型、映射与演进                    | [application/DESIGN.md](application/DESIGN.md)                                                                                                          |
 | 贡献流程与阶段规则                         | [application/CONTRIBUTING.md](application/CONTRIBUTING.md)                                                                                              |
