@@ -18,13 +18,13 @@
 
 ## 命名与ID
 
-- **文件名**：`SOLUTION-{IDEA-ID}.md`，其中 **IDEA-ID** 为需求链统一标识（见 [../knowledge/constitution/standards/naming-conventions.md](../knowledge/constitution/standards/naming-conventions.md)）。
+- **文件名**：`SOLUTION-{IDEA-ID}.md`，其中 **IDEA-ID** 为需求链统一标识（见 [../constitution/standards/naming-conventions.md](../constitution/standards/naming-conventions.md)）。
 - **文档内**：文末「## 文档元数据」中 `id` 与文件名一致，可含 `parent`、`dependencies`、`tags` 等关联字段（勿在文件开头使用 `---` YAML frontmatter）。
 
 ## 规范与模板
 
-- **阶段目标与工作流**：见 [../../.ai/skills/sdx-solution/SKILL.md](../../.ai/skills/sdx-solution/SKILL.md)（需求提取 → 影响面评估 → 冲突识别 → 方案制定 → 文档输出与评审）。
-- **文档模板**：见 [../../.ai/skills/sdx-solution/assets/solution-template.md](../../.ai/skills/sdx-solution/assets/solution-template.md)。
+- **阶段目标与工作流**：见 [../../agent/skills/sdx-solution/SKILL.md](../../agent/skills/sdx-solution/SKILL.md)（阶段 1 会话参数 → 阶段 2 中间 spec → 阶段 3.1 骨架 / 3.2 分块填充 → 终检）；若目标工程经 `agent-install` / `docs-install` 将技能装到 `.cursor/skills/` 等目录，以该工程内实际路径为准。
+- **文档模板**：见 [../../agent/skills/sdx-solution/assets/solution-template.md](../../agent/skills/sdx-solution/assets/solution-template.md)。
 
 ## 集成关系
 

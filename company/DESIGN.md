@@ -1,0 +1,94 @@
+# 公司知识库设计（精简版）
+
+本文件定义 `company/` 的设计边界、目录契约、同步闭环与演进策略。  
+`company/` 负责公司层知识编排与系统槽位治理，不承载下游系统实现细节。
+
+---
+
+## 阅读顺序
+
+1. [README.md](README.md) — 公司知识库定位与目录说明
+2. 本文 — 设计边界、治理规则与流程约束
+3. [architecture/README.md](architecture/README.md) — 公司级架构视图入口
+4. [system-SYSNAME/README.md](system-SYSNAME/README.md) — 系统槽位模板说明
+5. [../system/DESIGN.md](../system/DESIGN.md) — 系统知识库设计（下游对齐参考）
+
+---
+
+## 1. 定位与边界
+
+`company/DESIGN.md` 的定位是公司知识库设计说明，核心职责是定义公司层治理语义、系统槽位编排规则与同步入口约束。
+
+- `company/` 承载公司层聚合视图与导航；
+- `system/` 承载系统层治理与架构聚合；
+- `application/` 仍是实体事实源与字段语义的 SSOT。
+
+边界约束：
+
+- **治理边界**：`company/` 负责公司层结构语义、导航与归档入口；
+- **内容边界**：系统实现细节留在 `system/`，应用实体细节留在 `application/`；
+- **流程边界**：`company/` 以消费同步结果与归档产物为主，不定义下游实体字段；
+- **引用边界**：优先路径引用与槽位映射，避免跨层复制正文。
+
+---
+
+## 2. 目录契约与治理规则
+
+`company/` 采用“公司架构层 + 系统槽位层 + 建联清单”的轻量契约模型。
+
+| 层级 | 目录 | 职责 |
+| --- | --- | --- |
+| 架构层 | `architecture/` | 承载公司级架构视图与跨系统治理叙事 |
+| 槽位层 | `system-{name}/` | 挂载系统镜像内容的统一入口 |
+| 清单层 | `knowledge-links.yaml` | 记录建联关系与同步编排信息 |
+
+治理规则：
+
+- **命名规则**：系统槽位统一 `system-{SYSTEM_NAME}`；
+- **职责规则**：`company/` 不承载系统实现细节与应用字段定义；
+- **引用规则**：跨层内容使用链接引用，不复制下游正文；
+- **变更规则**：新增槽位或调整目录语义时，先更新本文件约束再更新内容。
+
+---
+
+## 3. 同步流程与追溯闭环
+
+`company/` 的流程定位是“公司层编排入口”，流程保持轻量但可审计。
+
+1. **系统侧准备**：下游 `system/` 侧完成可同步内容整理；
+2. **公司侧挂载**：通过 fetch 将内容同步到 `company/system-{name}/` 槽位；
+3. **治理校核**：在 `company/architecture/` 与 `knowledge-links.yaml` 维护一致性；
+4. **追溯记录**：对新增、替换、退役槽位记录来源、影响范围与状态。
+
+闭环原则：
+
+- `company/` 负责可见性、可治理性、可追溯性；
+- `company/` 不重写下游内容，只维护公司层映射与入口；
+- 出现冲突时以下游事实源为准，`company/` 修复映射与导航。
+
+---
+
+## 4. 质量门禁与演进策略
+
+质量门禁采用“轻规则、强一致性”：
+
+- **命名门禁**：槽位目录命名统一，禁止同义目录并存；
+- **边界门禁**：`company/` 文档不引入系统实现与应用字段细节；
+- **引用门禁**：跨层描述必须可追溯至 `system/` 或 `application/`；
+- **变更门禁**：槽位变更先更新设计约束，再更新目录与链接清单。
+
+演进顺序：
+
+1. 稳定目录契约与槽位命名；
+2. 完善 `knowledge-links.yaml` 的来源、状态与更新时间信息；
+3. 增补自动化巡检（命名一致性、链接可达性、槽位完整性）。
+
+---
+
+## 参考
+
+- [README.md](README.md)
+- [architecture/README.md](architecture/README.md)
+- [system-SYSNAME/README.md](system-SYSNAME/README.md)
+- [knowledge-links.yaml](knowledge-links.yaml)
+- [../system/DESIGN.md](../system/DESIGN.md)

@@ -1,0 +1,50 @@
+# application/specs — 目录级元数据（SSOT）
+schema_version: "1.1"
+
+identity:
+  id: "DIR-APPLICATION-SPECS"
+  name: "规约目录（application/specs）"
+  description: "application 顶层 specs 目录元数据。本文件为该目录唯一元数据入口。"
+  updated_at: "2026-04-08"
+  owner: "docs"
+  status: "active"
+
+role:
+  scope: "application"
+  type: "specs"
+  is_system_level_index: true
+
+repository:
+  root_relative: "specs"
+  child_directories: []
+  child_files:
+    - "README.md"
+    - "specs_meta.yaml"
+
+pipeline:
+  outputs:
+    ssot_file: "specs_meta.yaml"
+    directory_role: "顶层 specs 目录的机器可读元数据入口（非强制交付目录）"
+
+integration:
+  consumed_by:
+    - "../requirements/"
+    - "../knowledge/technical/"
+  key_fields:
+    specs_directory:
+      - "identity.id"
+      - "role.scope"
+      - "repository.root_relative"
+
+layers:
+  - key: "sp"
+    code: "SPECS"
+    order: 1
+    entity_kind: "directory_meta"
+    id_pattern: "DIR-APPLICATION-SPECS"
+    artifacts:
+      metadata: "specs_meta.yaml"
+
+indexing:
+  readme_index_table: false
+  rule: "目录用途、约束或引用关系变化时，更新本文件与 README.md。"
