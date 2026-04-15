@@ -256,3 +256,48 @@ docsconfig_read_into() {
   fi
   return 0
 }
+
+# =============================================================================
+# § 文本文件与 agent/ 路径段重写（docs-install / agent-install 共用）
+# =============================================================================
+
+sdx_have_cmd() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+sdx_is_text_file() {
+  local f="$1"
+  case "$f" in
+    *.md|*.yaml|*.yml|*.json|*.jsonl|*.txt|*.sh|*.gitignore|*.html|*.css|*.js|*.toml)
+      return 0 ;;
+  esac
+  if sdx_have_cmd file; then
+    local mt
+    mt="$(file -b --mime-type "$f" 2>/dev/null || true)"
+    [[ "$mt" == text/* || "$mt" == application/json || "$mt" == *yaml* || "$mt" == *json* ]] && return 0
+  fi
+  return 1
+}
+
+sdx_have_perl() {
+  sdx_have_cmd perl
+}
+
+# 将路径段 agent/ 替换为 agent_slash（须以 / 结尾，如 .cursor/）
+sdx_rewrite_agent_path_segment_in_file() {
+  local file="$1" agent_slash="${2:?}"
+  [[ -f "$file" ]] && sdx_is_text_file "$file" || return 0
+  sdx_have_perl || return 0
+  SDX_AGENT_SLASH="$agent_slash" \
+    perl -CSD -i -pe 's{\bagent/}{$ENV{SDX_AGENT_SLASH}}g' \
+    "$file" 2>/dev/null || true
+}
+
+sdx_rewrite_agent_path_segment_in_tree() {
+  local root="$1" agent_slash="${2:?}"
+  [[ -d "$root" ]] || return 0
+  local f
+  while IFS= read -r -d '' f; do
+    sdx_rewrite_agent_path_segment_in_file "$f" "$agent_slash"
+  done < <(find "$root" -type f -print0 2>/dev/null || true)
+}

@@ -52,22 +52,7 @@ DOC_INIT_STAMP=""
 # =============================================================================
 
 have_cmd()  { command -v "$1" >/dev/null 2>&1; }
-have_perl() { have_cmd perl; }
-
-# 判断是否为文本文件（按扩展名或 MIME 类型）
-is_text_file() {
-  local f="$1"
-  case "$f" in
-    *.md|*.yaml|*.yml|*.json|*.jsonl|*.txt|*.sh|*.gitignore|*.html|*.css|*.js|*.toml)
-      return 0 ;;
-  esac
-  if have_cmd file; then
-    local mt
-    mt="$(file -b --mime-type "$f" 2>/dev/null || true)"
-    [[ "$mt" == text/* || "$mt" == application/json || "$mt" == *yaml* || "$mt" == *json* ]] && return 0
-  fi
-  return 1
-}
+have_perl() { sdx_have_perl; }
 
 # 计算目标工程根相对文档目录路径（带尾斜杠）
 compute_docs_rel_slash() {
@@ -269,7 +254,7 @@ reset_docs_dir_with_backup() {
 # 将文档前缀统一归一为 ${DOC_DIR}/（保持幂等）
 rewrite_docs_prefix_to_doc_dir() {
   local file="$1" docs_slash="$2"
-  [[ -f "$file" ]] && is_text_file "$file" || return 0
+  [[ -f "$file" ]] && sdx_is_text_file "$file" || return 0
   have_perl || return 0
   SDX_DOCS_SLASH="$docs_slash" \
     perl -CSD -i -pe '
@@ -306,6 +291,99 @@ log_rewrite_hits() {
     ' "$file" 2>/dev/null || true
 }
 
+# 在 DOC_ROOT/README.md 注入或更新「Agent 路径」说明（HTML 注释标记块，幂等）
+# 用法：docs_install_inject_readme_agent_note <readme_path> <primary_dir> [other_dir ...]
+docs_install_inject_readme_agent_note() {
+  local readme="$1" primary="$2"
+  shift 2
+  local -a others=("$@")
+  [[ -f "$readme" ]] || return 0
+  have_perl || return 0
+
+  local oline
+  if (( ${#others[@]} > 0 )); then
+    local oj
+    oj=$(printf '%s、' "${others[@]}")
+    oj="${oj%、}"
+    oline="**其他可用 Agent 根目录**：${oj}（可通过 \`agent-install --agents=...\` 安装对应目录）。"
+  else
+    oline="**其他可用 Agent 根目录**：无（当前 \`AGENT_DIRS\` 仅含主目录）。"
+  fi
+
+  local note_tmp
+  note_tmp="$(mktemp "${TMPDIR:-/tmp}/sdx-agent-readme-note.XXXXXX")" || return 0
+  {
+    printf '%s\n' '<!-- sdx-agent-dirs-note:begin -->'
+    printf '%s\n' "> **Agent 路径**：知识库内指向中央库 **agent** 树的路径已重写为当前主目录 \`${primary}/\`（与 \`.docsconfig\` 的 \`AGENT_DIRS\` 首项一致）。"
+    printf '%s\n' "> ${oline}"
+    printf '%s\n' '<!-- sdx-agent-dirs-note:end -->'
+  } > "$note_tmp"
+
+  SDX_NOTE_FILE="$note_tmp" perl -CSD -e '
+    use strict;
+    use warnings;
+    use utf8;
+    my $path = $ARGV[0];
+    open my $fh, "<:encoding(UTF-8)", $path or exit 0;
+    local $/;
+    my $t = <$fh>;
+    close $fh;
+    open my $nf, "<:encoding(UTF-8)", $ENV{SDX_NOTE_FILE} or exit 0;
+    my $nb = <$nf>;
+    close $nf;
+    chomp $nb;
+    my $b = "<!-- sdx-agent-dirs-note:begin -->";
+    my $e = "<!-- sdx-agent-dirs-note:end -->";
+    if ($t =~ /\Q$b\E/s && $t =~ /\Q$e\E/s) {
+      $t =~ s{\Q$b\E[\s\S]*?\Q$e\E}{$nb}s;
+    } else {
+      $t .= "\n\n" . $nb . "\n";
+    }
+    open $fh, ">:encoding(UTF-8)", $path or exit 0;
+    print $fh $t;
+    close $fh;
+  ' "$readme" 2>/dev/null || true
+  rm -f "$note_tmp"
+}
+
+# 知识库安装并写入 .docsconfig 后：按 AGENT_DIRS 首项将 agent/ 重写为主 Agent 目录，并更新 README 提示
+rewrite_knowledge_agent_paths_after_install() {
+  [[ "${CFG[dry_run]}" == '1' ]] && return 0
+  [[ "${CFG[scope]}" == 'knowledge' ]] || return 0
+  [[ -n "${CFG[docs_abs]:-}" ]] || return 0
+
+  local repo_target='' doc_root='' dd=''
+  install_doc_path repo_target doc_root dd
+
+  local cfg="$repo_target/.docsconfig"
+  [[ -f "$cfg" ]] || { warn "未找到 $cfg，跳过 agent/ 路径重写"; return 0; }
+
+  local _d _r _dd _ar ads _kt
+  docsconfig_read_into "$cfg" _d _r _dd _ar ads _kt || true
+
+  if [[ -z "${ads:-}" ]]; then
+    ads='.cursor'
+    info "AGENT_DIRS 为空，agent/ 路径重写默认使用首项: $ads"
+  fi
+
+  read -ra ads_arr <<< "$ads"
+  local primary="${ads_arr[0]:-.cursor}"
+  local -a others=()
+  local i
+  for (( i=1; i<${#ads_arr[@]}; i++ )); do
+    others+=("${ads_arr[i]}")
+  done
+
+  local primary_slash="${primary%/}/"
+  info ">>> 重写知识库中的 agent/ 路径段为 ${primary_slash}（AGENT_DIRS 首项）"
+  sdx_rewrite_agent_path_segment_in_tree "${CFG[docs_abs]}" "$primary_slash"
+
+  local readme="${CFG[docs_abs]}/README.md"
+  if [[ -f "$readme" ]]; then
+    docs_install_inject_readme_agent_note "$readme" "$primary" "${others[@]}"
+  fi
+}
+
 # =============================================================================
 # § 6  核心安装步骤
 # =============================================================================
@@ -332,14 +410,13 @@ install_application_full_to_docs() {
   info "    源:   $src_root"
   info "    目标: $dst_root"
 
-  local rel src_f dst_f base
-  while IFS= read -r -d '' rel; do
-    rel="${rel#./}"
-    [[ -z "$rel" ]] && continue
-    base="${rel##*/}"
-    # 排除元文件和多版本 README
-    [[ "$base" == 'DESIGN.md' || "$base" == 'CONTRIBUTING.md' ]] && continue
-    [[ "$base" == 'README.md' || "$base" == 'README-s.md' || "$base" == 'README-c.md' ]] && continue
+    local rel src_f dst_f
+    while IFS= read -r -d '' rel; do
+      rel="${rel#./}"
+      [[ -z "$rel" ]] && continue
+      # 仅排除 application/ 根部的元文件与多版本 README（子目录 README.md 须照常同步）
+      [[ "$rel" == 'DESIGN.md' || "$rel" == 'CONTRIBUTING.md' ]] && continue
+      [[ "$rel" == 'README.md' || "$rel" == 'README-s.md' || "$rel" == 'README-c.md' ]] && continue
 
     src_f="$src_root/$rel"
     dst_f="$dst_root/$rel"
@@ -835,6 +912,7 @@ docs_init_run() {
     install_docs
     install_docs_link_scripts_to_target_repo
     install_docsconfig
+    rewrite_knowledge_agent_paths_after_install
   fi
 
   # ── 步骤 2：scope=knowledge 写 .docsconfig（含 KNOWLEDGE_TYPE）──────────────

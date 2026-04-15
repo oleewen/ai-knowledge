@@ -13,9 +13,11 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 |------|------|
 | `agent-install.sh` | 仅安装 Agent（`hooks` / `scripts` / `rules` / `skills`）；`--scope`=`a`/`r`/`s`/`h`/`sh`，`--target`（默认 `$HOME`），`--agents`（默认 `cursor`，可 `all` 或多选），`--dry-run`。 |
 | `docs-install.sh` | 知识库同步与配置分流；默认 `--scope=k`（knowledge）。`--scope=knowledge` 同步知识库并写 `.docsconfig`（含 **`KNOWLEDGE_TYPE`**）；`--scope=config` 仅更新 `.docsconfig` 的路径与 `AGENT_*`，不写 `KNOWLEDGE_TYPE`。两种 scope 都会调用 `install_agent_path`，但仅当 `AGENT_ROOT` 为空时补默认 `AGENT_*`。 |
-| `docs-link.sh` | 在**当前 Git 仓库（源知识库）**内维护 `company/knowledge-links.yaml` 或 `system/knowledge-links.yaml`，登记/注销目标库（`link` / `unlink`，`--target`）；`link` 校验目标 `.docsconfig`，`unlink` 支持目标失联按路径注销。 |
+| `docs-link.sh` | 在**当前 Git 仓库（源知识库）**内维护 `company/knowledge-links.yaml` 或 `system/knowledge-links.yaml`，登记/注销目标库（`--link` / `--unlink` 二选一，`--target`）；`--link` 校验目标 `.docsconfig`，`--unlink` 支持目标失联按路径注销。 |
 
 `docs-install.sh` 仅负责 knowledge 与 `.docsconfig`（不安装 Agent 文件）；Agent 安装仅由 `agent-install.sh` 负责。
+
+`--scope=knowledge` 完成同步并写入 `.docsconfig` 后，会将 `DOC_ROOT` 内文本中的路径段 `agent/` 按 `AGENT_DIRS` **首项**重写为对应目录（如 `.cursor/`），并在 `README.md` 注入说明块（列出其余可用 Agent 根目录）。
 
 **`docs-bootstrap.sh`**：远程 `curl` 下载后执行；临时 **clone** 本仓库，再调用 **`docs-install.sh`** 透传参数（**仅**知识库初始化；**仅装 Agent** 请本地 clone 后使用 **`agent-install.sh`**）。
 
@@ -69,8 +71,8 @@ cd ai-knowledge
 ./scripts/agent-install.sh --scope=sh --dry-run
 
 # 建联（在「源」公司库或系统库仓库根执行）
-./scripts/docs-link.sh link --target=/abs/path/to/target-repo
-./scripts/docs-link.sh unlink --target=/abs/path/to/target-repo
+./scripts/docs-link.sh --link --target=/abs/path/to/target-repo
+./scripts/docs-link.sh --unlink --target=/abs/path/to/target-repo
 ```
 
 ### 方式一（续）：远程 curl（无克隆，仅 knowledge 流程）
@@ -211,7 +213,7 @@ your-project/
 | `docs-config.sh` | docs-install 配置层；`source agent/scripts/docs-core.sh` 复用路径/`.docsconfig` 工具 |
 | `docs-install.sh` | knowledge 安装编排入口；默认 `--scope=k`（knowledge），并 `source` `docs-config.sh` |
 | `link-config.sh` | docs-link 配置层；优先 `../agent/scripts/docs-core.sh`，否则按目标工程 `.docsconfig` 之 **AGENT_ROOT** / **AGENT_DIRS** 定位 **`scripts/docs-core.sh`** |
-| `docs-link.sh` | 登记/注销目标知识库；`source link-config.sh`；`link` 校验源/目标 `.docsconfig` 与边关系，`unlink` 支持失联目标注销 |
+| `docs-link.sh` | 登记/注销目标知识库；`source link-config.sh`；`--link` 校验源/目标 `.docsconfig` 与边关系，`--unlink` 支持失联目标注销 |
 | `docs-bootstrap.sh` | 临时 clone 后直接执行 **`docs-install.sh`**（纯链路：clone → docs-install，参数透传） |
 
 ## 版本历史

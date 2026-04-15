@@ -36,21 +36,7 @@ INSTALL_SCRIPTS=0
 declare -a ENABLED_AGENTS=()
 
 have_cmd()  { command -v "$1" >/dev/null 2>&1; }
-have_perl() { have_cmd perl; }
-
-is_text_file() {
-  local f="$1"
-  case "$f" in
-    *.md|*.yaml|*.yml|*.json|*.jsonl|*.txt|*.sh|*.gitignore|*.html|*.css|*.js|*.toml)
-      return 0 ;;
-  esac
-  if have_cmd file; then
-    local mt
-    mt="$(file -b --mime-type "$f" 2>/dev/null || true)"
-    [[ "$mt" == text/* || "$mt" == application/json || "$mt" == *yaml* || "$mt" == *json* ]] && return 0
-  fi
-  return 1
-}
+have_perl() { sdx_have_perl; }
 
 run_or_dry() {
   if [[ "${CFG[dry_run]}" == '1' ]]; then
@@ -91,25 +77,6 @@ copy_file_plain() {
   fi
   ensure_dir "$(dirname "$dst")"
   cp "$src" "$dst"
-}
-
-# 将 agent/ 前缀替换为 <agent_slash>（如 .cursor/）
-rewrite_agent_file() {
-  local file="$1" agent_slash="$2"
-  [[ -f "$file" ]] && is_text_file "$file" || return 0
-  have_perl || return 0
-  SDX_AGENT_SLASH="$agent_slash" \
-    perl -CSD -i -pe 's{\bagent/}{$ENV{SDX_AGENT_SLASH}}g' \
-    "$file" 2>/dev/null || true
-}
-
-rewrite_agent_tree() {
-  local root="$1" agent_slash="$2"
-  [[ -d "$root" ]] || return 0
-  local f
-  while IFS= read -r -d '' f; do
-    rewrite_agent_file "$f" "$agent_slash"
-  done < <(find "$root" -type f -print0 2>/dev/null || true)
 }
 
 agent_install_root() {
@@ -183,7 +150,7 @@ install_agent_scripts() {
     copy_file_plain "$src_docs_ssot" "$dst_scripts/docs-core.sh"
 
     if [[ "${CFG[dry_run]}" == '0' ]]; then
-      rewrite_agent_tree "$dst_scripts" "$agent_slash"
+      sdx_rewrite_agent_path_segment_in_tree "$dst_scripts" "$agent_slash"
     fi
   done
 }
@@ -210,7 +177,7 @@ install_agent_skills() {
     done
 
     if [[ "${CFG[dry_run]}" == '0' ]]; then
-      rewrite_agent_tree "${agent_dir}/skills" "$agent_slash"
+      sdx_rewrite_agent_path_segment_in_tree "${agent_dir}/skills" "$agent_slash"
     fi
   done
 }
@@ -241,7 +208,7 @@ install_agent_rules() {
     done
 
     if [[ "${CFG[dry_run]}" == '0' ]]; then
-      rewrite_agent_tree "${agent_dir}/rules" "$agent_slash"
+      sdx_rewrite_agent_path_segment_in_tree "${agent_dir}/rules" "$agent_slash"
     fi
   done
 }
@@ -262,8 +229,8 @@ install_agent_hooks() {
     [[ -f "$hooks_json" ]] && copy_file_plain "$hooks_json" "${agent_dir}/hooks.json"
 
     if [[ "${CFG[dry_run]}" == '0' ]]; then
-      [[ -d "${agent_dir}/hooks" ]] && rewrite_agent_tree "${agent_dir}/hooks" "$agent_slash"
-      [[ -f "${agent_dir}/hooks.json" ]] && rewrite_agent_file "${agent_dir}/hooks.json" "$agent_slash"
+      [[ -d "${agent_dir}/hooks" ]] && sdx_rewrite_agent_path_segment_in_tree "${agent_dir}/hooks" "$agent_slash"
+      [[ -f "${agent_dir}/hooks.json" ]] && sdx_rewrite_agent_path_segment_in_file "${agent_dir}/hooks.json" "$agent_slash"
     fi
   done
 }

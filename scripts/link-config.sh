@@ -77,8 +77,10 @@ link_config_source_docs_core() {
     esac
   done <"$cfg"
 
+  local ar_base=''
   if [[ -n "$raw_ar" ]]; then
-    core="$(_link_config_abs_path "$raw_ar")/scripts/docs-core.sh"
+    ar_base="$(_link_config_abs_path "$raw_ar")"
+    core="${ar_base}/scripts/docs-core.sh"
     if [[ -f "$core" ]]; then
       # shellcheck source=/dev/null
       source "$core"
@@ -89,7 +91,11 @@ link_config_source_docs_core() {
   local d
   for d in $raw_ads; do
     [[ -z "$d" ]] && continue
-    core="$(_link_config_abs_path "$d")/scripts/docs-core.sh"
+    local d_base="$d"
+    if [[ -n "$ar_base" && "$d_base" != /* && "$d_base" != "~"* ]]; then
+      d_base="${ar_base}/${d_base}"
+    fi
+    core="$(_link_config_abs_path "$d_base")/scripts/docs-core.sh"
     if [[ -f "$core" ]]; then
       # shellcheck source=/dev/null
       source "$core"

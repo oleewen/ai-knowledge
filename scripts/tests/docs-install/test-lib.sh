@@ -34,8 +34,9 @@ assert_contains() {
 assert_not_contains() {
   local needle="${1:?needle is required}"
   local path="${2:?path is required}"
-  rg --fixed-strings "$needle" "$path" >/dev/null \
-    && fail "命中不应出现内容: $needle ($path)"
+  if rg --fixed-strings "$needle" "$path" >/dev/null 2>&1; then
+    fail "命中不应出现内容: $needle ($path)"
+  fi
 }
 
 new_tmp_dir() {

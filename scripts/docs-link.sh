@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # docs-link.sh — 在源知识库登记 / 注销目标知识库（仅本地 path）
-# 用法: ./scripts/docs-link.sh link|unlink --target=<目标仓库根> [--dry-run]
+# 用法: ./scripts/docs-link.sh --link|--unlink --target=<目标仓库根> [--dry-run]
 # 须在源 Git 仓库内执行；link 需校验源、目标 .docsconfig 与 KNOWLEDGE_TYPE；
 # unlink 支持目标失联场景（仅按登记 path 注销）。
 set -euo pipefail
@@ -59,7 +59,18 @@ TARGET_RAW=''
 
 while (( $# > 0 )); do
   case "$1" in
-    link|unlink) CMD="$1"; shift ;;
+    --link)
+      [[ "$CMD" == 'unlink' ]] && error "不能同时指定 --link 与 --unlink"
+      [[ "$CMD" == 'link' ]] && error "重复指定 --link"
+      CMD='link'
+      shift
+      ;;
+    --unlink)
+      [[ "$CMD" == 'link' ]] && error "不能同时指定 --link 与 --unlink"
+      [[ "$CMD" == 'unlink' ]] && error "重复指定 --unlink"
+      CMD='unlink'
+      shift
+      ;;
     --dry-run)   DRY=1; shift ;;
     --target=*)  TARGET_RAW="${1#*=}"; shift ;;
     --target)
@@ -82,11 +93,11 @@ while (( $# > 0 )); do
       ;;
     -h|--help)
       cat >&2 <<'EOF'
-用法: ./scripts/docs-link.sh link|unlink --target=<目标知识库仓库根> [--dry-run]
+用法: ./scripts/docs-link.sh --link|--unlink --target=<目标知识库仓库根> [--dry-run]
 
-  须在「源」知识库 Git 仓库内执行（git rev-parse 取根）。登记文件：
-    公司源（KNOWLEDGE_TYPE=company）→ company/knowledge-links.yaml
-    系统源（KNOWLEDGE_TYPE=system） → system/knowledge-links.yaml
+  --link / --unlink 二选一，不得同时出现。
+
+  须在「源」知识库 Git 仓库内执行（git rev-parse 取根）。登记文件：源 .docsconfig 的 DOC_ROOT/knowledge-links.yaml
 
   允许边：company→system、system→application（源/目标 .docsconfig 须含合法 KNOWLEDGE_TYPE）。
   unlink 支持目标失联（路径不存在或目标仓库配置缺失）时按登记 path 注销。
@@ -95,8 +106,8 @@ while (( $# > 0 )); do
   --target   目标知识库仓库根；兼容旧参数 --path（已弃用）。
 
 示例:
-  ./scripts/docs-link.sh link --target=/abs/path/to/target-system-repo
-  ./scripts/docs-link.sh unlink --target=/abs/path/to/target-app-repo --dry-run
+  ./scripts/docs-link.sh --target=~/workspaces/target-repo --link
+  ./scripts/docs-link.sh --target=~/workspaces/target-repo --unlink --dry-run
 EOF
       exit 0
       ;;
@@ -104,7 +115,7 @@ EOF
   esac
 done
 
-validate_link_command "$CMD" || error "请指定子命令: link | unlink"
+validate_link_command "$CMD" || error "请指定 --link 或 --unlink（二选一）"
 [[ -n "$TARGET_RAW" ]] || error "请指定 --target=<目标仓库根>"
 
 SRC_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || error "请在 Git 仓库内执行 docs-link"
@@ -113,13 +124,15 @@ SRC_CFG="$SRC_ROOT/.docsconfig"
 
 _sdoc='' _srepo='' _sdd='' _skt=''
 docsconfig_read_into "$SRC_CFG" _sdoc _srepo _sdd _skt || error "无法解析源 .docsconfig"
+[[ -n "$_sdoc" ]] || error "源 .docsconfig 缺少 DOC_ROOT"
 [[ -n "$_skt" ]] || error "源 .docsconfig 缺少 KNOWLEDGE_TYPE"
 docsconfig_validate_knowledge_type "$_skt" || exit 1
 
 expect_target=''
+LIST_FILE="$_sdoc/knowledge-links.yaml"
 case "$_skt" in
-  company) LIST_FILE="$SRC_ROOT/company/knowledge-links.yaml"; expect_target='system' ;;
-  system)  LIST_FILE="$SRC_ROOT/system/knowledge-links.yaml"; expect_target='application' ;;
+  company) expect_target='system' ;;
+  system)  expect_target='application' ;;
   *) error "源 KNOWLEDGE_TYPE=${_skt} 不支持建联（仅 company 或 system 可作为源）" ;;
 esac
 
