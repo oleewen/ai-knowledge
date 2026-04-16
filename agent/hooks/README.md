@@ -2,7 +2,8 @@
 
 | 钩子 | 事件 | 说明 |
 |------|------|------|
-| [sdx_gate_common.py](sdx_gate_common.py) | `preToolUse`（`Write` / `StrReplace`） | 统一实现：`python3 agent/hooks/sdx_gate_common.py --gate <name>`。`name` 与受管路径对应关系：`solution` → `**/solutions/SOLUTION-*.md`（[sdx-solution](../skills/sdx-solution/SKILL.md)）；`analysis` → `**/analysis/ANALYSIS-*.md`（[sdx-analysis](../skills/sdx-analysis/SKILL.md)）；`design` → `**/requirements/**/ADD-*.md`（[sdx-design](../skills/sdx-design/SKILL.md)）；`prd` → `**/requirements/**/PRD-*.md`（[sdx-prd](../skills/sdx-prd/SKILL.md)）；`test` → `**/requirements/**/TDD-*.md`（[sdx-test](../skills/sdx-test/SKILL.md)）。 |
+| [sdx_session_gate.py](sdx_session_gate.py) | `preToolUse`（`Write` / `StrReplace`） | 会话激活前置脚本：仅检测会话内是否出现 `/sdx-solution`、`/sdx-analysis`、`/sdx-prd`、`/sdx-design`、`/sdx-test`。命中后标记当前会话为 SDX 激活态。 |
+| [sdx_gate_common.py](sdx_gate_common.py) | `preToolUse`（`Write` / `StrReplace`） | 统一实现：`python3 agent/hooks/sdx_gate_common.py --gate <name>`。仅在 `sdx_session_gate.py` 已激活会话后生效。`name` 与受管路径对应关系：`solution` → `**/solutions/SOLUTION-*.md`（[sdx-solution](../skills/sdx-solution/SKILL.md)）；`analysis` → `**/analysis/ANALYSIS-*.md`（[sdx-analysis](../skills/sdx-analysis/SKILL.md)）；`design` → `**/requirements/**/ADD-*.md`（[sdx-design](../skills/sdx-design/SKILL.md)）；`prd` → `**/requirements/**/PRD-*.md`（[sdx-prd](../skills/sdx-prd/SKILL.md)）；`test` → `**/requirements/**/TDD-*.md`（[sdx-test](../skills/sdx-test/SKILL.md)）。 |
 
 ### 同构闸门语义、尚无 preToolUse 脚本
 
@@ -21,3 +22,9 @@
 3. **排查**：菜单 **View → Output**，下拉选择 **Hooks**，查看是否已加载钩子及脚本是否报错。
 
 未满足上述条件时，仓库内文档与闸门约定仍然有效，但 IDE 侧拦截可能不生效。
+
+## 会话触发语义
+
+- 默认不拦截：若当前会话从未出现 `/sdx-*` 指令，`sdx_gate_common.py` 将直接放行。
+- 一次激活、会话内持续生效：同一会话内只要出现过一次 `/sdx-*`，后续对受管路径的写入都进入 SDX 闸门校验。
+- 受管路径与 `CONFIRMED + 目标文件名引用` 的放行规则保持不变。

@@ -2,6 +2,10 @@
 """
 SDX 阶段写入闸门（preToolUse）：根据 --gate 选择具体阶段，逻辑共用。
 
+会话触发语义：
+- 仅当会话内出现过 /sdx-* 并被 sdx_session_gate.py 激活后，本闸门才生效；
+- 未激活会话时直接 allow（不拦截）。
+
 stdin：Cursor preToolUse JSON（结构可能演进，故递归扫描全部字符串）。
 stdout：仅输出一行 JSON（permission 等）。
 stderr：可选调试（DEBUG=1）。
@@ -20,6 +24,11 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable
+
+if __package__ in (None, ""):
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from sdx_session_state import is_session_active
 
 # ---------------------------------------------------------------------------
 # 各阶段：候选路径收集（须与历史五脚本行为一致）
@@ -216,6 +225,12 @@ def run_gate(
     except json.JSONDecodeError:
         if env.get("DEBUG"):
             print(f"{cfg.debug_label}: JSON parse fail, fail-open", file=sys.stderr)
+        print('{"permission": "allow"}', flush=True)
+        return 0
+
+    if not is_session_active(payload, env):
+        if env.get("DEBUG"):
+            print(f"{cfg.debug_label}: session not active, allow", file=sys.stderr)
         print('{"permission": "allow"}', flush=True)
         return 0
 

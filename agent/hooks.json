@@ -3,6 +3,11 @@
   "hooks": {
     "preToolUse": [
       {
+        "command": "python3 agent/hooks/sdx_session_gate.py",
+        "matcher": "Write|StrReplace",
+        "failClosed": false
+      },
+      {
         "command": "python3 agent/hooks/sdx_gate_common.py --gate solution",
         "matcher": "Write|StrReplace",
         "failClosed": false

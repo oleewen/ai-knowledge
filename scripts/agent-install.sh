@@ -230,7 +230,18 @@ install_agent_hooks() {
 
     if [[ "${CFG[dry_run]}" == '0' ]]; then
       [[ -d "${agent_dir}/hooks" ]] && sdx_rewrite_agent_path_segment_in_tree "${agent_dir}/hooks" "$agent_slash"
-      [[ -f "${agent_dir}/hooks.json" ]] && sdx_rewrite_agent_path_segment_in_file "${agent_dir}/hooks.json" "$agent_slash"
+      if [[ -f "${agent_dir}/hooks.json" ]]; then
+        if [[ "${CFG[target_abs]}" == "${CFG[home_abs]}" ]]; then
+          if have_perl; then
+            # 仅在 $HOME 场景下，定向处理 hooks.json 的 command 值：agent/ -> 空。
+            perl -0777 -i -pe 's/("command"\s*:\s*"[^"\n]*)agent\//\1/g' "${agent_dir}/hooks.json"
+          else
+            warn "未检测到 perl：跳过 hooks.json command 的 agent/ 前缀去除。"
+          fi
+        else
+          sdx_rewrite_agent_path_segment_in_file "${agent_dir}/hooks.json" "$agent_slash"
+        fi
+      fi
     fi
   done
 }
