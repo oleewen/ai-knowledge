@@ -217,9 +217,9 @@ install_agent_hooks() {
   (( INSTALL_HOOKS == 1 )) || return 0
   local agent agent_dir agent_slash
   local hooks_src="${CFG[repo_root]}/agent/hooks"
-  local hooks_json="${CFG[repo_root]}/agent/hooks/hooks.json"
+  local hooks_json="${CFG[repo_root]}/agent/hooks.json"
 
-  [[ -d "$hooks_src" || -f "$hooks_json" ]] || { warn "未找到 agent/hooks 或 agent/hooks/hooks.json"; return 0; }
+  [[ -d "$hooks_src" || -f "$hooks_json" ]] || { warn "未找到 agent/hooks 或 agent/hooks.json"; return 0; }
 
   for agent in "${ENABLED_AGENTS[@]}"; do
     agent_dir="$(agent_install_root "$agent")"

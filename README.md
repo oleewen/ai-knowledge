@@ -32,6 +32,8 @@
 
 业务细节、路径级精要与检索字段以 [INDEX_GUIDE.md](INDEX_GUIDE.md) 为权威地图；人类协作入口以本文件为准；Agent 行为约束见 [AGENTS.md](AGENTS.md)。
 
+> 升级提示（2026-04）：Hooks 配置 SSOT 已从 `agent/hooks/hooks.json` 迁移为 `agent/hooks.json`；目标工程中的 `.cursor/hooks.json` 产物路径保持不变。
+
 ---
 
 ## 快速开始

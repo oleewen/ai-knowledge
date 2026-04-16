@@ -7,6 +7,8 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 
 **维护策略（当前）**：`docs-install.sh` / `docs-link.sh` / `agent-install.sh` 分别 `source` 对应 `*-config.sh`；三者中路径与 `.docsconfig` 相关能力统一复用 `agent/scripts/docs-core.sh`。改对应脚本行为时需同步其 config 脚本与本文档。
 
+**升级提示（2026-04）**：Hooks 配置 SSOT 已从 `agent/hooks/hooks.json` 迁移到 `agent/hooks.json`。目标工程安装产物 `.cursor/hooks.json` 保持不变。
+
 ## 推荐入口（一分为三）
 
 | 脚本 | 用途 |
@@ -169,7 +171,7 @@ your-project/
 ```
 ~/
 ├── .cursor/                       # Cursor（另有 .trea/、.claude/ 下同构）
-│   ├── hooks.json                 # 自仓库 agent/hooks/hooks.json
+│   ├── hooks.json                 # 自仓库 agent/hooks.json
 │   ├── hooks/                     # 自仓库 agent/hooks/
 │   ├── scripts/                   # 含 docs-core.sh（自仓库 agent/scripts/ 复制）与 config-bootstrap 等
 │   ├── skills/                    # Skills（不含各层 README）

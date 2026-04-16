@@ -12,7 +12,7 @@
 
 ## 如何自动生效（无需单独「Hooks 总开关」）
 
-钩子配置 SSOT 为同目录下的 [hooks.json](hooks.json)。在目标工程侧，`agent-install` 会将其复制为 **`${TARGET}/.cursor/hooks.json`**（与其它 Agent 资产一致）。保存后 Cursor 会重载钩子配置。本仓库已包含工作区设置 [.vscode/settings.json](../../.vscode/settings.json)（为 `agent/hooks/hooks.json` 与 `.cursor/hooks.json` 提供 JSON Schema，便于校验与补全）。
+钩子配置 SSOT 为 [agent/hooks.json](../hooks.json)。在目标工程侧，`agent-install` 会将其复制为 **`${TARGET}/.cursor/hooks.json`**（与其它 Agent 资产一致）。保存后 Cursor 会重载钩子配置。本仓库已包含工作区设置 [.vscode/settings.json](../../.vscode/settings.json)（为 `agent/hooks.json` 与 `.cursor/hooks.json` 提供 JSON Schema，便于校验与补全）。
 
 请同时满足：
 

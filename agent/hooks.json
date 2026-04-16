@@ -3,27 +3,27 @@
   "hooks": {
     "preToolUse": [
       {
-        "command": "python3 hooks/sdx_gate_common.py --gate solution",
+        "command": "python3 agent/hooks/sdx_gate_common.py --gate solution",
         "matcher": "Write|StrReplace",
         "failClosed": false
       },
       {
-        "command": "python3 hooks/sdx_gate_common.py --gate analysis",
+        "command": "python3 agent/hooks/sdx_gate_common.py --gate analysis",
         "matcher": "Write|StrReplace",
         "failClosed": false
       },
       {
-        "command": "python3 hooks/sdx_gate_common.py --gate design",
+        "command": "python3 agent/hooks/sdx_gate_common.py --gate design",
         "matcher": "Write|StrReplace",
         "failClosed": false
       },
       {
-        "command": "python3 hooks/sdx_gate_common.py --gate prd",
+        "command": "python3 agent/hooks/sdx_gate_common.py --gate prd",
         "matcher": "Write|StrReplace",
         "failClosed": false
       },
       {
-        "command": "python3 hooks/sdx_gate_common.py --gate test",
+        "command": "python3 agent/hooks/sdx_gate_common.py --gate test",
         "matcher": "Write|StrReplace",
         "failClosed": false
       }
