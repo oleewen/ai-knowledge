@@ -1,11 +1,12 @@
-# ai-knowledge
+# AI Knowledge Base Framework
 
-> 企业级元知识底座：以 SSOT（单一事实源）与联邦治理组织架构与交付文档。
+> **企业级元知识底座**：基于 SSOT（单一事实源）与联邦治理模式，为 AI Agent 提供结构化知识供给与协作规范。
 
-`ai-knowledge` 是**纯文档型**元知识库，提供 Markdown/YAML 知识库骨架与 Bash 初始化脚本，用于向任意工程注入 SDD 文档与 Agent 配置。
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/oleewen/ai-knowledge/graphs/commit-activity)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 ---
-
 ## 目录
 
 - [简介](#简介)
@@ -17,81 +18,47 @@
 - [开发指南](#开发指南)
 - [贡献指南](#贡献指南)
 
----
+## 📖 简介
 
-## 简介
+`ai-knowledge` 是一个**纯文档型**元知识平台。它不提供业务逻辑，而是为 AI 原生开发提供一套可植入的「骨架」。通过内置的一系列 Bash 脚本，您可以将其注入任何工程，建立符合 SDD（基于文档的开发）原则的 AI 协作环境。
 
-本仓库提供三类核心资产：
-
-| 资产 | 路径 | 说明 |
-|------|------|------|
-| 应用元知识库 SSOT | `application/` | 四视角知识实体、阶段文档、changelogs |
-| 组织与公司级槽位骨架 | `system/` / `company/` | 联邦治理骨架，按需挂载 |
-| 规范与 Slash 技能 | `agent/` | 协作规范（rules）与 Agent 工作流（skills） |
-| 初始化脚本链 | `scripts/` | `docs-install` / `agent-install` / `docs-link` / `docs-bootstrap` |
-
-业务细节、路径级精要与检索字段以 [INDEX_GUIDE.md](INDEX_GUIDE.md) 为权威地图；人类协作入口以本文件为准；Agent 行为约束见 [AGENTS.md](AGENTS.md)。
-
-> 升级提示（2026-04）：Hooks 配置 SSOT 已从 `agent/hooks/hooks.json` 迁移为 `agent/hooks.json`；目标工程中的 `.cursor/hooks.json` 产物路径保持不变。
+### 核心价值
+- **SSOT 驱动**：消除冗余信息，维护产品、技术、数据的唯一事实源。
+- **Agent 友好**：内置一套完善的协作规范（Rules）与 Slash 技能（Skills），提升 AI 编码的确定性。
+- **联邦治理**：自顶向下支持「公司—系统—应用」的多层级知识挂载与隔离。
+- **纯文架构**：完全基于 Markdown 与 YAML，天然支持版本控制与低带宽传输。
 
 ---
 
-## 快速开始
+## 🚀 快速开始
 
-### 环境要求
-
-- **Bash** 5+
+### 预备环境
+- **Bash** 5.0+
 - **Git**
-- **curl**（可选，用于远程 bootstrap）
-- **rsync**（可选，脚本可回退为 `cp`）
+- **rsync**（推荐，用于高效文件同步）
 
-### 安装方式
-
-**方式一：Agent 初始化（推荐）**
-
-将以下意图交给 Agent，按其中「方式二或三」完成初始化：
-
-```text
-按 https://github.com/oleewen/ai-knowledge README.md 的快速开始中方式二或三，初始化知识库到 ./docs
-```
-
-**方式二：本地初始化（克隆后执行）**
-
+### 1. 手动安装（克隆后执行）
 ```bash
-cd /path/to/your-workspaces
-git clone https://github.com/oleewen/ai-knowledge
+git clone https://github.com/oleewen/ai-knowledge.git
 cd ai-knowledge
 
-# 初始化知识库到目标工程
-./scripts/docs-install.sh [--选项] --target=/path/to/your-project/docs
-
-# 仅安装 Agent 配置
-./scripts/agent-install.sh [--scope=...] [--target=...] [--dry-run]
+# 将知识库安装至目标工程的 ./docs 目录
+./scripts/docs-install.sh --target=/path/to/your-project/docs
 ```
 
-**方式三：远程 bootstrap（无需先 clone）**
-
+### 2. 远程 Bootstrap（无需克隆）
 ```bash
 cd /path/to/your-project
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" \
-  | bash -s -- [选项] --target ./docs
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- --target ./docs
 ```
 
-### 安装参数说明
-
-| 参数 | 默认值 | 说明 |
-|------|--------|------|
-| `--target` | 必填 | 目标工程文档目录 |
-| `--scope` | `knowledge`（可简写 `k`） | `knowledge` 写入 `.docsconfig` 含 `KNOWLEDGE_TYPE`；`config` 不写 `KNOWLEDGE_TYPE` |
-| `--mode` | `standalone` | `central` 用于中央知识库挂载建联模式 |
-| `--type` | `application` | `application` / `system` / `company` |
-| `--dry-run` | — | 预览变更，不实际写入 |
-
-详细参数与落地产物见 [scripts/README.md](scripts/README.md)。
+### 3. Agent 自动化安装
+直接向您的开发代理（如 Claude Code / Cursor）发送指令：
+> “根据 https://github.com/oleewen/ai-knowledge 的 README 规范，初始化知识库架构到当前工程的 ./docs 路径。”
 
 ---
 
-## 项目结构
+## 📂 项目结构
 
 ```text
 ai-knowledge/
@@ -121,21 +88,29 @@ ai-knowledge/
 
 ---
 
-## 常见 Skill 与推荐流程
+## 🤖 Agent 工作流与推荐流程
 
-### 场景组合
+项目内置了针对不同复杂度的协作链路，建议按需组合使用：
 
-| 场景 | 说明 |
-|------|------|
-| 单应用开发 | 推荐 **知识库构建链路** + **功能实现链路** |
-| 多应用开发 | 推荐 **知识库构建链路** + **需求设计链路** + **功能实现链路** |
-
-### 推荐执行顺序
-
+### 执行主链路
 ```mermaid
 flowchart TD
-    S((开始))
-    Z((结束))
+    S((开始)) --> KB[知识库构建链路]
+    KB --> RDD[业务需求设计链路]
+    RDD --> SDD[功能实现交付链路]
+    SDD --> Z((归档/结束))
+
+    subgraph SDD["SDD 功能实现链路"]
+      direction LR
+      b["脑暴分析"] --> ex["代码探索"] --> app["实现任务"] --> tdd["测试驱动开发"]
+    end
+```
+
+### 执行子流程
+```mermaid
+flowchart TD
+    S((开始)) 
+    Z((归档/结束))
 
     subgraph KB["知识库构建链路"]
         direction LR
@@ -177,13 +152,11 @@ flowchart TD
     J -- 分析设计文档 --> E 
     E <-. Spec文档 .-> P
     D <-- 变更内容 --> E
-    
 ```
 
-### Skill 速查表
-
-| 链路      | 命令              | 说明                   |
-|----------|-------------------|------------------------|
+### 常用流程速查
+| 链路分类 | 核心命令 | 核心产出 |
+| :--- | :--- | :--- |
 | 知识库构建 | `/docs-bootstrap` | 初始化目标工程文档骨架与配置 |
 | 知识库构建 | `/docs-indexing`  | 生成或更新 `INDEX_GUIDE.md` 索引地图 |
 | 知识库构建 | `/agent-guide`    | 同步 `AGENTS.md` 与 `README.md` 协作约束 |
@@ -199,80 +172,25 @@ flowchart TD
 
 ---
 
-## 技术架构
+## 🛠️ 技术指标与架构
 
-| 维度 | 说明 |
-|------|------|
-| 主要格式 | Markdown、YAML（知识实体与各视角元数据） |
-| 脚本 | Bash 5+（`docs-install`、`agent-install`、`docs-bootstrap` 等初始化链） |
-| 协作 | Git，遵循 Conventional Commits（见 [agent/rules/coding/git-guidelines.md](agent/rules/coding/git-guidelines.md)） |
-| 运行时 | 本仓库不包含服务端或业务应用运行时；构建/启动命令以向目标工程注入文档为准 |
-
-架构依赖关系：
-
-```mermaid
-flowchart TD
-  subgraph central["中央库 ai-knowledge"]
-    app["application/"]
-    sys["system/"]
-    com["company/"]
-    ag["agent/"]
-    sc["scripts/"]
-  end
-  tgt["目标工程 docs/ 与仓库根 .docsconfig"]
-  sc -->|"docs-install / bootstrap"| app
-  sc -->|"docs-install / bootstrap"| sys
-  sc -->|"docs-install / bootstrap"| com
-  com --> sys --> app
-  sc -->|"agent-install"| ag
-  sc --> tgt
-  sys --> tgt
-  com --> tgt
-  app -->|"DESIGN/CONTRIBUTING 约束"| app
-```
+- **数据载体**：UTF-8 Markdown (Content) + Frontmatter YAML (Metadata)。
+- **版本控制**：Git，强制遵循 [Conventional Commits](agent/rules/coding/git-guidelines.md)。
+- **SSOT 设计**：跨文件引用仅限 `ID` 字符串，严禁正文冗余同步。
 
 ---
 
-## 文档导航
+## 🤝 参与贡献
 
-| 文档 | 用途 |
-|------|------|
-| [AGENTS.md](AGENTS.md) | AI Agent 契约、约束与关键路径 |
-| [INDEX_GUIDE.md](INDEX_GUIDE.md) | 全库路径地图与检索精要（权威索引） |
-| [application/README.md](application/README.md) | 应用知识库 |
-| [system/README.md](system/README.md) | 系统知识库 |
-| [company/README.md](company/README.md) | 公司知识库 |
-| [agent/README.md](agent/README.md) | Agent Rules 规范与 Slash Skills |
-| [scripts/README.md](scripts/README.md) | 初始化脚本参数、模式与落地产物；`.docsconfig` 键说明 |
+在进行任何修改前，请务必阅读以下文档以确保符合元模型一致性：
+1. [INDEX_GUIDE.md](INDEX_GUIDE.md) — 了解当前知识登记表。
+2. [application/DESIGN.md](application/DESIGN.md) — 理解四视角元模型设计逻辑。
+3. [application/CONTRIBUTING.md](application/CONTRIBUTING.md) — 熟悉贡献流程与质量门禁。
 
 ---
 
-## 开发指南
+## 📜 许可说明
 
-- **规范索引**：[agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)
-- **系统设计与元模型**：[application/DESIGN.md](application/DESIGN.md)
-- **贡献流程**：[application/CONTRIBUTING.md](application/CONTRIBUTING.md)
-- **提交信息**：遵循 Conventional Commits，格式为 `<类型>: <描述>`
+本项目采用 [Apache-2.0](LICENSE) 开源协议。
 
-  ```
-  docs: 更新 application/INDEX_GUIDE 登记
-  feat: 新增 sdx-test Skill 模板
-  fix: 修复 docs-install --mode=central 路径计算
-  ```
-
----
-
-## 贡献指南
-
-新增或修改知识实体、阶段文档与索引前，请先阅读：
-
-1. [application/CONTRIBUTING.md](application/CONTRIBUTING.md) — 贡献流程与阶段规则
-2. [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md) — 全局命名与交付约定
-3. 相关子目录 README
-
-**注意事项：**
-
-- 禁止随意修改 `application/knowledge/` 已有实体 ID 或破坏跨视角 ID 引用，除非同步更新全部引用
-- 禁止未读 [application/DESIGN.md](application/DESIGN.md) 即新增 knowledge 实体或 ADR
-- 禁止未经用户确认即执行 `git commit` / `git push`
-- 避免破坏跨文档 ID 引用与导航表一致性
+🤖 *Generated by [Antigravity](https://github.com/oleewen/ai-knowledge) Framework*
