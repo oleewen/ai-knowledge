@@ -19,6 +19,59 @@ require_bash5() {
 require_bash5
 
 # =============================================================================
+# § 日志与输出
+# =============================================================================
+
+sdx_log()   { printf '%s\n'       "$*" >&2; }
+sdx_info()  { printf '信息: %s\n'  "$*" >&2; }
+sdx_warn()  { printf '警告: %s\n'  "$*" >&2; }
+sdx_error() { printf '错误: %s\n' "$*" >&2; exit 1; }
+
+# =============================================================================
+# § IO 与同步工具
+# =============================================================================
+
+sdx_have_cmd() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+# dry-run 感知的命令执行器
+# 要求调用方环境中定义了 $DRY_RUN 或全局变量
+sdx_run_or_dry() {
+  local dry="${DRY_RUN:-${CFG[dry_run]:-0}}"
+  if [[ "$dry" == '1' ]]; then
+    sdx_log "[dry-run] $*"
+  else
+    "$@"
+  fi
+}
+
+sdx_ensure_dir() { sdx_run_or_dry mkdir -p "$1"; }
+
+# 同步目录树，允许排除文件
+# 用法：sdx_sync_dir <src> <dst> [extra_rsync_args...]
+sdx_sync_dir() {
+  local src="$1" dst="$2"
+  shift 2
+  local dry="${DRY_RUN:-${CFG[dry_run]:-0}}"
+
+  [[ -d "$src" ]] || return 0
+  if [[ "$dry" == '1' ]]; then
+    sdx_log "[dry-run] 同步目录: $src → $dst"
+    return 0
+  fi
+  sdx_ensure_dir "$dst"
+  if sdx_have_cmd rsync; then
+    rsync -a --delete "$@" "$src"/ "$dst"/
+  else
+    sdx_warn "未检测到 rsync，使用 cp -R（无法完全排除或增量同步；建议安装 rsync）"
+    rm -rf "$dst"
+    sdx_ensure_dir "$(dirname "$dst")"
+    cp -R "$src" "$dst"
+  fi
+}
+
+# =============================================================================
 # § 中央库 Git 与 docs-bootstrap（curl | bash）克隆参数
 # 环境变量 GIT_REPO_URL / GIT_REF 可覆盖；由 sdx_docs_bootstrap_get_* 读取。
 # =============================================================================
@@ -298,10 +351,6 @@ docsconfig_read_into() {
 # =============================================================================
 # § 文本文件与 agent/ 路径段重写（docs-install / agent-install 共用）
 # =============================================================================
-
-sdx_have_cmd() {
-  command -v "$1" >/dev/null 2>&1
-}
 
 sdx_is_text_file() {
   local f="$1"

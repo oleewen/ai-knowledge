@@ -14,9 +14,6 @@ readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=./link-config.sh
 source "${SCRIPT_DIR}/link-config.sh"
 
-error() { printf '错误: %s\n' "$*" >&2; exit 1; }
-warn() { printf '警告: %s\n' "$*" >&2; }
-
 # =============================================================================
 # knowledge-links.yaml
 # =============================================================================
@@ -199,16 +196,12 @@ knowledge_link_ensure_application_slot() {
   local tpl dest
   tpl="$(strip_trailing_slash "$(abs_path "$doc_root")")/application-APPNAME"
   dest="$(strip_trailing_slash "$(abs_path "$doc_root")")/application-${app}"
-  if [[ "$app" == 'APPNAME' ]]; then
-    warn "推断的 APPNAME 为 APPNAME，跳过槽位目录生成（与模板同名）"
-    return 0
-  fi
-  [[ -d "$tpl" ]] || error "源 DOC_ROOT 下缺少模板目录: $tpl"
+  [[ -d "$tpl" ]] || sdx_error "源 DOC_ROOT 下缺少模板目录: $tpl"
   if [[ -d "$dest" ]]; then
     return 0
   fi
   if [[ "$DRY" == '1' ]]; then
-    printf '[dry-run] 将自模板创建目录: %s → %s\n' "$tpl" "$dest" >&2
+    sdx_log "[dry-run] 将自模板创建目录: %s → %s" "$tpl" "$dest"
     return 0
   fi
   cp -R "$tpl" "$dest"
@@ -256,13 +249,13 @@ knowledge_link_remove_application_slot() {
     return 0
   fi
   repo_root="$(knowledge_link_repo_root_for_backup "$doc_root")" || {
-    warn "无法解析 REPO_ROOT，跳过备份，将直接删除: $dest"
+    sdx_warn "无法解析 REPO_ROOT，跳过备份，将直接删除: $dest"
     if [[ "$DRY" == '1' ]]; then
-      printf '[dry-run] 将删除目录: %s\n' "$dest" >&2
+      sdx_log "[dry-run] 将删除目录: $dest"
       return 0
     fi
     rm -rf "$dest"
-    printf '已删除槽位目录: %s\n' "$dest" >&2
+    sdx_info "已删除槽位目录: $dest"
     return 0
   }
   sdx_docs_backup_path_to_init "$repo_root" "$dest" "" "$DRY"
@@ -277,52 +270,8 @@ CMD=''
 TARGET_RAW=''
 CLI_APP_NAME=''
 
-while (( $# > 0 )); do
-  case "$1" in
-    --link)
-      [[ "$CMD" == 'unlink' ]] && error "不能同时指定 --link 与 --unlink"
-      [[ "$CMD" == 'link' ]] && error "重复指定 --link"
-      CMD='link'
-      shift
-      ;;
-    --unlink)
-      [[ "$CMD" == 'link' ]] && error "不能同时指定 --link 与 --unlink"
-      [[ "$CMD" == 'unlink' ]] && error "重复指定 --unlink"
-      CMD='unlink'
-      shift
-      ;;
-    --dry-run)   DRY=1; shift ;;
-    --app-name=*)
-      CLI_APP_NAME="${1#*=}"
-      shift
-      ;;
-    --app-name)
-      shift
-      [[ -n "${1:-}" ]] || error "缺少 --app-name 值"
-      CLI_APP_NAME="$1"
-      shift
-      ;;
-    --target=*)  TARGET_RAW="${1#*=}"; shift ;;
-    --target)
-      shift
-      [[ -n "${1:-}" ]] || error "缺少 --target 值"
-      TARGET_RAW="$1"
-      shift
-      ;;
-    --path=*)
-      TARGET_RAW="${1#*=}"
-      warn "--path 已弃用，请改用 --target"
-      shift
-      ;;
-    --path)
-      shift
-      [[ -n "${1:-}" ]] || error "缺少 --path 值"
-      TARGET_RAW="$1"
-      warn "--path 已弃用，请改用 --target"
-      shift
-      ;;
-    -h|--help)
-      cat >&2 <<'EOF'
+usage() {
+  cat >&2 <<'EOF'
 用法: ./scripts/docs-link.sh --link|--unlink --target=<目标知识库仓库根> [--app-name=名] [--dry-run]
 
   --link / --unlink 二选一，不得同时出现。
@@ -346,23 +295,71 @@ while (( $# > 0 )); do
   ./scripts/docs-link.sh --target=~/workspaces/target-repo --link --app-name=my-app
   ./scripts/docs-link.sh --target=~/workspaces/target-repo --unlink --dry-run
 EOF
+}
+
+while (( $# > 0 )); do
+  case "$1" in
+    --link)
+      [[ "$CMD" == 'unlink' ]] && sdx_error "不能同时指定 --link 与 --unlink"
+      [[ "$CMD" == 'link' ]] && sdx_error "重复指定 --link"
+      CMD='link'
+      shift
+      ;;
+    --unlink)
+      [[ "$CMD" == 'link' ]] && sdx_error "不能同时指定 --link 与 --unlink"
+      [[ "$CMD" == 'unlink' ]] && sdx_error "重复指定 --unlink"
+      CMD='unlink'
+      shift
+      ;;
+    --dry-run)   DRY=1; shift ;;
+    --app-name=*)
+      CLI_APP_NAME="${1#*=}"
+      shift
+      ;;
+    --app-name)
+      shift
+      [[ -n "${1:-}" ]] || sdx_error "缺少 --app-name 值"
+      CLI_APP_NAME="$1"
+      shift
+      ;;
+    --target=*)  TARGET_RAW="${1#*=}"; shift ;;
+    --target)
+      shift
+      [[ -n "${1:-}" ]] || sdx_error "缺少 --target 值"
+      TARGET_RAW="$1"
+      shift
+      ;;
+    --path=*)
+      TARGET_RAW="${1#*=}"
+      sdx_warn "--path 已弃用，请改用 --target"
+      shift
+      ;;
+    --path)
+      shift
+      [[ -n "${1:-}" ]] || sdx_error "缺少 --path 值"
+      TARGET_RAW="$1"
+      sdx_warn "--path 已弃用，请改用 --target"
+      shift
+      ;;
+    -h|--help)
+      usage
       exit 0
       ;;
-    *) error "未知参数: $1" ;;
+    *) sdx_error "未知参数: $1" ;;
   esac
 done
 
-validate_link_command "$CMD" || error "请指定 --link 或 --unlink（二选一）"
-[[ -n "$TARGET_RAW" ]] || error "请指定 --target=<目标仓库根>"
+validate_link_command "$CMD" || sdx_error "请指定 --link 或 --unlink（二选一）"
+[[ -n "$TARGET_RAW" ]] || sdx_error "请指定 --target=<目标仓库根>"
 
-SRC_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || error "请在 Git 仓库内执行 docs-link"
+SRC_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || sdx_error "请在 Git 仓库内执行 docs-link"
 SRC_CFG="$SRC_ROOT/.docsconfig"
-[[ -f "$SRC_CFG" ]] || error "源仓库缺少 .docsconfig: $SRC_CFG"
+[[ -f "$SRC_CFG" ]] || sdx_error "源仓库缺少 .docsconfig: $SRC_CFG"
 
 _sdoc='' _srepo='' _sdd='' _skt=''
-docsconfig_read_into "$SRC_CFG" _sdoc _srepo _sdd _skt || error "无法解析源 .docsconfig"
-[[ -n "$_sdoc" ]] || error "源 .docsconfig 缺少 DOC_ROOT"
-[[ -n "$_skt" ]] || error "源 .docsconfig 缺少 KNOWLEDGE_TYPE"
+docsconfig_read_into "$SRC_CFG" _sdoc _srepo _sdd _skt || sdx_error "无法解析源 .docsconfig"
+[[ -n "$_sdoc" ]] || sdx_error "源 .docsconfig 缺少 DOC_ROOT"
+[[ -n "$_skt" ]] || sdx_error "源 .docsconfig 缺少 KNOWLEDGE_TYPE"
 docsconfig_validate_knowledge_type "$_skt" || exit 1
 
 expect_target=''
@@ -370,30 +367,30 @@ LIST_FILE="$_sdoc/knowledge-links.yaml"
 case "$_skt" in
   company) expect_target='system' ;;
   system)  expect_target='application' ;;
-  *) error "源 KNOWLEDGE_TYPE=${_skt} 不支持建联（仅 company 或 system 可作为源）" ;;
+  *) sdx_error "源 KNOWLEDGE_TYPE=${_skt} 不支持建联（仅 company 或 system 可作为源）" ;;
 esac
 
-TARGET_KEY="$(normalize_target_repo_root "$TARGET_RAW")" || error "目标路径非法: $TARGET_RAW"
+TARGET_KEY="$(normalize_target_repo_root "$TARGET_RAW")" || sdx_error "目标路径非法: $TARGET_RAW"
 REGISTER_KEY=''
 TARGET_DOC_DIR=''
 TARGET_APP_NAME=''
 matched_idx=-1
 
 if [[ "$CMD" == 'link' ]]; then
-  TGT_ROOT="$(cd -P "$TARGET_KEY" 2>/dev/null && pwd)" || error "目标路径不存在或不可进入: $TARGET_KEY"
+  TGT_ROOT="$(cd -P "$TARGET_KEY" 2>/dev/null && pwd)" || sdx_error "目标路径不存在或不可进入: $TARGET_KEY"
   TGT_CFG="$TGT_ROOT/.docsconfig"
-  [[ -f "$TGT_CFG" ]] || error "目标仓库缺少 .docsconfig: $TGT_CFG"
+  [[ -f "$TGT_CFG" ]] || sdx_error "目标仓库缺少 .docsconfig: $TGT_CFG"
 
   _tdoc='' _trepo='' _tdd='' _tkt=''
-  docsconfig_read_into "$TGT_CFG" _tdoc _trepo _tdd _tkt || error "无法解析目标 .docsconfig"
-  [[ -n "$_tkt" ]] || error "目标 .docsconfig 缺少 KNOWLEDGE_TYPE"
+  docsconfig_read_into "$TGT_CFG" _tdoc _trepo _tdd _tkt || sdx_error "无法解析目标 .docsconfig"
+  [[ -n "$_tkt" ]] || sdx_error "目标 .docsconfig 缺少 KNOWLEDGE_TYPE"
   docsconfig_validate_knowledge_type "$_tkt" || exit 1
-  [[ "$_tkt" == "$expect_target" ]] || error "目标须为 ${expect_target} 知识库（KNOWLEDGE_TYPE=${_tkt}）"
+  [[ "$_tkt" == "$expect_target" ]] || sdx_error "目标须为 ${expect_target} 知识库（KNOWLEDGE_TYPE=${_tkt}）"
   REGISTER_KEY="$(knowledge_link_register_value_from_dir "$TGT_ROOT")"
   TARGET_DOC_DIR="${_tdd:-}"
 else
-  REGISTER_KEY="$(knowledge_link_identity_from_raw_target "$TARGET_RAW")" || error "目标路径非法: $TARGET_RAW"
-  [[ -z "$CLI_APP_NAME" ]] || warn "--app-name 仅在 --link 时有效，已忽略"
+  REGISTER_KEY="$(knowledge_link_identity_from_raw_target "$TARGET_RAW")" || sdx_error "目标路径非法: $TARGET_RAW"
+  [[ -z "$CLI_APP_NAME" ]] || sdx_warn "--app-name 仅在 --link 时有效，已忽略"
 fi
 
 declare -a paths=() doc_dirs=() app_names=()

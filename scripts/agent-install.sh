@@ -9,10 +9,8 @@ readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=agent-config.sh
 source "${SCRIPT_DIR}/agent-config.sh"
 
-log()   { printf '%s\n'       "$*" >&2; }
-info()  { printf '信息: %s\n'  "$*" >&2; }
-warn()  { printf '警告: %s\n'  "$*" >&2; }
-error() { printf '错误: %s\n' "$*" >&2; exit 1; }
+# shellcheck source=agent-config.sh
+source "${SCRIPT_DIR}/agent-config.sh"
 
 # =============================================================================
 # 全局状态
@@ -35,47 +33,25 @@ INSTALL_SCRIPTS=0
 
 declare -a ENABLED_AGENTS=()
 
-have_cmd()  { command -v "$1" >/dev/null 2>&1; }
+have_cmd()  { sdx_have_cmd "$1"; }
 have_perl() { sdx_have_perl; }
 
-run_or_dry() {
-  if [[ "${CFG[dry_run]}" == '1' ]]; then
-    log "[dry-run] $*"
-  else
-    "$@"
-  fi
-}
-
-ensure_dir() { run_or_dry mkdir -p "$1"; }
+run_or_dry() { sdx_run_or_dry "$@"; }
+ensure_dir() { sdx_ensure_dir "$1"; }
 
 # 同步目录树，排除各层 README / readme.md
 sync_tree_excluding_readme() {
   local src="$1" dst="$2"
-  [[ -d "$src" ]] || return 0
-  if [[ "${CFG[dry_run]}" == '1' ]]; then
-    log "[dry-run] 同步目录: $src → $dst"
-    return 0
-  fi
-  ensure_dir "$dst"
-  if have_cmd rsync; then
-    rsync -a --delete \
-      --exclude 'README' --exclude 'README.md' --exclude 'readme.md' \
-      "$src"/ "$dst"/
-  else
-    warn "未检测到 rsync，使用 cp -R（无法排除 README；建议安装 rsync）"
-    rm -rf "$dst"
-    ensure_dir "$(dirname "$dst")"
-    cp -R "$src" "$dst"
-  fi
+  sdx_sync_dir "$src" "$dst" --exclude 'README' --exclude 'README.md' --exclude 'readme.md'
 }
 
 copy_file_plain() {
   local src="$1" dst="$2"
   if [[ "${CFG[dry_run]}" == '1' ]]; then
-    log "[dry-run] 拷贝: $src → $dst"
+    sdx_log "[dry-run] 拷贝: $src → $dst"
     return 0
   fi
-  ensure_dir "$(dirname "$dst")"
+  sdx_ensure_dir "$(dirname "$dst")"
   cp "$src" "$dst"
 }
 
@@ -93,124 +69,90 @@ init_repo_root() {
     CFG[repo_root]="$(abs_path "$SCRIPT_DIR/..")"
   fi
   local rr="${CFG[repo_root]}"
-  [[ -d "$rr/agent/rules"   ]] || error "未找到 agent/rules: $rr/agent/rules"
-  [[ -d "$rr/agent/skills"  ]] || error "未找到 agent/skills: $rr/agent/skills"
-  [[ -d "$rr/agent/hooks"   ]] || error "未找到 agent/hooks: $rr/agent/hooks"
-  [[ -d "$rr/agent/scripts" ]] || error "未找到 agent/scripts: $rr/agent/scripts"
-  [[ -f "$rr/agent/scripts/docs-core.sh" ]] || error "未找到 agent/scripts/docs-core.sh: $rr/agent/scripts/docs-core.sh"
+  [[ -d "$rr/agent/rules"   ]] || sdx_error "未找到 agent/rules: $rr/agent/rules"
+  [[ -d "$rr/agent/skills"  ]] || sdx_error "未找到 agent/skills: $rr/agent/skills"
+  [[ -d "$rr/agent/hooks"   ]] || sdx_error "未找到 agent/hooks: $rr/agent/hooks"
+  [[ -d "$rr/agent/scripts" ]] || sdx_error "未找到 agent/scripts: $rr/agent/scripts"
+  [[ -f "$rr/agent/scripts/docs-core.sh" ]] || sdx_error "未找到 agent/scripts/docs-core.sh: $rr/agent/scripts/docs-core.sh"
 }
 
 apply_scope() {
   validate_agent_scope_token "${CFG[scope]}" \
-    || error "无效 --scope: ${CFG[scope]}（支持 a|r|s|h|sh）"
+    || sdx_error "无效 --scope: ${CFG[scope]}（支持 a|r|s|h|sh）"
   agent_scope_apply "${CFG[scope]}" INSTALL_RULES INSTALL_SKILLS INSTALL_HOOKS INSTALL_SCRIPTS \
-    || error "内部错误：无法应用 scope: ${CFG[scope]}"
+    || sdx_error "内部错误：无法应用 scope: ${CFG[scope]}"
 }
 
 apply_agents() {
   local ao="${CFG[agents_opt]:-}"
   [[ -n "$ao" ]] || ao="${AGENTS_OPT:-$SDX_DEFAULT_AGENTS_OPT}"
   validate_agents "$ao" \
-    || error "无效 --agents: $ao（支持 cursor、trea、claude、all 及逗号或空格分隔多选）"
+    || sdx_error "无效 --agents: $ao（支持 cursor、trea、claude、all 及逗号或空格分隔多选）"
   read -ra ENABLED_AGENTS <<< "$(normalize_agents "$ao")"
-  (( ${#ENABLED_AGENTS[@]} > 0 )) || error "未解析到任何 Agent"
+  (( ${#ENABLED_AGENTS[@]} > 0 )) || sdx_error "未解析到任何 Agent"
 }
 
 # =============================================================================
 # 安装各子树
 # =============================================================================
 
-install_agent_scripts() {
-  (( INSTALL_SCRIPTS == 1 )) || return 0
+# 通用资源安装（scripts、rules、skills）
+# 用法：install_agent_subtree_generic <label> <src_rel_path> <dst_rel_path> [extra_item_logic_func]
+install_agent_resource() {
+  local label="$1" src_rel="$2" dst_rel="$3"
   local agent agent_dir agent_slash
-  local src_scripts="${CFG[repo_root]}/agent/scripts"
-  local src_docs_ssot="${CFG[repo_root]}/agent/scripts/docs-core.sh"
-  local item base dst_scripts
+  local src_root="${CFG[repo_root]}/${src_rel}"
+  local item base dst_dir
 
-  [[ -d "$src_scripts" ]] || { warn "未找到 agent/scripts，跳过"; return 0; }
+  [[ -d "$src_root" ]] || { sdx_warn "未找到 ${src_root}，跳过 ${label}"; return 0; }
 
   for agent in "${ENABLED_AGENTS[@]}"; do
     agent_dir="$(agent_install_root "$agent")"
     agent_slash="$(get_agent_dir "$agent")/"
-    info ">>> 安装 ${agent}：scripts"
-    dst_scripts="${agent_dir}/scripts"
-    ensure_dir "$dst_scripts"
+    sdx_info ">>> 安装 ${agent}：${label}"
+    dst_dir="${agent_dir}/${dst_rel}"
+    ensure_dir "$dst_dir"
 
     shopt -s nullglob
-    for item in "$src_scripts"/*; do
+    for item in "$src_root"/*; do
       base="$(basename "$item")"
       [[ "$base" == 'README' || "$base" == 'README.md' || "$base" == 'readme.md' ]] && continue
-      [[ "$base" == 'docs-core.sh' ]] && continue
+      # 特殊说明：docs-core.sh 在 scripts 流程中单独处理（为了明确来源）
+      [[ "$label" == "scripts" && "$base" == "docs-core.sh" ]] && continue
+
       if [[ -d "$item" ]]; then
-        sync_tree_excluding_readme "$item" "$dst_scripts/$base"
+        sync_tree_excluding_readme "$item" "$dst_dir/$base"
       else
-        copy_file_plain "$item" "$dst_scripts/$base"
+        copy_file_plain "$item" "$dst_dir/$base"
       fi
     done
-    copy_file_plain "$src_docs_ssot" "$dst_scripts/docs-core.sh"
 
     if [[ "${CFG[dry_run]}" == '0' ]]; then
-      sdx_rewrite_agent_path_segment_in_tree "$dst_scripts" "$agent_slash"
+      sdx_rewrite_agent_path_segment_in_tree "$dst_dir" "$agent_slash"
     fi
+  done
+}
+
+install_agent_scripts() {
+  (( INSTALL_SCRIPTS == 1 )) || return 0
+  install_agent_resource "scripts" "agent/scripts" "scripts"
+  
+  # 补充 docs-core.sh
+  local agent agent_dir src_docs_ssot="${CFG[repo_root]}/agent/scripts/docs-core.sh"
+  for agent in "${ENABLED_AGENTS[@]}"; do
+    agent_dir="$(agent_install_root "$agent")"
+    copy_file_plain "$src_docs_ssot" "${agent_dir}/scripts/docs-core.sh"
   done
 }
 
 install_agent_skills() {
   (( INSTALL_SKILLS == 1 )) || return 0
-  local agent agent_dir agent_slash
-  local skills_root="${CFG[repo_root]}/agent/skills"
-  local sd skill
-
-  [[ -d "$skills_root" ]] || { warn "未找到 agent/skills"; return 0; }
-
-  for agent in "${ENABLED_AGENTS[@]}"; do
-    agent_dir="$(agent_install_root "$agent")"
-    agent_slash="$(get_agent_dir "$agent")/"
-    info ">>> 安装 ${agent}：skills"
-    ensure_dir "${agent_dir}/skills"
-
-    shopt -s nullglob
-    for sd in "$skills_root"/*/; do
-      [[ -d "$sd" ]] || continue
-      skill="$(basename "$sd")"
-      sync_tree_excluding_readme "$sd" "${agent_dir}/skills/$skill"
-    done
-
-    if [[ "${CFG[dry_run]}" == '0' ]]; then
-      sdx_rewrite_agent_path_segment_in_tree "${agent_dir}/skills" "$agent_slash"
-    fi
-  done
+  install_agent_resource "skills" "agent/skills" "skills"
 }
 
 install_agent_rules() {
   (( INSTALL_RULES == 1 )) || return 0
-  local agent agent_dir agent_slash
-  local rules_src="${CFG[repo_root]}/agent/rules"
-  local item base
-
-  [[ -d "$rules_src" ]] || { warn "未找到 agent/rules"; return 0; }
-
-  for agent in "${ENABLED_AGENTS[@]}"; do
-    agent_dir="$(agent_install_root "$agent")"
-    agent_slash="$(get_agent_dir "$agent")/"
-    info ">>> 安装 ${agent}：rules"
-    ensure_dir "${agent_dir}/rules"
-
-    shopt -s nullglob
-    for item in "$rules_src"/*; do
-      base="$(basename "$item")"
-      [[ "$base" == 'README' || "$base" == 'README.md' || "$base" == 'readme.md' ]] && continue
-      if [[ -d "$item" ]]; then
-        sync_tree_excluding_readme "$item" "${agent_dir}/rules/$base"
-      else
-        copy_file_plain "$item" "${agent_dir}/rules/$base"
-      fi
-    done
-
-    if [[ "${CFG[dry_run]}" == '0' ]]; then
-      sdx_rewrite_agent_path_segment_in_tree "${agent_dir}/rules" "$agent_slash"
-    fi
-  done
+  install_agent_resource "rules" "agent/rules" "rules"
 }
 
 install_agent_hooks() {
@@ -219,12 +161,12 @@ install_agent_hooks() {
   local hooks_src="${CFG[repo_root]}/agent/hooks"
   local hooks_json="${CFG[repo_root]}/agent/hooks.json"
 
-  [[ -d "$hooks_src" || -f "$hooks_json" ]] || { warn "未找到 agent/hooks 或 agent/hooks.json"; return 0; }
+  [[ -d "$hooks_src" || -f "$hooks_json" ]] || { sdx_warn "未找到 agent/hooks 或 agent/hooks.json"; return 0; }
 
   for agent in "${ENABLED_AGENTS[@]}"; do
     agent_dir="$(agent_install_root "$agent")"
     agent_slash="$(get_agent_dir "$agent")/"
-    info ">>> 安装 ${agent}：hooks"
+    sdx_info ">>> 安装 ${agent}：hooks"
     [[ -d "$hooks_src" ]] && sync_tree_excluding_readme "$hooks_src" "${agent_dir}/hooks"
     [[ -f "$hooks_json" ]] && copy_file_plain "$hooks_json" "${agent_dir}/hooks.json"
 
@@ -236,7 +178,7 @@ install_agent_hooks() {
             # 仅在 $HOME 场景下，定向处理 hooks.json 的 command 值：agent/ -> 空。
             perl -0777 -i -pe 's/("command"\s*:\s*"[^"\n]*)agent\//\1/g' "${agent_dir}/hooks.json"
           else
-            warn "未检测到 perl：跳过 hooks.json command 的 agent/ 前缀去除。"
+            sdx_warn "未检测到 perl：跳过 hooks.json command 的 agent/ 前缀去除。"
           fi
         else
           sdx_rewrite_agent_path_segment_in_file "${agent_dir}/hooks.json" "$agent_slash"
@@ -274,19 +216,19 @@ install_agent_config() {
 
   local cfg="$t/.docsconfig"
   [[ -f "$cfg" ]] \
-    || error "未找到 $cfg。请先在该工程执行 docs-install（或 docs-install --scope=config <目标工程文档目录>）生成 .docsconfig。"
+    || sdx_error "未找到 $cfg。请先在该工程执行 docs-install（或 docs-install --scope=config <目标工程文档目录>）生成 .docsconfig。"
 
   local doc_root repo_root doc_dir _ar_old _ads_old kt
   docsconfig_read_into "$cfg" doc_root repo_root doc_dir _ar_old _ads_old kt \
-    || error "无法解析: $cfg"
+    || sdx_error "无法解析: $cfg"
 
   [[ -n "$doc_root" && -n "$repo_root" && -n "$doc_dir" ]] \
-    || error ".docsconfig 缺少 DOC_ROOT/REPO_ROOT/DOC_DIR，请重新执行 docs-install。"
+    || sdx_error ".docsconfig 缺少 DOC_ROOT/REPO_ROOT/DOC_DIR，请重新执行 docs-install。"
 
   local ar ads
   install_agent_path ar ads
 
-  info ">>> 更新 .docsconfig 中的 AGENT_ROOT / AGENT_DIRS（按本次参数重算）: $cfg"
+  sdx_info ">>> 更新 .docsconfig 中的 AGENT_ROOT / AGENT_DIRS（按本次参数重算）: $cfg"
   docsconfig_write "$t" "$doc_root" "$doc_dir" "${CFG[dry_run]}" "$ar" "$ads" "${kt:-}"
 }
 
@@ -335,7 +277,7 @@ parse_args() {
         ;;
       --scope)
         shift
-        [[ -n "${1:-}" ]] || error "缺少 --scope 值"
+        [[ -n "${1:-}" ]] || sdx_error "缺少 --scope 值"
         CFG[scope]="$1"
         shift
         ;;
@@ -345,7 +287,7 @@ parse_args() {
         ;;
       --target)
         shift
-        [[ -n "${1:-}" ]] || error "缺少 --target 值"
+        [[ -n "${1:-}" ]] || sdx_error "缺少 --target 值"
         CFG[target_abs]="$1"
         shift
         ;;
@@ -359,7 +301,7 @@ parse_args() {
         while (( $# > 0 )); do
           case "$1" in -*) break ;; *) parts+=("$1"); shift ;; esac
         done
-        (( ${#parts[@]} > 0 )) || error "缺少 --agents 值（如 cursor,trea 或 cursor trea）"
+        (( ${#parts[@]} > 0 )) || sdx_error "缺少 --agents 值（如 cursor,trea 或 cursor trea）"
         CFG[agents_opt]="$(IFS=','; printf '%s' "${parts[*]}")"
         ;;
       --dry-run)
@@ -371,7 +313,7 @@ parse_args() {
         exit 0
         ;;
       *)
-        error "未知或不支持的参数: $1（支持 --scope / --target / --agents / --dry-run）"
+        sdx_error "未知或不支持的参数: $1（支持 --scope / --target / --agents / --dry-run）"
         ;;
     esac
   done
@@ -379,7 +321,7 @@ parse_args() {
 
 agent_install_run() {
   init_repo_root
-  [[ -n "${HOME:-}" ]] || error "需要 HOME 环境变量"
+  [[ -n "${HOME:-}" ]] || sdx_error "需要 HOME 环境变量"
   CFG[home_abs]="$(abs_path "$HOME")"
 
   if [[ -z "${CFG[target_abs]:-}" ]]; then
@@ -391,12 +333,12 @@ agent_install_run() {
   apply_scope
   apply_agents
 
-  have_perl || warn "未检测到 perl：路径替换可能被跳过，建议安装 perl。"
+  have_perl || sdx_warn "未检测到 perl：路径替换可能被跳过，建议安装 perl。"
 
   install_agent
   install_agent_config
 
-  info "完成：agent-install"
+  sdx_info "完成：agent-install"
 }
 
 main() {

@@ -64,16 +64,17 @@ SDX_BS_CLONE_DIR=''
 SDX_BS_TARGET_DIR="${PWD}"
 
 # =============================================================================
-# § 3  日志与错误处理
+# § 3  日志与错误处理（回退逻辑以支持 standalone curl | bash）
 # =============================================================================
 
-sdx_bs_log()  { printf '%s\n'        "$*" >&2; }
-sdx_bs_info() { printf '[INFO]  %s\n' "$*" >&2; }
-sdx_bs_err()  { printf '[ERROR] %s\n' "$*" >&2; }
+if ! declare -F sdx_log >/dev/null 2>&1; then
+  sdx_log()   { printf '%s\n'       "$*" >&2; }
+  sdx_info()  { printf '[INFO]  %s\n' "$*" >&2; }
+  sdx_error() { printf '[ERROR] %s\n' "$*" >&2; exit 1; }
+fi
 
 sdx_bs_die() {
-  sdx_bs_err "$1"
-  exit "${2:-1}"
+  sdx_error "$1"
 }
 
 # =============================================================================
@@ -96,25 +97,25 @@ sdx_bs_clone_repo() {
   local repo_url="$1" ref="$2" dest_dir="$3"
 
   if [[ -d "$dest_dir" ]]; then
-    sdx_bs_info "清理已存在的临时目录: $dest_dir"
+    sdx_info "清理已存在的临时目录: $dest_dir"
     rm -rf "$dest_dir"
   fi
 
-  sdx_bs_info "克隆仓库: $repo_url → $dest_dir"
+  sdx_info "克隆仓库: $repo_url → $dest_dir"
 
   if [[ "$ref" == 'HEAD' || -z "$ref" ]]; then
     git clone --depth 1 "$repo_url" "$dest_dir" \
-      || { sdx_bs_err "克隆失败: $repo_url"; return 1; }
+      || { sdx_error "克隆失败: $repo_url"; }
   else
-    sdx_bs_info "  分支/标签: $ref"
+    sdx_info "  分支/标签: $ref"
     git clone --depth 1 --single-branch -b "$ref" "$repo_url" "$dest_dir" \
-      || { sdx_bs_err "克隆失败: $repo_url (ref: $ref)"; return 1; }
+      || { sdx_error "克隆失败: $repo_url (ref: $ref)"; }
   fi
 }
 
 sdx_bs_cleanup() {
   if [[ -n "$SDX_BS_CLONE_DIR" && -d "$SDX_BS_CLONE_DIR" ]]; then
-    sdx_bs_info "清理临时目录: $SDX_BS_CLONE_DIR"
+    sdx_info "清理临时目录: $SDX_BS_CLONE_DIR"
     rm -rf "$SDX_BS_CLONE_DIR"
   fi
 }
@@ -152,14 +153,14 @@ sdx_bs_main() {
   SDX_BS_CLONE_DIR="$(sdx_docs_bootstrap_gen_clone_dir "$tmpdir")"
   trap sdx_bs_cleanup EXIT
 
-  sdx_bs_log ''
-  sdx_bs_log '=========================================='
-  sdx_bs_log 'docs-bootstrap'
-  sdx_bs_info "仓库: $repo_url"
-  sdx_bs_info "引用: $ref"
-  sdx_bs_info "目标: $SDX_BS_TARGET_DIR"
-  sdx_bs_log '=========================================='
-  sdx_bs_log ''
+  sdx_log ''
+  sdx_log '=========================================='
+  sdx_log 'docs-bootstrap'
+  sdx_info "仓库: $repo_url"
+  sdx_info "引用: $ref"
+  sdx_info "目标: $SDX_BS_TARGET_DIR"
+  sdx_log '=========================================='
+  sdx_log ''
 
   sdx_bs_clone_repo "$repo_url" "$ref" "$SDX_BS_CLONE_DIR" || exit 1
 
@@ -172,10 +173,10 @@ sdx_bs_main() {
   # shellcheck disable=SC1090
   source "$shared_config"
 
-  sdx_bs_log ''
-  sdx_bs_info "已加载共享配置（agent/scripts/docs-core.sh）"
-  sdx_bs_info '>>> 执行 docs-install.sh...'
-  sdx_bs_log ''
+  sdx_log ''
+  sdx_info "已加载共享配置（agent/scripts/docs-core.sh）"
+  sdx_info '>>> 执行 docs-install.sh...'
+  sdx_log ''
 
   export REPO_ROOT="$SDX_BS_CLONE_DIR"
   bash "$docs_install" "$@"
