@@ -142,6 +142,7 @@ Markdown、YAML；**Bash 5+**；Git。可选 `rsync`（脚本可回退 `cp`）�
 | `/docs-change`                                                       | 聚合文档变更至 `application/changelogs/`                               |
 | `/agent-guide`                                                       | 更新本文件与 `README.md`                                              |
 | `/docs-build`                                                        | 知识构建与资产补全（见 [agent/skills/README.md](agent/skills/README.md)） |
+| `/docs-distill`                                                      | 从来源蒸馏业务知识写入目标文档/目录，方案确认后落盘与冲突检查（见 [agent/skills/README.md](agent/skills/README.md)） |
 | `/sdx-solution` `/sdx-analysis` `/sdx-prd` `/sdx-design` `/sdx-test` | SDD 各阶段产物（见 [agent/skills/README.md](agent/skills/README.md)） |
 
 

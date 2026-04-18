@@ -164,6 +164,7 @@ flowchart TD
 | 知识库构建 | `/docs-change`    | 聚合变更到 `application/changelogs/` |
 | 知识库构建 | `/docs-fetch`     | 拉取下游应用侧文档到中央库镜像 |
 | 知识库构建 | `/docs-archive`   | 将应用侧已核实内容归档到系统知识库 |
+| 知识库构建 | `/docs-distill`   | 从来源文档/章节蒸馏业务知识写入目标文档或目录；方案确认后落盘并做冲突检查 |
 | 需求设计  | `/sdx-solution`    | 产出解决方案文档（SOLUTION） |
 | 需求设计  | `/sdx-analysis`    | 产出需求分析文档（ANALYSIS） |
 | 需求设计  | `/sdx-prd`         | 产出产品需求文档（PRD） |
