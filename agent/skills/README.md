@@ -19,7 +19,7 @@
 | `/docs-archive` | 将 `system/application-{name}/` 已核实内容归档到系统知识库 `system/architecture/`；支持 `--app` `--since` `--full` `--dry-run`，默认按增量锚点归档。 |
 | `/docs-fetch` | 从已通过中央知识库挂载建联注册的目标工程拉取最新文档，覆盖更新本仓库联邦镜像 `applications/app-{APPNAME}/`，并追加同步 changelog。 |
 | `/docs-build` | 从工程代码与文档按四视角（技术→数据→业务→产品）提取链上实体 ID，生成 `*_knowledge.json`（schema 2.1），刷新各视角 README 与 `{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md`。 |
-| `/docs-distill` | 从指定文档/目录/章节提炼业务知识，按目标文档或目录体例补充写入；先澄清与方案确认再落盘，补充后做一致性检查与冲突分步确认。 |
+| `/docs-distill` | 支持「来源 {分隔符} 目标」简写（空格、`-`、`2`、`到`、`→` 等）；从指定文档/目录/章节或选中内容提炼、总结、合并、补全到目标文件或目录；先澄清与方案确认再落盘，补充后做一致性检查与冲突分步确认。 |
 | `/sdx-solution` | 产出解决方案阶段文档（Solution 阶段）。 |
 | `/sdx-analysis` | 产出需求分析阶段文档（Analysis 阶段）。 |
 | `/sdx-prd` | 产出 PRD 阶段文档（Requirements 阶段）；总确认前默认禁止写入 `{DOC_DIR}/requirements/**/PRD-*.md`（见技能 HARD-GATE）。 |
