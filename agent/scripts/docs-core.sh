@@ -380,11 +380,17 @@ sdx_rewrite_agent_path_segment_in_file() {
     "$file" 2>/dev/null || true
 }
 
+# 遍历 root 下待重写路径的文件：排除常见依赖/缓存/版本库目录，避免 ~/.cursor/skills 等目录残留导致 find 极慢或“假死”
 sdx_rewrite_agent_path_segment_in_tree() {
   local root="$1" agent_slash="${2:?}"
   [[ -d "$root" ]] || return 0
+  sdx_info "  重写 agent/ 路径引用（跳过 node_modules/.git 等）: ${root}"
   local f
   while IFS= read -r -d '' f; do
     sdx_rewrite_agent_path_segment_in_file "$f" "$agent_slash"
-  done < <(find "$root" -type f -print0 2>/dev/null || true)
+  done < <(
+    find "$root" \
+      \( -name node_modules -o -name .git -o -name __pycache__ -o -name .venv -o -name .cache -o -name dist -o -name build -o -name target \) \
+      -prune -o -type f -print0 2>/dev/null || true
+  )
 }

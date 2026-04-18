@@ -9,9 +9,6 @@ readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=agent-config.sh
 source "${SCRIPT_DIR}/agent-config.sh"
 
-# shellcheck source=agent-config.sh
-source "${SCRIPT_DIR}/agent-config.sh"
-
 # =============================================================================
 # 全局状态
 # =============================================================================
@@ -112,6 +109,7 @@ install_agent_resource() {
     sdx_info ">>> 安装 ${agent}：${label}"
     dst_dir="${agent_dir}/${dst_rel}"
     ensure_dir "$dst_dir"
+    sdx_info "  同步 ${label}：${src_root} → ${dst_dir}"
 
     shopt -s nullglob
     for item in "$src_root"/*; do
