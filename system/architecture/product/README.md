@@ -2,6 +2,8 @@
 
 [返回上一级 · 架构文档索引](../README.md)
 
+本目录为产品架构**目录与入口**。
+
 | 章节 | 文件 |
 |------|------|
 | 产品概述 | [product-overview.md](product-overview.md) |

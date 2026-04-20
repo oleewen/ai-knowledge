@@ -2,6 +2,8 @@
 
 [返回上一级 · 架构文档索引](../README.md)
 
+本目录为技术架构**目录与入口**。
+
 | 章节 | 文件 |
 |------|------|
 | 技术架构概述 | [technical-overview.md](technical-overview.md) |
