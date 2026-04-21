@@ -10,47 +10,39 @@
 
 **锚点 changelog_id 在应用 `CHANGE-LOG.md` 中找不到**：应用变更日志可能被重写或条目被删除。此时不能静默降级为全量归档，须警告并请用户确认，否则可能重复归档已归档内容。
 
-**归档写入失败后仍更新锚点**：锚点必须在**归档目标目录根目录 `system/architecture/` 下本次归档涉及的全部写入**均成功，且 `system/changelogs/CHANGE-LOG.md` 已成功追加后，才更新。任一目标写入失败则不更新锚点，保证下次重试从同一位置开始。
+**归档写入失败后仍更新锚点**：锚点必须在 `{APPNAME}-overview.md` 写入成功，且 `system/changelogs/CHANGE-LOG.md` 已成功追加后，才更新。任一写入失败则不更新锚点，保证下次重试从同一位置开始。
 
-**`--full` 参数误用**：`--full` 会忽略锚点重新归档所有内容，可能产生重复 ID 或覆盖系统库已有内容。使用前须确认系统库当前状态，或先备份。
+**`--full` 参数误用**：`--full` 会忽略锚点重新提炼所有章节，可能覆盖系统库已有内容。使用前须确认当前 overview 文件状态，或先 `--dry-run` 预览。
+
+---
+
+## overview 归档
+
+**模板替换错误**：创建 `{APPNAME}-overview.md` 时须同时替换两处：
+- 文件名：`NAME-overview.md` → `{APPNAME}-overview.md`
+- 文件内标题：`# {NAME} 架构概览` → `# {APPNAME} 架构概览`
+
+不要只替换文件名而忘记替换标题，或反之。
+
+**整段复制原始文档**：第三列应是提炼后的业务知识摘要，不是原始文档的粘贴。若某节应用侧文档内容很长，须提炼核心要点写入，细节保留在应用侧。
+
+**变动标识遗漏**：每次归档写入第三列时须标注 A/U/D：
+- 原为 `—` 或空 → 写入内容 → 标 `**[A]**`
+- 原有内容 → 内容有变化 → 标 `**[U]**`
+- 原有内容 → 本次应删除 → 标 `**[D]**`，清空内容
+- 原有内容 → 本次无变化 → 保持原内容，不加标注
+
+**未读「应填内容 + 产出建议」就直接写入**：每节写入前须先读副标题链接对应章节的「应填内容」和「产出建议」注释，了解该节期望的内容格式，再提炼写入。
+
+**五架构视角章节遗漏**：overview 文件有五个架构视角共 160+ 行，每次归档须逐节处理，不能只处理有变化的视角而跳过其他视角的检查。无内容的节写 `—`，有内容的节确认是否需要更新。
+
+**第三列写了与应用侧重复的长描述**：第三列应提炼系统级摘要，不要把应用侧文档的完整段落搬过来，避免两处维护失步。
 
 ---
 
 ## 联邦边界
 
-**在应用库里重复定义全系统业务域**：应用知识库只放本应用的接口细节、Schema、部署参数；跨应用映射、系统边界、聚合与实体 ID 契约属于系统知识库。上行时提炼有效信息，不要把应用库内容整段复制到系统库。
-
-**在系统库里粘贴 OpenAPI 全文**：系统库只保留 `docs_manifest_path` 与 ID 引用，API 细节以应用侧 manifest 为 SSOT。
-
-**knowledge 与 SDD 文档混淆归档规则**：knowledge 归档遵循提炼原则（不整段复制，只写 ID 和摘要）；solutions/analysis/requirements 文档归档遵循直接归档原则（保持文档完整性）。两者规则不同，不要混用。
-
----
-
-## SDD 文档归档
-
-**归档草稿状态文档**：solutions/analysis 文档状态为 `draft` 时通常不归档；若用户明确要求归档草稿，须在批次归档文档中标注「草稿归档，待评审」。
-
-**归档输出格式混乱**：同一批次归档内容应按 `BUSINESS-ARCHITECTURE.md`、`TECHNICAL-ARCHITECTURE.md`、`DATA-ARCHITECTURE.md`、`PRODUCT-ARCHITECTURE.md` 的既定格式提炼填充，避免跨文件字段风格不一致。
-
-**requirements 需求包不完整**：归档 `REQUIREMENT-{IDEA-ID}/` 时须整包归档，不能只归档部分 MVP 阶段目录；若应用侧需求包不完整，在批次归档文档中标注「需求包不完整，已归档现有阶段」。
-
-**solutions/analysis 索引表未更新**：归档文档后必须在 `system/architecture/solutions/README.md` 和 `system/architecture/analysis/README.md` 的索引表中追加对应行，否则导航断链。
-
----
-
-## ID 与引用
-
-**修改已有实体 ID**：已有实体禁止改 id。需重命名时必须同步更新全部跨视角引用（`implemented_by_app_id`、`persisted_as_entity_ids`、`invokes_api_ids` 等），否则引用链断裂。
-
-**新增 ID 不检查全局唯一性**：新增实体 ID 须全局唯一，先读各视角 `*_meta.yaml` 确认现有 ID，再分配新编号。
-
-**交叉引用写了重复长描述**：关联字段只写 ID，不写重复的名称或描述，避免两处维护失步。
-
----
-
-## 上行时机与顺序
-
-**未读系统文件就直接写入**：先读拟修改的系统文件与相邻 `*_meta.yaml`，确认现有 ID 和字段结构，再写入。
+**knowledge 与 SDD 文档混淆归档规则**：knowledge 和 SDD 文档均作为知识来源，不直接归档到系统库。归档的唯一目标是 `{APPNAME}-overview.md` 第三列。不要把应用侧文档整段复制到 overview 第三列。
 
 **应用侧与系统侧冲突时强行覆盖**：冲突时以代码与 manifest 为准，或标为待人工确认，不强行覆盖系统权威域定义。
 
@@ -69,15 +61,11 @@
 ## 快速自查清单
 
 - [ ] 归档锚点已读取，增量范围已确认（或全量归档已明确授权）
-- [ ] 归档内容已按 `BUSINESS-ARCHITECTURE.md`、`TECHNICAL-ARCHITECTURE.md`、`DATA-ARCHITECTURE.md`、`PRODUCT-ARCHITECTURE.md` 要求格式提炼填充
-- [ ] knowledge 归档：应用独有细节仍保留在应用库，未整段复制到系统库
-- [ ] knowledge 归档：系统库无大段与 manifest 重复的冗余正文
-- [ ] knowledge 归档：已有实体 ID 未被修改；新增 ID 已确认全局唯一
-- [ ] knowledge 归档：关联字段只写 ID，无重复长描述
-- [ ] knowledge 归档：新增/修改的 YAML 可被解析，无断链 ID
-- [ ] SDD 文档归档：仅归档 approved/review 状态文档（或草稿已标注）
-- [ ] SDD 文档归档：solutions/analysis 索引表已更新
-- [ ] SDD 文档归档：requirements 需求包目录结构完整
-- [ ] 变更影响导航时已同步更新 system/architecture/INDEX_GUIDE 或视角 README
+- [ ] `{APPNAME}-overview.md` 文件名和标题均已正确替换（NAME → APPNAME）
+- [ ] 五架构视角全部章节行均已处理（有内容或明确标 `—`）
+- [ ] 每节写入前已读对应章节「应填内容 + 产出建议」
+- [ ] 第三列内容为提炼摘要，非整段复制原始文档
+- [ ] 变动标识（A/U/D）准确标注，无遗漏
+- [ ] 应用侧细节（接口 DDL、用户故事原文、OpenAPI 全文等）未出现在第三列
 - [ ] 批次归档文档已写入 `system/changelogs/CHANGE-LOG.md`
 - [ ] 归档锚点已在写入成功后更新（`ARCHIVE-LOG.md` 已追加新记录）

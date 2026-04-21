@@ -50,12 +50,9 @@ APP_DIR="system/application-${APP}"
 APP_CHANGE_LOG="${APP_DIR}/changelogs/CHANGE-LOG.md"
 APP_ARCHIVE_LOG="${APP_DIR}/changelogs/ARCHIVE-LOG.md"
 SYSTEM_CHANGE_LOG="system/changelogs/CHANGE-LOG.md"
-SYSTEM_TARGETS=(
-  "system/architecture/BUSINESS-ARCHITECTURE.md"
-  "system/architecture/TECHNICAL-ARCHITECTURE.md"
-  "system/architecture/DATA-ARCHITECTURE.md"
-  "system/architecture/PRODUCT-ARCHITECTURE.md"
-)
+OVERVIEW_DIR="system/architecture/overview"
+OVERVIEW_TEMPLATE="${OVERVIEW_DIR}/NAME-overview.md"
+OVERVIEW_TARGET="${OVERVIEW_DIR}/${APP}-overview.md"
 
 now_iso="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 
@@ -91,18 +88,12 @@ elif [[ -n "$SINCE" ]]; then
 fi
 
 show_targets_preview() {
-  local f
-  for f in "${SYSTEM_TARGETS[@]}"; do
-    if [[ -f "$f" ]]; then
-      if rg -q "BEGIN MANAGED BLOCK|END MANAGED BLOCK" "$f"; then
-        echo "- ${f} (managed-block: yes)"
-      else
-        echo "- ${f} (managed-block: no)"
-      fi
-    else
-      echo "- ${f} (missing)"
-    fi
-  done
+  echo "- overview_template: ${OVERVIEW_TEMPLATE}"
+  if [[ -f "${OVERVIEW_TARGET}" ]]; then
+    echo "- overview_target: ${OVERVIEW_TARGET} (exists, will update)"
+  else
+    echo "- overview_target: ${OVERVIEW_TARGET} (not found, will create from template)"
+  fi
 }
 
 if [[ "$DRY_RUN" == true ]]; then
@@ -120,7 +111,7 @@ if [[ "$DRY_RUN" == true ]]; then
   echo
   echo "[Layer 3] Planned log records"
   echo "- system_change_log -> ${SYSTEM_CHANGE_LOG}"
-  echo "  | ${APP} | ${range_to:-N/A} | ${now_iso} | ${now_iso} | dry-run preview |"
+  echo "  | ${APP} | ${range_to:-N/A} | ${now_iso} | ${now_iso} | overview archive dry-run |"
   echo "- app_archive_log -> ${APP_ARCHIVE_LOG}"
   echo "  | ${range_to:-N/A} | ${now_iso} | ${now_iso} |"
   exit 0
