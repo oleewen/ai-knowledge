@@ -21,12 +21,12 @@ source "${AGENT_CONFIG_DIR}/../agent/scripts/docs-core.sh"
 
 readonly SDX_VERSION='3.0.0'
 
-# 安装目标：多 IDE 根（cursor / trea / claude）
-readonly -a SDX_SUPPORTED_AGENTS=(cursor trea claude kiro)
+# 安装目标：多 IDE 根（cursor / trae / claude）
+readonly -a SDX_SUPPORTED_AGENTS=(cursor trae claude kiro)
 
 declare -A SDX_AGENT_DIR_MAP=(
   [cursor]='.cursor'
-  [trea]='.trea'
+  [trae]='.trae'
   [claude]='.claude'
   [kiro]='.kiro'
 )

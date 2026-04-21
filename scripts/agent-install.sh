@@ -84,7 +84,7 @@ apply_agents() {
   local ao="${CFG[agents_opt]:-}"
   [[ -n "$ao" ]] || ao="${AGENTS_OPT:-$SDX_DEFAULT_AGENTS_OPT}"
   validate_agents "$ao" \
-    || sdx_error "无效 --agents: $ao（支持 cursor、trea、claude、all 及逗号或空格分隔多选）"
+    || sdx_error "无效 --agents: $ao（支持 cursor、trae、claude、all 及逗号或空格分隔多选）"
   read -ra ENABLED_AGENTS <<< "$(normalize_agents "$ao")"
   (( ${#ENABLED_AGENTS[@]} > 0 )) || sdx_error "未解析到任何 Agent"
 }
@@ -241,7 +241,7 @@ usage() {
 
 说明
   将本仓库 agent/{scripts,rules,skills,hooks} 安装到 --target 下、按 --agents 选定的多分根：
-    ${TARGET}/.{.cursor|.trea|.claude}/...
+    ${TARGET}/.{.cursor|.trae|.claude}/...
   scripts 阶段会从本仓库复制 agent/scripts/docs-core.sh 到各选中 Agent 的 scripts/docs-core.sh。
   不安装README。
   当 --target 不是 $HOME 时，更新 <target>/.docsconfig 的 AGENT_ROOT 与 AGENT_DIRS（与当前 --agents 一致）；
@@ -250,7 +250,7 @@ usage() {
 选项
   --scope=SCOPE   a=全部 | r=rules | s=skills | h=hooks | sh=scripts  [默认: a]
   --target=PATH   安装根父目录，其下仅为选中的 agent 创建对应目录  [默认: $HOME]
-  --agents=LIST   cursor | trea | claude | all；逗号或空格分隔多选  [默认: cursor]
+  --agents=LIST   cursor | trae | claude | all；逗号或空格分隔多选  [默认: cursor]
   --dry-run       仅打印将执行的操作
   -h, --help      显示此帮助
 
@@ -299,7 +299,7 @@ parse_args() {
         while (( $# > 0 )); do
           case "$1" in -*) break ;; *) parts+=("$1"); shift ;; esac
         done
-        (( ${#parts[@]} > 0 )) || sdx_error "缺少 --agents 值（如 cursor,trea 或 cursor trea）"
+        (( ${#parts[@]} > 0 )) || sdx_error "缺少 --agents 值（如 cursor,trae 或 cursor trae）"
         CFG[agents_opt]="$(IFS=','; printf '%s' "${parts[*]}")"
         ;;
       --dry-run)

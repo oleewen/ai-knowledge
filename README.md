@@ -49,7 +49,7 @@ cd ai-knowledge
 ### 2. 远程 Bootstrap（无需克隆）
 ```bash
 cd /path/to/your-project
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- --target ./docs
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- --doc-target ./docs --agents cursor,trae
 ```
 
 ### 3. Agent 自动化安装
@@ -157,7 +157,7 @@ flowchart TD
 ### 常用流程速查
 | 链路分类 | 核心命令 | 核心产出 |
 | :--- | :--- | :--- |
-| 知识库构建 | `/docs-bootstrap` | 初始化目标工程文档骨架与配置 |
+| 知识库构建 | `scripts/docs-bootstrap.sh` | 远程 clone 并串联执行 docs-install（知识库）+ agent-install（Agent） |
 | 知识库构建 | `/docs-indexing`  | 生成或更新 `INDEX_GUIDE.md` 索引地图 |
 | 知识库构建 | `/agent-guide`    | 同步 `AGENTS.md` 与 `README.md` 协作约束 |
 | 知识库构建 | `/docs-build`     | 维护知识实体与视角索引（`application/knowledge/`） |

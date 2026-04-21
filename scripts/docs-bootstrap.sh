@@ -16,8 +16,7 @@
 #   bash docs-bootstrap.sh --doc-target=~/workspace/my-app/docs --agents=cursor,kiro
 #
 #   # curl | bash
-#   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh \
-#     | bash -s -- --doc-target=~/workspace/my-app/docs --agents=cursor,kiro
+#   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh | bash -s -- --doc-target=~/workspace/my-app/docs --agents=cursor,trae
 #
 # 参数：
 #   --doc-target=PATH          目标工程文档目录（必填，或交互询问）
@@ -147,7 +146,7 @@ sdx_bs_usage() {
 选项
   --doc-target=PATH          目标工程文档目录（必填，或交互询问）
   --agents=LIST              要安装的 Agent，支持 / 或 , 分隔
-                             合法值：cursor trea claude kiro all
+                             合法值：cursor trae claude kiro all
                              （缺省时交互询问，默认 cursor）
   --agent-scope=home|project Agent 安装位置（默认 home）
                              home    → 安装到 $HOME
@@ -180,7 +179,7 @@ sdx_bs_normalize_agents() {
 # 校验 agents 字符串（逗号分隔）中每个值是否合法
 sdx_bs_validate_agents() {
   local agents_csv="${1:-}"
-  local -a valid=(cursor trea claude kiro all)
+  local -a valid=(cursor trae claude kiro all)
   local agent ok v msg
   IFS=',' read -ra parts <<< "$agents_csv"
   for agent in "${parts[@]}"; do
@@ -191,7 +190,7 @@ sdx_bs_validate_agents() {
       [[ "$agent" == "$v" ]] && { ok=1; break; }
     done
     if [[ $ok -ne 1 ]]; then
-      msg="无效 agent: ${agent}（合法值：cursor trea claude kiro all）"
+      msg="无效 agent: ${agent}（合法值：cursor trae claude kiro all）"
       sdx_error "$msg"
     fi
   done
@@ -279,7 +278,7 @@ sdx_bs_prompt_doc_target() {
 
 # 询问要安装的 agent（展示编号列表，支持编号或名称输入）
 sdx_bs_prompt_agents() {
-  local -a agent_list=(cursor trea claude kiro all)
+  local -a agent_list=(cursor trae claude kiro all)
   sdx_log ''
   sdx_log '请选择要安装的 Agent（输入编号，多选用 / 或 , 分隔，直接回车选 1）：'
   local i
@@ -368,7 +367,7 @@ sdx_bs_collect_params() {
     if sdx_bs_is_interactive; then
       sdx_bs_prompt_agents
     else
-      sdx_bs_die "非交互环境：请通过 --agents=LIST 指定要安装的 Agent（cursor trea claude kiro all）"
+      sdx_bs_die "非交互环境：请通过 --agents=LIST 指定要安装的 Agent（cursor trae claude kiro all）"
     fi
   fi
 
