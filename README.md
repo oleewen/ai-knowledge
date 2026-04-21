@@ -110,7 +110,7 @@ flowchart TD
 ```mermaid
 flowchart TD
     S((开始)) 
-    Z((归档/结束))
+    Z((结束))
 
     subgraph KB["知识库构建链路"]
         direction LR
@@ -121,6 +121,7 @@ flowchart TD
         E["docs-change 聚合变更 changelogs"]
         R["docs-fetch 拉取下级知识库"]
         T["docs-archive 归档下级知识库"]
+        U["docs-extract 抽取文档知识"]
     end
 
     subgraph RDD["需求设计链路"]
@@ -148,7 +149,8 @@ flowchart TD
     S -- 需求链路 --> Q -- IDEA --> F -- 解决方案 --> G -- 需求分析 : MVP/Sprint --> H -- 产品设计 --> I -- 技术设计 --> J
     I -- 需求Spec --> K --> L --> M --> N --> O --> P --> Z
     D -. 知识库 .-> R --> T --> Z
-    
+    T -- 指定文档 --> U
+    R -- 指定文档 --> U --> Z
     J -- 分析设计文档 --> E 
     E <-. Spec文档 .-> P
     D <-- 变更内容 --> E
@@ -164,6 +166,7 @@ flowchart TD
 | 知识库构建 | `/docs-change`    | 聚合变更到 `application/changelogs/` |
 | 知识库构建 | `/docs-fetch`     | 拉取下游应用侧文档到中央库镜像 |
 | 知识库构建 | `/docs-archive`   | 将应用侧已核实内容归档到系统知识库 |
+| 知识库构建 | `/docs-extract`   | 从任意文件或目录按段落级关键词筛选，提炼业务知识写入指定 `XX-overview.md` |
 | 知识库构建 | `/docs-distill`   | 从来源文档/章节蒸馏业务知识写入目标文档或目录；方案确认后落盘并做冲突检查 |
 | 需求设计  | `/sdx-solution`    | 产出解决方案文档（SOLUTION） |
 | 需求设计  | `/sdx-analysis`    | 产出需求分析文档（ANALYSIS） |
