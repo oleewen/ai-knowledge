@@ -13,9 +13,6 @@ source "$SCRIPT_DIR/docs-config.sh"
 # § 1  日志函数
 # =============================================================================
 
-# shellcheck source=./docs-config.sh
-source "$SCRIPT_DIR/docs-config.sh"
-
 # =============================================================================
 # § 2  全局状态
 # =============================================================================
@@ -183,7 +180,7 @@ copy_dir() {
 # 备份并清空 DOC_DIR（保留目录本身）
 reset_docs_dir_with_backup() {
   local docs_dir="${CFG[docs_abs]}"
-  [[ -n "$docs_dir" && "$docs_dir" != '/' ]] || error "拒绝清空非法 DOC_DIR: ${docs_dir:-<empty>}"
+  [[ -n "$docs_dir" && "$docs_dir" != '/' ]] || sdx_error "拒绝清空非法 DOC_DIR: ${docs_dir:-<empty>}"
 
   if [[ ! -d "$docs_dir" ]]; then
     sdx_info "DOC_DIR 不存在，创建空目录后继续: $docs_dir"
@@ -517,8 +514,8 @@ resolve_docsconfig_roots() {
     if [[ -z "$_rt" ]]; then
       _rt="$(docsconfig_repo_root_fallback_from_doc_root "$_dr")"
       [[ -n "$_rt" ]] \
-        || error "无法写入 .docsconfig：DOC_ROOT 父目录不可解析: $_dr"
-      warn "未检测到 DOC_ROOT 所在 Git 仓库，已回退使用父目录作为 REPO_ROOT: $_rt"
+        || sdx_error "无法写入 .docsconfig：DOC_ROOT 父目录不可解析: $_dr"
+      sdx_warn "未检测到 DOC_ROOT 所在 Git 仓库，已回退使用父目录作为 REPO_ROOT: $_rt"
     fi
     _dd="$(docsconfig_doc_dir_from_roots "$_rt" "$_dr")" \
       || sdx_error "无法计算 DOC_DIR（DOC_ROOT 须位于 REPO_ROOT 目录下）"

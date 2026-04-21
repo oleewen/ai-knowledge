@@ -7,7 +7,14 @@
 # - 自闭环实现；路径与 .docsconfig 工具统一复用 agent/scripts/docs-core.sh
 #
 
-readonly DOCS_CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [[ -n "${_SDX_DOCS_CONFIG_SH_LOADED:-}" ]]; then
+  return 0 2>/dev/null || exit 0
+fi
+readonly _SDX_DOCS_CONFIG_SH_LOADED=1
+
+if ! declare -p DOCS_CONFIG_DIR >/dev/null 2>&1; then
+  readonly DOCS_CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+fi
 # shellcheck source=../agent/scripts/docs-core.sh
 source "${DOCS_CONFIG_DIR}/../agent/scripts/docs-core.sh"
 
