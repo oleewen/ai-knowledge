@@ -42,14 +42,14 @@
 git clone https://github.com/oleewen/ai-knowledge.git
 cd ai-knowledge
 
-# 将知识库安装至目标工程的 ./docs 目录
-./scripts/docs-install.sh --target=/path/to/your-project/docs
+# 将知识库 Bootstrap 至目标工程的 ./docs 目录
+./scripts/docs-bootstrap.sh --doc-target=/path/to/your-project/docs
 ```
 
 ### 2. 远程 Bootstrap（无需克隆）
 ```bash
 cd /path/to/your-project
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- --doc-target ./docs --agents cursor,trae
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- --doc-target /path/to/your-project/docs --agents cursor,trae
 ```
 
 ### 3. Agent 自动化安装
