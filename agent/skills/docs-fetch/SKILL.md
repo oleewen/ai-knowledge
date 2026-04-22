@@ -30,7 +30,7 @@ description: >
 | 可选输入 | `--app` 应用名、`--branch` 目标分支 |
 | 固定输出 | 更新后的 `applications/app-{APPNAME}/` 目录内容 |
 | 附加产出 | `applications/app-{APPNAME}/changelogs/fetch-log.md`（追加同步记录） |
-| 不产出 | 不修改 `{DOC_DIR}/`、不触发 `docs-archive`、不修改 `APPLICATIONS_INDEX.md` |
+| 不产出 | 不修改 `{DOC_DIR}/`、不触发 `docs-distill`、不修改 `APPLICATIONS_INDEX.md` |
 
 ## 参数
 
@@ -101,5 +101,5 @@ scripts/fetch-docs.sh \
 | 类型 | 技能 | 说明 |
 |------|------|------|
 | 前置 | 中央知识库挂载建联 | 应用须已注册，manifest 须存在 |
-| 协作 | `docs-archive` | 同步后可将应用侧有效信息上行到系统库 |
+| 协作 | `docs-distill` | 同步后可将应用侧有效信息上行到系统库 |
 | 协作 | `docs-change` | 同步后可生成变更索引 |

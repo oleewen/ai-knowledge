@@ -16,7 +16,7 @@ constitution（治理基线：术语/原则/标准/ADR）
       │
       ├──→ knowledge（SSOT：四视角实体与映射）
       │          ↑
-      │          └── 归档 / 回写（如 docs-archive）
+      │          └── 蒸馏 / 回写（如 docs-distill）
       │
       └──→ changelogs（变更留痕与索引运维）
 ```

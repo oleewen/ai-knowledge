@@ -1,28 +1,30 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# update-archive-log.sh
-# 作用：向 agent 侧 ARCHIVE-LOG.md 追加归档锚点记录
+# append-change-log.sh
+# 作用：向 agent 侧 CHANGE-LOG.md 追加蒸馏批次记录
 #
 # 用法：
-#   agent/skills/docs-archive/scripts/update-archive-log.sh \
+#   agent/skills/docs-distill/scripts/append-change-log.sh \
 #     --app billing \
 #     --changelog-id v1.3.0 \
 #     --changelog-time "2026-04-05 10:00" \
-#     [--archived-at "2026-04-05T10:30:00+08:00"]
+#     [--archived-at "2026-04-05T10:30:00+08:00"] \
+#     [--summary "蒸馏 billing 结构更新"]
 
 usage() {
     cat <<'EOF'
 Usage:
-  update-archive-log.sh --app APP --changelog-id ID --changelog-time TIME [--archived-at ISO_TIME]
+  append-change-log.sh --app APP --changelog-id ID --changelog-time TIME [--archived-at ISO_TIME] [--summary TEXT]
 
 Required:
   --app             应用名（用于 agent 日志分组）
-  --changelog-id    变更唯一标识
-  --changelog-time  变更时间（原始记录时间）
+  --changelog-id    本次蒸馏对应的应用变更 ID
+  --changelog-time  应用变更时间（原始记录时间）
 
 Optional:
-  --archived-at     归档时间（默认：当前 UTC ISO8601）
+  --archived-at     蒸馏时间（默认：当前 UTC ISO8601）
+  --summary         一句话摘要
 EOF
 }
 
@@ -30,6 +32,7 @@ APP=""
 CHANGELOG_ID=""
 CHANGELOG_TIME=""
 ARCHIVED_AT=""
+SUMMARY=""
 
 while [[ $# -gt 0 ]]; do
     case "${1}" in
@@ -47,6 +50,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --archived-at)
             ARCHIVED_AT="${2:-}"
+            shift 2
+            ;;
+        --summary)
+            SUMMARY="${2:-}"
             shift 2
             ;;
         -h|--help)
@@ -83,18 +90,18 @@ escape_md_cell() {
     printf '%s' "${raw}"
 }
 
-LOG_FILE="agent/skills/docs-archive/logs/application-${APP}/ARCHIVE-LOG.md"
+LOG_FILE="agent/skills/docs-distill/logs/CHANGE-LOG.md"
 mkdir -p "$(dirname "${LOG_FILE}")"
 
 if [[ ! -f "${LOG_FILE}" ]]; then
     {
-        echo "# ARCHIVE LOG - ${APP}"
+        echo "# CHANGE LOG - docs-distill"
         echo
-        echo "| changelog_id | changelog_time | archived_at |"
-        echo "|---|---|---|"
+        echo "| app | changelog_id | changelog_time | archived_at | summary |"
+        echo "|---|---|---|---|---|"
     } > "${LOG_FILE}"
 fi
 
-echo "| $(escape_md_cell "${CHANGELOG_ID}") | $(escape_md_cell "${CHANGELOG_TIME}") | $(escape_md_cell "${ARCHIVED_AT}") |" >> "${LOG_FILE}"
+echo "| $(escape_md_cell "${APP}") | $(escape_md_cell "${CHANGELOG_ID}") | $(escape_md_cell "${CHANGELOG_TIME}") | $(escape_md_cell "${ARCHIVED_AT}") | $(escape_md_cell "${SUMMARY}") |" >> "${LOG_FILE}"
 
-echo "[OK] 已追加 agent 应用归档锚点: ${LOG_FILE}"
+echo "[OK] 已追加 agent 变更总账: ${LOG_FILE}"

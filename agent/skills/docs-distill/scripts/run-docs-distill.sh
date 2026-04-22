@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# run-docs-archive.sh
+# run-docs-distill.sh
 # 最小可执行入口：
 # - 支持 dry-run 三层预览
 # - 非 dry-run 仅做最小日志写入编排（暂不实现架构内容提炼写入）
@@ -9,7 +9,7 @@ set -euo pipefail
 usage() {
   cat <<'EOF'
 Usage:
-  run-docs-archive.sh --app APP [--since ID_OR_TIME] [--full] [--dry-run]
+  run-docs-distill.sh --app APP [--since ID_OR_TIME] [--full] [--dry-run]
 
 Options:
   --app       应用名（对应 system/application-{app}/）
@@ -97,12 +97,12 @@ show_targets_preview() {
 }
 
 if [[ "$DRY_RUN" == true ]]; then
-  echo "=== Dry-Run Preview: docs-archive ==="
+  echo "=== Dry-Run Preview: docs-distill ==="
   echo "[Layer 1] Candidate range"
   echo "- app: ${APP}"
   echo "- mode: ${range_mode}"
   echo "- source_change_log: ${APP_CHANGE_LOG}"
-  echo "- archive_anchor_log: ${APP_ARCHIVE_LOG}"
+  echo "- distill_anchor_log: ${APP_ARCHIVE_LOG}"
   echo "- from: ${range_from:-<none>}"
   echo "- to: ${range_to:-<none>}"
   echo
@@ -111,8 +111,8 @@ if [[ "$DRY_RUN" == true ]]; then
   echo
   echo "[Layer 3] Planned log records"
   echo "- system_change_log -> ${SYSTEM_CHANGE_LOG}"
-  echo "  | ${APP} | ${range_to:-N/A} | ${now_iso} | ${now_iso} | overview archive dry-run |"
-  echo "- app_archive_log -> ${APP_ARCHIVE_LOG}"
+  echo "  | ${APP} | ${range_to:-N/A} | ${now_iso} | ${now_iso} | overview distill dry-run |"
+  echo "- app_distill_log -> ${APP_ARCHIVE_LOG}"
   echo "  | ${range_to:-N/A} | ${now_iso} | ${now_iso} |"
   exit 0
 fi
@@ -124,14 +124,14 @@ if [[ -z "$range_to" ]]; then
   exit 1
 fi
 
-"agent/skills/docs-archive/scripts/append-system-change-log.sh" \
+"agent/skills/docs-distill/scripts/append-change-log.sh" \
   --app "$APP" \
   --changelog-id "$range_to" \
   --changelog-time "$now_iso" \
   --archived-at "$now_iso" \
-  --summary "archive run (logs-only)"
+  --summary "distill run (logs-only)"
 
-"agent/skills/docs-archive/scripts/update-application-archive-log.sh" \
+"agent/skills/docs-distill/scripts/update-archive-log.sh" \
   --app "$APP" \
   --changelog-id "$range_to" \
   --changelog-time "$now_iso" \

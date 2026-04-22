@@ -1,12 +1,12 @@
 # 联邦原则与映射规范
 
-docs-archive 的联邦层级约定、overview 归档规则与质量自检标准。
+docs-distill 的联邦层级约定、overview 蒸馏规则与质量自检标准。
 
 ---
 
-## 归档目标
+## 蒸馏目标
 
-归档写入的唯一目标文件：
+蒸馏写入的唯一目标文件：
 
 ```
 system/architecture/overview/{APPNAME}-overview.md
@@ -14,7 +14,7 @@ system/architecture/overview/{APPNAME}-overview.md
 
 文件不存在时以 `system/architecture/overview/NAME-overview.md` 为模板创建（替换 NAME → APPNAME，同时替换文件内标题 `# {NAME} 架构概览` 中的 `{NAME}` → `APPNAME`）。
 
-以下文件**仅作为知识来源**，不直接归档：
+以下文件**仅作为知识来源**，不直接蒸馏：
 - `system/architecture/business/`、`product/`、`application/`、`technical/`、`data/` 下各视角详细文档（提供「应填内容 + 产出建议」规范）
 - 应用侧 knowledge YAML/MD（提供应用实际业务知识）
 - 应用侧 SDD 文档（solutions/analysis/requirements，提供方案与需求知识）
@@ -30,9 +30,9 @@ system/architecture/overview/{APPNAME}-overview.md
 
 ---
 
-## overview 归档规则
+## overview 蒸馏规则
 
-overview 归档遵循**提炼原则**：从应用侧 knowledge 和 SDD 文档中提取有效信息，按五架构视角逐节写入 `{APPNAME}-overview.md` 第三列，禁止整段复制原始文档。
+overview 蒸馏遵循**提炼原则**：从应用侧 knowledge 和 SDD 文档中提取有效信息，按五架构视角逐节写入 `{APPNAME}-overview.md` 第三列，禁止整段复制原始文档。
 
 ### 提炼步骤
 
@@ -47,7 +47,7 @@ overview 归档遵循**提炼原则**：从应用侧 knowledge 和 SDD 文档中
    - 原第三列有内容但本次应删除：标注 `**[D]**`（删除，清空内容）
    - 原第三列有内容且本次无变化：保持原内容，不加标注
 
-### 五架构视角归档顺序
+### 五架构视角蒸馏顺序
 
 按以下顺序逐节处理，保证语义收敛：
 
@@ -70,6 +70,6 @@ overview 归档遵循**提炼原则**：从应用侧 knowledge 和 SDD 文档中
 
 - 五架构视角全部章节行均已处理（有内容或明确标 `—`）
 - 第三列内容符合对应章节「应填内容」要求，非整段复制
-- 变动标识（A/U/D）准确反映本次归档的实际变化
+- 变动标识（A/U/D）准确反映本次蒸馏的实际变化
 - 应用侧细节（接口 DDL、用户故事原文等）未出现在第三列
 - 文件名为 `{APPNAME}-overview.md`，标题为 `# {APPNAME} 架构概览`

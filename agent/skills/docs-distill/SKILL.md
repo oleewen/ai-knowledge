@@ -1,139 +1,111 @@
 ---
 name: docs-distill
 description: >
-  Slash 命令：`/docs-distill`。支持紧凑写法「来源 {分隔符} 目标」：来源为单文件、目录或文档内章节/选中内容；目标为要写入或对齐的文件或目录；
-  分隔符可为空格、`-`、`2`（口语「A 2 B」）、`到`、`→` 等，语义均为「写入到目标」。
-  从来源提炼、抽象业务知识并按目标体例补充写入；补充后做一致性检查，冲突时分步向用户确认。
-  工作流强制「先探索与澄清 → 给出 2～3 种方案与取舍 → 用户确认后再落盘」，禁止未经确认的批量改写。
-  只要用户意图涉及知识蒸馏、抽取、提炼、总结、合并、补充、补全、增补，或从文档/章节/多源材料写入另一份文档或目录、
-  需要结构对齐与冲突检查，就必须使用本技能，即使用户未说「蒸馏」也未显式使用 `/docs-distill`。
+  将应用知识库（system/application-{name}/）已核实内容蒸馏后写入系统知识库（system/architecture/overview/{APPNAME}-overview.md）。
+  当用户执行 /docs-distill，或提到「知识蒸馏」「提炼应用知识到系统」「同步应用知识到系统」「把应用侧内容提炼后推上去」
+  「更新主库」「上行蒸馏」「推送到系统库」「knowledge 蒸馏」「SDD 蒸馏」「生成 overview」「更新 overview」时必须触发本技能。
+  支持 --app --since --full --dry-run，默认按增量锚点蒸馏。
+  即使用户只是说「帮我蒸馏一下 billing」或「把最新的变更同步上去」也应触发本技能。
 ---
 
-# 知识蒸馏（docs-distill）
+# docs-distill：应用知识蒸馏并上行到系统库
 
-将**来源知识**压缩为与**目标载体**一致的业务表述，并在落盘前后做**结构遵从**与**冲突治理**。闸门、索引与链接约定见 [reference/gates-and-links.md](reference/gates-and-links.md)。
+> 把 `system/application-{name}/` 的可晋升内容蒸馏后写入 `system/architecture/overview/{APPNAME}-overview.md`，形成以应用为单位的完整知识快照，并维护可追溯日志链路。
 
-## 与相近技能的分工
+## 快速定向
 
-| 场景 | 优先技能 |
-|------|----------|
-| 从代码与四视角链提取实体 ID、刷新 `KNOWLEDGE_INDEX` | `docs-build` |
-| 定向增改 Markdown 并链式同步引用 | `docs-upgrade` |
-| SDD 各阶段标准产物（Solution/PRD/ADD/TDD 等） | `sdx-*` |
-| 多源业务叙述 → 目标文档/目录的结构化补充 + 冲突检查 | **本技能** |
-
----
-
-## HARD-GATE
-
-在用户明确确认**方案确认书**（模板见 [assets/distill-scheme-template.md](assets/distill-scheme-template.md)）之前：
-
-- **禁止**修改任何目标文档，**禁止**在目标目录下新增/覆盖终稿内容（草稿可先写在会话内或用户指定的临时路径）。
-- **允许**：读取来源与目标、列出目录、做笔记、输出方案与对比、在用户同意的临时区生成对比稿。
-
-若用户坚持「直接改」，仍须先用一句话概括将采用的方案与风险，并得到用户**明确同意**后再落盘。
+| 需要做什么 | 去读 |
+|-----------|------|
+| 了解三日志职责、参数契约、原子顺序 | 本文件（继续往下读） |
+| 闸门触发条件、会话 spec 标记、交互节奏 | [reference/interaction-gate.md](reference/interaction-gate.md) |
+| 蒸馏目标范围、变更发现方式、批次日志格式 | [reference/archive-spec.md](reference/archive-spec.md) |
+| 联邦层级、overview 提炼规则、五架构视角蒸馏顺序 | [reference/federation-spec.md](reference/federation-spec.md) |
+| 锚点文件格式、增量范围逻辑、dry-run 约束 | [reference/archive-log-spec.md](reference/archive-log-spec.md) |
+| 常见陷阱与完整自查清单 | [gotchas.md](gotchas.md) |
+| 日志写入脚本（可直接执行） | [scripts/](scripts/)（见下文「脚本说明」） |
 
 ---
 
-## 输入与输出
+## 三日志职责（必须区分）
 
-| 类型 | 内容 |
-| ---- | ---- |
-| 硬输入 | 来源（文件/目录/章节或锚点范围）、目标（文件或目录）；用户确认的**方案确认书** |
-| 可选输入 | 术语表、冲突策略、临时映射/冲突清单文件路径 |
-| 固定产出 | 按目标体例增补后的 Markdown（及用户要求同步的索引/README） |
-| 不产出 | 不经确认的批量覆盖；不代替 `docs-build` 生成实体 ID |
-
-### 来源—目标简写语法
-
-用户可用一行紧凑形式表达任务，执行步骤 0 时应先解析为「来源」「目标」，再进入澄清与方案确认：
-
-**模式**：`{来源} {分隔符} {目标}`
-
-| 位置 | 含义 | 示例 |
-| ---- | ---- | ---- |
-| 来源 | 仓库内文件或目录路径；或会话中的文档片段、章节标题/锚点、「上文选中内容」等 | `application/knowledge/foo.md`、`system/architecture/（节选）` |
-| 分隔符 | 语义均为「将来源侧知识蒸馏/合并/补充到目标」 | 见下表 |
-| 目标 | 目标 Markdown 文件路径，或目标目录（多文件落盘时须在方案确认书中写清命名与索引规则） | `application/knowledge/bar.md` |
-
-**等价分隔符**（任选其一；若用户混用多种，以能唯一切分为准）：
-
-| 形式 | 说明 |
-| ---- | ---- |
-| 单个空格 | 在来源与目标路径不含歧义空格、且不与句中其它词混淆时使用 |
-| `-`、`–`、`—` | 常见于 `path-a - path-b` |
-| `2` | 口语「A 2 B」表示「从 A 到 B」 |
-| `到` | 中文，如「A 到 B」 |
-| `→`、`>` | 流向箭头；注意与 Shell 重定向区分——在自然语言或 Markdown 对话里表示「写到」 |
-
-**解析约定**：
-
-1. **切分**：自左向右识别分隔符；若存在多种可能，优先选用能形成**合法仓库相对路径**或用户明确用引号标出的两段；否则**只问一个**澄清句确认来源与目标边界。
-2. **路径含空格**：要求用户用引号包裹该段路径，或改用 `→` / `到` 等不易与路径混淆的分隔符。
-3. **来源为「选中内容」**：无文件路径时，将当前消息或用户指明的粘贴块视为来源，仍须确认抽象层级与是否保留出处。
-4. 解析结果须写入方案确认书中的来源清单与目标清单，不得仅停留在会话口头理解。
+| 日志文件 | 职责 | 写入时机 |
+|---------|------|---------|
+| `system/application-{name}/changelogs/CHANGE-LOG.md` | 应用侧变更来源，定义可蒸馏增量候选区间 | 步骤 0 读取，**本技能不写入** |
+| `system/application-{name}/changelogs/ARCHIVE-LOG.md` | 应用侧蒸馏锚点，记录已蒸馏到哪个变更位置 | 蒸馏成功后更新（步骤 4 最后执行） |
+| `system/changelogs/CHANGE-LOG.md` | 系统侧蒸馏批次总账，记录本次蒸馏结果与范围 | 每次蒸馏先写（步骤 4a 先执行） |
 
 ---
 
-## 参数（会话内确认）
+## 参数契约
 
-在进入蒸馏落盘前，须与用户对齐下列维度（可一次性展示、分项确认）；细节问题**一次只问一个**，见 [reference/workflow-spec.md](reference/workflow-spec.md)。
-
-| 参数 | 说明 |
-| ---- | ---- |
-| 来源范围 | 单文件 / 目录 / 指定章节或标题；是否含附件、脚注 |
-| 目标形态 | 单文件追加或替换节 / 多文件拆分 / 新建并更新索引 |
-| 抽象层级 | 摘录级 / 要点级 / 可对外宣讲级；是否保留出处 |
-| 术语与风格 | 对齐的术语表或禁用词；语体 |
-| 冲突策略 | 与目标已有内容不一致时：以来源为准 / 以目标为准 / 并列待裁决 |
-| 产出物 | 是否同步目录导航、changelog 等 |
+| 参数 | 默认 | 说明 |
+|-----|------|------|
+| `--app` | 全部已登记应用 | 仅处理指定应用，如 `billing-appeal`（对应 `system/application-billing-appeal/`） |
+| `--since` | 从应用 `ARCHIVE-LOG.md` 锚点继续 | 手动指定起始变更点，覆盖自动锚点 |
+| `--full` | `false` | 全量重新提炼所有章节，忽略锚点 |
+| `--dry-run` | `false` | 仅预览不落盘，输出三层预览：候选变更区间、目标文件状态、将写入三日志的条目摘要 |
 
 ---
 
-## 工作流（六步）
+## 交互与确认闸门
 
-| 步骤 | 摘要 | 详见 |
-|------|------|------|
-| 0 | 探索上下文：读来源与目标体例，确认「从哪来、到哪去」 | [workflow-spec.md §0](reference/workflow-spec.md) |
-| 1 | 澄清范围与约束（分步单问） | §1 |
-| 2 | 提出 2～3 种方案与推荐 | §2 |
-| 3 | 输出并确认**方案确认书** | §3 |
-| 4 | 蒸馏、改写、落盘 | §4 |
-| 5 | 文档检查与冲突处理 | §5、[quality-checklist.md](reference/quality-checklist.md) |
-| 6 | 变更摘要；不自动 Git 提交 | §6 |
+写入前须完成**Spec草稿 + 用户总确认**（`PENDING` → `CONFIRMED`）。触发 HARD-GATE 时默认先 `--dry-run` 再落盘。完整触发条件表与推荐交互节奏见 [reference/interaction-gate.md](reference/interaction-gate.md)。
 
-流程图与完整条款见 [reference/workflow-spec.md](reference/workflow-spec.md)。
+---
+
+## 原子顺序（严格执行）
+
+```
+步骤 0  读取应用 CHANGE-LOG.md，结合 --since/--full 计算蒸馏范围
+
+步骤 1  检查 system/architecture/overview/{APPNAME}-overview.md 是否存在
+        - 不存在：以 NAME-overview.md 为模板创建，替换 NAME → APPNAME
+        - 存在：则继续下一步
+
+步骤 2  读取应用侧 knowledge（四视角 YAML/MD）+ SDD 文档，作为提炼的知识来源
+        （这些文档不再是蒸馏目标，仅作为提炼的输入）
+
+步骤 3  读取 {APPNAME}-overview.md 五架构视角知识索引表，
+        逐条读取副标题列文件链接对应章节的「应填内容 + 产出建议」要求和已有内容，
+        从应用知识库提炼相应业务知识，并判断知识变动标识（A/U/D），
+        写入第三列（完整内容快照，含变动标识）
+
+步骤 4a 先写 system/changelogs/CHANGE-LOG.md（系统总账）
+步骤 4b 再写 system/application-{name}/changelogs/ARCHIVE-LOG.md（应用锚点前移）
+```
+
+**关键约束**：步骤 4a 失败时禁止执行步骤 4b；步骤 3 写入失败时禁止执行步骤 4。
+
+---
+
+## 命令示例
+
+```bash
+/docs-distill --app billing-appeal --dry-run
+/docs-distill --app billing-appeal --since v1.2.0
+/docs-distill --app billing-appeal --full
+/docs-distill --app billing-appeal
+```
+
+---
+
+## 脚本说明
+
+`scripts/` 目录提供可直接执行的日志写入脚本，**仅处理日志追加，不执行内容提炼写入**：
+
+| 脚本 | 用途 | 何时使用 |
+|-----|------|---------|
+| `run-docs-distill.sh` | 最小可执行入口，支持 dry-run 三层预览与日志写入编排 | 步骤 0–4 的自动化入口（承载 docs-distill 工作流） |
+| `append-change-log.sh` | 向系统侧 `CHANGE-LOG.md` 追加批次记录 | 步骤 4a |
+| `update-archive-log.sh` | 向应用侧 `ARCHIVE-LOG.md` 追加锚点记录 | 步骤 4b |
+
+内容提炼（步骤 1–3）由 Agent 按 [reference/federation-spec.md](reference/federation-spec.md) 规则执行，脚本不覆盖此部分。
 
 ---
 
 ## 核心约束
 
-| 约束 | 原因 |
-| ---- | ---- |
-| 方案确认门禁 | 防止未经评审的批量改写与范围蔓延 |
-| 证据与可追溯 | 蒸馏结论应能在来源中对应；多出处合并须可说明 |
-| 结构服从目标 | 标题层级与体例以目标文档/目录为准 |
-| 冲突显式处理 | 来源或目标矛盾时不得静默合并；分步请用户裁决 |
-| 闸门合规 | 受管路径须符合 [AGENTS.md](../../../AGENTS.md) 与 [CONVENTIONS.md](../../rules/CONVENTIONS.md) |
-
----
-
-## 依赖关系
-
-| 类型 | 技能/组件 | 说明 |
-| ---- | --------- | ---- |
-| 可选上游 | `docs-indexing` | 需要权威路径地图时查阅 `INDEX_GUIDE.md` |
-| 相邻 | `docs-build` / `docs-upgrade` / `sdx-*` | 分工见上文表；勿混用职责 |
-| 下游 | — | 无强制下游；可按需触发 `docs-change` 等 |
-
----
-
-## 参考资源
-
-| 资源 | 路径 | 何时读 |
-| ---- | ---- | ------ |
-| 步骤 0～6 全文、流程图 | [reference/workflow-spec.md](reference/workflow-spec.md) | 执行任意步骤时 |
-| 闸门、INDEX、链接与 Git | [reference/gates-and-links.md](reference/gates-and-links.md) | 探索目标、自检链接时 |
-| 质量与收口清单 | [reference/quality-checklist.md](reference/quality-checklist.md) | 步骤 5～6 |
-| 方案确认书模板 | [assets/distill-scheme-template.md](assets/distill-scheme-template.md) | 步骤 3 落草稿时 |
-| 常见陷阱 | [gotchas.md](gotchas.md) | 歧义、抢闸门、与相近技能混淆时 |
+- 默认增量，不重复蒸馏已锚定区间
+- `--full` 重新提炼全部章节，不受锚点限制
+- 蒸馏内容已按五架构视角逐节写入 `{APPNAME}-overview.md` 第三列
+- 蒸馏前先读目标文件，确认现有内容（用于判断 A/U/D）

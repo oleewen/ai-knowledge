@@ -1,10 +1,10 @@
 # 闸门、索引与链接约定
 
-供 `docs-distill` 在探索目标与自检链接时使用。
+供 `docs-archive` 在探索目标与自检链接时使用。
 
 ## 文档产出闸门
 
-若写入路径落在仓库 [AGENTS.md](../../../../AGENTS.md) 所述**文档产出闸门**（如 `{DOC_DIR}` 下受管终稿、`system/architecture/` 等），须先核对 [agent/rules/CONVENTIONS.md](../../../rules/CONVENTIONS.md) 第三节与相关 `sdx-*`、`docs-archive` 规则，**不得绕过既有总确认流程**。
+若写入路径落在仓库 [AGENTS.md](../../../../AGENTS.md) 所述**文档产出闸门**（如 `{DOC_DIR}` 下受管终稿、`system/architecture/` 等），须先核对 [agent/rules/CONVENTIONS.md](../../../rules/CONVENTIONS.md) 第三节与相关 `sdx-*`、`docs-distill` 规则，**不得绕过既有总确认流程**。
 
 ## INDEX_GUIDE
 

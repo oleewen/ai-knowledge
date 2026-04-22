@@ -1,111 +1,129 @@
 ---
 name: docs-archive
 description: >
-  将应用知识库（system/application-{name}/）已核实内容归档到系统知识库（system/architecture/overview/{APPNAME}-overview.md）。
-  当用户执行 /docs-archive，或提到「归档」「同步应用知识到系统」「同步一下」「把应用侧内容推上去」
-  「更新主库」「上行归档」「推送到系统库」「knowledge 归档」「SDD 归档」「生成 overview」「更新 overview」时必须触发本技能。
-  支持 --app --since --full --dry-run，默认按增量锚点归档。
-  即使用户只是说「帮我归档一下 billing」或「把最新的变更同步上去」也应触发本技能。
+  Slash 命令：`/docs-archive`。输入指定 overview 文件（可含多视角章节）；
+  归档目标默认取自 overview 各行副标题中的文件链接与对应章节，无需额外提供目标路径。
+  从指定 overview 的各视角章节抽取可归档知识，映射并写入「各架构视角表」每行副标题文件链接对应章节；
+  补充后做一致性检查，冲突时分步向用户确认。
+  工作流强制「先探索与澄清 → 给出 2～3 种方案与取舍 → 用户确认后再落盘」，禁止未经确认的批量改写。
+  只要用户意图涉及知识归档、合并、补充、补全、增补，或从 overview/章节/多源材料写入架构视角文档或目录、
+  需要结构对齐与冲突检查，就必须使用本技能，即使用户未说「归档」也未显式使用 `/docs-archive`。
 ---
 
-# docs-archive：应用知识归档到系统库
+# 知识归档（docs-archive）
 
-> 把 `system/application-{name}/` 的可晋升内容归档到 `system/architecture/overview/{APPNAME}-overview.md`，形成以应用为单位的完整知识快照，并维护可追溯日志链路。
+将**overview 来源知识**按视角映射归档为与**目标载体**一致的业务表述，并在落盘前后做**结构遵从**与**冲突治理**。目标章节由 overview 行内副标题链接自动确定。闸门、索引与链接约定见 [reference/gates-and-links.md](reference/gates-and-links.md)。
 
-## 快速定向
+## 与相近技能的分工
 
-| 需要做什么 | 去读 |
-|-----------|------|
-| 了解三日志职责、参数契约、原子顺序 | 本文件（继续往下读） |
-| 闸门触发条件、会话 spec 标记、交互节奏 | [reference/interaction-gate.md](reference/interaction-gate.md) |
-| 归档目标范围、变更发现方式、批次日志格式 | [reference/archive-spec.md](reference/archive-spec.md) |
-| 联邦层级、overview 提炼规则、五架构视角归档顺序 | [reference/federation-spec.md](reference/federation-spec.md) |
-| 锚点文件格式、增量范围逻辑、dry-run 约束 | [reference/archive-log-spec.md](reference/archive-log-spec.md) |
-| 常见陷阱与完整自查清单 | [gotchas.md](gotchas.md) |
-| 日志写入脚本（可直接执行） | [scripts/](scripts/)（见下文「脚本说明」） |
-
----
-
-## 三日志职责（必须区分）
-
-| 日志文件 | 职责 | 写入时机 |
-|---------|------|---------|
-| `system/application-{name}/changelogs/CHANGE-LOG.md` | 应用侧变更来源，定义可归档增量候选区间 | 步骤 0 读取，**本技能不写入** |
-| `system/application-{name}/changelogs/ARCHIVE-LOG.md` | 应用侧归档锚点，记录已归档到哪个变更位置 | 归档成功后更新（步骤 4 最后执行） |
-| `system/changelogs/CHANGE-LOG.md` | 系统侧归档批次总账，记录本次归档结果与范围 | 每次归档先写（步骤 4a 先执行） |
+| 场景 | 优先技能 |
+|------|----------|
+| 从代码与四视角链提取实体 ID、刷新 `KNOWLEDGE_INDEX` | `docs-build` |
+| 定向增改 Markdown 并链式同步引用 | `docs-upgrade` |
+| SDD 各阶段标准产物（Solution/PRD/ADD/TDD 等） | `sdx-*` |
+| 指定 overview 各视角 → 各架构视角表行副标题文件链接对应章节的归档补充 + 冲突检查 | **本技能** |
 
 ---
 
-## 参数契约
+## HARD-GATE
 
-| 参数 | 默认 | 说明 |
-|-----|------|------|
-| `--app` | 全部已登记应用 | 仅处理指定应用，如 `billing-appeal`（对应 `system/application-billing-appeal/`） |
-| `--since` | 从应用 `ARCHIVE-LOG.md` 锚点继续 | 手动指定起始变更点，覆盖自动锚点 |
-| `--full` | `false` | 全量重新提炼所有章节，忽略锚点 |
-| `--dry-run` | `false` | 仅预览不落盘，输出三层预览：候选变更区间、目标文件状态、将写入三日志的条目摘要 |
+在用户明确确认**方案确认书**（模板见 [assets/distill-scheme-template.md](assets/distill-scheme-template.md)）之前：
 
----
+- **禁止**修改任何目标文档，**禁止**在目标目录下新增/覆盖终稿内容（草稿可先写在会话内或用户指定的临时路径）。
+- **允许**：读取 overview 与链接目标章节、列出目录、做笔记、输出方案与对比、在用户同意的临时区生成对比稿。
 
-## 交互与确认闸门
-
-写入前须完成**Spec草稿 + 用户总确认**（`PENDING` → `CONFIRMED`）。触发 HARD-GATE 时默认先 `--dry-run` 再落盘。完整触发条件表与推荐交互节奏见 [reference/interaction-gate.md](reference/interaction-gate.md)。
+若用户坚持「直接改」，仍须先用一句话概括将采用的方案与风险，并得到用户**明确同意**后再落盘。
 
 ---
 
-## 原子顺序（严格执行）
+## 输入与输出
 
-```
-步骤 0  读取应用 CHANGE-LOG.md，结合 --since/--full 计算归档范围
+| 类型 | 内容 |
+| ---- | ---- |
+| 硬输入 | overview 文件（可指定章节/锚点范围）；用户确认的**方案确认书** |
+| 可选输入 | 术语表、冲突策略、临时映射/冲突清单文件路径 |
+| 固定产出 | 按目标体例增补后的 Markdown（重点为架构视角表行副标题链接对应章节）及用户要求同步的索引/README |
+| 不产出 | 不经确认的批量覆盖；不代替 `docs-build` 生成实体 ID |
 
-步骤 1  检查 system/architecture/overview/{APPNAME}-overview.md 是否存在
-        - 不存在：以 NAME-overview.md 为模板创建，替换 NAME → APPNAME
-        - 存在：则继续下一步
+### overview 指定语法
 
-步骤 2  读取应用侧 knowledge（四视角 YAML/MD）+ SDD 文档，作为提炼的知识来源
-        （这些文档不再是归档目标，仅作为提炼的输入）
+用户可用一行紧凑形式直接指定 overview，执行步骤 0 时先解析 overview 路径与可选范围，再进入澄清与方案确认：
 
-步骤 3  读取 {APPNAME}-overview.md 五架构视角知识索引表，
-        逐条读取副标题列文件链接对应章节的「应填内容 + 产出建议」要求和已有内容，
-        从应用知识库提炼相应业务知识，并判断知识变动标识（A/U/D），
-        写入第三列（完整内容快照，含变动标识）
+**模式**：`{overview}` 或 `{overview}#{章节/锚点}`
 
-步骤 4a 先写 system/changelogs/CHANGE-LOG.md（系统总账）
-步骤 4b 再写 system/application-{name}/changelogs/ARCHIVE-LOG.md（应用锚点前移）
-```
+| 字段 | 含义 | 示例 |
+| ---- | ---- | ---- |
+| overview | 仓库内 overview 文件路径（必填） | `system/architecture/overview/billing-overview.md` |
+| 章节/锚点 | 可选，仅归档该范围 | `#支付域`、`#refund-flow` |
 
-**关键约束**：步骤 4a 失败时禁止执行步骤 4b；步骤 3 写入失败时禁止执行步骤 4。
+**解析约定**：
 
----
-
-## 命令示例
-
-```bash
-/docs-archive --app billing-appeal --dry-run
-/docs-archive --app billing-appeal --since v1.2.0
-/docs-archive --app billing-appeal --full
-/docs-archive --app billing-appeal
-```
+1. **仅认 overview**：默认不接收额外目标路径；目标取自 overview 表格行内副标题链接与对应章节。
+2. **路径含空格**：要求用户用引号包裹路径。
+3. **缺失链接处理**：若某行无副标题链接或链接章节不存在，列入冲突清单并逐条请用户决策。
+4. 解析结果须写入方案确认书中的来源清单与目标清单，不得仅停留在会话口头理解。
 
 ---
 
-## 脚本说明
+## 参数（会话内确认）
 
-`scripts/` 目录提供可直接执行的日志写入脚本，**仅处理日志追加，不执行内容提炼写入**：
+在进入归档落盘前，须与用户对齐下列维度（可一次性展示、分项确认）；细节问题**一次只问一个**，见 [reference/workflow-spec.md](reference/workflow-spec.md)。
 
-| 脚本 | 用途 | 何时使用 |
-|-----|------|---------|
-| `run-docs-archive.sh` | 最小可执行入口，支持 dry-run 三层预览与日志写入编排 | 步骤 0–4 的自动化入口 |
-| `append-change-log.sh` | 向系统侧 `CHANGE-LOG.md` 追加批次记录 | 步骤 4a |
-| `update-archive-log.sh` | 向应用侧 `ARCHIVE-LOG.md` 追加锚点记录 | 步骤 4b |
+| 参数 | 说明 |
+| ---- | ---- |
+| 来源范围 | 单文件 / 目录 / 指定章节或标题；是否含附件、脚注 |
+| 归档范围 | 全文 / 指定章节；是否仅处理含副标题链接的行 |
+| 抽象层级 | 摘录级 / 要点级 / 可对外宣讲级；是否保留出处 |
+| 术语与风格 | 对齐的术语表或禁用词；语体 |
+| 冲突策略 | 与目标已有内容不一致时：以来源为准 / 以目标为准 / 并列待裁决 |
+| 产出物 | 是否同步目录导航、changelog 等 |
 
-内容提炼（步骤 1–3）由 Agent 按 [reference/federation-spec.md](reference/federation-spec.md) 规则执行，脚本不覆盖此部分。
+---
+
+## 工作流（六步）
+
+| 步骤 | 摘要 | 详见 |
+|------|------|------|
+| 0 | 探索上下文：读 overview 与行内副标题链接目标章节，确认归档边界 | [workflow-spec.md §0](reference/workflow-spec.md) |
+| 1 | 澄清范围与约束（分步单问） | §1 |
+| 2 | 提出 2～3 种方案与推荐 | §2 |
+| 3 | 输出并确认**方案确认书** | §3 |
+| 4 | 归档、改写、落盘 | §4 |
+| 5 | 文档检查与冲突处理 | §5、[quality-checklist.md](reference/quality-checklist.md) |
+| 6 | 变更摘要；不自动 Git 提交 | §6 |
+
+流程图与完整条款见 [reference/workflow-spec.md](reference/workflow-spec.md)。
 
 ---
 
 ## 核心约束
 
-- 默认增量，不重复归档已锚定区间
-- `--full` 重新提炼全部章节，不受锚点限制
-- 归档内容已按五架构视角逐节写入 `{APPNAME}-overview.md` 第三列
-- 归档前先读目标文件，确认现有内容（用于判断 A/U/D）
+| 约束 | 原因 |
+| ---- | ---- |
+| 方案确认门禁 | 防止未经评审的批量改写与范围蔓延 |
+| 证据与可追溯 | 归档结论应能在来源中对应；多出处合并须可说明 |
+| 结构服从目标 | 标题层级与体例以目标文档/目录为准 |
+| 冲突显式处理 | 来源或目标矛盾时不得静默合并；分步请用户裁决 |
+| 闸门合规 | 受管路径须符合 [AGENTS.md](../../../AGENTS.md) 与 [CONVENTIONS.md](../../rules/CONVENTIONS.md) |
+
+---
+
+## 依赖关系
+
+| 类型 | 技能/组件 | 说明 |
+| ---- | --------- | ---- |
+| 可选上游 | `docs-indexing` | 需要权威路径地图时查阅 `INDEX_GUIDE.md` |
+| 相邻 | `docs-build` / `docs-upgrade` / `sdx-*` | 分工见上文表；勿混用职责 |
+| 下游 | — | 无强制下游；可按需触发 `docs-change` 等 |
+
+---
+
+## 参考资源
+
+| 资源 | 路径 | 何时读 |
+| ---- | ---- | ------ |
+| 步骤 0～6 全文、流程图 | [reference/workflow-spec.md](reference/workflow-spec.md) | 执行任意步骤时 |
+| 闸门、INDEX、链接与 Git | [reference/gates-and-links.md](reference/gates-and-links.md) | 探索目标、自检链接时 |
+| 质量与收口清单 | [reference/quality-checklist.md](reference/quality-checklist.md) | 步骤 5～6 |
+| 方案确认书模板 | [assets/distill-scheme-template.md](assets/distill-scheme-template.md) | 步骤 3 落草稿时 |
+| 常见陷阱 | [gotchas.md](gotchas.md) | 歧义、抢闸门、与相近技能混淆时 |

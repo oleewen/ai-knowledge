@@ -1,6 +1,6 @@
-# docs-archive 交互与确认闸门
+# docs-distill 交互与确认闸门
 
-与 SDD 各阶段的 **sdx-*-gate**（见 [agent/hooks/README.md](../../../hooks/README.md)；规则总表 [agent/rules/CONVENTIONS.md](../../../rules/CONVENTIONS.md#artifact-gates) 第三节）采用**同一话语体系**，便于在会话中复用「中间会话 spec → 用户总确认 → 落盘」的节奏；**差异**在于：sdx 已提供 `preToolUse` 写入拦截，**docs-archive 当前不设独立钩子**，执行者须在对话中遵守下表（IDE 不代为拦截）。
+与 SDD 各阶段的 **sdx-*-gate**（见 [agent/hooks/README.md](../../../hooks/README.md)；规则总表 [agent/rules/CONVENTIONS.md](../../../rules/CONVENTIONS.md#artifact-gates) 第三节）采用**同一话语体系**，便于在会话中复用「中间会话 spec → 用户总确认 → 落盘」的节奏；**差异**在于：sdx 已提供 `preToolUse` 写入拦截，**docs-distill 当前不设独立钩子**，执行者须在对话中遵守下表（IDE 不代为拦截）。
 
 ---
 
@@ -8,9 +8,9 @@
 
 | 概念 | 对齐方式 |
 |------|----------|
-| 中间会话 spec | 路径：`docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-archive.md`（与 `sdx-design` 等同级目录） |
+| 中间会话 spec | 路径：`docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-distill.md`（与 `sdx-design` 等同级目录） |
 | 用户总确认 | 会话 spec 文末标记由 `PENDING` 改为 `CONFIRMED`（见下文「门禁标记」） |
-| 合法例外 | 用户在同一会话中**明示**跳过闸门、仅要预览、或授权直写；或环境变量 **`DOCS_ARCHIVE_ALLOW_WRITE=1`**（仅限人工知情场景，类比 `SDX_DESIGN_ALLOW_ADD_WRITE=1`） |
+| 合法例外 | 用户在同一会话中**明示**跳过闸门、仅要预览、或授权直写；或环境变量 **`DOCS_DISTILL_ALLOW_WRITE=1`**（仅限人工知情场景，类比 `SDX_DESIGN_ALLOW_ADD_WRITE=1`） |
 | 预览优先 | 触发 HARD-GATE 时，**先** `--dry-run`，再谈是否落盘 |
 
 ---
@@ -29,8 +29,8 @@
 | 应用 `ARCHIVE-LOG.md` 中的锚点 id 在应用 `CHANGE-LOG.md` 中找不到 | **不得**静默改为全量；说明风险并请用户选择修正锚点、手动 `--since` 或授权全量 | 见 gotchas「锚点 changelog_id…」 |
 | 首次为某应用创建 overview 文件（`{APPNAME}-overview.md` 不存在） | 须先 `--dry-run` 预览将创建的文件结构（文件名、标题、五架构视角章节数）；总确认后再创建并写入 | 首次创建会生成新文件，须用户确认文件结构符合预期 |
 | 应用侧与系统侧内容冲突且无法按联邦规则自动消解 | 不强行覆盖；标为待人工确认或仅更新无争议区块 | 见 gotchas「应用侧与系统侧冲突时强行覆盖」 |
-| 多应用均有待归档区间且调用未带 `--app` | 列出候选应用与各自锚点；建议先按应用分别 `--dry-run` 再分批确认 | 见 gotchas「多应用归档」 |
-| 步骤 3 写入**失败** | **禁止**执行步骤 4（保持「系统总账先于应用锚点」与 gotchas「归档写入失败后仍更新锚点」） | 见上级 SKILL「原子顺序」 |
+| 多应用均有待蒸馏区间且调用未带 `--app` | 列出候选应用与各自锚点；建议先按应用分别 `--dry-run` 再分批确认 | 见 gotchas「多应用蒸馏」 |
+| 步骤 3 写入**失败** | **禁止**执行步骤 4（保持「系统总账先于应用锚点」与 gotchas「蒸馏写入失败后仍更新锚点」） | 见上级 SKILL「原子顺序」 |
 
 未列入上表、但 [gotchas.md](../gotchas.md) 要求「须警告并请用户确认」的情形，**同等适用** HARD-GATE 精神：先说明事实与选项，再写入。
 
@@ -38,12 +38,12 @@
 
 ## 中间会话 spec 与门禁标记
 
-**路径**：`docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-archive.md`
+**路径**：`docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-distill.md`
 
 **文末标记**（与 sdx 一致，仅换前缀名）：
 
-- 总确认前：`<!-- docs-archive-gate: PENDING -->`
-- 用户总确认后：`<!-- docs-archive-gate: CONFIRMED -->`
+- 总确认前：`<!-- docs-distill-gate: PENDING -->`
+- 用户总确认后：`<!-- docs-distill-gate: CONFIRMED -->`
 
 **文中至少写明**（供后续审计与可能的自动化对齐）：目标 `--app`（或声明处理全部已登记应用）、是否 `--full`、是否使用 `--since` 及其值、是否已执行 `--dry-run` 及结论摘要、是否为首次创建 overview 文件（新建 vs 更新）。
 
@@ -60,5 +60,5 @@
 
 ## 与校验脚本、钩子的关系
 
-- 若仓库后续为 `system/architecture/**` 或归档日志路径增加 `preToolUse` 钩子，建议复用 **`docs-archive-gate: PENDING|CONFIRMED`** 与上述会话 spec 路径，与 **sdx-*-gate** 的 `CONFIRMED` + 文件名引用模式保持一致。
+- 若仓库后续为 `system/architecture/**` 或蒸馏日志路径增加 `preToolUse` 钩子，建议复用 **`docs-distill-gate: PENDING|CONFIRMED`** 与上述会话 spec 路径，与 **sdx-*-gate** 的 `CONFIRMED` + 文件名引用模式保持一致。
 - 在此之前，以本文件与 [上级 SKILL.md](../SKILL.md) 为**规范来源**。

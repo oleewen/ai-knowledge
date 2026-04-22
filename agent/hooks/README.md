@@ -9,7 +9,7 @@
 
 | 技能 | 说明 |
 |------|------|
-| docs-archive | 与 sdx-* 相同「中间会话 spec + `PENDING`/`CONFIRMED` + 用户总确认」话语体系；规范见 [agent/skills/docs-archive/reference/interaction-gate.md](../skills/docs-archive/reference/interaction-gate.md)，规则总表见 [agent/rules/CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates) 第三节。当前**未**提供写入拦截脚本，以技能与会话执行为准。 |
+| docs-distill | 与 sdx-* 相同「中间会话 spec + `PENDING`/`CONFIRMED` + 用户总确认」话语体系；规范见 [agent/skills/docs-distill/reference/interaction-gate.md](../skills/docs-distill/reference/interaction-gate.md)，规则总表见 [agent/rules/CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates) 第三节。当前**未**提供写入拦截脚本，以技能与会话执行为准。 |
 
 ## 如何自动生效（无需单独「Hooks 总开关」）
 

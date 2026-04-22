@@ -120,7 +120,7 @@ flowchart TD
         D["docs-build 构建知识库 knowledge"]
         E["docs-change 聚合变更 changelogs"]
         R["docs-fetch 拉取下级知识库"]
-        T["docs-archive 归档下级知识库"]
+        T["docs-distill 蒸馏下级知识库"]
         U["docs-extract 抽取文档知识"]
     end
 
@@ -165,9 +165,9 @@ flowchart TD
 | 知识库构建 | `/docs-build`     | 维护知识实体与视角索引（`application/knowledge/`） |
 | 知识库构建 | `/docs-change`    | 聚合变更到 `application/changelogs/` |
 | 知识库构建 | `/docs-fetch`     | 拉取下游应用侧文档到中央库镜像 |
-| 知识库构建 | `/docs-archive`   | 将应用侧已核实内容归档到系统知识库 |
+| 知识库构建 | `/docs-distill`   | 将应用侧已核实内容蒸馏到系统知识库 |
 | 知识库构建 | `/docs-extract`   | 从任意文件或目录按段落级关键词筛选，提炼业务知识写入指定 `XX-overview.md` |
-| 知识库构建 | `/docs-distill`   | 从来源文档/章节蒸馏业务知识写入目标文档或目录；方案确认后落盘并做冲突检查 |
+| 知识库构建 | `/docs-archive`   | 从指定 overview 文件各视角归档知识到架构视角表各行副标题文件链接对应章节；方案确认后落盘并做冲突检查 |
 | 需求设计  | `/sdx-solution`    | 产出解决方案文档（SOLUTION） |
 | 需求设计  | `/sdx-analysis`    | 产出需求分析文档（ANALYSIS） |
 | 需求设计  | `/sdx-prd`         | 产出产品需求文档（PRD） |

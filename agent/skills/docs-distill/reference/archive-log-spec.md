@@ -1,6 +1,6 @@
-# 归档锚点规范
+# 蒸馏锚点规范
 
-docs-archive 的增量归档机制依赖归档锚点文件，记录每次归档到的 changelog 位置，下次从该位置之后继续。
+docs-distill 的增量蒸馏机制依赖蒸馏锚点文件，记录每次蒸馏到的 changelog 位置，下次从该位置之后继续。
 
 ---
 
@@ -12,7 +12,7 @@ docs-archive 的增量归档机制依赖归档锚点文件，记录每次归档�
 system/application-{name}/changelogs/ARCHIVE-LOG.md
 ```
 
-首次归档时自动创建；不存在则视为从未归档，执行全量归档。
+首次蒸馏时自动创建；不存在则视为从未蒸馏，执行全量蒸馏。
 
 ---
 
@@ -53,34 +53,34 @@ system/application-{name}/changelogs/ARCHIVE-LOG.md
 
 ```
 if CHANGE-LOG.md 不存在:
-    归档范围 = 0（无输入，提示缺少变更源）
+    蒸馏范围 = 0（无输入，提示缺少变更源）
 
 elif --full 参数:
-    归档范围 = CHANGE-LOG.md 全部条目
+    蒸馏范围 = CHANGE-LOG.md 全部条目
 
 elif --since 参数指定:
-    归档范围 = CHANGE-LOG.md 中 since 之后的条目
+    蒸馏范围 = CHANGE-LOG.md 中 since 之后的条目
 
 elif ARCHIVE-LOG.md 存在且有 marker:
     last_id = ARCHIVE-LOG.md 最后一条记录的 changelog_id
-    归档范围 = CHANGE-LOG.md 中 last_id 之后的所有条目
-    若 last_id 在 CHANGE-LOG.md 中找不到 → 警告并请用户确认是否全量归档
+    蒸馏范围 = CHANGE-LOG.md 中 last_id 之后的所有条目
+    若 last_id 在 CHANGE-LOG.md 中找不到 → 警告并请用户确认是否全量蒸馏
 
 else:
-    归档范围 = CHANGE-LOG.md 全部条目（首次归档）
+    蒸馏范围 = CHANGE-LOG.md 全部条目（首次蒸馏）
 ```
 
 ---
 
 ## 锚点更新时机
 
-**归档写入成功后才更新锚点**（原子性保证）：
+**蒸馏写入成功后才更新锚点**（原子性保证）：
 
-1. 完成 **`system/architecture/` 下本次批次涉及的全部写入**（按当前归档规则落盘）
-2. 生成或追加批次归档文档（`system/changelogs/CHANGE-LOG.md`）
+1. 完成 **`system/architecture/` 下本次批次涉及的全部写入**（按当前蒸馏规则落盘）
+2. 生成或追加批次蒸馏文档（`system/changelogs/CHANGE-LOG.md`）
 3. **最后**更新 `system/application-{name}/.../ARCHIVE-LOG.md`
 
-若步骤 1–2 任一失败，不更新锚点，下次重试时从同一位置开始，避免漏归档。
+若步骤 1–2 任一失败，不更新锚点，下次重试时从同一位置开始，避免漏蒸馏。
 
 ---
 

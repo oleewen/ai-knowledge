@@ -13,7 +13,7 @@
 
 ```text
 knowledge（SSOT）
-    ↑ 归档 / 回写（如 docs-archive）
+    ↑ 蒸馏 / 回写（如 docs-distill）
     │
 solutions ──→ analysis ──→ requirements
     │              │              │
