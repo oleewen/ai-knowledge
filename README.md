@@ -122,6 +122,7 @@ flowchart TD
         R["docs-fetch 拉取下级知识库"]
         T["docs-distill 蒸馏下级知识库"]
         U["docs-extract 抽取文档知识"]
+        V["docs-archive 归档文档知识"]
     end
 
     subgraph RDD["需求设计链路"]
@@ -148,9 +149,8 @@ flowchart TD
     S -- 知识库链路 --> A --> B --> C --> D -- 知识库 --> F 
     S -- 需求链路 --> Q -- IDEA --> F -- 解决方案 --> G -- 需求分析 : MVP/Sprint --> H -- 产品设计 --> I -- 技术设计 --> J
     I -- 需求Spec --> K --> L --> M --> N --> O --> P --> Z
-    D -. 知识库 .-> R --> T --> Z
-    T -- 指定文档 --> U
-    R -- 指定文档 --> U --> Z
+    D -. 应用知识库 .-> R -- 应用知识库 --> T -- 应用知识视图 -->  V
+    R -- 应用知识库 --> U -- 应用知识视图 --> V -- 系统知识库 --> Z
     J -- 分析设计文档 --> E 
     E <-. Spec文档 .-> P
     D <-- 变更内容 --> E
