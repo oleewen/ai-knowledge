@@ -18,9 +18,9 @@ description: >
 |-----------|------|
 | 了解三日志职责、参数契约、原子顺序 | 本文件（继续往下读） |
 | 闸门触发条件、会话 spec 标记、交互节奏 | [reference/interaction-gate.md](reference/interaction-gate.md) |
-| 蒸馏目标范围、变更发现方式、批次日志格式 | [reference/archive-spec.md](reference/archive-spec.md) |
+| 蒸馏目标范围、变更发现方式、批次日志格式 | [reference/distill-spec.md](reference/distill-spec.md) |
 | 联邦层级、overview 提炼规则、五架构视角蒸馏顺序 | [reference/federation-spec.md](reference/federation-spec.md) |
-| 锚点文件格式、增量范围逻辑、dry-run 约束 | [reference/archive-log-spec.md](reference/archive-log-spec.md) |
+| 锚点文件格式、增量范围逻辑、dry-run 约束 | [reference/distill-log-spec.md](reference/distill-log-spec.md) |
 | 常见陷阱与完整自查清单 | [gotchas.md](gotchas.md) |
 | 日志写入脚本（可直接执行） | [scripts/](scripts/)（见下文「脚本说明」） |
 

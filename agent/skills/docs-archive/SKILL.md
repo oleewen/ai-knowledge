@@ -28,7 +28,7 @@ description: >
 
 ## HARD-GATE
 
-在用户明确确认**方案确认书**（模板见 [assets/distill-scheme-template.md](assets/distill-scheme-template.md)）之前：
+在用户明确确认**方案确认书**（模板见 [assets/archive-template.md](assets/archive-template.md)）之前：
 
 - **禁止**修改任何目标文档，**禁止**在目标目录下新增/覆盖终稿内容（草稿可先写在会话内或用户指定的临时路径）。
 - **允许**：读取 overview 与链接目标章节、列出目录、做笔记、输出方案与对比、在用户同意的临时区生成对比稿。
@@ -127,5 +127,5 @@ description: >
 | 步骤 0～6 全文、流程图 | [reference/workflow-spec.md](reference/workflow-spec.md) | 执行任意步骤时 |
 | 闸门、INDEX、链接与 Git | [reference/gates-and-links.md](reference/gates-and-links.md) | 探索目标、自检链接时 |
 | 质量与收口清单 | [reference/quality-checklist.md](reference/quality-checklist.md) | 步骤 5～6 |
-| 方案确认书模板 | [assets/distill-scheme-template.md](assets/distill-scheme-template.md) | 步骤 3 落草稿时 |
+| 方案确认书模板 | [assets/archive-template.md](assets/archive-template.md) | 步骤 3 落草稿时 |
 | 常见陷阱 | [gotchas.md](gotchas.md) | 歧义、抢闸门、与相近技能混淆时 |

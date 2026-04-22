@@ -72,7 +72,7 @@ digraph kd {
 
 ## 步骤 3：方案确认书
 
-在用户确认前输出一页**方案确认书**。字段与占位见 [assets/distill-scheme-template.md](../assets/distill-scheme-template.md)。
+在用户确认前输出一页**方案确认书**。字段与占位见 [assets/archive-template.md](../assets/archive-template.md)。
 
 必备内容：
 

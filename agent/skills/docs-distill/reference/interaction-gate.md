@@ -51,7 +51,7 @@
 
 ## 推荐交互节奏（brainstorming 机制子集）
 
-1. **上下文探索**：读取应用 `CHANGE-LOG.md`、`ARCHIVE-LOG.md`，必要时对照 [archive-log-spec.md](archive-log-spec.md) 与 gotchas。
+1. **上下文探索**：读取应用 `CHANGE-LOG.md`、`ARCHIVE-LOG.md`，必要时对照 [distill-log-spec.md](distill-log-spec.md) 与 gotchas。
 2. **触发 HARD-GATE 时**：先 `--dry-run`，展示候选区间、受影响路径与日志摘要。
 3. **单次一个待确认点**：优先选择题或「范围 / 风险 / 授权」三要素之一；避免一次抛出无关问题（与 `sdx-design` 阶段二「每次只呈现一段」同构）。
 4. **用户总确认后**：再执行原子顺序步骤 2–4；失败则按 gotchas 回滚语义处理，不前移锚点。
