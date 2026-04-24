@@ -101,7 +101,7 @@ if [[ "$DRY_RUN" == true ]]; then
   echo "[Layer 1] Candidate range"
   echo "- app: ${APP}"
   echo "- mode: ${range_mode}"
-  echo "- source_change_log: ${APP_CHANGE_LOG}"
+  echo "- app_change_log: ${APP_CHANGE_LOG}"
   echo "- distill_anchor_log: ${APP_ARCHIVE_LOG}"
   echo "- from: ${range_from:-<none>}"
   echo "- to: ${range_to:-<none>}"

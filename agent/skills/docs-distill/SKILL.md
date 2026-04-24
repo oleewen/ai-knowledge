@@ -10,7 +10,7 @@ description: >
 
 # docs-distill：应用知识蒸馏并上行到系统库
 
-> 把 `system/application-{name}/` 的可晋升内容蒸馏后写入 `system/architecture/overview/{APPNAME}-overview.md`，形成以应用为单位的完整知识快照，并维护可追溯日志链路。
+> 把 `system/application-{name}/` 的可晋升内容蒸馏后写入 `system/architecture/overview/{APPNAME}-overview.md`，形成以应用为单位的完整知识快照；可追溯性通过三日志链路维护，**不在 overview 正文中记录来源**（不写 `(来源：...)`、出处、参见链接等）。
 
 ## 快速定向
 
@@ -108,4 +108,5 @@ description: >
 - 默认增量，不重复蒸馏已锚定区间
 - `--full` 重新提炼全部章节，不受锚点限制
 - 蒸馏内容已按五架构视角逐节写入 `{APPNAME}-overview.md` 第三列
+- 写入到 `{APPNAME}-overview.md` 第三列的知识正文不记录来源（不写 `(来源：...)`、出处、参见链接等）
 - 蒸馏前先读目标文件，确认现有内容（用于判断 A/U/D）
