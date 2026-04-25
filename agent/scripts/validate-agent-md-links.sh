@@ -56,16 +56,14 @@ for dirpath, _, files in os.walk(agent):
         path = os.path.join(dirpath, name)
         rel_md = os.path.relpath(path, repo)
         try:
-            text = open(path, encoding="utf-8").read()
-        except OSError as e:
+            with open(path, encoding="utf-8") as f:
+                text = f.read()
+        except (OSError, UnicodeDecodeError) as e:
             warns.append(f"{rel_md}: 无法读取 ({e})")
             continue
         for m in link_re.finditer(text):
-            raw = m.group(1).strip()
-            if is_external(raw.split("#", 1)[0]):
-                continue
-            target = raw.split("#", 1)[0].strip()
-            if not target:
+            target = m.group(1).strip().split("#", 1)[0].strip()
+            if is_external(target):
                 continue
             joined = norm(os.path.join(os.path.dirname(path), target))
             # agent 内互链：目标须在 agent 下且存在（含 L3 裸链规则）
@@ -97,13 +95,9 @@ if warns:
     for w in warns:
         print("[WARN]", w, file=sys.stderr)
 if errs:
-    print("校验失败（", len(errs), "）:", file=sys.stderr)
+    print(f"校验失败（{len(errs)}）:", file=sys.stderr)
     for e in errs:
         print(" ", e, file=sys.stderr)
     sys.exit(1)
-print(
-    "[OK] agent Markdown 链接检查通过（agent 内互链 + 跨边界须 REPO_ROOT/DOC_ROOT；DOC_ROOT=",
-    doc_root,
-    "）",
-)
+print(f"[OK] agent Markdown 链接检查通过（agent 内互链 + 跨边界须 REPO_ROOT/DOC_ROOT；DOC_ROOT={doc_root}）")
 PY

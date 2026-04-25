@@ -119,11 +119,11 @@ sdx_bs_clone_repo() {
 
   if [[ "$ref" == 'HEAD' || -z "$ref" ]]; then
     git clone --depth 1 "$repo_url" "$dest_dir" \
-      || { sdx_error "克隆失败: $repo_url"; }
+      || sdx_error "克隆失败: $repo_url"
   else
     sdx_info "  分支/标签: $ref"
     git clone --depth 1 --single-branch -b "$ref" "$repo_url" "$dest_dir" \
-      || { sdx_error "克隆失败: $repo_url (ref: $ref)"; }
+      || sdx_error "克隆失败: $repo_url (ref: $ref)"
   fi
 }
 

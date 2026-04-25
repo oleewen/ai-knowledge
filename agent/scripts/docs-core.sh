@@ -65,6 +65,9 @@ sdx_sync_dir() {
     rsync -a --delete "$@" "$src"/ "$dst"/
   else
     sdx_warn "未检测到 rsync，使用 cp -R（无法完全排除或增量同步；建议安装 rsync）"
+    [[ -n "$dst" && "$dst" != '/' ]] || {
+      sdx_error "sdx_sync_dir 目标目录非法: '$dst'"
+    }
     rm -rf "$dst"
     sdx_ensure_dir "$(dirname "$dst")"
     cp -R "$src" "$dst"
@@ -110,6 +113,7 @@ expand_tilde() {
 abs_path() {
   local p
   p="$(expand_tilde "${1:-}")"
+  [[ -n "$p" ]] || return 1
   [[ "$p" == /* ]] || p="$PWD/$p"
 
   if [[ -d "$p" ]]; then
@@ -375,9 +379,11 @@ sdx_rewrite_agent_path_segment_in_file() {
   local file="$1" agent_slash="${2:?}"
   [[ -f "$file" ]] && sdx_is_text_file "$file" || return 0
   sdx_have_perl || return 0
-  SDX_AGENT_SLASH="$agent_slash" \
-    perl -CSD -i -pe 's{\bagent/}{$ENV{SDX_AGENT_SLASH}}g' \
-    "$file" 2>/dev/null || true
+  if ! SDX_AGENT_SLASH="$agent_slash" \
+    perl -CSD -i -pe 'BEGIN { die "SDX_AGENT_SLASH unset\n" unless defined $ENV{SDX_AGENT_SLASH} && length $ENV{SDX_AGENT_SLASH} } s{\bagent/}{$ENV{SDX_AGENT_SLASH}}g' \
+    "$file" 2>/dev/null; then
+    sdx_warn "重写 agent/ 路径失败：$file"
+  fi
 }
 
 # 遍历 root 下待重写路径的文件：排除常见依赖/缓存/版本库目录，避免 ~/.cursor/skills 等目录残留导致 find 极慢或“假死”

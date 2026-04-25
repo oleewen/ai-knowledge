@@ -18,31 +18,30 @@ source "${SCRIPT_DIR}/link-config.sh"
 # knowledge-links.yaml
 # =============================================================================
 
+# 去除 YAML 字段值两端的单/双引号
+_yaml_unquote() {
+  local v="${1:-}"
+  v="${v#\"}"; v="${v%\"}"
+  v="${v#\'}"; v="${v%\'}"
+  printf '%s' "$v"
+}
+
 # 从 knowledge-links.yaml 解析每条 link：path、可选 doc_dir、可选 app_name（application 槽位）
 # 输出每行：path<TAB>doc_dir<TAB>app_name（后两者可为空）
 knowledge_links_parse_entries_stream() {
   local f="${1:?}"
   [[ -f "$f" ]] || return 0
-  local path="" doc_dir="" app_name="" v w z
+  local path="" doc_dir="" app_name=""
   while IFS= read -r line || [[ -n "$line" ]]; do
     if [[ "$line" =~ ^[[:space:]]*-[[:space:]]*path:[[:space:]]*(.*)$ ]]; then
       [[ -n "$path" ]] && printf '%s\t%s\t%s\n' "$path" "$doc_dir" "$app_name"
-      v="${BASH_REMATCH[1]}"
-      v="${v#\"}"; v="${v%\"}"
-      v="${v#\'}"; v="${v%\'}"
-      path="$v"
+      path="$(_yaml_unquote "${BASH_REMATCH[1]}")"
       doc_dir=""
       app_name=""
     elif [[ -n "$path" && "$line" =~ ^[[:space:]]*doc_dir:[[:space:]]*(.*)$ ]]; then
-      w="${BASH_REMATCH[1]}"
-      w="${w#\"}"; w="${w%\"}"
-      w="${w#\'}"; w="${w%\'}"
-      doc_dir="$w"
+      doc_dir="$(_yaml_unquote "${BASH_REMATCH[1]}")"
     elif [[ -n "$path" && "$line" =~ ^[[:space:]]*app_name:[[:space:]]*(.*)$ ]]; then
-      z="${BASH_REMATCH[1]}"
-      z="${z#\"}"; z="${z%\"}"
-      z="${z#\'}"; z="${z%\'}"
-      app_name="$z"
+      app_name="$(_yaml_unquote "${BASH_REMATCH[1]}")"
     fi
   done <"$f"
   [[ -n "$path" ]] && printf '%s\t%s\t%s\n' "$path" "$doc_dir" "$app_name"
@@ -241,7 +240,7 @@ knowledge_link_remove_application_slot() {
   local dest repo_root
   [[ -n "$app" ]] || return 0
   if [[ "$app" == 'APPNAME' ]]; then
-    warn "APPNAME 为保留名，跳过删除槽位目录"
+    sdx_warn "APPNAME 为保留名，跳过删除槽位目录"
     return 0
   fi
   dest="$(strip_trailing_slash "$(abs_path "$doc_root")")/application-${app}"
@@ -422,13 +421,12 @@ if [[ "$CMD" == 'link' && "$expect_target" == 'application' ]]; then
   fi
   knowledge_link_ensure_application_slot "$_sdoc" "$TARGET_APP_NAME"
 elif [[ "$CMD" == 'link' && "$expect_target" != 'application' && -n "$CLI_APP_NAME" ]]; then
-  warn "--app-name 仅用于 system→application 建联，已忽略"
+  sdx_warn "--app-name 仅用于 system→application 建联，已忽略"
 fi
 
 case "$CMD" in
   link)
-    link_is_update=0
-    [[ "$have" -eq 1 ]] && link_is_update=1
+    link_is_update=$have
     if [[ "$have" -eq 1 ]]; then
       paths[matched_idx]="$REGISTER_KEY"
       doc_dirs[matched_idx]="$TARGET_DOC_DIR"
@@ -439,29 +437,16 @@ case "$CMD" in
       app_names+=("${TARGET_APP_NAME:-}")
     fi
     knowledge_links_write_triples "$LIST_FILE" paths doc_dirs app_names
-    if [[ "$link_is_update" -eq 1 ]]; then
-      if [[ -n "$TARGET_APP_NAME" ]]; then
-        if [[ -n "$TARGET_DOC_DIR" ]]; then
-          printf '已更新登记: %s → %s (doc_dir=%s, application-%s)\n' "$LIST_FILE" "$REGISTER_KEY" "$TARGET_DOC_DIR" "$TARGET_APP_NAME"
-        else
-          printf '已更新登记: %s → %s (application-%s)\n' "$LIST_FILE" "$REGISTER_KEY" "$TARGET_APP_NAME"
-        fi
-      elif [[ -n "$TARGET_DOC_DIR" ]]; then
-        printf '已更新登记: %s → %s (doc_dir=%s)\n' "$LIST_FILE" "$REGISTER_KEY" "$TARGET_DOC_DIR"
-      else
-        printf '已更新登记: %s → %s\n' "$LIST_FILE" "$REGISTER_KEY"
-      fi
+    _link_verb='已登记'; [[ "$link_is_update" -eq 1 ]] && _link_verb='已更新登记'
+    _link_info=''
+    if [[ -n "$TARGET_APP_NAME" && -n "$TARGET_DOC_DIR" ]]; then
+      _link_info=" (doc_dir=${TARGET_DOC_DIR}, application-${TARGET_APP_NAME})"
     elif [[ -n "$TARGET_APP_NAME" ]]; then
-      if [[ -n "$TARGET_DOC_DIR" ]]; then
-        printf '已登记: %s → %s (doc_dir=%s, application-%s)\n' "$LIST_FILE" "$REGISTER_KEY" "$TARGET_DOC_DIR" "$TARGET_APP_NAME"
-      else
-        printf '已登记: %s → %s (application-%s)\n' "$LIST_FILE" "$REGISTER_KEY" "$TARGET_APP_NAME"
-      fi
+      _link_info=" (application-${TARGET_APP_NAME})"
     elif [[ -n "$TARGET_DOC_DIR" ]]; then
-      printf '已登记: %s → %s (doc_dir=%s)\n' "$LIST_FILE" "$REGISTER_KEY" "$TARGET_DOC_DIR"
-    else
-      printf '已登记: %s → %s\n' "$LIST_FILE" "$REGISTER_KEY"
+      _link_info=" (doc_dir=${TARGET_DOC_DIR})"
     fi
+    printf '%s: %s → %s%s\n' "$_link_verb" "$LIST_FILE" "$REGISTER_KEY" "$_link_info"
     ;;
   unlink)
     [[ "$have" -eq 0 ]] && { printf '提示: 未找到登记项，跳过: %s\n' "$REGISTER_KEY" >&2; exit 0; }

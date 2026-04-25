@@ -77,11 +77,7 @@ validate_agents() {
     [[ -z "$agent" ]] && continue
     [[ "$agent" == 'all' ]] && return 0
 
-    local valid=0
-    for supported in "${SDX_SUPPORTED_AGENTS[@]}"; do
-      [[ "$agent" == "$supported" ]] && { valid=1; break; }
-    done
-    (( valid == 0 )) && return 1
+    [[ " ${SDX_SUPPORTED_AGENTS[*]} " == *" $agent "* ]] || return 1
   done
   return 0
 }

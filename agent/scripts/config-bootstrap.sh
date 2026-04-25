@@ -31,9 +31,13 @@ resolve_repo_doc_root() {
 # 解析承载 .docsconfig 的 REPO_ROOT（目标工程仓库根）
 find_repo_root_for_docsconfig() {
   local script_dir="${1:?script_dir}"
-  local gr
-  for gr in "$(git -C "${PWD}" rev-parse --show-toplevel 2>/dev/null)" \
-            "$(git -C "$script_dir" rev-parse --show-toplevel 2>/dev/null)"; do
+  local gr last=''
+  local pwd_root script_root
+  pwd_root="$(git -C "${PWD}" rev-parse --show-toplevel 2>/dev/null || true)"
+  script_root="$(git -C "$script_dir" rev-parse --show-toplevel 2>/dev/null || true)"
+  for gr in "$pwd_root" "$script_root"; do
+    [[ -n "$gr" && "$gr" == "$last" ]] && continue
+    last="$gr"
     [[ -n "$gr" && -f "$gr/.docsconfig" ]] && {
       printf '%s' "$gr"
       return 0
@@ -66,33 +70,32 @@ config_bootstrap_hint_docs_install() {
 EOF
 }
 
-# Usage: validate_bootstrap_docsconfig "<调用方脚本所在目录>"
-# 成功：设置 DOC_ROOT、REPO_ROOT、DOC_DIR（不 export）；可选 AGENT_*。
-# 失败：stderr 说明并 exit 1
-validate_bootstrap_docsconfig() {
-  local script_dir="${1:?script_dir}"
-  local rr=""
-
-  if ! rr="$(find_repo_root_for_docsconfig "$script_dir")"; then
-    echo "[config] 未找到目标仓库根下的 .docsconfig。" >&2
-    config_bootstrap_hint_docs_install
+config_bootstrap_fail() {
+  local msg="${1:-[config] 配置校验失败。}"
+  echo "$msg" >&2
+  config_bootstrap_hint_docs_install
+  if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     exit 1
   fi
+  return 1
+}
 
-  local cfg="$rr/.docsconfig"
-  [[ -f "$cfg" ]] || {
-    echo "[config] 内部错误：预期存在 $cfg" >&2
-    exit 1
-  }
+# Usage: validate_bootstrap_docsconfig "<调用方脚本所在目录>"
+# 成功：设置 DOC_ROOT、REPO_ROOT、DOC_DIR（不 export）；可选 AGENT_*。
+# 失败：stderr 说明；被执行时 exit 1，被 source 时 return 1
+validate_bootstrap_docsconfig() {
+  local script_dir="${1:?script_dir}"
 
-  docsconfig_parse_into_globals "$cfg" || {
-    config_bootstrap_hint_docs_install
-    exit 1
+  local rr
+  if ! rr="$(find_repo_root_for_docsconfig "$script_dir")"; then
+    config_bootstrap_fail "[config] 未找到目标仓库根下的 .docsconfig。"
+  fi
+
+  docsconfig_parse_into_globals "$rr/.docsconfig" || {
+    config_bootstrap_fail "[config] 解析 .docsconfig 失败。"
   }
 
   if [[ -z "${DOC_ROOT:-}" || -z "${REPO_ROOT:-}" || -z "${DOC_DIR:-}" ]]; then
-    echo "[config] .docsconfig 缺少必需的 DOC_ROOT、REPO_ROOT 或 DOC_DIR。" >&2
-    config_bootstrap_hint_docs_install
-    exit 1
+    config_bootstrap_fail "[config] .docsconfig 缺少必需的 DOC_ROOT、REPO_ROOT 或 DOC_DIR。"
   fi
 }

@@ -8,13 +8,8 @@ readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=./docs-config.sh
 source "$SCRIPT_DIR/docs-config.sh"
 
-# ========== docs-install 内联主体（knowledge 路径）==========
 # =============================================================================
-# § 1  日志函数
-# =============================================================================
-
-# =============================================================================
-# § 2  全局状态
+# § 1  全局状态
 # =============================================================================
 
 # 主配置关联数组（单一事实源）
@@ -883,8 +878,6 @@ docs_init_run() {
     install_docsconfig
     rewrite_knowledge_agent_paths_after_install
   fi
-
-  # ── 步骤 2：scope=knowledge 写 .docsconfig（含 KNOWLEDGE_TYPE）──────────────
 
   sdx_info "完成：初始化"
   print_checklist
