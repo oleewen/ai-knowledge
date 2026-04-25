@@ -42,7 +42,7 @@ DOC_ROOT="$(resolve_repo_doc_root)"
 cd "$REPO_ROOT" || exit 1
 
 REQUIREMENTS_DIR="${DOC_ROOT}/requirements"
-TEMPLATE="agent/skills/sdx-design/assets/add-template.md"
+TEMPLATE="${_AGENT_HOME}/skills/sdx-design/assets/add-template.md"
 
 info()    { echo "[INFO]  $1"; }
 warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
