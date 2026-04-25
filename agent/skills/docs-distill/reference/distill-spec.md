@@ -2,6 +2,8 @@
 
 docs-distill 蒸馏阶段（步骤 2–3）的范围界定、变更发现方式与产物格式。
 
+**目录**：[系统侧范围](#系统侧范围蒸馏目标) · [变更发现方式](#变更发现方式择一或组合) · [蒸馏产物](#蒸馏产物)
+
 ---
 
 ## 系统侧范围（蒸馏目标）
@@ -20,7 +22,7 @@ system/architecture/overview/{APPNAME}-overview.md
 - 应用侧 SDD 文档（solutions/analysis/requirements）
 
 日志文件（不变）：
-- `system/changelogs/CHANGE-LOG.md`（批次蒸馏总日志，文件不存在则创建）
+- `system/changelogs/DISTILL-LOG.md`（蒸馏记录，兼作锚点，所有应用共用，含 `app` 列，文件不存在则创建）
 
 ---
 
@@ -39,5 +41,4 @@ system/architecture/overview/{APPNAME}-overview.md
 | 产物 | 路径 | 内容 |
 |------|------|------|
 | **overview 蒸馏** | `system/architecture/overview/{APPNAME}-overview.md` | 五架构视角完整知识快照，第三列含变动标识（A/U/D） |
-| **批次蒸馏** | `system/changelogs/CHANGE-LOG.md`（文件不存在则创建） | 按应用分节追加：变更文件路径、变更类型（新增/修改/删除）、一句话摘要、可选提交号 |
-| **应用内留痕** | `system/application-{name}/changelogs/ARCHIVE-LOG.md` | 追加本节蒸馏锚点记录（用于下次增量起点） |
+| **蒸馏记录** | `system/changelogs/DISTILL-LOG.md`（文件不存在则创建） | 所有应用共用，含 `app` 列；记录变更文件路径、变更类型、一句话摘要；兼作下次增量锚点 |

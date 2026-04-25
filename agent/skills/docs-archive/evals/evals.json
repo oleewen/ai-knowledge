@@ -1,0 +1,23 @@
+{
+  "skill_name": "docs-archive",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "帮我把 system/architecture/overview/billing-appeal-overview.md 里业务架构视角的内容归档到对应的章节文件里，归档完之后把 overview 里已归档的部分替换成索引壳",
+      "expected_output": "触发 docs-archive 技能；阶段 1 读取 billing-appeal-overview.md 业务架构视角各行，解析行内副标题链接确认目标章节；阶段 2 澄清来源范围（仅业务架构视角）、来源清理策略（仅保留索引壳）；阶段 3 输出方案确认书（来源清单、目标清单、映射规则、冲突策略）；用户确认后阶段 4 按行归档写入目标章节并回写 overview；阶段 5 一致性检查",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "我想把 payment-overview.md#技术架构 这一节的内容补充进架构文档，但不确定要怎么处理冲突，你帮我看看",
+      "expected_output": "触发 docs-archive 技能；阶段 1 读取 payment-overview.md 技术架构节，解析行内副标题链接；阶段 2 澄清冲突策略（以来源为准 / 以目标为准 / 并列待裁决）；阶段 3 输出方案确认书，列出候选冲突点；HARD-GATE 生效，等待用户确认后再落盘",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "order-service 的 overview 更新了好几个视角，需要全部归档到架构文档，直接帮我改吧",
+      "expected_output": "触发 docs-archive 技能；识别用户说「直接改」触发 HARD-GATE；一句话概括方案与风险（多视角全量归档，影响面大）；阶段 1 读取 overview 全部视角行；阶段 2 逐项澄清（来源范围、来源清理策略、冲突策略）；阶段 3 输出方案确认书等待明确同意；不得跳过确认直接写入",
+      "files": []
+    }
+  ]
+}

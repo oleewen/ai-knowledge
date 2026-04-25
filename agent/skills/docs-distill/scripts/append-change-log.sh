@@ -2,7 +2,8 @@
 set -euo pipefail
 
 # append-change-log.sh
-# 作用：向 agent 侧 CHANGE-LOG.md 追加蒸馏批次记录
+# 作用：向 system/changelogs/DISTILL-LOG.md 写入蒸馏批次记录（最新在前）
+#       所有应用共用同一文件，以 app 列区分来源
 #
 # 用法：
 #   agent/skills/docs-distill/scripts/append-change-log.sh \
@@ -18,7 +19,7 @@ Usage:
   append-change-log.sh --app APP --changelog-id ID --changelog-time TIME [--archived-at ISO_TIME] [--summary TEXT]
 
 Required:
-  --app             应用名（用于 agent 日志分组）
+  --app             应用名
   --changelog-id    本次蒸馏对应的应用变更 ID
   --changelog-time  应用变更时间（原始记录时间）
 
@@ -36,30 +37,12 @@ SUMMARY=""
 
 while [[ $# -gt 0 ]]; do
     case "${1}" in
-        --app)
-            APP="${2:-}"
-            shift 2
-            ;;
-        --changelog-id)
-            CHANGELOG_ID="${2:-}"
-            shift 2
-            ;;
-        --changelog-time)
-            CHANGELOG_TIME="${2:-}"
-            shift 2
-            ;;
-        --archived-at)
-            ARCHIVED_AT="${2:-}"
-            shift 2
-            ;;
-        --summary)
-            SUMMARY="${2:-}"
-            shift 2
-            ;;
-        -h|--help)
-            usage
-            exit 0
-            ;;
+        --app)            APP="${2:-}";            shift 2 ;;
+        --changelog-id)   CHANGELOG_ID="${2:-}";   shift 2 ;;
+        --changelog-time) CHANGELOG_TIME="${2:-}"; shift 2 ;;
+        --archived-at)    ARCHIVED_AT="${2:-}";    shift 2 ;;
+        --summary)        SUMMARY="${2:-}";        shift 2 ;;
+        -h|--help)        usage; exit 0 ;;
         *)
             echo "[ERROR] 未知参数: ${1}" >&2
             usage >&2
@@ -83,25 +66,47 @@ if [[ -z "${ARCHIVED_AT}" ]]; then
     ARCHIVED_AT="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 fi
 
+# 转义 Markdown 表格单元格中的竖线与换行
 escape_md_cell() {
     local raw="${1}"
-    raw="${raw//$'\n'/ }"
+    raw="$(printf '%s' "${raw}" | tr '\n' ' ')"
     raw="${raw//|/\\|}"
     printf '%s' "${raw}"
 }
 
-LOG_FILE="agent/skills/docs-distill/logs/CHANGE-LOG.md"
+# 蒸馏批次总账（所有应用共用）
+LOG_FILE="system/changelogs/DISTILL-LOG.md"
 mkdir -p "$(dirname "${LOG_FILE}")"
 
+# 文件不存在时初始化（含表头）
 if [[ ! -f "${LOG_FILE}" ]]; then
     {
-        echo "# CHANGE LOG - docs-distill"
+        echo "# DISTILL LOG"
         echo
-        echo "| app | changelog_id | changelog_time | archived_at | summary |"
+        echo "| app | changelog_id | changelog_time | distilled_at | summary |"
         echo "|---|---|---|---|---|"
     } > "${LOG_FILE}"
 fi
 
-echo "| $(escape_md_cell "${APP}") | $(escape_md_cell "${CHANGELOG_ID}") | $(escape_md_cell "${CHANGELOG_TIME}") | $(escape_md_cell "${ARCHIVED_AT}") | $(escape_md_cell "${SUMMARY}") |" >> "${LOG_FILE}"
+ROW="| $(escape_md_cell "${APP}") | $(escape_md_cell "${CHANGELOG_ID}") | $(escape_md_cell "${CHANGELOG_TIME}") | $(escape_md_cell "${ARCHIVED_AT}") | $(escape_md_cell "${SUMMARY}") |"
 
-echo "[OK] 已追加 agent 变更总账: ${LOG_FILE}"
+# 将新记录插入分隔行（|---|...）之后、上一条记录之前，实现最新在前
+tmp_file="$(mktemp)"
+awk -v row="${ROW}" '
+    BEGIN { inserted = 0 }
+    {
+        print $0
+        if (inserted == 0 && $0 ~ /^\|[[:space:]]*---/) {
+            print row
+            inserted = 1
+        }
+    }
+    END {
+        if (inserted == 0) {
+            print row
+        }
+    }
+' "${LOG_FILE}" > "${tmp_file}"
+mv "${tmp_file}" "${LOG_FILE}"
+
+echo "[OK] 已写入蒸馏批次总账（最新在前）: ${LOG_FILE}"

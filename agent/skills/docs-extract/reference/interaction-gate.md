@@ -2,6 +2,8 @@
 
 与 `docs-distill` 采用**同一话语体系**（中间会话 spec → 用户总确认 → 落盘）；**差异**在于：docs-extract 无增量锚点，每次均为全量提炼，HARD-GATE 触发条件相对简单。
 
+**目录**：[与 docs-distill 对齐](#与-docs-distill-对齐的约定) · [HARD-GATE 触发条件](#hard-gate默认禁止落盘) · [会话 spec 与门禁标记](#中间会话-spec-与门禁标记) · [推荐交互节奏](#推荐交互节奏)
+
 ---
 
 ## 与 docs-distill 对齐的约定

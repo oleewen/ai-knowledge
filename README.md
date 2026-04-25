@@ -71,8 +71,24 @@ ai-knowledge/
 │   ├── rules/              # 编码、设计、测试、文档规范
 │   ├── skills/             # Slash 技能（docs-indexing、sdx-* 等）
 │   └── scripts/            # 共享 Bash 库（config-bootstrap、validate-agent-md-links）
-├── company/                # 公司知识库壳（architecture、system-{name}/）
-├── system/                 # 系统知识库壳（architecture、application-{name}/）
+├── company/                # 公司知识库壳
+│   ├── constitution/       # 宪法层：术语、原则、ADR 模板
+│   ├── architecture/       # 企业架构：业务、产品、应用、技术、数据架构
+│   ├── solutions/          # 解决方案产物
+│   ├── analysis/           # 需求分析产物
+│   ├── changelogs/         # 变更记录与索引运维日志
+│   ├── DESIGN.md           # 元模型、映射与演进原则
+│   └── INDEX_GUIDE.md      # 全库路径权威索引
+├── system/                 # 系统知识库壳
+│   ├── constitution/       # 宪法层：术语、原则、ADR 模板
+│   ├── architecture/       # 系统架构：业务、产品、应用、技术、数据架构
+│   ├── solutions/          # 解决方案产物
+│   ├── analysis/           # 需求分析产物
+│   ├── requirements/       # 需求交付产物
+│   ├── specs/              # 需求规格产物
+│   ├── changelogs/         # 变更记录与索引运维日志
+│   ├── DESIGN.md           # 元模型、映射与演进原则
+│   └── INDEX_GUIDE.md      # 全库路径权威索引
 ├── application/            # 应用知识库 SSOT
 │   ├── constitution/       # 宪法层：术语、原则、ADR 模板
 │   ├── knowledge/          # 四视角知识实体（业务/产品/技术/数据）
@@ -167,7 +183,7 @@ flowchart TD
 | 知识库构建 | `/docs-fetch`     | 拉取下游应用侧文档到中央库镜像 |
 | 知识库构建 | `/docs-distill`   | 将应用侧已核实内容蒸馏到系统知识库 |
 | 知识库构建 | `/docs-extract`   | 从任意文件或目录按段落级关键词筛选，提炼业务知识写入指定 `XX-overview.md` |
-| 知识库构建 | `/docs-archive`   | 从指定 overview 文件各视角归档知识到架构视角表各行副标题文件链接对应章节；方案确认后落盘并做冲突检查 |
+| 知识库构建 | `/docs-archive`   | 从指定 overview 文件各视角归档知识到架构视角表各行副标题文件链接对应章节；探索 → 澄清 → 方案确认书 → 落盘，补充后做一致性检查与冲突处理 |
 | 需求设计  | `/sdx-solution`    | 产出解决方案文档（SOLUTION） |
 | 需求设计  | `/sdx-analysis`    | 产出需求分析文档（ANALYSIS） |
 | 需求设计  | `/sdx-prd`         | 产出产品需求文档（PRD） |

@@ -1,6 +1,8 @@
 # docs-distill 交互与确认闸门
 
-与 SDD 各阶段的 **sdx-*-gate**（见 [agent/hooks/README.md](../../../hooks/README.md)；规则总表 [agent/rules/CONVENTIONS.md](../../../rules/CONVENTIONS.md#artifact-gates) 第三节）采用**同一话语体系**，便于在会话中复用「中间会话 spec → 用户总确认 → 落盘」的节奏；**差异**在于：sdx 已提供 `preToolUse` 写入拦截，**docs-distill 当前不设独立钩子**，执行者须在对话中遵守下表（IDE 不代为拦截）。
+与 SDD 各阶段的 **sdx-*-gate** 采用同一话语体系，便于复用「中间会话 spec → 用户总确认 → 落盘」的节奏。差异在于：sdx 已提供 `preToolUse` 写入拦截，**docs-distill 当前不设独立钩子**，执行者须在对话中遵守下表（IDE 不代为拦截）。
+
+**目录**：[与 sdx-*-gate 对齐](#与-sdx--gate-对齐的约定) · [HARD-GATE 触发条件](#hard-gate默认禁止落盘) · [会话 spec 与门禁标记](#中间会话-spec-与门禁标记) · [推荐交互节奏](#推荐交互节奏brainstorming-机制子集) · [与钩子的关系](#与校验脚本钩子的关系)
 
 ---
 
@@ -17,7 +19,7 @@
 
 ## HARD-GATE（默认禁止落盘）
 
-在取得 **用户总确认**（会话 spec 中 `CONFIRMED`，或同会话明示授权）之前，**禁止**执行 [上级 SKILL.md](../SKILL.md) 中原子顺序的**步骤 2–4**（写入 `system/architecture/`、追加 `system/changelogs/CHANGE-LOG.md`、更新 `system/application-{name}/changelogs/ARCHIVE-LOG.md`）。
+在取得 **用户总确认**（会话 spec 中 `CONFIRMED`，或同会话明示授权）之前，**禁止**执行 [上级 SKILL.md](../SKILL.md) 中原子顺序的**步骤 2–4**（写入 `system/architecture/`、写入 `system/changelogs/DISTILL-LOG.md`）。
 
 **允许**的步骤：步骤 0–1 的读取、范围计算、提取与映射规划；以及**仅预览**的 `--dry-run`（不产生上述落盘）。
 
@@ -30,7 +32,7 @@
 | 首次为某应用创建 overview 文件（`{APPNAME}-overview.md` 不存在） | 须先 `--dry-run` 预览将创建的文件结构（文件名、标题、五架构视角章节数）；总确认后再创建并写入 | 首次创建会生成新文件，须用户确认文件结构符合预期 |
 | 应用侧与系统侧内容冲突且无法按联邦规则自动消解 | 不强行覆盖；标为待人工确认或仅更新无争议区块 | 见 gotchas「应用侧与系统侧冲突时强行覆盖」 |
 | 多应用均有待蒸馏区间且调用未带 `--app` | 列出候选应用与各自锚点；建议先按应用分别 `--dry-run` 再分批确认 | 见 gotchas「多应用蒸馏」 |
-| 步骤 3 写入**失败** | **禁止**执行步骤 4（保持「系统总账先于应用锚点」与 gotchas「蒸馏写入失败后仍更新锚点」） | 见上级 SKILL「原子顺序」 |
+| 步骤 3 写入**失败** | **禁止**执行步骤 4（保持「overview 写入先于 DISTILL-LOG」原子约束） | 见上级 SKILL「原子顺序」 |
 
 未列入上表、但 [gotchas.md](../gotchas.md) 要求「须警告并请用户确认」的情形，**同等适用** HARD-GATE 精神：先说明事实与选项，再写入。
 

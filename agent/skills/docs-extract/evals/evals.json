@@ -1,0 +1,23 @@
+{
+  "skill_name": "docs-extract",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "帮我从 docs/design.md 和 docs/adr/ 这两个来源提炼业务知识，写进 system/architecture/overview/billing-overview.md，先 dry-run 看看会命中哪些内容",
+      "expected_output": "触发 docs-extract 技能；阶段 1 校验 --sources 路径存在，读取 billing-overview.md 关键词附录；阶段 2 确认关键词覆盖范围；阶段 3 dry-run 输出两层预览：[Layer 1] 命中段落摘要（归属章节 + 摘录要点，不附源路径）、[Layer 2] 将写入 overview 的 A/U/D 变动摘要；不写入任何文件",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "/docs-extract --sources docs/ --overview system/architecture/overview/payment-overview.md",
+      "expected_output": "触发 docs-extract 技能；阶段 1 校验路径，读取 payment-overview.md 关键词附录；阶段 2 评估 docs/ 目录文件规模；阶段 3 触发 HARD-GATE（首次写入或大量 U 更新），先 dry-run 展示变动摘要，等待用户总确认（CONFIRMED）；确认后阶段 4 按五视角逐节提炼写入第三列，写入失败则整体回滚",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "我们 order-service 有一批设计文档在 docs/specs/ 下，帮我把里面跟业务规则相关的内容整理进 order-service-overview.md，不需要 dry-run 直接写",
+      "expected_output": "触发 docs-extract 技能；识别用户说「直接写」但仍须触发 HARD-GATE；阶段 1 读取 order-service-overview.md 关键词附录，确认「业务规则」相关关键词；阶段 2 评估 docs/specs/ 规模；阶段 3 说明 HARD-GATE 原因（避免关键词过宽误写入），先 dry-run 展示命中段落摘要，等待用户确认后再落盘",
+      "files": []
+    }
+  ]
+}
