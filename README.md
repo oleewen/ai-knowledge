@@ -167,7 +167,7 @@ flowchart TD
 | 知识库构建 | `/docs-fetch`     | 拉取下游应用侧文档到中央库镜像 |
 | 知识库构建 | `/docs-distill`   | 将应用侧已核实内容蒸馏到系统知识库 |
 | 知识库构建 | `/docs-extract`   | 从任意文件或目录按段落级关键词筛选，提炼业务知识写入指定 `XX-overview.md` |
-| 知识库构建 | `/docs-archive`   | 从指定 overview 文件各视角归档知识到架构视角表各行副标题文件链接对应章节；方案确认后落盘并做冲突检查 |
+| 知识库构建 | `/docs-archive`   | 从指定 overview 文件各视角归档知识到架构视角表各行副标题文件链接对应章节；探索 → 澄清 → 方案确认书 → 落盘，补充后做一致性检查与冲突处理 |
 | 需求设计  | `/sdx-solution`    | 产出解决方案文档（SOLUTION） |
 | 需求设计  | `/sdx-analysis`    | 产出需求分析文档（ANALYSIS） |
 | 需求设计  | `/sdx-prd`         | 产出产品需求文档（PRD） |

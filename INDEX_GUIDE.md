@@ -1,6 +1,6 @@
 # ai-knowledge 索引指南（INDEX_GUIDE）
 
-> **最后更新**: 2026-04-14  
+> **最后更新**: 2026-04-25  
 > **文档定位**: 面向 AI Agent 与维护者的**仓库根**全景导航；九章结构遵循 `agent/skills/docs-indexing/reference/nine-chapter-spec.md`。与 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)（应用知识库侧机器索引与建联登记）互为补充时，以本文件为**中央库根路径**落地与检索入口。
 
 ---
@@ -27,7 +27,7 @@
 - **核心定位**: 企业级全局知识底座（Markdown/YAML + Bash 初始化链）；**无业务应用运行时**
 - **技术栈**: Markdown、YAML；Bash 5+；Git；可选 `curl`、`rsync`（脚本可回退 `cp`）
 - **语言/构建**: 不适用传统应用「启动类」；可运行项为 Bash 脚本与可选 `scripts/tests/docs-init/run.sh`（见 [scripts/README.md](scripts/README.md)）
-- **仓库规模（git 已跟踪）**: 共 **237** 个文件；扩展名约 **160** `.md`、**29** `.sh`、**24** `.yaml`、**11** `.py`（统计来源：`git ls-files`，2026-04-14）
+- **仓库规模（git 已跟踪）**: 共 **314** 个文件；扩展名约 **221** `.md`、**33** `.sh`、**26** `.yaml`、**18** `.py`、**10** `.json`（统计来源：`git ls-files`，2026-04-25）
 
 ---
 
@@ -216,10 +216,10 @@ stateDiagram-v2
 
 | 类型 | 数量（已跟踪） | 描述 |
 |------|----------------|------|
-| 全库文件 | 237 | `git ls-files` 2026-04-14 |
-| Markdown | 160 | 主体文档与 Skill |
-| Shell | 29 | 初始化与辅助脚本 |
-| YAML | 24 | 元数据与知识实体 |
+| 全库文件 | 314 | `git ls-files` 2026-04-25 |
+| Markdown | 221 | 主体文档与 Skill |
+| Shell | 33 | 初始化与辅助脚本 |
+| YAML | 26 | 元数据与知识实体 |
 
 精读依据：`agent/skills/docs-indexing/reference/scan-spec.md` 深度 3；本索引正文整合自**已读**入口文件与仓库统计，非逐文件全文摘录。
 
@@ -234,7 +234,7 @@ stateDiagram-v2
 ### 8.3 维护规则
 
 - **触发**: 大目录调整、Skill/脚本契约变更、联邦路径变更后执行 `/docs-indexing`。
-- **增量前提**: `application/changelogs/INDEXING-LOG.md` 文末需有 `indexing_finished_ms` 注释后方可选 incremental（本次运行前无有效基线，故此前仅支持 full）。
+- **增量前提**: `application/changelogs/INDEXING-LOG.md` 文末存在 `<!-- sdx-indexing:indexing_finished_ms=... -->` 作为基线；增量扫描 `--since` 默认取该值。
 - **联动**: 与 `/docs-change` 共用 `application/changelogs/` 下运维文件。
 
 ---
