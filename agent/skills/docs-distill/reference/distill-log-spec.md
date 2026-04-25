@@ -1,29 +1,31 @@
-# 蒸馏锚点规范
+# 蒸馏日志规范
 
-docs-distill 的增量蒸馏机制依赖蒸馏锚点文件，记录每次蒸馏到的 changelog 位置，下次从该位置之后继续。
+docs-distill 的增量蒸馏机制依赖 DISTILL-LOG，它同时承担两个职责：记录每次蒸馏结果，以及作为下次增量蒸馏的锚点来源。
 
----
-
-## 锚点文件位置
-
-每个应用独立维护一个锚点文件：
-
-```
-system/application-{name}/changelogs/ARCHIVE-LOG.md
-```
-
-首次蒸馏时自动创建；不存在则视为从未蒸馏，执行全量蒸馏。
+**目录**：[日志文件位置](#日志文件位置) · [日志格式](#日志文件格式markdown-记录) · [changelog_id 确定规则](#changelog_id-的确定规则) · [增量范围逻辑](#增量范围确定逻辑优先级) · [写入时机](#日志写入时机) · [dry-run 规则](#dry-run-规则) · [示例](#示例)
 
 ---
 
-## 锚点文件格式（Markdown 记录）
+## 日志文件位置
+
+所有应用共用一个日志文件：
+
+```
+system/changelogs/DISTILL-LOG.md
+```
+
+首次蒸馏时自动创建；不存在则视为从未蒸馏，执行全量蒸馏。读取锚点时按 `app` 列过滤，取该应用最新一条记录。
+
+---
+
+## 日志文件格式（Markdown 记录）
 
 ```markdown
-# ARCHIVE LOG - {APPNAME}
+# DISTILL LOG
 
-| changelog_id | changelog_time | archived_at |
-|---|---|---|
-| v1.3.0 | 2026-04-05 10:00 | 2026-04-05T10:30:00+08:00 |
+| app | changelog_id | changelog_time | distilled_at | summary |
+|---|---|---|---|---|
+| billing-appeal | v1.3.0 | 2026-04-05 10:00 | 2026-04-05T10:30:00+08:00 | overview distill |
 ```
 
 ---
@@ -49,7 +51,7 @@ system/application-{name}/changelogs/ARCHIVE-LOG.md
 
 1. `--full`（最高优先级）
 2. `--since`
-3. `ARCHIVE-LOG.md` 最后一条 marker（默认增量）
+3. `DISTILL-LOG.md` 中该 app 最新一条记录（默认增量）
 
 ```
 if CHANGE-LOG.md 不存在:
@@ -61,8 +63,8 @@ elif --full 参数:
 elif --since 参数指定:
     蒸馏范围 = CHANGE-LOG.md 中 since 之后的条目
 
-elif ARCHIVE-LOG.md 存在且有 marker:
-    last_id = ARCHIVE-LOG.md 最后一条记录的 changelog_id
+elif DISTILL-LOG.md 存在且有该 app 的记录:
+    last_id = DISTILL-LOG.md 中 app=当前应用 的最新一条 changelog_id
     蒸馏范围 = CHANGE-LOG.md 中 last_id 之后的所有条目
     若 last_id 在 CHANGE-LOG.md 中找不到 → 警告并请用户确认是否全量蒸馏
 
@@ -72,15 +74,14 @@ else:
 
 ---
 
-## 锚点更新时机
+## 日志写入时机
 
-**蒸馏写入成功后才更新锚点**（原子性保证）：
+**overview 写入成功后才写入 DISTILL-LOG**（原子性保证）：
 
 1. 完成 **`system/architecture/` 下本次批次涉及的全部写入**（按当前蒸馏规则落盘）
-2. 生成或追加批次蒸馏文档（`system/changelogs/CHANGE-LOG.md`）
-3. **最后**更新 `system/application-{name}/.../ARCHIVE-LOG.md`
+2. **最后**写入 `system/changelogs/DISTILL-LOG.md`（新记录最新在前）
 
-若步骤 1–2 任一失败，不更新锚点，下次重试时从同一位置开始，避免漏蒸馏。
+若步骤 1 失败，不写入 DISTILL-LOG，下次重试时从同一位置开始，避免漏蒸馏。
 
 ---
 
@@ -89,18 +90,18 @@ else:
 `--dry-run` 只输出计划动作与匹配到的变更范围：
 
 - 不写入 `system/architecture/` 任何文件
-- 不追加 `system/changelogs/CHANGE-LOG.md`
-- 不更新 `system/application-{name}/changelogs/ARCHIVE-LOG.md`
+- 不写入 `system/changelogs/DISTILL-LOG.md`
 
 ---
 
 ## 示例
 
 ```markdown
-# ARCHIVE LOG - billing-appeal
+# DISTILL LOG
 
-| changelog_id | changelog_time | archived_at |
-|---|---|---|
-| v1.2.0 | 2026-03-20 14:00 | 2026-03-20T15:00:00+08:00 |
-| v1.3.0 | 2026-04-05 10:00 | 2026-04-05T10:30:00+08:00 |
+| app | changelog_id | changelog_time | distilled_at | summary |
+|---|---|---|---|---|
+| billing-appeal | v1.3.0 | 2026-04-05 10:00 | 2026-04-05T10:30:00+08:00 | overview distill |
+| payment | v2.1.0 | 2026-04-01 09:00 | 2026-04-01T09:30:00+08:00 | overview distill |
+| billing-appeal | v1.2.0 | 2026-03-20 14:00 | 2026-03-20T15:00:00+08:00 | overview distill |
 ```

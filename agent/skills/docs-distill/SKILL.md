@@ -2,37 +2,40 @@
 name: docs-distill
 description: >
   将应用知识库（system/application-{name}/）已核实内容蒸馏后写入系统知识库（system/architecture/overview/{APPNAME}-overview.md）。
-  当用户执行 /docs-distill，或提到「知识蒸馏」「提炼应用知识到系统」「同步应用知识到系统」「把应用侧内容提炼后推上去」
-  「更新主库」「上行蒸馏」「推送到系统库」「knowledge 蒸馏」「SDD 蒸馏」「生成 overview」「更新 overview」时必须触发本技能。
+  只要用户提到以下任意一种意图，就应立即触发本技能，不要等用户明确说出命令名：
+  「知识蒸馏」「提炼应用知识到系统」「同步应用知识到系统」「把应用侧内容提炼后推上去」「更新主库」「上行蒸馏」
+  「推送到系统库」「knowledge 蒸馏」「SDD 蒸馏」「生成 overview」「更新 overview」「overview 需要更新」
+  「应用知识有变更要同步」「帮我蒸馏一下 {app}」「把最新变更同步上去」「系统库需要刷新」。
   支持 --app --since --full --dry-run，默认按增量锚点蒸馏。
-  即使用户只是说「帮我蒸馏一下 billing」或「把最新的变更同步上去」也应触发本技能。
+  用户执行 /docs-distill 时必须触发。
 ---
 
 # docs-distill：应用知识蒸馏并上行到系统库
 
-> 把 `system/application-{name}/` 的可晋升内容蒸馏后写入 `system/architecture/overview/{APPNAME}-overview.md`，形成以应用为单位的完整知识快照；可追溯性通过三日志链路维护，**不在 overview 正文中记录来源**（不写 `(来源：...)`、出处、参见链接等）。
+> 把 `system/application-{name}/` 的可晋升内容蒸馏后写入 `system/architecture/overview/{APPNAME}-overview.md`，形成以应用为单位的完整知识快照。可追溯性通过日志链路维护——overview 正文不记录来源（不写 `(来源：...)`、出处、参见链接），保持内容干净。
 
 ## 快速定向
 
-| 需要做什么 | 去读 |
-|-----------|------|
-| 了解三日志职责、参数契约、原子顺序 | 本文件（继续往下读） |
-| 闸门触发条件、会话 spec 标记、交互节奏 | [reference/interaction-gate.md](reference/interaction-gate.md) |
-| 蒸馏目标范围、变更发现方式、批次日志格式 | [reference/distill-spec.md](reference/distill-spec.md) |
-| 联邦层级、overview 提炼规则、五架构视角蒸馏顺序 | [reference/federation-spec.md](reference/federation-spec.md) |
-| 锚点文件格式、增量范围逻辑、dry-run 约束 | [reference/distill-log-spec.md](reference/distill-log-spec.md) |
-| 常见陷阱与完整自查清单 | [gotchas.md](gotchas.md) |
-| 日志写入脚本（可直接执行） | [scripts/](scripts/)（见下文「脚本说明」） |
+| 需要做什么 | 去读 | 何时打开 |
+|-----------|------|---------|
+| 两日志职责、参数契约、原子顺序 | 本文件（继续往下读） | 每次执行前 |
+| 闸门触发条件、会话 spec 标记、交互节奏 | [reference/interaction-gate.md](reference/interaction-gate.md) | 任意写入前；`--full` / 锚点异常 / 冲突 / 多应用 |
+| 蒸馏目标范围、变更发现方式 | [reference/distill-spec.md](reference/distill-spec.md) | 定蒸馏范围时 |
+| 联邦层级、overview 提炼规则、五架构视角顺序 | [reference/federation-spec.md](reference/federation-spec.md) | 步骤 4.2–4.3 写入时 |
+| 锚点文件格式、增量范围逻辑、dry-run 约束 | [reference/distill-log-spec.md](reference/distill-log-spec.md) | 步骤 1 读锚点、步骤 4.4 更新锚点时 |
+| 常见陷阱与完整自查清单 | [gotchas.md](gotchas.md) | 遇到异常或执行完毕自查时 |
+| 日志写入脚本（可直接执行） | [scripts/](scripts/)（见下文「脚本说明」） | 步骤 4.4 |
 
 ---
 
-## 三日志职责（必须区分）
+## 两日志职责（必须区分）
+
+两个日志文件职责不同，混淆会导致锚点错位或漏蒸馏：
 
 | 日志文件 | 职责 | 写入时机 |
 |---------|------|---------|
-| `system/application-{name}/changelogs/CHANGE-LOG.md` | 应用侧变更来源，定义可蒸馏增量候选区间 | 步骤 0 读取，**本技能不写入** |
-| `system/application-{name}/changelogs/ARCHIVE-LOG.md` | 应用侧蒸馏锚点，记录已蒸馏到哪个变更位置 | 蒸馏成功后更新（步骤 4 最后执行） |
-| `system/changelogs/CHANGE-LOG.md` | 系统侧蒸馏批次总账，记录本次蒸馏结果与范围 | 每次蒸馏先写（步骤 4a 先执行） |
+| `system/application-{name}/changelogs/CHANGE-LOG.md` | 应用侧变更来源，定义可蒸馏增量候选区间 | 阶段 1 读取，**本技能不写入** |
+| `system/changelogs/DISTILL-LOG.md` | 蒸馏记录，兼作锚点：记录每次蒸馏结果与范围，下次增量从该应用最新一条继续（含 `app` 列） | 蒸馏成功后写入（阶段 4 步骤 4.4） |
 
 ---
 
@@ -43,38 +46,31 @@ description: >
 | `--app` | 全部已登记应用 | 仅处理指定应用，如 `billing-appeal`（对应 `system/application-billing-appeal/`） |
 | `--since` | 从应用 `ARCHIVE-LOG.md` 锚点继续 | 手动指定起始变更点，覆盖自动锚点 |
 | `--full` | `false` | 全量重新提炼所有章节，忽略锚点 |
-| `--dry-run` | `false` | 仅预览不落盘，输出三层预览：候选变更区间、目标文件状态、将写入三日志的条目摘要 |
+| `--dry-run` | `false` | 仅预览不落盘，输出三层预览：候选变更区间、目标文件状态、将写入 DISTILL-LOG 的条目摘要 |
 
 ---
 
 ## 交互与确认闸门
 
-写入前须完成**Spec草稿 + 用户总确认**（`PENDING` → `CONFIRMED`）。触发 HARD-GATE 时默认先 `--dry-run` 再落盘。完整触发条件表与推荐交互节奏见 [reference/interaction-gate.md](reference/interaction-gate.md)。
+写入前须完成**Spec草稿 + 用户总确认**（`PENDING` → `CONFIRMED`）。这个节奏的目的是让用户在落盘前看到蒸馏范围和影响面，避免意外覆盖。触发 HARD-GATE 时默认先 `--dry-run` 再落盘。完整触发条件表与推荐交互节奏见 [reference/interaction-gate.md](reference/interaction-gate.md)。
+
+HARD-GATE 固定在**阶段 3 与阶段 4 之间**。
 
 ---
 
-## 原子顺序（严格执行）
+## 工作流（五阶段）
 
-```
-步骤 0  读取应用 CHANGE-LOG.md，结合 --since/--full 计算蒸馏范围
+| 阶段 | 名称 | 摘要 | 详见 |
+|------|------|------|------|
+| 1 | EXPLORE | 读应用 CHANGE-LOG.md + ARCHIVE-LOG.md；计算蒸馏范围 | [distill-log-spec.md](reference/distill-log-spec.md) |
+| 2 | CLARIFY | 确认 --app / --since / --full 参数；首次创建 overview 时确认文件结构；单次一问 | [interaction-gate.md](reference/interaction-gate.md) |
+| 3 | CONFIRM（HARD-GATE）| dry-run 展示候选区间、受影响路径、三日志摘要；会话 spec 标记 CONFIRMED 后解锁阶段 4 | [interaction-gate.md](reference/interaction-gate.md) |
+| 4 | EXECUTE | 4.1 检查/创建 overview 文件 → 4.2 读应用知识库 → 4.3 提炼写入第三列 → 4.4 写入 DISTILL-LOG | [federation-spec.md](reference/federation-spec.md) |
+| 5 | CLOSE | 变更摘要；DISTILL-LOG 最新在前（新记录插入表头分隔行之后、上一条记录之前）；不自动 git commit | — |
 
-步骤 1  检查 system/architecture/overview/{APPNAME}-overview.md 是否存在
-        - 不存在：以 NAME-overview.md 为模板创建，替换 NAME → APPNAME
-        - 存在：则继续下一步
+> **HARD-GATE**：阶段 3 会话 spec 标记 CONFIRMED 前，禁止执行阶段 4（写入 `system/architecture/`、写入 DISTILL-LOG）。dry-run 属于阶段 3，不单独占阶段。
 
-步骤 2  读取应用侧 knowledge（四视角 YAML/MD）+ SDD 文档，作为提炼的知识来源
-        （这些文档不再是蒸馏目标，仅作为提炼的输入）
-
-步骤 3  读取 {APPNAME}-overview.md 五架构视角知识索引表，
-        逐条读取副标题列文件链接对应章节的「应填内容 + 产出建议」要求和已有内容，
-        从应用知识库提炼相应业务知识，并判断知识变动标识（A/U/D），
-        写入第三列（完整内容快照，含变动标识）
-
-步骤 4a 先写 system/changelogs/CHANGE-LOG.md（系统总账）
-步骤 4b 再写 system/application-{name}/changelogs/ARCHIVE-LOG.md（应用锚点前移）
-```
-
-**关键约束**：步骤 4a 失败时禁止执行步骤 4b；步骤 3 写入失败时禁止执行步骤 4。
+**阶段 4 原子约束**：4.3 写入失败时禁止执行 4.4。
 
 ---
 
@@ -91,22 +87,21 @@ description: >
 
 ## 脚本说明
 
-`scripts/` 目录提供可直接执行的日志写入脚本，**仅处理日志追加，不执行内容提炼写入**：
+`scripts/` 目录提供可直接执行的日志写入脚本，**仅处理日志写入，不执行内容提炼**。两个日志脚本均采用**最新在前**策略：新记录插入表头分隔行之后、上一条记录之前。
 
-| 脚本 | 用途 | 何时使用 |
-|-----|------|---------|
-| `run-docs-distill.sh` | 最小可执行入口，支持 dry-run 三层预览与日志写入编排 | 步骤 0–4 的自动化入口（承载 docs-distill 工作流） |
-| `append-change-log.sh` | 向系统侧 `CHANGE-LOG.md` 追加批次记录 | 步骤 4a |
-| `update-archive-log.sh` | 向应用侧 `ARCHIVE-LOG.md` 追加锚点记录 | 步骤 4b |
+| 脚本 | 用途 | 写入路径 | 何时使用 |
+|-----|------|---------|---------|
+| `run-docs-distill.sh` | 最小可执行入口，支持 dry-run 三层预览与日志写入编排；须从项目根目录执行（或 `--root` 指定） | — | 阶段 4 步骤 4.4 的自动化入口 |
+| `append-change-log.sh` | 向 `system/changelogs/DISTILL-LOG.md` 写入蒸馏记录（含 `app` 列，最新在前）；兼作锚点来源 | `system/changelogs/DISTILL-LOG.md` | 阶段 4 步骤 4.4 |
 
-内容提炼（步骤 1–3）由 Agent 按 [reference/federation-spec.md](reference/federation-spec.md) 规则执行，脚本不覆盖此部分。
+内容提炼（阶段 4 步骤 4.2–4.3）由 Agent 按 [reference/federation-spec.md](reference/federation-spec.md) 规则执行，脚本不覆盖此部分。
 
 ---
 
 ## 核心约束
 
-- 默认增量，不重复蒸馏已锚定区间
-- `--full` 重新提炼全部章节，不受锚点限制
+- 默认增量，不重复蒸馏已锚定区间——这样多次执行是安全的
+- `--full` 重新提炼全部章节，不受锚点限制；使用前先 `--dry-run` 确认影响面
 - 蒸馏内容已按五架构视角逐节写入 `{APPNAME}-overview.md` 第三列
 - 写入到 `{APPNAME}-overview.md` 第三列的知识正文不记录来源（不写 `(来源：...)`、出处、参见链接等）
 - 蒸馏前先读目标文件，确认现有内容（用于判断 A/U/D）

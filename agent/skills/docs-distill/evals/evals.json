@@ -1,0 +1,23 @@
+{
+  "skill_name": "docs-distill",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "帮我把 billing-appeal 应用的最新变更蒸馏到系统库，上次蒸馏后又合并了几个 PR，CHANGE-LOG 里有 v1.4.0 和 v1.5.0 两个新条目",
+      "expected_output": "触发 docs-distill 技能；阶段 1 读取 system/application-billing-appeal/changelogs/CHANGE-LOG.md 和 system/changelogs/DISTILL-LOG.md 确认锚点；阶段 3 dry-run 展示候选区间（v1.4.0 和 v1.5.0）；用户确认后阶段 4 按五架构视角提炼写入 system/architecture/overview/billing-appeal-overview.md 第三列，并写入 DISTILL-LOG",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "/docs-distill --app payment --full --dry-run",
+      "expected_output": "触发 docs-distill 技能；识别 --full 参数触发 HARD-GATE；dry-run 模式输出三层预览：[Layer 1] 候选变更区间（全量，from=BEGIN）、[Layer 2] 目标文件状态（payment-overview.md 是否存在）、[Layer 3] 将写入 DISTILL-LOG 的条目摘要；不写入任何文件",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "系统库的 overview 需要更新了，我们 order-service 这边知识库改了不少，你帮我看看要同步哪些内容",
+      "expected_output": "触发 docs-distill 技能；阶段 1 读取 system/application-order-service/changelogs/CHANGE-LOG.md 和 DISTILL-LOG.md；阶段 2 确认 --app=order-service 参数；阶段 3 展示 dry-run 预览（候选变更区间、受影响路径）；等待用户确认后再执行阶段 4",
+      "files": []
+    }
+  ]
+}

@@ -10,7 +10,7 @@
 
 **锚点 changelog_id 在应用 `CHANGE-LOG.md` 中找不到**：应用变更日志可能被重写或条目被删除。此时不能静默降级为全量蒸馏，须警告并请用户确认，否则可能重复蒸馏已蒸馏内容。
 
-**蒸馏写入失败后仍更新锚点**：锚点必须在 `{APPNAME}-overview.md` 写入成功，且 `system/changelogs/CHANGE-LOG.md` 已成功追加后，才更新。任一写入失败则不更新锚点，保证下次重试从同一位置开始。
+**蒸馏写入失败后仍写入 DISTILL-LOG**：DISTILL-LOG 必须在 `{APPNAME}-overview.md` 写入成功后才写入。写入失败则不更新 DISTILL-LOG，保证下次重试从同一位置开始，避免漏蒸馏。
 
 **`--full` 参数误用**：`--full` 会忽略锚点重新提炼所有章节，可能覆盖系统库已有内容。使用前须确认当前 overview 文件状态，或先 `--dry-run` 预览。
 
@@ -54,7 +54,7 @@
 
 **未指定 `--app` 时通读全部应用**：扫描应用知识库根目录 `system/application-*/` 时只做轻量检查（读应用 `CHANGE-LOG.md` 与 `ARCHIVE-LOG.md`），不通读全部知识库内容，按需加载。
 
-**多应用蒸馏时锚点混淆**：每个应用独立维护 `changelogs/ARCHIVE-LOG.md`，不共用锚点文件。
+**多应用蒸馏时锚点混淆**：`system/changelogs/DISTILL-LOG.md` 所有应用共用，读取锚点时须按 `app` 列过滤，取该应用最新一条记录，不能直接取文件最后一行。
 
 ---
 
@@ -67,5 +67,4 @@
 - [ ] 第三列内容为提炼摘要，非整段复制原始文档
 - [ ] 变动标识（A/U/D）准确标注，无遗漏
 - [ ] 应用侧细节（接口 DDL、用户故事原文、OpenAPI 全文等）未出现在第三列
-- [ ] 批次蒸馏文档已写入 `system/changelogs/CHANGE-LOG.md`
-- [ ] 蒸馏锚点已在写入成功后更新（`ARCHIVE-LOG.md` 已追加新记录）
+- [ ] 蒸馏记录已写入 `system/changelogs/DISTILL-LOG.md`（overview 写入成功后）
