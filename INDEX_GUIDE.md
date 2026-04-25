@@ -15,8 +15,8 @@
 | Agent 契约 | [AGENTS.md](AGENTS.md) | 角色、索引查阅顺序、提交闸门与禁止事项 |
 | 应用知识库 SSOT | [application/README.md](application/README.md) | SDD 主线、四视角与阶段文档中枢 |
 | 应用侧索引与建联 | [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) | 应用目录九章索引、中央知识库挂载建联登记 |
-| 组织级槽位 | [system/README.md](system/README.md) | `architecture/`、`application-{name}/` 联邦槽位 |
-| 公司级槽位 | [company/README.md](company/README.md) | `architecture/`、`system-{name}/` 槽位 |
+| 系统知识库 | [system/README.md](system/README.md) | `architecture/`（五视角文档）、`application-{name}/` 联邦槽位、`analysis/`、`constitution/` |
+| 公司知识库 | [company/README.md](company/README.md) | `architecture/`（五视角文档）、`system-{name}/` 联邦槽位、`changelogs/`、`constitution/`、`solutions/` |
 | 初始化脚本 | [scripts/README.md](scripts/README.md) | `docs-install`/`agent-install`/`docs-link`/`docs-bootstrap` |
 | 规范与 Slash | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/skills/README.md](agent/skills/README.md) | 全局约定与 Skill 清单 |
 | 变更与索引运维 | [application/changelogs/README.md](application/changelogs/README.md) | `CHANGE-LOG.md`、`INDEXING-LOG.md` |
@@ -27,7 +27,7 @@
 - **核心定位**: 企业级全局知识底座（Markdown/YAML + Bash 初始化链）；**无业务应用运行时**
 - **技术栈**: Markdown、YAML；Bash 5+；Git；可选 `curl`、`rsync`（脚本可回退 `cp`）
 - **语言/构建**: 不适用传统应用「启动类」；可运行项为 Bash 脚本与可选 `scripts/tests/docs-init/run.sh`（见 [scripts/README.md](scripts/README.md)）
-- **仓库规模（git 已跟踪）**: 共 **314** 个文件；扩展名约 **221** `.md`、**33** `.sh`、**26** `.yaml`、**18** `.py`、**10** `.json`（统计来源：`git ls-files`，2026-04-25）
+- **仓库规模（git 已跟踪）**: 共 **376** 个文件；扩展名约 **279** `.md`、**33** `.sh`、**30** `.yaml`、**18** `.py`、**10** `.json`（统计来源：`git ls-files`，2026-04-25）
 
 ---
 
@@ -39,7 +39,8 @@
 ./
 ├── README.md / AGENTS.md / INDEX_GUIDE.md    # 人类与 Agent 入口、本索引
 ├── application/                              # 应用知识库 SSOT：knowledge、阶段、solutions～requirements、changelogs
-├── system/ / company/                        # 组织级 / 公司级槽位骨架
+├── system/                                   # 系统知识库：architecture/（五视角文档）、application-APPNAME/ 联邦槽位、analysis/、constitution/
+├── company/                                  # 公司知识库：architecture/（五视角文档）、system-SYSNAME/ 联邦槽位、changelogs/、constitution/、solutions/
 ├── scripts/                                  # 向目标工程注入知识库与 .docsconfig；bootstrap
 ├── agent/                                    # rules/、skills/、scripts/（config-bootstrap、校验）
 ├── docs/                                     # 设计备忘与 superpowers 规格等（若存在）
@@ -54,12 +55,16 @@ flowchart LR
     app["application/"]
     ag["agent/"]
     sc["scripts/"]
+    sys["system/"]
+    co["company/"]
   end
   tgt["目标工程 docs/ 与仓库根 .docsconfig"]
   sc -->|"docs-install / bootstrap"| app
   sc -->|"agent-install"| ag
   sc --> tgt
   app -->|"DESIGN/CONTRIBUTING 约束"| app
+  sys -->|"architecture/ 五视角文档"| sys
+  co -->|"architecture/ 五视角文档"| co
 ```
 
 ### 2.3 包结构
@@ -95,9 +100,10 @@ flowchart LR
 |------|------|----------|
 | SSOT | 单一事实源，`application/` 为应用知识稳定事实中枢 | 与联邦镜像、目标工程对齐 |
 | 四视角 | 业务 / 产品 / 技术 / 数据 知识分层与映射字段 | 见 [application/DESIGN.md](application/DESIGN.md) |
-| 联邦治理 | `system/`、`company/`槽位与迁移叙事 | 多库协作与 docs-install 模式 |
+| 联邦治理 | `system/`、`company/` 槽位与迁移叙事；`system/application-{name}/` 为应用镜像，`company/system-{name}/` 为系统镜像 | 多库协作与 docs-install 模式 |
 | SDD | 方案 → 分析 → PRD/设计/测试 阶段交付链 | `sdx-*` Skill 与 `application/` 阶段目录 |
 | 中央知识库挂载建联 | `docs-install --mode=central` 等约定 | 见 [README.md](README.md)、[scripts/README.md](scripts/README.md) |
+| 五架构视角 | 业务 / 产品 / 应用 / 技术 / 数据 架构文档体系；`system/architecture/` 与 `company/architecture/` 均按此组织 | docs-distill、docs-archive、overview 文件 |
 
 ### 4.2 聚合根（知识组织）
 
@@ -216,10 +222,10 @@ stateDiagram-v2
 
 | 类型 | 数量（已跟踪） | 描述 |
 |------|----------------|------|
-| 全库文件 | 314 | `git ls-files` 2026-04-25 |
-| Markdown | 221 | 主体文档与 Skill |
+| 全库文件 | 376 | `git ls-files` 2026-04-25 |
+| Markdown | 279 | 主体文档与 Skill |
 | Shell | 33 | 初始化与辅助脚本 |
-| YAML | 26 | 元数据与知识实体 |
+| YAML | 30 | 元数据与知识实体 |
 
 精读依据：`agent/skills/docs-indexing/reference/scan-spec.md` 深度 3；本索引正文整合自**已读**入口文件与仓库统计，非逐文件全文摘录。
 
@@ -247,6 +253,8 @@ stateDiagram-v2
 |------|------|------|
 | 全局查阅顺序 | [INDEX_GUIDE.md](INDEX_GUIDE.md)（本文件） | 根目录九章地图 |
 | 应用侧九章与建联 | [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) | 目标为 `DOC_DIR` 时的并行索引 |
+| 系统知识库入口 | [system/README.md](system/README.md) | 五视角架构文档、联邦槽位、analysis/ |
+| 公司知识库入口 | [company/README.md](company/README.md) | 五视角架构文档、system-{name}/ 槽位、changelogs/ |
 | 设计原则 | [application/DESIGN.md](application/DESIGN.md) | 元模型与演进 |
 | 贡献流程 | [application/CONTRIBUTING.md](application/CONTRIBUTING.md) | 阶段与模板指针 |
 
@@ -273,6 +281,7 @@ stateDiagram-v2
 | `/docs-change` | [agent/skills/docs-change/SKILL.md](agent/skills/docs-change/SKILL.md) |
 | `/docs-fetch` | [agent/skills/docs-fetch/SKILL.md](agent/skills/docs-fetch/SKILL.md) |
 | `/docs-distill` | [agent/skills/docs-distill/SKILL.md](agent/skills/docs-distill/SKILL.md) |
+| `/docs-extract` | [agent/skills/docs-extract/SKILL.md](agent/skills/docs-extract/SKILL.md) |
 | `/docs-archive` | [agent/skills/docs-archive/SKILL.md](agent/skills/docs-archive/SKILL.md) |
 | `/docs-upgrade` | [agent/skills/docs-upgrade/SKILL.md](agent/skills/docs-upgrade/SKILL.md) |
 | `/sdx-solution` | [agent/skills/sdx-solution/SKILL.md](agent/skills/sdx-solution/SKILL.md) |
@@ -284,4 +293,4 @@ stateDiagram-v2
 
 ---
 
-**索引元数据**: 本次运行 **mode=full**，**depth=3**，输出 **./INDEX_GUIDE.md**；运行记录见 [application/changelogs/INDEXING-LOG.md](application/changelogs/INDEXING-LOG.md)。
+**索引元数据**: 本次运行 **mode=incremental**，**depth=3**，**since=1777101878615**，输出 **./INDEX_GUIDE.md**；运行记录见 [application/changelogs/INDEXING-LOG.md](application/changelogs/INDEXING-LOG.md)。
