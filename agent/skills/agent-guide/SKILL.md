@@ -1,13 +1,12 @@
 ---
-
-## name: agent-guide
-
+name: agent-guide
 description: >
   生成或更新仓库根目录的 README.md（面向人类开发者）与 AGENTS.md（面向 AI Agent 的契约文件）。
   以落盘 INDEX_GUIDE.md 为唯一地图，最小阅读集探索，三文件职责不重叠。
   当用户执行 /agent-guide、需要初始化或更新仓库入口文档、做仓库 onboarding、
   更新 Agent 契约、README 过时需要同步、或新成员/新 Agent 需要快速上手时，务必使用本技能。
   即使用户只说"帮我写个 README"、"更新一下 AGENTS"、"整理一下项目文档入口"，也应触发本技能。
+---
 
 # Agent 指引生成（agent-guide）
 
@@ -129,5 +128,4 @@ bash agent/skills/agent-guide/scripts/validate-guide.sh --root .
 | AGENTS 输出骨架                  | [assets/agents-skeleton.md](assets/agents-skeleton.md)           | 生成 AGENTS 时           |
 | 常见陷阱与防错规则                    | [gotchas.md](gotchas.md)                                         | 遇到 Index/生成/验证相关问题时   |
 | 路径验证脚本                       | [scripts/validate-guide.sh](scripts/validate-guide.sh)           | 步骤 5 自动验证时            |
-
 
