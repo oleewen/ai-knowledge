@@ -12,8 +12,6 @@
 | [`architecture/`](architecture/README.md) | 架构视图文档（模板与索引见下表）；体例统一为「二级章节导语 + 三级小节 + 应写内容 / 产出建议」 |
 | [`application-APPNAME/`](application-APPNAME/README.md) | 占位槽位；真实应用名替换 `APPNAME`，内容可由 fetch 填入 |
 
-初始化与参数约定见仓库根 [`docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md`](../docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md)。
-
 ## 架构文档（`architecture/`）
 
 下列文件与 [`architecture/README.md`](architecture/README.md) 同目录；建议先读 **[架构总览](architecture/OVERVIEW.md)**，再按需深入各视角。

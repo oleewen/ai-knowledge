@@ -71,8 +71,24 @@ ai-knowledge/
 │   ├── rules/              # 编码、设计、测试、文档规范
 │   ├── skills/             # Slash 技能（docs-indexing、sdx-* 等）
 │   └── scripts/            # 共享 Bash 库（config-bootstrap、validate-agent-md-links）
-├── company/                # 公司知识库壳（architecture、system-{name}/）
-├── system/                 # 系统知识库壳（architecture、application-{name}/）
+├── company/                # 公司知识库壳
+│   ├── constitution/       # 宪法层：术语、原则、ADR 模板
+│   ├── architecture/       # 企业架构：业务、产品、应用、技术、数据架构
+│   ├── solutions/          # 解决方案产物
+│   ├── analysis/           # 需求分析产物
+│   ├── changelogs/         # 变更记录与索引运维日志
+│   ├── DESIGN.md           # 元模型、映射与演进原则
+│   └── INDEX_GUIDE.md      # 全库路径权威索引
+├── system/                 # 系统知识库壳
+│   ├── constitution/       # 宪法层：术语、原则、ADR 模板
+│   ├── architecture/       # 系统架构：业务、产品、应用、技术、数据架构
+│   ├── solutions/          # 解决方案产物
+│   ├── analysis/           # 需求分析产物
+│   ├── requirements/       # 需求交付产物
+│   ├── specs/              # 需求规格产物
+│   ├── changelogs/         # 变更记录与索引运维日志
+│   ├── DESIGN.md           # 元模型、映射与演进原则
+│   └── INDEX_GUIDE.md      # 全库路径权威索引
 ├── application/            # 应用知识库 SSOT
 │   ├── constitution/       # 宪法层：术语、原则、ADR 模板
 │   ├── knowledge/          # 四视角知识实体（业务/产品/技术/数据）
