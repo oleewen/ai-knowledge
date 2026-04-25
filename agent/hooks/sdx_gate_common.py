@@ -20,6 +20,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -28,71 +29,25 @@ from typing import Callable
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from sdx_session_state import is_session_active
+from sdx_session_state import is_session_active, iter_strings
 
 # ---------------------------------------------------------------------------
 # 各阶段：候选路径收集（须与历史五脚本行为一致）
 # ---------------------------------------------------------------------------
 
 
-def _collect_prd(strings: list[str]) -> list[str]:
-    out: list[str] = []
-    for s in strings:
-        s_norm = s.replace("\\", "/")
-        if "/requirements/" not in s_norm or not s_norm.endswith(".md"):
-            continue
-        base = s_norm.rsplit("/", 1)[-1]
-        if base.startswith("PRD-") and base.endswith(".md"):
-            out.append(s)
-    return out
-
-
-def _collect_analysis(strings: list[str]) -> list[str]:
-    out: list[str] = []
-    for s in strings:
-        s_norm = s.replace("\\", "/")
-        if "/analysis/ANALYSIS-" not in s_norm or not s_norm.endswith(".md"):
-            continue
-        base = s_norm.rsplit("/", 1)[-1]
-        if base.startswith("ANALYSIS-") and base.endswith(".md"):
-            out.append(s)
-    return out
-
-
-def _collect_solution(strings: list[str]) -> list[str]:
-    out: list[str] = []
-    for s in strings:
-        s_norm = s.replace("\\", "/")
-        if "/solutions/SOLUTION-" not in s_norm or not s_norm.endswith(".md"):
-            continue
-        base = s_norm.rsplit("/", 1)[-1]
-        if base.startswith("SOLUTION-") and base.endswith(".md"):
-            out.append(s)
-    return out
-
-
-def _collect_add(strings: list[str]) -> list[str]:
-    out: list[str] = []
-    for s in strings:
-        s_norm = s.replace("\\", "/")
-        if "/requirements/" not in s_norm or not s_norm.endswith(".md"):
-            continue
-        base = s_norm.rsplit("/", 1)[-1]
-        if base.startswith("ADD-") and base.endswith(".md"):
-            out.append(s)
-    return out
-
-
-def _collect_tdd(strings: list[str]) -> list[str]:
-    out: list[str] = []
-    for s in strings:
-        s_norm = s.replace("\\", "/")
-        if "/requirements/" not in s_norm or not s_norm.endswith(".md"):
-            continue
-        base = s_norm.rsplit("/", 1)[-1]
-        if base.startswith("TDD-") and base.endswith(".md"):
-            out.append(s)
-    return out
+def _make_collector(dir_fragment: str, prefix: str) -> Callable[[list[str]], list[str]]:
+    """工厂：生成按目录片段与文件名前缀过滤路径字符串的收集函数。"""
+    def _collect(strings: list[str]) -> list[str]:
+        out: list[str] = []
+        for s in strings:
+            s_norm = s.replace("\\", "/")
+            if dir_fragment not in s_norm or not s_norm.endswith(".md"):
+                continue
+            if s_norm.rsplit("/", 1)[-1].startswith(prefix):
+                out.append(s)
+        return out
+    return _collect
 
 
 @dataclass(frozen=True)
@@ -116,7 +71,7 @@ GATES: dict[str, GateConfig] = {
             "并确保文中引用目标文件名。若确需跳过闸门（仅限人工授权），可在环境中设置 SDX_PRD_ALLOW_PRD_WRITE=1。"
         ),
         basename_prefix="PRD-",
-        collect=_collect_prd,
+        collect=_make_collector("/requirements/", "PRD-"),
     ),
     "analysis": GateConfig(
         marker_confirmed="<!-- sdx-analysis-gate: CONFIRMED -->",
@@ -128,7 +83,7 @@ GATES: dict[str, GateConfig] = {
             "并确保文中引用目标文件名。若确需跳过闸门（仅限人工授权），可在环境中设置 SDX_ANALYSIS_ALLOW_ANALYSIS_WRITE=1。"
         ),
         basename_prefix="ANALYSIS-",
-        collect=_collect_analysis,
+        collect=_make_collector("/analysis/ANALYSIS-", "ANALYSIS-"),
     ),
     "solution": GateConfig(
         marker_confirmed="<!-- sdx-solution-gate: CONFIRMED -->",
@@ -140,7 +95,7 @@ GATES: dict[str, GateConfig] = {
             "并确保文中引用目标文件名。若确需跳过闸门（仅限人工授权），可在环境中设置 SDX_SOLUTION_ALLOW_SOLUTION_WRITE=1。"
         ),
         basename_prefix="SOLUTION-",
-        collect=_collect_solution,
+        collect=_make_collector("/solutions/SOLUTION-", "SOLUTION-"),
     ),
     "design": GateConfig(
         marker_confirmed="<!-- sdx-design-gate: CONFIRMED -->",
@@ -152,7 +107,7 @@ GATES: dict[str, GateConfig] = {
             "并确保文中引用目标文件名。若确需跳过闸门（仅限人工授权），可在环境中设置 SDX_DESIGN_ALLOW_ADD_WRITE=1。"
         ),
         basename_prefix="ADD-",
-        collect=_collect_add,
+        collect=_make_collector("/requirements/", "ADD-"),
     ),
     "test": GateConfig(
         marker_confirmed="<!-- sdx-test-gate: CONFIRMED -->",
@@ -164,7 +119,7 @@ GATES: dict[str, GateConfig] = {
             "并确保文中引用目标文件名。若确需跳过闸门（仅限人工授权），可在环境中设置 SDX_TEST_ALLOW_TDD_WRITE=1。"
         ),
         basename_prefix="TDD-",
-        collect=_collect_tdd,
+        collect=_make_collector("/requirements/", "TDD-"),
     ),
 }
 
@@ -174,21 +129,14 @@ def _repo_root() -> Path:
     return here.parents[2]
 
 
-def _iter_strings(obj: object):
-    if isinstance(obj, str):
-        yield obj
-    elif isinstance(obj, dict):
-        for v in obj.values():
-            yield from _iter_strings(v)
-    elif isinstance(obj, list):
-        for v in obj:
-            yield from _iter_strings(v)
-
-
 def _has_confirmed_spec(repo: Path, marker_confirmed: str, basename: str) -> bool:
     specs_dir = repo / "docs" / "superpowers" / "specs"
     if not specs_dir.is_dir():
         return False
+    # 仅接受“独立文件名标记”，避免相似名称的子串误命中。
+    basename_pattern = re.compile(
+        rf"(?<![A-Za-z0-9._-]){re.escape(basename)}(?![A-Za-z0-9._-])"
+    )
     for p in specs_dir.rglob("*.md"):
         try:
             text = p.read_text(encoding="utf-8", errors="replace")
@@ -196,7 +144,7 @@ def _has_confirmed_spec(repo: Path, marker_confirmed: str, basename: str) -> boo
             continue
         if marker_confirmed not in text:
             continue
-        if basename in text:
+        if basename_pattern.search(text):
             return True
     return False
 
@@ -234,7 +182,7 @@ def run_gate(
         print('{"permission": "allow"}', flush=True)
         return 0
 
-    strings = list(_iter_strings(payload))
+    strings = list(iter_strings(payload))
     candidates = list(dict.fromkeys(cfg.collect(strings)))
     if not candidates:
         print('{"permission": "allow"}', flush=True)
@@ -244,8 +192,6 @@ def run_gate(
     deny_paths: list[str] = []
     for c in candidates:
         base = Path(c.replace("\\", "/")).name
-        if not base.startswith(cfg.basename_prefix) or not base.endswith(".md"):
-            continue
         if _has_confirmed_spec(repo, cfg.marker_confirmed, base):
             continue
         deny_paths.append(c)

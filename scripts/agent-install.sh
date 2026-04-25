@@ -73,7 +73,7 @@ symlink_points_to() {
 backup_existing_target_path() {
   local p="$1"
   [[ -e "$p" || -L "$p" ]] || return 0
-  sdx_docs_backup_path_to_init "${CFG[target_abs]}" "$p" "${CFG[stamp]}" "${CFG[dry_run]}"
+  sdx_docs_backup_path_to_init "${CFG[repo_root]}" "$p" "${CFG[stamp]}" "${CFG[dry_run]}"
 }
 
 ensure_symlink() {
@@ -104,47 +104,36 @@ link_store_into_agent_root() {
   sdx_info ">>> 链接 ${agent}：${store} -> ${agent_dir}"
   ensure_dir "$agent_dir"
 
+  local _nullglob_was_set=1
+  shopt -q nullglob && _nullglob_was_set=0
   shopt -s nullglob
   local item base
 
-  local src_root
-  src_root="${CFG[repo_root]}/agent"
-
-  if [[ -d "${store}" ]]; then
-    for item in "${store}"/*; do
-      base="$(basename "$item")"
-      case "$base" in
-        hooks|rules|scripts|skills) continue ;;
-      esac
-      ensure_symlink "$item" "${agent_dir}/${base}"
-    done
-  else
-    if (( INSTALL_HOOKS == 1 )) && [[ -f "${src_root}/hooks.json" ]]; then
-      ensure_symlink "${store}/hooks.json" "${agent_dir}/hooks.json"
-    fi
-  fi
+  [[ -d "${store}" ]] || sdx_error "未找到 agent 存储目录: ${store}"
+  for item in "${store}"/*; do
+    base="$(basename "$item")"
+    case "$base" in
+      hooks|rules|scripts|skills) continue ;;
+    esac
+    ensure_symlink "$item" "${agent_dir}/${base}"
+  done
 
   local cat
   for cat in hooks rules scripts skills; do
     ensure_dir "${agent_dir}/${cat}"
 
-    if [[ -d "${store}/${cat}" ]]; then
-      for item in "${store}/${cat}"/*; do
-        base="$(basename "$item")"
-        ensure_symlink "$item" "${agent_dir}/${cat}/${base}"
-      done
-      continue
-    fi
-
-    local src_cat_dir="${src_root}/${cat}"
-    [[ -d "${src_cat_dir}" ]] || continue
-
-    for item in "${src_cat_dir}"/*; do
+    [[ -d "${store}/${cat}" ]] || continue
+    for item in "${store}/${cat}"/*; do
       base="$(basename "$item")"
-      [[ "$base" == 'README' || "$base" == 'README.md' || "$base" == 'readme.md' ]] && continue
-      ensure_symlink "${store}/${cat}/${base}" "${agent_dir}/${cat}/${base}"
+      ensure_symlink "$item" "${agent_dir}/${cat}/${base}"
     done
   done
+
+  if (( _nullglob_was_set == 0 )); then
+    shopt -s nullglob
+  else
+    shopt -u nullglob
+  fi
 }
 
 # =============================================================================
@@ -197,6 +186,8 @@ install_agent_resource() {
   ensure_dir "$dst_dir"
   sdx_info "  同步 ${label}：${src_root} → ${dst_dir}"
 
+  local _nullglob_was_set=1
+  shopt -q nullglob && _nullglob_was_set=0
   shopt -s nullglob
   for item in "$src_root"/*; do
     base="$(basename "$item")"
@@ -209,6 +200,11 @@ install_agent_resource() {
       copy_file_plain "$item" "$dst_dir/$base"
     fi
   done
+  if (( _nullglob_was_set == 0 )); then
+    shopt -s nullglob
+  else
+    shopt -u nullglob
+  fi
 }
 
 install_agent_scripts() {
