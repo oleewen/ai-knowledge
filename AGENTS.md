@@ -14,7 +14,7 @@
 
 ## 项目概述（精要）
 
-全局知识底座仓库：Markdown/YAML 知识库与 Bash 初始化脚本；无业务应用运行时。四视角与阶段文档（应用知识库 SSOT）见 [application/](application/)；组织级 `system/`、公司级 `company/` 见 [system/README.md](system/README.md)、[company/README.md](company/README.md)；人类入口见 [README.md](README.md)。
+全局知识底座仓库：Markdown/YAML 知识库与 Bash 初始化脚本；无业务应用运行时。应用知识库 `application` 见 [application/README.md](application/README.md)、系统级知识库 `system/`见 [system/README.md](system/README.md)、、公司级知识库 `company/` [company/README.md](company/README.md)；人类入口见 [README.md](README.md)。
 
 ---
 
@@ -22,7 +22,7 @@
 
 ### 行为准则
 
-- **先读后写**：修改任何文件前，先完整阅读本文件、README.md，按需查阅INDEX_GUIDE.md，并细读其他相关文档。
+- **先读后写**：修改任何文件前，先完整阅读本文件、`README.md` ，按需查阅 `INDEX_GUIDE.md`，并细读其他相关文档。
 - **最小变更**：只改该改的，不做未经要求的重构
 - **保持一致**：遵循项目现有的代码风格、命名规范和架构模式
 - **不假设，要验证**：不确定时读代码/文档，不编造 API、路径或配置
@@ -36,18 +36,18 @@
 
 ### 工作约定
 
-- **与 Index 一致**：平面检索与路径级精要以根目录 [INDEX_GUIDE.md](INDEX_GUIDE.md) 为准；未索引区域须补读或标注待核实。
-- **会话开始**：读 [README.md](README.md) 与本文件；业务与路径细节查 [INDEX_GUIDE.md](INDEX_GUIDE.md)；按任务打开 [application/README.md](application/README.md)、[application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) 或 [agent/rules/](agent/rules/) 下具体规范。
-- **会话中**：业务规则不明 → 列出待确认项；新增技术债务可登记 [application/knowledge/technical/technical-debt.md](application/knowledge/technical/technical-debt.md)；重大结构或治理变更遵循 SDD，并核对 [application/DESIGN.md](application/DESIGN.md)、[application/CONTRIBUTING.md](application/CONTRIBUTING.md)。
-- **文档产出闸门（SDD + docs-distill + docs-extract + docs-archive）**：执行 `/sdx-solution`、`/sdx-analysis`、`/sdx-prd`、`/sdx-design`、`/sdx-test`、`/docs-distill`、`/docs-extract`、`/docs-archive` 或写入对应受管终稿（`{DOC_DIR}` 下 `SOLUTION-*`、`ANALYSIS-*`、`PRD-*`、`ADD-*`、`TDD-*`，以及 `system/architecture/` 等，见总表）前，须完成中间会话 spec 与用户总确认。规则总表见 [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md#artifact-gates) 第三节；各阶段技能见 `agent/skills/sdx-*/SKILL.md`、[agent/skills/docs-distill/SKILL.md](agent/skills/docs-distill/SKILL.md)、[agent/skills/docs-extract/SKILL.md](agent/skills/docs-extract/SKILL.md) 与 [agent/skills/docs-archive/SKILL.md](agent/skills/docs-archive/SKILL.md)。
+- **与 Index 一致**：知识库索引以根目录 [INDEX_GUIDE.md](INDEX_GUIDE.md) 为准；未索引区域须补读或标注待核实。
+- **会话开始**：读 [README.md](README.md) 与本文件；业务与路径细节查 [INDEX_GUIDE.md](INDEX_GUIDE.md)；按需读取各级知识库下的README、INDEX_GUIDE.md 或 [agent/rules/](agent/rules/) 下具体规范。
+- **会话中**：业务规则不明 → 列出待确认项；新增技术债务可登记 [knowledge/technical/technical-debt.md](knowledge/technical/technical-debt.md)；重大结构或治理变更遵循 SDD，并核对 DESIGN.md、CONTRIBUTING.md。
+- **文档产出闸门（SDD + docs-distill + docs-extract + docs-archive）**：执行 `/sdx-solution`、`/sdx-analysis`、`/sdx-prd`、`/sdx-design`、`/sdx-test`、`/docs-distill`、`/docs-extract`、`/docs-archive` 或写入对应受管终稿（`{DOC_DIR}` 下 `SOLUTION-*`、`ANALYSIS-*`、`PRD-*`、`ADD-*`、`TDD-*`，以及 `company|system/architecture/` 等，见总表）前，须完成中间会话 spec 与用户总确认。规则总表见 [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md#artifact-gates) 第三节；各阶段技能见 `agent/skills/sdx-*/SKILL.md`、[agent/skills/docs-distill/SKILL.md](agent/skills/docs-distill/SKILL.md)、[agent/skills/docs-extract/SKILL.md](agent/skills/docs-extract/SKILL.md) 与 [agent/skills/docs-archive/SKILL.md](agent/skills/docs-archive/SKILL.md)。
 - **会话结束**：新增规则或约束需经确认后写入 `application/`、`system/`、`company/` 或本文件；索引类变更按需记录于 [application/changelogs/](application/changelogs/)（见 [application/changelogs/README.md](application/changelogs/README.md)）。
 
 ### 禁止事项
 
 - 禁止随意修改 `application/knowledge/` 已有实体 **ID** 或破坏跨视角 **ID 引用**（如 `implemented_by_app_id`、`persisted_as_entity_ids`），除非同步更新全部引用。
-- 禁止未读 [application/DESIGN.md](application/DESIGN.md) 与 [application/CONTRIBUTING.md](application/CONTRIBUTING.md) 即新增 knowledge 实体或 ADR。
+- 禁止未读 DESIGN.md、CONTRIBUTING.md 即新增 knowledge 实体或 ADR。
 - 禁止无约定变更即删改 [agent/rules/](agent/rules/)、[agent/skills/](agent/skills/) 中模板与技能核心结构。
-- 禁止未评估影响面即改 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[application/README.md](application/README.md) 导航表导致断链或错位。
+- 禁止未评估影响面即改 INDEX_GUIDE.md、README.md 导航表导致断链或错位。
 - **不在本文粘贴** [INDEX_GUIDE.md](INDEX_GUIDE.md) 第 3 节级 API/字典全表；需要时直接打开该文件。
 - **禁止未经用户确认即提交代码**：不得自动执行 `git commit`（含 Skill 步骤中的「Commit」）；须经用户确认后提交。例外：用户在同一会话中明确指令可以提交并认可说明。细则见 [agent/rules/coding/git-guidelines.md](agent/rules/coding/git-guidelines.md)。
 
@@ -156,7 +156,7 @@ Markdown、YAML；**Bash 5+**；Git。可选 `rsync`（脚本可回退 `cp`）�
 
 ## 参考文档
 
-1. [INDEX_GUIDE.md](INDEX_GUIDE.md)（权威地图与查阅指北）
+1. [INDEX_GUIDE.md](INDEX_GUIDE.md)（知识库索引）
 2. [README.md](README.md)、[scripts/README.md](scripts/README.md)
 3. [application/README.md](application/README.md)、[application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[application/DESIGN.md](application/DESIGN.md)、[application/CONTRIBUTING.md](application/CONTRIBUTING.md)、[system/README.md](system/README.md)、[company/README.md](company/README.md)
 4. [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/rules/](agent/rules/)

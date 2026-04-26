@@ -1,7 +1,7 @@
 # ai-knowledge 索引指南（INDEX_GUIDE）
 
 > **最后更新**: 2026-04-25  
-> **文档定位**: 面向 AI Agent 与维护者的**仓库根**全景导航；九章结构遵循 `agent/skills/docs-indexing/reference/nine-chapter-spec.md`。与 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)（应用知识库侧机器索引与建联登记）互为补充时，以本文件为**中央库根路径**落地与检索入口。
+> **文档定位**: 面向 AI Agent 与维护者的**仓库根全索引目录**；九章结构遵循 `agent/skills/docs-indexing/reference/nine-chapter-spec.md`。与 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)（应用知识库侧机器索引与建联登记）互为补充时，以本文件为**中央库根路径**落地与检索入口。
 
 ---
 
