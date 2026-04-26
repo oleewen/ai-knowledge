@@ -2,7 +2,7 @@
 name: docs-indexing
 description: >
   为代码库生成结构化文档索引（INDEX_GUIDE.md），产出标准化九章文档地图，
-  作为 Agent 导航与 RAG 上下文的权威来源；索引运行日志写入 changelogs/INDEXING-LOG.md。
+  作为 Agent 导航与 RAG 上下文的权威来源；索引运行记录写入 `changelogs/INDEXING-LOG.md` 主表（最新在上，见 `reference/indexing-log-spec.md`）。
   支持全量/增量扫描与三级深度（拓扑/结构/精读）。
   当用户执行 /docs-indexing、需要生成或更新项目索引、建立文档地图、做项目 Onboarding、
   或下游 docs-build/agent-guide 需要 INDEX_GUIDE.md 时，务必使用本技能。
@@ -20,8 +20,8 @@ description: >
 | 类型 | 内容 |
 | ---- | ---- |
 | 硬输入 | 代码库根目录、用户确认的扫描模式（full/incremental）、用户确认的扫描深度（1/2/3） |
-| 可选输入 | 输出路径、增量起始时间；增量基线可从 `changelogs/INDEXING-LOG.md` 文末注释读取候选值展示给用户 |
-| 固定输出 | `DOC_ROOT/INDEX_GUIDE.md`（九章结构）、`changelogs/INDEXING-LOG.md`（追加运行日志） |
+| 可选输入 | 输出路径、增量起始时间；候选基线可从 `changelogs/INDEXING-LOG.md` **主表第一行** `indexing_finished_ms` 读取（仅作展示；迁移期可提及 HTML 回退，见 [reference/indexing-log-spec.md](reference/indexing-log-spec.md)） |
+| 固定输出 | `DOC_ROOT/INDEX_GUIDE.md`（九章结构）、`changelogs/INDEXING-LOG.md`（主表插入一行，**最新在上**） |
 | 不产出 | 不生成知识实体 ID、不修改 README/AGENTS、不产出 CHANGELOG |
 
 ## 参数
@@ -41,7 +41,7 @@ description: >
 
 ### 步骤 1：环境准备
 
-读取历史日志 `changelogs/INDEXING-LOG.md`（若存在），提取文末最近一次 `indexing_finished_ms` 作为候选基线——这只是给用户看的参考信息，不能据此自动锁定模式。验证输出路径可写。
+读取 `changelogs/INDEXING-LOG.md`（若存在）主表第一行，或回退为文内旧 HTML 注释，提取**候选** `indexing_finished_ms`——仅作展示，不能据此自动锁定模式。验证输出路径可写。
 
 建议按 [reference/scan-config-onboarding.md](reference/scan-config-onboarding.md) 的「上下文探索」核对仓库事实（DOC_ROOT 位置、是否有有效基线），这样在步骤 2 提问时能给用户更准确的建议。
 
@@ -58,7 +58,7 @@ description: >
 
 **推荐做法**：一条消息列出所有待确认项，并附便捷预设（如 full+1、incremental+2 等），降低来回成本。用户选定预设后，仍须复述完整参数再执行。具体话术见 [reference/scan-config-onboarding.md](reference/scan-config-onboarding.md)。
 
-**增量前提不满足时**（`INDEXING-LOG.md` 无有效 `indexing_finished_ms`）：向用户说明，请用户确认改走全量或中止，不得自动降级。
+**增量前提不满足时**（`INDEXING-LOG.md` 主表/回退均无法得到有效 `indexing_finished_ms` 且用户未给 `--since`）：向用户说明，请其确认改走全量或中止，**不得**静默自动全量；`scripts/indexing.sh` 在 incremental 且无基线时**非 0 退出**。
 
 ### 步骤 3：变更分析
 
@@ -84,7 +84,7 @@ scripts/indexing.sh --mode <用户已确认的 mode> --depth <用户已确认的
 
 ### 步骤 6：输出生成
 
-按九章规范（见 [reference/nine-chapter-spec.md](reference/nine-chapter-spec.md)）生成文档；输出模板见 [assets/index-guide-template.md](assets/index-guide-template.md)；向 `changelogs/INDEXING-LOG.md` **追加**本次运行日志（不覆盖历史记录）。
+按九章规范（见 [reference/nine-chapter-spec.md](reference/nine-chapter-spec.md)）生成文档；输出模板见 [assets/index-guide-template.md](assets/index-guide-template.md)；在 `INDEX_GUIDE` 成功落盘后，向 `changelogs/INDEXING-LOG.md` 主表**插入**一行（**最新在上**；见 `scripts/indexing_log.py` 与 [reference/indexing-log-spec.md](reference/indexing-log-spec.md)）。
 
 ---
 
@@ -123,4 +123,5 @@ scripts/indexing.sh --mode <用户已确认的 mode> --depth <用户已确认的
 | 质量验证清单 | [reference/quality-standards.md](reference/quality-standards.md) | 步骤 5 验证时 |
 | INDEX_GUIDE 输出模板 | [assets/index-guide-template.md](assets/index-guide-template.md) | 步骤 6 生成文档时 |
 | 常见陷阱与防错规则 | [gotchas.md](gotchas.md) | 遇到门禁/扫描/输出相关问题时 |
+| 索引运行日志（表、锚、增量、dry-run）与 DISTILL-LOG 对位 | [reference/indexing-log-spec.md](reference/indexing-log-spec.md) | 读/写 `INDEXING-LOG.md` 或对齐脚本行为时 |
 | 辅助脚本 | [scripts/indexing.sh](scripts/indexing.sh) | 步骤 4 执行扫描时 |

@@ -32,9 +32,9 @@ docs-indexing 技能的产出质量验证清单。步骤 5（质量验证）时�
 
 ## 可追溯性
 
-- [ ] 操作日志已追加到 `INDEXING-LOG.md`（Markdown）
-- [ ] 日志包含模式、深度、文件数、耗时、`indexing_finished_at`
-- [ ] 增量模式记录基线时间戳
+- [ ] 主表行已写入 `INDEXING-LOG.md`（`indexing_log.py` / 技能等效；最新在上）
+- [ ] 主表行包含 `indexing_finished_ms`、模式、深度、文件数、耗时、输出路径等（见 [indexing-log-spec.md](indexing-log-spec.md)）
+- [ ] 增量模式在日志中可识别本次采用的 `since_ms`（全量为 `0`）
 
 ## 交叉引用
 

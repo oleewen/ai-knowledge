@@ -19,7 +19,7 @@
 候选时间戳与默认路径须展示给用户确认（或用户显式给出字面量）后再写入命令。"默认"不等于"不需要确认"。
 
 **增量基线时间戳来源混淆**
-索引增量的基线唯一来源是 `INDEXING-LOG.md` 文末最近一次 `<!-- sdx-indexing:indexing_finished_ms=... -->`。
+索引增量的**首选**基线是 `INDEXING-LOG.md` 主表**第一行**的 `indexing_finished_ms`；迁移前文件可回退为文内最后一次 `<!-- sdx-indexing:indexing_finished_ms=... -->`。
 `CHANGE-LOG.md` 文末的 `docs-change:baseline_time_ms` 是 **docs-change** 的采集基线，两者不可混用。
 
 ---
@@ -61,11 +61,11 @@
 
 ## 输出与日志相关
 
-**未追加操作日志**
-每次执行完毕必须向 `changelogs/INDEXING-LOG.md` **追加**一节 Markdown，并包含文末 `<!-- sdx-indexing:indexing_finished_ms=... -->`。不追加日志会导致下次增量无法找到有效基线。
+**未写操作日志**
+每次成功写 `INDEX_GUIDE` 后必须向 `changelogs/INDEXING-LOG.md` 主表**插入一行**（最新在上）。不写入则下次增量无有效主表锚点；迁移前仍可能依赖文内旧 HTML 注释回退。
 
-**日志节缺失关键信息**
-须包含：运行节标题（ISO 时间）、模式、深度、索引文件数、输出路径、耗时，以及文末基线注释。缺少任何一项都会影响增量基线解析。
+**主表行缺失关键列**
+`indexing_finished_ms`、`mode`、`depth`、`output_path` 等须完整；主表见 [reference/indexing-log-spec.md](reference/indexing-log-spec.md)；缺少 `indexing_finished_ms` 会无法作增量基线。
 
 **输出路径优先级混淆**
 优先级：用户指定 > `./{DOC_DIR}/` > `./doc/` > `./INDEX_GUIDE.md`。若使用默认值，须将解析结果展示给用户确认后再写入。
@@ -91,7 +91,7 @@ agent-guide 生成 README 时以本 INDEX §二为唯一来源。本 Skill 更�
 - [ ] 所有路径为项目根相对路径，可访问
 - [ ] 版本号、配置值来自实际读取的文件
 - [ ] 每个文件只归入一个章节（MECE）
-- [ ] 操作日志已追加到 `changelogs/INDEXING-LOG.md`，基线注释完整
+- [ ] 主表行已写入 `changelogs/INDEXING-LOG.md`（或同意旧式+回退仅迁移期使用）
 - [ ] 增量模式未清空未变更章节
 - [ ] 构建产物目录已排除
 - [ ] 未读内容未写成已核实事实（零幻觉）

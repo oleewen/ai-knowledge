@@ -10,7 +10,7 @@
 | 文件 | 用途 |
 |------|------|
 | [CHANGE-LOG.md](CHANGE-LOG.md) | 系统知识库 `system/` 侧维护性变更与 **docs-change** 聚合结果；文末 `<!-- docs-change:baseline_time_ms=... -->` 为增量基线 |
-| [INDEXING-LOG.md](INDEXING-LOG.md) | **docs-indexing** 运行记录（按次追加）；文末 `<!-- sdx-indexing:indexing_finished_ms=... -->` 为增量基线 |
+| [INDEXING-LOG.md](INDEXING-LOG.md) | **docs-indexing** 运行记录；主表**第一行** `indexing_finished_ms` 为增量锚点（[indexing-log-spec.md](../../agent/skills/docs-indexing/reference/indexing-log-spec.md)） |
 
 ---
 
@@ -19,4 +19,4 @@
 | Skill | 说明 |
 |-------|------|
 | [docs-change](../../agent/skills/docs-change/SKILL.md) | 聚合变更，**写入/更新** `CHANGE-LOG.md`（Markdown） |
-| [docs-indexing](../../agent/skills/docs-indexing/SKILL.md) | 生成 `INDEX_GUIDE.md`，**追加** `INDEXING-LOG.md`（Markdown） |
+| [docs-indexing](../../agent/skills/docs-indexing/SKILL.md) | 生成 `INDEX_GUIDE.md`，在 `INDEXING-LOG.md` 主表**插入**一行（最新在上） |

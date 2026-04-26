@@ -12,7 +12,7 @@
 
 | 命令 | 说明 |
 |------|------|
-| `/docs-indexing` | 生成结构化 `INDEX_GUIDE.md`（九章文档地图），作为 Agent 导航与 RAG 权威来源；索引运行日志写入 `changelogs/INDEXING-LOG.md`；支持全量/增量扫描与深度 1/2/3。 |
+| `/docs-indexing` | 生成结构化 `INDEX_GUIDE.md`（九章文档地图），作为 Agent 导航与 RAG 权威来源；`INDEXING-LOG.md` 用主表记录运行（**最新在上**，锚点见 [docs-indexing/reference/indexing-log-spec.md](docs-indexing/reference/indexing-log-spec.md)）；支持全量/增量与深度 1/2/3。 |
 | `/docs-change` | 从 git commit、CHANGELOG/CHANGE-LOG、本地文件 mtime 采集变更，落盘 `CHANGE-LOG.md`（文末 HTML 注释承载增量基线）；供下游增量索引等使用。 |
 | `/docs-upgrade` | 定向增改 Markdown、源代码注释与配置文本；落盘后链式同步引用链，并辅以关键词检索（同义/近义/中英文）对齐同类表述；支持替换简写 `a - b` / `a > b` / `a 2 b`。 |
 | `/agent-guide` | 生成或更新根目录 `README.md`（人类）与 `AGENTS.md`（Agent）；以落盘 `INDEX_GUIDE.md` 为唯一地图，与 Index 职责不重叠。 |

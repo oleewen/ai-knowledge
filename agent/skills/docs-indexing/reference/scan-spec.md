@@ -39,16 +39,16 @@ docs-indexing 技能的执行细节：深度级别定义、模式逻辑、文件
 
 ### incremental（增量）
 
-基于 `INDEXING-LOG.md` 文末最近一次 `indexing_finished_ms`（HTML 注释），仅处理变更文件：
+基于 `INDEXING-LOG.md` **主表第一行**的 `indexing_finished_ms` 作为时间锚点（**最新在上**；迁移期可回退文内最后一条 `<!-- sdx-indexing:indexing_finished_ms=... -->`），仅处理变更文件。详见 [indexing-log-spec.md](indexing-log-spec.md)。
 
-1. 从 `INDEXING-LOG.md` 读取最后一次 `<!-- sdx-indexing:indexing_finished_ms=... -->` 作为基线
+1. 从主表取锚点，或回退到 HTML 注释
 2. 仅扫描基线时间之后变更的文件
 3. 对已有章节：合并更新，不清空未变更部分
 4. 对新增文件：归入对应章节
 5. 对删除文件：从索引中移除相关条目
 6. 最终结构须与全量索引保持一致
 
-无历史记录时，须向用户说明增量前提不满足，请用户确认改走全量或中止，不得自动降级。
+无有效基线时，须向用户说明增量前提不满足，请用户确认改走全量或中止，**不得**静默自动全量；辅助脚本在 incremental 下无基线时**非 0 退出**。
 
 ---
 
@@ -76,23 +76,7 @@ docs-indexing 技能的执行细节：深度级别定义、模式逻辑、文件
 
 ## 日志格式
 
-每次执行完毕后向 `changelogs/INDEXING-LOG.md` **追加**一节 Markdown（表格字段 + 文末基线注释），例如：
-
-```markdown
-## 运行记录 — 2026-04-09T12:00:00Z
-
-| 字段 | 值 |
-|------|-----|
-| 模式 | full |
-| 深度 | 3 |
-| 索引文件数 | 156 |
-| 输出路径 | `./docs/INDEX_GUIDE.md` |
-| 耗时 (ms) | 120 |
-
-<!-- sdx-indexing:indexing_finished_ms=1704115200000 -->
-```
-
-必需信息：运行节标题（ISO 时间）、表格内模式/深度/索引文件数/输出路径/耗时，以及文末 `<!-- sdx-indexing:indexing_finished_ms=... -->`（供增量基线解析）。
+每次成功写出 `INDEX_GUIDE.md` 后，向 `changelogs/INDEXING-LOG.md` 的**主表**插入一行（**最新在上**，插在表头分隔行之后；列定义与实现见 [indexing-log-spec.md](indexing-log-spec.md) 与 `scripts/indexing_log.py`）。不依赖文末 HTML 注释；实现脚本：`scripts/indexing.sh` 调用 `indexing_log.py append`。
 
 ---
 

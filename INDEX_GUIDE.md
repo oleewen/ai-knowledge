@@ -240,7 +240,7 @@ stateDiagram-v2
 ### 8.3 维护规则
 
 - **触发**: 大目录调整、Skill/脚本契约变更、联邦路径变更后执行 `/docs-indexing`。
-- **增量前提**: `application/changelogs/INDEXING-LOG.md` 文末存在 `<!-- sdx-indexing:indexing_finished_ms=... -->` 作为基线；增量扫描 `--since` 默认取该值。
+- **增量前提**: `application/changelogs/INDEXING-LOG.md` 主表**第一行** `indexing_finished_ms` 为时间锚点（迁移期可回退文内 `<!-- sdx-indexing:indexing_finished_ms=... -->`）；显式 `--since` 优先生效。详见 `agent/skills/docs-indexing/reference/indexing-log-spec.md`。
 - **联动**: 与 `/docs-change` 共用 `application/changelogs/` 下运维文件。
 
 ---
