@@ -3,7 +3,7 @@
 SDX 阶段写入闸门（preToolUse）：根据 --gate 选择具体阶段，逻辑共用。
 
 会话触发语义：
-- 仅当会话内出现过 /sdx-* 并被 sdx_session_gate.py 激活后，本闸门才生效；
+- 仅当会话内出现过 /sdx-* 或 /docs-distill|extract|archive|build 并被 sdx_session_gate.py 激活后，本闸门才生效；
 - 未激活会话时直接 allow（不拦截）。
 
 stdin：Cursor preToolUse JSON（结构可能演进，故递归扫描全部字符串）。
@@ -13,7 +13,9 @@ stderr：可选调试（DEBUG=1）。
 用法：
   python3 agent/hooks/sdx_gate_common.py --gate prd
   python3 agent/hooks/sdx_gate_common.py --gate analysis
-  （其余：solution | design | test）
+  （其余：solution | design | test | distill | extract | archive | build）
+
+bypass_env 为空字符串（""）表示该 gate 无 bypass 机制，必须完整走 CONFIRMED 流程。
 """
 from __future__ import annotations
 
@@ -60,7 +62,80 @@ class GateConfig:
     collect: Callable[[list[str]], list[str]]
 
 
+def _make_overview_collector() -> Callable[[list[str]], list[str]]:
+    """收集写入 system/architecture/overview/ 下 .md 文件的路径。"""
+    def _collect(strings: list[str]) -> list[str]:
+        out: list[str] = []
+        for s in strings:
+            s_norm = s.replace("\\", "/")
+            if "system/architecture/overview/" in s_norm and s_norm.endswith(".md"):
+                out.append(s)
+        return out
+    return _collect
+
+
+def _make_knowledge_collector() -> Callable[[list[str]], list[str]]:
+    """收集写入 {DOC_DIR}/knowledge/ 下文件的路径（按路径片段 /knowledge/ 匹配）。"""
+    def _collect(strings: list[str]) -> list[str]:
+        out: list[str] = []
+        for s in strings:
+            s_norm = s.replace("\\", "/")
+            # 匹配 knowledge/ 目录下的 .md 或 .json 文件
+            if "/knowledge/" in s_norm and (s_norm.endswith(".md") or s_norm.endswith(".json")):
+                out.append(s)
+        return out
+    return _collect
+
+
 GATES: dict[str, GateConfig] = {
+    "build": GateConfig(
+        marker_confirmed="<!-- docs-build-gate: CONFIRMED -->",
+        bypass_env="",  # 无 bypass
+        debug_label="docs-build-gate",
+        deny_message=(
+            "docs-build：禁止在未完成中间 spec「用户总确认」前写入 knowledge/ 下的文件。"
+            "请先在 docs/superpowers/specs/ 维护会话 spec，将 <!-- docs-build-gate: PENDING --> 改为 CONFIRMED，"
+            "并确保文中引用目标文件名（如 KNOWLEDGE_INDEX.md）。本 gate 无 bypass 环境变量，须完整走确认流程。"
+        ),
+        basename_prefix="",
+        collect=_make_knowledge_collector(),
+    ),
+    "distill": GateConfig(
+        marker_confirmed="<!-- docs-distill-gate: CONFIRMED -->",
+        bypass_env="",  # 无 bypass：必须走 CONFIRMED 流程
+        debug_label="docs-distill-gate",
+        deny_message=(
+            "docs-distill：禁止在未完成中间 spec「用户总确认」前写入 system/architecture/overview/ 下的文件。"
+            "请先在 docs/superpowers/specs/ 维护会话 spec，将 <!-- docs-distill-gate: PENDING --> 改为 CONFIRMED，"
+            "并确保文中引用目标文件名。本 gate 无 bypass 环境变量，须完整走确认流程。"
+        ),
+        basename_prefix="",  # overview 文件名不固定，由路径收集器负责过滤
+        collect=_make_overview_collector(),
+    ),
+    "extract": GateConfig(
+        marker_confirmed="<!-- docs-extract-gate: CONFIRMED -->",
+        bypass_env="",  # 无 bypass
+        debug_label="docs-extract-gate",
+        deny_message=(
+            "docs-extract：禁止在未完成中间 spec「用户总确认」前写入 system/architecture/overview/ 下的文件。"
+            "请先在 docs/superpowers/specs/ 维护会话 spec，将 <!-- docs-extract-gate: PENDING --> 改为 CONFIRMED，"
+            "并确保文中引用目标文件名。本 gate 无 bypass 环境变量，须完整走确认流程。"
+        ),
+        basename_prefix="",
+        collect=_make_overview_collector(),
+    ),
+    "archive": GateConfig(
+        marker_confirmed="<!-- docs-archive-gate: CONFIRMED -->",
+        bypass_env="",  # 无 bypass
+        debug_label="docs-archive-gate",
+        deny_message=(
+            "docs-archive：禁止在未完成中间 spec「用户总确认」前写入 system/architecture/overview/ 下的文件。"
+            "请先在 docs/superpowers/specs/ 维护会话 spec，将 <!-- docs-archive-gate: PENDING --> 改为 CONFIRMED，"
+            "并确保文中引用目标文件名。本 gate 无 bypass 环境变量，须完整走确认流程。"
+        ),
+        basename_prefix="",
+        collect=_make_overview_collector(),
+    ),
     "prd": GateConfig(
         marker_confirmed="<!-- sdx-prd-gate: CONFIRMED -->",
         bypass_env="SDX_PRD_ALLOW_PRD_WRITE",
@@ -159,7 +234,8 @@ def run_gate(
     cfg = GATES[gate_id]
     env = environ if environ is not None else os.environ
 
-    if env.get(cfg.bypass_env) == "1":
+    # bypass_env 为空字符串表示该 gate 无 bypass 机制，跳过此检查
+    if cfg.bypass_env and env.get(cfg.bypass_env) == "1":
         print('{"permission": "allow"}', flush=True)
         return 0
 
@@ -218,7 +294,7 @@ def _build_arg_parser() -> argparse.ArgumentParser:
         "--gate",
         required=True,
         choices=sorted(GATES.keys()),
-        help="阶段：prd | analysis | solution | design | test",
+        help="阶段：archive | analysis | design | distill | extract | prd | solution | test",
     )
     return p
 

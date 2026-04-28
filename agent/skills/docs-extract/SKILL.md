@@ -56,6 +56,8 @@ description: >
 
 HARD-GATE 固定在**阶段 3 与阶段 4 之间**。
 
+**门禁标记**：会话 spec 中使用 `<!-- docs-extract-gate: PENDING -->`，用户总确认后改为 `<!-- docs-extract-gate: CONFIRMED -->`，且正文须出现目标文件名（basename）。本 gate **无 bypass 环境变量**，须完整走确认流程；唯一例外是用户在同一对话中明示跳过。
+
 ---
 
 ## 工作流（五阶段）
@@ -91,3 +93,11 @@ HARD-GATE 固定在**阶段 3 与阶段 4 之间**。
 - 写入到 overview 第三列的知识正文不记录来源（不写 `(来源：...)`、出处、参见链接等）
 - 只更新有命中段落的章节；无命中章节保持原内容不变，不覆盖
 - 写入前先读目标章节现有内容，确认 A/U/D 判断准确
+
+---
+
+## 工程化支持
+
+仓库 [agent/hooks.json](../../hooks.json) 注册了 `preToolUse` 钩子（`Write` / `StrReplace`），脚本见 [agent/hooks/sdx_gate_common.py](../../hooks/sdx_gate_common.py)（`python3 agent/hooks/sdx_gate_common.py --gate extract`）；需启用 Hooks 方生效。
+
+钩子证据校验逻辑：检查 `docs/superpowers/specs/` 下是否存在包含 `<!-- docs-extract-gate: CONFIRMED -->` 且引用目标文件名的 spec 文件；未通过则拒绝写入。**本 gate 无 bypass 环境变量。**

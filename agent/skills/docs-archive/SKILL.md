@@ -44,6 +44,8 @@ description: >
 - **禁止**：修改目标文档、在目标目录下新增/覆盖终稿内容
 - **允许**：读取 overview 与链接目标章节、列出目录、输出方案对比、在临时区生成对比稿
 
+**门禁标记**：会话 spec 中使用 `<!-- docs-archive-gate: PENDING -->`，用户明确确认方案确认书后改为 `<!-- docs-archive-gate: CONFIRMED -->`，且正文须出现目标文件名（basename）。本 gate **无 bypass 环境变量**，须完整走确认流程；唯一例外是用户在同一对话中明示跳过。
+
 若用户坚持「直接改」，仍须一句话概括方案与风险，得到**明确同意**后再落盘。
 
 ---
@@ -111,6 +113,14 @@ description: >
 | 结构服从目标 | 标题层级与体例以目标文档/目录为准，不强行保留来源章节顺序 |
 | 冲突显式处理 | 来源或目标矛盾时不得静默合并；分步请用户裁决 |
 | 闸门合规 | 受管路径须符合 [AGENTS.md](../../../AGENTS.md) 与 [CONVENTIONS.md](../../rules/CONVENTIONS.md) |
+
+---
+
+## 工程化支持
+
+仓库 [agent/hooks.json](../../hooks.json) 注册了 `preToolUse` 钩子（`Write` / `StrReplace`），脚本见 [agent/hooks/sdx_gate_common.py](../../hooks/sdx_gate_common.py)（`python3 agent/hooks/sdx_gate_common.py --gate archive`）；需启用 Hooks 方生效。
+
+钩子证据校验逻辑：检查 `docs/superpowers/specs/` 下是否存在包含 `<!-- docs-archive-gate: CONFIRMED -->` 且引用目标文件名的 spec 文件；未通过则拒绝写入。**本 gate 无 bypass 环境变量。**
 
 ---
 

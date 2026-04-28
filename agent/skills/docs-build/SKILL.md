@@ -61,13 +61,30 @@ description: >
 
 ---
 
+## HARD-GATE
+
+写入 `{DOC_DIR}/knowledge/` 下任何文件（JSON、README、KNOWLEDGE_INDEX）前，**须先**完成会话内参数确认书 + 用户总确认（Qclose-1）。
+
+**门禁标记**：会话 spec 中使用 `<!-- docs-build-gate: PENDING -->`，用户总确认后改为 `<!-- docs-build-gate: CONFIRMED -->`，且正文须出现目标 `KNOWLEDGE_INDEX.md` 或目标视角文件名。本 gate **无 bypass 环境变量**，须完整走确认流程；唯一例外是用户在同一对话中明示跳过。
+
+**总确认（Qclose-1）**：阶段 1 完成后，向用户展示将写入的视角、路径与文件清单，询问：
+
+> 是否同意以上述参数执行知识实体提取并写入 `{DOC_DIR}/knowledge/`？（C 确认 / M 修改参数 / S 跳过）
+
+收到 C/S 后将 `PENDING` 改为 `CONFIRMED`，进入阶段 2。
+
+**工程化支持**：仓库 [agent/hooks.json](../../hooks.json) 注册了 `preToolUse` 钩子（`Write` / `StrReplace`），脚本见 [agent/hooks/sdx_gate_common.py](../../hooks/sdx_gate_common.py)（`python3 agent/hooks/sdx_gate_common.py --gate build`）；需启用 Hooks 方生效。钩子证据校验逻辑：检查 `docs/superpowers/specs/` 下是否存在包含 `<!-- docs-build-gate: CONFIRMED -->` 且引用目标文件名的 spec 文件；未通过则拒绝写入。**本 gate 无 bypass 环境变量。**
+
+---
+
 ## 工作流（四阶段）
 
 **预检策略**：直接采用默认参数，不逐项追问。仅在以下情况才暂停澄清（一次只问一个点）：用户显式指定参数或视角子集；`DOC_DIR` 路径有歧义；校验失败需选择处理方式；遇到 `extraction-rules.md` 未覆盖的边界。
 
 | 阶段 | 名称 | 摘要 | 详见 |
 |------|------|------|------|
-| 1 | 初始化 | 验证主 Index Guide 可用；验证输出目录可写；加载内置配置 | [reference/builtin-config.md](reference/builtin-config.md) |
+| 1 | 初始化 | 验证主 Index Guide 可用；验证输出目录可写；加载内置配置；**完成后触发 Qclose-1** | [reference/builtin-config.md](reference/builtin-config.md) |
+| — | **HARD-GATE（Qclose-1）** | 展示将写入的视角、路径与文件清单；会话 spec 标记 CONFIRMED 后解锁阶段 2 | 见上文 HARD-GATE 章节 |
 | 2 | 提取 | 按固定顺序独立执行四视角；后续视角引用前序 ID，不修改前序输出 | [reference/extraction-rules.md](reference/extraction-rules.md) |
 | 3 | README 填充 | 先读目标 README 既有版式，再从 JSON 映射列值刷新数据行；保留固定段 | [reference/readme-fill-spec.md](reference/readme-fill-spec.md) |
 | 4 | 归并 | 读取四视角 JSON → 前缀验证 → 对称性检查 → 证据链验证 → 更新 KNOWLEDGE_INDEX；运行验证脚本 | [reference/consolidation-spec.md](reference/consolidation-spec.md) |

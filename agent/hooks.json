@@ -31,6 +31,26 @@
         "command": "python3 hooks/sdx_gate_common.py --gate test",
         "matcher": "Write|StrReplace",
         "failClosed": false
+      },
+      {
+        "command": "python3 hooks/sdx_gate_common.py --gate distill",
+        "matcher": "Write|StrReplace",
+        "failClosed": false
+      },
+      {
+        "command": "python3 hooks/sdx_gate_common.py --gate extract",
+        "matcher": "Write|StrReplace",
+        "failClosed": false
+      },
+      {
+        "command": "python3 hooks/sdx_gate_common.py --gate archive",
+        "matcher": "Write|StrReplace",
+        "failClosed": false
+      },
+      {
+        "command": "python3 hooks/sdx_gate_common.py --gate build",
+        "matcher": "Write|StrReplace",
+        "failClosed": false
       }
     ]
   }

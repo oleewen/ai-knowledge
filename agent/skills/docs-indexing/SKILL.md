@@ -45,9 +45,9 @@ description: >
 
 建议按 [reference/scan-config-onboarding.md](reference/scan-config-onboarding.md) 的「上下文探索」核对仓库事实（DOC_ROOT 位置、是否有有效基线），这样在步骤 2 提问时能给用户更准确的建议。
 
-### 步骤 2：扫描配置（用户确认门禁）
+### 步骤 2：扫描配置（HARD-GATE：参数确认书）
 
-**在进入步骤 3 之前，必须获得用户对以下参数的明确确认：**
+**在进入步骤 3 之前，必须获得用户对以下参数的明确确认（Qclose-1）：**
 
 - `mode`：`full` 或 `incremental`
 - `depth`：`1`、`2` 或 `3`
@@ -55,6 +55,20 @@ description: >
 - `--since`（增量时，须展示候选值请用户确认，或用户显式给出）
 
 这个门禁存在的原因：模式和深度直接决定扫描成本与覆盖范围，Agent 无法替用户做这个权衡。
+
+**参数确认书格式**（会话内，无需落盘 spec 文件）：
+
+```
+即将执行 /docs-indexing，参数如下：
+- mode: <full|incremental>
+- depth: <1|2|3>
+- output: <路径>
+- since: <时间或 N/A>
+
+C 确认执行 / M 修改参数 / S 跳过
+```
+
+收到 C/S 后方可进入步骤 3。**禁止**在未收到确认前写入 `INDEX_GUIDE.md` 或 `INDEXING-LOG.md`。
 
 **推荐做法**：一条消息列出所有待确认项，并附便捷预设（如 full+1、incremental+2 等），降低来回成本。用户选定预设后，仍须复述完整参数再执行。具体话术见 [reference/scan-config-onboarding.md](reference/scan-config-onboarding.md)。
 

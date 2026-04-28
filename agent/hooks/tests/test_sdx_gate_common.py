@@ -100,6 +100,328 @@ class GateCommonTests(unittest.TestCase):
         printed = [args[0] for args, _kwargs in mock_print.call_args_list if args]
         self.assertTrue(any('"permission": "allow"' in s for s in printed))
 
+    # ------------------------------------------------------------------
+    # docs-distill / docs-extract / docs-archive gate 测试
+    # ------------------------------------------------------------------
+
+    def test_distill_gate_deny_without_confirmed_spec(self) -> None:
+        payload = {
+            "toolName": "write_file",
+            "args": {"path": "system/architecture/overview/billing-overview.md"},
+            "sessionId": "s-distill-deny",
+        }
+        env = {}
+
+        with patch("agent.hooks.sdx_gate_common.is_session_active", return_value=True), patch(
+            "agent.hooks.sdx_gate_common._repo_root"
+        ) as mock_repo_root:
+            with tempfile.TemporaryDirectory() as tmp:
+                repo = Path(tmp)
+                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                mock_repo_root.return_value = repo
+                with patch("builtins.print") as mock_print:
+                    code = run_gate("distill", stdin=json.dumps(payload), environ=env)
+
+        self.assertEqual(code, 0)
+        printed = [args[0] for args, _kwargs in mock_print.call_args_list if args]
+        self.assertTrue(any('"permission": "deny"' in s for s in printed))
+
+    def test_distill_gate_allow_with_confirmed_spec(self) -> None:
+        payload = {
+            "toolName": "write_file",
+            "args": {"path": "system/architecture/overview/billing-overview.md"},
+            "sessionId": "s-distill-allow",
+        }
+        env = {}
+
+        with patch("agent.hooks.sdx_gate_common.is_session_active", return_value=True), patch(
+            "agent.hooks.sdx_gate_common._repo_root"
+        ) as mock_repo_root:
+            with tempfile.TemporaryDirectory() as tmp:
+                repo = Path(tmp)
+                specs_dir = repo / "docs" / "superpowers" / "specs"
+                specs_dir.mkdir(parents=True, exist_ok=True)
+                (specs_dir / "distill-spec.md").write_text(
+                    "<!-- docs-distill-gate: CONFIRMED -->\nbilling-overview.md\n",
+                    encoding="utf-8",
+                )
+                mock_repo_root.return_value = repo
+                with patch("builtins.print") as mock_print:
+                    code = run_gate("distill", stdin=json.dumps(payload), environ=env)
+
+        self.assertEqual(code, 0)
+        printed = [args[0] for args, _kwargs in mock_print.call_args_list if args]
+        self.assertTrue(any('"permission": "allow"' in s for s in printed))
+
+    def test_distill_gate_no_bypass_via_env(self) -> None:
+        """distill gate 无 bypass 环境变量，设置任意值均不应放行（仍走证据校验）。"""
+        payload = {
+            "toolName": "write_file",
+            "args": {"path": "system/architecture/overview/billing-overview.md"},
+            "sessionId": "s-distill-bypass",
+        }
+        # 即使设置了类似 bypass 的环境变量，也不应放行（因为 bypass_env="" 被跳过）
+        env = {"DOCS_DISTILL_ALLOW_WRITE": "1"}
+
+        with patch("agent.hooks.sdx_gate_common.is_session_active", return_value=True), patch(
+            "agent.hooks.sdx_gate_common._repo_root"
+        ) as mock_repo_root:
+            with tempfile.TemporaryDirectory() as tmp:
+                repo = Path(tmp)
+                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                mock_repo_root.return_value = repo
+                with patch("builtins.print") as mock_print:
+                    code = run_gate("distill", stdin=json.dumps(payload), environ=env)
+
+        self.assertEqual(code, 0)
+        printed = [args[0] for args, _kwargs in mock_print.call_args_list if args]
+        # 无 confirmed spec，应 deny（不被环境变量绕过）
+        self.assertTrue(any('"permission": "deny"' in s for s in printed))
+
+    def test_extract_gate_deny_without_confirmed_spec(self) -> None:
+        payload = {
+            "toolName": "write_file",
+            "args": {"path": "system/architecture/overview/payment-overview.md"},
+            "sessionId": "s-extract-deny",
+        }
+        env = {}
+
+        with patch("agent.hooks.sdx_gate_common.is_session_active", return_value=True), patch(
+            "agent.hooks.sdx_gate_common._repo_root"
+        ) as mock_repo_root:
+            with tempfile.TemporaryDirectory() as tmp:
+                repo = Path(tmp)
+                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                mock_repo_root.return_value = repo
+                with patch("builtins.print") as mock_print:
+                    code = run_gate("extract", stdin=json.dumps(payload), environ=env)
+
+        self.assertEqual(code, 0)
+        printed = [args[0] for args, _kwargs in mock_print.call_args_list if args]
+        self.assertTrue(any('"permission": "deny"' in s for s in printed))
+
+    def test_extract_gate_allow_with_confirmed_spec(self) -> None:
+        payload = {
+            "toolName": "write_file",
+            "args": {"path": "system/architecture/overview/payment-overview.md"},
+            "sessionId": "s-extract-allow",
+        }
+        env = {}
+
+        with patch("agent.hooks.sdx_gate_common.is_session_active", return_value=True), patch(
+            "agent.hooks.sdx_gate_common._repo_root"
+        ) as mock_repo_root:
+            with tempfile.TemporaryDirectory() as tmp:
+                repo = Path(tmp)
+                specs_dir = repo / "docs" / "superpowers" / "specs"
+                specs_dir.mkdir(parents=True, exist_ok=True)
+                (specs_dir / "extract-spec.md").write_text(
+                    "<!-- docs-extract-gate: CONFIRMED -->\npayment-overview.md\n",
+                    encoding="utf-8",
+                )
+                mock_repo_root.return_value = repo
+                with patch("builtins.print") as mock_print:
+                    code = run_gate("extract", stdin=json.dumps(payload), environ=env)
+
+        self.assertEqual(code, 0)
+        printed = [args[0] for args, _kwargs in mock_print.call_args_list if args]
+        self.assertTrue(any('"permission": "allow"' in s for s in printed))
+
+    def test_archive_gate_deny_without_confirmed_spec(self) -> None:
+        payload = {
+            "toolName": "write_file",
+            "args": {"path": "system/architecture/overview/order-overview.md"},
+            "sessionId": "s-archive-deny",
+        }
+        env = {}
+
+        with patch("agent.hooks.sdx_gate_common.is_session_active", return_value=True), patch(
+            "agent.hooks.sdx_gate_common._repo_root"
+        ) as mock_repo_root:
+            with tempfile.TemporaryDirectory() as tmp:
+                repo = Path(tmp)
+                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                mock_repo_root.return_value = repo
+                with patch("builtins.print") as mock_print:
+                    code = run_gate("archive", stdin=json.dumps(payload), environ=env)
+
+        self.assertEqual(code, 0)
+        printed = [args[0] for args, _kwargs in mock_print.call_args_list if args]
+        self.assertTrue(any('"permission": "deny"' in s for s in printed))
+
+    def test_archive_gate_allow_with_confirmed_spec(self) -> None:
+        payload = {
+            "toolName": "write_file",
+            "args": {"path": "system/architecture/overview/order-overview.md"},
+            "sessionId": "s-archive-allow",
+        }
+        env = {}
+
+        with patch("agent.hooks.sdx_gate_common.is_session_active", return_value=True), patch(
+            "agent.hooks.sdx_gate_common._repo_root"
+        ) as mock_repo_root:
+            with tempfile.TemporaryDirectory() as tmp:
+                repo = Path(tmp)
+                specs_dir = repo / "docs" / "superpowers" / "specs"
+                specs_dir.mkdir(parents=True, exist_ok=True)
+                (specs_dir / "archive-spec.md").write_text(
+                    "<!-- docs-archive-gate: CONFIRMED -->\norder-overview.md\n",
+                    encoding="utf-8",
+                )
+                mock_repo_root.return_value = repo
+                with patch("builtins.print") as mock_print:
+                    code = run_gate("archive", stdin=json.dumps(payload), environ=env)
+
+        self.assertEqual(code, 0)
+        printed = [args[0] for args, _kwargs in mock_print.call_args_list if args]
+        self.assertTrue(any('"permission": "allow"' in s for s in printed))
+
+    def test_overview_outside_path_not_intercepted(self) -> None:
+        """非 system/architecture/overview/ 路径的 overview 文件不被 distill/extract/archive gate 拦截。"""
+        payload = {
+            "toolName": "write_file",
+            "args": {"path": "docs/some-overview.md"},
+            "sessionId": "s-outside",
+        }
+        env = {}
+
+        with patch("agent.hooks.sdx_gate_common.is_session_active", return_value=True), patch(
+            "agent.hooks.sdx_gate_common._repo_root"
+        ) as mock_repo_root:
+            with tempfile.TemporaryDirectory() as tmp:
+                repo = Path(tmp)
+                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                mock_repo_root.return_value = repo
+                with patch("builtins.print") as mock_print:
+                    code = run_gate("distill", stdin=json.dumps(payload), environ=env)
+
+        self.assertEqual(code, 0)
+        printed = [args[0] for args, _kwargs in mock_print.call_args_list if args]
+        # 路径不在受管范围，应 allow
+        self.assertTrue(any('"permission": "allow"' in s for s in printed))
+
+    # ------------------------------------------------------------------
+    # docs-build gate 测试
+    # ------------------------------------------------------------------
+
+    def test_build_gate_deny_without_confirmed_spec(self) -> None:
+        payload = {
+            "toolName": "write_file",
+            "args": {"path": "application/knowledge/KNOWLEDGE_INDEX.md"},
+            "sessionId": "s-build-deny",
+        }
+        env = {}
+
+        with patch("agent.hooks.sdx_gate_common.is_session_active", return_value=True), patch(
+            "agent.hooks.sdx_gate_common._repo_root"
+        ) as mock_repo_root:
+            with tempfile.TemporaryDirectory() as tmp:
+                repo = Path(tmp)
+                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                mock_repo_root.return_value = repo
+                with patch("builtins.print") as mock_print:
+                    code = run_gate("build", stdin=json.dumps(payload), environ=env)
+
+        self.assertEqual(code, 0)
+        printed = [args[0] for args, _kwargs in mock_print.call_args_list if args]
+        self.assertTrue(any('"permission": "deny"' in s for s in printed))
+
+    def test_build_gate_allow_with_confirmed_spec(self) -> None:
+        payload = {
+            "toolName": "write_file",
+            "args": {"path": "application/knowledge/KNOWLEDGE_INDEX.md"},
+            "sessionId": "s-build-allow",
+        }
+        env = {}
+
+        with patch("agent.hooks.sdx_gate_common.is_session_active", return_value=True), patch(
+            "agent.hooks.sdx_gate_common._repo_root"
+        ) as mock_repo_root:
+            with tempfile.TemporaryDirectory() as tmp:
+                repo = Path(tmp)
+                specs_dir = repo / "docs" / "superpowers" / "specs"
+                specs_dir.mkdir(parents=True, exist_ok=True)
+                (specs_dir / "build-spec.md").write_text(
+                    "<!-- docs-build-gate: CONFIRMED -->\nKNOWLEDGE_INDEX.md\n",
+                    encoding="utf-8",
+                )
+                mock_repo_root.return_value = repo
+                with patch("builtins.print") as mock_print:
+                    code = run_gate("build", stdin=json.dumps(payload), environ=env)
+
+        self.assertEqual(code, 0)
+        printed = [args[0] for args, _kwargs in mock_print.call_args_list if args]
+        self.assertTrue(any('"permission": "allow"' in s for s in printed))
+
+    def test_build_gate_intercepts_json(self) -> None:
+        """build gate 应拦截 knowledge/ 下的 .json 文件写入。"""
+        payload = {
+            "toolName": "write_file",
+            "args": {"path": "application/knowledge/technical/technical_knowledge.json"},
+            "sessionId": "s-build-json",
+        }
+        env = {}
+
+        with patch("agent.hooks.sdx_gate_common.is_session_active", return_value=True), patch(
+            "agent.hooks.sdx_gate_common._repo_root"
+        ) as mock_repo_root:
+            with tempfile.TemporaryDirectory() as tmp:
+                repo = Path(tmp)
+                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                mock_repo_root.return_value = repo
+                with patch("builtins.print") as mock_print:
+                    code = run_gate("build", stdin=json.dumps(payload), environ=env)
+
+        self.assertEqual(code, 0)
+        printed = [args[0] for args, _kwargs in mock_print.call_args_list if args]
+        self.assertTrue(any('"permission": "deny"' in s for s in printed))
+
+    def test_build_gate_no_bypass_via_env(self) -> None:
+        """build gate 无 bypass 环境变量，设置任意值均不应放行。"""
+        payload = {
+            "toolName": "write_file",
+            "args": {"path": "application/knowledge/KNOWLEDGE_INDEX.md"},
+            "sessionId": "s-build-bypass",
+        }
+        env = {"DOCS_BUILD_ALLOW_WRITE": "1"}
+
+        with patch("agent.hooks.sdx_gate_common.is_session_active", return_value=True), patch(
+            "agent.hooks.sdx_gate_common._repo_root"
+        ) as mock_repo_root:
+            with tempfile.TemporaryDirectory() as tmp:
+                repo = Path(tmp)
+                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                mock_repo_root.return_value = repo
+                with patch("builtins.print") as mock_print:
+                    code = run_gate("build", stdin=json.dumps(payload), environ=env)
+
+        self.assertEqual(code, 0)
+        printed = [args[0] for args, _kwargs in mock_print.call_args_list if args]
+        self.assertTrue(any('"permission": "deny"' in s for s in printed))
+
+    def test_knowledge_outside_path_not_intercepted(self) -> None:
+        """非 /knowledge/ 路径的文件不被 build gate 拦截。"""
+        payload = {
+            "toolName": "write_file",
+            "args": {"path": "application/requirements/PRD-abc.md"},
+            "sessionId": "s-build-outside",
+        }
+        env = {}
+
+        with patch("agent.hooks.sdx_gate_common.is_session_active", return_value=True), patch(
+            "agent.hooks.sdx_gate_common._repo_root"
+        ) as mock_repo_root:
+            with tempfile.TemporaryDirectory() as tmp:
+                repo = Path(tmp)
+                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                mock_repo_root.return_value = repo
+                with patch("builtins.print") as mock_print:
+                    code = run_gate("build", stdin=json.dumps(payload), environ=env)
+
+        self.assertEqual(code, 0)
+        printed = [args[0] for args, _kwargs in mock_print.call_args_list if args]
+        self.assertTrue(any('"permission": "allow"' in s for s in printed))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -68,7 +68,7 @@ scripts/change-indexing.sh --since "2026-03-20 00:00:00.000" --output ./changelo
 2. 统一时间格式：字符串 `yyyy-MM-dd HH:mm:ss.SSS`
 3. 按时间倒序排列
 4. 将本轮摘要与条目写入 `CHANGE-LOG.md`（结构参考 [assets/changes-index-template.md](assets/changes-index-template.md)）
-5. 增量模式：**追加**新条目，更新文末 `<!-- docs-change:baseline_time_ms=... -->`，不删除历史小节
+5. 增量模式：将本轮新条目**插入文件最前**（倒序，最新在上），历史小节保留在后不删除；更新文末 `<!-- docs-change:baseline_time_ms=... -->`
 
 ### 步骤 5：验证
 
@@ -86,7 +86,7 @@ scripts/change-indexing.sh --since "2026-03-20 00:00:00.000" --output ./changelo
 |------|------|
 | 零幻觉 | 只收录实际可验证的变更数据；猜测的条目会污染下游增量索引 |
 | 时间精确 | 统一 ms 精度；基线写入 HTML 注释便于脚本解析 |
-| 增量一致性 | 同一文件内追加历史，不覆盖既有条目——基线一旦丢失，下次增量会退化为全量 |
+| 增量一致性 | 新条目插入文件最前（倒序），历史小节保留不删除——基线一旦丢失，下次增量会退化为全量 |
 | 幂等性 | 相同输入与基线下结果一致 |
 | 优雅降级 | Git/CHANGELOG 不可用时跳过对应来源，不终止流程 |
 

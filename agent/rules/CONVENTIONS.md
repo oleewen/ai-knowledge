@@ -52,7 +52,7 @@
 
 1. **须先**完成中间会话 spec：`docs/superpowers/specs/YYYY-MM-DD-<topic>-<阶段后缀>.md`，并完成闸门 **用户总确认**（阶段后缀与 Skill 见下表）。
 2. 在会话 spec 文末使用标记：`<!-- <stage>-gate: CONFIRMED -->`（总确认前为 `PENDING`）；文中须出现目标终稿文件名，或（`docs-distill`）须写明目标应用与 `--full` / `--since` / `--dry-run` 等关键参数摘要，供钩子与校验脚本识别。
-3. **例外**：用户在同一对话中**明示**跳过闸门或授权直写终稿时，可遵循用户指令；或按下表设置环境变量为 `1`（仅限人工知情场景）。
+3. **例外**：用户在同一对话中**明示**跳过闸门或授权直写终稿时，可遵循用户指令；或按下表设置环境变量为 `1`（仅限人工知情场景，仅适用于有环境变量例外的阶段）。`docs-distill`、`docs-extract`、`docs-archive` 三个阶段**无 bypass 环境变量**，须完整走确认流程。
 
 完整流程、HARD-GATE 与校验命令见各阶段 `agent/skills/<...>/SKILL.md`。
 
@@ -65,9 +65,22 @@
 | sdx-design | `application/requirements/**/ADD-*.md` | `application/requirements/**/ADD-*.md` | `-sdx-design.md` | `<!-- sdx-design-gate: CONFIRMED -->` | `SDX_DESIGN_ALLOW_ADD_WRITE` | [sdx-design/SKILL.md](../skills/sdx-design/SKILL.md) |
 | sdx-prd | `application/requirements/**/*` | `application/requirements/**/PRD-*.md` | `-sdx-prd.md` | `<!-- sdx-prd-gate: CONFIRMED -->` | `SDX_PRD_ALLOW_PRD_WRITE` | [sdx-prd/SKILL.md](../skills/sdx-prd/SKILL.md) |
 | sdx-test | `application/requirements/**/*` | `application/requirements/**/TDD-*.md` | `-sdx-test.md` | `<!-- sdx-test-gate: CONFIRMED -->` | `SDX_TEST_ALLOW_TDD_WRITE` | [sdx-test/SKILL.md](../skills/sdx-test/SKILL.md) |
-| docs-distill | `system/architecture/**/*` | `system/architecture/` 受管区块及蒸馏相关日志的写入 | `-docs-distill.md` | `<!-- docs-distill-gate: CONFIRMED -->` | `DOCS_DISTILL_ALLOW_WRITE` | [docs-distill/SKILL.md](../skills/docs-distill/SKILL.md) |
+| docs-distill | `system/architecture/**/*` | `system/architecture/overview/` 受管区块及蒸馏相关日志的写入 | `-docs-distill.md` | `<!-- docs-distill-gate: CONFIRMED -->` | 无（必须走确认流程） | [docs-distill/SKILL.md](../skills/docs-distill/SKILL.md) |
+| docs-extract | `system/architecture/overview/**/*` | `system/architecture/overview/*.md` 写入 | `-docs-extract.md` | `<!-- docs-extract-gate: CONFIRMED -->` | 无（必须走确认流程） | [docs-extract/SKILL.md](../skills/docs-extract/SKILL.md) |
+| docs-archive | `system/architecture/overview/**/*` | `system/architecture/overview/*.md` 写入 | `-docs-archive.md` | `<!-- docs-archive-gate: CONFIRMED -->` | 无（必须走确认流程） | [docs-archive/SKILL.md](../skills/docs-archive/SKILL.md) |
+| docs-build | `{DOC_DIR}/knowledge/**/*` | `{DOC_DIR}/knowledge/` 下 JSON、README、KNOWLEDGE_INDEX 写入 | `-docs-build.md` | `<!-- docs-build-gate: CONFIRMED -->` | 无（必须走确认流程） | [docs-build/SKILL.md](../skills/docs-build/SKILL.md) |
 
 **说明**：`sdx-prd` 与 `sdx-test` 的规则 globs 均覆盖 `application/requirements/**/*`，以**文件名模式** `PRD-*.md` / `TDD-*.md` 区分终稿类型。
+
+### 闸门分层说明
+
+技能按写入风险分三层，闸门强度不同：
+
+| 层级 | 技能 | 闸门形式 | hook 保护 |
+|------|------|---------|----------|
+| **高风险**（落盘 spec + hook） | sdx-solution/analysis/prd/design/test、docs-distill/extract/archive/build | 落盘 spec 文件（`docs/superpowers/specs/`）+ `PENDING` → `CONFIRMED` + hook 证据校验 | ✅ |
+| **中等风险**（会话内确认书） | docs-indexing、docs-upgrade、agent-guide | 会话内参数确认书 + Qclose-1，无需落盘 spec 文件；SKILL.md 中有 HARD-GATE 描述 | ❌（写入路径不固定，hook 难以精确拦截） |
+| **低风险**（现有参数确认） | docs-change、docs-tag、docs-fetch | 保持现有参数确认机制，不加 spec gate | ❌ |
 
 ### docs-distill 补充
 
