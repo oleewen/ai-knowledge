@@ -4,7 +4,7 @@
 
 ## IDEA-ID
 
-与上游 PRD/ADD 完全一致，格式：`{YYMMDD}-{主题}`。
+与上游 PRD/ASD/DSD可追溯一致，格式：`{YYMMDD}-{主题}`。
 
 **路径示例**：
 
@@ -13,7 +13,8 @@
 | 会话 spec | `docs/superpowers/specs/2026-04-12-审批提效-sdx-test.md` |
 | TDD | `{DOC_DIR}/requirements/REQUIREMENT-260412-审批提效/MVP-Phase-1/TDD-260412-审批提效-1.md` |
 | 上游 PRD | `…/PRD-260412-审批提效-1.md` |
-| 上游 ADD | `…/ADD-260412-审批提效-1.md` |
+| 上游 ASD | `…/ASD-260412-审批提效-1.md` |
+| 上游 DSD | `…/DSD-260412-审批提效-1.md` |
 
 ---
 

@@ -12,7 +12,7 @@
 |------|----------|
 | 中间会话 spec | 路径：`docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-distill.md`（与 `sdx-design` 等同级目录） |
 | 用户总确认 | 会话 spec 文末标记由 `PENDING` 改为 `CONFIRMED`（见下文「门禁标记」） |
-| 合法例外 | 用户在同一会话中**明示**跳过闸门、仅要预览、或授权直写；或环境变量 **`DOCS_DISTILL_ALLOW_WRITE=1`**（仅限人工知情场景，类比 `SDX_DESIGN_ALLOW_ADD_WRITE=1`） |
+| 合法例外 | 用户在同一会话中**明示**跳过闸门、仅要预览、或授权直写；或环境变量 **`DOCS_DISTILL_ALLOW_WRITE=1`**（仅限人工知情场景，类比 `SDX_DESIGN_ALLOW_DSD_WRITE=1`） |
 | 预览优先 | 触发 HARD-GATE 时，**先** `--dry-run`，再谈是否落盘 |
 
 ---

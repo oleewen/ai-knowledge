@@ -15,7 +15,7 @@ description: >
 
 在需求分析基础上，将**当前 MVP** 细化为可评审、可验收的 PRD：业务流程、用例、用户故事、模块与交互、业务规则与数据字典、NFR 与验收标准。产出结构以 [assets/prd-template.md](assets/prd-template.md) 为准：**十一章**（§1 产品概述 → … → §11 附录含 **§11.3 质量自查**）。
 
-主要读者：**产品经理**（撰写与验收对齐）；**研发参与评审**（可行性、范围边界）。技术实现留给下游 sdx-design。
+主要读者：**产品经理**（撰写与验收对齐）；**研发参与评审**（可行性、范围边界）。架构与实现细化留给下游 **`sdx-architect`（ASD）** / **`sdx-design`（DSD）**。
 
 **硬输入**：`{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md` 中当前 MVP 章节（不存在时终止，提示先执行 sdx-analysis）。  
 **固定输出**：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`

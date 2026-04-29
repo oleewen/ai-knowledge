@@ -2,11 +2,11 @@
 
 PRD **主要供产品经理**撰写、维护与验收对齐；**研发团队参与评审**（可行性、范围边界），但不以研发实现说明替代产品表述。
 
-与 [../../sdx-solution/reference/audience-and-language.md](../../sdx-solution/reference/audience-and-language.md) 同一原则：正文写**角色/能力/旅程、用户故事与验收标准、信息架构与交互规则、业务规则与数据含义**；**实现向技术细节**留在下游 **sdx-design（ADD）**。
+与 [../../sdx-solution/reference/audience-and-language.md](../../sdx-solution/reference/audience-and-language.md) 同一原则：正文写**角色/能力/旅程、用户故事与验收标准、信息架构与交互规则、业务规则与数据含义**；**实现向技术细节**留在下游 **sdx-architect（ASD）** / **sdx-design（DSD）**。
 
 ## 宜写 / 宜弱化
 
-| 宜写入 PRD | 宜弱化或避免（留给 ADD） |
+| 宜写入 PRD | 宜弱化或避免（留给 ASD/DSD） |
 |------------|-------------------------|
 | 业务流程、用户故事、用例、验收标准 | 类名、接口路径、具体协议 |
 | 信息架构、操作路径、校验与反馈 | 表名、字段名、缓存/队列选型 |

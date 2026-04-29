@@ -5,7 +5,7 @@ identity:
   id: DIR-REQUIREMENTS
   name: 需求交付
   description: >
-    REQUIREMENT-{IDEA-ID}/ 内 PRD/ADD/TDD 等；目录名与 ANALYSIS-{IDEA-ID}.md、PRD-* 同属 *-{IDEA-ID}（IDEA-ID 定义见 ../constitution/standards/naming-conventions.md）。
+    REQUIREMENT-{IDEA-ID}/ 内 PRD、ASD、DSD、TDD 等；目录名与 ANALYSIS-{IDEA-ID}.md、PRD-* 同属 *-{IDEA-ID}（IDEA-ID 定义见 ../constitution/standards/naming-conventions.md）。
 
 role:
   stage: requirements
@@ -34,14 +34,15 @@ pipeline:
 integration:
   traceability:
     - 交付包目录 REQUIREMENT-{IDEA-ID} 与 ANALYSIS-{IDEA-ID}.md 共用同一 IDEA-ID
-    - PRD parent → 对应 ANALYSIS 或 REQUIREMENT 标识；ADD/TDD parent → 对应 PRD
+    - PRD parent → 对应 ANALYSIS 或 REQUIREMENT 标识；ASD/DSD/TDD parent → 对应 PRD（或 DSD.parent / architecture_ref 指向 ASD）
 
 references:
   - ./README.md
   - ../INDEX_GUIDE.md
   - ../../README.md
   - ../../agent/skills/sdx-prd/assets/prd-template.md
-  - ../../agent/skills/sdx-design/assets/add-template.md
+  - ../../agent/skills/sdx-architect/assets/asd-template.md
+  - ../../agent/skills/sdx-design/assets/dsd-template.md
   - ../../agent/skills/sdx-test/assets/tdd-template.md
 
 layers:
@@ -69,11 +70,13 @@ layers:
     artifacts:
       fixed_filenames:
         - PRD.md
-        - ADD.md
+        - ASD.md
+        - DSD.md
         - TDD.md
     frontmatter_constraints:
       PRD.md: "需 id、parent、mvp_phase；parent 与 REQUIREMENT-{IDEA-ID} 或 ANALYSIS-{IDEA-ID} 可追溯一致"
-      ADD.md: "需 id、parent；parent 指向对应 PRD"
+      ASD.md: "需 id、parent；parent 指向对应 PRD"
+      DSD.md: "需 id、parent、architecture_ref（ASD）；parent 指向对应 PRD"
       TDD.md: "需 id、parent；parent 指向对应 PRD"
     indexing:
       readme_index_table: false

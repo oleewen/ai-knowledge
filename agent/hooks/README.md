@@ -2,8 +2,8 @@
 
 | 钩子 | 事件 | 说明 |
 |------|------|------|
-| [sdx_session_gate.py](sdx_session_gate.py) | `preToolUse`（`Write` / `StrReplace`） | 会话激活前置脚本：仅检测会话内是否出现 `/sdx-solution`、`/sdx-analysis`、`/sdx-prd`、`/sdx-design`、`/sdx-test`。命中后标记当前会话为 SDX 激活态。 |
-| [sdx_gate_common.py](sdx_gate_common.py) | `preToolUse`（`Write` / `StrReplace`） | 统一实现：`python3 agent/hooks/sdx_gate_common.py --gate <name>`。仅在 `sdx_session_gate.py` 已激活会话后生效。`name` 与受管路径对应关系：`solution` → `**/solutions/SOLUTION-*.md`（[sdx-solution](../skills/sdx-solution/SKILL.md)）；`analysis` → `**/analysis/ANALYSIS-*.md`（[sdx-analysis](../skills/sdx-analysis/SKILL.md)）；`design` → `**/requirements/**/ADD-*.md`（[sdx-design](../skills/sdx-design/SKILL.md)）；`prd` → `**/requirements/**/PRD-*.md`（[sdx-prd](../skills/sdx-prd/SKILL.md)）；`test` → `**/requirements/**/TDD-*.md`（[sdx-test](../skills/sdx-test/SKILL.md)）。 |
+| [sdx_session_gate.py](sdx_session_gate.py) | `preToolUse`（`Write` / `StrReplace`） | 会话激活前置脚本：仅检测会话内是否出现 `/sdx-solution`、`/sdx-analysis`、`/sdx-prd`、`/sdx-architect`、`/sdx-design`、`/sdx-test`。命中后标记当前会话为 SDX 激活态。 |
+| [sdx_gate_common.py](sdx_gate_common.py) | `preToolUse`（`Write` / `StrReplace`） | 统一实现：`python3 agent/hooks/sdx_gate_common.py --gate <name>`。仅在 `sdx_session_gate.py` 已激活会话后生效。`architect` → `**/requirements/**/ASD-*.md`（[sdx-architect](../skills/sdx-architect/SKILL.md)）；`design` → `**/requirements/**/DSD-*.md`（[sdx-design](../skills/sdx-design/SKILL.md)）；另有 `solution`、`analysis`、`prd`、`test`、`distill`、`extract`、`archive`、`build` 等（见源码 `GATES`）。 |
 
 ### 同构闸门语义、尚无 preToolUse 脚本
 

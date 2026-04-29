@@ -32,7 +32,7 @@ description: >
 |------|----------|
 | 从代码与四视角链提取实体 ID、刷新 `KNOWLEDGE_INDEX` | `docs-build` |
 | 定向增改 Markdown 并链式同步引用 | `docs-upgrade` |
-| SDD 各阶段标准产物（Solution/PRD/ADD/TDD 等） | `sdx-*` |
+| SDD 各阶段标准产物（Solution/PRD/ASD/DSD/TDD 等） | `sdx-*` |
 | 指定 overview 各视角 → 各架构视角表行副标题文件链接对应章节的归档补充 + 冲突检查 | **本技能** |
 
 ---

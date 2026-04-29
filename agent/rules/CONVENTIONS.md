@@ -62,7 +62,8 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | sdx-solution | `application/solutions/**/*` | `application/solutions/SOLUTION-*.md` | `-sdx-solution.md` | `<!-- sdx-solution-gate: CONFIRMED -->` | `SDX_SOLUTION_ALLOW_SOLUTION_WRITE` | [sdx-solution/SKILL.md](../skills/sdx-solution/SKILL.md) |
 | sdx-analysis | `application/analysis/**/*` | `application/analysis/ANALYSIS-*.md` | `-sdx-analysis.md` | `<!-- sdx-analysis-gate: CONFIRMED -->` | `SDX_ANALYSIS_ALLOW_ANALYSIS_WRITE` | [sdx-analysis/SKILL.md](../skills/sdx-analysis/SKILL.md) |
-| sdx-design | `application/requirements/**/ADD-*.md` | `application/requirements/**/ADD-*.md` | `-sdx-design.md` | `<!-- sdx-design-gate: CONFIRMED -->` | `SDX_DESIGN_ALLOW_ADD_WRITE` | [sdx-design/SKILL.md](../skills/sdx-design/SKILL.md) |
+| sdx-architect | `application/requirements/**/ASD-*.md` | `application/requirements/**/ASD-*.md` | `-sdx-architect.md` | `<!-- sdx-architect-gate: CONFIRMED -->` | `SDX_ARCHITECT_ALLOW_ASD_WRITE` | [sdx-architect/SKILL.md](../skills/sdx-architect/SKILL.md) |
+| sdx-design | `application/requirements/**/DSD-*.md` | `application/requirements/**/DSD-*.md` | `-sdx-design.md` | `<!-- sdx-design-gate: CONFIRMED -->` | `SDX_DESIGN_ALLOW_DSD_WRITE` | [sdx-design/SKILL.md](../skills/sdx-design/SKILL.md) |
 | sdx-prd | `application/requirements/**/*` | `application/requirements/**/PRD-*.md` | `-sdx-prd.md` | `<!-- sdx-prd-gate: CONFIRMED -->` | `SDX_PRD_ALLOW_PRD_WRITE` | [sdx-prd/SKILL.md](../skills/sdx-prd/SKILL.md) |
 | sdx-test | `application/requirements/**/*` | `application/requirements/**/TDD-*.md` | `-sdx-test.md` | `<!-- sdx-test-gate: CONFIRMED -->` | `SDX_TEST_ALLOW_TDD_WRITE` | [sdx-test/SKILL.md](../skills/sdx-test/SKILL.md) |
 | docs-distill | `system/architecture/**/*` | `system/architecture/overview/` 受管区块及蒸馏相关日志的写入 | `-docs-distill.md` | `<!-- docs-distill-gate: CONFIRMED -->` | 无（必须走确认流程） | [docs-distill/SKILL.md](../skills/docs-distill/SKILL.md) |
@@ -78,7 +79,7 @@
 
 | 层级 | 技能 | 闸门形式 | hook 保护 |
 |------|------|---------|----------|
-| **高风险**（落盘 spec + hook） | sdx-solution/analysis/prd/design/test、docs-distill/extract/archive/build | 落盘 spec 文件（`docs/superpowers/specs/`）+ `PENDING` → `CONFIRMED` + hook 证据校验 | ✅ |
+| **高风险**（落盘 spec + hook） | sdx-solution/analysis/prd/**architect**/**design**/test、docs-distill/extract/archive/build | 落盘 spec 文件（`docs/superpowers/specs/`）+ `PENDING` → `CONFIRMED` + hook 证据校验 | ✅ |
 | **中等风险**（会话内确认书） | docs-indexing、docs-upgrade、agent-guide | 会话内参数确认书 + Qclose-1，无需落盘 spec 文件；SKILL.md 中有 HARD-GATE 描述 | ❌（写入路径不固定，hook 难以精确拦截） |
 | **低风险**（现有参数确认） | docs-change、docs-tag、docs-fetch | 保持现有参数确认机制，不加 spec gate | ❌ |
 

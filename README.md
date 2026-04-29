@@ -147,7 +147,7 @@ flowchart TD
         F["sdx-solution 产出解决方案"] 
         G["sdx-analysis 产出需求分析"] 
         H["sdx-prd 产出产品设计"] 
-        I["sdx-design 产出技术设计"] 
+        I["sdx-architect: ASD；sdx-design: DSD/spec"] 
         J["sdx-test 产出测试设计"] 
     end
 
@@ -187,7 +187,8 @@ flowchart TD
 | 需求设计  | `/sdx-solution`    | 产出解决方案文档（SOLUTION） |
 | 需求设计  | `/sdx-analysis`    | 产出需求分析文档（ANALYSIS） |
 | 需求设计  | `/sdx-prd`         | 产出产品需求文档（PRD） |
-| 需求设计  | `/sdx-design`      | 产出架构设计文档（ADD/spec） |
+| 需求设计  | `/sdx-architect`   | 产出架构设计说明书（ASD） |
+| 需求设计  | `/sdx-design`      | 产出详细设计说明书（DSD）与 `specs/` |
 | 需求设计  | `/sdx-test`        | 产出测试设计文档（TDD） |
 
 ---

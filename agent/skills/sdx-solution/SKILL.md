@@ -10,7 +10,7 @@ description: >
 
 # 解决方案阶段（sdx-solution）
 
-从业务描述中提取结构化诉求，评估影响面并化解冲突，产出**可供业务与产品评审**的共识级解决方案。主要读者为业务方与产品；技术实现留给下游 sdx-analysis / sdx-prd / sdx-design。
+从业务描述中提取结构化诉求，评估影响面并化解冲突，产出**可供业务与产品评审**的共识级解决方案。主要读者为业务方与产品；技术实现留给下游 sdx-analysis / sdx-prd / **sdx-architect** / **sdx-design**。
 
 ---
 

@@ -1,6 +1,6 @@
 # sdx-test 草稿（中间稿）
 
-**IDEA-ID**：`{IDEA-ID}`（与 PRD/ADD 一致；规则见 [reference/core-concepts.md](../reference/core-concepts.md)）  
+**IDEA-ID**：`{IDEA-ID}`（与 PRD/DSD（及 ASD）一致；规则见 [reference/core-concepts.md](../reference/core-concepts.md)）  
 **DOC_DIR**（自 `.docsconfig`）：`{DOC_DIR}`  
 **--depth**：`quick | standard | deep`  
 **门禁粒度**：`6 门禁（G1–G6）| 精简 4 门禁`  

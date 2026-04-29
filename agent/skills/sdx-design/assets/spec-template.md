@@ -1,6 +1,6 @@
 # {MVP-N} 规约摘录（Spec 汇总）
 
-> 来源：`{ADD-FILE}.md` 与 `specs/{service-name}/**`  
+> 来源：`{DSD-FILE}.md`（详细设计说明书）与 `specs/{service-name}/**`  
 > 目标：从规约视角描述 **哪个服务的哪个 API 要做什么改动**，以及对应的领域/数据变更点，供研发实现对照。
 
 ---

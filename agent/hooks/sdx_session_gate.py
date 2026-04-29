@@ -21,7 +21,7 @@ if __package__ in (None, ""):
 from sdx_session_state import activate_session, iter_strings
 
 _SDX_COMMAND_PATTERN = re.compile(
-    r"/(?:sdx-solution|sdx-analysis|sdx-prd|sdx-design|sdx-test"
+    r"/(?:sdx-solution|sdx-analysis|sdx-prd|sdx-architect|sdx-design|sdx-test"
     r"|docs-distill|docs-extract|docs-archive|docs-build)\b",
     re.IGNORECASE,
 )

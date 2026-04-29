@@ -3,11 +3,12 @@
 # 禁止 export DOC_ROOT / REPO_ROOT / DOC_DIR / AGENT_*（仅当前 shell 赋值）。
 #
 # Source 成功后由本文件设置的变量（供 validate-*.sh 使用）：
-#   DOC_ROOT    — 文档树根绝对路径（由 .docsconfig 解析并展开 ~/）
-#   REPO_ROOT   — 目标工程 Git 仓库根绝对路径
-#   DOC_DIR     — 相对 REPO_ROOT 的文档路径段
-#   AGENT_ROOT  — 可选
-#   AGENT_DIRS  — 可选
+#   DOC_ROOT         — 文档树根绝对路径（由 .docsconfig 解析并展开 ~/）
+#   REPO_ROOT        — 目标工程 Git 仓库根绝对路径
+#   DOC_DIR          — 相对 REPO_ROOT 的文档路径段
+#   AGENT_ROOT       — 可选
+#   AGENT_DIRS       — 可选
+#   KNOWLEDGE_TYPE   — 可选：application | system | company（未写则为空）
 #
 # -----------------------------------------------------------------------------
 # 依赖同目录 docs-core.sh（由 agent-install 安装）
@@ -58,7 +59,8 @@ find_repo_root_for_docsconfig() {
 
 docsconfig_parse_into_globals() {
   local path="${1:?}"
-  docsconfig_read_into "$path" DOC_ROOT REPO_ROOT DOC_DIR AGENT_ROOT AGENT_DIRS \
+  KNOWLEDGE_TYPE=""
+  docsconfig_read_into "$path" DOC_ROOT REPO_ROOT DOC_DIR AGENT_ROOT AGENT_DIRS KNOWLEDGE_TYPE \
     || return 1
 }
 

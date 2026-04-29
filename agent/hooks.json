@@ -18,6 +18,11 @@
         "failClosed": false
       },
       {
+        "command": "python3 hooks/sdx_gate_common.py --gate architect",
+        "matcher": "Write|StrReplace",
+        "failClosed": false
+      },
+      {
         "command": "python3 hooks/sdx_gate_common.py --gate design",
         "matcher": "Write|StrReplace",
         "failClosed": false

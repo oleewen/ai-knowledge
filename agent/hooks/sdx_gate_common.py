@@ -13,7 +13,7 @@ stderr：可选调试（DEBUG=1）。
 用法：
   python3 agent/hooks/sdx_gate_common.py --gate prd
   python3 agent/hooks/sdx_gate_common.py --gate analysis
-  （其余：solution | design | test | distill | extract | archive | build）
+  （其余：architect | solution | design | test | distill | extract | archive | build）
 
 bypass_env 为空字符串（""）表示该 gate 无 bypass 机制，必须完整走 CONFIRMED 流程。
 """
@@ -172,17 +172,29 @@ GATES: dict[str, GateConfig] = {
         basename_prefix="SOLUTION-",
         collect=_make_collector("/solutions/SOLUTION-", "SOLUTION-"),
     ),
+    "architect": GateConfig(
+        marker_confirmed="<!-- sdx-architect-gate: CONFIRMED -->",
+        bypass_env="SDX_ARCHITECT_ALLOW_ASD_WRITE",
+        debug_label="sdx-architect-gate",
+        deny_message=(
+            "sdx-architect：禁止在未完成中间 spec「用户总确认」前写入 requirements 下的 ASD 文件。"
+            "请先在 docs/superpowers/specs/ 维护会话 spec，将 <!-- sdx-architect-gate: PENDING --> 改为 CONFIRMED，"
+            "并确保文中引用目标文件名。若确需跳过闸门（仅限人工授权），可在环境中设置 SDX_ARCHITECT_ALLOW_ASD_WRITE=1。"
+        ),
+        basename_prefix="ASD-",
+        collect=_make_collector("/requirements/", "ASD-"),
+    ),
     "design": GateConfig(
         marker_confirmed="<!-- sdx-design-gate: CONFIRMED -->",
-        bypass_env="SDX_DESIGN_ALLOW_ADD_WRITE",
+        bypass_env="SDX_DESIGN_ALLOW_DSD_WRITE",
         debug_label="sdx-design-gate",
         deny_message=(
-            "sdx-design：禁止在未完成中间 spec「用户总确认」前写入 requirements 下的 ADD 文件。"
+            "sdx-design：禁止在未完成中间 spec「用户总确认」前写入 requirements 下的 DSD 文件。"
             "请先在 docs/superpowers/specs/ 维护会话 spec，将 <!-- sdx-design-gate: PENDING --> 改为 CONFIRMED，"
-            "并确保文中引用目标文件名。若确需跳过闸门（仅限人工授权），可在环境中设置 SDX_DESIGN_ALLOW_ADD_WRITE=1。"
+            "并确保文中引用目标文件名。若确需跳过闸门（仅限人工授权），可在环境中设置 SDX_DESIGN_ALLOW_DSD_WRITE=1。"
         ),
-        basename_prefix="ADD-",
-        collect=_make_collector("/requirements/", "ADD-"),
+        basename_prefix="DSD-",
+        collect=_make_collector("/requirements/", "DSD-"),
     ),
     "test": GateConfig(
         marker_confirmed="<!-- sdx-test-gate: CONFIRMED -->",
@@ -294,7 +306,7 @@ def _build_arg_parser() -> argparse.ArgumentParser:
         "--gate",
         required=True,
         choices=sorted(GATES.keys()),
-        help="阶段：archive | analysis | design | distill | extract | prd | solution | test",
+        help="阶段：architect | archive | analysis | build | design | distill | extract | prd | solution | test",
     )
     return p
 
