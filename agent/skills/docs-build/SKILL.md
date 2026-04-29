@@ -73,6 +73,8 @@ description: >
 
 收到 C/S 后将 `PENDING` 改为 `CONFIRMED`，进入阶段 2。
 
+**门禁进度表锚点（与 sdx-* 对齐）**：若会话 spec 草稿含「门禁」「覆盖模板」等与 `sdx-*` 会话 spec 同构的进度表，两列均应使用指向**本会话稿内**小节锚点。示例见 [`sdx-solution` 会话模板](../sdx-solution/assets/solution-session-spec-template.md)「门禁进度」。
+
 **工程化支持**：仓库 [agent/hooks.json](../../hooks.json) 注册了 `preToolUse` 钩子（`Write` / `StrReplace`），脚本见 [agent/hooks/sdx_gate_common.py](../../hooks/sdx_gate_common.py)（`python3 agent/hooks/sdx_gate_common.py --gate build`）；需启用 Hooks 方生效。钩子证据校验逻辑：检查 `docs/superpowers/specs/` 下是否存在包含 `<!-- docs-build-gate: CONFIRMED -->` 且引用目标文件名的 spec 文件；未通过则拒绝写入。**本 gate 无 bypass 环境变量。**
 
 ---

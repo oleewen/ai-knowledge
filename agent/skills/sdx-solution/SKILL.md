@@ -69,6 +69,8 @@ F：跳过全部门禁，直接拟定草稿、撰写终稿
 | G6 | §6 交付计划 |
 | G7 | §7 附录 + 文末 yaml |
 
+**会话草稿「门禁进度」表**：门禁列与覆盖模板列均须为指向**本会话 spec 稿内** `## Gn` 小节锚点。占位与示例见 [assets/solution-session-spec-template.md](assets/solution-session-spec-template.md)「门禁进度」。
+
 ### 门禁节奏（强制）
 
 - 每次只呈现一段草案或一个待确认点，末尾附标准四选项

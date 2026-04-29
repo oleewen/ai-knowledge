@@ -45,8 +45,9 @@ description: >
 - **允许**：读取 overview 与链接目标章节、列出目录、输出方案对比、在临时区生成对比稿
 
 **门禁标记**：会话 spec 中使用 `<!-- docs-archive-gate: PENDING -->`，用户明确确认方案确认书后改为 `<!-- docs-archive-gate: CONFIRMED -->`，且正文须出现目标文件名（basename）。本 gate **无 bypass 环境变量**，须完整走确认流程；唯一例外是用户在同一对话中明示跳过。
-
 若用户坚持「直接改」，仍须一句话概括方案与风险，得到**明确同意**后再落盘。
+
+**门禁进度表锚点（与 sdx-* 对齐）**：若 `docs/superpowers/specs/` 会话草稿中出现「门禁」「覆盖模板」等与 `sdx-*` 会话 spec 同构的进度表，两列均应使用指向**本会话稿内**小节锚点。示例见 [`sdx-solution` 会话模板](../sdx-solution/assets/solution-session-spec-template.md)「门禁进度」。
 
 ---
 

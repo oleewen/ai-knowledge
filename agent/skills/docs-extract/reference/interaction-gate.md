@@ -46,6 +46,8 @@
 
 **文中至少写明**：`--sources` 路径列表、`--overview` 目标路径、命中段落数量与归属章节摘要、是否已执行 `--dry-run` 及结论摘要。
 
+**门禁进度表锚点（与 sdx-* 对齐）**：若本会话草稿含「门禁」「覆盖模板」等与 `sdx-*` 会话 spec 同构的进度表，两列均应使用指向**本会话稿内**小节锚点。示例见 [`sdx-solution` 会话模板](../../sdx-solution/assets/solution-session-spec-template.md)「门禁进度」。
+
 ---
 
 ## 推荐交互节奏

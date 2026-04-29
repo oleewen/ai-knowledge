@@ -49,6 +49,8 @@
 
 **文中至少写明**（供后续审计与可能的自动化对齐）：目标 `--app`（或声明处理全部已登记应用）、是否 `--full`、是否使用 `--since` 及其值、是否已执行 `--dry-run` 及结论摘要、是否为首次创建 overview 文件（新建 vs 更新）。
 
+**门禁进度表锚点（与 sdx-* 对齐）**：若本会话草稿含「门禁」「覆盖模板」等与 `sdx-*` 会话 spec 同构的进度表，两列均应使用指向**本会话稿内**小节锚点。示例见 [`sdx-solution` 会话模板](../../sdx-solution/assets/solution-session-spec-template.md)「门禁进度」。
+
 ---
 
 ## 推荐交互节奏（brainstorming 机制子集）

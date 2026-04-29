@@ -73,7 +73,43 @@ symlink_points_to() {
 backup_existing_target_path() {
   local p="$1"
   [[ -e "$p" || -L "$p" ]] || return 0
-  sdx_docs_backup_path_to_init "${CFG[repo_root]}" "$p" "${CFG[stamp]}" "${CFG[dry_run]}"
+
+  if [[ -L "$p" ]]; then
+    local target_root existing stamp dry_run
+    target_root="$(strip_trailing_slash "$(abs_path "${CFG[target_abs]}")")"
+    existing="$p"
+    stamp="${CFG[stamp]}"
+    dry_run="${CFG[dry_run]}"
+
+    local backup_root rel backup_target
+    [[ -n "$stamp" ]] || stamp="$(date +%Y-%m-%d_%H-%M-%S)"
+    backup_root="${target_root}/.docs-init/${stamp}"
+
+    if [[ "$existing" == "$target_root"/* ]]; then
+      rel="${existing#"$target_root"/}"
+    else
+      rel="${existing#/}"
+    fi
+
+    backup_target="${backup_root}/${rel}"
+    if [[ -e "$backup_target" || -L "$backup_target" ]]; then
+      local i=1
+      while [[ -e "${backup_target}.__${i}" || -L "${backup_target}.__${i}" ]]; do (( i++ )); done
+      backup_target="${backup_target}.__${i}"
+    fi
+
+    if [[ "$dry_run" == '1' ]]; then
+      printf '信息: [dry-run] 将备份：%s → %s\n' "$existing" "$backup_target" >&2
+      return 0
+    fi
+
+    mkdir -p "$(dirname "$backup_target")" 2>/dev/null || true
+    mv "$existing" "$backup_target"
+    printf '信息: 已备份：%s → %s\n' "$existing" "$backup_target" >&2
+    return 0
+  fi
+
+  sdx_docs_backup_path_to_init "${CFG[target_abs]}" "$p" "${CFG[stamp]}" "${CFG[dry_run]}"
 }
 
 ensure_symlink() {
@@ -108,24 +144,49 @@ link_store_into_agent_root() {
   shopt -q nullglob && _nullglob_was_set=0
   shopt -s nullglob
   local item base
+  local src_root
+  src_root="${CFG[repo_root]}/agent"
 
-  [[ -d "${store}" ]] || sdx_error "未找到 agent 存储目录: ${store}"
-  for item in "${store}"/*; do
-    base="$(basename "$item")"
-    case "$base" in
-      hooks|rules|scripts|skills) continue ;;
-    esac
-    ensure_symlink "$item" "${agent_dir}/${base}"
-  done
+  if [[ -d "${store}" ]]; then
+    for item in "${store}"/*; do
+      base="$(basename "$item")"
+      case "$base" in
+        hooks|rules|scripts|skills) continue ;;
+      esac
+      ensure_symlink "$item" "${agent_dir}/${base}"
+    done
+  else
+    [[ "${CFG[dry_run]}" == '1' ]] || sdx_error "未找到 agent 存储目录: ${store}"
+    if (( INSTALL_HOOKS == 1 )) && [[ -f "${src_root}/hooks.json" ]]; then
+      ensure_symlink "${store}/hooks.json" "${agent_dir}/hooks.json"
+    fi
+  fi
 
   local cat
   for cat in hooks rules scripts skills; do
+    case "$cat" in
+      hooks)   (( INSTALL_HOOKS == 1 ))   || continue ;;
+      rules)   (( INSTALL_RULES == 1 ))   || continue ;;
+      scripts) (( INSTALL_SCRIPTS == 1 )) || continue ;;
+      skills)  (( INSTALL_SKILLS == 1 ))  || continue ;;
+    esac
+
     ensure_dir "${agent_dir}/${cat}"
 
-    [[ -d "${store}/${cat}" ]] || continue
-    for item in "${store}/${cat}"/*; do
+    if [[ -d "${store}/${cat}" ]]; then
+      for item in "${store}/${cat}"/*; do
+        base="$(basename "$item")"
+        ensure_symlink "$item" "${agent_dir}/${cat}/${base}"
+      done
+      continue
+    fi
+
+    [[ "${CFG[dry_run]}" == '1' ]] || continue
+    [[ -d "${src_root}/${cat}" ]] || continue
+    for item in "${src_root}/${cat}"/*; do
       base="$(basename "$item")"
-      ensure_symlink "$item" "${agent_dir}/${cat}/${base}"
+      [[ "$base" == 'README' || "$base" == 'README.md' || "$base" == 'readme.md' ]] && continue
+      ensure_symlink "${store}/${cat}/${base}" "${agent_dir}/${cat}/${base}"
     done
   done
 
