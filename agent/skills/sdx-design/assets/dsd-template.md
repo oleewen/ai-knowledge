@@ -32,14 +32,19 @@
 > 跟外部系统集成的关系，消息队列、异步处理机制，用到的容器
 
 ```mermaid
-graph TD
-    subgraph 本次变更范围
-        A[容器A]
-        B[容器B]
-    end
-    C[外部系统C] --> A
-    A --> B
-    B --> D[( XX数据库 )]
+architecture-beta
+    group system(cloud)["XX系统"]
+
+    service server1(server)["容器A"] in system
+    service server2(server)["容器B"] in system
+    service server3(server)["外部系统C"] 
+    service db(database)["数据库"] in system
+    service disk(disk)["存储"] in system
+
+    server3:B --> T:server1
+    server1:B --> T:db
+    server1:R --> L:server2
+    server2:B --> T:disk
 ```
 
 ### 2.2 API详细设计
@@ -263,11 +268,11 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 
 ## 3. 需求规约
 
-<!-- 规约术语：与规约文件名或 OpenAPI/领域名一致的可读简称；应用实体 ID、服务实体 ID 须与 `{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md` / `knowledge/technical/` 中 APP-*、MS-* 对齐。 -->
+<!-- 与上游 ASD §3 同构三列表；在 ASD 已定稿行上扩写规约正文与链路。规约术语：与规约文件名或 OpenAPI/领域名一致的可读简称；应用实体 ID、服务实体 ID 须与 `{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md` / `knowledge/technical/` 中 APP-*、MS-* 对齐。 -->
 
 | 应用 | 规约文件 | 规约描述 |
 | ---- | -------- | -------- |
-| `{APP-ID}` | `./specs/spec-{ID}-{N}-{service-name}.md` | 核心改动点：... |
+| `{APP-ID}` | `./specs/spec-{ID}-{N}-{service-name}.md` | 核心改动点：... （`{service-name}` 与同库 **`{DOC_DIR}/knowledge-links.yaml`** 的 **`service_name`** 优先对齐，见 ASD §3） |
 
 ## 4. 附录
 
@@ -288,7 +293,7 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 - [ ] **§2 详细设计（应用架构～非功能）**
   *通过标准*：§2.1～§2.5 对应实现级内容完整；每个 **API-n** / **DDL** / 非功能条目可追溯到 PRD/规约/SPECS。
 - [ ] **§3 需求规约**
-  *通过标准*：`specs/` 路径、**source**（DSD §2）、**requirement**（FR-n）一致。
+  *通过标准*：与 **ASD §3** 表格行对齐；`specs/` 路径、**source**（DSD §2）、**requirement**（FR-n）一致。
 - [ ] **§4 附录与元数据**
   *通过标准*：§4.1 变更历史、§4.2 自查可追溯；文末 YAML `id`/ `architecture_ref` 与 ASD/PRD 一致。
 

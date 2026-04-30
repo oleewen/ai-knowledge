@@ -25,13 +25,15 @@
 #### 系统架构图
 
 ```mermaid
-graph TD
-    subgraph 本次变更范围
-        A[系统A]
-        B[系统B]
-    end
-    C[外部系统C] --> A
-    A --> B
+architecture-beta
+    group system(cloud)["XX系统"]
+
+    service server1(server)["系统A"] in system
+    service server2(server)["系统B"] in system
+    service server3(server)["系统C"] 
+
+    server3:B --> T:server1
+    server1:R --> L:server2
 ```
 
 #### 服务变更
@@ -69,22 +71,9 @@ sequenceDiagram
 #### 领域模型图
 
 ```mermaid
-classDiagram
-    class AggregateRoot {
-        +ID id
-        +method1()
-        +method2()
-    }
-    class Entity {
-        +ID id
-        +field1
-    }
-    class ValueObject {
-        +field1
-        +field2
-    }
-    AggregateRoot "1" --> "*" Entity
-    Entity --> ValueObject
+erDiagram
+    AggregateRoot ||--o{ Entity : "聚合内实体"
+    Entity }o--o| ValueObject : "嵌入或引用"
 ```
 
 #### 领域事件
@@ -122,22 +111,6 @@ flowchart LR
 
 ```mermaid
 erDiagram
-    table_name1（U） {
-        BIGINT id PK "主键ID"
-        VARCHAR name "名称"
-        VARCHAR code UK "编码（A）"
-        TIMESTAMP created_at "创建时间"
-        TIMESTAMP updated_at "更新时间"
-    }
-
-    table_name2（A） {
-        BIGINT id PK "主键ID"
-        VARCHAR name "名称"
-        VARCHAR code FK "表1编码" 
-        TIMESTAMP created_at "创建时间"
-        TIMESTAMP updated_at "更新时间"
-    }
-
     table_name1（U）||--o{ table_name2（A）: 被引用
 ```
 
@@ -164,6 +137,18 @@ erDiagram
 - 回滚前需备份相关数据库与配置
 - 回滚步骤：逐步逆向操作（如数据库还原、容器回滚等），确保服务健康
 - 回滚注意事项：做好监控收敛，通知相关人员
+
+## 3. 需求规约
+
+<!-- 规约术语：与规约文件名或 OpenAPI/领域名一致的可读简称；应用实体 ID、服务实体 ID 须与 `{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md` / `knowledge/technical/` 中 APP-*、MS-* 对齐。 -->
+
+<!-- 本表为架构阶段「服务能力摘要」：下游 DSD「§3 需求规约」在此行基础上扩写，并落盘 `./specs/*.md` / OpenAPI / 规约 YAML；若与 ASD 冲突，以已确认 ASD + PRD 溯源为准。联邦模式（system/company）下「规约文件」可填 `N/A` 或应用库预期路径，「规约描述」仍须写清服务级能力边界。 -->
+
+<!-- 占位 `{app-name}`：规约文件名中的可文件名化小段（字符集与 `scripts/docs-link.sh` 登记的 `app_name` 校验一致：**小写、a-z0-9._-**）。取值优先与同库 **`{DOC_DIR}/knowledge-links.yaml`** 中与本应用那条 link 的 **`app_name`** 对齐；若无登记或本节无对应条目，再与 **`{APP-ID}`** / KNOWLEDGE_INDEX 中应用标识一致且无冲突的简称。**不得**用语义上的 `{service-name}` 替代本节文件名段占位（服务能力仍写在「规约描述」内的 **负责服务**）。 -->
+
+| 应用 | 规约文件 | 规约描述 |
+| ---- | -------- | -------- |
+| `{APP-ID}` | `./specs/spec-{ID}-{N}-{app-name}.md` | **负责服务**：MS-xxx / 服务简称<br/>**能力**：…<br/>**核心参数**：…<br/>**关键步骤**：1. … 2. …<br/>**返回结果**：成功语义 / 典型失败或错误码占位 |
 
 ## 文档元数据
 

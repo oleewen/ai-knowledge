@@ -138,6 +138,7 @@ for file in "${FILES[@]}"; do
   REQUIRED_SECTIONS=(
     "## 1. 设计概述"
     "## 2. 架构设计"
+    "## 3. 需求规约"
   )
 
   SECTION_COUNT=0
@@ -145,10 +146,10 @@ for file in "${FILES[@]}"; do
     if grep -qF "${section}" "${file}"; then
       SECTION_COUNT=$((SECTION_COUNT + 1))
     else
-      warn "${BASENAME}: 缺少章节 '${section}'"
+      error "${BASENAME}: 缺少必需章节 '${section}'（ASD 须含 §1–§3）"
     fi
   done
-  info "${BASENAME}: ${SECTION_COUNT}/2 个必需章节（§1–§2）"
+  info "${BASENAME}: ${SECTION_COUNT}/3 个必需章节（§1–§3）"
 
   DD_COUNT=$(grep -c 'DD-[0-9]' "${file}" 2>/dev/null || true)
   info "${BASENAME}: DD-n=${DD_COUNT}"

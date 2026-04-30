@@ -8,7 +8,7 @@
 
 ### 1. 模板驱动
 
-输出遵循 [../assets/dsd-template.md](../assets/dsd-template.md)：**§1** 设计概述（与 ASD §1 / `asd-template` 对齐）；**§2** 详细设计；**§3** 需求规约；**§4** 附录。章节顺序与 `dsd-template` 约定不可擅自重排；无内容的章节保留标题并标注「不适用」或「待补充」。规约文件按 `specs/{service-name}/{type}/` 目录结构组织。
+输出遵循 [../assets/dsd-template.md](../assets/dsd-template.md)：**§1** 设计概述（与 ASD §1 / `asd-template` 对齐）；**§2** 详细设计；**§3** 需求规约（与 ASD §3 / [asd-template §3](../../sdx-architect/assets/asd-template.md) 表行对齐并扩写）；**§4** 附录。章节顺序与 `dsd-template` 约定不可擅自重排；无内容的章节保留标题并标注「不适用」或「待补充」。规约文件按 `specs/{service-name}/{type}/` 目录结构组织。
 
 ### 2. 证据优先
 

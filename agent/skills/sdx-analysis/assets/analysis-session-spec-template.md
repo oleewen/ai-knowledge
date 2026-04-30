@@ -14,7 +14,7 @@
 
 | 门禁 | 覆盖模板 | 状态 | 备注 |
 |------|----------|------|------|
-| [G1](./analysis-session-spec-template.md#G1) | [§1 背景与目标](./analysis-session-spec-template.md#G1) | 草案/已确认 | 示例行；按需复制为 G2…G7 |
+| [G{n}](#g{n}-XX) | [§{n} XX](#g{n}-XX) | 草案/已确认 | 示例行；按需复制为 G{n+1} |
 
 ---
 

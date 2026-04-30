@@ -1,6 +1,6 @@
 # sdx-design 工作流规范（详细设计 **DSD**）
 
-> **说明**：**ASD**（`/sdx-architect`）承载原架构 **§1–§2**。**DSD**（`/sdx-design`）为独立技能，文档 **§1–§4**：**§1** 与 [asd-template §1](../../sdx-architect/assets/asd-template.md) 对齐且与 ASD 同源/可追溯；**详细设计从 §2 起编号**。门禁：**Ga1–Ga2**（ASD）、**Gd1–Gd4**（DSD §1–§4）。
+> **说明**：**ASD**（`/sdx-architect`）承载 **§1–§3**（§3 为需求规约摘要表，与 [dsd-template §3](../assets/dsd-template.md) 表头同构）。**DSD**（`/sdx-design`）为独立技能，文档 **§1–§4**：**§1** 与 [asd-template §1](../../sdx-architect/assets/asd-template.md) 对齐且与 ASD 同源/可追溯；**§3** 继承并扩写 **ASD §3**；**详细设计从 §2 起编号**。门禁：**Ga1–Ga3**（ASD）、**Gd1–Gd4**（DSD §1–§4）。
 
 [SKILL.md](../SKILL.md) 为主干。本文件补充：**门禁状态机**（回跳影响面、Q-n 协议）与**阶段三内容生成算法**（步骤 0–3）。
 
@@ -70,7 +70,7 @@ Q-{n}：{问题描述}
 
 ### 步骤 0：架构（不在本技能落笔）
 
-**ASD** **`/sdx-architect`** 已产出 **`ASD-*.md`（§1§2）**。「设计概述」在 DSD **§1** 必须与 ASD **§1 / [asd-template](../../sdx-architect/assets/asd-template.md)** 对齐。
+**ASD** **`/sdx-architect`** 已产出 **`ASD-*.md`（§1–§3）**。「设计概述」在 DSD **§1** 必须与 ASD **§1 / [asd-template](../../sdx-architect/assets/asd-template.md)** 对齐；**§3 需求规约**表须在 **ASD §3** 已定稿行上扩写。
 
 ---
 
@@ -92,7 +92,7 @@ Q-{n}：{问题描述}
 
 ### 步骤 2：规约生成（→ specs/）
 
-从 **DSD §2**（及 ASD 中仍有效的领域/边界描述，若规约条目引用）抽取，写入：
+从 **DSD §2**、**DSD §3 / ASD §3** 规划路径（及 ASD 中仍有效的领域/边界描述，若规约条目引用）抽取，写入：
 
 ```
 specs/{service-name}/
@@ -127,6 +127,6 @@ specs/{service-name}/
 ## 步间数据流
 
 ```
-/sdx-architect → ASD（§1、§2）
-/sdx-design → DSD：**§1**（与 ASD §1）+ **§2** 详细设计 → **§3** 需求规约 → **§4** 附录 → **specs/**
+/sdx-architect → ASD（§1、§2、§3）
+/sdx-design → DSD：**§1**（与 ASD §1）+ **§2** 详细设计 → **§3** 需求规约（扩写 ASD §3）→ **§4** 附录 → **specs/**
 ```
