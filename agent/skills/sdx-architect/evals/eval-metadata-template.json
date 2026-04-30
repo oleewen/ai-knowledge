@@ -1,0 +1,48 @@
+{
+  "skill_name": "sdx-architect",
+  "eval_id": "architect-trigger-001",
+  "expected_category": "should-trigger",
+  "expected_route": "/sdx-architect",
+  "notes": "模板示例：可复制后按具体 eval 填充。",
+  "assertions": [
+    {
+      "id": "gate-compliance",
+      "name": "门禁合规",
+      "type": "must_include",
+      "check": "响应需明确 HARD-GATE（草稿总确认前禁止写入 ASD 定稿路径）及合法例外条件。",
+      "priority": "P0"
+    },
+    {
+      "id": "structure-integrity",
+      "name": "结构完整",
+      "type": "must_include",
+      "check": "响应需覆盖 ASD 输出结构边界：至少点明 §1、§2、§3 的定位与用途。",
+      "priority": "P0"
+    },
+    {
+      "id": "boundary-routing",
+      "name": "边界分流",
+      "type": "must_not_conflict",
+      "check": "若 prompt 目标为 API/DDL/规约 YAML 细化，应分流到 /sdx-design；若目标为蒸馏/抽取/归档/索引，应分流到 docs 类技能。",
+      "priority": "P0"
+    },
+    {
+      "id": "upstream-awareness",
+      "name": "上游依赖识别",
+      "type": "should_include",
+      "check": "响应应提及 sdx-prd（必需）与 sdx-analysis（推荐）作为输入来源。",
+      "priority": "P1"
+    },
+    {
+      "id": "federated-mode-awareness",
+      "name": "联邦模式识别",
+      "type": "should_include",
+      "check": "当 KNOWLEDGE_TYPE 为 system/company 时，响应应说明仅做联邦概要，不在本库写 DSD/specs。",
+      "priority": "P1"
+    }
+  ],
+  "scoring": {
+    "pass_rule": "P0 断言全部通过，且 P1 至少通过 1 项",
+    "fail_rule": "任一 P0 断言失败即判定不通过"
+  }
+}

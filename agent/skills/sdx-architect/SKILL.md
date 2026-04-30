@@ -1,90 +1,85 @@
 ---
 name: sdx-architect
 description: >
-  架构设计阶段：基于 PRD 产出架构设计说明书 ASD（§1 设计概述、§2 架构设计、§3 需求规约摘要表）。
-  §3 与 DSD 模板「需求规约」三列表对齐：**`{app-name}`**（规约文件名段）优先与同库 **`{DOC_DIR}/knowledge-links.yaml`** 中 **`app_name`** 对齐（见 `scripts/docs-link.sh`，路径范式见 `assets/asd-template.md` §3）；表中按服务写清能力、核心参数、关键步骤、返回结果；全量 OpenAPI/规约 YAML 由下游 /sdx-design 扩写。
-  当用户执行 /sdx-architect、需要写 ASD、画服务边界与架构图、整理服务变更表、或 KNOWLEDGE_TYPE 为 system/company 的联邦概要时，务必使用本技能。
-  详细设计（API/DDL/逻辑、规约正文落盘）不在本技能范围，由下游 /sdx-design 产出 DSD 与 specs。
-  须遵守正文 HARD-GATE：默认禁止在「草稿用户总确认」之前写入 {DOC_DIR}/requirements/**/ASD-*.md。
+  当用户需要基于 PRD/ANALYSIS 产出架构设计说明书 ASD（§1/§2/§3）时，必须使用本技能。
+  若用户要求实现级 API/DDL/规约 YAML/DSD，请不要继续本技能，改为分流到 /sdx-design。
+  本技能默认执行门禁：未完成“用户总确认”前，禁止写入 {DOC_DIR}/requirements/**/ASD-*.md。
+  当用户提到服务边界、架构图、服务变更表、系统级联邦概要（KNOWLEDGE_TYPE=system/company）等场景，也应优先触发本技能。
 ---
 
 # 架构设计阶段（sdx-architect）
 
-产出**架构设计说明书（ASD）**：**§1、§2、§3**。与 PRD、分析文档对齐，为下游 **DSD**（`/sdx-design`）提供边界、服务级变更、**规约摘要行**与引用链。主要读者：**架构师、技术负责人**。
-
-**上游**：`sdx-prd`（必需）、`sdx-analysis`（推荐）。**下游**：`sdx-design`（同目录 `DSD-{IDEA-ID}-{N}.md`）。
+本技能以“调度器”方式工作：先判定是否应由 `sdx-architect` 处理，再按阶段读取对应规范文件，最终产出可校验的 ASD。
 
 ---
 
-## 知识与库类型
+## 适用边界
 
-执行**阶段一**时读取 `.docsconfig` 中的 **`KNOWLEDGE_TYPE`**。规则见 **[reference/knowledge-type-modes.md](reference/knowledge-type-modes.md)**。`system`/`company` 时 ASD 仍为联邦概要主承载；**不写 DSD/specs YAML 于本库**。
-
----
-
-## HARD-GATE
-
-草稿总确认前，**禁止**写入 `{DOC_DIR}/requirements/**/ASD-*.md`。
-
-**合法例外**：
-- 用户明示跳过门禁或仅要草稿或紧急直写
-- 环境变量 `SDX_ARCHITECT_ALLOW_ASD_WRITE=1`
-
-**门禁标记**：会话 spec 使用 `<!-- sdx-architect-gate: PENDING -->`，总确认后为 `<!-- sdx-architect-gate: CONFIRMED -->`，且正文须出现目标 **`ASD-{IDEA-ID}-{N}.md`** basename。
+- **本技能负责**：ASD（`§1/§2/§3`）、架构边界、服务变更、规约摘要行、门禁执行。
+- **本技能不负责**：DSD、实现级 API/DDL、完整规约 YAML 落盘。
+- **边界分流**：出现实现级细节诉求时，转 `[/sdx-design](../sdx-design/SKILL.md)`。
 
 ---
 
-## 阶段一：准备
+## 输入与前置检查
 
-抛出并确认：**IDEA-ID / MVP**、**KNOWLEDGE_TYPE**、`--depth`、门禁 **Ga1（§1）/ Ga2（§2）/ Ga3（§3）**。
+执行前最少确认：
 
----
+- `PRD`（必需）
+- `ANALYSIS`（推荐）
+- `.docsconfig` 的 `KNOWLEDGE_TYPE`（建议）
 
-## 阶段二：会话草稿确认
-
-**路径**：`docs/superpowers/specs/YYYY-MM-DD-<topic>-sdx-architect.md`。骨架：**[assets/architect-session-spec-template.md](assets/architect-session-spec-template.md)**。
-
-会话草稿必须从 `architect-session-spec-template.md` 整段复制 `## 门禁进度` 区块（含表头/示例行的链接写法），只允许替换占位符与链接目标，不允许改表结构/列名/是否为链接。
-
-标准 **C/M/S/F** 四选项与同目录 `sdx-design` 的约定一致。
-
-**门禁与 ASD 映射**：
-
-| 门禁 | 覆盖模板 | 状态 | 备注 |
-|------|----------|------|------|
-| [G{n}](#g{n}-XX) | [§{n} XX](#g{n}-XX) | 草案/已确认 | 示例行；按需复制为 G{n+1} |
-
-**brainstorming**：多路径时先做 2～3 套对比；可对照 [../sdx-design/reference/brainstorming-integration.md](../sdx-design/reference/brainstorming-integration.md)。
-
-**总确认**：是否同意以当前草稿为唯一素材生成 **`ASD-{IDEA-ID}-{N}.md`**？确认人：**`$HOME` 末级目录名**。
+若输入不全，先补澄清，不直接进入正式 ASD 落盘。
 
 ---
 
-## 阶段三：定稿
+## 执行路由（先读后写）
 
-在 `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/` 下新建 **`ASD-{IDEA-ID}-{N}.md`**，按 **[assets/asd-template.md](assets/asd-template.md)** 落 **§1、§2、§3** 与文末 YAML。
-
-联邦补充说明：**[assets/asd-stub-sections-federated.md](assets/asd-stub-sections-federated.md)**。
-
-```bash
-agent/skills/sdx-architect/scripts/validate-asd.sh
-agent/skills/sdx-architect/scripts/validate-asd.sh --file path/to/ASD-xxx.md --gate-check
-```
+1. **流程与阶段**：先读 `references/workflow.md`
+2. **门禁与例外**：再读 `references/gates.md`
+3. **质量检查**：落盘前读 `references/quality-checklist.md`
+4. **反模式规避**：遇到歧义时读 `references/anti-patterns.md`
+5. **输出样式**：参考 `assets/asd-template.md` 与 `assets/samples/mini-asd-example.md`
 
 ---
 
-## 参考资源
+## 门禁要求（必须执行）
 
-| 资源 | 路径 |
-|------|------|
-| 联邦 / KNOWLEDGE_TYPE | [reference/knowledge-type-modes.md](reference/knowledge-type-modes.md) |
-| 受众与文档语言（可共用） | [../sdx-design/reference/audience-and-language.md](../sdx-design/reference/audience-and-language.md) |
-| 设计原则 | [../sdx-design/reference/design-principles.md](../sdx-design/reference/design-principles.md) |
-| ASD 模板 | [assets/asd-template.md](assets/asd-template.md) |
-| 会话草稿 | [assets/architect-session-spec-template.md](assets/architect-session-spec-template.md) |
+- 总确认前，禁止写 `{DOC_DIR}/requirements/**/ASD-*.md`
+- 合法例外仅限：
+  - 用户明确要求跳过
+  - `SDX_ARCHITECT_ALLOW_ASD_WRITE=1`
+- 建议在会话草稿使用状态标记：
+  - `PENDING`（未确认）
+  - `CONFIRMED`（已确认）
+
+会话草稿模板使用：`assets/architect-session-spec-template.md`。
+
+---
+
+## 产出与校验
+
+- 正式产物路径：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ASD-{IDEA-ID}-{N}.md`
+- 使用模板：`assets/asd-template.md`
+- 联邦模式补充：`assets/asd-stub-sections-federated.md`
+- 落盘后执行：
+
+  ```bash
+  agent/skills/sdx-architect/scripts/validate-asd.sh
+  agent/skills/sdx-architect/scripts/validate-asd.sh --file path/to/ASD-xxx.md --gate-check
+  ```
+
+---
+
+## 评测与迭代（skill-creator 对齐）
+
+- 评测样本：`evals/evals.json`
+- 评测元模板：`evals/eval-metadata-template.json`
+- 评分规则：`agents/grader.md`
+- 失败分析：`agents/analyzer.md`
 
 ---
 
 ## 工程化支持
 
-钩子：`python3 agent/hooks/sdx_gate_common.py --gate architect`，注册见 [agent/hooks.json](../../hooks.json)。
+钩子：`python3 agent/hooks/sdx_gate_common.py --gate architect`，注册见 `agent/hooks.json`。

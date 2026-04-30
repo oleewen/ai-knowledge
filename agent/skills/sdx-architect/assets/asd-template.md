@@ -148,7 +148,7 @@ erDiagram
 
 | 应用 | 规约文件 | 规约描述 |
 | ---- | -------- | -------- |
-| `{APP-ID}` | `./specs/spec-{ID}-{N}-{app-name}.md` | **负责服务**：MS-xxx / 服务简称<br/>**能力**：…<br/>**核心参数**：…<br/>**关键步骤**：1. … 2. …<br/>**返回结果**：成功语义 / 典型失败或错误码占位 |
+| `{APP-ID}` | `./specs/spec-{ID}-{N}-{app-name}.md` | **Spec结构**：参照 `asd-spec-template.md`（第1-6节）<br/>**范围（1）**：能力边界 / 覆盖 FR-UC-BR-EX / SSOT 来源<br/>**术语（2）**：核心业务概念与字段口径<br/>**需求条目（3-4）**：FR-{n} / UC-{n}<br/>**接口定义（5）**：接口签名、入参、出参、BR、EX（message/suggestions）<br/>**元数据（6）**：id/title/version/status/created/updated/parent/refs/scope |
 
 ## 文档元数据
 

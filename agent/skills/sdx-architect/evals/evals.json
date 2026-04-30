@@ -1,0 +1,57 @@
+{
+  "skill_name": "sdx-architect",
+  "version": "1.0.0",
+  "description": "用于评估 sdx-architect 技能触发边界与分流准确性",
+  "evals": [
+    {
+      "id": "architect-trigger-001",
+      "category": "should-trigger",
+      "prompt": "我已经有 PRD 文档了，帮我用 /sdx-architect 先产出 ASD，重点要画服务边界图和系统上下游关系。"
+    },
+    {
+      "id": "architect-trigger-002",
+      "category": "should-trigger",
+      "prompt": "这次是系统级 KNOWLEDGE_TYPE=system，请你做联邦概要架构设计，输出 ASD 的 §1 和 §2。"
+    },
+    {
+      "id": "architect-trigger-003",
+      "category": "should-trigger",
+      "prompt": "我们要整理订单域改造，先不要落 API 细节，先出一版架构设计说明书 ASD，包含服务变更表。"
+    },
+    {
+      "id": "architect-trigger-004",
+      "category": "should-trigger",
+      "prompt": "请按 sdx 流程进入架构阶段，我要在需求目录里生成 ASD-ORDER-1.md，并确认门禁 G1-G3。"
+    },
+    {
+      "id": "architect-not-trigger-001",
+      "category": "should-not-trigger",
+      "prompt": "我已经有 ASD 了，下一步请补齐 API、DDL、时序和规约 YAML，产出 DSD 与 specs。"
+    },
+    {
+      "id": "architect-not-trigger-002",
+      "category": "should-not-trigger",
+      "prompt": "请直接执行 /sdx-design，把 ASD 第三节规约摘要扩写成实现级接口契约。"
+    },
+    {
+      "id": "architect-not-trigger-003",
+      "category": "should-not-trigger",
+      "prompt": "帮我把 system/application-billing 的内容蒸馏到 system/architecture/overview/billing-overview.md。"
+    },
+    {
+      "id": "architect-not-trigger-004",
+      "category": "should-not-trigger",
+      "prompt": "从 docs/design 和 docs/prd 目录抽取业务知识，写入 payment-overview 第三列。"
+    },
+    {
+      "id": "architect-not-trigger-005",
+      "category": "should-not-trigger",
+      "prompt": "请把 billing-overview 里未归档章节按视角写回 architecture 各子文档，并清理 overview 已归档段落。"
+    },
+    {
+      "id": "architect-not-trigger-006",
+      "category": "should-not-trigger",
+      "prompt": "更新一下仓库 INDEX_GUIDE.md，最近目录变动很大，需要重建文档索引。"
+    }
+  ]
+}
