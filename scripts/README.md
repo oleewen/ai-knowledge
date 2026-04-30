@@ -34,7 +34,7 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 | **中央知识库挂载建联**（`central`） | `application`（默认） | `application/` **子集** | 仅 `changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs_meta.yaml`、`manifest.yaml`；**不执行中央知识库挂载建联登记/联邦槽位写入** |
 | **中央知识库挂载建联**（`central`） | `system` / `company` | - | **不支持**（报错） |
 
-2. **Agent 配置**（**`agent-install.sh`**）：在 **`--target`**（默认 **`$HOME`**）下按 **`--agents`**（默认 **`cursor`**，可 **`all`** 或多选）安装到 **`${TARGET}/.{.cursor|.trea|.claude}/`** 中对应目录；按 **`--scope`** 选择同步 **`hooks`**、**`scripts`**、**`rules`**、**`skills`**。当 **`--target` 不是 `$HOME`** 且 **`${TARGET}/.docsconfig`** 已存在时，所有 scope 都会按本次参数重算并覆盖 **`AGENT_ROOT`** 与 **`AGENT_DIRS`**。`docs-install` 在 `scope=config|knowledge` 下都会处理 `AGENT_*`：仅当 `.docsconfig` 中 **`AGENT_ROOT`** 为空时写默认 **`AGENT_ROOT=$HOME`** 与 **`AGENT_DIRS=.cursor`**；`AGENT_ROOT` 非空时保留原值。
+2. **Agent 配置**（**`agent-install.sh`**）：在 **`--target`**（默认 **`$HOME`**）下按 **`--agents`**（默认 **`cursor`**，可 **`all`** 或多选）安装到 **`${TARGET}/.{.cursor|.trea|.claude}/`** 中对应目录；单份实体默认存储于 **`$HOME/.agents/`**；按 **`--scope`** 选择同步 **`hooks`**、**`scripts`**、**`rules`**、**`skills`**。当 **`--target` 不是 `$HOME`** 且 **`${TARGET}/.docsconfig`** 已存在时，所有 scope 都会按本次参数重算并覆盖 **`AGENT_ROOT`** 与 **`AGENT_DIRS`**。`docs-install` 在 `scope=config|knowledge` 下都会处理 `AGENT_*`：仅当 `.docsconfig` 中 **`AGENT_ROOT`** 为空时写默认 **`AGENT_ROOT=$HOME`** 与 **`AGENT_DIRS=.cursor`**；`AGENT_ROOT` 非空时保留原值。
 
 3. **冲突处理**：**`docs-install`** 若目标路径已存在，默认会交互式提示；使用 `--force` 强制覆盖，或 `--dry-run` 预览。**`agent-install`** 对安装树采用同步覆盖（可用 `--dry-run` 预览）。
 
@@ -170,6 +170,7 @@ your-project/
 
 ```
 ~/
+├── .agents/                       # agent-install 单份实体存储（默认）
 ├── .cursor/                       # Cursor（另有 .trea/、.claude/ 下同构）
 │   ├── hooks.json                 # 自仓库 agent/hooks.json
 │   ├── hooks/                     # 自仓库 agent/hooks/

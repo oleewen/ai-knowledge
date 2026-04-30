@@ -360,10 +360,10 @@ usage() {
   agent-install.sh [选项]
 
 说明
-  将本仓库 agent/{scripts,rules,skills,hooks} 安装到 $HOME/.agent/（单份实体存储），并按 --agents
-  在 ${TARGET}/.{.cursor|.trae|.claude}/ 下建立软链（按条目链接，包含 $HOME/.agent/ 根文件与
+  将本仓库 agent/{scripts,rules,skills,hooks} 安装到 $HOME/.agents/（单份实体存储），并按 --agents
+  在 ${TARGET}/.{.cursor|.trae|.claude}/ 下建立软链（按条目链接，包含 $HOME/.agents/ 根文件与
   hooks/rules/scripts/skills 子目录下的各文件/目录）。
-  scripts 阶段会从本仓库复制 agent/scripts/docs-core.sh 到 $HOME/.agent/scripts/docs-core.sh。
+  scripts 阶段会从本仓库复制 agent/scripts/docs-core.sh 到 $HOME/.agents/scripts/docs-core.sh。
   不安装README。
   当 --target 不是 $HOME 时，更新 <target>/.docsconfig 的 AGENT_ROOT 与 AGENT_DIRS（与当前 --agents 一致）；
   若该文件不存在，请先对目标工程执行 docs-install。
@@ -442,7 +442,7 @@ agent_install_run() {
   init_repo_root
   [[ -n "${HOME:-}" ]] || sdx_error "需要 HOME 环境变量"
   CFG[home_abs]="$(abs_path "$HOME")"
-  CFG[store_abs]="$(strip_trailing_slash "$(abs_path "${CFG[home_abs]}/.agent")")"
+  CFG[store_abs]="$(strip_trailing_slash "$(abs_path "${CFG[home_abs]}/.agents")")"
   CFG[stamp]="$(date +%Y-%m-%d_%H-%M-%S)"
 
   if [[ -z "${CFG[target_abs]:-}" ]]; then
