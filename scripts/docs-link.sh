@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 # docs-link.sh — 在源知识库登记 / 注销目标知识库（repository + path + doc_dir + app_name + app_label）
 # application 建联时 app_name：--app-name > 登记文件已有 > Git 仓库根目录名推断
+# app_label：新登记或条目中尚无 app_label 时默认等于 app_name；重复 link 且已有 app_label 则保留不覆盖
 # 同一 target 重复 link：合并更新同一条记录，不追加重复行
 # 用法: ./scripts/docs-link.sh --link|--unlink --target <目标仓库根> [--app-name=名] [--dry-run]
 # 须在源 Git 仓库内执行；link 需校验源、目标 .docsconfig 与 KNOWLEDGE_TYPE；
 # unlink 支持目标失联场景（按登记 identity 注销）；system 源注销 application 建联时先将
 # DOC_ROOT 下 application-<APPNAME>/ 备份至 REPO_ROOT/.docs-init/<时间戳>/（与 docs-install 一致）再移除。
-# 登记值：repository 存 Git remote URL（有 remote 时）；path 存本机路径（在 $HOME 下为相对 $HOME，
-#       否则为规范化绝对路径）。path 不得为 URL 形态（须写在 repository）。不兼容旧版仅 path=URL 的 YAML。
+# 登记值：repository 存 Git remote URL（有 remote 时）；path 存本机路径（在 $HOME 下为 ~/ 前缀的
+#       路径，家目录本身写 ~/；否则为规范化绝对路径）。兼容旧数据：无 ~ 的 $HOME 相对片段仍可读。
+#       path 不得为 URL 形态（须写在 repository）。不兼容旧版仅 path=URL 的 YAML。
 set -euo pipefail
 
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -31,11 +33,11 @@ knowledge_links_validate_stored_path_field() {
   local p="${1:?}" src="${2:?}"
   [[ -n "$p" ]] || sdx_error "knowledge-links.yaml 条目缺少 path 或 path 为空: $src"
   if [[ "$p" =~ ^(git@|ssh://|https://|http://) ]]; then
-    sdx_error "knowledge-links.yaml: path 不得为远程 URL（已废弃）。请将远端写入 repository，path 改为相对 \$HOME 或本机绝对路径: $src"
+    sdx_error "knowledge-links.yaml: path 不得为远程 URL（已废弃）。请将远端写入 repository，path 改为 ~/…、~/ 或本机绝对路径（兼容旧：无 ~ 的 \$HOME 相对片段）: $src"
   fi
 }
 
-# 将绝对仓库根路径转为写入 knowledge-links 的 path（$HOME 下为相对 $HOME，否则绝对路径）
+# 将绝对仓库根路径转为写入 knowledge-links 的 path（$HOME 下为 ~/… 或 ~/，否则绝对路径；手写不依赖 docsconfig_format_root_for_write）
 knowledge_link_stored_path_from_absolute() {
   local abs="${1:?}" home_abs r
   abs="$(cd -P "$abs" 2>/dev/null && pwd)" || {
@@ -49,21 +51,25 @@ knowledge_link_stored_path_from_absolute() {
     return 0
   }
   if [[ "$abs" == "$home_abs" ]]; then
-    printf '%s\n' '.'
+    printf '%s\n' '~/'
     return 0
   fi
   if [[ "$abs" == "$home_abs/"* ]]; then
     r="${abs#"${home_abs}"/}"
-    printf '%s\n' "$r"
+    printf '~/%s\n' "$r"
     return 0
   fi
   printf '%s\n' "$abs"
 }
 
-# 将登记 path 展开为绝对路径（相对 $HOME 的 path 会拼 $HOME）
+# 将登记 path 展开为绝对路径（~/…、~、/ 绝对路径走 abs_path；否则视为相对 $HOME 的旧形态并拼 $HOME）
 knowledge_link_expand_stored_path() {
   local p="${1:?}" home
   if [[ "$p" == /* ]]; then
+    abs_path "$p"
+    return 0
+  fi
+  if [[ "$p" == '~' ]] || [[ "$p" =~ ^~/ ]]; then
     abs_path "$p"
     return 0
   fi
@@ -90,7 +96,7 @@ knowledge_links_load_into_arrays() {
 
   [[ -f "$f" ]] || return 0
 
-  knowledge_links__flush_pending() {
+  knowledge_links_flush_pending() {
     if [[ -n "$path" ]]; then
       knowledge_links_validate_stored_path_field "$path" "$f"
       _paths+=("$path")
@@ -112,9 +118,9 @@ knowledge_links_load_into_arrays() {
     [[ -z "${line//[[:space:]]/}" ]] && continue
     [[ "$line" =~ ^[[:space:]]*# ]] && continue
     if [[ "$line" =~ ^[[:space:]]*-[[:space:]]+([a-z_]+):[[:space:]]*(.*)$ ]]; then
-      knowledge_links__flush_pending
       key="${BASH_REMATCH[1]}"
       val="$(_yaml_unquote "${BASH_REMATCH[2]}")"
+      knowledge_links_flush_pending
       case "$key" in
         path) path="$val" ;;
         repository) repo="$val" ;;
@@ -136,7 +142,7 @@ knowledge_links_load_into_arrays() {
       esac
     fi
   done <"$f"
-  knowledge_links__flush_pending
+  knowledge_links_flush_pending
 }
 
 # 覆盖写出 knowledge-links.yaml（repository、path、doc_dir、app_name、app_label 数组下标对齐）
@@ -391,7 +397,7 @@ usage() {
   --target      目标知识库仓库根（或已登记的 remote URL）；兼容旧参数 --path（已弃用）。
   --app-name    仅 system→application 建联有效：显式指定 YAML 中的 app_name 及槽位目录名。
                 若省略：登记文件中该 path 已有 app_name 则沿用、不再推断；否则由目标本地 Git 仓库根目录名推断。
-  每条 link 记录：repository（有 Git remote 时）、path（本机相对 \$HOME 或绝对路径）、doc_dir、application 时的 app_name 与 app_label（脚本写入时 app_label 默认等于 app_name）。
+  每条 link 记录：repository（有 Git remote 时）、path（本机在 \$HOME 下为 ~/… 或 ~/，否则绝对路径；兼容旧无 ~ 的 \$HOME 相对片段）、doc_dir、application 时的 app_name 与 app_label（无 app_label 时默认等于 app_name；重复 link 时若已有 app_label 则保留）。
   system→application：在源 DOC_ROOT 下自 application-APPNAME 模板生成 application-<APPNAME>/（已存在则跳过）。
   同一 target 重复 link：不新增行，只更新已存在且 identity 相同的那条记录。
   unlink 时：注销该条目的同时将 application-<APPNAME>/ 备份到工程根 .docs-init/ 再移除（若目录存在）。
@@ -528,7 +534,11 @@ if [[ "$CMD" == 'link' && "$expect_target" == 'application' ]]; then
     TARGET_APP_NAME="$(knowledge_link_guess_app_name "$TGT_ROOT")" || exit 1
   fi
   knowledge_link_ensure_application_slot "$_sdoc" "$TARGET_APP_NAME"
-  [[ -n "$TARGET_APP_NAME" ]] && TARGET_APP_LABEL="$TARGET_APP_NAME"
+  if [[ "$have" -eq 1 && "$matched_idx" -ge 0 && -n "${app_labels[matched_idx]:-}" ]]; then
+    TARGET_APP_LABEL="${app_labels[matched_idx]}"
+  else
+    [[ -n "$TARGET_APP_NAME" ]] && TARGET_APP_LABEL="$TARGET_APP_NAME"
+  fi
 elif [[ "$CMD" == 'link' && "$expect_target" != 'application' && -n "$CLI_APP_NAME" ]]; then
   sdx_warn "--app-name 仅用于 system→application 建联，已忽略"
 fi
