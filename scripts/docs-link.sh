@@ -2,7 +2,7 @@
 # docs-link.sh — 在源知识库登记 / 注销目标知识库（repository + path + doc_dir + app_name + app_label）
 # application 建联时 app_name：--app-name > 登记文件已有 > Git 仓库根目录名推断
 # 同一 target 重复 link：合并更新同一条记录，不追加重复行
-# 用法: ./scripts/docs-link.sh --link|--unlink --target=<目标仓库根> [--app-name=名] [--dry-run]
+# 用法: ./scripts/docs-link.sh --link|--unlink --target <目标仓库根> [--app-name=名] [--dry-run]
 # 须在源 Git 仓库内执行；link 需校验源、目标 .docsconfig 与 KNOWLEDGE_TYPE；
 # unlink 支持目标失联场景（按登记 identity 注销）；system 源注销 application 建联时先将
 # DOC_ROOT 下 application-<APPNAME>/ 备份至 REPO_ROOT/.docs-init/<时间戳>/（与 docs-install 一致）再移除。
@@ -378,7 +378,7 @@ CLI_APP_NAME=''
 
 usage() {
   cat >&2 <<'EOF'
-用法: ./scripts/docs-link.sh --link|--unlink --target=<目标知识库仓库根> [--app-name=名] [--dry-run]
+用法: ./scripts/docs-link.sh --link|--unlink --target <目标知识库仓库根> [--app-name 名] [--dry-run]
 
   --link / --unlink 二选一，不得同时出现。
 
@@ -397,9 +397,9 @@ usage() {
   unlink 时：注销该条目的同时将 application-<APPNAME>/ 备份到工程根 .docs-init/ 再移除（若目录存在）。
 
 示例:
-  ./scripts/docs-link.sh --target=~/workspaces/target-repo --link
-  ./scripts/docs-link.sh --target=~/workspaces/target-repo --link --app-name=my-app
-  ./scripts/docs-link.sh --target=~/workspaces/target-repo --unlink --dry-run
+  ./scripts/docs-link.sh --target ~/workspaces/target-repo --link
+  ./scripts/docs-link.sh --target ~/workspaces/target-repo --link --app-name=my-app
+  ./scripts/docs-link.sh --target ~/workspaces/target-repo --unlink --dry-run
 EOF
 }
 
@@ -456,7 +456,7 @@ while (( $# > 0 )); do
 done
 
 validate_link_command "$CMD" || sdx_error "请指定 --link 或 --unlink（二选一）"
-[[ -n "$TARGET_RAW" ]] || sdx_error "请指定 --target=<目标仓库根>"
+[[ -n "$TARGET_RAW" ]] || sdx_error "请指定 --target <目标仓库根>（仍兼容 --target=PATH）"
 
 SRC_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || sdx_error "请在 Git 仓库内执行 docs-link"
 SRC_CFG="$SRC_ROOT/.docsconfig"

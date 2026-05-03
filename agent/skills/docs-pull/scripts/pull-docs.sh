@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# docs-fetch — 从目标工程拉取知识库文档
+# docs-pull — 从目标工程拉取知识库文档
 #
 # 职责：
 #   1. git clone 目标工程到临时目录
@@ -10,7 +10,7 @@ set -euo pipefail
 #   4. 输出同步统计（新增/修改/删除文件数）供 Agent 生成 changelog
 #
 # 用法：
-#   scripts/fetch-docs.sh \
+#   scripts/pull-docs.sh \
 #     --app APPNAME \
 #     --repo https://github.com/org/repo.git \
 #     --branch main \
@@ -61,7 +61,7 @@ if [[ ! -f "$MANIFEST" ]]; then
     exit 1
 fi
 
-echo "=== docs-fetch ==="
+echo "=== docs-pull ==="
 echo "  app        : $APP"
 echo "  repo       : $REPO_URL"
 echo "  branch     : $BRANCH"
@@ -76,8 +76,9 @@ if $DRY_RUN; then
     echo "  2. 备份 $TARGET/changelogs/ 和 $MANIFEST"
     echo "  3. rsync <tmpdir>/$DOCS_ROOT/ -> $TARGET/"
     echo "  4. 恢复 changelogs/ 和 manifest"
-    echo "  5. 更新 manifest 中的 last_fetched_* 字段"
-    echo "  6. 输出同步统计"
+    echo "  5. 若仅有 fetch-log.md，迁移为 pull-log.md"
+    echo "  6. 更新 manifest 中的 last_pulled_* 字段，移除遗留 last_fetched_*"
+    echo "  7. 输出同步统计"
     exit 0
 fi
 
@@ -159,34 +160,46 @@ if [[ -d "$BACKUP_DIR/changelogs" ]]; then
 fi
 cp "$BACKUP_DIR/$(basename "$MANIFEST")" "$MANIFEST"
 
+# ── 步骤 4b：遗留同步日志文件名迁移 ───────────────────────────────────────────
+
+if [[ -d "$TARGET/changelogs" ]]; then
+    if [[ -f "$TARGET/changelogs/fetch-log.md" && ! -f "$TARGET/changelogs/pull-log.md" ]]; then
+        echo "[INFO] 迁移 changelogs/fetch-log.md -> pull-log.md"
+        mv "$TARGET/changelogs/fetch-log.md" "$TARGET/changelogs/pull-log.md"
+    fi
+fi
+
 # ── 步骤 5：更新 manifest 中的同步信息 ───────────────────────────────────────
 
 NOW_ISO=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-# 更新或追加 last_fetched_* 字段
 python3 - "$MANIFEST" "$BRANCH" "$COMMIT_HASH" "$NOW_ISO" <<'PYEOF'
 import sys, re
 
-manifest_path, branch, commit, fetched_at = sys.argv[1:]
+manifest_path, branch, commit, pulled_at = sys.argv[1:]
 
 with open(manifest_path, 'r') as f:
     content = f.read()
 
+# 移除已废弃的 last_fetched_* 行
+for legacy in ("last_fetched_at", "last_fetched_branch", "last_fetched_commit"):
+    content = re.sub(rf"^{re.escape(legacy)}:.*\n?", "", content, flags=re.MULTILINE)
+
 fields = {
-    'last_fetched_at': fetched_at,
-    'last_fetched_branch': branch,
-    'last_fetched_commit': commit,
+    "last_pulled_at": pulled_at,
+    "last_pulled_branch": branch,
+    "last_pulled_commit": commit,
 }
 
 for key, value in fields.items():
-    pattern = rf'^{key}:.*$'
+    pattern = rf"^{key}:.*$"
     replacement = f'{key}: "{value}"'
     if re.search(pattern, content, re.MULTILINE):
         content = re.sub(pattern, replacement, content, flags=re.MULTILINE)
     else:
-        content = content.rstrip('\n') + f'\n{replacement}\n'
+        content = content.rstrip("\n") + f"\n{replacement}\n"
 
-with open(manifest_path, 'w') as f:
+with open(manifest_path, "w") as f:
     f.write(content)
 PYEOF
 
@@ -201,10 +214,10 @@ echo "  modified   : $MODIFIED"
 echo "  deleted    : $DELETED"
 echo "  synced_at  : $NOW_ISO"
 echo ""
-echo "FETCH_RESULT_BRANCH=$BRANCH"
-echo "FETCH_RESULT_COMMIT=$COMMIT_HASH"
-echo "FETCH_RESULT_COMMIT_MSG=$COMMIT_MSG"
-echo "FETCH_RESULT_ADDED=$ADDED"
-echo "FETCH_RESULT_MODIFIED=$MODIFIED"
-echo "FETCH_RESULT_DELETED=$DELETED"
-echo "FETCH_RESULT_SYNCED_AT=$NOW_ISO"
+echo "PULL_RESULT_BRANCH=$BRANCH"
+echo "PULL_RESULT_COMMIT=$COMMIT_HASH"
+echo "PULL_RESULT_COMMIT_MSG=$COMMIT_MSG"
+echo "PULL_RESULT_ADDED=$ADDED"
+echo "PULL_RESULT_MODIFIED=$MODIFIED"
+echo "PULL_RESULT_DELETED=$DELETED"
+echo "PULL_RESULT_SYNCED_AT=$NOW_ISO"

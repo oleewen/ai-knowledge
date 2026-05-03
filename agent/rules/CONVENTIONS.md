@@ -81,7 +81,7 @@
 |------|------|---------|----------|
 | **高风险**（落盘 spec + hook） | sdx-solution/analysis/prd/**architect**/**design**/test、docs-distill/extract/archive/build | 落盘 spec 文件（`docs/superpowers/specs/`）+ `PENDING` → `CONFIRMED` + hook 证据校验 | ✅ |
 | **中等风险**（会话内确认书） | docs-indexing、docs-upgrade、agent-guide | 会话内参数确认书 + Qclose-1，无需落盘 spec 文件；SKILL.md 中有 HARD-GATE 描述 | ❌（写入路径不固定，hook 难以精确拦截） |
-| **低风险**（现有参数确认） | docs-change、docs-tag、docs-fetch | 保持现有参数确认机制，不加 spec gate | ❌ |
+| **低风险**（现有参数确认） | docs-change、docs-tag、docs-pull | 保持现有参数确认机制，不加 spec gate | ❌ |
 
 ### docs-distill 补充
 

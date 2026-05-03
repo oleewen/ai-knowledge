@@ -40,7 +40,7 @@ links:
 EOF
 
 set +e
-out="$(cd "$SRC" && "${BASH:-bash}" "$DOCS_LINK" --unlink --target=/tmp/docs-link-test-nonexistent-path 2>&1)"
+out="$(cd "$SRC" && "${BASH:-bash}" "$DOCS_LINK" --unlink --target /tmp/docs-link-test-nonexistent-path 2>&1)"
 code=$?
 set -e
 

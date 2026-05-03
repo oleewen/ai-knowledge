@@ -1,4 +1,4 @@
-# docs-fetch 常见陷阱
+# docs-pull 常见陷阱
 
 遇到 manifest 缺失、分支失败、文件覆盖、changelog 追加相关问题时读本文件。每节说明**错误做法**与**正确处理方式**。
 
@@ -45,4 +45,4 @@
 - [ ] `changelogs/` 目录已备份，同步后已恢复
 - [ ] `{APPNAME}_manifest.yaml` 未被覆盖（或已恢复）
 - [ ] 应用知识库根目录下 `applications/app-{APPNAME}/` 目录结构完整（含 `knowledge/`、`requirements/`、`changelogs/`）
-- [ ] `fetch-log.md` 已追加同步记录（含分支、提交号、文件统计）
+- [ ] `pull-log.md` 已追加同步记录（含分支、提交号、文件统计）

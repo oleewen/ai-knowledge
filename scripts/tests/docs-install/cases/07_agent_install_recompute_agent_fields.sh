@@ -19,7 +19,7 @@ mkdir -p "$DOCS_DIR"
 git -C "$PROJECT_DIR" init -q
 
 # 先生成 .docsconfig，再注入旧 AGENT_*，用于验证 agent-install 会重算覆盖
-bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target="$DOCS_DIR" >"$OUT_FILE" 2>&1
+bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS_DIR" >"$OUT_FILE" 2>&1
 cat >"$PROJECT_DIR/.docsconfig" <<EOF
 DOC_ROOT=$DOCS_DIR
 REPO_ROOT=$PROJECT_DIR

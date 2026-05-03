@@ -123,23 +123,27 @@ flowchart TD
 ```
 
 ### 执行子流程
+
 ```mermaid
 flowchart TD
     S((开始)) 
     Z((结束))
 
-    subgraph KB["知识库构建链路"]
         direction LR
+        subgraph APPLICATION["应用知识库构建链路"]
         A["docs-bootstrap 安装知识库"] 
         B["docs-indexing 索引知识库 INDEX"]
         C["agent-guide 生成AGENTS｜README"]
         D["docs-build 构建知识库 knowledge"]
         E["docs-change 聚合变更 changelogs"]
-        R["docs-fetch 拉取下级知识库"]
-        T["docs-distill 蒸馏下级知识库"]
-        U["docs-extract 抽取文档知识"]
-        V["docs-archive 归档文档知识"]
-    end
+        X["docs-push 推送文档知识"]
+        end
+        subgraph SYSTEM["系统知识库构建链路"]
+            R["docs-pull 拉取下级知识库"]
+            T["docs-distill 蒸馏下级知识库"]
+            U["docs-extract 抽取知识"]
+            V["docs-archive 归档知识"]
+        end
 
     subgraph RDD["需求设计链路"]
         direction LR
@@ -147,29 +151,27 @@ flowchart TD
         F["sdx-solution 产出解决方案"] 
         G["sdx-analysis 产出需求分析"] 
         H["sdx-prd 产出产品设计"] 
-        I["sdx-architect: ASD；sdx-design: DSD/spec"] 
-        J["sdx-test 产出测试设计"] 
+        I["sdx-architect 产出概要设计"] 
     end
 
-    subgraph SDD["功能实现链路"]
+    subgraph SDD["需求交付链路"]
         direction LR
+        W["sdx-design 产出详细设计"] 
+        J["sdx-test 产出测试设计"] 
         K["superpower:brainstorming 功能变更脑暴"] 
         L["opsx:explore 需求分析探索"] 
         M["opsx:ff 快速产出规格"] 
         N["opsx:apply 提交实现任务"] 
         O["superpower:sdd 测试驱动开发"] 
         P["opsx:archive 需求规格归档"] 
-        
     end
 
-    S -- 知识库链路 --> A --> B --> C --> D -- 知识库 --> F 
-    S -- 需求链路 --> Q -- IDEA --> F -- 解决方案 --> G -- 需求分析 : MVP/Sprint --> H -- 产品设计 --> I -- 技术设计 --> J
-    I -- 需求Spec --> K --> L --> M --> N --> O --> P --> Z
-    D -. 应用知识库 .-> R -- 应用知识库 --> T -- 应用知识视图 -->  V
+    S -- 知识库链路 --> A --> B --> C --> D -- 应用知识库 --> F
+    S -- 需求链路 --> Q -- IDEA --> F -- 解决方案 --> G -- 需求分析 : MVP/Sprint --> H -- 产品设计 --> I -- 系统知识库：概设Spec --> X -- 概设Spec --> W -- 详细设计/Spec --> J -- 测试设计 --> K
+    I -- 应用知识库：概设Spec --> W -- 详设Spec --> K --> L --> M --> N --> O --> P --> Z
+    D -. 应用知识库 .-> R -- 应用知识库 --> T -- 应用知识视图 -->  V -- 系统知识库 --> F
     R -- 应用知识库 --> U -- 应用知识视图 --> V -- 系统知识库 --> Z
-    J -- 分析设计文档 --> E 
-    E <-. Spec文档 .-> P
-    D <-- 变更内容 --> E
+    P -- 更新文档 --> E -- 变更内容 --> B
 ```
 
 ### 常用流程速查
@@ -180,7 +182,7 @@ flowchart TD
 | 知识库构建 | `/agent-guide`    | 同步 `AGENTS.md` 与 `README.md` 协作约束 |
 | 知识库构建 | `/docs-build`     | 维护知识实体与视角索引（`application/knowledge/`） |
 | 知识库构建 | `/docs-change`    | 聚合变更到 `application/changelogs/` |
-| 知识库构建 | `/docs-fetch`     | 拉取下游应用侧文档到中央库镜像 |
+| 知识库构建 | `/docs-pull`     | 拉取下游应用侧文档到中央库镜像 |
 | 知识库构建 | `/docs-distill`   | 将应用侧已核实内容蒸馏到系统知识库 |
 | 知识库构建 | `/docs-extract`   | 从任意文件或目录按段落级关键词筛选，提炼业务知识写入指定 `XX-overview.md` |
 | 知识库构建 | `/docs-archive`   | 从指定 overview 文件各视角归档知识到架构视角表各行副标题文件链接对应章节；探索 → 澄清 → 方案确认书 → 落盘，补充后做一致性检查与冲突处理 |

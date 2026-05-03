@@ -18,7 +18,7 @@ trap cleanup EXIT
 mkdir -p "$DOCS_DIR"
 git -C "$PROJECT_DIR" init -q
 
-bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target="$DOCS_DIR" >"$OUT_FILE" 2>&1
+bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS_DIR" >"$OUT_FILE" 2>&1
 
 assert_file_exists "$DOCS_DIR/README.md"
 assert_file_exists "$DOCS_DIR/knowledge/README.md"

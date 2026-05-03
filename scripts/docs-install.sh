@@ -611,7 +611,7 @@ install_docsconfig() {
 usage() {
   cat >&2 <<'EOF'
 用法
-  docs-install.sh [选项] --target=<目标工程文档目录>
+  docs-install.sh [选项] --target <目标工程文档目录>
 
 说明
   --target：目标工程文档目录（必填）。例如：
@@ -632,7 +632,7 @@ usage() {
     central|c            仅当 type=application 时有效（application 子集分发）
   
 选项
-  --target=PATH   目标工程文档目录（必填）
+  --target PATH   目标工程文档目录（必填，仍兼容 --target=PATH）
   --scope=SCOPE   knowledge(k) | config(c)  [默认: k]
                   k|knowledge  同步知识库并写 .docsconfig（含 KNOWLEDGE_TYPE）
                   config       仅写 .docsconfig（不写 KNOWLEDGE_TYPE）
@@ -651,12 +651,12 @@ usage() {
   FORCE                 1=强制覆盖
 
 示例
-  ./scripts/docs-install.sh --target=~/workspace/my-app/docs
-  ./scripts/docs-install.sh --scope=knowledge --target=~/workspace/my-app/docs
-  ./scripts/docs-install.sh --scope=config --target=~/workspace/my-app/docs
-  ./scripts/docs-install.sh --mode=central --type=application --target=~/workspace/my-app/docs
-  ./scripts/docs-install.sh --mode=standalone --type=system --target=~/workspace/my-app/system
-  ./scripts/docs-install.sh --dry-run --target=~/workspace/my-app/docs
+  ./scripts/docs-install.sh --target ~/workspace/my-app/docs
+  ./scripts/docs-install.sh --scope=knowledge --target ~/workspace/my-app/docs
+  ./scripts/docs-install.sh --scope=config --target ~/workspace/my-app/docs
+  ./scripts/docs-install.sh --mode=central --type=application --target ~/workspace/my-app/docs
+  ./scripts/docs-install.sh --mode=standalone --type=system --target ~/workspace/my-app/system
+  ./scripts/docs-install.sh --dry-run --target ~/workspace/my-app/docs
 EOF
 }
 
@@ -664,6 +664,12 @@ parse_args() {
   while (( $# > 0 )); do
     case "$1" in
       --target=*) CFG[target_opt]="${1#*=}";                  shift ;;
+      --target)
+        shift
+        [[ -n "${1:-}" ]] || sdx_error "缺少 --target 值（目标工程文档目录）"
+        CFG[target_opt]="$1"
+        shift
+        ;;
       --mode=*)   CFG[mode]="${1#*=}";                        shift ;;
       --mode)     shift; CFG[mode]="${1:-}";                  shift ;;
       --scope=*)  CFG[scope]="${1#*=}";                       shift ;;
@@ -681,7 +687,7 @@ parse_args() {
   done
 
   [[ -n "${CFG[target_opt]}" ]] \
-    || sdx_error "缺少必填参数 --target=<目标工程文档目录>"
+    || sdx_error "缺少必填参数：请使用 --target <目标工程文档目录>（仍兼容 --target=PATH）"
   CFG[docs_abs]="${CFG[target_opt]}"
 }
 
@@ -744,7 +750,7 @@ validate_docs_arg_for_scope() {
   case "${CFG[scope]}" in
     config|knowledge)
       [[ -n "${CFG[docs_abs]:-}" ]] \
-        || sdx_error "--scope=${CFG[scope]} 时必须指定 --target=<目标工程文档目录>"
+        || sdx_error "--scope=${CFG[scope]} 时必须指定 --target <目标工程文档目录>（仍兼容 --target=PATH）"
       ;;
   esac
 }

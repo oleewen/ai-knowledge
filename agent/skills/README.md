@@ -18,7 +18,7 @@
 | `/agent-guide` | 生成或更新根目录 `README.md`（人类）与 `AGENTS.md`（Agent）；以落盘 `INDEX_GUIDE.md` 为唯一地图，与 Index 职责不重叠。 |
 | `/docs-distill` | 将 `system/application-{name}/` 已核实内容蒸馏到系统知识库 `system/architecture/`；支持 `--app` `--since` `--full` `--dry-run`，默认按增量锚点蒸馏。 |
 | `/docs-extract` | 从用户指定的任意文件或目录中，按段落级关键词相关度筛选，提炼业务知识写入指定 `XX-overview.md` 第三列（A/U/D 合并更新）；支持 `--sources` `--overview` `--dry-run`。 |
-| `/docs-fetch` | 从已通过中央知识库挂载建联注册的目标工程拉取最新文档，覆盖更新本仓库联邦镜像 `applications/app-{APPNAME}/`，并追加同步 changelog。 |
+| `/docs-pull` | 从已通过中央知识库挂载建联注册的目标工程拉取最新文档，覆盖更新本仓库联邦镜像 `applications/app-{APPNAME}/`，并追加同步 changelog。 |
 | `/docs-build` | 从工程代码与文档按四视角（技术→数据→业务→产品）提取链上实体 ID，生成 `*_knowledge.json`（schema 2.1），刷新各视角 README 与 `{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md`。 |
 | `/docs-archive` | 从指定 overview 文件各视角归档知识到架构视角表各行副标题文件链接对应章节；先澄清与方案确认再落盘，补充后做一致性检查与冲突分步确认。 |
 | `/sdx-solution` | 产出解决方案阶段文档（Solution 阶段）。 |

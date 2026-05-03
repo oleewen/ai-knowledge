@@ -370,7 +370,7 @@ usage() {
 
 选项
   --scope=SCOPE   a=全部 | r=rules | s=skills | h=hooks | sh=scripts  [默认: a]
-  --target=PATH   安装根父目录，其下仅为选中的 agent 创建对应目录  [默认: $HOME]
+  --target PATH   安装根父目录，其下仅为选中的 agent 创建对应目录  [默认: $HOME；仍兼容 --target=PATH]
   --agents=LIST   cursor | trae | claude | all；逗号或空格分隔多选  [默认: cursor]
   --dry-run       仅打印将执行的操作
   -h, --help      显示此帮助

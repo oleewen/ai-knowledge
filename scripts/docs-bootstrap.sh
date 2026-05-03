@@ -13,13 +13,13 @@
 #   bash docs-bootstrap.sh
 #
 #   # 全参数模式
-#   bash docs-bootstrap.sh --doc-target=~/workspace/my-app/docs --agents=cursor,kiro
+#   bash docs-bootstrap.sh --doc-target ~/workspace/my-app/docs --agents=cursor,kiro
 #
 #   # curl | bash
-#   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh | bash -s -- --doc-target=~/workspace/my-app/docs --agents=cursor,trae
+#   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh | bash -s -- --doc-target ~/workspace/my-app/docs --agents=cursor,trae
 #
 # 参数：
-#   --doc-target=PATH          目标工程文档目录（必填，或交互询问）
+#   --doc-target PATH          目标工程文档目录（必填，或交互询问；仍兼容 --doc-target=PATH）
 #   --agents=LIST              要安装的 Agent，/ 或 , 分隔（缺省交互询问，默认 cursor）
 #   --agent-scope=home|project Agent 安装位置（默认 home=$HOME）
 #
@@ -144,7 +144,7 @@ sdx_bs_usage() {
   docs-bootstrap.sh [选项]
 
 选项
-  --doc-target=PATH          目标工程文档目录（必填，或交互询问）
+  --doc-target PATH          目标工程文档目录（必填，或交互询问；仍兼容 --doc-target=PATH）
   --agents=LIST              要安装的 Agent，支持 / 或 , 分隔
                              合法值：cursor trae claude kiro all
                              （缺省时交互询问，默认 cursor）
@@ -162,11 +162,11 @@ sdx_bs_usage() {
   bash docs-bootstrap.sh
 
   # 全参数模式
-  bash docs-bootstrap.sh --doc-target=~/workspace/my-app/docs --agents=cursor,kiro
+  bash docs-bootstrap.sh --doc-target ~/workspace/my-app/docs --agents=cursor,kiro
 
   # curl | bash
   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh \
-    | bash -s -- --doc-target=~/workspace/my-app/docs --agents=cursor,kiro
+    | bash -s -- --doc-target ~/workspace/my-app/docs --agents=cursor,kiro
 EOF
 }
 
@@ -334,8 +334,8 @@ sdx_bs_confirm_plan() {
   sdx_log ''
   sdx_log '=========================================='
   sdx_log '即将执行以下操作：'
-  sdx_log "  1. docs-install  --target=${SDX_BS_DOC_TARGET}"
-  sdx_log "  2. agent-install --agents=${SDX_BS_AGENTS} --target=${SDX_BS_AGENT_TARGET}"
+  sdx_log "  1. docs-install  --target ${SDX_BS_DOC_TARGET}"
+  sdx_log "  2. agent-install --agents=${SDX_BS_AGENTS} --target ${SDX_BS_AGENT_TARGET}"
   sdx_log '=========================================='
   printf '确认执行？[Y/n]：' >&2
   local ans
@@ -352,7 +352,7 @@ sdx_bs_collect_params() {
     if sdx_bs_is_interactive; then
       sdx_bs_prompt_doc_target
     else
-      sdx_bs_die "非交互环境：请通过 --doc-target=PATH 指定目标工程文档目录"
+      sdx_bs_die "非交互环境：请通过 --doc-target PATH 指定目标工程文档目录（仍兼容 --doc-target=PATH）"
     fi
   else
     # 命令行传参时校验父目录
@@ -431,13 +431,13 @@ sdx_bs_main() {
   sdx_log ''
   sdx_info '>>> 执行 docs-install.sh...'
   export REPO_ROOT="$SDX_BS_CLONE_DIR"
-  bash "$docs_install" --target="$SDX_BS_DOC_TARGET" \
+  bash "$docs_install" --target "$SDX_BS_DOC_TARGET" \
     || sdx_bs_die "docs-install 执行失败，已中止"
 
   # § 9  执行 agent-install
   sdx_log ''
   sdx_info '>>> 执行 agent-install.sh...'
-  bash "$agent_install" --agents="$SDX_BS_AGENTS" --target="$SDX_BS_AGENT_TARGET" \
+  bash "$agent_install" --agents="$SDX_BS_AGENTS" --target "$SDX_BS_AGENT_TARGET" \
     || sdx_bs_die "agent-install 执行失败"
 
   sdx_log ''

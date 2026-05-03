@@ -18,7 +18,7 @@ trap cleanup EXIT
 mkdir -p "$SYSTEM_DIR"
 git -C "$PROJECT_DIR" init -q
 
-bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=system --target="$SYSTEM_DIR" >"$OUT_FILE" 2>&1
+bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=system --target "$SYSTEM_DIR" >"$OUT_FILE" 2>&1
 
 assert_file_exists "$PROJECT_DIR/scripts/docs-link.sh"
 assert_file_exists "$PROJECT_DIR/scripts/link-config.sh"

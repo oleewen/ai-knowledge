@@ -67,8 +67,8 @@ docsconfig_parse_into_globals() {
 config_bootstrap_hint_docs_install() {
   cat >&2 <<'EOF'
 [config] 请使用 docs-install.sh 初始化并写入 .docsconfig，例如：
-  bash scripts/docs-install.sh --scope=config <目标工程文档目录>
-（在已克隆 ai-knowledge 的仓库根执行；路径请按实际工程调整。）
+  bash scripts/docs-install.sh --scope=config --target <目标工程文档目录>
+（在已克隆 ai-knowledge 的仓库根执行；路径请按实际工程调整；仍兼容 --target=<目录>）
 EOF
 }
 

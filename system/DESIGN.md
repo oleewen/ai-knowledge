@@ -26,7 +26,7 @@
 边界约束：
 
 - **结构边界**：`constitution/`、`architecture/`、`application-{name}/` 职责分离；
-- **流程边界**：通过 `docs-fetch` 与 `docs-distill` 形成同步闭环；
+- **流程边界**：通过 `docs-pull` 与 `docs-distill` 形成同步闭环；
 - **事实边界**：`system` 维护治理事实，`application` 维护实体主定义。
 
 ---
@@ -59,7 +59,7 @@
 
 同步闭环：
 
-1. **下行拉取（docs-fetch）**：同步目标应用文档至 `system/application-{name}/`；
+1. **下行拉取（docs-pull）**：同步目标应用文档至 `system/application-{name}/`；
 2. **治理校核（system 层）**：在 `constitution/` 与 `architecture/` 执行一致性检查；
 3. **上行蒸馏（docs-distill）**：将已核实内容归并到系统主库结构；
 4. **追溯记录（changelogs）**：保留索引与变更日志用于审计和回放。

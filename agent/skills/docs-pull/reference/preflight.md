@@ -1,6 +1,6 @@
-# docs-fetch 预检与分步确认
+# docs-pull 预检与分步确认
 
-本页说明 Agent 在执行 `docs-fetch` 时**何时必须停下问用户**、**按什么顺序问**、以及**写盘闸门（HARD-GATE）**。目的与 superpowers「brainstorming」不同：不产出设计 spec，只在**高风险或歧义**时协作澄清，避免误同步。
+本页说明 Agent 在执行 `docs-pull` 时**何时必须停下问用户**、**按什么顺序问**、以及**写盘闸门（HARD-GATE）**。目的与 superpowers「brainstorming」不同：不产出设计 spec，只在**高风险或歧义**时协作澄清，避免误同步。
 
 ---
 
@@ -77,4 +77,4 @@
 
 - [ ] 应用与分支已锁定或通过 HARD-GATE。
 - [ ] 非 dry-run 实跑已获用户确认（若属于上文「必须停下」情形）。
-- [ ] 已阅读或与 [gotchas.md](../gotchas.md) 对照：changelog 备份、manifest 保护、fetch-log 追加。
+- [ ] 已阅读或与 [gotchas.md](../gotchas.md) 对照：changelog 备份、manifest 保护、pull-log 追加。

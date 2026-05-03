@@ -28,7 +28,7 @@ AGENT_DIRS=".claude .cursor"
 KNOWLEDGE_TYPE=application
 EOF
 
-bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target="$DOCS_DIR" >"$OUT_FILE" 2>&1
+bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS_DIR" >"$OUT_FILE" 2>&1
 
 IDX="$DOCS_DIR/INDEX_GUIDE.md"
 assert_file_exists "$IDX"
