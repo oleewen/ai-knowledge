@@ -90,7 +90,7 @@
 ## 九、附录（Appendix）
 
 - 生成器：`agent/skills/docs-indexing/scripts/indexing.sh`
-- 规范参考：`agent/skills/docs-indexing/reference/scan-spec.md`
+- 规范参考：`agent/skills/docs-indexing/references/scan-spec.md`
 
 ## 十、中央知识库接入工程
 

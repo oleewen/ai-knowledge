@@ -2,10 +2,10 @@
 
 | 钩子 | 事件 | 说明 |
 |------|------|------|
-| [sdx_session_gate.py](sdx_session_gate.py) | `preToolUse`（`Write` / `StrReplace`） | 会话激活前置脚本：检测会话内是否出现 `/sdx-*` 或 `/docs-distill`、`/docs-extract`、`/docs-archive`、`/docs-build`（见源码正则）。命中后标记当前会话为 SDX 激活态。 |
-| [sdx_gate_common.py](sdx_gate_common.py) | `preToolUse`（`Write` / `StrReplace`） | 统一实现：`python3 agent/hooks/sdx_gate_common.py --gate <name>`。仅在 `sdx_session_gate.py` 已激活会话后生效。`architect` → `**/requirements/**/ASD-*.md`（[sdx-architect](../skills/sdx-architect/SKILL.md)）；`design` → `**/requirements/**/DSD-*.md`（[sdx-design](../skills/sdx-design/SKILL.md)）；另有 `solution`、`analysis`、`prd`、`test`、`distill`、`extract`、`archive`、`build` 等（见源码 `GATES`）。 |
+| [sdx_session_gate.py](sdx_session_gate.py) | `preToolUse`（`Write` / `StrReplace`） | 会话激活前置脚本：检测会话内是否出现 `/sdx-*` 或 `/docs-distill`、`/docs-extract`、`/docs-archive`、`/docs-build`、`/docs-indexing`（见源码正则）。命中后标记当前会话为 SDX 激活态。 |
+| [sdx_gate_common.py](sdx_gate_common.py) | `preToolUse`（`Write` / `StrReplace`） | 统一实现：`python3 agent/hooks/sdx_gate_common.py --gate <name>`。仅在 `sdx_session_gate.py` 已激活会话后生效。`architect` → `**/requirements/**/ASD-*.md`（[sdx-architect](../skills/sdx-architect/SKILL.md)）；`design` → `**/requirements/**/DSD-*.md`（[sdx-design](../skills/sdx-design/SKILL.md)）；另有 `solution`、`analysis`、`prd`、`test`、`distill`、`extract`、`archive`、`build`、`indexing` 等（见源码 `GATES`）。 |
 
-### 同构闸门语义（docs-distill / docs-extract / docs-archive / docs-build 等）
+### 同构闸门语义（docs-distill / docs-extract / docs-archive / docs-build / docs-indexing 等）
 
 | 技能 | 说明 |
 |------|------|
@@ -13,6 +13,7 @@
 | docs-extract | 同上话语体系；规范见 [agent/skills/docs-extract/references/interaction-gate.md](../skills/docs-extract/references/interaction-gate.md) 与 [agent/skills/docs-extract/references/gates.md](../skills/docs-extract/references/gates.md)，规则总表见 [agent/rules/CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates) 第三节。写入拦截由 `sdx_gate_common.py --gate extract` 与同表其他 gate 一致实现。 |
 | docs-archive | 同上话语体系；规范见 [agent/skills/docs-archive/references/gates.md](../skills/docs-archive/references/gates.md)，流程见 [agent/skills/docs-archive/references/workflow.md](../skills/docs-archive/references/workflow.md)，规则总表见 [agent/rules/CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates) 第三节。写入拦截由 `sdx_gate_common.py --gate archive` 与同表其他 gate 一致实现。 |
 | docs-build | 同上话语体系；规范见 [agent/skills/docs-build/references/interaction-gate.md](../skills/docs-build/references/interaction-gate.md) 与 [agent/skills/docs-build/references/gates.md](../skills/docs-build/references/gates.md)，规则总表见 [agent/rules/CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates) 第三节。写入拦截由 `sdx_gate_common.py --gate build` 与同表其他 gate 一致实现。 |
+| docs-indexing | 同上话语体系；规范见 [agent/skills/docs-indexing/references/interaction-gate.md](../skills/docs-indexing/references/interaction-gate.md) 与 [agent/skills/docs-indexing/references/gates.md](../skills/docs-indexing/references/gates.md)，规则总表见 [agent/rules/CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates) 第三节。写入拦截由 `sdx_gate_common.py --gate indexing` 与同表其他 gate 一致实现；证据除 `CONFIRMED` 外，会话 spec 正文须含与本轮写入一致的**仓库根相对路径**（防多域 `INDEX_GUIDE.md` 同名误放行）。 |
 
 **docs-pull（联邦镜像拉取）**：属 CONVENTIONS 表「低风险」——**不**强制 `docs/superpowers/specs` 门闩，**无** `sdx_gate_common.py` 对应 gate；写盘前对话内确认见 [agent/skills/docs-pull/references/gates.md](../skills/docs-pull/references/gates.md)。
 

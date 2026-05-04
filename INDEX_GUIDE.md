@@ -1,7 +1,7 @@
 # ai-knowledge 索引指南（INDEX_GUIDE）
 
 > **最后更新**: 2026-04-25  
-> **文档定位**: 面向 AI Agent 与维护者的**仓库根全索引目录**；九章结构遵循 `agent/skills/docs-indexing/reference/nine-chapter-spec.md`。与 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)（应用知识库侧机器索引与建联登记）互为补充时，以本文件为**中央库根路径**落地与检索入口。
+> **文档定位**: 面向 AI Agent 与维护者的**仓库根全索引目录**；九章结构遵循 `agent/skills/docs-indexing/references/nine-chapter-spec.md`。与 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)（应用知识库侧机器索引与建联登记）互为补充时，以本文件为**中央库根路径**落地与检索入口。
 
 ---
 
@@ -227,7 +227,7 @@ stateDiagram-v2
 | Shell | 33 | 初始化与辅助脚本 |
 | YAML | 30 | 元数据与知识实体 |
 
-精读依据：`agent/skills/docs-indexing/reference/scan-spec.md` 深度 3；本索引正文整合自**已读**入口文件与仓库统计，非逐文件全文摘录。
+精读依据：`agent/skills/docs-indexing/references/scan-spec.md` 深度 3；本索引正文整合自**已读**入口文件与仓库统计，非逐文件全文摘录。
 
 ### 8.2 排除列表
 
@@ -240,7 +240,7 @@ stateDiagram-v2
 ### 8.3 维护规则
 
 - **触发**: 大目录调整、Skill/脚本契约变更、联邦路径变更后执行 `/docs-indexing`。
-- **增量前提**: `application/changelogs/INDEXING-LOG.md` 主表**第一行** `indexing_finished_ms` 为时间锚点（迁移期可回退文内 `<!-- sdx-indexing:indexing_finished_ms=... -->`）；显式 `--since` 优先生效。详见 `agent/skills/docs-indexing/reference/indexing-log-spec.md`。
+- **增量前提**: `application/changelogs/INDEXING-LOG.md` 主表**第一行** `indexing_finished_ms` 为时间锚点（迁移期可回退文内 `<!-- sdx-indexing:indexing_finished_ms=... -->`）；显式 `--since` 优先生效。详见 `agent/skills/docs-indexing/references/indexing-log-spec.md`。
 - **联动**: 与 `/docs-change` 共用 `application/changelogs/` 下运维文件。
 
 ---
@@ -279,6 +279,7 @@ stateDiagram-v2
 | `/docs-agent` | [agent/skills/docs-agent/SKILL.md](agent/skills/docs-agent/SKILL.md) |
 | `/docs-build` | [agent/skills/docs-build/SKILL.md](agent/skills/docs-build/SKILL.md) |
 | `/docs-change` | [agent/skills/docs-change/SKILL.md](agent/skills/docs-change/SKILL.md) |
+| `/docs-tag` | [agent/skills/docs-tag/SKILL.md](agent/skills/docs-tag/SKILL.md) |
 | `/docs-pull` | [agent/skills/docs-pull/SKILL.md](agent/skills/docs-pull/SKILL.md) |
 | `/docs-distill` | [agent/skills/docs-distill/SKILL.md](agent/skills/docs-distill/SKILL.md) |
 | `/docs-extract` | [agent/skills/docs-extract/SKILL.md](agent/skills/docs-extract/SKILL.md) |

@@ -399,6 +399,136 @@ class GateCommonTests(unittest.TestCase):
         printed = [args[0] for args, _kwargs in mock_print.call_args_list if args]
         self.assertTrue(any('"permission": "deny"' in s for s in printed))
 
+    def test_indexing_gate_deny_without_confirmed_spec(self) -> None:
+        payload = {
+            "toolName": "write_file",
+            "args": {"path": "application/INDEX_GUIDE.md"},
+            "sessionId": "s-indexing-deny",
+        }
+        env = {}
+
+        with patch("agent.hooks.sdx_gate_common.is_session_active", return_value=True), patch(
+            "agent.hooks.sdx_gate_common._repo_root"
+        ) as mock_repo_root:
+            with tempfile.TemporaryDirectory() as tmp:
+                repo = Path(tmp)
+                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                mock_repo_root.return_value = repo
+                with patch("builtins.print") as mock_print:
+                    code = run_gate("indexing", stdin=json.dumps(payload), environ=env)
+
+        self.assertEqual(code, 0)
+        printed = [args[0] for args, _kwargs in mock_print.call_args_list if args]
+        self.assertTrue(any('"permission": "deny"' in s for s in printed))
+
+    def test_indexing_gate_deny_confirmed_without_full_path(self) -> None:
+        """仅有 CONFIRMED + basename 不足；须正文含仓库根相对路径。"""
+        payload = {
+            "toolName": "write_file",
+            "args": {"path": "application/INDEX_GUIDE.md"},
+            "sessionId": "s-indexing-deny-path",
+        }
+        env = {}
+
+        with patch("agent.hooks.sdx_gate_common.is_session_active", return_value=True), patch(
+            "agent.hooks.sdx_gate_common._repo_root"
+        ) as mock_repo_root:
+            with tempfile.TemporaryDirectory() as tmp:
+                repo = Path(tmp)
+                specs_dir = repo / "docs" / "superpowers" / "specs"
+                specs_dir.mkdir(parents=True, exist_ok=True)
+                (specs_dir / "ix.md").write_text(
+                    "<!-- docs-indexing-gate: CONFIRMED -->\n仅提及 INDEX_GUIDE.md 无目录前缀\n",
+                    encoding="utf-8",
+                )
+                mock_repo_root.return_value = repo
+                with patch("builtins.print") as mock_print:
+                    code = run_gate("indexing", stdin=json.dumps(payload), environ=env)
+
+        self.assertEqual(code, 0)
+        printed = [args[0] for args, _kwargs in mock_print.call_args_list if args]
+        self.assertTrue(any('"permission": "deny"' in s for s in printed))
+
+    def test_indexing_gate_allow_with_confirmed_spec_and_path(self) -> None:
+        payload = {
+            "toolName": "write_file",
+            "args": {"path": "application/INDEX_GUIDE.md"},
+            "sessionId": "s-indexing-allow",
+        }
+        env = {}
+
+        with patch("agent.hooks.sdx_gate_common.is_session_active", return_value=True), patch(
+            "agent.hooks.sdx_gate_common._repo_root"
+        ) as mock_repo_root:
+            with tempfile.TemporaryDirectory() as tmp:
+                repo = Path(tmp)
+                specs_dir = repo / "docs" / "superpowers" / "specs"
+                specs_dir.mkdir(parents=True, exist_ok=True)
+                (specs_dir / "ix-spec.md").write_text(
+                    "<!-- docs-indexing-gate: CONFIRMED -->\n"
+                    "本轮写入：\n"
+                    "- application/INDEX_GUIDE.md\n",
+                    encoding="utf-8",
+                )
+                mock_repo_root.return_value = repo
+                with patch("builtins.print") as mock_print:
+                    code = run_gate("indexing", stdin=json.dumps(payload), environ=env)
+
+        self.assertEqual(code, 0)
+        printed = [args[0] for args, _kwargs in mock_print.call_args_list if args]
+        self.assertTrue(any('"permission": "allow"' in s for s in printed))
+
+    def test_indexing_gate_intercepts_indexing_log(self) -> None:
+        payload = {
+            "toolName": "write_file",
+            "args": {"path": "application/changelogs/INDEXING-LOG.md"},
+            "sessionId": "s-indexing-log",
+        }
+        env = {}
+
+        with patch("agent.hooks.sdx_gate_common.is_session_active", return_value=True), patch(
+            "agent.hooks.sdx_gate_common._repo_root"
+        ) as mock_repo_root:
+            with tempfile.TemporaryDirectory() as tmp:
+                repo = Path(tmp)
+                specs_dir = repo / "docs" / "superpowers" / "specs"
+                specs_dir.mkdir(parents=True, exist_ok=True)
+                (specs_dir / "ix2.md").write_text(
+                    "<!-- docs-indexing-gate: CONFIRMED -->\n"
+                    "application/changelogs/INDEXING-LOG.md\n",
+                    encoding="utf-8",
+                )
+                mock_repo_root.return_value = repo
+                with patch("builtins.print") as mock_print:
+                    code = run_gate("indexing", stdin=json.dumps(payload), environ=env)
+
+        self.assertEqual(code, 0)
+        printed = [args[0] for args, _kwargs in mock_print.call_args_list if args]
+        self.assertTrue(any('"permission": "allow"' in s for s in printed))
+
+    def test_indexing_log_outside_changelogs_not_intercepted(self) -> None:
+        """非 */changelogs/ 路径下的 INDEXING-LOG.md 不由 indexing gate 收集。"""
+        payload = {
+            "toolName": "write_file",
+            "args": {"path": "docs/INDEXING-LOG.md"},
+            "sessionId": "s-indexing-outside",
+        }
+        env = {}
+
+        with patch("agent.hooks.sdx_gate_common.is_session_active", return_value=True), patch(
+            "agent.hooks.sdx_gate_common._repo_root"
+        ) as mock_repo_root:
+            with tempfile.TemporaryDirectory() as tmp:
+                repo = Path(tmp)
+                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                mock_repo_root.return_value = repo
+                with patch("builtins.print") as mock_print:
+                    code = run_gate("indexing", stdin=json.dumps(payload), environ=env)
+
+        self.assertEqual(code, 0)
+        printed = [args[0] for args, _kwargs in mock_print.call_args_list if args]
+        self.assertTrue(any('"permission": "allow"' in s for s in printed))
+
     def test_knowledge_outside_path_not_intercepted(self) -> None:
         """非 /knowledge/ 路径的文件不被 build gate 拦截。"""
         payload = {

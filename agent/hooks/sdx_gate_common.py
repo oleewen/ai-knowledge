@@ -3,7 +3,7 @@
 SDX 阶段写入闸门（preToolUse）：根据 --gate 选择具体阶段，逻辑共用。
 
 会话触发语义：
-- 仅当会话内出现过 /sdx-* 或 /docs-distill|extract|archive|build 并被 sdx_session_gate.py 激活后，本闸门才生效；
+- 仅当会话内出现过 /sdx-* 或 /docs-distill、/docs-extract、/docs-archive、/docs-build、/docs-indexing 并被 sdx_session_gate.py 激活后，本闸门才生效；
 - 未激活会话时直接 allow（不拦截）。
 
 stdin：Cursor preToolUse JSON（结构可能演进，故递归扫描全部字符串）。
@@ -13,7 +13,7 @@ stderr：可选调试（DEBUG=1）。
 用法：
   python3 agent/hooks/sdx_gate_common.py --gate prd
   python3 agent/hooks/sdx_gate_common.py --gate analysis
-  （其余：architect | solution | design | test | distill | extract | archive | build）
+  （其余：architect | solution | design | test | distill | extract | archive | build | indexing）
 
 bypass_env 为空字符串（""）表示该 gate 无 bypass 机制，必须完整走 CONFIRMED 流程。
 """
@@ -87,6 +87,62 @@ def _make_knowledge_collector() -> Callable[[list[str]], list[str]]:
     return _collect
 
 
+def _normalize_repo_relative_for_gate(repo: Path, candidate: str) -> str | None:
+    """将工具 payload 中的路径规范为仓库根相对 POSIX 路径；无法落在仓库内则 None。"""
+    repo_r = repo.resolve()
+    raw = (candidate or "").strip().replace("\\", "/")
+    if not raw:
+        return None
+    try:
+        p = Path(raw)
+        if p.is_absolute():
+            full = p.resolve()
+        else:
+            full = (repo_r / raw.lstrip("./")).resolve()
+        rel = full.relative_to(repo_r)
+    except (ValueError, OSError):
+        return None
+    return str(rel).replace("\\", "/")
+
+
+def _has_indexing_write_allowed(repo: Path, marker_confirmed: str, candidate: str) -> bool:
+    """除 CONFIRMED 标记外，须任一 spec 正文包含与 candidate 一致的仓库根相对路径（防多份 INDEX_GUIDE 同名误放行）。"""
+    rel = _normalize_repo_relative_for_gate(repo, candidate)
+    if not rel:
+        return False
+    specs_dir = repo / "docs" / "superpowers" / "specs"
+    if not specs_dir.is_dir():
+        return False
+    variants = (rel, f"./{rel}")
+    for p in specs_dir.rglob("*.md"):
+        try:
+            text = p.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        if marker_confirmed not in text:
+            continue
+        if any(v in text for v in variants):
+            return True
+    return False
+
+
+def _make_indexing_collector() -> Callable[[list[str]], list[str]]:
+    """收集 INDEX_GUIDE.md 与各域 changelogs/INDEXING-LOG.md 的写入路径。"""
+
+    def _collect(strings: list[str]) -> list[str]:
+        out: list[str] = []
+        for s in strings:
+            s_norm = s.replace("\\", "/")
+            if s_norm.endswith("INDEX_GUIDE.md"):
+                out.append(s)
+                continue
+            if s_norm.endswith("INDEXING-LOG.md") and "/changelogs/" in s_norm:
+                out.append(s)
+        return out
+
+    return _collect
+
+
 GATES: dict[str, GateConfig] = {
     "build": GateConfig(
         marker_confirmed="<!-- docs-build-gate: CONFIRMED -->",
@@ -135,6 +191,19 @@ GATES: dict[str, GateConfig] = {
         ),
         basename_prefix="",
         collect=_make_overview_collector(),
+    ),
+    "indexing": GateConfig(
+        marker_confirmed="<!-- docs-indexing-gate: CONFIRMED -->",
+        bypass_env="",  # 无 bypass
+        debug_label="docs-indexing-gate",
+        deny_message=(
+            "docs-indexing：禁止在未完成中间 spec「用户总确认」前写入 INDEX_GUIDE.md 或 */changelogs/INDEXING-LOG.md。"
+            "请先在 docs/superpowers/specs/ 维护 `*-docs-indexing.md`，将 <!-- docs-indexing-gate: PENDING --> 改为 CONFIRMED，"
+            "且正文须**逐字列出**本轮将写入的仓库根相对路径（例如 application/INDEX_GUIDE.md）。"
+            "本 gate 无 bypass 环境变量，须完整走确认流程。"
+        ),
+        basename_prefix="",
+        collect=_make_indexing_collector(),
     ),
     "prd": GateConfig(
         marker_confirmed="<!-- sdx-prd-gate: CONFIRMED -->",
@@ -279,9 +348,13 @@ def run_gate(
     repo = _repo_root()
     deny_paths: list[str] = []
     for c in candidates:
-        base = Path(c.replace("\\", "/")).name
-        if _has_confirmed_spec(repo, cfg.marker_confirmed, base):
-            continue
+        if gate_id == "indexing":
+            if _has_indexing_write_allowed(repo, cfg.marker_confirmed, c):
+                continue
+        else:
+            base = Path(c.replace("\\", "/")).name
+            if _has_confirmed_spec(repo, cfg.marker_confirmed, base):
+                continue
         deny_paths.append(c)
 
     if not deny_paths:
@@ -306,7 +379,7 @@ def _build_arg_parser() -> argparse.ArgumentParser:
         "--gate",
         required=True,
         choices=sorted(GATES.keys()),
-        help="阶段：architect | archive | analysis | build | design | distill | extract | prd | solution | test",
+        help="阶段：architect | archive | analysis | build | design | distill | extract | indexing | prd | solution | test",
     )
     return p
 

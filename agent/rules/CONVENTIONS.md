@@ -52,7 +52,7 @@
 
 1. **须先**完成中间会话 spec：`docs/superpowers/specs/YYYY-MM-DD-<topic>-<阶段后缀>.md`，并完成闸门 **用户总确认**（阶段后缀与 Skill 见下表）。
 2. 在会话 spec 文末使用标记：`<!-- <stage>-gate: CONFIRMED -->`（总确认前为 `PENDING`）；文中须出现目标终稿文件名，或（`docs-distill`）须写明目标应用与 `--full` / `--since` / `--dry-run` 等关键参数摘要，供钩子与校验脚本识别。
-3. **例外**：用户在同一对话中**明示**跳过闸门或授权直写终稿时，可遵循用户指令；或按下表设置环境变量为 `1`（仅限人工知情场景，仅适用于有环境变量例外的阶段）。`docs-distill`、`docs-extract`、`docs-archive` 三个阶段**无 bypass 环境变量**，须完整走确认流程。
+3. **例外**：用户在同一对话中**明示**跳过闸门或授权直写终稿时，可遵循用户指令；或按下表设置环境变量为 `1`（仅限人工知情场景，仅适用于有环境变量例外的阶段）。`docs-distill`、`docs-extract`、`docs-archive`、`docs-build`、`docs-indexing` **无 bypass 环境变量**，须完整走确认流程。
 
 完整流程、HARD-GATE 与校验命令见各阶段 `agent/skills/<...>/SKILL.md`。
 
@@ -70,6 +70,7 @@
 | docs-extract | `system/architecture/overview/**/*` | `system/architecture/overview/*.md` 写入 | `-docs-extract.md` | `<!-- docs-extract-gate: CONFIRMED -->` | 无（必须走确认流程） | [docs-extract/SKILL.md](../skills/docs-extract/SKILL.md) |
 | docs-archive | `system/architecture/overview/**/*` | `system/architecture/overview/*.md` 写入 | `-docs-archive.md` | `<!-- docs-archive-gate: CONFIRMED -->` | 无（必须走确认流程） | [docs-archive/SKILL.md](../skills/docs-archive/SKILL.md) |
 | docs-build | `{DOC_DIR}/knowledge/**/*` | `{DOC_DIR}/knowledge/` 下 JSON、README、KNOWLEDGE_INDEX 写入 | `-docs-build.md` | `<!-- docs-build-gate: CONFIRMED -->` | 无（必须走确认流程） | [docs-build/SKILL.md](../skills/docs-build/SKILL.md) |
+| docs-indexing | `**/INDEX_GUIDE.md`、`**/changelogs/INDEXING-LOG.md` | 各文档根下 `INDEX_GUIDE.md` 与对应 `changelogs/INDEXING-LOG.md` 主表写入 | `-docs-indexing.md` | `<!-- docs-indexing-gate: CONFIRMED -->` | 无（必须走确认流程） | [docs-indexing/SKILL.md](../skills/docs-indexing/SKILL.md) |
 
 **说明**：`sdx-prd` 与 `sdx-test` 的规则 globs 均覆盖 `application/requirements/**/*`，以**文件名模式** `PRD-*.md` / `TDD-*.md` 区分终稿类型。
 
@@ -79,14 +80,18 @@
 
 | 层级 | 技能 | 闸门形式 | hook 保护 |
 |------|------|---------|----------|
-| **高风险**（落盘 spec + hook） | sdx-solution/analysis/prd/**architect**/**design**/test、docs-distill/extract/archive/build | 落盘 spec 文件（`docs/superpowers/specs/`）+ `PENDING` → `CONFIRMED` + hook 证据校验 | ✅ |
-| **中等风险**（会话内确认书） | docs-indexing、docs-upgrade、docs-agent | 会话内参数确认书 + Qclose-1，无需落盘 spec 文件；SKILL.md 中有 HARD-GATE 描述 | ❌（写入路径不固定，hook 难以精确拦截） |
+| **高风险**（落盘 spec + hook） | sdx-solution/analysis/prd/**architect**/**design**/test、docs-distill/extract/archive/build/indexing | 落盘 spec 文件（`docs/superpowers/specs/`）+ `PENDING` → `CONFIRMED` + hook 证据校验（`docs-indexing` 须在 spec 正文**逐字列出**本轮将写入的仓库根相对路径，与 `sdx_gate_common.py --gate indexing` 一致） | ✅ |
+| **中等风险**（会话内确认书） | docs-upgrade、docs-agent | 会话内参数确认书 + Qclose-1，无需落盘 spec 文件；SKILL.md 中有 HARD-GATE 描述 | ❌（写入路径不固定或契约不要求 hook） |
 | **低风险**（现有参数确认） | docs-change、docs-tag、docs-pull | 保持现有参数确认机制，不加 spec gate | ❌ |
 
 ### docs-distill 补充
 
 - 会话 spec 除上述共通要求外，须写明目标应用与 `--full` / `--since` / `--dry-run` 等关键参数摘要。
 - 涉及 `system/changelogs/CHANGE-LOG.md` 与 `system/application-*/changelogs/ARCHIVE-LOG.md` 的追加与锚点更新，与上述闸门**同一原子事务**，适用同一交互与确认要求。详见 [docs-distill/references/interaction-gate.md](../skills/docs-distill/references/interaction-gate.md)。
+
+### docs-indexing 补充
+
+- 会话 spec 除 `CONFIRMED` 标记外，须在正文中列出本轮将写入的 **`INDEX_GUIDE.md` 与 `*/changelogs/INDEXING-LOG.md` 的完整仓库根相对路径**（例如 `application/INDEX_GUIDE.md`），以便钩子区分多域同名文件。参数 `mode` / `depth` / `output` / `since` 摘要建议写入同一会话 spec。详见 [docs-indexing/references/interaction-gate.md](../skills/docs-indexing/references/interaction-gate.md)。
 
 ---
 

@@ -39,7 +39,7 @@
 - **与 Index 一致**：知识库索引以根目录 [INDEX_GUIDE.md](INDEX_GUIDE.md) 为准；未索引区域须补读或标注待核实。
 - **会话开始**：读 [README.md](README.md) 与本文件；业务与路径细节查 [INDEX_GUIDE.md](INDEX_GUIDE.md)；按需读取各级知识库下的README、INDEX_GUIDE.md 或 [agent/rules/](agent/rules/) 下具体规范。
 - **会话中**：业务规则不明 → 列出待确认项；新增技术债务可登记 [knowledge/technical/technical-debt.md](knowledge/technical/technical-debt.md)；重大结构或治理变更遵循 SDD，并核对 DESIGN.md、CONTRIBUTING.md。
-- **文档产出闸门（SDD + docs-distill + docs-extract + docs-archive）**：执行 `/sdx-solution`、`/sdx-analysis`、`/sdx-prd`、`/sdx-architect`、`/sdx-design`、`/sdx-test`、`/docs-distill`、`/docs-extract`、`/docs-archive` 或写入对应受管终稿（`{DOC_DIR}` 下 `SOLUTION-*`、`ANALYSIS-*`、`PRD-*`、`ASD-*`、`DSD-*`、`TDD-*`，以及 `company|system/architecture/` 等，见总表）前，须完成中间会话 spec 与用户总确认。规则总表见 [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md#artifact-gates) 第三节；各阶段技能见 `agent/skills/sdx-*/SKILL.md`、[agent/skills/docs-distill/SKILL.md](agent/skills/docs-distill/SKILL.md)、[agent/skills/docs-extract/SKILL.md](agent/skills/docs-extract/SKILL.md) 与 [agent/skills/docs-archive/SKILL.md](agent/skills/docs-archive/SKILL.md)。
+- **文档产出闸门（SDD + docs-distill + docs-extract + docs-archive + docs-build + docs-indexing）**：执行 `/sdx-solution`、`/sdx-analysis`、`/sdx-prd`、`/sdx-architect`、`/sdx-design`、`/sdx-test`、`/docs-distill`、`/docs-extract`、`/docs-archive`、`/docs-build`、`/docs-indexing` 或写入对应受管终稿（`{DOC_DIR}` 下 `SOLUTION-*`、`ANALYSIS-*`、`PRD-*`、`ASD-*`、`DSD-*`、`TDD-*`，`company|system/architecture/`，`{DOC_DIR}/knowledge/`，以及各文档根 `INDEX_GUIDE.md`、`**/changelogs/INDEXING-LOG.md` 等，见总表）前，须完成中间会话 spec 与用户总确认。规则总表见 [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md#artifact-gates) 第三节；各阶段技能见 `agent/skills/sdx-*/SKILL.md`、[agent/skills/docs-distill/SKILL.md](agent/skills/docs-distill/SKILL.md)、[agent/skills/docs-extract/SKILL.md](agent/skills/docs-extract/SKILL.md)、[agent/skills/docs-archive/SKILL.md](agent/skills/docs-archive/SKILL.md)、[agent/skills/docs-build/SKILL.md](agent/skills/docs-build/SKILL.md) 与 [agent/skills/docs-indexing/SKILL.md](agent/skills/docs-indexing/SKILL.md)。
 - **会话结束**：新增规则或约束需经确认后写入 `application/`、`system/`、`company/` 或本文件；索引类变更按需记录于 [application/changelogs/](application/changelogs/)（见 [application/changelogs/README.md](application/changelogs/README.md)）。
 
 ### 禁止事项
@@ -94,7 +94,7 @@ Markdown、YAML；**Bash 5+**；Git。可选 `rsync`（脚本可回退 `cp`）�
 
 ## 流程规范
 
-以下规范与 [README.md](README.md)「开发指南」叠加执行；**索引链路**（`/docs-indexing`、`/docs-change`）为 [agent/skills/](agent/skills/) 中的 Skill，产出 `application/changelogs/` 下运维文件，**非**日常编辑必跑项，详见各 SKILL 与 [application/changelogs/README.md](application/changelogs/README.md)。
+以下规范与 [README.md](README.md)「开发指南」叠加执行；**索引链路**（`/docs-indexing`、`/docs-change`、`/docs-tag`）为 [agent/skills/](agent/skills/) 中的 Skill，产出 `application/changelogs/` 下运维文件（`/docs-tag` 为概览关键词标记，不产出 changelogs），**非**日常编辑必跑项，详见各 SKILL 与 [application/changelogs/README.md](application/changelogs/README.md)。
 
 ### 编码与协作规范
 
@@ -138,8 +138,9 @@ Markdown、YAML；**Bash 5+**；Git。可选 `rsync`（脚本可回退 `cp`）�
 
 | 命令                                                                   | 说明                                                              |
 | -------------------------------------------------------------------- | --------------------------------------------------------------- |
-| `/docs-indexing`                                                     | 生成或更新根目录 `INDEX_GUIDE.md`                                       |
+| `/docs-indexing`                                                     | 生成或更新各文档根 `INDEX_GUIDE.md` 与 `changelogs/INDEXING-LOG.md`；高风险：须 `docs/superpowers/specs/*-docs-indexing.md` + `docs-indexing-gate`（见 [agent/skills/docs-indexing/SKILL.md](agent/skills/docs-indexing/SKILL.md)） |
 | `/docs-change`                                                       | 聚合文档变更至 `application/changelogs/`                               |
+| `/docs-tag`                                                          | 概览 Markdown 关键词附录与表格行 ✅ 标记（见 [agent/skills/docs-tag/SKILL.md](agent/skills/docs-tag/SKILL.md)） |
 | `/docs-agent`                                                        | 更新本文件与 `README.md`                                              |
 | `/docs-build`                                                        | 知识构建与资产补全（见 [agent/skills/README.md](agent/skills/README.md)） |
 | `/docs-archive`                                                      | 从指定 overview 文件各视角归档知识到架构视角表各行副标题文件链接对应章节；探索 → 澄清 → 方案确认书 → 落盘，补充后做一致性检查与冲突处理（见 [agent/skills/README.md](agent/skills/README.md)） |
@@ -160,4 +161,4 @@ Markdown、YAML；**Bash 5+**；Git。可选 `rsync`（脚本可回退 `cp`）�
 2. [README.md](README.md)、[scripts/README.md](scripts/README.md)
 3. [application/README.md](application/README.md)、[application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[application/DESIGN.md](application/DESIGN.md)、[application/CONTRIBUTING.md](application/CONTRIBUTING.md)、[system/README.md](system/README.md)、[company/README.md](company/README.md)
 4. [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/rules/](agent/rules/)
-5. [agent/README.md](agent/README.md)、[agent/skills/README.md](agent/skills/README.md)、[agent/skills/docs-agent/SKILL.md](agent/skills/docs-agent/SKILL.md)、[agent/skills/docs-distill/SKILL.md](agent/skills/docs-distill/SKILL.md)、[agent/skills/docs-extract/SKILL.md](agent/skills/docs-extract/SKILL.md)、[agent/skills/docs-archive/SKILL.md](agent/skills/docs-archive/SKILL.md)
+5. [agent/README.md](agent/README.md)、[agent/skills/README.md](agent/skills/README.md)、[agent/skills/docs-agent/SKILL.md](agent/skills/docs-agent/SKILL.md)、[agent/skills/docs-tag/SKILL.md](agent/skills/docs-tag/SKILL.md)、[agent/skills/docs-distill/SKILL.md](agent/skills/docs-distill/SKILL.md)、[agent/skills/docs-extract/SKILL.md](agent/skills/docs-extract/SKILL.md)、[agent/skills/docs-archive/SKILL.md](agent/skills/docs-archive/SKILL.md)
