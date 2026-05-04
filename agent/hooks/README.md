@@ -2,14 +2,17 @@
 
 | 钩子 | 事件 | 说明 |
 |------|------|------|
-| [sdx_session_gate.py](sdx_session_gate.py) | `preToolUse`（`Write` / `StrReplace`） | 会话激活前置脚本：仅检测会话内是否出现 `/sdx-solution`、`/sdx-analysis`、`/sdx-prd`、`/sdx-architect`、`/sdx-design`、`/sdx-test`。命中后标记当前会话为 SDX 激活态。 |
+| [sdx_session_gate.py](sdx_session_gate.py) | `preToolUse`（`Write` / `StrReplace`） | 会话激活前置脚本：检测会话内是否出现 `/sdx-*` 或 `/docs-distill`、`/docs-extract`、`/docs-archive`、`/docs-build`（见源码正则）。命中后标记当前会话为 SDX 激活态。 |
 | [sdx_gate_common.py](sdx_gate_common.py) | `preToolUse`（`Write` / `StrReplace`） | 统一实现：`python3 agent/hooks/sdx_gate_common.py --gate <name>`。仅在 `sdx_session_gate.py` 已激活会话后生效。`architect` → `**/requirements/**/ASD-*.md`（[sdx-architect](../skills/sdx-architect/SKILL.md)）；`design` → `**/requirements/**/DSD-*.md`（[sdx-design](../skills/sdx-design/SKILL.md)）；另有 `solution`、`analysis`、`prd`、`test`、`distill`、`extract`、`archive`、`build` 等（见源码 `GATES`）。 |
 
-### 同构闸门语义（docs-distill 等）
+### 同构闸门语义（docs-distill / docs-extract 等）
 
 | 技能 | 说明 |
 |------|------|
 | docs-distill | 与 sdx-* 相同「中间会话 spec + `PENDING`/`CONFIRMED` + 用户总确认」话语体系；规范见 [agent/skills/docs-distill/references/interaction-gate.md](../skills/docs-distill/references/interaction-gate.md) 与 [agent/skills/docs-distill/references/gates.md](../skills/docs-distill/references/gates.md)，规则总表见 [agent/rules/CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates) 第三节。写入拦截由上文 `sdx_gate_common.py --gate distill` 与同表其他 gate 一致实现；须满足会话激活等条件，详见 Output 面板 Hooks 日志。 |
+| docs-extract | 同上话语体系；规范见 [agent/skills/docs-extract/references/interaction-gate.md](../skills/docs-extract/references/interaction-gate.md) 与 [agent/skills/docs-extract/references/gates.md](../skills/docs-extract/references/gates.md)，规则总表见 [agent/rules/CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates) 第三节。写入拦截由 `sdx_gate_common.py --gate extract` 与同表其他 gate 一致实现。 |
+
+**docs-pull（联邦镜像拉取）**：属 CONVENTIONS 表「低风险」——**不**强制 `docs/superpowers/specs` 门闩，**无** `sdx_gate_common.py` 对应 gate；写盘前对话内确认见 [agent/skills/docs-pull/references/gates.md](../skills/docs-pull/references/gates.md)。
 
 ## 如何自动生效（无需单独「Hooks 总开关」）
 

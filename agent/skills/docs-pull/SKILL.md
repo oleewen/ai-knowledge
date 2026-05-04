@@ -7,99 +7,78 @@ description: >
   同步应用文档、拉取最新知识库、更新联邦镜像、应用侧有更新要拉到中央库、
   "把应用的文档同步过来"、"拉一下最新的"、"应用知识库更新了帮我同步"、
   "更新一下 app 镜像"、"docs-pull 一下"。
+  若用户已明确要求只做 docs-distill、docs-extract、docs-archive、SDD 终稿落盘或仅改 system overview，则不要以本技能为唯一主路径，应分流到对应技能。
 ---
 
 # 应用知识库拉取（docs-pull）
 
-**术语**：**联邦镜像**指本仓库内 `applications/app-{APPNAME}/`（由中央知识库挂载建联登记）。**应用知识库 SSOT** 指 `{DOC_DIR}/`，本技能默认不修改。
+本技能以「调度器」方式工作：先判定是否应由 `docs-pull` 处理，再按序读取 `references/` 下规范，在**低风险参数确认**（见 [agent/rules/CONVENTIONS.md](../../rules/CONVENTIONS.md#artifact-gates)）下更新联邦镜像 `applications/app-{APPNAME}/`。
 
-## 前置条件
+> **联邦镜像**指本仓库 `applications/app-{APPNAME}/`。**应用知识库 SSOT**在目标工程 `{DOC_DIR}/`；本技能默认不修改中央库 `{DOC_DIR}/` 本体。
 
-目标应用必须已通过中央知识库挂载建联注册：
+---
 
-- `applications/app-{APPNAME}/` 目录存在
-- `applications/app-{APPNAME}/{APPNAME}_manifest.yaml` 存在且含 `repo_url` 字段
+## 适用边界
 
-未注册的应用须先执行中央知识库挂载建联。
+- **本技能负责**：已注册应用的远端文档 → 联邦镜像；`pull-log.md` 追加；manifest `last_pulled_*` 更新（由脚本）；`--dry-run` / `--force` 语义下的确认节奏。
+- **本技能不负责**：写入 `system/architecture/overview/`（走 **docs-extract** / **docs-distill**）；归档 **docs-archive**；`APPLICATIONS_INDEX.md` 自动改写；SDD 终稿。
+- **分流**：用户只要上述产物时，转对应技能。
 
-## 输入与输出
+---
 
-| 类型 | 内容 |
-|------|------|
-| 硬输入 | `applications/app-{APPNAME}/{APPNAME}_manifest.yaml`（含 `repo_url`、`docs_root`） |
-| 可选输入 | `--app` 应用名、`--branch` 目标分支 |
-| 固定输出 | 更新后的 `applications/app-{APPNAME}/` 目录内容 |
-| 附加产出 | `applications/app-{APPNAME}/changelogs/pull-log.md`（追加同步记录） |
-| 不产出 | 不修改 `{DOC_DIR}/`、不触发 `docs-distill`、不修改 `APPLICATIONS_INDEX.md` |
+## 输入与前置检查
 
-## 参数
+- `applications/app-{APPNAME}/` 与 `{APPNAME}_manifest.yaml` 已存在（未注册须先挂载建联）。
+- 从仓库根可调用 `agent/skills/docs-pull/scripts/pull-docs.sh`（或等价封装）。
 
-| 参数 | 默认值 | 说明 |
-|------|--------|------|
-| `--app` | 自动发现 | 应用名称；未指定时列出已注册应用供选择 |
-| `--branch` | `main` → `master` | 目标分支；自动探测主干，两者均不存在时终止 |
-| `--dry-run` | `false` | 预览模式，仅打印操作计划，不实际拉取 |
-| `--force` | `false` | 强制覆盖，跳过冲突确认 |
+---
 
-## 工作流
+## 执行路由（先读后写）
 
-**预检策略**：参数已齐且无歧义时直接执行（或先 `--dry-run`）。遇多应用未指定、分支失败、`--force`/大范围覆盖等高风险情形，按 [reference/preflight.md](reference/preflight.md) 分步确认，**写盘前须满足 HARD-GATE**。
+1. **写盘闸门与何时停问**：先读 `references/gates.md`（**非** SDX 式 spec gate）
+2. **四步工作流、参数、脚本形态**：再读 `references/workflow.md`
+3. **manifest 字段**：解析或不确定时读 `references/manifest-spec.md`
+4. **术语**：读 `references/core-concepts.md`
+5. **原则层**：范围判断时读 `references/design-principles.md`
+6. **反模式**：收敛前读 `references/anti-patterns.md`
+7. **实跑前后验收**：读 `references/quality-checklist.md`
+8. **与 SDD / brainstorming 边界**：读 `references/brainstorming-integration.md`
+9. **操作层陷阱**：读 `gotchas.md`
+10. **一纸速查（可选）**：`assets/docs-pull-run-checklist.md`
 
-### 步骤 1：应用发现与 manifest 解析
+---
 
-1. 若未指定 `--app`，扫描 `applications/app-*/` 列出已注册应用供选择
-2. 读取 manifest，提取 `repo_url`、`docs_root`、`app_id`；向用户复述将使用的值
-3. 确认分支优先级：`--branch` > manifest `default_branch` > 自动探测（`main` → `master`）
+## 门禁与确认（必须执行）
 
-manifest 字段规范见 [reference/manifest-spec.md](reference/manifest-spec.md)。
+- 实跑拉取前满足 `references/gates.md` 写盘 HARD-GATE；**不**要求 `docs/superpowers/specs/` 文稿或 HTML gate 标记（与 CONVENTIONS 低风险表一致）。
 
-### 步骤 2：拉取目标工程文档
+---
 
-```bash
-scripts/pull-docs.sh \
-  --app {APPNAME} \
-  --repo {repo_url} \
-  --branch {branch} \
-  --docs-root {docs_root} \
-  --target applications/app-{APPNAME}
-```
+## 产出与校验
 
-脚本负责：clone → 备份 `changelogs/` 和 manifest → rsync 同步 → 恢复保护文件 → 必要时将旧版单文件同步日志重命名为 `pull-log.md` → 更新 manifest `last_pulled_*` 并清理废弃同步元数据字段行 → 输出统计。
+- **镜像树**：`applications/app-{APPNAME}/`（rsync 结果）。
+- **同步记录**：`applications/app-{APPNAME}/changelogs/pull-log.md`（追加）。
+- **脚本**：从仓库根执行，示例见 `references/workflow.md`。
 
-### 步骤 3：追加同步 changelog
+---
 
-在 `applications/app-{APPNAME}/changelogs/pull-log.md` 末尾追加一条记录（即使文件无变化也须追加）。格式见 [assets/pull-log-template.md](assets/pull-log-template.md)。
+## 评测与迭代（skill-creator 对齐）
 
-### 步骤 4：验证与收尾
+- 评测样本：`evals/evals.json`（可扩展 `assertions`）
+- 评测元模板：`evals/eval-metadata-template.json`
+- 评分规则：`agents/grader.md`
+- 失败分析：`agents/analyzer.md`
 
-- 验证 `applications/app-{APPNAME}/` 目录结构完整（含 `knowledge/`、`requirements/`、`changelogs/`）
-- 验证 `{APPNAME}_manifest.yaml` 未被覆盖（若被覆盖则 `git checkout` 恢复）
-- 输出同步摘要：分支、提交号、增删改统计
+---
 
-## 核心约束
+## 工程化支持
 
-| 约束 | 说明 |
-|------|------|
-| 注册前置 | manifest 必须存在且 `repo_url` 非空，否则终止 |
-| changelog 保留 | 本地 `changelogs/` 不被远端覆盖，仅追加 |
-| manifest 保护 | `{APPNAME}_manifest.yaml` 不被远端覆盖 |
-| 幂等性 | 相同分支相同提交重复执行结果一致 |
-| 零幻觉 | 只同步实际拉取到的文件，不编造内容 |
+本技能路径**无** `preToolUse` 专用钩子；依赖对话内遵守 `gates.md`。若未来升级闸门层级，须先改 CONVENTIONS 与 `agent/hooks.json` 再改本技能。
 
-## 参考资源
+---
 
-| 资源 | 路径 | 何时读 |
-|------|------|--------|
-| 预检与写盘闸门 | [reference/preflight.md](reference/preflight.md) | 多应用/分支歧义/强制覆盖前；实跑前确认时 |
-| manifest 字段规范 | [reference/manifest-spec.md](reference/manifest-spec.md) | 解析 manifest 时；字段不确定时 |
-| 拉取脚本 | [scripts/pull-docs.sh](scripts/pull-docs.sh) | 步骤 2 执行拉取时 |
-| changelog 模板 | [assets/pull-log-template.md](assets/pull-log-template.md) | 步骤 3 生成记录时 |
-| 常见陷阱与防错 | [gotchas.md](gotchas.md) | 遇到 manifest 缺失、分支失败、覆盖问题时 |
+## 快速定向表
 
-## 依赖关系
-
-| 类型 | 技能 | 说明 |
-|------|------|------|
-| 前置 | 中央知识库挂载建联 | 应用须已注册，manifest 须存在 |
-| 协作 | `docs-distill` | 同步后可将应用侧有效信息上行到系统库 |
-| 协作 | `docs-change` | 同步后可生成变更索引 |
+| 需要做什么 | 去读 |
+|-----------|------|
+| 全目录索引与何时打开 | [references/README.md](references/README.md) |
