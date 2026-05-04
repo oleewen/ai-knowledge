@@ -7,141 +7,86 @@ description: >
   初始化知识库、同步知识库、提取实体、更新知识索引、代码重构后对齐实体 ID、
   补全四视角知识资产、下游 docs-indexing 需要知识实体输入、
   "帮我把代码里的实体整理一下"、"知识库和代码对不上了"、"更新一下 KNOWLEDGE_INDEX"。
+  若用户已明确要求只做 docs-indexing（根 INDEX_GUIDE）、docs-distill、docs-extract、docs-archive、仅写 SDD 终稿等为主路径，则不要以本技能为唯一主流程，应分流到对应技能。
 ---
 
 # 知识实体提取（docs-build）
 
-**术语**：**应用知识库**指 `DOC_DIR`（见 `.docsconfig`）对应的目录，路径前缀 `{DOC_DIR}/`。
+本技能以「调度器」方式工作：先判定是否应由 `docs-build` 处理，再按序读取 `references/` 下规范，经会话 spec 与 **Qclose-1** 后写入 `{DOC_DIR}/knowledge/`。
 
-## 快速定向
-
-| 需要做什么 | 去读 | 何时打开 |
-|-----------|------|---------|
-| 工作流职责、输入输出、参数 | 本文件（继续往下读） | 每次执行前 |
-| 内置配置、设计原则、错误处理 | [reference/builtin-config.md](reference/builtin-config.md) | 初始化阶段；遇到配置或错误处理问题时 |
-| 四视角提取规则（含 TOC） | [reference/extraction-rules.md](reference/extraction-rules.md) | 阶段 2 提取时；规则不确定时 |
-| 各视角 README 填充列映射 | [reference/readme-fill-spec.md](reference/readme-fill-spec.md) | 阶段 3 填充 README 时 |
-| 归并算法与验证规则 | [reference/consolidation-spec.md](reference/consolidation-spec.md) | 阶段 4 归并时 |
-| 质量验证清单 | [reference/quality-checklist.md](reference/quality-checklist.md) | 阶段 4 完成后自查时 |
-| Knowledge JSON 输出模板 | [assets/knowledge-schema-template.json](assets/knowledge-schema-template.json) | 生成 JSON 时 |
-| KNOWLEDGE_INDEX 输出模板 | [assets/knowledge-index-template.md](assets/knowledge-index-template.md) | 生成主索引时 |
-| 常见陷阱与防错 | [gotchas.md](gotchas.md) | 遇到视角顺序、ID 生成、API 覆盖相关问题时 |
-| 提取结果验证脚本 | [scripts/validate-extraction.sh](scripts/validate-extraction.sh) | 阶段 4 自动验证时 |
-
-## 与相近技能的分工
-
-| 场景 | 优先技能 |
-|------|----------|
-| 生成或更新根目录 `INDEX_GUIDE.md` | `docs-indexing` |
-| 从代码与四视角链提取实体 ID、刷新 `KNOWLEDGE_INDEX` | **本技能** |
-| 将 overview 知识归档到架构视角表各章节 | `docs-archive` |
-| 将应用知识蒸馏上行到系统库 | `docs-distill` |
-| 从任意文件按关键词提炼业务知识写入 overview | `docs-extract` |
+**术语**：**应用知识库**指 `.docsconfig` 中 `DOC_DIR` 对应目录，路径前缀 `{DOC_DIR}/`。
 
 ---
 
-## 输入与输出
+## 适用边界
 
-| 类型 | 内容 |
-|------|------|
-| 硬输入 | 主 Index Guide（必须可用，否则终止并提示先运行 `/docs-indexing`） |
-| 可选输入 | README.md、AGENTS.md、PRD 文档、源代码 |
-| 固定输出 | `{DOC_DIR}/knowledge/{perspective}/{perspective}_knowledge.json`；各视角 `README.md`（索引表刷新）；`{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md` |
-| 可选输出 | `{DOC_DIR}/knowledge/{perspective}/extraction_report.md`（仅 `--emit-report` 时） |
-| 不产出 | 锚点文档、CHANGELOG、目录树 |
-
-## 参数
-
-| 参数 | 默认值 | 说明 |
-|------|--------|------|
-| `--perspectives` | `technical,data,business,product` | 提取视角（逗号分隔） |
-| `--skip-existing` | `true` | 跳过已处理实体；变更文件涉及的实体仍强制重提取 |
-| `--confidence-threshold` | `medium` | 最低置信度（high/medium/low） |
-| `--emit-report` | `false` | 生成提取报告 |
+- **本技能负责**：四视角 `*_knowledge.json`（schema 2.1）、各视角 `README.md` 索引表、`KNOWLEDGE_INDEX.md` 归并与校验脚本。
+- **本技能不负责**：根目录 `INDEX_GUIDE.md`（**docs-indexing**）；系统 overview 上行（**docs-distill** / **docs-extract**）；overview 按视角归档（**docs-archive**）；`SOLUTION-*` / `ASD-*` 等 SDD 终稿。
+- **分流**：用户明确只要上述下游时，转对应技能。
 
 ---
 
-## HARD-GATE
+## 输入与前置检查
 
-写入 `{DOC_DIR}/knowledge/` 下任何文件（JSON、README、KNOWLEDGE_INDEX）前，**须先**完成会话内参数确认书 + 用户总确认（Qclose-1）。
-
-**门禁标记**：会话 spec 中使用 `<!-- docs-build-gate: PENDING -->`，用户总确认后改为 `<!-- docs-build-gate: CONFIRMED -->`，且正文须出现目标 `KNOWLEDGE_INDEX.md` 或目标视角文件名。本 gate **无 bypass 环境变量**，须完整走确认流程；唯一例外是用户在同一对话中明示跳过。
-
-**总确认（Qclose-1）**：阶段 1 完成后，向用户展示将写入的视角、路径与文件清单，询问：
-
-> 是否同意以上述参数执行知识实体提取并写入 `{DOC_DIR}/knowledge/`？（C 确认 / M 修改参数 / S 跳过）
-
-收到 C/S 后将 `PENDING` 改为 `CONFIRMED`，进入阶段 2。
-
-**门禁进度表锚点（与 sdx-* 对齐）**：若会话 spec 草稿含「门禁」「覆盖模板」等与 `sdx-*` 会话 spec 同构的进度表，两列均应使用指向**本会话稿内**小节锚点。示例见 [`sdx-solution` 会话模板](../sdx-solution/assets/solution-session-spec-template.md)「门禁进度」。
-
-**工程化支持**：仓库 [agent/hooks.json](../../hooks.json) 注册了 `preToolUse` 钩子（`Write` / `StrReplace`），脚本见 [agent/hooks/sdx_gate_common.py](../../hooks/sdx_gate_common.py)（`python3 agent/hooks/sdx_gate_common.py --gate build`）；需启用 Hooks 方生效。钩子证据校验逻辑：检查 `docs/superpowers/specs/` 下是否存在包含 `<!-- docs-build-gate: CONFIRMED -->` 且引用目标文件名的 spec 文件；未通过则拒绝写入。**本 gate 无 bypass 环境变量。**
+- 主 Index Guide 已可用（否则先 `/docs-indexing`）。
+- 知晓 `{DOC_DIR}/knowledge/` 可写；会话 spec 目录 `docs/superpowers/specs/`。
 
 ---
 
-## 工作流（四阶段）
+## 执行路由（先读后写）
 
-**预检策略**：直接采用默认参数，不逐项追问。仅在以下情况才暂停澄清（一次只问一个点）：用户显式指定参数或视角子集；`DOC_DIR` 路径有歧义；校验失败需选择处理方式；遇到 `extraction-rules.md` 未覆盖的边界。
-
-| 阶段 | 名称 | 摘要 | 详见 |
-|------|------|------|------|
-| 1 | 初始化 | 验证主 Index Guide 可用；验证输出目录可写；加载内置配置；**完成后触发 Qclose-1** | [reference/builtin-config.md](reference/builtin-config.md) |
-| — | **HARD-GATE（Qclose-1）** | 展示将写入的视角、路径与文件清单；会话 spec 标记 CONFIRMED 后解锁阶段 2 | 见上文 HARD-GATE 章节 |
-| 2 | 提取 | 按固定顺序独立执行四视角；后续视角引用前序 ID，不修改前序输出 | [reference/extraction-rules.md](reference/extraction-rules.md) |
-| 3 | README 填充 | 先读目标 README 既有版式，再从 JSON 映射列值刷新数据行；保留固定段 | [reference/readme-fill-spec.md](reference/readme-fill-spec.md) |
-| 4 | 归并 | 读取四视角 JSON → 前缀验证 → 对称性检查 → 证据链验证 → 更新 KNOWLEDGE_INDEX；运行验证脚本 | [reference/consolidation-spec.md](reference/consolidation-spec.md) |
-
-### 阶段 2 视角提取顺序
-
-按固定顺序独立执行，后续视角引用前序 ID，不修改前序输出：
-
-| 顺序 | 视角 | 层级 | 主要输入源 |
-|------|------|------|-----------|
-| 1 | 技术 | SYS / APP / MS / API | 主 INDEX、源代码、启动类、接口定义 |
-| 2 | 数据 | DS / ENT | 主 INDEX、多数据源配置、实体类、MyBatis XML |
-| 3 | 业务 | BD / BSD / BC / AGG / AB | 主 INDEX、包结构 FQCN、技术视角 MS-* |
-| 4 | 产品 | PL / PM / FT / UC | 主 INDEX、README、PRD、技术+业务已提取 ID |
-
-API 层级须覆盖四类入口：Dubbo、HTTP、MQ Consumer、Job，每条标注 `api_type`。
-
-### 阶段 4 验证命令
-
-```bash
-scripts/validate-extraction.sh
-```
+1. **门禁与 Qclose-1**：先读 `references/gates.md`
+2. **四阶段、参数、预检策略**：再读 `references/workflow.md`
+3. **会话节奏与 spec 路径**：读 `references/interaction-gate.md`
+4. **内置配置与完整约束**：阶段 1 读 `references/builtin-config.md`
+5. **四视角提取规则**：阶段 2 读 `references/extraction-rules.md`
+6. **README 填充**：阶段 3 读 `references/readme-fill-spec.md`
+7. **归并与主索引**：阶段 4 读 `references/consolidation-spec.md`
+8. **术语**：不确定时读 `references/core-concepts.md`
+9. **原则层**：读 `references/design-principles.md`
+10. **反模式**：收敛前读 `references/anti-patterns.md`
+11. **与 SDD / brainstorming 边界**：读 `references/brainstorming-integration.md`
+12. **提取后验收**：阶段 4 后读 `references/quality-checklist.md`
+13. **操作层陷阱**：读 `gotchas.md`
+14. **会话骨架**：新建 spec 时可复制 `assets/docs-build-session-spec-template.md`
 
 ---
 
-## 命令示例
+## 门禁要求（必须执行）
 
-```bash
-/docs-build
-/docs-build --perspectives technical,data
-/docs-build --skip-existing false
-/docs-build --confidence-threshold high --emit-report
-```
+- 阶段 1 完成后的 **Qclose-1** 与 `docs-build-gate: CONFIRMED` 前，禁止写入 `{DOC_DIR}/knowledge/`。合法例外见 `references/gates.md`。
 
 ---
 
-## 核心约束
+## 产出与校验
 
-| 约束 | 说明 |
-|------|------|
-| 证据优先 | 每个实体 ID 必须有可验证的证据来源 |
-| 零幻觉 | 只从已读文件提取 ID，禁止编造 |
-| 前缀唯一 | 层级+ID、层级+别名全知识库唯一 |
-| 视角对称 | `KNOWLEDGE_INDEX.md` §1～§4 同轮维护；各视角 README 与 JSON 同源 |
-| 幂等可重试 | 支持中断后从指定阶段继续；已提取视角保留，失败视角标记 |
-| API 四类覆盖 | Dubbo、HTTP、MQ Consumer、Job 全覆盖，每条标注 `api_type` |
-| 边界清晰 | 只负责提取、README 刷新与主索引归并；不生成锚点文档或 CHANGELOG |
+- **会话 spec**：`docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-build.md`（可选从 `assets/docs-build-session-spec-template.md` 起稿）。
+- **正式产物**：各视角 `*_knowledge.json`、`README.md`、`KNOWLEDGE_INDEX.md`。
+- **验证**：
+
+  ```bash
+  agent/skills/docs-build/scripts/validate-extraction.sh
+  ```
 
 ---
 
-## 依赖关系
+## 评测与迭代（skill-creator 对齐）
 
-| 类型 | 技能 | 说明 |
-|------|------|------|
-| 必须上游 | `docs-indexing` | 生成主 Index Guide |
-| 可选上游 | `agent-guide` | 维护 AGENTS.md |
-| 可选下游 | `docs-distill` | 将提取结果蒸馏上行到系统库 |
-| 可选下游 | `docs-archive` | 将知识归档到架构视角表 |
+- 评测样本：`evals/evals.json`
+- 评测元模板：`evals/eval-metadata-template.json`
+- 评分规则：`agents/grader.md`
+- 失败分析：`agents/analyzer.md`
+
+---
+
+## 工程化支持
+
+钩子：`python3 agent/hooks/sdx_gate_common.py --gate build`，注册见 `agent/hooks.json`；须启用 Hooks 且会话激活。证据：`<!-- docs-build-gate: CONFIRMED -->` 与目标文件名引用。详见 `references/gates.md` 与 `agent/hooks/README.md`。
+
+---
+
+## 快速定向表
+
+| 需要做什么 | 去读 |
+|-----------|------|
+| 全目录索引与何时打开 | [references/README.md](references/README.md) |

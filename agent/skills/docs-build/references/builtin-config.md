@@ -1,6 +1,6 @@
 # 内置配置、设计原则与错误处理
 
-docs-build 的硬约束配置、设计原则与错误处理规范。SKILL.md「核心约束」为精简版，本文件为完整规范。
+docs-build 的硬约束配置、设计原则与错误处理规范。上级 [SKILL.md](../SKILL.md) 与 [workflow.md](workflow.md)「核心约束」为精简版，本文件为完整规范。
 
 ---
 
