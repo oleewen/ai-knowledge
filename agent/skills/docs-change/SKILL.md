@@ -1,19 +1,25 @@
 ---
 name: docs-change
 description: >
-  从 git commit、CHANGELOG/CHANGE-LOG、本地文件修改时间三个维度采集变更，
-  生成可追溯的文档变更聚合，落盘为 Markdown：`CHANGE-LOG.md`（文末 HTML 注释承载增量基线）。
-  当用户执行 /docs-change、需要生成变更索引、追踪文档改动、做增量文档更新、
-  或下游 docs-indexing/docs-build 需要变更输入时，务必使用本技能。
-  即使用户只说"记录一下最近的改动"、"生成变更日志"、"哪些文件改了"、
-  "帮我看看最近改了什么"，也应触发本技能。
+  当用户执行 /docs-change、需要生成或更新变更聚合 `CHANGE-LOG.md`、从 git/CHANGELOG/本地 mtime 做增量基线追踪、或下游 docs-indexing/docs-build 需要变更输入时，必须使用本技能。
+  从 git commit、CHANGELOG/CHANGE-LOG、本地文件修改时间三维度采集变更，落盘为 Markdown：`CHANGE-LOG.md`（文末 HTML 注释承载增量基线）。
+  即使用户只说「记录一下最近的改动」「生成变更日志」「哪些文件改了」「帮我看看最近改了什么」，也应触发。
+  若用户已明确要求只做 docs-indexing（生成或更新 INDEX_GUIDE）、docs-build 实体提取、docs-archive 视角归档等为主路径，则不要以本技能为唯一主流程，应分流到对应技能。
 ---
 
-# 文档变更索引（docs-change）
+# docs-change：文档变更聚合
 
-多源融合的文档变更追踪：从 Git 提交、`CHANGELOG*` / `CHANGE-LOG.md` 条目、本地文件修改时间三个维度采集变更，写入 `{output_dir}/CHANGE-LOG.md`，并在文末保留 `<!-- docs-change:baseline_time_ms=... -->` 供下次增量采集。
+本技能以「调度器」方式工作：先判定是否应由 `docs-change` 处理，再按 `references/` 规范执行多源采集与 `CHANGE-LOG.md` 更新，保证文末基线可被下游增量消费。
 
-这份变更日志是 docs-indexing 增量模式的驱动数据——它的准确性直接决定增量索引能否正确识别需要重新扫描的文件。
+---
+
+## 适用边界
+
+- **本技能负责**：`CHANGE-LOG.md`（或用户指定 `--output` 下）多源聚合、时间统一、倒序插入、文末 `<!-- docs-change:baseline_time_ms=... -->` 维护。
+- **本技能不负责**：生成或更新 `INDEX_GUIDE.md`、知识实体与 `KNOWLEDGE_INDEX`、overview 归档、全库定向替换（分别为 **docs-indexing**、**docs-build**、**docs-archive**、**docs-upgrade**）。
+- **分流**：用户只要索引地图或只要扫描文档树时，以 **docs-indexing** 为主；变更列表为本技能的**输入侧协作**而非替代索引技能。
+
+---
 
 ## 输入与输出
 
@@ -22,9 +28,9 @@ description: >
 | 硬输入 | 代码库根目录 |
 | 可选输入 | `--since` 时间基准、`--output` 输出目录；增量基线取自已有 `CHANGE-LOG.md` 文末注释 |
 | 固定输出 | `{output_dir}/CHANGE-LOG.md`（Markdown；人类可读 + 文末基线注释） |
-| 不产出 | 不生成 INDEX_GUIDE、不修改知识实体、不更新 README/AGENTS |
+| 不产出 | 不生成 `INDEX_GUIDE`、不修改知识实体、不更新 README/AGENTS |
 
-## 参数
+### 参数
 
 | 参数 | 必需 | 默认值 | 说明 |
 |------|------|--------|------|
@@ -35,60 +41,55 @@ description: >
 
 ---
 
-## 工作流（五步）
+## 前置确认（可选）
 
-### 步骤 1：环境准备
+当**时间基准不清**、**输出目录多候选**、或用户声明**只采某一来源**时，须先与用户确认再继续。默认无歧义时可按 [references/gates.md](references/gates.md) 与 [references/workflow.md](references/workflow.md) 直接执行。
 
-定位输出目录并确认可写；检测 Git 可用性（不可用则跳过 git 来源，不终止流程）；扫描 `CHANGELOG*` / `CHANGE-LOG.md` / `changes*` 文件。
-
-如果存在歧义（时间基准不清、输出目录有多个候选、用户要求只采集某一来源），先向用户确认再继续。具体触发条件和确认方式见 [reference/execution-spec.md](reference/execution-spec.md)「前置确认」一节。
-
-### 步骤 2：时间基准计算
-
-```
-baseline_time = --since 参数 | CHANGE-LOG.md 文末注释 | "2020-01-01 00:00:00.000"
-cutoff_time   = max(baseline_time, latest_git_commit_time)   # Git 不可用时 = baseline_time
-```
-
-这两个值的区别很重要：Git 来源用 `baseline_time` 过滤，CHANGELOG 和本地文件用 `cutoff_time` 过滤。混淆会导致冗余条目，详见 [gotchas.md](gotchas.md)。
-
-### 步骤 3：数据采集
-
-默认**三源并行**采集。可使用辅助脚本完成原始数据收集：
-
-```bash
-scripts/change-indexing.sh --since "2026-03-20 00:00:00.000" --output ./changelogs/
-```
-
-脚本输出原始数据到 `{output_dir}/.raw/`，由 Agent 读取后解析并整理写入 `CHANGE-LOG.md`。各源采集规则与排除列表见 [reference/execution-spec.md](reference/execution-spec.md)。
-
-### 步骤 4：数据处理与输出
-
-1. 三源数据各自标记来源（`git` / `changelog` / `local`）
-2. 统一时间格式：字符串 `yyyy-MM-dd HH:mm:ss.SSS`
-3. 按时间倒序排列
-4. 将本轮摘要与条目写入 `CHANGE-LOG.md`（结构参考 [assets/changes-index-template.md](assets/changes-index-template.md)）
-5. 增量模式：将本轮新条目**插入文件最前**（倒序，最新在上），历史小节保留在后不删除；更新文末 `<!-- docs-change:baseline_time_ms=... -->`
-
-### 步骤 5：验证
-
-- `CHANGE-LOG.md` 存在且为有效 Markdown
-- 文末基线注释与本轮最新 `baseline_time_ms` 一致
-- 收录条目均标注来源且时间可核对
-
-完整验证清单见 [reference/execution-spec.md](reference/execution-spec.md)。
+细则（仅 Git、多目录仲裁等）见 [references/gates.md](references/gates.md)「前置确认与歧义处理」。
 
 ---
 
-## 核心约束
+## 执行路由（先读后写）
 
-| 约束 | 原因 |
-|------|------|
-| 零幻觉 | 只收录实际可验证的变更数据；猜测的条目会污染下游增量索引 |
-| 时间精确 | 统一 ms 精度；基线写入 HTML 注释便于脚本解析 |
-| 增量一致性 | 新条目插入文件最前（倒序），历史小节保留不删除——基线一旦丢失，下次增量会退化为全量 |
-| 幂等性 | 相同输入与基线下结果一致 |
-| 优雅降级 | Git/CHANGELOG 不可用时跳过对应来源，不终止流程 |
+1. **边界与歧义**：先读 `references/gates.md`
+2. **五步流程与脚本**：再读 `references/workflow.md`
+3. **输出目录与三源规则**：读 `references/collection-rules.md`
+4. **baseline / cutoff 语义**：不确定时读 `references/core-concepts.md`
+5. **原则层**：对齐粒度时读 `references/design-principles.md`
+6. **反模式**：收敛方案前读 `references/anti-patterns.md`
+7. **验证与运维建议**：落盘后读 `references/quality-checklist.md`
+8. **操作层陷阱**：时间/增量/来源问题时读 `gotchas.md`
+9. **全目录索引**：按需读 `references/README.md`
+10. **CHANGE-LOG 结构**：组织章节时参考 `assets/changes-index-template.md`（及 JSON 模板如需）
+
+---
+
+## 门禁要求（本技能）
+
+- 无 SDD 式「终稿 HTML gate」；**有歧义须停顿确认**（见上文「前置确认」与 `references/gates.md`）。
+- **禁止**在本技能流程中宣称已完成 **INDEX_GUIDE** 或知识实体更新（见适用边界）。
+
+---
+
+## 产出与校验
+
+- **正式产物**：`{output_dir}/CHANGE-LOG.md`，结构参考 `assets/changes-index-template.md`。
+- **校验**：执行 `references/quality-checklist.md`；时间比较与排除目录防循环见 `gotchas.md`。
+
+---
+
+## 评测与迭代（skill-creator 对齐）
+
+- 评测样本：`evals/evals.json`（含 `expected_output` 与 `assertions`）
+- 评测元模板：`evals/eval-metadata-template.json`
+- 评分规则：`agents/grader.md`
+- 失败分析：`agents/analyzer.md`
+
+---
+
+## 工程化支持
+
+辅助脚本：[scripts/change-indexing.sh](scripts/change-indexing.sh)（原始数据采集至 `{output_dir}/.raw/`）。本仓库未为 `docs-change` 注册 `preToolUse` 钩子。
 
 ---
 
@@ -96,16 +97,17 @@ scripts/change-indexing.sh --since "2026-03-20 00:00:00.000" --output ./changelo
 
 | 类型 | 技能/组件 | 说明 |
 |------|-----------|------|
-| 下游 | `docs-indexing` | 增量索引前宜完成本轮聚合；扫描范围由变更列表驱动 |
-| 下游 | `docs-build` | 基于变更文件列表执行增量提取 |
+| 下游 | `docs-indexing` | 增量索引宜消费本轮 `CHANGE-LOG.md` |
+| 下游 | `docs-build` | 可基于变更文件列表做增量提取 |
 
 ---
 
-## 参考资源
+## 工作流阶段索引
 
-| 资源 | 路径 | 何时读 |
-|------|------|--------|
-| 执行规范、前置确认与验证清单 | [reference/execution-spec.md](reference/execution-spec.md) | 采集规则不确定、有歧义需确认、验证失败时 |
-| CHANGE-LOG 结构参考 | [assets/changes-index-template.md](assets/changes-index-template.md) | 组织 CHANGE-LOG 章节时 |
-| 常见陷阱与防错规则 | [gotchas.md](gotchas.md) | 遇到时间/增量/来源相关问题时 |
-| 辅助脚本 | [scripts/change-indexing.sh](scripts/change-indexing.sh) | 执行原始数据采集时 |
+| 步骤 | 摘要 | 详见 |
+|------|------|------|
+| 1 | 环境准备、Git 检测、歧义确认 | [references/workflow.md](references/workflow.md) |
+| 2 | 时间基准计算 | 同上 |
+| 3 | 三源采集（可调用脚本） | 同上 + [references/collection-rules.md](references/collection-rules.md) |
+| 4 | 合并、排序、写入、更新基线 | [references/workflow.md](references/workflow.md) |
+| 5 | 验证 | [references/quality-checklist.md](references/quality-checklist.md) |

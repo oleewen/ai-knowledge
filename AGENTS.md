@@ -140,7 +140,7 @@ Markdown、YAML；**Bash 5+**；Git。可选 `rsync`（脚本可回退 `cp`）�
 | -------------------------------------------------------------------- | --------------------------------------------------------------- |
 | `/docs-indexing`                                                     | 生成或更新根目录 `INDEX_GUIDE.md`                                       |
 | `/docs-change`                                                       | 聚合文档变更至 `application/changelogs/`                               |
-| `/agent-guide`                                                       | 更新本文件与 `README.md`                                              |
+| `/docs-agent`                                                        | 更新本文件与 `README.md`                                              |
 | `/docs-build`                                                        | 知识构建与资产补全（见 [agent/skills/README.md](agent/skills/README.md)） |
 | `/docs-archive`                                                      | 从指定 overview 文件各视角归档知识到架构视角表各行副标题文件链接对应章节；探索 → 澄清 → 方案确认书 → 落盘，补充后做一致性检查与冲突处理（见 [agent/skills/README.md](agent/skills/README.md)） |
 | `/docs-distill`                                                      | 将 `system/application-{name}/` 已核实内容蒸馏到系统知识库 `system/architecture/`；支持 `--app` `--since` `--full` `--dry-run` |
@@ -160,4 +160,4 @@ Markdown、YAML；**Bash 5+**；Git。可选 `rsync`（脚本可回退 `cp`）�
 2. [README.md](README.md)、[scripts/README.md](scripts/README.md)
 3. [application/README.md](application/README.md)、[application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[application/DESIGN.md](application/DESIGN.md)、[application/CONTRIBUTING.md](application/CONTRIBUTING.md)、[system/README.md](system/README.md)、[company/README.md](company/README.md)
 4. [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/rules/](agent/rules/)
-5. [agent/README.md](agent/README.md)、[agent/skills/README.md](agent/skills/README.md)、[agent/skills/docs-distill/SKILL.md](agent/skills/docs-distill/SKILL.md)、[agent/skills/docs-extract/SKILL.md](agent/skills/docs-extract/SKILL.md)、[agent/skills/docs-archive/SKILL.md](agent/skills/docs-archive/SKILL.md)
+5. [agent/README.md](agent/README.md)、[agent/skills/README.md](agent/skills/README.md)、[agent/skills/docs-agent/SKILL.md](agent/skills/docs-agent/SKILL.md)、[agent/skills/docs-distill/SKILL.md](agent/skills/docs-distill/SKILL.md)、[agent/skills/docs-extract/SKILL.md](agent/skills/docs-extract/SKILL.md)、[agent/skills/docs-archive/SKILL.md](agent/skills/docs-archive/SKILL.md)

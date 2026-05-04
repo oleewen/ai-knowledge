@@ -152,4 +152,4 @@ else:
 | 主产物后写日志 | 是 | 是（先 `INDEX_GUIDE` 后本文件） |
 | dry-run 不写日志 | 是 | 是 |
 
-若下游技能（`agent-guide`、`docs-build`）引用 `INDEXING-LOG` 的读法，**以本规范**为准更新说明。
+若下游技能（`docs-agent`、`docs-build`）引用 `INDEXING-LOG` 的读法，**以本规范**为准更新说明。

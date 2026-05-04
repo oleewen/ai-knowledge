@@ -21,7 +21,7 @@
 | [skills](skills)                                                                             | Skill 工作流目录（每个子目录对应一个能力域）                                             |
 | [scripts/](scripts)                                                                          | 共享 Bash 库（`config-bootstrap.sh` 依赖同目录 **`docs-core.sh`**；加载 **`DOC_ROOT`/`REPO_ROOT`/`DOC_DIR`** 及可选 **`AGENT_ROOT`/`AGENT_DIRS`**、`resolve_repo_doc_root`、`validate-agent-md-links.sh` 等） |
 | [skills/README.md](skills/README.md)                                                         | Skills 使用入口与命令清单（权威）                                                  |
-| [skills/agent-guide/assets/agents-skeleton.md](skills/agent-guide/assets/agents-skeleton.md) | `AGENTS.md` 推荐骨架模板                                                    |
+| [skills/docs-agent/assets/agents-skeleton.md](skills/docs-agent/assets/agents-skeleton.md) | `AGENTS.md` 推荐骨架模板                                                    |
 
 
 ## 与全仓库文档关系

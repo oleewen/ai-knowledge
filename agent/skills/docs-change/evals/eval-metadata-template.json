@@ -1,0 +1,66 @@
+{
+  "skill_name": "docs-change",
+  "eval_id": "REPLACE_WITH_EVAL_ID",
+  "expected_category": "should-trigger | should-not-trigger",
+  "expected_route": "/docs-change | （not-trigger 时填主分流目标，如 /docs-indexing）",
+  "expected_output": "一两句：本 eval 下模型应表现出的路由与要点（与 evals.json 中同 id 条一致）。",
+  "notes": "复制本模板为 <eval-id>-metadata.json 或在跑分流水线中内联使用；断言须与 agents/grader.md 一致。",
+  "assertions_should_trigger_example": [
+    {
+      "id": "gate-compliance",
+      "name": "歧义与边界",
+      "type": "must_include",
+      "check": "响应需体现：有歧义时先确认；或不宣称已完成 INDEX_GUIDE/实体更新（与 gates 一致）。",
+      "priority": "P0"
+    },
+    {
+      "id": "structure-integrity",
+      "name": "结构完整",
+      "type": "must_include",
+      "check": "响应需体现三源（git/changelog/local）、CHANGE-LOG.md、文末基线注释或增量插入语义。",
+      "priority": "P0"
+    },
+    {
+      "id": "boundary-routing",
+      "name": "边界分流",
+      "type": "must_not_conflict",
+      "check": "对 should-trigger 样本，不得将主路径误判为仅 docs-indexing 全量索引或仅 docs-build 实体提取。",
+      "priority": "P0"
+    },
+    {
+      "id": "baseline-awareness",
+      "name": "基线意识",
+      "type": "should_include",
+      "check": "应提及 baseline_time/cutoff_time、--since 或文末 baseline_time_ms 之一。",
+      "priority": "P1"
+    }
+  ],
+  "assertions_should_not_trigger_example": [
+    {
+      "id": "correct-downstream",
+      "name": "正确下游",
+      "type": "must_include",
+      "check": "须点名与 prompt 一致的下游技能（如 docs-indexing、docs-build）。",
+      "priority": "P0"
+    },
+    {
+      "id": "no-false-change-primary",
+      "name": "勿假主 docs-change",
+      "type": "must_not_conflict",
+      "check": "不得将本请求描述为「默认完整执行 docs-change 聚合 CHANGE-LOG」而忽略用户已指定的下游技能。",
+      "priority": "P0"
+    },
+    {
+      "id": "optional-quality-hint",
+      "name": "可拒绝写 CHANGE-LOG",
+      "type": "should_include",
+      "check": "可加分：明确本对话不应写 CHANGE-LOG 或应先进入所列下游技能。",
+      "priority": "P1"
+    }
+  ],
+  "scoring": {
+    "pass_rule_should_trigger": "P0 全部通过，且 P1 至少通过 1 项（若无 P1 则仅 P0）",
+    "pass_rule_should_not_trigger": "P0 全部通过；P1 可选",
+    "fail_rule": "任一 P0 断言失败即判定不通过"
+  }
+}

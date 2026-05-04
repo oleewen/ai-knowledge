@@ -276,7 +276,7 @@ stateDiagram-v2
 | 命令 | 目录 |
 |------|------|
 | `/docs-indexing` | [agent/skills/docs-indexing/SKILL.md](agent/skills/docs-indexing/SKILL.md) |
-| `/agent-guide` | [agent/skills/agent-guide/SKILL.md](agent/skills/agent-guide/SKILL.md) |
+| `/docs-agent` | [agent/skills/docs-agent/SKILL.md](agent/skills/docs-agent/SKILL.md) |
 | `/docs-build` | [agent/skills/docs-build/SKILL.md](agent/skills/docs-build/SKILL.md) |
 | `/docs-change` | [agent/skills/docs-change/SKILL.md](agent/skills/docs-change/SKILL.md) |
 | `/docs-pull` | [agent/skills/docs-pull/SKILL.md](agent/skills/docs-pull/SKILL.md) |

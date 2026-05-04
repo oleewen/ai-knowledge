@@ -1,22 +1,13 @@
-# 执行规范与验证清单
+# docs-change 采集规则
 
-docs-change 的详细采集规则、错误处理与验证标准。SKILL.md 中已有的流程概述不在此重复。
-
----
-
-## 前置确认与歧义处理
-
-当触发条件与确认方式见 [SKILL.md 前置确认（可选）](../SKILL.md#前置确认可选)。执行侧约定：
-
-- **默认**：未歧义时不强制问答；按下列「输出目录定位」与数据采集规则直接执行。
-- **已确认仅 Git**：`git log` 仍用 `baseline_time`；不采集 CHANGELOG 条目与本地 mtime；`CHANGE-LOG.md` 中仅写入 Git 来源条目，文末基线注释仍按本轮聚合结果更新。
-- **多候选输出目录**：以用户在「前置确认」中选择的目录为准；若用户未表态且 SKILL 触发确认，则仍按下方优先级自动解析。
+输出目录定位、三源采集、排除列表与错误处理。**歧义时是否停顿**见 [gates.md](gates.md)。
 
 ---
 
 ## 输出目录定位
 
 优先级顺序：
+
 1. 用户指定 `--output`
 2. 当前目录 `./changelogs/`
 3. 最短路径的 `**/changelogs/` 目录
@@ -50,6 +41,7 @@ git log --since="$BASELINE_TIME" \
 | 自定义 | 正则匹配 `\d{4}-\d{2}-\d{2}` |
 
 日期提取正则：
+
 ```
 \[(\d{4}-\d{2}-\d{2})\]|(\d{4}-\d{2}-\d{2})|(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})
 ```
@@ -84,30 +76,9 @@ git log --since="$BASELINE_TIME" \
 | 时间格式无效 | 正则匹配失败 | 使用默认时间或跳过 |
 
 日志格式：
+
 ```
 [ERROR] [yyyy-MM-dd HH:mm:ss] {错误描述}
 [WARN]  [yyyy-MM-dd HH:mm:ss] {警告描述}
 [INFO]  [yyyy-MM-dd HH:mm:ss] {信息描述}
 ```
-
----
-
-## 验证清单
-
-### 文件存在性
-- [ ] `CHANGE-LOG.md` 存在且为有效 Markdown
-
-### 基线与内容
-- [ ] 文末存在 `<!-- docs-change:baseline_time_ms=... -->`，且与本轮聚合后的基线一致
-- [ ] 收录条目均标注来源（git / changelog / local）且时间可核对
-
-### 时间一致性
-- [ ] 条目时间均在约定的 `baseline_time` / `cutoff_time` 规则下（见 [gotchas.md](../gotchas.md)）
-
----
-
-## 最佳实践
-
-- **定时执行**：每日或每次提交后运行，保持索引新鲜
-- **CI 集成**：在 CI/CD 流程中自动生成，产物纳入 git
-- **基线备份**：定期备份 `CHANGE-LOG.md` 以防文末基线注释丢失

@@ -77,8 +77,8 @@
 **增量模式跳过 docs-change**
 增量模式必须先通过 `docs-change` 维护 `CHANGE-LOG.md`，以变更文件列表驱动扫描范围。直接扫描全部文件就失去了增量的意义。
 
-**与 agent-guide 产出的目录树矛盾**
-agent-guide 生成 README 时以本 INDEX §二为唯一来源。本 Skill 更新 §二后需通知 agent-guide 同步，保持两处一致。
+**与 docs-agent 产出的目录树矛盾**
+docs-agent 生成 README 时以本 INDEX §二为唯一来源。本 Skill 更新 §二后需通知 docs-agent 同步，保持两处一致。
 
 ---
 

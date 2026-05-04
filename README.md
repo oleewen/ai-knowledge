@@ -133,7 +133,7 @@ flowchart TD
         subgraph APPLICATION["应用知识库构建链路"]
         A["docs-bootstrap 安装知识库"] 
         B["docs-indexing 索引知识库 INDEX"]
-        C["agent-guide 生成AGENTS｜README"]
+        C["docs-agent 生成AGENTS｜README"]
         D["docs-build 构建知识库 knowledge"]
         E["docs-change 聚合变更 changelogs"]
         X["docs-push 推送文档知识"]
@@ -179,7 +179,7 @@ flowchart TD
 | :--- | :--- | :--- |
 | 知识库构建 | `scripts/docs-bootstrap.sh` | 远程 clone 并串联执行 docs-install（知识库）+ agent-install（Agent） |
 | 知识库构建 | `/docs-indexing`  | 生成或更新 `INDEX_GUIDE.md` 索引地图 |
-| 知识库构建 | `/agent-guide`    | 同步 `AGENTS.md` 与 `README.md` 协作约束 |
+| 知识库构建 | `/docs-agent`    | 同步 `AGENTS.md` 与 `README.md` 协作约束 |
 | 知识库构建 | `/docs-build`     | 维护知识实体与视角索引（`application/knowledge/`） |
 | 知识库构建 | `/docs-change`    | 聚合变更到 `application/changelogs/` |
 | 知识库构建 | `/docs-pull`     | 拉取下游应用侧文档到中央库镜像 |

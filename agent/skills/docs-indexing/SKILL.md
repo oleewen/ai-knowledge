@@ -5,7 +5,7 @@ description: >
   作为 Agent 导航与 RAG 上下文的权威来源；索引运行记录写入 `changelogs/INDEXING-LOG.md` 主表（最新在上，见 `reference/indexing-log-spec.md`）。
   支持全量/增量扫描与三级深度（拓扑/结构/精读）。
   当用户执行 /docs-indexing、需要生成或更新项目索引、建立文档地图、做项目 Onboarding、
-  或下游 docs-build/agent-guide 需要 INDEX_GUIDE.md 时，务必使用本技能。
+  或下游 docs-build/docs-agent 需要 INDEX_GUIDE.md 时，务必使用本技能。
   即使用户只说"帮我建个索引"、"生成一下项目文档"、"更新一下 INDEX"、
   "项目文档太乱了帮我整理一下"，也应触发本技能。
 ---
@@ -13,7 +13,7 @@ description: >
 # 文档索引生成器（docs-indexing）
 
 将代码库解析为结构化、可检索的 `INDEX_GUIDE.md`，作为 Agent 与开发者的系统全景导航。
-这份索引是整个知识库体系的"地图"——它的质量直接决定后续 docs-build、agent-guide 等技能能否准确定位信息。
+这份索引是整个知识库体系的"地图"——它的质量直接决定后续 docs-build、docs-agent 等技能能否准确定位信息。
 
 ## 输入与输出
 
@@ -123,7 +123,7 @@ scripts/indexing.sh --mode <用户已确认的 mode> --depth <用户已确认的
 | ---- | --------- | ---- |
 | 前置 | `docs-change` | 维护变更聚合 `CHANGE-LOG.md`，增量模式依赖其变更文件列表 |
 | 下游 | `docs-build` | 以主 INDEX 作为提取证据来源 |
-| 关联 | `agent-guide` | 维护 README.md / AGENTS.md 与 INDEX 交叉引用 |
+| 关联 | `docs-agent` | 维护 README.md / AGENTS.md 与 INDEX 交叉引用 |
 
 ---
 

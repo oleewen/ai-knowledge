@@ -15,7 +15,7 @@
 | `/docs-indexing` | 生成结构化 `INDEX_GUIDE.md`（九章文档地图），作为 Agent 导航与 RAG 权威来源；`INDEXING-LOG.md` 用主表记录运行（**最新在上**，锚点见 [docs-indexing/reference/indexing-log-spec.md](docs-indexing/reference/indexing-log-spec.md)）；支持全量/增量与深度 1/2/3。 |
 | `/docs-change` | 从 git commit、CHANGELOG/CHANGE-LOG、本地文件 mtime 采集变更，落盘 `CHANGE-LOG.md`（文末 HTML 注释承载增量基线）；供下游增量索引等使用。 |
 | `/docs-upgrade` | 定向增改 Markdown、源代码注释与配置文本；落盘后链式同步引用链，并辅以关键词检索（同义/近义/中英文）对齐同类表述；支持替换简写 `a - b` / `a > b` / `a 2 b`。 |
-| `/agent-guide` | 生成或更新根目录 `README.md`（人类）与 `AGENTS.md`（Agent）；以落盘 `INDEX_GUIDE.md` 为唯一地图，与 Index 职责不重叠。 |
+| `/docs-agent` | 生成或更新根目录 `README.md`（人类）与 `AGENTS.md`（Agent）；以落盘 `INDEX_GUIDE.md` 为唯一地图，与 Index 职责不重叠。 |
 | `/docs-distill` | 将 `system/application-{name}/` 已核实内容蒸馏到系统知识库 `system/architecture/`；支持 `--app` `--since` `--full` `--dry-run`，默认按增量锚点蒸馏。 |
 | `/docs-extract` | 从用户指定的任意文件或目录中，按段落级关键词相关度筛选，提炼业务知识写入指定 `XX-overview.md` 第三列（A/U/D 合并更新）；支持 `--sources` `--overview` `--dry-run`。 |
 | `/docs-pull` | 从已通过中央知识库挂载建联注册的目标工程拉取最新文档，覆盖更新本仓库联邦镜像 `applications/app-{APPNAME}/`，并追加同步 changelog。 |
