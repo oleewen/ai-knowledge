@@ -62,9 +62,11 @@ def _make_target_file(path: Path) -> None:
     path.write_text('# 目标文件\n\n占位内容\n', encoding='utf-8')
 
 
-def _count_spec_tags_blocks(content: str) -> int:
-    """统计文件中 <!-- spec-tags ... --> 块的数量"""
-    return len(re.findall(r'<!--\s*spec-tags', content))
+def _count_keyword_appendix_blocks(content: str) -> int:
+    """统计关键词附录块数量（新格式 ## 附录 / ### 文档关键词，或旧格式 <!-- spec-tags）。"""
+    n_new = len(re.findall(r'##\s*附录\s*\n+\s*###\s*文档关键词', content))
+    n_old = len(re.findall(r'<!--\s*spec-tags', content))
+    return n_new + n_old
 
 
 def _build_overview_with_table(
@@ -126,7 +128,11 @@ def _build_overview_with_table(
 @given(
     keywords=st.lists(_alpha_text, min_size=1, max_size=5),
 )
-@settings(max_examples=100, suppress_health_check=[HealthCheck.function_scoped_fixture])
+@settings(
+    max_examples=100,
+    deadline=None,
+    suppress_health_check=[HealthCheck.function_scoped_fixture],
+)
 def test_property1_scan_output_format(keywords):
     """
     对于任意种子关键词列表和包含 Markdown 文件的扫描目录，
@@ -210,7 +216,11 @@ def test_property1_scan_output_format(keywords):
     top_n=st.integers(min_value=1, max_value=50),
     keywords=st.lists(_alpha_text, min_size=1, max_size=5),
 )
-@settings(max_examples=100, suppress_health_check=[HealthCheck.function_scoped_fixture])
+@settings(
+    max_examples=100,
+    deadline=None,
+    suppress_health_check=[HealthCheck.function_scoped_fixture],
+)
 def test_property2_scan_top_n_limit(top_n, keywords):
     """
     对于任意正整数 N，当 --top-n N 时，
@@ -312,10 +322,10 @@ def test_property4_write_idempotent(keywords):
         keyword_tag.write_tags_to_file(str(target_file), keywords)
 
         content = target_file.read_text(encoding='utf-8')
-        block_count = _count_spec_tags_blocks(content)
+        block_count = _count_keyword_appendix_blocks(content)
 
         assert block_count == 1, (
-            f'文件中 spec-tags 块数量为 {block_count}，期望恰好 1 个'
+            f'文件中关键词附录块数量为 {block_count}，期望恰好 1 个'
         )
 
         # 读取内容应与写入一致

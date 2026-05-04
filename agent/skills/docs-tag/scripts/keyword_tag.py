@@ -3,15 +3,15 @@
 """
 keyword_tag.py — 关键词驱动的文档标记工具
 
-用法（Skill 层调用）：
-  python keyword_tag.py --file FILE --phase 1-scan --keywords 计费 费用类型 --scan-dir docs/architecture/ --top-n 30
-  python keyword_tag.py --file FILE --phase 1-write --keywords 计费 费用类型 --selected 计费规则,PolicyType
-  python keyword_tag.py --file FILE --phase 2
+用法（Skill 层调用，请在仓库根 REPO_ROOT 下执行）：
+  python3 agent/skills/docs-tag/scripts/keyword_tag.py --file FILE --phase 1-scan --keywords 计费 费用类型 --scan-dir docs/architecture/ --top-n 30
+  python3 agent/skills/docs-tag/scripts/keyword_tag.py --file FILE --phase 1-write --keywords 计费 费用类型 --selected 计费规则,PolicyType
+  python3 agent/skills/docs-tag/scripts/keyword_tag.py --file FILE --phase 2
 
-用法（命令行直接使用，向后兼容）：
-  python keyword_tag.py --file FILE --phase 1 --keywords 计费 费用类型
-  python keyword_tag.py --file FILE --phase 2
-  python keyword_tag.py --file FILE --phase all --keywords 计费 费用类型
+用法（在脚本所在目录调试，或相对路径指向本文件，向后兼容）：
+  python3 keyword_tag.py --file FILE --phase 1 --keywords 计费 费用类型
+  python3 keyword_tag.py --file FILE --phase 2
+  python3 keyword_tag.py --file FILE --phase all --keywords 计费 费用类型
 """
 
 import re
@@ -568,7 +568,9 @@ def main():
         print(f'错误：文件不存在：{args.file}', file=sys.stderr)
         sys.exit(1)
 
-    if args.scan_dir and not os.path.exists(args.scan_dir):
+    # 仅在实际扫描目录的阶段校验 scan_dir（1-write / 2 不依赖扫描目录）
+    _phases_need_scan_dir = ('1-scan', '1', 'all')
+    if args.phase in _phases_need_scan_dir and args.scan_dir and not os.path.exists(args.scan_dir):
         print(f'错误：扫描目录不存在：{args.scan_dir}', file=sys.stderr)
         sys.exit(1)
 
