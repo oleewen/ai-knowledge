@@ -33,3 +33,7 @@
 8. **校验缺失即宣告完成**
    - 表现：未执行 `validate-asd.sh` 即结束。
    - 纠正：把 validate 作为收尾必经步骤，失败即修复后重跑。
+
+9. **联邦库在本层强写 DSD / specs**
+   - 表现：`KNOWLEDGE_TYPE` 为 `system`/`company` 时，仍在系统/公司库落应用级 **DSD** 或完整 **`specs/`**。
+   - 纠正：本层 **ASD** 仅联邦概要；详设与规约收口在**应用知识库**执行 **`/sdx-design`**（见 [knowledge-type-modes.md](knowledge-type-modes.md)）。

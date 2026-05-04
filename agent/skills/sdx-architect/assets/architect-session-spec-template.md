@@ -5,7 +5,7 @@
 **IDEA-ID**：`{IDEA-ID}`（与 PRD / 同目录命名一致）  
 **目标 ASD 文件**：`ASD-{IDEA-ID}-{N}.md`（须与落盘路径一致，供钩子与 `validate-asd.sh --Gte-check` 匹配）  
 **DOC_DIR**（自 `.docsconfig`）：`{DOC_DIR}`  
-**KNOWLEDGE_TYPE**（自 `.docsconfig`，可选）：`application | system | company | （未设置）` — `system`/`company` 时见 [knowledge-type-modes.md](../reference/knowledge-type-modes.md)。  
+**KNOWLEDGE_TYPE**（自 `.docsconfig`，可选）：`application | system | company | （未设置）` — `system`/`company` 时见 [knowledge-type-modes.md](../references/knowledge-type-modes.md)。  
 **--depth**：`quick | standard | deep`  
 **门禁粒度**：建议 **G1–G3**（对应 ASD §1–§3）  
 **spec 版本**：`1.0.0`

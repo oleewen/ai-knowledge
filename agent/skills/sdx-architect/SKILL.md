@@ -39,7 +39,8 @@ description: >
 2. **门禁与例外**：再读 `references/gates.md`
 3. **质量检查**：落盘前读 `references/quality-checklist.md`
 4. **反模式规避**：遇到歧义时读 `references/anti-patterns.md`
-5. **输出样式**：参考 `assets/asd-template.md` 与 `assets/samples/mini-asd-example.md`
+5. **知识库类型与联邦分工**（`KNOWLEDGE_TYPE` / system|company）：读 `references/knowledge-type-modes.md`
+6. **输出样式**：参考 `assets/asd-template.md` 与 `assets/samples/mini-asd-example.md`
 
 ---
 
