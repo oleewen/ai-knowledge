@@ -1,0 +1,298 @@
+{
+  "skill_name": "sdx-design",
+  "version": "1.1.0",
+  "description": "用于评估 sdx-design 技能触发边界、分流与门禁表述；含 expected_output 与断言供 grader 客观评分。",
+  "evals": [
+    {
+      "id": "design-trigger-001",
+      "category": "should-trigger",
+      "prompt": "ASD-ORDER-1.md 已定稿，请走 /sdx-design：先会话 spec 与 Gd1–Gd4，总确认后落 DSD-ORDER-1.md，并把 §2.2 的 API 契约同步进 specs/billing/api/ 下的 OpenAPI YAML。",
+      "expected_output": "以 /sdx-design 为主路径：ASD 硬输入、会话 spec、门禁与总确认后再写 DSD；体现 specs 与 API 规约落盘；未确认不写 DSD 终稿。",
+      "assertions": [
+        {
+          "id": "gate-compliance",
+          "name": "门禁合规",
+          "type": "must_include",
+          "check": "明确用户总确认前禁止写入 {DOC_DIR}/requirements/**/DSD-*.md（或等价「未确认不落 DSD 定稿」），并可提及合法例外或 SDX_DESIGN_ALLOW_DSD_WRITE。",
+          "priority": "P0"
+        },
+        {
+          "id": "structure-integrity",
+          "name": "结构完整",
+          "type": "must_include",
+          "check": "体现 DSD §1–§4、Gd1–Gd4 或详设/规约与 specs 路径，而非仅复述 ASD 章节即结束。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得将本请求主路径改为仅 /sdx-architect、仅 /sdx-prd 或纯 docs-* 并宣称无需 DSD/specs。",
+          "priority": "P0"
+        },
+        {
+          "id": "asd-input",
+          "name": "ASD 硬输入",
+          "type": "should_include",
+          "check": "应提及 ASD-ORDER-1 或 ASD 作为输入。",
+          "priority": "P1"
+        }
+      ]
+    },
+    {
+      "id": "design-trigger-002",
+      "category": "should-trigger",
+      "prompt": "我们要把订单域 ASD §3 的规约摘要行扩写到实现级：补齐 YAML 路径、错误码与幂等策略，产出 DSD 与 specs，用 sdx-design 流程。",
+      "expected_output": "主路径为 sdx-design：在 ASD §3 行上扩写实现级规约、DSD §3 与 specs；含门禁；不把扩写仅放在 ASD 内完成。",
+      "assertions": [
+        {
+          "id": "gate-compliance",
+          "name": "门禁合规",
+          "type": "must_include",
+          "check": "含未确认不写 DSD 终稿路径或 HARD-GATE 等价语义。",
+          "priority": "P0"
+        },
+        {
+          "id": "structure-integrity",
+          "name": "结构完整",
+          "type": "must_include",
+          "check": "体现 DSD、§3 规约扩写、specs/YAML 或实现级契约之一组，并区分于仅架构摘要。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得将主路径改为仅更新 ASD 而无 DSD/specs 作为本轮交付框架。",
+          "priority": "P0"
+        },
+        {
+          "id": "specs-awareness",
+          "name": "规约落盘",
+          "type": "should_include",
+          "check": "应提及 specs 或规约 YAML 落盘。",
+          "priority": "P1"
+        }
+      ]
+    },
+    {
+      "id": "design-trigger-003",
+      "category": "should-trigger",
+      "prompt": "应用库 KNOWLEDGE_TYPE=application，MVP-Phase-1 里已有 PRD 和 ASD，请执行详细设计阶段：DSD + 全量 specs 目录结构按 dsd-template 来。",
+      "expected_output": "明确 /sdx-design：application 全量、DSD+specs 目录、模板对齐；ASD+PRD 为输入；含总确认门禁。",
+      "assertions": [
+        {
+          "id": "gate-compliance",
+          "name": "门禁合规",
+          "type": "must_include",
+          "check": "含总确认前禁止写入 DSD 正式路径或等价表述。",
+          "priority": "P0"
+        },
+        {
+          "id": "structure-integrity",
+          "name": "结构完整",
+          "type": "must_include",
+          "check": "体现 DSD、specs 或 dsd-template 与详设阶段，而非仅 PRD/ASD 评审。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得将主路径改为仅 sdx-architect 或仅 sdx-prd。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "design-trigger-004",
+      "category": "should-trigger",
+      "prompt": "请按 SDX 进入详细设计：我有 ASD-PAY-1.md，要生成 DSD-PAY-1.md，并确认 validate-dsd.sh --gate-check 能通过。",
+      "expected_output": "主路径 sdx-design：DSD-PAY-1、校验脚本、门禁；ASD 为前置。",
+      "assertions": [
+        {
+          "id": "gate-compliance",
+          "name": "门禁合规",
+          "type": "must_include",
+          "check": "须体现未确认不写 DSD 或 CONFIRMED 门禁语义。",
+          "priority": "P0"
+        },
+        {
+          "id": "structure-integrity",
+          "name": "结构完整",
+          "type": "must_include",
+          "check": "体现 DSD 产物与 validate-dsd 或 gate-check 之一。",
+          "priority": "P0"
+        },
+        {
+          "id": "deliverable-naming",
+          "name": "产物对齐",
+          "type": "should_include",
+          "check": "应出现 DSD-PAY-1 或 PAY-1 与 ASD 输入语义。",
+          "priority": "P1"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得将本请求整体改判为仅 /sdx-test 或仅 docs-indexing。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "design-not-trigger-001",
+      "category": "should-not-trigger",
+      "prompt": "只要先把服务边界和上下文图画清楚，产出 ASD-CRM-2.md 就行，先不要 API 和 DDL。",
+      "expected_output": "主路径为 /sdx-architect 与 ASD；不以 DSD/specs 为当前主交付。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确点名 sdx-architect、/sdx-architect 或 ASD 为当前主路径。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-design-primary",
+          "name": "勿假主详设阶段",
+          "type": "must_not_conflict",
+          "check": "不得将回答框架定为「默认先完整执行 sdx-design 产出 DSD」而忽略只要 ASD。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "design-not-trigger-002",
+      "category": "should-not-trigger",
+      "prompt": "请用 /sdx-prd 把用户故事和验收标准写进 PRD-BILL-01.md，暂不做接口与表结构。",
+      "expected_output": "分流到 /sdx-prd 与 PRD；不以 DSD 为主路径。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须出现 /sdx-prd 或 sdx-prd 或 PRD-BILL-01 作为主交付语义。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-design-primary",
+          "name": "勿假主详设阶段",
+          "type": "must_not_conflict",
+          "check": "不得将主路径表述为 sdx-design 与 DSD/specs 定稿。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "design-not-trigger-003",
+      "category": "should-not-trigger",
+      "prompt": "帮我把 system/application-payment 蒸馏进 system/architecture/overview/payment-overview.md。",
+      "expected_output": "分流到 docs-distill；不以 DSD 为主路径。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须点名 docs-distill、/docs-distill 或等价蒸馏到 overview 表述。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-design-primary",
+          "name": "勿假主详设阶段",
+          "type": "must_not_conflict",
+          "check": "不得将任务框成产出 requirements 下 DSD-*.md 作为主要交付。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "design-not-trigger-004",
+      "category": "should-not-trigger",
+      "prompt": "从 design 目录抽取段落写进 risk-overview 第三列，按业务关键词筛选。",
+      "expected_output": "分流到 docs-extract；不以 DSD 为主路径。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须点名 docs-extract、/docs-extract 或等价提炼到 overview 第三列表述。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-design-primary",
+          "name": "勿假主详设阶段",
+          "type": "must_not_conflict",
+          "check": "不得将主路径说成 sdx-design 与 DSD。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "design-not-trigger-005",
+      "category": "should-not-trigger",
+      "prompt": "DSD 已定稿，请用 /sdx-test 基于 PRD 和 DSD 写 TDD-ORDER-1.md，覆盖接口与异常场景。",
+      "expected_output": "主路径为 /sdx-test 与 TDD；不以重写 DSD 为当前主任务。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须点名 /sdx-test、sdx-test 或 TDD 为当前主路径。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-design-primary",
+          "name": "勿假主详设阶段",
+          "type": "must_not_conflict",
+          "check": "不得将主路径改为以 sdx-design 更新 DSD 为唯一答案。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "design-not-trigger-006",
+      "category": "should-not-trigger",
+      "prompt": "业务方只有模糊目标，请先走 /sdx-solution 出 SOLUTION-260504-模糊需求.md，不要写接口。",
+      "expected_output": "分流到 /sdx-solution 与 SOLUTION；不以 DSD 为主路径。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须点名 /sdx-solution、sdx-solution 或 SOLUTION 为当前主路径。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-design-primary",
+          "name": "勿假主详设阶段",
+          "type": "must_not_conflict",
+          "check": "不得将主路径说成先写 DSD/specs。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "design-not-trigger-007",
+      "category": "should-not-trigger",
+      "prompt": "跑一下 /docs-build 同步 KNOWLEDGE_INDEX 和四视角 README。",
+      "expected_output": "分流到 docs-build；不以 DSD 为主路径。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须点名 docs-build、/docs-build 或 KNOWLEDGE_INDEX 构建语义。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-design-primary",
+          "name": "勿假主详设阶段",
+          "type": "must_not_conflict",
+          "check": "不得将主路径说成 sdx-design。",
+          "priority": "P0"
+        }
+      ]
+    }
+  ]
+}

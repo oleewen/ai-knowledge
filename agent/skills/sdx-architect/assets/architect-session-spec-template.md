@@ -28,7 +28,7 @@
 
 ### 方案取舍（本门禁内若存在多套可选）
 
-（可选；见 [reference/brainstorming-integration.md](../../sdx-design/reference/brainstorming-integration.md) — 与 sdx-design 共用细则时读该文件。）
+（可选；见 [brainstorming-integration.md](../../sdx-design/references/brainstorming-integration.md) — 与 sdx-design 共用细则时读该文件。）
 
 ### Q-n / DD-n（本门禁相关）
 

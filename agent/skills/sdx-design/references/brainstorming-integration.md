@@ -10,7 +10,7 @@
 |------|----------------------|----------------------|
 | 主产物 | 常为 `*-design.md` + `writing-plans` | 会话 spec：`...-sdx-design.md`；终稿：`DSD-*.md` |
 | 正常终态 | 进入 `writing-plans` 等实现计划 | **Qclose-1** → 阶段三分块定稿 |
-| HARD-GATE | 以 brainstorming 技能为准 | **仍以 sdx-design HARD-GATE 为准** |
+| HARD-GATE | 以 brainstorming 技能为准 | **仍以 [sdx-design 门禁](gates.md) 为准** |
 
 **禁止**：在仅执行 `/sdx-design` 的对话中，用「已完成 brainstorming」为由跳过 **Gd{n}** 收口、门禁标记或 Qclose-1；也**禁止**默认创建独立 `*-design.md` 替代本会话 spec。
 

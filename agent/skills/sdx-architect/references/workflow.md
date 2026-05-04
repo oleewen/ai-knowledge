@@ -1,5 +1,9 @@
 # sdx-architect 工作流
 
+[SKILL.md](../SKILL.md) 为主干；写入类门禁与例外见 [gates.md](gates.md)。
+
+---
+
 ## 目标
 
 在架构阶段输出可追溯、可落地的 `ASD-{IDEA-ID}-{N}.md`，并为下游 `/sdx-design` 提供稳定输入。

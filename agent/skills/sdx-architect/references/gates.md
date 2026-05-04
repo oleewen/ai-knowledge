@@ -1,5 +1,9 @@
 # sdx-architect 门禁规则
 
+[SKILL.md](../SKILL.md) 为主干；流程与阶段见 [workflow.md](workflow.md)。
+
+---
+
 ## 核心门禁
 
 - 流程顺序必须为：准备 -> 会话草稿 -> 用户总确认 -> ASD落盘 -> validate。
