@@ -1,23 +1,181 @@
 {
   "skill_name": "docs-archive",
+  "version": "1.0.0",
+  "description": "用于评估 docs-archive 触发边界、分流与门禁表述；含 expected_output 与断言供 grader 客观评分。",
   "evals": [
     {
-      "id": 1,
+      "id": "archive-trigger-001",
+      "category": "should-trigger",
       "prompt": "帮我把 system/architecture/overview/billing-appeal-overview.md 里业务架构视角的内容归档到对应的章节文件里，归档完之后把 overview 里已归档的部分替换成索引壳",
-      "expected_output": "触发 docs-archive 技能；阶段 1 读取 billing-appeal-overview.md 业务架构视角各行，解析行内副标题链接确认目标章节；阶段 2 澄清来源范围（仅业务架构视角）、来源清理策略（仅保留索引壳）；阶段 3 输出方案确认书（来源清单、目标清单、映射规则、冲突策略）；用户确认后阶段 4 按行归档写入目标章节并回写 overview；阶段 5 一致性检查",
-      "files": []
+      "expected_output": "以 /docs-archive 为主路径：读 overview 业务架构视角各行，解析行内副标题链接；澄清来源清理（索引壳）；输出方案确认书；HARD-GATE 下用户确认后再落盘目标并回写 overview；步骤 5 一致性检查。",
+      "assertions": [
+        {
+          "id": "gate-compliance",
+          "name": "门禁合规",
+          "type": "must_include",
+          "check": "明确方案确认书或用户总确认前禁止写入目标文档（或等价 HARD-GATE）。",
+          "priority": "P0"
+        },
+        {
+          "id": "structure-integrity",
+          "name": "结构完整",
+          "type": "must_include",
+          "check": "体现 overview、表格行链接→目标章节、方案确认书、确认后执行落盘与 overview 清理（索引壳）。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得将主路径改为仅 docs-extract 从任意源写 overview 第三列。",
+          "priority": "P0"
+        },
+        {
+          "id": "cleanup-strategy",
+          "name": "清理策略",
+          "type": "should_include",
+          "check": "应提及索引壳或来源清理与 billing-appeal-overview（或路径形态）。",
+          "priority": "P1"
+        }
+      ]
     },
     {
-      "id": 2,
+      "id": "archive-trigger-002",
+      "category": "should-trigger",
       "prompt": "我想把 payment-overview.md#技术架构 这一节的内容补充进架构文档，但不确定要怎么处理冲突，你帮我看看",
-      "expected_output": "触发 docs-archive 技能；阶段 1 读取 payment-overview.md 技术架构节，解析行内副标题链接；阶段 2 澄清冲突策略（以来源为准 / 以目标为准 / 并列待裁决）；阶段 3 输出方案确认书，列出候选冲突点；HARD-GATE 生效，等待用户确认后再落盘",
-      "files": []
+      "expected_output": "主路径 docs-archive：读 payment-overview 指定节与链接目标；分步澄清冲突策略；方案确认书列候选冲突；确认前不落盘。",
+      "assertions": [
+        {
+          "id": "gate-compliance",
+          "name": "门禁合规",
+          "type": "must_include",
+          "check": "含未确认不写目标终稿或 HARD-GATE 等价语义。",
+          "priority": "P0"
+        },
+        {
+          "id": "structure-integrity",
+          "name": "结构完整",
+          "type": "must_include",
+          "check": "体现锚点范围、副标题链接、冲突策略选项（以来源/以目标/并列）、方案确认书。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得将本请求仅答复为 docs-upgrade 链式替换而无归档/确认流程。",
+          "priority": "P0"
+        },
+        {
+          "id": "conflict-clarify",
+          "name": "冲突澄清",
+          "type": "should_include",
+          "check": "应提及冲突处理或请用户裁决，而非静默合并。",
+          "priority": "P1"
+        }
+      ]
     },
     {
-      "id": 3,
+      "id": "archive-trigger-003",
+      "category": "should-trigger",
       "prompt": "order-service 的 overview 更新了好几个视角，需要全部归档到架构文档，直接帮我改吧",
-      "expected_output": "触发 docs-archive 技能；识别用户说「直接改」触发 HARD-GATE；一句话概括方案与风险（多视角全量归档，影响面大）；阶段 1 读取 overview 全部视角行；阶段 2 逐项澄清（来源范围、来源清理策略、冲突策略）；阶段 3 输出方案确认书等待明确同意；不得跳过确认直接写入",
-      "files": []
+      "expected_output": "识别「直接改」：仍须 HARD-GATE；概括多视角全量风险；步骤 0 读 overview；分步澄清；方案确认书；不得跳过确认直接写入。",
+      "assertions": [
+        {
+          "id": "gate-compliance",
+          "name": "门禁合规",
+          "type": "must_include",
+          "check": "即使用户说直接改，仍须明确确认前禁止写目标或须明示例外+同意。",
+          "priority": "P0"
+        },
+        {
+          "id": "structure-integrity",
+          "name": "结构完整",
+          "type": "must_include",
+          "check": "体现方案确认书、风险一句、多视角边界，而非宣称立即落盘。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得同意「无需确认即可写入全部架构文档」作为唯一结论。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "archive-not-trigger-001",
+      "category": "should-not-trigger",
+      "prompt": "代码重构了一批实体，帮我把 application/knowledge 里的实体 ID 对齐并刷新 KNOWLEDGE_INDEX.md",
+      "expected_output": "主路径为 docs-build（或等价知识构建）；不以 docs-archive 从 overview 归档为主任务。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 docs-build、实体 ID 或 KNOWLEDGE_INDEX 为当前主任务。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-archive-primary",
+          "name": "勿假主 archive",
+          "type": "must_not_conflict",
+          "check": "不得将本请求框成以 overview 行链接归档到架构章节为主路径。",
+          "priority": "P0"
+        },
+        {
+          "id": "respect-knowledge-scope",
+          "name": "尊重知识库职责",
+          "type": "should_include",
+          "check": "可提及 archive 不负责批量造/改实体 ID。",
+          "priority": "P1"
+        }
+      ]
+    },
+    {
+      "id": "archive-not-trigger-002",
+      "category": "should-not-trigger",
+      "prompt": "把全仓库 Markdown 里的「订金」统一改成「预付款」，并同步所有引用链",
+      "expected_output": "主路径为 docs-upgrade（术语定向增改与引用链）；不是 docs-archive。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 docs-upgrade 或等价「定向替换/引用链同步」。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-archive-primary",
+          "name": "勿假主 archive",
+          "type": "must_not_conflict",
+          "check": "不得将全库术语替换描述为 overview→架构章节归档主流程。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "archive-not-trigger-003",
+      "category": "should-not-trigger",
+      "prompt": "从 docs/design.md 和 docs/api.md 提炼业务要点写进 payment-overview.md 第三列，先 dry-run",
+      "expected_output": "主路径为 docs-extract（--sources、overview 第三列、dry-run）；不是从 overview 表格链接归档到视角文件。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 docs-extract、--sources/--overview 或第三列/dry-run 等 extract 特征。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-archive-primary",
+          "name": "勿假主 archive",
+          "type": "must_not_conflict",
+          "check": "不得将本请求主路径写成按 overview 行内链接写入架构视角章节文件。",
+          "priority": "P0"
+        }
+      ]
     }
   ]
 }
