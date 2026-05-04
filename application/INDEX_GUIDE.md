@@ -1,96 +1,223 @@
-# ai-knowledge 索引指南
+# application 索引指南（INDEX_GUIDE）
 
-> 最后更新：2026-04-05T10:56:57Z
-> 文档定位：由 docs-indexing 自动生成的九章索引（mode=full, depth=3）
+> **最后更新**: 2026-05-04  
+> **文档定位**: 面向 AI Agent 的 **`application/` 文档根**九章机器索引；与仓库根 [INDEX_GUIDE.md](../INDEX_GUIDE.md) 互补。中央知识库挂载建联登记见 **§十**。
+
+---
 
 ## 一、项目概览（Project Overview）
 
-- 项目名称：`ai-knowledge`
-- 扫描模式：`full`
-- 扫描深度：`3`
-- 索引文件总数：`166`
-- 输出路径：`${DOC_DIR}/INDEX_GUIDE.md`（目标工程 `.docsconfig` 之 **`DOC_DIR`**；同文件另有 **`DOC_ROOT`/`REPO_ROOT`**，可选 **`AGENT_ROOT`/`AGENT_DIRS`**）
+### 1.1 速查表
+
+| 组件 | 路径 | 描述 |
+|------|------|------|
+| 应用入口（模式分流） | [README.md](README.md) | `standalone` / `central` 见 [README-s.md](README-s.md)、[README-c.md](README-c.md) |
+| 设计元模型 | [DESIGN.md](DESIGN.md) | 四视角、实体与演进约束 |
+| 贡献与阶段 | [CONTRIBUTING.md](CONTRIBUTING.md) | SDD 阶段、闸门与模板指针 |
+| 四视角实体索引 | [knowledge/KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md) | ID 表与证据链（示例级 SSOT） |
+| 宪法与术语 | [constitution/README.md](constitution/README.md) | 原则、命名、ADR 模板 |
+| 阶段产物目录 | `solutions/`、`analysis/`、`requirements/` | 方案～需求包与元数据 |
+| 运维日志 | [changelogs/README.md](changelogs/README.md) | `CHANGE-LOG.md`、`INDEXING-LOG.md` |
+| 仓库根全索引 | [../INDEX_GUIDE.md](../INDEX_GUIDE.md) | 中央库根路径九章地图 |
+
+### 1.2 元信息
+
+- **目录角色**: 应用知识库 **SSOT**（稳定事实、阶段交付、四视角知识）
+- **技术栈**: Markdown、YAML、JSON（知识提取产物）
+- **已跟踪文件规模**（仅 `application/` 前缀）: **46** 个文件（`git ls-files application/`，2026-05-04）
+- **精读深度**: 本轮 **depth=3**（以已读入口与目录枚举为准，非逐文件全文内嵌）
+
+---
 
 ## 二、架构视图（Architecture View）
 
-### 2.1 顶层目录
+### 2.1 模块结构
 
-- `${DOC_DIR}`
+```text
+application/
+├── README.md / README-s.md / README-c.md   # 入口与模式说明
+├── INDEX_GUIDE.md                          # 本文件
+├── DESIGN.md / CONTRIBUTING.md             # 元模型与贡献
+├── docs_meta.yaml / manifest.yaml          # 文档元数据
+├── analysis/                               # 需求分析阶段占位与 meta
+├── changelogs/                             # CHANGE-LOG、INDEXING-LOG
+├── constitution/                           # 术语、原则、ADR、标准
+├── knowledge/                              # 四视角：business/data/product/technical
+├── requirements/                         # 需求包与 REQUIREMENT-EXAMPLE
+├── solutions/                              # 方案阶段与 archive
+└── specs/                                  # 规约与阶段规格占位
+```
 
-### 2.2 主要文件（样本）
-- application/
-  - INDEX_GUIDE.md                # 当前索引指南
-  - README.md
-  - DESIGN.md
-  - CONTRIBUTING.md
-  - docs_meta.yaml
-  - manifest.yaml
-  - analysis/
-    - README.md
-    - analysis_meta.yaml
-  - changelogs/
-    - README.md
-  - constitution/
-    - README.md
-    - GLOSSARY.md
-    - constitution_meta.yaml
-    - adr/adr-template.md
-    - principles/architecture-principles.yaml
-    - standards/naming-conventions.md
-  - knowledge/
-    - README.md
-    - KNOWLEDGE_INDEX.md
-    - business/ business_knowledge.json
-    - data/ data_knowledge.json
-    - technical/ technical_knowledge.json
-    - product/ product_knowledge.json
-  - requirements/
-    - README.md
-    - REQUIREMENT-EXAMPLE/README.md
-    - requirements_meta.yaml
-  - solutions/
-    - README.md
-    - solutions_meta.yaml
-  - specs/
-    - README.md
+### 2.2 依赖关系
 
+```mermaid
+flowchart TB
+  subgraph app["application/"]
+    k["knowledge/"]
+    c["constitution/"]
+    sol["solutions/"]
+    ana["analysis/"]
+    req["requirements/"]
+    cl["changelogs/"]
+  end
+  root["仓库根 INDEX_GUIDE"]
+  agent["agent/skills sdx-*"]
+  root --> app
+  sol --> ana --> req
+  k --> DESIGN["DESIGN.md"]
+  c --> DESIGN
+  agent --> sol
+  agent --> cl
+```
+
+### 2.3 包结构
+
+非 JVM 工程；以**目录 + 元数据 YAML**组织阶段与视角，不以 Java 包分层。
+
+### 2.4 文档目录
+
+- **本索引**: [INDEX_GUIDE.md](INDEX_GUIDE.md)
+- **知识实体**: [knowledge/README.md](knowledge/README.md)
+- **阶段模板**: 各 `*/README.md`、`requirements/REQUIREMENT-EXAMPLE/`
+
+---
 
 ## 三、接口清单（Interface Catalog）
 
-- 本仓库为文档与脚本仓库，未检测到应用运行时 API 接口清单。
+| 小节 | 状态 | 说明 |
+|------|------|------|
+| 3.1～3.4 | [未索引] | 无运行时 RPC/HTTP/调度/消息；对外契约为文档与 Slash 工作流 |
 
-## 四、核心流程（Core Flows）
+---
 
-- docs-indexing 扫描仓库文件并生成 `INDEX_GUIDE.md`
-- 结果写入 `${DOC_DIR}/changelogs/INDEXING-LOG.md` 以支持增量基线
+## 四、领域模型（Domain Model）
 
-## 五、配置与环境（Config & Environment）
+### 4.1 业务术语
 
-- `--mode`: `full` / `incremental`
-- `--depth`: `1` / `2` / `3`
-- `--output`: 输出文件路径（默认 `${DOC_DIR}/INDEX_GUIDE.md`）
-- `--since`: 增量扫描起始时间戳（epoch ms）
+| 术语 | 定义 | 落点 |
+|------|------|------|
+| 四视角 | 业务 / 产品 / 技术 / 数据 分层与 ID 规范 | [DESIGN.md](DESIGN.md)、[constitution/GLOSSARY.md](constitution/GLOSSARY.md) |
+| 知识实体 | YAML/JSON 承载的层级 ID 与关系字段 | [knowledge/](knowledge/) |
+| SDD 阶段 | Solution → Analysis → PRD/设计/测试 链 | [CONTRIBUTING.md](CONTRIBUTING.md)、`agent/skills/sdx-*` |
 
-## 六、未索引区域声明（Unindexed Scope）
+### 4.2 聚合与目录映射
 
-- 仅索引可读取文件，不推断未读取内容。
-- 当前未进行语义抽取，仅提供结构化路径与统计。
+| 聚合 | 职责 | 路径 |
+|------|------|------|
+| 宪法与标准 | 术语、架构原则、命名、ADR 模板 | [constitution/](constitution/) |
+| 四视角知识 | 实体与证据链 | [knowledge/](knowledge/) |
+| 阶段包 | 方案、分析、需求树 | [solutions/](solutions/)、[analysis/](analysis/)、[requirements/](requirements/) |
 
-## 七、质量与边界（Quality & Boundaries）
+### 4.3 领域服务
 
-- 路径均为仓库根相对路径
-- 输出具有幂等性（相同输入得到相同结构）
-- 增量模式在无有效基线时自动降级为全量
+| 能力 | 说明 |
+|------|------|
+| Slash SDD | `/sdx-solution` 等写入受管终稿前须用户与 spec 闸门 |
+| docs-build | 四视角实体提取与 `KNOWLEDGE_INDEX` 联动（见根索引 §九） |
 
-## 八、日志与追溯（Traceability）
+### 4.4 领域事件
 
-- 索引运行日志：`${DOC_DIR}/changelogs/INDEXING-LOG.md`
-- 变更聚合日志：`${DOC_DIR}/changelogs/CHANGE-LOG.md`
+维护性事件见 [changelogs/CHANGE-LOG.md](changelogs/CHANGE-LOG.md)、[changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)。
 
-## 九、附录（Appendix）
+---
 
-- 生成器：`agent/skills/docs-indexing/scripts/indexing.sh`
-- 规范参考：`agent/skills/docs-indexing/references/scan-spec.md`
+## 五、业务逻辑（Business Logic）
+
+### 5.1 状态流转（SDD 摘要）
+
+与根索引一致：方案 → 分析 → PRD → 设计 → 测试；**HARD-GATE** 见各 `sdx-*` Skill。
+
+### 5.2 核心流程（本目录）
+
+1. 阅读 [README.md](README.md) 选择 `standalone` / `central` 入口文档。  
+2. 变更知识实体或阶段产物时遵守 [DESIGN.md](DESIGN.md) 与 [CONTRIBUTING.md](CONTRIBUTING.md)。  
+3. 维护本目录索引：执行 `/docs-indexing`（参数见根索引与 `agent/skills/docs-indexing`）。
+
+### 5.3 业务规则
+
+| 来源 | 要点 |
+|------|------|
+| [AGENTS.md](../AGENTS.md) | 禁止擅自改实体 ID、未确认不提交 |
+| [DESIGN.md](DESIGN.md) | 元模型、映射字段、禁止破坏引用链 |
+
+### 5.4 枚举
+
+| 名称 | 取值 |
+|------|------|
+| 知识视角子目录 | `business/`、`data/`、`product/`、`technical/` |
+
+---
+
+## 六、数据映射（Data Mapping）
+
+### 6.1 数据源
+
+| 数据源 | 类型 | 用途 |
+|--------|------|------|
+| `knowledge/**/*.yaml` | YAML | 实体与关系（若存在） |
+| `*_knowledge.json` | JSON | 各视角提取/示例产物 |
+
+### 6.2～6.4
+
+无 RDBMS；实体映射与关系见 [DESIGN.md](DESIGN.md)、[knowledge/KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md)。SQL 类索引 **[未索引]**。
+
+---
+
+## 七、配置中心（Configuration Hub）
+
+### 7.1 配置项
+
+| 项 | 位置 | 说明 |
+|----|------|------|
+| 文档元数据 | [docs_meta.yaml](docs_meta.yaml)、各 `*_meta.yaml` | 阶段与目录元信息 |
+| manifest | [manifest.yaml](manifest.yaml) | 应用清单字段（按项目约定） |
+
+### 7.2 环境差异
+
+中央库模式与独立安装差异见 [README-c.md](README-c.md)、[README-s.md](README-s.md) 及 [../scripts/README.md](../scripts/README.md)。
+
+### 7.3 敏感信息
+
+不在本目录提交真实密钥；仅描述键名与流程。
+
+---
+
+## 八、索引边界（Index Boundary）
+
+### 8.1 覆盖范围
+
+| 指标 | 值 |
+|------|-----|
+| `git ls-files application/` | 46 |
+| 本轮 mode / depth | `full` / `3` |
+
+### 8.2 排除与未读
+
+- 未纳入：`../system/`、`../company/` 正文（由各自 `INDEX_GUIDE` 覆盖）。  
+- 被 `.gitignore` 排除且未入库的路径 **[未索引]**。
+
+### 8.3 维护规则
+
+- 根 `INDEX_GUIDE` 与**本文件**的索引运行均可记入 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)（`output_path` 区分）。  
+- 增量前提：主表第一行 `indexing_finished_ms` 有效，见 `agent/skills/docs-indexing/references/indexing-log-spec.md`。
+
+---
+
+## 九、扩展资源（Extended Resources）
+
+### 9.1 核心文档
+
+| 文档 | 路径 |
+|------|------|
+| 全局索引 | [../INDEX_GUIDE.md](../INDEX_GUIDE.md) |
+| 系统库入口 | [../system/README.md](../system/README.md) |
+| Skill 总表 | [../agent/skills/README.md](../agent/skills/README.md) |
+
+### 9.2 工具链
+
+Bash 5+、Git；可选 `docs-change` / `docs-build` 与本目录 changelogs 联动。
+
+---
 
 ## 十、中央知识库接入工程
 
@@ -99,3 +226,7 @@
 | APP ID | 工程路径（Git 或绝对路径） | 文档目录 |
 |--------|---------------------------|----------|
 | APP-TEST | /private/tmp/test-central | /private/tmp/test-central/docs |
+
+---
+
+**索引元数据**: 本次运行 **mode=full**，**depth=3**，**since_ms=0**，输出 **application/INDEX_GUIDE.md**；运行记录见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)。

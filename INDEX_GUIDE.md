@@ -1,7 +1,7 @@
 # ai-knowledge 索引指南（INDEX_GUIDE）
 
-> **最后更新**: 2026-04-25  
-> **文档定位**: 面向 AI Agent 与维护者的**仓库根全索引目录**；九章结构遵循 `agent/skills/docs-indexing/references/nine-chapter-spec.md`。与 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)（应用知识库侧机器索引与建联登记）互为补充时，以本文件为**中央库根路径**落地与检索入口。
+> **最后更新**: 2026-05-04  
+> **文档定位**: 面向 AI Agent 与维护者的**仓库根全索引目录**；九章结构遵循 `agent/skills/docs-indexing/references/nine-chapter-spec.md`。与 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[system/INDEX_GUIDE.md](system/INDEX_GUIDE.md) 互为补充时，以本文件为**中央库根路径**落地与检索入口。
 
 ---
 
@@ -16,6 +16,7 @@
 | 应用知识库 SSOT | [application/README.md](application/README.md) | SDD 主线、四视角与阶段文档中枢 |
 | 应用侧索引与建联 | [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) | 应用目录九章索引、中央知识库挂载建联登记 |
 | 系统知识库 | [system/README.md](system/README.md) | `architecture/`（五视角文档）、`application-{name}/` 联邦槽位、`analysis/`、`constitution/` |
+| 系统侧机器索引 | [system/INDEX_GUIDE.md](system/INDEX_GUIDE.md) | `system/` 树内九章索引（与根、应用侧索引互补） |
 | 公司知识库 | [company/README.md](company/README.md) | `architecture/`（五视角文档）、`system-{name}/` 联邦槽位、`changelogs/`、`constitution/`、`solutions/` |
 | 初始化脚本 | [scripts/README.md](scripts/README.md) | `docs-install`/`agent-install`/`docs-link`/`docs-bootstrap` |
 | 规范与 Slash | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/skills/README.md](agent/skills/README.md) | 全局约定与 Skill 清单 |
@@ -27,7 +28,7 @@
 - **核心定位**: 企业级全局知识底座（Markdown/YAML + Bash 初始化链）；**无业务应用运行时**
 - **技术栈**: Markdown、YAML；Bash 5+；Git；可选 `curl`、`rsync`（脚本可回退 `cp`）
 - **语言/构建**: 不适用传统应用「启动类」；可运行项为 Bash 脚本与可选 `scripts/tests/docs-init/run.sh`（见 [scripts/README.md](scripts/README.md)）
-- **仓库规模（git 已跟踪）**: 共 **376** 个文件；扩展名约 **279** `.md`、**33** `.sh`、**30** `.yaml`、**18** `.py`、**10** `.json`（统计来源：`git ls-files`，2026-04-25）
+- **仓库规模（git 已跟踪）**: 共 **517** 个文件；扩展名约 **395** `.md`、**40** `.sh`、**30** `.yaml`、**10** `.py`、**39** `.json`（统计来源：`git ls-files`，2026-05-04）
 
 ---
 
@@ -74,7 +75,8 @@ flowchart LR
 ### 2.4 文档目录
 
 - **根索引**: 本文件 [INDEX_GUIDE.md](INDEX_GUIDE.md)
-- **应用知识库**: [application/](application/)，详 [application/README.md](application/README.md)
+- **应用知识库**: [application/](application/)，详 [application/README.md](application/README.md)；机器索引 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)
+- **系统知识库树**: [system/](system/)，详 [system/README.md](system/README.md)；机器索引 [system/INDEX_GUIDE.md](system/INDEX_GUIDE.md)
 - **运维日志**: [application/changelogs/](application/changelogs/)（`CHANGE-LOG.md`、`INDEXING-LOG.md`）
 
 ---
@@ -222,10 +224,12 @@ stateDiagram-v2
 
 | 类型 | 数量（已跟踪） | 描述 |
 |------|----------------|------|
-| 全库文件 | 376 | `git ls-files` 2026-04-25 |
-| Markdown | 279 | 主体文档与 Skill |
-| Shell | 33 | 初始化与辅助脚本 |
+| 全库文件 | 517 | `git ls-files` 2026-05-04 |
+| Markdown | 395 | 主体文档与 Skill |
+| Shell | 40 | 初始化与辅助脚本 |
 | YAML | 30 | 元数据与知识实体 |
+| Python | 10 | 钩子与辅助脚本 |
+| JSON | 39 | 评测与知识提取等 |
 
 精读依据：`agent/skills/docs-indexing/references/scan-spec.md` 深度 3；本索引正文整合自**已读**入口文件与仓库统计，非逐文件全文摘录。
 
@@ -252,8 +256,9 @@ stateDiagram-v2
 | 文档 | 路径 | 描述 |
 |------|------|------|
 | 全局查阅顺序 | [INDEX_GUIDE.md](INDEX_GUIDE.md)（本文件） | 根目录九章地图 |
-| 应用侧九章与建联 | [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) | 目标为 `DOC_DIR` 时的并行索引 |
+| 应用侧九章与建联 | [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) | `application/` 树内九章索引与中央建联登记 |
 | 系统知识库入口 | [system/README.md](system/README.md) | 五视角架构文档、联邦槽位、analysis/ |
+| 系统侧九章索引 | [system/INDEX_GUIDE.md](system/INDEX_GUIDE.md) | `system/` 树内九章索引 |
 | 公司知识库入口 | [company/README.md](company/README.md) | 五视角架构文档、system-{name}/ 槽位、changelogs/ |
 | 设计原则 | [application/DESIGN.md](application/DESIGN.md) | 元模型与演进 |
 | 贡献流程 | [application/CONTRIBUTING.md](application/CONTRIBUTING.md) | 阶段与模板指针 |
@@ -295,4 +300,4 @@ stateDiagram-v2
 
 ---
 
-**索引元数据**: 本次运行 **mode=incremental**，**depth=3**，**since=1777101878615**，输出 **./INDEX_GUIDE.md**；运行记录见 [application/changelogs/INDEXING-LOG.md](application/changelogs/INDEXING-LOG.md)。
+**索引元数据**: 本次运行 **mode=full**，**depth=3**，**since_ms=0**（全量），输出 **./INDEX_GUIDE.md**；运行记录见 [application/changelogs/INDEXING-LOG.md](application/changelogs/INDEXING-LOG.md)。

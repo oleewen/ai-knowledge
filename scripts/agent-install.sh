@@ -57,9 +57,13 @@ is_agent_readme_basename() {
 }
 
 # 同步目录树，排除各层 README / readme.md
+# 须带 --delete-excluded：否则接收端仅余被 exclude 的文件（如旧目录里的 README）时，
+# rsync 无法删空父目录，会报「not empty, cannot delete」（例如 reference/ 已改名为 references/）。
 sync_tree_excluding_readme() {
   local src="$1" dst="$2"
-  sdx_sync_dir "$src" "$dst" --exclude 'README' --exclude 'README.md' --exclude 'readme.md'
+  sdx_sync_dir "$src" "$dst" \
+    --delete-excluded \
+    --exclude 'README' --exclude 'README.md' --exclude 'readme.md'
 }
 
 copy_file_plain() {

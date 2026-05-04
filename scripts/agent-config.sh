@@ -48,18 +48,20 @@ readonly SDX_DEFAULT_AGENTS_OPT='cursor'
 
 # 根据 scope 设置四个 nameref 开关：install_rules install_skills install_hooks install_scripts
 # 用法：agent_scope_apply <scope> <nameref_rules> <nameref_skills> <nameref_hooks> <nameref_scripts>
+# 注意：本函数内 nameref 局部名不得与第 2～5 参「变量名」相同，否则 Bash 会报 circular name reference
+#（例如调用方传 _ir 时，不可再声明 local -n _ir="$2"）。
 agent_scope_apply() {
   local _raw="${1:?scope}"
-  local -n _ir="${2:?}" _is="${3:?}" _ih="${4:?}" _ish="${5:?}"
-  _ir=0 _is=0 _ih=0 _ish=0
+  local -n _ref_rules="${2:?}" _ref_skills="${3:?}" _ref_hooks="${4:?}" _ref_scripts="${5:?}"
+  _ref_rules=0 _ref_skills=0 _ref_hooks=0 _ref_scripts=0
   case "${_raw}" in
     a|A|all)
-      _ir=1 _is=1 _ih=1 _ish=1
+      _ref_rules=1 _ref_skills=1 _ref_hooks=1 _ref_scripts=1
       ;;
-    r|R) _ir=1 ;;
-    s|S) _is=1 ;;
-    h|H) _ih=1 ;;
-    sh|SH) _ish=1 ;;
+    r|R) _ref_rules=1 ;;
+    s|S) _ref_skills=1 ;;
+    h|H) _ref_hooks=1 ;;
+    sh|SH) _ref_scripts=1 ;;
     *) return 1 ;;
   esac
   return 0
