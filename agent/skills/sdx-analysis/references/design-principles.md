@@ -1,6 +1,6 @@
 # 设计原则（sdx-analysis）
 
-验收勾选项见 [quality-checklist.md](quality-checklist.md)；语言规范见 [audience-and-language.md](audience-and-language.md)。
+验收勾选项见 [quality-checklist.md](quality-checklist.md)；语言规范见 [audience-and-language.md](audience-and-language.md)；反模式清单见 [anti-patterns.md](anti-patterns.md)。
 
 ---
 
