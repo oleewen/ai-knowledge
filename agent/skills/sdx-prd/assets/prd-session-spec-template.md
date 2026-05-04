@@ -1,6 +1,6 @@
 # sdx-prd 草稿（中间稿）
 
-> **说明**：门禁 **G{n}** 为流程步骤编号；模板 **§n** 为 PRD 章节号；**US-n / UC-n / FR-n** 等编号见 [reference/core-concepts.md](../reference/core-concepts.md)。
+> **说明**：门禁 **G{n}** 为流程步骤编号；模板 **§n** 为 PRD 章节号；**US-n / UC-n / FR-n** 等编号见 [references/core-concepts.md](../references/core-concepts.md)。
 
 **IDEA-ID**：`{IDEA-ID}`（与上游 `ANALYSIS-{IDEA-ID}.md` 一致）  
 **MVP 阶段 N**：`{N}`（对应目录 `MVP-Phase-{N}` 与终稿文件名 `PRD-{IDEA-ID}-{N}.md`）  
@@ -27,7 +27,7 @@
 
 ### 方案取舍（本门禁内若存在多套可选）
 
-（可选；有 2 套及以上真实路径时填写：各路径业务命名、利弊、被选方案及理由。详见 [reference/brainstorming-integration.md](../reference/brainstorming-integration.md)。）
+（可选；有 2 套及以上真实路径时填写：各路径业务命名、利弊、被选方案及理由。详见 [references/brainstorming-integration.md](../references/brainstorming-integration.md)。）
 
 ### Q-n / FR / US / BR（本门禁相关）
 

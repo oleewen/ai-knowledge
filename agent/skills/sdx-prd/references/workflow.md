@@ -1,6 +1,105 @@
-# 工作流规范（sdx-prd）
+# sdx-prd 工作流
 
-SKILL.md 三阶段流程为主干；本文件补充**门禁状态机**、精简/全量映射、回跳影响面、Q-n 协议，以及各章节的填充要点。
+[SKILL.md](../SKILL.md) 为主干；写入类门禁与例外见 [gates.md](gates.md)。
+
+---
+
+## 目标
+
+在**需求分析（ANALYSIS）**与**当前 MVP** 范围内，产出可评审、可验收的 **PRD**（十一章），为下游 **ASD / DSD** 提供可追溯的 US/UC/FR/BR/AC 锚点。
+
+---
+
+## 核心约束（执行须满足）
+
+| 约束 | 说明 |
+|------|------|
+| 模板驱动 | 严格遵循 `prd-template.md` 十一章；无内容章节保留标题并标注「不适用」 |
+| 证据优先 | 用户故事与业务规则须引用 FR-n / BR-n，禁止臆测 |
+| MVP 聚焦 | 仅覆盖 `--mvp` 对应范围，不混入后续 MVP |
+| 业务可读 | 正文以产品/业务语言为主；细则见 [audience-and-language.md](audience-and-language.md) |
+| 歧义标注 | 不确定项标为待澄清，暂停确认，禁止自行假设 |
+| 可追溯 | US-n→FR-n，UC-n↔US-n，BR-n 与 ANALYSIS 一致，AC/NAC 可指回 US 或 §9 |
+| 命名约定 | `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md` |
+
+完整原则、FR 句式、表格级反模式与错误处理见 [design-principles.md](design-principles.md)；叙事级反模式见 [anti-patterns.md](anti-patterns.md)。
+
+---
+
+## 阶段一：准备工作
+
+**一次性**抛出以下参数供用户选择（支持快捷修改，如 `1.1 M IDEA-ID=XXX`）：
+
+1. **IDEA-ID 主题** — 默认 `{YYMMDD}-{中文主题}`；须与上游 `ANALYSIS-{IDEA-ID}.md` **对齐**（见 [core-concepts.md](core-concepts.md)）。
+2. **MVP 阶段编号 `N`** — 对应 `MVP-Phase-{N}` 与终稿文件名 `PRD-{IDEA-ID}-{N}.md`。
+3. **门禁粒度** — 3.1 全量 **11G（G1–G11）**（与 prd-template 十一章一一对应）；3.2 **精简 6G**：G(1)–G(6)（映射见下文「精简 6 门禁映射」）。
+4. **分析深度** — 4.1 `standard`（默认）；4.2 `quick` 压缩叙述版；4.3 `deep` 含对标与交互细化要点。
+
+**硬输入**：`{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md` 中当前 MVP 章节；不存在时终止，提示先执行 `sdx-analysis`。
+
+---
+
+## 阶段二：草稿确认
+
+**路径**：`docs/superpowers/specs/YYYY-MM-DD-<topic>-sdx-prd.md`，骨架见 [../assets/prd-session-spec-template.md](../assets/prd-session-spec-template.md)。
+
+### 标准四选项
+
+每个门禁末尾附上（全文见 [gates.md](gates.md) 内 fenced 块）：C / M / S / F。
+
+### 门禁与模板映射（全量 11G）
+
+| 门禁 | 覆盖模板 | 状态 | 备注 |
+|------|----------|------|------|
+| [G{n}](#g{n}-XX) | [§{n} XX](#g{n}-XX) | 草案/已确认 | 示例行；按需复制为 G{n+1} |
+
+**精简 6G** 映射见下文「精简 6 门禁映射」。
+
+**会话草稿「门禁进度」表**：门禁列与覆盖模板列均须为指向**本会话 spec 稿内** `## Gn` 小节锚点。占位与示例见会话模板「门禁进度」。
+
+### 门禁节奏（强制）
+
+- 每次只呈现一段草案或一个待确认点，末尾附标准四选项。
+- Gn 未收口前不展开 G(n+1)（回跳除外）。
+- 进入本阶段后，**禁止**以「已在 `…/specs/….md` 中补充 G{n} 草案，要点如下：」起首；直接给出要点或提问。
+- 回跳到 G{k} 后，按强/弱依赖评估后续门禁是否需重审（见「回跳影响面评估」）。
+
+### brainstorming 嵌入层（阶段二）
+
+阶段二在门禁交互上**对齐** brainstorming 的可复用节奏，但以本会话 spec 与 `PRD-*.md` 为唯一交付主线。细则见 [brainstorming-integration.md](brainstorming-integration.md)。
+
+- **单题澄清**：与 **Q-n** 协议一致（见「待澄清项（Q-n）交互协议」）。
+- **任意 G{n} 内多套可取舍方案**：当存在两条及以上真实可选路径时，**须在本门禁内**先完成 brainstorming 式对比（2–3 套、业务语义命名、利弊与推荐），再写入「本门禁结论」并收口该 Gn。
+
+### 总确认（Qclose-1）
+
+规则与确认人见 [gates.md](gates.md)。
+
+---
+
+## 阶段三：草稿定稿
+
+**3.1 骨架**：在 `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/` 下新建 `PRD-{IDEA-ID}-{N}.md`，按 [../assets/prd-template.md](../assets/prd-template.md) 落十一章标题、表架、§11.3（`- [ ]`）、文末 fenced yaml；标注「草稿填充中」。
+
+**3.2 分块填充**（默认 11 chunk，与 G1–G11 / §1–§11 对齐；精简 6G 时可用 6 chunk）：
+
+| Chunk | 覆盖章节 | 填充要点 |
+|-------|---------|---------|
+| 1 | §1 产品概述 | 引用 SOLUTION/ANALYSIS/MVP；摘录成功标准与角色 |
+| 2 | §2 业务流程 | 主流程 Mermaid + 步骤表（六要素）；EX-n 清单；跨系统时序 |
+| 3 | §3 产品交互 | 交互旅程或说明；关键校验与反馈 |
+| 4 | §4 用例模型 | 用例图（覆盖角色）；UC-n 含前后置、主成功场景、扩展场景 |
+| 5 | §5 用户故事 | 每 FR-n 至少一 US-n；Given-When-Then 含正常+异常 |
+| 6 | §6 功能模块 | 按业务能力域划分；模块与 US-n 对应 |
+| 7 | §7 业务规则 | BR-n 集中汇总（触发条件、执行逻辑、优先级、关联用例） |
+| 8 | §8 数据字典 | 业务术语；状态定义与流转 |
+| 9 | §9 非功能需求 | 仅本 MVP 相关类别；指标/阈值 + 度量方法 |
+| 10 | §10 验收标准 | AC-n 关联 US-n；NAC-n 与 §9 互链 |
+| 11 | §11 附录 | §11.1 原型链接；§11.2 变更历史；§11.3 质量自查勾选 |
+
+每块结束附标准四选项；用户可随时说「暂停」。
+
+**终检**：对照 [quality-checklist.md](quality-checklist.md) 逐项判定，已达标项将 `- [ ]` 改为 `- [x]`，未达标项保持 `- [ ]`，禁止虚假勾选。
 
 ---
 

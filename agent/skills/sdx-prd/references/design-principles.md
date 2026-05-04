@@ -1,6 +1,6 @@
 # 设计原则与反模式（sdx-prd）
 
-SKILL.md「核心约束」为精简版，本文件为完整规范。质量验收清单见 [quality-checklist.md](quality-checklist.md)（本文件讲原则，清单可执行）。
+执行路由与阶段见 [SKILL.md](../SKILL.md)、[workflow.md](workflow.md)。**表格级禁止清单**见本文「反模式清单（禁止）」；**叙事级表现 + 纠正**见 [anti-patterns.md](anti-patterns.md)。质量验收清单见 [quality-checklist.md](quality-checklist.md)（本文件讲原则，清单可执行）。
 
 ---
 

@@ -10,7 +10,7 @@
 |------|----------------------|----------------------|
 | 主产物 | 常为 `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` | 会话 spec：`...-sdx-prd.md`；终稿：`PRD-*.md` |
 | 正常终态 | 经批准后进入 `writing-plans` 等实现计划 | **Qclose-1** → 阶段三分块定稿；**不**在本会话内以 `writing-plans` 作为默认收尾 |
-| HARD-GATE | 以 brainstorming 技能为准 | **仍以 sdx-prd HARD-GATE 为准**：总确认前默认不写 `{DOC_DIR}/requirements/**/PRD-*.md` |
+| HARD-GATE | 以 brainstorming 技能为准 | **仍以 sdx-prd 门禁为准**（见 [gates.md](gates.md)）：总确认前默认不写 `{DOC_DIR}/requirements/**/PRD-*.md` |
 
 **禁止**：在仅执行 `/sdx-prd` 的对话中，用「已完成 brainstorming」为由跳过 Gn 收口、门禁标记或 Qclose-1；也**禁止**默认创建 `*-design.md` 替代本会话 spec。
 
