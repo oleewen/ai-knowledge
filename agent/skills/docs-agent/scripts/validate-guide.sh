@@ -3,7 +3,7 @@
 # validate-guide.sh — 验证 README.md / AGENTS.md / INDEX 路径一致性
 #
 # 用法（自仓库根执行）：
-#   bash agent/skills/agent-guide/scripts/validate-guide.sh [--root <project-root>]
+#   bash agent/skills/docs-agent/scripts/validate-guide.sh [--root <project-root>]
 #
 # 检查项：
 #   1. INDEX 落盘路径是否存在

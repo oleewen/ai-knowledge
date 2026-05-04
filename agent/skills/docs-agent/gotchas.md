@@ -1,16 +1,16 @@
-# agent-guide 常见陷阱
+# docs-agent 常见陷阱
 
 ---
 
 ## 需求对齐
 
-**意图模糊仍直接生成 README/AGENTS**：符合 [execution-spec.md §0](reference/execution-spec.md)「澄清路径」时，须先对齐 `--output` 与 `--mode`（一次一问），确认前不落盘。快速路径仅在参数或自然语言已可唯一推断时适用。
+**意图模糊仍直接生成 README/AGENTS**：符合 [references/gates.md](references/gates.md)「澄清路径」时，须先对齐 `--output` 与 `--mode`（一次一问），确认前不落盘。快速路径仅在参数或自然语言已可唯一推断时适用。
 
 ---
 
 ## Index 解析
 
-**用对话粘贴的 Index 替代落盘文件**：仓库存在 §1.1 路径时，一律以磁盘版本为准，忽略对话粘贴内容。磁盘版本可能已更新，用粘贴内容会导致产出与实际仓库不一致。
+**用对话粘贴的 Index 替代落盘文件**：仓库存在落盘路径时，一律以磁盘版本为准，忽略对话粘贴内容。磁盘版本可能已更新，用粘贴内容会导致产出与实际仓库不一致。
 
 **未命中 Index 仍继续生成**：四个候选路径均不存在时，立即终止并提示用户运行 `/docs-indexing`，不要凭印象或目录猜测生成文档。
 
@@ -42,7 +42,7 @@
 
 ## 验收阶段
 
-**跳过路径一致性校验**：生成后必须验证 AGENTS 中的路径引用在磁盘上存在，否则 Agent 按指引打开文件时报 404，工作流中断。运行 `bash agent/skills/agent-guide/scripts/validate-guide.sh --root .` 可自动检查。
+**跳过路径一致性校验**：生成后必须验证 AGENTS 中的路径引用在磁盘上存在，否则 Agent 按指引打开文件时报 404，工作流中断。运行 `bash agent/skills/docs-agent/scripts/validate-guide.sh --root .` 可自动检查。
 
 **AGENTS 首条参考路径写错**：AGENTS「先读什么」表格中 INDEX 路径必须与步骤 1 记录的实际落盘路径完全一致，否则 Agent 启动时找不到地图。
 
@@ -50,7 +50,7 @@
 
 ## 禁止在本 Skill 内调用 docs-indexing
 
-发现 Index 过时或缺失时，不要在 agent-guide 执行流程内自动触发 docs-indexing。职责混淆会导致执行链不可预期，可能覆盖用户未提交的 Index 变更。需要更新 Index 时，单独运行 `/docs-indexing`。
+发现 Index 过时或缺失时，不要在 docs-agent 执行流程内自动触发 docs-indexing。职责混淆会导致执行链不可预期，可能覆盖用户未提交的 Index 变更。需要更新 Index 时，单独运行 `/docs-indexing`。
 
 ---
 

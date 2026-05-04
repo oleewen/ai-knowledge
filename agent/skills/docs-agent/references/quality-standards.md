@@ -1,6 +1,6 @@
 # 质量验证标准
 
-agent-guide 产出的验收清单与反模式。步骤 5 验证时逐项核对。
+`docs-agent` 产出的验收清单与反模式。步骤 5 验证时逐项核对。
 
 ---
 
@@ -20,7 +20,7 @@ agent-guide 产出的验收清单与反模式。步骤 5 验证时逐项核对�
 辅助验证：
 
 ```bash
-bash agent/skills/agent-guide/scripts/validate-guide.sh --root .
+bash agent/skills/docs-agent/scripts/validate-guide.sh --root .
 ```
 
 ---
@@ -28,7 +28,7 @@ bash agent/skills/agent-guide/scripts/validate-guide.sh --root .
 ## 反模式（禁止）
 
 | 反模式 | 说明 |
-|--------|------|
+| ------ | ---- |
 | AGENTS 重写文档索引表 | 在 AGENTS 里重写一份「完整文档索引表」 |
 | Skill 内调用 docs-indexing | 在本 Skill 执行流程内调用 docs-indexing |
 | 无 Index 编造细节 | 无落盘 Index 且用户未授权例外时编造目录/模块细节 |
