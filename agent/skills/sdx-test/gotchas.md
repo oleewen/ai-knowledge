@@ -1,6 +1,6 @@
 # 常见陷阱（sdx-test）
 
-反模式与设计原则见 [reference/design-principles.md](reference/design-principles.md)；本文件聚焦**操作层易错点**。
+反模式与设计原则见 [references/design-principles.md](references/design-principles.md)；本文件聚焦**操作层易错点**。
 
 ---
 

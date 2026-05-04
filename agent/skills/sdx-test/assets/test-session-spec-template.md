@@ -1,6 +1,6 @@
 # sdx-test 草稿（中间稿）
 
-**IDEA-ID**：`{IDEA-ID}`（与 PRD/DSD（及 ASD）一致；规则见 [reference/core-concepts.md](../reference/core-concepts.md)）  
+**IDEA-ID**：`{IDEA-ID}`（与 PRD/DSD（及 ASD）一致；规则见 [references/core-concepts.md](../references/core-concepts.md)）  
 **DOC_DIR**（自 `.docsconfig`）：`{DOC_DIR}`  
 **--depth**：`quick | standard | deep`  
 **门禁粒度**：`6 门禁（G1–G6）| 精简 4 门禁`  
@@ -24,7 +24,7 @@
 
 ### 方案取舍（本门禁内若存在多套可选）
 
-（可选；有 2 套及以上真实路径时填写：各路径业务命名、利弊、被选方案及理由。详见 [reference/brainstorming-integration.md](../reference/brainstorming-integration.md)。）
+（可选；有 2 套及以上真实路径时填写：各路径业务命名、利弊、被选方案及理由。详见 [references/brainstorming-integration.md](../references/brainstorming-integration.md)。）
 
 ### Q-n / TC / US / BR（本门禁相关）
 

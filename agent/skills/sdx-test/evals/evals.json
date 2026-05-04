@@ -1,0 +1,298 @@
+{
+  "skill_name": "sdx-test",
+  "version": "1.1.0",
+  "description": "用于评估 sdx-test 技能触发边界、分流与门禁表述；含 expected_output 与断言供 grader 客观评分。",
+  "evals": [
+    {
+      "id": "test-trigger-001",
+      "category": "should-trigger",
+      "prompt": "PRD 和 DSD 都有了，请走 /sdx-test：先会话 spec 与 G1–G6，总确认后落 TDD-BILL-1.md，§2 要覆盖接口异常和回归范围。",
+      "expected_output": "以 /sdx-test 为主路径：会话 spec、门禁、总确认后再写 TDD；体现用例、回归、接口异常；未确认不写 TDD 终稿。",
+      "assertions": [
+        {
+          "id": "gate-compliance",
+          "name": "门禁合规",
+          "type": "must_include",
+          "check": "明确用户总确认前禁止写入 {DOC_DIR}/requirements/**/TDD-*.md（或等价「未确认不落 TDD 定稿」），并可提及合法例外或 SDX_TEST_ALLOW_TDD_WRITE。",
+          "priority": "P0"
+        },
+        {
+          "id": "structure-integrity",
+          "name": "结构完整",
+          "type": "must_include",
+          "check": "体现 TDD、G1–G6 或六章模板、用例与回归/异常之一组，而非仅复述 DSD 即结束。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得将本请求主路径改为仅 /sdx-design、仅 /sdx-prd 或纯 docs-* 并宣称无需 TDD。",
+          "priority": "P0"
+        },
+        {
+          "id": "prd-baseline",
+          "name": "PRD 基线",
+          "type": "should_include",
+          "check": "应提及 PRD 或需求侧输入。",
+          "priority": "P1"
+        }
+      ]
+    },
+    {
+      "id": "test-trigger-002",
+      "category": "should-trigger",
+      "prompt": "帮我出一份测试方案：把 PRD 里 US-001～003 转成 Given-When-Then，并写进出标准和 P0 回归集，用 sdx-test 流程，depth 用 quick。",
+      "expected_output": "主路径 sdx-test：TDD/用例/进出标准/回归；quick depth；含门禁意识。",
+      "assertions": [
+        {
+          "id": "gate-compliance",
+          "name": "门禁合规",
+          "type": "must_include",
+          "check": "含未确认不写 TDD 终稿或 HARD-GATE 等价语义。",
+          "priority": "P0"
+        },
+        {
+          "id": "structure-integrity",
+          "name": "结构完整",
+          "type": "must_include",
+          "check": "体现 Given-When-Then、进出标准、回归或 TDD 章节规划。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得将主路径改为仅写 PRD 用户故事而无测试设计交付框架。",
+          "priority": "P0"
+        },
+        {
+          "id": "depth-quick",
+          "name": "深度参数",
+          "type": "should_include",
+          "check": "应提及 quick 或精简覆盖语义。",
+          "priority": "P1"
+        }
+      ]
+    },
+    {
+      "id": "test-trigger-003",
+      "category": "should-trigger",
+      "prompt": "请按 SDX 进入测试设计阶段，生成 TDD-ORDER-2.md，并跑 validate-test.sh --gate-check。",
+      "expected_output": "主路径 sdx-test：TDD-ORDER-2、校验脚本、门禁；与 PRD/DSD 衔接。",
+      "assertions": [
+        {
+          "id": "gate-compliance",
+          "name": "门禁合规",
+          "type": "must_include",
+          "check": "须体现未确认不写 TDD 或 CONFIRMED 门禁语义。",
+          "priority": "P0"
+        },
+        {
+          "id": "structure-integrity",
+          "name": "结构完整",
+          "type": "must_include",
+          "check": "体现 TDD 产物与 validate-test 或 gate-check 之一。",
+          "priority": "P0"
+        },
+        {
+          "id": "deliverable-naming",
+          "name": "产物对齐",
+          "type": "should_include",
+          "check": "应出现 TDD-ORDER-2 或 ORDER-2 与测试设计语义。",
+          "priority": "P1"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得将本请求整体改判为仅 /sdx-architect 或仅 docs-indexing。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "test-trigger-004",
+      "category": "should-trigger",
+      "prompt": "设计一下回归范围：根据 DSD §2 变更列出 TC-REG 清单和退出标准，最后归到 TDD 里。",
+      "expected_output": "以 sdx-test 收敛：回归用例清单、退出标准、纳入 TDD；非仅 DSD 更新。",
+      "assertions": [
+        {
+          "id": "gate-compliance",
+          "name": "门禁合规",
+          "type": "must_include",
+          "check": "含总确认前不写 TDD 正式路径或等价表述。",
+          "priority": "P0"
+        },
+        {
+          "id": "structure-integrity",
+          "name": "结构完整",
+          "type": "must_include",
+          "check": "体现 TDD、TC-REG、退出/进出标准之一组。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得将主路径改为仅 /sdx-design 扩写 DSD 而无 TDD。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "test-not-trigger-001",
+      "category": "should-not-trigger",
+      "prompt": "只要先把 PRD-CRM-1.md 里用户故事和验收标准写全，暂不要测试用例和 TDD。",
+      "expected_output": "主路径为 /sdx-prd 与 PRD；不以 TDD 为当前主交付。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确点名 sdx-prd、/sdx-prd 或 PRD 为当前主路径。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-test-primary",
+          "name": "勿假主测试设计阶段",
+          "type": "must_not_conflict",
+          "check": "不得将回答框架定为「默认先完整执行 sdx-test 产出 TDD」而忽略只要 PRD。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "test-not-trigger-002",
+      "category": "should-not-trigger",
+      "prompt": "请用 /sdx-design 把 ASD §3 扩写到 DSD 和 specs，先不要写测试方案。",
+      "expected_output": "分流到 /sdx-design 与 DSD/specs；不以 TDD 为主路径。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须出现 /sdx-design 或 sdx-design 或 DSD/specs 作为主路径。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-test-primary",
+          "name": "勿假主测试设计阶段",
+          "type": "must_not_conflict",
+          "check": "不得将主路径表述为 sdx-test 与 TDD 定稿。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "test-not-trigger-003",
+      "category": "should-not-trigger",
+      "prompt": "先把服务边界画进 ASD-PAY-1.md，不要测试用例。",
+      "expected_output": "主路径为 /sdx-architect 与 ASD；不以 TDD 为主路径。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须点名 sdx-architect、/sdx-architect 或 ASD 为当前主路径。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-test-primary",
+          "name": "勿假主测试设计阶段",
+          "type": "must_not_conflict",
+          "check": "不得将任务框成产出 TDD-*.md 作为主要交付。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "test-not-trigger-004",
+      "category": "should-not-trigger",
+      "prompt": "把 application-billing 蒸馏到 billing-overview.md。",
+      "expected_output": "分流到 docs-distill；不以 TDD 为主路径。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须点名 docs-distill、/docs-distill 或等价蒸馏到 overview 表述。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-test-primary",
+          "name": "勿假主测试设计阶段",
+          "type": "must_not_conflict",
+          "check": "不得将主路径说成 sdx-test 与 TDD。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "test-not-trigger-005",
+      "category": "should-not-trigger",
+      "prompt": "业务目标很模糊，请先 /sdx-solution 出 SOLUTION-260504-x.md，不要测试用例。",
+      "expected_output": "分流到 /sdx-solution 与 SOLUTION；不以 TDD 为主路径。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须点名 /sdx-solution、sdx-solution 或 SOLUTION 为当前主路径。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-test-primary",
+          "name": "勿假主测试设计阶段",
+          "type": "must_not_conflict",
+          "check": "不得将主路径说成先写 TDD。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "test-not-trigger-006",
+      "category": "should-not-trigger",
+      "prompt": "跑 /docs-build 更新 KNOWLEDGE_INDEX。",
+      "expected_output": "分流到 docs-build；不以 TDD 为主路径。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须点名 docs-build、/docs-build 或 KNOWLEDGE_INDEX 构建语义。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-test-primary",
+          "name": "勿假主测试设计阶段",
+          "type": "must_not_conflict",
+          "check": "不得将主路径说成 sdx-test。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "test-not-trigger-007",
+      "category": "should-not-trigger",
+      "prompt": "从 prd 目录抽取段落写进 foo-overview 第三列。",
+      "expected_output": "分流到 docs-extract；不以 TDD 为主路径。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须点名 docs-extract、/docs-extract 或等价提炼到 overview 表述。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-test-primary",
+          "name": "勿假主测试设计阶段",
+          "type": "must_not_conflict",
+          "check": "不得将主路径说成 TDD。",
+          "priority": "P0"
+        }
+      ]
+    }
+  ]
+}
