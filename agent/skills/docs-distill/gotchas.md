@@ -1,6 +1,6 @@
 # docs-distill 常见陷阱
 
-技能正文见 [SKILL.md](SKILL.md)；参考文档索引见 [reference/README.md](reference/README.md)。
+技能正文见 [SKILL.md](SKILL.md)；参考文档索引见 [references/README.md](references/README.md)。
 
 ---
 

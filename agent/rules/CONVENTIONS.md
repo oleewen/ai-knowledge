@@ -86,7 +86,7 @@
 ### docs-distill 补充
 
 - 会话 spec 除上述共通要求外，须写明目标应用与 `--full` / `--since` / `--dry-run` 等关键参数摘要。
-- 涉及 `system/changelogs/CHANGE-LOG.md` 与 `system/application-*/changelogs/ARCHIVE-LOG.md` 的追加与锚点更新，与上述闸门**同一原子事务**，适用同一交互与确认要求。详见 [docs-distill/reference/interaction-gate.md](../skills/docs-distill/reference/interaction-gate.md)。
+- 涉及 `system/changelogs/CHANGE-LOG.md` 与 `system/application-*/changelogs/ARCHIVE-LOG.md` 的追加与锚点更新，与上述闸门**同一原子事务**，适用同一交互与确认要求。详见 [docs-distill/references/interaction-gate.md](../skills/docs-distill/references/interaction-gate.md)。
 
 ---
 

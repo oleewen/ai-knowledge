@@ -1,6 +1,6 @@
 # 索引运行日志规范
 
-docs-indexing 的增量索引机制依赖各文档根下的 `INDEXING-LOG.md`，同时承担两个职责：记录每次索引运行结果，以及作为**下一次增量扫描的时间锚点**来源。形态与 [docs-distill 的 `distill-log-spec.md`](../../docs-distill/reference/distill-log-spec.md) 对齐：主表、**新记录最新在前**、单一真源、先主产物后日志。
+docs-indexing 的增量索引机制依赖各文档根下的 `INDEXING-LOG.md`，同时承担两个职责：记录每次索引运行结果，以及作为**下一次增量扫描的时间锚点**来源。形态与 [docs-distill 的 `distill-log-spec.md`](../../docs-distill/references/distill-log-spec.md) 对齐：主表、**新记录最新在前**、单一真源、先主产物后日志。
 
 **目录**：[日志文件位置](#日志文件位置) · [日志格式](#日志文件格式markdown-表记录) · [锚点列](#锚点列-indexing_finished_ms) · [增量基线确定逻辑（优先级）](#增量基线确定逻辑优先级) · [写入时机](#日志写入时机) · [dry-run 规则](#dry-run-规则) · [兼容旧版 Markdown 节与 HTML 注释](#兼容旧版-markdown-节与-html-注释) · [示例](#示例)
 
