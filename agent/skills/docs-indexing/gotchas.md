@@ -27,7 +27,7 @@
 ## 扫描与采集相关
 
 **深度 3 抽样跳读**
-用户确认了 `depth=3` 就是要最大化覆盖。不能只读每模块少量示例文件，或跳过"看起来差不多"的同级文件。须在排除规则内系统遍历；无法读完的路径必须在 §八 明示。详见 [reference/scan-spec.md](reference/scan-spec.md)「深度 3 应读尽读准则」。
+用户确认了 `depth=3` 就是要最大化覆盖。不能只读每模块少量示例文件，或跳过"看起来差不多"的同级文件。须在排除规则内系统遍历；无法读完的路径必须在 §八 明示。详见 [references/scan-spec.md](references/scan-spec.md)「深度 3 应读尽读准则」。
 
 **把未读文件写成已索引内容**
 零幻觉原则的核心：只索引实际读取的内容。未读路径标注 `[未索引]` 并说明原因，归入 §八。猜测的内容一旦写入索引，会污染下游所有依赖它的技能。
@@ -65,7 +65,7 @@
 每次成功写 `INDEX_GUIDE` 后必须向 `changelogs/INDEXING-LOG.md` 主表**插入一行**（最新在上）。不写入则下次增量无有效主表锚点；迁移前仍可能依赖文内旧 HTML 注释回退。
 
 **主表行缺失关键列**
-`indexing_finished_ms`、`mode`、`depth`、`output_path` 等须完整；主表见 [reference/indexing-log-spec.md](reference/indexing-log-spec.md)；缺少 `indexing_finished_ms` 会无法作增量基线。
+`indexing_finished_ms`、`mode`、`depth`、`output_path` 等须完整；主表见 [references/indexing-log-spec.md](references/indexing-log-spec.md)；缺少 `indexing_finished_ms` 会无法作增量基线。
 
 **输出路径优先级混淆**
 优先级：用户指定 > `./{DOC_DIR}/` > `./doc/` > `./INDEX_GUIDE.md`。若使用默认值，须将解析结果展示给用户确认后再写入。

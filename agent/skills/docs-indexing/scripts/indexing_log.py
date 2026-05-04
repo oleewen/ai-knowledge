@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# INDEXING-LOG 写入与基线解析（对齐 reference/indexing-log-spec.md）
+# INDEXING-LOG 写入与基线解析（对齐 references/indexing-log-spec.md）
 
 from __future__ import annotations
 

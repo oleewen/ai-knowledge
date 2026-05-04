@@ -12,8 +12,9 @@
 
 | 命令 | 说明 |
 |------|------|
-| `/docs-indexing` | 生成结构化 `INDEX_GUIDE.md`（九章文档地图），作为 Agent 导航与 RAG 权威来源；`INDEXING-LOG.md` 用主表记录运行（**最新在上**，锚点见 [docs-indexing/reference/indexing-log-spec.md](docs-indexing/reference/indexing-log-spec.md)）；支持全量/增量与深度 1/2/3。 |
+| `/docs-indexing` | 生成结构化 `INDEX_GUIDE.md`（九章文档地图），作为 Agent 导航与 RAG 权威来源；`INDEXING-LOG.md` 用主表记录运行（**最新在上**，锚点见 [docs-indexing/references/indexing-log-spec.md](docs-indexing/references/indexing-log-spec.md)）；支持全量/增量与深度 1/2/3；高风险落盘 spec + `sdx_gate_common.py --gate indexing`（见 [docs-indexing/references/gates.md](docs-indexing/references/gates.md)）。 |
 | `/docs-change` | 从 git commit、CHANGELOG/CHANGE-LOG、本地文件 mtime 采集变更，落盘 `CHANGE-LOG.md`（文末 HTML 注释承载增量基线）；供下游增量索引等使用。 |
+| `/docs-tag` | 为 Markdown 概览做关键词驱动标记：扫描目录提取候选词、用户选择后写入 YAML 附录（`<!-- spec-tags -->`），再对表格行追加 ✅；流程见 [docs-tag/references/workflow.md](docs-tag/references/workflow.md)。 |
 | `/docs-upgrade` | 定向增改 Markdown、源代码注释与配置文本；落盘后链式同步引用链，并辅以关键词检索（同义/近义/中英文）对齐同类表述；支持替换简写 `a - b` / `a > b` / `a 2 b`。 |
 | `/docs-agent` | 生成或更新根目录 `README.md`（人类）与 `AGENTS.md`（Agent）；以落盘 `INDEX_GUIDE.md` 为唯一地图，与 Index 职责不重叠。 |
 | `/docs-distill` | 将 `system/application-{name}/` 已核实内容蒸馏到系统知识库 `system/architecture/`；支持 `--app` `--since` `--full` `--dry-run`，默认按增量锚点蒸馏。 |

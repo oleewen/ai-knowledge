@@ -132,7 +132,7 @@ if [[ "$DATA_MODE" == "incremental" ]]; then
     if [[ "$BASE_INDEXING_TIME_MS" == "0" ]] || [[ -z "$BASE_INDEXING_TIME_MS" ]]; then
         echo "[ERROR] incremental 需要有效基线：主表第一行 indexing_finished_ms，"
         echo "  或显式 \`--since <epoch ms>\`。"
-        echo "  可改 \`--mode full\`，或先补全 ${LOG_FILE} 见 agent/skills/docs-indexing/reference/indexing-log-spec.md" >&2
+        echo "  可改 \`--mode full\`，或先补全 ${LOG_FILE} 见 agent/skills/docs-indexing/references/indexing-log-spec.md" >&2
         exit 1
     else
         echo "Using incremental mode with baseline (since) $BASE_INDEXING_TIME_MS"
@@ -262,7 +262,7 @@ ${TOP_FILES}
 
 ## 九、附录（Appendix）
 - 生成器：\`agent/skills/docs-indexing/scripts/indexing.sh\`
-- 规范参考：\`agent/skills/docs-indexing/reference/scan-spec.md\`
+- 规范参考：\`agent/skills/docs-indexing/references/scan-spec.md\`
 EOF
 
 # 写入索引运行日志（主表、最新在上；见 indexing_log.py / indexing-log-spec）
