@@ -11,6 +11,8 @@ description: >
 
 本技能以「调度器」方式工作：先判定是否应由 `sdx-analysis` 处理，再按阶段读取规范文件，经会话 spec 与门禁后产出可校验的 `ANALYSIS-*.md`（六章，见 `assets/analysis-template.md`）。
 
+主要读者：**需求分析师**（撰写与验收）；**产品与架构师参与评审**（可行性、范围）。实现与实现细化留给下游 **`sdx-architect`（ASD）** / **`sdx-design`（DSD）**。
+
 ---
 
 ## 适用边界
