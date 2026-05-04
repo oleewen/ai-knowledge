@@ -2,7 +2,7 @@
 
 ## IDEA-ID
 
-定义见 [sdx-solution：core-concepts §IDEA-ID](../../sdx-solution/reference/core-concepts.md#idea-id)。
+定义见 [sdx-solution：core-concepts §IDEA-ID](../../sdx-solution/references/core-concepts.md#idea-id)。
 
 本阶段终稿路径：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`  
 上游路径：`{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md`

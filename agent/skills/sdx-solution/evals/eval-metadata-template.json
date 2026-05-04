@@ -1,0 +1,48 @@
+{
+  "skill_name": "sdx-solution",
+  "eval_id": "solution-trigger-001",
+  "expected_category": "should-trigger",
+  "expected_route": "/sdx-solution",
+  "notes": "模板示例：可复制后按具体 eval 填充。",
+  "assertions": [
+    {
+      "id": "gate-compliance",
+      "name": "门禁合规",
+      "type": "must_include",
+      "check": "响应需明确 HARD-GATE（草稿用户总确认前禁止写入 {DOC_DIR}/solutions/SOLUTION-*.md）及合法例外条件。",
+      "priority": "P0"
+    },
+    {
+      "id": "structure-integrity",
+      "name": "结构完整",
+      "type": "must_include",
+      "check": "响应需体现解决方案阶段产出边界：共识级 SOLUTION、七章模板或会话 spec + 分阶段门禁（G1–G7 / 精简 5G），而非 ANALYSIS/PRD/ASD 正文。",
+      "priority": "P0"
+    },
+    {
+      "id": "boundary-routing",
+      "name": "边界分流",
+      "type": "must_not_conflict",
+      "check": "若 prompt 目标为需求分析、PRD、ASD/DSD 或 docs-distill/extract/indexing，应分流到对应 sdx-* 或 docs-* 技能，不得把此类任务当作仅写 SOLUTION 即可结束。",
+      "priority": "P0"
+    },
+    {
+      "id": "upstream-awareness",
+      "name": "输入形态识别",
+      "type": "should_include",
+      "check": "响应应体现从业务描述/原始材料结构化诉求，并说明与下游 sdx-analysis（及更后阶段）的衔接，而非假定已有完整 PRD。",
+      "priority": "P1"
+    },
+    {
+      "id": "session-spec-awareness",
+      "name": "会话 spec 与总确认",
+      "type": "should_include",
+      "check": "应提及阶段二中间稿路径形态（docs/superpowers/specs/…-sdx-solution.md）或等价的会话 spec + Qclose-1 总确认后再定稿。",
+      "priority": "P1"
+    }
+  ],
+  "scoring": {
+    "pass_rule": "P0 断言全部通过，且 P1 至少通过 1 项",
+    "fail_rule": "任一 P0 断言失败即判定不通过"
+  }
+}

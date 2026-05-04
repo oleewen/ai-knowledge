@@ -2,7 +2,7 @@
 
 主要读者为**产品经理、需求分析师**与参与范围评审的**业务方**。正文用「谁能做什么、规则如何、如何验收、与谁协作」来表述，而不是系统内部如何调用。
 
-语言原则与转写示例与 sdx-solution 完全一致，见 [../../sdx-solution/reference/audience-and-language.md](../../sdx-solution/reference/audience-and-language.md)。
+语言原则与转写示例与 sdx-solution 完全一致，见 [../../sdx-solution/references/audience-and-language.md](../../sdx-solution/references/audience-and-language.md)。
 
 ---
 

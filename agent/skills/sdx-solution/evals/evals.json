@@ -1,0 +1,57 @@
+{
+  "skill_name": "sdx-solution",
+  "version": "1.0.0",
+  "description": "用于评估 sdx-solution 技能触发边界与分流准确性",
+  "evals": [
+    {
+      "id": "solution-trigger-001",
+      "category": "should-trigger",
+      "prompt": "业务方丢了一段会议纪要，需求比较模糊，帮我走 /sdx-solution：先出会话 spec、过门禁，最后落 SOLUTION-BILL-01.md，要把冲突点和 MVP 里程碑写清楚。"
+    },
+    {
+      "id": "solution-trigger-002",
+      "category": "should-trigger",
+      "prompt": "我们要在 {DOC_DIR}/solutions/ 写共识级方案文档，按七章模板，先评估影响面再定 MVP，请用 sdx-solution 流程，不要直接进需求分析。"
+    },
+    {
+      "id": "solution-trigger-003",
+      "category": "should-trigger",
+      "prompt": "老板要一版「订单域改造」解决方案给评审用，只要业务语言、不写接口。请执行 /sdx-solution，IDEA-ID 用 260504-订单域改造，门禁用精简 5G。"
+    },
+    {
+      "id": "solution-trigger-004",
+      "category": "should-trigger",
+      "prompt": "请按 SDX 流程先做解决方案阶段：识别矛盾、给 2～3 套化解路径对比，收口后再生成 SOLUTION-CRM-2.md。"
+    },
+    {
+      "id": "solution-not-trigger-001",
+      "category": "should-not-trigger",
+      "prompt": "SOLUTION 已经有了，请接着做 /sdx-analysis，把 MVP 拆细、依赖和风险写进 ANALYSIS-CRM-1.md。"
+    },
+    {
+      "id": "solution-not-trigger-002",
+      "category": "should-not-trigger",
+      "prompt": "请用 /sdx-prd 把用户故事和验收标准补全，我要可评审的 PRD-ORDER-1.md。"
+    },
+    {
+      "id": "solution-not-trigger-003",
+      "category": "should-not-trigger",
+      "prompt": "请用 /sdx-architect 基于现有 PRD 产出 ASD，画服务边界和服务变更表。"
+    },
+    {
+      "id": "solution-not-trigger-004",
+      "category": "should-not-trigger",
+      "prompt": "帮我把 system/application-billing 蒸馏进 system/architecture/overview/billing-overview.md，按 docs-distill 流程。"
+    },
+    {
+      "id": "solution-not-trigger-005",
+      "category": "should-not-trigger",
+      "prompt": "从 design 目录抽取段落写进 payment-overview 第三列，执行 docs-extract。"
+    },
+    {
+      "id": "solution-not-trigger-006",
+      "category": "should-not-trigger",
+      "prompt": "更新仓库 INDEX_GUIDE.md，目录变动大，跑 docs-indexing。"
+    }
+  ]
+}
