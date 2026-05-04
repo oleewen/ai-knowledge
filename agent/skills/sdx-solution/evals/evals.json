@@ -1,57 +1,290 @@
 {
   "skill_name": "sdx-solution",
-  "version": "1.0.0",
-  "description": "用于评估 sdx-solution 技能触发边界与分流准确性",
+  "version": "1.1.0",
+  "description": "用于评估 sdx-solution 技能触发边界、分流与门禁表述；含 expected_output 与断言供 grader 客观评分。",
   "evals": [
     {
       "id": "solution-trigger-001",
       "category": "should-trigger",
-      "prompt": "业务方丢了一段会议纪要，需求比较模糊，帮我走 /sdx-solution：先出会话 spec、过门禁，最后落 SOLUTION-BILL-01.md，要把冲突点和 MVP 里程碑写清楚。"
+      "prompt": "业务方丢了一段会议纪要，需求比较模糊，帮我走 /sdx-solution：先出会话 spec、过门禁，最后落 SOLUTION-BILL-01.md，要把冲突点和 MVP 里程碑写清楚。",
+      "expected_output": "以 /sdx-solution 为主路径：说明先写会话 spec 与门禁，总确认后再定稿 SOLUTION-BILL-01.md；须体现 HARD-GATE；应覆盖冲突点与 MVP/里程碑的共识表述方式（业务语言）。",
+      "assertions": [
+        {
+          "id": "gate-compliance",
+          "name": "门禁合规",
+          "type": "must_include",
+          "check": "明确总确认前禁止写入 {DOC_DIR}/solutions/SOLUTION-*.md（或等价「未确认不写终稿」），并可提及合法例外或 SDX_SOLUTION_ALLOW_SOLUTION_WRITE。",
+          "priority": "P0"
+        },
+        {
+          "id": "structure-integrity",
+          "name": "结构完整",
+          "type": "must_include",
+          "check": "体现会话 spec（如 docs/superpowers/specs/…-sdx-solution.md）、门禁（G1–G7 或精简 5G）与七章 SOLUTION 模板/分块填充，而非以 ANALYSIS/PRD 为主产物。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得将本请求主路径改为仅 sdx-analysis、sdx-prd、sdx-architect 或 docs-* 并宣称无需 SOLUTION。",
+          "priority": "P0"
+        },
+        {
+          "id": "deliverable-naming",
+          "name": "产物对齐",
+          "type": "should_include",
+          "check": "应出现 SOLUTION-BILL-01 或 BILL-01 与冲突/MVP/里程碑中至少两类关键词的规划说明。",
+          "priority": "P1"
+        }
+      ]
     },
     {
       "id": "solution-trigger-002",
       "category": "should-trigger",
-      "prompt": "我们要在 {DOC_DIR}/solutions/ 写共识级方案文档，按七章模板，先评估影响面再定 MVP，请用 sdx-solution 流程，不要直接进需求分析。"
+      "prompt": "我们要在 {DOC_DIR}/solutions/ 写共识级方案文档，按七章模板，先评估影响面再定 MVP，请用 sdx-solution 流程，不要直接进需求分析。",
+      "expected_output": "明确采用 sdx-solution：先影响面与 MVP 共识，再走会话 spec/门禁与 SOLUTION；说明不应跳过解决方案阶段直接进入 ANALYSIS。",
+      "assertions": [
+        {
+          "id": "gate-compliance",
+          "name": "门禁合规",
+          "type": "must_include",
+          "check": "明确总确认前禁止写入 {DOC_DIR}/solutions/SOLUTION-*.md 或等价门禁表述。",
+          "priority": "P0"
+        },
+        {
+          "id": "structure-integrity",
+          "name": "结构完整",
+          "type": "must_include",
+          "check": "体现七章模板、影响面、MVP 与 sdx-solution 阶段（spec/门禁/SOLUTION），并区分于「直接需求分析」。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得同意「跳过解决方案、直接写 ANALYSIS」作为对本 prompt 的遵从答复。",
+          "priority": "P0"
+        },
+        {
+          "id": "analysis-deferred",
+          "name": "下游衔接",
+          "type": "should_include",
+          "check": "可提及定稿 SOLUTION 后再进入 sdx-analysis 等下游（非本轮主路径）。",
+          "priority": "P1"
+        }
+      ]
     },
     {
       "id": "solution-trigger-003",
       "category": "should-trigger",
-      "prompt": "老板要一版「订单域改造」解决方案给评审用，只要业务语言、不写接口。请执行 /sdx-solution，IDEA-ID 用 260504-订单域改造，门禁用精简 5G。"
+      "prompt": "老板要一版「订单域改造」解决方案给评审用，只要业务语言、不写接口。请执行 /sdx-solution，IDEA-ID 用 260504-订单域改造，门禁用精简 5G。",
+      "expected_output": "以 /sdx-solution 执行：IDEA-ID 260504-订单域改造、精简 5G；强调业务语言、接口细节不进正文；含门禁与 SOLUTION 路径意识。",
+      "assertions": [
+        {
+          "id": "gate-compliance",
+          "name": "门禁合规",
+          "type": "must_include",
+          "check": "含未确认不写 SOLUTION 终稿或 HARD-GATE 等价语义。",
+          "priority": "P0"
+        },
+        {
+          "id": "structure-integrity",
+          "name": "结构完整",
+          "type": "must_include",
+          "check": "体现精简 5G（或 G(1–2)–G7 映射）、会话 spec 与 SOLUTION 七章/共识边界。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得将主路径改为 sdx-design/API 详设或仅产出 ASD。",
+          "priority": "P0"
+        },
+        {
+          "id": "idea-id-echo",
+          "name": "参数回应",
+          "type": "should_include",
+          "check": "应复述或采纳 260504-订单域改造（或 订单域改造 与日期组合）。",
+          "priority": "P1"
+        }
+      ]
     },
     {
       "id": "solution-trigger-004",
       "category": "should-trigger",
-      "prompt": "请按 SDX 流程先做解决方案阶段：识别矛盾、给 2～3 套化解路径对比，收口后再生成 SOLUTION-CRM-2.md。"
+      "prompt": "请按 SDX 流程先做解决方案阶段：识别矛盾、给 2～3 套化解路径对比，收口后再生成 SOLUTION-CRM-2.md。",
+      "expected_output": "主路径为解决方案阶段：矛盾识别、2～3 套化解路径对比、收口后经总确认生成 SOLUTION-CRM-2.md；含门禁意识。",
+      "assertions": [
+        {
+          "id": "gate-compliance",
+          "name": "门禁合规",
+          "type": "must_include",
+          "check": "含总确认前不写 SOLUTION 终稿或等价表述。",
+          "priority": "P0"
+        },
+        {
+          "id": "structure-integrity",
+          "name": "结构完整",
+          "type": "must_include",
+          "check": "体现多方案对比在门禁内完成、会话 spec、SOLUTION-CRM-2 定稿节奏。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得将「先做解决方案」偷换为直接 PRD/ASD 落盘。",
+          "priority": "P0"
+        },
+        {
+          "id": "multi-path-compare",
+          "name": "多方案对比",
+          "type": "should_include",
+          "check": "应提及 2～3 套路径或利弊对比后再收口（可与 brainstorming 嵌入层一致）。",
+          "priority": "P1"
+        }
+      ]
     },
     {
       "id": "solution-not-trigger-001",
       "category": "should-not-trigger",
-      "prompt": "SOLUTION 已经有了，请接着做 /sdx-analysis，把 MVP 拆细、依赖和风险写进 ANALYSIS-CRM-1.md。"
+      "prompt": "SOLUTION 已经有了，请接着做 /sdx-analysis，把 MVP 拆细、依赖和风险写进 ANALYSIS-CRM-1.md。",
+      "expected_output": "主路径为 sdx-analysis：产出或迭代 ANALYSIS-CRM-1.md；不以完整 sdx-solution 门禁链写新 SOLUTION 为终点。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 /sdx-analysis 或 ANALYSIS-CRM-1.md（或 ANALYSIS）为当前主任务，而非以 sdx-solution 为唯一主路径。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-solution-primary",
+          "name": "勿假主解决方案阶段",
+          "type": "must_not_conflict",
+          "check": "不得将本请求表述为「仍需完整执行 sdx-solution 过 G1–G7 并新建 SOLUTION」作为主要答案。",
+          "priority": "P0"
+        },
+        {
+          "id": "respect-existing-solution",
+          "name": "尊重已有 SOLUTION",
+          "type": "should_include",
+          "check": "可提及已有 SOLUTION、本阶段聚焦 ANALYSIS。",
+          "priority": "P1"
+        }
+      ]
     },
     {
       "id": "solution-not-trigger-002",
       "category": "should-not-trigger",
-      "prompt": "请用 /sdx-prd 把用户故事和验收标准补全，我要可评审的 PRD-ORDER-1.md。"
+      "prompt": "请用 /sdx-prd 把用户故事和验收标准补全，我要可评审的 PRD-ORDER-1.md。",
+      "expected_output": "主路径为 sdx-prd 与 PRD-ORDER-1.md；不以 sdx-solution 会话 spec + SOLUTION 为主交付。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 /sdx-prd 或 PRD-ORDER-1.md（或 PRD）为当前主任务。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-solution-primary",
+          "name": "勿假主解决方案阶段",
+          "type": "must_not_conflict",
+          "check": "不得将本请求框成以 sdx-solution 与 SOLUTION 七章为主路径。",
+          "priority": "P0"
+        }
+      ]
     },
     {
       "id": "solution-not-trigger-003",
       "category": "should-not-trigger",
-      "prompt": "请用 /sdx-architect 基于现有 PRD 产出 ASD，画服务边界和服务变更表。"
+      "prompt": "请用 /sdx-architect 基于现有 PRD 产出 ASD，画服务边界和服务变更表。",
+      "expected_output": "主路径为 sdx-architect 与 ASD（服务边界、服务变更表）；不以 SOLUTION 为当前主产物。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 /sdx-architect 或 ASD 为当前主任务。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-solution-primary",
+          "name": "勿假主解决方案阶段",
+          "type": "must_not_conflict",
+          "check": "不得将本请求描述为默认先写 SOLUTION 再过门禁。",
+          "priority": "P0"
+        }
+      ]
     },
     {
       "id": "solution-not-trigger-004",
       "category": "should-not-trigger",
-      "prompt": "帮我把 system/application-billing 蒸馏进 system/architecture/overview/billing-overview.md，按 docs-distill 流程。"
+      "prompt": "帮我把 system/application-billing 蒸馏进 system/architecture/overview/billing-overview.md，按 docs-distill 流程。",
+      "expected_output": "主路径为 docs-distill 与 billing-overview；不是 sdx-solution。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 docs-distill、蒸馏或 billing-overview 等与应用知识库→系统 overview 相关的技能/流程，而非 sdx-solution。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-solution-primary",
+          "name": "勿假主解决方案阶段",
+          "type": "must_not_conflict",
+          "check": "不得用「先出 SOLUTION 七章」作为完成本请求的主方案。",
+          "priority": "P0"
+        }
+      ]
     },
     {
       "id": "solution-not-trigger-005",
       "category": "should-not-trigger",
-      "prompt": "从 design 目录抽取段落写进 payment-overview 第三列，执行 docs-extract。"
+      "prompt": "从 design 目录抽取段落写进 payment-overview 第三列，执行 docs-extract。",
+      "expected_output": "主路径为 docs-extract 与 payment-overview；不是 sdx-solution。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 docs-extract 或抽取写入 overview 第三列，而非 sdx-solution。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-solution-primary",
+          "name": "勿假主解决方案阶段",
+          "type": "must_not_conflict",
+          "check": "不得将本请求框成 SOLUTION 会话 spec 与门禁链。",
+          "priority": "P0"
+        }
+      ]
     },
     {
       "id": "solution-not-trigger-006",
       "category": "should-not-trigger",
-      "prompt": "更新仓库 INDEX_GUIDE.md，目录变动大，跑 docs-indexing。"
+      "prompt": "更新仓库 INDEX_GUIDE.md，目录变动大，跑 docs-indexing。",
+      "expected_output": "主路径为 docs-indexing 与 INDEX_GUIDE.md；不是 sdx-solution。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 docs-indexing 或 INDEX_GUIDE 文档索引相关流程，而非 sdx-solution。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-solution-primary",
+          "name": "勿假主解决方案阶段",
+          "type": "must_not_conflict",
+          "check": "不得将本请求描述为解决方案阶段与 SOLUTION 落盘主路径。",
+          "priority": "P0"
+        }
+      ]
     }
   ]
 }

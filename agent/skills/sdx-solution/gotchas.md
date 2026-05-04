@@ -1,6 +1,6 @@
 # 常见陷阱（sdx-solution）
 
-反模式见 [references/design-principles.md](references/design-principles.md)；本文件聚焦**操作层易错点**。
+**反模式（表现 + 纠正）**见 [references/anti-patterns.md](references/anti-patterns.md)；**原则与错误处理表**见 [references/design-principles.md](references/design-principles.md)。本文件聚焦**操作层易错点**。
 
 ---
 

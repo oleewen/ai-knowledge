@@ -1,48 +1,66 @@
 {
   "skill_name": "sdx-solution",
-  "eval_id": "solution-trigger-001",
-  "expected_category": "should-trigger",
-  "expected_route": "/sdx-solution",
-  "notes": "模板示例：可复制后按具体 eval 填充。",
-  "assertions": [
+  "eval_id": "REPLACE_WITH_EVAL_ID",
+  "expected_category": "should-trigger | should-not-trigger",
+  "expected_route": "/sdx-solution | （not-trigger 时填主分流目标，如 /sdx-analysis）",
+  "expected_output": "一两句：本 eval 下模型应表现出的路由与要点（与 evals.json 中同 id 条一致）。",
+  "notes": "复制本模板为 <eval-id>-metadata.json 或在跑分流水线中内联使用；断言须与 agents/grader.md 一致。",
+  "assertions_should_trigger_example": [
     {
       "id": "gate-compliance",
       "name": "门禁合规",
       "type": "must_include",
-      "check": "响应需明确 HARD-GATE（草稿用户总确认前禁止写入 {DOC_DIR}/solutions/SOLUTION-*.md）及合法例外条件。",
+      "check": "响应需明确：草稿用户总确认前禁止写入 {DOC_DIR}/solutions/SOLUTION-*.md，并提及合法例外或环境变量之一。",
       "priority": "P0"
     },
     {
       "id": "structure-integrity",
       "name": "结构完整",
       "type": "must_include",
-      "check": "响应需体现解决方案阶段产出边界：共识级 SOLUTION、七章模板或会话 spec + 分阶段门禁（G1–G7 / 精简 5G），而非 ANALYSIS/PRD/ASD 正文。",
+      "check": "响应需体现解决方案阶段：会话 spec（…-sdx-solution.md 或等价表述）、门禁（G1–G7 或精简 5G）与 SOLUTION 七章共识文档，而非 ANALYSIS/PRD/ASD 正文落盘为主。",
       "priority": "P0"
     },
     {
       "id": "boundary-routing",
       "name": "边界分流",
       "type": "must_not_conflict",
-      "check": "若 prompt 目标为需求分析、PRD、ASD/DSD 或 docs-distill/extract/indexing，应分流到对应 sdx-* 或 docs-* 技能，不得把此类任务当作仅写 SOLUTION 即可结束。",
+      "check": "对本 should-trigger 样本，不得将主路径误判为仅执行 sdx-analysis、sdx-prd、sdx-architect 或纯 docs-* 并结束。",
       "priority": "P0"
-    },
-    {
-      "id": "upstream-awareness",
-      "name": "输入形态识别",
-      "type": "should_include",
-      "check": "响应应体现从业务描述/原始材料结构化诉求，并说明与下游 sdx-analysis（及更后阶段）的衔接，而非假定已有完整 PRD。",
-      "priority": "P1"
     },
     {
       "id": "session-spec-awareness",
       "name": "会话 spec 与总确认",
       "type": "should_include",
-      "check": "应提及阶段二中间稿路径形态（docs/superpowers/specs/…-sdx-solution.md）或等价的会话 spec + Qclose-1 总确认后再定稿。",
+      "check": "应提及阶段二中间稿路径形态（docs/superpowers/specs/…-sdx-solution.md）或等价表述，以及 Qclose-1/总确认后再定稿 SOLUTION。",
+      "priority": "P1"
+    }
+  ],
+  "assertions_should_not_trigger_example": [
+    {
+      "id": "correct-downstream",
+      "name": "正确下游",
+      "type": "must_include",
+      "check": "须点名与 prompt 一致的下游技能或产物（例如 sdx-analysis + ANALYSIS-*.md），不得以 sdx-solution 为唯一主路径。",
+      "priority": "P0"
+    },
+    {
+      "id": "no-false-solution-primary",
+      "name": "勿假主解决方案阶段",
+      "type": "must_not_conflict",
+      "check": "不得将本请求描述为「默认完整执行 sdx-solution 门禁并产出 SOLUTION 作为终点」而忽略用户已指定的下游阶段。",
+      "priority": "P0"
+    },
+    {
+      "id": "optional-quality-hint",
+      "name": "可拒绝写盘",
+      "type": "should_include",
+      "check": "可加分：明确本对话不应写入 SOLUTION 终稿或应先进入所列下游技能。",
       "priority": "P1"
     }
   ],
   "scoring": {
-    "pass_rule": "P0 断言全部通过，且 P1 至少通过 1 项",
+    "pass_rule_should_trigger": "P0 全部通过，且 P1 至少通过 1 项（若无 P1 则仅 P0）",
+    "pass_rule_should_not_trigger": "P0 全部通过；P1 可选",
     "fail_rule": "任一 P0 断言失败即判定不通过"
   }
 }

@@ -5,7 +5,7 @@
 ## 输入
 
 - 失败样本集合（至少包含 prompt、期望分类、实际响应、grader 证据）
-- 当前技能说明（`SKILL.md`）与相关边界文档
+- 当前技能说明（`SKILL.md`）与边界文档：`references/gates.md`、`references/workflow.md`、`references/anti-patterns.md`、`gotchas.md`
 
 ## 输出结构
 
