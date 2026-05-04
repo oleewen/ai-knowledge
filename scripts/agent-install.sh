@@ -32,10 +32,29 @@ INSTALL_SCRIPTS=0
 
 declare -a ENABLED_AGENTS=()
 
-have_cmd()  { sdx_have_cmd "$1"; }
-
-run_or_dry() { sdx_run_or_dry "$@"; }
 ensure_dir() { sdx_ensure_dir "$1"; }
+
+# 保存/恢复 nullglob；调用方需持有 local 变量名并传入 nameref
+_nullglob_enable() {
+  local -n _ng_save="${1:?}"
+  _ng_save=1
+  shopt -q nullglob && _ng_save=0
+  shopt -s nullglob
+}
+
+_nullglob_restore() {
+  local -n _ng_save="${1:?}"
+  if (( _ng_save == 0 )); then
+    shopt -s nullglob
+  else
+    shopt -u nullglob
+  fi
+}
+
+is_agent_readme_basename() {
+  local base="${1:?}"
+  [[ "$base" == 'README' || "$base" == 'README.md' || "$base" == 'readme.md' ]]
+}
 
 # 同步目录树，排除各层 README / readme.md
 sync_tree_excluding_readme() {
@@ -49,12 +68,12 @@ copy_file_plain() {
     sdx_log "[dry-run] 拷贝: $src → $dst"
     return 0
   fi
-  sdx_ensure_dir "$(dirname "$dst")"
+  ensure_dir "$(dirname "$dst")"
   cp "$src" "$dst"
 }
 
 agent_store_root() {
-  abs_path "${CFG[store_abs]}"
+  printf '%s\n' "${CFG[store_abs]}"
 }
 
 agent_install_root() {
@@ -127,7 +146,7 @@ ensure_symlink() {
     sdx_log "[dry-run] 链接: $dst -> $src"
     return 0
   fi
-  sdx_ensure_dir "$(dirname "$dst")"
+  ensure_dir "$(dirname "$dst")"
   ln -s "$src" "$dst"
 }
 
@@ -141,15 +160,14 @@ link_store_into_agent_root() {
   ensure_dir "$agent_dir"
 
   local _nullglob_was_set=1
-  shopt -q nullglob && _nullglob_was_set=0
-  shopt -s nullglob
+  _nullglob_enable _nullglob_was_set
   local item base
   local src_root
   src_root="${CFG[repo_root]}/agent"
 
   if [[ -d "${store}" ]]; then
     for item in "${store}"/*; do
-      base="$(basename "$item")"
+      base="${item##*/}"
       case "$base" in
         hooks|rules|scripts|skills) continue ;;
       esac
@@ -162,39 +180,35 @@ link_store_into_agent_root() {
     fi
   fi
 
-  local cat
-  for cat in hooks rules scripts skills; do
-    case "$cat" in
+  local category
+  for category in hooks rules scripts skills; do
+    case "$category" in
       hooks)   (( INSTALL_HOOKS == 1 ))   || continue ;;
       rules)   (( INSTALL_RULES == 1 ))   || continue ;;
       scripts) (( INSTALL_SCRIPTS == 1 )) || continue ;;
       skills)  (( INSTALL_SKILLS == 1 ))  || continue ;;
     esac
 
-    ensure_dir "${agent_dir}/${cat}"
+    ensure_dir "${agent_dir}/${category}"
 
-    if [[ -d "${store}/${cat}" ]]; then
-      for item in "${store}/${cat}"/*; do
-        base="$(basename "$item")"
-        ensure_symlink "$item" "${agent_dir}/${cat}/${base}"
+    if [[ -d "${store}/${category}" ]]; then
+      for item in "${store}/${category}"/*; do
+        base="${item##*/}"
+        ensure_symlink "$item" "${agent_dir}/${category}/${base}"
       done
       continue
     fi
 
     [[ "${CFG[dry_run]}" == '1' ]] || continue
-    [[ -d "${src_root}/${cat}" ]] || continue
-    for item in "${src_root}/${cat}"/*; do
-      base="$(basename "$item")"
-      [[ "$base" == 'README' || "$base" == 'README.md' || "$base" == 'readme.md' ]] && continue
-      ensure_symlink "${store}/${cat}/${base}" "${agent_dir}/${cat}/${base}"
+    [[ -d "${src_root}/${category}" ]] || continue
+    for item in "${src_root}/${category}"/*; do
+      base="${item##*/}"
+      is_agent_readme_basename "$base" && continue
+      ensure_symlink "${store}/${category}/${base}" "${agent_dir}/${category}/${base}"
     done
   done
 
-  if (( _nullglob_was_set == 0 )); then
-    shopt -s nullglob
-  else
-    shopt -u nullglob
-  fi
+  _nullglob_restore _nullglob_was_set
 }
 
 # =============================================================================
@@ -224,7 +238,7 @@ apply_agents() {
   local ao="${CFG[agents_opt]:-}"
   [[ -n "$ao" ]] || ao="${AGENTS_OPT:-$SDX_DEFAULT_AGENTS_OPT}"
   validate_agents "$ao" \
-    || sdx_error "无效 --agents: $ao（支持 cursor、trae、claude、all 及逗号或空格分隔多选）"
+    || sdx_error "无效 --agents: $ao（支持 cursor、trae、claude、kiro、all 及逗号或空格分隔多选）"
   read -ra ENABLED_AGENTS <<< "$(normalize_agents "$ao")"
   (( ${#ENABLED_AGENTS[@]} > 0 )) || sdx_error "未解析到任何 Agent"
 }
@@ -233,8 +247,6 @@ apply_agents() {
 # 安装各子树
 # =============================================================================
 
-# 通用资源安装（scripts、rules、skills）
-# 用法：install_agent_subtree_generic <label> <src_rel_path> <dst_rel_path> [extra_item_logic_func]
 install_agent_resource() {
   local label="$1" src_rel="$2" dst_rel="$3"
   local src_root="${CFG[repo_root]}/${src_rel}"
@@ -248,11 +260,10 @@ install_agent_resource() {
   sdx_info "  同步 ${label}：${src_root} → ${dst_dir}"
 
   local _nullglob_was_set=1
-  shopt -q nullglob && _nullglob_was_set=0
-  shopt -s nullglob
+  _nullglob_enable _nullglob_was_set
   for item in "$src_root"/*; do
-    base="$(basename "$item")"
-    [[ "$base" == 'README' || "$base" == 'README.md' || "$base" == 'readme.md' ]] && continue
+    base="${item##*/}"
+    is_agent_readme_basename "$base" && continue
     [[ "$label" == "scripts" && "$base" == "docs-core.sh" ]] && continue
 
     if [[ -d "$item" ]]; then
@@ -261,17 +272,13 @@ install_agent_resource() {
       copy_file_plain "$item" "$dst_dir/$base"
     fi
   done
-  if (( _nullglob_was_set == 0 )); then
-    shopt -s nullglob
-  else
-    shopt -u nullglob
-  fi
+  _nullglob_restore _nullglob_was_set
 }
 
 install_agent_scripts() {
   (( INSTALL_SCRIPTS == 1 )) || return 0
   install_agent_resource "scripts" "agent/scripts" "scripts"
-  
+
   # 补充 docs-core.sh
   local src_docs_ssot="${CFG[repo_root]}/agent/scripts/docs-core.sh"
   copy_file_plain "$src_docs_ssot" "$(agent_store_root)/scripts/docs-core.sh"
@@ -371,7 +378,7 @@ usage() {
 选项
   --scope=SCOPE   a=全部 | r=rules | s=skills | h=hooks | sh=scripts  [默认: a]
   --target PATH   安装根父目录，其下仅为选中的 agent 创建对应目录  [默认: $HOME；仍兼容 --target=PATH]
-  --agents=LIST   cursor | trae | claude | all；逗号或空格分隔多选  [默认: cursor]
+  --agents=LIST   cursor | trae | claude | kiro | all；逗号或空格分隔多选  [默认: cursor]
   --dry-run       仅打印将执行的操作
   -h, --help      显示此帮助
 

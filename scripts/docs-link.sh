@@ -28,13 +28,28 @@ _yaml_unquote() {
   printf '%s' "$v"
 }
 
+# 与 identity 解析一致：判定是否为 Git 远端 URL 形态（path 字段禁止写入此类串）
+knowledge_link_value_looks_like_git_remote() {
+  [[ "${1:-}" =~ ^(git@|ssh://|https://|http://) ]]
+}
+
 # path 字段禁止为远程 URL 形态（须写在 repository）
 knowledge_links_validate_stored_path_field() {
   local p="${1:?}" src="${2:?}"
   [[ -n "$p" ]] || sdx_error "knowledge-links.yaml 条目缺少 path 或 path 为空: $src"
-  if [[ "$p" =~ ^(git@|ssh://|https://|http://) ]]; then
+  if knowledge_link_value_looks_like_git_remote "$p"; then
     sdx_error "knowledge-links.yaml: path 不得为远程 URL（已废弃）。请将远端写入 repository，path 改为 ~/…、~/ 或本机绝对路径（兼容旧：无 ~ 的 \$HOME 相对片段）: $src"
   fi
+}
+
+# YAML 双引号字段内转义（写 knowledge-links 用）
+_knowledge_link_yaml_escape_dq() {
+  printf '%s' "${1//\"/\\\"}"
+}
+
+# DOC_ROOT 绝对路径并去尾斜杠（槽位路径拼接用）
+_knowledge_link_doc_root_abs_ns() {
+  strip_trailing_slash "$(abs_path "${1:?}")"
 }
 
 # 将绝对仓库根路径转为写入 knowledge-links 的 path（$HOME 下为 ~/… 或 ~/，否则绝对路径；手写不依赖 docsconfig_format_root_for_write）
@@ -114,6 +129,18 @@ knowledge_links_load_into_arrays() {
     app_label=''
   }
 
+  # 未知键静默忽略（与 YAML 扩展字段前向兼容）
+  knowledge_links_set_kv() {
+    case "${1:?}" in
+      path) path="$2" ;;
+      repository) repo="$2" ;;
+      doc_dir) doc_dir="$2" ;;
+      app_name) app_name="$2" ;;
+      app_label) app_label="$2" ;;
+      *) ;;
+    esac
+  }
+
   while IFS= read -r line || [[ -n "$line" ]]; do
     [[ -z "${line//[[:space:]]/}" ]] && continue
     [[ "$line" =~ ^[[:space:]]*# ]] && continue
@@ -121,25 +148,11 @@ knowledge_links_load_into_arrays() {
       key="${BASH_REMATCH[1]}"
       val="$(_yaml_unquote "${BASH_REMATCH[2]}")"
       knowledge_links_flush_pending
-      case "$key" in
-        path) path="$val" ;;
-        repository) repo="$val" ;;
-        doc_dir) doc_dir="$val" ;;
-        app_name) app_name="$val" ;;
-        app_label) app_label="$val" ;;
-        *) ;;
-      esac
+      knowledge_links_set_kv "$key" "$val"
     elif [[ "$line" =~ ^[[:space:]]{4}([a-z_]+):[[:space:]]*(.*)$ ]]; then
       key="${BASH_REMATCH[1]}"
       val="$(_yaml_unquote "${BASH_REMATCH[2]}")"
-      case "$key" in
-        path) path="$val" ;;
-        repository) repo="$val" ;;
-        doc_dir) doc_dir="$val" ;;
-        app_name) app_name="$val" ;;
-        app_label) app_label="$val" ;;
-        *) ;;
-      esac
+      knowledge_links_set_kv "$key" "$val"
     fi
   done <"$f"
   knowledge_links_flush_pending
@@ -164,18 +177,18 @@ knowledge_links_write_quads() {
     printf '%s\n' 'links:'
     for ((i = 0; i < n; i++)); do
       if [[ -n "${_repos[i]:-}" ]]; then
-        printf '  - repository: "%s"\n' "${_repos[i]//\"/\\\"}"
-        printf '    path: "%s"\n' "${_paths[i]//\"/\\\"}"
+        printf '  - repository: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_repos[i]}")"
+        printf '    path: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_paths[i]}")"
       else
-        printf '  - path: "%s"\n' "${_paths[i]//\"/\\\"}"
+        printf '  - path: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_paths[i]}")"
       fi
       if [[ -n "${_dirs[i]:-}" ]]; then
-        printf '    doc_dir: "%s"\n' "${_dirs[i]//\"/\\\"}"
+        printf '    doc_dir: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_dirs[i]}")"
       fi
       if [[ -n "${_apps[i]:-}" ]]; then
-        printf '    app_name: "%s"\n' "${_apps[i]//\"/\\\"}"
+        printf '    app_name: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_apps[i]}")"
         lab="${_labels[i]:-${_apps[i]}}"
-        printf '    app_label: "%s"\n' "${lab//\"/\\\"}"
+        printf '    app_label: "%s"\n' "$(_knowledge_link_yaml_escape_dq "$lab")"
       fi
     done
   } >"$f"
@@ -199,32 +212,39 @@ knowledge_link_git_remote_url_prefer_origin() {
 }
 
 # 给定已存在的本地目录：得到与 link 时一致的登记字符串（用于去重 / unlink）
+# 可选第二参数为变量名：在 Git 仓库且解析到 remote 时写入 strip 后的 URL，否则写空（供 link 避免二次 git remote）
 knowledge_link_register_value_from_dir() {
-  local dir="${1:?}" resolved top url
+  local dir="${1:?}" _repo_var="${2:-}" resolved top url
   resolved="$(cd -P "$dir" 2>/dev/null && pwd)" || {
     printf '%s\n' "$dir"
+    [[ -n "$_repo_var" ]] && printf -v "$_repo_var" '%s' ''
     return 0
   }
   if ! git -C "$resolved" rev-parse --is-inside-work-tree &>/dev/null; then
     printf '%s\n' "$resolved"
+    [[ -n "$_repo_var" ]] && printf -v "$_repo_var" '%s' ''
     return 0
   fi
   top="$(git -C "$resolved" rev-parse --show-toplevel 2>/dev/null)" || {
     printf '%s\n' "$resolved"
+    [[ -n "$_repo_var" ]] && printf -v "$_repo_var" '%s' ''
     return 0
   }
   url="$(knowledge_link_git_remote_url_prefer_origin "$top" || true)"
   if [[ -n "$url" ]]; then
-    printf '%s\n' "$(strip_trailing_slash "$url")"
+    url="$(strip_trailing_slash "$url")"
+    printf '%s\n' "$url"
+    [[ -n "$_repo_var" ]] && printf -v "$_repo_var" '%s' "$url"
     return 0
   fi
   printf '%s\n' "$(strip_trailing_slash "$top")"
+  [[ -n "$_repo_var" ]] && printf -v "$_repo_var" '%s' ''
 }
 
 # 将「用户传入的 --target」规范为与已登记项可比对的身份串
 knowledge_link_identity_from_raw_target() {
   local raw="${1:?}" p
-  if [[ "$raw" =~ ^(git@|ssh://|https://|http://) ]]; then
+  if knowledge_link_value_looks_like_git_remote "$raw"; then
     printf '%s\n' "$(strip_trailing_slash "$raw")"
     return 0
   fi
@@ -274,8 +294,8 @@ knowledge_link_validate_app_name() {
 # 从目标仓库根推断应用标识：优先 Git 仓库根目录名，否则为路径 basename（无用户指定时用）
 knowledge_link_guess_app_name() {
   local root="${1:?}" top base
-  if git -C "$root" rev-parse --show-toplevel &>/dev/null; then
-    top="$(git -C "$root" rev-parse --show-toplevel)"
+  top="$(git -C "$root" rev-parse --show-toplevel 2>/dev/null)" || top=''
+  if [[ -n "$top" ]]; then
     base="$(basename "$top")"
   else
     base="$(basename "$(cd -P "$root" 2>/dev/null && pwd)")"
@@ -305,9 +325,10 @@ knowledge_link_apply_app_slot_substitutions() {
 # 在源 DOC_ROOT 下生成 application-${APPNAME}（参考 application-APPNAME 模板）
 knowledge_link_ensure_application_slot() {
   local doc_root="${1:?}" app="${2:?}"
-  local tpl dest
-  tpl="$(strip_trailing_slash "$(abs_path "$doc_root")")/application-APPNAME"
-  dest="$(strip_trailing_slash "$(abs_path "$doc_root")")/application-${app}"
+  local dr tpl dest
+  dr="$(_knowledge_link_doc_root_abs_ns "$doc_root")"
+  tpl="${dr}/application-APPNAME"
+  dest="${dr}/application-${app}"
   [[ -d "$tpl" ]] || sdx_error "源 DOC_ROOT 下缺少模板目录: $tpl"
   if [[ -d "$dest" ]]; then
     return 0
@@ -320,7 +341,7 @@ knowledge_link_ensure_application_slot() {
   knowledge_link_apply_app_slot_substitutions "$dest" "$app"
 }
 
-# 从已登记的 path（URL 或本地路径）推断 APPNAME，供旧数据或无 app_name 字段时 unlink 删槽位
+# 从登记 identity（repository URL 或已展开本地路径）推断 APPNAME，供旧数据或无 app_name 时 unlink 删槽位
 knowledge_link_app_name_from_register_key() {
   local key="${1:?}" base
   if [[ -d "$key" ]]; then
@@ -340,7 +361,7 @@ knowledge_link_app_name_from_register_key() {
 # 解析工程根（与 docs-install 写入 .docsconfig 的 REPO_ROOT 推导一致，供 .docs-init 备份路径）
 knowledge_link_repo_root_for_backup() {
   local doc_root="${1:?}" dr rr
-  dr="$(strip_trailing_slash "$(abs_path "$doc_root")")"
+  dr="$(_knowledge_link_doc_root_abs_ns "$doc_root")"
   rr="$(docsconfig_repo_root_from_doc_root "$dr")"
   [[ -n "$rr" ]] || rr="$(docsconfig_repo_root_fallback_from_doc_root "$dr")"
   [[ -n "$rr" ]] || return 1
@@ -356,7 +377,7 @@ knowledge_link_remove_application_slot() {
     sdx_warn "APPNAME 为保留名，跳过删除槽位目录"
     return 0
   fi
-  dest="$(strip_trailing_slash "$(abs_path "$doc_root")")/application-${app}"
+  dest="$(_knowledge_link_doc_root_abs_ns "$doc_root")/application-${app}"
   if [[ ! -d "$dest" ]]; then
     return 0
   fi
@@ -501,10 +522,9 @@ if [[ "$CMD" == 'link' ]]; then
   [[ -n "$_tkt" ]] || sdx_error "目标 .docsconfig 缺少 KNOWLEDGE_TYPE"
   docsconfig_validate_knowledge_type "$_tkt" || exit 1
   [[ "$_tkt" == "$expect_target" ]] || sdx_error "目标须为 ${expect_target} 知识库（KNOWLEDGE_TYPE=${_tkt}）"
-  REGISTER_KEY="$(knowledge_link_register_value_from_dir "$TGT_ROOT")"
+  REGISTER_REPO=''
+  REGISTER_KEY="$(knowledge_link_register_value_from_dir "$TGT_ROOT" REGISTER_REPO)"
   TARGET_DOC_DIR="${_tdd:-}"
-  _url="$(knowledge_link_git_remote_url_prefer_origin "$TGT_ROOT" || true)"
-  [[ -n "$_url" ]] && REGISTER_REPO="$(strip_trailing_slash "$_url")"
   REGISTER_PATH_STORED="$(knowledge_link_stored_path_from_absolute "$TGT_ROOT")"
 else
   REGISTER_KEY="$(knowledge_link_identity_from_raw_target "$TARGET_RAW")" || sdx_error "目标路径非法: $TARGET_RAW"

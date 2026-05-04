@@ -26,7 +26,6 @@ declare -A CFG=(
   [force]="${FORCE:-0}"
   [create_project_root]="${CREATE_PROJECT_ROOT:-0}"
   # 运行时填充
-  [docs_slash]=""
   [home_abs]=""
 )
 
@@ -41,19 +40,7 @@ DOC_INIT_STAMP=""
 # § 3  工具函数（纯函数，无副作用）
 # =============================================================================
 
-have_cmd()  { sdx_have_cmd "$1"; }
 have_perl() { sdx_have_perl; }
-
-# 计算目标工程根相对文档目录路径（带尾斜杠）
-compute_docs_rel_slash() {
-  local root docs
-  root="$(strip_trailing_slash "$1")"
-  docs="$(strip_trailing_slash "$2")"
-  if   [[ "$docs" == "$root"   ]]; then printf './\n'
-  elif [[ "$docs" == "$root"/* ]]; then printf '%s/\n' "${docs#"$root"/}"
-  else                                   printf '%s/\n' "$docs"
-  fi
-}
 
 # =============================================================================
 # § 4  IO 工具（副作用函数）
@@ -100,17 +87,17 @@ should_overwrite() {
   # 非交互环境默认覆盖
   [[ ! -t 0 ]] && return 0
 
-  log "目标已存在：$target"
+  sdx_log "目标已存在：$target"
   printf '1) 覆盖 / 2) 跳过 / 3) 全部覆盖 / 4) 全部跳过 [默认 1，Esc 退出]：' >&2
   local key='' key2=''
-  IFS= read -rsn1 key || { log "已取消"; return 2; }
+  IFS= read -rsn1 key || { sdx_log "已取消"; return 2; }
 
   # lone ESC：超时内无后续字节则为单独 Esc；否则视为终端转义序列，按无效处理
   if [[ "$key" == $'\e' ]]; then
     if IFS= read -rsn1 -t 0.05 key2 2>/dev/null; then
-      log "无效选择，默认覆盖"; return 0
+      sdx_log "无效选择，默认覆盖"; return 0
     fi
-    log "已取消（Esc）" >&2
+    sdx_log "已取消（Esc）" >&2
     return 2
   fi
 
@@ -165,7 +152,7 @@ copy_dir() {
   fi
   ensure_dir "$(dirname "$dst")"
   ensure_dir "$dst"
-  if have_cmd rsync; then
+  if sdx_have_cmd rsync; then
     rsync -a "$src"/ "$dst"/
   else
     cp -R "$src"/. "$dst"/
@@ -214,46 +201,6 @@ reset_docs_dir_with_backup() {
 # =============================================================================
 # § 5  内容替换函数
 # =============================================================================
-
-# 将文档前缀统一归一为 ${DOC_DIR}/（保持幂等）
-rewrite_docs_prefix_to_doc_dir() {
-  local file="$1" docs_slash="$2"
-  [[ -f "$file" ]] && sdx_is_text_file "$file" || return 0
-  have_perl || return 0
-  SDX_DOCS_SLASH="$docs_slash" \
-    perl -CSD -i -pe '
-      next if /\$\{DOC_DIR\}\//;
-      if ($ENV{SDX_DOCS_SLASH} ne "./") {
-        my $needle = quotemeta($ENV{SDX_DOCS_SLASH});
-        s{$needle}{\${DOC_DIR}/}gi;
-      }
-      s{system/}{\${DOC_DIR}/}gi;
-    ' "$file" 2>/dev/null || true
-}
-
-# 输出规则命中明细（行号 + 片段，片段最大 160 字符）
-# 用法：log_rewrite_hits <level> <rule> <file> <pattern> [i]
-#   第 5 个参数为 i 时按不区分大小写匹配
-log_rewrite_hits() {
-  local level="$1" rule="$2" file="$3" pattern="$4" ci="${5:-}"
-  [[ -f "$file" && -n "$pattern" ]] || return 0
-  have_perl || return 0
-
-  # ci=i 时追加 /i 修饰符；统一用一段 perl，通过环境变量传递 case-insensitive 标志
-  SDX_LOG_LEVEL="$level" SDX_LOG_RULE="$rule" SDX_LOG_FILE="$file" \
-  SDX_LOG_PATTERN="$pattern" SDX_LOG_CI="${ci}" \
-    perl -CSD -ne '
-      my $pat = $ENV{SDX_LOG_PATTERN};
-      my $ci  = $ENV{SDX_LOG_CI} eq "i";
-      my $matched = $ci ? /$pat/i : /$pat/;
-      if ($matched) {
-        my $line = $_;
-        chomp $line;
-        $line = substr($line, 0, 160);
-        print "$ENV{SDX_LOG_LEVEL} [$ENV{SDX_LOG_RULE}] file=$ENV{SDX_LOG_FILE} line=$. text=$line\n";
-      }
-    ' "$file" 2>/dev/null || true
-}
 
 # 在 DOC_ROOT/README.md 注入或更新「Agent 路径」说明（HTML 注释标记块，幂等）
 # 用法：docs_install_inject_readme_agent_note <readme_path> <primary_dir> [other_dir ...]
@@ -317,7 +264,7 @@ rewrite_knowledge_agent_paths_after_install() {
   [[ -n "${CFG[docs_abs]:-}" ]] || return 0
 
   local repo_target='' doc_root='' dd=''
-  install_doc_path repo_target doc_root dd
+  resolve_docsconfig_roots repo_target doc_root dd
 
   local cfg="$repo_target/.docsconfig"
   [[ -f "$cfg" ]] || { sdx_warn "未找到 $cfg，跳过 agent/ 路径重写"; return 0; }
@@ -356,10 +303,6 @@ rewrite_knowledge_agent_paths_after_install() {
 # 用法：application_copy_one <src_f> <dst_f>
 application_copy_one() {
   local src_f="$1" dst_f="$2"
-  if [[ "${CFG[dry_run]}" == '1' ]]; then
-    sdx_log "[dry-run] $src_f → $dst_f"
-    return 0
-  fi
   copy_with_conflict "$src_f" "$dst_f" || return 0  # skip 时静默返回
 }
 
@@ -367,20 +310,19 @@ application_copy_one() {
 install_application_full_to_docs() {
   local src_root="${CFG[repo_root]}/application"
   local dst_root="${CFG[docs_abs]}"
-  local docs_slash="${CFG[docs_slash]}"
 
   [[ -d "$src_root" ]] || sdx_error "未找到 application 目录: $src_root"
   sdx_info ">>> 初始化 application/（全量）→ 目标文档目录"
   sdx_info "    源:   $src_root"
   sdx_info "    目标: $dst_root"
 
-    local rel src_f dst_f
-    while IFS= read -r -d '' rel; do
-      rel="${rel#./}"
-      [[ -z "$rel" ]] && continue
-      # 仅排除 application/ 根部的元文件与多版本 README（子目录 README.md 须照常同步）
-      [[ "$rel" == 'DESIGN.md' || "$rel" == 'CONTRIBUTING.md' ]] && continue
-      [[ "$rel" == 'README.md' || "$rel" == 'README-s.md' || "$rel" == 'README-c.md' ]] && continue
+  local rel src_f dst_f
+  while IFS= read -r -d '' rel; do
+    rel="${rel#./}"
+    [[ -z "$rel" ]] && continue
+    # 仅排除 application/ 根部的元文件与多版本 README（子目录 README.md 须照常同步）
+    [[ "$rel" == 'DESIGN.md' || "$rel" == 'CONTRIBUTING.md' ]] && continue
+    [[ "$rel" == 'README.md' || "$rel" == 'README-s.md' || "$rel" == 'README-c.md' ]] && continue
 
     src_f="$src_root/$rel"
     dst_f="$dst_root/$rel"
@@ -399,7 +341,6 @@ install_application_full_to_docs() {
 install_application_subset_to_docs() {
   local src_root="${CFG[repo_root]}/application"
   local dst_root="${CFG[docs_abs]}"
-  local docs_slash="${CFG[docs_slash]}"
 
   [[ -d "$src_root" ]] || sdx_error "未找到 application 目录: $src_root"
   sdx_info ">>> 初始化 application/（§2.1 核心子集，central + type=application）→ 目标"
@@ -449,11 +390,6 @@ install_org_template_to_docs() {
     [[ -z "$rel" ]] && continue
     src_f="$src_root/$rel"
     dst_f="$dst_root/$rel"
-
-    if [[ "${CFG[dry_run]}" == '1' ]]; then
-      sdx_log "[dry-run] $src_f → $dst_f"; continue
-    fi
-    # 复用统一冲突处理；跳过时 continue
     copy_with_conflict "$src_f" "$dst_f" || continue
   done < <(cd "$src_root" && find . -type f -print0)
 
@@ -522,12 +458,6 @@ resolve_docsconfig_roots() {
   fi
 }
 
-# 计算 docsconfig 写入所需 DOC_* 路径
-# 用法：install_doc_path <nameref_repo_target> <nameref_doc_root> <nameref_dd>
-install_doc_path() {
-  resolve_docsconfig_roots "${1:?}" "${2:?}" "${3:?}"
-}
-
 # 计算 docsconfig 写入所需 KNOWLEDGE_TYPE
 # 用法：install_knowledge_type <nameref_kt_out>
 install_knowledge_type() {
@@ -573,7 +503,7 @@ install_docsconfig() {
   local cfg_file existed=0
   local kt_out=''
   local ar_out='' ads_out=''
-  install_doc_path repo_target doc_root dd
+  resolve_docsconfig_roots repo_target doc_root dd
 
   # ── 读取已有 .docsconfig（若存在）────────────────────────────────────────
   cfg_file="$repo_target/.docsconfig"
@@ -790,7 +720,6 @@ resolve_type() {
   else
     CFG[type]='application'
   fi
-
 }
 
 # 约束：mode 仅对 type=application 生效
@@ -812,16 +741,6 @@ validate_type_sources() {
     system)      [[ -d "${CFG[repo_root]}/system"      ]] || sdx_error "未找到 system/: ${CFG[repo_root]}/system（type=system）" ;;
     company)     [[ -d "${CFG[repo_root]}/company"     ]] || sdx_error "未找到 company/: ${CFG[repo_root]}/company（type=company）" ;;
   esac
-}
-
-# 计算运行时派生路径（docs_slash）
-compute_derived_paths() {
-  if [[ -n "${CFG[docs_abs]}" ]]; then
-    CFG[docs_slash]="$(compute_docs_rel_slash "${CFG[target_dir]}" "${CFG[docs_abs]}")"
-  else
-    # 未传文档目录时采用约定默认值
-    CFG[docs_slash]='docs/'
-  fi
 }
 
 # =============================================================================
@@ -865,7 +784,6 @@ docs_init_run() {
 
   validate_docs_and_target
 
-  compute_derived_paths
   DOC_INIT_STAMP="$(date +%Y-%m-%d_%H-%M-%S)"
 
   [[ -n "${HOME:-}" ]] || sdx_error "需要 HOME 环境变量"

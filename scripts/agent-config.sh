@@ -11,6 +11,11 @@
 #   source "$(dirname "$0")/agent-config.sh"
 #
 
+if [[ -n "${_SDX_AGENT_CONFIG_SH_LOADED:-}" ]]; then
+  return 0 2>/dev/null || exit 0
+fi
+readonly _SDX_AGENT_CONFIG_SH_LOADED=1
+
 readonly AGENT_CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=../agent/scripts/docs-core.sh
 source "${AGENT_CONFIG_DIR}/../agent/scripts/docs-core.sh"
@@ -41,12 +46,6 @@ readonly SDX_DEFAULT_AGENTS_OPT='cursor'
 # § 2  Scope 校验与展开（安装子树开关）
 # =============================================================================
 
-# 校验 scope 单 token
-# 返回：0=合法
-validate_agent_scope_token() {
-  [[ "${1:-}" =~ ^(a|A|all|r|R|s|S|h|H|sh|SH)$ ]]
-}
-
 # 根据 scope 设置四个 nameref 开关：install_rules install_skills install_hooks install_scripts
 # 用法：agent_scope_apply <scope> <nameref_rules> <nameref_skills> <nameref_hooks> <nameref_scripts>
 agent_scope_apply() {
@@ -66,6 +65,12 @@ agent_scope_apply() {
   return 0
 }
 
+validate_agent_scope_token() {
+  [[ -n "${1:-}" ]] || return 1
+  local _ir _is _ih _ish
+  agent_scope_apply "${1:-}" _ir _is _ih _ish
+}
+
 # 校验 --agents 列表（逗号或空格分隔；支持 all）
 validate_agents() {
   local agents_str="${1:-}"
@@ -82,7 +87,6 @@ validate_agents() {
   return 0
 }
 
-# 规范化 --agents（展开 all、去重）；输出空格分隔的 agent 名
 normalize_agents() {
   local agents_str="${1:-}"
 
@@ -106,7 +110,6 @@ normalize_agents() {
   printf '%s' "${normalized[*]}"
 }
 
-# 根据已选 agent 名输出 AGENT_DIRS（空格分隔目录名，供 .docsconfig）
 agent_dirs_space_separated_for() {
   local ag d out=''
   for ag in "$@"; do

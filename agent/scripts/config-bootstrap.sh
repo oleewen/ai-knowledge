@@ -22,14 +22,10 @@ fi
 # shellcheck source=/dev/null
 source "$_CFG_SH"
 
-# -----------------------------------------------------------------------------
-# 返回已加载的 DOC_ROOT（与 .docsconfig 一致）；无 override。
-# -----------------------------------------------------------------------------
 resolve_repo_doc_root() {
   printf '%s' "${DOC_ROOT:-}"
 }
 
-# 解析承载 .docsconfig 的 REPO_ROOT（目标工程仓库根）
 find_repo_root_for_docsconfig() {
   local script_dir="${1:?script_dir}"
   local gr last=''
@@ -57,25 +53,14 @@ find_repo_root_for_docsconfig() {
   return 1
 }
 
-docsconfig_parse_into_globals() {
-  local path="${1:?}"
-  KNOWLEDGE_TYPE=""
-  docsconfig_read_into "$path" DOC_ROOT REPO_ROOT DOC_DIR AGENT_ROOT AGENT_DIRS KNOWLEDGE_TYPE \
-    || return 1
-}
-
-config_bootstrap_hint_docs_install() {
+config_bootstrap_fail() {
+  local msg="${1:-[config] 配置校验失败。}"
+  printf '%s\n' "$msg" >&2
   cat >&2 <<'EOF'
 [config] 请使用 docs-install.sh 初始化并写入 .docsconfig，例如：
   bash scripts/docs-install.sh --scope=config --target <目标工程文档目录>
 （在已克隆 ai-knowledge 的仓库根执行；路径请按实际工程调整；仍兼容 --target=<目录>）
 EOF
-}
-
-config_bootstrap_fail() {
-  local msg="${1:-[config] 配置校验失败。}"
-  echo "$msg" >&2
-  config_bootstrap_hint_docs_install
   if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     exit 1
   fi
@@ -93,9 +78,9 @@ validate_bootstrap_docsconfig() {
     config_bootstrap_fail "[config] 未找到目标仓库根下的 .docsconfig。"
   fi
 
-  docsconfig_parse_into_globals "$rr/.docsconfig" || {
-    config_bootstrap_fail "[config] 解析 .docsconfig 失败。"
-  }
+  KNOWLEDGE_TYPE=""
+  docsconfig_read_into "$rr/.docsconfig" DOC_ROOT REPO_ROOT DOC_DIR AGENT_ROOT AGENT_DIRS KNOWLEDGE_TYPE \
+    || config_bootstrap_fail "[config] 解析 .docsconfig 失败。"
 
   if [[ -z "${DOC_ROOT:-}" || -z "${REPO_ROOT:-}" || -z "${DOC_DIR:-}" ]]; then
     config_bootstrap_fail "[config] .docsconfig 缺少必需的 DOC_ROOT、REPO_ROOT 或 DOC_DIR。"
