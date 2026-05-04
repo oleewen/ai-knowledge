@@ -45,7 +45,7 @@ bash "$DOCS_INSTALL_SCRIPT" \
   --mode=central \
   --type=application \
   --dry-run \
-  --target="$DOCS_DIR" >"$OUT_FILE" 2>&1
+  --target "$DOCS_DIR" >"$OUT_FILE" 2>&1
 
 APP_INDEX_SUM_AFTER="$(cksum "$APP_INDEX" | awk '{print $1":"$2}')"
 SYS_INDEX_SUM_AFTER="$(cksum "$SYS_INDEX" | awk '{print $1":"$2}')"

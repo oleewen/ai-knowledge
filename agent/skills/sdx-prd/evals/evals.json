@@ -1,0 +1,290 @@
+{
+  "skill_name": "sdx-prd",
+  "version": "1.1.0",
+  "description": "用于评估 sdx-prd 技能触发边界、分流与门禁表述；含 expected_output 与断言供 grader 客观评分。",
+  "evals": [
+    {
+      "id": "prd-trigger-001",
+      "category": "should-trigger",
+      "prompt": "ANALYSIS-ORDER-01.md 里 MVP-Phase-1 的 FR 已经齐了，请走 /sdx-prd：出会话 spec、过门禁，最后落 PRD-ORDER-01-1.md，要有 US 和验收标准。",
+      "expected_output": "以 /sdx-prd 为主路径：基于 ANALYSIS 当前 MVP 写十一章 PRD；会话 spec + 门禁；总确认后定稿 PRD-ORDER-01-1.md；含 HARD-GATE 与 US/验收表述。",
+      "assertions": [
+        {
+          "id": "gate-compliance",
+          "name": "门禁合规",
+          "type": "must_include",
+          "check": "明确总确认前禁止写入 {DOC_DIR}/requirements/**/PRD-*.md 或等价门禁表述，并可提及合法例外或 SDX_PRD_ALLOW_PRD_WRITE。",
+          "priority": "P0"
+        },
+        {
+          "id": "structure-integrity",
+          "name": "结构完整",
+          "type": "must_include",
+          "check": "体现 PRD 十一章/会话 spec、门禁与基于 ANALYSIS 的 MVP，而非以 ANALYSIS 扩写或 ASD 为主产物。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得将本请求主路径改为仅 sdx-analysis、sdx-solution、sdx-architect 或纯 docs-*。",
+          "priority": "P0"
+        },
+        {
+          "id": "deliverable-echo",
+          "name": "产物对齐",
+          "type": "should_include",
+          "check": "应出现 PRD-ORDER-01-1 或 ORDER-01 与 MVP-Phase-1 及 US/验收中至少一类关键词的规划说明。",
+          "priority": "P1"
+        }
+      ]
+    },
+    {
+      "id": "prd-trigger-002",
+      "category": "should-trigger",
+      "prompt": "我们要把当前 MVP 写成可评审的 PRD，按十一章模板，先做会话 spec 再过门禁，不要直接进架构 ASD。",
+      "expected_output": "主路径为 sdx-prd：十一章 PRD、会话 spec 与门禁；明确不应跳过 PRD 直接写 ASD。",
+      "assertions": [
+        {
+          "id": "gate-compliance",
+          "name": "门禁合规",
+          "type": "must_include",
+          "check": "含未确认不写 PRD 终稿或 HARD-GATE 等价语义。",
+          "priority": "P0"
+        },
+        {
+          "id": "structure-integrity",
+          "name": "结构完整",
+          "type": "must_include",
+          "check": "体现十一章模板、会话 spec、门禁与 PRD 定稿节奏，并区分于「直接 ASD/架构」。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得同意「跳过 PRD、直接产出 ASD」作为对本 prompt 的遵从答复。",
+          "priority": "P0"
+        },
+        {
+          "id": "session-spec",
+          "name": "会话 spec",
+          "type": "should_include",
+          "check": "应提及 docs/superpowers/specs/…-sdx-prd.md 或等价会话 spec + Qclose。",
+          "priority": "P1"
+        }
+      ]
+    },
+    {
+      "id": "prd-trigger-003",
+      "category": "should-trigger",
+      "prompt": "产品要一版可验收的 PRD 给研发评审，IDEA-ID 与 ANALYSIS 对齐，门禁用精简 6G，输出 PRD-BILL-02-1.md。",
+      "expected_output": "采用 sdx-prd：精简 6G、PRD-BILL-02-1、与 ANALYSIS 对齐；含门禁与 MVP 范围意识。",
+      "assertions": [
+        {
+          "id": "gate-compliance",
+          "name": "门禁合规",
+          "type": "must_include",
+          "check": "含 PRD 写入门禁或总确认语义。",
+          "priority": "P0"
+        },
+        {
+          "id": "structure-integrity",
+          "name": "结构完整",
+          "type": "must_include",
+          "check": "体现精简 6G（或 11G）、PRD-BILL-02-1 与 ANALYSIS 对齐。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得将主路径改为仅 DSD 或仅写技术方案。",
+          "priority": "P0"
+        },
+        {
+          "id": "idea-echo",
+          "name": "参数回应",
+          "type": "should_include",
+          "check": "应复述 BILL-02、PRD-BILL-02-1 或精简 6G 之一。",
+          "priority": "P1"
+        }
+      ]
+    },
+    {
+      "id": "prd-trigger-004",
+      "category": "should-trigger",
+      "prompt": "请按 SDX 进入产品需求阶段：基于 ANALYSIS 当前 MVP 写用户故事和 AC，IDEA-ID 与 ANALYSIS 文件名一致。",
+      "expected_output": "主路径为 PRD 阶段：US/AC、基于 ANALYSIS MVP、IDEA-ID 对齐；含门禁与 PRD 路径边界。",
+      "assertions": [
+        {
+          "id": "gate-compliance",
+          "name": "门禁合规",
+          "type": "must_include",
+          "check": "含总确认前不写 PRD 终稿或等价表述。",
+          "priority": "P0"
+        },
+        {
+          "id": "structure-integrity",
+          "name": "结构完整",
+          "type": "must_include",
+          "check": "体现基于 ANALYSIS MVP 的用户故事/验收与 PRD 阶段定位。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得将「产品需求阶段」偷换为仅需求分析 ANALYSIS 或仅架构 ASD。",
+          "priority": "P0"
+        },
+        {
+          "id": "traceability",
+          "name": "追溯",
+          "type": "should_include",
+          "check": "应提及 US、AC 或 FR 与 ANALYSIS 的承接关系。",
+          "priority": "P1"
+        }
+      ]
+    },
+    {
+      "id": "prd-not-trigger-001",
+      "category": "should-not-trigger",
+      "prompt": "只有业务会议纪要，还没有 ANALYSIS，请先帮我跑 /sdx-analysis 产出 ANALYSIS-OPS-01.md，不要写 PRD。",
+      "expected_output": "主路径为 /sdx-analysis 与 ANALYSIS-OPS-01.md；不以完整 sdx-prd 门禁链写 PRD 为终点。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 /sdx-analysis 或 ANALYSIS-OPS-01.md（或 ANALYSIS）为当前主任务。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-prd-primary",
+          "name": "勿假主 PRD",
+          "type": "must_not_conflict",
+          "check": "不得将本请求表述为「仍需完整执行 sdx-prd 过门禁并新建 PRD」作为主要答案。",
+          "priority": "P0"
+        },
+        {
+          "id": "defer-prd",
+          "name": "PRD 后置",
+          "type": "should_include",
+          "check": "可提及先有 ANALYSIS 后再进入 sdx-prd（非本轮主路径）。",
+          "priority": "P1"
+        }
+      ]
+    },
+    {
+      "id": "prd-not-trigger-002",
+      "category": "should-not-trigger",
+      "prompt": "老板要先一版共识方案给业务拍板，请用 /sdx-solution 写 SOLUTION-PAY-01.md。",
+      "expected_output": "主路径为 sdx-solution 与 SOLUTION；不以 sdx-prd 为主交付。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 /sdx-solution 或 SOLUTION-PAY-01.md（或 SOLUTION）为当前主任务。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-prd-primary",
+          "name": "勿假主 PRD",
+          "type": "must_not_conflict",
+          "check": "不得将本请求框成以 sdx-prd 与 PRD 十一章为主路径。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "prd-not-trigger-003",
+      "category": "should-not-trigger",
+      "prompt": "PRD 已定稿，请用 /sdx-architect 基于 PRD 画服务边界，生成 ASD-CRM-1.md。",
+      "expected_output": "主路径为 sdx-architect 与 ASD；不以 PRD 重写为当前主产物。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 /sdx-architect 或 ASD 为当前主任务。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-prd-primary",
+          "name": "勿假主 PRD",
+          "type": "must_not_conflict",
+          "check": "不得将本请求描述为默认先写或重写过 PRD 门禁链。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "prd-not-trigger-004",
+      "category": "should-not-trigger",
+      "prompt": "把 application-billing 蒸馏到 billing-overview，执行 docs-distill --app billing。",
+      "expected_output": "主路径为 docs-distill；不是 sdx-prd。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 docs-distill 或 billing-overview 等，而非 sdx-prd。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-prd-primary",
+          "name": "勿假主 PRD",
+          "type": "must_not_conflict",
+          "check": "不得用「先出 PRD 十一章」作为完成本请求的主方案。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "prd-not-trigger-005",
+      "category": "should-not-trigger",
+      "prompt": "从多个源文件提炼业务知识进 payment-overview 第三列，用 docs-extract。",
+      "expected_output": "主路径为 docs-extract；不是 sdx-prd。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 docs-extract 或 overview 第三列，而非 sdx-prd。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-prd-primary",
+          "name": "勿假主 PRD",
+          "type": "must_not_conflict",
+          "check": "不得将本请求框成 PRD 会话 spec 与门禁链。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "prd-not-trigger-006",
+      "category": "should-not-trigger",
+      "prompt": "重建 INDEX_GUIDE.md，跑 docs-indexing 全量扫描。",
+      "expected_output": "主路径为 docs-indexing；不是 sdx-prd。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 docs-indexing 或 INDEX_GUIDE，而非 sdx-prd。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-prd-primary",
+          "name": "勿假主 PRD",
+          "type": "must_not_conflict",
+          "check": "不得将本请求描述为 PRD 阶段与 PRD 落盘主路径。",
+          "priority": "P0"
+        }
+      ]
+    }
+  ]
+}

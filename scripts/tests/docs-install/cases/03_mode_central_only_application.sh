@@ -24,7 +24,7 @@ bash "$DOCS_INSTALL_SCRIPT" \
   --mode=central \
   --type=system \
   --dry-run \
-  --target="$DOCS_DIR" >"$OUT_FILE" 2>&1
+  --target "$DOCS_DIR" >"$OUT_FILE" 2>&1
 CODE=$?
 set -e
 

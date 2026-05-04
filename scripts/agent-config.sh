@@ -11,6 +11,11 @@
 #   source "$(dirname "$0")/agent-config.sh"
 #
 
+if [[ -n "${_SDX_AGENT_CONFIG_SH_LOADED:-}" ]]; then
+  return 0 2>/dev/null || exit 0
+fi
+readonly _SDX_AGENT_CONFIG_SH_LOADED=1
+
 readonly AGENT_CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=../agent/scripts/docs-core.sh
 source "${AGENT_CONFIG_DIR}/../agent/scripts/docs-core.sh"
@@ -41,29 +46,31 @@ readonly SDX_DEFAULT_AGENTS_OPT='cursor'
 # § 2  Scope 校验与展开（安装子树开关）
 # =============================================================================
 
-# 校验 scope 单 token
-# 返回：0=合法
-validate_agent_scope_token() {
-  [[ "${1:-}" =~ ^(a|A|all|r|R|s|S|h|H|sh|SH)$ ]]
-}
-
 # 根据 scope 设置四个 nameref 开关：install_rules install_skills install_hooks install_scripts
 # 用法：agent_scope_apply <scope> <nameref_rules> <nameref_skills> <nameref_hooks> <nameref_scripts>
+# 注意：本函数内 nameref 局部名不得与第 2～5 参「变量名」相同，否则 Bash 会报 circular name reference
+#（例如调用方传 _ir 时，不可再声明 local -n _ir="$2"）。
 agent_scope_apply() {
   local _raw="${1:?scope}"
-  local -n _ir="${2:?}" _is="${3:?}" _ih="${4:?}" _ish="${5:?}"
-  _ir=0 _is=0 _ih=0 _ish=0
+  local -n _ref_rules="${2:?}" _ref_skills="${3:?}" _ref_hooks="${4:?}" _ref_scripts="${5:?}"
+  _ref_rules=0 _ref_skills=0 _ref_hooks=0 _ref_scripts=0
   case "${_raw}" in
     a|A|all)
-      _ir=1 _is=1 _ih=1 _ish=1
+      _ref_rules=1 _ref_skills=1 _ref_hooks=1 _ref_scripts=1
       ;;
-    r|R) _ir=1 ;;
-    s|S) _is=1 ;;
-    h|H) _ih=1 ;;
-    sh|SH) _ish=1 ;;
+    r|R) _ref_rules=1 ;;
+    s|S) _ref_skills=1 ;;
+    h|H) _ref_hooks=1 ;;
+    sh|SH) _ref_scripts=1 ;;
     *) return 1 ;;
   esac
   return 0
+}
+
+validate_agent_scope_token() {
+  [[ -n "${1:-}" ]] || return 1
+  local _ir _is _ih _ish
+  agent_scope_apply "${1:-}" _ir _is _ih _ish
 }
 
 # 校验 --agents 列表（逗号或空格分隔；支持 all）
@@ -77,16 +84,11 @@ validate_agents() {
     [[ -z "$agent" ]] && continue
     [[ "$agent" == 'all' ]] && return 0
 
-    local valid=0
-    for supported in "${SDX_SUPPORTED_AGENTS[@]}"; do
-      [[ "$agent" == "$supported" ]] && { valid=1; break; }
-    done
-    (( valid == 0 )) && return 1
+    [[ " ${SDX_SUPPORTED_AGENTS[*]} " == *" $agent "* ]] || return 1
   done
   return 0
 }
 
-# 规范化 --agents（展开 all、去重）；输出空格分隔的 agent 名
 normalize_agents() {
   local agents_str="${1:-}"
 
@@ -110,7 +112,6 @@ normalize_agents() {
   printf '%s' "${normalized[*]}"
 }
 
-# 根据已选 agent 名输出 AGENT_DIRS（空格分隔目录名，供 .docsconfig）
 agent_dirs_space_separated_for() {
   local ag d out=''
   for ag in "$@"; do

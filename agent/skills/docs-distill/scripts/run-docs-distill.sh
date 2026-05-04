@@ -39,9 +39,10 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # 确定项目根目录：优先 --root，其次脚本位置上溯四级（scripts/ → docs-distill/ → skills/ → agent/ → 根）
 if [[ -z "${ROOT_DIR}" ]]; then
-  SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
   ROOT_DIR="$(cd "${SCRIPT_DIR}/../../../.." && pwd)"
 fi
 
@@ -63,7 +64,7 @@ if [[ ! "$APP" =~ ^[a-zA-Z0-9][a-zA-Z0-9_-]*$ ]]; then
   exit 1
 fi
 
-SCRIPTS_DIR="agent/skills/docs-distill/scripts"
+SCRIPTS_DIR="${SCRIPT_DIR}"
 APP_DIR="system/application-${APP}"
 APP_CHANGE_LOG="${APP_DIR}/changelogs/CHANGE-LOG.md"  # 只读：应用侧变更来源
 DISTILL_LOG="system/changelogs/DISTILL-LOG.md"        # 读写：蒸馏记录兼锚点（步骤 4.4）

@@ -12,20 +12,22 @@
 
 | 命令 | 说明 |
 |------|------|
-| `/docs-indexing` | 生成结构化 `INDEX_GUIDE.md`（九章文档地图），作为 Agent 导航与 RAG 权威来源；索引运行日志写入 `changelogs/INDEXING-LOG.md`；支持全量/增量扫描与深度 1/2/3。 |
+| `/docs-indexing` | 生成结构化 `INDEX_GUIDE.md`（九章文档地图），作为 Agent 导航与 RAG 权威来源；`INDEXING-LOG.md` 用主表记录运行（**最新在上**，锚点见 [docs-indexing/references/indexing-log-spec.md](docs-indexing/references/indexing-log-spec.md)）；支持全量/增量与深度 1/2/3；高风险落盘 spec + `sdx_gate_common.py --gate indexing`（见 [docs-indexing/references/gates.md](docs-indexing/references/gates.md)）。 |
 | `/docs-change` | 从 git commit、CHANGELOG/CHANGE-LOG、本地文件 mtime 采集变更，落盘 `CHANGE-LOG.md`（文末 HTML 注释承载增量基线）；供下游增量索引等使用。 |
+| `/docs-tag` | 为 Markdown 概览做关键词驱动标记：扫描目录提取候选词、用户选择后写入 YAML 附录（`<!-- spec-tags -->`），再对表格行追加 ✅；流程见 [docs-tag/references/workflow.md](docs-tag/references/workflow.md)。 |
 | `/docs-upgrade` | 定向增改 Markdown、源代码注释与配置文本；落盘后链式同步引用链，并辅以关键词检索（同义/近义/中英文）对齐同类表述；支持替换简写 `a - b` / `a > b` / `a 2 b`。 |
-| `/agent-guide` | 生成或更新根目录 `README.md`（人类）与 `AGENTS.md`（Agent）；以落盘 `INDEX_GUIDE.md` 为唯一地图，与 Index 职责不重叠。 |
+| `/docs-agent` | 生成或更新根目录 `README.md`（人类）与 `AGENTS.md`（Agent）；以落盘 `INDEX_GUIDE.md` 为唯一地图，与 Index 职责不重叠。 |
 | `/docs-distill` | 将 `system/application-{name}/` 已核实内容蒸馏到系统知识库 `system/architecture/`；支持 `--app` `--since` `--full` `--dry-run`，默认按增量锚点蒸馏。 |
 | `/docs-extract` | 从用户指定的任意文件或目录中，按段落级关键词相关度筛选，提炼业务知识写入指定 `XX-overview.md` 第三列（A/U/D 合并更新）；支持 `--sources` `--overview` `--dry-run`。 |
-| `/docs-fetch` | 从已通过中央知识库挂载建联注册的目标工程拉取最新文档，覆盖更新本仓库联邦镜像 `applications/app-{APPNAME}/`，并追加同步 changelog。 |
+| `/docs-pull` | 从已通过中央知识库挂载建联注册的目标工程拉取最新文档，覆盖更新本仓库联邦镜像 `applications/app-{APPNAME}/`，并追加同步 changelog。 |
 | `/docs-build` | 从工程代码与文档按四视角（技术→数据→业务→产品）提取链上实体 ID，生成 `*_knowledge.json`（schema 2.1），刷新各视角 README 与 `{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md`。 |
 | `/docs-archive` | 从指定 overview 文件各视角归档知识到架构视角表各行副标题文件链接对应章节；先澄清与方案确认再落盘，补充后做一致性检查与冲突分步确认。 |
 | `/sdx-solution` | 产出解决方案阶段文档（Solution 阶段）。 |
 | `/sdx-analysis` | 产出需求分析阶段文档（Analysis 阶段）。 |
 | `/sdx-prd` | 产出 PRD 阶段文档（Requirements 阶段）；总确认前默认禁止写入 `{DOC_DIR}/requirements/**/PRD-*.md`（见技能 HARD-GATE）。 |
-| `/sdx-design` | 产出架构/设计阶段文档（Architecture Design 阶段）。 |
-| `/sdx-test` | 产出测试设计与验证阶段文档（Test 阶段）；总确认前默认禁止写入 `{DOC_DIR}/requirements/**/TDD-*.md`（见技能 HARD-GATE）。 |
+| `/sdx-architect` | 产出架构设计说明书 **ASD**（§1–§3，含与 DSD 同构的 §3 需求规约摘要表；System/Company 联邦概要主场）。 |
+| `/sdx-design` | 产出详细设计说明书 **DSD**（§1–§4，§1 与 ASD §1 对齐；详设自 §2 起）及应用全量 **`specs/*.yaml`**；门禁与流程见 [sdx-design/references/gates.md](sdx-design/references/gates.md)、[workflow.md](sdx-design/references/workflow.md)，评测见 `sdx-design/evals/`。 |
+| `/sdx-test` | 产出测试设计与验证阶段文档（Test 阶段）；总确认前默认禁止写入 `{DOC_DIR}/requirements/**/TDD-*.md`（见 [sdx-test/references/gates.md](sdx-test/references/gates.md)）；流程见 [workflow.md](sdx-test/references/workflow.md)，评测见 `sdx-test/evals/`。 |
 | `/skill-creator` | 创建、评测与迭代技能的官方工作流（含 `scripts/`、`eval-viewer/`）。来源：Anthropic 仓库 [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) 中 `plugins/skill-creator/skills/skill-creator`；本仓库副本在 `agent/skills/skill-creator/`。 |
 
 ## 使用说明

@@ -18,6 +18,7 @@ cd "$REPO_ROOT" || exit 1
 DEFAULT_OUTPUT="${DOC_ROOT}/INDEX_GUIDE.md"
 LOG_FILE="${DOC_ROOT}/changelogs/INDEXING-LOG.md"
 CHANGE_LOG_FILE="${DOC_ROOT}/changelogs/CHANGE-LOG.md"
+INDEXING_LOG_PY="${SCRIPT_DIR}/indexing_log.py"
 mkdir -p "${DOC_ROOT}/changelogs"
 
 now_ms() {
@@ -114,34 +115,30 @@ START_TIME=$(date '+%Y-%m-%d %H:%M:%S')
 OUTPUT_DIR=$(dirname "$OUTPUT")
 mkdir -p "$OUTPUT_DIR"
 
-# 获取上次索引时间（用于增量模式）
+# 获取上次索引时间（用于增量模式）；主表首行，否则回退文内 HTML 注释（见 indexing-log-spec）
 BASE_INDEXING_TIME_MS=0
+SINCE_MS_FOR_LOG=0
 if [[ "$DATA_MODE" == "incremental" ]]; then
     if [[ -n "$SINCE" ]]; then
         BASE_INDEXING_TIME_MS="$SINCE"
+        SINCE_MS_FOR_LOG="$SINCE"
     elif [[ -f "$LOG_FILE" ]]; then
-        # Markdown 追加日志：取文末最近一次 <!-- sdx-indexing:indexing_finished_ms=... -->
-        BASE_INDEXING_TIME_MS=$(python3 - <<PY
-import re
-path = r"""$LOG_FILE"""
-try:
-    text = open(path, encoding="utf-8").read()
-except OSError:
-    print("0")
-    raise SystemExit
-ms = re.findall(r"<!-- sdx-indexing:indexing_finished_ms=(\d+) -->", text)
-print(ms[-1] if ms else "0")
-PY
-)
+        BASE_INDEXING_TIME_MS=$(
+            python3 "$INDEXING_LOG_PY" read-baseline "$LOG_FILE" 2>/dev/null || echo "0"
+        )
+        SINCE_MS_FOR_LOG="$BASE_INDEXING_TIME_MS"
     fi
 
     if [[ "$BASE_INDEXING_TIME_MS" == "0" ]] || [[ -z "$BASE_INDEXING_TIME_MS" ]]; then
-        echo "Warning: No valid baseline in $LOG_FILE, forcing full mode"
-        DATA_MODE="full"
-        BASE_INDEXING_TIME_MS=0
+        echo "[ERROR] incremental 需要有效基线：主表第一行 indexing_finished_ms，"
+        echo "  或显式 \`--since <epoch ms>\`。"
+        echo "  可改 \`--mode full\`，或先补全 ${LOG_FILE} 见 agent/skills/docs-indexing/references/indexing-log-spec.md" >&2
+        exit 1
     else
-        echo "Using incremental mode since $BASE_INDEXING_TIME_MS"
+        echo "Using incremental mode with baseline (since) $BASE_INDEXING_TIME_MS"
     fi
+else
+    SINCE_MS_FOR_LOG=0
 fi
 
 # 生成变更索引（简版元数据）
@@ -257,7 +254,7 @@ ${TOP_FILES}
 ## 七、质量与边界（Quality & Boundaries）
 - 路径均为仓库根相对路径
 - 输出具有幂等性（相同输入得到相同结构）
-- 增量模式在无有效基线时自动降级为全量
+- 增量模式须有效基线（见 \`${REL_LOG}\` 主表或 \`--since\`），否则应中止或改全量
 
 ## 八、日志与追溯（Traceability）
 - 索引运行日志（Markdown）：\`${REL_LOG}\`
@@ -265,39 +262,29 @@ ${TOP_FILES}
 
 ## 九、附录（Appendix）
 - 生成器：\`agent/skills/docs-indexing/scripts/indexing.sh\`
-- 规范参考：\`agent/skills/docs-indexing/reference/scan-spec.md\`
+- 规范参考：\`agent/skills/docs-indexing/references/scan-spec.md\`
 EOF
 
-# 写入索引运行日志（Markdown 追加）
+# 写入索引运行日志（主表、最新在上；见 indexing_log.py / indexing-log-spec）
 FINISHED_TIME_MS=$(now_ms)
 DURATION_MS=$((FINISHED_TIME_MS - CURRENT_TIME_MS))
 TIMESTAMP_ISO="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-
-if [[ ! -f "$LOG_FILE" ]]; then
-    cat > "$LOG_FILE" << EOF
-# INDEXING-LOG
-
-本文件由 **docs-indexing** 按运行追加记录（Markdown）；增量模式基线取自文末最近一次 \`<!-- sdx-indexing:indexing_finished_ms=... -->\`。
-
----
-
-EOF
-fi
-
-cat >> "$LOG_FILE" << EOF
-
-## 运行记录 — ${TIMESTAMP_ISO}
-
-| 字段 | 值 |
-|------|-----|
-| 模式 | ${DATA_MODE} |
-| 深度 | ${READ_MODE} |
-| 索引文件数 | ${INDEXED_FILES} |
-| 输出路径 | \`${OUTPUT}\` |
-| 耗时 (ms) | ${DURATION_MS} |
-
-<!-- sdx-indexing:indexing_finished_ms=${FINISHED_TIME_MS} -->
-EOF
+REL_OUTPUT=$(
+    REPO_ROOT="${REPO_ROOT}" OUT="${OUTPUT}" python3 -c \
+        "import os, os.path as p; r=os.environ['REPO_ROOT']; o=os.environ['OUT']; \
+print(p.relpath(p.abspath(o), p.abspath(r)))" 2>/dev/null || echo "$OUTPUT"
+)
+SUMMARY="${DATA_MODE} d${READ_MODE}"
+python3 "$INDEXING_LOG_PY" append "$LOG_FILE" \
+    --finished-ms "$FINISHED_TIME_MS" \
+    --indexed-at "$TIMESTAMP_ISO" \
+    --mode "$DATA_MODE" \
+    --depth "$READ_MODE" \
+    --since-ms "$SINCE_MS_FOR_LOG" \
+    --output-path "$REL_OUTPUT" \
+    --file-count "$INDEXED_FILES" \
+    --duration-ms "$DURATION_MS" \
+    --summary "$SUMMARY"
 
 # 完成时间
 END_TIME=$(date '+%Y-%m-%d %H:%M:%S')

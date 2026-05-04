@@ -1,5 +1,7 @@
 # Gotchas — 已知陷阱与防错指南
 
+参数门禁与阶段命令见 [references/gates.md](references/gates.md)、[references/workflow.md](references/workflow.md)。
+
 ## 1. 锚点匹配失败
 
 **问题**：GitHub Markdown 锚点规则与直觉不符。全角括号（）、斜杠 `/` 等字符会被直接删除，而非转为 `-`，导致手动拼写的锚点与实际生成的锚点不一致，`get_section_content` 返回空字符串。

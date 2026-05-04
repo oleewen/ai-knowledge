@@ -1,0 +1,23 @@
+{
+  "skill_name": "docs-build",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "主 INDEX 已经跑过 docs-indexing 了，帮我把四视角实体从代码里抽一遍，更新 KNOWLEDGE_INDEX，先给我看下会动哪些文件再写",
+      "expected_output": "触发 docs-build；阶段 1 后 Qclose-1；说明 docs-build-gate 与 spec；列出 knowledge 路径清单；CONFIRMED 后再阶段 2–4；提及 validate-extraction.sh",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "/docs-build --perspectives technical,data --confidence-threshold high",
+      "expected_output": "触发 docs-build；仅技术+数据视角；仍须 Qclose-1 与 gate；不写 distill/overview",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "帮我重新生成根目录的 INDEX_GUIDE.md，顺便把 knowledge 实体也建一下",
+      "expected_output": "分流：INDEX_GUIDE 主路径为 docs-indexing；knowledge 为 docs-build；不得只以 docs-build 包掉 indexing",
+      "files": []
+    }
+  ]
+}

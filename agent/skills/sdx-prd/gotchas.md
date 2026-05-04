@@ -1,6 +1,8 @@
-# sdx-prd 常见陷阱
+# 常见陷阱（sdx-prd）
 
-阶段二按门禁 Gn 收口，阶段三按 §1–§11 分块定稿。流程总览见 [SKILL.md](SKILL.md)，填充要点见 [reference/workflow-spec.md](reference/workflow-spec.md)。
+**反模式（表现 + 纠正）**见 [references/anti-patterns.md](references/anti-patterns.md)；**原则与表格级禁止**见 [references/design-principles.md](references/design-principles.md)。
+
+阶段二按门禁 Gn 收口，阶段三按 §1–§11 分块定稿。流程总览见 [SKILL.md](SKILL.md)，填充要点见 [references/workflow.md](references/workflow.md)。
 
 ---
 

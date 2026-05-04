@@ -1,18 +1,31 @@
 ---
 name: docs-upgrade
 description: >
-  定向增改仓库内 Markdown、源代码注释与配置文本；落盘后自动做链式同步：沿引用链查找关联处，
-  并辅以关键词检索（同义/近义/中英文同义表述）定位需对齐的内容后替换。
-  只要用户提到以下任意场景，就应立即使用本技能，不要等用户明确说"/docs-upgrade"：
+  当用户执行 /docs-upgrade、需要定向增改仓库内 Markdown/注释/配置文本、统一术语并沿引用链与关键词做链式同步时，必须使用本技能。
+  落盘后按默认规则沿引用链查找关联处，并辅以关键词检索（同义/近义/中英文）定位需对齐的内容后替换。
+  只要用户提到以下任意场景，就应立即使用本技能，不要等用户明确说「/docs-upgrade」：
   改文档、改注释、统一术语、对齐表述、替换词语、更新说明、同步引用链、
-  "帮我改一下这个文档"、"把 X 统一成 Y"、"更新一下注释"、"这里的说法不一致"、
-  "把这段改成..."、"文档里有个错别字"、"注释过时了"、"把所有 X 改成 Y"。
+  「帮我改一下这个文档」「把 X 统一成 Y」「更新一下注释」「这里的说法不一致」、
+  「把这段改成…」「文档里有个错别字」「注释过时了」「把所有 X 改成 Y」。
   支持替换简写：a - b、a > b、a 2 b 均表示将 a 替换为 b。
+  若用户已明确要求以 docs-archive、docs-change、docs-indexing、docs-build、仅写 CHANGE-LOG 或仅重建 INDEX_GUIDE 为主路径，则不要以本技能为唯一主流程，应分流到对应技能。
 ---
 
-# docs-upgrade（定向文档与注释升级）
+# docs-upgrade：定向文档与注释升级
+
+本技能以「调度器」方式工作：先判定是否应由 `docs-upgrade` 处理，再按 `references/` 规范完成主修改、关联同步与校验。
 
 可控范围内的文本一致化：先完成主目标文件的增改，再按默认规则把关联处与同类表述对齐。
+
+---
+
+## 适用边界
+
+- **本技能负责**：文档、纯文本、代码与配置中的注释、字符串内文档路径；链式引用检索 + 关键词检索（同义/近义/中英文对应）；会话内**范围确认书**（见 `references/gates.md`）。
+- **本技能不负责**：变更索引聚合（**docs-change**）、全库索引重建（**docs-indexing**）、overview 视角归档（**docs-archive**）、实体与 `KNOWLEDGE_INDEX`（**docs-build**），除非用户明确列为附加任务。
+- **不包含**（除非用户明确要求）：纯业务逻辑重构、与文档无关的大规模代码改写。
+
+---
 
 ## 输入与输出
 
@@ -23,54 +36,52 @@ description: >
 | 固定输出 | 修改后的目标文件；关联文件（链式/关键词检索命中且需对齐时） |
 | 不产出 | 变更索引（`docs-change`）、全库索引重建（`docs-indexing`） |
 
-## 能力边界
+---
 
-**包含**：文档、纯文本、代码与配置中的注释、字符串内文档路径；链式引用检索 + 关键词检索（同义/近义/中英文对应）。
+## 执行路由（先读后写）
 
-**不包含**（除非用户明确要求）：纯业务逻辑重构、与文档无关的大规模代码改写。
+1. **门禁与范围确认**：先读 `references/gates.md`（含可复制模板 [assets/docs-upgrade-scope-ack-template.md](assets/docs-upgrade-scope-ack-template.md)）
+2. **主流程步骤**：再读 `references/workflow.md`
+3. **预检与同步前闸门**：意图不清或步骤 3 前读 `references/brainstorming-integration.md`
+4. **引用链细则**：步骤 3 读 `references/related-doc-discovery.md`
+5. **关键词与语义**：步骤 3 读 `references/semantic-keyword-discovery.md`
+6. **替换简写与概念**：不确定时读 `references/core-concepts.md`
+7. **原则层**：读 `references/design-principles.md`
+8. **反模式**：收敛前读 `references/anti-patterns.md`
+9. **验证**：落盘后读 `references/quality-checklist.md`
+10. **操作层陷阱**：读 `gotchas.md`
+11. **全目录索引**：按需读 `references/README.md`
 
-范围明显过大（如无边界全库术语替换）时，先与用户确认批次或排除目录再继续。意图不清、多策略取舍或大范围同步前需澄清时，按 [reference/brainstorming-preflight.md](reference/brainstorming-preflight.md) 做预检；路径与指令已明确的小改走快路径直接执行。
+---
 
-## 替换简写
+## 门禁要求（必须执行）
 
-以下三种形式等价，trim 后把 `a` 替换为 `b`，分隔符与 `a`、`b` 之间可以有空格：
+- **在执行任何写入前**完成范围确认书与用户明确同意（`C` / `S`；快路径见 `references/gates.md`）。
+- **禁止**未确认即批量写入多个文件。
 
-| 形式 | 含义 |
-|------|------|
-| `a - b` | `a` → `b` |
-| `a > b` | `a` → `b` |
-| `a 2 b` | `a` → `b`（数字 2 表示 to） |
+---
 
-若 `a` 或 `b` 含 `|`、换行或边界不清，使用引号：`"旧术语" - "新术语"`。替换前确认命中范围：若 `a` 在目标范围内不唯一，列出命中次数与示例行，或请用户确认是否全部替换。
+## 产出与校验
 
-## 主流程（顺序执行）
+- **产出**：已修改的主文件与已确认的关联文件；链接与结构校验见 `references/quality-checklist.md`。
+- **可选集成元数据**：`agents/openai.yaml` 供 Cursor/Agent 展示用，**非**执行本技能的必读输入。
 
-### 步骤 1：锁定目标
+---
 
-解析用户给出的路径；无路径时用搜索定位候选，多候选则列出选项后再编辑。预检指引见 [reference/brainstorming-preflight.md](reference/brainstorming-preflight.md)。
+## 评测与迭代（skill-creator 对齐）
 
-### 步骤 2：主修改
+- 评测样本：`evals/evals.json`（含 `expected_output` 与 `assertions`）
+- 评测元模板：`evals/eval-metadata-template.json`
+- 评分规则：`agents/grader.md`
+- 失败分析：`agents/analyzer.md`
 
-按用户意图完成增写、改写或替换（含注释与字符串中的文档性表述）。
+---
 
-### 步骤 3：关联与语义同步
+## 工程化支持
 
-大范围同步或命中数/概念边界存疑时，先完成 [reference/brainstorming-preflight.md](reference/brainstorming-preflight.md) 中的**同步前闸门**再扩展。
+本仓库 **未** 为 `docs-upgrade` 注册 `preToolUse` 钩子；合规依赖范围确认书与执行纪律。
 
-**默认**（用户未声明「只改本文件」时）对本轮已修改的每个文件同时做：
-
-- **引用链检索**：出站（本文件引用了谁）与入站（谁引用了本文件），将关联处与本次变更同一概念、需对齐的术语或表述一并修订。细则见 [reference/related-doc-discovery.md](reference/related-doc-discovery.md)。
-- **关键词/语义检索**：文件间无直接链接但存在同义/近义/中英文对应表述、复制段或同一术语散落多处时，按 [reference/semantic-keyword-discovery.md](reference/semantic-keyword-discovery.md) 判断是否应改。
-
-**例外**：用户明确说「只改本文件」「不要同步关联文档」「不要全库搜」时，跳过扩展检索。
-
-### 步骤 4：回链校验
-
-若存在互链，确认相对路径、锚点与反引号路径仍有效。
-
-### 步骤 5：不确定项门禁
-
-无法在仓库内核实的内容 → **停止并输出编号选项**，待用户选择后再改。复杂项可拆成多轮单问，见 [reference/brainstorming-preflight.md](reference/brainstorming-preflight.md)。
+---
 
 ## 须由用户决策的情形
 
@@ -80,9 +91,7 @@ description: >
 - 是否删除过时段落、是否保留兼容说明、标题层级或文档结构取舍
 - 多文件同名、多段相似但语义可能不同的文本、或链式/关键词检索下「是否视为同一概念」存疑时
 
-## 验证
-
-抽查：链接可解析、表格与代码块未破坏、术语与主目标一致。用户要求时运行仓库既有校验命令。
+---
 
 ## 依赖关系
 
@@ -90,12 +99,3 @@ description: >
 |------|-----------|------|
 | 协作 | `docs-change` | 变更聚合与时间线索引 |
 | 协作 | `docs-indexing` | 重建 `INDEX_GUIDE.md` |
-
-## 参考
-
-| 资源 | 路径 | 何时读 |
-|------|------|--------|
-| brainstorming 式预检（快路径/同步前闸门/分步提问） | [reference/brainstorming-preflight.md](reference/brainstorming-preflight.md) | 意图不清、多方案取舍、步骤 3 前需确认范围时 |
-| 关联发现（入站/出站/链式深度） | [reference/related-doc-discovery.md](reference/related-doc-discovery.md) | 步骤 3 引用链检索时 |
-| 关键词与语义对齐策略 | [reference/semantic-keyword-discovery.md](reference/semantic-keyword-discovery.md) | 步骤 3 关键词检索时 |
-| 常见误判与范围控制 | [gotchas.md](gotchas.md) | 遇到范围过大、近义词误判、替换歧义时 |

@@ -10,7 +10,7 @@
 | 文件 | 用途 |
 |------|------|
 | [CHANGE-LOG.md](CHANGE-LOG.md) | 维护性变更记录与 **docs-change** 聚合结果；文末 `<!-- docs-change:baseline_time_ms=... -->` 为增量基线 |
-| [INDEXING-LOG.md](INDEXING-LOG.md) | **docs-indexing** 运行记录（按次追加）；文末 `<!-- sdx-indexing:indexing_finished_ms=... -->` 为增量基线 |
+| [INDEXING-LOG.md](INDEXING-LOG.md) | **docs-indexing** 运行记录；主表**第一行** `indexing_finished_ms` 为增量锚点（[indexing-log-spec.md](../../agent/skills/docs-indexing/references/indexing-log-spec.md)） |
 
 ---
 
@@ -19,6 +19,6 @@
 | Skill | 说明 |
 |-------|------|
 | [docs-change](../../agent/skills/docs-change/SKILL.md) | 聚合 git / CHANGELOG / 本地 mtime，**写入/更新** `CHANGE-LOG.md`（Markdown） |
-| [docs-indexing](../../agent/skills/docs-indexing/SKILL.md) | 生成 `INDEX_GUIDE.md`，**追加** `INDEXING-LOG.md`（Markdown） |
+| [docs-indexing](../../agent/skills/docs-indexing/SKILL.md) | 生成 `INDEX_GUIDE.md`，在 `INDEXING-LOG.md` 主表**插入**一行（最新在上） |
 
 命令清单与执行入口统一见 [../../agent/skills/README.md](../../agent/skills/README.md)。

@@ -66,9 +66,9 @@ class TestIntegrationWorkflow:
         )
         assert result.returncode == 0, f'1-write 失败：{result.stderr}'
         
-        # 验证 YAML 附录已写入
+        # 验证关键词附录已写入（新格式 ## 附录 / ```yaml，或旧格式 <!-- spec-tags）
         content = target_file.read_text(encoding='utf-8')
-        assert '<!-- spec-tags' in content
+        assert '### 文档关键词' in content or '<!-- spec-tags' in content
         assert '计费' in content
         
         # 5. 执行 phase 2

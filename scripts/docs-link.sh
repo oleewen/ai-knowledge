@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
-# docs-link.sh — 在源知识库登记 / 注销目标知识库（path + 目标 DOC_DIR + app_name）
+# docs-link.sh — 在源知识库登记 / 注销目标知识库（repository + path + doc_dir + app_name + app_label）
 # application 建联时 app_name：--app-name > 登记文件已有 > Git 仓库根目录名推断
-# 同一 target 重复 link：合并更新同一条记录，不追加重复 path
-# 用法: ./scripts/docs-link.sh --link|--unlink --target=<目标仓库根> [--app-name=名] [--dry-run]
+# app_label：新登记或条目中尚无 app_label 时默认等于 app_name；重复 link 且已有 app_label 则保留不覆盖
+# 同一 target 重复 link：合并更新同一条记录，不追加重复行
+# 用法: ./scripts/docs-link.sh --link|--unlink --target <目标仓库根> [--app-name=名] [--dry-run]
 # 须在源 Git 仓库内执行；link 需校验源、目标 .docsconfig 与 KNOWLEDGE_TYPE；
-# unlink 支持目标失联场景（按登记 path 注销）；system 源注销 application 建联时先将
+# unlink 支持目标失联场景（按登记 identity 注销）；system 源注销 application 建联时先将
 # DOC_ROOT 下 application-<APPNAME>/ 备份至 REPO_ROOT/.docs-init/<时间戳>/（与 docs-install 一致）再移除。
-# 登记值：目标为 Git 仓库时优先 remote URL（origin，否则第一个 remote），
-#       若无可用 remote 则使用 git 仓库根绝对路径；非 Git 目标为规范化绝对路径。
+# 登记值：repository 存 Git remote URL（有 remote 时）；path 存本机路径（在 $HOME 下为 ~/ 前缀的
+#       路径，家目录本身写 ~/；否则为规范化绝对路径）。兼容旧数据：无 ~ 的 $HOME 相对片段仍可读。
+#       path 不得为 URL 形态（须写在 repository）。不兼容旧版仅 path=URL 的 YAML。
 set -euo pipefail
 
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -18,43 +20,153 @@ source "${SCRIPT_DIR}/link-config.sh"
 # knowledge-links.yaml
 # =============================================================================
 
-# 从 knowledge-links.yaml 解析每条 link：path、可选 doc_dir、可选 app_name（application 槽位）
-# 输出每行：path<TAB>doc_dir<TAB>app_name（后两者可为空）
-knowledge_links_parse_entries_stream() {
-  local f="${1:?}"
-  [[ -f "$f" ]] || return 0
-  local path="" doc_dir="" app_name="" v w z
-  while IFS= read -r line || [[ -n "$line" ]]; do
-    if [[ "$line" =~ ^[[:space:]]*-[[:space:]]*path:[[:space:]]*(.*)$ ]]; then
-      [[ -n "$path" ]] && printf '%s\t%s\t%s\n' "$path" "$doc_dir" "$app_name"
-      v="${BASH_REMATCH[1]}"
-      v="${v#\"}"; v="${v%\"}"
-      v="${v#\'}"; v="${v%\'}"
-      path="$v"
-      doc_dir=""
-      app_name=""
-    elif [[ -n "$path" && "$line" =~ ^[[:space:]]*doc_dir:[[:space:]]*(.*)$ ]]; then
-      w="${BASH_REMATCH[1]}"
-      w="${w#\"}"; w="${w%\"}"
-      w="${w#\'}"; w="${w%\'}"
-      doc_dir="$w"
-    elif [[ -n "$path" && "$line" =~ ^[[:space:]]*app_name:[[:space:]]*(.*)$ ]]; then
-      z="${BASH_REMATCH[1]}"
-      z="${z#\"}"; z="${z%\"}"
-      z="${z#\'}"; z="${z%\'}"
-      app_name="$z"
-    fi
-  done <"$f"
-  [[ -n "$path" ]] && printf '%s\t%s\t%s\n' "$path" "$doc_dir" "$app_name"
+# 去除 YAML 字段值两端的单/双引号
+_yaml_unquote() {
+  local v="${1:-}"
+  v="${v#\"}"; v="${v%\"}"
+  v="${v#\'}"; v="${v%\'}"
+  printf '%s' "$v"
 }
 
-# 覆盖写出 knowledge-links.yaml（path、doc_dir、app_name 三组数组下标对齐）
-knowledge_links_write_triples() {
+# 与 identity 解析一致：判定是否为 Git 远端 URL 形态（path 字段禁止写入此类串）
+knowledge_link_value_looks_like_git_remote() {
+  [[ "${1:-}" =~ ^(git@|ssh://|https://|http://) ]]
+}
+
+# path 字段禁止为远程 URL 形态（须写在 repository）
+knowledge_links_validate_stored_path_field() {
+  local p="${1:?}" src="${2:?}"
+  [[ -n "$p" ]] || sdx_error "knowledge-links.yaml 条目缺少 path 或 path 为空: $src"
+  if knowledge_link_value_looks_like_git_remote "$p"; then
+    sdx_error "knowledge-links.yaml: path 不得为远程 URL（已废弃）。请将远端写入 repository，path 改为 ~/…、~/ 或本机绝对路径（兼容旧：无 ~ 的 \$HOME 相对片段）: $src"
+  fi
+}
+
+# YAML 双引号字段内转义（写 knowledge-links 用）
+_knowledge_link_yaml_escape_dq() {
+  printf '%s' "${1//\"/\\\"}"
+}
+
+# DOC_ROOT 绝对路径并去尾斜杠（槽位路径拼接用）
+_knowledge_link_doc_root_abs_ns() {
+  strip_trailing_slash "$(abs_path "${1:?}")"
+}
+
+# 将绝对仓库根路径转为写入 knowledge-links 的 path（$HOME 下为 ~/… 或 ~/，否则绝对路径；手写不依赖 docsconfig_format_root_for_write）
+knowledge_link_stored_path_from_absolute() {
+  local abs="${1:?}" home_abs r
+  abs="$(cd -P "$abs" 2>/dev/null && pwd)" || {
+    printf '%s\n' "$abs"
+    return 0
+  }
+  home_abs="${HOME:-}"
+  [[ -n "$home_abs" ]] && home_abs="$(cd -P "$home_abs" 2>/dev/null && pwd)" || home_abs=''
+  [[ -z "$home_abs" ]] && {
+    printf '%s\n' "$abs"
+    return 0
+  }
+  if [[ "$abs" == "$home_abs" ]]; then
+    printf '%s\n' '~/'
+    return 0
+  fi
+  if [[ "$abs" == "$home_abs/"* ]]; then
+    r="${abs#"${home_abs}"/}"
+    printf '~/%s\n' "$r"
+    return 0
+  fi
+  printf '%s\n' "$abs"
+}
+
+# 将登记 path 展开为绝对路径（~/…、~、/ 绝对路径走 abs_path；否则视为相对 $HOME 的旧形态并拼 $HOME）
+knowledge_link_expand_stored_path() {
+  local p="${1:?}" home
+  if [[ "$p" == /* ]]; then
+    abs_path "$p"
+    return 0
+  fi
+  if [[ "$p" == '~' ]] || [[ "$p" =~ ^~/ ]]; then
+    abs_path "$p"
+    return 0
+  fi
+  home="${HOME:-}"
+  [[ -n "$home" ]] || sdx_error "未设置 HOME，无法展开相对 path: $p"
+  abs_path "${home%/}/$p"
+}
+
+# 读入 knowledge-links.yaml 填入数组（下标对齐）；非法旧形态 path=URL 时报错退出
+knowledge_links_load_into_arrays() {
   local f="${1:?}"
   local -n _paths="${2:?}"
-  local -n _dirs="${3:?}"
-  local -n _apps="${4:?}"
-  local d i n
+  local -n _repos="${3:?}"
+  local -n _dirs="${4:?}"
+  local -n _apps="${5:?}"
+  local -n _labels="${6:?}"
+  local line key val path="" repo="" doc_dir="" app_name="" app_label=""
+
+  _paths=()
+  _repos=()
+  _dirs=()
+  _apps=()
+  _labels=()
+
+  [[ -f "$f" ]] || return 0
+
+  knowledge_links_flush_pending() {
+    if [[ -n "$path" ]]; then
+      knowledge_links_validate_stored_path_field "$path" "$f"
+      _paths+=("$path")
+      _repos+=("${repo:-}")
+      _dirs+=("${doc_dir:-}")
+      _apps+=("${app_name:-}")
+      _labels+=("${app_label:-}")
+    elif [[ -n "$repo$doc_dir$app_name$app_label" ]]; then
+      sdx_error "knowledge-links.yaml 中存在未写完的条目（有 repository/doc_dir/app_name/app_label 但缺少 path）: $f"
+    fi
+    path=''
+    repo=''
+    doc_dir=''
+    app_name=''
+    app_label=''
+  }
+
+  # 未知键静默忽略（与 YAML 扩展字段前向兼容）
+  knowledge_links_set_kv() {
+    case "${1:?}" in
+      path) path="$2" ;;
+      repository) repo="$2" ;;
+      doc_dir) doc_dir="$2" ;;
+      app_name) app_name="$2" ;;
+      app_label) app_label="$2" ;;
+      *) ;;
+    esac
+  }
+
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    [[ -z "${line//[[:space:]]/}" ]] && continue
+    [[ "$line" =~ ^[[:space:]]*# ]] && continue
+    if [[ "$line" =~ ^[[:space:]]*-[[:space:]]+([a-z_]+):[[:space:]]*(.*)$ ]]; then
+      key="${BASH_REMATCH[1]}"
+      val="$(_yaml_unquote "${BASH_REMATCH[2]}")"
+      knowledge_links_flush_pending
+      knowledge_links_set_kv "$key" "$val"
+    elif [[ "$line" =~ ^[[:space:]]{4}([a-z_]+):[[:space:]]*(.*)$ ]]; then
+      key="${BASH_REMATCH[1]}"
+      val="$(_yaml_unquote "${BASH_REMATCH[2]}")"
+      knowledge_links_set_kv "$key" "$val"
+    fi
+  done <"$f"
+  knowledge_links_flush_pending
+}
+
+# 覆盖写出 knowledge-links.yaml（repository、path、doc_dir、app_name、app_label 数组下标对齐）
+knowledge_links_write_quads() {
+  local f="${1:?}"
+  local -n _repos="${2:?}"
+  local -n _paths="${3:?}"
+  local -n _dirs="${4:?}"
+  local -n _apps="${5:?}"
+  local -n _labels="${6:?}"
+  local d i n lab
   d="$(dirname "$f")"
   n="${#_paths[@]}"
   [[ "$DRY" == '1' ]] && { printf '[dry-run] 将写入 %s（%d 条 links）\n' "$f" "$n" >&2; return 0; }
@@ -64,12 +176,19 @@ knowledge_links_write_triples() {
     printf '%s\n' '# 知识库建联清单（可由 docs-link.sh 维护）'
     printf '%s\n' 'links:'
     for ((i = 0; i < n; i++)); do
-      printf '  - path: "%s"\n' "${_paths[i]//\"/\\\"}"
+      if [[ -n "${_repos[i]:-}" ]]; then
+        printf '  - repository: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_repos[i]}")"
+        printf '    path: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_paths[i]}")"
+      else
+        printf '  - path: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_paths[i]}")"
+      fi
       if [[ -n "${_dirs[i]:-}" ]]; then
-        printf '    doc_dir: "%s"\n' "${_dirs[i]//\"/\\\"}"
+        printf '    doc_dir: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_dirs[i]}")"
       fi
       if [[ -n "${_apps[i]:-}" ]]; then
-        printf '    app_name: "%s"\n' "${_apps[i]//\"/\\\"}"
+        printf '    app_name: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_apps[i]}")"
+        lab="${_labels[i]:-${_apps[i]}}"
+        printf '    app_label: "%s"\n' "$(_knowledge_link_yaml_escape_dq "$lab")"
       fi
     done
   } >"$f"
@@ -93,32 +212,39 @@ knowledge_link_git_remote_url_prefer_origin() {
 }
 
 # 给定已存在的本地目录：得到与 link 时一致的登记字符串（用于去重 / unlink）
+# 可选第二参数为变量名：在 Git 仓库且解析到 remote 时写入 strip 后的 URL，否则写空（供 link 避免二次 git remote）
 knowledge_link_register_value_from_dir() {
-  local dir="${1:?}" resolved top url
+  local dir="${1:?}" _repo_var="${2:-}" resolved top url
   resolved="$(cd -P "$dir" 2>/dev/null && pwd)" || {
     printf '%s\n' "$dir"
+    [[ -n "$_repo_var" ]] && printf -v "$_repo_var" '%s' ''
     return 0
   }
   if ! git -C "$resolved" rev-parse --is-inside-work-tree &>/dev/null; then
     printf '%s\n' "$resolved"
+    [[ -n "$_repo_var" ]] && printf -v "$_repo_var" '%s' ''
     return 0
   fi
   top="$(git -C "$resolved" rev-parse --show-toplevel 2>/dev/null)" || {
     printf '%s\n' "$resolved"
+    [[ -n "$_repo_var" ]] && printf -v "$_repo_var" '%s' ''
     return 0
   }
   url="$(knowledge_link_git_remote_url_prefer_origin "$top" || true)"
   if [[ -n "$url" ]]; then
-    printf '%s\n' "$(strip_trailing_slash "$url")"
+    url="$(strip_trailing_slash "$url")"
+    printf '%s\n' "$url"
+    [[ -n "$_repo_var" ]] && printf -v "$_repo_var" '%s' "$url"
     return 0
   fi
   printf '%s\n' "$(strip_trailing_slash "$top")"
+  [[ -n "$_repo_var" ]] && printf -v "$_repo_var" '%s' ''
 }
 
 # 将「用户传入的 --target」规范为与已登记项可比对的身份串
 knowledge_link_identity_from_raw_target() {
   local raw="${1:?}" p
-  if [[ "$raw" =~ ^(git@|ssh://|https://|http://) ]]; then
+  if knowledge_link_value_looks_like_git_remote "$raw"; then
     printf '%s\n' "$(strip_trailing_slash "$raw")"
     return 0
   fi
@@ -130,13 +256,19 @@ knowledge_link_identity_from_raw_target() {
   fi
 }
 
-# 将「已登记的一条 path」规范为身份串（目录则按 Git 规则，否则原样）
-knowledge_link_identity_from_stored_path() {
-  local stored="${1:?}"
-  if [[ -d "$stored" ]]; then
-    knowledge_link_register_value_from_dir "$stored"
+# 将「已登记的一条 repository + path」规范为身份串（与 REGISTER_KEY / --target 比对）
+knowledge_link_identity_from_stored_entry() {
+  local repo="${1:-}" stored_path="${2:?}"
+  local exp
+  if [[ -n "$repo" ]]; then
+    printf '%s\n' "$(strip_trailing_slash "$repo")"
+    return 0
+  fi
+  exp="$(knowledge_link_expand_stored_path "$stored_path")"
+  if [[ -d "$exp" ]]; then
+    knowledge_link_register_value_from_dir "$exp"
   else
-    printf '%s\n' "$(strip_trailing_slash "$stored")"
+    printf '%s\n' "$(strip_trailing_slash "$exp")"
   fi
 }
 
@@ -162,8 +294,8 @@ knowledge_link_validate_app_name() {
 # 从目标仓库根推断应用标识：优先 Git 仓库根目录名，否则为路径 basename（无用户指定时用）
 knowledge_link_guess_app_name() {
   local root="${1:?}" top base
-  if git -C "$root" rev-parse --show-toplevel &>/dev/null; then
-    top="$(git -C "$root" rev-parse --show-toplevel)"
+  top="$(git -C "$root" rev-parse --show-toplevel 2>/dev/null)" || top=''
+  if [[ -n "$top" ]]; then
     base="$(basename "$top")"
   else
     base="$(basename "$(cd -P "$root" 2>/dev/null && pwd)")"
@@ -193,9 +325,10 @@ knowledge_link_apply_app_slot_substitutions() {
 # 在源 DOC_ROOT 下生成 application-${APPNAME}（参考 application-APPNAME 模板）
 knowledge_link_ensure_application_slot() {
   local doc_root="${1:?}" app="${2:?}"
-  local tpl dest
-  tpl="$(strip_trailing_slash "$(abs_path "$doc_root")")/application-APPNAME"
-  dest="$(strip_trailing_slash "$(abs_path "$doc_root")")/application-${app}"
+  local dr tpl dest
+  dr="$(_knowledge_link_doc_root_abs_ns "$doc_root")"
+  tpl="${dr}/application-APPNAME"
+  dest="${dr}/application-${app}"
   [[ -d "$tpl" ]] || sdx_error "源 DOC_ROOT 下缺少模板目录: $tpl"
   if [[ -d "$dest" ]]; then
     return 0
@@ -208,7 +341,7 @@ knowledge_link_ensure_application_slot() {
   knowledge_link_apply_app_slot_substitutions "$dest" "$app"
 }
 
-# 从已登记的 path（URL 或本地路径）推断 APPNAME，供旧数据或无 app_name 字段时 unlink 删槽位
+# 从登记 identity（repository URL 或已展开本地路径）推断 APPNAME，供旧数据或无 app_name 时 unlink 删槽位
 knowledge_link_app_name_from_register_key() {
   local key="${1:?}" base
   if [[ -d "$key" ]]; then
@@ -228,7 +361,7 @@ knowledge_link_app_name_from_register_key() {
 # 解析工程根（与 docs-install 写入 .docsconfig 的 REPO_ROOT 推导一致，供 .docs-init 备份路径）
 knowledge_link_repo_root_for_backup() {
   local doc_root="${1:?}" dr rr
-  dr="$(strip_trailing_slash "$(abs_path "$doc_root")")"
+  dr="$(_knowledge_link_doc_root_abs_ns "$doc_root")"
   rr="$(docsconfig_repo_root_from_doc_root "$dr")"
   [[ -n "$rr" ]] || rr="$(docsconfig_repo_root_fallback_from_doc_root "$dr")"
   [[ -n "$rr" ]] || return 1
@@ -241,10 +374,10 @@ knowledge_link_remove_application_slot() {
   local dest repo_root
   [[ -n "$app" ]] || return 0
   if [[ "$app" == 'APPNAME' ]]; then
-    warn "APPNAME 为保留名，跳过删除槽位目录"
+    sdx_warn "APPNAME 为保留名，跳过删除槽位目录"
     return 0
   fi
-  dest="$(strip_trailing_slash "$(abs_path "$doc_root")")/application-${app}"
+  dest="$(_knowledge_link_doc_root_abs_ns "$doc_root")/application-${app}"
   if [[ ! -d "$dest" ]]; then
     return 0
   fi
@@ -272,28 +405,28 @@ CLI_APP_NAME=''
 
 usage() {
   cat >&2 <<'EOF'
-用法: ./scripts/docs-link.sh --link|--unlink --target=<目标知识库仓库根> [--app-name=名] [--dry-run]
+用法: ./scripts/docs-link.sh --link|--unlink --target <目标知识库仓库根> [--app-name 名] [--dry-run]
 
   --link / --unlink 二选一，不得同时出现。
 
   须在「源」知识库 Git 仓库内执行（git rev-parse 取根）。登记文件：源 .docsconfig 的 DOC_ROOT/knowledge-links.yaml
 
   允许边：company→system、system→application（源/目标 .docsconfig 须含合法 KNOWLEDGE_TYPE）。
-  unlink 支持目标失联（路径不存在或目标仓库配置缺失）时按登记 path 注销。
+  unlink 支持目标失联（路径不存在或目标仓库配置缺失）时按登记 identity 注销。
 
   --dry-run     仅打印将执行的操作，不写文件。
   --target      目标知识库仓库根（或已登记的 remote URL）；兼容旧参数 --path（已弃用）。
   --app-name    仅 system→application 建联有效：显式指定 YAML 中的 app_name 及槽位目录名。
                 若省略：登记文件中该 path 已有 app_name 则沿用、不再推断；否则由目标本地 Git 仓库根目录名推断。
-  每条 link 记录：path、目标 doc_dir（DOC_DIR）、以及 application 时的 app_name。
+  每条 link 记录：repository（有 Git remote 时）、path（本机在 \$HOME 下为 ~/… 或 ~/，否则绝对路径；兼容旧无 ~ 的 \$HOME 相对片段）、doc_dir、application 时的 app_name 与 app_label（无 app_label 时默认等于 app_name；重复 link 时若已有 app_label 则保留）。
   system→application：在源 DOC_ROOT 下自 application-APPNAME 模板生成 application-<APPNAME>/（已存在则跳过）。
-  同一 target 重复 link：不新增行，只更新已存在且 identity 相同的那条记录（path/doc_dir/app_name）。
-  unlink 时：注销该 path 的同时将 application-<APPNAME>/ 备份到工程根 .docs-init/ 再移除（若目录存在）。
+  同一 target 重复 link：不新增行，只更新已存在且 identity 相同的那条记录。
+  unlink 时：注销该条目的同时将 application-<APPNAME>/ 备份到工程根 .docs-init/ 再移除（若目录存在）。
 
 示例:
-  ./scripts/docs-link.sh --target=~/workspaces/target-repo --link
-  ./scripts/docs-link.sh --target=~/workspaces/target-repo --link --app-name=my-app
-  ./scripts/docs-link.sh --target=~/workspaces/target-repo --unlink --dry-run
+  ./scripts/docs-link.sh --target ~/workspaces/target-repo --link
+  ./scripts/docs-link.sh --target ~/workspaces/target-repo --link --app-name=my-app
+  ./scripts/docs-link.sh --target ~/workspaces/target-repo --unlink --dry-run
 EOF
 }
 
@@ -350,7 +483,7 @@ while (( $# > 0 )); do
 done
 
 validate_link_command "$CMD" || sdx_error "请指定 --link 或 --unlink（二选一）"
-[[ -n "$TARGET_RAW" ]] || sdx_error "请指定 --target=<目标仓库根>"
+[[ -n "$TARGET_RAW" ]] || sdx_error "请指定 --target <目标仓库根>（仍兼容 --target=PATH）"
 
 SRC_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || sdx_error "请在 Git 仓库内执行 docs-link"
 SRC_CFG="$SRC_ROOT/.docsconfig"
@@ -372,8 +505,11 @@ esac
 
 TARGET_KEY="$(normalize_target_repo_root "$TARGET_RAW")" || sdx_error "目标路径非法: $TARGET_RAW"
 REGISTER_KEY=''
+REGISTER_REPO=''
+REGISTER_PATH_STORED=''
 TARGET_DOC_DIR=''
 TARGET_APP_NAME=''
+TARGET_APP_LABEL=''
 matched_idx=-1
 
 if [[ "$CMD" == 'link' ]]; then
@@ -386,25 +522,22 @@ if [[ "$CMD" == 'link' ]]; then
   [[ -n "$_tkt" ]] || sdx_error "目标 .docsconfig 缺少 KNOWLEDGE_TYPE"
   docsconfig_validate_knowledge_type "$_tkt" || exit 1
   [[ "$_tkt" == "$expect_target" ]] || sdx_error "目标须为 ${expect_target} 知识库（KNOWLEDGE_TYPE=${_tkt}）"
-  REGISTER_KEY="$(knowledge_link_register_value_from_dir "$TGT_ROOT")"
+  REGISTER_REPO=''
+  REGISTER_KEY="$(knowledge_link_register_value_from_dir "$TGT_ROOT" REGISTER_REPO)"
   TARGET_DOC_DIR="${_tdd:-}"
+  REGISTER_PATH_STORED="$(knowledge_link_stored_path_from_absolute "$TGT_ROOT")"
 else
   REGISTER_KEY="$(knowledge_link_identity_from_raw_target "$TARGET_RAW")" || sdx_error "目标路径非法: $TARGET_RAW"
   [[ -z "$CLI_APP_NAME" ]] || sdx_warn "--app-name 仅在 --link 时有效，已忽略"
 fi
 
-declare -a paths=() doc_dirs=() app_names=()
-while IFS=$'\t' read -r p d a || [[ -n "${p:-}" ]]; do
-  [[ -z "${p:-}" ]] && continue
-  paths+=("$p")
-  doc_dirs+=("${d:-}")
-  app_names+=("${a:-}")
-done < <(knowledge_links_parse_entries_stream "$LIST_FILE")
+declare -a repos=() paths=() doc_dirs=() app_names=() app_labels=()
+knowledge_links_load_into_arrays "$LIST_FILE" paths repos doc_dirs app_names app_labels
 
 have=0
 new_identity="${REGISTER_KEY}"
 for i in "${!paths[@]}"; do
-  if [[ "$(knowledge_link_identity_from_stored_path "${paths[i]}")" == "$new_identity" ]]; then
+  if [[ "$(knowledge_link_identity_from_stored_entry "${repos[i]:-}" "${paths[i]}")" == "$new_identity" ]]; then
     have=1
     matched_idx=$i
     break
@@ -421,47 +554,45 @@ if [[ "$CMD" == 'link' && "$expect_target" == 'application' ]]; then
     TARGET_APP_NAME="$(knowledge_link_guess_app_name "$TGT_ROOT")" || exit 1
   fi
   knowledge_link_ensure_application_slot "$_sdoc" "$TARGET_APP_NAME"
+  if [[ "$have" -eq 1 && "$matched_idx" -ge 0 && -n "${app_labels[matched_idx]:-}" ]]; then
+    TARGET_APP_LABEL="${app_labels[matched_idx]}"
+  else
+    [[ -n "$TARGET_APP_NAME" ]] && TARGET_APP_LABEL="$TARGET_APP_NAME"
+  fi
 elif [[ "$CMD" == 'link' && "$expect_target" != 'application' && -n "$CLI_APP_NAME" ]]; then
-  warn "--app-name 仅用于 system→application 建联，已忽略"
+  sdx_warn "--app-name 仅用于 system→application 建联，已忽略"
 fi
 
 case "$CMD" in
   link)
-    link_is_update=0
-    [[ "$have" -eq 1 ]] && link_is_update=1
+    link_is_update=$have
     if [[ "$have" -eq 1 ]]; then
-      paths[matched_idx]="$REGISTER_KEY"
+      repos[matched_idx]="$REGISTER_REPO"
+      paths[matched_idx]="$REGISTER_PATH_STORED"
       doc_dirs[matched_idx]="$TARGET_DOC_DIR"
       app_names[matched_idx]="${TARGET_APP_NAME:-}"
+      app_labels[matched_idx]="${TARGET_APP_LABEL:-}"
     else
-      paths+=("$REGISTER_KEY")
+      repos+=("$REGISTER_REPO")
+      paths+=("$REGISTER_PATH_STORED")
       doc_dirs+=("$TARGET_DOC_DIR")
       app_names+=("${TARGET_APP_NAME:-}")
+      app_labels+=("${TARGET_APP_LABEL:-}")
     fi
-    knowledge_links_write_triples "$LIST_FILE" paths doc_dirs app_names
-    if [[ "$link_is_update" -eq 1 ]]; then
-      if [[ -n "$TARGET_APP_NAME" ]]; then
-        if [[ -n "$TARGET_DOC_DIR" ]]; then
-          printf '已更新登记: %s → %s (doc_dir=%s, application-%s)\n' "$LIST_FILE" "$REGISTER_KEY" "$TARGET_DOC_DIR" "$TARGET_APP_NAME"
-        else
-          printf '已更新登记: %s → %s (application-%s)\n' "$LIST_FILE" "$REGISTER_KEY" "$TARGET_APP_NAME"
-        fi
-      elif [[ -n "$TARGET_DOC_DIR" ]]; then
-        printf '已更新登记: %s → %s (doc_dir=%s)\n' "$LIST_FILE" "$REGISTER_KEY" "$TARGET_DOC_DIR"
-      else
-        printf '已更新登记: %s → %s\n' "$LIST_FILE" "$REGISTER_KEY"
-      fi
+    knowledge_links_write_quads "$LIST_FILE" repos paths doc_dirs app_names app_labels
+    _link_verb='已登记'; [[ "$link_is_update" -eq 1 ]] && _link_verb='已更新登记'
+    _link_info=''
+    if [[ -n "$TARGET_APP_NAME" && -n "$TARGET_DOC_DIR" ]]; then
+      _link_info=" (doc_dir=${TARGET_DOC_DIR}, application-${TARGET_APP_NAME})"
     elif [[ -n "$TARGET_APP_NAME" ]]; then
-      if [[ -n "$TARGET_DOC_DIR" ]]; then
-        printf '已登记: %s → %s (doc_dir=%s, application-%s)\n' "$LIST_FILE" "$REGISTER_KEY" "$TARGET_DOC_DIR" "$TARGET_APP_NAME"
-      else
-        printf '已登记: %s → %s (application-%s)\n' "$LIST_FILE" "$REGISTER_KEY" "$TARGET_APP_NAME"
-      fi
+      _link_info=" (application-${TARGET_APP_NAME})"
     elif [[ -n "$TARGET_DOC_DIR" ]]; then
-      printf '已登记: %s → %s (doc_dir=%s)\n' "$LIST_FILE" "$REGISTER_KEY" "$TARGET_DOC_DIR"
-    else
-      printf '已登记: %s → %s\n' "$LIST_FILE" "$REGISTER_KEY"
+      _link_info=" (doc_dir=${TARGET_DOC_DIR})"
     fi
+    _loc=''
+    [[ -n "$REGISTER_REPO" ]] && _loc=" repository=${REGISTER_REPO}"
+    _loc="${_loc} path=${REGISTER_PATH_STORED}"
+    printf '%s: %s → identity=%s%s%s\n' "$_link_verb" "$LIST_FILE" "$REGISTER_KEY" "$_loc" "$_link_info"
     ;;
   unlink)
     [[ "$have" -eq 0 ]] && { printf '提示: 未找到登记项，跳过: %s\n' "$REGISTER_KEY" >&2; exit 0; }
@@ -469,17 +600,24 @@ case "$CMD" in
     if [[ "$matched_idx" -ge 0 && "$_skt" == 'system' ]]; then
       UNLINK_APP_NAME="${app_names[matched_idx]:-}"
       if [[ -z "$UNLINK_APP_NAME" ]]; then
-        UNLINK_APP_NAME="$(knowledge_link_app_name_from_register_key "${paths[matched_idx]}")" || UNLINK_APP_NAME=''
+        if [[ -n "${repos[matched_idx]:-}" ]]; then
+          UNLINK_APP_NAME="$(knowledge_link_app_name_from_register_key "${repos[matched_idx]}")" || UNLINK_APP_NAME=''
+        else
+          _exp="$(knowledge_link_expand_stored_path "${paths[matched_idx]}")"
+          UNLINK_APP_NAME="$(knowledge_link_app_name_from_register_key "$_exp")" || UNLINK_APP_NAME=''
+        fi
       fi
     fi
-    declare -a newp=() newd=() newa=()
+    declare -a newr=() newp=() newd=() newa=() newl=()
     for i in "${!paths[@]}"; do
-      [[ "$(knowledge_link_identity_from_stored_path "${paths[i]}")" == "$new_identity" ]] && continue
+      [[ "$(knowledge_link_identity_from_stored_entry "${repos[i]:-}" "${paths[i]}")" == "$new_identity" ]] && continue
+      newr+=("${repos[i]:-}")
       newp+=("${paths[i]}")
       newd+=("${doc_dirs[i]:-}")
       newa+=("${app_names[i]:-}")
+      newl+=("${app_labels[i]:-}")
     done
-    knowledge_links_write_triples "$LIST_FILE" newp newd newa
+    knowledge_links_write_quads "$LIST_FILE" newr newp newd newa newl
     if [[ -n "$UNLINK_APP_NAME" ]]; then
       knowledge_link_remove_application_slot "$_sdoc" "$UNLINK_APP_NAME"
     fi

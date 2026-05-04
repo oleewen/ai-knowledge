@@ -1,6 +1,6 @@
 # 常见陷阱（sdx-solution）
 
-反模式见 [reference/design-principles.md](reference/design-principles.md)；本文件聚焦**操作层易错点**。
+**反模式（表现 + 纠正）**见 [references/anti-patterns.md](references/anti-patterns.md)；**原则与错误处理表**见 [references/design-principles.md](references/design-principles.md)。本文件聚焦**操作层易错点**。
 
 ---
 
@@ -26,7 +26,7 @@
 ## 阶段三
 
 - **技术语言混入正文**：通读全文执行语言审查，将接口名、表名、中间件等技术词转写为业务表述；确需保留的技术线索放入 §7.3「内部参考」。
-- **跳过质量门禁自查**：终检必须逐项检查 [reference/quality-checklist.md](reference/quality-checklist.md)，已达标项改为 `- [x]`，未达标项保持 `- [ ]`，禁止未复核即全选。
+- **跳过质量门禁自查**：终检必须逐项检查 [references/quality-checklist.md](references/quality-checklist.md)，已达标项改为 `- [x]`，未达标项保持 `- [ ]`，禁止未复核即全选。
 
 ---
 

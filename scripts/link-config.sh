@@ -26,6 +26,7 @@ _link_config_expand_tilde() {
 _link_config_abs_path() {
   local p
   p="$(_link_config_expand_tilde "${1:-}")"
+  [[ -n "$p" ]] || return 1
   [[ "$p" == /* ]] || p="$PWD/$p"
 
   if [[ -d "$p" ]]; then

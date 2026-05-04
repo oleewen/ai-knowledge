@@ -35,11 +35,15 @@ sdx_have_cmd() {
   command -v "$1" >/dev/null 2>&1
 }
 
+# 与 sdx_run_or_dry / sdx_sync_dir 一致：调用方可设 DRY_RUN 或 CFG[dry_run]
+sdx_dry_run_enabled() {
+  [[ "${DRY_RUN:-${CFG[dry_run]:-0}}" == '1' ]]
+}
+
 # dry-run 感知的命令执行器
 # 要求调用方环境中定义了 $DRY_RUN 或全局变量
 sdx_run_or_dry() {
-  local dry="${DRY_RUN:-${CFG[dry_run]:-0}}"
-  if [[ "$dry" == '1' ]]; then
+  if sdx_dry_run_enabled; then
     sdx_log "[dry-run] $*"
   else
     "$@"
@@ -53,10 +57,9 @@ sdx_ensure_dir() { sdx_run_or_dry mkdir -p "$1"; }
 sdx_sync_dir() {
   local src="$1" dst="$2"
   shift 2
-  local dry="${DRY_RUN:-${CFG[dry_run]:-0}}"
 
   [[ -d "$src" ]] || return 0
-  if [[ "$dry" == '1' ]]; then
+  if sdx_dry_run_enabled; then
     sdx_log "[dry-run] 同步目录: $src → $dst"
     return 0
   fi
@@ -65,6 +68,9 @@ sdx_sync_dir() {
     rsync -a --delete "$@" "$src"/ "$dst"/
   else
     sdx_warn "未检测到 rsync，使用 cp -R（无法完全排除或增量同步；建议安装 rsync）"
+    [[ -n "$dst" && "$dst" != '/' ]] || {
+      sdx_error "sdx_sync_dir 目标目录非法: '$dst'"
+    }
     rm -rf "$dst"
     sdx_ensure_dir "$(dirname "$dst")"
     cp -R "$src" "$dst"
@@ -110,6 +116,7 @@ expand_tilde() {
 abs_path() {
   local p
   p="$(expand_tilde "${1:-}")"
+  [[ -n "$p" ]] || return 1
   [[ "$p" == /* ]] || p="$PWD/$p"
 
   if [[ -d "$p" ]]; then
@@ -220,13 +227,13 @@ sdx_docs_backup_path_to_init() {
   fi
 
   if [[ "$dry_run" == '1' ]]; then
-    printf '信息: [dry-run] 将备份：%s → %s\n' "$existing" "$backup_target" >&2
+    sdx_info "[dry-run] 将备份：$existing → $backup_target"
     return 0
   fi
 
   mkdir -p "$(dirname "$backup_target")" 2>/dev/null || true
   mv "$existing" "$backup_target"
-  printf '信息: 已备份：%s → %s\n' "$existing" "$backup_target" >&2
+  sdx_info "已备份：$existing → $backup_target"
 }
 
 # 静默：是否为合法 KNOWLEDGE_TYPE（与 validate_type / docsconfig_write 一致）
@@ -237,15 +244,25 @@ docsconfig_knowledge_type_is_valid() {
 
 docsconfig_validate_knowledge_type() {
   local v="${1:-}"
-  if docsconfig_knowledge_type_is_valid "$v"; then
-    return 0
-  fi
+  docsconfig_knowledge_type_is_valid "$v" && return 0
   printf '[docsconfig] 非法 KNOWLEDGE_TYPE: %s（允许: application system company）\n' "$v" >&2
   return 1
 }
 
 # 与 docsconfig_knowledge_type_is_valid 允许集合一致（供 *-config 枚举/文档对齐）
 readonly -a SDX_SUPPORTED_KNOWLEDGE_TYPES=(application system company)
+
+# 打印 .docsconfig 正文键值（不含文件头）；参数：dr rr doc_dir knowledge_type agent_root agent_dirs
+docsconfig_print_kv_block() {
+  local dr="$1" rr="$2" doc_dir="$3" knowledge_type="$4" agent_root="$5" agent_dirs="$6"
+  local ar
+  printf 'DOC_ROOT=%s\nREPO_ROOT=%s\nDOC_DIR=%s\n' "$dr" "$rr" "$doc_dir"
+  [[ -n "$knowledge_type" ]] && printf 'KNOWLEDGE_TYPE=%s\n' "$knowledge_type"
+  if [[ -n "$agent_root" ]]; then
+    ar="$(docsconfig_format_root_for_write "$agent_root")"
+    printf 'AGENT_ROOT=%s\nAGENT_DIRS="%s"\n' "$ar" "$agent_dirs"
+  fi
+}
 
 docsconfig_write() {
   local repo_root="${1:?repo_root}"
@@ -265,7 +282,7 @@ docsconfig_write() {
     esac
   fi
 
-  local out rr dr ar
+  local out rr dr
   out="$(strip_trailing_slash "$(abs_path "$repo_root")")/.docsconfig"
   rr="$(docsconfig_format_root_for_write "$repo_root")"
   dr="$(docsconfig_format_root_for_write "$doc_root")"
@@ -275,23 +292,14 @@ docsconfig_write() {
   fi
 
   if [[ "$dry" == '1' ]]; then
-    printf 'Would write %s:\nDOC_ROOT=%s\nREPO_ROOT=%s\nDOC_DIR=%s\n' "$out" "$dr" "$rr" "$doc_dir"
-    [[ -n "$knowledge_type_in" ]] && printf 'KNOWLEDGE_TYPE=%s\n' "$knowledge_type_in"
-    if [[ -n "$agent_root_in" ]]; then
-      ar="$(docsconfig_format_root_for_write "$agent_root_in")"
-      printf 'AGENT_ROOT=%s\nAGENT_DIRS="%s"\n' "$ar" "$agent_dirs_in"
-    fi
+    printf 'Would write %s:\n' "$out"
+    docsconfig_print_kv_block "$dr" "$rr" "$doc_dir" "$knowledge_type_in" "$agent_root_in" "$agent_dirs_in"
     return 0
   fi
 
   umask 022
   {
-    printf 'DOC_ROOT=%s\nREPO_ROOT=%s\nDOC_DIR=%s\n' "$dr" "$rr" "$doc_dir"
-    [[ -n "$knowledge_type_in" ]] && printf 'KNOWLEDGE_TYPE=%s\n' "$knowledge_type_in"
-    if [[ -n "$agent_root_in" ]]; then
-      ar="$(docsconfig_format_root_for_write "$agent_root_in")"
-      printf 'AGENT_ROOT=%s\nAGENT_DIRS="%s"\n' "$ar" "$agent_dirs_in"
-    fi
+    docsconfig_print_kv_block "$dr" "$rr" "$doc_dir" "$knowledge_type_in" "$agent_root_in" "$agent_dirs_in"
   } >"$out"
 }
 
@@ -375,9 +383,11 @@ sdx_rewrite_agent_path_segment_in_file() {
   local file="$1" agent_slash="${2:?}"
   [[ -f "$file" ]] && sdx_is_text_file "$file" || return 0
   sdx_have_perl || return 0
-  SDX_AGENT_SLASH="$agent_slash" \
-    perl -CSD -i -pe 's{\bagent/}{$ENV{SDX_AGENT_SLASH}}g' \
-    "$file" 2>/dev/null || true
+  if ! SDX_AGENT_SLASH="$agent_slash" \
+    perl -CSD -i -pe 'BEGIN { die "SDX_AGENT_SLASH unset\n" unless defined $ENV{SDX_AGENT_SLASH} && length $ENV{SDX_AGENT_SLASH} } s{\bagent/}{$ENV{SDX_AGENT_SLASH}}g' \
+    "$file" 2>/dev/null; then
+    sdx_warn "重写 agent/ 路径失败：$file"
+  fi
 }
 
 # 遍历 root 下待重写路径的文件：排除常见依赖/缓存/版本库目录，避免 ~/.cursor/skills 等目录残留导致 find 极慢或“假死”

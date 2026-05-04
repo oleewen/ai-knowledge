@@ -14,7 +14,7 @@
 
 | 门禁 | 覆盖模板 | 状态 | 备注 |
 |------|----------|------|------|
-|      |          | 草案/已确认 |      |
+| [G{n}](#g{n}-XX) | [§{n} XX](#g{n}-XX) | 草案/已确认 | 示例行；按需复制为 G{n+1} |
 
 ---
 
@@ -26,7 +26,7 @@
 
 ### 方案取舍（本门禁内若存在多套可选）
 
-（可选；有 2 套及以上真实路径时填写：各路径业务命名、利弊、被选方案及理由。详见 [reference/brainstorming-integration.md](../reference/brainstorming-integration.md)。）
+（可选；有 2 套及以上真实路径时填写：各路径业务命名、利弊、被选方案及理由。详见 [reference/brainstorming-integration.md](../references/brainstorming-integration.md)。）
 
 ### Q-n / C-n / R-n / MVP（本门禁相关）
 

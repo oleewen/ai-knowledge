@@ -1,0 +1,317 @@
+# {详细设计说明书（DSD）标题}
+
+> **§1 与 ASD**：下列「设计概述」**章节结构与字段**与 [asd-template.md §1](../../../sdx-architect/assets/asd-template.md) 对齐；可与 ASD 同源复制，或与 ASD §1 **保持可追溯一致**（若仅摘要须说明差异）。
+
+---
+
+## 1. 设计概述
+
+### 1.1 设计目标
+
+- 关联需求分析：`{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md`
+- 关联产品需求：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`
+- 架构设计说明书：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ASD-{IDEA-ID}-{N}.md`
+- MVP阶段：MVP-Phase-{N}
+
+### 1.2 设计约束
+<!-- 技术约束、架构约束、兼容性约束等 -->
+
+### 1.3 关键设计决策
+
+| 决策编号 | 决策点 | 决策结果 | 决策理由 | 备选方案 |
+| --------- | ------- | --------- | --------- | --------- |
+| DD-001 | | | | |
+
+
+---
+
+## 2. 详细设计
+
+### 2.1 应用架构设计
+
+> 跟外部系统集成的关系，消息队列、异步处理机制，用到的容器
+
+```mermaid
+architecture-beta
+    group system(cloud)["XX系统"]
+
+    service server1(server)["容器A"] in system
+    service server2(server)["容器B"] in system
+    service server3(server)["外部系统C"] 
+    service db(database)["数据库"] in system
+    service disk(disk)["存储"] in system
+
+    server3:B --> T:server1
+    server1:B --> T:db
+    server1:R --> L:server2
+    server2:B --> T:disk
+```
+
+### 2.2 API详细设计
+
+#### API-001：{API名称}
+
+- 能力描述：提供XX能力
+
+**API签名** ：
+
+```text
+`POST /api/v1/xxx`
+```
+
+**请求参数** :
+
+```json
+{
+  "field1": "string, required, 描述",
+  "field2": "integer, optional, 描述"
+}
+```
+
+**响应结构**：
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "module": {
+    "id": "string",
+    "field1": "string"
+  }
+}
+```
+
+**错误码**：
+
+| 错误码 | 错误信息 | 触发条件 | HTTP状态码 |
+| ------ | -------- | -------- | ---------- |
+| 400001  |          |          | 400        |
+
+**幂等性**：
+<!-- 描述幂等性保障方案 -->
+
+### 2.3 业务逻辑设计
+
+#### 核心类图
+
+```mermaid
+classDiagram
+    direction TB
+    class XxxApplicationService {
+        <<Application>>
+        -xxxRepository XxxRepository
+        -domainService XxxDomainService
+        +execute(cmd) Result
+    }
+    class XxxDomainService {
+        <<Domain>>
+        +validate(aggregate) void
+        +applyRule(aggregate) void
+    }
+    class XxxAggregate {
+        <<AggregateRoot>>
+        -id Identity
+        -state State
+        +create(cmd) void
+        +process(cmd) void
+    }
+    class XxxRepository {
+        <<Interface>>
+        +findById(id) XxxAggregate
+        +save(aggregate) void
+    }
+    XxxApplicationService --> XxxRepository : 依赖
+    XxxApplicationService --> XxxDomainService : 依赖
+    XxxApplicationService --> XxxAggregate : 操作
+    XxxDomainService --> XxxAggregate : 操作
+    XxxRepository ..> XxxAggregate : 持久化
+```
+
+> 按实际 MVP 补充：应用服务、领域服务、聚合根/实体及仓储接口，并标注依赖与职责。
+
+#### 状态机设计
+
+```mermaid
+stateDiagram-v2
+    [*] --> 已创建
+    已创建 --> 处理中 : 开始
+    处理中 --> 已完成 : 完成
+    处理中 --> 失败 : 失败
+    失败 --> 处理中 : 重试
+    已完成 --> [*]
+```
+
+#### 逻辑-001: {逻辑名称}
+
+**流程图**：
+
+```mermaid
+sequenceDiagram
+    participant user as 调用方
+    participant app as 应用服务
+    participant domain as 领域服务
+    participant repo as 仓储 
+    participant event as 事件总线
+
+    user->>+app: 请求
+    app->>app: 参数校验
+    alt 校验通过
+        app->>domain: 业务规则检查
+        alt 规则通过
+            domain-->>app: 通过
+            domain->>repo: 持久化
+            domain->>event: 发布事件
+            app-->>user: 返回成功
+        else 规则不通过
+            domain-->>app: 失败
+            app-->>user: 返回业务错误
+        end
+    else 校验失败
+        app-->>user: 返回错误
+    end
+    app-->>-user:
+```
+
+**伪代码**：
+
+```python
+function processXxx(request):
+    // 1. 参数校验
+    validate(request)
+    
+    // 2. 业务规则检查
+    checkBusinessRules(request)
+    
+    // 3. 执行业务逻辑
+    result = executeLogic(request)
+    
+    // 4. 持久化
+    save(result)
+    
+    // 5. 发布领域事件
+    publishEvent(XxxCreatedEvent(result))
+    
+    return result
+```
+
+#### 一致性设计
+<!-- 乐观锁/悲观锁/分布式锁方案 -->
+<!-- 本地事务/分布式事务/最终一致性方案 -->
+
+### 2.4 数据访问设计
+
+#### 库表DDL
+
+```sql
+-- 创建主表
+CREATE TABLE table_name1 (
+    id BIGINT PRIMARY KEY COMMENT '主键ID',
+    name VARCHAR(64) NOT NULL COMMENT '名称',
+    code VARCHAR(32) UNIQUE NOT NULL COMMENT '编码（A）',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'
+);
+
+-- 创建附属表
+CREATE TABLE table_name2 (
+    id BIGINT PRIMARY KEY COMMENT '主键ID',
+    name VARCHAR(64) NOT NULL COMMENT '名称',
+    code VARCHAR(32) NOT NULL COMMENT '表1编码',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    CONSTRAINT fk_code FOREIGN KEY (code) REFERENCES table_name1(code)
+);
+```
+
+#### 查询策略
+
+**索引策略**
+
+```sql
+-- 索引
+CREATE INDEX idx_table_name1_name ON table_name1(name);
+CREATE INDEX idx_table_name2_name ON table_name2(name);
+```
+
+- 常用查询字段建议添加二级索引，如 `name`、`code`。
+- 联合索引可依据实际查询场景补充设计，避免冗余。
+
+**分页策略**
+
+- 推荐使用主键/唯一索引进行物理分页（如 `where id > ? order by id limit ?`）。
+- 大数据量场景下避免 offset 过大的 SQL。
+
+#### 缓存策略
+
+| 缓存Key模式               | 数据类型    | 过期时间 | 更新策略 | 用途               |
+|--------------------------|------------|----------|----------|--------------------|
+| table_name1:{id}         | hash/object| 1h       | 写后更新 | 单条主数据缓存     |
+| table_name2:{id}         | hash/object| 1h       | 写后更新 | 单条附属数据缓存   |
+| table_name1:list:page:{n}| list       | 10min    | 定期刷新 | 列表分页缓存       |
+
+- 删除/更新数据时需同步刷新缓存
+- 缓存雪崩可加随机抖动过期
+
+### 2.5 非功能性设计
+
+#### 安全设计
+<!-- 认证授权、数据脱敏、审计日志等 -->
+
+#### 可观测设计
+<!-- 考虑该记录什么日志，增加什么监控，什么情况下报警 -->
+
+**日志** ：
+
+**监控报警策略** ：
+
+<!-- 告警规则、通知渠道、收敛策略等 -->
+
+## 3. 需求规约
+
+<!-- 与上游 ASD §3 同构三列表；在 ASD 已定稿行上扩写规约正文与链路。规约术语：与规约文件名或 OpenAPI/领域名一致的可读简称；应用实体 ID、服务实体 ID 须与 `{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md` / `knowledge/technical/` 中 APP-*、MS-* 对齐。 -->
+
+| 应用 | 规约文件 | 规约描述 |
+| ---- | -------- | -------- |
+| `{APP-ID}` | `./specs/spec-{ID}-{N}-{service-name}.md` | 核心改动点：... （`{service-name}` 与同库 **`{DOC_DIR}/knowledge-links.yaml`** 的 **`service_name`** 优先对齐，见 ASD §3） |
+
+## 4. 附录
+
+### 4.1 变更历史
+
+| 版本  | 日期 | 变更说明 | 作者      |
+| ----- | ---- | -------- | --------- |
+| 1.0.0 |      | 初始版本 | architect |
+
+### 4.2 质量自查表 (Self-Check)
+
+<!-- 本节编号与主文 **§2–§4** 对齐；§1「设计概述」与 ASD §1 / [asd-template §1](../../../sdx-architect/assets/asd-template.md) 对齐。-->
+
+- [ ] **结构与占位**
+  *通过标准*：`## 1`–`## 4` 主章节齐全；Mermaid 可渲染；不适用处已标注。
+- [ ] **§1 设计概述**
+  *通过标准*：与 **ASD §1** 一致或可指回（ANALYSIS/PRD、MVP、约束、DD-n）；若为摘要须说明与 ASD 差异。
+- [ ] **§2 详细设计（应用架构～非功能）**
+  *通过标准*：§2.1～§2.5 对应实现级内容完整；每个 **API-n** / **DDL** / 非功能条目可追溯到 PRD/规约/SPECS。
+- [ ] **§3 需求规约**
+  *通过标准*：与 **ASD §3** 表格行对齐；`specs/` 路径、**source**（DSD §2）、**requirement**（FR-n）一致。
+- [ ] **§4 附录与元数据**
+  *通过标准*：§4.1 变更历史、§4.2 自查可追溯；文末 YAML `id`/ `architecture_ref` 与 ASD/PRD 一致。
+
+## 文档元数据
+
+<!-- 唯一元数据位置：须为 fenced yaml，且位于全文末尾；禁止在文件开头使用 --- YAML frontmatter -->
+
+```yaml
+id: "DSD-{IDEA-ID}"
+title: "{技术设计标题}"
+version: "1.0.0"
+status: "draft"
+created: "{YYYY-MM-DD}"
+updated: "{YYYY-MM-DD}"
+author: "architect"
+reviewers: []
+parent: "PRD-{IDEA-ID}-{N}"
+architecture_ref: "ASD-{IDEA-ID}-{N}"
+mvp_phase: "MVP-Phase-{N}"
+tags: ["DSD"]
+```

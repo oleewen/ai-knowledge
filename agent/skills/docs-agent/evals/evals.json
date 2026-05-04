@@ -1,0 +1,102 @@
+{
+  "skill_name": "docs-agent",
+  "version": "1.0.0",
+  "description": "用于评估 docs-agent 技能触发边界、步骤 0 门禁与 INDEX 驱动入口文档；含 expected_output 与断言供 grader 客观评分。",
+  "evals": [
+    {
+      "id": "docs-agent-trigger-001",
+      "category": "should-trigger",
+      "prompt": "仓库里 INDEX_GUIDE.md 已经落盘了，帮我走 /docs-agent：output 和 mode 都是默认，把根目录 README 和 AGENTS 对齐 INDEX，写之前先给我参数确认书我点 C。",
+      "expected_output": "以 /docs-agent 为主路径：先步骤 0 参数确认书（含 output/mode/将写入路径），收到 C 后再读 Index 并生成 README+AGENTS；须体现未确认前禁止覆盖根目录双文件；落盘后提及 validate-guide.sh。",
+      "assertions": [
+        {
+          "id": "gate-step0",
+          "name": "步骤 0 门禁",
+          "type": "must_include",
+          "check": "明确写入 README/AGENTS 前须参数确认书与用户 C/S（或等价「未确认不写」），禁止未确认即覆盖。",
+          "priority": "P0"
+        },
+        {
+          "id": "index-driven",
+          "name": "INDEX 驱动",
+          "type": "must_include",
+          "check": "须以落盘 INDEX 为地图、最小阅读集，并区分与 docs-indexing（不在本技能内重建索引）的职责。",
+          "priority": "P0"
+        },
+        {
+          "id": "validate-script",
+          "name": "校验命令",
+          "type": "should_include",
+          "check": "应出现 agent/skills/docs-agent/scripts/validate-guide.sh 或等价「落盘后校验路径/链接」表述。",
+          "priority": "P1"
+        }
+      ]
+    },
+    {
+      "id": "docs-agent-trigger-002",
+      "category": "should-trigger",
+      "prompt": "只更新 AGENTS.md，在已有 README 上不动，mode 用 update，帮我执行文档入口同步。",
+      "expected_output": "推断为 --output agents、--mode update；仍须先步骤 0 确认书再写入；只改 AGENTS，不重复 README 命令块；README 为事实源指针。",
+      "assertions": [
+        {
+          "id": "output-agents",
+          "name": "输出范围",
+          "type": "must_include",
+          "check": "明确仅更新 AGENTS.md 或 agents 输出范围，且 update 合并优先而非全量覆盖。",
+          "priority": "P0"
+        },
+        {
+          "id": "gate-step0",
+          "name": "步骤 0 门禁",
+          "type": "must_include",
+          "check": "仍须参数确认书/用户同意后才可写入，不得以「只改 AGENTS」跳过确认。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-agent-not-trigger-001",
+      "category": "should-not-trigger",
+      "prompt": "INDEX_GUIDE.md 里 §2 目录树过时了，帮我直接重写整个索引文件并更新九章结构。",
+      "expected_output": "主路径应指向 /docs-indexing 或 docs-indexing 技能；说明 docs-agent 不生成/不替代 INDEX 正文。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须点名 docs-indexing 或 INDEX 维护技能为处理 INDEX 重写的主路径，不得以 docs-agent 为唯一主路径完成该任务。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-indexing",
+          "name": "不误揽索引",
+          "type": "must_not_conflict",
+          "check": "不得宣称可在 docs-agent 流程内直接调用或替代 docs-indexing 完成九章 INDEX 全量重写且无风险。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-agent-not-trigger-002",
+      "category": "should-not-trigger",
+      "prompt": "我们要在 {DOC_DIR}/solutions/ 写 SOLUTION-FOO.md，按七章模板先过门禁，不要写 README。",
+      "expected_output": "主路径应指向 sdx-solution（或等价 SDD 解决方案阶段），不是 docs-agent。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须点名 sdx-solution 或 SOLUTION-*.md 门禁与会话 spec，不得以 docs-agent 为主路径。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-sdx",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得将共识级 SOLUTION 落盘描述为 docs-agent 的标准产出。",
+          "priority": "P0"
+        }
+      ]
+    }
+  ]
+}

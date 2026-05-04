@@ -80,7 +80,7 @@
 
 ## 快速自查清单
 
-完整清单见 [reference/quality-checklist.md](reference/quality-checklist.md)，以下为高频失误项：
+完整清单见 [references/quality-checklist.md](references/quality-checklist.md)，以下为高频失误项：
 
 - [ ] 主 Index Guide 已落盘，未通读全仓
 - [ ] 四视角按技术 → 数据 → 业务 → 产品顺序执行

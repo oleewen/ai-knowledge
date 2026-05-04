@@ -19,7 +19,7 @@
 ## 范围与一致性
 
 - **擅自扩大映射表**：只写进方案确认书已映射的主题；新增主题须先更新确认书再获确认。  
-- **只改正文不更新导航**：若目标目录依赖 README/INDEX 表，需在步骤 5 检查是否需同步（见 [quality-checklist.md](reference/quality-checklist.md)）。  
+- **只改正文不更新导航**：若目标目录依赖 README/INDEX 表，需在步骤 5 检查是否需同步（见 [references/quality-checklist.md](references/quality-checklist.md)）。  
 
 ## 与相近技能混淆
 

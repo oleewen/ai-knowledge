@@ -1,2 +1,8 @@
 # 知识库建联清单（可由 docs-link.sh 维护）
+# 字段约定见 scripts/README.md（repository + path；path 不得为 URL；application 建联含 app_name / app_label）。
+# 示例（勿把 URL 写在 path）：
+#   - repository: "https://example.com/org/app.git"
+#     path: "~/workspaces/app"
+#     doc_dir: "application"
+#     app_name: "my-app"
 links:

@@ -1,0 +1,59 @@
+{
+  "skill_name": "docs-build",
+  "eval_id": "REPLACE_WITH_EVAL_ID",
+  "expected_category": "should-trigger | should-not-trigger",
+  "expected_route": "/docs-build | （not-trigger 时填主分流目标，如 /docs-indexing）",
+  "expected_output": "一两句：与 evals.json 同 id 条一致。",
+  "notes": "复制为 <eval-id>-metadata.json；断言与 agents/grader.md 一致。",
+  "assertions_should_trigger_example": [
+    {
+      "id": "gate-compliance",
+      "name": "门禁合规",
+      "type": "must_include",
+      "check": "须体现 Qclose-1 与 docs-build-gate CONFIRMED 前禁止写入 {DOC_DIR}/knowledge/，或合法同会话例外。",
+      "priority": "P0"
+    },
+    {
+      "id": "scope-knowledge",
+      "name": "知识产物范围",
+      "type": "must_include",
+      "check": "须点明四视角 *_knowledge.json、README、KNOWLEDGE_INDEX 或 validate 脚本之一。",
+      "priority": "P0"
+    },
+    {
+      "id": "no-false-low-risk",
+      "name": "勿误称低风险",
+      "type": "must_not_conflict",
+      "check": "不得将 docs-build 描述为无需 docs/superpowers/specs 或无 build gate/hook（与 CONVENTIONS 矛盾）。",
+      "priority": "P0"
+    },
+    {
+      "id": "index-upstream",
+      "name": "Index 上游",
+      "type": "should_include",
+      "check": "应提及主 Index Guide / docs-indexing 依赖。",
+      "priority": "P1"
+    }
+  ],
+  "assertions_should_not_trigger_example": [
+    {
+      "id": "correct-downstream",
+      "name": "正确下游",
+      "type": "must_include",
+      "check": "须点名 docs-indexing 或用户要求的下游技能。",
+      "priority": "P0"
+    },
+    {
+      "id": "no-false-build-primary",
+      "name": "勿假主 build",
+      "type": "must_not_conflict",
+      "check": "不得以仅 docs-build 覆盖用户已指定的 indexing/SDD 主路径。",
+      "priority": "P0"
+    }
+  ],
+  "scoring": {
+    "pass_rule_should_trigger": "P0 全部通过，且 P1 至少通过 1 项（若无 P1 则仅 P0）",
+    "pass_rule_should_not_trigger": "P0 全部通过；P1 可选",
+    "fail_rule": "任一 P0 断言失败即判定不通过"
+  }
+}

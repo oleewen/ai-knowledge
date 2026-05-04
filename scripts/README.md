@@ -15,13 +15,13 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 |------|------|
 | `agent-install.sh` | 仅安装 Agent（`hooks` / `scripts` / `rules` / `skills`）；`--scope`=`a`/`r`/`s`/`h`/`sh`，`--target`（默认 `$HOME`），`--agents`（默认 `cursor`，可 `all` 或多选），`--dry-run`。 |
 | `docs-install.sh` | 知识库同步与配置分流；默认 `--scope=k`（knowledge）。`--scope=knowledge` 同步知识库并写 `.docsconfig`（含 **`KNOWLEDGE_TYPE`**）；`--scope=config` 仅更新 `.docsconfig` 的路径与 `AGENT_*`，不写 `KNOWLEDGE_TYPE`。两种 scope 都会调用 `install_agent_path`，但仅当 `AGENT_ROOT` 为空时补默认 `AGENT_*`。 |
-| `docs-link.sh` | 在**当前 Git 仓库（源知识库）**内维护 `company/knowledge-links.yaml` 或 `system/knowledge-links.yaml`，登记/注销目标库（`--link` / `--unlink` 二选一，`--target`）；`--link` 校验目标 `.docsconfig`，`--unlink` 支持目标失联按路径注销；**system→application** 注销时将 `application-<APPNAME>/` 先备份至工程根 **`.docs-init/<时间戳>/`**（与 `docs-install` 备份同源逻辑）再移除。 |
+| `docs-link.sh` | 在**当前 Git 仓库（源知识库）**内维护 `DOC_ROOT/knowledge-links.yaml`（`company` / `system` 源），登记/注销目标库（`--link` / `--unlink`，`--target`）；清单字段：**`repository`**（Git 有 remote 时写远端 URL）、**`path`**（本机在 `$HOME` 下为 `~/…` 或 `~/`，否则为绝对路径；兼容旧数据无 `~` 的 `$HOME` 相对片段；**不得**把 URL 写在 `path`）；可选 **`doc_dir`**、**`app_name`** / **`app_label`**（system→application；无 **`app_label`** 时默认等于 **`app_name`**；同一 target 再次 **`--link`** 时若已有 **`app_label`** 则保留不覆盖）。**不兼容**旧版「仅 `path` 且值为 URL」的 YAML。`--unlink` 可按本地路径或 `repository` 与登记 identity 匹配注销；**system→application** 注销时将 `application-<APPNAME>/` 备份至工程根 **`.docs-init/<时间戳>/`** 再移除。 |
 
 `docs-install.sh` 仅负责 knowledge 与 `.docsconfig`（不安装 Agent 文件）；Agent 安装仅由 `agent-install.sh` 负责。
 
 `--scope=knowledge` 完成同步并写入 `.docsconfig` 后，会将 `DOC_ROOT` 内文本中的路径段 `agent/` 按 `AGENT_DIRS` **首项**重写为对应目录（如 `.cursor/`），并在 `README.md` 注入说明块（列出其余可用 Agent 根目录）。
 
-**`docs-bootstrap.sh`**：远程 `curl` 下载后执行；临时 **clone** 本仓库，再调用 **`docs-install.sh`** 透传参数（**仅**知识库初始化；**仅装 Agent** 请本地 clone 后使用 **`agent-install.sh`**）。
+**`docs-bootstrap.sh`**：远程 `curl` 下载后执行；临时 **clone** 本仓库，再依次调用 **`docs-install.sh`**（知识库与 `.docsconfig`）与 **`agent-install.sh`**（由 `--agents` / `--agent-scope` 决定安装目标）。**仅**想本地分步执行时，可 clone 后分别运行上述两脚本。
 
 ## 功能概述
 
@@ -34,13 +34,13 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 | **中央知识库挂载建联**（`central`） | `application`（默认） | `application/` **子集** | 仅 `changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs_meta.yaml`、`manifest.yaml`；**不执行中央知识库挂载建联登记/联邦槽位写入** |
 | **中央知识库挂载建联**（`central`） | `system` / `company` | - | **不支持**（报错） |
 
-2. **Agent 配置**（**`agent-install.sh`**）：在 **`--target`**（默认 **`$HOME`**）下按 **`--agents`**（默认 **`cursor`**，可 **`all`** 或多选）安装到 **`${TARGET}/.{.cursor|.trea|.claude}/`** 中对应目录；按 **`--scope`** 选择同步 **`hooks`**、**`scripts`**、**`rules`**、**`skills`**。当 **`--target` 不是 `$HOME`** 且 **`${TARGET}/.docsconfig`** 已存在时，所有 scope 都会按本次参数重算并覆盖 **`AGENT_ROOT`** 与 **`AGENT_DIRS`**。`docs-install` 在 `scope=config|knowledge` 下都会处理 `AGENT_*`：仅当 `.docsconfig` 中 **`AGENT_ROOT`** 为空时写默认 **`AGENT_ROOT=$HOME`** 与 **`AGENT_DIRS=.cursor`**；`AGENT_ROOT` 非空时保留原值。
+2. **Agent 配置**（**`agent-install.sh`**）：在 **`--target`**（默认 **`$HOME`**）下按 **`--agents`**（默认 **`cursor`**，可 **`all`** 或多选）安装到 **`${TARGET}/.{.cursor|.trea|.claude}/`** 中对应目录；单份实体默认存储于 **`$HOME/.agents/`**；按 **`--scope`** 选择同步 **`hooks`**、**`scripts`**、**`rules`**、**`skills`**。当 **`--target` 不是 `$HOME`** 且 **`${TARGET}/.docsconfig`** 已存在时，所有 scope 都会按本次参数重算并覆盖 **`AGENT_ROOT`** 与 **`AGENT_DIRS`**。`docs-install` 在 `scope=config|knowledge` 下都会处理 `AGENT_*`：仅当 `.docsconfig` 中 **`AGENT_ROOT`** 为空时写默认 **`AGENT_ROOT=$HOME`** 与 **`AGENT_DIRS=.cursor`**；`AGENT_ROOT` 非空时保留原值。
 
 3. **冲突处理**：**`docs-install`** 若目标路径已存在，默认会交互式提示；使用 `--force` 强制覆盖，或 `--dry-run` 预览。**`agent-install`** 对安装树采用同步覆盖（可用 `--dry-run` 预览）。
 
 4. **同步范围控制（docs-install）**：通过 **`--scope`** 控制执行范围
-   - `knowledge`（`k`，**默认**）：同步知识库并写入 `.docsconfig`（须传 `--target=<目标工程文档目录>`）；写 `KNOWLEDGE_TYPE`，并在 `AGENT_ROOT` 为空时补默认 `AGENT_*`
-   - `config`（`c`）：仅写入 `.docsconfig`（须传 `--target=<目标工程文档目录>`）；不写 `KNOWLEDGE_TYPE`，并在 `AGENT_ROOT` 为空时补默认 `AGENT_*`
+   - `knowledge`（`k`，**默认**）：同步知识库并写入 `.docsconfig`（须传 `--target <目标工程文档目录>`）；写 `KNOWLEDGE_TYPE`，并在 `AGENT_ROOT` 为空时补默认 `AGENT_*`
+   - `config`（`c`）：仅写入 `.docsconfig`（须传 `--target <目标工程文档目录>`）；不写 `KNOWLEDGE_TYPE`，并在 `AGENT_ROOT` 为空时补默认 `AGENT_*`
 
    **Agent 安装**请使用 **`agent-install.sh`**（见上表与「agent-install.sh」选项节）。
 
@@ -64,8 +64,8 @@ git clone https://github.com/oleewen/ai-knowledge.git
 cd ai-knowledge
 
 # 知识库 + .docsconfig（默认 standalone；中央知识库挂载建联加 --mode=central）
-./scripts/docs-install.sh --target=/path/to/your-project/docs
-./scripts/docs-install.sh --mode=central --type=application --target=/path/to/your-project/docs
+./scripts/docs-install.sh --target /path/to/your-project/docs
+./scripts/docs-install.sh --mode=central --type=application --target /path/to/your-project/docs
 
 # 仅安装 Agent（默认安装到 $HOME/.cursor 等；--target 为工程根时可更新该根下 .docsconfig 的 AGENT_*）
 ./scripts/agent-install.sh
@@ -73,21 +73,21 @@ cd ai-knowledge
 ./scripts/agent-install.sh --scope=sh --dry-run
 
 # 建联（在「源」公司库或系统库仓库根执行）
-./scripts/docs-link.sh --link --target=/abs/path/to/target-repo
-./scripts/docs-link.sh --unlink --target=/abs/path/to/target-repo
+./scripts/docs-link.sh --link --target /abs/path/to/target-repo
+./scripts/docs-link.sh --unlink --target /abs/path/to/target-repo
 ```
 
-### 方式一（续）：远程 curl（无克隆，仅 knowledge 流程）
+### 方式一（续）：远程 curl（无预先 clone，由 bootstrap 临时克隆）
 
-在**目标工程**目录执行（参数透传给 **`docs-install.sh`**；`GIT_REPO_URL` / `GIT_REF` 可选）：
+在**目标工程**目录执行（由 **`docs-bootstrap.sh`** 解析 **`--doc-target`** / **`--agents`** / **`--agent-scope`**，克隆后依次调用 **`docs-install.sh`** 与 **`agent-install.sh`**；`GIT_REPO_URL` / `GIT_REF` 可选）：
 
 ```bash
 cd /path/to/your-project
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- --target ./docs
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- --mode=central --type=application --target ./docs
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- --doc-target ./docs
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- --doc-target /path/to/your-project/docs --agents=cursor
 ```
 
-**说明**：bootstrap **不**调用 `agent-install`；若需仅安装 Agent，须 **git clone** 后使用 **`./scripts/agent-install.sh`**。
+**说明**：若**只要** Agent、不要本流程中的 knowledge 安装，请 **git clone** 后单独执行 **`./scripts/agent-install.sh`**。
 
 ## 测试（docs-init）
 
@@ -97,6 +97,12 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 
 ```bash
 bash scripts/tests/docs-init/run.sh
+```
+
+**docs-link**（须 **Bash 5+**；与 `docs-link.sh` 运行要求一致）：
+
+```bash
+bash scripts/tests/docs-link/run.sh
 ```
 
 含整库副本与中央知识库挂载建联登记类用例（Spec §6.5 / §6.8；耗时与磁盘占用更高）：
@@ -118,7 +124,7 @@ export GIT_REF=main                                                  # 分支或
 | 选项 | 说明 | 默认 |
 |------|------|------|
 | `--scope=SCOPE` | `a`：全部；`r`：rules；`s`：skills；`h`：hooks；`sh`：scripts（含复制 `agent/scripts/docs-core.sh`） | `a` |
-| `--target=PATH` | 安装父目录，其下仅为**已选 agent** 创建 **`${TARGET}/.cursor`** 等；**非 `$HOME`** 且存在 `PATH/.docsconfig` 时，任意 scope 都会按本次参数重算并覆盖 `AGENT_ROOT`/`AGENT_DIRS` | `$HOME` |
+| `--target PATH` | 安装父目录，其下仅为**已选 agent** 创建 **`${TARGET}/.cursor`** 等；**非 `$HOME`** 且存在 `PATH/.docsconfig` 时，任意 scope 都会按本次参数重算并覆盖 `AGENT_ROOT`/`AGENT_DIRS` | `$HOME` |
 | `--agents=LIST` | `cursor` \| `trea` \| `claude` \| `all`；逗号或空格分隔多选 | `cursor` |
 | `--dry-run` | 预览，不写入 | - |
 | `-h`, `--help` | 显示帮助 | - |
@@ -127,7 +133,7 @@ export GIT_REF=main                                                  # 分支或
 
 | 选项 | 说明 | 默认 |
 |------|------|------|
-| `--target=PATH` | 目标工程文档目录路径（如 `~/project/docs`）；`config` / `knowledge` 均必填 | - |
+| `--target PATH` | 目标工程文档目录路径（如 `~/project/docs`）；`config` / `knowledge` 均必填（仍兼容 `--target=PATH`） | - |
 | `--mode=MODE` | 模式：`standalone`（独立）\| **中央知识库挂载建联**（`central`，仅应用子集分发）；缩写：`s` \| `c` | `standalone` |
 | `--type=TYPE` | `application` \| `system` \| `company`；**中央知识库挂载建联（`central`）仅允许 `application`**；未指定时默认 `application` | `application` |
 | `--scope=SCOPE` | 同步范围：`knowledge(k)` \| `config(c)`；**须传 `--target`**；`knowledge` 写 `.docsconfig`（含 `KNOWLEDGE_TYPE`），`config` 不写 `KNOWLEDGE_TYPE`；两者均在 `AGENT_ROOT` 为空时补默认 `AGENT_*` | `k`（knowledge） |
@@ -142,7 +148,7 @@ export GIT_REF=main                                                  # 分支或
 
 以 `--mode=standalone` 为例：文档模板落在**目标工程**。**`--scope=knowledge`** 会写入/更新 `.docsconfig`（含 `KNOWLEDGE_TYPE`）；**`--scope=config`** 会写入/更新 `.docsconfig` 的路径键（不写 `KNOWLEDGE_TYPE`）。两种 scope 都在 `AGENT_ROOT` 为空时补默认 `AGENT_*`。`agent-install` 在 `--target` 非 `$HOME` 且存在 `.docsconfig` 时，会按本次参数重算并覆盖 `AGENT_*`。
 
-**目标工程**（参数 `--target=<目标工程文档目录>` 及其父目录；`.docsconfig` 至少包含 **`DOC_ROOT`/`REPO_ROOT`/`DOC_DIR`**；`scope=knowledge` 时含 **`KNOWLEDGE_TYPE`**）：
+**目标工程**（参数 `--target <目标工程文档目录>` 及其父目录；`.docsconfig` 至少包含 **`DOC_ROOT`/`REPO_ROOT`/`DOC_DIR`**；`scope=knowledge` 时含 **`KNOWLEDGE_TYPE`**）：
 
 ```
 your-project/
@@ -166,10 +172,11 @@ your-project/
 └── .docs-init/                    # 工程侧备份（覆盖已有文档模板时自动创建）
 ```
 
-**用户主目录 `$HOME`**（**`agent-install`** 默认 **`--target=$HOME`** 时；安装结果示例）：
+**用户主目录 `$HOME`**（**`agent-install`** 默认 **`--target $HOME`** 时；安装结果示例）：
 
 ```
 ~/
+├── .agents/                       # agent-install 单份实体存储（默认）
 ├── .cursor/                       # Cursor（另有 .trea/、.claude/ 下同构）
 │   ├── hooks.json                 # 自仓库 agent/hooks.json
 │   ├── hooks/                     # 自仓库 agent/hooks/
@@ -215,8 +222,8 @@ your-project/
 | `docs-config.sh` | docs-install 配置层；`source agent/scripts/docs-core.sh` 复用路径/`.docsconfig` 工具 |
 | `docs-install.sh` | knowledge 安装编排入口；默认 `--scope=k`（knowledge），并 `source` `docs-config.sh` |
 | `link-config.sh` | docs-link 配置层；优先 `../agent/scripts/docs-core.sh`，否则按目标工程 `.docsconfig` 之 **AGENT_ROOT** / **AGENT_DIRS** 定位 **`scripts/docs-core.sh`** |
-| `docs-link.sh` | 登记/注销目标知识库；`source link-config.sh`；`--link` 校验源/目标 `.docsconfig` 与边关系，`--unlink` 支持失联目标注销 |
-| `docs-bootstrap.sh` | 临时 clone 后直接执行 **`docs-install.sh`**（纯链路：clone → docs-install，参数透传） |
+| `docs-link.sh` | 登记/注销目标知识库；`source link-config.sh`；`knowledge-links.yaml` 使用 **`repository` + `path`**，及 **`app_name` / `app_label`**（见上表）；`--link` 校验源/目标 `.docsconfig` 与边关系，`--unlink` 支持失联目标注销 |
+| `docs-bootstrap.sh` | 临时 clone 后依次执行 **`docs-install.sh`** 与 **`agent-install.sh`**（链路：clone → docs-install → agent-install；CLI 见脚本 `-h`） |
 
 ## 版本历史
 
