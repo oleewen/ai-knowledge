@@ -1,0 +1,17 @@
+{
+  "skill_name": "docs-push",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "用户：把 docs/superpowers/specs 里 spec-250504-1-myapp.md 按 system/knowledge-links.yaml 推到 myapp 登记路径，先 dry-run 再 path 模式实跑。",
+      "expected_output": "Agent 先读 gates/parameters；执行 push-specs.sh copy --dry-run；展示输出后再实跑；不自动 git push。",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "用户：strict 模式下如果有一个 spec 的 app_name 未登记，整批应失败且目标库不应被部分写入。",
+      "expected_output": "Agent 使用 --strict 并说明失败语义；可引用 scripts/tests/docs-push/cases/02_strict_missing_app.sh 行为。",
+      "files": []
+    }
+  ]
+}

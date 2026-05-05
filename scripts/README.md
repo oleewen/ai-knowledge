@@ -17,6 +17,13 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 | `docs-install.sh` | 知识库同步与配置分流；默认 `--scope=k`（knowledge）。`--scope=knowledge` 同步知识库并写 `.docsconfig`（含 **`KNOWLEDGE_TYPE`**）；`--scope=config` 仅更新 `.docsconfig` 的路径与 `AGENT_*`，不写 `KNOWLEDGE_TYPE`。两种 scope 都会调用 `install_agent_path`，但仅当 `AGENT_ROOT` 为空时补默认 `AGENT_*`。 |
 | `docs-link.sh` | 在**当前 Git 仓库（源知识库）**内维护 `DOC_ROOT/knowledge-links.yaml`（`company` / `system` 源），登记/注销目标库（`--link` / `--unlink`，`--target`）；清单字段：**`repository`**（Git 有 remote 时写远端 URL）、**`path`**（本机在 `$HOME` 下为 `~/…` 或 `~/`，否则为绝对路径；兼容旧数据无 `~` 的 `$HOME` 相对片段；**不得**把 URL 写在 `path`）；可选 **`doc_dir`**、**`app_name`** / **`app_label`**（system→application；无 **`app_label`** 时默认等于 **`app_name`**；同一 target 再次 **`--link`** 时若已有 **`app_label`** 则保留不覆盖）。**不兼容**旧版「仅 `path` 且值为 URL」的 YAML。`--unlink` 可按本地路径或 `repository` 与登记 identity 匹配注销；**system→application** 注销时将 `application-<APPNAME>/` 备份至工程根 **`.docs-init/<时间戳>/`** 再移除。 |
 
+### push-specs（Slash `/docs-push` 配套脚本）
+
+- **路径**：`agent/skills/docs-push/scripts/push-specs.sh`（须在**中央知识库仓库根**执行；`--links` 为相对路径时相对于该根）。
+- **作用**：将 `--specs-dir` 下符合 `spec-{yyMMdd}-{n}-{app_name}.md` 的文件复制到 `knowledge-links.yaml` 中对应 **`app_name`** 条目的 **`{path}/{doc_dir}/specs/`**；可选 **`--mode repo --branch`** 在本机已 clone 的 Git 工作区上切换分支后写入；`git` 子命令提供 **`--git-op none|stage|commit|push`** 与 **`--dry-run`**。
+- **文档**：见 [agent/skills/docs-push/SKILL.md](../agent/skills/docs-push/SKILL.md) 与 [agent/skills/docs-push/references/parameters.md](../agent/skills/docs-push/references/parameters.md)。
+- **测试**：`bash scripts/tests/docs-push/run.sh`（须 Bash 5+）。
+
 `docs-install.sh` 仅负责 knowledge 与 `.docsconfig`（不安装 Agent 文件）；Agent 安装仅由 `agent-install.sh` 负责。
 
 `--scope=knowledge` 完成同步并写入 `.docsconfig` 后，会将 `DOC_ROOT` 内文本中的路径段 `agent/` 按 `AGENT_DIRS` **首项**重写为对应目录（如 `.cursor/`），并在 `README.md` 注入说明块（列出其余可用 Agent 根目录）。
