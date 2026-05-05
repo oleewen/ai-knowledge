@@ -15,8 +15,6 @@ set -euo pipefail
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=./link-config.sh
 source "${SCRIPT_DIR}/link-config.sh"
-# shellcheck source=./lib/knowledge-links-read.sh
-source "${SCRIPT_DIR}/lib/knowledge-links-read.sh"
 
 # =============================================================================
 # knowledge-links.yaml

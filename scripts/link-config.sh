@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 #
-# link-config.sh — 仅供 docs-link.sh source
+# link-config.sh — 由 docs-link.sh 等 source
 #
 # 职责：
 # - 承载 docs-link 的默认值、参数校验、路径函数、.docsconfig 读入工具
+# - knowledge-links.yaml 只读解析见已 source 的 agent/scripts/docs-core.sh
 # - 路径与 .docsconfig 工具统一复用 agent/scripts/docs-core.sh
 # - 解析顺序：仓库内 ../agent/scripts/docs-core.sh（中央库布局）→ .docsconfig 之
 #   AGENT_ROOT/scripts/docs-core.sh → AGENT_DIRS 中各根下 scripts/docs-core.sh（按声明顺序）
@@ -129,4 +130,3 @@ normalize_target_repo_root() {
   p="$(strip_trailing_slash "$p")"
   printf '%s\n' "$p"
 }
-

@@ -1,6 +1,6 @@
 # system 索引指南（INDEX_GUIDE）
 
-> **最后更新**: 2026-05-04  
+> **最后更新**: 2026-05-05  
 > **文档定位**: 面向 AI Agent 的 **`system/` 文档根**九章机器索引；描述系统知识库、五视角架构文档与 **`application-{name}/`** 联邦槽位。应用层 SSOT 仍在 [../application/](../application/)。
 
 ---
@@ -25,7 +25,7 @@
 
 - **目录角色**: **系统知识库** — 组织级架构叙事、`system/architecture/` 五视角终稿、`application-{name}/` 镜像槽位
 - **技术栈**: Markdown、YAML（元数据与链接登记）
-- **已跟踪文件规模**（仅 `system/` 前缀）: **73** 个文件（`git ls-files system/`，2026-05-04）
+- **已跟踪文件规模**（仅 `system/` 前缀）: **73** 个文件（`git ls-files system/`，2026-05-05）
 - **精读深度**: 本轮 **depth=3**（已读 README、architecture 索引与目录枚举）
 
 ---
@@ -47,7 +47,6 @@ system/
 ├── analysis/                     # 系统侧分析占位
 ├── requirements/                 # 需求树占位与 EXAMPLE
 ├── solutions/                    # 方案阶段占位
-├── specs/                        # 规约占位
 └── changelogs/                   # 变更与索引日志（本根）
 ```
 

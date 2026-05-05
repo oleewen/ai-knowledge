@@ -3,12 +3,81 @@
 # 子命令: copy | git（详见 agent/skills/docs-push/references/parameters.md）
 set -euo pipefail
 
-readonly _PS_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# agent/skills/docs-push/scripts → 仓库根为 ../../../..
-readonly _AIK_ROOT="$(cd "${_PS_SCRIPT_DIR}/../../../.." && pwd)"
+readonly _INVOCATION_PWD="$(pwd -P)"
+readonly _PS_SCRIPT_DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 
-# shellcheck source=../../../../scripts/lib/knowledge-links-read.sh
-source "${_AIK_ROOT}/scripts/lib/knowledge-links-read.sh"
+_ps_bootstrap_error() {
+  printf '%s\n' "$*" >&2
+  exit 1
+}
+
+# 将已存在的普通文件规范为绝对路径（供 source）
+_ps_abspath_existing_file() {
+  local f="${1:?}"
+  [[ -f "$f" ]] || return 1
+  printf '%s\n' "$(cd -P "$(dirname "$f")" && pwd -P)/$(basename "$f")"
+}
+
+# 解析要 source 的 docs-core.sh（与「中央库根」解耦；支持 agent-install 的 ~/.agents 布局）。
+# 顺序：DOCS_CORE_SH → 技能树下 ../../../scripts/docs-core.sh → ~/.agents/scripts →
+#       ~/.{cursor,claude,trea,kiro}/scripts → 自脚本/cwd 上溯 agent/scripts → AIK_ROOT/agent/scripts。
+_aik_resolve_docs_core_sh() {
+  local dc d home="${HOME:-}"
+  if [[ -n "${DOCS_CORE_SH:-}" ]]; then
+    [[ -f "$DOCS_CORE_SH" ]] || _ps_bootstrap_error "DOCS_CORE_SH 已设置但文件不存在: ${DOCS_CORE_SH}"
+    _ps_abspath_existing_file "$DOCS_CORE_SH"
+    return 0
+  fi
+  dc="${_PS_SCRIPT_DIR}/../../../scripts/docs-core.sh"
+  if [[ -f "$dc" ]]; then
+    _ps_abspath_existing_file "$dc"
+    return 0
+  fi
+  if [[ -n "$home" ]]; then
+    dc="${home%/}/.agents/scripts/docs-core.sh"
+    if [[ -f "$dc" ]]; then
+      _ps_abspath_existing_file "$dc"
+      return 0
+    fi
+    for d in "${home%/}/.cursor" "${home%/}/.claude" "${home%/}/.trea" "${home%/}/.kiro"; do
+      dc="${d}/scripts/docs-core.sh"
+      if [[ -f "$dc" ]]; then
+        _ps_abspath_existing_file "$dc"
+        return 0
+      fi
+    done
+  fi
+  d="${_PS_SCRIPT_DIR}"
+  while [[ -n "$d" && "$d" != "/" ]]; do
+    if [[ -f "$d/agent/scripts/docs-core.sh" ]]; then
+      _ps_abspath_existing_file "$d/agent/scripts/docs-core.sh"
+      return 0
+    fi
+    d="$(dirname "$d")"
+  done
+  d="${_INVOCATION_PWD}"
+  while [[ -n "$d" && "$d" != "/" ]]; do
+    if [[ -f "$d/agent/scripts/docs-core.sh" ]]; then
+      _ps_abspath_existing_file "$d/agent/scripts/docs-core.sh"
+      return 0
+    fi
+    d="$(dirname "$d")"
+  done
+  if [[ -n "${AIK_ROOT:-}" ]]; then
+    dc="$(cd -P "${AIK_ROOT}" 2>/dev/null && pwd -P)/agent/scripts/docs-core.sh" || dc=""
+    if [[ -n "$dc" && -f "$dc" ]]; then
+      _ps_abspath_existing_file "$dc"
+      return 0
+    fi
+  fi
+  _ps_bootstrap_error \
+    "push-specs.sh: 无法找到 docs-core.sh。" \
+    "可设置 DOCS_CORE_SH，或确保已 agent-install（~/.agents/scripts/docs-core.sh），或在中央库内执行，或 export AIK_ROOT 指向含 agent/scripts/docs-core.sh 的仓库根。"
+}
+
+_DOCS_CORE_SH="$(_aik_resolve_docs_core_sh)"
+# shellcheck source=/dev/null
+source "$_DOCS_CORE_SH"
 
 usage() {
   sed 's/^    //' <<'EOF'
@@ -28,8 +97,46 @@ usage() {
       --git-op      none | stage | commit | push
       commit/push  须配合 --message
 
-    说明: --links 若为相对路径，则相对于中央知识库仓库根（本脚本所在 ai-knowledge 根: 见 _AIK_ROOT）。
+    说明: --links 若为相对路径，则相对于中央知识库仓库根（解析顺序见 agent/skills/docs-push/references/parameters.md）。
 EOF
+}
+
+# 相对 --links 的仓库根：AIK_ROOT（须存在该相对路径）→ cwd 上溯含该文件 → cwd 上溯 agent/scripts 标记。
+_aik_resolve_root_for_links() {
+  local rel="${1:?}" d
+  if [[ -n "${AIK_ROOT:-}" ]]; then
+    d="$(cd -P "${AIK_ROOT}" 2>/dev/null && pwd -P)" || \
+      sdx_error "AIK_ROOT 无法进入: ${AIK_ROOT}"
+    [[ -f "$d/$rel" ]] || \
+      sdx_error "AIK_ROOT 下不存在 ${rel}（当前 AIK_ROOT=$d）"
+    printf '%s\n' "$d"
+    return 0
+  fi
+  d="${_INVOCATION_PWD}"
+  while [[ -n "$d" && "$d" != "/" ]]; do
+    if [[ -f "$d/$rel" ]]; then
+      printf '%s\n' "$d"
+      return 0
+    fi
+    d="$(dirname "$d")"
+  done
+  d="${_INVOCATION_PWD}"
+  while [[ -n "$d" && "$d" != "/" ]]; do
+    if [[ -f "$d/agent/scripts/docs-core.sh" ]]; then
+      printf '%s\n' "$d"
+      return 0
+    fi
+    d="$(dirname "$d")"
+  done
+  d="${_PS_SCRIPT_DIR}"
+  while [[ -n "$d" && "$d" != "/" ]]; do
+    if [[ -f "$d/agent/scripts/docs-core.sh" ]]; then
+      printf '%s\n' "$d"
+      return 0
+    fi
+    d="$(dirname "$d")"
+  done
+  return 1
 }
 
 sdx_warn() { printf '%s\n' "$*" >&2; }
@@ -86,6 +193,9 @@ done
 [[ -d "$SPECS_DIR" ]] || sdx_error "specs 目录不存在或不是目录: $SPECS_DIR"
 
 if [[ "$LINKS_FILE" != /* ]]; then
+  [[ "$LINKS_FILE" != *..* ]] || sdx_error "相对 --links 不得包含 ..: $LINKS_FILE"
+  _AIK_ROOT="$(_aik_resolve_root_for_links "$LINKS_FILE")" || sdx_error \
+    "无法解析相对 --links 的仓库根（未找到 ${LINKS_FILE} 于当前目录任一上级，且未找到 agent/scripts/docs-core.sh）。请 cd 到中央库根或其子目录，或 export AIK_ROOT=含该文件的仓库根，或改用绝对路径 --links。"
   LINKS_FILE="${_AIK_ROOT}/${LINKS_FILE}"
 fi
 [[ -f "$LINKS_FILE" ]] || sdx_error "knowledge-links 文件不存在: $LINKS_FILE"

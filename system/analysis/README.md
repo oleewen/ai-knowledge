@@ -4,7 +4,7 @@
 
 ## 定位与用途
 
-- **输入**：解决方案文档（[../solutions](../solutions)）、知识库（[../architecture](../architecture)）、规约（各需求包内 `specs/` 或 [../specs/README.md](../specs/README.md) 说明）。
+- **输入**：解决方案文档（[../solutions](../solutions)）、知识库（[../architecture](../architecture)）、规约（各需求包内 `specs/` 或 [../architecture](../architecture) 与技术视角 manifest 约定）。
 - **输出**：需求分析文档 `ANALYSIS-{IDEA-ID}.md`，作为后续需求交付（PRD/ASD/DSD/TDD）的输入。
 
 ## 分析索引表

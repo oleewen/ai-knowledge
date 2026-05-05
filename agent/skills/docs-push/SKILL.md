@@ -13,7 +13,7 @@ description: >
 
 本技能以 **调度器** 方式工作：先读闸门与参数说明，在**用户确认**（尤其 `git push`）前提下调用 `scripts/push-specs.sh`。
 
-> **写盘目标**：`knowledge-links.yaml` 中每条 link 的**本机 `path`** 下 `{doc_dir}/specs/`（`doc_dir` 缺省为 `application`）。**不**使用 `repository` 做隐式 clone；远端仅作建联元数据。
+> **写盘目标**：`knowledge-links.yaml` 中每条 link 的**本机 `path`** 下 `{doc_dir}/specs/`（`doc_dir` 缺省为 `docs`）。**不**使用 `repository` 做隐式 clone；远端仅作建联元数据。
 
 ---
 

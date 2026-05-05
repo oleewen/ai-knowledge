@@ -2,6 +2,34 @@
 
 脚本：`agent/skills/docs-push/scripts/push-specs.sh`（Bash 5+）。
 
+### `docs-core.sh` 加载路径（与仓库根解耦）
+
+须先加载 `docs-core.sh`（内含 knowledge-links 只读解析）。**不**再要求「仓库根」与 core 同树。解析顺序：
+
+1. **`DOCS_CORE_SH`**：显式指向 `docs-core.sh` 文件（须存在）；
+2. **`${脚本目录}/../../../scripts/docs-core.sh`**：`agent-install` 后的技能路径（`.agents/skills/.../scripts` 或经 symlink 的 `~/.cursor/skills/...`）；
+3. **`$HOME/.agents/scripts/docs-core.sh`**；
+4. **`$HOME/.cursor|.claude|.trea|.kiro/scripts/docs-core.sh`**（依次尝试）；
+5. 自脚本**物理目录**上溯，查找 `agent/scripts/docs-core.sh`；
+6. 自**当前工作目录**物理路径上溯，同上；
+7. **`AIK_ROOT/agent/scripts/docs-core.sh`**（若已设置 `AIK_ROOT`）。
+
+### 相对 `--links` 的中央库根
+
+`--links` 为相对路径时，解析为「含该文件的仓库根」，顺序：
+
+1. **`AIK_ROOT`**：必须满足 **`$AIK_ROOT/<相对路径>`** 为已存在的文件（用于仅有安装产物、工作区不在中央库树等场景）；
+2. 自**当前工作目录**上溯，找到第一个满足 **`$d/<相对路径>`** 存在的目录 `d`；
+3. 自当前工作目录上溯 **`agent/scripts/docs-core.sh`**，以其父级的父级的父级为仓库根（与中央库布局一致）；
+4. 自脚本目录上溯 **`agent/scripts/docs-core.sh`**（同上）。
+
+相对路径**不得**包含 `..`。若仍无法解析，请改用**绝对路径** `--links`。
+
+| 变量 | 必选 | 说明 |
+|------|------|------|
+| `DOCS_CORE_SH` | 否 | 显式指定要 `source` 的 `docs-core.sh`。 |
+| `AIK_ROOT` | 否 | 指向含 `knowledge-links` 相对路径的仓库根；**相对 `--links` 时**，若已设置则**必须**能在其下找到该文件。也参与 `docs-core` 解析（见上第 7 步）。 |
+
 ---
 
 ## 子命令
