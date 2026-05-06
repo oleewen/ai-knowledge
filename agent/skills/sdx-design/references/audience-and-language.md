@@ -13,8 +13,8 @@
 
 ## 与 PRD 的分工
 
-PRD 描述「做什么、如何验收」；**DSD + ASD** 共同描述「怎么做、依赖什么系统与数据」（架构级以 **ASD** 为准，实现级以 **DSD §2** 为主）。接口名、表结构、消息格式等**属于 DSD 与 specs/**；若 PRD 中已出现实现细节，设计时仍以 PRD 功能范围为约束，在 DSD 中给出**工程化**表述。
+PRD 描述「做什么、如何验收」；**DSD** 与 **ASD 与/或 architect spec**（`specs/spec-*.md`）共同描述「怎么做、依赖什么系统与数据」（**有 ASD** 时架构级以 **ASD** 为准；**仅有 architect spec** 时架构/范围级以该 spec §1 与元数据为准；实现级以 **DSD §2** 为主）。接口名、表结构、消息格式等**属于 DSD 与 specs/**；若 PRD 中已出现实现细节，设计时仍以 PRD 功能范围为约束，在 DSD 中给出**工程化**表述。
 
 ## 与模板的关系
 
-章节结构与占位说明以 [../assets/dsd-template.md](../assets/dsd-template.md) 为准（与 **ASD** 的 **§1** 对齐见 `asd-template`）；本文件约束**语气与信息类型**，不替代模板中的必填小节。
+章节结构与占位说明以 [../assets/dsd-template.md](../assets/dsd-template.md) 为准（**§1** 与 **ASD §1** 或 **仅有 architect spec 时** 与该 spec §1–2 对齐，骨架见 `asd-template`）；本文件约束**语气与信息类型**，不替代模板中的必填小节。

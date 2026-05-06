@@ -7,7 +7,7 @@
       "id": "design-trigger-001",
       "category": "should-trigger",
       "prompt": "ASD-ORDER-1.md 已定稿，请走 /sdx-design：先会话 spec 与 Gd1–Gd4，总确认后落 DSD-ORDER-1.md，并把 §2.2 的 API 契约同步进 specs/billing/api/ 下的 OpenAPI YAML。",
-      "expected_output": "以 /sdx-design 为主路径：ASD 硬输入、会话 spec、门禁与总确认后再写 DSD；体现 specs 与 API 规约落盘；未确认不写 DSD 终稿。",
+      "expected_output": "以 /sdx-design 为主路径：上游 ASD 与/或 architect spec（specs/spec-*.md）硬输入、会话 spec、门禁与总确认后再写 DSD；体现 specs 与 API 规约落盘；未确认不写 DSD 终稿。",
       "assertions": [
         {
           "id": "gate-compliance",
@@ -31,10 +31,10 @@
           "priority": "P0"
         },
         {
-          "id": "asd-input",
-          "name": "ASD 硬输入",
+          "id": "upstream-input",
+          "name": "上游硬输入",
           "type": "should_include",
-          "check": "应提及 ASD-ORDER-1 或 ASD 作为输入。",
+          "check": "应提及 ASD-ORDER-1、ASD 或 specs/spec-（architect spec）之一作为详设上游输入。",
           "priority": "P1"
         }
       ]
@@ -136,6 +136,35 @@
           "name": "边界分流",
           "type": "must_not_conflict",
           "check": "不得将本请求整体改判为仅 /sdx-test 或仅 docs-indexing。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "design-trigger-005",
+      "category": "should-trigger",
+      "prompt": "ASD 尚未落终稿，但 specs/spec-ORDER-1-billing.md（asd-spec-template 第1–6节）已就绪；请走 /sdx-design：先会话 spec 与 Gd1–Gd4，总确认后写 DSD-ORDER-1.md。",
+      "expected_output": "主路径为 sdx-design：承认 architect spec 可作为详设唯一上游之一；仍含门禁与总确认；不因无 ASD 而整体改判仅 sdx-architect。",
+      "assertions": [
+        {
+          "id": "gate-compliance",
+          "name": "门禁合规",
+          "type": "must_include",
+          "check": "含未确认不写 DSD 终稿路径或 HARD-GATE 等价语义。",
+          "priority": "P0"
+        },
+        {
+          "id": "architect-spec-input",
+          "name": "architect spec 上游",
+          "type": "must_include",
+          "check": "须体现 specs/spec- 或 architect spec 与 ASD 至少其一即可进入详设（或等价表述），且本 prompt 下不因缺 ASD 而拒绝 sdx-design 主路径。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得将主路径改为「必须先补 ASD 终稿」作为唯一答案而完全跳过 DSD/会话 spec 框架（除非用户明确要求仅架构）。",
           "priority": "P0"
         }
       ]

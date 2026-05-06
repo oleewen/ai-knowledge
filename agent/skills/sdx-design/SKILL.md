@@ -1,8 +1,8 @@
 ---
 name: sdx-design
 description: >
-  详细设计与规约：以 /sdx-architect 产出的 ASD 为硬输入，编写详细设计说明书 DSD。
-  DSD **§1 设计概述**与 [asd-template §1](../sdx-architect/assets/asd-template.md) 对齐（可与 ASD §1 同源复制）；**§3 需求规约**继承 [asd-template §3](../sdx-architect/assets/asd-template.md) 与上游 ASD §3 表行并扩写；**详细设计正文从 §2 起编号**（§2 详细设计、§3 需求规约、§4 附录），应用全量附带 specs/*.yaml。
+  详细设计与规约：以 /sdx-architect 产出的 **ASD** 与/或 **architect spec**（`{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{app-name}.md`，结构见 [asd-spec-template.md](../sdx-architect/assets/asd-spec-template.md) 第1–6节，路径约定见 [asd-template §3 表](../sdx-architect/assets/asd-template.md)）为硬输入，**二者至少具备其一**，编写详细设计说明书 DSD。
+  有 ASD 时：DSD **§1** 与 [asd-template §1](../sdx-architect/assets/asd-template.md) 对齐（可与 ASD §1 同源复制）；**§3 需求规约**继承 asd-template 与 **ASD §3** 表行并扩写。仅有 architect spec 时：§1/§3 以该 spec §1–4 与元数据 refs 为 SSOT，表结构仍遵循 dsd-template。详细设计正文从 §2 起编号（§2 详细设计、§3 需求规约、§4 附录），应用全量附带 specs/*.yaml。
   不包含历史「单文档 ADD」：实现级契约仅以 DSD+规约为准。当用户需要 API/DDL、业务逻辑、规约 YAML 或未声明仅架构时务必使用本技能。
   本技能默认执行门禁：未完成「草稿用户总确认」前，禁止写入 {DOC_DIR}/requirements/**/DSD-*.md。
   若用户已明确要求只做 sdx-solution、sdx-analysis、sdx-prd、sdx-architect、sdx-test 的正文落盘，或执行 docs-distill/docs-extract/docs-archive/docs-indexing/docs-build，则不要以本技能为主路径，应分流到对应技能。
@@ -12,9 +12,14 @@ description: >
 
 本技能以「调度器」方式工作：先判定是否应由 `sdx-design` 处理，再按阶段读取规范文件，经会话 spec 与门禁后产出可校验的 **DSD** 与（应用全量时）**`specs/**/*.yaml`**。
 
-**不写 ASD**；必须以 **`ASD-{IDEA-ID}-{N}.md`**（`/sdx-architect`）为输入主干。产出 **`DSD-{IDEA-ID}-{N}.md`**；**§3** 须在 **ASD §3** 已有行上扩写，冲突时以已确认 **ASD + PRD** 溯源为准。
+**不写 ASD**；上游 **至少其一**（**同 IDEA-ID / 同阶段 `{N}`** 可对齐）：
 
-**上游**：**`sdx-architect`（ASD，必选同 IDEA-ID）**、`sdx-prd`、`sdx-analysis`。**下游**：`sdx-test`。
+1. **`ASD-{IDEA-ID}-{N}.md`**（`/sdx-architect`），与/或  
+2. **`{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{app-name}.md`**（architect 需求规约 spec，**非**本会话闸门稿 `docs/superpowers/specs/...-sdx-design.md`）
+
+产出 **`DSD-{IDEA-ID}-{N}.md`**。**有 ASD 时** §3 须在 **ASD §3** 已有行上扩写，冲突以已确认 **ASD + PRD** 溯源为准。**仅有 architect spec 时** §3 以该文件 FR/UC（及 §5 可验收点）为表行基础，并标注 SSOT；与 PRD 冲突时须先收口上游。
+
+**上游**：**`sdx-architect`（ASD 与/或 architect spec）**、`sdx-prd`、`sdx-analysis`。**下游**：`sdx-test`。
 
 主要读者：**骨干开发、测试设计**。
 
@@ -32,7 +37,8 @@ description: >
 
 执行前最少确认：
 
-- **IDEA-ID**、**ASD 路径**（与同包 PRD 一致）、**`KNOWLEDGE_TYPE`**（见 `references/knowledge-type-modes.md` 索引链）。
+- **IDEA-ID**、**上游至少其一的路径**（`ASD-*.md` 与/或 `{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{app-name}.md`）、与同包 **PRD** 一致（若已存在）。
+- **`KNOWLEDGE_TYPE`**（见 `references/knowledge-type-modes.md` 索引链）。
 - **`--depth`**（与 workflow 中详设粒度一致）。
 - 目标工程中 **`{DOC_DIR}`** 与 **`docs/superpowers/specs/`** 可写路径意识。
 
@@ -56,7 +62,7 @@ description: >
 6. **操作层陷阱**：对话执行易错时读 `gotchas.md`
 7. **受众与语言**：终检或语言审查时读 `references/audience-and-language.md`
 8. **质量终检**：落盘前读 `references/quality-checklist.md`
-9. **模板与骨架**：阶段二用 `assets/design-session-spec-template.md`；阶段三用 `assets/dsd-template.md`
+9. **模板与骨架**：阶段二用 `assets/design-session-spec-template.md`；阶段三用 `assets/dsd-template.md`；architect spec 结构参照 [../sdx-architect/assets/asd-spec-template.md](../sdx-architect/assets/asd-spec-template.md)
 
 ---
 
@@ -102,4 +108,6 @@ description: >
 | 资源 | 路径 |
 |------|------|
 | ASD §1 / 上游结构 | [../sdx-architect/assets/asd-template.md](../sdx-architect/assets/asd-template.md) |
+| architect spec §1–6 | [../sdx-architect/assets/asd-spec-template.md](../sdx-architect/assets/asd-spec-template.md) |
 | DSD 模板（§1+§2–§4） | [assets/dsd-template.md](assets/dsd-template.md) |
+| 双轨输入设计说明（人类） | [../../../docs/superpowers/specs/2026-05-06-sdx-design-dual-input-design.md](../../../docs/superpowers/specs/2026-05-06-sdx-design-dual-input-design.md) |

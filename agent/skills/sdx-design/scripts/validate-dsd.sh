@@ -167,8 +167,10 @@ for file in "${FILES[@]}"; do
 
   if grep -qF "ASD-" "${file}"; then
     success "${BASENAME}: 文内引用 ASD 文档"
+  elif grep -qE '\./specs/spec-|specs/spec-' "${file}"; then
+    success "${BASENAME}: 文内引用 architect spec（specs/spec-*.md）"
   else
-    warn "${BASENAME}: 未发现 ASD-* 引用（建议在「关联文档」或正文引用架构说明书）"
+    warn "${BASENAME}: 未发现 ASD-* 或 specs/spec-*.md 引用（建议在「关联文档」或正文引用架构说明书或 architect spec）"
   fi
 
   if grep -q 'PRD-' "${file}"; then

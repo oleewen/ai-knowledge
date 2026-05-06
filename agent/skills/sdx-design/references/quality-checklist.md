@@ -12,12 +12,12 @@
 
 | 维度 | 通过要点 |
 |------|----------|
-| 结构与占位 | **`## 1`–`## 4`** 齐全；§1 与 **ASD §1 / asd-template** 可追溯对齐 |
+| 结构与占位 | **`## 1`–`## 4`** 齐全；§1 与 **ASD §1 / asd-template** 或 **仅有 architect spec 时** 与该 `specs/spec-*.md` §1–2 **可追溯对齐** |
 | §1 设计概述 | ANALYSIS/PRD/MVP；约束；DD-n |
 | §2 详细设计 | §2.1～§2.5：**API-n**、DDL、非功能等与 `specs/` 可追溯 |
 | §3 需求规约 | 规约路径与磁盘一致 |
 | §4 附录 | §4.1 历史；§4.2 自查 |
-| 一致性 / 可追溯 / 可行性 / 术语 / 元数据 | 与 ASD、PRD、KNOWLEDGE 无未说明冲突 |
+| 一致性 / 可追溯 / 可行性 / 术语 / 元数据 | 与 **ASD 与/或 architect spec**、PRD、KNOWLEDGE 无未说明冲突 |
 
 **联邦概要**（`KNOWLEDGE_TYPE` system/company）：按 [knowledge-type-modes.md](knowledge-type-modes.md) 标 **N/A**。
 
@@ -26,7 +26,7 @@
 ## 逐项核对目录（以 dsd-template §4.2 条目标题为准）
 
 - [ ] **结构与占位**
-- [ ] **§1 设计概述**（对齐 ASD §1）
+- [ ] **§1 设计概述**（有 ASD 则对齐 ASD §1；仅有 architect spec 则对齐该 spec §1–2 并标注 SSOT）
 - [ ] **§2 详细设计**（§2.1～§2.5）
 - [ ] **§3 需求规约**
 - [ ] **§4 附录与元数据**

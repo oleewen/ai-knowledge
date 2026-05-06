@@ -4,7 +4,7 @@
 
 ---
 
-> **说明**：**ASD**（`/sdx-architect`）承载 **§1–§3**（§3 为需求规约摘要表，与 [dsd-template §3](../assets/dsd-template.md) 表头同构）。**DSD**（`/sdx-design`）为独立技能，文档 **§1–§4**：**§1** 与 [asd-template §1](../../sdx-architect/assets/asd-template.md) 对齐且与 ASD 同源/可追溯；**§3** 继承并扩写 **ASD §3**；**详细设计从 §2 起编号**。门禁：**Ga1–Ga3**（ASD）、**Gd1–Gd4**（DSD §1–§4）。
+> **说明**：**ASD**（`/sdx-architect`）承载 **§1–§3**（§3 为需求规约摘要表，与 [dsd-template §3](../assets/dsd-template.md) 表头同构）。**architect spec** 为 `{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{app-name}.md`，结构见 [asd-spec-template §1–6](../../sdx-architect/assets/asd-spec-template.md)，路径约定见 [asd-template §3 表](../../sdx-architect/assets/asd-template.md)。详设上游 **ASD 与 architect spec 至少其一**（同 IDEA-ID / `{N}` 对齐）。**DSD**（`/sdx-design`）文档 **§1–§4**：**有 ASD 时** **§1** 与 ASD §1 / [asd-template §1](../../sdx-architect/assets/asd-template.md) 同源可追溯，**§3** 继承并扩写 **ASD §3**；**仅有 architect spec 时** §1/§3 以该 spec 为 SSOT，表结构仍遵循 `dsd-template`。**详细设计从 §2 起编号**。门禁：**Ga1–Ga3**（ASD）、**Gd1–Gd4**（DSD §1–§4）。
 
 本文件补充：**门禁状态机**（回跳影响面、Q-n 协议）与**阶段三内容生成算法**（步骤 0–3）。
 
@@ -73,15 +73,18 @@ Q-{n}：{问题描述}
 
 **仅在用户总确认（`CONFIRMED`）之后**用于填充 **DSD** 与规约，不得绕过 HARD-GATE 单独执行（见 `gates.md`）。
 
-### 步骤 0：架构（不在本技能落笔）
+### 步骤 0：架构输入（不在本技能落笔）
 
-**ASD** **`/sdx-architect`** 已产出 **`ASD-*.md`（§1–§3）**。「设计概述」在 DSD **§1** 必须与 ASD **§1 / [asd-template](../../sdx-architect/assets/asd-template.md)** 对齐；**§3 需求规约**表须在 **ASD §3** 已定稿行上扩写。
+**`/sdx-architect`** 已产出 **`ASD-*.md`（§1–§3）** 与/或 **`{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{app-name}.md`**（asd-spec-template），**至少其一**。
+
+- **有 ASD**：DSD **§1** 与 ASD **§1 / [asd-template](../../sdx-architect/assets/asd-template.md)** 对齐；**§3** 在 **ASD §3** 已定稿行上扩写（若有 architect spec，接口/FR 细节可由其 §3–6 补全；冲突以已确认 ASD + PRD 为准）。
+- **仅有 architect spec**：DSD **§1** 以 spec §1–2 与元数据 `refs` 为主组织，骨架对齐 `asd-template` §1；**§3** 以 spec FR/UC 等为表行基础并标注 SSOT；与 PRD 冲突时先收口上游。
 
 ---
 
 ### 步骤 1：详细设计（→ DSD §2）
 
-**输入**：**ASD** + PRD + 分析 + 按需 knowledge
+**输入**：**ASD 与/或 architect spec**（至少其一）+ PRD + 分析 + 按需 knowledge
 
 **与 DSD §2 对应**：
 
@@ -113,25 +116,27 @@ specs/{service-name}/
 
 ### 步骤 3：文档输出与终检（→ DSD-*.md）
 
-1. 按 [../assets/dsd-template.md](../assets/dsd-template.md) 整合 **§1–§4**（**§1** 可复制 ASD §1）。
+1. 按 [../assets/dsd-template.md](../assets/dsd-template.md) 整合 **§1–§4**（**有 ASD 时 §1** 可复制 ASD §1；**仅有 architect spec 时** 在元数据或关联文档中显式引用该 spec 路径）。
 2. 填充文末元数据（`## 文档元数据`）：
-   - `id`、`title`、`version`、`status: draft`、`created`、`updated`、`parent`（常为 PRD）、`architecture_ref`（ASD）、`mvp_phase`
+   - `id`、`title`、`version`、`status: draft`、`created`、`updated`、`parent`（常为 PRD）、`architecture_ref`（若有 ASD）、`mvp_phase`；无 ASD 时须在正文或元数据扩展字段中可追溯 **architect spec**（`specs/spec-*.md`）
 3. 对照 [quality-checklist.md](quality-checklist.md) 逐项判定。
 
 **输出目录（应用全量）**：
 
 ```
 {DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/
-├── ASD-{IDEA-ID}-{N}.md        ← /sdx-architect
+├── ASD-{IDEA-ID}-{N}.md        ← /sdx-architect（可选，与下项至少其一在 {DOC_DIR} 可追溯）
 ├── DSD-{IDEA-ID}-{N}.md        ← /sdx-design（本节）
 └── specs/{service-name}/{type}/*.yaml
 ```
+
+`{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{app-name}.md` 常在 **ASD §3** 表或独立由 `/sdx-architect` 产出；详设阶段须能在 `{DOC_DIR}` 下定位该文件（若存在）。
 
 ---
 
 ## 步间数据流
 
 ```
-/sdx-architect → ASD（§1、§2、§3）
-/sdx-design → DSD：**§1**（与 ASD §1）+ **§2** 详细设计 → **§3** 需求规约（扩写 ASD §3）→ **§4** 附录 → **specs/**
+/sdx-architect → ASD（§1、§2、§3）与/或 → {DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{app-name}.md（asd-spec-template）
+/sdx-design → DSD：**§1**（有 ASD 则对齐 ASD §1；仅有 spec 则以 spec 为 SSOT）+ **§2** 详细设计 → **§3**（有 ASD 则扩写 ASD §3；仅有 spec 则以 spec FR/UC 为基）→ **§4** 附录 → **specs/**
 ```

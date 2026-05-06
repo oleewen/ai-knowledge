@@ -17,7 +17,7 @@
       "id": "structure-integrity",
       "name": "结构完整",
       "type": "must_include",
-      "check": "响应需覆盖 DSD §1–§4、ASD 硬输入与（若适用）specs 规约落盘或实现级契约边界，而非以 ASD/PRD 为唯一终稿。",
+      "check": "响应需覆盖 DSD §1–§4、上游硬输入（ASD 与/或 architect spec：specs/spec-*.md）与（若适用）specs 规约落盘或实现级契约边界，而非仅以 ASD/PRD 为唯一终稿。",
       "priority": "P0"
     },
     {
@@ -28,10 +28,10 @@
       "priority": "P0"
     },
     {
-      "id": "asd-input",
-      "name": "ASD 硬输入",
+      "id": "upstream-input",
+      "name": "上游硬输入",
       "type": "should_include",
-      "check": "应提及 ASD 或同 IDEA-ID 架构输入为前置。",
+      "check": "应提及 ASD、specs/spec-（architect spec）或同 IDEA-ID 详设上游之一为前置。",
       "priority": "P1"
     }
   ],
