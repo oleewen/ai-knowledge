@@ -1,6 +1,6 @@
 # {MVP-N} 规约摘录（Spec 汇总）
 
-> **命名与位置（sdx-design）**：落盘路径 **`{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md`**；`{service-name}` 与同库 **`knowledge-links.yaml`** 的 `service_name` 优先对齐。  
+> **命名与位置（sdx-design）**：落盘路径 **`{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{MS-ID}.md`**；`{MS-ID}` 须与同知识库 **`KNOWLEDGE_INDEX.md`**、`knowledge/technical/` 等处登记的 **MS 实体 ID（MS-*）** 对齐或可唯一映射。  
 > 来源：主要自 **`{DSD-FILE}.md`（详细设计说明书）** 对应章节摘录与整理。  
 > 目标：从规约视角描述 **哪个服务的哪个 API 要做什么改动**，以及对应的领域/数据变更点，供研发实现对照。
 

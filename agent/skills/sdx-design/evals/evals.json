@@ -6,7 +6,7 @@
     {
       "id": "design-trigger-001",
       "category": "should-trigger",
-      "prompt": "ASD-ORDER-1.md 已定稿，请走 /sdx-design：先会话 spec 与 Gd1–Gd4，总确认后落 DSD-ORDER-1.md，并把 §2.2 的 API 契约同步进 `{DOC_DIR}/specs/spec-ORDER-1-{N}-{service-name}.md`（spec-template）。",
+      "prompt": "ASD-ORDER-1.md 已定稿，请走 /sdx-design：先会话 spec 与 Gd1–Gd4，总确认后落 DSD-ORDER-1.md，并把 §2.2 的 API 契约同步进 `{DOC_DIR}/specs/spec-ORDER-1-{N}-{service-name}.md`（dsd-spec-template）。",
       "expected_output": "以 /sdx-design 为主路径：上游 ASD 与/或 **`{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md`** 硬输入、会话 spec、门禁与总确认后再写 DSD；体现 **`{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md`** 规约稿与详设同期；未确认不写 DSD 终稿。",
       "assertions": [
         {
@@ -78,7 +78,7 @@
     {
       "id": "design-trigger-003",
       "category": "should-trigger",
-      "prompt": "应用库 KNOWLEDGE_TYPE=application，MVP-Phase-1 里已有 PRD 和 ASD，请执行详细设计阶段：DSD + `{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md` 规约稿按 spec-template / dsd-template 来。",
+      "prompt": "应用库 KNOWLEDGE_TYPE=application，MVP-Phase-1 里已有 PRD 和 ASD，请执行详细设计阶段：DSD + `{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md` 规约稿按 dsd-spec-template / dsd-template 来。",
       "expected_output": "明确 /sdx-design：application 全量、DSD + **specs/spec-{IDEA-ID}-{N}-{service-name}.md**、模板对齐；ASD+PRD 为输入；含总确认门禁。",
       "assertions": [
         {

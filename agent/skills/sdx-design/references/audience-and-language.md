@@ -13,7 +13,7 @@
 
 ## 与 PRD 的分工
 
-PRD 描述「做什么、如何验收」；**DSD** 与 **ASD 与/或** `{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md`（需求规约 Markdown，骨架见 [../assets/spec-template.md](../assets/spec-template.md)）共同描述「怎么做、依赖什么系统与数据」（**有 ASD** 时架构级以 **ASD** 为准；**仅有该 Markdown** 时架构/范围级以其 §1 与元数据为准；实现级以 **DSD §2** 为主）。接口名、表结构、消息格式等**属于 DSD 正文与上述汇总稿**；若 PRD 中已出现实现细节，设计时仍以 PRD 功能范围为约束，在 DSD 中给出**工程化**表述。
+PRD 描述「做什么、如何验收」；**DSD** 与 **ASD 与/或** `{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md`（需求规约 Markdown，骨架见 [../assets/dsd-spec-template.md](../assets/dsd-spec-template.md)）共同描述「怎么做、依赖什么系统与数据」（**有 ASD** 时架构级以 **ASD** 为准；**仅有该 Markdown** 时架构/范围级以其 §1 与元数据为准；实现级以 **DSD §2** 为主）。接口名、表结构、消息格式等**属于 DSD 正文与上述汇总稿**；若 PRD 中已出现实现细节，设计时仍以 PRD 功能范围为约束，在 DSD 中给出**工程化**表述。
 
 ## 与模板的关系
 

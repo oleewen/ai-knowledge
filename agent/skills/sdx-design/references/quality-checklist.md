@@ -15,7 +15,7 @@
 | 结构与占位 | **`## 1`–`## 4`** 齐全；§1 与 **ASD §1 / asd-template** 或 **仅有 `specs/spec-{IDEA-ID}-{N}-{service-name}.md` 时** 与该文件 §1–2 **可追溯对齐** |
 | §1 设计概述 | ANALYSIS/PRD/MVP；约束；DD-n |
 | §2 详细设计 | §2.1～§2.5：**API-n**、DDL、非功能等与 §3 规约表及 `specs/spec-{IDEA-ID}-{N}-{service-name}.md`（适用时）可追溯 |
-| §3 需求规约 | 表中 `./specs/spec-{IDEA-ID}-{N}-{service-name}.md` 与磁盘一致；应用全量时该 Markdown 与 [spec-template.md](../assets/spec-template.md) 骨架一致且与 DSD §2 互指 |
+| §3 需求规约 | 表中 `./specs/spec-{IDEA-ID}-{N}-{service-name}.md` 与磁盘一致；应用全量时该 Markdown 与 [dsd-spec-template.md](../assets/dsd-spec-template.md) 骨架一致且与 DSD §2 互指 |
 | §4 附录 | §4.1 历史；§4.2 自查 |
 | 一致性 / 可追溯 / 可行性 / 术语 / 元数据 | 与 **ASD 与/或** `{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md`、PRD、KNOWLEDGE 无未说明冲突 |
 
