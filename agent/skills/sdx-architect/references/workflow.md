@@ -23,7 +23,7 @@
    - 写入 `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ASD-{IDEA-ID}-{N}.md`。
    - 内容遵循 `asd-template.md`，至少覆盖 `§1/§2/§3` 与文末元数据。
 5. **validate**
-   - 运行 `agent/skills/sdx-architect/scripts/validate-asd.sh`。
+   - 在**仓库根**运行 `agent/skills/sdx-architect/scripts/validate-asd.sh`（或于 `agent/skills/sdx-architect/` 下执行 `./scripts/validate-asd.sh`）。
    - 失败则回到草稿修正，再次校验。
 
 ## 执行原则

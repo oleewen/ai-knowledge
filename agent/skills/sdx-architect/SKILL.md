@@ -1,24 +1,36 @@
 ---
 name: sdx-architect
 description: >
-  当用户需要基于 PRD/ANALYSIS 产出架构设计说明书 ASD（§1/§2/§3）时，必须使用本技能。
-  若用户要求实现级 API/DDL/**spec-*.md 规约**/DSD，请不要继续本技能，改为分流到 /sdx-design。
-  本技能默认执行门禁：未完成「用户总确认」前，禁止写入 {DOC_DIR}/requirements/**/ASD-*.md。
-  当用户提到服务边界、架构图、服务变更表、系统级联邦概要（KNOWLEDGE_TYPE=system/company）等场景，也应优先触发本技能。
-  若用户明确要求只做 sdx-solution、sdx-analysis、sdx-prd、sdx-test 的正文落盘，或执行 docs-distill/docs-extract/docs-archive/docs-indexing，则不要以本技能为主路径，应分流到对应技能。
+  架构设计技能：基于 PRD/ANALYSIS 产出架构设计说明书 ASD（§1/§2/§3）。
+  触发：服务边界、架构图、服务变更表、系统级联邦概要（KNOWLEDGE_TYPE=system/company）；目标产物为 ASD 终稿或架构阶段会话。
+  分流：实现级 API/DDL、**spec-*.md** 规约全文、DSD → /sdx-design；仅 sdx-solution / sdx-analysis / sdx-prd / sdx-test 正文落盘，或仅 docs-distill / docs-extract / docs-archive / docs-indexing → 对应技能，不以本技能为主路径。
+  门禁：未完成「用户总确认」前禁止写入 `{DOC_DIR}/requirements/**/ASD-*.md`（例外见 references/gates.md）。
+compatibility: 本仓库 Bash 5+，仓库根下 `scripts/config-bootstrap.sh` 可解析 `DOC_ROOT`；校验与钩子命令见正文（路径均相对仓库根）。
 ---
 
 # 架构设计阶段（sdx-architect）
 
-本技能以「调度器」方式工作：先判定是否应由 `sdx-architect` 处理，再按阶段读取对应规范文件，最终产出可校验的 ASD。
+调度式工作：**先判断是否由本技能主责**，按需读 `references/`，经会话草稿与用户总确认后产出可校验的 **ASD**。
 
 ---
 
 ## 适用边界
 
-- **本技能负责**：ASD（`§1/§2/§3`）、架构边界、服务变更、规约摘要行、门禁执行。
-- **本技能不负责**：DSD、实现级 API/DDL、**spec-*.md** 完整规约落盘。
-- **边界分流**：出现实现级细节诉求时，转 `[/sdx-design](../sdx-design/SKILL.md)`。
+### 何时使用
+
+- 需要 **ASD**（`§1/§2/§3`）、架构边界、服务变更、规约**摘要**行与门禁。
+- 用户讨论 **服务边界、架构图、服务变更表、联邦概要**（`KNOWLEDGE_TYPE=system|company`）等，且主交付为架构阶段产物。
+
+### 何时不以本技能为主路径
+
+- 主目标是 **docs-distill / docs-extract / docs-archive / docs-indexing** → 用对应 **docs-*** 技能。
+- 主产出是 **SOLUTION / ANALYSIS / PRD / TDD** 正文、**不要** ASD → 用对应 **sdx-*** 阶段技能。
+- 诉求为实现级 **API/DDL、spec-*.md 规约全文、DSD** → **[sdx-design](../sdx-design/SKILL.md)**。
+
+### 职责摘要
+
+- **负责**：ASD、架构边界、服务变更、规约摘要、门禁与会话草稿（见 `assets/architect-session-spec-template.md`）。
+- **不负责**：DSD、实现级契约、**spec-*.md** 完整规约落盘（属详设阶段）。
 
 ---
 
@@ -47,29 +59,29 @@ description: >
 
 ## 门禁要求（必须执行）
 
-- 总确认前，禁止写 `{DOC_DIR}/requirements/**/ASD-*.md`
+- 总确认前，禁止写 `{DOC_DIR}/requirements/**/ASD-*.md`。
 - 合法例外仅限：
   - 用户明确要求跳过
   - `SDX_ARCHITECT_ALLOW_ASD_WRITE=1`
-- 建议在会话草稿使用状态标记：
-  - `PENDING`（未确认）
-  - `CONFIRMED`（已确认）
+- 会话草稿中的状态标记与 HTML 注释形态见 `references/gates.md`（与 `validate-asd.sh --gate-check` 一致）。
 
-会话草稿模板使用：`assets/architect-session-spec-template.md`。
+会话草稿模板：`assets/architect-session-spec-template.md`。
 
 ---
 
 ## 产出与校验
 
-- 正式产物路径：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ASD-{IDEA-ID}-{N}.md`
-- 使用模板：`assets/asd-template.md`
-- 联邦模式补充：`assets/asd-stub-sections-federated.md`
-- 落盘后执行：
+- 正式产物：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ASD-{IDEA-ID}-{N}.md`
+- 模板：`assets/asd-template.md`；联邦补充：`assets/asd-stub-sections-federated.md`
 
-  ```bash
-  agent/skills/sdx-architect/scripts/validate-asd.sh
-  agent/skills/sdx-architect/scripts/validate-asd.sh --file path/to/ASD-xxx.md --gate-check
-  ```
+落盘校验（**当前工作目录为仓库根**；`--file` 路径相对仓库根或与 `{DOC_ROOT}` 解析一致）：
+
+```bash
+agent/skills/sdx-architect/scripts/validate-asd.sh
+agent/skills/sdx-architect/scripts/validate-asd.sh --file path/to/ASD-xxx.md --gate-check
+```
+
+或在 `agent/skills/sdx-architect/` 下执行：`./scripts/validate-asd.sh`（参数同上）。
 
 ---
 
@@ -84,4 +96,10 @@ description: >
 
 ## 工程化支持
 
-钩子：`python3 agent/hooks/sdx_gate_common.py --gate architect`，注册见 `agent/hooks.json`；需启用 Hooks 方生效。
+Hooks 启用时，在**仓库根**执行：`python3 agent/hooks/sdx_gate_common.py --gate architect`（登记于 `agent/hooks.json`）。
+
+---
+
+## 跨技能链接
+
+详设 / 规约全文：**[sdx-design](../sdx-design/SKILL.md)**。

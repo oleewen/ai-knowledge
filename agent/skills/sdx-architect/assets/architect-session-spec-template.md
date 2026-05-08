@@ -3,7 +3,7 @@
 > **说明**：门禁 **G{n}** 为流程步骤编号；ASD **§1.3 关键设计决策**表中的 **DD-n** 等为设计条目编号，勿与 G{n} 混读。
 
 **IDEA-ID**：`{IDEA-ID}`（与 PRD / 同目录命名一致）  
-**目标 ASD 文件**：`ASD-{IDEA-ID}-{N}.md`（须与落盘路径一致，供钩子与 `validate-asd.sh --Gte-check` 匹配）  
+**目标 ASD 文件**：`ASD-{IDEA-ID}-{N}.md`（须与落盘路径一致，供钩子与 `validate-asd.sh --gate-check` 匹配）  
 **DOC_DIR**（自 `.docsconfig`）：`{DOC_DIR}`  
 **KNOWLEDGE_TYPE**（自 `.docsconfig`，可选）：`application | system | company | （未设置）` — `system`/`company` 时见 [knowledge-type-modes.md](../references/knowledge-type-modes.md)。  
 **--depth**：`quick | standard | deep`  
@@ -65,6 +65,6 @@
 - 确认人：`$HOME` 路径末级目录名
 - 日期：YYYY-MM-DD
 
-<!-- sdx-architect-Gte: PENDING -->
+<!-- sdx-architect-gate: PENDING -->
 
-总确认后，将上一行中的 `PENDING` 改为 `CONFIRMED`。本 spec 正文须至少出现一次完整文件名 `ASD-{IDEA-ID}-{N}.md`。
+总确认后，将上一行改为 `<!-- sdx-architect-gate: CONFIRMED -->`（仅改状态词亦可，须与 [validate-asd.sh](../scripts/validate-asd.sh) 检索字符串一致）。本 spec 正文须至少出现一次完整文件名 `ASD-{IDEA-ID}-{N}.md`。

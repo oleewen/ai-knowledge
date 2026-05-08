@@ -23,6 +23,15 @@
 - `PENDING`：草稿阶段，未获总确认。
 - `CONFIRMED`：已获总确认，可执行落盘。
 
+## 会话 spec HTML 标记（与 validate-asd 一致）
+
+会话草稿（如 `docs/superpowers/specs/...`）中须使用**固定字面量**（区分大小写），供 `validate-asd.sh --gate-check` 检索：
+
+- 草稿：`<!-- sdx-architect-gate: PENDING -->`
+- 已确认：`<!-- sdx-architect-gate: CONFIRMED -->`
+
+另须在同一会话 spec 正文中出现目标 **`ASD-*.md` 完整文件名**，与落盘文件一致。
+
 ## 执行检查点
 
 - 落盘前检查是否满足 `CONFIRMED` 或合法例外。
