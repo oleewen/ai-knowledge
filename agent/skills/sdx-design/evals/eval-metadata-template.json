@@ -4,7 +4,7 @@
   "expected_category": "should-trigger | should-not-trigger",
   "expected_route": "/sdx-design | （not-trigger 时填主分流目标）",
   "expected_output": "一两句：本 eval 下模型应表现出的路由与要点（与 evals.json 中同 id 条一致）。",
-  "notes": "复制本模板为 <eval-id>-metadata.json 或在跑分流水线中内联使用；断言须与 agents/grader.md 一致。",
+  "notes": "复制本模板为 <eval-id>-metadata.json 或在跑分流水线中内联使用；断言须与 agents/grader.md 一致；JSON 字段表见 ../references/schemas.md。",
   "assertions_should_trigger_example": [
     {
       "id": "gate-compliance",
