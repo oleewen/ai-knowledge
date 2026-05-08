@@ -24,7 +24,7 @@
 
 ## 规约与 DSD 同期
 
-应用全量场景下，**`{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md`** 与 **DSD** 在总确认后同期落盘；与 DSD §2 互指与终检见 `workflow.md` 阶段三、[quality-checklist.md](quality-checklist.md)。
+应用全量场景下，**`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`** 与 **DSD** 在总确认后同期落盘；与 DSD §2 互指与终检见 `workflow.md` 阶段三、[quality-checklist.md](quality-checklist.md)。
 
 ---
 

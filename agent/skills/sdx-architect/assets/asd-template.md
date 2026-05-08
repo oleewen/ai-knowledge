@@ -140,15 +140,15 @@ erDiagram
 
 ## 3. 需求规约
 
-<!-- 规约术语：与 **`./specs/spec-*.md` 文件名**或领域名一致的可读简称；应用实体 ID、服务实体 ID 须与 `{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md` / `knowledge/technical/` 中 APP-*、MS-* 对齐。 -->
+<!-- 规约术语：与 **`./specs/spec-asd-*.md` 文件名**（架构阶段规约稿，由 `/sdx-architect` 维护）或领域名一致的可读简称；应用实体 ID、服务实体 ID 须与 `{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md` / `knowledge/technical/` 中 APP-*、MS-* 对齐。 -->
 
-<!-- 本表为架构阶段「服务能力摘要」：下游 DSD「§3 需求规约」在此行基础上扩写，并落盘 **`./specs/spec-*.md`**（详设阶段正文骨架见 sdx-design **`dsd-spec-template.md`**）；若与 ASD 冲突，以已确认 ASD + PRD 溯源为准。联邦模式（system/company）下「规约文件」可填 `N/A` 或应用库预期路径，「规约描述」仍须写清服务级能力边界。 -->
+<!-- 本表为架构阶段「服务能力摘要」：下游 DSD「§3 需求规约」在此行基础上扩写；详设阶段另落盘 **`./specs/spec-dsd-*.md`**（实现级规约终稿，正文骨架见 sdx-design **`dsd-spec-template.md`**）。**spec-asd-*** 与 **spec-dsd-*** 为两份文件（方案 A）。若与 ASD 冲突，以已确认 ASD + PRD 溯源为准。联邦模式（system/company）下「规约文件」可填 `N/A` 或应用库预期路径，「规约描述」仍须写清服务级能力边界。 -->
 
 <!-- 占位 `{app-name}`：规约文件名中的可文件名化小段（字符集与 `scripts/docs-link.sh` 登记的 `app_name` 校验一致：**小写、a-z0-9._-**）。取值优先与同库 **`{DOC_DIR}/knowledge-links.yaml`** 中与本应用那条 link 的 **`app_name`** 对齐；若无登记或本节无对应条目，再与 **`{APP-ID}`** / KNOWLEDGE_INDEX 中应用标识一致且无冲突的简称。**不得**用语义上的 `{service-name}` 替代本节文件名段占位（服务能力仍写在「规约描述」内的 **负责服务**）。 -->
 
 | 应用 | 规约文件 | 规约描述 |
 | ---- | -------- | -------- |
-| `{APP-ID}` | `./specs/spec-{ID}-{N}-{app-name}.md` | **Spec结构**：参照 `asd-spec-template.md`（第1-6节）<br/>**范围（1）**：能力边界 / 覆盖 FR-UC-BR-EX / SSOT 来源<br/>**术语（2）**：核心业务概念与字段口径<br/>**需求条目（3-4）**：FR-{n} / UC-{n}<br/>**接口定义（5）**：接口签名、入参、出参、BR、EX（message/suggestions）<br/>**元数据（6）**：id/title/version/status/created/updated/parent/refs/scope |
+| `{APP-ID}` | `./specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md` | **Spec结构**：参照 `asd-spec-template.md`（第1-6节）<br/>**范围（1）**：能力边界 / 覆盖 FR-UC-BR-EX / SSOT 来源<br/>**术语（2）**：核心业务概念与字段口径<br/>**需求条目（3-4）**：FR-{n} / UC-{n}<br/>**接口定义（5）**：接口签名、入参、出参、BR、EX（message/suggestions）<br/>**元数据（6）**：id/title/version/status/created/updated/parent/refs/scope |
 
 ## 文档元数据
 

@@ -17,7 +17,7 @@ description: >
 ## 适用边界
 
 - **本技能负责**：共识级 `SOLUTION-*.md`（七章模板）、会话 spec（`...-sdx-solution.md`）、阶段一至三流程与门禁、影响面与冲突/MVP 共识表述（业务语言为主）。
-- **本技能不负责**：`ANALYSIS-*`、`PRD-*`、`ASD-*`、`DSD-*`、`TDD-*` 的正式落盘；实现级 API/DDL/**specs/spec-{IDEA-ID}-{N}-{service-name}.md 规约**；`docs-distill` / `docs-extract` / `docs-indexing` / `docs-archive` 等文档工程技能的主流程。
+- **本技能不负责**：`ANALYSIS-*`、`PRD-*`、`ASD-*`、`DSD-*`、`TDD-*` 的正式落盘；实现级 API/DDL/**{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md 规约**；`docs-distill` / `docs-extract` / `docs-indexing` / `docs-archive` 等文档工程技能的主流程。
 - **边界分流**：用户明确只要下游产物时，转对应 `sdx-*` 或 `docs-*` 技能，不把「仅写 SOLUTION」当作替代路径。
 
 ---

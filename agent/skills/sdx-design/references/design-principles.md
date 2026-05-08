@@ -8,7 +8,7 @@
 
 ### 1. 模板驱动
 
-输出遵循 [../assets/dsd-template.md](../assets/dsd-template.md)：**§1** 设计概述（**有 ASD** 时与 ASD §1 / `asd-template` 对齐；**仅有需求规约 Markdown** 时以 `{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md` §1–2 与 `refs` 为 SSOT，骨架仍对齐 `asd-template` §1）；**§2** 详细设计；**§3** 需求规约（**有 ASD** 时与 ASD §3 / [asd-template §3](../../sdx-architect/assets/asd-template.md) 表行对齐并扩写；**仅有该 Markdown 时** 以其中需求条目为表行基础并标注 SSOT；规约汇总稿与 [dsd-spec-template](../assets/dsd-spec-template.md) 骨架一致）；**§4** 附录。章节顺序与 `dsd-template` 约定不可擅自重排；无内容的章节保留标题并标注「不适用」或「待补充」。**应用全量**时在 `{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md` 输出规约汇总稿，遵循 [../assets/dsd-spec-template.md](../assets/dsd-spec-template.md)（**不**要求配套 `specs/{service}/{type}/` 下分文件 YAML）。
+输出遵循 [../assets/dsd-template.md](../assets/dsd-template.md)：**§1** 设计概述（**有 ASD** 时与 ASD §1 / `asd-template` 对齐；**仅有架构规约 Markdown（spec-asd）** 时以 `{DOC_DIR}/specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md` §1–2 与 `refs` 为 SSOT，骨架仍对齐 `asd-template` §1）；**§2** 详细设计；**§3** 需求规约（**有 ASD** 时与 ASD §3 / [asd-template §3](../../sdx-architect/assets/asd-template.md) 表行对齐并扩写；**仅有 spec-asd 时** 以其中需求条目为表行基础并标注 SSOT；详设规约终稿与 [dsd-spec-template](../assets/dsd-spec-template.md) 骨架一致）；**§4** 附录。章节顺序与 `dsd-template` 约定不可擅自重排；无内容的章节保留标题并标注「不适用」或「待补充」。**应用全量**时在 `{DOC_DIR}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md` 输出规约汇总稿，遵循 [../assets/dsd-spec-template.md](../assets/dsd-spec-template.md)（**不**要求配套 `specs/{service}/{type}/` 下分文件 YAML）。
 
 ### 2. 证据优先
 
@@ -25,7 +25,7 @@
 
 ### 3. 按需加载
 
-仅在本轮任务需要时打开文件：起手读 **ASD 与/或 `{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md`（需求规约 Markdown，至少其一）** + PRD + 需求分析 + 对应知识库视角；按需打开代码位置、现有文档、ADR；再基于详设段落编写或对齐（应用全量时）**`specs/spec-{IDEA-ID}-{N}-{service-name}.md` 汇总稿**。**禁止**为「完整性」通读 `knowledge/**` 或全仓源码。
+仅在本轮任务需要时打开文件：起手读 **ASD 与/或 `{DOC_DIR}/specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md`（架构规约草案，至少其一）** + PRD + 需求分析 + 对应知识库视角；按需打开代码位置、现有文档、ADR；再基于详设段落编写或对齐（应用全量时）**`specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md` 汇总稿**。**禁止**为「完整性」通读 `knowledge/**` 或全仓源码。
 
 ### 4. 歧义标注
 
@@ -33,7 +33,7 @@
 
 ### 5. 范围边界
 
-本技能仅负责输出 **DSD** 与 **`{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md` 规约汇总稿**（`dsd-spec-template.md`）。不产出测试设计或代码——那些是下游 sdx-test / dev 的职责。
+本技能仅负责输出 **DSD** 与 **`{DOC_DIR}/specs/spec-dsd-{IDEA-ID}-{N}-{service-name}.md` 规约汇总稿**（`dsd-spec-template.md`）。不产出测试设计或代码——那些是下游 sdx-test / dev 的职责。
 
 ### 6. 可追溯性
 

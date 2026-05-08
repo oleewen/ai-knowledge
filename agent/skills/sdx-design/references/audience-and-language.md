@@ -13,8 +13,8 @@
 
 ## 与 PRD 的分工
 
-PRD 描述「做什么、如何验收」；**DSD** 与 **ASD 与/或** `{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md`（需求规约 Markdown，骨架见 [../assets/dsd-spec-template.md](../assets/dsd-spec-template.md)）共同描述「怎么做、依赖什么系统与数据」（**有 ASD** 时架构级以 **ASD** 为准；**仅有该 Markdown** 时架构/范围级以其 §1 与元数据为准；实现级以 **DSD §2** 为主）。接口名、表结构、消息格式等**属于 DSD 正文与上述汇总稿**；若 PRD 中已出现实现细节，设计时仍以 PRD 功能范围为约束，在 DSD 中给出**工程化**表述。
+PRD 描述「做什么、如何验收」；**DSD** 与 **ASD 与/或** 架构规约 **`{DOC_DIR}/specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md`**、详设规约 **`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`**（骨架见 [../assets/dsd-spec-template.md](../assets/dsd-spec-template.md)）共同描述「怎么做、依赖什么系统与数据」（**有 ASD** 时架构级以 **ASD** 为准；**仅有 spec-asd** 时架构/范围级以其 §1 与元数据为准；实现级以 **DSD §2** 与 **spec-dsd** 汇总稿为准）。接口名、表结构、消息格式等**属于 DSD 正文与上述汇总稿**；若 PRD 中已出现实现细节，设计时仍以 PRD 功能范围为约束，在 DSD 中给出**工程化**表述。
 
 ## 与模板的关系
 
-章节结构与占位说明以 [../assets/dsd-template.md](../assets/dsd-template.md) 为准（**§1** 与 **ASD §1** 或 **仅有 `specs/spec-{IDEA-ID}-{N}-{service-name}.md` 时** 与该文件 §1–2 对齐，骨架见 `asd-template`）；本文件约束**语气与信息类型**，不替代模板中的必填小节。
+章节结构与占位说明以 [../assets/dsd-template.md](../assets/dsd-template.md) 为准（**§1** 与 **ASD §1** 或 **仅有 `{DOC_DIR}/specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md` / 应用全量路径下 **`spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`** 时** 与该文件 §1–2 对齐，骨架见 `asd-template`）；本文件约束**语气与信息类型**，不替代模板中的必填小节。

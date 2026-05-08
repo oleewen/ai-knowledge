@@ -1,8 +1,8 @@
 # ASD 联邦概要（`KNOWLEDGE_TYPE` = system | company）补充说明
 
-拆分为 **ASD + DSD** 后，系统库/公司库中的 **ASD 撰写 §1、§2 与 §3 需求规约（架构级摘要表）**（见 [asd-template.md](asd-template.md)）。其中 **§3** 不是历史单文档 ADD 里的「详细设计」，而是与 DSD 同构的 **规约行前菜**：服务能力、参数、步骤、返回等一行摘要；**不在 ASD 中展开**接口契约全文、DDL 与 **`specs/spec-*.md`** 终稿。
-
-实现级接口、DDL、业务逻辑与 **`specs/spec-*.md`** 在**应用知识库**通过 **`/sdx-design`** 产出 **DSD** 并评审确认后再视为终稿。**联邦 ASD 的 §3**：`规约文件` 列可填 `N/A` 或应用库预期 `./specs/spec-*.md` 路径；`规约描述` 仍须写清边界，便于应用库承接。
+拆分为 **ASD + DSD** 后
+- 系统库/公司库中的 **ASD 撰写 §1、§2 与 §3 需求规约（架构级摘要表）**（见 [asd-template.md](asd-template.md)）。其中 **§3** 是**概要级需求规约**：服务能力、参数、步骤、返回等一行摘要。架构阶段可选用 [asd-spec-template.md](asd-spec-template.md) 模板。
+- 实现级接口、DDL、业务逻辑与 **`specs/spec-dsd-*.md`** 在**应用知识库**通过 **`/sdx-design`** 产出 **DSD** 并评审确认后再视为终稿。
 
 ## 建议在 ASD §2 末补充（可选）
 

@@ -44,11 +44,11 @@
 
 ## 规约汇总稿（workflow 步骤 2）
 
-**汇总稿与 DSD 设计内容不一致**：`specs/spec-{IDEA-ID}-{N}-{service-name}.md` 须从 **DSD** 对应章节（常为 §2）整理；DSD 变更时汇总稿同步更新。
+**汇总稿与 DSD 设计内容不一致**：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md` 须从 **DSD** 对应章节（常为 §2）整理；DSD 变更时汇总稿同步更新。
 
 **缺少与 DSD/PRD 的对应关系**：§3 规约表行、正文 API/数据描述须能指回 **DSD §2** 与 **FR-n**（或 PRD 条目）。
 
-**路径与命名不规范**：实现级规约汇总**仅**使用 **`{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md`**（骨架 [assets/dsd-spec-template.md](assets/dsd-spec-template.md)）。**勿**将分目录 **YAML** 树当作本技能必选交付物。
+**路径与命名不规范**：实现级规约汇总**仅**使用 **`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`**（骨架 [assets/dsd-spec-template.md](assets/dsd-spec-template.md)）。**勿**将分目录 **YAML** 树当作本技能必选交付物。
 
 ---
 

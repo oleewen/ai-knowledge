@@ -279,11 +279,17 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 
 ## 3. 需求规约
 
-<!-- 与上游 ASD §3 同构三列表；在 ASD 已定稿行上扩写规约正文与链路。规约术语：与规约文件名或 OpenAPI/领域名一致的可读简称；应用实体 ID、服务实体 ID 须与 `{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md` / `knowledge/technical/` 中 APP-*、MS-* 对齐。规约文件名中 `{MS-ID}` 段须与同库 **MS 实体 ID**（MS-*）对齐。 -->
+<!--
+  **规约 Markdown 落盘路径（须严格按此模板，勿擅自改段名或层级）**：
+  `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`
+  - `{MS-ID}` 须与同库 **MS 实体 ID**（`{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md`、`knowledge/technical/` 等处 **MS-***）对齐或可唯一映射。
+  - **若该路径下文件尚不存在**：按模板 `dsd-spec-template.md` 创建。
+  - 正文骨架：[dsd-spec-template.md](dsd-spec-template.md)；应用实体 ID 与 **MS-*** 口径见 KNOWLEDGE_INDEX / `knowledge/technical/`。
+-->
 
 | 应用 | 规约文件 | 规约描述 |
 | ---- | -------- | -------- |
-| `{APP-ID}` | `{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{MS-ID}.md` | 核心改动点：... （`{MS-ID}` 须与同知识库已登记的 **MS 实体 ID**（`{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md`、`knowledge/technical/` 等处 **MS-***）对齐或可唯一映射；Markdown 正文骨架见 [dsd-spec-template.md](dsd-spec-template.md)，见 ASD §3） |
+| `{APP-ID}` | `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md` | 核心改动点：… **须使用左列全路径模板**；`{MS-ID}` 见上注释。若磁盘上尚无该文件：**搬迁或拷贝**规约 Markdown 至该路径并消除旧路径引用。正文见 [dsd-spec-template.md](dsd-spec-template.md)，与 **ASD §3** 同行扩写。 |
 
 ## 4. 附录
 
@@ -302,9 +308,9 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 - [ ] **§1 设计概述**
   *通过标准*：与 **ASD §1** 一致或可指回（ANALYSIS/PRD、MVP、约束、DD-n）；若为摘要须说明与 ASD 差异。
 - [ ] **§2 详细设计（应用架构～非功能）**
-  *通过标准*：§2.1～§2.5 对应实现级内容完整；每个 **API-n** / **DDL** / 非功能条目可追溯到 PRD、§3 规约表行及 `./specs/spec-{IDEA-ID}-{N}-{MS-ID}.md`（适用时）。
+  *通过标准*：§2.1～§2.5 对应实现级内容完整；每个 **API-n** / **DDL** / 非功能条目可追溯到 PRD、§3 规约表行及 `./specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`（适用时）。
 - [ ] **§3 需求规约**
-  *通过标准*：与 **ASD §3** 表格行对齐；`./specs/spec-{IDEA-ID}-{N}-{MS-ID}.md` 路径与磁盘一致，与 **DSD §2**、**requirement**（FR-n）可追溯一致。
+  *通过标准*：与 **ASD §3** 表格行对齐；`./specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md` 路径与磁盘一致，与 **DSD §2**、**requirement**（FR-n）可追溯一致。
 - [ ] **§4 附录与元数据**
   *通过标准*：§4.1 变更历史、§4.2 自查可追溯；文末 YAML `id`/ `architecture_ref` 与 ASD/PRD 一致。
 

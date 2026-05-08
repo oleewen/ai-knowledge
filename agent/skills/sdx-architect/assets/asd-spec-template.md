@@ -1,5 +1,7 @@
 # {IDEA-ID} {APP-NAME} MVP-Phase-{n} 需求规约示例
 
+> **命名（sdx-architect）**：落盘文件名 **`{DOC_DIR}/specs/spec-asd-{IDEA-ID}-{MVP-PHASE}-{app-name}.md`**（与元数据 `id` 一致）；详设阶段由 `/sdx-design` 另产 **`spec-dsd-*.md`**，勿与本文混为单文件。
+
 ## 1. 需求规约范围
 
 - 应用：{APP-NAME}
@@ -42,7 +44,7 @@
 ## 6. 元数据
 
 ```yaml
-id: "spec-{IDEA-ID}-{MVP-PHASE}-{APP-NAME}"
+id: "spec-asd-{IDEA-ID}-{MVP-PHASE}-{APP-NAME}"
 title: "{app-name} MVP-Phase-{n} 需求规约"
 version: "1.0.0"
 status: "draft"

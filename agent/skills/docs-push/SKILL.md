@@ -1,7 +1,7 @@
 ---
 name: docs-push
 description: >
-  将 specs 目录下符合 spec-{yyMMdd}-{n}-{app_name}.md 的文件推送到 knowledge-links.yaml
+  将 specs 目录下符合 `spec-asd-*.md`（架构规约草案）与 `spec-dsd-*.md`（详设规约终稿）的文件推送到 knowledge-links.yaml
   已登记目标库的 {path}/{doc_dir}/specs/；支持 path 与 repo+feature 模式；拷贝后通过脚本四档衔接 Git（不暂存/暂存/提交/推送）。
   只要用户提到以下任一场景，就应立即使用本技能，不要等用户明确说「/docs-push」：
   推送 spec 到应用库、同步 specs 到建联 path、按 knowledge-links 上传 spec、把中央 spec 推到目标工程、

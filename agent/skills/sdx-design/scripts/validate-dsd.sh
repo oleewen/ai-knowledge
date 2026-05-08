@@ -75,7 +75,7 @@ echo "DOC_ROOT: ${DOC_ROOT}"
 if [[ -n "${KNOWLEDGE_TYPE:-}" ]]; then
   echo "KNOWLEDGE_TYPE: ${KNOWLEDGE_TYPE}"
 else
-  echo "KNOWLEDGE_TYPE: （未设置，规约路径形态：{DOC_ROOT}/specs/spec-{IDEA-ID}-{N}-{service-name}.md，按 application 语义终检）"
+  echo "KNOWLEDGE_TYPE: （未设置，规约路径形态：{DOC_ROOT}/{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md，按 application 语义终检）"
 fi
 echo ""
 
@@ -168,9 +168,9 @@ for file in "${FILES[@]}"; do
   if grep -qF "ASD-" "${file}"; then
     success "${BASENAME}: 文内引用 ASD 文档"
   elif grep -qE '\./specs/spec-|specs/spec-' "${file}"; then
-    success "${BASENAME}: 文内引用需求规约路径（specs/spec-{IDEA-ID}-{N}-{service-name}.md 形态）"
+    success "${BASENAME}: 文内引用需求规约路径（{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md 形态）"
   else
-    warn "${BASENAME}: 未发现 ASD-* 或 specs/spec-{IDEA-ID}-{N}-{service-name}.md 引用（建议在「关联文档」或正文引用架构说明书或需求规约 Markdown）"
+    warn "${BASENAME}: 未发现 ASD-* 或 {DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md 引用（建议在「关联文档」或正文引用架构说明书或需求规约 Markdown）"
   fi
 
   if grep -q 'PRD-' "${file}"; then
@@ -186,18 +186,18 @@ for file in "${FILES[@]}"; do
     if [[ -d "${DOC_SPECS_DIR}" ]]; then
       FSPEC_COUNT=$(find "${DOC_SPECS_DIR}" -maxdepth 1 -name 'spec-*.md' 2>/dev/null | wc -l | tr -d ' ')
       if [[ "${FSPEC_COUNT}" -gt 0 ]]; then
-        warn "${BASENAME}: 联邦概要下 ${DOC_SPECS_DIR} 仍有规约稿（spec-*.md / spec-{IDEA-ID}-{N}-{service-name}.md）（若非有意可忽略）"
+        warn "${BASENAME}: 联邦概要下 ${DOC_SPECS_DIR} 仍有规约稿（spec-asd-*.md / spec-dsd-*.md）（若非有意可忽略）"
       fi
     fi
   elif [[ -d "${DOC_SPECS_DIR}" ]]; then
     MD_COUNT=$(find "${DOC_SPECS_DIR}" -maxdepth 1 -name 'spec-*.md' 2>/dev/null | wc -l | tr -d ' ')
     if [[ "${MD_COUNT}" -gt 0 ]]; then
-      success "${BASENAME}: ${DOC_SPECS_DIR} 下存在 ${MD_COUNT} 个规约稿（spec-{IDEA-ID}-{N}-{service-name}.md）"
+      success "${BASENAME}: ${DOC_SPECS_DIR} 下存在 ${MD_COUNT} 个规约稿（spec-asd-*/spec-dsd-*.md）"
     else
-      warn "${BASENAME}: ${DOC_SPECS_DIR} 下未发现规约稿（应用全量时应在总确认后产出 specs/spec-{IDEA-ID}-{N}-{service-name}.md）"
+      warn "${BASENAME}: ${DOC_SPECS_DIR} 下未发现规约稿（应用全量时应在总确认后产出 {DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md）"
     fi
   else
-    warn "${BASENAME}: 未找到 ${DOC_SPECS_DIR}（应用全量规约路径为 ${DOC_ROOT}/specs/spec-{IDEA-ID}-{N}-{service-name}.md）"
+    warn "${BASENAME}: 未找到 ${DOC_SPECS_DIR}（应用全量规约路径为 ${DOC_ROOT}/{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md）"
   fi
 
   if [[ "${GATE_CHECK}" == true ]]; then
