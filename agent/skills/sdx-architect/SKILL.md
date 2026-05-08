@@ -2,7 +2,7 @@
 name: sdx-architect
 description: >
   当用户需要基于 PRD/ANALYSIS 产出架构设计说明书 ASD（§1/§2/§3）时，必须使用本技能。
-  若用户要求实现级 API/DDL/规约 YAML/DSD，请不要继续本技能，改为分流到 /sdx-design。
+  若用户要求实现级 API/DDL/**spec-*.md 规约**/DSD，请不要继续本技能，改为分流到 /sdx-design。
   本技能默认执行门禁：未完成「用户总确认」前，禁止写入 {DOC_DIR}/requirements/**/ASD-*.md。
   当用户提到服务边界、架构图、服务变更表、系统级联邦概要（KNOWLEDGE_TYPE=system/company）等场景，也应优先触发本技能。
   若用户明确要求只做 sdx-solution、sdx-analysis、sdx-prd、sdx-test 的正文落盘，或执行 docs-distill/docs-extract/docs-archive/docs-indexing，则不要以本技能为主路径，应分流到对应技能。
@@ -17,7 +17,7 @@ description: >
 ## 适用边界
 
 - **本技能负责**：ASD（`§1/§2/§3`）、架构边界、服务变更、规约摘要行、门禁执行。
-- **本技能不负责**：DSD、实现级 API/DDL、完整规约 YAML 落盘。
+- **本技能不负责**：DSD、实现级 API/DDL、**spec-*.md** 完整规约落盘。
 - **边界分流**：出现实现级细节诉求时，转 `[/sdx-design](../sdx-design/SKILL.md)`。
 
 ---

@@ -17,7 +17,7 @@
       "id": "structure-integrity",
       "name": "结构完整",
       "type": "must_include",
-      "check": "响应需覆盖 DSD §1–§4、上游硬输入（ASD 与/或 architect spec：specs/spec-*.md）与（若适用）specs 规约落盘或实现级契约边界，而非仅以 ASD/PRD 为唯一终稿。",
+      "check": "响应需覆盖 DSD §1–§4、上游硬输入（ASD 与/或 `{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md`）与（若适用）该路径规约稿落盘或实现级契约边界，而非仅以 ASD/PRD 为唯一终稿。",
       "priority": "P0"
     },
     {
@@ -47,7 +47,7 @@
       "id": "no-false-design-primary",
       "name": "勿假主详设阶段",
       "type": "must_not_conflict",
-      "check": "不得将本请求描述为「默认完整执行 sdx-design 并产出 DSD/specs 作为终点」而忽略用户已指定的其它阶段。",
+      "check": "不得将本请求描述为「默认完整执行 sdx-design 并产出 **DSD** 与 **`{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md`** 作为终点」而忽略用户已指定的其它阶段。",
       "priority": "P0"
     },
     {

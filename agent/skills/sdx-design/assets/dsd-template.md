@@ -32,19 +32,22 @@
 > 跟外部系统集成的关系，消息队列、异步处理机制，用到的容器
 
 ```mermaid
-architecture-beta
-    group system(cloud)["XX系统"]
+C4Container
+    title 应用容器架构（示例占位，请按实替换名称与技术栈）
 
-    service server1(server)["容器A"] in system
-    service server2(server)["容器B"] in system
-    service server3(server)["外部系统C"] 
-    service db(database)["数据库"] in system
-    service disk(disk)["存储"] in system
+    System_Ext(ext_c, "外部系统C", "第三方或遗留系统，与 XX 系统交互")
 
-    server3:B --> T:server1
-    server1:B --> T:db
-    server1:R --> L:server2
-    server2:B --> T:disk
+    System_Boundary(boundary_xx, "XX系统") {
+        Container(app_a, "容器A", "技术栈待填", "对外入口、编排与核心业务")
+        Container(app_b, "容器B", "技术栈待填", "内部服务或后台任务")
+        ContainerDb(db, "数据库", "RDBMS 等", "业务数据持久化")
+        Container(store, "存储", "对象存储/文件等", "附件、导出与对象数据")
+    }
+
+    Rel(ext_c, app_a, "调用", "HTTPS/API 等")
+    Rel_D(app_a, db, "读写", "SQL/驱动")
+    Rel(app_a, app_b, "同步调用", "内网 RPC/HTTP 等")
+    Rel_D(app_b, store, "读写", "SDK/挂载")
 ```
 
 ### 2.2 API详细设计
@@ -272,7 +275,7 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 
 | 应用 | 规约文件 | 规约描述 |
 | ---- | -------- | -------- |
-| `{APP-ID}` | `./specs/spec-{ID}-{N}-{service-name}.md` | 核心改动点：... （`{service-name}` 与同库 **`{DOC_DIR}/knowledge-links.yaml`** 的 **`service_name`** 优先对齐，见 ASD §3） |
+| `{APP-ID}` | `./specs/spec-{IDEA-ID}-{N}-{service-name}.md` | 核心改动点：... （`{service-name}` 与同库 **`{DOC_DIR}/knowledge-links.yaml`** 的 **`service_name`** 优先对齐；Markdown 正文骨架见 **`agent/skills/sdx-design/assets/spec-template.md`**，见 ASD §3） |
 
 ## 4. 附录
 
@@ -291,9 +294,9 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 - [ ] **§1 设计概述**
   *通过标准*：与 **ASD §1** 一致或可指回（ANALYSIS/PRD、MVP、约束、DD-n）；若为摘要须说明与 ASD 差异。
 - [ ] **§2 详细设计（应用架构～非功能）**
-  *通过标准*：§2.1～§2.5 对应实现级内容完整；每个 **API-n** / **DDL** / 非功能条目可追溯到 PRD/规约/SPECS。
+  *通过标准*：§2.1～§2.5 对应实现级内容完整；每个 **API-n** / **DDL** / 非功能条目可追溯到 PRD、§3 规约表行及 `./specs/spec-{IDEA-ID}-{N}-{service-name}.md`（适用时）。
 - [ ] **§3 需求规约**
-  *通过标准*：与 **ASD §3** 表格行对齐；`specs/` 路径、**source**（DSD §2）、**requirement**（FR-n）一致。
+  *通过标准*：与 **ASD §3** 表格行对齐；`./specs/spec-{IDEA-ID}-{N}-{service-name}.md` 路径与磁盘一致，与 **DSD §2**、**requirement**（FR-n）可追溯一致。
 - [ ] **§4 附录与元数据**
   *通过标准*：§4.1 变更历史、§4.2 自查可追溯；文末 YAML `id`/ `architecture_ref` 与 ASD/PRD 一致。
 

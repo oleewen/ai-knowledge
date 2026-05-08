@@ -1,6 +1,6 @@
 # sdx-design 草稿（中间稿）（DSD）
 
-> **Gd{n}** 为门禁编号；正文 **§1–§4** 与 **[dsd-template.md](dsd-template.md)** 一致。**§1** 结构与 **[asd-template §1](../../../sdx-architect/assets/asd-template.md)** 对齐，且与 ASD 终稿可同源。
+> **G{n}** 为门禁编号；正文 **§1–§4** 与 **[dsd-template.md](dsd-template.md)** 一致。**§1** 结构与 **[asd-template §1](../../../sdx-architect/assets/asd-template.md)** 对齐，且与 ASD 终稿可同源。
 
 **上游 ASD**：`ASD-{IDEA-ID}-{N}.md`  
 **目标 DSD**：`DSD-{IDEA-ID}-{N}.md`  
@@ -15,23 +15,23 @@
 
 ---
 
-## Gd1（§1）…
+## G1（§1）…
 
 ### 本门禁结论
 
 ---
 
-## Gd2（§2）…
+## G2（§2）…
 
 ### 本门禁结论
 
 ---
 
-## Gd3（§3）…
+## G3（§3）…
 
 ---
 
-## Gd4（§4）…
+## G4（§4）…
 
 ---
 

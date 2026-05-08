@@ -42,13 +42,13 @@
 
 ---
 
-## 规约生成（workflow 步骤 2）
+## 规约汇总稿（workflow 步骤 2）
 
-**规约文件与 DSD 设计内容不一致**：规约文件必须从 **DSD** 对应章节直接提取；DSD 变更时规约同步更新。
+**汇总稿与 DSD 设计内容不一致**：`specs/spec-{IDEA-ID}-{N}-{service-name}.md` 须从 **DSD** 对应章节（常为 §2）整理；DSD 变更时汇总稿同步更新。
 
-**规约文件缺少追溯标注**：每个规约文件头部必须标注 `source`（关联 DSD 章节）和 `requirement`（关联 PRD 需求）。
+**缺少与 DSD/PRD 的对应关系**：§3 规约表行、正文 API/数据描述须能指回 **DSD §2** 与 **FR-n**（或 PRD 条目）。
 
-**规约目录结构不规范**：严格按 `specs/{service-name}/api/`、`domain/`、`data/`、`integration/` 四类目录组织，不平铺在 `specs/` 下。
+**路径与命名不规范**：实现级规约汇总**仅**使用 **`{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md`**（骨架 [assets/spec-template.md](assets/spec-template.md)）。**勿**将分目录 **YAML** 树当作本技能必选交付物。
 
 ---
 

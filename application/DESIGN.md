@@ -86,7 +86,7 @@
 | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | **solutions**    | `solutions_meta.yaml`（`layers`：SOLUTION）；根目录 `SOLUTION-{IDEA-ID}.md`                                                                          |
 | **analysis**     | `analysis_meta.yaml`（`layers`：ANALYSIS）；`ANALYSIS-{IDEA-ID}.md`；`parent` → Solution                                                           |
-| **requirements** | `requirements_meta.yaml`（`layers`：交付包 → MVP 分阶段）；`REQUIREMENT-{IDEA-ID}/MVP-Phase-*/` 下 PRD / ASD / DSD / TDD；规约 YAML 等见同包 `specs/`（结构见 `sdx-design` → `dsd-template`） |
+| **requirements** | `requirements_meta.yaml`（`layers`：交付包 → MVP 分阶段）；`REQUIREMENT-{IDEA-ID}/MVP-Phase-*/` 下 PRD / ASD / DSD / TDD；**`specs/spec-{IDEA-ID}-{N}-{service-name}.md` 规约稿**见 `{DOC_DIR}/specs/`（结构见 `sdx-design` → `spec-template` / `dsd-template`） |
 | **changelogs**   | `changelogs_meta.yaml`（`layers`：人类变更日志 → 索引运维）；`CHANGE-LOG.md`（docs-change）；`INDEXING-LOG.md`（docs-indexing）                        |
 
 

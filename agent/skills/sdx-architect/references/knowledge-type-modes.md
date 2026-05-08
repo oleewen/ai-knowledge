@@ -6,13 +6,13 @@
 拆分后：
 
 - **ASD**（`/sdx-architect`）：§1 设计概述、§2 架构设计、§3 需求规约（架构级摘要表，与 DSD §3 表头对齐）。  
-- **DSD**（`/sdx-design`）：§1 设计概述（与 ASD §1 / `asd-template` 对齐）、§2 详细设计、§3 需求规约、§4 附录；应用全量场景下 **`specs/**/*.yaml`** 与 DSD 同步落盘。
+- **DSD**（`/sdx-design`）：§1 设计概述（与 ASD §1 / `asd-template` 对齐）、§2 详细设计、§3 需求规约、§4 附录；应用全量场景下 **`{DOC_DIR}/specs/spec-*.md`** 与 DSD 同步落盘。
 
 ---
 
 ## 模式对照
 
-| `KNOWLEDGE_TYPE` | ASD（架构） | DSD（详细设计 + 规约） | `specs/**/*.yaml` |
+| `KNOWLEDGE_TYPE` | ASD（架构） | DSD（详细设计 + 规约） | `spec-*.md`（`{DOC_DIR}/specs/`） |
 |------------------|------------|------------------------|-------------------|
 | `application` 或（未设置） | §1–§3 完整 | §1–§4 完整（**§1** 溯源 ASD；**§3** 溯源并扩写 **ASD §3**；详设 **§2** 起） | **需要**（按 `sdx-design` 阶段三落盘） |
 | `system` / `company` | §1–§3 **联邦概要**（§3 可为 `N/A` 路径 + 服务能力摘要） | **不在本库落 DSD**；由**应用知识库**按需补 **DSD**，本层无 `specs/` | **不要求**（可不建 `specs/`） |
@@ -33,6 +33,6 @@
 ## 与会话门禁（分别技能）
 
 - **sdx-architect**：门禁对应 **Ga1→§1、Ga2→§2、Ga3→§3**（会话 spec 见 architect-session-spec-template）。  
-- **sdx-design**：门禁对应 **Gd1→§1 … Gd4→§4**，**应用全量**时含规约 YAML 草案与终盘。
+- **sdx-design**：门禁对应 **Gd1→§1 … Gd4→§4**，**应用全量**时含 **`spec-*.md`** 规约草案与终盘。
 
 联邦场景下 **不写 DSD 于 system/company**，故无 `sdx-design` 门禁激活于本库；转至应用知识库后再跑 `/sdx-design`。

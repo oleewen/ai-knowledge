@@ -23,8 +23,8 @@
 - `F1 路由误判`：`should-trigger` 未触发，或 `should-not-trigger` 被错误触发。
 - `F2 边界混淆`：把 ASD/PRD 任务当成 DSD，或把 docs 类任务误判为 sdx-design。
 - `F3 门禁遗漏`：未体现 HARD-GATE、总确认、例外条件。
-- `F4 结构缺失`：未覆盖 DSD §1–§4、双轨上游（ASD 与/或 architect spec）或 `specs/` 追溯要求。
-- `F5 上游输入失真`：同 IDEA-ID 下既无 ASD 又无可追溯的 **`specs/spec-*.md`（architect spec）** 仍宣称可定稿 DSD 实现级契约且无例外依据。
+- `F4 结构缺失`：未覆盖 DSD §1–§4、双轨上游（ASD 与/或 **`{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md`**）或 **spec-template** 规约汇总与详设互指要求。
+- `F5 上游输入失真`：同 IDEA-ID 下既无 ASD 又无可追溯的 **`{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md`（需求规约 Markdown）** 仍宣称可定稿 DSD 实现级契约且无例外依据。
 - `F6 证据不足`：结论正确但无法被断言复核，导致评测不稳定。
 
 ## 优先级修复策略（必须给出）

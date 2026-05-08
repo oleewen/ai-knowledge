@@ -8,7 +8,7 @@
 
 ### 1. 模板驱动
 
-输出遵循 [../assets/dsd-template.md](../assets/dsd-template.md)：**§1** 设计概述（**有 ASD** 时与 ASD §1 / `asd-template` 对齐；**仅有 architect spec** 时以 `{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{app-name}.md` §1–2 与 `refs` 为 SSOT，骨架仍对齐 `asd-template` §1）；**§2** 详细设计；**§3** 需求规约（**有 ASD** 时与 ASD §3 / [asd-template §3](../../sdx-architect/assets/asd-template.md) 表行对齐并扩写；**仅有 architect spec 时** 以该文件 FR/UC 等为表行基础并标注 SSOT）；**§4** 附录。章节顺序与 `dsd-template` 约定不可擅自重排；无内容的章节保留标题并标注「不适用」或「待补充」。规约文件按 `specs/{service-name}/{type}/` 目录结构组织。
+输出遵循 [../assets/dsd-template.md](../assets/dsd-template.md)：**§1** 设计概述（**有 ASD** 时与 ASD §1 / `asd-template` 对齐；**仅有需求规约 Markdown** 时以 `{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md` §1–2 与 `refs` 为 SSOT，骨架仍对齐 `asd-template` §1）；**§2** 详细设计；**§3** 需求规约（**有 ASD** 时与 ASD §3 / [asd-template §3](../../sdx-architect/assets/asd-template.md) 表行对齐并扩写；**仅有该 Markdown 时** 以其中需求条目为表行基础并标注 SSOT；规约汇总稿与 [spec-template](../assets/spec-template.md) 骨架一致）；**§4** 附录。章节顺序与 `dsd-template` 约定不可擅自重排；无内容的章节保留标题并标注「不适用」或「待补充」。**应用全量**时在 `{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md` 输出规约汇总稿，遵循 [../assets/spec-template.md](../assets/spec-template.md)（**不**要求配套 `specs/{service}/{type}/` 下分文件 YAML）。
 
 ### 2. 证据优先
 
@@ -25,7 +25,7 @@
 
 ### 3. 按需加载
 
-仅在本轮任务需要时打开文件：起手读 **ASD 与/或 `{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{app-name}.md`（architect spec，至少其一）** + PRD + 需求分析 + 对应知识库视角；按需打开代码位置、现有规约、ADR；再基于详设段落生成 **`specs/{service}/{type}/` YAML**。**禁止**为「完整性」通读 `knowledge/**` 或全仓源码。
+仅在本轮任务需要时打开文件：起手读 **ASD 与/或 `{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md`（需求规约 Markdown，至少其一）** + PRD + 需求分析 + 对应知识库视角；按需打开代码位置、现有文档、ADR；再基于详设段落编写或对齐（应用全量时）**`specs/spec-{IDEA-ID}-{N}-{service-name}.md` 汇总稿**。**禁止**为「完整性」通读 `knowledge/**` 或全仓源码。
 
 ### 4. 歧义标注
 
@@ -33,7 +33,7 @@
 
 ### 5. 范围边界
 
-本技能仅负责输出 **DSD** 与 **`specs/`** 规约。不产出测试设计或代码——那些是下游 sdx-test / dev 的职责。
+本技能仅负责输出 **DSD** 与 **`{DOC_DIR}/specs/spec-{IDEA-ID}-{N}-{service-name}.md` 规约汇总稿**（spec-template）。不产出测试设计或代码——那些是下游 sdx-test / dev 的职责。
 
 ### 6. 可追溯性
 

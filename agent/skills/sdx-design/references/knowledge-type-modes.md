@@ -1,6 +1,6 @@
 # 知识库类型（见 sdx-architect）
 
-**`KNOWLEDGE_TYPE`（application / system / company）与 ASD、DSD、`specs/` 分工**的权威说明已迁至：
+**`KNOWLEDGE_TYPE`（application / system / company）与 ASD、DSD、`specs/spec-{IDEA-ID}-{N}-{service-name}.md` 规约分工**的权威说明已迁至：
 
 **[../../sdx-architect/references/knowledge-type-modes.md](../../sdx-architect/references/knowledge-type-modes.md)**
 

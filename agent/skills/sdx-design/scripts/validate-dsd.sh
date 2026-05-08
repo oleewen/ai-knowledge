@@ -75,7 +75,7 @@ echo "DOC_ROOT: ${DOC_ROOT}"
 if [[ -n "${KNOWLEDGE_TYPE:-}" ]]; then
   echo "KNOWLEDGE_TYPE: ${KNOWLEDGE_TYPE}"
 else
-  echo "KNOWLEDGE_TYPE: （未设置，specs/ 等按 application 语义终检）"
+  echo "KNOWLEDGE_TYPE: （未设置，规约路径形态：{DOC_ROOT}/specs/spec-{IDEA-ID}-{N}-{service-name}.md，按 application 语义终检）"
 fi
 echo ""
 
@@ -168,9 +168,9 @@ for file in "${FILES[@]}"; do
   if grep -qF "ASD-" "${file}"; then
     success "${BASENAME}: 文内引用 ASD 文档"
   elif grep -qE '\./specs/spec-|specs/spec-' "${file}"; then
-    success "${BASENAME}: 文内引用 architect spec（specs/spec-*.md）"
+    success "${BASENAME}: 文内引用需求规约路径（specs/spec-{IDEA-ID}-{N}-{service-name}.md 形态）"
   else
-    warn "${BASENAME}: 未发现 ASD-* 或 specs/spec-*.md 引用（建议在「关联文档」或正文引用架构说明书或 architect spec）"
+    warn "${BASENAME}: 未发现 ASD-* 或 specs/spec-{IDEA-ID}-{N}-{service-name}.md 引用（建议在「关联文档」或正文引用架构说明书或需求规约 Markdown）"
   fi
 
   if grep -q 'PRD-' "${file}"; then
@@ -179,25 +179,25 @@ for file in "${FILES[@]}"; do
     warn "${BASENAME}: 未发现关联 PRD 编号 (PRD-*)"
   fi
 
-  SPECS_DIR="${DIRPATH}/specs"
+  DOC_SPECS_DIR="${DOC_ROOT}/specs"
   _kt="${KNOWLEDGE_TYPE:-}"
   if [[ "${_kt}" == "system" || "${_kt}" == "company" ]]; then
-    success "${BASENAME}: KNOWLEDGE_TYPE=${_kt}，跳过 specs/ 目录强制检查（联邦概要下通常不落 DSD 于本库）"
-    if [[ -d "${SPECS_DIR}" ]]; then
-      warn "${BASENAME}: 联邦概要下存在 specs/ 目录，若非有意可删除"
-    fi
-  elif [[ -d "${SPECS_DIR}" ]]; then
-    SPEC_COUNT=$(find "${SPECS_DIR}" \( -name "*.yaml" -o -name "*.yml" \) 2>/dev/null | wc -l | tr -d ' ')
-    success "${BASENAME}: specs/ 目录存在 (${SPEC_COUNT} 个规约文件)"
-    for subdir in "api" "domain" "data"; do
-      if find "${SPECS_DIR}" -type d -name "${subdir}" 2>/dev/null | grep -q .; then
-        success "${BASENAME}: specs/ 含 ${subdir}/ 子目录"
-      else
-        warn "${BASENAME}: specs/ 缺少 ${subdir}/ 子目录"
+    success "${BASENAME}: KNOWLEDGE_TYPE=${_kt}，跳过 ${DOC_ROOT}/specs 规约稿检查（联邦概要下通常不落 DSD 于本库）"
+    if [[ -d "${DOC_SPECS_DIR}" ]]; then
+      FSPEC_COUNT=$(find "${DOC_SPECS_DIR}" -maxdepth 1 -name 'spec-*.md' 2>/dev/null | wc -l | tr -d ' ')
+      if [[ "${FSPEC_COUNT}" -gt 0 ]]; then
+        warn "${BASENAME}: 联邦概要下 ${DOC_SPECS_DIR} 仍有规约稿（spec-*.md / spec-{IDEA-ID}-{N}-{service-name}.md）（若非有意可忽略）"
       fi
-    done
-  elif [[ "${_kt}" != "system" && "${_kt}" != "company" ]]; then
-    warn "${BASENAME}: specs/ 目录不存在: ${SPECS_DIR}"
+    fi
+  elif [[ -d "${DOC_SPECS_DIR}" ]]; then
+    MD_COUNT=$(find "${DOC_SPECS_DIR}" -maxdepth 1 -name 'spec-*.md' 2>/dev/null | wc -l | tr -d ' ')
+    if [[ "${MD_COUNT}" -gt 0 ]]; then
+      success "${BASENAME}: ${DOC_SPECS_DIR} 下存在 ${MD_COUNT} 个规约稿（spec-{IDEA-ID}-{N}-{service-name}.md）"
+    else
+      warn "${BASENAME}: ${DOC_SPECS_DIR} 下未发现规约稿（应用全量时应在总确认后产出 specs/spec-{IDEA-ID}-{N}-{service-name}.md）"
+    fi
+  else
+    warn "${BASENAME}: 未找到 ${DOC_SPECS_DIR}（应用全量规约路径为 ${DOC_ROOT}/specs/spec-{IDEA-ID}-{N}-{service-name}.md）"
   fi
 
   if [[ "${GATE_CHECK}" == true ]]; then
