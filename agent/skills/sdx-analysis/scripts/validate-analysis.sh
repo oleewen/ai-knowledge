@@ -1,20 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# 需求分析文档结构校验脚本
-# 用法: scripts/validate-analysis.sh [--file <path>] [--gate-check] [--gate-strict]
-# DOC_ROOT：resolve_repo_doc_root（仅 .docsconfig）；见 agent/scripts/config-bootstrap.sh
+# ANALYSIS 结构校验（六章模板；门禁不改变结构）。
+# 用法：validate-analysis.sh [--file <path>] [--gate-check] [--gate-strict]
+# DOC_ROOT：resolve_repo_doc_root（.docsconfig）；先 config-bootstrap.sh
 #
-# 说明：闸门式工作流仅改变产出过程，不改变 ANALYSIS 文档结构要求；校验项仍以六章模板为准。
-#
-# 校验项:
-#   1. 文档目录存在
-#   2. 文末「文档元数据」YAML 完整性；禁止首行 --- 作为 frontmatter
-#   3. 六章 ## 结构完整性（与当前 analysis-template.md 一致）
-#   4. 关键模板小节（### / ####）标题完整性
-#   5. 编号体系一致性（FR-n、BR-n、R-n、MVP-n）
-#   6. 模板 analysis-template.md 存在
-#   7. 可选 --gate-check：是否存在含 <!-- sdx-analysis-gate: CONFIRMED --> 且引用该文件名的会话 spec（见 SKILL HARD-GATE）
+# 要点：文末 YAML、六章、`### FR-`、小节标题、FR/BR/R/MVP、--gate-check 查 CONFIRMED spec；
+#       --gate-strict：门禁失败记 ERROR。
 
 TARGET_FILE=""
 ERRORS=0

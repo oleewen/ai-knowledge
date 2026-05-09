@@ -2,36 +2,36 @@
   "skill_name": "sdx-analysis",
   "eval_id": "REPLACE_WITH_EVAL_ID",
   "expected_category": "should-trigger | should-not-trigger",
-  "expected_route": "/sdx-analysis | （not-trigger 时填主分流目标）",
-  "expected_output": "一两句：本 eval 下模型应表现出的路由与要点（与 evals.json 中同 id 条一致）。",
-  "notes": "复制本模板为 <eval-id>-metadata.json 或在跑分流水线中内联使用；断言须与 agents/grader.md 一致。",
+  "expected_route": "/sdx-analysis | （not-trigger：主分流）",
+  "expected_output": "与同 id 条一致的路由与要点摘要。",
+  "notes": "复制为 `<eval-id>-metadata.json` 或流水线内联；断言与 agents/grader.md 一致。",
   "assertions_should_trigger_example": [
     {
       "id": "gate-compliance",
       "name": "门禁合规",
       "type": "must_include",
-      "check": "响应需明确：草稿用户总确认前禁止写入 {DOC_DIR}/analysis/ANALYSIS-*.md，并提及合法例外或 SDX_ANALYSIS_ALLOW_ANALYSIS_WRITE 之一。",
+      "check": "总确认前禁写 `{DOC_DIR}/analysis/ANALYSIS-*.md`；可提例外或 `SDX_ANALYSIS_ALLOW_ANALYSIS_WRITE`。",
       "priority": "P0"
     },
     {
       "id": "structure-integrity",
       "name": "结构完整",
       "type": "must_include",
-      "check": "响应需体现需求分析阶段：ANALYSIS 六章（或会话 spec + G1–G6 / 精简 4G）、须基于上游 SOLUTION，而非重复写共识方案全文或以 PRD/ASD 正文为主产物。",
+      "check": "含 ANALYSIS 六章（或会话 spec + 6G/精简 4G）、须基于上游 SOLUTION；勿以 PRD/ASD 正文为主产物。",
       "priority": "P0"
     },
     {
       "id": "boundary-routing",
       "name": "边界分流",
       "type": "must_not_conflict",
-      "check": "对本 should-trigger 样本，不得将主路径误判为仅 sdx-solution、sdx-prd、sdx-architect 或纯 docs-* 并结束。",
+      "check": "对本 should-trigger，主路径勿改为仅 sdx-solution / PRD / architect / docs-* 并收尾。",
       "priority": "P0"
     },
     {
       "id": "upstream-solution",
       "name": "上游 SOLUTION",
       "type": "should_include",
-      "check": "应提及对齐或依赖 SOLUTION-{IDEA-ID}.md（或等价「已共识方案」）再细化 FR/MVP/依赖/风险。",
+      "check": "提及对齐或依赖 `SOLUTION-{IDEA-ID}.md`（或等价「已共识方案」）再细化 FR/MVP/依赖/风险。",
       "priority": "P1"
     }
   ],
@@ -40,27 +40,27 @@
       "id": "correct-downstream",
       "name": "正确下游",
       "type": "must_include",
-      "check": "须点名与 prompt 一致的下游技能或产物（如 sdx-solution + SOLUTION、sdx-prd + PRD、docs-distill 等），不得以 sdx-analysis 为唯一主路径。",
+      "check": "点名 prompt 所指技能或产物（如 sdx-solution + SOLUTION、sdx-prd、docs-distill）。",
       "priority": "P0"
     },
     {
       "id": "no-false-analysis-primary",
-      "name": "勿假主需求分析阶段",
+      "name": "勿假主需求分析",
       "type": "must_not_conflict",
-      "check": "不得将本请求描述为「默认完整执行 sdx-analysis 门禁并产出 ANALYSIS 作为终点」而忽略用户已指定的阶段。",
+      "check": "勿用「默认完整 sdx-analysis 并以 ANALYSIS 为终点」覆盖用户已指定阶段。",
       "priority": "P0"
     },
     {
       "id": "optional-defer-analysis",
-      "name": "可声明本阶段不做",
+      "name": "可声明不做本阶段",
       "type": "should_include",
-      "check": "可加分：明确本对话不应写入 ANALYSIS 终稿或应先进入所列下游技能。",
+      "check": "可加分：本对话不写 ANALYSIS 终稿或先走所列下游。",
       "priority": "P1"
     }
   ],
   "scoring": {
-    "pass_rule_should_trigger": "P0 全部通过，且 P1 至少通过 1 项（若无 P1 则仅 P0）",
-    "pass_rule_should_not_trigger": "P0 全部通过；P1 可选",
-    "fail_rule": "任一 P0 断言失败即判定不通过"
+    "pass_rule_should_trigger": "P0 全过；若有 P1 则至少一过（否则仅 P0）",
+    "pass_rule_should_not_trigger": "P0 全过；P1 可选",
+    "fail_rule": "任一 P0 失败即不过"
   }
 }

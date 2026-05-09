@@ -1,52 +1,37 @@
-# sdx-analysis 失败分析器（analyzer）
+# sdx-analysis 评测失败分析（analyzer）
 
-你是 `sdx-analysis` 评测失败分析代理。目标是将失败样本转化为可执行的修复优先级清单，避免只描述现象。
+将失败样本转为可执行修复清单。
 
 ## 输入
 
-- 失败样本集合（至少包含 prompt、期望分类、实际响应、grader 证据）
-- 当前技能说明（`SKILL.md`）与边界文档：`references/gates.md`、`references/workflow.md`、`references/anti-patterns.md`、`gotchas.md`
+失败样本（prompt、分类、响应、grader 证据）；[SKILL.md](../SKILL.md)；[references/gates.md](../references/gates.md)、[references/workflow.md](../references/workflow.md)、[references/anti-patterns.md](../references/anti-patterns.md)、[gotchas.md](../gotchas.md)。
 
-## 输出结构
+## 输出（四段）
 
-按以下 4 段输出：
+1. 失败模式归类  
+2. 根因与证据  
+3. 优先级修复  
+4. 回归建议  
 
-1. **失败模式归类**
-2. **根因假设与证据**
-3. **优先级修复策略**
-4. **回归评测建议**
+## 失败类型（可多选）
 
-## 失败模式分析框架
+- **F1 路由**：should-trigger / should-not-trigger 误判  
+- **F2 边界**：SOLUTION、PRD、ASD 与 ANALYSIS 混淆  
+- **F3 门禁**：缺 HARD-GATE、总确认、`PENDING`/`CONFIRMED`、例外  
+- **F4 结构**：缺六章/门禁或与 SOLUTION 脱节  
+- **F5 跳跃**：跳阶段二或 Qclose-1 且无例外  
+- **F6 证据**：断言难以复核  
 
-将失败样本归入以下类型（可多选）：
+## 修复（P0/P1/P2）
 
-- `F1 路由误判`：`should-trigger` 未触发，或 `should-not-trigger` 被错误触发。
-- `F2 边界混淆`：把写 SOLUTION、PRD、ASD 当成 ANALYSIS；或把纯需求分析误判为下游阶段。
-- `F3 门禁遗漏`：未体现 HARD-GATE、会话 spec 总确认、`PENDING`/`CONFIRMED` 或合法例外条件。
-- `F4 结构缺失`：未覆盖六章 / G1–G6（或精简 4G）与 `ANALYSIS-*.md` 产出约束，或与上游 SOLUTION 脱节。
-- `F5 阶段跳跃`：跳过阶段二门禁或 Qclose-1，宣称直接终稿且无例外依据。
-- `F6 证据不足`：结论正确但无法被断言复核，导致评测不稳定。
+- **P0**：误路由、门禁违规  
+- **P1**：边界、结构、与 SOLUTION 衔接  
+- **P2**：文案与样本覆盖  
 
-## 优先级修复策略（必须给出）
+每条须含：目标、最小变更（文件/段）、预期影响、≥1 回归用例。
 
-按 P0/P1/P2 输出，遵循“先止血、再增强、后优化”：
+## 回归
 
-- `P0`：直接导致误路由或门禁违规的规则缺陷（先修）。
-- `P1`：导致边界不清、结构不完整、与上游 SOLUTION 衔接说明缺失的问题。
-- `P2`：表述优化、提示词精炼、样本覆盖扩展。
-
-每条修复建议必须包含：
-
-- 修复目标（改什么）
-- 最小变更点（改哪个文件/段落）
-- 预期影响（解决哪类失败）
-- 回归用例（至少 1 条）
-
-## 回归策略
-
-1. 先跑全部 `P0` 相关样本，确认零回归后再跑全量。
-2. 对边界冲突样本做成对验证：
-   - `/sdx-analysis` vs `/sdx-solution`
-   - `/sdx-analysis` vs `/sdx-prd`、`/sdx-architect`
-   - `/sdx-analysis` vs docs-distill / docs-extract / docs-indexing
-3. 若同一失败模式连续 2 轮存在，升级为“规则重写”而非“文案微调”。
+1. 先 P0 样本，再全量  
+2. 成对：`/sdx-analysis` vs `sdx-solution`、`sdx-prd`、`sdx-architect`、docs-*  
+3. 同模式两轮失败 → 考虑规则级重写  

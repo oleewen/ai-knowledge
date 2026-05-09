@@ -1,46 +1,35 @@
-# 常见陷阱（sdx-analysis）
+# sdx-analysis 操作层陷阱
 
-**反模式（表现 + 纠正）**见 [references/anti-patterns.md](references/anti-patterns.md)；**原则与错误处理表**见 [references/design-principles.md](references/design-principles.md)。本文件聚焦**操作层易错点**。
-
----
+概念反模式：[references/anti-patterns.md](references/anti-patterns.md)。原则：[references/design-principles.md](references/design-principles.md)。
 
 ## 阶段一
 
-- **多题合并提问**：必须一次性抛出所有参数选项（IDEA-ID、门禁粒度、分析深度），并明示支持快捷修改；避免逐项追问。
-- **IDEA-ID 未与上游对齐**：须与 `SOLUTION-{IDEA-ID}.md` 同链，不得自行另起编号。
-
----
+- IDEA-ID、门禁粒度、深度一次列全并支持快捷改；勿逐项追问。
+- IDEA-ID 须与 `SOLUTION-{IDEA-ID}.md` 同链。
 
 ## 阶段二
 
-- **套话起首**：进入阶段二后，禁止以「已在 `…/specs/….md` 中补充 G{n} 草案，要点如下：」类句式开篇；直接写要点或提问。
-- **门禁编号混淆**：**G{n}**（大括号）= 流程步骤编号；**G-n**（连字符）= 模板 §1.2 业务目标条目编号，二者禁止混用。
-- **并行展开多门禁**：Gn 未收口前不展开 G(n+1)。
-- **回跳后全部作废**：回跳到 G{k} 后，按强/弱依赖评估后续门禁是否需重审，不默认全部作废。
-- **确认人填写错误**：须填 `$HOME` 末级目录名（本机用户名），勿填显示名、邮箱或「用户」等占位词。
-- **门禁标记缺失**：spec 文末须有 `<!-- sdx-analysis-gate: PENDING -->`，总确认后改为 `CONFIRMED`；spec 正文须至少出现一次完整文件名 `ANALYSIS-{IDEA-ID}.md`。
-- **误认为只有 G2/G4 才需多方案比选**：任意 G{n} 只要存在多套真实可选路径，均须在本门禁内完成对比后再收口。
-
----
+- 禁「已在 `…/specs/….md` 补充 G{n}…」套话开篇。
+- **G{n}** = 门禁；**G-n** = §1.2 目标；勿混。
+- Gn 收口后再 G(n+1)。
+- 回跳 G{k} 后做强/弱依赖评估，勿默认全州作废。
+- 确认人：`$HOME` 末级用户名；勿占位词。
+- Spec：文末 `<!-- sdx-analysis-gate: PENDING -->`（总确认后 `CONFIRMED`）；正文至少一次 `ANALYSIS-{IDEA-ID}.md`。
+- 任一 G{n} 有 ≥2 真实路径须在本门禁比选（不限 G2/G4）。
 
 ## 阶段三
 
-- **技术语言混入正文**：通读全文执行语言审查，将接口名、表名、中间件等技术词转写为业务表述；确需保留的技术线索放入 §6.3 并标注「待研发确认」。
-- **跳过质量门禁自查**：终检必须逐项检查 [references/quality-checklist.md](references/quality-checklist.md)，已达标项改为 `- [x]`，未达标项保持 `- [ ]`，禁止未复核即全选。
-- **P0 需求出现在后序 MVP**：P0 需求必须在首个合理 MVP 中交付；技术基础设施随首个消费它的 MVP 一并交付。
-
----
+- §1–§5、§6.1–§6.2：技术词转业务语；线索收 §6.3「待研发确认」。
+- §6.4：对照 [references/quality-checklist.md](references/quality-checklist.md) 逐项勾选。
+- **P0** FR 须落入首个合理 MVP；基础设施随首个消费方 MVP。
 
 ## 输入与歧义
 
-- **无解决方案直接开始**：`SOLUTION-{ID}.md` 是硬输入；不存在时终止并提示先执行 `sdx-solution`。
-- **解决方案文档结构不完整时静默继续**：须发出警告并列出缺失章节，在文档中显式标注「基于不完整解决方案，存在分析盲区」。
-- **knowledge 目录缺失时不标注**：须在 §1.3 中显式标注「缺少知识库基线，以下分析仅基于解决方案文档」。
+- 无 `SOLUTION-{ID}`：终止并指向 `sdx-solution`。
+- 方案结构不全：警告并列缺失，正文标「基于不完整方案，存在分析盲区」。
+- 无 `knowledge/`：§1.3 标「缺少知识库基线，以下仅基于方案」。
 
----
+## MVP
 
-## MVP 拆分
-
-- **MVP 无业务价值**：按功能维度机械拆分，每个 MVP 无法独立演示给业务方；自问「这个 MVP 能解决什么业务问题」，答不上来则重拆。
-- **MVP 循环依赖**：拆分后须验证 §4.3 依赖图，确保无环。
-- **优先级缺失**：FR-n 未标注 P0–P3 优先级，导致 G4 MVP 拆分无依据。
+- 每个 MVP 须能回答解决的**业务问题**；§4.3 依赖无环。
+- FR-n 须标 P0–P3，否则 G4 无据。
