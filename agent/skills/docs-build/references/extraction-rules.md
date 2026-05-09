@@ -1,8 +1,8 @@
-# 四视角提取规则详解
+# 四视角提取规则
 
-docs-build 的核心提取规则。按固定顺序执行：技术 → 数据 → 业务 → 产品。每个视角独立提取，后续视角可引用前序视角已提取的 ID。
+顺序：技术 → 数据 → 业务 → 产品。各视角独立产出；后序只**引用**前序 ID。
 
-输出文件统一使用 `{perspective}_knowledge.json`（schema_version 2.1）。完整 JSON 结构见 [../assets/knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
+输出：`{perspective}_knowledge.json`，`schema_version` **2.1**。结构见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
 
 ## 目录
 
@@ -114,7 +114,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 ### 输出结构
 
-技术视角使用**分类结构**（非扁平数组），`entities` 下按 `systems`、`applications`、`services`、`apis` 分组。完整示例见 [../assets/knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
+技术视角使用**分类结构**（非扁平数组），`entities` 下按 `systems`、`applications`、`services`、`apis` 分组。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
 
 ---
 
@@ -144,7 +144,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 ### 输出结构
 
-数据视角使用**扁平数组**，DS 和 ENT 通过 `parent_id` 关联。完整示例见 [../assets/knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
+数据视角使用**扁平数组**，DS 和 ENT 通过 `parent_id` 关联。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
 
 ---
 
@@ -192,7 +192,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 ### 输出结构
 
-业务视角使用**扁平数组**，通过 `hierarchy` 区分层级，`parent_id`/`children` 表达层级关系。完整示例见 [../assets/knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
+业务视角使用**扁平数组**，通过 `hierarchy` 区分层级，`parent_id`/`children` 表达层级关系。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
 
 ---
 
@@ -231,7 +231,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 ### 输出结构
 
-产品视角使用**扁平数组**，PL→PM→FT→UC 通过 `parent_id` 关联。完整示例见 [../assets/knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
+产品视角使用**扁平数组**，PL→PM→FT→UC 通过 `parent_id` 关联。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
 
 ---
 

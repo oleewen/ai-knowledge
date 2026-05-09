@@ -1,17 +1,15 @@
-# 各视角 README 填充规范
+# README 填充规范
 
-在全部目标视角的 `*_knowledge.json`（schema 2.1）已生成后、写入 **`{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md` 之前**，按本规范更新各视角目录下的 `README.md`。**不得**用占位示例行冒充真实提取结果；无实体时保留说明句并标注待补充，与 [quality-checklist.md](quality-checklist.md)、[gotchas.md](../gotchas.md)（「以模板占位行作为索引唯一内容」）一致。
-
----
+`*_knowledge.json` 就绪后、**写 `KNOWLEDGE_INDEX.md` 前**，按此更新各视角 `README.md`。禁止示例行冒充；无实体则说明+待补充（[quality-checklist.md](quality-checklist.md)、[gotchas.md](../gotchas.md)）。
 
 ## 原则
 
 | 原则 | 说明 |
 |------|------|
-| 格式同源 | 表头、章节顺序、静态说明段与各视角 **现有** `README.md` 对齐；仅替换「索引表」数据行与必要的引导句 |
-| 数据同源 | 表格行仅来自对应 `*_knowledge.json` 已存在实体，字段映射见下节 |
-| 不删固定段 | 保留「层级结构」「关键字段」「与其他视角的映射」、Index Guide / DESIGN 链接等；除非该视角 README 模板整体改版 |
-| 路径可点击 | Markdown 链接相对 **当前 README 文件** 指向 `*_knowledge.json`、`*_meta.yaml`、`../KNOWLEDGE_INDEX.md` 等 |
+| 格式同源 | 沿用现有 README 表头/章节/静态段；只换索引表数据行 |
+| 数据同源 | 行只来自对应 JSON，映射见下 |
+| 不删固定段 | 保留层级说明、跨视角、INDEX/DESIGN 链等 |
+| 链接可点 | 相对当前 README 指向 JSON、meta、`../KNOWLEDGE_INDEX.md` |
 
 ---
 
@@ -67,7 +65,7 @@
 | 名称 | `name` |
 | 文件/目录 | `business_knowledge.json`（`hierarchy=…`） |
 
-扁平数组按层级分组排序；**列名「示例」改为真实 ID 后，表标题可改为「业务索引表」**，引导句说明「完整清单以 `business_knowledge.json` 为准」。
+扁平分组排序；有真实 ID 后标题可改「业务索引表」，并注「以 `business_knowledge.json` 为准」。
 
 ### product —「产品线索引表」
 
@@ -83,10 +81,10 @@
 
 ---
 
-## 与 KNOWLEDGE_INDEX 的顺序
+## 相对 KNOWLEDGE_INDEX 的顺序
 
-1. 四视角 `*_knowledge.json` 就绪  
-2. **本规范**更新各视角 `README.md`  
-3. 再执行 [consolidation-spec.md](consolidation-spec.md) 更新 `{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md`  
+1. 四 JSON 就绪  
+2. 本规范更 README  
+3. [consolidation-spec.md](consolidation-spec.md) 写 `KNOWLEDGE_INDEX.md`  
 
-这样人类从视角目录进入时，README 与 JSON、主索引三者一致。
+保证 README、JSON、INDEX 一致。

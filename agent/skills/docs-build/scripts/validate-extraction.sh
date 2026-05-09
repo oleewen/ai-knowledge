@@ -1,18 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# 知识实体提取结果验证脚本
-# 用法: scripts/validate-extraction.sh
-# DOC_ROOT / DOC_DIR：validate_bootstrap_docsconfig；见 agent/scripts/config-bootstrap.sh
-# 知识库目录：{DOC_DIR}/knowledge（即 REPO_ROOT/DOC_DIR/knowledge，与 DOC_ROOT/knowledge 等价）
-#
-# 校验项:
-#   1. KNOWLEDGE_INDEX.md 存在且非空
-#   2. *_knowledge.json 文件格式有效（schema 2.1）
-#   3. ID 前缀符合约定
-#   4. 层级+ID 唯一性
-#   5. 证据链非空
-#   6. metadata 节存在
+# 校验 docs-build 产物。无 CLI 参数；路径来自 .docsconfig（config-bootstrap.sh）
+# 检查：INDEX 非空；JSON 可解析且 schema_version 2.1；前缀；层级+ID 唯一；evidence；metadata
 
 ERRORS=0
 WARNINGS=0
@@ -31,7 +21,7 @@ validate_bootstrap_docsconfig "$SCRIPT_DIR"
 DOC_ROOT="$(resolve_repo_doc_root)"
 cd "$REPO_ROOT" || exit 1
 
-# 路径约定：知识库在 {DOC_DIR}/knowledge（DOC_ROOT 已为 REPO_ROOT/DOC_DIR 时等价于 DOC_ROOT/knowledge）
+# 知识库：{DOC_DIR}/knowledge
 KNOWLEDGE_DIR="${REPO_ROOT}/${DOC_DIR}/knowledge"
 INDEX_FILE="${KNOWLEDGE_DIR}/KNOWLEDGE_INDEX.md"
 
@@ -40,7 +30,7 @@ warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
 error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
 
-echo "=== 知识实体提取结果验证 ==="
+echo "=== docs-build 校验 ==="
 echo "REPO_ROOT: ${REPO_ROOT}"
 echo "DOC_ROOT: ${DOC_ROOT}"
 echo "DOC_DIR:  ${DOC_DIR}"
@@ -219,7 +209,7 @@ echo "=== 验证结果 ==="
 echo "错误: ${ERRORS}  警告: ${WARNINGS}"
 
 if [[ ${ERRORS} -gt 0 ]]; then
-  echo "验证失败，请修复以上错误。"
+  echo "校验失败，请修正后重跑。"
   exit 1
 else
   echo "验证通过。"

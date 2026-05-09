@@ -1,20 +1,20 @@
-# docs-build 失败分析器（analyzer）
+# docs-build — analyzer
 
-将失败样本转化为 P0/P1/P2 修复清单。
+失败样本 → P0/P1/P2 修复项。
 
 ## 输入
 
-`SKILL.md`、`references/gates.md`、`references/workflow.md`、`references/anti-patterns.md`、`gotchas.md`
+`SKILL.md`、`references/gates.md`、`workflow.md`、`anti-patterns.md`、`gotchas.md`
 
-## 失败模式（可多选）
+## 模式（多选）
 
-- `F1 路由误判`
-- `F2 边界混淆`：build vs indexing / distill / extract
-- `F3 门禁遗漏`：Qclose-1、`CONFIRMED`、合法例外
-- `F4 结构缺失`：四阶段、视角顺序、validate 脚本
-- `F5 虚构低风险`：错误描述为无 spec gate
-- `F6 证据不足`
+- F1 路由误判
+- F2 build ↔ indexing/distill/extract 混
+- F3 门禁漏：Qclose-1、`CONFIRMED`、例外
+- F4 缺四阶段/顺序/validate
+- F5 误称无 spec gate（低风险幻觉）
+- F6 证据薄
 
 ## 回归
 
-成对验证：`/docs-build` vs `/docs-indexing`、`/docs-build` vs `sdx-*`。
+对照：`/docs-build` vs `/docs-indexing`；build vs `sdx-*`。

@@ -1,8 +1,6 @@
 # KNOWLEDGE_INDEX
 
-> **最后更新**: {YYYY-MM-DD}
-> **文档定位**: 四视角链上实体 ID 的唯一维护位置（SSOT）
-> **Schema**: 对齐 `*_knowledge.json` schema_version 2.1
+> 更新：{YYYY-MM-DD} · SSOT：`*_knowledge.json` schema 2.1
 
 ---
 
