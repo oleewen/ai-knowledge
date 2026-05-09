@@ -1,8 +1,9 @@
 ---
 name: docs-push
 description: >
-  将 specs 目录下符合 `spec-asd-*.md`（架构规约草案，多在 `{DOC_DIR}/specs/`）的文件推送到 knowledge-links.yaml；**spec-dsd-*.md** 默认应在 **`requirements/.../MVP-Phase-*/specs/`**，推送时 `--specs-dir` 指向该目录即可。
-  已登记目标库的 {path}/{doc_dir}/specs/；支持 path 与 repo+feature 模式；拷贝后通过脚本四档衔接 Git（不暂存/暂存/提交/推送）。
+  推送规约：**`spec-asd-*.md`** 递归收集，落成 `{path}/{doc_dir}/requirements/REQUIREMENT-*/MVP-Phase-*/specs/`（中央常在 `{DOC_DIR}/specs/` 落盘则由脚本按文件名归位；若以 `requirements/` 为前缀则从 `--specs-dir` 镜像相对路径）。
+  **`spec-{yyMMdd}-{n}-{app}.md`** 仅从 `--specs-dir` 顶层匹配，落成 `{path}/{doc_dir}/specs/`。**`spec-dsd-*.md`** 仍按需将 `--specs-dir` 指到 `requirements/.../MVP-Phase-*/specs/`（脚本行为未改）。
+  依据 knowledge-links.yaml 的 `{path}/{doc_dir}`；支持 path 与 repo 模式四档 Git；执行 push 须用户确认。
   只要用户提到以下任一场景，就应立即使用本技能，不要等用户明确说「/docs-push」：
   推送 spec 到应用库、同步 specs 到建联 path、按 knowledge-links 上传 spec、把中央 spec 推到目标工程、
   「spec 推到已注册的 app」「repo+feature 分支写 spec」「docs-push 一下」。
@@ -13,7 +14,7 @@ description: >
 
 本技能以 **调度器** 方式工作：先读闸门与参数说明，在**用户确认**（尤其 `git push`）前提下调用 `scripts/push-specs.sh`。
 
-> **写盘目标**：`knowledge-links.yaml` 中每条 link 的**本机 `path`** 下 `{doc_dir}/specs/`（`doc_dir` 缺省为 `docs`）。**不**使用 `repository` 做隐式 clone；远端仅作建联元数据。
+> **写盘目标**：每条 link 的**本机 `path`** × `{doc_dir}`（缺省常为 `application`/`docs`，以 YAML 为准）。**Legacy**规约 → `{doc_dir}/specs/`。**spec-asd** → `{doc_dir}/requirements/REQUIREMENT-{IDEA}/MVP-Phase-{N}/specs/` 或镜像 `requirements/` 子树。**不**使用 `repository` 隐式 clone；远端仅元数据。
 
 ---
 
@@ -34,6 +35,12 @@ description: >
 bash agent/skills/docs-push/scripts/push-specs.sh copy --specs-dir DIR --links system/knowledge-links.yaml --mode path
 ```
 
+**spec-asd 中央在 `application/specs/` 时**（`--specs-dir` 取 `{DOC_DIR}` 根或其父级，以便 `find` 命中子目录下的 `spec-asd-*.md`）：
+
+```bash
+bash agent/skills/docs-push/scripts/push-specs.sh copy --specs-dir ./application --links system/knowledge-links.yaml --mode path --dry-run
+```
+
 `--links` 为相对路径时，相对于中央库根目录。
 
 ---
@@ -42,7 +49,7 @@ bash agent/skills/docs-push/scripts/push-specs.sh copy --specs-dir DIR --links s
 
 | docs-push | docs-pull |
 |-----------|-----------|
-| 中央 → 目标 `path` 下 `{doc_dir}/specs/` | 目标 → 中央 `applications/app-*` 镜像 |
+| 中央 → 目标：`spec-asd` 入 `{doc_dir}/requirements/…/specs/`；legacy 入 `{doc_dir}/specs/` | 目标 → 中央 `applications/app-*` 镜像 |
 | 需显式 `--links` | 依赖 manifest 等 |
 
 ---

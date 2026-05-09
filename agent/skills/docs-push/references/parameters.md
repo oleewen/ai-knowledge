@@ -36,7 +36,7 @@
 
 | 子命令 | 作用 |
 |--------|------|
-| `copy` | 将匹配的 spec 文件复制到目标 `{path}/{doc_dir}/specs/`。 |
+| `copy` | 将匹配的规约文件按计划复制到应用 `{path}/{doc_dir}/` 下对应子路径（legacy 写 `specs/`；spec-asd 写 `requirements/…/specs/`，详见下节）。 |
 | `git` | 按同一批文件在目标 Git 仓库根下执行四档之一（见下）。 |
 
 ---
@@ -45,7 +45,7 @@
 
 | 选项 | 必选 | 说明 |
 |------|------|------|
-| `--specs-dir DIR` | 是 | 源目录，内含 `spec-{yyMMdd}-{n}-{app_name}.md`。 |
+| `--specs-dir DIR` | 是 | 源**树根**。**Legacy**：仅扫描该目录**顶层** `*.md`。**spec-asd**：递归 `find` 其下任意深度的 `spec-asd-*.md`。解析为物理路径（`cd -P`），以避免 macOS `/var`/`/private/var` 与 `find` 输出前缀不一致。 |
 | `--links FILE` | 是 | `knowledge-links.yaml`；**绝对路径**，或相对**中央知识库仓库根**的相对路径。 |
 | `--mode path \| repo` | 否 | 默认 `path`。`repo` 时在目标 `path` 上执行 `git checkout -B <branch>` 再拷贝（**不** `clone`）。 |
 | `--branch NAME` | repo 必填 | 检出或创建并检出的分支名。 |
@@ -65,20 +65,49 @@
 
 ---
 
-## 文件名约定
+## 文件名约定与目标路径（双轨）
+
+### Legacy：`spec-{yyMMdd}-{n}-{app}.md`
 
 - 正则：`^spec-([0-9]{6})-([0-9]+)-([a-zA-Z0-9_.-]+)\.md$`
-- 捕获组 3 为 **`app_name`**，须与 `knowledge-links.yaml` 中 **`app_name`** 字段**大小写敏感、完全相等**。
+- 组 3 为 **`app_name`**，须与 `knowledge-links.yaml` **`app_name`** **大小写敏感、完全一致**。
+- 目标：**`{path}/{doc_dir}/specs/<basename>`**（仅顶层文件）。
+
+顶层若存在 `spec-asd-*.md`，本轨**静默跳过**（由 spec-asd 轨处理），不再报「不符 legacy」。
+
+### spec-asd：`spec-asd-{IDEA-ID}-{MVP-PHASE}-{app-name}.md`
+
+- 命名与 `sdx-architect` 的 `asd-spec-template` 一致；**自右向左**解析 `app-name`、数字 `MVP-PHASE`、`IDEA-ID`（支持 `IDEA-ID` 中含 `-`）。
+- **`app-name`** 须与登记 **`app_name`** 一致（用于选 `path`/`doc_dir`）。
+- **混合路由**（相对 `--specs-dir` 的 `rel`）：
+  - **`rel` 以 `requirements/` 开头**：**整段镜像** → `{path}/{doc_dir}/<rel>`；且 `dirname(<rel>)` 须匹配 `requirements/REQUIREMENT-*/MVP-Phase-*/specs(/…)?`（文件须在 Phase 下 `specs/` 树内，不得贴在 `MVP-Phase-*` 根目录）。
+  - **否则**（常见：中央落在 `{DOC_DIR}/specs/`）：**文件名归位** → `{path}/{doc_dir}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{MVP-PHASE}/specs/<basename>`。
+- 相对路径中若出现独立 `..` 段：**跳过**并在 strict 下整批失败。
+
+### spec-dsd
+
+- `spec-dsd-*.md` 仍可依既有习惯将 `--specs-dir` **直接指向**已有的 `requirements/.../MVP-Phase-*/specs/`；若文件名符合 legacy 正则才会被顶层轨 pickup（一般不适用）。**本技能主推**对上表 spec-asd / legacy 的明确语义；推送 dsd 前请核对命名与 `--specs-dir` 是否与团队约定一致。
+
+设计详述见仓库内 [docs/superpowers/specs/2026-05-09-docs-push-spec-asd-routing-design.md](../../../../docs/superpowers/specs/2026-05-09-docs-push-spec-asd-routing-design.md)。
 
 ---
 
 ## 示例
 
-**path 模式 dry-run：**
+**path 模式 dry-run（legacy spec）：**
 
 ```bash
 bash agent/skills/docs-push/scripts/push-specs.sh copy \
   --specs-dir ./docs/superpowers/specs \
+  --links system/knowledge-links.yaml \
+  --mode path --dry-run
+```
+
+**spec-asd 文件名归位 dry-run**（假设中央写在 `application/specs/`；`--specs-dir` 取能覆盖到该文件的根）：
+
+```bash
+bash agent/skills/docs-push/scripts/push-specs.sh copy \
+  --specs-dir ./application \
   --links system/knowledge-links.yaml \
   --mode path --dry-run
 ```

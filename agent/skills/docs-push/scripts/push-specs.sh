@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# push-specs.sh — 将 spec-{yyMMdd}-{n}-{app_name}.md 推送到 knowledge-links 登记路径下 {doc_dir}/specs/
+# push-specs.sh — 双轨：spec-{yyMMdd}-{n}-{app}.md → {doc_dir}/specs/；
+#                   spec-asd-*.md → {doc_dir}/requirements/…/MVP-Phase-*/specs/（文件名归位或 requirements/ 前缀镜像）
 # 子命令: copy | git（详见 agent/skills/docs-push/references/parameters.md）
 set -euo pipefail
 
@@ -89,7 +90,7 @@ usage() {
                          [--dry-run] [--strict] [--allow-dirty]
 
     必选:
-      --specs-dir   源目录（内含 spec-*.md）
+      --specs-dir   源目录根（legacy 仅扫描顶层 *.md；spec-asd-* 递归 find）
       --links       knowledge-links.yaml（相对仓库根或绝对路径）
     repo 模式:
       --mode repo   且 copy/git 均须在目标 path 上切换分支时提供 --branch
@@ -200,7 +201,8 @@ if [[ "$LINKS_FILE" != /* ]]; then
 fi
 [[ -f "$LINKS_FILE" ]] || sdx_error "knowledge-links 文件不存在: $LINKS_FILE"
 
-SPECS_DIR="$(cd "$SPECS_DIR" && pwd)"
+# 物理路径：避免 macOS /var ↔ /private/var 等与 find -print 前缀不一致导致相对路径计算失败
+SPECS_DIR="$(cd -P "$SPECS_DIR" && pwd)"
 
 [[ "$MODE" == path || "$MODE" == repo ]] || sdx_error "--mode 须为 path 或 repo: $MODE"
 if [[ "$MODE" == repo ]]; then
@@ -231,17 +233,70 @@ find_link_index_for_app() {
   return 1
 }
 
+# 相对路径段含独立 ".." 则返回 0（坏）
+_ps_rel_has_dot_dot() {
+  local rel="${1:?}"
+  [[ "$rel" =~ (^|/)\.\.(/|$) ]]
+}
+
+# 规范源绝对路径，并返回相对 SPECS_DIR 的路径（不含前导 /）
+_ps_rel_from_specs_root() {
+  local abs="${1:?}" root="${2:?}"
+  local pfx="${root}/"
+  [[ "$abs" == "$pfx"* ]] || {
+    sdx_error "内部错误: 源文件不在 --specs-dir 下: $abs"
+    return 1
+  }
+  printf '%s' "${abs#"$pfx"}"
+}
+
+# 解析 spec-asd-{IDEA}-{PHASE}-{app}.md（自右向左）；失败返回 1。输出三行：IDEA / PHASE / APP
+_ps_parse_spec_asd_basename() {
+  local base="${1:?}" body rest app phase idea
+  [[ "$base" == spec-asd-*.md ]] || return 1
+  body="${base#spec-asd-}"
+  body="${body%.md}"
+  [[ -n "$body" ]] || return 1
+  app="${body##*-}"
+  [[ "$app" =~ ^[a-zA-Z0-9_.-]+$ ]] || return 1
+  rest="${body%"${app}"}"
+  [[ "$rest" == *-* ]] || return 1
+  rest="${rest%-}"
+  [[ -n "$rest" ]] || return 1
+  phase="${rest##*-}"
+  [[ "$phase" =~ ^[0-9]+$ ]] || return 1
+  idea="${rest%"${phase}"}"
+  idea="${idea%-}"
+  [[ -n "$idea" ]] || return 1
+  while [[ "$idea" == *- ]]; do
+    idea="${idea%-}"
+  done
+  [[ -n "$idea" ]] || return 1
+  [[ "$idea" =~ ^[a-zA-Z0-9_.-]+$ ]] || return 1
+  printf '%s\n%s\n%s\n' "$idea" "$phase" "$app"
+}
+
+# dirname(relative_under_doc_root) 须落在 requirements/REQUIREMENT-*/MVP-Phase-*/specs[/…] 下
+_ps_spec_asd_mirror_dd_ok() {
+  local rt="${1:?}"
+  local ddir
+  ddir="$(dirname "$rt")"
+  [[ "$ddir" =~ ^requirements/REQUIREMENT-[^/]+/MVP-Phase-[^/]+/specs(/.*)?$ ]]
+}
+
 # 写入计划文件：每行 src_abs<TAB>dest_abs<TAB>repo_root_expanded
 # 严格模式：任一条目解析失败则不写任何行并返回 1
 write_validated_plan() {
   local out="${1:?}"
-  local f base spec_re='^spec-([0-9]{6})-([0-9]+)-([a-zA-Z0-9_.-]+)\.md$'
-  local idx doc_dir exp_root dest app
+  local spec_re='^spec-([0-9]{6})-([0-9]+)-([a-zA-Z0-9_.-]+)\.md$'
+  local f base idx doc_dir exp_root dest app rel doc_base parsed_idea parsed_phase parsed_app parsed_blob
   local had_skip=0
   : >"$out"
   shopt -s nullglob
   for f in "$SPECS_DIR"/*.md; do
+    [[ -f "$f" ]] || continue
     base="$(basename "$f")"
+    [[ "$base" == spec-asd-*.md ]] && continue
     if [[ ! "$base" =~ $spec_re ]]; then
       sdx_warn "[skip] 文件名不符合 spec-{yyMMdd}-{n}-{app_name}.md: $base"
       had_skip=1
@@ -260,6 +315,64 @@ write_validated_plan() {
     printf '%s\t%s\t%s\n' "$f" "$dest" "$exp_root" >>"$out"
   done
   shopt -u nullglob
+
+  local asd_list abs_asd
+  asd_list="$(mktemp)"
+  find "$SPECS_DIR" -type f -name 'spec-asd-*.md' ! -path '*/.*' 2>/dev/null \
+    | LC_ALL=C sort >"$asd_list" || true
+  while IFS= read -r f || [[ -n "$f" ]]; do
+    [[ -z "$f" ]] && continue
+    abs_asd="$(cd -P "$(dirname "$f")" && pwd)/$(basename "$f")"
+    rel="$(_ps_rel_from_specs_root "$abs_asd" "$SPECS_DIR")"
+    if _ps_rel_has_dot_dot "$rel"; then
+      sdx_warn "[skip] 相对路径非法（含 ..）: $rel （源 $abs_asd）"
+      had_skip=1
+      continue
+    fi
+    base="$(basename "$abs_asd")"
+    if ! parsed_blob="$(_ps_parse_spec_asd_basename "$base")"; then
+      sdx_warn "[skip] spec-asd 文件名无法解析（期望 spec-asd-{IDEA-ID}-{PHASE}-{app-name}.md）: $base"
+      had_skip=1
+      continue
+    fi
+    parsed_idea='' parsed_phase='' parsed_app=''
+    {
+      IFS= read -r parsed_idea || true
+      IFS= read -r parsed_phase || true
+      IFS= read -r parsed_app || true
+    } <<< "$parsed_blob"
+    if [[ -z "${parsed_idea:-}" || -z "${parsed_phase:-}" || -z "${parsed_app:-}" ]]; then
+      sdx_warn "[skip] spec-asd 解析字段不完整: $base"
+      had_skip=1
+      continue
+    fi
+
+    if ! idx="$(find_link_index_for_app "$parsed_app")"; then
+      sdx_warn "[skip] 未在 knowledge-links 中找到 app_name=$parsed_app: $base"
+      had_skip=1
+      continue
+    fi
+    doc_dir="${doc_dirs[idx]:-application}"
+    exp_root="$(knowledge_link_expand_stored_path "${paths[idx]}")"
+    exp_root="$(cd "$exp_root" 2>/dev/null && pwd)" || sdx_error "无法进入 path 目录: ${paths[idx]} → $exp_root"
+    doc_base="${exp_root}/${doc_dir}"
+
+    if [[ "$rel" == requirements/* ]]; then
+      dest="${doc_base}/${rel}"
+      dest_rel="${rel}"
+      if ! _ps_spec_asd_mirror_dd_ok "$dest_rel"; then
+        sdx_warn "[skip] spec-asd 镜像目标须位于 requirements/REQUIREMENT-*/MVP-Phase-*/specs/ 下: $dest"
+        had_skip=1
+        continue
+      fi
+    else
+      dest="${doc_base}/requirements/REQUIREMENT-${parsed_idea}/MVP-Phase-${parsed_phase}/specs/${base}"
+    fi
+
+    printf '%s\t%s\t%s\n' "$abs_asd" "$dest" "$exp_root" >>"$out"
+  done <"$asd_list"
+  rm -f "$asd_list"
+
   if [[ "$STRICT" -eq 1 && "$had_skip" -ne 0 ]]; then
     : >"$out"
     return 1

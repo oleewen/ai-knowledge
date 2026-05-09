@@ -3,7 +3,8 @@
 ## 1. 准备
 
 - 确认 `knowledge-links.yaml` 中目标 **`path`** 为本机已存在目录（通常为已 clone 的应用库根）。
-- 确认 `app_name` 与 spec 文件名后缀一致。
+- 确认 `app_name` 与文件名一致：**legacy** 对应 `spec-…-{app}.md` 最后一小段；**spec-asd** 对应 `spec-asd-{IDEA}-{N}-{app-name}.md` 最后一段 **`app-name`**。
+- **`--specs-dir`**：**spec-asd** 会递归下级目录——通常取 `{DOC_DIR}` 根目录（而非仅 `specs/` 单层），除非你确定所有 `spec-asd-*.md` 的路径都在传入目录树下。
 
 ## 2. 拷贝（`copy`）
 

@@ -12,6 +12,18 @@
       "prompt": "用户：strict 模式下如果有一个 spec 的 app_name 未登记，整批应失败且目标库不应被部分写入。",
       "expected_output": "Agent 使用 --strict 并说明失败语义；可引用 scripts/tests/docs-push/cases/02_strict_missing_app.sh 行为。",
       "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "用户：中央 application/specs 里有 spec-asd-ORDER-1-myapp.md，要按 knowledge-links 推到登记应用库 dry-run，目标应落在 MVP Phase 目录下的 specs/。",
+      "expected_output": "Agent 读 parameters；dry-run 输出含 application/requirements/REQUIREMENT-ORDER/MVP-Phase-1/specs/…；语义见 scripts/tests/docs-push/cases/05_spec_asd_relocate_dry_run.sh。",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "用户：源码已在 requirements/REQUIREMENT-x/MVP-Phase-y/specs/.../spec-asd 树下，要与应用库同路径推送，docs-push copy --dry-run 该长什么样？",
+      "expected_output": "Agent 说明 requirements/ 前缀镜像：.dest 相对 doc_dir 与源自 --specs-dir 的相对路径一致，且须在 …/specs/ 子树下；可参考 06_spec_asd_mirror_requirements_prefix.sh。",
+      "files": []
     }
   ]
 }
