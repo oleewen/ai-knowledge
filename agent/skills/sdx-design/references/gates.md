@@ -24,7 +24,7 @@
 
 ## 规约与 DSD 同期
 
-应用全量场景下，**`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`** 与 **DSD** 在总确认后同期落盘；与 DSD §2 互指与终检见 `workflow.md` 阶段三、[quality-checklist.md](quality-checklist.md)。
+**DSD** 在总确认后同期落盘，并生成详设需求规约 **`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`**（**禁止**写入 **`{DOC_DIR}/specs/`**，该处仅 **概设需求规约** **`spec-asd-*.md`**）；与 DSD §2 互指与终检见 `workflow.md` 步骤 3、[quality-checklist.md](quality-checklist.md)。
 
 ---
 

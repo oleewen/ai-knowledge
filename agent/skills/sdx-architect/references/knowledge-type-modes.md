@@ -12,9 +12,9 @@
 
 ## 模式对照
 
-| `KNOWLEDGE_TYPE` | ASD（架构） | DSD（详细设计 + 规约） | `spec-asd-*.md` / `spec-dsd-*.md`（`{DOC_DIR}/specs/`） |
+| `KNOWLEDGE_TYPE` | ASD（架构） | DSD（详细设计 + 规约） | **概设需求规约** **`spec-asd-*.md`**（`{DOC_DIR}/specs/`）/ **详设需求规约** **`spec-dsd-*.md`**（**仅** `MVP-Phase-*/specs/`） |
 |------------------|------------|------------------------|-------------------|
-| `application` 或（未设置） | §1–§3 完整 | §1–§4 完整（**§1** 溯源 ASD；**§3** 溯源并扩写 **ASD §3**；详设 **§2** 起） | **需要**：架构草案 **spec-asd-***（`/sdx-architect`）、详设终稿 **spec-dsd-***（`/sdx-design`，按阶段落盘） |
+| `application` 或（未设置） | §1–§3 完整 | §1–§4 完整（**§1** 溯源 ASD；**§3** 溯源并扩写 **ASD §3**；详设 **§2** 起） | **需要**：**概设需求规约** **spec-asd-***（`/sdx-architect`、`{DOC_DIR}/specs/`）；**详设需求规约** **spec-dsd-***（`/sdx-design`，**仅** `requirements/.../MVP-Phase-*/specs/`） |
 | `system` / `company` | §1–§3 **联邦概要**（§3 可为 `N/A` 路径 + 服务能力摘要） | **不在本库落 DSD**；由**应用知识库**按需补 **DSD**，本层无 `specs/` | **不要求**（可不建 `specs/`） |
 
 ---
@@ -32,7 +32,7 @@
 
 ## 与会话门禁（分别技能）
 
-- **sdx-architect**：门禁对应 **G1→§1、G2→§2、G3→§3**（会话 spec 见 architect-session-spec-template），产出 **`spec-asd-*.md`**（概要规约）。  
-- **sdx-design**：门禁对应 **G1→§1 … G4→§4**，产出 **`spec-dsd-*.md`** 详设规约。
+- **sdx-architect**：门禁对应 **G1→§1、G2→§2、G3→§3**（会话 spec 见 architect-session-spec-template），产出 **`spec-asd-*.md`**（**概设需求规约**）。  
+- **sdx-design**：门禁对应 **G1→§1 … G4→§4**，产出 **`spec-dsd-*.md`**（**详设需求规约**）。
 
 联邦场景下 **不写 DSD 于 system/company**，故无 `sdx-design` 门禁激活于本库；转至应用知识库后再跑 `/sdx-design`。

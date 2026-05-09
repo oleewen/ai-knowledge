@@ -1,9 +1,9 @@
 ---
 name: sdx-design
 description: >
-  详细设计技能：产出 DSD（§1–§4，assets/dsd-template.md）及应用全量时 `{DOC_DIR}/specs/spec-dsd-{IDEA-ID}-{N}-{service-name}.md`（assets/dsd-spec-template.md）。
-  触发：编写或修改 DSD；将 ASD §3 或需求表扩写到实现级（API、DDL、错误码、幂等）；详设门禁（Gd、Qclose、validate-dsd）；具备 ASD/architect spec 与 PRD 且目标是 DSD 终稿。
-  上游至少其一（同 IDEA-ID、同 N）：`ASD-*.md` 或 **`{DOC_DIR}/specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md`**（asd-spec-template，架构规约草案）；与会话门禁稿 `docs/superpowers/specs/*-sdx-design.md` 不同路径。不写 ASD。
+  详细设计技能：产出 DSD（§1–§4，assets/dsd-template.md）及详设需求规约 **`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`**（assets/dsd-spec-template.md）；**禁止**将 **spec-dsd-*** 写入 **`{DOC_DIR}/specs/`**。
+  触发：编写或修改 DSD；将 ASD §3 或概设需求规约`spec-asd-*.md`扩写到实现级（API、DDL、错误码、幂等）；详设门禁（G、Qclose、validate-dsd）；具备 ASD/architect spec 与 PRD 且目标是 DSD 终稿。
+  上游至少其一（同 IDEA-ID、同 N）：`ASD-*.md` 或 **`spec-asd-*.md`**（asd-spec-template，**概设需求规约**）；与会话门禁稿 `docs/superpowers/specs/*-sdx-design.md` 不同路径。不写 ASD。
   门禁：未完成「草稿用户总确认」前禁止写入 `{DOC_DIR}/requirements/**/DSD-*.md`（例外见 references/gates.md）。
   分流：以 docs-distill / docs-extract / docs-archive / docs-indexing / docs-build 为主，或仅需 SOLUTION/ANALYSIS/PRD/ASD/TDD，或仅限 sdx-architect、PRD、测试时。
 compatibility: 本仓库 Bash 5+，仓库根下 `scripts/config-bootstrap.sh` 可解析 `DOC_ROOT`；详设钩子见 `agent/hooks/sdx_gate_common.py --gate design`（路径均相对仓库根）。
@@ -11,11 +11,11 @@ compatibility: 本仓库 Bash 5+，仓库根下 `scripts/config-bootstrap.sh` �
 
 # 详细设计阶段（sdx-design）
 
-调度式工作：**先判断是否由本技能主责**，按需读 `references/`，维护会话 spec → 门禁 `CONFIRMED` → 落盘 **DSD**；应用全量时 **`{DOC_DIR}/specs/spec-dsd-{IDEA-ID}-{N}-{service-name}.md`** 与 DSD 同期（骨架 `assets/dsd-spec-template.md`）。
+调度式工作：**先判断是否由本技能主责**，按需读 `references/`，维护会话 spec → 门禁 `CONFIRMED` → 落盘 **DSD**，生成详设需求规约 **`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`** 与 DSD 同期（骨架 `assets/dsd-spec-template.md`）。
 
 **不写 ASD**。上游至少其一（**同 IDEA-ID、同 `{N}`**）：`ASD-{IDEA-ID}-{N}.md`（`/sdx-architect`）或 **`{DOC_DIR}/specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md`**（[asd-spec-template](../sdx-architect/assets/asd-spec-template.md)）。详设终稿为 **`spec-dsd-*.md`**（[dsd-spec-template.md](assets/dsd-spec-template.md)），与 **DSD** 同期落盘，可与 **spec-asd-*** 并存。
 
-**路径区分**：`docs/superpowers/specs/*-sdx-design.md` 仅为会话闸门稿；**规约汇总稿**在 `{DOC_DIR}/specs/`，勿混写。
+**路径区分**：`docs/superpowers/specs/*-sdx-design.md` 仅为会话闸门稿；**概设需求规约** **spec-asd-*** 可在 **`{DOC_DIR}/specs/`**；**详设需求规约** **spec-dsd-*** **只能**在 **`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/`**，勿混写。
 
 产出 **`DSD-{IDEA-ID}-{N}.md`**（[assets/dsd-template.md](assets/dsd-template.md)）。**有 ASD** 时 §3 在 ASD §3 已有行上扩写，冲突以已确认 **ASD + PRD** 为准。**仅有 architect spec** 时以 FR/UC 与 §5 可验收点为表行基础并标 SSOT；与 PRD 冲突须先收口上游。
 
@@ -39,8 +39,8 @@ compatibility: 本仓库 Bash 5+，仓库根下 `scripts/config-bootstrap.sh` �
 
 1. 确认 **IDEA-ID**、上游（`ASD-*` 或 **`{DOC_DIR}/specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md`**）、**PRD**、`KNOWLEDGE_TYPE`、`--depth`
 2. 读 [references/gates.md](references/gates.md) → [references/workflow.md](references/workflow.md)
-3. 用 [design-session-spec-template.md](assets/design-session-spec-template.md) 维护会话 spec，逐 Gd1–Gd4，Qclose-1 后 `CONFIRMED`
-4. 写 **DSD**（[dsd-template.md](assets/dsd-template.md)）；应用全量时写规约汇总稿（[dsd-spec-template.md](assets/dsd-spec-template.md)）
+3. 用 [design-session-spec-template.md](assets/design-session-spec-template.md) 维护会话 spec，逐 G1–G4，Qclose-1 后 `CONFIRMED`
+4. 写 **DSD**（[dsd-template.md](assets/dsd-template.md)）；按 [dsd-spec-template.md](assets/dsd-spec-template.md) 写 **详设需求规约**（`spec-dsd-*.md`）汇总稿
 5. 落盘后校验（**当前工作目录为仓库根**）：`agent/skills/sdx-design/scripts/validate-dsd.sh`（可选 `--gate-check`）；或在 `agent/skills/sdx-design/` 下执行 `./scripts/validate-dsd.sh`
 
 ---
@@ -50,8 +50,8 @@ compatibility: 本仓库 Bash 5+，仓库根下 `scripts/config-bootstrap.sh` �
 ### 何时使用
 
 - 编写或修改 **DSD**，或把 **ASD §3** / 需求表扩写到实现级。
-- 落盘 **`{DOC_DIR}/specs/spec-*.md`**（与 DSD 互指；应用全量与 DSD 同期）。
-- 用户提及 **详设、Gd、Qclose、validate-dsd、未确认不写 DSD**，或同时具备 **ASD/spec 上游 + PRD** 且要 **DSD 终稿**。
+- 生成详设需求规约 **`spec-dsd-*.md`**（唯一目录 **`.../MVP-Phase-{N}/specs/`**）与 **DSD** 同期；**spec-asd-*** 仍仅在 **`{DOC_DIR}/specs/`**。
+- 用户提及 **详设、G、Qclose、validate-dsd、未确认不写 DSD**，或同时具备 **ASD/spec 上游 + PRD** 且要 **DSD 终稿**。
 
 ### 何时不用（分流）
 
@@ -61,14 +61,14 @@ compatibility: 本仓库 Bash 5+，仓库根下 `scripts/config-bootstrap.sh` �
 
 ### 职责
 
-- **负责**：DSD（§1–§4）、`...-sdx-design.md` 会话流程（Gd/Qclose）、应用全量规约汇总稿与追溯。
+- **负责**：DSD（§1–§4）、`...-sdx-design.md` 会话流程（G/Qclose）、生成**详设需求规约**（`spec-dsd-*.md`）汇总稿与追溯。
 - **不负责**：以 **ASD/PRD/TDD…** 等替代详设作主产物；纯 **docs-*** 文档工程主线。
 
 ---
 
 ## 前置检查（执行前）
 
-- **IDEA-ID**；上游 **`ASD-*` 与/或 `{DOC_DIR}/specs/spec-*.md`**；与 **PRD** 可追溯一致（若 PRD 已存在）。
+- **IDEA-ID**；上游 **`ASD-*` 与/或 `{DOC_DIR}/specs/spec-asd-*.md`**；与 **PRD** 可追溯一致（若 PRD 已存在）。
 - **`KNOWLEDGE_TYPE`**（[references/knowledge-type-modes.md](references/knowledge-type-modes.md)）。
 - **`--depth`** 与 workflow 详设粒度一致；知晓 **`{DOC_DIR}`**、`docs/superpowers/specs/` 写入位置。
 
@@ -93,7 +93,7 @@ compatibility: 本仓库 Bash 5+，仓库根下 `scripts/config-bootstrap.sh` �
 6. **执行陷阱**：`gotchas.md`
 7. **语气**：`references/audience-and-language.md`
 8. **终检**：`references/quality-checklist.md`
-9. **模板**：会话 `assets/design-session-spec-template.md`；DSD `assets/dsd-template.md`；规约 **`{DOC_DIR}/specs/...`** 用 `assets/dsd-spec-template.md`；architect 稿对齐 [asd-spec-template](../sdx-architect/assets/asd-spec-template.md)。
+9. **模板**：会话 `assets/design-session-spec-template.md`；DSD `assets/dsd-template.md`；**详设需求规约** **`.../MVP-Phase-{N}/specs/spec-dsd-*.md`** 用 `assets/dsd-spec-template.md`；**概设需求规约**对齐 [asd-spec-template](../sdx-architect/assets/asd-spec-template.md)。
 
 ---
 
@@ -107,7 +107,7 @@ compatibility: 本仓库 Bash 5+，仓库根下 `scripts/config-bootstrap.sh` �
 
 - **会话 spec**：`docs/superpowers/specs/YYYY-MM-DD-<topic>-sdx-design.md`（骨架 `assets/design-session-spec-template.md`）。
 - **DSD**：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/DSD-{IDEA-ID}-{N}.md`（`assets/dsd-template.md`）。
-- **规约汇总稿**（应用全量、`assets/dsd-spec-template.md`）：`{DOC_DIR}/specs/spec-dsd-{IDEA-ID}-{N}-{service-name}.md`，与 DSD 同期。
+- **详设需求规约**（`assets/dsd-spec-template.md`）：**仅** **`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`**，与 DSD 同期。
 
 落盘校验（**在仓库根执行**；`path/to/` 相对于仓库根或与脚本解析后的 `{DOC_ROOT}` 一致时可按需调整）：
 

@@ -1,9 +1,9 @@
 ---
 name: sdx-architect
 description: >
-  架构设计技能：基于 PRD/ANALYSIS 产出架构设计说明书 ASD（§1/§2/§3）；可选 **`{DOC_DIR}/specs/spec-asd-*.md`** 架构规约草案（asd-spec-template）。
+  架构设计技能：基于 PRD/ANALYSIS 产出架构设计说明书 ASD（§1/§2/§3）；可选 **`{DOC_DIR}/specs/spec-asd-*.md`** **概设需求规约**（asd-spec-template）。
   触发：服务边界、架构图、服务变更表、系统级联邦概要（KNOWLEDGE_TYPE=system/company）；目标产物为 ASD 终稿或架构阶段会话。
-  分流：实现级 API/DDL、**spec-dsd-*.md** 规约全文、DSD → /sdx-design；仅 sdx-solution / sdx-analysis / sdx-prd / sdx-test 正文落盘，或仅 docs-distill / docs-extract / docs-archive / docs-indexing → 对应技能，不以本技能为主路径。
+  分流：实现级 API/DDL、**spec-dsd-*.md** **详设需求规约**全文、DSD → /sdx-design；仅 sdx-solution / sdx-analysis / sdx-prd / sdx-test 正文落盘，或仅 docs-distill / docs-extract / docs-archive / docs-indexing → 对应技能，不以本技能为主路径。
   门禁：未完成「用户总确认」前禁止写入 `{DOC_DIR}/requirements/**/ASD-*.md`（例外见 references/gates.md）。
 compatibility: 本仓库 Bash 5+，仓库根下 `scripts/config-bootstrap.sh` 可解析 `DOC_ROOT`；校验与钩子命令见正文（路径均相对仓库根）。
 ---
@@ -25,12 +25,12 @@ compatibility: 本仓库 Bash 5+，仓库根下 `scripts/config-bootstrap.sh` �
 
 - 主目标是 **docs-distill / docs-extract / docs-archive / docs-indexing** → 用对应 **docs-*** 技能。
 - 主产出是 **SOLUTION / ANALYSIS / PRD / TDD** 正文、**不要** ASD → 用对应 **sdx-*** 阶段技能。
-- 诉求为实现级 **API/DDL、spec-dsd-*.md 规约全文、DSD** → **[sdx-design](../sdx-design/SKILL.md)**。
+- 诉求为实现级 **API/DDL、spec-dsd-*.md（详设需求规约）全文、DSD** → **[sdx-design](../sdx-design/SKILL.md)**。
 
 ### 职责摘要
 
-- **负责**：ASD、架构边界、服务变更、规约摘要、（可选）**`{DOC_DIR}/specs/spec-asd-*.md`** 架构规约草案（`assets/asd-spec-template.md`）、门禁与会话草稿（见 `assets/architect-session-spec-template.md`）。
-- **不负责**：DSD、实现级契约、**spec-dsd-*.md** 完整规约落盘（属详设阶段）。本技能可维护 **`spec-asd-*.md`**（`asd-spec-template.md`）架构规约草案。
+- **负责**：ASD、架构边界、服务变更、规约摘要、（可选）**`{DOC_DIR}/specs/spec-asd-*.md`** **概设需求规约**（`assets/asd-spec-template.md`）、门禁与会话草稿（见 `assets/architect-session-spec-template.md`）。
+- **不负责**：DSD、实现级契约、**spec-dsd-*.md**（**详设需求规约**）完整落盘（属详设阶段）。本技能可维护 **`spec-asd-*.md`**（`asd-spec-template.md`）**概设需求规约**。
 
 ---
 

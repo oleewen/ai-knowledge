@@ -1,6 +1,6 @@
 # 知识库类型（见 sdx-architect）
 
-**`KNOWLEDGE_TYPE`（application / system / company）与 ASD、DSD、`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md` 规约分工**的权威说明已迁至：
+**`KNOWLEDGE_TYPE`（application / system / company）与 ASD、DSD、**概设需求规约**（`spec-asd-*.md`）/ **详设需求规约**（`spec-dsd-*.md`）分工**的权威说明已迁至：
 
 **[../../sdx-architect/references/knowledge-type-modes.md](../../sdx-architect/references/knowledge-type-modes.md)**
 

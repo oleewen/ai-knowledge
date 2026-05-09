@@ -12,5 +12,5 @@
 
 ## 3. 需求规约
 
-- 规约文件：`./specs/spec-asd-order-1-order.md`
+- 规约文件（**概设需求规约**）：`./specs/spec-asd-order-1-order.md`
 - 规约摘要：定义查询能力边界、关键参数、异常返回约束。

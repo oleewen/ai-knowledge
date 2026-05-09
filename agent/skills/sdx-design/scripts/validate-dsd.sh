@@ -170,7 +170,7 @@ for file in "${FILES[@]}"; do
   elif grep -qE '\./specs/spec-|specs/spec-' "${file}"; then
     success "${BASENAME}: 文内引用需求规约路径（{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md 形态）"
   else
-    warn "${BASENAME}: 未发现 ASD-* 或 {DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md 引用（建议在「关联文档」或正文引用架构说明书或需求规约 Markdown）"
+    warn "${BASENAME}: 未发现 ASD-* 或 {DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md 引用（建议在「关联文档」或正文引用 ASD，或 **概设需求规约** / **详设需求规约** 路径）"
   fi
 
   if grep -q 'PRD-' "${file}"; then
@@ -179,25 +179,35 @@ for file in "${FILES[@]}"; do
     warn "${BASENAME}: 未发现关联 PRD 编号 (PRD-*)"
   fi
 
+  MVP_SPECS_DIR="${DIRPATH}/specs"
   DOC_SPECS_DIR="${DOC_ROOT}/specs"
   _kt="${KNOWLEDGE_TYPE:-}"
+
+  # spec-dsd 唯一合法目录：与 DSD 同包 MVP-Phase-{N}/specs/；禁止落在 {DOC_ROOT}/specs/
+  if [[ -d "${DOC_SPECS_DIR}" ]]; then
+    MIS_DSD=$(find "${DOC_SPECS_DIR}" -maxdepth 1 -name 'spec-dsd-*.md' 2>/dev/null | wc -l | tr -d ' ')
+    if [[ "${MIS_DSD}" -gt 0 ]]; then
+      warn "${BASENAME}: ${DOC_SPECS_DIR} 下存在 spec-dsd-*.md —— 详设需求规约只能写在 requirements/.../MVP-Phase-*/specs/，不得放在 {DOC_ROOT}/specs/"
+    fi
+  fi
+
   if [[ "${_kt}" == "system" || "${_kt}" == "company" ]]; then
-    success "${BASENAME}: KNOWLEDGE_TYPE=${_kt}，跳过 ${DOC_ROOT}/specs 规约稿检查（联邦概要下通常不落 DSD 于本库）"
+    success "${BASENAME}: KNOWLEDGE_TYPE=${_kt}，跳过 MVP-Phase 下 spec-dsd 检查（联邦概要）"
     if [[ -d "${DOC_SPECS_DIR}" ]]; then
-      FSPEC_COUNT=$(find "${DOC_SPECS_DIR}" -maxdepth 1 -name 'spec-*.md' 2>/dev/null | wc -l | tr -d ' ')
+      FSPEC_COUNT=$(find "${DOC_SPECS_DIR}" -maxdepth 1 -name 'spec-asd-*.md' 2>/dev/null | wc -l | tr -d ' ')
       if [[ "${FSPEC_COUNT}" -gt 0 ]]; then
-        warn "${BASENAME}: 联邦概要下 ${DOC_SPECS_DIR} 仍有规约稿（spec-asd-*.md / spec-dsd-*.md）（若非有意可忽略）"
+        info "${BASENAME}: 联邦概要下 ${DOC_SPECS_DIR} 有 ${FSPEC_COUNT} 个 spec-asd-*.md（可忽略）"
       fi
     fi
-  elif [[ -d "${DOC_SPECS_DIR}" ]]; then
-    MD_COUNT=$(find "${DOC_SPECS_DIR}" -maxdepth 1 -name 'spec-*.md' 2>/dev/null | wc -l | tr -d ' ')
-    if [[ "${MD_COUNT}" -gt 0 ]]; then
-      success "${BASENAME}: ${DOC_SPECS_DIR} 下存在 ${MD_COUNT} 个规约稿（spec-asd-*/spec-dsd-*.md）"
+  elif [[ -d "${MVP_SPECS_DIR}" ]]; then
+    DSD_SPEC_COUNT=$(find "${MVP_SPECS_DIR}" -maxdepth 1 -name 'spec-dsd-*.md' 2>/dev/null | wc -l | tr -d ' ')
+    if [[ "${DSD_SPEC_COUNT}" -gt 0 ]]; then
+      success "${BASENAME}: ${MVP_SPECS_DIR} 下存在 ${DSD_SPEC_COUNT} 个 spec-dsd-*.md（合法路径）"
     else
-      warn "${BASENAME}: ${DOC_SPECS_DIR} 下未发现规约稿（应用全量时应在总确认后产出 {DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md）"
+      warn "${BASENAME}: ${MVP_SPECS_DIR} 下未发现 spec-dsd-*.md（应用全量时应在总确认后与 DSD 同期产出）"
     fi
   else
-    warn "${BASENAME}: 未找到 ${DOC_SPECS_DIR}（应用全量规约路径为 ${DOC_ROOT}/{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md）"
+    warn "${BASENAME}: 未找到 ${MVP_SPECS_DIR}（应与 DSD 同目录创建 specs/ 并落 spec-dsd-*.md）"
   fi
 
   if [[ "${GATE_CHECK}" == true ]]; then

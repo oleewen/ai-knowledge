@@ -27,7 +27,7 @@
 | `/sdx-analysis` | 产出需求分析阶段文档（Analysis 阶段）。 |
 | `/sdx-prd` | 产出 PRD 阶段文档（Requirements 阶段）；总确认前默认禁止写入 `{DOC_DIR}/requirements/**/PRD-*.md`（见技能 HARD-GATE）。 |
 | `/sdx-architect` | 产出架构设计说明书 **ASD**（§1–§3，含与 DSD 同构的 §3 需求规约摘要表；System/Company 联邦概要主场）；可选 **`spec-asd-*.md`**（[asd-spec-template](sdx-architect/assets/asd-spec-template.md)）。 |
-| `/sdx-design` | 产出详细设计说明书 **DSD**（§1–§4，§1 与 ASD §1 对齐；详设自 §2 起）及应用全量 **`specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`**（[dsd-spec-template](sdx-design/assets/dsd-spec-template.md)，`{DOC_DIR}/specs/`）；上游可含 **`spec-asd-*.md`**（[asd-spec-template](sdx-architect/assets/asd-spec-template.md)）；门禁与流程见 [sdx-design/references/gates.md](sdx-design/references/gates.md)、[workflow.md](sdx-design/references/workflow.md)，评测见 `sdx-design/evals/`。 |
+| `/sdx-design` | 产出详细设计说明书 **DSD**（§1–§4，§1 与 ASD §1 对齐；详设自 §2 起）及 **`requirements/.../MVP-Phase-{N}/specs/spec-dsd-*.md`**（[dsd-spec-template](sdx-design/assets/dsd-spec-template.md)，**禁止**写入 `{DOC_DIR}/specs/`）；上游可含 **`{DOC_DIR}/specs/spec-asd-*.md`**（[asd-spec-template](sdx-architect/assets/asd-spec-template.md)）；门禁与流程见 [sdx-design/references/gates.md](sdx-design/references/gates.md)、[workflow.md](sdx-design/references/workflow.md)，评测见 `sdx-design/evals/`。 |
 | `/sdx-test` | 产出测试设计与验证阶段文档（Test 阶段）；总确认前默认禁止写入 `{DOC_DIR}/requirements/**/TDD-*.md`（见 [sdx-test/references/gates.md](sdx-test/references/gates.md)）；流程见 [workflow.md](sdx-test/references/workflow.md)，评测见 `sdx-test/evals/`。 |
 | `/skill-creator` | 创建、评测与迭代技能的官方工作流（含 `scripts/`、`eval-viewer/`）。来源：Anthropic 仓库 [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) 中 `plugins/skill-creator/skills/skill-creator`；本仓库副本在 `agent/skills/skill-creator/`。 |
 

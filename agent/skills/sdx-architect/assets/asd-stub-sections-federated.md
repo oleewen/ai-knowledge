@@ -2,7 +2,7 @@
 
 拆分为 **ASD + DSD** 后
 - 系统库/公司库中的 **ASD 撰写 §1、§2 与 §3 需求规约（架构级摘要表）**（见 [asd-template.md](asd-template.md)）。其中 **§3** 是**概要级需求规约**：服务能力、参数、步骤、返回等一行摘要。架构阶段可选用 [asd-spec-template.md](asd-spec-template.md) 模板。
-- 实现级接口、DDL、业务逻辑与 **`specs/spec-dsd-*.md`** 在**应用知识库**通过 **`/sdx-design`** 产出 **DSD** 并评审确认后再视为终稿。
+- 实现级接口、DDL、业务逻辑与 **详设需求规约** **`requirements/.../MVP-Phase-*/specs/spec-dsd-*.md`** 在**应用知识库**通过 **`/sdx-design`** 产出 **DSD** 并评审确认后再视为终稿。
 
 ## 建议在 ASD §2 末补充（可选）
 
