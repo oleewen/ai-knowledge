@@ -1,8 +1,10 @@
-# docs-indexing 反模式（概念层）
+# docs-indexing 反模式
 
-- **跳过参数或写入门禁**：未 C 确认参数、或未 `docs-indexing-gate: CONFIRMED` + 路径清单即写 `INDEX_GUIDE` / `INDEXING-LOG`。
-- **多根同名不加路径**：会话 spec 只写 `INDEX_GUIDE.md` 不写 `application/…` / `system/…` 等完整相对路径，导致钩子无法对齐意图。
-- **深度 3 抽样跳读**：用户选 3 却以 token 为由少读；违反 [scan-spec.md](scan-spec.md) 应读尽读准则。
-- **增量无基线静默全量**：须用户显式改 full 或中止，不得自动降级。
+| 问题 | 说明 |
+|------|------|
+| 跳 Qclose 或跳 gate | 须 C + `CONFIRMED` + 路径清单再写 INDEX/LOG |
+| spec 只有 basename | 须写 **`application/...` 级**根相对路径 |
+| depth 3 少读 | 违 [scan-spec.md](scan-spec.md) |
+| 无基线静默 full | 须用户 explicit full 或中止 |
 
-操作层见 [../gotchas.md](../gotchas.md)。
+操作：[gotchas.md](../gotchas.md)。

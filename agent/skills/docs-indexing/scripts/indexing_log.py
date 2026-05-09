@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# INDEXING-LOG 写入与基线解析（对齐 references/indexing-log-spec.md）
+# INDEXING-LOG 读写；见 references/indexing-log-spec.md
 
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ def is_separator_line(line: str) -> bool:
 
 INTRO = """# INDEXING-LOG
 
-> 由 **docs-indexing** 维护。增量基线取自主表**第一行**的 `indexing_finished_ms`（`INDEX_GUIDE` 落盘成功后再写本表；新行**最新在上**）。兼容：若无表可解析，可回退读文内最后一次 `<!-- sdx-indexing:indexing_finished_ms=... -->`。
+> docs-indexing。锚点=主表**首行** `indexing_finished_ms`；INDEX 成功后再插本表；**新行在上**。无表时可回退文内最后一处 `<!-- sdx-indexing:indexing_finished_ms=... -->`。
 
 """
 

@@ -1,92 +1,57 @@
 ---
 name: docs-indexing
 description: >
-  为代码库生成结构化文档索引（INDEX_GUIDE.md），产出标准化九章文档地图，
-  作为 Agent 导航与 RAG 上下文的权威来源；索引运行记录写入 `changelogs/INDEXING-LOG.md` 主表（最新在上，见 `references/indexing-log-spec.md`）。
-  支持全量/增量扫描与三级深度（拓扑/结构/精读）。
-  当用户执行 /docs-indexing、需要生成或更新项目索引、建立文档地图、做项目 Onboarding、
-  或下游 docs-build/docs-agent 需要 INDEX_GUIDE.md 时，务必使用本技能。
-  即使用户只说「帮我建个索引」「生成一下项目文档」「更新一下 INDEX」「项目文档太乱了帮我整理一下」，也应触发本技能。
-  默认门禁：未完成中间会话 spec 与用户总确认（`docs-indexing-gate: CONFIRMED`）前，禁止写入各 `INDEX_GUIDE.md` 与 `*/changelogs/INDEXING-LOG.md`（与 CONVENTIONS 高风险一致；Hooks 启用时由 `sdx_gate_common.py --gate indexing` 拦截）。
-  若用户已明确要求只做 docs-build、docs-distill、docs-extract、仅写 SDD 终稿等为主路径，则不要以本技能为唯一主流程，应分流到对应技能。
+  生成九章 `INDEX_GUIDE.md`，维护各 `DOC_DIR` 下 `changelogs/INDEXING-LOG.md` 主表（最新在上；见 indexing-log-spec）。
+  支持 full/incremental 与深度 1/2/3。Agent/RAG 地图；下游 docs-build、docs-agent 依赖主 INDEX。
+  触发：`/docs-indexing`、建/更索引、文档地图、Onboarding、口述「整理 INDEX」等。
+  门禁：未完成 spec 与「用户总确认」（`docs-indexing-gate: CONFIRMED`）前禁止写任何 `INDEX_GUIDE.md` 与 `*/changelogs/INDEXING-LOG.md`（高风险；Hooks 下 `sdx_gate_common.py --gate indexing`）。
+  用户只要 docs-build/distill/extract/SDD 为主路径 → 分流，勿单跑本技能。
 ---
 
-# 文档索引生成器（docs-indexing）
+# docs-indexing（文档索引）
 
-本技能以「调度器」方式工作：先判定是否应由 `docs-indexing` 处理，再按序读取 `references/` 下规范，经**参数 Qclose-1**、**落盘会话 spec** 与 **`docs-indexing-gate`** 后写入 `INDEX_GUIDE.md` 与 `INDEXING-LOG.md`。
+判定路径 → 读 `references/` → **参数 Qclose-1** → 会话 spec + **路径清单** + **`docs-indexing-gate`** → 写 `INDEX_GUIDE` / `INDEXING-LOG`。
 
-将代码库解析为结构化、可检索的 `INDEX_GUIDE.md`，作为 Agent 与开发者的系统全景导航；其质量直接影响下游 `docs-build`、`docs-agent` 等技能能否准确定位信息。
+## 边界
 
----
+| 负责 | 不负责 |
+|------|--------|
+| 各文档根九章 `INDEX_GUIDE`、`INDEXING-LOG`、full/incremental、深度 1–3 | `*_knowledge.json`、KNOWLEDGE_INDEX（docs-build）；SDD 终稿（sdx-*）；overview（distill/extract） |
 
-## 适用边界
+## 前置
 
-- **本技能负责**：各文档根 `INDEX_GUIDE.md`（九章）、`changelogs/INDEXING-LOG.md` 主表行、全量/增量与深度 1/2/3 扫描流程。
-- **本技能不负责**：知识实体 `*_knowledge.json`、`KNOWLEDGE_INDEX`（**docs-build**）；根 `INDEX_GUIDE.md` 以外的业务终稿（**sdx-***）；系统 overview（**docs-distill** / **docs-extract**）。
-- **分流**：用户明确只要下游产物时，转对应技能。
+- `DOC_ROOT`、输出路径、`docs/superpowers/specs/` 可写
+- 增量：弄清 `INDEXING-LOG` 基线或 `--since`（[indexing-log-spec.md](references/indexing-log-spec.md)）
 
----
+## 阅读顺序
 
-## 输入与前置检查
+1. `gates.md` → `workflow.md` → `interaction-gate.md`
+2. 步骤 1–2：`scan-config-onboarding.md`；步骤 4：`scan-spec.md`；步骤 5：`quality-standards.md`；步骤 6：`nine-chapter-spec.md`
+3. 日志：`indexing-log-spec.md`；超范围：`brainstorming-integration.md`；反模式：`anti-patterns.md`；坑：`gotchas.md`
+4. 新建 spec：`assets/docs-indexing-session-spec-template.md`
 
-- 知晓本轮 `DOC_ROOT` / 输出路径及 `docs/superpowers/specs/` 可写。
-- 增量模式须理解 `INDEXING-LOG` 基线或 `--since`（见 `references/indexing-log-spec.md`）。
+## 门禁
 
----
+- 步骤 2：未 **Qclose-1（C）** 不得进扫描/写盘编排（[workflow.md](references/workflow.md)）
+- 写入：须 `CONFIRMED` + spec **完整仓库根相对路径清单**，否则不落 `INDEX_GUIDE`/`INDEXING-LOG`（例外见 `gates.md`）
 
-## 执行路由（先读后写）
+## 产出与脚本
 
-1. **门禁与路径证据**：先读 `references/gates.md`
-2. **六步流程与参数**：再读 `references/workflow.md`
-3. **会话 spec 与节奏**：读 `references/interaction-gate.md`
-4. **扫描配置与话术**：步骤 1～2 读 `references/scan-config-onboarding.md`
-5. **扫描执行规则**：步骤 4 读 `references/scan-spec.md`
-6. **九章结构**：步骤 6 读 `references/nine-chapter-spec.md`
-7. **质量验证**：步骤 5 读 `references/quality-standards.md`
-8. **日志格式与增量**：读/写日志时读 `references/indexing-log-spec.md`
-9. **与 SDD 边界**：需求超范围时读 `references/brainstorming-integration.md`
-10. **反模式**：收敛前读 `references/anti-patterns.md`
-11. **操作层陷阱**：读 `gotchas.md`
-12. **会话骨架**：新建 spec 时可复制 `assets/docs-indexing-session-spec-template.md`
+- Spec：`docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-indexing.md`
+- 产物：`INDEX_GUIDE.md`、`INDEXING-LOG.md`（参数与脚本 invocation 与用户确认一致）
 
----
+```bash
+agent/skills/docs-indexing/scripts/indexing.sh --mode <mode> --depth <depth>
+```
 
-## 门禁要求（必须执行）
+## 评测
 
-- **参数**：未完成 [workflow.md](references/workflow.md) 步骤 2 的 **Qclose-1（C）**，不得进入扫描与写盘编排。
-- **写入**：未完成 `docs-indexing-gate: CONFIRMED` 及 spec 内**路径清单**前，禁止 `Write` / `StrReplace` 写入受管 `INDEX_GUIDE.md` 与 `*/changelogs/INDEXING-LOG.md`。合法例外见 `references/gates.md`。
+`evals/evals.json`、`eval-metadata-template.json`、`agents/grader.md`、`agents/analyzer.md`。
 
----
+## 工程化
 
-## 产出与校验
+`python3 agent/hooks/sdx_gate_common.py --gate indexing`；会话内需曾出现 `/docs-indexing` 激活（`sdx_session_gate.py`）。`agent/hooks.json`、`agent/hooks/README.md`、`gates.md`。
 
-- **会话 spec**：`docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-indexing.md`（骨架见 `assets/docs-indexing-session-spec-template.md`）。
-- **正式产物**：已确认的 `INDEX_GUIDE.md`、`INDEXING-LOG.md` 主表更新。
-- **辅助脚本**（参数须与用户确认一致）：
+## 参考索引
 
-  ```bash
-  agent/skills/docs-indexing/scripts/indexing.sh --mode <mode> --depth <depth>
-  ```
-
----
-
-## 评测与迭代（skill-creator 对齐）
-
-- 评测样本：`evals/evals.json`
-- 评测元模板：`evals/eval-metadata-template.json`
-- 评分规则：`agents/grader.md`
-- 失败分析：`agents/analyzer.md`
-
----
-
-## 工程化支持
-
-钩子：`python3 agent/hooks/sdx_gate_common.py --gate indexing`；会话须曾出现 `/docs-indexing` 以激活（见 `sdx_session_gate.py`）。注册见 `agent/hooks.json`；语义见 `agent/hooks/README.md` 与 `references/gates.md`。
-
----
-
-## 快速定向表
-
-| 需要做什么 | 去读 |
-|-------------|------|
-| 全目录索引与何时打开 | [references/README.md](references/README.md) |
+[references/README.md](references/README.md)

@@ -1,10 +1,10 @@
-# docs-indexing 评测分析（analyzer）
+# docs-indexing — analyzer
 
-在聚合评测结果后，关注：
+聚合结果后盯：
 
-1. **路径证据**：模型是否遗漏「spec 须含完整相对路径」导致与钩子语义不一致。
-2. **与 docs-build 分流**：误将「只建 INDEX」需求接到 `docs-build`。
-3. **深度 3**：是否弱化「应读尽读」与 §八 未读声明。
-4. **增量基线**：是否在无基线时暗示静默全量。
+1. spec **完整根相对路径** vs 钩子  
+2. 「只要 INDEX」是否误分流 docs-build  
+3. depth 3 是否弱化应读尽读 / §八  
+4. 无基线是否暗示静默 full  
 
-改进技能时优先修正 **P0 反复失败** 的表述缺口，避免为过拟合单次 prompt 堆砌 MUST。
+优先补 **P0 反复失败** 的 SKILL 措辞，勿为单条 prompt 堆 MUST。

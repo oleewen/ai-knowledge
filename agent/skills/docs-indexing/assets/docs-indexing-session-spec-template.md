@@ -1,40 +1,28 @@
-# docs-indexing 会话 spec 骨架
+# docs-indexing 会话 spec
 
-路径：`docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-indexing.md`
+`docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-indexing.md`。替换占位；总确认前 `PENDING`。
 
-复制后替换占位；总确认前保留 `PENDING`。
+## 1. 范围
 
----
+- `INDEX_GUIDE`：`<如 application/INDEX_GUIDE.md>`
+- `INDEXING-LOG`：`<如 application/changelogs/INDEXING-LOG.md>`
+- docs-change / 基线：`<说明>`
 
-## 1. 背景与范围
+## 2. Qclose-1
 
-- 本轮 `DOC_ROOT` / 输出 `INDEX_GUIDE.md` 路径：`<例如 application/INDEX_GUIDE.md>`
-- 本轮 `INDEXING-LOG.md` 路径：`<例如 application/changelogs/INDEXING-LOG.md>`
-- 依赖：`docs-change` 是否已跑、增量基线是否可用：`<说明>`
+- `mode` · `depth` · `output` · `since`
+- 用户：**C / M / S**
 
-## 2. 已确认参数（Qclose-1）
+## 3. 写入路径清单（钩子）
 
-- `mode`：`<full|incremental>`
-- `depth`：`<1|2|3>`
-- `output`：`<路径>`
-- `since`：`<epoch ms 或 N/A>`
-- 用户选择：`<C / M / S>`
+与工具 **逐字一致** 的根相对路径（每行一条；只写本轮真会动的）：
 
-## 3. 本轮写入路径清单（钩子证据）
-
-须与工具调用中的仓库根相对路径**逐字一致**（每行一条）：
-
-- `<例如 application/INDEX_GUIDE.md>`
-- `<例如 application/changelogs/INDEXING-LOG.md>`
-
-（若本轮仅更新其中之一，可只列将实际写入的路径。）
+- …
 
 ## 4. 门禁进度（可选）
 
-与 `sdx-*` 同构时锚到本文件内小节。示例见 [`sdx-solution` 会话模板](../../sdx-solution/assets/solution-session-spec-template.md)「门禁进度」。
+同 sdx 则锚本节；例 [sdx-solution 模板](../../sdx-solution/assets/solution-session-spec-template.md)。
 
 ---
 
-<!-- docs-indexing-gate: PENDING -->
-
-（总确认后：`<!-- docs-indexing-gate: CONFIRMED -->`，且正文须含上节所列完整相对路径。）
+`<!-- docs-indexing-gate: PENDING -->` → 总确认 `CONFIRMED`；正文须含 §3 所列路径。

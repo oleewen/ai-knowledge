@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# docs-indexing - 文档索引生成器
-# 基于 docs-indexing Skill 的实现
+# docs-indexing 辅助脚本（技能契约见 agent/skills/docs-indexing）
 
 set -euo pipefail
 
@@ -14,7 +13,7 @@ validate_bootstrap_docsconfig "$SCRIPT_DIR"
 DOC_ROOT="$(resolve_repo_doc_root)"
 cd "$REPO_ROOT" || exit 1
 
-# 配置变量（cwd=仓库根；路径由 resolve_repo_doc_root / .docsconfig 与 DOC_ROOT 统一）
+# cwd=仓库根；路径见 .docsconfig / resolve_repo_doc_root
 DEFAULT_OUTPUT="${DOC_ROOT}/INDEX_GUIDE.md"
 LOG_FILE="${DOC_ROOT}/changelogs/INDEXING-LOG.md"
 CHANGE_LOG_FILE="${DOC_ROOT}/changelogs/CHANGE-LOG.md"
@@ -28,21 +27,15 @@ print(int(time.time() * 1000))
 PY
 }
 
-# 显示帮助信息
 show_help() {
     echo "Usage: $0 [options]"
-    echo "为代码库生成结构化文档索引（INDEX_GUIDE.md）"
+    echo "INDEX_GUIDE 辅助；参数须与技能会话确认一致"
     echo ""
-    echo "Options:"
-    echo "  --mode MODE           扫描模式：f/full（全量）或 i/incremental（增量）"
-    echo "  --depth DEPTH         扫描深度：1（拓扑）、2（结构）、3（精读）"
-    echo "  --output OUTPUT       输出文件路径（默认：文档根下 INDEX_GUIDE.md，见 .docsconfig / resolve_repo_doc_root）"
-    echo "  --since TIMESTAMP     增量模式起始时间（epoch ms）"
-    echo "  -h, --help            显示帮助信息"
-    echo ""
-    echo "Examples:"
-    echo "  $0 --mode full --depth 3"
-    echo "  $0 --mode incremental --depth 2"
+    echo "  --mode f|full|i|incremental"
+    echo "  --depth 1|2|3"
+    echo "  --output PATH   (默认文档根 INDEX_GUIDE.md)"
+    echo "  --since MS      增量 epoch ms"
+    echo "  -h, --help"
 }
 
 # 解析命令行参数

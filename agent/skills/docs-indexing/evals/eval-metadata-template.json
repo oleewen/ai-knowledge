@@ -3,28 +3,28 @@
   "eval_id": "REPLACE_WITH_EVAL_ID",
   "expected_category": "should-trigger | should-not-trigger",
   "expected_route": "/docs-indexing | （not-trigger 时填主分流目标）",
-  "expected_output": "一两句：与 evals.json 同 id 条一致。",
-  "notes": "复制为 <eval-id>-metadata.json；断言与 agents/grader.md 一致。",
+  "expected_output": "与同 id evals.json 对齐。",
+  "notes": "复制 <eval-id>-metadata.json；断言同 grader。",
   "assertions_should_trigger_example": [
     {
       "id": "gate-compliance",
       "name": "门禁合规",
       "type": "must_include",
-      "check": "须体现参数 Qclose-1 与 docs-indexing-gate CONFIRMED 前禁止写入 INDEX_GUIDE/INDEXING-LOG，或合法同会话例外。",
+      "check": "Qclose-1；CONFIRMED 前禁写 INDEX/LOG 或合法同会话例外。",
       "priority": "P0"
     },
     {
       "id": "path-evidence",
       "name": "路径证据",
       "type": "must_include",
-      "check": "须强调会话 spec 正文须列完整仓库根相对路径（防多域同名）。",
+      "check": "spec 须列完整根相对路径（防多域同名）。",
       "priority": "P0"
     },
     {
       "id": "no-false-low-risk",
       "name": "勿误称中等风险",
       "type": "must_not_conflict",
-      "check": "不得称 docs-indexing 无需 docs/superpowers/specs 或无 indexing gate/hook（与 CONVENTIONS 矛盾）。",
+      "check": "勿称无需 specs 或无 indexing gate/hook（违 CONVENTIONS）。",
       "priority": "P0"
     }
   ],
@@ -33,7 +33,7 @@
       "id": "no-blind-write",
       "name": "禁止默许直写",
       "type": "must_include",
-      "check": "须拒绝跳过闸门或仅在有用户明示例外时说明直写条件。",
+      "check": "拒跳闸；或仅在用户明示例外时说明直写条件。",
       "priority": "P0"
     }
   ],
