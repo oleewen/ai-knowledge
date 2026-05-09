@@ -1,71 +1,39 @@
-# docs-agent 常见陷阱
+# docs-agent 易错点
 
----
+## 意图
 
-## 需求对齐
+模糊仍直接生成 → 走 [gates.md](references/gates.md) 澄清；确认前不落盘。快速路径仅当参数可唯一推断。
 
-**意图模糊仍直接生成 README/AGENTS**：符合 [references/gates.md](references/gates.md)「澄清路径」时，须先对齐 `--output` 与 `--mode`（一次一问），确认前不落盘。快速路径仅在参数或自然语言已可唯一推断时适用。
+## Index
 
----
+- **磁盘优先**：有落盘路径则不用对话粘贴。
+- **四路径皆无** → 停，提示 `/docs-indexing`，不猜结构。
+- **REPO_ROOT 先于 DOC_ROOT**；两 Index 并存时按序命中即停；AGENTS 链用实测相对路径。
 
-## Index 解析
+## 探索
 
-**用对话粘贴的 Index 替代落盘文件**：仓库存在落盘路径时，一律以磁盘版本为准，忽略对话粘贴内容。磁盘版本可能已更新，用粘贴内容会导致产出与实际仓库不一致。
+- 不以 INDEX 为地图却通读全仓。
+- AGENTS **不**粘贴 INDEX §3；只写一句指向 §3。
+- INDEX §6 未索引：不写死结论；必要时只读指定路径。
 
-**未命中 Index 仍继续生成**：四个候选路径均不存在时，立即终止并提示用户运行 `/docs-indexing`，不要凭印象或目录猜测生成文档。
+## 生成
 
-**REPO_ROOT 与 DOC_ROOT 优先级混淆**：查找顺序是 REPO_ROOT 先、DOC_ROOT 后。仓库同时存在两个 Index 时，严格按此优先级命中即停，记录实际落盘相对路径，写入 AGENTS 链接时再换算为可点击的相对路径。
+- **先 README 后 AGENTS**。
+- README 目录树仅从 INDEX §2，勿另树。
+- AGENTS 概述 ≤3 行。
+- `--mode update`：合并，不全量抹掉 README。
 
----
+## 验收
 
-## 探索与阅读
+- 跑 `validate-guide.sh`；核对 AGENTS 首条 INDEX 与实际一致。
 
-**通读全仓后再写 AGENTS**：以 INDEX 为地图，只打开与「README 首屏 / AGENTS 契约」直接相关的文件。通读全仓会导致上下文爆炸，且 AGENTS 容易堆砌无关细节。
+## 职责
 
-**把 INDEX §3 API 入口表复制进 AGENTS**：AGENTS 只写一句「详见当前 INDEX §3」，不粘贴原表。三处维护极易失步。
+索引缺失或过时：**不要在本 Skill 内自动跑 docs-indexing**；让用户单独 `/docs-indexing`。
 
-**把「未索引区域」写成已核实事实**：INDEX §6 标注为未索引的路径，在 AGENTS 中只写「详见 INDEX §6」或标注「待核实」，需要时只补读该具体路径。
+## 自查
 
----
-
-## 生成阶段
-
-**先写 AGENTS 再写 README**：严格遵循「先 README 后 AGENTS」顺序。先写 AGENTS 会导致命令块写进去，再写 README 时又复制一遍，两文件命令不同步。
-
-**README 目录树与 INDEX §2 矛盾**：README 目录树直接从 INDEX §2 提取，禁止另起一套，否则新读者与 Agent 获得矛盾的项目结构认知。
-
-**AGENTS 项目概述超过 3 行**：AGENTS 项目概述 ≤3 行，细节链到 README 与 INDEX §1。臃肿的概述浪费 Agent 上下文。
-
-**`--mode update` 时直接覆盖已有 README**：diff 比较后合并，保留已有有效段落，只更新过时或缺失部分。
-
----
-
-## 验收阶段
-
-**跳过路径一致性校验**：生成后必须验证 AGENTS 中的路径引用在磁盘上存在，否则 Agent 按指引打开文件时报 404，工作流中断。运行 `bash agent/skills/docs-agent/scripts/validate-guide.sh --root .` 可自动检查。
-
-**AGENTS 首条参考路径写错**：AGENTS「先读什么」表格中 INDEX 路径必须与步骤 1 记录的实际落盘路径完全一致，否则 Agent 启动时找不到地图。
-
----
-
-## 禁止在本 Skill 内调用 docs-indexing
-
-发现 Index 过时或缺失时，不要在 docs-agent 执行流程内自动触发 docs-indexing。职责混淆会导致执行链不可预期，可能覆盖用户未提交的 Index 变更。需要更新 Index 时，单独运行 `/docs-indexing`。
-
----
-
-## 快速自查清单
-
-- [ ] 澄清路径已对齐输出范围与模式，或未触发澄清路径（快速路径）
-- [ ] Index 来自磁盘落盘文件，非对话粘贴
-- [ ] 未命中 Index 时已终止，未编造结构
-- [ ] Index 查找顺序：REPO_ROOT 先，DOC_ROOT 后
-- [ ] 以 INDEX 为地图最小阅读，未通读全仓
-- [ ] AGENTS 未粘贴 INDEX §3 API 入口表
-- [ ] 未索引区域未写成已核实事实
-- [ ] 先 README 后 AGENTS，命令块未重复
-- [ ] README 目录树与 INDEX §2 一致
-- [ ] AGENTS 项目概述 ≤3 行
-- [ ] `--mode update` 时合并而非覆盖
-- [ ] AGENTS 首条参考路径可跳转
-- [ ] 未在本 Skill 内调用 docs-indexing
+- [ ] 澄清/gates 已过或未触发澄清
+- [ ] Index 磁盘版；未命中已停；查找顺序 REPO→DOC
+- [ ] 最小阅读；§3 §6 合规；先读后顺；树一源；overview≤3；update 合并
+- [ ] 校验脚本；首链可点；未内调 docs-indexing

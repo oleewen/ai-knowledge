@@ -1,16 +1,6 @@
 #!/usr/bin/env bash
-#
-# validate-guide.sh — 验证 README.md / AGENTS.md / INDEX 路径一致性
-#
-# 用法（自仓库根执行）：
-#   bash agent/skills/docs-agent/scripts/validate-guide.sh [--root <project-root>]
-#
-# 检查项：
-#   1. INDEX 落盘路径是否存在
-#   2. README.md 中引用的相对路径是否可达
-#   3. AGENTS.md 中引用的相对路径是否可达
-#   4. README 与 AGENTS 之间是否存在大段重复
-#   5. AGENTS 首条参考是否指向实际 INDEX
+# README / AGENTS / INDEX：落盘索引、Markdown 相对链可达、二者重复度粗检。
+# bash agent/skills/docs-agent/scripts/validate-guide.sh [--root <repo>]
 
 set -euo pipefail
 

@@ -2,29 +2,29 @@
   "skill_name": "docs-agent",
   "eval_id": "REPLACE_WITH_EVAL_ID",
   "expected_category": "should-trigger | should-not-trigger",
-  "expected_route": "/docs-agent | （not-trigger 时填主分流目标）",
-  "expected_output": "一两句：本 eval 下模型应表现出的路由与要点（与 evals.json 中同 id 条一致）。",
-  "notes": "复制本模板为 <eval-id>-metadata.json 或在跑分流水线中内联使用；断言须与 agents/grader.md 一致。",
+  "expected_route": "/docs-agent | （not-trigger 时填分流目标）",
+  "expected_output": "与同 id eval 条目一致的一两句要点。",
+  "notes": "复制为 `<eval-id>-metadata.json` 或流水线内联；断言与 agents/grader.md 一致。",
   "assertions_should_trigger_example": [
     {
       "id": "gate-step0",
       "name": "步骤 0 门禁",
       "type": "must_include",
-      "check": "响应需明确：写入根目录 README/AGENTS 前须完成参数确认书与用户 C/S（或等价明确同意），禁止未确认即覆盖。",
+      "check": "写根 README/AGENTS 前须有确认书与 C/S（或未确认不写）。",
       "priority": "P0"
     },
     {
       "id": "index-driven",
       "name": "INDEX 驱动",
       "type": "must_include",
-      "check": "响应需体现以落盘 INDEX 为唯一地图、最小阅读集，且不在本技能内调用 docs-indexing 重建索引。",
+      "check": "落盘 INDEX 为地图、最小阅读；本技能不调 docs-indexing 重建。",
       "priority": "P0"
     },
     {
       "id": "validate-script",
       "name": "校验命令",
       "type": "should_include",
-      "check": "应提及 validate-guide.sh 或等价路径一致性校验。",
+      "check": "提及 validate-guide.sh 或等价链校验。",
       "priority": "P1"
     }
   ],
@@ -33,14 +33,14 @@
       "id": "correct-downstream",
       "name": "正确下游",
       "type": "must_include",
-      "check": "须点名与 prompt 一致的下游技能（如 docs-indexing、sdx-solution、docs-build 等），不得以 docs-agent 为唯一主路径。",
+      "check": "点名与 prompt 一致的下游技能，不以 docs-agent 为唯一主路径。",
       "priority": "P0"
     },
     {
       "id": "no-scope-creep",
       "name": "职责不扩张",
       "type": "must_not_conflict",
-      "check": "不得将 INDEX 全文维护、SOLUTION 落盘或 knowledge 实体构建框成 docs-agent 默认职责。",
+      "check": "不把 INDEX 全文维护、SOLUTION、实体构建说成本技能默认职责。",
       "priority": "P0"
     }
   ]
