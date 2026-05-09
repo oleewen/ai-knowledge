@@ -64,7 +64,7 @@ sequenceDiagram
 
 | 接口名称 | 所属服务 | 能力说明 | 输入输出 |
 | --------------- | -------- | -------- | ------ |
-| XX接口 | serivice-a | 提供XX能力 | 输入：XX <br/> 输出：YY |
+| XX接口 | service-a | 提供XX能力 | 输入：XX <br/> 输出：YY |
 
 ### 2.3 领域模型设计
 
@@ -104,7 +104,7 @@ flowchart LR
     Q2 -->|"海量列式分析"| A_COL["📊 <b>列式存储/分析</b><br/>Doris<br/>ClickHouse<br/>HBase"]
     Q2 -->|"图关系查询"| A_GRAPH["🕸️ <b>图数据库</b><br/>Neo4j<br/>JanusGraph"]
     Q2 -->|"对象/文件存储"| A_OBJ["📦 <b>对象/文件存储</b><br/>MinIO<br/>S3<br/>HDFS"]
-    Q2 -->|"消息/事件流"| A_MSG["📨 <b>消息/事件流</b><br/>Kafka<br/>RockitMQ<br/>RabbitMQ"]
+    Q2 -->|"消息/事件流"| A_MSG["📨 <b>消息/事件流</b><br/>Kafka<br/>RocketMQ<br/>RabbitMQ"]
 ```
 
 #### 数据库表设计
@@ -140,11 +140,9 @@ erDiagram
 
 ## 3. 需求规约
 
-<!-- 规约术语：与 **`./specs/spec-asd-*.md` 文件名**（**概设需求规约**，由 `/sdx-architect` 维护）或领域名一致的可读简称；应用实体 ID、服务实体 ID 须与 `{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md` / `knowledge/technical/` 中 APP-*、MS-* 对齐。 -->
+<!-- 表内「应用/服务」与 `./specs/spec-asd-*.md`、APP-*/MS-*（KNOWLEDGE_INDEX）对齐。架构级摘要；详设见 DSD 与 `spec-dsd-*.md`（仅 `requirements/.../MVP-Phase-*/specs/`）。冲突以已确认 ASD+PRD 为准。联邦：规约文件可 `N/A`，描述须写明服务级边界。 -->
 
-<!-- 本表为架构阶段「服务能力摘要」：下游 DSD「§3 需求规约」在此行基础上扩写；详设阶段 **详设需求规约** **`spec-dsd-*.md`** 仅落在 **`requirements/.../MVP-Phase-*/specs/`**（实现级终稿，正文骨架见 sdx-design **`dsd-spec-template.md`**）。**概设需求规约** **spec-asd-***（`{DOC_DIR}/specs/`）与 **详设需求规约** **spec-dsd-***（**禁止**放 `{DOC_DIR}/specs/`）。若与 ASD 冲突，以已确认 ASD + PRD 溯源为准。联邦模式（system/company）下「规约文件」可填 `N/A` 或应用库预期路径，「规约描述」仍须写清服务级能力边界。 -->
-
-<!-- 占位 `{app-name}`：规约文件名中的可文件名化小段（字符集与 `scripts/docs-link.sh` 登记的 `app_name` 校验一致：**小写、a-z0-9._-**）。取值优先与同库 **`{DOC_DIR}/knowledge-links.yaml`** 中与本应用那条 link 的 **`app_name`** 对齐；若无登记或本节无对应条目，再与 **`{APP-ID}`** / KNOWLEDGE_INDEX 中应用标识一致且无冲突的简称。**不得**用语义上的 `{service-name}` 替代本节文件名段占位（服务能力仍写在「规约描述」内的 **负责服务**）。 -->
+<!-- `{app-name}`：文件名片段，小写 `a-z0-9._-`，优先对齐 `knowledge-links.yaml` 的 `app_name`。勿用 `{service-name}` 替代本占位。 -->
 
 | 应用 | 规约文件 | 规约描述 |
 | ---- | -------- | -------- |

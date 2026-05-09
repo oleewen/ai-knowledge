@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# 架构设计说明书（ASD）结构校验
-# 用法: validate-asd.sh [--file <path>] [--gate-check] [--gate-strict]
+# ASD 结构校验。用法: [--file <path>] [--gate-check] [--gate-strict]
 
 TARGET_FILE=""
 ERRORS=0

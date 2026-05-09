@@ -3,8 +3,8 @@
   "eval_id": "REPLACE_WITH_EVAL_ID",
   "expected_category": "should-trigger | should-not-trigger",
   "expected_route": "/sdx-architect | （not-trigger 时填主分流目标）",
-  "expected_output": "一两句：本 eval 下模型应表现出的路由与要点（与 evals.json 中同 id 条一致）。",
-  "notes": "复制本模板为 <eval-id>-metadata.json 或在跑分流水线中内联使用；断言须与 agents/grader.md 一致。",
+  "expected_output": "与 evals.json 同 id 的 expected_output 对齐的一两句期望。",
+  "notes": "复制为 <eval-id>-metadata.json；断言与 agents/grader.md 一致。",
   "assertions_should_trigger_example": [
     {
       "id": "gate-compliance",
