@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ASD 结构校验。用法: [--file <path>] [--gate-check] [--gate-strict]
+# ASD 结构校验。[--file <path>] [--gate-check|--gate-strict]
 
 TARGET_FILE=""
 ERRORS=0
@@ -58,7 +58,7 @@ check_architect_gate() {
   if [[ ${found} -eq 1 ]]; then
     success "闸门：已找到引用 ${base} 且 CONFIRMED 的会话 spec"
   else
-    local msg="闸门：未找到引用 ${base} 且 <!-- sdx-architect-gate: CONFIRMED --> 的会话 spec（见 agent/skills/sdx-architect/SKILL.md HARD-GATE）"
+    local msg="闸门：缺少引用 ${base} 且 CONFIRMED 的会话 spec（见 sdx-architect SKILL 门禁）"
     if [[ "${GATE_STRICT}" == true ]]; then
       error "${msg}"
     else
@@ -67,7 +67,7 @@ check_architect_gate() {
   fi
 }
 
-echo "=== ASD（架构设计说明书）结构校验 ==="
+echo "=== ASD 结构校验 ==="
 echo "DOC_ROOT: ${DOC_ROOT}"
 if [[ -n "${KNOWLEDGE_TYPE:-}" ]]; then
   echo "KNOWLEDGE_TYPE: ${KNOWLEDGE_TYPE}"
@@ -145,7 +145,7 @@ for file in "${FILES[@]}"; do
     if grep -qF "${section}" "${file}"; then
       SECTION_COUNT=$((SECTION_COUNT + 1))
     else
-      error "${BASENAME}: 缺少必需章节 '${section}'（ASD 须含 §1–§3）"
+      error "${BASENAME}: 缺少 '${section}'（须 §1–§3）"
     fi
   done
   info "${BASENAME}: ${SECTION_COUNT}/3 个必需章节（§1–§3）"
@@ -173,7 +173,7 @@ echo "=== 校验结果 ==="
 echo "错误: ${ERRORS}  警告: ${WARNINGS}"
 
 if [[ ${ERRORS} -gt 0 ]]; then
-  echo "校验失败，请修复以上错误。"
+  echo "校验失败，请修正后重跑。"
   exit 1
 else
   echo "校验通过。"

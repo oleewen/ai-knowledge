@@ -10,7 +10,7 @@
 - MVP阶段：MVP-Phase-{N}
 
 ### 1.2 设计约束
-<!-- 技术约束、架构约束、兼容性约束等 -->
+<!-- 技术/架构/兼容约束 -->
 
 ### 1.3 关键设计决策
 
@@ -122,7 +122,7 @@ erDiagram
 
 #### 发布步骤
 
-<!-- 明确本次变更涉及的部署与环境变更，按顺序列出操作项（例如：容器/服务升级、数据库迁移、配置/环境变量调整、接口切换等） -->
+<!-- 部署与环境变更：逐项（升级/迁移/配置/切换等）-->
 
 #### 发布检查
 
@@ -140,9 +140,9 @@ erDiagram
 
 ## 3. 需求规约
 
-<!-- 表内「应用/服务」与 `./specs/spec-asd-*.md`、APP-*/MS-*（KNOWLEDGE_INDEX）对齐。架构级摘要；详设见 DSD 与 `spec-dsd-*.md`（仅 `requirements/.../MVP-Phase-*/specs/`）。冲突以已确认 ASD+PRD 为准。联邦：规约文件可 `N/A`，描述须写明服务级边界。 -->
+<!-- 行内应用/服务对齐 spec-asd-*、KNOWLEDGE_INDEX；摘要级，详设见 DSD/spec-dsd-*。冲突以已确认 ASD+PRD。联邦可将规约标 N/A，须写服务边界。-->
 
-<!-- `{app-name}`：文件名片段，小写 `a-z0-9._-`，优先对齐 `knowledge-links.yaml` 的 `app_name`。勿用 `{service-name}` 替代本占位。 -->
+<!-- `{app-name}`：`a-z0-9._-`，对齐 knowledge-links.yaml；勿用 `{service-name}` 替代 -->
 
 | 应用 | 规约文件 | 规约描述 |
 | ---- | -------- | -------- |
@@ -150,7 +150,7 @@ erDiagram
 
 ## 文档元数据
 
-<!-- 唯一元数据位置：须为 fenced yaml，且位于全文末尾；禁止在文件开头使用 --- YAML frontmatter -->
+<!-- 文末唯一 fenced YAML；禁用文件头 --- frontmatter -->
 
 ```yaml
 id: "ASD-{IDEA-ID}"
