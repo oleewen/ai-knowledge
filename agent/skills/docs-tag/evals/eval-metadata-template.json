@@ -3,21 +3,21 @@
   "eval_id": "REPLACE_WITH_EVAL_ID",
   "expected_category": "should-trigger | should-not-trigger",
   "expected_route": "/docs-tag | （not-trigger 时填主分流目标）",
-  "expected_output": "一两句：本 eval 下模型应表现出的路由与要点（与 evals.json 中同 id 条一致）。",
-  "notes": "复制本模板为 <eval-id>-metadata.json 或在跑分流水线中内联使用；断言须与 agents/grader.md 一致。",
+  "expected_output": "与同 id evals.json 对齐。",
+  "notes": "复制 <eval-id>-metadata.json；断言同 grader。",
   "assertions_should_trigger_example": [
     {
       "id": "param-gate",
       "name": "参数门禁",
       "type": "must_include",
-      "check": "响应需明确：执行脚本前须完成参数确认并一次性复述完整参数。",
+      "check": "脚本前确认并一次性复述全参。",
       "priority": "P0"
     },
     {
       "id": "subphase-path",
       "name": "子阶段与路径",
       "type": "must_include",
-      "check": "须体现 1-scan、1-write、phase 2 与 agent/skills/docs-tag/scripts/keyword_tag.py（或 python3 等价）。",
+      "check": "须有 1-scan、1-write、phase 2 与 `keyword_tag.py` 路径。",
       "priority": "P0"
     }
   ],
@@ -26,14 +26,14 @@
       "id": "correct-downstream",
       "name": "正确下游",
       "type": "must_include",
-      "check": "须点名与 prompt 一致的下游技能（docs-extract、docs-upgrade、docs-indexing 等），不得以 docs-tag 为唯一主路径。",
+      "check": "须点与用户 prompt 一致的下游；≠ 唯 docs-tag。",
       "priority": "P0"
     },
     {
       "id": "no-scope-creep",
       "name": "职责不扩张",
       "type": "must_not_conflict",
-      "check": "不得将 overview 第三列提炼、全库术语替换或 INDEX 维护框成 docs-tag 默认职责。",
+      "check": "勿将第三列提炼、全库术语、INDEX 默认归 tag。",
       "priority": "P0"
     }
   ]

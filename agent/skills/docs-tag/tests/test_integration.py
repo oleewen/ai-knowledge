@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-集成测试：docs-tag-skill 完整工作流链路验证
-"""
+"""keyword_tag 集成测"""
 import json
 import os
 import subprocess

@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-属性测试：docs-tag-skill
-使用 Hypothesis 验证设计文档中定义的 8 个正确性属性。
-"""
+"""Hypothesis 属性测（docs-tag）"""
 
 import io
 import json

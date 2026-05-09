@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-keyword_tag.py 核心函数单元测试
-"""
+"""keyword_tag 单测"""
 
 import subprocess
 import sys

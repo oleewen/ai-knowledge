@@ -1,17 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-keyword_tag.py — 关键词驱动的文档标记工具
-
-用法（Skill 层调用，请在仓库根 REPO_ROOT 下执行）：
-  python3 agent/skills/docs-tag/scripts/keyword_tag.py --file FILE --phase 1-scan --keywords 计费 费用类型 --scan-dir docs/architecture/ --top-n 30
-  python3 agent/skills/docs-tag/scripts/keyword_tag.py --file FILE --phase 1-write --keywords 计费 费用类型 --selected 计费规则,PolicyType
-  python3 agent/skills/docs-tag/scripts/keyword_tag.py --file FILE --phase 2
-
-用法（在脚本所在目录调试，或相对路径指向本文件，向后兼容）：
-  python3 keyword_tag.py --file FILE --phase 1 --keywords 计费 费用类型
-  python3 keyword_tag.py --file FILE --phase 2
-  python3 keyword_tag.py --file FILE --phase all --keywords 计费 费用类型
+关键词附录 + 表行 ✅。Skill：仓库根执行；用 1-scan / 1-write / 2，勿在非 TTY 用 --phase 1。
+  python3 agent/skills/docs-tag/scripts/keyword_tag.py --file F --phase 1-scan --keywords … [--scan-dir] [--top-n]
+  python3 … --phase 1-write --keywords … --selected A,B
+  python3 … --phase 2
+本地兼容：--phase 1 | 2 | all（1 含 input）
 """
 
 import re
@@ -30,7 +24,7 @@ CACHE_FILE = '/tmp/keyword_tag_cache.json'
 # ─────────────────────────────────────────────
 
 def positive_int(value):
-    """argparse 类型校验：正整数"""
+    """argparse：正整数"""
     try:
         ivalue = int(value)
     except ValueError:
@@ -41,21 +35,20 @@ def positive_int(value):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='文档关键词标记工具')
-    parser.add_argument('--file', required=True, help='目标文件路径')
+    parser = argparse.ArgumentParser(description='概览关键词标记（spec-tags + ✅）')
+    parser.add_argument('--file', required=True, help='目标 Markdown')
     parser.add_argument('--phase',
                         choices=['1', '2', 'all', '1-scan', '1-write'],
                         required=True,
-                        help='执行阶段：1=关键词扩展(终端交互), 2=表格标记, all=两阶段连续执行, '
-                             '1-scan=扫描输出JSON(供Skill层使用), 1-write=写入选中词(供Skill层使用)')
+                        help='1=交互候选; 2=打勾; all=两段; 1-scan/1-write=Skill')
     parser.add_argument('--keywords', nargs='+', default=[],
-                        help='种子关键词（phase 1/1-scan/1-write/all 时必填）')
+                        help='种子词（phase 含 1/1-scan/1-write/all 时必填）')
     parser.add_argument('--scan-dir', default='docs/architecture/',
-                        help='候选词扫描目录（默认：docs/architecture/）')
+                        help='共现扫描目录')
     parser.add_argument('--top-n', type=positive_int, default=30,
-                        help='候选词展示数量上限（默认：30，必须为正整数）')
+                        help='Top-N 候选（正整数）')
     parser.add_argument('--selected', default=None,
-                        help='已选中的关键词（逗号分隔，--phase 1-write 时必填）')
+                        help='1-write：逗号分隔选中词')
     return parser.parse_args()
 
 
@@ -64,7 +57,7 @@ def parse_args():
 # ─────────────────────────────────────────────
 
 def split_sections(content):
-    """将 md 文件内容按标题切分为 [(heading_text, section_body), ...] 列表"""
+    """按 # 标题切 [(heading, body), …]"""
     sections = []
     lines = content.split('\n')
     current_heading = ''

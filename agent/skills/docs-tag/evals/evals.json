@@ -1,33 +1,33 @@
 {
   "skill_name": "docs-tag",
   "version": "1.0.0",
-  "description": "用于评估 docs-tag 触发边界、参数门禁与 1-scan/1-write/2 子阶段分流；含断言供 grader 客观评分。",
+  "description": "docs-tag 触发边界、门禁、1-scan/1-write/2 分流；对齐 grader 断言。",
   "evals": [
     {
       "id": "docs-tag-trigger-001",
       "category": "should-trigger",
       "prompt": "帮我对 system/architecture/overview/billing-overview.md 做 /docs-tag：phase all，关键词「计费」「结算」，scan-dir 和 top-n 用默认；先复述参数再 1-scan，我选好候选词后再 1-write 和 phase 2。",
-      "expected_output": "以 /docs-tag 为主路径：先 gates 参数确认与完整复述；使用 python3 agent/skills/docs-tag/scripts/keyword_tag.py 的 1-scan → 用户选词 → 1-write → phase 2；不调用 docs-extract 写第三列。",
+      "expected_output": "/docs-tag：gates+复述→keyword_tag.py 1-scan→选→1-write→2；不写 extract 第三列。",
       "assertions": [
         {
           "id": "param-gate",
           "name": "参数门禁",
           "type": "must_include",
-          "check": "明确执行脚本前须完成参数确认并一次性复述完整参数（file/phase/keywords/scan-dir/top-n 等）。",
+          "check": "脚本前确认并一次性复述全参（file/phase/keywords/scan-dir/top-n 等）。",
           "priority": "P0"
         },
         {
           "id": "subphase-path",
           "name": "子阶段与路径",
           "type": "must_include",
-          "check": "须体现 1-scan、1-write、phase 2（或 2）及仓库根相对路径 agent/skills/docs-tag/scripts/keyword_tag.py。",
+          "check": "须含 1-scan、1-write、phase 2 与 `agent/skills/docs-tag/scripts/keyword_tag.py`。",
           "priority": "P0"
         },
         {
           "id": "no-phase1-input",
           "name": "禁用交互 phase1",
           "type": "should_include",
-          "check": "应说明自动化流程不使用 --phase 1 的 input() 挂起路径，或等价使用 1-scan/1-write。",
+          "check": "宜提勿用 `--phase 1` 或须 `1-scan`/`1-write`。",
           "priority": "P1"
         }
       ]
@@ -36,20 +36,20 @@
       "id": "docs-tag-trigger-002",
       "category": "should-trigger",
       "prompt": "YAML 里已经有 spec-tags 了，只要对同一文件跑表格打勾，/docs-tag phase 2。",
-      "expected_output": "确认 --phase 2 与 --file；参数复述后执行 keyword_tag.py --phase 2；提醒若无 spec-tags 会先报错见 gotchas。",
+      "expected_output": "确认 file/phase 2→`keyword_tag.py --phase 2`；无附录会败（gotchas）。",
       "assertions": [
         {
           "id": "phase2-only",
           "name": "仅阶段 2",
           "type": "must_include",
-          "check": "明确仅执行阶段 2 或 --phase 2，且不将主路径改为 docs-extract。",
+          "check": "仅 phase 2；主轴≠ docs-extract。",
           "priority": "P0"
         },
         {
           "id": "prerequisite",
           "name": "前置提示",
           "type": "should_include",
-          "check": "可提及若无关键词附录则须先阶段 1，或引用 gotchas/脚本行为。",
+          "check": "可提无附录须先阶段 1（gotchas）。",
           "priority": "P1"
         }
       ]
@@ -58,20 +58,20 @@
       "id": "docs-tag-not-trigger-001",
       "category": "should-not-trigger",
       "prompt": "从 applications/app-billing/design.md 和 README 里把计费规则提炼进 billing-overview.md 第三列，做 A/U/D 合并。",
-      "expected_output": "主路径应指向 /docs-extract 或 docs-extract；说明不是 docs-tag 的 YAML+表格打勾流程。",
+      "expected_output": "主轴 docs-extract（第三列/AUD）；≠ tag 附录+✅。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "须点名 docs-extract 或等价「overview 第三列、--sources、A/U/D」为处理该任务的主路径。",
+          "check": "须点 `docs-extract` 或第三列/`--sources`/A,U,D 等价。",
           "priority": "P0"
         },
         {
           "id": "no-false-tag-primary",
           "name": "不误揽提炼",
           "type": "must_not_conflict",
-          "check": "不得将多源业务提炼与第三列合并描述为 docs-tag 的默认完整职责。",
+          "check": "勿称多源第三列合并是 docs-tag 默认闭环。",
           "priority": "P0"
         }
       ]
@@ -80,20 +80,20 @@
       "id": "docs-tag-not-trigger-002",
       "category": "should-not-trigger",
       "prompt": "把全仓库 Markdown 里的「帐单」统一改成「账单」，用关键词检索对齐。",
-      "expected_output": "主路径应指向 /docs-upgrade 或 docs-upgrade；不是 docs-tag。",
+      "expected_output": "主轴 docs-upgrade（术语链式）；≠ docs-tag。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "须点名 docs-upgrade 或等价「链式同步、术语替换」为处理该任务的主路径。",
+          "check": "须点 `docs-upgrade` 或术语链式等价。",
           "priority": "P0"
         },
         {
           "id": "boundary-upgrade",
           "name": "边界分流",
           "type": "must_not_conflict",
-          "check": "不得将全库术语替换宣称仅通过 docs-tag 即可完成。",
+          "check": "勿称全库术语替换只靠 docs-tag。",
           "priority": "P0"
         }
       ]
