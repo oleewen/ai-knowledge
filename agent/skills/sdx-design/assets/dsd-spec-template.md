@@ -74,18 +74,24 @@
 ```mermaid
 sequenceDiagram
     participant caller as 调用方
-    participant svc as {ManagerOrService}
-    participant repo as {Repo}
-    participant db as {DB}
+    participant service as 应用服务
+    participant domain as 领域服务
+    participant repo as 仓储
+    participant db as 映射器
 
-    caller->>+svc: {apiMethod}(request)
-    svc->>svc: 参数校验（{规则1}/{规则2}/{规则3}）
-    svc->>svc: 默认值处理（{默认行为}）
-    svc->>repo: 查询/写入（{关键参数}）
-    repo->>db: SQL/持久化
-    db-->>repo: 结果
-    repo-->>svc: 结果
-    svc-->>-caller: Response
+    caller->>service: {apiMethod}(request)
+    service->>service: 参数校验（{规则1}/{规则2}/{规则3}）
+    service->>service: 默认值处理（{默认行为}）
+    service->>domain: 业务规则检查
+    alt 规则通过
+        domain-->>service: 通过
+        domain->>repo: 持久化
+        repo->>db: SQL/持久化
+        service-->>caller: 返回成功
+    else 规则不通过
+        domain-->>service: 失败
+        service-->>caller: 返回业务错误
+    end
 ```
 
 ---
@@ -104,7 +110,7 @@ sequenceDiagram
 
 ## 3. 领域规约（{AggregateName} / {AGG-ID}）
 
-### 3.1 聚合与实体变更
+### 3.1 聚合/实体变更
 
 - **聚合**：`{AGG-ID} {AggregateName}`（上下文：`{BC-ID} {BoundedContext}`）
 - **聚合根实体**：`{ENT-ID} {EntityName}`
