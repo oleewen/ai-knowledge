@@ -1,26 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# 解决方案文档结构校验脚本
-# 用法: scripts/validate-solution.sh [--file <path>]
-# 文档根路径：resolve_repo_doc_root（仅 .docsconfig）
-# 先 validate_bootstrap_docsconfig，详见 agent/scripts/config-bootstrap.sh
+# SOLUTION 结构校验（七章模板；门禁不改变结构要求）。
+# 用法：validate-solution.sh [--file <path>] [--gate-check] [--gate-strict]
+# 文档根：resolve_repo_doc_root（.docsconfig）；先 source config-bootstrap.sh
 #
-# 说明：门禁式工作流仅改变产出过程，不改变 SOLUTION 文档结构要求；校验项仍以七章模板为准。
-#
-# 校验项:
-#   1. 模板文件存在
-#   2. 文档目录存在
-#   3. 文末「文档元数据」YAML 完整性（与 solution-template 一致）；禁止文件头 YAML frontmatter（首行 ---）
-#   4. id 格式符合 SOLUTION-{IDEA-ID}
-#   5. 七章 ## 结构完整性
-#   6. 模板小节（### / ####）标题完整性
-#   7. 空章节检测（无内容且未标注「不适用」或「待补充」）
-#   8. 编号体系一致性（G-n、Q-n、C-n、R-n）
-#   9. 技术语言检测（接口名、表名等技术词混入正文）
-#  10. 可选 --gate-check：是否存在含 <!-- sdx-solution-gate: CONFIRMED --> 且引用该文件名的会话 spec（见 SKILL HARD-GATE）
-#
-# 用法补充: [--gate-check] [--gate-strict] 需与 --file 或全量扫描联用；--gate-strict 时未通过记为错误。
+# 要点：文末 YAML、`id`、`## 1`–`## 7`、小节标题、空节标注、编号、正文技术词筛查；
+#       --gate-check：specs 下含 CONFIRMED 且引用该文件名的会话 spec（见 SKILL）。
+# --gate-strict：门禁未过记 ERROR。
 
 TARGET_FILE=""
 ERRORS=0

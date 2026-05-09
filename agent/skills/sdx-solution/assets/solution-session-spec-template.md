@@ -26,7 +26,7 @@
 
 ### 方案取舍（本门禁内若存在多套可选）
 
-（可选；有 2 套及以上真实路径时填写：各路径业务命名、利弊、被选方案及理由。详见 [reference/brainstorming-integration.md](../references/brainstorming-integration.md)。）
+（可选；≥2 条真实路径时：业务命名、利弊、选中理由。见 [brainstorming-integration.md](../references/brainstorming-integration.md)。）
 
 ### Q-n / C-n / R-n / MVP（本门禁相关）
 
@@ -48,4 +48,4 @@
 
 <!-- sdx-solution-gate: PENDING -->
 
-总确认后，将上一行中的 `PENDING` 改为 `CONFIRMED`（供钩子与 `validate-solution.sh --gate-check` 识别）。本 spec 正文须至少出现一次完整文件名 `SOLUTION-{IDEA-ID}.md`。
+总确认后：`PENDING`→`CONFIRMED`（钩子与 `validate-solution.sh --gate-check`）。正文须至少出现一次 `SOLUTION-{IDEA-ID}.md`。
