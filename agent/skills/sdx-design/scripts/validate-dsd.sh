@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# 详细设计说明书（DSD）结构校验
-# 用法: validate-dsd.sh [--file <path>] [--gate-check] [--gate-strict]
-#
-# 可选 --gate-check：是否存在含 <!-- sdx-design-gate: CONFIRMED --> 且引用该 DSD 文件名的会话 spec
+# DSD 结构校验。用法: [--file <path>] [--gate-check] [--gate-strict]；gate-check 会话 spec 须含 CONFIRMED 与该 DSD 文件名
 
 TARGET_FILE=""
 ERRORS=0

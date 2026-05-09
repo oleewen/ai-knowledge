@@ -1,55 +1,47 @@
-# 评测与 JSON 结构（sdx-design）
+# 评测 JSON 契约（sdx-design）
 
-与 **skill-creator** 约定对齐：机器可读断言、评分产物与流水线字段须一致，便于 `eval-viewer` 与人工复核。
+与 **skill-creator** 对齐，供流水线与 viewer 解析。
 
----
-
-## `evals/evals.json`（样本集）
+## `evals/evals.json`
 
 | 字段 | 说明 |
 |------|------|
-| `skill_name` | 固定 `sdx-design` |
-| `version` | 样本集版本号 |
-| `description` | 本文件用途（给人读） |
-| `evals[]` | 见下单条 `eval` |
+| `skill_name` | `sdx-design` |
+| `version` | 样本集版本 |
+| `description` | 给人读的用途说明 |
+| `evals[]` | 单条评测，见下 |
 
-### 单条 `eval` 对象
+### 单条 `eval`
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
-| `id` | string | 唯一标识，如 `design-trigger-001` |
-| `category` | string | `should-trigger` 或 `should-not-trigger` |
-| `prompt` | string | 模拟用户输入 |
-| `expected_output` | string | 期望响应要点（给 grader/人审） |
-| `assertions` | array | 断言列表，见下 |
+| `id` | string | 唯一，如 `design-trigger-001` |
+| `category` | string | `should-trigger` \| `should-not-trigger` |
+| `prompt` | string | 模拟输入 |
+| `expected_output` | string | 期望要点 |
+| `assertions` | array | 见下 |
 
-### `assertions[]` 项
+### `assertions[]`
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
 | `id` | string | 如 `gate-compliance` |
 | `name` | string | 短标签 |
-| `type` | string | 如 `must_include`、`must_not_conflict`、`should_include` |
-| `check` | string | 可客观核对的判定语句 |
-| `priority` | string | `P0`（硬）或 `P1`（软） |
+| `type` | string | `must_include`、`must_not_conflict` 等 |
+| `check` | string | 可核对语句 |
+| `priority` | string | `P0` \| `P1` |
 
-**权威断言语义**：跑分/子代理 grading 须遵循 [agents/grader.md](../agents/grader.md)。
-
----
+断言语义遵循 [agents/grader.md](../agents/grader.md)。
 
 ## `evals/eval-metadata-template.json`
 
-单条评测回合的元数据壳；复制后把 `REPLACE_WITH_EVAL_ID` 等替换为真实值。断言数组可与 `evals.json` 同源复制。
+单回合元数据壳；替换占位符后与 `evals.json` 对齐。
 
----
+## `grading.json` / grader 输出
 
-## `grading.json`（grader 输出，供 viewer）
+字段 **`text`**、**`passed`**、**`evidence`**（勿用别名），否则 viewer 解析失败。
 
-`agents/grader.md` 要求每条期望使用字段 **`text`**、**`passed`**、**`evidence`**（勿用 `name`/`met` 等别名），否则 eval-viewer 解析失败。
+## 与脚本
 
----
-
-## 与仓库脚本的关系
-
-- 结构化 DSD 检查：[scripts/validate-dsd.sh](../scripts/validate-dsd.sh)（非 JSON schema，为章节/元数据/引用启发式校验）。
-- 写入拦截：`agent/hooks/sdx_gate_common.py --gate design`（见 SKILL.md「工程化支持」）。
+- [validate-dsd.sh](../scripts/validate-dsd.sh)：章节/启发式校验，非 JSON schema。  
+- `agent/hooks/sdx_gate_common.py --gate design`：写入拦截。

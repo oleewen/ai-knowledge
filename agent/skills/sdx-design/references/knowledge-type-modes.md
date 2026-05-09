@@ -1,7 +1,5 @@
-# 知识库类型（见 sdx-architect）
+# 知识库类型（索引）
 
-**`KNOWLEDGE_TYPE`（application / system / company）与 ASD、DSD、**概设需求规约**（`spec-asd-*.md`）/ **详设需求规约**（`spec-dsd-*.md`）分工**的权威说明已迁至：
+权威说明：**[sdx-architect/references/knowledge-type-modes.md](../../sdx-architect/references/knowledge-type-modes.md)**（`KNOWLEDGE_TYPE`、`spec-asd`/`spec-dsd`、`ASD/DSD` 分工）。
 
-**[../../sdx-architect/references/knowledge-type-modes.md](../../sdx-architect/references/knowledge-type-modes.md)**
-
-本文件保留为索引，避免引用断链；**DSD / 规约口径**以 **`/sdx-design` SKILL** 与 `validate-dsd.sh` 为准。
+**本技能**：落盘口径以 [SKILL.md](../SKILL.md)、`scripts/validate-dsd.sh` 为准。

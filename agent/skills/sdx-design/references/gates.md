@@ -1,62 +1,44 @@
-# sdx-design 门禁规则
+# sdx-design 门禁
 
-[SKILL.md](../SKILL.md) 为主干；流程与阶段见 [workflow.md](workflow.md)。
-
----
+流程见 [workflow.md](workflow.md)。
 
 ## 核心门禁
 
-- **总确认前，禁止写入** `{DOC_DIR}/requirements/**/DSD-*.md`（正式路径下的详细设计终稿）。
-- 合法例外**仅**在以下情形，且须在对话中留下明确依据：
-  1. 用户在同一轮对话中明示可跳过门禁、仅要草稿、或紧急直写终稿。
-  2. 环境变量 `SDX_DESIGN_ALLOW_DSD_WRITE=1`。
+**总确认前禁止写入** `{DOC_DIR}/requirements/**/DSD-*.md`**。例外须在对话留痕：
 
-除以上两项外，一律按门禁执行。
+1. 用户明示跳过门禁、仅草稿或紧急直写终稿。  
+2. `SDX_DESIGN_ALLOW_DSD_WRITE=1`。
 
----
+## 会话 spec
 
-## 门禁标记与 spec 约束
-
-- Spec 文末使用 `<!-- sdx-design-gate: PENDING -->`；总确认后改为 `<!-- sdx-design-gate: CONFIRMED -->`。
-- Spec 正文须至少出现一次目标文件名形态：`DSD-{IDEA-ID}-{N}.md`（与所选 IDEA-ID、阶段号一致）。
-
----
+- 文末：`<!-- sdx-design-gate: PENDING -->` → 总确认后 **`CONFIRMED`**。  
+- 正文至少一次出现 **`DSD-{IDEA-ID}-{N}.md`**（与所选 IDEA-ID、阶段一致）。
 
 ## 规约与 DSD 同期
 
-**DSD** 在总确认后同期落盘，并生成详设需求规约 **`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`**（**禁止**写入 **`{DOC_DIR}/specs/`**，该处仅 **概设需求规约** **`spec-asd-*.md`**）；与 DSD §2 互指与终检见 `workflow.md` 步骤 3、[quality-checklist.md](quality-checklist.md)。
-
----
+**DSD** 与 **spec-dsd-*.md** 在总确认后同期落盘。**spec-dsd** 勿写 **`{DOC_DIR}/specs/`**（该处仅 **`spec-asd-*.md`**）。互指与终检见 `workflow.md` 步骤 3、[quality-checklist.md](quality-checklist.md)。
 
 ## 与独立 `/brainstorming` 的关系
 
-本会话默认主产物为 `...-sdx-design.md` 与 **`DSD-*.md`**，**不以**独立 brainstorming 常见的 `*-design.md` + `writing-plans` 作为默认终态。嵌入节奏见 [brainstorming-integration.md](brainstorming-integration.md)。
-
----
+本会话默认终态为 **`...-sdx-design.md`** + **`DSD-*.md`**，不以独立 brainstorming 的 `*-design.md` + `writing-plans` 为默认。嵌入节奏见 [brainstorming-integration.md](brainstorming-integration.md)。
 
 ## 交互选项（C / M / S / F）
 
-阶段二各门禁末尾及 Qclose-1 均附标准四选项：
-
 ```
-C：确认，进入下一步
-M：修改，格式 "M 旧内容 - 新内容"
-S：跳过本门禁，按默认值推进
-F：跳过全部门禁，直接拟定草稿、撰写终稿
+C：确认进入下一步    M：修改（"M 旧 - 新"）
+S：跳过本门禁默认值  F：跳全部门禁拟草稿/终稿
 ```
 
-- **F** 直写终稿时仍须满足上文「合法例外」之一，否则违规。
+**F** 直写终稿仍须符合上文「例外」其一。
 
----
-
-## 总确认（Qclose-1）
+## Qclose-1
 
 全部门禁收口后：
 
-> 是否同意以当前草稿为唯一素材生成 `DSD-{IDEA-ID}-{N}.md`？（附标准四选项）
+> 是否同意以当前草稿为唯一素材生成 `DSD-{IDEA-ID}-{N}.md`？
 
-- **C / S**：将 `PENDING` 改为 `CONFIRMED`，进入阶段三。
-- **M**：返回修订 spec。
-- **F**：不经总确认直写草稿（须符合「合法例外」）。
+- **C / S**：`CONFIRMED` → 阶段三。  
+- **M**：回修订。  
+- **F**：不经总确认直写 → 须合法例外。
 
-**确认人**：填写 `$HOME` 路径末级目录名（本机用户名），勿填显示名或占位词。
+**确认人**：`$HOME` 末级目录名（本机用户名）。

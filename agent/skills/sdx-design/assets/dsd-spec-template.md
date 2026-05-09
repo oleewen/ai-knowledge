@@ -1,9 +1,7 @@
 # {MVP-N} 规约摘录（Spec 汇总）
 
-> **术语**：**`spec-dsd-*.md`** 为 **详设需求规约**；**`spec-asd-*.md`**（由 `/sdx-architect` 维护于 `{DOC_DIR}/specs/`）为 **概设需求规约**。  
-> **命名与位置（sdx-design）**：由 **`/sdx-design`** 生成的详设需求规约 **`spec-dsd-*.md`** **只能**落在 **`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/`**（与同期 **DSD** 同属该 `MVP-Phase-{N}/` 包），完整文件名为 **`spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`**；**禁止**写入 **`{DOC_DIR}/specs/`**（该目录仅用于 **概设需求规约** **`spec-asd-*.md`**）。`{MS-ID}` 须与同知识库 **`KNOWLEDGE_INDEX.md`**、`knowledge/technical/` 等处登记的 **MS 实体 ID（MS-*）** 对齐或可唯一映射。  
-> 来源：主要自 **`{DSD-FILE}.md`（详细设计说明书）** 对应章节摘录与整理。  
-> 目标：从规约视角描述 **哪个服务的哪个 API 要做什么改动**，以及对应的领域/数据变更点，供研发实现对照。
+> **spec-dsd-*.md**：详设规约，**仅** `requirements/.../MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`；勿写 **`{DOC_DIR}/specs/`**（该处仅 **`spec-asd-*`**）。`{MS-ID}` 对齐 **MS-***。**spec-asd**：architect，`{DOC_DIR}/specs/`。  
+> 自 **DSD** 摘录：服务/API 改动与领域/数据变更点。
 
 ---
 

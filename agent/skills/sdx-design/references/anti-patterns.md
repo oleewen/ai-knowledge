@@ -1,28 +1,21 @@
-# 反模式（概念层，sdx-design）
+# sdx-design 反模式（概念层）
 
-本文件与 [design-principles.md](design-principles.md) 中的「反模式清单」互补：此处强调**路由与产物**类误判；细则与表格仍以 `design-principles.md` 为准。
+与 [design-principles.md](design-principles.md) 内「反模式清单」互补：**路由与产物**优先在此排查；细则以 design-principles 为准。
 
----
+## 边界与产物
 
-## 技能边界类（优先纠正）
+| 误判 | 纠正 |
+|------|------|
+| 未确认写 **DSD** 终稿 | [gates.md](gates.md)：会话 spec + Qclose-1 |
+| 在详设「重写 ASD」且无 DD/回跳 | 回 architect 或在 DSD 显式决策记录 |
+| 同 IDEA-ID 下无 **ASD-* 且无 spec-asd-*** 即写实现级契约 | 先补其一或用户明示例外留痕 |
+| 服务边界级分叉在 Gd「悄悄改架构」 | 边界在 **`/sdx-architect`** 收口 |
+| **spec-dsd** 与 DSD §2/§3 无法互指 | 终检前对齐 [quality-checklist.md](quality-checklist.md) |
+| **spec-dsd** 写在 **`{DOC_DIR}/specs/`** | 迁至 **`requirements/.../MVP-Phase-{N}/specs/`**（仅 **`spec-asd`** 在上级 `specs/`） |
 
-1. **未确认写 DSD 终稿**：跳过会话 spec 或 Qclose-1 即写入 `{DOC_DIR}/requirements/**/DSD-*.md` —— 违反 [gates.md](gates.md)。
-2. **在详设阶段重写 ASD**：在 DSD 中替代或漂移 **ASD §1–§3** 已收口结论而不标注 DD-n 或回跳 —— 应回 **sdx-architect** 或显式决策记录。
-3. **无上游硬输入**：同 IDEA-ID 下既无 **`ASD-*.md`** 又无 **`{DOC_DIR}/specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md`**（**概设需求规约**，[asd-spec-template](../../sdx-architect/assets/asd-spec-template.md)）即大写 API/DDL/实现级契约 —— 须先补齐其一或用户明示例外并留痕。
-4. **把架构选型当 Gd 独断**：服务边界级分叉应在 **`/sdx-architect`**（Ga）收口，不在 DSD 内「悄悄改架构」。
-5. **规约与 DSD §2/§3 脱钩**：**`requirements/.../MVP-Phase-{N}/specs/spec-dsd-*.md`** 汇总稿或 §3 规约表与 **DSD** 无法互指 —— 终检前须对齐 [quality-checklist.md](quality-checklist.md)。
+## 与上游混淆
 
-6. **spec-dsd 错目录**：将 **`spec-dsd-*.md`** 写在 **`{DOC_DIR}/specs/`**（该目录仅 **`spec-asd-*.md`**）—— 须迁至 **`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/`**。
+- 整段贴 **PRD** 叙事代替 **US-n/FR-n** 引用。  
+- 把自动化用例写入 DSD 正文代替 **`sdx-test` / TDD**。
 
----
-
-## 与上游文档混淆
-
-- 把 **PRD 叙事**整段贴入 DSD 代替可追溯引用（US-n/FR-n）。
-- 把 **测试用例/自动化脚本**写入 DSD 正文代替 **sdx-test** 的 TDD。
-
----
-
-## 操作层补充
-
-操作层易错点（闸门、spec 路径、Mermaid、元数据等）见 [../gotchas.md](../gotchas.md)。
+操作层：**[../gotchas.md](../gotchas.md)**。

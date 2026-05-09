@@ -1,87 +1,76 @@
-# 设计原则与反模式（sdx-design）
+# 设计原则（sdx-design）
 
-[SKILL.md](../SKILL.md) 为主干；本文件为完整设计约束规范。验收勾选项见 [quality-checklist.md](quality-checklist.md)。
-
----
+[SKILL.md](../SKILL.md) 主干；验收勾选项见 [quality-checklist.md](quality-checklist.md)。
 
 ## 设计原则
 
 ### 1. 模板驱动
 
-输出遵循 [../assets/dsd-template.md](../assets/dsd-template.md)：**§1** 设计概述（**有 ASD** 时与 ASD §1 / `asd-template` 对齐；**仅有概设需求规约（spec-asd）** 时以 `{DOC_DIR}/specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md` §1–2 与 `refs` 为 SSOT，骨架仍对齐 `asd-template` §1）；**§2** 详细设计；**§3** 需求规约（**有 ASD** 时与 ASD §3 / [asd-template §3](../../sdx-architect/assets/asd-template.md) 表行对齐并扩写；**仅有 spec-asd 时** 以其中需求条目为表行基础并标注 SSOT；**详设需求规约**终稿与 [dsd-spec-template](../assets/dsd-spec-template.md) 骨架一致）；**§4** 附录。章节顺序与 `dsd-template` 约定不可擅自重排；无内容的章节保留标题并标注「不适用」或「待补充」。**应用全量**时在 **`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`** 输出**详设需求规约**汇总稿，遵循 [../assets/dsd-spec-template.md](../assets/dsd-spec-template.md)（**不**要求配套 `specs/{service}/{type}/` 下分文件 YAML）。
+- 遵循 [dsd-template.md](../assets/dsd-template.md)。**§1**：有 ASD → 对齐 ASD §1/`asd-template`；仅有 **`spec-asd-*`** → 以其 §1–2 与 `refs` 为 SSOT。**§2** 详设。**§3**：有 ASD → 对齐并扩写 ASD §3；仅有 spec-asd → 以其中需求条目为表行基础并标 SSOT。**§4** 附录。不重排章节；空节保留标题，注「不适用/待补充」。
+- **应用全量**：另写 **`requirements/.../specs/spec-dsd-*.md`**（[dsd-spec-template.md](../assets/dsd-spec-template.md)）；不要求 `specs/{service}/…` 分文件 YAML。
 
 ### 2. 证据优先
 
-架构决策与设计须引用 PRD、需求分析、`knowledge/` 或工程事实，禁止凭空臆测。引用格式：
-
-| 证据类型 | 格式 | 示例 |
-|----------|------|------|
-| 产品需求 | `PRD-{YYMMDD}-{主题slug} US-{N}` | `PRD-260403-管区分钱分量 US-003` |
-| 功能需求 | `FR-{NNN}` | `FR-001 创建申诉单` |
-| 知识库实体 | `{视角}-{ID}` | `BC-001 FeeAppealContext` |
-| 文档章节 | `{文件} §{章节}` | `INDEX_GUIDE.md §3.2` |
-| 代码位置 | `{类}:{方法}` | `PolicyAppealApi:create` |
-| ADR 决策 | `ADR-{NNN}` | `ADR-001 选择 DDD 分层架构` |
+| 类型 | 格式 | 例 |
+|------|------|-----|
+| 产品需求 | `PRD-{…} US-{N}` | `PRD-260403-xxx US-003` |
+| 功能 | `FR-{NNN}` | `FR-001 …` |
+| 知识实体 | `{视角}-{ID}` | `BC-001 …` |
+| 文档 | `{文件} §{节}` | `INDEX_GUIDE.md §3.2` |
+| 代码 | `{类}:{方法}` | `FooApi:create` |
+| ADR | `ADR-{NNN}` | `ADR-001 …` |
 
 ### 3. 按需加载
 
-仅在本轮任务需要时打开文件：起手读 **ASD 与/或 `{DOC_DIR}/specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md`（**概设需求规约**，至少其一）** + PRD + 需求分析 + 对应知识库视角；按需打开代码位置、现有文档、ADR；再基于详设段落编写或对齐（应用全量时）**`requirements/.../MVP-Phase-{N}/specs/spec-dsd-*.md`（**详设需求规约**）汇总稿**。**禁止**为「完整性」通读 `knowledge/**` 或全仓源码。
+起手 **ASD 与/或 `spec-asd-*` + PRD + ANALYSIS** + 相关 knowledge；按需代码/ADR。勿为「完整性」通读 `knowledge/**` 或全仓。**spec-dsd** 按需维护互指。
 
 ### 4. 歧义标注
 
-对 PRD 或需求分析中技术实现不明确的地方，标注为待澄清项，在文档中显式记录。禁止自行假设缺失信息后继续，应暂停并请求用户澄清。
+技术实现不明确处标待澄清并在文档记录；勿自行补全后继续。
 
-### 5. 范围边界
+### 5. 范围
 
-本技能仅负责输出 **DSD** 与 **`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`（**详设需求规约**）汇总稿**（`dsd-spec-template.md`）。不产出测试设计或代码——那些是下游 sdx-test / dev 的职责。
+本技能只产 **DSD** 与 **`spec-dsd-*.md`**。不测设、不写实现代码 → `sdx-test` / dev。
 
-### 6. 可追溯性
+### 6. 可追溯
 
-- 每个设计决策（DD-n）可追溯到 PRD 中的用户故事或功能需求（FR-n）
-- 每个 API 设计可追溯到 PRD 中的业务流程与用例
-- 每个数据表/字段变更可追溯到功能需求
-- 每个规约文件可追溯到 **DSD**（常为 §2）中的具体设计条目
-- 每个非功能性设计可追溯到需求分析中的非功能需求
+DD-n→PRD；API→用例；表变更→FR；规约条目→DSD（常为 §2）；非功能→分析中的非功能需求。
 
-### 7. ID 编号规范
+### 7. ID 前缀
 
-| 前缀 | 用途 | 示例 |
-|------|------|------|
-| `ASD-*` / `DSD-*` | 文档编号 | 与同目录 PRD、`REQUIREMENT-{IDEA-ID}` 对齐 |
-| `DD-{NNN}` | 设计决策编号 | `DD-001` |
-| `API-{NNN}` | API 接口编号 | `API-001` |
-| `LOGIC-{NNN}` | 业务逻辑编号 | `LOGIC-001` |
-| `TBL-{NNN}` | 数据表编号 | `TBL-001` |
-
----
+| 前缀 | 用途 |
+|------|------|
+| `ASD-*` / `DSD-*` | 文档，与 REQUIREMENT/MVP 对齐 |
+| `DD-{NNN}` | 设计决策 |
+| `API-{NNN}` | 接口 |
+| `LOGIC-{NNN}` | 业务逻辑 |
+| `TBL-{NNN}` | 数据表 |
 
 ## 反模式清单（禁止）
 
-| 反模式 | 说明 |
-|--------|------|
-| 过度设计 | 超越 MVP 范围引入不必要的抽象层、中间件或扩展点 |
-| 臆测架构 | 未引用 knowledge 或现有架构即假设系统结构 |
-| 吞没歧义 | 将技术实现不明确的地方自行补全，不标注待澄清 |
-| 范围蔓延 | 在 DSD 中直接编写测试用例或实现代码 |
-| 模板跳章 | 跳过或重排 `dsd-template.md` 的章节结构 |
-| 通读全库 | 一次性读取全仓知识库而不考虑本轮任务实际需要 |
-| 无编号引用 | 设计决策 / API / 表无统一编号，导致不可追溯 |
-| 接口不完整 | API 设计缺少错误码、幂等性说明或容错策略 |
-| DDL 无索引 | 数据表设计缺少索引策略与查询分析 |
-| 忽略非功能 | 仅关注功能实现，忽略安全、可观测性、性能等非功能设计 |
-| 规约脱钩 | 规约文件内容与 DSD 设计不一致或无法互相追溯 |
-| 循环中 RPC | 设计中在循环内调用 RPC 或数据库（违反项目约束） |
+| 表现 | 说明 |
+|------|------|
+| 过度设计 | 超 MVP 的抽象/中间件 |
+| 臆测架构 | 无 knowledge/事实即定结构 |
+| 吞没歧义 | 不标待澄清自行补全 |
+| 范围蔓延 | DSD 内写测试/代码 |
+| 模板跳章 | 改变 `dsd-template` 结构 |
+| 通读全库 | 无视任务范围读完 knowledge |
+| 无编号引用 | DD/API/TBL 不可追溯 |
+| 接口不完整 | 缺错误码、幂等或容错 |
+| DDL 无索引 | 缺策略与查询分析 |
+| 忽略非功能 | 安全、可观测、性能空话 |
+| 规约脱钩 | spec-dsd 与 DSD 不一致 |
+| 循环中 RPC | 循环内 RPC/DB |
 
----
+## 常见错误处置
 
-## 错误处理
-
-| 错误场景 | 处理方式 |
-|----------|----------|
-| PRD 文档不存在 | 终止，提示先执行 sdx-prd |
-| PRD 文档结构不完整 | 发出警告，列出缺失章节，基于已有内容继续并标注风险 |
-| 需求分析文档缺失 | 发出警告，仅基于 PRD 完成设计，标注缺少需求分析基线 |
-| knowledge 目录缺失 | 发出警告，仅基于 PRD 和 AGENTS.md 完成设计，标注缺少知识库基线 |
-| DSD/ASD 模板不存在 | 终止，提示核对 `agent/skills/sdx-design/assets/dsd-template.md` 与 `agent/skills/sdx-architect/assets/asd-template.md` |
-| 现有架构冲突 | 记录为设计决策（DD-n），标注冲突点与化解方案 |
-| 输出目录不存在 | 自动创建 `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/` 目录 |
+| 场景 | 处理 |
+|------|------|
+| 无 PRD | 停；先 `sdx-prd` |
+| PRD 结构缺 | 警告；列缺失；标风险后继续 |
+| 无 ANALYSIS | 警告；仅 PRD；标缺基线 |
+| 无 knowledge | 警告；标缺基线 |
+| 模板缺失 | 停；核对 `assets/dsd-template.md`、`sdx-architect` asd-template |
+| 架构冲突 | DD-n 记录化解 |
+| 输出目录不存在 | 创建 `{DOC_DIR}/requirements/.../MVP-Phase-{N}/` |
