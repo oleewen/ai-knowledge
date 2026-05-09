@@ -1,28 +1,23 @@
-# docs-push 闸门与确认
+# docs-push 闸门
 
-[SKILL.md](../SKILL.md) 为主干；命令与示例见 [parameters.md](parameters.md)、[workflow.md](workflow.md)。
+命令细节见 [parameters.md](parameters.md)、[workflow.md](workflow.md)。
 
----
+## 与 CONVENTIONS
 
-## 与 CONVENTIONS 的关系
+按 [agent/rules/CONVENTIONS.md](../../../rules/CONVENTIONS.md#artifact-gates)，docs-push 为**低风险工程同步**：不要 SDX 中间 spec、无 HTML gate。
 
-- 按 [agent/rules/CONVENTIONS.md](../../../rules/CONVENTIONS.md#artifact-gates) 总表，**docs-push 为低风险工程同步**：不要求 SDX 中间会话 spec，无 HTML gate 标记。
-- **HARD-GATE** 指：在非 `--dry-run` **覆盖写入目标库文件**或执行 **`git push`** 前，须在对话中取得用户明确意图；**禁止**在未确认时代用户执行 `push` 或改写生产分支。
+**HARD-GATE**：非 `--dry-run` **覆盖目标文件**或执行 **`git push`** 前，须在对话取得用户明确同意；**禁止**未确认替用户 `push` 或改生产分支。
 
----
+## copy 前
 
-## 实跑 copy（写目标 specs）前
+1. `--links` 与 `--specs-dir` 已确认。
+2. `--mode repo` 时 **`--branch`** 已确认（`checkout -B` 会创建/移动该分支尖端，见 parameters）。
+3. 建议先 **`--dry-run`**。
 
-1. **`--links`** 指向的 `knowledge-links.yaml` 与 **`--specs-dir`** 已由用户确认。
-2. **`--mode repo`** 时 **`--branch`** 已确认；知晓 `git checkout -B` 会移动/创建该分支尖端（见 [parameters.md](parameters.md)）。
-3. 建议先 **`--dry-run`**，再实跑。
+## `git` 子命令
 
----
-
-## Git 四档（`git` 子命令）
-
-| 档位 | 须确认 |
-|------|--------|
-| `none` / `stage` | 仍建议用户知晓将触碰的仓库路径。 |
-| `commit` | 用户已提供 `--message`（或由用户逐字确认 message）。 |
-| `push` | **必须**用户一句显式授权后再执行（含 dry-run 预览后的「可以 push」）。 |
+| 档位 | 确认 |
+|------|------|
+| `none` / `stage` | 仍建议用户知晓将触碰的仓库 |
+| `commit` | 用户已定 `--message`（或逐字确认） |
+| `push` | **须**一句显式授权后再执行 |

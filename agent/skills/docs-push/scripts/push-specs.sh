@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-# push-specs.sh — 双轨：spec-{yyMMdd}-{n}-{app}.md → {doc_dir}/specs/；
-#                   spec-asd-*.md → {doc_dir}/requirements/…/MVP-Phase-*/specs/（文件名归位或 requirements/ 前缀镜像）
-# 子命令: copy | git（详见 agent/skills/docs-push/references/parameters.md）
+# push-specs.sh：legacy → {doc_dir}/specs/；spec-asd → requirements/…/MVP-Phase-*/specs/（归位或 requirements/ 镜像）
+# 子命令 copy|git → references/parameters.md
 set -euo pipefail
 
 readonly _INVOCATION_PWD="$(pwd -P)"
@@ -19,9 +18,7 @@ _ps_abspath_existing_file() {
   printf '%s\n' "$(cd -P "$(dirname "$f")" && pwd -P)/$(basename "$f")"
 }
 
-# 解析要 source 的 docs-core.sh（与「中央库根」解耦；支持 agent-install 的 ~/.agents 布局）。
-# 顺序：DOCS_CORE_SH → 技能树下 ../../../scripts/docs-core.sh → ~/.agents/scripts →
-#       ~/.{cursor,claude,trea,kiro}/scripts → 自脚本/cwd 上溯 agent/scripts → AIK_ROOT/agent/scripts。
+# docs-core.sh：DOCS_CORE_SH → 技能 ../../../scripts → ~/.agents|.cursor|.claude|…/scripts → 上溯 agent/scripts → AIK_ROOT
 _aik_resolve_docs_core_sh() {
   local dc d home="${HOME:-}"
   if [[ -n "${DOCS_CORE_SH:-}" ]]; then
@@ -98,7 +95,7 @@ usage() {
       --git-op      none | stage | commit | push
       commit/push  须配合 --message
 
-    说明: --links 若为相对路径，则相对于中央知识库仓库根（解析顺序见 agent/skills/docs-push/references/parameters.md）。
+    相对 --links：中央仓库根解析见 agent/skills/docs-push/references/parameters.md
 EOF
 }
 

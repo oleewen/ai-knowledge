@@ -2,29 +2,29 @@
 
 ## 1. 准备
 
-- 确认 `knowledge-links.yaml` 中目标 **`path`** 为本机已存在目录（通常为已 clone 的应用库根）。
-- 确认 `app_name` 与文件名一致：**legacy** 对应 `spec-…-{app}.md` 最后一小段；**spec-asd** 对应 `spec-asd-{IDEA}-{N}-{app-name}.md` 最后一段 **`app-name`**。
-- **`--specs-dir`**：**spec-asd** 会递归下级目录——通常取 `{DOC_DIR}` 根目录（而非仅 `specs/` 单层），除非你确定所有 `spec-asd-*.md` 的路径都在传入目录树下。
+- `knowledge-links.yaml` 中 **`path`** 为本机已存在目录（多为已 clone 的应用根）。
+- `app_name` 与文件名末段一致：legacy → `spec-…-{app}`；asd → `spec-asd-{IDEA}-{PHASE}-{app}` 最后一段。
+- **`--specs-dir`**：asd **递归**，通常取 `{DOC_DIR}` 根（非仅单层 `specs/`），除非你确定所有 `spec-asd` 都在该树下。
 
-## 2. 拷贝（`copy`）
+## 2. copy
 
 1. 建议先 `--dry-run` 核对目标绝对路径。
-2. 去掉 `--dry-run` 实跑 `copy`。
-3. **`--strict`**：CI 或「不允许部分成功」时使用；否则无法路由的文件仅告警并跳过。
+2. 去掉 `--dry-run` 执行 `copy`。
+3. **`--strict`**：CI 或不允许部分成功；否则无法路由的条仅告警跳过。
 
-## 3. Git 四档（`git`）
+## 3. Git 四档（`copy` 成功后）
 
-在 **`copy` 成功后**，向用户说明四档并给出可选命令（同一套 `--specs-dir` / `--links` / `--mode` / `--branch`）：
+同一套 `--specs-dir` / `--links` / `--mode` / `--branch`，向用户说明所选档位：
 
-| 用户意图 | `--git-op` |
-|----------|------------|
-| 只确认工作区 | `none` |
-| 暂存不提交 | `stage` |
+| 意图 | `--git-op` |
+|------|------------|
+| 只看工作区 | `none` |
+| 暂存 | `stage` |
 | 提交 | `commit`（须 `--message`） |
-| 提交并推送 | `push`（须 `--message`；**执行前须用户明确同意**） |
+| 提交并推送 | `push`（须 `--message`；**执行前用户须明确同意**） |
 
-每个登记目标若对应**不同** Git 根，脚本按**仓库根聚合**：每个根一次 `add`，`commit`/`push` 各一次。
+不同 Git 根时脚本按**仓库根聚合**：每根一次 `add`，`commit`/`push` 各一次。
 
 ## 4. 脏工作区
 
-默认在 `repo` 模式切换分支前、以及 `git` 子命令在可能改写 Git 状态前，会检查 `git status --porcelain`：除**本次计划内的目标文件相对路径**外不得有其它变更。若需放宽，使用 `--allow-dirty`（仍建议先清理无关变更）。
+默认：`repo` 切分支前、以及可能改 Git 状态前，`git status` 除**本次计划内文件**外不得有其余变更。放宽用 `--allow-dirty`（仍建议先清理无关变更）。

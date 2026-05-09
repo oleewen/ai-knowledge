@@ -1,59 +1,42 @@
 ---
 name: docs-push
 description: >
-  推送规约：**`spec-asd-*.md`** 递归收集，落成 `{path}/{doc_dir}/requirements/REQUIREMENT-*/MVP-Phase-*/specs/`（中央常在 `{DOC_DIR}/specs/` 落盘则由脚本按文件名归位；若以 `requirements/` 为前缀则从 `--specs-dir` 镜像相对路径）。
-  **`spec-{yyMMdd}-{n}-{app}.md`** 仅从 `--specs-dir` 顶层匹配，落成 `{path}/{doc_dir}/specs/`。**`spec-dsd-*.md`** 仍按需将 `--specs-dir` 指到 `requirements/.../MVP-Phase-*/specs/`（脚本行为未改）。
-  依据 knowledge-links.yaml 的 `{path}/{doc_dir}`；支持 path 与 repo 模式四档 Git；执行 push 须用户确认。
-  只要用户提到以下任一场景，就应立即使用本技能，不要等用户明确说「/docs-push」：
-  推送 spec 到应用库、同步 specs 到建联 path、按 knowledge-links 上传 spec、把中央 spec 推到目标工程、
-  「spec 推到已注册的 app」「repo+feature 分支写 spec」「docs-push 一下」。
-  若用户仅要 docs-pull、docs-distill、SDD 终稿闸门或只改 overview，则不要以本技能为主路径。
+  按 `knowledge-links.yaml` 将中央规约复制到各应用本机 `path`×`doc_dir`：legacy `spec-{yyMMdd}-{n}-{app}.md` → `{doc_dir}/specs/`（仅 `--specs-dir` 顶层）；`spec-asd-*.md` 递归收集，归位到 `requirements/REQUIREMENT-*/MVP-Phase-*/specs/` 或按 `requirements/` 前缀镜像。
+  `spec-dsd-*.md` 需将 `--specs-dir` 指到对应 Phase 下 `specs/`。支持 `path`/`repo` 与 Git 四档（`none|stage|commit|push`）；**非 dry-run 写盘与 `git push` 须用户确认**。
+  「推 spec 到应用库」「按 knowledge-links 同步 specs」「docs-push」等意图触发；仅 docs-pull、distill、SDD 闸门或只改 overview 时分流。
 ---
 
-# docs-push（spec 推送到建联目标）
+# docs-push：spec 推送到建联目标
 
-本技能以 **调度器** 方式工作：先读闸门与参数说明，在**用户确认**（尤其 `git push`）前提下调用 `scripts/push-specs.sh`。
+调度器：读闸门与参数 → 用户确认（尤其写盘、`push`）→ 调用 `scripts/push-specs.sh`。
 
-> **写盘目标**：每条 link 的**本机 `path`** × `{doc_dir}`（缺省常为 `application`/`docs`，以 YAML 为准）。**Legacy**规约 → `{doc_dir}/specs/`。**spec-asd** → `{doc_dir}/requirements/REQUIREMENT-{IDEA}/MVP-Phase-{N}/specs/` 或镜像 `requirements/` 子树。**不**使用 `repository` 隐式 clone；远端仅元数据。
+**写盘**：每条 link 的**本机 `path`** × `doc_dir`（YAML 为准）。**不**用 `repository` 做隐式 clone；远端仅元数据。
 
----
-
-## 读序（先读后写）
+## 读序
 
 1. [references/gates.md](references/gates.md)
 2. [references/parameters.md](references/parameters.md)
 3. [references/workflow.md](references/workflow.md)
-4. 陷阱：[gotchas.md](gotchas.md)
+4. [gotchas.md](gotchas.md)
 
----
-
-## 脚本入口
-
-从**中央知识库仓库根**执行（路径相对根）：
+## 脚本（中央库根执行）
 
 ```bash
-bash agent/skills/docs-push/scripts/push-specs.sh copy --specs-dir DIR --links system/knowledge-links.yaml --mode path
+bash agent/skills/docs-push/scripts/push-specs.sh copy \
+  --specs-dir DIR --links system/knowledge-links.yaml --mode path
 ```
 
-**spec-asd 中央在 `application/specs/` 时**（`--specs-dir` 取 `{DOC_DIR}` 根或其父级，以便 `find` 命中子目录下的 `spec-asd-*.md`）：
+**`spec-asd` 常在 `{DOC_DIR}/specs/`**：`--specs-dir` 取能 `find` 到文件的根（常 `./application`），先 `--dry-run`。
 
-```bash
-bash agent/skills/docs-push/scripts/push-specs.sh copy --specs-dir ./application --links system/knowledge-links.yaml --mode path --dry-run
-```
+相对 `--links` 相对**中央库根**。
 
-`--links` 为相对路径时，相对于中央库根目录。
-
----
-
-## 与 docs-pull 的边界
+## 与 docs-pull
 
 | docs-push | docs-pull |
 |-----------|-----------|
-| 中央 → 目标：`spec-asd` 入 `{doc_dir}/requirements/…/specs/`；legacy 入 `{doc_dir}/specs/` | 目标 → 中央 `applications/app-*` 镜像 |
-| 需显式 `--links` | 依赖 manifest 等 |
+| 中央 → 目标（asd → `requirements/…/specs/`；legacy → `specs/`） | 目标 → 中央 `applications/app-*` |
+| 显式 `--links` | 依赖 manifest 等 |
 
----
+## 评测
 
-## 评测（skill-creator）
-
-- `evals/evals.json`
+[evals/evals.json](evals/evals.json)
