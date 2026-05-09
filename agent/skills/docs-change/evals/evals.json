@@ -1,33 +1,33 @@
 {
   "skill_name": "docs-change",
   "version": "1.0.0",
-  "description": "用于评估 docs-change 触发边界、分流与三源/基线表述；含 expected_output 与断言供 grader 客观评分。",
+  "description": "评测 docs-change 触发、分流及三源/基线表述；含 expected_output 与断言供 grader 打分。",
   "evals": [
     {
       "id": "change-trigger-001",
       "category": "should-trigger",
       "prompt": "帮我跑一下 /docs-change，把最近两周的文档改动聚到 application/changelogs/CHANGE-LOG.md，下游要给 docs-indexing 用",
-      "expected_output": "主路径 docs-change：三源采集、指定或解析 --output、写入 CHANGE-LOG.md、文末基线；提及与 docs-indexing 的衔接；有歧义时先确认。",
+      "expected_output": "docs-change：三源、--output、`CHANGE-LOG.md`、文末基线；衔接 docs-indexing；歧义先确认。",
       "assertions": [
         {
           "id": "structure-integrity",
           "name": "结构完整",
           "type": "must_include",
-          "check": "体现 git/changelog/local 或三源语义、CHANGE-LOG.md、增量/基线。",
+          "check": "含三源语义、CHANGE-LOG.md、增量或基线。",
           "priority": "P0"
         },
         {
           "id": "boundary-routing",
           "name": "边界分流",
           "type": "must_not_conflict",
-          "check": "不得将主路径改为仅执行 docs-indexing 生成 INDEX_GUIDE 而完全不提 CHANGE-LOG 聚合。",
+          "check": "不得以仅 docs-indexing/INDEX_GUIDE 替代 CHANGE-LOG 聚合主路径。",
           "priority": "P0"
         },
         {
           "id": "downstream-hint",
           "name": "下游衔接",
           "type": "should_include",
-          "check": "应提及 docs-indexing 消费变更列表或等价表述。",
+          "check": "提及 docs-indexing 消费变更或等价表述。",
           "priority": "P1"
         }
       ]
@@ -36,20 +36,20 @@
       "id": "change-trigger-002",
       "category": "should-trigger",
       "prompt": "记录一下最近改了什么，生成变更日志，默认输出到 changelogs 就行",
-      "expected_output": "触发 docs-change：说明默认输出目录解析、三源、CHANGE-LOG.md 与倒序插入；无歧义时可执行向。",
+      "expected_output": "触发 docs-change：默认输出、`CHANGE-LOG.md`、三源、倒序插入；无歧义可执行。",
       "assertions": [
         {
           "id": "structure-integrity",
           "name": "结构完整",
           "type": "must_include",
-          "check": "体现 CHANGE-LOG.md 或 changelogs 输出路径与变更聚合。",
+          "check": "含 CHANGE-LOG.md 或 changelogs 路径与聚合。",
           "priority": "P0"
         },
         {
           "id": "boundary-routing",
           "name": "边界分流",
           "type": "must_not_conflict",
-          "check": "不得将本请求仅答复为「用 git log 列文件」且完全不提聚合落盘与基线。",
+          "check": "不得仅用 git log 列文件而无聚合落盘与基线。",
           "priority": "P0"
         }
       ]
@@ -58,20 +58,20 @@
       "id": "change-trigger-003",
       "category": "should-trigger",
       "prompt": "/docs-change --since 2026-04-01 --output ./application/changelogs/ ，注意别用错 baseline 和 cutoff",
-      "expected_output": "主路径 docs-change：强调 --since、--output；解释 Git 用 baseline、CHANGELOG/local 用 cutoff 或指向正确文档。",
+      "expected_output": "docs-change：`--since`、`--output`；Git→baseline，CHANGELOG/local→cutoff（或引文档）。",
       "assertions": [
         {
           "id": "baseline-awareness",
           "name": "基线语义",
           "type": "must_include",
-          "check": "须区分 baseline_time 与 cutoff_time 或说明二者不可混用。",
+          "check": "区分 baseline_time 与 cutoff_time，或说明不可混用。",
           "priority": "P0"
         },
         {
           "id": "structure-integrity",
           "name": "结构完整",
           "type": "must_include",
-          "check": "体现参数 --since、--output 与 CHANGE-LOG 聚合。",
+          "check": "含 --since、--output 与 CHANGE-LOG 聚合。",
           "priority": "P0"
         }
       ]
@@ -80,20 +80,20 @@
       "id": "change-not-trigger-001",
       "category": "should-not-trigger",
       "prompt": "帮我全量更新根目录 INDEX_GUIDE.md，按九章结构扫描仓库，不用 CHANGE-LOG",
-      "expected_output": "主路径为 docs-indexing（或等价索引技能）；不以 docs-change 聚合 CHANGE-LOG 为唯一主任务。",
+      "expected_output": "主路径 docs-indexing；不以 CHANGE-LOG 聚合为唯一主任务。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "须明确 docs-indexing 或 INDEX_GUIDE 全量更新为当前主任务。",
+          "check": "点名 docs-indexing 或 INDEX_GUIDE 全量更新为主任务。",
           "priority": "P0"
         },
         {
           "id": "no-false-change-primary",
           "name": "勿假主 docs-change",
           "type": "must_not_conflict",
-          "check": "不得将本请求框成以 docs-change 写 CHANGE-LOG 为主路径而忽略全量索引诉求。",
+          "check": "不得以 docs-change 写 CHANGE-LOG 为主路径而忽略全量索引。",
           "priority": "P0"
         }
       ]
@@ -102,20 +102,20 @@
       "id": "change-not-trigger-002",
       "category": "should-not-trigger",
       "prompt": "基于最近改动的 Markdown 文件做增量 docs-build，刷新 KNOWLEDGE_INDEX",
-      "expected_output": "主路径为 docs-build（实体与索引）；CHANGE-LOG 可作为输入但非本对话主技能终点。",
+      "expected_output": "主路径 docs-build；CHANGE-LOG 仅可作输入而非终点。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "须明确 docs-build 或 KNOWLEDGE_INDEX 增量为当前主任务。",
+          "check": "点名 docs-build 或 KNOWLEDGE_INDEX 增量为主任务。",
           "priority": "P0"
         },
         {
           "id": "no-false-change-primary",
           "name": "勿假主 docs-change",
           "type": "must_not_conflict",
-          "check": "不得将本请求唯一主路径描述为仅聚合 CHANGE-LOG 而无 docs-build 实体工作。",
+          "check": "不得仅以聚合 CHANGE-LOG 为主路径而无 docs-build 实体工作。",
           "priority": "P0"
         }
       ]
@@ -124,20 +124,20 @@
       "id": "change-not-trigger-003",
       "category": "should-not-trigger",
       "prompt": "把 billing-overview 里业务视角归档到架构章节文件里，再检查冲突",
-      "expected_output": "主路径为 docs-archive；不是 docs-change。",
+      "expected_output": "主路径 docs-archive（非 docs-change）。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "须明确 docs-archive 或 overview 行链接归档语义。",
+          "check": "点名 docs-archive 或 overview 行链接归档。",
           "priority": "P0"
         },
         {
           "id": "no-false-change-primary",
           "name": "勿假主 docs-change",
           "type": "must_not_conflict",
-          "check": "不得将本请求主路径写成 docs-change 聚合 git/CHANGELOG。",
+          "check": "不得将主路径写成 docs-change 聚合 git/CHANGELOG。",
           "priority": "P0"
         }
       ]

@@ -1,84 +1,68 @@
 # docs-change 采集规则
 
-输出目录定位、三源采集、排除列表与错误处理。**歧义时是否停顿**见 [gates.md](gates.md)。
+歧义是否停顿见 [gates.md](gates.md)。
 
----
+## 输出目录
 
-## 输出目录定位
-
-优先级顺序：
-
-1. 用户指定 `--output`
-2. 当前目录 `./changelogs/`
-3. 最短路径的 `**/changelogs/` 目录
+1. 用户 `--output`
+2. `./changelogs/`
+3. 最短路径 `**/changelogs/`
 4. 新建 `./changelogs/`
 
----
+## Git
 
-## 数据采集规则
-
-### Git 提交
-
-**过滤条件**：`commit_time > baseline_time`
+**条件**：`commit_time > baseline_time`
 
 ```bash
 git log --since="$BASELINE_TIME" \
     --pretty=format:"%H|%aI|%aN|%s" --name-only
 ```
 
-每条记录提取：`commit_hash`、`time`、`author`、`message`、`files[]`
+字段：`commit_hash`、`time`、`author`、`message`、`files[]`
 
-### CHANGELOG 条目
+## CHANGELOG
 
-**过滤条件**：`entry_time > cutoff_time`
-
-支持格式：
+**条件**：`entry_time > cutoff_time`
 
 | 格式 | 示例 |
 |------|------|
 | Keep a Changelog | `## [1.0.0] - 2026-03-23` |
 | Semantic Release JSON | `{"version":"1.0.0","date":"2026-03-23T10:00:00Z"}` |
-| 自定义 | 正则匹配 `\d{4}-\d{2}-\d{2}` |
+| 自定义 | 日期 `\d{4}-\d{2}-\d{2}` |
 
-日期提取正则：
+正则：
 
 ```
 \[(\d{4}-\d{2}-\d{2})\]|(\d{4}-\d{2}-\d{2})|(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})
 ```
 
-解析失败时只跳过该条目并输出 `[WARN]`，继续解析同文件其余条目。
+条目解析失败：`[WARN]` 跳过该条，继续同文件其余条目。
 
-### 本地文件变更
+## 本地文件
 
-**过滤条件**：`mtime > cutoff_time`
+**条件**：`mtime > cutoff_time`
 
-排除目录：
-
-| 排除模式 | 原因 |
-|----------|------|
+| 排除 | 原因 |
+|------|------|
 | `.git` | 版本控制 |
-| `node_modules` | 前端依赖 |
-| `.venv`、`__pycache__` | Python 运行时 |
+| `node_modules` | 依赖 |
+| `.venv`、`__pycache__` | Python |
 | `target`、`build` | 构建产物 |
-| `.cursor`、`.idea`、`.vscode` | IDE 配置 |
-| `{output_dir}` | 防止输出目录自引用循环 |
-
----
+| `.cursor`、`.idea`、`.vscode` | IDE |
+| `{output_dir}` | 防自引用循环 |
 
 ## 错误处理
 
-| 场景 | 检测 | 处理 |
-|------|------|------|
-| Git 不可用 | `git --version` 失败 | `[WARN]` 跳过 git 来源，继续执行 |
-| CHANGELOG 解析失败 | 时间提取为空 | `[WARN]` 跳过该条目，继续解析 |
-| 输出目录不可写 | `test -w` 失败 | 创建目录或终止并报错 |
-| JSON 生成异常 | 异常捕获 | 清理临时文件，输出 `[ERROR]` |
-| 时间格式无效 | 正则匹配失败 | 使用默认时间或跳过 |
-
-日志格式：
+| 场景 | 处理 |
+|------|------|
+| Git 不可用 | `[WARN]` 跳过 git |
+| CHANGELOG 单条无效 | `[WARN]` 跳过该条 |
+| 输出目录不可写 | 创建或报错终止 |
+| JSON 异常 | 清临时文件，`[ERROR]` |
+| 时间无效 | 默认或跳过 |
 
 ```
-[ERROR] [yyyy-MM-dd HH:mm:ss] {错误描述}
-[WARN]  [yyyy-MM-dd HH:mm:ss] {警告描述}
-[INFO]  [yyyy-MM-dd HH:mm:ss] {信息描述}
+[ERROR] [yyyy-MM-dd HH:mm:ss] …
+[WARN]  [yyyy-MM-dd HH:mm:ss] …
+[INFO]  [yyyy-MM-dd HH:mm:ss] …
 ```

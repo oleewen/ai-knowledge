@@ -1,15 +1,8 @@
 #!/bin/bash
 
-# docs-change - 原始变更数据采集器
-#
-# 职责：采集三源原始数据并输出到临时目录，供 Agent 解析并写入 CHANGE-LOG.md（Markdown）。
-# 不负责：CHANGE-LOG 正文排版、时间格式统一、数据合并排序（由 Agent 完成）。
-#
-# 输出文件（写入 {output_dir}/.raw/）：
-#   git_commits.txt     - git log 原始输出（格式：HASH|ISO_TIME|AUTHOR|MESSAGE\nFILE\n...）
-#   changelog_files.txt - 找到的 CHANGELOG 文件路径列表
-#   local_files.txt     - mtime 超过基线的本地文件路径列表
-#   meta.env            - 采集元信息（BASELINE_TIME、CUTOFF_TIME、IS_GIT_REPO 等）
+# docs-change：三源原始采集 → {output_dir}/.raw/，供 Agent 写 CHANGE-LOG.md。
+# 不写正文、不统一时间、不合并排序（Agent 侧）。
+# .raw/: git_commits.txt | changelog_files.txt | local_files.txt | meta.env
 
 set -euo pipefail
 
@@ -22,17 +15,15 @@ DEFAULT_SINCE_MS="1577836800000"
 show_help() {
     cat <<EOF
 Usage: $0 [options]
+三源采集 → .raw/
 
-从 Git、CHANGELOG、本地文件三个维度采集原始变更数据。
-
-Options:
-  --since TIME    变更起始时间（yyyy-MM-dd HH:mm:ss.SSS 或 epoch ms）
-  --output DIR    输出目录（默认：$DEFAULT_OUTPUT）
-  -h, --help      显示帮助
+  --since TIME    起始（yyyy-MM-dd HH:mm:ss.SSS 或 epoch ms）
+  --output DIR    默认 $DEFAULT_OUTPUT
+  -h, --help
 
 Examples:
   $0 --since '2026-03-20 00:00:00.000' --output ./changelogs/
-  $0                  # 基于上次 baseline 增量运行
+  $0                  # 读文末 baseline 增量
 EOF
 }
 

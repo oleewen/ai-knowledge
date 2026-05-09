@@ -12,12 +12,10 @@
 
 ## 统计
 
-- 总变更数: {total_changes}
-- Git 提交: {git_commits}
-- CHANGELOG 条目: {changelog_entries}
-- 本地文件: {local_files}
+- 总变更: {total_changes}
+- Git: {git_commits} · CHANGELOG: {changelog_entries} · 本地: {local_files}
 
-## Git 提交 ({git_commits})
+## Git ({git_commits})
 
 ### {time}
 - **提交**: {commit_hash}
@@ -32,7 +30,7 @@
 - **文件**: {changelog_file}
 - **内容**: {content}
 
-## 本地文件 ({local_files})
+## 本地 ({local_files})
 
 ### {time}
 - **文件**: {file_path}
