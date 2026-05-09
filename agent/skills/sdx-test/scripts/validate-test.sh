@@ -1,19 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# 测试设计文档结构校验脚本
-# 用法: scripts/validate-test.sh [--file <path>] [--gate-check] [--gate-strict]
-# DOC_ROOT：resolve_repo_doc_root（仅 .docsconfig）；见 agent/scripts/config-bootstrap.sh
+# TDD 结构校验（六章模板；门禁不改变结构）。
+# 用法：validate-test.sh [--file <path>] [--gate-check] [--gate-strict]
+# DOC_ROOT：resolve_repo_doc_root（.docsconfig）；先 config-bootstrap.sh
 #
-# 说明：闸门式工作流仅改变产出过程，不改变 TDD 文档结构要求；校验项仍以六章模板为准。
-#
-# 校验项:
-#   1. 文档目录存在
-#   2. 文末「文档元数据」YAML 完整性（id、title、version、status、parent、mvp_phase）；禁止文件头 ---
-#   3. 六章结构完整性
-#   4. 编号体系一致性（TC-*）
-#   5. 模板 tdd-template.md 存在
-#   6. 可选 --gate-check：是否存在含 <!-- sdx-test-gate: CONFIRMED --> 且引用该文件名的会话 spec（见 SKILL HARD-GATE）
+# 要点：文末 YAML（含 parent、mvp_phase）、六章、TC-* 前缀、tdd-template 存在；
+#       --gate-check：specs 下 CONFIRMED 且引用该文件；--gate-strict 门禁失败记 ERROR。
 
 TARGET_FILE=""
 ERRORS=0

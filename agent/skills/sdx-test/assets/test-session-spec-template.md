@@ -1,5 +1,7 @@
 # sdx-test 草稿（中间稿）
 
+> **G{n}** = 流程门禁；**TC-*** = 测试用例编号；勿混。
+
 **IDEA-ID**：`{IDEA-ID}`（与 PRD/DSD（及 ASD）一致；规则见 [references/core-concepts.md](../references/core-concepts.md)）  
 **DOC_DIR**（自 `.docsconfig`）：`{DOC_DIR}`  
 **--depth**：`quick | standard | deep`  
@@ -24,7 +26,7 @@
 
 ### 方案取舍（本门禁内若存在多套可选）
 
-（可选；有 2 套及以上真实路径时填写：各路径业务命名、利弊、被选方案及理由。详见 [references/brainstorming-integration.md](../references/brainstorming-integration.md)。）
+（可选；≥2 路径时：命名、利弊、选中理由。见 [brainstorming-integration.md](../references/brainstorming-integration.md)。）
 
 ### Q-n / TC / US / BR（本门禁相关）
 
@@ -46,4 +48,4 @@
 
 <!-- sdx-test-gate: PENDING -->
 
-总确认后，将上一行中的 `PENDING` 改为 `CONFIRMED`（供钩子与 `validate-test.sh --gate-check` 识别）。本 spec 正文须至少出现一次完整文件名 `TDD-{IDEA-ID}-{N}.md`（与目标落盘文件名一致）。
+总确认后：`PENDING`→`CONFIRMED`（钩子与 `validate-test.sh --gate-check`）。正文须至少一次 `TDD-{IDEA-ID}-{N}.md`（与落盘文件名一致）。
