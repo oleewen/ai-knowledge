@@ -1,38 +1,34 @@
-# docs-distill 会话 spec 骨架
+# docs-distill 会话 spec
 
-路径约定：`docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-distill.md`
+`docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-distill.md`。总确认前保留 **PENDING**。
 
-复制后替换尖括号占位；**不要**在取得用户总确认前删除 `PENDING` 行。
+## 1. 背景
 
----
+- `<APPNAME>`  
+- 触发（如 CHANGE-LOG 新版本 / 口头请求）
 
-## 1. 背景与目标
+## 2. 参数
 
-- 应用：`<APPNAME>`
-- 触发原因：`<例如 CHANGE-LOG 新版本条目 / 用户口头请求>`
+- `--app`：`…`（或「全部已登记」）  
+- `--since`：`自动` / 具体 id  
+- `--full`：是/否  
+- `--dry-run`：是/否 + 一句话结论
 
-## 2. 参数与范围
+## 3. 区间
 
-- `--app`：`<值或「全部已登记应用」>`
-- `--since`：`<无则写「自动锚点」或具体 id>`
-- `--full`：`<是/否>`
-- 是否已 `--dry-run`：`<是/否，结论一句话>`
-
-## 3. 蒸馏区间摘要
-
-- 候选变更区间：`<起止 changelog_id 或 BEGIN→HEAD>`
-- 目标文件：`system/architecture/overview/<APPNAME>-overview.md`（`<新建 | 更新>`）
+- 候选：`…` changelog 区间  
+- 目标：`system/architecture/overview/<APPNAME>-overview.md`（**新建｜更新**）
 
 ## 4. 门禁进度（可选）
 
-与 `sdx-*` 会话 spec 同构时，两列表格锚到**本文件**小节。示例见 [`sdx-solution` 会话模板](../../sdx-solution/assets/solution-session-spec-template.md)「门禁进度」。
+同 `sdx-*`：表锚指**本文**小节。例：[sdx-solution 会话模板](../../sdx-solution/assets/solution-session-spec-template.md)。
 
-## 5. 风险与待定
+## 5. 风险
 
-- `<无则写「无」>`
+`<无则写无>`
 
 ---
 
 <!-- docs-distill-gate: PENDING -->
 
-（用户总确认后改为：`<!-- docs-distill-gate: CONFIRMED -->`）
+确认后：`<!-- docs-distill-gate: CONFIRMED -->`

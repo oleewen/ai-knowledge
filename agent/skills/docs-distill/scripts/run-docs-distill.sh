@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
-# run-docs-distill.sh
-# 最小可执行入口：
-# - 支持 dry-run 三层预览
-# - 非 dry-run 执行日志写入（overview 写入成功后写入 DISTILL-LOG）
-# - 须从项目根目录执行，或通过 --root 指定项目根目录
+# overview 内容由 Agent；本脚本 orchestrate dry-run 与 DISTILL-LOG。
+# 从仓库根执行，或 `--root`。
 
 usage() {
   cat <<'EOF'

@@ -2,36 +2,36 @@
   "skill_name": "docs-distill",
   "eval_id": "REPLACE_WITH_EVAL_ID",
   "expected_category": "should-trigger | should-not-trigger",
-  "expected_route": "/docs-distill | （not-trigger 时填主分流目标，如 /docs-extract）",
-  "expected_output": "一两句：本 eval 下模型应表现出的路由与要点（与 evals.json 中同 id 条一致）。",
-  "notes": "复制本模板为 <eval-id>-metadata.json 或在跑分流水线中内联使用；断言须与 agents/grader.md 一致。",
+  "expected_route": "/docs-distill | （not-trigger 填下游）",
+  "expected_output": "与同 id eval 条目一致的一句话要点。",
+  "notes": "复制为 `<id>-metadata.json`；断言与 grader 一致。",
   "assertions_should_trigger_example": [
     {
       "id": "gate-compliance",
       "name": "门禁合规",
       "type": "must_include",
-      "check": "响应需明确：阶段 3 未 CONFIRMED（且无合法例外）前禁止阶段 4 写入 overview 与 DISTILL-LOG，并提及合法例外或 DOCS_DISTILL_ALLOW_WRITE 之一（若讨论写盘）。",
+      "check": "阶段 3 未 CONFIRMED（且无例外）→ 禁止写 overview/DISTILL；可提 `DOCS_DISTILL_ALLOW_WRITE` 或明示例外（若谈及写盘）。",
       "priority": "P0"
     },
     {
       "id": "structure-integrity",
       "name": "结构完整",
       "type": "must_include",
-      "check": "响应需体现五阶段、两日志（CHANGE-LOG 来源 vs DISTILL-LOG 锚点）、--dry-run 预览语义、4.3 成功后才 4.4。",
+      "check": "五阶段；CHANGE-LOG 源 vs DISTILL 锚；dry-run 语义；4.3 成功后才 4.4。",
       "priority": "P0"
     },
     {
       "id": "boundary-routing",
       "name": "边界分流",
       "type": "must_not_conflict",
-      "check": "对 should-trigger 样本，不得将主路径误判为仅 docs-indexing、仅 docs-archive 或仅写 SDD 终稿即结束。",
+      "check": "should-trigger 勿判成纯 indexing/archive/SDD。",
       "priority": "P0"
     },
     {
       "id": "session-spec-awareness",
-      "name": "会话 spec 与总确认",
+      "name": "会话 spec",
       "type": "should_include",
-      "check": "应提及 docs/superpowers/specs/…-docs-distill.md 或等价路径，以及 PENDING→CONFIRMED。",
+      "check": "可提 `…-docs-distill.md`、`PENDING`→`CONFIRMED`。",
       "priority": "P1"
     }
   ],
@@ -40,27 +40,27 @@
       "id": "correct-downstream",
       "name": "正确下游",
       "type": "must_include",
-      "check": "须点名与 prompt 一致的下游技能或产物（例如 docs-extract、某 overview 段落抽取流程）。",
+      "check": "点名与 prompt 一致下游（如 docs-extract）。",
       "priority": "P0"
     },
     {
       "id": "no-false-distill-primary",
       "name": "勿假主蒸馏",
       "type": "must_not_conflict",
-      "check": "不得将本请求描述为「默认完整执行 docs-distill 五阶段并写 DISTILL-LOG」而忽略用户已指定的下游技能。",
+      "check": "勿描述为默认走完五阶段+DISTILL 而忽略指定下游。",
       "priority": "P0"
     },
     {
       "id": "optional-quality-hint",
-      "name": "可拒绝写盘",
+      "name": "可拒写盘",
       "type": "should_include",
-      "check": "可加分：明确本对话不应写入 overview 第三列或应先进入所列下游技能。",
+      "check": "可加：不写第三列或先走所列下游。",
       "priority": "P1"
     }
   ],
   "scoring": {
-    "pass_rule_should_trigger": "P0 全部通过，且 P1 至少通过 1 项（若无 P1 则仅 P0）",
-    "pass_rule_should_not_trigger": "P0 全部通过；P1 可选",
-    "fail_rule": "任一 P0 断言失败即判定不通过"
+    "pass_rule_should_trigger": "P0 全过；有 P1 则≥1",
+    "pass_rule_should_not_trigger": "P0 全过；P1 可选",
+    "fail_rule": "任一 P0 → 失败"
   }
 }

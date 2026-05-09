@@ -1,17 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
-# append-change-log.sh
-# 作用：向 system/changelogs/DISTILL-LOG.md 写入蒸馏批次记录（最新在前）
-#       所有应用共用同一文件，以 app 列区分来源
-#
-# 用法：
-#   agent/skills/docs-distill/scripts/append-change-log.sh \
-#     --app billing \
-#     --changelog-id v1.3.0 \
-#     --changelog-time "2026-04-05 10:00" \
-#     [--archived-at "2026-04-05T10:30:00+08:00"] \
-#     [--summary "蒸馏 billing 结构更新"]
+# 追加 system/changelogs/DISTILL-LOG.md（最新在前；共用表，app 分列）。
 
 usage() {
     cat <<'EOF'
