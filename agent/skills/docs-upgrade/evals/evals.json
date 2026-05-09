@@ -1,40 +1,40 @@
 {
   "skill_name": "docs-upgrade",
   "version": "1.0.0",
-  "description": "用于评估 docs-upgrade 触发边界、范围确认书/快路径与分流表述；含 expected_output 与断言供 grader 客观评分。",
+  "description": "评估触发、确认书/快路径、与 archive/change/index 分流",
   "evals": [
     {
       "id": "upgrade-trigger-001",
       "category": "should-trigger",
       "prompt": "把 system/architecture/overview/billing-overview.md 里所有「订金」统一成「预付款」，并同步引用这个 overview 的架构章节和全库注释里的同类说法",
-      "expected_output": "主路径 docs-upgrade：须先范围确认书（多文件+关键词）；再主修改、引用链、关键词；不得未确认即批量写入。",
+      "expected_output": "docs-upgrade：多文件+关键词前须范围确认或等效；主改→链→词；未确认勿批量写。",
       "assertions": [
         {
           "id": "gate-awareness",
           "name": "门禁意识",
           "type": "must_include",
-          "check": "明确范围确认、C/S/M、或先列出命中规模再请用户确认后再写。",
+          "check": "须含范围确认、C/S/M、或先列命中规模再请用户确认后写。",
           "priority": "P0"
         },
         {
           "id": "structure-integrity",
           "name": "结构完整",
           "type": "must_include",
-          "check": "体现主文件、关联/关键词或链式同步、术语统一语义。",
+          "check": "须含主文件、关联/关键词或链式、术语统一语义。",
           "priority": "P0"
         },
         {
           "id": "boundary-routing",
           "name": "边界分流",
           "type": "must_not_conflict",
-          "check": "不得将主路径改为仅 docs-archive 从 overview 表格归档而不做术语升级流程。",
+          "check": "不得将主路径收成仅 docs-archive 表格归档而无术语升级流程。",
           "priority": "P0"
         },
         {
           "id": "sync-strategy",
           "name": "同步策略",
           "type": "should_include",
-          "check": "应提及引用链、rg/关键词或入站出站之一。",
+          "check": "应提引用链、rg/关键词或入站出站之一。",
           "priority": "P1"
         }
       ]
@@ -43,27 +43,27 @@
       "id": "upgrade-trigger-002",
       "category": "should-trigger",
       "prompt": "application/README.md 第三段有个错别字「索引」写成「索隐」，只改这一处，不要动别的文件",
-      "expected_output": "快路径：单文件、改动明确；一句话复述确认即可执行；跳过关联同步。",
+      "expected_output": "快路径：单点+用户限范围→一句话复述确认；不扩展关联。",
       "assertions": [
         {
           "id": "gate-awareness",
           "name": "门禁意识",
           "type": "must_include",
-          "check": "体现快路径或一句话复述+确认、或明确仅本文件不扩展。",
+          "check": "须快路径式一句话确认或明确仅本文件不扩。",
           "priority": "P0"
         },
         {
           "id": "structure-integrity",
           "name": "结构完整",
           "type": "must_include",
-          "check": "指向 README 单点修改，不宣称全库链式。",
+          "check": "指向 README 单处修改；勿宣称全库链式。",
           "priority": "P0"
         },
         {
           "id": "boundary-routing",
           "name": "边界分流",
           "type": "must_not_conflict",
-          "check": "不得坚持要求完整范围确认书模板而忽略用户「只改一处」的明确约束。",
+          "check": "不得在用户已限「一处」时仍强制完整模板化确认书压倒约束。",
           "priority": "P0"
         }
       ]
@@ -72,20 +72,20 @@
       "id": "upgrade-trigger-003",
       "category": "should-trigger",
       "prompt": "用 docs-upgrade：把 XTerm - YTerm 应用到 docs/design.md 以及同义英文注释里",
-      "expected_output": "识别替换简写；主修改+必要时关键词；多文件或大范围前范围确认。",
+      "expected_output": "识别简写；主 design.md；注释/关键词；多文件前确认或先列命中。",
       "assertions": [
         {
           "id": "structure-integrity",
           "name": "结构完整",
           "type": "must_include",
-          "check": "体现 XTerm→YTerm 或 a-b 替换简写与 design.md。",
+          "check": "须体现 XTerm→YTerm（或 a-b）与 design.md。",
           "priority": "P0"
         },
         {
           "id": "gate-awareness",
           "name": "门禁意识",
           "type": "must_include",
-          "check": "若涉及多文件或注释全库，须提及确认或先列命中。",
+          "check": "若涉多文件或注释面大，须提确认或先列命中规模。",
           "priority": "P0"
         }
       ]
@@ -94,20 +94,20 @@
       "id": "upgrade-not-trigger-001",
       "category": "should-not-trigger",
       "prompt": "把 payment-overview 里技术架构视角按表格链接归档到对应章节，并处理与目标章节的冲突",
-      "expected_output": "主路径为 docs-archive；不是 docs-upgrade 全库术语链。",
+      "expected_output": "主路径 docs-archive。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "须明确 docs-archive 或 overview 行链接归档。",
+          "check": "须点名 docs-archive 或 overview 行链归档。",
           "priority": "P0"
         },
         {
           "id": "no-false-upgrade-primary",
-          "name": "勿假主 docs-upgrade",
+          "name": "勿假主 upgrade",
           "type": "must_not_conflict",
-          "check": "不得将本请求唯一主路径描述为 docs-upgrade 替换与 rg 链式同步。",
+          "check": "不得唯一主路径写成 docs-upgrade 替换+rg。",
           "priority": "P0"
         }
       ]
@@ -116,20 +116,20 @@
       "id": "upgrade-not-trigger-002",
       "category": "should-not-trigger",
       "prompt": "跑一下变更聚合，更新 application/changelogs/CHANGE-LOG.md，给后面索引用",
-      "expected_output": "主路径为 docs-change；不是 docs-upgrade。",
+      "expected_output": "主路径 docs-change。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "须明确 docs-change 或 CHANGE-LOG 聚合。",
+          "check": "须点名 docs-change 或 CHANGE-LOG 聚合。",
           "priority": "P0"
         },
         {
           "id": "no-false-upgrade-primary",
-          "name": "勿假主 docs-upgrade",
+          "name": "勿假主 upgrade",
           "type": "must_not_conflict",
-          "check": "不得将本请求框成以 docs-upgrade 链式改文档为主任务。",
+          "check": "不得框成 docs-upgrade 链式改文为主任务。",
           "priority": "P0"
         }
       ]
@@ -138,20 +138,20 @@
       "id": "upgrade-not-trigger-003",
       "category": "should-not-trigger",
       "prompt": "全量重建根目录 INDEX_GUIDE.md，九章结构，不要改业务文档正文",
-      "expected_output": "主路径为 docs-indexing；不是 docs-upgrade。",
+      "expected_output": "主路径 docs-indexing。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "须明确 docs-indexing 或 INDEX_GUIDE 全量/增量索引。",
+          "check": "须点名 docs-indexing 或 INDEX_GUIDE 全量/增量。",
           "priority": "P0"
         },
         {
           "id": "no-false-upgrade-primary",
-          "name": "勿假主 docs-upgrade",
+          "name": "勿假主 upgrade",
           "type": "must_not_conflict",
-          "check": "不得将本请求主路径写成 docs-upgrade 术语替换与引用链同步。",
+          "check": "不得主路径写成 docs-upgrade 术语同步。",
           "priority": "P0"
         }
       ]

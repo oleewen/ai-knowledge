@@ -2,36 +2,36 @@
   "skill_name": "docs-upgrade",
   "eval_id": "REPLACE_WITH_EVAL_ID",
   "expected_category": "should-trigger | should-not-trigger",
-  "expected_route": "/docs-upgrade | （not-trigger 时填主分流目标，如 /docs-archive）",
-  "expected_output": "一两句：本 eval 下模型应表现出的路由与要点（与 evals.json 中同 id 条一致）。",
-  "notes": "复制本模板为 <eval-id>-metadata.json 或在跑分流水线中内联使用；断言须与 agents/grader.md 一致。",
+  "expected_route": "/docs-upgrade | （not-trigger 填下游）",
+  "expected_output": "与同 id eval 一致的一两句要点",
+  "notes": "复制为 `<id>-metadata.json`；断言与 grader 一致",
   "assertions_should_trigger_example": [
     {
       "id": "gate-awareness",
       "name": "门禁意识",
       "type": "must_include",
-      "check": "响应需体现：多文件/大范围前须范围确认或快路径一句话确认；或明确 C/S 语义。",
+      "check": "多文件/大范围前须确认或快路径一句话；可提 C/S。",
       "priority": "P0"
     },
     {
       "id": "structure-integrity",
       "name": "结构完整",
       "type": "must_include",
-      "check": "响应需体现主修改、引用链/关键词或替换简写、与「仅本文件」例外之一组合理。",
+      "check": "须含主改、链/关键词或简写、与「仅本文件」的合理组合。",
       "priority": "P0"
     },
     {
       "id": "boundary-routing",
       "name": "边界分流",
       "type": "must_not_conflict",
-      "check": "对 should-trigger 样本，不得将主路径误判为仅 docs-archive、仅 docs-change 或仅 docs-indexing。",
+      "check": "should-trigger 勿判成仅 archive/change/indexing。",
       "priority": "P0"
     },
     {
       "id": "sync-strategy",
       "name": "同步策略",
       "type": "should_include",
-      "check": "可提及入站/出站、rg 关键词或链式深度之一。",
+      "check": "可提入站/出站、rg、链深之一。",
       "priority": "P1"
     }
   ],
@@ -40,27 +40,27 @@
       "id": "correct-downstream",
       "name": "正确下游",
       "type": "must_include",
-      "check": "须点名与 prompt 一致的下游技能（如 docs-archive、docs-change）。",
+      "check": "点名与 prompt 一致下游（archive、change 等）。",
       "priority": "P0"
     },
     {
       "id": "no-false-upgrade-primary",
-      "name": "勿假主 docs-upgrade",
+      "name": "勿假主 upgrade",
       "type": "must_not_conflict",
-      "check": "不得将本请求描述为「默认完整执行 docs-upgrade 多文件链式写入」而忽略用户已指定的下游技能。",
+      "check": "勿描述为默认完整多文件 upgrade 而忽略指定下游。",
       "priority": "P0"
     },
     {
       "id": "optional-quality-hint",
-      "name": "可拒绝越权",
+      "name": "可拒越权",
       "type": "should_include",
-      "check": "可加分：明确本对话不应以 docs-upgrade 替代所列下游。",
+      "check": "可加：不应以 upgrade 替代所列下游。",
       "priority": "P1"
     }
   ],
   "scoring": {
-    "pass_rule_should_trigger": "P0 全部通过，且 P1 至少通过 1 项（若无 P1 则仅 P0）",
-    "pass_rule_should_not_trigger": "P0 全部通过；P1 可选",
-    "fail_rule": "任一 P0 断言失败即判定不通过"
+    "pass_rule_should_trigger": "P0 全过；有 P1 则≥1",
+    "pass_rule_should_not_trigger": "P0 全过；P1 可选",
+    "fail_rule": "任一 P0 → 失败"
   }
 }
