@@ -1,13 +1,13 @@
 {
   "skill_name": "sdx-design",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "评测 design 触发/分流/门禁；供 grader 对照 expected_output 与断言。",
   "evals": [
     {
       "id": "design-trigger-001",
       "category": "should-trigger",
-      "prompt": "ASD-ORDER-1.md 已定稿，请走 /sdx-design：先会话 spec 与 Gd1–Gd4，总确认后落 DSD-ORDER-1.md，并把 §2.2 的 API 契约同步进 `{DOC_DIR}/requirements/REQUIREMENT-ORDER-1/MVP-Phase-{N}/specs/spec-dsd-ORDER-1-{N}-{MS-ID}.md`（dsd-spec-template）。",
-      "expected_output": "以 /sdx-design 为主路径：上游 **`ASD-*` 与/或 `{DOC_DIR}/specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md`**（**概设需求规约**，可选）、会话 spec、门禁与总确认后再写 DSD；体现 **`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`** **详设需求规约**终稿与详设同期；未确认不写 DSD 终稿。",
+      "prompt": "ASD-ORDER-1.md 已定稿，请走 /sdx-design：先会话 spec 与 Gd1–Gd3，总确认后落 DSD-ORDER-1.md，并把 §2.2 的 API 契约写进同一 DSD。",
+      "expected_output": "以 /sdx-design 为主路径：上游 **`ASD-*` 与/或 `{DOC_DIR}/specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md`**（**概设需求规约**，可选）、会话 spec、门禁与总确认后再写 **单一 DSD**；实现级契约写在 **DSD §2**；未确认不写 DSD 终稿。",
       "assertions": [
         {
           "id": "gate-compliance",
@@ -20,14 +20,14 @@
           "id": "structure-integrity",
           "name": "结构完整",
           "type": "must_include",
-          "check": "体现 DSD §1–§4、Gd1–Gd4 或详设与 **`requirements/.../MVP-Phase-{N}/specs/spec-dsd-*.md`** 规约路径，而非仅复述 ASD 章节即结束。",
+          "check": "体现 **DSD §1–§3**、**Gd1–Gd3**，且说明实现级内容落在 **§2**，而非仅复述 ASD 章节即结束。",
           "priority": "P0"
         },
         {
           "id": "boundary-routing",
           "name": "边界分流",
           "type": "must_not_conflict",
-          "check": "不得将本请求主路径改为仅 /sdx-architect、仅 /sdx-prd 或纯 docs-* 并宣称无需 **DSD** 与 **`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`**。",
+          "check": "不得将本请求主路径改为仅 /sdx-architect、仅 /sdx-prd 或纯 docs-* 并宣称无需 **`DSD`**（requirements 下 **`DSD-*.md`**）作为详设主交付。",
           "priority": "P0"
         },
         {
@@ -42,8 +42,8 @@
     {
       "id": "design-trigger-002",
       "category": "should-trigger",
-      "prompt": "我们要把订单域 ASD §3 的规约摘要行扩写到实现级：补齐表内 `./specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md`（若已有）与终盘 **`requirements/.../MVP-Phase-{N}/specs/spec-dsd-*.md`** 路径、错误码与幂等策略，产出 DSD 与 **`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`**，用 sdx-design 流程。",
-      "expected_output": "主路径为 sdx-design：在 ASD §3 行上扩写实现级规约、DSD §3 与 **`MVP-Phase-{N}/specs/spec-dsd-*.md`**；含门禁；不把扩写仅放在 ASD 内完成。",
+      "prompt": "我们要把订单域 ASD §3 的规约摘要行扩写到实现级：结合 `./specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md`（若已有），补齐错误码与幂等策略，并产出 **DSD**（按 dsd-template），用 sdx-design 流程。",
+      "expected_output": "主路径为 sdx-design：在 **DSD §2** 将 ASD §3 扩写到实现级；含门禁；不把实现级扩写仅留在 ASD 内完成。",
       "assertions": [
         {
           "id": "gate-compliance",
@@ -56,21 +56,21 @@
           "id": "structure-integrity",
           "name": "结构完整",
           "type": "must_include",
-          "check": "体现 DSD、§3 规约扩写、**`requirements/.../specs/spec-dsd-*.md`** 或实现级契约表述，并区分于仅架构摘要。",
+          "check": "体现 **DSD**、**§2** 实现级契约（API/错误码/幂等等）并区分于仅架构摘要。",
           "priority": "P0"
         },
         {
           "id": "boundary-routing",
           "name": "边界分流",
           "type": "must_not_conflict",
-          "check": "不得将主路径改为仅更新 ASD 而无 **DSD** 与 **`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`** 作为本轮交付框架。",
+          "check": "不得将主路径改为仅更新 **ASD** 而无 **`DSD-{IDEA-ID}-{N}.md`** 作为本轮详设交付框架。",
           "priority": "P0"
         },
         {
-          "id": "specs-awareness",
-          "name": "规约落盘",
+          "id": "impl-in-dsd",
+          "name": "§2 实现级落地",
           "type": "should_include",
-          "check": "应提及 **`requirements/.../specs/spec-dsd-*.md`** 或规约稿落盘。",
+          "check": "宜明确实现级条目写在 **DSD §2**（而非第二份拆分 Markdown）。",
           "priority": "P1"
         }
       ]
@@ -78,8 +78,8 @@
     {
       "id": "design-trigger-003",
       "category": "should-trigger",
-      "prompt": "应用库 KNOWLEDGE_TYPE=application，MVP-Phase-1 里已有 PRD 和 ASD，请执行详细设计阶段：DSD + `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md` 规约稿按 dsd-spec-template / dsd-template 来。",
-      "expected_output": "明确 /sdx-design：application 全量、DSD + **`requirements/.../specs/spec-dsd-*.md`**、模板对齐；ASD+PRD 为输入；含总确认门禁。",
+      "prompt": "应用库 KNOWLEDGE_TYPE=application，MVP-Phase-1 里已有 PRD 和 ASD，请执行详细设计阶段：按 `dsd-template` 产出 **DSD**。",
+      "expected_output": "明确 /sdx-design：**仅 DSD**、模板对齐；ASD+PRD 为输入；含总确认门禁。",
       "assertions": [
         {
           "id": "gate-compliance",
@@ -92,7 +92,7 @@
           "id": "structure-integrity",
           "name": "结构完整",
           "type": "must_include",
-          "check": "体现 DSD、**`requirements/.../specs/spec-dsd-*.md`** 或 dsd-template 与详设阶段，而非仅 PRD/ASD 评审。",
+          "check": "体现 **DSD §1–§3**、`dsd-template` 口径与详设阶段，而非仅 PRD/ASD 评审。",
           "priority": "P0"
         },
         {
@@ -143,7 +143,7 @@
     {
       "id": "design-trigger-005",
       "category": "should-trigger",
-      "prompt": "ASD 尚未落终稿，但 specs/spec-asd-ORDER-1-billing.md（asd-spec-template 第1–6节）已就绪；请走 /sdx-design：先会话 spec 与 Gd1–Gd4，总确认后写 DSD-ORDER-1.md。",
+      "prompt": "ASD 尚未落终稿，但 specs/spec-asd-ORDER-1-billing.md（asd-spec-template 第1–6节）已就绪；请走 /sdx-design：先会话 spec 与 Gd1–Gd3，总确认后写 DSD-ORDER-1.md。",
       "expected_output": "主路径为 sdx-design：承认 architect spec 可作为详设唯一上游之一；仍含门禁与总确认；不因无 ASD 而整体改判仅 sdx-architect。",
       "assertions": [
         {
@@ -208,7 +208,7 @@
           "id": "no-false-design-primary",
           "name": "勿假主详设阶段",
           "type": "must_not_conflict",
-          "check": "不得将主路径表述为 sdx-design 与 **DSD**、`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md` 定稿（本 prompt 应以 sdx-prd 为主）。",
+          "check": "不得将主路径表述为 sdx-design 与 **`DSD-*.md` 详设定稿**（本 prompt 应以 sdx-prd 为主）。",
           "priority": "P0"
         }
       ]
@@ -296,7 +296,7 @@
           "id": "no-false-design-primary",
           "name": "勿假主详设阶段",
           "type": "must_not_conflict",
-          "check": "不得将主路径说成先写 **DSD** 或 **`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`**。",
+          "check": "不得将主路径说成先写 **`DSD-*.md`** 或 **requirements 下详设终稿** 而跳过 SOLUTION。",
           "priority": "P0"
         }
       ]

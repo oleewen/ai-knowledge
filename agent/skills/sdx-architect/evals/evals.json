@@ -150,8 +150,8 @@
     {
       "id": "architect-not-trigger-001",
       "category": "should-not-trigger",
-      "prompt": "我已经有 ASD 了，下一步请补齐 API、DDL、时序和 **spec-dsd-*.md**（详设需求规约），产出 DSD 与 `{DOC_DIR}/requirements/**/MVP-Phase-*/specs/spec-dsd-*.md`。",
-      "expected_output": "主路径 `/sdx-design`：DSD + spec-dsd-*.md；≠ 再以完整 architect 门禁链写 ASD 为唯一交付。",
+      "prompt": "我已经有 ASD 了，下一步请在 **sdx-design** 下补齐 **DSD**：把 API、DDL、时序等实现级内容写进 **DSD §2**。",
+      "expected_output": "主路径 **`/sdx-design`**：**单一 DSD** 承载详设；≠ 再以完整 architect 门禁链替代详设交付。",
       "assertions": [
         {
           "id": "correct-downstream",

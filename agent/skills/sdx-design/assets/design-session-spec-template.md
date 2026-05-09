@@ -1,6 +1,6 @@
 # sdx-design 草稿（DSD）
 
-> **G{n}**：门禁；**§1–§4** 对齐 [dsd-template.md](dsd-template.md)；**§1** 结构同源 [asd-template §1](../../../sdx-architect/assets/asd-template.md) / ASD。
+> **G{n}**：门禁；**§1–§3** 对齐 [dsd-template.md](dsd-template.md)；**§1** 结构同源 [asd-template §1](../../../sdx-architect/assets/asd-template.md) / ASD。
 
 **上游 ASD**：`ASD-{IDEA-ID}-{N}.md` **目标 DSD**：`DSD-{IDEA-ID}-{N}.md`
 
@@ -10,7 +10,9 @@
 
 | 门禁 | 覆盖模板 | 状态 | 备注 |
 |------|----------|------|------|
-| [G{n}](#g{n}-XX) | [§{n} XX](#g{n}-XX) | 草案/已确认 | 示例行；按需复制为 G{n+1} |
+| [G1](#g1§1) | §1 设计概述 | 草案/已确认 | … |
+| [G2](#g2§2) | §2 详细设计 | 草案/已确认 | … |
+| [G3](#g3§3) | §3 附录（含自查） | 草案/已确认 | … |
 
 ---
 
@@ -28,9 +30,7 @@
 
 ## G3（§3）…
 
----
-
-## G4（§4）…
+附录、变更历史、质量自查收口；文末元数据字段齐备。
 
 ---
 

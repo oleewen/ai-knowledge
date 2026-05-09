@@ -6,8 +6,7 @@
 
 - [1. 设计概述](#1-设计概述)
 - [2. 详细设计](#2-详细设计)
-- [3. 需求规约](#3-需求规约)
-- [4. 附录](#4-附录)
+- [3. 附录](#3-附录)
 - [文档元数据](#文档元数据)
 
 ---
@@ -277,42 +276,28 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 
 <!-- 告警规则、通知渠道、收敛策略等 -->
 
-## 3. 需求规约
+> **实现级契约与追溯**：API、DDL、时序、幂等等**全部写在 §2**；与 **PRD（FR-n）**、**ASD §3**（或概设 `spec-asd-*`）的对应关系也在 §2 小节内用编号与引用写清，**不另建**独立详设 Markdown。
 
-<!--
-  **规约 Markdown 落盘路径（须严格按此模板，勿擅自改段名或层级）**：
-  `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`
-  - `{MS-ID}` 须与同库 **MS 实体 ID**（`{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md`、`knowledge/technical/` 等处 **MS-***）对齐或可唯一映射。
-  - **若该路径下文件尚不存在**：按模板 `dsd-spec-template.md` 创建。
-  - 正文骨架：[dsd-spec-template.md](dsd-spec-template.md)；应用实体 ID 与 **MS-*** 口径见 KNOWLEDGE_INDEX / `knowledge/technical/`。
--->
+## 3. 附录
 
-| 应用 | 规约文件 | 规约描述 |
-| ---- | -------- | -------- |
-| `{APP-ID}` | `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md` | 核心改动点：… **须使用左列全路径模板**；`{MS-ID}` 见上注释。若磁盘上尚无该文件：参考 [dsd-spec-template.md](dsd-spec-template.md) 模板生成。 |
-
-## 4. 附录
-
-### 4.1 变更历史
+### 3.1 变更历史
 
 | 版本  | 日期 | 变更说明 | 作者      |
 | ----- | ---- | -------- | --------- |
 | 1.0.0 |      | 初始版本 | architect |
 
-### 4.2 质量自查表 (Self-Check)
+### 3.2 质量自查表 (Self-Check)
 
-<!-- 本节编号与主文 **§2–§4** 对齐；§1「设计概述」与 ASD §1 / [asd-template §1](../../../sdx-architect/assets/asd-template.md) 对齐。-->
+<!-- 本节与主文 **§1–§3** 对齐；§1「设计概述」与 ASD §1 / [asd-template §1](../../../sdx-architect/assets/asd-template.md) 对齐。-->
 
 - [ ] **结构与占位**
-  *通过标准*：`## 1`–`## 4` 主章节齐全；Mermaid 可渲染；不适用处已标注。
+  *通过标准*：`## 1`–`## 3` 主章节齐全；Mermaid 可渲染；不适用处已标注。
 - [ ] **§1 设计概述**
   *通过标准*：与 **ASD §1** 一致或可指回（ANALYSIS/PRD、MVP、约束、DD-n）；若为摘要须说明与 ASD 差异。
 - [ ] **§2 详细设计（应用架构～非功能）**
-  *通过标准*：§2.1～§2.5 对应实现级内容完整；每个 **API-n** / **DDL** / 非功能条目可追溯到 PRD、§3 规约表行及 **`requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`**（适用时）。
-- [ ] **§3 需求规约**
-  *通过标准*：与 **ASD §3** 表格行对齐；**`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-dsd-{IDEA-ID}-{N}-{MS-ID}.md`** 路径与磁盘一致，与 **DSD §2**、**requirement**（FR-n）可追溯一致。
-- [ ] **§4 附录与元数据**
-  *通过标准*：§4.1 变更历史、§4.2 自查可追溯；文末 YAML `id`/ `architecture_ref` 与 ASD/PRD 一致。
+  *通过标准*：§2.1～§2.5 对应实现级内容完整；每个 **API-n** / **DDL** / 非功能条目可追溯到 **PRD（FR-n）** 与 **ASD §3 / 概设 spec-asd**（若有）在 **§2** 中的对应表述。
+- [ ] **§3 附录与元数据**
+  *通过标准*：§3.1 变更历史、§3.2 自查可追溯；文末 YAML `id`/ `architecture_ref` 与 ASD/PRD 一致。
 
 ## 文档元数据
 

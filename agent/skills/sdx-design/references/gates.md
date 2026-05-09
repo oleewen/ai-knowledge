@@ -14,9 +14,9 @@
 - 文末：`<!-- sdx-design-gate: PENDING -->` → 总确认后 **`CONFIRMED`**。  
 - 正文至少一次出现 **`DSD-{IDEA-ID}-{N}.md`**（与所选 IDEA-ID、阶段一致）。
 
-## 规约与 DSD 同期
+## DSD 落盘时机
 
-**DSD** 与 **spec-dsd-*.md** 在总确认后同期落盘。**spec-dsd** 勿写 **`{DOC_DIR}/specs/`**（该处仅 **`spec-asd-*.md`**）。互指与终检见 `workflow.md` 步骤 3、[quality-checklist.md](quality-checklist.md)。
+总确认通过后，**仅写 DSD**。实现级内容与 PRD / ASD §3（或 **`spec-asd-*`**）的追溯在 **DSD §2** 表达。终检见 [quality-checklist.md](quality-checklist.md)。
 
 ## 与独立 `/brainstorming` 的关系
 

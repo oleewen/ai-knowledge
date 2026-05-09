@@ -140,7 +140,7 @@ erDiagram
 
 ## 3. 需求规约
 
-<!-- 行内应用/服务对齐 spec-asd-*、KNOWLEDGE_INDEX；摘要级，详设见 DSD/spec-dsd-*。冲突以已确认 ASD+PRD。联邦可将规约标 N/A，须写服务边界。-->
+<!-- 行内应用/服务对齐 spec-asd-*、KNOWLEDGE_INDEX；摘要级，详设见应用库 **DSD-*.md**（`/sdx-design`）。冲突以已确认 ASD+PRD。联邦可将规约标 N/A，须写服务边界。-->
 
 <!-- `{app-name}`：`a-z0-9._-`，对齐 knowledge-links.yaml；勿用 `{service-name}` 替代 -->
 

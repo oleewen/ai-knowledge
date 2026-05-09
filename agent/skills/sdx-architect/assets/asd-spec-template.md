@@ -1,6 +1,6 @@
 # {IDEA-ID} {APP-NAME} MVP-Phase-{n} 概设需求规约示例
 
-> **spec-asd-*.md**：概设（本模板）。**spec-dsd-*.md**：详设，路径仅 `requirements/.../MVP-Phase-{N}/specs/`。落 **`{DOC_DIR}/specs/spec-asd-{IDEA-ID}-{MVP-PHASE}-{app-name}.md`**，`id` 同文件名。
+> **spec-asd-*.md**：概设（本模板）。**详设**由应用库 **`DSD-*.md`**（`/sdx-design`，见 `sdx-design` 技能）承载。落 **`{DOC_DIR}/specs/spec-asd-{IDEA-ID}-{MVP-PHASE}-{app-name}.md`**，`id` 同文件名。
 
 ## 1. 需求规约范围
 

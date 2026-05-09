@@ -17,7 +17,7 @@ prompt、期望类别、响应、grader 证据；`SKILL.md` 与 `references/gate
 | F1 | 路由误判 |
 | F2 | 边界混淆（ASD/PRD vs DSD vs docs-*）|
 | F3 | 门禁遗漏 |
-| F4 | 缺 §1–§4、上游或 **spec-dsd** 互指 |
+| F4 | 缺 §1–§3、上游或未在 §2 内表达追溯 |
 | F5 | 无 ASD/spec-asd 仍宣称实现级定稿且无例外依据 |
 | F6 | 证据无法被断言复核 |
 

@@ -167,8 +167,8 @@ flowchart TD
     end
 
     S -- 知识库链路 --> A --> B --> C --> D -- 应用知识库 --> F
-    S -- 需求链路 --> Q -- IDEA --> F -- 解决方案 --> G -- 需求分析 : MVP/Sprint --> H -- 产品设计 --> I -- 系统知识库：概设Spec --> X -- 概设Spec --> W -- 详细设计/Spec --> J -- 测试设计 --> K
-    I -- 应用知识库：概设Spec --> W -- 详设Spec --> K --> L --> M --> N --> O --> P --> Z
+    S -- 需求链路 --> Q -- IDEA --> F -- 解决方案 --> G -- 需求分析 : MVP/Sprint --> H -- 产品设计 --> I -- 系统知识库：概设（spec-asd） --> X -- 概设（spec-asd） --> W -- 详细设计（DSD） --> J -- 测试设计 --> K
+    I -- 应用知识库：概设（spec-asd） --> W -- 详细设计（DSD） --> K --> L --> M --> N --> O --> P --> Z
     D -. 应用知识库 .-> R -- 应用知识库 --> T -- 应用知识视图 -->  V -- 系统知识库 --> F
     R -- 应用知识库 --> U -- 应用知识视图 --> V -- 系统知识库 --> Z
     P -- 更新文档 --> E -- 变更内容 --> B
@@ -190,7 +190,7 @@ flowchart TD
 | 需求设计  | `/sdx-analysis`    | 产出需求分析文档（ANALYSIS） |
 | 需求设计  | `/sdx-prd`         | 产出产品需求文档（PRD） |
 | 需求设计  | `/sdx-architect`   | 产出架构设计说明书（ASD） |
-| 需求设计  | `/sdx-design`      | 产出详细设计说明书（DSD）与 `specs/` |
+| 需求设计  | `/sdx-design`      | 产出详细设计说明书（DSD）；概设 **`spec-asd`** 位于 `{DOC_DIR}/specs/`（`/sdx-architect`） |
 | 需求设计  | `/sdx-test`        | 产出测试设计文档（TDD） |
 
 ---

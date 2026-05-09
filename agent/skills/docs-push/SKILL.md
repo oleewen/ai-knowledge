@@ -2,7 +2,7 @@
 name: docs-push
 description: >
   按 `knowledge-links.yaml` 将中央规约复制到各应用本机 `path`×`doc_dir`：legacy `spec-{yyMMdd}-{n}-{app}.md` → `{doc_dir}/specs/`（仅 `--specs-dir` 顶层）；`spec-asd-*.md` 递归收集，归位到 `requirements/REQUIREMENT-*/MVP-Phase-*/specs/` 或按 `requirements/` 前缀镜像。
-  `spec-dsd-*.md` 需将 `--specs-dir` 指到对应 Phase 下 `specs/`。支持 `path`/`repo` 与 Git 四档（`none|stage|commit|push`）；**非 dry-run 写盘与 `git push` 须用户确认**。
+  **DSD** 等正文一般不经本技能推送（见 `/sdx-design`）；本技能聚焦于 **legacy / spec-asd** 等规约文件路由。支持 `path`/`repo` 与 Git 四档（`none|stage|commit|push`）；**非 dry-run 写盘与 `git push` 须用户确认**。
   「推 spec 到应用库」「按 knowledge-links 同步 specs」「docs-push」等意图触发；仅 docs-pull、distill、SDD 闸门或只改 overview 时分流。
 ---
 

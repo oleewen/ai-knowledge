@@ -1,8 +1,8 @@
 # sdx-design 工作流
 
-门禁 [gates.md](gates.md)；**路径与产物**见 [SKILL.md](../SKILL.md)。**spec-asd / spec-dsd 目录**与 **KNOWLEDGE_TYPE**：[knowledge-type-modes.md](../../sdx-architect/references/knowledge-type-modes.md)。
+门禁 [gates.md](gates.md)；**路径与产物**见 [SKILL.md](../SKILL.md)。**spec-asd** 路径与 **KNOWLEDGE_TYPE**：[knowledge-type-modes.md](../../sdx-architect/references/knowledge-type-modes.md)。
 
-**分工**：ASD（architect）§1–§3；本技能 **DSD §1–§4**，详设从 **§2** 起。上游至少其一：**`ASD-*`** 或 **`{DOC_DIR}/specs/spec-asd-*.md`**（同 IDEA-ID、`{N}`）。**spec-dsd-*** 仅在 **`requirements/.../MVP-Phase-{N}/specs/`**。有 ASD 时 DSD §1/§3 同源并扩写；仅有 spec-asd 时 §1/§3 以该文件与元数据为 SSOT，表结构仍跟 `dsd-template`。映射：architect 会话 **G1–G3**（ASD）；本技能 **G1–G4**（DSD §1–§4，模板称 Gd{n}）。
+**分工**：ASD（architect）§1–§3；本技能 **DSD §1–§3**，实现级正文在 **§2**。上游至少其一：**`ASD-*`** 或 **`{DOC_DIR}/specs/spec-asd-*.md`**（同 IDEA-ID、`{N}`）。若有 ASD：**§2** 在 ASD §3 行与服务边界上扩写；仅有 spec-asd 时，范围与表行口径以 **spec-asd + PRD** 为 SSOT。映射：architect 会话 **G1–G3**（ASD）；本技能 **G1–G3**（DSD §1–§3，模板称 Gd{n}）。
 
 本文件：**状态机**、**回跳**、**Q-n**、**阶段三算法**。
 
@@ -12,10 +12,10 @@
 
 ```
 [阶段一：参数确认] → （可 S/F 跳过）
-[阶段二：逐门禁] Gd1→Gd2→Gd3→Gd4（§1–§4）；每门禁：草案 → （可选）多方案 → 确认 → 收口
+[阶段二：逐门禁] Gd1→Gd2→Gd3（§1–§3）；每门禁：草案 → （可选）多方案 → 确认 → 收口
   → （可 S/F 跳过）
 [Qclose-1] → C/S：PENDING → CONFIRMED
-[阶段三] 骨架 → chunk §1–§4 → spec-dsd 汇总稿 → 终检
+[阶段三] 骨架 → chunk §1–§3 → 终检
 ```
 
 ---
@@ -24,7 +24,7 @@
 
 用户在 **G{k}** 改结论后，后续门禁若为**强依赖**（同一 DD-n/API-n、服务/数据边界矛盾）→ 须重确认；**弱依赖**（大量引用术语/范围）→ 建议重确认；**无依赖** → 可保持。
 
-*例*：改 Gd2 API 边界 → Gd3 规约多为强依赖；向用户说明后由其定重审范围。
+*例*：改 Gd2（§2 API）边界 → Gd3（附录收口）常为弱依赖但仍建议快速复核术语一致。
 
 ---
 
@@ -52,38 +52,35 @@ Q-{n}：{问题}
 
 ### 步骤 0：架构输入（不落笔）
 
-Architect 已产 **ASD-* 与/或 `spec-asd-*`**。**spec-dsd-*** 仅用 **dsd-spec-template**，与 PRD 等闭合。
+Architect 已产 **ASD-* 与/或 `spec-asd-*`**。实现级契约**只进 DSD §2**，与 PRD、分析等闭合。
 
-- **有 ASD**：DSD §1 对齐 ASD/`asd-template` §1；§3 在 ASD §3 行上扩写（architect spec 可补 §3–6；冲突以 ASD+PRD 为准）。
-- **仅有 spec-asd**：§1 以 spec §1–2、`refs` 组织；§3 以 FR/UC 等为表行并标 SSOT；与 PRD 冲突先收口上游。
+- **有 ASD**：DSD §1 对齐 ASD/`asd-template` §1；**§2** 承载 API/DDL/时序等与 ASD §3 的对应展开（冲突以 ASD+PRD 为准）。
+- **仅有 spec-asd**：§1 以 spec §1–2、`refs` 组织；§2 按 FR/UC 等落地并标 SSOT；与 PRD 冲突先收口上游。
 
 ### 步骤 1：详设（→ §2）
 
 **输入**：ASD 与/或 spec-asd + PRD + 分析 + 按需 knowledge。  
 **对齐 §2.1–§2.5**：应用架构、API-{NNN}、LOGIC、DDL/缓存、安全与可观测。  
-**depth**：同 SKILL `--depth`。
+**depth**：同 SKILL `--depth`。  
+在此节内写明与 **FR-n / ASD §3 行 / spec-asd** 的追溯。
 
 ### 步骤 2：输出 DSD-*.md
 
-1. 按 `dsd-template.md` 整合 §1–§4（仅有 spec-asd 时正文或元数据须可追溯其路径）。
+1. 按 `dsd-template.md` 整合 §1–§3（仅有 spec-asd 时正文或元数据须可追溯其路径）。
 2. 文末 `## 文档元数据`：含 `mvp_phase`、`parent`、必要时 `architecture_ref` 或 spec-asd 路径。
 3. 对照 [quality-checklist.md](quality-checklist.md)。
 
-**目录（应用全量）**：
+**目录（应用全量，示意）**：
 
 ```
 {DOC_DIR}/specs/spec-asd-...md          ← 概设（/sdx-architect）
 
 {DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/
 ├── ASD-...md    ← 可选（architect）
-├── DSD-...md    ← 本技能
-└── specs/
-    └── spec-dsd-...md   ← 详设规约（本技能）；禁止写入 {DOC_DIR}/specs/
+└── DSD-...md    ← 本技能（唯一详设正文）
 ```
 
-### 步骤 3：spec-dsd 汇总稿
-
-从 DSD §2、§3（及仍有效的 ASD §3/领域描述）整理，按 **dsd-spec-template** 写入 **`.../MVP-Phase-{N}/specs/spec-dsd-*.md`**，与 DSD 互可追溯。
+（`MVP-Phase-* / specs/` **不是**本轮必建目录：仅当另有 **spec-asd**、`docs-push` 等与本包无关的资产时才可能存在。）
 
 ---
 
@@ -91,5 +88,5 @@ Architect 已产 **ASD-* 与/或 `spec-asd-*`**。**spec-dsd-*** 仅用 **dsd-sp
 
 ```
 /sdx-architect → ASD 与/或 {DOC_DIR}/specs/spec-asd-*.md
-/sdx-design    → 读 spec-asd（若有）→ DSD + requirements/.../specs/spec-dsd-*.md（禁止 {DOC_DIR}/specs/）
+/sdx-design    → 读 spec-asd（若有）→ **仅 DSD-{IDEA-ID}-{N}.md**
 ```

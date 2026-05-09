@@ -3,7 +3,7 @@ name: sdx-architect
 description: >
   基于 PRD（ANALYSIS 推荐）产出 ASD §1–§3；可选 `{DOC_DIR}/specs/spec-asd-*.md`（asd-spec-template）。
   覆盖服务边界、架构图、服务变更表；KNOWLEDGE_TYPE=system|company 时为联邦概要。
-  实现级 API/DDL、spec-dsd-*.md 全文与 DSD → /sdx-design；仅里程碑或 docs-* → 对应 sdx-/docs- 技能。
+  实现级 API/DDL 与 **DSD（详设文档）** → /sdx-design；仅里程碑或 docs-* → 对应 sdx-/docs- 技能。
   触发：ASD、边界、变更、§3 规约摘要或 spec-asd-*。
   门禁：未经「用户总确认」不写 `{DOC_DIR}/requirements/**/ASD-*.md`（例外见 references/gates.md）。
 compatibility: Bash 5+（仓库根）；`scripts/config-bootstrap.sh` 解析 `DOC_ROOT`；校验方式见正文。
@@ -19,10 +19,10 @@ compatibility: Bash 5+（仓库根）；`scripts/config-bootstrap.sh` 解析 `DO
 |------|------|
 | docs-distill / extract / archive / indexing | **docs-*** |
 | SOLUTION / ANALYSIS / PRD / TDD，不要 ASD | 对应 **sdx-*** |
-| API/DDL、spec-dsd-*.md、DSD | [sdx-design](../sdx-design/SKILL.md) |
+| API/DDL、DSD | [sdx-design](../sdx-design/SKILL.md) |
 | ASD、边界、变更、规约摘要、可选 spec-asd-*.md | **本技能** |
 
-产物：`asd-template`、`asd-stub-sections-federated`、会话 spec、`asd-spec-template`（spec-asd-*）。不含 DSD 与 spec-dsd 全文。
+产物：`asd-template`、`asd-stub-sections-federated`、会话 spec、`asd-spec-template`（spec-asd-*）。不含 **DSD** 全文。
 
 ## 输入（落盘前）
 

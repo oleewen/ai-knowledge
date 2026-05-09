@@ -21,13 +21,10 @@
 - 新表须有 **`gmt_create` / `gmt_modified`**；索引须对应真实查询，避免冗余。  
 - 伪代码/流程图：**禁止**在 `for` 内 RPC/DB；用批量接口或批量查。  
 - **§2.5** 安全、可观测须实质填写，勿仅写「参考通用方案」。
-
-## spec-dsd（workflow 步骤 3）
-
-须与 **DSD §2** 等一致；表行/正文可指回 **DSD §2** 与 **FR-n**。路径**仅** **`requirements/.../MVP-Phase-{N}/specs/spec-dsd-*.md`**（[dsd-spec-template.md](assets/dsd-spec-template.md)）；勿把分目录 YAML 树当必选交付物。
+- 与 **FR-n**、**ASD §3**（或 **spec-asd** 中需求条目）的对应关系**写在 §2**，避免双源。
 
 ## DSD-*.md 输出
 
-- 章节与 **dsd-template**（§1–§4）一致；空节保留标题，标「不适用/待补充」。  
+- 章节与 **dsd-template**（§1–§3）一致；空节保留标题，标「不适用/待补充」。  
 - **勿**在文件头用 YAML frontmatter；**仅**文末 `## 文档元数据` fenced yaml；含 `mvp_phase` 等必填项。  
 - Mermaid：输出前自检语法；`sequenceDiagram` / `stateDiagram-v2` / `erDiagram` / `classDiagram` / `flowchart` 择类而用。

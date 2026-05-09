@@ -10,8 +10,8 @@
 | 在详设「重写 ASD」且无 DD/回跳 | 回 architect 或在 DSD 显式决策记录 |
 | 同 IDEA-ID 下无 **ASD-* 且无 spec-asd-*** 即写实现级契约 | 先补其一或用户明示例外留痕 |
 | 服务边界级分叉在 Gd「悄悄改架构」 | 边界在 **`/sdx-architect`** 收口 |
-| **spec-dsd** 与 DSD §2/§3 无法互指 | 终检前对齐 [quality-checklist.md](quality-checklist.md) |
-| **spec-dsd** 写在 **`{DOC_DIR}/specs/`** | 迁至 **`requirements/.../MVP-Phase-{N}/specs/`**（仅 **`spec-asd`** 在上级 `specs/`） |
+| **§2 与 PRD/ASD** 无法在 §2 内互指编号 | 终检前对齐 [quality-checklist.md](quality-checklist.md) |
+| **实现级正文**散落在 DSD **外**的第二份 Markdown | 合并进 **DSD §2**，保持单一真相源 |
 
 ## 与上游混淆
 

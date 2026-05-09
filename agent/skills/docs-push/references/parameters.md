@@ -72,10 +72,6 @@
   - **否则**：归位 → `…/requirements/REQUIREMENT-{IDEA}/MVP-Phase-{PHASE}/specs/<basename>`。
 - `rel` 含独立 `..`：跳过；**`--strict` 整批失败**。
 
-### spec-dsd
-
-通常 `--specs-dir` **直接指向**已有 `requirements/.../MVP-Phase-*/specs/`。命名若不落 legacy 轨则不会被顶层 pickup；推送前与团队约定一致。
-
 设计见长文：[docs/superpowers/specs/2026-05-09-docs-push-spec-asd-routing-design.md](../../../../docs/superpowers/specs/2026-05-09-docs-push-spec-asd-routing-design.md)。
 
 ---

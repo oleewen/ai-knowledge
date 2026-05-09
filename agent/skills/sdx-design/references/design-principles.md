@@ -6,8 +6,8 @@
 
 ### 1. 模板驱动
 
-- 遵循 [dsd-template.md](../assets/dsd-template.md)。**§1**：有 ASD → 对齐 ASD §1/`asd-template`；仅有 **`spec-asd-*`** → 以其 §1–2 与 `refs` 为 SSOT。**§2** 详设。**§3**：有 ASD → 对齐并扩写 ASD §3；仅有 spec-asd → 以其中需求条目为表行基础并标 SSOT。**§4** 附录。不重排章节；空节保留标题，注「不适用/待补充」。
-- **应用全量**：另写 **`requirements/.../specs/spec-dsd-*.md`**（[dsd-spec-template.md](../assets/dsd-spec-template.md)）；不要求 `specs/{service}/…` 分文件 YAML。
+- 遵循 [dsd-template.md](../assets/dsd-template.md)。**§1**：有 ASD → 对齐 ASD §1/`asd-template`；仅有 **`spec-asd-*`** → 以其 §1–2 与 `refs` 为 SSOT。**§2** 承载全部实现级契约与追溯。**§3** 附录与自查。不重排章节；空节保留标题，注「不适用/待补充」。
+- **应用全量**：实现级内容**只写 DSD **§2**；不要求 `specs/{service}/…` 分文件 YAML。`MVP-Phase-* / specs/` 目录**不是**详设必建项。
 
 ### 2. 证据优先
 
@@ -22,7 +22,7 @@
 
 ### 3. 按需加载
 
-起手 **ASD 与/或 `spec-asd-*` + PRD + ANALYSIS** + 相关 knowledge；按需代码/ADR。勿为「完整性」通读 `knowledge/**` 或全仓。**spec-dsd** 按需维护互指。
+起手 **ASD 与/或 `spec-asd-*` + PRD + ANALYSIS** + 相关 knowledge；按需代码/ADR。勿为「完整性」通读 `knowledge/**` 或全仓。
 
 ### 4. 歧义标注
 
@@ -30,11 +30,11 @@
 
 ### 5. 范围
 
-本技能只产 **DSD** 与 **`spec-dsd-*.md`**。不测设、不写实现代码 → `sdx-test` / dev。
+本技能只产 **DSD**。不测设、不写实现代码 → `sdx-test` / dev。
 
 ### 6. 可追溯
 
-DD-n→PRD；API→用例；表变更→FR；规约条目→DSD（常为 §2）；非功能→分析中的非功能需求。
+DD-n→PRD；API→用例；表变更→FR；实现级条目在 **§2** 内指回 **ASD §3 行 / spec-asd / FR**；非功能→分析中的非功能需求。
 
 ### 7. ID 前缀
 
@@ -60,7 +60,7 @@ DD-n→PRD；API→用例；表变更→FR；规约条目→DSD（常为 §2）�
 | 接口不完整 | 缺错误码、幂等或容错 |
 | DDL 无索引 | 缺策略与查询分析 |
 | 忽略非功能 | 安全、可观测、性能空话 |
-| 规约脱钩 | spec-dsd 与 DSD 不一致 |
+| 契约外置 | 把实现级细节拆到 DSD 外的第二份 Markdown，导致双源 |
 | 循环中 RPC | 循环内 RPC/DB |
 
 ## 常见错误处置

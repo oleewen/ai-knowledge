@@ -1,7 +1,7 @@
 # ASD 联邦概要（KNOWLEDGE_TYPE = system | company）
 
 - **本库**：§1–§3 摘要（可选用 [asd-spec-template.md](asd-spec-template.md)）
-- **应用库**：接口/DDL/**spec-dsd-*.md**/DSD → `/sdx-design`
+- **应用库**：接口/DDL 等实现级正文 → **`DSD-*.md`**（`/sdx-design`）
 
 ## ASD §2 末（可选）：下游承接
 
