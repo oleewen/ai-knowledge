@@ -1,7 +1,7 @@
 {
   "skill_name": "sdx-prd",
   "version": "1.1.0",
-  "description": "用于评估 sdx-prd 技能触发边界、分流与门禁表述；含 expected_output 与断言供 grader 客观评分。",
+  "description": "评测 prd 触发/分流/门禁；供 grader 对照 expected_output 与断言。",
   "evals": [
     {
       "id": "prd-trigger-001",

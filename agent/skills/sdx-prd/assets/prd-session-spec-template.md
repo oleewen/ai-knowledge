@@ -1,13 +1,9 @@
-# sdx-prd 草稿（中间稿）
+# sdx-prd 草稿
 
-> **说明**：门禁 **G{n}** 为流程步骤编号；模板 **§n** 为 PRD 章节号；**US-n / UC-n / FR-n** 等编号见 [references/core-concepts.md](../references/core-concepts.md)。
+> **G{n}**：门禁步骤；**§n**：PRD 章号。编号见 [core-concepts.md](../references/core-concepts.md)。
 
-**IDEA-ID**：`{IDEA-ID}`（与上游 `ANALYSIS-{IDEA-ID}.md` 一致）  
-**MVP 阶段 N**：`{N}`（对应目录 `MVP-Phase-{N}` 与终稿文件名 `PRD-{IDEA-ID}-{N}.md`）  
-**DOC_DIR**（自 `.docsconfig`）：`{DOC_DIR}`  
-**--depth**：`quick | standard | deep`  
-**门禁粒度**：`11 门禁（G1–G11）| 精简 6 门禁`  
-**spec 版本**：`1.0.0`
+**IDEA-ID**：`{IDEA-ID}`（= `ANALYSIS-{IDEA-ID}.md`） **N**：`{N}` → `MVP-Phase-{N}` / `PRD-{IDEA-ID}-{N}.md`  
+**DOC_DIR**：`{DOC_DIR}` **--depth**：`quick | standard | deep` **门禁**：`11G | 精简6G` **spec 版本**：`1.0.0`
 
 ---
 
@@ -44,9 +40,9 @@
 
 本人确认：本 spec 可作为生成 `PRD-{IDEA-ID}-{N}.md` 的唯一素材来源。
 
-- 确认人：`$HOME` 路径的**末级目录名**（即本机登录用户名；例：`/Users/alice` → `alice`；勿填显示名或占位词）
+- 确认人：`$HOME` 末级目录名（本机用户名；勿填昵称/占位）
 - 日期：YYYY-MM-DD
 
 <!-- sdx-prd-gate: PENDING -->
 
-总确认后，将上一行中的 `PENDING` 改为 `CONFIRMED`（供钩子与 `validate-prd.sh --gate-check` 识别）。本 spec 正文须至少出现一次完整文件名 `PRD-{IDEA-ID}-{N}.md`。
+总确认：`PENDING`→`CONFIRMED`（与 `validate-prd.sh --gate-check` 字面一致）。正文至少一次完整 **`PRD-{IDEA-ID}-{N}.md`**。

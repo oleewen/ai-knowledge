@@ -1,84 +1,78 @@
 ---
 name: sdx-prd
 description: >
-  当用户执行 /sdx-prd、需要把 ANALYSIS 中当前 MVP 细化为可评审可验收的 PRD（用户故事、用例、流程、验收）时，必须使用本技能。
-  默认门禁：未完成「草稿用户总确认」前禁止写入 {DOC_DIR}/requirements/**/PRD-*.md。
-  即使用户只说「帮我写个 PRD」「细化用户故事」「设计业务流程」「把需求分析转成 PRD」，在已具备或可指向上游 ANALYSIS 时也应触发本技能。
-  若用户仅有会议纪要尚无 SOLUTION/ANALYSIS、或明确要求只做 sdx-solution/sdx-analysis/sdx-architect/sdx-design、或执行 docs-distill/docs-extract/docs-indexing，则不要以本技能为主路径，应分流到对应技能。
+  将 ANALYSIS 中当前 MVP 细化为可评审、可验收的 PRD（十一章，`assets/prd-template.md`）：用户故事、用例、流程、验收等。
+  触发：/sdx-prd；或用户要「写 PRD」「细化用户故事/业务流程」「需求分析转 PRD」，且可指向上游 ANALYSIS。
+  分流：仅有会议纪要、无 SOLUTION/ANALYSIS；或只要 sdx-solution/analysis/architect/design；或主路径为 docs-distill/extract/indexing → 对应技能，非本技能主责。
+  门禁：未完成「草稿用户总确认」不得写 `{DOC_DIR}/requirements/**/PRD-*.md`（例外见 references/gates.md）。
+compatibility: Bash 5+；`scripts/config-bootstrap.sh` 解析 `DOC_ROOT`；钩子 `python3 agent/hooks/sdx_gate_common.py --gate prd`（见 `agent/hooks.json`）。
 ---
 
-# 产品需求阶段（sdx-prd）
+# 产品需求（sdx-prd）
 
-本技能以「调度器」方式工作：先判定是否应由 `sdx-prd` 处理，再按阶段读取规范文件，经会话 spec 与门禁后产出可校验的 **PRD-{IDEA-ID}-{N}.md**（十一章，见 `assets/prd-template.md`）。
+先判主责 → 读 `references/` → 会话 **`...-sdx-prd.md`** → 门禁收口 → **`PRD-{IDEA-ID}-{N}.md`**（十一章）。
 
-主要读者：**产品**（撰写与验收）；**需求分析师、架构师、研发**参与评审**（可行性、范围）。架构与实现细化留给下游 **`sdx-architect`（ASD）** / **`sdx-design`（DSD）**。
-
----
-
-## 适用边界
-
-- **本技能负责**：`PRD-*.md`（十一章）、会话 spec（`...-sdx-prd.md`）、当前 **MVP-Phase-{N}** 范围内的流程/用例/故事/规则/验收、门禁与校验。
-- **本技能不负责**：共识 `SOLUTION-*`、需求分析 `ANALYSIS-*` 初稿；`ASD-*` / `DSD-*` 正式落盘；`docs-distill` / `docs-extract` / `docs-indexing` / `docs-archive` 主流程。
-- **边界分流**：无 ANALYSIS 或用户只要上游/下游产物时，引导或转对应 `sdx-*` / `docs-*` 技能。
+读者：**产品**（主笔与验收）；**分析、架构、研发**参评可行性与范围。下游：**sdx-architect（ASD）**、**sdx-design（DSD）**。
 
 ---
 
-## 输入与前置检查
+## 路由
 
-执行前最少确认：
+| 主路径 | 技能 |
+|--------|------|
+| docs-distill / extract / archive / indexing 为主 | **docs-*** |
+| SOLUTION / ANALYSIS / ASD / DSD 为主、不要 PRD | 对应 **sdx-*** |
+| **PRD**、会话 spec、G1–G11（或精简 6G）、Qclose、validate-prd | **本技能** |
 
-- **`ANALYSIS-{IDEA-ID}.md`** 存在且含目标 MVP 材料（缺失则先 `sdx-analysis`）。
-- **IDEA-ID** 与 **`N`（MVP-Phase）** 与终稿路径一致。
-- `{DOC_DIR}/requirements/.../MVP-Phase-{N}/` 与 `docs/superpowers/specs/` 可写路径意识。
+**负责**：`PRD-*.md`、会话 spec、当前 **MVP-Phase-{N}** 内流程/用例/故事/规则/验收、门禁。  
+**不负责**：`SOLUTION-*` / `ANALYSIS-*` 初稿、`ASD-*`/`DSD-*` 正式稿、docs-* 主线。
 
-若用户明确要求先做方案或需求分析，不强行套入本技能全流程。
+---
+
+## 前置
+
+- **`ANALYSIS-{IDEA-ID}.md`** 含目标 MVP（缺则先 `sdx-analysis`）。  
+- **IDEA-ID**、**`N`** 与终稿路径一致。  
+- 知悉 `{DOC_DIR}/requirements/.../MVP-Phase-{N}/` 与 `docs/superpowers/specs/`。  
+用户要先方案/分析时，不强行套全流程。
 
 ---
 
 ## 执行路由（先读后写）
 
-1. **门禁与例外**：先读 `references/gates.md`
-2. **流程与阶段**：再读 `references/workflow.md`
-3. **阶段二节奏与多方案**：读 `references/brainstorming-integration.md`
-4. **IDEA-ID 与路径口径**：不确定时读 `references/core-concepts.md`
-5. **原则、编号与表格级反模式**：边界判断时读 `references/design-principles.md`
-6. **反模式（叙事级）**：收敛方案前读 `references/anti-patterns.md`
-7. **操作层陷阱**：流程/故事/MVP 易错时读 `gotchas.md`
-8. **受众与语言**：终检或语言审查时读 `references/audience-and-language.md`
-9. **质量终检**：落盘前读 `references/quality-checklist.md`
-10. **模板、骨架与形态参考**：阶段二用 `assets/prd-session-spec-template.md`；阶段三用 `assets/prd-template.md`；需「一行级」形态对齐时读 `assets/samples/mini-prd-example.md`
+1. [gates.md](references/gates.md)  
+2. [workflow.md](references/workflow.md)  
+3. [brainstorming-integration.md](references/brainstorming-integration.md)  
+4. 口径不明 → [core-concepts.md](references/core-concepts.md)  
+5. 原则/编号 → [design-principles.md](references/design-principles.md)  
+6. 叙事反模式 → [anti-patterns.md](references/anti-patterns.md)  
+7. 操作易错 → [gotchas.md](gotchas.md)  
+8. 语气 → [audience-and-language.md](references/audience-and-language.md)  
+9. 终检 → [quality-checklist.md](references/quality-checklist.md)  
+10. 模板：`assets/prd-session-spec-template.md`、`assets/prd-template.md`；形态参考 `assets/samples/mini-prd-example.md`
 
 ---
 
-## 门禁要求（必须执行）
+## 门禁
 
-- 总确认前，禁止写 `{DOC_DIR}/requirements/**/PRD-*.md`；合法例外与标记见 `references/gates.md`。
-- 建议在会话 spec 使用 `PENDING` / `CONFIRMED` 语义（HTML 注释形态见 `gates.md`）。
+总确认前禁止 **`{DOC_DIR}/requirements/**/PRD-*.md`**；`PENDING`/`CONFIRMED` 与例外见 [gates.md](references/gates.md)。
 
 ---
 
 ## 产出与校验
 
-- **会话 spec**：`docs/superpowers/specs/YYYY-MM-DD-<topic>-sdx-prd.md`（骨架见会话模板）。
-- **正式产物**：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`（十一章，见 `assets/prd-template.md`）。
-- 落盘后执行：
+- **会话 spec**：`docs/superpowers/specs/YYYY-MM-DD-<topic>-sdx-prd.md`  
+- **PRD**：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`
 
-  ```bash
-  agent/skills/sdx-prd/scripts/validate-prd.sh
-  agent/skills/sdx-prd/scripts/validate-prd.sh --file path/to/PRD-xxx.md --gate-check
-  ```
+仓库根：
 
----
-
-## 评测与迭代（skill-creator 对齐）
-
-- 评测样本：`evals/evals.json`（含 `expected_output` 与 `assertions`）
-- 评测元模板：`evals/eval-metadata-template.json`
-- 评分规则：`agents/grader.md`
-- 失败分析：`agents/analyzer.md`
+```bash
+agent/skills/sdx-prd/scripts/validate-prd.sh
+agent/skills/sdx-prd/scripts/validate-prd.sh --file path/to/PRD-xxx.md --gate-check
+```
 
 ---
 
-## 工程化支持
+## 评测与工程化
 
-钩子：`python3 agent/hooks/sdx_gate_common.py --gate prd`，注册见 `agent/hooks.json`；需启用 Hooks 方生效。
+`evals/evals.json`、`evals/eval-metadata-template.json`、`agents/grader.md`、`agents/analyzer.md`。Hooks 须在仓库启用后方拦截写入。

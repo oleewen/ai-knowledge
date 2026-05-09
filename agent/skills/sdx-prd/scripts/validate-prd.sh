@@ -1,20 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# PRD 文档结构校验脚本
-# 用法: scripts/validate-prd.sh [--file <path>] [--gate-check] [--gate-strict]
-# DOC_ROOT：resolve_repo_doc_root（仅 .docsconfig）；见 agent/scripts/config-bootstrap.sh
-#
-# 说明：闸门式工作流仅改变产出过程，不改变 PRD 文档结构要求；校验项仍以十一章模板为准。
-#
-# 校验项:
-#   1. 文档目录存在
-#   2. 文末「文档元数据」YAML 完整性（id、title、version、status、parent、mvp_phase）；禁止文件头 ---
-#   3. 十一章结构完整性（与当前 prd-template.md 一致）
-#   4. 编号体系一致性（US-n、UC-n、BR-n、EX-n、AC-n）
-#   5. 模板 prd-template.md 存在
-#   6. 需求分析关联检查
-#   7. 可选 --gate-check：是否存在含 <!-- sdx-prd-gate: CONFIRMED --> 且引用该文件名的会话 spec（见 SKILL HARD-GATE）
+# PRD 结构校验。用法: [--file <path>] [--gate-check] [--gate-strict]；DOC_ROOT 见 config-bootstrap.sh
+# 检：目录、十一章 vs prd-template、文末 yaml（禁文件头 ---）、编号、ANALYSIS 关联；gate-check：CONFIRMED spec 引用目标 PRD 名（SKILL HARD-GATE）
 
 TARGET_FILE=""
 ERRORS=0
