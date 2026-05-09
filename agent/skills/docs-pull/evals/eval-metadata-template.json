@@ -2,36 +2,36 @@
   "skill_name": "docs-pull",
   "eval_id": "REPLACE_WITH_EVAL_ID",
   "expected_category": "should-trigger | should-not-trigger",
-  "expected_route": "/docs-pull | （not-trigger 时填主分流目标，如 /docs-distill）",
-  "expected_output": "一两句：本 eval 下模型应表现出的路由与要点（与 evals.json 中同 id 条一致）。",
-  "notes": "复制本模板为 <eval-id>-metadata.json；断言须与 agents/grader.md 一致。",
+  "expected_route": "/docs-pull | （not-trigger 填下游）",
+  "expected_output": "与同 id eval 条目一致的一句要点",
+  "notes": "复制为 `<id>-metadata.json`；断言与 grader 一致",
   "assertions_should_trigger_example": [
     {
       "id": "gate-awareness",
-      "name": "低风险闸门表述",
+      "name": "低风险闸门",
       "type": "must_include",
-      "check": "响应须体现写盘前事实确认或 gates 语义；不得将 docs-pull 描述为必须 docs/superpowers/specs 中 HTML CONFIRMED 门闩（与 CONVENTIONS 低风险表矛盾）。",
+      "check": "体现写盘前事实确认/gates；不得称必须 superpowers HTML CONFIRMED（与 CONVENTIONS 低风险冲突）。",
       "priority": "P0"
     },
     {
       "id": "scope-federal-mirror",
-      "name": "联邦镜像范围",
+      "name": "联邦镜像",
       "type": "must_include",
-      "check": "须点明 applications/app-*、manifest、pull-log 或 pull-docs.sh 之一。",
+      "check": "须提 applications/app-*、manifest、pull-log 或 pull-docs.sh 其一。",
       "priority": "P0"
     },
     {
       "id": "boundary-routing",
-      "name": "不误代下游",
+      "name": "不误当代下游",
       "type": "must_not_conflict",
-      "check": "不得将主路径说成仅改 system overview 或仅写 SDD 终稿。",
+      "check": "不得说成仅改 system overview 或仅 SDD。",
       "priority": "P0"
     },
     {
       "id": "dry-run-hint",
-      "name": "预览提示",
+      "name": "预览",
       "type": "should_include",
-      "check": "高风险场景应提及可先 --dry-run。",
+      "check": "高风险可先 `--dry-run`。",
       "priority": "P1"
     }
   ],
@@ -40,20 +40,20 @@
       "id": "correct-downstream",
       "name": "正确下游",
       "type": "must_include",
-      "check": "须点名 distill/extract 等与 prompt 一致的下游。",
+      "check": "点名 distill/extract 等与 prompt 一致下游。",
       "priority": "P0"
     },
     {
       "id": "no-false-pull-primary",
       "name": "勿假主 pull",
       "type": "must_not_conflict",
-      "check": "不得以仅 docs-pull 实跑覆盖用户已指定的 overview/SDD 任务。",
+      "check": "不得以仅 docs-pull 覆盖用户指定的 overview/SDD。",
       "priority": "P0"
     }
   ],
   "scoring": {
-    "pass_rule_should_trigger": "P0 全部通过，且 P1 至少通过 1 项（若无 P1 则仅 P0）",
-    "pass_rule_should_not_trigger": "P0 全部通过；P1 可选",
-    "fail_rule": "任一 P0 断言失败即判定不通过"
+    "pass_rule_should_trigger": "P0 全过；有 P1 则≥1",
+    "pass_rule_should_not_trigger": "P0 全过；P1 可选",
+    "fail_rule": "任一 P0 → 失败"
   }
 }

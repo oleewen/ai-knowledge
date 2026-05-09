@@ -1,22 +1,24 @@
 {
   "skill_name": "docs-pull",
+  "version": "1.0.0",
+  "description": "冒烟：镜像拉取、dry-run、与 distill 分流",
   "evals": [
     {
       "id": 1,
       "prompt": "billing-appeal 那边应用库又合并了几个 PR，帮我把联邦镜像 applications/app-billing-appeal/ 从远端拉一下最新文档，先 dry-run 我看下计划",
-      "expected_output": "触发 docs-pull；读取 manifest 与分支；说明低风险无 spec gate 但实跑前仍须 gates 条件；先 --dry-run 输出计划；不宣称已写入 overview 第三列",
+      "expected_output": "docs-pull：读 manifest→ gates 语义→ `--dry-run` 计划→ 不误称已更新 system overview 第三列→ 不写 HTML spec gate。",
       "files": []
     },
     {
       "id": 2,
       "prompt": "/docs-pull --app payment --branch release/1.2",
-      "expected_output": "触发 docs-pull；复述 repo_url、docs_root；确认 HARD-GATE 已满足或请用户一句确认后调用 pull-docs.sh；步骤 3 追加 pull-log；不提 docs-distill 为同一步主路径",
+      "expected_output": "docs-pull：复述 repo/docs_root→ HARD-GATE 或一句许可→ `pull-docs.sh`→ 追加 pull-log→ distill **不是**同一步默认主交付。",
       "files": []
     },
     {
       "id": 3,
       "prompt": "帮我把 payment-overview 第三列从应用库蒸馏到系统库，顺便拉一下最新镜像",
-      "expected_output": "应分流：overview 第三列主路径为 docs-distill（或 extract），拉镜像为 docs-pull；不得只以 docs-pull 覆盖 distill 主交付",
+      "expected_output": "**分流**：overview 主线 distill（或 extract）；拉镜像 docs-pull→ 不能只 pull 顶替 distill。",
       "files": []
     }
   ]

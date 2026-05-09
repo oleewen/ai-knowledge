@@ -1,21 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
-# docs-pull — 从目标工程拉取知识库文档
-#
-# 职责：
-#   1. git clone 目标工程到临时目录
-#   2. 将 {docs_root}/ 内容同步到 applications/app-{APPNAME}/
-#   3. 保护本地 changelogs/ 和 manifest 文件不被覆盖
-#   4. 输出同步统计（新增/修改/删除文件数）供 Agent 生成 changelog
-#
-# 用法：
-#   scripts/pull-docs.sh \
-#     --app APPNAME \
-#     --repo https://github.com/org/repo.git \
-#     --branch main \
-#     --docs-root docs \
-#     --target applications/app-APPNAME
+# clone 远端 `{docs_root}` → rsync 到 `applications/app-*`；保护 changelogs/ 与 manifest；打印统计。
+# `--app --repo --branch --docs-root --target`；可选 `--dry-run`。
 
 # ── 参数解析 ──────────────────────────────────────────────────────────────────
 
