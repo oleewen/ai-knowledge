@@ -16,19 +16,24 @@
 ### 1.1 设计目标
 
 - 关联需求分析：`{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md`
-- 关联产品需求：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`
-- 架构设计说明书：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ASD-{IDEA-ID}-{N}.md`
+- 关联产品需求：`./PRD-{IDEA-ID}-{N}.md`
+- 架构设计说明书：`./ASD-{IDEA-ID}-{N}.md`
+- 概要需求规约：`./specs/asd-spec-{IDEA-ID}-{N}-{APP-NAME}.md`
 - MVP阶段：MVP-Phase-{N}
 
 ### 1.2 设计约束
 <!-- 技术约束、架构约束、兼容性约束等 -->
+
+- 业务约束
+- 技术约束
+- 架构约束
+- 兼容性约束
 
 ### 1.3 关键设计决策
 
 | 决策编号 | 决策点 | 决策结果 | 决策理由 | 备选方案 |
 | --------- | ------- | --------- | --------- | --------- |
 | DD-001 | | | | |
-
 
 ---
 

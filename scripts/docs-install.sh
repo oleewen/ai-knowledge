@@ -582,11 +582,11 @@ usage() {
 
 示例
   ./scripts/docs-install.sh --target ~/workspace/my-app/docs
-  ./scripts/docs-install.sh --scope=knowledge --target ~/workspace/my-app/docs
-  ./scripts/docs-install.sh --scope=config --target ~/workspace/my-app/docs
-  ./scripts/docs-install.sh --mode=central --type=application --target ~/workspace/my-app/docs
-  ./scripts/docs-install.sh --mode=standalone --type=system --target ~/workspace/my-app/system
-  ./scripts/docs-install.sh --dry-run --target ~/workspace/my-app/docs
+  ./scripts/docs-install.sh --target ~/workspace/my-app/docs --scope=k
+  ./scripts/docs-install.sh --target ~/workspace/my-app/docs --scope=c
+  ./scripts/docs-install.sh --target ~/workspace/my-app/docs --scope=k --type=application --mode=central
+  ./scripts/docs-install.sh --target ~/workspace/my-app/docs --scope=k --type=system
+  ./scripts/docs-install.sh --target ~/workspace/my-app/docs --dry-run
 EOF
 }
 
