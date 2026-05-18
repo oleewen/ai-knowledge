@@ -3,7 +3,7 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "用户：把 docs/superpowers/specs 里 spec-250504-1-myapp.md 按 system/knowledge-links.yaml 推到 myapp 登记路径，先 dry-run 再 path 模式实跑。",
+      "prompt": "用户：把 application/specs 里 spec-250504-1-myapp.md 按 system/knowledge-links.yaml 推到 myapp 登记路径，先 dry-run 再 path 模式实跑。",
       "expected_output": "读 gates/parameters；push-specs copy --dry-run 后实跑 copy；不自作 push",
       "files": []
     },

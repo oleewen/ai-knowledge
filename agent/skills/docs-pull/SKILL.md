@@ -37,7 +37,7 @@ description: >
 
 ## 门禁
 
-实跑 rsync **前**满足 `references/gates.md` HARD-GATE；**不要**求 `docs/superpowers/specs/` 或 HTML gate（与 CONVENTIONS 低风险一致）。
+实跑 rsync **前**满足 `references/gates.md` HARD-GATE；**不要**求 `application/specs/` 或 HTML gate（与 CONVENTIONS 低风险一致）。
 
 ## 产出
 

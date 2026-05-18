@@ -7,6 +7,7 @@
 - Skill 路径：`agent/skills/<skill-name>/SKILL.md`
 - 命令名约定：目录名即 Slash 命令（如 `docs-indexing` -> `/docs-indexing`）
 - 调用方式：在 Chat 输入 `/` 选择命令，或使用 `@<skill-name>` 作为上下文附加
+- 高风险技能的**会话 spec** 路径契约：[session-spec-path.md](../references/session-spec-path.md)（`*/specs/`，以当次会话 spec 为准）
 
 ## 当前可用技能
 

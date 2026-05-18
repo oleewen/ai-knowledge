@@ -1,7 +1,7 @@
 ---
 name: sdx-architect
 description: >
-  基于 PRD（ANALYSIS 推荐）产出 ASD §1–§3；可选 `{DOC_DIR}/specs/spec-asd-*.md`（asd-spec-template）。
+  基于 PRD（ANALYSIS 推荐）产出 ASD §1–§3；可选 `spec-asd-*.md`（asd-spec-template）。
   覆盖服务边界、架构图、服务变更表；KNOWLEDGE_TYPE=system|company 时为联邦概要。
   实现级 API/DDL 与 **DSD（详设文档）** → /sdx-design；仅里程碑或 docs-* → 对应 sdx-/docs- 技能。
   触发：ASD、边界、变更、§3 规约摘要或 spec-asd-*。
@@ -17,6 +17,7 @@ compatibility: Bash 5+（仓库根）；`scripts/config-bootstrap.sh` 解析 `DO
 
 | 诉求 | 技能 |
 |------|------|
+| 会话 spec 路径 | [session-spec-path.md](../../references/session-spec-path.md) |
 | docs-distill / extract / archive / indexing | **docs-*** |
 | SOLUTION / ANALYSIS / PRD / TDD，不要 ASD | 对应 **sdx-*** |
 | API/DDL、DSD | [sdx-design](../sdx-design/SKILL.md) |
@@ -31,7 +32,7 @@ compatibility: Bash 5+（仓库根）；`scripts/config-bootstrap.sh` 解析 `DO
 
 ## 阅读顺序（先读后写）
 
-1. `references/gates.md` → `workflow.md` → `quality-checklist.md`
+1. `references/gates.md` → `workflow.md` → `brainstorming-integration.md` → `quality-checklist.md`
 2. 歧义：`anti-patterns.md`、`knowledge-type-modes.md`
 3. 结构：`assets/asd-template.md`、`assets/samples/mini-asd-example.md`
 
@@ -41,7 +42,8 @@ compatibility: Bash 5+（仓库根）；`scripts/config-bootstrap.sh` 解析 `DO
 
 ## 产出与校验
 
-路径：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ASD-{IDEA-ID}-{N}.md`
+- **会话 spec**：`*/specs/YYYY-MM-DD-<topic>-sdx-architect.md`（路径契约：[session-spec-path.md](../../references/session-spec-path.md)）
+- **ASD**：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ASD-{IDEA-ID}-{N}.md`
 
 ```bash
 # 仓库根

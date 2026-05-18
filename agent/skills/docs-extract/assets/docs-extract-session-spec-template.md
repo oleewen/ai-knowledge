@@ -1,6 +1,7 @@
 # docs-extract 会话 spec 骨架
 
-路径：`docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-extract.md`  
+路径契约：[session-spec-path.md](../../../references/session-spec-path.md)。
+路径：`system/specs/YYYY-MM-DD-<topic>-docs-extract.md`  
 确认前保持文末 `PENDING`。
 
 ## 1. 背景与目标

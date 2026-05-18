@@ -72,7 +72,7 @@
   - **否则**：归位 → `…/requirements/REQUIREMENT-{IDEA}/MVP-Phase-{PHASE}/specs/<basename>`。
 - `rel` 含独立 `..`：跳过；**`--strict` 整批失败**。
 
-设计见长文：[docs/superpowers/specs/2026-05-09-docs-push-spec-asd-routing-design.md](../../../../docs/superpowers/specs/2026-05-09-docs-push-spec-asd-routing-design.md)。
+路由与 `--specs-dir` 语义见上文与本目录 [workflow.md](workflow.md)。
 
 ---
 
@@ -81,7 +81,7 @@
 ```bash
 # legacy，path，dry-run
 bash agent/skills/docs-push/scripts/push-specs.sh copy \
-  --specs-dir ./docs/superpowers/specs \
+  --specs-dir ./application/specs \
   --links system/knowledge-links.yaml --mode path --dry-run
 
 # spec-asd 在 application 树下

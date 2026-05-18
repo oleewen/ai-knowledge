@@ -1,5 +1,10 @@
 # brainstorming 嵌入（sdx-solution）
 
+## 会话 spec 路径
+
+闸门中间稿须落在 **`*/specs/`**（`{文档根}/specs/`，不含 `requirements/**/specs/`）。契约：[session-spec-path.md](../../../references/session-spec-path.md)。
+
+示例：`application/specs/YYYY-MM-DD-<topic>-sdx-solution.md`
 ## 与独立 `/brainstorming`
 
 | | 独立 `/brainstorming` | 本技能阶段二 |

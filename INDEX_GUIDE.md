@@ -44,7 +44,7 @@
 ├── company/                                  # 公司知识库：architecture/（五视角文档）、system-SYSNAME/ 联邦槽位、changelogs/、constitution/、solutions/
 ├── scripts/                                  # 向目标工程注入知识库与 .docsconfig；bootstrap
 ├── agent/                                    # rules/、skills/、scripts/（config-bootstrap、校验）
-├── docs/                                     # 设计备忘与 superpowers 规格等（若存在）
+├── docs/                                     # 设计备忘等（若存在；会话 spec 见各文档根 specs/）
 └── .gitignore                                # 忽略 `.*` 等；见 §八
 ```
 

@@ -1,5 +1,6 @@
 # sdx-architect 草稿
 
+路径契约：[session-spec-path.md](../../../references/session-spec-path.md)。
 > **G{n}**：流程门禁。**DD-n**：ASD §1.3 设计条目 — 二者勿混。
 
 **IDEA-ID**：`{IDEA-ID}`  

@@ -31,7 +31,8 @@ from typing import Callable
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from sdx_session_state import is_session_active, iter_strings
+from session_spec_paths import is_session_spec_path, iter_session_spec_files
+from sdx_session_state import get_session_specs, is_session_active, iter_strings
 
 # ---------------------------------------------------------------------------
 # 各阶段：候选路径收集（须与历史五脚本行为一致）
@@ -105,16 +106,53 @@ def _normalize_repo_relative_for_gate(repo: Path, candidate: str) -> str | None:
     return str(rel).replace("\\", "/")
 
 
-def _has_indexing_write_allowed(repo: Path, marker_confirmed: str, candidate: str) -> bool:
+def _iter_spec_paths_for_gate(
+    repo: Path,
+    payload: object,
+    environ: dict[str, str] | None,
+) -> list[Path]:
+    ordered: list[Path] = []
+    seen: set[str] = set()
+    for rel in get_session_specs(payload, environ):
+        if not is_session_spec_path(rel):
+            continue
+        p = (repo / rel).resolve()
+        key = str(p)
+        if key not in seen and p.is_file():
+            seen.add(key)
+            ordered.append(p)
+    for p in iter_session_spec_files(repo):
+        key = str(p.resolve())
+        if key not in seen:
+            seen.add(key)
+            ordered.append(p)
+    return ordered
+
+
+def _spec_text_confirms(path: Path, marker_confirmed: str, basename: str) -> bool:
+    basename_pattern = re.compile(
+        rf"(?<![A-Za-z0-9._-]){re.escape(basename)}(?![A-Za-z0-9._-])"
+    )
+    try:
+        text = path.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return False
+    return marker_confirmed in text and bool(basename_pattern.search(text))
+
+
+def _has_indexing_write_allowed(
+    repo: Path,
+    marker_confirmed: str,
+    candidate: str,
+    payload: object,
+    environ: dict[str, str] | None = None,
+) -> bool:
     """除 CONFIRMED 标记外，须任一 spec 正文包含与 candidate 一致的仓库根相对路径（防多份 INDEX_GUIDE 同名误放行）。"""
     rel = _normalize_repo_relative_for_gate(repo, candidate)
     if not rel:
         return False
-    specs_dir = repo / "docs" / "superpowers" / "specs"
-    if not specs_dir.is_dir():
-        return False
     variants = (rel, f"./{rel}")
-    for p in specs_dir.rglob("*.md"):
+    for p in _iter_spec_paths_for_gate(repo, payload, environ):
         try:
             text = p.read_text(encoding="utf-8", errors="replace")
         except OSError:
@@ -150,7 +188,7 @@ GATES: dict[str, GateConfig] = {
         debug_label="docs-build-gate",
         deny_message=(
             "docs-build：禁止在未完成中间 spec「用户总确认」前写入 knowledge/ 下的文件。"
-            "请先在 docs/superpowers/specs/ 维护会话 spec，将 <!-- docs-build-gate: PENDING --> 改为 CONFIRMED，"
+            "请先在当前会话 spec（*/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- docs-build-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名（如 KNOWLEDGE_INDEX.md）。本 gate 无 bypass 环境变量，须完整走确认流程。"
         ),
         basename_prefix="",
@@ -162,7 +200,7 @@ GATES: dict[str, GateConfig] = {
         debug_label="docs-distill-gate",
         deny_message=(
             "docs-distill：禁止在未完成中间 spec「用户总确认」前写入 system/architecture/overview/ 下的文件。"
-            "请先在 docs/superpowers/specs/ 维护会话 spec，将 <!-- docs-distill-gate: PENDING --> 改为 CONFIRMED，"
+            "请先在当前会话 spec（*/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- docs-distill-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名。本 gate 无 bypass 环境变量，须完整走确认流程。"
         ),
         basename_prefix="",  # overview 文件名不固定，由路径收集器负责过滤
@@ -174,7 +212,7 @@ GATES: dict[str, GateConfig] = {
         debug_label="docs-extract-gate",
         deny_message=(
             "docs-extract：禁止在未完成中间 spec「用户总确认」前写入 system/architecture/overview/ 下的文件。"
-            "请先在 docs/superpowers/specs/ 维护会话 spec，将 <!-- docs-extract-gate: PENDING --> 改为 CONFIRMED，"
+            "请先在当前会话 spec（*/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- docs-extract-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名。本 gate 无 bypass 环境变量，须完整走确认流程。"
         ),
         basename_prefix="",
@@ -186,7 +224,7 @@ GATES: dict[str, GateConfig] = {
         debug_label="docs-archive-gate",
         deny_message=(
             "docs-archive：禁止在未完成中间 spec「用户总确认」前写入 system/architecture/overview/ 下的文件。"
-            "请先在 docs/superpowers/specs/ 维护会话 spec，将 <!-- docs-archive-gate: PENDING --> 改为 CONFIRMED，"
+            "请先在当前会话 spec（*/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- docs-archive-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名。本 gate 无 bypass 环境变量，须完整走确认流程。"
         ),
         basename_prefix="",
@@ -198,7 +236,7 @@ GATES: dict[str, GateConfig] = {
         debug_label="docs-indexing-gate",
         deny_message=(
             "docs-indexing：禁止在未完成中间 spec「用户总确认」前写入 INDEX_GUIDE.md 或 */changelogs/INDEXING-LOG.md。"
-            "请先在 docs/superpowers/specs/ 维护 `*-docs-indexing.md`，将 <!-- docs-indexing-gate: PENDING --> 改为 CONFIRMED，"
+            "请先在当前会话 spec（*/specs/ 下）维护 `*-docs-indexing.md`，将 <!-- docs-indexing-gate: PENDING --> 改为 CONFIRMED，"
             "且正文须**逐字列出**本轮将写入的仓库根相对路径（例如 application/INDEX_GUIDE.md）。"
             "本 gate 无 bypass 环境变量，须完整走确认流程。"
         ),
@@ -211,7 +249,7 @@ GATES: dict[str, GateConfig] = {
         debug_label="sdx-prd-gate",
         deny_message=(
             "sdx-prd：禁止在未完成中间 spec「用户总确认」前写入 requirements 下的 PRD 文件。"
-            "请先在 docs/superpowers/specs/ 维护会话 spec，将 <!-- sdx-prd-gate: PENDING --> 改为 CONFIRMED，"
+            "请先在当前会话 spec（*/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- sdx-prd-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名。若确需跳过闸门（仅限人工授权），可在环境中设置 SDX_PRD_ALLOW_PRD_WRITE=1。"
         ),
         basename_prefix="PRD-",
@@ -223,7 +261,7 @@ GATES: dict[str, GateConfig] = {
         debug_label="sdx-analysis-gate",
         deny_message=(
             "sdx-analysis：禁止在未完成中间 spec「用户总确认」前写入 analysis 下的 ANALYSIS 文件。"
-            "请先在 docs/superpowers/specs/ 维护会话 spec，将 <!-- sdx-analysis-gate: PENDING --> 改为 CONFIRMED，"
+            "请先在当前会话 spec（*/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- sdx-analysis-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名。若确需跳过闸门（仅限人工授权），可在环境中设置 SDX_ANALYSIS_ALLOW_ANALYSIS_WRITE=1。"
         ),
         basename_prefix="ANALYSIS-",
@@ -235,7 +273,7 @@ GATES: dict[str, GateConfig] = {
         debug_label="sdx-solution-gate",
         deny_message=(
             "sdx-solution：禁止在未完成中间 spec「用户总确认」前写入 solutions 下的 SOLUTION 文件。"
-            "请先在 docs/superpowers/specs/ 维护会话 spec，将 <!-- sdx-solution-gate: PENDING --> 改为 CONFIRMED，"
+            "请先在当前会话 spec（*/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- sdx-solution-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名。若确需跳过闸门（仅限人工授权），可在环境中设置 SDX_SOLUTION_ALLOW_SOLUTION_WRITE=1。"
         ),
         basename_prefix="SOLUTION-",
@@ -247,7 +285,7 @@ GATES: dict[str, GateConfig] = {
         debug_label="sdx-architect-gate",
         deny_message=(
             "sdx-architect：禁止在未完成中间 spec「用户总确认」前写入 requirements 下的 ASD 文件。"
-            "请先在 docs/superpowers/specs/ 维护会话 spec，将 <!-- sdx-architect-gate: PENDING --> 改为 CONFIRMED，"
+            "请先在当前会话 spec（*/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- sdx-architect-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名。若确需跳过闸门（仅限人工授权），可在环境中设置 SDX_ARCHITECT_ALLOW_ASD_WRITE=1。"
         ),
         basename_prefix="ASD-",
@@ -259,7 +297,7 @@ GATES: dict[str, GateConfig] = {
         debug_label="sdx-design-gate",
         deny_message=(
             "sdx-design：禁止在未完成中间 spec「用户总确认」前写入 requirements 下的 DSD 文件。"
-            "请先在 docs/superpowers/specs/ 维护会话 spec，将 <!-- sdx-design-gate: PENDING --> 改为 CONFIRMED，"
+            "请先在当前会话 spec（*/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- sdx-design-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名。若确需跳过闸门（仅限人工授权），可在环境中设置 SDX_DESIGN_ALLOW_DSD_WRITE=1。"
         ),
         basename_prefix="DSD-",
@@ -271,7 +309,7 @@ GATES: dict[str, GateConfig] = {
         debug_label="sdx-test-gate",
         deny_message=(
             "sdx-test：禁止在未完成中间 spec「用户总确认」前写入 requirements 下的 TDD 文件。"
-            "请先在 docs/superpowers/specs/ 维护会话 spec，将 <!-- sdx-test-gate: PENDING --> 改为 CONFIRMED，"
+            "请先在当前会话 spec（*/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- sdx-test-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名。若确需跳过闸门（仅限人工授权），可在环境中设置 SDX_TEST_ALLOW_TDD_WRITE=1。"
         ),
         basename_prefix="TDD-",
@@ -285,22 +323,15 @@ def _repo_root() -> Path:
     return here.parents[2]
 
 
-def _has_confirmed_spec(repo: Path, marker_confirmed: str, basename: str) -> bool:
-    specs_dir = repo / "docs" / "superpowers" / "specs"
-    if not specs_dir.is_dir():
-        return False
-    # 仅接受“独立文件名标记”，避免相似名称的子串误命中。
-    basename_pattern = re.compile(
-        rf"(?<![A-Za-z0-9._-]){re.escape(basename)}(?![A-Za-z0-9._-])"
-    )
-    for p in specs_dir.rglob("*.md"):
-        try:
-            text = p.read_text(encoding="utf-8", errors="replace")
-        except OSError:
-            continue
-        if marker_confirmed not in text:
-            continue
-        if basename_pattern.search(text):
+def _has_confirmed_spec(
+    repo: Path,
+    marker_confirmed: str,
+    basename: str,
+    payload: object,
+    environ: dict[str, str] | None = None,
+) -> bool:
+    for p in _iter_spec_paths_for_gate(repo, payload, environ):
+        if _spec_text_confirms(p, marker_confirmed, basename):
             return True
     return False
 
@@ -349,11 +380,11 @@ def run_gate(
     deny_paths: list[str] = []
     for c in candidates:
         if gate_id == "indexing":
-            if _has_indexing_write_allowed(repo, cfg.marker_confirmed, c):
+            if _has_indexing_write_allowed(repo, cfg.marker_confirmed, c, payload, env):
                 continue
         else:
             base = Path(c.replace("\\", "/")).name
-            if _has_confirmed_spec(repo, cfg.marker_confirmed, base):
+            if _has_confirmed_spec(repo, cfg.marker_confirmed, base, payload, env):
                 continue
         deny_paths.append(c)
 

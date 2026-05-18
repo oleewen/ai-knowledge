@@ -28,14 +28,16 @@ description: >-
 
 - 至少一种原始业务描述（过短则先补）。
 - IDEA-ID、门禁粒度（7G/精简 5G）、深度（可与用户确认）。
-- 知晓 `{DOC_DIR}`、`docs/superpowers/specs/` 可写路径。
+- 知晓 `{DOC_DIR}`、`application/specs/` 可写路径。
 
 ---
 
 ## 路由表
 
+
 | 目的 | 文件 |
 |------|------|
+| 会话 spec 路径 | [session-spec-path.md](../../references/session-spec-path.md) |
 | 门禁与例外 | `references/gates.md` |
 | 流程与阶段 | `references/workflow.md` |
 | 多方案与 brainstorming | `references/brainstorming-integration.md` |
@@ -57,7 +59,7 @@ description: >-
 
 ## 产出与校验
 
-- 会话 spec：`docs/superpowers/specs/YYYY-MM-DD-<topic>-sdx-solution.md`
+- 会话 spec：`application/specs/YYYY-MM-DD-<topic>-sdx-solution.md`
 - 正式稿：`{DOC_DIR}/solutions/SOLUTION-{IDEA-ID}.md`
 
 ```bash

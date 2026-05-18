@@ -4,7 +4,7 @@
 
 ## CONVENTIONS
 
-[CONVENTIONS §artifact-gates](../../../rules/CONVENTIONS.md#artifact-gates)：高风险 → `docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-indexing.md`，`PENDING`→`CONFIRMED`，Hooks 下 `sdx_gate_common.py --gate indexing`。
+[CONVENTIONS §artifact-gates](../../../rules/CONVENTIONS.md#artifact-gates)：高风险 → `application/specs/YYYY-MM-DD-<topic>-docs-indexing.md`，`PENDING`→`CONFIRMED`，Hooks 下 `sdx_gate_common.py --gate indexing`。
 
 ## 双层确认
 

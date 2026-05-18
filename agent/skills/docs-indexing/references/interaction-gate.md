@@ -1,10 +1,11 @@
 # docs-indexing 交互闸门
 
+路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（`*/specs/`，排除 `requirements/**/specs/`）。
 spec → Qclose-1 → `CONFIRMED` → 写受管路径。[gates.md](gates.md)；[workflow.md](workflow.md)。
 
 ## spec
 
-- `docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-indexing.md`
+- `application/specs/YYYY-MM-DD-<topic>-docs-indexing.md`
 - [docs-indexing-session-spec-template.md](../assets/docs-indexing-session-spec-template.md)
 
 ## 节奏

@@ -1,12 +1,13 @@
 # 交互闸门
 
+路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（`*/specs/`，排除 `requirements/**/specs/`）。
 硬规则与条件表：[gates.md](gates.md)；阶段：[workflow.md](workflow.md)。
 
 ## 与 sdx-*-gate 对齐
 
 | 概念 | 做法 |
 | ---- | ----- |
-| 中间会话 spec | `docs/superpowers/specs/…-docs-distill.md` |
+| 中间会话 spec | `system/specs/…-docs-distill.md` |
 | 总确认 | `PENDING` → `CONFIRMED`（[gates.md](gates.md)） |
 | 例外 | 同会话明示 或 `DOCS_DISTILL_ALLOW_WRITE=1` |
 | 预览 | HARD-GATE 场景优先 **`--dry-run`** |

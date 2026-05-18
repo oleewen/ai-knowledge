@@ -38,24 +38,14 @@ warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
 error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
 
+# shellcheck source=../../../scripts/check-session-spec-gate.sh
+source "${REPO_ROOT}/agent/scripts/check-session-spec-gate.sh"
+
 check_design_gate() {
   local file="$1"
   local base
   base=$(basename "${file}")
-  local specs_dir="${REPO_ROOT}/docs/superpowers/specs"
-  if [[ ! -d "${specs_dir}" ]]; then
-    warn "闸门：未找到 ${specs_dir}，跳过 gate 检查"
-    return
-  fi
-  local found=0
-  local spec
-  while IFS= read -r -d '' spec; do
-    if grep -qF "<!-- sdx-design-gate: CONFIRMED -->" "${spec}" 2>/dev/null && grep -qF "${base}" "${spec}" 2>/dev/null; then
-      found=1
-      break
-    fi
-  done < <(find "${specs_dir}" -name "*.md" -print0 2>/dev/null)
-  if [[ ${found} -eq 1 ]]; then
+  if check_session_spec_gate "<!-- sdx-design-gate: CONFIRMED -->" "${base}"; then
     success "闸门：已找到引用 ${base} 且 CONFIRMED 的会话 spec"
   else
     local msg="闸门：未找到引用 ${base} 且 <!-- sdx-design-gate: CONFIRMED --> 的会话 spec（见 agent/skills/sdx-design/SKILL.md HARD-GATE）"

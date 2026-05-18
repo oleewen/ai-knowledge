@@ -4,7 +4,7 @@
 
 ## 闸门与会话 spec
 
-未完成 **Qclose-1** 勿写 **DSD**：先在 `docs/superpowers/specs/` 维护 **`...-sdx-design.md`**，收口后 `PENDING`→`CONFIRMED`，正文含目标 **`DSD-*.md`** 全名。否则易触发钩子或评审口径不一致。
+未完成 **Qclose-1** 勿写 **DSD**：先在 `application/specs/` 维护 **`...-sdx-design.md`**，收口后 `PENDING`→`CONFIRMED`，正文含目标 **`DSD-*.md`** 全名。否则易触发钩子或评审口径不一致。
 
 ## 前置
 

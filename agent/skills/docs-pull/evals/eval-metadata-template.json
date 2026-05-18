@@ -10,7 +10,7 @@
       "id": "gate-awareness",
       "name": "低风险闸门",
       "type": "must_include",
-      "check": "体现写盘前事实确认/gates；不得称必须 superpowers HTML CONFIRMED（与 CONVENTIONS 低风险冲突）。",
+      "check": "体现写盘前事实确认/gates；不得称必须 */specs/ CONFIRMED（与 CONVENTIONS 低风险冲突）。",
       "priority": "P0"
     },
     {

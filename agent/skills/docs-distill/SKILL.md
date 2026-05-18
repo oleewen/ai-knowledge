@@ -21,9 +21,10 @@ description: >
 
 ## 前置
 
+- 路径契约：[session-spec-path.md](../../references/session-spec-path.md)（`*/specs/`）
 - 可读 `system/application-{name}/changelogs/CHANGE-LOG.md`（过短则补背景）。
 - 明确 `{APPNAME}` / `--app`；多应用宜带 `--app`。
-- 知 `docs/superpowers/specs/`、`system/architecture/overview/`。
+- 知 `system/specs/`、`system/architecture/overview/`。
 
 ## 读序
 
@@ -45,7 +46,7 @@ description: >
 
 ## 产出与脚本
 
-- 会话 spec：`docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-distill.md`
+- 会话 spec：`system/specs/YYYY-MM-DD-<topic>-docs-distill.md`
 - `{APPNAME}-overview.md` 第三列；`system/changelogs/DISTILL-LOG.md`（仅 4.3 成功后追加）
 
 ```bash

@@ -1,6 +1,7 @@
 # docs-distill 会话 spec
 
-`docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-distill.md`。总确认前保留 **PENDING**。
+路径契约：[session-spec-path.md](../../../references/session-spec-path.md)。
+`system/specs/YYYY-MM-DD-<topic>-docs-distill.md`。总确认前保留 **PENDING**。
 
 ## 1. 背景
 

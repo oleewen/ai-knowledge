@@ -78,19 +78,53 @@ def session_state_path(payload: object, environ: dict[str, str] | None = None) -
     return _state_dir(environ) / f"{_sanitize_session_id(sid)}.json"
 
 
-def is_session_active(payload: object, environ: dict[str, str] | None = None) -> bool:
+def load_session_state(payload: object, environ: dict[str, str] | None = None) -> dict:
     state_file = session_state_path(payload, environ)
     try:
-        if not state_file.is_file():
-            return False
-        data = json.loads(state_file.read_text(encoding="utf-8", errors="replace"))
+        if state_file.is_file():
+            data = json.loads(state_file.read_text(encoding="utf-8", errors="replace"))
+            if isinstance(data, dict):
+                return data
     except (OSError, json.JSONDecodeError):
+        pass
+    return {}
+
+
+def is_session_active(payload: object, environ: dict[str, str] | None = None) -> bool:
+    return bool(load_session_state(payload, environ).get("active"))
+
+
+def get_session_specs(payload: object, environ: dict[str, str] | None = None) -> list[str]:
+    data = load_session_state(payload, environ)
+    raw = data.get("session_specs")
+    if not isinstance(raw, list):
+        return []
+    return [s for s in raw if isinstance(s, str)]
+
+
+def merge_session_specs(
+    payload: object,
+    new_specs: list[str],
+    environ: dict[str, str] | None = None,
+) -> bool:
+    state_file = session_state_path(payload, environ)
+    data = load_session_state(payload, environ)
+    data["active"] = True
+    existing = get_session_specs(payload, environ)
+    merged: list[str] = []
+    seen: set[str] = set()
+    for s in existing + new_specs:
+        if s not in seen:
+            seen.add(s)
+            merged.append(s)
+    data["session_specs"] = merged
+    try:
+        state_file.parent.mkdir(parents=True, exist_ok=True)
+        state_file.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+        return True
+    except OSError:
         return False
-    return bool(data.get("active"))
 
 
 def activate_session(payload: object, environ: dict[str, str] | None = None) -> bool:
-    state_file = session_state_path(payload, environ)
-    state_file.parent.mkdir(parents=True, exist_ok=True)
-    state_file.write_text(json.dumps({"active": True}, ensure_ascii=False), encoding="utf-8")
-    return True
+    return merge_session_specs(payload, [], environ)

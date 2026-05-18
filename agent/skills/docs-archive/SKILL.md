@@ -19,8 +19,9 @@ description: >
 
 ## 前置
 
+- 路径契约：[session-spec-path.md](../../references/session-spec-path.md)（`*/specs/`）
 - 有 **overview 路径**（及可选 `#锚点`）；知目标来自**表格行链接**。
-- 知会话 spec：`docs/superpowers/specs/`，钩子要 `CONFIRMED` + 目标 **basename**（见 `references/gates.md`）。
+- 知会话 spec：`system/specs/`，钩子要 `CONFIRMED` + 目标 **basename**（见 `references/gates.md`）。
 
 ## 读序（先读后写）
 
@@ -41,7 +42,7 @@ description: >
 
 ## 产出
 
-- 会话 spec（可选）：`docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-archive.md`
+- 会话 spec（可选）：`system/specs/YYYY-MM-DD-<topic>-docs-archive.md`
 - 正式：按目标体例增补的 Markdown（链接指向章节）；overview 按确认策略回写
 
 ## 评测

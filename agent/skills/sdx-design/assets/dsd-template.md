@@ -16,9 +16,9 @@
 ### 1.1 设计目标
 
 - 关联需求分析：`{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md`
-- 关联产品需求：`./PRD-{IDEA-ID}-{N}.md`
-- 架构设计说明书：`./ASD-{IDEA-ID}-{N}.md`
-- 概要需求规约：`./specs/asd-spec-{IDEA-ID}-{N}-{APP-NAME}.md`
+- 关联产品需求：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`
+- 架构设计说明书：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ASD-{IDEA-ID}-{N}.md`
+- 概要需求规约：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/specs/spec-asd-{IDEA-ID}-{N}-{APP-NAME}.md`
 - MVP阶段：MVP-Phase-{N}
 
 ### 1.2 设计约束

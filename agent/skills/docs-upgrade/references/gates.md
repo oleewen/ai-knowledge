@@ -1,5 +1,6 @@
 # 门禁与分流
 
+路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（会话 spec 落在 `*/specs/`，排除 `requirements/**/specs/`）。
 流程：[workflow.md](workflow.md)；预检：[brainstorming-integration.md](brainstorming-integration.md)；实操：[gotchas.md](../gotchas.md)。
 
 ## 边界（摘要）
@@ -30,5 +31,5 @@ C 确认执行 / M 改范围 / S 跳过关联仅改主文件
 
 ## 与其它关系
 
-- ≠ superpowers 全套「先 design spec 再实现」；嵌入节奏见 brainstorming。  
+- ≠ 独立 brainstorming 全套「先 design spec 再实现」；嵌入节奏见 brainstorming-integration。  
 - **无** `preToolUse` 钩子；靠执行模型守 HARD-GATE。

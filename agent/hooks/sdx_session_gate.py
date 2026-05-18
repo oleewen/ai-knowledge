@@ -18,7 +18,8 @@ from pathlib import Path
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from sdx_session_state import activate_session, iter_strings
+from session_spec_paths import session_specs_from_payload
+from sdx_session_state import activate_session, iter_strings, merge_session_specs
 
 _SDX_COMMAND_PATTERN = re.compile(
     r"/(?:sdx-solution|sdx-analysis|sdx-prd|sdx-architect|sdx-design|sdx-test"
@@ -46,9 +47,14 @@ def run(stdin: str | None = None, environ: dict[str, str] | None = None) -> int:
         return _allow()
 
     try:
-        matched = any(_SDX_COMMAND_PATTERN.search(s) for s in iter_strings(payload))
+        strings = list(iter_strings(payload))
+        matched = any(_SDX_COMMAND_PATTERN.search(s) for s in strings)
         if matched:
-            activate_session(payload, env)
+            specs = session_specs_from_payload(strings)
+            if specs:
+                merge_session_specs(payload, specs, env)
+            else:
+                activate_session(payload, env)
             if env.get("DEBUG"):
                 print("sdx-session-gate: activated", file=sys.stderr)
     except OSError:

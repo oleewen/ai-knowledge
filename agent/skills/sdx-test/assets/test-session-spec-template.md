@@ -1,5 +1,6 @@
 # sdx-test 草稿（中间稿）
 
+路径契约：[session-spec-path.md](../../../references/session-spec-path.md)。
 > **G{n}** = 流程门禁；**TC-*** = 测试用例编号；勿混。
 
 **IDEA-ID**：`{IDEA-ID}`（与 PRD/DSD（及 ASD）一致；规则见 [references/core-concepts.md](../references/core-concepts.md)）  

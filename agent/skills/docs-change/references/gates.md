@@ -1,5 +1,6 @@
 # docs-change 闸门与边界
 
+路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（会话 spec 落在 `*/specs/`，排除 `requirements/**/specs/`）。
 与 [collection-rules.md](collection-rules.md) 互补；操作易错见 [gotchas.md](../gotchas.md)。
 
 ## 边界

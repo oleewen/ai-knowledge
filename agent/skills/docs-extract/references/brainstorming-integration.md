@@ -1,5 +1,11 @@
 # docs-extract 与多方案 / 澄清
 
+## 会话 spec 路径
+
+闸门中间稿须落在 **`*/specs/`**（`{文档根}/specs/`，不含 `requirements/**/specs/`）。契约：[session-spec-path.md](../../../references/session-spec-path.md)。
+
+示例：`system/specs/YYYY-MM-DD-<topic>-docs-extract.md`
+
 主产物：`…-docs-extract.md` 会话 spec 与门禁后的 **overview 第三列**。默认不设独立 `*-design.md` + writing-plans 终态。
 
 ## 节奏（与 sdx 阶段二同构）

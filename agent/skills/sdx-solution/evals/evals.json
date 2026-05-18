@@ -20,7 +20,7 @@
           "id": "structure-integrity",
           "name": "结构完整",
           "type": "must_include",
-          "check": "体现会话 spec（如 docs/superpowers/specs/…-sdx-solution.md）、门禁（G1–G7 或精简 5G）与七章 SOLUTION 模板/分块填充，而非以 ANALYSIS/PRD 为主产物。",
+          "check": "体现会话 spec（如 */specs/（如 application/specs/）…-sdx-solution.md）、门禁（G1–G7 或精简 5G）与七章 SOLUTION 模板/分块填充，而非以 ANALYSIS/PRD 为主产物。",
           "priority": "P0"
         },
         {

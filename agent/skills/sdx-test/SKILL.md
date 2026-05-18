@@ -28,14 +28,16 @@ description: >-
 
 - **IDEA-ID**、**MVP 阶段 N**（与 PRD/DSD 路径一致）。
 - 门禁粒度（6G / 精简 4G）、`--depth`（`quick` / `standard` / `deep`）。
-- `{DOC_DIR}`、`docs/superpowers/specs/` 可写路径。
+- `{DOC_DIR}`、`application/specs/` 可写路径。
 
 ---
 
 ## 路由表
 
+
 | 目的 | 文件 |
 |------|------|
+| 会话 spec 路径 | [session-spec-path.md](../../references/session-spec-path.md) |
 | 门禁与例外 | `references/gates.md` |
 | 流程与 G{n} 要点 | `references/workflow.md` |
 | brainstorming | `references/brainstorming-integration.md` |
@@ -58,14 +60,14 @@ description: >-
 ## 阶段摘要
 
 - **一**：锁定 IDEA-ID、门禁粒度、`--depth`（见 `workflow.md`、`core-concepts.md`）。
-- **二**：`docs/superpowers/specs/…-sdx-test.md`；单次一段一点，末附 **C/M/S/F**（`gates.md`）。
+- **二**：`application/specs/…-sdx-test.md`；单次一段一点，末附 **C/M/S/F**（`gates.md`）。
 - **三**：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/TDD-{IDEA-ID}-{N}.md`，按 `tdd-template.md` 分块与终检。
 
 ---
 
 ## 产出与校验
 
-- 会话 spec：`docs/superpowers/specs/YYYY-MM-DD-<topic>-sdx-test.md`
+- 会话 spec：`application/specs/YYYY-MM-DD-<topic>-sdx-test.md`
 - 正式：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/TDD-{IDEA-ID}-{N}.md`
 
 ```bash

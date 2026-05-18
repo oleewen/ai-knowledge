@@ -1,5 +1,6 @@
 # sdx-design 草稿（DSD）
 
+路径契约：[session-spec-path.md](../../../references/session-spec-path.md)。
 > **G{n}**：门禁；**§1–§3** 对齐 [dsd-template.md](dsd-template.md)；**§1** 结构同源 [asd-template §1](../../../sdx-architect/assets/asd-template.md) / ASD。
 
 **上游 ASD**：`ASD-{IDEA-ID}-{N}.md` **目标 DSD**：`DSD-{IDEA-ID}-{N}.md`

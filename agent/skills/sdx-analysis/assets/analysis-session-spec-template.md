@@ -1,5 +1,6 @@
 # sdx-analysis 草稿（中间稿）
 
+路径契约：[session-spec-path.md](../../../references/session-spec-path.md)。
 > **说明**：门禁 **G{n}** 为流程步骤编号；模板 §1.2 **需求目标**表中的 **G-n** 为与上游对齐的目标条目编号；§2 **FR-n** 为功能需求编号，勿混读。
 
 **IDEA-ID**：`{IDEA-ID}`（`{YYMMDD}-{主题}`，主题**以中文为主**；若用 ASCII slug，本行备注中文题名）  

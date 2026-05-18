@@ -1,10 +1,11 @@
 # docs-build 交互闸门
 
+路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（`*/specs/`，排除 `requirements/**/specs/`）。
 spec → Qclose-1 → 写入。要件见 [gates.md](gates.md)；阶段见 [workflow.md](workflow.md)。
 
 ## spec
 
-- `docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-build.md`
+- `application/specs/YYYY-MM-DD-<topic>-docs-build.md`
 - 起稿：[docs-build-session-spec-template.md](../assets/docs-build-session-spec-template.md)
 
 ## 节奏

@@ -1,5 +1,6 @@
 # sdx-prd 草稿
 
+路径契约：[session-spec-path.md](../../../references/session-spec-path.md)。
 > **G{n}**：门禁步骤；**§n**：PRD 章号。编号见 [core-concepts.md](../references/core-concepts.md)。
 
 **IDEA-ID**：`{IDEA-ID}`（= `ANALYSIS-{IDEA-ID}.md`） **N**：`{N}` → `MVP-Phase-{N}` / `PRD-{IDEA-ID}-{N}.md`  

@@ -98,8 +98,6 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 
 ## 测试（docs-init）
 
-集成测试设计见 [docs/superpowers/specs/2026-04-10-docs-init-testing-design.md](../../docs/superpowers/specs/2026-04-10-docs-init-testing-design.md)。
-
 在仓库根执行（默认 CI 子集，不修改当前克隆的登记文件）：
 
 ```bash

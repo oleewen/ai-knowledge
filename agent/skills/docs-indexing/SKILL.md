@@ -20,7 +20,8 @@ description: >
 
 ## 前置
 
-- `DOC_ROOT`、输出路径、`docs/superpowers/specs/` 可写
+- 路径契约：[session-spec-path.md](../../references/session-spec-path.md)（`*/specs/`）
+- `DOC_ROOT`、输出路径、`application/specs/` 可写
 - 增量：弄清 `INDEXING-LOG` 基线或 `--since`（[indexing-log-spec.md](references/indexing-log-spec.md)）
 
 ## 阅读顺序
@@ -37,7 +38,7 @@ description: >
 
 ## 产出与脚本
 
-- Spec：`docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-indexing.md`
+- Spec：`application/specs/YYYY-MM-DD-<topic>-docs-indexing.md`
 - 产物：`INDEX_GUIDE.md`、`INDEXING-LOG.md`（参数与脚本 invocation 与用户确认一致）
 
 ```bash

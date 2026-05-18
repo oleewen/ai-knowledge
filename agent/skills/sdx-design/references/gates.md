@@ -11,6 +11,8 @@
 
 ## 会话 spec
 
+- 路径：符合 `*/specs/`（见 [session-spec-path.md](../../../references/session-spec-path.md)）。
+
 - 文末：`<!-- sdx-design-gate: PENDING -->` → 总确认后 **`CONFIRMED`**。  
 - 正文至少一次出现 **`DSD-{IDEA-ID}-{N}.md`**（与所选 IDEA-ID、阶段一致）。
 

@@ -18,8 +18,10 @@ compatibility: Bash 5+；`scripts/config-bootstrap.sh` 解析 `DOC_ROOT`；钩�
 
 ## 路由
 
+
 | 主路径 | 技能 |
 |--------|------|
+| 会话 spec 路径 | [session-spec-path.md](../../references/session-spec-path.md) |
 | docs-distill / extract / archive / indexing 为主 | **docs-*** |
 | SOLUTION / ANALYSIS / ASD / DSD 为主、不要 PRD | 对应 **sdx-*** |
 | **PRD**、会话 spec、G1–G11（或精简 6G）、Qclose、validate-prd | **本技能** |
@@ -33,7 +35,7 @@ compatibility: Bash 5+；`scripts/config-bootstrap.sh` 解析 `DOC_ROOT`；钩�
 
 - **`ANALYSIS-{IDEA-ID}.md`** 含目标 MVP（缺则先 `sdx-analysis`）。  
 - **IDEA-ID**、**`N`** 与终稿路径一致。  
-- 知悉 `{DOC_DIR}/requirements/.../MVP-Phase-{N}/` 与 `docs/superpowers/specs/`。  
+- 知悉 `{DOC_DIR}/requirements/.../MVP-Phase-{N}/` 与 `application/specs/`。  
 用户要先方案/分析时，不强行套全流程。
 
 ---
@@ -61,7 +63,7 @@ compatibility: Bash 5+；`scripts/config-bootstrap.sh` 解析 `DOC_ROOT`；钩�
 
 ## 产出与校验
 
-- **会话 spec**：`docs/superpowers/specs/YYYY-MM-DD-<topic>-sdx-prd.md`  
+- **会话 spec**：`application/specs/YYYY-MM-DD-<topic>-sdx-prd.md`  
 - **PRD**：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`
 
 仓库根：

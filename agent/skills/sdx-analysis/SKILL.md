@@ -28,14 +28,16 @@ description: >-
 
 - 可对齐的 **`SOLUTION-{IDEA-ID}.md`**（或用户认可的缺口策略）。
 - IDEA-ID 与上游一致；门禁粒度（6G / 精简 4G）；深度。
-- `{DOC_DIR}/analysis/`、`docs/superpowers/specs/` 可写路径。
+- `{DOC_DIR}/analysis/`、`application/specs/` 可写路径。
 
 ---
 
 ## 路由表
 
+
 | 目的 | 文件 |
 |------|------|
+| 会话 spec 路径 | [session-spec-path.md](../../references/session-spec-path.md) |
 | 门禁与例外 | `references/gates.md` |
 | 流程与阶段 | `references/workflow.md` |
 | brainstorming 嵌入 | `references/brainstorming-integration.md` |
@@ -57,7 +59,7 @@ description: >-
 
 ## 产出与校验
 
-- 会话 spec：`docs/superpowers/specs/YYYY-MM-DD-<topic>-sdx-analysis.md`
+- 会话 spec：`application/specs/YYYY-MM-DD-<topic>-sdx-analysis.md`
 - 正式稿：`{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md`
 
 ```bash

@@ -14,7 +14,7 @@ class GateCommonTests(unittest.TestCase):
     def test_has_confirmed_spec_avoids_substring_false_positive(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp)
-            specs_dir = repo / "docs" / "superpowers" / "specs"
+            specs_dir = repo / "application" / "specs"
             specs_dir.mkdir(parents=True, exist_ok=True)
             spec = specs_dir / "S-1.md"
             spec.write_text(
@@ -28,13 +28,15 @@ class GateCommonTests(unittest.TestCase):
                     repo,
                     "<!-- sdx-prd-gate: CONFIRMED -->",
                     "PRD-2026-foo.md",
+                    None,
+                    None,
                 )
             )
 
     def test_has_confirmed_spec_accepts_exact_basename(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp)
-            specs_dir = repo / "docs" / "superpowers" / "specs"
+            specs_dir = repo / "application" / "specs"
             specs_dir.mkdir(parents=True, exist_ok=True)
             spec = specs_dir / "S-2.md"
             spec.write_text(
@@ -48,6 +50,8 @@ class GateCommonTests(unittest.TestCase):
                     repo,
                     "<!-- sdx-prd-gate: CONFIRMED -->",
                     "PRD-2026-foo.md",
+                    None,
+                    None,
                 )
             )
 
@@ -64,7 +68,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
-                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                (repo / "application" / "specs").mkdir(parents=True, exist_ok=True)
                 mock_repo_root.return_value = repo
                 with patch("builtins.print") as mock_print:
                     code = run_gate("prd", stdin=json.dumps(payload), environ=env)
@@ -86,7 +90,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
-                specs_dir = repo / "docs" / "superpowers" / "specs"
+                specs_dir = repo / "application" / "specs"
                 specs_dir.mkdir(parents=True, exist_ok=True)
                 (specs_dir / "ok.md").write_text(
                     "<!-- sdx-prd-gate: CONFIRMED -->\nPRD-abc.md\n",
@@ -117,7 +121,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
-                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                (repo / "application" / "specs").mkdir(parents=True, exist_ok=True)
                 mock_repo_root.return_value = repo
                 with patch("builtins.print") as mock_print:
                     code = run_gate("distill", stdin=json.dumps(payload), environ=env)
@@ -139,7 +143,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
-                specs_dir = repo / "docs" / "superpowers" / "specs"
+                specs_dir = repo / "system" / "specs"
                 specs_dir.mkdir(parents=True, exist_ok=True)
                 (specs_dir / "distill-spec.md").write_text(
                     "<!-- docs-distill-gate: CONFIRMED -->\nbilling-overview.md\n",
@@ -168,7 +172,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
-                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                (repo / "application" / "specs").mkdir(parents=True, exist_ok=True)
                 mock_repo_root.return_value = repo
                 with patch("builtins.print") as mock_print:
                     code = run_gate("distill", stdin=json.dumps(payload), environ=env)
@@ -191,7 +195,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
-                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                (repo / "application" / "specs").mkdir(parents=True, exist_ok=True)
                 mock_repo_root.return_value = repo
                 with patch("builtins.print") as mock_print:
                     code = run_gate("extract", stdin=json.dumps(payload), environ=env)
@@ -213,7 +217,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
-                specs_dir = repo / "docs" / "superpowers" / "specs"
+                specs_dir = repo / "system" / "specs"
                 specs_dir.mkdir(parents=True, exist_ok=True)
                 (specs_dir / "extract-spec.md").write_text(
                     "<!-- docs-extract-gate: CONFIRMED -->\npayment-overview.md\n",
@@ -240,7 +244,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
-                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                (repo / "application" / "specs").mkdir(parents=True, exist_ok=True)
                 mock_repo_root.return_value = repo
                 with patch("builtins.print") as mock_print:
                     code = run_gate("archive", stdin=json.dumps(payload), environ=env)
@@ -262,7 +266,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
-                specs_dir = repo / "docs" / "superpowers" / "specs"
+                specs_dir = repo / "system" / "specs"
                 specs_dir.mkdir(parents=True, exist_ok=True)
                 (specs_dir / "archive-spec.md").write_text(
                     "<!-- docs-archive-gate: CONFIRMED -->\norder-overview.md\n",
@@ -290,7 +294,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
-                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                (repo / "application" / "specs").mkdir(parents=True, exist_ok=True)
                 mock_repo_root.return_value = repo
                 with patch("builtins.print") as mock_print:
                     code = run_gate("distill", stdin=json.dumps(payload), environ=env)
@@ -317,7 +321,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
-                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                (repo / "application" / "specs").mkdir(parents=True, exist_ok=True)
                 mock_repo_root.return_value = repo
                 with patch("builtins.print") as mock_print:
                     code = run_gate("build", stdin=json.dumps(payload), environ=env)
@@ -339,7 +343,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
-                specs_dir = repo / "docs" / "superpowers" / "specs"
+                specs_dir = repo / "application" / "specs"
                 specs_dir.mkdir(parents=True, exist_ok=True)
                 (specs_dir / "build-spec.md").write_text(
                     "<!-- docs-build-gate: CONFIRMED -->\nKNOWLEDGE_INDEX.md\n",
@@ -367,7 +371,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
-                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                (repo / "application" / "specs").mkdir(parents=True, exist_ok=True)
                 mock_repo_root.return_value = repo
                 with patch("builtins.print") as mock_print:
                     code = run_gate("build", stdin=json.dumps(payload), environ=env)
@@ -390,7 +394,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
-                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                (repo / "application" / "specs").mkdir(parents=True, exist_ok=True)
                 mock_repo_root.return_value = repo
                 with patch("builtins.print") as mock_print:
                     code = run_gate("build", stdin=json.dumps(payload), environ=env)
@@ -412,7 +416,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
-                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                (repo / "application" / "specs").mkdir(parents=True, exist_ok=True)
                 mock_repo_root.return_value = repo
                 with patch("builtins.print") as mock_print:
                     code = run_gate("indexing", stdin=json.dumps(payload), environ=env)
@@ -435,7 +439,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
-                specs_dir = repo / "docs" / "superpowers" / "specs"
+                specs_dir = repo / "application" / "specs"
                 specs_dir.mkdir(parents=True, exist_ok=True)
                 (specs_dir / "ix.md").write_text(
                     "<!-- docs-indexing-gate: CONFIRMED -->\n仅提及 INDEX_GUIDE.md 无目录前缀\n",
@@ -462,7 +466,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
-                specs_dir = repo / "docs" / "superpowers" / "specs"
+                specs_dir = repo / "application" / "specs"
                 specs_dir.mkdir(parents=True, exist_ok=True)
                 (specs_dir / "ix-spec.md").write_text(
                     "<!-- docs-indexing-gate: CONFIRMED -->\n"
@@ -491,7 +495,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
-                specs_dir = repo / "docs" / "superpowers" / "specs"
+                specs_dir = repo / "application" / "specs"
                 specs_dir.mkdir(parents=True, exist_ok=True)
                 (specs_dir / "ix2.md").write_text(
                     "<!-- docs-indexing-gate: CONFIRMED -->\n"
@@ -520,7 +524,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
-                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                (repo / "application" / "specs").mkdir(parents=True, exist_ok=True)
                 mock_repo_root.return_value = repo
                 with patch("builtins.print") as mock_print:
                     code = run_gate("indexing", stdin=json.dumps(payload), environ=env)
@@ -543,7 +547,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
-                (repo / "docs" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                (repo / "application" / "specs").mkdir(parents=True, exist_ok=True)
                 mock_repo_root.return_value = repo
                 with patch("builtins.print") as mock_print:
                     code = run_gate("build", stdin=json.dumps(payload), environ=env)
