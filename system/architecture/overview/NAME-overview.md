@@ -1,5 +1,12 @@
 # {NAME} 架构概览
 
+## 架构摘录
+
+| 架构视角 | 主标题 | 副标题 |
+| --- | --- | --- |
+| [业务架构示例](../business/README.md) | [业务流程示例](../business/business-processes.md) | [核心业务流程示例](../business/business-processes.md#核心业务流程) |
+| [应用架构示例](../application/README.md) | [应用全景图示例](../application/application-landscape.md) | [系统上下文图示例](../application/application-landscape.md#系统上下文图) |
+
 ## [业务架构](../business/README.md)
 
 | 主标题 | 副标题 | 归档业务知识 |
