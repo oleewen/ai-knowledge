@@ -7,12 +7,12 @@
 | 参数 | 必需 | 默认 | 说明 |
 |------|------|------|------|
 | `--file` | 是 | — | 目标 MD |
-| `--phase` | 是 | — | `1`/交互、`2`、`all`；Skill 用 `1-scan`/`1-write`/`2` |
+| `--phase` | 是 | — | `1`/交互、`2`、`3`/`excerpt`、`all`；Skill 用 `1-scan`/`1-write`/`2`/`3` |
 | `--keywords` | 1/all 时 | — | 种子词，空格分隔 |
 | `--scan-dir` | 否 | `docs/architecture/` | 扫目录 |
 | `--top-n` | 否 | `30` | Top 候选数 |
 
-Skill：`1-scan` → 列表/JSON → 用户选 → `1-write` → `2`。勿用 `--phase 1` 的 `input()`（gotchas §7）。
+Skill：`1-scan` → 列表/JSON → 用户选 → `1-write` → `2` → `3`。勿用 `--phase 1` 的 `input()`（gotchas §7）。
 
 ---
 
@@ -72,7 +72,24 @@ python3 agent/skills/docs-tag/scripts/keyword_tag.py \
 python3 agent/skills/docs-tag/scripts/keyword_tag.py --file FILE --phase 2
 ```
 
-汇报脚本统计（✅ 行数、跳过行数）。
+汇报脚本统计（✅ 行数、跳过行数）。判定章节相关性时**忽略 HTML 注释**（`<!-- … -->`），见 gotchas §6b。
+
+---
+
+## 步骤 5：架构摘录（phase 3 或 excerpt）
+
+```bash
+python3 agent/skills/docs-tag/scripts/keyword_tag.py --file FILE --phase 3
+```
+
+从五视角表（`## [业务架构](…)` 等 H2）中副标题列含 ✅ 的行，按固定顺序写入 `## 架构摘录` 三列表。无 ✅ 时写入 `<!-- excerpt:empty -->` 占位行。
+
+汇报摘录行数；**勿手改**摘录表数据行（gotchas §9）。
+
+| 场景 | 要点 |
+|------|------|
+| 仅 phase 3 | gates → `--phase 3`（或 `excerpt`）；不需 keywords |
+| 完整 Skill | `1-scan`→选→`1-write`→`2`→`3` |
 
 ## 示例摘要
 
@@ -80,4 +97,4 @@ python3 agent/skills/docs-tag/scripts/keyword_tag.py --file FILE --phase 2
 |------|------|
 | 仅 phase 1 | gates → `1-scan` → 选词 → `1-write` |
 | 仅 phase 2 | gates → `--phase 2` → 汇报 N✅ / M skip |
-| all | gates → `1-scan`→选→`1-write`→`2`，默认 scan-dir/top-n 已复述 |
+| all | gates → `1-scan`→选→`1-write`→`2`→`3`，默认 scan-dir/top-n 已复述 |

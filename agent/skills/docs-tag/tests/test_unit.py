@@ -14,11 +14,13 @@ from keyword_tag import (
     split_sections,
     extract_terms,
     get_section_content,
+    content_for_keyword_match,
     resolve_link,
     is_table_data_row,
     extract_link_from_cell,
     add_check_mark,
     strip_check_mark,
+    phase2,
 )
 
 SCRIPT_PATH = os.path.join(os.path.dirname(__file__), '..', 'scripts', 'keyword_tag.py')
@@ -143,6 +145,51 @@ class TestGetSectionContent:
         f.write_text('# 存在的章节\n内容', encoding='utf-8')
         result = get_section_content(str(f), '不存在的锚点')
         assert result == ''
+
+
+class TestContentForKeywordMatch:
+    def test_去掉单行与多行HTML注释(self):
+        raw = '正文计费\n<!-- 注释里也有计费 -->\n<!--\n多行\n计费\n-->\n尾部'
+        assert '计费' in content_for_keyword_match(raw)
+        assert content_for_keyword_match(raw).count('计费') == 1
+
+    def test_仅注释含关键词时无匹配文本(self):
+        raw = '<!-- 占位：计费规则 -->\n无关键词正文'
+        assert '计费' not in content_for_keyword_match(raw)
+
+
+class TestPhase2IgnoresComments:
+    def test_关键词仅在HTML注释中不打勾(self, tmp_path):
+        linked = tmp_path / 'section.md'
+        linked.write_text(
+            '# 章节\n\n<!-- 计费规则应写于此 -->\n\n正文无业务词。\n',
+            encoding='utf-8',
+        )
+        overview = tmp_path / 'overview.md'
+        overview.write_text(
+            '# 概览\n\n| 主标题 | 副标题 |\n| --- | --- |\n'
+            f'| A | [链](section.md) |\n\n'
+            '## 附录\n\n### 文档关键词\n\n```yaml\nkeywords:\n- 计费\n```\n',
+            encoding='utf-8',
+        )
+        phase2(str(overview))
+        assert '✅' not in overview.read_text(encoding='utf-8')
+
+    def test_正文含关键词仍打勾(self, tmp_path):
+        linked = tmp_path / 'section.md'
+        linked.write_text(
+            '# 章节\n\n<!-- 注释 -->\n\n计费说明正文。\n',
+            encoding='utf-8',
+        )
+        overview = tmp_path / 'overview.md'
+        overview.write_text(
+            '# 概览\n\n| 主标题 | 副标题 |\n| --- | --- |\n'
+            f'| A | [链](section.md) |\n\n'
+            '## 附录\n\n### 文档关键词\n\n```yaml\nkeywords:\n- 计费\n```\n',
+            encoding='utf-8',
+        )
+        phase2(str(overview))
+        assert '✅' in overview.read_text(encoding='utf-8')
 
 
 # ─────────────────────────────────────────────

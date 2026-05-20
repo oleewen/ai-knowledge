@@ -20,7 +20,7 @@
           "id": "subphase-path",
           "name": "子阶段与路径",
           "type": "must_include",
-          "check": "须含 1-scan、1-write、phase 2 与 `agent/skills/docs-tag/scripts/keyword_tag.py`。",
+          "check": "须含 1-scan、1-write、phase 2/3 与 `agent/skills/docs-tag/scripts/keyword_tag.py`。",
           "priority": "P0"
         },
         {
@@ -36,7 +36,7 @@
       "id": "docs-tag-trigger-002",
       "category": "should-trigger",
       "prompt": "YAML 里已经有 spec-tags 了，只要对同一文件跑表格打勾，/docs-tag phase 2。",
-      "expected_output": "确认 file/phase 2→`keyword_tag.py --phase 2`；无附录会败（gotchas）。",
+      "expected_output": "确认 file/phase 2→`keyword_tag.py --phase 2`；无附录会败；匹配时忽略 HTML 注释（gotchas §6b）。",
       "assertions": [
         {
           "id": "phase2-only",
@@ -46,11 +46,33 @@
           "priority": "P0"
         },
         {
+          "id": "phase2-ignore-html-comments",
+          "name": "忽略 HTML 注释",
+          "type": "should_include",
+          "check": "可说明 phase 2 判定相关性时不计 <!-- … --> 内文字（gotchas §6b）。",
+          "priority": "P1"
+        },
+        {
           "id": "prerequisite",
           "name": "前置提示",
           "type": "should_include",
           "check": "可提无附录须先阶段 1（gotchas）。",
           "priority": "P1"
+        }
+      ]
+    },
+    {
+      "id": "docs-tag-trigger-003",
+      "category": "should-trigger",
+      "prompt": "billing-overview 表格已经打好 ✅ 了，帮我刷新顶部的架构摘录表，/docs-tag phase 3 就行。",
+      "expected_output": "确认 file/phase 3→keyword_tag.py --phase 3；不要求 keywords。",
+      "assertions": [
+        {
+          "id": "phase3-only",
+          "name": "仅阶段 3",
+          "type": "must_include",
+          "check": "仅 phase 3 或 excerpt；生成架构摘录。",
+          "priority": "P0"
         }
       ]
     },

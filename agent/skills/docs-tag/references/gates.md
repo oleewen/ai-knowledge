@@ -5,8 +5,8 @@
 ## 步骤 1：参数（已提供则跳过问）
 
 1. `--file`（必填）  
-2. `--phase`：`1`/`2`/`all`；自动化用 `1-scan`/`1-write`/`2`  
-3. `--keywords`：phase 含 1 或 all 时必填  
+2. `--phase`：`1`/`2`/`3`/`excerpt`/`all`；自动化用 `1-scan`/`1-write`/`2`/`3`  
+3. `--keywords`：phase 含 1 或 all 时必填；**phase 3 / excerpt 不需要**  
 4. `--scan-dir`：默认展示，可改（默认 `docs/architecture/`）  
 5. `--top-n`：默认展示，可改（默认 `30`）
 

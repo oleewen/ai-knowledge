@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-关键词附录 + 表行 ✅。Skill：仓库根执行；用 1-scan / 1-write / 2，勿在非 TTY 用 --phase 1。
+关键词附录 + 表行 ✅ + 架构摘录。Skill：仓库根执行；勿在非 TTY 用 --phase 1。
   python3 agent/skills/docs-tag/scripts/keyword_tag.py --file F --phase 1-scan --keywords … [--scan-dir] [--top-n]
   python3 … --phase 1-write --keywords … --selected A,B
   python3 … --phase 2
-本地兼容：--phase 1 | 2 | all（1 含 input）
+  python3 … --phase 3   # 或 excerpt：从五视角表 ✅ 行生成 ## 架构摘录
+本地兼容：--phase 1 | 2 | 3 | all（1 含 input；all = 1→2→3）
 """
 
 import re
@@ -17,6 +18,16 @@ import urllib.parse
 from collections import Counter
 
 CACHE_FILE = '/tmp/keyword_tag_cache.json'
+
+PERSPECTIVE_ORDER = (
+    '业务架构', '产品架构', '应用架构', '技术架构', '数据架构',
+)
+_PERSPECTIVE_ALT = '|'.join(re.escape(p) for p in PERSPECTIVE_ORDER)
+PERSPECTIVE_H2_RE = re.compile(
+    rf'^##\s+\[({_PERSPECTIVE_ALT})\]\([^)]+\)\s*$'
+)
+EXCERPT_HEADING = '架构摘录'
+EXCERPT_EMPTY_ROW = '| <!-- excerpt:empty --> | | |'
 
 
 # ─────────────────────────────────────────────
@@ -38,9 +49,9 @@ def parse_args():
     parser = argparse.ArgumentParser(description='概览关键词标记（spec-tags + ✅）')
     parser.add_argument('--file', required=True, help='目标 Markdown')
     parser.add_argument('--phase',
-                        choices=['1', '2', 'all', '1-scan', '1-write'],
+                        choices=['1', '2', '3', 'excerpt', 'all', '1-scan', '1-write'],
                         required=True,
-                        help='1=交互候选; 2=打勾; all=两段; 1-scan/1-write=Skill')
+                        help='1=交互候选; 2=打勾; 3/excerpt=架构摘录; all=1→2→3; 1-scan/1-write=Skill')
     parser.add_argument('--keywords', nargs='+', default=[],
                         help='种子词（phase 含 1/1-scan/1-write/all 时必填）')
     parser.add_argument('--scan-dir', default='docs/architecture/',
@@ -444,6 +455,13 @@ def get_section_content(filepath, anchor):
     return '\n'.join(section_lines)
 
 
+def content_for_keyword_match(text):
+    """phase 2 相关性判定用文本：去掉 HTML 注释，避免 <!-- … --> 误触发 ✅。"""
+    if not text:
+        return ''
+    return re.sub(r'<!--.*?-->', '', text, flags=re.DOTALL)
+
+
 def resolve_link(url, overview_dir):
     """将副标题列的相对 URL 解析为 (绝对文件路径, 锚点)"""
     if '#' in url:
@@ -531,9 +549,10 @@ def phase2(overview_file):
 
         filepath, anchor = resolve_link(url, overview_dir)
         section_content = get_section_content(filepath, anchor)
+        matchable = content_for_keyword_match(section_content)
 
-        # 判断相关性：任意关键词出现在章节内容中（大小写不敏感）
-        content_lower = section_content.lower()
+        # 判断相关性：任意关键词出现在章节正文（不含 HTML 注释）中（大小写不敏感）
+        content_lower = matchable.lower()
         is_relevant = any(kw.lower() in content_lower for kw in keywords)
 
         if is_relevant:
@@ -548,6 +567,149 @@ def phase2(overview_file):
         f.writelines(new_lines)
 
     print(f'完成：标记 {marked_count} 行 ✅，跳过 {skipped_count} 行')
+
+
+# ─────────────────────────────────────────────
+# 第三阶段：架构摘录（五视角 ✅ → ## 架构摘录）
+# ─────────────────────────────────────────────
+
+def is_perspective_section_boundary(line):
+    """节结束：下一 H2、--- 或 ## 附录"""
+    stripped = line.strip()
+    if re.match(r'^---\s*$', stripped):
+        return True
+    if re.match(r'^##\s+附录', stripped):
+        return True
+    if re.match(r'^##\s+', stripped):
+        return True
+    return False
+
+
+def parse_perspective_sections(lines):
+    """
+    解析五视角 H2 节正文行。
+    返回 (sections: {视角名: [行…]}, found: set[视角名])。
+    """
+    sections = {p: [] for p in PERSPECTIVE_ORDER}
+    found = set()
+    current = None
+
+    for line in lines:
+        stripped = line.rstrip('\n')
+        m = PERSPECTIVE_H2_RE.match(stripped)
+        if m:
+            current = m.group(1)
+            found.add(current)
+            continue
+        if current is not None:
+            if is_perspective_section_boundary(line):
+                current = None
+                continue
+            sections[current].append(line)
+
+    for perspective in PERSPECTIVE_ORDER:
+        if perspective not in found:
+            print(f'警告：未找到视角 H2 [{perspective}]', file=sys.stderr)
+
+    return sections, found
+
+
+def row_has_check_in_subtitle(line):
+    parts = line.split('|')
+    return len(parts) >= 3 and '✅' in parts[2]
+
+
+def excerpt_row_from_table_line(perspective, line):
+    clean = strip_check_mark(line)
+    parts = clean.split('|')
+    if len(parts) < 3:
+        return None
+    col1 = parts[1].strip()
+    col2 = parts[2].strip()
+    return f'| {perspective} | {col1} | {col2} |'
+
+
+def collect_excerpt_rows(lines):
+    """按固定视角顺序收集摘录行；返回 (行字符串列表, 各视角计数)。"""
+    sections, _found = parse_perspective_sections(lines)
+    rows = []
+    counts = {p: 0 for p in PERSPECTIVE_ORDER}
+
+    for perspective in PERSPECTIVE_ORDER:
+        for line in sections.get(perspective, []):
+            if not is_table_data_row(line):
+                continue
+            if not row_has_check_in_subtitle(line):
+                continue
+            row = excerpt_row_from_table_line(perspective, line)
+            if row:
+                rows.append(row)
+                counts[perspective] += 1
+
+    return rows, counts
+
+
+def replace_excerpt_table(lines, excerpt_rows):
+    """
+    替换 ## 架构摘录 下表格数据区（保留节标题、表头、分隔行）。
+    成功返回新 lines；缺少架构摘录节返回 None。
+    """
+    excerpt_start = None
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        if re.match(r'^##\s+', stripped) and EXCERPT_HEADING in stripped:
+            excerpt_start = i
+            break
+
+    if excerpt_start is None:
+        return None
+
+    excerpt_end = len(lines)
+    for j in range(excerpt_start + 1, len(lines)):
+        if re.match(r'^##\s+', lines[j].strip()):
+            excerpt_end = j
+            break
+
+    sep_idx = None
+    for j in range(excerpt_start, excerpt_end):
+        if re.match(r'^\|\s*[-:]+\s*\|', lines[j].strip()):
+            sep_idx = j
+            break
+
+    if sep_idx is None:
+        return None
+
+    data_start = sep_idx + 1
+    new_lines = list(lines[:data_start])
+    if excerpt_rows:
+        for row in excerpt_rows:
+            new_lines.append(row if row.endswith('\n') else row + '\n')
+    else:
+        new_lines.append(EXCERPT_EMPTY_ROW + '\n')
+    new_lines.extend(lines[excerpt_end:])
+    return new_lines
+
+
+def phase3(overview_file):
+    with open(overview_file, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
+
+    excerpt_rows, counts = collect_excerpt_rows(lines)
+    new_lines = replace_excerpt_table(lines, excerpt_rows)
+    if new_lines is None:
+        print(f'错误：未找到 ## {EXCERPT_HEADING}', file=sys.stderr)
+        sys.exit(1)
+
+    with open(overview_file, 'w', encoding='utf-8') as f:
+        f.writelines(new_lines)
+
+    total = sum(counts.values())
+    if total == 0:
+        print('摘录 0 行（empty）')
+        return
+
+    parts = [f'{p} {counts[p]}' for p in PERSPECTIVE_ORDER if counts[p]]
+    print(f'完成：摘录 {total} 行（{" / ".join(parts)}）')
 
 
 # ─────────────────────────────────────────────
@@ -589,9 +751,13 @@ def main():
         phase1(args.file, args.keywords, args.scan_dir, args.top_n)
         if args.phase == 'all':
             phase2(args.file)
+            phase3(args.file)
 
     elif args.phase == '2':
         phase2(args.file)
+
+    elif args.phase in ('3', 'excerpt'):
+        phase3(args.file)
 
 
 if __name__ == '__main__':

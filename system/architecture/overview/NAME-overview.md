@@ -1,11 +1,15 @@
-# {NAME} 架构概览
+# {域名称}架构概览（{slug}-overview）
+
+> **维护说明**
+> - 副标题列 `✅`：由 `docs-tag --phase 2` 根据附录 keywords 与链接章节正文判定。
+> - `## 架构摘录`：由 `docs-tag --phase 3`（同义 `excerpt`）从下方五视角表中 ✅ 行投影生成，请勿手改摘录表数据行。
+> - 推荐顺序：`1-write`（或已有 keywords）→ `2` → `3`。
 
 ## 架构摘录
 
 | 架构视角 | 主标题 | 副标题 |
 | --- | --- | --- |
-| [业务架构示例](../business/README.md) | [业务流程示例](../business/business-processes.md) | [核心业务流程示例](../business/business-processes.md#核心业务流程) |
-| [应用架构示例](../application/README.md) | [应用全景图示例](../application/application-landscape.md) | [系统上下文图示例](../application/application-landscape.md#系统上下文图) |
+| _（运行 `--phase 3` 后填充）_ | | |
 
 ## [业务架构](../business/README.md)
 
