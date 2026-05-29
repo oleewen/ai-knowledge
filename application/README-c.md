@@ -42,6 +42,6 @@ constitution（治理基线：术语/原则/标准/ADR）
 ## 机器可读元数据
 
 - 根元数据：[docs_meta.yaml](docs_meta.yaml)
-- 子目录元数据：`constitution/constitution_meta.yaml`、`knowledge_meta.yaml`、`changelogs_meta.yaml`
+- 子目录元数据：`constitution/constitution_meta.yaml`、`knowledge_meta.yaml`（阶段目录见各 `README.md`，含 [changelogs/README.md](changelogs/README.md)）
 
 > 约束细则以对应 YAML 与 `DESIGN.md` 为准，本文件不复写字段定义。

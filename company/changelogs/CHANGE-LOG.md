@@ -1,6 +1,6 @@
 # CHANGE-LOG
 
-本文件为 `application/` 侧**维护性变更与文档聚合**的 Markdown 日志入口。
+本文件为 `company/` 侧**维护性变更与文档聚合**的 Markdown 日志入口。
 
 ## 2026-04-25 09:30:00（时间示例）
 

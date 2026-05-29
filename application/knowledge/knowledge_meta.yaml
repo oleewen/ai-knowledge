@@ -50,5 +50,5 @@ knowledge:
       - knowledge/product/product_meta.yaml
       - knowledge/technical/technical_meta.yaml
       - knowledge/data/data_meta.yaml
-      - requirements/requirements_meta.yaml
-      - changelogs/changelogs_meta.yaml
+      - requirements/README.md
+      - changelogs/README.md

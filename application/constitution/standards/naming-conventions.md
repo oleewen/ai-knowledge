@@ -70,18 +70,18 @@
   - `**application/knowledge/` 根**：`knowledge_meta.yaml`（本树 SSOT 索引说明）。
   - `**application/constitution/` 根**：`constitution_meta.yaml`（宪法层总索引，与四视角根目录 `business_meta.yaml` 等并列）。
   - **宪法层一级子树**（与根 meta 分工、避免重复）：`principles/principles_meta.yaml`、`standards/standards_meta.yaml`、`adr/adr_meta.yaml`（及同目录 `adr-template.md`）；ADR 正文为 `adr/ADR-{序号}-{短标题}.md`。
-  - `**application/` 下阶段目录**：与目录名一致的 `{dirname}_meta.yaml`（含 `schema_version`、`layers` 等 SSOT 结构），例如 `solutions/solutions_meta.yaml`、`analysis/analysis_meta.yaml`、`requirements/requirements_meta.yaml`、`changelogs/changelogs_meta.yaml`。
-  - **应用知识库根目录**（`applications/{app}/`）：`application_meta.yaml`（联邦单元根索引）；子目录同模式，如 `constitution/constitution_meta.yaml`、`knowledge/knowledge_meta.yaml`、`requirements/requirements_meta.yaml`、`changelogs/changelogs_meta.yaml`；`constitution/` 与中央库同构。
+  - `**application/` 下阶段目录**：**solutions**、**analysis**、**requirements**、**changelogs** 约定收敛于各目录 `README.md`（无 `{dirname}_meta.yaml`）。宪法层、`knowledge/` 四视角等仍使用 `{dirname}_meta.yaml`。
+  - **应用知识库根目录**（`applications/{app}/`）：`application_meta.yaml`（联邦单元根索引）；子目录同模式，如 `constitution/constitution_meta.yaml`、`knowledge/knowledge_meta.yaml`、`requirements/README.md`、`changelogs/README.md`；`constitution/` 与中央库同构。
   - **中央库四视角**（`application/knowledge/{perspective}/`）：与**应用知识库** `applications/{app}/knowledge/{perspective}/` 同构；采用「视角索引 + 层级实体」命名（`business_meta.yaml`、`product_meta.yaml`、`technical_meta.yaml`、`data_meta.yaml` 等单文件 SSOT），**集中放在该视角根目录**（子目录仅作导航锚点）。
 - **中央库 · 业务视角**（`application/knowledge/business/`）：`business_meta.yaml`（含 `layers`：BD/BSD/BC/AGG/AB）；`{BD-ID}/` 等子目录作层级锚点。
 - **中央库 · 产品视角**（`application/knowledge/product/`）：`product_meta.yaml`（含 `layers`：PL/PM/FT/UC）；`{PL-ID}/{PM-ID}/` 作层级锚点。
 - **中央库 · 技术视角**（`application/knowledge/technical/`）：`technical_meta.yaml`（含 `layers`：SYS/APP/MS/API）；`{SYS-ID}/` 为系统锚点，其下为应用注册 YAML。
 - **中央库 · 数据视角**（`application/knowledge/data/`）：`data_meta.yaml`（含 `layers`：DS/ENT）；`{DS-ID}/` 作存储锚点。
 - **IDEA-ID（需求链统一标识）**：统一命名格式 `*-{YYMMDD}-{主题slug}` 中的 `{YYMMDD}-{主题slug}` 段；各阶段类型前缀为 `SOLUTION` / `ANALYSIS` / `REQUIREMENT`（目录）/ `PRD` / `ASD` / `DSD` / `TDD` 等。
-- **中央库 · requirements 阶段**（`application/requirements/`）：`requirements_meta.yaml`（含 `layers`：REQ / MVP_PHASE）；`REQUIREMENT-{IDEA-ID}/` 为交付包锚点（与 `ANALYSIS-{IDEA-ID}.md` 共用同一 **IDEA-ID**），不在包内并列根级 `*_meta.yaml` 拷贝。
-- **中央库 · solutions 阶段**（`application/solutions/`）：`solutions_meta.yaml`（含 `layers`：SOLUTION）；根目录平铺 `SOLUTION-{IDEA-ID}.md`。
-- **中央库 · analysis 阶段**（`application/analysis/`）：`analysis_meta.yaml`（含 `layers`：ANALYSIS）；根目录平铺 `ANALYSIS-{IDEA-ID}.md`。
-- **中央库 · changelogs**（`application/changelogs/`）：`changelogs_meta.yaml`（含 `layers`：CHANGELOG / INDEX_OPS）；`CHANGE-LOG.md`（变更聚合）；`INDEXING-LOG.md`（索引运行日志）。
+- **中央库 · requirements 阶段**（`application/requirements/`）：`README.md` 为阶段约定入口；`REQUIREMENT-{IDEA-ID}/` 为交付包锚点（与 `ANALYSIS-{IDEA-ID}.md` 共用同一 **IDEA-ID**），不在包内并列根级 `*_meta.yaml` 拷贝。
+- **中央库 · solutions 阶段**（`application/solutions/`）：`README.md` 为阶段约定入口；根目录平铺 `SOLUTION-{IDEA-ID}.md`；`archive/` 归档。
+- **中央库 · analysis 阶段**（`application/analysis/`）：`README.md` 为阶段约定入口；根目录平铺 `ANALYSIS-{IDEA-ID}.md`。
+- **中央库 · changelogs**（`application/changelogs/`）：`README.md` 为阶段约定入口；`CHANGE-LOG.md`（变更聚合）；`INDEXING-LOG.md`（索引运行日志）。
 - **宪法层 ADR 标准**：`constitution/adr/adr_meta.yaml` 与 [../adr/adr-template.md](../adr/adr-template.md) 配套，描述模板结构、状态值与 `adr/ADR-{序号}-{短标题}.md` 落盘约定。
 
 ---

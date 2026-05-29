@@ -29,7 +29,7 @@
 - ***应用知识库根目录**：使用 [docs_meta.yaml](docs_meta.yaml) 概括 `application/` 树与子目录 meta 指针
   - `knowledge/knowledge_meta.yaml` 描述知识树；
   - `constitution/constitution_meta.yaml` 描述宪法层组件与产出；
-  - `solutions/`、`analysis/`、`requirements/`、`changelogs/` 各阶段目录根使用与目录同名的 `{dirname}_meta.yaml`（如 `solutions_meta.yaml`）。
+  - **`solutions/`、`analysis/`、`requirements/`、`changelogs/`** 阶段约定均收敛于各目录 **`README.md`**（无 `{dirname}_meta.yaml`）。宪法层、`knowledge/` 四视角等仍使用 `{dirname}_meta.yaml`（见 [constitution/standards/naming-conventions.md](constitution/standards/naming-conventions.md)）。
 - 细则见 [constitution/standards/naming-conventions.md](constitution/standards/naming-conventions.md)。
 
 **协同（目标态）**：应用仓维护 `/docs` 与 `manifest.yaml`；系统侧可抓取 manifest 更新 `knowledge` 并做一致性检查。
@@ -84,10 +84,10 @@
 
 | 阶段               | 约定                                                                                                                                            |
 | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| **solutions**    | `solutions_meta.yaml`（`layers`：SOLUTION）；根目录 `SOLUTION-{IDEA-ID}.md`                                                                          |
-| **analysis**     | `analysis_meta.yaml`（`layers`：ANALYSIS）；`ANALYSIS-{IDEA-ID}.md`；`parent` → Solution                                                           |
-| **requirements** | `requirements_meta.yaml`（`layers`：交付包 → MVP 分阶段）；`REQUIREMENT-{IDEA-ID}/MVP-Phase-*/` 下 PRD / ASD / DSD / TDD；**详设正文**仅为 **`DSD-*.md`**（`sdx-design` **`dsd-template`**）；**`spec-asd-*.md`** 仅在 **`{DOC_DIR}/specs/`**（`sdx-architect` **`asd-spec-template`**） |
-| **changelogs**   | `changelogs_meta.yaml`（`layers`：人类变更日志 → 索引运维）；`CHANGE-LOG.md`（docs-change）；`INDEXING-LOG.md`（docs-indexing）                        |
+| **solutions**    | `README.md`（阶段约定 SSOT）；根目录平铺 `SOLUTION-{IDEA-ID}.md`；`archive/` 归档；文末元数据可选 `parent`/`dependencies`（无 `solutions_meta.yaml`）                                                                          |
+| **analysis**     | `README.md`（阶段约定 SSOT）；根目录平铺 `ANALYSIS-{IDEA-ID}.md`；文末元数据 `parent` → Solution（单层交付物）                                                           |
+| **requirements** | `README.md`（阶段约定 SSOT）；`REQUIREMENT-{IDEA-ID}/MVP-Phase-*/` 下 PRD / ASD / DSD / TDD；**详设正文**仅为 **`DSD-*.md`**；**`spec-asd-*.md`** 仅在各阶段 `specs/`（无 `requirements_meta.yaml`） |
+| **changelogs**   | `README.md`（阶段约定 SSOT）；`CHANGE-LOG.md`（docs-change）；`INDEXING-LOG.md`（docs-indexing）；无 `changelogs_meta.yaml`                        |
 
 
 ---

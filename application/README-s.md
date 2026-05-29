@@ -47,6 +47,6 @@ solutions ──→ analysis ──→ requirements
 ## 机器可读元数据
 
 - 根元数据：[docs_meta.yaml](docs_meta.yaml)
-- 子目录元数据：`constitution/constitution_meta.yaml`、`knowledge_meta.yaml`、`solutions_meta.yaml`、`analysis_meta.yaml`、`requirements_meta.yaml`、`changelogs_meta.yaml`
+- 子目录元数据：`constitution/constitution_meta.yaml`、`knowledge_meta.yaml`（**solutions** / **analysis** / **requirements** / **changelogs** 见各目录 `README.md`）
 
 > 约束细则以对应 YAML 与 `DESIGN.md` 为准，本文件不复写字段定义。

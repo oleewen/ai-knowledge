@@ -16,13 +16,17 @@ child_directories:
     meta: "knowledge/knowledge_meta.yaml"
     description: "四视角业务 / 产品 / 技术 / 数据（SSOT）"
   solutions:
-    meta: "solutions/solutions_meta.yaml"
+    readme: "solutions/README.md"
+    description: "解决方案阶段：平铺 SOLUTION-{IDEA-ID}.md（约定见 README，无 solutions_meta.yaml）"
   analysis:
-    meta: "analysis/analysis_meta.yaml"
+    readme: "analysis/README.md"
+    description: "需求分析阶段：平铺 ANALYSIS-{IDEA-ID}.md（约定见 README，无 analysis_meta.yaml）"
   requirements:
-    meta: "requirements/requirements_meta.yaml"
+    readme: "requirements/README.md"
+    description: "需求交付阶段：REQUIREMENT-{IDEA-ID}/ 树（约定见 README，无 requirements_meta.yaml）"
   changelogs:
-    meta: "changelogs/changelogs_meta.yaml"
+    readme: "changelogs/README.md"
+    description: "变更留痕与索引运维：CHANGE-LOG.md、INDEXING-LOG.md（约定见 README，无 changelogs_meta.yaml）"
 
 child_files:
   - "README.md"

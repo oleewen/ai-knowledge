@@ -162,7 +162,7 @@ flowchart LR
 
 | 项 | 位置 |
 |----|------|
-| 文档元数据 | [docs_meta.yaml](docs_meta.yaml)、[changelogs/changelogs_meta.yaml](changelogs/changelogs_meta.yaml) |
+| 文档元数据 | [docs_meta.yaml](docs_meta.yaml)、[changelogs/README.md](changelogs/README.md) |
 
 ### 7.2 环境差异
 
