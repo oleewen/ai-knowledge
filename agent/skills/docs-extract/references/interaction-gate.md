@@ -1,6 +1,6 @@
 # docs-extract 交互与确认
 
-路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（`*/specs/`，排除 `requirements/**/specs/`）。
+路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（`{DOC_DIR}/superpowers/`，排除 `requirements/**/specs/`）。
 与 docs-distill 同构：**中间会话 spec → 用户总确认 → 落盘**。差异：extract **无** `DISTILL-LOG`；按次扫 `--sources` **≠** `docs-distill --full`。
 
 硬规则与表见 [gates.md](gates.md)；阶段见 [workflow.md](workflow.md)。
@@ -9,7 +9,7 @@
 
 | 概念 | 做法 |
 |------|------|
-| 会话 spec | `system/specs/…-docs-extract.md` |
+| 会话 spec | `system/superpowers/…-docs-extract.md` |
 | 总确认 | `PENDING` → `CONFIRMED`（gates） |
 | 例外 | 同会话明示 |
 | 预览 | HARD-GATE 场景**先** `--dry-run` |

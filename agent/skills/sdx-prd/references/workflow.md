@@ -35,7 +35,7 @@
 
 ## 阶段二：草稿
 
-路径：`application/specs/YYYY-MM-DD-<topic>-sdx-prd.md`，骨架 [../assets/prd-session-spec-template.md](../assets/prd-session-spec-template.md)。每门禁末附 **C/M/S/F**（见 `gates.md`）。
+路径：`{DOC_DIR}/superpowers/YYYY-MM-DD-<topic>-sdx-prd.md`，骨架 [../assets/prd-session-spec-template.md](../assets/prd-session-spec-template.md)。每门禁末附 **C/M/S/F**（见 `gates.md`）。
 
 ### G 与模板（11G）
 

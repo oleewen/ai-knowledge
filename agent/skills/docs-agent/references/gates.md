@@ -1,6 +1,6 @@
 # docs-agent 门禁与范围对齐
 
-路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（会话 spec 落在 `*/specs/`，排除 `requirements/**/specs/`）。
+路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（会话 spec 落在 `{DOC_DIR}/superpowers/`，排除 `requirements/**/specs/`）。
 主干：[SKILL.md](../SKILL.md)。步骤 1–5：[workflow.md](workflow.md)。
 
 ## 步骤 0（HARD-GATE：参数确认书）

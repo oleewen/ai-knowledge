@@ -70,7 +70,7 @@
           "id": "session-spec",
           "name": "会话 spec",
           "type": "should_include",
-          "check": "应提及 */specs/（如 application/specs/）…-sdx-prd.md 或等价会话 spec + Qclose。",
+          "check": "应提及 {DOC_DIR}/superpowers/…-sdx-prd.md（或等价会话 spec 路径）+ Qclose。",
           "priority": "P1"
         }
       ]

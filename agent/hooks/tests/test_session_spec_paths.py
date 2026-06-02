@@ -13,11 +13,17 @@ from session_spec_paths import (
 
 
 class SessionSpecPathTests(unittest.TestCase):
-    def test_accepts_docroot_specs(self) -> None:
-        self.assertTrue(is_session_spec_path("application/specs/2026-05-18-x-sdx-prd.md"))
+    def test_accepts_docroot_superpowers(self) -> None:
+        self.assertTrue(
+            is_session_spec_path("application/superpowers/2026-05-18-x-sdx-prd.md")
+        )
+        self.assertTrue(
+            is_session_spec_path("system/superpowers/2026-05-18-x-docs-distill.md")
+        )
 
-    def test_accepts_system_specs(self) -> None:
-        self.assertTrue(is_session_spec_path("system/specs/2026-05-18-x-docs-distill.md"))
+    def test_rejects_legacy_specs_dir(self) -> None:
+        self.assertFalse(is_session_spec_path("application/specs/2026-05-18-x-sdx-prd.md"))
+        self.assertFalse(is_session_spec_path("system/specs/2026-05-18-x-docs-extract.md"))
 
     def test_rejects_superpowers_nested_specs(self) -> None:
         self.assertFalse(is_session_spec_path("docs/superpowers/specs/x.md"))
@@ -29,22 +35,25 @@ class SessionSpecPathTests(unittest.TestCase):
             )
         )
 
-    def test_extract_from_strings(self) -> None:
-        strings = ["write application/specs/2026-05-18-a-sdx-prd.md"]
+    def test_extract_from_strings_superpowers(self) -> None:
+        strings = ["write application/superpowers/2026-05-18-a-sdx-design.md"]
         self.assertEqual(
             session_specs_from_payload(strings),
-            ["application/specs/2026-05-18-a-sdx-prd.md"],
+            ["application/superpowers/2026-05-18-a-sdx-design.md"],
         )
 
     def test_iter_session_spec_files(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp)
-            good = repo / "application" / "specs"
+            good = repo / "application" / "superpowers"
             good.mkdir(parents=True)
             (good / "a.md").write_text("# a", encoding="utf-8")
+            legacy = repo / "application" / "specs"
+            legacy.mkdir(parents=True)
+            (legacy / "b.md").write_text("# b", encoding="utf-8")
             bad = repo / "docs" / "superpowers" / "specs"
             bad.mkdir(parents=True)
-            (bad / "b.md").write_text("# b", encoding="utf-8")
+            (bad / "c.md").write_text("# c", encoding="utf-8")
             paths = {p.name for p in iter_session_spec_files(repo)}
             self.assertEqual(paths, {"a.md"})
 

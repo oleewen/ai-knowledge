@@ -6,8 +6,13 @@ import re
 from pathlib import Path
 from typing import Iterator
 
+# 会话闸门 spec 统一落在 {DOC_DIR}/superpowers/
+_SESSION_SPEC_DIR_NAMES = ("superpowers",)
+_DOCROOTS = frozenset({"application", "system", "company"})
+_DIR_ALT = "|".join(_SESSION_SPEC_DIR_NAMES)
+
 _PATH_IN_TEXT_RE = re.compile(
-    r"(?<![A-Za-z0-9._-])((?:application|system|company|[^/\s]+)/specs/[^\s\"']+\.md)"
+    rf"(?<![A-Za-z0-9._-])((?:application|system|company|[^/\s]+)/(?:{_DIR_ALT})/[^\s\"']+\.md)"
 )
 
 
@@ -20,25 +25,27 @@ def is_session_spec_path(rel: str) -> bool:
     if not rel.endswith(".md") or "/requirements/" in rel:
         return False
     parts = rel.split("/")
-    if len(parts) < 3 or parts[1] != "specs":
+    if len(parts) < 3 or parts[0] not in _DOCROOTS or parts[1] not in _SESSION_SPEC_DIR_NAMES:
         return False
     return True
 
 
 def iter_session_spec_files(repo: Path) -> Iterator[Path]:
-    for docroot in repo.iterdir():
-        if not docroot.is_dir() or docroot.name.startswith("."):
+    for docroot_name in sorted(_DOCROOTS):
+        docroot = repo / docroot_name
+        if not docroot.is_dir():
             continue
-        specs = docroot / "specs"
-        if not specs.is_dir():
-            continue
-        for p in specs.rglob("*.md"):
-            try:
-                rel = p.relative_to(repo)
-            except ValueError:
+        for dir_name in _SESSION_SPEC_DIR_NAMES:
+            container = docroot / dir_name
+            if not container.is_dir():
                 continue
-            if is_session_spec_path(str(rel).replace("\\", "/")):
-                yield p
+            for p in container.rglob("*.md"):
+                try:
+                    rel = p.relative_to(repo)
+                except ValueError:
+                    continue
+                if is_session_spec_path(str(rel).replace("\\", "/")):
+                    yield p
 
 
 def session_specs_from_payload(strings: list[str]) -> list[str]:

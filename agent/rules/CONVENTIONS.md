@@ -50,7 +50,7 @@
 
 对受管终稿或等价写入（含工具调用）前：
 
-1. **须先**完成中间会话 spec：路径符合 `*/specs/YYYY-MM-DD-<topic>-<阶段后缀>.md`，见 [session-spec-path.md](../references/session-spec-path.md)），并完成闸门 **用户总确认**（阶段后缀与 Skill 见下表）。
+1. **须先**完成中间会话 spec：路径符合 `{DOC_DIR}/superpowers/YYYY-MM-DD-<topic>-<阶段后缀>.md`，见 [session-spec-path.md](../references/session-spec-path.md)），并完成闸门 **用户总确认**（阶段后缀与 Skill 见下表）。
 2. 在会话 spec 文末使用标记：`<!-- <stage>-gate: CONFIRMED -->`（总确认前为 `PENDING`）；文中须出现目标终稿文件名，或（`docs-distill`）须写明目标应用与 `--full` / `--since` / `--dry-run` 等关键参数摘要，供钩子与校验脚本识别。
 3. **例外**：用户在同一对话中**明示**跳过闸门或授权直写终稿时，可遵循用户指令；或按下表设置环境变量为 `1`（仅限人工知情场景，仅适用于有环境变量例外的阶段）。`docs-distill`、`docs-extract`、`docs-archive`、`docs-build`、`docs-indexing` **无 bypass 环境变量**，须完整走确认流程。
 
@@ -80,7 +80,7 @@
 
 | 层级 | 技能 | 闸门形式 | hook 保护 |
 |------|------|---------|----------|
-| **高风险**（落盘 spec + hook） | sdx-solution/analysis/prd/architect/design/test、docs-distill/extract/archive/build/indexing | 落盘 spec 文件（`*/specs/`，见 [session-spec-path.md](../references/session-spec-path.md)）+ `PENDING` → `CONFIRMED` + hook 证据校验（`docs-indexing` 须在 spec 正文**逐字列出**本轮将写入的仓库根相对路径，与 `sdx_gate_common.py --gate indexing` 一致） | ✅ |
+| **高风险**（落盘 spec + hook） | sdx-solution/analysis/prd/architect/design/test、docs-distill/extract/archive/build/indexing | 落盘 spec 文件（`{DOC_DIR}/superpowers/`，见 [session-spec-path.md](../references/session-spec-path.md)）+ `PENDING` → `CONFIRMED` + hook 证据校验（`docs-indexing` 须在 spec 正文**逐字列出**本轮将写入的仓库根相对路径，与 `sdx_gate_common.py --gate indexing` 一致） | ✅ |
 | **中等风险**（会话内确认书） | docs-upgrade、docs-agent | 会话内参数确认书 + Qclose-1，无需落盘 spec 文件；SKILL.md 中有 HARD-GATE 描述 | ❌（写入路径不固定或契约不要求 hook） |
 | **低风险**（现有参数确认） | docs-change、docs-tag、docs-pull | 保持现有参数确认机制，不加 spec gate | ❌ |
 

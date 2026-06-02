@@ -9,7 +9,7 @@
 
 ## Spec 标记
 
-- 路径：符合 `*/specs/`（见 [session-spec-path.md](../../../references/session-spec-path.md)）。
+- 路径：符合 `{DOC_DIR}/superpowers/`（见 [session-spec-path.md](../../../references/session-spec-path.md)）。
 
 - 文末：`<!-- sdx-test-gate: PENDING -->` → 总确认后 `CONFIRMED`。
 - 正文至少一次与目标一致的 `TDD-{IDEA-ID}-{N}.md`。

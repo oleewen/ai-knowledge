@@ -2,10 +2,10 @@
 
 ## 会话 spec 路径
 
-闸门中间稿须落在 **`*/specs/`**（`{文档根}/specs/`，不含 `requirements/**/specs/`）。契约：[session-spec-path.md](../../../references/session-spec-path.md)。
+闸门中间稿须落在 **`{DOC_DIR}/superpowers/`**（不含 `requirements/**/specs/`）。契约：[session-spec-path.md](../../../references/session-spec-path.md)。
 
-本技能为中等风险，通常无落盘 spec；若写入闸门稿，须符合 `*/specs/`。
-借 **探索、单问、方案比选、闸门** 等形式；**不是**「必须先写独立 `*/specs/*-design.md` 再实现」全套外部 brainstorming 工作流。
+本技能为中等风险，通常无落盘 spec；若写入闸门稿，须符合 `{DOC_DIR}/superpowers/`。
+借 **探索、单问、方案比选、闸门** 等形式；**不是**「必须先写独立 `{DOC_DIR}/superpowers/*-design.md` 再实现」全套外部 brainstorming 工作流。
 
 ## 快路径 vs 预检
 

@@ -2,9 +2,9 @@
 
 ## 会话 spec 路径
 
-闸门中间稿须落在 **`*/specs/`**（`{文档根}/specs/`，不含 `requirements/**/specs/`）。契约：[session-spec-path.md](../../../references/session-spec-path.md)。
+闸门中间稿须落在 **`{DOC_DIR}/superpowers/`**（不含 `requirements/**/specs/`）。契约：[session-spec-path.md](../../../references/session-spec-path.md)。
 
-示例：`system/specs/YYYY-MM-DD-<topic>-docs-archive.md`
+示例：`{DOC_DIR}/superpowers/YYYY-MM-DD-<topic>-docs-archive.md`
 
 交付仍是**确认书 → 落盘**，非独立 `/brainstorming`；澄清与方案对比可同节奏。
 

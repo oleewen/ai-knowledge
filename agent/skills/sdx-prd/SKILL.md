@@ -35,7 +35,7 @@ compatibility: Bash 5+；`scripts/config-bootstrap.sh` 解析 `DOC_ROOT`；钩�
 
 - **`ANALYSIS-{IDEA-ID}.md`** 含目标 MVP（缺则先 `sdx-analysis`）。  
 - **IDEA-ID**、**`N`** 与终稿路径一致。  
-- 知悉 `{DOC_DIR}/requirements/.../MVP-Phase-{N}/` 与 `application/specs/`。  
+- 知悉 `{DOC_DIR}/requirements/.../MVP-Phase-{N}/` 与 `{DOC_DIR}/superpowers/`（闸门 spec）。  
 用户要先方案/分析时，不强行套全流程。
 
 ---
@@ -63,7 +63,7 @@ compatibility: Bash 5+；`scripts/config-bootstrap.sh` 解析 `DOC_ROOT`；钩�
 
 ## 产出与校验
 
-- **会话 spec**：`application/specs/YYYY-MM-DD-<topic>-sdx-prd.md`  
+- **会话 spec**：`{DOC_DIR}/superpowers/YYYY-MM-DD-<topic>-sdx-prd.md`  
 - **PRD**：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`
 
 仓库根：

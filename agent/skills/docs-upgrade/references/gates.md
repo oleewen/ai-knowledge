@@ -1,6 +1,6 @@
 # 门禁与分流
 
-路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（会话 spec 落在 `*/specs/`，排除 `requirements/**/specs/`）。
+路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（会话 spec 落在 `{DOC_DIR}/superpowers/`，排除 `requirements/**/specs/`）。
 流程：[workflow.md](workflow.md)；预检：[brainstorming-integration.md](brainstorming-integration.md)；实操：[gotchas.md](../gotchas.md)。
 
 ## 边界（摘要）

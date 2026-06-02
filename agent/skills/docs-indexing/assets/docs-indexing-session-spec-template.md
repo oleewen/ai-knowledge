@@ -1,7 +1,7 @@
 # docs-indexing 会话 spec
 
 路径契约：[session-spec-path.md](../../../references/session-spec-path.md)。
-`application/specs/YYYY-MM-DD-<topic>-docs-indexing.md`。替换占位；总确认前 `PENDING`。
+`{DOC_DIR}/superpowers/YYYY-MM-DD-<topic>-docs-indexing.md`。替换占位；总确认前 `PENDING`。
 
 ## 1. 范围
 

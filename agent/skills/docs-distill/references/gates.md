@@ -1,6 +1,6 @@
 # 门禁
 
-路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（会话 spec 落在 `*/specs/`，排除 `requirements/**/specs/`）。
+路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（会话 spec 落在 `{DOC_DIR}/superpowers/`，排除 `requirements/**/specs/`）。
 五阶段：[workflow.md](workflow.md)；节奏：[interaction-gate.md](interaction-gate.md)。
 
 ## 总则
@@ -12,7 +12,7 @@
 
 ## Spec
 
-- 路径：`system/specs/YYYY-MM-DD-<topic>-docs-distill.md`
+- 路径：`{DOC_DIR}/superpowers/YYYY-MM-DD-<topic>-docs-distill.md`
 - 文末 `<!-- docs-distill-gate: PENDING -->` → 确认后 `CONFIRMED`
 - 正文须含目标 **`{APPNAME}-overview.md` basename**，并写明：`--app`/`--full`/`--since`、是否 `--dry-run`、新建或更新概述
 
