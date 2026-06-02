@@ -22,7 +22,7 @@
 ## 钩子
 
 `agent/hooks.json` → `preToolUse`（Write/StrReplace）→ [sdx_gate_common.py](../../hooks/sdx_gate_common.py) `--gate archive`。  
-**证据**：符合 `{DOC_DIR}/superpowers/`（见 [session-spec-path.md](../../../references/session-spec-path.md)）的 spec 中含 `docs-archive-gate: CONFIRMED` 且出现目标 basename。
+**证据**：符合 `{DOC_DIR}/superpower/specs/`（见 [session-spec-path.md](../../../references/session-spec-path.md)）的 spec 中含 `docs-archive-gate: CONFIRMED` 且出现目标 basename。
 
 ## 与 workflow
 

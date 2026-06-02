@@ -28,7 +28,7 @@ description: >-
 
 - 至少一种原始业务描述（过短则先补）。
 - IDEA-ID、门禁粒度（7G/精简 5G）、深度（可与用户确认）。
-- 知晓 `{DOC_DIR}`、`{DOC_DIR}/superpowers/` 可写路径。
+- 知晓 `{DOC_DIR}`、`{DOC_DIR}/superpower/specs/` 可写路径。
 
 ---
 
@@ -59,7 +59,7 @@ description: >-
 
 ## 产出与校验
 
-- 会话 spec：`{DOC_DIR}/superpowers/YYYY-MM-DD-<topic>-sdx-solution.md`
+- 会话 spec：`{DOC_DIR}/superpower/specs/YYYY-MM-DD-<topic>-sdx-solution.md`
 - 正式稿：`{DOC_DIR}/solutions/SOLUTION-{IDEA-ID}.md`
 
 ```bash

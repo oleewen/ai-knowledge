@@ -20,9 +20,9 @@ description: >
 
 ## 前置
 
-- 路径契约：[session-spec-path.md](../../references/session-spec-path.md)（`{DOC_DIR}/superpowers/`）
+- 路径契约：[session-spec-path.md](../../references/session-spec-path.md)（`{DOC_DIR}/superpower/specs/`）
 - `--sources`、`--overview` 可解析；overview 含 `## 文档关键词`（缺则补，见 gotchas）。
-- 会话 spec：`{DOC_DIR}/superpowers/`；目标常位于 `system/architecture/overview/`。
+- 会话 spec：`{DOC_DIR}/superpower/specs/`；目标常位于 `system/architecture/overview/`。
 
 ## 执行顺序（先读后写）
 
@@ -44,7 +44,7 @@ description: >
 
 ## 产出
 
-- 会话 spec：`{DOC_DIR}/superpowers/YYYY-MM-DD-<topic>-docs-extract.md`（可选用 assets 模板）
+- 会话 spec：`{DOC_DIR}/superpower/specs/YYYY-MM-DD-<topic>-docs-extract.md`（可选用 assets 模板）
 - 正式：`--overview` 对应 `*.md` 第三列更新
 
 ## 评测

@@ -9,7 +9,7 @@
 
 ## Spec 标记
 
-- 路径：符合 `{DOC_DIR}/superpowers/`（见 [session-spec-path.md](../../../references/session-spec-path.md)）。
+- 路径：符合 `{DOC_DIR}/superpower/specs/`（见 [session-spec-path.md](../../../references/session-spec-path.md)）。
 
 - 文末：`<!-- sdx-solution-gate: PENDING -->`，总确认后改为 `CONFIRMED`。
 - 正文至少出现一次与 IDEA-ID 一致的 `SOLUTION-{IDEA-ID}.md`。

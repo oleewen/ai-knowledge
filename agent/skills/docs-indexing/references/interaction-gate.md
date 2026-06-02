@@ -1,11 +1,11 @@
 # docs-indexing 交互闸门
 
-路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（闸门 spec 在 `{DOC_DIR}/superpowers/`，排除 `requirements/**/specs/`）。
+路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（本技能闸门 spec 在 `{DOC_DIR}/superpower/specs/`，排除 `requirements/**/specs/`）。
 spec → Qclose-1 → `CONFIRMED` → 写受管路径。[gates.md](gates.md)；[workflow.md](workflow.md)。
 
 ## spec
 
-- `{DOC_DIR}/superpowers/YYYY-MM-DD-<topic>-docs-indexing.md`
+- `{DOC_DIR}/superpower/specs/YYYY-MM-DD-<topic>-docs-indexing.md`
 - [docs-indexing-session-spec-template.md](../assets/docs-indexing-session-spec-template.md)
 
 ## 节奏

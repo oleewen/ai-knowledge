@@ -20,8 +20,8 @@ description: >
 
 ## 前置
 
-- 路径契约：[session-spec-path.md](../../references/session-spec-path.md)（闸门 spec 在 `{DOC_DIR}/superpowers/`）
-- `DOC_ROOT`、输出路径、`{DOC_DIR}/superpowers/` 可写
+- 路径契约：[session-spec-path.md](../../references/session-spec-path.md)（`{DOC_DIR}/superpower/specs/`）
+- `DOC_ROOT`、输出路径、`{DOC_DIR}/superpower/specs/` 可写
 - 增量：弄清 `INDEXING-LOG` 基线或 `--since`（[indexing-log-spec.md](references/indexing-log-spec.md)）
 
 ## 阅读顺序
@@ -38,7 +38,7 @@ description: >
 
 ## 产出与脚本
 
-- Spec：`{DOC_DIR}/superpowers/YYYY-MM-DD-<topic>-docs-indexing.md`
+- Spec：`{DOC_DIR}/superpower/specs/YYYY-MM-DD-<topic>-docs-indexing.md`
 - 产物：`INDEX_GUIDE.md`、`INDEXING-LOG.md`（参数与脚本 invocation 与用户确认一致）
 
 ```bash

@@ -2,6 +2,6 @@
 *.class
 *.log.*
 
-**/superpowers/*
+**/superpower/specs/*
 .*
 !.gitignore

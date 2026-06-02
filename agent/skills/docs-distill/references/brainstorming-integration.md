@@ -2,9 +2,9 @@
 
 ## 会话 spec 路径
 
-闸门中间稿须落在 **`{DOC_DIR}/superpowers/`**（不含 `requirements/**/specs/`）。契约：[session-spec-path.md](../../../references/session-spec-path.md)。
+闸门中间稿须落在 **`{DOC_DIR}/superpower/specs/`**（不含 `requirements/**/specs/`）。契约：[session-spec-path.md](../../../references/session-spec-path.md)。
 
-示例：`{DOC_DIR}/superpowers/YYYY-MM-DD-<topic>-docs-distill.md`
+示例：`{DOC_DIR}/superpower/specs/YYYY-MM-DD-<topic>-docs-distill.md`
 
 本会话主线：**`-docs-distill` spec**、门禁后的 **overview 更新**、**DISTILL-LOG**。默认不把 `*-design.md` + writing-plans 当作终态。
 

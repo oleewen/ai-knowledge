@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 在 {DOC_DIR}/superpowers/*.md 中查找 CONFIRMED 标记与目标 basename。
+# 在 {docroot}/superpower/specs/*.md 中查找 CONFIRMED 标记与目标 basename。
 # 用法: check_session_spec_gate "<!-- sdx-prd-gate: CONFIRMED -->" "PRD-foo.md"
 set -euo pipefail
 
@@ -13,15 +13,15 @@ while IFS= read -r -d '' spec; do
   case "${rel}" in
     */requirements/*) continue ;;
   esac
-  IFS=/ read -r seg1 seg2 _rest <<< "${rel}/x/x"
-  if [[ "${seg2}" != "superpowers" ]]; then
+  IFS=/ read -r seg1 seg2 seg3 _rest <<< "${rel}/x/x/x"
+  if [[ "${seg2}" != "superpower" || "${seg3}" != "specs" ]]; then
     continue
   fi
   if grep -qF "${MARKER}" "${spec}" 2>/dev/null && grep -qF "${TARGET}" "${spec}" 2>/dev/null; then
     found=1
     break
   fi
-done < <(find "${REPO_ROOT}" -type f -name '*.md' -path '*/superpowers/*' ! -path '*/requirements/*' -print0 2>/dev/null)
+done < <(find "${REPO_ROOT}" -type f -name '*.md' -path '*/superpower/specs/*' ! -path '*/requirements/*' -print0 2>/dev/null)
 
 if [[ "${found}" -eq 1 ]]; then
   exit 0

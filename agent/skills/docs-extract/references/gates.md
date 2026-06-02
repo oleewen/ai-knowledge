@@ -1,6 +1,6 @@
 # docs-extract 门禁
 
-路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（会话 spec 落在 `{DOC_DIR}/superpowers/`，排除 `requirements/**/specs/`）。
+路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（会话 spec 落在 `{DOC_DIR}/superpower/specs/`，排除 `requirements/**/specs/`）。
 五阶段与参数见 [workflow.md](workflow.md)；交互见 [interaction-gate.md](interaction-gate.md)。
 
 ## 核心
@@ -10,7 +10,7 @@
 
 ## Spec
 
-- 路径：`{DOC_DIR}/superpowers/YYYY-MM-DD-<topic>-docs-extract.md`
+- 路径：`{DOC_DIR}/superpower/specs/YYYY-MM-DD-<topic>-docs-extract.md`
 - 文末：`<!-- docs-extract-gate: PENDING -->` → 确认后 `CONFIRMED`
 - 正文须出现目标 `XX-overview.md` basename（与 `--overview` 一致）
 - 至少含：`--sources` 列表、`--overview`、命中数与章节摘要、是否 `dry-run` 及结论

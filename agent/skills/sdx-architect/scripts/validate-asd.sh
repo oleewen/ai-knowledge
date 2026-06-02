@@ -41,7 +41,7 @@ success() { echo "[OK]    $1"; }
 # shellcheck source=../../../scripts/check-session-spec-gate.sh
 source "${REPO_ROOT}/agent/scripts/check-session-spec-gate.sh"
 
-# 会话 spec 闸门：{DOC_DIR}/superpowers/（见 agent/references/session-spec-path.md）
+# 会话 spec 闸门：{DOC_DIR}/superpower/specs/（见 agent/references/session-spec-path.md）
 
 check_architect_gate() {
   local file="$1"

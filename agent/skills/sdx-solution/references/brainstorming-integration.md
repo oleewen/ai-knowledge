@@ -2,9 +2,9 @@
 
 ## 会话 spec 路径
 
-闸门中间稿须落在 **`{DOC_DIR}/superpowers/`**（不含 `requirements/**/specs/`）。契约：[session-spec-path.md](../../../references/session-spec-path.md)。
+闸门中间稿须落在 **`{DOC_DIR}/superpower/specs/`**（不含 `requirements/**/specs/`）。契约：[session-spec-path.md](../../../references/session-spec-path.md)。
 
-示例：`{DOC_DIR}/superpowers/YYYY-MM-DD-<topic>-sdx-solution.md`
+示例：`{DOC_DIR}/superpower/specs/YYYY-MM-DD-<topic>-sdx-solution.md`
 ## 与独立 `/brainstorming`
 
 | | 独立 `/brainstorming` | 本技能阶段二 |

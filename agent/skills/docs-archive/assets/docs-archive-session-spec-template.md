@@ -1,7 +1,7 @@
 # docs-archive 会话 spec
 
 路径契约：[session-spec-path.md](../../../references/session-spec-path.md)。
-路径：`{DOC_DIR}/superpowers/YYYY-MM-DD-<topic>-docs-archive.md`。确认前保持 `PENDING`。[gates.md](../references/gates.md)。
+路径：`{DOC_DIR}/superpower/specs/YYYY-MM-DD-<topic>-docs-archive.md`。确认前保持 `PENDING`。[gates.md](../references/gates.md)。
 
 ## 1. 背景与目标
 

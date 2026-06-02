@@ -42,7 +42,7 @@ compatibility: Bash 5+（仓库根）；`scripts/config-bootstrap.sh` 解析 `DO
 
 ## 产出与校验
 
-- **会话 spec**：`{DOC_DIR}/superpowers/YYYY-MM-DD-<topic>-sdx-architect.md`（路径契约：[session-spec-path.md](../../references/session-spec-path.md)）
+- **会话 spec**：`{DOC_DIR}/superpower/specs/YYYY-MM-DD-<topic>-sdx-architect.md`（路径契约：[session-spec-path.md](../../references/session-spec-path.md)）
 - **ASD**：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ASD-{IDEA-ID}-{N}.md`
 
 ```bash

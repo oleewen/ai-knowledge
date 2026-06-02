@@ -12,7 +12,7 @@ compatibility: Bash 5+；`scripts/config-bootstrap.sh` 解析 `DOC_ROOT`；钩�
 
 判定主责 → 读 `references/` → 会话 **`...-sdx-design.md`** → **CONFIRMED** → 落盘 **DSD**。**不写 ASD**。
 
-**上游**（同 IDEA-ID、`{N}`）：`ASD-*`（`/sdx-architect`）与/或 **`{DOC_DIR}/specs/spec-asd-*.md`**（[asd-spec-template](../sdx-architect/assets/asd-spec-template.md)）。详设正文以 **DSD** 为唯一载体。**会话闸门稿**：`application/superpowers/*-sdx-design.md`；勿与 **`spec-asd`**（`{DOC_DIR}/specs/`）路径混淆。
+**上游**（同 IDEA-ID、`{N}`）：`ASD-*`（`/sdx-architect`）与/或 **`{DOC_DIR}/specs/spec-asd-*.md`**（[asd-spec-template](../sdx-architect/assets/asd-spec-template.md)）。详设正文以 **DSD** 为唯一载体。**会话闸门稿**：`{DOC_DIR}/superpower/specs/*-sdx-design.md`；勿与 **`spec-asd`**（`{DOC_DIR}/specs/`）路径混淆。
 
 有 **ASD**：DSD §1 与 ASD §1 对齐；**§2** 在 ASD §3 与服务边界基础上扩写到实现级；冲突以已确认 **ASD + PRD** 为准。**仅有 architect spec**：以 FR/UC 等与 spec §5 为范围基础并标 SSOT；与 PRD 冲突先收口上游。
 
@@ -61,7 +61,7 @@ compatibility: Bash 5+；`scripts/config-bootstrap.sh` 解析 `DOC_ROOT`；钩�
 
 ## 前置
 
-**PRD**（硬）；**ASD 与/或 spec-asd**（缺一则须澄清或用户明示例外）；`KNOWLEDGE_TYPE`、`{DOC_DIR}`、`{DOC_DIR}/superpowers/` 位置。指令只要上游或 docs 主线时不要强行套全流程。
+**PRD**（硬）；**ASD 与/或 spec-asd**（缺一则须澄清或用户明示例外）；`KNOWLEDGE_TYPE`、`{DOC_DIR}`、`{DOC_DIR}/superpower/specs/` 位置。指令只要上游或 docs 主线时不要强行套全流程。
 
 **KNOWLEDGE_TYPE**： [references/knowledge-type-modes.md](references/knowledge-type-modes.md)（正文权威在 `sdx-architect`）。
 
@@ -90,7 +90,7 @@ compatibility: Bash 5+；`scripts/config-bootstrap.sh` 解析 `DOC_ROOT`；钩�
 
 ## 产出与校验
 
-- **会话 spec**：`{DOC_DIR}/superpowers/YYYY-MM-DD-<topic>-sdx-design.md`  
+- **会话 spec**：`{DOC_DIR}/superpower/specs/YYYY-MM-DD-<topic>-sdx-design.md`  
 - **DSD**：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/DSD-{IDEA-ID}-{N}.md`  
 
 ```bash

@@ -20,7 +20,7 @@
 
 ## 会话 spec 标记
 
-- 路径：符合 `{DOC_DIR}/superpowers/`（见 [session-spec-path.md](../../../references/session-spec-path.md)）。（`validate-asd.sh --gate-check`，大小写敏感）
+- 路径：符合 `{DOC_DIR}/superpower/specs/`（见 [session-spec-path.md](../../../references/session-spec-path.md)）。（`validate-asd.sh --gate-check`，大小写敏感）
 
 - `<!-- sdx-architect-gate: PENDING -->`
 - `<!-- sdx-architect-gate: CONFIRMED -->`

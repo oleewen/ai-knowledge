@@ -31,7 +31,7 @@
       "id": "session-spec-awareness",
       "name": "会话 spec",
       "type": "should_include",
-      "check": "可提 `system/superpowers/…-docs-archive.md`、钩子证据、basename。",
+      "check": "可提 `{DOC_DIR}/superpower/specs/…-docs-archive.md`、钩子证据、basename。",
       "priority": "P1"
     }
   ],

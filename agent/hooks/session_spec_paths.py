@@ -6,13 +6,12 @@ import re
 from pathlib import Path
 from typing import Iterator
 
-# 会话闸门 spec 统一落在 {DOC_DIR}/superpowers/
-_SESSION_SPEC_DIR_NAMES = ("superpowers",)
 _DOCROOTS = frozenset({"application", "system", "company"})
-_DIR_ALT = "|".join(_SESSION_SPEC_DIR_NAMES)
+_SESSION_SPEC_PREFIX = "superpower/specs"
 
 _PATH_IN_TEXT_RE = re.compile(
-    rf"(?<![A-Za-z0-9._-])((?:application|system|company|[^/\s]+)/(?:{_DIR_ALT})/[^\s\"']+\.md)"
+    r"(?<![A-Za-z0-9._-])"
+    r"((?:application|system|company)/superpower/specs/[^\s\"']+\.md)"
 )
 
 
@@ -25,27 +24,28 @@ def is_session_spec_path(rel: str) -> bool:
     if not rel.endswith(".md") or "/requirements/" in rel:
         return False
     parts = rel.split("/")
-    if len(parts) < 3 or parts[0] not in _DOCROOTS or parts[1] not in _SESSION_SPEC_DIR_NAMES:
+    # {docroot}/superpower/specs/<file>.md
+    if len(parts) < 4:
+        return False
+    if parts[0] not in _DOCROOTS:
+        return False
+    if parts[1] != "superpower" or parts[2] != "specs":
         return False
     return True
 
 
 def iter_session_spec_files(repo: Path) -> Iterator[Path]:
     for docroot_name in sorted(_DOCROOTS):
-        docroot = repo / docroot_name
-        if not docroot.is_dir():
+        specs_dir = repo / docroot_name / "superpower" / "specs"
+        if not specs_dir.is_dir():
             continue
-        for dir_name in _SESSION_SPEC_DIR_NAMES:
-            container = docroot / dir_name
-            if not container.is_dir():
+        for p in specs_dir.rglob("*.md"):
+            try:
+                rel = p.relative_to(repo)
+            except ValueError:
                 continue
-            for p in container.rglob("*.md"):
-                try:
-                    rel = p.relative_to(repo)
-                except ValueError:
-                    continue
-                if is_session_spec_path(str(rel).replace("\\", "/")):
-                    yield p
+            if is_session_spec_path(str(rel).replace("\\", "/")):
+                yield p
 
 
 def session_specs_from_payload(strings: list[str]) -> list[str]:

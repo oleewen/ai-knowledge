@@ -21,9 +21,9 @@ description: >
 
 ## 前置
 
-- 路径契约：[session-spec-path.md](../../references/session-spec-path.md)（`{DOC_DIR}/superpowers/`）
+- 路径契约：[session-spec-path.md](../../references/session-spec-path.md)（`{DOC_DIR}/superpower/specs/`）
 - 主 Index Guide 可用（否则先 `/docs-indexing`）
-- `{DOC_DIR}/knowledge/` 可写；spec 在 `{DOC_DIR}/superpowers/`
+- `{DOC_DIR}/knowledge/` 可写；spec 在 `{DOC_DIR}/superpower/specs/`
 
 ## 阅读顺序（先读后写）
 
@@ -41,7 +41,7 @@ description: >
 
 ## 产出与校验
 
-- Spec：`{DOC_DIR}/superpowers/YYYY-MM-DD-<topic>-docs-build.md`
+- Spec：`{DOC_DIR}/superpower/specs/YYYY-MM-DD-<topic>-docs-build.md`
 - 产物：各视角 `*_knowledge.json`、`README.md`、`KNOWLEDGE_INDEX.md`
 
 ```bash

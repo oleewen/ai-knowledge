@@ -1,13 +1,13 @@
 # 交互闸门
 
-路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（闸门 spec 在 `{DOC_DIR}/superpowers/`，排除 `requirements/**/specs/`）。
+路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（本技能闸门 spec 在 `{DOC_DIR}/superpower/specs/`，排除 `requirements/**/specs/`）。
 硬规则与条件表：[gates.md](gates.md)；阶段：[workflow.md](workflow.md)。
 
 ## 与 sdx-*-gate 对齐
 
 | 概念 | 做法 |
 | ---- | ----- |
-| 中间会话 spec | `system/superpowers/…-docs-distill.md` |
+| 中间会话 spec | `{DOC_DIR}/superpower/specs/…-docs-distill.md` |
 | 总确认 | `PENDING` → `CONFIRMED`（[gates.md](gates.md)） |
 | 例外 | 同会话明示 或 `DOCS_DISTILL_ALLOW_WRITE=1` |
 | 预览 | HARD-GATE 场景优先 **`--dry-run`** |

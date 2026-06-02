@@ -42,7 +42,7 @@
 
 ## 阶段二
 
-**路径**：`{DOC_DIR}/superpowers/YYYY-MM-DD-<topic>-sdx-solution.md`，骨架：[solution-session-spec-template.md](../assets/solution-session-spec-template.md)。
+**路径**：`{DOC_DIR}/superpower/specs/YYYY-MM-DD-<topic>-sdx-solution.md`，骨架：[solution-session-spec-template.md](../assets/solution-session-spec-template.md)。
 
 - 各门禁末尾四选项：`C/M/S/F`（全文见 [gates.md](gates.md)）。
 - **门禁进度表**：门禁列与「覆盖模板」列锚到**本会话** `## Gn`（占位见会话模板）。
