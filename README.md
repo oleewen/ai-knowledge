@@ -82,7 +82,7 @@ Agent 读 [AGENTS.md](AGENTS.md) 作为契约，读 [INDEX_GUIDE.md](INDEX_GUIDE
 | **C** | 老系统 + 中央库 | 各应用先 SSOT，中央 pull/distill/archive |
 | **D** | 仅有 legacy 文档 | overview 缓冲区 → archive → build |
 
-完整步骤见 **[docs/getting-started.md](docs/getting-started.md)**。讲稿与案例见 [docs/sharing/用企业AI知识库底座，激活组织知识.md](docs/sharing/用企业AI知识库底座，激活组织知识.md)。
+完整步骤见 **[docs/getting-started.md](docs/getting-started.md)**。
 
 ---
 
