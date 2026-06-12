@@ -38,9 +38,23 @@
 
 | 层级 | 目录 | 职责 |
 | --- | --- | --- |
-| 架构层 | `architecture/` | 承载公司级架构视图与跨系统治理叙事 |
+| 架构层 | `architecture/` | 承载公司级架构视图与跨系统治理叙事；含 `overview/` 缓冲区 |
 | 槽位层 | `system-{name}/` | 挂载系统镜像内容的统一入口 |
 | 清单层 | `knowledge-links.yaml` | 记录建联关系与同步编排信息 |
+
+#### 公司级实体首次定义
+
+下列实体在 **company/** 首次定义；系统层、应用层仅引用 ID，不重复字段语义（完整表见 [application/DESIGN.md](../application/DESIGN.md) §2.2.1）。
+
+| 视角 | 实体 | 说明 |
+| --- | --- | --- |
+| 业务 | BD（业务域） | 公司级业务划分 |
+| 产品 | PL（产品线） | 跨系统产品族 |
+| 应用 | SYS（系统层） | 公司内系统边界 |
+
+#### 系统镜像槽位与上行
+
+`system-{name}/` 承接下游系统知识库的镜像同步结果，供公司层导航与跨系统治理；不承载系统实现细节。上行提炼与 overview/archive 流程见 [system/DESIGN.md](../system/DESIGN.md)（docs-pull、docs-distill、docs-archive）。
 
 治理规则：
 

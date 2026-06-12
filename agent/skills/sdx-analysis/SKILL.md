@@ -28,7 +28,7 @@ description: >-
 
 - 可对齐的 **`SOLUTION-{IDEA-ID}.md`**（或用户认可的缺口策略）。
 - IDEA-ID 与上游一致；门禁粒度（6G / 精简 4G）；深度。
-- `{DOC_DIR}/analysis/`、`{DOC_DIR}/superpower/specs/` 可写路径。
+- `{DOC_DIR}/analysis/`、`{DOC_DIR}/superpowers/specs/` 可写路径。
 
 ---
 
@@ -59,7 +59,7 @@ description: >-
 
 ## 产出与校验
 
-- 会话 spec：`{DOC_DIR}/superpower/specs/YYYY-MM-DD-<topic>-sdx-analysis.md`
+- 会话 spec：`{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-sdx-analysis.md`
 - 正式稿：`{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md`
 
 ```bash

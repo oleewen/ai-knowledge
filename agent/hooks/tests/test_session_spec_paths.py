@@ -13,15 +13,15 @@ from session_spec_paths import (
 
 
 class SessionSpecPathTests(unittest.TestCase):
-    def test_accepts_superpower_specs(self) -> None:
+    def test_accepts_superpowers_specs(self) -> None:
         self.assertTrue(
             is_session_spec_path(
-                "{DOC_DIR}/superpower/specs/2026-05-18-x-sdx-prd.md"
+                "application/superpowers/specs/2026-05-18-x-sdx-prd.md"
             )
         )
         self.assertTrue(
             is_session_spec_path(
-                "{DOC_DIR}/superpower/specs/2026-05-18-x-docs-distill.md"
+                "system/superpowers/specs/2026-05-18-x-docs-distill.md"
             )
         )
 
@@ -30,13 +30,20 @@ class SessionSpecPathTests(unittest.TestCase):
             is_session_spec_path("application/specs/2026-05-18-x-sdx-prd.md")
         )
 
+    def test_rejects_legacy_superpower_specs(self) -> None:
+        self.assertFalse(
+            is_session_spec_path(
+                "application/superpower/specs/2026-05-18-x-sdx-prd.md"
+            )
+        )
+
     def test_rejects_flat_superpowers(self) -> None:
         self.assertFalse(
             is_session_spec_path("application/superpowers/2026-05-18-x-sdx-prd.md")
         )
 
-    def test_rejects_docs_superpower_specs(self) -> None:
-        self.assertFalse(is_session_spec_path("docs/superpower/specs/x.md"))
+    def test_rejects_docs_superpowers_specs(self) -> None:
+        self.assertFalse(is_session_spec_path("docs/superpowers/specs/x.md"))
 
     def test_rejects_requirements_specs(self) -> None:
         self.assertFalse(
@@ -46,22 +53,22 @@ class SessionSpecPathTests(unittest.TestCase):
         )
 
     def test_extract_from_strings(self) -> None:
-        strings = ["write {DOC_DIR}/superpower/specs/2026-05-18-a-sdx-design.md"]
+        strings = ["write application/superpowers/specs/2026-05-18-a-sdx-design.md"]
         self.assertEqual(
             session_specs_from_payload(strings),
-            ["{DOC_DIR}/superpower/specs/2026-05-18-a-sdx-design.md"],
+            ["application/superpowers/specs/2026-05-18-a-sdx-design.md"],
         )
 
     def test_iter_session_spec_files(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp)
-            good = repo / "application" / "superpower" / "specs"
+            good = repo / "application" / "superpowers" / "specs"
             good.mkdir(parents=True)
             (good / "a.md").write_text("# a", encoding="utf-8")
             legacy = repo / "application" / "specs"
             legacy.mkdir(parents=True)
             (legacy / "b.md").write_text("# b", encoding="utf-8")
-            bad = repo / "docs" / "superpower" / "specs"
+            bad = repo / "docs" / "superpowers" / "specs"
             bad.mkdir(parents=True)
             (bad / "c.md").write_text("# c", encoding="utf-8")
             paths = {p.name for p in iter_session_spec_files(repo)}

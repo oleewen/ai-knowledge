@@ -1,7 +1,7 @@
 # docs-build 会话 spec
 
 路径契约：[session-spec-path.md](../../../references/session-spec-path.md)。
-`{DOC_DIR}/superpower/specs/YYYY-MM-DD-<topic>-docs-build.md`。占位替换；总确认前 `PENDING`。
+`{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-docs-build.md`。占位替换；总确认前 `PENDING`。
 
 ## 1. 范围
 

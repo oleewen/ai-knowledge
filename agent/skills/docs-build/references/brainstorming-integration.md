@@ -2,9 +2,9 @@
 
 ## 会话 spec 路径
 
-闸门中间稿须落在 **`{DOC_DIR}/superpower/specs/`**（不含 `requirements/**/specs/`）。契约：[session-spec-path.md](../../../references/session-spec-path.md)。
+闸门中间稿须落在 **`{DOC_DIR}/superpowers/specs/`**（不含 `requirements/**/specs/`）。契约：[session-spec-path.md](../../../references/session-spec-path.md)。
 
-示例：`{DOC_DIR}/superpower/specs/YYYY-MM-DD-<topic>-docs-build.md`
+示例：`{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-docs-build.md`
 
 spec/Qclose-1 形近 sdx-*，但**主交付**是 `{DOC_DIR}/knowledge/` 下 schema **2.1** 实体，非 `SOLUTION-*`/`ASD-*` 等终稿。
 

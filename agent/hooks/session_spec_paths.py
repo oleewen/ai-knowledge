@@ -7,11 +7,11 @@ from pathlib import Path
 from typing import Iterator
 
 _DOCROOTS = frozenset({"application", "system", "company"})
-_SESSION_SPEC_PREFIX = "superpower/specs"
+_SESSION_SPEC_PREFIX = "superpowers/specs"
 
 _PATH_IN_TEXT_RE = re.compile(
     r"(?<![A-Za-z0-9._-])"
-    r"((?:application|system|company)/superpower/specs/[^\s\"']+\.md)"
+    r"((?:application|system|company)/superpowers/specs/[^\s\"']+\.md)"
 )
 
 
@@ -24,19 +24,19 @@ def is_session_spec_path(rel: str) -> bool:
     if not rel.endswith(".md") or "/requirements/" in rel:
         return False
     parts = rel.split("/")
-    # {docroot}/superpower/specs/<file>.md
+    # {docroot}/superpowers/specs/<file>.md
     if len(parts) < 4:
         return False
     if parts[0] not in _DOCROOTS:
         return False
-    if parts[1] != "superpower" or parts[2] != "specs":
+    if parts[1] != "superpowers" or parts[2] != "specs":
         return False
     return True
 
 
 def iter_session_spec_files(repo: Path) -> Iterator[Path]:
     for docroot_name in sorted(_DOCROOTS):
-        specs_dir = repo / docroot_name / "superpower" / "specs"
+        specs_dir = repo / docroot_name / "superpowers" / "specs"
         if not specs_dir.is_dir():
             continue
         for p in specs_dir.rglob("*.md"):

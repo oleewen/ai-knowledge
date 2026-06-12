@@ -1,6 +1,6 @@
 # 方案确认书（归档）— 草稿
 
-复制到会话或 `{DOC_DIR}/superpower/specs/`；**用户确认前**禁止写目标终稿。
+复制到会话或 `{DOC_DIR}/superpowers/specs/`；**用户确认前**禁止写目标终稿。
 
 ## 元信息
 

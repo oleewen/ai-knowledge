@@ -2,9 +2,9 @@
 
 ## 会话 spec 路径
 
-闸门中间稿须落在 **`{DOC_DIR}/superpower/specs/`**（不含 `requirements/**/specs/`）。契约：[session-spec-path.md](../../../references/session-spec-path.md)。
+闸门中间稿须落在 **`{DOC_DIR}/superpowers/specs/`**（不含 `requirements/**/specs/`）。契约：[session-spec-path.md](../../../references/session-spec-path.md)。
 
-示例：`{DOC_DIR}/superpower/specs/YYYY-MM-DD-<topic>-sdx-prd.md`
+示例：`{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-sdx-prd.md`
 
 如何把 brainstorming 节奏嵌 **G{n}**，并与 Q-n、C/M/S/F 协同。执行阶段二时建议打开，避免与独立 **`/brainstorming`** 混淆。
 

@@ -188,7 +188,7 @@ GATES: dict[str, GateConfig] = {
         debug_label="docs-build-gate",
         deny_message=(
             "docs-build：禁止在未完成中间 spec「用户总确认」前写入 knowledge/ 下的文件。"
-            "请先在当前会话 spec（{DOC_DIR}/superpower/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- docs-build-gate: PENDING --> 改为 CONFIRMED，"
+            "请先在当前会话 spec（{DOC_DIR}/superpowers/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- docs-build-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名（如 KNOWLEDGE_INDEX.md）。本 gate 无 bypass 环境变量，须完整走确认流程。"
         ),
         basename_prefix="",
@@ -200,7 +200,7 @@ GATES: dict[str, GateConfig] = {
         debug_label="docs-distill-gate",
         deny_message=(
             "docs-distill：禁止在未完成中间 spec「用户总确认」前写入 system/architecture/overview/ 下的文件。"
-            "请先在当前会话 spec（{DOC_DIR}/superpower/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- docs-distill-gate: PENDING --> 改为 CONFIRMED，"
+            "请先在当前会话 spec（{DOC_DIR}/superpowers/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- docs-distill-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名。本 gate 无 bypass 环境变量，须完整走确认流程。"
         ),
         basename_prefix="",  # overview 文件名不固定，由路径收集器负责过滤
@@ -212,7 +212,7 @@ GATES: dict[str, GateConfig] = {
         debug_label="docs-extract-gate",
         deny_message=(
             "docs-extract：禁止在未完成中间 spec「用户总确认」前写入 system/architecture/overview/ 下的文件。"
-            "请先在当前会话 spec（{DOC_DIR}/superpower/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- docs-extract-gate: PENDING --> 改为 CONFIRMED，"
+            "请先在当前会话 spec（{DOC_DIR}/superpowers/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- docs-extract-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名。本 gate 无 bypass 环境变量，须完整走确认流程。"
         ),
         basename_prefix="",
@@ -224,7 +224,7 @@ GATES: dict[str, GateConfig] = {
         debug_label="docs-archive-gate",
         deny_message=(
             "docs-archive：禁止在未完成中间 spec「用户总确认」前写入 system/architecture/overview/ 下的文件。"
-            "请先在当前会话 spec（{DOC_DIR}/superpower/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- docs-archive-gate: PENDING --> 改为 CONFIRMED，"
+            "请先在当前会话 spec（{DOC_DIR}/superpowers/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- docs-archive-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名。本 gate 无 bypass 环境变量，须完整走确认流程。"
         ),
         basename_prefix="",
@@ -236,7 +236,7 @@ GATES: dict[str, GateConfig] = {
         debug_label="docs-indexing-gate",
         deny_message=(
             "docs-indexing：禁止在未完成中间 spec「用户总确认」前写入 INDEX_GUIDE.md 或 */changelogs/INDEXING-LOG.md。"
-            "请先在当前会话 spec（{DOC_DIR}/superpower/specs/ 下）维护 `*-docs-indexing.md`，将 <!-- docs-indexing-gate: PENDING --> 改为 CONFIRMED，"
+            "请先在当前会话 spec（{DOC_DIR}/superpowers/specs/ 下）维护 `*-docs-indexing.md`，将 <!-- docs-indexing-gate: PENDING --> 改为 CONFIRMED，"
             "且正文须**逐字列出**本轮将写入的仓库根相对路径（例如 application/INDEX_GUIDE.md）。"
             "本 gate 无 bypass 环境变量，须完整走确认流程。"
         ),
@@ -249,7 +249,7 @@ GATES: dict[str, GateConfig] = {
         debug_label="sdx-prd-gate",
         deny_message=(
             "sdx-prd：禁止在未完成中间 spec「用户总确认」前写入 requirements 下的 PRD 文件。"
-            "请先在当前会话 spec（{DOC_DIR}/superpower/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- sdx-prd-gate: PENDING --> 改为 CONFIRMED，"
+            "请先在当前会话 spec（{DOC_DIR}/superpowers/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- sdx-prd-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名。若确需跳过闸门（仅限人工授权），可在环境中设置 SDX_PRD_ALLOW_PRD_WRITE=1。"
         ),
         basename_prefix="PRD-",
@@ -261,7 +261,7 @@ GATES: dict[str, GateConfig] = {
         debug_label="sdx-analysis-gate",
         deny_message=(
             "sdx-analysis：禁止在未完成中间 spec「用户总确认」前写入 analysis 下的 ANALYSIS 文件。"
-            "请先在当前会话 spec（{DOC_DIR}/superpower/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- sdx-analysis-gate: PENDING --> 改为 CONFIRMED，"
+            "请先在当前会话 spec（{DOC_DIR}/superpowers/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- sdx-analysis-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名。若确需跳过闸门（仅限人工授权），可在环境中设置 SDX_ANALYSIS_ALLOW_ANALYSIS_WRITE=1。"
         ),
         basename_prefix="ANALYSIS-",
@@ -273,7 +273,7 @@ GATES: dict[str, GateConfig] = {
         debug_label="sdx-solution-gate",
         deny_message=(
             "sdx-solution：禁止在未完成中间 spec「用户总确认」前写入 solutions 下的 SOLUTION 文件。"
-            "请先在当前会话 spec（{DOC_DIR}/superpower/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- sdx-solution-gate: PENDING --> 改为 CONFIRMED，"
+            "请先在当前会话 spec（{DOC_DIR}/superpowers/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- sdx-solution-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名。若确需跳过闸门（仅限人工授权），可在环境中设置 SDX_SOLUTION_ALLOW_SOLUTION_WRITE=1。"
         ),
         basename_prefix="SOLUTION-",
@@ -285,7 +285,7 @@ GATES: dict[str, GateConfig] = {
         debug_label="sdx-architect-gate",
         deny_message=(
             "sdx-architect：禁止在未完成中间 spec「用户总确认」前写入 requirements 下的 ASD 文件。"
-            "请先在当前会话 spec（{DOC_DIR}/superpower/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- sdx-architect-gate: PENDING --> 改为 CONFIRMED，"
+            "请先在当前会话 spec（{DOC_DIR}/superpowers/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- sdx-architect-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名。若确需跳过闸门（仅限人工授权），可在环境中设置 SDX_ARCHITECT_ALLOW_ASD_WRITE=1。"
         ),
         basename_prefix="ASD-",
@@ -297,7 +297,7 @@ GATES: dict[str, GateConfig] = {
         debug_label="sdx-design-gate",
         deny_message=(
             "sdx-design：禁止在未完成中间 spec「用户总确认」前写入 requirements 下的 DSD 文件。"
-            "请先在当前会话 spec（{DOC_DIR}/superpower/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- sdx-design-gate: PENDING --> 改为 CONFIRMED，"
+            "请先在当前会话 spec（{DOC_DIR}/superpowers/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- sdx-design-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名。若确需跳过闸门（仅限人工授权），可在环境中设置 SDX_DESIGN_ALLOW_DSD_WRITE=1。"
         ),
         basename_prefix="DSD-",
@@ -309,7 +309,7 @@ GATES: dict[str, GateConfig] = {
         debug_label="sdx-test-gate",
         deny_message=(
             "sdx-test：禁止在未完成中间 spec「用户总确认」前写入 requirements 下的 TDD 文件。"
-            "请先在当前会话 spec（{DOC_DIR}/superpower/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- sdx-test-gate: PENDING --> 改为 CONFIRMED，"
+            "请先在当前会话 spec（{DOC_DIR}/superpowers/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- sdx-test-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名。若确需跳过闸门（仅限人工授权），可在环境中设置 SDX_TEST_ALLOW_TDD_WRITE=1。"
         ),
         basename_prefix="TDD-",

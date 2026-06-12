@@ -1,6 +1,6 @@
 # 写盘闸门
 
-路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（会话 spec 落在 `{DOC_DIR}/superpower/specs/`，排除 `requirements/**/specs/`）。
+路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（会话 spec 落在 `{DOC_DIR}/superpowers/specs/`，排除 `requirements/**/specs/`）。
 主干：[SKILL.md](../SKILL.md)；脚本：[workflow.md](workflow.md)。
 
 ## 与 SDX/extract 区别

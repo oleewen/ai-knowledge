@@ -22,6 +22,7 @@
 | **联邦治理** | 系统库管边界与索引；应用库管实现细节并 **上行对齐**                                                         |
 | **闭环**   | knowledge ← 归档回写；阶段上 solutions → analysis → requirements；规约落在需求包内 specs/ 或 knowledge/application/ |
 | **四视角**  | 业务 / 产品 / 应用 / 数据；关联写在各视角 YAML，**不**维护独立映射矩阵文件                                       |
+| **与系统层视角** | 应用层四视角为实体 SSOT；系统层在此基础上增加 **technical（技术）** 五架构视角，用于聚合与治理，见 [../system/DESIGN.md](../system/DESIGN.md) |
 
 
 **目录索引 YAML（约定）**：
@@ -78,6 +79,30 @@
 
 - **层级**：DS → ENT  
 - **约定**：`data_meta.yaml` 在根目录（单文件 SSOT：`identity`、`repository`、`pipeline`、`integration`、`layers[]`）；`{DS-ID}/` 为存储锚点。ENT 含 `maps_to_aggregate_id`、敏感级别等。
+
+### 2.2.1 跨层实体首次定义层级
+
+实体在联邦三层中**首次定义**的层级如下；他处仅 ID 引用，不重复定义字段语义。
+
+| 视角 | 实体 | 首次定义层级 |
+| --- | --- | --- |
+| **业务** business | 业务域 BD | 公司 [company/](../company/DESIGN.md) |
+| | 业务子域 BSD | 系统 [system/](../system/DESIGN.md) |
+| | 限界上下文 BC | 应用（本层） |
+| | 聚合 AGG | 应用（本层） |
+| | 能力 AB | 应用（本层） |
+| **产品** product | 产品线 PL | 公司 |
+| | 产品模块 PM | 系统 |
+| | 产品功能 FT | 应用（本层） |
+| | 用户场景 UC | 应用（本层） |
+| | 业务规则 BR | 应用（本层） |
+| **应用** application | 系统层 SYS | 公司 |
+| | 应用层 APP | 系统 |
+| | 模块层 MS | 应用（本层） |
+| | 接口层 API | 应用（本层） |
+| **数据** data | 数据层 DS | 系统 |
+| | 实体 ENT | 应用（本层） |
+| | 数据表 TBL | 应用（本层） |
 
 ### 2.3 阶段目录
 

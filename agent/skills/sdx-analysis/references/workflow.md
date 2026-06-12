@@ -40,7 +40,7 @@
 
 ## 阶段二
 
-**路径**：`{DOC_DIR}/superpower/specs/YYYY-MM-DD-<topic>-sdx-analysis.md`，骨架：[analysis-session-spec-template.md](../assets/analysis-session-spec-template.md)。
+**路径**：`{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-sdx-analysis.md`，骨架：[analysis-session-spec-template.md](../assets/analysis-session-spec-template.md)。
 
 - 各门禁末附 **C/M/S/F**（见 [gates.md](gates.md)）。
 - **门禁进度表**：两列锚到本会话 `## Gn`。

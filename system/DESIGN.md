@@ -38,8 +38,32 @@
 | 层级 | 目录 | 职责 |
 | --- | --- | --- |
 | 治理层 | `constitution/` | 定义术语边界、槽位规则、职责划分与引用规范 |
-| 架构层 | `architecture/` | 提供业务/产品/系统/数据架构的系统级聚合视图 |
+| 架构层 | `architecture/` | 五架构视角聚合视图；含 `overview/` 蒸馏缓冲区 |
 | 联邦层 | `application-{name}/` | 应用镜像挂载槽位，承接拉取内容并支持归档追溯 |
+
+#### 五架构视角
+
+| 视角 | 回答什么问题 | 入口 |
+| --- | --- | --- |
+| **业务** | 做什么业务、边界与流程 | [architecture/business/](architecture/business/README.md) |
+| **产品** | 用户、功能组织与发布 | [architecture/product/](architecture/product/README.md) |
+| **应用** | 服务拆分与集成边界 | [architecture/application/](architecture/application/README.md) |
+| **数据** | 建模、存储与治理 | [architecture/data/](architecture/data/README.md) |
+| **技术** | 运行、扩展、观测与交付 | [architecture/technical/](architecture/technical/README.md) |
+
+应用层 [knowledge/](../application/knowledge/) 为四视角实体 SSOT（无独立 technical 实体树）；技术视角在系统层 `architecture/technical/` 聚合表达。
+
+#### Overview 蒸馏区
+
+`architecture/overview/*-overview.md` 是**从散落知识到结构化架构章节的缓冲区**，不是最终 SSOT——最终 SSOT 在 `architecture/` 各视角章节与 [application/knowledge/](../application/knowledge/)。
+
+| 阶段 | Skill | 产出 |
+| --- | --- | --- |
+| 抽取 | `/docs-extract` | overview 第三列草稿（段落筛选） |
+| 蒸馏 | `/docs-distill` | 自应用镜像上行已核实内容至 overview 第三列 |
+| 归档 | `/docs-archive` | 核实后落入 `architecture/` 各视角对应章节 |
+
+原则：先 overview 缓冲区，再 archive，再 [docs-build](../application/knowledge/) 实体 — 不要一步到位硬造 YAML。
 
 目录契约：
 

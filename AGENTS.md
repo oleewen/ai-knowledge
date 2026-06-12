@@ -138,7 +138,7 @@ Markdown、YAML；**Bash 5+**；Git。可选 `rsync`（脚本可回退 `cp`）�
 
 | 命令                                                                   | 说明                                                              |
 | -------------------------------------------------------------------- | --------------------------------------------------------------- |
-| `/docs-indexing`                                                     | 生成或更新各文档根 `INDEX_GUIDE.md` 与 `changelogs/INDEXING-LOG.md`；高风险：须 `{DOC_DIR}/superpower/specs/*-docs-indexing.md` + `docs-indexing-gate`（见 [agent/skills/docs-indexing/SKILL.md](agent/skills/docs-indexing/SKILL.md)） |
+| `/docs-indexing`                                                     | 生成或更新各文档根 `INDEX_GUIDE.md` 与 `changelogs/INDEXING-LOG.md`；高风险：须 `{DOC_DIR}/superpowers/specs/*-docs-indexing.md` + `docs-indexing-gate`（见 [agent/skills/docs-indexing/SKILL.md](agent/skills/docs-indexing/SKILL.md)） |
 | `/docs-change`                                                       | 聚合文档变更至 `application/changelogs/`                               |
 | `/docs-tag`                                                          | 概览 Markdown 关键词附录与表格行 ✅ 标记（见 [agent/skills/docs-tag/SKILL.md](agent/skills/docs-tag/SKILL.md)） |
 | `/docs-agent`                                                        | 更新本文件与 `README.md`                                              |

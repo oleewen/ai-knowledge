@@ -28,7 +28,7 @@ description: >-
 
 - **IDEA-ID**、**MVP 阶段 N**（与 PRD/DSD 路径一致）。
 - 门禁粒度（6G / 精简 4G）、`--depth`（`quick` / `standard` / `deep`）。
-- `{DOC_DIR}`、`{DOC_DIR}/superpower/specs/` 可写路径。
+- `{DOC_DIR}`、`{DOC_DIR}/superpowers/specs/` 可写路径。
 
 ---
 
@@ -60,14 +60,14 @@ description: >-
 ## 阶段摘要
 
 - **一**：锁定 IDEA-ID、门禁粒度、`--depth`（见 `workflow.md`、`core-concepts.md`）。
-- **二**：`{DOC_DIR}/superpower/specs/…-sdx-test.md`；单次一段一点，末附 **C/M/S/F**（`gates.md`）。
+- **二**：`{DOC_DIR}/superpowers/specs/…-sdx-test.md`；单次一段一点，末附 **C/M/S/F**（`gates.md`）。
 - **三**：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/TDD-{IDEA-ID}-{N}.md`，按 `tdd-template.md` 分块与终检。
 
 ---
 
 ## 产出与校验
 
-- 会话 spec：`{DOC_DIR}/superpower/specs/YYYY-MM-DD-<topic>-sdx-test.md`
+- 会话 spec：`{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-sdx-test.md`
 - 正式：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/TDD-{IDEA-ID}-{N}.md`
 
 ```bash

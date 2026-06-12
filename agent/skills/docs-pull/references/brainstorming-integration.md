@@ -2,9 +2,9 @@
 
 ## 会话 spec 路径
 
-闸门中间稿须落在 **`{DOC_DIR}/superpower/specs/`**（不含 `requirements/**/specs/`）。契约：[session-spec-path.md](../../../references/session-spec-path.md)。
+闸门中间稿须落在 **`{DOC_DIR}/superpowers/specs/`**（不含 `requirements/**/specs/`）。契约：[session-spec-path.md](../../../references/session-spec-path.md)。
 
-本技能为低风险，无落盘 spec 闸门；若自写中间确认稿，仍须符合 `{DOC_DIR}/superpower/specs/`。
+本技能为低风险，无落盘 spec 闸门；若自写中间确认稿，仍须符合 `{DOC_DIR}/superpowers/specs/`。
 
 docs-pull 预检是 **高风险参数与写盘事实确认**，≠ `/brainstorming` 设计链，也 ≠ `sdx-solution` 的 G 系列门禁。
 

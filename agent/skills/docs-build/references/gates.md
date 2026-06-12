@@ -4,7 +4,7 @@
 
 ## CONVENTIONS
 
-[CONVENTIONS.md §artifact-gates](../../../rules/CONVENTIONS.md#artifact-gates)：docs-build **高风险** → `{DOC_DIR}/superpower/specs/YYYY-MM-DD-<topic>-docs-build.md`，`PENDING`→`CONFIRMED`，Hooks 下 `sdx_gate_common.py --gate build` 证据链。
+[CONVENTIONS.md §artifact-gates](../../../rules/CONVENTIONS.md#artifact-gates)：docs-build **高风险** → `{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-docs-build.md`，`PENDING`→`CONFIRMED`，Hooks 下 `sdx_gate_common.py --gate build` 证据链。
 
 ## 核心
 
