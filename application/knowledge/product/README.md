@@ -43,8 +43,8 @@
 ## 关键字段（用于映射）
 
 - **PM**：`relies_on_context_ids`（→ business BC）
-- **FT**：`invokes_api_ids`（→ technical API）、`realizes_use_case_ids`（→ UC）
-- **UC**：`map_to_api_id`（→ technical API）
+- **FT**：`invokes_api_ids`（→ application API）、`realizes_use_case_ids`（→ UC）
+- **UC**：`map_to_api_id`（→ application API）
 
 ---
 

@@ -24,7 +24,7 @@ table_schema:
 
 ```yaml
 contains_prefixes:
-  technical: ["SYS-", "APP-", "MS-", "API-"]
+  application: ["SYS-", "APP-", "MS-", "API-"]
   data:      ["DS-", "ENT-"]
   business:  ["BD-", "BSD-", "BC-", "AGG-", "AB-"]
   product:   ["PL-", "PM-", "FT-", "UC-"]

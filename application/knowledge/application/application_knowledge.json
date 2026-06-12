@@ -1,6 +1,6 @@
 {
   "schema_version": "2.1",
-  "perspective": "technical",
+  "perspective": "application",
   "generated_at": "1970-01-01T00:00:00Z",
   "confidence": "example",
   "entities": {
@@ -11,13 +11,22 @@
         "full_id": "SYS-EXAMPLE",
         "alias": "ExampleSystem",
         "name": "示例系统",
-        "description": "仅用于演示技术视角数据结构（示例）。",
+        "description": "仅用于演示应用视角数据结构（示例）。",
         "architecture": {
           "apps": [
-            { "id": "APP-EXAMPLE", "name": "示例应用", "startup_class": "ExampleApp", "role": "示例角色" }
+            {
+              "id": "APP-EXAMPLE",
+              "name": "示例应用",
+              "startup_class": "ExampleApp",
+              "role": "示例角色"
+            }
           ],
           "external_dependencies": [
-            { "system": "ExternalExample", "integration": "HTTP", "purpose": "示例外部依赖" }
+            {
+              "system": "ExternalExample",
+              "integration": "HTTP",
+              "purpose": "示例外部依赖"
+            }
           ],
           "ddd_layers": [
             "Gateway（HTTP/Dubbo 合同）",
@@ -27,7 +36,12 @@
           ]
         },
         "evidence_chain": [],
-        "cross_references": { "business": [], "product": [], "technical": [], "data": [] }
+        "cross_references": {
+          "business": [],
+          "product": [],
+          "data": [],
+          "application": []
+        }
       }
     ],
     "applications": [
@@ -38,15 +52,21 @@
         "parent_sys_id": "SYS-EXAMPLE",
         "alias": "ExampleApp",
         "name": "示例应用",
-        "description": "仅用于演示技术视角数据结构（示例）。",
+        "description": "仅用于演示应用视角数据结构（示例）。",
         "repo_url": "git@example.com:org/example.git",
         "docs_manifest_path": "/application/manifest.yaml",
         "startup_class": "ExampleApp",
         "maven_module": "example-module",
-        "service_ids": ["MS-EXAMPLE"],
+        "service_ids": [
+          "MS-EXAMPLE"
+        ],
         "mq_consumers": [],
         "evidence_chain": [],
-        "cross_references": { "business": [], "product": [], "data": [] }
+        "cross_references": {
+          "business": [],
+          "product": [],
+          "data": []
+        }
       }
     ],
     "services": [
@@ -59,7 +79,17 @@
         "host_module": "example-module",
         "protocol": "HTTP",
         "evidence_chain": [],
-        "cross_references": { "business": ["BC-EXAMPLE"], "product": ["PM-EXAMPLE"], "apis": ["API-EXAMPLE-001"] }
+        "cross_references": {
+          "business": [
+            "BC-EXAMPLE"
+          ],
+          "product": [
+            "PM-EXAMPLE"
+          ],
+          "apis": [
+            "API-EXAMPLE-001"
+          ]
+        }
       }
     ],
     "apis": [

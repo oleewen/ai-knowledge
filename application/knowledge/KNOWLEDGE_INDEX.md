@@ -35,14 +35,14 @@
 
 ---
 
-## §3 技术视角（technical · SYS → APP → MS → API）
+## §3 应用视角（application · SYS → APP → MS → API）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| SYS | EXAMPLE | ExampleSystem | 示例系统 | `technical/technical_knowledge.json`（示例） |
-| APP | EXAMPLE | ExampleApp | 示例应用 | `technical/technical_knowledge.json`（示例） |
-| MS | EXAMPLE | ExampleService | 示例微服务 | `technical/technical_knowledge.json`（示例） |
-| API | EXAMPLE-001 | ExampleService.create | 示例 API | `technical/technical_knowledge.json`（示例） |
+| SYS | EXAMPLE | ExampleSystem | 示例系统 | `application/application_knowledge.json`（示例） |
+| APP | EXAMPLE | ExampleApp | 示例应用 | `application/application_knowledge.json`（示例） |
+| MS | EXAMPLE | ExampleService | 示例微服务 | `application/application_knowledge.json`（示例） |
+| API | EXAMPLE-001 | ExampleService.create | 示例 API | `application/application_knowledge.json`（示例） |
 
 ---
 
@@ -61,14 +61,14 @@
 |---------|----------------------|
 | BD-EXAMPLE | `business/BD-EXAMPLE/` |
 | PL-EXAMPLE | `product/PL-EXAMPLE/` |
-| SYS-EXAMPLE | `technical/SYS-EXAMPLE/` |
+| SYS-EXAMPLE | `application/SYS-EXAMPLE/` |
 | DS-EXAMPLE | `data/DS-EXAMPLE/` |
 
 ---
 
 ## 交叉引用
 
-- 技术：`technical/technical_knowledge.json`
+- 应用：`application/application_knowledge.json`
 - 业务：`business/business_knowledge.json`
 - 产品：`product/product_knowledge.json`
 - 数据：`data/data_knowledge.json`

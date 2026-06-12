@@ -20,7 +20,7 @@
 
 | 参数 | 默认 | 说明 |
 |------|------|------|
-| `--perspectives` | `technical,data,business,product` | 逗号分隔 |
+| `--perspectives` | `application,data,business,product` | 逗号分隔 |
 | `--skip-existing` | `true` | 未变跳过；变更文件仍重提 |
 | `--confidence-threshold` | `medium` | high / medium / low |
 | `--emit-report` | `false` | 提取报告 |
@@ -78,7 +78,7 @@ agent/skills/docs-build/scripts/validate-extraction.sh
 
 ```bash
 /docs-build
-/docs-build --perspectives technical,data
+/docs-build --perspectives application,data
 /docs-build --skip-existing false
 /docs-build --confidence-threshold high --emit-report
 ```

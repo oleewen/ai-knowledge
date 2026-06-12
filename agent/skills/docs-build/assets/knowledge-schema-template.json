@@ -1,9 +1,9 @@
 {
   "$comment": "docs-build *_knowledge.json（schema 2.1）结构示例。",
 
-  "technical_knowledge_example": {
+  "application_knowledge_example": {
     "schema_version": "2.1",
-    "perspective": "technical",
+    "perspective": "application",
     "generated_at": "2026-03-27T00:00:00Z",
     "entities": {
       "systems": [
@@ -87,7 +87,7 @@
       "total_apis": 1,
       "total_entities": 4,
       "extraction_basis": "INDEX_GUIDE.md + 源代码",
-      "schema_notes": "schema 2.1 技术视角使用分类 entities 对象",
+      "schema_notes": "schema 2.1 应用视角使用分类 entities 对象",
       "changes_from_previous": ""
     }
   },
@@ -125,7 +125,7 @@
         "evidence_chain": [
           { "source": "@Table(name=\"billing_appeal\")", "confidence": "high", "type": "code" }
         ],
-        "cross_references": { "datasource": "DS-001", "business": ["AGG-001"], "technical": ["MS-001"] }
+        "cross_references": { "datasource": "DS-001", "business": ["AGG-001"], "application": ["MS-001"] }
       }
     ],
     "metadata": {
@@ -156,7 +156,7 @@
         "evidence_chain": [
           { "source": "com.company.billing.charging.appeal（顶层包路径）", "confidence": "high", "type": "code" }
         ],
-        "cross_references": { "technical": ["SYS-001"], "product": ["PL-001"] }
+        "cross_references": { "application": ["SYS-001"], "product": ["PL-001"] }
       },
       {
         "hierarchy": "AGG",
@@ -173,9 +173,9 @@
         "implemented_by_service_ids": ["MS-001", "MS-002"],
         "abilities": ["AB-APPEAL-LIFECYCLE"],
         "evidence_chain": [
-          { "source": "MS-001 BillingAppeal; MS-002 BillingAppealItem", "confidence": "high", "type": "technical_entity" }
+          { "source": "MS-001 BillingAppeal; MS-002 BillingAppealItem", "confidence": "high", "type": "application_entity" }
         ],
-        "cross_references": { "technical": ["MS-001", "MS-002"], "business": ["BC-001"], "data": ["ENT-001", "ENT-002", "ENT-003"] }
+        "cross_references": { "application": ["MS-001", "MS-002"], "business": ["BC-001"], "data": ["ENT-001", "ENT-002", "ENT-003"] }
       },
       {
         "hierarchy": "AB",
@@ -193,7 +193,7 @@
         "evidence_chain": [
           { "source": "API-002 BillingAppeal.create; API-005 BillingAppeal.submit", "confidence": "high", "type": "api_reference" }
         ],
-        "cross_references": { "technical": ["MS-001", "MS-002"], "business": ["AGG-001"] }
+        "cross_references": { "application": ["MS-001", "MS-002"], "business": ["AGG-001"] }
       }
     ],
     "metadata": {
@@ -226,7 +226,7 @@
         "evidence_chain": [
           { "source": "README.md §功能特性", "confidence": "high", "type": "document" }
         ],
-        "cross_references": { "technical": ["SYS-001"], "business": ["BD-001"] }
+        "cross_references": { "application": ["SYS-001"], "business": ["BD-001"] }
       },
       {
         "hierarchy": "FT",
@@ -252,7 +252,7 @@
         "evidence_chain": [
           { "source": "API-002 BillingAppeal.create", "confidence": "high", "type": "api_reference" }
         ],
-        "cross_references": { "technical": ["API-002"], "product": ["PM-001"], "business": ["AB-001"] }
+        "cross_references": { "application": ["API-002"], "product": ["PM-001"], "business": ["AB-001"] }
       }
     ],
     "metadata": {

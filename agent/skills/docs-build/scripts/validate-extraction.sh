@@ -50,7 +50,7 @@ else
 fi
 
 # 2. *_knowledge.json 文件检查
-PERSPECTIVES=("technical" "data" "business" "product")
+PERSPECTIVES=("application" "data" "business" "product")
 KNOWLEDGE_COUNT=0
 
 for p in "${PERSPECTIVES[@]}"; do
@@ -69,8 +69,8 @@ for p in "${PERSPECTIVES[@]}"; do
         warn "${p}_knowledge.json schema_version 不是 2.1 (实际: ${VERSION})"
       fi
 
-      # 实体数量（技术视角为分类结构，其余为扁平数组）
-      if [[ "${p}" == "technical" ]]; then
+      # 实体数量（应用视角为分类结构，其余为扁平数组）
+      if [[ "${p}" == "application" ]]; then
         COUNT=$(python3 -c "
 import json
 d=json.load(open('${KNOWLEDGE_FILE}'))
@@ -86,7 +86,7 @@ print(total)
       info "${p}_knowledge.json 包含 ${COUNT} 个实体"
 
       # 证据链非空检查
-      if [[ "${p}" == "technical" ]]; then
+      if [[ "${p}" == "application" ]]; then
         EMPTY_EVIDENCE=$(python3 -c "
 import json
 d=json.load(open('${KNOWLEDGE_FILE}'))
@@ -127,7 +127,7 @@ info "发现 ${KNOWLEDGE_COUNT}/4 个 knowledge JSON 文件"
 
 # 3. ID 前缀验证
 declare -A PREFIX_MAP=(
-  ["technical"]="SYS APP MS API"
+  ["application"]="SYS APP MS API"
   ["data"]="DS ENT"
   ["business"]="BD BSD BC AGG AB"
   ["product"]="PL PM FT UC"
@@ -138,7 +138,7 @@ for p in "${PERSPECTIVES[@]}"; do
   [[ ! -f "${KNOWLEDGE_FILE}" ]] && continue
 
   ALLOWED="${PREFIX_MAP[$p]}"
-  if [[ "${p}" == "technical" ]]; then
+  if [[ "${p}" == "application" ]]; then
     INVALID=$(python3 -c "
 import json
 d=json.load(open('${KNOWLEDGE_FILE}'))
@@ -172,7 +172,7 @@ if [[ ${KNOWLEDGE_COUNT} -gt 0 ]]; then
 import json, os
 seen=set()
 dups=0
-for p in ['technical','data','business','product']:
+for p in ['application','data','business','product']:
     f=os.path.join('${KNOWLEDGE_DIR}',p,f'{p}_knowledge.json')
     if not os.path.exists(f): continue
     d=json.load(open(f))

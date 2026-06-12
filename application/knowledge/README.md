@@ -1,13 +1,13 @@
 # knowledge — 应用知识库主体
 
-**应用知识库**（联邦单元内 `knowledge/`）：**业务 / 产品 / 技术 / 数据** 四视角；**宪法层**（术语、原则、标准、ADR）与 `knowledge/` **平级**，见 [`../constitution/`](../constitution/README.md)。与中央库 `application/knowledge/` 同构。中央库阶段文档（solutions、analysis）见 [`../solutions`](../solutions/README.md)、[`../analysis`](../analysis/README.md)；本应用 requirements 以本树及中央库为事实源；归档时可回写。
+**应用知识库**（联邦单元内 `knowledge/`）：**业务 / 产品 / 应用 / 数据** 四视角；**宪法层**（术语、原则、标准、ADR）与 `knowledge/` **平级**，见 [`../constitution/`](../constitution/README.md)。与中央库 `application/knowledge/` 同构。中央库阶段文档（solutions、analysis）见 [`../solutions`](../solutions/README.md)、[`../analysis`](../analysis/README.md)；本应用 requirements 以本树及中央库为事实源；归档时可回写。
 
 ---
 
 ## 四视角实体 ID（SSOT）
 
-- **链上实体 ID 登记表**：[KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md) — **仅** business / product / technical / data 四视角（**不含** `DIR-*` 联邦/阶段、**不含** constitution）。`application/` 入口见 [../README.md](../README.md)；仓库根 Index Guide 见 [INDEX_GUIDE.md](../../INDEX_GUIDE.md) **§1.2**。
-- **docs-build 中间产物（机器 JSON，与物化锚点 `.md` 分离）**：各视角根目录 `technical_knowledge.json`、`business_knowledge.json`、`product_knowledge.json`、`data_knowledge.json`（字段约定见 [../../agent/skills/docs-build/SKILL.md](../../agent/skills/docs-build/SKILL.md)）。
+- **链上实体 ID 登记表**：[KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md) — **仅** business / product / application / data 四视角（**不含** `DIR-*` 联邦/阶段、**不含** constitution）。`application/` 入口见 [../README.md](../README.md)；仓库根 Index Guide 见 [INDEX_GUIDE.md](../../INDEX_GUIDE.md) **§1.2**。
+- **docs-build 中间产物（机器 JSON，与物化锚点 `.md` 分离）**：各视角根目录 `application_knowledge.json`、`business_knowledge.json`、`product_knowledge.json`、`data_knowledge.json`（字段约定见 [../../agent/skills/docs-build/SKILL.md](../../agent/skills/docs-build/SKILL.md)）。
 - **机器契约（SSOT）**：[../../agent/skills/docs-build/SKILL.md](../../agent/skills/docs-build/SKILL.md)（ssot、symmetry、meta_read_order）；[knowledge_meta.yaml](knowledge_meta.yaml) 仅保留联邦/目录元数据。
 
 ## 子目录
@@ -16,7 +16,7 @@
 |------|------|------------------|
 | [business](business) | BD → BSD → BC → AGG | [business/business_meta.yaml](business/business_meta.yaml) |
 | [product](product) | PL → PM → FT → UC | [product/product_meta.yaml](product/product_meta.yaml) |
-| [technical](technical) | SYS → APP → MS | [technical/technical_meta.yaml](technical/technical_meta.yaml) |
+| [application](application) | SYS → APP → MS | [application/application_meta.yaml](application/application_meta.yaml) |
 | [data](data) | DS → ENT | [data/data_meta.yaml](data/data_meta.yaml) |
 
 ---

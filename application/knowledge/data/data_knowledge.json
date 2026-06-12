@@ -16,7 +16,7 @@
       "owned_by_app_id": ["APP-EXAMPLE"],
       "notes": [],
       "evidence_chain": [],
-      "cross_references": { "technical": [], "product": [], "business": [], "data": [] }
+      "cross_references": { "application": [], "product": [], "business": [], "data": [] }
     },
     {
       "hierarchy": "ENT",
@@ -29,7 +29,7 @@
       "physical_table": "example_table",
       "maps_to_aggregate_id": "AGG-EXAMPLE",
       "evidence_chain": [],
-      "cross_references": { "datasource": "DS-EXAMPLE", "business": ["AGG-EXAMPLE"], "technical": ["MS-EXAMPLE"], "product": [] }
+      "cross_references": { "datasource": "DS-EXAMPLE", "business": ["AGG-EXAMPLE"], "application": ["MS-EXAMPLE"], "product": [] }
     }
   ],
   "metadata": {

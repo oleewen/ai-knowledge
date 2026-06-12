@@ -20,8 +20,8 @@
 | -------- | ------------------------------------------------------------------------------------ |
 | **SSOT** | 实体只在一处定义；他处仅 **ID 引用**                                                               |
 | **联邦治理** | 系统库管边界与索引；应用库管实现细节并 **上行对齐**                                                         |
-| **闭环**   | knowledge ← 归档回写；阶段上 solutions → analysis → requirements；规约落在需求包内 specs/ 或 technical |
-| **四视角**  | 业务 / 产品 / 技术 / 数据；关联写在各视角 YAML，**不**维护独立映射矩阵文件                                       |
+| **闭环**   | knowledge ← 归档回写；阶段上 solutions → analysis → requirements；规约落在需求包内 specs/ 或 knowledge/application/ |
+| **四视角**  | 业务 / 产品 / 应用 / 数据；关联写在各视角 YAML，**不**维护独立映射矩阵文件                                       |
 
 
 **目录索引 YAML（约定）**：
@@ -46,7 +46,7 @@
 | 目录                | 说明                                               |
 | ----------------- | ------------------------------------------------ |
 | **constitution/** | 宪法层：术语、原则、标准、ADR                                  |
-| **knowledge/**    | 业务 / 产品 / 技术 / 数据 四视角                             |
+| **knowledge/**    | 业务 / 产品 / 应用 / 数据 四视角                             |
 | **solutions/**    | `SOLUTION-{IDEA-ID}.md`                          |
 | **analysis/**     | `ANALYSIS-{IDEA-ID}.md`                          |
 | **requirements/** | `REQUIREMENT-{IDEA-ID}/` 按阶段交付（规约可在各包内 `specs/`） |
@@ -69,10 +69,10 @@
 - **层级**：PL → PM → FT → UC  
 - **约定**：`product_meta.yaml` 在根目录（单文件 SSOT：`identity`、`repository`、`pipeline`、`integration`、`layers[]`）；`{PL-ID}/{PM-ID}/` 为锚点。FT 含 `invokes_api_ids`、`realizes_use_case_ids` 等；UC 含 `map_to_api_id` 等。
 
-#### 技术 (technical)
+#### 应用 (application)
 
 - **层级**：SYS → APP → MS → API  
-- **约定**：`technical_meta.yaml` 在根目录（单文件 SSOT：`identity`、`repository`、`pipeline`、`integration`、`layers[]`）；`{SYS-ID}/{APP目录}/{APP-ID}.yaml` 登记 `repo_url`、`docs_manifest_path`、`service_ids` 等。
+- **约定**：`application_meta.yaml` 在根目录（单文件 SSOT：`identity`、`repository`、`pipeline`、`integration`、`layers[]`）；`{SYS-ID}/{APP目录}/{APP-ID}.yaml` 登记 `repo_url`、`docs_manifest_path`、`service_ids` 等。
 
 #### 数据 (data)
 

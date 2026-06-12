@@ -67,9 +67,9 @@ business/
 
 ## 关键字段（用于映射）
 
-- **BC（限界上下文）**：`implemented_by_app_id`（→ technical APP）
+- **BC（限界上下文）**：`implemented_by_app_id`（→ application APP）
 - **AGG（聚合）**：`persisted_as_entity_ids`（→ data ENT）
-- **AB（能力）**：`apis[]`（含 API-ID，→ technical API）
+- **AB（能力）**：`apis[]`（含 API-ID，→ application API）
 
 （字段细则以 `business_knowledge.json` 为准；映射见 `business_meta.yaml` → `integration`。）
 

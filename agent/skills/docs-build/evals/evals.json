@@ -9,8 +9,8 @@
     },
     {
       "id": 2,
-      "prompt": "/docs-build --perspectives technical,data --confidence-threshold high",
-      "expected_output": "docs-build；仅 technical+data；仍 Qclose-1+gate；非 distill/overview",
+      "prompt": "/docs-build --perspectives application,data --confidence-threshold high",
+      "expected_output": "docs-build；仅 application+data；仍 Qclose-1+gate；非 distill/overview",
       "files": []
     },
     {

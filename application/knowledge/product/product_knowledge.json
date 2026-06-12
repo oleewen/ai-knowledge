@@ -13,7 +13,7 @@
       "description": "仅用于演示产品视角数据结构（示例）。",
       "target_users": ["示例用户"],
       "evidence_chain": [],
-      "cross_references": { "technical": [], "product": [], "business": [], "data": [] }
+      "cross_references": { "application": [], "product": [], "business": [], "data": [] }
     },
     {
       "hierarchy": "PM",
@@ -23,7 +23,7 @@
       "alias": "ExampleProductModule",
       "name": "示例产品模块",
       "evidence_chain": [],
-      "cross_references": { "technical": [], "product": ["PL-001"], "business": [], "data": [] }
+      "cross_references": { "application": [], "product": ["PL-001"], "business": [], "data": [] }
     },
     {
       "hierarchy": "FT",
@@ -40,7 +40,7 @@
       ],
       "realizes_use_case_ids": ["UC-EXAMPLE-001"],
       "evidence_chain": [],
-      "cross_references": { "product": ["PM-EXAMPLE"], "business": [], "technical": [], "data": [] }
+      "cross_references": { "product": ["PM-EXAMPLE"], "business": [], "application": [], "data": [] }
     },
     {
       "hierarchy": "UC",
@@ -51,7 +51,7 @@
       "description": "仅用于演示产品视角数据结构（示例）。",
       "map_to_api_id": "API-EXAMPLE-001",
       "evidence_chain": [],
-      "cross_references": { "technical": ["API-EXAMPLE-001"], "product": ["PM-EXAMPLE"], "business": [], "data": [] }
+      "cross_references": { "application": ["API-EXAMPLE-001"], "product": ["PM-EXAMPLE"], "business": [], "data": [] }
     }
   ],
   "metadata": {

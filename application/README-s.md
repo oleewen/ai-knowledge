@@ -17,7 +17,7 @@ knowledge（SSOT）
     │
 solutions ──→ analysis ──→ requirements
     │              │              │
-    └──────────────┴──────────────┴──→ 规约：需求包内 specs/ 或 knowledge/technical/（可选）
+    └──────────────┴──────────────┴──→ 规约：需求包内 specs/ 或 knowledge/application/（可选）
 ```
 
 **推荐落地顺序**：先查 / 补 **knowledge** 实体与 ID（读 [DESIGN.md](DESIGN.md)、[CONTRIBUTING.md](CONTRIBUTING.md)）→ 写 **solutions** / **analysis** → 建 **requirements** 包；规约与 `ANALYSIS-*` 对齐 **IDEA-ID**。

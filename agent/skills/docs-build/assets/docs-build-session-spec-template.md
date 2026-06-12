@@ -6,7 +6,7 @@
 ## 1. 范围
 
 - `{DOC_DIR}`：
-- 视角：`technical,data,business,product` 子集或全
+- 视角：`application,data,business,product` 子集或全
 - 主 Index Guide：已确认可用
 
 ## 2. 参数

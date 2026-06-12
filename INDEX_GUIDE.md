@@ -101,7 +101,7 @@ flowchart LR
 | 术语 | 定义 | 使用场景 |
 |------|------|----------|
 | SSOT | 单一事实源，`application/` 为应用知识稳定事实中枢 | 与联邦镜像、目标工程对齐 |
-| 四视角 | 业务 / 产品 / 技术 / 数据 知识分层与映射字段 | 见 [application/DESIGN.md](application/DESIGN.md) |
+| 四视角 | 业务 / 产品 / 应用 / 数据 知识分层与映射字段 | 见 [application/DESIGN.md](application/DESIGN.md) |
 | 联邦治理 | `system/`、`company/` 槽位与迁移叙事；`system/application-{name}/` 为应用镜像，`company/system-{name}/` 为系统镜像 | 多库协作与 docs-install 模式 |
 | SDD | 方案 → 分析 → PRD/设计/测试 阶段交付链 | `sdx-*` Skill 与 `application/` 阶段目录 |
 | 中央知识库挂载建联 | `docs-install --mode=central` 等约定 | 见 [README.md](README.md)、[scripts/README.md](scripts/README.md) |

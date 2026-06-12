@@ -1,12 +1,12 @@
 # 四视角提取规则
 
-顺序：技术 → 数据 → 业务 → 产品。各视角独立产出；后序只**引用**前序 ID。
+顺序：应用 → 数据 → 业务 → 产品。各视角独立产出；后序只**引用**前序 ID。
 
 输出：`{perspective}_knowledge.json`，`schema_version` **2.1**。结构见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
 
 ## 目录
 
-- [1. 技术视角（Technical）](#1-技术视角technical)
+- [1. 应用视角（Application）](#1-应用视角application)
   - [SYS（系统层级）](#sys系统层级)
   - [APP（应用层级）](#app应用层级)
   - [MS（微服务层级）](#ms微服务层级)
@@ -23,7 +23,7 @@
 
 ---
 
-## 1. 技术视角（Technical）
+## 1. 应用视角（Application）
 
 ### 输入源
 
@@ -114,7 +114,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 ### 输出结构
 
-技术视角使用**分类结构**（非扁平数组），`entities` 下按 `systems`、`applications`、`services`、`apis` 分组。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
+应用视角使用**分类结构**（非扁平数组），`entities` 下按 `systems`、`applications`、`services`、`apis` 分组。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
 
 ---
 
@@ -155,7 +155,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 - 主 Index Guide
 - AGENTS.md（业务域定义，可选）
 - 源代码包结构（FQCN 分析）
-- 技术视角已提取的 MS-* 服务
+- 应用视角已提取的 MS-* 服务
 
 ### 提取规则
 
@@ -201,7 +201,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 ### 输入源
 
 - 主 Index Guide
-- 技术视角已提取的 SYS、MS、API，业务视角已提取的 BD、BSD、BC、AGG、AB
+- 应用视角已提取的 SYS、MS、API，业务视角已提取的 BD、BSD、BC、AGG、AB
 - README.md（产品概述、用户场景）
 - PRD 文档（若有）
 
@@ -214,7 +214,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 #### PM（产品模块层级）
 
-- 提取自技术视角 MS-* 服务列表，与 MS-* 一一对应
+- 提取自应用视角 MS-* 服务列表，与 MS-* 一一对应
 - **必须字段**：`full_id`（如 `PM-BILLING-APPEAL-CORE`）、`parent_id`（所属 PL）
 - **禁止**：无 MS-* 对应的 PM-ID、单 MS-* 对应多个 PM-ID
 
@@ -238,7 +238,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 ## 跨视角依赖
 
 ```
-技术视角 ─────────────────────────────────┐
+应用视角 ─────────────────────────────────┐
   SYS → APP → MS → API                   │
                                           ▼
 数据视角                              业务视角

@@ -168,7 +168,7 @@ your-project/
 │   │   ├── knowledge_meta.yaml
 │   │   ├── business/              # 业务视角
 │   │   ├── product/               # 产品视角
-│   │   ├── technical/             # 技术视角
+│   │   ├── application/           # 应用视角
 │   │   └── data/                  # 数据视角
 │   ├── solutions/                 # 解决方案阶段
 │   ├── analysis/                  # 需求分析阶段

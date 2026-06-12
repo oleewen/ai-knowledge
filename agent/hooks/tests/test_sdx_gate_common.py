@@ -361,7 +361,7 @@ class GateCommonTests(unittest.TestCase):
         """build gate 应拦截 knowledge/ 下的 .json 文件写入。"""
         payload = {
             "toolName": "write_file",
-            "args": {"path": "application/knowledge/technical/technical_knowledge.json"},
+            "args": {"path": "application/knowledge/application/application_knowledge.json"},
             "sessionId": "s-build-json",
         }
         env = {}

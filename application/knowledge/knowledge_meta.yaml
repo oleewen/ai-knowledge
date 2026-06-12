@@ -8,7 +8,7 @@ description: "四视角（宪法层物理目录见同级的 ../constitution/）�
 child_directories:
   - business
   - product
-  - technical
+  - application
   - data
 child_files:
   - README.md
@@ -19,7 +19,7 @@ role:
     - constitution
     - business
     - product
-    - technical
+    - application
     - data
 
 indexing:
@@ -29,7 +29,7 @@ indexing:
     - ../constitution/README.md
     - ./business/README.md
     - ./product/README.md
-    - ./technical/README.md
+    - ./application/README.md
     - ./data/README.md
 
 references:
@@ -48,7 +48,7 @@ knowledge:
       - knowledge/knowledge_meta.yaml
       - knowledge/business/business_meta.yaml
       - knowledge/product/product_meta.yaml
-      - knowledge/technical/technical_meta.yaml
+      - knowledge/application/application_meta.yaml
       - knowledge/data/data_meta.yaml
       - requirements/README.md
       - changelogs/README.md

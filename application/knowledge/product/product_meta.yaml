@@ -22,9 +22,9 @@ repository:
 integration:
   cross_perspective:
     - { from: "PM.cross_references.business", to: "business.BC/AGG" }
-    - { from: "FT.invokes_api_ids", to: "technical.API" }
+    - { from: "FT.invokes_api_ids", to: "application.API" }
     - { from: "FT.realizes_use_case_ids", to: "product.UC" }
-    - { from: "UC.cross_references.technical", to: "technical.API" }
+    - { from: "UC.cross_references.application", to: "application.API" }
   key_fields:
     PL: ["target_users"]
     PM: ["parent_id"]

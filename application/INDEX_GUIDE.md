@@ -42,7 +42,7 @@ application/
 ├── analysis/                               # 需求分析阶段占位与 meta
 ├── changelogs/                             # CHANGE-LOG、INDEXING-LOG
 ├── constitution/                           # 术语、原则、ADR、标准
-├── knowledge/                              # 四视角：business/data/product/technical
+├── knowledge/                              # 四视角：business/data/product/application
 ├── requirements/                         # 需求包与 REQUIREMENT-EXAMPLE
 ├── solutions/                              # 方案阶段与 archive
 └── specs/                                  # 规约与阶段规格占位
@@ -96,7 +96,7 @@ flowchart TB
 
 | 术语 | 定义 | 落点 |
 |------|------|------|
-| 四视角 | 业务 / 产品 / 技术 / 数据 分层与 ID 规范 | [DESIGN.md](DESIGN.md)、[constitution/GLOSSARY.md](constitution/GLOSSARY.md) |
+| 四视角 | 业务 / 产品 / 应用 / 数据 分层与 ID 规范 | [DESIGN.md](DESIGN.md)、[constitution/GLOSSARY.md](constitution/GLOSSARY.md) |
 | 知识实体 | YAML/JSON 承载的层级 ID 与关系字段 | [knowledge/](knowledge/) |
 | SDD 阶段 | Solution → Analysis → PRD/设计/测试 链 | [CONTRIBUTING.md](CONTRIBUTING.md)、`agent/skills/sdx-*` |
 
@@ -144,7 +144,7 @@ flowchart TB
 
 | 名称 | 取值 |
 |------|------|
-| 知识视角子目录 | `business/`、`data/`、`product/`、`technical/` |
+| 知识视角子目录 | `business/`、`data/`、`product/`、`application/` |
 
 ---
 

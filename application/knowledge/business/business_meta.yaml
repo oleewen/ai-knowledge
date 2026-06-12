@@ -21,10 +21,10 @@ repository:
 
 integration:
   cross_perspective:
-    - { from: "BC.implemented_by_app_id", to: "technical.APP" }
+    - { from: "BC.implemented_by_app_id", to: "application.APP" }
     - { from: "AGG.persisted_as_entity_ids", to: "data.ENT" }
-    - { from: "AGG.implemented_by_service_ids", to: "technical.MS" }
-    - { from: "AB.apis[].id", to: "technical.API" }
+    - { from: "AGG.implemented_by_service_ids", to: "application.MS" }
+    - { from: "AB.apis[].id", to: "application.API" }
   key_fields:
     BC: ["implemented_by_app_id"]
     AGG: ["persisted_as_entity_ids", "implemented_by_service_ids"]

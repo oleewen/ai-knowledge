@@ -29,7 +29,7 @@ integration:
   consumed_by:
     - ../knowledge/business/
     - ../knowledge/product/
-    - ../knowledge/technical/
+    - ../knowledge/application/
     - ../knowledge/data/
     - ../requirements/
 

@@ -1,24 +1,24 @@
-# knowledge/technical — 视角元数据（SSOT）
+# knowledge/application — 视角元数据（SSOT）
 schema_version: "1.1"
 
 identity:
-  id: "DIR-KNOWLEDGE-TECHNICAL"
-  name: "技术视角（knowledge/technical）"
-  description: "实现版图：SYS→APP→MS→API；技术视角 entities 为分类结构，见 technical_knowledge.json。"
+  id: "DIR-KNOWLEDGE-APPLICATION"
+  name: "应用视角（knowledge/application）"
+  description: "实现版图：SYS→APP→MS→API；应用视角 entities 为分类结构，见 application_knowledge.json。"
 
 role:
-  perspective: "technical"
+  perspective: "application"
   is_system_level_index: true
 
 repository:
-  root_relative: "knowledge/technical"
+  root_relative: "knowledge/application"
   child_files:
     - "README.md"
-    - "technical_knowledge.json"
+    - "application_knowledge.json"
   hierarchy:
     chain: "SYS → APP → MS → API"
     storage: "virtual_json"
-    technical_entities_shape: "entities.{systems,applications,services,apis}"
+    application_entities_shape: "entities.{systems,applications,services,apis}"
 
 integration:
   cross_perspective:
@@ -33,7 +33,7 @@ integration:
 
 references:
   - { path: "./README.md", note: "人类可读说明" }
-  - { path: "./technical_knowledge.json", note: "分类实体（SYS/APP/MS/API）" }
+  - { path: "./application_knowledge.json", note: "分类实体（SYS/APP/MS/API）" }
   - { path: "../../INDEX_GUIDE.md", note: "联邦索引" }
 
 layers:

@@ -1,7 +1,7 @@
 ---
 name: docs-build
 description: >
-  从技术→数据→业务→产品四视角提取实体 ID，产出 *_knowledge.json（schema 2.1）、各视角 README 索引行、
+  从应用→数据→业务→产品四视角提取实体 ID，产出 *_knowledge.json（schema 2.1）、各视角 README 索引行、
   归并 `{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md`。依赖主 Index Guide。
   触发：初始化/同步知识实体、对齐 ID、补四视角资产、更新 KNOWLEDGE_INDEX、docs-indexing 下游要实体等；
   口语如「把代码里实体整理一下」「知识和代码对不上」。用户只要根 INDEX、overview、归档或 SDD 终稿为主路径 → 分流对应技能，勿单走本技能。

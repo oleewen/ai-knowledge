@@ -14,7 +14,7 @@ child_directories:
     description: "宪法层：术语、原则、标准、ADR（与 knowledge/ 平级）"
   knowledge:
     meta: "knowledge/knowledge_meta.yaml"
-    description: "四视角业务 / 产品 / 技术 / 数据（SSOT）"
+    description: "四视角业务 / 产品 / 应用 / 数据（SSOT）"
   solutions:
     readme: "solutions/README.md"
     description: "解决方案阶段：平铺 SOLUTION-{IDEA-ID}.md（约定见 README，无 solutions_meta.yaml）"
@@ -53,7 +53,7 @@ integration:
     - path: "../agent/"
       description: "规范、模板与 Agent 技能（非 application 内必存路径）"
   traceability:
-    description: "阶段链 solutions → analysis → requirements；规约落在需求包内 specs/ 或 knowledge/technical/；knowledge 为事实源，归档可回写"
+    description: "阶段链 solutions → analysis → requirements；规约落在需求包内 specs/ 或 knowledge/application/；knowledge 为事实源，归档可回写"
 
 references:
   - path: "./README.md"

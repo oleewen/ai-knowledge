@@ -24,7 +24,7 @@ graph TD
 
 | 视角 | 前缀 |
 |------|------|
-| technical | SYS- APP- MS- API- |
+| application | SYS- APP- MS- API- |
 | data | DS- ENT- |
 | business | BD- BSD- BC- AGG- AB- |
 | product | PL- PM- FT- UC- |
@@ -48,7 +48,7 @@ graph TD
 
 | 视角 | entities |
 |------|----------|
-| technical | `{systems, applications, services, apis}` |
+| application | `{systems, applications, services, apis}` |
 | data / business / product | 扁平数组；父子用 `parent_id` 等 |
 
 详 [knowledge-schema-template.json](../assets/knowledge-schema-template.json)。

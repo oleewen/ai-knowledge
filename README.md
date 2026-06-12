@@ -91,7 +91,7 @@ ai-knowledge/
 │   └── INDEX_GUIDE.md      # 全库路径权威索引
 ├── application/            # 应用知识库 SSOT
 │   ├── constitution/       # 宪法层：术语、原则、ADR 模板
-│   ├── knowledge/          # 四视角知识实体（业务/产品/技术/数据）
+│   ├── knowledge/          # 四视角知识实体（业务/产品/应用/数据）
 │   ├── solutions/          # 解决方案产物
 │   ├── analysis/           # 需求分析产物
 │   ├── requirements/       # 需求交付产物

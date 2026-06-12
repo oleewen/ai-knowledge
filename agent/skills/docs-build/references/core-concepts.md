@@ -6,7 +6,7 @@
 
 | 视角 | 前缀 | 产出 |
 |------|------|------|
-| technical | SYS/APP/MS/API | `technical_knowledge.json`（`entities` 分类） |
+| application | SYS/APP/MS/API | `application_knowledge.json`（`entities` 分类） |
 | data | DS、ENT | `data_knowledge.json`（扁平） |
 | business | BD→AB | `business_knowledge.json`（扁平） |
 | product | PL→UC | `product_knowledge.json`（扁平） |

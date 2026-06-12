@@ -14,7 +14,7 @@
       "strategic_classification": "supporting_domain",
       "children": ["BSD-EXAMPLE"],
       "evidence_chain": [],
-      "cross_references": { "technical": [], "product": [], "business": [], "data": [] }
+      "cross_references": { "application": [], "product": [], "business": [], "data": [] }
     },
 
     {
@@ -27,7 +27,7 @@
       "parent_id": "BD-EXAMPLE",
       "bounded_contexts": ["BC-EXAMPLE"],
       "evidence_chain": [],
-      "cross_references": { "technical": [], "product": [], "business": [], "data": [] }
+      "cross_references": { "application": [], "product": [], "business": [], "data": [] }
     },
 
     {
@@ -45,7 +45,7 @@
         "术语B": "示例定义B"
       },
       "evidence_chain": [],
-      "cross_references": { "technical": [], "product": [], "business": [], "data": [] }
+      "cross_references": { "application": [], "product": [], "business": [], "data": [] }
     },
 
     {
@@ -66,7 +66,7 @@
       "implemented_by_service_ids": ["MS-EXAMPLE"],
       "abilities": ["AB-EXAMPLE"],
       "evidence_chain": [],
-      "cross_references": { "technical": ["MS-EXAMPLE"], "product": [], "business": ["BC-EXAMPLE"], "data": ["ENT-EXAMPLE"] }
+      "cross_references": { "application": ["MS-EXAMPLE"], "product": [], "business": ["BC-EXAMPLE"], "data": ["ENT-EXAMPLE"] }
     },
 
     {
@@ -82,7 +82,7 @@
         { "id": "API-EXAMPLE-001", "method": "Example.create", "description": "示例：创建" }
       ],
       "evidence_chain": [],
-      "cross_references": { "technical": ["MS-EXAMPLE"], "product": [], "business": ["AGG-EXAMPLE"], "data": [] }
+      "cross_references": { "application": ["MS-EXAMPLE"], "product": [], "business": ["AGG-EXAMPLE"], "data": [] }
     }
   ],
   "metadata": {

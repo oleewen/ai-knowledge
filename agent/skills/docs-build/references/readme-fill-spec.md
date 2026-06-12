@@ -17,7 +17,7 @@
 
 | 视角 | README 路径 | JSON 来源 |
 |------|-------------|-----------|
-| technical | `{DOC_DIR}/knowledge/technical/README.md` | `technical/technical_knowledge.json` |
+| application | `{DOC_DIR}/knowledge/application/README.md` | `application/application_knowledge.json` |
 | data | `{DOC_DIR}/knowledge/data/README.md` | `data/data_knowledge.json` |
 | business | `{DOC_DIR}/knowledge/business/README.md` | `business/business_knowledge.json` |
 | product | `{DOC_DIR}/knowledge/product/README.md` | `product/product_knowledge.json` |
@@ -26,7 +26,7 @@
 
 ## 表格列与 JSON 映射
 
-### technical —「技术索引表」
+### application —「技术索引表」
 
 表头：`| 类型 | 名称 | ID (KNOWLEDGE_INDEX) | 路径 / 说明 |`
 
@@ -35,7 +35,7 @@
 | 类型 | 系统 / 应用 / 微服务（MS）/ 接口（与层级一致的中文） |
 | 名称 | `name` |
 | ID (KNOWLEDGE_INDEX) | SYS/APP：`full_id`；MS：`id`（如 `MS-…`）；API：`id`（如 `API-…`） |
-| 路径 / 说明 | `technical_knowledge.json`（`hierarchy=…` / `full_id=…` 或 `id=…`）；可附 `alias` 或证据摘要 |
+| 路径 / 说明 | `application_knowledge.json`（`hierarchy=…` / `full_id=…` 或 `id=…`）；可附 `alias` 或证据摘要 |
 
 自 `entities` 分类对象遍历：`systems` → `applications` → `services` → `apis`。
 

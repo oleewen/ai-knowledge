@@ -16,7 +16,7 @@ SDD **需求分析**阶段目录：产出 `ANALYSIS-{IDEA-ID}.md`，作为 [../r
 - [../knowledge/](../knowledge/) — 四视角与宪法层
 - 规约：各需求包内 `specs/`
 
-细化结论可与 **business、product** 等功能/用例 ID 追溯；实现方案宜与 **technical、data** 对齐。
+细化结论可与 **business、product** 等功能/用例 ID 追溯；实现方案宜与 **application、data** 对齐。
 
 ## 分析索引表
 

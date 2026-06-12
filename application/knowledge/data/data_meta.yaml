@@ -23,7 +23,7 @@ integration:
   cross_perspective:
     - { from: "business.AGG.persisted_as_entity_ids", to: "ENT.id" }
     - { from: "ENT.cross_references.business", to: "business.AGG" }
-    - { from: "DS.owned_by_app_id", to: "technical.APP" }
+    - { from: "DS.owned_by_app_id", to: "application.APP" }
   key_fields:
     DS: ["config_key", "type", "owned_by_app_id"]
     ENT: ["logical_name", "physical_table", "parent_id"]

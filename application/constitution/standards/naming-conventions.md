@@ -39,7 +39,7 @@
 | BR- | Business Rule    | 业务规则 |
 
 
-### 技术视角 (technical)
+### 应用视角 (application)
 
 
 | 前缀   | 英文全称                       | 含义                                                                                                      |
@@ -72,10 +72,10 @@
   - **宪法层一级子树**（与根 meta 分工、避免重复）：`principles/principles_meta.yaml`、`standards/standards_meta.yaml`、`adr/adr_meta.yaml`（及同目录 `adr-template.md`）；ADR 正文为 `adr/ADR-{序号}-{短标题}.md`。
   - `**application/` 下阶段目录**：**solutions**、**analysis**、**requirements**、**changelogs** 约定收敛于各目录 `README.md`（无 `{dirname}_meta.yaml`）。宪法层、`knowledge/` 四视角等仍使用 `{dirname}_meta.yaml`。
   - **应用知识库根目录**（`applications/{app}/`）：`application_meta.yaml`（联邦单元根索引）；子目录同模式，如 `constitution/constitution_meta.yaml`、`knowledge/knowledge_meta.yaml`、`requirements/README.md`、`changelogs/README.md`；`constitution/` 与中央库同构。
-  - **中央库四视角**（`application/knowledge/{perspective}/`）：与**应用知识库** `applications/{app}/knowledge/{perspective}/` 同构；采用「视角索引 + 层级实体」命名（`business_meta.yaml`、`product_meta.yaml`、`technical_meta.yaml`、`data_meta.yaml` 等单文件 SSOT），**集中放在该视角根目录**（子目录仅作导航锚点）。
+  - **中央库四视角**（`application/knowledge/{perspective}/`）：与**应用知识库** `applications/{app}/knowledge/{perspective}/` 同构；采用「视角索引 + 层级实体」命名（`business_meta.yaml`、`product_meta.yaml`、`application_meta.yaml`、`data_meta.yaml` 等单文件 SSOT），**集中放在该视角根目录**（子目录仅作导航锚点）。
 - **中央库 · 业务视角**（`application/knowledge/business/`）：`business_meta.yaml`（含 `layers`：BD/BSD/BC/AGG/AB）；`{BD-ID}/` 等子目录作层级锚点。
 - **中央库 · 产品视角**（`application/knowledge/product/`）：`product_meta.yaml`（含 `layers`：PL/PM/FT/UC）；`{PL-ID}/{PM-ID}/` 作层级锚点。
-- **中央库 · 技术视角**（`application/knowledge/technical/`）：`technical_meta.yaml`（含 `layers`：SYS/APP/MS/API）；`{SYS-ID}/` 为系统锚点，其下为应用注册 YAML。
+- **中央库 · 应用视角**（`application/knowledge/application/`）：`application_meta.yaml`（含 `layers`：SYS/APP/MS/API）；`{SYS-ID}/` 为系统锚点，其下为应用注册 YAML。
 - **中央库 · 数据视角**（`application/knowledge/data/`）：`data_meta.yaml`（含 `layers`：DS/ENT）；`{DS-ID}/` 作存储锚点。
 - **IDEA-ID（需求链统一标识）**：统一命名格式 `*-{YYMMDD}-{主题slug}` 中的 `{YYMMDD}-{主题slug}` 段；各阶段类型前缀为 `SOLUTION` / `ANALYSIS` / `REQUIREMENT`（目录）/ `PRD` / `ASD` / `DSD` / `TDD` 等。
 - **中央库 · requirements 阶段**（`application/requirements/`）：`README.md` 为阶段约定入口；`REQUIREMENT-{IDEA-ID}/` 为交付包锚点（与 `ANALYSIS-{IDEA-ID}.md` 共用同一 **IDEA-ID**），不在包内并列根级 `*_meta.yaml` 拷贝。
