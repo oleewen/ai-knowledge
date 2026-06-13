@@ -310,7 +310,7 @@ flowchart TD
 | 公司元模型 | [company/DESIGN.md](company/DESIGN.md) |
 | 初始化脚本 | [scripts/README.md](scripts/README.md) |
 | Skill 清单 | [agent/skills/README.md](agent/skills/README.md) |
-| 架构师讲稿与案例 | [docs/sharing/用企业AI知识库底座，激活组织知识.md](docs/sharing/用企业AI知识库底座，激活组织知识.md) |
+| 架构师讲稿与案例 | [docs/superpowers/sharing/用企业AI知识库底座，激活组织知识.md](docs/superpowers/sharing/用企业AI知识库底座，激活组织知识.md) |
 
 ---
 

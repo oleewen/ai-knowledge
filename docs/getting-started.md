@@ -1,6 +1,6 @@
 # 从零起步构建知识库
 
-> **定位**：落地操作指南（canonical SSOT）。概念与元模型见 [README.md](../README.md)、各层 [DESIGN.md](../application/DESIGN.md)；讲稿与案例见 [分享稿](sharing/用企业AI知识库底座，激活组织知识.md)。
+> **定位**：落地操作指南（canonical SSOT）。概念与元模型见 [README.md](../README.md)、各层 [DESIGN.md](../application/DESIGN.md)；讲稿与案例见 [分享稿](superpowers/sharing/用企业AI知识库底座，激活组织知识.md)。
 
 ---
 
@@ -149,4 +149,4 @@
 | 元模型与实体层级 | [application/DESIGN.md](../application/DESIGN.md)、[system/DESIGN.md](../system/DESIGN.md)、[company/DESIGN.md](../company/DESIGN.md) |
 | 初始化脚本 | [scripts/README.md](../scripts/README.md) |
 | Skill 清单 | [agent/skills/README.md](../agent/skills/README.md) |
-| 讲稿与案例 | [docs/sharing/用企业AI知识库底座，激活组织知识.md](sharing/用企业AI知识库底座，激活组织知识.md) |
+| 讲稿与案例 | [docs/superpowers/sharing/用企业AI知识库底座，激活组织知识.md](superpowers/sharing/用企业AI知识库底座，激活组织知识.md) |
