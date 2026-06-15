@@ -4,7 +4,7 @@
 
 本节将本系统性能目标、容量与扩展策略显性化，支撑峰值与长期增长规划。
 
-> **性能与扩展 SSOT**：公司级性能基线与扩展标准见 [`technical-performance-scalability.md`](../../../company/ea/technical/technical-performance-scalability.md)。
+> **性能与扩展 SSOT**：系统层落地叙事；公司级技术治理框架见 [company/ea/technical/README.md](../../../company/ea/technical/README.md)。
 
 ## 性能基线
 

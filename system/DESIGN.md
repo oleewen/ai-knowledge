@@ -25,8 +25,8 @@
 
 边界约束：
 
-- **结构边界**：`architecture/`、`application-{name}/` 职责分离；治理与命名 SSOT 在 `agent/rules/`；
-- **流程边界**：通过 `docs-pull` 与 `docs-distill` 形成同步闭环；
+- **结构边界**：`architecture/`、`application-{name}/` 职责分离；命名与术语 SSOT 在 [agent/knowledge/](../agent/knowledge/knowledge-governance.md)；流程闸门在 [agent/rules/](../agent/rules/CONVENTIONS.md)；
+- **流程边界**：应用镜像经 `docs-pull` 下行；架构知识经 `docs-distill` / `docs-archive` 上行；SDD 阶段链见 §2.2；
 - **事实边界**：`system` 维护治理事实，`application` 维护实体主定义。
 
 ---
@@ -37,10 +37,24 @@
 
 | 层级 | 目录 | 职责 |
 | --- | --- | --- |
+| 根导航 | [README.md](README.md)、[INDEX_GUIDE.md](INDEX_GUIDE.md)、[docs_meta.yaml](docs_meta.yaml) | 人类入口、Agent 九章索引、目录元数据 |
 | 治理规则 | [agent/knowledge/](../agent/knowledge/knowledge-governance.md) | 术语边界、命名 SSOT、ADR 模板与原则（全仓库） |
 | ADR 正文 | [adr/](adr/README.md) | 系统层架构决策记录正文 |
 | 架构层 | `architecture/` | 五架构视角聚合视图；含 `overview/` 蒸馏缓冲区 |
-| 联邦层 | `application-{name}/` | 应用镜像挂载槽位，承接拉取内容并支持归档追溯 |
+| SDD 阶段 | [solutions/](solutions/README.md)、[analysis/](analysis/README.md)、[requirements/](requirements/README.md) | 方案 → 分析 → 需求交付（PRD/ASD/DSD/TDD） |
+| 联邦层 | `application-{name}/` | 应用镜像挂载槽位，承接 `/docs-pull` 内容并支持归档追溯 |
+| 建联清单 | [knowledge-links.yaml](knowledge-links.yaml) | 联邦应用建联登记（见 [scripts/README.md](../scripts/README.md)） |
+| 运维 | [changelogs/](changelogs/README.md) | `CHANGE-LOG.md`、`INDEXING-LOG.md` |
+
+#### SDD 阶段链（system 模式）
+
+| 阶段 | 目录 | 产出 | 下游 |
+| --- | --- | --- | --- |
+| 方案 | `solutions/` | `SOLUTION-{IDEA-ID}.md` | `analysis/` |
+| 分析 | `analysis/` | `ANALYSIS-{IDEA-ID}.md` | `requirements/` |
+| 交付 | `requirements/` | `REQUIREMENT-{IDEA-ID}/MVP-Phase-*/` 下 PRD/ASD/DSD/TDD | 应用库详设可经 `/sdx-design` 落盘 |
+
+公司侧跨系统 SDD 见 [../company/DESIGN.md](../company/DESIGN.md)；路径 SSOT 见 [agent/references/knowledge-layout.md](../agent/references/knowledge-layout.md)。
 
 #### 五架构视角
 
@@ -66,6 +80,18 @@
 
 原则：先 overview 缓冲区，再 archive，再 [docs-build](../application/knowledge/) 实体 — 不要一步到位硬造 YAML。
 
+#### SSOT 继承矩阵（system/architecture ↔ company/ea）
+
+`company/ea/` 聚焦**公司级治理叙事**；`system/architecture/` 聚焦**本系统落地叙事**。章节首段 SSOT 声明须与下表一致，**禁止**链接到不存在的 `company/ea/` 同名文件。
+
+| 继承类型 | 说明 | 示例 |
+| --- | --- | --- |
+| **公司对齐** | 存在同名 `company/ea/{视角}/*.md` 时，系统章节引用其为上游标准 | `business-overview` → `company/ea/business/business-overview.md` |
+| **框架参照** | 无同名公司文件时，系统章节为 SSOT，仅链至 `company/ea/{视角}/README.md` 或最近似公司章节 | `business-glossary`、`data-model` |
+| **能力框架** | 系统能力落地参照公司 CAP 框架 | `business-capability-map` → `company/ea/business/business-capability.md` |
+| **ADR** | 系统 ADR 正文在 `system/adr/` 或应用视角章节；模板见 `agent/knowledge/adr-*.md` | `application-adr.md` |
+| **实体字段** | BSD/PM/APP/DS/TSD 等字段语义不在此重复，见 [application/DESIGN.md](../application/DESIGN.md) §2.2.1 | — |
+
 目录契约：
 
 - `system/` 维护目录语义、映射关系与流程约束；
@@ -84,8 +110,8 @@
 
 同步闭环：
 
-1. **下行拉取（docs-pull）**：同步目标应用文档至 `system/application-{name}/`；
-2. **治理校核（system 层）**：在 `architecture/` 与 `agent/rules/` 治理约定下执行一致性检查；
+1. **下行拉取（docs-pull）**：同步目标应用文档至 `system/application-{name}/`（技能见 [agent/skills/docs-pull/SKILL.md](../agent/skills/docs-pull/SKILL.md)）；
+2. **治理校核（system 层）**：在 `architecture/` 与 [agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md) 约定下执行一致性检查；
 3. **上行蒸馏（docs-distill）**：将已核实内容归并到系统主库结构；
 4. **追溯记录（changelogs）**：保留索引与变更日志用于审计和回放。
 
@@ -114,4 +140,6 @@
 - [INDEX_GUIDE.md](INDEX_GUIDE.md)
 - [agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md)
 - [architecture/README.md](architecture/README.md)
+- [agent/references/knowledge-layout.md](../agent/references/knowledge-layout.md)
+- [../company/DESIGN.md](../company/DESIGN.md)
 - [../application/DESIGN.md](../application/DESIGN.md)

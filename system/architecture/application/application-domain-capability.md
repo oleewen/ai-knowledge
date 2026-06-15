@@ -4,7 +4,7 @@
 
 本节说明本系统领域能力及 SLA，对应业务架构中领域能力与子系统承载关系。
 
-> **领域能力 SSOT**：公司级能力与 SLA 登记标准见 [`application-domain-capability.md`](../../../company/ea/application/application-domain-capability.md)。
+> **领域能力 SSOT**：系统层能力与 SLA 落地；公司级能力框架见 [business-capability.md](../../../company/ea/business/business-capability.md)。
 
 ## 领域能力
 

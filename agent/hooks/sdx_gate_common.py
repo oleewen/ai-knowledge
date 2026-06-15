@@ -122,7 +122,7 @@ def _iter_spec_paths_for_gate(
     ordered: list[Path] = []
     seen: set[str] = set()
     for rel in get_session_specs(payload, environ):
-        if not is_session_spec_path(rel):
+        if not is_session_spec_path(rel, repo=repo):
             continue
         p = (repo / rel).resolve()
         key = str(p)

@@ -4,7 +4,7 @@
 
 本节说明本系统各端覆盖范围与差异落地，避免功能与体验碎片化。
 
-> **多端策略 SSOT**：公司级端类型与响应式标准见 [`product-multi-platform.md`](../../../company/ea/product/product-multi-platform.md)。
+> **多端策略 SSOT**：系统层落地叙事；公司级产品治理框架见 [company/ea/product/README.md](../../../company/ea/product/README.md)。
 
 ## 端覆盖
 

@@ -92,6 +92,7 @@
 ### docs-indexing 补充
 
 - 会话 spec 除 `CONFIRMED` 标记外，须在正文中列出本轮将写入的 **`INDEX_GUIDE.md` 与 `*/changelogs/INDEXING-LOG.md` 的完整仓库根相对路径**（例如 `application/INDEX_GUIDE.md`），以便钩子区分多域同名文件。参数 `mode` / `depth` / `output` / `since` 摘要建议写入同一会话 spec。详见 [docs-indexing/references/interaction-gate.md](../skills/docs-indexing/references/interaction-gate.md)。
+- **会话 spec 路径**：`{DOC_DIR}/superpowers/specs/` 中 `{DOC_DIR}` **优先**读目标工程 **`.docsconfig`** 的 `DOC_DIR=`；无配置或无效时默认为 **`docs`**。未在 `.docsconfig` 声明的 `application` / `system` / `company` 下不得放置会话 spec（见 [session-spec-path.md](../references/session-spec-path.md)）。
 
 ---
 

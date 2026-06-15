@@ -4,7 +4,7 @@
 
 本节统一本系统日志、指标、追踪与可视化，支撑排障、容量与 SLO 验证。
 
-> **可观测性 SSOT**：公司级日志、监控与追踪标准见 [`technical-observability.md`](../../../company/ea/technical/technical-observability.md)。
+> **可观测性 SSOT**：系统层落地叙事；公司级技术治理框架见 [company/ea/technical/README.md](../../../company/ea/technical/README.md)。
 
 ## 日志体系
 

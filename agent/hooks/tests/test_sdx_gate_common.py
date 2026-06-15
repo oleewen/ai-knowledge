@@ -10,6 +10,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from agent.hooks.sdx_gate_common import _has_confirmed_spec, run_gate
 
 
+def _write_docsconfig(repo: Path, doc_dir: str) -> None:
+    (repo / ".docsconfig").write_text(
+        f"DOC_ROOT={repo}\nREPO_ROOT={repo}\nDOC_DIR={doc_dir}\n",
+        encoding="utf-8",
+    )
+
+
 class GateCommonTests(unittest.TestCase):
     def test_has_confirmed_spec_avoids_substring_false_positive(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -36,6 +43,7 @@ class GateCommonTests(unittest.TestCase):
     def test_has_confirmed_spec_accepts_exact_basename(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp)
+            _write_docsconfig(repo, "application")
             specs_dir = repo / "application" / "superpowers" / "specs"
             specs_dir.mkdir(parents=True, exist_ok=True)
             spec = specs_dir / "S-2.md"
@@ -90,6 +98,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
+                _write_docsconfig(repo, "application")
                 specs_dir = repo / "application" / "superpowers" / "specs"
                 specs_dir.mkdir(parents=True, exist_ok=True)
                 (specs_dir / "ok.md").write_text(
@@ -165,6 +174,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
+                _write_docsconfig(repo, "system")
                 specs_dir = repo / "system" / "superpowers" / "specs"
                 specs_dir.mkdir(parents=True, exist_ok=True)
                 (specs_dir / "distill-spec.md").write_text(
@@ -239,6 +249,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
+                _write_docsconfig(repo, "system")
                 specs_dir = repo / "system" / "superpowers" / "specs"
                 specs_dir.mkdir(parents=True, exist_ok=True)
                 (specs_dir / "extract-spec.md").write_text(
@@ -288,6 +299,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
+                _write_docsconfig(repo, "system")
                 specs_dir = repo / "system" / "superpowers" / "specs"
                 specs_dir.mkdir(parents=True, exist_ok=True)
                 (specs_dir / "archive-spec.md").write_text(
@@ -365,6 +377,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
+                _write_docsconfig(repo, "application")
                 specs_dir = repo / "application" / "superpowers" / "specs"
                 specs_dir.mkdir(parents=True, exist_ok=True)
                 (specs_dir / "build-spec.md").write_text(
@@ -488,6 +501,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
+                _write_docsconfig(repo, "application")
                 specs_dir = repo / "application" / "superpowers" / "specs"
                 specs_dir.mkdir(parents=True, exist_ok=True)
                 (specs_dir / "ix-spec.md").write_text(
@@ -517,6 +531,7 @@ class GateCommonTests(unittest.TestCase):
         ) as mock_repo_root:
             with tempfile.TemporaryDirectory() as tmp:
                 repo = Path(tmp)
+                _write_docsconfig(repo, "application")
                 specs_dir = repo / "application" / "superpowers" / "specs"
                 specs_dir.mkdir(parents=True, exist_ok=True)
                 (specs_dir / "ix2.md").write_text(

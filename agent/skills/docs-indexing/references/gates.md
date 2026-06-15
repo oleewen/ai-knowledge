@@ -15,6 +15,8 @@
 
 多份 `INDEX_GUIDE`、`INDEXING-LOG` 并存时：spec **逐字含**本轮**仓库根相对路径**（如 `application/INDEX_GUIDE.md`），与工具 payload 一致。仅 `basename` 不足。
 
+**会话 spec 目录**：`{DOC_DIR}/superpowers/specs/`，`{DOC_DIR}` 从 **`.docsconfig`** 读取，无效时默认 **`docs`**（见 [session-spec-path.md](../../../references/session-spec-path.md)）。无 `.docsconfig` 时可在同一 spec 中列出多条 INDEX 路径（如根 `INDEX_GUIDE.md` 与 `system/INDEX_GUIDE.md`）。
+
 ## 标记
 
 文末 `<!-- docs-indexing-gate: PENDING -->` → 总确认后 `CONFIRMED`。无 env bypass。

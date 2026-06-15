@@ -1,6 +1,6 @@
 # system 索引指南（INDEX_GUIDE）
 
-> **最后更新**: 2026-05-05  
+> **最后更新**: 2026-06-15  
 > **文档定位**: 面向 AI Agent 的 **`system/` 文档根**九章机器索引；描述系统知识库、五视角架构文档与 **`application-{name}/`** 联邦槽位。应用层 SSOT 仍在 [../application/](../application/)。
 
 ---
@@ -12,7 +12,8 @@
 | 组件 | 路径 | 描述 |
 |------|------|------|
 | 系统库人类入口 | [README.md](README.md) | 子目录表、架构文档阅读顺序 |
-| 架构总览 | [architecture/OVERVIEW.md](architecture/OVERVIEW.md) | 一页纸、视角关系、治理与 FAQ |
+| 设计契约 | [DESIGN.md](DESIGN.md) | 目录边界、SSOT 继承、同步闭环 |
+| 架构入口 | [architecture/README.md](architecture/README.md) | 五视角索引与阅读顺序 |
 | 五视角架构目录 | [architecture/README.md](architecture/README.md) | 业务/产品/应用/数据/技术 分视角 README |
 | 联邦应用槽位 | [application-APPNAME/README.md](application-APPNAME/README.md) | 占位模板；真实应用名替换 `APPNAME` |
 | 系统宪法 | [../agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md) | 全仓库治理与命名 SSOT |
@@ -39,7 +40,7 @@ system/
 ├── README.md / INDEX_GUIDE.md / DESIGN.md / docs_meta.yaml
 ├── knowledge-links.yaml
 ├── architecture/                 # 五视角 + overview/ 蒸馏占位
-│   ├── OVERVIEW.md / ARCHITECTURE-OVERVIEW.md
+│   ├── README.md
 │   ├── business/ product/ application/ data/ technical/
 │   └── overview/NAME-overview.md
 ├── application-APPNAME/          # 联邦槽位（示例名 APPNAME）
@@ -71,7 +72,7 @@ flowchart LR
 ### 2.4 文档目录
 
 - **架构入口**: [architecture/README.md](architecture/README.md)  
-- **总览**: [architecture/OVERVIEW.md](architecture/OVERVIEW.md)  
+- **设计契约**: [DESIGN.md](DESIGN.md)  
 - **公司侧对照**: [../company/ea/README.md](../company/ea/README.md)
 
 ---
@@ -91,7 +92,7 @@ flowchart LR
 | 术语 | 定义 |
 |------|------|
 | 五视角架构 | 业务、产品、应用、数据、技术 架构文档体系 |
-| 联邦槽位 | `application-{name}/` 承载从应用库 fetch 的镜像内容 |
+| 联邦槽位 | `application-{name}/` 承载经 `/docs-pull` 同步的应用镜像内容 |
 | 蒸馏入口 | `architecture/overview/*-overview.md` 与 docs-distill 技能对齐 |
 
 ### 4.2 聚合
@@ -119,7 +120,7 @@ flowchart LR
 
 ### 5.1 阅读顺序（摘自 README）
 
-1. [architecture/OVERVIEW.md](architecture/OVERVIEW.md)  
+1. [architecture/README.md](architecture/README.md)  
 2. 业务 / 产品视角文档  
 3. 应用 / 数据 / 技术视角文档  
 

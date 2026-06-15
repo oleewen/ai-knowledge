@@ -11,7 +11,8 @@
 2. 本文 — 设计边界、治理规则与流程约束
 3. [ea/README.md](ea/README.md) — 企业架构视图入口
 4. [system-SYSNAME/README.md](system-SYSNAME/README.md) — 系统槽位模板说明
-5. [../system/DESIGN.md](../system/DESIGN.md) — 系统知识库设计（下游对齐参考）
+5. [../agent/references/knowledge-layout.md](../agent/references/knowledge-layout.md) — 三层路径与 overview SSOT
+6. [../system/DESIGN.md](../system/DESIGN.md) — 系统知识库设计（下游对齐参考）
 
 ---
 
@@ -28,7 +29,7 @@
 - **治理边界**：`company/` 负责公司层结构语义、导航与归档入口；
 - **内容边界**：系统实现细节留在 `system/`，应用实体细节留在 `application/`；架构层只保留企业架构顶层视图，不承载各视角的实现细节文件；
 - **流程边界**：`company/` 承载跨系统方案（`solutions/`）与需求分析（`analysis/`）；PRD/ASD/DSD/TDD 等交付物由各系统侧 `requirements/` 承接，不在 `company/` 层定义；
-- **引用边界**：优先路径引用与槽位映射，避免跨层复制正文。
+- **引用边界**：优先路径引用与槽位映射，避免跨层复制正文；路径 SSOT 见 [agent/references/knowledge-layout.md](../agent/references/knowledge-layout.md)。
 
 ---
 
@@ -43,6 +44,9 @@
 | 分析层 | `analysis/` | 公司级跨系统需求分析；衔接 `solutions/`，输出由各系统侧 `requirements/` 承接 |
 | 槽位层 | `system-{name}/` | 挂载系统镜像内容的统一入口 |
 | 清单层 | `knowledge-links.yaml` | 记录建联关系与同步编排信息 |
+| 运维 | `changelogs/` | `CHANGE-LOG.md`、`INDEXING-LOG.md`（见 [changelogs/README.md](changelogs/README.md)） |
+
+**索引说明**：公司库当前不设独立 `INDEX_GUIDE.md` / `docs_meta.yaml`；Agent 检索入口为 [README.md](README.md)、本文与仓库根 [INDEX_GUIDE.md](../INDEX_GUIDE.md) §公司知识库。
 
 #### 公司级实体
 
@@ -59,9 +63,21 @@
 
 命名细则见 [agent/knowledge/naming-conventions.md](../agent/knowledge/naming-conventions.md)。
 
-#### 系统镜像槽位与上行
+#### 系统镜像槽位
 
-`system-{name}/` 承接下游系统知识库的镜像同步结果，供公司层导航与跨系统治理；不承载系统实现细节。上行提炼与 overview/archive 流程见 [system/DESIGN.md](../system/DESIGN.md)（docs-pull、docs-distill、docs-archive）。
+`system-{name}/` 承接下游 `system/` 知识库的镜像同步结果，供公司层导航与跨系统治理；不承载系统实现细节。
+
+- **下行同步**：由 `knowledge-links.yaml` 登记后，经脚本或人工将目标 `system/` 文档同步至 `company/system-{name}/`（尚无与 `/docs-pull` 同级的独立 Slash 技能；应用联邦镜像才使用 `/docs-pull`）。
+- **架构上行**：公司侧 overview/archive 流程见 [ea/overview/](ea/overview/NAME-overview.md) 与 [agent/skills/docs-extract/SKILL.md](../agent/skills/docs-extract/SKILL.md)、[docs-archive/SKILL.md](../agent/skills/docs-archive/SKILL.md)；系统侧蒸馏见 [system/DESIGN.md](../system/DESIGN.md)（`/docs-distill` 仅落盘 `system/architecture/overview/`）。
+
+#### SDD 跨层衔接
+
+| 层级 | 方案 | 分析 | 需求交付 |
+| --- | --- | --- | --- |
+| 公司 | `company/solutions/` | `company/analysis/` | **不在 company/** |
+| 系统 | `system/solutions/` | `system/analysis/` | `system/requirements/` |
+
+公司 `analysis/ANALYSIS-{IDEA-ID}.md` 拆解跨系统归属后，各系统侧在对应 `system/requirements/REQUIREMENT-{IDEA-ID}/` 承接 PRD/ASD/DSD/TDD（同 IDEA-ID 链）。
 
 治理规则：
 
@@ -77,7 +93,7 @@
 `company/` 的流程定位是“公司层编排入口”，流程保持轻量但可审计。
 
 1. **系统侧准备**：下游 `system/` 侧完成可同步内容整理；
-2. **公司侧挂载**：通过 fetch 将内容同步到 `company/system-{name}/` 槽位；
+2. **公司侧挂载**：按 `knowledge-links.yaml` 将内容同步至 `company/system-{name}/` 槽位（非 `/docs-pull` 技能路径）；
 3. **治理校核**：在 `company/ea/` 与 `knowledge-links.yaml` 维护一致性；
 4. **追溯记录**：对新增、替换、退役槽位记录来源、影响范围与状态。
 
@@ -112,4 +128,6 @@
 - [ea/README.md](ea/README.md)
 - [system-SYSNAME/README.md](system-SYSNAME/README.md)
 - [knowledge-links.yaml](knowledge-links.yaml)
+- [agent/references/knowledge-layout.md](../agent/references/knowledge-layout.md)
+- [../INDEX_GUIDE.md](../INDEX_GUIDE.md)
 - [../system/DESIGN.md](../system/DESIGN.md)

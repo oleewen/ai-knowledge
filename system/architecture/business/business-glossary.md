@@ -2,7 +2,7 @@
 
 [返回上一级 · 业务架构目录](README.md)
 
-> **业务术语 SSOT**：公司级概念模型与术语标准见 [`business-glossary.md`](../../../company/ea/business/business-glossary.md)。
+> **业务术语 SSOT**：系统层落地叙事；公司级业务治理框架见 [company/ea/business/README.md](../../../company/ea/business/README.md)。
 
 ## 概念模型
 

@@ -4,7 +4,7 @@
 
 本节将业务能力落地为可部署、可契约化的服务单元，并细化到容器与组件粒度，支撑实现与评审。
 
-> **服务设计 SSOT**：公司级设计原则、拆分与 C4 表达标准见 [`application-service-design.md`](../../../company/ea/application/application-service-design.md)。
+> **服务设计 SSOT**：系统层落地叙事；公司级 C4 与系统边界标准见 [application-architecture.md](../../../company/ea/application/application-architecture.md)。
 
 ## 设计原则
 

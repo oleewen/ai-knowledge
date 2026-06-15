@@ -12,6 +12,12 @@ child_directories:
   architecture:
     readme: "architecture/README.md"
     description: "五架构视角聚合；含 overview/ 蒸馏缓冲区"
+  adr:
+    readme: "adr/README.md"
+    description: "系统层 ADR 正文"
+  application-APPNAME:
+    readme: "application-APPNAME/README.md"
+    description: "联邦应用镜像槽位（占位 APPNAME）"
   solutions:
     readme: "solutions/README.md"
     description: "解决方案阶段：平铺 SOLUTION-{IDEA-ID}.md"
@@ -29,6 +35,8 @@ child_files:
   - "README.md"
   - "INDEX_GUIDE.md"
   - "DESIGN.md"
+  - "docs_meta.yaml"
+  - "knowledge-links.yaml"
 
 inputs:
   - path: "(from-repository-and-delivery)"
@@ -47,7 +55,7 @@ naming_conventions:
 integration:
   upstream:
     - path: "../agent/"
-      description: "规范、模板与 Agent 技能（治理 SSOT：agent/rules/）"
+      description: "规范、模板与 Agent 技能（命名 SSOT：agent/knowledge/；闸门：agent/rules/）"
   traceability:
     description: "阶段链 solutions → analysis → requirements；架构蒸馏经 overview → archive"
 

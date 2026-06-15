@@ -4,7 +4,7 @@
 
 本节沉淀本系统重大技术决策的背景、选项与后果，便于审计、复盘与知识传承。
 
-> **ADR SSOT**：公司级 ADR 模板与编号规则见 [`application-adr.md`](../../../company/ea/application/application-adr.md)。
+> **ADR SSOT**：系统层决策记录；模板见 [adr-guidelines.md](../../../agent/knowledge/adr-guidelines.md)、[adr-template.md](../../../agent/knowledge/adr-template.md)。公司级系统边界语境见 [company/ea/application/README.md](../../../company/ea/application/README.md)。
 
 ## ADR 模板
 

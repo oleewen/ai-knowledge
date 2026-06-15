@@ -8,22 +8,58 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from session_spec_paths import (
     is_session_spec_path,
     iter_session_spec_files,
+    resolve_session_spec_doc_dir,
     session_specs_from_payload,
 )
 
 
+def _write_docsconfig(repo: Path, doc_dir: str) -> None:
+    (repo / ".docsconfig").write_text(
+        f"DOC_ROOT={repo}\nREPO_ROOT={repo}\nDOC_DIR={doc_dir}\n",
+        encoding="utf-8",
+    )
+
+
 class SessionSpecPathTests(unittest.TestCase):
-    def test_accepts_superpowers_specs(self) -> None:
+    def test_shape_accepts_superpowers_specs(self) -> None:
         self.assertTrue(
             is_session_spec_path(
                 "application/superpowers/specs/2026-05-18-x-sdx-prd.md"
             )
         )
-        self.assertTrue(
-            is_session_spec_path(
-                "system/superpowers/specs/2026-05-18-x-docs-distill.md"
+
+    def test_docsconfig_application_only_allows_application(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            _write_docsconfig(repo, "application")
+            rel = "application/superpowers/specs/x.md"
+            self.assertEqual(resolve_session_spec_doc_dir(repo), "application")
+            self.assertTrue(is_session_spec_path(rel, repo=repo))
+            self.assertFalse(
+                is_session_spec_path("docs/superpowers/specs/x.md", repo=repo)
             )
-        )
+            self.assertFalse(
+                is_session_spec_path("system/superpowers/specs/x.md", repo=repo)
+            )
+
+    def test_no_docsconfig_defaults_docs(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            self.assertEqual(resolve_session_spec_doc_dir(repo), "docs")
+            self.assertTrue(
+                is_session_spec_path("docs/superpowers/specs/x.md", repo=repo)
+            )
+            self.assertFalse(
+                is_session_spec_path(
+                    "application/superpowers/specs/x.md", repo=repo
+                )
+            )
+
+    def test_invalid_doc_dir_in_config_defaults_docs(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            _write_docsconfig(repo, ".")
+            self.assertEqual(resolve_session_spec_doc_dir(repo), "docs")
 
     def test_rejects_legacy_docroot_specs(self) -> None:
         self.assertFalse(
@@ -42,9 +78,6 @@ class SessionSpecPathTests(unittest.TestCase):
             is_session_spec_path("application/superpowers/2026-05-18-x-sdx-prd.md")
         )
 
-    def test_rejects_docs_superpowers_specs(self) -> None:
-        self.assertFalse(is_session_spec_path("docs/superpowers/specs/x.md"))
-
     def test_rejects_requirements_specs(self) -> None:
         self.assertFalse(
             is_session_spec_path(
@@ -59,20 +92,33 @@ class SessionSpecPathTests(unittest.TestCase):
             ["application/superpowers/specs/2026-05-18-a-sdx-design.md"],
         )
 
-    def test_iter_session_spec_files(self) -> None:
+    def test_iter_session_spec_files_respects_docsconfig(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp)
-            good = repo / "application" / "superpowers" / "specs"
-            good.mkdir(parents=True)
-            (good / "a.md").write_text("# a", encoding="utf-8")
+            _write_docsconfig(repo, "application")
+            app_specs = repo / "application" / "superpowers" / "specs"
+            app_specs.mkdir(parents=True)
+            (app_specs / "a.md").write_text("# a", encoding="utf-8")
             legacy = repo / "application" / "specs"
             legacy.mkdir(parents=True)
             (legacy / "b.md").write_text("# b", encoding="utf-8")
-            bad = repo / "docs" / "superpowers" / "specs"
-            bad.mkdir(parents=True)
-            (bad / "c.md").write_text("# c", encoding="utf-8")
+            docs_specs = repo / "docs" / "superpowers" / "specs"
+            docs_specs.mkdir(parents=True)
+            (docs_specs / "d.md").write_text("# d", encoding="utf-8")
             paths = {p.name for p in iter_session_spec_files(repo)}
             self.assertEqual(paths, {"a.md"})
+
+    def test_iter_session_spec_files_defaults_docs(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            app_specs = repo / "application" / "superpowers" / "specs"
+            app_specs.mkdir(parents=True)
+            (app_specs / "a.md").write_text("# a", encoding="utf-8")
+            docs_specs = repo / "docs" / "superpowers" / "specs"
+            docs_specs.mkdir(parents=True)
+            (docs_specs / "d.md").write_text("# d", encoding="utf-8")
+            paths = {p.name for p in iter_session_spec_files(repo)}
+            self.assertEqual(paths, {"d.md"})
 
 
 if __name__ == "__main__":
