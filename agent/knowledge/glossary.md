@@ -79,7 +79,7 @@ tags: ["glossary", "terminology", "governance"]
 | implemented_by_service_ids | 聚合根由哪些 **MS-*（入口簇）** 实现；**MS-*** 须可指回 **API 宿主类**，**非** artifactId。 |
 | relies_on_context_ids      | 产品模块依赖哪些限界上下文。                                                      |
 | invokes_api_ids            | 功能点调用的 API 列表。                                                      |
-| implemented_by_api_id      | 能力（Ability）由哪个 API 实现。                                              |
+| apis                       | 能力（AB）绑定的 API 列表；跨视角引用见 `apis[].id` → API.id（落盘 SSOT 见 `business-meta.md` §5）。 |
 | map_to_api_id              | 用例（UC）映射到 API 的关系。                                                  |
 | persisted_as_entity_ids    | 聚合持久化对应的数据实体 ID。                                                    |
 | maps_to_aggregate_id       | 数据实体对应的业务聚合根。                                                       |

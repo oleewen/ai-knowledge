@@ -14,7 +14,7 @@
 ```text
 agent/rules（治理基线：术语/原则/命名/ADR）
       │
-      ├──→ knowledge（SSOT：四视角实体与映射）
+      ├──→ knowledge（SSOT：五视角实体与映射）
       │          ↑
       │          └── 蒸馏 / 回写（如 docs-distill）
       │
@@ -28,14 +28,14 @@ agent/rules（治理基线：术语/原则/命名/ADR）
 | 主线 | 目录 | 主要内容 |
 |------|------|----------|
 | 治理基线 | [agent/knowledge/](../agent/knowledge/knowledge-governance.md) | 术语、原则、命名、ADR |
-| 知识基线 | [knowledge](knowledge) | 四视角知识实体与映射 |
+| 知识基线 | [knowledge](knowledge) | 五视角知识实体与映射 |
 | 变更留痕 | [changelogs](changelogs/README.md) | 变更记录与索引运维文件 |
 
 ## 子目录入口
 
 | 目录 | 入口说明 |
 |------|----------|
-| [knowledge/README.md](knowledge/README.md) | 四视角知识实体组织与映射规则 |
+| [knowledge/README.md](knowledge/README.md) | 五视角知识实体组织与映射规则 |
 | [changelogs/README.md](changelogs/README.md) | 变更记录与索引运维文件 |
 
 ## 机器可读元数据

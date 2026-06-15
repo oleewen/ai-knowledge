@@ -26,7 +26,7 @@ solutions ──→ analysis ──→ requirements
 
 | 阶段 | 目录 | 主要产物 |
 |------|------|----------|
-| 知识基线 | [agent/knowledge/](../agent/knowledge/knowledge-governance.md)、[knowledge](knowledge) | 治理规则与四视角实体 |
+| 知识基线 | [agent/knowledge/](../agent/knowledge/knowledge-governance.md)、[knowledge](knowledge) | 治理规则与五视角实体 |
 | 方案阶段 | [solutions](solutions) | `SOLUTION-{IDEA-ID}.md` |
 | 分析阶段 | [analysis](analysis) | `ANALYSIS-{IDEA-ID}.md` |
 | 交付阶段 | [requirements](requirements) | `REQUIREMENT-{IDEA-ID}/MVP-Phase-*`（PRD/ASD/DSD/TDD/`specs/`） |
@@ -37,7 +37,7 @@ solutions ──→ analysis ──→ requirements
 
 | 目录 | 入口说明 |
 |------|----------|
-| [knowledge/README.md](knowledge/README.md) | 四视角知识实体组织与映射规则 |
+| [knowledge/README.md](knowledge/README.md) | 五视角知识实体组织与映射规则 |
 | [solutions/README.md](solutions/README.md) | 方案阶段编写规则 |
 | [analysis/README.md](analysis/README.md) | 分析阶段编写规则 |
 | [requirements/README.md](requirements/README.md) | 交付阶段结构与产物规则 |

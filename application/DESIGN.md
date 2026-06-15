@@ -61,7 +61,7 @@
 #### 业务 (business)
 
 - **层级**：BD → BSD → BC → AGG → AB  
-- **约定**：`business-meta.md` 在 `knowledge/business/` 根目录（单文件 SSOT：概览、层级链、层定义、必填字段、跨视角引用）；`{BD-ID}/…` 为锚点目录。实例见 `business-entities.md`。AGG 含 `persisted_as_entity_ids` 等；AB 为能力（Ability）缩写，`implemented_by_api_id` 映射 API。
+- **约定**：`business-meta.md` 在 `knowledge/business/` 根目录（单文件 SSOT：概览、层级链、层定义、必填字段、跨视角引用）；`{BD-ID}/…` 为锚点目录。实例见 `business-entities.md`。AGG 含 `persisted_as_entity_ids` 等；AB 为能力（Ability）缩写，`apis`（含 `id` → API）映射实现接口。
 
 #### 产品 (product)
 
@@ -135,7 +135,7 @@
 | ---- | -------- | -------- | ---------------------------------- | ------------- |
 | 实现   | BC       | APP      | `implemented_by_app_id`            | 上下文由哪个APP实现   |
 | 实现   | AGG      | MS       | `implemented_by_service_ids`       | 聚合根被哪些 MS 实现  |
-| 实现   | AB       | API      | `implemented_by_api_id`            | 能力被哪个API实现    |
+| 实现   | AB       | API      | `apis`（`apis[].id`）              | 能力绑定的 API 列表（单 API 时仅一项）    |
 | 需求支撑 | PM       | BC       | `relies_on_context_ids`            | 模块依赖哪些上下文（组件） |
 | 接口   | FT       | API      | `invokes_api_ids`                  | 功能调用的 API     |
 | 接口   | UC       | API      | `map_to_api_id`                    | 用例映射的 API     |

@@ -24,7 +24,7 @@
 
 - **目录角色**: 应用知识库 **SSOT**（稳定事实、阶段交付、五视角知识）
 - **技术栈**: Markdown、YAML、JSON（知识提取产物）
-- **已跟踪文件规模**（仅 `application/` 前缀）: **46** 个文件（`git ls-files application/`，2026-05-04）
+- **已跟踪文件规模**（仅 `application/` 前缀）: **35** 个文件（`git ls-files application/`，2026-05-04）
 - **精读深度**: 本轮 **depth=3**（以已读入口与目录枚举为准，非逐文件全文内嵌）
 
 ---
@@ -39,13 +39,16 @@ application/
 ├── INDEX_GUIDE.md                          # 本文件
 ├── DESIGN.md / CONTRIBUTING.md             # 元模型与贡献
 ├── docs_meta.yaml / manifest.yaml          # 文档元数据
-├── analysis/                               # 需求分析阶段占位与 meta
+├── adr/                                    # 应用层 ADR 正文
+├── analysis/                               # 需求分析阶段
 ├── changelogs/                             # CHANGE-LOG、INDEXING-LOG
 ├── knowledge/                              # 五视角：business/data/product/application/technical
-├── requirements/                         # 需求包与 REQUIREMENT-EXAMPLE
-├── solutions/                              # 方案阶段与 archive
-└── specs/                                  # 规约与阶段规格占位
+├── requirements/                           # 需求包与 REQUIREMENT-EXAMPLE
+├── solutions/                              # 方案阶段与 archive/
+└── superpowers/specs/                      # 会话 spec（通常 gitignore；DOC_DIR=application 时）
 ```
+
+> **规约路径说明**：SDD 规约 `spec-asd-*.md` 在各需求包 `MVP-Phase-*/specs/`；legacy docs-push 可选 `application/specs/`（中央库可不建）。
 
 ### 2.2 依赖关系
 
@@ -141,7 +144,7 @@ flowchart TB
 
 | 名称 | 取值 |
 |------|------|
-| 知识视角子目录 | `business/`、`data/`、`product/`、`application/` |
+| 知识视角子目录 | `business/`、`data/`、`product/`、`application/`、`technical/` |
 
 ---
 
@@ -185,7 +188,7 @@ flowchart TB
 
 | 指标 | 值 |
 |------|-----|
-| `git ls-files application/` | 46 |
+| `git ls-files application/` | 35 |
 | 本轮 mode / depth | `full` / `3` |
 
 ### 8.2 排除与未读

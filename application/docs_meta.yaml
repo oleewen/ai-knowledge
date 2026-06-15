@@ -24,6 +24,9 @@ child_directories:
   changelogs:
     readme: "changelogs/README.md"
     description: "变更留痕与索引运维：CHANGE-LOG.md、INDEXING-LOG.md（约定见 README，无 changelogs_meta.yaml）"
+  adr:
+    readme: "adr/README.md"
+    description: "应用层 ADR 正文（ADR-{序号}-{标题}.md）"
 
 child_files:
   - "README.md"

@@ -14,7 +14,7 @@ SDD **解决方案**阶段目录：产出 `SOLUTION-{IDEA-ID}.md`，作为 [../a
 ## 输入
 
 - 外部 — 业务诉求（邮件、会议纪要、工单等）
-- [../knowledge/](../knowledge/) — 四视角与宪法层
+- [../knowledge/](../knowledge/) — 五视角与[治理基线](../../agent/knowledge/knowledge-governance.md)
 - 规约：各需求包内 `specs/`
 
 影响面评估可与 **business、product、application、data** 实体 ID 建立引用，不重复定义实体。

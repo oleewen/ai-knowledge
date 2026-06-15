@@ -41,7 +41,7 @@ business/
 | 了解某聚合的业务规则与能力   | `business-entities.md` 中 `hierarchy=AGG` 行 |
 | 了解上下文边界与通用语言    | `business-entities.md` 中 `hierarchy=BC` 行 |
 | 跨视角映射（业务→技术/数据） | [business-meta.md](business-meta.md) → §5 跨视角引用 |
-| 全库四视角索引         | [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) |
+| 全库五视角索引         | [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) |
 
 ---
 

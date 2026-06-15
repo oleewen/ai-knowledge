@@ -13,7 +13,7 @@ SDD **需求分析**阶段目录：产出 `ANALYSIS-{IDEA-ID}.md`，作为 [../r
 ## 输入
 
 - [../solutions/](../solutions/) — `SOLUTION-{IDEA-ID}.md`
-- [../knowledge/](../knowledge/) — 四视角与宪法层
+- [../knowledge/](../knowledge/) — 五视角与[治理基线](../../agent/knowledge/knowledge-governance.md)
 - 规约：各需求包内 `specs/`
 
 细化结论可与 **business、product** 等功能/用例 ID 追溯；实现方案宜与 **application、data** 对齐。
