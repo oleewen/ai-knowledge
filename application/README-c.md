@@ -12,7 +12,7 @@
 ## 文档流（一页纸）
 
 ```text
-constitution（治理基线：术语/原则/标准/ADR）
+agent/rules（治理基线：术语/原则/命名/ADR）
       │
       ├──→ knowledge（SSOT：四视角实体与映射）
       │          ↑
@@ -21,13 +21,13 @@ constitution（治理基线：术语/原则/标准/ADR）
       └──→ changelogs（变更留痕与索引运维）
 ```
 
-**推荐落地顺序**：先核对 **constitution** 治理约束，再查 / 补 **knowledge** 实体与 ID（读 [DESIGN.md](DESIGN.md)、[CONTRIBUTING.md](CONTRIBUTING.md)），最后在 **changelogs** 留痕并维护索引链路。
+**推荐落地顺序**：先核对 [agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md) 治理约束，再查 / 补 **knowledge** 实体与 ID（读 [DESIGN.md](DESIGN.md)、[CONTRIBUTING.md](CONTRIBUTING.md)），最后在 **changelogs** 留痕并维护索引链路。
 
 ## 中央知识库挂载建联维护主线
 
 | 主线 | 目录 | 主要内容 |
 |------|------|----------|
-| 治理基线 | [constitution](constitution/README.md) | 术语、原则、标准、ADR |
+| 治理基线 | [agent/knowledge/](../agent/knowledge/knowledge-governance.md) | 术语、原则、命名、ADR |
 | 知识基线 | [knowledge](knowledge) | 四视角知识实体与映射 |
 | 变更留痕 | [changelogs](changelogs/README.md) | 变更记录与索引运维文件 |
 
@@ -35,13 +35,12 @@ constitution（治理基线：术语/原则/标准/ADR）
 
 | 目录 | 入口说明 |
 |------|----------|
-| [constitution/README.md](constitution/README.md) | 宪法层：术语、原则、标准、ADR |
 | [knowledge/README.md](knowledge/README.md) | 四视角知识实体组织与映射规则 |
 | [changelogs/README.md](changelogs/README.md) | 变更记录与索引运维文件 |
 
 ## 机器可读元数据
 
 - 根元数据：[docs_meta.yaml](docs_meta.yaml)
-- 子目录元数据：`constitution/constitution_meta.yaml`、`knowledge_meta.yaml`（阶段目录见各 `README.md`，含 [changelogs/README.md](changelogs/README.md)）
+- 子目录元数据：`knowledge/knowledge-meta.md`（阶段目录见各 `README.md`，含 [changelogs/README.md](changelogs/README.md)）
 
 > 约束细则以对应 YAML 与 `DESIGN.md` 为准，本文件不复写字段定义。

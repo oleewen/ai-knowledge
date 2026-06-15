@@ -4,7 +4,7 @@
 
 本节连接本系统数据资产与消费场景，支撑决策、运营与智能化。
 
-> **数据分析 SSOT**：公司级分析消费与开放标准见 [`data-analytics.md`](../../../company/architecture/data/data-analytics.md)。
+> **数据分析 SSOT**：公司级分析消费与开放标准见 [`data-analytics.md`](../../../company/ea/data/data-analytics.md)。
 
 ## BI 看板
 

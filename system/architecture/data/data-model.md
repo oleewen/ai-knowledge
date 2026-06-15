@@ -4,7 +4,7 @@
 
 本节沉淀本系统数据源与物理层数据结构，支撑跨服务一致性与演进治理。
 
-> **数据模型 SSOT**：公司级 CDM/LDM/PDM 标准见 [`data-model.md`](../../../company/architecture/data/data-model.md)。
+> **数据模型 SSOT**：公司级 CDM/LDM/PDM 标准见 [`data-model.md`](../../../company/ea/data/data-model.md)。
 
 与 [`application-domain-model.md`](../application/application-domain-model.md)、[`business-glossary.md`](../business/business-glossary.md#概念模型) 交叉对齐。
 

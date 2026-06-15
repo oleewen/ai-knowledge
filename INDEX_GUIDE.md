@@ -13,11 +13,11 @@
 |------|------|------|
 | 人类入口 | [README.md](README.md) | 克隆、bootstrap、`docs-install`/`agent-install` 与协作总览 |
 | Agent 契约 | [AGENTS.md](AGENTS.md) | 角色、索引查阅顺序、提交闸门与禁止事项 |
-| 应用知识库 SSOT | [application/README.md](application/README.md) | SDD 主线、四视角与阶段文档中枢 |
+| 应用知识库 SSOT | [application/README.md](application/README.md) | SDD 主线、五视角与阶段文档中枢 |
 | 应用侧索引与建联 | [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) | 应用目录九章索引、中央知识库挂载建联登记 |
-| 系统知识库 | [system/README.md](system/README.md) | `architecture/`（五视角文档）、`application-{name}/` 联邦槽位、`analysis/`、`constitution/` |
+| 系统知识库 | [system/README.md](system/README.md) | `architecture/`（五视角文档）、`application-{name}/` 联邦槽位、`analysis/` |
 | 系统侧机器索引 | [system/INDEX_GUIDE.md](system/INDEX_GUIDE.md) | `system/` 树内九章索引（与根、应用侧索引互补） |
-| 公司知识库 | [company/README.md](company/README.md) | `architecture/`（五视角文档）、`system-{name}/` 联邦槽位、`changelogs/`、`constitution/`、`solutions/` |
+| 公司知识库 | [company/README.md](company/README.md) | `architecture/`（五视角文档）、`system-{name}/` 联邦槽位、`changelogs/`、`solutions/` |
 | 初始化脚本 | [scripts/README.md](scripts/README.md) | `docs-install`/`agent-install`/`docs-link`/`docs-bootstrap` |
 | 规范与 Slash | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/skills/README.md](agent/skills/README.md) | 全局约定与 Skill 清单 |
 | 变更与索引运维 | [application/changelogs/README.md](application/changelogs/README.md) | `CHANGE-LOG.md`、`INDEXING-LOG.md` |
@@ -40,8 +40,8 @@
 ./
 ├── README.md / AGENTS.md / INDEX_GUIDE.md    # 人类与 Agent 入口、本索引
 ├── application/                              # 应用知识库 SSOT：knowledge、阶段、solutions～requirements、changelogs
-├── system/                                   # 系统知识库：architecture/（五视角文档）、application-APPNAME/ 联邦槽位、analysis/、constitution/
-├── company/                                  # 公司知识库：architecture/（五视角文档）、system-SYSNAME/ 联邦槽位、changelogs/、constitution/、solutions/
+├── system/                                   # 系统知识库：architecture/（五视角文档）、application-APPNAME/ 联邦槽位、analysis/
+├── company/                                  # 公司知识库：architecture/（五视角文档）、system-SYSNAME/ 联邦槽位、changelogs/、solutions/
 ├── scripts/                                  # 向目标工程注入知识库与 .docsconfig；bootstrap
 ├── agent/                                    # rules/、skills/、scripts/（config-bootstrap、校验）
 ├── docs/                                     # 设计备忘等（若存在；会话 spec 见各文档根 specs/）
@@ -70,7 +70,7 @@ flowchart LR
 
 ### 2.3 包结构
 
-本仓库非 JVM 工程；以**目录职责**代替包分层：**宪法与四视角**在 `application/constitution/` 与 `application/knowledge/`；**协作规范**在 `agent/rules/`；**可执行初始化**在 `scripts/`；**Slash 工作流**在 `agent/skills/<name>/SKILL.md`。
+本仓库非 JVM 工程；以**目录职责**代替包分层：**五视角实体**在 `application/knowledge/`；**治理与命名 SSOT** 在 `agent/knowledge/`；**可执行初始化**在 `scripts/`；**Slash 工作流**在 `agent/skills/<name>/SKILL.md`。
 
 ### 2.4 文档目录
 
@@ -101,18 +101,18 @@ flowchart LR
 | 术语 | 定义 | 使用场景 |
 |------|------|----------|
 | SSOT | 单一事实源，`application/` 为应用知识稳定事实中枢 | 与联邦镜像、目标工程对齐 |
-| 四视角 | 业务 / 产品 / 应用 / 数据 知识分层与映射字段 | 见 [application/DESIGN.md](application/DESIGN.md) |
+| 五视角 | 业务 / 产品 / 应用 / 数据 / 技术 知识分层与映射字段 | 见 [application/DESIGN.md](application/DESIGN.md) |
 | 联邦治理 | `system/`、`company/` 槽位与迁移叙事；`system/application-{name}/` 为应用镜像，`company/system-{name}/` 为系统镜像 | 多库协作与 docs-install 模式 |
 | SDD | 方案 → 分析 → PRD/设计/测试 阶段交付链 | `sdx-*` Skill 与 `application/` 阶段目录 |
 | 中央知识库挂载建联 | `docs-install --mode=central` 等约定 | 见 [README.md](README.md)、[scripts/README.md](scripts/README.md) |
-| 五架构视角 | 业务 / 产品 / 应用 / 技术 / 数据 架构文档体系；`system/architecture/` 与 `company/architecture/` 均按此组织 | docs-distill、docs-archive、overview 文件 |
+| 五架构视角 | 业务 / 产品 / 应用 / 技术 / 数据 架构文档体系；`system/architecture/` 与 `company/ea/` 均按此组织 | docs-distill、docs-archive、overview 文件 |
 
 ### 4.2 聚合根（知识组织）
 
 | 聚合 | 职责 | 关键落点 |
 |------|------|----------|
-| 宪法层 | 术语、原则、命名、ADR 模板 | [application/constitution/](application/constitution/) |
-| 四视角实体 | BC/AGG、PL/PM/FT/UC、SYS/APP/MS、DS/ENT 等 | [application/knowledge/](application/knowledge/) |
+| 治理规则 | 术语、原则、命名、ADR 模板 | [agent/knowledge/knowledge-governance.md](agent/knowledge/knowledge-governance.md)、[agent/knowledge/README.md](agent/knowledge/README.md) |
+| 五视角实体 | BC/AGG、PL/PM/FT/UC、SYS/APP/MS、DS/ENT、MW/CMP 等 | [application/knowledge/](application/knowledge/) |
 | 阶段产物 | SOLUTION / ANALYSIS / REQUIREMENT 包 | `application/solutions/` 等 |
 
 ### 4.3 领域服务（协作能力）
@@ -175,13 +175,13 @@ stateDiagram-v2
 
 | 数据源 | 类型 | 用途 |
 |--------|------|------|
-| `application/knowledge/**/*.yaml` 等 | YAML 元数据与实体 | 四视角实体与关系 |
-| `*_knowledge.json` | JSON（若存在） | 知识提取产物，见各视角目录 |
+| `application/knowledge/**/*.yaml` 等 | YAML 元数据与实体 | 五视角实体与关系 |
+| `*-entities.md` / `*-meta.md` | Markdown | 知识实体与视角元数据，见各视角目录 |
 | Git 仓库 | 文本与脚本 | 版本与协作真相源 |
 
 ### 6.2 实体映射
 
-映射字段与层级见 [application/DESIGN.md](application/DESIGN.md)、[application/constitution/GLOSSARY.md](application/constitution/GLOSSARY.md)（如 `implemented_by_app_id`、`persisted_as_entity_ids` 等）；**禁止**在未同步引用链时改实体 ID（见 [AGENTS.md](AGENTS.md)）。
+映射字段与层级见 [application/DESIGN.md](application/DESIGN.md)、[agent/knowledge/glossary.md](agent/knowledge/glossary.md)（如 `implemented_by_app_id`、`persisted_as_entity_ids` 等）；**禁止**在未同步引用链时改实体 ID（见 [AGENTS.md](AGENTS.md)）。
 
 ### 6.3 关系映射
 

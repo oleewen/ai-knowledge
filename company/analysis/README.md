@@ -7,13 +7,13 @@ SDD **需求分析**阶段目录：产出 `ANALYSIS-{IDEA-ID}.md`，作为 [../r
 | 项 | 约定 |
 |----|------|
 | 文件 | 根目录平铺 `ANALYSIS-{IDEA-ID}.md` |
-| IDEA-ID | 与 `SOLUTION-{IDEA-ID}.md`、`REQUIREMENT-{IDEA-ID}/` **同链**（见 [../constitution/standards/naming-conventions.md](../constitution/standards/naming-conventions.md)） |
+| IDEA-ID | 与 `SOLUTION-{IDEA-ID}.md`、`REQUIREMENT-{IDEA-ID}/` **同链**（见 [../../agent/knowledge/naming-conventions.md](../../agent/knowledge/naming-conventions.md)） |
 | 文档元数据 | 文末 `## 文档元数据`：`id` 与文件名一致；`parent` → 对应 `SOLUTION-{IDEA-ID}`（**勿**在文首使用 `---` YAML frontmatter） |
 
 ## 输入
 
 - [../solutions/](../solutions/) — `SOLUTION-{IDEA-ID}.md`
-- [../architecture/](../architecture/) — 五视角架构文档
+- [../ea/](../ea/) — 企业架构五视角文档
 - 规约：各需求包内 `specs/`
 
 ## 分析索引表

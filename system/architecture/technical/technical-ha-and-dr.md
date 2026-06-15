@@ -4,7 +4,7 @@
 
 本节定义本系统可用性目标、灾难恢复与韧性工程实践，支撑业务连续性论证。
 
-> **高可用与容灾 SSOT**：公司级 HA/DR 与韧性标准见 [`technical-ha-and-dr.md`](../../../company/architecture/technical/technical-ha-and-dr.md)。
+> **高可用与容灾 SSOT**：公司级 HA/DR 与韧性标准见 [`technical-ha-and-dr.md`](../../../company/ea/technical/technical-ha-and-dr.md)。
 
 ## 高可用设计
 

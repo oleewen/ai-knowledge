@@ -12,17 +12,17 @@
 | 组件 | 路径 | 描述 |
 |------|------|------|
 | 应用入口（模式分流） | [README.md](README.md) | `standalone` / `central` 见 [README-s.md](README-s.md)、[README-c.md](README-c.md) |
-| 设计元模型 | [DESIGN.md](DESIGN.md) | 四视角、实体与演进约束 |
+| 设计元模型 | [DESIGN.md](DESIGN.md) | 五视角、实体与演进约束 |
 | 贡献与阶段 | [CONTRIBUTING.md](CONTRIBUTING.md) | SDD 阶段、闸门与模板指针 |
-| 四视角实体索引 | [knowledge/KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md) | ID 表与证据链（示例级 SSOT） |
-| 宪法与术语 | [constitution/README.md](constitution/README.md) | 原则、命名、ADR 模板 |
+| 五视角实体索引 | [knowledge/KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md) | ID 表与证据链（示例级 SSOT） |
+| 宪法与术语 | [../agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md) | 治理、命名、ADR |
 | 阶段产物目录 | `solutions/`、`analysis/`、`requirements/` | 方案～需求包与元数据 |
 | 运维日志 | [changelogs/README.md](changelogs/README.md) | `CHANGE-LOG.md`、`INDEXING-LOG.md` |
 | 仓库根全索引 | [../INDEX_GUIDE.md](../INDEX_GUIDE.md) | 中央库根路径九章地图 |
 
 ### 1.2 元信息
 
-- **目录角色**: 应用知识库 **SSOT**（稳定事实、阶段交付、四视角知识）
+- **目录角色**: 应用知识库 **SSOT**（稳定事实、阶段交付、五视角知识）
 - **技术栈**: Markdown、YAML、JSON（知识提取产物）
 - **已跟踪文件规模**（仅 `application/` 前缀）: **46** 个文件（`git ls-files application/`，2026-05-04）
 - **精读深度**: 本轮 **depth=3**（以已读入口与目录枚举为准，非逐文件全文内嵌）
@@ -41,8 +41,7 @@ application/
 ├── docs_meta.yaml / manifest.yaml          # 文档元数据
 ├── analysis/                               # 需求分析阶段占位与 meta
 ├── changelogs/                             # CHANGE-LOG、INDEXING-LOG
-├── constitution/                           # 术语、原则、ADR、标准
-├── knowledge/                              # 四视角：business/data/product/application
+├── knowledge/                              # 五视角：business/data/product/application/technical
 ├── requirements/                         # 需求包与 REQUIREMENT-EXAMPLE
 ├── solutions/                              # 方案阶段与 archive
 └── specs/                                  # 规约与阶段规格占位
@@ -54,7 +53,6 @@ application/
 flowchart TB
   subgraph app["application/"]
     k["knowledge/"]
-    c["constitution/"]
     sol["solutions/"]
     ana["analysis/"]
     req["requirements/"]
@@ -65,7 +63,6 @@ flowchart TB
   root --> app
   sol --> ana --> req
   k --> DESIGN["DESIGN.md"]
-  c --> DESIGN
   agent --> sol
   agent --> cl
 ```
@@ -96,7 +93,7 @@ flowchart TB
 
 | 术语 | 定义 | 落点 |
 |------|------|------|
-| 四视角 | 业务 / 产品 / 应用 / 数据 分层与 ID 规范 | [DESIGN.md](DESIGN.md)、[constitution/GLOSSARY.md](constitution/GLOSSARY.md) |
+| 五视角 | 业务 / 产品 / 应用 / 数据 / 技术 分层与 ID 规范 | [DESIGN.md](DESIGN.md)、[../agent/knowledge/glossary.md](../agent/knowledge/glossary.md) |
 | 知识实体 | YAML/JSON 承载的层级 ID 与关系字段 | [knowledge/](knowledge/) |
 | SDD 阶段 | Solution → Analysis → PRD/设计/测试 链 | [CONTRIBUTING.md](CONTRIBUTING.md)、`agent/skills/sdx-*` |
 
@@ -104,8 +101,8 @@ flowchart TB
 
 | 聚合 | 职责 | 路径 |
 |------|------|------|
-| 宪法与标准 | 术语、架构原则、命名、ADR 模板 | [constitution/](constitution/) |
-| 四视角知识 | 实体与证据链 | [knowledge/](knowledge/) |
+| 治理与标准 | 术语、架构原则、命名、ADR 模板 | [../agent/knowledge/README.md](../agent/knowledge/README.md) |
+| 五视角知识 | 实体与证据链 | [knowledge/](knowledge/) |
 | 阶段包 | 方案、分析、需求树 | [solutions/](solutions/)、[analysis/](analysis/)、[requirements/](requirements/) |
 
 ### 4.3 领域服务
@@ -113,7 +110,7 @@ flowchart TB
 | 能力 | 说明 |
 |------|------|
 | Slash SDD | `/sdx-solution` 等写入受管终稿前须用户与 spec 闸门 |
-| docs-build | 四视角实体提取与 `KNOWLEDGE_INDEX` 联动（见根索引 §九） |
+| docs-build | 五视角实体提取与 `KNOWLEDGE_INDEX` 联动（见根索引 §九） |
 
 ### 4.4 领域事件
 
@@ -155,7 +152,7 @@ flowchart TB
 | 数据源 | 类型 | 用途 |
 |--------|------|------|
 | `knowledge/**/*.yaml` | YAML | 实体与关系（若存在） |
-| `*_knowledge.json` | JSON | 各视角提取/示例产物 |
+| `*-entities.md` | Markdown | 各视角实体索引（SSOT） |
 
 ### 6.2～6.4
 
@@ -169,7 +166,7 @@ flowchart TB
 
 | 项 | 位置 | 说明 |
 |----|------|------|
-| 文档元数据 | [docs_meta.yaml](docs_meta.yaml)、各 `*_meta.yaml` | 阶段与目录元信息 |
+| 文档元数据 | [docs_meta.yaml](docs_meta.yaml)、[knowledge/knowledge-meta.md](knowledge/knowledge-meta.md) | 阶段与目录元信息 |
 | manifest | [manifest.yaml](manifest.yaml) | 应用清单字段（按项目约定） |
 
 ### 7.2 环境差异

@@ -4,7 +4,7 @@
 
 本节说明本系统运营支撑能力落地，沉淀运营、内容、触达与反馈所需的产品能力，支撑增长与留存。
 
-> **运营支撑 SSOT**：公司级后台、内容、触达与营销规范见 [`product-operations-support.md`](../../../company/architecture/product/product-operations-support.md)。
+> **运营支撑 SSOT**：公司级后台、内容、触达与营销规范见 [`product-operations-support.md`](../../../company/ea/product/product-operations-support.md)。
 
 ## 运营后台
 

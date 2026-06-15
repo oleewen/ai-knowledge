@@ -4,7 +4,7 @@
 
 本节描述本系统计算、网络与边缘交付的落地方式，支撑部署、安全与成本治理。
 
-> **基础设施 SSOT**：公司级部署、网络与云资源标准见 [`technical-infrastructure.md`](../../../company/architecture/technical/technical-infrastructure.md)。
+> **基础设施 SSOT**：公司级部署、网络与云资源标准见 [`technical-infrastructure.md`](../../../company/ea/technical/technical-infrastructure.md)。
 
 ## 部署架构
 

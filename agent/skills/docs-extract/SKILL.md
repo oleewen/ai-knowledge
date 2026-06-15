@@ -20,9 +20,9 @@ description: >
 
 ## 前置
 
-- 路径契约：[session-spec-path.md](../../references/session-spec-path.md)（`{DOC_DIR}/superpowers/specs/`）
+- 路径契约：[session-spec-path.md](../../references/session-spec-path.md)、[knowledge-layout.md](../../references/knowledge-layout.md)
 - `--sources`、`--overview` 可解析；overview 含 `## 文档关键词`（缺则补，见 gotchas）。
-- 会话 spec：`{DOC_DIR}/superpowers/specs/`；目标常位于 `system/architecture/overview/`。
+- 会话 spec：`{DOC_DIR}/superpowers/specs/`；目标常位于 `system/architecture/overview/` 或 `company/ea/overview/`。
 
 ## 执行顺序（先读后写）
 

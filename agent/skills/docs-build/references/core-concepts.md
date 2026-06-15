@@ -1,19 +1,11 @@
-# docs-build 核心概念
+# 核心概念
 
-[SKILL.md](../SKILL.md)；细则 [extraction-rules.md](extraction-rules.md)。
+| 视角 | 层级 | SSOT 文件 |
+| --- | --- | --- |
+| application | SYS/APP/MS/API | `application-entities.md`（分节表，语义等价 schema 2.1 分类结构） |
+| data | DS、ENT | `data-entities.md`（扁平） |
+| business | BD→AB | `business-entities.md`（扁平） |
+| product | PL→UC | `product-entities.md`（扁平） |
+| technical | MW/CMP | `technical-entities.md`（扁平） |
 
-## 视角与产物
-
-| 视角 | 前缀 | 产出 |
-|------|------|------|
-| application | SYS/APP/MS/API | `application_knowledge.json`（`entities` 分类） |
-| data | DS、ENT | `data_knowledge.json`（扁平） |
-| business | BD→AB | `business_knowledge.json`（扁平） |
-| product | PL→UC | `product_knowledge.json`（扁平） |
-
-主索引：`{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md`。
-
-## 依赖
-
-- 上游：主 Index Guide（多由 `/docs-indexing`）
-- 不替代：docs-indexing、docs-archive、docs-distill、docs-extract
+层级与必填字段见各视角 `{perspective}-meta.md`。

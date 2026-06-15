@@ -12,4 +12,4 @@
 | 📎 | 数据分析 | [data-analytics.md](data-analytics.md) | 数据资产与分析消费场景连接。 |
 | 📎 | 数据流转 | [data-flow.md](data-flow.md) | 数据流动路径与管道设计。 |
 
-> 数据治理标准、数仓与湖架构、数据安全分级见 [公司数据架构](../../../company/architecture/data/README.md)。
+> 数据治理标准、数仓与湖架构、数据安全分级见 [公司数据架构](../../../company/ea/data/README.md)。

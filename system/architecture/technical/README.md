@@ -2,7 +2,7 @@
 
 [返回上一级 · 架构文档索引](../README.md)
 
-本目录为技术架构**目录与入口**。🔑 核心文件为必维护项；📎 补充文件按系统复杂度按需启用；📐 决策记录与架构变更同步。
+本目录为技术架构**目录与入口**。🔑 核心文件为必维护项；📎 补充文件按系统复杂度按需启用；📐 决策记录与架构变更同步。实体 SSOT：[technical-meta.md](technical-meta.md)、[technical-entities.md](technical-entities.md)（**TSD-***，引用 **TPL-***）。
 
 | 类型 | 章节 | 文件 | 概述 |
 |------|------|------|------|
@@ -13,4 +13,4 @@
 | 🔑 | 高可用与容灾 | [technical-ha-and-dr.md](technical-ha-and-dr.md) | 可用性目标、灾难恢复与韧性实践。 |
 | 🔑 | 可观测性 | [technical-observability.md](technical-observability.md) | 日志、指标、追踪与 SLO 验证。 |
 
-> DevOps 流程、技术安全基线、开发环境标准见 [公司技术架构](../../../company/architecture/technical/README.md)。
+> DevOps 流程、技术安全基线、开发环境标准见 [公司技术架构](../../../company/ea/technical/README.md)。

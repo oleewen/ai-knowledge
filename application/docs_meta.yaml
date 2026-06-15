@@ -6,15 +6,12 @@ description: "企业级知识库 application/ 根目录：人类与 Agent 的主
 role:
   kind: "documentation_root"
   ssot_subdirectory: "knowledge/"
-  # 宪法层 SSOT 目录为 constitution/（与 knowledge/ 平级）；命名与 ADR 规约见该树
+  # 治理与命名 SSOT 见 agent/knowledge/knowledge-governance.md
 
 child_directories:
-  constitution:
-    meta: "constitution/constitution_meta.yaml"
-    description: "宪法层：术语、原则、标准、ADR（与 knowledge/ 平级）"
   knowledge:
-    meta: "knowledge/knowledge_meta.yaml"
-    description: "四视角业务 / 产品 / 应用 / 数据（SSOT）"
+    meta: "knowledge/knowledge-meta.md"
+    description: "五视角业务 / 产品 / 应用 / 数据 / 技术（SSOT）"
   solutions:
     readme: "solutions/README.md"
     description: "解决方案阶段：平铺 SOLUTION-{IDEA-ID}.md（约定见 README，无 solutions_meta.yaml）"
@@ -40,18 +37,18 @@ inputs:
 
 outputs:
   primary_artifact:
-    pattern: "README.md, INDEX_GUIDE.md, DESIGN.md, CONTRIBUTING.md, */{dirname}_meta.yaml, constitution/**/*, knowledge/**/*"
-    description: "child_files（根级）+ child_directories 的 {dirname}_meta.yaml + constitution/ 与 knowledge/ 树实体"
+    pattern: "README.md, INDEX_GUIDE.md, DESIGN.md, CONTRIBUTING.md, knowledge/**/*"
+    description: "child_files（根级）+ knowledge/ 树（{perspective}-meta.md、{perspective}-entities.md）"
 
 naming_conventions:
   directory_index:
-    description: "各一级子目录使用与目录同名的 {dirname}_meta.yaml；knowledge/ 根另见 knowledge_meta.yaml"
-    reference: "./constitution/standards/naming-conventions.md"
+    description: "knowledge/ 根见 knowledge-meta.md；五视角见 {perspective}-meta.md + {perspective}-entities.md"
+    reference: "../agent/knowledge/naming-conventions.md"
 
 integration:
   upstream:
     - path: "../agent/"
-      description: "规范、模板与 Agent 技能（非 application 内必存路径）"
+      description: "规范、模板与 Agent 技能（治理 SSOT：agent/rules/）"
   traceability:
     description: "阶段链 solutions → analysis → requirements；规约落在需求包内 specs/ 或 knowledge/application/；knowledge 为事实源，归档可回写"
 
@@ -60,3 +57,4 @@ references:
   - path: "./INDEX_GUIDE.md"
   - path: "./DESIGN.md"
   - path: "./CONTRIBUTING.md"
+  - path: "../agent/knowledge/knowledge-governance.md"

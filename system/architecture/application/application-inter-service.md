@@ -4,7 +4,7 @@
 
 本节描述本系统同步与异步协作方式、编排与依赖治理，支撑故障定位、容量规划与解耦改造。
 
-> **服务交互 SSOT**：公司级同步/异步/编排标准见 [`application-inter-service.md`](../../../company/architecture/application/application-inter-service.md)。
+> **服务交互 SSOT**：公司级同步/异步/编排标准见 [`application-inter-service.md`](../../../company/ea/application/application-inter-service.md)。
 
 ## 同步链路
 

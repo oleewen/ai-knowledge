@@ -9,7 +9,7 @@
 
 1. [README.md](README.md) — 系统知识库定位与目录说明
 2. 本文 — 设计边界、映射与治理流程
-3. [constitution/README.md](constitution/README.md) — 治理层职责
+3. [agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md) — 治理层职责
 4. [architecture/README.md](architecture/README.md) — 架构聚合视图入口
 5. [../application/DESIGN.md](../application/DESIGN.md) — 应用侧 SSOT 设计依据
 
@@ -25,7 +25,7 @@
 
 边界约束：
 
-- **结构边界**：`constitution/`、`architecture/`、`application-{name}/` 职责分离；
+- **结构边界**：`architecture/`、`application-{name}/` 职责分离；治理与命名 SSOT 在 `agent/rules/`；
 - **流程边界**：通过 `docs-pull` 与 `docs-distill` 形成同步闭环；
 - **事实边界**：`system` 维护治理事实，`application` 维护实体主定义。
 
@@ -37,7 +37,8 @@
 
 | 层级 | 目录 | 职责 |
 | --- | --- | --- |
-| 治理层 | `constitution/` | 定义术语边界、槽位规则、职责划分与引用规范 |
+| 治理规则 | [agent/knowledge/](../agent/knowledge/knowledge-governance.md) | 术语边界、命名 SSOT、ADR 模板与原则（全仓库） |
+| ADR 正文 | [adr/](adr/README.md) | 系统层架构决策记录正文 |
 | 架构层 | `architecture/` | 五架构视角聚合视图；含 `overview/` 蒸馏缓冲区 |
 | 联邦层 | `application-{name}/` | 应用镜像挂载槽位，承接拉取内容并支持归档追溯 |
 
@@ -51,7 +52,7 @@
 | **数据** | 建模、存储与治理 | [architecture/data/](architecture/data/README.md) |
 | **技术** | 运行、扩展、观测与交付 | [architecture/technical/](architecture/technical/README.md) |
 
-应用层 [knowledge/](../application/knowledge/) 为四视角实体 SSOT（无独立 technical 实体树）；技术视角在系统层 `architecture/technical/` 聚合表达。
+应用层 [knowledge/](../application/knowledge/) 为五视角实体 SSOT；技术视角叙事文档在 `architecture/technical/` 与 `knowledge/technical/` 实体并存，层级链 `TPL → TSD → MW → CMP`。
 
 #### Overview 蒸馏区
 
@@ -84,7 +85,7 @@
 同步闭环：
 
 1. **下行拉取（docs-pull）**：同步目标应用文档至 `system/application-{name}/`；
-2. **治理校核（system 层）**：在 `constitution/` 与 `architecture/` 执行一致性检查；
+2. **治理校核（system 层）**：在 `architecture/` 与 `agent/rules/` 治理约定下执行一致性检查；
 3. **上行蒸馏（docs-distill）**：将已核实内容归并到系统主库结构；
 4. **追溯记录（changelogs）**：保留索引与变更日志用于审计和回放。
 
@@ -111,6 +112,6 @@
 
 - [README.md](README.md)
 - [INDEX_GUIDE.md](INDEX_GUIDE.md)
-- [constitution/README.md](constitution/README.md)
+- [agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md)
 - [architecture/README.md](architecture/README.md)
 - [../application/DESIGN.md](../application/DESIGN.md)

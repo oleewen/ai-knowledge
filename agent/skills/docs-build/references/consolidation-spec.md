@@ -1,6 +1,6 @@
 # 归并规范（阶段 4）
 
-[readme-fill-spec.md](readme-fill-spec.md) 之后收口：读四 `*_knowledge.json`（2.1），前缀/对称校验，写 **`KNOWLEDGE_INDEX.md`**。
+[readme-fill-spec.md](readme-fill-spec.md) 之后收口：读四 `{perspective}-entities.md`，前缀/对称校验，写 **`KNOWLEDGE_INDEX.md`**。
 
 ## 流程
 

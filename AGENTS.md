@@ -2,7 +2,7 @@
 
 > **契约定位**：本文件仅承载 Agent 角色定位、核心契约、文档索引、流程规范等关键索引和必读内容。
 
-**最后更新**: 2026-04-25
+**最后更新**: 2026-06-15
 
 ---
 
@@ -39,7 +39,7 @@
 - **与 Index 一致**：知识库索引以根目录 [INDEX_GUIDE.md](INDEX_GUIDE.md) 为准；未索引区域须补读或标注待核实。
 - **会话开始**：读 [README.md](README.md) 与本文件；业务与路径细节查 [INDEX_GUIDE.md](INDEX_GUIDE.md)；按需读取各级知识库下的README、INDEX_GUIDE.md 或 [agent/rules/](agent/rules/) 下具体规范。
 - **会话中**：业务规则不明 → 列出待确认项；新增技术债务可登记 [application/knowledge/technical-debt.md](application/knowledge/technical-debt.md)；重大结构或治理变更遵循 SDD，并核对 DESIGN.md、CONTRIBUTING.md。
-- **文档产出闸门（SDD + docs-distill + docs-extract + docs-archive + docs-build + docs-indexing）**：执行 `/sdx-solution`、`/sdx-analysis`、`/sdx-prd`、`/sdx-architect`、`/sdx-design`、`/sdx-test`、`/docs-distill`、`/docs-extract`、`/docs-archive`、`/docs-build`、`/docs-indexing` 或写入对应受管终稿（`{DOC_DIR}` 下 `SOLUTION-*`、`ANALYSIS-*`、`PRD-*`、`ASD-*`、`DSD-*`、`TDD-*`，`company|system/architecture/`，`{DOC_DIR}/knowledge/`，以及各文档根 `INDEX_GUIDE.md`、`**/changelogs/INDEXING-LOG.md` 等，见总表）前，须完成中间会话 spec 与用户总确认。规则总表见 [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md#artifact-gates) 第三节；各阶段技能见 `agent/skills/sdx-*/SKILL.md`、[agent/skills/docs-distill/SKILL.md](agent/skills/docs-distill/SKILL.md)、[agent/skills/docs-extract/SKILL.md](agent/skills/docs-extract/SKILL.md)、[agent/skills/docs-archive/SKILL.md](agent/skills/docs-archive/SKILL.md)、[agent/skills/docs-build/SKILL.md](agent/skills/docs-build/SKILL.md) 与 [agent/skills/docs-indexing/SKILL.md](agent/skills/docs-indexing/SKILL.md)。
+- **文档产出闸门（SDD + docs-distill + docs-extract + docs-archive + docs-build + docs-indexing）**：执行 `/sdx-solution`、`/sdx-analysis`、`/sdx-prd`、`/sdx-architect`、`/sdx-design`、`/sdx-test`、`/docs-distill`、`/docs-extract`、`/docs-archive`、`/docs-build`、`/docs-indexing` 或写入对应受管终稿（`{DOC_DIR}` 下 `SOLUTION-*`、`ANALYSIS-*`、`PRD-*`、`ASD-*`、`DSD-*`、`TDD-*`，`company/ea|system/architecture/`，`{DOC_DIR}/knowledge/`，以及各文档根 `INDEX_GUIDE.md`、`**/changelogs/INDEXING-LOG.md` 等，见总表）前，须完成中间会话 spec 与用户总确认。规则总表见 [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md#artifact-gates) 第三节；各阶段技能见 `agent/skills/sdx-*/SKILL.md`、[agent/skills/docs-distill/SKILL.md](agent/skills/docs-distill/SKILL.md)、[agent/skills/docs-extract/SKILL.md](agent/skills/docs-extract/SKILL.md)、[agent/skills/docs-archive/SKILL.md](agent/skills/docs-archive/SKILL.md)、[agent/skills/docs-build/SKILL.md](agent/skills/docs-build/SKILL.md) 与 [agent/skills/docs-indexing/SKILL.md](agent/skills/docs-indexing/SKILL.md)。
 - **会话结束**：新增规则或约束需经确认后写入 `application/`、`system/`、`company/` 或本文件；索引类变更按需记录于 [application/changelogs/](application/changelogs/)（见 [application/changelogs/README.md](application/changelogs/README.md)）。
 
 ### 禁止事项
@@ -68,10 +68,11 @@
 | 速查表、元信息、目录树、模块依赖、详细索引字典、索引边界      | [INDEX_GUIDE.md](INDEX_GUIDE.md)                                                                                                                        |
 | 应用知识库主线、SDD 查阅顺序                  | [application/README.md](application/README.md)、[application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)                                               |
 | 系统知识库（架构、联邦槽位）                    | [system/README.md](system/README.md)                                                                                                                    |
-| 公司知识库                             | [company/README.md](company/README.md)                                                                                                                  |
+| 公司知识库                             | [company/README.md](company/README.md)、[company/ea/README.md](company/ea/README.md)                                                                 |
+| Agent 知识库布局（路径 SSOT）              | [agent/references/knowledge-layout.md](agent/references/knowledge-layout.md)                                                                        |
 | 设计原则、元模型、映射与演进                    | [application/DESIGN.md](application/DESIGN.md)                                                                                                          |
 | 贡献流程与阶段规则                         | [application/CONTRIBUTING.md](application/CONTRIBUTING.md)                                                                                              |
-| 知识库实体导航、四视角                       | [application/knowledge/KNOWLEDGE_INDEX.md](application/knowledge/KNOWLEDGE_INDEX.md)、[application/knowledge/README.md](application/knowledge/README.md) |
+| 知识库实体导航、五视角                       | [application/knowledge/KNOWLEDGE_INDEX.md](application/knowledge/KNOWLEDGE_INDEX.md)、[application/knowledge/README.md](application/knowledge/README.md) |
 | 全局约定与命名                           | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)                                                                                              |
 | Slash 技能                          | [agent/skills/README.md](agent/skills/README.md)                                                                                                      |
 | 初始化脚本参数与产物、`.docsconfig` 键（`DOC_*` / `AGENT_*`） | [scripts/README.md](scripts/README.md)                                                                                                                  |
@@ -160,5 +161,5 @@ Markdown、YAML；**Bash 5+**；Git。可选 `rsync`（脚本可回退 `cp`）�
 1. [INDEX_GUIDE.md](INDEX_GUIDE.md)（知识库索引）
 2. [README.md](README.md)、[scripts/README.md](scripts/README.md)
 3. [application/README.md](application/README.md)、[application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[application/DESIGN.md](application/DESIGN.md)、[application/CONTRIBUTING.md](application/CONTRIBUTING.md)、[system/README.md](system/README.md)、[company/README.md](company/README.md)
-4. [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/rules/](agent/rules/)
+4. [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/rules/](agent/rules/)、[agent/references/knowledge-layout.md](agent/references/knowledge-layout.md)
 5. [agent/README.md](agent/README.md)、[agent/skills/README.md](agent/skills/README.md)、[agent/skills/docs-agent/SKILL.md](agent/skills/docs-agent/SKILL.md)、[agent/skills/docs-tag/SKILL.md](agent/skills/docs-tag/SKILL.md)、[agent/skills/docs-distill/SKILL.md](agent/skills/docs-distill/SKILL.md)、[agent/skills/docs-extract/SKILL.md](agent/skills/docs-extract/SKILL.md)、[agent/skills/docs-archive/SKILL.md](agent/skills/docs-archive/SKILL.md)

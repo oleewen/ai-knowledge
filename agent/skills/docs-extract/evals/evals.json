@@ -18,6 +18,12 @@
       "prompt": "我们 order-service 有一批设计文档在 docs/specs/ 下，帮我把里面跟业务规则相关的内容整理进 order-service-overview.md，不需要 dry-run 直接写",
       "expected_output": "仍走 extract + HARD-GATE：说明不可因「直接写」跳过；读附录与规模；先 dry-run/确认再落盘",
       "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "从 company/ea/business/business-overview.md 提炼公司级业务背景，写进 company/ea/overview/COMPANY-overview.md 第三列，先 dry-run",
+      "expected_output": "docs-extract：--overview 指向 company/ea/overview/；读公司库表行关键词；dry-run + CONFIRMED；不写 DISTILL-LOG",
+      "files": []
     }
   ]
 }

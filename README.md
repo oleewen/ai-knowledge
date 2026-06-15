@@ -124,27 +124,26 @@ ai-knowledge/
 ├── scripts/                # 初始化脚本链（Bash 5+）
 ├── agent/                  # AI 协作规范与 Slash 技能
 │   ├── hooks/              # Hooks 配置（Cursor/Claude/Bing 等）
-│   ├── rules/              # 编码、设计、测试、文档规范
+│   ├── knowledge/          # 知识治理 SSOT：命名、术语、原则、ADR
+│   ├── rules/              # 编码、设计、测试、文档协作规范
 │   ├── skills/             # Slash 技能（docs-indexing、sdx-* 等）
 │   └── scripts/            # 共享 Bash 库（config-bootstrap、validate-agent-md-links）
 ├── company/                # 公司知识库壳
-│   ├── constitution/       # 宪法层：术语、原则、ADR 模板
-│   ├── architecture/       # 企业架构：业务、应用、技术、数据架构
+│   ├── ea/                 # 企业架构：业务、产品、应用、数据、技术五视角
+│   ├── solutions/          # 公司级跨系统解决方案
+│   ├── analysis/           # 公司级跨系统需求分析
 │   ├── changelogs/         # 变更记录与索引运维日志
 │   ├── DESIGN.md           # 元模型、映射与演进原则
 │   └── INDEX_GUIDE.md      # 全库路径权威索引
 ├── system/                 # 系统知识库壳
-│   ├── constitution/       # 宪法层：术语、原则、ADR 模板
 │   ├── architecture/       # 系统架构：业务、产品、应用、技术、数据架构
 │   ├── solutions/          # 解决方案产物
 │   ├── analysis/           # 需求分析产物
 │   ├── requirements/       # 需求交付产物
-│   ├── specs/              # 需求规格产物
 │   ├── changelogs/         # 变更记录与索引运维日志
 │   ├── DESIGN.md           # 元模型、映射与演进原则
 │   └── INDEX_GUIDE.md      # 全库路径权威索引
 ├── application/            # 应用知识库 SSOT
-│   ├── constitution/       # 宪法层：术语、原则、ADR 模板
 │   ├── knowledge/          # 四视角知识实体（业务/产品/应用/数据）
 │   ├── solutions/          # 解决方案产物
 │   ├── analysis/           # 需求分析产物

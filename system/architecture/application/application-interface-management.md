@@ -4,7 +4,7 @@
 
 本节统一本系统内外接口的发现、规范与演进，降低集成断裂与版本碎片化风险。
 
-> **接口管理 SSOT**：公司级 API 规范与版本策略见 [`application-interface-management.md`](../../../company/architecture/application/application-interface-management.md)。
+> **接口管理 SSOT**：公司级 API 规范与版本策略见 [`application-interface-management.md`](../../../company/ea/application/application-interface-management.md)。
 
 ## 内部 API
 

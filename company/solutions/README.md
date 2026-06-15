@@ -8,13 +8,13 @@ SDD **解决方案**阶段目录：产出 `SOLUTION-{IDEA-ID}.md`，作为 [../a
 |----|------|
 | 文件 | 根目录平铺 `SOLUTION-{IDEA-ID}.md`（本目录无 `{dirname}_meta.yaml`） |
 | 归档 | 已完结或 superseded 方案移入 [archive/](archive/) |
-| IDEA-ID | 需求链统一标识（见 [../constitution/standards/naming-conventions.md](../constitution/standards/naming-conventions.md)） |
+| IDEA-ID | 需求链统一标识（见 [../../agent/knowledge/naming-conventions.md](../../agent/knowledge/naming-conventions.md)） |
 | 文档元数据 | 文末 `## 文档元数据`：`id` 与文件名一致；可选 `parent`、`dependencies`、`tags`（**勿**在文首使用 `---` YAML frontmatter） |
 
 ## 输入
 
 - 外部 — 业务诉求（邮件、会议纪要、工单等）
-- [../architecture/](../architecture/) — 五视角架构文档
+- [../ea/](../ea/) — 企业架构五视角文档
 - 规约：各需求包内 `specs/`
 
 ## 方案索引表

@@ -4,7 +4,7 @@
 
 本节说明本系统主责业务流程子集及与系统能力的映射，为应用架构设计提供业务输入。
 
-> **业务流程 SSOT**：公司级流程编码规约与主流程目录见 [`business-processes.md`](../../../company/architecture/business/business-processes.md)。
+> **业务流程 SSOT**：公司级流程编码规约与主流程目录见 [`business-processes.md`](../../../company/ea/business/business-processes.md)。
 
 ## 核心流程
 

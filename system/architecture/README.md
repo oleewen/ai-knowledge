@@ -10,6 +10,6 @@
 | [product/README.md](product/README.md) | 产品架构 | 本产品定位、功能结构、用户旅程与体验策略，衔接业务目标与系统交付。 |
 | [application/README.md](application/README.md) | 应用架构 | 本系统边界、服务与领域模型、集成与接口，含系统概述与 ADR。 |
 | [data/README.md](data/README.md) | 数据架构 | 本系统数据模型、存储、流转、治理与安全，支撑数据生命周期与分析。 |
-| [technical/README.md](technical/README.md) | 技术架构 | 本系统基础设施、高可用、安全、可观测性与 DevOps，支撑运行与工程效率。 |
+| [technical/README.md](technical/README.md) | 技术架构 | 本系统基础设施、高可用、安全、可观测性与 DevOps，支撑运行与工程效率。实体 SSOT：`technical-meta.md`、`technical-entities.md`（TSD） |
 
-与公司知识库侧 [`../../company/architecture/`](../../company/architecture/README.md) 对照阅读；顶层索引见 [`../README.md`](../README.md)。
+与公司知识库侧 [`../../company/ea/`](../../company/ea/README.md) 对照阅读；顶层索引见 [`../README.md`](../README.md)。

@@ -4,7 +4,7 @@
 
 本节描述本系统数据流动、加工与一致性保障，支撑集成与排障。
 
-> **数据流转 SSOT**：公司级数据流与一致性标准见 [`data-flow.md`](../../../company/architecture/data/data-flow.md)。
+> **数据流转 SSOT**：公司级数据流与一致性标准见 [`data-flow.md`](../../../company/ea/data/data-flow.md)。
 
 ## 数据流图
 

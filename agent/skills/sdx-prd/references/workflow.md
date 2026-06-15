@@ -6,6 +6,8 @@
 
 在 **ANALYSIS** 与**当前 MVP** 内产出可评审、可验收 **PRD**（十一章），为下游 **ASD/DSD** 提供 US/UC/FR/BR/AC 锚点。
 
+**公司库**（`KNOWLEDGE_TYPE=company`）：上游为 `company/analysis/ANALYSIS-*.md`（含各系统功能归属）；**本技能在 `system/` 文档根执行**，产出落在对应 **`system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-*.md`**（按 ANALYSIS 拆解的系统逐项编写，非 `company/requirements/`）。布局见 [knowledge-layout.md](../../../references/knowledge-layout.md)。
+
 ## 核心约束（须满足）
 
 | 约束 | 说明 |

@@ -1,8 +1,8 @@
 # 四视角提取规则
 
-顺序：应用 → 数据 → 业务 → 产品。各视角独立产出；后序只**引用**前序 ID。
+顺序：应用 → 数据 → 技术 → 业务 → 产品。各视角独立产出；后序只**引用**前序 ID。
 
-输出：`{perspective}_knowledge.json`，`schema_version` **2.1**。结构见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
+输出：`{perspective}-entities.md`（Markdown 实体表，schema 2.1 语义等价）。结构参考 [knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
 
 ## 目录
 
@@ -18,6 +18,8 @@
   - [BD / BSD / BC / AGG / AB](#bd--bsd--bc--agg--ab)
 - [4. 产品视角（Product）](#4-产品视角product)
   - [PL / PM / FT / UC](#pl--pm--ft--uc)
+- [5. 技术视角（Technical）](#5-技术视角technical)
+  - [MW / CMP](#mw--cmp)
 - [跨视角依赖](#跨视角依赖)
 - [通用字段说明](#通用字段说明)
 
@@ -235,20 +237,50 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 ---
 
+## 5. 技术视角（Technical）
+
+### 输入源
+
+- 主 Index Guide
+- `application.yml` / Nacos 等配置（数据源、Redis、Kafka、MQ）
+- `pom.xml` / `build.gradle`（关键依赖 allowlist）
+- 系统层已登记的 **TSD-***（引用）
+
+### 提取规则
+
+#### MW（中间件绑定）
+
+- 提取自配置与部署绑定：数据源、缓存、MQ Topic/Group、注册配置等
+- **必须字段**：`full_id`、`binding_type`、`config_key`、`parent_tsd_id`、`bound_app_id`
+- **禁止**：将 MS/API 宿主类登记为 MW；Consumer 类仍在 API 层
+
+#### CMP（组件）
+
+- 提取自 Maven 依赖 allowlist（Dubbo、MyBatis、Redis、Kafka Client、关键 Spring Starter 等）
+- **必须字段**：`full_id`、`maven_coordinates`、`parent_mw_id` 或 `parent_app_id`
+- **禁止**：全量依赖扫描导致 CMP 爆炸
+
+### 输出结构
+
+技术视角使用**扁平数组**，MW→CMP 通过 `parent_mw_id` 关联。
+
+---
+
 ## 跨视角依赖
 
 ```
 应用视角 ─────────────────────────────────┐
   SYS → APP → MS → API                   │
                                           ▼
-数据视角                              业务视角
-  DS → ENT                     BD → BSD → BC → AGG → AB
-                                   引用 MS-*    引用 API-*
+数据视角                              技术视角
+  DS → ENT                     MW → CMP（引用 TSD/TPL）
+                                   引用 APP/DS
                                           │
-                                          ▼
-                                    产品视角
-                               PL → PM → FT → UC
-                            引用 SYS-*  引用 MS-*  引用 API-*
+                    ┌─────────────────────┴─────────────────────┐
+                    ▼                                           ▼
+              业务视角                                    产品视角
+       BD → BSD → BC → AGG → AB                  PL → PM → FT → UC
+            引用 MS-*    引用 API-*            引用 SYS-*  引用 MS-*  引用 API-*
 ```
 
 ---
@@ -259,7 +291,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 | 字段 | 必需 | 说明 |
 |------|------|------|
-| `hierarchy` | 是 | 层级标识（SYS/APP/MS/API/DS/ENT/BD/BSD/BC/AGG/AB/PL/PM/FT/UC） |
+| `hierarchy` | 是 | 层级标识（SYS/APP/MS/API/DS/ENT/MW/CMP/TPL/TSD/BD/BSD/BC/AGG/AB/PL/PM/FT/UC） |
 | `id` | 是 | 数字编码（001、002...），同层级唯一 |
 | `alias` | 是 | 英文编码，机器可读标识 |
 | `name` | 是 | 中文名称，面向业务阅读 |
@@ -271,7 +303,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 ### metadata 节
 
-每个 `*_knowledge.json` 尾部须包含 `metadata` 对象：
+每个 `{perspective}-entities.md` 须含 **统计** 节（各层级计数、`extraction_basis`、`schema_notes`、`changes_from_previous`）。
 
 | 字段 | 说明 |
 |------|------|

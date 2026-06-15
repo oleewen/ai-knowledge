@@ -63,13 +63,21 @@ class GateConfig:
     collect: Callable[[list[str]], list[str]]
 
 
+def _OVERVIEW_DIR_FRAGMENTS() -> tuple[str, ...]:
+    return ("system/architecture/overview/", "company/ea/overview/")
+
+
 def _make_overview_collector() -> Callable[[list[str]], list[str]]:
-    """收集写入 system/architecture/overview/ 下 .md 文件的路径。"""
+    """收集写入 system/architecture/overview/ 或 company/ea/overview/ 下 .md 文件的路径。"""
+    fragments = _OVERVIEW_DIR_FRAGMENTS()
+
     def _collect(strings: list[str]) -> list[str]:
         out: list[str] = []
         for s in strings:
             s_norm = s.replace("\\", "/")
-            if "system/architecture/overview/" in s_norm and s_norm.endswith(".md"):
+            if not s_norm.endswith(".md"):
+                continue
+            if any(frag in s_norm for frag in fragments):
                 out.append(s)
         return out
     return _collect
@@ -199,7 +207,7 @@ GATES: dict[str, GateConfig] = {
         bypass_env="",  # 无 bypass：必须走 CONFIRMED 流程
         debug_label="docs-distill-gate",
         deny_message=(
-            "docs-distill：禁止在未完成中间 spec「用户总确认」前写入 system/architecture/overview/ 下的文件。"
+            "docs-distill：禁止在未完成中间 spec「用户总确认」前写入 system/architecture/overview/ 或 company/ea/overview/ 下的文件。"
             "请先在当前会话 spec（{DOC_DIR}/superpowers/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- docs-distill-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名。本 gate 无 bypass 环境变量，须完整走确认流程。"
         ),
@@ -211,7 +219,7 @@ GATES: dict[str, GateConfig] = {
         bypass_env="",  # 无 bypass
         debug_label="docs-extract-gate",
         deny_message=(
-            "docs-extract：禁止在未完成中间 spec「用户总确认」前写入 system/architecture/overview/ 下的文件。"
+            "docs-extract：禁止在未完成中间 spec「用户总确认」前写入 system/architecture/overview/ 或 company/ea/overview/ 下的文件。"
             "请先在当前会话 spec（{DOC_DIR}/superpowers/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- docs-extract-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名。本 gate 无 bypass 环境变量，须完整走确认流程。"
         ),
@@ -223,7 +231,7 @@ GATES: dict[str, GateConfig] = {
         bypass_env="",  # 无 bypass
         debug_label="docs-archive-gate",
         deny_message=(
-            "docs-archive：禁止在未完成中间 spec「用户总确认」前写入 system/architecture/overview/ 下的文件。"
+            "docs-archive：禁止在未完成中间 spec「用户总确认」前写入 system/architecture/overview/ 或 company/ea/overview/ 下的文件。"
             "请先在当前会话 spec（{DOC_DIR}/superpowers/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- docs-archive-gate: PENDING --> 改为 CONFIRMED，"
             "并确保文中引用目标文件名。本 gate 无 bypass 环境变量，须完整走确认流程。"
         ),

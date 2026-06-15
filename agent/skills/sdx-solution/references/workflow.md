@@ -6,6 +6,8 @@
 
 会话 spec + 门禁收口后分块定稿 `SOLUTION-*.md`，为 `sdx-analysis` / `sdx-prd` 等提供稳定输入。
 
+**公司库**（`KNOWLEDGE_TYPE=company`）：输入含 [`company/ea/`](../../../../company/ea/README.md) 五视角；方案须明确跨系统需求下**各系统负责的功能边界**；交付物落在 `company/solutions/`，下游 `company/analysis/` 衔接各 `system/` 侧 requirements。
+
 ---
 
 ## 门禁状态机

@@ -1,6 +1,6 @@
 # KNOWLEDGE_INDEX
 
-> 更新：{YYYY-MM-DD} · SSOT：`*_knowledge.json` schema 2.1
+> 更新：{YYYY-MM-DD} · SSOT：`{perspective}-entities.md`（schema 2.1 语义）
 
 ---
 

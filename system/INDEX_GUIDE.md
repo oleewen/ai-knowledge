@@ -15,7 +15,7 @@
 | 架构总览 | [architecture/OVERVIEW.md](architecture/OVERVIEW.md) | 一页纸、视角关系、治理与 FAQ |
 | 五视角架构目录 | [architecture/README.md](architecture/README.md) | 业务/产品/应用/数据/技术 分视角 README |
 | 联邦应用槽位 | [application-APPNAME/README.md](application-APPNAME/README.md) | 占位模板；真实应用名替换 `APPNAME` |
-| 系统宪法 | [constitution/README.md](constitution/README.md) | 与 `application/constitution/` 职责边界见该 README |
+| 系统宪法 | [../agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md) | 全仓库治理与命名 SSOT |
 | 联邦建联 | [knowledge-links.yaml](knowledge-links.yaml) | 与中央库/应用镜像的链接登记（按项目约定维护） |
 | 运维日志 | [changelogs/README.md](changelogs/README.md) | `CHANGE-LOG.md`、**本根** `INDEXING-LOG.md` |
 | 仓库根全索引 | [../INDEX_GUIDE.md](../INDEX_GUIDE.md) | 中央库根路径九章地图 |
@@ -38,7 +38,6 @@
 system/
 ├── README.md / INDEX_GUIDE.md / DESIGN.md / docs_meta.yaml
 ├── knowledge-links.yaml
-├── constitution/                 # 系统级宪法与治理
 ├── architecture/                 # 五视角 + overview/ 蒸馏占位
 │   ├── OVERVIEW.md / ARCHITECTURE-OVERVIEW.md
 │   ├── business/ product/ application/ data/ technical/
@@ -57,13 +56,12 @@ flowchart LR
   subgraph sys["system/"]
     arch["architecture/"]
     slot["application-*/"]
-    con["constitution/"]
   end
   app["../application/ SSOT"]
   distill["docs-distill / docs-archive"]
   app -.->|"镜像填充"| slot
   distill --> arch
-  con --> arch
+  rules["../agent/rules/"] -.-> arch
 ```
 
 ### 2.3 包结构
@@ -74,7 +72,7 @@ flowchart LR
 
 - **架构入口**: [architecture/README.md](architecture/README.md)  
 - **总览**: [architecture/OVERVIEW.md](architecture/OVERVIEW.md)  
-- **公司侧对照**: [../company/architecture/README.md](../company/architecture/README.md)
+- **公司侧对照**: [../company/ea/README.md](../company/ea/README.md)
 
 ---
 
@@ -135,7 +133,7 @@ flowchart LR
 
 | 来源 | 要点 |
 |------|------|
-| [constitution/README.md](constitution/README.md) | 系统与应用宪法边界 |
+| [../agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md) | 治理与命名 SSOT |
 | [../AGENTS.md](../AGENTS.md) | 全局 Agent 契约 |
 
 ---
@@ -147,7 +145,7 @@ flowchart LR
 | 数据源 | 类型 | 用途 |
 |--------|------|------|
 | `architecture/**/*.md` | Markdown | 架构事实与模板段 |
-| `*_meta.yaml` | YAML | 目录元数据 |
+| `*-meta.md` / `*-entities.md` | Markdown | 架构视角元数据与实体（如 technical/） |
 | `knowledge-links.yaml` | YAML | 联邦链接 |
 
 ### 6.2～6.4
@@ -200,7 +198,7 @@ flowchart LR
 
 | 文档 | 路径 |
 |------|------|
-| 公司架构对照 | [../company/architecture/README.md](../company/architecture/README.md) |
+| 公司架构对照 | [../company/ea/README.md](../company/ea/README.md) |
 | docs-distill | [../agent/skills/docs-distill/SKILL.md](../agent/skills/docs-distill/SKILL.md) |
 
 ### 9.2 视角文件索引（architecture/）

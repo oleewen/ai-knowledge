@@ -130,6 +130,28 @@ class GateCommonTests(unittest.TestCase):
         printed = [args[0] for args, _kwargs in mock_print.call_args_list if args]
         self.assertTrue(any('"permission": "deny"' in s for s in printed))
 
+    def test_distill_gate_deny_company_ea_overview_without_confirmed_spec(self) -> None:
+        payload = {
+            "toolName": "write_file",
+            "args": {"path": "company/ea/overview/COMPANY-overview.md"},
+            "sessionId": "s-distill-ea-deny",
+        }
+        env = {}
+
+        with patch("agent.hooks.sdx_gate_common.is_session_active", return_value=True), patch(
+            "agent.hooks.sdx_gate_common._repo_root"
+        ) as mock_repo_root:
+            with tempfile.TemporaryDirectory() as tmp:
+                repo = Path(tmp)
+                (repo / "company" / "superpowers" / "specs").mkdir(parents=True, exist_ok=True)
+                mock_repo_root.return_value = repo
+                with patch("builtins.print") as mock_print:
+                    code = run_gate("distill", stdin=json.dumps(payload), environ=env)
+
+        self.assertEqual(code, 0)
+        printed = [args[0] for args, _kwargs in mock_print.call_args_list if args]
+        self.assertTrue(any('"permission": "deny"' in s for s in printed))
+
     def test_distill_gate_allow_with_confirmed_spec(self) -> None:
         payload = {
             "toolName": "write_file",
@@ -281,7 +303,7 @@ class GateCommonTests(unittest.TestCase):
         self.assertTrue(any('"permission": "allow"' in s for s in printed))
 
     def test_overview_outside_path_not_intercepted(self) -> None:
-        """非 system/architecture/overview/ 路径的 overview 文件不被 distill/extract/archive gate 拦截。"""
+        """非 system/architecture/overview/ 或 company/ea/overview/ 路径的 overview 文件不被 distill/extract/archive gate 拦截。"""
         payload = {
             "toolName": "write_file",
             "args": {"path": "docs/some-overview.md"},

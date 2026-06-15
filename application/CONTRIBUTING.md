@@ -9,7 +9,7 @@
 1. [INDEX_GUIDE.md](INDEX_GUIDE.md)：九章索引（含中央知识库挂载建联登记）、与仓库根 [INDEX_GUIDE.md](../INDEX_GUIDE.md) 分工见各文件说明
 2. [DESIGN.md](DESIGN.md)：元模型、字段语义与跨视角映射
 3. [AGENTS.md](../AGENTS.md)：仓库级约束与禁止项
-4. 目标目录 `README.md` + 对应 `*_meta.yaml`：落盘与命名的最终约束
+4. 目标目录 `README.md` + 对应 `{perspective}-meta.md`：落盘与命名的最终约束
 
 ---
 
@@ -26,7 +26,7 @@
 ## 最小执行清单
 
 - 定范围：本次改动影响哪些目录、哪些 ID、哪些映射字段  
-- 读权威：先读目标目录 `README.md` 与 `*_meta.yaml`  
+- 读权威：先读目标目录 `README.md` 与 `{perspective}-meta.md`  
 - 落盘：按既有命名与 frontmatter 约束写入  
 - 回链：补索引与必要交叉引用  
 - 自检：全局搜索受影响 ID/字段，确认无断链

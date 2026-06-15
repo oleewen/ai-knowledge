@@ -15,4 +15,4 @@
 | 📎 | 运营支撑 | [product-operations-support.md](product-operations-support.md) | 运营、内容、触达与反馈所需的产品能力。 |
 | 📎 | 多端策略 | [product-multi-platform.md](product-multi-platform.md) | 各端覆盖范围与差异落地。 |
 
-> 度量标准、体验设计规范见 [公司产品架构](../../../company/architecture/product/README.md)。
+> 度量标准、体验设计规范见 [公司产品架构](../../../company/ea/product/README.md)。

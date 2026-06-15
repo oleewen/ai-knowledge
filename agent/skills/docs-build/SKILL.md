@@ -1,9 +1,9 @@
 ---
 name: docs-build
 description: >
-  从应用→数据→业务→产品四视角提取实体 ID，产出 *_knowledge.json（schema 2.1）、各视角 README 索引行、
+  从应用→数据→技术→业务→产品五视角提取实体 ID，产出 `{perspective}-entities.md`（schema 2.1 语义）、各视角 README 索引行、
   归并 `{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md`。依赖主 Index Guide。
-  触发：初始化/同步知识实体、对齐 ID、补四视角资产、更新 KNOWLEDGE_INDEX、docs-indexing 下游要实体等；
+  触发：初始化/同步知识实体、对齐 ID、补五视角资产、更新 KNOWLEDGE_INDEX、docs-indexing 下游要实体等；
   口语如「把代码里实体整理一下」「知识和代码对不上」。用户只要根 INDEX、overview、归档或 SDD 终稿为主路径 → 分流对应技能，勿单走本技能。
 ---
 
@@ -17,7 +17,7 @@ description: >
 
 | 负责 | 不负责 |
 |------|--------|
-| 四视角 `*_knowledge.json`、README 索引表、`KNOWLEDGE_INDEX.md`、`validate-extraction.sh` | 根 `INDEX_GUIDE`（docs-indexing）；overview 蒸馏/抽取（docs-distill / docs-extract）；视角归档（docs-archive）；SDD 终稿 |
+| 五视角 `{perspective}-entities.md`、`{perspective}-meta.md`、README 索引表、`KNOWLEDGE_INDEX.md`、`validate-extraction.sh` | 根 `INDEX_GUIDE`（docs-indexing）；overview 蒸馏/抽取（docs-distill / docs-extract）；视角归档（docs-archive）；SDD 终稿 |
 
 ## 前置
 
@@ -42,7 +42,7 @@ description: >
 ## 产出与校验
 
 - Spec：`{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-docs-build.md`
-- 产物：各视角 `*_knowledge.json`、`README.md`、`KNOWLEDGE_INDEX.md`
+- 产物：各视角 `{perspective}-entities.md`、`README.md`、`KNOWLEDGE_INDEX.md`
 
 ```bash
 agent/skills/docs-build/scripts/validate-extraction.sh

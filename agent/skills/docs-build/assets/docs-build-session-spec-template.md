@@ -15,7 +15,7 @@
 
 ## 3. 将写入文件
 
-- `*_knowledge.json`、`README`、`KNOWLEDGE_INDEX.md` …
+- `{perspective}-entities.md`、`README`、`KNOWLEDGE_INDEX.md` …
 
 ## 4. 门禁进度（可选）
 
@@ -27,4 +27,4 @@
 
 ---
 
-`<!-- docs-build-gate: PENDING -->` → 总确认后 `CONFIRMED`；正文须含 `KNOWLEDGE_INDEX.md` 或目标 `*_knowledge.json` basename。
+`<!-- docs-build-gate: PENDING -->` → 总确认后 `CONFIRMED`；正文须含 `KNOWLEDGE_INDEX.md` 或目标 `{perspective}-entities.md` basename。

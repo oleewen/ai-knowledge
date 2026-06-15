@@ -4,7 +4,7 @@
 
 本节说明本系统的应用结构、职责边界与分层演进，为服务设计与集成提供上层蓝图。
 
-> **应用架构 SSOT**：公司级 C4、分层与演进标准见 [`application-architecture.md`](../../../company/architecture/application/application-architecture.md)。
+> **应用架构 SSOT**：公司级 C4、分层与演进标准见 [`application-architecture.md`](../../../company/ea/application/application-architecture.md)。
 
 ## 系统上下文
 

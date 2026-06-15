@@ -12,7 +12,7 @@
 |------|------|
 | 必需 | 主 Index Guide（否则停，先 `/docs-indexing`） |
 | 可选 | README、AGENTS、PRD、源码 |
-| 固定输出 | `{DOC_DIR}/knowledge/{p}/{p}_knowledge.json`、`README`、`KNOWLEDGE_INDEX.md` |
+| 固定输出 | `{DOC_DIR}/knowledge/{p}/{p}-entities.md`、`README`、`KNOWLEDGE_INDEX.md` |
 | `--emit-report` | `{DOC_DIR}/knowledge/{p}/extraction_report.md` |
 | 不产出 | 锚点文档、CHANGELOG、目录树 |
 
@@ -35,7 +35,7 @@
 |------|------|------|------|
 | 1 | 初始化 | INDEX、可写、`builtin-config`；**末 Qclose-1** | [builtin-config.md](builtin-config.md) |
 | — | HARD-GATE | [gates.md](gates.md)；`CONFIRMED` 后进 2 | [interaction-gate.md](interaction-gate.md) |
-| 2 | 提取 | 四视角固定序；后序只读前序 ID | [extraction-rules.md](extraction-rules.md) |
+| 2 | 提取 | 五视角固定序；后序只读前序 ID | [extraction-rules.md](extraction-rules.md) |
 | 3 | README | 沿用版式，JSON→表行 | [readme-fill-spec.md](readme-fill-spec.md) |
 | 4 | 归并 | 四 JSON → 校验 → `KNOWLEDGE_INDEX` | [consolidation-spec.md](consolidation-spec.md) |
 

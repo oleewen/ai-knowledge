@@ -8,14 +8,14 @@
 
 ## 核心
 
-总确认前禁止写 `{DOC_DIR}/knowledge/`（`*_knowledge.json`、`README`、`KNOWLEDGE_INDEX` 等）。
+总确认前禁止写 `{DOC_DIR}/knowledge/`（`{perspective}-entities.md`、`README`、`KNOWLEDGE_INDEX` 等）。
 
 例外：同会话用户**明示**跳过、只要草稿或授权直写。无 env bypass。
 
 ## spec 与标记
 
 - 文末：`<!-- docs-build-gate: PENDING -->` → 总确认后 `CONFIRMED`
-- 正文须含目标之一：`KNOWLEDGE_INDEX.md` 或本轮 `*_knowledge.json` / `README.md` basename
+- 正文须含目标之一：`KNOWLEDGE_INDEX.md` 或本轮 `{perspective}-entities.md` / `README.md` basename
 
 **Qclose-1**（阶段 1 末）：列视角、路径、文件清单，问：
 

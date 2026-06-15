@@ -16,7 +16,7 @@ description: >
 
 | 负责 | 不负责 |
 |------|--------|
-| 各文档根九章 `INDEX_GUIDE`、`INDEXING-LOG`、full/incremental、深度 1–3 | `*_knowledge.json`、KNOWLEDGE_INDEX（docs-build）；SDD 终稿（sdx-*）；overview（distill/extract） |
+| 各文档根九章 `INDEX_GUIDE`、`INDEXING-LOG`、full/incremental、深度 1–3 | `{perspective}-entities.md`、KNOWLEDGE_INDEX（docs-build）；SDD 终稿（sdx-*）；overview（distill/extract） |
 
 ## 前置
 

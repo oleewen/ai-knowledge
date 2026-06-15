@@ -1,7 +1,7 @@
 ---
 name: docs-tag
 description: >
-  为 Markdown 概览（如 *-overview.md）做关键词相关度：扫目录候选 → 选词 → YAML 附录 → 表行 ✅ → 架构摘录（phase 3）。
+  为 Markdown 概览（`system/architecture/overview/` 或 `company/ea/overview/` 下 *-overview.md）做关键词相关度：扫目录候选 → 选词 → YAML 附录 → 表行 ✅ → 架构摘录（phase 3）。
   触发：`/docs-tag`、`扫描关键词`、`给概览打标签`、`表格打勾`、`架构摘录`、`刷新摘录`、`phase 3`。
   仅第三列提炼 / 全文术语替换 / INDEX → 分流 docs-extract、docs-upgrade、docs-indexing。
 ---
@@ -22,7 +22,7 @@ description: >
 
 ## 前置
 
-- `--file` 存在  
+- `--file` 存在（系统库或公司库 overview，见 [knowledge-layout.md](../../references/knowledge-layout.md)）  
 - phase 含 1 时 keywords 齐备；Skill 用 `1-scan`+`1-write`+`2`+`3`（`3` 不需 keywords）  
 - **仓库根**：`agent/skills/docs-tag/scripts/keyword_tag.py`
 

@@ -12,6 +12,8 @@ description: >-
 
 读者：需求分析师撰写；产品/架构评审。实现设计走 `sdx-architect`、`sdx-design`。
 
+**公司库**（`KNOWLEDGE_TYPE=company`）：见 [references/workflow.md](references/workflow.md)「公司库」段；产出 `company/analysis/ANALYSIS-*.md`，PRD 由各 `system/` 侧 `/sdx-prd` 承接。
+
 ---
 
 ## 边界

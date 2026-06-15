@@ -162,10 +162,9 @@ your-project/
 │   ├── README.md                  # 应用知识库 README
 │   ├── INDEX_GUIDE.md             # 九章索引（docs-indexing）；中央知识库挂载建联登记见「十」
 │   ├── docs_meta.yaml             # 根目录元数据
-│   ├── constitution/            # 宪法层（原则、标准、ADR；与 knowledge/ 平级）
-│   ├── knowledge/                 # 知识库（四视角）
+│   ├── knowledge/                 # 知识库（四视角）；治理 SSOT 见 agent/knowledge/
 │   │   ├── README.md
-│   │   ├── knowledge_meta.yaml
+│   │   ├── knowledge-meta.md
 │   │   ├── business/              # 业务视角
 │   │   ├── product/               # 产品视角
 │   │   ├── application/           # 应用视角

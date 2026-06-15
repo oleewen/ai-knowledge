@@ -4,7 +4,7 @@
 
 本节沉淀本系统共享平台能力选型与使用规范，避免重复建设与安全碎片化。
 
-> **中间件 SSOT**：公司级中间件选型与使用规范见 [`technical-middleware.md`](../../../company/architecture/technical/technical-middleware.md)。
+> **中间件 SSOT**：公司级中间件选型与使用规范见 [`technical-middleware.md`](../../../company/ea/technical/technical-middleware.md)。
 
 ## 消息队列
 

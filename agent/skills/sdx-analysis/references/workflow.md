@@ -6,6 +6,8 @@
 
 将已共识方案细化为可评审排期的 **`ANALYSIS-*.md`（六章）**，供 PRD / 架构等接续。
 
+**公司库**（`KNOWLEDGE_TYPE=company`）：上游为 `company/solutions/SOLUTION-*.md`；分析须拆解**系统级功能归属**与接口依赖；产出 `company/analysis/ANALYSIS-*.md`，PRD/ASD/DSD 由各 `system/requirements/` 承接。
+
 ---
 
 ## 门禁状态机

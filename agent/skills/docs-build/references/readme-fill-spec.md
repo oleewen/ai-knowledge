@@ -1,6 +1,6 @@
 # README 填充规范
 
-`*_knowledge.json` 就绪后、**写 `KNOWLEDGE_INDEX.md` 前**，按此更新各视角 `README.md`。禁止示例行冒充；无实体则说明+待补充（[quality-checklist.md](quality-checklist.md)、[gotchas.md](../gotchas.md)）。
+ `{perspective}-entities.md` 就绪后、**写 `KNOWLEDGE_INDEX.md` 前**，按此更新各视角 `README.md`。禁止示例行冒充；无实体则说明+待补充（[quality-checklist.md](quality-checklist.md)、[gotchas.md](../gotchas.md)）。
 
 ## 原则
 
@@ -17,10 +17,10 @@
 
 | 视角 | README 路径 | JSON 来源 |
 |------|-------------|-----------|
-| application | `{DOC_DIR}/knowledge/application/README.md` | `application/application_knowledge.json` |
-| data | `{DOC_DIR}/knowledge/data/README.md` | `data/data_knowledge.json` |
-| business | `{DOC_DIR}/knowledge/business/README.md` | `business/business_knowledge.json` |
-| product | `{DOC_DIR}/knowledge/product/README.md` | `product/product_knowledge.json` |
+| application | `{DOC_DIR}/knowledge/application/README.md` | `application/application-entities.md` |
+| data | `{DOC_DIR}/knowledge/data/README.md` | `data/data-entities.md` |
+| business | `{DOC_DIR}/knowledge/business/README.md` | `business/business-entities.md` |
+| product | `{DOC_DIR}/knowledge/product/README.md` | `product/product-entities.md` |
 
 ---
 
@@ -35,7 +35,7 @@
 | 类型 | 系统 / 应用 / 微服务（MS）/ 接口（与层级一致的中文） |
 | 名称 | `name` |
 | ID (KNOWLEDGE_INDEX) | SYS/APP：`full_id`；MS：`id`（如 `MS-…`）；API：`id`（如 `API-…`） |
-| 路径 / 说明 | `application_knowledge.json`（`hierarchy=…` / `full_id=…` 或 `id=…`）；可附 `alias` 或证据摘要 |
+| 路径 / 说明 | `application-entities.md`（`hierarchy=…` / `full_id=…` 或 `id=…`）；可附 `alias` 或证据摘要 |
 
 自 `entities` 分类对象遍历：`systems` → `applications` → `services` → `apis`。
 
@@ -49,7 +49,7 @@
 | 层级 | `DS` / `ENT` |
 | 类型 | `数据存储` / `数据实体` |
 | 名称 | `name` |
-| 锚点目录 / 文件 | `data_knowledge.json`（`hierarchy=DS|ENT` / `full_id=…`） |
+| 锚点目录 / 文件 | `data-entities.md`（`hierarchy=DS|ENT` / `full_id=…`） |
 
 扁平 `entities` 数组按 `hierarchy` 过滤；ENT 的 `parent_id` 可用于排序或链序说明。
 
@@ -63,9 +63,9 @@
 | 层级 | `BD` / `BSD` / `BC` / `AGG` / `AB` |
 | ID | `full_id` 或规范 `id` 字段（与 JSON 一致） |
 | 名称 | `name` |
-| 文件/目录 | `business_knowledge.json`（`hierarchy=…`） |
+| 文件/目录 | `business-entities.md`（`hierarchy=…`） |
 
-扁平分组排序；有真实 ID 后标题可改「业务索引表」，并注「以 `business_knowledge.json` 为准」。
+扁平分组排序；有真实 ID 后标题可改「业务索引表」，并注「以 `business-entities.md` 为准」。
 
 ### product —「产品线索引表」
 
@@ -77,7 +77,7 @@
 | 层级 | `PL` / `PM` / `FT` / `UC` |
 | 类型 | 产品线 / 产品模块 / 功能 / 用例（与 README 示例一致） |
 | 名称 | `name` |
-| 锚点目录 | `product_knowledge.json`（`hierarchy=…` / `full_id` 或 `id`） |
+| 锚点目录 | `product-entities.md`（`hierarchy=…` / `full_id` 或 `id`） |
 
 ---
 

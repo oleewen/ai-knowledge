@@ -32,7 +32,7 @@
 
 - **无 evidence_chain** → 每实体 ≥1 条 `{source, confidence, type}`；high 须代码/配置直证
 - **技术 entities 用数组** → 须为 `{ systems, applications, services, apis }`；他视角才扁平
-- **缺 metadata** → 每 `*_knowledge.json` 完整 `metadata`（计数、`extraction_basis`、`schema_notes`、`changes_from_previous`）
+- **缺统计节** → 每 `{perspective}-entities.md` 含完整统计（计数、`extraction_basis`、`schema_notes`、`changes_from_previous`）
 
 ## README 与归并
 

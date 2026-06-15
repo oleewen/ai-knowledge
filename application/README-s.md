@@ -26,7 +26,7 @@ solutions ──→ analysis ──→ requirements
 
 | 阶段 | 目录 | 主要产物 |
 |------|------|----------|
-| 知识基线 | [constitution](constitution/README.md)、[knowledge](knowledge) | 宪法层与四视角实体 |
+| 知识基线 | [agent/knowledge/](../agent/knowledge/knowledge-governance.md)、[knowledge](knowledge) | 治理规则与四视角实体 |
 | 方案阶段 | [solutions](solutions) | `SOLUTION-{IDEA-ID}.md` |
 | 分析阶段 | [analysis](analysis) | `ANALYSIS-{IDEA-ID}.md` |
 | 交付阶段 | [requirements](requirements) | `REQUIREMENT-{IDEA-ID}/MVP-Phase-*`（PRD/ASD/DSD/TDD/`specs/`） |
@@ -37,7 +37,6 @@ solutions ──→ analysis ──→ requirements
 
 | 目录 | 入口说明 |
 |------|----------|
-| [constitution/README.md](constitution/README.md) | 宪法层：术语、原则、标准、ADR |
 | [knowledge/README.md](knowledge/README.md) | 四视角知识实体组织与映射规则 |
 | [solutions/README.md](solutions/README.md) | 方案阶段编写规则 |
 | [analysis/README.md](analysis/README.md) | 分析阶段编写规则 |
@@ -47,6 +46,6 @@ solutions ──→ analysis ──→ requirements
 ## 机器可读元数据
 
 - 根元数据：[docs_meta.yaml](docs_meta.yaml)
-- 子目录元数据：`constitution/constitution_meta.yaml`、`knowledge_meta.yaml`（**solutions** / **analysis** / **requirements** / **changelogs** 见各目录 `README.md`）
+- 子目录元数据：`knowledge/knowledge-meta.md`（**solutions** / **analysis** / **requirements** / **changelogs** 见各目录 `README.md`）
 
 > 约束细则以对应 YAML 与 `DESIGN.md` 为准，本文件不复写字段定义。

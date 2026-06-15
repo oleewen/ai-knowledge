@@ -1,10 +1,15 @@
 # docs-extract 提炼规范
 
-关键词附录、段落筛选、第三列写入。**流程**见 [workflow.md](workflow.md)。
+布局契约：[knowledge-layout.md](../../../references/knowledge-layout.md)。关键词附录、段落筛选、第三列写入。**流程**见 [workflow.md](workflow.md)。
 
 ## 关键词附录格式
 
-overview 须含 `## 文档关键词`「章节 → 关键词」表。章节名与 `architecture/overview/NAME-overview.md` 主标题（README 🔑 + ADR）对齐：
+overview 须含 `## 文档关键词`「章节 → 关键词」表。章节名与目标 overview 主标题对齐：
+
+- **系统库**：`system/architecture/overview/NAME-overview.md` 表行（见各视角 README）
+- **公司库**：`company/ea/overview/NAME-overview.md` 表行（见 `company/ea/` 各视角 README）
+
+系统库示例附录：
 
 ```markdown
 ## 文档关键词
@@ -30,12 +35,14 @@ overview 须含 `## 文档关键词`「章节 → 关键词」表。章节名与
 | 技术架构概述 | 技术栈, 技术选型, 框架 |
 | 基础设施架构 | 基础设施, 部署, 容器, 云, 服务器 |
 | 中间件与基础组件 | 中间件, 消息队列, 缓存, 数据库 |
-| 高可用与容灾 | 高可用, 容灾, 故障转移, 备份 |
 | 性能与扩展性 | 性能, 扩展, 并发, 吞吐量 |
+| 高可用与容灾 | 高可用, 容灾, 故障转移, 备份 |
 | 可观测性 | 监控, 日志, 告警, 链路追踪 |
 | 数据架构概述 | 数据架构, 数据设计, 数据策略 |
 | 数据模型 | 数据模型, 表结构, 字段, ER图 |
 | 数据存储方案 | 存储, 数据库, 持久化, 分库分表 |
+| 数据分析与应用 | 分析, BI, 看板, 报表, 机器学习 |
+| 数据流转 | 数据流, ETL, 同步, 一致性, CDC |
 ```
 
 - 手工维护业务术语；多章可共用词；段落归 **命中密度最高** 章（平手按五视角顺序）；附录标题固定 `## 文档关键词`。

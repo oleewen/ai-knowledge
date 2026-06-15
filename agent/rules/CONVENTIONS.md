@@ -60,15 +60,15 @@
 
 | 阶段 | 规则 globs（Cursor） | 终稿 / 写入范围 | 中间会话 spec 文件名后缀 | 闸门标记 | 环境变量例外 | Skill |
 | --- | --- | --- | --- | --- | --- | --- |
-| sdx-solution | `application/solutions/**/*` | `application/solutions/SOLUTION-*.md` | `-sdx-solution.md` | `<!-- sdx-solution-gate: CONFIRMED -->` | `SDX_SOLUTION_ALLOW_SOLUTION_WRITE` | [sdx-solution/SKILL.md](../skills/sdx-solution/SKILL.md) |
-| sdx-analysis | `application/analysis/**/*` | `application/analysis/ANALYSIS-*.md` | `-sdx-analysis.md` | `<!-- sdx-analysis-gate: CONFIRMED -->` | `SDX_ANALYSIS_ALLOW_ANALYSIS_WRITE` | [sdx-analysis/SKILL.md](../skills/sdx-analysis/SKILL.md) |
+| sdx-solution | `application/solutions/**/*`、`company/solutions/**/*` | `{DOC_DIR}/solutions/SOLUTION-*.md` | `-sdx-solution.md` | `<!-- sdx-solution-gate: CONFIRMED -->` | `SDX_SOLUTION_ALLOW_SOLUTION_WRITE` | [sdx-solution/SKILL.md](../skills/sdx-solution/SKILL.md) |
+| sdx-analysis | `application/analysis/**/*`、`company/analysis/**/*` | `{DOC_DIR}/analysis/ANALYSIS-*.md` | `-sdx-analysis.md` | `<!-- sdx-analysis-gate: CONFIRMED -->` | `SDX_ANALYSIS_ALLOW_ANALYSIS_WRITE` | [sdx-analysis/SKILL.md](../skills/sdx-analysis/SKILL.md) |
 | sdx-architect | `application/requirements/**/ASD-*.md` | `application/requirements/**/ASD-*.md` | `-sdx-architect.md` | `<!-- sdx-architect-gate: CONFIRMED -->` | `SDX_ARCHITECT_ALLOW_ASD_WRITE` | [sdx-architect/SKILL.md](../skills/sdx-architect/SKILL.md) |
 | sdx-design | `application/requirements/**/DSD-*.md` | `application/requirements/**/DSD-*.md` | `-sdx-design.md` | `<!-- sdx-design-gate: CONFIRMED -->` | `SDX_DESIGN_ALLOW_DSD_WRITE` | [sdx-design/SKILL.md](../skills/sdx-design/SKILL.md) |
 | sdx-prd | `application/requirements/**/*` | `application/requirements/**/PRD-*.md` | `-sdx-prd.md` | `<!-- sdx-prd-gate: CONFIRMED -->` | `SDX_PRD_ALLOW_PRD_WRITE` | [sdx-prd/SKILL.md](../skills/sdx-prd/SKILL.md) |
 | sdx-test | `application/requirements/**/*` | `application/requirements/**/TDD-*.md` | `-sdx-test.md` | `<!-- sdx-test-gate: CONFIRMED -->` | `SDX_TEST_ALLOW_TDD_WRITE` | [sdx-test/SKILL.md](../skills/sdx-test/SKILL.md) |
-| docs-distill | `system/architecture/**/*` | `system/architecture/overview/` 受管区块及蒸馏相关日志的写入 | `-docs-distill.md` | `<!-- docs-distill-gate: CONFIRMED -->` | 无（必须走确认流程） | [docs-distill/SKILL.md](../skills/docs-distill/SKILL.md) |
-| docs-extract | `system/architecture/overview/**/*` | `system/architecture/overview/*.md` 写入 | `-docs-extract.md` | `<!-- docs-extract-gate: CONFIRMED -->` | 无（必须走确认流程） | [docs-extract/SKILL.md](../skills/docs-extract/SKILL.md) |
-| docs-archive | `system/architecture/overview/**/*` | `system/architecture/overview/*.md` 写入 | `-docs-archive.md` | `<!-- docs-archive-gate: CONFIRMED -->` | 无（必须走确认流程） | [docs-archive/SKILL.md](../skills/docs-archive/SKILL.md) |
+| docs-distill | `system/architecture/**/*`、`company/ea/**/*` | `system/architecture/overview/` 受管区块及蒸馏相关日志的写入 | `-docs-distill.md` | `<!-- docs-distill-gate: CONFIRMED -->` | 无（必须走确认流程） | [docs-distill/SKILL.md](../skills/docs-distill/SKILL.md) |
+| docs-extract | `system/architecture/overview/**/*`、`company/ea/overview/**/*` | `system/architecture/overview/*.md`、`company/ea/overview/*.md` 写入 | `-docs-extract.md` | `<!-- docs-extract-gate: CONFIRMED -->` | 无（必须走确认流程） | [docs-extract/SKILL.md](../skills/docs-extract/SKILL.md) |
+| docs-archive | `system/architecture/overview/**/*`、`company/ea/overview/**/*` | `system/architecture/overview/*.md`、`company/ea/overview/*.md` 写入 | `-docs-archive.md` | `<!-- docs-archive-gate: CONFIRMED -->` | 无（必须走确认流程） | [docs-archive/SKILL.md](../skills/docs-archive/SKILL.md) |
 | docs-build | `{DOC_DIR}/knowledge/**/*` | `{DOC_DIR}/knowledge/` 下 JSON、README、KNOWLEDGE_INDEX 写入 | `-docs-build.md` | `<!-- docs-build-gate: CONFIRMED -->` | 无（必须走确认流程） | [docs-build/SKILL.md](../skills/docs-build/SKILL.md) |
 | docs-indexing | `**/INDEX_GUIDE.md`、`**/changelogs/INDEXING-LOG.md` | 各文档根下 `INDEX_GUIDE.md` 与对应 `changelogs/INDEXING-LOG.md` 主表写入 | `-docs-indexing.md` | `<!-- docs-indexing-gate: CONFIRMED -->` | 无（必须走确认流程） | [docs-indexing/SKILL.md](../skills/docs-indexing/SKILL.md) |
 
@@ -98,3 +98,4 @@
 ## 四、参考文档
 
 - AI 协作说明：`agent/README.md`
+- 知识库布局（路径、overview、流水线 SSOT）：[knowledge-layout.md](../references/knowledge-layout.md)

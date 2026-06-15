@@ -4,7 +4,7 @@
 
 本节说明本系统信息架构落地，定义导航、层级与内容模型，支撑可发现性与一致心智模型。
 
-> **信息架构 SSOT**：公司级导航、页面层级与内容模型标准见 [`product-information-architecture.md`](../../../company/architecture/product/product-information-architecture.md)。
+> **信息架构 SSOT**：公司级导航、页面层级与内容模型标准见 [`product-information-architecture.md`](../../../company/ea/product/product-information-architecture.md)。
 
 ## 导航结构
 

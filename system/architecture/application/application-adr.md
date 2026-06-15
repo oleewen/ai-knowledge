@@ -4,7 +4,7 @@
 
 本节沉淀本系统重大技术决策的背景、选项与后果，便于审计、复盘与知识传承。
 
-> **ADR SSOT**：公司级 ADR 模板与编号规则见 [`application-adr.md`](../../../company/architecture/application/application-adr.md)。
+> **ADR SSOT**：公司级 ADR 模板与编号规则见 [`application-adr.md`](../../../company/ea/application/application-adr.md)。
 
 ## ADR 模板
 
@@ -22,7 +22,7 @@
 
 <!-- **应写内容**：本系统全部 ADR 的索引表（编号、标题、状态）；取代关系链；定期 review 责任。 -->
 
-<!-- **产出建议**：本文件内或独立 `adr/README` 中的索引表。 -->
+<!-- **产出建议**：本文件内索引表，或链至 [system/adr/README.md](../../adr/README.md)。 -->
 
 | ADR 编号 | 标题 | 状态 | 日期 |
 | --- | --- | --- | --- |

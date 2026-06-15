@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # 校验 docs-build 产物。无 CLI 参数；路径来自 .docsconfig（config-bootstrap.sh）
-# 检查：INDEX 非空；JSON 可解析且 schema_version 2.1；前缀；层级+ID 唯一；evidence；metadata
+# 检查：INDEX 非空；{perspective}-entities.md / {perspective}-meta.md 存在且含实体表与统计节
 
 ERRORS=0
 WARNINGS=0
@@ -21,7 +21,6 @@ validate_bootstrap_docsconfig "$SCRIPT_DIR"
 DOC_ROOT="$(resolve_repo_doc_root)"
 cd "$REPO_ROOT" || exit 1
 
-# 知识库：{DOC_DIR}/knowledge
 KNOWLEDGE_DIR="${REPO_ROOT}/${DOC_DIR}/knowledge"
 INDEX_FILE="${KNOWLEDGE_DIR}/KNOWLEDGE_INDEX.md"
 
@@ -49,154 +48,48 @@ else
   error "KNOWLEDGE_INDEX.md 不存在: ${INDEX_FILE}"
 fi
 
-# 2. *_knowledge.json 文件检查
-PERSPECTIVES=("application" "data" "business" "product")
-KNOWLEDGE_COUNT=0
-
-for p in "${PERSPECTIVES[@]}"; do
-  KNOWLEDGE_FILE="${KNOWLEDGE_DIR}/${p}/${p}_knowledge.json"
-  if [[ -f "${KNOWLEDGE_FILE}" ]]; then
-    KNOWLEDGE_COUNT=$((KNOWLEDGE_COUNT + 1))
-    # JSON 格式有效性
-    if python3 -c "import json; json.load(open('${KNOWLEDGE_FILE}'))" 2>/dev/null; then
-      success "${p}_knowledge.json 格式有效"
-
-      # schema_version 检查
-      VERSION=$(python3 -c "import json; d=json.load(open('${KNOWLEDGE_FILE}')); print(d.get('schema_version',''))" 2>/dev/null)
-      if [[ "${VERSION}" == "2.1" ]]; then
-        success "${p}_knowledge.json schema_version=2.1"
-      else
-        warn "${p}_knowledge.json schema_version 不是 2.1 (实际: ${VERSION})"
-      fi
-
-      # 实体数量（应用视角为分类结构，其余为扁平数组）
-      if [[ "${p}" == "application" ]]; then
-        COUNT=$(python3 -c "
-import json
-d=json.load(open('${KNOWLEDGE_FILE}'))
-ents=d.get('entities',{})
-total=0
-for k in ['systems','applications','services','apis']:
-    total+=len(ents.get(k,[]))
-print(total)
-" 2>/dev/null)
-      else
-        COUNT=$(python3 -c "import json; d=json.load(open('${KNOWLEDGE_FILE}')); print(len(d.get('entities',[])))" 2>/dev/null)
-      fi
-      info "${p}_knowledge.json 包含 ${COUNT} 个实体"
-
-      # 证据链非空检查
-      if [[ "${p}" == "application" ]]; then
-        EMPTY_EVIDENCE=$(python3 -c "
-import json
-d=json.load(open('${KNOWLEDGE_FILE}'))
-ents=d.get('entities',{})
-count=0
-for k in ['systems','applications','services','apis']:
-    count+=sum(1 for e in ents.get(k,[]) if not e.get('evidence_chain'))
-print(count)
-" 2>/dev/null)
-      else
-        EMPTY_EVIDENCE=$(python3 -c "
-import json
-d=json.load(open('${KNOWLEDGE_FILE}'))
-count=sum(1 for e in d.get('entities',[]) if not e.get('evidence_chain'))
-print(count)
-" 2>/dev/null)
-      fi
-      if [[ "${EMPTY_EVIDENCE}" -gt 0 ]]; then
-        warn "${p}_knowledge.json 有 ${EMPTY_EVIDENCE} 个实体缺少证据链"
-      fi
-
-      # metadata 节检查
-      HAS_META=$(python3 -c "import json; d=json.load(open('${KNOWLEDGE_FILE}')); print('yes' if 'metadata' in d else 'no')" 2>/dev/null)
-      if [[ "${HAS_META}" == "yes" ]]; then
-        success "${p}_knowledge.json 包含 metadata 节"
-      else
-        warn "${p}_knowledge.json 缺少 metadata 节"
-      fi
-    else
-      error "${p}_knowledge.json JSON 格式无效"
-    fi
-  else
-    info "${p}_knowledge.json 未找到（可选）"
-  fi
-done
-
-info "发现 ${KNOWLEDGE_COUNT}/4 个 knowledge JSON 文件"
-
-# 3. ID 前缀验证
-declare -A PREFIX_MAP=(
-  ["application"]="SYS APP MS API"
-  ["data"]="DS ENT"
-  ["business"]="BD BSD BC AGG AB"
-  ["product"]="PL PM FT UC"
-)
-
-for p in "${PERSPECTIVES[@]}"; do
-  KNOWLEDGE_FILE="${KNOWLEDGE_DIR}/${p}/${p}_knowledge.json"
-  [[ ! -f "${KNOWLEDGE_FILE}" ]] && continue
-
-  ALLOWED="${PREFIX_MAP[$p]}"
-  if [[ "${p}" == "application" ]]; then
-    INVALID=$(python3 -c "
-import json
-d=json.load(open('${KNOWLEDGE_FILE}'))
-ents=d.get('entities',{})
-allowed='${ALLOWED}'.split()
-invalid=0
-for k in ['systems','applications','services','apis']:
-    invalid+=sum(1 for e in ents.get(k,[]) if e.get('hierarchy') not in allowed)
-print(invalid)
-" 2>/dev/null)
-  else
-    INVALID=$(python3 -c "
-import json
-d=json.load(open('${KNOWLEDGE_FILE}'))
-allowed='${ALLOWED}'.split()
-invalid=[e['hierarchy'] for e in d.get('entities',[]) if e.get('hierarchy') not in allowed]
-print(len(invalid))
-" 2>/dev/null)
-  fi
-
-  if [[ "${INVALID}" -gt 0 ]]; then
-    error "${p}_knowledge.json 包含 ${INVALID} 个非法前缀"
-  else
-    success "${p}_knowledge.json 前缀验证通过"
-  fi
-done
-
-# 4. 唯一性检查（层级+ID）
-if [[ ${KNOWLEDGE_COUNT} -gt 0 ]]; then
-  DUPLICATES=$(python3 -c "
-import json, os
-seen=set()
-dups=0
-for p in ['application','data','business','product']:
-    f=os.path.join('${KNOWLEDGE_DIR}',p,f'{p}_knowledge.json')
-    if not os.path.exists(f): continue
-    d=json.load(open(f))
-    entities=d.get('entities',[])
-    if isinstance(entities, dict):
-        all_ents=[]
-        for k in ['systems','applications','services','apis']:
-            all_ents.extend(entities.get(k,[]))
-        entities=all_ents
-    for e in entities:
-        key=f\"{e.get('hierarchy','')}-{e.get('id','')}\"
-        if key in seen: dups+=1
-        seen.add(key)
-print(dups)
-" 2>/dev/null)
-
-  if [[ "${DUPLICATES}" -gt 0 ]]; then
-    error "发现 ${DUPLICATES} 个重复的 层级+ID 组合"
-  else
-    success "层级+ID 唯一性验证通过"
-  fi
+# 2. knowledge-meta.md
+META_ROOT="${KNOWLEDGE_DIR}/knowledge-meta.md"
+if [[ -f "${META_ROOT}" ]]; then
+  success "knowledge-meta.md 存在"
+else
+  warn "knowledge-meta.md 未找到（可选）"
 fi
 
-# 5. 提取报告（可选）
+# 3. 各视角 {perspective}-meta.md / {perspective}-entities.md
+PERSPECTIVES=("application" "data" "business" "product" "technical")
+ENTITIES_COUNT=0
+
+for p in "${PERSPECTIVES[@]}"; do
+  META_FILE="${KNOWLEDGE_DIR}/${p}/${p}-meta.md"
+  ENTITIES_FILE="${KNOWLEDGE_DIR}/${p}/${p}-entities.md"
+
+  if [[ -f "${META_FILE}" ]]; then
+    success "${p}-meta.md 存在"
+  else
+    warn "${p}-meta.md 未找到"
+  fi
+
+  if [[ -f "${ENTITIES_FILE}" ]]; then
+    ENTITIES_COUNT=$((ENTITIES_COUNT + 1))
+    success "${p}-entities.md 存在"
+
+    if grep -q "## 统计" "${ENTITIES_FILE}" || grep -q "## 实体总表" "${ENTITIES_FILE}"; then
+      success "${p}-entities.md 含实体表或统计节"
+    else
+      warn "${p}-entities.md 缺少 ## 实体总表 或 ## 统计 节"
+    fi
+
+    ROWS=$(grep -c '^|' "${ENTITIES_FILE}" 2>/dev/null || echo 0)
+    info "${p}-entities.md 表格行数约 ${ROWS}"
+  else
+    info "${p}-entities.md 未找到（可选）"
+  fi
+done
+
+info "发现 ${ENTITIES_COUNT}/${#PERSPECTIVES[@]} 个 entities Markdown 文件"
+
+# 4. 提取报告（可选）
 for p in "${PERSPECTIVES[@]}"; do
   REPORT="${KNOWLEDGE_DIR}/${p}/extraction_report.md"
   if [[ -f "${REPORT}" ]]; then

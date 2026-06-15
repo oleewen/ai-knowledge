@@ -6,8 +6,9 @@
 
 | 路径 | 说明 |
 |------|------|
-| [constitution/README.md](constitution/README.md) | 系统级宪法与治理：术语边界、槽位约定；与 `application/constitution/` 职责划分见该目录 README |
+| [agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md) | 治理与命名 SSOT：术语边界、槽位约定 |
 | [architecture/README.md](architecture/README.md) | 五视角架构索引（业务 / 产品 / 应用 / 数据 / 技术） |
+| [adr/README.md](adr/README.md) | 系统层 ADR 正文目录 |
 | [solutions/README.md](solutions/README.md) | SDD 解决方案阶段：产出 `SOLUTION-{IDEA-ID}.md`，作为 analysis 上游输入 |
 | [analysis/README.md](analysis/README.md) | SDD 需求分析阶段：产出 `ANALYSIS-{IDEA-ID}.md`，衔接 solutions 与 requirements |
 | [requirements/README.md](requirements/README.md) | SDD 需求交付：按 `REQUIREMENT-{IDEA-ID}/` 组织 PRD、ASD、DSD、TDD 等阶段产物 |
@@ -20,4 +21,4 @@
 2. [architecture/business/README.md](architecture/business/README.md) / [architecture/product/README.md](architecture/product/README.md) — 业务与产品语境  
 3. [architecture/application/README.md](architecture/application/README.md) / [architecture/data/README.md](architecture/data/README.md) / [architecture/technical/README.md](architecture/technical/README.md) — 系统、数据与技术落地  
 
-与公司知识库侧 [`../company/architecture/`](../company/architecture/README.md) 对照阅读。
+与公司知识库侧 [`../company/ea/`](../company/ea/README.md) 对照阅读。

@@ -4,7 +4,7 @@
 
 本节概括本系统技术选型、技术雷达与决策记录，为基础设施、中间件与工程实践提供统一基线。
 
-> **技术架构 SSOT**：公司级技术选型与雷达标准见 [`technical-overview.md`](../../../company/architecture/technical/technical-overview.md)。
+> **技术架构 SSOT**：公司级技术选型与雷达标准见 [`technical-overview.md`](../../../company/ea/technical/technical-overview.md)。
 
 与 [`application-overview.md`](../application/application-overview.md#技术摘要)、[`data-overview.md`](../data/data-overview.md) 可对齐。
 

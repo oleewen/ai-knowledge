@@ -1,5 +1,5 @@
 {
-  "$comment": "docs-build *_knowledge.json（schema 2.1）结构示例。",
+  "$comment": "docs-build {perspective}-entities.md（schema 2.1 语义）结构参考；落盘为 Markdown 表格。",
 
   "application_knowledge_example": {
     "schema_version": "2.1",

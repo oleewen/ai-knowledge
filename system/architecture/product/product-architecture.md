@@ -4,7 +4,7 @@
 
 本节说明本系统产品板块及其与产品模块（PM）、系统（SYS）的映射关系，为产品功能与旅程设计提供上层结构。
 
-> **PL 定义 SSOT**：公司级产品线清单见 [`product-architecture.md`](../../../company/architecture/product/product-architecture.md)。
+> **PL 定义 SSOT**：公司级产品线清单见 [`product-architecture.md`](../../../company/ea/product/product-architecture.md)。
 
 ## 产品板块
 

@@ -4,7 +4,7 @@
 
 本节说明本系统租户隔离、环境拓扑与发布控制，支撑安全合规与交付节奏。
 
-> **多租户多环境 SSOT**：公司级租户、环境与功能开关标准见 [`application-multi-tenant-environment.md`](../../../company/architecture/application/application-multi-tenant-environment.md)。
+> **多租户多环境 SSOT**：公司级租户、环境与功能开关标准见 [`application-multi-tenant-environment.md`](../../../company/ea/application/application-multi-tenant-environment.md)。
 
 ## 租户隔离
 

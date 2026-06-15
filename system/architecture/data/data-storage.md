@@ -4,7 +4,7 @@
 
 本节说明本系统各类存储的选型、分布与扩展策略，支撑容量与成本目标。
 
-> **数据存储 SSOT**：公司级存储选型与分布标准见 [`data-storage.md`](../../../company/architecture/data/data-storage.md)。
+> **数据存储 SSOT**：公司级存储选型与分布标准见 [`data-storage.md`](../../../company/ea/data/data-storage.md)。
 
 ## 库选型
 

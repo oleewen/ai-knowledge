@@ -13,4 +13,4 @@
 | 🔑 | 能力地图 | [business-capability-map.md](business-capability-map.md) | 本系统业务能力落地、成熟度及与业务域对应。 |
 | 📎 | 规则策略 | [business-rules-and-strategies.md](business-rules-and-strategies.md) | 业务策略与合规约束落地，作为产品与风控依据。 |
 
-> 商业模式与价值链、组织角色见 [公司业务架构](../../../company/architecture/business/README.md)。
+> 商业模式与价值链、组织角色见 [公司业务架构](../../../company/ea/business/README.md)。
