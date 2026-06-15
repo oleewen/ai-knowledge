@@ -4,7 +4,7 @@
 > - 副标题列 `✅`：由 `docs-tag --phase 2` 根据附录 keywords 与链接章节正文判定。
 > - `## 架构摘录`：由 `docs-tag --phase 3`（同义 `excerpt`）从下方五视角表中 ✅ 行投影生成，请勿手改摘录表数据行。
 > - 推荐顺序：`1-write`（或已有 keywords）→ `2` → `3`。
-> - 表行范围：各视角 README 🔑 核心文件 + 应用 ADR（📐）；副标题锚点与各章节 `##` 标题同步维护。
+> - 表行范围：各视角 README 文件；副标题锚点与各章节 `##` 标题同步维护。
 
 ## 架构摘录
 
@@ -23,73 +23,40 @@
 | [业务域划分](../business/business-domain-division.md) | [业务域职责](../business/business-domain-division.md#业务域职责) | — |
 | [业务域划分](../business/business-domain-division.md) | [核心域 / 支撑域 / 通用域](../business/business-domain-division.md#核心域--支撑域--通用域) | — |
 | [业务域划分](../business/business-domain-division.md) | [业务域关系图](../business/business-domain-division.md#业务域关系图) | — |
-| [业务术语](../business/business-glossary.md) | [概念模型](../business/business-glossary.md#概念模型) | — |
-| [业务术语](../business/business-glossary.md) | [业务术语](../business/business-glossary.md#业务术语) | — |
-| [业务术语](../business/business-glossary.md) | [术语映射](../business/business-glossary.md#术语映射) | — |
-| [业务术语](../business/business-glossary.md) | [术语治理](../business/business-glossary.md#术语治理) | — |
-| [业务流程](../business/business-processes.md) | [核心流程](../business/business-processes.md#核心流程) | — |
-| [业务流程](../business/business-processes.md) | [分支流程](../business/business-processes.md#分支流程) | — |
-| [业务流程](../business/business-processes.md) | [异常流程](../business/business-processes.md#异常流程) | — |
-| [业务流程](../business/business-processes.md) | [系统映射](../business/business-processes.md#系统映射) | — |
-| [业务能力地图](../business/business-capability-map.md) | [能力清单](../business/business-capability-map.md#能力清单) | — |
-| [业务能力地图](../business/business-capability-map.md) | [成熟度评估](../business/business-capability-map.md#成熟度评估) | — |
-| [业务能力地图](../business/business-capability-map.md) | [系统映射](../business/business-capability-map.md#系统映射) | — |
+| [商业模式](../business/business-model.md) | [商业模式](../business/business-model.md#商业模式) | — |
+| [商业模式](../business/business-model.md) | [收支模型](../business/business-model.md#收支模型) | — |
+| [价值链](../business/business-value-chain.md) | [价值创造环节](../business/business-value-chain.md#价值创造环节) | — |
+| [价值链](../business/business-value-chain.md) | [竞争壁垒](../business/business-value-chain.md#竞争壁垒) | — |
+| [组织角色](../business/business-roles-and-organization.md) | [干系人](../business/business-roles-and-organization.md#干系人) | — |
+| [组织角色](../business/business-roles-and-organization.md) | [组织结构](../business/business-roles-and-organization.md#组织结构) | — |
+| [业务能力](../business/business-capability.md) | [能力清单](../business/business-capability.md#能力清单) | — |
+| [业务能力](../business/business-capability.md) | [成熟度评估](../business/business-capability.md#成熟度评估) | — |
 
 ## [产品架构](../product/README.md)
 
 | 主标题 | 副标题 | 归档业务知识 |
 | --- | --- | --- |
-| [产品概述](../product/product-overview.md) | [价值主张](../product/product-overview.md#价值主张) | — |
+| [产品概述](../product/product-overview.md) | [产品定位](../product/product-overview.md#产品定位) | — |
 | [产品概述](../product/product-overview.md) | [目标用户](../product/product-overview.md#目标用户) | — |
-| [产品概述](../product/product-overview.md) | [竞品分析](../product/product-overview.md#竞品分析) | — |
 | [产品概述](../product/product-overview.md) | [产品路线](../product/product-overview.md#产品路线) | — |
-| [产品架构](../product/product-architecture.md) | [产品线清单（PL）](../product/product-architecture.md#产品线清单pl) | — |
-| [产品架构](../product/product-architecture.md) | [产品线职责与边界](../product/product-architecture.md#产品线职责与边界) | — |
-| [产品架构](../product/product-architecture.md) | [产品线关系图](../product/product-architecture.md#产品线关系图) | — |
-| [信息架构](../product/product-information-architecture.md) | [导航结构](../product/product-information-architecture.md#导航结构) | — |
-| [信息架构](../product/product-information-architecture.md) | [页面层级](../product/product-information-architecture.md#页面层级) | — |
-| [信息架构](../product/product-information-architecture.md) | [内容模型](../product/product-information-architecture.md#内容模型) | — |
-| [产品功能](../product/product-feature.md) | [产品模块全景图](../product/product-feature.md#产品模块全景图) | — |
-| [产品功能](../product/product-feature.md) | [模块功能清单](../product/product-feature.md#模块功能清单) | — |
-| [产品功能](../product/product-feature.md) | [功能优先级](../product/product-feature.md#功能优先级) | — |
-| [产品功能](../product/product-feature.md) | [MVP 定义与迭代](../product/product-feature.md#mvp-定义与迭代) | — |
-| [用户旅程与场景](../product/product-user-journeys.md) | [用户旅程地图](../product/product-user-journeys.md#用户旅程地图) | — |
-| [用户旅程与场景](../product/product-user-journeys.md) | [用户故事地图](../product/product-user-journeys.md#用户故事地图) | — |
-| [用户旅程与场景](../product/product-user-journeys.md) | [场景用例](../product/product-user-journeys.md#场景用例) | — |
-| [用户旅程与场景](../product/product-user-journeys.md) | [用户故事清单](../product/product-user-journeys.md#用户故事清单) | — |
-| [用户旅程与场景](../product/product-user-journeys.md) | [业务规则清单](../product/product-user-journeys.md#业务规则清单) | — |
-| [版本管理与发布](../product/product-release.md) | [版本规范](../product/product-release.md#版本规范) | — |
-| [版本管理与发布](../product/product-release.md) | [发布记录](../product/product-release.md#发布记录) | — |
-| [版本管理与发布](../product/product-release.md) | [灰度发布](../product/product-release.md#灰度发布) | — |
-| [版本管理与发布](../product/product-release.md) | [功能开关](../product/product-release.md#功能开关) | — |
+| [产品线](../product/product-architecture.md) | [产品线清单](../product/product-architecture.md#产品线清单pl) | — |
+| [产品线](../product/product-architecture.md) | [职责与边界](../product/product-architecture.md#产品线职责与边界) | — |
+| [产品线](../product/product-architecture.md) | [产品线关系图](../product/product-architecture.md#产品线关系图) | — |
+| [度量标准](../product/product-metrics.md) | [指标框架](../product/product-metrics.md#指标框架) | — |
+| [度量标准](../product/product-metrics.md) | [实验原则](../product/product-metrics.md#实验原则) | — |
+| [体验设计](../product/product-ux.md) | [设计规范](../product/product-ux.md#设计规范) | — |
+| [体验设计](../product/product-ux.md) | [无障碍标准](../product/product-ux.md#无障碍标准) | — |
 
 ## [应用架构](../application/README.md)
 
 | 主标题 | 副标题 | 归档业务知识 |
 | --- | --- | --- |
-| [系统概述](../application/application-overview.md) | [系统使命](../application/application-overview.md#系统使命) | — |
-| [系统概述](../application/application-overview.md) | [用户场景](../application/application-overview.md#用户场景) | — |
-| [系统概述](../application/application-overview.md) | [系统范围](../application/application-overview.md#系统范围) | — |
-| [系统概述](../application/application-overview.md) | [外部依赖](../application/application-overview.md#外部依赖) | — |
-| [系统概述](../application/application-overview.md) | [技术摘要](../application/application-overview.md#技术摘要) | — |
+| [系统概述](../application/application-overview.md) | [系统清单](../application/application-overview.md#系统清单) | — |
+| [系统概述](../application/application-overview.md) | [系统使命标准](../application/application-overview.md#系统使命标准) | — |
+| [系统概述](../application/application-overview.md) | [系统范围标准](../application/application-overview.md#系统范围标准) | — |
 | [应用架构](../application/application-architecture.md) | [系统上下文](../application/application-architecture.md#系统上下文) | — |
-| [应用架构](../application/application-architecture.md) | [职责边界](../application/application-architecture.md#职责边界) | — |
-| [应用架构](../application/application-architecture.md) | [服务能力矩阵](../application/application-architecture.md#服务能力矩阵) | — |
-| [应用架构](../application/application-architecture.md) | [分层结构](../application/application-architecture.md#分层结构) | — |
-| [应用架构](../application/application-architecture.md) | [演进路线](../application/application-architecture.md#演进路线) | — |
-| [领域模型](../application/application-domain-model.md) | [领域模型](../application/application-domain-model.md#领域模型) | — |
-| [领域模型](../application/application-domain-model.md) | [对象模型](../application/application-domain-model.md#对象模型) | — |
-| [领域模型](../application/application-domain-model.md) | [对象定义](../application/application-domain-model.md#对象定义) | — |
-| [服务设计](../application/application-service-design.md) | [设计原则](../application/application-service-design.md#设计原则) | — |
-| [服务设计](../application/application-service-design.md) | [服务拆分](../application/application-service-design.md#服务拆分) | — |
-| [服务设计](../application/application-service-design.md) | [服务设计](../application/application-service-design.md#服务设计) | — |
-| [服务设计](../application/application-service-design.md) | [服务容器图](../application/application-service-design.md#服务容器图) | — |
-| [服务设计](../application/application-service-design.md) | [组件图](../application/application-service-design.md#组件图) | — |
-| [领域能力](../application/application-domain-capability.md) | [领域能力](../application/application-domain-capability.md#领域能力) | — |
-| [ADR](../application/application-adr.md) | [ADR 模板](../application/application-adr.md#adr-模板) | — |
-| [ADR](../application/application-adr.md) | [架构风格](../application/application-adr.md#架构风格) | — |
-| [ADR](../application/application-adr.md) | [ADR 索引](../application/application-adr.md#adr-索引) | — |
-| [ADR](../application/application-adr.md) | [待登记](../application/application-adr.md#待登记) | — |
+| [应用架构](../application/application-architecture.md) | [C4 架构标准](../application/application-architecture.md#c4-架构标准) | — |
+| [应用架构](../application/application-architecture.md) | [系统边界](../application/application-architecture.md#系统边界) | — |
 
 ## [技术架构](../technical/README.md)
 
@@ -98,29 +65,18 @@
 | [技术架构概述](../technical/technical-overview.md) | [技术选型](../technical/technical-overview.md#技术选型) | — |
 | [技术架构概述](../technical/technical-overview.md) | [技术雷达](../technical/technical-overview.md#技术雷达) | — |
 | [技术架构概述](../technical/technical-overview.md) | [选型决策](../technical/technical-overview.md#选型决策) | — |
-| [基础设施架构](../technical/technical-infrastructure.md) | [部署架构](../technical/technical-infrastructure.md#部署架构) | — |
-| [基础设施架构](../technical/technical-infrastructure.md) | [网络拓扑](../technical/technical-infrastructure.md#网络拓扑) | — |
-| [基础设施架构](../technical/technical-infrastructure.md) | [云资源规划](../technical/technical-infrastructure.md#云资源规划) | — |
-| [基础设施架构](../technical/technical-infrastructure.md) | [容器编排](../technical/technical-infrastructure.md#容器编排) | — |
-| [基础设施架构](../technical/technical-infrastructure.md) | [流量接入](../technical/technical-infrastructure.md#流量接入) | — |
-| [中间件与基础组件](../technical/technical-middleware.md) | [消息队列](../technical/technical-middleware.md#消息队列) | — |
-| [中间件与基础组件](../technical/technical-middleware.md) | [缓存](../technical/technical-middleware.md#缓存) | — |
-| [中间件与基础组件](../technical/technical-middleware.md) | [搜索引擎](../technical/technical-middleware.md#搜索引擎) | — |
-| [中间件与基础组件](../technical/technical-middleware.md) | [配置注册](../technical/technical-middleware.md#配置注册) | — |
-| [中间件与基础组件](../technical/technical-middleware.md) | [任务调度](../technical/technical-middleware.md#任务调度) | — |
-| [中间件与基础组件](../technical/technical-middleware.md) | [对象存储](../technical/technical-middleware.md#对象存储) | — |
-| [高可用与容灾](../technical/technical-ha-and-dr.md) | [高可用设计](../technical/technical-ha-and-dr.md#高可用设计) | — |
-| [高可用与容灾](../technical/technical-ha-and-dr.md) | [容灾方案](../technical/technical-ha-and-dr.md#容灾方案) | — |
-| [高可用与容灾](../technical/technical-ha-and-dr.md) | [熔断降级](../technical/technical-ha-and-dr.md#熔断降级) | — |
-| [高可用与容灾](../technical/technical-ha-and-dr.md) | [混沌工程](../technical/technical-ha-and-dr.md#混沌工程) | — |
-| [性能与扩展性](../technical/technical-performance-scalability.md) | [性能基线](../technical/technical-performance-scalability.md#性能基线) | — |
-| [性能与扩展性](../technical/technical-performance-scalability.md) | [容量规划](../technical/technical-performance-scalability.md#容量规划) | — |
-| [性能与扩展性](../technical/technical-performance-scalability.md) | [扩展策略](../technical/technical-performance-scalability.md#扩展策略) | — |
-| [性能与扩展性](../technical/technical-performance-scalability.md) | [性能测试](../technical/technical-performance-scalability.md#性能测试) | — |
-| [可观测性](../technical/technical-observability.md) | [日志体系](../technical/technical-observability.md#日志体系) | — |
-| [可观测性](../technical/technical-observability.md) | [监控告警](../technical/technical-observability.md#监控告警) | — |
-| [可观测性](../technical/technical-observability.md) | [链路追踪](../technical/technical-observability.md#链路追踪) | — |
-| [可观测性](../technical/technical-observability.md) | [可视化](../technical/technical-observability.md#可视化) | — |
+| [云基础设施](../technical/technical-infrastructure.md) | [部署架构](../technical/technical-infrastructure.md#部署架构) | — |
+| [云基础设施](../technical/technical-infrastructure.md) | [网络拓扑](../technical/technical-infrastructure.md#网络拓扑) | — |
+| [云基础设施](../technical/technical-infrastructure.md) | [云资源规划](../technical/technical-infrastructure.md#云资源规划) | — |
+| [云基础设施](../technical/technical-infrastructure.md) | [容器编排](../technical/technical-infrastructure.md#容器编排) | — |
+| [DevOps](../technical/technical-devops.md) | [CI/CD 流程](../technical/technical-devops.md#cicd-流程) | — |
+| [DevOps](../technical/technical-devops.md) | [分支策略](../technical/technical-devops.md#分支策略) | — |
+| [DevOps](../technical/technical-devops.md) | [质量门禁](../technical/technical-devops.md#质量门禁) | — |
+| [技术安全](../technical/technical-security.md) | [身份认证](../technical/technical-security.md#身份认证) | — |
+| [技术安全](../technical/technical-security.md) | [数据加密](../technical/technical-security.md#数据加密) | — |
+| [技术安全](../technical/technical-security.md) | [合规基线](../technical/technical-security.md#合规基线) | — |
+| [开发环境](../technical/technical-dev-environment.md) | [本地环境](../technical/technical-dev-environment.md#本地环境) | — |
+| [开发环境](../technical/technical-dev-environment.md) | [工具链标准](../technical/technical-dev-environment.md#工具链标准) | — |
 
 ## [数据架构](../data/README.md)
 
@@ -129,16 +85,17 @@
 | [数据架构概述](../data/data-overview.md) | [设计原则](../data/data-overview.md#设计原则) | — |
 | [数据架构概述](../data/data-overview.md) | [架构全景](../data/data-overview.md#架构全景) | — |
 | [数据架构概述](../data/data-overview.md) | [生命周期](../data/data-overview.md#生命周期) | — |
-| [数据模型](../data/data-model.md) | [数据源](../data/data-model.md#数据源) | — |
-| [数据模型](../data/data-model.md) | [物理模型](../data/data-model.md#物理模型) | — |
-| [数据模型](../data/data-model.md) | [系统数据实体](../data/data-model.md#系统数据实体) | — |
-| [数据模型](../data/data-model.md) | [模型版本](../data/data-model.md#模型版本) | — |
-| [数据存储方案](../data/data-storage.md) | [库选型](../data/data-storage.md#库选型) | — |
-| [数据存储方案](../data/data-storage.md) | [分库分表](../data/data-storage.md#分库分表) | — |
-| [数据存储方案](../data/data-storage.md) | [读写分离](../data/data-storage.md#读写分离) | — |
-| [数据存储方案](../data/data-storage.md) | [冷热分离](../data/data-storage.md#冷热分离) | — |
-| [数据存储方案](../data/data-storage.md) | [数据归档](../data/data-storage.md#数据归档) | — |
-| [数据存储方案](../data/data-storage.md) | [系统存储分布](../data/data-storage.md#系统存储分布) | — |
+| [数据治理](../data/data-governance.md) | [数据标准](../data/data-governance.md#数据标准) | — |
+| [数据治理](../data/data-governance.md) | [元数据管理](../data/data-governance.md#元数据管理) | — |
+| [数据治理](../data/data-governance.md) | [数据质量](../data/data-governance.md#数据质量) | — |
+| [数据治理](../data/data-governance.md) | [数据血缘](../data/data-governance.md#数据血缘) | — |
+| [数仓与湖](../data/data-warehouse-lake.md) | [分层架构](../data/data-warehouse-lake.md#分层架构) | — |
+| [数仓与湖](../data/data-warehouse-lake.md) | [湖仓一体](../data/data-warehouse-lake.md#湖仓一体) | — |
+| [数仓与湖](../data/data-warehouse-lake.md) | [建模规范](../data/data-warehouse-lake.md#建模规范) | — |
+| [数据安全](../data/data-security-privacy.md) | [分类分级](../data/data-security-privacy.md#分类分级) | — |
+| [数据安全](../data/data-security-privacy.md) | [脱敏规范](../data/data-security-privacy.md#脱敏规范) | — |
+| [数据安全](../data/data-security-privacy.md) | [访问控制](../data/data-security-privacy.md#访问控制) | — |
+
 ---
 
 ## 附录
@@ -147,7 +104,7 @@
 
 ```yaml
 keywords:
-  - SYSNAME
+  - COMPANY
   - 示例术语A
   - 示例术语B
 ```

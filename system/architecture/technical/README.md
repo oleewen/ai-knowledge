@@ -12,6 +12,5 @@
 | 🔑 | 性能扩展 | [technical-performance-scalability.md](technical-performance-scalability.md) | 性能目标、容量与扩展策略。 |
 | 🔑 | 高可用与容灾 | [technical-ha-and-dr.md](technical-ha-and-dr.md) | 可用性目标、灾难恢复与韧性实践。 |
 | 🔑 | 可观测性 | [technical-observability.md](technical-observability.md) | 日志、指标、追踪与 SLO 验证。 |
-| 📎 | DevOps | [technical-devops.md](technical-devops.md) | 交付流水线、质量门禁与发布策略。 |
-| 📎 | 技术安全 | [technical-security.md](technical-security.md) | 身份、数据、密钥与合规。 |
-| 📎 | 开发环境 | [technical-dev-environment.md](technical-dev-environment.md) | 本地与协作环境，对齐生产约束。 |
+
+> DevOps 流程、技术安全基线、开发环境标准见 [公司技术架构](../../../company/architecture/technical/README.md)。

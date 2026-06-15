@@ -12,7 +12,7 @@
 | 🔑 | 产品功能 | [product-feature.md](product-feature.md) | 价值主张拆解为功能模块与优先级。 |
 | 🔑 | 用户旅程 | [product-user-journeys.md](product-user-journeys.md) | 用户触点与情绪串联，驱动故事与用例。 |
 | 📎 | 版本发布 | [product-release.md](product-release.md) | 版本实践、发布记录与灰度、功能开关落地。 |
-| 📎 | 度量标准 | [product-metrics.md](product-metrics.md) | 产品行为与数据闭环，支撑实验与迭代。 |
 | 📎 | 运营支撑 | [product-operations-support.md](product-operations-support.md) | 运营、内容、触达与反馈所需的产品能力。 |
-| 📎 | 体验设计 | [product-ux.md](product-ux.md) | 视觉与交互语言，统一流程可理解性与无障碍。 |
 | 📎 | 多端策略 | [product-multi-platform.md](product-multi-platform.md) | 各端覆盖范围与差异落地。 |
+
+> 度量标准、体验设计规范见 [公司产品架构](../../../company/architecture/product/README.md)。
