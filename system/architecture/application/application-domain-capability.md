@@ -2,9 +2,11 @@
 
 [返回上一级 · 应用架构目录](README.md)
 
-本节对应业务架构中领域能力
+本节说明本系统领域能力及 SLA，对应业务架构中领域能力与子系统承载关系。
 
-## 子系统A能力与SLA
+> **领域能力 SSOT**：公司级能力与 SLA 登记标准见 [`application-domain-capability.md`](../../../company/architecture/application/application-domain-capability.md)。
+
+## 领域能力
 
 | 业务活动 | 归属系统 | 能力说明 | SLA 协议 |
 | --- | --- | --- | --- |
