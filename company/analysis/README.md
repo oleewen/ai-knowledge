@@ -1,6 +1,6 @@
 # analysis — 需求分析文档
 
-SDD **需求分析**阶段目录：产出 `ANALYSIS-{IDEA-ID}.md`，作为 [../requirements](../requirements) 输入；上游 [../solutions](../solutions) 中 `SOLUTION-{IDEA-ID}.md`。
+SDD **需求分析**阶段目录：产出 `ANALYSIS-{IDEA-ID}.md`，下游输出由各系统侧 `system/solutions/` 承接（`company/` 层不设 requirements 目录）；上游 [../solutions](../solutions) 中 `SOLUTION-{IDEA-ID}.md`。
 
 ## 交付物
 

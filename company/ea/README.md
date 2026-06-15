@@ -11,6 +11,7 @@
 | 应用架构 | [application/README.md](application/README.md) | 公司内系统清单、C4 系统级架构 | SYS |
 | 数据架构 | [data/README.md](data/README.md) | 数据治理、数仓与湖、数据安全 | MDG |
 | 技术架构 | [technical/README.md](technical/README.md) | 云基础设施、DevOps、技术安全、开发环境 | TPL |
+| 概览缓冲区 | [overview/NAME-overview.md](overview/NAME-overview.md) | 五视角聚合表格（docs-tag / docs-archive 操作对象） | — |
 
 各视角 `{perspective}-meta.md`（层级与必填字段）、`{perspective}-entities.md`（实例索引）见对应子目录。
 

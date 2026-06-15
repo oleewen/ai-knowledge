@@ -38,7 +38,7 @@
 
 | 层级 | 目录 | 职责 |
 | --- | --- | --- |
-| 企业架构层 | `ea/` | 承载公司级企业架构顶层视图（五视角，聚焦治理叙事，不含实现细节）；含 `overview/` 缓冲区 |
+| 企业架构层 | `ea/` | 承载公司级企业架构顶层视图（五视角，聚焦治理叙事，不含实现细节）；含 [`ea/overview/`](ea/overview/NAME-overview.md) 缓冲区（docs-tag / docs-archive 操作对象） |
 | 方案层 | `solutions/` | 公司级跨系统解决方案；明确「哪个系统负责提供什么功能」，作为 `analysis/` 上游输入 |
 | 分析层 | `analysis/` | 公司级跨系统需求分析；衔接 `solutions/`，输出由各系统侧 `requirements/` 承接 |
 | 槽位层 | `system-{name}/` | 挂载系统镜像内容的统一入口 |
