@@ -142,8 +142,8 @@ application                   # 应用知识库 SSOT
 | 视角 | 回答什么问题 | 主要内容 |
 | --- | --- | --- |
 | **业务** [business](../../../system/architecture/business/README.md) | 做什么业务、边界在哪、流程与能力如何组织 | 业务概述、业务域划分、业务流程、业务能力地图、业务术语 |
-| **产品** [product](../../../system/architecture/product/README.md) | 用户是谁、功能如何组织、旅程与发布节奏 | 产品概述、产品功能架构、用户旅程与场景、版本管理与发布 |
-| **应用** [application](../../../system/architecture/application/README.md) | 系统如何拆分、服务如何协作、领域与集成边界 | 应用架构概述、职责边界、服务设计、领域模型、集成架构 |
+| **产品** [product](../../../system/architecture/product/README.md) | 用户是谁、功能如何组织、旅程与发布节奏 | 产品概述、产品架构、产品功能、用户旅程与场景、版本管理与发布 |
+| **应用** [application](../../../system/architecture/application/README.md) | 系统如何拆分、服务如何协作、领域与集成边界 | 系统概述、应用架构、服务设计、领域模型、集成架构 |
 | **数据** [data](../../../system/architecture/data/README.md) | 数据如何建模、存储、流转与治理 | 数据架构概述、数据模型、数据流转、数据治理 |
 | **技术** [technical](../../../system/architecture/technical/README.md) | 如何运行、扩展、观测与交付 | 技术架构概述、基础设施、高可用与容灾、可观测性、DevOps |
 
