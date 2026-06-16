@@ -24,6 +24,7 @@
 
 - [../analysis/](../analysis/) — `ANALYSIS-{IDEA-ID}.md`（可选）
 - [../solutions/](../solutions/) — `SOLUTION-{IDEA-ID}.md`（可选）
+- [../knowledge/](../knowledge/) — 五视角实体登记、实现映射与应用层实体主定义
 - 各需求包内 `specs/` 与 SDX 模板
 
 ## 主线（四步）

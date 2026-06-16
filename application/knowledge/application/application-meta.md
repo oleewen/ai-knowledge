@@ -1,6 +1,6 @@
 # 应用视角元数据（application/knowledge/application）
 
-应用层实现版图（SYS→APP→MS→API）视角元数据 SSOT。实例索引见 [application-entities.md](application-entities.md)。
+应用侧实现版图（SYS→APP→MS→API）实体登记与接口实现元数据。实例索引见 [application-entities.md](application-entities.md)。
 
 ---
 
@@ -11,7 +11,7 @@
 | meta_id | `DIR-KNOWLEDGE-APPLICATION` |
 | 视角 | application |
 | 层级范围 | application |
-| 说明 | 实现版图；公司级 SYS 在 `company/ea/application/` 首次定义，系统层 APP，本层登记 MS/API（示例含 SYS/APP）。 |
+| 说明 | 实现版图；公司级 SYS 在 `company/ea/application/` 首次定义，系统层自 APP 起首次定义，本层重点登记 API 与应用实现映射（示例含 SYS/APP/MS/API）。 |
 | entities_shape | 分节表：SYS / APP / MS / API（语义等价于 schema 2.1 分类结构） |
 
 ---
@@ -20,10 +20,10 @@
 
 | 链序 | 层级代码 | 说明 |
 | --- | --- | --- |
-| 1 | SYS | 系统 |
-| 2 | APP | 应用（代码仓库/部署单元） |
-| 3 | MS | 对外入口宿主类聚类 |
-| 4 | API | 接口端点（HTTP/Dubbo/MQ/Job） |
+| 1 | SYS | 系统（公司层首次定义） |
+| 2 | APP | 应用（代码仓库/部署单元，系统层首次定义） |
+| 3 | MS | 对外入口宿主类聚类（系统层首次定义） |
+| 4 | API | 接口端点（HTTP/Dubbo/MQ/Job，应用层首次定义） |
 
 ---
 
@@ -77,7 +77,7 @@
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 人类可读说明 |
-| [application-entities.md](application-entities.md) | 分类实体 SSOT |
+| [application-entities.md](application-entities.md) | 分类实体索引与登记主表 |
 | [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) | 五视角索引 |
 
 **索引**：`readme_index_table: true`；变更 ID 时同步 README、KNOWLEDGE_INDEX.md、manifest/OpenAPI（按需）。

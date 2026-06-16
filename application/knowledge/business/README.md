@@ -1,6 +1,6 @@
 # business — 业务视角
 
-本目录描述业务版图与领域规则（DDD），不依赖具体技术实现。实体 SSOT：[business-meta.md](business-meta.md)、[business-entities.md](business-entities.md)。
+本目录描述业务版图与领域规则（DDD），不依赖具体技术实现。本树承接业务实体登记与实现映射；元数据与实例索引见 [business-meta.md](business-meta.md)、[business-entities.md](business-entities.md)。
 
 ---
 
@@ -27,7 +27,7 @@
 ```
 business/
 ├── README.md              # 本文件（人类导航）
-├── business-meta.md       # 视角 SSOT（元模型、层级约定、跨视角映射）
+├── business-meta.md       # 视角元数据（元模型、层级约定、跨视角映射）
 ├── business-entities.md   # 扁平实体列表（AI 检索首选入口）
 ```
 

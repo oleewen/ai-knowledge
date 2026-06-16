@@ -1,6 +1,6 @@
 # 数据视角元数据（application/knowledge/data）
 
-应用层数据版图（DS→ENT）视角元数据 SSOT。实例索引见 [data-entities.md](data-entities.md)。
+应用侧数据版图（DS→ENT）实体登记与物理落地元数据。实例索引见 [data-entities.md](data-entities.md)。
 
 ---
 
@@ -11,7 +11,7 @@
 | meta_id | `DIR-KNOWLEDGE-DATA` |
 | 视角 | data |
 | 层级范围 | application |
-| 说明 | 数据存储与实体；公司级 MDG 在 `company/ea/data/` 首次定义，系统层 DS，本层登记 ENT。 |
+| 说明 | 数据存储与实体；公司级 MDG 在 `company/ea/data/` 首次定义，系统层自 DS/ENT 起首次定义，本层承接物理表锚点与应用归属信息。 |
 
 ---
 
@@ -19,8 +19,8 @@
 
 | 链序 | 层级代码 | 说明 |
 | --- | --- | --- |
-| 1 | DS | 数据存储 |
-| 2 | ENT | 数据实体（表/集合） |
+| 1 | DS | 数据存储（系统层首次定义） |
+| 2 | ENT | 数据实体（表/集合，系统层首次定义；应用层补充物理落地） |
 
 ---
 
@@ -75,7 +75,7 @@
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 人类可读说明 |
-| [data-entities.md](data-entities.md) | 扁平实体 SSOT |
+| [data-entities.md](data-entities.md) | 扁平实体索引与登记主表 |
 | [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) | 五视角索引 |
 
 **索引**：`readme_index_table: true`；变更 ID 时同步 README、KNOWLEDGE_INDEX.md（按需）。

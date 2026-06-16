@@ -10,7 +10,7 @@ description: >
 
 调度器：判定归属 → 读 `references/` → **低风险写盘确认**（见 CONVENTIONS 低风险表）→ 更新 `applications/app-{APPNAME}/`。
 
-> **镜像** = `applications/app-{APPNAME}/`。**应用知识库 SSOT** 在远端 `{DOC_DIR}/`；本技能**默认不写**中央库 `{DOC_DIR}/` 本体。
+> **镜像** = `applications/app-{APPNAME}/`。远端 `{DOC_DIR}/` 是应用侧知识主库；本技能**默认不写**中央库 `{DOC_DIR}/` 本体。
 
 ## 边界
 

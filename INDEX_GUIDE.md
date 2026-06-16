@@ -13,7 +13,7 @@
 |------|------|------|
 | 人类入口 | [README.md](README.md) | 克隆、bootstrap、`docs-install`/`agent-install` 与协作总览 |
 | Agent 契约 | [AGENTS.md](AGENTS.md) | 角色、索引查阅顺序、提交闸门与禁止事项 |
-| 应用知识库 SSOT | [application/README.md](application/README.md) | SDD 主线、五视角与阶段文档中枢 |
+| 应用侧知识主库 | [application/README.md](application/README.md) | SDD 主线、五视角、实现登记与应用层实体主库 |
 | 应用侧索引与建联 | [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) | 应用目录九章索引、中央知识库挂载建联登记 |
 | 系统知识库 | [system/README.md](system/README.md) | `architecture/`（五视角文档）、`application-{name}/` 联邦槽位、`analysis/` |
 | 系统侧机器索引 | [system/INDEX_GUIDE.md](system/INDEX_GUIDE.md) | `system/` 树内九章索引（与根、应用侧索引互补） |
@@ -39,7 +39,7 @@
 ```text
 ./
 ├── README.md / AGENTS.md / INDEX_GUIDE.md    # 人类与 Agent 入口、本索引
-├── application/                              # 应用知识库 SSOT：knowledge、阶段、solutions～requirements、changelogs
+├── application/                              # 应用侧知识主库：knowledge、阶段、solutions～requirements、changelogs
 ├── system/                                   # 系统知识库：architecture/（五视角文档）、application-APPNAME/ 联邦槽位、analysis/
 ├── company/                                  # 公司知识库：ea/（五视角企业架构）、system-SYSNAME/ 联邦槽位、changelogs/、solutions/、analysis/
 ├── scripts/                                  # 向目标工程注入知识库与 .docsconfig；bootstrap

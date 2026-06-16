@@ -1,6 +1,6 @@
 # application — 应用知识库（mode=c）
 
-`application/` 维护应用层面的稳定事实与治理线索，是全仓库的知识中枢。  
+`application/` 维护应用侧稳定事实、实现登记与治理线索，是全仓库的重要知识中枢。  
 本文件面向中央知识库挂载建联（`mode=c`）阅读与维护场景，聚焦「按什么顺序读、到哪里写」；九章机器索引与 **中央知识库挂载建联登记**见 [INDEX_GUIDE.md](INDEX_GUIDE.md)。
 
 ## 推荐阅读路径
@@ -14,7 +14,7 @@
 ```text
 agent/rules（治理基线：术语/原则/命名/ADR）
       │
-      ├──→ knowledge（SSOT：五视角实体与映射）
+      ├──→ knowledge（五视角实体登记、实现映射与应用层实体主库）
       │          ↑
       │          └── 蒸馏 / 回写（如 docs-distill）
       │
@@ -28,7 +28,7 @@ agent/rules（治理基线：术语/原则/命名/ADR）
 | 主线 | 目录 | 主要内容 |
 |------|------|----------|
 | 治理基线 | [agent/knowledge/](../agent/knowledge/knowledge-governance.md) | 术语、原则、命名、ADR |
-| 知识基线 | [knowledge](knowledge) | 五视角知识实体与映射 |
+| 知识基线 | [knowledge](knowledge) | 五视角实体登记、实现映射与应用层实体主库 |
 | 变更留痕 | [changelogs](changelogs/README.md) | 变更记录与索引运维文件 |
 
 ## 子目录入口

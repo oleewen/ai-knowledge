@@ -71,7 +71,7 @@
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 人类可读说明 |
-| [technical-entities.md](technical-entities.md) | 扁平实体 SSOT |
+| [technical-entities.md](technical-entities.md) | 扁平实体索引与登记主表 |
 | [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) | 五视角索引 |
 | [../../../company/ea/technical/technical-entities.md](../../../company/ea/technical/technical-entities.md) | 公司级 TPL |
 | [../../../system/architecture/technical/technical-entities.md](../../../system/architecture/technical/technical-entities.md) | 系统级 TSD |

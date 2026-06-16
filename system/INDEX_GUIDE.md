@@ -1,7 +1,7 @@
 # system 索引指南（INDEX_GUIDE）
 
 > **最后更新**: 2026-06-15  
-> **文档定位**: 面向 AI Agent 的 **`system/` 文档根**九章机器索引；描述系统知识库、五视角架构文档与 **`application-{name}/`** 联邦槽位。应用层 SSOT 仍在 [../application/](../application/)。
+> **文档定位**: 面向 AI Agent 的 **`system/` 文档根**九章机器索引；描述系统知识库、五视角架构文档与 **`application-{name}/`** 联邦槽位。应用侧实现登记与应用层实体主库仍在 [../application/](../application/)。
 
 ---
 

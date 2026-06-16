@@ -1,6 +1,6 @@
 # application — 应用知识库（mode=s）
 
-`application/` 维护应用层面的稳定事实与阶段交付物，是全仓库的知识中枢。  
+`application/` 维护应用侧稳定事实、实现登记与阶段交付物，是全仓库的重要知识中枢。  
 本文件面向知识库安装 standalone（模式）（`mode=s`）阅读与维护场景，回答「在 `application/` 里按什么顺序读、到哪里写」；九章机器索引与 **中央知识库挂载建联登记**见 [INDEX_GUIDE.md](INDEX_GUIDE.md)。
 
 ## 推荐阅读路径
@@ -12,7 +12,7 @@
 ## SDD 文档流（一页纸）
 
 ```text
-knowledge（SSOT）
+knowledge（实体登记、实现映射与应用层实体主库）
     ↑ 蒸馏 / 回写（如 docs-distill）
     │
 solutions ──→ analysis ──→ requirements
@@ -26,7 +26,7 @@ solutions ──→ analysis ──→ requirements
 
 | 阶段 | 目录 | 主要产物 |
 |------|------|----------|
-| 知识基线 | [agent/knowledge/](../agent/knowledge/knowledge-governance.md)、[knowledge](knowledge) | 治理规则与五视角实体 |
+| 知识基线 | [agent/knowledge/](../agent/knowledge/knowledge-governance.md)、[knowledge](knowledge) | 治理规则、五视角实体登记与应用层实体 |
 | 方案阶段 | [solutions](solutions) | `SOLUTION-{IDEA-ID}.md` |
 | 分析阶段 | [analysis](analysis) | `ANALYSIS-{IDEA-ID}.md` |
 | 交付阶段 | [requirements](requirements) | `REQUIREMENT-{IDEA-ID}/MVP-Phase-*`（PRD/ASD/DSD/TDD/`specs/`） |

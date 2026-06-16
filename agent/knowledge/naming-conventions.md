@@ -17,36 +17,38 @@
 
 五视角：**业务 / 产品 / 应用 / 数据 / 技术**。跨层实体首次定义层级见 [application/DESIGN.md](../../../application/DESIGN.md) §2.2.1；公司层目录语义见 [company/DESIGN.md](../../../company/DESIGN.md)。
 
+> 说明：**首次定义** 指该实体的治理语义、字段口径与上游主定义层级；下游层可继续做实例登记、实现映射、物理锚点或引用，不等同于“只允许在该层出现”。
+
 ### 业务视角 (business)
 
-| 前缀   | 英文全称               | 含义    | 首次定义 |
+| 前缀   | 英文全称   | 含义    | 首次定义 |
 | ---- | ------------------ | ----- | ---- |
 | BD-  | Business Domain    | 业务域   | 公司 |
 | CAP- | Business Capability | 业务能力（L1/L2/L3 能力目录） | 公司 |
 | BSD- | Business Subdomain | 业务子域  | 系统 |
-| BC-  | Bounded Context    | 限界上下文 | 应用 |
-| AGG- | Aggregate          | 聚合根   | 应用 |
-| AB-  | Ability            | 聚合能力（能力边界） | 应用 |
+| BC-  | Bounded Context    | 限界上下文 | 系统 |
+| AGG- | Aggregate | 聚合根   | 系统 |
+| AB-  | Ability   | 领域能力（能力边界） | 系统 |
 
 ### 产品视角 (product)
 
-| 前缀  | 英文全称             | 含义   | 首次定义 |
+| 前缀  | 英文全称 | 含义   | 首次定义 |
 | --- | ---------------- | ---- | ---- |
 | PL- | Product Line     | 产品线  | 公司 |
 | PM- | Product Module   | 产品模块 | 系统 |
-| FT- | Feature          | 功能点  | 应用 |
-| UC- | Use Case         | 用例   | 应用 |
-| BP- | Business Process | 业务流程 | 应用 |
-| BR- | Business Rule    | 业务规则 | 应用 |
+| BP- | Business Process | 业务流程 | 系统 |
+| FT- | Feature | 功能点  | 系统 |
+| UC- | Use Case         | 用例   | 系统 |
+| BR- | Business Rule    | 业务规则 | 系统 |
 
 ### 应用视角 (application)
 
-| 前缀   | 英文全称                       | 含义                                                                                                      | 首次定义 |
+| 前缀   | 英文全称    | 含义       | 首次定义 |
 | ---- | -------------------------- | ------------------------------------------------------------------------------------------------------- | ---- |
-| SYS- | System                     | 系统                                                                                                      | 公司 |
-| APP- | Application                | 应用（代码仓库/部署单元）                                                                                           | 系统 |
-| MS-  | Microservice（技术视图 **入口簇**） | **对外入口**（HTTP/Dubbo/MQ/Job）**宿主类**按 **docs-build §8.1.1** 聚类；**不**对应 Maven `artifactId`/子模块（**§8.1.2**） | 应用 |
-| API- | API Endpoint               | 接口端点                                                                                                    | 应用 |
+| SYS- | System  | 系统       | 公司 |
+| APP- | Application    | 应用（代码仓库/部署单元）   | 系统 |
+| MS-  | Microservice | 微服务（**入口簇**） | 系统 |
+| API- | API Endpoint   | 接口端点     | 应用 |
 
 ### 数据视角 (data)
 
@@ -54,17 +56,17 @@
 | ---- | ---------- | ---------- | ---- |
 | MDG- | Master Data Domain | 主数据域（治理目录，非 DS/ENT 替代） | 公司 |
 | DS-  | Data Store | 数据存储       | 系统 |
-| ENT- | Entity     | 数据实体（表/集合） | 应用 |
+| ENT- | Entity     | 数据实体（表/集合） | 系统 |
 | TBL- | Table      | 数据表（物理表锚点） | 应用 |
 
 ### 技术视角 (technical)
 
-| 前缀   | 英文全称              | 含义 | 首次定义 |
+| 前缀   | 英文全称  | 含义 | 首次定义 |
 | ---- | ----------------- | ---- | ---- |
 | TPL- | Technology Platform | 公司级平台能力目录（云/DevOps/安全/开发环境） | 公司 |
 | TSD- | Technical Domain    | 系统级技术域落地（中间件域、可观测域等） | 系统 |
 | MW-  | Middleware Binding  | 应用内中间件绑定实例（连接串、集群、Topic 等） | 应用 |
-| CMP- | Component           | 关键 Maven 依赖 / 共享运行时组件 | 应用 |
+| CMP- | Component  | 关键 Maven 依赖 / 共享运行时组件 | 应用 |
 
 层级链：`TPL → TSD → MW`；`CMP` 挂 `MW` 或 `APP`（`parent_mw_id` / `parent_app_id`）。**MW** 登记基础设施绑定；**MS/API** 仍登记业务入口宿主，二者不互替。
 

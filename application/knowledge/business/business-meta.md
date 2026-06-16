@@ -1,6 +1,6 @@
 # 业务视角元数据（application/knowledge/business）
 
-应用层 DDD 业务版图（BD→BSD→BC→AGG→AB）视角元数据 SSOT。实例索引见 [business-entities.md](business-entities.md)。
+应用侧 DDD 业务版图（BD→BSD→BC→AGG→AB）实体登记与实现映射元数据。实例索引见 [business-entities.md](business-entities.md)。
 
 ---
 
@@ -11,7 +11,7 @@
 | meta_id | `DIR-KNOWLEDGE-BUSINESS` |
 | 视角 | business |
 | 层级范围 | application |
-| 说明 | DDD 业务版图；公司级 BD/CAP 在 `company/ea/business/` 首次定义，本层自 BSD 起登记。 |
+| 说明 | DDD 业务版图；公司级 BD/CAP 在 `company/ea/business/` 首次定义，系统层自 BSD 起首次定义，本层承接实现映射与实例登记。 |
 
 ---
 
@@ -21,9 +21,9 @@
 | --- | --- | --- |
 | 1 | BD | 业务域（应用层可登记实例；公司层为 SSOT） |
 | 2 | BSD | 业务子域（系统层首次定义，应用层可引用/登记） |
-| 3 | BC | 限界上下文 |
-| 4 | AGG | 聚合根 |
-| 5 | AB | 聚合能力（Ability） |
+| 3 | BC | 限界上下文（系统层首次定义，应用层承接实现映射） |
+| 4 | AGG | 聚合根（系统层首次定义，应用层补充持久化/服务映射） |
+| 5 | AB | 领域能力（Ability，系统层首次定义，应用层补充 API 映射） |
 
 ---
 
@@ -79,7 +79,7 @@
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 人类可读说明 |
-| [business-entities.md](business-entities.md) | 扁平实体 SSOT |
+| [business-entities.md](business-entities.md) | 扁平实体索引与登记主表 |
 | [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) | 五视角索引 |
 | [../../INDEX_GUIDE.md](../../INDEX_GUIDE.md) | 联邦索引 |
 

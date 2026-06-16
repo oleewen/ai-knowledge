@@ -1,7 +1,7 @@
 # 系统知识库设计（精简版）
 
 本文件定义 `system/` 的设计边界、目录契约、映射闭环与演进策略。  
-`system/` 负责系统知识库的治理编排；应用级实体事实源仍以 `application/` 为准。
+`system/` 负责系统知识库的治理编排，并承接系统层首次定义实体的主语义；`application/` 继续承接应用层接口、物理表、组件与实现映射。
 
 ---
 
@@ -19,21 +19,21 @@
 
 `system/DESIGN.md` 的定位是系统知识库的设计说明，核心职责是定义 `system/` 的治理结构、联邦槽位与上下行同步机制。
 
-- `application/` 是应用级实体与关系字段的 SSOT；
-- `system/` 是系统级索引治理层，承载聚合视图、镜像槽位与归档编排；
-- `system/` 可引用 `application/`，但不复制其字段级规范。
+- `system/` 是系统级索引治理层，同时承接 `BSD/BC/AGG/AB/PM/FT/UC/BP/BR/APP/MS/DS/ENT/TSD` 等系统层首次定义实体的主语义；
+- `application/` 承接 `API/TBL/MW/CMP` 等应用层首次定义实体，以及对上游实体的实现映射与实例登记；
+- `system/` 与 `application/` 可相互引用，但不得形成字段语义双源。
 
 边界约束：
 
 - **结构边界**：`architecture/`、`application-{name}/` 职责分离；命名与术语 SSOT 在 [agent/knowledge/](../agent/knowledge/knowledge-governance.md)；流程闸门在 [agent/rules/](../agent/rules/CONVENTIONS.md)；
 - **流程边界**：应用镜像经 `docs-pull` 下行；架构知识经 `docs-distill` / `docs-archive` 上行；SDD 阶段链见 §2.2；
-- **事实边界**：`system` 维护治理事实，`application` 维护实体主定义。
+- **事实边界**：`system` 维护系统层实体主定义与治理事实，`application` 维护应用层实体主定义与实现事实。
 
 ---
 
 ## 2. 元模型与目录契约
 
-`system/` 采用“治理层 -> 架构层 -> 联邦层”三层模型，聚焦治理编排，不承担应用实体主数据定义。
+`system/` 采用“治理层 -> 架构层 -> 联邦层”三层模型，聚焦治理编排，并承接系统层首次定义实体的治理语义与架构表达。
 
 | 层级 | 目录 | 职责 |
 | --- | --- | --- |
@@ -66,7 +66,7 @@
 | **数据** | 建模、存储与治理 | [architecture/data/](architecture/data/README.md) |
 | **技术** | 运行、扩展、观测与交付 | [architecture/technical/](architecture/technical/README.md) |
 
-应用层 [knowledge/](../application/knowledge/) 为五视角实体 SSOT；技术视角叙事文档在 `architecture/technical/` 与 `knowledge/technical/` 实体并存，层级链 `TPL → TSD → MW → CMP`。
+五视角实体按公司 / 系统 / 应用三层分治：公司层负责 `BD/CAP/PL/SYS/MDG/TPL`，系统层负责 `BSD/BC/AGG/AB/PM/FT/UC/BP/BR/APP/MS/DS/ENT/TSD`，应用层负责 `API/TBL/MW/CMP`；应用侧 [knowledge/](../application/knowledge/) 继续承接实现映射与实例登记。技术视角层级链仍为 `TPL → TSD → MW → CMP`。
 
 #### Overview 蒸馏区
 
@@ -90,7 +90,7 @@
 | **框架参照** | 无同名公司文件时，系统章节为 SSOT，仅链至 `company/ea/{视角}/README.md` 或最近似公司章节 | `business-glossary`、`data-model` |
 | **能力框架** | 系统能力落地参照公司 CAP 框架 | `business-capability-map` → `company/ea/business/business-capability.md` |
 | **ADR** | 系统 ADR 正文在 `system/adr/` 或应用视角章节；模板见 `agent/knowledge/adr-*.md` | `application-adr.md` |
-| **实体字段** | BSD/PM/APP/DS/TSD 等字段语义不在此重复，见 [application/DESIGN.md](../application/DESIGN.md) §2.2.1 | — |
+| **实体字段** | 跨层实体首次定义矩阵见 [application/DESIGN.md](../application/DESIGN.md) §2.2.1；`system/DESIGN.md` 不再逐字段重复铺开 | — |
 
 目录契约：
 
@@ -104,7 +104,7 @@
 
 两者关系定义为“**索引治理层 ↔ 实体事实层**”。
 
-- **事实来源**：业务/产品/技术/数据实体及字段语义以 `application/` 为准；
+- **事实来源**：公司 / 系统 / 应用三层实体按首次定义矩阵分层负责；应用层接口、数据表、组件及实现映射仍以 `application/` 为准；
 - **治理映射**：`system/` 通过 `architecture/` 与 `application-{name}/` 维护跨应用可读视图与镜像挂载关系；
 - **引用方式**：优先路径引用与 ID 引用，避免在 `system` 冗余复制实体正文。
 
@@ -122,7 +122,7 @@
 质量门禁采用“轻规范、强可追溯”：
 
 - **一致性门禁**：术语、目录职责与引用路径应与 `README.md`、`AGENTS.md`、`INDEX_GUIDE.md` 对齐；
-- **边界门禁**：`system` 文档不引入 `application` 字段级实体定义；
+- **边界门禁**：跨层实体不得在 `system` 与 `application` 形成双份主定义；应用层仅补实现映射与下游锚点；
 - **同步门禁**：涉及 `application-{name}/` 更新须记录来源、影响范围与回写策略；
 - **演进门禁**：新增目录或流程，先更新本文件契约，再更新实现文档。
 
@@ -130,7 +130,7 @@
 
 1. 稳定三层模型（治理/架构/联邦槽位）；
 2. 增补模板与自动化检查（术语巡检、引用完整性检查）；
-3. 仅在 `system` 出现独立事实源时，再引入字段级细化规则。
+3. 对系统层首次定义实体，先更新本文件与命名 / 设计契约，再决定是否补充更细字段规则。
 
 ---
 
