@@ -36,7 +36,7 @@
       "id": "change-trigger-002",
       "category": "should-trigger",
       "prompt": "记录一下最近改了什么，生成变更日志，默认输出到 changelogs 就行",
-      "expected_output": "触发 docs-change：默认输出、`CHANGE-LOG.md`、三源、倒序插入；无歧义可执行。",
+      "expected_output": "触发 docs-change：默认 `${DOC_DIR}/changelogs/`（须 .docsconfig）、`CHANGE-LOG.md`、三源、倒序插入；无歧义可执行。",
       "assertions": [
         {
           "id": "structure-integrity",
@@ -117,6 +117,50 @@
           "type": "must_not_conflict",
           "check": "不得仅以聚合 CHANGE-LOG 为主路径而无 docs-build 实体工作。",
           "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "change-gate-001",
+      "category": "should-trigger",
+      "prompt": "在中央库 ai-knowledge 根目录跑 /docs-change，这里没有 .docsconfig",
+      "expected_output": "中止并提示 docs-install；不得用手写 changelogs 路径继续。",
+      "assertions": [
+        {
+          "id": "docsconfig-gate",
+          "name": ".docsconfig 硬门禁",
+          "type": "must_include",
+          "check": "提及无 .docsconfig 须中止或 docs-install 初始化。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-heuristic-bypass",
+          "name": "禁止启发式绕过",
+          "type": "must_not_conflict",
+          "check": "不得在无配置时仍扫描 **/changelogs/ 并写入 CHANGE-LOG。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "change-path-001",
+      "category": "should-trigger",
+      "prompt": "工程已 docs-install，.docsconfig 里 DOC_DIR=application，帮我跑 /docs-change 增量",
+      "expected_output": "默认写入 application/changelogs/CHANGE-LOG.md；可读文末 baseline_time_ms。",
+      "assertions": [
+        {
+          "id": "default-output",
+          "name": "默认输出路径",
+          "type": "must_include",
+          "check": "含 DOC_DIR 或 DOC_ROOT 下 changelogs/CHANGE-LOG 语义。",
+          "priority": "P0"
+        },
+        {
+          "id": "bootstrap-first",
+          "name": "先 bootstrap",
+          "type": "should_include",
+          "check": "提及 validate_bootstrap_docsconfig 或读取 .docsconfig。",
+          "priority": "P1"
         }
       ]
     },

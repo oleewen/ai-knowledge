@@ -4,10 +4,12 @@
 
 ## 步骤 1：环境准备
 
-1. 输出目录可写（规则见 collection-rules「输出目录定位」）。
-2. 检测 Git；不可用则跳过 git 来源，流程继续。
-3. 扫描 `CHANGELOG*`、`CHANGE-LOG.md`、`changes*` 等候选。
-4. 歧义按 [gates.md](gates.md) 先确认。
+1. **`.docsconfig` 硬门禁**（见 [gates.md](gates.md)）：`validate_bootstrap_docsconfig`；失败即中止。
+2. `DOC_ROOT="$(resolve_repo_doc_root)"`；`cd "$REPO_ROOT"`。
+3. 默认输出：`DEFAULT_OUTPUT="${DOC_ROOT}/changelogs"`；用户 `--output` 可覆盖。
+4. 可选 `[INFO]`：`INDEX_GUIDE.md`、`changelogs/INDEXING-LOG.md` 是否存在（不阻塞、不参与采集）。
+5. 输出目录可写；检测 Git；扫描 CHANGELOG 候选。
+6. 其余歧义按 [gates.md](gates.md) 先确认。
 
 ## 步骤 2：时间基准
 
@@ -27,8 +29,8 @@ cutoff_time   = max(baseline_time, latest_git_commit_time)   # 无 Git 时 = bas
 
 ```bash
 agent/skills/docs-change/scripts/change-indexing.sh \
-  --since "2026-03-20 00:00:00.000" \
-  --output ./changelogs/
+  --since "2026-03-20 00:00:00.000"
+# 默认 --output 为 ${DOC_ROOT}/changelogs（由 .docsconfig 解析）
 ```
 
 输出 `{output_dir}/.raw/`；Agent 解析后写 `CHANGE-LOG.md`。细则见 collection-rules。

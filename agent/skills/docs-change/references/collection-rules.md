@@ -4,10 +4,12 @@
 
 ## 输出目录
 
-1. 用户 `--output`
-2. `./changelogs/`
-3. 最短路径 `**/changelogs/`
-4. 新建 `./changelogs/`
+**前置**：须已通过 [gates.md](gates.md) `.docsconfig` 硬门禁。
+
+1. 用户 `--output`（相对 `REPO_ROOT` 或绝对路径）
+2. `${DOC_ROOT}/changelogs/`（`.docsconfig` 解析之文档根下 changelogs）
+
+已移除：`./changelogs/` 仓库根默认、最短路径 `**/changelogs/`、无配置时新建 `./changelogs/`。
 
 ## Git
 

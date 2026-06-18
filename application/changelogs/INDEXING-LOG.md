@@ -5,3 +5,4 @@
 
 | indexing_finished_ms | indexed_at | mode | depth | since_ms | output_path | file_count | duration_ms | summary |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1781755355802 | 2026-06-18T04:02:35Z | full | 3 | 0 | INDEX_GUIDE.md | 513 | 120000 | full d3 根索引刷新（quick-start、统计、CHANGE-LOG 联动） |

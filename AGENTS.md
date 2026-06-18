@@ -2,7 +2,7 @@
 
 > **契约定位**：本文件仅承载 Agent 角色定位、核心契约、文档索引、流程规范等关键索引和必读内容。
 
-**最后更新**: 2026-06-15
+**最后更新**: 2026-06-18
 
 ---
 
@@ -14,7 +14,7 @@
 
 ## 项目概述（精要）
 
-全局知识底座仓库：Markdown/YAML 知识库与 Bash 初始化脚本；无业务应用运行时。应用知识库 `application` 见 [application/README.md](application/README.md)、系统级知识库 `system/`见 [system/README.md](system/README.md)、、公司级知识库 `company/` [company/README.md](company/README.md)；人类入口见 [README.md](README.md)。
+全局知识底座仓库：Markdown/YAML 知识库与 Bash 初始化脚本；无业务应用运行时。应用侧见 [application/README.md](application/README.md)；系统侧见 [system/README.md](system/README.md) 与 [system/INDEX_GUIDE.md](system/INDEX_GUIDE.md)；公司侧见 [company/README.md](company/README.md)；人类入口见 [README.md](README.md)。
 
 ---
 

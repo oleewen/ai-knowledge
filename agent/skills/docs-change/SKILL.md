@@ -23,7 +23,7 @@ description: >
 
 | 项 | 说明 |
 |----|------|
-| 硬输入 | 仓库根目录 |
+| 硬输入 | 仓库根目录 **且** 存在有效 `.docsconfig`（`DOC_ROOT`/`REPO_ROOT`/`DOC_DIR`） |
 | 可选 | `--since`、`--output`；基线读已有文末注释 |
 | 输出 | `{output_dir}/CHANGE-LOG.md`（Markdown + 文末基线） |
 | 不产出 | INDEX_GUIDE、知识实体、`README`/`AGENTS` 批量改写 |
@@ -33,13 +33,13 @@ description: >
 | 参数 | 必需 | 默认 | 说明 |
 |------|------|------|------|
 | `--since` | 否 | 见下 | `yyyy-MM-dd HH:mm:ss.SSS` 或 epoch ms |
-| `--output` | 否 | `./changelogs/` | 优先级：用户指定 > `./changelogs/` > `./{DOC_DIR}/changelogs/` |
+| `--output` | 否 | `${DOC_ROOT}/changelogs/` | 优先级：用户指定 > `.docsconfig` 解析之 `${DOC_ROOT}/changelogs/` |
 
 时间：`--since` > 文末 `baseline_time_ms` > `2020-01-01`。
 
 ## 前置确认
 
-时间基准不清、输出目录多解、或用户声明**仅采某一来源**时先确认；否则按 [references/gates.md](references/gates.md)、[references/workflow.md](references/workflow.md) 执行。细则见 gates「前置确认与歧义处理」。
+时间基准不清、用户显式 `--output` 与默认 `{DOC_DIR}/changelogs/` 不一致且未说明、或用户声明**仅采某一来源**时先确认；否则按 [references/gates.md](references/gates.md)、[references/workflow.md](references/workflow.md) 执行。细则见 gates「前置确认与歧义处理」。
 
 ## 执行顺序（先读后写）
 
@@ -55,6 +55,8 @@ description: >
 10. [assets/changes-index-template.md](assets/changes-index-template.md) — CHANGE-LOG 结构（JSON 模板按需）
 
 ## 门禁
+
+**`.docsconfig` 硬门禁**：无配置或解析失败即中止（见 [references/gates.md](references/gates.md)）；与 `docs-indexing` 脚本契约一致。
 
 无 SDD 式 HTML gate；**有歧义须确认**。禁止宣称本流程已更新 INDEX_GUIDE 或知识实体。
 
@@ -84,7 +86,7 @@ description: >
 
 | 步 | 摘要 | 详见 |
 |----|------|------|
-| 1 | 环境、Git、候选文件、歧义 | workflow |
+| 1 | `.docsconfig` 门禁、环境、Git、候选文件 | workflow |
 | 2 | 时间基准 | workflow + core-concepts |
 | 3 | 三源采集（可跑脚本） | workflow + collection-rules |
 | 4 | 合并、排序、写入、更新基线 | workflow |

@@ -157,7 +157,7 @@ ai-knowledge/
 │   ├── analysis/           # 公司级跨系统需求分析
 │   ├── changelogs/         # 变更记录与索引运维日志
 │   ├── DESIGN.md           # 元模型、映射与演进原则
-│   └── INDEX_GUIDE.md      # 全库路径权威索引
+│   └── README.md           # 公司知识库入口（索引见根 INDEX_GUIDE §9）
 ├── system/                 # 系统知识库壳
 │   ├── architecture/       # 系统架构：业务、产品、应用、技术、数据架构
 │   ├── solutions/          # 解决方案产物
@@ -165,16 +165,18 @@ ai-knowledge/
 │   ├── requirements/       # 需求交付产物
 │   ├── changelogs/         # 变更记录与索引运维日志
 │   ├── DESIGN.md           # 元模型、映射与演进原则
-│   └── INDEX_GUIDE.md      # 全库路径权威索引
+│   └── INDEX_GUIDE.md      # system/ 树内九章索引
 ├── application/            # 应用知识库：实现登记与应用层实体 SSOT
-│   ├── knowledge/          # 四视角知识实体（业务/产品/应用/数据）
+│   ├── knowledge/          # 五视角知识实体（业务/产品/应用/数据/技术）
 │   ├── solutions/          # 解决方案产物
 │   ├── analysis/           # 需求分析产物
 │   ├── requirements/       # 需求交付产物
 │   ├── specs/              # 需求规格产物
 │   ├── changelogs/         # 变更记录与索引运维日志
+│   ├── INDEX_GUIDE.md      # application/ 树内九章索引
 │   ├── DESIGN.md           # 元模型、映射与演进原则
 │   └── CONTRIBUTING.md     # 贡献流程与阶段规则
+├── docs/                   # 设计备忘、分享材料（会话 spec 见 docs/superpowers/specs/）
 └── .gitignore
 ```
 
@@ -390,7 +392,7 @@ flowchart TD
 | 链路分类 | 核心命令 | 核心产出 |
 | :--- | :--- | :--- |
 | 知识库构建 | `scripts/docs-bootstrap.sh` | 远程 clone 并串联执行 docs-install（知识库）+ agent-install（Agent） |
-| 知识库构建 | `/docs-indexing`  | 生成或更新 `INDEX_GUIDE.md` 索引地图 |
+| 知识库构建 | `/docs-indexing`  | 生成或更新根 `INDEX_GUIDE.md`  |
 | 知识库构建 | `/docs-agent`    | 同步 `AGENTS.md` 与 `README.md` 协作约束 |
 | 知识库构建 | `/docs-build`     | 维护知识实体与视角索引（`application/knowledge/`） |
 | 知识库构建 | `/docs-change`    | 聚合变更到 `application/changelogs/` |
@@ -434,7 +436,7 @@ flowchart TD
 
 在进行任何修改前，请务必阅读以下文档以确保符合元模型一致性：
 1. [INDEX_GUIDE.md](INDEX_GUIDE.md) — 了解当前知识登记表。
-2. [application/DESIGN.md](application/DESIGN.md) — 理解四视角元模型设计逻辑。
+2. [application/DESIGN.md](application/DESIGN.md) — 理解五视角元模型设计逻辑。
 3. [application/CONTRIBUTING.md](application/CONTRIBUTING.md) — 熟悉贡献流程与质量门禁。
 
 ---

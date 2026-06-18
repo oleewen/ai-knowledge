@@ -17,7 +17,13 @@
 - **增量**：新条目前插，历史不删；更新文末 `baseline_time_ms`。
 - **写入前**：三源合并后须按时间倒序。
 - **每条带来源**：供下游分流。
-- **路径约定**：默认 `./changelogs/`；自定义 `--output` 时与 docs-indexing 读取路径对齐。
+- **路径约定**：默认 `${DOC_ROOT}/changelogs/`（`.docsconfig`）；自定义 `--output` 时与 docs-indexing 读取路径对齐。
+
+## 配置与路径
+
+- **无 `.docsconfig` 不执行**：须先 `docs-install --scope=config`；勿用 `**/changelogs/` 启发式绕过。
+- **默认输出**：`${DOC_ROOT}/changelogs/CHANGE-LOG.md`；与 `docs-indexing` 读取路径对齐。
+- **`INDEXING-LOG` 基线 ≠ docs-change 基线**：勿混用 `indexing_finished_ms` 与 `docs-change:baseline_time_ms`。
 
 ## 快速自查
 

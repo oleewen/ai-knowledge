@@ -1,6 +1,6 @@
 # ai-knowledge 索引指南（INDEX_GUIDE）
 
-> **最后更新**: 2026-05-04  
+> **最后更新**: 2026-06-18  
 > **文档定位**: 面向 AI Agent 与维护者的**仓库根全索引目录**；九章结构遵循 `agent/skills/docs-indexing/references/nine-chapter-spec.md`。与 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[system/INDEX_GUIDE.md](system/INDEX_GUIDE.md) 互为补充时，以本文件为**中央库根路径**落地与检索入口。
 
 ---
@@ -12,6 +12,7 @@
 | 组件 | 路径 | 描述 |
 |------|------|------|
 | 人类入口 | [README.md](README.md) | 克隆、bootstrap、`docs-install`/`agent-install` 与协作总览 |
+| 从零落地 | [quick-start.md](quick-start.md) | 场景 A–D 选型与逐步操作（canonical SSOT） |
 | Agent 契约 | [AGENTS.md](AGENTS.md) | 角色、索引查阅顺序、提交闸门与禁止事项 |
 | 应用侧知识主库 | [application/README.md](application/README.md) | SDD 主线、五视角、实现登记与应用层实体主库 |
 | 应用侧索引与建联 | [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) | 应用目录九章索引、中央知识库挂载建联登记 |
@@ -28,7 +29,7 @@
 - **核心定位**: 企业级全局知识底座（Markdown/YAML + Bash 初始化链）；**无业务应用运行时**
 - **技术栈**: Markdown、YAML；Bash 5+；Git；可选 `curl`、`rsync`（脚本可回退 `cp`）
 - **语言/构建**: 不适用传统应用「启动类」；可运行项为 Bash 脚本与可选 `scripts/tests/docs-init/run.sh`（见 [scripts/README.md](scripts/README.md)）
-- **仓库规模（git 已跟踪）**: 共 **517** 个文件；扩展名约 **395** `.md`、**40** `.sh`、**30** `.yaml`、**10** `.py`、**39** `.json`（统计来源：`git ls-files`，2026-05-04）
+- **仓库规模（git 已跟踪）**: 共 **513** 个文件；扩展名约 **397** `.md`、**48** `.sh`、**36** `.json`、**13** `.py`、**6** `.yaml`（统计来源：`git ls-files`，2026-06-18）
 
 ---
 
@@ -38,7 +39,7 @@
 
 ```text
 ./
-├── README.md / AGENTS.md / INDEX_GUIDE.md    # 人类与 Agent 入口、本索引
+├── README.md / AGENTS.md / INDEX_GUIDE.md / quick-start.md  # 人类与 Agent 入口、本索引、从零落地
 ├── application/                              # 应用侧知识主库：knowledge、阶段、solutions～requirements、changelogs
 ├── system/                                   # 系统知识库：architecture/（五视角文档）、application-APPNAME/ 联邦槽位、analysis/
 ├── company/                                  # 公司知识库：ea/（五视角企业架构）、system-SYSNAME/ 联邦槽位、changelogs/、solutions/、analysis/
@@ -146,10 +147,11 @@ stateDiagram-v2
 
 ### 5.2 核心流程
 
-1. **目标工程接入知识库**: `git clone` 或 `docs-bootstrap.sh` → `./scripts/docs-install.sh --target=...`（可选 `--mode=central`、`--scope`、`--type`）。
-2. **仅安装 Agent 配置**: `./scripts/agent-install.sh`（`--target`、`--agents`、`--scope` 等）。
-3. **维护索引与变更**: `/docs-indexing` 更新根 `INDEX_GUIDE.md`；`/docs-change` 更新 `CHANGE-LOG.md`。
-4. **知识工程**: `/docs-build` 等按 [agent/skills/README.md](agent/skills/README.md) 执行。
+1. **从零选型与落地**: 读 [quick-start.md](quick-start.md) 选场景 A–D，再按 [scripts/README.md](scripts/README.md) 执行 bootstrap / install。
+2. **目标工程接入知识库**: `git clone` 或 `docs-bootstrap.sh` → `./scripts/docs-install.sh --target=...`（可选 `--mode=central`、`--scope`、`--type`）。
+3. **仅安装 Agent 配置**: `./scripts/agent-install.sh`（`--target`、`--agents`、`--scope` 等）。
+4. **维护索引与变更**: `/docs-indexing` 更新根 `INDEX_GUIDE.md`；`/docs-change` 更新 [application/changelogs/CHANGE-LOG.md](application/changelogs/CHANGE-LOG.md)。
+5. **知识工程**: `/docs-build` 等按 [agent/skills/README.md](agent/skills/README.md) 执行。
 
 ### 5.3 业务规则（协作）
 
@@ -224,12 +226,12 @@ stateDiagram-v2
 
 | 类型 | 数量（已跟踪） | 描述 |
 |------|----------------|------|
-| 全库文件 | 517 | `git ls-files` 2026-05-04 |
-| Markdown | 395 | 主体文档与 Skill |
-| Shell | 40 | 初始化与辅助脚本 |
-| YAML | 30 | 元数据与知识实体 |
-| Python | 10 | 钩子与辅助脚本 |
-| JSON | 39 | 评测与知识提取等 |
+| 全库文件 | 513 | `git ls-files` 2026-06-18 |
+| Markdown | 397 | 主体文档与 Skill |
+| Shell | 48 | 初始化与辅助脚本 |
+| JSON | 36 | 评测与知识提取等 |
+| Python | 13 | 钩子与辅助脚本 |
+| YAML | 6 | 元数据与知识实体 |
 
 精读依据：`agent/skills/docs-indexing/references/scan-spec.md` 深度 3；本索引正文整合自**已读**入口文件与仓库统计，非逐文件全文摘录。
 
@@ -256,6 +258,7 @@ stateDiagram-v2
 | 文档 | 路径 | 描述 |
 |------|------|------|
 | 全局查阅顺序 | [INDEX_GUIDE.md](INDEX_GUIDE.md)（本文件） | 根目录九章地图 |
+| 从零落地 | [quick-start.md](quick-start.md) | 场景 A–D 操作 SSOT |
 | 应用侧九章与建联 | [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) | `application/` 树内九章索引与中央建联登记 |
 | 系统知识库入口 | [system/README.md](system/README.md) | 五视角架构文档、联邦槽位、analysis/ |
 | 系统侧九章索引 | [system/INDEX_GUIDE.md](system/INDEX_GUIDE.md) | `system/` 树内九章索引 |
@@ -300,4 +303,4 @@ stateDiagram-v2
 
 ---
 
-**索引元数据**: 本次运行 **mode=full**，**depth=3**，**since_ms=0**（全量），输出 **./INDEX_GUIDE.md**；运行记录见 [application/changelogs/INDEXING-LOG.md](application/changelogs/INDEXING-LOG.md)。
+**索引元数据**: 本次运行 **mode=full**，**depth=3**，**since_ms=0**（全量），输出 **./INDEX_GUIDE.md**；运行记录见 [application/changelogs/INDEXING-LOG.md](application/changelogs/INDEXING-LOG.md)。会话 spec：`docs/superpowers/specs/2026-06-18-root-index-docs-indexing.md`。

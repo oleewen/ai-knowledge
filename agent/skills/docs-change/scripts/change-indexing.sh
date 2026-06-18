@@ -3,10 +3,20 @@
 # docs-change：三源原始采集 → {output_dir}/.raw/，供 Agent 写 CHANGE-LOG.md。
 # 不写正文、不统一时间、不合并排序（Agent 侧）。
 # .raw/: git_commits.txt | changelog_files.txt | local_files.txt | meta.env
+# cwd=仓库根；路径见 .docsconfig / resolve_repo_doc_root
 
 set -euo pipefail
 
-DEFAULT_OUTPUT="./changelogs"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+_AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+# shellcheck disable=SC1091
+source "$_AGENT_HOME/scripts/config-bootstrap.sh"
+validate_bootstrap_docsconfig "$SCRIPT_DIR"
+
+DOC_ROOT="$(resolve_repo_doc_root)"
+cd "$REPO_ROOT" || exit 1
+
+DEFAULT_OUTPUT="${DOC_ROOT}/changelogs"
 DEFAULT_SINCE="2020-01-01 00:00:00.000"
 DEFAULT_SINCE_MS="1577836800000"
 
@@ -18,12 +28,12 @@ Usage: $0 [options]
 三源采集 → .raw/
 
   --since TIME    起始（yyyy-MM-dd HH:mm:ss.SSS 或 epoch ms）
-  --output DIR    默认 $DEFAULT_OUTPUT
+  --output DIR    默认 ${DOC_ROOT}/changelogs/（.docsconfig DOC_ROOT）
   -h, --help
 
 Examples:
-  $0 --since '2026-03-20 00:00:00.000' --output ./changelogs/
-  $0                  # 读文末 baseline 增量
+  $0 --since '2026-03-20 00:00:00.000' --output "${DOC_ROOT}/changelogs/"
+  $0                  # 默认输出 ${DOC_ROOT}/changelogs/；无 --since 时读文末 baseline 增量
 EOF
 }
 
@@ -200,6 +210,9 @@ LOCAL_COUNT=$(wc -l < "$RAW_DIR/local_files.txt" | tr -d ' ')
 # ── 步骤 4：输出元信息供 Agent 消费 ──────────────────────────────────────────
 
 cat > "$RAW_DIR/meta.env" <<EOF
+DOC_ROOT="$DOC_ROOT"
+DOC_DIR="$DOC_DIR"
+REPO_ROOT="$REPO_ROOT"
 BASELINE_TIME="$BASELINE_TIME"
 BASELINE_MS="$BASELINE_MS"
 CUTOFF_TIME="$CUTOFF_TIME"
