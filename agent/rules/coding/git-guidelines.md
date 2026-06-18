@@ -8,6 +8,45 @@
 
 ---
 
+## 远程传输：SSH 优先
+
+本节规范 **Agent** 在本仓库执行远程 Git 操作时的传输方式。
+
+### 默认协议
+
+涉及 **`origin`** 的 `git fetch` / `git pull` / `git push` 时，fetch 与 push URL 均优先使用 **SSH**（GitHub 示例：`git@github.com:{owner}/{repo}.git`）。
+
+- 不修改全局 `git config`；仅允许仓库级 `git remote set-url`。
+- 用户在同一会话明确要求保留或使用 HTTPS 时，不自动切换。
+
+### Agent 执行流程（静默修正）
+
+在用户已确认远程操作（例如已同意 `git push`）后、实际执行 `fetch` / `pull` / `push` **之前**：
+
+1. 读取 `origin` URL：`git remote get-url origin`
+2. 若 URL 以 `http://` 或 `https://` 开头，按下方规则转换为 SSH，并执行：
+   ```bash
+   git remote set-url origin <ssh-url>
+   git remote set-url --push origin <ssh-url>
+   ```
+3. 继续原定远程命令。
+4. 若曾切换 URL，操作完成后在回复中简要说明，例如：「已将 `origin` 从 HTTPS 切换为 SSH：`git@github.com:oleewen/ai-knowledge.git`」。
+
+若远程操作因 HTTPS 连接失败（如 443 超时），按上述流程切换 SSH 后**重试一次**；仍失败则停止并上报错误，不无限重试。
+
+URL 已是 `git@` 或 `ssh://` 形式时跳过修正。
+
+### GitHub HTTPS → SSH 转换
+
+| HTTPS | SSH |
+|-------|-----|
+| `https://github.com/{owner}/{repo}.git` | `git@github.com:{owner}/{repo}.git` |
+| `https://github.com/{owner}/{repo}` | `git@github.com:{owner}/{repo}.git` |
+
+非 GitHub 主机不自动转换；告知用户需手动配置 SSH URL。
+
+---
+
 ## 提交格式规范
 
 ### 语言与适用范围（含 IDE 生成提交说明）

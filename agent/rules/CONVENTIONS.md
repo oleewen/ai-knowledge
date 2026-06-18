@@ -11,7 +11,7 @@
 
 | 分类 | 文件 | 说明 |
 | --- | --- | --- |
-| 编码与协作（`coding/`） | [coding/git-guidelines.md](coding/git-guidelines.md) | Git 提交规范：Conventional Commits、**提交前须经用户确认**、原子提交、检查清单 |
+| 编码与协作（`coding/`） | [coding/git-guidelines.md](coding/git-guidelines.md) | Git 提交规范：Conventional Commits、**提交前须经用户确认**、**SSH 优先（`origin` 静默修正）**、原子提交、检查清单 |
 | 编码与协作（`coding/`） | [coding/project-structure.md](coding/project-structure.md) | 项目结构与分层职责约定（用于组织文档与工程目录） |
 | 编码与协作（`coding/`） | [coding/java-guidelines.md](coding/java-guidelines.md) | 语言专项参考（仅在对应技术栈项目落地时启用） |
 | 编码与协作（`coding/`） | [coding/maven-guidelines.md](coding/maven-guidelines.md) | 构建专项参考（仅在 Maven 项目落地时启用） |
@@ -36,9 +36,10 @@
 - `skills/` 中 `SKILL.md` 是工作流定义，不是可执行脚本。
 - Slash 命令清单与用法以 `../skills/README.md` 为准，本文件不重复维护命令详情。
 
-### 3) Git：提交前须经用户确认
+### 3) Git：提交前确认与 SSH 优先
 
 - **禁止**未获用户明确同意即执行 `git commit` / `git push`（Agent 与全部 Skill 工作流同责）。细则与例外见 [coding/git-guidelines.md](coding/git-guidelines.md) 第一节。
+- 远程操作（`fetch` / `pull` / `push`）默认 SSH；`origin` 为 HTTPS 时 Agent 静默修正。细则见 [coding/git-guidelines.md](coding/git-guidelines.md)「远程传输：SSH 优先」。
 
 ---
 
