@@ -332,7 +332,7 @@ Skill 引入了类似 `superpowers:brainstorming` 类似的闸门机制，确保
 只有 legacy  → extract → archive → build
 ```
 
-操作 SSOT：[docs/getting-started.md](../../../docs/getting-started.md)
+操作 SSOT：[quick-start.md](../../../quick-start.md)
 
 ---
 

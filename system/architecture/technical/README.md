@@ -11,6 +11,5 @@
 | 🔑 | 中间件 | [technical-middleware.md](technical-middleware.md) | 共享平台能力选型与使用规范。 |
 | 🔑 | 性能扩展 | [technical-performance-scalability.md](technical-performance-scalability.md) | 性能目标、容量与扩展策略。 |
 | 🔑 | 高可用与容灾 | [technical-ha-and-dr.md](technical-ha-and-dr.md) | 可用性目标、灾难恢复与韧性实践。 |
-| 🔑 | 可观测性 | [technical-observability.md](technical-observability.md) | 日志、指标、追踪与 SLO 验证。 |
 
-> DevOps 流程、技术安全基线、开发环境标准见 [公司技术架构](../../../company/ea/technical/README.md)。
+> 可观测性标准、DevOps 流程、技术安全基线、开发环境标准见 [公司技术架构](../../../company/ea/technical/README.md)。

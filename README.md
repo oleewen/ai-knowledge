@@ -37,14 +37,20 @@
 
 ### 核心价值
 
-- **SSOT 驱动**：消除冗余、混淆与冲突，维护**业务 / 产品 / 技术 / 数据**四视角的唯一事实源。
-- **Agent 友好**：Rules + Skills + Hooks，提升 AI 协作的确定性与可审计性。
-- **联邦治理**：公司 → 系统 → 应用，多层级知识库挂载与隔离。
-- **纯文架构**：Markdown + YAML + Git，天然版本化。
+- **SSOT 驱动**：消除知识冗余、混淆与冲突；维护**业务 / 产品 / 应用 / 数据 / 技术**五视角唯一事实源，跨文件仅 **ID 引用**。
+- **Skills 链闭环**：`docs-*` 构建链 × `sdx-*` 交付链双链路——知识底座支撑规约交付，交付产物再上行归并。
+- **联邦治理**：公司 → 系统 → 应用三层分治，各守其位；link / pull / distill 联邦挂载与上行对齐。
+- **Agent 友好**：Rules + Skills + Hooks + Gate 闸门；Markdown + YAML + Git 纯文架构，天然版本化与变更追溯。
 
 ---
 
 ## 为什么需要元知识底座
+
+| 分工 | 谁提供 | 提供什么 |
+| --- | --- | --- |
+| Agent 能力 | AI Agent 平台 | 上下文、工具、权限 |
+| DevOps 能力 | 云平台 | 可观测、行动能力 |
+| **工程知识** | **工程团队** | **知识 — SSOT + Skills** |
 
 业界共识：**Agent = LLM + Harness**。模型提供智能，Harness 提供上下文、知识、工具、权限与可观测——决定 Agent 能否在真实工程里稳定交付。
 
@@ -52,15 +58,20 @@
 
 | 现象 | 后果 |
 | --- | --- |
-| 业务知识散落在 Wiki、协作文档、代码注释、同事脑中 | 上下文管道无 SSOT，Agent「读什么、先读什么」说不清 |
-| 同一概念在 PRD、接口文档、数据字典里各说各话 | 术语与查阅顺序不统一，行动前约束失效 |
-| 每次会话重新「猜」业务边界，改完即落盘 | 输出不稳定、无法审计与回滚 |
+| **知识缺失**：规则只存在于硬编码、同事脑中，AI 无法获取 | 边界靠猜，产出不稳定 |
+| **知识散落**：碎片存于 Wiki、协作文档、邮件、代码注释 | 噪声大，上下文不全，RAG 碰运气 |
+| **知识混淆**：PRD、接口文档、数据字典术语各说各话 | 通用语言约束失效，Agent 读了也猜 |
+| **知识冲突**：不同文档对同一件事表述矛盾，不知谁对 | 产出对错难料，人工兜底成本高 |
+| **知识老化**：文档写完就不更新，代码早变了文档还是旧的 | 越用越偏，错误知识比没有更危险 |
+| **知识孤岛**：各团队/系统自有一套，跨团队无法互通引用 | 重复建设，上下游对不齐，治理无从落地 |
 
-| 常见做法 | SSOT 知识库做法 |
-| --- | --- |
-| 把整个 Wiki、代码丢给 RAG | 实体只在一处定义，他处 ID 引用，阅读路径可预测 |
-| 每次会话口述业务背景 | 多视角索引地图，知识可复用 |
-| 局部碎片化知识 | 系统级全貌 + 应用级细节，可评估、可治理 |
+| 优势 | 混沌知识库 | SSOT 知识库 |
+| --- | --- | --- |
+| **知识集中** | Wiki、文档、代码中散落，知识碎片化，RAG 碰运气 | 一处定义，他处引用，精确导航，RAG 有依据 |
+| **术语统一** | 各项文档术语各说各话，术语对不齐理不清 | 多视角 + 角色契约，跨团队通用语言 |
+| **职责清晰** | 业务范围、规则靠猜，不知谁对谁错 | 清晰的职责边界定义，作用上下文约束 |
+| **联邦互通** | 各系统/团队独立成库，上下游对不齐，重复建设 | 公司→系统→应用分层挂载，跨团队引用，联邦治理落地 |
+| **易更新可溯源** | 代码改了，文档没人更新，或不知谁什么时候改了 | Git 版本管理 + 变更日志 + 更新/抽取/蒸馏闭环 |
 
 Agent 读 [AGENTS.md](AGENTS.md) 作为契约，读 [INDEX_GUIDE.md](INDEX_GUIDE.md) 作为地图，再按需深入各层知识库——而非「碰运气检索」。
 
@@ -93,7 +104,7 @@ Agent 读 [AGENTS.md](AGENTS.md) 作为契约，读 [INDEX_GUIDE.md](INDEX_GUIDE
 | **C** | 老系统 + 中央库 | 各应用先 SSOT，中央 pull/distill/archive |
 | **D** | 仅有 legacy 文档 | overview 缓冲区 → archive → build |
 
-完整步骤见 **[docs/getting-started.md](docs/getting-started.md)**。
+完整步骤见 **[quick-start.md](quick-start.md)**。
 
 ---
 
@@ -131,6 +142,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 ai-knowledge/
 ├── README.md               # 人类入口（本文件）
 ├── AGENTS.md               # AI Agent 契约、约束与关键路径
+├── quick-start.md          # 从零落地指南（场景 A–D）
 ├── INDEX_GUIDE.md          # 全库路径地图与检索精要（权威索引）
 ├── scripts/                # 初始化脚本链（Bash 5+）
 ├── agent/                  # AI 协作规范与 Slash 技能
@@ -172,32 +184,128 @@ ai-knowledge/
 
 项目内置了针对不同复杂度的协作链路，建议按需组合使用：
 
-### 执行主链路
+### 构建链与交付链闭环
 
 ```mermaid
 flowchart TD
-    S((开始)) --> KB
-    KB --> RD
-    RD --> SDD
-    SDD --> Z((结束))
+    subgraph KB["知识库构建链"]
+        direction LR
+        KB_COMPANY["公司知识库构建"]
+        KB_SYSTEM["系统知识库构建"]
+        KB_APP["应用知识库构建"]
 
-    subgraph KB["知识库构建链路"]
-      direction LR
-      application["应用知识库构建"] --> system["系统知识库蒸馏"] --> company["公司知识库提炼"]
+        KB_COMPANY -. push .-> KB_SYSTEM -. push .-> KB_APP
+        KB_APP -. pull .-> KB_SYSTEM -. pull .-> KB_COMPANY
+    end
+    subgraph RD["需求交付链"]
+        direction LR
+        ANALYSIS["需求分析阶段<br/>@按需求"]
+        DESIGN["需求设计阶段<br/>@MVP/Sprint"]
+        DETAIL["详细设计阶段<br/>@按应用"]
+        ANALYSIS --> DESIGN --> DETAIL 
+    end
+    subgraph SDD["SDD开发链"]
+        direction LR
+        I1[脑暴] --> I2[探索] --> I3[实现] --> I4[归档]
     end
 
-    subgraph RD["需求交付链路"]
-      direction LR
-      a["需求分析设计"] --> d["规约详细设计"] --> r["规约开发实现"]
-    end
+    RD -. 业务变更知识提纯 .-> KB
+    KB -- SSOT 知识库 --> RD --> SDD
 
-    subgraph SDD["SDD 功能实现链路"]
-      direction LR
-      brainstorming["脑暴分析"] --> explore["代码探索"] --> apply["实现任务"] --> archive["Spec 归档"]
-    end
 ```
 
-### 执行子流程
+### 应用知识库构建
+
+```mermaid
+flowchart LR
+    S((开始))
+    Z((结束))
+
+    subgraph APPLICATION["应用知识库构建链路"]
+        A["索引: /docs-indexing<br/>产出：知识库索引"]
+        B["Agent: /docs-agent<br/>生成 AGENTS｜README"]
+        C["构建: /docs-build<br/>产出：五视角实体"]
+        D["变更: /docs-change<br/>聚合变更 changelogs"]
+    end
+
+    S -- 应用代码库 --> A -- INDEX_GUIDE --> B -- AGENTS｜README --> C -- 知识实体 --> D -- 应用知识库 --> Z
+    D -.变更回流.-> A
+```
+
+### 系统｜公司知识库构建
+
+```mermaid
+flowchart LR
+    S((开始))
+    Z((结束))
+
+    subgraph SYSTEM["系统｜公司知识库构建链路"]
+        B["建联: /docs-link<br/>产出：知识库建联"]
+        C["拉取: /docs-pull<br/>产出：知识库镜像"]
+        D["蒸馏: /docs-distill<br/>产出：架构知识视图"]
+        E["抽取: /docs-extract<br/>产出：架构知识视图"]
+        F["归档: /docs-archive<br/>产出：系统/公司知识库"]
+    end
+
+    S -- 系统/公司文档库 --> B --> C -- 应用/系统知识库 --> D -- 架构知识视图 --> F -- 系统/公司文档库 --> Z
+    B -- 零散文档 --> E -- 架构知识视图 --> F
+```
+
+### 需求交付链
+
+`sdx-*` 负责把业务想法逐步收敛为可评审、可实现、可测试的规约。
+
+```mermaid
+flowchart LR
+    S((开始))
+    Z((结束)) 
+
+    subgraph DELIVERY["需求交付链路"]
+        subgraph ANALYSIS["需求分析阶段 @按需求"]
+            A["解决方案: /sdx-solution<br/>产出：解决方案文档"]
+            B["需求分析: /sdx-analysis<br/>产出：需求分析文档"] 
+        end
+
+        subgraph DESIGN["需求设计阶段 @MVP/Sprint"]
+            C["产品设计: /sdx-prd<br/>产出：产品设计文档"]
+            D["概要设计: /sdx-architect<br/>产出：概要设计文档"]
+        end
+
+        subgraph DETAIL["详细设计阶段 @按应用"]
+            E["详细设计: /sdx-design<br/>产出：详细设计文档"]
+            F["测试设计: /sdx-test<br/>产出：测试设计文档"]
+        end
+    end
+
+    S -- 需求链路 --> A -- SOLUTION --> B -- ANALYSIS --> C -- PRD --> D -- ASD --> E -- DSD --> F -- TDD --> Z
+```
+---
+
+### 知识提纯：萃取 + 蒸馏
+
+知识 Overview 缓冲区：`overview/*-overview.md` = **散落知识 → 结构化章节的缓冲区**
+
+```mermaid
+flowchart LR
+    S((开始))
+    Z((结束))
+
+    X["萃取：/docs-extract<br/>输入: 文档/输入文本"]
+    Y["蒸馏：/docs-distill<br/>输入: 应用知识库镜像"]
+    A["overview 章节内容<br/>产出: *-overview.md"]
+    B["核实：人工核实修正<br/>产出: 可归档条目"]
+    C["归档：/docs-archive<br/>产出: 五大架构视角知识"]
+    D["实体：/docs-build<br/>产出: 五大架构视角实体"]
+    E["SSOT 知识库<br/>ea｜architecture"]
+
+    S --> X
+    S --> Y
+    X --> A
+    Y --> A
+    A --> B --> C --> D --> E --> Z
+```
+
+### 执行全流程
 
 ```mermaid
 flowchart TD
@@ -311,7 +419,7 @@ flowchart TD
 
 | 需求 | 文档 |
 | --- | --- |
-| 从零落地（场景 A–D） | [docs/getting-started.md](docs/getting-started.md) |
+| 从零落地（场景 A–D） | [quick-start.md](quick-start.md) |
 | 全库路径地图 | [INDEX_GUIDE.md](INDEX_GUIDE.md) |
 | Agent 契约 | [AGENTS.md](AGENTS.md) |
 | 应用元模型 | [application/DESIGN.md](application/DESIGN.md) |
@@ -330,6 +438,11 @@ flowchart TD
 3. [application/CONTRIBUTING.md](application/CONTRIBUTING.md) — 熟悉贡献流程与质量门禁。
 
 ---
+
+---
+
+> AI 的上限是模型，AI 的下限是知识。  
+> **SSOT + Skills 链，让下限撑起上限。**
 
 ## 📜 许可说明
 

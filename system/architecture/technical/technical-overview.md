@@ -26,6 +26,6 @@
 
 ## 选型决策
 
-<!-- **应写内容**：本系统重大选型的背景、备选方案、决策结论与后果；与 [`application-adr.md`](../application/application-adr.md) ADR 的对应关系。 -->
+<!-- **应写内容**：本系统重大选型的背景、备选方案、决策结论与后果；与 [system/adr/README.md](../../adr/README.md) ADR 的对应关系。 -->
 
 <!-- **产出建议**：本系统决策索引表；链路至 ADR/文档。 -->

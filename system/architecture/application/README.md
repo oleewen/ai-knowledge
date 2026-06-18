@@ -15,4 +15,5 @@
 | 📎 | 服务交互 | [application-inter-service.md](application-inter-service.md) | 同步/异步协作、编排与依赖治理。 |
 | 📎 | 接口管理 | [application-interface-management.md](application-interface-management.md) | 内外接口的发现、规范与演进。 |
 | 📎 | 多租户环境 | [application-multi-tenant-environment.md](application-multi-tenant-environment.md) | 租户隔离、环境拓扑与发布控制。 |
-| 📐 | ADR | [application-adr.md](application-adr.md) | 重大技术决策的背景、选项与后果。 |
+
+> ADR 正文见 [system/adr/README.md](../../adr/README.md)、[application/adr/README.md](../../../application/adr/README.md)；模板见 [agent/knowledge/adr-guidelines.md](../../../agent/knowledge/adr-guidelines.md)。

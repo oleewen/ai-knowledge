@@ -4,7 +4,7 @@
 > - 副标题列 `✅`：由 `docs-tag --phase 2` 根据附录 keywords 与链接章节正文判定。
 > - `## 架构摘录`：由 `docs-tag --phase 3`（同义 `excerpt`）从下方五视角表中 ✅ 行投影生成，请勿手改摘录表数据行。
 > - 推荐顺序：`1-write`（或已有 keywords）→ `2` → `3`。
-> - 表行范围：各视角 README 🔑 核心文件 + 应用 ADR（📐）；副标题锚点与各章节 `##` 标题同步维护。
+> - 表行范围：各视角 README 🔑 核心文件；副标题锚点与各章节 `##` 标题同步维护。
 
 ## 架构摘录
 
@@ -82,11 +82,6 @@
 | [服务设计](../application/application-service-design.md) | [服务容器图](../application/application-service-design.md#服务容器图) | — |
 | [服务设计](../application/application-service-design.md) | [组件图](../application/application-service-design.md#组件图) | — |
 | [领域能力](../application/application-domain-capability.md) | [领域能力](../application/application-domain-capability.md#领域能力) | — |
-| [ADR](../application/application-adr.md) | [ADR 模板](../application/application-adr.md#adr-模板) | — |
-| [ADR](../application/application-adr.md) | [架构风格](../application/application-adr.md#架构风格) | — |
-| [ADR](../application/application-adr.md) | [ADR 索引](../application/application-adr.md#adr-索引) | — |
-| [ADR](../application/application-adr.md) | [待登记](../application/application-adr.md#待登记) | — |
-
 ## [技术架构](../technical/README.md)
 
 | 主标题 | 副标题 | 归档业务知识 |
@@ -113,11 +108,6 @@
 | [高可用与容灾](../technical/technical-ha-and-dr.md) | [容灾方案](../technical/technical-ha-and-dr.md#容灾方案) | — |
 | [高可用与容灾](../technical/technical-ha-and-dr.md) | [熔断降级](../technical/technical-ha-and-dr.md#熔断降级) | — |
 | [高可用与容灾](../technical/technical-ha-and-dr.md) | [混沌工程](../technical/technical-ha-and-dr.md#混沌工程) | — |
-| [可观测性](../technical/technical-observability.md) | [日志体系](../technical/technical-observability.md#日志体系) | — |
-| [可观测性](../technical/technical-observability.md) | [监控告警](../technical/technical-observability.md#监控告警) | — |
-| [可观测性](../technical/technical-observability.md) | [链路追踪](../technical/technical-observability.md#链路追踪) | — |
-| [可观测性](../technical/technical-observability.md) | [可视化](../technical/technical-observability.md#可视化) | — |
-
 ## [数据架构](../data/README.md)
 
 | 主标题 | 副标题 | 归档业务知识 |
@@ -134,10 +124,6 @@
 | [数据存储方案](../data/data-storage.md) | [冷热分离](../data/data-storage.md#冷热分离) | — |
 | [数据存储方案](../data/data-storage.md) | [数据归档](../data/data-storage.md#数据归档) | — |
 | [数据存储方案](../data/data-storage.md) | [服务存储分布](../data/data-storage.md#服务存储分布) | — |
-| [数据分析与应用](../data/data-analytics.md) | [BI 看板](../data/data-analytics.md#bi-看板) | — |
-| [数据分析与应用](../data/data-analytics.md) | [分析场景](../data/data-analytics.md#分析场景) | — |
-| [数据分析与应用](../data/data-analytics.md) | [机器学习数据](../data/data-analytics.md#机器学习数据) | — |
-| [数据分析与应用](../data/data-analytics.md) | [数据开放](../data/data-analytics.md#数据开放) | — |
 | [数据流转](../data/data-flow.md) | [数据流图](../data/data-flow.md#数据流图) | — |
 | [数据流转](../data/data-flow.md) | [ETL 流程](../data/data-flow.md#etl-流程) | — |
 | [数据流转](../data/data-flow.md) | [实时数据流](../data/data-flow.md#实时数据流) | — |
