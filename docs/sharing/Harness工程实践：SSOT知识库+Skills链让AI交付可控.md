@@ -105,15 +105,15 @@ footer: 'ai-knowledge · 架构师 / 研发负责人 · 45 min'
 - **联邦**：公司管业务划分 → 系统管职责边界 → 应用管实现细节
 
 ```text
-company/            system/              application/
-├ ea/               ├ architecture/      ├ knowledge/ 
-│ └ overview/       │ └ overview/        │ └ KNOWLEDGE_INDEX.md
-├ system-*/         ├ application-*/     ├ solutions/
-├ solutions/        ├ solutions/         ├ analysis/
-├ analysis/         ├ analysis/          ├ requirements/
-└ changelogs/       ├ requirements/      ├ adr/
-                    ├ adr/               └ changelogs/
-                    └ changelogs/      
+company/                system/                  application/
+├ ea/                   ├ architecture/          ├ knowledge/ 
+│ └ overview/           │ └ overview/            │ └ KNOWLEDGE_INDEX.md
+├ system-*/             ├ application-*/         ├ solutions/
+├ solutions/            ├ solutions/             ├ analysis/
+├ analysis/             ├ analysis/              ├ requirements/
+└ changelogs/           ├ requirements/          ├ adr/
+                        ├ adr/                   └ changelogs/
+                        └ changelogs/      
 ```
 
 ---
@@ -285,7 +285,7 @@ flowchart LR
 知识 Overview 缓冲区：`overview/*-overview.md` = **散落知识 → 结构化章节的缓冲区**
 
 ```mermaid
-flowchart
+flowchart LR
     S((开始))
     Z((结束))
 
@@ -387,15 +387,12 @@ flowchart LR
         S2["/docs-indexing<br/>产出：知识库索引"]
         S3["/docs-agent<br/>生成 AGENTS｜README"]
         S4["/docs-build<br/>产出：五视角实体"]
-        S5["/sdx-solution<br/>产出：解决方案文档"]
-        S6["/sdx-analysis<br/>产出：需求分析文档"]
-        S7["/sdx-prd<br/>产出：产品设计文档"]
-        S8["/sdx-architect<br/>产出：概要设计文档"]
+        S5["/sdx-*<br/>产出：分析设计文档"]
         S9["/docs-change<br/>产出：变更聚合"]
         S10["/docs-push<br/>推送：概设规约"]
 
-        S0 --> S2 --> S3 --> S4 --> S5 --> S6 --> S7 --> S8 --> S9 -.-> S2
-        S8 --> S10
+        S0 --> S2 --> S3 --> S4 --> S5 --> S9 -.-> S2
+        S5 --> S10
         S4 -.-> S1 -.-> S10
     end
 
@@ -405,12 +402,11 @@ flowchart LR
         A1["/docs-indexing<br/>产出：知识库索引"]
         A2["/docs-agent<br/>生成 AGENTS｜README"]
         A3["/docs-build<br/>产出：五视角实体"]
-        A4["/sdx-design<br/>产出：详细设计文档"]
-        A5["/sdx-test<br/>产出：测试设计文档"]
+        A4["/sdx-*<br/>产出：详细设计文档"]
         A6["/SDD<br/>产出：规约、代码"]
         A7["/docs-change<br/>产出：增量变更记录"]
 
-        A0 --> A1 --> A2 --> A3 --> A4 --> A5 --> A6 --> A7
+        A0 --> A1 --> A2 --> A3 --> A4 --> A6 --> A7
         A1 <-.-> A7
     end
 
@@ -660,8 +656,6 @@ flowchart LR
     D --> Z((结束))
 ```
 
-![w:420](rebate-image.png) ![w:420](spec-image.png)
-
 ---
 
 ## 案例 2：增值计费 — MVP 迭代
@@ -687,40 +681,34 @@ flowchart LR
         S11["/docs-extract<br/>知识提炼"]
         S12["/grill-*<br/>拷问澄清纠错"]
         S13["/docs-archive<br/>知识归档"]
-        S5["/sdx-solution<br/>产出：解决方案文档"]
-        S6["/sdx-analysis<br/>产出：需求分析文档"]
-        S7["/sdx-prd<br/>产出：产品设计文档"]
-        S8["/sdx-architect<br/>产出：概要设计文档"]
+        S5["/sdx-*<br/>产出：分析设计文档"]
         S9["/docs-change<br/>产出：变更聚合"]
         S10["/docs-push<br/>推送：概设规约"]
 
-        S0 --> S2 --> S3 --> S4 --> S11 --> S12 --> S13 --> S5 --> S6 --> S7 --> S8 --> S9 -.-> S2
-        S8 --> S10
+        S0 --> S2 --> S3 --> S4 --> S11 --> S12 --> S13 --> S5 --> S9 -.-> S2
+        S5 --> S10
         S4 -.-> S1 -.-> S10
     end
 
     subgraph APP["应用库接入"]
         direction LR
-        A0["bootstrap<br/>安装应用知识库 · 多应用模式"]
+        A0["bootstrap<br/>安装应用知识库 · 多应用"]
         A1["/docs-indexing<br/>产出：知识库索引"]
         A2["/docs-agent<br/>生成 AGENTS｜README"]
         A3["/docs-build<br/>产出：五视角实体"]
-        A4["/sdx-design<br/>产出：详细设计文档"]
-        A5["/sdx-test<br/>产出：测试设计文档"]
+        A4["/sdx-*<br/>产出：详细设计文档"]
         A6["/SDD<br/>产出：规约、代码"]
         A7["/docs-change<br/>产出：增量变更记录"]
 
-        A0 --> A1 --> A2 --> A3 --> A4 --> A5 --> A6 --> A7
+        A0 --> A1 --> A2 --> A3 --> A4 --> A6 --> A7
         A1 <-.-> A7
     end
 
     S --> S0
     S --> A0
-    S10 --> A4
+    S10 --> A3
     A7 --> Z((结束))
 ```
-
-![w:640](vas-image.png)
 
 ---
 
