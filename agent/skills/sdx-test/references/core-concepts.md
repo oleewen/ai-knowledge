@@ -6,7 +6,7 @@
 
 | 产物 | 路径示例 |
 |------|-----------|
-| 会话 spec | `{DOC_DIR}/superpowers/specs/2026-04-12-审批提效-sdx-test.md` |
+| 会话 spec | `{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-sdx-test.md` |
 | TDD | `{DOC_DIR}/requirements/REQUIREMENT-260412-审批提效/MVP-Phase-1/TDD-260412-审批提效-1.md` |
 | PRD/ASD/DSD | 同目录 `PRD-*`、`ASD-*`、`DSD-*` |
 

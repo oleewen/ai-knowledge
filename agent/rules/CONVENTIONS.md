@@ -41,6 +41,17 @@
 - **禁止**未获用户明确同意即执行 `git commit` / `git push`（Agent 与全部 Skill 工作流同责）。细则与例外见 [coding/git-guidelines.md](coding/git-guidelines.md) 第一节。
 - 远程操作（`fetch` / `pull` / `push`）默认 SSH；`origin` 为 HTTPS 时 Agent 静默修正。细则见 [coding/git-guidelines.md](coding/git-guidelines.md)「远程传输：SSH 优先」。
 
+### 4) superpowers 引用隔离
+
+<a id="superpowers-ref-isolation"></a>
+
+`{docroot}/superpowers/`（如 `docs/superpowers/`）为会话闸门 spec 与 brainstorming 设计备忘区，**不是**正式 SSOT。
+
+- **禁止**：除 `{application|system|company|docs}/superpowers/**` **内部**外，全仓任何文件不得引用 superpowers 下**具名文件**（路径含 `superpowers/(specs|plans)/YYYY-MM-DD-` 且指向 `.md` 文件名）。
+- **允许**：目录契约（`{DOC_DIR}/superpowers/specs/`）、占位模式（`YYYY-MM-DD-<topic>-*.md`、`*-docs-indexing.md`）、hooks 通用正则、无日期测试桩（如 `x.md`）。
+- **验收**（仓库根）：`bash scripts/check-forbidden-file-refs.sh`；套件：`bash scripts/tests/forbidden-file-refs/run.sh`。
+- **细则**：见 [session-spec-path.md](../references/session-spec-path.md)；上游 decouple 设计备忘位于 `docs/superpowers/specs/`（superpowers 内部，库外不链具名文件）。
+
 ---
 
 ## 三、文档产出闸门（SDD 与 docs-distill）

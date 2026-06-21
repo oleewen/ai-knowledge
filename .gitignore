@@ -4,6 +4,8 @@
 
 .*
 !.gitignore
+!.githooks/
+!.githooks/**
 
 agent/hooks/__pycache__/sdx_gate_common.cpython-313.pyc
 agent/hooks/__pycache__/sdx_session_state.cpython-313.pyc

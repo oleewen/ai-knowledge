@@ -62,6 +62,10 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 
 **`agent` 内 Markdown 链接自检**（可选，在仓库根执行）：`bash agent/scripts/validate-agent-md-links.sh` —— 校验 `agent/**/*.md` 中链接：`agent` 内互链须存在；跨出 `agent` 须落在 `REPO_ROOT`/`DOC_ROOT` 下且存在（Agent 语义可达）。
 
+**禁止的文件引用自检**（可选，在仓库根执行）：`bash scripts/check-forbidden-file-refs.sh` —— 当前检查 superpowers 具名路径：除 `{docroot}/superpowers/**` 内部外，扫描全仓是否出现 `…/superpowers/(specs|plans)/YYYY-MM-DD-*.md` 字面量或 Markdown 链接；目录契约与占位符允许。规则见 [agent/rules/CONVENTIONS.md](../agent/rules/CONVENTIONS.md#superpowers-ref-isolation)。基线套件：`bash scripts/tests/forbidden-file-refs/run.sh`。
+
+可选 pre-commit（仓库根）：若已配置 `.githooks/pre-commit` 调用上述脚本，可执行 `git config core.hooksPath .githooks` 启用本地钩子（不写入仓库 `git config`，由开发者自行决定）。
+
 ## 使用方式
 
 ### 方式一：克隆后执行（推荐）

@@ -52,6 +52,7 @@
 - 禁止无约定变更即删改 [agent/rules/](agent/rules/)、[agent/skills/](agent/skills/) 中模板与技能核心结构。
 - 禁止未评估影响面即改 INDEX_GUIDE.md、README.md 导航表导致断链或错位。
 - **不在本文粘贴** [INDEX_GUIDE.md](INDEX_GUIDE.md) 第 3 节级 API/字典全表；需要时直接打开该文件。
+- **禁止库外引用 superpowers 具名文件**：除 `{docroot}/superpowers/**` 内部外，不得出现 `…/superpowers/(specs|plans)/YYYY-MM-DD-*.md` 字面量或 Markdown 链接；目录契约与占位符允许。验收见 [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md#superpowers-ref-isolation)。
 - **禁止未经用户确认即提交代码**：不得自动执行 `git commit`（含 Skill 步骤中的「Commit」）；须经用户确认后提交。例外：用户在同一会话中明确指令可以提交并认可说明。细则见 [agent/rules/coding/git-guidelines.md](agent/rules/coding/git-guidelines.md)。
 
 ---

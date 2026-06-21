@@ -9,7 +9,7 @@
 
 | 产物 | 路径示例 |
 |------|-----------|
-| 会话 spec | `{DOC_DIR}/superpowers/specs/2026-04-12-审批提效-sdx-solution.md` |
+| 会话 spec | `{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-sdx-solution.md` |
 | 解决方案 | `{DOC_DIR}/solutions/SOLUTION-260412-审批提效.md` |
 | 下游分析 | `{DOC_DIR}/analysis/ANALYSIS-260412-审批提效.md` |
 

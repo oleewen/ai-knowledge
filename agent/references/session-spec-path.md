@@ -46,6 +46,7 @@
 
 - 不得将 `{DOC_DIR}/specs/`（无 `superpowers/` 段）、`{docroot}/superpower/specs/` 或 requirements 内 `specs/` 当作会话闸门 spec。
 - 另禁止引用 `ideas/**`。
+- **库外不得引用具名 superpowers 文件**：除 `{docroot}/superpowers/**` 内部外，全仓 Markdown 或字面量不得指向 `…/superpowers/(specs|plans)/YYYY-MM-DD-*.md`；目录契约与占位符允许。细则见 [CONVENTIONS.md](../rules/CONVENTIONS.md#superpowers-ref-isolation)。
 
 ## 迁移
 
@@ -64,6 +65,6 @@ mv application/superpower application/superpowers   # 各 DOC_DIR 同理
 
 | 类型 | 路径示例 | 用途 |
 |------|----------|------|
-| 会话 spec（闸门 / 设计备忘） | `{DOC_DIR}/superpowers/specs/2026-05-18-x-sdx-prd.md` | 用户总确认、`CONFIRMED`、钩子证据；或 brainstorming `-design.md` |
+| 会话 spec（闸门 / 设计备忘） | `{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-sdx-prd.md` | 用户总确认、`CONFIRMED`、钩子证据；或 brainstorming `-design.md` |
 | 规约 spec-asd | `application/requirements/…/specs/spec-asd-*.md` 或 `{DOC_DIR}/specs/spec-asd-*.md` | 架构规约，由 docs-push 推送 |
 | legacy spec | `application/specs/spec-{yyMMdd}-*.md` | docs-push legacy |

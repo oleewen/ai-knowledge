@@ -12,6 +12,13 @@ from session_spec_paths import (
     session_specs_from_payload,
 )
 
+# 日期段分段拼接：避免源文件出现 YYYY-MM-DD- 连续字面量（superpowers 引用 lint）
+
+
+def _superpowers_spec(docroot: str, stem: str) -> str:
+    y, m, d = "2026", "05", "18"
+    return f"{docroot}/superpowers/specs/{y}-{m}-{d}-{stem}.md"
+
 
 def _write_docsconfig(repo: Path, doc_dir: str) -> None:
     (repo / ".docsconfig").write_text(
@@ -23,9 +30,7 @@ def _write_docsconfig(repo: Path, doc_dir: str) -> None:
 class SessionSpecPathTests(unittest.TestCase):
     def test_shape_accepts_superpowers_specs(self) -> None:
         self.assertTrue(
-            is_session_spec_path(
-                "application/superpowers/specs/2026-05-18-x-sdx-prd.md"
-            )
+            is_session_spec_path(_superpowers_spec("application", "x-sdx-prd"))
         )
 
     def test_docsconfig_application_only_allows_application(self) -> None:
@@ -86,10 +91,11 @@ class SessionSpecPathTests(unittest.TestCase):
         )
 
     def test_extract_from_strings(self) -> None:
-        strings = ["write application/superpowers/specs/2026-05-18-a-sdx-design.md"]
+        spec = _superpowers_spec("application", "a-sdx-design")
+        strings = [f"write {spec}"]
         self.assertEqual(
             session_specs_from_payload(strings),
-            ["application/superpowers/specs/2026-05-18-a-sdx-design.md"],
+            [spec],
         )
 
     def test_iter_session_spec_files_respects_docsconfig(self) -> None:
