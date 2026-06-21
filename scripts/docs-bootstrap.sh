@@ -39,6 +39,10 @@ if [[ -n "$_BOOTSTRAP_SCRIPT_DIR" && -f "${_BOOTSTRAP_SCRIPT_DIR}/../agent/scrip
   # shellcheck source=/dev/null
   source "${_BOOTSTRAP_SCRIPT_DIR}/../agent/scripts/docs-core.sh"
 fi
+if [[ -n "$_BOOTSTRAP_SCRIPT_DIR" && -f "${_BOOTSTRAP_SCRIPT_DIR}/agent-config.sh" ]]; then
+  # shellcheck source=./agent-config.sh
+  source "${_BOOTSTRAP_SCRIPT_DIR}/agent-config.sh"
+fi
 
 if ! declare -F require_bash5 >/dev/null 2>&1; then
   require_bash5() {
@@ -75,14 +79,13 @@ SDX_BS_CLONE_DIR=''
 SDX_BS_DOC_TARGET=''      # --doc-target
 SDX_BS_AGENTS=''          # --agents（规范化后逗号分隔）
 SDX_BS_AGENT_SCOPE='home' # --agent-scope: home | project
-SDX_BS_AGENT_TARGET=''    # 推导结果：$HOME 或 dirname(doc-target)
+SDX_BS_AGENT_TARGET=''
 
-# 与 agent-install 一致；含 all（安装层展开关键字）
-readonly -a SDX_BS_AGENT_CHOICES=(cursor trae claude kiro all)
-
-# =============================================================================
-# § 3  日志与错误处理（回退逻辑以支持 standalone curl | bash）
-# =============================================================================
+if declare -p SDX_SUPPORTED_AGENTS >/dev/null 2>&1; then
+  SDX_BS_AGENT_CHOICES=("${SDX_SUPPORTED_AGENTS[@]}" all)
+else
+  readonly -a SDX_BS_AGENT_CHOICES=(cursor trae claude kiro all)
+fi
 
 if ! declare -F sdx_log >/dev/null 2>&1; then
   sdx_log()   { printf '%s\n'       "$*" >&2; }
@@ -172,16 +175,28 @@ EOF
 EOF
 }
 
-# 将 / 或 , 分隔的 agents 字符串规范化为逗号分隔
 sdx_bs_normalize_agents() {
   local raw="${1:-}"
-  printf '%s' "$raw" | tr '/' ',' | tr -s ',' | sed 's/^,//;s/,$//'
+  raw="$(printf '%s' "$raw" | tr '/' ',')"
+  if declare -f sdx_agents_normalize >/dev/null; then
+    sdx_agents_normalize "$raw"
+  else
+    printf '%s' "$raw" | tr -s ',' | sed 's/^,//;s/,$//'
+  fi
 }
 
-# 校验 agents 字符串（逗号分隔）中每个值是否合法
 sdx_bs_validate_agents() {
-  local agents_csv="${1:-}"
-  local agent ok v msg legal
+  local agents_csv="${1:-}" agent
+  if declare -f sdx_agents_validate >/dev/null; then
+    IFS=',' read -ra parts <<< "$agents_csv"
+    for agent in "${parts[@]}"; do
+      agent="${agent// /}"
+      [[ -z "$agent" ]] && continue
+      sdx_agents_validate "$agent" || sdx_error "无效 agent: ${agent}"
+    done
+    return 0
+  fi
+  local ok v legal
   legal="$(IFS=' '; printf '%s' "${SDX_BS_AGENT_CHOICES[*]}")"
   IFS=',' read -ra parts <<< "$agents_csv"
   for agent in "${parts[@]}"; do
@@ -191,10 +206,7 @@ sdx_bs_validate_agents() {
     for v in "${SDX_BS_AGENT_CHOICES[@]}"; do
       [[ "$agent" == "$v" ]] && { ok=1; break; }
     done
-    if [[ $ok -ne 1 ]]; then
-      msg="无效 agent: ${agent}（合法值：${legal}）"
-      sdx_error "$msg"
-    fi
+    [[ $ok -eq 1 ]] || sdx_error "无效 agent: ${agent}（合法值：${legal}）"
   done
 }
 

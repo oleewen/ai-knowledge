@@ -32,8 +32,6 @@ INSTALL_SCRIPTS=0
 
 declare -a ENABLED_AGENTS=()
 
-ensure_dir() { sdx_ensure_dir "$1"; }
-
 # 保存/恢复 nullglob；调用方需持有 local 变量名并传入 nameref
 _nullglob_enable() {
   local -n _ng_save="${1:?}"
@@ -67,13 +65,11 @@ sync_tree_excluding_readme() {
 }
 
 copy_file_plain() {
-  local src="$1" dst="$2"
-  if [[ "${CFG[dry_run]}" == '1' ]]; then
-    sdx_log "[dry-run] 拷贝: $src → $dst"
-    return 0
-  fi
-  ensure_dir "$(dirname "$dst")"
-  cp "$src" "$dst"
+  SDX_IO_DRY_RUN="${CFG[dry_run]:-0}"
+  SDX_IO_FORCE=1
+  SDX_IO_BACKUP_FN=''
+  export SDX_IO_DRY_RUN SDX_IO_FORCE SDX_IO_BACKUP_FN
+  sdx_io_copy_file "$1" "$2"
 }
 
 agent_store_root() {
@@ -107,12 +103,7 @@ backup_existing_target_path() {
     local backup_root rel backup_target
     [[ -n "$stamp" ]] || stamp="$(date +%Y-%m-%d_%H-%M-%S)"
     backup_root="${target_root}/.docs-init/${stamp}"
-
-    if [[ "$existing" == "$target_root"/* ]]; then
-      rel="${existing#"$target_root"/}"
-    else
-      rel="${existing#/}"
-    fi
+    rel="$(sdx_backup_rel_under_root "$target_root" "$existing")"
 
     backup_target="${backup_root}/${rel}"
     if [[ -e "$backup_target" || -L "$backup_target" ]]; then
@@ -150,7 +141,7 @@ ensure_symlink() {
     sdx_log "[dry-run] 链接: $dst -> $src"
     return 0
   fi
-  ensure_dir "$(dirname "$dst")"
+  sdx_ensure_dir "$(dirname "$dst")"
   ln -s "$src" "$dst"
 }
 
@@ -161,7 +152,7 @@ link_store_into_agent_root() {
   agent_dir="$(agent_install_root "$agent")"
 
   sdx_info ">>> 链接 ${agent}：${store} -> ${agent_dir}"
-  ensure_dir "$agent_dir"
+  sdx_ensure_dir "$agent_dir"
 
   local _nullglob_was_set=1
   _nullglob_enable _nullglob_was_set
@@ -193,7 +184,7 @@ link_store_into_agent_root() {
       skills)  (( INSTALL_SKILLS == 1 ))  || continue ;;
     esac
 
-    ensure_dir "${agent_dir}/${category}"
+    sdx_ensure_dir "${agent_dir}/${category}"
 
     if [[ -d "${store}/${category}" ]]; then
       for item in "${store}/${category}"/*; do
@@ -260,7 +251,7 @@ install_agent_resource() {
 
   dst_dir="$(agent_store_root)/${dst_rel}"
   sdx_info ">>> 安装：${label}"
-  ensure_dir "$dst_dir"
+  sdx_ensure_dir "$dst_dir"
   sdx_info "  同步 ${label}：${src_root} → ${dst_dir}"
 
   local _nullglob_was_set=1
@@ -462,11 +453,11 @@ agent_install_run() {
     CFG[target_abs]="$(strip_trailing_slash "$(abs_path "${CFG[target_abs]}")")"
   fi
 
-  ensure_dir "$(agent_store_root)"
-  ensure_dir "$(agent_store_root)/hooks"
-  ensure_dir "$(agent_store_root)/rules"
-  ensure_dir "$(agent_store_root)/scripts"
-  ensure_dir "$(agent_store_root)/skills"
+  sdx_ensure_dir "$(agent_store_root)"
+  sdx_ensure_dir "$(agent_store_root)/hooks"
+  sdx_ensure_dir "$(agent_store_root)/rules"
+  sdx_ensure_dir "$(agent_store_root)/scripts"
+  sdx_ensure_dir "$(agent_store_root)/skills"
 
   apply_scope
   apply_agents

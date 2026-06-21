@@ -3,6 +3,46 @@
 # docs-core.sh — 共享路径、.docsconfig 工具与 knowledge-links.yaml 只读解析（供 scripts/*-config.sh source）
 #
 
+# =============================================================================
+# §0 路径引导（path bootstrap；先于 source 守卫）
+# =============================================================================
+
+expand_tilde() {
+  local p="${1:-}"
+  if [[ "$p" == '~' ]]; then
+    printf '%s\n' "${HOME:-}"
+  elif [[ "$p" =~ ^~/ ]]; then
+    printf '%s\n' "${HOME:-}/${p:2}"
+  else
+    printf '%s\n' "$p"
+  fi
+}
+
+abs_path() {
+  local p
+  p="$(expand_tilde "${1:-}")"
+  [[ -n "$p" ]] || return 1
+  [[ "$p" == /* ]] || p="$PWD/$p"
+
+  if [[ -d "$p" ]]; then
+    (cd -P "$p" 2>/dev/null && pwd)
+  else
+    local dir base
+    dir="$(dirname "$p")"
+    base="$(basename "$p")"
+    dir="$(cd -P "$dir" 2>/dev/null && pwd || printf '%s' "$dir")"
+    printf '%s/%s\n' "$dir" "$base"
+  fi
+}
+
+strip_trailing_slash() {
+  local p="${1:-}"
+  while [[ "$p" != '/' && "$p" == */ ]]; do
+    p="${p%/}"
+  done
+  printf '%s\n' "$p"
+}
+
 if [[ -n "${_AGENT_SHARED_DOCS_CONFIG_LOADED:-}" ]]; then
   return 0
 fi
@@ -77,6 +117,88 @@ sdx_sync_dir() {
   fi
 }
 
+# IO 策略：SDX_IO_DRY_RUN SDX_IO_FORCE SDX_IO_CONFLICT_MODE；可选 SDX_IO_BACKUP_FN
+sdx_io_should_overwrite() {
+  local target="$1"
+  [[ "${SDX_IO_DRY_RUN:-0}" == '1' ]] && return 0
+  [[ "${SDX_IO_FORCE:-0}" == '1' ]] && return 0
+  case "${SDX_IO_CONFLICT_MODE:-}" in
+    overwrite_all) return 0 ;;
+    skip_all)      return 1 ;;
+  esac
+  [[ ! -t 0 ]] && return 0
+  sdx_log "目标已存在：$target"
+  printf '1) 覆盖 / 2) 跳过 / 3) 全部覆盖 / 4) 全部跳过 [默认 1，Esc 退出]：' >&2
+  local key='' key2=''
+  IFS= read -rsn1 key || { sdx_log "已取消"; return 2; }
+  if [[ "$key" == $'\e' ]]; then
+    if IFS= read -rsn1 -t 0.05 key2 2>/dev/null; then
+      sdx_log "无效选择，默认覆盖"; return 0
+    fi
+    sdx_log "已取消（Esc）" >&2
+    return 2
+  fi
+  case "$key" in
+    $'\n'|$'\r'|1) return 0 ;;
+    2) return 1 ;;
+    3) SDX_IO_CONFLICT_MODE='overwrite_all'; return 0 ;;
+    4) SDX_IO_CONFLICT_MODE='skip_all'; return 1 ;;
+    *) sdx_log "无效选择，默认覆盖"; return 0 ;;
+  esac
+}
+
+sdx_io_copy_file() {
+  local src="$1" dst="$2"
+  if [[ "${SDX_IO_DRY_RUN:-0}" == '1' ]]; then
+    sdx_log "[dry-run] 拷贝: $src → $dst"; return 0
+  fi
+  if [[ -e "$dst" ]]; then
+    local _ow=0
+    sdx_io_should_overwrite "$dst" || _ow=$?
+    [[ "$_ow" -eq 2 ]] && exit 130
+    [[ "$_ow" -eq 1 ]] && { sdx_log "[skip] $dst"; return 1; }
+    if [[ -n "${SDX_IO_BACKUP_FN:-}" ]] && declare -f "$SDX_IO_BACKUP_FN" >/dev/null; then
+      "$SDX_IO_BACKUP_FN" "$dst"
+    fi
+  fi
+  sdx_ensure_dir "$(dirname "$dst")"
+  cp "$src" "$dst"
+}
+
+sdx_io_copy_tree() {
+  local src="$1" dst="$2"
+  if [[ "${SDX_IO_DRY_RUN:-0}" == '1' ]]; then
+    sdx_log "[dry-run] 拷贝目录: $src → $dst"; return 0
+  fi
+  if [[ -e "$dst" ]]; then
+    local _ow=0
+    sdx_io_should_overwrite "$dst" || _ow=$?
+    [[ "$_ow" -eq 2 ]] && exit 130
+    [[ "$_ow" -eq 1 ]] && { sdx_log "[skip] $dst"; return 0; }
+    if [[ -n "${SDX_IO_BACKUP_FN:-}" ]] && declare -f "$SDX_IO_BACKUP_FN" >/dev/null; then
+      "$SDX_IO_BACKUP_FN" "$dst"
+    fi
+  fi
+  sdx_ensure_dir "$(dirname "$dst")"
+  sdx_ensure_dir "$dst"
+  if sdx_have_cmd rsync; then
+    rsync -a "$src"/ "$dst"/
+  else
+    cp -R "$src"/. "$dst"/
+  fi
+}
+
+sdx_backup_rel_under_root() {
+  local repo_root="${1:?}" existing="${2:?}"
+  existing="$(abs_path "$existing")"
+  repo_root="$(strip_trailing_slash "$(abs_path "$repo_root")")"
+  if [[ "$existing" == "$repo_root"/* ]]; then
+    printf '%s' "${existing#"$repo_root"/}"
+  else
+    printf '%s' "${existing#/}"
+  fi
+}
+
 # =============================================================================
 # § 中央库 Git 与 docs-bootstrap（curl | bash）克隆参数
 # 环境变量 GIT_REPO_URL / GIT_REF 可覆盖；由 sdx_docs_bootstrap_get_* 读取。
@@ -100,42 +222,6 @@ sdx_docs_bootstrap_get_tmpdir() {
 
 sdx_docs_bootstrap_gen_clone_dir() {
   printf '%s/ai-knowledge-%s' "${1:?tmpdir}" "$$"
-}
-
-expand_tilde() {
-  local p="${1:-}"
-  if [[ "$p" == '~' ]]; then
-    printf '%s\n' "${HOME:-}"
-  elif [[ "$p" =~ ^~/ ]]; then
-    printf '%s\n' "${HOME:-}/${p:2}"
-  else
-    printf '%s\n' "$p"
-  fi
-}
-
-abs_path() {
-  local p
-  p="$(expand_tilde "${1:-}")"
-  [[ -n "$p" ]] || return 1
-  [[ "$p" == /* ]] || p="$PWD/$p"
-
-  if [[ -d "$p" ]]; then
-    (cd -P "$p" 2>/dev/null && pwd)
-  else
-    local dir base
-    dir="$(dirname "$p")"
-    base="$(basename "$p")"
-    dir="$(cd -P "$dir" 2>/dev/null && pwd || printf '%s' "$dir")"
-    printf '%s/%s\n' "$dir" "$base"
-  fi
-}
-
-strip_trailing_slash() {
-  local p="${1:-}"
-  while [[ "$p" != '/' && "$p" == */ ]]; do
-    p="${p%/}"
-  done
-  printf '%s\n' "$p"
 }
 
 docsconfig_format_root_for_write() {
@@ -213,11 +299,7 @@ sdx_docs_backup_path_to_init() {
   [[ -n "$stamp" ]] || stamp="$(date +%Y-%m-%d_%H-%M-%S)"
   backup_root="${repo_root}/.docs-init/${stamp}"
 
-  if [[ "$existing" == "$repo_root"/* ]]; then
-    rel="${existing#"$repo_root"/}"
-  else
-    rel="${existing#/}"
-  fi
+  rel="$(sdx_backup_rel_under_root "$repo_root" "$existing")"
 
   backup_target="${backup_root}/${rel}"
   if [[ -e "$backup_target" ]]; then
@@ -251,6 +333,39 @@ docsconfig_validate_knowledge_type() {
 
 # 与 docsconfig_knowledge_type_is_valid 允许集合一致（供 *-config 枚举/文档对齐）
 readonly -a SDX_SUPPORTED_KNOWLEDGE_TYPES=(application system company)
+readonly -a SDX_SUPPORTED_AGENTS=(cursor trae claude kiro)
+
+sdx_agents_normalize() {
+  local agents_str="${1:-}"
+  if [[ "$agents_str" == 'all' ]]; then
+    printf '%s' "${SDX_SUPPORTED_AGENTS[*]}"
+    return 0
+  fi
+  local -a agents normalized
+  local -A seen
+  IFS=', ' read -ra agents <<< "$agents_str"
+  local agent
+  for agent in "${agents[@]}"; do
+    [[ -z "$agent" ]] && continue
+    [[ -n "${seen[$agent]+x}" ]] && continue
+    seen["$agent"]=1
+    normalized+=("$agent")
+  done
+  printf '%s' "${normalized[*]}"
+}
+
+sdx_agents_validate() {
+  local agents_str="${1:-}"
+  local -a agents
+  IFS=', ' read -ra agents <<< "$agents_str"
+  local agent
+  for agent in "${agents[@]}"; do
+    [[ -z "$agent" ]] && continue
+    [[ "$agent" == 'all' ]] && return 0
+    [[ " ${SDX_SUPPORTED_AGENTS[*]} " == *" $agent "* ]] || return 1
+  done
+  return 0
+}
 
 # 打印 .docsconfig 正文键值（不含文件头）；参数：dr rr doc_dir knowledge_type agent_root agent_dirs
 docsconfig_print_kv_block() {
@@ -403,6 +518,99 @@ sdx_rewrite_agent_path_segment_in_tree() {
       \( -name node_modules -o -name .git -o -name __pycache__ -o -name .venv -o -name .cache -o -name dist -o -name build -o -name target \) \
       -prune -o -type f -print0 2>/dev/null || true
   )
+}
+
+sdx_source_docs_core_from_layout() {
+  local link_config_dir="${1:?}"
+  local core bootstrap_used=''
+  core="${link_config_dir}/../agent/scripts/docs-core.sh"
+  if [[ -f "$core" ]]; then
+    # shellcheck source=/dev/null
+    source "$core"
+    return 0
+  fi
+
+  for bootstrap_used in \
+    "${HOME}/.cursor/scripts/docs-core.sh" \
+    "${HOME}/.trae/scripts/docs-core.sh" \
+    "${HOME}/.claude/scripts/docs-core.sh"; do
+    if [[ -f "$bootstrap_used" ]]; then
+      # shellcheck source=/dev/null
+      source "$bootstrap_used"
+      break
+    fi
+  done
+  if [[ -z "$bootstrap_used" || ! -f "$bootstrap_used" ]]; then
+    if ! declare -f abs_path >/dev/null 2>&1; then
+      printf '错误: 未找到中央库 %s，且未安装 Agent scripts（~/.cursor/scripts/docs-core.sh）。\n' \
+        "${link_config_dir}/../agent/scripts/docs-core.sh" >&2
+      return 1
+    fi
+  fi
+
+  local repo_root cfg raw_ar raw_ads line v
+  repo_root="$(cd "$(dirname "${link_config_dir}")" && pwd)"
+  cfg="${repo_root}/.docsconfig"
+  if [[ ! -f "$cfg" ]]; then
+    printf '错误: 未找到 %s，且目标工程根无 .docsconfig（%s）。请使用中央库 clone 执行 docs-link，或在目标工程先 docs-install --scope=config 并安装 agent 脚本（含 docs-core.sh）。\n' \
+      "${link_config_dir}/../agent/scripts/docs-core.sh" "$cfg" >&2
+    return 1
+  fi
+
+  raw_ar=''
+  raw_ads=''
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
+    case "$line" in
+      AGENT_ROOT=*)
+        raw_ar="${line#*=}"
+        raw_ar="${raw_ar%$'\r'}"
+        ;;
+      AGENT_DIRS=*)
+        v="${line#*=}"
+        v="${v%$'\r'}"
+        if [[ ${#v} -ge 2 && "${v:0:1}" == '"' && "${v: -1}" == '"' ]]; then
+          v="${v:1:${#v}-2}"
+        fi
+        raw_ads="$v"
+        ;;
+    esac
+  done <"$cfg"
+
+  local ar_base='' resolved_core=''
+  if [[ -n "$raw_ar" ]]; then
+    ar_base="$(abs_path "$raw_ar")"
+    resolved_core="${ar_base}/scripts/docs-core.sh"
+    if [[ -f "$resolved_core" ]]; then
+      if [[ -n "$bootstrap_used" && "$resolved_core" != "$bootstrap_used" ]]; then
+        unset _AGENT_SHARED_DOCS_CONFIG_LOADED
+      fi
+      # shellcheck source=/dev/null
+      source "$resolved_core"
+      return 0
+    fi
+  fi
+
+  local d d_base
+  for d in $raw_ads; do
+    [[ -z "$d" ]] && continue
+    d_base="$d"
+    if [[ -n "$ar_base" && "$d_base" != /* && "$d_base" != "~"* ]]; then
+      d_base="${ar_base}/${d_base}"
+    fi
+    resolved_core="$(abs_path "$d_base")/scripts/docs-core.sh"
+    if [[ -f "$resolved_core" ]]; then
+      if [[ -n "$bootstrap_used" && "$resolved_core" != "$bootstrap_used" ]]; then
+        unset _AGENT_SHARED_DOCS_CONFIG_LOADED
+      fi
+      # shellcheck source=/dev/null
+      source "$resolved_core"
+      return 0
+    fi
+  done
+
+  printf '错误: .docsconfig 已存在（%s），但 AGENT_ROOT/AGENT_DIRS 下均未找到 scripts/docs-core.sh。请执行 agent-install.sh --scope=sh 或等价安装。\n' "$cfg" >&2
+  return 1
 }
 
 # =============================================================================

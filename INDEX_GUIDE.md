@@ -28,7 +28,7 @@
 - **项目名称**: `ai-knowledge`
 - **核心定位**: 企业级全局知识底座（Markdown/YAML + Bash 初始化链）；**无业务应用运行时**
 - **技术栈**: Markdown、YAML；Bash 5+；Git；可选 `curl`、`rsync`（脚本可回退 `cp`）
-- **语言/构建**: 不适用传统应用「启动类」；可运行项为 Bash 脚本与可选 `scripts/tests/docs-init/run.sh`（见 [scripts/README.md](scripts/README.md)）
+- **语言/构建**: 不适用传统应用「启动类」；可运行项为 Bash 脚本与可选 `scripts/tests/run.sh`（见 [scripts/README.md](scripts/README.md)）
 - **仓库规模（git 已跟踪）**: 共 **513** 个文件；扩展名约 **397** `.md`、**48** `.sh`、**36** `.json`、**13** `.py`、**6** `.yaml`（统计来源：`git ls-files`，2026-06-18）
 
 ---

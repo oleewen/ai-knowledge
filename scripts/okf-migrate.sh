@@ -5,8 +5,6 @@ set -euo pipefail
 # 用法: bash scripts/okf-migrate.sh [--dry-run]
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-OKF_DIR="$REPO_ROOT/scripts/okf"
 BUNDLE="${BUNDLE:-application}"
 DRY_RUN=0
 
@@ -45,6 +43,21 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
+
+repo_root="$(cd "$SCRIPT_DIR/.." && pwd)"
+agent_home="$(cd "$SCRIPT_DIR/../agent" && pwd)"
+bootstrap="${agent_home}/scripts/config-bootstrap.sh"
+if [[ -f "$repo_root/.docsconfig" && -f "$bootstrap" ]]; then
+  # shellcheck disable=SC1091
+  source "$bootstrap"
+  validate_bootstrap_docsconfig "$SCRIPT_DIR" || exit 1
+  repo_root="${REPO_ROOT:-$repo_root}"
+elif command -v git >/dev/null 2>&1; then
+  git_root="$(git -C "$repo_root" rev-parse --show-toplevel 2>/dev/null || true)"
+  [[ -n "$git_root" ]] && repo_root="$git_root"
+fi
+REPO_ROOT="$repo_root"
+OKF_DIR="$REPO_ROOT/scripts/okf"
 
 run_cmd() {
   local desc="$1"

@@ -5,7 +5,6 @@ set -euo pipefail
 # 用法: bash scripts/validate-okf.sh [--bundle NAME]
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 BUNDLE="${BUNDLE:-application}"
 
 while [[ $# -gt 0 ]]; do
@@ -41,16 +40,27 @@ EOF
   esac
 done
 
-_AGENT_HOME="$(cd "$SCRIPT_DIR/../agent" && pwd)"
-_BOOTSTRAP="${_AGENT_HOME}/scripts/config-bootstrap.sh"
-if [[ -f "$REPO_ROOT/.docsconfig" && -f "$_BOOTSTRAP" ]]; then
-  # shellcheck disable=SC1091
-  source "$_BOOTSTRAP"
-  validate_bootstrap_docsconfig "$SCRIPT_DIR" || exit 1
-elif command -v git >/dev/null 2>&1; then
-  git_root="$(git -C "$REPO_ROOT" rev-parse --show-toplevel 2>/dev/null || true)"
-  [[ -n "$git_root" ]] && REPO_ROOT="$git_root"
-fi
+sdx_okf_resolve_repo_root() {
+  local script_dir="$1"
+  local repo_root
+  repo_root="$(cd "$script_dir/.." && pwd)"
+  local agent_home bootstrap
+  agent_home="$(cd "$script_dir/../agent" && pwd)"
+  bootstrap="${agent_home}/scripts/config-bootstrap.sh"
+  if [[ -f "$repo_root/.docsconfig" && -f "$bootstrap" ]]; then
+    # shellcheck disable=SC1091
+    source "$bootstrap"
+    validate_bootstrap_docsconfig "$script_dir" || return 1
+    repo_root="${REPO_ROOT:-$repo_root}"
+  elif command -v git >/dev/null 2>&1; then
+    local git_root
+    git_root="$(git -C "$repo_root" rev-parse --show-toplevel 2>/dev/null || true)"
+    [[ -n "$git_root" ]] && repo_root="$git_root"
+  fi
+  printf '%s' "$repo_root"
+}
+
+REPO_ROOT="$(sdx_okf_resolve_repo_root "$SCRIPT_DIR")" || exit 1
 
 cd "$REPO_ROOT" || exit 1
 

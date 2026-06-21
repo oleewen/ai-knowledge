@@ -41,7 +41,7 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 | **中央知识库挂载建联**（`central`） | `application`（默认） | `application/` **子集** | 仅 `changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs_meta.md`、`manifest.md`；**不执行中央知识库挂载建联登记/联邦槽位写入** |
 | **中央知识库挂载建联**（`central`） | `system` / `company` | - | **不支持**（报错） |
 
-2. **Agent 配置**（**`agent-install.sh`**）：在 **`--target`**（默认 **`$HOME`**）下按 **`--agents`**（默认 **`cursor`**，可 **`all`** 或多选）安装到 **`${TARGET}/.{.cursor|.trea|.claude}/`** 中对应目录；单份实体默认存储于 **`$HOME/.agents/`**；按 **`--scope`** 选择同步 **`hooks`**、**`scripts`**、**`rules`**、**`skills`**。当 **`--target` 不是 `$HOME`** 且 **`${TARGET}/.docsconfig`** 已存在时，所有 scope 都会按本次参数重算并覆盖 **`AGENT_ROOT`** 与 **`AGENT_DIRS`**。`docs-install` 在 `scope=config|knowledge` 下都会处理 `AGENT_*`：仅当 `.docsconfig` 中 **`AGENT_ROOT`** 为空时写默认 **`AGENT_ROOT=$HOME`** 与 **`AGENT_DIRS=.cursor`**；`AGENT_ROOT` 非空时保留原值。
+2. **Agent 配置**（**`agent-install.sh`**）：在 **`--target`**（默认 **`$HOME`**）下按 **`--agents`**（默认 **`cursor`**，可 **`all`** 或多选）安装到 **`${TARGET}/.{.cursor|.trae|.claude|.kiro}/`** 中对应目录；单份实体默认存储于 **`$HOME/.agents/`**；按 **`--scope`** 选择同步 **`hooks`**、**`scripts`**、**`rules`**、**`skills`**。当 **`--target` 不是 `$HOME`** 且 **`${TARGET}/.docsconfig`** 已存在时，所有 scope 都会按本次参数重算并覆盖 **`AGENT_ROOT`** 与 **`AGENT_DIRS`**。`docs-install` 在 `scope=config|knowledge` 下都会处理 `AGENT_*`：仅当 `.docsconfig` 中 **`AGENT_ROOT`** 为空时写默认 **`AGENT_ROOT=$HOME`** 与 **`AGENT_DIRS=.cursor`**；`AGENT_ROOT` 非空时保留原值。
 
 3. **冲突处理**：**`docs-install`** 若目标路径已存在，默认会交互式提示；使用 `--force` 强制覆盖，或 `--dry-run` 预览。**`agent-install`** 对安装树采用同步覆盖（可用 `--dry-run` 预览）。
 
@@ -131,30 +131,37 @@ bash scripts/okf-migrate.sh --dry-run     # 预览各步命令
 bash scripts/tests/okf/run.sh
 ```
 
-## 测试（docs-init）
+## 测试总览
 
-在仓库根执行（默认 CI 子集，不修改当前克隆的登记文件）：
+在**仓库根**执行：
 
 ```bash
-bash scripts/tests/docs-init/run.sh
+bash scripts/tests/run.sh              # 快测（forbidden-file-refs、docs-link、docs-change、okf）
+bash scripts/tests/run.sh --full       # 全量（含 docs-install、docs-push）
+bash scripts/tests/run.sh --suite okf  # 单套件
 ```
 
-**docs-link**（须 **Bash 5+**；与 `docs-link.sh` 运行要求一致）：
+| 套件 | 命令 | 说明 |
+|------|------|------|
+| 聚合 | `bash scripts/tests/run.sh` | 默认 `--quick` |
+| docs-install | `bash scripts/tests/docs-install/run.sh` | 知识库安装集成测（10 案） |
+| docs-link | `bash scripts/tests/docs-link/run.sh` | 建联 YAML（须 Bash 5+） |
+| docs-push | `bash scripts/tests/docs-push/run.sh` | push-specs（须 Bash 5+） |
+| docs-change | `bash scripts/tests/docs-change/run.sh` | change-indexing 集成测 |
+| forbidden-file-refs | `bash scripts/tests/forbidden-file-refs/run.sh` | 库外 superpowers 引用门禁 |
+| okf | `bash scripts/tests/okf/run.sh` | OKF Python 单元 + 验收脚本 |
+
+**本地门禁建议**（非 pre-commit 强制）：
+
+- 日常：`bash scripts/tests/run.sh`
+- 大改/发版前：`bash scripts/tests/run.sh --full`
+- pre-commit（可选）：`git config core.hooksPath .githooks` → 仅 `check-forbidden-file-refs.sh`
+
+环境变量（docs-install 部分用例可选）：
 
 ```bash
-bash scripts/tests/docs-link/run.sh
-```
-
-含整库副本与中央知识库挂载建联登记类用例（Spec §6.5 / §6.8；耗时与磁盘占用更高）：
-
-```bash
-DOCS_INIT_TEST_FULL=1 bash scripts/tests/docs-init/run.sh
-```
-
-环境变量（可选）：
-```bash
-export GIT_REPO_URL=https://github.com/oleewen/ai-knowledge.git  # 仓库地址
-export GIT_REF=main                                                  # 分支或标签
+export GIT_REPO_URL=https://github.com/oleewen/ai-knowledge.git
+export GIT_REF=main
 ```
 
 ## 选项说明
@@ -165,7 +172,7 @@ export GIT_REF=main                                                  # 分支或
 |------|------|------|
 | `--scope=SCOPE` | `a`：全部；`r`：rules；`s`：skills；`h`：hooks；`sh`：scripts（含复制 `agent/scripts/docs-core.sh`） | `a` |
 | `--target PATH` | 安装父目录，其下仅为**已选 agent** 创建 **`${TARGET}/.cursor`** 等；**非 `$HOME`** 且存在 `PATH/.docsconfig` 时，任意 scope 都会按本次参数重算并覆盖 `AGENT_ROOT`/`AGENT_DIRS` | `$HOME` |
-| `--agents=LIST` | `cursor` \| `trea` \| `claude` \| `all`；逗号或空格分隔多选 | `cursor` |
+| `--agents=LIST` | `cursor` \| `trae` \| `claude` \| `kiro` \| `all`；逗号或空格分隔多选 | `cursor` |
 | `--dry-run` | 预览，不写入 | - |
 | `-h`, `--help` | 显示帮助 | - |
 
@@ -216,14 +223,15 @@ your-project/
 ```
 ~/
 ├── .agents/                       # agent-install 单份实体存储（默认）
-├── .cursor/                       # Cursor（另有 .trea/、.claude/ 下同构）
+├── .cursor/                       # Cursor（另有 .trae/、.claude/、.kiro/ 下同构）
 │   ├── hooks.json                 # 自仓库 agent/hooks.json
 │   ├── hooks/                     # 自仓库 agent/hooks/
 │   ├── scripts/                   # 含 docs-core.sh（自仓库 agent/scripts/ 复制）与 config-bootstrap 等
 │   ├── skills/                    # Skills（不含各层 README）
 │   └── rules/                     # Rules
-├── .trea/
-└── .claude/
+├── .trae/
+├── .claude/
+└── .kiro/
 ```
 
 **注意**：standalone + `type=application`（默认）下自动排除 `DESIGN.md` 和 `CONTRIBUTING.md`。
@@ -246,7 +254,7 @@ your-project/
 
 ### Agent 安装（agent-install.sh）
 
-1. **`--scope` 含 `sh` 时**：将 **`agent/scripts/`** 下条目（**不含** `docs-core.sh`）与 **`agent/scripts/docs-core.sh`（共享实现）** 安装到 **`${TARGET}/.cursor| .trea| .claude/scripts/`**；并对 `scripts/` 下树执行 `agent/` → **`AGENT_DIR/`** 的路径改写。
+1. **`--scope` 含 `sh` 时**：将 **`agent/scripts/`** 下条目（**不含** `docs-core.sh`）与 **`agent/scripts/docs-core.sh`（共享实现）** 安装到 **`${TARGET}/.cursor| .trae| .claude| .kiro/scripts/`**；并对 `scripts/` 下树执行 `agent/` → **`AGENT_DIR/`** 的路径改写。
 2. **`--scope` 含 `s` 时**：将 **`agent/skills/`** 下各技能子目录同步到三处 **`skills/`**（排除各层 **README**；不再依赖前缀筛选）。
 3. **`--scope` 含 `r` 时**：同步 **`agent/rules/`** 到三处 **`rules/`**。
 4. **`--scope` 含 `h` 时**：同步 **`agent/hooks/`**（含同目录下的 **`hooks.json`** SSOT）。
@@ -268,7 +276,7 @@ your-project/
 
 | 版本 | 变更 |
 |------|------|
-| 3.0.0 | **`agent-install`** / **`agent-config`** 重构：仅 **`--scope`/`--target`/`--dry-run`**；多分根 **`${TARGET}/.cursor|.trea|.claude`**；含 **hooks**；排除 **README**；**`agent/scripts/docs-core.sh`** 复制至各 Agent **`scripts/docs-core.sh`**；**`--target`≠`$HOME`** 时更新 **`.docsconfig`** 之 **`AGENT_*`**（无文件则提示先 **docs-install**） |
+| 3.0.0 | **`agent-install`** / **`agent-config`** 重构：仅 **`--scope`/`--target`/`--dry-run`**；多分根 **`${TARGET}/.cursor|.trae|.claude|.kiro`**；含 **hooks**；排除 **README**；**`agent/scripts/docs-core.sh`** 复制至各 Agent **`scripts/docs-core.sh`**；**`--target`≠`$HOME`** 时更新 **`.docsconfig`** 之 **`AGENT_*`**（无文件则提示先 **docs-install**） |
 | 2.9.4 | **移除** **`maintain-agent-init.sh`**；**`agent-install.sh`** 与 core 重叠段改由**人工**与 **`lib/docs-init-core.sh`** / **`docs-install`** 对齐 |
 | 2.9.3 | 新增 **`agent-config.sh`**（初版自 **`docs-core.sh`** 复制，独立维护）；**`agent-install.sh`** 改为 **`source` `agent-config.sh`**；**`maintain-agent-init.sh`** 不再内联整段 docs-core，并修正对 core 的切片行号 |
 | 2.9.2 | **`docs-install.sh`** 改为**自包含**（内联 **`docs-core.sh`** 与 **`lib/docs-init-core.sh`** 主体，不 `source` 其它脚本）；**`lib/docs-init-core.sh`** 作对照 SSOT（彼时 **`agent-install`** 由 **`maintain-agent-init.sh`** 生成） |
@@ -283,5 +291,7 @@ your-project/
 | 2.1.2 | 落地方案 A：`SDX_DOC_ROOT`、`.sdx-doc-root` 与目录探测统一由 `agent/scripts/sdx-doc-root.sh` 提供；各 `validate-*.sh` 接入 |
 | 2.1.1 | `standalone` 下 `--scope` 为 `agent` 时，`<目标工程文档目录>` 可省略；未指定时 Agent 内 `application/` → 文档前缀替换默认为 `docs/` |
 | 2.1.0 | Agent skills/rules 安装目录由「目标工程根下」改为「用户主目录 `$HOME` 下」；备份对应使用 `~/.docs-init/` |
-| 2.0.0 | 重构：使用 `application/` 作为模板源；新增文件名/内容替换；支持多 Agent（cursor、trea、claude）；Agent 目录改为 `.cursor/`、`.trea/`、`.claude/`；standalone 模式排除 DESIGN.md 和 CONTRIBUTING.md |
+| 2.0.0 | 重构：使用 `application/` 作为模板源；新增文件名/内容替换；支持多 Agent（cursor、trae、claude、kiro）；Agent 目录改为 `.cursor/`、`.trae/`、`.claude/`、`.kiro/`；standalone 模式排除 DESIGN.md 和 CONTRIBUTING.md |
 | 1.0.0 | 初始版本：使用 `applications/app-APPNAME/` 作为模板源；支持 standalone 与中央知识库挂载建联（`central`）；Agent 配置安装在 `agent/` 目录 |
+
+> **注**：`scripts/lib/docs-init-core.sh` 已移除；逻辑现位于 `agent/scripts/docs-core.sh` 与各入口脚本。

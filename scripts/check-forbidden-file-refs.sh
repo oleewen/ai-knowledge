@@ -30,9 +30,7 @@ run_scan() {
   local label="$1"
   local pattern="$2"
   local out
-  if out="$(rg -n "$pattern" "${GLOBS[@]}" . 2>/dev/null || true)"; then
-    :
-  fi
+  out="$(rg -n "$pattern" "${GLOBS[@]}" . 2>/dev/null || true)"
   if [[ -n "$out" ]]; then
     echo "== $label ==" >&2
     echo "$out" >&2
