@@ -30,29 +30,9 @@ _knowledge_link_doc_root_abs_ns() {
   strip_trailing_slash "$(abs_path "${1:?}")"
 }
 
-# 将绝对仓库根路径转为写入 knowledge-links 的 path（$HOME 下为 ~/… 或 ~/，否则绝对路径；手写不依赖 docsconfig_format_root_for_write）
+# 将绝对仓库根路径转为写入 knowledge-links 的 path（SSOT：docsconfig_format_root_for_write）
 knowledge_link_stored_path_from_absolute() {
-  local abs="${1:?}" home_abs r
-  abs="$(cd -P "$abs" 2>/dev/null && pwd)" || {
-    printf '%s\n' "$abs"
-    return 0
-  }
-  home_abs="${HOME:-}"
-  [[ -n "$home_abs" ]] && home_abs="$(cd -P "$home_abs" 2>/dev/null && pwd)" || home_abs=''
-  [[ -z "$home_abs" ]] && {
-    printf '%s\n' "$abs"
-    return 0
-  }
-  if [[ "$abs" == "$home_abs" ]]; then
-    printf '%s\n' '~/'
-    return 0
-  fi
-  if [[ "$abs" == "$home_abs/"* ]]; then
-    r="${abs#"${home_abs}"/}"
-    printf '~/%s\n' "$r"
-    return 0
-  fi
-  printf '%s\n' "$abs"
+  docsconfig_format_root_for_write "${1:?}"
 }
 
 # 覆盖写出 knowledge-links.yaml（repository、path、doc_dir、app_name、app_label 数组下标对齐）
@@ -386,8 +366,8 @@ SRC_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || sdx_error "请在 Git
 SRC_CFG="$SRC_ROOT/.docsconfig"
 [[ -f "$SRC_CFG" ]] || sdx_error "源仓库缺少 .docsconfig: $SRC_CFG"
 
-_sdoc='' _srepo='' _sdd='' _skt=''
-docsconfig_read_into "$SRC_CFG" _sdoc _srepo _sdd _skt || sdx_error "无法解析源 .docsconfig"
+_sdoc='' _srepo='' _sdd='' _sar='' _sads='' _skt=''
+docsconfig_read_into "$SRC_CFG" _sdoc _srepo _sdd _sar _sads _skt || sdx_error "无法解析源 .docsconfig"
 [[ -n "$_sdoc" ]] || sdx_error "源 .docsconfig 缺少 DOC_ROOT"
 [[ -n "$_skt" ]] || sdx_error "源 .docsconfig 缺少 KNOWLEDGE_TYPE"
 docsconfig_validate_knowledge_type "$_skt" || exit 1
@@ -414,8 +394,8 @@ if [[ "$CMD" == 'link' ]]; then
   TGT_CFG="$TGT_ROOT/.docsconfig"
   [[ -f "$TGT_CFG" ]] || sdx_error "目标仓库缺少 .docsconfig: $TGT_CFG"
 
-  _tdoc='' _trepo='' _tdd='' _tkt=''
-  docsconfig_read_into "$TGT_CFG" _tdoc _trepo _tdd _tkt || sdx_error "无法解析目标 .docsconfig"
+  _tdoc='' _trepo='' _tdd='' _tar='' _tads='' _tkt=''
+  docsconfig_read_into "$TGT_CFG" _tdoc _trepo _tdd _tar _tads _tkt || sdx_error "无法解析目标 .docsconfig"
   [[ -n "$_tkt" ]] || sdx_error "目标 .docsconfig 缺少 KNOWLEDGE_TYPE"
   docsconfig_validate_knowledge_type "$_tkt" || exit 1
   [[ "$_tkt" == "$expect_target" ]] || sdx_error "目标须为 ${expect_target} 知识库（KNOWLEDGE_TYPE=${_tkt}）"

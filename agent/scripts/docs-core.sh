@@ -3,10 +3,6 @@
 # docs-core.sh — 共享路径、.docsconfig 工具与 knowledge-links.yaml 只读解析（供 scripts/*-config.sh source）
 #
 
-# =============================================================================
-# §0 路径引导（path bootstrap；先于 source 守卫）
-# =============================================================================
-
 expand_tilde() {
   local p="${1:-}"
   if [[ "$p" == '~' ]]; then
@@ -58,30 +54,20 @@ require_bash5() {
 }
 require_bash5
 
-# =============================================================================
-# § 日志与输出
-# =============================================================================
-
 sdx_log()   { printf '%s\n'       "$*" >&2; }
 sdx_info()  { printf '信息: %s\n'  "$*" >&2; }
 sdx_warn()  { printf '警告: %s\n'  "$*" >&2; }
 sdx_error() { printf '错误: %s\n' "$*" >&2; exit 1; }
 
-# =============================================================================
-# § IO 与同步工具
-# =============================================================================
-
 sdx_have_cmd() {
   command -v "$1" >/dev/null 2>&1
 }
 
-# 与 sdx_run_or_dry / sdx_sync_dir 一致：调用方可设 DRY_RUN 或 CFG[dry_run]
+# 与 sdx_run_or_dry / sdx_sync_dir / sdx_io_* 一致：DRY_RUN、CFG[dry_run] 或 SDX_IO_DRY_RUN
 sdx_dry_run_enabled() {
-  [[ "${DRY_RUN:-${CFG[dry_run]:-0}}" == '1' ]]
+  [[ "${DRY_RUN:-${CFG[dry_run]:-0}}" == '1' || "${SDX_IO_DRY_RUN:-0}" == '1' ]]
 }
 
-# dry-run 感知的命令执行器
-# 要求调用方环境中定义了 $DRY_RUN 或全局变量
 sdx_run_or_dry() {
   if sdx_dry_run_enabled; then
     sdx_log "[dry-run] $*"
@@ -92,8 +78,6 @@ sdx_run_or_dry() {
 
 sdx_ensure_dir() { sdx_run_or_dry mkdir -p "$1"; }
 
-# 同步目录树，允许排除文件
-# 用法：sdx_sync_dir <src> <dst> [extra_rsync_args...]
 sdx_sync_dir() {
   local src="$1" dst="$2"
   shift 2
@@ -117,10 +101,9 @@ sdx_sync_dir() {
   fi
 }
 
-# IO 策略：SDX_IO_DRY_RUN SDX_IO_FORCE SDX_IO_CONFLICT_MODE；可选 SDX_IO_BACKUP_FN
 sdx_io_should_overwrite() {
   local target="$1"
-  [[ "${SDX_IO_DRY_RUN:-0}" == '1' ]] && return 0
+  sdx_dry_run_enabled && return 0
   [[ "${SDX_IO_FORCE:-0}" == '1' ]] && return 0
   case "${SDX_IO_CONFLICT_MODE:-}" in
     overwrite_all) return 0 ;;
@@ -149,7 +132,7 @@ sdx_io_should_overwrite() {
 
 sdx_io_copy_file() {
   local src="$1" dst="$2"
-  if [[ "${SDX_IO_DRY_RUN:-0}" == '1' ]]; then
+  if sdx_dry_run_enabled; then
     sdx_log "[dry-run] 拷贝: $src → $dst"; return 0
   fi
   if [[ -e "$dst" ]]; then
@@ -165,29 +148,6 @@ sdx_io_copy_file() {
   cp "$src" "$dst"
 }
 
-sdx_io_copy_tree() {
-  local src="$1" dst="$2"
-  if [[ "${SDX_IO_DRY_RUN:-0}" == '1' ]]; then
-    sdx_log "[dry-run] 拷贝目录: $src → $dst"; return 0
-  fi
-  if [[ -e "$dst" ]]; then
-    local _ow=0
-    sdx_io_should_overwrite "$dst" || _ow=$?
-    [[ "$_ow" -eq 2 ]] && exit 130
-    [[ "$_ow" -eq 1 ]] && { sdx_log "[skip] $dst"; return 0; }
-    if [[ -n "${SDX_IO_BACKUP_FN:-}" ]] && declare -f "$SDX_IO_BACKUP_FN" >/dev/null; then
-      "$SDX_IO_BACKUP_FN" "$dst"
-    fi
-  fi
-  sdx_ensure_dir "$(dirname "$dst")"
-  sdx_ensure_dir "$dst"
-  if sdx_have_cmd rsync; then
-    rsync -a "$src"/ "$dst"/
-  else
-    cp -R "$src"/. "$dst"/
-  fi
-}
-
 sdx_backup_rel_under_root() {
   local repo_root="${1:?}" existing="${2:?}"
   existing="$(abs_path "$existing")"
@@ -199,10 +159,6 @@ sdx_backup_rel_under_root() {
   fi
 }
 
-# =============================================================================
-# § 中央库 Git 与 docs-bootstrap（curl | bash）克隆参数
-# 环境变量 GIT_REPO_URL / GIT_REF 可覆盖；由 sdx_docs_bootstrap_get_* 读取。
-# =============================================================================
 readonly SDX_GIT_REPO_URL='https://github.com/oleewen/ai-knowledge.git'
 readonly SDX_GIT_DEFAULT_REF='HEAD'
 
@@ -247,20 +203,43 @@ docsconfig_normalize_root_value() {
 }
 
 docsconfig_repo_root_from_doc_root() {
-  local doc_root="${1:?doc_root}"
-  local dr gr
+  local doc_root="${1:?doc_root}" dr gr
   dr="$(cd -P "$doc_root" 2>/dev/null && pwd)" || return 0
   gr="$(git -C "$dr" rev-parse --show-toplevel 2>/dev/null || true)"
-  [[ -n "$gr" ]] || return 0
-  if [[ "$(dirname "$dr")" == "$gr" ]]; then
+  if [[ -n "$gr" && "$(dirname "$dr")" == "$gr" ]]; then
     printf '%s\n' "$gr"
+    return 0
   fi
-  return 0
+  cd -P "$(dirname "$doc_root")" 2>/dev/null && pwd || true
 }
 
 docsconfig_repo_root_fallback_from_doc_root() {
-  local doc_root="${1:?doc_root}"
-  cd -P "$(dirname "$doc_root")" 2>/dev/null && pwd || true
+  docsconfig_repo_root_from_doc_root "$@"
+}
+
+docsconfig_find_repo_root() {
+  local script_dir="${1:?script_dir}"
+  local gr last='' pwd_root script_root d i
+  pwd_root="$(git -C "${PWD}" rev-parse --show-toplevel 2>/dev/null || true)"
+  script_root="$(git -C "$script_dir" rev-parse --show-toplevel 2>/dev/null || true)"
+  for gr in "$pwd_root" "$script_root"; do
+    [[ -n "$gr" && "$gr" == "$last" ]] && continue
+    last="$gr"
+    [[ -n "$gr" && -f "$gr/.docsconfig" ]] && {
+      printf '%s' "$gr"
+      return 0
+    }
+  done
+  d="$(pwd)"
+  for ((i = 0; i < 32; i++)); do
+    [[ -f "$d/.docsconfig" ]] && {
+      printf '%s' "$d"
+      return 0
+    }
+    [[ "$d" == "/" ]] && break
+    d="$(dirname "$d")"
+  done
+  return 1
 }
 
 docsconfig_doc_dir_from_roots() {
@@ -284,12 +263,6 @@ docsconfig_doc_dir_from_roots() {
   esac
 }
 
-# =============================================================================
-# § .docs-init 备份（docs-install 清空 DOC_DIR、docs-link 注销槽位等共用）
-# =============================================================================
-
-# 将已存在的文件或目录移至 repo_root/.docs-init/<stamp>/rel，rel 规则与 docs-install 的 backup_path 一致。
-# 参数：repo_root、existing、stamp（可选，空则每次调用自生成时间戳）、dry_run（可选，1 则只打印不移动）
 sdx_docs_backup_path_to_init() {
   local repo_root="${1:?}" existing="${2:?}" stamp="${3:-}" dry_run="${4:-0}"
   local backup_root rel backup_target
@@ -464,16 +437,9 @@ docsconfig_read_into() {
   if (( $# >= 7 )); then
     local -n _ktype="${7:?}"
     _ktype="$raw_kt"
-  elif (( $# == 5 )); then
-    local -n _ktype_legacy="${5:?}"
-    _ktype_legacy="$raw_kt"
   fi
   return 0
 }
-
-# =============================================================================
-# § 文本文件与 agent/ 路径段重写（docs-install / agent-install 共用）
-# =============================================================================
 
 sdx_is_text_file() {
   local f="$1"
@@ -489,15 +455,11 @@ sdx_is_text_file() {
   return 1
 }
 
-sdx_have_perl() {
-  sdx_have_cmd perl
-}
-
-# 将路径段 agent/ 替换为 agent_slash（须以 / 结尾，如 .cursor/）
 sdx_rewrite_agent_path_segment_in_file() {
   local file="$1" agent_slash="${2:?}"
   [[ -f "$file" ]] && sdx_is_text_file "$file" || return 0
-  sdx_have_perl || return 0
+  grep -q 'agent/' "$file" 2>/dev/null || return 0
+  sdx_have_cmd perl || return 0
   if ! SDX_AGENT_SLASH="$agent_slash" \
     perl -CSD -i -pe 'BEGIN { die "SDX_AGENT_SLASH unset\n" unless defined $ENV{SDX_AGENT_SLASH} && length $ENV{SDX_AGENT_SLASH} } s{\bagent/}{$ENV{SDX_AGENT_SLASH}}g' \
     "$file" 2>/dev/null; then
@@ -516,8 +478,90 @@ sdx_rewrite_agent_path_segment_in_tree() {
   done < <(
     find "$root" \
       \( -name node_modules -o -name .git -o -name __pycache__ -o -name .venv -o -name .cache -o -name dist -o -name build -o -name target \) \
-      -prune -o -type f -print0 2>/dev/null || true
+      -prune -o -type f \( \
+        -name '*.md' -o -name '*.yaml' -o -name '*.yml' -o -name '*.json' -o -name '*.jsonl' \
+        -o -name '*.txt' -o -name '*.sh' -o -name '*.gitignore' -o -name '*.html' -o -name '*.css' \
+        -o -name '*.js' -o -name '*.toml' \
+      \) -print0 2>/dev/null || true
   )
+}
+
+# 自 start 目录向上找首个含 relative_path 文件的目录，打印该目录绝对路径
+sdx_find_upward_with_file() {
+  local relative_path="${1:?}" start d
+  shift
+  [[ $# -gt 0 ]] || set -- "${PWD}"
+  local s
+  for s in "$@"; do
+    d="$(cd -P "$s" 2>/dev/null && pwd -P)" || continue
+    while [[ -n "$d" && "$d" != "/" ]]; do
+      [[ -f "$d/$relative_path" ]] && {
+        printf '%s\n' "$d"
+        return 0
+      }
+      d="$(dirname "$d")"
+    done
+  done
+  return 1
+}
+
+# 解析 docs-core.sh 绝对路径（不 source）；顺序见 agent/skills/docs-push/references/parameters.md
+sdx_resolve_docs_core_path() {
+  local hint="${1:-${PWD}}" d home="${HOME:-}" dc
+
+  if [[ -n "${DOCS_CORE_SH:-}" ]]; then
+    [[ -f "$DOCS_CORE_SH" ]] || return 1
+    abs_path "$DOCS_CORE_SH"
+    return 0
+  fi
+
+  for dc in \
+    "${hint}/../agent/scripts/docs-core.sh" \
+    "${hint}/agent/scripts/docs-core.sh" \
+    "${hint}/../../../scripts/docs-core.sh"; do
+    if [[ -f "$dc" ]]; then
+      abs_path "$dc"
+      return 0
+    fi
+  done
+
+  if [[ -n "$home" ]]; then
+    for dc in \
+      "${home}/.agents/scripts/docs-core.sh" \
+      "${home}/.cursor/scripts/docs-core.sh" \
+      "${home}/.trae/scripts/docs-core.sh" \
+      "${home}/.claude/scripts/docs-core.sh" \
+      "${home}/.kiro/scripts/docs-core.sh"; do
+      if [[ -f "$dc" ]]; then
+        abs_path "$dc"
+        return 0
+      fi
+    done
+  fi
+
+  d="$(cd -P "$hint" 2>/dev/null && pwd -P || printf '%s' "$hint")"
+  while [[ -n "$d" && "$d" != "/" ]]; do
+    if [[ -f "$d/agent/scripts/docs-core.sh" ]]; then
+      abs_path "$d/agent/scripts/docs-core.sh"
+      return 0
+    fi
+    d="$(dirname "$d")"
+  done
+
+  d="$(pwd -P 2>/dev/null || pwd)"
+  while [[ -n "$d" && "$d" != "/" ]]; do
+    if [[ -f "$d/agent/scripts/docs-core.sh" ]]; then
+      abs_path "$d/agent/scripts/docs-core.sh"
+      return 0
+    fi
+    d="$(dirname "$d")"
+  done
+
+  if [[ -n "${AIK_ROOT:-}" && -f "${AIK_ROOT}/agent/scripts/docs-core.sh" ]]; then
+    abs_path "${AIK_ROOT}/agent/scripts/docs-core.sh"
+    return 0
+  fi
+  return 1
 }
 
 sdx_source_docs_core_from_layout() {
@@ -530,22 +574,26 @@ sdx_source_docs_core_from_layout() {
     return 0
   fi
 
-  for bootstrap_used in \
-    "${HOME}/.cursor/scripts/docs-core.sh" \
-    "${HOME}/.trae/scripts/docs-core.sh" \
-    "${HOME}/.claude/scripts/docs-core.sh"; do
-    if [[ -f "$bootstrap_used" ]]; then
-      # shellcheck source=/dev/null
-      source "$bootstrap_used"
-      break
-    fi
-  done
-  if [[ -z "$bootstrap_used" || ! -f "$bootstrap_used" ]]; then
-    if ! declare -f abs_path >/dev/null 2>&1; then
-      printf '错误: 未找到中央库 %s，且未安装 Agent scripts（~/.cursor/scripts/docs-core.sh）。\n' \
-        "${link_config_dir}/../agent/scripts/docs-core.sh" >&2
-      return 1
-    fi
+  bootstrap_used=''
+  if declare -f sdx_resolve_docs_core_path >/dev/null 2>&1; then
+    bootstrap_used="$(sdx_resolve_docs_core_path "$link_config_dir" 2>/dev/null || true)"
+  else
+    for bootstrap_used in \
+      "${HOME}/.cursor/scripts/docs-core.sh" \
+      "${HOME}/.trae/scripts/docs-core.sh" \
+      "${HOME}/.claude/scripts/docs-core.sh"; do
+      [[ -f "$bootstrap_used" ]] && break
+      bootstrap_used=''
+    done
+  fi
+  if [[ -n "$bootstrap_used" && -f "$bootstrap_used" ]]; then
+    unset _AGENT_SHARED_DOCS_CONFIG_LOADED
+    # shellcheck source=/dev/null
+    source "$bootstrap_used"
+  elif ! declare -f abs_path >/dev/null 2>&1; then
+    printf '错误: 未找到中央库 %s，且未安装 Agent scripts（~/.cursor/scripts/docs-core.sh）。\n' \
+      "${link_config_dir}/../agent/scripts/docs-core.sh" >&2
+    return 1
   fi
 
   local repo_root cfg raw_ar raw_ads line v
@@ -559,23 +607,29 @@ sdx_source_docs_core_from_layout() {
 
   raw_ar=''
   raw_ads=''
-  while IFS= read -r line || [[ -n "$line" ]]; do
-    [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
-    case "$line" in
-      AGENT_ROOT=*)
-        raw_ar="${line#*=}"
-        raw_ar="${raw_ar%$'\r'}"
-        ;;
-      AGENT_DIRS=*)
-        v="${line#*=}"
-        v="${v%$'\r'}"
-        if [[ ${#v} -ge 2 && "${v:0:1}" == '"' && "${v: -1}" == '"' ]]; then
-          v="${v:1:${#v}-2}"
-        fi
-        raw_ads="$v"
-        ;;
-    esac
-  done <"$cfg"
+  if declare -f docsconfig_read_into >/dev/null 2>&1; then
+    local _cfg_dr _cfg_rr _cfg_dd
+    docsconfig_read_into "$cfg" _cfg_dr _cfg_rr _cfg_dd raw_ar raw_ads || return 1
+  else
+    local v
+    while IFS= read -r line || [[ -n "$line" ]]; do
+      [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
+      case "$line" in
+        AGENT_ROOT=*)
+          raw_ar="${line#*=}"
+          raw_ar="${raw_ar%$'\r'}"
+          ;;
+        AGENT_DIRS=*)
+          v="${line#*=}"
+          v="${v%$'\r'}"
+          if [[ ${#v} -ge 2 && "${v:0:1}" == '"' && "${v: -1}" == '"' ]]; then
+            v="${v:1:${#v}-2}"
+          fi
+          raw_ads="$v"
+          ;;
+      esac
+    done <"$cfg"
+  fi
 
   local ar_base='' resolved_core=''
   if [[ -n "$raw_ar" ]]; then
@@ -613,11 +667,8 @@ sdx_source_docs_core_from_layout() {
   return 1
 }
 
-# =============================================================================
-# § knowledge-links.yaml（只读解析；依赖上文 abs_path / sdx_error）
-# =============================================================================
+# knowledge-links.yaml（只读解析）
 
-# 去除 YAML 字段值两端的单/双引号
 _yaml_unquote() {
   local v="${1:-}"
   v="${v#\"}"; v="${v%\"}"
@@ -642,11 +693,7 @@ knowledge_links_validate_stored_path_field() {
 # 将登记 path 展开为绝对路径（~/…、~、/ 绝对路径走 abs_path；否则视为相对 $HOME 的旧形态并拼 $HOME）
 knowledge_link_expand_stored_path() {
   local p="${1:?}" home
-  if [[ "$p" == /* ]]; then
-    abs_path "$p"
-    return 0
-  fi
-  if [[ "$p" == '~' ]] || [[ "$p" =~ ^~/ ]]; then
+  if [[ "$p" == /* || "$p" == '~' || "$p" =~ ^~/ ]]; then
     abs_path "$p"
     return 0
   fi
@@ -673,7 +720,7 @@ knowledge_links_load_into_arrays() {
 
   [[ -f "$f" ]] || return 0
 
-  knowledge_links_flush_pending() {
+  flush_pending() {
     if [[ -n "$path" ]]; then
       knowledge_links_validate_stored_path_field "$path" "$f"
       _paths+=("$path")
@@ -684,15 +731,10 @@ knowledge_links_load_into_arrays() {
     elif [[ -n "$repo$doc_dir$app_name$app_label" ]]; then
       sdx_error "knowledge-links.yaml 中存在未写完的条目（有 repository/doc_dir/app_name/app_label 但缺少 path）: $f"
     fi
-    path=''
-    repo=''
-    doc_dir=''
-    app_name=''
-    app_label=''
+    path='' repo='' doc_dir='' app_name='' app_label=''
   }
 
-  # 未知键静默忽略（与 YAML 扩展字段前向兼容）
-  knowledge_links_set_kv() {
+  set_kv() {
     case "${1:?}" in
       path) path="$2" ;;
       repository) repo="$2" ;;
@@ -709,13 +751,13 @@ knowledge_links_load_into_arrays() {
     if [[ "$line" =~ ^[[:space:]]*-[[:space:]]+([a-z_]+):[[:space:]]*(.*)$ ]]; then
       key="${BASH_REMATCH[1]}"
       val="$(_yaml_unquote "${BASH_REMATCH[2]}")"
-      knowledge_links_flush_pending
-      knowledge_links_set_kv "$key" "$val"
+      flush_pending
+      set_kv "$key" "$val"
     elif [[ "$line" =~ ^[[:space:]]{4}([a-z_]+):[[:space:]]*(.*)$ ]]; then
       key="${BASH_REMATCH[1]}"
       val="$(_yaml_unquote "${BASH_REMATCH[2]}")"
-      knowledge_links_set_kv "$key" "$val"
+      set_kv "$key" "$val"
     fi
   done <"$f"
-  knowledge_links_flush_pending
+  flush_pending
 }

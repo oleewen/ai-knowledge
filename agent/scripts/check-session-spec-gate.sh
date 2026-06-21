@@ -1,29 +1,34 @@
 #!/usr/bin/env bash
-# 在 {docroot}/superpowers/specs/*.md 中查找 CONFIRMED 标记与目标 basename。
-# 用法: check_session_spec_gate "<!-- sdx-prd-gate: CONFIRMED -->" "PRD-foo.md"
-set -euo pipefail
+# check_session_spec_gate — 在 {DOC_DIR}/superpowers/specs/*.md 中查找 CONFIRMED 标记与目标 basename。
+# 用法（source 后）: check_session_spec_gate "<!-- sdx-prd-gate: CONFIRMED -->" "PRD-foo.md"
+# 依赖 REPO_ROOT；扫描逻辑与 agent/hooks/session_spec_paths.py 一致。
 
-MARKER="${1:?marker required}"
-TARGET="${2:?target basename required}"
-REPO_ROOT="${REPO_ROOT:?REPO_ROOT required}"
+check_session_spec_gate() {
+  local marker="${1:?marker required}" target="${2:?target basename required}"
+  local repo="${REPO_ROOT:?REPO_ROOT required}"
+  local hooks="${repo}/agent/hooks"
+  [[ -d "$hooks" ]] || return 1
 
-found=0
-while IFS= read -r -d '' spec; do
-  rel="${spec#"${REPO_ROOT}/"}"
-  case "${rel}" in
-    */requirements/*) continue ;;
-  esac
-  IFS=/ read -r seg1 seg2 seg3 _rest <<< "${rel}/x/x/x"
-  if [[ "${seg2}" != "superpowers" || "${seg3}" != "specs" ]]; then
-    continue
-  fi
-  if grep -qF "${MARKER}" "${spec}" 2>/dev/null && grep -qF "${TARGET}" "${spec}" 2>/dev/null; then
-    found=1
-    break
-  fi
-done < <(find "${REPO_ROOT}" -type f -name '*.md' -path '*/superpowers/specs/*' ! -path '*/requirements/*' -print0 2>/dev/null)
+  REPO_ROOT="$repo" MARKER="$marker" TARGET="$target" python3 <<'PY'
+import os
+import re
+import sys
+from pathlib import Path
 
-if [[ "${found}" -eq 1 ]]; then
-  exit 0
-fi
-exit 1
+repo = Path(os.environ["REPO_ROOT"])
+sys.path.insert(0, str(repo / "agent" / "hooks"))
+from session_spec_paths import iter_session_spec_files  # noqa: E402
+
+marker = os.environ["MARKER"]
+target = os.environ["TARGET"]
+pat = re.compile(rf"(?<![A-Za-z0-9._-]){re.escape(target)}(?![A-Za-z0-9._-])")
+for p in iter_session_spec_files(repo):
+    try:
+        text = p.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        continue
+    if marker in text and pat.search(text):
+        sys.exit(0)
+sys.exit(1)
+PY
+}

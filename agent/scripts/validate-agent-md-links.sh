@@ -31,10 +31,18 @@ link_re = re.compile(r"\]\(([^)]+)\)")
 
 errs = []
 warns = []
+exists_cache: dict[str, bool] = {}
 
 
 def norm(p: str) -> str:
     return os.path.normpath(p)
+
+
+def path_exists(path: str) -> bool:
+    key = norm(path)
+    if key not in exists_cache:
+        exists_cache[key] = os.path.exists(path)
+    return exists_cache[key]
 
 
 def is_under(path: str, root: str) -> bool:
@@ -68,7 +76,7 @@ for dirpath, _, files in os.walk(agent):
             joined = norm(os.path.join(os.path.dirname(path), target))
             # agent 内互链：目标须在 agent 下且存在（含 L3 裸链规则）
             if is_under(joined, agent):
-                if not os.path.exists(joined):
+                if not path_exists(joined):
                     errs.append(f"{rel_md}: 目标不存在 → ({target})")
             else:
                 # 跨出 agent：须落在 REPO_ROOT 或 DOC_ROOT 目录树内
@@ -80,7 +88,7 @@ for dirpath, _, files in os.walk(agent):
                 if is_under(joined, git_dir):
                     errs.append(f"{rel_md}: 禁止链接到 .git → ({target})")
                     continue
-                if not os.path.exists(joined):
+                if not path_exists(joined):
                     errs.append(f"{rel_md}: 目标不存在 → ({target})")
             # 深层 reference 禁止裸 application|docs 根链（规范 L3）
             target_slash = target.replace("\\", "/")
