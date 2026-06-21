@@ -15,7 +15,7 @@ title: 数据视角元数据（application/knowledge/data）
 | meta_id | `DIR-KNOWLEDGE-DATA` |
 | 视角 | data |
 | 层级范围 | application |
-| 说明 | 数据存储与实体；公司级 MDG 在 `company/ea/data/` 首次定义，系统层自 DS/ENT 起首次定义，本层承接物理表锚点与应用归属信息。 |
+| 说明 | 数据存储与实体；公司级 MDG 在 `company/knowledge/data/` 首次定义，系统层自 DS/ENT 起首次定义，本层承接物理表锚点与应用归属信息。 |
 
 ---
 

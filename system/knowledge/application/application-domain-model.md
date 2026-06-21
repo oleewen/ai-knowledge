@@ -9,7 +9,7 @@ title: 领域模型
 
 本节给出本系统的模型：聚合/实体边界、UML 类图及关键属性，供服务实现与评审。
 
-> **领域模型 SSOT**：系统层落地叙事；公司级应用治理框架见 [company/ea/application/README.md](../../../company/ea/application/README.md)。
+> **领域模型 SSOT**：系统层落地叙事；公司级应用治理框架见 [company/knowledge/application/README.md](../../../company/knowledge/application/README.md)。
 
 与 [业务架构 — 概念模型](../business/business-glossary.md#概念模型) 及 [数据架构 — 逻辑/物理模型](../data/data-model.md) 交叉对齐。
 

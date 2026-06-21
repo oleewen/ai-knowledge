@@ -182,7 +182,7 @@ def _split_existing(text: str) -> Tuple[str, str]:
 def _default_suffix() -> str:
     return "\n".join(
         [
-            "> 公司级 **TPL-***、系统级 **TSD-*** 不在本索引登记；见 `company/ea/technical/`、`system/knowledge/technical/`。",
+            "> 公司级 **TPL-***、系统级 **TSD-*** 不在本索引登记；见 `company/knowledge/technical/`、`system/knowledge/technical/`。",
             "",
             "---",
             "",
@@ -190,7 +190,7 @@ def _default_suffix() -> str:
             "",
             "| 索引 ID | 命名式 ID（锚点目录） |",
             "|---------|----------------------|",
-            "| BD-EXAMPLE | `business/BD-EXAMPLE/` |",
+            "| BD-EXAMPLE | `business/BSD-EXAMPLE/` |",
             "| PL-EXAMPLE | `product/PL-EXAMPLE/` |",
             "| SYS-EXAMPLE | `application/SYS-EXAMPLE/` |",
             "| DS-EXAMPLE | `data/DS-EXAMPLE/` |",

@@ -12,7 +12,7 @@ layer_scope: system
 ---
 # Relations
 
-- parent: [PL-EXAMPLE](/knowledge/product/PM-EXAMPLE/PL-EXAMPLE.md)
+- parent: [PL-EXAMPLE](/knowledge/product/PL-EXAMPLE.md)
 
 # Cross-perspective
 

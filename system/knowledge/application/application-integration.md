@@ -9,7 +9,7 @@ title: 集成架构
 
 本节管理本系统第三方与遗留系统集成，明确协议、数据流与防腐边界。
 
-> **集成架构 SSOT**：系统层落地叙事；公司级应用治理框架见 [company/ea/application/README.md](../../../company/ea/application/README.md)。
+> **集成架构 SSOT**：系统层落地叙事；公司级应用治理框架见 [company/knowledge/application/README.md](../../../company/knowledge/application/README.md)。
 
 ## 集成清单
 

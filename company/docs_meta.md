@@ -1,0 +1,69 @@
+---
+type: Directory Meta
+title: company 目录元数据
+---
+
+```yaml
+# company/ 目录元数据（根导航与 SSOT 指针）
+id: "DIR-COMPANY"
+name: "公司知识库根（company）"
+description: "公司级知识库 company/ 根目录：人类与 Agent 主导航（README、INDEX_GUIDE）、设计约束（DESIGN）及五视角企业架构 SSOT。"
+
+role:
+  kind: "documentation_root"
+  ssot_subdirectory: "knowledge/"
+  # 治理与命名 SSOT 见 agent/knowledge/knowledge-governance.md
+
+child_directories:
+  knowledge:
+    readme: "knowledge/README.md"
+    description: "五架构视角企业架构；含 overview/ 蒸馏缓冲区"
+  solutions:
+    readme: "solutions/README.md"
+    description: "公司级跨系统解决方案"
+  analysis:
+    readme: "analysis/README.md"
+    description: "公司级跨系统需求分析"
+  system-SYSNAME:
+    readme: "system-SYSNAME/README.md"
+    description: "系统镜像槽位（占位 SYSNAME）"
+  changelogs:
+    readme: "changelogs/README.md"
+    description: "变更留痕与索引运维"
+
+child_files:
+  - "README.md"
+  - "INDEX_GUIDE.md"
+  - "DESIGN.md"
+  - "knowledge-links.yaml"
+
+inputs:
+  - path: "(from-repository-and-delivery)"
+    description: "仓库治理、跨系统方案/分析产出与归档回写"
+
+outputs:
+  primary_artifact:
+    pattern: "README.md, INDEX_GUIDE.md, DESIGN.md, knowledge/**/*"
+    description: "根级导航与设计 + knowledge/ 公司层 per-entity OKF concept"
+
+naming_conventions:
+  directory_index:
+    description: "实体 ID 与 IDEA-ID 命名以 agent/knowledge/naming-conventions.md 为准"
+    reference: "../agent/knowledge/naming-conventions.md"
+
+integration:
+  upstream:
+    - path: "../agent/"
+      description: "规范、模板与 Agent 技能（命名 SSOT：agent/knowledge/；闸门：agent/rules/）"
+  downstream:
+    - path: "../system/"
+      description: "系统层 reference 引用公司层 BD/PL/SYS/MDG/TPL SSOT"
+  traceability:
+    description: "阶段链 solutions → analysis；各系统 PRD/ASD 在对应 system/requirements/"
+
+references:
+  - path: "./README.md"
+  - path: "./INDEX_GUIDE.md"
+  - path: "./DESIGN.md"
+  - path: "../agent/knowledge/knowledge-governance.md"
+```

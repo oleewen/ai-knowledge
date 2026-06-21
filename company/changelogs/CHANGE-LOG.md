@@ -1,3 +1,7 @@
+---
+type: Change Log
+title: CHANGE-LOG
+---
 # CHANGE-LOG
 
 本文件为 `company/` 侧**维护性变更与文档聚合**的 Markdown 日志入口。

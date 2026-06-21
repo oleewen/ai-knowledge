@@ -20,11 +20,11 @@
 | `/docs-upgrade` | 定向增改 Markdown、源代码注释与配置文本；落盘后链式同步引用链，并辅以关键词检索（同义/近义/中英文）对齐同类表述；支持替换简写 `a - b` / `a > b` / `a 2 b`。 |
 | `/docs-agent` | 生成或更新根目录 `README.md`（人类）与 `AGENTS.md`（Agent）；以落盘 `INDEX_GUIDE.md` 为唯一地图，与 Index 职责不重叠。 |
 | `/docs-distill` | 将 `system/application-{name}/` 已核实内容蒸馏到 `system/knowledge/overview/`；支持 `--app` `--since` `--full` `--dry-run`，默认按增量锚点蒸馏。 |
-| `/docs-extract` | 从用户指定的任意文件或目录中，按段落级关键词相关度筛选，提炼业务知识写入 `system/knowledge/overview/` 或 `company/ea/overview/` 第三列（A/U/D 合并更新）；支持 `--sources` `--overview` `--dry-run`。 |
+| `/docs-extract` | 从用户指定的任意文件或目录中，按段落级关键词相关度筛选，提炼业务知识写入 `system/knowledge/overview/` 或 `company/knowledge/overview/` 第三列（A/U/D 合并更新）；支持 `--sources` `--overview` `--dry-run`。 |
 | `/docs-pull` | 从已通过中央知识库挂载建联注册的目标工程拉取最新文档，覆盖更新本仓库联邦镜像 `applications/app-{APPNAME}/`，并追加同步 changelog。 |
 | `/docs-push` | 将 `spec-{yyMMdd}-{n}-{app_name}.md` 推送到 `knowledge-links.yaml` 登记的本机 `path` 下 `{doc_dir}/specs/`；支持 `path` / `repo+feature` 与 Git 四档（`push-specs.sh`）。 |
 | `/docs-build` | 从工程代码与文档按五视角（应用→数据→技术→业务→产品）提取链上实体 ID，生成 `{perspective}-entities.md`（schema 2.1 语义），刷新各视角 README 与 `{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md`。 |
-| `/docs-archive` | 从 `system/knowledge/overview/` 或 `company/ea/overview/` 各视角归档知识到表行副标题链接对应章节；先澄清与方案确认再落盘，补充后做一致性检查与冲突分步确认。 |
+| `/docs-archive` | 从 `system/knowledge/overview/` 或 `company/knowledge/overview/` 各视角归档知识到表行副标题链接对应章节；先澄清与方案确认再落盘，补充后做一致性检查与冲突分步确认。 |
 | `/sdx-solution` | 产出解决方案阶段文档（Solution 阶段）。 |
 | `/sdx-analysis` | 产出需求分析阶段文档（Analysis 阶段）。 |
 | `/sdx-prd` | 产出 PRD 阶段文档（Requirements 阶段）；总确认前默认禁止写入 `{DOC_DIR}/requirements/**/PRD-*.md`（见技能 HARD-GATE）。 |

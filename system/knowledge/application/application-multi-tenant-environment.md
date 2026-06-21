@@ -9,7 +9,7 @@ title: 多租户多环境
 
 本节说明本系统租户隔离、环境拓扑与发布控制，支撑安全合规与交付节奏。
 
-> **多租户多环境 SSOT**：系统层落地叙事；公司级应用治理框架见 [company/ea/application/README.md](../../../company/ea/application/README.md)。
+> **多租户多环境 SSOT**：系统层落地叙事；公司级应用治理框架见 [company/knowledge/application/README.md](../../../company/knowledge/application/README.md)。
 
 ## 租户隔离
 

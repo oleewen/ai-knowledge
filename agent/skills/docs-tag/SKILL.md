@@ -1,7 +1,7 @@
 ---
 name: docs-tag
 description: >
-  为 Markdown 概览（`system/knowledge/overview/` 或 `company/ea/overview/` 下 *-overview.md）做关键词相关度：扫目录候选 → 选词 → YAML 附录 → 表行 ✅ → 架构摘录（phase 3）。
+  为 Markdown 概览（`system/knowledge/overview/` 或 `company/knowledge/overview/` 下 *-overview.md）做关键词相关度：扫目录候选 → 选词 → YAML 附录 → 表行 ✅ → 架构摘录（phase 3）。
   触发：`/docs-tag`、`扫描关键词`、`给概览打标签`、`表格打勾`、`架构摘录`、`刷新摘录`、`phase 3`。
   仅第三列提炼 / 全文术语替换 / INDEX → 分流 docs-extract、docs-upgrade、docs-indexing。
 ---

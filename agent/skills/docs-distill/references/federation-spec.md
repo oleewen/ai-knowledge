@@ -7,7 +7,7 @@
 **系统库**唯一落盘：`system/knowledge/overview/{APPNAME}-overview.md`。  
 新建：从 `NAME-overview.md` 拷；**文件名 + 文内标题** `NAME` → `APPNAME`。
 
-**公司库** overview 缓冲区：`company/ea/overview/{NAME}-overview.md`（`docs-extract` / `docs-archive` / `docs-tag` 同工作流；`docs-distill` 上行目标仍为系统库 overview）。
+**公司库** overview 缓冲区：`company/knowledge/overview/{NAME}-overview.md`（`docs-extract` / `docs-archive` / `docs-tag` 同工作流；`docs-distill` 上行目标仍为系统库 overview）。
 
 **非目标**（只当来源）：各层 `architecture/` 或 `ea/` 下五视角长篇、应用 knowledge、应用 SDD。
 
@@ -40,7 +40,7 @@
 - 技术：技术概述 → 基础设施 → 中间件 → 性能扩展 → 高可用 → 可观测性
 - 数据：数据概述 → 数据模型 → 数据存储 → 数据分析 → 数据流转
 
-### 公司库（`company/ea/overview/`）
+### 公司库（`company/knowledge/overview/`）
 
 - 业务：概述 → 域划分 → 商业模式 → 价值链 → 组织角色 → 业务能力
 - 产品：概述 → 产品线 → 度量标准 → 体验设计

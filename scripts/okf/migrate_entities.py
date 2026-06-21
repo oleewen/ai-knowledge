@@ -36,6 +36,9 @@ PREFIX_PERSPECTIVE: Dict[str, str] = {
     "MW": "technical",
     "CMP": "technical",
     "TSD": "technical",
+    "CAP": "business",
+    "MDG": "data",
+    "TPL": "technical",
 }
 
 RELATION_FIELDS: Set[str] = {
@@ -282,6 +285,9 @@ def build_concept_content(
     }
     if bundle == "system":
         meta["layer_scope"] = "system"
+    elif bundle == "company":
+        meta["layer_scope"] = "company"
+        meta["definition_scope"] = "local"
     extra_meta_keys: Set[str] = set()
     for key, val in entity.items():
         if key in FRONTMATTER_SKIP or key in RELATION_FIELDS or key in CROSS_PERSPECTIVE_FIELDS:

@@ -31,4 +31,4 @@ title: "系统知识库（顶层 `system/`）"
 3. [knowledge/business/README.md](architecture/business/README.md) / [knowledge/product/README.md](architecture/product/README.md) — 业务与产品语境  
 4. [knowledge/application/README.md](architecture/application/README.md) / [knowledge/data/README.md](architecture/data/README.md) / [knowledge/technical/README.md](architecture/technical/README.md) — 系统、数据与技术落地  
 
-与公司知识库侧 [`../company/ea/`](../company/ea/README.md) 对照阅读。
+与公司知识库侧 [`../company/knowledge/`](../company/knowledge/README.md) 对照阅读。

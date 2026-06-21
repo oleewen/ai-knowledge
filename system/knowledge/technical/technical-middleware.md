@@ -9,7 +9,7 @@ title: 中间件与基础组件
 
 本节沉淀本系统共享平台能力选型与使用规范，避免重复建设与安全碎片化。
 
-> **中间件 SSOT**：系统层落地叙事；公司级技术治理框架见 [company/ea/technical/README.md](../../../company/ea/technical/README.md)。
+> **中间件 SSOT**：系统层落地叙事；公司级技术治理框架见 [company/knowledge/technical/README.md](../../../company/knowledge/technical/README.md)。
 
 ## 消息队列
 

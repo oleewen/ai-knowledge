@@ -12,7 +12,7 @@ TS = "2026-06-21T00:00:00Z"
 
 ENTITIES: list[tuple[str, str]] = [
     (
-        "knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md",
+        "knowledge/business/BD-EXAMPLE.md",
         """---
 type: Business Domain
 title: 示例业务域
@@ -30,12 +30,12 @@ layer_scope: system
 ---
 # SSOT
 
-上游主定义：`company/ea/business/BD-EXAMPLE/`（公司层 OKF 落盘见后续波次）。
+上游主定义：`company/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md`（公司层 OKF SSOT）。
 
 # Relations
 
 - children:
-  - [BSD-EXAMPLE](/knowledge/business/BD-EXAMPLE/BSD-EXAMPLE.md)
+  - [BSD-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md)
 
 # Cross-perspective
 
@@ -51,7 +51,7 @@ layer_scope: system
 """,
     ),
     (
-        "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE.md",
+        "knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md",
         """---
 type: Business Subdomain
 title: 示例业务子域
@@ -66,9 +66,9 @@ layer_scope: system
 ---
 # Relations
 
-- parent: [BD-EXAMPLE](/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md)
+- parent: [BD-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BD-EXAMPLE.md)
 - bounded_contexts:
-  - [BC-EXAMPLE](/knowledge/business/BD-EXAMPLE/BC-EXAMPLE.md)
+  - [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md)
 
 # Cross-perspective
 
@@ -84,7 +84,7 @@ layer_scope: system
 """,
     ),
     (
-        "knowledge/business/BD-EXAMPLE/BC-EXAMPLE.md",
+        "knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md",
         """---
 type: Bounded Context
 title: 示例限界上下文
@@ -99,9 +99,9 @@ layer_scope: system
 ---
 # Relations
 
-- parent: [BSD-EXAMPLE](/knowledge/business/BD-EXAMPLE/BSD-EXAMPLE.md)
+- parent: [BSD-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md)
 - aggregates:
-  - [AGG-EXAMPLE](/knowledge/business/BD-EXAMPLE/AGG-EXAMPLE.md)
+  - [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
 
 # Cross-perspective
 
@@ -117,7 +117,7 @@ layer_scope: system
 """,
     ),
     (
-        "knowledge/business/BD-EXAMPLE/AGG-EXAMPLE.md",
+        "knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md",
         """---
 type: Aggregate
 title: 示例聚合
@@ -132,9 +132,9 @@ layer_scope: system
 ---
 # Relations
 
-- parent: [BC-EXAMPLE](/knowledge/business/BD-EXAMPLE/BC-EXAMPLE.md)
+- parent: [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md)
 - abilities:
-  - [AB-EXAMPLE](/knowledge/business/BD-EXAMPLE/AB-EXAMPLE.md)
+  - [AB-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AB-EXAMPLE.md)
 
 # Cross-perspective
 
@@ -150,7 +150,7 @@ layer_scope: system
 """,
     ),
     (
-        "knowledge/business/BD-EXAMPLE/AB-EXAMPLE.md",
+        "knowledge/business/BSD-EXAMPLE/AB-EXAMPLE.md",
         """---
 type: Ability
 title: 示例业务能力
@@ -165,11 +165,11 @@ layer_scope: system
 ---
 # Relations
 
-- parent: [AGG-EXAMPLE](/knowledge/business/BD-EXAMPLE/AGG-EXAMPLE.md)
+- parent: [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
 
 # Cross-perspective
 
-- implemented_by_app_id: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE.md)
+- implemented_by_app_id: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
 
 # Details
 
@@ -181,7 +181,7 @@ layer_scope: system
 """,
     ),
     (
-        "knowledge/product/PM-EXAMPLE/PL-EXAMPLE.md",
+        "knowledge/product/PL-EXAMPLE.md",
         """---
 type: Product Line
 title: 示例产品线
@@ -198,7 +198,7 @@ layer_scope: system
 ---
 # SSOT
 
-上游主定义：`company/ea/product/PL-EXAMPLE/`（公司层 OKF 落盘见后续波次）。
+上游主定义：`company/knowledge/product/PL-EXAMPLE.md`（公司层 OKF SSOT）。
 
 # Relations
 
@@ -234,7 +234,7 @@ layer_scope: system
 ---
 # Relations
 
-- parent: [PL-EXAMPLE](/knowledge/product/PM-EXAMPLE/PL-EXAMPLE.md)
+- parent: [PL-EXAMPLE](/knowledge/product/PL-EXAMPLE.md)
 
 # Cross-perspective
 
@@ -329,12 +329,12 @@ layer_scope: system
 ---
 # SSOT
 
-上游主定义：`company/ea/application/SYS-EXAMPLE/`（公司层 OKF 落盘见后续波次）。
+上游主定义：`company/knowledge/application/SYS-EXAMPLE.md`（公司层 OKF SSOT）。
 
 # Relations
 
 - children:
-  - [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE.md)
+  - [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
 
 # Cross-perspective
 
@@ -350,7 +350,7 @@ layer_scope: system
 """,
     ),
     (
-        "knowledge/application/APP-EXAMPLE.md",
+        "knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md",
         """---
 type: Application
 title: 示例应用
@@ -370,7 +370,7 @@ layer_scope: system
 
 - parent: [SYS-EXAMPLE](/knowledge/application/SYS-EXAMPLE.md)
 - service_ids:
-  - [MS-EXAMPLE](/knowledge/application/MS-EXAMPLE.md)
+  - [MS-EXAMPLE](/knowledge/application/APP-EXAMPLE/MS-EXAMPLE.md)
 
 # Cross-perspective
 
@@ -386,7 +386,7 @@ layer_scope: system
 """,
     ),
     (
-        "knowledge/application/MS-EXAMPLE.md",
+        "knowledge/application/APP-EXAMPLE/MS-EXAMPLE.md",
         """---
 type: Microservice
 title: 示例微服务
@@ -401,12 +401,12 @@ layer_scope: system
 ---
 # Relations
 
-- parent: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE.md)
+- parent: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
 
 # Cross-perspective
 
 - cross_references:
-  - [BC-EXAMPLE](/knowledge/business/BD-EXAMPLE/BC-EXAMPLE.md)
+  - [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md)
   - [PM-EXAMPLE](/knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md)
 
 # Details
@@ -419,7 +419,7 @@ layer_scope: system
 """,
     ),
     (
-        "knowledge/data/DS-EXAMPLE.md",
+        "knowledge/data/DS-EXAMPLE/DS-EXAMPLE.md",
         """---
 type: Data Store
 title: 示例数据源
@@ -429,17 +429,17 @@ timestamp: "%s"
 full_id: DS-EXAMPLE
 perspective: data
 hierarchy: DS
-parent_id: null
+parent_id: MDG-EXAMPLE
 config_key: example_config_key
 layer_scope: system
 ---
 # Relations
 
-- (none)
+- parent: [MDG-EXAMPLE](/knowledge/data/MDG-EXAMPLE.md)
 
 # Cross-perspective
 
-- owned_by_app_id: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE.md)
+- owned_by_app_id: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
 
 # Details
 
@@ -451,7 +451,7 @@ layer_scope: system
 """,
     ),
     (
-        "knowledge/data/ENT-EXAMPLE.md",
+        "knowledge/data/DS-EXAMPLE/ENT-EXAMPLE.md",
         """---
 type: Entity
 title: 示例实体
@@ -466,11 +466,11 @@ layer_scope: system
 ---
 # Relations
 
-- parent: [DS-EXAMPLE](/knowledge/data/DS-EXAMPLE.md)
+- parent: [DS-EXAMPLE](/knowledge/data/DS-EXAMPLE/DS-EXAMPLE.md)
 
 # Cross-perspective
 
-- maps_to_aggregate_id: [AGG-EXAMPLE](/knowledge/business/BD-EXAMPLE/AGG-EXAMPLE.md)
+- maps_to_aggregate_id: [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
 
 # Details
 

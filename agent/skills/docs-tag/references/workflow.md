@@ -9,7 +9,7 @@
 | `--file` | 是 | — | 目标 MD |
 | `--phase` | 是 | — | `1`/交互、`2`、`3`/`excerpt`、`all`；Skill 用 `1-scan`/`1-write`/`2`/`3` |
 | `--keywords` | 1/all 时 | — | 种子词，空格分隔 |
-| `--scan-dir` | 否 | `docs/architecture/` | 扫目录；公司 `ea` overview 场景用 `company/ea/` |
+| `--scan-dir` | 否 | `docs/architecture/` | 扫目录；公司 `ea` overview 场景用 `company/knowledge/` |
 | `--top-n` | 否 | `30` | Top 候选数 |
 
 Skill：`1-scan` → 列表/JSON → 用户选 → `1-write` → `2` → `3`。勿用 `--phase 1` 的 `input()`（gotchas §7）。

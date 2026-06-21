@@ -24,7 +24,7 @@ description: >
 - 路径契约：[session-spec-path.md](../../references/session-spec-path.md)、[knowledge-layout.md](../../references/knowledge-layout.md)
 - 可读 `system/application-{name}/changelogs/CHANGE-LOG.md`（过短则补背景）。
 - 明确 `{APPNAME}` / `--app`；多应用宜带 `--app`。
-- 知 `{DOC_DIR}/superpowers/specs/`、`system/knowledge/overview/`；公司侧 overview 为 `company/ea/overview/`（`docs-extract` / `docs-archive` / `docs-tag` 同工作流）。
+- 知 `{DOC_DIR}/superpowers/specs/`、`system/knowledge/overview/`；公司侧 overview 为 `company/knowledge/overview/`（`docs-extract` / `docs-archive` / `docs-tag` 同工作流）。
 
 ## 读序
 

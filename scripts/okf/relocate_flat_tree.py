@@ -27,7 +27,7 @@ LINK_REWRITES: List[Tuple[str, str]] = [
     ("/knowledge/product/PL-EXAMPLE/PL-EXAMPLE.md", "/knowledge/product/PM-EXAMPLE/PL-EXAMPLE.md"),
     ("/knowledge/product/PL-EXAMPLE/PM-EXAMPLE.md", "/knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md"),
     ("/knowledge/application/SYS-EXAMPLE/", "/knowledge/application/MS-EXAMPLE/"),
-    ("/knowledge/application/MS-EXAMPLE.md", "/knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md"),
+    ("/knowledge/application/APP-EXAMPLE/MS-EXAMPLE.md", "/knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md"),
     ("/knowledge/application/API-EXAMPLE-001.md", "/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md"),
     ("/knowledge/data/DS-EXAMPLE/", "/knowledge/data/ENT-EXAMPLE/"),
     ("/knowledge/technical/MW-EXAMPLE.md", "/knowledge/technical/MW-EXAMPLE/MW-EXAMPLE.md"),
@@ -69,31 +69,31 @@ REFERENCE_META: Dict[str, Dict[str, str]] = {
 SSOT_BODY: Dict[str, str] = {
     "BD-EXAMPLE": (
         "# SSOT\n\n"
-        "上游主定义：`company/ea/business/BD-EXAMPLE/`（公司层 OKF 落盘见后续波次）。\n"
+        "上游主定义：`company/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md`（公司层 OKF SSOT）。\n"
     ),
     "PL-EXAMPLE": (
         "# SSOT\n\n"
-        "上游主定义：`company/ea/product/PL-EXAMPLE/`（公司层 OKF 落盘见后续波次）。\n"
+        "上游主定义：`company/knowledge/product/PL-EXAMPLE.md`（公司层 OKF SSOT）。\n"
     ),
     "SYS-EXAMPLE": (
         "# SSOT\n\n"
-        "上游主定义：`company/ea/application/SYS-EXAMPLE/`（公司层 OKF 落盘见后续波次）。\n"
+        "上游主定义：`company/knowledge/application/SYS-EXAMPLE.md`（公司层 OKF SSOT）。\n"
     ),
     "APP-EXAMPLE": (
         "# SSOT\n\n"
-        "上游主定义：`system/knowledge/application/APP-EXAMPLE.md`（系统层 OKF SSOT）。\n"
+        "上游主定义：`system/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md`（系统层 OKF SSOT）。\n"
     ),
     "MS-EXAMPLE": (
         "# SSOT\n\n"
-        "上游主定义：`system/knowledge/application/MS-EXAMPLE.md`（系统层 OKF SSOT）。\n"
+        "上游主定义：`system/knowledge/application/APP-EXAMPLE/MS-EXAMPLE.md`（系统层 OKF SSOT）。\n"
     ),
     "DS-EXAMPLE": (
         "# SSOT\n\n"
-        "上游主定义：`system/knowledge/data/DS-EXAMPLE.md`（系统层 OKF SSOT）。\n"
+        "上游主定义：`system/knowledge/data/DS-EXAMPLE/DS-EXAMPLE.md`（系统层 OKF SSOT）。\n"
     ),
     "ENT-EXAMPLE": (
         "# SSOT\n\n"
-        "上游主定义：`system/knowledge/data/ENT-EXAMPLE.md`（系统层 OKF SSOT）。\n"
+        "上游主定义：`system/knowledge/data/DS-EXAMPLE/ENT-EXAMPLE.md`（系统层 OKF SSOT）。\n"
     ),
 }
 

@@ -4,7 +4,7 @@
 
 ## 仓库级闸门
 
-写入落在 [AGENTS.md](../../../../AGENTS.md) 所述**文档产出闸门**（如 `{DOC_DIR}` 受管终稿、`system/knowledge/`、`company/ea/`）时，须对照 [CONVENTIONS.md](../../../rules/CONVENTIONS.md) 第三节与相关 `sdx-*` / `docs-distill`，**不绕过总确认**。
+写入落在 [AGENTS.md](../../../../AGENTS.md) 所述**文档产出闸门**（如 `{DOC_DIR}` 受管终稿、`system/knowledge/`、`company/knowledge/`）时，须对照 [CONVENTIONS.md](../../../rules/CONVENTIONS.md) 第三节与相关 `sdx-*` / `docs-distill`，**不绕过总确认**。
 
 ## HARD-GATE（本技能）
 
@@ -24,7 +24,7 @@
 `agent/hooks.json` → `preToolUse`（Write/StrReplace）→ [sdx_gate_common.py](../../hooks/sdx_gate_common.py) `--gate archive`。  
 **证据**：符合 `{DOC_DIR}/superpowers/specs/`（见 [session-spec-path.md](../../../references/session-spec-path.md)）的 spec 中含 `docs-archive-gate: CONFIRMED` 且出现目标 basename。
 
-**范围说明**（见 [knowledge-layout.md](../../../references/knowledge-layout.md)）：hook **仅拦截** `*/overview/*.md` 回写；视角章节（`system/knowledge/{视角}/`、`company/ea/{视角}/`）落盘由本会话**方案确认书** HARD-GATE 约束，不经 overview collector。
+**范围说明**（见 [knowledge-layout.md](../../../references/knowledge-layout.md)）：hook **仅拦截** `*/overview/*.md` 回写；视角章节（`system/knowledge/{视角}/`、`company/knowledge/{视角}/`）落盘由本会话**方案确认书** HARD-GATE 约束，不经 overview collector。
 
 ## 与 workflow
 

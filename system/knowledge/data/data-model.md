@@ -9,7 +9,7 @@ title: 数据模型
 
 本节沉淀本系统数据源与物理层数据结构，支撑跨服务一致性与演进治理。
 
-> **数据模型 SSOT**：系统层落地叙事；公司级数据原则见 [data-overview.md](../../../company/ea/data/data-overview.md)。
+> **数据模型 SSOT**：系统层落地叙事；公司级数据原则见 [data-overview.md](../../../company/knowledge/data/data-overview.md)。
 
 与 [`application-domain-model.md`](../application/application-domain-model.md)、[`business-glossary.md`](../business/business-glossary.md#概念模型) 交叉对齐。
 

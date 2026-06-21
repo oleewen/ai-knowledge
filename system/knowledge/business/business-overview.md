@@ -9,7 +9,7 @@ title: 业务概述
 
 本节说明本系统在业务全景中的定位、目标与范围裁剪，为产品与系统设计提供业务语境。
 
-> **业务概述 SSOT**：公司级背景、目标与范围见 [`business-overview.md`](../../../company/ea/business/business-overview.md)。
+> **业务概述 SSOT**：公司级背景、目标与范围见 [`business-overview.md`](../../../company/knowledge/business/business-overview.md)。
 
 ## 背景与愿景
 

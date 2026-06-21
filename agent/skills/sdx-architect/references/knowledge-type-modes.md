@@ -22,7 +22,7 @@
 | 模式 | 五视角入口 |
 | --- | --- |
 | `system` | [system/knowledge/README.md](../../../../system/knowledge/README.md)；overview 摘要见 `system/knowledge/overview/` |
-| `company` | [company/ea/README.md](../../../../company/ea/README.md)；overview 摘要见 `company/ea/overview/` |
+| `company` | [company/knowledge/README.md](../../../../company/knowledge/README.md)；overview 摘要见 `company/knowledge/overview/` |
 
 1. **§1**：ANALYSIS/PRD/overview 链接  
 2. **§2**：服务变更表；下游指针见 [asd-stub-sections-federated.md](../assets/asd-stub-sections-federated.md)  

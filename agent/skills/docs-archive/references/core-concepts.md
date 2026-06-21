@@ -8,7 +8,7 @@
 
 | 字段 | 含义 | 例 |
 | ------ | ------ | --- |
-| overview | 必填，仓库内路径 | `system/knowledge/overview/billing-overview.md`；公司侧 `company/ea/overview/COMPANY-overview.md` |
+| overview | 必填，仓库内路径 | `system/knowledge/overview/billing-overview.md`；公司侧 `company/knowledge/overview/COMPANY-overview.md` |
 | 锚 | 可选，只归档该范围 | `#支付域` |
 
 ## 目标路径（overview 驱动）

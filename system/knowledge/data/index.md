@@ -2,5 +2,8 @@
 
 ## Concepts
 
-* [示例数据源](DS-EXAMPLE.md) - 仅用于演示数据视角数据结构（示例）。
-* [示例实体](ENT-EXAMPLE.md)
+* [示例主数据域](MDG-EXAMPLE.md) - 仅用于演示公司级 MDG 数据结构（示例）。
+
+## Subdirectories
+
+* [DS-EXAMPLE](DS-EXAMPLE/) - 仅用于演示数据视角数据结构（示例）。

@@ -15,7 +15,7 @@ title: 业务视角元数据（application/knowledge/business）
 | meta_id | `DIR-KNOWLEDGE-BUSINESS` |
 | 视角 | business |
 | 层级范围 | application |
-| 说明 | DDD 业务版图；公司级 BD/CAP 在 `company/ea/business/` 首次定义，系统层自 BSD 起首次定义，本层承接实现映射与实例登记。 |
+| 说明 | DDD 业务版图；公司级 BD/CAP 在 `company/knowledge/business/` 首次定义，系统层自 BSD 起首次定义，本层承接实现映射与实例登记。 |
 
 ---
 

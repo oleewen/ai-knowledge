@@ -1,7 +1,7 @@
 ---
 name: docs-archive
 description: >
-  将 overview 知识按表格行内副标题链接归档到架构视角章节（`system/knowledge/` 或 `company/ea/`），并在确认后清理 overview、做冲突检查。
+  将 overview 知识按表格行内副标题链接归档到架构视角章节（`system/knowledge/` 或 `company/knowledge/`），并在确认后清理 overview、做冲突检查。
   触发：/docs-archive，或「知识归档」「overview 落盘」「补架构视角」「合并进目标章」「冲突检查」「结构对齐」等同类表述（不必等用户说命令名）。
   工作流：探索 → 澄清 → 2～3 方案 → 方案确认书 → 用户确认后落盘；禁止未确认批量改写。
   若用户只要 docs-extract、docs-distill、docs-build、docs-upgrade、仅 SDD 终稿或仅 KNOWLEDGE_INDEX，则分流，不以本技能为主路径。
@@ -20,7 +20,7 @@ description: >
 ## 前置
 
 - 路径契约：[session-spec-path.md](../../references/session-spec-path.md)、[knowledge-layout.md](../../references/knowledge-layout.md)
-- 有 **overview 路径**（`system/knowledge/overview/` 或 `company/ea/overview/`，及可选 `#锚点`）；知目标来自**表格行链接**。
+- 有 **overview 路径**（`system/knowledge/overview/` 或 `company/knowledge/overview/`，及可选 `#锚点`）；知目标来自**表格行链接**。
 - 知会话 spec：`{DOC_DIR}/superpowers/specs/`，钩子要 `CONFIRMED` + 目标 **basename**（见 `references/gates.md`）。
 
 ## 读序（先读后写）

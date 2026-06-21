@@ -9,7 +9,7 @@ title: 系统概述
 
 本节为本系统一页纸 SSOT，为全景图、服务设计与集成提供统一语境。
 
-> **系统概述 SSOT**：公司级概述写作标准见 [`application-overview.md`](../../../company/ea/application/application-overview.md)。
+> **系统概述 SSOT**：公司级概述写作标准见 [`application-overview.md`](../../../company/knowledge/application/application-overview.md)。
 
 ## 系统使命
 

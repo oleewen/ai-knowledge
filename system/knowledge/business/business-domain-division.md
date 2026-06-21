@@ -9,7 +9,7 @@ title: 业务域划分
 
 本节说明本系统覆盖的业务域层级（L1–L5）及父级关系，为流程拆解与系统映射打底。
 
-> **L1 定义 SSOT**：公司级一级业务域见 [`business-domain-division.md`](../../../company/ea/business/business-domain-division.md)。
+> **L1 定义 SSOT**：公司级一级业务域见 [`business-domain-division.md`](../../../company/knowledge/business/business-domain-division.md)。
 >
 > **层级约定**：L1–L5 均为「业务域」文档层级，不强制绑定 BD/BSD/BC/AGG/AB 实体码；可在清单中通过「实体映射」列做软关联。
 

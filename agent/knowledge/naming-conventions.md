@@ -9,7 +9,7 @@
 ## 1. 格式约定
 
 - **通用格式**：`{TYPE}-{NAME}`，其中 `TYPE` 为下表所列前缀，`NAME` 为英文短名（建议大写+连字符）。
-- **示例（本仓库）**：`BD-CHARGING-APPEAL`、`CAP-ORDER-FULFILL`、`BC-BILLING-APPEAL-CORE`、`FT-BILLING-APPEAL-LIFECYCLE`、`APP-BILLING-APPEAL-SERVICE`、`ENT-T_BILLING_APPEAL`、`TPL-K8S-PLATFORM`、`TSD-MIDDLEWARE`、`MW-KAFKA-ORDER-EVENTS`、`CMP-DUBBO-CLIENT`。
+- **示例（本仓库）**：`BD-CHARGING-APPEAL`、`CAP-ORDER-FULFILL`、`BC-BILLING-APPEAL-CORE`、`FT-BILLING-APPEAL-LIFECYCLE`、`APP-BILLING-APPEAL-SERVICE`、`ENT-T_BILLING_APPEAL`、`TPL-K8S-PLATFORM`、`TSD`、`MW-KAFKA-ORDER-EVENTS`、`CMP-DUBBO-CLIENT`。
 
 ---
 
@@ -88,7 +88,7 @@
 - **系统库 · 应用视角**（`system/knowledge/application/`）：`application-meta.md`（SYS/APP/MS/API）；`{SYS-ID}/` 为系统锚点，其下为应用注册 YAML。
 - **系统库 · 数据视角**（`system/knowledge/data/`）：`data-meta.md`（DS/ENT）；`{DS-ID}/` 作存储锚点。
 - **系统库 · 技术视角**（`system/knowledge/technical/`）：`technical-meta.md`（MW/CMP）；`technical-entities.md` 为实体 SSOT。
-- **公司层五视角**（`company/ea/{perspective}/`）：叙事 Markdown + `{perspective}-meta.md` + `{perspective}-entities.md`（公司级实体：BD/CAP、PL、SYS、MDG、TPL）。
+- **公司层五视角**（`company/knowledge/{perspective}/`）：叙事 Markdown + `{perspective}-meta.md` + `{perspective}-entities.md`（公司级实体：BD/CAP、PL、SYS、MDG、TPL）。
 - **IDEA-ID（需求链统一标识）**：统一命名格式 `*-{YYMMDD}-{主题slug}` 中的 `{YYMMDD}-{主题slug}` 段；各阶段类型前缀为 `SOLUTION` / `ANALYSIS` / `REQUIREMENT`（目录）/ `PRD` / `ASD` / `DSD` / `TDD` 等。
 - **系统库 · requirements 阶段**（`system/requirements/`）：`README.md` 为阶段约定入口；`REQUIREMENT-{IDEA-ID}/` 为交付包锚点（与 `ANALYSIS-{IDEA-ID}.md` 共用同一 **IDEA-ID**），不在包内并列根级 `*_meta.yaml` 拷贝。
 - **系统库 · solutions 阶段**（`system/solutions/`）：`README.md` 为阶段约定入口；根目录平铺 `SOLUTION-{IDEA-ID}.md`；`archive/` 归档。
@@ -116,7 +116,7 @@
 ## 4. 引用规则
 
 - 跨文件、跨视角引用**只写 ID 字符串**，不写名称或路径。
-- 例如：在聚合中写 `persisted_as_entity_ids: ["ENT-T_BILLING_APPEAL"]`，在功能中写 `invokes_api_ids: ["API-BILLING-APPEAL-CREATE"]`，在能力地图中写 `maps_to_cap_ids: ["CAP-ORDER-FULFILL"]`，在中间件绑定中写 `parent_tsd_id: "TSD-MIDDLEWARE"`，在组件中写 `maven_coordinates: "org.apache.dubbo:dubbo:3.x"`。
+- 例如：在聚合中写 `persisted_as_entity_ids: ["ENT-T_BILLING_APPEAL"]`，在功能中写 `invokes_api_ids: ["API-BILLING-APPEAL-CREATE"]`，在能力地图中写 `maps_to_cap_ids: ["CAP-ORDER-FULFILL"]`，在中间件绑定中写 `parent_tsd_id: "TSD"`，在组件中写 `maven_coordinates: "org.apache.dubbo:dubbo:3.x"`。
 
 ---
 

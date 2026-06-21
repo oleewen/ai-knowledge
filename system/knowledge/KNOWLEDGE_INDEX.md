@@ -18,11 +18,11 @@ title: 知识库 · 五视角实体 ID 索引（SSOT）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| BD | EXAMPLE |  | 示例业务域 | `business/BD-EXAMPLE/BD-EXAMPLE.md` |
-| BSD | EXAMPLE |  | 示例业务子域 | `business/BD-EXAMPLE/BSD-EXAMPLE.md` |
-| BC | EXAMPLE |  | 示例限界上下文 | `business/BD-EXAMPLE/BC-EXAMPLE.md` |
-| AGG | EXAMPLE |  | 示例聚合 | `business/BD-EXAMPLE/AGG-EXAMPLE.md` |
-| AB | EXAMPLE |  | 示例业务能力 | `business/BD-EXAMPLE/AB-EXAMPLE.md` |
+| BD | EXAMPLE |  | 示例业务域 | `business/BD-EXAMPLE.md` |
+| BSD | EXAMPLE |  | 示例业务子域 | `business/BSD-EXAMPLE/BSD-EXAMPLE.md` |
+| BC | EXAMPLE |  | 示例限界上下文 | `business/BSD-EXAMPLE/BC-EXAMPLE.md` |
+| AGG | EXAMPLE |  | 示例聚合 | `business/BSD-EXAMPLE/AGG-EXAMPLE.md` |
+| AB | EXAMPLE |  | 示例业务能力 | `business/BSD-EXAMPLE/AB-EXAMPLE.md` |
 
 ---
 
@@ -30,7 +30,7 @@ title: 知识库 · 五视角实体 ID 索引（SSOT）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| PL | EXAMPLE |  | 示例产品线 | `product/PM-EXAMPLE/PL-EXAMPLE.md` |
+| PL | EXAMPLE |  | 示例产品线 | `product/PL-EXAMPLE.md` |
 | PM | EXAMPLE |  | 示例产品模块 | `product/PM-EXAMPLE/PM-EXAMPLE.md` |
 | FT | EXAMPLE |  | 示例功能 | `product/PM-EXAMPLE/FT-EXAMPLE.md` |
 | UC | EXAMPLE-001 |  | 示例用例 | `product/PM-EXAMPLE/UC-EXAMPLE-001.md` |
@@ -42,8 +42,8 @@ title: 知识库 · 五视角实体 ID 索引（SSOT）
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
 | SYS | EXAMPLE |  | 示例系统边界 | `application/SYS-EXAMPLE.md` |
-| APP | EXAMPLE |  | 示例应用 | `application/APP-EXAMPLE.md` |
-| MS | EXAMPLE |  | 示例微服务 | `application/MS-EXAMPLE.md` |
+| APP | EXAMPLE |  | 示例应用 | `application/APP-EXAMPLE/APP-EXAMPLE.md` |
+| MS | EXAMPLE |  | 示例微服务 | `application/APP-EXAMPLE/MS-EXAMPLE.md` |
 
 ---
 
@@ -51,8 +51,8 @@ title: 知识库 · 五视角实体 ID 索引（SSOT）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| DS | EXAMPLE |  | 示例数据源 | `data/DS-EXAMPLE.md` |
-| ENT | EXAMPLE |  | 示例实体 | `data/ENT-EXAMPLE.md` |
+| DS | EXAMPLE |  | 示例数据源 | `data/DS-EXAMPLE/DS-EXAMPLE.md` |
+| ENT | EXAMPLE |  | 示例实体 | `data/DS-EXAMPLE/ENT-EXAMPLE.md` |
 
 ---
 
@@ -60,11 +60,11 @@ title: 知识库 · 五视角实体 ID 索引（SSOT）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| — | — | — | — | — |
+| MW | EXAMPLE |  | 示例中间件绑定 | `technical/MW/MW-EXAMPLE.md` |
 
 ---
 
-> 公司级 **TPL-***、系统级 **TSD-*** 不在本索引登记；见 `company/ea/technical/`、`system/knowledge/technical/`。
+> 公司级 **TPL-***、系统级 **TSD-*** 不在本索引登记；见 `company/knowledge/technical/`、`system/knowledge/technical/`。
 
 ---
 

@@ -15,7 +15,7 @@ title: 应用视角元数据（application/knowledge/application）
 | meta_id | `DIR-KNOWLEDGE-APPLICATION` |
 | 视角 | application |
 | 层级范围 | application |
-| 说明 | 实现版图；公司级 SYS 在 `company/ea/application/` 首次定义，系统层自 APP 起首次定义，本层重点登记 API 与应用实现映射（示例含 SYS/APP/MS/API）。 |
+| 说明 | 实现版图；公司级 SYS 在 `company/knowledge/application/` 首次定义，系统层自 APP 起首次定义，本层重点登记 API 与应用实现映射（示例含 SYS/APP/MS/API）。 |
 | entities_shape | 分节表：SYS / APP / MS / API（语义等价于 schema 2.1 分类结构） |
 
 ---

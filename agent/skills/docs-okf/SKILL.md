@@ -4,8 +4,8 @@ description: >
   OKF bundle 迁移、校验与可视化：从 legacy `*-entities.md` 拆出 per-entity concept、注入 frontmatter、
   生成各级 index.md 与 KNOWLEDGE_INDEX、运行 validate-okf、产出 viz.html。
   触发：/docs-okf、OKF 迁移、刷新 viz、对齐 application/ 或 system/ 与 OKF v0.1。
-  参数：--dry-run、--validate、--viz、--bundle application|system。
-  设计 spec：docs/superpowers/specs/2026-06-21-application-okf-design.md、docs/superpowers/specs/2026-06-21-system-okf-design.md。
+  参数：--dry-run、--validate、--viz、--bundle application|system|company。
+  设计 spec：docs/superpowers/specs/2026-06-21-application-okf-design.md、docs/superpowers/specs/2026-06-21-system-okf-design.md、docs/superpowers/specs/2026-06-21-company-okf-design.md。
   用户只要 docs-build 提取或 docs-indexing 九章地图为主路径 → 分流对应技能。
 ---
 
@@ -32,7 +32,7 @@ description: >
 | `--dry-run` | off | 预览各步命令，不写盘 |
 | `--validate` | off | 仅运行 `scripts/validate-okf.sh` |
 | `--viz` | off | 仅运行 `scripts/okf/visualize.py` 刷新 `viz.html` |
-| `--bundle` | `application` | OKF bundle 根目录名（相对仓库根） |
+| `--bundle` | `application` | OKF bundle 根目录名（`application` / `system` / `company`） |
 
 无 flags 时执行完整迁移编排（等同 `okf-migrate.sh`）。
 

@@ -8,12 +8,13 @@ full_id: MW-EXAMPLE
 perspective: technical
 hierarchy: MW
 parent_id: null
+parent_tsd_id: TSD-EXAMPLE
 binding_type: kafka
 config_key: example.kafka.topic
 ---
 # Relations
 
-- (none)
+- parent_tsd_id: [TSD-EXAMPLE](../../../system/knowledge/technical/TSD-EXAMPLE.md)
 
 # Cross-perspective
 

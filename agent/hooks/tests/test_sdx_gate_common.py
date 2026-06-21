@@ -142,7 +142,7 @@ class GateCommonTests(unittest.TestCase):
     def test_distill_gate_deny_company_ea_overview_without_confirmed_spec(self) -> None:
         payload = {
             "toolName": "write_file",
-            "args": {"path": "company/ea/overview/COMPANY-overview.md"},
+            "args": {"path": "company/knowledge/overview/COMPANY-overview.md"},
             "sessionId": "s-distill-ea-deny",
         }
         env = {}
@@ -315,7 +315,7 @@ class GateCommonTests(unittest.TestCase):
         self.assertTrue(any('"permission": "allow"' in s for s in printed))
 
     def test_overview_outside_path_not_intercepted(self) -> None:
-        """非 system/knowledge/overview/ 或 company/ea/overview/ 路径的 overview 文件不被 distill/extract/archive gate 拦截。"""
+        """非 system/knowledge/overview/ 或 company/knowledge/overview/ 路径的 overview 文件不被 distill/extract/archive gate 拦截。"""
         payload = {
             "toolName": "write_file",
             "args": {"path": "docs/some-overview.md"},

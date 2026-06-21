@@ -14,7 +14,7 @@ ssot_layer: company
 ---
 # SSOT
 
-上游主定义：`company/ea/application/SYS-EXAMPLE/`（公司层 OKF 落盘见后续波次）。
+上游主定义：`company/knowledge/application/SYS-EXAMPLE.md`（公司层 OKF SSOT）。
 
 # Relations
 

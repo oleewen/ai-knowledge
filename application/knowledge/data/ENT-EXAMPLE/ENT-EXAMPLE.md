@@ -15,7 +15,7 @@ ssot_layer: system
 ---
 # SSOT
 
-上游主定义：`system/knowledge/data/ENT-EXAMPLE.md`（系统层 OKF SSOT）。
+上游主定义：`system/knowledge/data/DS-EXAMPLE/ENT-EXAMPLE.md`（系统层 OKF SSOT）。
 
 # Relations
 

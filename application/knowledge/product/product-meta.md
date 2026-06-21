@@ -15,7 +15,7 @@ title: 产品视角元数据（application/knowledge/product）
 | meta_id | `DIR-KNOWLEDGE-PRODUCT` |
 | 视角 | product |
 | 层级范围 | application |
-| 说明 | 产品版图；公司级 PL 在 `company/ea/product/` 首次定义，系统层自 PM 起首次定义，本层承接 API / 验收映射与实例登记（示例含 PL/PM/FT/UC）。 |
+| 说明 | 产品版图；公司级 PL 在 `company/knowledge/product/` 首次定义，系统层自 PM 起首次定义，本层承接 API / 验收映射与实例登记（示例含 PL/PM/FT/UC）。 |
 
 ---
 

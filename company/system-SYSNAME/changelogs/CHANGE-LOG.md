@@ -1,4 +1,8 @@
-# CHANGE LOG - APPNAME
+---
+type: Change Log
+title: CHANGE-LOG（system-SYSNAME 槽位）
+---
+# CHANGE LOG - SYSNAME
 
 ## v0.1.0 - 2026-04-07
 

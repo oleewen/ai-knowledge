@@ -42,7 +42,7 @@ title: 技术视角元数据（system/knowledge/technical）
 | 字段 | 说明 |
 | --- | --- |
 | hierarchy | 固定为 `TSD` |
-| full_id | 规范 ID，如 `TSD-MIDDLEWARE` |
+| full_id | 规范 ID，如 `TSD` |
 | name | 中文名称 |
 | description | 实体描述 |
 | evidence_source | 证据来源 |
@@ -71,8 +71,8 @@ title: 技术视角元数据（system/knowledge/technical）
 | --- | --- |
 | [README.md](README.md) | 叙事文档索引 |
 | [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md) | TSD 实例 SSOT |
-| [../../../company/ea/technical/technical-meta.md](../../../company/ea/technical/technical-meta.md) | 公司级 TPL 元数据 |
-| [../../../company/ea/technical/KNOWLEDGE_INDEX.md](../../../company/ea/technical/KNOWLEDGE_INDEX.md) | 公司级 TPL 实例 |
+| [../../../company/knowledge/technical/technical-meta.md](../../../company/knowledge/technical/technical-meta.md) | 公司级 TPL 元数据 |
+| [../../../company/knowledge/technical/KNOWLEDGE_INDEX.md](../../../company/knowledge/technical/KNOWLEDGE_INDEX.md) | 公司级 TPL 实例 |
 | [../../../agent/knowledge/naming-conventions.md](../../../agent/knowledge/naming-conventions.md) | 命名 SSOT |
 
 **索引**：`readme_index_table: false`；变更 TSD ID 时同步 system/DESIGN.md 与 overview（按需）。

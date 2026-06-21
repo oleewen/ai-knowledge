@@ -9,7 +9,7 @@ title: 版本管理与发布
 
 本节说明本系统版本实践、发布记录与灰度、功能开关落地，与公司级规约对齐，并与工程发布协同。
 
-> **版本与发布 SSOT**：系统层落地叙事；公司级产品治理框架见 [company/ea/product/README.md](../../../company/ea/product/README.md)。
+> **版本与发布 SSOT**：系统层落地叙事；公司级产品治理框架见 [company/knowledge/product/README.md](../../../company/knowledge/product/README.md)。
 
 ## 版本规范
 

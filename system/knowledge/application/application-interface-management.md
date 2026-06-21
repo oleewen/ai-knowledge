@@ -9,7 +9,7 @@ title: 接口管理
 
 本节统一本系统内外接口的发现、规范与演进，降低集成断裂与版本碎片化风险。
 
-> **接口管理 SSOT**：系统层落地叙事；公司级应用治理框架见 [company/ea/application/README.md](../../../company/ea/application/README.md)。
+> **接口管理 SSOT**：系统层落地叙事；公司级应用治理框架见 [company/knowledge/application/README.md](../../../company/knowledge/application/README.md)。
 
 ## 内部 API
 

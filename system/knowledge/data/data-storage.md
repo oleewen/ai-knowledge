@@ -9,7 +9,7 @@ title: 数据存储方案
 
 本节说明本系统各类存储的选型、分布与扩展策略，支撑容量与成本目标。
 
-> **数据存储 SSOT**：系统层落地叙事；公司级数据治理框架见 [company/ea/data/README.md](../../../company/ea/data/README.md)。
+> **数据存储 SSOT**：系统层落地叙事；公司级数据治理框架见 [company/knowledge/data/README.md](../../../company/knowledge/data/README.md)。
 
 ## 库选型
 

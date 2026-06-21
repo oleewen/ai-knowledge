@@ -9,7 +9,7 @@ title: 高可用与容灾
 
 本节定义本系统可用性目标、灾难恢复与韧性工程实践，支撑业务连续性论证。
 
-> **高可用与容灾 SSOT**：系统层落地叙事；公司级技术治理框架见 [company/ea/technical/README.md](../../../company/ea/technical/README.md)。
+> **高可用与容灾 SSOT**：系统层落地叙事；公司级技术治理框架见 [company/knowledge/technical/README.md](../../../company/knowledge/technical/README.md)。
 
 ## 高可用设计
 

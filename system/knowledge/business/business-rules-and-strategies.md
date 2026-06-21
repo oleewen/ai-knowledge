@@ -9,7 +9,7 @@ title: 业务规则与策略
 
 本节说明本系统业务策略与合规约束落地，作为产品逻辑、风控与合规的共同依据。
 
-> **规则与策略 SSOT**：系统层落地叙事；公司级业务治理框架见 [company/ea/business/README.md](../../../company/ea/business/README.md)。
+> **规则与策略 SSOT**：系统层落地叙事；公司级业务治理框架见 [company/knowledge/business/README.md](../../../company/knowledge/business/README.md)。
 
 > **范围说明**：本文件聚焦**业务策略与约束**（定价策略、授信规则、合规红线等）；BR（业务规则）实体（功能级规则，如校验逻辑、流程约束）归属产品视角，见 [`product-user-journeys.md` · 业务规则清单](../product/product-user-journeys.md#业务规则清单)。
 

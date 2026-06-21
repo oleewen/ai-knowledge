@@ -9,7 +9,7 @@ title: 能力地图
 
 本节说明本系统业务能力落地，描述「能做什么、成熟与否、由谁承载」，支撑规划、投资与架构演进。
 
-> **能力地图 SSOT**：公司级能力框架与成熟度标准见 [`business-capability.md`](../../../company/ea/business/business-capability.md)。
+> **能力地图 SSOT**：公司级能力框架与成熟度标准见 [`business-capability.md`](../../../company/knowledge/business/business-capability.md)。
 
 ## 能力清单
 

@@ -97,6 +97,25 @@ def test_is_concept_file():
     assert not okf_lib.is_concept_file(Path("manifest.yaml"))
 
 
+def test_hierarchy_to_type_cap():
+    assert okf_lib.hierarchy_to_type("CAP") == "Business Capability"
+
+
+def test_entity_relpath_company_bd_in_domain_folder():
+    path = okf_lib.entity_relpath("business", "BD-EXAMPLE", bundle="company")
+    assert path == "knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md"
+
+
+def test_entity_relpath_company_cap():
+    path = okf_lib.entity_relpath("business", "CAP-EXAMPLE", bundle="company")
+    assert path == "knowledge/business/BD-EXAMPLE/CAP-EXAMPLE.md"
+
+
+def test_entity_relpath_company_tpl():
+    path = okf_lib.entity_relpath("technical", "TPL-EXAMPLE", bundle="company")
+    assert path == "knowledge/technical/TPL-EXAMPLE.md"
+
+
 def main() -> None:
     tests = [
         test_parse_frontmatter,
@@ -111,6 +130,10 @@ def main() -> None:
         test_format_frontmatter_roundtrip,
         test_scan_concepts,
         test_is_concept_file,
+        test_hierarchy_to_type_cap,
+        test_entity_relpath_company_bd_in_domain_folder,
+        test_entity_relpath_company_cap,
+        test_entity_relpath_company_tpl,
     ]
     for fn in tests:
         fn()

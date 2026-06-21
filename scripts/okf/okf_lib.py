@@ -26,9 +26,12 @@ HIERARCHY_TO_TYPE: Dict[str, str] = {
     "API": "API Endpoint",
     "DS": "Data Store",
     "ENT": "Entity",
+    "MDG": "Master Data Domain",
     "MW": "Middleware Binding",
     "CMP": "Component",
     "TSD": "Technical Subdomain",
+    "CAP": "Business Capability",
+    "TPL": "Technical Platform",
 }
 
 APPLICATION_PERSPECTIVE_DOMAIN_ANCHOR: Dict[str, str] = {
@@ -40,11 +43,19 @@ APPLICATION_PERSPECTIVE_DOMAIN_ANCHOR: Dict[str, str] = {
 }
 
 SYSTEM_PERSPECTIVE_DOMAIN_ANCHOR: Dict[str, str] = {
-    "business": "BD-EXAMPLE",
+    "business": "BSD-EXAMPLE",
     "product": "PM-EXAMPLE",
-    "application": "MS-EXAMPLE",
-    "data": "ENT-EXAMPLE",
-    "technical": "TSD-MIDDLEWARE",
+    "application": "APP-EXAMPLE",
+    "data": "DS-EXAMPLE",
+    "technical": "MW",
+}
+
+COMPANY_PERSPECTIVE_DOMAIN_ANCHOR: Dict[str, str] = {
+    "business": "BD-EXAMPLE",
+    "product": "PL-EXAMPLE",
+    "application": "SYS-EXAMPLE",
+    "data": "MDG-EXAMPLE",
+    "technical": "TPL-EXAMPLE",
 }
 
 # 默认 application bundle 锚点（向后兼容）
@@ -160,7 +171,9 @@ def perspective_domain_anchor(
 ) -> str:
     """域扁平树：返回 perspective 下域文件夹名。"""
     anchor_map = (
-        SYSTEM_PERSPECTIVE_DOMAIN_ANCHOR
+        COMPANY_PERSPECTIVE_DOMAIN_ANCHOR
+        if bundle == "company"
+        else SYSTEM_PERSPECTIVE_DOMAIN_ANCHOR
         if bundle == "system"
         else APPLICATION_PERSPECTIVE_DOMAIN_ANCHOR
     )
@@ -175,15 +188,35 @@ def entity_relpath(
 ) -> str:
     """相对 bundle 根的 concept 路径（域扁平树）。"""
     prefix = _id_prefix(full_id)
-    if bundle == "system":
-        if perspective == "application" and prefix in ("APP", "MS"):
-            return f"knowledge/application/{full_id}.md"
-        if perspective == "data" and prefix in ("DS", "ENT"):
-            return f"knowledge/data/{full_id}.md"
+    if bundle == "company":
         if perspective == "business" and prefix == "BD":
+            return f"knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md"
+        if perspective == "business" and prefix == "CAP":
             return f"knowledge/business/BD-EXAMPLE/{full_id}.md"
         if perspective == "product" and prefix == "PL":
-            return f"knowledge/product/PM-EXAMPLE/{full_id}.md"
+            return f"knowledge/product/{full_id}.md"
+        if perspective == "application" and prefix == "SYS":
+            return f"knowledge/application/{full_id}.md"
+        if perspective == "data" and prefix == "MDG":
+            return f"knowledge/data/{full_id}.md"
+        if perspective == "technical" and prefix == "TPL":
+            return f"knowledge/technical/{full_id}.md"
+        anchor = perspective_domain_anchor(perspective, full_id, bundle)
+        if not anchor:
+            return f"knowledge/{perspective}/{full_id}.md"
+        return f"knowledge/{perspective}/{anchor}/{full_id}.md"
+
+    if bundle == "system":
+        if perspective == "business" and prefix == "BD":
+            return f"knowledge/business/{full_id}.md"
+        if perspective == "product" and prefix == "PL":
+            return f"knowledge/product/{full_id}.md"
+        if perspective == "application" and prefix == "SYS":
+            return f"knowledge/application/{full_id}.md"
+        if perspective == "data" and prefix == "MDG":
+            return f"knowledge/data/{full_id}.md"
+        if perspective == "technical" and prefix == "TSD":
+            return f"knowledge/technical/{full_id}.md"
         anchor = perspective_domain_anchor(perspective, full_id, bundle)
         if not anchor:
             return f"knowledge/{perspective}/{full_id}.md"

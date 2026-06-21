@@ -9,7 +9,7 @@ title: 数据架构概述
 
 本节阐明本系统数据层的设计原则、全景与生命周期策略，为模型、存储、流转与治理提供统一语境。
 
-> **数据架构 SSOT**：公司级数据原则、全景与生命周期标准见 [`data-overview.md`](../../../company/ea/data/data-overview.md)。
+> **数据架构 SSOT**：公司级数据原则、全景与生命周期标准见 [`data-overview.md`](../../../company/knowledge/data/data-overview.md)。
 
 与业务架构、应用架构可对齐。
 

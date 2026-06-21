@@ -77,7 +77,7 @@ flowchart LR
 
 - **架构入口**: [knowledge/README.md](knowledge/README.md)  
 - **设计契约**: [DESIGN.md](DESIGN.md)  
-- **公司侧对照**: [../company/ea/README.md](../company/ea/README.md)
+- **公司侧对照**: [../company/knowledge/README.md](../company/knowledge/README.md)
 
 ---
 
@@ -203,7 +203,7 @@ flowchart LR
 
 | 文档 | 路径 |
 |------|------|
-| 公司架构对照 | [../company/ea/README.md](../company/ea/README.md) |
+| 公司架构对照 | [../company/knowledge/README.md](../company/knowledge/README.md) |
 | docs-distill | [../agent/skills/docs-distill/SKILL.md](../agent/skills/docs-distill/SKILL.md) |
 
 ### 9.2 视角文件索引（knowledge/）

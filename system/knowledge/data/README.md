@@ -15,4 +15,4 @@ title: 数据架构
 | 🔑 | 数据存储 | [data-storage.md](data-storage.md) | 存储选型、分布与扩展策略。 |
 | 📎 | 数据流转 | [data-flow.md](data-flow.md) | 数据流动路径与管道设计。 |
 
-> 数据治理标准、数仓与湖架构、数据安全分级见 [公司数据架构](../../../company/ea/data/README.md)。
+> 数据治理标准、数仓与湖架构、数据安全分级见 [公司数据架构](../../../company/knowledge/data/README.md)。
