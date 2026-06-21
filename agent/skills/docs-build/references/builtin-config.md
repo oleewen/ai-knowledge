@@ -42,6 +42,8 @@ evidence:
   repo_facts:
     - "pom.xml"
     - "AGENTS.md"
+    - "docs_meta.md"
+    - "manifest.md"
     - "manifest.yaml"
     - "Mapper/XML 表名（data 视角，已读范围内）"
 ```

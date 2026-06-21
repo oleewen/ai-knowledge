@@ -16,7 +16,7 @@ description: >
 
 | 负责 | 不负责 |
 |------|--------|
-| 各文档根九章 `INDEX_GUIDE`、`INDEXING-LOG`、full/incremental、深度 1–3 | `{perspective}-entities.md`、KNOWLEDGE_INDEX（docs-build）；SDD 终稿（sdx-*）；overview（distill/extract） |
+| 各文档根九章 `INDEX_GUIDE`、`INDEXING-LOG`、full/incremental、深度 1–3 | `{perspective}-entities.md`、KNOWLEDGE_INDEX（docs-build）；OKF index/viz（docs-okf）；SDD 终稿（sdx-*）；overview（distill/extract） |
 
 ## 前置
 
@@ -44,6 +44,15 @@ description: >
 ```bash
 agent/skills/docs-indexing/scripts/indexing.sh --mode <mode> --depth <depth>
 ```
+
+**INDEX_GUIDE 落盘后（建议）**：刷新 OKF 各级 `index.md` 并校验 bundle：
+
+```bash
+python3 scripts/okf/generate_index.py --bundle application --recursive
+bash scripts/validate-okf.sh --bundle application
+```
+
+详 [docs-okf/references/workflow.md](../docs-okf/references/workflow.md)。
 
 ## 评测
 

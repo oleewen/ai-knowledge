@@ -62,6 +62,15 @@ agent/skills/docs-indexing/scripts/indexing.sh --mode <mode> --depth <depth>
 
 [nine-chapter-spec.md](nine-chapter-spec.md)，[index-guide-template.md](../assets/index-guide-template.md)。INDEX 落盘后再插 LOG（[indexing-log-spec.md](indexing-log-spec.md)、`indexing_log.py`）。
 
+**OKF 索引（建议，非阻断）**：`INDEX_GUIDE.md` 落盘后运行：
+
+```bash
+python3 scripts/okf/generate_index.py --bundle application --recursive
+bash scripts/validate-okf.sh --bundle application
+```
+
+`INDEX_GUIDE.md`（九章 Agent 地图）与各级 OKF `index.md`（渐进披露）职责分离；见 [docs-okf/references/workflow.md](../../docs-okf/references/workflow.md)。
+
 ---
 
 ## 核心约束

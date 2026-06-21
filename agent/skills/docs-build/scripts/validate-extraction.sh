@@ -2,7 +2,8 @@
 set -euo pipefail
 
 # 校验 docs-build 产物。无 CLI 参数；路径来自 .docsconfig（config-bootstrap.sh）
-# 检查：INDEX 非空；{perspective}-entities.md / {perspective}-meta.md 存在且含实体表与统计节
+# 检查：KNOWLEDGE_INDEX 存在；各视角至少一个含 full_id 的 per-entity .md；
+#       *-entities.md 若仍存在则 WARN（已废弃）
 
 ERRORS=0
 WARNINGS=0
@@ -28,6 +29,19 @@ info()    { echo "[INFO]  $1"; }
 warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
 error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
+
+_is_entity_concept_file() {
+  local file="$1"
+  local base
+  base="$(basename "$file")"
+  case "$base" in
+    index.md | *-meta.md | *-entities.md | KNOWLEDGE_INDEX.md)
+      return 1
+      ;;
+  esac
+  [[ "$base" == *.md ]] || return 1
+  grep -q '^full_id:' "$file" 2>/dev/null
+}
 
 echo "=== docs-build 校验 ==="
 echo "REPO_ROOT: ${REPO_ROOT}"
@@ -56,13 +70,15 @@ else
   warn "knowledge-meta.md 未找到（可选）"
 fi
 
-# 3. 各视角 {perspective}-meta.md / {perspective}-entities.md
+# 3. 各视角 per-entity concept / meta / 废弃 entities
 PERSPECTIVES=("application" "data" "business" "product" "technical")
-ENTITIES_COUNT=0
+TOTAL_ENTITIES=0
 
 for p in "${PERSPECTIVES[@]}"; do
-  META_FILE="${KNOWLEDGE_DIR}/${p}/${p}-meta.md"
-  ENTITIES_FILE="${KNOWLEDGE_DIR}/${p}/${p}-entities.md"
+  PERSPECTIVE_DIR="${KNOWLEDGE_DIR}/${p}"
+  META_FILE="${PERSPECTIVE_DIR}/${p}-meta.md"
+  ENTITIES_FILE="${PERSPECTIVE_DIR}/${p}-entities.md"
+  ENTITY_COUNT=0
 
   if [[ -f "${META_FILE}" ]]; then
     success "${p}-meta.md 存在"
@@ -70,24 +86,27 @@ for p in "${PERSPECTIVES[@]}"; do
     warn "${p}-meta.md 未找到"
   fi
 
-  if [[ -f "${ENTITIES_FILE}" ]]; then
-    ENTITIES_COUNT=$((ENTITIES_COUNT + 1))
-    success "${p}-entities.md 存在"
+  if [[ -d "${PERSPECTIVE_DIR}" ]]; then
+    while IFS= read -r -d '' f; do
+      if _is_entity_concept_file "$f"; then
+        ENTITY_COUNT=$((ENTITY_COUNT + 1))
+      fi
+    done < <(find "${PERSPECTIVE_DIR}" -name "*.md" -print0 2>/dev/null || true)
+  fi
 
-    if grep -q "## 统计" "${ENTITIES_FILE}" || grep -q "## 实体总表" "${ENTITIES_FILE}"; then
-      success "${p}-entities.md 含实体表或统计节"
-    else
-      warn "${p}-entities.md 缺少 ## 实体总表 或 ## 统计 节"
-    fi
-
-    ROWS=$(grep -c '^|' "${ENTITIES_FILE}" 2>/dev/null || echo 0)
-    info "${p}-entities.md 表格行数约 ${ROWS}"
+  TOTAL_ENTITIES=$((TOTAL_ENTITIES + ENTITY_COUNT))
+  if [[ ${ENTITY_COUNT} -gt 0 ]]; then
+    success "${p}: ${ENTITY_COUNT} 个含 full_id 的 per-entity concept 文件"
   else
-    info "${p}-entities.md 未找到（可选）"
+    warn "${p}: 未发现含 full_id 的 per-entity .md（OKF 目标态每视角至少一个）"
+  fi
+
+  if [[ -f "${ENTITIES_FILE}" ]]; then
+    warn "${p}-entities.md 仍存在（已废弃；SSOT 为 per-entity .md，请迁移后删除）"
   fi
 done
 
-info "发现 ${ENTITIES_COUNT}/${#PERSPECTIVES[@]} 个 entities Markdown 文件"
+info "合计 ${TOTAL_ENTITIES} 个 per-entity concept 文件"
 
 # 4. 提取报告（可选）
 for p in "${PERSPECTIVES[@]}"; do
