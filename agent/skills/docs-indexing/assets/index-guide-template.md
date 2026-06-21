@@ -249,6 +249,8 @@ public enum {EnumName} {
 
 ### 9.3 工具链
 
+<!-- §9.3：仅路径/命令索引（命令 | 目录）；不写 Skill 长描述。用法 SSOT：agent/skills/README.md -->
+
 | 工具 | 版本 | 用途 |
 |------|------|------|
 | {Tool} | {version} | {描述} |

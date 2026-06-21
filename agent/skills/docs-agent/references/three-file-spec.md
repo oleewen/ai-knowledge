@@ -15,6 +15,7 @@ README、`AGENTS`、当前 **INDEX**：职责与去重。
 1. 命令块 / 选项 / 大链接表 → **仅 README**；AGENTS：`详见 README.md` + 可选一条示例。
 2. AGENTS「项目概述/技术栈」各 **≤3 行**；细节 → README + INDEX §1。
 3. AGENTS「查阅顺序」一句：当前主 Index 相对路径 → `README.md` → 子索引或规范。
+4. Skill 路径索引 → **仅 INDEX §9.3**；README / AGENTS 链 `agent/skills/README.md`，**不得复制 §9.3 Skill 长表**。
 
 ## 产出顺序
 

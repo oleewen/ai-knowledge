@@ -325,6 +325,7 @@ flowchart LR
 
 | 需求 | 文档 |
 | --- | --- |
+| 流程总览图 | [README.md](README.md#-agent-工作流与推荐流程) |
 | 元模型与实体层级 | [application/DESIGN.md](application/DESIGN.md)、[system/DESIGN.md](system/DESIGN.md)、[company/DESIGN.md](company/DESIGN.md) |
 | 初始化脚本 | [scripts/README.md](scripts/README.md) |
 | Skill 清单 | [agent/skills/README.md](agent/skills/README.md) |
