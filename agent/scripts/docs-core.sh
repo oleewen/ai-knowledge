@@ -63,6 +63,10 @@ sdx_have_cmd() {
   command -v "$1" >/dev/null 2>&1
 }
 
+sdx_have_perl() {
+  sdx_have_cmd perl
+}
+
 # 与 sdx_run_or_dry / sdx_sync_dir / sdx_io_* 一致：DRY_RUN、CFG[dry_run] 或 SDX_IO_DRY_RUN
 sdx_dry_run_enabled() {
   [[ "${DRY_RUN:-${CFG[dry_run]:-0}}" == '1' || "${SDX_IO_DRY_RUN:-0}" == '1' ]]

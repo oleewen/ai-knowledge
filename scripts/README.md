@@ -13,7 +13,7 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 
 | 脚本 | 用途 |
 |------|------|
-| `agent-install.sh` | 仅安装 Agent（`hooks` / `scripts` / `rules` / `skills`）；`--scope`=`a`/`r`/`s`/`h`/`sh`，`--target`（默认 `$HOME`），`--agents`（默认 `cursor`，可 `all` 或多选），`--dry-run`。 |
+| `agent-install.sh` | 安装 Agent 树（`hooks` / `scripts` / `rules` / `skills` / `knowledge` / `references`）；`--scope`=`a`/`r`/`s`/`h`/`sh`/`k`（`k` 或 `knowledge` 仅 knowledge+references），`--target`（默认 `$HOME`），`--agents`（默认 `cursor`，可 `all` 或多选），`--dry-run`。 |
 | `docs-install.sh` | 知识库同步与配置分流；默认 `--scope=k`（knowledge）。`--scope=knowledge` 同步知识库并写 `.docsconfig`（含 **`KNOWLEDGE_TYPE`**）；`--scope=config` 仅更新 `.docsconfig` 的路径与 `AGENT_*`，不写 `KNOWLEDGE_TYPE`。两种 scope 都会调用 `install_agent_path`，但仅当 `AGENT_ROOT` 为空时补默认 `AGENT_*`。 |
 | `docs-link.sh` | 在**当前 Git 仓库（源知识库）**内维护 `DOC_ROOT/knowledge-links.yaml`（`company` / `system` 源），登记/注销目标库（`--link` / `--unlink`，`--target`）；清单字段：**`repository`**（Git 有 remote 时写远端 URL）、**`path`**（本机在 `$HOME` 下为 `~/…` 或 `~/`，否则为绝对路径；兼容旧数据无 `~` 的 `$HOME` 相对片段；**不得**把 URL 写在 `path`）；可选 **`doc_dir`**、**`app_name`** / **`app_label`**（system→application；无 **`app_label`** 时默认等于 **`app_name`**；同一 target 再次 **`--link`** 时若已有 **`app_label`** 则保留不覆盖）。**不兼容**旧版「仅 `path` 且值为 URL」的 YAML。`--unlink` 可按本地路径或 `repository` 与登记 identity 匹配注销；**system→application** 注销时将 `application-<APPNAME>/` 备份至工程根 **`.docs-init/<时间戳>/`** 再移除。 |
 
@@ -41,7 +41,7 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 | **中央知识库挂载建联**（`central`） | `application`（默认） | `application/` **子集** | 仅 `changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs_meta.md`、`manifest.md`；**不执行中央知识库挂载建联登记/联邦槽位写入** |
 | **中央知识库挂载建联**（`central`） | `system` / `company` | - | **不支持**（报错） |
 
-2. **Agent 配置**（**`agent-install.sh`**）：在 **`--target`**（默认 **`$HOME`**）下按 **`--agents`**（默认 **`cursor`**，可 **`all`** 或多选）安装到 **`${TARGET}/.{.cursor|.trae|.claude|.kiro}/`** 中对应目录；单份实体默认存储于 **`$HOME/.agents/`**；按 **`--scope`** 选择同步 **`hooks`**、**`scripts`**、**`rules`**、**`skills`**。当 **`--target` 不是 `$HOME`** 且 **`${TARGET}/.docsconfig`** 已存在时，所有 scope 都会按本次参数重算并覆盖 **`AGENT_ROOT`** 与 **`AGENT_DIRS`**。`docs-install` 在 `scope=config|knowledge` 下都会处理 `AGENT_*`：仅当 `.docsconfig` 中 **`AGENT_ROOT`** 为空时写默认 **`AGENT_ROOT=$HOME`** 与 **`AGENT_DIRS=.cursor`**；`AGENT_ROOT` 非空时保留原值。
+2. **Agent 配置**（**`agent-install.sh`**）：在 **`--target`**（默认 **`$HOME`**）下按 **`--agents`**（默认 **`cursor`**，可 **`all`** 或多选）安装到 **`${TARGET}/.{.cursor|.trae|.claude|.kiro}/`** 中对应目录；单份实体默认存储于 **`$HOME/.agents/`**；按 **`--scope`** 选择同步 **`hooks`**、**`scripts`**、**`rules`**、**`skills`**、**`knowledge`**、**`references`**（默认 **`a`** 为全部；**`k`** / **`knowledge`** 仅后两者）。当 **`--target` 不是 `$HOME`** 且 **`${TARGET}/.docsconfig`** 已存在时，所有 scope 都会按本次参数重算并覆盖 **`AGENT_ROOT`** 与 **`AGENT_DIRS`**。`docs-install` 在 `scope=config|knowledge` 下都会处理 `AGENT_*`：仅当 `.docsconfig` 中 **`AGENT_ROOT`** 为空时写默认 **`AGENT_ROOT=$HOME`** 与 **`AGENT_DIRS=.cursor`**；`AGENT_ROOT` 非空时保留原值。
 
 3. **冲突处理**：**`docs-install`** 若目标路径已存在，默认会交互式提示；使用 `--force` 强制覆盖，或 `--dry-run` 预览。**`agent-install`** 对安装树采用同步覆盖（可用 `--dry-run` 预览）。
 
@@ -150,6 +150,7 @@ bash scripts/tests/run.sh --suite okf  # 单套件
 | docs-change | `bash scripts/tests/docs-change/run.sh` | change-indexing 集成测 |
 | forbidden-file-refs | `bash scripts/tests/forbidden-file-refs/run.sh` | 库外 superpowers 引用门禁 |
 | okf | `bash scripts/tests/okf/run.sh` | OKF Python 单元 + 验收脚本 |
+| agent-install | `bash scripts/tests/agent-install/run.sh` | Agent 安装（knowledge/references、scope=k） |
 
 **本地门禁建议**（非 pre-commit 强制）：
 
@@ -170,7 +171,7 @@ export GIT_REF=main
 
 | 选项 | 说明 | 默认 |
 |------|------|------|
-| `--scope=SCOPE` | `a`：全部；`r`：rules；`s`：skills；`h`：hooks；`sh`：scripts（含复制 `agent/scripts/docs-core.sh`） | `a` |
+| `--scope=SCOPE` | `a`：全部（含 `knowledge/`、`references/`）；`r`：rules；`s`：skills；`h`：hooks；`sh`：scripts（含复制 `agent/scripts/docs-core.sh`）；`k` / `knowledge`：仅 `knowledge/` + `references/` | `a` |
 | `--target PATH` | 安装父目录，其下仅为**已选 agent** 创建 **`${TARGET}/.cursor`** 等；**非 `$HOME`** 且存在 `PATH/.docsconfig` 时，任意 scope 都会按本次参数重算并覆盖 `AGENT_ROOT`/`AGENT_DIRS` | `$HOME` |
 | `--agents=LIST` | `cursor` \| `trae` \| `claude` \| `kiro` \| `all`；逗号或空格分隔多选 | `cursor` |
 | `--dry-run` | 预览，不写入 | - |
@@ -189,7 +190,7 @@ export GIT_REF=main
 | `--dry-run` | 预览模式，仅打印将要执行的操作 | - |
 | `-h`, `--help` | 显示帮助信息 | - |
 
-注意：`scope=knowledge` 同步知识库并写 `.docsconfig`（含 `KNOWLEDGE_TYPE`）；`scope=config` 仅写 `.docsconfig` 路径键（不写 `KNOWLEDGE_TYPE`）。两者都会在 `AGENT_ROOT` 为空时补默认 `AGENT_*`。**Agent 安装与 `--scope=a|r|s|h|sh` 仅适用于 `agent-install.sh`。**
+注意：`scope=knowledge` 同步知识库并写 `.docsconfig`（含 `KNOWLEDGE_TYPE`）；`scope=config` 仅写 `.docsconfig` 路径键（不写 `KNOWLEDGE_TYPE`）。两者都会在 `AGENT_ROOT` 为空时补默认 `AGENT_*`。**Agent 安装与 `--scope=a|r|s|h|sh|k|knowledge` 仅适用于 `agent-install.sh`**（与 `docs-install` 的 `k`/`knowledge` 语义不同）。
 
 ## 初始化后的目录结构
 
@@ -223,6 +224,8 @@ your-project/
 ```
 ~/
 ├── .agents/                       # agent-install 单份实体存储（默认）
+│   ├── knowledge/                 # agent/knowledge 治理 SSOT（scope=a 或 k）
+│   └── references/                # agent/references（scope=a 或 k）
 ├── .cursor/                       # Cursor（另有 .trae/、.claude/、.kiro/ 下同构）
 │   ├── hooks.json                 # 自仓库 agent/hooks.json
 │   ├── hooks/                     # 自仓库 agent/hooks/
@@ -258,6 +261,7 @@ your-project/
 2. **`--scope` 含 `s` 时**：将 **`agent/skills/`** 下各技能子目录同步到三处 **`skills/`**（排除各层 **README**；不再依赖前缀筛选）。
 3. **`--scope` 含 `r` 时**：同步 **`agent/rules/`** 到三处 **`rules/`**。
 4. **`--scope` 含 `h` 时**：同步 **`agent/hooks/`**（含同目录下的 **`hooks.json`** SSOT）。
+5. **`--scope` 含 `k` / `knowledge` 或 `a` 时**：同步 **`agent/knowledge/`** 与 **`agent/references/`** 到 store 并软链至各 Agent 根（与 `docs-install` 路径重写后的 `.cursor/knowledge/` 链接对齐）。
 5. 改写路径引用：`agent/` → **`.cursor/`** 等对应前缀。
 
 ## 脚本组成

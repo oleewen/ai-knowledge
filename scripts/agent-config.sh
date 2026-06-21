@@ -23,12 +23,19 @@ declare -A SDX_AGENT_DIR_MAP=(
 readonly SDX_DEFAULT_AGENT_SCOPE='a'
 readonly SDX_DEFAULT_AGENTS_OPT='cursor'
 
+# scope=a：hooks + rules + scripts + skills + knowledge + references
+# scope=k|knowledge：仅 knowledge/ + references/
 agent_scope_apply() {
   local _raw="${1:?scope}"
-  local -n _ref_rules="${2:?}" _ref_skills="${3:?}" _ref_hooks="${4:?}" _ref_scripts="${5:?}"
-  _ref_rules=0 _ref_skills=0 _ref_hooks=0 _ref_scripts=0
+  local -n _ref_rules="${2:?}" _ref_skills="${3:?}" _ref_hooks="${4:?}" _ref_scripts="${5:?}" _ref_knowledge="${6:?}"
+  _ref_rules=0 _ref_skills=0 _ref_hooks=0 _ref_scripts=0 _ref_knowledge=0
   case "${_raw}" in
-    a|A|all) _ref_rules=1 _ref_skills=1 _ref_hooks=1 _ref_scripts=1 ;;
+    a|A|all)
+      _ref_rules=1 _ref_skills=1 _ref_hooks=1 _ref_scripts=1 _ref_knowledge=1
+      ;;
+    k|K|knowledge)
+      _ref_knowledge=1
+      ;;
     r|R) _ref_rules=1 ;;
     s|S) _ref_skills=1 ;;
     h|H) _ref_hooks=1 ;;
@@ -39,8 +46,8 @@ agent_scope_apply() {
 
 validate_agent_scope_token() {
   [[ -n "${1:-}" ]] || return 1
-  local _ir _is _ih _ish
-  agent_scope_apply "${1:-}" _ir _is _ih _ish
+  local _ir _is _ih _ish _ik
+  agent_scope_apply "${1:-}" _ir _is _ih _ish _ik
 }
 
 validate_agents() { sdx_agents_validate "${1:-}"; }

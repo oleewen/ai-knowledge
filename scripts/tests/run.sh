@@ -4,8 +4,8 @@ set -euo pipefail
 TEST_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$TEST_ROOT/../.." && pwd)"
 
-QUICK_SUITES=(forbidden-file-refs docs-link docs-change okf)
-FULL_SUITES=(forbidden-file-refs docs-link docs-change okf docs-install docs-push)
+QUICK_SUITES=(forbidden-file-refs docs-link docs-change okf agent-install)
+FULL_SUITES=(forbidden-file-refs docs-link docs-change okf agent-install docs-install docs-push)
 
 MODE='quick'
 SUITE=''
