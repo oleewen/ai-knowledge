@@ -38,7 +38,7 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 |------|---------------------|--------|----------|
 | **standalone** | `application`（默认） | `application/` | 全量拷贝（排除 `DESIGN.md`、`CONTRIBUTING.md`）；内容替换见 `docs-install` |
 | **standalone** | `system` / `company` | `system/` / `company/` | 组织级 / 公司级模板同步；并在目标工程根 **`scripts/`** 安装 **`docs-link.sh`**、**`link-config.sh`**（`link-config` 会按 `.docsconfig` 之 **`AGENT_*`** 解析 **`docs-core.sh`**） |
-| **中央知识库挂载建联**（`central`） | `application`（默认） | `application/` **子集** | 仅 `changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs_meta.yaml`、`manifest.yaml`；**不执行中央知识库挂载建联登记/联邦槽位写入** |
+| **中央知识库挂载建联**（`central`） | `application`（默认） | `application/` **子集** | 仅 `changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs_meta.md`、`manifest.md`；**不执行中央知识库挂载建联登记/联邦槽位写入** |
 | **中央知识库挂载建联**（`central`） | `system` / `company` | - | **不支持**（报错） |
 
 2. **Agent 配置**（**`agent-install.sh`**）：在 **`--target`**（默认 **`$HOME`**）下按 **`--agents`**（默认 **`cursor`**，可 **`all`** 或多选）安装到 **`${TARGET}/.{.cursor|.trea|.claude}/`** 中对应目录；单份实体默认存储于 **`$HOME/.agents/`**；按 **`--scope`** 选择同步 **`hooks`**、**`scripts`**、**`rules`**、**`skills`**。当 **`--target` 不是 `$HOME`** 且 **`${TARGET}/.docsconfig`** 已存在时，所有 scope 都会按本次参数重算并覆盖 **`AGENT_ROOT`** 与 **`AGENT_DIRS`**。`docs-install` 在 `scope=config|knowledge` 下都会处理 `AGENT_*`：仅当 `.docsconfig` 中 **`AGENT_ROOT`** 为空时写默认 **`AGENT_ROOT=$HOME`** 与 **`AGENT_DIRS=.cursor`**；`AGENT_ROOT` 非空时保留原值。
@@ -95,6 +95,37 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 ```
 
 **说明**：若**只要** Agent、不要本流程中的 knowledge 安装，请 **git clone** 后单独执行 **`./scripts/agent-install.sh`**。
+
+## OKF 工具与校验（validate-okf）
+
+`scripts/okf/` 提供 OKF bundle 生成与校验脚本（frontmatter 注入、index 生成、实体迁移等）。门禁入口：
+
+```bash
+bash scripts/validate-okf.sh              # 默认 --bundle application
+bash scripts/validate-okf.sh --bundle application
+bash scripts/okf-migrate.sh               # 全量 OKF 迁移编排（可重复运行）
+bash scripts/okf-migrate.sh --dry-run     # 预览各步命令
+```
+
+`validate-okf.sh` 调用 `scripts/okf/validate_bundle.py`，检查 bundle 内 Markdown frontmatter、`full_id` 唯一性、`/knowledge/` 与 `/application/` 链接及 `index.md` 条目；**有错误 exit 1**，仅警告 exit 0。
+
+`okf-migrate.sh` 按序调用实体迁移（五视角，缺 `*-entities.md` 则跳过）、frontmatter 注入、index 生成、`validate-okf` 与 `visualize.py`；`--dry-run` 时对各 Python 步骤传递 `--dry-run` 并跳过 shell 校验/可视化执行。
+
+| 脚本 | 说明 |
+|------|------|
+| `scripts/okf-migrate.sh` | OKF 全量迁移编排（`--dry-run`） |
+| `scripts/okf/validate_bundle.py` | bundle 校验（`--bundle` / `--repo`） |
+| `scripts/okf/inject_frontmatter.py` | 治理文档 frontmatter 注入 |
+| `scripts/okf/generate_index.py` | 生成 §6 `index.md` |
+| `scripts/okf/generate_knowledge_index.py` | 生成 `KNOWLEDGE_INDEX.md` |
+| `scripts/okf/migrate_entities.py` | 实体 Markdown 迁移 |
+| `scripts/okf/visualize.py` | 生成 bundle 可视化 HTML |
+
+测试（仓库根）：
+
+```bash
+bash scripts/tests/okf/run.sh
+```
 
 ## 测试（docs-init）
 
@@ -161,7 +192,7 @@ your-project/
 ├── application/                          # 文档目录（application/ 模板拷贝）
 │   ├── README.md                  # 应用知识库 README
 │   ├── INDEX_GUIDE.md             # 九章索引（docs-indexing）；中央知识库挂载建联登记见「十」
-│   ├── docs_meta.yaml             # 根目录元数据
+│   ├── docs_meta.md               # 根目录元数据（OKF）
 │   ├── knowledge/                 # 知识库（四视角）；治理 SSOT 见 agent/knowledge/
 │   │   ├── README.md
 │   │   ├── knowledge-meta.md

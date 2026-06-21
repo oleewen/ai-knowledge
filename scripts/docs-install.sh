@@ -360,7 +360,7 @@ install_application_subset_to_docs() {
   done
 
   local base
-  for base in INDEX_GUIDE.md docs_meta.yaml manifest.yaml; do
+  for base in INDEX_GUIDE.md docs_meta.md manifest.md; do
     [[ -f "$src_root/$base" ]] || continue
     application_copy_one "$src_root/$base" "$dst_root/$base"
   done
