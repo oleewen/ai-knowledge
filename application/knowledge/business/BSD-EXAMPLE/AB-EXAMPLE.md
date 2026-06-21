@@ -9,6 +9,7 @@ perspective: business
 hierarchy: AB
 parent_id: AGG-EXAMPLE
 capability: 示例能力描述
+layer_scope: application
 ---
 # Relations
 

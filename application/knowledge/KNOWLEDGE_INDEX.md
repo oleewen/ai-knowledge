@@ -70,22 +70,27 @@ title: 知识库 · 五视角实体 ID 索引（SSOT）
 
 ---
 
+> 公司级 **TPL-***、系统级 **TSD-*** 不在本索引登记；见 `company/knowledge/technical/`、`system/knowledge/technical/`。
+
+---
+
 ## 物化目录映射（示例）
 
 | 索引 ID | 命名式 ID（锚点目录） |
 |---------|----------------------|
-| BD-EXAMPLE | `business/BD-EXAMPLE/` |
-| PL-EXAMPLE | `product/PL-EXAMPLE/` |
-| SYS-EXAMPLE | `application/SYS-EXAMPLE/` |
-| DS-EXAMPLE | `data/DS-EXAMPLE/` |
+| BD-EXAMPLE | `business/BSD-EXAMPLE/BSD-EXAMPLE.md` |
+| PL-EXAMPLE | `product/PL-EXAMPLE.md` |
+| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |
+| DS-EXAMPLE | `data/DS-EXAMPLE.md` |
 
 ---
 
 ## 交叉引用
 
-- 应用：`application/application-entities.md`
-- 业务：`business/business-entities.md`
-- 产品：`product/product-entities.md`
-- 数据：`data/data-entities.md`
-- 技术：`technical/technical-entities.md`
-- 知识库总说明：`README.md`
+- 应用：[application/index.md](application/index.md) · [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md) §3
+- 业务：[business/index.md](business/index.md) · §1
+- 产品：[product/index.md](product/index.md) · §2
+- 数据：[data/index.md](data/index.md) · §4
+- 技术：[technical/index.md](technical/index.md) · §5
+- 知识库总说明：[README.md](README.md)
+

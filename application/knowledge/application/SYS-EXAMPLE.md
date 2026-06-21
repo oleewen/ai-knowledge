@@ -10,7 +10,7 @@ hierarchy: SYS
 parent_id: null
 architecture_summary: APP-EXAMPLE; 外部依赖 ExternalExample/HTTP; DDD 四层
 definition_scope: reference
-ssot_layer: company
+layer_scope: application
 ---
 # SSOT
 

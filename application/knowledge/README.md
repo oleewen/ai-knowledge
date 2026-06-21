@@ -11,7 +11,7 @@ title: knowledge — 应用侧知识主体
 ## 五视角实体 ID 与登记
 
 - **链上实体 ID 登记表**：[KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md) — business / product / application / data / technical 五视角（**不含** `DIR-*` 联邦/阶段）。`application/` 入口见 [../README.md](../README.md)；仓库根 Index Guide 见 [INDEX_GUIDE.md](../../INDEX_GUIDE.md) **§1.2**。
-- **视角实例索引**：各视角根目录 `{perspective}-entities.md`（字段约定见 [../../agent/skills/docs-build/SKILL.md](../../agent/skills/docs-build/SKILL.md) 与对应 `{perspective}-meta.md`）。
+- **视角实例索引**：各视角 per-entity `{ID}.md`（OKF concept SSOT）；ID 登记表 [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md)（扫描生成）。
 - **机器契约**：[../../agent/skills/docs-build/SKILL.md](../../agent/skills/docs-build/SKILL.md)（ssot、symmetry、meta_read_order）；[knowledge-meta.md](knowledge-meta.md) 保留联邦/目录元数据。
 
 ## 子目录

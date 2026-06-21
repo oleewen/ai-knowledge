@@ -8,6 +8,7 @@ full_id: UC-EXAMPLE-001
 perspective: product
 hierarchy: UC
 parent_id: PM-EXAMPLE
+layer_scope: application
 ---
 # Relations
 

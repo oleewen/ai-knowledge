@@ -8,6 +8,7 @@ full_id: PM-EXAMPLE
 perspective: product
 hierarchy: PM
 parent_id: PL-EXAMPLE
+layer_scope: application
 ---
 # Relations
 

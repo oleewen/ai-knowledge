@@ -12,6 +12,7 @@ alias: ExampleService.create
 host_class: ExampleApiImpl
 host_module: example-module
 method_signature: create(ExampleReq req)
+layer_scope: application
 ---
 # Relations
 

@@ -8,6 +8,7 @@ full_id: BC-EXAMPLE
 perspective: business
 hierarchy: BC
 parent_id: BSD-EXAMPLE
+layer_scope: application
 ---
 # Relations
 

@@ -9,6 +9,7 @@ perspective: technical
 hierarchy: CMP
 parent_id: null
 maven_coordinates: "org.example:example-client:1.0.0"
+layer_scope: application
 ---
 # Relations
 

@@ -4,7 +4,7 @@ title: application 索引指南（INDEX_GUIDE）
 ---
 # application 索引指南（INDEX_GUIDE）
 
-> **最后更新**: 2026-05-04  
+> **最后更新**: 2026-06-21  
 > **文档定位**: 面向 AI Agent 的 **`application/` 文档根**九章机器索引；与仓库根 [INDEX_GUIDE.md](../INDEX_GUIDE.md) 互补。中央知识库挂载建联登记见 **§十**。
 
 ---
@@ -28,7 +28,7 @@ title: application 索引指南（INDEX_GUIDE）
 
 - **目录角色**: 应用侧知识主库（稳定事实、阶段交付、实现登记与应用层实体）
 - **技术栈**: Markdown、YAML、JSON（知识提取产物）
-- **已跟踪文件规模**（仅 `application/` 前缀）: **35** 个文件（`git ls-files application/`，2026-05-04）
+- **已跟踪文件规模**（仅 `application/` 前缀）: **67** 个文件（`git ls-files application/`，2026-06-21）
 - **精读深度**: 本轮 **depth=3**（以已读入口与目录枚举为准，非逐文件全文内嵌）
 
 ---
@@ -158,8 +158,7 @@ flowchart TB
 
 | 数据源 | 类型 | 用途 |
 |--------|------|------|
-| `knowledge/**/*.yaml` | YAML | 实体与关系（若存在） |
-| `*-entities.md` | Markdown | 各视角实体索引（SSOT） |
+| `knowledge/**/{ID}.md` | Markdown（OKF concept） | 各视角 per-entity 实体（SSOT） |
 
 ### 6.2～6.4
 
@@ -192,7 +191,7 @@ flowchart TB
 
 | 指标 | 值 |
 |------|-----|
-| `git ls-files application/` | 35 |
+| `git ls-files application/` | 67 |
 | 本轮 mode / depth | `full` / `3` |
 
 ### 8.2 排除与未读

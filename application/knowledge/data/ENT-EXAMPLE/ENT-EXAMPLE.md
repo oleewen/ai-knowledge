@@ -11,7 +11,7 @@ parent_id: DS-EXAMPLE
 logical_name: ExampleEntity
 physical_table: example_table
 definition_scope: reference
-ssot_layer: system
+layer_scope: application
 ---
 # SSOT
 

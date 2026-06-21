@@ -11,10 +11,11 @@ parent_id: null
 parent_tsd_id: TSD-EXAMPLE
 binding_type: kafka
 config_key: example.kafka.topic
+layer_scope: application
 ---
 # Relations
 
-- parent_tsd_id: [TSD-EXAMPLE](../../../system/knowledge/technical/TSD-EXAMPLE.md)
+- parent_tsd_id: [TSD-EXAMPLE](../../../../system/knowledge/technical/TSD-EXAMPLE.md)
 
 # Cross-perspective
 

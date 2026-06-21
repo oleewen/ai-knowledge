@@ -22,11 +22,11 @@ title: 知识树元数据（application/knowledge）
 
 | 目录 | 视角 | meta | entities |
 | --- | --- | --- | --- |
-| business/ | 业务 | [business-meta.md](business/business-meta.md) | [business-entities.md](business/business-entities.md) |
-| product/ | 产品 | [product-meta.md](product/product-meta.md) | [product-entities.md](product/product-entities.md) |
-| application/ | 应用 | [application-meta.md](application/application-meta.md) | [application-entities.md](application/application-entities.md) |
-| data/ | 数据 | [data-meta.md](data/data-meta.md) | [data-entities.md](data/data-entities.md) |
-| technical/ | 技术 | [technical-meta.md](technical/technical-meta.md) | [technical-entities.md](technical/technical-entities.md) |
+| business/ | 业务 | [business-meta.md](business/business-meta.md) | [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md) §1 |
+| product/ | 产品 | [product-meta.md](product/product-meta.md) | [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md) §2 |
+| application/ | 应用 | [application-meta.md](application/application-meta.md) | [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md) §3 |
+| data/ | 数据 | [data-meta.md](data/data-meta.md) | [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md) §4 |
+| technical/ | 技术 | [technical-meta.md](technical/technical-meta.md) | [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md) §5 |
 
 **子文件**：[README.md](README.md)
 

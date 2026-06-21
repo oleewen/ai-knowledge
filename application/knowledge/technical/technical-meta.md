@@ -4,7 +4,7 @@ title: 技术视角元数据（application/knowledge/technical）
 ---
 # 技术视角元数据（application/knowledge/technical）
 
-应用层技术版图（MW→CMP）视角元数据 SSOT。实例索引见 [technical-entities.md](technical-entities.md)。
+应用层技术版图（MW→CMP）视角元数据 SSOT。实例索引见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（§5，扫描生成；per-entity `{ID}.md` 为 SSOT）。
 
 ---
 
@@ -16,6 +16,7 @@ title: 技术视角元数据（application/knowledge/technical）
 | 视角 | technical |
 | 层级范围 | application |
 | 说明 | 中间件绑定与关键组件；公司级 TPL、系统级 TSD 在对应层首次定义，本层登记 MW/CMP。 |
+| entities_shape | per-entity `{ID}.md`（OKF concept）；索引见 KNOWLEDGE_INDEX §5 |
 
 ---
 
@@ -48,6 +49,7 @@ title: 技术视角元数据（application/knowledge/technical）
 | name | 中文名称 |
 | description | 实体描述 |
 | evidence_source | 证据来源 |
+| layer_scope | 固定为 `application` |
 
 ### 各层专属
 
@@ -75,9 +77,10 @@ title: 技术视角元数据（application/knowledge/technical）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 人类可读说明 |
-| [technical-entities.md](technical-entities.md) | 扁平实体索引与登记主表 |
-| [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) | 五视角索引 |
-| [../../../company/knowledge/technical/technical-entities.md](../../../company/knowledge/technical/technical-entities.md) | 公司级 TPL |
-| [../../../system/knowledge/technical/technical-entities.md](../../../system/knowledge/technical/technical-entities.md) | 系统级 TSD |
+| [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) | MW/CMP 实例索引 |
+| [../../../company/knowledge/technical/technical-meta.md](../../../company/knowledge/technical/technical-meta.md) | 公司级 TPL 元数据 |
+| [../../../company/knowledge/KNOWLEDGE_INDEX.md](../../../company/knowledge/KNOWLEDGE_INDEX.md) | 公司级 TPL 实例 |
+| [../../../system/knowledge/technical/technical-meta.md](../../../system/knowledge/technical/technical-meta.md) | 系统级 TSD 元数据 |
+| [../../../system/knowledge/KNOWLEDGE_INDEX.md](../../../system/knowledge/KNOWLEDGE_INDEX.md) | 系统级 TSD 实例 |
 
 **索引**：`readme_index_table: true`；变更 ID 时同步 README、KNOWLEDGE_INDEX.md（按需）。

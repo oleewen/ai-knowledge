@@ -9,6 +9,7 @@ perspective: product
 hierarchy: FT
 parent_id: PM-EXAMPLE
 acceptance_criteria: 示例验收标准A; 示例验收标准B
+layer_scope: application
 ---
 # Relations
 

@@ -13,7 +13,7 @@ maven_module: example-module
 repo_url: "git@example.com:org/example.git"
 docs_manifest_path: /application/manifest.md
 definition_scope: reference
-ssot_layer: system
+layer_scope: application
 ---
 # SSOT
 

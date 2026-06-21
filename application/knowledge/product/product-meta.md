@@ -4,7 +4,7 @@ title: 产品视角元数据（application/knowledge/product）
 ---
 # 产品视角元数据（application/knowledge/product）
 
-应用侧产品版图（PL→PM→FT→UC）实体登记与交互映射元数据。实例索引见 [product-entities.md](product-entities.md)。
+应用侧产品版图（PL→PM→FT→UC）实体登记与交互映射元数据。实例索引见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（§2，扫描生成；per-entity `{ID}.md` 为 SSOT）。
 
 ---
 
@@ -16,6 +16,7 @@ title: 产品视角元数据（application/knowledge/product）
 | 视角 | product |
 | 层级范围 | application |
 | 说明 | 产品版图；公司级 PL 在 `company/knowledge/product/` 首次定义，系统层自 PM 起首次定义，本层承接 API / 验收映射与实例登记（示例含 PL/PM/FT/UC）。 |
+| entities_shape | per-entity `{ID}.md`（OKF concept）；索引见 KNOWLEDGE_INDEX §2 |
 
 ---
 
@@ -52,6 +53,7 @@ title: 产品视角元数据（application/knowledge/product）
 | name | 中文名称 |
 | description | 实体描述（PM 可省略） |
 | evidence_source | 证据来源 |
+| layer_scope | 固定为 `application` |
 
 ### 各层专属
 
@@ -80,7 +82,7 @@ title: 产品视角元数据（application/knowledge/product）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 人类可读说明 |
-| [product-entities.md](product-entities.md) | 扁平实体索引与登记主表 |
+| [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) | §2 产品视角实例索引（扫描生成） |
 | [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) | 五视角索引 |
 
 **索引**：`readme_index_table: true`；变更 ID 时同步 README、KNOWLEDGE_INDEX.md（按需）。

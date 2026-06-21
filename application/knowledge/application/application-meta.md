@@ -4,7 +4,7 @@ title: 应用视角元数据（application/knowledge/application）
 ---
 # 应用视角元数据（application/knowledge/application）
 
-应用侧实现版图（SYS→APP→MS→API）实体登记与接口实现元数据。实例索引见 [application-entities.md](application-entities.md)。
+应用侧实现版图（SYS→APP→MS→API）实体登记与接口实现元数据。实例索引见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（§3，扫描生成；per-entity `{ID}.md` 为 SSOT）。
 
 ---
 
@@ -16,7 +16,7 @@ title: 应用视角元数据（application/knowledge/application）
 | 视角 | application |
 | 层级范围 | application |
 | 说明 | 实现版图；公司级 SYS 在 `company/knowledge/application/` 首次定义，系统层自 APP 起首次定义，本层重点登记 API 与应用实现映射（示例含 SYS/APP/MS/API）。 |
-| entities_shape | 分节表：SYS / APP / MS / API（语义等价于 schema 2.1 分类结构） |
+| entities_shape | per-entity `{ID}.md`（OKF concept）；索引见 KNOWLEDGE_INDEX §3 |
 
 ---
 
@@ -53,6 +53,7 @@ title: 应用视角元数据（application/knowledge/application）
 | name | 中文名称 |
 | description | 实体描述 |
 | evidence_source | 证据来源 |
+| layer_scope | 固定为 `application` |
 
 ### 各层专属
 
@@ -65,7 +66,22 @@ title: 应用视角元数据（application/knowledge/application）
 
 ---
 
-## 5. 跨视角引用
+## 5. 跨层路径映射（MS/API 分层差异化）
+
+application 层与 system 层 MS/API 落盘路径 **intentionally 不同**；跨层对照以本表为准，不强制文件搬迁。
+
+| 实体 | system 路径 | application 路径 | 说明 |
+|------|-------------|-------------------|------|
+| SYS-EXAMPLE | `system/knowledge/application/SYS-EXAMPLE.md` | `application/knowledge/application/SYS-EXAMPLE.md` | 均为视角根 reference |
+| APP-EXAMPLE | `system/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md` | `application/knowledge/application/APP-EXAMPLE.md` | system 有 APP 锚点目录 |
+| MS-EXAMPLE | `system/knowledge/application/APP-EXAMPLE/MS-EXAMPLE.md` | `application/knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md` | system 嵌于 APP；application 独立 MS 目录 |
+| API-EXAMPLE-001 | （system 不登记） | `application/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md` | API 仅 application SSOT |
+
+**链接约定**：同 bundle 用 `/knowledge/...`；跨 bundle `# SSOT` 用仓库根相对路径。
+
+---
+
+## 6. 跨视角引用
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
@@ -76,12 +92,12 @@ title: 应用视角元数据（application/knowledge/application）
 
 ---
 
-## 6. 关联文档
+## 7. 关联文档
 
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 人类可读说明 |
-| [application-entities.md](application-entities.md) | 分类实体索引与登记主表 |
+| [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) | §3 应用视角实例索引（扫描生成） |
 | [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) | 五视角索引 |
 
 **索引**：`readme_index_table: true`；变更 ID 时同步 README、KNOWLEDGE_INDEX.md、manifest/OpenAPI（按需）。

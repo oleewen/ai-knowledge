@@ -12,11 +12,11 @@ host_class: ExampleApiImpl
 host_module: example-module
 protocol: HTTP
 definition_scope: reference
-ssot_layer: system
+layer_scope: application
 ---
 # SSOT
 
-上游主定义：`system/knowledge/application/MS-EXAMPLE.md`（系统层 OKF SSOT）。
+上游主定义：`system/knowledge/application/APP-EXAMPLE/MS-EXAMPLE.md`（系统层 OKF SSOT）。
 
 # Relations
 

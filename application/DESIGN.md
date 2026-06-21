@@ -41,7 +41,7 @@ title: 应用知识文档库 — 设计方案摘录
 
 ### OKF per-entity SSOT
 
-`application/` 已对齐 [Open Knowledge Format v0.1](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md)：**每个知识实体**为一 concept 文件（`{ID}.md` + YAML frontmatter + bundle-relative 跨链）；各级 `index.md` 供 RAG 渐进下钻；`KNOWLEDGE_INDEX.md` 由工具扫描生成而非手写聚合表。细则见 [docs/superpowers/specs/2026-06-21-application-okf-design.md](../docs/superpowers/specs/2026-06-21-application-okf-design.md) 与 Skill `/docs-okf`。
+`application/` 已对齐 [Open Knowledge Format v0.1](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md)：**每个知识实体**为一 concept 文件（`{ID}.md` + YAML frontmatter + bundle-relative 跨链）；各级 `index.md` 供 RAG 渐进下钻；`KNOWLEDGE_INDEX.md` 由工具扫描生成而非手写聚合表。路径与 type 见 [agent/knowledge/naming-conventions.md](../agent/knowledge/naming-conventions.md) §OKF；工具链见 `/docs-okf`。
 
 ---
 
@@ -71,35 +71,35 @@ title: 应用知识文档库 — 设计方案摘录
 > 该视角回答：做什么业务、边界在哪、流程与能力如何组织。
 
 - **层级**：BD → BSD → BC → AGG → AB  
-- **约定**：`business-meta.md` 在 `knowledge/business/` 根目录；**域扁平树** `BSD-EXAMPLE/`（登记入口）内扁平存放 `BD-EXAMPLE.md`(reference) 与 BSD→AB 全链 `{ID}.md`；详见 [域扁平树设计](../docs/superpowers/specs/2026-06-21-business-flat-tree-design.md)。
+- **约定**：`business-meta.md` 在 `knowledge/business/` 根目录；**域扁平树** `BSD-EXAMPLE/`（登记入口）内扁平存放 `BD-EXAMPLE.md`(reference) 与 BSD→AB 全链 `{ID}.md`。
 
 #### 产品 (product)
 
 > 该视角回答：用户是谁、功能如何组织、旅程与场景。
 
 - **层级**：PL → PM → FT → UC  
-- **约定**：`product-meta.md` 在根目录；`{PL-ID}/{PM-ID}/` 为锚点。实例见 `product-entities.md`。FT 含 `invokes_api_ids`、`realizes_use_case_ids` 等；UC 含 `map_to_api_id` 等。
+- **约定**：`product-meta.md` 在根目录；`{PL-ID}/{PM-ID}/` 为锚点。实例为 per-entity `{ID}.md`（OKF concept）；索引见 [KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md) §2。FT 含 `invokes_api_ids`、`realizes_use_case_ids` 等；UC 含 `map_to_api_id` 等。
 
 #### 应用 (application)
 
 > 该视角回答：系统如何拆分、服务如何协作、领域与集成边界。
 
 - **层级**：SYS → APP → MS → API  
-- **约定**：`application-meta.md` 在根目录；`{SYS-ID}/{APP目录}/{APP-ID}.yaml` 登记 `repo_url`、`docs_manifest_path`、`service_ids` 等。实例见 `application-entities.md`。
+- **约定**：`application-meta.md` 在根目录；`{SYS-ID}/{APP目录}/` 为锚点。APP/MS/API 等实体以 per-entity `{ID}.md` frontmatter 登记 `repo_url`、`docs_manifest_path`、`service_ids` 等；索引见 [KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md) §3。
 
 #### 数据 (data)
 
 > 该视角回答：数据如何建模、存储、流转与治理。
 
 - **层级**：DS → ENT  
-- **约定**：`data-meta.md` 在根目录；`{DS-ID}/` 为存储锚点。实例见 `data-entities.md`。ENT 含 `maps_to_aggregate_id`、敏感级别等。
+- **约定**：`data-meta.md` 在根目录；`{DS-ID}/` 为存储锚点。实例为 per-entity `{ID}.md`；索引见 [KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md) §4。ENT 含 `maps_to_aggregate_id`、敏感级别等。
 
 #### 技术 (technical)
 
 > 该视角回答：如何运行、扩展、观测与交付。
 
 - **层级**：MW → CMP（公司 **TPL**、系统 **TSD** 在对应层 `technical/` 登记）  
-- **约定**：`technical-meta.md` 在 `knowledge/technical/` 根目录；`technical-entities.md` 登记中间件绑定与关键组件。MW 含 `parent_tsd_id`、`bound_app_id`；CMP 含 `maven_coordinates`、`parent_mw_id` 或 `parent_app_id`。
+- **约定**：`technical-meta.md` 在 `knowledge/technical/` 根目录。中间件绑定与关键组件见 per-entity `{ID}.md`；索引见 [KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md) §5。MW 含 `parent_tsd_id`、`bound_app_id`；CMP 含 `maven_coordinates`、`parent_mw_id` 或 `parent_app_id`。
 
 > 系统层五视角关注域见 [system/DESIGN.md](../system/DESIGN.md) §五架构视角；公司层五视角见 [company/DESIGN.md](../company/DESIGN.md) §公司层五视角聚焦范围；跨层实体首次定义见 §2.2.1。
 
@@ -149,7 +149,7 @@ title: 应用知识文档库 — 设计方案摘录
 
 ## 3. 核心映射（分布式引用）
 
-在源实体 YAML 中写**目标实体 ID**。
+在源实体 frontmatter 中写**目标实体 ID**。
 
 
 | 方向   | 源        | 目标       | 字段                                 | 含义            |

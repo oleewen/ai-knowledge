@@ -10,7 +10,7 @@ hierarchy: DS
 parent_id: null
 config_key: example_config_key
 definition_scope: reference
-ssot_layer: system
+layer_scope: application
 ---
 # SSOT
 

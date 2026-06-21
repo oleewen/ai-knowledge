@@ -10,7 +10,7 @@ hierarchy: PL
 parent_id: null
 target_users: 示例用户
 definition_scope: reference
-ssot_layer: company
+layer_scope: application
 ---
 # SSOT
 

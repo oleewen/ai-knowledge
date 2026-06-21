@@ -9,6 +9,7 @@ perspective: business
 hierarchy: AGG
 parent_id: BC-EXAMPLE
 root_entity: ExampleRoot
+layer_scope: application
 ---
 # Relations
 

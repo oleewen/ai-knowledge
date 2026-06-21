@@ -4,7 +4,7 @@ title: technical — 技术视角
 ---
 # technical — 技术视角
 
-本目录描述中间件绑定、关键运行时组件，并通过 ID 与其他视角建立映射。公司级 **TPL-***、系统级 **TSD-*** 在对应层目录首次定义；本层主定义并登记 **MW-*** 与 **CMP-***。元数据与实例索引见 [technical-meta.md](technical-meta.md)、[technical-entities.md](technical-entities.md)。
+本目录描述中间件绑定、关键运行时组件，并通过 ID 与其他视角建立映射。公司级 **TPL-***、系统级 **TSD-*** 在对应层目录首次定义；本层主定义并登记 **MW-*** 与 **CMP-***。元数据与实例索引见 [technical-meta.md](technical-meta.md)、[../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（§5）。
 
 ---
 
@@ -13,19 +13,19 @@ title: technical — 技术视角
 | 链序 | 层级 | 类型 | 名称 | 锚点 |
 |:----:|------|------|------|------|
 | — | 索引 | 技术视角 | 技术视角 | [technical-meta.md](technical-meta.md) |
-| L1 | 中间件绑定 | MW | 示例中间件绑定 | [technical-entities.md](technical-entities.md) |
-| L2 | 组件 | CMP | 示例组件 | 同上 |
+| L1 | 中间件绑定 | MW | 示例中间件绑定 | [MW-EXAMPLE/MW-EXAMPLE.md](MW-EXAMPLE/MW-EXAMPLE.md) |
+| L2 | 组件 | CMP | 示例组件 | [MW-EXAMPLE/CMP-EXAMPLE.md](MW-EXAMPLE/CMP-EXAMPLE.md) |
 
 ---
 
 ## 层级结构
 
 ```
-中间件绑定 (MW) → 组件 (CMP)   （内容整合于 technical-entities.md）
+中间件绑定 (MW) → 组件 (CMP)   （per-entity `{ID}.md` 为 SSOT；扫描索引见 KNOWLEDGE_INDEX §5）
 ```
 
 - **字段模板**：[technical-meta.md](technical-meta.md) → §4 必填字段
-- **层级内容**：[technical-entities.md](technical-entities.md)
+- **层级内容**：per-entity `{ID}.md`；枚举见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) §5
 
 **边界**：MW 登记基础设施绑定（数据源、缓存、MQ Topic/集群等）；MS/API 仍登记业务入口宿主类，不迁入本视角。
 
