@@ -18,7 +18,7 @@
 | 应用侧索引与建联 | [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) | 应用目录九章索引、中央知识库挂载建联登记 |
 | 系统知识库 | [system/README.md](system/README.md) | `architecture/`（五视角文档）、`application-{name}/` 联邦槽位、`analysis/` |
 | 系统侧机器索引 | [system/INDEX_GUIDE.md](system/INDEX_GUIDE.md) | `system/` 树内九章索引（与根、应用侧索引互补） |
-| 公司知识库 | [company/README.md](company/README.md) | `ea/`（五视角企业架构）、`system-{name}/` 联邦槽位、`changelogs/`、`solutions/`、`analysis/` |
+| 公司知识库 | [company/README.md](company/README.md) | `knowledge/`（五视角企业架构）、`system-{name}/` 联邦槽位、`changelogs/`、`solutions/`、`analysis/` |
 | 初始化脚本 | [scripts/README.md](scripts/README.md) | `docs-install`/`agent-install`/`docs-link`/`docs-bootstrap` |
 | 规范与 Slash | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/skills/README.md](agent/skills/README.md) | 全局约定与 Skill 清单 |
 | 变更与索引运维 | [application/changelogs/README.md](application/changelogs/README.md) | `CHANGE-LOG.md`、`INDEXING-LOG.md` |
@@ -42,7 +42,7 @@
 ├── README.md / AGENTS.md / INDEX_GUIDE.md / quick-start.md  # 人类与 Agent 入口、本索引、从零落地
 ├── application/                              # 应用侧知识主库：knowledge、阶段、solutions～requirements、changelogs
 ├── system/                                   # 系统知识库：architecture/（五视角文档）、application-APPNAME/ 联邦槽位、analysis/
-├── company/                                  # 公司知识库：ea/（五视角企业架构）、system-SYSNAME/ 联邦槽位、changelogs/、solutions/、analysis/
+├── company/                                  # 公司知识库：knowledge/（五视角企业架构）、system-SYSNAME/ 联邦槽位、changelogs/、solutions/、analysis/
 ├── scripts/                                  # 向目标工程注入知识库与 .docsconfig；bootstrap
 ├── agent/                                    # rules/、skills/、scripts/（config-bootstrap、校验）
 ├── docs/                                     # 设计备忘等（若存在；会话 spec 见各文档根 specs/）
@@ -66,7 +66,7 @@ flowchart LR
   sc --> tgt
   app -->|"DESIGN/CONTRIBUTING 约束"| app
   sys -->|"architecture/ 五视角文档"| sys
-  co -->|"ea/ 五视角企业架构"| co
+  co -->|"knowledge/ 五视角企业架构"| co
 ```
 
 ### 2.3 包结构
@@ -262,7 +262,7 @@ stateDiagram-v2
 | 应用侧九章与建联 | [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) | `application/` 树内九章索引与中央建联登记 |
 | 系统知识库入口 | [system/README.md](system/README.md) | 五视角架构文档、联邦槽位、analysis/ |
 | 系统侧九章索引 | [system/INDEX_GUIDE.md](system/INDEX_GUIDE.md) | `system/` 树内九章索引 |
-| 公司知识库入口 | [company/README.md](company/README.md) | ea/ 五视角企业架构、system-{name}/ 槽位、changelogs/ |
+| 公司知识库入口 | [company/README.md](company/README.md) | knowledge/ 五视角企业架构、system-{name}/ 槽位、changelogs/ |
 | 设计原则 | [application/DESIGN.md](application/DESIGN.md) | 元模型与演进 |
 | 贡献流程 | [application/CONTRIBUTING.md](application/CONTRIBUTING.md) | 阶段与模板指针 |
 
@@ -303,4 +303,4 @@ stateDiagram-v2
 
 ---
 
-**索引元数据**: 本次运行 **mode=full**，**depth=3**，**since_ms=0**（全量），输出 **./INDEX_GUIDE.md**；运行记录见 [application/changelogs/INDEXING-LOG.md](application/changelogs/INDEXING-LOG.md)。会话 spec：`docs/superpowers/specs/2026-06-18-root-index-docs-indexing.md`。
+**索引元数据**: 本次运行 **mode=full**，**depth=3**，**since_ms=0**（全量），输出 **./INDEX_GUIDE.md**；运行记录见 [application/changelogs/INDEXING-LOG.md](application/changelogs/INDEXING-LOG.md)。

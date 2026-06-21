@@ -152,7 +152,7 @@ ai-knowledge/
 │   ├── skills/             # Slash 技能（docs-indexing、sdx-* 等）
 │   └── scripts/            # 共享 Bash 库（config-bootstrap、validate-agent-md-links）
 ├── company/                # 公司知识库壳
-│   ├── ea/                 # 企业架构：业务、产品、应用、数据、技术五视角
+│   ├── knowledge/          # 企业架构：业务、产品、应用、数据、技术五视角
 │   ├── solutions/          # 公司级跨系统解决方案
 │   ├── analysis/           # 公司级跨系统需求分析
 │   ├── changelogs/         # 变更记录与索引运维日志
