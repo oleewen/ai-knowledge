@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""将 application/knowledge 五视角嵌套锚点搬迁为域扁平树。见 docs/superpowers/specs/2026-06-21-business-flat-tree-design.md"""
+"""将 application/knowledge 五视角嵌套锚点搬迁为域扁平树。路径见 naming-conventions.md §OKF business 行。"""
 
 from __future__ import annotations
 
@@ -35,6 +35,7 @@ LINK_REWRITES: List[Tuple[str, str]] = [
 ]
 
 # 相对 knowledge/ 的搬迁：旧 → 新
+# 注：本脚本仅适用于 application bundle；system 层 BD 保留在视角根（business/BD-EXAMPLE.md）。
 FILE_MOVES: List[Tuple[str, str]] = [
     ("business/BD-EXAMPLE/BD-EXAMPLE.md", "business/BSD-EXAMPLE/BD-EXAMPLE.md"),
     ("business/BD-EXAMPLE/BSD-EXAMPLE.md", "business/BSD-EXAMPLE/BSD-EXAMPLE.md"),

@@ -116,6 +116,11 @@ def test_entity_relpath_company_tpl():
     assert path == "knowledge/technical/TPL-EXAMPLE.md"
 
 
+def test_entity_relpath_system_bd_at_perspective_root():
+    path = okf_lib.entity_relpath("business", "BD-EXAMPLE", bundle="system")
+    assert path == "knowledge/business/BD-EXAMPLE.md"
+
+
 def main() -> None:
     tests = [
         test_parse_frontmatter,
@@ -134,6 +139,7 @@ def main() -> None:
         test_entity_relpath_company_bd_in_domain_folder,
         test_entity_relpath_company_cap,
         test_entity_relpath_company_tpl,
+        test_entity_relpath_system_bd_at_perspective_root,
     ]
     for fn in tests:
         fn()

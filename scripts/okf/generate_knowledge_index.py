@@ -12,7 +12,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
 import okf_lib  # noqa: E402
 
-PERSPECTIVE_SECTIONS: List[Tuple[str, str, List[str]]] = [
+_APPLICATION_PERSPECTIVE_SECTIONS: List[Tuple[str, str, List[str]]] = [
     (
         "§1 业务视角（business · BD → BSD → BC → AGG → AB）",
         "business",
@@ -39,6 +39,17 @@ PERSPECTIVE_SECTIONS: List[Tuple[str, str, List[str]]] = [
         ["MW", "CMP"],
     ),
 ]
+
+
+def _perspective_sections(bundle: str) -> List[Tuple[str, str, List[str]]]:
+    sections = list(_APPLICATION_PERSPECTIVE_SECTIONS)
+    if bundle == "system":
+        sections[4] = (
+            "§5 技术视角（technical · TSD → MW）",
+            "technical",
+            ["TSD", "MW"],
+        )
+    return sections
 
 def _repo_root() -> Path:
     return Path(__file__).resolve().parents[2]
@@ -179,10 +190,23 @@ def _split_existing(text: str) -> Tuple[str, str]:
     return prefix, suffix
 
 
-def _default_suffix() -> str:
+def _default_suffix(bundle: str) -> str:
+    if bundle == "system":
+        footer_note = (
+            "> 公司级 **TPL-*** 不在本索引登记；见 `company/knowledge/technical/`。"
+            "系统级 **TSD-*** 在本索引 §5 登记。"
+        )
+        bd_mapping = "| BD-EXAMPLE | `business/BD-EXAMPLE.md` |"
+    else:
+        footer_note = (
+            "> 公司级 **TPL-***、系统级 **TSD-*** 不在本索引登记；见 "
+            "`company/knowledge/technical/`、`system/knowledge/technical/`。"
+        )
+        bd_mapping = "| BD-EXAMPLE | `business/BSD-EXAMPLE/` |"
+
     return "\n".join(
         [
-            "> 公司级 **TPL-***、系统级 **TSD-*** 不在本索引登记；见 `company/knowledge/technical/`、`system/knowledge/technical/`。",
+            footer_note,
             "",
             "---",
             "",
@@ -190,7 +214,7 @@ def _default_suffix() -> str:
             "",
             "| 索引 ID | 命名式 ID（锚点目录） |",
             "|---------|----------------------|",
-            "| BD-EXAMPLE | `business/BSD-EXAMPLE/` |",
+            bd_mapping,
             "| PL-EXAMPLE | `product/PL-EXAMPLE/` |",
             "| SYS-EXAMPLE | `application/SYS-EXAMPLE/` |",
             "| DS-EXAMPLE | `data/DS-EXAMPLE/` |",
@@ -209,10 +233,14 @@ def _default_suffix() -> str:
     )
 
 
-def render_knowledge_index(bundle_root: Path, existing_text: Optional[str] = None) -> str:
+def render_knowledge_index(
+    bundle_root: Path,
+    existing_text: Optional[str] = None,
+    bundle: str = "application",
+) -> str:
     concepts = _load_concepts(bundle_root)
     if existing_text:
-        prefix, suffix = _split_existing(existing_text)
+        prefix, _suffix = _split_existing(existing_text)
     else:
         prefix = okf_lib.format_frontmatter(
             {
@@ -220,10 +248,8 @@ def render_knowledge_index(bundle_root: Path, existing_text: Optional[str] = Non
                 "title": "知识库 · 五视角实体 ID 索引（SSOT）",
             }
         ).rstrip() + "\n# 知识库 · 五视角实体 ID 索引（SSOT）"
-        suffix = _default_suffix()
 
-    if not suffix.strip():
-        suffix = _default_suffix()
+    suffix = _default_suffix(bundle)
 
     header = prefix.rstrip()
     if header.endswith("---"):
@@ -239,7 +265,7 @@ def render_knowledge_index(bundle_root: Path, existing_text: Optional[str] = Non
     parts.append("---")
     parts.append("")
 
-    for heading, perspective, hierarchies in PERSPECTIVE_SECTIONS:
+    for heading, perspective, hierarchies in _perspective_sections(bundle):
         parts.append(_render_section(heading, perspective, hierarchies, concepts).rstrip())
         parts.append("")
         parts.append("---")
@@ -263,7 +289,7 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     index_path = bundle_root / "knowledge" / "KNOWLEDGE_INDEX.md"
     existing = index_path.read_text(encoding="utf-8") if index_path.is_file() else None
-    rendered = render_knowledge_index(bundle_root, existing)
+    rendered = render_knowledge_index(bundle_root, existing, args.bundle)
 
     if args.dry_run:
         print(rendered)

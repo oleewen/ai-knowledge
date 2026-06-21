@@ -66,7 +66,7 @@ layer_scope: system
 ---
 # Relations
 
-- parent: [BD-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BD-EXAMPLE.md)
+- parent: [BD-EXAMPLE](/knowledge/business/BD-EXAMPLE.md)
 - bounded_contexts:
   - [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md)
 

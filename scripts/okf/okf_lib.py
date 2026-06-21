@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# OKF 共享库：frontmatter、type 映射、concept 路径；见 docs/superpowers/plans/2026-06-21-application-okf.md
+# OKF 共享库：frontmatter、type 映射、concept 路径；细则见 /docs-okf 与 agent/knowledge/naming-conventions.md §OKF
 
 from __future__ import annotations
 
