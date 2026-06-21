@@ -9,7 +9,6 @@ perspective: application
 hierarchy: SYS
 parent_id: null
 definition_scope: reference
-ssot_layer: company
 layer_scope: system
 ---
 # SSOT

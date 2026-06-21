@@ -17,7 +17,7 @@ SDD **需求分析**阶段目录：产出 `ANALYSIS-{IDEA-ID}.md`，作为 [../r
 ## 输入
 
 - [../solutions/](../solutions/) — `SOLUTION-{IDEA-ID}.md`
-- [../architecture/](../architecture/) — 五视角架构文档
+- [../knowledge/](../knowledge/) — 五视角架构文档
 - 规约：各需求包内 `specs/`
 
 ## 分析索引表

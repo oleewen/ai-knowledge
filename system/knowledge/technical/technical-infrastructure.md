@@ -19,7 +19,7 @@ title: 基础设施架构
 
 ## 网络拓扑
 
-<!-- **应写内容**：本系统 VPC、子网、路由、防火墙边界；DMZ、内网、管理网分层；东西向与南北向流量路径；与 [`technical-security.md`](technical-security.md#认证授权) 安全域一致。 -->
+<!-- **应写内容**：本系统 VPC、子网、路由、防火墙边界；DMZ、内网、管理网分层；东西向与南北向流量路径；与 [`technical-security.md`](../../../company/knowledge/technical/technical-security.md#认证授权) 安全域一致。 -->
 
 <!-- **产出建议**：本系统网络拓扑图；安全域清单。 -->
 

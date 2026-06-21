@@ -33,6 +33,6 @@ title: 产品架构
 
 ## 产品系统映射
 
-<!-- **应写内容**：可选；PL 与承载系统（SYS）的对应关系；跨系统 PL 交付时的主责系统标注。链路至 [`application-landscape.md`](../application/application-landscape.md)。 -->
+<!-- **应写内容**：可选；PL 与承载系统（SYS）的对应关系；跨系统 PL 交付时的主责系统标注。链路至 [`application-overview.md`](../application/application-overview.md)。 -->
 
 <!-- **产出建议**：映射表（PL-ID × SYS-ID × 主责 / 协同）；单系统场景可写「本系统即主责系统」。 -->

@@ -9,7 +9,6 @@ perspective: product
 hierarchy: PL
 parent_id: null
 definition_scope: reference
-ssot_layer: company
 layer_scope: system
 ---
 # SSOT

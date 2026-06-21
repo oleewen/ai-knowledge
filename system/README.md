@@ -28,7 +28,7 @@ title: "系统知识库（顶层 `system/`）"
 
 1. [DESIGN.md](DESIGN.md) — 目录契约与 SSOT 继承  
 2. [knowledge/README.md](knowledge/README.md) — 五视角索引入口  
-3. [knowledge/business/README.md](architecture/business/README.md) / [knowledge/product/README.md](architecture/product/README.md) — 业务与产品语境  
-4. [knowledge/application/README.md](architecture/application/README.md) / [knowledge/data/README.md](architecture/data/README.md) / [knowledge/technical/README.md](architecture/technical/README.md) — 系统、数据与技术落地  
+3. [knowledge/business/README.md](knowledge/business/README.md) / [knowledge/product/README.md](knowledge/product/README.md) — 业务与产品语境  
+4. [knowledge/application/README.md](knowledge/application/README.md) / [knowledge/data/README.md](knowledge/data/README.md) / [knowledge/technical/README.md](knowledge/technical/README.md) — 系统、数据与技术落地  
 
 与公司知识库侧 [`../company/knowledge/`](../company/knowledge/README.md) 对照阅读。

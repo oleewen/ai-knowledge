@@ -13,7 +13,7 @@ title: 多端策略
 
 ## 端覆盖
 
-<!-- **应写内容**：本系统各端（Web / App / 小程序 / H5 / 桌面端等）目标用户与使用场景；首发与维护策略；技术栈与发布渠道摘要（可链路至 [`application-landscape.md`](../application/application-landscape.md)）。 -->
+<!-- **应写内容**：本系统各端（Web / App / 小程序 / H5 / 桌面端等）目标用户与使用场景；首发与维护策略；技术栈与发布渠道摘要（可链路至 [`application-overview.md`](../application/application-overview.md)）。 -->
 
 <!-- **产出建议**：本系统端—场景—优先级表；下线或冻结端的说明。 -->
 
@@ -35,7 +35,7 @@ title: 多端策略
 
 ## 响应式策略
 
-<!-- **应写内容**：本系统断点、布局策略与组件行为；移动端优先或桌面优先的选择；与 [`product-ux.md`](product-ux.md#设计规范) Design System 栅格一致。 -->
+<!-- **应写内容**：本系统断点、布局策略与组件行为；移动端优先或桌面优先的选择；与 [`product-ux.md`](../../../company/knowledge/product/product-ux.md#设计规范) Design System 栅格一致。 -->
 
 <!-- **产出建议**：本系统断点与布局规范；关键模板截图或说明。 -->
 

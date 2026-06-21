@@ -41,7 +41,7 @@ title: 系统知识库设计（精简版）
 
 | 层级 | 目录 | 职责 |
 | --- | --- | --- |
-| 根导航 | [README.md](README.md)、[INDEX_GUIDE.md](INDEX_GUIDE.md)、[docs_meta.yaml](docs_meta.yaml) | 人类入口、Agent 九章索引、目录元数据 |
+| 根导航 | [README.md](README.md)、[INDEX_GUIDE.md](INDEX_GUIDE.md)、[docs_meta.md](docs_meta.md) | 人类入口、Agent 九章索引、目录元数据 |
 | 治理规则 | [agent/knowledge/](../agent/knowledge/knowledge-governance.md) | 术语边界、命名 SSOT、ADR 模板与原则（全仓库） |
 | ADR 正文 | [adr/](adr/README.md) | 系统层架构决策记录正文 |
 | 架构层 | `knowledge/` | 五架构视角聚合视图；含 `overview/` 蒸馏缓冲区 |
@@ -64,15 +64,26 @@ title: 系统知识库设计（精简版）
 
 | 视角 | 回答什么问题 | 主要内容 | 入口 |
 | --- | --- | --- | --- |
-| **业务** | 做什么业务、边界与流程 | 业务概述、业务域划分（公司·BD）、业务术语、能力地图、业务流程（系统·BP） | [knowledge/business/](architecture/business/README.md) |
-| **产品** | 用户、功能组织与发布 | 产品概述、产品架构、信息架构、产品功能（系统·FT）、用户旅程（系统·UC）、版本发布、运营支撑、多端策略 | [knowledge/product/](architecture/product/README.md) |
-| **应用** | 服务拆分与集成边界 | 应用架构（系统·APP）、领域模型（系统·BC/AGG）、服务设计（系统·MS）、领域能力（系统·AB）、集成架构、服务交互、接口管理（应用·API）、多租户环境、ADR | [knowledge/application/](architecture/application/README.md) |
-| **数据** | 建模、存储与治理 | 数据概述、数据模型（系统·ENT）、数据存储（系统·DS）、数据流转 | [knowledge/data/](architecture/data/README.md) |
-| **技术** | 运行、扩展、观测与交付 | 技术概述、部署架构（系统·TSD）、中间件（系统·TSD/MW）、性能扩展、高可用与容灾 | [knowledge/technical/](architecture/technical/README.md) |
+| **业务** | 做什么业务、边界与流程 | 业务概述、业务域划分（公司·BD）、业务术语、能力地图、业务流程（系统·BP） | [knowledge/business/](knowledge/business/README.md) |
+| **产品** | 用户、功能组织与发布 | 产品概述、产品架构、信息架构、产品功能（系统·FT）、用户旅程（系统·UC）、版本发布、运营支撑、多端策略 | [knowledge/product/](knowledge/product/README.md) |
+| **应用** | 服务拆分与集成边界 | 应用架构（系统·APP）、领域模型（系统·BC/AGG）、服务设计（系统·MS）、领域能力（系统·AB）、集成架构、服务交互、接口管理（应用·API）、多租户环境、ADR | [knowledge/application/](knowledge/application/README.md) |
+| **数据** | 建模、存储与治理 | 数据概述、数据模型（系统·ENT）、数据存储（系统·DS）、数据流转 | [knowledge/data/](knowledge/data/README.md) |
+| **技术** | 运行、扩展、观测与交付 | 技术概述、部署架构（系统·TSD）、中间件（系统·TSD/MW）、性能扩展、高可用与容灾 | [knowledge/technical/](knowledge/technical/README.md) |
 
 > **层级说明**：标注（公司·XYZ）的内容由公司层首次定义（见 [company/DESIGN.md](../company/DESIGN.md) §公司级实体）；标注（系统·XYZ）的内容在系统层首次定义；标注（应用·XYZ）的内容在应用层首次定义。无标注项为通用关注域，各层均可落地叙事。
 
 五视角实体按公司 / 系统 / 应用三层分治：公司层实体 `BD/CAP/PL/SYS/MDG/TPL` 见 [company/DESIGN.md](../company/DESIGN.md) §公司级实体；系统层负责 `BSD/BC/AGG/AB/PM/FT/UC/BP/BR/APP/MS/DS/ENT/TSD`，应用层负责 `API/TBL/MW/CMP`；应用侧 [knowledge/](../application/knowledge/) 继续承接实现映射与实例登记。技术视角层级链仍为 `TPL → TSD → MW → CMP`。
+
+#### 系统层 BD 落盘（与 company/application 区分）
+
+| 层级 | 路径 | 说明 |
+| --- | --- | --- |
+| company | `knowledge/business/BD-{NAME}/BD-{NAME}.md` | 公司 SSOT |
+| system | `knowledge/business/BD-{NAME}.md` | 视角根单文件 reference |
+| system | `knowledge/business/BSD-{NAME}/` | BSD→AB SSOT |
+| application | `knowledge/business/BSD-{NAME}/BD-*.md` | 应用 reference |
+
+实现 SSOT：`okf_lib.entity_relpath(bundle="system", BD)` → `knowledge/business/{full_id}.md`
 
 #### Overview 蒸馏区
 

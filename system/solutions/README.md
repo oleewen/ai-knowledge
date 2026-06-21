@@ -18,7 +18,7 @@ SDD **解决方案**阶段目录：产出 `SOLUTION-{IDEA-ID}.md`，作为 [../a
 ## 输入
 
 - 外部 — 业务诉求（邮件、会议纪要、工单等）
-- [../architecture/](../architecture/) — 五视角架构文档
+- [../knowledge/](../knowledge/) — 五视角架构文档
 - 规约：各需求包内 `specs/`
 
 ## 方案索引表

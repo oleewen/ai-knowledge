@@ -4,7 +4,7 @@ title: system 索引指南（INDEX_GUIDE）
 ---
 # system 索引指南（INDEX_GUIDE）
 
-> **最后更新**: 2026-06-15  
+> **最后更新**: 2026-06-21  
 > **文档定位**: 面向 AI Agent 的 **`system/` 文档根**九章机器索引；描述系统知识库、五视角架构文档与 **`application-{name}/`** 联邦槽位。应用侧实现登记与应用层实体主库仍在 [../application/](../application/)。
 
 ---
@@ -30,7 +30,7 @@ title: system 索引指南（INDEX_GUIDE）
 
 - **目录角色**: **系统知识库** — 组织级架构叙事、`system/knowledge/` 五视角终稿、`application-{name}/` 镜像槽位
 - **技术栈**: Markdown、YAML（元数据与链接登记）
-- **已跟踪文件规模**（仅 `system/` 前缀）: **73** 个文件（`git ls-files system/`，2026-05-05）
+- **已跟踪文件规模**（仅 `system/` 前缀）: **97** 个文件（`git ls-files system/`，2026-06-21）
 - **精读深度**: 本轮 **depth=3**（已读 README、knowledge 索引与目录枚举）
 
 ---
@@ -150,7 +150,7 @@ flowchart LR
 | 数据源 | 类型 | 用途 |
 |--------|------|------|
 | `knowledge/**/*.md` | Markdown | 架构事实与模板段 |
-| `*-meta.md` / `*-entities.md` | Markdown | 架构视角元数据与实体（如 technical/） |
+| `*-meta.md` / [KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md) | Markdown | 五视角元数据与实体实例索引 |
 | `knowledge-links.yaml` | YAML | 联邦链接 |
 
 ### 6.2～6.4
@@ -183,7 +183,7 @@ flowchart LR
 
 | 指标 | 值 |
 |------|-----|
-| `git ls-files system/` | 73 |
+| `git ls-files system/` | 97 |
 | 本轮 mode / depth | `full` / `3` |
 
 ### 8.2 排除
@@ -208,7 +208,9 @@ flowchart LR
 
 ### 9.2 视角文件索引（knowledge/）
 
-与 [knowledge/README.md](knowledge/README.md) 中表格一致，含 `BUSINESS-ARCHITECTURE.md`、`PRODUCT-ARCHITECTURE.md`、`APPLICATION-ARCHITECTURE.md`、`DATA-ARCHITECTURE.md`、`TECHNICAL-ARCHITECTURE.md` 等；不在此重复全表以避免漂移。
+- **架构入口**：[knowledge/README.md](knowledge/README.md) — 五视角 README 与叙事章节索引  
+- **实体 SSOT**：[knowledge/KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md) — 扫描生成的五视角 ID 表  
+- **视角元数据**：各 `{perspective}/{perspective}-meta.md`（见 [knowledge/knowledge-meta.md](knowledge/knowledge-meta.md) §2）
 
 ---
 

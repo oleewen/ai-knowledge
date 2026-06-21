@@ -10,7 +10,6 @@ hierarchy: BD
 parent_id: null
 strategic_classification: supporting_domain
 definition_scope: reference
-ssot_layer: company
 layer_scope: system
 ---
 # SSOT

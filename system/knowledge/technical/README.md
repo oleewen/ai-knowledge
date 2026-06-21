@@ -6,7 +6,7 @@ title: 技术架构
 
 [返回上一级 · 架构文档索引](../README.md)
 
-本目录为技术架构**目录与入口**。🔑 核心文件为必维护项；📎 补充文件按系统复杂度按需启用；📐 决策记录与架构变更同步。实体 SSOT：[technical-meta.md](technical-meta.md)、[KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md)（per-entity OKF concept）。
+本目录为技术架构**目录与入口**。🔑 核心文件为必维护项；📎 补充文件按系统复杂度按需启用；📐 决策记录与架构变更同步。实体 SSOT：[technical-meta.md](technical-meta.md)、[KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（per-entity OKF concept）。
 
 | 类型 | 章节 | 文件 | 概述 |
 |------|------|------|------|

@@ -35,6 +35,6 @@ title: 性能与扩展性
 
 ## 性能测试
 
-<!-- **应写内容**：本系统压测场景、数据模型、环境与通过标准；报告归档与复测周期；与 [`technical-devops.md`](technical-devops.md#cicd) CI 门禁的关系。 -->
+<!-- **应写内容**：本系统压测场景、数据模型、环境与通过标准；报告归档与复测周期；与 [`technical-devops.md`](../../../company/knowledge/technical/technical-devops.md#cicd) CI 门禁的关系。 -->
 
 <!-- **产出建议**：本系统压测方案；最近报告链接或摘要。 -->

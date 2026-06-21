@@ -56,15 +56,16 @@ title: 知识库 · 五视角实体 ID 索引（SSOT）
 
 ---
 
-## §5 技术视角（technical · MW → CMP）
+## §5 技术视角（technical · TSD → MW）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
+| TSD | EXAMPLE |  | 中间件域 | `technical/TSD-EXAMPLE.md` |
 | MW | EXAMPLE |  | 示例中间件绑定 | `technical/MW/MW-EXAMPLE.md` |
 
 ---
 
-> 公司级 **TPL-***、系统级 **TSD-*** 不在本索引登记；见 `company/knowledge/technical/`、`system/knowledge/technical/`。
+> 公司级 **TPL-*** 不在本索引登记；见 `company/knowledge/technical/`。系统级 **TSD-*** 在本索引 §5 登记。
 
 ---
 
@@ -72,7 +73,7 @@ title: 知识库 · 五视角实体 ID 索引（SSOT）
 
 | 索引 ID | 命名式 ID（锚点目录） |
 |---------|----------------------|
-| BD-EXAMPLE | `business/BD-EXAMPLE/` |
+| BD-EXAMPLE | `business/BD-EXAMPLE.md` |
 | PL-EXAMPLE | `product/PL-EXAMPLE/` |
 | SYS-EXAMPLE | `application/SYS-EXAMPLE/` |
 | DS-EXAMPLE | `data/DS-EXAMPLE/` |
