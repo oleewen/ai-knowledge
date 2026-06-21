@@ -1,3 +1,7 @@
+---
+type: Perspective Meta
+title: 数据视角元数据（application/knowledge/data）
+---
 # 数据视角元数据（application/knowledge/data）
 
 应用侧数据版图（DS→ENT）实体登记与物理落地元数据。实例索引见 [data-entities.md](data-entities.md)。

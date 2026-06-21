@@ -1,3 +1,7 @@
+---
+type: Documentation
+title: product — 产品视角
+---
 # product — 产品视角
 
 本目录描述产品功能、用户故事与需求规格，并通过 ID 与其他视角建立映射。本树承接产品实体登记与交互映射；元数据与实例索引见 [product-meta.md](product-meta.md)、[product-entities.md](product-entities.md)。

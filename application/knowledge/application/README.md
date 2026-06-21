@@ -1,3 +1,7 @@
+---
+type: Documentation
+title: application — 应用视角
+---
 # application — 应用视角
 
 本目录描述本应用的物理实现、部署架构与服务接口；系统层 `APP/MS` 在此承接实例登记与实现映射，应用层 `API` 在此主定义。应用注册与索引见 [application-meta.md](application-meta.md)、[application-entities.md](application-entities.md)，以及 **[../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)**。
@@ -36,7 +40,7 @@
 
 - `id`, `name`, `description`
 - `repo_url`
-- `docs_manifest_path`（如 `/application/manifest.yaml`）
+- `docs_manifest_path`（如 `/application/manifest.md`）
 - `service_ids`（MS-*）
 - `owner_team`（可选）
 

@@ -1,3 +1,7 @@
+---
+type: Perspective Meta
+title: 技术视角元数据（application/knowledge/technical）
+---
 # 技术视角元数据（application/knowledge/technical）
 
 应用层技术版图（MW→CMP）视角元数据 SSOT。实例索引见 [technical-entities.md](technical-entities.md)。

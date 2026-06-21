@@ -1,3 +1,7 @@
+---
+type: Perspective Meta
+title: 应用视角元数据（application/knowledge/application）
+---
 # 应用视角元数据（application/knowledge/application）
 
 应用侧实现版图（SYS→APP→MS→API）实体登记与接口实现元数据。实例索引见 [application-entities.md](application-entities.md)。

@@ -1,3 +1,8 @@
+---
+type: Documentation
+tags: [technical-debt]
+title: 技术债务与风险
+---
 # 技术债务与风险
 
 ## 技术债务

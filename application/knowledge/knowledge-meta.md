@@ -1,3 +1,7 @@
+---
+type: Perspective Tree Meta
+title: 知识树元数据（application/knowledge）
+---
 # 知识树元数据（application/knowledge）
 
 应用知识库五视角知识树的联邦单元元数据 SSOT。
@@ -65,7 +69,7 @@
 
 | 顺序 | 路径 |
 | --- | --- |
-| 1 | docs_meta.yaml |
+| 1 | docs_meta.md |
 | 2 | knowledge/knowledge-meta.md |
 | 3 | knowledge/business/business-meta.md |
 | 4 | knowledge/product/product-meta.md |

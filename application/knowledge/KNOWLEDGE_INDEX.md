@@ -1,6 +1,12 @@
+---
+type: Knowledge Index
+title: 知识库 · 五视角实体 ID 索引（SSOT）
+---
 # 知识库 · 五视角实体 ID 索引（SSOT）
 
 > 本文件仅保留示例，用于演示五视角索引结构与字段形状。
+
+---
 
 ---
 
@@ -16,11 +22,11 @@
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| BD | EXAMPLE | ExampleBusinessDomain | 示例业务域 | `business/business-entities.md`（示例） |
-| BSD | EXAMPLE | ExampleBusinessSubdomain | 示例业务子域 | `business/business-entities.md`（示例） |
-| BC | EXAMPLE | ExampleBoundedContext | 示例限界上下文 | `business/business-entities.md`（示例） |
-| AGG | EXAMPLE | ExampleAggregate | 示例聚合 | `business/business-entities.md`（示例） |
-| AB | EXAMPLE | ExampleAbility | 示例能力 | `business/business-entities.md`（示例） |
+| BD | EXAMPLE |  | 示例业务域 | `business/BD-EXAMPLE.md` |
+| BSD | EXAMPLE |  | 示例业务子域 | `business/BSD-EXAMPLE/BSD-EXAMPLE.md` |
+| BC | EXAMPLE |  | 示例限界上下文 | `business/BSD-EXAMPLE/BC-EXAMPLE.md` |
+| AGG | EXAMPLE |  | 示例聚合 | `business/BSD-EXAMPLE/AGG-EXAMPLE.md` |
+| AB | EXAMPLE |  | 示例能力 | `business/BSD-EXAMPLE/AB-EXAMPLE.md` |
 
 ---
 
@@ -28,10 +34,10 @@
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| PL | EXAMPLE | ExampleProductLine | 示例产品线 | `product/product-entities.md`（示例） |
-| PM | EXAMPLE | ExampleProductModule | 示例产品模块 | `product/product-entities.md`（示例） |
-| FT | EXAMPLE | ExampleFeature | 示例功能 | `product/product-entities.md`（示例） |
-| UC | EXAMPLE | ExampleUseCase | 示例用例 | `product/product-entities.md`（示例） |
+| PL | EXAMPLE |  | 示例产品线 | `product/PL-EXAMPLE.md` |
+| PM | EXAMPLE |  | 示例产品模块 | `product/PM-EXAMPLE/PM-EXAMPLE.md` |
+| FT | EXAMPLE |  | 示例功能 | `product/PM-EXAMPLE/FT-EXAMPLE.md` |
+| UC | EXAMPLE-001 |  | 示例用例 | `product/PM-EXAMPLE/UC-EXAMPLE-001.md` |
 
 ---
 
@@ -39,10 +45,10 @@
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| SYS | EXAMPLE | ExampleSystem | 示例系统 | `application/application-entities.md`（示例） |
-| APP | EXAMPLE | ExampleApp | 示例应用 | `application/application-entities.md`（示例） |
-| MS | EXAMPLE | ExampleService | 示例微服务 | `application/application-entities.md`（示例） |
-| API | EXAMPLE-001 | ExampleService.create | 示例 API | `application/application-entities.md`（示例） |
+| SYS | EXAMPLE |  | 示例系统 | `application/SYS-EXAMPLE.md` |
+| APP | EXAMPLE |  | 示例应用 | `application/APP-EXAMPLE.md` |
+| MS | EXAMPLE |  | 示例微服务 | `application/MS-EXAMPLE/MS-EXAMPLE.md` |
+| API | EXAMPLE-001 | ExampleService.create | 示例 API：创建 | `application/MS-EXAMPLE/API-EXAMPLE-001.md` |
 
 ---
 
@@ -50,8 +56,8 @@
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| DS | EXAMPLE | ExampleDatasource | 示例数据源 | `data/data-entities.md`（示例） |
-| ENT | EXAMPLE | ExampleEntity | 示例实体 | `data/data-entities.md`（示例） |
+| DS | EXAMPLE |  | 示例数据源 | `data/DS-EXAMPLE.md` |
+| ENT | EXAMPLE |  | 示例实体 | `data/ENT-EXAMPLE/ENT-EXAMPLE.md` |
 
 ---
 
@@ -59,10 +65,8 @@
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| MW | EXAMPLE | ExampleMiddleware | 示例中间件绑定 | `technical/technical-entities.md`（示例） |
-| CMP | EXAMPLE | ExampleComponent | 示例组件 | `technical/technical-entities.md`（示例） |
-
-> 公司级 **TPL-***、系统级 **TSD-*** 不在本索引登记；见 `company/ea/technical/`、`system/architecture/technical/`。
+| MW | EXAMPLE |  | 示例中间件绑定 | `technical/MW-EXAMPLE/MW-EXAMPLE.md` |
+| CMP | EXAMPLE |  | 示例组件 | `technical/MW-EXAMPLE/CMP-EXAMPLE.md` |
 
 ---
 

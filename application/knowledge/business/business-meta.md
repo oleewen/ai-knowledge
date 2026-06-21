@@ -1,3 +1,7 @@
+---
+type: Perspective Meta
+title: 业务视角元数据（application/knowledge/business）
+---
 # 业务视角元数据（application/knowledge/business）
 
 应用侧 DDD 业务版图（BD→BSD→BC→AGG→AB）实体登记与实现映射元数据。实例索引见 [business-entities.md](business-entities.md)。

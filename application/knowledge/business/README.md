@@ -1,3 +1,7 @@
+---
+type: Documentation
+title: business — 业务视角
+---
 # business — 业务视角
 
 本目录描述业务版图与领域规则（DDD），不依赖具体技术实现。本树承接业务实体登记与实现映射；元数据与实例索引见 [business-meta.md](business-meta.md)、[business-entities.md](business-entities.md)。

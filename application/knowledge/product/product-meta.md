@@ -1,3 +1,7 @@
+---
+type: Perspective Meta
+title: 产品视角元数据（application/knowledge/product）
+---
 # 产品视角元数据（application/knowledge/product）
 
 应用侧产品版图（PL→PM→FT→UC）实体登记与交互映射元数据。实例索引见 [product-entities.md](product-entities.md)。

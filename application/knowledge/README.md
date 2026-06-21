@@ -1,3 +1,7 @@
+---
+type: Documentation
+title: knowledge — 应用侧知识主体
+---
 # knowledge — 应用侧知识主体
 
 **应用侧知识树**（联邦单元内 `knowledge/`）：承接 **业务 / 产品 / 应用 / 数据 / 技术** 五视角的实体登记、实现映射与应用层实体主定义；治理与命名 SSOT 见 [`../../agent/knowledge/knowledge-governance.md`](../../agent/knowledge/knowledge-governance.md)。与中央库 `application/knowledge/` 同构。中央库阶段文档（solutions、analysis）见 [`../solutions`](../solutions/README.md)、[`../analysis`](../analysis/README.md)；本应用 requirements 以本树及中央库为事实源；归档时可回写。
