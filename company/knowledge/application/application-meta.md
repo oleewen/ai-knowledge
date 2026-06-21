@@ -4,7 +4,7 @@ title: 应用视角元数据（company/knowledge/application）
 ---
 # 应用视角元数据（company/knowledge/application）
 
-公司级系统边界（SYS）的视角元数据 SSOT。实例索引见 [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md)。
+公司级系统边界（SYS）的视角元数据 SSOT。实例索引见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)。
 
 ---
 
@@ -12,7 +12,7 @@ title: 应用视角元数据（company/knowledge/application）
 
 | 字段 | 值 |
 | --- | --- |
-| meta_id | `DIR-COMPANY-EA-APPLICATION` |
+| meta_id | `DIR-COMPANY-KNOWLEDGE-APPLICATION` |
 | 视角 | application |
 | 层级范围 | company |
 | 说明 | 公司内系统边界目录；系统层 APP、应用层 MS/API 引用 SYS ID。 |
@@ -63,6 +63,6 @@ title: 应用视角元数据（company/knowledge/application）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 叙事文档索引 |
-| [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md) | SYS 实例 SSOT |
+| [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) | SYS 实例 SSOT |
 | [../../DESIGN.md](../../DESIGN.md) | 公司级实体定义 |
 | [../../../agent/knowledge/naming-conventions.md](../../../agent/knowledge/naming-conventions.md) | ID 命名 SSOT |

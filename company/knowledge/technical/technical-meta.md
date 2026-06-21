@@ -4,7 +4,7 @@ title: 技术视角元数据（company/knowledge/technical）
 ---
 # 技术视角元数据（company/knowledge/technical）
 
-公司级技术平台能力（TPL）的视角元数据 SSOT。实例索引见 [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md)。
+公司级技术平台能力（TPL）的视角元数据 SSOT。实例索引见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)。
 
 ---
 
@@ -12,7 +12,7 @@ title: 技术视角元数据（company/knowledge/technical）
 
 | 字段 | 值 |
 | --- | --- |
-| meta_id | `DIR-COMPANY-EA-TECHNICAL` |
+| meta_id | `DIR-COMPANY-KNOWLEDGE-TECHNICAL` |
 | 视角 | technical |
 | 层级范围 | company |
 | 说明 | 公司级平台能力目录（云/DevOps/安全/开发环境）；系统层 TSD、应用层 MW/CMP 引用 TPL ID。 |
@@ -69,6 +69,6 @@ title: 技术视角元数据（company/knowledge/technical）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 叙事文档索引 |
-| [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md) | TPL 实例 SSOT |
+| [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) | TPL 实例 SSOT |
 | [../../DESIGN.md](../../DESIGN.md) | 公司级实体定义 |
 | [../../../agent/knowledge/naming-conventions.md](../../../agent/knowledge/naming-conventions.md) | ID 命名 SSOT |

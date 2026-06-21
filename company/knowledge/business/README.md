@@ -6,7 +6,7 @@ title: 业务架构
 
 [返回上一级 · 架构文档索引](../README.md)
 
-本目录为业务架构**目录与入口**，聚焦公司级业务架构顶层内容。实体 SSOT：[business-meta.md](business-meta.md)、[business-entities.md](business-entities.md)（**BD-***、**CAP-***）。
+本目录为业务架构**目录与入口**，聚焦公司级业务架构顶层内容。实体 SSOT：[business-meta.md](business-meta.md)、[../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（**BD-***、**CAP-***）；per-entity 见下表。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
@@ -16,3 +16,11 @@ title: 业务架构
 | 价值链 | [business-value-chain.md](business-value-chain.md) | 价值创造环节与竞争壁垒框架。 |
 | 业务能力 | [business-capability.md](business-capability.md) | 公司级能力框架与成熟度标准。 |
 | 组织角色 | [business-roles-and-organization.md](business-roles-and-organization.md) | 干系人、角色与组织协作标准。 |
+
+## 实体索引（per-entity）
+
+| 层级 | full_id | 名称 | per-entity |
+|------|---------|------|------------|
+| BD | BD-EXAMPLE | 示例业务域 | [BD-EXAMPLE/BD-EXAMPLE.md](BD-EXAMPLE/BD-EXAMPLE.md) |
+| CAP | CAP-EXAMPLE-L1 | 示例一级能力 | [BD-EXAMPLE/CAP-EXAMPLE-L1.md](BD-EXAMPLE/CAP-EXAMPLE-L1.md) |
+| CAP | CAP-EXAMPLE | 示例二级能力 | [BD-EXAMPLE/CAP-EXAMPLE.md](BD-EXAMPLE/CAP-EXAMPLE.md) |

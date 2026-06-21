@@ -6,7 +6,7 @@ title: 技术架构
 
 [返回上一级 · 架构文档索引](../README.md)
 
-本目录为技术架构**目录与入口**，聚焦公司级云基础设施、DevOps、技术安全与开发环境顶层内容。实体 SSOT：[technical-meta.md](technical-meta.md)、[technical-entities.md](technical-entities.md)（**TPL-***）。
+本目录为技术架构**目录与入口**，聚焦公司级云基础设施、DevOps、技术安全与开发环境顶层内容。实体 SSOT：[technical-meta.md](technical-meta.md)、[../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（**TPL-***）；per-entity 见下表。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
@@ -15,3 +15,9 @@ title: 技术架构
 | DevOps | [technical-devops.md](technical-devops.md) | 公司级 CI/CD、分支与发布标准。 |
 | 技术安全 | [technical-security.md](technical-security.md) | 公司级认证、加密与合规标准。 |
 | 开发环境 | [technical-dev-environment.md](technical-dev-environment.md) | 公司级本地环境与工具链标准。 |
+
+## 实体索引（per-entity）
+
+| 层级 | full_id | 名称 | per-entity |
+|------|---------|------|------------|
+| TPL | TPL-EXAMPLE | 示例技术平台能力 | [TPL-EXAMPLE.md](TPL-EXAMPLE.md) |

@@ -4,7 +4,7 @@ title: 产品视角元数据（company/knowledge/product）
 ---
 # 产品视角元数据（company/knowledge/product）
 
-公司级产品线（PL）的视角元数据 SSOT。实例索引见 [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md)。
+公司级产品线（PL）的视角元数据 SSOT。实例索引见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)。
 
 ---
 
@@ -12,7 +12,7 @@ title: 产品视角元数据（company/knowledge/product）
 
 | 字段 | 值 |
 | --- | --- |
-| meta_id | `DIR-COMPANY-EA-PRODUCT` |
+| meta_id | `DIR-COMPANY-KNOWLEDGE-PRODUCT` |
 | 视角 | product |
 | 层级范围 | company |
 | 说明 | 公司级跨系统产品族目录；系统层 PM、应用层 FT/UC 引用 PL ID。 |
@@ -68,6 +68,6 @@ title: 产品视角元数据（company/knowledge/product）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 叙事文档索引 |
-| [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md) | PL 实例 SSOT |
+| [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) | PL 实例 SSOT |
 | [../../DESIGN.md](../../DESIGN.md) | 公司级实体定义 |
 | [../../../agent/knowledge/naming-conventions.md](../../../agent/knowledge/naming-conventions.md) | ID 命名 SSOT |

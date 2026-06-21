@@ -75,6 +75,8 @@ company/
 | 实体 | 路径 |
 |------|------|
 | BD-EXAMPLE | [knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md](knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md) |
+| CAP-EXAMPLE-L1 | [knowledge/business/BD-EXAMPLE/CAP-EXAMPLE-L1.md](knowledge/business/BD-EXAMPLE/CAP-EXAMPLE-L1.md) |
+| CAP-EXAMPLE | [knowledge/business/BD-EXAMPLE/CAP-EXAMPLE.md](knowledge/business/BD-EXAMPLE/CAP-EXAMPLE.md) |
 | PL-EXAMPLE | [knowledge/product/PL-EXAMPLE.md](knowledge/product/PL-EXAMPLE.md) |
 | SYS-EXAMPLE | [knowledge/application/SYS-EXAMPLE.md](knowledge/application/SYS-EXAMPLE.md) |
 | MDG-EXAMPLE | [knowledge/data/MDG-EXAMPLE.md](knowledge/data/MDG-EXAMPLE.md) |

@@ -14,15 +14,17 @@ title: 知识库 · 五视角实体 ID 索引（SSOT）
 
 ---
 
-## §1 业务视角（business · BD → BSD → BC → AGG → AB）
+## §1 业务视角（business · BD → CAP）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
 | BD | EXAMPLE |  | 示例业务域 | `business/BD-EXAMPLE/BD-EXAMPLE.md` |
+| CAP | EXAMPLE-L1 |  | 示例一级能力 | `business/BD-EXAMPLE/CAP-EXAMPLE-L1.md` |
+| CAP | EXAMPLE |  | 示例二级能力 | `business/BD-EXAMPLE/CAP-EXAMPLE.md` |
 
 ---
 
-## §2 产品视角（product · PL → PM → FT → UC）
+## §2 产品视角（product · PL）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
@@ -30,7 +32,7 @@ title: 知识库 · 五视角实体 ID 索引（SSOT）
 
 ---
 
-## §3 应用视角（application · SYS → APP → MS → API）
+## §3 应用视角（application · SYS）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
@@ -38,34 +40,37 @@ title: 知识库 · 五视角实体 ID 索引（SSOT）
 
 ---
 
-## §4 数据视角（data · DS → ENT）
+## §4 数据视角（data · MDG）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| — | — | — | — | — |
+| MDG | EXAMPLE |  | 示例主数据域 | `data/MDG-EXAMPLE.md` |
 
 ---
 
-## §5 技术视角（technical · MW → CMP）
+## §5 技术视角（technical · TPL）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| — | — | — | — | — |
+| TPL | EXAMPLE |  | 示例技术平台能力 | `technical/TPL-EXAMPLE.md` |
 
 ---
 
-> 公司级 **TPL-***、系统级 **TSD-*** 不在本索引登记；见 `company/knowledge/technical/`、`system/knowledge/technical/`。
+> 系统级 **TSD-*** 不在本索引登记；见 `system/knowledge/technical/`。
 
 ---
 
 ## 物化目录映射（示例）
 
-| 索引 ID | 命名式 ID（锚点目录） |
-|---------|----------------------|
-| BD-EXAMPLE | `business/BSD-EXAMPLE/` |
-| PL-EXAMPLE | `product/PL-EXAMPLE/` |
-| SYS-EXAMPLE | `application/SYS-EXAMPLE/` |
-| DS-EXAMPLE | `data/DS-EXAMPLE/` |
+| 索引 ID | 命名式 ID（锚点目录 / 文件） |
+|---------|--------------------------|
+| BD-EXAMPLE | `business/BD-EXAMPLE/` |
+| CAP-EXAMPLE-L1 | `business/BD-EXAMPLE/CAP-EXAMPLE-L1.md` |
+| CAP-EXAMPLE | `business/BD-EXAMPLE/CAP-EXAMPLE.md` |
+| PL-EXAMPLE | `product/PL-EXAMPLE.md` |
+| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |
+| MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |
+| TPL-EXAMPLE | `technical/TPL-EXAMPLE.md` |
 
 ---
 

@@ -17,14 +17,14 @@ SDD **需求分析**阶段目录：产出 `ANALYSIS-{IDEA-ID}.md`，下游由各
 ## 输入
 
 - [../solutions/](../solutions/) — `SOLUTION-{IDEA-ID}.md`
-- [../ea/](../ea/) — 企业架构五视角文档
+- [../knowledge/](../knowledge/README.md) — 企业架构五视角文档
 - 规约：各需求包内 `specs/`
 
 ## 分析索引表
 
 | 文档文件名 | 标题 | 关联解决方案 | 简要说明 |
 |------------|------|--------------|----------|
-| ... | ... | ... | ... |
+| ANALYSIS-EXAMPLE.md | 示例跨系统需求分析 | SOLUTION-EXAMPLE | SDD 链演示模板 |
 
 ## 规范
 

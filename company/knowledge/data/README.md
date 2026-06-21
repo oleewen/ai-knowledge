@@ -6,7 +6,7 @@ title: 数据架构
 
 [返回上一级 · 架构文档索引](../README.md)
 
-本目录为数据架构**目录与入口**，聚焦公司级数据治理、安全与数仓湖顶层内容。实体 SSOT：[data-meta.md](data-meta.md)、[data-entities.md](data-entities.md)（**MDG-***）。
+本目录为数据架构**目录与入口**，聚焦公司级数据治理、安全与数仓湖顶层内容。实体 SSOT：[data-meta.md](data-meta.md)、[../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（**MDG-***）；per-entity 见下表。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
@@ -14,3 +14,9 @@ title: 数据架构
 | 数据治理 | [data-governance.md](data-governance.md) | 公司级数据标准、元数据、质量、血缘与主数据规范。 |
 | 数仓与湖 | [data-warehouse-lake.md](data-warehouse-lake.md) | 公司级分析域分层与湖仓一体标准。 |
 | 数据安全 | [data-security-privacy.md](data-security-privacy.md) | 公司级数据分类分级与隐私合规标准。 |
+
+## 实体索引（per-entity）
+
+| 层级 | full_id | 名称 | per-entity |
+|------|---------|------|------------|
+| MDG | MDG-EXAMPLE | 示例主数据域 | [MDG-EXAMPLE.md](MDG-EXAMPLE.md) |

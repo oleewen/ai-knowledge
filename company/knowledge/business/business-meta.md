@@ -4,7 +4,7 @@ title: 业务视角元数据（company/knowledge/business）
 ---
 # 业务视角元数据（company/knowledge/business）
 
-公司级业务域（BD）与业务能力目录（CAP）的视角元数据 SSOT。实例索引见 [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md)。
+公司级业务域（BD）与业务能力目录（CAP）的视角元数据 SSOT。实例索引见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)。
 
 ---
 
@@ -12,7 +12,7 @@ title: 业务视角元数据（company/knowledge/business）
 
 | 字段 | 值 |
 | --- | --- |
-| meta_id | `DIR-COMPANY-EA-BUSINESS` |
+| meta_id | `DIR-COMPANY-KNOWLEDGE-BUSINESS` |
 | 视角 | business |
 | 层级范围 | company |
 | 说明 | 公司级业务域划分与 L1/L2/L3 能力目录；系统/应用层引用 BD/CAP ID，不重复字段语义。 |
@@ -79,6 +79,6 @@ title: 业务视角元数据（company/knowledge/business）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 叙事文档索引 |
-| [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md) | BD/CAP 实例 SSOT |
+| [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) | BD/CAP 实例 SSOT |
 | [../../DESIGN.md](../../DESIGN.md) | 公司级实体定义 |
 | [../../../agent/knowledge/naming-conventions.md](../../../agent/knowledge/naming-conventions.md) | ID 命名 SSOT |
