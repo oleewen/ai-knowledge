@@ -1,3 +1,7 @@
+---
+type: Change Log
+title: 文档变更索引
+---
 # 文档变更索引
 
 本文件由 **docs-change** 聚合 Git、`CHANGELOG*` 与本地 mtime 变更；增量基线见文末注释。
