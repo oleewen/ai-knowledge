@@ -1,6 +1,6 @@
 # docs-distill Grader
 
-**仅输出** JSON：`text`（1–3 句）、`passed`、`evidence`。
+据 **evals/evals.json** 与下列原则输出 JSON：`text`、`passed`、`evidence`。
 
 **判定**：  
 - **should-trigger**：主路径 `/docs-distill` 或等价；含 HARD-GATE、PENDING/CONFIRMED（或例外）、双日志、`dry-run`（若适用）；勿误判成仅 indexing/archive/SDD。  

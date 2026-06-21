@@ -1,61 +1,46 @@
 ---
 name: docs-build
 description: >
-  从应用→数据→技术→业务→产品五视角提取实体 ID，产出 per-entity `{ID}.md`（OKF concept + frontmatter）、各视角 README 索引行、
-  扫描生成 `{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md`（不再手写 `*-entities.md`）。依赖主 Index Guide。
-  触发：初始化/同步知识实体、对齐 ID、补五视角资产、更新 KNOWLEDGE_INDEX、docs-indexing 下游要实体等；
-  口语如「把代码里实体整理一下」「知识和代码对不上」。用户只要根 INDEX、overview、归档或 SDD 终稿为主路径 → 分流对应技能，勿单走本技能。
+  从五视角提取实体 ID，产出 per-entity {ID}.md、各视角 README、扫描生成 KNOWLEDGE_INDEX.md。依赖主 Index Guide。
+  触发：初始化/同步知识实体、对齐 ID、docs-indexing 下游要实体等。
+  分流：用户只要 INDEX、overview、归档或 SDD 为主路径 → 对应技能。
+  门禁：Qclose-1 后须 docs-build-gate CONFIRMED 才写 {DOC_DIR}/knowledge/（见 gates.md）。
 ---
 
 # docs-build（知识实体提取）
 
-判定主路径 → 读 `references/` → 会话 spec + **Qclose-1** → 写 `{DOC_DIR}/knowledge/`。
-
-**应用知识库**：`.docsconfig` 的 `DOC_DIR`，下文 `{DOC_DIR}/`。
+判定主路径 → 读 references/ → 会话 spec + Qclose-1 → 写 `{DOC_DIR}/knowledge/`。
 
 ## 边界
 
 | 负责 | 不负责 |
 |------|--------|
-| 五视角 per-entity `{ID}.md`、`{perspective}-meta.md`、README 索引表、扫描生成 `KNOWLEDGE_INDEX.md`、`validate-extraction.sh` | 根 `INDEX_GUIDE`（docs-indexing）；OKF 迁移/viz（docs-okf）；overview 蒸馏/抽取（docs-distill / docs-extract）；视角归档（docs-archive）；SDD 终稿 |
+| 五视角 per-entity、README、KNOWLEDGE_INDEX、validate-extraction | INDEX_GUIDE；docs-okf 迁移；distill/extract；docs-archive；SDD |
 
-## 前置
+## 最短路径
 
-- 路径契约：[session-spec-path.md](../../references/session-spec-path.md)（`{DOC_DIR}/superpowers/specs/`）
-- 主 Index Guide 可用（否则先 `/docs-indexing`）
-- `{DOC_DIR}/knowledge/` 可写；spec 在 `{DOC_DIR}/superpowers/specs/`
-
-## 阅读顺序（先读后写）
-
-1. `gates.md`（门禁、Qclose-1）
-2. `workflow.md`（四阶段、参数）
-3. `interaction-gate.md`（spec、节奏）
-4. 阶段 1：`builtin-config.md`；阶段 2：`extraction-rules.md`；阶段 3：`readme-fill-spec.md`；阶段 4：`consolidation-spec.md`
-5. 混淆：`core-concepts.md`；原则：`design-principles.md`；反模式：`anti-patterns.md`；SDD 边界：`brainstorming-integration.md`
-6. 阶段 4 后：`quality-checklist.md`；操作坑：`gotchas.md`
-7. 新建 spec：`assets/docs-build-session-spec-template.md`
+1. [gates.md](references/gates.md)
+2. [workflow.md](references/workflow.md)
+3. [interaction-gate.md](references/interaction-gate.md)
+4. [builtin-config.md](references/builtin-config.md)、[extraction-rules.md](references/extraction-rules.md)
+5. [readme-fill-spec.md](references/readme-fill-spec.md)、[consolidation-spec.md](references/consolidation-spec.md)
+6. [core-concepts.md](references/core-concepts.md)、[brainstorming-integration.md](references/brainstorming-integration.md)
+7. [quality-checklist.md](references/quality-checklist.md)、[gotchas.md](gotchas.md)
+8. [docs-build-session-spec-template.md](assets/docs-build-session-spec-template.md)
 
 ## 门禁
 
-阶段 1 后须 **Qclose-1**；`docs-build-gate: CONFIRMED` 前禁止写 `{DOC_DIR}/knowledge/`（例外见 `gates.md`）。
+阶段 1 后须 **Qclose-1**；`CONFIRMED` 前禁止写 `{DOC_DIR}/knowledge/`（[gates.md](references/gates.md)）。
 
-## 产出与校验
+## 产出
 
 - Spec：`{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-docs-build.md`
-- 产物：各视角 per-entity `{ID}.md`、`README.md`、扫描生成的 `KNOWLEDGE_INDEX.md`
+- 产物：各视角 `{ID}.md`、README、KNOWLEDGE_INDEX.md
 
 ```bash
 agent/skills/docs-build/scripts/validate-extraction.sh
 ```
 
-## 评测
+## 评测 / 脚本
 
-`evals/evals.json`、`evals/eval-metadata-template.json`、`agents/grader.md`、`agents/analyzer.md`。
-
-## 工程化
-
-`python3 agent/hooks/sdx_gate_common.py --gate build`（`agent/hooks.json`）；证据 `<!-- docs-build-gate: CONFIRMED -->` + 目标文件名。详 `gates.md`、`agent/hooks/README.md`。
-
-## 索引
-
-全表见 [references/README.md](references/README.md)。
+评测：`evals/evals.json`、[grader.md](agents/grader.md)。钩子：`python3 agent/hooks/sdx_gate_common.py --gate build`（详 gates.md）。

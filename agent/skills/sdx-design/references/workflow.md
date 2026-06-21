@@ -1,10 +1,14 @@
 # sdx-design 工作流
 
-门禁 [gates.md](gates.md)；**路径与产物**见 [SKILL.md](../SKILL.md)。**spec-asd** 路径与 **KNOWLEDGE_TYPE**：[knowledge-type-modes.md](../../sdx-architect/references/knowledge-type-modes.md)。
+门禁 [gates.md](gates.md)。**spec-asd** 与 **KNOWLEDGE_TYPE**：[knowledge-type-modes.md](../../sdx-architect/references/knowledge-type-modes.md)。
 
-**分工**：ASD（architect）§1–§3；本技能 **DSD §1–§3**，实现级正文在 **§2**。上游至少其一：**`ASD-*`** 或 **`{DOC_DIR}/specs/spec-asd-*.md`**（同 IDEA-ID、`{N}`）。若有 ASD：**§2** 在 ASD §3 行与服务边界上扩写；仅有 spec-asd 时，范围与表行口径以 **spec-asd + PRD** 为 SSOT。映射：architect 会话 **G1–G3**（ASD）；本技能 **G1–G3**（DSD §1–§3，模板称 Gd{n}）。
+## 前置
 
-本文件：**状态机**、**回跳**、**Q-n**、**阶段三算法**。
+- **PRD**（硬）；**ASD-* 和/或 `{DOC_DIR}/specs/spec-asd-*.md`**（缺则澄清或用户明示例外）
+- IDEA-ID、{N}、`{DOC_DIR}`、`{DOC_DIR}/superpowers/specs/` 可写
+- 仅要上游或 docs 主线时不强行套全流程
+
+**分工**：ASD §1–§3；本技能 **DSD §1–§3**，实现级在 **§2**。映射：architect G1–G3；本技能 **Gd{n}**（DSD §1–§3）。
 
 ---
 

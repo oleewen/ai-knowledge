@@ -1,93 +1,52 @@
 ---
 name: docs-change
 description: >
-  从 Git、`CHANGELOG*`、本地修改时间三源采集变更，写入 `{output_dir}/CHANGE-LOG.md`，文末以 `<!-- docs-change:baseline_time_ms=... -->` 保留增量基线。
-  `/docs-change`、生成或更新变更聚合、下游索引/实体需变更输入，或用户说「记录改动」「变更日志」「最近改了什么」时触发。
-  用户明确要求仅 `docs-indexing`、`docs-build`、`docs-archive`、`docs-upgrade` 为主路径时，分流至对应技能。
+  从 Git、CHANGELOG*、本地 mtime 三源采集变更，写入 {output_dir}/CHANGE-LOG.md，文末保留增量基线注释。
+  触发：/docs-change、变更聚合、口述「记录改动」「最近改了什么」。
+  分流：用户只要 docs-indexing/docs-build/docs-archive/docs-upgrade 为主路径 → 对应技能。
+  门禁：无有效 .docsconfig 即中止；时间基准或 --output 歧义须先确认（无 SDD HTML gate）。
 ---
 
 # docs-change：变更聚合
 
-调度器：先判定是否由本技能处理，再按 `references/` 多源采集并更新 `CHANGE-LOG.md`，供下游读基线做增量。
+调度器：判定主责 → 读 references/ → 多源采集 → 更新 CHANGE-LOG.md。
 
 ## 边界
 
 | 负责 | 不负责 |
 |------|--------|
-| `CHANGE-LOG.md` 多源聚合、时间统一、倒序插入、文末基线 | `INDEX_GUIDE`、`KNOWLEDGE_INDEX`、overview 归档、全库术语替换 |
-| | 对应 **docs-indexing**、**docs-build**、**docs-archive**、**docs-upgrade** |
+| CHANGE-LOG.md 多源聚合、倒序插入、文末基线 | INDEX_GUIDE、KNOWLEDGE_INDEX、overview 归档、全库术语替换 |
+| | docs-indexing、docs-build、docs-archive、docs-upgrade |
 
-仅要文档地图时以 **docs-indexing** 为主；变更列表与索引协作，不互相替代。
+## 最短路径
 
-## 输入与输出
-
-| 项 | 说明 |
-|----|------|
-| 硬输入 | 仓库根目录 **且** 存在有效 `.docsconfig`（`DOC_ROOT`/`REPO_ROOT`/`DOC_DIR`） |
-| 可选 | `--since`、`--output`；基线读已有文末注释 |
-| 输出 | `{output_dir}/CHANGE-LOG.md`（Markdown + 文末基线） |
-| 不产出 | INDEX_GUIDE、知识实体、`README`/`AGENTS` 批量改写 |
-
-**参数**
-
-| 参数 | 必需 | 默认 | 说明 |
-|------|------|------|------|
-| `--since` | 否 | 见下 | `yyyy-MM-dd HH:mm:ss.SSS` 或 epoch ms |
-| `--output` | 否 | `${DOC_ROOT}/changelogs/` | 优先级：用户指定 > `.docsconfig` 解析之 `${DOC_ROOT}/changelogs/` |
-
-时间：`--since` > 文末 `baseline_time_ms` > `2020-01-01`。
-
-## 前置确认
-
-时间基准不清、用户显式 `--output` 与默认 `{DOC_DIR}/changelogs/` 不一致且未说明、或用户声明**仅采某一来源**时先确认；否则按 [references/gates.md](references/gates.md)、[references/workflow.md](references/workflow.md) 执行。细则见 gates「前置确认与歧义处理」。
-
-## 执行顺序（先读后写）
-
-1. [gates.md](references/gates.md) — 边界与歧义
-2. [workflow.md](references/workflow.md) — 五步与脚本
-3. [collection-rules.md](references/collection-rules.md) — 输出目录与三源
-4. [core-concepts.md](references/core-concepts.md) — baseline / cutoff（不确定时）
-5. [design-principles.md](references/design-principles.md) — 对齐粒度
-6. [anti-patterns.md](references/anti-patterns.md) — 收敛方案前
-7. [quality-checklist.md](references/quality-checklist.md) — 落盘验证
-8. [gotchas.md](gotchas.md) — 时间/增量/来源陷阱
-9. [references/README.md](references/README.md) — 全目录索引
-10. [assets/changes-index-template.md](assets/changes-index-template.md) — CHANGE-LOG 结构（JSON 模板按需）
+1. [gates.md](references/gates.md)
+2. [workflow.md](references/workflow.md)
+3. [collection-rules.md](references/collection-rules.md)
+4. [core-concepts.md](references/core-concepts.md)
+5. [design-principles.md](references/design-principles.md)
+6. [anti-patterns.md](references/anti-patterns.md)
+7. [quality-checklist.md](references/quality-checklist.md)
+8. [gotchas.md](gotchas.md)
+9. 结构模板：[changes-index-template.md](assets/changes-index-template.md)
 
 ## 门禁
 
-**`.docsconfig` 硬门禁**：无配置或解析失败即中止（见 [references/gates.md](references/gates.md)）；与 `docs-indexing` 脚本契约一致。
+`.docsconfig` 硬门禁：解析失败即中止（[gates.md](references/gates.md)）。有歧义须确认；禁止宣称已更新 INDEX 或知识实体。
 
-无 SDD 式 HTML gate；**有歧义须确认**。禁止宣称本流程已更新 INDEX_GUIDE 或知识实体。
+## 产出
 
-## 校验
+- 输出：`{output_dir}/CHANGE-LOG.md`（默认 `${DOC_ROOT}/changelogs/`；参数见 [workflow.md](references/workflow.md)）
+- 原始数据：`{output_dir}/.raw/`（[change-indexing.sh](scripts/change-indexing.sh)）
 
-结构见 `assets/changes-index-template.md`；核对 [quality-checklist.md](references/quality-checklist.md)，时间/排除目录见 gotchas。
+```bash
+agent/skills/docs-change/scripts/change-indexing.sh --since "yyyy-MM-dd HH:mm:ss.SSS"
+```
 
-## 评测
+## 评测 / 脚本
 
-- 样本：[evals/evals.json](evals/evals.json)
-- 元模板：[evals/eval-metadata-template.json](evals/eval-metadata-template.json)
-- 评分：[agents/grader.md](agents/grader.md)
-- 失败分析：[agents/analyzer.md](agents/analyzer.md)
-
-## 脚本
-
-[scripts/change-indexing.sh](scripts/change-indexing.sh) 写原始数据至 `{output_dir}/.raw/`。本仓库未注册 `docs-change` 的 `preToolUse` 钩子。
+评测：`evals/evals.json`、[grader.md](agents/grader.md)、[analyzer.md](agents/analyzer.md)。无 preToolUse 钩子。
 
 ## 下游
 
-| 技能 | 关系 |
-|------|------|
-| docs-indexing | 可消费本轮 `CHANGE-LOG.md` |
-| docs-build | 可按变更列表做增量提取 |
-
-## 五步索引
-
-| 步 | 摘要 | 详见 |
-|----|------|------|
-| 1 | `.docsconfig` 门禁、环境、Git、候选文件 | workflow |
-| 2 | 时间基准 | workflow + core-concepts |
-| 3 | 三源采集（可跑脚本） | workflow + collection-rules |
-| 4 | 合并、排序、写入、更新基线 | workflow |
-| 5 | 验证 | quality-checklist |
+docs-indexing / docs-build 可消费 CHANGE-LOG.md（一行指针，详 workflow）。

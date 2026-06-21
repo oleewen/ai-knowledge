@@ -1,32 +1,11 @@
 # 预检与 brainstorming 形式衔接
 
-## 会话 spec 路径
-
-闸门中间稿须落在 **`{DOC_DIR}/superpowers/specs/`**（不含 `requirements/**/specs/`）。契约：[session-spec-path.md](../../../references/session-spec-path.md)。
-
-本技能为中等风险，通常无落盘 spec；若写入闸门稿，须符合 `{DOC_DIR}/superpowers/specs/`。
-借 **探索、单问、方案比选、闸门** 等形式；**不是**「必须先写独立 `{DOC_DIR}/superpowers/specs/*-design.md` 再实现」全套外部 brainstorming 工作流。
-
-## 快路径 vs 预检
+会话 spec（若写）：`{DOC_DIR}/superpowers/specs/` — [session-spec-path.md](../../../references/session-spec-path.md)。
 
 | 情形 | 做法 |
 | ---- | ---- |
-| 路径 + 替换/改写已明（含简写） | **快路径**：按 SKILL/workflow，不必长对话 |
-| 无路径、意图糊、「对齐」无标准 | **预检**：探索后**一次一问**锁目标 |
-| 多策略（只标题 vs 全文、保守 vs 重写） | **2～3 方案 + 推荐** → 选定再做步骤 2 |
-| 步骤 3 前：命中爆、目录太大、是否同概念存疑 | **同步前闸门** + [gates.md](gates.md) |
+| 路径 + 替换已明 | 快路径：按 workflow，不必长对话 |
+| 意图糊、多策略 | 2～3 方案 + 推荐 → 再改 |
+| 步骤 3 前命中爆/目录大 | 同步前闸门 + [gates.md](gates.md) |
 
-## HARD-GATE（本技能含义）
-
-≠ 禁止一切写入直到独立设计稿。  
-= **高风险扩展前**须确认：大批量/跨目录统一；链深或「所有 X」未界定批次/排除；多段是否同概念不清。  
-未过 → 不做步骤 3 大范围替，或仅已确认批次。
-
-## 与步骤对应
-
-1. **锁目标**：预检澄清改什么、哪文件；多候选列项、可单问。  
-2. **主改**：多实现方式时先方案再动手。  
-3. **关联**：对照 gotchas；必要时先定批次/边界/是否加关键词轮。细则：related / semantic。  
-4. **步骤 5**：复杂决策拆**多轮单问**。
-
-要点：基于仓内真实内容；无法核实 → SKILL「须用户拍板」。推荐附简短理由。
+**HARD-GATE（本技能）**：大批量/跨目录/链深未界定 → 不做步骤 3 大范围替。细则：[gates.md](gates.md)、[workflow.md](workflow.md)。

@@ -1,6 +1,6 @@
 # docs-extract 评测裁判（grader）
 
-根据 `prompt`、响应与断言输出可审计 JSON。
+据 **evals/evals.json** 与下列原则输出 JSON：`text`、`passed`、`evidence`。
 
 ## 输出（仅此结构）
 

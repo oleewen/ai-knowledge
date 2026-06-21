@@ -2,6 +2,12 @@
 
 [SKILL.md](../SKILL.md)；步骤 1 [gates.md](gates.md)。
 
+## 前置
+
+- `--file` 须存在（系统/公司 overview，见 [knowledge-layout.md](../../../references/knowledge-layout.md)）
+- phase 含 1 时 keywords 齐备；Skill 用 `1-scan`+`1-write`+`2`+`3`
+- 脚本路径：`agent/skills/docs-tag/scripts/keyword_tag.py`（仓库根执行）
+
 ## 参数
 
 | 参数 | 必需 | 默认 | 说明 |

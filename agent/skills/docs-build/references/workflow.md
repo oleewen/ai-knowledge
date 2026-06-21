@@ -2,6 +2,12 @@
 
 主干：[SKILL.md](../SKILL.md)；门禁：[gates.md](gates.md)。
 
+## 前置
+
+- 路径：[session-spec-path.md](../../../references/session-spec-path.md)（`{DOC_DIR}/superpowers/specs/`）
+- 主 Index Guide 可用（否则先 `/docs-indexing`）
+- `{DOC_DIR}/knowledge/` 可写
+
 ## 术语
 
 **应用知识库**：`.docsconfig` 的 `DOC_DIR` → `{DOC_DIR}/`。

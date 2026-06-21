@@ -2,6 +2,12 @@
 
 主干：[SKILL.md](../SKILL.md)；写入门禁：[gates.md](gates.md)。
 
+## 前置
+
+- 路径：[session-spec-path.md](../../../references/session-spec-path.md)、[knowledge-layout.md](../../../references/knowledge-layout.md)
+- 可读 `system/application-{name}/changelogs/CHANGE-LOG.md`；明确 `{APPNAME}` / `--app`
+- `{DOC_DIR}/superpowers/specs/`、`system/knowledge/overview/` 可写（公司侧见 knowledge-layout）
+
 ## 两日志
 
 | 文件 | 职责 | 本技能写入 |

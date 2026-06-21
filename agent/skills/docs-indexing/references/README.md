@@ -5,6 +5,7 @@
 | 文档 | 用途 | 何时 |
 |------|------|------|
 | [gates.md](gates.md) | 门禁、双层确认、路径证据、钩子 | 写 INDEX / LOG 前 |
+| [session-spec-path.md](../../../references/session-spec-path.md) | 会话 spec 目录契约 | 写 spec 前 |
 | [workflow.md](workflow.md) | 六步、参数 | 每次跑前 |
 | [interaction-gate.md](interaction-gate.md) | spec、节奏、路径清单 | 参数后 |
 | [scan-config-onboarding.md](scan-config-onboarding.md) | 探索、预设、话术 | 步骤 1–2 |

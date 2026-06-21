@@ -1,6 +1,6 @@
 # docs-build — grader
 
-据 `prompt`、响应与断言输出 JSON：`text`、`passed`、`evidence`。
+据 **evals/evals.json** 与下列原则输出 JSON：`text`、`passed`、`evidence`。
 
 ## 原则
 

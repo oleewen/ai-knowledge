@@ -1,62 +1,52 @@
 ---
 name: sdx-architect
 description: >
-  基于 PRD（ANALYSIS 推荐）产出 ASD §1–§3；可选 `spec-asd-*.md`（asd-spec-template）。
-  覆盖服务边界、架构图、服务变更表；KNOWLEDGE_TYPE=system|company 时为联邦概要。
-  实现级 API/DDL 与 **DSD（详设文档）** → /sdx-design；仅里程碑或 docs-* → 对应 sdx-/docs- 技能。
+  基于 PRD 产出 ASD §1–§3；可选 spec-asd-*.md。KNOWLEDGE_TYPE=system|company 时为联邦概要。
   触发：ASD、边界、变更、§3 规约摘要或 spec-asd-*。
-  门禁：未经「用户总确认」不写 `{DOC_DIR}/requirements/**/ASD-*.md`（例外见 references/gates.md）。
-compatibility: Bash 5+（仓库根）；`scripts/config-bootstrap.sh` 解析 `DOC_ROOT`；校验方式见正文。
+  分流：API/DDL/DSD → sdx-design；docs-* 或仅其他 SDX 阶段 → 对应技能。
+  门禁：总确认前禁写 {DOC_DIR}/requirements/**/ASD-*.md（例外见 gates.md）。
+compatibility: Bash 5+；config-bootstrap 解析 DOC_ROOT；validate-asd.sh。
 ---
 
 # sdx-architect（架构设计）
 
-判定主路径 → 读 `references/` → 草稿与总确认 → 落盘 ASD 并校验。
+判主路径 → 读 references/ → 总确认 → ASD 终稿。**DSD 正文 → sdx-design**。
+
+## 边界
+
+| 负责 | 不负责 |
+|------|--------|
+| ASD-*.md、可选 spec-asd-*.md、服务边界与 §3 摘要 | DSD 实现级 API/DDL；docs-* 主路径 |
 
 ## 路由
 
-| 诉求 | 技能 |
+| 目的 | 文件 |
 |------|------|
 | 会话 spec 路径 | [session-spec-path.md](../../references/session-spec-path.md) |
-| docs-distill / extract / archive / indexing | **docs-*** |
-| SOLUTION / ANALYSIS / PRD / TDD，不要 ASD | 对应 **sdx-*** |
-| API/DDL、DSD | [sdx-design](../sdx-design/SKILL.md) |
-| ASD、边界、变更、规约摘要、可选 spec-asd-*.md | **本技能** |
+| 门禁 / 流程 | [gates.md](references/gates.md)、[workflow.md](references/workflow.md) |
+| brainstorming | [brainstorming-integration.md](references/brainstorming-integration.md) |
+| KNOWLEDGE_TYPE（SSOT） | [knowledge-type-modes.md](references/knowledge-type-modes.md) |
+| 反模式 / 终检 | [anti-patterns.md](references/anti-patterns.md)、[quality-checklist.md](references/quality-checklist.md) |
+| 模板 | [asd-template.md](assets/asd-template.md)、[asd-spec-template.md](assets/asd-spec-template.md) |
 
-产物：`asd-template`、`asd-stub-sections-federated`、会话 spec、`asd-spec-template`（spec-asd-*）。不含 **DSD** 全文。
+## 最少输入
 
-## 输入（落盘前）
-
-- PRD（必需）；ANALYSIS、`.docsconfig` 中 `KNOWLEDGE_TYPE`（建议）
-- 缺项先澄清，不落正式 ASD
-
-## 阅读顺序（先读后写）
-
-1. `references/gates.md` → `workflow.md` → `brainstorming-integration.md` → `quality-checklist.md`
-2. 歧义：`anti-patterns.md`、`knowledge-type-modes.md`
-3. 结构：`assets/asd-template.md`、`assets/samples/mini-asd-example.md`
+- **PRD**（必需）；**ANALYSIS**、**KNOWLEDGE_TYPE**（建议）。缺项先澄清，不落正式 ASD。
 
 ## 门禁
 
-总确认前禁止 `{DOC_DIR}/requirements/**/ASD-*.md`；例外见 `references/gates.md`（含 `SDX_ARCHITECT_ALLOW_ASD_WRITE=1`、`--gate-check`）。
+总确认前禁止 `{DOC_DIR}/requirements/**/ASD-*.md`（[gates.md](references/gates.md)）。
 
 ## 产出与校验
 
-- **会话 spec**：`{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-sdx-architect.md`（路径契约：[session-spec-path.md](../../references/session-spec-path.md)）
-- **ASD**：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ASD-{IDEA-ID}-{N}.md`
+- Spec：`{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-sdx-architect.md`
+- ASD：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ASD-{IDEA-ID}-{N}.md`
 
 ```bash
-# 仓库根
 agent/skills/sdx-architect/scripts/validate-asd.sh
 agent/skills/sdx-architect/scripts/validate-asd.sh --file path/to/ASD-xxx.md --gate-check
 ```
 
-在 `agent/skills/sdx-architect/`：`./scripts/validate-asd.sh`（同上参数）。
+## 评测 / 钩子
 
-## 评测
-
-见 `evals/`、`agents/grader.md`、`agents/analyzer.md`。
-
-## 工程化
-
-`python3 agent/hooks/sdx_gate_common.py --gate architect`（仓库根，`agent/hooks.json`）。
+评测：`evals/evals.json`、[grader.md](agents/grader.md)。钩子：`python3 agent/hooks/sdx_gate_common.py --gate architect`。

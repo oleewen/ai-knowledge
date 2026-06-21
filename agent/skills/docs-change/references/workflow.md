@@ -2,6 +2,15 @@
 
 时间语义见 [core-concepts.md](core-concepts.md)；采集见 [collection-rules.md](collection-rules.md)；验证见 [quality-checklist.md](quality-checklist.md)。
 
+## 参数
+
+| 参数 | 必需 | 默认 | 说明 |
+|------|------|------|------|
+| `--since` | 否 | 见步骤 2 | `yyyy-MM-dd HH:mm:ss.SSS` 或 epoch ms |
+| `--output` | 否 | `${DOC_ROOT}/changelogs/` | 用户指定 > `.docsconfig` 解析 |
+
+硬输入：仓库根且存在有效 `.docsconfig`（`DOC_ROOT` / `REPO_ROOT` / `DOC_DIR`）。
+
 ## 步骤 1：环境准备
 
 1. **`.docsconfig` 硬门禁**（见 [gates.md](gates.md)）：`validate_bootstrap_docsconfig`；失败即中止。

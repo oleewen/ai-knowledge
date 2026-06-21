@@ -2,6 +2,12 @@
 
 写入门禁见 [gates.md](gates.md)。
 
+## 前置
+
+- 路径：[session-spec-path.md](../../../references/session-spec-path.md)、[knowledge-layout.md](../../../references/knowledge-layout.md)
+- `--sources`、`--overview` 可解析；overview 含 `## 文档关键词`（缺则补，见 gotchas）
+- 会话 spec：`{DOC_DIR}/superpowers/specs/`；目标常位于 `system/knowledge/overview/` 或 `company/knowledge/overview/`
+
 ## 与 docs-distill
 
 任意 `--sources` 补充路径；共享目标（overview 第三列）与 A/U/D；**无** `DISTILL-LOG` / 应用蒸馏锚点。

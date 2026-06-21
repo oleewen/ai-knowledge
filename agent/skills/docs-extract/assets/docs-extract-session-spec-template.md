@@ -32,4 +32,4 @@
 
 <!-- docs-extract-gate: PENDING -->
 
-（确认后：`<!-- docs-extract-gate: CONFIRMED -->`）
+HTML 注释与 CONFIRMED 例外见 [gates.md](../references/gates.md)。

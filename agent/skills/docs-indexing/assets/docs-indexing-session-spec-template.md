@@ -26,4 +26,4 @@
 
 ---
 
-`<!-- docs-indexing-gate: PENDING -->` → 总确认 `CONFIRMED`；正文须含 §3 所列路径。
+`<!-- docs-indexing-gate: PENDING -->` → 总确认 `CONFIRMED`；HTML 注释与例外见 [gates.md](../references/gates.md)。

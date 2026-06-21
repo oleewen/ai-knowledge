@@ -1,6 +1,6 @@
 # docs-archive Grader
 
-**仅**输出 JSON：`text`（1～3 句）、`passed`、`evidence`（对断言或失败）。
+据 **evals/evals.json** 与下列原则输出 JSON：`text`、`passed`、`evidence`。
 
 **原则**：`should-trigger` → 主路径须为 `/docs-archive` 或等价；含 HARD-GATE、确认书、overview→链接解析；勿误判为纯 extract/distill/upgrade/build。**should-not-trigger** → 须正确分流。**P0** 任一失败 → `passed: false`。只评测，不改写技能。
 

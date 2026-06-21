@@ -1,6 +1,12 @@
 # sdx-prd 工作流
 
-门禁 [gates.md](gates.md)。原则与表格级反模式 [design-principles.md](design-principles.md)；叙事反模式 [anti-patterns.md](anti-patterns.md)。
+门禁 [gates.md](gates.md)。原则 [design-principles.md](design-principles.md)；反模式 [anti-patterns.md](anti-patterns.md)。
+
+## 前置
+
+- **`ANALYSIS-{IDEA-ID}.md`** 含目标 MVP（缺则 `sdx-analysis`）
+- **IDEA-ID**、**N** 与 `{DOC_DIR}/requirements/.../MVP-Phase-{N}/` 一致
+- 闸门 spec：`{DOC_DIR}/superpowers/specs/`；用户要先方案/分析时不强行套全流程
 
 ## 目标
 

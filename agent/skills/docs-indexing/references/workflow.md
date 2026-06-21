@@ -28,7 +28,7 @@
 
 ### 1 环境
 
-读 `INDEXING-LOG` 主表首行或旧 HTML → **候选** `indexing_finished_ms`（不自动定 mode）。输出可写。[scan-config-onboarding.md](scan-config-onboarding.md) 对齐 DOC_ROOT/基线。
+路径契约：[session-spec-path.md](../../../references/session-spec-path.md)。读 `INDEXING-LOG` 主表首行或旧 HTML → **候选** `indexing_finished_ms`（不自动定 mode）。输出可写。[scan-config-onboarding.md](scan-config-onboarding.md) 对齐 DOC_ROOT/基线/`{DOC_DIR}/superpowers/specs/` 可写。
 
 ### 2 配置（HARD-GATE：Qclose-1）
 

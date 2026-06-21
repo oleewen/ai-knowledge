@@ -1,63 +1,44 @@
 ---
 name: docs-extract
 description: >
-  按段落关键词相关度从 `--sources` 提炼业务知识，写入 `--overview` 第三列（A/U/D）；支持 `--dry-run`。不写 `DISTILL-LOG`；第三列不写来源脚注。
-  `/docs-extract`、任意源 → overview、或说「提炼进 overview」「抽取业务知识到系统库」「从设计文档整理进知识库」等时触发。
-  用户明确要求仅 docs-distill、docs-archive、docs-indexing、SDD 终稿为主路径时分流。
+  按段落关键词相关度从 --sources 提炼业务知识，写入 --overview 第三列（A/U/D）；支持 --dry-run。不写 DISTILL-LOG。
+  触发：/docs-extract、「提炼进 overview」「从设计文档整理进知识库」等。
+  分流：用户只要 docs-distill/archive/indexing 或 SDD 为主路径 → 对应技能。
+  门禁：阶段 3 未 CONFIRMED 禁止阶段 4（docs-extract-gate；见 gates.md）。
 ---
 
 # docs-extract：任意源 → overview 第三列
 
-调度器：判定归本技能后，按 `references/` 与会话 spec、门禁执行；段落级筛选后更新第三列。
+判定主责 → 读 references/ → 段落筛选 → 更新第三列。
 
 ## 边界
 
 | 负责 | 不负责 |
 |------|--------|
-| 任意源 → overview 第三列；段落筛选；`docs-extract-gate` + `--dry-run`；A/U/D | docs-distill 上行主路径；docs-archive；docs-indexing；代写 SDD 终稿 |
+| 任意源 → overview 第三列；A/U/D；docs-extract-gate | docs-distill 上行；docs-archive；docs-indexing；SDD 终稿 |
 
-明确只要上述下游 → 转对应 `docs-*` / `sdx-*`。
-
-## 前置
-
-- 路径契约：[session-spec-path.md](../../references/session-spec-path.md)、[knowledge-layout.md](../../references/knowledge-layout.md)
-- `--sources`、`--overview` 可解析；overview 含 `## 文档关键词`（缺则补，见 gotchas）。
-- 会话 spec：`{DOC_DIR}/superpowers/specs/`；目标常位于 `system/knowledge/overview/` 或 `company/knowledge/overview/`。
-
-## 执行顺序（先读后写）
+## 最短路径
 
 1. [gates.md](references/gates.md)
 2. [workflow.md](references/workflow.md)
 3. [interaction-gate.md](references/interaction-gate.md)
-4. [core-concepts.md](references/core-concepts.md)（术语混淆时）
-5. [extract-spec.md](references/extract-spec.md)（阶段 1、4）
-6. [design-principles.md](references/design-principles.md)
-7. [anti-patterns.md](references/anti-patterns.md)
-8. [quality-checklist.md](references/quality-checklist.md)
-9. [gotchas.md](gotchas.md)
-10. [brainstorming-integration.md](references/brainstorming-integration.md)（长澄清）
-11. [assets/docs-extract-session-spec-template.md](assets/docs-extract-session-spec-template.md)（新 spec）
+4. [core-concepts.md](references/core-concepts.md)
+5. [extract-spec.md](references/extract-spec.md)
+6. [design-principles.md](references/design-principles.md)、[anti-patterns.md](references/anti-patterns.md)
+7. [quality-checklist.md](references/quality-checklist.md)
+8. [gotchas.md](gotchas.md)
+9. [brainstorming-integration.md](references/brainstorming-integration.md)
+10. [docs-extract-session-spec-template.md](assets/docs-extract-session-spec-template.md)
 
 ## 门禁
 
-阶段 3 未 `CONFIRMED`（且无合法例外）→ **禁止**阶段 4。细则见 [gates.md](references/gates.md)、[agent/rules/CONVENTIONS.md](../../rules/CONVENTIONS.md#artifact-gates)。
+阶段 3 未 `CONFIRMED` → **禁止**阶段 4（[gates.md](references/gates.md)）。
 
 ## 产出
 
-- 会话 spec：`{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-docs-extract.md`（可选用 assets 模板）
-- 正式：`--overview` 对应 `*.md` 第三列更新
+- Spec：`{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-docs-extract.md`
+- 正式：`--overview` 第三列更新
 
-## 评测
+## 评测 / 脚本
 
-- [evals/evals.json](evals/evals.json)
-- [evals/eval-metadata-template.json](evals/eval-metadata-template.json)
-- [agents/grader.md](agents/grader.md)
-- [agents/analyzer.md](agents/analyzer.md)
-
-## 钩子
-
-`python3 agent/hooks/sdx_gate_common.py --gate extract`（见 `agent/hooks.json`）；与会话 spec `<!-- docs-extract-gate: CONFIRMED -->` 及目标 overview basename 对齐。详见 [references/gates.md](references/gates.md)、[agent/hooks/README.md](../../hooks/README.md)。
-
-## 索引
-
-全目录与打开时机：[references/README.md](references/README.md)。
+评测：`evals/evals.json`、[grader.md](agents/grader.md)。钩子：`python3 agent/hooks/sdx_gate_common.py --gate extract`（详 gates.md）。

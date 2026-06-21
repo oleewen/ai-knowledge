@@ -1,6 +1,12 @@
 # 工作流（步骤 0～6）
 
-交付主线：**方案确认书 → 目标增补**；澄清节奏可与 brainstorming 对齐，但以本会话确认书与落盘为准。
+交付主线：**方案确认书 → 目标增补**。**HARD-GATE**：步骤 3 用户确认前不得执行步骤 4。
+
+## 前置
+
+- 路径：[session-spec-path.md](../../../references/session-spec-path.md)、[knowledge-layout.md](../../../references/knowledge-layout.md)
+- overview 路径（`system/knowledge/overview/` 或 `company/knowledge/overview/`，可选 `#锚点`）；目标由**表格行链接**解析
+- 会话 spec：`{DOC_DIR}/superpowers/specs/`；钩子要 `CONFIRMED` + 目标 basename（见 gates.md）
 
 **流程**（须顺序；澄清一般**一次一问**）：
 
