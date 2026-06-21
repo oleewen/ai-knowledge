@@ -1,3 +1,7 @@
+---
+type: Agent Index Guide
+title: application 索引指南（INDEX_GUIDE）
+---
 # application 索引指南（INDEX_GUIDE）
 
 > **最后更新**: 2026-05-04  
@@ -38,7 +42,7 @@ application/
 ├── README.md / README-s.md / README-c.md   # 入口与模式说明
 ├── INDEX_GUIDE.md                          # 本文件
 ├── DESIGN.md / CONTRIBUTING.md             # 元模型与贡献
-├── docs_meta.yaml / manifest.yaml          # 文档元数据
+├── docs_meta.md / manifest.md          # 文档元数据
 ├── adr/                                    # 应用层 ADR 正文
 ├── analysis/                               # 需求分析阶段
 ├── changelogs/                             # CHANGE-LOG、INDEXING-LOG
@@ -72,7 +76,7 @@ flowchart TB
 
 ### 2.3 包结构
 
-非 JVM 工程；以**目录 + 元数据 YAML**组织阶段与视角，不以 Java 包分层。
+非 JVM 工程；以**目录 + 元数据 Markdown**组织阶段与视角，不以 Java 包分层。
 
 ### 2.4 文档目录
 
@@ -169,8 +173,8 @@ flowchart TB
 
 | 项 | 位置 | 说明 |
 |----|------|------|
-| 文档元数据 | [docs_meta.yaml](docs_meta.yaml)、[knowledge/knowledge-meta.md](knowledge/knowledge-meta.md) | 阶段与目录元信息 |
-| manifest | [manifest.yaml](manifest.yaml) | 应用清单字段（按项目约定） |
+| 文档元数据 | [docs_meta.md](docs_meta.md)、[knowledge/knowledge-meta.md](knowledge/knowledge-meta.md) | 阶段与目录元信息 |
+| manifest | [manifest.md](manifest.md) | 应用清单字段（按项目约定） |
 
 ### 7.2 环境差异
 

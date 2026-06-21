@@ -1,3 +1,7 @@
+---
+type: Contributing Guide
+title: 贡献指南 — application/
+---
 # 贡献指南 — application/
 
 本文件只定义最小贡献规则；目录结构、字段与模板一律引用权威入口，避免重复维护。

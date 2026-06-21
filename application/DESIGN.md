@@ -1,3 +1,7 @@
+---
+type: Design Document
+title: 应用知识文档库 — 设计方案摘录
+---
 # 应用知识文档库 — 设计方案摘录
 
 本文件是《应用知识文档库设计方案》的**精简版**：治理依据与演进参考。细节与入口仍以 [README.md](README.md)、[INDEX_GUIDE.md](INDEX_GUIDE.md) 及仓库根 [INDEX_GUIDE.md](../INDEX_GUIDE.md) 为准。
@@ -21,19 +25,23 @@
 | **SSOT** | 实体只在一处定义；他处仅 **ID 引用**                                                               |
 | **联邦治理** | 系统库管边界与索引；应用库管实现细节并 **上行对齐**                                                         |
 | **闭环**   | knowledge ← 归档回写；阶段上 solutions → analysis → requirements；规约落在需求包内 specs/ 或 knowledge/application/ |
-| **五视角**  | 业务 / 产品 / 应用 / 数据 / 技术；关联写在各视角 meta/entities Markdown，**不**维护独立映射矩阵文件                                       |
+| **五视角**  | 业务 / 产品 / 应用 / 数据 / 技术；关联写在各视角 meta 与 **per-entity `{ID}.md`**（OKF concept），**不**维护独立映射矩阵文件；legacy `*-entities.md` 已废弃                                       |
 | **与系统/公司层视角** | 五视角在各层同构；公司/系统/应用按 [naming-conventions.md](../agent/knowledge/naming-conventions.md) 与 §2.2.1 分层首次定义实体 |
 
 
 **目录索引（约定）**：
 
-- ***应用知识库根目录**：使用 [docs_meta.yaml](docs_meta.yaml) 概括 `application/` 树与子目录 meta 指针
+- ***应用知识库根目录**：使用 [docs_meta.md](docs_meta.md) 概括 `application/` 树与子目录 meta 指针
   - `knowledge/knowledge-meta.md` 描述知识树；
   - 治理与命名 SSOT 见 [agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md)；
-  - **`solutions/`、`analysis/`、`requirements/`、`changelogs/`** 阶段约定均收敛于各目录 **`README.md`**（无 `{dirname}_meta.yaml`）。`knowledge/` 五视角等使用 `{perspective}-meta.md` + `{perspective}-entities.md`（见 [agent/knowledge/naming-conventions.md](../agent/knowledge/naming-conventions.md)）。
+  - **`solutions/`、`analysis/`、`requirements/`、`changelogs/`** 阶段约定均收敛于各目录 **`README.md`**。`knowledge/` 五视角采用 `{perspective}-meta.md` + **per-entity `{ID}.md`**（OKF SSOT）；`KNOWLEDGE_INDEX.md` 由扫描生成。
 - 细则见 [agent/knowledge/naming-conventions.md](../agent/knowledge/naming-conventions.md)。
 
-**协同（目标态）**：应用仓维护 `/docs` 与 `manifest.yaml`；系统侧可抓取 manifest 更新 `knowledge` 并做一致性检查。
+**协同（目标态）**：应用仓维护 `/docs` 与 `manifest.md`；系统侧可抓取 manifest 更新 `knowledge` 并做一致性检查。
+
+### OKF per-entity SSOT
+
+`application/` 已对齐 [Open Knowledge Format v0.1](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md)：**每个知识实体**为一 concept 文件（`{ID}.md` + YAML frontmatter + bundle-relative 跨链）；各级 `index.md` 供 RAG 渐进下钻；`KNOWLEDGE_INDEX.md` 由工具扫描生成而非手写聚合表。细则见 [docs/superpowers/specs/2026-06-21-application-okf-design.md](../docs/superpowers/specs/2026-06-21-application-okf-design.md) 与 Skill `/docs-okf`。
 
 ---
 
@@ -63,7 +71,7 @@
 > 该视角回答：做什么业务、边界在哪、流程与能力如何组织。
 
 - **层级**：BD → BSD → BC → AGG → AB  
-- **约定**：`business-meta.md` 在 `knowledge/business/` 根目录（单文件 SSOT：概览、层级链、层定义、必填字段、跨视角引用）；`{BD-ID}/…` 为锚点目录。实例见 `business-entities.md`。AGG 含 `persisted_as_entity_ids` 等；AB 为能力（Ability）缩写，`apis`（含 `id` → API）映射实现接口。
+- **约定**：`business-meta.md` 在 `knowledge/business/` 根目录；**域扁平树** `BSD-EXAMPLE/`（登记入口）内扁平存放 `BD-EXAMPLE.md`(reference) 与 BSD→AB 全链 `{ID}.md`；详见 [域扁平树设计](../docs/superpowers/specs/2026-06-21-business-flat-tree-design.md)。
 
 #### 产品 (product)
 

@@ -1,3 +1,8 @@
+---
+type: Documentation Root
+tags: [governance]
+title: application — 应用知识库
+---
 # application — 应用知识库
 
 `application/` 维护应用侧稳定事实、实现登记与阶段交付，是全仓库的重要知识中枢。  

@@ -1,3 +1,7 @@
+---
+type: Documentation
+title: application — 应用知识库（mode=c）
+---
 # application — 应用知识库（mode=c）
 
 `application/` 维护应用侧稳定事实、实现登记与治理线索，是全仓库的重要知识中枢。  
@@ -40,7 +44,7 @@ agent/rules（治理基线：术语/原则/命名/ADR）
 
 ## 机器可读元数据
 
-- 根元数据：[docs_meta.yaml](docs_meta.yaml)
+- 根元数据：[docs_meta.md](docs_meta.md)
 - 子目录元数据：`knowledge/knowledge-meta.md`（阶段目录见各 `README.md`，含 [changelogs/README.md](changelogs/README.md)）
 
-> 约束细则以对应 YAML 与 `DESIGN.md` 为准，本文件不复写字段定义。
+> 约束细则以 `docs_meta.md` 与 `DESIGN.md` 为准，本文件不复写字段定义。
