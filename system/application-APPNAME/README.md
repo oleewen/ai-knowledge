@@ -1,3 +1,8 @@
+---
+type: Documentation
+tags: [federation]
+title: "application-{app-name} 槽位（模板）"
+---
 # application-{app-name} 槽位（模板）
 
 将 **`APPNAME`** 替换为实际应用标识。本目录用于在 **系统知识库根** 下挂载自应用知识库经 [`/docs-pull`](../../agent/skills/docs-pull/SKILL.md) 同步的镜像内容。

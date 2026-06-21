@@ -1,3 +1,7 @@
+---
+type: Agent Index Guide
+title: system 索引指南（INDEX_GUIDE）
+---
 # system 索引指南（INDEX_GUIDE）
 
 > **最后更新**: 2026-06-15  
@@ -13,8 +17,8 @@
 |------|------|------|
 | 系统库人类入口 | [README.md](README.md) | 子目录表、架构文档阅读顺序 |
 | 设计契约 | [DESIGN.md](DESIGN.md) | 目录边界、SSOT 继承、同步闭环 |
-| 架构入口 | [architecture/README.md](architecture/README.md) | 五视角索引与阅读顺序 |
-| 五视角架构目录 | [architecture/README.md](architecture/README.md) | 业务/产品/应用/数据/技术 分视角 README |
+| 架构入口 | [knowledge/README.md](knowledge/README.md) | 五视角索引与阅读顺序 |
+| 五视角架构目录 | [knowledge/README.md](knowledge/README.md) | 业务/产品/应用/数据/技术 分视角 README |
 | 联邦应用槽位 | [application-APPNAME/README.md](application-APPNAME/README.md) | 占位模板；真实应用名替换 `APPNAME` |
 | 系统宪法 | [../agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md) | 全仓库治理与命名 SSOT |
 | 联邦建联 | [knowledge-links.yaml](knowledge-links.yaml) | 与中央库/应用镜像的链接登记（按项目约定维护） |
@@ -24,10 +28,10 @@
 
 ### 1.2 元信息
 
-- **目录角色**: **系统知识库** — 组织级架构叙事、`system/architecture/` 五视角终稿、`application-{name}/` 镜像槽位
+- **目录角色**: **系统知识库** — 组织级架构叙事、`system/knowledge/` 五视角终稿、`application-{name}/` 镜像槽位
 - **技术栈**: Markdown、YAML（元数据与链接登记）
 - **已跟踪文件规模**（仅 `system/` 前缀）: **73** 个文件（`git ls-files system/`，2026-05-05）
-- **精读深度**: 本轮 **depth=3**（已读 README、architecture 索引与目录枚举）
+- **精读深度**: 本轮 **depth=3**（已读 README、knowledge 索引与目录枚举）
 
 ---
 
@@ -37,9 +41,9 @@
 
 ```text
 system/
-├── README.md / INDEX_GUIDE.md / DESIGN.md / docs_meta.yaml
+├── README.md / INDEX_GUIDE.md / DESIGN.md / docs_meta.md
 ├── knowledge-links.yaml
-├── architecture/                 # 五视角 + overview/ 蒸馏占位
+├── knowledge/                 # 五视角 + overview/ 蒸馏占位
 │   ├── README.md
 │   ├── business/ product/ application/ data/ technical/
 │   └── overview/NAME-overview.md
@@ -55,7 +59,7 @@ system/
 ```mermaid
 flowchart LR
   subgraph sys["system/"]
-    arch["architecture/"]
+    arch["knowledge/"]
     slot["application-*/"]
   end
   app["../application/ SSOT"]
@@ -67,11 +71,11 @@ flowchart LR
 
 ### 2.3 包结构
 
-非代码包分层；以 **architecture 子目录** 对应五视角文档树。
+非代码包分层；以 **knowledge 子目录** 对应五视角文档树。
 
 ### 2.4 文档目录
 
-- **架构入口**: [architecture/README.md](architecture/README.md)  
+- **架构入口**: [knowledge/README.md](knowledge/README.md)  
 - **设计契约**: [DESIGN.md](DESIGN.md)  
 - **公司侧对照**: [../company/ea/README.md](../company/ea/README.md)
 
@@ -93,13 +97,13 @@ flowchart LR
 |------|------|
 | 五视角架构 | 业务、产品、应用、数据、技术 架构文档体系 |
 | 联邦槽位 | `application-{name}/` 承载经 `/docs-pull` 同步的应用镜像内容 |
-| 蒸馏入口 | `architecture/overview/*-overview.md` 与 docs-distill 技能对齐 |
+| 蒸馏入口 | `knowledge/overview/*-overview.md` 与 docs-distill 技能对齐 |
 
 ### 4.2 聚合
 
 | 聚合 | 职责 | 路径 |
 |------|------|------|
-| 架构正文 | 可评审架构叙事 | [architecture/](architecture/) |
+| 架构正文 | 可评审架构叙事 | [knowledge/](knowledge/) |
 | 槽位 | 应用联邦镜像 | `application-*/` |
 | 链接登记 | 建联元数据 | [knowledge-links.yaml](knowledge-links.yaml) |
 
@@ -107,7 +111,7 @@ flowchart LR
 
 | 能力 | 说明 |
 |------|------|
-| docs-distill | 自 `system/application-*/` 核实内容上行至 `architecture/overview/` |
+| docs-distill | 自 `system/application-*/` 核实内容上行至 `knowledge/overview/` |
 | docs-archive | 与 overview 行级副标题文件对齐（见根索引 Skill 表） |
 
 ### 4.4 领域事件
@@ -120,7 +124,7 @@ flowchart LR
 
 ### 5.1 阅读顺序（摘自 README）
 
-1. [architecture/README.md](architecture/README.md)  
+1. [knowledge/README.md](knowledge/README.md)  
 2. 业务 / 产品视角文档  
 3. 应用 / 数据 / 技术视角文档  
 
@@ -145,7 +149,7 @@ flowchart LR
 
 | 数据源 | 类型 | 用途 |
 |--------|------|------|
-| `architecture/**/*.md` | Markdown | 架构事实与模板段 |
+| `knowledge/**/*.md` | Markdown | 架构事实与模板段 |
 | `*-meta.md` / `*-entities.md` | Markdown | 架构视角元数据与实体（如 technical/） |
 | `knowledge-links.yaml` | YAML | 联邦链接 |
 
@@ -161,7 +165,7 @@ flowchart LR
 
 | 项 | 位置 |
 |----|------|
-| 文档元数据 | [docs_meta.yaml](docs_meta.yaml)、[changelogs/README.md](changelogs/README.md) |
+| 文档元数据 | [docs_meta.md](docs_meta.md)、[changelogs/README.md](changelogs/README.md) |
 
 ### 7.2 环境差异
 
@@ -202,9 +206,9 @@ flowchart LR
 | 公司架构对照 | [../company/ea/README.md](../company/ea/README.md) |
 | docs-distill | [../agent/skills/docs-distill/SKILL.md](../agent/skills/docs-distill/SKILL.md) |
 
-### 9.2 视角文件索引（architecture/）
+### 9.2 视角文件索引（knowledge/）
 
-与 [architecture/README.md](architecture/README.md) 中表格一致，含 `BUSINESS-ARCHITECTURE.md`、`PRODUCT-ARCHITECTURE.md`、`APPLICATION-ARCHITECTURE.md`、`DATA-ARCHITECTURE.md`、`TECHNICAL-ARCHITECTURE.md` 等；不在此重复全表以避免漂移。
+与 [knowledge/README.md](knowledge/README.md) 中表格一致，含 `BUSINESS-ARCHITECTURE.md`、`PRODUCT-ARCHITECTURE.md`、`APPLICATION-ARCHITECTURE.md`、`DATA-ARCHITECTURE.md`、`TECHNICAL-ARCHITECTURE.md` 等；不在此重复全表以避免漂移。
 
 ---
 

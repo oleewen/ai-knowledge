@@ -30,4 +30,4 @@
 | total_tpl | 1 |
 | total_entities | 1 |
 | extraction_basis | 示例占位 |
-| schema_notes | 公司层仅登记 TPL；TSD 见 system/architecture/technical/ |
+| schema_notes | 公司层仅登记 TPL；TSD 见 system/knowledge/technical/ |

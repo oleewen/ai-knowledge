@@ -106,7 +106,7 @@ flowchart LR
 | 联邦治理 | `system/`、`company/` 槽位与迁移叙事；`system/application-{name}/` 为应用镜像，`company/system-{name}/` 为系统镜像 | 多库协作与 docs-install 模式 |
 | SDD | 方案 → 分析 → PRD/设计/测试 阶段交付链 | `sdx-*` Skill 与 `application/` 阶段目录 |
 | 中央知识库挂载建联 | `docs-install --mode=central` 等约定 | 见 [README.md](README.md)、[scripts/README.md](scripts/README.md) |
-| 五架构视角 | 业务 / 产品 / 应用 / 技术 / 数据 架构文档体系；`system/architecture/` 与 `company/ea/` 均按此组织 | docs-distill、docs-archive、overview 文件 |
+| 五架构视角 | 业务 / 产品 / 应用 / 技术 / 数据 架构文档体系；`system/knowledge/` 与 `company/ea/` 均按此组织 | docs-distill、docs-archive、overview 文件 |
 
 ### 4.2 聚合根（知识组织）
 

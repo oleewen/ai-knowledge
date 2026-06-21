@@ -28,15 +28,27 @@ HIERARCHY_TO_TYPE: Dict[str, str] = {
     "ENT": "Entity",
     "MW": "Middleware Binding",
     "CMP": "Component",
+    "TSD": "Technical Subdomain",
 }
 
-PERSPECTIVE_DOMAIN_ANCHOR: Dict[str, str] = {
+APPLICATION_PERSPECTIVE_DOMAIN_ANCHOR: Dict[str, str] = {
     "business": "BSD-EXAMPLE",
     "product": "PM-EXAMPLE",
     "application": "MS-EXAMPLE",
     "data": "ENT-EXAMPLE",
     "technical": "MW-EXAMPLE",
 }
+
+SYSTEM_PERSPECTIVE_DOMAIN_ANCHOR: Dict[str, str] = {
+    "business": "BD-EXAMPLE",
+    "product": "PM-EXAMPLE",
+    "application": "MS-EXAMPLE",
+    "data": "ENT-EXAMPLE",
+    "technical": "TSD-MIDDLEWARE",
+}
+
+# 默认 application bundle 锚点（向后兼容）
+PERSPECTIVE_DOMAIN_ANCHOR = APPLICATION_PERSPECTIVE_DOMAIN_ANCHOR
 
 # legacy：嵌套锚点规则（迁移前）；新落盘见 entity_relpath + PERSPECTIVE_DOMAIN_ANCHOR
 PERSPECTIVE_ANCHOR_RULES: Dict[str, str] = {
@@ -141,18 +153,42 @@ def hierarchy_to_type(hierarchy: str) -> str:
     return HIERARCHY_TO_TYPE.get(hierarchy, hierarchy)
 
 
-def perspective_domain_anchor(perspective: str, full_id: Optional[str] = None) -> str:
-    """域扁平树：返回 perspective 下域文件夹名（示例 ID 用 PERSPECTIVE_DOMAIN_ANCHOR）。"""
-    return PERSPECTIVE_DOMAIN_ANCHOR.get(perspective, full_id or "")
+def perspective_domain_anchor(
+    perspective: str,
+    full_id: Optional[str] = None,
+    bundle: str = "application",
+) -> str:
+    """域扁平树：返回 perspective 下域文件夹名。"""
+    anchor_map = (
+        SYSTEM_PERSPECTIVE_DOMAIN_ANCHOR
+        if bundle == "system"
+        else APPLICATION_PERSPECTIVE_DOMAIN_ANCHOR
+    )
+    return anchor_map.get(perspective, full_id or "")
 
 
 def entity_relpath(
     perspective: str,
     full_id: str,
     parent_id: Optional[str] = None,
+    bundle: str = "application",
 ) -> str:
-    """相对 application/ bundle 根的 concept 路径（域扁平树）。"""
+    """相对 bundle 根的 concept 路径（域扁平树）。"""
     prefix = _id_prefix(full_id)
+    if bundle == "system":
+        if perspective == "application" and prefix in ("APP", "MS"):
+            return f"knowledge/application/{full_id}.md"
+        if perspective == "data" and prefix in ("DS", "ENT"):
+            return f"knowledge/data/{full_id}.md"
+        if perspective == "business" and prefix == "BD":
+            return f"knowledge/business/BD-EXAMPLE/{full_id}.md"
+        if perspective == "product" and prefix == "PL":
+            return f"knowledge/product/PM-EXAMPLE/{full_id}.md"
+        anchor = perspective_domain_anchor(perspective, full_id, bundle)
+        if not anchor:
+            return f"knowledge/{perspective}/{full_id}.md"
+        return f"knowledge/{perspective}/{anchor}/{full_id}.md"
+
     if perspective == "application" and prefix in ("SYS", "APP"):
         return f"knowledge/application/{full_id}.md"
     if perspective == "business" and prefix == "BD":
@@ -161,7 +197,7 @@ def entity_relpath(
         return f"knowledge/data/{full_id}.md"
     if perspective == "product" and prefix == "PL":
         return f"knowledge/product/{full_id}.md"
-    anchor = perspective_domain_anchor(perspective, full_id)
+    anchor = perspective_domain_anchor(perspective, full_id, bundle)
     if not anchor:
         return f"knowledge/{perspective}/{full_id}.md"
     return f"knowledge/{perspective}/{anchor}/{full_id}.md"

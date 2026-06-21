@@ -64,7 +64,7 @@ SCRIPTS_DIR="${SCRIPT_DIR}"
 APP_DIR="system/application-${APP}"
 APP_CHANGE_LOG="${APP_DIR}/changelogs/CHANGE-LOG.md"  # 只读：应用侧变更来源
 DISTILL_LOG="system/changelogs/DISTILL-LOG.md"        # 读写：蒸馏记录兼锚点（步骤 4.4）
-OVERVIEW_DIR="system/architecture/overview"
+OVERVIEW_DIR="system/knowledge/overview"
 OVERVIEW_TEMPLATE="${OVERVIEW_DIR}/NAME-overview.md"
 OVERVIEW_TARGET="${OVERVIEW_DIR}/${APP}-overview.md"
 

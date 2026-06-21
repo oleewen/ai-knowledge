@@ -1,3 +1,8 @@
+---
+type: Change Log
+title: application-APPNAME 变更日志
+---
+
 # CHANGE-LOG
 
 本文件为 `application/` 侧**维护性变更与文档聚合**的 Markdown 日志入口。

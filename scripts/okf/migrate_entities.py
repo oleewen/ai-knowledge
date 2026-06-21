@@ -35,6 +35,7 @@ PREFIX_PERSPECTIVE: Dict[str, str] = {
     "ENT": "data",
     "MW": "technical",
     "CMP": "technical",
+    "TSD": "technical",
 }
 
 RELATION_FIELDS: Set[str] = {
@@ -202,6 +203,7 @@ def id_to_link(
     entity_index: Dict[str, Dict[str, Any]],
     *,
     cross_perspective: bool = False,
+    bundle: str = "application",
 ) -> str:
     prefix = full_id.split("-", 1)[0]
     if cross_perspective and prefix in ("APP", "MS", "API"):
@@ -218,12 +220,18 @@ def id_to_link(
     if prefix == "ENT" and not parent_id:
         parent_id = "DS-EXAMPLE"
 
-    relpath = okf_lib.entity_relpath(perspective, full_id, parent_id)
+    relpath = okf_lib.entity_relpath(perspective, full_id, parent_id, bundle=bundle)
     return okf_lib.to_bundle_link(relpath)
 
 
-def format_link(full_id: str, entity_index: Dict[str, Dict[str, Any]], *, cross: bool) -> str:
-    link = id_to_link(full_id, entity_index, cross_perspective=cross)
+def format_link(
+    full_id: str,
+    entity_index: Dict[str, Dict[str, Any]],
+    *,
+    cross: bool,
+    bundle: str = "application",
+) -> str:
+    link = id_to_link(full_id, entity_index, cross_perspective=cross, bundle=bundle)
     return f"[{full_id}]({link})"
 
 
@@ -231,6 +239,7 @@ def format_field_links(
     field: str,
     value: Optional[str],
     entity_index: Dict[str, Dict[str, Any]],
+    bundle: str = "application",
 ) -> List[str]:
     if value is None:
         return []
@@ -242,7 +251,7 @@ def format_field_links(
         if not fid or fid in NULL_MARKERS:
             continue
         if re.match(r"^[A-Z][A-Z0-9_]*(?:-[A-Z0-9_]+)+$", fid):
-            lines.append(format_link(fid, entity_index, cross=cross))
+            lines.append(format_link(fid, entity_index, cross=cross, bundle=bundle))
         else:
             lines.append(token)
     return lines
@@ -252,6 +261,7 @@ def build_concept_content(
     entity: Dict[str, Any],
     perspective: str,
     entity_index: Dict[str, Dict[str, Any]],
+    bundle: str = "application",
 ) -> str:
     hierarchy = entity.get("hierarchy") or entity.get("full_id", "").split("-", 1)[0]
     full_id = entity["full_id"]
@@ -270,6 +280,8 @@ def build_concept_content(
         "hierarchy": hierarchy,
         "parent_id": parent_id,
     }
+    if bundle == "system":
+        meta["layer_scope"] = "system"
     extra_meta_keys: Set[str] = set()
     for key, val in entity.items():
         if key in FRONTMATTER_SKIP or key in RELATION_FIELDS or key in CROSS_PERSPECTIVE_FIELDS:
@@ -283,13 +295,13 @@ def build_concept_content(
     relation_lines: List[str] = []
     if parent_id:
         relation_lines.append(
-            f"- parent: {format_link(parent_id, entity_index, cross=False)}"
+            f"- parent: {format_link(parent_id, entity_index, cross=False, bundle=bundle)}"
         )
     for field in ("children", "aggregates", "abilities", "bounded_contexts"):
         val = entity.get(field)
         if not val:
             continue
-        links = format_field_links(field, val, entity_index)
+        links = format_field_links(field, val, entity_index, bundle=bundle)
         if links:
             relation_lines.append(f"- {field}:")
             for link in links:
@@ -299,12 +311,12 @@ def build_concept_content(
         if entity.get("parent_sys_id"):
             ps = entity["parent_sys_id"]
             relation_lines.append(
-                f"- parent_sys_id: {format_link(ps, entity_index, cross=False)}"
+                f"- parent_sys_id: {format_link(ps, entity_index, cross=False, bundle=bundle)}"
             )
         if entity.get("service_id"):
             sid = entity["service_id"]
             relation_lines.append(
-                f"- service_id: {format_link(sid, entity_index, cross=False)}"
+                f"- service_id: {format_link(sid, entity_index, cross=False, bundle=bundle)}"
             )
         if entity.get("service_ids"):
             links = format_field_links("service_ids", entity["service_ids"], entity_index)
@@ -318,7 +330,7 @@ def build_concept_content(
         val = entity.get(field)
         if not val or field in ("service_ids",):
             continue
-        links = format_field_links(field, val, entity_index)
+        links = format_field_links(field, val, entity_index, bundle=bundle)
         if links:
             if len(links) == 1:
                 cross_lines.append(f"- {field}: {links[0]}")
@@ -393,9 +405,9 @@ def migrate(
             or entity.get("parent_sys_id")
             or entity.get("service_id")
         )
-        relpath = okf_lib.entity_relpath(perspective, full_id, parent_id)
+        relpath = okf_lib.entity_relpath(perspective, full_id, parent_id, bundle=bundle)
         out_path = bundle_root / relpath
-        content = build_concept_content(entity, perspective, entity_index)
+        content = build_concept_content(entity, perspective, entity_index, bundle=bundle)
 
         if dry_run:
             print(f"[dry-run] would write: {out_path.relative_to(repo)}")

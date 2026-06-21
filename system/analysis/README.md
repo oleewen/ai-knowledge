@@ -1,3 +1,7 @@
+---
+type: Documentation
+title: analysis — 需求分析文档
+---
 # analysis — 需求分析文档
 
 SDD **需求分析**阶段目录：产出 `ANALYSIS-{IDEA-ID}.md`，作为 [../requirements](../requirements) 输入；上游 [../solutions](../solutions) 中 `SOLUTION-{IDEA-ID}.md`。

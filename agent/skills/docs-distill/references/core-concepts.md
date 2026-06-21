@@ -7,7 +7,7 @@
 | 术语 | 含义 |
 | ------ | ------ |
 | `{name}`/`{APPNAME}` | 应用目录名（如 `billing-appeal`），与 `system/application-{name}/` 一致 |
-| `{APPNAME}-overview.md` | `system/architecture/overview/` 下产物 |
+| `{APPNAME}-overview.md` | `system/knowledge/overview/` 下产物 |
 | `changelog_id` | CHANGE-LOG 条目稳定 id；规则见 distill-log-spec |
 
 ## 日志（摘要）

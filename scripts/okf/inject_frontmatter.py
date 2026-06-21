@@ -31,11 +31,17 @@ EXACT_GOVERNANCE: Dict[str, Dict[str, Any]] = {
     "changelogs/README.md": {"type": "Documentation"},
     "changelogs/CHANGE-LOG.md": {"type": "Change Log"},
     "changelogs/INDEXING-LOG.md": {"type": "Indexing Log"},
+    "docs_meta.md": {"type": "Directory Meta"},
+    "application-APPNAME/README.md": {"type": "Documentation", "tags": ["federation"]},
     "requirements/REQUIREMENT-EXAMPLE/README.md": {"type": "Requirement Package"},
 }
 
 PERSPECTIVE_META_RE = re.compile(r"^knowledge/[^/]+/[^/]+-meta\.md$")
 PERSPECTIVE_README_RE = re.compile(r"^knowledge/[^/]+/README\.md$")
+ARCHITECTURE_CHAPTER_RE = re.compile(
+    r"^knowledge/(?:business|product|application|data|technical)/[a-z][a-z0-9-]*\.md$"
+)
+OVERVIEW_BUFFER_RE = re.compile(r"^knowledge/overview/[^/]+\.md$")
 TITLE_RE = re.compile(r"^#\s+(.+)$", re.MULTILINE)
 
 
@@ -52,6 +58,10 @@ def classify_governance(relpath: str) -> Optional[Dict[str, Any]]:
         return {"type": "Perspective Meta"}
     if PERSPECTIVE_README_RE.match(posix):
         return {"type": "Documentation"}
+    if OVERVIEW_BUFFER_RE.match(posix):
+        return {"type": "Architecture Overview Buffer", "tags": ["overview", "distill"]}
+    if ARCHITECTURE_CHAPTER_RE.match(posix):
+        return {"type": "Architecture Chapter", "tags": ["architecture", "chapter"]}
     return None
 
 

@@ -16,7 +16,7 @@ description: >
 
 | 负责 | 不负责 |
 | ---- | ------ |
-| 已注册 app 的远端文档 → 镜像；`pull-log.md`；manifest `last_pulled_*`（脚本）；`--dry-run` / `--force` 确认节奏 | 写 `system/architecture/overview/`（extract/distill）；**docs-archive**；自动改写 `APPLICATIONS_INDEX.md`；SDD 终稿 |
+| 已注册 app 的远端文档 → 镜像；`pull-log.md`；manifest `last_pulled_*`（脚本）；`--dry-run` / `--force` 确认节奏 | 写 `system/knowledge/overview/`（extract/distill）；**docs-archive**；自动改写 `APPLICATIONS_INDEX.md`；SDD 终稿 |
 
 ## 前置
 

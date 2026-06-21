@@ -22,4 +22,4 @@
 2. [solutions/README.md](solutions/README.md) / [analysis/README.md](analysis/README.md) — 跨系统 SDD 上游  
 3. [system-SYSNAME/README.md](system-SYSNAME/README.md) — 系统镜像槽位（按需替换 `SYSNAME`）  
 
-与系统知识库侧 [`../system/architecture/`](../system/architecture/README.md) 对照阅读；设计契约见 [DESIGN.md](DESIGN.md)。
+与系统知识库侧 [`../system/knowledge/`](../system/knowledge/README.md) 对照阅读；设计契约见 [DESIGN.md](DESIGN.md)。

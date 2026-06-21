@@ -120,7 +120,7 @@ run_cmd "visualize" python3 \
   "$OKF_DIR/visualize.py" \
   --bundle "$BUNDLE" \
   --out "${BUNDLE}/viz.html" \
-  --name "application OKF"
+  --name "${BUNDLE} OKF"
 
 echo ""
 echo "=== okf-migrate 完成 ==="

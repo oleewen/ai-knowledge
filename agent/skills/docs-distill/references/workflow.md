@@ -30,7 +30,7 @@
 | 4 EXECUTE | 4.1 overview 检查/创建 → 4.2 读应用知识 → **4.3 写第三列** → **4.4 DISTILL-LOG** | [federation-spec.md](federation-spec.md) |
 | 5 CLOSE | 摘要；DISTILL **最新在前**；不自动 commit | — |
 
-**HARD-GATE**：阶段 3 未 `CONFIRMED` → 禁止阶段 4（含 `system/architecture/` overview 内容与 DISTILL-LOG）。`dry-run` 属阶段 3。  
+**HARD-GATE**：阶段 3 未 `CONFIRMED` → 禁止阶段 4（含 `system/knowledge/` overview 内容与 DISTILL-LOG）。`dry-run` 属阶段 3。  
 **原子**：**4.3 失败禁止 4.4**。
 
 ## 命令示例

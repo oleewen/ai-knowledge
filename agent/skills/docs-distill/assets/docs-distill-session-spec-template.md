@@ -18,7 +18,7 @@
 ## 3. 区间
 
 - 候选：`…` changelog 区间  
-- 目标：`system/architecture/overview/<APPNAME>-overview.md`（**新建｜更新**）
+- 目标：`system/knowledge/overview/<APPNAME>-overview.md`（**新建｜更新**）
 
 ## 4. 门禁进度（可选）
 

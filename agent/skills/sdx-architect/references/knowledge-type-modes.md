@@ -21,7 +21,7 @@
 
 | 模式 | 五视角入口 |
 | --- | --- |
-| `system` | [system/architecture/README.md](../../../../system/architecture/README.md)；overview 摘要见 `system/architecture/overview/` |
+| `system` | [system/knowledge/README.md](../../../../system/knowledge/README.md)；overview 摘要见 `system/knowledge/overview/` |
 | `company` | [company/ea/README.md](../../../../company/ea/README.md)；overview 摘要见 `company/ea/overview/` |
 
 1. **§1**：ANALYSIS/PRD/overview 链接  

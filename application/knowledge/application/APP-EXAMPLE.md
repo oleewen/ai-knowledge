@@ -17,7 +17,7 @@ ssot_layer: system
 ---
 # SSOT
 
-上游主定义：`system/architecture/application/APP-EXAMPLE/`（系统层 OKF 落盘见后续波次）。
+上游主定义：`system/knowledge/application/APP-EXAMPLE.md`（系统层 OKF SSOT）。
 
 # Relations
 

@@ -24,7 +24,7 @@ title: knowledge — 应用侧知识主体
 | [data](data) | DS → ENT → TBL（TBL 为应用层首次定义；ENT 在本树承接物理落地） | [data/data-meta.md](data/data-meta.md) |
 | [technical](technical) | MW → CMP | [technical/technical-meta.md](technical/technical-meta.md) |
 
-公司级 **TPL-***、系统级 **TSD-*** 分别在 `company/ea/technical/`、`system/architecture/technical/` 登记；本树技术视角登记 **MW/CMP**。
+公司级 **TPL-***、系统级 **TSD-*** 分别在 `company/ea/technical/`、`system/knowledge/technical/` 登记；本树技术视角登记 **MW/CMP**。
 
 ---
 

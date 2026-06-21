@@ -231,8 +231,8 @@ flowchart LR
 | 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `INDEX_GUIDE.md`、`README.md`、`AGENTS.md` |
 | 3 | `docs-link` 登记各已有应用库（`--link --target=… --app_name=…`） | `knowledge-links.yaml`（`repository` + `path` + `doc_dir` + `app_name`） |
 | 4 | `/docs-pull` 拉取各应用联邦镜像 | `system/application-{APPNAME}/` |
-| 5 | `/docs-distill --app {APPNAME}`（配合 `--since` 增量） | `system/architecture/overview/{APPNAME}-overview.md` 第三列 |
-| 6 | `/docs-archive`（人工核实高优先级行后） | 知识落入 `system/architecture/` 各视角章节 |
+| 5 | `/docs-distill --app {APPNAME}`（配合 `--since` 增量） | `system/knowledge/overview/{APPNAME}-overview.md` 第三列 |
+| 6 | `/docs-archive`（人工核实高优先级行后） | 知识落入 `system/knowledge/` 各视角章节 |
 
 ### 阶段三：接续系统知识库需求分析、概要设计
 

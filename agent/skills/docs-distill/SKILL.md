@@ -1,7 +1,7 @@
 ---
 name: docs-distill
 description: >
-  将 system/application-{name}/ 已核实内容蒸馏写入 system/architecture/overview/{APPNAME}-overview.md 第三列。
+  将 system/application-{name}/ 已核实内容蒸馏写入 system/knowledge/overview/{APPNAME}-overview.md 第三列。
   触发：/docs-distill，或「知识蒸馏」「上行系统库」「更新 overview」「同步应用知识」「系统库刷新」等（不必等用户说命令名）。
   参数：--app、--since、--full、--dry-run；默认增量锚点。
   分流：用户只要 docs-extract、docs-archive、docs-indexing、仅 SDD 终稿等 → 不以本技能为唯一主路径。
@@ -24,7 +24,7 @@ description: >
 - 路径契约：[session-spec-path.md](../../references/session-spec-path.md)、[knowledge-layout.md](../../references/knowledge-layout.md)
 - 可读 `system/application-{name}/changelogs/CHANGE-LOG.md`（过短则补背景）。
 - 明确 `{APPNAME}` / `--app`；多应用宜带 `--app`。
-- 知 `{DOC_DIR}/superpowers/specs/`、`system/architecture/overview/`；公司侧 overview 为 `company/ea/overview/`（`docs-extract` / `docs-archive` / `docs-tag` 同工作流）。
+- 知 `{DOC_DIR}/superpowers/specs/`、`system/knowledge/overview/`；公司侧 overview 为 `company/ea/overview/`（`docs-extract` / `docs-archive` / `docs-tag` 同工作流）。
 
 ## 读序
 

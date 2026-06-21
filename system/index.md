@@ -1,0 +1,31 @@
+---
+okf_version: "0.1"
+---
+
+# system — OKF Bundle Index
+
+## 根导航
+
+| 章节 | 路径 |
+| --- | --- |
+| 人类入口 | [README.md](/README.md) |
+| Agent 九章索引 | [INDEX_GUIDE.md](/INDEX_GUIDE.md) |
+| 设计方案 | [DESIGN.md](/DESIGN.md) |
+| 目录元数据 | [docs_meta.md](/docs_meta.md) |
+| 联邦建联 | knowledge-links.yaml |
+
+## 主要分区
+
+| 分区 | 路径 |
+| --- | --- |
+| 五视角知识 SSOT | [knowledge/](/knowledge/) |
+| 解决方案阶段 | [solutions/](/solutions/) |
+| 需求分析阶段 | [analysis/](/analysis/) |
+| 需求交付阶段 | [requirements/](/requirements/) |
+| 变更与索引运维 | [changelogs/](/changelogs/) |
+| 系统层 ADR | [adr/](/adr/) |
+| 联邦应用槽位 | [application-APPNAME/](/application-APPNAME/) |
+
+## 可视化
+
+- [viz.html](/viz.html)

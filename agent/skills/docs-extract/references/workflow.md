@@ -38,9 +38,9 @@
 ## 命令示例
 
 ```bash
-/docs-extract --sources docs/design.md --overview system/architecture/overview/billing-overview.md --dry-run
-/docs-extract --sources docs/ --overview system/architecture/overview/billing-overview.md
-/docs-extract --sources docs/design.md docs/adr/ --overview system/architecture/overview/billing-overview.md
+/docs-extract --sources docs/design.md --overview system/knowledge/overview/billing-overview.md --dry-run
+/docs-extract --sources docs/ --overview system/knowledge/overview/billing-overview.md
+/docs-extract --sources docs/design.md docs/adr/ --overview system/knowledge/overview/billing-overview.md
 ```
 
 ## 执行摘要

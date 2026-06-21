@@ -81,19 +81,19 @@ SSOT_BODY: Dict[str, str] = {
     ),
     "APP-EXAMPLE": (
         "# SSOT\n\n"
-        "上游主定义：`system/architecture/application/APP-EXAMPLE/`（系统层 OKF 落盘见后续波次）。\n"
+        "上游主定义：`system/knowledge/application/APP-EXAMPLE.md`（系统层 OKF SSOT）。\n"
     ),
     "MS-EXAMPLE": (
         "# SSOT\n\n"
-        "上游主定义：`system/architecture/application/MS-EXAMPLE/`（系统层 OKF 落盘见后续波次）。\n"
+        "上游主定义：`system/knowledge/application/MS-EXAMPLE.md`（系统层 OKF SSOT）。\n"
     ),
     "DS-EXAMPLE": (
         "# SSOT\n\n"
-        "上游主定义：`system/architecture/data/DS-EXAMPLE/`（系统层 OKF 落盘见后续波次）。\n"
+        "上游主定义：`system/knowledge/data/DS-EXAMPLE.md`（系统层 OKF SSOT）。\n"
     ),
     "ENT-EXAMPLE": (
         "# SSOT\n\n"
-        "上游主定义：`system/architecture/data/ENT-EXAMPLE/`（系统层 OKF 落盘见后续波次）。\n"
+        "上游主定义：`system/knowledge/data/ENT-EXAMPLE.md`（系统层 OKF SSOT）。\n"
     ),
 }
 

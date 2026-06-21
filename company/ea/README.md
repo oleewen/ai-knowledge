@@ -15,4 +15,4 @@
 
 各视角 `{perspective}-meta.md`（层级与必填字段）、`{perspective}-entities.md`（实例索引）见对应子目录。
 
-与系统知识库侧 [`../../system/architecture/`](../../system/architecture/README.md) 对照阅读；顶层索引见 [`../README.md`](../README.md)。
+与系统知识库侧 [`../../system/knowledge/`](../../system/knowledge/README.md) 对照阅读；顶层索引见 [`../README.md`](../README.md)。

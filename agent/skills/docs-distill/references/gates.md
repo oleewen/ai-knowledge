@@ -5,7 +5,7 @@
 
 ## 总则
 
-阶段 3 **`CONFIRMED`**（或合法例外）前，禁止阶段 4：写 `system/architecture/` 受管 overview 内容、追加 `DISTILL-LOG`。  
+阶段 3 **`CONFIRMED`**（或合法例外）前，禁止阶段 4：写 `system/knowledge/` 受管 overview 内容、追加 `DISTILL-LOG`。  
 阶段 1–3 可读、算范围、`--dry-run`（dry-run **不落**上述两处）。
 
 **合法例外**（须在对话留痕）：① 同会话**明示**跳过/仅预览/授权直写；② `DOCS_DISTILL_ALLOW_WRITE=1`（人工知情）。

@@ -78,6 +78,6 @@ title: 技术视角元数据（application/knowledge/technical）
 | [technical-entities.md](technical-entities.md) | 扁平实体索引与登记主表 |
 | [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) | 五视角索引 |
 | [../../../company/ea/technical/technical-entities.md](../../../company/ea/technical/technical-entities.md) | 公司级 TPL |
-| [../../../system/architecture/technical/technical-entities.md](../../../system/architecture/technical/technical-entities.md) | 系统级 TSD |
+| [../../../system/knowledge/technical/technical-entities.md](../../../system/knowledge/technical/technical-entities.md) | 系统级 TSD |
 
 **索引**：`readme_index_table: true`；变更 ID 时同步 README、KNOWLEDGE_INDEX.md（按需）。

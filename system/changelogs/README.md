@@ -1,3 +1,7 @@
+---
+type: Documentation
+title: changelogs — 变更留痕与索引运维
+---
 # changelogs — 变更留痕与索引运维
 
 `system/` 知识库变更可追溯入口：仅约定 **Markdown** 日志产物，不重复阶段文档写作规范。阶段约定 SSOT 为本 README（无 `{dirname}_meta.yaml`）。

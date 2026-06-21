@@ -15,7 +15,7 @@ ssot_layer: system
 ---
 # SSOT
 
-上游主定义：`system/architecture/data/ENT-EXAMPLE/`（系统层 OKF 落盘见后续波次）。
+上游主定义：`system/knowledge/data/ENT-EXAMPLE.md`（系统层 OKF SSOT）。
 
 # Relations
 

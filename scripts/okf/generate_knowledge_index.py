@@ -182,7 +182,7 @@ def _split_existing(text: str) -> Tuple[str, str]:
 def _default_suffix() -> str:
     return "\n".join(
         [
-            "> 公司级 **TPL-***、系统级 **TSD-*** 不在本索引登记；见 `company/ea/technical/`、`system/architecture/technical/`。",
+            "> 公司级 **TPL-***、系统级 **TSD-*** 不在本索引登记；见 `company/ea/technical/`、`system/knowledge/technical/`。",
             "",
             "---",
             "",

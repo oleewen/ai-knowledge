@@ -3,9 +3,9 @@ name: docs-okf
 description: >
   OKF bundle 迁移、校验与可视化：从 legacy `*-entities.md` 拆出 per-entity concept、注入 frontmatter、
   生成各级 index.md 与 KNOWLEDGE_INDEX、运行 validate-okf、产出 viz.html。
-  触发：/docs-okf、OKF 迁移、刷新 viz、对齐 application/ 与 OKF v0.1。
-  参数：--dry-run、--validate、--viz、--bundle application。
-  设计 spec：docs/superpowers/specs/2026-06-21-application-okf-design.md。
+  触发：/docs-okf、OKF 迁移、刷新 viz、对齐 application/ 或 system/ 与 OKF v0.1。
+  参数：--dry-run、--validate、--viz、--bundle application|system。
+  设计 spec：docs/superpowers/specs/2026-06-21-application-okf-design.md、docs/superpowers/specs/2026-06-21-system-okf-design.md。
   用户只要 docs-build 提取或 docs-indexing 九章地图为主路径 → 分流对应技能。
 ---
 

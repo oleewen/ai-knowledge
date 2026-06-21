@@ -1,3 +1,7 @@
+---
+type: Design Document
+title: 系统知识库设计（精简版）
+---
 # 系统知识库设计（精简版）
 
 本文件定义 `system/` 的设计边界、目录契约、映射闭环与演进策略。  
@@ -10,7 +14,7 @@
 1. [README.md](README.md) — 系统知识库定位与目录说明
 2. 本文 — 设计边界、映射与治理流程
 3. [agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md) — 治理层职责
-4. [architecture/README.md](architecture/README.md) — 架构聚合视图入口
+4. [knowledge/README.md](knowledge/README.md) — 架构聚合视图入口
 5. [../application/DESIGN.md](../application/DESIGN.md) — 应用侧 SSOT 设计依据
 
 ---
@@ -25,7 +29,7 @@
 
 边界约束：
 
-- **结构边界**：`architecture/`、`application-{name}/` 职责分离；命名与术语 SSOT 在 [agent/knowledge/](../agent/knowledge/knowledge-governance.md)；流程闸门在 [agent/rules/](../agent/rules/CONVENTIONS.md)；
+- **结构边界**：`knowledge/`、`application-{name}/` 职责分离；命名与术语 SSOT 在 [agent/knowledge/](../agent/knowledge/knowledge-governance.md)；流程闸门在 [agent/rules/](../agent/rules/CONVENTIONS.md)；
 - **流程边界**：应用镜像经 `docs-pull` 下行；架构知识经 `docs-distill` / `docs-archive` 上行；SDD 阶段链见 §2.2；
 - **事实边界**：`system` 维护系统层实体主定义与治理事实，`application` 维护应用层实体主定义与实现事实。
 
@@ -40,7 +44,7 @@
 | 根导航 | [README.md](README.md)、[INDEX_GUIDE.md](INDEX_GUIDE.md)、[docs_meta.yaml](docs_meta.yaml) | 人类入口、Agent 九章索引、目录元数据 |
 | 治理规则 | [agent/knowledge/](../agent/knowledge/knowledge-governance.md) | 术语边界、命名 SSOT、ADR 模板与原则（全仓库） |
 | ADR 正文 | [adr/](adr/README.md) | 系统层架构决策记录正文 |
-| 架构层 | `architecture/` | 五架构视角聚合视图；含 `overview/` 蒸馏缓冲区 |
+| 架构层 | `knowledge/` | 五架构视角聚合视图；含 `overview/` 蒸馏缓冲区 |
 | SDD 阶段 | [solutions/](solutions/README.md)、[analysis/](analysis/README.md)、[requirements/](requirements/README.md) | 方案 → 分析 → 需求交付（PRD/ASD/DSD/TDD） |
 | 联邦层 | `application-{name}/` | 应用镜像挂载槽位，承接 `/docs-pull` 内容并支持归档追溯 |
 | 建联清单 | [knowledge-links.yaml](knowledge-links.yaml) | 联邦应用建联登记（见 [scripts/README.md](../scripts/README.md)） |
@@ -60,11 +64,11 @@
 
 | 视角 | 回答什么问题 | 主要内容 | 入口 |
 | --- | --- | --- | --- |
-| **业务** | 做什么业务、边界与流程 | 业务概述、业务域划分（公司·BD）、业务术语、能力地图、业务流程（系统·BP） | [architecture/business/](architecture/business/README.md) |
-| **产品** | 用户、功能组织与发布 | 产品概述、产品架构、信息架构、产品功能（系统·FT）、用户旅程（系统·UC）、版本发布、运营支撑、多端策略 | [architecture/product/](architecture/product/README.md) |
-| **应用** | 服务拆分与集成边界 | 应用架构（系统·APP）、领域模型（系统·BC/AGG）、服务设计（系统·MS）、领域能力（系统·AB）、集成架构、服务交互、接口管理（应用·API）、多租户环境、ADR | [architecture/application/](architecture/application/README.md) |
-| **数据** | 建模、存储与治理 | 数据概述、数据模型（系统·ENT）、数据存储（系统·DS）、数据流转 | [architecture/data/](architecture/data/README.md) |
-| **技术** | 运行、扩展、观测与交付 | 技术概述、部署架构（系统·TSD）、中间件（系统·TSD/MW）、性能扩展、高可用与容灾 | [architecture/technical/](architecture/technical/README.md) |
+| **业务** | 做什么业务、边界与流程 | 业务概述、业务域划分（公司·BD）、业务术语、能力地图、业务流程（系统·BP） | [knowledge/business/](architecture/business/README.md) |
+| **产品** | 用户、功能组织与发布 | 产品概述、产品架构、信息架构、产品功能（系统·FT）、用户旅程（系统·UC）、版本发布、运营支撑、多端策略 | [knowledge/product/](architecture/product/README.md) |
+| **应用** | 服务拆分与集成边界 | 应用架构（系统·APP）、领域模型（系统·BC/AGG）、服务设计（系统·MS）、领域能力（系统·AB）、集成架构、服务交互、接口管理（应用·API）、多租户环境、ADR | [knowledge/application/](architecture/application/README.md) |
+| **数据** | 建模、存储与治理 | 数据概述、数据模型（系统·ENT）、数据存储（系统·DS）、数据流转 | [knowledge/data/](architecture/data/README.md) |
+| **技术** | 运行、扩展、观测与交付 | 技术概述、部署架构（系统·TSD）、中间件（系统·TSD/MW）、性能扩展、高可用与容灾 | [knowledge/technical/](architecture/technical/README.md) |
 
 > **层级说明**：标注（公司·XYZ）的内容由公司层首次定义（见 [company/DESIGN.md](../company/DESIGN.md) §公司级实体）；标注（系统·XYZ）的内容在系统层首次定义；标注（应用·XYZ）的内容在应用层首次定义。无标注项为通用关注域，各层均可落地叙事。
 
@@ -72,19 +76,19 @@
 
 #### Overview 蒸馏区
 
-`architecture/overview/*-overview.md` 是**从散落知识到结构化架构章节的缓冲区**，不是最终 SSOT——最终 SSOT 在 `architecture/` 各视角章节与 [application/knowledge/](../application/knowledge/)。
+`knowledge/overview/*-overview.md` 是**从散落知识到结构化架构章节的缓冲区**，不是最终 SSOT——最终 SSOT 在 `knowledge/` 各视角章节与 [application/knowledge/](../application/knowledge/)。
 
 | 阶段 | Skill | 产出 |
 | --- | --- | --- |
 | 抽取 | `/docs-extract` | overview 第三列草稿（段落筛选） |
 | 蒸馏 | `/docs-distill` | 自应用镜像上行已核实内容至 overview 第三列 |
-| 归档 | `/docs-archive` | 核实后落入 `architecture/` 各视角对应章节 |
+| 归档 | `/docs-archive` | 核实后落入 `knowledge/` 各视角对应章节 |
 
 原则：先 overview 缓冲区，再 archive，再 [docs-build](../application/knowledge/) 实体 — 不要一步到位硬造 YAML。
 
-#### SSOT 继承矩阵（system/architecture ↔ company/ea）
+#### SSOT 继承矩阵（system/knowledge ↔ company/ea）
 
-`company/ea/` 聚焦**公司级治理叙事**；`system/architecture/` 聚焦**本系统落地叙事**。章节首段 SSOT 声明须与下表一致，**禁止**链接到不存在的 `company/ea/` 同名文件。
+`company/ea/` 聚焦**公司级治理叙事**；`system/knowledge/` 聚焦**本系统落地叙事**。章节首段 SSOT 声明须与下表一致，**禁止**链接到不存在的 `company/ea/` 同名文件。
 
 | 继承类型 | 说明 | 示例 |
 | --- | --- | --- |
@@ -107,13 +111,13 @@
 两者关系定义为“**索引治理层 ↔ 实体事实层**”。
 
 - **事实来源**：公司 / 系统 / 应用三层实体按首次定义矩阵分层负责；应用层接口、数据表、组件及实现映射仍以 `application/` 为准；
-- **治理映射**：`system/` 通过 `architecture/` 与 `application-{name}/` 维护跨应用可读视图与镜像挂载关系；
+- **治理映射**：`system/` 通过 `knowledge/` 与 `application-{name}/` 维护跨应用可读视图与镜像挂载关系；
 - **引用方式**：优先路径引用与 ID 引用，避免在 `system` 冗余复制实体正文。
 
 同步闭环：
 
 1. **下行拉取（docs-pull）**：同步目标应用文档至 `system/application-{name}/`（技能见 [agent/skills/docs-pull/SKILL.md](../agent/skills/docs-pull/SKILL.md)）；
-2. **治理校核（system 层）**：在 `architecture/` 与 [agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md) 约定下执行一致性检查；
+2. **治理校核（system 层）**：在 `knowledge/` 与 [agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md) 约定下执行一致性检查；
 3. **上行蒸馏（docs-distill）**：将已核实内容归并到系统主库结构；
 4. **追溯记录（changelogs）**：保留索引与变更日志用于审计和回放。
 
@@ -141,7 +145,7 @@
 - [README.md](README.md)
 - [INDEX_GUIDE.md](INDEX_GUIDE.md)
 - [agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md)
-- [architecture/README.md](architecture/README.md)
+- [knowledge/README.md](knowledge/README.md)
 - [agent/references/knowledge-layout.md](../agent/references/knowledge-layout.md)
 - [../company/DESIGN.md](../company/DESIGN.md)
 - [../application/DESIGN.md](../application/DESIGN.md)

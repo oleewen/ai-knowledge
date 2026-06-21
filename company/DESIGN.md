@@ -80,7 +80,7 @@
 `system-{name}/` 承接下游 `system/` 知识库的镜像同步结果，供公司层导航与跨系统治理；不承载系统实现细节。
 
 - **下行同步**：由 `knowledge-links.yaml` 登记后，经脚本或人工将目标 `system/` 文档同步至 `company/system-{name}/`（尚无与 `/docs-pull` 同级的独立 Slash 技能；应用联邦镜像才使用 `/docs-pull`）。
-- **架构上行**：公司侧 overview/archive 流程见 [ea/overview/](ea/overview/NAME-overview.md) 与 [agent/skills/docs-extract/SKILL.md](../agent/skills/docs-extract/SKILL.md)、[docs-archive/SKILL.md](../agent/skills/docs-archive/SKILL.md)；系统侧蒸馏见 [system/DESIGN.md](../system/DESIGN.md)（`/docs-distill` 仅落盘 `system/architecture/overview/`）。
+- **架构上行**：公司侧 overview/archive 流程见 [ea/overview/](ea/overview/NAME-overview.md) 与 [agent/skills/docs-extract/SKILL.md](../agent/skills/docs-extract/SKILL.md)、[docs-archive/SKILL.md](../agent/skills/docs-archive/SKILL.md)；系统侧蒸馏见 [system/DESIGN.md](../system/DESIGN.md)（`/docs-distill` 仅落盘 `system/knowledge/overview/`）。
 
 #### SDD 跨层衔接
 

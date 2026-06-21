@@ -120,7 +120,7 @@ class GateCommonTests(unittest.TestCase):
     def test_distill_gate_deny_without_confirmed_spec(self) -> None:
         payload = {
             "toolName": "write_file",
-            "args": {"path": "system/architecture/overview/billing-overview.md"},
+            "args": {"path": "system/knowledge/overview/billing-overview.md"},
             "sessionId": "s-distill-deny",
         }
         env = {}
@@ -164,7 +164,7 @@ class GateCommonTests(unittest.TestCase):
     def test_distill_gate_allow_with_confirmed_spec(self) -> None:
         payload = {
             "toolName": "write_file",
-            "args": {"path": "system/architecture/overview/billing-overview.md"},
+            "args": {"path": "system/knowledge/overview/billing-overview.md"},
             "sessionId": "s-distill-allow",
         }
         env = {}
@@ -193,7 +193,7 @@ class GateCommonTests(unittest.TestCase):
         """distill gate 无 bypass 环境变量，设置任意值均不应放行（仍走证据校验）。"""
         payload = {
             "toolName": "write_file",
-            "args": {"path": "system/architecture/overview/billing-overview.md"},
+            "args": {"path": "system/knowledge/overview/billing-overview.md"},
             "sessionId": "s-distill-bypass",
         }
         # 即使设置了类似 bypass 的环境变量，也不应放行（因为 bypass_env="" 被跳过）
@@ -217,7 +217,7 @@ class GateCommonTests(unittest.TestCase):
     def test_extract_gate_deny_without_confirmed_spec(self) -> None:
         payload = {
             "toolName": "write_file",
-            "args": {"path": "system/architecture/overview/payment-overview.md"},
+            "args": {"path": "system/knowledge/overview/payment-overview.md"},
             "sessionId": "s-extract-deny",
         }
         env = {}
@@ -239,7 +239,7 @@ class GateCommonTests(unittest.TestCase):
     def test_extract_gate_allow_with_confirmed_spec(self) -> None:
         payload = {
             "toolName": "write_file",
-            "args": {"path": "system/architecture/overview/payment-overview.md"},
+            "args": {"path": "system/knowledge/overview/payment-overview.md"},
             "sessionId": "s-extract-allow",
         }
         env = {}
@@ -267,7 +267,7 @@ class GateCommonTests(unittest.TestCase):
     def test_archive_gate_deny_without_confirmed_spec(self) -> None:
         payload = {
             "toolName": "write_file",
-            "args": {"path": "system/architecture/overview/order-overview.md"},
+            "args": {"path": "system/knowledge/overview/order-overview.md"},
             "sessionId": "s-archive-deny",
         }
         env = {}
@@ -289,7 +289,7 @@ class GateCommonTests(unittest.TestCase):
     def test_archive_gate_allow_with_confirmed_spec(self) -> None:
         payload = {
             "toolName": "write_file",
-            "args": {"path": "system/architecture/overview/order-overview.md"},
+            "args": {"path": "system/knowledge/overview/order-overview.md"},
             "sessionId": "s-archive-allow",
         }
         env = {}
@@ -315,7 +315,7 @@ class GateCommonTests(unittest.TestCase):
         self.assertTrue(any('"permission": "allow"' in s for s in printed))
 
     def test_overview_outside_path_not_intercepted(self) -> None:
-        """非 system/architecture/overview/ 或 company/ea/overview/ 路径的 overview 文件不被 distill/extract/archive gate 拦截。"""
+        """非 system/knowledge/overview/ 或 company/ea/overview/ 路径的 overview 文件不被 distill/extract/archive gate 拦截。"""
         payload = {
             "toolName": "write_file",
             "args": {"path": "docs/some-overview.md"},
