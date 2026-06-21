@@ -1,6 +1,6 @@
 # docs-okf 工作流
 
-[SKILL.md](../SKILL.md)；设计 spec：[2026-06-21-application-okf-design.md](../../../../docs/superpowers/specs/2026-06-21-application-okf-design.md)。
+入口：[SKILL.md](../SKILL.md)。
 
 ## 三步
 
@@ -61,4 +61,4 @@ python3 scripts/okf/generate_index.py --bundle application --recursive
 bash scripts/validate-okf.sh --bundle application
 ```
 
-`INDEX_GUIDE.md` 仍为九章 Agent 地图；各级 `index.md` 为 OKF 渐进披露入口（双索引并存，见设计 spec §3）。
+`INDEX_GUIDE.md` 仍为九章 Agent 地图；各级 `index.md` 为 OKF 渐进披露入口（双索引并存）。

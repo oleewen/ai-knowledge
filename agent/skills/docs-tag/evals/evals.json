@@ -101,14 +101,14 @@
     {
       "id": "docs-tag-trigger-002",
       "category": "should-trigger",
-      "prompt": "对 company/ea/overview/COMPANY-overview.md 做 /docs-tag：keywords「价值链」「商业模式」，scan-dir 用 company/ea/，先 1-scan 我选词后再 2 和 3",
-      "expected_output": "docs-tag：公司库 overview；--scan-dir company/ea/；1-scan→1-write→2→3；不写 extract 第三列。",
+      "prompt": "对 company/knowledge/overview/COMPANY-overview.md 做 /docs-tag：keywords「价值链」「商业模式」，scan-dir 用 company/knowledge/，先 1-scan 我选词后再 2 和 3",
+      "expected_output": "docs-tag：公司库 overview；--scan-dir company/knowledge/；1-scan→1-write→2→3；不写 extract 第三列。",
       "assertions": [
         {
           "id": "company-scan-dir",
           "name": "公司库扫描目录",
           "type": "must_include",
-          "check": "须提 company/ea/ 或公司库 scan-dir。",
+          "check": "须提 company/knowledge/ 或公司库 scan-dir。",
           "priority": "P0"
         }
       ]

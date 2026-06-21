@@ -2,7 +2,7 @@
 
 顺序：应用 → 数据 → 技术 → 业务 → 产品。各视角独立产出；后序只**引用**前序 ID。
 
-输出：`{perspective}-entities.md`（Markdown 实体表，schema 2.1 语义等价）。结构参考 [knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
+输出：各实体 per-entity `{ID}.md`（OKF concept + YAML frontmatter；schema 2.1 字段语义）。结构参考 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)「concept 文件形状」。
 
 ## 目录
 
@@ -116,7 +116,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 ### 输出结构
 
-应用视角使用**分类结构**（非扁平数组），`entities` 下按 `systems`、`applications`、`services`、`apis` 分组。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
+应用视角每个 SYS/APP/MS/API 各落盘一 concept 文件；`hierarchy` 与分类字段写在 frontmatter。字段分组语义仍等价 `{ systems, applications, services, apis }`。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)。
 
 ---
 
@@ -146,7 +146,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 ### 输出结构
 
-数据视角使用**扁平数组**，DS 和 ENT 通过 `parent_id` 关联。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
+数据视角每个 DS/ENT 各一 `{ID}.md`；DS 与 ENT 通过 frontmatter `parent_id` 关联。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)。
 
 ---
 
@@ -194,7 +194,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 ### 输出结构
 
-业务视角使用**扁平数组**，通过 `hierarchy` 区分层级，`parent_id`/`children` 表达层级关系。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
+业务视角每个 BD/BSD/BC/AGG/AB 各一 `{ID}.md`；`hierarchy` 与 `parent_id`/`children` 写在 frontmatter。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)。
 
 ---
 
@@ -233,7 +233,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 ### 输出结构
 
-产品视角使用**扁平数组**，PL→PM→FT→UC 通过 `parent_id` 关联。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json)。
+产品视角每个 PL/PM/FT/UC 各一 `{ID}.md`；PL→PM→FT→UC 通过 frontmatter `parent_id` 关联。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)。
 
 ---
 
@@ -262,7 +262,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 ### 输出结构
 
-技术视角使用**扁平数组**，MW→CMP 通过 `parent_mw_id` 关联。
+技术视角每个 MW/CMP 各一 `technical/{ID}.md`；MW→CMP 通过 frontmatter `parent_mw_id` 关联。
 
 ---
 
@@ -301,9 +301,11 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 | `description` | 推荐 | 实体描述 |
 | `parent_id` | 视情况 | 指向父层 full_id，表达层级归属 |
 
-### metadata 节
+### metadata 与统计（可选）
 
-每个 `{perspective}-entities.md` 须含 **统计** 节（各层级计数、`extraction_basis`、`schema_notes`、`changes_from_previous`）。
+每个 per-entity concept **必须**含非空 frontmatter `full_id`（及 [consolidation-spec.md](consolidation-spec.md) 所列字段）。
+
+**统计**（各层级计数、`extraction_basis`、`schema_notes`、`changes_from_previous`）为可选：可写入 `--emit-report` 的 `extraction_report.md`、会话 spec，或 `{perspective}-meta.md` 备注；**不**再要求单独的 `{perspective}-entities.md` 统计节。
 
 | 字段 | 说明 |
 |------|------|

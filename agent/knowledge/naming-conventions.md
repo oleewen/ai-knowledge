@@ -108,9 +108,6 @@
 | data | `knowledge/data/ENT-EXAMPLE/{ID}.md` | `Data Store` / `Entity` |
 | technical | `knowledge/technical/MW-EXAMPLE/{ID}.md` | `Middleware Binding` / `Component` |
 
-跨概念引用使用 bundle-relative 链接 `/knowledge/.../{ID}.md`。完整 taxonomy 与 RAG 策略见 [docs/superpowers/specs/2026-06-21-application-okf-design.md](../../docs/superpowers/specs/2026-06-21-application-okf-design.md)。
-
-
 ---
 
 ## 4. 引用规则

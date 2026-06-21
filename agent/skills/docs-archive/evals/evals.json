@@ -107,8 +107,8 @@
     {
       "id": "archive-trigger-004",
       "category": "should-trigger",
-      "prompt": "帮我把 company/ea/overview/COMPANY-overview.md 里产品架构视角的内容归档到 company/ea/product/ 对应章节，归档后 overview 保留索引壳",
-      "expected_output": "docs-archive：公司库 overview→ea 视角章；确认书；hook 仅保护 overview 回写；确认后落盘。",
+      "prompt": "帮我把 company/knowledge/overview/COMPANY-overview.md 里产品架构视角的内容归档到 company/knowledge/product/ 对应章节，归档后 overview 保留索引壳",
+      "expected_output": "docs-archive：公司库 overview→knowledge 视角章；确认书；hook 仅保护 overview 回写；确认后落盘。",
       "assertions": [
         {
           "id": "gate-compliance",
@@ -121,7 +121,7 @@
           "id": "company-ea-path",
           "name": "公司库路径",
           "type": "must_include",
-          "check": "须识别 company/ea/overview 与 company/ea/product 归档关系。",
+          "check": "须识别 company/knowledge/overview 与 company/knowledge/product 归档关系。",
           "priority": "P0"
         }
       ]

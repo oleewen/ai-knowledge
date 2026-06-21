@@ -1,6 +1,6 @@
 # KNOWLEDGE_INDEX
 
-> 更新：{YYYY-MM-DD} · SSOT：`{perspective}-entities.md`（schema 2.1 语义）
+> 更新：{YYYY-MM-DD} · SSOT：各视角 per-entity `{ID}.md` frontmatter；本文件由扫描生成，非手写 SSOT
 
 ---
 

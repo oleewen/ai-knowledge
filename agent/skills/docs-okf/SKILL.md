@@ -5,7 +5,6 @@ description: >
   生成各级 index.md 与 KNOWLEDGE_INDEX、运行 validate-okf、产出 viz.html。
   触发：/docs-okf、OKF 迁移、刷新 viz、对齐 application/ 或 system/ 与 OKF v0.1。
   参数：--dry-run、--validate、--viz、--bundle application|system|company。
-  设计 spec：docs/superpowers/specs/2026-06-21-application-okf-design.md、docs/superpowers/specs/2026-06-21-system-okf-design.md、docs/superpowers/specs/2026-06-21-company-okf-design.md。
   用户只要 docs-build 提取或 docs-indexing 九章地图为主路径 → 分流对应技能。
 ---
 
@@ -21,7 +20,6 @@ description: >
 
 ## 前置
 
-- 设计 spec：[docs/superpowers/specs/2026-06-21-application-okf-design.md](../../../docs/superpowers/specs/2026-06-21-application-okf-design.md)
 - 仓库根可写；默认 bundle 为 `application/`（`--bundle` 可覆盖）
 - 全量迁移需存在 legacy `*-entities.md`（缺则对应视角跳过迁移步）
 
@@ -48,7 +46,7 @@ python3 scripts/okf/generate_index.py --bundle application --recursive
 ## 阅读顺序
 
 1. [references/workflow.md](references/workflow.md) — migrate / validate / viz 三步
-2. [docs/superpowers/specs/2026-06-21-application-okf-design.md](../../../docs/superpowers/specs/2026-06-21-application-okf-design.md) — type taxonomy、落盘与 RAG 策略
+2. [agent/knowledge/naming-conventions.md](../../../agent/knowledge/naming-conventions.md) §OKF — 路径与 type
 3. [scripts/README.md](../../../scripts/README.md) — OKF 工具表
 
 ## 下游

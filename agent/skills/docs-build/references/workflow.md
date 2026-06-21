@@ -12,7 +12,7 @@
 |------|------|
 | 必需 | 主 Index Guide（否则停，先 `/docs-indexing`） |
 | 可选 | README、AGENTS、PRD、源码 |
-| 固定输出 | `{DOC_DIR}/knowledge/{p}/{p}-entities.md`、`README`、`KNOWLEDGE_INDEX.md` |
+| 固定输出 | `{DOC_DIR}/knowledge/{p}/` 下 per-entity `{ID}.md`、`README`、`KNOWLEDGE_INDEX.md`（扫描生成） |
 | `--emit-report` | `{DOC_DIR}/knowledge/{p}/extraction_report.md` |
 | 不产出 | 锚点文档、CHANGELOG、目录树 |
 
@@ -36,8 +36,8 @@
 | 1 | 初始化 | INDEX、可写、`builtin-config`；**末 Qclose-1** | [builtin-config.md](builtin-config.md) |
 | — | HARD-GATE | [gates.md](gates.md)；`CONFIRMED` 后进 2 | [interaction-gate.md](interaction-gate.md) |
 | 2 | 提取 | 五视角固定序；后序只读前序 ID | [extraction-rules.md](extraction-rules.md) |
-| 3 | README | 沿用版式，JSON→表行 | [readme-fill-spec.md](readme-fill-spec.md) |
-| 4 | 归并 | 四 JSON → 校验 → `KNOWLEDGE_INDEX` | [consolidation-spec.md](consolidation-spec.md) |
+| 3 | README | 沿用版式，per-entity → 表行 | [readme-fill-spec.md](readme-fill-spec.md) |
+| 4 | 归并 | 扫描 per-entity → 校验 → `KNOWLEDGE_INDEX` | [consolidation-spec.md](consolidation-spec.md) |
 
 ### 阶段 2 顺序
 
@@ -65,7 +65,7 @@ agent/skills/docs-build/scripts/validate-extraction.sh
 | 证据优先 | ID 有可核来源 |
 | 零幻觉 | 仅已读文件 |
 | 前缀唯一 | 层级+ID、层级+别名 |
-| 对称 | INDEX §1–§4 同轮；README 与 JSON 一致 |
+| 对称 | INDEX §1–§4 同轮；README 与 per-entity 一致 |
 | 幂等 | 可断点续跑 |
 | API 四类 | 见上 |
 | 边界 | 无锚点/CHANGELOG |

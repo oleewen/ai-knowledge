@@ -49,7 +49,7 @@ graph TD
 
 ## concept 文件形状
 
-每个实体 concept 为独立 `{ID}.md`，frontmatter 至少含 `full_id`、`perspective`、`hierarchy`、`type`、`title`；跨视角引用写在 `# Cross-perspective` 与 bundle-relative 链接。路径规则见 [naming-conventions.md](../../../knowledge/naming-conventions.md) OKF 小节与 [2026-06-21-application-okf-design.md](../../../../docs/superpowers/specs/2026-06-21-application-okf-design.md) §5。
+每个实体 concept 为独立 `{ID}.md`，frontmatter 至少含 `full_id`、`perspective`、`hierarchy`、`type`、`title`；跨视角引用写在 `# Cross-perspective` 与 bundle-relative 链接。路径规则见 [naming-conventions.md](../../../knowledge/naming-conventions.md) §OKF concept 路径与 type 映射。
 
 | 视角 | 落盘 |
 |------|------|

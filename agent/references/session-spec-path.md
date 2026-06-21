@@ -16,12 +16,12 @@
 
 示例（`.docsconfig` 中 `DOC_DIR=docs`）：
 
-- `docs/superpowers/specs/2026-06-02-order-prd-sdx-prd.md`
+- `docs/superpowers/specs/YYYY-MM-DD-<topic>-sdx-prd.md`
 
 示例（中央库 **无** `.docsconfig`，或 `DOC_DIR` 无效时默认 `docs`）：
 
-- `docs/superpowers/specs/2026-06-15-index-p1-fix-docs-indexing.md`（可一次列出 `INDEX_GUIDE.md`、`system/INDEX_GUIDE.md` 等多条写入路径）
-- `docs/superpowers/specs/2026-06-15-session-spec-path-design.md`（brainstorming 设计备忘）
+- `docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-indexing.md`（可一次列出 `INDEX_GUIDE.md`、`system/INDEX_GUIDE.md` 等多条写入路径）
+- `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`（brainstorming 设计备忘）
 
 ## DOC_DIR 解析（与 hooks 一致）
 

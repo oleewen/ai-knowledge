@@ -21,8 +21,8 @@
     },
     {
       "id": 4,
-      "prompt": "从 company/ea/business/business-overview.md 提炼公司级业务背景，写进 company/ea/overview/COMPANY-overview.md 第三列，先 dry-run",
-      "expected_output": "docs-extract：--overview 指向 company/ea/overview/；读公司库表行关键词；dry-run + CONFIRMED；不写 DISTILL-LOG",
+      "prompt": "从 company/knowledge/business/business-overview.md 提炼公司级业务背景，写进 company/knowledge/overview/COMPANY-overview.md 第三列，先 dry-run",
+      "expected_output": "docs-extract：--overview 指向 company/knowledge/overview/；读公司库表行关键词；dry-run + CONFIRMED；不写 DISTILL-LOG",
       "files": []
     }
   ]
