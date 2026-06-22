@@ -7,6 +7,26 @@ BUNDLE_ROOT="$ROOT/application"
 VIZ_HTML="$BUNDLE_ROOT/viz.html"
 LEGACY_ENTITIES="$BUNDLE_ROOT/knowledge/business/business-entities.md"
 
+DOCS_CONFIG="$ROOT/.docsconfig"
+DOCS_CONFIG_CREATED=0
+
+cleanup_docsconfig() {
+  if [[ "$DOCS_CONFIG_CREATED" -eq 1 && -f "$DOCS_CONFIG" ]]; then
+    rm -f "$DOCS_CONFIG"
+  fi
+}
+
+if [[ ! -f "$DOCS_CONFIG" ]]; then
+  DOCS_CONFIG_CREATED=1
+  trap cleanup_docsconfig EXIT
+  cat >"$DOCS_CONFIG" <<EOF
+DOC_ROOT=$ROOT/application
+REPO_ROOT=$ROOT
+DOC_DIR=application
+KNOWLEDGE_TYPE=application
+EOF
+fi
+
 if [[ ! -x "$VALIDATE_SCRIPT" ]] && [[ ! -f "$VALIDATE_SCRIPT" ]]; then
   echo "未找到 validate-okf.sh: $VALIDATE_SCRIPT" >&2
   exit 1

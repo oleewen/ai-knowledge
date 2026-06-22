@@ -2,30 +2,38 @@
 
 入口：[SKILL.md](../SKILL.md)。
 
+## 前置
+
+读 [path-resolution.md](path-resolution.md)。须有效 `.docsconfig`（含 `KNOWLEDGE_TYPE`）。解析后：
+
+- `BUNDLE` = `{DOC_DIR}`
+- viz `--out` = `{KNOWLEDGE_TYPE}/viz.html`
+- viz `--name` = `"{KNOWLEDGE_TYPE} OKF"`
+
 ## 三步
 
 ### 1 migrate（全量编排）
 
 **脚本**：`bash scripts/okf-migrate.sh [--dry-run]`
 
-按序执行（可重复运行）：
+按序执行（可重复运行）；`BUNDLE` / `REPO_ROOT` 由 `resolve-okf-paths` 从 `.docsconfig` 解析：
 
 1. `migrate_entities.py` — 五视角；缺 `{perspective}-entities.md` 则跳过
-2. `inject_frontmatter.py --bundle application`
-3. `generate_index.py --bundle application --recursive`
-4. `generate_knowledge_index.py --bundle application`
+2. `inject_frontmatter.py --bundle "${DOC_DIR}"`
+3. `generate_index.py --bundle "${DOC_DIR}" --recursive`
+4. `generate_knowledge_index.py --bundle "${DOC_DIR}"`
 5. `validate-okf.sh`
-6. `visualize.py` → `application/viz.html`
+6. `visualize.py` → `{KNOWLEDGE_TYPE}/viz.html`
 
-环境变量 `BUNDLE` 可覆盖默认 bundle 名。
+环境变量 `BUNDLE` 或 CLI `--bundle` 可覆盖 `{DOC_DIR}`。
 
 ### 2 validate（门禁）
 
-**脚本**：`bash scripts/validate-okf.sh [--bundle application]`
+**脚本**：`bash scripts/validate-okf.sh [--bundle "${DOC_DIR}"]`
 
 检查 frontmatter、`full_id` 唯一性、bundle-relative 链接、`index.md` 条目。有 **ERROR** exit 1；仅 WARN exit 0。
 
-单独校验：`/docs-okf --validate` 或 `--validate --bundle application`。
+单独校验：`/docs-okf --validate` 或 `--validate --bundle "${DOC_DIR}"`。
 
 ### 3 viz（可视化）
 
@@ -33,9 +41,9 @@
 
 ```bash
 python3 scripts/okf/visualize.py \
-  --bundle application \
-  --out application/viz.html \
-  --name "application OKF"
+  --bundle "${DOC_DIR}" \
+  --out "${KNOWLEDGE_TYPE}/viz.html" \
+  --name "${KNOWLEDGE_TYPE} OKF"
 ```
 
 扫描所有 concept，解析 Markdown 链接构图，输出自包含 HTML（Cytoscape + marked）。
@@ -48,17 +56,17 @@ python3 scripts/okf/visualize.py \
 |----------|------|
 | 全量迁移 | `bash scripts/okf-migrate.sh` |
 | 预览 | `bash scripts/okf-migrate.sh --dry-run` |
-| 仅校验 | `bash scripts/validate-okf.sh --bundle application` |
-| 仅 viz | `python3 scripts/okf/visualize.py --bundle application --out application/viz.html --name "application OKF"` |
-| INDEX_GUIDE 后补 OKF index | `python3 scripts/okf/generate_index.py --bundle application --recursive` 然后 validate |
+| 仅校验 | `bash scripts/validate-okf.sh` |
+| 仅 viz | `python3 scripts/okf/visualize.py --bundle "${DOC_DIR}" --out "${KNOWLEDGE_TYPE}/viz.html" --name "${KNOWLEDGE_TYPE} OKF"` |
+| INDEX_GUIDE 后补 OKF index | `python3 scripts/okf/generate_index.py --bundle "${DOC_DIR}" --recursive` 然后 validate |
 
 ## 与 docs-indexing 协作
 
 更新 `INDEX_GUIDE.md` 后（docs-indexing 步骤 6 落盘），**建议**：
 
 ```bash
-python3 scripts/okf/generate_index.py --bundle application --recursive
-bash scripts/validate-okf.sh --bundle application
+python3 scripts/okf/generate_index.py --bundle "${DOC_DIR}" --recursive
+bash scripts/validate-okf.sh
 ```
 
 `INDEX_GUIDE.md` 仍为九章 Agent 地图；各级 `index.md` 为 OKF 渐进披露入口（双索引并存）。

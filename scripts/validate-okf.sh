@@ -1,36 +1,44 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# OKF bundle 校验入口。默认 bundle=application；路径可经 .docsconfig 解析仓库根。
+# OKF bundle 校验入口。须有效 .docsconfig（含 KNOWLEDGE_TYPE）。
 # 用法: bash scripts/validate-okf.sh [--bundle NAME]
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-BUNDLE="${BUNDLE:-application}"
+AGENT_HOME="$(cd "$SCRIPT_DIR/../agent" && pwd)"
+RESOLVE="${AGENT_HOME}/skills/docs-okf/scripts/resolve-okf-paths.sh"
+
+BUNDLE="${BUNDLE:-}"
+BUNDLE_OVERRIDE=0
+[[ -n "$BUNDLE" ]] && BUNDLE_OVERRIDE=1
+
+usage() {
+  cat <<EOF
+用法: bash scripts/validate-okf.sh [--bundle NAME]
+
+校验 OKF bundle（frontmatter、full_id、链接、index 条目）。
+bundle 默认取自 .docsconfig 的 DOC_DIR；KNOWLEDGE_TYPE 必填。
+
+环境变量:
+  BUNDLE   覆盖 .docsconfig 推导的 bundle（DOC_DIR）
+EOF
+}
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --bundle)
-      [[ $# -ge 2 ]] || {
-        echo "缺少 --bundle 参数值" >&2
-        exit 1
-      }
+      [[ $# -ge 2 ]] || { echo "缺少 --bundle 参数值" >&2; exit 1; }
       BUNDLE="$2"
+      BUNDLE_OVERRIDE=1
       shift 2
       ;;
     --bundle=*)
       BUNDLE="${1#*=}"
+      BUNDLE_OVERRIDE=1
       shift
       ;;
     -h | --help)
-      cat <<EOF
-用法: bash scripts/validate-okf.sh [--bundle NAME]
-
-校验 OKF bundle（frontmatter、full_id、链接、index 条目）。
-默认 bundle=application；存在 .docsconfig 时 REPO_ROOT 取自配置。
-
-环境变量:
-  BUNDLE   覆盖默认 bundle 名
-EOF
+      usage
       exit 0
       ;;
     *)
@@ -40,33 +48,24 @@ EOF
   esac
 done
 
-sdx_okf_resolve_repo_root() {
-  local script_dir="$1"
-  local repo_root
-  repo_root="$(cd "$script_dir/.." && pwd)"
-  local agent_home bootstrap
-  agent_home="$(cd "$script_dir/../agent" && pwd)"
-  bootstrap="${agent_home}/scripts/config-bootstrap.sh"
-  if [[ -f "$repo_root/.docsconfig" && -f "$bootstrap" ]]; then
-    # shellcheck disable=SC1091
-    source "$bootstrap"
-    validate_bootstrap_docsconfig "$script_dir" || return 1
-    repo_root="${REPO_ROOT:-$repo_root}"
-  elif command -v git >/dev/null 2>&1; then
-    local git_root
-    git_root="$(git -C "$repo_root" rev-parse --show-toplevel 2>/dev/null || true)"
-    [[ -n "$git_root" ]] && repo_root="$git_root"
-  fi
-  printf '%s' "$repo_root"
-}
+# shellcheck disable=SC1091
+source "$RESOLVE"
+resolve_okf_paths "$SCRIPT_DIR"
 
-REPO_ROOT="$(sdx_okf_resolve_repo_root "$SCRIPT_DIR")" || exit 1
+if [[ "$BUNDLE_OVERRIDE" -eq 0 ]]; then
+  BUNDLE="$OKF_BUNDLE"
+elif [[ "$BUNDLE" != "$OKF_BUNDLE" ]]; then
+  echo "[okf] BUNDLE 已由 CLI/环境变量覆盖为 ${BUNDLE}（.docsconfig DOC_DIR=${DOC_DIR}）" >&2
+fi
 
 cd "$REPO_ROOT" || exit 1
 
 echo "=== validate-okf ==="
-echo "REPO_ROOT: ${REPO_ROOT}"
-echo "BUNDLE:    ${BUNDLE}"
+echo "REPO_ROOT:      ${REPO_ROOT}"
+echo "DOC_DIR:        ${DOC_DIR}"
+echo "KNOWLEDGE_TYPE: ${KNOWLEDGE_TYPE}"
+echo "BUNDLE:         ${BUNDLE}"
+echo "OKF_VIZ_OUT:    ${OKF_VIZ_OUT}"
 echo ""
 
 python3 "$REPO_ROOT/scripts/okf/validate_bundle.py" --bundle "$BUNDLE" --repo "$REPO_ROOT"
