@@ -4,7 +4,7 @@ title: application 索引指南（INDEX_GUIDE）
 ---
 # application 索引指南（INDEX_GUIDE）
 
-> **最后更新**: 2026-06-21  
+> **最后更新**: 2026-06-22  
 > **文档定位**: 面向 AI Agent 的 **`application/` 文档根**九章机器索引；与仓库根 [INDEX_GUIDE.md](../INDEX_GUIDE.md) 互补。中央知识库挂载建联登记见 **§十**。
 
 ---
@@ -23,6 +23,8 @@ title: application 索引指南（INDEX_GUIDE）
 | 阶段产物目录 | `solutions/`、`analysis/`、`requirements/` | 方案～需求包与元数据 |
 | 运维日志 | [changelogs/README.md](changelogs/README.md) | `CHANGE-LOG.md`、`INDEXING-LOG.md` |
 | 仓库根全索引 | [../INDEX_GUIDE.md](../INDEX_GUIDE.md) | 中央库根路径九章地图 |
+| OKF 根索引 | [index.md](index.md) | `okf_version: 0.1`；bundle 渐进披露入口 |
+| OKF 知识索引 | [knowledge/index.md](knowledge/index.md) | 五视角 OKF 子树入口 |
 
 ### 1.2 元信息
 
@@ -40,7 +42,7 @@ title: application 索引指南（INDEX_GUIDE）
 ```text
 application/
 ├── README.md / README-s.md / README-c.md   # 入口与模式说明
-├── INDEX_GUIDE.md                          # 本文件
+├── index.md / INDEX_GUIDE.md               # OKF 根索引与本文件（九章）
 ├── DESIGN.md / CONTRIBUTING.md             # 元模型与贡献
 ├── docs-meta.md / manifest.md          # 文档元数据
 ├── adr/                                    # 应用层 ADR 正文
@@ -118,6 +120,7 @@ flowchart TB
 |------|------|
 | Slash SDD | `/sdx-solution` 等写入受管终稿前须用户与 spec 闸门 |
 | docs-build | 五视角实体提取与 `KNOWLEDGE_INDEX` 联动（见根索引 §九） |
+| docs-okf | legacy `*-entities.md` → OKF concept、`index.md`、validate-okf、viz（见 [../agent/skills/docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md)） |
 
 ### 4.4 领域事件
 
@@ -158,7 +161,7 @@ flowchart TB
 
 | 数据源 | 类型 | 用途 |
 |--------|------|------|
-| `knowledge/**/{ID}.md` | Markdown（OKF concept） | 各视角 per-entity 实体（SSOT） |
+| `knowledge/**/{ID}.md` | Markdown（OKF concept + frontmatter） | 各视角 per-entity 实体（SSOT）；校验 `bash ../scripts/validate-okf.sh --bundle application` |
 
 ### 6.2～6.4
 
@@ -215,6 +218,7 @@ flowchart TB
 | 全局索引 | [../INDEX_GUIDE.md](../INDEX_GUIDE.md) |
 | 系统库入口 | [../system/README.md](../system/README.md) |
 | Skill 总表 | [../agent/skills/README.md](../agent/skills/README.md) |
+| docs-okf | [../agent/skills/docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md) |
 
 ### 9.2 工具链
 
@@ -232,4 +236,4 @@ Bash 5+、Git；可选 `docs-change` / `docs-build` 与本目录 changelogs 联�
 
 ---
 
-**索引元数据**: 本次运行 **mode=full**，**depth=3**，**since_ms=0**，输出 **application/INDEX_GUIDE.md**；运行记录见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)。
+**索引元数据**: 本次运行 **mode=full**，**depth=3**，**since_ms=0**，输出 **application/INDEX_GUIDE.md**；运行记录见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)（2026-06-22）。

@@ -9,3 +9,4 @@ title: INDEXING-LOG
 
 | indexing_finished_ms | indexed_at | mode | depth | since_ms | output_path | file_count | duration_ms | summary |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1782099595327 | 2026-06-22T03:39:55Z | full | 3 | 0 | company/INDEX_GUIDE.md | 72 | 180000 | full d3 company 索引 |

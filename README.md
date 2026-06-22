@@ -132,8 +132,8 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 ├── application/          # 应用知识主库：knowledge、阶段产物、changelogs
 ├── system/               # 系统库：architecture/、application-{name}/ 槽位
 ├── company/              # 公司库：knowledge/、system-{name}/ 槽位
-├── scripts/              # docs-install、agent-install、bootstrap
-├── agent/                # rules/、skills/、hooks/、scripts/
+├── scripts/              # docs-install、agent-install、bootstrap、OKF（validate-okf、okf-migrate）
+├── agent/                # rules/、skills/（含 docs-okf）、hooks/、scripts/
 ├── docs/                 # 设计备忘（会话 spec 见 docs/superpowers/specs/）
 └── .gitignore
 ```
@@ -142,7 +142,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 
 ## 🤖 Agent 工作流与推荐流程
 
-`docs-*` 维护 SSOT 知识库，`sdx-*` 产出可评审规约，场景分步见 [quick-start.md](quick-start.md)。
+`docs-*` 维护 SSOT 知识库，`sdx-*` 产出可评审规约；OKF bundle 迁移与校验见 `/docs-okf`（与 [INDEX_GUIDE.md](INDEX_GUIDE.md) 九章地图、`index.md` 渐进披露双索引并存）。场景分步见 [quick-start.md](quick-start.md)。
 
 ```mermaid
 flowchart TD
@@ -176,6 +176,7 @@ Skill 清单见 [agent/skills/README.md](agent/skills/README.md)。
 | Agent 契约 | [AGENTS.md](AGENTS.md) |
 | 应用 / 系统 / 公司元模型 | [application/DESIGN.md](application/DESIGN.md)、[system/DESIGN.md](system/DESIGN.md)、[company/DESIGN.md](company/DESIGN.md) |
 | 初始化脚本 | [scripts/README.md](scripts/README.md) |
+| OKF 迁移与校验 | [agent/skills/docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md)（`scripts/validate-okf.sh`、`scripts/okf-migrate.sh`） |
 | Skill 清单 | [agent/skills/README.md](agent/skills/README.md) |
 
 ---

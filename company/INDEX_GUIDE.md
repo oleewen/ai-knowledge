@@ -4,7 +4,7 @@ title: company 索引指南（INDEX_GUIDE）
 ---
 # company 索引指南（INDEX_GUIDE）
 
-> **最后更新**: 2026-06-21  
+> **最后更新**: 2026-06-22  
 > **文档定位**: 面向 AI Agent 的 **`company/` 文档根**九章机器索引；描述公司知识库、五视角企业架构与 **`system-{name}/`** 镜像槽位。系统层实体见 [../system/](../system/)；应用层见 [../application/](../application/)。
 
 ---
@@ -29,6 +29,8 @@ title: company 索引指南（INDEX_GUIDE）
 
 - **目录角色**: **公司知识库** — 公司层 BD/CAP/PL/SYS/MDG/TPL SSOT、`knowledge/` 五视角叙事、`system-{name}/` 镜像槽位
 - **技术栈**: Markdown、YAML（knowledge-links.yaml）
+- **已跟踪文件规模**（仅 `company/` 前缀）: **72** 个文件（`git ls-files company/`，2026-06-22）
+- **精读深度**: 本轮 **depth=3**
 
 ---
 
@@ -100,10 +102,19 @@ overview 缓冲区：[knowledge/overview/NAME-overview.md](knowledge/overview/NA
 
 ## 八、技能与脚本（Skills & Scripts）
 
-`bash scripts/validate-okf.sh --bundle company`
+| 项 | 路径/命令 |
+|----|----------|
+| OKF 校验 | `bash scripts/validate-okf.sh --bundle company` |
+| OKF 迁移 | `bash scripts/okf-migrate.sh`（须目标工程 `.docsconfig`） |
+| docs-okf Skill | [../agent/skills/docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md) |
+| 测试套件 | `bash scripts/tests/docs-okf/run.sh`（resolve-okf-paths 门禁） |
 
 ---
 
 ## 九、附录（Appendix）
 
 [viz.html](viz.html)
+
+---
+
+**索引元数据**: 本次运行 **mode=full**，**depth=3**，**since_ms=0**，输出 **company/INDEX_GUIDE.md**；运行记录见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)（2026-06-22）。

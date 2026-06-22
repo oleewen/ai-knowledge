@@ -4,7 +4,7 @@ title: system 索引指南（INDEX_GUIDE）
 ---
 # system 索引指南（INDEX_GUIDE）
 
-> **最后更新**: 2026-06-21  
+> **最后更新**: 2026-06-22  
 > **文档定位**: 面向 AI Agent 的 **`system/` 文档根**九章机器索引；描述系统知识库、五视角架构文档与 **`application-{name}/`** 联邦槽位。应用侧实现登记与应用层实体主库仍在 [../application/](../application/)。
 
 ---
@@ -30,7 +30,7 @@ title: system 索引指南（INDEX_GUIDE）
 
 - **目录角色**: **系统知识库** — 组织级架构叙事、`system/knowledge/` 五视角终稿、`application-{name}/` 镜像槽位
 - **技术栈**: Markdown、YAML（元数据与链接登记）
-- **已跟踪文件规模**（仅 `system/` 前缀）: **97** 个文件（`git ls-files system/`，2026-06-21）
+- **已跟踪文件规模**（仅 `system/` 前缀）: **102** 个文件（`git ls-files system/`，2026-06-22）
 - **精读深度**: 本轮 **depth=3**（已读 README、knowledge 索引与目录枚举）
 
 ---
@@ -113,6 +113,7 @@ flowchart LR
 |------|------|
 | docs-distill | 自 `system/application-*/` 核实内容上行至 `knowledge/overview/` |
 | docs-archive | 与 overview 行级副标题文件对齐（见根索引 Skill 表） |
+| docs-okf | OKF 迁移/校验（目标工程须 `.docsconfig` + `KNOWLEDGE_TYPE`） |
 
 ### 4.4 领域事件
 
@@ -183,7 +184,7 @@ flowchart LR
 
 | 指标 | 值 |
 |------|-----|
-| `git ls-files system/` | 97 |
+| `git ls-files system/` | 102 |
 | 本轮 mode / depth | `full` / `3` |
 
 ### 8.2 排除
@@ -205,6 +206,7 @@ flowchart LR
 |------|------|
 | 公司架构对照 | [../company/knowledge/README.md](../company/knowledge/README.md) |
 | docs-distill | [../agent/skills/docs-distill/SKILL.md](../agent/skills/docs-distill/SKILL.md) |
+| docs-okf | [../agent/skills/docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md) |
 
 ### 9.2 视角文件索引（knowledge/）
 
@@ -214,4 +216,4 @@ flowchart LR
 
 ---
 
-**索引元数据**: 本次运行 **mode=full**，**depth=3**，**since_ms=0**，输出 **system/INDEX_GUIDE.md**；运行记录见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)。
+**索引元数据**: 本次运行 **mode=full**，**depth=3**，**since_ms=0**，输出 **system/INDEX_GUIDE.md**；运行记录见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)（2026-06-22）。

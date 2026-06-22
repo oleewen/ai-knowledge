@@ -2,7 +2,7 @@
 
 > **契约定位**：本文件仅承载 Agent 角色定位、核心契约、文档索引、流程规范等关键索引和必读内容。
 
-**最后更新**: 2026-06-21
+**最后更新**: 2026-06-22
 
 ---
 
@@ -42,7 +42,7 @@
 - **会话开始**：读 [README.md](README.md) 与本文件；业务与路径细节查 [INDEX_GUIDE.md](INDEX_GUIDE.md)；按需读取各级知识库下的README、INDEX_GUIDE.md 或 [agent/rules/](agent/rules/) 下具体规范。
 - **会话中**：业务规则不明 → 列出待确认项；新增技术债务可登记 [application/knowledge/technical-debt.md](application/knowledge/technical-debt.md)；重大结构或治理变更遵循 SDD，并核对 DESIGN.md、CONTRIBUTING.md。
 - **OKF RAG 消费**（`application/` bundle）：(1) 先读目录 `index.md` 渐进下钻，禁止默认批量加载全树；(2) 按 frontmatter `type` / `tags` 过滤后再打开单 concept；(3) 跨概念导航使用 bundle-relative 链接（如 `/knowledge/.../{ID}.md`）；(4) 九章机器地图仍读 `INDEX_GUIDE.md`，OKF 浏览入口为各级 `index.md`。
-- **文档产出闸门（SDD + docs-distill + docs-extract + docs-archive + docs-build + docs-indexing）**：执行 `/sdx-solution`、`/sdx-analysis`、`/sdx-prd`、`/sdx-architect`、`/sdx-design`、`/sdx-test`、`/docs-distill`、`/docs-extract`、`/docs-archive`、`/docs-build`、`/docs-indexing` 或写入对应受管终稿（`{DOC_DIR}` 下 `SOLUTION-*`、`ANALYSIS-*`、`PRD-*`、`ASD-*`、`DSD-*`、`TDD-*`，`company/knowledge|system/knowledge/`，`{DOC_DIR}/knowledge/`，以及各文档根 `INDEX_GUIDE.md`、`**/changelogs/INDEXING-LOG.md` 等，见总表）前，须完成中间会话 spec 与用户总确认。规则总表见 [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md#artifact-gates) 第三节；各阶段技能见 `agent/skills/sdx-*/SKILL.md`、[agent/skills/docs-distill/SKILL.md](agent/skills/docs-distill/SKILL.md)、[agent/skills/docs-extract/SKILL.md](agent/skills/docs-extract/SKILL.md)、[agent/skills/docs-archive/SKILL.md](agent/skills/docs-archive/SKILL.md)、[agent/skills/docs-build/SKILL.md](agent/skills/docs-build/SKILL.md) 与 [agent/skills/docs-indexing/SKILL.md](agent/skills/docs-indexing/SKILL.md)。
+- **文档产出闸门（SDD + docs-distill + docs-extract + docs-archive + docs-build + docs-indexing + docs-okf）**：执行 `/sdx-solution`、`/sdx-analysis`、`/sdx-prd`、`/sdx-architect`、`/sdx-design`、`/sdx-test`、`/docs-distill`、`/docs-extract`、`/docs-archive`、`/docs-build`、`/docs-indexing`、`/docs-okf` 或写入对应受管终稿（`{DOC_DIR}` 下 `SOLUTION-*`、`ANALYSIS-*`、`PRD-*`、`ASD-*`、`DSD-*`、`TDD-*`，`company/knowledge|system/knowledge/`，`{DOC_DIR}/knowledge/`，以及各文档根 `INDEX_GUIDE.md`、`**/changelogs/INDEXING-LOG.md` 等，见总表）前，须完成中间会话 spec 与用户总确认。规则总表见 [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md#artifact-gates) 第三节；各阶段技能见 `agent/skills/sdx-*/SKILL.md`、[agent/skills/docs-distill/SKILL.md](agent/skills/docs-distill/SKILL.md)、[agent/skills/docs-extract/SKILL.md](agent/skills/docs-extract/SKILL.md)、[agent/skills/docs-archive/SKILL.md](agent/skills/docs-archive/SKILL.md)、[agent/skills/docs-build/SKILL.md](agent/skills/docs-build/SKILL.md)、[agent/skills/docs-indexing/SKILL.md](agent/skills/docs-indexing/SKILL.md) 与 [agent/skills/docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md)。
 - **会话结束**：新增规则或约束需经确认后写入 `application/`、`system/`、`company/` 或本文件；索引类变更按需记录于 [application/changelogs/](application/changelogs/)（见 [application/changelogs/README.md](application/changelogs/README.md)）。
 
 ### 禁止事项
@@ -74,6 +74,7 @@
 | 元模型与贡献 | [application/DESIGN.md](application/DESIGN.md)、[application/CONTRIBUTING.md](application/CONTRIBUTING.md) |
 | 全局约定、Slash 技能 | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/skills/README.md](agent/skills/README.md) |
 | 初始化脚本、`.docsconfig` | [scripts/README.md](scripts/README.md) |
+| OKF 迁移与校验 | [agent/skills/docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) |
 | 变更与索引运维（按需） | [application/changelogs/](application/changelogs/) |
 
 ---
@@ -92,7 +93,7 @@ Markdown、YAML；**Bash 5+**；Git；可选 `rsync`。详 [INDEX_GUIDE.md](INDE
 
 ## 流程规范
 
-以下与 [README.md](README.md) 叠加；索引链路（`/docs-indexing`、`/docs-change`、`/docs-tag`）产出 `application/changelogs/` 运维文件，**非**日常必跑，见各 SKILL。
+以下与 [README.md](README.md) 叠加；索引链路（`/docs-indexing`、`/docs-change`、`/docs-tag`）与 OKF 维护（`/docs-okf`）产出 `application/changelogs/` 等运维文件，**非**日常必跑，见各 SKILL。
 
 Slash 技能见 [agent/skills/README.md](agent/skills/README.md)；产出闸门见 [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md#artifact-gates)。
 

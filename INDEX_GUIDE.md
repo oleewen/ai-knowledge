@@ -1,6 +1,6 @@
 # ai-knowledge 索引指南（INDEX_GUIDE）
 
-> **最后更新**: 2026-06-18  
+> **最后更新**: 2026-06-22  
 > **文档定位**: 面向 AI Agent 与维护者的**仓库根全索引目录**；九章结构遵循 `agent/skills/docs-indexing/references/nine-chapter-spec.md`。与 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[system/INDEX_GUIDE.md](system/INDEX_GUIDE.md) 互为补充时，以本文件为**中央库根路径**落地与检索入口。
 
 ---
@@ -22,6 +22,8 @@
 | 初始化脚本 | [scripts/README.md](scripts/README.md) | `docs-install`/`agent-install`/`docs-link`/`docs-bootstrap` |
 | 规范与 Slash | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/skills/README.md](agent/skills/README.md) | 全局约定与 Skill 清单 |
 | 变更与索引运维 | [application/changelogs/README.md](application/changelogs/README.md) | `CHANGE-LOG.md`、`INDEXING-LOG.md` |
+| OKF bundle 与校验 | [agent/skills/docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) | legacy 实体迁移、`index.md`、validate-okf、viz；与九章 INDEX 双索引并存 |
+| OKF 脚本入口 | [scripts/validate-okf.sh](scripts/validate-okf.sh)、[scripts/okf-migrate.sh](scripts/okf-migrate.sh) | 校验与全量迁移编排；详 [scripts/README.md](scripts/README.md) §OKF |
 
 ### 1.2 元信息
 
@@ -29,7 +31,7 @@
 - **核心定位**: 企业级全局知识底座（Markdown/YAML + Bash 初始化链）；**无业务应用运行时**
 - **技术栈**: Markdown、YAML；Bash 5+；Git；可选 `curl`、`rsync`（脚本可回退 `cp`）
 - **语言/构建**: 不适用传统应用「启动类」；可运行项为 Bash 脚本与可选 `scripts/tests/run.sh`（见 [scripts/README.md](scripts/README.md)）
-- **仓库规模（git 已跟踪）**: 共 **513** 个文件；扩展名约 **397** `.md`、**48** `.sh`、**36** `.json`、**13** `.py`、**6** `.yaml`（统计来源：`git ls-files`，2026-06-18）
+- **仓库规模（git 已跟踪）**: 共 **657** 个文件；扩展名约 **503** `.md`、**78** `.sh`、**36** `.json`、**28** `.py`、**3** `.yaml`、**3** `.html`（统计来源：`git ls-files`，2026-06-22）
 
 ---
 
@@ -43,9 +45,9 @@
 ├── application/                              # 应用侧知识主库：knowledge、阶段、solutions～requirements、changelogs
 ├── system/                                   # 系统知识库：architecture/（五视角文档）、application-APPNAME/ 联邦槽位、analysis/
 ├── company/                                  # 公司知识库：knowledge/（五视角企业架构）、system-SYSNAME/ 联邦槽位、changelogs/、solutions/、analysis/
-├── scripts/                                  # 向目标工程注入知识库与 .docsconfig；bootstrap
-├── agent/                                    # rules/、skills/、scripts/（config-bootstrap、校验）
-├── docs/                                     # 设计备忘等（若存在；会话 spec 见各文档根 specs/）
+├── scripts/                                  # docs-install、OKF（okf/、validate-okf.sh、okf-migrate.sh）、tests/
+├── agent/                                    # rules/、skills/（含 docs-okf）、scripts/（config-bootstrap、校验）
+├── docs/                                     # 设计备忘；会话 spec 见 docs/superpowers/specs/
 └── .gitignore                                # 忽略 `.*` 等；见 §八
 ```
 
@@ -151,7 +153,8 @@ stateDiagram-v2
 2. **目标工程接入知识库**: `git clone` 或 `docs-bootstrap.sh` → `./scripts/docs-install.sh --target=...`（可选 `--mode=central`、`--scope`、`--type`）。
 3. **仅安装 Agent 配置**: `./scripts/agent-install.sh`（`--target`、`--agents`、`--scope` 等）。
 4. **维护索引与变更**: `/docs-indexing` 更新根 `INDEX_GUIDE.md`；`/docs-change` 更新 [application/changelogs/CHANGE-LOG.md](application/changelogs/CHANGE-LOG.md)。
-5. **知识工程**: `/docs-build` 等按 [agent/skills/README.md](agent/skills/README.md) 执行。
+5. **OKF 迁移与校验**: `/docs-okf` 或 `bash scripts/okf-migrate.sh`；INDEX 落盘后建议 `python3 scripts/okf/generate_index.py --bundle application --recursive` 并 `bash scripts/validate-okf.sh`（见 [agent/skills/docs-okf/references/workflow.md](agent/skills/docs-okf/references/workflow.md)）。
+6. **知识工程**: `/docs-build` 等按 [agent/skills/README.md](agent/skills/README.md) 执行。
 
 ### 5.3 业务规则（协作）
 
@@ -205,7 +208,9 @@ stateDiagram-v2
 | `REPO_ROOT`（环境变量） | [scripts/docs-install.sh](scripts/docs-install.sh) 等 | 指向**本中央库**根目录（运行脚本时） |
 | `--target` | `docs-install.sh` | 目标工程文档目录，**必填** |
 | `--mode` / `--scope` / `--type` / `--force` / `--dry-run` | `docs-install.sh` | 见 [scripts/README.md](scripts/README.md) |
-| `.docsconfig` 键 | 目标工程仓库根 | `DOC_ROOT`、`REPO_ROOT`、`DOC_DIR`、`KNOWLEDGE_TYPE`；可选 `AGENT_*`（`agent-install`） |
+| `.docsconfig` 键 | 目标工程仓库根 | `DOC_ROOT`、`REPO_ROOT`、`DOC_DIR`、`KNOWLEDGE_TYPE`；可选 `AGENT_*`（`agent-install`）；OKF 路径解析见 [agent/skills/docs-okf/scripts/resolve-okf-paths.sh](agent/skills/docs-okf/scripts/resolve-okf-paths.sh) |
+| OKF 校验 | [scripts/validate-okf.sh](scripts/validate-okf.sh) | `--bundle` 默认 `.docsconfig` 的 `DOC_DIR`；须 `KNOWLEDGE_TYPE` |
+| OKF 迁移 | [scripts/okf-migrate.sh](scripts/okf-migrate.sh) | 全量编排；`--dry-run` 预览 |
 
 ### 7.2 环境差异
 
@@ -226,12 +231,13 @@ stateDiagram-v2
 
 | 类型 | 数量（已跟踪） | 描述 |
 |------|----------------|------|
-| 全库文件 | 513 | `git ls-files` 2026-06-18 |
-| Markdown | 397 | 主体文档与 Skill |
-| Shell | 48 | 初始化与辅助脚本 |
+| 全库文件 | 657 | `git ls-files` 2026-06-22 |
+| Markdown | 503 | 主体文档、OKF concept 与 Skill |
+| Shell | 78 | 初始化、OKF 与测试脚本 |
 | JSON | 36 | 评测与知识提取等 |
-| Python | 13 | 钩子与辅助脚本 |
-| YAML | 6 | 元数据与知识实体 |
+| Python | 28 | 钩子、OKF 与辅助脚本 |
+| YAML | 3 | 元数据与 knowledge-links |
+| HTML | 3 | OKF viz 等 |
 
 精读依据：`agent/skills/docs-indexing/references/scan-spec.md` 深度 3；本索引正文整合自**已读**入口文件与仓库统计，非逐文件全文摘录。
 
@@ -293,6 +299,7 @@ stateDiagram-v2
 | `/docs-extract` | [agent/skills/docs-extract/SKILL.md](agent/skills/docs-extract/SKILL.md) |
 | `/docs-archive` | [agent/skills/docs-archive/SKILL.md](agent/skills/docs-archive/SKILL.md) |
 | `/docs-upgrade` | [agent/skills/docs-upgrade/SKILL.md](agent/skills/docs-upgrade/SKILL.md) |
+| `/docs-okf` | [agent/skills/docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md)（[workflow](agent/skills/docs-okf/references/workflow.md)、[path-resolution](agent/skills/docs-okf/references/path-resolution.md)） |
 | `/sdx-solution` | [agent/skills/sdx-solution/SKILL.md](agent/skills/sdx-solution/SKILL.md) |
 | `/sdx-analysis` | [agent/skills/sdx-analysis/SKILL.md](agent/skills/sdx-analysis/SKILL.md) |
 | `/sdx-prd` | [agent/skills/sdx-prd/SKILL.md](agent/skills/sdx-prd/SKILL.md) |
@@ -303,4 +310,4 @@ stateDiagram-v2
 
 ---
 
-**索引元数据**: 本次运行 **mode=full**，**depth=3**，**since_ms=0**（全量），输出 **./INDEX_GUIDE.md**；运行记录见 [application/changelogs/INDEXING-LOG.md](application/changelogs/INDEXING-LOG.md)。
+**索引元数据**: 本次运行 **mode=full**，**depth=3**，**since_ms=0**（全量），输出 **./INDEX_GUIDE.md**；运行记录见 [application/changelogs/INDEXING-LOG.md](application/changelogs/INDEXING-LOG.md)（2026-06-22 四域 full d3）。
