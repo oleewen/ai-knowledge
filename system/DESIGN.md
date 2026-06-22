@@ -41,7 +41,7 @@ title: 系统知识库设计（精简版）
 
 | 层级 | 目录 | 职责 |
 | --- | --- | --- |
-| 根导航 | [README.md](README.md)、[INDEX_GUIDE.md](INDEX_GUIDE.md)、[docs_meta.md](docs_meta.md) | 人类入口、Agent 九章索引、目录元数据 |
+| 根导航 | [README.md](README.md)、[INDEX_GUIDE.md](INDEX_GUIDE.md)、[docs-meta.md](docs-meta.md) | 人类入口、Agent 九章索引、目录元数据 |
 | 治理规则 | [agent/knowledge/](../agent/knowledge/knowledge-governance.md) | 术语边界、命名 SSOT、ADR 模板与原则（全仓库） |
 | ADR 正文 | [adr/](adr/README.md) | 系统层架构决策记录正文 |
 | 架构层 | `knowledge/` | 五架构视角聚合视图；含 `overview/` 蒸馏缓冲区 |

@@ -69,7 +69,7 @@ title: 知识树元数据（application/knowledge）
 
 | 顺序 | 路径 |
 | --- | --- |
-| 1 | docs_meta.md |
+| 1 | docs-meta.md |
 | 2 | knowledge/knowledge-meta.md |
 | 3 | knowledge/business/business-meta.md |
 | 4 | knowledge/product/product-meta.md |

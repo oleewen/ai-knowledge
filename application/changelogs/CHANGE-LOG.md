@@ -22,6 +22,19 @@ title: 文档变更索引
 - 总变更: 379
 - Git: 379 · CHANGELOG: 0 · 本地: 0
 
+### 2026-06-22 · rename
+- **类型**: 命名统一
+- **说明**: 三文档根 `docs_meta.md` → `docs-meta.md`；`naming-conventions.md` 修正为 `docs-meta.md`；`docs-install` 安装契约同步；OKF viz 再生。
+- **文件**:
+  - `application/docs-meta.md`（自 `docs_meta.md` 重命名）
+  - `system/docs-meta.md`（自 `docs_meta.md` 重命名）
+  - `company/docs-meta.md`（自 `docs_meta.md` 重命名）
+  - `agent/knowledge/naming-conventions.md`
+  - `scripts/docs-install.sh`
+  - `scripts/okf/inject_frontmatter.py`
+  - 各文档根 INDEX/DESIGN/README/index/manifest/knowledge-meta 引用
+  - `application/viz.html`、`system/viz.html`、`company/viz.html`
+
 ## Git (379)
 
 ### 2026-06-18 11:53:31.000 · git

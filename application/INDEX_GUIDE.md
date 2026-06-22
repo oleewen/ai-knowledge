@@ -42,7 +42,7 @@ application/
 ├── README.md / README-s.md / README-c.md   # 入口与模式说明
 ├── INDEX_GUIDE.md                          # 本文件
 ├── DESIGN.md / CONTRIBUTING.md             # 元模型与贡献
-├── docs_meta.md / manifest.md          # 文档元数据
+├── docs-meta.md / manifest.md          # 文档元数据
 ├── adr/                                    # 应用层 ADR 正文
 ├── analysis/                               # 需求分析阶段
 ├── changelogs/                             # CHANGE-LOG、INDEXING-LOG
@@ -172,7 +172,7 @@ flowchart TB
 
 | 项 | 位置 | 说明 |
 |----|------|------|
-| 文档元数据 | [docs_meta.md](docs_meta.md)、[knowledge/knowledge-meta.md](knowledge/knowledge-meta.md) | 阶段与目录元信息 |
+| 文档元数据 | [docs-meta.md](docs-meta.md)、[knowledge/knowledge-meta.md](knowledge/knowledge-meta.md) | 阶段与目录元信息 |
 | manifest | [manifest.md](manifest.md) | 应用清单字段（按项目约定） |
 
 ### 7.2 环境差异

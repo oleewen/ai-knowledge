@@ -19,7 +19,7 @@ title: company 索引指南（INDEX_GUIDE）
 | 设计契约 | [DESIGN.md](DESIGN.md) | 目录边界、公司层 SSOT、同步闭环 |
 | 架构入口 | [knowledge/README.md](knowledge/README.md) | 五视角索引 |
 | OKF 根索引 | [index.md](index.md) | `okf_version: "0.1"` |
-| 目录元数据 | [docs_meta.md](docs_meta.md) | Directory Meta |
+| 目录元数据 | [docs-meta.md](docs-meta.md) | Directory Meta |
 | 联邦建联 | [knowledge-links.yaml](knowledge-links.yaml) | 系统建联登记 |
 | 运维日志 | [changelogs/README.md](changelogs/README.md) | CHANGE-LOG、INDEXING-LOG |
 | 仓库根全索引 | [../INDEX_GUIDE.md](../INDEX_GUIDE.md) | 中央库根地图 |
@@ -38,7 +38,7 @@ title: company 索引指南（INDEX_GUIDE）
 
 ```text
 company/
-├── README.md / INDEX_GUIDE.md / DESIGN.md / docs_meta.md / index.md
+├── README.md / INDEX_GUIDE.md / DESIGN.md / docs-meta.md / index.md
 ├── knowledge-links.yaml
 ├── knowledge/
 ├── solutions/ analysis/

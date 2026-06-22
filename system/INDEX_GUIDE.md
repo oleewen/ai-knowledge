@@ -41,7 +41,7 @@ title: system 索引指南（INDEX_GUIDE）
 
 ```text
 system/
-├── README.md / INDEX_GUIDE.md / DESIGN.md / docs_meta.md
+├── README.md / INDEX_GUIDE.md / DESIGN.md / docs-meta.md
 ├── knowledge-links.yaml
 ├── knowledge/                 # 五视角 + overview/ 蒸馏占位
 │   ├── README.md
@@ -165,7 +165,7 @@ flowchart LR
 
 | 项 | 位置 |
 |----|------|
-| 文档元数据 | [docs_meta.md](docs_meta.md)、[changelogs/README.md](changelogs/README.md) |
+| 文档元数据 | [docs-meta.md](docs-meta.md)、[changelogs/README.md](changelogs/README.md) |
 
 ### 7.2 环境差异
 

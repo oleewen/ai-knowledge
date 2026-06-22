@@ -38,7 +38,7 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 |------|---------------------|--------|----------|
 | **standalone** | `application`（默认） | `application/` | 全量拷贝（排除 `DESIGN.md`、`CONTRIBUTING.md`）；内容替换见 `docs-install` |
 | **standalone** | `system` / `company` | `system/` / `company/` | 组织级 / 公司级模板同步；并在目标工程根 **`scripts/`** 安装 **`docs-link.sh`**、**`link-config.sh`**（`link-config` 会按 `.docsconfig` 之 **`AGENT_*`** 解析 **`docs-core.sh`**） |
-| **中央知识库挂载建联**（`central`） | `application`（默认） | `application/` **子集** | 仅 `changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs_meta.md`、`manifest.md`；**不执行中央知识库挂载建联登记/联邦槽位写入** |
+| **中央知识库挂载建联**（`central`） | `application`（默认） | `application/` **子集** | 仅 `changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs-meta.md`、`manifest.md`；**不执行中央知识库挂载建联登记/联邦槽位写入** |
 | **中央知识库挂载建联**（`central`） | `system` / `company` | - | **不支持**（报错） |
 
 2. **Agent 配置**（**`agent-install.sh`**）：在 **`--target`**（默认 **`$HOME`**）下按 **`--agents`**（默认 **`cursor`**，可 **`all`** 或多选）安装到 **`${TARGET}/.{.cursor|.trae|.claude|.kiro}/`** 中对应目录；单份实体默认存储于 **`$HOME/.agents/`**；按 **`--scope`** 选择同步 **`hooks`**、**`scripts`**、**`rules`**、**`skills`**、**`knowledge`**、**`references`**（默认 **`a`** 为全部；**`k`** / **`knowledge`** 仅后两者）。当 **`--target` 不是 `$HOME`** 且 **`${TARGET}/.docsconfig`** 已存在时，所有 scope 都会按本次参数重算并覆盖 **`AGENT_ROOT`** 与 **`AGENT_DIRS`**。`docs-install` 在 `scope=config|knowledge` 下都会处理 `AGENT_*`：仅当 `.docsconfig` 中 **`AGENT_ROOT`** 为空时写默认 **`AGENT_ROOT=$HOME`** 与 **`AGENT_DIRS=.cursor`**；`AGENT_ROOT` 非空时保留原值。
@@ -204,7 +204,7 @@ your-project/
 ├── application/                          # 文档目录（application/ 模板拷贝）
 │   ├── README.md                  # 应用知识库 README
 │   ├── INDEX_GUIDE.md             # 九章索引（docs-indexing）；中央知识库挂载建联登记见「十」
-│   ├── docs_meta.md               # 根目录元数据（OKF）
+│   ├── docs-meta.md               # 根目录元数据（OKF）
 │   ├── knowledge/                 # 知识库（四视角）；治理 SSOT 见 agent/knowledge/
 │   │   ├── README.md
 │   │   ├── knowledge-meta.md

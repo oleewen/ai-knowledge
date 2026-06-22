@@ -77,7 +77,7 @@
 - **目录**：与实体 ID 一致（如 `BD-CHARGING-APPEAL`、`PL-BILLING-APPEAL`），或以 ID 为准在索引中查找。
 - **实体定义文件**：应用注册等可为 `{id}.yaml`（如 `APP-BILLING-APPEAL-SERVICE.yaml`）；数据实体字段模板见各视角 `{perspective}-meta.md` §4 必填字段；若需逐实体落盘（如应用侧增量），可采用 `{ENT-ID}_ENT_meta.yaml` 约定；业务各层字段模板收敛于 **`business-meta.md`** §4。
 - **元数据文件（目录索引）**：
-  - **`application/`、`system/`、`company/` 根**：`docs_meta.yaml`（阶段子目录与 `knowledge/` 指针、`INDEX_GUIDE`/`DESIGN` 等导航约定摘要）。
+  - **`application/`、`system/`、`company/` 根**：`docs-meta.md`（阶段子目录与 `knowledge/` 指针、`INDEX_GUIDE`/`DESIGN` 等导航约定摘要）。
   - **`{DOC_DIR}/knowledge/` 根**：`knowledge-meta.md`（本树 SSOT 索引说明）。
   - **治理与命名 SSOT**：`agent/knowledge/`（`naming-conventions.md`、`glossary.md`、`architecture-principles.md`、`adr-template.md`、`adr-guidelines.md`）；ADR 正文为 `application/adr/ADR-{序号}-{短标题}.md` 或 `system/adr/ADR-{序号}-{短标题}.md`（按决策范围）。
   - **`{DOC_DIR}/` 下阶段目录**：**solutions**、**analysis**、**requirements**、**changelogs** 约定收敛于各目录 `README.md`（无 `{dirname}_meta.yaml`）。`knowledge/` 五视角等使用 `{perspective}-meta.md` + `{perspective}-entities.md`。

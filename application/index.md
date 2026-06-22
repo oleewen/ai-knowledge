@@ -14,7 +14,7 @@ okf_version: "0.1"
 | Agent 九章索引 | [INDEX_GUIDE.md](/INDEX_GUIDE.md) |
 | 设计方案 | [DESIGN.md](/DESIGN.md) |
 | 贡献指南 | [CONTRIBUTING.md](/CONTRIBUTING.md) |
-| 目录元数据 | [docs_meta.md](/docs_meta.md) |
+| 目录元数据 | [docs-meta.md](/docs-meta.md) |
 | 目录清单 | [manifest.md](/manifest.md) |
 
 ## 主要分区

@@ -31,7 +31,7 @@ title: 应用知识文档库 — 设计方案摘录
 
 **目录索引（约定）**：
 
-- ***应用知识库根目录**：使用 [docs_meta.md](docs_meta.md) 概括 `application/` 树与子目录 meta 指针
+- ***应用知识库根目录**：使用 [docs-meta.md](docs-meta.md) 概括 `application/` 树与子目录 meta 指针
   - `knowledge/knowledge-meta.md` 描述知识树；
   - 治理与命名 SSOT 见 [agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md)；
   - **`solutions/`、`analysis/`、`requirements/`、`changelogs/`** 阶段约定均收敛于各目录 **`README.md`**。`knowledge/` 五视角采用 `{perspective}-meta.md` + **per-entity `{ID}.md`**（OKF SSOT）；`KNOWLEDGE_INDEX.md` 由扫描生成。
