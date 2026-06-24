@@ -10,6 +10,32 @@ from typing import Any, Dict, Iterator, List, Optional, Tuple
 OKF_RESERVED_NAMES = frozenset({"index.md", "log.md"})
 FRONTMATTER_RE = re.compile(r"\A---\r?\n(.*?)\r?\n---\r?\n?", re.DOTALL)
 
+# OKF v1 frontmatter 必填 10 字段（SSOT：system/knowledge/_schema/okf-spec.md §1）
+REQUIRED_FRONTMATTER_FIELDS = (
+    "type",
+    "title",
+    "description",
+    "tags",
+    "timestamp",
+    "full_id",
+    "perspective",
+    "hierarchy",
+    "parent_id",
+    "layer_scope",
+)
+
+# OKF v1 正文 4 段（拼写精确、区分大小写；使用 # 一级标题，与 example 保持一致）
+REQUIRED_SECTIONS = ("Relations", "Cross-perspective", "Details", "Evidence")
+
+# OKF v1 合法 perspective 枚举
+VALID_PERSPECTIVES = frozenset({"business", "product", "application", "data", "technical"})
+
+# OKF v1 合法 layer_scope 枚举（与全仓现状一致：application / system / company）
+VALID_LAYER_SCOPES = frozenset({"application", "system", "company"})
+
+# ISO8601 时间戳正则（OKF v1 强制 UTC + Z 后缀）
+ISO8601_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
+
 HIERARCHY_TO_TYPE: Dict[str, str] = {
     "BD": "Business Domain",
     "BSD": "Business Subdomain",
