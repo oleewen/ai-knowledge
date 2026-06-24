@@ -58,6 +58,9 @@ HIERARCHY_TO_TYPE: Dict[str, str] = {
     "TSD": "Technical Subdomain",
     "CAP": "Business Capability",
     "TPL": "Technical Platform",
+    "BP": "Business Process",
+    "BR": "Business Rule",
+    "TBL": "Data Table",
 }
 
 APPLICATION_PERSPECTIVE_DOMAIN_ANCHOR: Dict[str, str] = {

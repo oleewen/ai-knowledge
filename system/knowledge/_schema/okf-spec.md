@@ -61,19 +61,34 @@ cross_references / evidence_chain（应放入正文 Cross-perspective 段与 Evi
 
 ## 2. type 与 hierarchy 映射表
 
-9 行精确映射。**`type` 与 `hierarchy` 必须一一对应**。
+24 行精确映射。**`type` 与 `hierarchy` 必须一一对应**。
 
-| hierarchy | type | perspective |
-|-----------|------|-------------|
-| BD | `Business Domain` | business |
-| BSD | `Business Subdomain` | business |
-| BC | `Bounded Context` | business |
-| AGG | `Aggregate` | business |
-| AB | `Ability` | business |
-| PL | `Product Line` | product |
-| PM | `Product Module` | product |
-| FT | `Feature` | product |
-| UC | `Use Case` | product |
+| hierarchy | type | perspective | 知识库 |
+|-----------|------|-------------|--------|
+| BD | `Business Domain` | business | company |
+| CAP | `Business Capability` | business | company |
+| PL | `Product Line` | product | company |
+| SYS | `System` | application | company |
+| MDG | `Master Data Domain` | data | company |
+| TPL | `Technical Platform` | technical | company |
+| BSD | `Business Subdomain` | business | system |
+| BC | `Bounded Context` | business | system |
+| AGG | `Aggregate` | business | system |
+| AB | `Ability` | business | system |
+| PM | `Product Module` | product | system |
+| BP | `Business Process` | product | system |
+| FT | `Feature` | product | system |
+| UC | `Use Case` | product | system |
+| BR | `Business Rule` | product | system |
+| APP | `Application` | application | system |
+| MS | `Microservice` | application | system |
+| DS | `Data Store` | data | system |
+| ENT | `Entity` | data | system |
+| TSD | `Technical Subdomain` | technical | system |
+| API | `API Endpoint` | application | application |
+| TBL | `Data Table` | data | application |
+| MW | `Middleware Binding` | technical | application |
+| CMP | `Component` | technical | application |
 
 > 说明：本仓库暂无 application / data / technical 视角的 example（缺源码）；预留 perspective 枚举以便后续扩展。
 
@@ -255,6 +270,10 @@ product/
 
 ## 10. 与 example 的对照
 
+11 个 example 文件（5+3 基础 + 3 流程/规则/数据表扩展），分布在 company / system / application 三层。
+
+### 10.1 基础 8 个 example（system bundle）
+
 | 字段 | BD-EXAMPLE | BSD-EXAMPLE | BC-EXAMPLE | AGG-EXAMPLE | AB-EXAMPLE | PM-EXAMPLE | FT-EXAMPLE | UC-EXAMPLE-001 |
 |------|------------|-------------|------------|-------------|------------|------------|------------|----------------|
 | `type` | Business Domain | Business Subdomain | Bounded Context | Aggregate | Ability | Product Module | Feature | Use Case |
@@ -265,6 +284,27 @@ product/
 | Cross-perspective 段 | `(none)` | `(none)` | `(none)` | `(none)` | `implemented_by_app_id: [APP-EXAMPLE]` | `(none)` | `(none)` | `(none)` |
 | Details 段 | `(none)` | `(none)` | `(none)` | `(none)` | `(none)` | `(none)` | `(none)` | `(none)` |
 | Evidence 段 | `示例数据` | `示例数据` | `示例数据` | `示例数据` | `示例数据` | `示例数据` | `示例数据` | `示例数据` |
+
+### 10.2 扩展 3 个 example（BP / BR / TBL）
+
+| 字段 | BP-EXAMPLE | BR-EXAMPLE | TBL-EXAMPLE |
+|------|------------|------------|-------------|
+| `type` | Business Process | Business Rule | Data Table |
+| `tags` | `[product, BP]` | `[product, BR]` | `[data, TBL]` |
+| `parent_id` | `PM-EXAMPLE` | `PM-EXAMPLE` | `DS-EXAMPLE` |
+| `layer_scope` | `system` | `system` | `application` |
+| Relations 段 | `parent:` | `parent:` | `parent:` |
+| Cross-perspective 段 | `(none)` | `(none)` | `(none)` |
+| Details 段 | `(none)` | `(none)` | `(none)` |
+| Evidence 段 | `示例数据` | `示例数据` | `示例数据` |
+
+### 10.3 落点
+
+| example | 路径 | 父层目录 |
+|---------|------|---------|
+| BP-EXAMPLE | `system/knowledge/product/PM-EXAMPLE/BP-EXAMPLE.md` | `PM-EXAMPLE/` |
+| BR-EXAMPLE | `system/knowledge/product/PM-EXAMPLE/BR-EXAMPLE.md` | `PM-EXAMPLE/` |
+| TBL-EXAMPLE | `application/knowledge/data/DS-EXAMPLE/TBL-EXAMPLE.md` | `DS-EXAMPLE/` |
 
 ---
 
