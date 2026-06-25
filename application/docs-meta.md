@@ -36,7 +36,7 @@ child_directories:
 
 child_files:
   - "README.md"
-  - "INDEX_GUIDE.md"
+  - "INDEX-GUIDE.md"
   - "DESIGN.md"
   - "CONTRIBUTING.md"
 
@@ -46,7 +46,7 @@ inputs:
 
 outputs:
   primary_artifact:
-    pattern: "README.md, INDEX_GUIDE.md, DESIGN.md, CONTRIBUTING.md, knowledge/**/*"
+    pattern: "README.md, INDEX-GUIDE.md, DESIGN.md, CONTRIBUTING.md, knowledge/**/*"
     description: "child_files（根级）+ knowledge/ 树（{perspective}-meta.md + 实体文件 {ID}.md，OKF SSOT）"
 
 naming_conventions:
@@ -63,7 +63,7 @@ integration:
 
 references:
   - path: "./README.md"
-  - path: "./INDEX_GUIDE.md"
+  - path: "./INDEX-GUIDE.md"
   - path: "./DESIGN.md"
   - path: "./CONTRIBUTING.md"
   - path: "../agent/knowledge/knowledge-governance.md"

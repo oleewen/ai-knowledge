@@ -23,8 +23,8 @@ title: system 索引指南（INDEX_GUIDE）
 | 系统宪法 | [../agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md) | 全仓库治理与命名 SSOT |
 | 联邦建联 | [knowledge-links.yaml](knowledge-links.yaml) | 与中央库/应用镜像的链接登记（按项目约定维护） |
 | 运维日志 | [changelogs/README.md](changelogs/README.md) | `CHANGE-LOG.md`、**本根** `INDEXING-LOG.md` |
-| 仓库根全索引 | [../INDEX_GUIDE.md](../INDEX_GUIDE.md) | 中央库根路径九章地图 |
-| 应用侧索引 | [../application/INDEX_GUIDE.md](../application/INDEX_GUIDE.md) | 应用 `DOC_DIR` 机器索引 |
+| 仓库根全索引 | [../INDEX-GUIDE.md](../INDEX-GUIDE.md) | 中央库根路径九章地图 |
+| 应用侧索引 | [../application/INDEX-GUIDE.md](../application/INDEX-GUIDE.md) | 应用 `DOC_DIR` 机器索引 |
 
 ### 1.2 元信息
 
@@ -41,7 +41,7 @@ title: system 索引指南（INDEX_GUIDE）
 
 ```text
 system/
-├── README.md / INDEX_GUIDE.md / DESIGN.md / docs-meta.md
+├── README.md / INDEX-GUIDE.md / DESIGN.md / docs-meta.md
 ├── knowledge-links.yaml
 ├── knowledge/                 # 五视角 + overview/ 蒸馏占位
 │   ├── README.md
@@ -151,7 +151,7 @@ flowchart LR
 | 数据源 | 类型 | 用途 |
 |--------|------|------|
 | `knowledge/**/*.md` | Markdown | 架构事实与模板段 |
-| `*-meta.md` / [KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md) | Markdown | 五视角元数据与实体实例索引 |
+| `*-meta.md` / [KNOWLEDGE-INDEX.md](knowledge/KNOWLEDGE-INDEX.md) | Markdown | 五视角元数据与实体实例索引 |
 | `knowledge-links.yaml` | YAML | 联邦链接 |
 
 ### 6.2～6.4
@@ -194,7 +194,7 @@ flowchart LR
 
 ### 8.3 维护规则
 
-- 本根 **`system/changelogs/INDEXING-LOG.md`** 记录对 **`system/INDEX_GUIDE.md`** 的索引运行（与 `application/changelogs` 中根/应用索引行分列）。
+- 本根 **`system/changelogs/INDEXING-LOG.md`** 记录对 **`system/INDEX-GUIDE.md`** 的索引运行（与 `application/changelogs` 中根/应用索引行分列）。
 
 ---
 
@@ -211,9 +211,9 @@ flowchart LR
 ### 9.2 视角文件索引（knowledge/）
 
 - **架构入口**：[knowledge/README.md](knowledge/README.md) — 五视角 README 与叙事章节索引  
-- **实体 SSOT**：[knowledge/KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md) — 扫描生成的五视角 ID 表  
+- **实体 SSOT**：[knowledge/KNOWLEDGE-INDEX.md](knowledge/KNOWLEDGE-INDEX.md) — 扫描生成的五视角 ID 表  
 - **视角元数据**：各 `{perspective}/{perspective}-meta.md`（见 [knowledge/knowledge-meta.md](knowledge/knowledge-meta.md) §2）
 
 ---
 
-**索引元数据**: 本次运行 **mode=full**，**depth=3**，**since_ms=0**，输出 **system/INDEX_GUIDE.md**；运行记录见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)（2026-06-22）。
+**索引元数据**: 本次运行 **mode=full**，**depth=3**，**since_ms=0**，输出 **system/INDEX-GUIDE.md**；运行记录见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)（2026-06-22）。

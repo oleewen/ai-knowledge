@@ -87,7 +87,7 @@ title: 知识库 · 五视角实体 ID 索引（SSOT）
 
 ## 交叉引用
 
-- 应用：[application/index.md](application/index.md) · [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md) §3
+- 应用：[application/index.md](application/index.md) · [KNOWLEDGE-INDEX.md](KNOWLEDGE-INDEX.md) §3
 - 业务：[business/index.md](business/index.md) · §1
 - 产品：[product/index.md](product/index.md) · §2
 - 数据：[data/index.md](data/index.md) · §4

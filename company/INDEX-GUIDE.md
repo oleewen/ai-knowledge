@@ -22,8 +22,8 @@ title: company 索引指南（INDEX_GUIDE）
 | 目录元数据 | [docs-meta.md](docs-meta.md) | 目录元数据与导航约束 |
 | 联邦建联 | [knowledge-links.yaml](knowledge-links.yaml) | 系统建联登记 |
 | 运维日志 | [changelogs/README.md](changelogs/README.md) | CHANGE-LOG、INDEXING-LOG |
-| 仓库根全索引 | [../INDEX_GUIDE.md](../INDEX_GUIDE.md) | 中央库根地图 |
-| 系统侧索引 | [../system/INDEX_GUIDE.md](../system/INDEX_GUIDE.md) | system 九章索引 |
+| 仓库根全索引 | [../INDEX-GUIDE.md](../INDEX-GUIDE.md) | 中央库根地图 |
+| 系统侧索引 | [../system/INDEX-GUIDE.md](../system/INDEX-GUIDE.md) | system 九章索引 |
 
 ### 1.2 元信息
 
@@ -40,7 +40,7 @@ title: company 索引指南（INDEX_GUIDE）
 
 ```text
 company/
-├── README.md / INDEX_GUIDE.md / DESIGN.md / docs-meta.md / index.md
+├── README.md / INDEX-GUIDE.md / DESIGN.md / docs-meta.md / index.md
 ├── knowledge-links.yaml
 ├── knowledge/
 ├── solutions/ analysis/
@@ -84,7 +84,7 @@ company/
 | MDG-EXAMPLE | [knowledge/data/MDG-EXAMPLE.md](knowledge/data/MDG-EXAMPLE.md) |
 | TPL-EXAMPLE | [knowledge/technical/TPL-EXAMPLE.md](knowledge/technical/TPL-EXAMPLE.md) |
 
-扫描索引：[knowledge/KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md)
+扫描索引：[knowledge/KNOWLEDGE-INDEX.md](knowledge/KNOWLEDGE-INDEX.md)
 
 ---
 
@@ -117,4 +117,4 @@ overview 缓冲区：[knowledge/overview/NAME-overview.md](knowledge/overview/NA
 
 ---
 
-**索引元数据**: 本次运行 **mode=full**，**depth=3**，**since_ms=0**，输出 **company/INDEX_GUIDE.md**；运行记录见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)（2026-06-22）。
+**索引元数据**: 本次运行 **mode=full**，**depth=3**，**since_ms=0**，输出 **company/INDEX-GUIDE.md**；运行记录见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)（2026-06-22）。

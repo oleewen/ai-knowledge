@@ -4,7 +4,7 @@ title: technical（技术视角）
 ---
 # technical（技术视角）
 
-本目录描述中间件绑定、关键运行时组件，并通过 ID 与其他视角建立映射。公司级 **TPL-***、系统级 **TSD-*** 在对应层目录首次定义；本层主定义并登记 **MW-*** 与 **CMP-***。元数据与实例索引见 [technical-meta.md](technical-meta.md)、[../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（§5）。
+本目录描述中间件绑定、关键运行时组件，并通过 ID 与其他视角建立映射。公司级 **TPL-***、系统级 **TSD-*** 在对应层目录首次定义；本层主定义并登记 **MW-*** 与 **CMP-***。元数据与实例索引见 [technical-meta.md](technical-meta.md)、[../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md)（§5）。
 
 ---
 
@@ -25,7 +25,7 @@ title: technical（技术视角）
 ```
 
 - **字段模板**：[technical-meta.md](technical-meta.md) → §4 必填字段
-- **层级内容**：实体文件 `{ID}.md`；枚举见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) §5
+- **层级内容**：实体文件 `{ID}.md`；枚举见 [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) §5
 
 **边界**：MW 登记基础设施绑定（数据源、缓存、MQ Topic/集群等）；MS/API 仍登记业务入口宿主类，不迁入本视角。
 
@@ -43,4 +43,4 @@ title: technical（技术视角）
 - **技术 ← 应用**：`bound_app_id` → APP；`implements_tpl_ids`（APP 字段）→ TPL。
 - **技术 ← 数据**：`related_ds_id` → DS（数据源类绑定）。
 
-仓库根 Index Guide：[INDEX_GUIDE.md](../../../INDEX_GUIDE.md)；设计：[../../DESIGN.md](../../DESIGN.md)；命名：[../../../agent/knowledge/naming-conventions.md](../../../agent/knowledge/naming-conventions.md)。
+仓库根 Index Guide：[INDEX-GUIDE.md](../../../INDEX-GUIDE.md)；设计：[../../DESIGN.md](../../DESIGN.md)；命名：[../../../agent/knowledge/naming-conventions.md](../../../agent/knowledge/naming-conventions.md)。

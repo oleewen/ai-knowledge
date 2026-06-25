@@ -102,8 +102,8 @@ timestamp: "2026-06-25T00:00:00Z"
 
 - `README.md`
 - `index.md`
-- `INDEX_GUIDE.md`
-- `KNOWLEDGE_INDEX.md`
+- `INDEX-GUIDE.md`
+- `KNOWLEDGE-INDEX.md`
 
 处理规则：
 
@@ -164,7 +164,7 @@ timestamp: "2026-06-25T00:00:00Z"
   - 索引入口
   - 元数据
   - 叙事文件
-- `README.md`、`index.md`、`INDEX_GUIDE.md`、`KNOWLEDGE_INDEX.md` 默认优先归为索引入口。
+- `README.md`、`index.md`、`INDEX-GUIDE.md`、`KNOWLEDGE-INDEX.md` 默认优先归为索引入口。
 - `*-meta.md`、`docs-meta.md`、`knowledge-links.yaml`、变更日志默认优先归为元数据。
 
 ---
@@ -336,8 +336,8 @@ MAY：
 
 - `README.md`
 - `index.md`
-- `INDEX_GUIDE.md`
-- `KNOWLEDGE_INDEX.md`
+- `INDEX-GUIDE.md`
+- `KNOWLEDGE-INDEX.md`
 
 MUST：
 
@@ -351,8 +351,8 @@ SHOULD：
 
 - `README.md`：人类入口
 - `index.md`：当前目录渐进披露
-- `INDEX_GUIDE.md`：机器地图
-- `KNOWLEDGE_INDEX.md`：知识实体扫描索引
+- `INDEX-GUIDE.md`：机器地图
+- `KNOWLEDGE-INDEX.md`：知识实体扫描索引
 
 MAY：
 
@@ -362,8 +362,8 @@ MAY：
 
 - 根/入口：`company/README.md`、`system/README.md`、`application/README.md`
 - 渐进披露：`company/index.md`、`system/knowledge/index.md`、`application/knowledge/index.md`
-- 机器索引：`company/INDEX_GUIDE.md`、`system/INDEX_GUIDE.md`、`application/INDEX_GUIDE.md`
-- 实体枚举：`application/knowledge/KNOWLEDGE_INDEX.md`
+- 机器索引：`company/INDEX-GUIDE.md`、`system/INDEX-GUIDE.md`、`application/INDEX-GUIDE.md`
+- 实体枚举：`application/knowledge/KNOWLEDGE-INDEX.md`
 
 ---
 

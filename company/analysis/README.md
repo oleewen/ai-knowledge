@@ -33,4 +33,4 @@ SDD **需求分析**阶段目录：产出 `ANALYSIS-{IDEA-ID}.md`，下游由各
 
 ## 索引维护
 
-每新增或评审一份 `ANALYSIS-{IDEA-ID}.md`，须同步更新上表；重大结构变更时按需更新根 `INDEX_GUIDE.md`。
+每新增或评审一份 `ANALYSIS-{IDEA-ID}.md`，须同步更新上表；重大结构变更时按需更新根 `INDEX-GUIDE.md`。

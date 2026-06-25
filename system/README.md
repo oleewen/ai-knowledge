@@ -14,7 +14,7 @@ title: "系统知识库（顶层 `system/`）"
 | 路径 | 说明 |
 | ------ | ------ |
 | [DESIGN.md](DESIGN.md) | 设计边界、SSOT 继承矩阵、同步闭环与 SDD 阶段链 |
-| [INDEX_GUIDE.md](INDEX_GUIDE.md) | Agent 九章机器索引（本 `system/` 文档根） |
+| [INDEX-GUIDE.md](INDEX-GUIDE.md) | Agent 九章机器索引（本 `system/` 文档根） |
 | [docs-meta.md](docs-meta.md) | 目录元数据与 SSOT 指针 |
 | [knowledge-links.yaml](knowledge-links.yaml) | 联邦应用建联清单 |
 | [agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md) | 治理与命名 SSOT：术语边界、槽位约定 |

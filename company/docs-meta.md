@@ -34,7 +34,7 @@ child_directories:
 
 child_files:
   - "README.md"
-  - "INDEX_GUIDE.md"
+  - "INDEX-GUIDE.md"
   - "DESIGN.md"
   - "knowledge-links.yaml"
 
@@ -44,7 +44,7 @@ inputs:
 
 outputs:
   primary_artifact:
-    pattern: "README.md, INDEX_GUIDE.md, DESIGN.md, knowledge/**/*"
+    pattern: "README.md, INDEX-GUIDE.md, DESIGN.md, knowledge/**/*"
     description: "根级导航与设计 + knowledge/ 公司层 OKF 概念实体"
 
 naming_conventions:
@@ -64,7 +64,7 @@ integration:
 
 references:
   - path: "./README.md"
-  - path: "./INDEX_GUIDE.md"
+  - path: "./INDEX-GUIDE.md"
   - path: "./DESIGN.md"
   - path: "../agent/knowledge/knowledge-governance.md"
   - path: "../agent/knowledge/okf-spec.md"

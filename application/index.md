@@ -11,7 +11,7 @@ okf_version: "1.0"
 | 人类入口 | [README.md](/README.md) |
 | 独立模式说明 | [README-s.md](/README-s.md) |
 | 中央挂载说明 | [README-c.md](/README-c.md) |
-| Agent 九章索引 | [INDEX_GUIDE.md](/INDEX_GUIDE.md) |
+| Agent 九章索引 | [INDEX-GUIDE.md](/INDEX-GUIDE.md) |
 | 设计方案 | [DESIGN.md](/DESIGN.md) |
 | 贡献指南 | [CONTRIBUTING.md](/CONTRIBUTING.md) |
 | 目录元数据 | [docs-meta.md](/docs-meta.md) |

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""从 bundle concept 文件重建 KNOWLEDGE_INDEX.md。"""
+"""从 bundle concept 文件重建 KNOWLEDGE-INDEX.md。"""
 
 from __future__ import annotations
 
@@ -276,7 +276,7 @@ def render_knowledge_index(
 
 
 def main(argv: Optional[List[str]] = None) -> int:
-    parser = argparse.ArgumentParser(description="重建 bundle KNOWLEDGE_INDEX.md")
+    parser = argparse.ArgumentParser(description="重建 bundle KNOWLEDGE-INDEX.md")
     parser.add_argument("--bundle", required=True, help="bundle 名称，如 application")
     parser.add_argument("--dry-run", action="store_true", help="仅输出到 stdout")
     args = parser.parse_args(argv)
@@ -287,7 +287,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         print(f"error: bundle 不存在: {bundle_root}", file=sys.stderr)
         return 1
 
-    index_path = bundle_root / "knowledge" / "KNOWLEDGE_INDEX.md"
+    index_path = bundle_root / "knowledge" / "KNOWLEDGE-INDEX.md"
     existing = index_path.read_text(encoding="utf-8") if index_path.is_file() else None
     rendered = render_knowledge_index(bundle_root, existing, args.bundle)
 

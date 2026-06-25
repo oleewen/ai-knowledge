@@ -9,7 +9,7 @@ okf_version: "0.1"
 | 章节 | 路径 |
 | --- | --- |
 | 人类入口 | [README.md](/README.md) |
-| Agent 九章索引 | [INDEX_GUIDE.md](/INDEX_GUIDE.md) |
+| Agent 九章索引 | [INDEX-GUIDE.md](/INDEX-GUIDE.md) |
 | 设计方案 | [DESIGN.md](/DESIGN.md) |
 | 目录元数据 | [docs-meta.md](/docs-meta.md) |
 | 联邦建联 | knowledge-links.yaml |

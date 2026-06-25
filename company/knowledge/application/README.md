@@ -6,7 +6,7 @@ title: 应用架构
 
 [返回上一级 · 架构文档索引](../README.md)
 
-本目录为应用架构**目录与入口**，聚焦公司级系统全景与 C4 系统级架构。实体 SSOT：[application-meta.md](application-meta.md)、[../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（**SYS-***）；实体文件见下表。
+本目录为应用架构**目录与入口**，聚焦公司级系统全景与 C4 系统级架构。实体 SSOT：[application-meta.md](application-meta.md)、[../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md)（**SYS-***）；实体文件见下表。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|

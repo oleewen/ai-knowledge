@@ -107,7 +107,7 @@ footer: 'ai-knowledge · 架构师 / 研发负责人 · 45 min'
 ```text
 company/                system/                  application/
 ├ ea/                   ├ architecture/          ├ knowledge/ 
-│ └ overview/           │ └ overview/            │ └ KNOWLEDGE_INDEX.md
+│ └ overview/           │ └ overview/            │ └ KNOWLEDGE-INDEX.md
 ├ system-*/             ├ application-*/         ├ solutions/
 ├ solutions/            ├ solutions/             ├ analysis/
 ├ analysis/             ├ analysis/              ├ requirements/

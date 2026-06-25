@@ -4,7 +4,7 @@ title: 产品视角元数据（system/knowledge/product）
 ---
 # 产品视角元数据（system/knowledge/product）
 
-系统级产品版图（PL→PM→FT→UC）视角元数据 SSOT。实例索引见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)。
+系统级产品版图（PL→PM→FT→UC）视角元数据 SSOT。实例索引见 [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md)。
 
 ---
 
@@ -82,9 +82,9 @@ title: 产品视角元数据（system/knowledge/product）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 叙事文档索引 |
-| [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) | PL/PM/FT/UC 实例 SSOT |
+| [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) | PL/PM/FT/UC 实例 SSOT |
 | [../../DESIGN.md](../../DESIGN.md) | 系统库设计契约 |
 | [../../../company/knowledge/product/product-meta.md](../../../company/knowledge/product/product-meta.md) | 公司级 PL 元数据 |
 | [../../../agent/knowledge/naming-conventions.md](../../../agent/knowledge/naming-conventions.md) | ID 命名 SSOT |
 
-**索引**：`readme_index_table: false`；变更 ID 时同步 KNOWLEDGE_INDEX.md 与 narrative 章节（按需）。
+**索引**：`readme_index_table: false`；变更 ID 时同步 KNOWLEDGE-INDEX.md 与 narrative 章节（按需）。

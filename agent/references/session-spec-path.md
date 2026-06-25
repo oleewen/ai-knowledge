@@ -20,7 +20,7 @@
 
 示例（中央库 **无** `.docsconfig`，或 `DOC_DIR` 无效时默认 `docs`）：
 
-- `docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-indexing.md`（可一次列出 `INDEX_GUIDE.md`、`system/INDEX_GUIDE.md` 等多条写入路径）
+- `docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-indexing.md`（可一次列出 `INDEX-GUIDE.md`、`system/INDEX-GUIDE.md` 等多条写入路径）
 - `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`（brainstorming 设计备忘）
 
 ## DOC_DIR 解析（与 hooks 一致）
@@ -30,7 +30,7 @@
 | 存在 `.docsconfig` 且 `DOC_DIR=application`（或 `system` / `company` / `docs`） | **配置值**（首段路径；`.` 或空视为无效） |
 | 无 `.docsconfig`，或缺少 / 无效 `DOC_DIR` | **`docs`** |
 
-**跨域写入**：当有效 `{DOC_DIR}` 为 `docs` 时，会话 spec 仍可在 §3 **写入路径清单**中列出任意仓库根相对终稿路径（如 `system/INDEX_GUIDE.md`）；spec 文件本身须落在 `docs/superpowers/specs/`。
+**跨域写入**：当有效 `{DOC_DIR}` 为 `docs` 时，会话 spec 仍可在 §3 **写入路径清单**中列出任意仓库根相对终稿路径（如 `system/INDEX-GUIDE.md`）；spec 文件本身须落在 `docs/superpowers/specs/`。
 
 ## 实现判定（与 hooks 一致）
 

@@ -4,7 +4,7 @@ title: 数据视角元数据（application/knowledge/data）
 ---
 # 数据视角元数据（application/knowledge/data）
 
-应用侧数据版图（DS→ENT）实体登记与物理落地元数据。实例索引见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（§4，扫描生成；实体文件 `{ID}.md` 为 SSOT）。
+应用侧数据版图（DS→ENT）实体登记与物理落地元数据。实例索引见 [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md)（§4，扫描生成；实体文件 `{ID}.md` 为 SSOT）。
 
 ---
 
@@ -81,7 +81,7 @@ title: 数据视角元数据（application/knowledge/data）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 人类可读说明 |
-| [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) | §4 数据视角实例索引（扫描生成） |
-| [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) | 五视角索引 |
+| [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) | §4 数据视角实例索引（扫描生成） |
+| [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) | 五视角索引 |
 
-**索引**：`readme_index_table: true`；变更 ID 时同步 README、KNOWLEDGE_INDEX.md（按需）。
+**索引**：`readme_index_table: true`；变更 ID 时同步 README、KNOWLEDGE-INDEX.md（按需）。

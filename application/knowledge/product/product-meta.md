@@ -4,7 +4,7 @@ title: 产品视角元数据（application/knowledge/product）
 ---
 # 产品视角元数据（application/knowledge/product）
 
-应用侧产品版图（PL→PM→FT→UC）实体登记与交互映射元数据。实例索引见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（§2，扫描生成；实体文件 `{ID}.md` 为 SSOT）。
+应用侧产品版图（PL→PM→FT→UC）实体登记与交互映射元数据。实例索引见 [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md)（§2，扫描生成；实体文件 `{ID}.md` 为 SSOT）。
 
 ---
 
@@ -82,7 +82,7 @@ title: 产品视角元数据（application/knowledge/product）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 人类可读说明 |
-| [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) | §2 产品视角实例索引（扫描生成） |
-| [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) | 五视角索引 |
+| [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) | §2 产品视角实例索引（扫描生成） |
+| [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) | 五视角索引 |
 
-**索引**：`readme_index_table: true`；变更 ID 时同步 README、KNOWLEDGE_INDEX.md（按需）。
+**索引**：`readme_index_table: true`；变更 ID 时同步 README、KNOWLEDGE-INDEX.md（按需）。

@@ -5,7 +5,7 @@ title: application 索引指南（INDEX_GUIDE）
 # application 索引指南（INDEX_GUIDE）
 
 > **最后更新**: 2026-06-22  
-> **文档定位**: 面向 AI Agent 的 **`application/` 文档根**九章机器索引；与仓库根 [INDEX_GUIDE.md](../INDEX_GUIDE.md) 互补。中央知识库挂载建联登记见 **§十**。
+> **文档定位**: 面向 AI Agent 的 **`application/` 文档根**九章机器索引；与仓库根 [INDEX-GUIDE.md](../INDEX-GUIDE.md) 互补。中央知识库挂载建联登记见 **§十**。
 
 ---
 
@@ -18,11 +18,11 @@ title: application 索引指南（INDEX_GUIDE）
 | 应用入口（模式分流） | [README.md](README.md) | `standalone` / `central` 见 [README-s.md](README-s.md)、[README-c.md](README-c.md) |
 | 设计元模型 | [DESIGN.md](DESIGN.md) | 五视角、实体与演进约束 |
 | 贡献与阶段 | [CONTRIBUTING.md](CONTRIBUTING.md) | SDD 阶段、闸门与模板指针 |
-| 五视角实体索引 | [knowledge/KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md) | ID 表与证据链（示例级 SSOT） |
+| 五视角实体索引 | [knowledge/KNOWLEDGE-INDEX.md](knowledge/KNOWLEDGE-INDEX.md) | ID 表与证据链（示例级 SSOT） |
 | 宪法与术语 | [../agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md) | 治理、命名、ADR |
 | 阶段产物目录 | `solutions/`、`analysis/`、`requirements/` | 方案～需求包与元数据 |
 | 运维日志 | [changelogs/README.md](changelogs/README.md) | `CHANGE-LOG.md`、`INDEXING-LOG.md` |
-| 仓库根全索引 | [../INDEX_GUIDE.md](../INDEX_GUIDE.md) | 中央库根路径九章地图 |
+| 仓库根全索引 | [../INDEX-GUIDE.md](../INDEX-GUIDE.md) | 中央库根路径九章地图 |
 | OKF 根索引 | [index.md](index.md) | `okf_version: 0.1`；bundle 渐进披露入口 |
 | OKF 知识索引 | [knowledge/index.md](knowledge/index.md) | 五视角 OKF 子树入口 |
 
@@ -42,7 +42,7 @@ title: application 索引指南（INDEX_GUIDE）
 ```text
 application/
 ├── README.md / README-s.md / README-c.md   # 入口与模式说明
-├── index.md / INDEX_GUIDE.md               # OKF 根索引与本文件（九章）
+├── index.md / INDEX-GUIDE.md               # OKF 根索引与本文件（九章）
 ├── DESIGN.md / CONTRIBUTING.md             # 元模型与贡献
 ├── docs-meta.md / manifest.md          # 文档元数据
 ├── adr/                                    # 应用层 ADR 正文
@@ -82,7 +82,7 @@ flowchart TB
 
 ### 2.4 文档目录
 
-- **本索引**: [INDEX_GUIDE.md](INDEX_GUIDE.md)
+- **本索引**: [INDEX-GUIDE.md](INDEX-GUIDE.md)
 - **知识实体**: [knowledge/README.md](knowledge/README.md)
 - **阶段模板**: 各 `*/README.md`、`requirements/REQUIREMENT-EXAMPLE/`
 
@@ -165,7 +165,7 @@ flowchart TB
 
 ### 6.2～6.4
 
-无 RDBMS；实体映射与关系见 [DESIGN.md](DESIGN.md)、[knowledge/KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md)。SQL 类索引 **[未索引]**。
+无 RDBMS；实体映射与关系见 [DESIGN.md](DESIGN.md)、[knowledge/KNOWLEDGE-INDEX.md](knowledge/KNOWLEDGE-INDEX.md)。SQL 类索引 **[未索引]**。
 
 ---
 
@@ -215,7 +215,7 @@ flowchart TB
 
 | 文档 | 路径 |
 |------|------|
-| 全局索引 | [../INDEX_GUIDE.md](../INDEX_GUIDE.md) |
+| 全局索引 | [../INDEX-GUIDE.md](../INDEX-GUIDE.md) |
 | 系统库入口 | [../system/README.md](../system/README.md) |
 | Skill 总表 | [../agent/skills/README.md](../agent/skills/README.md) |
 | docs-okf | [../agent/skills/docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md) |
@@ -236,4 +236,4 @@ Bash 5+、Git；可选 `docs-change` / `docs-build` 与本目录 changelogs 联�
 
 ---
 
-**索引元数据**: 本次运行 **mode=full**，**depth=3**，**since_ms=0**，输出 **application/INDEX_GUIDE.md**；运行记录见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)（2026-06-22）。
+**索引元数据**: 本次运行 **mode=full**，**depth=3**，**since_ms=0**，输出 **application/INDEX-GUIDE.md**；运行记录见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)（2026-06-22）。

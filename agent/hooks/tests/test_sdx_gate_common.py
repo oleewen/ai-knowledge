@@ -345,7 +345,7 @@ class GateCommonTests(unittest.TestCase):
     def test_build_gate_deny_without_confirmed_spec(self) -> None:
         payload = {
             "toolName": "write_file",
-            "args": {"path": "application/knowledge/KNOWLEDGE_INDEX.md"},
+            "args": {"path": "application/knowledge/KNOWLEDGE-INDEX.md"},
             "sessionId": "s-build-deny",
         }
         env = {}
@@ -367,7 +367,7 @@ class GateCommonTests(unittest.TestCase):
     def test_build_gate_allow_with_confirmed_spec(self) -> None:
         payload = {
             "toolName": "write_file",
-            "args": {"path": "application/knowledge/KNOWLEDGE_INDEX.md"},
+            "args": {"path": "application/knowledge/KNOWLEDGE-INDEX.md"},
             "sessionId": "s-build-allow",
         }
         env = {}
@@ -381,7 +381,7 @@ class GateCommonTests(unittest.TestCase):
                 specs_dir = repo / "application" / "superpowers" / "specs"
                 specs_dir.mkdir(parents=True, exist_ok=True)
                 (specs_dir / "build-spec.md").write_text(
-                    "<!-- docs-build-gate: CONFIRMED -->\nKNOWLEDGE_INDEX.md\n",
+                    "<!-- docs-build-gate: CONFIRMED -->\nKNOWLEDGE-INDEX.md\n",
                     encoding="utf-8",
                 )
                 mock_repo_root.return_value = repo
@@ -419,7 +419,7 @@ class GateCommonTests(unittest.TestCase):
         """build gate 无 bypass 环境变量，设置任意值均不应放行。"""
         payload = {
             "toolName": "write_file",
-            "args": {"path": "application/knowledge/KNOWLEDGE_INDEX.md"},
+            "args": {"path": "application/knowledge/KNOWLEDGE-INDEX.md"},
             "sessionId": "s-build-bypass",
         }
         env = {"DOCS_BUILD_ALLOW_WRITE": "1"}
@@ -441,7 +441,7 @@ class GateCommonTests(unittest.TestCase):
     def test_indexing_gate_deny_without_confirmed_spec(self) -> None:
         payload = {
             "toolName": "write_file",
-            "args": {"path": "application/INDEX_GUIDE.md"},
+            "args": {"path": "application/INDEX-GUIDE.md"},
             "sessionId": "s-indexing-deny",
         }
         env = {}
@@ -464,7 +464,7 @@ class GateCommonTests(unittest.TestCase):
         """仅有 CONFIRMED + basename 不足；须正文含仓库根相对路径。"""
         payload = {
             "toolName": "write_file",
-            "args": {"path": "application/INDEX_GUIDE.md"},
+            "args": {"path": "application/INDEX-GUIDE.md"},
             "sessionId": "s-indexing-deny-path",
         }
         env = {}
@@ -477,7 +477,7 @@ class GateCommonTests(unittest.TestCase):
                 specs_dir = repo / "application" / "superpowers" / "specs"
                 specs_dir.mkdir(parents=True, exist_ok=True)
                 (specs_dir / "ix.md").write_text(
-                    "<!-- docs-indexing-gate: CONFIRMED -->\n仅提及 INDEX_GUIDE.md 无目录前缀\n",
+                    "<!-- docs-indexing-gate: CONFIRMED -->\n仅提及 INDEX-GUIDE.md 无目录前缀\n",
                     encoding="utf-8",
                 )
                 mock_repo_root.return_value = repo
@@ -491,7 +491,7 @@ class GateCommonTests(unittest.TestCase):
     def test_indexing_gate_allow_with_confirmed_spec_and_path(self) -> None:
         payload = {
             "toolName": "write_file",
-            "args": {"path": "application/INDEX_GUIDE.md"},
+            "args": {"path": "application/INDEX-GUIDE.md"},
             "sessionId": "s-indexing-allow",
         }
         env = {}
@@ -507,7 +507,7 @@ class GateCommonTests(unittest.TestCase):
                 (specs_dir / "ix-spec.md").write_text(
                     "<!-- docs-indexing-gate: CONFIRMED -->\n"
                     "本轮写入：\n"
-                    "- application/INDEX_GUIDE.md\n",
+                    "- application/INDEX-GUIDE.md\n",
                     encoding="utf-8",
                 )
                 mock_repo_root.return_value = repo

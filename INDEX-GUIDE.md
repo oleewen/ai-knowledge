@@ -1,7 +1,7 @@
 # ai-knowledge 索引指南（INDEX_GUIDE）
 
 > **最后更新**: 2026-06-22  
-> **文档定位**: 面向 AI Agent 与维护者的**仓库根全索引目录**；九章结构遵循 `agent/skills/docs-indexing/references/nine-chapter-spec.md`。与 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)、[system/INDEX_GUIDE.md](system/INDEX_GUIDE.md) 互为补充时，以本文件为**中央库根路径**落地与检索入口。
+> **文档定位**: 面向 AI Agent 与维护者的**仓库根全索引目录**；九章结构遵循 `agent/skills/docs-indexing/references/nine-chapter-spec.md`。与 [application/INDEX-GUIDE.md](application/INDEX-GUIDE.md)、[system/INDEX-GUIDE.md](system/INDEX-GUIDE.md) 互为补充时，以本文件为**中央库根路径**落地与检索入口。
 
 ---
 
@@ -15,9 +15,9 @@
 | 从零落地 | [quick-start.md](quick-start.md) | 场景 A–D 选型与逐步操作（canonical SSOT） |
 | Agent 契约 | [AGENTS.md](AGENTS.md) | 角色、索引查阅顺序、提交闸门与禁止事项 |
 | 应用侧知识主库 | [application/README.md](application/README.md) | SDD 主线、五视角、实现登记与应用层实体主库 |
-| 应用侧索引与建联 | [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) | 应用目录九章索引、中央知识库挂载建联登记 |
+| 应用侧索引与建联 | [application/INDEX-GUIDE.md](application/INDEX-GUIDE.md) | 应用目录九章索引、中央知识库挂载建联登记 |
 | 系统知识库 | [system/README.md](system/README.md) | `architecture/`（五视角文档）、`application-{name}/` 联邦槽位、`analysis/` |
-| 系统侧机器索引 | [system/INDEX_GUIDE.md](system/INDEX_GUIDE.md) | `system/` 树内九章索引（与根、应用侧索引互补） |
+| 系统侧机器索引 | [system/INDEX-GUIDE.md](system/INDEX-GUIDE.md) | `system/` 树内九章索引（与根、应用侧索引互补） |
 | 公司知识库 | [company/README.md](company/README.md) | `knowledge/`（五视角企业架构）、`system-{name}/` 联邦槽位、`changelogs/`、`solutions/`、`analysis/` |
 | 初始化脚本 | [scripts/README.md](scripts/README.md) | `docs-install`/`agent-install`/`docs-link`/`docs-bootstrap` |
 | 规范与 Slash | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/skills/README.md](agent/skills/README.md) | 全局约定与 Skill 清单 |
@@ -41,7 +41,7 @@
 
 ```text
 ./
-├── README.md / AGENTS.md / INDEX_GUIDE.md / quick-start.md  # 人类与 Agent 入口、本索引、从零落地
+├── README.md / AGENTS.md / INDEX-GUIDE.md / quick-start.md  # 人类与 Agent 入口、本索引、从零落地
 ├── application/                              # 应用侧知识主库：knowledge、阶段、solutions～requirements、changelogs
 ├── system/                                   # 系统知识库：architecture/（五视角文档）、application-APPNAME/ 联邦槽位、analysis/
 ├── company/                                  # 公司知识库：knowledge/（五视角企业架构）、system-SYSNAME/ 联邦槽位、changelogs/、solutions/、analysis/
@@ -77,9 +77,9 @@ flowchart LR
 
 ### 2.4 文档目录
 
-- **根索引**: 本文件 [INDEX_GUIDE.md](INDEX_GUIDE.md)
-- **应用知识库**: [application/](application/)，详 [application/README.md](application/README.md)；机器索引 [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md)
-- **系统知识库树**: [system/](system/)，详 [system/README.md](system/README.md)；机器索引 [system/INDEX_GUIDE.md](system/INDEX_GUIDE.md)
+- **根索引**: 本文件 [INDEX-GUIDE.md](INDEX-GUIDE.md)
+- **应用知识库**: [application/](application/)，详 [application/README.md](application/README.md)；机器索引 [application/INDEX-GUIDE.md](application/INDEX-GUIDE.md)
+- **系统知识库树**: [system/](system/)，详 [system/README.md](system/README.md)；机器索引 [system/INDEX-GUIDE.md](system/INDEX-GUIDE.md)
 - **运维日志**: [application/changelogs/](application/changelogs/)（`CHANGE-LOG.md`、`INDEXING-LOG.md`）
 
 ---
@@ -152,7 +152,7 @@ stateDiagram-v2
 1. **从零选型与落地**: 读 [quick-start.md](quick-start.md) 选场景 A–D，再按 [scripts/README.md](scripts/README.md) 执行 bootstrap / install。
 2. **目标工程接入知识库**: `git clone` 或 `docs-bootstrap.sh` → `./scripts/docs-install.sh --target=...`（可选 `--mode=central`、`--scope`、`--type`）。
 3. **仅安装 Agent 配置**: `./scripts/agent-install.sh`（`--target`、`--agents`、`--scope` 等）。
-4. **维护索引与变更**: `/docs-indexing` 更新根 `INDEX_GUIDE.md`；`/docs-change` 更新 [application/changelogs/CHANGE-LOG.md](application/changelogs/CHANGE-LOG.md)。
+4. **维护索引与变更**: `/docs-indexing` 更新根 `INDEX-GUIDE.md`；`/docs-change` 更新 [application/changelogs/CHANGE-LOG.md](application/changelogs/CHANGE-LOG.md)。
 5. **OKF 迁移与校验**: `/docs-okf` 或 `bash scripts/okf-migrate.sh`；INDEX 落盘后建议 `python3 scripts/okf/generate_index.py --bundle application --recursive` 并 `bash scripts/validate-okf.sh`（见 [agent/skills/docs-okf/references/workflow.md](agent/skills/docs-okf/references/workflow.md)）。
 6. **知识工程**: `/docs-build` 等按 [agent/skills/README.md](agent/skills/README.md) 执行。
 
@@ -190,7 +190,7 @@ stateDiagram-v2
 
 ### 6.3 关系映射
 
-跨视角引用通过 **ID 与 YAML 字段**维护；详 [application/knowledge/README.md](application/knowledge/README.md)、[application/knowledge/KNOWLEDGE_INDEX.md](application/knowledge/KNOWLEDGE_INDEX.md)。
+跨视角引用通过 **ID 与 YAML 字段**维护；详 [application/knowledge/README.md](application/knowledge/README.md)、[application/knowledge/KNOWLEDGE-INDEX.md](application/knowledge/KNOWLEDGE-INDEX.md)。
 
 ### 6.4 SQL 索引
 
@@ -263,11 +263,11 @@ stateDiagram-v2
 
 | 文档 | 路径 | 描述 |
 |------|------|------|
-| 全局查阅顺序 | [INDEX_GUIDE.md](INDEX_GUIDE.md)（本文件） | 根目录九章地图 |
+| 全局查阅顺序 | [INDEX-GUIDE.md](INDEX-GUIDE.md)（本文件） | 根目录九章地图 |
 | 从零落地 | [quick-start.md](quick-start.md) | 场景 A–D 操作 SSOT |
-| 应用侧九章与建联 | [application/INDEX_GUIDE.md](application/INDEX_GUIDE.md) | `application/` 树内九章索引与中央建联登记 |
+| 应用侧九章与建联 | [application/INDEX-GUIDE.md](application/INDEX-GUIDE.md) | `application/` 树内九章索引与中央建联登记 |
 | 系统知识库入口 | [system/README.md](system/README.md) | 五视角架构文档、联邦槽位、analysis/ |
-| 系统侧九章索引 | [system/INDEX_GUIDE.md](system/INDEX_GUIDE.md) | `system/` 树内九章索引 |
+| 系统侧九章索引 | [system/INDEX-GUIDE.md](system/INDEX-GUIDE.md) | `system/` 树内九章索引 |
 | 公司知识库入口 | [company/README.md](company/README.md) | knowledge/ 五视角企业架构、system-{name}/ 槽位、changelogs/ |
 | 设计原则 | [application/DESIGN.md](application/DESIGN.md) | 元模型与演进 |
 | 贡献流程 | [application/CONTRIBUTING.md](application/CONTRIBUTING.md) | 阶段与模板指针 |
@@ -310,4 +310,4 @@ stateDiagram-v2
 
 ---
 
-**索引元数据**: 本次运行 **mode=full**，**depth=3**，**since_ms=0**（全量），输出 **./INDEX_GUIDE.md**；运行记录见 [application/changelogs/INDEXING-LOG.md](application/changelogs/INDEXING-LOG.md)（2026-06-22 四域 full d3）。
+**索引元数据**: 本次运行 **mode=full**，**depth=3**，**since_ms=0**（全量），输出 **./INDEX-GUIDE.md**；运行记录见 [application/changelogs/INDEXING-LOG.md](application/changelogs/INDEXING-LOG.md)（2026-06-22 四域 full d3）。

@@ -41,14 +41,14 @@ if [[ -n "$entities" ]]; then
   exit 1
 fi
 
-ki="$BUNDLE_ROOT/knowledge/KNOWLEDGE_INDEX.md"
+ki="$BUNDLE_ROOT/knowledge/KNOWLEDGE-INDEX.md"
 [[ -f "$ki" ]] || {
-  echo "缺少 KNOWLEDGE_INDEX.md: $ki" >&2
+  echo "缺少 KNOWLEDGE-INDEX.md: $ki" >&2
   exit 1
 }
 
 grep -qE 'BD-EXAMPLE|business' "$ki" || {
-  echo "KNOWLEDGE_INDEX.md 应提及 BD-EXAMPLE 或 business" >&2
+  echo "KNOWLEDGE-INDEX.md 应提及 BD-EXAMPLE 或 business" >&2
   exit 1
 }
 

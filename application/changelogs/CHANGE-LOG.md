@@ -77,12 +77,12 @@ title: 文档变更索引
 - **作者**: ouliyuan0129
 - **信息**: docs(update): 更新知识库文档以反映应用侧知识主库的结构与内容
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `README.md`
   - `agent/knowledge/naming-conventions.md`
   - `agent/skills/docs-pull/SKILL.md`
   - `application/DESIGN.md`
-  - `application/INDEX_GUIDE.md`
+  - `application/INDEX-GUIDE.md`
   - `application/README-c.md`
   - `application/README-s.md`
   - `application/README.md`
@@ -101,7 +101,7 @@ title: 文档变更索引
   - `application/requirements/README.md`
   - `application/solutions/README.md`
   - `system/DESIGN.md`
-  - `system/INDEX_GUIDE.md`
+  - `system/INDEX-GUIDE.md`
   - `system/application-APPNAME/README.md`
 
 ### 2026-06-15 20:13:13.000 · git
@@ -111,7 +111,7 @@ title: 文档变更索引
 - **文件**:
   - `agent/knowledge/glossary.md`
   - `application/DESIGN.md`
-  - `application/INDEX_GUIDE.md`
+  - `application/INDEX-GUIDE.md`
   - `application/README-c.md`
   - `application/README-s.md`
   - `application/analysis/README.md`
@@ -125,7 +125,7 @@ title: 文档变更索引
 - **作者**: ouliyuan0129
 - **信息**: docs(update): 更新索引指南与会话 spec 路径契约以提升一致性与清晰度
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `agent/hooks/sdx_gate_common.py`
   - `agent/hooks/session_spec_paths.py`
   - `agent/hooks/tests/test_sdx_gate_common.py`
@@ -138,7 +138,7 @@ title: 文档变更索引
   - `company/analysis/README.md`
   - `company/system-SYSNAME/README.md`
   - `system/DESIGN.md`
-  - `system/INDEX_GUIDE.md`
+  - `system/INDEX-GUIDE.md`
   - `system/README.md`
   - `system/application-APPNAME/README.md`
   - `system/architecture/application/application-adr.md`
@@ -173,7 +173,7 @@ title: 文档变更索引
 - **信息**: docs(knowledge-update): 更新知识库结构与文档以支持新视角与治理规范
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `README.md`
   - `agent/README.md`
   - `agent/hooks/sdx_gate_common.py`
@@ -357,7 +357,7 @@ title: 文档变更索引
 - **信息**: docs(application-knowledge-update): 更新应用知识库结构与文档以支持新视角
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `README.md`
   - `agent/hooks/tests/test_sdx_gate_common.py`
   - `agent/skills/README.md`
@@ -373,14 +373,14 @@ title: 文档变更索引
   - `agent/skills/docs-build/references/workflow.md`
   - `agent/skills/docs-build/scripts/validate-extraction.sh`
   - `application/DESIGN.md`
-  - `application/INDEX_GUIDE.md`
+  - `application/INDEX-GUIDE.md`
   - `application/README-s.md`
   - `application/analysis/README.md`
   - `application/constitution/GLOSSARY.md`
   - `application/constitution/constitution_meta.yaml`
   - `application/constitution/standards/naming-conventions.md`
   - `application/docs_meta.yaml`
-  - `application/knowledge/KNOWLEDGE_INDEX.md`
+  - `application/knowledge/KNOWLEDGE-INDEX.md`
   - `application/knowledge/README.md`
   - `application/knowledge/application/README.md`
   - `application/knowledge/application/application_knowledge.json`
@@ -489,7 +489,7 @@ title: 文档变更索引
   - `company/requirements/REQUIREMENT-EXAMPLE/README.md`
   - `company/solutions/README.md`
   - `company/solutions/solutions_meta.yaml`
-  - `system/INDEX_GUIDE.md`
+  - `system/INDEX-GUIDE.md`
   - `system/analysis/README.md`
   - `system/analysis/analysis_meta.yaml`
   - `system/changelogs/README.md`
@@ -539,7 +539,7 @@ title: 文档变更索引
 - **信息**: docs(session-spec-path): 更新会话 spec 路径契约与相关文档
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `agent/hooks/README.md`
   - `agent/hooks/sdx_gate_common.py`
   - `agent/hooks/sdx_session_gate.py`
@@ -1228,7 +1228,7 @@ title: 文档变更索引
   - `scripts/link-config.sh`
   - `scripts/tests/docs-push/cases/03_resolve_from_cwd_fake_cursor_layout.sh`
   - `scripts/tests/docs-push/cases/04_agents_layout_relative_links_cwd.sh`
-  - `system/INDEX_GUIDE.md`
+  - `system/INDEX-GUIDE.md`
   - `system/analysis/README.md`
   - `system/specs/README.md`
 
@@ -1263,11 +1263,11 @@ title: 文档变更索引
 - **作者**: ouliyuan0129
 - **信息**: docs(docs-indexing): 更新索引指南以增强文档结构与信息完整性
 - **文件**:
-  - `INDEX_GUIDE.md`
-  - `application/INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
+  - `application/INDEX-GUIDE.md`
   - `scripts/agent-config.sh`
   - `scripts/agent-install.sh`
-  - `system/INDEX_GUIDE.md`
+  - `system/INDEX-GUIDE.md`
   - `system/changelogs/INDEXING-LOG.md`
 
 ### 2026-05-04 11:52:15.000 · git
@@ -1276,16 +1276,16 @@ title: 文档变更索引
 - **信息**: docs(docs-indexing): 增强文档结构与功能性
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `agent/hooks.json`
   - `agent/hooks/README.md`
   - `agent/hooks/sdx_gate_common.py`
   - `agent/hooks/sdx_session_gate.py`
   - `agent/hooks/tests/test_sdx_gate_common.py`
   - `agent/rules/CONVENTIONS.md`
-  - `application/INDEX_GUIDE.md`
+  - `application/INDEX-GUIDE.md`
   - `company/changelogs/README.md`
-  - `system/INDEX_GUIDE.md`
+  - `system/INDEX-GUIDE.md`
   - `system/changelogs/README.md`
 
 ### 2026-05-04 11:51:45.000 · git
@@ -1361,7 +1361,7 @@ title: 文档变更索引
 - **信息**: docs(docs-agent): 更新文档以增强一致性与准确性
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `README.md`
   - `agent/README.md`
   - `agent/skills/README.md`
@@ -1541,7 +1541,7 @@ title: 文档变更索引
 - **作者**: ouliyuan0129
 - **信息**: docs(sdx-test): 更新文档以增强技能描述和一致性
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `agent/skills/README.md`
   - `agent/skills/sdx-test/SKILL.md`
   - `agent/skills/sdx-test/agents/analyzer.md`
@@ -1565,7 +1565,7 @@ title: 文档变更索引
 - **作者**: ouliyuan0129
 - **信息**: docs(sdx-design): 增强文档结构与内容一致性
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `agent/skills/README.md`
   - `agent/skills/sdx-architect/SKILL.md`
   - `agent/skills/sdx-architect/agents/analyzer.md`
@@ -1728,7 +1728,7 @@ title: 文档变更索引
 - **作者**: ouliyuan0129
 - **信息**: docs(docs-pull): 引入新技能并更新相关文档
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `README.md`
   - `agent/rules/CONVENTIONS.md`
   - `agent/scripts/config-bootstrap.sh`
@@ -1844,7 +1844,7 @@ title: 文档变更索引
 - **信息**: docs(AGENTS, INDEX_GUIDE, README): 更新文档以引入架构设计阶段和详细设计阶段规范
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `README.md`
   - `agent/hooks.json`
   - `agent/hooks/README.md`
@@ -1923,7 +1923,7 @@ title: 文档变更索引
 - **作者**: ouliyuan0129
 - **信息**: docs(docs-indexing): 更新索引日志机制以增强增量索引的准确性和可追溯性
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `agent/skills/README.md`
   - `agent/skills/docs-indexing/SKILL.md`
   - `agent/skills/docs-indexing/gotchas.md`
@@ -1947,7 +1947,7 @@ title: 文档变更索引
 - **信息**: docs(AGENTS, INDEX_GUIDE): 更新文档内容以增强可读性和一致性
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
 
 ### 2026-04-25 20:29:06.000 · git
 - **提交**: `b2f28688e8fb`
@@ -1996,7 +1996,7 @@ title: 文档变更索引
 - **作者**: ouliyuan0129
 - **信息**: docs(docs-build): 重构技能文档以增强可读性和导航性
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `agent/skills/docs-build/SKILL.md`
 
 ### 2026-04-25 16:38:43.000 · git
@@ -2047,7 +2047,7 @@ title: 文档变更索引
 - **信息**: docs: 更新文档索引与指南，记录全库索引运行
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `README.md`
 
 ### 2026-04-25 14:08:58.000 · git
@@ -2120,7 +2120,7 @@ title: 文档变更索引
 - **信息**: refactor(agent): rename docs-archive to docs-distill and swap skill responsibilities
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `README.md`
   - `agent/hooks/README.md`
   - `agent/rules/CONVENTIONS.md`
@@ -2432,7 +2432,7 @@ title: 文档变更索引
 - **作者**: ouliyuan0129
 - **信息**: 更新文档与脚本，优化知识库安装与配置流程
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `README.md`
   - `agent/hooks/hooks.json`
   - `scripts/README.md`
@@ -2450,10 +2450,10 @@ title: 文档变更索引
 ### 2026-04-14 11:32:06.000 · git
 - **提交**: `2bd1590b7c83`
 - **作者**: ouliyuan0129
-- **信息**: 更新 AGENTS.md、INDEX_GUIDE.md 和 README.md，删除 APPLICATIONS_INDEX.md 和 applications/README.md
+- **信息**: 更新 AGENTS.md、INDEX-GUIDE.md 和 README.md，删除 APPLICATIONS_INDEX.md 和 applications/README.md
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `README.md`
   - `agent/skills/README.md`
   - `applications/APPLICATIONS_INDEX.md`
@@ -2472,9 +2472,9 @@ title: 文档变更索引
 ### 2026-04-14 11:03:41.000 · git
 - **提交**: `bd01476e3953`
 - **作者**: ouliyuan0129
-- **信息**: 更新 INDEX_GUIDE.md，重构为九章结构并补充项目概览与架构视图，增强文档导航与可读性。同时，更新 CHANGE-LOG.md 和 INDEXING-LOG.md，记录与 docs-indexing 的联动变更及索引统计信息，确保文档维护的准确性与一致性。
+- **信息**: 更新 INDEX-GUIDE.md，重构为九章结构并补充项目概览与架构视图，增强文档导航与可读性。同时，更新 CHANGE-LOG.md 和 INDEXING-LOG.md，记录与 docs-indexing 的联动变更及索引统计信息，确保文档维护的准确性与一致性。
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `agent/README.md`
 
 ### 2026-04-14 10:42:10.000 · git
@@ -2526,7 +2526,7 @@ title: 文档变更索引
 - **作者**: ouliyuan0129
 - **信息**: 更新文档与脚本，新增 docs-link.sh 脚本以支持知识库登记与注销
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `README.md`
   - `scripts/README.md`
   - `scripts/docs-link.sh`
@@ -2537,7 +2537,7 @@ title: 文档变更索引
 - **作者**: ouliyuan0129
 - **信息**: 更新文档与脚本，统一配置管理
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `scripts/README.md`
   - `scripts/docs-config.sh`
   - `scripts/docs-install.sh`
@@ -2547,7 +2547,7 @@ title: 文档变更索引
 - **作者**: ouliyuan0129
 - **信息**: 更新文档，调整脚本引用以统一配置管理
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `agent/README.md`
   - `agent/scripts/config-bootstrap.sh`
   - `agent/scripts/docs-core.sh`
@@ -2563,7 +2563,7 @@ title: 文档变更索引
 - **作者**: ouliyuan0129
 - **信息**: refactor(agent): 将 docs-config.sh 重命名为 docs-core.sh
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `README.md`
   - `agent/scripts/docs-core.sh`
   - `agent/skills/README.md`
@@ -2572,13 +2572,13 @@ title: 文档变更索引
   - `agent/skills/docs-fetch/reference/manifest-spec.md`
   - `agent/skills/docs-fetch/scripts/fetch-docs.sh`
   - `application/CONTRIBUTING.md`
-  - `application/INDEX_GUIDE.md`
+  - `application/INDEX-GUIDE.md`
   - `application/README-c.md`
   - `application/README-s.md`
   - `application/README.md`
   - `application/knowledge/README.md`
   - `scripts/README.md`
-  - `system/INDEX_GUIDE.md`
+  - `system/INDEX-GUIDE.md`
 
 ### 2026-04-14 10:05:06.000 · git
 - **提交**: `02d5ea927373`
@@ -2586,7 +2586,7 @@ title: 文档变更索引
 - **信息**: 更新文档，调整初始化脚本与配置说明
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `README.md`
   - `agent/scripts/config-bootstrap.sh`
   - `agent/skills/README.md`
@@ -2594,7 +2594,7 @@ title: 文档变更索引
   - `agent/skills/docs-fetch/gotchas.md`
   - `agent/skills/docs-fetch/reference/manifest-spec.md`
   - `agent/skills/docs-fetch/scripts/fetch-docs.sh`
-  - `application/INDEX_GUIDE.md`
+  - `application/INDEX-GUIDE.md`
   - `application/README-c.md`
   - `application/README-s.md`
   - `application/manifest.yaml`
@@ -2610,7 +2610,7 @@ title: 文档变更索引
   - `scripts/tests/docs-install/cases/04_central_no_registry_side_effect.sh`
   - `scripts/tests/docs-install/run.sh`
   - `scripts/tests/docs-install/test-lib.sh`
-  - `system/INDEX_GUIDE.md`
+  - `system/INDEX-GUIDE.md`
   - `system/solutions/README.md`
 
 ### 2026-04-14 09:51:21.000 · git
@@ -2618,7 +2618,7 @@ title: 文档变更索引
 - **作者**: ouliyuan0129
 - **信息**: 更新文档，调整初始化脚本与配置说明
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `README.md`
   - `agent/scripts/config-bootstrap.sh`
   - `scripts/README.md`
@@ -2644,7 +2644,7 @@ title: 文档变更索引
 - **文件**:
   - `.gitignore`
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `README.md`
   - `agent/README.md`
   - `agent/scripts/config-bootstrap.sh`
@@ -2680,7 +2680,7 @@ title: 文档变更索引
 - **信息**: 更新文档，增强用户指导与规则说明
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `README.md`
   - `agent/README.md`
   - `agent/hooks.json`
@@ -2961,7 +2961,7 @@ title: 文档变更索引
   - `.agent/skills/sdx-analysis/scripts/validate-analysis.sh`
   - `.agent/skills/sdx-solution/scripts/validate-solution.sh`
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `application/analysis/README.md`
   - `application/solutions/README.md`
   - `system/analysis/README.md`
@@ -3215,10 +3215,10 @@ title: 文档变更索引
   - `.agent/rules/CONVENTIONS.md`
   - `.agent/skills/agent-guide/SKILL.md`
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
-  - `application/INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
+  - `application/INDEX-GUIDE.md`
   - `scripts/README.md`
-  - `system/INDEX_GUIDE.md`
+  - `system/INDEX-GUIDE.md`
 
 ### 2026-04-09 12:14:41.000 · git
 - **提交**: `5a07f33d00a3`
@@ -3271,12 +3271,12 @@ title: 文档变更索引
   - `.agent/skills/docs-indexing/reference/scan-spec.md`
   - `.agent/skills/docs-indexing/scripts/indexing.sh`
   - `.docsconfig`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `application/DESIGN.md`
-  - `application/INDEX_GUIDE.md`
+  - `application/INDEX-GUIDE.md`
   - `application/constitution/standards/naming-conventions.md`
   - `scripts/docs-init.sh`
-  - `system/INDEX_GUIDE.md`
+  - `system/INDEX-GUIDE.md`
   - `system/changelogs/CHANGE-LOG.md`
   - `system/changelogs/INDEXING-LOG.md`
   - `system/changelogs/README.md`
@@ -3319,11 +3319,11 @@ title: 文档变更索引
 ### 2026-04-08 22:16:50.000 · git
 - **提交**: `a76d905eefaa`
 - **作者**: ouliyuan0129
-- **信息**: 更新 INDEX_GUIDE.md 文档，调整输出路径为环境变量，并新增系统索引指南文件
+- **信息**: 更新 INDEX-GUIDE.md 文档，调整输出路径为环境变量，并新增系统索引指南文件
 - **文件**:
-  - `application/INDEX_GUIDE.md`
+  - `application/INDEX-GUIDE.md`
   - `scripts/docs-config.sh`
-  - `system/INDEX_GUIDE.md`
+  - `system/INDEX-GUIDE.md`
 
 ### 2026-04-08 21:26:57.000 · git
 - **提交**: `a8dceedb5447`
@@ -3660,7 +3660,7 @@ title: 文档变更索引
   - `AGENTS.md`
   - `README.md`
   - `application/CONTRIBUTING.md`
-  - `application/INDEX_GUIDE.md`
+  - `application/INDEX-GUIDE.md`
   - `application/SYSTEM_INDEX.md`
   - `application/analysis/analysis_meta.yaml`
   - `application/knowledge/business/README.md`
@@ -3679,7 +3679,7 @@ title: 文档变更索引
   - `.agent/skills/docs-archive/reference/archive-spec.md`
   - `.agent/skills/docs-archive/reference/federation-spec.md`
   - `.agent/skills/sdx-design/SKILL.md`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `application/DESIGN.md`
   - `application/README.md`
   - `application/analysis/README.md`
@@ -4370,7 +4370,7 @@ title: 文档变更索引
   - `.ai/skills/docs-upgrade/references/gotchas.md`
   - `.ai/skills/docs-upgrade/references/related-doc-discovery.md`
   - `.ai/skills/docs-upgrade/references/semantic-keyword-discovery.md`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
 
 ### 2026-04-05 21:25:05.000 · git
 - **提交**: `36295f5448f6`
@@ -4436,9 +4436,9 @@ title: 文档变更索引
   - `.ai/skills/docs-indexing/scripts/indexing.sh`
   - `.cursor/skills/skill-creator/SKILL.md`
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `README.md`
-  - `system/INDEX_GUIDE.md`
+  - `system/INDEX-GUIDE.md`
   - `system/changelogs/changes-index.json`
   - `system/changelogs/changes-index.md`
   - `system/changelogs/indexing-log.jsonl`
@@ -4631,7 +4631,7 @@ title: 文档变更索引
   - `.ai/skills/sdx-solution/SKILL.md`
   - `.ai/skills/sdx-test/SKILL.md`
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `README.md`
   - `applications/APPLICATIONS_INDEX.md`
   - `applications/app-APPNAME/APPNAME_INDEX.md`
@@ -4696,7 +4696,7 @@ title: 文档变更索引
 - **信息**: 更新知识库名称与相关路径，确保一致性
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `README.md`
   - `scripts/README.md`
   - `scripts/knowledge-config.sh`
@@ -4920,7 +4920,7 @@ title: 文档变更索引
   - `.ai/skills/sdx-test/assets/tdd-template.md`
   - `.ai/skills/sdx-test/reference/workflow-spec.md`
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `README.md`
   - `applications/APPLICATIONS_INDEX.md`
   - `applications/README.md`
@@ -5059,7 +5059,7 @@ title: 文档变更索引
   - `.ai/rules/solution/solution-template.md`
   - `.ai/skills/sdx-analysis/scripts/validate-analysis.sh`
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `README.md`
   - `scripts/README.md`
   - `scripts/knowledge-init.sh`
@@ -5229,7 +5229,7 @@ title: 文档变更索引
   - `.cursor/skills/knowledge-upgrade/SKILL.md`
   - `AGENTS.md`
   - `INDEX.md`
-  - `INDEX_GUIDE.md`
+  - `INDEX-GUIDE.md`
   - `PROJECT_INDEX.md`
   - `README.md`
   - `applications/APPLICATIONS_INDEX.md`

@@ -16,18 +16,18 @@ title: changelogs（变更留痕与索引运维）
 
 ## 关联索引
 
-- [../INDEX_GUIDE.md](../INDEX_GUIDE.md)
-- 仓库根 [INDEX_GUIDE.md](../../INDEX_GUIDE.md)（按需）
+- [../INDEX-GUIDE.md](../INDEX-GUIDE.md)
+- 仓库根 [INDEX-GUIDE.md](../../INDEX-GUIDE.md)（按需）
 
 ## Skill 指针
 
 | Skill | 说明 |
 |-------|------|
 | [docs-change](../../agent/skills/docs-change/SKILL.md) | 聚合 git / CHANGELOG / 本地 mtime，**写入/更新** `CHANGE-LOG.md` |
-| [docs-indexing](../../agent/skills/docs-indexing/SKILL.md) | 生成 `INDEX_GUIDE.md`，在 `INDEXING-LOG.md` 主表**插入**一行（最新在上） |
+| [docs-indexing](../../agent/skills/docs-indexing/SKILL.md) | 生成 `INDEX-GUIDE.md`，在 `INDEXING-LOG.md` 主表**插入**一行（最新在上） |
 
 命令清单与执行入口见 [../../agent/skills/README.md](../../agent/skills/README.md)。
 
 ## 索引维护
 
-目录结构或日志约定变更时，须更新本 README 与相关 `INDEX_GUIDE.md`（按需）。
+目录结构或日志约定变更时，须更新本 README 与相关 `INDEX-GUIDE.md`（按需）。

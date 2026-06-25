@@ -38,7 +38,7 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 |------|---------------------|--------|----------|
 | **standalone** | `application`（默认） | `application/` | 全量拷贝（排除 `DESIGN.md`、`CONTRIBUTING.md`）；内容替换见 `docs-install` |
 | **standalone** | `system` / `company` | `system/` / `company/` | 组织级 / 公司级模板同步；并在目标工程根 **`scripts/`** 安装 **`docs-link.sh`**、**`link-config.sh`**（`link-config` 会按 `.docsconfig` 之 **`AGENT_*`** 解析 **`docs-core.sh`**） |
-| **中央知识库挂载建联**（`central`） | `application`（默认） | `application/` **子集** | 仅 `changelogs/`、`knowledge/`、`specs/`、`INDEX_GUIDE.md`、`README.md`、`docs-meta.md`、`manifest.md`；**不执行中央知识库挂载建联登记/联邦槽位写入** |
+| **中央知识库挂载建联**（`central`） | `application`（默认） | `application/` **子集** | 仅 `changelogs/`、`knowledge/`、`specs/`、`INDEX-GUIDE.md`、`README.md`、`docs-meta.md`、`manifest.md`；**不执行中央知识库挂载建联登记/联邦槽位写入** |
 | **中央知识库挂载建联**（`central`） | `system` / `company` | - | **不支持**（报错） |
 
 2. **Agent 配置**（**`agent-install.sh`**）：在 **`--target`**（默认 **`$HOME`**）下按 **`--agents`**（默认 **`cursor`**，可 **`all`** 或多选）安装到 **`${TARGET}/.{.cursor|.trae|.claude|.kiro}/`** 中对应目录；单份实体默认存储于 **`$HOME/.agents/`**；按 **`--scope`** 选择同步 **`hooks`**、**`scripts`**、**`rules`**、**`skills`**、**`knowledge`**、**`references`**（默认 **`a`** 为全部；**`k`** / **`knowledge`** 仅后两者）。当 **`--target` 不是 `$HOME`** 且 **`${TARGET}/.docsconfig`** 已存在时，所有 scope 都会按本次参数重算并覆盖 **`AGENT_ROOT`** 与 **`AGENT_DIRS`**。`docs-install` 在 `scope=config|knowledge` 下都会处理 `AGENT_*`：仅当 `.docsconfig` 中 **`AGENT_ROOT`** 为空时写默认 **`AGENT_ROOT=$HOME`** 与 **`AGENT_DIRS=.cursor`**；`AGENT_ROOT` 非空时保留原值。
@@ -121,7 +121,7 @@ bash scripts/okf-migrate.sh --dry-run     # 预览各步命令
 | `scripts/okf/validate_bundle.py` | bundle 校验（`--bundle` / `--repo`） |
 | `scripts/okf/inject_frontmatter.py` | 治理文档 frontmatter 注入 |
 | `scripts/okf/generate_index.py` | 生成 §6 `index.md` |
-| `scripts/okf/generate_knowledge_index.py` | 生成 `KNOWLEDGE_INDEX.md` |
+| `scripts/okf/generate_knowledge_index.py` | 生成 `KNOWLEDGE-INDEX.md` |
 | `scripts/okf/migrate_entities.py` | 实体 Markdown 迁移 |
 | `scripts/okf/visualize.py` | 生成 bundle 可视化 HTML |
 
@@ -203,7 +203,7 @@ your-project/
 ├── .docsconfig                    # 可选：由 docs-install/agent-install 写入（至少 DOC_*；scope=knowledge 含 KNOWLEDGE_TYPE）
 ├── application/                          # 文档目录（application/ 模板拷贝）
 │   ├── README.md                  # 应用知识库 README
-│   ├── INDEX_GUIDE.md             # 九章索引（docs-indexing）；中央知识库挂载建联登记见「十」
+│   ├── INDEX-GUIDE.md             # 九章索引（docs-indexing）；中央知识库挂载建联登记见「十」
 │   ├── docs-meta.md               # 根目录元数据（OKF）
 │   ├── knowledge/                 # 知识库（四视角）；治理 SSOT 见 agent/knowledge/
 │   │   ├── README.md
@@ -242,7 +242,7 @@ your-project/
 ## 中央知识库挂载建联说明
 
 在 **`scope=knowledge`** + **`type=application`** 下，`--mode=central`（中央知识库挂载建联）仅切换为 application 子集分发。
-不会更新本仓库 `application/INDEX_GUIDE.md` / `system/INDEX_GUIDE.md`，也不会创建联邦槽位目录。
+不会更新本仓库 `application/INDEX-GUIDE.md` / `system/INDEX-GUIDE.md`，也不会创建联邦槽位目录。
 
 ## 工作原理
 
@@ -290,7 +290,7 @@ your-project/
 | 2.7.0 | 拆分 **`agent-install.sh`** / **`docs-install.sh`** / **`docs-link.sh`**；核心逻辑迁至 **`lib/docs-init-core.sh`**；`.docsconfig` 增加 **`KNOWLEDGE_TYPE`**；**`docs-bootstrap.sh`** 改为调用 **`docs-install.sh`** |
 | 2.6.0 | **`--scope`**：**移除 `ck`**；**`k`/`knowledge`** 表示原 `ck` 行为（同步知识库 + `.docsconfig`）；默认 **`SCOPE`** 改为 **`knowledge`** |
 | 2.5.0 | **`--scope`**：新增 **`agent`/`a`**，一次安装 scripts + rules + skills；**移除** scope **`skills`/`s`、`rules`/`r`、`rs`**（请改用 **`--scope=agent`**） |
-| 2.4.0 | `central`：`--type` 仅 `application`\|`system`，默认 `application`；移除 `--app-id`；`system` 中央登记写入 `system/INDEX_GUIDE.md` 与 `company/system-<slug>/`；`-r` 时自动创建文档目录 |
+| 2.4.0 | `central`：`--type` 仅 `application`\|`system`，默认 `application`；移除 `--app-id`；`system` 中央登记写入 `system/INDEX-GUIDE.md` 与 `company/system-<slug>/`；`-r` 时自动创建文档目录 |
 | 2.1.3 | `sdx-doc-root` 默认首段改为 `docs`；目录探测优先 `docs/` 下标记 |
 | 2.1.2 | 落地方案 A：`SDX_DOC_ROOT`、`.sdx-doc-root` 与目录探测统一由 `agent/scripts/sdx-doc-root.sh` 提供；各 `validate-*.sh` 接入 |
 | 2.1.1 | `standalone` 下 `--scope` 为 `agent` 时，`<目标工程文档目录>` 可省略；未指定时 Agent 内 `application/` → 文档前缀替换默认为 `docs/` |

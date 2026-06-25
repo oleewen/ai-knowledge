@@ -6,7 +6,7 @@ title: 产品架构
 
 [返回上一级 · 架构文档索引](../README.md)
 
-本目录为产品架构**目录与入口**，聚焦公司级产品架构顶层内容。实体 SSOT：[product-meta.md](product-meta.md)、[../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（**PL-***）；实体文件见下表。
+本目录为产品架构**目录与入口**，聚焦公司级产品架构顶层内容。实体 SSOT：[product-meta.md](product-meta.md)、[../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md)（**PL-***）；实体文件见下表。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|

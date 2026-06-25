@@ -50,7 +50,7 @@ title: 公司知识库设计
 | 清单层 | `knowledge-links.yaml` | 记录建联关系与同步编排信息 |
 | 运维 | `changelogs/` | `CHANGE-LOG.md`、`INDEXING-LOG.md`（见 [changelogs/README.md](changelogs/README.md)） |
 
-**索引说明**：Agent 检索入口为 [README.md](README.md)、[INDEX_GUIDE.md](INDEX_GUIDE.md)、[docs-meta.md](docs-meta.md)、本文与仓库根 [INDEX_GUIDE.md](../INDEX_GUIDE.md) §公司知识库。
+**索引说明**：Agent 检索入口为 [README.md](README.md)、[INDEX-GUIDE.md](INDEX-GUIDE.md)、[docs-meta.md](docs-meta.md)、本文与仓库根 [INDEX-GUIDE.md](../INDEX-GUIDE.md) §公司知识库。
 
 #### 公司级实体
 
@@ -145,5 +145,5 @@ title: 公司知识库设计
 - [system-SYSNAME/README.md](system-SYSNAME/README.md)
 - [knowledge-links.yaml](knowledge-links.yaml)
 - [agent/references/knowledge-layout.md](../agent/references/knowledge-layout.md)
-- [../INDEX_GUIDE.md](../INDEX_GUIDE.md)
+- [../INDEX-GUIDE.md](../INDEX-GUIDE.md)
 - [../system/DESIGN.md](../system/DESIGN.md)

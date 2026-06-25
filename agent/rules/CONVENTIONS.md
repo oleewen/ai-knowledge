@@ -82,7 +82,7 @@
 | docs-extract | `system/knowledge/overview/**/*`、`company/knowledge/overview/**/*` | `system/knowledge/overview/*.md`、`company/knowledge/overview/*.md` 写入 | `-docs-extract.md` | `<!-- docs-extract-gate: CONFIRMED -->` | 无（必须走确认流程） | [docs-extract/SKILL.md](../skills/docs-extract/SKILL.md) |
 | docs-archive | `system/knowledge/overview/**/*`、`company/knowledge/overview/**/*` | `system/knowledge/overview/*.md`、`company/knowledge/overview/*.md` 写入 | `-docs-archive.md` | `<!-- docs-archive-gate: CONFIRMED -->` | 无（必须走确认流程） | [docs-archive/SKILL.md](../skills/docs-archive/SKILL.md) |
 | docs-build | `{DOC_DIR}/knowledge/**/*` | `{DOC_DIR}/knowledge/` 下 JSON、README、KNOWLEDGE_INDEX 写入 | `-docs-build.md` | `<!-- docs-build-gate: CONFIRMED -->` | 无（必须走确认流程） | [docs-build/SKILL.md](../skills/docs-build/SKILL.md) |
-| docs-indexing | `**/INDEX_GUIDE.md`、`**/changelogs/INDEXING-LOG.md` | 各文档根下 `INDEX_GUIDE.md` 与对应 `changelogs/INDEXING-LOG.md` 主表写入 | `-docs-indexing.md` | `<!-- docs-indexing-gate: CONFIRMED -->` | 无（必须走确认流程） | [docs-indexing/SKILL.md](../skills/docs-indexing/SKILL.md) |
+| docs-indexing | `**/INDEX-GUIDE.md`、`**/changelogs/INDEXING-LOG.md` | 各文档根下 `INDEX-GUIDE.md` 与对应 `changelogs/INDEXING-LOG.md` 主表写入 | `-docs-indexing.md` | `<!-- docs-indexing-gate: CONFIRMED -->` | 无（必须走确认流程） | [docs-indexing/SKILL.md](../skills/docs-indexing/SKILL.md) |
 
 **说明**：`sdx-prd` 与 `sdx-test` 的规则 globs 均覆盖 `application/requirements/**/*`，以**文件名模式** `PRD-*.md` / `TDD-*.md` 区分终稿类型。
 
@@ -103,7 +103,7 @@
 
 ### docs-indexing 补充
 
-- 会话 spec 除 `CONFIRMED` 标记外，须在正文中列出本轮将写入的 **`INDEX_GUIDE.md` 与 `*/changelogs/INDEXING-LOG.md` 的完整仓库根相对路径**（例如 `application/INDEX_GUIDE.md`），以便钩子区分多域同名文件。参数 `mode` / `depth` / `output` / `since` 摘要建议写入同一会话 spec。详见 [docs-indexing/references/interaction-gate.md](../skills/docs-indexing/references/interaction-gate.md)。
+- 会话 spec 除 `CONFIRMED` 标记外，须在正文中列出本轮将写入的 **`INDEX-GUIDE.md` 与 `*/changelogs/INDEXING-LOG.md` 的完整仓库根相对路径**（例如 `application/INDEX-GUIDE.md`），以便钩子区分多域同名文件。参数 `mode` / `depth` / `output` / `since` 摘要建议写入同一会话 spec。详见 [docs-indexing/references/interaction-gate.md](../skills/docs-indexing/references/interaction-gate.md)。
 - **会话 spec 路径**：`{DOC_DIR}/superpowers/specs/` 中 `{DOC_DIR}` **优先**读目标工程 **`.docsconfig`** 的 `DOC_DIR=`；无配置或无效时默认为 **`docs`**。未在 `.docsconfig` 声明的 `application` / `system` / `company` 下不得放置会话 spec（见 [session-spec-path.md](../references/session-spec-path.md)）。
 
 ---

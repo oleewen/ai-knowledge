@@ -30,7 +30,7 @@ EOF
 
 bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS_DIR" >"$OUT_FILE" 2>&1
 
-IDX="$DOCS_DIR/INDEX_GUIDE.md"
+IDX="$DOCS_DIR/INDEX-GUIDE.md"
 assert_file_exists "$IDX"
 assert_contains ".claude/skills/docs-indexing" "$IDX"
 assert_not_contains "agent/skills/docs-indexing" "$IDX"

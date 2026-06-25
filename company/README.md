@@ -14,7 +14,7 @@ title: "公司知识库（顶层 `company/`）"
 
 | 路径 | 说明 |
 | ------ | ------ |
-| [`INDEX_GUIDE.md`](INDEX_GUIDE.md) | Agent 九章机器索引 |
+| [`INDEX-GUIDE.md`](INDEX-GUIDE.md) | Agent 九章机器索引 |
 | [`DESIGN.md`](DESIGN.md) | 设计边界、目录契约、SDD 跨层衔接与同步闭环 |
 | [`knowledge/`](knowledge/README.md) | 公司级企业架构（业务/产品/应用/数据/技术五视角，聚焦治理叙事） |
 | [`solutions/`](solutions/README.md) | 公司级跨系统解决方案（明确哪个系统负责什么功能，作为 analysis 上游） |
