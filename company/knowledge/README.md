@@ -21,6 +21,6 @@ title: 企业架构
 | 技术架构 | [technical/README.md](technical/README.md) | 云基础设施、DevOps、技术安全、开发环境 | TPL |
 | 概览缓冲区 | [overview/NAME-overview.md](overview/NAME-overview.md) | 五视角聚合表格（docs-tag / docs-archive 操作对象） | — |
 
-各视角 `{perspective}-meta.md`（层级与必填字段）以及实例索引见 [KNOWLEDGE-INDEX.md](KNOWLEDGE-INDEX.md)（扫描生成）。
+各视角 `{perspective}-meta.md`（层级与必填字段）以及实例索引见 [index.md](index.md)（扫描生成）。
 
-与系统知识库侧 [`../../system/knowledge/`](../../system/knowledge/README.md) 对照阅读；顶层索引见 [`../README.md`](../README.md) 与 [`../INDEX-GUIDE.md`](../INDEX-GUIDE.md)。
+与系统知识库侧 [`../../system/knowledge/`](../../system/knowledge/README.md) 对照阅读；顶层索引见 [`../README.md`](../README.md) 与 [`../index.md`](../index.md)。

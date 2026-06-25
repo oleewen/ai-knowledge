@@ -4,7 +4,7 @@ title: business（业务视角）
 ---
 # business（业务视角）
 
-本目录描述业务版图与领域规则（DDD），不依赖具体技术实现。本树承接业务实体登记与实现映射；元数据与实例索引见 [business-meta.md](business-meta.md)、[../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md)（§1）。
+本目录描述业务版图与领域规则（DDD），不依赖具体技术实现。本树承接业务实体登记与实现映射；元数据与实例索引见 [business-meta.md](business-meta.md)、[../index.md](../index.md)（§1）。
 
 ---
 
@@ -22,7 +22,7 @@ title: business（业务视角）
 | 聚合    | `AGG` | Markdown 实体表 | BC 下多个聚合，每个含业务规则    |
 | 能力    | `AB`  | Markdown 实体表 | AGG 下多个能力（含 API 列表） |
 
-**关键设计决策**：各级实体以实体文件 `{ID}.md` 为 SSOT；全库扫描索引见 [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md)（§1）。
+**关键设计决策**：各级实体以实体文件 `{ID}.md` 为 SSOT；全库扫描索引见 [../index.md](../index.md)（§1）。
 
 ---
 
@@ -43,17 +43,17 @@ business/
 
 | 检索需求            | 推荐入口 |
 | --------------- | ---- |
-| 快速枚举全部业务实体 ID   | [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) §1（扫描生成） |
+| 快速枚举全部业务实体 ID   | [../index.md](../index.md) §1（扫描生成） |
 | 了解某聚合的业务规则与能力   | 对应 `{ID}.md`（如 [BSD-EXAMPLE/AGG-EXAMPLE.md](BSD-EXAMPLE/AGG-EXAMPLE.md)） |
 | 了解上下文边界与通用语言    | 对应 `{ID}.md`（如 [BSD-EXAMPLE/BC-EXAMPLE.md](BSD-EXAMPLE/BC-EXAMPLE.md)） |
 | 跨视角映射（业务→技术/数据） | [business-meta.md](business-meta.md) → §5 跨视角引用 |
-| 全库五视角索引         | [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) |
+| 全库五视角索引         | [../index.md](../index.md) |
 
 ---
 
 ## 业务索引表（示例）
 
-本目录仅保留**示例**，用于演示 BD→AB 的层级与字段形状。完整 ID 清单以 [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) §1 为准。
+本目录仅保留**示例**，用于演示 BD→AB 的层级与字段形状。完整 ID 清单以 [../index.md](../index.md) §1 为准。
 
 | 链序  | 层级    | ID（示例）      | 名称（示例）  | 文件 |
 | --- | ----- | ----------- | ------- | --- |
@@ -78,6 +78,6 @@ business/
 ## 与其他视角的映射
 
 - **业务 → 技术**：BC/AGG/AB → APP/MS/API（见 business-meta.md §5）。
-- **业务 → 数据**：AGG → ENT，见 [../data/ENT-EXAMPLE/ENT-EXAMPLE.md](../data/ENT-EXAMPLE/ENT-EXAMPLE.md) 或 [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) §4。
+- **业务 → 数据**：AGG → ENT，见 [../data/ENT-EXAMPLE/ENT-EXAMPLE.md](../data/ENT-EXAMPLE/ENT-EXAMPLE.md) 或 [../index.md](../index.md) §4。
 
-仓库根 Index Guide：[INDEX-GUIDE.md](../../../INDEX-GUIDE.md)。
+仓库根 Index Guide：[index.md](../../../index.md)。

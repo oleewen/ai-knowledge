@@ -14,11 +14,11 @@
 
 | 命令 | 说明 |
 |------|------|
-| `/docs-indexing` | 生成结构化 `INDEX_GUIDE.md`（九章文档地图），作为 Agent 导航与 RAG 权威来源；`INDEXING-LOG.md` 用主表记录运行（**最新在上**，锚点见 [docs-indexing/references/indexing-log-spec.md](docs-indexing/references/indexing-log-spec.md)）；支持全量/增量与深度 1/2/3；高风险落盘 spec + `sdx_gate_common.py --gate indexing`（见 [docs-indexing/references/gates.md](docs-indexing/references/gates.md)）。 |
+| `/docs-indexing` | 生成结构化 `index.md`（九章文档地图），作为 Agent 导航与 RAG 权威来源；`INDEXING-LOG.md` 用主表记录运行（**最新在上**，锚点见 [docs-indexing/references/indexing-log-spec.md](docs-indexing/references/indexing-log-spec.md)）；支持全量/增量与深度 1/2/3；高风险落盘 spec + `sdx_gate_common.py --gate indexing`（见 [docs-indexing/references/gates.md](docs-indexing/references/gates.md)）。 |
 | `/docs-change` | 从 git commit、CHANGELOG/CHANGE-LOG、本地文件 mtime 采集变更，落盘 `CHANGE-LOG.md`（文末 HTML 注释承载增量基线）；供下游增量索引等使用。 |
 | `/docs-tag` | 为 Markdown 概览做关键词驱动标记：候选词附录、表格行 ✅、架构摘录（phase 3）；流程见 [docs-tag/references/workflow.md](docs-tag/references/workflow.md)。 |
 | `/docs-upgrade` | 定向增改 Markdown、源代码注释与配置文本；落盘后链式同步引用链，并辅以关键词检索（同义/近义/中英文）对齐同类表述；支持替换简写 `a - b` / `a > b` / `a 2 b`。 |
-| `/docs-agent` | 生成或更新根目录 `README.md`（人类）与 `AGENTS.md`（Agent）；以落盘 `INDEX_GUIDE.md` 为唯一地图，与 Index 职责不重叠。 |
+| `/docs-agent` | 生成或更新根目录 `README.md`（人类）与 `AGENTS.md`（Agent）；以落盘 `index.md` 为唯一地图，与 Index 职责不重叠。 |
 | `/docs-distill` | 将 `system/application-{name}/` 已核实内容蒸馏到 `system/knowledge/overview/`；支持 `--app` `--since` `--full` `--dry-run`，默认按增量锚点蒸馏。 |
 | `/docs-extract` | 从用户指定的任意文件或目录中，按段落级关键词相关度筛选，提炼业务知识写入 `system/knowledge/overview/` 或 `company/knowledge/overview/` 第三列（A/U/D 合并更新）；支持 `--sources` `--overview` `--dry-run`。 |
 | `/docs-pull` | 从已通过中央知识库挂载建联注册的目标工程拉取最新文档，覆盖更新本仓库联邦镜像 `applications/app-{APPNAME}/`，并追加同步 changelog。 |
@@ -38,4 +38,4 @@
 - 这些命令由 Agent 依据对应 `SKILL.md` 执行并落盘产物。
 - **`git commit` / `git push`**：须遵守仓库 **[git-guidelines.md](../rules/coding/git-guidelines.md)**「提交前用户确认」— **禁止**在未经用户明确同意时提交；步骤中若写「Commit」，意为**经用户确认后再提交**。
 - `scripts/` 目录负责项目初始化（如 `docs-*.sh`），不等同于 Skill 命令。
-- 若命令输出涉及索引或变更记录，请以仓库约定路径为准（如 `INDEX_GUIDE.md`、`{DOC_DIR}/changelogs/`）。
+- 若命令输出涉及索引或变更记录，请以仓库约定路径为准（如 `index.md`、`{DOC_DIR}/changelogs/`）。

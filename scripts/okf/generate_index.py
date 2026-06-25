@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""为 OKF bundle 目录生成 §6 index.md。"""
+"""为 OKF bundle 目录生成 index.md（bundle 根仅更新 OKF 区块）。"""
 
 from __future__ import annotations
 
@@ -73,6 +73,9 @@ def _bullet(title: str, link: str, desc: str) -> str:
 
 
 SECTION_TITLE_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
+_RE_SENTINEL_LINE = re.compile(
+    r"^\s*<!--\s*(okf:begin|okf:end|docs-indexing:begin|docs-indexing:end)\s*-->\s*$"
+)
 
 
 def _extract_section(text: str, title: str) -> str:
@@ -98,6 +101,12 @@ def _extract_section(text: str, title: str) -> str:
         content = "\n".join(lines[start:i]).strip()
         return content
     return ""
+
+def _sanitize_preserved_section(content: str) -> str:
+    if not content:
+        return ""
+    lines = [ln for ln in content.splitlines() if not _RE_SENTINEL_LINE.match(ln)]
+    return "\n".join(lines).strip()
 
 
 def _render_related_indexes(directory: Path) -> str:
@@ -148,8 +157,8 @@ def render_index_body(directory: Path) -> str:
     existing = {"阅读顺序": "", "关联索引": ""}
     if index_path.is_file():
         _, body = okf_lib.parse_frontmatter(index_path.read_text(encoding="utf-8"))
-        existing["阅读顺序"] = _extract_section(body, "阅读顺序")
-        existing["关联索引"] = _extract_section(body, "关联索引")
+        existing["阅读顺序"] = _sanitize_preserved_section(_extract_section(body, "阅读顺序"))
+        existing["关联索引"] = _sanitize_preserved_section(_extract_section(body, "关联索引"))
 
     lines = [f"# {directory.name}", "", "目录说明见 [README.md](README.md)。", ""]
 
@@ -174,15 +183,85 @@ def render_index_body(directory: Path) -> str:
     lines.append("")
     return "\n".join(lines).rstrip() + "\n"
 
+_RE_OKF_BLOCK = re.compile(
+    r"<!--\s*okf:begin\s*-->.*?<!--\s*okf:end\s*-->",
+    flags=re.DOTALL,
+)
+
+
+def _demote_headings(text: str) -> str:
+    lines: List[str] = []
+    for line in text.splitlines():
+        m = re.match(r"^(#{1,6})\s+(.*)$", line)
+        if m:
+            level = min(len(m.group(1)) + 1, 6)
+            lines.append("#" * level + " " + m.group(2))
+        else:
+            lines.append(line)
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def _render_okf_root_block(directory: Path) -> str:
+    body = render_index_body(directory)
+    lines = body.splitlines()
+    if lines and lines[0].startswith("# "):
+        lines = lines[1:]
+    body_wo_h1 = "\n".join(lines).lstrip("\n").rstrip() + "\n"
+    demoted = _demote_headings(body_wo_h1)
+    return "## OKF 渐进披露\n\n" + demoted
+
+
+def _split_frontmatter(text: str) -> tuple[str, str]:
+    if not text.lstrip().startswith("---"):
+        return "", text
+    lines = text.splitlines(keepends=True)
+    start = None
+    for i, line in enumerate(lines):
+        if line.strip() == "---":
+            start = i
+            break
+        if line.strip():
+            return "", text
+    if start is None:
+        return "", text
+    for j in range(start + 1, len(lines)):
+        if lines[j].strip() == "---":
+            fm = "".join(lines[: j + 1]).rstrip() + "\n"
+            body = "".join(lines[j + 1 :]).lstrip("\n")
+            return fm, body
+    return "", text
+
+
+def _upsert_okf_block_in_index(index_path: Path, okf_block: str) -> str:
+    okf_block = okf_block.rstrip() + "\n"
+    okf_wrapped = (
+        "<!-- okf:begin -->\n" + okf_block + "<!-- okf:end -->\n"
+    )
+    existing = index_path.read_text(encoding="utf-8") if index_path.is_file() else ""
+    fm, body = _split_frontmatter(existing)
+    if _RE_OKF_BLOCK.search(body):
+        body = _RE_OKF_BLOCK.sub(okf_wrapped, body, count=1)
+    else:
+        body = okf_wrapped + "\n" + body.lstrip("\n")
+    return (fm + body).rstrip() + "\n"
+
 
 def write_index(directory: Path, bundle_root: Path, dry_run: bool = False) -> bool:
     index_path = directory / "index.md"
-    body = render_index_body(directory)
+    if _is_bundle_root(bundle_root, directory):
+        okf_block = _render_okf_root_block(directory)
+        merged = _upsert_okf_block_in_index(index_path, okf_block)
+        if dry_run:
+            return True
+        index_path.write_text(merged, encoding="utf-8")
+        return True
+
     existing_meta: Dict[str, object] = {}
     if index_path.is_file():
         existing_meta, _ = okf_lib.parse_frontmatter(index_path.read_text(encoding="utf-8"))
-    if _is_bundle_root(bundle_root, directory) and "okf_version" in existing_meta:
-        body = okf_lib.format_frontmatter({"okf_version": existing_meta["okf_version"]}) + body
+        if existing_meta:
+            return True
+    body = render_index_body(directory)
     if dry_run:
         return True
     index_path.write_text(body, encoding="utf-8")
@@ -207,7 +286,7 @@ def collect_directories(
 
 
 def main(argv: Optional[List[str]] = None) -> int:
-    parser = argparse.ArgumentParser(description="生成 OKF bundle 目录 index.md")
+    parser = argparse.ArgumentParser(description="生成 OKF bundle 目录 index.md（bundle 根仅更新 OKF 区块）")
     parser.add_argument("--bundle", required=True, help="bundle 名称，如 application")
     parser.add_argument(
         "--dir",
@@ -243,7 +322,7 @@ def main(argv: Optional[List[str]] = None) -> int:
             skipped += 1
 
     action = "would write" if args.dry_run else "wrote"
-    print(f"{action} {written} index.md ({skipped} skipped)")
+    print(f"{action} {written} index file(s) ({skipped} skipped)")
     return 0
 
 

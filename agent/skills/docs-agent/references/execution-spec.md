@@ -6,7 +6,7 @@
 
 **路径（命中即停）**，记下相对路径为「当前 INDEX」：
 
-1. `REPO_ROOT/INDEX_GUIDE.md`、`INDEX-GUIDE.md`
+1. `REPO_ROOT/index.md`、`index.md`
 2. `DOC_ROOT/` 同上
 
 **命中后**：仅以该文件为地图；不调 docs-indexing；不以用户粘贴替换磁盘（磁盘优先）。

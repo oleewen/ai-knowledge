@@ -17,5 +17,5 @@
 
 ## 关联索引
 
-- [../INDEX-GUIDE.md](../INDEX-GUIDE.md)
-- 仓库根 [INDEX-GUIDE.md](../../INDEX-GUIDE.md)（按需）
+- [../index.md](../index.md)
+- 仓库根 [index.md](../../index.md)（按需）

@@ -4,7 +4,7 @@ title: 知识树元数据（system/knowledge）
 ---
 # 知识树元数据（system/knowledge）
 
-系统知识库五视角知识树元数据 SSOT。实例索引见 [KNOWLEDGE-INDEX.md](KNOWLEDGE-INDEX.md)。
+系统知识库五视角知识树元数据 SSOT。实例索引见 [index.md](index.md)。
 
 ---
 
@@ -22,11 +22,11 @@ title: 知识树元数据（system/knowledge）
 
 | 目录 | 视角 | meta | 实例索引 |
 | --- | --- | --- | --- |
-| business/ | 业务 | [business-meta.md](business/business-meta.md) | [KNOWLEDGE-INDEX.md](KNOWLEDGE-INDEX.md) §1 |
-| product/ | 产品 | [product-meta.md](product/product-meta.md) | [KNOWLEDGE-INDEX.md](KNOWLEDGE-INDEX.md) §2 |
-| application/ | 应用 | [application-meta.md](application/application-meta.md) | [KNOWLEDGE-INDEX.md](KNOWLEDGE-INDEX.md) §3 |
-| data/ | 数据 | [data-meta.md](data/data-meta.md) | [KNOWLEDGE-INDEX.md](KNOWLEDGE-INDEX.md) §4 |
-| technical/ | 技术 | [technical-meta.md](technical/technical-meta.md) | [KNOWLEDGE-INDEX.md](KNOWLEDGE-INDEX.md) §5 |
+| business/ | 业务 | [business-meta.md](business/business-meta.md) | [index.md](index.md) §1 |
+| product/ | 产品 | [product-meta.md](product/product-meta.md) | [index.md](index.md) §2 |
+| application/ | 应用 | [application-meta.md](application/application-meta.md) | [index.md](index.md) §3 |
+| data/ | 数据 | [data-meta.md](data/data-meta.md) | [index.md](index.md) §4 |
+| technical/ | 技术 | [technical-meta.md](technical/technical-meta.md) | [index.md](index.md) §5 |
 
 **子文件**：[README.md](README.md)
 
@@ -46,10 +46,10 @@ title: 知识树元数据（system/knowledge）
 
 | 类型 | 路径 |
 | --- | --- |
-| system_index | [../INDEX-GUIDE.md](../INDEX-GUIDE.md) |
+| system_index | [../index.md](../index.md) |
 | per_perspective_readmes | business/README.md, product/README.md, application/README.md, data/README.md, technical/README.md |
 | governance | [../../agent/knowledge/knowledge-governance.md](../../agent/knowledge/knowledge-governance.md) |
-| entity_index | [KNOWLEDGE-INDEX.md](KNOWLEDGE-INDEX.md) |
+| entity_index | [index.md](index.md) |
 | design | [../DESIGN.md](../DESIGN.md) |
 
 ---
@@ -74,8 +74,8 @@ title: 知识树元数据（system/knowledge）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 五视角架构入口 |
-| [../INDEX-GUIDE.md](../INDEX-GUIDE.md) | system 索引 |
-| [../../INDEX-GUIDE.md](../../INDEX-GUIDE.md) | 仓库根索引 |
+| [../index.md](../index.md) | system 索引 |
+| [../../index.md](../../index.md) | 仓库根索引 |
 | [../DESIGN.md](../DESIGN.md) | 系统库设计契约 |
 | [../../company/knowledge/knowledge-meta.md](../../company/knowledge/knowledge-meta.md) | 公司级知识树元数据 |
 | [../../agent/knowledge/naming-conventions.md](../../agent/knowledge/naming-conventions.md) | 命名 SSOT |

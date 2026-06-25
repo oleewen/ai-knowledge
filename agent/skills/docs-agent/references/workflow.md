@@ -29,7 +29,7 @@ validate_bootstrap_docsconfig "$REPO_ROOT/agent/skills/docs-agent/scripts"
 DOC_ROOT="$(resolve_repo_doc_root)"
 ```
 
-按序查找落盘 Index，命中即停并记录相对路径：`REPO_ROOT` 下 `INDEX_GUIDE.md` / `INDEX-GUIDE.md`，再 `DOC_ROOT` 下同名。未命中 → 终止并提示 `/docs-indexing`。细则与降级见 [execution-spec.md](execution-spec.md)。
+按序查找落盘 Index，命中即停并记录相对路径：`REPO_ROOT` 下 `index.md` / `index.md`，再 `DOC_ROOT` 下同名。未命中 → 终止并提示 `/docs-indexing`。细则与降级见 [execution-spec.md](execution-spec.md)。
 
 ## 步骤 2：探索
 

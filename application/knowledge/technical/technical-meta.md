@@ -4,7 +4,7 @@ title: 技术视角元数据（application/knowledge/technical）
 ---
 # 技术视角元数据（application/knowledge/technical）
 
-应用层技术版图（MW→CMP）视角元数据 SSOT。实例索引见 [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md)（§5，扫描生成；实体文件 `{ID}.md` 为 SSOT）。
+应用层技术版图（MW→CMP）视角元数据 SSOT。实例索引见 [../index.md](../index.md)（§5，扫描生成；实体文件 `{ID}.md` 为 SSOT）。
 
 ---
 
@@ -77,10 +77,10 @@ title: 技术视角元数据（application/knowledge/technical）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 人类可读说明 |
-| [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) | MW/CMP 实例索引 |
+| [../index.md](../index.md) | MW/CMP 实例索引 |
 | [../../../company/knowledge/technical/technical-meta.md](../../../company/knowledge/technical/technical-meta.md) | 公司级 TPL 元数据 |
-| [../../../company/knowledge/KNOWLEDGE-INDEX.md](../../../company/knowledge/KNOWLEDGE-INDEX.md) | 公司级 TPL 实例 |
+| [../../../company/knowledge/index.md](../../../company/knowledge/index.md) | 公司级 TPL 实例 |
 | [../../../system/knowledge/technical/technical-meta.md](../../../system/knowledge/technical/technical-meta.md) | 系统级 TSD 元数据 |
-| [../../../system/knowledge/KNOWLEDGE-INDEX.md](../../../system/knowledge/KNOWLEDGE-INDEX.md) | 系统级 TSD 实例 |
+| [../../../system/knowledge/index.md](../../../system/knowledge/index.md) | 系统级 TSD 实例 |
 
-**索引**：`readme_index_table: true`；变更 ID 时同步 README、KNOWLEDGE-INDEX.md（按需）。
+**索引**：`readme_index_table: true`；变更 ID 时同步 README、index.md（按需）。

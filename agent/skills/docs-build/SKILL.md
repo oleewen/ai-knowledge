@@ -15,7 +15,7 @@ description: >
 
 | 负责 | 不负责 |
 |------|--------|
-| 五视角 per-entity、README、KNOWLEDGE_INDEX、validate-extraction | INDEX_GUIDE；docs-okf 迁移；distill/extract；docs-archive；SDD |
+| 五视角 per-entity、README、KNOWLEDGE_INDEX、validate-extraction | index；docs-okf 迁移；distill/extract；docs-archive；SDD |
 
 ## 最短路径
 

@@ -16,7 +16,7 @@
 1. **`.docsconfig` 硬门禁**（见 [gates.md](gates.md)）：`validate_bootstrap_docsconfig`；失败即中止。
 2. `DOC_ROOT="$(resolve_repo_doc_root)"`；`cd "$REPO_ROOT"`。
 3. 默认输出：`DEFAULT_OUTPUT="${DOC_ROOT}/changelogs"`；用户 `--output` 可覆盖。
-4. 可选 `[INFO]`：`INDEX_GUIDE.md`、`changelogs/INDEXING-LOG.md` 是否存在（不阻塞、不参与采集）。
+4. 可选 `[INFO]`：`index.md`、`changelogs/INDEXING-LOG.md` 是否存在（不阻塞、不参与采集）。
 5. 输出目录可写；检测 Git；扫描 CHANGELOG 候选。
 6. 其余歧义按 [gates.md](gates.md) 先确认。
 

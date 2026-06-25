@@ -19,7 +19,7 @@ import okf_lib  # noqa: E402
 
 BUNDLE_LINK_RE = re.compile(r"\]\((/(?:knowledge|application)/[^)]+)\)")
 INDEX_LINK_RE = re.compile(r"(?<!!)\[[^\]]*\]\(([^)]+)\)")
-ALLOWED_ROOT_INDEX_KEYS = frozenset({"okf_version"})
+ALLOWED_ROOT_INDEX_KEYS = frozenset({"okf_version", "type", "title", "tags"})
 
 # 段标题提取正则（迁移期同时兼容旧英文 H1 与新中文 H2）
 SECTION_HEADING_RE = re.compile(r"^(#{1,2})\s+(\S.*?)\s*$", re.MULTILINE)

@@ -6,8 +6,8 @@
 ## 边界
 
 - **负责**：Git、`CHANGELOG*` / `CHANGE-LOG`、本地 mtime 采集，聚合 `{output_dir}/CHANGE-LOG.md`，文末 `<!-- docs-change:baseline_time_ms=... -->`。
-- **不负责**：`INDEX_GUIDE`、知识实体、批量改 `README`/`AGENTS`（→ docs-indexing、docs-build 等）。
-- **分流**：只要全量/增量文档地图、`INDEX_GUIDE` 时，主路径为 **docs-indexing**，不以仅跑 docs-change 替代。
+- **不负责**：`index`、知识实体、批量改 `README`/`AGENTS`（→ docs-indexing、docs-build 等）。
+- **分流**：只要全量/增量文档地图、`index` 时，主路径为 **docs-indexing**，不以仅跑 docs-change 替代。
 
 ## `.docsconfig` 硬门禁
 

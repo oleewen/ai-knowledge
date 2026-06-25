@@ -6,7 +6,7 @@ title: data（数据视角）
 
 索引入口见 [index.md](index.md)。
 
-本目录描述数据存储结构、数据实体与治理属性，并通过 ID 与其他视角建立映射；系统层 `DS/ENT` 在此承接实例登记与物理落地，应用层 `TBL` 作为物理表锚点在本树主定义。元数据与实例索引见 [data-meta.md](data-meta.md)、[../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md)（§4）。
+本目录描述数据存储结构、数据实体与治理属性，并通过 ID 与其他视角建立映射；系统层 `DS/ENT` 在此承接实例登记与物理落地，应用层 `TBL` 作为物理表锚点在本树主定义。元数据与实例索引见 [data-meta.md](data-meta.md)、[../index.md](../index.md)（§4）。
 
 ---
 
@@ -27,7 +27,7 @@ title: data（数据视角）
 ```
 
 - **字段模板**：[data-meta.md](data-meta.md) → §4 必填字段
-- **层级内容**：实体文件 `{ID}.md`；枚举见 [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) §4
+- **层级内容**：实体文件 `{ID}.md`；枚举见 [../index.md](../index.md) §4
 
 ---
 
@@ -40,7 +40,7 @@ title: data（数据视角）
 
 ## 本视角导航
 
-- 数据存储与实体清单（唯一事实来源）：实体文件 `{ID}.md` + [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) §4
+- 数据存储与实体清单（唯一事实来源）：实体文件 `{ID}.md` + [../index.md](../index.md) §4
 
 ---
 
@@ -49,4 +49,4 @@ title: data（数据视角）
 - **数据 ← 业务**：`persisted_as_entity_ids` ↔ ENT。
 - **数据 ← 技术**：`owned_by_app_id` → APP/MS。
 
-仓库根 Index Guide：[INDEX-GUIDE.md](../../../INDEX-GUIDE.md)；设计：[../../DESIGN.md](../../DESIGN.md)。
+仓库根 Index Guide：[index.md](../../../index.md)；设计：[../../DESIGN.md](../../DESIGN.md)。

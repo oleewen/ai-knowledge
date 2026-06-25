@@ -2,9 +2,9 @@
 
 闸门总述 [gates.md](gates.md)。
 
-## INDEX_GUIDE
+## index
 
-根与子域 `INDEX_GUIDE.md`：**按需**查路径权威、索引边界、是否要更导航。
+根与子域 `index.md`：**按需**查路径权威、索引边界、是否要更导航。
 
 ## 站内 Markdown
 

@@ -38,7 +38,7 @@
 
 ## 索引指针
 
-- 仓库根：[INDEX-GUIDE.md](../../INDEX-GUIDE.md)、[AGENTS.md](../../AGENTS.md)
+- 仓库根：[index.md](../../index.md)、[AGENTS.md](../../AGENTS.md)
 - 应用层设计：[application/DESIGN.md](../../application/DESIGN.md)
 - 系统层设计：[system/DESIGN.md](../../system/DESIGN.md)
 - 公司层设计：[company/DESIGN.md](../../company/DESIGN.md)

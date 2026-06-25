@@ -21,7 +21,7 @@
 
 - 唯一上行目标：**overview 第三列**；不把 knowledge/SDD 当系统终稿段落。  
 - 冲突：**代码/manifest** 或标待定，勿硬盖系统权威。  
-- 动到全局导航：**INDEX_GUIDE** / 视角 **README** 须评估同步。
+- 动到全局导航：**index** / 视角 **README** 须评估同步。
 
 ## 多应用
 

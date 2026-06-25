@@ -6,9 +6,9 @@ title: application（应用视角）
 
 索引入口见 [index.md](index.md)。
 
-本目录描述本应用的物理实现、部署架构与服务接口；系统层 `APP/MS` 在此承接实例登记与实现映射，应用层 `API` 在此主定义。应用注册与索引见 [application-meta.md](application-meta.md) 与 **[../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md)**（§3）。
+本目录描述本应用的物理实现、部署架构与服务接口；系统层 `APP/MS` 在此承接实例登记与实现映射，应用层 `API` 在此主定义。应用注册与索引见 [application-meta.md](application-meta.md) 与 **[../index.md](../index.md)**（§3）。
 
-- **实现入口**：HTTP（`@GatewayApi`）与 ZSS Job 见 [INDEX-GUIDE.md](../../../INDEX-GUIDE.md) **第三节 · 3.1**、**第三节 · 3.3**。
+- **实现入口**：HTTP（`@GatewayApi`）与 ZSS Job 见 [index.md](../../../index.md) **第三节 · 3.1**、**第三节 · 3.3**。
 - **统一元数据**：[application-meta.md](application-meta.md) — `layers`（sys / app / ms / api）。
 
 ---
@@ -22,7 +22,7 @@ title: application（应用视角）
 | 微服务（MS） | 示例微服务 | MS-EXAMPLE | [MS-EXAMPLE/MS-EXAMPLE.md](MS-EXAMPLE/MS-EXAMPLE.md) |
 | 接口 | 示例 API | API-EXAMPLE-001 | [MS-EXAMPLE/API-EXAMPLE-001.md](MS-EXAMPLE/API-EXAMPLE-001.md) |
 
-本目录仅保留**示例**，用于演示 SYS/APP/MS/API 的层级与字段形状。完整 ID 清单以 [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) §3 为准。
+本目录仅保留**示例**，用于演示 SYS/APP/MS/API 的层级与字段形状。完整 ID 清单以 [../index.md](../index.md) §3 为准。
 
 ---
 
@@ -33,7 +33,7 @@ title: application（应用视角）
 ```
 
 - **字段模板**：[application-meta.md](application-meta.md) → §4 必填字段
-- **层级内容**：实体文件 `{ID}.md`；枚举见 [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) §3
+- **层级内容**：实体文件 `{ID}.md`；枚举见 [../index.md](../index.md) §3
 
 ---
 
@@ -52,4 +52,4 @@ title: application（应用视角）
 - **应用 ← 业务**：`implemented_by_app_id` → APP。
 - **应用 ← 产品**：`invokes_api_ids` → API。
 
-仓库根 Index Guide：[INDEX-GUIDE.md](../../../INDEX-GUIDE.md)；设计：[../../DESIGN.md](../../DESIGN.md)。
+仓库根 Index Guide：[index.md](../../../index.md)；设计：[../../DESIGN.md](../../DESIGN.md)。

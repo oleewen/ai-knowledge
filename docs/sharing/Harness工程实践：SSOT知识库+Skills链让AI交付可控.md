@@ -107,7 +107,7 @@ footer: 'ai-knowledge · 架构师 / 研发负责人 · 45 min'
 ```text
 company/                system/                  application/
 ├ ea/                   ├ architecture/          ├ knowledge/ 
-│ └ overview/           │ └ overview/            │ └ KNOWLEDGE-INDEX.md
+│ └ overview/           │ └ overview/            │ └ index.md
 ├ system-*/             ├ application-*/         ├ solutions/
 ├ solutions/            ├ solutions/             ├ analysis/
 ├ analysis/             ├ analysis/              ├ requirements/
@@ -227,7 +227,7 @@ flowchart LR
         D["变更: /docs-change<br/>聚合变更 changelogs"]
     end
 
-    S -- 应用代码库 --> A -- INDEX_GUIDE --> B -- AGENTS｜README --> C -- 知识实体 --> D -- 应用知识库 --> Z
+    S -- 应用代码库 --> A -- index --> B -- AGENTS｜README --> C -- 知识实体 --> D -- 应用知识库 --> Z
     D -.变更回流.-> A
 ```
 

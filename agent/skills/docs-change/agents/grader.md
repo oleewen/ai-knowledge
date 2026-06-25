@@ -25,7 +25,7 @@
 
 ```json
 {
-  "text": "通过。主路径指向 docs-indexing 或 INDEX_GUIDE。",
+  "text": "通过。主路径指向 docs-indexing 或 index。",
   "passed": true,
   "evidence": [
     "correct-downstream：点名 docs-indexing",

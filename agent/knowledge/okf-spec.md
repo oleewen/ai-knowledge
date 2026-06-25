@@ -102,8 +102,8 @@ timestamp: "2026-06-25T00:00:00Z"
 
 - `README.md`
 - `index.md`
-- `INDEX-GUIDE.md`
-- `KNOWLEDGE-INDEX.md`
+- `index.md`
+- `index.md`
 
 处理规则：
 
@@ -164,7 +164,7 @@ timestamp: "2026-06-25T00:00:00Z"
   - 索引入口
   - 元数据
   - 叙事文件
-- `README.md`、`index.md`、`INDEX-GUIDE.md`、`KNOWLEDGE-INDEX.md` 默认优先归为索引入口。
+- `README.md`、`index.md`、`index.md`、`index.md` 默认优先归为索引入口。
 - `*-meta.md`、`docs-meta.md`、`knowledge-links.yaml`、变更日志默认优先归为元数据。
 
 ---
@@ -190,7 +190,7 @@ timestamp: "2026-06-25T00:00:00Z"
 | 实体概念核心键 | `hierarchy` | 枚举 | ✅ | 与 `type` 一一对应 | `BD` / `CAP` / `PL` / `SYS` / `MDG` / `TPL` / `BSD` / `BC` / `AGG` / `AB` / `PM` / `BP` / `FT` / `UC` / `BR` / `APP` / `MS` / `DS` / `ENT` / `TSD` / `API` / `TBL` / `MW` / `CMP` |
 | 实体概念核心键 | `parent_id` | 字符串 \| null | ✅ | 父层 full_id；BD 与 PL 允许 `null` | `BD-EXAMPLE` / `PM-EXAMPLE` / `null` |
 | 实体概念核心键 | `layer_scope` | 枚举 | ✅ | 与知识库路径前缀对应 | `company` / `system` / `application` |
-| 非实体文档键 | `okf_version` | 字符串 | - | 当前只出现在三层根 `index.md` | `"0.1"` / `"1.0"` |
+| 非实体文档键 | `okf_version` | 字符串 | - | 当前只出现在 bundle 根 `index.md` | `"0.1"` / `"1.0"` |
 | 非实体文档键 | `status` | 字符串 | - | 当前只出现在公司层示例方案/分析文档 | `draft` / `"draft"` |
 
 规则：
@@ -335,9 +335,9 @@ MAY：
 适用于：
 
 - `README.md`
-- `index.md`
-- `INDEX-GUIDE.md`
-- `KNOWLEDGE-INDEX.md`
+- `index.md`（仅 bundle 根；含 okf 区块 + 九章区块）
+- `index.md`（OKF 渐进披露入口：bundle 子目录）
+- `knowledge/index.md`（知识实体扫描索引）
 
 MUST：
 
@@ -345,14 +345,14 @@ MUST：
 - 当前目录关键文件与子目录入口齐全
 - 与 concept、叙事、元数据分型保持一致
 - 不强行加入 concept frontmatter
-- `index.md` 不应包含 frontmatter（OKF Core 约定；本仓库仅在根 `index.md` 允许 `okf_version`）
+- OKF 渐进披露入口（bundle 根 `index.md` 的 OKF 区块）仅允许 `okf_version` 作为 frontmatter
 
 SHOULD：
 
 - `README.md`：人类入口
-- `index.md`：当前目录渐进披露
-- `INDEX-GUIDE.md`：机器地图
-- `KNOWLEDGE-INDEX.md`：知识实体扫描索引
+- `index.md`：当前目录渐进披露（bundle 根为 OKF 区块 + 九章区块；子目录为渐进披露入口）
+- `<DOC_DIR>/index.md`：九章机器索引（仓库根或各 DOC_DIR）
+- `knowledge/index.md`：知识实体扫描索引
 
 MAY：
 
@@ -361,9 +361,9 @@ MAY：
 代表性文件：
 
 - 根/入口：`company/README.md`、`system/README.md`、`application/README.md`
-- 渐进披露：`company/index.md`、`system/knowledge/index.md`、`application/knowledge/index.md`
-- 机器索引：`company/INDEX-GUIDE.md`、`system/INDEX-GUIDE.md`、`application/INDEX-GUIDE.md`
-- 实体枚举：`application/knowledge/KNOWLEDGE-INDEX.md`
+- 渐进披露：bundle 根 `index.md` 的 OKF 区块、以及各级子目录 `index.md`
+- 机器索引：`company/index.md`、`system/index.md`、`application/index.md`、根 `index.md`
+- 实体枚举：`application/knowledge/index.md`
 
 ---
 

@@ -58,15 +58,15 @@ python3 scripts/okf/visualize.py \
 | 预览 | `bash scripts/okf-migrate.sh --dry-run` |
 | 仅校验 | `bash scripts/validate-okf.sh` |
 | 仅 viz | `python3 scripts/okf/visualize.py --bundle "${DOC_DIR}" --out "${KNOWLEDGE_TYPE}/viz.html" --name "${KNOWLEDGE_TYPE} OKF"` |
-| INDEX_GUIDE 后补 OKF index | `python3 scripts/okf/generate_index.py --bundle "${DOC_DIR}" --recursive` 然后 validate |
+| index 后补 OKF index | `python3 scripts/okf/generate_index.py --bundle "${DOC_DIR}" --recursive` 然后 validate |
 
 ## 与 docs-indexing 协作
 
-更新 `INDEX_GUIDE.md` 后（docs-indexing 步骤 6 落盘），**建议**：
+更新九章索引 `index.md` 后（docs-indexing 步骤 6 落盘），**建议**：
 
 ```bash
 python3 scripts/okf/generate_index.py --bundle "${DOC_DIR}" --recursive
 bash scripts/validate-okf.sh
 ```
 
-`INDEX_GUIDE.md` 仍为九章 Agent 地图；各级 `index.md` 为 OKF 渐进披露入口（双索引并存）。
+九章索引为 `index.md`；OKF 渐进披露入口为 bundle 根 `index.md` 的 OKF 区块与各级子目录 `index.md`（双索引并存）。

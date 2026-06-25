@@ -15,7 +15,7 @@ description: >
 
 | 负责 | 不负责 |
 |------|--------|
-| `--file`、`--phase`、附录、表行 ✅、架构摘录 | INDEX_GUIDE；extract 第三列；upgrade 全库替换 |
+| `--file`、`--phase`、附录、表行 ✅、架构摘录 | index；extract 第三列；upgrade 全库替换 |
 
 ## 最短路径
 

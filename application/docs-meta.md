@@ -7,7 +7,7 @@ title: application 目录元数据
 # application/ 目录元数据（根导航与 SSOT 指针）
 id: "DIR-APPLICATION"
 name: "应用知识库根（application）"
-description: "企业级知识库 application/ 根目录：人类与 Agent 的主导航（README、INDEX_GUIDE）、设计约束（DESIGN、CONTRIBUTING）及 SDD 各阶段与 knowledge SSOT。"
+description: "企业级知识库 application/ 根目录：人类与 Agent 的主导航（README、index）、设计约束（DESIGN、CONTRIBUTING）及 SDD 各阶段与 knowledge SSOT。"
 
 role:
   kind: "documentation_root"
@@ -36,7 +36,7 @@ child_directories:
 
 child_files:
   - "README.md"
-  - "INDEX-GUIDE.md"
+  - "index.md"
   - "DESIGN.md"
   - "CONTRIBUTING.md"
 
@@ -46,7 +46,7 @@ inputs:
 
 outputs:
   primary_artifact:
-    pattern: "README.md, INDEX-GUIDE.md, DESIGN.md, CONTRIBUTING.md, knowledge/**/*"
+    pattern: "README.md, index.md, DESIGN.md, CONTRIBUTING.md, knowledge/**/*"
     description: "child_files（根级）+ knowledge/ 树（{perspective}-meta.md + 实体文件 {ID}.md，OKF SSOT）"
 
 naming_conventions:
@@ -63,7 +63,7 @@ integration:
 
 references:
   - path: "./README.md"
-  - path: "./INDEX-GUIDE.md"
+  - path: "./index.md"
   - path: "./DESIGN.md"
   - path: "./CONTRIBUTING.md"
   - path: "../agent/knowledge/knowledge-governance.md"

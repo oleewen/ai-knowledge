@@ -271,7 +271,7 @@ install_application_subset_to_docs() {
   done
 
   local base
-  for base in INDEX-GUIDE.md docs-meta.md manifest.md; do
+  for base in index.md docs-meta.md manifest.md; do
     [[ -f "$src_root/$base" ]] || continue
     sdx_io_copy_file "$src_root/$base" "$dst_root/$base" || return 0
   done

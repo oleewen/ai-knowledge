@@ -15,7 +15,7 @@ description: >
 
 | 负责 | 不负责 |
 |------|--------|
-| CHANGE-LOG.md 多源聚合、倒序插入、文末基线 | INDEX_GUIDE、KNOWLEDGE_INDEX、overview 归档、全库术语替换 |
+| CHANGE-LOG.md 多源聚合、倒序插入、文末基线 | index、KNOWLEDGE_INDEX、overview 归档、全库术语替换 |
 | | docs-indexing、docs-build、docs-archive、docs-upgrade |
 
 ## 最短路径

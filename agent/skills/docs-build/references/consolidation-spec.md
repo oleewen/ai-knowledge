@@ -75,7 +75,7 @@ graph TD
 
 | 类型 | 格式例 |
 |------|--------|
-| 文档 | `INDEX_GUIDE.md §3.2` |
+| 文档 | `index.md §3.2` |
 | concept | `business/BD-EXAMPLE/BD-EXAMPLE.md` |
 | 代码 | `FooApiImpl#create:111` |
 | 配置 | `application.yml:key` |

@@ -5,7 +5,7 @@
 
 ## 1. 范围
 
-- `INDEX_GUIDE`：`<如 application/INDEX_GUIDE.md>`
+- 索引指南：`<如 application/index.md 或 index.md>`
 - `INDEXING-LOG`：`<如 application/changelogs/INDEXING-LOG.md>`
 - docs-change / 基线：`<说明>`
 

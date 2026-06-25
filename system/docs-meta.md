@@ -7,7 +7,7 @@ title: system 目录元数据
 # system/ 目录元数据（根导航与 SSOT 指针）
 id: "DIR-SYSTEM"
 name: "系统知识库根（system）"
-description: "企业级知识库 system/ 根目录：人类与 Agent 的主导航（README、INDEX_GUIDE）、设计约束（DESIGN）及知识聚合与联邦槽位。"
+description: "企业级知识库 system/ 根目录：人类与 Agent 的主导航（README、index）、设计约束（DESIGN）及知识聚合与联邦槽位。"
 
 role:
   kind: "documentation_root"
@@ -40,7 +40,7 @@ child_directories:
 
 child_files:
   - "README.md"
-  - "INDEX-GUIDE.md"
+  - "index.md"
   - "DESIGN.md"
   - "knowledge-links.yaml"
 
@@ -50,7 +50,7 @@ inputs:
 
 outputs:
   primary_artifact:
-    pattern: "README.md, INDEX-GUIDE.md, DESIGN.md, knowledge/**/*"
+    pattern: "README.md, index.md, DESIGN.md, knowledge/**/*"
     description: "根级导航与设计 + knowledge/ 聚合视图与实体文件 OKF 概念实体"
 
 naming_conventions:
@@ -67,7 +67,7 @@ integration:
 
 references:
   - path: "./README.md"
-  - path: "./INDEX-GUIDE.md"
+  - path: "./index.md"
   - path: "./DESIGN.md"
   - path: "../agent/knowledge/knowledge-governance.md"
   - path: "../agent/knowledge/okf-spec.md"

@@ -15,7 +15,7 @@ description: >
 
 | 负责 | 不负责 |
 | ---- | ------ |
-| 根 README.md、AGENTS.md；`--output` / `--mode`；与 INDEX 对齐 | INDEX_GUIDE（docs-indexing）；实体（docs-build）；术语批量（docs-upgrade）；SDD / distill / extract 主流程 |
+| 根 README.md、AGENTS.md；`--output` / `--mode`；与 INDEX 对齐 | index（docs-indexing）；实体（docs-build）；术语批量（docs-upgrade）；SDD / distill / extract 主流程 |
 
 ## 最短路径
 

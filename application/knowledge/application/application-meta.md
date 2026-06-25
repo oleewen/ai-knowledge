@@ -4,7 +4,7 @@ title: 应用视角元数据（application/knowledge/application）
 ---
 # 应用视角元数据（application/knowledge/application）
 
-应用侧实现版图（SYS→APP→MS→API）实体登记与接口实现元数据。实例索引见 [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md)（§3，扫描生成；实体文件 `{ID}.md` 为 SSOT）。
+应用侧实现版图（SYS→APP→MS→API）实体登记与接口实现元数据。实例索引见 [../index.md](../index.md)（§3，扫描生成；实体文件 `{ID}.md` 为 SSOT）。
 
 ---
 
@@ -97,7 +97,7 @@ application 层与 system 层 MS/API 落盘路径 **intentionally 不同**；跨
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 人类可读说明 |
-| [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) | §3 应用视角实例索引（扫描生成） |
-| [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) | 五视角索引 |
+| [../index.md](../index.md) | §3 应用视角实例索引（扫描生成） |
+| [../index.md](../index.md) | 五视角索引 |
 
-**索引**：`readme_index_table: true`；变更 ID 时同步 README、KNOWLEDGE-INDEX.md、manifest/OpenAPI（按需）。
+**索引**：`readme_index_table: true`；变更 ID 时同步 README、index.md、manifest/OpenAPI（按需）。

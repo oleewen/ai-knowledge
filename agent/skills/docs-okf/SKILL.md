@@ -16,7 +16,7 @@ description: >
 
 | 负责 | 不负责 |
 |------|--------|
-| OKF 迁移编排、index、KNOWLEDGE_INDEX、validate-okf、viz | INDEX_GUIDE（docs-indexing）；新实体提取（docs-build）；SDD |
+| OKF 迁移编排、index、KNOWLEDGE_INDEX、validate-okf、viz | index（docs-indexing）；新实体提取（docs-build）；SDD |
 
 ## 最短路径
 

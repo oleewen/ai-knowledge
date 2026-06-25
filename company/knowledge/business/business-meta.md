@@ -4,7 +4,7 @@ title: 业务视角元数据（company/knowledge/business）
 ---
 # 业务视角元数据（company/knowledge/business）
 
-公司级业务域（BD）与业务能力目录（CAP）的视角元数据 SSOT。实例索引见 [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md)。
+公司级业务域（BD）与业务能力目录（CAP）的视角元数据 SSOT。实例索引见 [../index.md](../index.md)。
 
 ---
 
@@ -79,6 +79,6 @@ title: 业务视角元数据（company/knowledge/business）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 叙事文档索引 |
-| [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) | BD/CAP 实例 SSOT |
+| [../index.md](../index.md) | BD/CAP 实例 SSOT |
 | [../../DESIGN.md](../../DESIGN.md) | 公司级实体定义 |
 | [../../../agent/knowledge/naming-conventions.md](../../../agent/knowledge/naming-conventions.md) | ID 命名 SSOT |

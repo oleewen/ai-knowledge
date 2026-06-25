@@ -22,4 +22,4 @@
 ## 日志与导航
 
 - [ ] **4.3 成功后**才追加 DISTILL-LOG；新行**最前**  
-- [ ] 若影响 `system/knowledge/INDEX_GUIDE.md` 或视角 README → 评估同步（gotchas）
+- [ ] 若影响 `system/knowledge/index.md` 或视角 README → 评估同步（gotchas）

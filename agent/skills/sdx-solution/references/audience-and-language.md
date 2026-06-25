@@ -22,4 +22,4 @@
 
 ## Agent
 
-可阅 `knowledge/`、INDEX_GUIDE 等核对事实；写入 `SOLUTION-*.md` 须转成业务表述。须保留的系统边界线索放 **§7.3** 并标「待研发确认」。
+可阅 `knowledge/`、index 等核对事实；写入 `SOLUTION-*.md` 须转成业务表述。须保留的系统边界线索放 **§7.3** 并标「待研发确认」。

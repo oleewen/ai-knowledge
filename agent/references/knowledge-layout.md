@@ -70,7 +70,7 @@ company/knowledge/{business,product,application,data,technical}/
 | --- | --- | --- |
 | docs-distill / docs-extract | `system/knowledge/overview/*.md`、`company/knowledge/overview/*.md` | 第三列与 overview 回写 |
 | docs-archive | 同上（overview 回写） | **章节落盘**靠会话**方案确认书** HARD-GATE；hook **不**拦截 `knowledge/` 或 `ea/` 下视角章节 |
-| docs-indexing | 各 `INDEX-GUIDE.md`、`*/changelogs/INDEXING-LOG.md` | 见 CONVENTIONS |
+| docs-indexing | 各 `index.md`、`*/changelogs/INDEXING-LOG.md` | 见 CONVENTIONS |
 
 ---
 

@@ -155,7 +155,7 @@ def _has_indexing_write_allowed(
     payload: object,
     environ: dict[str, str] | None = None,
 ) -> bool:
-    """除 CONFIRMED 标记外，须任一 spec 正文包含与 candidate 一致的仓库根相对路径（防多份 INDEX_GUIDE 同名误放行）。"""
+    """除 CONFIRMED 标记外，须任一 spec 正文包含与 candidate 一致的仓库根相对路径（防多份 index 同名误放行）。"""
     rel = _normalize_repo_relative_for_gate(repo, candidate)
     if not rel:
         return False
@@ -173,13 +173,13 @@ def _has_indexing_write_allowed(
 
 
 def _make_indexing_collector() -> Callable[[list[str]], list[str]]:
-    """收集 INDEX-GUIDE.md 与各域 changelogs/INDEXING-LOG.md 的写入路径。"""
+    """收集仓库根 index.md、各 DOC_DIR 的 index.md 与各域 changelogs/INDEXING-LOG.md 的写入路径。"""
 
     def _collect(strings: list[str]) -> list[str]:
         out: list[str] = []
         for s in strings:
             s_norm = s.replace("\\", "/")
-            if s_norm.endswith("INDEX-GUIDE.md"):
+            if s_norm == "index.md" or re.match(r"^[^/]+/index\.md$", s_norm):
                 out.append(s)
                 continue
             if s_norm.endswith("INDEXING-LOG.md") and "/changelogs/" in s_norm:
@@ -197,7 +197,7 @@ GATES: dict[str, GateConfig] = {
         deny_message=(
             "docs-build：禁止在未完成中间 spec「用户总确认」前写入 knowledge/ 下的文件。"
             "请先在当前会话 spec（{DOC_DIR}/superpowers/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- docs-build-gate: PENDING --> 改为 CONFIRMED，"
-            "并确保文中引用目标文件名（如 KNOWLEDGE-INDEX.md）。本 gate 无 bypass 环境变量，须完整走确认流程。"
+            "并确保文中引用目标文件名（如 index.md）。本 gate 无 bypass 环境变量，须完整走确认流程。"
         ),
         basename_prefix="",
         collect=_make_knowledge_collector(),
@@ -243,9 +243,9 @@ GATES: dict[str, GateConfig] = {
         bypass_env="",  # 无 bypass
         debug_label="docs-indexing-gate",
         deny_message=(
-            "docs-indexing：禁止在未完成中间 spec「用户总确认」前写入 INDEX-GUIDE.md 或 */changelogs/INDEXING-LOG.md。"
+            "docs-indexing：禁止在未完成中间 spec「用户总确认」前写入 index.md（仓库根或各 DOC_DIR）或 */changelogs/INDEXING-LOG.md。"
             "请先在当前会话 spec（{DOC_DIR}/superpowers/specs/ 下）维护 `*-docs-indexing.md`，将 <!-- docs-indexing-gate: PENDING --> 改为 CONFIRMED，"
-            "且正文须**逐字列出**本轮将写入的仓库根相对路径（例如 application/INDEX-GUIDE.md）。"
+            "且正文须**逐字列出**本轮将写入的仓库根相对路径（例如 application/index.md、index.md）。"
             "本 gate 无 bypass 环境变量，须完整走确认流程。"
         ),
         basename_prefix="",

@@ -32,7 +32,7 @@ ${DOC_DIR}/changelogs/INDEXING-LOG.md
 | `mode` | `full` 或 `incremental` |
 | `depth` | `1`、`2` 或 `3` |
 | `since_ms` | 本 run 在增量时采用的基线（epoch ms）；全量时填 `0` |
-| `output_path` | 本次写出的 `INDEX_GUIDE.md`（或用户指定）相对 `DOC_DIR` 或仓库根的约定路径，与技能输出一致 |
+| `output_path` | 本次写出的索引指南（如 `index.md` / `index.md`；或用户指定）相对 `DOC_DIR` 或仓库根的约定路径，与技能输出一致 |
 | `file_count` | 本 run 统计或扫描涉及的文件数（与 `scan-spec`/实现约定一致，在 spec 中保持同一口径） |
 | `duration_ms` | 本 run 耗时（毫秒） |
 | `summary` | 可空；极短说明，如 `incremental depth3` |
@@ -44,7 +44,7 @@ ${DOC_DIR}/changelogs/INDEXING-LOG.md
 
 | indexing_finished_ms | indexed_at | mode | depth | since_ms | output_path | file_count | duration_ms | summary |
 |---:|---|---|:---:|---:|---|---:|---:|---|
-| 1714108800000 | 2026-04-26T10:00:00Z | incremental | 3 | 1714022400000 | ./INDEX_GUIDE.md | 376 | 1200 | depth3 |
+| 1714108800000 | 2026-04-26T10:00:00Z | incremental | 3 | 1714022400000 | ./index.md | 376 | 1200 | depth3 |
 ```
 
 ---
@@ -96,7 +96,7 @@ else:
 
 INDEX **成功落盘后**再写 LOG（先主产物、后总账）：
 
-1. 写 `INDEX_GUIDE`  
+1. 写索引指南  
 2. 再 `${DOC_DIR}/changelogs/INDEXING-LOG.md`（新行插顶）
 
 若 1 败：不写 LOG，避免假进度。
@@ -129,8 +129,8 @@ INDEX **成功落盘后**再写 LOG（先主产物、后总账）：
 
 | indexing_finished_ms | indexed_at | mode | depth | since_ms | output_path | file_count | duration_ms | summary |
 |---:|---|---|:---:|---:|---|---:|---:|---|
-| 1714200000000 | 2026-04-27T08:00:00Z | full | 3 | 0 | ./INDEX_GUIDE.md | 400 | 3000 | regen full |
-| 1714108800000 | 2026-04-26T10:00:00Z | incremental | 3 | 1714022400000 | ./INDEX_GUIDE.md | 376 | 1200 | depth3 |
+| 1714200000000 | 2026-04-27T08:00:00Z | full | 3 | 0 | ./index.md | 400 | 3000 | regen full |
+| 1714108800000 | 2026-04-26T10:00:00Z | incremental | 3 | 1714022400000 | ./index.md | 376 | 1200 | depth3 |
 ```
 
 首行=最近成功 incremental 的默认基线以技能与 docs-change 语义为准。

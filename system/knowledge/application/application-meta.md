@@ -4,7 +4,7 @@ title: 应用视角元数据（system/knowledge/application）
 ---
 # 应用视角元数据（system/knowledge/application）
 
-系统级应用版图（SYS→APP→MS）视角元数据 SSOT。实例索引见 [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md)。
+系统级应用版图（SYS→APP→MS）视角元数据 SSOT。实例索引见 [../index.md](../index.md)。
 
 ---
 
@@ -95,9 +95,9 @@ application 层与 system 层 MS/API 落盘路径 **intentionally 不同**；跨
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 叙事文档索引 |
-| [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) | SYS/APP/MS 实例 SSOT |
+| [../index.md](../index.md) | SYS/APP/MS 实例 SSOT |
 | [../../DESIGN.md](../../DESIGN.md) | 系统库设计契约 |
 | [../../../company/knowledge/application/application-meta.md](../../../company/knowledge/application/application-meta.md) | 公司级 SYS 元数据 |
 | [../../../agent/knowledge/naming-conventions.md](../../../agent/knowledge/naming-conventions.md) | ID 命名 SSOT |
 
-**索引**：`readme_index_table: false`；变更 ID 时同步 KNOWLEDGE-INDEX.md 与 narrative 章节（按需）。
+**索引**：`readme_index_table: false`；变更 ID 时同步 index.md 与 narrative 章节（按需）。

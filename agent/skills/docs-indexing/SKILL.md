@@ -1,21 +1,21 @@
 ---
 name: docs-indexing
 description: >
-  生成九章 INDEX_GUIDE.md，维护各 DOC_DIR 下 changelogs/INDEXING-LOG.md 主表（最新在上）。
+  生成九章索引指南（如仓库根 index.md 或各 DOC_DIR 下 index.md），维护各 DOC_DIR 下 changelogs/INDEXING-LOG.md 主表（最新在上）。
   触发：/docs-indexing、建/更索引、文档地图、Onboarding、口述「整理 INDEX」。
   分流：用户只要 docs-build/distill/extract/SDD 为主路径 → 对应技能，勿单跑本技能。
-  门禁：未完成 spec 与用户总确认（docs-indexing-gate: CONFIRMED）前禁止写 INDEX_GUIDE.md 与 */changelogs/INDEXING-LOG.md。
+  门禁：未完成 spec 与用户总确认（docs-indexing-gate: CONFIRMED）前禁止写索引指南（index.md / index.md）与 */changelogs/INDEXING-LOG.md。
 ---
 
 # docs-indexing（文档索引）
 
-判定路径 → 读 references/ → Qclose-1 → 会话 spec + 路径清单 → 写 INDEX_GUIDE / INDEXING-LOG。
+判定路径 → 读 references/ → Qclose-1 → 会话 spec + 路径清单 → 写索引指南 / INDEXING-LOG。
 
 ## 边界
 
 | 负责 | 不负责 |
 |------|--------|
-| 各文档根九章 INDEX_GUIDE、INDEXING-LOG、full/incremental、深度 1–3 | 实体与 KNOWLEDGE_INDEX（docs-build）；OKF（docs-okf）；SDD（sdx-*）；overview（distill/extract） |
+| 各文档根九章索引指南（index.md / index.md）、INDEXING-LOG、full/incremental、深度 1–3 | 实体与 KNOWLEDGE_INDEX（docs-build）；OKF（docs-okf）；SDD（sdx-*）；overview（distill/extract） |
 
 ## 最短路径
 
@@ -38,7 +38,7 @@ description: >
 ## 产出
 
 - Spec：`{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-docs-indexing.md`
-- 产物：`INDEX_GUIDE.md`、`INDEXING-LOG.md`
+- 产物：索引指南（如 `index.md` / `index.md`）、`INDEXING-LOG.md`
 
 ```bash
 agent/skills/docs-indexing/scripts/indexing.sh --mode <mode> --depth <depth>

@@ -6,7 +6,7 @@ title: product（产品视角）
 
 索引入口见 [index.md](index.md)。
 
-本目录描述产品功能、用户故事与需求规格，并通过 ID 与其他视角建立映射。本树承接产品实体登记与交互映射；元数据与实例索引见 [product-meta.md](product-meta.md)、[../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md)（§2）。
+本目录描述产品功能、用户故事与需求规格，并通过 ID 与其他视角建立映射。本树承接产品实体登记与交互映射；元数据与实例索引见 [product-meta.md](product-meta.md)、[../index.md](../index.md)（§2）。
 
 ---
 
@@ -20,7 +20,7 @@ title: product（产品视角）
 | L3 | 功能 | FT | 示例功能 | [PM-EXAMPLE/FT-EXAMPLE.md](PM-EXAMPLE/FT-EXAMPLE.md) |
 | L4 | 用例 | UC | 示例用例 | [PM-EXAMPLE/UC-EXAMPLE-001.md](PM-EXAMPLE/UC-EXAMPLE-001.md) |
 
-本目录仅保留**示例**，用于演示 PL/PM/FT/UC 的层级与字段形状。完整 ID 清单以 [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) §2 为准。
+本目录仅保留**示例**，用于演示 PL/PM/FT/UC 的层级与字段形状。完整 ID 清单以 [../index.md](../index.md) §2 为准。
 
 ---
 
@@ -28,7 +28,7 @@ title: product（产品视角）
 
 | 推荐入口 | 说明 |
 |---------|------|
-| 实体文件 `{ID}.md` + [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) §2 | **产品层级（PL/PM/FT/UC）唯一事实来源** |
+| 实体文件 `{ID}.md` + [../index.md](../index.md) §2 | **产品层级（PL/PM/FT/UC）唯一事实来源** |
 | [product-meta.md](product-meta.md) | 元模型与跨视角映射 |
 
 ---
@@ -40,7 +40,7 @@ title: product（产品视角）
 ```
 
 - **层级与 ID 模式**：[product-meta.md](product-meta.md) → §3 层定义
-- **层级内容**：实体文件 `{ID}.md`；枚举见 [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) §2
+- **层级内容**：实体文件 `{ID}.md`；枚举见 [../index.md](../index.md) §2
 
 ---
 
@@ -57,4 +57,4 @@ title: product（产品视角）
 - **产品 → 业务**：`relies_on_context_ids` → BC。
 - **产品 → 技术**：`invokes_api_ids` / `map_to_api_id` → API（manifest）。
 
-仓库根 Index Guide：[INDEX-GUIDE.md](../../../INDEX-GUIDE.md)；设计：[../../DESIGN.md](../../DESIGN.md)。
+仓库根 Index Guide：[index.md](../../../index.md)；设计：[../../DESIGN.md](../../DESIGN.md)。
