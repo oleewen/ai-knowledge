@@ -25,4 +25,4 @@ layer_scope: company
 
 ## 依据与证据
 
-data-governance.md（示例）
+chapters/data-governance.md（示例）

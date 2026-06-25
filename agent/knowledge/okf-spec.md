@@ -396,8 +396,8 @@ MAY：
 
 代表性文件：
 
-- company：`company/knowledge/product/product-overview.md`、`company/knowledge/overview/NAME-overview.md`
-- system：`system/knowledge/product/product-multi-platform.md`、`system/knowledge/overview/NAME-overview.md`
+- company：`company/knowledge/product/chapters/product-overview.md`、`company/knowledge/overview/NAME-overview.md`
+- system：`system/knowledge/product/chapters/product-multi-platform.md`、`system/knowledge/overview/NAME-overview.md`
 - application：`application/DESIGN.md`（治理叙事型设计摘录）
 
 ---

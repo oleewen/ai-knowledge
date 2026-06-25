@@ -4,21 +4,19 @@
 
 ## 子目录
 
-（无）
+* [chapters](chapters/README.md) - 数据架构章节目录。
+* [MDG-EXAMPLE](MDG-EXAMPLE.md) - 示例主数据域。
 
 ## 目录文件
 
-* [示例主数据域](MDG-EXAMPLE.md) - 仅用于演示公司级 MDG 数据结构。
-
-* [data-governance.md](data-governance.md)
 * [data-meta.md](data-meta.md)
-* [data-overview.md](data-overview.md)
-* [data-security-privacy.md](data-security-privacy.md)
-* [data-warehouse-lake.md](data-warehouse-lake.md)
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md)
+2. [data-meta.md](data-meta.md)
+3. [chapters/README.md](chapters/README.md)
+4. [MDG-EXAMPLE.md](MDG-EXAMPLE.md)
 
 ## 关联索引
 

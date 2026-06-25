@@ -4,22 +4,19 @@
 
 ## 子目录
 
-（无）
+* [chapters](chapters/README.md) - 技术架构章节目录。
+* [TPL-EXAMPLE](TPL-EXAMPLE.md) - 示例技术平台能力。
 
 ## 目录文件
 
-* [示例技术平台能力](TPL-EXAMPLE.md) - 仅用于演示公司级 TPL 数据结构（示例）。
-
-* [technical-dev-environment.md](technical-dev-environment.md)
-* [technical-devops.md](technical-devops.md)
-* [technical-infrastructure.md](technical-infrastructure.md)
 * [technical-meta.md](technical-meta.md)
-* [technical-overview.md](technical-overview.md)
-* [technical-security.md](technical-security.md)
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md)
+2. [technical-meta.md](technical-meta.md)
+3. [chapters/README.md](chapters/README.md)
+4. [TPL-EXAMPLE.md](TPL-EXAMPLE.md)
 
 ## 关联索引
 

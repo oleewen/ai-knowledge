@@ -45,7 +45,7 @@ title: 产品视角元数据（company/knowledge/product）
 | full_id | 规范 ID，如 `PL-BILLING-APPEAL` |
 | name | 中文名称 |
 | description | 实体描述 |
-| evidence_source | 证据来源（如 `product-architecture.md`） |
+| evidence_source | 证据来源（如 `chapters/product-architecture.md`） |
 
 ### PL 专属
 

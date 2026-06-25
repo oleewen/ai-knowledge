@@ -45,7 +45,7 @@ title: 数据视角元数据（company/knowledge/data）
 | full_id | 规范 ID，如 `MDG-CUSTOMER-MASTER` |
 | name | 中文名称 |
 | description | 实体描述 |
-| evidence_source | 证据来源（如 `data-governance.md`） |
+| evidence_source | 证据来源（如 `chapters/data-governance.md`） |
 
 ### MDG 专属
 

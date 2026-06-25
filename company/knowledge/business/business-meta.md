@@ -47,7 +47,7 @@ title: 业务视角元数据（company/knowledge/business）
 | full_id | 规范 ID，如 `BD-CHARGING-APPEAL` |
 | name | 中文名称 |
 | description | 实体描述 |
-| evidence_source | 证据来源（叙事文档或章节，如 `business-domain-division.md`） |
+| evidence_source | 证据来源（叙事文档或章节，如 `chapters/business-domain-division.md`） |
 
 ### BD 专属
 

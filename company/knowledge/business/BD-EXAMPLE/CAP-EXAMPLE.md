@@ -26,4 +26,4 @@ layer_scope: company
 
 ## 依据与证据
 
-business-capability.md（示例）
+chapters/business-capability.md（示例）

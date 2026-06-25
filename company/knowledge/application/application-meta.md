@@ -45,7 +45,7 @@ title: 应用视角元数据（company/knowledge/application）
 | full_id | 规范 ID，如 `SYS-BILLING-APPEAL` |
 | name | 中文名称 |
 | description | 实体描述 |
-| evidence_source | 证据来源（如 `application-overview.md`） |
+| evidence_source | 证据来源（如 `chapters/application-overview.md`） |
 
 ---
 

@@ -45,7 +45,7 @@ title: 技术视角元数据（company/knowledge/technical）
 | full_id | 规范 ID，如 `TPL-K8S-PLATFORM` |
 | name | 中文名称 |
 | description | 实体描述 |
-| evidence_source | 证据来源（如 `technical-overview.md`） |
+| evidence_source | 证据来源（如 `chapters/technical-overview.md`） |
 
 ### TPL 专属
 

@@ -4,21 +4,19 @@
 
 ## 子目录
 
-（无）
+* [chapters](chapters/README.md) - 产品架构章节目录。
+* [PL-EXAMPLE](PL-EXAMPLE.md) - 示例产品线。
 
 ## 目录文件
 
-* [示例产品线](PL-EXAMPLE.md) - 仅用于演示公司级 PL 数据结构。
-
-* [product-architecture.md](product-architecture.md)
 * [product-meta.md](product-meta.md)
-* [product-metrics.md](product-metrics.md)
-* [product-overview.md](product-overview.md)
-* [product-ux.md](product-ux.md)
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md)
+2. [product-meta.md](product-meta.md)
+3. [chapters/README.md](chapters/README.md)
+4. [PL-EXAMPLE.md](PL-EXAMPLE.md)
 
 ## 关联索引
 

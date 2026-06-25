@@ -4,23 +4,21 @@
 
 ## 子目录
 
+* [chapters](chapters/README.md) - 业务架构章节目录。
 * [BSD-EXAMPLE](BSD-EXAMPLE/README.md) - 仅用于演示业务视角数据结构（示例）。
 
 ## 目录文件
 
 * [示例业务域](BD-EXAMPLE.md) - 仅用于演示业务视角数据结构（示例）。
 
-* [business-capability-map.md](business-capability-map.md)
-* [business-domain-division.md](business-domain-division.md)
-* [business-glossary.md](business-glossary.md)
 * [business-meta.md](business-meta.md)
-* [business-overview.md](business-overview.md)
-* [business-processes.md](business-processes.md)
-* [business-rules-and-strategies.md](business-rules-and-strategies.md)
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md)
+2. [business-meta.md](business-meta.md)
+3. [chapters/README.md](chapters/README.md)
+4. [BD-EXAMPLE.md](BD-EXAMPLE.md)
 
 ## 关联索引
 

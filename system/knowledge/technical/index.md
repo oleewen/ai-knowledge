@@ -4,22 +4,21 @@
 
 ## 子目录
 
-* [MW](MW/README.md)
+* [chapters](chapters/README.md) - 技术架构章节目录。
+* [MW](MW/README.md) - 中间件绑定示例目录。
 
 ## 目录文件
 
 * [中间件域](TSD-EXAMPLE.md) - 系统级中间件与基础组件落地域（示例）。
 
-* [technical-ha-and-dr.md](technical-ha-and-dr.md)
-* [technical-infrastructure.md](technical-infrastructure.md)
 * [technical-meta.md](technical-meta.md)
-* [technical-middleware.md](technical-middleware.md)
-* [technical-overview.md](technical-overview.md)
-* [technical-performance-scalability.md](technical-performance-scalability.md)
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md)
+2. [technical-meta.md](technical-meta.md)
+3. [chapters/README.md](chapters/README.md)
+4. [TSD-EXAMPLE.md](TSD-EXAMPLE.md)
 
 ## 关联索引
 

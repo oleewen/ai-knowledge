@@ -26,4 +26,4 @@ layer_scope: system
 
 ## 依据与证据
 
-technical-middleware.md（示例）
+chapters/technical-middleware.md（示例）

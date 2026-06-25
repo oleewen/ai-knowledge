@@ -25,4 +25,4 @@ layer_scope: company
 
 ## 依据与证据
 
-product-architecture.md（示例）
+chapters/product-architecture.md（示例）

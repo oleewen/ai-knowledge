@@ -5,20 +5,18 @@
 ## 子目录
 
 * [BD-EXAMPLE](BD-EXAMPLE/README.md) - 仅用于演示公司级 BD 数据结构。
+* [chapters](chapters/README.md) - 业务架构叙事章节目录。
 
 ## 目录文件
 
-* [business-capability.md](business-capability.md)
-* [business-domain-division.md](business-domain-division.md)
 * [business-meta.md](business-meta.md)
-* [business-model.md](business-model.md)
-* [business-overview.md](business-overview.md)
-* [business-roles-and-organization.md](business-roles-and-organization.md)
-* [business-value-chain.md](business-value-chain.md)
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md)
+2. [business-meta.md](business-meta.md)
+3. [chapters/README.md](chapters/README.md)
+4. [BD-EXAMPLE/README.md](BD-EXAMPLE/README.md)
 
 ## 关联索引
 

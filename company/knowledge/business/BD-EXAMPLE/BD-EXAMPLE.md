@@ -27,4 +27,4 @@ layer_scope: company
 
 ## 依据与证据
 
-business-domain-division.md（示例）
+chapters/business-domain-division.md（示例）
