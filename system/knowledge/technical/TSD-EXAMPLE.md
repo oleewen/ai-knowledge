@@ -9,22 +9,21 @@ perspective: technical
 hierarchy: TSD
 parent_id: null
 layer_scope: system
-domain: middleware
-parent_tpl_id: TPL-EXAMPLE
 ---
-# Relations
+## 关系
 
 - children:
   - [MW-EXAMPLE](/knowledge/technical/MW/MW-EXAMPLE.md)
+- parent_tpl_id: [TPL-EXAMPLE](../../../company/knowledge/technical/TPL-EXAMPLE.md)
 
-# Cross-perspective
-
-- (none)
-
-# Details
+## 跨视角
 
 - (none)
 
-# Evidence
+## 详细说明
+
+- domain: middleware
+
+## 依据与证据
 
 technical-middleware.md（示例）

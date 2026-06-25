@@ -10,18 +10,18 @@ hierarchy: BR
 parent_id: PM-EXAMPLE
 layer_scope: system
 ---
-# Relations
+## 关系
 
 - parent: [PM-EXAMPLE](/knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 - 示例数据

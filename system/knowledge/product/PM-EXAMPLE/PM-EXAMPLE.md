@@ -10,18 +10,22 @@ hierarchy: PM
 parent_id: PL-EXAMPLE
 layer_scope: system
 ---
-# Relations
+## 关系
 
 - parent: [PL-EXAMPLE](/knowledge/product/PL-EXAMPLE.md)
+- children:
+  - [BP-EXAMPLE](/knowledge/product/PM-EXAMPLE/BP-EXAMPLE.md)
+  - [BR-EXAMPLE](/knowledge/product/PM-EXAMPLE/BR-EXAMPLE.md)
+  - [FT-EXAMPLE](/knowledge/product/PM-EXAMPLE/FT-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据

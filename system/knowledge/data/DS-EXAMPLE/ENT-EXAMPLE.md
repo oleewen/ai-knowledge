@@ -10,18 +10,18 @@ hierarchy: ENT
 parent_id: DS-EXAMPLE
 layer_scope: system
 ---
-# Relations
+## 关系
 
 - parent: [DS-EXAMPLE](/knowledge/data/DS-EXAMPLE/DS-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - maps_to_aggregate_id: [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据

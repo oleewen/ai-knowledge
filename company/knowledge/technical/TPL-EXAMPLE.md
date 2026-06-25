@@ -8,22 +8,21 @@ full_id: TPL-EXAMPLE
 perspective: technical
 hierarchy: TPL
 parent_id: null
-domain: 云基础设施
 layer_scope: company
-definition_scope: local
 ---
-# Relations
+## 关系
 
 - (none)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
-- (none)
+- domain: 云基础设施
+- definition_scope: local（本层主定义）
 
-# Evidence
+## 依据与证据
 
 technical-overview.md（示例）

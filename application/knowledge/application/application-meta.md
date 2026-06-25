@@ -4,7 +4,7 @@ title: 应用视角元数据（application/knowledge/application）
 ---
 # 应用视角元数据（application/knowledge/application）
 
-应用侧实现版图（SYS→APP→MS→API）实体登记与接口实现元数据。实例索引见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（§3，扫描生成；per-entity `{ID}.md` 为 SSOT）。
+应用侧实现版图（SYS→APP→MS→API）实体登记与接口实现元数据。实例索引见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（§3，扫描生成；实体文件 `{ID}.md` 为 SSOT）。
 
 ---
 
@@ -16,7 +16,7 @@ title: 应用视角元数据（application/knowledge/application）
 | 视角 | application |
 | 层级范围 | application |
 | 说明 | 实现版图；公司级 SYS 在 `company/knowledge/application/` 首次定义，系统层自 APP 起首次定义，本层重点登记 API 与应用实现映射（示例含 SYS/APP/MS/API）。 |
-| entities_shape | per-entity `{ID}.md`（OKF concept）；索引见 KNOWLEDGE_INDEX §3 |
+| entities_shape | 实体文件 `{ID}.md`（OKF 概念实体）；索引见 KNOWLEDGE_INDEX §3 |
 
 ---
 

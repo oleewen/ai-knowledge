@@ -10,20 +10,20 @@ hierarchy: MS
 parent_id: APP-EXAMPLE
 layer_scope: system
 ---
-# Relations
+## 关系
 
 - parent: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - cross_references:
   - [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md)
   - [PM-EXAMPLE](/knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据

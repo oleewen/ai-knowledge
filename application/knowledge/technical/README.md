@@ -1,8 +1,8 @@
 ---
 type: Documentation
-title: technical — 技术视角
+title: technical（技术视角）
 ---
-# technical — 技术视角
+# technical（技术视角）
 
 本目录描述中间件绑定、关键运行时组件，并通过 ID 与其他视角建立映射。公司级 **TPL-***、系统级 **TSD-*** 在对应层目录首次定义；本层主定义并登记 **MW-*** 与 **CMP-***。元数据与实例索引见 [technical-meta.md](technical-meta.md)、[../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（§5）。
 
@@ -21,11 +21,11 @@ title: technical — 技术视角
 ## 层级结构
 
 ```
-中间件绑定 (MW) → 组件 (CMP)   （per-entity `{ID}.md` 为 SSOT；扫描索引见 KNOWLEDGE_INDEX §5）
+中间件绑定 (MW) → 组件 (CMP)   （实体文件 `{ID}.md` 为 SSOT；扫描索引见 KNOWLEDGE_INDEX §5）
 ```
 
 - **字段模板**：[technical-meta.md](technical-meta.md) → §4 必填字段
-- **层级内容**：per-entity `{ID}.md`；枚举见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) §5
+- **层级内容**：实体文件 `{ID}.md`；枚举见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) §5
 
 **边界**：MW 登记基础设施绑定（数据源、缓存、MQ Topic/集群等）；MS/API 仍登记业务入口宿主类，不迁入本视角。
 

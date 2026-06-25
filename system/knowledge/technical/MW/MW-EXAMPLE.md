@@ -8,23 +8,21 @@ full_id: MW-EXAMPLE
 perspective: technical
 hierarchy: MW
 parent_id: null
-parent_tsd_id: TSD-EXAMPLE
-binding_type: kafka
-config_key: example.kafka.topic
 layer_scope: system
 ---
-# Relations
+## 关系
 
 - parent_tsd_id: [TSD-EXAMPLE](/knowledge/technical/TSD-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - bound_app_id: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
 
-# Details
+## 详细说明
 
-- (none)
+- binding_type: kafka
+- config_key: example.kafka.topic
 
-# Evidence
+## 依据与证据
 
 technical-middleware.md（示例）

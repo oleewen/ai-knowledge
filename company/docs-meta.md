@@ -13,6 +13,7 @@ role:
   kind: "documentation_root"
   ssot_subdirectory: "knowledge/"
   # 治理与命名 SSOT 见 agent/knowledge/knowledge-governance.md
+  # 文件分型与 concept 结构 SSOT 见 agent/knowledge/okf-spec.md
 
 child_directories:
   knowledge:
@@ -44,7 +45,7 @@ inputs:
 outputs:
   primary_artifact:
     pattern: "README.md, INDEX_GUIDE.md, DESIGN.md, knowledge/**/*"
-    description: "根级导航与设计 + knowledge/ 公司层 per-entity OKF concept"
+    description: "根级导航与设计 + knowledge/ 公司层 OKF 概念实体"
 
 naming_conventions:
   directory_index:
@@ -66,4 +67,5 @@ references:
   - path: "./INDEX_GUIDE.md"
   - path: "./DESIGN.md"
   - path: "../agent/knowledge/knowledge-governance.md"
+  - path: "../agent/knowledge/okf-spec.md"
 ```

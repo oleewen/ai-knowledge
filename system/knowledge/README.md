@@ -8,8 +8,10 @@ title: 系统知识库 — 架构文档
 
 本目录为 **系统知识库** 侧五视角架构入口；体例见各视角 README（二级导语 + 三级小节）。
 
+> **共享规范 SSOT**：概念实体、索引入口、叙事与元数据的分型规则统一见 [../../agent/knowledge/okf-spec.md](../../agent/knowledge/okf-spec.md)。
+
 | 文件 | 视角 | 概述 |
-|------|------|------|
+| ------ | ------ | ------ |
 | [business/README.md](business/README.md) | 业务架构 | 本系统业务背景、域划分、流程、能力地图与术语，支撑业务决策与跨团队对齐。 |
 | [product/README.md](product/README.md) | 产品架构 | 本产品定位、功能结构与用户旅程，衔接业务目标与系统交付。 |
 | [application/README.md](application/README.md) | 应用架构 | 本系统边界、服务与领域模型、集成与接口。 |

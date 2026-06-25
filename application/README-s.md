@@ -1,11 +1,11 @@
 ---
 type: Documentation
-title: application — 应用知识库（mode=s）
+title: application（应用知识库，mode=s）
 ---
-# application — 应用知识库（mode=s）
+# application（应用知识库，mode=s）
 
 `application/` 维护应用侧稳定事实、实现登记与阶段交付物，是全仓库的重要知识中枢。  
-本文件面向知识库安装 standalone（模式）（`mode=s`）阅读与维护场景，回答「在 `application/` 里按什么顺序读、到哪里写」；九章机器索引与 **中央知识库挂载建联登记**见 [INDEX_GUIDE.md](INDEX_GUIDE.md)。
+本文件面向知识库安装 standalone（独立安装模式）（`mode=s`）阅读与维护场景，回答「在 `application/` 里按什么顺序读、到哪里写」；九章机器索引与 **中央知识库挂载建联登记**见 [INDEX_GUIDE.md](INDEX_GUIDE.md)。
 
 ## 推荐阅读路径
 

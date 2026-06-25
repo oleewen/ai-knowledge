@@ -8,23 +8,21 @@ full_id: CAP-EXAMPLE-L1
 perspective: business
 hierarchy: CAP
 parent_id: null
-level: L1
-maps_to_bd_id: BD-EXAMPLE
 layer_scope: company
-definition_scope: local
 ---
-# Relations
+## 关系
 
 - maps_to_bd_id: [BD-EXAMPLE](/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
-- (none)
+- level: L1（一级能力）
+- definition_scope: local（本层主定义）
 
-# Evidence
+## 依据与证据
 
 business-capability.md（示例）

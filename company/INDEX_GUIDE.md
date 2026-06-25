@@ -9,7 +9,7 @@ title: company 索引指南（INDEX_GUIDE）
 
 ---
 
-## 一、项目概览（Project Overview）
+## 一、项目概览
 
 ### 1.1 速查表
 
@@ -19,7 +19,7 @@ title: company 索引指南（INDEX_GUIDE）
 | 设计契约 | [DESIGN.md](DESIGN.md) | 目录边界、公司层 SSOT、同步闭环 |
 | 架构入口 | [knowledge/README.md](knowledge/README.md) | 五视角索引 |
 | OKF 根索引 | [index.md](index.md) | `okf_version: "0.1"` |
-| 目录元数据 | [docs-meta.md](docs-meta.md) | Directory Meta |
+| 目录元数据 | [docs-meta.md](docs-meta.md) | 目录元数据与导航约束 |
 | 联邦建联 | [knowledge-links.yaml](knowledge-links.yaml) | 系统建联登记 |
 | 运维日志 | [changelogs/README.md](changelogs/README.md) | CHANGE-LOG、INDEXING-LOG |
 | 仓库根全索引 | [../INDEX_GUIDE.md](../INDEX_GUIDE.md) | 中央库根地图 |
@@ -34,7 +34,7 @@ title: company 索引指南（INDEX_GUIDE）
 
 ---
 
-## 二、架构视图（Architecture View）
+## 二、架构视图
 
 ### 2.1 模块结构
 
@@ -55,7 +55,7 @@ company/
 
 ---
 
-## 三、接口清单（Interface Catalog）
+## 三、接口清单
 
 | 小节 | 状态 | 说明 |
 |------|------|------|
@@ -63,7 +63,7 @@ company/
 
 ---
 
-## 四、模块依赖（Module Dependencies）
+## 四、模块依赖
 
 | 上游 | 下游 | 关系 |
 |------|------|------|
@@ -72,7 +72,7 @@ company/
 
 ---
 
-## 五、详细索引（Detailed Index）
+## 五、详细索引
 
 | 实体 | 路径 |
 |------|------|
@@ -88,19 +88,19 @@ company/
 
 ---
 
-## 六、API / 字典边界（Boundaries）
+## 六、API / 字典边界
 
 overview 缓冲区：[knowledge/overview/NAME-overview.md](knowledge/overview/NAME-overview.md)
 
 ---
 
-## 七、变更与运维（Operations）
+## 七、变更与运维
 
 [changelogs/README.md](changelogs/README.md)
 
 ---
 
-## 八、技能与脚本（Skills & Scripts）
+## 八、技能与脚本
 
 | 项 | 路径/命令 |
 |----|----------|
@@ -111,7 +111,7 @@ overview 缓冲区：[knowledge/overview/NAME-overview.md](knowledge/overview/NA
 
 ---
 
-## 九、附录（Appendix）
+## 九、附录
 
 [viz.html](viz.html)
 

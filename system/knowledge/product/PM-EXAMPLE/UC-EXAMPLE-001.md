@@ -9,19 +9,20 @@ perspective: product
 hierarchy: UC
 parent_id: FT-EXAMPLE
 layer_scope: system
+
 ---
-# Relations
+## 关系
 
 - parent: [FT-EXAMPLE](/knowledge/product/PM-EXAMPLE/FT-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据

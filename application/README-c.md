@@ -1,8 +1,8 @@
 ---
 type: Documentation
-title: application — 应用知识库（mode=c）
+title: application（应用知识库，mode=c）
 ---
-# application — 应用知识库（mode=c）
+# application（应用知识库，mode=c）
 
 `application/` 维护应用侧稳定事实、实现登记与治理线索，是全仓库的重要知识中枢。  
 本文件面向中央知识库挂载建联（`mode=c`）阅读与维护场景，聚焦「按什么顺序读、到哪里写」；九章机器索引与 **中央知识库挂载建联登记**见 [INDEX_GUIDE.md](INDEX_GUIDE.md)。

@@ -25,7 +25,7 @@ title: 应用知识文档库 — 设计方案摘录
 | **SSOT** | 实体只在一处定义；他处仅 **ID 引用**                                                               |
 | **联邦治理** | 系统库管边界与索引；应用库管实现细节并 **上行对齐**                                                         |
 | **闭环**   | knowledge ← 归档回写；阶段上 solutions → analysis → requirements；规约落在需求包内 specs/ 或 knowledge/application/ |
-| **五视角**  | 业务 / 产品 / 应用 / 数据 / 技术；关联写在各视角 meta 与 **per-entity `{ID}.md`**（OKF concept），**不**维护独立映射矩阵文件；legacy `*-entities.md` 已废弃                                       |
+| **五视角**  | 业务 / 产品 / 应用 / 数据 / 技术；关联写在各视角 meta 与 **实体文件 `{ID}.md`**（OKF 概念实体），**不**维护独立映射矩阵文件；legacy `*-entities.md` 已废弃                                       |
 | **与系统/公司层视角** | 五视角在各层同构；公司/系统/应用按 [naming-conventions.md](../agent/knowledge/naming-conventions.md) 与 §2.2.1 分层首次定义实体 |
 
 
@@ -34,14 +34,14 @@ title: 应用知识文档库 — 设计方案摘录
 - ***应用知识库根目录**：使用 [docs-meta.md](docs-meta.md) 概括 `application/` 树与子目录 meta 指针
   - `knowledge/knowledge-meta.md` 描述知识树；
   - 治理与命名 SSOT 见 [agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md)；
-  - **`solutions/`、`analysis/`、`requirements/`、`changelogs/`** 阶段约定均收敛于各目录 **`README.md`**。`knowledge/` 五视角采用 `{perspective}-meta.md` + **per-entity `{ID}.md`**（OKF SSOT）；`KNOWLEDGE_INDEX.md` 由扫描生成。
+- **`solutions/`、`analysis/`、`requirements/`、`changelogs/`** 阶段约定均收敛于各目录 **`README.md`**。`knowledge/` 五视角采用 `{perspective}-meta.md` + **实体文件 `{ID}.md`**（OKF SSOT）；`KNOWLEDGE_INDEX.md` 由扫描生成。
 - 细则见 [agent/knowledge/naming-conventions.md](../agent/knowledge/naming-conventions.md)。
 
 **协同（目标态）**：应用仓维护 `/docs` 与 `manifest.md`；系统侧可抓取 manifest 更新 `knowledge` 并做一致性检查。
 
-### OKF per-entity SSOT
+### OKF 实体文件（per-entity）SSOT
 
-`application/` 已对齐 [Open Knowledge Format v0.1](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md)：**每个知识实体**为一 concept 文件（`{ID}.md` + YAML frontmatter + bundle-relative 跨链）；各级 `index.md` 供 RAG 渐进下钻；`KNOWLEDGE_INDEX.md` 由工具扫描生成而非手写聚合表。路径与 type 见 [agent/knowledge/naming-conventions.md](../agent/knowledge/naming-conventions.md) §OKF；工具链见 `/docs-okf`。
+`application/` 已对齐 [Open Knowledge Format v0.1](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md)：**每个知识实体**为一概念实体文件（`{ID}.md` + YAML frontmatter + bundle-relative 跨链）；各级 `index.md` 供 RAG 渐进下钻；`KNOWLEDGE_INDEX.md` 由工具扫描生成而非手写聚合表。路径与 type 见 [agent/knowledge/naming-conventions.md](../agent/knowledge/naming-conventions.md) §OKF；工具链见 `/docs-okf`。
 
 ---
 
@@ -78,28 +78,28 @@ title: 应用知识文档库 — 设计方案摘录
 > 该视角回答：用户是谁、功能如何组织、旅程与场景。
 
 - **层级**：PL → PM → FT → UC  
-- **约定**：`product-meta.md` 在根目录；`{PL-ID}/{PM-ID}/` 为锚点。实例为 per-entity `{ID}.md`（OKF concept）；索引见 [KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md) §2。FT 含 `invokes_api_ids`、`realizes_use_case_ids` 等；UC 含 `map_to_api_id` 等。
+- **约定**：`product-meta.md` 在根目录；`{PL-ID}/{PM-ID}/` 为锚点。实例为实体文件 `{ID}.md`（OKF 概念实体）；索引见 [KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md) §2。FT 含 `invokes_api_ids`、`realizes_use_case_ids` 等；UC 含 `map_to_api_id` 等。
 
 #### 应用 (application)
 
 > 该视角回答：系统如何拆分、服务如何协作、领域与集成边界。
 
 - **层级**：SYS → APP → MS → API  
-- **约定**：`application-meta.md` 在根目录；`{SYS-ID}/{APP目录}/` 为锚点。APP/MS/API 等实体以 per-entity `{ID}.md` frontmatter 登记 `repo_url`、`docs_manifest_path`、`service_ids` 等；索引见 [KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md) §3。
+- **约定**：`application-meta.md` 在根目录；`{SYS-ID}/{APP目录}/` 为锚点。APP/MS/API 等实体以实体文件 `{ID}.md` frontmatter 登记 `repo_url`、`docs_manifest_path`、`service_ids` 等；索引见 [KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md) §3。
 
 #### 数据 (data)
 
 > 该视角回答：数据如何建模、存储、流转与治理。
 
 - **层级**：DS → ENT  
-- **约定**：`data-meta.md` 在根目录；`{DS-ID}/` 为存储锚点。实例为 per-entity `{ID}.md`；索引见 [KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md) §4。ENT 含 `maps_to_aggregate_id`、敏感级别等。
+- **约定**：`data-meta.md` 在根目录；`{DS-ID}/` 为存储锚点。实例为实体文件 `{ID}.md`；索引见 [KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md) §4。ENT 含 `maps_to_aggregate_id`、敏感级别等。
 
 #### 技术 (technical)
 
 > 该视角回答：如何运行、扩展、观测与交付。
 
 - **层级**：MW → CMP（公司 **TPL**、系统 **TSD** 在对应层 `technical/` 登记）  
-- **约定**：`technical-meta.md` 在 `knowledge/technical/` 根目录。中间件绑定与关键组件见 per-entity `{ID}.md`；索引见 [KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md) §5。MW 含 `parent_tsd_id`、`bound_app_id`；CMP 含 `maven_coordinates`、`parent_mw_id` 或 `parent_app_id`。
+- **约定**：`technical-meta.md` 在 `knowledge/technical/` 根目录。中间件绑定与关键组件见实体文件 `{ID}.md`；索引见 [KNOWLEDGE_INDEX.md](knowledge/KNOWLEDGE_INDEX.md) §5。MW 含 `parent_tsd_id`、`bound_app_id`；CMP 含 `maven_coordinates`、`parent_mw_id` 或 `parent_app_id`。
 
 > 系统层五视角关注域见 [system/DESIGN.md](../system/DESIGN.md) §五架构视角；公司层五视角见 [company/DESIGN.md](../company/DESIGN.md) §公司层五视角聚焦范围；跨层实体首次定义见 §2.2.1。
 

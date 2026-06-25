@@ -4,7 +4,7 @@ title: 技术视角元数据（application/knowledge/technical）
 ---
 # 技术视角元数据（application/knowledge/technical）
 
-应用层技术版图（MW→CMP）视角元数据 SSOT。实例索引见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（§5，扫描生成；per-entity `{ID}.md` 为 SSOT）。
+应用层技术版图（MW→CMP）视角元数据 SSOT。实例索引见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（§5，扫描生成；实体文件 `{ID}.md` 为 SSOT）。
 
 ---
 
@@ -16,7 +16,7 @@ title: 技术视角元数据（application/knowledge/technical）
 | 视角 | technical |
 | 层级范围 | application |
 | 说明 | 中间件绑定与关键组件；公司级 TPL、系统级 TSD 在对应层首次定义，本层登记 MW/CMP。 |
-| entities_shape | per-entity `{ID}.md`（OKF concept）；索引见 KNOWLEDGE_INDEX §5 |
+| entities_shape | 实体文件 `{ID}.md`（OKF 概念实体）；索引见 KNOWLEDGE_INDEX §5 |
 
 ---
 

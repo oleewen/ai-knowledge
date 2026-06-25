@@ -10,18 +10,20 @@ hierarchy: FT
 parent_id: PM-EXAMPLE
 layer_scope: system
 ---
-# Relations
+## 关系
 
 - parent: [PM-EXAMPLE](/knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md)
+- children:
+  - [UC-EXAMPLE-001](/knowledge/product/PM-EXAMPLE/UC-EXAMPLE-001.md)
 
-# Cross-perspective
-
-- (none)
-
-# Details
+## 跨视角
 
 - (none)
 
-# Evidence
+## 详细说明
+
+- (none)
+
+## 依据与证据
 
 示例数据

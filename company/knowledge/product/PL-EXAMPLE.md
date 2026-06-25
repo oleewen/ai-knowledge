@@ -8,22 +8,21 @@ full_id: PL-EXAMPLE
 perspective: product
 hierarchy: PL
 parent_id: null
-target_users: [内部运营, 业务方]
 layer_scope: company
-definition_scope: local
 ---
-# Relations
+## 关系
 
 - (none)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
-- (none)
+- target_users: [内部运营, 业务方]
+- definition_scope: local（本层主定义）
 
-# Evidence
+## 依据与证据
 
 product-architecture.md（示例）

@@ -47,11 +47,11 @@ inputs:
 outputs:
   primary_artifact:
     pattern: "README.md, INDEX_GUIDE.md, DESIGN.md, CONTRIBUTING.md, knowledge/**/*"
-    description: "child_files（根级）+ knowledge/ 树（{perspective}-meta.md + per-entity {ID}.md，OKF SSOT）"
+    description: "child_files（根级）+ knowledge/ 树（{perspective}-meta.md + 实体文件 {ID}.md，OKF SSOT）"
 
 naming_conventions:
   directory_index:
-    description: "knowledge/ 根见 knowledge-meta.md；五视角见 {perspective}-meta.md + per-entity {ID}.md"
+    description: "knowledge/ 根见 knowledge-meta.md；五视角见 {perspective}-meta.md + 实体文件 {ID}.md"
     reference: "../agent/knowledge/naming-conventions.md"
 
 integration:

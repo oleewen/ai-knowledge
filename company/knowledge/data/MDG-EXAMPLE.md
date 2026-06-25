@@ -8,22 +8,21 @@ full_id: MDG-EXAMPLE
 perspective: data
 hierarchy: MDG
 parent_id: null
-governance_owner: 示例：数据治理委员会
 layer_scope: company
-definition_scope: local
 ---
-# Relations
+## 关系
 
 - (none)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
-- (none)
+- governance_owner: 示例：数据治理委员会
+- definition_scope: local（本层主定义）
 
-# Evidence
+## 依据与证据
 
 data-governance.md（示例）

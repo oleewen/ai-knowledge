@@ -4,7 +4,7 @@ title: 数据视角元数据（application/knowledge/data）
 ---
 # 数据视角元数据（application/knowledge/data）
 
-应用侧数据版图（DS→ENT）实体登记与物理落地元数据。实例索引见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（§4，扫描生成；per-entity `{ID}.md` 为 SSOT）。
+应用侧数据版图（DS→ENT）实体登记与物理落地元数据。实例索引见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（§4，扫描生成；实体文件 `{ID}.md` 为 SSOT）。
 
 ---
 
@@ -16,7 +16,7 @@ title: 数据视角元数据（application/knowledge/data）
 | 视角 | data |
 | 层级范围 | application |
 | 说明 | 数据存储与实体；公司级 MDG 在 `company/knowledge/data/` 首次定义，系统层自 DS/ENT 起首次定义，本层承接物理表锚点与应用归属信息。 |
-| entities_shape | per-entity `{ID}.md`（OKF concept）；索引见 KNOWLEDGE_INDEX §4 |
+| entities_shape | 实体文件 `{ID}.md`（OKF 概念实体）；索引见 KNOWLEDGE_INDEX §4 |
 
 ---
 

@@ -7,10 +7,12 @@ title: "系统知识库（顶层 `system/`）"
 
 本目录为 **目标态下的「系统知识库」语义**：组织级视图、架构文档与 **`application-{name}/`** 联邦槽位（应用镜像经 [`/docs-pull`](../agent/skills/docs-pull/SKILL.md) 同步）。
 
+> **共享规范 SSOT**：知识文件分型与 OKF 概念实体结构统一遵循 [../agent/knowledge/okf-spec.md](../agent/knowledge/okf-spec.md)。
+
 ## 子目录
 
 | 路径 | 说明 |
-|------|------|
+| ------ | ------ |
 | [DESIGN.md](DESIGN.md) | 设计边界、SSOT 继承矩阵、同步闭环与 SDD 阶段链 |
 | [INDEX_GUIDE.md](INDEX_GUIDE.md) | Agent 九章机器索引（本 `system/` 文档根） |
 | [docs-meta.md](docs-meta.md) | 目录元数据与 SSOT 指针 |

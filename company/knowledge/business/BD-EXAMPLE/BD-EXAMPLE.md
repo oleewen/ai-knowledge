@@ -8,24 +8,23 @@ full_id: BD-EXAMPLE
 perspective: business
 hierarchy: BD
 parent_id: null
-strategic_classification: core_domain
 layer_scope: company
-definition_scope: local
 ---
-# Relations
+## 关系
 
 - children:
   - [CAP-EXAMPLE-L1](/knowledge/business/BD-EXAMPLE/CAP-EXAMPLE-L1.md)
   - [CAP-EXAMPLE](/knowledge/business/BD-EXAMPLE/CAP-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
-- (none)
+- strategic_classification: core_domain（战略分类枚举值保留英文）
+- definition_scope: local（本层主定义）
 
-# Evidence
+## 依据与证据
 
 business-domain-division.md（示例）

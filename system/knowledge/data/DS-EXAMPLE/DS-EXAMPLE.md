@@ -8,21 +8,20 @@ full_id: DS-EXAMPLE
 perspective: data
 hierarchy: DS
 parent_id: MDG-EXAMPLE
-config_key: example_config_key
 layer_scope: system
 ---
-# Relations
+## 关系
 
 - parent: [MDG-EXAMPLE](/knowledge/data/MDG-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - owned_by_app_id: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
 
-# Details
+## 详细说明
 
-- (none)
+- config_key: example_config_key
 
-# Evidence
+## 依据与证据
 
 示例数据

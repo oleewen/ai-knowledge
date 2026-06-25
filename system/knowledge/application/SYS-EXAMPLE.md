@@ -8,26 +8,22 @@ full_id: SYS-EXAMPLE
 perspective: application
 hierarchy: SYS
 parent_id: null
-definition_scope: reference
 layer_scope: system
 ---
-# SSOT
-
-上游主定义：`company/knowledge/application/SYS-EXAMPLE.md`（公司层 OKF SSOT）。
-
-# Relations
+## 关系
 
 - children:
   - [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
-- (none)
+- 上游主定义：`company/knowledge/application/SYS-EXAMPLE.md`（公司层 OKF SSOT）。
+- definition_scope: reference
 
-# Evidence
+## 依据与证据
 
 示例数据

@@ -1,8 +1,8 @@
 ---
 type: Documentation
-title: application — 应用视角
+title: application（应用视角）
 ---
-# application — 应用视角
+# application（应用视角）
 
 本目录描述本应用的物理实现、部署架构与服务接口；系统层 `APP/MS` 在此承接实例登记与实现映射，应用层 `API` 在此主定义。应用注册与索引见 [application-meta.md](application-meta.md) 与 **[../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)**（§3）。
 
@@ -27,11 +27,11 @@ title: application — 应用视角
 ## 层级结构
 
 ```
-系统 (SYS) → 应用 (APP) → 微服务 (MS) → API   （per-entity `{ID}.md` 为 SSOT；扫描索引见 KNOWLEDGE_INDEX §3）
+系统 (SYS) → 应用 (APP) → 微服务 (MS) → API   （实体文件 `{ID}.md` 为 SSOT；扫描索引见 KNOWLEDGE_INDEX §3）
 ```
 
 - **字段模板**：[application-meta.md](application-meta.md) → §4 必填字段
-- **层级内容**：per-entity `{ID}.md`；枚举见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) §3
+- **层级内容**：实体文件 `{ID}.md`；枚举见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) §3
 
 ---
 

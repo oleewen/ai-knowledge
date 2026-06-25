@@ -1,8 +1,8 @@
 ---
 type: Documentation
-title: business — 业务视角
+title: business（业务视角）
 ---
-# business — 业务视角
+# business（业务视角）
 
 本目录描述业务版图与领域规则（DDD），不依赖具体技术实现。本树承接业务实体登记与实现映射；元数据与实例索引见 [business-meta.md](business-meta.md)、[../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（§1）。
 
@@ -22,7 +22,7 @@ title: business — 业务视角
 | 聚合    | `AGG` | Markdown 实体表 | BC 下多个聚合，每个含业务规则    |
 | 能力    | `AB`  | Markdown 实体表 | AGG 下多个能力（含 API 列表） |
 
-**关键设计决策**：各级实体以 per-entity `{ID}.md` 为 SSOT；全库扫描索引见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（§1）。
+**关键设计决策**：各级实体以实体文件 `{ID}.md` 为 SSOT；全库扫描索引见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（§1）。
 
 ---
 
@@ -33,7 +33,7 @@ business/
 ├── README.md              # 本文件（人类导航）
 ├── business-meta.md       # 视角元数据（元模型、层级约定、跨视角映射）
 ├── index.md               # OKF 浏览入口
-├── BD-EXAMPLE.md          # 示例业务域（per-entity SSOT）
+├── BD-EXAMPLE.md          # 示例业务域（实体文件 SSOT）
 └── BSD-EXAMPLE/           # 示例子域树（BC/AGG/AB）
 ```
 
@@ -71,7 +71,7 @@ business/
 - **AGG（聚合）**：`persisted_as_entity_ids`（→ data ENT）
 - **AB（能力）**：`apis`（含 API-ID，→ application API）
 
-（字段细则以 per-entity `{ID}.md` 为准；映射见 [business-meta.md](business-meta.md)。）
+（字段细则以实体文件 `{ID}.md` 为准；映射见 [business-meta.md](business-meta.md)。）
 
 ---
 

@@ -1,8 +1,8 @@
 ---
 type: Documentation
-title: knowledge — 应用侧知识主体
+title: knowledge（应用侧知识主体）
 ---
-# knowledge — 应用侧知识主体
+# knowledge（应用侧知识主体）
 
 **应用侧知识树**（联邦单元内 `knowledge/`）：承接 **业务 / 产品 / 应用 / 数据 / 技术** 五视角的实体登记、实现映射与应用层实体主定义；治理与命名 SSOT 见 [`../../agent/knowledge/knowledge-governance.md`](../../agent/knowledge/knowledge-governance.md)。与中央库 `application/knowledge/` 同构。中央库阶段文档（solutions、analysis）见 [`../solutions`](../solutions/README.md)、[`../analysis`](../analysis/README.md)；本应用 requirements 以本树及中央库为事实源；归档时可回写。
 
@@ -11,7 +11,7 @@ title: knowledge — 应用侧知识主体
 ## 五视角实体 ID 与登记
 
 - **链上实体 ID 登记表**：[KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md) — business / product / application / data / technical 五视角（**不含** `DIR-*` 联邦/阶段）。`application/` 入口见 [../README.md](../README.md)；仓库根 Index Guide 见 [INDEX_GUIDE.md](../../INDEX_GUIDE.md) **§1.2**。
-- **视角实例索引**：各视角 per-entity `{ID}.md`（OKF concept SSOT）；ID 登记表 [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md)（扫描生成）。
+- **视角实例索引**：各视角实体文件 `{ID}.md`（OKF 概念实体 SSOT）；ID 登记表 [KNOWLEDGE_INDEX.md](KNOWLEDGE_INDEX.md)（扫描生成）。
 - **机器契约**：[../../agent/skills/docs-build/SKILL.md](../../agent/skills/docs-build/SKILL.md)（ssot、symmetry、meta_read_order）；[knowledge-meta.md](knowledge-meta.md) 保留联邦/目录元数据。
 
 ## 子目录

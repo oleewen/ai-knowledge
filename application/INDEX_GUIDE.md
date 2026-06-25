@@ -9,7 +9,7 @@ title: application 索引指南（INDEX_GUIDE）
 
 ---
 
-## 一、项目概览（Project Overview）
+## 一、项目概览
 
 ### 1.1 速查表
 
@@ -35,7 +35,7 @@ title: application 索引指南（INDEX_GUIDE）
 
 ---
 
-## 二、架构视图（Architecture View）
+## 二、架构视图
 
 ### 2.1 模块结构
 
@@ -88,7 +88,7 @@ flowchart TB
 
 ---
 
-## 三、接口清单（Interface Catalog）
+## 三、接口清单
 
 | 小节 | 状态 | 说明 |
 |------|------|------|
@@ -96,7 +96,7 @@ flowchart TB
 
 ---
 
-## 四、领域模型（Domain Model）
+## 四、领域模型
 
 ### 4.1 业务术语
 
@@ -120,7 +120,7 @@ flowchart TB
 |------|------|
 | Slash SDD | `/sdx-solution` 等写入受管终稿前须用户与 spec 闸门 |
 | docs-build | 五视角实体提取与 `KNOWLEDGE_INDEX` 联动（见根索引 §九） |
-| docs-okf | legacy `*-entities.md` → OKF concept、`index.md`、validate-okf、viz（见 [../agent/skills/docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md)） |
+| docs-okf | legacy `*-entities.md` → OKF 概念实体、`index.md`、validate-okf、viz（见 [../agent/skills/docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md)） |
 
 ### 4.4 领域事件
 
@@ -128,11 +128,11 @@ flowchart TB
 
 ---
 
-## 五、业务逻辑（Business Logic）
+## 五、业务逻辑
 
 ### 5.1 状态流转（SDD 摘要）
 
-与根索引一致：方案 → 分析 → PRD → 设计 → 测试；**HARD-GATE** 见各 `sdx-*` Skill。
+与根索引一致：方案 → 分析 → PRD → 设计 → 测试；硬闸门（HARD-GATE）见各 `sdx-*` Skill。
 
 ### 5.2 核心流程（本目录）
 
@@ -155,13 +155,13 @@ flowchart TB
 
 ---
 
-## 六、数据映射（Data Mapping）
+## 六、数据映射
 
 ### 6.1 数据源
 
 | 数据源 | 类型 | 用途 |
 |--------|------|------|
-| `knowledge/**/{ID}.md` | Markdown（OKF concept + frontmatter） | 各视角 per-entity 实体（SSOT）；校验 `bash ../scripts/validate-okf.sh --bundle application` |
+| `knowledge/**/{ID}.md` | Markdown（OKF 概念实体 + frontmatter） | 各视角实体文件（SSOT）；校验 `bash ../scripts/validate-okf.sh --bundle application` |
 
 ### 6.2～6.4
 
@@ -169,7 +169,7 @@ flowchart TB
 
 ---
 
-## 七、配置中心（Configuration Hub）
+## 七、配置中心
 
 ### 7.1 配置项
 
@@ -188,7 +188,7 @@ flowchart TB
 
 ---
 
-## 八、索引边界（Index Boundary）
+## 八、索引边界
 
 ### 8.1 覆盖范围
 
@@ -209,7 +209,7 @@ flowchart TB
 
 ---
 
-## 九、扩展资源（Extended Resources）
+## 九、扩展资源
 
 ### 9.1 核心文档
 

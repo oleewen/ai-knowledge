@@ -10,7 +10,7 @@ from typing import Any, Dict, Iterator, List, Optional, Tuple
 OKF_RESERVED_NAMES = frozenset({"index.md", "log.md"})
 FRONTMATTER_RE = re.compile(r"\A---\r?\n(.*?)\r?\n---\r?\n?", re.DOTALL)
 
-# OKF v1 frontmatter 必填 10 字段（SSOT：system/knowledge/_schema/okf-spec.md §1）
+# OKF v1 frontmatter 必填 10 字段（SSOT：agent/knowledge/okf-spec.md §2）
 REQUIRED_FRONTMATTER_FIELDS = (
     "type",
     "title",

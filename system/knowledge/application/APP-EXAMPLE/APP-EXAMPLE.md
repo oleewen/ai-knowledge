@@ -8,25 +8,24 @@ full_id: APP-EXAMPLE
 perspective: application
 hierarchy: APP
 parent_id: SYS-EXAMPLE
-startup_class: ExampleApp
-maven_module: example-module
-repo_url: "git@example.com:org/example.git"
 layer_scope: system
 ---
-# Relations
+## 关系
 
 - parent: [SYS-EXAMPLE](/knowledge/application/SYS-EXAMPLE.md)
 - service_ids:
   - [MS-EXAMPLE](/knowledge/application/APP-EXAMPLE/MS-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
-- (none)
+- startup_class: ExampleApp
+- maven_module: example-module
+- repo_url: `git@example.com:org/example.git`
 
-# Evidence
+## 依据与证据
 
 示例数据

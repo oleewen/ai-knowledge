@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """OKF bundle 校验：frontmatter、full_id 唯一性、链接与 index 条目。
 
-OKF v1 SSOT：system/knowledge/_schema/okf-spec.md
+OKF v1 SSOT：agent/knowledge/okf-spec.md
 本脚本是 OKF 10 硬规则 R1~R10 的实现入口。
 """
 

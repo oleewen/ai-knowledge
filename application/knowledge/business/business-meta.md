@@ -4,7 +4,7 @@ title: 业务视角元数据（application/knowledge/business）
 ---
 # 业务视角元数据（application/knowledge/business）
 
-应用侧 DDD 业务版图（BD→BSD→BC→AGG→AB）实体登记与实现映射元数据。实例索引见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（§1，扫描生成；per-entity `{ID}.md` 为 SSOT）。
+应用侧 DDD 业务版图（BD→BSD→BC→AGG→AB）实体登记与实现映射元数据。实例索引见 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md)（§1，扫描生成；实体文件 `{ID}.md` 为 SSOT）。
 
 ---
 
@@ -16,7 +16,7 @@ title: 业务视角元数据（application/knowledge/business）
 | 视角 | business |
 | 层级范围 | application |
 | 说明 | DDD 业务版图；公司级 BD/CAP 在 `company/knowledge/business/` 首次定义，系统层自 BSD 起首次定义，本层承接实现映射与实例登记。 |
-| entities_shape | per-entity `{ID}.md`（OKF concept）；索引见 KNOWLEDGE_INDEX §1 |
+| entities_shape | 实体文件 `{ID}.md`（OKF 概念实体）；索引见 KNOWLEDGE_INDEX §1 |
 
 ---
 

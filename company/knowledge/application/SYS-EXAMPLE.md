@@ -9,20 +9,19 @@ perspective: application
 hierarchy: SYS
 parent_id: null
 layer_scope: company
-definition_scope: local
 ---
-# Relations
+## 关系
 
 - (none)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
-- (none)
+- definition_scope: local（本层主定义）
 
-# Evidence
+## 依据与证据
 
 application-overview.md（示例）

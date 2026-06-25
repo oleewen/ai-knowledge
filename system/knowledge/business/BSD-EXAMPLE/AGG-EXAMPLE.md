@@ -10,20 +10,20 @@ hierarchy: AGG
 parent_id: BC-EXAMPLE
 layer_scope: system
 ---
-# Relations
+## 关系
 
 - parent: [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md)
 - abilities:
   - [AB-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AB-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据

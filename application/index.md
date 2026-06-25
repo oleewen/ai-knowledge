@@ -2,7 +2,7 @@
 okf_version: "1.0"
 ---
 
-# application — OKF Bundle Index
+# application（OKF Bundle 索引）
 
 ## 根导航
 

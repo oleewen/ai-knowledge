@@ -9,7 +9,7 @@ title: system 索引指南（INDEX_GUIDE）
 
 ---
 
-## 一、项目概览（Project Overview）
+## 一、项目概览
 
 ### 1.1 速查表
 
@@ -35,7 +35,7 @@ title: system 索引指南（INDEX_GUIDE）
 
 ---
 
-## 二、架构视图（Architecture View）
+## 二、架构视图
 
 ### 2.1 模块结构
 
@@ -81,7 +81,7 @@ flowchart LR
 
 ---
 
-## 三、接口清单（Interface Catalog）
+## 三、接口清单
 
 | 小节 | 状态 | 说明 |
 |------|------|------|
@@ -89,7 +89,7 @@ flowchart LR
 
 ---
 
-## 四、领域模型（Domain Model）
+## 四、领域模型
 
 ### 4.1 业务术语
 
@@ -121,7 +121,7 @@ flowchart LR
 
 ---
 
-## 五、业务逻辑（Business Logic）
+## 五、业务逻辑
 
 ### 5.1 阅读顺序（摘自 README）
 
@@ -144,7 +144,7 @@ flowchart LR
 
 ---
 
-## 六、数据映射（Data Mapping）
+## 六、数据映射
 
 ### 6.1 数据源
 
@@ -160,7 +160,7 @@ flowchart LR
 
 ---
 
-## 七、配置中心（Configuration Hub）
+## 七、配置中心
 
 ### 7.1 配置项
 
@@ -178,7 +178,7 @@ flowchart LR
 
 ---
 
-## 八、索引边界（Index Boundary）
+## 八、索引边界
 
 ### 8.1 覆盖范围
 
@@ -198,7 +198,7 @@ flowchart LR
 
 ---
 
-## 九、扩展资源（Extended Resources）
+## 九、扩展资源
 
 ### 9.1 核心文档
 

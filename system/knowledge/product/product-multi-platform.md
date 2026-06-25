@@ -35,7 +35,7 @@ title: 多端策略
 
 ## 响应式策略
 
-<!-- **应写内容**：本系统断点、布局策略与组件行为；移动端优先或桌面优先的选择；与 [`product-ux.md`](../../../company/knowledge/product/product-ux.md#设计规范) Design System 栅格一致。 -->
+<!-- **应写内容**：本系统断点、布局策略与组件行为；移动端优先或桌面优先的选择；与 [`product-ux.md`](../../../company/knowledge/product/product-ux.md#设计规范) 设计系统（Design System）栅格一致。 -->
 
 <!-- **产出建议**：本系统断点与布局规范；关键模板截图或说明。 -->
 
