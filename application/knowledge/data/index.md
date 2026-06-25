@@ -6,4 +6,5 @@
 
 ## Subdirectories
 
+* [DS-EXAMPLE](DS-EXAMPLE/) - 示例数据源目录
 * [ENT-EXAMPLE](ENT-EXAMPLE/) - 示例实体

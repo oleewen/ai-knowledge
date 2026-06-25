@@ -1,3 +1,5 @@
 # REQUIREMENT-EXAMPLE
 
-*(empty)*
+## Files
+
+* [README.md](README.md) - 示例需求交付包说明

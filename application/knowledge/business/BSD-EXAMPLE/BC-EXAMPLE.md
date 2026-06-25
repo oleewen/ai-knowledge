@@ -10,20 +10,20 @@ hierarchy: BC
 parent_id: BSD-EXAMPLE
 layer_scope: application
 ---
-# Relations
+## 关系
 
 - parent: [BSD-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md)
 - aggregates:
   - [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - implemented_by_app_id: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE.md)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据

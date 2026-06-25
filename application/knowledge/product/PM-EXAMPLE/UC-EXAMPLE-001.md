@@ -10,18 +10,18 @@ hierarchy: UC
 parent_id: PM-EXAMPLE
 layer_scope: application
 ---
-# Relations
+## 关系
 
 - parent: [PM-EXAMPLE](/knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - map_to_api_id: [API-EXAMPLE-001](/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据

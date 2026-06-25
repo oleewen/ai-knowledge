@@ -10,18 +10,18 @@ hierarchy: PM
 parent_id: PL-EXAMPLE
 layer_scope: application
 ---
-# Relations
+## 关系
 
 - parent: [PL-EXAMPLE](/knowledge/product/PL-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据

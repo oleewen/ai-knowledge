@@ -8,21 +8,20 @@ full_id: CMP-EXAMPLE
 perspective: technical
 hierarchy: CMP
 parent_id: null
-maven_coordinates: "org.example:example-client:1.0.0"
 layer_scope: application
 ---
-# Relations
+## 关系
 
 - (none)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
-- (none)
+- maven_coordinates: org.example:example-client:1.0.0
 
-# Evidence
+## 依据与证据
 
 pom.xml（示例）

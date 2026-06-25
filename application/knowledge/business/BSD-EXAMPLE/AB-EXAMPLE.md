@@ -8,21 +8,20 @@ full_id: AB-EXAMPLE
 perspective: business
 hierarchy: AB
 parent_id: AGG-EXAMPLE
-capability: 示例能力描述
 layer_scope: application
 ---
-# Relations
+## 关系
 
 - parent: [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - apis: [API-EXAMPLE-001](/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md)
 
-# Details
+## 详细说明
 
-- (none)
+- capability: 示例能力描述
 
-# Evidence
+## 依据与证据
 
 示例数据

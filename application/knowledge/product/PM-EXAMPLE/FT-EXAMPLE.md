@@ -8,22 +8,21 @@ full_id: FT-EXAMPLE
 perspective: product
 hierarchy: FT
 parent_id: PM-EXAMPLE
-acceptance_criteria: 示例验收标准A; 示例验收标准B
 layer_scope: application
 ---
-# Relations
+## 关系
 
 - parent: [PM-EXAMPLE](/knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - invokes_api_ids: [API-EXAMPLE-001](/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md)
 - realizes_use_case_ids: [UC-EXAMPLE-001](/knowledge/product/PM-EXAMPLE/UC-EXAMPLE-001.md)
 
-# Details
+## 详细说明
 
-- (none)
+- acceptance_criteria: 示例验收标准A; 示例验收标准B
 
-# Evidence
+## 依据与证据
 
 示例数据

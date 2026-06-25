@@ -8,25 +8,24 @@ full_id: API-EXAMPLE-001
 perspective: application
 hierarchy: API
 parent_id: MS-EXAMPLE
-alias: ExampleService.create
-host_class: ExampleApiImpl
-host_module: example-module
-method_signature: create(ExampleReq req)
 layer_scope: application
 ---
-# Relations
+## 关系
 
 - parent: [MS-EXAMPLE](/knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md)
 - service_id: [MS-EXAMPLE](/knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
-- (none)
+- alias: ExampleService.create
+- host_class: ExampleApiImpl
+- host_module: example-module
+- method_signature: create(ExampleReq req)
 
-# Evidence
+## 依据与证据
 
 示例数据

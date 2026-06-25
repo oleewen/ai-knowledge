@@ -21,8 +21,8 @@ BUNDLE_LINK_RE = re.compile(r"\]\((/(?:knowledge|application)/[^)]+)\)")
 INDEX_LINK_RE = re.compile(r"(?<!!)\[[^\]]*\]\(([^)]+)\)")
 ALLOWED_ROOT_INDEX_KEYS = frozenset({"okf_version"})
 
-# 段标题提取正则（# 后跟可选空格 + 标题文本；与 example 一级标题保持一致）
-SECTION_HEADING_RE = re.compile(r"^#\s+(\S.*?)\s*$", re.MULTILINE)
+# 段标题提取正则（迁移期同时兼容旧英文 H1 与新中文 H2）
+SECTION_HEADING_RE = re.compile(r"^(#{1,2})\s+(\S.*?)\s*$", re.MULTILINE)
 
 # Cross-perspective 段内链接提取（与 BUNDLE_LINK_RE 不同：相对路径也校验）
 SECTION_LINK_RE = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
@@ -203,9 +203,13 @@ class Validator:
 
     def _check_sections(self, path: Path, relpath: str, body: str) -> None:
         """R4 4 段齐全 + R5 段标题拼写精确。"""
-        # 提取所有 ## 段标题
-        headings = SECTION_HEADING_RE.findall(body)
-        heading_set = set(headings)
+        matches = SECTION_HEADING_RE.findall(body)
+        normalized_headings = []
+        for _, title in matches:
+            normalized = okf_lib.normalize_section_heading(title)
+            if normalized:
+                normalized_headings.append(normalized)
+        heading_set = set(normalized_headings)
 
         # R4
         missing_sections = [s for s in okf_lib.REQUIRED_SECTIONS if s not in heading_set]
@@ -215,17 +219,15 @@ class Validator:
             )
 
         # R5 段标题拼写精确（识别常见拼写错误）
-        canonical = set(okf_lib.REQUIRED_SECTIONS)
-        for h in headings:
-            # 仅检查形如 Relations/Cross-perspective/Details/Evidence 的近形变体
-            lower = h.strip()
-            if lower in canonical:
+        canonical = {s.lower().replace(" ", "-") for s in okf_lib.ALL_SECTION_TITLES}
+        for _, title in matches:
+            if okf_lib.normalize_section_heading(title) is not None:
                 continue
             # 拼写相似度启发：完全小写、大小写混用、连字符替换为空格等
-            normalized = lower.lower().replace(" ", "-")
-            if normalized in {c.lower() for c in canonical} and lower not in canonical:
+            normalized = title.strip().lower().replace(" ", "-")
+            if normalized in canonical:
                 self.error(
-                    f"R5 段标题拼写错误: {h!r} 应为 {normalized!r} 或其一: {relpath}"
+                    f"R5 段标题拼写错误: {title!r}: {relpath}"
                 )
 
     def _check_layer_scope(self, path: Path, relpath: str, meta: Dict) -> None:

@@ -8,31 +8,27 @@ full_id: MS-EXAMPLE
 perspective: application
 hierarchy: MS
 parent_id: null
-host_class: ExampleApiImpl
-host_module: example-module
-protocol: HTTP
-definition_scope: reference
 layer_scope: application
 ---
-# SSOT
-
-上游主定义：`system/knowledge/application/APP-EXAMPLE/MS-EXAMPLE.md`（系统层 OKF SSOT）。
-
-# Relations
+## 关系
 
 - (none)
 
-# Cross-perspective
+## 跨视角
 
 - cross_references:
   - [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md)
   - [PM-EXAMPLE](/knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md)
   - [API-EXAMPLE-001](/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md)
 
-# Details
+## 详细说明
 
-- (none)
+- 上游主定义：`system/knowledge/application/APP-EXAMPLE/MS-EXAMPLE.md`（系统层 OKF SSOT）。
+- host_class: ExampleApiImpl
+- host_module: example-module
+- protocol: HTTP
+- definition_scope: reference
 
-# Evidence
+## 依据与证据
 
 示例数据

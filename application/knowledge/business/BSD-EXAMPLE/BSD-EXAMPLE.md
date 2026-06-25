@@ -10,20 +10,20 @@ hierarchy: BSD
 parent_id: BD-EXAMPLE
 layer_scope: application
 ---
-# Relations
+## 关系
 
 - parent: [BD-EXAMPLE](/knowledge/business/BD-EXAMPLE.md)
 - bounded_contexts:
   - [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据

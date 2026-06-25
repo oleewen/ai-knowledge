@@ -1,5 +1,5 @@
 ---
-okf_version: "0.1"
+okf_version: "1.0"
 ---
 
 # application — OKF Bundle Index

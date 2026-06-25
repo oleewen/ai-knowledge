@@ -8,27 +8,23 @@ full_id: ENT-EXAMPLE
 perspective: data
 hierarchy: ENT
 parent_id: DS-EXAMPLE
-logical_name: ExampleEntity
-physical_table: example_table
-definition_scope: reference
 layer_scope: application
 ---
-# SSOT
-
-上游主定义：`system/knowledge/data/DS-EXAMPLE/ENT-EXAMPLE.md`（系统层 OKF SSOT）。
-
-# Relations
+## 关系
 
 - parent: [DS-EXAMPLE](/knowledge/data/DS-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - maps_to_aggregate_id: [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
 
-# Details
+## 详细说明
 
-- (none)
+- 上游主定义：`system/knowledge/data/DS-EXAMPLE/ENT-EXAMPLE.md`（系统层 OKF SSOT）。
+- logical_name: ExampleEntity
+- physical_table: example_table
+- definition_scope: reference
 
-# Evidence
+## 依据与证据
 
 示例数据

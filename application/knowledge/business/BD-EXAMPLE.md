@@ -8,27 +8,23 @@ full_id: BD-EXAMPLE
 perspective: business
 hierarchy: BD
 parent_id: null
-strategic_classification: supporting_domain
-definition_scope: reference
 layer_scope: application
 ---
-# SSOT
-
-上游主定义：`company/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md`（公司层 OKF SSOT）。
-
-# Relations
+## 关系
 
 - children:
   - [BSD-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
-- (none)
+- 上游主定义：`company/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md`（公司层 OKF SSOT）。
+- strategic_classification: supporting_domain
+- definition_scope: reference
 
-# Evidence
+## 依据与证据
 
 示例数据

@@ -8,32 +8,28 @@ full_id: APP-EXAMPLE
 perspective: application
 hierarchy: APP
 parent_id: SYS-EXAMPLE
-startup_class: ExampleApp
-maven_module: example-module
-repo_url: "git@example.com:org/example.git"
-docs_manifest_path: /application/manifest.md
-definition_scope: reference
 layer_scope: application
 ---
-# SSOT
-
-上游主定义：`system/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md`（系统层 OKF SSOT）。
-
-# Relations
+## 关系
 
 - parent: [SYS-EXAMPLE](/knowledge/application/SYS-EXAMPLE.md)
 - parent_sys_id: [SYS-EXAMPLE](/knowledge/application/SYS-EXAMPLE.md)
 - service_ids:
   - [MS-EXAMPLE](/knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
-- (none)
+- 上游主定义：`system/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md`（系统层 OKF SSOT）。
+- startup_class: ExampleApp
+- maven_module: example-module
+- repo_url: `git@example.com:org/example.git`
+- docs_manifest_path: /application/manifest.md
+- definition_scope: reference
 
-# Evidence
+## 依据与证据
 
 示例数据

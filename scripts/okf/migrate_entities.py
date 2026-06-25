@@ -363,13 +363,13 @@ def build_concept_content(
 
     evidence = entity.get("evidence_source") or ""
 
-    body_parts = ["# Relations", ""]
+    body_parts = ["## 关系", ""]
     body_parts.extend(relation_lines if relation_lines else ["- (none)"])
-    body_parts.extend(["", "# Cross-perspective", ""])
+    body_parts.extend(["", "## 跨视角", ""])
     body_parts.extend(cross_lines if cross_lines else ["- (none)"])
-    body_parts.extend(["", "# Details", ""])
+    body_parts.extend(["", "## 详细说明", ""])
     body_parts.extend(detail_lines if detail_lines else ["- (none)"])
-    body_parts.extend(["", "# Evidence", "", evidence, ""])
+    body_parts.extend(["", "## 依据与证据", "", evidence, ""])
 
     return okf_lib.format_frontmatter(meta) + "\n".join(body_parts)
 

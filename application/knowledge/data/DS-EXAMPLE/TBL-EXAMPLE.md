@@ -10,18 +10,18 @@ hierarchy: TBL
 parent_id: DS-EXAMPLE
 layer_scope: application
 ---
-# Relations
+## 关系
 
-- parent: [DS-EXAMPLE](/knowledge/data/DS-EXAMPLE/DS-EXAMPLE.md)
+- parent: [DS-EXAMPLE](/knowledge/data/DS-EXAMPLE.md)
 
-# Cross-perspective
-
-- (none)
-
-# Details
+## 跨视角
 
 - (none)
 
-# Evidence
+## 详细说明
+
+- (none)
+
+## 依据与证据
 
 - 示例数据

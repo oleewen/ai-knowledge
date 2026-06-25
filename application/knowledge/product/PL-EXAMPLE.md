@@ -8,26 +8,22 @@ full_id: PL-EXAMPLE
 perspective: product
 hierarchy: PL
 parent_id: null
-target_users: 示例用户
-definition_scope: reference
 layer_scope: application
 ---
-# SSOT
-
-上游主定义：`company/knowledge/product/PL-EXAMPLE.md`（公司层 OKF SSOT）。
-
-# Relations
+## 关系
 
 - (none)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
-- (none)
+- 上游主定义：`company/knowledge/product/PL-EXAMPLE.md`（公司层 OKF SSOT）。
+- target_users: 示例用户
+- definition_scope: reference
 
-# Evidence
+## 依据与证据
 
 示例数据

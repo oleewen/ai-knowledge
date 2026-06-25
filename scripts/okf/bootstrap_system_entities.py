@@ -32,20 +32,20 @@ layer_scope: system
 
 上游主定义：`company/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md`（公司层 OKF SSOT）。
 
-# Relations
+## 关系
 
 - children:
   - [BSD-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据
 """,
@@ -64,21 +64,21 @@ hierarchy: BSD
 parent_id: BD-EXAMPLE
 layer_scope: system
 ---
-# Relations
+## 关系
 
 - parent: [BD-EXAMPLE](/knowledge/business/BD-EXAMPLE.md)
 - bounded_contexts:
   - [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据
 """,
@@ -97,21 +97,21 @@ hierarchy: BC
 parent_id: BSD-EXAMPLE
 layer_scope: system
 ---
-# Relations
+## 关系
 
 - parent: [BSD-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md)
 - aggregates:
   - [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据
 """,
@@ -130,21 +130,21 @@ hierarchy: AGG
 parent_id: BC-EXAMPLE
 layer_scope: system
 ---
-# Relations
+## 关系
 
 - parent: [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md)
 - abilities:
   - [AB-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AB-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据
 """,
@@ -163,19 +163,19 @@ hierarchy: AB
 parent_id: AGG-EXAMPLE
 layer_scope: system
 ---
-# Relations
+## 关系
 
 - parent: [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - implemented_by_app_id: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据
 """,
@@ -200,20 +200,20 @@ layer_scope: system
 
 上游主定义：`company/knowledge/product/PL-EXAMPLE.md`（公司层 OKF SSOT）。
 
-# Relations
+## 关系
 
 - children:
   - [PM-EXAMPLE](/knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据
 """,
@@ -232,19 +232,19 @@ hierarchy: PM
 parent_id: PL-EXAMPLE
 layer_scope: system
 ---
-# Relations
+## 关系
 
 - parent: [PL-EXAMPLE](/knowledge/product/PL-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据
 """,
@@ -263,19 +263,19 @@ hierarchy: FT
 parent_id: PM-EXAMPLE
 layer_scope: system
 ---
-# Relations
+## 关系
 
 - parent: [PM-EXAMPLE](/knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据
 """,
@@ -294,19 +294,19 @@ hierarchy: UC
 parent_id: FT-EXAMPLE
 layer_scope: system
 ---
-# Relations
+## 关系
 
 - parent: [FT-EXAMPLE](/knowledge/product/PM-EXAMPLE/FT-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据
 """,
@@ -331,20 +331,20 @@ layer_scope: system
 
 上游主定义：`company/knowledge/application/SYS-EXAMPLE.md`（公司层 OKF SSOT）。
 
-# Relations
+## 关系
 
 - children:
   - [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据
 """,
@@ -366,21 +366,21 @@ maven_module: example-module
 repo_url: "git@example.com:org/example.git"
 layer_scope: system
 ---
-# Relations
+## 关系
 
 - parent: [SYS-EXAMPLE](/knowledge/application/SYS-EXAMPLE.md)
 - service_ids:
   - [MS-EXAMPLE](/knowledge/application/APP-EXAMPLE/MS-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据
 """,
@@ -399,21 +399,21 @@ hierarchy: MS
 parent_id: APP-EXAMPLE
 layer_scope: system
 ---
-# Relations
+## 关系
 
 - parent: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - cross_references:
   - [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md)
   - [PM-EXAMPLE](/knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据
 """,
@@ -433,19 +433,19 @@ parent_id: MDG-EXAMPLE
 config_key: example_config_key
 layer_scope: system
 ---
-# Relations
+## 关系
 
 - parent: [MDG-EXAMPLE](/knowledge/data/MDG-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - owned_by_app_id: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据
 """,
@@ -464,19 +464,19 @@ hierarchy: ENT
 parent_id: DS-EXAMPLE
 layer_scope: system
 ---
-# Relations
+## 关系
 
 - parent: [DS-EXAMPLE](/knowledge/data/DS-EXAMPLE/DS-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - maps_to_aggregate_id: [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 示例数据
 """,

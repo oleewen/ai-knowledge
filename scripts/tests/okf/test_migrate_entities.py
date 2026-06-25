@@ -77,9 +77,9 @@ def test_migrate_writes_concept_file():
             assert bd_path.is_file()
             text = bd_path.read_text(encoding="utf-8")
             assert "full_id: BD-EXAMPLE" in text
-            assert "# Relations" in text
-            assert "# Cross-perspective" in text
-            assert "# Evidence" in text
+            assert "## 关系" in text
+            assert "## 跨视角" in text
+            assert "## 依据与证据" in text
         finally:
             migrate_entities._repo_root = orig  # type: ignore[assignment]
 

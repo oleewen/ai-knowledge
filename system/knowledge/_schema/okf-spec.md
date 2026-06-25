@@ -10,8 +10,8 @@ layer_scope: system
 
 # OKF v1 规则文档
 
+> **谷歌OKF规范参考**：[github.com/google/open-knowledge-framework](https://github.com/google/open-knowledge-framework)
 > **SSOT**：本仓库 `system/knowledge/_schema/okf-spec.md`（单一事实源）
-> **下游**：policy-vas-docs 侧 spec（`/Users/only/workspaces/policy-vas-docs/docs/superpowers/specs/2026-06-23-增值计费-OKF-SSOT-对齐-spec.md`）以此为蓝本
 > **示例**：`system/knowledge/{business,product}` 下的 5+3 个 example（BD-EXAMPLE / BSD-EXAMPLE+BC-EXAMPLE+AGG-EXAMPLE+AB-EXAMPLE / PM-EXAMPLE+FT-EXAMPLE+UC-EXAMPLE-001）
 
 ---
@@ -48,13 +48,13 @@ layer_scope: system
 
 ```
 id（仅 OKF 内部序号，无语义）
-alias（中文叙述应放入 Details 段）
-children / bounded_contexts / aggregates / abilities（应放入 Relations 段）
-ubiquitious_language / root_entity / entities / invariants（应放入 Details 段）
-capability / apis / target_users（应放入 Details 段）
-invokes_api_ids / realizes_use_case_ids / acceptance_criteria（应放入 Details 段）
+alias（中文叙述应放入「详细说明」段）
+children / bounded_contexts / aggregates / abilities（应放入「关系」段）
+ubiquitious_language / root_entity / entities / invariants（应放入「详细说明」段）
+capability / apis / target_users（应放入「详细说明」段）
+invokes_api_ids / realizes_use_case_ids / acceptance_criteria（应放入「详细说明」段）
 strategic_classification（公司层 BD 用，公司层投影才需）
-cross_references / evidence_chain（应放入正文 Cross-perspective 段与 Evidence 段）
+cross_references / evidence_chain（应放入正文「跨视角」段与「依据与证据」段）
 ```
 
 ---
@@ -96,16 +96,16 @@ cross_references / evidence_chain（应放入正文 Cross-perspective 段与 Evi
 
 ## 3. 4 段正文结构
 
-每个 per-entity 文件**必须**包含 4 个二级标题（拼写精确、区分大小写）。
+每个 per-entity 文件**必须**包含 4 个二级标题。OKF v1 的语义分段保持不变，但本仓库落地标题统一使用中文，英文仅作为语义映射参考。
 
 | 顺序 | 标题 | 内容 |
 |------|------|------|
-| 1 | `## Relations` | 父子、聚合、能力、应用实现指针（按层级差异化） |
-| 2 | `## Cross-perspective` | 跨 perspective 引用（business↔product↔application↔data↔technical） |
-| 3 | `## Details` | 业务定义、不变量、关键 ADR、关键职责、验收标准等中文叙述 |
-| 4 | `## Evidence` | 文件路径 + 章节锚点（多源用换行或分号） |
+| 1 | `## 关系`（Relations） | 父子、聚合、能力、应用实现指针（按层级差异化） |
+| 2 | `## 跨视角`（Cross-perspective） | 跨 perspective 引用（business↔product↔application↔data↔technical） |
+| 3 | `## 详细说明`（Details） | 业务定义、不变量、关键 ADR、关键职责、验收标准等中文叙述 |
+| 4 | `## 依据与证据`（Evidence） | 文件路径 + 章节锚点（多源用换行或分号） |
 
-### 3.1 Relations 段（按层级差异化）
+### 3.1 关系段（Relations，按层级差异化）
 
 | 层级 | 必含子段 | 选含子段 |
 |------|---------|---------|
@@ -123,13 +123,13 @@ cross_references / evidence_chain（应放入正文 Cross-perspective 段与 Evi
 - 同文件目录：`[X-XXX](X-XXX.md)` 或 `[X-XXX](X-XXX/X-XXX.md)`
 - 跨 perspective：`[X-XXX](../../<other-perspective>/X-XXX/X-XXX.md)`
 
-### 3.2 Cross-perspective 段
+### 3.2 跨视角段（Cross-perspective）
 
 - 跨 perspective 引用：明列 `business:` / `product:` / `application:` / `data:` / `technical:` 子段
 - 无引用时填 `(none)`，对应 perspective 子段可省略
 - 本仓库无源码时 `application:` / `data:` / `technical:` 统一标 `(none)` 或 `待源码/工程化阶段补充`
 
-### 3.3 Details 段
+### 3.3 详细说明段（Details）
 
 中文短句段落。允许包含：
 - 业务定义 / 关键职责 / 关键不变量
@@ -137,9 +137,9 @@ cross_references / evidence_chain（应放入正文 Cross-perspective 段与 Evi
 - 通用语言（ubiquitous language）列表
 - 根实体 / 实体列表 / API 列表 / 验收标准 / 目标用户
 
-**模板**：无 Details 内容时填 `(none)`（与 example 一致）
+**模板**：无“详细说明”内容时填 `(none)`（与 example 一致）
 
-### 3.4 Evidence 段
+### 3.4 依据与证据段（Evidence）
 
 - 文件路径 + 章节锚点
 - 多源用换行或分号串接
@@ -202,23 +202,23 @@ product/
 
 | 引用类型 | 位置 | 形式 |
 |---------|------|------|
-| 父子 / 聚合 / 能力 | Relations 段 | `parent: [...]` / `children: [...]` / `bounded_contexts: [...]` / `aggregates: [...]` / `abilities: [...]` |
-| 应用实现 | Relations 段 | `implemented_by_app_id: [...]`（仅 AB） |
-| 跨 perspective | Cross-perspective 段 | `business:` / `product:` / `application:` / `data:` / `technical:` |
-| 段内引用 | Cross-perspective 段内 | 同 perspective 引用走 Relations 段；**禁止**在 Cross-perspective 段内引同 perspective 实体 |
+| 父子 / 聚合 / 能力 | 关系段 | `parent: [...]` / `children: [...]` / `bounded_contexts: [...]` / `aggregates: [...]` / `abilities: [...]` |
+| 应用实现 | 关系段 | `implemented_by_app_id: [...]`（仅 AB） |
+| 跨 perspective | 跨视角段 | `business:` / `product:` / `application:` / `data:` / `technical:` |
+| 段内引用 | 跨视角段内 | 同 perspective 引用走关系段；**禁止**在跨视角段内引同 perspective 实体 |
 
 ---
 
-## 6. Evidence 多源表达
+## 6. 依据与证据多源表达
 
 - **多源用换行或分号串接**：
   ```markdown
-  ## Evidence
+  ## 依据与证据
 
   docs/knowledge/business/business-domain-division.md §核心域
   docs/knowledge/business/business-rules-and-strategies.md PM-002/BR-001
   ```
-- **可信度不强制 frontmatter 字段**：v1 不引入 `confidence` 字段；可信度由 Evidence 段的来源（业务域划分 high / 业务规则 high / 第三方文档 medium）隐式表达
+- **可信度不强制 frontmatter 字段**：v1 不引入 `confidence` 字段；可信度由“依据与证据”段的来源（业务域划分 high / 业务规则 high / 第三方文档 medium）隐式表达
 - **多源不必区分类型**：v1 不引入 `type: document | interview | data` 字段
 
 ---
@@ -280,10 +280,10 @@ product/
 | `tags` | `[business, BD]` | `[business, BSD]` | `[business, BC]` | `[business, AGG]` | `[business, AB]` | `[product, PM]` | `[product, FT]` | `[product, UC]` |
 | `parent_id` | `null` | `BD-EXAMPLE` | `BSD-EXAMPLE` | `BC-EXAMPLE` | `AGG-EXAMPLE` | `PL-EXAMPLE` | `PM-EXAMPLE` | `FT-EXAMPLE` |
 | `layer_scope` | `system` | `system` | `system` | `system` | `system` | `system` | `system` | `system` |
-| Relations 段 | `children:` | `parent: + bounded_contexts:` | `parent: + aggregates:` | `parent: + abilities:` | `parent: + implemented_by_app_id:` | `parent: + children:` | `parent: + children:` | `parent:` |
-| Cross-perspective 段 | `(none)` | `(none)` | `(none)` | `(none)` | `implemented_by_app_id: [APP-EXAMPLE]` | `(none)` | `(none)` | `(none)` |
-| Details 段 | `(none)` | `(none)` | `(none)` | `(none)` | `(none)` | `(none)` | `(none)` | `(none)` |
-| Evidence 段 | `示例数据` | `示例数据` | `示例数据` | `示例数据` | `示例数据` | `示例数据` | `示例数据` | `示例数据` |
+| 关系段 | `children:` | `parent: + bounded_contexts:` | `parent: + aggregates:` | `parent: + abilities:` | `parent: + implemented_by_app_id:` | `parent: + children:` | `parent: + children:` | `parent:` |
+| 跨视角段 | `(none)` | `(none)` | `(none)` | `(none)` | `implemented_by_app_id: [APP-EXAMPLE]` | `(none)` | `(none)` | `(none)` |
+| 详细说明段 | `(none)` | `(none)` | `(none)` | `(none)` | `(none)` | `(none)` | `(none)` | `(none)` |
+| 依据与证据段 | `示例数据` | `示例数据` | `示例数据` | `示例数据` | `示例数据` | `示例数据` | `示例数据` | `示例数据` |
 
 ### 10.2 扩展 3 个 example（BP / BR / TBL）
 
@@ -293,10 +293,10 @@ product/
 | `tags` | `[product, BP]` | `[product, BR]` | `[data, TBL]` |
 | `parent_id` | `PM-EXAMPLE` | `PM-EXAMPLE` | `DS-EXAMPLE` |
 | `layer_scope` | `system` | `system` | `application` |
-| Relations 段 | `parent:` | `parent:` | `parent:` |
-| Cross-perspective 段 | `(none)` | `(none)` | `(none)` |
-| Details 段 | `(none)` | `(none)` | `(none)` |
-| Evidence 段 | `示例数据` | `示例数据` | `示例数据` |
+| 关系段 | `parent:` | `parent:` | `parent:` |
+| 跨视角段 | `(none)` | `(none)` | `(none)` |
+| 详细说明段 | `(none)` | `(none)` | `(none)` |
+| 依据与证据段 | `示例数据` | `示例数据` | `示例数据` |
 
 ### 10.3 落点
 
@@ -320,11 +320,3 @@ product/
 - ❌ 静默修改 v1 spec 字段
 - ❌ 删除 v1 spec
 - ❌ 在 frontmatter 引入新字段而不更新 spec
-
----
-
-## 12. 附录 A：与下游 spec 的同步关系
-
-| 下游 | spec 路径 | 同步时机 |
-|------|----------|----------|
-| policy-vas-docs | `docs/superpowers/specs/2026-06-23-增值计费-OKF-SSOT-对齐-spec.md` | v1 落定后 fork；演进时双向同步 |

@@ -8,24 +8,23 @@ full_id: AGG-EXAMPLE
 perspective: business
 hierarchy: AGG
 parent_id: BC-EXAMPLE
-root_entity: ExampleRoot
 layer_scope: application
 ---
-# Relations
+## 关系
 
 - parent: [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md)
 - abilities:
   - [AB-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AB-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - implemented_by_service_ids: [MS-EXAMPLE](/knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md)
 - persisted_as_entity_ids: [ENT-EXAMPLE](/knowledge/data/ENT-EXAMPLE/ENT-EXAMPLE.md)
 
-# Details
+## 详细说明
 
-- (none)
+- root_entity: ExampleRoot
 
-# Evidence
+## 依据与证据
 
 示例数据

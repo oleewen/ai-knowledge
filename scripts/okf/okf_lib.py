@@ -24,8 +24,15 @@ REQUIRED_FRONTMATTER_FIELDS = (
     "layer_scope",
 )
 
-# OKF v1 正文 4 段（拼写精确、区分大小写；使用 # 一级标题，与 example 保持一致）
-REQUIRED_SECTIONS = ("Relations", "Cross-perspective", "Details", "Evidence")
+# OKF v1 正文 4 段的中文落地标题；旧英文标题仅作为迁移兼容输入
+REQUIRED_SECTIONS = ("关系", "跨视角", "详细说明", "依据与证据")
+LEGACY_SECTION_ALIASES = {
+    "Relations": "关系",
+    "Cross-perspective": "跨视角",
+    "Details": "详细说明",
+    "Evidence": "依据与证据",
+}
+ALL_SECTION_TITLES = frozenset(REQUIRED_SECTIONS) | frozenset(LEGACY_SECTION_ALIASES.keys())
 
 # OKF v1 合法 perspective 枚举
 VALID_PERSPECTIVES = frozenset({"business", "product", "application", "data", "technical"})
@@ -35,6 +42,13 @@ VALID_LAYER_SCOPES = frozenset({"application", "system", "company"})
 
 # ISO8601 时间戳正则（OKF v1 强制 UTC + Z 后缀）
 ISO8601_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
+
+
+def normalize_section_heading(title: str) -> Optional[str]:
+    title = title.strip()
+    if title in REQUIRED_SECTIONS:
+        return title
+    return LEGACY_SECTION_ALIASES.get(title)
 
 HIERARCHY_TO_TYPE: Dict[str, str] = {
     "BD": "Business Domain",

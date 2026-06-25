@@ -27,21 +27,21 @@ strategic_classification: core_domain
 layer_scope: company
 definition_scope: local
 ---
-# Relations
+## 关系
 
 - children:
   - [CAP-EXAMPLE-L1](/knowledge/business/BD-EXAMPLE/CAP-EXAMPLE-L1.md)
   - [CAP-EXAMPLE](/knowledge/business/BD-EXAMPLE/CAP-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 business-domain-division.md（示例）
 """,
@@ -63,19 +63,19 @@ maps_to_bd_id: BD-EXAMPLE
 layer_scope: company
 definition_scope: local
 ---
-# Relations
+## 关系
 
 - maps_to_bd_id: [BD-EXAMPLE](/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 business-capability.md（示例）
 """,
@@ -97,20 +97,20 @@ maps_to_bd_id: BD-EXAMPLE
 layer_scope: company
 definition_scope: local
 ---
-# Relations
+## 关系
 
 - parent: [CAP-EXAMPLE-L1](/knowledge/business/BD-EXAMPLE/CAP-EXAMPLE-L1.md)
 - maps_to_bd_id: [BD-EXAMPLE](/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 business-capability.md（示例）
 """,
@@ -131,19 +131,19 @@ target_users: [内部运营, 业务方]
 layer_scope: company
 definition_scope: local
 ---
-# Relations
+## 关系
 
 - (none)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 product-architecture.md（示例）
 """,
@@ -163,19 +163,19 @@ parent_id: null
 layer_scope: company
 definition_scope: local
 ---
-# Relations
+## 关系
 
 - (none)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 application-overview.md（示例）
 """,
@@ -196,19 +196,19 @@ governance_owner: 示例：数据治理委员会
 layer_scope: company
 definition_scope: local
 ---
-# Relations
+## 关系
 
 - (none)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 data-governance.md（示例）
 """,
@@ -229,19 +229,19 @@ domain: 云基础设施
 layer_scope: company
 definition_scope: local
 ---
-# Relations
+## 关系
 
 - (none)
 
-# Cross-perspective
+## 跨视角
 
 - (none)
 
-# Details
+## 详细说明
 
 - (none)
 
-# Evidence
+## 依据与证据
 
 technical-overview.md（示例）
 """,
