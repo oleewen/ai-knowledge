@@ -4,6 +4,8 @@ title: 技术架构
 ---
 # 技术架构
 
+索引入口见 [index.md](index.md)。
+
 [返回上一级 · 架构文档索引](../README.md)
 
 本目录为技术架构**目录与入口**，聚焦公司级云基础设施、DevOps、技术安全与开发环境顶层内容。实体 SSOT：[technical-meta.md](technical-meta.md)、[../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md)（**TPL-***）；实体文件见下表。

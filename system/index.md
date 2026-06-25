@@ -1,31 +1,37 @@
 ---
-okf_version: "0.1"
+okf_version: 0.1
 ---
+# system
 
-# system — OKF Bundle Index
+目录说明见 [README.md](README.md)。
 
-## 根导航
+## 子目录
 
-| 章节 | 路径 |
-| --- | --- |
-| 人类入口 | [README.md](/README.md) |
-| Agent 九章索引 | [INDEX-GUIDE.md](/INDEX-GUIDE.md) |
-| 设计方案 | [DESIGN.md](/DESIGN.md) |
-| 目录元数据 | [docs-meta.md](/docs-meta.md) |
-| 联邦建联 | knowledge-links.yaml |
+* [adr](adr/README.md)
+* [analysis](analysis/README.md)
+* [application-APPNAME](application-APPNAME/README.md)
+* [changelogs](changelogs/README.md)
+* [knowledge](knowledge/README.md)
+* [requirements](requirements/README.md)
+* [solutions](solutions/README.md)
 
-## 主要分区
+## 目录文件
 
-| 分区 | 路径 |
-| --- | --- |
-| 五视角知识 SSOT | [knowledge/](/knowledge/) |
-| 解决方案阶段 | [solutions/](/solutions/) |
-| 需求分析阶段 | [analysis/](/analysis/) |
-| 需求交付阶段 | [requirements/](/requirements/) |
-| 变更与索引运维 | [changelogs/](/changelogs/) |
-| 系统层 ADR | [adr/](/adr/) |
-| 联邦应用槽位 | [application-APPNAME/](/application-APPNAME/) |
+* [DESIGN.md](DESIGN.md)
+* [INDEX-GUIDE.md](INDEX-GUIDE.md)
+* [docs-meta.md](docs-meta.md)
+* [knowledge-links.yaml](knowledge-links.yaml)
+* [viz.html](viz.html)
 
-## 可视化
+## 阅读顺序
 
-- [viz.html](/viz.html)
+1. [DESIGN.md](DESIGN.md) — 目录契约与 SSOT 继承  
+2. [knowledge/README.md](knowledge/README.md) — 五视角索引入口  
+3. [knowledge/business/README.md](knowledge/business/README.md) / [knowledge/product/README.md](knowledge/product/README.md) — 业务与产品语境  
+4. [knowledge/application/README.md](knowledge/application/README.md) / [knowledge/data/README.md](knowledge/data/README.md) / [knowledge/technical/README.md](knowledge/technical/README.md) — 系统、数据与技术落地  
+
+与公司知识库侧 [`../company/knowledge/`](../company/knowledge/README.md) 对照阅读。
+
+## 关联索引
+
+- 上一级说明：[../README.md](../README.md)

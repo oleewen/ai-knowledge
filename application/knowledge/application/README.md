@@ -4,6 +4,8 @@ title: application（应用视角）
 ---
 # application（应用视角）
 
+索引入口见 [index.md](index.md)。
+
 本目录描述本应用的物理实现、部署架构与服务接口；系统层 `APP/MS` 在此承接实例登记与实现映射，应用层 `API` 在此主定义。应用注册与索引见 [application-meta.md](application-meta.md) 与 **[../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md)**（§3）。
 
 - **实现入口**：HTTP（`@GatewayApi`）与 ZSS Job 见 [INDEX-GUIDE.md](../../../INDEX-GUIDE.md) **第三节 · 3.1**、**第三节 · 3.3**。

@@ -4,6 +4,8 @@ title: analysis（需求分析）文档
 ---
 # analysis（需求分析）文档
 
+索引入口见 [index.md](index.md)。
+
 SDD **需求分析**阶段目录：产出 `ANALYSIS-{IDEA-ID}.md`，作为 [../requirements](../requirements) 输入；上游 [../solutions](../solutions) 中 `SOLUTION-{IDEA-ID}.md`。
 
 ## 交付物

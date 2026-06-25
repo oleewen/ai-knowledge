@@ -4,6 +4,8 @@ title: 业务架构
 ---
 # 业务架构
 
+索引入口见 [index.md](index.md)。
+
 [返回上一级 · 架构文档索引](../README.md)
 
 本目录为业务架构**目录与入口**，聚焦公司级业务架构顶层内容。实体 SSOT：[business-meta.md](business-meta.md)、[../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md)（**BD-***、**CAP-***）；实体文件见下表。

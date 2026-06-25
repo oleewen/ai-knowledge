@@ -4,9 +4,10 @@
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 from pathlib import Path
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
@@ -23,13 +24,6 @@ def _bundle_root(repo: Path, bundle: str) -> Path:
 
 def _is_bundle_root(bundle_root: Path, directory: Path) -> bool:
     return directory.resolve() == bundle_root.resolve()
-
-
-def _has_okf_version(index_path: Path) -> bool:
-    if not index_path.is_file():
-        return False
-    meta, _ = okf_lib.parse_frontmatter(index_path.read_text(encoding="utf-8"))
-    return "okf_version" in meta
 
 
 def _concept_entries(directory: Path) -> List[Tuple[str, str, str]]:
@@ -68,7 +62,7 @@ def _subdir_entries(directory: Path) -> List[Tuple[str, str, str]]:
     for path in sorted(directory.iterdir()):
         if not path.is_dir() or path.name.startswith("."):
             continue
-        entries.append((path.name, f"{path.name}/", _subdir_description(path)))
+        entries.append((path.name, f"{path.name}/README.md", _subdir_description(path)))
     return entries
 
 
@@ -78,31 +72,117 @@ def _bullet(title: str, link: str, desc: str) -> str:
     return f"* [{title}]({link})"
 
 
-def render_index_body(directory: Path) -> str:
+SECTION_TITLE_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
+
+
+def _extract_section(text: str, title: str) -> str:
+    lines = text.splitlines()
+    i = 0
+    while i < len(lines):
+        m = SECTION_TITLE_RE.match(lines[i])
+        if not m:
+            i += 1
+            continue
+        level = len(m.group(1))
+        heading = m.group(2).strip()
+        if heading != title:
+            i += 1
+            continue
+        i += 1
+        start = i
+        while i < len(lines):
+            m2 = SECTION_TITLE_RE.match(lines[i])
+            if m2 and len(m2.group(1)) <= level:
+                break
+            i += 1
+        content = "\n".join(lines[start:i]).strip()
+        return content
+    return ""
+
+
+def _render_related_indexes(directory: Path) -> str:
+    parent = directory.parent
+    lines: List[str] = []
+    if (parent / "index.md").exists():
+        lines.append("- 上一级索引：[../index.md](../index.md)")
+    if (parent / "README.md").exists():
+        lines.append("- 上一级说明：[../README.md](../README.md)")
+    if not lines:
+        return "（暂无）"
+    return "\n".join(lines)
+
+
+def _render_directory_files(directory: Path) -> str:
+    concept_files = {link for _, link, _ in _concept_entries(directory)}
+    other: List[str] = []
+    for path in sorted(directory.iterdir()):
+        if not path.is_file():
+            continue
+        if path.name in {"index.md", "README.md"}:
+            continue
+        if path.name in concept_files:
+            continue
+        other.append(path.name)
+    lines: List[str] = []
     concepts = _concept_entries(directory)
-    subdirs = _subdir_entries(directory)
-    lines = [f"# {directory.name}", ""]
     if concepts:
-        lines.append("## Concepts")
-        lines.append("")
         lines.extend(_bullet(title, link, desc) for title, link, desc in concepts)
-        lines.append("")
-    if subdirs:
-        lines.append("## Subdirectories")
-        lines.append("")
-        lines.extend(_bullet(name, link, desc) for name, link, desc in subdirs)
-        lines.append("")
-    if not concepts and not subdirs:
-        lines.append("*(empty)*")
-        lines.append("")
+    if other:
+        if concepts:
+            lines.append("")
+        lines.extend(f"* [{name}]({name})" for name in other)
+    if not lines:
+        return "（无）"
+    return "\n".join(lines)
+
+
+def _render_subdirectories(directory: Path) -> str:
+    subdirs = _subdir_entries(directory)
+    if not subdirs:
+        return "（无）"
+    return "\n".join(_bullet(name, link, desc) for name, link, desc in subdirs)
+
+
+def render_index_body(directory: Path) -> str:
+    index_path = directory / "index.md"
+    existing = {"阅读顺序": "", "关联索引": ""}
+    if index_path.is_file():
+        _, body = okf_lib.parse_frontmatter(index_path.read_text(encoding="utf-8"))
+        existing["阅读顺序"] = _extract_section(body, "阅读顺序")
+        existing["关联索引"] = _extract_section(body, "关联索引")
+
+    lines = [f"# {directory.name}", "", "目录说明见 [README.md](README.md)。", ""]
+
+    lines.append("## 子目录")
+    lines.append("")
+    lines.append(_render_subdirectories(directory))
+    lines.append("")
+
+    lines.append("## 目录文件")
+    lines.append("")
+    lines.append(_render_directory_files(directory))
+    lines.append("")
+
+    lines.append("## 阅读顺序")
+    lines.append("")
+    lines.append(existing["阅读顺序"] if existing["阅读顺序"] else "（待补充）")
+    lines.append("")
+
+    lines.append("## 关联索引")
+    lines.append("")
+    lines.append(existing["关联索引"] if existing["关联索引"] else _render_related_indexes(directory))
+    lines.append("")
     return "\n".join(lines).rstrip() + "\n"
 
 
 def write_index(directory: Path, bundle_root: Path, dry_run: bool = False) -> bool:
     index_path = directory / "index.md"
-    if _is_bundle_root(bundle_root, directory) and _has_okf_version(index_path):
-        return False
     body = render_index_body(directory)
+    existing_meta: Dict[str, object] = {}
+    if index_path.is_file():
+        existing_meta, _ = okf_lib.parse_frontmatter(index_path.read_text(encoding="utf-8"))
+    if _is_bundle_root(bundle_root, directory) and "okf_version" in existing_meta:
+        body = okf_lib.format_frontmatter({"okf_version": existing_meta["okf_version"]}) + body
     if dry_run:
         return True
     index_path.write_text(body, encoding="utf-8")
@@ -119,10 +199,10 @@ def collect_directories(
         if not base.is_dir():
             return []
         if recursive:
-            return sorted(p for p in base.rglob("*") if p.is_dir())
+            return [base] + sorted(p for p in base.rglob("*") if p.is_dir())
         return [base]
     if recursive:
-        return sorted(p for p in bundle_root.rglob("*") if p.is_dir())
+        return [bundle_root] + sorted(p for p in bundle_root.rglob("*") if p.is_dir())
     return [bundle_root]
 
 

@@ -4,20 +4,9 @@ title: changelogs — 变更留痕与索引运维
 ---
 # changelogs — 变更留痕与索引运维
 
+索引入口见 [index.md](index.md)。
+
 `application/` 侧知识主库变更可追溯入口：仅约定 **Markdown** 日志产物，不重复阶段文档写作规范。阶段约定 SSOT 为本 README（无 `{dirname}_meta.yaml`）。
-
-## 目录文件
-
-| 文件 | 用途 |
-|------|------|
-| `README.md` | 本说明 |
-| [CHANGE-LOG.md](CHANGE-LOG.md) | `application/` 侧维护性变更与 **docs-change** 聚合；文末 `<!-- docs-change:baseline_time_ms=... -->` 为增量基线 |
-| [INDEXING-LOG.md](INDEXING-LOG.md) | **docs-indexing** 运行记录；主表**第一行** `indexing_finished_ms` 为增量锚点（[indexing-log-spec.md](../../agent/skills/docs-indexing/references/indexing-log-spec.md)） |
-
-## 关联索引
-
-- [../INDEX-GUIDE.md](../INDEX-GUIDE.md)
-- 仓库根 [INDEX-GUIDE.md](../../INDEX-GUIDE.md)（按需）
 
 ## Skill 指针
 

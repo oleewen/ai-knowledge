@@ -4,6 +4,8 @@ title: solutions — 解决方案文档
 ---
 # solutions — 解决方案文档
 
+索引入口见 [index.md](index.md)。
+
 SDD **解决方案**阶段目录：产出 `SOLUTION-{IDEA-ID}.md`，作为 [../analysis](../analysis) 输入。
 
 ## 交付物

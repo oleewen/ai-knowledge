@@ -4,6 +4,8 @@ title: requirements — 需求交付
 ---
 # requirements — 需求交付
 
+索引入口见 [index.md](index.md)。
+
 将 **analysis** 中的高层次需求按 MVP / 阶段落为可执行交付版本（PRD / **ASD** / **DSD** / TDD 等）。阶段约定 SSOT 为本 README（无 `{dirname}_meta.yaml`）；各 `REQUIREMENT-{IDEA-ID}/` 内不复制根级 meta。
 
 ## 层级与交付物

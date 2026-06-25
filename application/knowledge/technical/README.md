@@ -4,6 +4,8 @@ title: technical（技术视角）
 ---
 # technical（技术视角）
 
+索引入口见 [index.md](index.md)。
+
 本目录描述中间件绑定、关键运行时组件，并通过 ID 与其他视角建立映射。公司级 **TPL-***、系统级 **TSD-*** 在对应层目录首次定义；本层主定义并登记 **MW-*** 与 **CMP-***。元数据与实例索引见 [technical-meta.md](technical-meta.md)、[../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md)（§5）。
 
 ---

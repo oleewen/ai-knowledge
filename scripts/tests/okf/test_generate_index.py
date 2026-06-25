@@ -39,11 +39,15 @@ def test_render_index_lists_concepts_and_subdirs():
         )
 
         body = generate_index.render_index_body(root)
+        assert "## 子目录" in body
+        assert "## 目录文件" in body
+        assert "## 阅读顺序" in body
+        assert "## 关联索引" in body
         assert "* [示例业务域](BD-EXAMPLE.md) - 演示用" in body
-        assert "* [BSD-EXAMPLE](BSD-EXAMPLE/) - 子域描述" in body
+        assert "* [BSD-EXAMPLE](BSD-EXAMPLE/README.md) - 子域描述" in body
 
 
-def test_skip_bundle_root_with_okf_version():
+def test_preserve_bundle_root_okf_version():
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp)
         index_path = root / "index.md"
@@ -51,7 +55,11 @@ def test_skip_bundle_root_with_okf_version():
             '---\nokf_version: "0.1"\n---\n# Root\n',
             encoding="utf-8",
         )
-        assert not generate_index.write_index(root, root)
+        assert generate_index.write_index(root, root)
+        written = index_path.read_text(encoding="utf-8")
+        meta, body = okf_lib.parse_frontmatter(written)
+        assert meta["okf_version"] == "0.1"
+        assert body.lstrip().startswith("# ")
 
 
 def test_knowledge_index_id_suffix_and_evidence():
@@ -77,7 +85,7 @@ def test_knowledge_index_id_suffix_and_evidence():
 def main() -> None:
     tests = [
         test_render_index_lists_concepts_and_subdirs,
-        test_skip_bundle_root_with_okf_version,
+        test_preserve_bundle_root_okf_version,
         test_knowledge_index_id_suffix_and_evidence,
     ]
     for fn in tests:

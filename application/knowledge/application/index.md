@@ -1,10 +1,23 @@
 # application
 
-## Concepts
+目录说明见 [README.md](README.md)。
+
+## 子目录
+
+* [MS-EXAMPLE](MS-EXAMPLE/README.md) - 示例微服务
+
+## 目录文件
 
 * [示例应用](APP-EXAMPLE.md)
 * [示例系统](SYS-EXAMPLE.md) - 仅用于演示应用视角数据结构（示例）。
 
-## Subdirectories
+* [application-meta.md](application-meta.md)
 
-* [MS-EXAMPLE](MS-EXAMPLE/) - 示例微服务
+## 阅读顺序
+
+（待补充）
+
+## 关联索引
+
+- 上一级索引：[../index.md](../index.md)
+- 上一级说明：[../README.md](../README.md)
