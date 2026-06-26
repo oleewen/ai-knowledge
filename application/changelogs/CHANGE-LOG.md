@@ -35,6 +35,15 @@ title: 文档变更索引
   - 各文档根 INDEX/DESIGN/README/index/manifest/knowledge-meta 引用
   - `application/viz.html`、`system/viz.html`、`company/viz.html`
 
+### 2026-06-26 · chore
+- **类型**: 脚本退役
+- **说明**: 退役一次性命名迁移守护脚本 `scripts/check-docs-meta-naming.sh`（由 `a7feaac` 引入）。当前仓库零违规、迁移已彻底完成。**调整后范围**：仅删除脚本本体，保留测试套件 `scripts/tests/docs-meta-naming/` 与 `scripts/tests/run.sh` 中 `docs-meta-naming` 注册项；test case 改为 skip 行为以维持套件可调度。保留 `a7feaac` 迁移条目与 git rename 历史作为可追溯 SSOT。若未来再次出现命名迁移，按 `a7feaac` 同样的模式新建一份一次性检查器。
+- **文件**:
+  - `scripts/check-docs-meta-naming.sh`（删除）
+  - `scripts/tests/docs-meta-naming/cases/01_clean_repo.sh`（改为 skip 占位）
+  - `scripts/tests/docs-meta-naming/`（保留）
+  - `scripts/tests/run.sh`（注册项保留）
+
 ## Git (379)
 
 ### 2026-06-18 11:53:31.000 · git
