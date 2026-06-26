@@ -2,4 +2,4 @@
 set -euo pipefail
 
 ROOT="$(git rev-parse --show-toplevel)"
-bash "$ROOT/scripts/check-forbidden-file-refs.sh"
+bash "$ROOT/agent/scripts/check-forbidden-file-refs.sh"
