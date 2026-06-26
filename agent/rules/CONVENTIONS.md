@@ -49,7 +49,7 @@
 
 - **禁止**：除 `{application|system|company|docs}/superpowers/**` **内部**外，全仓任何文件不得引用 superpowers 下**具名文件**（路径含 `superpowers/(specs|plans)/YYYY-MM-DD-` 且指向 `.md` 文件名）。
 - **允许**：目录契约（`{DOC_DIR}/superpowers/specs/`）、占位模式（`YYYY-MM-DD-<topic>-*.md`、`*-docs-indexing.md`）、hooks 通用正则、无日期测试桩（如 `x.md`）。
-- **验收**（仓库根）：`bash scripts/check-forbidden-file-refs.sh`；套件：`bash scripts/tests/forbidden-file-refs/run.sh`。
+- **验收**（仓库根）：`bash agent/scripts/check-forbidden-file-refs.sh`；套件：`bash agent/scripts/tests/forbidden-file-refs/run.sh`。
 - **细则**：见 [session-spec-path.md](../references/session-spec-path.md)；上游 decouple 设计备忘位于 `docs/superpowers/specs/`（superpowers 内部，库外不链具名文件）。
 
 ---
