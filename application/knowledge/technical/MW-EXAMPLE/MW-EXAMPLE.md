@@ -7,12 +7,13 @@ timestamp: "2026-06-21T00:00:00Z"
 full_id: MW-EXAMPLE
 perspective: technical
 hierarchy: MW
-parent_id: null
+parent_id: TSD-EXAMPLE
 layer_scope: application
 ---
 ## 关系
 
-- parent_tsd_id: [TSD-EXAMPLE](../../../../system/knowledge/technical/TSD-EXAMPLE.md)
+- parent: [TSD-EXAMPLE](/knowledge/technical/TSD-EXAMPLE.md)
+- parent_tsd_id: [TSD-EXAMPLE](/knowledge/technical/TSD-EXAMPLE.md)
 
 ## 跨视角
 

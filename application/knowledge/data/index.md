@@ -5,11 +5,10 @@
 ## 子目录
 
 * [DS-EXAMPLE](DS-EXAMPLE/README.md)
-* [ENT-EXAMPLE](ENT-EXAMPLE/README.md) - 示例实体
 
 ## 目录文件
 
-* [示例数据源](DS-EXAMPLE.md) - 仅用于演示数据视角数据结构（示例）。
+* [MDG-EXAMPLE.md](MDG-EXAMPLE.md)
 
 * [data-meta.md](data-meta.md)
 

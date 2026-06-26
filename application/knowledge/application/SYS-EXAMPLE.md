@@ -12,7 +12,8 @@ layer_scope: application
 ---
 ## 关系
 
-- (none)
+- children:
+  - [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE.md)
 
 ## 跨视角
 

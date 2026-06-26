@@ -8,6 +8,7 @@
 
 ## 目录文件
 
+* [BP-EXAMPLE.md](BP-EXAMPLE.md)
 * [示例产品线](PL-EXAMPLE.md) - 仅用于演示产品视角数据结构（示例）。
 
 * [product-meta.md](product-meta.md)

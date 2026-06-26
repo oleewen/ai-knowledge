@@ -12,7 +12,7 @@ layer_scope: application
 ---
 ## 关系
 
-- parent: [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
+- parent: [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)
 
 ## 跨视角
 

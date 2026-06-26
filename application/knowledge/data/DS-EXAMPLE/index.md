@@ -8,6 +8,8 @@
 
 ## 目录文件
 
+* [示例数据源](DS-EXAMPLE.md)
+* [示例实体](ENT-EXAMPLE.md)
 * [示例数据表](TBL-EXAMPLE.md)
 
 ## 阅读顺序
