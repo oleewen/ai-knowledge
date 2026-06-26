@@ -4,8 +4,8 @@ set -euo pipefail
 TEST_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$TEST_ROOT/../.." && pwd)"
 
-QUICK_SUITES=(forbidden-file-refs docs-link docs-change okf docs-okf agent-install docs-meta-naming)
-FULL_SUITES=(forbidden-file-refs docs-link docs-change okf docs-okf agent-install docs-meta-naming docs-install docs-push)
+QUICK_SUITES=("agent/scripts/tests/forbidden-file-refs/run.sh" docs-link docs-change okf docs-okf agent-install docs-meta-naming)
+FULL_SUITES=("agent/scripts/tests/forbidden-file-refs/run.sh" docs-link docs-change okf docs-okf agent-install docs-meta-naming docs-install docs-push)
 
 MODE='quick'
 SUITE=''
@@ -35,7 +35,12 @@ done
 
 run_suite() {
   local name="$1"
-  local runner="$TEST_ROOT/$name/run.sh"
+  local runner
+  if [[ "$name" == */* ]]; then
+    runner="$REPO_ROOT/$name"
+  else
+    runner="$TEST_ROOT/$name/run.sh"
+  fi
   if [[ ! -f "$runner" ]]; then
     echo "[FAIL] 未找到套件 runner: $runner" >&2
     return 1
