@@ -250,11 +250,11 @@ layer_scope: system
 """,
     ),
     (
-        "knowledge/product/PM-EXAMPLE/FT-EXAMPLE.md",
+        "knowledge/product/PM-EXAMPLE/FT-EXAMPLE/FT-EXAMPLE.md",
         """---
 type: Feature
 title: 示例功能
-description: null
+description: 仅用于演示产品视角数据结构（示例）。
 tags: [product, FT]
 timestamp: "%s"
 full_id: FT-EXAMPLE
@@ -266,14 +266,17 @@ layer_scope: system
 ## 关系
 
 - parent: [PM-EXAMPLE](/knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md)
+- children:
+  - [FR-EXAMPLE](/knowledge/product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/FR-EXAMPLE.md)
 
 ## 跨视角
 
-- (none)
+- invokes_api_ids: [API-EXAMPLE-001](/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md)
+- realizes_use_case_ids: [UC-EXAMPLE](/knowledge/product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md)
 
 ## 详细说明
 
-- (none)
+- acceptance_criteria: 示例验收标准A; 示例验收标准B
 
 ## 依据与证据
 
@@ -281,28 +284,30 @@ layer_scope: system
 """,
     ),
     (
-        "knowledge/product/PM-EXAMPLE/UC-EXAMPLE-001.md",
+        "knowledge/product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md",
         """---
 type: Use Case
 title: 示例用例
-description: null
+description: 仅用于演示产品视角数据结构（示例）。
 tags: [product, UC]
 timestamp: "%s"
-full_id: UC-EXAMPLE-001
+full_id: UC-EXAMPLE
 perspective: product
 hierarchy: UC
-parent_id: FT-EXAMPLE
+parent_id: FR-EXAMPLE
 layer_scope: system
 ---
 ## 关系
 
-- parent: [FT-EXAMPLE](/knowledge/product/PM-EXAMPLE/FT-EXAMPLE.md)
+- parent: [FR-EXAMPLE](/knowledge/product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/FR-EXAMPLE.md)
 
 ## 跨视角
 
-- (none)
+- map_to_api_id: [API-EXAMPLE-001](/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md)
 
 ## 详细说明
+
+### UC-001
 
 - (none)
 

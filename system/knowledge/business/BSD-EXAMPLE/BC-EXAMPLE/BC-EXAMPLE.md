@@ -1,7 +1,7 @@
 ---
 type: Bounded Context
 title: 示例限界上下文
-description: null
+description: 仅用于演示业务视角数据结构（示例）。
 tags: [business, BC]
 timestamp: "2026-06-21T00:00:00Z"
 full_id: BC-EXAMPLE
@@ -14,11 +14,11 @@ layer_scope: system
 
 - parent: [BSD-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md)
 - aggregates:
-  - [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
+  - [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)
 
 ## 跨视角
 
-- (none)
+- implemented_by_app_id: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
 
 ## 详细说明
 

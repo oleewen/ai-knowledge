@@ -13,10 +13,6 @@ layer_scope: system
 ## 关系
 
 - parent: [PL-EXAMPLE](/knowledge/product/PL-EXAMPLE.md)
-- children:
-  - [BP-EXAMPLE](/knowledge/product/PM-EXAMPLE/BP-EXAMPLE.md)
-  - [BR-EXAMPLE](/knowledge/product/PM-EXAMPLE/BR-EXAMPLE.md)
-  - [FT-EXAMPLE](/knowledge/product/PM-EXAMPLE/FT-EXAMPLE.md)
 
 ## 跨视角
 
