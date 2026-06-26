@@ -14,7 +14,7 @@ layer_scope: application
 
 - parent: [BSD-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md)
 - aggregates:
-  - [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
+  - [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)
 
 ## 跨视角
 

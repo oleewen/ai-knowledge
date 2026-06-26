@@ -1,7 +1,6 @@
 ---
 type: Documentation
-title: ENT-EXAMPLE
+title: FT-EXAMPLE
 ---
-# ENT-EXAMPLE
 
 索引入口见 [index.md](index.md)。

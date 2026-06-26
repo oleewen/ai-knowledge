@@ -7,12 +7,14 @@ timestamp: "2026-06-21T00:00:00Z"
 full_id: DS-EXAMPLE
 perspective: data
 hierarchy: DS
-parent_id: null
+parent_id: MDG-EXAMPLE
 layer_scope: application
 ---
 ## 关系
 
-- (none)
+- parent: [MDG-EXAMPLE](/knowledge/data/MDG-EXAMPLE.md)
+- children:
+  - [ENT-EXAMPLE](/knowledge/data/DS-EXAMPLE/ENT-EXAMPLE.md)
 
 ## 跨视角
 

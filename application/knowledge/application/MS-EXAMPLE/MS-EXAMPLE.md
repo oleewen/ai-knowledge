@@ -7,17 +7,19 @@ timestamp: "2026-06-21T00:00:00Z"
 full_id: MS-EXAMPLE
 perspective: application
 hierarchy: MS
-parent_id: null
+parent_id: APP-EXAMPLE
 layer_scope: application
 ---
 ## 关系
 
-- (none)
+- parent: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE.md)
+- children:
+  - [API-EXAMPLE-001](/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md)
 
 ## 跨视角
 
 - cross_references:
-  - [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md)
+  - [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE/BC-EXAMPLE.md)
   - [PM-EXAMPLE](/knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md)
   - [API-EXAMPLE-001](/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md)
 

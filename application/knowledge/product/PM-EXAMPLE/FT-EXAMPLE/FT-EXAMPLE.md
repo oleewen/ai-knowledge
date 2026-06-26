@@ -13,11 +13,13 @@ layer_scope: application
 ## 关系
 
 - parent: [PM-EXAMPLE](/knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md)
+- children:
+  - [FR-EXAMPLE](/knowledge/product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/FR-EXAMPLE.md)
 
 ## 跨视角
 
 - invokes_api_ids: [API-EXAMPLE-001](/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md)
-- realizes_use_case_ids: [UC-EXAMPLE-001](/knowledge/product/PM-EXAMPLE/UC-EXAMPLE-001.md)
+- realizes_use_case_ids: [UC-EXAMPLE](/knowledge/product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md)
 
 ## 详细说明
 

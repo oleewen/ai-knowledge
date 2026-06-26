@@ -12,11 +12,11 @@ layer_scope: application
 ---
 ## 关系
 
-- parent: [DS-EXAMPLE](/knowledge/data/DS-EXAMPLE.md)
+- parent: [DS-EXAMPLE](/knowledge/data/DS-EXAMPLE/DS-EXAMPLE.md)
 
 ## 跨视角
 
-- maps_to_aggregate_id: [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
+- maps_to_aggregate_id: [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)
 
 ## 详细说明
 

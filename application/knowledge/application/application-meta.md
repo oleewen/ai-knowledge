@@ -2,7 +2,6 @@
 type: Perspective Meta
 title: 应用视角元数据（application/knowledge/application）
 ---
-# 应用视角元数据（application/knowledge/application）
 
 应用侧实现版图（SYS→APP→MS→API）实体登记与接口实现元数据。实例索引见 [../index.md](../index.md)（§3，扫描生成；实体文件 `{ID}.md` 为 SSOT）。
 
@@ -70,8 +69,10 @@ title: 应用视角元数据（application/knowledge/application）
 
 application 层与 system 层 MS/API 落盘路径 **intentionally 不同**；跨层对照以本表为准，不强制文件搬迁。
 
+本层目录约定：`SYS`、`APP` 保留为根文件；目录从 `MS-{NAME}/` 开始，`API` 作为 `MS` 目录下叶子文件。
+
 | 实体 | system 路径 | application 路径 | 说明 |
-|------|-------------|-------------------|------|
+| --- | --- | --- | --- |
 | SYS-EXAMPLE | `system/knowledge/application/SYS-EXAMPLE.md` | `application/knowledge/application/SYS-EXAMPLE.md` | 均为视角根 reference |
 | APP-EXAMPLE | `system/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md` | `application/knowledge/application/APP-EXAMPLE.md` | system 有 APP 锚点目录 |
 | MS-EXAMPLE | `system/knowledge/application/APP-EXAMPLE/MS-EXAMPLE.md` | `application/knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md` | system 嵌于 APP；application 独立 MS 目录 |

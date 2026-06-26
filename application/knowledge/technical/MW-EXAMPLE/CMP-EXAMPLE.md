@@ -7,12 +7,12 @@ timestamp: "2026-06-21T00:00:00Z"
 full_id: CMP-EXAMPLE
 perspective: technical
 hierarchy: CMP
-parent_id: null
+parent_id: MW-EXAMPLE
 layer_scope: application
 ---
 ## 关系
 
-- (none)
+- parent: [MW-EXAMPLE](/knowledge/technical/MW-EXAMPLE/MW-EXAMPLE.md)
 
 ## 跨视角
 

@@ -12,7 +12,7 @@ layer_scope: application
 ---
 ## 关系
 
-- parent: [DS-EXAMPLE](/knowledge/data/DS-EXAMPLE.md)
+- parent: [DS-EXAMPLE](/knowledge/data/DS-EXAMPLE/DS-EXAMPLE.md)
 
 ## 跨视角
 
