@@ -9,7 +9,6 @@ if [[ ! -f "$SCRIPT" ]]; then
   echo "02_detect_violation: FAIL (script missing: $SCRIPT)" >&2
   exit 1
 fi
-
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
