@@ -12,7 +12,7 @@ from pathlib import Path
 
 bundle_root = Path(sys.argv[1])
 repo_root = bundle_root.parent
-sys.path.insert(0, str(repo_root / "scripts" / "okf"))
+sys.path.insert(0, str(repo_root / "agent" / "skills" / "docs-okf" / "scripts"))
 import okf_lib  # noqa: E402
 
 n = 0

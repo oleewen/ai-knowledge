@@ -24,4 +24,4 @@ set -e
 printf '%s\n' "$out" | grep -Fq 'KNOWLEDGE_TYPE' || fail "stderr 应提及 KNOWLEDGE_TYPE"
 printf '%s\n' "$out" | grep -Fq 'scope=knowledge' || fail "stderr 应提示 scope=knowledge"
 
-pass "无 KNOWLEDGE_TYPE 时 validate-okf.sh 中止"
+pass "无 KNOWLEDGE_TYPE 时 okf-validate.sh 中止"

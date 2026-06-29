@@ -8,7 +8,7 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(ROOT / "scripts" / "okf"))
+sys.path.insert(0, str(ROOT / "agent" / "skills" / "docs-okf" / "scripts"))
 import generate_index  # noqa: E402
 import generate_knowledge_index  # noqa: E402
 import okf_lib  # noqa: E402

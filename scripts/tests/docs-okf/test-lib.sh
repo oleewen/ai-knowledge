@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 RESOLVE_SCRIPT="$ROOT_DIR/agent/skills/docs-okf/scripts/resolve-okf-paths.sh"
-VALIDATE_SCRIPT="$ROOT_DIR/scripts/validate-okf.sh"
+VALIDATE_SCRIPT="$ROOT_DIR/agent/skills/docs-okf/scripts/okf-validate.sh"
 
 fail() { printf 'FAIL: %s\n' "$*" >&2; exit 1; }
 pass() { printf 'PASS: %s\n' "$*"; }

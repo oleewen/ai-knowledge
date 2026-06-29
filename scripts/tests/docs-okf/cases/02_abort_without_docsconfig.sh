@@ -22,4 +22,4 @@ set -e
 printf '%s\n' "$out" | grep -Fq '.docsconfig' || fail "stderr 应提及 .docsconfig"
 printf '%s\n' "$out" | grep -Fq 'docs-install' || fail "stderr 应提示 docs-install"
 
-pass "无 .docsconfig 时 validate-okf.sh 中止"
+pass "无 .docsconfig 时 okf-validate.sh 中止"

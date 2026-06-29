@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(ROOT / "scripts" / "okf"))
+sys.path.insert(0, str(ROOT / "agent" / "skills" / "docs-okf" / "scripts"))
 import inject_frontmatter  # noqa: E402
 import okf_lib  # noqa: E402
 

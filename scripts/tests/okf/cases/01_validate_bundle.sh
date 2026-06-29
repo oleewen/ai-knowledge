@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
-VALIDATE_SCRIPT="$ROOT/scripts/validate-okf.sh"
+VALIDATE_SCRIPT="$ROOT/agent/skills/docs-okf/scripts/okf-validate.sh"
 BUNDLE_ROOT="$ROOT/application"
 VIZ_HTML="$BUNDLE_ROOT/viz.html"
 LEGACY_ENTITIES="$BUNDLE_ROOT/knowledge/business/business-entities.md"
@@ -28,12 +28,12 @@ EOF
 fi
 
 if [[ ! -x "$VALIDATE_SCRIPT" ]] && [[ ! -f "$VALIDATE_SCRIPT" ]]; then
-  echo "未找到 validate-okf.sh: $VALIDATE_SCRIPT" >&2
+  echo "未找到 okf-validate.sh: $VALIDATE_SCRIPT" >&2
   exit 1
 fi
 
 set +e
-out="$(bash "$VALIDATE_SCRIPT" 2>&1)"
+out="$(bash "$VALIDATE_SCRIPT" --bundle application 2>&1)"
 code=$?
 set -e
 
