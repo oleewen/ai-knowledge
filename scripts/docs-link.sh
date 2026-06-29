@@ -280,7 +280,18 @@ CMD=''
 TARGET_RAW=''
 CLI_APP_NAME=''
 
-usage() {
+docs_link_require_value() {
+  local flag="${1:?flag is required}"
+  local value="${2-}"
+  [[ -n "$value" ]] || sdx_error "缺少 ${flag} 值"
+}
+
+docs_link_unknown_arg() {
+  local arg="${1:?arg is required}"
+  sdx_error "未知参数: ${arg}"
+}
+
+docs_link_usage() {
   cat >&2 <<'EOF'
 用法: ./scripts/docs-link.sh --link|--unlink --target <目标知识库仓库根> [--app-name 名] [--dry-run]
 
@@ -307,57 +318,63 @@ usage() {
 EOF
 }
 
-while (( $# > 0 )); do
-  case "$1" in
-    --link)
-      [[ "$CMD" == 'unlink' ]] && sdx_error "不能同时指定 --link 与 --unlink"
-      [[ "$CMD" == 'link' ]] && sdx_error "重复指定 --link"
-      CMD='link'
-      shift
-      ;;
-    --unlink)
-      [[ "$CMD" == 'link' ]] && sdx_error "不能同时指定 --link 与 --unlink"
-      [[ "$CMD" == 'unlink' ]] && sdx_error "重复指定 --unlink"
-      CMD='unlink'
-      shift
-      ;;
-    --dry-run)   DRY=1; shift ;;
-    --app-name=*)
-      CLI_APP_NAME="${1#*=}"
-      shift
-      ;;
-    --app-name)
-      shift
-      [[ -n "${1:-}" ]] || sdx_error "缺少 --app-name 值"
-      CLI_APP_NAME="$1"
-      shift
-      ;;
-    --target=*)  TARGET_RAW="${1#*=}"; shift ;;
-    --target)
-      shift
-      [[ -n "${1:-}" ]] || sdx_error "缺少 --target 值"
-      TARGET_RAW="$1"
-      shift
-      ;;
-    --path=*)
-      TARGET_RAW="${1#*=}"
-      sdx_warn "--path 已弃用，请改用 --target"
-      shift
-      ;;
-    --path)
-      shift
-      [[ -n "${1:-}" ]] || sdx_error "缺少 --path 值"
-      TARGET_RAW="$1"
-      sdx_warn "--path 已弃用，请改用 --target"
-      shift
-      ;;
-    -h|--help)
-      usage
-      exit 0
-      ;;
-    *) sdx_error "未知参数: $1" ;;
-  esac
-done
+docs_link_parse_args() {
+  while (( $# > 0 )); do
+    case "$1" in
+      --link)
+        [[ "$CMD" == 'unlink' ]] && sdx_error "不能同时指定 --link 与 --unlink"
+        [[ "$CMD" == 'link' ]] && sdx_error "重复指定 --link"
+        CMD='link'
+        shift
+        ;;
+      --unlink)
+        [[ "$CMD" == 'link' ]] && sdx_error "不能同时指定 --link 与 --unlink"
+        [[ "$CMD" == 'unlink' ]] && sdx_error "重复指定 --unlink"
+        CMD='unlink'
+        shift
+        ;;
+      --dry-run) DRY=1; shift ;;
+      --app-name=*)
+        CLI_APP_NAME="${1#*=}"
+        shift
+        ;;
+      --app-name)
+        shift
+        docs_link_require_value "--app-name" "${1:-}"
+        CLI_APP_NAME="$1"
+        shift
+        ;;
+      --target=*) TARGET_RAW="${1#*=}"; shift ;;
+      --target)
+        shift
+        docs_link_require_value "--target" "${1:-}"
+        TARGET_RAW="$1"
+        shift
+        ;;
+      --path=*)
+        TARGET_RAW="${1#*=}"
+        sdx_warn "--path 已弃用，请改用 --target"
+        shift
+        ;;
+      --path)
+        shift
+        docs_link_require_value "--path" "${1:-}"
+        TARGET_RAW="$1"
+        sdx_warn "--path 已弃用，请改用 --target"
+        shift
+        ;;
+      -h|--help)
+        docs_link_usage
+        exit 0
+        ;;
+      *)
+        docs_link_unknown_arg "$1"
+        ;;
+    esac
+  done
+}
+
+docs_link_parse_args "$@"
 
 validate_link_command "$CMD" || sdx_error "请指定 --link 或 --unlink（二选一）"
 [[ -n "$TARGET_RAW" ]] || sdx_error "请指定 --target <目标仓库根>（仍兼容 --target=PATH）"
@@ -440,64 +457,78 @@ elif [[ "$CMD" == 'link' && "$expect_target" != 'application' && -n "$CLI_APP_NA
   sdx_warn "--app-name 仅用于 system→application 建联，已忽略"
 fi
 
-case "$CMD" in
-  link)
-    link_is_update=$have
-    if [[ "$have" -eq 1 ]]; then
-      repos[matched_idx]="$REGISTER_REPO"
-      paths[matched_idx]="$REGISTER_PATH_STORED"
-      doc_dirs[matched_idx]="$TARGET_DOC_DIR"
-      app_names[matched_idx]="${TARGET_APP_NAME:-}"
-      app_labels[matched_idx]="${TARGET_APP_LABEL:-}"
-    else
-      repos+=("$REGISTER_REPO")
-      paths+=("$REGISTER_PATH_STORED")
-      doc_dirs+=("$TARGET_DOC_DIR")
-      app_names+=("${TARGET_APP_NAME:-}")
-      app_labels+=("${TARGET_APP_LABEL:-}")
-    fi
-    knowledge_links_write_quads "$LIST_FILE" repos paths doc_dirs app_names app_labels
-    _link_verb='已登记'; [[ "$link_is_update" -eq 1 ]] && _link_verb='已更新登记'
-    _link_info=''
-    if [[ -n "$TARGET_APP_NAME" && -n "$TARGET_DOC_DIR" ]]; then
-      _link_info=" (doc_dir=${TARGET_DOC_DIR}, application-${TARGET_APP_NAME})"
-    elif [[ -n "$TARGET_APP_NAME" ]]; then
-      _link_info=" (application-${TARGET_APP_NAME})"
-    elif [[ -n "$TARGET_DOC_DIR" ]]; then
-      _link_info=" (doc_dir=${TARGET_DOC_DIR})"
-    fi
-    _loc=''
-    [[ -n "$REGISTER_REPO" ]] && _loc=" repository=${REGISTER_REPO}"
-    _loc="${_loc} path=${REGISTER_PATH_STORED}"
-    printf '%s: %s → identity=%s%s%s\n' "$_link_verb" "$LIST_FILE" "$REGISTER_KEY" "$_loc" "$_link_info"
-    ;;
-  unlink)
-    [[ "$have" -eq 0 ]] && { printf '提示: 未找到登记项，跳过: %s\n' "$REGISTER_KEY" >&2; exit 0; }
-    UNLINK_APP_NAME=''
-    if [[ "$matched_idx" -ge 0 && "$_skt" == 'system' ]]; then
-      UNLINK_APP_NAME="${app_names[matched_idx]:-}"
-      if [[ -z "$UNLINK_APP_NAME" ]]; then
-        if [[ -n "${repos[matched_idx]:-}" ]]; then
-          UNLINK_APP_NAME="$(knowledge_link_app_name_from_register_key "${repos[matched_idx]}")" || UNLINK_APP_NAME=''
-        else
-          _exp="$(knowledge_link_expand_stored_path "${paths[matched_idx]}")"
-          UNLINK_APP_NAME="$(knowledge_link_app_name_from_register_key "$_exp")" || UNLINK_APP_NAME=''
-        fi
+docs_link_execute_link() {
+  local link_is_update
+  local link_info=''
+  local link_loc=''
+  local link_verb='已登记'
+
+  link_is_update=$have
+  if [[ "$have" -eq 1 ]]; then
+    repos[matched_idx]="$REGISTER_REPO"
+    paths[matched_idx]="$REGISTER_PATH_STORED"
+    doc_dirs[matched_idx]="$TARGET_DOC_DIR"
+    app_names[matched_idx]="${TARGET_APP_NAME:-}"
+    app_labels[matched_idx]="${TARGET_APP_LABEL:-}"
+  else
+    repos+=("$REGISTER_REPO")
+    paths+=("$REGISTER_PATH_STORED")
+    doc_dirs+=("$TARGET_DOC_DIR")
+    app_names+=("${TARGET_APP_NAME:-}")
+    app_labels+=("${TARGET_APP_LABEL:-}")
+  fi
+
+  knowledge_links_write_quads "$LIST_FILE" repos paths doc_dirs app_names app_labels
+
+  [[ "$link_is_update" -eq 1 ]] && link_verb='已更新登记'
+  if [[ -n "$TARGET_APP_NAME" && -n "$TARGET_DOC_DIR" ]]; then
+    link_info=" (doc_dir=${TARGET_DOC_DIR}, application-${TARGET_APP_NAME})"
+  elif [[ -n "$TARGET_APP_NAME" ]]; then
+    link_info=" (application-${TARGET_APP_NAME})"
+  elif [[ -n "$TARGET_DOC_DIR" ]]; then
+    link_info=" (doc_dir=${TARGET_DOC_DIR})"
+  fi
+  [[ -n "$REGISTER_REPO" ]] && link_loc=" repository=${REGISTER_REPO}"
+  link_loc="${link_loc} path=${REGISTER_PATH_STORED}"
+  printf '%s: %s → identity=%s%s%s\n' "$link_verb" "$LIST_FILE" "$REGISTER_KEY" "$link_loc" "$link_info"
+}
+
+docs_link_execute_unlink() {
+  local unlink_app_name=''
+  local exp=''
+  local i
+  declare -a newr=() newp=() newd=() newa=() newl=()
+
+  [[ "$have" -eq 0 ]] && { printf '提示: 未找到登记项，跳过: %s\n' "$REGISTER_KEY" >&2; exit 0; }
+  if [[ "$matched_idx" -ge 0 && "$_skt" == 'system' ]]; then
+    unlink_app_name="${app_names[matched_idx]:-}"
+    if [[ -z "$unlink_app_name" ]]; then
+      if [[ -n "${repos[matched_idx]:-}" ]]; then
+        unlink_app_name="$(knowledge_link_app_name_from_register_key "${repos[matched_idx]}")" || unlink_app_name=''
+      else
+        exp="$(knowledge_link_expand_stored_path "${paths[matched_idx]}")"
+        unlink_app_name="$(knowledge_link_app_name_from_register_key "$exp")" || unlink_app_name=''
       fi
     fi
-    declare -a newr=() newp=() newd=() newa=() newl=()
-    for i in "${!paths[@]}"; do
-      [[ "$(knowledge_link_identity_from_stored_entry "${repos[i]:-}" "${paths[i]}")" == "$new_identity" ]] && continue
-      newr+=("${repos[i]:-}")
-      newp+=("${paths[i]}")
-      newd+=("${doc_dirs[i]:-}")
-      newa+=("${app_names[i]:-}")
-      newl+=("${app_labels[i]:-}")
-    done
-    knowledge_links_write_quads "$LIST_FILE" newr newp newd newa newl
-    if [[ -n "$UNLINK_APP_NAME" ]]; then
-      knowledge_link_remove_application_slot "$_sdoc" "$UNLINK_APP_NAME"
-    fi
-    printf '已注销: %s 中的 %s\n' "$LIST_FILE" "$REGISTER_KEY"
-    ;;
+  fi
+
+  for i in "${!paths[@]}"; do
+    [[ "$(knowledge_link_identity_from_stored_entry "${repos[i]:-}" "${paths[i]}")" == "$new_identity" ]] && continue
+    newr+=("${repos[i]:-}")
+    newp+=("${paths[i]}")
+    newd+=("${doc_dirs[i]:-}")
+    newa+=("${app_names[i]:-}")
+    newl+=("${app_labels[i]:-}")
+  done
+
+  knowledge_links_write_quads "$LIST_FILE" newr newp newd newa newl
+  if [[ -n "$unlink_app_name" ]]; then
+    knowledge_link_remove_application_slot "$_sdoc" "$unlink_app_name"
+  fi
+  printf '已注销: %s 中的 %s\n' "$LIST_FILE" "$REGISTER_KEY"
+}
+
+case "$CMD" in
+  link) docs_link_execute_link ;;
+  unlink) docs_link_execute_unlink ;;
 esac

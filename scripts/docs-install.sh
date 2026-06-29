@@ -7,6 +7,8 @@ readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # 配置层与 .docsconfig 工具统一下沉到 docs-config.sh
 # shellcheck source=./docs-config.sh
 source "$SCRIPT_DIR/docs-config.sh"
+# shellcheck source=../agent/scripts/cli-core.sh
+source "$SCRIPT_DIR/../agent/scripts/cli-core.sh"
 
 # =============================================================================
 # § 1  全局状态
@@ -176,13 +178,13 @@ docs_install_inject_readme_agent_note() {
 }
 
 # 知识库安装并写入 .docsconfig 后：按 AGENT_DIRS 首项将 agent/ 重写为主 Agent 目录，并更新 README 提示
-rewrite_knowledge_agent_paths_after_install() {
+docs_install_rewrite_agent_paths() {
   [[ "${CFG[dry_run]}" == '1' ]] && return 0
   [[ "${CFG[scope]}" == 'knowledge' ]] || return 0
   [[ -n "${CFG[docs_abs]:-}" ]] || return 0
 
   local repo_target='' doc_root='' dd=''
-  resolve_docsconfig_roots repo_target doc_root dd
+  docs_install_resolve_docsconfig_roots repo_target doc_root dd
 
   local cfg="$repo_target/.docsconfig"
   [[ -f "$cfg" ]] || { sdx_warn "未找到 $cfg，跳过 agent/ 路径重写"; return 0; }
@@ -321,7 +323,7 @@ install_docs_link_scripts_to_target_repo() {
 }
 
 # 步骤 1 分发：按 type × mode 将知识库模板安装至目标文档目录
-install_docs() {
+docs_install_copy_templates() {
   case "${CFG[type]}" in
     application)
       if [[ "${CFG[mode]}" == 'central' ]]; then
@@ -345,7 +347,7 @@ install_docs() {
 # 说明：
 #   - 有 docs_abs：从 docs_abs 推导 repo_target 与 dd
 #   - 无 docs_abs：回退到 HOME（仅 config/knowledge scope 时调用）
-resolve_docsconfig_roots() {
+docs_install_resolve_docsconfig_roots() {
   local -n _rt="${1:?}"   # repo_target（输出）
   local -n _dr="${2:?}"   # doc_root（输出）
   local -n _dd="${3:?}"   # doc_dir（输出）
@@ -406,7 +408,7 @@ install_agent_path() {
 
 # 写入目标工程仓库根 .docsconfig（DOC_*、KNOWLEDGE_TYPE；scope=config|knowledge 均按需补全 AGENT_*）
 # dry-run 时仅预览，不写入
-install_docsconfig() {
+docs_install_write_docsconfig() {
   local doc_root='' repo_target='' dd=''
   local old_doc_root='' old_repo_root='' old_doc_dir=''
   local old_agent_root='' old_agent_dirs=''
@@ -414,7 +416,7 @@ install_docsconfig() {
   local cfg_file existed=0
   local kt_out=''
   local ar_out='' ads_out=''
-  resolve_docsconfig_roots repo_target doc_root dd
+  docs_install_resolve_docsconfig_roots repo_target doc_root dd
 
   # ── 读取已有 .docsconfig（若存在）────────────────────────────────────────
   cfg_file="$repo_target/.docsconfig"
@@ -449,7 +451,7 @@ install_docsconfig() {
 # § 9  CLI：usage / parse_args
 # =============================================================================
 
-usage() {
+docs_install_usage() {
   cat >&2 <<'EOF'
 用法
   docs-install.sh [选项] --target <目标工程文档目录>
@@ -501,28 +503,28 @@ usage() {
 EOF
 }
 
-parse_args() {
+docs_install_parse_args() {
   while (( $# > 0 )); do
     case "$1" in
       --target=*) CFG[target_opt]="${1#*=}";                  shift ;;
       --target)
         shift
-        [[ -n "${1:-}" ]] || sdx_error "缺少 --target 值（目标工程文档目录）"
+        sdx_cli_require_value "--target" "${1:-}"
         CFG[target_opt]="$1"
         shift
         ;;
       --mode=*)   CFG[mode]="${1#*=}";                        shift ;;
-      --mode)     shift; CFG[mode]="${1:-}";                  shift ;;
+      --mode)     shift; sdx_cli_require_value "--mode" "${1:-}"; CFG[mode]="${1:-}"; shift ;;
       --scope=*)  CFG[scope]="${1#*=}";                       shift ;;
-      --scope)    shift; CFG[scope]="${1:-}";                 shift ;;
+      --scope)    shift; sdx_cli_require_value "--scope" "${1:-}"; CFG[scope]="${1:-}"; shift ;;
       --type=*)   CFG[type]="${1#*=}"; CFG[type_explicit]=1;  shift ;;
-      --type)     shift; CFG[type]="${1:-}"; CFG[type_explicit]=1; shift ;;
+      --type)     shift; sdx_cli_require_value "--type" "${1:-}"; CFG[type]="${1:-}"; CFG[type_explicit]=1; shift ;;
       --dry-run)  CFG[dry_run]=1;                             shift ;;
       --force)    CFG[force]=1;                               shift ;;
       -r)         CFG[create_project_root]=1;                 shift ;;
-      -h|--help)  usage; exit 0 ;;
+      -h|--help)  docs_install_usage; exit 0 ;;
       *)
-        sdx_error "未知参数: $1（使用 -h 或 --help 查看帮助）"
+        sdx_cli_unknown_arg "$1"
         ;;
     esac
   done
@@ -538,7 +540,7 @@ parse_args() {
 # =============================================================================
 
 # 初始化并校验 REPO_ROOT
-init_repo_root() {
+docs_install_init_repo_root() {
   if [[ -z "${CFG[repo_root]}" ]]; then
     CFG[repo_root]="$(abs_path "$SCRIPT_DIR/..")"
   fi
@@ -546,7 +548,7 @@ init_repo_root() {
 }
 
 # 校验并规范化文档目录与工程根目录
-validate_docs_and_target() {
+docs_install_validate_docs_target() {
   [[ -n "${CFG[docs_abs]}" ]] \
     || sdx_error "内部错误：应在提供 <目标工程文档目录> 后调用文档路径校验"
 
@@ -578,7 +580,7 @@ apply_mode() {
 }
 
 # 规范化并校验 --scope
-validate_sync_scope() {
+docs_install_validate_scope() {
   [[ "${CFG[scope]}" != 'ck' ]] \
     || sdx_error "无效 --scope: ck（已移除，请使用 --scope=k 或 --scope=knowledge）"
   validate_scope "${CFG[scope]}" \
@@ -658,7 +660,7 @@ validate_type_sources() {
 # § 11  完成提示
 # =============================================================================
 
-print_checklist() {
+docs_install_print_checklist() {
   sdx_log ''
   sdx_log '─────────────────────────────────────────────────────────────────────────'
   sdx_log "初始化完成  目标: ${CFG[docs_abs]}"
@@ -670,9 +672,9 @@ print_checklist() {
 # § 12  主入口（parse_args 之后的主体）
 # =============================================================================
 
-docs_init_run() {
-  init_repo_root
-  validate_sync_scope
+docs_install_run() {
+  docs_install_init_repo_root
+  docs_install_validate_scope
   validate_docs_arg_for_scope
   apply_type_scope_policy
   resolve_type
@@ -682,18 +684,18 @@ docs_init_run() {
 
   validate_type_sources
 
-  # ── scope=config：仅 install_docsconfig，后退出 ─────────────────────────
+  # ── scope=config：仅 docs_install_write_docsconfig，后退出 ─────────────────
   if [[ "${CFG[scope]}" == 'config' ]]; then
     [[ -n "${HOME:-}" ]] || sdx_error "需要 HOME 环境变量"
     CFG[home_abs]="$(abs_path "$HOME")"
-    validate_docs_and_target
-    install_docsconfig
+    docs_install_validate_docs_target
+    docs_install_write_docsconfig
     sdx_info "完成：docs-install（--scope=config）"
-    print_checklist
+    docs_install_print_checklist
     exit 0
   fi
 
-  validate_docs_and_target
+  docs_install_validate_docs_target
 
   DOC_INIT_STAMP="$(date +%Y-%m-%d_%H-%M-%S)"
 
@@ -710,23 +712,23 @@ docs_init_run() {
   fi
 
   if [[ -n "${CFG[docs_abs]}" && "${CFG[scope]}" == 'knowledge' ]]; then
-    install_docs
+    docs_install_copy_templates
     install_docs_link_scripts_to_target_repo
-    install_docsconfig
-    rewrite_knowledge_agent_paths_after_install
+    docs_install_write_docsconfig
+    docs_install_rewrite_agent_paths
   fi
 
   docs_install_sync_conflict_mode
 
   sdx_info "完成：初始化"
-  print_checklist
+  docs_install_print_checklist
 }
 
 # ========== 入口（默认 --scope=k，即 knowledge）==========
 if [[ "$#" -eq 0 ]]; then
-  parse_args --scope="${KINIT_DEFAULT_SCOPE:-k}"
+  docs_install_parse_args --scope="${KINIT_DEFAULT_SCOPE:-k}"
 else
-  parse_args "$@"
+  docs_install_parse_args "$@"
 fi
 
-docs_init_run
+docs_install_run

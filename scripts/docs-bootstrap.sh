@@ -93,6 +93,17 @@ if ! declare -F sdx_log >/dev/null 2>&1; then
   sdx_error() { printf '[ERROR] %s\n' "$*" >&2; exit 1; }
 fi
 
+sdx_bs_require_value() {
+  local flag="${1:?flag}"
+  local value="${2-}"
+  [[ -n "$value" ]] || sdx_error "缺少 ${flag} 值"
+}
+
+sdx_bs_unknown_arg() {
+  local arg="${1:?arg}"
+  sdx_error "未知参数: ${arg}（使用 -h 查看帮助）"
+}
+
 # =============================================================================
 # § 4  环境检查（Bash 版本见 docs-core.sh 之 require_bash5；预载失败时 §1 回退已定义）
 # =============================================================================
@@ -219,7 +230,7 @@ sdx_bs_parse_args() {
         ;;
       --doc-target)
         shift
-        [[ -n "${1:-}" ]] || sdx_error "缺少 --doc-target 值"
+        sdx_bs_require_value "--doc-target" "${1:-}"
         SDX_BS_DOC_TARGET="$1"
         shift
         ;;
@@ -229,7 +240,7 @@ sdx_bs_parse_args() {
         ;;
       --agents)
         shift
-        [[ -n "${1:-}" ]] || sdx_error "缺少 --agents 值"
+        sdx_bs_require_value "--agents" "${1:-}"
         SDX_BS_AGENTS="$(sdx_bs_normalize_agents "$1")"
         shift
         ;;
@@ -239,7 +250,7 @@ sdx_bs_parse_args() {
         ;;
       --agent-scope)
         shift
-        [[ -n "${1:-}" ]] || sdx_error "缺少 --agent-scope 值"
+        sdx_bs_require_value "--agent-scope" "${1:-}"
         SDX_BS_AGENT_SCOPE="$1"
         shift
         ;;
@@ -248,7 +259,7 @@ sdx_bs_parse_args() {
         exit 0
         ;;
       *)
-        sdx_error "未知参数: $1（使用 -h 查看帮助）"
+        sdx_bs_unknown_arg "$1"
         ;;
     esac
   done
@@ -398,6 +409,23 @@ sdx_bs_collect_params() {
 # § 7  主流程
 # =============================================================================
 
+sdx_bs_run_docs_install() {
+  local docs_install="${1:?docs_install}"
+  sdx_log ''
+  sdx_info '>>> 执行 docs-install.sh...'
+  export REPO_ROOT="$SDX_BS_CLONE_DIR"
+  bash "$docs_install" --target "$SDX_BS_DOC_TARGET" \
+    || sdx_error "docs-install 执行失败，已中止"
+}
+
+sdx_bs_run_agent_install() {
+  local agent_install="${1:?agent_install}"
+  sdx_log ''
+  sdx_info '>>> 执行 agent-install.sh...'
+  bash "$agent_install" --agents="$SDX_BS_AGENTS" --target "$SDX_BS_AGENT_TARGET" \
+    || sdx_error "agent-install 执行失败"
+}
+
 sdx_bs_main() {
   require_bash5
   sdx_bs_check_deps
@@ -441,18 +469,8 @@ sdx_bs_main() {
   sdx_log ''
   sdx_info "已加载共享配置（agent/scripts/docs-core.sh）"
 
-  # § 8  执行 docs-install
-  sdx_log ''
-  sdx_info '>>> 执行 docs-install.sh...'
-  export REPO_ROOT="$SDX_BS_CLONE_DIR"
-  bash "$docs_install" --target "$SDX_BS_DOC_TARGET" \
-    || sdx_error "docs-install 执行失败，已中止"
-
-  # § 9  执行 agent-install
-  sdx_log ''
-  sdx_info '>>> 执行 agent-install.sh...'
-  bash "$agent_install" --agents="$SDX_BS_AGENTS" --target "$SDX_BS_AGENT_TARGET" \
-    || sdx_error "agent-install 执行失败"
+  sdx_bs_run_docs_install "$docs_install"
+  sdx_bs_run_agent_install "$agent_install"
 
   sdx_log ''
   sdx_info '完成：docs-bootstrap'
