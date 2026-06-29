@@ -16,7 +16,7 @@ graph TD
 
 **前置**：各视角 README 已与实体 concept 同步（[readme-fill-spec.md](readme-fill-spec.md)）。
 
-**扫描范围**：`{DOC_DIR}/knowledge/{perspective}/` 下所有 `.md`，排除 `index.md`、`*-meta.md`、`*-entities.md`、`KNOWLEDGE_INDEX.md`；仅纳入 frontmatter 含非空 `full_id` 的 concept 文件。可与 `scripts/okf/generate_knowledge_index.py` 同语义。
+**扫描范围**：`{DOC_DIR}/knowledge/{perspective}/` 下所有 `.md`，排除 `index.md`、`*-meta.md`、`*-entities.md`、`KNOWLEDGE_INDEX.md`；仅纳入 frontmatter 含非空 `full_id` 的 concept 文件。可与 `agent/skills/docs-okf/scripts/generate_knowledge_index.py` 同语义。
 
 ## 规则
 
@@ -84,4 +84,4 @@ graph TD
 
 表头模板：[knowledge-index-template.md](../assets/knowledge-index-template.md)。
 
-**生成方式**：优先调用 `python3 scripts/okf/generate_knowledge_index.py --bundle application`；手工维护时须与扫描结果一致。
+**生成方式**：优先调用 `python3 agent/skills/docs-okf/scripts/generate_knowledge_index.py --bundle application`；手工维护时须与扫描结果一致。

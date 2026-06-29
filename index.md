@@ -23,7 +23,7 @@
 | 规范与 Slash | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/skills/README.md](agent/skills/README.md) | 全局约定与 Skill 清单 |
 | 变更与索引运维 | [application/changelogs/README.md](application/changelogs/README.md) | `CHANGE-LOG.md`、`INDEXING-LOG.md` |
 | OKF bundle 与校验 | [agent/skills/docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) | OKF refresh、validate-okf、viz 与产物校验；与九章 INDEX 双索引并存 |
-| OKF 脚本入口 | [scripts/validate-okf.sh](scripts/validate-okf.sh)、[scripts/okf-migrate.sh](scripts/okf-migrate.sh) | 校验与 refresh 编排；详 [scripts/README.md](scripts/README.md) §OKF |
+| OKF 入口 | `/docs-okf` | OKF refresh、校验与可视化（实现归属 `docs-okf`） |
 
 ### 1.2 元信息
 
@@ -45,7 +45,7 @@
 ├── application/                              # 应用侧知识主库：knowledge、阶段、solutions～requirements、changelogs
 ├── system/                                   # 系统知识库：architecture/（五视角文档）、application-APPNAME/ 联邦槽位、analysis/
 ├── company/                                  # 公司知识库：knowledge/（五视角企业架构）、system-SYSNAME/ 联邦槽位、changelogs/、solutions/、analysis/
-├── scripts/                                  # docs-install、OKF（okf/、validate-okf.sh、okf-migrate.sh）、tests/
+├── scripts/                                  # docs-install、tests/
 ├── agent/                                    # rules/、skills/（含 docs-okf）、scripts/（config-bootstrap、校验）
 ├── docs/                                     # 设计备忘；会话 spec 见 docs/superpowers/specs/
 └── .gitignore                                # 忽略 `.*` 等；见 §八
@@ -153,7 +153,7 @@ stateDiagram-v2
 2. **目标工程接入知识库**: `git clone` 或 `docs-bootstrap.sh` → `./scripts/docs-install.sh --target=...`（可选 `--mode=central`、`--scope`、`--type`）。
 3. **仅安装 Agent 配置**: `./scripts/agent-install.sh`（`--target`、`--agents`、`--scope` 等）。
 4. **维护索引与变更**: `/docs-indexing` 更新根 `index.md`；`/docs-change` 更新 [application/changelogs/CHANGE-LOG.md](application/changelogs/CHANGE-LOG.md)。
-5. **OKF refresh 与校验**: `/docs-okf` 或 `bash scripts/okf-migrate.sh`；INDEX 落盘后建议 `python3 scripts/okf/generate_index.py --bundle application --recursive` 并 `bash scripts/validate-okf.sh`（见 [agent/skills/docs-okf/references/workflow.md](agent/skills/docs-okf/references/workflow.md)）。
+5. **OKF refresh 与校验**: `/docs-okf`（实现与内部命令见 [agent/skills/docs-okf/references/workflow.md](agent/skills/docs-okf/references/workflow.md)）。
 6. **知识工程**: `/docs-build` 等按 [agent/skills/README.md](agent/skills/README.md) 执行。
 
 ### 5.3 业务规则（协作）
@@ -209,8 +209,7 @@ stateDiagram-v2
 | `--target` | `docs-install.sh` | 目标工程文档目录，**必填** |
 | `--mode` / `--scope` / `--type` / `--force` / `--dry-run` | `docs-install.sh` | 见 [scripts/README.md](scripts/README.md) |
 | `.docsconfig` 键 | 目标工程仓库根 | `DOC_ROOT`、`REPO_ROOT`、`DOC_DIR`、`KNOWLEDGE_TYPE`；可选 `AGENT_*`（`agent-install`）；OKF 路径解析见 [agent/skills/docs-okf/scripts/resolve-okf-paths.sh](agent/skills/docs-okf/scripts/resolve-okf-paths.sh) |
-| OKF 校验 | [scripts/validate-okf.sh](scripts/validate-okf.sh) | `--bundle` 默认 `.docsconfig` 的 `DOC_DIR`；须 `KNOWLEDGE_TYPE` |
-| OKF refresh | [scripts/okf-migrate.sh](scripts/okf-migrate.sh) | refresh / validate 编排；`--dry-run` 预览 |
+| OKF refresh / 校验 | `/docs-okf` | 公开入口；内部实现位于 `agent/skills/docs-okf/scripts/` |
 
 ### 7.2 环境差异
 

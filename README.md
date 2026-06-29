@@ -183,7 +183,7 @@ Skill 清单见 [agent/skills/README.md](agent/skills/README.md)。
 | Agent 契约 | [AGENTS.md](AGENTS.md) |
 | 应用 / 系统 / 公司元模型 | [application/DESIGN.md](application/DESIGN.md)、[system/DESIGN.md](system/DESIGN.md)、[company/DESIGN.md](company/DESIGN.md) |
 | 初始化脚本 | [scripts/README.md](scripts/README.md) |
-| OKF refresh 与校验 | [agent/skills/docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md)（`scripts/validate-okf.sh`、`scripts/okf-migrate.sh`） |
+| OKF refresh 与校验 | [agent/skills/docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md)（入口：`/docs-okf`） |
 | Skill 清单 | [agent/skills/README.md](agent/skills/README.md) |
 
 ---

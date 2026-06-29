@@ -140,8 +140,7 @@ overview 缓冲区：[knowledge/overview/NAME-overview.md](knowledge/overview/NA
 
 | 项 | 路径/命令 |
 | ---- | ---------- |
-| OKF 校验 | `bash scripts/validate-okf.sh --bundle company` |
-| OKF refresh | `bash scripts/okf-migrate.sh`（须目标工程 `.docsconfig`） |
+| OKF refresh / 校验 | `/docs-okf` |
 | docs-okf Skill | [../agent/skills/docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md) |
 | 测试套件 | `bash scripts/tests/docs-okf/run.sh`（resolve-okf-paths 门禁） |
 

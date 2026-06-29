@@ -31,7 +31,7 @@ title: 文档变更索引
   - `company/docs-meta.md`（自 `docs_meta.md` 重命名）
   - `agent/knowledge/naming-conventions.md`
   - `scripts/docs-install.sh`
-  - `scripts/okf/inject_frontmatter.py`
+  - `agent/skills/docs-okf/scripts/inject_frontmatter.py`
   - 各文档根 INDEX/DESIGN/README/index/manifest/knowledge-meta 引用
   - `application/viz.html`、`system/viz.html`、`company/viz.html`
 

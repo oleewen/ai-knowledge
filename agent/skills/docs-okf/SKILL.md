@@ -10,7 +10,7 @@ description: >
 
 # docs-okf（OKF refresh 与校验）
 
-判定路径 → 读 path-resolution → 读 workflow → 调用 okf-migrate / validate-okf / visualize。
+判定路径 → 读 path-resolution → 读 workflow → 执行 /docs-okf（内部调用 okf-indexing / okf-validate / visualize）。
 
 ## 边界
 
@@ -35,8 +35,10 @@ description: >
 ## 评测 / 脚本
 
 ```bash
-bash scripts/okf-migrate.sh [--dry-run]    # 须 .docsconfig + KNOWLEDGE_TYPE
-bash scripts/validate-okf.sh [--bundle "${DOC_DIR}"]
+/docs-okf
+
+bash agent/skills/docs-okf/scripts/okf-indexing.sh [--dry-run]
+bash agent/skills/docs-okf/scripts/okf-validate.sh [--bundle "${DOC_DIR}"]
 ```
 
 与 docs-build / docs-indexing 协作见 workflow 下游表。

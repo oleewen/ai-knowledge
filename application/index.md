@@ -197,7 +197,7 @@ flowchart TB
 
 | 数据源 | 类型 | 用途 |
 | -------- | ------ | ------ |
-| `knowledge/**/{ID}.md` | Markdown（OKF 概念实体 + frontmatter） | 各视角实体文件（SSOT）；校验 `bash ../scripts/validate-okf.sh --bundle application` |
+| `knowledge/**/{ID}.md` | Markdown（OKF 概念实体 + frontmatter） | 各视角实体文件（SSOT）；校验 `/docs-okf` |
 
 ### 6.2～6.4
 

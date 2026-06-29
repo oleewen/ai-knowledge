@@ -100,30 +100,26 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 
 **说明**：若**只要** Agent、不要本流程中的 knowledge 安装，请 **git clone** 后单独执行 **`./scripts/agent-install.sh`**。
 
-## OKF 工具与校验（validate-okf）
+## OKF 工具与校验（docs-okf）
 
-`scripts/okf/` 提供 OKF bundle 刷新、校验与可视化脚本（frontmatter 注入、index 生成、viz 产物校验等）。门禁入口：
+OKF refresh / 校验 / 可视化的公开入口统一为：`/docs-okf`。
 
-```bash
-bash scripts/validate-okf.sh              # 默认 --bundle application
-bash scripts/validate-okf.sh --bundle application
-bash scripts/okf-migrate.sh               # OKF refresh / validate 编排（可重复运行）
-bash scripts/okf-migrate.sh --dry-run     # 预览各步命令
-```
+实现位于 `agent/skills/docs-okf/scripts/`（用于维护与测试；不建议在公开文档中直接教学 shell/python 调用）。
 
-`validate-okf.sh` 调用 `scripts/okf/validate_bundle.py`，检查 bundle 内 Markdown frontmatter、`full_id` 唯一性、`/knowledge/` 与 `/application/` 链接及 `index.md` 条目；**有错误 exit 1**，仅警告 exit 0。
+`okf-validate.sh` 调用 `validate_bundle.py`，检查 bundle 内 Markdown frontmatter、`full_id` 唯一性、bundle-relative 链接及 `index.md` 条目；**有错误 exit 1**，仅警告 exit 0。
 
-`okf-migrate.sh` 按序调用 frontmatter 注入、index 生成、knowledge index 生成、`visualize.py`、`validate-okf` 与 `validate_viz_index.py`；`--dry-run` 时仅打印将执行的刷新与校验命令。
+`okf-indexing.sh` 按序调用 frontmatter 注入、index 生成、knowledge index 生成、`visualize.py`、`okf-validate.sh` 与 `validate_viz_index.py`；`--dry-run` 时仅打印将执行的刷新与校验命令。
 
 | 脚本 | 说明 |
 | ------ | ------ |
-| `scripts/okf-migrate.sh` | OKF refresh / validate 编排（`--dry-run`） |
-| `scripts/okf/validate_bundle.py` | bundle 校验（`--bundle` / `--repo`） |
-| `scripts/okf/validate_viz_index.py` | index / viz 产物校验 |
-| `scripts/okf/inject_frontmatter.py` | 治理文档 frontmatter 注入 |
-| `scripts/okf/generate_index.py` | 生成 §6 `index.md` |
-| `scripts/okf/generate_knowledge_index.py` | 生成 `index.md` |
-| `scripts/okf/visualize.py` | 生成 bundle 可视化 HTML |
+| `agent/skills/docs-okf/scripts/okf-indexing.sh` | OKF refresh / validate 编排（`--dry-run`） |
+| `agent/skills/docs-okf/scripts/okf-validate.sh` | OKF bundle 校验入口（`--bundle`） |
+| `agent/skills/docs-okf/scripts/validate_bundle.py` | bundle 校验（`--bundle` / `--repo`） |
+| `agent/skills/docs-okf/scripts/validate_viz_index.py` | index / viz 产物校验 |
+| `agent/skills/docs-okf/scripts/inject_frontmatter.py` | 治理文档 frontmatter 注入 |
+| `agent/skills/docs-okf/scripts/generate_index.py` | 生成 OKF 目录 `index.md`（渐进披露） |
+| `agent/skills/docs-okf/scripts/generate_knowledge_index.py` | 生成 `knowledge/index.md` |
+| `agent/skills/docs-okf/scripts/visualize.py` | 生成 bundle 可视化 HTML |
 
 测试（仓库根）：
 

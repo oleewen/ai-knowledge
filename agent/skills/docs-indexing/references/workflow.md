@@ -65,8 +65,8 @@ agent/skills/docs-indexing/scripts/indexing.sh --mode <mode> --depth <depth>
 **OKF 索引（建议，非阻断）**：索引指南落盘后运行：
 
 ```bash
-python3 scripts/okf/generate_index.py --bundle application --recursive
-bash scripts/validate-okf.sh --bundle application
+python3 agent/skills/docs-okf/scripts/generate_index.py --bundle application --recursive
+bash agent/skills/docs-okf/scripts/okf-validate.sh --bundle application
 ```
 
 九章索引指南（仓库根或各 DOC_DIR 的 `index.md`）与各级 OKF `index.md`（渐进披露）职责分离；见 [docs-okf/references/workflow.md](../../docs-okf/references/workflow.md)。

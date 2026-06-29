@@ -35,3 +35,5 @@ CLI/env `--bundle` 可覆盖 `DOC_DIR`；viz 仍用 `KNOWLEDGE_TYPE`。覆盖时
 ## 脚本
 
 `agent/skills/docs-okf/scripts/resolve-okf-paths.sh` — 与 `docs-build/scripts/validate-extraction.sh` 同源 bootstrap。
+
+OKF refresh / 校验实现位于 `agent/skills/docs-okf/scripts/`（包含 `okf-indexing.sh`、`okf-validate.sh` 与相关 `*.py`）。
