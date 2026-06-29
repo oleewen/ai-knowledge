@@ -30,19 +30,37 @@ EOF
   return 1
 }
 
-# Usage: validate_bootstrap_docsconfig "<调用方脚本所在目录>"
+# Usage: validate_bootstrap_docsconfig
 validate_bootstrap_docsconfig() {
-  local script_dir="${1:?script_dir}" rr
-
-  if ! rr="$(docsconfig_find_repo_root "$script_dir")"; then
-    config_bootstrap_fail "[config] 未找到目标仓库根下的 .docsconfig。"
+  local cfg_path config_owner_root
+  if [[ $# -gt 0 ]]; then
+    # 过渡兼容：旧调用方仍可能传入 caller_script_dir，但已不再参与查找决策。
+    :
   fi
 
+  if ! cfg_path="$(docsconfig_find_path)"; then
+    config_bootstrap_fail "[config] 未找到当前工程的 .docsconfig。"
+    return 1
+  fi
+  config_owner_root="$(dirname "$cfg_path")"
+
   KNOWLEDGE_TYPE=""
-  docsconfig_read_into "$rr/.docsconfig" DOC_ROOT REPO_ROOT DOC_DIR AGENT_ROOT AGENT_DIRS KNOWLEDGE_TYPE \
-    || config_bootstrap_fail "[config] 解析 .docsconfig 失败。"
+  DOCSCONFIG_PATH="$cfg_path"
+  CONFIG_OWNER_ROOT="$config_owner_root"
+  docsconfig_read_into "$cfg_path" DOC_ROOT REPO_ROOT DOC_DIR AGENT_ROOT AGENT_DIRS KNOWLEDGE_TYPE \
+    || {
+      config_bootstrap_fail "[config] 解析 .docsconfig 失败。"
+      return 1
+    }
 
   if [[ -z "${DOC_ROOT:-}" || -z "${REPO_ROOT:-}" || -z "${DOC_DIR:-}" ]]; then
     config_bootstrap_fail "[config] .docsconfig 缺少必需的 DOC_ROOT、REPO_ROOT 或 DOC_DIR。"
+    return 1
   fi
+
+  docsconfig_validate_owner_matches_repo_root "$config_owner_root" "$REPO_ROOT" \
+    || {
+      config_bootstrap_fail "[config] .docsconfig 与 REPO_ROOT 不一致。请重新执行 docs-install。"
+      return 1
+    }
 }

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# resolve-okf-paths.sh — 从 .docsconfig 解析 OKF bundle 与 viz 路径
-# Usage: source .../resolve-okf-paths.sh && resolve_okf_paths "<调用方脚本所在目录>"
+# resolve-okf-paths.sh — 从当前工程的 .docsconfig 解析 OKF bundle 与 viz 路径
+# Usage: source .../resolve-okf-paths.sh && resolve_okf_paths
 set -euo pipefail
 
 _resolve_okf_agent_home() {
@@ -10,7 +10,6 @@ _resolve_okf_agent_home() {
 }
 
 resolve_okf_paths() {
-  local caller_script_dir="${1:?caller_script_dir}"
   local agent_home bootstrap
 
   agent_home="$(_resolve_okf_agent_home)"
@@ -22,7 +21,7 @@ resolve_okf_paths() {
 
   # shellcheck disable=SC1091
   source "$bootstrap"
-  validate_bootstrap_docsconfig "$caller_script_dir" || exit 1
+  validate_bootstrap_docsconfig || exit 1
 
   if [[ -z "${KNOWLEDGE_TYPE:-}" ]]; then
     config_bootstrap_fail "[okf] .docsconfig 缺少 KNOWLEDGE_TYPE。请使用 docs-install.sh --scope=knowledge --target <目标工程文档目录> 写入 KNOWLEDGE_TYPE。"
@@ -36,6 +35,6 @@ resolve_okf_paths() {
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-  printf 'Usage: source %s && resolve_okf_paths "<caller_script_dir>"\n' "$0" >&2
+  printf 'Usage: source %s && resolve_okf_paths\n' "$0" >&2
   exit 1
 fi

@@ -11,51 +11,79 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck disable=SC1091
 source "$_AGENT_HOME/scripts/config-bootstrap.sh"
-validate_bootstrap_docsconfig "$SCRIPT_DIR"
-
-DOC_ROOT="$(resolve_repo_doc_root)"
-cd "$REPO_ROOT" || exit 1
-
-DEFAULT_OUTPUT="${DOC_ROOT}/changelogs"
 DEFAULT_SINCE="2020-01-01 00:00:00.000"
 DEFAULT_SINCE_MS="1577836800000"
 
 # ── 帮助 ──────────────────────────────────────────────────────────────────────
 
 show_help() {
+    local default_output_hint='DOC_ROOT/changelogs'
     cat <<EOF
 Usage: $0 [options]
 三源采集 → .raw/
 
   --since TIME    起始（yyyy-MM-dd HH:mm:ss.SSS 或 epoch ms）
-  --output DIR    默认 ${DOC_ROOT}/changelogs/（.docsconfig DOC_ROOT）
+  --output DIR    默认 ${default_output_hint}/（有 .docsconfig 时）
+  --dry-run       仅预演；无 .docsconfig 时允许继续，但不落盘
   -h, --help
 
 Examples:
-  $0 --since '2026-03-20 00:00:00.000' --output "${DOC_ROOT}/changelogs/"
-  $0                  # 默认输出 ${DOC_ROOT}/changelogs/；无 --since 时读文末 baseline 增量
+  $0 --since '2026-03-20 00:00:00.000' --output "./changelogs"
+  $0                  # 默认输出 DOC_ROOT/changelogs；无 --since 时读文末 baseline 增量
+  $0 --dry-run        # 无 .docsconfig 时仅预演，不创建任何目录
 EOF
 }
 
 # ── 参数解析 ──────────────────────────────────────────────────────────────────
 
 SINCE=""
-OUTPUT="$DEFAULT_OUTPUT"
+OUTPUT=""
+DRY_RUN=0
 
 while [[ $# -gt 0 ]]; do
     case $1 in
         --since)  SINCE="$2"; shift 2 ;;
         --output) OUTPUT="$2"; shift 2 ;;
+        --dry-run) DRY_RUN=1; shift ;;
         -h|--help) show_help; exit 0 ;;
         *) echo "[ERROR] Unknown option: $1"; show_help; exit 1 ;;
     esac
 done
 
-mkdir -p "$OUTPUT"
-RAW_DIR="$OUTPUT/.raw"
-mkdir -p "$RAW_DIR"
+BOOTSTRAP_OK=1
+if ! validate_bootstrap_docsconfig; then
+    BOOTSTRAP_OK=0
+    [[ "$DRY_RUN" -eq 1 ]] || exit 1
+fi
 
+if [[ "$BOOTSTRAP_OK" -eq 1 ]]; then
+    DOC_ROOT="$(resolve_repo_doc_root)"
+    DEFAULT_OUTPUT="${DOC_ROOT}/changelogs"
+    [[ -n "$OUTPUT" ]] || OUTPUT="$DEFAULT_OUTPUT"
+    cd "$REPO_ROOT" || exit 1
+else
+    DOC_ROOT=""
+    REPO_ROOT="$(pwd -P)"
+    DOC_DIR=""
+    [[ -n "$OUTPUT" ]] || OUTPUT="./changelogs"
+fi
+
+RAW_DIR="$OUTPUT/.raw"
 CHANGE_LOG_MD="$OUTPUT/CHANGE-LOG.md"
+
+if [[ "$BOOTSTRAP_OK" -eq 0 && "$DRY_RUN" -eq 1 ]]; then
+    echo "=== docs-change dry-run 预演 ==="
+    echo "  cwd                  : $(pwd -P)"
+    echo "  output(default)      : $OUTPUT"
+    echo "  baseline_time        : $DEFAULT_SINCE"
+    echo "  is_git_repo          : $(git rev-parse --is-inside-work-tree >/dev/null 2>&1 && echo true || echo false)"
+    echo "  docsconfig           : missing"
+    echo "  note                 : 当前工程无 .docsconfig，dry-run 仅预演，不创建目录，不写 .raw/。"
+    exit 0
+fi
+
+mkdir -p "$OUTPUT"
+mkdir -p "$RAW_DIR"
 
 # ── 步骤 1：时间基准计算 ──────────────────────────────────────────────────────
 

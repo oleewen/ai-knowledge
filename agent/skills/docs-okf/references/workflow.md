@@ -4,7 +4,7 @@
 
 ## 前置
 
-读 [path-resolution.md](path-resolution.md)。须有效 `.docsconfig`（含 `KNOWLEDGE_TYPE`）。解析后：
+读 [path-resolution.md](path-resolution.md)。先 `cd` 到目标工程目录；须有效 `.docsconfig`（含 `KNOWLEDGE_TYPE`）。解析后：
 
 - `BUNDLE` = `{DOC_DIR}`
 - viz `--out` = `{KNOWLEDGE_TYPE}/viz.html`
@@ -16,7 +16,7 @@
 
 **入口**：`/docs-okf`（内部脚本：`bash agent/skills/docs-okf/scripts/okf-indexing.sh [--dry-run]`）
 
-按序执行（可重复运行）；`BUNDLE` / `REPO_ROOT` 由 `resolve-okf-paths` 从 `.docsconfig` 解析：
+按序执行（可重复运行）；`BUNDLE` / `REPO_ROOT` 由 `resolve-okf-paths` 从当前工程 `.docsconfig` 解析：
 
 1. `inject_frontmatter.py --bundle "${DOC_DIR}"`
 2. `generate_index.py --bundle "${DOC_DIR}" --recursive`

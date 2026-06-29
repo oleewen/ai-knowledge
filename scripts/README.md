@@ -59,6 +59,8 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 
 - **`validate_bootstrap_docsconfig`**：定位含 `.docsconfig` 的仓库根并读入 **`DOC_ROOT`** / **`REPO_ROOT`** / **`DOC_DIR`**（及可选 **`AGENT_*`**），不 `export`；缺少文件或缺少上述必填键时，stderr 提示使用 **`docs-install.sh`** 初始化。
 - **`resolve_repo_doc_root`**：返回 **`validate_bootstrap_docsconfig`** 已加载的 **`DOC_ROOT`**（与 `.docsconfig` 一致），**无参数、不支持 override**。典型写法：**`DOC_ROOT="$(resolve_repo_doc_root)"`**。
+- 运行时脚本读取 `.docsconfig` 时，统一以**当前工作目录所属工程**为准；使用 `docs-okf`、`docs-change` 前请先 `cd` 到目标工程目录。
+- 若命中的 `.docsconfig` 所在目录与其中 `REPO_ROOT` 不一致，视为配置漂移，应重新执行 `docs-install` 修复。
 
 **`agent` 内 Markdown 链接自检**（可选，在仓库根执行）：`bash agent/scripts/validate-agent-md-links.sh` —— 校验 `agent/**/*.md` 中链接：`agent` 内互链须存在；跨出 `agent` 须落在 `REPO_ROOT`/`DOC_ROOT` 下且存在（Agent 语义可达）。
 

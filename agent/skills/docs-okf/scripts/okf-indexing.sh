@@ -49,7 +49,7 @@ done
 
 # shellcheck disable=SC1091
 source "$RESOLVE"
-resolve_okf_paths "$SCRIPT_DIR"
+resolve_okf_paths
 
 if [[ "$BUNDLE_OVERRIDE" -eq 0 ]]; then
   BUNDLE="$OKF_BUNDLE"

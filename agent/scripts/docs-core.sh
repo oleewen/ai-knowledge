@@ -222,28 +222,40 @@ docsconfig_repo_root_fallback_from_doc_root() {
 }
 
 docsconfig_find_repo_root() {
-  local script_dir="${1:?script_dir}"
-  local gr last='' pwd_root script_root d i
+  local pwd_root d i
   pwd_root="$(git -C "${PWD}" rev-parse --show-toplevel 2>/dev/null || true)"
-  script_root="$(git -C "$script_dir" rev-parse --show-toplevel 2>/dev/null || true)"
-  for gr in "$pwd_root" "$script_root"; do
-    [[ -n "$gr" && "$gr" == "$last" ]] && continue
-    last="$gr"
-    [[ -n "$gr" && -f "$gr/.docsconfig" ]] && {
-      printf '%s' "$gr"
-      return 0
-    }
-  done
-  d="$(pwd)"
+  d="$(cd -P "$PWD" 2>/dev/null && pwd)" || return 1
+
   for ((i = 0; i < 32; i++)); do
     [[ -f "$d/.docsconfig" ]] && {
       printf '%s' "$d"
       return 0
     }
+    [[ -n "$pwd_root" && "$d" == "$pwd_root" ]] && break
     [[ "$d" == "/" ]] && break
     d="$(dirname "$d")"
   done
   return 1
+}
+
+docsconfig_find_path() {
+  local repo_root
+  repo_root="$(docsconfig_find_repo_root)" || return 1
+  printf '%s/.docsconfig' "$repo_root"
+}
+
+docsconfig_validate_owner_matches_repo_root() {
+  local config_owner_root="${1:?config_owner_root}"
+  local repo_root="${2:?repo_root}"
+  local owner_abs repo_abs
+
+  owner_abs="$(cd -P "$config_owner_root" 2>/dev/null && pwd)" || return 1
+  repo_abs="$(cd -P "$repo_root" 2>/dev/null && pwd)" || return 1
+  if [[ "$owner_abs" != "$repo_abs" ]]; then
+    printf '[docsconfig] 配置漂移：.docsconfig 位于 %s，但 REPO_ROOT=%s\n' \
+      "$owner_abs" "$repo_abs" >&2
+    return 1
+  fi
 }
 
 docsconfig_doc_dir_from_roots() {
