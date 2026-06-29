@@ -33,10 +33,11 @@ okf_version: 0.1
 
 ### 关联索引
 
-- 上一级说明：[../README.md](../README.md)
+* 上一级说明：[../README.md](../README.md)
 <!-- okf:end -->
 
 <!-- docs-indexing:begin -->
+<!-- markdownlint-disable-next-line MD025 -->
 # company 索引指南（index）
 
 > **最后更新**: 2026-06-22  
@@ -49,7 +50,7 @@ okf_version: 0.1
 ### 1.1 速查表
 
 | 组件 | 路径 | 描述 |
-|------|------|------|
+| ------ | ------ | ------ |
 | 公司库人类入口 | [README.md](README.md) | 子目录表、阅读顺序 |
 | 设计契约 | [DESIGN.md](DESIGN.md) | 目录边界、公司层 SSOT、同步闭环 |
 | 架构入口 | [knowledge/README.md](knowledge/README.md) | 五视角索引 |
@@ -62,10 +63,10 @@ okf_version: 0.1
 
 ### 1.2 元信息
 
-- **目录角色**: **公司知识库** — 公司层 BD/CAP/PL/SYS/MDG/TPL SSOT、`knowledge/` 五视角叙事、`system-{name}/` 镜像槽位
-- **技术栈**: Markdown、YAML（knowledge-links.yaml）
-- **已跟踪文件规模**（仅 `company/` 前缀）: **72** 个文件（`git ls-files company/`，2026-06-22）
-- **精读深度**: 本轮 **depth=3**
+* **目录角色**: **公司知识库** — 公司层 BD/CAP/PL/SYS/MDG/TPL SSOT、`knowledge/` 五视角叙事、`system-{name}/` 镜像槽位
+* **技术栈**: Markdown、YAML（knowledge-links.yaml）
+* **已跟踪文件规模**（仅 `company/` 前缀）: **72** 个文件（`git ls-files company/`，2026-06-22）
+* **精读深度**: 本轮 **depth=3**
 
 ---
 
@@ -85,15 +86,15 @@ company/
 
 ### 2.2 文档目录
 
-- **架构入口**: [knowledge/README.md](knowledge/README.md)
-- **系统侧对照**: [../system/knowledge/README.md](../system/knowledge/README.md)
+* **架构入口**: [knowledge/README.md](knowledge/README.md)
+* **系统侧对照**: [../system/knowledge/README.md](../system/knowledge/README.md)
 
 ---
 
 ## 三、接口清单
 
 | 小节 | 状态 | 说明 |
-|------|------|------|
+| ------ | ------ | ------ |
 | 3.1～3.4 | [未索引] | 无运行时 API |
 
 ---
@@ -101,7 +102,7 @@ company/
 ## 四、模块依赖
 
 | 上游 | 下游 | 关系 |
-|------|------|------|
+| ------ | ------ | ------ |
 | `company/knowledge/` | `system/knowledge/` | 公司层实体 SSOT |
 | `company/solutions/` | `company/analysis/` | SDD 上游 |
 
@@ -110,7 +111,7 @@ company/
 ## 五、详细索引
 
 | 实体 | 路径 |
-|------|------|
+| ------ | ------ |
 | BD-EXAMPLE | [knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md](knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md) |
 | CAP-EXAMPLE-L1 | [knowledge/business/BD-EXAMPLE/CAP-EXAMPLE-L1.md](knowledge/business/BD-EXAMPLE/CAP-EXAMPLE-L1.md) |
 | CAP-EXAMPLE | [knowledge/business/BD-EXAMPLE/CAP-EXAMPLE.md](knowledge/business/BD-EXAMPLE/CAP-EXAMPLE.md) |
@@ -138,9 +139,9 @@ overview 缓冲区：[knowledge/overview/NAME-overview.md](knowledge/overview/NA
 ## 八、技能与脚本
 
 | 项 | 路径/命令 |
-|----|----------|
+| ---- | ---------- |
 | OKF 校验 | `bash scripts/validate-okf.sh --bundle company` |
-| OKF 迁移 | `bash scripts/okf-migrate.sh`（须目标工程 `.docsconfig`） |
+| OKF refresh | `bash scripts/okf-migrate.sh`（须目标工程 `.docsconfig`） |
 | docs-okf Skill | [../agent/skills/docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md) |
 | 测试套件 | `bash scripts/tests/docs-okf/run.sh`（resolve-okf-paths 门禁） |
 

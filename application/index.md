@@ -33,11 +33,11 @@ okf_version: 1.0
 
 ### 关联索引
 
-- 上一级说明：[../README.md](../README.md)
+* 上一级说明：[../README.md](../README.md)
 <!-- okf:end -->
 
-
 <!-- docs-indexing:begin -->
+<!-- markdownlint-disable-next-line MD025 -->
 # application 索引指南（index）
 
 > **最后更新**: 2026-06-22  
@@ -50,7 +50,7 @@ okf_version: 1.0
 ### 1.1 速查表
 
 | 组件 | 路径 | 描述 |
-|------|------|------|
+| ------ | ------ | ------ |
 | 应用入口（模式分流） | [README.md](README.md) | `standalone` / `central` 见 [README-s.md](README-s.md)、[README-c.md](README-c.md) |
 | 设计元模型 | [DESIGN.md](DESIGN.md) | 五视角、实体与演进约束 |
 | 贡献与阶段 | [CONTRIBUTING.md](CONTRIBUTING.md) | SDD 阶段、闸门与模板指针 |
@@ -64,10 +64,10 @@ okf_version: 1.0
 
 ### 1.2 元信息
 
-- **目录角色**: 应用侧知识主库（稳定事实、阶段交付、实现登记与应用层实体）
-- **技术栈**: Markdown、YAML、JSON（知识提取产物）
-- **已跟踪文件规模**（仅 `application/` 前缀）: **67** 个文件（`git ls-files application/`，2026-06-21）
-- **精读深度**: 本轮 **depth=3**（以已读入口与目录枚举为准，非逐文件全文内嵌）
+* **目录角色**: 应用侧知识主库（稳定事实、阶段交付、实现登记与应用层实体）
+* **技术栈**: Markdown、YAML、JSON（知识提取产物）
+* **已跟踪文件规模**（仅 `application/` 前缀）: **67** 个文件（`git ls-files application/`，2026-06-21）
+* **精读深度**: 本轮 **depth=3**（以已读入口与目录枚举为准，非逐文件全文内嵌）
 
 ---
 
@@ -118,16 +118,16 @@ flowchart TB
 
 ### 2.4 文档目录
 
-- **本索引**: [index.md](index.md)
-- **知识实体**: [knowledge/README.md](knowledge/README.md)
-- **阶段模板**: 各 `*/README.md`、`requirements/REQUIREMENT-EXAMPLE/`
+* **本索引**: [index.md](index.md)
+* **知识实体**: [knowledge/README.md](knowledge/README.md)
+* **阶段模板**: 各 `*/README.md`、`requirements/REQUIREMENT-EXAMPLE/`
 
 ---
 
 ## 三、接口清单
 
 | 小节 | 状态 | 说明 |
-|------|------|------|
+| ------ | ------ | ------ |
 | 3.1～3.4 | [未索引] | 无运行时 RPC/HTTP/调度/消息；对外契约为文档与 Slash 工作流 |
 
 ---
@@ -137,7 +137,7 @@ flowchart TB
 ### 4.1 业务术语
 
 | 术语 | 定义 | 落点 |
-|------|------|------|
+| ------ | ------ | ------ |
 | 五视角 | 业务 / 产品 / 应用 / 数据 / 技术 分层与 ID 规范 | [DESIGN.md](DESIGN.md)、[../agent/knowledge/glossary.md](../agent/knowledge/glossary.md) |
 | 知识实体 | YAML/JSON 承载的层级 ID 与关系字段 | [knowledge/](knowledge/) |
 | SDD 阶段 | Solution → Analysis → PRD/设计/测试 链 | [CONTRIBUTING.md](CONTRIBUTING.md)、`agent/skills/sdx-*` |
@@ -145,7 +145,7 @@ flowchart TB
 ### 4.2 聚合与目录映射
 
 | 聚合 | 职责 | 路径 |
-|------|------|------|
+| ------ | ------ | ------ |
 | 治理与标准 | 术语、架构原则、命名、ADR 模板 | [../agent/knowledge/README.md](../agent/knowledge/README.md) |
 | 五视角知识 | 实体与证据链 | [knowledge/](knowledge/) |
 | 阶段包 | 方案、分析、需求树 | [solutions/](solutions/)、[analysis/](analysis/)、[requirements/](requirements/) |
@@ -153,10 +153,10 @@ flowchart TB
 ### 4.3 领域服务
 
 | 能力 | 说明 |
-|------|------|
+| ------ | ------ |
 | Slash SDD | `/sdx-solution` 等写入受管终稿前须用户与 spec 闸门 |
 | docs-build | 五视角实体提取与 `KNOWLEDGE_INDEX` 联动（见根索引 §九） |
-| docs-okf | legacy `*-entities.md` → OKF 概念实体、`index.md`、validate-okf、viz（见 [../agent/skills/docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md)） |
+| docs-okf | OKF refresh、`index.md`、validate-okf、viz 与产物校验（见 [../agent/skills/docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md)） |
 
 ### 4.4 领域事件
 
@@ -178,16 +178,16 @@ flowchart TB
 
 ### 5.3 业务规则
 
-| 来源 | 要点 |
-|------|------|
-| [AGENTS.md](../AGENTS.md) | 禁止擅自改实体 ID、未确认不提交 |
-| [DESIGN.md](DESIGN.md) | 元模型、映射字段、禁止破坏引用链 |
+| 来源                         | 要点                             |
+| ---------------------------- | -------------------------------- |
+| [AGENTS.md](../AGENTS.md)     | 禁止擅自改实体 ID、未确认不提交 |
+| [DESIGN.md](DESIGN.md)       | 元模型、映射字段、禁止破坏引用链 |
 
 ### 5.4 枚举
 
-| 名称 | 取值 |
-|------|------|
-| 知识视角子目录 | `business/`、`data/`、`product/`、`application/`、`technical/` |
+| 名称           | 取值                                                                |
+| -------------- | ------------------------------------------------------------------- |
+| 知识视角子目录 | `business/`、`data/`、`product/`、`application/`、`technical/`      |
 
 ---
 
@@ -196,7 +196,7 @@ flowchart TB
 ### 6.1 数据源
 
 | 数据源 | 类型 | 用途 |
-|--------|------|------|
+| -------- | ------ | ------ |
 | `knowledge/**/{ID}.md` | Markdown（OKF 概念实体 + frontmatter） | 各视角实体文件（SSOT）；校验 `bash ../scripts/validate-okf.sh --bundle application` |
 
 ### 6.2～6.4
@@ -210,7 +210,7 @@ flowchart TB
 ### 7.1 配置项
 
 | 项 | 位置 | 说明 |
-|----|------|------|
+| ---- | ------ | ------ |
 | 文档元数据 | [docs-meta.md](docs-meta.md)、[knowledge/knowledge-meta.md](knowledge/knowledge-meta.md) | 阶段与目录元信息 |
 | manifest | [manifest.md](manifest.md) | 应用清单字段（按项目约定） |
 
@@ -229,19 +229,19 @@ flowchart TB
 ### 8.1 覆盖范围
 
 | 指标 | 值 |
-|------|-----|
+| ------ | ----- |
 | `git ls-files application/` | 67 |
 | 本轮 mode / depth | `full` / `3` |
 
 ### 8.2 排除与未读
 
-- 未纳入：`../system/`、`../company/` 正文（由各自 `index` 覆盖）。  
-- 被 `.gitignore` 排除且未入库的路径 **[未索引]**。
+* 未纳入：`../system/`、`../company/` 正文（由各自 `index` 覆盖）。  
+* 被 `.gitignore` 排除且未入库的路径 **[未索引]**。
 
 ### 8.3 维护规则
 
-- 根 `index` 与**本文件**的索引运行均可记入 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)（`output_path` 区分）。  
-- 增量前提：主表第一行 `indexing_finished_ms` 有效，见 `agent/skills/docs-indexing/references/indexing-log-spec.md`。
+* 根 `index` 与**本文件**的索引运行均可记入 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)（`output_path` 区分）。  
+* 增量前提：主表第一行 `indexing_finished_ms` 有效，见 `agent/skills/docs-indexing/references/indexing-log-spec.md`。
 
 ---
 
@@ -250,7 +250,7 @@ flowchart TB
 ### 9.1 核心文档
 
 | 文档 | 路径 |
-|------|------|
+| ------ | ------ |
 | 全局索引 | [../index.md](../index.md) |
 | 系统库入口 | [../system/README.md](../system/README.md) |
 | Skill 总表 | [../agent/skills/README.md](../agent/skills/README.md) |
@@ -266,9 +266,9 @@ Bash 5+、Git；可选 `docs-change` / `docs-build` 与本目录 changelogs 联�
 
 本节用于在本仓库（中央知识库）登记各目标工程的接入信息，便于追溯与映射。由 `scripts/docs-install.sh --mode=central`（**中央知识库挂载建联**）维护本表。
 
-| APP ID | 工程路径（Git 或绝对路径） | 文档目录 |
-|--------|---------------------------|----------|
-| APP-TEST | /private/tmp/test-central | /private/tmp/test-central/docs |
+| APP ID   | 工程路径（Git 或绝对路径）      | 文档目录                       |
+| -------- | ------------------------------- | ------------------------------ |
+| APP-TEST | /private/tmp/test-central       | /private/tmp/test-central/docs |
 
 ---
 

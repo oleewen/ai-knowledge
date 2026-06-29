@@ -10,16 +10,23 @@
 
 ## 目录
 
-- [简介](#-简介)
-- [为什么需要元知识底座](#为什么需要元知识底座)
-- [三层联邦架构](#三层联邦架构)
-- [从零选型](#从零选型)
-- [快速开始](#-快速开始)
-- [项目结构](#-项目结构)
-- [Agent 工作流与推荐流程](#-agent-工作流与推荐流程)
-- [文档导航](#文档导航)
-- [参与贡献](#-参与贡献)
-- [许可说明](#-许可说明)
+- [AI Knowledge Base Framework](#ai-knowledge-base-framework)
+  - [目录](#目录)
+  - [📖 简介](#-简介)
+    - [核心价值](#核心价值)
+  - [为什么需要元知识底座](#为什么需要元知识底座)
+  - [三层联邦架构](#三层联邦架构)
+  - [从零选型](#从零选型)
+  - [🚀 快速开始](#-快速开始)
+    - [预备环境](#预备环境)
+    - [1. 手动安装（克隆后执行）](#1-手动安装克隆后执行)
+    - [2. 远程 Bootstrap（无需克隆）](#2-远程-bootstrap无需克隆)
+    - [3. Agent 自动化安装](#3-agent-自动化安装)
+  - [📂 项目结构](#-项目结构)
+  - [🤖 Agent 工作流与推荐流程](#-agent-工作流与推荐流程)
+  - [文档导航](#文档导航)
+  - [🤝 参与贡献](#-参与贡献)
+  - [📜 许可说明](#-许可说明)
 
 ## 📖 简介
 
@@ -116,7 +123,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 
 ### 3. Agent 自动化安装
 
-> 根据 https://github.com/oleewen/ai-knowledge 的 README，初始化知识库到当前工程 `./docs`。
+> 根据 [ai-knowledge README](https://github.com/oleewen/ai-knowledge) 的说明，初始化知识库到当前工程 `./docs`。
 
 技术栈与仓库元信息见 [index.md](index.md) §1.2。
 
@@ -176,7 +183,7 @@ Skill 清单见 [agent/skills/README.md](agent/skills/README.md)。
 | Agent 契约 | [AGENTS.md](AGENTS.md) |
 | 应用 / 系统 / 公司元模型 | [application/DESIGN.md](application/DESIGN.md)、[system/DESIGN.md](system/DESIGN.md)、[company/DESIGN.md](company/DESIGN.md) |
 | 初始化脚本 | [scripts/README.md](scripts/README.md) |
-| OKF 迁移与校验 | [agent/skills/docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md)（`scripts/validate-okf.sh`、`scripts/okf-migrate.sh`） |
+| OKF refresh 与校验 | [agent/skills/docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md)（`scripts/validate-okf.sh`、`scripts/okf-migrate.sh`） |
 | Skill 清单 | [agent/skills/README.md](agent/skills/README.md) |
 
 ---

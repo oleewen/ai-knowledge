@@ -10,7 +10,7 @@
 ### 1.1 速查表
 
 | 组件 | 路径 | 描述 |
-|------|------|------|
+| ------ | ------ | ------ |
 | 人类入口 | [README.md](README.md) | 克隆、bootstrap、`docs-install`/`agent-install` 与协作总览 |
 | 从零落地 | [quick-start.md](quick-start.md) | 场景 A–D 选型与逐步操作（canonical SSOT） |
 | Agent 契约 | [AGENTS.md](AGENTS.md) | 角色、索引查阅顺序、提交闸门与禁止事项 |
@@ -22,8 +22,8 @@
 | 初始化脚本 | [scripts/README.md](scripts/README.md) | `docs-install`/`agent-install`/`docs-link`/`docs-bootstrap` |
 | 规范与 Slash | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/skills/README.md](agent/skills/README.md) | 全局约定与 Skill 清单 |
 | 变更与索引运维 | [application/changelogs/README.md](application/changelogs/README.md) | `CHANGE-LOG.md`、`INDEXING-LOG.md` |
-| OKF bundle 与校验 | [agent/skills/docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) | legacy 实体迁移、`index.md`、validate-okf、viz；与九章 INDEX 双索引并存 |
-| OKF 脚本入口 | [scripts/validate-okf.sh](scripts/validate-okf.sh)、[scripts/okf-migrate.sh](scripts/okf-migrate.sh) | 校验与全量迁移编排；详 [scripts/README.md](scripts/README.md) §OKF |
+| OKF bundle 与校验 | [agent/skills/docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) | OKF refresh、validate-okf、viz 与产物校验；与九章 INDEX 双索引并存 |
+| OKF 脚本入口 | [scripts/validate-okf.sh](scripts/validate-okf.sh)、[scripts/okf-migrate.sh](scripts/okf-migrate.sh) | 校验与 refresh 编排；详 [scripts/README.md](scripts/README.md) §OKF |
 
 ### 1.2 元信息
 
@@ -89,7 +89,7 @@ flowchart LR
 本仓库为**文档与脚本型**仓库，**不提供** HTTP/RPC/消息等运行时接口。
 
 | 小节 | 状态 | 说明 |
-|------|------|------|
+| ------ | ------ | ------ |
 | 3.1 服务接口 | [未索引] | 无 Dubbo/gRPC 类服务接口 |
 | 3.2 HTTP 接口 | [未索引] | 无 REST 路由；对外「契约」体现为文档与脚本 CLI |
 | 3.3 定时任务 | [未索引] | 无内嵌调度；CI 若存在由外部平台配置，未纳入本索引 |
@@ -102,7 +102,7 @@ flowchart LR
 ### 4.1 业务术语
 
 | 术语 | 定义 | 使用场景 |
-|------|------|----------|
+| ------ | ------ | ---------- |
 | SSOT | 单一事实源，`application/` 为应用知识稳定事实中枢 | 与联邦镜像、目标工程对齐 |
 | 五视角 | 业务 / 产品 / 应用 / 数据 / 技术 知识分层与映射字段 | 见 [application/DESIGN.md](application/DESIGN.md) |
 | 联邦治理 | `system/`、`company/` 槽位与迁移叙事；`system/application-{name}/` 为应用镜像，`company/system-{name}/` 为系统镜像 | 多库协作与 docs-install 模式 |
@@ -113,7 +113,7 @@ flowchart LR
 ### 4.2 聚合根（知识组织）
 
 | 聚合 | 职责 | 关键落点 |
-|------|------|----------|
+| ------ | ------ | ---------- |
 | 治理规则 | 术语、原则、命名、ADR 模板 | [agent/knowledge/knowledge-governance.md](agent/knowledge/knowledge-governance.md)、[agent/knowledge/README.md](agent/knowledge/README.md) |
 | 五视角实体 | BC/AGG、PL/PM/FT/UC、SYS/APP/MS、DS/ENT、MW/CMP 等 | [application/knowledge/](application/knowledge/) |
 | 阶段产物 | SOLUTION / ANALYSIS / REQUIREMENT 包 | `application/solutions/` 等 |
@@ -121,7 +121,7 @@ flowchart LR
 ### 4.3 领域服务（协作能力）
 
 | 能力 | 功能 | 依赖 |
-|------|------|------|
+| ------ | ------ | ------ |
 | Slash Skills | 文档索引、变更聚合、SDD 各阶段、归档等 | `agent/skills/*/SKILL.md` |
 | 初始化链 | 拷贝知识库、写 `.docsconfig`、安装 Agent 文件 | `scripts/*.sh`、`agent/scripts/docs-core.sh` |
 
@@ -153,13 +153,13 @@ stateDiagram-v2
 2. **目标工程接入知识库**: `git clone` 或 `docs-bootstrap.sh` → `./scripts/docs-install.sh --target=...`（可选 `--mode=central`、`--scope`、`--type`）。
 3. **仅安装 Agent 配置**: `./scripts/agent-install.sh`（`--target`、`--agents`、`--scope` 等）。
 4. **维护索引与变更**: `/docs-indexing` 更新根 `index.md`；`/docs-change` 更新 [application/changelogs/CHANGE-LOG.md](application/changelogs/CHANGE-LOG.md)。
-5. **OKF 迁移与校验**: `/docs-okf` 或 `bash scripts/okf-migrate.sh`；INDEX 落盘后建议 `python3 scripts/okf/generate_index.py --bundle application --recursive` 并 `bash scripts/validate-okf.sh`（见 [agent/skills/docs-okf/references/workflow.md](agent/skills/docs-okf/references/workflow.md)）。
+5. **OKF refresh 与校验**: `/docs-okf` 或 `bash scripts/okf-migrate.sh`；INDEX 落盘后建议 `python3 scripts/okf/generate_index.py --bundle application --recursive` 并 `bash scripts/validate-okf.sh`（见 [agent/skills/docs-okf/references/workflow.md](agent/skills/docs-okf/references/workflow.md)）。
 6. **知识工程**: `/docs-build` 等按 [agent/skills/README.md](agent/skills/README.md) 执行。
 
 ### 5.3 业务规则（协作）
 
 | 规则来源 | 描述 |
-|----------|------|
+| ---------- | ------ |
 | [AGENTS.md](AGENTS.md) | 禁止擅自改实体 ID、未确认不 `git commit`、文档产出闸门 |
 | [application/CONTRIBUTING.md](application/CONTRIBUTING.md) | 贡献流程与阶段规则 |
 | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md) | 全局命名与交付约定 |
@@ -167,7 +167,7 @@ stateDiagram-v2
 ### 5.4 枚举与模式（初始化）
 
 | 名称 | 取值 | 说明 |
-|------|------|------|
+| ------ | ------ | ------ |
 | `docs-install --mode` | `standalone` / `central`（中央知识库挂载建联） | 见 [scripts/README.md](scripts/README.md) 功能概述表 |
 | `docs-install --scope` | `config` / `knowledge` | 默认 `k`（knowledge）；`knowledge` 不处理 `.docsconfig` |
 | `docs-install --type` | `application` / `system` / `company` | 与 `scope=knowledge` 组合 |
@@ -179,9 +179,9 @@ stateDiagram-v2
 ### 6.1 数据源
 
 | 数据源 | 类型 | 用途 |
-|--------|------|------|
+| -------- | ------ | ------ |
 | `application/knowledge/**/*.yaml` 等 | YAML 元数据与实体 | 五视角实体与关系 |
-| `*-entities.md` / `*-meta.md` | Markdown | 知识实体与视角元数据，见各视角目录 |
+| `{ID}.md` / `*-meta.md` | Markdown | OKF 概念实体与视角元数据，见各视角目录 |
 | Git 仓库 | 文本与脚本 | 版本与协作真相源 |
 
 ### 6.2 实体映射
@@ -203,19 +203,19 @@ stateDiagram-v2
 ### 7.1 配置项（节选）
 
 | 配置项/参数 | 所在位置 | 说明 |
-|-------------|----------|------|
+| ------------- | ---------- | ------ |
 | `GIT_REPO_URL` / `GIT_REF` | [scripts/docs-bootstrap.sh](scripts/docs-bootstrap.sh) | bootstrap 克隆地址与引用（可环境变量覆盖） |
 | `REPO_ROOT`（环境变量） | [scripts/docs-install.sh](scripts/docs-install.sh) 等 | 指向**本中央库**根目录（运行脚本时） |
 | `--target` | `docs-install.sh` | 目标工程文档目录，**必填** |
 | `--mode` / `--scope` / `--type` / `--force` / `--dry-run` | `docs-install.sh` | 见 [scripts/README.md](scripts/README.md) |
 | `.docsconfig` 键 | 目标工程仓库根 | `DOC_ROOT`、`REPO_ROOT`、`DOC_DIR`、`KNOWLEDGE_TYPE`；可选 `AGENT_*`（`agent-install`）；OKF 路径解析见 [agent/skills/docs-okf/scripts/resolve-okf-paths.sh](agent/skills/docs-okf/scripts/resolve-okf-paths.sh) |
 | OKF 校验 | [scripts/validate-okf.sh](scripts/validate-okf.sh) | `--bundle` 默认 `.docsconfig` 的 `DOC_DIR`；须 `KNOWLEDGE_TYPE` |
-| OKF 迁移 | [scripts/okf-migrate.sh](scripts/okf-migrate.sh) | 全量编排；`--dry-run` 预览 |
+| OKF refresh | [scripts/okf-migrate.sh](scripts/okf-migrate.sh) | refresh / validate 编排；`--dry-run` 预览 |
 
 ### 7.2 环境差异
 
 | 维度 | standalone | central（中央知识库挂载建联） |
-|------|------------|-------------------------------|
+| ------ | ------------ | ------------------------------- |
 | 同步范围 | 按 type 全量或组织/公司模板 | `application/` 子集为主（见 scripts 功能表） |
 | 登记行为 | 标准拷贝 | 另涉及主库登记与联邦路径（见脚本说明） |
 
@@ -230,7 +230,7 @@ stateDiagram-v2
 ### 8.1 覆盖范围
 
 | 类型 | 数量（已跟踪） | 描述 |
-|------|----------------|------|
+| ------ | ---------------- | ------ |
 | 全库文件 | 657 | `git ls-files` 2026-06-22 |
 | Markdown | 503 | 主体文档、OKF concept 与 Skill |
 | Shell | 78 | 初始化、OKF 与测试脚本 |
@@ -244,7 +244,7 @@ stateDiagram-v2
 ### 8.2 排除列表
 
 | 模式 | 原因 |
-|------|------|
+| ------ | ------ |
 | `.git/` | 版本控制元数据 |
 | `node_modules/`、`target/`、`build/` | 依赖与构建产物（scan-spec） |
 | 被 `.gitignore` 忽略的 `.*` 等 | 如 `.cursor` 工作区缓存通常未入库；以 `git ls-files` 为准 |
@@ -262,7 +262,7 @@ stateDiagram-v2
 ### 9.1 核心文档
 
 | 文档 | 路径 | 描述 |
-|------|------|------|
+| ------ | ------ | ------ |
 | 全局查阅顺序 | [index.md](index.md)（本文件） | 根目录九章地图 |
 | 从零落地 | [quick-start.md](quick-start.md) | 场景 A–D 操作 SSOT |
 | 应用侧九章与建联 | [application/index.md](application/index.md) | `application/` 树内九章索引与中央建联登记 |
@@ -275,20 +275,20 @@ stateDiagram-v2
 ### 9.2 相关项目
 
 | 项目 | 关系 | 描述 |
-|------|------|------|
+| ------ | ------ | ------ |
 | oleewen/ai-knowledge | 上游 | 中央库本仓库 |
 | 目标工程 `docs/` | 下游 | 由 `docs-install` 注入内容 |
 
 ### 9.3 工具链与 Skill 清单
 
 | 工具 | 版本/说明 | 用途 |
-|------|-----------|------|
+| ------ | ----------- | ------ |
 | Bash | 5+ | 脚本运行环境 |
 | Git | 当前环境 | 版本控制；`git ls-files` 枚举 |
 | Slash Skills | 见下表 | Agent 工作流 |
 
 | 命令 | 目录 |
-|------|------|
+| ------ | ------ |
 | `/docs-indexing` | [agent/skills/docs-indexing/SKILL.md](agent/skills/docs-indexing/SKILL.md) |
 | `/docs-agent` | [agent/skills/docs-agent/SKILL.md](agent/skills/docs-agent/SKILL.md) |
 | `/docs-build` | [agent/skills/docs-build/SKILL.md](agent/skills/docs-build/SKILL.md) |

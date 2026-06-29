@@ -59,7 +59,9 @@ def test_preserve_bundle_root_okf_version():
         written = index_path.read_text(encoding="utf-8")
         meta, body = okf_lib.parse_frontmatter(written)
         assert meta["okf_version"] == "0.1"
-        assert body.lstrip().startswith("# ")
+        assert body.lstrip().startswith("<!-- okf:begin -->")
+        assert "## OKF 渐进披露" in body
+        assert "# Root" in body
 
 
 def test_knowledge_index_id_suffix_and_evidence():

@@ -12,18 +12,18 @@
 
 ## 三步
 
-### 1 migrate（全量编排）
+### 1 refresh（全量编排）
 
 **脚本**：`bash scripts/okf-migrate.sh [--dry-run]`
 
 按序执行（可重复运行）；`BUNDLE` / `REPO_ROOT` 由 `resolve-okf-paths` 从 `.docsconfig` 解析：
 
-1. `migrate_entities.py` — 五视角；缺 `{perspective}-entities.md` 则跳过
-2. `inject_frontmatter.py --bundle "${DOC_DIR}"`
-3. `generate_index.py --bundle "${DOC_DIR}" --recursive`
-4. `generate_knowledge_index.py --bundle "${DOC_DIR}"`
+1. `inject_frontmatter.py --bundle "${DOC_DIR}"`
+2. `generate_index.py --bundle "${DOC_DIR}" --recursive`
+3. `generate_knowledge_index.py --bundle "${DOC_DIR}"`
+4. `visualize.py` → `{KNOWLEDGE_TYPE}/viz.html`
 5. `validate-okf.sh`
-6. `visualize.py` → `{KNOWLEDGE_TYPE}/viz.html`
+6. `validate_viz_index.py`
 
 环境变量 `BUNDLE` 或 CLI `--bundle` 可覆盖 `{DOC_DIR}`。
 
@@ -53,8 +53,8 @@ python3 scripts/okf/visualize.py \
 ## 参数组合
 
 | 用户意图 | 命令 |
-|----------|------|
-| 全量迁移 | `bash scripts/okf-migrate.sh` |
+| ---------- | ------ |
+| 全量刷新 | `bash scripts/okf-migrate.sh` |
 | 预览 | `bash scripts/okf-migrate.sh --dry-run` |
 | 仅校验 | `bash scripts/validate-okf.sh` |
 | 仅 viz | `python3 scripts/okf/visualize.py --bundle "${DOC_DIR}" --out "${KNOWLEDGE_TYPE}/viz.html" --name "${KNOWLEDGE_TYPE} OKF"` |

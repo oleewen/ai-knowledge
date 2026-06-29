@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# OKF 全量迁移编排：实体迁移 → frontmatter → index → 校验 → 可视化。
+# OKF refresh 编排：frontmatter → index → knowledge index → viz → 校验。
 # 用法: bash scripts/okf-migrate.sh [--dry-run]
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -12,19 +12,17 @@ BUNDLE_OVERRIDE=0
 [[ -n "$BUNDLE" ]] && BUNDLE_OVERRIDE=1
 DRY_RUN=0
 
-PERSPECTIVES=(business product application data technical)
-
 usage() {
   cat <<EOF
 用法: bash scripts/okf-migrate.sh [--dry-run]
 
-按序执行 OKF 全量迁移（可重复运行）：
-  1. migrate_entities（五视角，缺 *-entities.md 则跳过）
-  2. inject_frontmatter
-  3. generate_index（--recursive）
-  4. generate_knowledge_index
+按序执行 OKF refresh / validate（可重复运行）：
+  1. inject_frontmatter
+  2. generate_index（--recursive）
+  3. generate_knowledge_index
+  4. visualize
   5. validate-okf
-  6. visualize
+  6. validate-viz-index
 
 须有效 .docsconfig（含 KNOWLEDGE_TYPE）。bundle 默认取自 DOC_DIR；viz 输出取自 KNOWLEDGE_TYPE。
 
@@ -75,7 +73,7 @@ run_cmd() {
 
 cd "$REPO_ROOT"
 
-echo "=== okf-migrate ==="
+echo "=== okf-refresh ==="
 echo "REPO_ROOT:      ${REPO_ROOT}"
 echo "DOC_DIR:        ${DOC_DIR}"
 echo "KNOWLEDGE_TYPE: ${KNOWLEDGE_TYPE}"
@@ -84,26 +82,6 @@ echo "OKF_VIZ_OUT:    ${OKF_VIZ_OUT}"
 if [[ "$DRY_RUN" -eq 1 ]]; then
   echo "MODE:           dry-run（仅打印命令）"
 fi
-
-for perspective in "${PERSPECTIVES[@]}"; do
-  entities_rel="${BUNDLE}/knowledge/${perspective}/${perspective}-entities.md"
-  entities_path="${REPO_ROOT}/${entities_rel}"
-  if [[ ! -f "$entities_path" ]]; then
-    echo ""
-    echo "=== migrate_entities (${perspective}): skip（缺少 ${entities_rel}）==="
-    continue
-  fi
-  migrate_args=(
-    "$OKF_DIR/migrate_entities.py"
-    --bundle "$BUNDLE"
-    --entities "$entities_rel"
-    --perspective "$perspective"
-  )
-  if [[ "$DRY_RUN" -eq 1 ]]; then
-    migrate_args+=(--dry-run)
-  fi
-  run_cmd "migrate_entities (${perspective})" python3 "${migrate_args[@]}"
-done
 
 inject_args=(
   "$OKF_DIR/inject_frontmatter.py"
@@ -133,13 +111,17 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
 fi
 run_cmd "generate_knowledge_index" python3 "${knowledge_index_args[@]}"
 
-run_cmd "validate-okf" bash "$REPO_ROOT/scripts/validate-okf.sh" --bundle "$BUNDLE"
-
 run_cmd "visualize" python3 \
   "$OKF_DIR/visualize.py" \
   --bundle "$BUNDLE" \
   --out "$OKF_VIZ_OUT" \
   --name "$OKF_VIZ_NAME"
 
+run_cmd "validate-okf" bash "$REPO_ROOT/scripts/validate-okf.sh" --bundle "$BUNDLE"
+run_cmd "validate-viz-index" python3 \
+  "$OKF_DIR/validate_viz_index.py" \
+  --bundle "$BUNDLE" \
+  --viz "$OKF_VIZ_OUT"
+
 echo ""
-echo "=== okf-migrate 完成 ==="
+echo "=== okf-refresh 完成 ==="
