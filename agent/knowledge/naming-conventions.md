@@ -2,7 +2,7 @@
 
 知识库中所有**知识实体**必须拥有**全局唯一**的 ID，用于跨视角引用与追溯。本规范为必遵项；实体命名 SSOT 位于本仓库 `agent/knowledge/naming-conventions.md`，文件分型与 concept 结构规则见 [`okf-spec.md`](okf-spec.md)。
 
-**适用范围**：系统库 `application/`、`system/`、`company/` 及各联邦镜像 `applications/app-APPNAME/` 下的 `knowledge/` 实体均遵循本规范；治理叙事与 Agent 规则见 [`knowledge-governance.md`](knowledge-governance.md)。
+**适用范围**：系统库 `application/`、`system/`、`company/` 及联邦槽位 `system/application-{APPNAME}/`、`company/system-{SYSNAME}/` 下的 `knowledge/` 实体均遵循本规范；治理叙事与 Agent 规则见 [`knowledge-governance.md`](knowledge-governance.md)。
 
 ---
 

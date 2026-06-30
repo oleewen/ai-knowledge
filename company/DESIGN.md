@@ -56,6 +56,12 @@ title: 公司知识库设计
 
 下列实体在 **company/** 首次定义；系统层、应用层仅引用 ID，不重复字段语义（完整表见 [application/DESIGN.md](../application/DESIGN.md) §2.2.1）。
 
+SSOT 约束：
+
+- company 层首次定义实体（BD/CAP/PL/SYS/MDG/TPL）的正文 SSOT 落在 `company/knowledge/**`；
+- `company/knowledge/overview/` 仅作为缓冲区，不作为实体正文 SSOT；
+- system/application 层仅引用 ID 与链接，不重复字段语义。
+
 | 视角 | 实体 | 说明 |
 | --- | --- | --- |
 | 业务 | BD（业务域） | 公司级业务划分 |
@@ -83,7 +89,7 @@ title: 公司知识库设计
 
 `system-{name}/` 承接下游 `system/` 知识库的镜像同步结果，供公司层导航与跨系统治理；不承载系统实现细节。
 
-- **下行同步**：由 `knowledge-links.yaml` 登记后，经脚本或人工将目标 `system/` 文档同步至 `company/system-{name}/`（尚无与 `/docs-pull` 同级的独立 Slash 技能；应用联邦镜像才使用 `/docs-pull`）。
+- **下行同步**：以 `knowledge-links.yaml` 为输入真源，由 docs-link 完成建联与槽位创建，再由 docs-pull 进行 system→company 槽位同步（仅使用本地 `path`，不 clone）。
 - **架构上行**：公司侧 overview/archive 流程见 [knowledge/overview/](knowledge/overview/NAME-overview.md) 与 [agent/skills/docs-extract/SKILL.md](../agent/skills/docs-extract/SKILL.md)、[docs-archive/SKILL.md](../agent/skills/docs-archive/SKILL.md)；系统侧蒸馏见 [system/DESIGN.md](../system/DESIGN.md)（`/docs-distill` 仅落盘 `system/knowledge/overview/`）。
 
 #### SDD 跨层衔接
@@ -97,7 +103,7 @@ title: 公司知识库设计
 
 治理规则：
 
-- **命名规则**：系统槽位统一 `system-{SYSTEM_NAME}`；
+- **命名规则**：系统槽位统一 `system-{sys_name}`（`sys_name` 为目录名 slug；`sys_label` 仅展示用）；
 - **职责规则**：`company/` 不承载系统实现细节与应用字段定义；
 - **引用规则**：跨层内容使用链接引用，不复制下游正文；
 - **变更规则**：新增槽位或调整目录语义时，先更新本文件约束再更新内容。
@@ -109,9 +115,9 @@ title: 公司知识库设计
 `company/` 的流程定位是“公司层编排入口”，流程保持轻量但可审计。
 
 1. **系统侧准备**：下游 `system/` 侧完成可同步内容整理；
-2. **公司侧挂载**：按 `knowledge-links.yaml` 将内容同步至 `company/system-{name}/` 槽位（非 `/docs-pull` 技能路径）；
+2. **公司侧挂载**：按 `knowledge-links.yaml` 将内容同步至 `company/system-{sys_name}/` 槽位（docs-pull：读取目标仓库 `.docsconfig` 的 `DOC_ROOT/DOC_DIR`，源目录为 `{DOC_ROOT}/{DOC_DIR}/`）；
 3. **治理校核**：在 `company/knowledge/` 与 `knowledge-links.yaml` 维护一致性；
-4. **追溯记录**：对新增、替换、退役槽位记录来源、影响范围与状态。
+4. **追溯记录**：每次同步后必须追加槽位 `company/system-{sys_name}/changelogs/CHANGE-LOG.md`；company 根 `changelogs/CHANGE-LOG.md` 仅做槽位级汇总事件（可选）。
 
 闭环原则：
 
@@ -129,6 +135,7 @@ title: 公司知识库设计
 - **边界门禁**：`company/` 文档不引入系统实现与应用字段细节；
 - **引用门禁**：跨层描述必须可追溯至 `system/` 或 `application/`；
 - **变更门禁**：槽位变更先更新设计约束，再更新目录与链接清单。
+- **同步门禁**：槽位同步写根目录时禁止覆盖 `README.md`、`index.md`、`changelogs/`；默认只允许单槽位（需显式指定 `--sys-name`），`--all` 才允许全量并汇总失败；仅使用本地 `path`（必须为 Git 工作区）。
 
 演进顺序：
 

@@ -294,6 +294,6 @@ your-project/
 | 2.1.1 | `standalone` 下 `--scope` 为 `agent` 时，`<目标工程文档目录>` 可省略；未指定时 Agent 内 `application/` → 文档前缀替换默认为 `docs/` |
 | 2.1.0 | Agent skills/rules 安装目录由「目标工程根下」改为「用户主目录 `$HOME` 下」；备份对应使用 `~/.docs-init/` |
 | 2.0.0 | 重构：使用 `application/` 作为模板源；新增文件名/内容替换；支持多 Agent（cursor、trae、claude、kiro）；Agent 目录改为 `.cursor/`、`.trae/`、`.claude/`、`.kiro/`；standalone 模式排除 DESIGN.md 和 CONTRIBUTING.md |
-| 1.0.0 | 初始版本：使用 `applications/app-APPNAME/` 作为模板源；支持 standalone 与中央知识库挂载建联（`central`）；Agent 配置安装在 `agent/` 目录 |
+| 1.0.0 | 初始版本：支持 standalone 与中央知识库挂载建联（`central`）；Agent 配置安装在 `agent/` 目录 |
 
 > **注**：`scripts/lib/docs-init-core.sh` 已移除；逻辑现位于 `agent/scripts/docs-core.sh` 与各入口脚本。

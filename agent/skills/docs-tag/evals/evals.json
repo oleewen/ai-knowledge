@@ -79,7 +79,7 @@
     {
       "id": "docs-tag-not-trigger-001",
       "category": "should-not-trigger",
-      "prompt": "从 applications/app-billing/design.md 和 README 里把计费规则提炼进 billing-overview.md 第三列，做 A/U/D 合并。",
+      "prompt": "从 system/application-billing/design.md 和 README 里把计费规则提炼进 billing-overview.md 第三列，做 A/U/D 合并。",
       "expected_output": "主轴 docs-extract（第三列/AUD）；≠ tag 附录+✅。",
       "assertions": [
         {
