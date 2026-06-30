@@ -726,7 +726,7 @@ knowledge_links_load_into_arrays() {
   local -n _dirs="${4:?}"
   local -n _apps="${5:?}"
   local -n _labels="${6:?}"
-  local line key val path="" repo="" doc_dir="" app_name="" app_label=""
+  local line key val path="" repo="" doc_dir="" app_name="" app_label="" sys_name="" sys_label=""
 
   _paths=()
   _repos=()
@@ -742,12 +742,17 @@ knowledge_links_load_into_arrays() {
       _paths+=("$path")
       _repos+=("${repo:-}")
       _dirs+=("${doc_dir:-}")
-      _apps+=("${app_name:-}")
-      _labels+=("${app_label:-}")
-    elif [[ -n "$repo$doc_dir$app_name$app_label" ]]; then
-      sdx_error "knowledge-links.yaml 中存在未写完的条目（有 repository/doc_dir/app_name/app_label 但缺少 path）: $f"
+      if [[ "$doc_dir" == 'system' ]]; then
+        _apps+=("${sys_name:-}")
+        _labels+=("${sys_label:-}")
+      else
+        _apps+=("${app_name:-}")
+        _labels+=("${app_label:-}")
+      fi
+    elif [[ -n "$repo$doc_dir$app_name$app_label$sys_name$sys_label" ]]; then
+      sdx_error "knowledge-links.yaml 中存在未写完的条目（有 repository/doc_dir/app_name/app_label/sys_name/sys_label 但缺少 path）: $f"
     fi
-    path='' repo='' doc_dir='' app_name='' app_label=''
+    path='' repo='' doc_dir='' app_name='' app_label='' sys_name='' sys_label=''
   }
 
   set_kv() {
@@ -757,6 +762,8 @@ knowledge_links_load_into_arrays() {
       doc_dir) doc_dir="$2" ;;
       app_name) app_name="$2" ;;
       app_label) app_label="$2" ;;
+      sys_name) sys_name="$2" ;;
+      sys_label) sys_label="$2" ;;
       *) ;;
     esac
   }

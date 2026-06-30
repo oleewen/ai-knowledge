@@ -5,8 +5,8 @@ TEST_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$TEST_ROOT/../.." && pwd)"
 source "$REPO_ROOT/agent/scripts/test-core.sh"
 
-QUICK_SUITES=("agent/scripts/tests/forbidden-file-refs/run.sh" docs-link docs-change okf docs-okf agent-install docs-meta-naming)
-FULL_SUITES=("agent/scripts/tests/forbidden-file-refs/run.sh" docs-link docs-change okf docs-okf agent-install docs-meta-naming docs-install docs-push)
+QUICK_SUITES=("agent/scripts/tests/forbidden-file-refs/run.sh" docs-link docs-pull docs-change okf docs-okf agent-install docs-meta-naming)
+FULL_SUITES=("agent/scripts/tests/forbidden-file-refs/run.sh" docs-link docs-pull docs-change okf docs-okf agent-install docs-meta-naming docs-install docs-push)
 
 MODE='quick'
 SUITE=''
