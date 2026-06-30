@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 同一 target 再次 link 时保留已有 app_label；无 app_label 时默认 app_name
+# link 时 repository 必填：目标仓库须有 Git remote URL
 set -euo pipefail
 
 TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -16,8 +16,7 @@ ROOT_DIR="$(cd "$TEST_DIR/../../../.." && pwd)"
 DOCS_LINK="$ROOT_DIR/scripts/docs-link.sh"
 FAKEHOME="$TMP_DIR/fakehome"
 SYS_SRC="$FAKEHOME/ws/system-kb"
-APP_TGT="$FAKEHOME/ws/my-application-repo"
-LIST="$SYS_SRC/docs/knowledge-links.yaml"
+APP_TGT="$FAKEHOME/ws/app-no-remote"
 TPL="$ROOT_DIR/system/application-APPNAME"
 
 cleanup() {
@@ -31,7 +30,6 @@ mkdir -p "$SYS_SRC/docs" "$APP_TGT/docs"
 cp -R "$TPL" "$SYS_SRC/docs/application-APPNAME"
 git -C "$SYS_SRC" init -q
 git -C "$APP_TGT" init -q
-git -C "$APP_TGT" remote add origin "https://example.com/org/my-application-repo.git"
 
 cat >"$SYS_SRC/.docsconfig" <<EOF
 DOC_ROOT=docs
@@ -51,25 +49,13 @@ AGENT_ROOT=$ROOT_DIR/agent
 AGENT_DIRS=.cursor
 EOF
 
-run_link() {
-  ( cd "$SYS_SRC" && HOME="$FAKEHOME" "${BASH:-bash}" "$DOCS_LINK" --link --target "$APP_TGT" )
-}
+set +e
+out="$(cd "$SYS_SRC" && HOME="$FAKEHOME" "${BASH:-bash}" "$DOCS_LINK" --link --target "$APP_TGT" 2>&1)"
+code=$?
+set -e
 
-run_link || fail "首次 link 应成功"
-assert_file_exists "$LIST"
+[[ "$code" -ne 0 ]] || fail "目标无 remote 时应失败"
+printf '%s\n' "$out" | grep -Fq 'repository 必填' || fail "应提示 repository 必填"
 
-# 将 app_label 改为与 app_name 不同，第二次 link 后应仍保留
-if grep -q '^[[:space:]]*app_label:' "$LIST"; then
-  if [[ "$(uname -s)" == 'Darwin' ]]; then
-    sed -i '' 's/^\([[:space:]]*app_label:\).*/\1 "保留测签"/' "$LIST"
-  else
-    sed -i 's/^\([[:space:]]*app_label:\).*/\1 "保留测签"/' "$LIST"
-  fi
-else
-  fail "首次 link 后应写出 app_label 行"
-fi
+pass "repository 必填：目标无 remote 时 link 失败"
 
-run_link || fail "第二次 link 应成功"
-grep -Fq 'app_label: "保留测签"' "$LIST" || fail "再次 link 应保留已有 app_label"
-
-pass "再次 link 保留已有 app_label"

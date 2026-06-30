@@ -1,9 +1,9 @@
 # 知识库建联清单（可由 docs-link.sh 维护）
-# 约定见 scripts/README.md：repository 存远端；path 在 $HOME 下为 ~/… 或 ~/，否则绝对路径（不得为 URL）。
+# 字段约定见 scripts/README.md（repository + path；path 不得为 URL；application 建联含 app_name / app_label）。
 # 示例（勿把 URL 写在 path）：
-#   - repository: "https://example.com/org/app.git"
-#     path: "~/workspaces/app"
+#   - repository: "https://example.com/org/app-foo.git"
+#     path: "~/workspaces/app-foo"
 #     doc_dir: "application"
-#     app_name: "my-app"
-#     app_label: "my-app"
+#     app_name: "app-foo"
+#     app_label: "app-foo"
 links:
