@@ -40,7 +40,7 @@
 
 ## 方案取舍（当前段内若存在多套可选）
 
-（可选；≥2 条真实路径时：业务命名、利弊、选中理由。见 [brainstorming-integration.md](../references/brainstorming-integration.md)。）
+（可选；`>=2` 条真实路径时：记录业务命名、利弊、选中理由；作为当前段原生比选输入。）
 
 ---
 

@@ -5,7 +5,7 @@ set -euo pipefail
 # 用法：validate-solution.sh [--file <path>] [--gate-check] [--gate-strict]
 # 文档根：resolve_repo_doc_root（.docsconfig）；先 source config-bootstrap.sh
 #
-# 要点：文末 YAML、`id`、`## 1`–`## 7`、小节标题、空节标注、编号、正文技术词筛查；
+# 要点：文首 frontmatter、`id`、`## 1`–`## 7`、小节标题、空节标注、编号、正文技术词筛查；
 #       --gate-check：specs 下含 CONFIRMED 且引用该文件名的会话 spec（见 SKILL）。
 # --gate-strict：门禁未过记 ERROR。
 
@@ -73,19 +73,8 @@ else
   warn "solution-template.md 不存在: ${TEMPLATE}"
 fi
 
-# 1. 文档目录
-if [[ -d "${SOLUTIONS_DIR}" ]]; then
-  FILE_COUNT=$(find "${SOLUTIONS_DIR}" -name "SOLUTION-*.md" 2>/dev/null | wc -l | tr -d ' ')
-  success "solutions/ 目录存在 (${FILE_COUNT} 个解决方案文档)"
-else
-  warn "solutions/ 目录不存在: ${SOLUTIONS_DIR}"
-  echo ""
-  echo "=== 校验结果 ==="
-  echo "错误: ${ERRORS}  警告: ${WARNINGS}"
-  exit 0
-fi
-
 # 收集要校验的文件
+FILES=()
 if [[ -n "${TARGET_FILE}" ]]; then
   if [[ -f "${TARGET_FILE}" ]]; then
     FILES=("${TARGET_FILE}")
@@ -97,7 +86,18 @@ if [[ -n "${TARGET_FILE}" ]]; then
     exit 1
   fi
 else
-  FILES=()
+  # 1. 文档目录
+  if [[ -d "${SOLUTIONS_DIR}" ]]; then
+    FILE_COUNT=$(find "${SOLUTIONS_DIR}" -name "SOLUTION-*.md" 2>/dev/null | wc -l | tr -d ' ')
+    success "solutions/ 目录存在 (${FILE_COUNT} 个解决方案文档)"
+  else
+    warn "solutions/ 目录不存在: ${SOLUTIONS_DIR}"
+    echo ""
+    echo "=== 校验结果 ==="
+    echo "错误: ${ERRORS}  警告: ${WARNINGS}"
+    exit 0
+  fi
+
   while IFS= read -r -d '' f; do
     FILES+=("$f")
   done < <(find "${SOLUTIONS_DIR}" -name "SOLUTION-*.md" -print0 2>/dev/null)
@@ -116,39 +116,41 @@ for file in "${FILES[@]}"; do
   BASENAME=$(basename "${file}")
   echo "--- 校验: ${BASENAME} ---"
 
-  # 2. 文档元数据（文末 YAML）；禁止首行 --- 作为 frontmatter（模板内分隔线通常在第 3 行及以后）
+  # 2. 文档元数据（文首 frontmatter）
   FIRST_LINE=$(head -1 "${file}" 2>/dev/null || true)
-  if [[ "${FIRST_LINE}" == "---" ]]; then
-    warn "${BASENAME}: 首行为 ---（疑似 YAML frontmatter，应移除）；元数据须仅在文末「## 文档元数据」的 yaml 代码块中"
-  fi
-
-  if grep -qF "## 文档元数据" "${file}"; then
-    success "${BASENAME}: 「文档元数据」章节存在"
-    for field in "id:" "title:" "version:" "status:" "created:" "updated:" "author:" "parent:" "dependencies:" "tags:"; do
-      if grep -q "${field}" "${file}"; then
-        success "${BASENAME}: ${field} 字段存在"
-      else
-        warn "${BASENAME}: 缺少 ${field} 字段"
-      fi
-    done
-
-    ID_LINE=$(grep "id:" "${file}" 2>/dev/null | head -1 || true)
-    if [[ -n "${ID_LINE}" ]]; then
-      if echo "${ID_LINE}" | grep -qE 'SOLUTION-[0-9]{6}-'; then
-        success "${BASENAME}: id 含 SOLUTION- 前缀与日期段"
-      else
-        warn "${BASENAME}: id 建议符合 SOLUTION-{IDEA-ID}，实际: ${ID_LINE}"
-      fi
-    fi
-
-    STATUS_LINE=$(grep "status:" "${file}" 2>/dev/null | head -1 || true)
-    if echo "${STATUS_LINE}" | grep -q "draft\|review\|approved"; then
-      success "${BASENAME}: status 值有效"
-    else
-      warn "${BASENAME}: status 值异常: ${STATUS_LINE}"
-    fi
+  if [[ "${FIRST_LINE}" != "---" ]]; then
+    error "${BASENAME}: 缺少文首 YAML frontmatter（首行应为 ---）"
   else
-    warn "${BASENAME}: 缺少「## 文档元数据」章节（须在文末放置 YAML 元数据）"
+    FRONTMATTER_END_LINE=$(awk 'NR>1 && $0=="---"{print NR; exit}' "${file}" 2>/dev/null || true)
+    if [[ -z "${FRONTMATTER_END_LINE}" ]]; then
+      error "${BASENAME}: YAML frontmatter 未闭合（缺少第二个 ---）"
+    else
+      FRONTMATTER_CONTENT=$(sed -n "2,$((FRONTMATTER_END_LINE - 1))p" "${file}" 2>/dev/null || true)
+      success "${BASENAME}: YAML frontmatter 存在"
+      for field in "id:" "title:" "version:" "status:" "created:" "updated:" "author:" "parent:" "dependencies:" "tags:"; do
+        if echo "${FRONTMATTER_CONTENT}" | grep -qE "^${field}"; then
+          success "${BASENAME}: ${field} 字段存在"
+        else
+          warn "${BASENAME}: 缺少 ${field} 字段"
+        fi
+      done
+
+      ID_LINE=$(echo "${FRONTMATTER_CONTENT}" | grep -E '^id:' 2>/dev/null | head -1 || true)
+      if [[ -n "${ID_LINE}" ]]; then
+        if echo "${ID_LINE}" | grep -qE 'SOLUTION-'; then
+          success "${BASENAME}: id 含 SOLUTION- 前缀"
+        else
+          warn "${BASENAME}: id 建议符合 SOLUTION-{IDEA-ID}，实际: ${ID_LINE}"
+        fi
+      fi
+
+      STATUS_LINE=$(echo "${FRONTMATTER_CONTENT}" | grep -E '^status:' 2>/dev/null | head -1 || true)
+      if echo "${STATUS_LINE}" | grep -q "draft\|review\|approved"; then
+        success "${BASENAME}: status 值有效"
+      else
+        warn "${BASENAME}: status 值异常: ${STATUS_LINE}"
+      fi
+    fi
   fi
 
   # 3. 七章结构检查（与当前 solution-template.md 一致）

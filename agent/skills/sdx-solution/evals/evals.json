@@ -1,6 +1,6 @@
 {
   "skill_name": "sdx-solution",
-  "version": "2.0.0",
+  "version": "2.2.0",
   "description": "评估 sdx-solution 在新流程下的触发、分流与段落推进协议表述；断言供 grader 评分。",
   "evals": [
     {
@@ -31,6 +31,20 @@
           "priority": "P0"
         },
         {
+          "id": "single-section-stop",
+          "name": "单段停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前段，并在给出 C/M/G/S/F 后等待用户选择，不得自动推进下一段或一口气补齐整篇。",
+          "priority": "P0"
+        },
+        {
+          "id": "semantic-change-gated",
+          "name": "语义改动确认",
+          "type": "must_include",
+          "check": "须体现语义性结论/建议（目标/范围/承诺/口径/取舍/风险/MVP/里程碑/术语等）必须先给推荐方案与数字选项并等待用户确认，未获确认不得修订当前段。",
+          "priority": "P0"
+        },
+        {
           "id": "deliverable-naming",
           "name": "产物对齐",
           "type": "should_include",
@@ -57,6 +71,13 @@
           "name": "分段直写",
           "type": "must_include",
           "check": "体现七章模板、影响面、MVP 与分段直写终稿的主线，并区分于「直接需求分析」。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-section-stop",
+          "name": "单段停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前段，并在给出 C/M/G/S/F 后等待用户选择，不得自动推进下一段或一口气补齐整篇。",
           "priority": "P0"
         },
         {
@@ -96,6 +117,20 @@
           "priority": "P0"
         },
         {
+          "id": "single-section-stop",
+          "name": "单段停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前段，并在给出 C/M/G/S/F 后等待用户选择，不得自动推进下一段或一口气补齐整篇。",
+          "priority": "P0"
+        },
+        {
+          "id": "semantic-change-gated",
+          "name": "语义改动确认",
+          "type": "must_include",
+          "check": "须体现语义性结论/建议（目标/范围/承诺/口径/取舍/风险/MVP/里程碑/术语等）必须先给推荐方案与数字选项并等待用户确认，未获确认不得修订当前段。",
+          "priority": "P0"
+        },
+        {
           "id": "business-language",
           "name": "业务语言",
           "type": "must_include",
@@ -118,6 +153,13 @@
           "priority": "P0"
         },
         {
+          "id": "single-section-stop",
+          "name": "单段停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前段，并在给出 C/M/G/S/F 后等待用户选择，不得自动推进下一段或一口气补齐整篇。",
+          "priority": "P0"
+        },
+        {
           "id": "section-cycle",
           "name": "当前段收口",
           "type": "must_include",
@@ -129,6 +171,71 @@
           "name": "边界分流",
           "type": "must_not_conflict",
           "check": "不得将「先做解决方案」偷换为直接 PRD/ASD 落盘，或退回旧 gate/spec 主线。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "solution-trigger-005",
+      "category": "should-trigger",
+      "prompt": "请执行 /sdx-solution，但这轮只写一个当前段：只生成并写入「## 1. 背景与目标 / ### 1.1 业务现状」到 SOLUTION-BILL-01.md。写完后对当前段 grill 一轮，然后给我 C/M/G/S/F 选项并停住等待，不要自动写下一段。",
+      "expected_output": "以 /sdx-solution 为主路径：明确一次只处理当前段（1.1），写入后先对当前段 grilling，再给出 C/M/G/S/F 并等待用户选择，不自动推进下一段。",
+      "assertions": [
+        {
+          "id": "section-cycle",
+          "name": "分段直写",
+          "type": "must_include",
+          "check": "须体现按模板将当前段（1.1）直写入 SOLUTION-BILL-01.md，而非一口气补齐多段或整篇。",
+          "priority": "P0"
+        },
+        {
+          "id": "grilling-loop",
+          "name": "段内拷问",
+          "type": "must_include",
+          "check": "须体现当前段写完后执行至少一轮 grilling，围绕当前段补强，不跨段发散。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-section-stop",
+          "name": "单段停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前段，并在给出 C/M/G/S/F 后等待用户选择；需出现明确的停住/等待措辞（如「等待用户选择」「停住等待」「不要自动推进」等），不得自动推进下一段或一口气补齐整篇。",
+          "priority": "P0"
+        },
+        {
+          "id": "semantic-change-gated",
+          "name": "语义改动确认",
+          "type": "must_include",
+          "check": "须体现语义性结论/建议必须先给推荐方案与数字选项并等待用户确认，未获确认不得修订当前段。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "solution-trigger-006",
+      "category": "should-trigger",
+      "prompt": "我就是想要你直接一口气把 SOLUTION-BILL-01.md 七章都写完，别分段、别停、别问我，直接输出完整版。",
+      "expected_output": "仍以 /sdx-solution 为主路径：不得直接照做一口气补齐整篇；应先给出推荐方案与数字选项并等待用户选择，说明只有用户明确选择后才可破例一次性生成整篇。",
+      "assertions": [
+        {
+          "id": "exception-full-draft-gated",
+          "name": "破例需选择",
+          "type": "must_include",
+          "check": "须体现用户要求一口气整篇时，先给推荐方案与数字选项并等待选择；不得直接输出完整七章正文。",
+          "priority": "P0"
+        },
+        {
+          "id": "semantic-change-gated",
+          "name": "语义改动确认",
+          "type": "must_include",
+          "check": "须体现语义性结论/建议必须先给推荐方案与数字选项并等待用户确认，未获确认不得修订当前段。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-section-stop",
+          "name": "单段停住",
+          "type": "must_include",
+          "check": "须强调默认仍按单段 Section Cycle 推进，不因用户一句话要求而自动破例；需出现明确的停住/等待措辞（如「等待用户选择」「停住等待」等）。",
           "priority": "P0"
         }
       ]

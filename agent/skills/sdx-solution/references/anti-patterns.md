@@ -5,7 +5,7 @@
 | # | 反模式 | 纠正 |
 | --- | --- | --- |
 | 1 | 把集中式前置收口当默认起点 | [workflow.md](workflow.md)：先参数向导，再直写终稿 |
-| 2 | 用独立 brainstorming 终态替代当前段收口 | brainstorming 只嵌入参数向导与当前段循环；见 [brainstorming-integration.md](brainstorming-integration.md) |
+| 2 | 把参数发散或段内比选搬出主流程 | 参数澄清留在参数向导；多方案比选留在当前段循环 |
 | 3 | 当前段初稿一写完就算完成 | 先 grill，再由用户用 `C/M/G/S/F` 收口 |
 | 4 | 当前段未收口就偷偷推进下一段 | [gates.md](gates.md)：当前段优先，除非用户显式 `S` 或 `F` |
 | 5 | 回改前文后沿用当前段旧结论 | 前文一改，当前段必须 `reopened` 并再 grill 一轮 |
@@ -18,3 +18,4 @@
 | 12 | C-n 无成本与残余风险 | 每项：策略 + 成本档 + 残余风险 |
 | 13 | 不可测目标或伪 MVP | 能量化或标「待澄清」；MVP 须对应业务问题 |
 | 14 | 未跑 `validate-solution.sh` 即收口 | [SKILL.md](../SKILL.md) 校验 |
+| 15 | 一口气生成多段并跳过用户动作 | 一次只处理一个当前段；写完 grill 后等待 `C/M/G/S/F` |
