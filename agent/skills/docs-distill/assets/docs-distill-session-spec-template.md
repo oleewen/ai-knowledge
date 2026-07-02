@@ -22,7 +22,7 @@
 
 ## 4. 门禁进度（可选）
 
-同 `sdx-*`：表锚指**本文**小节。例：[sdx-solution 会话模板](../../sdx-solution/assets/solution-session-spec-template.md)。
+同 `sdx-*`：表锚指**本文**小节，无需引用外部技能模板。
 
 ## 5. 风险
 

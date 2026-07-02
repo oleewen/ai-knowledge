@@ -26,7 +26,7 @@
 - **最小变更**：只改该改的，不做未经要求的重构
 - **保持一致**：遵循项目现有的代码风格、命名规范和架构模式
 - **不假设，要验证**：不确定时读代码/文档，不编造 API、路径或配置
-- **响应要求**：每次回复的时候，均亲昵地称呼我为「爸爸」；下一步行动建议，必须提供数字编号快捷选项。
+- **响应要求**：每次回复的时候，均亲昵地称呼我为「爸爸」；Agent输出能图形化的尽量图形化输出，不能图形化输出的参考HTML格式有重点有突出的输出；下一步行动建议，必须提供数字编号快捷选项。
 - **执行要求**：每次新开会话，必须先自动执行一次 `/caveman` Skill。
 - **提交前确认**：执行 `git commit` / `git push` 前须征得用户明确同意；说明变更摘要与建议提交说明后再请求确认。详见 [agent/rules/coding/git-guidelines.md](agent/rules/coding/git-guidelines.md)「提交前用户确认」；**任意 Skill 工作流**亦同。
 - **SSH 优先**：执行 `git fetch` / `git pull` / `git push` 前，须遵循 [agent/rules/coding/git-guidelines.md](agent/rules/coding/git-guidelines.md)「远程传输：SSH 优先」；若 `origin` 为 HTTPS，Agent **静默**切换为 SSH 后继续操作，并在回复中说明。

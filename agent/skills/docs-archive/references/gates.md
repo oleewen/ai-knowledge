@@ -17,7 +17,7 @@
 
 **标记**：spec 中 `<!-- docs-archive-gate: PENDING -->` → 确认后 `CONFIRMED`；正文须含目标文件 **basename**（钩子证据）。  
 无环境变量 bypass；用户同会话**明示**跳过仍须一句方案+风险并取得**明确同意**。  
-进度表锚点与 `sdx-*` 同构时，两列指**本会话稿内**小节（例：[sdx-solution 会话模板](../../sdx-solution/assets/solution-session-spec-template.md)「门禁进度」）。
+进度表锚点与 `sdx-*` 同构时，两列指**本会话稿内**小节，无需引用外部技能模板。
 
 ## 钩子
 

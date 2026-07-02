@@ -19,7 +19,7 @@
 
 ## 4. 门禁进度（可选）
 
-同 sdx 则锚本节；例 [sdx-solution 模板](../../sdx-solution/assets/solution-session-spec-template.md)。
+同 `sdx-*` 则锚本节，无需引用外部技能模板。
 
 ## 5. Qclose-1
 

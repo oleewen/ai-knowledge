@@ -21,7 +21,7 @@
 
 ## 4. 门禁进度（可选）
 
-与 `sdx-*` 同构；两列锚**本文件**。例： [sdx-solution 会话模板](../../sdx-solution/assets/solution-session-spec-template.md)。
+与 `sdx-*` 同构；两列锚**本文件**，无需引用外部技能模板。
 
 | 门禁 | 覆盖 | 状态 | 备注 |
 |------|------|------|------|

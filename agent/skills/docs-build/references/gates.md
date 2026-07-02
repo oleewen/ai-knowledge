@@ -23,7 +23,7 @@
 
 **C 或 S** 后改 `CONFIRMED`，进阶段 2。
 
-进度表与 sdx 同构时锚到本会话内小节；例见 [sdx-solution 模板](../../sdx-solution/assets/solution-session-spec-template.md)「门禁进度」。
+进度表与 `sdx-*` 同构时锚到本会话内小节，无需引用外部技能模板。
 
 ## 钩子
 

@@ -12,11 +12,12 @@
 
 ```json
 {
-  "text": "通过。明确 SOLUTION 门禁与七章边界，未误指 ANALYSIS/PRD。",
+  "text": "通过。明确参数向导、分段直写终稿与段内 grilling，未误回到集中式前置收口主线。",
   "passed": true,
   "evidence": [
-    "gate-compliance：总确认前禁写 SOLUTION 定稿路径。",
-    "structure-integrity：会话 spec、门禁与七章定位。",
+    "parameter-guidance：体现逐项确认或快捷组合。",
+    "section-cycle：体现分段直写终稿与当前段收口。",
+    "grilling-loop：体现当前段 grilling 与用户动作协议。",
     "boundary-routing：未仅分流 ANALYSIS/PRD。"
   ]
 }
@@ -26,11 +27,11 @@
 
 ```json
 {
-  "text": "通过。主路径指向 sdx-analysis / ANALYSIS，未以完整 sdx-solution 为唯一交付。",
+  "text": "通过。主路径指向 sdx-analysis / ANALYSIS，未把当前请求错误框成 sdx-solution 的分段写作流程。",
   "passed": true,
   "evidence": [
     "correct-downstream：点名下游技能或产物。",
-    "no-false-solution-primary：未框成仅过门禁写 SOLUTION 即结束。"
+    "no-false-solution-primary：未框成参数向导 + 分段直写 SOLUTION 的主路径。"
   ]
 }
 ```
@@ -38,8 +39,8 @@
 ## 判定
 
 1. 读 `category`：`should-trigger` / `should-not-trigger`  
-2. **should-trigger**：主路径须为 `/sdx-solution`；须含 HARD-GATE、会话 spec、门禁、七章边界；不得把本任务判成「仅 ANALYSIS/PRD/ASD」或纯 docs 即够  
-3. **should-not-trigger**：须拒绝以 sdx-solution 为主路径，或明确分流至用户要的技能/产物；不得用「先完整 sdx-solution 再写 SOLUTION」作为唯一框架  
+2. **should-trigger**：主路径须为 `/sdx-solution`；须含参数向导、分段直写 `SOLUTION-*.md`、当前段 `grilling`、`C/M/G/S/F` 或等价推进协议；不得退回整份前置草稿 + 集中收口主线  
+3. **should-not-trigger**：须拒绝以 sdx-solution 为主路径，或明确分流至用户要的技能/产物；不得用“先参数向导再分段写 SOLUTION”作为对下游请求的统一框架  
 4. 按 `priority` 判：**P0** 任一失败 → `passed: false`  
 5. `evidence` 须可映射 `assertions[].id` 或 `check` 语义  
 6. 不输出实现方案；仅评判  

@@ -1,33 +1,33 @@
 {
   "skill_name": "sdx-solution",
-  "version": "1.1.0",
-  "description": "评估 sdx-solution 触发/分流/HARD-GATE 表述；断言供 grader 评分。",
+  "version": "2.0.0",
+  "description": "评估 sdx-solution 在新流程下的触发、分流与段落推进协议表述；断言供 grader 评分。",
   "evals": [
     {
       "id": "solution-trigger-001",
       "category": "should-trigger",
-      "prompt": "业务方丢了一段会议纪要，需求比较模糊，帮我走 /sdx-solution：先出会话 spec、过门禁，最后落 SOLUTION-BILL-01.md，要把冲突点和 MVP 里程碑写清楚。",
-      "expected_output": "以 /sdx-solution 为主路径：说明先写会话 spec 与门禁，总确认后再定稿 SOLUTION-BILL-01.md；须体现 HARD-GATE；应覆盖冲突点与 MVP/里程碑的共识表述方式（业务语言）。",
+      "prompt": "业务方丢了一段会议纪要，需求比较模糊，帮我走 /sdx-solution：先逐步确认参数，再一段一段写进 SOLUTION-BILL-01.md，每段写完都 grill 一轮，把冲突点和 MVP 里程碑补强。",
+      "expected_output": "以 /sdx-solution 为主路径：说明先走参数向导，再按模板分段直写 SOLUTION-BILL-01.md；每段写完进入 grilling，并由用户确认后推进下一段；应覆盖冲突点与 MVP/里程碑的业务表述。",
       "assertions": [
         {
-          "id": "gate-compliance",
-          "name": "门禁合规",
+          "id": "parameter-guidance",
+          "name": "参数向导",
           "type": "must_include",
-          "check": "明确总确认前禁止写入 {DOC_DIR}/solutions/SOLUTION-*.md（或等价「未确认不写终稿」），并可提及合法例外或 SDX_SOLUTION_ALLOW_SOLUTION_WRITE。",
+          "check": "明确存在逐项确认参数或快捷组合的入口，不得仍以整份前置草稿和集中收口作为默认第一步。",
           "priority": "P0"
         },
         {
-          "id": "structure-integrity",
-          "name": "结构完整",
+          "id": "section-cycle",
+          "name": "分段直写",
           "type": "must_include",
-          "check": "体现会话 spec（如 {DOC_DIR}/superpowers/specs/…-sdx-solution.md）、门禁（G1–G7 或精简 5G）与七章 SOLUTION 模板/分块填充，而非以 ANALYSIS/PRD 为主产物。",
+          "check": "体现按模板分段生成并直写 SOLUTION-BILL-01.md，而非先整份 spec、再统一定稿。",
           "priority": "P0"
         },
         {
-          "id": "boundary-routing",
-          "name": "边界分流",
-          "type": "must_not_conflict",
-          "check": "不得将本请求主路径改为仅 sdx-analysis、sdx-prd、sdx-architect 或 docs-* 并宣称无需 SOLUTION。",
+          "id": "grilling-loop",
+          "name": "段内拷问",
+          "type": "must_include",
+          "check": "体现每段生成后执行 grilling，并在当前段完成补强后再推进；可提及 C/M/G/S/F 或等价动作。",
           "priority": "P0"
         },
         {
@@ -42,21 +42,21 @@
     {
       "id": "solution-trigger-002",
       "category": "should-trigger",
-      "prompt": "我们要在 {DOC_DIR}/solutions/ 写共识级方案文档，按七章模板，先评估影响面再定 MVP，请用 sdx-solution 流程，不要直接进需求分析。",
-      "expected_output": "明确采用 sdx-solution：先影响面与 MVP 共识，再走会话 spec/门禁与 SOLUTION；说明不应跳过解决方案阶段直接进入 ANALYSIS。",
+      "prompt": "我们要在 {DOC_DIR}/solutions/ 写共识级方案文档，按七章模板，先评估影响面再定 MVP，请用 sdx-solution 流程，不要直接进需求分析。希望参数可以一步步确认，必要时也能用快捷组合。",
+      "expected_output": "明确采用 sdx-solution：先参数确认，再分段直写终稿，并支持逐项参数与快捷组合两种模式；说明不应跳过解决方案阶段直接进入 ANALYSIS。",
       "assertions": [
         {
-          "id": "gate-compliance",
-          "name": "门禁合规",
+          "id": "parameter-guidance",
+          "name": "参数向导",
           "type": "must_include",
-          "check": "明确总确认前禁止写入 {DOC_DIR}/solutions/SOLUTION-*.md 或等价门禁表述。",
+          "check": "须体现参数向导的两种入口：逐项确认或快捷组合。",
           "priority": "P0"
         },
         {
-          "id": "structure-integrity",
-          "name": "结构完整",
+          "id": "section-cycle",
+          "name": "分段直写",
           "type": "must_include",
-          "check": "体现七章模板、影响面、MVP 与 sdx-solution 阶段（spec/门禁/SOLUTION），并区分于「直接需求分析」。",
+          "check": "体现七章模板、影响面、MVP 与分段直写终稿的主线，并区分于「直接需求分析」。",
           "priority": "P0"
         },
         {
@@ -78,72 +78,58 @@
     {
       "id": "solution-trigger-003",
       "category": "should-trigger",
-      "prompt": "老板要一版「订单域改造」解决方案给评审用，只要业务语言、不写接口。请执行 /sdx-solution，IDEA-ID 用 260504-订单域改造，门禁用精简 5G。",
-      "expected_output": "以 /sdx-solution 执行：IDEA-ID 260504-订单域改造、精简 5G；强调业务语言、接口细节不进正文；含门禁与 SOLUTION 路径意识。",
+      "prompt": "老板要一版「订单域改造」解决方案给评审用，只要业务语言、不写接口。请执行 /sdx-solution，IDEA-ID 用 260504-订单域改造；如果当前段 grill 出前文设定有问题，允许回改前文再继续 grill 当前段。",
+      "expected_output": "以 /sdx-solution 执行：采纳 IDEA-ID 260504-订单域改造；强调业务语言、接口细节不进正文；体现前文回改后当前段必须重开并再做一轮 grilling。",
       "assertions": [
         {
-          "id": "gate-compliance",
-          "name": "门禁合规",
-          "type": "must_include",
-          "check": "含未确认不写 SOLUTION 终稿或 HARD-GATE 等价语义。",
-          "priority": "P0"
-        },
-        {
-          "id": "structure-integrity",
-          "name": "结构完整",
-          "type": "must_include",
-          "check": "体现精简 5G（或 G(1–2)–G7 映射）、会话 spec 与 SOLUTION 七章/共识边界。",
-          "priority": "P0"
-        },
-        {
-          "id": "boundary-routing",
-          "name": "边界分流",
-          "type": "must_not_conflict",
-          "check": "不得将主路径改为 sdx-design/API 详设或仅产出 ASD。",
-          "priority": "P0"
-        },
-        {
-          "id": "idea-id-echo",
+          "id": "parameter-guidance",
           "name": "参数回应",
-          "type": "should_include",
+          "type": "must_include",
           "check": "应复述或采纳 260504-订单域改造（或 订单域改造 与日期组合）。",
-          "priority": "P1"
+          "priority": "P0"
+        },
+        {
+          "id": "reopen-rule",
+          "name": "前文回改",
+          "type": "must_include",
+          "check": "体现当前段 grilling 打出前文缺口时，可以回改前文；回改后当前段必须重开并再 grill 一轮。",
+          "priority": "P0"
+        },
+        {
+          "id": "business-language",
+          "name": "业务语言",
+          "type": "must_include",
+          "check": "须强调只写业务语言，不进入接口/实现细节。",
+          "priority": "P0"
         }
       ]
     },
     {
       "id": "solution-trigger-004",
       "category": "should-trigger",
-      "prompt": "请按 SDX 流程先做解决方案阶段：识别矛盾、给 2～3 套化解路径对比，收口后再生成 SOLUTION-CRM-2.md。",
-      "expected_output": "主路径为解决方案阶段：矛盾识别、2～3 套化解路径对比、收口后经总确认生成 SOLUTION-CRM-2.md；含门禁意识。",
+      "prompt": "请按 SDX 流程先做解决方案阶段：识别矛盾、给 2～3 套化解路径对比，当前段写完后用户可以选 C/M/G/S/F；如果用户选 G，就继续 grill 当前段。",
+      "expected_output": "主路径为解决方案阶段：分段写作、段内比选、用户通过 C/M/G/S/F 控制推进；选 G 时继续 grill 当前段，不推进下一段。",
       "assertions": [
         {
-          "id": "gate-compliance",
-          "name": "门禁合规",
+          "id": "grilling-loop",
+          "name": "动作协议",
           "type": "must_include",
-          "check": "含总确认前不写 SOLUTION 终稿或等价表述。",
+          "check": "须提及 C/M/G/S/F 或等价动作；其中 G 表示继续 grill 当前段，不进入下一段。",
           "priority": "P0"
         },
         {
-          "id": "structure-integrity",
-          "name": "结构完整",
+          "id": "section-cycle",
+          "name": "当前段收口",
           "type": "must_include",
-          "check": "体现多方案对比在门禁内完成、会话 spec、SOLUTION-CRM-2 定稿节奏。",
+          "check": "须体现多方案对比在当前段内完成，再由用户决定是否推进。",
           "priority": "P0"
         },
         {
           "id": "boundary-routing",
           "name": "边界分流",
           "type": "must_not_conflict",
-          "check": "不得将「先做解决方案」偷换为直接 PRD/ASD 落盘。",
+          "check": "不得将「先做解决方案」偷换为直接 PRD/ASD 落盘，或退回旧 gate/spec 主线。",
           "priority": "P0"
-        },
-        {
-          "id": "multi-path-compare",
-          "name": "多方案对比",
-          "type": "should_include",
-          "check": "应提及 2～3 套路径或利弊对比后再收口（可与 brainstorming 嵌入层一致）。",
-          "priority": "P1"
         }
       ]
     },
@@ -151,7 +137,7 @@
       "id": "solution-not-trigger-001",
       "category": "should-not-trigger",
       "prompt": "SOLUTION 已经有了，请接着做 /sdx-analysis，把 MVP 拆细、依赖和风险写进 ANALYSIS-CRM-1.md。",
-      "expected_output": "主路径为 sdx-analysis：产出或迭代 ANALYSIS-CRM-1.md；不以完整 sdx-solution 门禁链写新 SOLUTION 为终点。",
+      "expected_output": "主路径为 sdx-analysis：产出或迭代 ANALYSIS-CRM-1.md；不以 sdx-solution 的参数向导 + 分段直写流程写新 SOLUTION 为终点。",
       "assertions": [
         {
           "id": "correct-downstream",
@@ -164,15 +150,8 @@
           "id": "no-false-solution-primary",
           "name": "勿假主解决方案阶段",
           "type": "must_not_conflict",
-          "check": "不得将本请求表述为「仍需完整执行 sdx-solution 过 G1–G7 并新建 SOLUTION」作为主要答案。",
+          "check": "不得将本请求表述为“仍需先做参数向导、再分段写 SOLUTION”作为主要答案。",
           "priority": "P0"
-        },
-        {
-          "id": "respect-existing-solution",
-          "name": "尊重已有 SOLUTION",
-          "type": "should_include",
-          "check": "可提及已有 SOLUTION、本阶段聚焦 ANALYSIS。",
-          "priority": "P1"
         }
       ]
     },
@@ -180,7 +159,7 @@
       "id": "solution-not-trigger-002",
       "category": "should-not-trigger",
       "prompt": "请用 /sdx-prd 把用户故事和验收标准补全，我要可评审的 PRD-ORDER-1.md。",
-      "expected_output": "主路径为 sdx-prd 与 PRD-ORDER-1.md；不以 sdx-solution 会话 spec + SOLUTION 为主交付。",
+      "expected_output": "主路径为 sdx-prd 与 PRD-ORDER-1.md；不以 sdx-solution 的参数向导 + Section Cycle + SOLUTION 写作为主交付。",
       "assertions": [
         {
           "id": "correct-downstream",
@@ -193,7 +172,7 @@
           "id": "no-false-solution-primary",
           "name": "勿假主解决方案阶段",
           "type": "must_not_conflict",
-          "check": "不得将本请求框成以 sdx-solution 与 SOLUTION 七章为主路径。",
+          "check": "不得将本请求框成以 sdx-solution 的参数向导、Section Cycle、SOLUTION 七章为主路径。",
           "priority": "P0"
         }
       ]
@@ -215,7 +194,7 @@
           "id": "no-false-solution-primary",
           "name": "勿假主解决方案阶段",
           "type": "must_not_conflict",
-          "check": "不得将本请求描述为默认先写 SOLUTION 再过门禁。",
+          "check": "不得将本请求描述为默认先做参数向导、分段写 SOLUTION 再进入架构设计。",
           "priority": "P0"
         }
       ]
@@ -259,7 +238,7 @@
           "id": "no-false-solution-primary",
           "name": "勿假主解决方案阶段",
           "type": "must_not_conflict",
-          "check": "不得将本请求框成 SOLUTION 会话 spec 与门禁链。",
+          "check": "不得将本请求框成 sdx-solution 的参数向导、分段直写或任何集中式前置收口主线。",
           "priority": "P0"
         }
       ]
@@ -281,7 +260,7 @@
           "id": "no-false-solution-primary",
           "name": "勿假主解决方案阶段",
           "type": "must_not_conflict",
-          "check": "不得将本请求描述为解决方案阶段与 SOLUTION 落盘主路径。",
+          "check": "不得将本请求描述为解决方案阶段、参数向导或 SOLUTION 落盘主路径。",
           "priority": "P0"
         }
       ]

@@ -25,11 +25,12 @@
 ## 二、关键约定（摘要）
 
 ### 1) 文件引用强校验
+
 - `agent` 内文件引用，避免误用仅能在根目录解析的短链：
-    - Agent 语义可达
-    - `agent/` 内文件引用，须以相对当前文件为准。
-    - `agent/` 外文件引用，须用仓库根 **`REPO_ROOT`** 相对路径（目标工程侧与 `.docsconfig` 之 **`REPO_ROOT`** 语义一致，见 [scripts/README.md](../../scripts/README.md)）。
-    - 仓库根执行自检：`bash agent/scripts/validate-agent-md-links.sh`。
+  - Agent 语义可达
+  - `agent/` 内文件引用，须以相对当前文件为准。
+  - `agent/` 外文件引用，须用仓库根 **`REPO_ROOT`** 相对路径（目标工程侧与 `.docsconfig` 之 **`REPO_ROOT`** 语义一致，见 [scripts/README.md](../../scripts/README.md)）。
+  - 仓库根执行自检：`bash agent/scripts/validate-agent-md-links.sh`。
 
 ### 2) Skills 与脚本边界
 
@@ -43,7 +44,7 @@
 
 ### 4) superpowers 引用隔离
 
-<a id="superpowers-ref-isolation"></a>
+#### superpowers-ref-isolation
 
 `{docroot}/superpowers/`（如 `docs/superpowers/`）为会话闸门 spec 与 brainstorming 设计备忘区，**不是**正式 SSOT。
 
@@ -56,7 +57,7 @@
 
 ## 三、文档产出闸门（SDD 与 docs-distill）
 
-<a id="artifact-gates"></a>
+### artifact-gates
 
 ### 共通模式
 
@@ -72,7 +73,7 @@
 
 | 阶段 | 规则 globs（Cursor） | 终稿 / 写入范围 | 中间会话 spec 文件名后缀 | 闸门标记 | 环境变量例外 | Skill |
 | --- | --- | --- | --- | --- | --- | --- |
-| sdx-solution | `application/solutions/**/*`、`company/solutions/**/*` | `{DOC_DIR}/solutions/SOLUTION-*.md` | `-sdx-solution.md` | `<!-- sdx-solution-gate: CONFIRMED -->` | `SDX_SOLUTION_ALLOW_SOLUTION_WRITE` | [sdx-solution/SKILL.md](../skills/sdx-solution/SKILL.md) |
+| sdx-solution | `application/solutions/**/*`、`company/solutions/**/*` | `{DOC_DIR}/solutions/SOLUTION-*.md` | 可选工作稿（无固定后缀要求） | 无 HTML gate；按当前段状态与 `C/M/G/S/F` 推进 | 无 | [sdx-solution/SKILL.md](../skills/sdx-solution/SKILL.md) |
 | sdx-analysis | `application/analysis/**/*`、`company/analysis/**/*` | `{DOC_DIR}/analysis/ANALYSIS-*.md` | `-sdx-analysis.md` | `<!-- sdx-analysis-gate: CONFIRMED -->` | `SDX_ANALYSIS_ALLOW_ANALYSIS_WRITE` | [sdx-analysis/SKILL.md](../skills/sdx-analysis/SKILL.md) |
 | sdx-architect | `application/requirements/**/ASD-*.md` | `application/requirements/**/ASD-*.md` | `-sdx-architect.md` | `<!-- sdx-architect-gate: CONFIRMED -->` | `SDX_ARCHITECT_ALLOW_ASD_WRITE` | [sdx-architect/SKILL.md](../skills/sdx-architect/SKILL.md) |
 | sdx-design | `application/requirements/**/DSD-*.md` | `application/requirements/**/DSD-*.md` | `-sdx-design.md` | `<!-- sdx-design-gate: CONFIRMED -->` | `SDX_DESIGN_ALLOW_DSD_WRITE` | [sdx-design/SKILL.md](../skills/sdx-design/SKILL.md) |
@@ -91,8 +92,9 @@
 技能按写入风险分三层，闸门强度不同：
 
 | 层级 | 技能 | 闸门形式 | hook 保护 |
-|------|------|---------|----------|
-| **高风险**（落盘 spec + hook） | sdx-solution/analysis/prd/architect/design/test、docs-distill/extract/archive/build/indexing | 落盘 spec 文件（`{DOC_DIR}/superpowers/specs/`，见 [session-spec-path.md](../references/session-spec-path.md)）+ `PENDING` → `CONFIRMED` + hook 证据校验（`docs-indexing` 须在 spec 正文**逐字列出**本轮将写入的仓库根相对路径，与 `sdx_gate_common.py --gate indexing` 一致） | ✅ |
+| --- | --- | --- | --- |
+| **高风险**（落盘 spec + hook） | sdx-analysis/prd/architect/design/test、docs-distill/extract/archive/build/indexing | 落盘 spec 文件（`{DOC_DIR}/superpowers/specs/`，见 [session-spec-path.md](../references/session-spec-path.md)）+ `PENDING` → `CONFIRMED` + hook 证据校验（`docs-indexing` 须在 spec 正文**逐字列出**本轮将写入的仓库根相对路径，与 `sdx_gate_common.py --gate indexing` 一致） | ✅ |
+| **中高风险**（直写终稿 + 段落推进协议） | sdx-solution | 参数向导 + 分段直写终稿 + 当前段 `C/M/G/S/F`；可选工作稿仅作暂存，不要求落盘 spec / HTML gate | ❌ |
 | **中等风险**（会话内确认书） | docs-upgrade、docs-agent | 会话内参数确认书 + Qclose-1，无需落盘 spec 文件；SKILL.md 中有 HARD-GATE 描述 | ❌（写入路径不固定或契约不要求 hook） |
 | **低风险**（现有参数确认） | docs-change、docs-tag、docs-pull | 保持现有参数确认机制，不加 spec gate | ❌ |
 

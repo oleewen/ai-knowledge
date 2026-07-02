@@ -16,7 +16,7 @@
 - 文末 `<!-- docs-distill-gate: PENDING -->` → 确认后 `CONFIRMED`
 - 正文须含目标 **`{APPNAME}-overview.md` basename**，并写明：`--app`/`--full`/`--since`、是否 `--dry-run`、新建或更新概述
 
-进度表锚点与 `sdx-*` 同构时指向**本会话**小节（例：[sdx-solution 会话模板](../../sdx-solution/assets/solution-session-spec-template.md)）。
+进度表锚点与 `sdx-*` 同构时指向**本会话**小节，无需引用外部技能模板。
 
 ## HARD-GATE（须先 preview 或总确认）
 

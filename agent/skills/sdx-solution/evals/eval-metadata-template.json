@@ -7,31 +7,31 @@
   "notes": "复制为 `<eval-id>-metadata.json` 或流水线内联；断言须与 agents/grader.md 对齐。",
   "assertions_should_trigger_example": [
     {
-      "id": "gate-compliance",
-      "name": "门禁合规",
+      "id": "parameter-guidance",
+      "name": "参数向导",
       "type": "must_include",
-      "check": "总确认前禁写 `{DOC_DIR}/solutions/SOLUTION-*.md`；可提合法例外或 `SDX_SOLUTION_ALLOW_SOLUTION_WRITE`。",
+      "check": "体现逐项确认参数或快捷组合，不得仍以整份前置草稿与集中收口作为默认第一步。",
       "priority": "P0"
     },
     {
-      "id": "structure-integrity",
-      "name": "结构完整",
+      "id": "section-cycle",
+      "name": "分段直写",
       "type": "must_include",
-      "check": "含会话 spec、门禁（G1–G7 或精简 5G）与七章 SOLUTION；非以 ANALYSIS/PRD/ASD 正文为主产物。",
+      "check": "含分段直写 SOLUTION 与当前段收口；非以 ANALYSIS/PRD/ASD 正文为主产物。",
       "priority": "P0"
     },
     {
-      "id": "boundary-routing",
-      "name": "边界分流",
-      "type": "must_not_conflict",
-      "check": "对本 should-trigger，主路径勿改为仅 sdx-analysis / PRD / architect / docs-* 并收尾。",
+      "id": "grilling-loop",
+      "name": "段内拷问",
+      "type": "must_include",
+      "check": "含当前段 grilling 与 `C/M/G/S/F` 或等价推进协议。",
       "priority": "P0"
     },
     {
-      "id": "session-spec-awareness",
-      "name": "会话 spec 与总确认",
+      "id": "reopen-rule",
+      "name": "前文回改",
       "type": "should_include",
-      "check": "提及 …-sdx-solution.md 或等价路径，以及总确认后再定稿 SOLUTION。",
+      "check": "提及前文回改后当前段重开，并至少再 grill 一轮。",
       "priority": "P1"
     }
   ],
@@ -47,14 +47,14 @@
       "id": "no-false-solution-primary",
       "name": "勿假主解决方案阶段",
       "type": "must_not_conflict",
-      "check": "勿用「默认完整 sdx-solution 并以 SOLUTION 为终点」覆盖用户已指定阶段。",
+      "check": "勿用「先参数向导、再分段写 SOLUTION」覆盖用户已指定阶段。",
       "priority": "P0"
     },
     {
       "id": "optional-quality-hint",
-      "name": "可拒写盘",
+      "name": "可补下游提示",
       "type": "should_include",
-      "check": "可加分：本对话不写 SOLUTION 终稿或先走所列下游。",
+      "check": "可加分：说明本轮直接走所列下游，不进入 sdx-solution 当前段循环。",
       "priority": "P1"
     }
   ],

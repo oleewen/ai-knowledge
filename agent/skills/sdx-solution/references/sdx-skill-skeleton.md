@@ -11,8 +11,8 @@ description: >
   <第三人称能力句>。
   触发：/slash 与口述同义。
   分流：docs vs sdx 一句。
-  门禁：禁写路径 + 例外指针 gates.md。
-compatibility: Bash 5+；钩子 python3 agent/hooks/sdx_gate_common.py --gate <name>
+  推进协议：动作、写入约束与例外指针 gates.md。
+compatibility: Bash 5+；校验脚本或钩子指针。
 ---
 
 # <title>
@@ -26,11 +26,11 @@ compatibility: Bash 5+；钩子 python3 agent/hooks/sdx_gate_common.py --gate <n
 ## 最少输入
 （bullet ≤5）
 
-## 门禁
-（链 gates.md；HARD-GATE 路径字面量）
+## 推进协议
+（链 gates.md；动作协议、写入约束、例外）
 
 ## 产出与校验
-（路径 + validate-*.sh）
+（路径 + validate-*.sh 或等价校验）
 
 ## 评测 / 钩子
 （指针）
@@ -38,8 +38,8 @@ compatibility: Bash 5+；钩子 python3 agent/hooks/sdx_gate_common.py --gate <n
 
 ## description 规范
 
-1. 第三人称；触发 + 分流 + 门禁禁写路径。
-2. 保留 `compatibility:` 一行（钩子/脚本/bootstrap）。
+1. 第三人称；触发 + 分流 + 推进协议/写入规则。
+2. 保留 `compatibility:` 一行（钩子/脚本/bootstrap/校验）。
 3. 不与边界表逐字重复。
 
 ## 禁止出现在 SKILL.md
@@ -52,8 +52,8 @@ compatibility: Bash 5+；钩子 python3 agent/hooks/sdx_gate_common.py --gate <n
 ## references 分工
 
 | 文件 | SSOT |
-|------|------|
-| `gates.md` | CONFIRMED、HTML 注释、钩子、例外 |
-| `workflow.md` | 阶段、G{n}、参数、公司库等特殊路径 |
+| --- | --- |
+| `gates.md` | 动作协议、写入约束、例外 |
+| `workflow.md` | 阶段、状态机、参数、公司库等特殊路径 |
 | `brainstorming-integration.md` | ≤20 行 + 链 gates |
 | `knowledge-type-modes.md` | KNOWLEDGE_TYPE 正文（architect） |

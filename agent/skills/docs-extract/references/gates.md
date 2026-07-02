@@ -14,7 +14,7 @@
 - 文末：`<!-- docs-extract-gate: PENDING -->` → 确认后 `CONFIRMED`
 - 正文须出现目标 `XX-overview.md` basename（与 `--overview` 一致）
 - 至少含：`--sources` 列表、`--overview`、命中数与章节摘要、是否 `dry-run` 及结论
-- 若含与 `sdx-*` 同构进度表，锚点指向**本会话稿**内小节（示例见 [sdx-solution 会话模板](../../sdx-solution/assets/solution-session-spec-template.md)「门禁进度」）
+- 若含与 `sdx-*` 同构进度表，锚点指向**本会话稿**内小节，无需引用外部技能模板
 
 ## HARD-GATE（须 dry-run 或总确认后再写）
 

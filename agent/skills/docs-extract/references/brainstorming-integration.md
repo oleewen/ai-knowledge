@@ -15,4 +15,4 @@
 
 ## Spec 门禁表
 
-可与 [sdx-solution 会话模板](../../sdx-solution/assets/solution-session-spec-template.md)「门禁进度」对齐；gate 前缀换为 `docs-extract` / `docs-extract-gate`。
+可与本技能会话稿中的门禁进度小节对齐；gate 前缀换为 `docs-extract` / `docs-extract-gate`。

@@ -11,4 +11,4 @@
 - **单次一确认点**：范围、`--since`/`--full`、冲突策略；见 [interaction-gate.md](interaction-gate.md)。  
 - **≥2 真路径**：阶段 2–3 内对比 2～3 套再选（不同起点、分批等）。
 
-进度表与文末 `docs-distill-gate`：`PENDING`/`CONFIRMED` 写法可与 [sdx-solution 会话模板](../../sdx-solution/assets/solution-session-spec-template.md)「门禁进度」同构；前缀换为 `docs-distill`。
+进度表与文末 `docs-distill-gate`：`PENDING`/`CONFIRMED` 写法保持本技能自有格式；若需要进度表，锚点指向本文件或本会话稿内对应小节。
