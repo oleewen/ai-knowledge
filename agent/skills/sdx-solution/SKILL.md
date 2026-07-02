@@ -2,23 +2,24 @@
 name: sdx-solution
 description: >
   逐步确认参数，按模板分段生成并直写 SOLUTION-{IDEA-ID}.md；
-  每段生成后进入 grilling 补强，用户确认后再推进下一段。
+  每段生成后自动 grilling 补强至收敛，用户确认后再推进下一段。
   触发：/sdx-solution、「写方案」「整理业务目标」、需求模糊需结构化并形成共识级解决方案。
   分流：只要 ANALYSIS/PRD/ASD/DSD/TDD 或 docs-* 主路径 → 对应技能。
-  推进协议：段落推进、回改与用户动作见 gates.md。
-compatibility: Bash 5+；校验脚本 agent/skills/sdx-solution/scripts/validate-solution.sh。
+  推进协议：段落推进、回改与用户动作见 references/gates.md；不要求会话 spec、HTML gate 或写前 hook。
+compatibility: Bash 5+；校验脚本 agent/skills/sdx-solution/scripts/validate-solution.sh（仅结构/内容校验，无 --gate-check）。
 ---
 
 # sdx-solution
 
-读 references/ → 参数向导 → 分段直写终稿 → 每段 grilling 补强 → 用户确认推进。
+读 references/ → 参数向导 → 分段直写终稿 → 每段自动 grilling 补强至收敛 → 用户确认推进。
 
 ## 输出硬门禁（P0）
 
 - 一次只处理一个“当前段”（章节或子章节），不得一口气补齐多段。
-- 当前段写入终稿后，必须对当前段执行至少一轮 `grilling`，再进入用户动作选择。
-- 输出 `C/M/G/S/F` 选项后必须停止等待用户选择，不得自动推进下一段。
-- 若用户要求“一次性生成整篇”，先给推荐方案与数字选项；只有用户明确选择后才可破例一次性生成。
+- 当前段写入终稿后，必须进入自动 `grilling` 循环；仅当当前段已收敛，或打出必须等待用户确认的语义性问题时，才把控制权交还用户。
+- 自动 `grilling` 收敛后，输出 `C/M/G/F` 选项并停止等待用户选择；不得自动推进下一段。
+- `F` 仅表示在当前段已收敛后，一次性补齐当前文档剩余未完成章节；不得覆盖已确认前文。
+- 若用户一开始就要求“一次性生成整篇”，仍先完成当前段并自动 `grilling` 至收敛，再由用户明确选择 `F` 进入批量补齐。
 - `grilling` 过程中如发现**语义性问题**（改变目标/范围/承诺/口径/取舍/风险/MVP/里程碑/术语等），必须先给出结论、推荐修订与数字选项并等待用户确认；未获确认不得修订当前段。
 - 仅**非语义性修订**（不改变含义的错别字/编号/排版等）可在当前段默认授权下直接修订；不确定时按语义性处理。
 
@@ -27,6 +28,12 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-solution/scripts/validate
 | 负责 | 不负责 |
 | --- | --- |
 | `SOLUTION-{IDEA-ID}.md` 共识级解决方案、参数向导、分段生成、段内补强、段落推进 | `ANALYSIS/PRD/ASD/DSD/TDD`；docs-* 主路径；实现级接口/表结构/中间件设计 |
+
+## 不这样用
+
+- 不要求先维护会话 spec、`PENDING -> CONFIRMED` 或 HTML gate 再写 `SOLUTION-*.md`
+- 不把写前 hook 当默认前置；主线是参数向导后直接分段直写终稿
+- 不把 `SOLUTION` 阶段偷换成 `ANALYSIS/PRD/ASD/DSD/TDD` 或 docs-* 主路径
 
 ## 路由
 
@@ -50,7 +57,7 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-solution/scripts/validate
 
 ## 推进协议
 
-段落推进、前文回改、用户动作 `C/M/G/S/F` 见 [gates.md](references/gates.md)。
+段落推进、前文回改、自动 `grilling` 与用户动作 `C/M/G/F` 见 [gates.md](references/gates.md)。
 
 ## 产出与校验
 
@@ -64,3 +71,4 @@ agent/skills/sdx-solution/scripts/validate-solution.sh --file path/to/SOLUTION-x
 ## 评测 / 钩子
 
 评测：`evals/evals.json`、[grader.md](agents/grader.md)。
+`sdx-solution` 不再使用写前 HTML gate / `CONFIRMED` hook 放行 `SOLUTION-*.md`。

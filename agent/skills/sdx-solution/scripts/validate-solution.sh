@@ -1,25 +1,20 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# SOLUTION 结构校验（七章模板；门禁不改变结构要求）。
-# 用法：validate-solution.sh [--file <path>] [--gate-check] [--gate-strict]
+# SOLUTION 结构校验（七章模板；不承担写前门禁）。
+# 用法：validate-solution.sh [--file <path>]
 # 文档根：resolve_repo_doc_root（.docsconfig）；先 source config-bootstrap.sh
 #
 # 要点：文首 frontmatter、`id`、`## 1`–`## 7`、小节标题、空节标注、编号、正文技术词筛查；
-#       --gate-check：specs 下含 CONFIRMED 且引用该文件名的会话 spec（见 SKILL）。
-# --gate-strict：门禁未过记 ERROR。
+#       不校验会话 spec、CONFIRMED、HTML gate 或写前 hook。
 
 TARGET_FILE=""
 ERRORS=0
 WARNINGS=0
-GATE_CHECK=false
-GATE_STRICT=false
 
 while [[ $# -gt 0 ]]; do
   case $1 in
     --file) TARGET_FILE="$2"; shift 2 ;;
-    --gate-check) GATE_CHECK=true; shift ;;
-    --gate-strict) GATE_CHECK=true; GATE_STRICT=true; shift ;;
     *) echo "未知参数: $1"; exit 1 ;;
   esac
 done
@@ -41,26 +36,6 @@ info()    { echo "[INFO]  $1"; }
 warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
 error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
-
-# shellcheck source=../../../scripts/check-session-spec-gate.sh
-source "${REPO_ROOT}/agent/scripts/check-session-spec-gate.sh"
-
-# 会话 spec 门禁：{DOC_DIR}/superpowers/specs/（见 agent/references/session-spec-path.md）
-check_solution_gate() {
-  local file="$1"
-  local base
-  base=$(basename "${file}")
-  if check_session_spec_gate "<!-- sdx-solution-gate: CONFIRMED -->" "${base}"; then
-    success "门禁：已找到引用 ${base} 且 CONFIRMED 的会话 spec"
-  else
-    local msg="门禁：未找到引用 ${base} 且 <!-- sdx-solution-gate: CONFIRMED --> 的会话 spec（见 agent/skills/sdx-solution/SKILL.md）"
-    if [[ "${GATE_STRICT}" == true ]]; then
-      error "${msg}"
-    else
-      warn "${msg}"
-    fi
-  fi
-}
 
 echo "=== 解决方案文档结构校验 ==="
 echo "DOC_ROOT: ${DOC_ROOT}"
@@ -276,10 +251,6 @@ for file in "${FILES[@]}"; do
   done
   if [[ ${TECH_WARN} -eq 0 ]]; then
     success "${BASENAME}: 未发现明显技术语言"
-  fi
-
-  if [[ "${GATE_CHECK}" == true ]]; then
-    check_solution_gate "${file}"
   fi
 
   echo ""

@@ -13,7 +13,7 @@ stderr：可选调试（DEBUG=1）。
 用法：
   python3 agent/hooks/sdx_gate_common.py --gate prd
   python3 agent/hooks/sdx_gate_common.py --gate analysis
-  （其余：architect | solution | design | test | distill | extract | archive | build | indexing）
+  （其余：architect | design | test | distill | extract | archive | build | indexing）
 
 bypass_env 为空字符串（""）表示该 gate 无 bypass 机制，必须完整走 CONFIRMED 流程。
 """
@@ -274,18 +274,6 @@ GATES: dict[str, GateConfig] = {
         ),
         basename_prefix="ANALYSIS-",
         collect=_make_collector("/analysis/ANALYSIS-", "ANALYSIS-"),
-    ),
-    "solution": GateConfig(
-        marker_confirmed="<!-- sdx-solution-gate: CONFIRMED -->",
-        bypass_env="SDX_SOLUTION_ALLOW_SOLUTION_WRITE",
-        debug_label="sdx-solution-gate",
-        deny_message=(
-            "sdx-solution：禁止在未完成中间 spec「用户总确认」前写入 solutions 下的 SOLUTION 文件。"
-            "请先在当前会话 spec（{DOC_DIR}/superpowers/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- sdx-solution-gate: PENDING --> 改为 CONFIRMED，"
-            "并确保文中引用目标文件名。若确需跳过闸门（仅限人工授权），可在环境中设置 SDX_SOLUTION_ALLOW_SOLUTION_WRITE=1。"
-        ),
-        basename_prefix="SOLUTION-",
-        collect=_make_collector("/solutions/SOLUTION-", "SOLUTION-"),
     ),
     "architect": GateConfig(
         marker_confirmed="<!-- sdx-architect-gate: CONFIRMED -->",

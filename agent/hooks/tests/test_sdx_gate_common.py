@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from agent.hooks.sdx_gate_common import _has_confirmed_spec, run_gate
+from agent.hooks.sdx_gate_common import GATES, _has_confirmed_spec, run_gate
 
 
 def _write_docsconfig(repo: Path, doc_dir: str) -> None:
@@ -18,6 +18,9 @@ def _write_docsconfig(repo: Path, doc_dir: str) -> None:
 
 
 class GateCommonTests(unittest.TestCase):
+    def test_solution_gate_removed_from_common_gates(self) -> None:
+        self.assertNotIn("solution", GATES)
+
     def test_has_confirmed_spec_avoids_substring_false_positive(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp)
