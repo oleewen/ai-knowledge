@@ -32,4 +32,4 @@
 
 - **禁止**在 TDD 内写可执行脚本/自动化代码；仅 `TDD-*.md`。
 - 六章顺序与 [assets/tdd-template.md](assets/tdd-template.md) 一致；无内容标「不适用/待补充」。
-- 元数据**仅**文末 fenced `yaml`；须含 `parent`（PRD）、`mvp_phase`；**禁**文首 `---`。
+- 元数据**要求**使用文首 frontmatter；须含 `parent`（PRD）、`mvp_phase`。

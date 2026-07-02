@@ -15,6 +15,6 @@
 | §9 与 §10.2 NAC 断 | 互链或「不适用」 |
 | BR 不落 §7 | §7 集中表 + UC 关联 |
 | §11.3 假勾选 | 对照 [quality-checklist.md](quality-checklist.md) |
-| 元数据错 | 仅文末 yaml；字段齐；[workflow.md](workflow.md) |
+| 元数据错 | 要求文首 frontmatter；字段齐；[workflow.md](workflow.md) |
 | Mermaid 错 | 输出前自检图类型语法 |
 | 未 validate 收尾 | `validate-prd.sh`（按需 `--gate-check`）；[SKILL.md](../SKILL.md) |

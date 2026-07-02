@@ -1,3 +1,16 @@
+---
+id: "ANALYSIS-{IDEA-ID}"
+title: "{需求标题}"
+version: "1.0.0"
+status: "draft"
+created: "{YYYY-MM-DD}"
+updated: "{YYYY-MM-DD}"
+author: "requirement_analyst"
+reviewers: []
+parent: "SOLUTION-{IDEA-ID}"
+tags: []
+---
+
 # 需求标题
 
 > 读者：**需求分析师**与**产品/架构**。
@@ -215,21 +228,4 @@ MVP-1 ──▶ MVP-2 ──▶ MVP-3
   *通过标准*：§6.1、§6.2 路径齐。
 
 - [ ] **格式与元数据**  
-  *通过标准*：编号连续；文末 fenced `yaml` 字段齐；首行非 `---`；`id` 与文件名一致。
-
-## 文档元数据
-
-<!-- 仅此 fenced yaml；禁文首 `---` -->
-
-```yaml
-id: "ANALYSIS-{IDEA-ID}"
-title: "{需求标题}"
-version: "1.0.0"
-status: "draft"
-created: "{YYYY-MM-DD}"
-updated: "{YYYY-MM-DD}"
-author: "requirement_analyst"
-reviewers: []
-parent: "SOLUTION-{IDEA-ID}"
-tags: []
-```
+  *通过标准*：编号连续；文首 frontmatter 字段齐；`id` 与文件名一致。

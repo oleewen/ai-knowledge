@@ -21,7 +21,7 @@
 | `TC-PERF-{NNN}` | 性能 |
 | `TC-REG-{NNN}` | 回归 |
 
-文档 `id` 形态以 **tdd-template** 文末 yaml 与落盘文件名为准（如 `TDD-{IDEA-ID}-{N}`）。
+文档 `id` 形态以 **tdd-template** 文首 frontmatter 与落盘文件名为准（如 `TDD-{IDEA-ID}-{N}`）。
 
 ## `--depth`
 
@@ -44,4 +44,4 @@
 | §5 | 进出标准、回归顺序 |
 | §6 | 变更历史、§6.2 自查 |
 
-元数据：**仅**文末 fenced `yaml`；**禁止**文首 `---`。
+元数据：**要求**文首 `---` frontmatter；字段以模板为准。

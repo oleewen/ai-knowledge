@@ -101,7 +101,7 @@ MVP：独立价值、单向依赖、P0 优先、共性随首个消费者；§4.1
 
 ### G6 §6
 
-§6.1–§6.4 + 语言审读；文末 fenced `yaml`（`parent`: `SOLUTION-{IDEA-ID}`）；**禁**文首 `---`。终检 [quality-checklist.md](quality-checklist.md)。
+§6.1–§6.4 + 语言审读；文首 frontmatter 含 `parent: SOLUTION-{IDEA-ID}`。终检 [quality-checklist.md](quality-checklist.md)。
 
 ---
 

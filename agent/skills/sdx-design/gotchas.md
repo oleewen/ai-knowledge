@@ -26,5 +26,5 @@
 ## DSD-*.md 输出
 
 - 章节与 **dsd-template**（§1–§3）一致；空节保留标题，标「不适用/待补充」。  
-- **勿**在文件头用 YAML frontmatter；**仅**文末 `## 文档元数据` fenced yaml；含 `mvp_phase` 等必填项。  
+- **要求**在文件头用 YAML frontmatter；含 `mvp_phase` 等必填项。  
 - Mermaid：输出前自检语法；`sequenceDiagram` / `stateDiagram-v2` / `erDiagram` / `classDiagram` / `flowchart` 择类而用。

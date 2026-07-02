@@ -14,7 +14,7 @@ title: requirements（需求交付）
 |------|---------------|------|
 | 交付包 | `REQUIREMENT-{IDEA-ID}/` | 与 `ANALYSIS-{IDEA-ID}.md` **同 IDEA-ID**（见 [../../agent/knowledge/naming-conventions.md](../../agent/knowledge/naming-conventions.md)） |
 | MVP 阶段 | `MVP-Phase-{N}/` | 阶段目录，其下平铺阶段产物 |
-| 阶段产物 | `PRD-{IDEA-ID}.md`、`ASD-{IDEA-ID}-{N}.md`、`DSD-{IDEA-ID}-{N}.md`、`TDD-{IDEA-ID}.md` 等 | 文末 `## 文档元数据`（ fenced `yaml`）；**勿**在文首使用 `---` YAML frontmatter |
+| 阶段产物 | `PRD-{IDEA-ID}.md`、`ASD-{IDEA-ID}-{N}.md`、`DSD-{IDEA-ID}-{N}.md`、`TDD-{IDEA-ID}.md` 等 | 文首 YAML frontmatter（必填） |
 | 规约 | `MVP-Phase-{N}/specs/` | `spec-asd-*.md` 等（见 `sdx-architect`） |
 
 ## 阶段文档元数据

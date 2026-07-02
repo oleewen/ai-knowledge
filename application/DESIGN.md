@@ -131,8 +131,8 @@ title: 应用知识文档库 — 设计方案摘录
 
 |阶段|约定|
 |---|---|
-|**solutions**|`README.md`（阶段约定 SSOT）；根目录平铺 `SOLUTION-{IDEA-ID}.md`；`archive/` 归档；文末元数据可选 `parent`/`dependencies`（无 `solutions_meta.yaml`）|
-|**analysis**|`README.md`（阶段约定 SSOT）；根目录平铺 `ANALYSIS-{IDEA-ID}.md`；文末元数据 `parent` → Solution（单层交付物）|
+|**solutions**|`README.md`（阶段约定 SSOT）；根目录平铺 `SOLUTION-{IDEA-ID}.md`；`archive/` 归档；文首 frontmatter 含 `id` 与可选 `parent`/`dependencies`（无 `solutions_meta.yaml`）|
+|**analysis**|`README.md`（阶段约定 SSOT）；根目录平铺 `ANALYSIS-{IDEA-ID}.md`；文首 frontmatter 含 `parent` → Solution（单层交付物）|
 |**requirements**|`README.md`（阶段约定 SSOT）；`REQUIREMENT-{IDEA-ID}/MVP-Phase-*/` 下 PRD / ASD / DSD / TDD；**详设正文**仅为 **`DSD-*.md`**；**`spec-asd-*.md`** 仅在各阶段 `specs/`（无 `requirements_meta.yaml`）|
 |**changelogs**|`README.md`（阶段约定 SSOT）；`CHANGE-LOG.md`（docs-change）；`INDEXING-LOG.md`（docs-indexing）；无 `changelogs_meta.yaml`|
 
