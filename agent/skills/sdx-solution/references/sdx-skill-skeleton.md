@@ -56,4 +56,5 @@ compatibility: Bash 5+；校验脚本或钩子指针。
 | `gates.md` | 动作协议、写入约束、例外 |
 | `workflow.md` | 阶段、状态机、参数、公司库等特殊路径 |
 | `brainstorming-integration.md` | ≤20 行 + 链 gates |
+| `agent/references/grilling-skill.md` | 公共 `grilling` 能力契约；Skill 优先、fallback 协议、统一输出 |
 | `knowledge-type-modes.md` | KNOWLEDGE_TYPE 正文（architect） |

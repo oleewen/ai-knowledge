@@ -25,6 +25,7 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-solution/scripts/validate
 | --- | --- |
 | 流程 | [workflow.md](references/workflow.md) |
 | 推进协议 | [gates.md](references/gates.md) |
+| grilling 能力 | [grilling-skill.md](../../references/grilling-skill.md) |
 | brainstorming | [brainstorming-integration.md](references/brainstorming-integration.md) |
 | IDEA-ID / depth | [core-concepts.md](references/core-concepts.md) |
 | 原则 / 反模式 | [design-principles.md](references/design-principles.md)、[anti-patterns.md](references/anti-patterns.md) |

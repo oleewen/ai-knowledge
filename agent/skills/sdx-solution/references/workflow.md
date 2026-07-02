@@ -6,6 +6,7 @@
 
 通过**参数向导 + 分段直写终稿 + 段内 grilling 补强**的方式，逐步形成可评审的 `SOLUTION-{IDEA-ID}.md`。
 本技能默认采用**单段收敛**的工作方式，而不是先准备整份前置草稿、再一次性集中收口。
+`grilling` 的公共能力契约见 [grilling-skill.md](../../../references/grilling-skill.md)；本文只定义其在 `sdx-solution` Section Cycle 中的绑定方式。
 
 **公司库**（`KNOWLEDGE_TYPE=company`）：输入含 [`company/knowledge/`](../../../../company/knowledge/README.md) 五视角；方案须明确跨系统需求下**各系统负责的功能边界**；交付物落在 `company/solutions/`，下游 `company/analysis/` 衔接各 `system/` 侧 requirements。
 
@@ -121,13 +122,16 @@ flowchart TD
 2. 按模板生成当前段
 3. 直接写入终稿对应位置
 4. 对当前段执行一轮 `grilling`
-5. 根据拷问结果修订当前段
+5. 根据拷问结果修订当前段，或识别是否涉及前文回改
 6. 用户用 `C/M/G/S/F` 做动作选择
 7. 收口后再进入下一段
 
 ### 约束
 
 - `grilling` 默认只拷当前段，不跨多段发散
+- 若环境未安装 `grilling` Skill，则按 [grilling-skill.md](../../../references/grilling-skill.md) 的 fallback 协议执行
+- 进入 `grilling` 阶段，默认授权直接修订当前段
+- 上述默认授权仅覆盖当前段；不自动扩展到前文或其他未打开段落
 - 当前段未收口，不默认推进到下一段
 - 若本段依赖前文结论，则前文变更会触发本段重开
 
@@ -148,6 +152,13 @@ flowchart TD
 4. 再进入用户确认
 
 也就是说，**前文回改不会直接视为当前段已通过**。
+
+### 回改授权边界
+
+- `grilling` 可直接识别“需要回改前文”，但不得把前文回改视为当前段默认授权的一部分
+- 涉及前文时，先输出受影响前提、推荐方案与数字选项，再等待用户选择
+- 只有用户明确选择后，才执行前文回改
+- 前文一旦被改，当前段立即 `reopened`，并按本流程重新 grill
 
 ---
 

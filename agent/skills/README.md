@@ -9,11 +9,12 @@
 - 调用方式：在 Chat 输入 `/` 选择命令，或使用 `@<skill-name>` 作为上下文附加
 - 高风险技能的**会话 spec** 路径契约：[session-spec-path.md](../references/session-spec-path.md)（`{DOC_DIR}/superpowers/specs/`，以当次会话 spec 为准）
 - **知识库布局**（双库路径、overview、流水线）：[knowledge-layout.md](../references/knowledge-layout.md)
+- **grilling 能力契约**（Skill 优先、fallback 提问协议、统一输出）：[grilling-skill.md](../references/grilling-skill.md)
 
 ## 当前可用技能
 
 | 命令 | 说明 |
-|------|------|
+| ---- | ---- |
 | `/docs-indexing` | 生成结构化 `index.md`（九章文档地图），作为 Agent 导航与 RAG 权威来源；`INDEXING-LOG.md` 用主表记录运行（**最新在上**，锚点见 [docs-indexing/references/indexing-log-spec.md](docs-indexing/references/indexing-log-spec.md)）；支持全量/增量与深度 1/2/3；高风险落盘 spec + `sdx_gate_common.py --gate indexing`（见 [docs-indexing/references/gates.md](docs-indexing/references/gates.md)）。 |
 | `/docs-change` | 从 git commit、CHANGELOG/CHANGE-LOG、本地文件 mtime 采集变更，落盘 `CHANGE-LOG.md`（文末 HTML 注释承载增量基线）；供下游增量索引等使用。 |
 | `/docs-tag` | 为 Markdown 概览做关键词驱动标记：候选词附录、表格行 ✅、架构摘录（phase 3）；流程见 [docs-tag/references/workflow.md](docs-tag/references/workflow.md)。 |
