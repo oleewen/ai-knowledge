@@ -14,7 +14,9 @@
 
 ### 默认协议
 
-涉及 **`origin`** 的 `git fetch` / `git pull` / `git push` 时，fetch 与 push URL 均优先使用 **SSH**（GitHub 示例：`git@github.com:{owner}/{repo}.git`）。
+涉及 **`origin`** 的 `git fetch` / `git pull` / `git push` 时，
+fetch 与 push URL 均优先使用 **SSH**
+（GitHub 示例：`git@github.com:{owner}/{repo}.git`）。
 
 - 不修改全局 `git config`；仅允许仓库级 `git remote set-url`。
 - 用户在同一会话明确要求保留或使用 HTTPS 时，不自动切换。
@@ -25,10 +27,12 @@
 
 1. 读取 `origin` URL：`git remote get-url origin`
 2. 若 URL 以 `http://` 或 `https://` 开头，按下方规则转换为 SSH，并执行：
+
    ```bash
    git remote set-url origin <ssh-url>
    git remote set-url --push origin <ssh-url>
    ```
+
 3. 继续原定远程命令。
 4. 若曾切换 URL，操作完成后在回复中简要说明，例如：「已将 `origin` 从 HTTPS 切换为 SSH：`git@github.com:oleewen/ai-knowledge.git`」。
 
@@ -38,10 +42,12 @@ URL 已是 `git@` 或 `ssh://` 形式时跳过修正。
 
 ### GitHub HTTPS → SSH 转换
 
+<!-- markdownlint-disable MD013 -->
 | HTTPS | SSH |
-|-------|-----|
+| ----- | --- |
 | `https://github.com/{owner}/{repo}.git` | `git@github.com:{owner}/{repo}.git` |
 | `https://github.com/{owner}/{repo}` | `git@github.com:{owner}/{repo}.git` |
+<!-- markdownlint-enable MD013 -->
 
 非 GitHub 主机不自动转换；告知用户需手动配置 SSH URL。
 
@@ -58,7 +64,7 @@ URL 已是 `git@` 或 `ssh://` 形式时跳过修正。
 
 示例：
 
-```
+```text
 docs(sdx-solution): 补充工作流说明与易错点
 
 - 同步 audience 与 workflow 章节
@@ -66,7 +72,8 @@ docs(sdx-solution): 补充工作流说明与易错点
 ```
 
 ### 标准格式
-```
+
+```text
 <type>(<scope>): <subject>
 <BLANK LINE>
 <body>
@@ -77,7 +84,7 @@ docs(sdx-solution): 补充工作流说明与易错点
 ### 提交类型说明
 
 | 类型 | 描述 | 使用场景 |
-|------|------|----------|
+| ------ | ------ | ---------- |
 | **feature** | 新增功能 | 添加新功能、新特性 |
 | **fix** | 修复bug | 修复代码缺陷、异常处理 |
 | **docs** | 文档注释 | 更新文档、注释、README |
@@ -91,7 +98,8 @@ docs(sdx-solution): 补充工作流说明与易错点
 ### 提交示例
 
 #### 功能开发
-```
+
+```text
 feature(appeal): 添加申诉单创建功能
 
 - 实现Appeal聚合根的创建逻辑
@@ -102,7 +110,8 @@ Resolves: PROJ-123
 ```
 
 #### Bug修复
-```
+
+```text
 fix(order): 修复订单金额计算错误
 
 - 修正BigDecimal精度丢失问题
@@ -113,7 +122,8 @@ Fixes: PROJ-456
 ```
 
 #### 文档更新
-```
+
+```text
 docs(api): 更新申诉API文档
 
 - 补充申诉创建接口参数说明
@@ -122,7 +132,8 @@ docs(api): 更新申诉API文档
 ```
 
 #### 代码重构
-```
+
+```text
 refactor(domain): 优化订单状态机实现
 
 - 将状态转换逻辑提取到独立类
@@ -131,7 +142,8 @@ refactor(domain): 优化订单状态机实现
 ```
 
 ### 紧急修复
-```
+
+```text
 hotfix(security): 修复SQL注入漏洞
 
 - 更新MyBatis参数绑定方式
@@ -144,12 +156,14 @@ Security: CVE-2023-XXXX
 ## 提交原则
 
 ### 核心原则
+
 1. **原子性**: 每个提交只包含一个逻辑变更
 2. **完整性**: 提交必须包含完整的变更（代码+测试）
 3. **可回滚**: 每个提交都可以独立回滚
 4. **可追溯**: 提交信息必须关联需求或问题
 
 ### 提交前检查清单
+
 - [ ] 代码通过所有单元测试
 - [ ] 代码符合项目编码规范
 - [ ] 提交信息格式正确
@@ -157,6 +171,7 @@ Security: CVE-2023-XXXX
 - [ ] 关联需求/问题编号
 
 ### 提交后流程
+
 1. **自动rebase**: 提交后自动rebase远程代码
 2. **冲突处理**: 如有冲突需手动解决
 3. **自动推送**: 无冲突时自动push到远程
@@ -164,7 +179,9 @@ Security: CVE-2023-XXXX
 ## 特殊情况处理
 
 ### 大功能拆分
+
 当功能过大时，使用`--squash`合并多个相关提交：
+
 ```bash
 # 创建功能分支
 git checkout -b feature/large-feature

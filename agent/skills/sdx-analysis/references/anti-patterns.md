@@ -3,18 +3,18 @@
 操作细节：[../gotchas.md](../gotchas.md)。原则：[design-principles.md](design-principles.md)。
 
 | # | 反模式 | 纠正 |
-|---|--------|------|
-| 1 | 未确认写终稿 | [gates.md](gates.md)：总确认与标记 |
-| 2 | 无 SOLUTION 硬写 ANALYSIS | 停并指 `sdx-solution`，或收窄并标注不完整 |
-| 3 | brainstorming 替代会话 spec / Qclose-1 | 仍用 `…-sdx-analysis.md`；[brainstorming-integration.md](brainstorming-integration.md) |
-| 4 | G{n} / G-n 混用 | **G{n}** 门禁；**G-n** §1.2 |
-| 5 | Gn 未收口就写下一门禁 | [workflow.md](workflow.md) |
-| 6 | 回跳后全州重填 | 强/弱/无依赖 + 用户选范围 |
-| 7 | 确认人占位、缺 gate 标记 | `$HOME` 末级；补齐 HTML 与 `ANALYSIS-{IDEA-ID}.md` 引用 |
-| 8 | 仅 G2/G4 才做多方案 | 任一门禁 ≥2 路径须**门内**对比 |
-| 9 | §1–§5、§6.1–§6.2 堆工程名 | 业务语；线索 §6.3 |
-|10 | §6.4 假勾 | [quality-checklist.md](quality-checklist.md) |
-|11 | MVP 无价值或依赖成环 | 业务价值问句 + §4.3 验环 |
-|12 | P0 落在后序 MVP | P0 进首个合理 MVP |
-|13 | IDEA-ID 与 SOLUTION 脱节 | 阶段一锁同链 [core-concepts.md](core-concepts.md) |
-|14 | 未跑 validate | [SKILL.md](../SKILL.md) 校验 |
+| --- | --- | --- |
+| 1 | 未确认当前段就自动推进下一段 | [gates.md](gates.md)：自动 grill 收敛后必须停在 `C/M/G/F` |
+| 2 | 无 SOLUTION 硬写 ANALYSIS | 停并指 `sdx-solution`，或收窄并标注分析盲区 |
+| 3 | 退回会话 spec / `Qclose-1` / `CONFIRMED` 主线 | 主线是参数向导 + 分段直写 `ANALYSIS-*.md` |
+| 4 | 把 `G{n}` 当流程门禁继续使用 | 仅保留 `G-n` 作为 §1.2 目标条目编号 |
+| 5 | 当前段未收口就一口气补齐多段 | 一次只处理一个当前段；批量补齐仅能走 `F` |
+| 6 | `G` 被当成每轮继续 grill 的必选按钮 | 自动 grill 应连续收敛；`G` 仅表示额外深挖当前段 |
+| 7 | 语义性变更直接改文，不先确认 | 先给结论、推荐修订和数字选项 |
+| 8 | `F` 被当成覆盖前文的整篇重写 | `F` 只补齐剩余未完成章节，保留已确认前文 |
+| 9 | 仅 `§2/§4` 才做多方案 | 任一当前段 `>=2` 条真实路径都应段内比选 |
+| 10 | §1–§5、§6.1–§6.2 堆工程名 | 需求分析阶段保持业务语；线索收 `§6.3` |
+| 11 | §6.4 假勾 | [quality-checklist.md](quality-checklist.md) 逐项自检 |
+| 12 | MVP 无价值或依赖成环 | 业务价值问句 + `§4.3` 验环 |
+| 13 | `IDEA-ID` 与 `SOLUTION` 脱节 | 参数向导阶段锁同链 [core-concepts.md](core-concepts.md) |
+| 14 | 未跑 validate | [SKILL.md](../SKILL.md) 校验 |

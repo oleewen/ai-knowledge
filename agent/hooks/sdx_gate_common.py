@@ -12,7 +12,6 @@ stderr：可选调试（DEBUG=1）。
 
 用法：
   python3 agent/hooks/sdx_gate_common.py --gate prd
-  python3 agent/hooks/sdx_gate_common.py --gate analysis
   （其余：architect | design | test | distill | extract | archive | build | indexing）
 
 bypass_env 为空字符串（""）表示该 gate 无 bypass 机制，必须完整走 CONFIRMED 流程。
@@ -263,18 +262,6 @@ GATES: dict[str, GateConfig] = {
         basename_prefix="PRD-",
         collect=_make_collector("/requirements/", "PRD-"),
     ),
-    "analysis": GateConfig(
-        marker_confirmed="<!-- sdx-analysis-gate: CONFIRMED -->",
-        bypass_env="SDX_ANALYSIS_ALLOW_ANALYSIS_WRITE",
-        debug_label="sdx-analysis-gate",
-        deny_message=(
-            "sdx-analysis：禁止在未完成中间 spec「用户总确认」前写入 analysis 下的 ANALYSIS 文件。"
-            "请先在当前会话 spec（{DOC_DIR}/superpowers/specs/ 下，见 agent/references/session-spec-path.md）维护，将 <!-- sdx-analysis-gate: PENDING --> 改为 CONFIRMED，"
-            "并确保文中引用目标文件名。若确需跳过闸门（仅限人工授权），可在环境中设置 SDX_ANALYSIS_ALLOW_ANALYSIS_WRITE=1。"
-        ),
-        basename_prefix="ANALYSIS-",
-        collect=_make_collector("/analysis/ANALYSIS-", "ANALYSIS-"),
-    ),
     "architect": GateConfig(
         marker_confirmed="<!-- sdx-architect-gate: CONFIRMED -->",
         bypass_env="SDX_ARCHITECT_ALLOW_ASD_WRITE",
@@ -406,7 +393,7 @@ def _build_arg_parser() -> argparse.ArgumentParser:
         "--gate",
         required=True,
         choices=sorted(GATES.keys()),
-        help="阶段：architect | archive | analysis | build | design | distill | extract | indexing | prd | solution | test",
+        help="阶段：architect | archive | build | design | distill | extract | indexing | prd | solution | test",
     )
     return p
 

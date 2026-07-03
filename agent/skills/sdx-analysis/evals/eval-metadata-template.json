@@ -2,37 +2,37 @@
   "skill_name": "sdx-analysis",
   "eval_id": "REPLACE_WITH_EVAL_ID",
   "expected_category": "should-trigger | should-not-trigger",
-  "expected_route": "/sdx-analysis | （not-trigger：主分流）",
+  "expected_route": "/sdx-analysis | （not-trigger：主分流目标）",
   "expected_output": "与同 id 条一致的路由与要点摘要。",
   "notes": "复制为 `<eval-id>-metadata.json` 或流水线内联；断言与 agents/grader.md 一致。",
   "assertions_should_trigger_example": [
     {
-      "id": "gate-compliance",
-      "name": "门禁合规",
+      "id": "parameter-guidance",
+      "name": "参数向导",
       "type": "must_include",
-      "check": "总确认前禁写 `{DOC_DIR}/analysis/ANALYSIS-*.md`；可提例外或 `SDX_ANALYSIS_ALLOW_ANALYSIS_WRITE`。",
+      "check": "明确存在逐项确认参数或快捷组合的入口，不得仍以会话 spec 和集中收口作为默认第一步。",
       "priority": "P0"
     },
     {
-      "id": "structure-integrity",
-      "name": "结构完整",
+      "id": "section-cycle",
+      "name": "分段直写",
       "type": "must_include",
-      "check": "含 ANALYSIS 六章（或会话 spec + 6G/精简 4G）、须基于上游 SOLUTION；勿以 PRD/ASD 正文为主产物。",
+      "check": "体现按模板分段生成并直写 ANALYSIS-*.md，而非先整份 spec、再统一定稿。",
       "priority": "P0"
     },
     {
-      "id": "boundary-routing",
-      "name": "边界分流",
-      "type": "must_not_conflict",
-      "check": "对本 should-trigger，主路径勿改为仅 sdx-solution / PRD / architect / docs-* 并收尾。",
+      "id": "single-section-stop",
+      "name": "单段停住",
+      "type": "must_include",
+      "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；不得自动推进下一段。",
       "priority": "P0"
     },
     {
       "id": "upstream-solution",
       "name": "上游 SOLUTION",
-      "type": "should_include",
-      "check": "提及对齐或依赖 `SOLUTION-{IDEA-ID}.md`（或等价「已共识方案」）再细化 FR/MVP/依赖/风险。",
-      "priority": "P1"
+      "type": "must_include",
+      "check": "须体现依赖或对齐 `SOLUTION-{IDEA-ID}.md`（或等价已共识方案）再细化 FR/MVP/依赖/风险。",
+      "priority": "P0"
     }
   ],
   "assertions_should_not_trigger_example": [
@@ -47,15 +47,8 @@
       "id": "no-false-analysis-primary",
       "name": "勿假主需求分析",
       "type": "must_not_conflict",
-      "check": "勿用「默认完整 sdx-analysis 并以 ANALYSIS 为终点」覆盖用户已指定阶段。",
+      "check": "勿用‘默认参数向导 + 分段直写 ANALYSIS’覆盖用户已指定阶段。",
       "priority": "P0"
-    },
-    {
-      "id": "optional-defer-analysis",
-      "name": "可声明不做本阶段",
-      "type": "should_include",
-      "check": "可加分：本对话不写 ANALYSIS 终稿或先走所列下游。",
-      "priority": "P1"
     }
   ],
   "scoring": {

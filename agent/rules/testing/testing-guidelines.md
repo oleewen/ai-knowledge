@@ -5,8 +5,9 @@
 ## 质量门禁标准
 
 ### 测试覆盖率要求
+
 | 指标 | 阈值 | 检查工具 | 说明 |
-|------|------|----------|------|
+| ------ | ------ | ---------- | ------ |
 | **单元测试覆盖率** | ≥80% | Jacoco | 核心业务逻辑必须覆盖 |
 | **代码重复率** | ≤5% | PMD/CPD | 避免代码重复 |
 | **严重漏洞** | 0 | SonarQube | 安全漏洞零容忍 |
@@ -14,6 +15,7 @@
 | **代码风格违规** | ≤10 | Checkstyle | 统一编码风格 |
 
 ### 测试分层策略
+
 - **单元测试**: 覆盖领域模型、领域服务
 - **集成测试**: 覆盖应用服务、仓储实现
 - **端到端测试**: 覆盖API接口、业务流程
@@ -22,6 +24,7 @@
 ## 单元测试规范
 
 ### 1. 测试框架配置
+
 ```xml
 <!-- pom.xml 测试依赖 -->
 <dependency>
@@ -44,11 +47,13 @@
 ```
 
 ### 2. 测试命名规范
+
 - **测试类**: `{ClassName}Test`
 - **测试方法**: `should{ExpectedBehavior}When{Condition}`
 - **测试包**: 与被测试类相同的包结构
 
 ### 3. 领域模型测试
+
 ```java
 package com.ai.master.order.domain.model;
 
@@ -85,6 +90,7 @@ public class OrderTest {
 ```
 
 ### 4. 领域服务测试
+
 ```java
 package com.ai.master.order.domain.service;
 
@@ -140,6 +146,7 @@ public class OrderDomainServiceTest {
 ```
 
 ### 5. 仓储接口测试
+
 ```java
 package com.ai.master.order.domain.repository;
 
@@ -179,6 +186,7 @@ public class OrderRepositoryTest {
 ## 集成测试规范
 
 ### 1. 应用服务测试
+
 ```java
 package com.ai.master.order.application.service;
 
@@ -225,6 +233,7 @@ public class OrderApplicationServiceTest {
 ```
 
 ### 2. API接口测试
+
 ```java
 package com.ai.master.order.provider.rpc;
 
@@ -263,6 +272,7 @@ public class OrderProviderTest {
 ## 测试数据准备
 
 ### 1. 测试数据工厂
+
 ```java
 package com.ai.master.test.factory;
 
@@ -288,6 +298,7 @@ public class OrderTestFactory {
 ```
 
 ### 2. 测试数据库配置
+
 ```yaml
 # application-test.yml
 spring:
@@ -305,6 +316,7 @@ spring:
 ## 测试执行策略
 
 ### 1. 测试分层执行
+
 ```bash
 # 单元测试
 mvn test -Dtest=*Test
@@ -320,6 +332,7 @@ mvn test -Dtest=com.ai.master.order.domain.*Test
 ```
 
 ### 2. 持续集成配置
+
 ```yaml
 # .github/workflows/test.yml
 name: Test
@@ -347,12 +360,14 @@ jobs:
 ## 测试最佳实践
 
 ### 1. 测试原则
+
 - **FIRST原则**: Fast, Independent, Repeatable, Self-validating, Timely
 - **AAA模式**: Arrange, Act, Assert
 - **单一断言**: 每个测试方法只验证一个行为
 - **可读性优先**: 测试代码应易于理解
 
 ### 2. Mock策略
+
 ```java
 // 领域服务测试 - 不Mock领域对象
 @Test
@@ -379,6 +394,7 @@ public void shouldProcessOrder() {
 ```
 
 ### 3. 测试覆盖检查
+
 ```xml
 <!-- pom.xml 配置 -->
 <plugin>
@@ -412,11 +428,13 @@ public void shouldProcessOrder() {
 ## 测试工具集成
 
 ### 1. IDE配置
+
 - **IntelliJ IDEA**: 启用代码覆盖率显示
 - **Eclipse**: 安装EclEmma插件
 - **VS Code**: 安装Java Test Runner扩展
 
 ### 2. Maven测试配置
+
 ```xml
 <properties>
     <maven.surefire.version>3.0.0-M7</maven.surefire.version>

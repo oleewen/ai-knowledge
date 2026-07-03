@@ -1,149 +1,200 @@
 {
   "skill_name": "sdx-analysis",
-  "version": "1.1.0",
-  "description": "评估 sdx-analysis 触发/分流/HARD-GATE；断言供 grader 评分。",
+  "version": "2.0.0",
+  "description": "评估 sdx-analysis 在新流程下的触发、分流与段落推进协议表述；断言供 grader 评分。",
   "evals": [
     {
       "id": "analysis-trigger-001",
       "category": "should-trigger",
-      "prompt": "SOLUTION-BILL-01.md 已经评审过了，请走 /sdx-analysis：拆 MVP、标依赖和风险，最后落 ANALYSIS-BILL-01.md，门禁用全量 6G。",
-      "expected_output": "以 /sdx-analysis 为主路径：基于 SOLUTION-BILL-01 细化需求；会话 spec + 门禁（全量 6G）；总确认后定稿 ANALYSIS-BILL-01.md；体现 HARD-GATE 与 MVP/依赖/风险。",
+      "prompt": "SOLUTION-BILL-01.md 已经评审过了，请走 /sdx-analysis：先逐步确认参数，再一段一段写进 ANALYSIS-BILL-01.md，重点补 FR、MVP、依赖和风险。",
+      "expected_output": "以 /sdx-analysis 为主路径：先走参数向导，再按模板分段直写 ANALYSIS-BILL-01.md；每段写完进入自动 grilling 至收敛，再由用户确认后推进下一段。",
       "assertions": [
         {
-          "id": "gate-compliance",
-          "name": "门禁合规",
+          "id": "parameter-guidance",
+          "name": "参数向导",
           "type": "must_include",
-          "check": "明确总确认前禁止写入 {DOC_DIR}/analysis/ANALYSIS-*.md 或等价门禁表述，并可提及合法例外或 SDX_ANALYSIS_ALLOW_ANALYSIS_WRITE。",
+          "check": "明确存在逐项确认参数或快捷组合的入口，不得仍以整份前置草稿和集中收口作为默认第一步。",
           "priority": "P0"
         },
         {
-          "id": "structure-integrity",
-          "name": "结构完整",
+          "id": "section-cycle",
+          "name": "分段直写",
           "type": "must_include",
-          "check": "体现 ANALYSIS 六章/会话 spec、G1–G6（或精简 4G 若用户改口）、基于 SOLUTION 的细化，而非仅重复写 SOLUTION 或跳去 PRD。",
+          "check": "体现按模板分段生成并直写 ANALYSIS-BILL-01.md，而非先整份 spec、再统一定稿。",
           "priority": "P0"
         },
         {
-          "id": "boundary-routing",
-          "name": "边界分流",
-          "type": "must_not_conflict",
-          "check": "不得将本请求主路径改为仅 sdx-solution、sdx-prd、sdx-architect 或纯 docs-*。",
+          "id": "grilling-loop",
+          "name": "段内拷问",
+          "type": "must_include",
+          "check": "体现每段生成后执行自动 grilling 并收敛后再推进；可提及 C/M/G/F 或等价动作。",
           "priority": "P0"
         },
         {
-          "id": "deliverable-echo",
-          "name": "产物对齐",
-          "type": "should_include",
-          "check": "应出现 ANALYSIS-BILL-01 或 BILL-01 与 MVP/依赖/风险中至少两类关键词的规划说明。",
-          "priority": "P1"
+          "id": "single-section-stop",
+          "name": "单段停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；不得自动推进下一段。",
+          "priority": "P0"
+        },
+        {
+          "id": "semantic-change-gated",
+          "name": "语义改动确认",
+          "type": "must_include",
+          "check": "须体现语义性结论/建议必须先给推荐方案与数字选项并等待用户确认，未获确认不得修订当前段。",
+          "priority": "P0"
+        },
+        {
+          "id": "upstream-solution",
+          "name": "上游 SOLUTION",
+          "type": "must_include",
+          "check": "须体现 ANALYSIS 基于已共识 SOLUTION 承接细化。",
+          "priority": "P0"
         }
       ]
     },
     {
       "id": "analysis-trigger-002",
       "category": "should-trigger",
-      "prompt": "我们要把共识方案细化成可排期的需求分析，按六章模板写 ANALYSIS，先做会话 spec 再过门禁，不要直接写 PRD。",
-      "expected_output": "主路径为 sdx-analysis：六章 ANALYSIS、会话 spec 与门禁；明确不应跳过本阶段直接写 PRD。",
+      "prompt": "我们要在 {DOC_DIR}/analysis/ 写需求分析文档，按六章模板，先确认参数，再只写一个当前段并自动 grill 到收敛，不要先写会话 spec。",
+      "expected_output": "明确采用 sdx-analysis：先参数确认，再分段直写终稿，并说明不要求会话 spec、Qclose 或写前 gate。",
       "assertions": [
         {
-          "id": "gate-compliance",
-          "name": "门禁合规",
+          "id": "parameter-guidance",
+          "name": "参数向导",
           "type": "must_include",
-          "check": "含未确认不写 ANALYSIS 终稿或 HARD-GATE 等价语义。",
+          "check": "须体现参数向导的两种入口：逐项确认或快捷组合。",
           "priority": "P0"
         },
         {
-          "id": "structure-integrity",
-          "name": "结构完整",
+          "id": "section-cycle",
+          "name": "分段直写",
           "type": "must_include",
-          "check": "体现六章模板、会话 spec、门禁与 ANALYSIS 定稿节奏，并区分于「直接 PRD」。",
+          "check": "体现六章模板与分段直写终稿的主线。",
           "priority": "P0"
         },
         {
-          "id": "boundary-routing",
-          "name": "边界分流",
+          "id": "single-section-stop",
+          "name": "单段停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；不得自动推进下一段。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-session-spec-gate-regression",
+          "name": "不回退旧门禁",
           "type": "must_not_conflict",
-          "check": "不得同意「跳过需求分析、直接写 PRD」作为对本 prompt 的遵从答复。",
+          "check": "不得要求会话 spec、Qclose-1、PENDING -> CONFIRMED、HTML gate 或写前 hook 作为 sdx-analysis 默认前置条件。",
           "priority": "P0"
-        },
-        {
-          "id": "session-spec",
-          "name": "会话 spec",
-          "type": "should_include",
-          "check": "应提及 {DOC_DIR}/superpowers/specs/…-sdx-analysis.md 或等价会话 spec + Qclose。",
-          "priority": "P1"
         }
       ]
     },
     {
       "id": "analysis-trigger-003",
       "category": "should-trigger",
-      "prompt": "业务想看清范围、优先级和依赖关系，用 sdx-analysis 流程从现有方案材料产出 ANALYSIS-CRM-2.md。",
-      "expected_output": "采用 sdx-analysis：基于方案材料细化范围、优先级、依赖；门禁与 ANALYSIS-CRM-2 路径意识。",
+      "prompt": "请执行 /sdx-analysis，但这轮只写一个当前段：先把 `## 2. 功能需求 / ### FR-001` 写进 ANALYSIS-CRM-01.md。写完后让当前段自动 grill 到烤干，然后给我 C/M/G/F 并停住等待。",
+      "expected_output": "以 /sdx-analysis 为主路径：明确一次只处理当前段（FR-001），写入后先对当前段自动 grilling 到收敛，再给出 C/M/G/F 并等待用户选择。",
       "assertions": [
         {
-          "id": "gate-compliance",
-          "name": "门禁合规",
+          "id": "section-cycle",
+          "name": "分段直写",
           "type": "must_include",
-          "check": "含 ANALYSIS 写入门禁或总确认语义。",
+          "check": "须体现按模板将当前段（FR-001）直写入 ANALYSIS-CRM-01.md，而非一口气补齐多段或整篇。",
           "priority": "P0"
         },
         {
-          "id": "structure-integrity",
-          "name": "结构完整",
+          "id": "grilling-loop",
+          "name": "段内拷问",
           "type": "must_include",
-          "check": "体现六章/FR-MVP-依赖 与 ANALYSIS-CRM-2 或 CRM-2 对齐。",
+          "check": "须体现当前段写完后自动 grilling 到收敛，围绕当前段补强，不跨段发散。",
           "priority": "P0"
         },
         {
-          "id": "boundary-routing",
-          "name": "边界分流",
-          "type": "must_not_conflict",
-          "check": "不得将主路径改为仅写 SOLUTION 或 ASD。",
+          "id": "single-section-stop",
+          "name": "单段停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；需出现明确的停住/等待措辞。",
           "priority": "P0"
-        },
-        {
-          "id": "upstream-mention",
-          "name": "上游材料",
-          "type": "should_include",
-          "check": "应体现「从方案材料/SOLUTION」承接共识再细化。",
-          "priority": "P1"
         }
       ]
     },
     {
       "id": "analysis-trigger-004",
       "category": "should-trigger",
-      "prompt": "请按 SDX 进入需求分析阶段：基于 SOLUTION 做深度细化，识别需求依赖与残余风险，IDEA-ID 与方案文件对齐。",
-      "expected_output": "主路径为需求分析阶段：依赖 SOLUTION、IDEA-ID 对齐、依赖与残余风险；含门禁与 ANALYSIS 产出边界。",
+      "prompt": "请按 SDX 进入需求分析阶段：当前段写完后不要每一轮 grill 都停下来问我，要自动连续 grill 到这部分内容烤干，再统一给我 C/M/G/F 选项。",
+      "expected_output": "以 /sdx-analysis 为主路径：明确当前段写入后进入自动连续 grilling，直到当前段收敛才回到用户动作菜单；不得把 G 当作每轮继续 grill 的必选按钮。",
       "assertions": [
         {
-          "id": "gate-compliance",
-          "name": "门禁合规",
+          "id": "auto-grilling-loop",
+          "name": "自动连续 grilling",
           "type": "must_include",
-          "check": "含总确认前不写 ANALYSIS 终稿或等价表述。",
+          "check": "须体现当前段写完后自动连续 grilling 到收敛，而非每一轮都停下等待用户继续。",
           "priority": "P0"
         },
         {
-          "id": "structure-integrity",
-          "name": "结构完整",
+          "id": "g-not-required-per-round",
+          "name": "G 非每轮必选",
           "type": "must_include",
-          "check": "体现基于 SOLUTION 的细化、依赖/风险与 ANALYSIS 阶段定位。",
+          "check": "须体现 G 仅用于当前段已收敛后的额外深挖，不能把 G 表述为每轮继续 grill 的必选动作。",
           "priority": "P0"
         },
         {
-          "id": "boundary-routing",
-          "name": "边界分流",
-          "type": "must_not_conflict",
-          "check": "不得将「需求分析阶段」偷换为仅架构 ASD 或仅 PRD。",
+          "id": "single-section-stop",
+          "name": "收敛后再停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后再给出 C/M/G/F 等待用户选择。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "analysis-trigger-005",
+      "category": "should-trigger",
+      "prompt": "我就是想要你直接一口气把 ANALYSIS-BILL-01.md 六章都写完，别分段、别停、别问我，直接输出完整版。",
+      "expected_output": "仍以 /sdx-analysis 为主路径：不得直接从空白状态一口气补齐整篇；应先完成当前段并自动 grilling 到收敛，再通过 `F` 一次性补齐剩余章节。",
+      "assertions": [
+        {
+          "id": "exception-full-draft-gated",
+          "name": "破例需选择",
+          "type": "must_include",
+          "check": "须体现用户要求一口气整篇时，先完成当前段并自动 grilling 到收敛，再通过 `F` 进入剩余章节批量补齐；不得直接从空白状态输出完整六章正文。",
           "priority": "P0"
         },
         {
-          "id": "idea-alignment",
-          "name": "IDEA 对齐",
-          "type": "should_include",
-          "check": "应提及 IDEA-ID 与 SOLUTION 文件对齐或等价表述。",
-          "priority": "P1"
+          "id": "single-section-stop",
+          "name": "单段停住",
+          "type": "must_include",
+          "check": "须强调默认仍按单段 Section Cycle 推进，不因用户一句话要求而自动破例；需体现 `F` 是显式用户动作。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "analysis-trigger-006",
+      "category": "should-trigger",
+      "prompt": "当前段“### 4.2 MVP 详细规划”已经确认通过，我现在直接选 F。请按 sdx-analysis 把剩余未完成章节全部生成，但不要覆盖已经确认的前文；如果后文打出前文语义冲突，要先停下来让我选。",
+      "expected_output": "以 /sdx-analysis 为主路径：说明 F 用于补齐剩余未完成章节，保留已确认前文；若批量补齐过程中触发语义性问题或前文回改，必须先停下等待用户确认。",
+      "assertions": [
+        {
+          "id": "f-batch-fill",
+          "name": "F 批量补齐",
+          "type": "must_include",
+          "check": "须体现 F 表示补齐剩余未完成章节，而不是提前结束流程或整篇重生成。",
+          "priority": "P0"
+        },
+        {
+          "id": "preserve-confirmed-prefix",
+          "name": "保留已确认前文",
+          "type": "must_include",
+          "check": "须体现 F 不覆盖已确认前文，至少复述保留既有确认内容或不重写前文。",
+          "priority": "P0"
+        },
+        {
+          "id": "semantic-change-gated",
+          "name": "批量补齐仍受语义门禁",
+          "type": "must_include",
+          "check": "须体现 F 过程中若后文打出前文语义冲突或其他语义性问题，必须先给推荐方案与数字选项并等待用户确认。",
+          "priority": "P0"
         }
       ]
     },
@@ -151,7 +202,7 @@
       "id": "analysis-not-trigger-001",
       "category": "should-not-trigger",
       "prompt": "只有会议纪要没有成文方案，先帮我写一版共识级 SOLUTION-OPS-1.md，走 /sdx-solution。",
-      "expected_output": "主路径为 /sdx-solution 与 SOLUTION-OPS-1.md；不以完整 sdx-analysis 门禁链写 ANALYSIS 为终点。",
+      "expected_output": "主路径为 /sdx-solution 与 SOLUTION-OPS-1.md；不以 sdx-analysis 的参数向导 + 分段直写流程写 ANALYSIS 为终点。",
       "assertions": [
         {
           "id": "correct-downstream",
@@ -164,15 +215,8 @@
           "id": "no-false-analysis-primary",
           "name": "勿假主需求分析",
           "type": "must_not_conflict",
-          "check": "不得将本请求表述为「仍需完整执行 sdx-analysis 过 G1–G6 并新建 ANALYSIS」作为主要答案。",
+          "check": "不得将本请求表述为“仍需先做参数向导、再分段写 ANALYSIS”作为主要答案。",
           "priority": "P0"
-        },
-        {
-          "id": "defer-analysis",
-          "name": "分析阶段后置",
-          "type": "should_include",
-          "check": "可提及先有 SOLUTION 后再进入 sdx-analysis（非本轮主路径）。",
-          "priority": "P1"
         }
       ]
     },
@@ -237,7 +281,7 @@
           "id": "no-false-analysis-primary",
           "name": "勿假主需求分析",
           "type": "must_not_conflict",
-          "check": "不得用「先出 ANALYSIS 六章」作为完成本请求的主方案。",
+          "check": "不得用“先出 ANALYSIS 六章”作为完成本请求的主方案。",
           "priority": "P0"
         }
       ]
@@ -259,7 +303,7 @@
           "id": "no-false-analysis-primary",
           "name": "勿假主需求分析",
           "type": "must_not_conflict",
-          "check": "不得将本请求框成 ANALYSIS 会话 spec 与门禁链。",
+          "check": "不得将本请求框成 ANALYSIS 分段直写主线。",
           "priority": "P0"
         }
       ]
@@ -267,21 +311,21 @@
     {
       "id": "analysis-not-trigger-006",
       "category": "should-not-trigger",
-      "prompt": "重建 INDEX_GUIDE.md，跑 docs-indexing 全量扫描。",
-      "expected_output": "主路径为 docs-indexing 与 INDEX_GUIDE.md；不是 sdx-analysis。",
+      "prompt": "我已经确认过前两章了。现在别按当前段流程，直接用 F 把整份 ANALYSIS-ORDER-1.md 从头到尾重写一遍，前面已确认内容也一起覆盖掉。",
+      "expected_output": "不得把该请求解释为当前 `sdx-analysis` 协议下合法的 F 动作；应明确指出 F 只用于保留已确认前文并补齐剩余未完成章节。",
       "assertions": [
         {
           "id": "correct-downstream",
-          "name": "正确下游",
+          "name": "正确拒绝当前协议",
           "type": "must_include",
-          "check": "须明确 docs-indexing 或 INDEX_GUIDE 文档索引相关流程，而非 sdx-analysis。",
+          "check": "须明确指出该请求不符合当前 sdx-analysis 协议中的 F 语义，或明确拒绝把它作为合法 F 动作执行。",
           "priority": "P0"
         },
         {
-          "id": "no-false-analysis-primary",
-          "name": "勿假主需求分析",
+          "id": "no-false-f-rewrite",
+          "name": "勿把 F 当整篇重写",
           "type": "must_not_conflict",
-          "check": "不得将本请求描述为需求分析阶段与 ANALYSIS 落盘主路径。",
+          "check": "不得将 F 描述为覆盖已确认前文的整篇重生成、整篇重写或整篇覆盖。",
           "priority": "P0"
         }
       ]

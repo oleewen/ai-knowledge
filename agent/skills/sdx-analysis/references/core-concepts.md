@@ -2,44 +2,54 @@
 
 ## IDEA-ID
 
-`{YYMMDD}-{主题}`，与 **sdx-solution** / `SOLUTION-{IDEA-ID}.md` **同链**。
+格式：`{YYMMDD}-{主题}`，与 **sdx-solution** / `SOLUTION-{IDEA-ID}.md` **同链**。
 
-- `YYMMDD`：如 `260412`
-- `主题`：中文短名 2–6 字
+- `YYMMDD`：日期，如 `260412`
+- `主题`：中文短名，2–6 字；若含 ASCII slug，正文同一处备注中文题名
 
 | 产物 | 路径示例 |
-|------|-----------|
-| 会话 spec | `{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-sdx-analysis.md` |
-| 需求分析 | `{DOC_DIR}/analysis/ANALYSIS-260412-审批提效.md` |
+| --- | --- |
 | 上游方案 | `{DOC_DIR}/solutions/SOLUTION-260412-审批提效.md` |
+| 需求分析 | `{DOC_DIR}/analysis/ANALYSIS-260412-审批提效.md` |
+| 下游 PRD | `{DOC_DIR}/requirements/PRD-260412-审批提效-1.md` |
 
 ## 编号
 
 | 前缀 | 含义 | 例 |
-|------|------|-----|
-| G-n | §1.2 目标（对齐 SOLUTION） | `G-1 …` |
+| --- | --- | --- |
+| G-n | §1.2 需求目标 | `G-1 …` |
 | FR-nnn | §2 功能需求 | `FR-001` |
-| BR-nnn | 业务规则（挂在 FR 内） | `BR-001` |
-| R-n | §5.2 风险 | `R-1` |
-| MVP-n | §4 阶段 | `MVP-1` |
-| Q-n | 阶段二待澄清 | `Q-1` |
+| BR-nnn | 挂在 FR 内的业务规则 | `BR-001` |
+| R-n | §5 风险 | `R-1` |
+| MVP-n | §4 交付阶段 | `MVP-1` |
+| Q-n | 当前段待澄清问题 | `Q-1` |
 
-**G{n}** = 门禁；**G-n** = 目标条目；勿混。
+`G-n`、`FR-nnn`、`BR-nnn`、`R-n`、`Q-n`、`MVP-n` 均是终稿内的业务编号；本技能不再使用 `G{n}` 作为默认门禁编号主线。
+
+## 当前段
+
+“当前段”是 `sdx-analysis` 的最小工作单元：
+
+- 可以是整章，如 `## 3. 非功能需求`
+- 可以是小节，如 `### 4.2 MVP 详细规划`
+- 在 `§2` 中也可以细化到单个 `### FR-001`
+
+协议始终围绕**当前段**执行“生成 / 自动 grill / 用户动作”闭环，而不是围绕整篇草稿。
 
 ## `--depth`
 
 | 值 | 含义 |
-|----|------|
-| `quick` | 研究收窄；FR 主攻 P0/P1 |
-| `standard` | 默认全量细化 |
-| `deep` | 对标与可行性加强；工程数可收敛 §6.3 |
+| --- | --- |
+| `quick` | 压缩研究与补充说明；优先覆盖 `P0/P1 FR` 与关键依赖风险 |
+| `standard` | 默认完整六章粒度 |
+| `deep` | 加强 `FR/MVP/依赖/风险` 的分析力度；正文仍须业务表述 |
 
 ## ANALYSIS 六章
 
 对齐 [analysis-template.md](../assets/analysis-template.md)：
 
 | 章 | 内容 |
-|---|------|
+| --- | --- |
 | §1 | 背景、G-n、范围与约束、研究与分析 |
 | §2 | FR（含 BR、对象、验收）+ 概览表 |
 | §3 | 非功能 §3.1–§3.5 |

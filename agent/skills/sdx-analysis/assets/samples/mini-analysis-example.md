@@ -1,6 +1,7 @@
 # Mini ANALYSIS 示意
 
-落盘须用 [../analysis-template.md](../analysis-template.md) 全文结构。本节仅示意语气、上游追溯与一行级 FR/MVP。
+落盘须用 [../analysis-template.md](../analysis-template.md) 全文结构。
+本节仅示意语气、上游追溯与一行级 FR/MVP。
 
 ---
 
@@ -12,10 +13,11 @@
 ## §2（节选）
 
 | FR 编号 | 名称 | 优先级 | MVP | G-n |
-|---------|------|--------|-----|-----|
+| ------- | ---- | ------ | --- | --- |
 | FR-001 | 审核待办聚合 | P0 | MVP-1 | G-1 |
 
-**FR-001**：审核员单列表看待办；验收：仅见授权单据，空态有引导。（处理逻辑内可附 BR 表，略。）
+**FR-001**：审核员单列表看待办；验收：仅见授权单据，空态有引导。
+（处理逻辑内可附 BR 表，略。）
 
 ## §3–§5（节选）
 
@@ -26,7 +28,9 @@
 ## §6（节选）
 
 - **§6.3**：契约级线索集中并标「待研发确认」。
-- **§6.4**：与 [../../references/quality-checklist.md](../../references/quality-checklist.md) 逐项对照勾选。
+- **§6.4**：与
+  [../../references/quality-checklist.md](../../references/quality-checklist.md)
+  逐项对照勾选。
 
 ```yaml
 id: ANALYSIS-DEMO-01

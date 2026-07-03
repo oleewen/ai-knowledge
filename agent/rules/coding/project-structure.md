@@ -6,7 +6,7 @@
 
 ### DDD六边形架构
 
-```
+```text
 {project-name}/                          # 根目录
 ├── {project-name}-api/                  # API接口层 (用户接口层)
 ├── {project-name}-service/              # 服务适配层 (用户接口层)
@@ -36,15 +36,15 @@ graph TD
 
 ### 1. 用户接口模块（api层）
 
-#### 职责定位
+#### API层职责定位
 
 - **对应领域分层**: 用户接口层的接口定义
 - **核心职责**: 定义服务接口、公共常量、通用定义
 - **边界**: 定义服务契约，不包含任何实现
 
-#### 代码结构
+#### API层代码结构
 
-```
+```text
 {project-name}-api/
 ├── src/main/java/com/{company}/{business}/{businessdomain}/
 │   └── {context}/api/
@@ -55,7 +55,7 @@ graph TD
 └── pom.xml
 ```
 
-#### 命名规范
+#### API层命名规范
 
 - **服务接口**: `{Aggregate}Service`
 - **请求对象**: `{Aggregate}{Action}Request`
@@ -63,7 +63,7 @@ graph TD
 - **DTO对象**: `{Aggregate}{Entity}DTO`
 - **包路径**: `com.{company}.{business}.{businessdomain}.{context}.api`
 
-#### 约束规则
+#### API层约束规则
 
 - 禁止直接暴露领域对象
 - 所有接口方法必须有完整的JavaDoc
@@ -72,15 +72,15 @@ graph TD
 
 ### 2. 服务适配模块（service层）
 
-#### 职责定位
+#### service层职责定位
 
 - **对应领域分层**: 用户接口层的适配器实现
 - **核心职责**: 输入输出转换、全局异常处理、状态码封装
 - **边界**: 接收外部请求，转换为内部命令
 
-#### 代码结构
+#### service层代码结构
 
-```
+```text
 {project-name}-service/
 ├── src/main/java/com/{company}/{business}/{businessdomain}/
 │   └── {context}/
@@ -103,7 +103,7 @@ graph TD
 └── pom.xml
 ```
 
-#### 命名规范
+#### service层命名规范
 
 - **实现类**: `{Aggregate}Provider` (RPC) / `{Aggregate}Controller` (HTTP)
 - **工厂类**: `{Aggregate}ProviderFactory`
@@ -118,15 +118,15 @@ graph TD
 
 ### 3. 应用服务模块（application层）
 
-#### 职责定位
+#### application层职责定位
 
 - **对应领域分层**: 应用服务层
 - **核心职责**: 用例编排、事务边界、流程控制
 - **边界**: 协调领域对象完成业务用例
 
-#### 代码结构
+#### application层代码结构
 
-```
+```text
 {project-name}-application/
 ├── src/main/java/com/{company}/{business}/{businessdomain}/
 │   └── {context}/application/
@@ -141,7 +141,7 @@ graph TD
 └── pom.xml
 ```
 
-#### 命名规范
+#### application层命名规范
 
 - **应用服务**: `{Aggregate}ApplicationService`
 - **命令对象**: `{Aggregate}{Action}Command`
@@ -149,7 +149,7 @@ graph TD
 - **结果对象**: `{Aggregate}{Action}Result`
 - **包路径**: `com.{company}.{business}.{businessdomain}.{context}.application`
 
-#### 约束规则
+#### application层约束规则
 
 - 应用服务只接收Command/Query对象
 - 应用服务返回Result对象
@@ -158,15 +158,15 @@ graph TD
 
 ### 4. 领域服务模块（domain层）
 
-#### 职责定位
+#### domain层职责定位
 
 - **对应领域分层**: 领域服务层
 - **核心职责**: 核心业务逻辑、领域模型、业务规则
 - **边界**: 包含所有业务逻辑，不依赖任何技术细节
 
-#### 代码结构
+#### domain层代码结构
 
-```
+```text
 {project-name}-domain/
 ├── src/main/java/com/{company}/{business}/{businessdomain}/
 │   └── {context}/domain/
@@ -185,7 +185,7 @@ graph TD
 └── pom.xml
 ```
 
-#### 命名规范
+#### domain层命名规范
 
 - **聚合根**: `{Aggregate}`
 - **实体**: `{Entity}`
@@ -205,15 +205,15 @@ graph TD
 
 ### 5. 基础设施模块（infrastructure层）
 
-#### 职责定位
+#### infrastructure层职责定位
 
 - **对应领域分层**: 基础设施层
 - **核心职责**: 技术实现、持久化、外部系统集成
 - **边界**: 实现领域层定义的所有技术接口
 
-#### 代码结构
+#### infrastructure层代码结构
 
-```
+```text
 {project-name}-infrastructure/
 ├── src/main/java/com/{company}/{business}/{businessdomain}/
 │   └── {context}/infrastructure/
@@ -230,7 +230,7 @@ graph TD
 └── pom.xml
 ```
 
-#### 命名规范
+#### infrastructure层命名规范
 
 - **DAO实现**: `{Aggregate}Dao`
 - **实体类**: `{Aggregate}Entity`
@@ -247,15 +247,15 @@ graph TD
 
 ### 6. 共享模块（common层）
 
-#### 职责定位
+#### common层职责定位
 
 - **共享组件**: 被多个模块依赖的通用代码
 - **核心职责**: 常量定义、枚举类型、工具类、异常定义
 - **边界**: 不包含业务逻辑，只提供通用能力
 
-#### 代码结构
+#### common层代码结构
 
-```
+```text
 {project-name}-common/
 ├── src/main/java/com/{company}/{business}/{businessdomain}/common/
 │   ├── consts/     # 常量定义
@@ -265,7 +265,7 @@ graph TD
 └── pom.xml
 ```
 
-#### 命名规范
+#### common层命名规范
 
 - **常量类**: `{Business}Constants`
 - **枚举类**: `{Business}Status` / `{Business}Type`
@@ -275,15 +275,15 @@ graph TD
 
 ### 7. 应用启动模块（boot层）
 
-#### 职责定位
+#### boot层职责定位
 
 - **应用启动**: Spring Boot应用的启动入口
 - **配置管理**: 环境配置、启动参数
 - **边界**: 只负责启动应用，不包含业务逻辑
 
-#### 代码结构
+#### boot层代码结构
 
-```
+```text
 {project-name}-boot/
 ├── src/main/java/com/{company}/{business}/{businessdomain}/
 │   └── boot/
@@ -296,7 +296,7 @@ graph TD
 └── pom.xml
 ```
 
-#### 命名规范
+#### boot层命名规范
 
 - **启动类**: `Application`
 - **包路径**: `com.{company}.{business}.{businessdomain}.boot`
@@ -305,7 +305,7 @@ graph TD
 
 ### 通用包结构模板
 
-```
+```text
 com.{company}.{business}.{businessdomain}.{subdomain}.{context}
 ├── {layer}/
 │   ├── {submodule}/
@@ -318,7 +318,7 @@ com.{company}.{business}.{businessdomain}.{subdomain}.{context}
 
 ### 1. 领域模型组织
 
-```
+```text
 // 按聚合根组织代码
 order/
 ├── api/
