@@ -141,7 +141,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 ├── company/              # 公司库：knowledge/、system-{name}/ 槽位
 ├── scripts/              # docs-install、agent-install、bootstrap、OKF（validate-okf、okf-migrate）
 ├── agent/                # rules/、skills/（含 docs-okf）、hooks/、scripts/
-├── docs/                 # 设计备忘（会话 spec 见 docs/superpowers/specs/）
+├── docs/                 # 设计备忘与协作产物（superpowers/specs/、plans/）
 └── .gitignore
 ```
 

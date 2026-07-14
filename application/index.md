@@ -87,7 +87,7 @@ application/
 ├── knowledge/                              # 五视角：business/data/product/application/technical
 ├── requirements/                           # 需求包与 REQUIREMENT-EXAMPLE
 ├── solutions/                              # 方案阶段与 archive/
-└── superpowers/specs/                      # 会话 spec（通常 gitignore；DOC_DIR=application 时）
+└── superpowers/specs/                      # 协作规约与设计产物（通常 gitignore；DOC_DIR=application 时）
 ```
 
 > **规约路径说明**：SDD 规约 `spec-asd-*.md` 在各需求包 `MVP-Phase-*/specs/`；legacy docs-push 可选 `application/specs/`（中央库可不建）。
@@ -154,7 +154,7 @@ flowchart TB
 
 | 能力 | 说明 |
 | ------ | ------ |
-| Slash SDD | `/sdx-solution` 等写入受管终稿前须用户与 spec 闸门 |
+| Slash SDD | `/sdx-solution` 等按参数向导、当前段推进与语义确认写入受管终稿 |
 | docs-build | 五视角实体提取与 `KNOWLEDGE_INDEX` 联动（见根索引 §九） |
 | docs-okf | OKF refresh、`index.md`、validate-okf、viz 与产物校验（见 [../agent/skills/docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md)） |
 
@@ -168,7 +168,7 @@ flowchart TB
 
 ### 5.1 状态流转（SDD 摘要）
 
-与根索引一致：方案 → 分析 → PRD → 设计 → 测试；硬闸门（HARD-GATE）见各 `sdx-*` Skill。
+与根索引一致：方案 → 分析 → PRD → 设计 → 测试；推进协议与写作约束见各 `sdx-*` Skill。
 
 ### 5.2 核心流程（本目录）
 
@@ -178,16 +178,12 @@ flowchart TB
 
 ### 5.3 业务规则
 
-| 来源                         | 要点                             |
-| ---------------------------- | -------------------------------- |
-| [AGENTS.md](../AGENTS.md)     | 禁止擅自改实体 ID、未确认不提交 |
-| [DESIGN.md](DESIGN.md)       | 元模型、映射字段、禁止破坏引用链 |
+* [AGENTS.md](../AGENTS.md)：禁止擅自改实体 ID、未确认不提交
+* [DESIGN.md](DESIGN.md)：元模型、映射字段、禁止破坏引用链
 
 ### 5.4 枚举
 
-| 名称           | 取值                                                                |
-| -------------- | ------------------------------------------------------------------- |
-| 知识视角子目录 | `business/`、`data/`、`product/`、`application/`、`technical/`      |
+* 知识视角子目录：`business/`、`data/`、`product/`、`application/`、`technical/`
 
 ---
 

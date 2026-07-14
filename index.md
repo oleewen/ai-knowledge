@@ -47,7 +47,7 @@
 ├── company/                                  # 公司知识库：knowledge/（五视角企业架构）、system-SYSNAME/ 联邦槽位、changelogs/、solutions/、analysis/
 ├── scripts/                                  # docs-install、tests/
 ├── agent/                                    # rules/、skills/（含 docs-okf）、scripts/（config-bootstrap、校验）
-├── docs/                                     # 设计备忘；会话 spec 见 docs/superpowers/specs/
+├── docs/                                     # 设计备忘与协作产物（superpowers/specs/、plans/）
 └── .gitignore                                # 忽略 `.*` 等；见 §八
 ```
 
@@ -145,7 +145,7 @@ stateDiagram-v2
     Test --> [*]: 交付与归档
 ```
 
-具体闸门与 **HARD-GATE** 见各 `sdx-*` Skill 与 [application/CONTRIBUTING.md](application/CONTRIBUTING.md)。
+具体推进协议与写作约束见各 `sdx-*` Skill 与 [application/CONTRIBUTING.md](application/CONTRIBUTING.md)。
 
 ### 5.2 核心流程
 
