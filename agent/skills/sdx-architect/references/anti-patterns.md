@@ -1,13 +1,20 @@
-# sdx-architect 反模式
+# sdx-architect 概念反模式
 
-| 反模式 | 纠正 |
-|--------|------|
-| 未确认即写 `ASD-*.md` | 草稿 → 总确认 → 落盘；或登记例外 |
-| ASD 塞进 API/DDL/规约全文 | 边界 + 摘要；详情 → `/sdx-design` |
-| 缺 §1/§2/§3 仅留图 | 按 `asd-template.md` 补三节再填 |
-| 结论对上无 PRD/ANALYSIS | 补引用，删臆断 |
-| 路径或占位不合规 | 统一命名并替换占位 |
-| 会话 spec 无 `PENDING`/`CONFIRMED` | 见 `gates.md` |
-| 有图无决策 | 补决策表（备选、取舍） |
-| 未跑 `validate-asd.sh` | 收尾必跑 |
-| system/company 在本库强写 DSD 或全套 `specs/` | 联邦 ASD 即可；详设 → 应用库 `/sdx-design`（[knowledge-type-modes.md](knowledge-type-modes.md)）|
+操作细节：[../gotchas.md](../gotchas.md)。
+
+| # | 反模式 | 纠正 |
+| --- | --- | --- |
+| 1 | 未确认当前段就自动推进下一段 | [gates.md](gates.md)：自动 grill 收敛后必须停在 `C/M/G/F` |
+| 2 | 无 PRD 硬写 ASD | 停并指 `sdx-prd`，或收窄并标注架构基线盲区 |
+| 3 | 退回会话 spec / `CONFIRMED` / gate-check 主线 | 主线是参数向导 + 分段直写 `ASD-*.md` |
+| 4 | 把 `G1-G3` 当流程门禁继续使用 | 仅保留 `§1-§3` 章节语义，不再以旧门禁驱动推进 |
+| 5 | 当前段未收口就一口气补齐多段 | 一次只处理一个当前段；批量补齐仅能走 `F` |
+| 6 | `G` 被当成每轮继续 grill 的必选按钮 | 自动 grill 应连续收敛；`G` 仅表示额外深挖当前段 |
+| 7 | 语义性变更直接改文，不先确认 | 先给结论、推荐修订和数字选项 |
+| 8 | `F` 被当成覆盖前文的整篇重写 | `F` 只补齐剩余未完成章节，保留已确认前文 |
+| 9 | ASD 塞进 API/DDL/规约全文 | ASD 保持边界、变更与规约摘要；实现级正文 → `/sdx-design` |
+| 10 | system/company 仍写应用级详设 | 联邦模式只写概要边界与承接指针 |
+| 11 | §3 无规约摘要或无下游承接 | 至少保留摘要表与 DSD/spec-asd 指针 |
+| 12 | 文首元数据缺失或 `id` 与路径不一致 | 要求文首 frontmatter；`id = ASD-{IDEA-ID}-{N}` |
+| 13 | `IDEA-ID` / `N` 与 PRD 脱节 | 参数向导阶段锁同链 |
+| 14 | 未跑 validate | [SKILL.md](../SKILL.md) 校验 |

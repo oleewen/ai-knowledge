@@ -1,5 +1,5 @@
 ---
-id: "ASD-{IDEA-ID}"
+id: "ASD-{IDEA-ID}-{N}"
 title: "{架构设计说明书标题}"
 version: "1.0.0"
 status: "draft"
@@ -7,7 +7,7 @@ created: "{YYYY-MM-DD}"
 updated: "{YYYY-MM-DD}"
 author: "architect"
 reviewers: []
-parent: "PRD-{IDEA-ID}"
+parent: "PRD-{IDEA-ID}-{N}"
 mvp_phase: "MVP-Phase-{N}"
 tags: ["ASD"]
 ---

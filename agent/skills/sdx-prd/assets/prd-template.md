@@ -1,5 +1,5 @@
 ---
-id: "PRD-{IDEA-ID}"
+id: "PRD-{IDEA-ID}-{N}"
 title: "{产品需求标题}"
 version: "1.0.0"
 status: "draft"
@@ -304,4 +304,4 @@ graph TD
 - [ ] **术语与引用**  
 *通过标准*：§8.1、§11.2 变更历史已落位；对外链接（原型、规约）可访问或已说明待补。
 - [ ] **格式与元数据**  
-*通过标准*：US/UC/BR/EX/AC/NAC 编号在文内连续可辨；文首 frontmatter 含 `id`、`title`、`version`、`status`、`created`、`updated`、`author`、`reviewers`、`parent`、`mvp_phase`；`id` 与 `PRD-{IDEA-ID}.md` 及目录 **REQUIREMENT-{IDEA-ID}** 一致。
+*通过标准*：US/UC/BR/EX/AC/NAC 编号在文内连续可辨；文首 frontmatter 含 `id`、`title`、`version`、`status`、`created`、`updated`、`author`、`reviewers`、`parent`、`mvp_phase`；`id` 与 `PRD-{IDEA-ID}-{N}.md` 及目录 **REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}** 一致。

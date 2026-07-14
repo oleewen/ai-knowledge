@@ -5,8 +5,8 @@ description: >
   每段生成后自动 grilling 补强至收敛，用户确认后再推进下一段。
   触发：/sdx-analysis、「拆 MVP」「需求分析」「细化方案」且可对齐上游 SOLUTION。
   分流：无 SOLUTION、只要其他 SDX 阶段或 docs-* 主路径 → 对应技能。
-  推进协议：段落推进、前文回改与用户动作见 references/gates.md；不要求会话 spec、HTML gate 或写前 hook。
-compatibility: Bash 5+；校验脚本 agent/skills/sdx-analysis/scripts/validate-analysis.sh（仅结构/内容校验，无 --gate-check）。
+  推进协议：参数向导、当前段、自动 grilling、前文回改与用户动作见 references/gates.md。
+compatibility: Bash 5+；校验脚本 agent/skills/sdx-analysis/scripts/validate-analysis.sh（仅结构/内容校验）。
 ---
 
 # sdx-analysis
@@ -31,8 +31,8 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-analysis/scripts/validate
 
 ## 不这样用
 
-- 不要求先维护会话 spec、`PENDING -> CONFIRMED` 或 HTML gate 再写 `ANALYSIS-*.md`
-- 不把写前 hook 当默认前置；主线是参数向导后直接分段直写终稿
+- 不走前置草稿 + 集中收口主线；主线是参数向导后直接分段直写终稿
+- 不把整篇集中回炉或整份重生成当默认路径
 - 不把 `ANALYSIS` 阶段偷换成 `PRD/ASD/DSD/TDD` 或 docs-* 主路径
 
 ## 路由
@@ -70,4 +70,4 @@ agent/skills/sdx-analysis/scripts/validate-analysis.sh --file path/to/ANALYSIS-x
 ## 评测 / 钩子
 
 评测：`evals/evals.json`、[grader.md](agents/grader.md)。
-`sdx-analysis` 不再使用写前 HTML gate / `CONFIRMED` hook 放行 `ANALYSIS-*.md`。
+`sdx-analysis` 评测聚焦当前段推进协议与结构校验。

@@ -1,30 +1,38 @@
-# sdx-design 易错点
+# sdx-design 操作层陷阱
 
-原则与反模式见 [references/design-principles.md](references/design-principles.md)；本文件为**操作层**。
+概念反模式：[references/anti-patterns.md](references/anti-patterns.md)。
 
-## 闸门与会话 spec
+## 参数向导
 
-未完成 **Qclose-1** 勿写 **DSD**：先在 `{DOC_DIR}/superpowers/specs/` 维护 **`...-sdx-design.md`**，收口后 `PENDING`→`CONFIRMED`，正文含目标 **`DSD-*.md`** 全名。否则易触发钩子或评审口径不一致。
+- 支持逐项确认与快捷组合；不要强制退回会话 spec。
+- `IDEA-ID`、`N` 须与 `PRD-{IDEA-ID}-{N}.md`、`ASD-{IDEA-ID}-{N}.md` 或 `spec-asd-*` 同链。
+- 缺 `ASD/spec-asd` 时要么回 `sdx-architect`，要么显式记录受限基线，不要悄悄补全。
 
-## 前置
+## Section Cycle
 
-- **无 PRD 开写**：缺 PRD 则停，提示先 `sdx-prd`；否则 DD/API 无法追溯 US/FR。  
-- **knowledge 缺失未声明**：在 ASD 或 DSD「关联文档」写明基线盲区。
+- 一次只处理一个当前段；可细到单个 `API`、`LOGIC`、`DDL/TBL`、错误码组或幂等策略。
+- 自动 `grilling` 要连续收敛，不要每一轮都停下来等用户。
+- 当前段若有 `>=2` 条真实实现路径，先在当前段内完成方案比选。
+- 语义性问题先给结论、推荐和数字选项，未确认不得改文。
+- 非语义性修订可直改当前段，但不要扩展到前文章节。
+- 前文一旦回改，当前段必须 `reopened` 并重新 grill。
+- 自动收敛后再给 `C/M/G/F`；不要默认替用户选下一步。
 
-## 与 ASD
+## 内容边界
 
-详设前应有 **ASD**（或用户明示例外并在对话留痕）。DD 主要在 ASD 收口时须与 DSD 内 API/TBL 一致。
+- `§1` 写目标、约束、关键决策与关联文档，不要把大量实现细节提前塞入。
+- `§2` 承接所有实现级契约，避免再拆第二正文源。
+- `§3` 写附录、自查、变更历史与必要补充，不要把 `§2` 的正文偷移到 `§3`。
+- 边界或能力归属变化应回 `ASD`，不要在 DSD 中暗改架构。
 
-## §2 详设
+## 详设质量
 
-- 每 **API-n**：幂等策略（或注明无需幂等的原因）；错误码表（码、信息、条件、HTTP；区分业务/系统/校验异常）。  
-- 新表须有 **`gmt_create` / `gmt_modified`**；索引须对应真实查询，避免冗余。  
-- 伪代码/流程图：**禁止**在 `for` 内 RPC/DB；用批量接口或批量查。  
-- **§2.5** 安全、可观测须实质填写，勿仅写「参考通用方案」。
-- 与 **FR-n**、**ASD §3**（或 **spec-asd** 中需求条目）的对应关系**写在 §2**，避免双源。
+- 每个 `API` 至少补齐签名、参数、响应、错误码、幂等或无需幂等的理由。
+- 新表设计至少说明主键、索引、审计字段和关键约束。
+- 时序或伪代码避免循环内 RPC/DB；优先批量化。
+- `§2.5` 的安全、可观测、性能要写实质约束，不要只写“参考通用方案”。
 
-## DSD-*.md 输出
+## 批量补齐
 
-- 章节与 **dsd-template**（§1–§3）一致；空节保留标题，标「不适用/待补充」。  
-- **要求**在文件头用 YAML frontmatter；含 `mvp_phase` 等必填项。  
-- Mermaid：输出前自检语法；`sequenceDiagram` / `stateDiagram-v2` / `erDiagram` / `classDiagram` / `flowchart` 择类而用。
+- `F` 只能补齐剩余未完成章节，不能覆盖已确认前文。
+- `F` 过程中若打出语义性问题或前文冲突，必须立刻停下等待用户确认。

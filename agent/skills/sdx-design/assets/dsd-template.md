@@ -1,5 +1,5 @@
 ---
-id: "DSD-{IDEA-ID}"
+id: "DSD-{IDEA-ID}-{N}"
 title: "{技术设计标题}"
 version: "1.0.0"
 status: "draft"

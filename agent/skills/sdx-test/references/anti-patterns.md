@@ -1,13 +1,19 @@
-# sdx-test 边界与路由反模式
+# sdx-test 概念反模式
 
-细则与表格见 [design-principles.md](design-principles.md)；操作层：[../gotchas.md](../gotchas.md)。
+操作细节：[../gotchas.md](../gotchas.md)。
 
 | # | 反模式 | 纠正 |
-|---|--------|------|
-| 1 | 未确认写 `TDD-*.md` 终稿 | [gates.md](gates.md) |
-| 2 | 无 PRD 宣称可评审 TDD | 先 **sdx-prd** 或显式风险收窄 |
-| 3 | 在 TDD 里扩写 API/DDL 替代 DSD | 追溯 DSD/specs，不吞详设 |
-| 4 | 产出自动化代码或执行报告 | 仅 **TDD** 文档 |
-| 5 | TC 无 US/API/BR/影响面锚点 | [design-principles.md](design-principles.md)、gotchas |
-| 6 | PRD 全文贴进 TDD | 用 Given-When-Then 与编号引用 |
-| 7 | 把 **docs-*** 当作测试设计主路径 | 分流 docs 技能 |
+| --- | --- | --- |
+| 1 | 未确认当前段就自动推进下一段 | [gates.md](gates.md)：自动 grill 收敛后必须停在 `C/M/G/F` |
+| 2 | 无 PRD 硬写 TDD | 停并指 `sdx-prd`，或收窄并标注需求基线盲区 |
+| 3 | 退回会话 spec / `Qclose-1` / `CONFIRMED` 主线 | 主线是参数向导 + 分段直写 `TDD-*.md` |
+| 4 | 当前段未收口就一口气补齐多段 | 一次只处理一个当前段；批量补齐仅能走 `F` |
+| 5 | `G` 被当成每轮继续 grill 的必选按钮 | 自动 grill 应连续收敛；`G` 仅表示额外深挖当前段 |
+| 6 | 语义性变更直接改文，不先确认 | 先给结论、推荐修订和数字选项 |
+| 7 | `F` 被当成覆盖前文的整篇重写 | `F` 只补齐剩余未完成章节，保留已确认前文 |
+| 8 | 在 TDD 中扩写 API/DDL 替代 DSD | 测试设计只追溯详设，不吞掉 DSD 正文 |
+| 9 | 产出自动化代码或执行报告 | 本技能只产 `TDD-*.md` |
+| 10 | 用例无 PRD/DSD/BR 锚点 | 在当前段内补追溯或显式标待澄清 |
+| 11 | 文首元数据缺失或 `id` 与路径不一致 | 要求文首 frontmatter；`id = TDD-{IDEA-ID}-{N}` |
+| 12 | `IDEA-ID` / `N` 与上游 PRD、DSD 脱节 | 参数向导阶段锁同链 |
+| 13 | 未跑 validate | [SKILL.md](../SKILL.md) 校验 |

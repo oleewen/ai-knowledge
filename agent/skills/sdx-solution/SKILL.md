@@ -5,8 +5,8 @@ description: >
   每段生成后自动 grilling 补强至收敛，用户确认后再推进下一段。
   触发：/sdx-solution、「写方案」「整理业务目标」、需求模糊需结构化并形成共识级解决方案。
   分流：只要 ANALYSIS/PRD/ASD/DSD/TDD 或 docs-* 主路径 → 对应技能。
-  推进协议：段落推进、回改与用户动作见 references/gates.md；不要求会话 spec、HTML gate 或写前 hook。
-compatibility: Bash 5+；校验脚本 agent/skills/sdx-solution/scripts/validate-solution.sh（仅结构/内容校验，无 --gate-check）。
+  推进协议：参数向导、当前段、自动 grilling、回改与用户动作见 references/gates.md。
+compatibility: Bash 5+；校验脚本 agent/skills/sdx-solution/scripts/validate-solution.sh（仅结构/内容校验）。
 ---
 
 # sdx-solution
@@ -31,8 +31,8 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-solution/scripts/validate
 
 ## 不这样用
 
-- 不要求先维护会话 spec、`PENDING -> CONFIRMED` 或 HTML gate 再写 `SOLUTION-*.md`
-- 不把写前 hook 当默认前置；主线是参数向导后直接分段直写终稿
+- 不走前置草稿 + 集中收口主线；主线是参数向导后直接分段直写终稿
+- 不把整篇集中回炉或整份重生成当默认路径
 - 不把 `SOLUTION` 阶段偷换成 `ANALYSIS/PRD/ASD/DSD/TDD` 或 docs-* 主路径
 
 ## 路由
@@ -71,4 +71,4 @@ agent/skills/sdx-solution/scripts/validate-solution.sh --file path/to/SOLUTION-x
 ## 评测 / 钩子
 
 评测：`evals/evals.json`、[grader.md](agents/grader.md)。
-`sdx-solution` 不再使用写前 HTML gate / `CONFIRMED` hook 放行 `SOLUTION-*.md`。
+`sdx-solution` 评测聚焦当前段推进协议与结构校验。

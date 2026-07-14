@@ -1,29 +1,28 @@
 # DSD 质量验收（sdx-design）
 
-终检前须完成会话总确认；`validate-dsd.sh --file <path> --gate-check` 可核 **CONFIRMED** 与目标 **DSD** 文件名。
+## 1) 结构
 
-**结构**：`## 1`–`## 3` 与 [dsd-template.md](../assets/dsd-template.md) 一致。**完整勾选项**在 DSD 文末 **§3.2**；定稿时将已达标 `- [ ]` 改 `- [x]`。原则见 [design-principles.md](design-principles.md)。
+- [ ] `§1 设计概述`、`§2 详细设计`、`§3 附录`
+- [ ] `§1`：目标、约束、关键决策（最小集）
+- [ ] `§2`：`§2.1-§2.5` 完整，且实现级契约集中在 `§2`
+- [ ] `§3`：附录、自查与必要补充齐备
+- [ ] 文首 frontmatter 合法
 
-## 摘要（对照 §3.2）
+## 2) 追溯
 
-| 维度 | 要点 |
-|------|------|
-| 结构 | §1–§3 齐；§1 与 ASD §1 **或** `spec-asd-*` §1–2 可追溯 |
-| §1 | ANALYSIS/PRD/MVP、约束、DD-n |
-| §2 | §2.1–§2.5 完整；每项与 **FR-n / ASD §3 或 spec-asd** 在 §2 内可追溯 |
-| §3 | §3.1 历史；§3.2 自查 |
-| 一致 | ASD、spec-asd、PRD、knowledge 无未解释冲突 |
+- [ ] 与 `PRD`、`ASD`、`spec-asd` 一致可追溯
+- [ ] `API/LOGIC/TBL` 编号与上游口径一致
+- [ ] 无 DSD 外第二正文源
+- [ ] 术语与范围与上游一致
 
-**联邦**（KNOWLEDGE_TYPE system/company）：按 [knowledge-type-modes.md](knowledge-type-modes.md) 标 **N/A**。
+## 3) 命名与路径
 
-## 目录自检（细则以 template §3.2 为准）
+- [ ] `DSD-{IDEA-ID}-{N}.md`；`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/`
+- [ ] `id`、`parent`、`architecture_ref` 与上游链路一致
+- [ ] `{IDEA-ID}`、`{N}`、`{app-name}` 等占位已替换、风格一致
 
-- [ ] 结构与占位  
-- [ ] §1  
-- [ ] §2（§2.1–§2.5）  
-- [ ] §3 与元数据  
+## 4) 当前段协议与校验
 
-## 原则补充
-
-- [ ] API 命名、版本、错误码符合项目约定（见 design-principles）  
-- [ ] 表字段约束已核对或有说明例外  
+- [ ] 自动 grilling 已收敛后再停在 `C/M/G/F`
+- [ ] 语义性改动已先确认，未越权直改
+- [ ] 已跑 `validate-dsd.sh` 并处理失败项

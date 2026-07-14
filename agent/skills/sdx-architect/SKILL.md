@@ -1,52 +1,74 @@
 ---
 name: sdx-architect
 description: >
-  基于 PRD 产出 ASD §1–§3；可选 spec-asd-*.md。KNOWLEDGE_TYPE=system|company 时为联邦概要。
-  触发：ASD、边界、变更、§3 规约摘要或 spec-asd-*。
+  基于已共识 PRD 按 §1-§3 分段细化边界、变更与规约摘要，并直写 ASD-{IDEA-ID}-{N}.md；
+  每段生成后自动 grilling 补强至收敛，用户确认后再推进下一段。
+  触发：/sdx-architect、ASD、边界、变更、§3 规约摘要或 spec-asd-*，且可对齐上游 PRD。
   分流：API/DDL/DSD → sdx-design；docs-* 或仅其他 SDX 阶段 → 对应技能。
-  门禁：总确认前禁写 {DOC_DIR}/requirements/**/ASD-*.md（例外见 gates.md）。
-compatibility: Bash 5+；config-bootstrap 解析 DOC_ROOT；validate-asd.sh。
+  推进协议：参数向导、当前段、自动 grilling、前文回改与用户动作见 references/gates.md。
+compatibility: Bash 5+；校验脚本 agent/skills/sdx-architect/scripts/validate-asd.sh（仅结构/内容校验）。
 ---
 
-# sdx-architect（架构设计）
+# sdx-architect
 
-判主路径 → 读 references/ → 总确认 → ASD 终稿。**DSD 正文 → sdx-design**。
+读 references/ → 参数向导 → 分段直写终稿 → 每段自动 grilling 补强至收敛 → 用户确认推进。无 PRD → 引导 sdx-prd。**DSD 正文 → sdx-design**。
+
+## 输出硬门禁（P0）
+
+- 一次只处理一个“当前段”（章节、子章节、单个 `DD`、单个服务变更项或单个规约摘要行）；禁止一口气补齐多段。
+- 当前段写入终稿后，必须进入自动 `grilling` 循环；仅当当前段已收敛，或打出必须等待用户确认的语义性问题时，才把控制权交还用户。
+- 自动 `grilling` 收敛后，输出 `C/M/G/F` 选项并停止等待用户选择；不得自动推进下一段。
+- `F` 仅表示在当前段已收敛后，一次性补齐当前文档剩余未完成章节；不得覆盖已确认前文。
+- 若用户一开始就要求“一次性生成整篇”，仍先完成当前段并自动 `grilling` 至收敛，再由用户明确选择 `F` 进入批量补齐。
+- `grilling` 过程中如发现**语义性问题**（改变目标/范围/边界/能力归属/服务拆分/规约口径/风险/优先级/术语/联邦模式等），必须先给出结论、推荐修订与数字选项并等待用户确认；未获确认不得修订当前段。
+- 仅**非语义性修订**（不改变含义的错别字/编号/排版等）可在当前段默认授权下直接修订；不确定时按语义性处理。
 
 ## 边界
 
 | 负责 | 不负责 |
-|------|--------|
-| ASD-*.md、可选 spec-asd-*.md、服务边界与 §3 摘要 | DSD 实现级 API/DDL；docs-* 主路径 |
+| --- | --- |
+| `ASD-{IDEA-ID}-{N}.md` 生成与推进、§1-§3 边界/变更/规约摘要、可选 `spec-asd-*` 指针 | `PRD/ANALYSIS/SOLUTION` 初稿；DSD 实现级 API/DDL；docs-* 主路径 |
+
+## 不这样用
+
+- 不走前置草稿 + 集中收口主线；主线是参数向导后直接分段直写终稿
+- 不把整篇集中回炉或整份重生成当默认路径
+- 不把 `ASD` 阶段偷换成 `DSD` 实现级设计或 docs-* 主路径
 
 ## 路由
 
 | 目的 | 文件 |
-|------|------|
-| 会话 spec 路径 | [session-spec-path.md](../../references/session-spec-path.md) |
-| 门禁 / 流程 | [gates.md](references/gates.md)、[workflow.md](references/workflow.md) |
-| brainstorming | [brainstorming-integration.md](references/brainstorming-integration.md) |
-| KNOWLEDGE_TYPE（SSOT） | [knowledge-type-modes.md](references/knowledge-type-modes.md) |
-| 反模式 / 终检 | [anti-patterns.md](references/anti-patterns.md)、[quality-checklist.md](references/quality-checklist.md) |
+| --- | --- |
+| 流程 | [workflow.md](references/workflow.md) |
+| 推进协议 | [gates.md](references/gates.md) |
+| grilling 能力 | [grilling-skill.md](../../references/grilling-skill.md) |
+| KNOWLEDGE_TYPE / 联邦模式 | [knowledge-type-modes.md](references/knowledge-type-modes.md) |
+| 原则 / 反模式 | [anti-patterns.md](references/anti-patterns.md)、[quality-checklist.md](references/quality-checklist.md) |
+| 易错 | [gotchas.md](gotchas.md) |
 | 模板 | [asd-template.md](assets/asd-template.md)、[asd-spec-template.md](assets/asd-spec-template.md) |
 
 ## 最少输入
 
-- **PRD**（必需）；**ANALYSIS**、**KNOWLEDGE_TYPE**（建议）。缺项先澄清，不落正式 ASD。
+- 可对齐的 **`PRD-{IDEA-ID}-{N}.md`**
+- 可选但推荐的 `ANALYSIS-{IDEA-ID}.md`
+- `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/` 可写
+- 若已给 `IDEA-ID`、`N`、章节范围、深度、`KNOWLEDGE_TYPE`，则直接进入参数向导确认
 
-## 门禁
+## 推进协议
 
-总确认前禁止 `{DOC_DIR}/requirements/**/ASD-*.md`（[gates.md](references/gates.md)）。
+段落推进、前文回改、自动 `grilling` 与用户动作 `C/M/G/F` 见 [gates.md](references/gates.md)。
 
 ## 产出与校验
 
-- Spec：`{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-sdx-architect.md`
-- ASD：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ASD-{IDEA-ID}-{N}.md`
+- 正式：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ASD-{IDEA-ID}-{N}.md`
+- 可选：`{DOC_DIR}/specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md`
 
 ```bash
 agent/skills/sdx-architect/scripts/validate-asd.sh
-agent/skills/sdx-architect/scripts/validate-asd.sh --file path/to/ASD-xxx.md --gate-check
+agent/skills/sdx-architect/scripts/validate-asd.sh --file path/to/ASD-xxx.md
 ```
 
 ## 评测 / 钩子
 
-评测：`evals/evals.json`、[grader.md](agents/grader.md)。钩子：`python3 agent/hooks/sdx_gate_common.py --gate architect`。
+评测：`evals/evals.json`、[grader.md](agents/grader.md)。
+`sdx-architect` 评测聚焦当前段推进协议与结构校验。

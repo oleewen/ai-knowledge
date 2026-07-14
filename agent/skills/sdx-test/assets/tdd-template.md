@@ -1,5 +1,5 @@
 ---
-id: "TDD-{IDEA-ID}"
+id: "TDD-{IDEA-ID}-{N}"
 title: "{测试设计标题}"
 version: "1.0.0"
 status: "draft"
@@ -7,7 +7,7 @@ created: "{YYYY-MM-DD}"
 updated: "{YYYY-MM-DD}"
 author: "quality-engineer"
 reviewers: []
-parent: "PRD-{IDEA-ID}"
+parent: "PRD-{IDEA-ID}-{N}"
 mvp_phase: "MVP-Phase-{N}"
 tags: []
 ---

@@ -1,208 +1,230 @@
 {
   "skill_name": "sdx-prd",
-  "version": "1.1.0",
-  "description": "评测 prd 触发/分流/门禁；供 grader 对照 expected_output 与断言。",
+  "version": "3.0.0",
+  "description": "评估 sdx-prd 在新流程下的触发、分流与段落推进协议表述；断言供 grader 评分。",
   "evals": [
     {
       "id": "prd-trigger-001",
       "category": "should-trigger",
-      "prompt": "ANALYSIS-ORDER-01.md 里 MVP-Phase-1 的 FR 已经齐了，请走 /sdx-prd：出会话 spec、过门禁，最后落 PRD-ORDER-01-1.md，要有 US 和验收标准。",
-      "expected_output": "以 /sdx-prd 为主路径：基于 ANALYSIS 当前 MVP 写十一章 PRD；会话 spec + 门禁；总确认后定稿 PRD-ORDER-01-1.md；含 HARD-GATE 与 US/验收表述。",
+      "prompt": "ANALYSIS-ORDER-01.md 已经评审过了，请走 /sdx-prd：先逐步确认参数，再一段一段写进 PRD-ORDER-01-1.md，重点补用户故事、主流程和验收标准。",
+      "expected_output": "以 /sdx-prd 为主路径：先走参数向导，再按模板分段直写 PRD-ORDER-01-1.md；每段写完进入自动 grilling 至收敛，再由用户确认后推进下一段。",
       "assertions": [
         {
-          "id": "gate-compliance",
-          "name": "门禁合规",
+          "id": "parameter-guidance",
+          "name": "参数向导",
           "type": "must_include",
-          "check": "明确总确认前禁止写入 {DOC_DIR}/requirements/**/PRD-*.md 或等价门禁表述，并可提及合法例外或 SDX_PRD_ALLOW_PRD_WRITE。",
+          "check": "明确存在逐项确认参数或快捷组合的入口，不得仍以整份前置草稿和集中收口作为默认第一步。",
           "priority": "P0"
         },
         {
-          "id": "structure-integrity",
-          "name": "结构完整",
+          "id": "section-cycle",
+          "name": "分段直写",
           "type": "must_include",
-          "check": "体现 PRD 十一章/会话 spec、门禁与基于 ANALYSIS 的 MVP，而非以 ANALYSIS 扩写或 ASD 为主产物。",
+          "check": "体现按模板分段生成并直写 PRD-ORDER-01-1.md，而非先整份 spec、再统一定稿。",
           "priority": "P0"
         },
         {
-          "id": "boundary-routing",
-          "name": "边界分流",
-          "type": "must_not_conflict",
-          "check": "不得将本请求主路径改为仅 sdx-analysis、sdx-solution、sdx-architect 或纯 docs-*。",
+          "id": "grilling-loop",
+          "name": "段内拷问",
+          "type": "must_include",
+          "check": "体现每段生成后执行自动 grilling 并收敛后再推进；可提及 C/M/G/F 或等价动作。",
           "priority": "P0"
         },
         {
-          "id": "deliverable-echo",
-          "name": "产物对齐",
-          "type": "should_include",
-          "check": "应出现 PRD-ORDER-01-1 或 ORDER-01 与 MVP-Phase-1 及 US/验收中至少一类关键词的规划说明。",
-          "priority": "P1"
+          "id": "single-section-stop",
+          "name": "单段停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；不得自动推进下一段。",
+          "priority": "P0"
+        },
+        {
+          "id": "semantic-change-gated",
+          "name": "语义改动确认",
+          "type": "must_include",
+          "check": "须体现语义性结论/建议必须先给推荐方案与数字选项并等待用户确认，未获确认不得修订当前段。",
+          "priority": "P0"
+        },
+        {
+          "id": "upstream-analysis-mvp",
+          "name": "上游 ANALYSIS 与 MVP",
+          "type": "must_include",
+          "check": "须体现 PRD 基于已共识 ANALYSIS 当前 MVP 承接细化。",
+          "priority": "P0"
         }
       ]
     },
     {
       "id": "prd-trigger-002",
       "category": "should-trigger",
-      "prompt": "我们要把当前 MVP 写成可评审的 PRD，按十一章模板，先做会话 spec 再过门禁，不要直接进架构 ASD。",
-      "expected_output": "主路径为 sdx-prd：十一章 PRD、会话 spec 与门禁；明确不应跳过 PRD 直接写 ASD。",
+      "prompt": "我们要在 {DOC_DIR}/requirements/REQUIREMENT-BILL-01/MVP-Phase-1/ 写 PRD 文档，按十一章模板，先确认参数，再只写一个当前段并自动 grill 到收敛，不要先写会话 spec。",
+      "expected_output": "明确采用 sdx-prd：先参数确认，再分段直写终稿，并说明不要求会话 spec、Qclose 或写前 gate。",
       "assertions": [
         {
-          "id": "gate-compliance",
-          "name": "门禁合规",
+          "id": "parameter-guidance",
+          "name": "参数向导",
           "type": "must_include",
-          "check": "含未确认不写 PRD 终稿或 HARD-GATE 等价语义。",
+          "check": "须体现参数向导的两种入口：逐项确认或快捷组合。",
           "priority": "P0"
         },
         {
-          "id": "structure-integrity",
-          "name": "结构完整",
+          "id": "section-cycle",
+          "name": "分段直写",
           "type": "must_include",
-          "check": "体现十一章模板、会话 spec、门禁与 PRD 定稿节奏，并区分于「直接 ASD/架构」。",
+          "check": "体现十一章模板与分段直写终稿的主线。",
           "priority": "P0"
         },
         {
-          "id": "boundary-routing",
-          "name": "边界分流",
+          "id": "single-section-stop",
+          "name": "单段停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；不得自动推进下一段。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-session-spec-gate-regression",
+          "name": "不回退旧门禁",
           "type": "must_not_conflict",
-          "check": "不得同意「跳过 PRD、直接产出 ASD」作为对本 prompt 的遵从答复。",
+          "check": "不得要求会话 spec、Qclose-1、PENDING -> CONFIRMED、HTML gate 或写前 hook 作为 sdx-prd 默认前置条件。",
           "priority": "P0"
-        },
-        {
-          "id": "session-spec",
-          "name": "会话 spec",
-          "type": "should_include",
-          "check": "应提及 {DOC_DIR}/superpowers/specs/…-sdx-prd.md（或等价会话 spec 路径）+ Qclose。",
-          "priority": "P1"
         }
       ]
     },
     {
       "id": "prd-trigger-003",
       "category": "should-trigger",
-      "prompt": "产品要一版可验收的 PRD 给研发评审，IDEA-ID 与 ANALYSIS 对齐，门禁用精简 6G，输出 PRD-BILL-02-1.md。",
-      "expected_output": "采用 sdx-prd：精简 6G、PRD-BILL-02-1、与 ANALYSIS 对齐；含门禁与 MVP 范围意识。",
+      "prompt": "请执行 /sdx-prd，但这轮只写一个当前段：先把 `## 5. 用户故事 / US-001` 写进 PRD-CRM-01-1.md。写完后让当前段自动 grill 到烤干，然后给我 C/M/G/F 并停住等待。",
+      "expected_output": "以 /sdx-prd 为主路径：明确一次只处理当前段（US-001），写入后先对当前段自动 grilling 到收敛，再给出 C/M/G/F 并等待用户选择。",
       "assertions": [
         {
-          "id": "gate-compliance",
-          "name": "门禁合规",
+          "id": "section-cycle",
+          "name": "分段直写",
           "type": "must_include",
-          "check": "含 PRD 写入门禁或总确认语义。",
+          "check": "须体现按模板将当前段（US-001）直写入 PRD-CRM-01-1.md，而非一口气补齐多段或整篇。",
           "priority": "P0"
         },
         {
-          "id": "structure-integrity",
-          "name": "结构完整",
+          "id": "grilling-loop",
+          "name": "段内拷问",
           "type": "must_include",
-          "check": "体现精简 6G（或 11G）、PRD-BILL-02-1 与 ANALYSIS 对齐。",
+          "check": "须体现当前段写完后自动 grilling 到收敛，围绕当前段补强，不跨段发散。",
           "priority": "P0"
         },
         {
-          "id": "boundary-routing",
-          "name": "边界分流",
-          "type": "must_not_conflict",
-          "check": "不得将主路径改为仅 DSD 或仅写技术方案。",
+          "id": "single-section-stop",
+          "name": "单段停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；需出现明确的停住/等待措辞。",
           "priority": "P0"
-        },
-        {
-          "id": "idea-echo",
-          "name": "参数回应",
-          "type": "should_include",
-          "check": "应复述 BILL-02、PRD-BILL-02-1 或精简 6G 之一。",
-          "priority": "P1"
         }
       ]
     },
     {
       "id": "prd-trigger-004",
       "category": "should-trigger",
-      "prompt": "请按 SDX 进入产品需求阶段：基于 ANALYSIS 当前 MVP 写用户故事和 AC，IDEA-ID 与 ANALYSIS 文件名一致。",
-      "expected_output": "主路径为 PRD 阶段：US/AC、基于 ANALYSIS MVP、IDEA-ID 对齐；含门禁与 PRD 路径边界。",
+      "prompt": "请按 SDX 进入 PRD 阶段：当前段写完后不要每一轮 grill 都停下来问我，要自动连续 grill 到这部分内容烤干，再统一给我 C/M/G/F 选项。",
+      "expected_output": "以 /sdx-prd 为主路径：明确当前段写入后进入自动连续 grilling，直到当前段收敛才回到用户动作菜单；不得把 G 当作每轮继续 grill 的必选按钮。",
       "assertions": [
         {
-          "id": "gate-compliance",
-          "name": "门禁合规",
+          "id": "auto-grilling-loop",
+          "name": "自动连续 grilling",
           "type": "must_include",
-          "check": "含总确认前不写 PRD 终稿或等价表述。",
+          "check": "须体现当前段写完后自动连续 grilling 到收敛，而非每一轮都停下等待用户继续。",
           "priority": "P0"
         },
         {
-          "id": "structure-integrity",
-          "name": "结构完整",
+          "id": "g-not-required-per-round",
+          "name": "G 非每轮必选",
           "type": "must_include",
-          "check": "体现基于 ANALYSIS MVP 的用户故事/验收与 PRD 阶段定位。",
+          "check": "须体现 G 仅用于当前段已收敛后的额外深挖，不能把 G 表述为每轮继续 grill 的必选动作。",
           "priority": "P0"
         },
         {
-          "id": "boundary-routing",
-          "name": "边界分流",
-          "type": "must_not_conflict",
-          "check": "不得将「产品需求阶段」偷换为仅需求分析 ANALYSIS 或仅架构 ASD。",
+          "id": "single-section-stop",
+          "name": "收敛后再停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后再给出 C/M/G/F 等待用户选择。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "prd-trigger-005",
+      "category": "should-trigger",
+      "prompt": "我就是想要你直接一口气把 PRD-BILL-01-1.md 十一章都写完，别分段、别停、别问我，直接输出完整版。",
+      "expected_output": "仍以 /sdx-prd 为主路径：不得直接从空白状态一口气补齐整篇；应先完成当前段并自动 grilling 到收敛，再通过 `F` 一次性补齐剩余章节。",
+      "assertions": [
+        {
+          "id": "exception-full-draft-gated",
+          "name": "破例需选择",
+          "type": "must_include",
+          "check": "须体现用户要求一口气整篇时，先完成当前段并自动 grilling 到收敛，再通过 `F` 进入剩余章节批量补齐；不得直接从空白状态输出完整十一章正文。",
           "priority": "P0"
         },
         {
-          "id": "traceability",
-          "name": "追溯",
-          "type": "should_include",
-          "check": "应提及 US、AC 或 FR 与 ANALYSIS 的承接关系。",
-          "priority": "P1"
+          "id": "single-section-stop",
+          "name": "单段停住",
+          "type": "must_include",
+          "check": "须强调默认仍按单段 Section Cycle 推进，不因用户一句话要求而自动破例；需体现 `F` 是显式用户动作。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "prd-trigger-006",
+      "category": "should-trigger",
+      "prompt": "当前段“### 10.1 功能验收标准”已经确认通过，我现在直接选 F。请按 sdx-prd 把剩余未完成章节全部生成，但不要覆盖已经确认的前文；如果后文打出前文语义冲突，要先停下来让我选。",
+      "expected_output": "以 /sdx-prd 为主路径：说明 F 用于补齐剩余未完成章节，保留已确认前文；若批量补齐过程中触发语义性问题或前文回改，必须先停下等待用户确认。",
+      "assertions": [
+        {
+          "id": "f-batch-fill",
+          "name": "F 批量补齐",
+          "type": "must_include",
+          "check": "须体现 F 表示补齐剩余未完成章节，而不是提前结束流程或整篇重生成。",
+          "priority": "P0"
+        },
+        {
+          "id": "preserve-confirmed-prefix",
+          "name": "保留已确认前文",
+          "type": "must_include",
+          "check": "须体现 F 不覆盖已确认前文，至少复述保留既有确认内容或不重写前文。",
+          "priority": "P0"
+        },
+        {
+          "id": "semantic-change-gated",
+          "name": "批量补齐仍受语义门禁",
+          "type": "must_include",
+          "check": "须体现 F 过程中若后文打出前文语义冲突或其他语义性问题，必须先给推荐方案与数字选项并等待用户确认。",
+          "priority": "P0"
         }
       ]
     },
     {
       "id": "prd-not-trigger-001",
       "category": "should-not-trigger",
-      "prompt": "只有业务会议纪要，还没有 ANALYSIS，请先帮我跑 /sdx-analysis 产出 ANALYSIS-OPS-01.md，不要写 PRD。",
-      "expected_output": "主路径为 /sdx-analysis 与 ANALYSIS-OPS-01.md；不以完整 sdx-prd 门禁链写 PRD 为终点。",
+      "prompt": "只有会议纪要没有成文分析，先帮我写一版 ANALYSIS-OPS-1.md，走 /sdx-analysis。",
+      "expected_output": "主路径为 /sdx-analysis 与 ANALYSIS-OPS-1.md；不以 sdx-prd 的参数向导 + 分段直写流程写 PRD 为终点。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "须明确 /sdx-analysis 或 ANALYSIS-OPS-01.md（或 ANALYSIS）为当前主任务。",
+          "check": "须明确 /sdx-analysis 或 ANALYSIS-OPS-1.md（或 ANALYSIS）为当前主任务。",
           "priority": "P0"
         },
         {
           "id": "no-false-prd-primary",
           "name": "勿假主 PRD",
           "type": "must_not_conflict",
-          "check": "不得将本请求表述为「仍需完整执行 sdx-prd 过门禁并新建 PRD」作为主要答案。",
+          "check": "不得将本请求表述为“仍需先做参数向导、再分段写 PRD”作为主要答案。",
           "priority": "P0"
-        },
-        {
-          "id": "defer-prd",
-          "name": "PRD 后置",
-          "type": "should_include",
-          "check": "可提及先有 ANALYSIS 后再进入 sdx-prd（非本轮主路径）。",
-          "priority": "P1"
         }
       ]
     },
     {
       "id": "prd-not-trigger-002",
       "category": "should-not-trigger",
-      "prompt": "老板要先一版共识方案给业务拍板，请用 /sdx-solution 写 SOLUTION-PAY-01.md。",
-      "expected_output": "主路径为 sdx-solution 与 SOLUTION；不以 sdx-prd 为主交付。",
-      "assertions": [
-        {
-          "id": "correct-downstream",
-          "name": "正确下游",
-          "type": "must_include",
-          "check": "须明确 /sdx-solution 或 SOLUTION-PAY-01.md（或 SOLUTION）为当前主任务。",
-          "priority": "P0"
-        },
-        {
-          "id": "no-false-prd-primary",
-          "name": "勿假主 PRD",
-          "type": "must_not_conflict",
-          "check": "不得将本请求框成以 sdx-prd 与 PRD 十一章为主路径。",
-          "priority": "P0"
-        }
-      ]
-    },
-    {
-      "id": "prd-not-trigger-003",
-      "category": "should-not-trigger",
-      "prompt": "PRD 已定稿，请用 /sdx-architect 基于 PRD 画服务边界，生成 ASD-CRM-1.md。",
-      "expected_output": "主路径为 sdx-architect 与 ASD；不以 PRD 重写为当前主产物。",
+      "prompt": "请用 /sdx-architect 基于 PRD 画服务边界，生成 ASD-ORDER-1.md。",
+      "expected_output": "主路径为 sdx-architect 与 ASD；不以 PRD 为当前主产物。",
       "assertions": [
         {
           "id": "correct-downstream",
@@ -215,7 +237,29 @@
           "id": "no-false-prd-primary",
           "name": "勿假主 PRD",
           "type": "must_not_conflict",
-          "check": "不得将本请求描述为默认先写或重写过 PRD 门禁链。",
+          "check": "不得将本请求描述为默认先写 PRD 再过门禁。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "prd-not-trigger-003",
+      "category": "should-not-trigger",
+      "prompt": "把 application-billing 蒸馏到 billing-overview，执行 docs-distill --app billing。",
+      "expected_output": "主路径为 docs-distill 与 billing-overview；不是 sdx-prd。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 docs-distill、蒸馏或 billing-overview 等，而非 sdx-prd。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-prd-primary",
+          "name": "勿假主 PRD",
+          "type": "must_not_conflict",
+          "check": "不得用“先出 PRD 十一章”作为完成本请求的主方案。",
           "priority": "P0"
         }
       ]
@@ -223,65 +267,21 @@
     {
       "id": "prd-not-trigger-004",
       "category": "should-not-trigger",
-      "prompt": "把 application-billing 蒸馏到 billing-overview，执行 docs-distill --app billing。",
-      "expected_output": "主路径为 docs-distill；不是 sdx-prd。",
+      "prompt": "我已经确认过前两章了。现在别按当前段流程，直接用 F 把整份 PRD-ORDER-1-1.md 从头到尾重写一遍，前面已确认内容也一起覆盖掉。",
+      "expected_output": "不得把该请求解释为当前 `sdx-prd` 协议下合法的 F 动作；应明确指出 F 只用于保留已确认前文并补齐剩余未完成章节。",
       "assertions": [
         {
           "id": "correct-downstream",
-          "name": "正确下游",
+          "name": "正确拒绝当前协议",
           "type": "must_include",
-          "check": "须明确 docs-distill 或 billing-overview 等，而非 sdx-prd。",
+          "check": "须明确指出该请求不符合当前 sdx-prd 协议中的 F 语义，或明确拒绝把它作为合法 F 动作执行。",
           "priority": "P0"
         },
         {
-          "id": "no-false-prd-primary",
-          "name": "勿假主 PRD",
+          "id": "no-false-f-rewrite",
+          "name": "勿把 F 当整篇重写",
           "type": "must_not_conflict",
-          "check": "不得用「先出 PRD 十一章」作为完成本请求的主方案。",
-          "priority": "P0"
-        }
-      ]
-    },
-    {
-      "id": "prd-not-trigger-005",
-      "category": "should-not-trigger",
-      "prompt": "从多个源文件提炼业务知识进 payment-overview 第三列，用 docs-extract。",
-      "expected_output": "主路径为 docs-extract；不是 sdx-prd。",
-      "assertions": [
-        {
-          "id": "correct-downstream",
-          "name": "正确下游",
-          "type": "must_include",
-          "check": "须明确 docs-extract 或 overview 第三列，而非 sdx-prd。",
-          "priority": "P0"
-        },
-        {
-          "id": "no-false-prd-primary",
-          "name": "勿假主 PRD",
-          "type": "must_not_conflict",
-          "check": "不得将本请求框成 PRD 会话 spec 与门禁链。",
-          "priority": "P0"
-        }
-      ]
-    },
-    {
-      "id": "prd-not-trigger-006",
-      "category": "should-not-trigger",
-      "prompt": "重建 INDEX_GUIDE.md，跑 docs-indexing 全量扫描。",
-      "expected_output": "主路径为 docs-indexing；不是 sdx-prd。",
-      "assertions": [
-        {
-          "id": "correct-downstream",
-          "name": "正确下游",
-          "type": "must_include",
-          "check": "须明确 docs-indexing 或 INDEX_GUIDE，而非 sdx-prd。",
-          "priority": "P0"
-        },
-        {
-          "id": "no-false-prd-primary",
-          "name": "勿假主 PRD",
-          "type": "must_not_conflict",
-          "check": "不得将本请求描述为 PRD 阶段与 PRD 落盘主路径。",
+          "check": "不得将 F 描述为覆盖已确认前文的整篇重生成、整篇重写或整篇覆盖。",
           "priority": "P0"
         }
       ]

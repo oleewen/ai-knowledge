@@ -1,19 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ASD 结构校验。[--file <path>] [--gate-check|--gate-strict]
+# ASD 结构校验（§1-§3 模板；不承担写前门禁）。
+# 用法：validate-asd.sh [--file <path>]
+# 要点：文首 frontmatter、`id`、`§1-§3`、关键标题、DD 编号、PRD 关联；
+#       不校验会话 spec、CONFIRMED、HTML gate 或写前 hook。
 
 TARGET_FILE=""
 ERRORS=0
 WARNINGS=0
-GATE_CHECK=false
-GATE_STRICT=false
 
 while [[ $# -gt 0 ]]; do
   case $1 in
     --file) TARGET_FILE="$2"; shift 2 ;;
-    --gate-check) GATE_CHECK=true; shift ;;
-    --gate-strict) GATE_CHECK=true; GATE_STRICT=true; shift ;;
     *) echo "未知参数: $1"; exit 1 ;;
   esac
 done
@@ -28,36 +27,12 @@ DOC_ROOT="$(resolve_repo_doc_root)"
 cd "$REPO_ROOT" || exit 1
 
 REQUIREMENTS_DIR="${DOC_ROOT}/requirements"
-TEMPLATE="${_AGENT_HOME}/skills/sdx-architect/assets/asd-template.md"
-if [[ ! -f "${TEMPLATE}" ]]; then
-  TEMPLATE="${REPO_ROOT}/agent/skills/sdx-architect/assets/asd-template.md"
-fi
+TEMPLATE="${SCRIPT_DIR}/../assets/asd-template.md"
 
 info()    { echo "[INFO]  $1"; }
 warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
 error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
-
-# shellcheck source=../../../scripts/check-session-spec-gate.sh
-source "${REPO_ROOT}/agent/scripts/check-session-spec-gate.sh"
-
-# 会话 spec 闸门：{DOC_DIR}/superpowers/specs/（见 agent/references/session-spec-path.md）
-
-check_architect_gate() {
-  local file="$1"
-  local base
-  base=$(basename "${file}")
-  if check_session_spec_gate "<!-- sdx-architect-gate: CONFIRMED -->" "${base}"; then
-    success "闸门：已找到引用 ${base} 且 CONFIRMED 的会话 spec"
-  else
-    local msg="闸门：缺少引用 ${base} 且 CONFIRMED 的会话 spec（见 sdx-architect SKILL 门禁）"
-    if [[ "${GATE_STRICT}" == true ]]; then
-      error "${msg}"
-    else
-      warn "${msg}"
-    fi
-  fi
-}
 
 echo "=== ASD 结构校验 ==="
 echo "DOC_ROOT: ${DOC_ROOT}"
@@ -72,17 +47,7 @@ else
   warn "asd-template.md 不存在: ${TEMPLATE}"
 fi
 
-if [[ -d "${REQUIREMENTS_DIR}" ]]; then
-  FILE_COUNT=$(find "${REQUIREMENTS_DIR}" -name "ASD-*.md" 2>/dev/null | wc -l | tr -d ' ')
-  success "requirements/ 目录存在 (${FILE_COUNT} 个 ASD 文档)"
-else
-  warn "requirements/ 目录不存在: ${REQUIREMENTS_DIR}"
-  echo ""
-  echo "=== 校验结果 ==="
-  echo "错误: ${ERRORS}  警告: ${WARNINGS}"
-  exit 0
-fi
-
+FILES=()
 if [[ -n "${TARGET_FILE}" ]]; then
   if [[ -f "${TARGET_FILE}" ]]; then
     FILES=("${TARGET_FILE}")
@@ -91,7 +56,17 @@ if [[ -n "${TARGET_FILE}" ]]; then
     exit 1
   fi
 else
-  FILES=()
+  if [[ -d "${REQUIREMENTS_DIR}" ]]; then
+    FILE_COUNT=$(find "${REQUIREMENTS_DIR}" -name "ASD-*.md" 2>/dev/null | wc -l | tr -d ' ')
+    success "requirements/ 目录存在 (${FILE_COUNT} 个 ASD 文档)"
+  else
+    warn "requirements/ 目录不存在: ${REQUIREMENTS_DIR}"
+    echo ""
+    echo "=== 校验结果 ==="
+    echo "错误: ${ERRORS}  警告: ${WARNINGS}"
+    exit 0
+  fi
+
   while IFS= read -r -d '' f; do
     FILES+=("$f")
   done < <(find "${REQUIREMENTS_DIR}" -name "ASD-*.md" -print0 2>/dev/null)
@@ -109,21 +84,41 @@ for file in "${FILES[@]}"; do
   BASENAME=$(basename "${file}")
   echo "--- 校验: ${BASENAME} ---"
 
-  if head -5 "${file}" | grep -q "^---"; then
-    warn "${BASENAME}: 文件开头存在 ---（应移除）"
-  fi
-
-  if grep -qF "## 文档元数据" "${file}"; then
-    success "${BASENAME}: 「文档元数据」章节存在"
-    for field in "id:" "title:" "version:" "status:" "parent:" "mvp_phase:"; do
-      if grep -q "${field}" "${file}"; then
-        success "${BASENAME}: ${field} 字段存在"
-      else
-        warn "${BASENAME}: 缺少 ${field} 字段"
-      fi
-    done
+  FIRST_LINE=$(head -1 "${file}" 2>/dev/null || true)
+  if [[ "${FIRST_LINE}" != "---" ]]; then
+    error "${BASENAME}: 缺少文首 YAML frontmatter（首行应为 ---）"
   else
-    warn "${BASENAME}: 缺少「## 文档元数据」章节"
+    FRONTMATTER_END_LINE=$(awk 'NR>1 && $0=="---"{print NR; exit}' "${file}" 2>/dev/null || true)
+    if [[ -z "${FRONTMATTER_END_LINE}" ]]; then
+      error "${BASENAME}: YAML frontmatter 未闭合（缺少第二个 ---）"
+    else
+      FRONTMATTER_CONTENT=$(sed -n "2,$((FRONTMATTER_END_LINE - 1))p" "${file}" 2>/dev/null || true)
+      success "${BASENAME}: YAML frontmatter 存在"
+      for field in "id:" "title:" "version:" "status:" "created:" "updated:" "author:" "reviewers:" "parent:" "mvp_phase:"; do
+        if echo "${FRONTMATTER_CONTENT}" | grep -qE "^${field}"; then
+          success "${BASENAME}: ${field} 字段存在"
+        else
+          warn "${BASENAME}: 缺少 ${field} 字段"
+        fi
+      done
+
+      ID_VALUE=$(echo "${FRONTMATTER_CONTENT}" | sed -n 's/^id:[[:space:]]*"\{0,1\}\([^"]*\)"\{0,1\}$/\1/p' | head -1)
+      EXPECTED_ID="${BASENAME%.md}"
+      if [[ -n "${ID_VALUE}" ]]; then
+        if [[ "${ID_VALUE}" == "${EXPECTED_ID}" ]]; then
+          success "${BASENAME}: id 与文件名一致"
+        else
+          warn "${BASENAME}: id 建议与文件名一致，期望 ${EXPECTED_ID}，实际 ${ID_VALUE}"
+        fi
+      fi
+
+      PARENT_LINE=$(echo "${FRONTMATTER_CONTENT}" | grep -E '^parent:' 2>/dev/null | head -1 || true)
+      if echo "${PARENT_LINE}" | grep -q 'PRD-'; then
+        success "${BASENAME}: parent 含 PRD- 前缀"
+      else
+        warn "${BASENAME}: parent 建议指向 PRD-{IDEA-ID}-{N}，实际: ${PARENT_LINE}"
+      fi
+    fi
   fi
 
   REQUIRED_SECTIONS=(
@@ -131,16 +126,30 @@ for file in "${FILES[@]}"; do
     "## 2. 架构设计"
     "## 3. 需求规约"
   )
-
   SECTION_COUNT=0
   for section in "${REQUIRED_SECTIONS[@]}"; do
     if grep -qF "${section}" "${file}"; then
       SECTION_COUNT=$((SECTION_COUNT + 1))
     else
-      error "${BASENAME}: 缺少 '${section}'（须 §1–§3）"
+      warn "${BASENAME}: 缺少章节 '${section}'"
     fi
   done
-  info "${BASENAME}: ${SECTION_COUNT}/3 个必需章节（§1–§3）"
+  info "${BASENAME}: ${SECTION_COUNT}/3 个必需章节"
+
+  REQUIRED_SUBHEADINGS=(
+    "### 1.1 设计目标"
+    "### 1.2 设计约束"
+    "### 1.3 关键设计决策"
+    "### 2.1 系统架构设计"
+    "### 3.1 需求规约摘要"
+  )
+  for h in "${REQUIRED_SUBHEADINGS[@]}"; do
+    if grep -qF "${h}" "${file}"; then
+      success "${BASENAME}: 小节标题 '${h}' 存在"
+    else
+      warn "${BASENAME}: 缺少小节标题 '${h}'"
+    fi
+  done
 
   DD_COUNT=$(grep -c 'DD-[0-9]' "${file}" 2>/dev/null || true)
   info "${BASENAME}: DD-n=${DD_COUNT}"
@@ -154,8 +163,12 @@ for file in "${FILES[@]}"; do
     warn "${BASENAME}: 未发现关联 PRD 编号 (PRD-*)"
   fi
 
-  if [[ "${GATE_CHECK}" == true ]]; then
-    check_architect_gate "${file}"
+  if [[ "${KNOWLEDGE_TYPE:-}" == "system" || "${KNOWLEDGE_TYPE:-}" == "company" ]]; then
+    if grep -q 'DSD-' "${file}" || grep -q 'spec-asd-' "${file}"; then
+      success "${BASENAME}: 含下游承接指针"
+    else
+      warn "${BASENAME}: 联邦模式建议显式给出下游承接指针（DSD/spec-asd）"
+    fi
   fi
 
   echo ""
@@ -165,7 +178,7 @@ echo "=== 校验结果 ==="
 echo "错误: ${ERRORS}  警告: ${WARNINGS}"
 
 if [[ ${ERRORS} -gt 0 ]]; then
-  echo "校验失败，请修正后重跑。"
+  echo "校验失败，请修复以上错误。"
   exit 1
 else
   echo "校验通过。"

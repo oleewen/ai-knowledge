@@ -1,19 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# DSD 结构校验。用法: [--file <path>] [--gate-check] [--gate-strict]；gate-check 会话 spec 须含 CONFIRMED 与该 DSD 文件名
+# DSD 结构校验（§1-§3 模板；不承担写前门禁）。
+# 用法：validate-dsd.sh [--file <path>]
+# 要点：文首 frontmatter、`id`、`§1-§3`、关键标题、API/LOGIC/TBL 编号、PRD/ASD 关联；
+#       不校验会话 spec、CONFIRMED、HTML gate 或写前 hook。
 
 TARGET_FILE=""
 ERRORS=0
 WARNINGS=0
-GATE_CHECK=false
-GATE_STRICT=false
 
 while [[ $# -gt 0 ]]; do
   case $1 in
     --file) TARGET_FILE="$2"; shift 2 ;;
-    --gate-check) GATE_CHECK=true; shift ;;
-    --gate-strict) GATE_CHECK=true; GATE_STRICT=true; shift ;;
     *) echo "未知参数: $1"; exit 1 ;;
   esac
 done
@@ -28,42 +27,15 @@ DOC_ROOT="$(resolve_repo_doc_root)"
 cd "$REPO_ROOT" || exit 1
 
 REQUIREMENTS_DIR="${DOC_ROOT}/requirements"
-TEMPLATE="${_AGENT_HOME}/skills/sdx-design/assets/dsd-template.md"
-if [[ ! -f "${TEMPLATE}" ]]; then
-  TEMPLATE="${REPO_ROOT}/agent/skills/sdx-design/assets/dsd-template.md"
-fi
+TEMPLATE="${SCRIPT_DIR}/../assets/dsd-template.md"
 
 info()    { echo "[INFO]  $1"; }
 warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
 error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
 
-# shellcheck source=../../../scripts/check-session-spec-gate.sh
-source "${REPO_ROOT}/agent/scripts/check-session-spec-gate.sh"
-
-check_design_gate() {
-  local file="$1"
-  local base
-  base=$(basename "${file}")
-  if check_session_spec_gate "<!-- sdx-design-gate: CONFIRMED -->" "${base}"; then
-    success "闸门：已找到引用 ${base} 且 CONFIRMED 的会话 spec"
-  else
-    local msg="闸门：未找到引用 ${base} 且 <!-- sdx-design-gate: CONFIRMED --> 的会话 spec（见 agent/skills/sdx-design/SKILL.md HARD-GATE）"
-    if [[ "${GATE_STRICT}" == true ]]; then
-      error "${msg}"
-    else
-      warn "${msg}"
-    fi
-  fi
-}
-
-echo "=== DSD（详细设计说明书）结构校验 ==="
+echo "=== DSD 结构校验 ==="
 echo "DOC_ROOT: ${DOC_ROOT}"
-if [[ -n "${KNOWLEDGE_TYPE:-}" ]]; then
-  echo "KNOWLEDGE_TYPE: ${KNOWLEDGE_TYPE}"
-else
-  echo "KNOWLEDGE_TYPE: （未设置，按默认应用库语义校验 DSD 章节骨架）"
-fi
 echo ""
 
 if [[ -f "${TEMPLATE}" ]]; then
@@ -72,29 +44,26 @@ else
   warn "dsd-template.md 不存在: ${TEMPLATE}"
 fi
 
-if [[ -d "${REQUIREMENTS_DIR}" ]]; then
-  FILE_COUNT=$(find "${REQUIREMENTS_DIR}" -name "DSD-*.md" 2>/dev/null | wc -l | tr -d ' ')
-  success "requirements/ 目录存在 (${FILE_COUNT} 个 DSD 文档)"
-else
-  warn "requirements/ 目录不存在: ${REQUIREMENTS_DIR}"
-  echo ""
-  echo "=== 校验结果 ==="
-  echo "错误: ${ERRORS}  警告: ${WARNINGS}"
-  exit 0
-fi
-
+FILES=()
 if [[ -n "${TARGET_FILE}" ]]; then
   if [[ -f "${TARGET_FILE}" ]]; then
     FILES=("${TARGET_FILE}")
   else
     error "指定文件不存在: ${TARGET_FILE}"
-    echo ""
-    echo "=== 校验结果 ==="
-    echo "错误: ${ERRORS}  警告: ${WARNINGS}"
     exit 1
   fi
 else
-  FILES=()
+  if [[ -d "${REQUIREMENTS_DIR}" ]]; then
+    FILE_COUNT=$(find "${REQUIREMENTS_DIR}" -name "DSD-*.md" 2>/dev/null | wc -l | tr -d ' ')
+    success "requirements/ 目录存在 (${FILE_COUNT} 个 DSD 文档)"
+  else
+    warn "requirements/ 目录不存在: ${REQUIREMENTS_DIR}"
+    echo ""
+    echo "=== 校验结果 ==="
+    echo "错误: ${ERRORS}  警告: ${WARNINGS}"
+    exit 0
+  fi
+
   while IFS= read -r -d '' f; do
     FILES+=("$f")
   done < <(find "${REQUIREMENTS_DIR}" -name "DSD-*.md" -print0 2>/dev/null)
@@ -112,21 +81,34 @@ for file in "${FILES[@]}"; do
   BASENAME=$(basename "${file}")
   echo "--- 校验: ${BASENAME} ---"
 
-  if head -5 "${file}" | grep -q "^---"; then
-    warn "${BASENAME}: 文件开头存在 ---（应移除）；元数据须仅在文末「## 文档元数据」的 yaml 代码块中"
-  fi
-
-  if grep -qF "## 文档元数据" "${file}"; then
-    success "${BASENAME}: 「文档元数据」章节存在"
-    for field in "id:" "title:" "version:" "status:" "parent:" "mvp_phase:"; do
-      if grep -q "${field}" "${file}"; then
-        success "${BASENAME}: ${field} 字段存在"
-      else
-        warn "${BASENAME}: 缺少 ${field} 字段"
-      fi
-    done
+  FIRST_LINE=$(head -1 "${file}" 2>/dev/null || true)
+  if [[ "${FIRST_LINE}" != "---" ]]; then
+    error "${BASENAME}: 缺少文首 YAML frontmatter（首行应为 ---）"
   else
-    warn "${BASENAME}: 缺少「## 文档元数据」章节"
+    FRONTMATTER_END_LINE=$(awk 'NR>1 && $0=="---"{print NR; exit}' "${file}" 2>/dev/null || true)
+    if [[ -z "${FRONTMATTER_END_LINE}" ]]; then
+      error "${BASENAME}: YAML frontmatter 未闭合（缺少第二个 ---）"
+    else
+      FRONTMATTER_CONTENT=$(sed -n "2,$((FRONTMATTER_END_LINE - 1))p" "${file}" 2>/dev/null || true)
+      success "${BASENAME}: YAML frontmatter 存在"
+      for field in "id:" "title:" "version:" "status:" "created:" "updated:" "author:" "reviewers:" "parent:" "architecture_ref:" "mvp_phase:"; do
+        if echo "${FRONTMATTER_CONTENT}" | grep -qE "^${field}"; then
+          success "${BASENAME}: ${field} 字段存在"
+        else
+          warn "${BASENAME}: 缺少 ${field} 字段"
+        fi
+      done
+
+      ID_VALUE=$(echo "${FRONTMATTER_CONTENT}" | sed -n 's/^id:[[:space:]]*"\{0,1\}\([^"]*\)"\{0,1\}$/\1/p' | head -1)
+      EXPECTED_ID="${BASENAME%.md}"
+      if [[ -n "${ID_VALUE}" ]]; then
+        if [[ "${ID_VALUE}" == "${EXPECTED_ID}" ]]; then
+          success "${BASENAME}: id 与文件名一致"
+        else
+          warn "${BASENAME}: id 建议与文件名一致，期望 ${EXPECTED_ID}，实际 ${ID_VALUE}"
+        fi
+      fi
+    fi
   fi
 
   REQUIRED_SECTIONS=(
@@ -134,7 +116,6 @@ for file in "${FILES[@]}"; do
     "## 2. 详细设计"
     "## 3. 附录"
   )
-
   SECTION_COUNT=0
   for section in "${REQUIRED_SECTIONS[@]}"; do
     if grep -qF "${section}" "${file}"; then
@@ -143,20 +124,30 @@ for file in "${FILES[@]}"; do
       warn "${BASENAME}: 缺少章节 '${section}'"
     fi
   done
-  info "${BASENAME}: ${SECTION_COUNT}/3 个必需章节（§1–§3，对齐 DSD 模板）"
+  info "${BASENAME}: ${SECTION_COUNT}/3 个必需章节"
+
+  REQUIRED_SUBHEADINGS=(
+    "### 1.1 设计目标"
+    "### 1.2 设计约束"
+    "### 1.3 关键设计决策"
+    "### 2.1 应用架构设计"
+    "### 2.2 API详细设计"
+    "### 2.3 业务逻辑设计"
+    "### 2.4 数据访问设计"
+    "### 2.5 非功能设计"
+  )
+  for h in "${REQUIRED_SUBHEADINGS[@]}"; do
+    if grep -qF "${h}" "${file}"; then
+      success "${BASENAME}: 小节标题 '${h}' 存在"
+    else
+      warn "${BASENAME}: 缺少小节标题 '${h}'"
+    fi
+  done
 
   API_COUNT=$(grep -c 'API-[0-9]' "${file}" 2>/dev/null || true)
   LOGIC_COUNT=$(grep -c 'LOGIC-[0-9]' "${file}" 2>/dev/null || true)
   TBL_COUNT=$(grep -c 'TBL-[0-9]' "${file}" 2>/dev/null || true)
   info "${BASENAME}: API-n=${API_COUNT} LOGIC-n=${LOGIC_COUNT} TBL-n=${TBL_COUNT}"
-
-  if grep -qF "ASD-" "${file}"; then
-    success "${BASENAME}: 文内引用 ASD 文档"
-  elif grep -qE '(spec-asd-|specs/spec-asd-)' "${file}"; then
-    success "${BASENAME}: 文内引用概设 spec-asd 路径（或等价片段）"
-  else
-    warn "${BASENAME}: 未发现 ASD-* 或 spec-asd 引用（建议在§1关联文档或正文中写明）"
-  fi
 
   if grep -q 'PRD-' "${file}"; then
     success "${BASENAME}: 关联 PRD 文档"
@@ -164,17 +155,10 @@ for file in "${FILES[@]}"; do
     warn "${BASENAME}: 未发现关联 PRD 编号 (PRD-*)"
   fi
 
-  # 文件名模式运行时拼接，避免在脚本源文件中出现连续敏感字面量（便于仓库关键词扫描）
-  _legacy_glob="$(printf '%s%s%s%s' spec - d sd)-*.md"
-  if [[ -n "${DOC_ROOT:-}" && -d "${DOC_ROOT}" ]]; then
-    _legacy_split_count=$(find "${DOC_ROOT}" -type f -name "${_legacy_glob}" 2>/dev/null | wc -l | tr -d ' ')
-    if [[ "${_legacy_split_count}" -gt 0 ]]; then
-      warn "${BASENAME}: 在 DOC_ROOT 下检测到 ${_legacy_split_count} 个已废弃格式的 Phase 级详设拆分 Markdown，请将内容并入 DSD 后移除"
-    fi
-  fi
-
-  if [[ "${GATE_CHECK}" == true ]]; then
-    check_design_gate "${file}"
+  if grep -q 'ASD-' "${file}" || grep -q 'spec-asd-' "${file}"; then
+    success "${BASENAME}: 关联 ASD/spec-asd"
+  else
+    warn "${BASENAME}: 未发现 ASD-* 或 spec-asd-* 引用"
   fi
 
   echo ""
