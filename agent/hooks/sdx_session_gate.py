@@ -3,9 +3,9 @@
 SDX 会话激活钩子（preToolUse）。
 
 职责：
-- 仅识别当前会话是否出现过 `/sdx-*` 或 `/docs-distill`、`/docs-extract`、`/docs-archive`、`/docs-build`、`/docs-indexing`（见正则）；
-- 命中后写入会话激活态；
-- 永远返回 allow（由 sdx_gate_common.py 决定具体拦截）。
+- 兼容识别当前会话是否出现过 `/sdx-*` 或 `/docs-distill`、`/docs-extract`、`/docs-archive`、`/docs-build`、`/docs-indexing`（见正则）；
+- 命中后写入会话激活态，供遗留兼容路径读取；
+- 永远返回 allow；当前仓库默认不再依赖 preToolUse 写前拦截。
 """
 from __future__ import annotations
 

@@ -1,57 +1,6 @@
 {
   "version": 1,
   "hooks": {
-    "preToolUse": [
-      {
-        "command": "python3 hooks/sdx_session_gate.py",
-        "matcher": "Write|StrReplace",
-        "failClosed": false
-      },
-      {
-        "command": "python3 hooks/sdx_gate_common.py --gate architect",
-        "matcher": "Write|StrReplace",
-        "failClosed": false
-      },
-      {
-        "command": "python3 hooks/sdx_gate_common.py --gate design",
-        "matcher": "Write|StrReplace",
-        "failClosed": false
-      },
-      {
-        "command": "python3 hooks/sdx_gate_common.py --gate prd",
-        "matcher": "Write|StrReplace",
-        "failClosed": false
-      },
-      {
-        "command": "python3 hooks/sdx_gate_common.py --gate test",
-        "matcher": "Write|StrReplace",
-        "failClosed": false
-      },
-      {
-        "command": "python3 hooks/sdx_gate_common.py --gate distill",
-        "matcher": "Write|StrReplace",
-        "failClosed": false
-      },
-      {
-        "command": "python3 hooks/sdx_gate_common.py --gate extract",
-        "matcher": "Write|StrReplace",
-        "failClosed": false
-      },
-      {
-        "command": "python3 hooks/sdx_gate_common.py --gate archive",
-        "matcher": "Write|StrReplace",
-        "failClosed": false
-      },
-      {
-        "command": "python3 hooks/sdx_gate_common.py --gate build",
-        "matcher": "Write|StrReplace",
-        "failClosed": false
-      },
-      {
-        "command": "python3 hooks/sdx_gate_common.py --gate indexing",
-        "matcher": "Write|StrReplace",
-        "failClosed": false
-      }
-    ]
+    "preToolUse": []
   }
 }
