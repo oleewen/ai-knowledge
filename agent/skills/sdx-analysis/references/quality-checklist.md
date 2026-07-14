@@ -33,6 +33,6 @@
 
 ## 格式
 
-- [ ] 文末 YAML 完整（id、title、version、status、created、updated、author、reviewers、parent、tags）；**无**文首 `---`
+- [ ] 文首 frontmatter 完整（id、title、version、status、created、updated、author、reviewers、parent、tags）
 - [ ] 六章与 [analysis-template.md](../assets/analysis-template.md) 一致
 - [ ] §6.1 术语；§6.2 SOLUTION / 知识库路径

@@ -1,18 +1,8 @@
 #!/usr/bin/env bash
 # config-bootstrap.sh — 从目标工程根 .docsconfig 读入文档根与仓库根约定到当前 shell
 # 禁止 export DOC_ROOT / REPO_ROOT / DOC_DIR / AGENT_*（仅当前 shell 赋值）。
-#
-# Source 成功后由本文件设置的变量（供 validate-*.sh 使用）：
-#   DOC_ROOT         — 文档树根绝对路径（由 .docsconfig 解析并展开 ~/）
-#   REPO_ROOT        — 目标工程 Git 仓库根绝对路径
-#   DOC_DIR          — 相对 REPO_ROOT 的文档路径段
-#   AGENT_ROOT       — 可选
-#   AGENT_DIRS       — 可选
-#   KNOWLEDGE_TYPE   — 可选：application | system | company（未写则为空）
-#
-# -----------------------------------------------------------------------------
 # 依赖同目录 docs-core.sh（由 agent-install 安装）
-# -----------------------------------------------------------------------------
+
 _BOOTSTRAP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _CFG_SH="${_BOOTSTRAP_DIR}/docs-core.sh"
 if [[ ! -f "$_CFG_SH" ]]; then
@@ -24,33 +14,6 @@ source "$_CFG_SH"
 
 resolve_repo_doc_root() {
   printf '%s' "${DOC_ROOT:-}"
-}
-
-find_repo_root_for_docsconfig() {
-  local script_dir="${1:?script_dir}"
-  local gr last=''
-  local pwd_root script_root
-  pwd_root="$(git -C "${PWD}" rev-parse --show-toplevel 2>/dev/null || true)"
-  script_root="$(git -C "$script_dir" rev-parse --show-toplevel 2>/dev/null || true)"
-  for gr in "$pwd_root" "$script_root"; do
-    [[ -n "$gr" && "$gr" == "$last" ]] && continue
-    last="$gr"
-    [[ -n "$gr" && -f "$gr/.docsconfig" ]] && {
-      printf '%s' "$gr"
-      return 0
-    }
-  done
-  local d i
-  d="$(pwd)"
-  for ((i = 0; i < 32; i++)); do
-    [[ -f "$d/.docsconfig" ]] && {
-      printf '%s' "$d"
-      return 0
-    }
-    [[ "$d" == "/" ]] && break
-    d="$(dirname "$d")"
-  done
-  return 1
 }
 
 config_bootstrap_fail() {
@@ -67,22 +30,37 @@ EOF
   return 1
 }
 
-# Usage: validate_bootstrap_docsconfig "<调用方脚本所在目录>"
-# 成功：设置 DOC_ROOT、REPO_ROOT、DOC_DIR（不 export）；可选 AGENT_*。
-# 失败：stderr 说明；被执行时 exit 1，被 source 时 return 1
+# Usage: validate_bootstrap_docsconfig
 validate_bootstrap_docsconfig() {
-  local script_dir="${1:?script_dir}"
-
-  local rr
-  if ! rr="$(find_repo_root_for_docsconfig "$script_dir")"; then
-    config_bootstrap_fail "[config] 未找到目标仓库根下的 .docsconfig。"
+  local cfg_path config_owner_root
+  if [[ $# -gt 0 ]]; then
+    # 过渡兼容：旧调用方仍可能传入 caller_script_dir，但已不再参与查找决策。
+    :
   fi
 
+  if ! cfg_path="$(docsconfig_find_path)"; then
+    config_bootstrap_fail "[config] 未找到当前工程的 .docsconfig。"
+    return 1
+  fi
+  config_owner_root="$(dirname "$cfg_path")"
+
   KNOWLEDGE_TYPE=""
-  docsconfig_read_into "$rr/.docsconfig" DOC_ROOT REPO_ROOT DOC_DIR AGENT_ROOT AGENT_DIRS KNOWLEDGE_TYPE \
-    || config_bootstrap_fail "[config] 解析 .docsconfig 失败。"
+  DOCSCONFIG_PATH="$cfg_path"
+  CONFIG_OWNER_ROOT="$config_owner_root"
+  docsconfig_read_into "$cfg_path" DOC_ROOT REPO_ROOT DOC_DIR AGENT_ROOT AGENT_DIRS KNOWLEDGE_TYPE \
+    || {
+      config_bootstrap_fail "[config] 解析 .docsconfig 失败。"
+      return 1
+    }
 
   if [[ -z "${DOC_ROOT:-}" || -z "${REPO_ROOT:-}" || -z "${DOC_DIR:-}" ]]; then
     config_bootstrap_fail "[config] .docsconfig 缺少必需的 DOC_ROOT、REPO_ROOT 或 DOC_DIR。"
+    return 1
   fi
+
+  docsconfig_validate_owner_matches_repo_root "$config_owner_root" "$REPO_ROOT" \
+    || {
+      config_bootstrap_fail "[config] .docsconfig 与 REPO_ROOT 不一致。请重新执行 docs-install。"
+      return 1
+    }
 }

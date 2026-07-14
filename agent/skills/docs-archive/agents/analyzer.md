@@ -13,9 +13,9 @@
 
 - **F1** 路由误判  
 - **F2** 与 extract / distill / upgrade / build 混淆  
-- **F3** 门禁：HARD-GATE、确认书、PENDING/CONFIRMED、明示例外  
-- **F4** 缺步骤 0～6、回写、冲突清单  
-- **F5** 未确认即宣称已写目标  
+- **F3** 缺当前确认书或当前单元  
+- **F4** 缺步骤、回写、冲突清单或动作停顿  
+- **F5** 语义变更未确认即宣称已写目标  
 - **F6** 证据不足  
 
 ## 回归
@@ -23,3 +23,4 @@
 1. P0 后全量 `evals/evals.json`  
 2. 成对：archive vs extract / build / upgrade  
 3. 同模式连挂 2 轮 → 收紧规则或 `gates.md`
+4. 修复优先补确认书收口、回写顺序、断链处理与动作停顿

@@ -8,6 +8,10 @@ set -euo pipefail
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=agent-config.sh
 source "${SCRIPT_DIR}/agent-config.sh"
+# shellcheck source=../agent/scripts/shell-utils.sh
+source "${SCRIPT_DIR}/../agent/scripts/shell-utils.sh"
+# shellcheck source=../agent/scripts/cli-core.sh
+source "${SCRIPT_DIR}/../agent/scripts/cli-core.sh"
 
 # =============================================================================
 # 全局状态
@@ -29,27 +33,9 @@ INSTALL_RULES=0
 INSTALL_SKILLS=0
 INSTALL_HOOKS=0
 INSTALL_SCRIPTS=0
+INSTALL_KNOWLEDGE=0
 
 declare -a ENABLED_AGENTS=()
-
-ensure_dir() { sdx_ensure_dir "$1"; }
-
-# 保存/恢复 nullglob；调用方需持有 local 变量名并传入 nameref
-_nullglob_enable() {
-  local -n _ng_save="${1:?}"
-  _ng_save=1
-  shopt -q nullglob && _ng_save=0
-  shopt -s nullglob
-}
-
-_nullglob_restore() {
-  local -n _ng_save="${1:?}"
-  if (( _ng_save == 0 )); then
-    shopt -s nullglob
-  else
-    shopt -u nullglob
-  fi
-}
 
 is_agent_readme_basename() {
   local base="${1:?}"
@@ -67,13 +53,11 @@ sync_tree_excluding_readme() {
 }
 
 copy_file_plain() {
-  local src="$1" dst="$2"
-  if [[ "${CFG[dry_run]}" == '1' ]]; then
-    sdx_log "[dry-run] 拷贝: $src → $dst"
-    return 0
-  fi
-  ensure_dir "$(dirname "$dst")"
-  cp "$src" "$dst"
+  SDX_IO_DRY_RUN="${CFG[dry_run]:-0}"
+  SDX_IO_FORCE=1
+  SDX_IO_BACKUP_FN=''
+  export SDX_IO_DRY_RUN SDX_IO_FORCE SDX_IO_BACKUP_FN
+  sdx_io_copy_file "$1" "$2"
 }
 
 agent_store_root() {
@@ -83,14 +67,6 @@ agent_store_root() {
 agent_install_root() {
   local agent="$1"
   abs_path "${CFG[target_abs]}/$(get_agent_dir "$agent")"
-}
-
-symlink_points_to() {
-  local link="$1" expect="$2"
-  [[ -L "$link" ]] || return 1
-  local actual
-  actual="$(readlink "$link" 2>/dev/null || true)"
-  [[ -n "$actual" && "$actual" == "$expect" ]]
 }
 
 backup_existing_target_path() {
@@ -107,12 +83,7 @@ backup_existing_target_path() {
     local backup_root rel backup_target
     [[ -n "$stamp" ]] || stamp="$(date +%Y-%m-%d_%H-%M-%S)"
     backup_root="${target_root}/.docs-init/${stamp}"
-
-    if [[ "$existing" == "$target_root"/* ]]; then
-      rel="${existing#"$target_root"/}"
-    else
-      rel="${existing#/}"
-    fi
+    rel="$(sdx_backup_rel_under_root "$target_root" "$existing")"
 
     backup_target="${backup_root}/${rel}"
     if [[ -e "$backup_target" || -L "$backup_target" ]]; then
@@ -138,7 +109,7 @@ backup_existing_target_path() {
 ensure_symlink() {
   local src="$1" dst="$2"
 
-  if symlink_points_to "$dst" "$src"; then
+  if sdx_symlink_points_to "$dst" "$src"; then
     return 0
   fi
 
@@ -150,7 +121,7 @@ ensure_symlink() {
     sdx_log "[dry-run] 链接: $dst -> $src"
     return 0
   fi
-  ensure_dir "$(dirname "$dst")"
+  sdx_ensure_dir "$(dirname "$dst")"
   ln -s "$src" "$dst"
 }
 
@@ -161,10 +132,10 @@ link_store_into_agent_root() {
   agent_dir="$(agent_install_root "$agent")"
 
   sdx_info ">>> 链接 ${agent}：${store} -> ${agent_dir}"
-  ensure_dir "$agent_dir"
+  sdx_ensure_dir "$agent_dir"
 
   local _nullglob_was_set=1
-  _nullglob_enable _nullglob_was_set
+  sdx_nullglob_enable _nullglob_was_set
   local item base
   local src_root
   src_root="${CFG[repo_root]}/agent"
@@ -193,7 +164,7 @@ link_store_into_agent_root() {
       skills)  (( INSTALL_SKILLS == 1 ))  || continue ;;
     esac
 
-    ensure_dir "${agent_dir}/${category}"
+    sdx_ensure_dir "${agent_dir}/${category}"
 
     if [[ -d "${store}/${category}" ]]; then
       for item in "${store}/${category}"/*; do
@@ -212,14 +183,14 @@ link_store_into_agent_root() {
     done
   done
 
-  _nullglob_restore _nullglob_was_set
+  sdx_nullglob_restore _nullglob_was_set
 }
 
 # =============================================================================
 # 初始化与校验
 # =============================================================================
 
-init_repo_root() {
+agent_install_init_repo_root() {
   if [[ -z "${CFG[repo_root]}" ]]; then
     CFG[repo_root]="$(abs_path "$SCRIPT_DIR/..")"
   fi
@@ -231,14 +202,14 @@ init_repo_root() {
   [[ -f "$rr/agent/scripts/docs-core.sh" ]] || sdx_error "未找到 agent/scripts/docs-core.sh: $rr/agent/scripts/docs-core.sh"
 }
 
-apply_scope() {
+agent_install_apply_scope() {
   validate_agent_scope_token "${CFG[scope]}" \
-    || sdx_error "无效 --scope: ${CFG[scope]}（支持 a|r|s|h|sh）"
-  agent_scope_apply "${CFG[scope]}" INSTALL_RULES INSTALL_SKILLS INSTALL_HOOKS INSTALL_SCRIPTS \
+    || sdx_error "无效 --scope: ${CFG[scope]}（支持 a|r|s|h|sh|k|knowledge）"
+  agent_scope_apply "${CFG[scope]}" INSTALL_RULES INSTALL_SKILLS INSTALL_HOOKS INSTALL_SCRIPTS INSTALL_KNOWLEDGE \
     || sdx_error "内部错误：无法应用 scope: ${CFG[scope]}"
 }
 
-apply_agents() {
+agent_install_apply_agents() {
   local ao="${CFG[agents_opt]:-}"
   [[ -n "$ao" ]] || ao="${AGENTS_OPT:-$SDX_DEFAULT_AGENTS_OPT}"
   validate_agents "$ao" \
@@ -260,11 +231,11 @@ install_agent_resource() {
 
   dst_dir="$(agent_store_root)/${dst_rel}"
   sdx_info ">>> 安装：${label}"
-  ensure_dir "$dst_dir"
+  sdx_ensure_dir "$dst_dir"
   sdx_info "  同步 ${label}：${src_root} → ${dst_dir}"
 
   local _nullglob_was_set=1
-  _nullglob_enable _nullglob_was_set
+  sdx_nullglob_enable _nullglob_was_set
   for item in "$src_root"/*; do
     base="${item##*/}"
     is_agent_readme_basename "$base" && continue
@@ -276,7 +247,7 @@ install_agent_resource() {
       copy_file_plain "$item" "$dst_dir/$base"
     fi
   done
-  _nullglob_restore _nullglob_was_set
+  sdx_nullglob_restore _nullglob_was_set
 }
 
 install_agent_scripts() {
@@ -312,11 +283,18 @@ install_agent_hooks() {
   [[ -f "$hooks_json" ]] && copy_file_plain "$hooks_json" "${store}/hooks.json"
 }
 
-install_agent() {
+install_agent_knowledge_tree() {
+  (( INSTALL_KNOWLEDGE == 1 )) || return 0
+  install_agent_resource "knowledge" "agent/knowledge" "knowledge"
+  install_agent_resource "references" "agent/references" "references"
+}
+
+agent_install_install() {
   install_agent_scripts
   install_agent_rules
   install_agent_skills
   install_agent_hooks
+  install_agent_knowledge_tree
 
   local agent
   for agent in "${ENABLED_AGENTS[@]}"; do
@@ -337,7 +315,7 @@ install_agent_path() {
 # install config：target ≠ $HOME 时更新 AGENT_ROOT / AGENT_DIRS
 # =============================================================================
 
-install_agent_config() {
+agent_install_update_docsconfig() {
   local t h
   t="$(strip_trailing_slash "${CFG[target_abs]}")"
   h="$(strip_trailing_slash "${CFG[home_abs]}")"
@@ -365,22 +343,22 @@ install_agent_config() {
 # CLI
 # =============================================================================
 
-usage() {
+agent_install_usage() {
   cat >&2 <<'EOF'
 用法
   agent-install.sh [选项]
 
 说明
-  将本仓库 agent/{scripts,rules,skills,hooks} 安装到 $HOME/.agents/（单份实体存储），并按 --agents
+  将本仓库 agent/ 树安装到 $HOME/.agents/（单份实体存储），并按 --agents
   在 ${TARGET}/.{.cursor|.trae|.claude}/ 下建立软链（按条目链接，包含 $HOME/.agents/ 根文件与
-  hooks/rules/scripts/skills 子目录下的各文件/目录）。
+  hooks/rules/scripts/skills/knowledge/references 等子目录下的各文件/目录）。
   scripts 阶段会从本仓库复制 agent/scripts/docs-core.sh 到 $HOME/.agents/scripts/docs-core.sh。
-  不安装README。
+  不安装 README。
   当 --target 不是 $HOME 时，更新 <target>/.docsconfig 的 AGENT_ROOT 与 AGENT_DIRS（与当前 --agents 一致）；
   若该文件不存在，请先对目标工程执行 docs-install。
 
 选项
-  --scope=SCOPE   a=全部 | r=rules | s=skills | h=hooks | sh=scripts  [默认: a]
+  --scope=SCOPE   a=全部 | r=rules | s=skills | h=hooks | sh=scripts | k|knowledge=knowledge+references  [默认: a]
   --target PATH   安装根父目录，其下仅为选中的 agent 创建对应目录  [默认: $HOME；仍兼容 --target=PATH]
   --agents=LIST   cursor | trae | claude | kiro | all；逗号或空格分隔多选  [默认: cursor]
   --dry-run       仅打印将执行的操作
@@ -394,11 +372,12 @@ usage() {
   ./scripts/agent-install.sh
   ./scripts/agent-install.sh --agents=cursor,claude
   ./scripts/agent-install.sh --scope=sh --dry-run
+  ./scripts/agent-install.sh --scope=k --dry-run
   ./scripts/agent-install.sh --target ~/workspace/my-repo --agents=all
 EOF
 }
 
-parse_args() {
+agent_install_parse_args() {
   while (( $# > 0 )); do
     case "$1" in
       --scope=*)
@@ -407,7 +386,7 @@ parse_args() {
         ;;
       --scope)
         shift
-        [[ -n "${1:-}" ]] || sdx_error "缺少 --scope 值"
+        sdx_cli_require_value "--scope" "${1:-}"
         CFG[scope]="$1"
         shift
         ;;
@@ -417,7 +396,7 @@ parse_args() {
         ;;
       --target)
         shift
-        [[ -n "${1:-}" ]] || sdx_error "缺少 --target 值"
+        sdx_cli_require_value "--target" "${1:-}"
         CFG[target_abs]="$1"
         shift
         ;;
@@ -439,18 +418,18 @@ parse_args() {
         shift
         ;;
       -h|--help)
-        usage
+        agent_install_usage
         exit 0
         ;;
       *)
-        sdx_error "未知或不支持的参数: $1（支持 --scope / --target / --agents / --dry-run）"
+        sdx_cli_unknown_arg "$1" "支持 --scope / --target / --agents / --dry-run"
         ;;
     esac
   done
 }
 
 agent_install_run() {
-  init_repo_root
+  agent_install_init_repo_root
   [[ -n "${HOME:-}" ]] || sdx_error "需要 HOME 环境变量"
   CFG[home_abs]="$(abs_path "$HOME")"
   CFG[store_abs]="$(strip_trailing_slash "$(abs_path "${CFG[home_abs]}/.agents")")"
@@ -462,24 +441,29 @@ agent_install_run() {
     CFG[target_abs]="$(strip_trailing_slash "$(abs_path "${CFG[target_abs]}")")"
   fi
 
-  ensure_dir "$(agent_store_root)"
-  ensure_dir "$(agent_store_root)/hooks"
-  ensure_dir "$(agent_store_root)/rules"
-  ensure_dir "$(agent_store_root)/scripts"
-  ensure_dir "$(agent_store_root)/skills"
+  sdx_ensure_dir "$(agent_store_root)"
 
-  apply_scope
-  apply_agents
+  agent_install_apply_scope
+  agent_install_apply_agents
 
-  install_agent
-  install_agent_config
+  (( INSTALL_HOOKS == 1 )) && sdx_ensure_dir "$(agent_store_root)/hooks"
+  (( INSTALL_RULES == 1 )) && sdx_ensure_dir "$(agent_store_root)/rules"
+  (( INSTALL_SCRIPTS == 1 )) && sdx_ensure_dir "$(agent_store_root)/scripts"
+  (( INSTALL_SKILLS == 1 )) && sdx_ensure_dir "$(agent_store_root)/skills"
+  if (( INSTALL_KNOWLEDGE == 1 )); then
+    sdx_ensure_dir "$(agent_store_root)/knowledge"
+    sdx_ensure_dir "$(agent_store_root)/references"
+  fi
+
+  agent_install_install
+  agent_install_update_docsconfig
 
   sdx_info "完成：agent-install"
 }
 
-main() {
-  parse_args "$@"
+agent_install_main() {
+  agent_install_parse_args "$@"
   agent_install_run
 }
 
-main "$@"
+agent_install_main "$@"

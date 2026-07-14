@@ -19,7 +19,7 @@
 - `F2` 边界混淆（docs-indexing / docs-build vs docs-change）  
 - `F3` 基线遗漏（未读 `baseline_time_ms`、混用 baseline/cutoff）  
 - `F4` 结构缺失（五步、三源、前插倒序）  
-- `F5` 禁止产物（声称写 INDEX_GUIDE 或改实体）  
+- `F5` 禁止产物（声称写 index 或改实体）  
 - `F6` 证据不足  
 
 ## 回归

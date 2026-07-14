@@ -38,12 +38,9 @@ log_ok()    { echo "[OK]    $1"; }
 DOC_SEG="${DOC_ROOT#"$REPO_ROOT"/}"
 INDEX_PATH=""
 for candidate in \
-    "INDEX_GUIDE.md" \
-    "INDEX-GUIDE.md" \
-    "${DOC_SEG}/INDEX_GUIDE.md" \
-    "${DOC_SEG}/INDEX-GUIDE.md" \
-    "${DOC_DIR}/INDEX_GUIDE.md" \
-    "${DOC_DIR}/INDEX-GUIDE.md"; do
+    "index.md" \
+    "${DOC_SEG}/index.md" \
+    "${DOC_DIR}/index.md"; do
     [[ -z "$candidate" ]] && continue
     if [[ -f "$ROOT/$candidate" ]]; then
         INDEX_PATH="$candidate"
@@ -54,7 +51,7 @@ done
 if [[ -n "$INDEX_PATH" ]]; then
     log_ok "INDEX 落盘路径: $INDEX_PATH"
 else
-    log_error "未找到 INDEX 落盘文件（INDEX_GUIDE.md、${DOC_DIR}/INDEX_GUIDE.md 等）"
+    log_error "未找到 INDEX 落盘文件（index.md、${DOC_DIR}/index.md 等）"
 fi
 
 # --- 提取 markdown 文件中的相对路径链接 ---

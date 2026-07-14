@@ -14,7 +14,7 @@ DOC_ROOT="$(resolve_repo_doc_root)"
 cd "$REPO_ROOT" || exit 1
 
 # cwd=仓库根；路径见 .docsconfig / resolve_repo_doc_root
-DEFAULT_OUTPUT="${DOC_ROOT}/INDEX_GUIDE.md"
+DEFAULT_OUTPUT="${DOC_ROOT}/index.md"
 LOG_FILE="${DOC_ROOT}/changelogs/INDEXING-LOG.md"
 CHANGE_LOG_FILE="${DOC_ROOT}/changelogs/CHANGE-LOG.md"
 INDEXING_LOG_PY="${SCRIPT_DIR}/indexing_log.py"
@@ -29,11 +29,11 @@ PY
 
 show_help() {
     echo "Usage: $0 [options]"
-    echo "INDEX_GUIDE 辅助；参数须与技能会话确认一致"
+    echo "索引指南辅助脚本；参数须与技能会话确认一致"
     echo ""
     echo "  --mode f|full|i|incremental"
     echo "  --depth 1|2|3"
-    echo "  --output PATH   (默认文档根 INDEX_GUIDE.md)"
+    echo "  --output PATH   (默认文档根 index.md)"
     echo "  --since MS      增量 epoch ms"
     echo "  -h, --help"
 }
@@ -189,8 +189,8 @@ scan_project() {
 # 执行扫描
 scan_project $READ_MODE $DATA_MODE
 
-# 生成 INDEX_GUIDE.md（九章结构，填充真实统计与路径）
-echo "Generating INDEX_GUIDE.md from scanned data..."
+# 生成索引指南（九章结构，填充真实统计与路径）
+echo "Generating index guide from scanned data..."
 PROJECT_NAME="$(basename "$(pwd)")"
 ISO_TIME="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 TOP_DIRS="$(ls -1d */ 2>/dev/null | sed 's#/$##' | sort | sed 's#^#- `./#;s#$#`#' || true)"
@@ -207,7 +207,8 @@ REL_LOG="./${LOG_FILE#"$REPO_ROOT"/}"
 REL_CHANGE_LOG="./${CHANGE_LOG_FILE#"$REPO_ROOT"/}"
 REL_DEFAULT_OUT="./${DEFAULT_OUTPUT#"$REPO_ROOT"/}"
 
-cat > "$OUTPUT" << EOF
+TMP_OUT="$(mktemp)"
+cat > "$TMP_OUT" << EOF
 # ${PROJECT_NAME} 索引指南
 
 > 最后更新：${ISO_TIME}
@@ -231,7 +232,7 @@ ${TOP_FILES}
 - 本仓库为文档与脚本仓库，未检测到应用运行时 API 接口清单。
 
 ## 四、核心流程（Core Flows）
-- docs-indexing 扫描仓库文件并生成 \`INDEX_GUIDE.md\`
+- docs-indexing 扫描仓库文件并生成索引指南
 - 结果写入 \`${REL_LOG}\` 以支持增量基线
 
 ## 五、配置与环境（Config & Environment）
@@ -257,6 +258,72 @@ ${TOP_FILES}
 - 生成器：\`agent/skills/docs-indexing/scripts/indexing.sh\`
 - 规范参考：\`agent/skills/docs-indexing/references/scan-spec.md\`
 EOF
+
+python3 - "$OUTPUT" "$TMP_OUT" <<'PY'
+from __future__ import annotations
+
+import re
+import sys
+from pathlib import Path
+
+out_path = Path(sys.argv[1])
+gen_path = Path(sys.argv[2])
+generated = gen_path.read_text(encoding="utf-8").rstrip() + "\n"
+
+RE_OKF = re.compile(r"<!--\s*okf:begin\s*-->.*?<!--\s*okf:end\s*-->", re.DOTALL)
+RE_IDX = re.compile(
+    r"<!--\s*docs-indexing:begin\s*-->.*?<!--\s*docs-indexing:end\s*-->",
+    re.DOTALL,
+)
+
+def split_frontmatter(text: str) -> tuple[str, str]:
+    if not text.lstrip().startswith("---"):
+        return "", text
+    lines = text.splitlines(keepends=True)
+    start = None
+    for i, line in enumerate(lines):
+        if line.strip() == "---":
+            start = i
+            break
+        if line.strip():
+            return "", text
+    if start is None:
+        return "", text
+    for j in range(start + 1, len(lines)):
+        if lines[j].strip() == "---":
+            fm = "".join(lines[: j + 1]).rstrip() + "\n"
+            body = "".join(lines[j + 1 :]).lstrip("\n")
+            return fm, body
+    return "", text
+
+existing = out_path.read_text(encoding="utf-8") if out_path.is_file() else ""
+fm, body = split_frontmatter(existing)
+
+if not RE_OKF.search(body):
+    okf_placeholder = (
+        "<!-- okf:begin -->\n"
+        "## OKF 渐进披露\n\n"
+        "（待生成）\n"
+        "<!-- okf:end -->\n\n"
+    )
+    body = okf_placeholder + body.lstrip("\n")
+
+idx_wrapped = (
+    "<!-- docs-indexing:begin -->\n"
+    + generated
+    + "<!-- docs-indexing:end -->\n"
+)
+
+if RE_IDX.search(body):
+    body = RE_IDX.sub(idx_wrapped, body, count=1)
+else:
+    body = body.rstrip() + "\n\n" + idx_wrapped
+
+out_path.parent.mkdir(parents=True, exist_ok=True)
+out_path.write_text((fm + body).rstrip() + "\n", encoding="utf-8")
+PY
+
+rm -f "$TMP_OUT"
 
 # 写入索引运行日志（主表、最新在上；见 indexing_log.py / indexing-log-spec）
 FINISHED_TIME_MS=$(now_ms)

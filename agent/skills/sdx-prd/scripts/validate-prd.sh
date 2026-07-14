@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# PRD 结构校验。用法: [--file <path>] [--gate-check] [--gate-strict]；DOC_ROOT 见 config-bootstrap.sh
-# 检：目录、十一章 vs prd-template、文末 yaml（禁文件头 ---）、编号、ANALYSIS 关联；gate-check：CONFIRMED spec 引用目标 PRD 名（SKILL HARD-GATE）
+# PRD 结构校验（十一章模板；不承担写前门禁）。
+# 用法：validate-prd.sh [--file <path>]
+# 文档根：resolve_repo_doc_root（.docsconfig）；先 source config-bootstrap.sh
+#
+# 要点：文首 frontmatter、`id`、`## 1`-`## 11`、关键小节标题、编号、ANALYSIS 关联、Mermaid 自检提示；
+#       不校验会话 spec、CONFIRMED、HTML gate 或写前 hook。
 
 TARGET_FILE=""
 ERRORS=0
 WARNINGS=0
-GATE_CHECK=false
-GATE_STRICT=false
 
 while [[ $# -gt 0 ]]; do
   case $1 in
     --file) TARGET_FILE="$2"; shift 2 ;;
-    --gate-check) GATE_CHECK=true; shift ;;
-    --gate-strict) GATE_CHECK=true; GATE_STRICT=true; shift ;;
     *) echo "未知参数: $1"; exit 1 ;;
   esac
 done
@@ -29,60 +29,25 @@ DOC_ROOT="$(resolve_repo_doc_root)"
 cd "$REPO_ROOT" || exit 1
 
 REQUIREMENTS_DIR="${DOC_ROOT}/requirements"
-TEMPLATE="${_AGENT_HOME}/skills/sdx-prd/assets/prd-template.md"
-if [[ ! -f "${TEMPLATE}" ]]; then
-  TEMPLATE="${REPO_ROOT}/agent/skills/sdx-prd/assets/prd-template.md"
-fi
+_TEMPLATE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+TEMPLATE="${_TEMPLATE_DIR}/assets/prd-template.md"
 
 info()    { echo "[INFO]  $1"; }
 warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
 error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
 
-# shellcheck source=../../../scripts/check-session-spec-gate.sh
-source "${REPO_ROOT}/agent/scripts/check-session-spec-gate.sh"
-
-# 会话 spec 闸门：{DOC_DIR}/superpowers/specs/（见 agent/references/session-spec-path.md）
-check_prd_gate() {
-  local file="$1"
-  local base
-  base=$(basename "${file}")
-  if check_session_spec_gate "<!-- sdx-prd-gate: CONFIRMED -->" "${base}"; then
-    success "闸门：已找到引用 ${base} 且 CONFIRMED 的会话 spec"
-  else
-    local msg="闸门：未找到引用 ${base} 且 <!-- sdx-prd-gate: CONFIRMED --> 的会话 spec（见 agent/skills/sdx-prd/SKILL.md）"
-    if [[ "${GATE_STRICT}" == true ]]; then
-      error "${msg}"
-    else
-      warn "${msg}"
-    fi
-  fi
-}
-
 echo "=== PRD 文档结构校验 ==="
 echo "DOC_ROOT: ${DOC_ROOT}"
 echo ""
 
-# 0. 模板文件
 if [[ -f "${TEMPLATE}" ]]; then
   success "prd-template.md 存在"
 else
   warn "prd-template.md 不存在: ${TEMPLATE}"
 fi
 
-# 1. 文档目录
-if [[ -d "${REQUIREMENTS_DIR}" ]]; then
-  FILE_COUNT=$(find "${REQUIREMENTS_DIR}" -name "PRD-*.md" 2>/dev/null | wc -l | tr -d ' ')
-  success "requirements/ 目录存在 (${FILE_COUNT} 个 PRD 文档)"
-else
-  warn "requirements/ 目录不存在: ${REQUIREMENTS_DIR}"
-  echo ""
-  echo "=== 校验结果 ==="
-  echo "错误: ${ERRORS}  警告: ${WARNINGS}"
-  exit 0
-fi
-
-# 收集要校验的文件
+FILES=()
 if [[ -n "${TARGET_FILE}" ]]; then
   if [[ -f "${TARGET_FILE}" ]]; then
     FILES=("${TARGET_FILE}")
@@ -94,7 +59,17 @@ if [[ -n "${TARGET_FILE}" ]]; then
     exit 1
   fi
 else
-  FILES=()
+  if [[ -d "${REQUIREMENTS_DIR}" ]]; then
+    FILE_COUNT=$(find "${REQUIREMENTS_DIR}" -name "PRD-*.md" 2>/dev/null | wc -l | tr -d ' ')
+    success "requirements/ 目录存在 (${FILE_COUNT} 个 PRD 文档)"
+  else
+    warn "requirements/ 目录不存在: ${REQUIREMENTS_DIR}"
+    echo ""
+    echo "=== 校验结果 ==="
+    echo "错误: ${ERRORS}  警告: ${WARNINGS}"
+    exit 0
+  fi
+
   while IFS= read -r -d '' f; do
     FILES+=("$f")
   done < <(find "${REQUIREMENTS_DIR}" -name "PRD-*.md" -print0 2>/dev/null)
@@ -108,31 +83,47 @@ if [[ ${#FILES[@]} -eq 0 ]]; then
   exit 0
 fi
 
-# 校验每个文档
 for file in "${FILES[@]}"; do
   BASENAME=$(basename "${file}")
   echo "--- 校验: ${BASENAME} ---"
 
-  # 2. 文档元数据（文末 YAML，非文件头 frontmatter）
   FIRST_LINE=$(head -1 "${file}" 2>/dev/null || true)
-  if [[ "${FIRST_LINE}" == "---" ]]; then
-    warn "${BASENAME}: 首行为 ---（疑似 YAML frontmatter，应移除）；元数据须仅在文末「## 文档元数据」的 yaml 代码块中"
-  fi
-
-  if grep -qF "## 文档元数据" "${file}"; then
-    success "${BASENAME}: 「文档元数据」章节存在"
-    for field in "id:" "title:" "version:" "status:" "parent:" "mvp_phase:"; do
-      if grep -q "${field}" "${file}"; then
-        success "${BASENAME}: ${field} 字段存在"
-      else
-        warn "${BASENAME}: 缺少 ${field} 字段"
-      fi
-    done
+  if [[ "${FIRST_LINE}" != "---" ]]; then
+    error "${BASENAME}: 缺少文首 YAML frontmatter（首行应为 ---）"
   else
-    warn "${BASENAME}: 缺少「## 文档元数据」章节（须在文末放置 YAML 元数据）"
+    FRONTMATTER_END_LINE=$(awk 'NR>1 && $0=="---"{print NR; exit}' "${file}" 2>/dev/null || true)
+    if [[ -z "${FRONTMATTER_END_LINE}" ]]; then
+      error "${BASENAME}: YAML frontmatter 未闭合（缺少第二个 ---）"
+    else
+      FRONTMATTER_CONTENT=$(sed -n "2,$((FRONTMATTER_END_LINE - 1))p" "${file}" 2>/dev/null || true)
+      success "${BASENAME}: YAML frontmatter 存在"
+      for field in "id:" "title:" "version:" "status:" "created:" "updated:" "author:" "reviewers:" "parent:" "mvp_phase:"; do
+        if echo "${FRONTMATTER_CONTENT}" | grep -qE "^${field}"; then
+          success "${BASENAME}: ${field} 字段存在"
+        else
+          warn "${BASENAME}: 缺少 ${field} 字段"
+        fi
+      done
+
+      ID_VALUE=$(echo "${FRONTMATTER_CONTENT}" | sed -n 's/^id:[[:space:]]*"\{0,1\}\([^"]*\)"\{0,1\}$/\1/p' | head -1)
+      EXPECTED_ID="${BASENAME%.md}"
+      if [[ -n "${ID_VALUE}" ]]; then
+        if [[ "${ID_VALUE}" == "${EXPECTED_ID}" ]]; then
+          success "${BASENAME}: id 与文件名一致"
+        else
+          warn "${BASENAME}: id 建议与文件名一致，期望 ${EXPECTED_ID}，实际 ${ID_VALUE}"
+        fi
+      fi
+
+      PARENT_LINE=$(echo "${FRONTMATTER_CONTENT}" | grep -E '^parent:' 2>/dev/null | head -1 || true)
+      if echo "${PARENT_LINE}" | grep -q 'ANALYSIS-'; then
+        success "${BASENAME}: parent 含 ANALYSIS- 前缀"
+      else
+        warn "${BASENAME}: parent 建议指向 ANALYSIS-{IDEA-ID}，实际: ${PARENT_LINE}"
+      fi
+    fi
   fi
 
-  # 3. 十一章结构检查
   REQUIRED_SECTIONS=(
     "## 1. 产品概述"
     "## 2. 业务流程"
@@ -157,56 +148,53 @@ for file in "${FILES[@]}"; do
   done
   info "${BASENAME}: ${SECTION_COUNT}/11 个必需章节"
 
-  # 3b. 模板小节（缺失时仅警告，兼容旧 PRD）
-  if ! grep -qF "### 1.2 成功标准" "${file}"; then
-    warn "${BASENAME}: 未找到「### 1.2 成功标准」（建议按当前 prd-template 补全 §1.2）"
-  fi
-  if ! grep -qF "## 9. 非功能需求" "${file}"; then
-    warn "${BASENAME}: 未找到「## 9. 非功能需求」（建议按当前 prd-template 补全独立 §9）"
-  fi
+  REQUIRED_SUBHEADINGS=(
+    "### 1.2 成功标准"
+    "### 2.1 核心业务流程"
+    "### 4.1 用例图"
+    "### 5.1 用户故事清单"
+    "### 10.1 功能验收标准"
+    "### 11.3 质量自查表"
+  )
+  for h in "${REQUIRED_SUBHEADINGS[@]}"; do
+    if grep -qF "${h}" "${file}"; then
+      success "${BASENAME}: 小节标题 '${h}' 存在"
+    else
+      warn "${BASENAME}: 缺少小节标题 '${h}'"
+    fi
+  done
 
-  # 4. 编号体系检查
   US_COUNT=$(grep -c 'US-[0-9]' "${file}" 2>/dev/null || true)
   UC_COUNT=$(grep -c 'UC-[0-9]' "${file}" 2>/dev/null || true)
   BR_COUNT=$(grep -c 'BR-[0-9]' "${file}" 2>/dev/null || true)
   EX_COUNT=$(grep -c 'EX-[0-9]' "${file}" 2>/dev/null || true)
   AC_COUNT=$(grep -c 'AC-[0-9]' "${file}" 2>/dev/null || true)
+  NAC_COUNT=$(grep -c 'NAC-[0-9]' "${file}" 2>/dev/null || true)
+  FR_COUNT=$(grep -c 'FR-[0-9]' "${file}" 2>/dev/null || true)
 
-  info "${BASENAME}: US-n=${US_COUNT} UC-n=${UC_COUNT} BR-n=${BR_COUNT} EX-n=${EX_COUNT} AC-n=${AC_COUNT}"
+  info "${BASENAME}: US-n=${US_COUNT} UC-n=${UC_COUNT} BR-n=${BR_COUNT} EX-n=${EX_COUNT} AC-n=${AC_COUNT} NAC-n=${NAC_COUNT} FR-n=${FR_COUNT}"
 
   if [[ ${US_COUNT} -eq 0 ]]; then
     warn "${BASENAME}: 未发现用户故事编号 (US-n)"
   fi
-
   if [[ ${UC_COUNT} -eq 0 ]]; then
     warn "${BASENAME}: 未发现用例编号 (UC-n)"
   fi
+  if [[ ${FR_COUNT} -eq 0 ]]; then
+    warn "${BASENAME}: 未发现功能需求引用 (FR-n)，可追溯性可能不足"
+  fi
 
-  # 5. Mermaid 图检查
   MERMAID_COUNT=$(grep -c '```mermaid' "${file}" 2>/dev/null || true)
   if [[ ${MERMAID_COUNT} -gt 0 ]]; then
     success "${BASENAME}: 包含 ${MERMAID_COUNT} 个 Mermaid 图"
   else
-    warn "${BASENAME}: 未发现 Mermaid 图（业务流程与用例图应使用 Mermaid）"
+    warn "${BASENAME}: 未发现 Mermaid 图（业务流程、用例或交互图建议使用 Mermaid）"
   fi
 
-  # 6. 需求分析关联检查
-  if grep -q 'REQUIREMENT-' "${file}"; then
-    success "${BASENAME}: 关联需求分析文档"
+  if grep -q 'ANALYSIS-' "${file}" || grep -q '^parent:' "${file}"; then
+    success "${BASENAME}: 关联 ANALYSIS 基线"
   else
-    warn "${BASENAME}: 未发现关联需求分析编号 (REQUIREMENT-*)"
-  fi
-
-  # 7. FR-n 追溯检查
-  FR_COUNT=$(grep -c 'FR-[0-9]' "${file}" 2>/dev/null || true)
-  if [[ ${FR_COUNT} -gt 0 ]]; then
-    success "${BASENAME}: 包含 ${FR_COUNT} 处 FR-n 引用"
-  else
-    warn "${BASENAME}: 未发现功能需求引用 (FR-n)，可追溯性可能不足"
-  fi
-
-  if [[ "${GATE_CHECK}" == true ]]; then
-    check_prd_gate "${file}"
+    warn "${BASENAME}: 未发现 ANALYSIS 关联信息"
   fi
 
   echo ""

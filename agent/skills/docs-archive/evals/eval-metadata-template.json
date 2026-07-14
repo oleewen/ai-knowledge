@@ -7,32 +7,32 @@
   "notes": "复制为 `<eval-id>-metadata.json`；断言与 agents/grader.md 一致。",
   "assertions_should_trigger_example": [
     {
-      "id": "gate-compliance",
-      "name": "门禁合规",
+      "id": "single-unit-stop",
+      "name": "单单元停顿",
       "type": "must_include",
-      "check": "确认书未获肯定前禁写目标；可提 PENDING/CONFIRMED 或同会话明示例外。",
+      "check": "一次只处理一个目标章节或一个 overview 行块，并在当前单元收敛后停下等待动作。",
       "priority": "P0"
     },
     {
-      "id": "structure-integrity",
-      "name": "结构完整",
+      "id": "confirmation-book-first",
+      "name": "确认书先收口",
       "type": "must_include",
-      "check": "含探索→澄清→方案→确认→落盘→检查/摘要、overview、副标题链、确认书。",
+      "check": "当前确认书未收口前，不得写目标章节或回写 overview。",
       "priority": "P0"
     },
     {
-      "id": "boundary-routing",
-      "name": "边界分流",
-      "type": "must_not_conflict",
-      "check": "should-trigger 不得误判为仅 extract/distill/upgrade/仅 SDD。",
+      "id": "semantic-change-needs-confirmation",
+      "name": "语义变更先确认",
+      "type": "must_include",
+      "check": "来源范围、目标章节、冲突策略、来源清理策略变化时，先给结论、推荐方案与数字选项。",
       "priority": "P0"
     },
     {
-      "id": "session-spec-awareness",
-      "name": "会话 spec",
-      "type": "should_include",
-      "check": "可提 `{DOC_DIR}/superpowers/specs/…-docs-archive.md`、钩子证据、basename。",
-      "priority": "P1"
+      "id": "overview-link-preserved",
+      "name": "回写保留链接",
+      "type": "must_include",
+      "check": "overview 回写后保留行内副标题链接，不得静默断链。",
+      "priority": "P0"
     }
   ],
   "assertions_should_not_trigger_example": [

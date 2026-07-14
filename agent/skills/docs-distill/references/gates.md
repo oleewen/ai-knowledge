@@ -1,36 +1,91 @@
-# 门禁
+# docs-distill 风险控制与推进协议
 
-路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（会话 spec 落在 `{DOC_DIR}/superpowers/specs/`，排除 `requirements/**/specs/`）。
-五阶段：[workflow.md](workflow.md)；节奏：[interaction-gate.md](interaction-gate.md)。
+主干：[SKILL.md](../SKILL.md)。流程：[workflow.md](workflow.md)。
 
-## 总则
+## 定位
 
-阶段 3 **`CONFIRMED`**（或合法例外）前，禁止阶段 4：写 `system/architecture/` 受管 overview 内容、追加 `DISTILL-LOG`。  
-阶段 1–3 可读、算范围、`--dry-run`（dry-run **不落**上述两处）。
+本文件定义 `docs-distill` 的风险控制与用户动作协议，用于约束：
 
-**合法例外**（须在对话留痕）：① 同会话**明示**跳过/仅预览/授权直写；② `DOCS_DISTILL_ALLOW_WRITE=1`（人工知情）。
+- 当前单元何时可以执行
+- 哪些情况必须先确认
+- 当前单元失败时如何停止
+- `C/M/G/S/F` 的语义
 
-## Spec
+`docs-distill` 默认采用“参数向导 -> 当前单元 -> 自动 grilling -> 用户动作推进”。
+参数未收口前，停留在参数向导；参数收口后直接处理当前单元。
 
-- 路径：`{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-docs-distill.md`
-- 文末 `<!-- docs-distill-gate: PENDING -->` → 确认后 `CONFIRMED`
-- 正文须含目标 **`{APPNAME}-overview.md` basename**，并写明：`--app`/`--full`/`--since`、是否 `--dry-run`、新建或更新概述
+## 当前单元执行条件
 
-进度表锚点与 `sdx-*` 同构时指向**本会话**小节（例：[sdx-solution 会话模板](../../sdx-solution/assets/solution-session-spec-template.md)）。
+满足以下条件即可处理当前单元：
 
-## HARD-GATE（须先 preview 或总确认）
+1. 目标 `--app` 已收口，或已明确本轮只处理一个候选应用。
+2. 时间范围已收口：自动锚点、显式 `--since`，或 `--full`。
+3. 已明确本轮是 `--dry-run` 还是正式写入。
+4. overview 与 `DISTILL-LOG` 的目标路径可解析。
 
-| 条件 | 动作 |
-| ---- | ----- |
-| `--full` | 警告；默认先 `dry-run`；确认后写 | [gotchas.md](../gotchas.md) |
-| 锚点 `changelog_id` 在应用 CHANGE-LOG **找不到** | 勿静默全量 → 让用户修锚/`--since`/授权全量 | gotchas |
-| **首次**建 `{APPNAME}-overview.md` | 先 `dry-run` 看结构 → 确认后建 | |
-| 应用侧与系统侧冲突且规则无法消解 | 不硬盖 → 待定或仅更无争议块 | gotchas |
-| 多应用且未 `--app` | 列候选与各锚点 → 建议分 `--app` preview | gotchas |
-| **4.3 失败** | **禁止** 4.4 | [workflow.md](workflow.md) |
+若以上任一条件未明确，继续停留在参数向导，不得落盘。
 
-未列入但 gotchas 要求「警告+确认」的，**视同** HARD-GATE 精神。
+## 高风险场景
 
-## 钩子
+以下情形必须先给出结论、推荐方案与数字选项，待用户确认后再执行：
 
-[hooks.json](../../../hooks.json)：preToolUse → `sdx_gate_common.py --gate distill`。未启用仍以本文 + [SKILL.md](../SKILL.md) 为准。详 [hooks/README.md](../../../hooks/README.md)。
+- `--full`
+- 锚点缺失或 `CHANGE-LOG` 无法定位增量起点
+- 首次创建 `{APPNAME}-overview.md`
+- 多应用但未指定 `--app`
+- 应用侧与系统侧知识冲突，且规则无法自动消解
+- 用户要求跳过预览直接写入
+
+这些情形下，`--dry-run` 是推荐方案，用于先看影响面再决定是否落盘。
+
+## 当前单元原子性
+
+- overview 第三列写入成功后，才能追加 `DISTILL-LOG`
+- overview 写入失败时，禁止追加 `DISTILL-LOG`
+- `--dry-run` 不写 overview，也不写 `DISTILL-LOG`
+- 当前单元未收敛前，不得自动推进到下一应用或下一批范围
+
+## 自动 grilling 默认授权
+
+自动 `grilling` 只可直接修订当前单元内的非语义问题：
+
+- 错别字
+- 编号
+- 排版
+- 当前单元内不改变含义的轻微重述
+
+若涉及语义性问题，必须先确认。典型语义问题包括：
+
+- 应用范围变化
+- 增量/全量策略变化
+- 冲突处理口径变化
+- 首次建 overview 与否
+- 是否补写 `DISTILL-LOG`
+
+## 用户动作
+
+### C：确认
+
+- 当前单元已收敛
+- 进入下一应用或结束
+
+### M：修改
+
+- 按用户要求修改当前单元的参数或摘要
+- 修改后重新自动 `grilling`
+
+### G：继续 grill
+
+- 在当前单元已收敛的基础上，继续深挖冲突、遗漏或摘要力度
+
+### S：暂存
+
+- 保留本轮分析结果
+- 不落盘当前单元
+- 结束当前单元或切换到其他应用
+
+### F：补齐剩余范围
+
+- 仅在当前单元已收敛后使用
+- 沿用已确认参数继续处理剩余同批范围
+- 中途若触发新的语义问题，必须再次停下确认

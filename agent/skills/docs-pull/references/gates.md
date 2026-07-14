@@ -1,41 +1,49 @@
-# 写盘闸门
+# docs-pull 风险控制与确认点
 
-路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（会话 spec 落在 `{DOC_DIR}/superpowers/specs/`，排除 `requirements/**/specs/`）。
-主干：[SKILL.md](../SKILL.md)；脚本：[workflow.md](workflow.md)。
+[SKILL.md](../SKILL.md)；执行循环 [workflow.md](workflow.md)。
 
-## 与 SDX/extract 区别
+## 参数确认
 
-CONVENTIONS **低风险**：**不要**会话 spec、`<!-- …-gate -->` HTML、`preToolUse` 拦本路径。  
-本页 HARD-GATE = **非 `--dry-run` 真要改镜像前**，对话内需满足以下条件（与参数确认同级，≠ SDD 产物闸）。
+参数向导至少收口以下内容：
 
-## HARD-GATE（实跑 rsync 前）
+- 运行模式：system 或 company
+- `--app` / `--sys-name` / `--all`
+- 当前轮是否只处理一个槽位还是准备批量继续
 
-**同时**满足：
+满足任一时，先澄清再执行：
 
-1. **app**：`--app` 已定，或多 app 场景用户**已选一个**。  
-2. **分支**：`--branch` 已定，或 `main`→`master` 探测**成功**。  
-3. **manifest**：可读且 **`repo_url` 非空**（否则停，见 [gotchas.md](../gotchas.md)）。  
-4. **`--force` 或大范围覆盖**用语 → **用户一句话确认**后再跑。
+- 用户只说“同步一下”但未说明 app/sys 范围
+- `--all` 是否真要批量继续不清
+- 当前运行模式（system 或 company）不清
 
-**快路径**：用户已给 `--app`+`--branch` 且无 force/歧义 → 可直接跑（或先 `--dry-run`）。
+## 风险确认
 
-## 须停问（勿猜）
+以下情况属于风险项，必须先给出结论、推荐方案与动作选项，再等待用户确认：
 
-| 情况 | 动作 |
-| ---- | ------ |
-| 多 app、未点名 | **一次一问**列候选 → 选型 |
-| clone/分支失败 | 报错；列远端分支（若可得）；不换分支除非用户明示 |
-| 无 main/master | **停**，请 `--branch` |
-| `repo_url` 空/缺 | **停**，补 manifest |
-| 「同步一下」意图糊 | 先列应用 |
-| 「全部同步」多 app | 明确：**逐 app 各自确认**，或用户明示授权静默全扫 |
+- 槽位目录不存在，需先 `docs-link`
+- `path` 不存在或不是 Git 工作区
+- 目标 `.docsconfig` 缺失或无法解析
+- `knowledge-links.yaml` 缺字段
+- `--all` 准备继续后续槽位
 
-## 建议复述（非纯 dry-run）
+推荐会话格式：
 
-> 将以 `{branch}` 从 `{repo_url}` 同步到 `applications/app-{APPNAME}/`，是否继续？
+```text
+即将执行 /docs-pull，当前参数如下：
+- mode: <system|company>
+- selector: <--app X|--sys-name Y|--all>
+- 当前槽位单元: <application-{app}|system-{sys}>
 
-拒 → 中止。
+C 确认当前槽位单元 / M 修改参数 / S 跳过当前槽位 / F 补齐剩余槽位
+```
 
-## 边界
+## 默认授权边界
 
-超出「登记应用远端文档 → 镜像」的（重组 `applications/`、多仓策略、重写联邦契约）→ 先方案/ADR，再回到 manifest 与本脚本。此文**不代替** SDD。
+- 已收口参数下，可直接执行非语义性动作：读取 links、解析 `.docsconfig`、校核槽位存在性
+- 涉及是否继续下一槽位、是否接受 `--all` 批量推进，按语义性处理
+
+## 约束
+
+- 必须先有 `docs-link` 创建槽位
+- 同步写槽位根目录时排除 `README.md`、`index.md`、`changelogs/`
+- 槽位 `CHANGE-LOG.md` 追溯记录必须跟随同步追加

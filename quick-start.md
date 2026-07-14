@@ -56,8 +56,8 @@ flowchart LR
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
 | 1 | `docs-bootstrap` 安装应用知识库（`--mode=standalone`，`--type=application`） | 应用 `/docs` 骨架 + `.docsconfig` + Agent |
-| 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `INDEX_GUIDE.md`、`README.md`、`AGENTS.md` |
-| 3 | `/docs-build` | 四视角实体、`KNOWLEDGE_INDEX.md` |
+| 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `index.md`、`README.md`、`AGENTS.md` |
+| 3 | `/docs-build` | 四视角实体、`index.md` |
 | 4 | 需求交付链路按需：`/sdx-solution` → … → `/sdx-architect` → `/sdx-design` → `/sdx-test` | `SOLUTION` … `DSD`、`TDD` |
 | 5 | `/docs-change` + 定期 `/docs-indexing` | 变更可追溯 |
 
@@ -113,7 +113,7 @@ flowchart LR
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
 | 1 | `docs-bootstrap` 安装系统/公司知识库（`--type=system` 或 `company`） | `/docs` 骨架 + `.docsconfig` + Agent |
-| 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `INDEX_GUIDE.md`、`README.md`、`AGENTS.md` |
+| 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `index.md`、`README.md`、`AGENTS.md` |
 | 3 | 需求分析设计链路：`/sdx-solution` → `/sdx-analysis` → `/sdx-prd` → `/sdx-architect` | `SOLUTION`、`ANALYSIS`、`PRD`、`ASD`、`spec-asd` |
 
 ### 阶段二：安装应用知识库，同步概设规约，详设与规约开发
@@ -124,7 +124,7 @@ flowchart LR
 | 2 | `/docs-push` 推送概设规约（`spec-asd`）到应用库 | 应用仓 `requirements/**/specs/` |
 | 3 | 规约详细设计链路：`/sdx-design` → `/sdx-test` | `DSD`、`TDD` |
 | 4 | 规约开发实现链路：`brainstorming` → `opsx:*` → `superpowers:sdd` | 代码实现 + 规格归档 |
-| 5 | `/docs-build`（按需） | 四视角实体、`KNOWLEDGE_INDEX.md` |
+| 5 | `/docs-build`（按需） | 四视角实体、`index.md` |
 
 应用库 **mode**：**standalone** 单应用全量模板；**central** 仅同步 `knowledge/`、`changelogs/` 等子集并与系统库 `docs-link` 建联（见 [scripts/README.md](scripts/README.md)）。
 
@@ -133,7 +133,7 @@ flowchart LR
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
 | 1 | `/docs-change` | 变更聚合至 `changelogs/` |
-| 2 | `/docs-indexing`（增量，完成 gate 确认） | `INDEX_GUIDE.md` 与变更对齐、可追溯 |
+| 2 | `/docs-indexing`（增量，完成 gate 确认） | `index.md` 与变更对齐、可追溯 |
 
 ---
 
@@ -218,9 +218,9 @@ flowchart LR
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
 | 1 | 各现存应用 `docs-bootstrap` 安装知识库（`--mode=standalone` 或 `central`） | 应用 `/docs` 骨架 + `.docsconfig` + Agent |
-| 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `INDEX_GUIDE.md`、`README.md`、`AGENTS.md` |
+| 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `index.md`、`README.md`、`AGENTS.md` |
 | 3 | `/docs-extract` 从 Wiki / 协作文档 / 代码注释等 legacy 源提炼（按需） | 应用侧结构化草稿或 overview 素材 |
-| 4 | `/docs-build` | 各应用四视角实体、`KNOWLEDGE_INDEX.md` |
+| 4 | `/docs-build` | 各应用四视角实体、`index.md` |
 | 5 | `/docs-change` | 变更聚合至各应用 `changelogs/` |
 
 ### 阶段二：新建系统知识库，登记已有应用，拉取镜像并蒸馏归档
@@ -228,11 +228,11 @@ flowchart LR
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
 | 1 | 克隆 `ai-knowledge` 作为中央库；`docs-bootstrap` 安装系统/公司知识库 | 中央 `/docs` 骨架 + `.docsconfig` + Agent |
-| 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `INDEX_GUIDE.md`、`README.md`、`AGENTS.md` |
+| 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `index.md`、`README.md`、`AGENTS.md` |
 | 3 | `docs-link` 登记各已有应用库（`--link --target=… --app_name=…`） | `knowledge-links.yaml`（`repository` + `path` + `doc_dir` + `app_name`） |
 | 4 | `/docs-pull` 拉取各应用联邦镜像 | `system/application-{APPNAME}/` |
-| 5 | `/docs-distill --app {APPNAME}`（配合 `--since` 增量） | `system/architecture/overview/{APPNAME}-overview.md` 第三列 |
-| 6 | `/docs-archive`（人工核实高优先级行后） | 知识落入 `system/architecture/` 各视角章节 |
+| 5 | `/docs-distill --app {APPNAME}`（配合 `--since` 增量） | `system/knowledge/overview/{APPNAME}-overview.md` 第三列 |
+| 6 | `/docs-archive`（人工核实高优先级行后） | 知识落入 `system/knowledge/` 各视角章节 |
 
 ### 阶段三：接续系统知识库需求分析、概要设计
 
@@ -248,7 +248,7 @@ flowchart LR
 | 2 | 规约详细设计链路：`/sdx-design` → `/sdx-test` | `DSD`、`TDD` |
 | 3 | 规约开发实现链路：`brainstorming` → `opsx:*` → `superpowers:sdd` | 代码实现 + 规格归档 |
 | 4 | `/docs-change` + 定期 `/docs-pull` + `/docs-distill --since` | 应用变更可追溯，联邦镜像与系统视图增量对齐 |
-| 5 | `/docs-indexing`（增量，完成 gate 确认） | 中央与应用 `INDEX_GUIDE.md` 一致 |
+| 5 | `/docs-indexing`（增量，完成 gate 确认） | 中央与应用 `index.md` 一致 |
 
 ---
 
@@ -297,7 +297,7 @@ flowchart LR
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
 | 1 | `docs-bootstrap` 安装应用或系统/公司知识库 | `/docs` 骨架 + `.docsconfig` + Agent |
-| 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `INDEX_GUIDE.md`、`README.md`、`AGENTS.md` |
+| 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `index.md`、`README.md`、`AGENTS.md` |
 | 3 | 复制 overview 模板，盘点源（Wiki / Confluence / Word / 代码注释等） | `{APPNAME}-overview.md` 骨架 |
 | 4 | `/docs-extract` 段落筛选提炼入第三列 | overview 第三列草稿 |
 
@@ -307,7 +307,7 @@ flowchart LR
 | --- | --- | --- |
 | 1 | 人工核实高优先级行（先术语与边界，再流程与接口） | 可归档条目 |
 | 2 | `/docs-archive` | 知识落入 `architecture/` 各视角章节 |
-| 3 | `/docs-build` | 四视角实体、`KNOWLEDGE_INDEX.md` |
+| 3 | `/docs-build` | 四视角实体、`index.md` |
 
 > **原则**：先 overview 缓冲区，再 archive，再 entity — 不要一步到位硬造 YAML。overview 与归档约定见 [system/DESIGN.md](system/DESIGN.md)。
 
@@ -316,7 +316,7 @@ flowchart LR
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
 | 1 | `/docs-change` | 变更聚合至 `changelogs/` |
-| 2 | `/docs-indexing`（增量，完成 gate 确认） | `INDEX_GUIDE.md` 与变更对齐 |
+| 2 | `/docs-indexing`（增量，完成 gate 确认） | `index.md` 与变更对齐 |
 | 3 | 需求交付链路按需：`/sdx-solution` → … → `/sdx-architect` → `/sdx-design` → `/sdx-test` | `SOLUTION` … `DSD`、`TDD` |
 
 ---
@@ -325,6 +325,7 @@ flowchart LR
 
 | 需求 | 文档 |
 | --- | --- |
+| 流程总览图 | [README.md](README.md#-agent-工作流与推荐流程) |
 | 元模型与实体层级 | [application/DESIGN.md](application/DESIGN.md)、[system/DESIGN.md](system/DESIGN.md)、[company/DESIGN.md](company/DESIGN.md) |
 | 初始化脚本 | [scripts/README.md](scripts/README.md) |
 | Skill 清单 | [agent/skills/README.md](agent/skills/README.md) |

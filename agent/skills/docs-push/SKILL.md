@@ -1,42 +1,71 @@
 ---
 name: docs-push
 description: >
-  按 `knowledge-links.yaml` 将中央规约复制到各应用本机 `path`×`doc_dir`：legacy `spec-{yyMMdd}-{n}-{app}.md` → `{doc_dir}/specs/`（仅 `--specs-dir` 顶层）；`spec-asd-*.md` 递归收集，归位到 `requirements/REQUIREMENT-*/MVP-Phase-*/specs/` 或按 `requirements/` 前缀镜像。
-  **DSD** 等正文一般不经本技能推送（见 `/sdx-design`）；本技能聚焦于 **legacy / spec-asd** 等规约文件路由。支持 `path`/`repo` 与 Git 四档（`none|stage|commit|push`）；**非 dry-run 写盘与 `git push` 须用户确认**。
-  「推 spec 到应用库」「按 knowledge-links 同步 specs」「docs-push」等意图触发；仅 docs-pull、distill、SDD 闸门或只改 overview 时分流。
+  按 knowledge-links.yaml 将中央规约复制到各应用本机 path×doc_dir（legacy spec → specs/；spec-asd → requirements/…/specs/）。
+  触发：推 spec 到应用库、按 knowledge-links 同步、docs-push。
+  分流：仅 docs-pull/distill/SDD/overview 时 → 对应技能；DSD 正文一般不经本技能。
+  推进协议：参数向导、当前目标单元、风险校核、C/M/S/F 见 references/workflow.md 与 references/gates.md。
 ---
 
 # docs-push：spec 推送到建联目标
 
-调度器：读闸门与参数 → 用户确认（尤其写盘、`push`）→ 调用 `scripts/push-specs.sh`。
+参数向导 → 处理单个目标 repo/path 当前单元 → 风险校核 → 用户动作推进。
 
-**写盘**：每条 link 的**本机 `path`** × `doc_dir`（YAML 为准）。**不**用 `repository` 做隐式 clone；远端仅元数据。
+## 输出硬约束（P0）
 
-## 读序
+- 一次只处理一个“当前目标单元”：单个 repo/path 组。
+- 非 `--dry-run` 写盘前，参数未收口时不得执行 `copy`。
+- 当前目标单元校核完成前，不得自动推进下一个目标。
+- `git push`、覆盖目标文件、`git-op` 选择、`--branch` 切换等语义性风险项必须先给出结论、推荐方案与数字选项；未获确认不得执行。
+- `--dry-run` 结果未确认前，不得静默切到实跑。
 
-1. [references/gates.md](references/gates.md)
-2. [references/parameters.md](references/parameters.md)
-3. [references/workflow.md](references/workflow.md)
+## 边界
+
+| 负责 | 不负责 |
+| ---- | ------ |
+| legacy / spec-asd 规约路由与复制；Git 四档 | DSD 正文（sdx-design）；docs-pull 镜像回拉 |
+
+## 不这样用
+
+- 不把旧“先 dry-run 再 copy”写成无停顿流水线；dry-run 后应先校核当前目标单元
+- 不把 `docs-pull` 镜像回拉或 DSD 正文编写主路径收成 `docs-push`
+- 不在未确认 `git push` 时静默推进远端操作
+
+## 最短路径
+
+1. [gates.md](references/gates.md)
+2. [parameters.md](references/parameters.md)
+3. [workflow.md](references/workflow.md)
 4. [gotchas.md](gotchas.md)
 
-## 脚本（中央库根执行）
+## 最少输入
+
+- `--specs-dir`
+- `--links`
+- `--mode`
+- `--git-op` 与必要时的 `--branch`
+
+## 当前目标单元
+
+- 单个目标 repo/path 组
+
+当前目标单元收敛后，由用户用 `C/M/S/F` 推进：
+
+- `C`：确认当前目标单元并结束或进入下一目标
+- `M`：修改参数、路由或 Git 档位，再重新校核
+- `S`：跳过当前目标单元
+- `F`：在当前目标单元已收敛后，按既定参数补齐剩余目标
+
+## 产出
+
+目标应用本机 `{doc_dir}/specs/` 或 `requirements/…/specs/`（YAML + 脚本为准）。
 
 ```bash
 bash agent/skills/docs-push/scripts/push-specs.sh copy \
   --specs-dir DIR --links system/knowledge-links.yaml --mode path
 ```
 
-**`spec-asd` 常在 `{DOC_DIR}/specs/`**：`--specs-dir` 取能 `find` 到文件的根（常 `./application`），先 `--dry-run`。
+## 评测 / 脚本
 
-相对 `--links` 相对**中央库根**。
-
-## 与 docs-pull
-
-| docs-push | docs-pull |
-|-----------|-----------|
-| 中央 → 目标（asd → `requirements/…/specs/`；legacy → `specs/`） | 目标 → 中央 `applications/app-*` |
-| 显式 `--links` | 依赖 manifest 等 |
-
-## 评测
-
-[evals/evals.json](evals/evals.json)
+评测：[evals/evals.json](evals/evals.json)。`--specs-dir` 与 `--links` 细则见 parameters.md。
+评测重点：单目标停顿、dry-run 路由确认、git-op 风险确认、不得静默 push。

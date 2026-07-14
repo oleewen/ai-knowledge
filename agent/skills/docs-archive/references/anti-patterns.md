@@ -4,7 +4,7 @@
 
 | 反模式 | 纠正 |
 | ------ | --- |
-| PENDING/口头同意即写目标 | [gates.md](gates.md)；「直接改」仍须风险+明确同意 |
+| 确认书未收口即写目标 | [gates.md](gates.md)；先收口来源、目标、冲突策略与来源清理策略 |
 | 冲突静默合并 | 冲突清单；单次一问；[workflow.md](workflow.md)、[quality-checklist.md](quality-checklist.md) |
 | 正文堆 `(来源：…)`、参见链 | [design-principles.md](design-principles.md) |
 | 照搬来源结构 | 服从目标体例；[workflow.md](workflow.md) 步骤 4 |

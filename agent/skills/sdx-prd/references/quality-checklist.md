@@ -29,4 +29,4 @@
 ## 可追溯与格式
 
 - [ ] US→FR；UC↔US；BR 与 ANALYSIS 一致；AC/NAC、EX 可指回；编号连贯
-- [ ] 文末 yaml 齐全；**勿**文件头 `---`；`id` 与路径一致
+- [ ] 文首 frontmatter 齐全；`id` 与路径一致

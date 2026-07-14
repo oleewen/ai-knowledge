@@ -1,35 +1,37 @@
-# sdx-architect — analyzer
+# sdx-architect 评测失败分析（analyzer）
 
-把失败样本压成「可改什么、先改哪里」。
+将失败样本转为可执行修复清单。
 
 ## 输入
 
-样本（prompt、期望分类、响应、grader 证据）；`SKILL.md`、`references/*.md`。
+失败样本（prompt、分类、响应、grader 证据）；[SKILL.md](../SKILL.md)；[references/gates.md](../references/gates.md)、[references/workflow.md](../references/workflow.md)、[references/anti-patterns.md](../references/anti-patterns.md)、[gotchas.md](../gotchas.md)。
 
 ## 输出（四段）
 
-1. 模式归类  
-2. 根因 + 证据  
-3. 修复优先级 P0/P1/P2  
-4. 回归建议  
+1. 失败模式归类
+2. 根因与证据
+3. 优先级修复
+4. 回归建议
 
 ## 失败类型（可多选）
 
-| 代号 | 含义 |
-|------|------|
-| F1 | 路由错：触发类未触发 / 不该触发误触发 |
-| F2 | 边界混：DSD/specs≈ASD 或 docs≈architect |
-| F3 | 门禁漏：总确认、例外、HARD-GATE |
-| F4 | 结构缺：无 §1/§2/§3 |
-| F5 | 联邦歪：system/company 仍落实现级 |
-| F6 | 证据薄：对上断言却对不上条文 |
+- **F1 路由**：should-trigger / should-not-trigger 误判
+- **F2 边界**：PRD、ASD、DSD、docs-* 混淆
+- **F3 协议回退**：退回会话 spec、`PENDING/CONFIRMED`、写前 gate/hook
+- **F4 当前段协议缺失**：缺参数向导、Section Cycle、自动 grilling、`C/M/G/F`、单段停住
+- **F5 语义越权**：语义性结论未确认就直接修订当前段或前文
+- **F6 联邦漂移**：`system/company` 被写成应用级详设
 
-## 修复项（每条）
+## 修复（P0/P1/P2）
 
-目标 · 最小改动（文件/段）· 影响 · ≥1 条回归样例。
+- **P0**：误路由、协议回退、单段停住缺失、语义越权
+- **P1**：边界不清、联邦模式漂移、与 PRD 衔接弱
+- **P2**：文案与样本覆盖
+
+每条须含：目标、最小变更（文件/段）、预期影响、至少 1 个回归用例。
 
 ## 回归
 
-1. P0 相关样本归零再全量  
-2. 对照：`/sdx-architect` ↔ `/sdx-design`；architect ↔ docs-distill/extract/archive/indexing  
-3. 同模式两轮仍败 → 考虑改规则不单改文案
+1. 先跑 P0 样本，再跑全量
+2. 成对验证：`/sdx-architect` vs `/sdx-design`、`/sdx-prd`、docs-*
+3. 同模式两轮失败，优先考虑协议级重写而非堆补丁

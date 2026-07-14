@@ -7,7 +7,7 @@
 | 术语 | 含义 |
 |------|------|
 | `--sources` | 文件或目录；目录递归（gotchas） |
-| `--overview` | 目标 `system/architecture/overview/XX-overview.md` |
+| `--overview` | 目标 `system/knowledge/overview/XX-overview.md` |
 | `## 文档关键词` | overview 附录；**筛选唯一依据** |
 | A / U / D | 第三列新增 / 变更 / 删除（extract-spec） |
 

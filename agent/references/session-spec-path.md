@@ -16,12 +16,12 @@
 
 示例（`.docsconfig` 中 `DOC_DIR=docs`）：
 
-- `docs/superpowers/specs/2026-06-02-order-prd-sdx-prd.md`
+- `docs/superpowers/specs/YYYY-MM-DD-<topic>-sdx-prd.md`
 
 示例（中央库 **无** `.docsconfig`，或 `DOC_DIR` 无效时默认 `docs`）：
 
-- `docs/superpowers/specs/2026-06-15-index-p1-fix-docs-indexing.md`（可一次列出 `INDEX_GUIDE.md`、`system/INDEX_GUIDE.md` 等多条写入路径）
-- `docs/superpowers/specs/2026-06-15-session-spec-path-design.md`（brainstorming 设计备忘）
+- `docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-indexing.md`（可一次列出 `index.md`、`system/index.md` 等多条写入路径）
+- `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`（brainstorming 设计备忘）
 
 ## DOC_DIR 解析（与 hooks 一致）
 
@@ -30,7 +30,7 @@
 | 存在 `.docsconfig` 且 `DOC_DIR=application`（或 `system` / `company` / `docs`） | **配置值**（首段路径；`.` 或空视为无效） |
 | 无 `.docsconfig`，或缺少 / 无效 `DOC_DIR` | **`docs`** |
 
-**跨域写入**：当有效 `{DOC_DIR}` 为 `docs` 时，会话 spec 仍可在 §3 **写入路径清单**中列出任意仓库根相对终稿路径（如 `system/INDEX_GUIDE.md`）；spec 文件本身须落在 `docs/superpowers/specs/`。
+**跨域写入**：当有效 `{DOC_DIR}` 为 `docs` 时，会话 spec 仍可在 §3 **写入路径清单**中列出任意仓库根相对终稿路径（如 `system/index.md`）；spec 文件本身须落在 `docs/superpowers/specs/`。
 
 ## 实现判定（与 hooks 一致）
 
@@ -46,6 +46,7 @@
 
 - 不得将 `{DOC_DIR}/specs/`（无 `superpowers/` 段）、`{docroot}/superpower/specs/` 或 requirements 内 `specs/` 当作会话闸门 spec。
 - 另禁止引用 `ideas/**`。
+- **库外不得引用具名 superpowers 文件**：除 `{docroot}/superpowers/**` 内部外，全仓 Markdown 或字面量不得指向 `…/superpowers/(specs|plans)/YYYY-MM-DD-*.md`；目录契约与占位符允许。细则见 [CONVENTIONS.md](../rules/CONVENTIONS.md#superpowers-ref-isolation)。
 
 ## 迁移
 
@@ -64,6 +65,6 @@ mv application/superpower application/superpowers   # 各 DOC_DIR 同理
 
 | 类型 | 路径示例 | 用途 |
 |------|----------|------|
-| 会话 spec（闸门 / 设计备忘） | `{DOC_DIR}/superpowers/specs/2026-05-18-x-sdx-prd.md` | 用户总确认、`CONFIRMED`、钩子证据；或 brainstorming `-design.md` |
+| 会话 spec（闸门 / 设计备忘） | `{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-sdx-prd.md` | 用户总确认、`CONFIRMED`、钩子证据；或 brainstorming `-design.md` |
 | 规约 spec-asd | `application/requirements/…/specs/spec-asd-*.md` 或 `{DOC_DIR}/specs/spec-asd-*.md` | 架构规约，由 docs-push 推送 |
 | legacy spec | `application/specs/spec-{yyMMdd}-*.md` | docs-push legacy |

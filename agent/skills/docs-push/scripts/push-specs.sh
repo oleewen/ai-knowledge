@@ -11,71 +11,38 @@ _ps_bootstrap_error() {
   exit 1
 }
 
-# 将已存在的普通文件规范为绝对路径（供 source）
-_ps_abspath_existing_file() {
-  local f="${1:?}"
-  [[ -f "$f" ]] || return 1
-  printf '%s\n' "$(cd -P "$(dirname "$f")" && pwd -P)/$(basename "$f")"
-}
-
-# docs-core.sh：DOCS_CORE_SH → 技能 ../../../scripts → ~/.agents|.cursor|.claude|…/scripts → 上溯 agent/scripts → AIK_ROOT
-_aik_resolve_docs_core_sh() {
-  local dc d home="${HOME:-}"
+_ps_source_docs_core() {
+  local dc
   if [[ -n "${DOCS_CORE_SH:-}" ]]; then
     [[ -f "$DOCS_CORE_SH" ]] || _ps_bootstrap_error "DOCS_CORE_SH 已设置但文件不存在: ${DOCS_CORE_SH}"
-    _ps_abspath_existing_file "$DOCS_CORE_SH"
+    # shellcheck source=/dev/null
+    source "$DOCS_CORE_SH"
     return 0
   fi
   dc="${_PS_SCRIPT_DIR}/../../../scripts/docs-core.sh"
   if [[ -f "$dc" ]]; then
-    _ps_abspath_existing_file "$dc"
+    # shellcheck source=/dev/null
+    source "$dc"
     return 0
   fi
-  if [[ -n "$home" ]]; then
-    dc="${home%/}/.agents/scripts/docs-core.sh"
+  for dc in \
+    "${HOME}/.agents/scripts/docs-core.sh" \
+    "${HOME}/.cursor/scripts/docs-core.sh" \
+    "${HOME}/.trae/scripts/docs-core.sh" \
+    "${HOME}/.claude/scripts/docs-core.sh" \
+    "${HOME}/.kiro/scripts/docs-core.sh"; do
     if [[ -f "$dc" ]]; then
-      _ps_abspath_existing_file "$dc"
+      # shellcheck source=/dev/null
+      source "$dc"
       return 0
     fi
-    for d in "${home%/}/.cursor" "${home%/}/.claude" "${home%/}/.trea" "${home%/}/.kiro"; do
-      dc="${d}/scripts/docs-core.sh"
-      if [[ -f "$dc" ]]; then
-        _ps_abspath_existing_file "$dc"
-        return 0
-      fi
-    done
-  fi
-  d="${_PS_SCRIPT_DIR}"
-  while [[ -n "$d" && "$d" != "/" ]]; do
-    if [[ -f "$d/agent/scripts/docs-core.sh" ]]; then
-      _ps_abspath_existing_file "$d/agent/scripts/docs-core.sh"
-      return 0
-    fi
-    d="$(dirname "$d")"
   done
-  d="${_INVOCATION_PWD}"
-  while [[ -n "$d" && "$d" != "/" ]]; do
-    if [[ -f "$d/agent/scripts/docs-core.sh" ]]; then
-      _ps_abspath_existing_file "$d/agent/scripts/docs-core.sh"
-      return 0
-    fi
-    d="$(dirname "$d")"
-  done
-  if [[ -n "${AIK_ROOT:-}" ]]; then
-    dc="$(cd -P "${AIK_ROOT}" 2>/dev/null && pwd -P)/agent/scripts/docs-core.sh" || dc=""
-    if [[ -n "$dc" && -f "$dc" ]]; then
-      _ps_abspath_existing_file "$dc"
-      return 0
-    fi
-  fi
-  _ps_bootstrap_error \
-    "push-specs.sh: 无法找到 docs-core.sh。" \
-    "可设置 DOCS_CORE_SH，或确保已 agent-install（~/.agents/scripts/docs-core.sh），或在中央库内执行，或 export AIK_ROOT 指向含 agent/scripts/docs-core.sh 的仓库根。"
+  return 1
 }
 
-_DOCS_CORE_SH="$(_aik_resolve_docs_core_sh)"
-# shellcheck source=/dev/null
-source "$_DOCS_CORE_SH"
+_ps_source_docs_core || _ps_bootstrap_error \
+  "push-specs.sh: 无法找到 docs-core.sh。" \
+  "可设置 DOCS_CORE_SH，或确保已 agent-install（~/.agents/scripts/docs-core.sh），或在中央库内执行，或 export AIK_ROOT 指向含 agent/scripts/docs-core.sh 的仓库根。"
 
 usage() {
   sed 's/^    //' <<'EOF'
@@ -99,45 +66,23 @@ usage() {
 EOF
 }
 
-# 相对 --links 的仓库根：AIK_ROOT（须存在该相对路径）→ cwd 上溯含该文件 → cwd 上溯 agent/scripts 标记。
+# 相对 --links 的仓库根：AIK_ROOT → 上溯含 links 文件 → 上溯 agent/scripts 标记（见 docs-core sdx_find_upward_with_file）
 _aik_resolve_root_for_links() {
-  local rel="${1:?}" d
+  local rel="${1:?}" root
   if [[ -n "${AIK_ROOT:-}" ]]; then
-    d="$(cd -P "${AIK_ROOT}" 2>/dev/null && pwd -P)" || \
+    root="$(cd -P "${AIK_ROOT}" 2>/dev/null && pwd -P)" || \
       sdx_error "AIK_ROOT 无法进入: ${AIK_ROOT}"
-    [[ -f "$d/$rel" ]] || \
-      sdx_error "AIK_ROOT 下不存在 ${rel}（当前 AIK_ROOT=$d）"
-    printf '%s\n' "$d"
+    [[ -f "$root/$rel" ]] || \
+      sdx_error "AIK_ROOT 下不存在 ${rel}（当前 AIK_ROOT=$root）"
+    printf '%s\n' "$root"
     return 0
   fi
-  d="${_INVOCATION_PWD}"
-  while [[ -n "$d" && "$d" != "/" ]]; do
-    if [[ -f "$d/$rel" ]]; then
-      printf '%s\n' "$d"
-      return 0
-    fi
-    d="$(dirname "$d")"
-  done
-  d="${_INVOCATION_PWD}"
-  while [[ -n "$d" && "$d" != "/" ]]; do
-    if [[ -f "$d/agent/scripts/docs-core.sh" ]]; then
-      printf '%s\n' "$d"
-      return 0
-    fi
-    d="$(dirname "$d")"
-  done
-  d="${_PS_SCRIPT_DIR}"
-  while [[ -n "$d" && "$d" != "/" ]]; do
-    if [[ -f "$d/agent/scripts/docs-core.sh" ]]; then
-      printf '%s\n' "$d"
-      return 0
-    fi
-    d="$(dirname "$d")"
-  done
-  return 1
+  if root="$(sdx_find_upward_with_file "$rel" "${_INVOCATION_PWD}")"; then
+    printf '%s\n' "$root"
+    return 0
+  fi
+  sdx_find_upward_with_file "agent/scripts/docs-core.sh" "${_INVOCATION_PWD}" "${_PS_SCRIPT_DIR}"
 }
-
-sdx_warn() { printf '%s\n' "$*" >&2; }
 
 CMD="${1:-}"
 [[ "$CMD" == copy || "$CMD" == git ]] || {

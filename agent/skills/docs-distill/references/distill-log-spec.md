@@ -48,12 +48,12 @@
 
 ## 写入时机
 
-**4.3（overview 第三列）全部成功后**再 4.4；本仓 `system/architecture/` 本轮写完后**最后**追加 DISTILL；新行**最前**。  
+**4.3（overview 第三列）全部成功后**再 4.4；本仓 `system/knowledge/` 本轮写完后**最后**追加 DISTILL；新行**最前**。  
 4.3 失败 → **不写** DISTILL，便于重试同位。
 
 ## dry-run
 
-不碰 `system/architecture/**`、不写 DISTILL-LOG；只输出计划与匹配区间。
+不碰 `system/knowledge/**`、不写 DISTILL-LOG；只输出计划与匹配区间。
 
 ## 示例（多 app）
 

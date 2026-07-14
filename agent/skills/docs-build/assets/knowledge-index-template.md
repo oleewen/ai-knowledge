@@ -1,6 +1,6 @@
 # KNOWLEDGE_INDEX
 
-> 更新：{YYYY-MM-DD} · SSOT：`{perspective}-entities.md`（schema 2.1 语义）
+> 更新：{YYYY-MM-DD} · SSOT：各视角 per-entity `{ID}.md` frontmatter；本文件由扫描生成，非手写 SSOT
 
 ---
 
@@ -11,7 +11,7 @@
 | SYS | 001 | SYS-{NAME} | {SystemAlias} | {系统名称} | {证据来源} |
 | APP | 001 | APP-{NAME} | {AppAlias} | {应用名称} | {启动类路径}; {pom.xml 模块} |
 | APP | 002 | APP-{NAME} | {AppAlias} | {应用名称} | {启动类路径}; {pom.xml 模块} |
-| MS | 001 | - | {ServiceAlias} | {服务名称} | {宿主类路径}; INDEX_GUIDE.md §3 |
+| MS | 001 | - | {ServiceAlias} | {服务名称} | {宿主类路径}; index.md §3 |
 | API | 001 | - | {MS别名}.{method} | {接口名称} | {类}#{行号}; {HTTP路径或Dubbo接口} |
 
 ---

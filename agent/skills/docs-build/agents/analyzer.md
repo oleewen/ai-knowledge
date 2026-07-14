@@ -10,9 +10,9 @@
 
 - F1 路由误判
 - F2 build ↔ indexing/distill/extract 混
-- F3 门禁漏：Qclose-1、`CONFIRMED`、例外
-- F4 缺四阶段/顺序/validate
-- F5 误称无 spec gate（低风险幻觉）
+- F3 缺参数向导或当前单元
+- F4 缺执行顺序/validate/动作停顿
+- F5 语义变更未确认或校验失败仍继续
 - F6 证据薄
 
 ## 回归

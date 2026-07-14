@@ -1,82 +1,73 @@
 ---
 name: sdx-analysis
-description: >-
-  在已共识 `SOLUTION-{IDEA-ID}.md` 上细化 FR/MVP/依赖/风险，产出 `ANALYSIS-{IDEA-ID}.md`（六章）与会话 spec。用于 `/sdx-analysis`，或口述「拆 MVP」「需求分析」「细化方案」且上下文已有/可对齐上游方案时。
-  总确认前禁写 `{DOC_DIR}/analysis/ANALYSIS-*.md`（例外见 references/gates.md）。
-  仅有会议纪要无 SOLUTION、或只要 SOLUTION/PRD/ASD/DSD、或仅以 docs-distill / docs-extract / docs-indexing 交付时，分流对应技能。
+description: >
+  在已共识 SOLUTION 上按六章分段细化 FR/MVP/依赖/风险，并直写 ANALYSIS-{IDEA-ID}.md；
+  每段生成后自动 grilling 补强至收敛，用户确认后再推进下一段。
+  触发：/sdx-analysis、「拆 MVP」「需求分析」「细化方案」且可对齐上游 SOLUTION。
+  分流：无 SOLUTION、只要其他 SDX 阶段或 docs-* 主路径 → 对应技能。
+  推进协议：参数向导、当前段、自动 grilling、前文回改与用户动作见 references/gates.md。
+compatibility: Bash 5+；校验脚本 agent/skills/sdx-analysis/scripts/validate-analysis.sh（仅结构/内容校验）。
 ---
 
 # sdx-analysis
 
-顺序：**是否本技能 → 读 references → 会话 spec → 门禁 → 校验**。
+读 references/ → 参数向导 → 分段直写终稿 → 每段自动 grilling 补强至收敛 → 用户确认推进。无 SOLUTION → 引导 sdx-solution。
 
-读者：需求分析师撰写；产品/架构评审。实现设计走 `sdx-architect`、`sdx-design`。
+## 输出硬门禁（P0）
 
-**公司库**（`KNOWLEDGE_TYPE=company`）：见 [references/workflow.md](references/workflow.md)「公司库」段；产出 `company/analysis/ANALYSIS-*.md`，PRD 由各 `system/` 侧 `/sdx-prd` 承接。
-
----
+- 一次只处理一个“当前段”（章节或子章节）；在 `§2` 可细到单个 `FR` 段，禁止一口气补齐多段。
+- 当前段写入终稿后，必须进入自动 `grilling` 循环；仅当当前段已收敛，或打出必须等待用户确认的语义性问题时，才把控制权交还用户。
+- 自动 `grilling` 收敛后，输出 `C/M/G/F` 选项并停止等待用户选择；不得自动推进下一段。
+- `F` 仅表示在当前段已收敛后，一次性补齐当前文档剩余未完成章节；不得覆盖已确认前文。
+- 若用户一开始就要求“一次性生成整篇”，仍先完成当前段并自动 `grilling` 至收敛，再由用户明确选择 `F` 进入批量补齐。
+- `grilling` 过程中如发现**语义性问题**（改变目标/范围/承诺/口径/取舍/风险/MVP/优先级/术语等），必须先给出结论、推荐修订与数字选项并等待用户确认；未获确认不得修订当前段。
+- 仅**非语义性修订**（不改变含义的错别字/编号/排版等）可在当前段默认授权下直接修订；不确定时按语义性处理。
 
 ## 边界
 
 | 负责 | 不负责 |
-|------|--------|
-| `ANALYSIS-*.md`、会话 spec、基于 **SOLUTION-{IDEA-ID}.md** 的细化、门禁与校验 | `SOLUTION-*` 初稿；`PRD-*`/`ASD-*`/`DSD-*` 正式稿；以 docs-distill / docs-extract / docs-indexing / docs-archive 为主路径 |
+| --- | --- |
+| `ANALYSIS-{IDEA-ID}.md` 分析生成与推进 | `SOLUTION`；`PRD/ASD/DSD/TDD`；docs-*；实现级设计 |
 
-无方案输入 → 引导 `sdx-solution`。用户锁定其他产物时转对应技能。
+## 不这样用
 
----
+- 不走前置草稿 + 集中收口主线；主线是参数向导后直接分段直写终稿
+- 不把整篇集中回炉或整份重生成当默认路径
+- 不把 `ANALYSIS` 阶段偷换成 `PRD/ASD/DSD/TDD` 或 docs-* 主路径
+
+## 路由
+
+| 目的 | 文件 |
+| --- | --- |
+| 流程 | [workflow.md](references/workflow.md) |
+| 推进协议 | [gates.md](references/gates.md) |
+| grilling 能力 | [grilling-skill.md](../../references/grilling-skill.md) |
+| IDEA-ID / depth | [core-concepts.md](references/core-concepts.md) |
+| 原则 / 反模式 | [design-principles.md](references/design-principles.md)、[anti-patterns.md](references/anti-patterns.md) |
+| 易错 / 受众 / 终检 | [gotchas.md](gotchas.md)、[audience-and-language.md](references/audience-and-language.md)、[quality-checklist.md](references/quality-checklist.md) |
+| 模板 | [analysis-template.md](assets/analysis-template.md) |
 
 ## 最少输入
 
-- 可对齐的 **`SOLUTION-{IDEA-ID}.md`**（或用户认可的缺口策略）。
-- IDEA-ID 与上游一致；门禁粒度（6G / 精简 4G）；深度。
-- `{DOC_DIR}/analysis/`、`{DOC_DIR}/superpowers/specs/` 可写路径。
+- 可对齐的 **`SOLUTION-{IDEA-ID}.md`** 或等价已共识方案材料
+- 可确定的主题或标题线索
+- `{DOC_DIR}/analysis/` 可写
+- 若已给 `IDEA-ID`、章节范围、深度，则直接进入参数向导确认
 
----
+## 推进协议
 
-## 路由表
-
-
-| 目的 | 文件 |
-|------|------|
-| 会话 spec 路径 | [session-spec-path.md](../../references/session-spec-path.md) |
-| 门禁与例外 | `references/gates.md` |
-| 流程与阶段 | `references/workflow.md` |
-| brainstorming 嵌入 | `references/brainstorming-integration.md` |
-| IDEA-ID、编号、`--depth` | `references/core-concepts.md` |
-| 原则与异常处理 | `references/design-principles.md` |
-| 概念反模式 | `references/anti-patterns.md` |
-| 操作易错 | `gotchas.md` |
-| 受众与语言 | `references/audience-and-language.md` |
-| 终检 | `references/quality-checklist.md` |
-| 模板 | 阶段二 `assets/analysis-session-spec-template.md`；阶段三 `assets/analysis-template.md`；形态参考 `assets/samples/mini-analysis-example.md` |
-
----
-
-## 门禁
-
-总确认前禁止写入 `{DOC_DIR}/analysis/ANALYSIS-*.md`。`PENDING` / `CONFIRMED` 见 `references/gates.md`。
-
----
+段落推进、前文回改、自动 `grilling` 与用户动作 `C/M/G/F` 见 [gates.md](references/gates.md)。
 
 ## 产出与校验
 
-- 会话 spec：`{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-sdx-analysis.md`
-- 正式稿：`{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md`
+- 正式：`{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md`
 
 ```bash
 agent/skills/sdx-analysis/scripts/validate-analysis.sh
-agent/skills/sdx-analysis/scripts/validate-analysis.sh --file path/to/ANALYSIS-xxx.md --gate-check
+agent/skills/sdx-analysis/scripts/validate-analysis.sh --file path/to/ANALYSIS-xxx.md
 ```
 
----
+## 评测 / 钩子
 
-## 评测
-
-样本：`evals/evals.json`；元数据：`evals/eval-metadata-template.json`；评分：`agents/grader.md`；归因：`agents/analyzer.md`。
-
----
-
-## 钩子
-
-`python3 agent/hooks/sdx_gate_common.py --gate analysis`（注册见 `agent/hooks.json`，须启用 Hooks）。
+评测：`evals/evals.json`、[grader.md](agents/grader.md)。
+`sdx-analysis` 评测聚焦当前段推进协议与结构校验。

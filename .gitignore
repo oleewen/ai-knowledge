@@ -4,3 +4,8 @@
 
 .*
 !.gitignore
+!.githooks/
+!.githooks/**
+
+**/__pycache__/
+**/*.pyc

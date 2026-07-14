@@ -1,3 +1,18 @@
+---
+id: "DSD-{IDEA-ID}-{N}"
+title: "{技术设计标题}"
+version: "1.0.0"
+status: "draft"
+created: "{YYYY-MM-DD}"
+updated: "{YYYY-MM-DD}"
+author: "architect"
+reviewers: []
+parent: "PRD-{IDEA-ID}-{N}"
+architecture_ref: "ASD-{IDEA-ID}-{N}"
+mvp_phase: "MVP-Phase-{N}"
+tags: ["DSD"]
+---
+
 # {详细设计说明书（DSD）标题}
 
 > 读者：**架构师**（主笔与验收）；**分析、产品、研发**参评可行性与范围。
@@ -11,7 +26,6 @@
 - [1. 设计概述](#1-设计概述)
 - [2. 详细设计](#2-详细设计)
 - [3. 附录](#3-附录)
-- [文档元数据](#文档元数据)
 
 ---
 
@@ -306,23 +320,4 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 - [ ] **§2 详细设计（应用架构～非功能）**
   *通过标准*：§2.1～§2.5 对应实现级内容完整；每个 **API-n** / **DDL** / 非功能条目可追溯到 **PRD（FR-n）** 与 **ASD §3 / 概设 spec-asd**（若有）在 **§2** 中的对应表述。
 - [ ] **§3 附录与元数据**
-  *通过标准*：§3.1 变更历史、§3.2 自查可追溯；文末 YAML `id`/ `architecture_ref` 与 ASD/PRD 一致。
-
-## 文档元数据
-
-<!-- 唯一元数据位置：须为 fenced yaml，且位于全文末尾；禁止在文件开头使用 --- YAML frontmatter -->
-
-```yaml
-id: "DSD-{IDEA-ID}"
-title: "{技术设计标题}"
-version: "1.0.0"
-status: "draft"
-created: "{YYYY-MM-DD}"
-updated: "{YYYY-MM-DD}"
-author: "architect"
-reviewers: []
-parent: "PRD-{IDEA-ID}-{N}"
-architecture_ref: "ASD-{IDEA-ID}-{N}"
-mvp_phase: "MVP-Phase-{N}"
-tags: ["DSD"]
-```
+  *通过标准*：§3.1 变更历史、§3.2 自查可追溯；文首 frontmatter `id` / `architecture_ref` 与 ASD/PRD 一致。

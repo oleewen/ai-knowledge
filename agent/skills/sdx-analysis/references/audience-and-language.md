@@ -1,13 +1,16 @@
 # sdx-analysis 受众与语言
 
-读者：**产品、需求分析**及参与范围评审的业务方。表述重点：谁能做什么、规则与验收、与谁协作，而非内部调用。
+读者：**产品、需求分析**及参与范围评审的业务方。
+表述重点：谁能做什么、规则与验收、与谁协作，而非内部调用。
 
-总则与转写范例可与 [../../sdx-solution/references/audience-and-language.md](../../sdx-solution/references/audience-and-language.md) 对齐。
+总则与转写范例可与
+[../../sdx-solution/references/audience-and-language.md](../../sdx-solution/references/audience-and-language.md)
+对齐。
 
 ## 宜写 / 宜后置
 
 | 宜写 | 宜弱化 |
-|------|--------|
+| ---- | ------ |
 | 角色、场景、主流程 | 类/接口/方法 |
 | 业务规则与边界 | 表/字段、中间件 |
 | 验收、优先级、MVP | 技术栈、部署形态 |
@@ -15,12 +18,12 @@
 
 ## Agent
 
-可查 `knowledge/`、INDEX_GUIDE；写入 **须**转写为场景、规则、验收、协作。**§6.3** 收敛技术线索并标「待研发确认」。
+可查 `knowledge/`、index；写入 **须**转写为场景、规则、验收、协作。**§6.3** 收敛技术线索并标「待研发确认」。
 
 ## 与 sdx-solution
 
-| | sdx-solution | sdx-analysis |
-|---|--------------|---------------|
+| 对比项 | sdx-solution | sdx-analysis |
+| ------ | ------------ | ------------ |
 | 读者侧重 | 业务/产品 | 产品/需求 |
 | 正文 | 目标、影响、思路 | FR、BR、验收、MVP |
 | 技术线索 | §7.3 | §6.3 |

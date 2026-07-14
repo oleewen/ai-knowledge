@@ -1,28 +1,88 @@
 {
   "skill_name": "docs-push",
+  "version": "2.0.0",
+  "description": "评测 docs-push 触发、当前目标单元、dry-run 路由确认与 git-op 风险确认。",
   "evals": [
     {
       "id": 1,
       "prompt": "用户：把 application/specs 里 spec-250504-1-myapp.md 按 system/knowledge-links.yaml 推到 myapp 登记路径，先 dry-run 再 path 模式实跑。",
-      "expected_output": "读 gates/parameters；push-specs copy --dry-run 后实跑 copy；不自作 push",
+      "expected_output": "读 gates/parameters；先收口 specs-dir/links/mode；以单个目标 repo/path 为当前单元，dry-run 后先确认路由，再决定实跑 copy；不自作 push",
+      "assertions": [
+        {
+          "id": "single-target-stop",
+          "name": "单目标停顿",
+          "type": "must_include",
+          "check": "须体现一次只处理一个目标 repo/path 单元，收敛后给出 C/M/S/F 或等价动作等待用户选择。",
+          "priority": "P0"
+        },
+        {
+          "id": "dry-run-route-confirmation",
+          "name": "dry-run 路由确认",
+          "type": "must_include",
+          "check": "须体现 dry-run 后先核对目标路径，再决定是否实跑 copy。",
+          "priority": "P0"
+        }
+      ],
       "files": []
     },
     {
       "id": 2,
       "prompt": "用户：strict 模式下如果有一个 spec 的 app_name 未登记，整批应失败且目标库不应被部分写入。",
-      "expected_output": "用 --strict 并说明整批中止；可指 scripts/tests/docs-push/cases/02_strict_missing_app.sh",
+      "expected_output": "用 --strict 并说明整批中止；当前目标单元不收敛前不推进后续目标；可指 scripts/tests/docs-push/cases/02_strict_missing_app.sh",
+      "assertions": [
+        {
+          "id": "single-target-stop",
+          "name": "单目标停顿",
+          "type": "must_include",
+          "check": "须体现当前目标未收敛前不推进后续目标。",
+          "priority": "P0"
+        }
+      ],
       "files": []
     },
     {
       "id": 3,
       "prompt": "用户：中央 application/specs 里有 spec-asd-ORDER-1-myapp.md，要按 knowledge-links 推到登记应用库 dry-run，目标应落在 MVP Phase 目录下的 specs/。",
-      "expected_output": "dry-run 含 …/requirements/REQUIREMENT-ORDER/MVP-Phase-1/specs/…；可指 cases/05_spec_asd_relocate_dry_run.sh",
+      "expected_output": "dry-run 含 …/requirements/REQUIREMENT-ORDER/MVP-Phase-1/specs/…；先确认路由，再决定是否继续当前目标；可指 cases/05_spec_asd_relocate_dry_run.sh",
+      "assertions": [
+        {
+          "id": "dry-run-route-confirmation",
+          "name": "dry-run 路由确认",
+          "type": "must_include",
+          "check": "须体现 spec-asd 目标目录的 dry-run 校核，而非直接实跑。",
+          "priority": "P0"
+        }
+      ],
       "files": []
     },
     {
       "id": 4,
       "prompt": "用户：源码已在 requirements/REQUIREMENT-x/MVP-Phase-y/specs/.../spec-asd 树下，要与应用库同路径推送，docs-push copy --dry-run 该长什么样？",
-      "expected_output": "说明 requirements/ 前缀镜像与同路径 dest；可指 cases/06_spec_asd_mirror_requirements_prefix.sh",
+      "expected_output": "说明 requirements/ 前缀镜像与同路径 dest；先给 dry-run 路由结果；可指 cases/06_spec_asd_mirror_requirements_prefix.sh",
+      "assertions": [
+        {
+          "id": "dry-run-route-confirmation",
+          "name": "dry-run 路由确认",
+          "type": "must_include",
+          "check": "须体现先展示 dry-run 路由，而非直接写入。",
+          "priority": "P0"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "用户：copy 完之后直接 git push 到目标仓库，message 你看着写就行。",
+      "expected_output": "须先收口 git-op=push 与 message；git push 前必须要用户显式授权；不得静默推进远端操作。",
+      "assertions": [
+        {
+          "id": "git-op-must-confirm",
+          "name": "git-op 风险确认",
+          "type": "must_include",
+          "check": "须体现 git push 与 commit message 需要明确确认，不能自行决定并执行。",
+          "priority": "P0"
+        }
+      ],
       "files": []
     }
   ]

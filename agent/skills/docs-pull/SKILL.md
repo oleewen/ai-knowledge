@@ -1,59 +1,74 @@
 ---
 name: docs-pull
 description: >
-  从已建联注册的远端应用库拉取文档，覆盖更新本仓库联邦镜像 applications/app-{APPNAME}/，并追加 pull 记录。
-  触发：同步应用文档、更新联邦镜像、拉最新镜像、「docs-pull 一下」等（不必等用户说命令名）。
-  分流：用户只要 docs-distill、docs-extract、docs-archive、SDD 终稿或只改 system overview → 不以本技能为唯一主路径。
+  按 knowledge-links.yaml 从本地 path 同步到联邦槽位（system/application-{APPNAME}/ 或 company/system-{SYSNAME}/），并追加槽位 changelogs/CHANGE-LOG.md。
+  触发：/docs-pull、从应用/系统本地仓回拉到联邦槽位、同步槽位、按 knowledge-links 拉取。
+  分流：推送中央规约到应用库 → docs-push；overview 蒸馏 / 归档 / SDD → 对应技能。
+  推进协议：参数向导、当前槽位单元、风险校核、C/M/S/F 见 references/workflow.md 与 references/gates.md。
 ---
 
-# docs-pull：远端 → 联邦镜像
+# docs-pull
 
-调度器：判定归属 → 读 `references/` → **低风险写盘确认**（见 CONVENTIONS 低风险表）→ 更新 `applications/app-{APPNAME}/`。
+参数向导 → 处理单个槽位当前单元 → 风险校核 → 用户动作推进。
 
-> **镜像** = `applications/app-{APPNAME}/`。远端 `{DOC_DIR}/` 是应用侧知识主库；本技能**默认不写**中央库 `{DOC_DIR}/` 本体。
+## 输出硬约束（P0）
+
+- 一次只处理一个“当前槽位单元”：单个 `application-{app_name}` 或 `system-{sys_name}`。
+- 参数未收口前，不得执行槽位同步。
+- `--all` 也必须先处理并校核一个当前槽位单元，未收敛前不得静默推进后续槽位。
+- 路径不存在、非 Git 工作区、目标 `.docsconfig` 缺失、槽位目录不存在、`knowledge-links.yaml` 字段不完整等风险项，必须先给出结论、推荐方案与数字选项；未获确认不得继续。
+- 当前槽位单元同步后，必须补写槽位 `changelogs/CHANGE-LOG.md`；未完成追溯前，不得视为当前单元完成。
 
 ## 边界
 
 | 负责 | 不负责 |
 | ---- | ------ |
-| 已注册 app 的远端文档 → 镜像；`pull-log.md`；manifest `last_pulled_*`（脚本）；`--dry-run` / `--force` 确认节奏 | 写 `system/architecture/overview/`（extract/distill）；**docs-archive**；自动改写 `APPLICATIONS_INDEX.md`；SDD 终稿 |
+| application → system、system → company 槽位同步；槽位 CHANGE-LOG 追溯 | docs-push 中央规约下发；docs-distill/docs-archive/SDD 正文 |
 
-## 前置
+## 不这样用
 
-- `applications/app-{APPNAME}/` 与 `{APPNAME}_manifest.yaml` 已存在。
-- 仓库根可调 `agent/skills/docs-pull/scripts/pull-docs.sh`。
+- 不把 `docs-push` 的中央规约复制主路径收成 `docs-pull`
+- 不在 `--all` 场景下一口气静默同步所有槽位
+- 不做远端 clone、分支拉取或跨仓初始化
 
-## 读序
+## 最短路径
 
-1. `references/gates.md`（低风险 ≠ SDX gate）  
-2. `references/workflow.md`  
-3. `references/manifest-spec.md`  
-4. `references/core-concepts.md`  
-5. `references/design-principles.md`、`references/anti-patterns.md`  
-6. `references/quality-checklist.md`  
-7. `references/brainstorming-integration.md`  
-8. `gotchas.md`  
-9. 可选：`assets/docs-pull-run-checklist.md`
+1. [references/gates.md](references/gates.md)
+2. [references/workflow.md](references/workflow.md)
+3. [references/README.md](references/README.md)
+4. [gotchas.md](gotchas.md)
 
-## 门禁
+## 最少输入
 
-实跑 rsync **前**满足 `references/gates.md` HARD-GATE；**不要**求 `{DOC_DIR}/superpowers/specs/` 或 HTML gate（与 CONVENTIONS 低风险一致）。
+- `knowledge-links.yaml`
+- `--app` / `--sys-name` / `--all` 三者之一
+- 本地 `path` 可访问
+- 槽位已由 `docs-link` 创建
+
+## 当前槽位单元
+
+- 单个 `application-{app_name}` 槽位
+- 单个 `system-{sys_name}` 槽位
+
+当前槽位单元收敛后，由用户用 `C/M/S/F` 推进：
+
+- `C`：确认当前槽位单元并结束或进入下一槽位
+- `M`：修改参数或目标范围，再重新校核
+- `S`：跳过当前槽位单元
+- `F`：在当前槽位单元已收敛后，按既定参数补齐剩余槽位
 
 ## 产出
 
-- 镜像树：`applications/app-{APPNAME}/`  
-- 记录：`applications/app-{APPNAME}/changelogs/pull-log.md`（追加）
+- 同步后的槽位目录
+- 槽位 `changelogs/CHANGE-LOG.md` 追溯记录
 
-命令示例：`references/workflow.md`。
+```bash
+bash agent/skills/docs-pull/scripts/pull-slots.sh --app <app_name>
+bash agent/skills/docs-pull/scripts/pull-slots.sh --sys-name <sys_name>
+bash agent/skills/docs-pull/scripts/pull-slots.sh --all
+```
 
-## 评测
+## 评测 / 脚本
 
-`evals/evals.json`、`evals/eval-metadata-template.json`、`agents/grader.md`、`agents/analyzer.md`。
-
-## 工程化
-
-本路径**无**专用 `preToolUse` 钩子；靠对话遵守 `gates.md`。
-
-## 索引
-
-全表：[references/README.md](references/README.md)。
+评测：`evals/evals.json`。
+评测重点：单槽位停顿、`--all` 批量继续需确认、CHANGE-LOG 追溯必须跟随同步。

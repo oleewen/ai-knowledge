@@ -1,3 +1,7 @@
+---
+type: Change Log
+title: 文档变更索引
+---
 # 文档变更索引
 
 本文件由 **docs-change** 聚合 Git、`CHANGELOG*` 与本地 mtime 变更；增量基线见文末注释。
@@ -17,6 +21,28 @@
 
 - 总变更: 379
 - Git: 379 · CHANGELOG: 0 · 本地: 0
+
+### 2026-06-22 · rename
+- **类型**: 命名统一
+- **说明**: 三文档根 `docs_meta.md` → `docs-meta.md`；`naming-conventions.md` 修正为 `docs-meta.md`；`docs-install` 安装契约同步；OKF viz 再生。
+- **文件**:
+  - `application/docs-meta.md`（自 `docs_meta.md` 重命名）
+  - `system/docs-meta.md`（自 `docs_meta.md` 重命名）
+  - `company/docs-meta.md`（自 `docs_meta.md` 重命名）
+  - `agent/knowledge/naming-conventions.md`
+  - `scripts/docs-install.sh`
+  - `agent/skills/docs-okf/scripts/inject_frontmatter.py`
+  - 各文档根 INDEX/DESIGN/README/index/manifest/knowledge-meta 引用
+  - `application/viz.html`、`system/viz.html`、`company/viz.html`
+
+### 2026-06-26 · chore
+- **类型**: 脚本退役
+- **说明**: 退役一次性命名迁移守护脚本 `scripts/check-docs-meta-naming.sh`（由 `a7feaac` 引入）。当前仓库零违规、迁移已彻底完成。**调整后范围**：仅删除脚本本体，保留测试套件 `scripts/tests/docs-meta-naming/` 与 `scripts/tests/run.sh` 中 `docs-meta-naming` 注册项；test case 改为 skip 行为以维持套件可调度。保留 `a7feaac` 迁移条目与 git rename 历史作为可追溯 SSOT。若未来再次出现命名迁移，按 `a7feaac` 同样的模式新建一份一次性检查器。
+- **文件**:
+  - `scripts/check-docs-meta-naming.sh`（删除）
+  - `scripts/tests/docs-meta-naming/cases/01_clean_repo.sh`（改为 skip 占位）
+  - `scripts/tests/docs-meta-naming/`（保留）
+  - `scripts/tests/run.sh`（注册项保留）
 
 ## Git (379)
 
@@ -60,12 +86,12 @@
 - **作者**: ouliyuan0129
 - **信息**: docs(update): 更新知识库文档以反映应用侧知识主库的结构与内容
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `README.md`
   - `agent/knowledge/naming-conventions.md`
   - `agent/skills/docs-pull/SKILL.md`
   - `application/DESIGN.md`
-  - `application/INDEX_GUIDE.md`
+  - `application/index.md`
   - `application/README-c.md`
   - `application/README-s.md`
   - `application/README.md`
@@ -84,7 +110,7 @@
   - `application/requirements/README.md`
   - `application/solutions/README.md`
   - `system/DESIGN.md`
-  - `system/INDEX_GUIDE.md`
+  - `system/index.md`
   - `system/application-APPNAME/README.md`
 
 ### 2026-06-15 20:13:13.000 · git
@@ -94,7 +120,7 @@
 - **文件**:
   - `agent/knowledge/glossary.md`
   - `application/DESIGN.md`
-  - `application/INDEX_GUIDE.md`
+  - `application/index.md`
   - `application/README-c.md`
   - `application/README-s.md`
   - `application/analysis/README.md`
@@ -108,7 +134,7 @@
 - **作者**: ouliyuan0129
 - **信息**: docs(update): 更新索引指南与会话 spec 路径契约以提升一致性与清晰度
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `agent/hooks/sdx_gate_common.py`
   - `agent/hooks/session_spec_paths.py`
   - `agent/hooks/tests/test_sdx_gate_common.py`
@@ -121,7 +147,7 @@
   - `company/analysis/README.md`
   - `company/system-SYSNAME/README.md`
   - `system/DESIGN.md`
-  - `system/INDEX_GUIDE.md`
+  - `system/index.md`
   - `system/README.md`
   - `system/application-APPNAME/README.md`
   - `system/architecture/application/application-adr.md`
@@ -156,7 +182,7 @@
 - **信息**: docs(knowledge-update): 更新知识库结构与文档以支持新视角与治理规范
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `README.md`
   - `agent/README.md`
   - `agent/hooks/sdx_gate_common.py`
@@ -340,7 +366,7 @@
 - **信息**: docs(application-knowledge-update): 更新应用知识库结构与文档以支持新视角
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `README.md`
   - `agent/hooks/tests/test_sdx_gate_common.py`
   - `agent/skills/README.md`
@@ -356,14 +382,14 @@
   - `agent/skills/docs-build/references/workflow.md`
   - `agent/skills/docs-build/scripts/validate-extraction.sh`
   - `application/DESIGN.md`
-  - `application/INDEX_GUIDE.md`
+  - `application/index.md`
   - `application/README-s.md`
   - `application/analysis/README.md`
   - `application/constitution/GLOSSARY.md`
   - `application/constitution/constitution_meta.yaml`
   - `application/constitution/standards/naming-conventions.md`
   - `application/docs_meta.yaml`
-  - `application/knowledge/KNOWLEDGE_INDEX.md`
+  - `application/knowledge/index.md`
   - `application/knowledge/README.md`
   - `application/knowledge/application/README.md`
   - `application/knowledge/application/application_knowledge.json`
@@ -472,7 +498,7 @@
   - `company/requirements/REQUIREMENT-EXAMPLE/README.md`
   - `company/solutions/README.md`
   - `company/solutions/solutions_meta.yaml`
-  - `system/INDEX_GUIDE.md`
+  - `system/index.md`
   - `system/analysis/README.md`
   - `system/analysis/analysis_meta.yaml`
   - `system/changelogs/README.md`
@@ -522,7 +548,7 @@
 - **信息**: docs(session-spec-path): 更新会话 spec 路径契约与相关文档
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `agent/hooks/README.md`
   - `agent/hooks/sdx_gate_common.py`
   - `agent/hooks/sdx_session_gate.py`
@@ -1211,7 +1237,7 @@
   - `scripts/link-config.sh`
   - `scripts/tests/docs-push/cases/03_resolve_from_cwd_fake_cursor_layout.sh`
   - `scripts/tests/docs-push/cases/04_agents_layout_relative_links_cwd.sh`
-  - `system/INDEX_GUIDE.md`
+  - `system/index.md`
   - `system/analysis/README.md`
   - `system/specs/README.md`
 
@@ -1246,11 +1272,11 @@
 - **作者**: ouliyuan0129
 - **信息**: docs(docs-indexing): 更新索引指南以增强文档结构与信息完整性
 - **文件**:
-  - `INDEX_GUIDE.md`
-  - `application/INDEX_GUIDE.md`
+  - `index.md`
+  - `application/index.md`
   - `scripts/agent-config.sh`
   - `scripts/agent-install.sh`
-  - `system/INDEX_GUIDE.md`
+  - `system/index.md`
   - `system/changelogs/INDEXING-LOG.md`
 
 ### 2026-05-04 11:52:15.000 · git
@@ -1259,16 +1285,16 @@
 - **信息**: docs(docs-indexing): 增强文档结构与功能性
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `agent/hooks.json`
   - `agent/hooks/README.md`
   - `agent/hooks/sdx_gate_common.py`
   - `agent/hooks/sdx_session_gate.py`
   - `agent/hooks/tests/test_sdx_gate_common.py`
   - `agent/rules/CONVENTIONS.md`
-  - `application/INDEX_GUIDE.md`
+  - `application/index.md`
   - `company/changelogs/README.md`
-  - `system/INDEX_GUIDE.md`
+  - `system/index.md`
   - `system/changelogs/README.md`
 
 ### 2026-05-04 11:51:45.000 · git
@@ -1344,7 +1370,7 @@
 - **信息**: docs(docs-agent): 更新文档以增强一致性与准确性
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `README.md`
   - `agent/README.md`
   - `agent/skills/README.md`
@@ -1524,7 +1550,7 @@
 - **作者**: ouliyuan0129
 - **信息**: docs(sdx-test): 更新文档以增强技能描述和一致性
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `agent/skills/README.md`
   - `agent/skills/sdx-test/SKILL.md`
   - `agent/skills/sdx-test/agents/analyzer.md`
@@ -1548,7 +1574,7 @@
 - **作者**: ouliyuan0129
 - **信息**: docs(sdx-design): 增强文档结构与内容一致性
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `agent/skills/README.md`
   - `agent/skills/sdx-architect/SKILL.md`
   - `agent/skills/sdx-architect/agents/analyzer.md`
@@ -1711,7 +1737,7 @@
 - **作者**: ouliyuan0129
 - **信息**: docs(docs-pull): 引入新技能并更新相关文档
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `README.md`
   - `agent/rules/CONVENTIONS.md`
   - `agent/scripts/config-bootstrap.sh`
@@ -1824,10 +1850,10 @@
 ### 2026-04-29 12:15:23.000 · git
 - **提交**: `ff4b57a2be4a`
 - **作者**: ouliyuan0129
-- **信息**: docs(AGENTS, INDEX_GUIDE, README): 更新文档以引入架构设计阶段和详细设计阶段规范
+- **信息**: docs(AGENTS, index, README): 更新文档以引入架构设计阶段和详细设计阶段规范
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `README.md`
   - `agent/hooks.json`
   - `agent/hooks/README.md`
@@ -1906,7 +1932,7 @@
 - **作者**: ouliyuan0129
 - **信息**: docs(docs-indexing): 更新索引日志机制以增强增量索引的准确性和可追溯性
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `agent/skills/README.md`
   - `agent/skills/docs-indexing/SKILL.md`
   - `agent/skills/docs-indexing/gotchas.md`
@@ -1927,10 +1953,10 @@
 ### 2026-04-26 18:24:25.000 · git
 - **提交**: `4a3e97844886`
 - **作者**: ouliyuan0129
-- **信息**: docs(AGENTS, INDEX_GUIDE): 更新文档内容以增强可读性和一致性
+- **信息**: docs(AGENTS, index): 更新文档内容以增强可读性和一致性
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `index.md`
 
 ### 2026-04-25 20:29:06.000 · git
 - **提交**: `b2f28688e8fb`
@@ -1979,7 +2005,7 @@
 - **作者**: ouliyuan0129
 - **信息**: docs(docs-build): 重构技能文档以增强可读性和导航性
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `agent/skills/docs-build/SKILL.md`
 
 ### 2026-04-25 16:38:43.000 · git
@@ -2030,7 +2056,7 @@
 - **信息**: docs: 更新文档索引与指南，记录全库索引运行
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `README.md`
 
 ### 2026-04-25 14:08:58.000 · git
@@ -2103,7 +2129,7 @@
 - **信息**: refactor(agent): rename docs-archive to docs-distill and swap skill responsibilities
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `README.md`
   - `agent/hooks/README.md`
   - `agent/rules/CONVENTIONS.md`
@@ -2415,7 +2441,7 @@
 - **作者**: ouliyuan0129
 - **信息**: 更新文档与脚本，优化知识库安装与配置流程
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `README.md`
   - `agent/hooks/hooks.json`
   - `scripts/README.md`
@@ -2433,10 +2459,10 @@
 ### 2026-04-14 11:32:06.000 · git
 - **提交**: `2bd1590b7c83`
 - **作者**: ouliyuan0129
-- **信息**: 更新 AGENTS.md、INDEX_GUIDE.md 和 README.md，删除 APPLICATIONS_INDEX.md 和 applications/README.md
+- **信息**: 更新 AGENTS.md、index.md 和 README.md，删除 APPLICATIONS_INDEX.md 和 applications/README.md
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `README.md`
   - `agent/skills/README.md`
   - `applications/APPLICATIONS_INDEX.md`
@@ -2455,9 +2481,9 @@
 ### 2026-04-14 11:03:41.000 · git
 - **提交**: `bd01476e3953`
 - **作者**: ouliyuan0129
-- **信息**: 更新 INDEX_GUIDE.md，重构为九章结构并补充项目概览与架构视图，增强文档导航与可读性。同时，更新 CHANGE-LOG.md 和 INDEXING-LOG.md，记录与 docs-indexing 的联动变更及索引统计信息，确保文档维护的准确性与一致性。
+- **信息**: 更新 index.md，重构为九章结构并补充项目概览与架构视图，增强文档导航与可读性。同时，更新 CHANGE-LOG.md 和 INDEXING-LOG.md，记录与 docs-indexing 的联动变更及索引统计信息，确保文档维护的准确性与一致性。
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `agent/README.md`
 
 ### 2026-04-14 10:42:10.000 · git
@@ -2509,7 +2535,7 @@
 - **作者**: ouliyuan0129
 - **信息**: 更新文档与脚本，新增 docs-link.sh 脚本以支持知识库登记与注销
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `README.md`
   - `scripts/README.md`
   - `scripts/docs-link.sh`
@@ -2520,7 +2546,7 @@
 - **作者**: ouliyuan0129
 - **信息**: 更新文档与脚本，统一配置管理
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `scripts/README.md`
   - `scripts/docs-config.sh`
   - `scripts/docs-install.sh`
@@ -2530,7 +2556,7 @@
 - **作者**: ouliyuan0129
 - **信息**: 更新文档，调整脚本引用以统一配置管理
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `agent/README.md`
   - `agent/scripts/config-bootstrap.sh`
   - `agent/scripts/docs-core.sh`
@@ -2546,7 +2572,7 @@
 - **作者**: ouliyuan0129
 - **信息**: refactor(agent): 将 docs-config.sh 重命名为 docs-core.sh
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `README.md`
   - `agent/scripts/docs-core.sh`
   - `agent/skills/README.md`
@@ -2555,13 +2581,13 @@
   - `agent/skills/docs-fetch/reference/manifest-spec.md`
   - `agent/skills/docs-fetch/scripts/fetch-docs.sh`
   - `application/CONTRIBUTING.md`
-  - `application/INDEX_GUIDE.md`
+  - `application/index.md`
   - `application/README-c.md`
   - `application/README-s.md`
   - `application/README.md`
   - `application/knowledge/README.md`
   - `scripts/README.md`
-  - `system/INDEX_GUIDE.md`
+  - `system/index.md`
 
 ### 2026-04-14 10:05:06.000 · git
 - **提交**: `02d5ea927373`
@@ -2569,7 +2595,7 @@
 - **信息**: 更新文档，调整初始化脚本与配置说明
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `README.md`
   - `agent/scripts/config-bootstrap.sh`
   - `agent/skills/README.md`
@@ -2577,7 +2603,7 @@
   - `agent/skills/docs-fetch/gotchas.md`
   - `agent/skills/docs-fetch/reference/manifest-spec.md`
   - `agent/skills/docs-fetch/scripts/fetch-docs.sh`
-  - `application/INDEX_GUIDE.md`
+  - `application/index.md`
   - `application/README-c.md`
   - `application/README-s.md`
   - `application/manifest.yaml`
@@ -2593,7 +2619,7 @@
   - `scripts/tests/docs-install/cases/04_central_no_registry_side_effect.sh`
   - `scripts/tests/docs-install/run.sh`
   - `scripts/tests/docs-install/test-lib.sh`
-  - `system/INDEX_GUIDE.md`
+  - `system/index.md`
   - `system/solutions/README.md`
 
 ### 2026-04-14 09:51:21.000 · git
@@ -2601,7 +2627,7 @@
 - **作者**: ouliyuan0129
 - **信息**: 更新文档，调整初始化脚本与配置说明
 - **文件**:
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `README.md`
   - `agent/scripts/config-bootstrap.sh`
   - `scripts/README.md`
@@ -2627,7 +2653,7 @@
 - **文件**:
   - `.gitignore`
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `README.md`
   - `agent/README.md`
   - `agent/scripts/config-bootstrap.sh`
@@ -2663,7 +2689,7 @@
 - **信息**: 更新文档，增强用户指导与规则说明
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `README.md`
   - `agent/README.md`
   - `agent/hooks.json`
@@ -2944,7 +2970,7 @@
   - `.agent/skills/sdx-analysis/scripts/validate-analysis.sh`
   - `.agent/skills/sdx-solution/scripts/validate-solution.sh`
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `application/analysis/README.md`
   - `application/solutions/README.md`
   - `system/analysis/README.md`
@@ -3050,8 +3076,6 @@
   - `.agent/skills/sdx-solution/scripts/validate-solution.sh`
   - `AGENTS.md`
   - `application/solutions/README.md`
-  - `docs/superpowers/plans/2026-04-09-docsconfig-tilde-agent-keys.md`
-  - `docs/superpowers/specs/2026-04-09-docsconfig-agent-keys-tilde-design.md`
   - `system/solutions/README.md`
 
 ### 2026-04-11 09:59:30.000 · git
@@ -3133,7 +3157,6 @@
 - **作者**: ouliyuan0129
 - **信息**: test(scripts): 增加 docs-init 集成测试并修复 dry-run 分支稳定性
 - **文件**:
-  - `docs/superpowers/specs/2026-04-09-docsconfig-agent-keys-tilde-design.md`
   - `scripts/README.md`
   - `scripts/docs-init.sh`
   - `scripts/tests/docs-init/cases/by-agents.sh`
@@ -3201,11 +3224,10 @@
   - `.agent/rules/CONVENTIONS.md`
   - `.agent/skills/agent-guide/SKILL.md`
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
-  - `application/INDEX_GUIDE.md`
-  - `docs/superpowers/plans/2026-04-09-docsconfig-tilde-agent-keys.md`
+  - `index.md`
+  - `application/index.md`
   - `scripts/README.md`
-  - `system/INDEX_GUIDE.md`
+  - `system/index.md`
 
 ### 2026-04-09 12:14:41.000 · git
 - **提交**: `5a07f33d00a3`
@@ -3222,36 +3244,26 @@
 - **作者**: ouliyuan0129
 - **信息**: docs: 新增 docsconfig ~ 与 AGENT_* 实现计划
 - **文件**:
-  - `docs/superpowers/plans/2026-04-09-docsconfig-tilde-agent-keys.md`
-
 ### 2026-04-09 12:07:41.000 · git
 - **提交**: `28472a28d691`
 - **作者**: ouliyuan0129
 - **信息**: docs: §4.4 术语替换纳入 DOC_ROOT/REPO_ROOT/DOC_DIR
 - **文件**:
-  - `docs/superpowers/specs/2026-04-09-docsconfig-agent-keys-tilde-design.md`
-
 ### 2026-04-09 12:06:20.000 · git
 - **提交**: `408dcf724b1c`
 - **作者**: ouliyuan0129
 - **信息**: docs: 明确 AGENT_* 术语替换范围与 AGENT_DIR 占位
 - **文件**:
-  - `docs/superpowers/specs/2026-04-09-docsconfig-agent-keys-tilde-design.md`
-
 ### 2026-04-09 12:00:57.000 · git
 - **提交**: `75e1a94d2e28`
 - **作者**: ouliyuan0129
 - **信息**: docs: 补充 AGENT_* 消费方与 DOC_ROOT 对齐及读入说明
 - **文件**:
-  - `docs/superpowers/specs/2026-04-09-docsconfig-agent-keys-tilde-design.md`
-
 ### 2026-04-09 11:08:41.000 · git
 - **提交**: `11a2f2a5f5ba`
 - **作者**: ouliyuan0129
 - **信息**: docs: 新增 docsconfig ~ 路径与 Agent 键设计说明
 - **文件**:
-  - `docs/superpowers/specs/2026-04-09-docsconfig-agent-keys-tilde-design.md`
-
 ### 2026-04-09 10:09:26.000 · git
 - **提交**: `6e7920ff058f`
 - **作者**: ouliyuan0129
@@ -3268,12 +3280,12 @@
   - `.agent/skills/docs-indexing/reference/scan-spec.md`
   - `.agent/skills/docs-indexing/scripts/indexing.sh`
   - `.docsconfig`
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `application/DESIGN.md`
-  - `application/INDEX_GUIDE.md`
+  - `application/index.md`
   - `application/constitution/standards/naming-conventions.md`
   - `scripts/docs-init.sh`
-  - `system/INDEX_GUIDE.md`
+  - `system/index.md`
   - `system/changelogs/CHANGE-LOG.md`
   - `system/changelogs/INDEXING-LOG.md`
   - `system/changelogs/README.md`
@@ -3316,26 +3328,17 @@
 ### 2026-04-08 22:16:50.000 · git
 - **提交**: `a76d905eefaa`
 - **作者**: ouliyuan0129
-- **信息**: 更新 INDEX_GUIDE.md 文档，调整输出路径为环境变量，并新增系统索引指南文件
+- **信息**: 更新 index.md 文档，调整输出路径为环境变量，并新增系统索引指南文件
 - **文件**:
-  - `application/INDEX_GUIDE.md`
+  - `application/index.md`
   - `scripts/docs-config.sh`
-  - `system/INDEX_GUIDE.md`
+  - `system/index.md`
 
 ### 2026-04-08 21:26:57.000 · git
 - **提交**: `a8dceedb5447`
 - **作者**: ouliyuan0129
 - **信息**: refactor(docs): 删除过时的文档与设计文件，整合相关内容
 - **文件**:
-  - `docs/superpowers/plans/2026-04-07-docs-archive-skill-refactor.md`
-  - `docs/superpowers/plans/2026-04-08-docsconfig-docs-init-implementation.md`
-  - `docs/superpowers/specs/2026-04-07-agent-doc-link-reachability-requirements.md`
-  - `docs/superpowers/specs/2026-04-07-agent-external-refs-path-resolution-design.md`
-  - `docs/superpowers/specs/2026-04-07-docs-archive-skill-refactor-design.md`
-  - `docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md`
-  - `docs/superpowers/specs/2026-04-08-rewrite-agent-file-system-skip-design.md`
-  - `docs/superpowers/specs/2026-04-08-rewrite-doc-file-minimal-disable-system-rewrite-design.md`
-
 ### 2026-04-08 21:17:49.000 · git
 - **提交**: `382da663acae`
 - **作者**: ouliyuan0129
@@ -3381,8 +3384,6 @@
 - **作者**: ouliyuan0129
 - **信息**: refactor(docs-init): 移除 rewrite_doc_file_minimal 并统一最小替换入口
 - **文件**:
-  - `docs/superpowers/specs/2026-04-08-rewrite-agent-file-system-skip-design.md`
-  - `docs/superpowers/specs/2026-04-08-rewrite-doc-file-minimal-disable-system-rewrite-design.md`
   - `scripts/README.md`
   - `scripts/docs-init.sh`
 
@@ -3405,14 +3406,11 @@
 - **作者**: ouliyuan0129
 - **信息**: docs(superpowers): 新增 rewrite_doc_file_minimal 禁用 system 替换设计
 - **文件**:
-  - `docs/superpowers/specs/2026-04-08-rewrite-doc-file-minimal-disable-system-rewrite-design.md`
-
 ### 2026-04-08 20:51:29.000 · git
 - **提交**: `07499bd87579`
 - **作者**: ouliyuan0129
 - **信息**: docs(superpowers): 新增 rewrite_agent_file 的 system 跳过替换设计
 - **文件**:
-  - `docs/superpowers/specs/2026-04-08-rewrite-agent-file-system-skip-design.md`
   - `scripts/docs-config.sh`
   - `scripts/docs-init.sh`
 
@@ -3474,12 +3472,6 @@
 - **作者**: ouliyuan0129
 - **信息**: docs(superpowers): 新增 agent 链接可达性要求并移除过时设计稿
 - **文件**:
-  - `docs/superpowers/specs/2026-04-07-agent-doc-link-reachability-requirements.md`
-  - `docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md`
-  - `docs/superpowers/specs/2026-04-07-rename-ai-to-agent-design.md`
-  - `docs/superpowers/specs/2026-04-08-constitution-split-design.md`
-  - `docs/superpowers/specs/2026-04-08-doc-root-scripts-refactor-design.md`
-
 ### 2026-04-08 12:20:48.000 · git
 - **提交**: `df78625405f0`
 - **作者**: ouliyuan0129
@@ -3495,9 +3487,6 @@
   - `.agent/skills/docs-archive/scripts/run-docs-archive.sh`
   - `.agent/skills/docs-archive/scripts/update-application-archive-log.sh`
   - `.agent/skills/docs-archive/scripts/update-archive-log.sh`
-  - `docs/superpowers/plans/2026-04-07-docs-archive-skill-refactor.md`
-  - `docs/superpowers/specs/2026-04-07-docs-archive-skill-refactor-design.md`
-
 ### 2026-04-08 12:20:46.000 · git
 - **提交**: `2039fd44751c`
 - **作者**: ouliyuan0129
@@ -3537,7 +3526,6 @@
 - **作者**: ouliyuan0129
 - **信息**: docs(spec): 同步 docsconfig 设计规格与 scripts 说明
 - **文件**:
-  - `docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md`
   - `scripts/README.md`
 
 ### 2026-04-08 12:19:38.000 · git
@@ -3545,15 +3533,11 @@
 - **作者**: ouliyuan0129
 - **信息**: docs(plan): 新增 docsconfig 与 docs-init 实施计划
 - **文件**:
-  - `docs/superpowers/plans/2026-04-08-docsconfig-docs-init-implementation.md`
-
 ### 2026-04-08 12:19:37.000 · git
 - **提交**: `1ef7b806d1f8`
 - **作者**: ouliyuan0129
 - **信息**: docs(spec): 新增 agent 外部引用路径规格
 - **文件**:
-  - `docs/superpowers/specs/2026-04-07-agent-external-refs-path-resolution-design.md`
-
 ### 2026-04-08 12:19:35.000 · git
 - **提交**: `7fd96f7ff9a0`
 - **作者**: ouliyuan0129
@@ -3568,107 +3552,77 @@
 - **作者**: ouliyuan0129
 - **信息**: docs(spec): DOC_ROOT 仅初始化显式指定，禁止推断
 - **文件**:
-  - `docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md`
-
 ### 2026-04-08 10:52:33.000 · git
 - **提交**: `ebd8759e5717`
 - **作者**: ouliyuan0129
 - **信息**: docs(spec): DOC_DIR 由 DOC_ROOT 推算，REPO_ROOT+DOC_DIR=DOC_ROOT
 - **文件**:
-  - `docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md`
-
 ### 2026-04-08 10:52:07.000 · git
 - **提交**: `b1511a7e22bd`
 - **作者**: ouliyuan0129
 - **信息**: docs(spec): REPO_ROOT 列于 DOC_ROOT 之后且由 DOC_ROOT 推算
 - **文件**:
-  - `docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md`
-
 ### 2026-04-08 10:50:54.000 · git
 - **提交**: `aef1f4d3d908`
 - **作者**: ouliyuan0129
 - **信息**: docs(spec): 明确 DOC_ROOT 即 docs-init 传入知识库目录（规范化）
 - **文件**:
-  - `docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md`
-
 ### 2026-04-08 10:50:02.000 · git
 - **提交**: `327bbff8fbee`
 - **作者**: ouliyuan0129
 - **信息**: docs(spec): 禁止 export 路径变量，避免多仓库环境串扰
 - **文件**:
-  - `docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md`
-
 ### 2026-04-08 10:47:34.000 · git
 - **提交**: `c89ea5069b5d`
 - **作者**: ouliyuan0129
 - **信息**: docs(spec): 明确 REPO_ROOT/DOC_ROOT 语义并新增 DOC_DIR（相对仓库根）
 - **文件**:
-  - `docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md`
-
 ### 2026-04-08 10:45:17.000 · git
 - **提交**: `a4465453240e`
 - **作者**: ouliyuan0129
 - **信息**: docs(spec): 目标文档目录即 DOC_ROOT，废弃 probe_base 与目录探测
 - **文件**:
-  - `docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md`
-
 ### 2026-04-08 10:39:24.000 · git
 - **提交**: `c406e52a7fb4`
 - **作者**: ouliyuan0129
 - **信息**: docs(spec): docs-init 缺 .docsconfig 时直接落盘；策略 D 仅约束 validate
 - **文件**:
-  - `docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md`
-
 ### 2026-04-08 10:36:34.000 · git
 - **提交**: `bc5d6c30a587`
 - **作者**: ouliyuan0129
 - **信息**: refactor: sdx_probe_doc_root_segment 重命名为 probe_doc_segment
 - **文件**:
   - `.agent/scripts/sdx-doc-root.sh`
-  - `docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md`
-
 ### 2026-04-08 10:34:48.000 · git
 - **提交**: `91f915a286c6`
 - **作者**: ouliyuan0129
 - **信息**: docs(spec): §1.2 与 §3.2 推断链表述对齐
 - **文件**:
-  - `docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md`
-
 ### 2026-04-08 10:34:42.000 · git
 - **提交**: `f7888ec27afe`
 - **作者**: ouliyuan0129
 - **信息**: docs(spec): 写入推断改为 --doc-root > .docsconfig > 探测 > 默认 docs
 - **文件**:
-  - `docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md`
-
 ### 2026-04-08 10:31:33.000 · git
 - **提交**: `b675c0d8050c`
 - **作者**: ouliyuan0129
 - **信息**: docs(spec): 运行时读 .docsconfig 不支持显式环境变量覆盖
 - **文件**:
-  - `docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md`
-
 ### 2026-04-08 10:10:12.000 · git
 - **提交**: `e6656424602d`
 - **作者**: ouliyuan0129
 - **信息**: docs(spec): 明确文档根推断函数落在 docs-config.sh
 - **文件**:
-  - `docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md`
-
 ### 2026-04-08 10:08:10.000 · git
 - **提交**: `021a75970898`
 - **作者**: ouliyuan0129
 - **信息**: docs(spec): 约定 --scope=c 为 config 缩写
 - **文件**:
-  - `docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md`
-
 ### 2026-04-08 10:05:11.000 · git
 - **提交**: `802b2ad17036`
 - **作者**: ouliyuan0129
 - **信息**: docs(spec): 新增 .docsconfig 与 docs-init 整合设计（方案甲）
 - **文件**:
-  - `docs/superpowers/specs/2026-04-08-docsconfig-docs-init-design.md`
-
 ### 2026-04-08 09:06:20.000 · git
 - **提交**: `1fe48e81b292`
 - **作者**: ouliyuan0129
@@ -3715,7 +3669,7 @@
   - `AGENTS.md`
   - `README.md`
   - `application/CONTRIBUTING.md`
-  - `application/INDEX_GUIDE.md`
+  - `application/index.md`
   - `application/SYSTEM_INDEX.md`
   - `application/analysis/analysis_meta.yaml`
   - `application/knowledge/business/README.md`
@@ -3734,7 +3688,7 @@
   - `.agent/skills/docs-archive/reference/archive-spec.md`
   - `.agent/skills/docs-archive/reference/federation-spec.md`
   - `.agent/skills/sdx-design/SKILL.md`
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `application/DESIGN.md`
   - `application/README.md`
   - `application/analysis/README.md`
@@ -3755,7 +3709,6 @@
   - `application/requirements/requirements_meta.yaml`
   - `application/solutions/README.md`
   - `application/solutions/solutions_meta.yaml`
-  - `docs/superpowers/specs/2026-04-08-constitution-split-design.md`
   - `scripts/README.md`
   - `scripts/docs-config.sh`
   - `system/README.md`
@@ -3820,57 +3773,41 @@
 - **作者**: ouliyuan0129
 - **信息**: docs: 默认 type=application，central 且无 type 时例外为 system
 - **文件**:
-  - `docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md`
-
 ### 2026-04-07 11:36:56.000 · git
 - **提交**: `9dc12ec5a9e0`
 - **作者**: ouliyuan0129
 - **信息**: docs: company/ 增加 architecture 与 system/architecture 对照
 - **文件**:
-  - `docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md`
-
 ### 2026-04-07 11:34:43.000 · git
 - **提交**: `35ce7b9ab199`
 - **作者**: ouliyuan0129
 - **信息**: docs: §2.3 central 默认 type=system；系统/公司库根与 fetch 槽位
 - **文件**:
-  - `docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md`
-
 ### 2026-04-07 11:26:38.000 · git
 - **提交**: `5ffdb837b423`
 - **作者**: ouliyuan0129
 - **信息**: docs: 5.1 并入 mode=standalone|central，移除 --sync 参数表述
 - **文件**:
-  - `docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md`
-
 ### 2026-04-07 11:24:56.000 · git
 - **提交**: `df49926b67a9`
 - **作者**: ouliyuan0129
 - **信息**: docs: §2.2 更正为 mode=s|c 等同 standalone|central；全量/核心改用 sync=full|core
 - **文件**:
-  - `docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md`
-
 ### 2026-04-07 11:23:18.000 · git
 - **提交**: `6587838347fe`
 - **作者**: ouliyuan0129
 - **信息**: docs: §2.2 确认 mode=s|c，旧 standalone/central 迁至 --init-mode
 - **文件**:
-  - `docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md`
-
 ### 2026-04-07 11:19:54.000 · git
 - **提交**: `7ae443927bca`
 - **作者**: ouliyuan0129
 - **信息**: docs: 确认 sync=core 源根为 application/（知识库布局 v2）
 - **文件**:
-  - `docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md`
-
 ### 2026-04-07 11:16:18.000 · git
 - **提交**: `28f0a3f28e6c`
 - **作者**: ouliyuan0129
 - **信息**: docs: 知识库顶层重构（application/system/company）评估与草案
 - **文件**:
-  - `docs/superpowers/specs/2026-04-07-knowledge-layout-v2-design.md`
-
 ### 2026-04-07 08:54:46.000 · git
 - **提交**: `1bc7901d6367`
 - **作者**: ouliyuan0129
@@ -3913,8 +3850,6 @@
 - **作者**: ouliyuan0129
 - **信息**: docs: 落盘 .ai 更名为 .agent 的设计评估说明
 - **文件**:
-  - `docs/superpowers/specs/2026-04-07-rename-ai-to-agent-design.md`
-
 ### 2026-04-06 20:46:17.000 · git
 - **提交**: `ec7f4feb20be`
 - **作者**: ouliyuan0129
@@ -3948,9 +3883,6 @@
 - **作者**: ouliyuan0129
 - **信息**: remove: 删除 `.ai` 目录下的外部引用审计与复评文档
 - **文件**:
-  - `docs/superpowers/specs/2026-04-06-ai-external-references-audit.md`
-  - `docs/superpowers/specs/2026-04-06-ai-external-references-reaudit.md`
-
 ### 2026-04-06 19:56:22.000 · git
 - **提交**: `9b45b869f8cc`
 - **作者**: ouliyuan0129
@@ -3965,8 +3897,6 @@
   - `.ai/skills/sdx-prd/scripts/validate-prd.sh`
   - `.ai/skills/sdx-solution/scripts/validate-solution.sh`
   - `.ai/skills/sdx-test/scripts/validate-test.sh`
-  - `docs/superpowers/specs/2026-04-06-ai-external-references-audit.md`
-  - `docs/superpowers/specs/2026-04-06-ai-external-references-reaudit.md`
   - `scripts/README.md`
   - `scripts/sdx-doc-root.sh`
   - `scripts/sdx-validate-bootstrap.sh`
@@ -3984,8 +3914,6 @@
   - `.ai/skills/sdx-solution/scripts/validate-solution.sh`
   - `.ai/skills/sdx-test/scripts/validate-test.sh`
   - `.ai/skills/sdx-validate-bootstrap.sh`
-  - `docs/superpowers/specs/2026-04-06-ai-external-references-audit.md`
-  - `docs/superpowers/specs/2026-04-06-ai-external-references-reaudit.md`
   - `scripts/README.md`
   - `scripts/sdx-doc-root.sh`
 
@@ -3994,8 +3922,6 @@
 - **作者**: ouliyuan0129
 - **信息**: docs: 复评 .ai 对外引用并记录脚本推断路径方案
 - **文件**:
-  - `docs/superpowers/specs/2026-04-06-ai-external-references-reaudit.md`
-
 ### 2026-04-06 19:44:46.000 · git
 - **提交**: `98ce08e0fa2c`
 - **作者**: ouliyuan0129
@@ -4020,8 +3946,6 @@
   - `.ai/skills/sdx-prd/SKILL.md`
   - `.ai/skills/sdx-solution/SKILL.md`
   - `.ai/skills/sdx-test/SKILL.md`
-  - `docs/superpowers/specs/2026-04-06-ai-external-references-audit.md`
-
 ### 2026-04-06 19:40:28.000 · git
 - **提交**: `5ef1d3a60c39`
 - **作者**: ouliyuan0129
@@ -4034,7 +3958,6 @@
   - `.ai/skills/sdx-solution/scripts/validate-solution.sh`
   - `.ai/skills/sdx-test/scripts/validate-test.sh`
   - `.ai/skills/sdx-validate-bootstrap.sh`
-  - `docs/superpowers/specs/2026-04-06-ai-external-references-audit.md`
   - `scripts/README.md`
   - `scripts/sdx-validate-bootstrap.sh`
 
@@ -4044,31 +3967,21 @@
 - **信息**: docs(.ai): README 全仓库文档关系改为纯文本路径，去除仓库根 Markdown 外链
 - **文件**:
   - `.ai/README.md`
-  - `docs/superpowers/specs/2026-04-06-ai-external-references-audit.md`
-
 ### 2026-04-06 19:35:52.000 · git
 - **提交**: `9d436182f52b`
 - **作者**: ouliyuan0129
 - **信息**: docs: 审计 .ai 目录对外部路径引用并落盘 spec
 - **文件**:
-  - `docs/superpowers/specs/2026-04-06-ai-external-references-audit.md`
-
 ### 2026-04-06 19:32:10.000 · git
 - **提交**: `bbe46211942b`
 - **作者**: ouliyuan0129
 - **信息**: remove: 删除与 Agent 安装至用户主目录相关的设计文档和实现计划
 - **文件**:
-  - `docs/superpowers/plans/2026-04-06-docs-init-agent-home.md`
-  - `docs/superpowers/specs/2026-04-06-doc-root-resolution-design.md`
-  - `docs/superpowers/specs/2026-04-06-docs-init-agent-home-design.md`
-  - `docs/superpowers/specs/2026-04-06-docs-init-optional-docs-path-design.md`
-
 ### 2026-04-06 19:30:40.000 · git
 - **提交**: `3bed4a5e831e`
 - **作者**: ouliyuan0129
 - **信息**: fix(scripts): doc_root 默认首段改为 docs，探测优先 docs 目录
 - **文件**:
-  - `docs/superpowers/specs/2026-04-06-doc-root-resolution-design.md`
   - `scripts/README.md`
   - `scripts/docs-config.sh`
   - `scripts/sdx-doc-root.sh`
@@ -4085,7 +3998,6 @@
   - `.ai/skills/sdx-prd/scripts/validate-prd.sh`
   - `.ai/skills/sdx-solution/scripts/validate-solution.sh`
   - `.ai/skills/sdx-test/scripts/validate-test.sh`
-  - `docs/superpowers/specs/2026-04-06-doc-root-resolution-design.md`
   - `scripts/README.md`
   - `scripts/docs-config.sh`
   - `scripts/sdx-doc-root.sh`
@@ -4096,14 +4008,11 @@
 - **作者**: ouliyuan0129
 - **信息**: docs: 新增 doc_root 解析来源（Skill/rules 上下文）设计说明
 - **文件**:
-  - `docs/superpowers/specs/2026-04-06-doc-root-resolution-design.md`
-
 ### 2026-04-06 19:14:34.000 · git
 - **提交**: `dbae58a463bc`
 - **作者**: ouliyuan0129
 - **信息**: feat(scripts): docs-init 在 standalone+s/r/rs 下可省略工程文档目录
 - **文件**:
-  - `docs/superpowers/specs/2026-04-06-docs-init-optional-docs-path-design.md`
   - `scripts/README.md`
   - `scripts/docs-config.sh`
   - `scripts/docs-init.sh`
@@ -4137,22 +4046,16 @@
 - **作者**: ouliyuan0129
 - **信息**: docs: 无工程路径时 docs_slash 默认改为 docs/
 - **文件**:
-  - `docs/superpowers/specs/2026-04-06-docs-init-optional-docs-path-design.md`
-
 ### 2026-04-06 19:07:51.000 · git
 - **提交**: `f6d8871b8d32`
 - **作者**: ouliyuan0129
 - **信息**: docs: 新增 docs-init scope s/r/rs 时文档路径可选的设计说明
 - **文件**:
-  - `docs/superpowers/specs/2026-04-06-docs-init-optional-docs-path-design.md`
-
 ### 2026-04-06 19:06:47.000 · git
 - **提交**: `828a807846aa`
 - **作者**: ouliyuan0129
 - **信息**: feat(scripts): docs-init 将 Agent skills/rules 安装至用户主目录
 - **文件**:
-  - `docs/superpowers/plans/2026-04-06-docs-init-agent-home.md`
-  - `docs/superpowers/specs/2026-04-06-docs-init-agent-home-design.md`
   - `scripts/README.md`
   - `scripts/docs-config.sh`
   - `scripts/docs-init.sh`
@@ -4162,8 +4065,6 @@
 - **作者**: ouliyuan0129
 - **信息**: docs: 新增 docs-init Agent 安装至用户主目录设计说明
 - **文件**:
-  - `docs/superpowers/specs/2026-04-06-docs-init-agent-home-design.md`
-
 ### 2026-04-06 18:38:59.000 · git
 - **提交**: `5926f7c9bd74`
 - **作者**: ouliyuan0129
@@ -4478,7 +4379,7 @@
   - `.ai/skills/docs-upgrade/references/gotchas.md`
   - `.ai/skills/docs-upgrade/references/related-doc-discovery.md`
   - `.ai/skills/docs-upgrade/references/semantic-keyword-discovery.md`
-  - `INDEX_GUIDE.md`
+  - `index.md`
 
 ### 2026-04-05 21:25:05.000 · git
 - **提交**: `36295f5448f6`
@@ -4544,9 +4445,9 @@
   - `.ai/skills/docs-indexing/scripts/indexing.sh`
   - `.cursor/skills/skill-creator/SKILL.md`
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `README.md`
-  - `system/INDEX_GUIDE.md`
+  - `system/index.md`
   - `system/changelogs/changes-index.json`
   - `system/changelogs/changes-index.md`
   - `system/changelogs/indexing-log.jsonl`
@@ -4739,7 +4640,7 @@
   - `.ai/skills/sdx-solution/SKILL.md`
   - `.ai/skills/sdx-test/SKILL.md`
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `README.md`
   - `applications/APPLICATIONS_INDEX.md`
   - `applications/app-APPNAME/APPNAME_INDEX.md`
@@ -4804,7 +4705,7 @@
 - **信息**: 更新知识库名称与相关路径，确保一致性
 - **文件**:
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `README.md`
   - `scripts/README.md`
   - `scripts/knowledge-config.sh`
@@ -5028,7 +4929,7 @@
   - `.ai/skills/sdx-test/assets/tdd-template.md`
   - `.ai/skills/sdx-test/reference/workflow-spec.md`
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `README.md`
   - `applications/APPLICATIONS_INDEX.md`
   - `applications/README.md`
@@ -5167,7 +5068,7 @@
   - `.ai/rules/solution/solution-template.md`
   - `.ai/skills/sdx-analysis/scripts/validate-analysis.sh`
   - `AGENTS.md`
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `README.md`
   - `scripts/README.md`
   - `scripts/knowledge-init.sh`
@@ -5337,7 +5238,7 @@
   - `.cursor/skills/knowledge-upgrade/SKILL.md`
   - `AGENTS.md`
   - `INDEX.md`
-  - `INDEX_GUIDE.md`
+  - `index.md`
   - `PROJECT_INDEX.md`
   - `README.md`
   - `applications/APPLICATIONS_INDEX.md`

@@ -7,6 +7,8 @@ readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # 配置层与 .docsconfig 工具统一下沉到 docs-config.sh
 # shellcheck source=./docs-config.sh
 source "$SCRIPT_DIR/docs-config.sh"
+# shellcheck source=../agent/scripts/cli-core.sh
+source "$SCRIPT_DIR/../agent/scripts/cli-core.sh"
 
 # =============================================================================
 # § 1  全局状态
@@ -37,18 +39,8 @@ _BACKUP_ROOT="${BACKUP_ROOT:-}"
 DOC_INIT_STAMP=""
 
 # =============================================================================
-# § 3  工具函数（纯函数，无副作用）
-# =============================================================================
-
-have_perl() { sdx_have_perl; }
-
-# =============================================================================
 # § 4  IO 工具（副作用函数）
 # =============================================================================
-
-# dry-run 感知的命令执行器：dry=1 时只打印，否则执行
-run_or_dry() { sdx_run_or_dry "$@"; }
-ensure_dir() { sdx_ensure_dir "$1"; }
 
 # 判断本次运行是否应在同步前重置 DOC_DIR（仅知识库同步 scope）
 should_reset_docs_dir_before_sync() {
@@ -74,89 +66,17 @@ backup_path() {
   sdx_docs_backup_path_to_init "${CFG[target_dir]:-$PWD}" "$existing" "${DOC_INIT_STAMP:-}" "${CFG[dry_run]:-0}"
 }
 
-# 询问用户是否覆盖已存在目标（支持全局策略）
-# 返回：0=覆盖，1=跳过，2=用户取消（调用方应对 2 执行 exit）
-should_overwrite() {
-  local target="$1"
-  [[ "${CFG[dry_run]}" == '1' ]] && return 0
-  [[ "${CFG[force]}"   == '1' ]] && return 0
-  case "$_CONFLICT_MODE" in
-    overwrite_all) return 0 ;;
-    skip_all)      return 1 ;;
-  esac
-  # 非交互环境默认覆盖
-  [[ ! -t 0 ]] && return 0
+docs_install_io_backup() { backup_path "$1"; }
 
-  sdx_log "目标已存在：$target"
-  printf '1) 覆盖 / 2) 跳过 / 3) 全部覆盖 / 4) 全部跳过 [默认 1，Esc 退出]：' >&2
-  local key='' key2=''
-  IFS= read -rsn1 key || { sdx_log "已取消"; return 2; }
-
-  # lone ESC：超时内无后续字节则为单独 Esc；否则视为终端转义序列，按无效处理
-  if [[ "$key" == $'\e' ]]; then
-    if IFS= read -rsn1 -t 0.05 key2 2>/dev/null; then
-      sdx_log "无效选择，默认覆盖"; return 0
-    fi
-    sdx_log "已取消（Esc）" >&2
-    return 2
-  fi
-
-  case "$key" in
-    $'\n'|$'\r') return 0 ;;
-    1)           return 0 ;;
-    2)           return 1 ;;
-    3) _CONFLICT_MODE='overwrite_all'; return 0 ;;
-    4) _CONFLICT_MODE='skip_all';      return 1 ;;
-    *) sdx_log "无效选择，默认覆盖";       return 0 ;;
-  esac
+docs_install_apply_io_policy() {
+  export SDX_IO_DRY_RUN="${CFG[dry_run]:-0}"
+  export SDX_IO_FORCE="${CFG[force]:-0}"
+  export SDX_IO_CONFLICT_MODE="${_CONFLICT_MODE:-}"
+  export SDX_IO_BACKUP_FN='docs_install_io_backup'
 }
 
-# 带冲突处理的单文件拷贝（内部公共实现）
-# 用法：copy_with_conflict <src> <dst>
-# 说明：dry-run / force / 交互策略均在此统一处理；调用方负责后续内容替换
-copy_with_conflict() {
-  local src="$1" dst="$2"
-  if [[ "${CFG[dry_run]}" == '1' ]]; then
-    sdx_log "[dry-run] 拷贝: $src → $dst"; return 0
-  fi
-  if [[ -e "$dst" ]]; then
-    local _ow=0
-    should_overwrite "$dst" || _ow=$?
-    [[ "$_ow" -eq 2 ]] && exit 130
-    [[ "$_ow" -eq 1 ]] && { sdx_log "[skip] $dst"; return 1; }  # 返回 1 表示已跳过
-    backup_path "$dst"
-  fi
-  ensure_dir "$(dirname "$dst")"
-  cp "$src" "$dst"
-  return 0
-}
-
-# 拷贝单个文件（含冲突处理）
-copy_file() {
-  local src="$1" dst="$2"
-  copy_with_conflict "$src" "$dst" || return 0  # skip 时静默返回
-}
-
-# 拷贝目录（含冲突处理）
-copy_dir() {
-  local src="$1" dst="$2"
-  if [[ "${CFG[dry_run]}" == '1' ]]; then
-    sdx_log "[dry-run] 拷贝目录: $src → $dst"; return 0
-  fi
-  if [[ -e "$dst" ]]; then
-    local _ow=0
-    should_overwrite "$dst" || _ow=$?
-    [[ "$_ow" -eq 2 ]] && exit 130
-    [[ "$_ow" -eq 1 ]] && { sdx_log "[skip] $dst"; return 0; }
-    backup_path "$dst"
-  fi
-  ensure_dir "$(dirname "$dst")"
-  ensure_dir "$dst"
-  if sdx_have_cmd rsync; then
-    rsync -a "$src"/ "$dst"/
-  else
-    cp -R "$src"/. "$dst"/
-  fi
+docs_install_sync_conflict_mode() {
+  _CONFLICT_MODE="${SDX_IO_CONFLICT_MODE:-}"
 }
 
 # 备份并清空 DOC_DIR（保留目录本身）
@@ -166,7 +86,7 @@ reset_docs_dir_with_backup() {
 
   if [[ ! -d "$docs_dir" ]]; then
     sdx_info "DOC_DIR 不存在，创建空目录后继续: $docs_dir"
-    ensure_dir "$docs_dir"
+    sdx_ensure_dir "$docs_dir"
     return 0
   fi
 
@@ -193,7 +113,7 @@ reset_docs_dir_with_backup() {
 
   local e
   for e in "${entries[@]}"; do backup_path "$e"; done
-  ensure_dir "$docs_dir"
+  sdx_ensure_dir "$docs_dir"
   sdx_info "DOC_DIR 已清空（目录保留）: $docs_dir"
 }
 
@@ -209,7 +129,7 @@ docs_install_inject_readme_agent_note() {
   shift 2
   local -a others=("$@")
   [[ -f "$readme" ]] || return 0
-  have_perl || return 0
+  sdx_have_perl || return 0
 
   local oline
   if (( ${#others[@]} > 0 )); then
@@ -258,13 +178,13 @@ docs_install_inject_readme_agent_note() {
 }
 
 # 知识库安装并写入 .docsconfig 后：按 AGENT_DIRS 首项将 agent/ 重写为主 Agent 目录，并更新 README 提示
-rewrite_knowledge_agent_paths_after_install() {
+docs_install_rewrite_agent_paths() {
   [[ "${CFG[dry_run]}" == '1' ]] && return 0
   [[ "${CFG[scope]}" == 'knowledge' ]] || return 0
   [[ -n "${CFG[docs_abs]:-}" ]] || return 0
 
   local repo_target='' doc_root='' dd=''
-  resolve_docsconfig_roots repo_target doc_root dd
+  docs_install_resolve_docsconfig_roots repo_target doc_root dd
 
   local cfg="$repo_target/.docsconfig"
   [[ -f "$cfg" ]] || { sdx_warn "未找到 $cfg，跳过 agent/ 路径重写"; return 0; }
@@ -299,13 +219,6 @@ rewrite_knowledge_agent_paths_after_install() {
 # § 6  核心安装步骤
 # =============================================================================
 
-# 将单个文件从 application/ 树复制到目标文档根，并执行内容替换
-# 用法：application_copy_one <src_f> <dst_f>
-application_copy_one() {
-  local src_f="$1" dst_f="$2"
-  copy_with_conflict "$src_f" "$dst_f" || return 0  # skip 时静默返回
-}
-
 # 步骤 1a：application/ 全量 → 目标（standalone 或默认）
 install_application_full_to_docs() {
   local src_root="${CFG[repo_root]}/application"
@@ -326,13 +239,13 @@ install_application_full_to_docs() {
 
     src_f="$src_root/$rel"
     dst_f="$dst_root/$rel"
-    application_copy_one "$src_f" "$dst_f"
+    sdx_io_copy_file "$src_f" "$dst_f" || return 0
   done < <(cd "$src_root" && find . -type f -print0)
 
   # standalone 使用 README-s.md 作为目标 README.md；缺失则回退 README.md
   local readme_src="$src_root/README-s.md"
   [[ -f "$readme_src" ]] || readme_src="$src_root/README.md"
-  [[ -f "$readme_src" ]] && application_copy_one "$readme_src" "$dst_root/README.md"
+  [[ -f "$readme_src" ]] && { sdx_io_copy_file "$readme_src" "$dst_root/README.md" || true; }
 
   sdx_info "    application/ 全量同步完成"
 }
@@ -355,20 +268,20 @@ install_application_subset_to_docs() {
       [[ -z "$rel" ]] && continue
       src_f="$src_root/$d/$rel"
       dst_f="$dst_root/$d/$rel"
-      application_copy_one "$src_f" "$dst_f"
+      sdx_io_copy_file "$src_f" "$dst_f" || return 0
     done < <(cd "$src_root/$d" && find . -type f -print0)
   done
 
   local base
-  for base in INDEX_GUIDE.md docs_meta.yaml manifest.yaml; do
+  for base in index.md docs-meta.md manifest.md; do
     [[ -f "$src_root/$base" ]] || continue
-    application_copy_one "$src_root/$base" "$dst_root/$base"
+    sdx_io_copy_file "$src_root/$base" "$dst_root/$base" || return 0
   done
 
   # central 使用 README-c.md 作为目标 README.md；缺失则回退 README.md
   local readme_src="$src_root/README-c.md"
   [[ -f "$readme_src" ]] || readme_src="$src_root/README.md"
-  [[ -f "$readme_src" ]] && application_copy_one "$readme_src" "$dst_root/README.md"
+  [[ -f "$readme_src" ]] && { sdx_io_copy_file "$readme_src" "$dst_root/README.md" || true; }
 
   sdx_info "    application/ §2.1 子集同步完成"
 }
@@ -390,7 +303,7 @@ install_org_template_to_docs() {
     [[ -z "$rel" ]] && continue
     src_f="$src_root/$rel"
     dst_f="$dst_root/$rel"
-    copy_with_conflict "$src_f" "$dst_f" || continue
+    sdx_io_copy_file "$src_f" "$dst_f" || continue
   done < <(cd "$src_root" && find . -type f -print0)
 
   sdx_info "    ${label}/ 同步完成"
@@ -404,13 +317,13 @@ install_docs_link_scripts_to_target_repo() {
   esac
   local dst_dir="${CFG[target_dir]}/scripts"
   sdx_info ">>> 安装建联脚本至目标工程: ${dst_dir}（docs-link.sh、link-config.sh）"
-  ensure_dir "$dst_dir"
-  copy_file "${CFG[repo_root]}/scripts/docs-link.sh" "$dst_dir/docs-link.sh"
-  copy_file "${CFG[repo_root]}/scripts/link-config.sh" "$dst_dir/link-config.sh"
+  sdx_ensure_dir "$dst_dir"
+  sdx_io_copy_file "${CFG[repo_root]}/scripts/docs-link.sh" "$dst_dir/docs-link.sh" || true
+  sdx_io_copy_file "${CFG[repo_root]}/scripts/link-config.sh" "$dst_dir/link-config.sh" || true
 }
 
 # 步骤 1 分发：按 type × mode 将知识库模板安装至目标文档目录
-install_docs() {
+docs_install_copy_templates() {
   case "${CFG[type]}" in
     application)
       if [[ "${CFG[mode]}" == 'central' ]]; then
@@ -434,7 +347,7 @@ install_docs() {
 # 说明：
 #   - 有 docs_abs：从 docs_abs 推导 repo_target 与 dd
 #   - 无 docs_abs：回退到 HOME（仅 config/knowledge scope 时调用）
-resolve_docsconfig_roots() {
+docs_install_resolve_docsconfig_roots() {
   local -n _rt="${1:?}"   # repo_target（输出）
   local -n _dr="${2:?}"   # doc_root（输出）
   local -n _dd="${3:?}"   # doc_dir（输出）
@@ -495,7 +408,7 @@ install_agent_path() {
 
 # 写入目标工程仓库根 .docsconfig（DOC_*、KNOWLEDGE_TYPE；scope=config|knowledge 均按需补全 AGENT_*）
 # dry-run 时仅预览，不写入
-install_docsconfig() {
+docs_install_write_docsconfig() {
   local doc_root='' repo_target='' dd=''
   local old_doc_root='' old_repo_root='' old_doc_dir=''
   local old_agent_root='' old_agent_dirs=''
@@ -503,7 +416,7 @@ install_docsconfig() {
   local cfg_file existed=0
   local kt_out=''
   local ar_out='' ads_out=''
-  resolve_docsconfig_roots repo_target doc_root dd
+  docs_install_resolve_docsconfig_roots repo_target doc_root dd
 
   # ── 读取已有 .docsconfig（若存在）────────────────────────────────────────
   cfg_file="$repo_target/.docsconfig"
@@ -538,7 +451,7 @@ install_docsconfig() {
 # § 9  CLI：usage / parse_args
 # =============================================================================
 
-usage() {
+docs_install_usage() {
   cat >&2 <<'EOF'
 用法
   docs-install.sh [选项] --target <目标工程文档目录>
@@ -590,28 +503,28 @@ usage() {
 EOF
 }
 
-parse_args() {
+docs_install_parse_args() {
   while (( $# > 0 )); do
     case "$1" in
       --target=*) CFG[target_opt]="${1#*=}";                  shift ;;
       --target)
         shift
-        [[ -n "${1:-}" ]] || sdx_error "缺少 --target 值（目标工程文档目录）"
+        sdx_cli_require_value "--target" "${1:-}"
         CFG[target_opt]="$1"
         shift
         ;;
       --mode=*)   CFG[mode]="${1#*=}";                        shift ;;
-      --mode)     shift; CFG[mode]="${1:-}";                  shift ;;
+      --mode)     shift; sdx_cli_require_value "--mode" "${1:-}"; CFG[mode]="${1:-}"; shift ;;
       --scope=*)  CFG[scope]="${1#*=}";                       shift ;;
-      --scope)    shift; CFG[scope]="${1:-}";                 shift ;;
+      --scope)    shift; sdx_cli_require_value "--scope" "${1:-}"; CFG[scope]="${1:-}"; shift ;;
       --type=*)   CFG[type]="${1#*=}"; CFG[type_explicit]=1;  shift ;;
-      --type)     shift; CFG[type]="${1:-}"; CFG[type_explicit]=1; shift ;;
+      --type)     shift; sdx_cli_require_value "--type" "${1:-}"; CFG[type]="${1:-}"; CFG[type_explicit]=1; shift ;;
       --dry-run)  CFG[dry_run]=1;                             shift ;;
       --force)    CFG[force]=1;                               shift ;;
       -r)         CFG[create_project_root]=1;                 shift ;;
-      -h|--help)  usage; exit 0 ;;
+      -h|--help)  docs_install_usage; exit 0 ;;
       *)
-        sdx_error "未知参数: $1（使用 -h 或 --help 查看帮助）"
+        sdx_cli_unknown_arg "$1"
         ;;
     esac
   done
@@ -627,7 +540,7 @@ parse_args() {
 # =============================================================================
 
 # 初始化并校验 REPO_ROOT
-init_repo_root() {
+docs_install_init_repo_root() {
   if [[ -z "${CFG[repo_root]}" ]]; then
     CFG[repo_root]="$(abs_path "$SCRIPT_DIR/..")"
   fi
@@ -635,7 +548,7 @@ init_repo_root() {
 }
 
 # 校验并规范化文档目录与工程根目录
-validate_docs_and_target() {
+docs_install_validate_docs_target() {
   [[ -n "${CFG[docs_abs]}" ]] \
     || sdx_error "内部错误：应在提供 <目标工程文档目录> 后调用文档路径校验"
 
@@ -648,7 +561,7 @@ validate_docs_and_target() {
   fi
   if [[ ! -d "$target_dir" ]]; then
     if [[ "${CFG[create_project_root]}" == '1' ]]; then
-      run_or_dry mkdir -p "$target_dir"
+      sdx_run_or_dry mkdir -p "$target_dir"
       [[ "${CFG[dry_run]}" == '0' ]] && sdx_info "已创建工程根目录: $target_dir"
     else
       sdx_error "工程根目录不存在: ${target_dir}（请先创建，或使用 -r 自动创建）"
@@ -656,7 +569,7 @@ validate_docs_and_target() {
   fi
   # DOC_ROOT 须为已存在目录，否则 .docsconfig 推导失败
   if [[ ! -d "${CFG[docs_abs]}" ]]; then
-    run_or_dry mkdir -p "${CFG[docs_abs]}"
+    sdx_run_or_dry mkdir -p "${CFG[docs_abs]}"
   fi
 }
 
@@ -667,7 +580,7 @@ apply_mode() {
 }
 
 # 规范化并校验 --scope
-validate_sync_scope() {
+docs_install_validate_scope() {
   [[ "${CFG[scope]}" != 'ck' ]] \
     || sdx_error "无效 --scope: ck（已移除，请使用 --scope=k 或 --scope=knowledge）"
   validate_scope "${CFG[scope]}" \
@@ -747,7 +660,7 @@ validate_type_sources() {
 # § 11  完成提示
 # =============================================================================
 
-print_checklist() {
+docs_install_print_checklist() {
   sdx_log ''
   sdx_log '─────────────────────────────────────────────────────────────────────────'
   sdx_log "初始化完成  目标: ${CFG[docs_abs]}"
@@ -759,9 +672,9 @@ print_checklist() {
 # § 12  主入口（parse_args 之后的主体）
 # =============================================================================
 
-docs_init_run() {
-  init_repo_root
-  validate_sync_scope
+docs_install_run() {
+  docs_install_init_repo_root
+  docs_install_validate_scope
   validate_docs_arg_for_scope
   apply_type_scope_policy
   resolve_type
@@ -771,25 +684,27 @@ docs_init_run() {
 
   validate_type_sources
 
-  # ── scope=config：仅 install_docsconfig，后退出 ─────────────────────────
+  # ── scope=config：仅 docs_install_write_docsconfig，后退出 ─────────────────
   if [[ "${CFG[scope]}" == 'config' ]]; then
     [[ -n "${HOME:-}" ]] || sdx_error "需要 HOME 环境变量"
     CFG[home_abs]="$(abs_path "$HOME")"
-    validate_docs_and_target
-    install_docsconfig
+    docs_install_validate_docs_target
+    docs_install_write_docsconfig
     sdx_info "完成：docs-install（--scope=config）"
-    print_checklist
+    docs_install_print_checklist
     exit 0
   fi
 
-  validate_docs_and_target
+  docs_install_validate_docs_target
 
   DOC_INIT_STAMP="$(date +%Y-%m-%d_%H-%M-%S)"
+
+  docs_install_apply_io_policy
 
   [[ -n "${HOME:-}" ]] || sdx_error "需要 HOME 环境变量"
   CFG[home_abs]="$(abs_path "$HOME")"
 
-  have_perl || sdx_warn "未检测到 perl：文件内容替换将被跳过，建议安装 perl。"
+  sdx_have_perl || sdx_warn "未检测到 perl：文件内容替换将被跳过，建议安装 perl。"
 
   # ── 步骤 1：知识库同步 ────────────────────────────────────────────────────
   if should_reset_docs_dir_before_sync; then
@@ -797,21 +712,23 @@ docs_init_run() {
   fi
 
   if [[ -n "${CFG[docs_abs]}" && "${CFG[scope]}" == 'knowledge' ]]; then
-    install_docs
+    docs_install_copy_templates
     install_docs_link_scripts_to_target_repo
-    install_docsconfig
-    rewrite_knowledge_agent_paths_after_install
+    docs_install_write_docsconfig
+    docs_install_rewrite_agent_paths
   fi
 
+  docs_install_sync_conflict_mode
+
   sdx_info "完成：初始化"
-  print_checklist
+  docs_install_print_checklist
 }
 
 # ========== 入口（默认 --scope=k，即 knowledge）==========
 if [[ "$#" -eq 0 ]]; then
-  parse_args --scope="${KINIT_DEFAULT_SCOPE:-k}"
+  docs_install_parse_args --scope="${KINIT_DEFAULT_SCOPE:-k}"
 else
-  parse_args "$@"
+  docs_install_parse_args "$@"
 fi
 
-docs_init_run
+docs_install_run

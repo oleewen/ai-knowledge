@@ -1,8 +1,21 @@
 # docs-archive Grader
 
-**仅**输出 JSON：`text`（1～3 句）、`passed`、`evidence`（对断言或失败）。
+据 **evals/evals.json** 与下列原则输出 JSON：`text`、`passed`、`evidence`。
 
-**原则**：`should-trigger` → 主路径须为 `/docs-archive` 或等价；含 HARD-GATE、确认书、overview→链接解析；勿误判为纯 extract/distill/upgrade/build。**should-not-trigger** → 须正确分流。**P0** 任一失败 → `passed: false`。只评测，不改写技能。
+## 判定
+
+- `should-trigger`：主路径须为 `/docs-archive` 或等价；能识别参数向导、当前确认书、overview -> 目标章节、自动 grilling 与 `C/M/G/S/F`
+- `should-not-trigger`：须正确分流，不误判为纯 extract/distill/upgrade/build
+- **P0** 任一失败 → `passed: false`
+
+## P0 断言
+
+- `single-unit-stop`：一次只处理一个目标章节或一个 overview 行块，并在收敛后停下等待动作
+- `confirmation-book-first`：当前确认书未收口前，不得写目标章节或回写 overview
+- `semantic-change-needs-confirmation`：来源范围、目标章节、冲突策略、来源清理策略等语义变更必须先确认
+- `overview-link-preserved`：overview 回写后保留行内副标题链接，不得静默断链
+
+只评测，不改写技能。
 
 材料：`SKILL.md`、`gates`、`workflow`、`anti-patterns`、`gotchas`、本条 `expected_output`、`evals.json`。
 
@@ -10,9 +23,9 @@
 
 ```json
 {
-  "text": "通过。含 HARD-GATE；确认前未宣称已写目标。",
+  "text": "通过。识别当前确认书与单个归档单元，停在动作选择前。",
   "passed": true,
-  "evidence": ["gate-compliance", "structure-integrity"]
+  "evidence": ["confirmation-book-first", "single-unit-stop", "structure-integrity"]
 }
 ```
 

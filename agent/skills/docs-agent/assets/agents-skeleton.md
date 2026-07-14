@@ -20,7 +20,7 @@
 ## 核心契约
 
 ### 行为
-- **先读后写**：本文件、README、`INDEX_GUIDE.md`…
+- **先读后写**：本文件、README、`index.md`…
 - **最小变更 · 保持一致 · 不假设要验证**
 
 ### 沟通 · 约定 · 禁止
@@ -37,7 +37,7 @@
 | 概况/启动/架构/导航 | README.md |
 | 速查/树/词典 | `{INDEX}` |
 | 系统知识库 | `{实测 system/README 等}` |
-| 公司知识库 / 企业架构 | `{实测 company/README、company/ea/README 等}` |
+| 公司知识库 / 企业架构 | `{实测 company/README、company/knowledge/README 等}` |
 | Agent 布局契约 | [agent/references/knowledge-layout.md](agent/references/knowledge-layout.md) |
 
 <!-- optional: 流程、规范表、Slash 技能表 -->

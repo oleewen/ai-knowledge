@@ -1,63 +1,69 @@
-# 工作流
+# docs-pull 工作流
 
-主干：[SKILL.md](../SKILL.md)；写盘：[gates.md](gates.md)。
+[SKILL.md](../SKILL.md)；风险控制与动作协议 [gates.md](gates.md)。
 
-## 范围
+## 参数向导
 
-- **联邦镜像**：`applications/app-{APPNAME}/`  
-- **SSOT**：远端 `{DOC_DIR}/`；本体**不因本技能默认被改**，只镜像树更新。
+按以下顺序收口参数；用户已明确时可跳过对应项：
 
-## IO
+1. 运行模式：system（application → system）或 company（system → company）
+2. `--app` / `--sys-name` / `--all`
+3. 当前轮起始槽位单元
 
-| 类型 | 内容 |
-| ---- | ------ |
-| 硬 | `applications/app-{APPNAME}/{APPNAME}_manifest.yaml`（`repo_url`、`docs_root`…） |
-| 可选 | `--app`、`--branch`、`--dry-run`、`--force` |
-| 出 | 更新镜像；**追加** `changelogs/pull-log.md` |
-| 不做 | 改中央 `{DOC_DIR}/`；不自动 distill；不改 `APPLICATIONS_INDEX.md` |
+参数未收口前，不进入执行。
 
-## 参数
+## 当前槽位单元
 
-| 参数 | 默认 | 说明 |
-| ---- | ------ | ------ |
-| `--app` | 自动发现多个则列选 | |
-| `--branch` | manifest `default_branch` 否则 `main`→`master` | 均无 → 停机 |
-| `--dry-run` | 假 | 只打计划 |
-| `--force` | 假 | 强覆盖 → [gates.md](gates.md) 额外一句确认 |
+一个当前槽位单元就是单个联邦槽位：
 
-## 四步
+- system 库下的 `application-{app_name}`
+- company 库下的 `system-{sys_name}`
 
-### 1 发现与 manifest
+一次只处理一个当前槽位单元，不并行推进多个槽位。
 
-无 `--app` → 扫 `applications/app-*/` 供选。读 manifest：**复述** `repo_url`、`docs_root`、`app_id`。分支：`--branch` > `default_branch` > `main`→`master`。字段 [manifest-spec.md](manifest-spec.md)。
+## 执行循环
 
-### 2 拉取
+### 1 建联前提
+
+- 在 system 知识库根执行 docs-link 建联（创建 `application-{app_name}/` 槽位）
+- 在 company 知识库根执行 docs-link 建联（创建 `system-{sys_name}/` 槽位）
+- 必须先有槽位目录，否则 `pull-slots.sh` 失败退出
+
+### 2 选择当前槽位单元
+
+- `--app <app_name>`：同步单个 application 槽位
+- `--sys-name <sys_name>`：同步单个 system 槽位
+- `--all`：先选择一个当前槽位单元处理，收敛后再决定是否继续剩余槽位
+
+### 3 执行同步
 
 ```bash
-agent/skills/docs-pull/scripts/pull-docs.sh \
-  --app {APPNAME} --repo {repo_url} --branch {branch} \
-  --docs-root {docs_root} --target applications/app-{APPNAME}
+bash agent/skills/docs-pull/scripts/pull-slots.sh --app <app_name>
+bash agent/skills/docs-pull/scripts/pull-slots.sh --sys-name <sys_name>
+bash agent/skills/docs-pull/scripts/pull-slots.sh --all
 ```
 
-职责（脚本）：clone → 备份 `changelogs/`+manifest → rsync → 恢复保护文件 → 可能迁日志为 `pull-log.md` → 更新 `last_pulled_*`。  
-**非 dry-run 前** → [gates.md](gates.md) HARD-GATE。
+脚本约束：
 
-### 3 记录
+- 仅使用本地 `path`，不 clone
+- 要求源 `path` 为 Git 工作区
+- 目标仓库 `.docsconfig` 必须完整可解析
+- 同步时排除 `README.md`、`index.md`、`changelogs/`
 
-在 `applications/app-{APPNAME}/changelogs/pull-log.md`**末尾追加**（**0 变更也写一条**）。格式 [../assets/pull-log-template.md](../assets/pull-log-template.md)。
+### 4 风险校核
 
-### 4 收尾
+当前槽位单元同步后，立即校核：
 
-核对 `knowledge/`、`requirements/`、`changelogs/`；manifest 未被覆盖（否则 `git checkout -- …manifest`）；输出分支、提交、统计摘要。
+- `knowledge-links.yaml` 字段是否完整
+- `path` 是否存在且为 Git 工作区
+- 目标 `.docsconfig` 与 `KNOWLEDGE_TYPE` 是否匹配
+- 槽位 `changelogs/CHANGE-LOG.md` 是否已追加追溯记录
 
-## 约束
+### 5 输出与动作停顿
 
-| 项 | 要求 |
-| -- | ------ |
-| 注册前置 | manifest 可读且 `repo_url` 非空 |
-| changelog | 本地 `changelogs/` **不被远端盖** |
-| manifest | `{APPNAME}_manifest.yaml` **不被远端盖** |
-| 幂等 | 同分支同提交重复结果一致 |
-| 零幻觉 | 只汇报真实拉到的内容与提交 |
+当前槽位单元收敛后，停下等待 `C/M/S/F`：
 
-**预检**：参数齐可走快路径或多先 `--dry-run`；多 app、`--force`、大范围覆盖用语 → gates 分步确认。
+- `C`：确认当前槽位单元并结束或进入下一槽位
+- `M`：修改参数、范围或模式，再重新校核
+- `S`：跳过当前槽位单元
+- `F`：按已确认参数补齐剩余槽位

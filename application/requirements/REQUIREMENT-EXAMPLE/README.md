@@ -1,4 +1,10 @@
+---
+type: Requirement Package
+title: REQUIREMENT-EXAMPLE — 需求包结构示例（占位）
+---
 # REQUIREMENT-EXAMPLE — 需求包结构示例（占位）
+
+索引入口见 [index.md](index.md)。
 
 本目录为 **命名与结构示例**，演示 `REQUIREMENT-{IDEA-ID}/` 下 MVP 阶段与 PRD/ASD/DSD/TDD 等落盘方式；非生产需求内容。
 

@@ -33,6 +33,6 @@
 
 ## 格式
 
-- [ ] 文末「## 文档元数据」YAML 完整（id、title、version、status、created、updated、author、parent、dependencies、tags）；**无**文首 `---`
+- [ ] 文首 frontmatter 完整（id、title、version、status、created、updated、author、parent、dependencies、tags）
 - [ ] 七章结构与 [solution-template.md](../assets/solution-template.md) 一致
 - [ ] §7.1 覆盖文内专用术语；§7.2 列已引需求/知识库路径

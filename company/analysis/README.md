@@ -1,4 +1,10 @@
+---
+type: Documentation
+title: analysis — 需求分析文档
+---
 # analysis — 需求分析文档
+
+索引入口见 [index.md](index.md)。
 
 SDD **需求分析**阶段目录：产出 `ANALYSIS-{IDEA-ID}.md`，下游由各系统侧 [`system/solutions/`](../../system/solutions/README.md) 承接（`company/` 层不设 requirements 目录）；上游 [../solutions](../solutions) 中 `SOLUTION-{IDEA-ID}.md`。
 
@@ -8,19 +14,19 @@ SDD **需求分析**阶段目录：产出 `ANALYSIS-{IDEA-ID}.md`，下游由各
 |----|------|
 | 文件 | 根目录平铺 `ANALYSIS-{IDEA-ID}.md` |
 | IDEA-ID | 与 `SOLUTION-{IDEA-ID}.md`、`REQUIREMENT-{IDEA-ID}/` **同链**（见 [../../agent/knowledge/naming-conventions.md](../../agent/knowledge/naming-conventions.md)） |
-| 文档元数据 | 文末 `## 文档元数据`：`id` 与文件名一致；`parent` → 对应 `SOLUTION-{IDEA-ID}`（**勿**在文首使用 `---` YAML frontmatter） |
+| 文档元数据 | 文首 YAML frontmatter：`id` 与文件名一致；`parent` → 对应 `SOLUTION-{IDEA-ID}` |
 
 ## 输入
 
 - [../solutions/](../solutions/) — `SOLUTION-{IDEA-ID}.md`
-- [../ea/](../ea/) — 企业架构五视角文档
+- [../knowledge/](../knowledge/README.md) — 企业架构五视角文档
 - 规约：各需求包内 `specs/`
 
 ## 分析索引表
 
 | 文档文件名 | 标题 | 关联解决方案 | 简要说明 |
 |------------|------|--------------|----------|
-| ... | ... | ... | ... |
+| ANALYSIS-EXAMPLE.md | 示例跨系统需求分析 | SOLUTION-EXAMPLE | SDD 链演示模板 |
 
 ## 规范
 
@@ -29,4 +35,4 @@ SDD **需求分析**阶段目录：产出 `ANALYSIS-{IDEA-ID}.md`，下游由各
 
 ## 索引维护
 
-每新增或评审一份 `ANALYSIS-{IDEA-ID}.md`，须同步更新上表；重大结构变更时按需更新根 `INDEX_GUIDE.md`。
+每新增或评审一份 `ANALYSIS-{IDEA-ID}.md`，须同步更新上表；重大结构变更时按需更新根 `index.md`。

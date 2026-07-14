@@ -1,11 +1,11 @@
 # 核心概念
 
-| 视角 | 层级 | SSOT 文件 |
+| 视角 | 层级 | SSOT 载体 |
 | --- | --- | --- |
-| application | SYS/APP/MS/API | `application-entities.md`（分节表，语义等价 schema 2.1 分类结构） |
-| data | DS、ENT | `data-entities.md`（扁平） |
-| business | BD→AB | `business-entities.md`（扁平） |
-| product | PL→UC | `product-entities.md`（扁平） |
-| technical | MW/CMP | `technical-entities.md`（扁平） |
+| application | SYS/APP/MS/API | 各实体 per-entity `{ID}.md`（OKF concept + frontmatter；schema 2.1 字段语义） |
+| data | DS、ENT | 锚点目录 + 叶子 `{ID}.md` |
+| business | BD→AB | 锚点目录 + 叶子 `{ID}.md` |
+| product | PL→UC | 锚点目录 + 叶子 `{ID}.md` |
+| technical | MW/CMP | 扁平 `technical/{ID}.md` |
 
-层级与必填字段见各视角 `{perspective}-meta.md`。
+层级与必填字段见各视角 `{perspective}-meta.md`；聚合索引由扫描生成 `KNOWLEDGE_INDEX.md`（非 SSOT）。

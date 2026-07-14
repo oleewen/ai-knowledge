@@ -1,3 +1,7 @@
+---
+type: Design Document
+title: 公司知识库设计
+---
 # 公司知识库设计
 
 本文件定义 `company/` 的设计边界、目录契约、同步闭环与演进策略。  
@@ -9,7 +13,7 @@
 
 1. [README.md](README.md) — 公司知识库定位与目录说明
 2. 本文 — 设计边界、治理规则与流程约束
-3. [ea/README.md](ea/README.md) — 企业架构视图入口
+3. [knowledge/README.md](knowledge/README.md) — 企业架构视图入口
 4. [system-SYSNAME/README.md](system-SYSNAME/README.md) — 系统槽位模板说明
 5. [../agent/references/knowledge-layout.md](../agent/references/knowledge-layout.md) — 三层路径与 overview SSOT
 6. [../system/DESIGN.md](../system/DESIGN.md) — 系统知识库设计（下游对齐参考）
@@ -39,18 +43,24 @@
 
 | 层级 | 目录 | 职责 |
 | --- | --- | --- |
-| 企业架构层 | `ea/` | 承载公司级企业架构顶层视图（五视角，聚焦治理叙事，不含实现细节）；含 [`ea/overview/`](ea/overview/NAME-overview.md) 缓冲区（docs-tag / docs-archive 操作对象） |
+| 企业架构层 | `knowledge/` | 承载公司级企业架构顶层视图（五视角，聚焦治理叙事，不含实现细节）；含 [`knowledge/overview/`](knowledge/overview/NAME-overview.md) 缓冲区（docs-tag / docs-archive 操作对象） |
 | 方案层 | `solutions/` | 公司级跨系统解决方案；明确「哪个系统负责提供什么功能」，作为 `analysis/` 上游输入 |
 | 分析层 | `analysis/` | 公司级跨系统需求分析；衔接 `solutions/`，输出由各系统侧 `requirements/` 承接 |
 | 槽位层 | `system-{name}/` | 挂载系统镜像内容的统一入口 |
 | 清单层 | `knowledge-links.yaml` | 记录建联关系与同步编排信息 |
 | 运维 | `changelogs/` | `CHANGE-LOG.md`、`INDEXING-LOG.md`（见 [changelogs/README.md](changelogs/README.md)） |
 
-**索引说明**：公司库当前不设独立 `INDEX_GUIDE.md` / `docs_meta.yaml`；Agent 检索入口为 [README.md](README.md)、本文与仓库根 [INDEX_GUIDE.md](../INDEX_GUIDE.md) §公司知识库。
+**索引说明**：Agent 检索入口为 [README.md](README.md)、[index.md](index.md)、[docs-meta.md](docs-meta.md)、本文与仓库根 [index.md](../index.md) §公司知识库。
 
 #### 公司级实体
 
 下列实体在 **company/** 首次定义；系统层、应用层仅引用 ID，不重复字段语义（完整表见 [application/DESIGN.md](../application/DESIGN.md) §2.2.1）。
+
+SSOT 约束：
+
+- company 层首次定义实体（BD/CAP/PL/SYS/MDG/TPL）的正文 SSOT 落在 `company/knowledge/**`；
+- `company/knowledge/overview/` 仅作为缓冲区，不作为实体正文 SSOT；
+- system/application 层仅引用 ID 与链接，不重复字段语义。
 
 | 视角 | 实体 | 说明 |
 | --- | --- | --- |
@@ -79,8 +89,8 @@
 
 `system-{name}/` 承接下游 `system/` 知识库的镜像同步结果，供公司层导航与跨系统治理；不承载系统实现细节。
 
-- **下行同步**：由 `knowledge-links.yaml` 登记后，经脚本或人工将目标 `system/` 文档同步至 `company/system-{name}/`（尚无与 `/docs-pull` 同级的独立 Slash 技能；应用联邦镜像才使用 `/docs-pull`）。
-- **架构上行**：公司侧 overview/archive 流程见 [ea/overview/](ea/overview/NAME-overview.md) 与 [agent/skills/docs-extract/SKILL.md](../agent/skills/docs-extract/SKILL.md)、[docs-archive/SKILL.md](../agent/skills/docs-archive/SKILL.md)；系统侧蒸馏见 [system/DESIGN.md](../system/DESIGN.md)（`/docs-distill` 仅落盘 `system/architecture/overview/`）。
+- **下行同步**：以 `knowledge-links.yaml` 为输入真源，由 docs-link 完成建联与槽位创建，再由 docs-pull 进行 system→company 槽位同步（仅使用本地 `path`，不 clone）。
+- **架构上行**：公司侧 overview/archive 流程见 [knowledge/overview/](knowledge/overview/NAME-overview.md) 与 [agent/skills/docs-extract/SKILL.md](../agent/skills/docs-extract/SKILL.md)、[docs-archive/SKILL.md](../agent/skills/docs-archive/SKILL.md)；系统侧蒸馏见 [system/DESIGN.md](../system/DESIGN.md)（`/docs-distill` 仅落盘 `system/knowledge/overview/`）。
 
 #### SDD 跨层衔接
 
@@ -93,7 +103,7 @@
 
 治理规则：
 
-- **命名规则**：系统槽位统一 `system-{SYSTEM_NAME}`；
+- **命名规则**：系统槽位统一 `system-{sys_name}`（`sys_name` 为目录名 slug；`sys_label` 仅展示用）；
 - **职责规则**：`company/` 不承载系统实现细节与应用字段定义；
 - **引用规则**：跨层内容使用链接引用，不复制下游正文；
 - **变更规则**：新增槽位或调整目录语义时，先更新本文件约束再更新内容。
@@ -105,9 +115,9 @@
 `company/` 的流程定位是“公司层编排入口”，流程保持轻量但可审计。
 
 1. **系统侧准备**：下游 `system/` 侧完成可同步内容整理；
-2. **公司侧挂载**：按 `knowledge-links.yaml` 将内容同步至 `company/system-{name}/` 槽位（非 `/docs-pull` 技能路径）；
-3. **治理校核**：在 `company/ea/` 与 `knowledge-links.yaml` 维护一致性；
-4. **追溯记录**：对新增、替换、退役槽位记录来源、影响范围与状态。
+2. **公司侧挂载**：按 `knowledge-links.yaml` 将内容同步至 `company/system-{sys_name}/` 槽位（docs-pull：读取目标仓库 `.docsconfig` 的 `DOC_ROOT/DOC_DIR`，源目录为 `{DOC_ROOT}/{DOC_DIR}/`）；
+3. **治理校核**：在 `company/knowledge/` 与 `knowledge-links.yaml` 维护一致性；
+4. **追溯记录**：每次同步后必须追加槽位 `company/system-{sys_name}/changelogs/CHANGE-LOG.md`；company 根 `changelogs/CHANGE-LOG.md` 仅做槽位级汇总事件（可选）。
 
 闭环原则：
 
@@ -125,6 +135,7 @@
 - **边界门禁**：`company/` 文档不引入系统实现与应用字段细节；
 - **引用门禁**：跨层描述必须可追溯至 `system/` 或 `application/`；
 - **变更门禁**：槽位变更先更新设计约束，再更新目录与链接清单。
+- **同步门禁**：槽位同步写根目录时禁止覆盖 `README.md`、`index.md`、`changelogs/`；默认只允许单槽位（需显式指定 `--sys-name`），`--all` 才允许全量并汇总失败；仅使用本地 `path`（必须为 Git 工作区）。
 
 演进顺序：
 
@@ -137,9 +148,9 @@
 ## 参考
 
 - [README.md](README.md)
-- [ea/README.md](ea/README.md)
+- [knowledge/README.md](knowledge/README.md)
 - [system-SYSNAME/README.md](system-SYSNAME/README.md)
 - [knowledge-links.yaml](knowledge-links.yaml)
 - [agent/references/knowledge-layout.md](../agent/references/knowledge-layout.md)
-- [../INDEX_GUIDE.md](../INDEX_GUIDE.md)
+- [../index.md](../index.md)
 - [../system/DESIGN.md](../system/DESIGN.md)

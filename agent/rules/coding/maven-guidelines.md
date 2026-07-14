@@ -6,7 +6,7 @@
 
 ### 多模块项目架构
 
-```
+```text
 {project-name}/
 ├── pom.xml (父POM)
 ├── {project-name}-api/pom.xml

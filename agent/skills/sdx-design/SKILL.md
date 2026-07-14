@@ -1,107 +1,74 @@
 ---
 name: sdx-design
 description: >
-  产出 **DSD（详细设计说明书，§1–§3，`assets/dsd-template.md`）**：唯一正式详设交付。
-  用于编写/修改 DSD、把 ASD §3 或 **spec-asd-*.md** 扩写到实现级（API、DDL、错误码、幂等）、门禁 G/Qclose/validate-dsd；上游须有 **ASD-* 或 spec-asd-***（同 IDEA-ID、`{N}`）与 PRD 可对齐。**不写 ASD**。
-  主路径为 docs-distill/extract/archive/indexing/build、仅需 SOLUTION/ANALYSIS/PRD/ASD/TDD，或明示仅 architect/PRD/测试 → 对应技能；非本技能主责。
-  门禁：未完成「草稿用户总确认」不得写 `{DOC_DIR}/requirements/**/DSD-*.md`（例外见 references/gates.md）。
-compatibility: Bash 5+；`scripts/config-bootstrap.sh` 解析 `DOC_ROOT`；钩子 `agent/hooks/sdx_gate_common.py --gate design`。
+  基于已共识 PRD 与 ASD/spec-asd 按 §1-§3 分段细化实现级设计，并直写 DSD-{IDEA-ID}-{N}.md；
+  每段生成后自动 grilling 补强至收敛，用户确认后再推进下一段。
+  触发：/sdx-design、编写/修改 DSD、API、DDL、错误码、幂等、时序、validate-dsd，且可对齐上游 ASD 或 spec-asd。
+  分流：只要 PRD/ASD/TDD/docs-* 主路径 → 对应技能。
+  推进协议：参数向导、当前段、自动 grilling、前文回改与用户动作见 references/gates.md。
+compatibility: Bash 5+；校验脚本 agent/skills/sdx-design/scripts/validate-dsd.sh（仅结构/内容校验）。
 ---
 
-# 详细设计（sdx-design）
+# sdx-design
 
-判定主责 → 读 `references/` → 会话 **`...-sdx-design.md`** → **CONFIRMED** → 落盘 **DSD**。**不写 ASD**。
+读 references/ → 参数向导 → 分段直写终稿 → 每段自动 grilling 补强至收敛 → 用户确认推进。无 PRD → 引导 `sdx-prd`；无 ASD/spec-asd → 引导 `sdx-architect` 或按缺口标注受限继续。**不写 ASD，不产 TDD。**
 
-**上游**（同 IDEA-ID、`{N}`）：`ASD-*`（`/sdx-architect`）与/或 **`{DOC_DIR}/specs/spec-asd-*.md`**（[asd-spec-template](../sdx-architect/assets/asd-spec-template.md)）。详设正文以 **DSD** 为唯一载体。**会话闸门稿**：`{DOC_DIR}/superpowers/specs/*-sdx-design.md`；勿与 **`spec-asd`**（`{DOC_DIR}/specs/`）路径混淆。
+## 输出硬门禁（P0）
 
-有 **ASD**：DSD §1 与 ASD §1 对齐；**§2** 在 ASD §3 与服务边界基础上扩写到实现级；冲突以已确认 **ASD + PRD** 为准。**仅有 architect spec**：以 FR/UC 等与 spec §5 为范围基础并标 SSOT；与 PRD 冲突先收口上游。
+- 一次只处理一个“当前段”（章节、子章节、单个 `API` 契约块、单个 `DDL/TBL` 块、单个 `LOGIC` 块、单个错误码组、单个幂等/时序/安全策略块）；禁止一口气补齐多段。
+- 当前段写入终稿后，必须进入自动 `grilling` 循环；仅当当前段已收敛，或打出必须等待用户确认的语义性问题时，才把控制权交还用户。
+- 自动 `grilling` 收敛后，输出 `C/M/G/F` 选项并停止等待用户选择；不得自动推进下一段。
+- `F` 仅表示在当前段已收敛后，一次性补齐当前文档剩余未完成章节；不得覆盖已确认前文。
+- 若用户一开始就要求“一次性生成整篇”，仍先完成当前段并自动 `grilling` 至收敛，再由用户明确选择 `F` 进入批量补齐。
+- `grilling` 过程中如发现**语义性问题**（改变接口语义、数据模型、服务边界、幂等策略、错误码口径、事务边界、非功能取舍、优先级、术语等），必须先给出结论、推荐修订与数字选项并等待用户确认；未获确认不得修订当前段。
+- 仅**非语义性修订**（不改变含义的错别字、编号、排版等）可在当前段默认授权下直接修订；不确定时按语义性处理。
 
-**链路**：`sdx-architect` · `sdx-prd` · `sdx-analysis` → **本技能** → `sdx-test`。读者：研发骨干、测试设计。
+## 边界
 
----
+| 负责 | 不负责 |
+| --- | --- |
+| `DSD-{IDEA-ID}-{N}.md` 生成与推进、§1-§3 详设、§2 实现级 API/DDL/LOGIC/错误码/幂等/时序设计 | `PRD/ASD/TDD/SOLUTION/ANALYSIS` 初稿；docs-* 主路径；实现代码与自动化测试 |
 
-## 技能包
+## 不这样用
 
-| 路径 | 说明 |
-|------|------|
-| `references/` | [references/README.md](references/README.md) |
-| `assets/` | DSD 模板、会话门禁模板 |
-| `scripts/` | `validate-dsd.sh` |
-| `evals/` + [schemas.md](references/schemas.md) | 评测契约与样本 |
-| `agents/` | `grader.md`、`analyzer.md` |
-| `gotchas.md` | 执行易错 |
-
----
+- 不走前置草稿 + 集中收口主线；主线是参数向导后直接分段直写终稿
+- 不把整篇集中回炉或整份重生成当默认路径
+- 不把 `DSD` 阶段偷换成 `ASD/PRD/TDD` 或 docs-* 主路径
+- 不把实现级契约拆到 DSD 外的第二份 Markdown 作为并行正文
 
 ## 路由
 
+| 目的 | 文件 |
+| --- | --- |
+| 流程 | [workflow.md](references/workflow.md) |
+| 推进协议 | [gates.md](references/gates.md) |
+| grilling 能力 | [grilling-skill.md](../../references/grilling-skill.md) |
+| 原则 / 反模式 | [design-principles.md](references/design-principles.md)、[anti-patterns.md](references/anti-patterns.md) |
+| 易错 / 受众 / 终检 | [gotchas.md](gotchas.md)、[audience-and-language.md](references/audience-and-language.md)、[quality-checklist.md](references/quality-checklist.md) |
+| KNOWLEDGE_TYPE | [knowledge-type-modes.md](references/knowledge-type-modes.md) |
+| 模板 | [dsd-template.md](assets/dsd-template.md)、上游 [asd-spec-template.md](../sdx-architect/assets/asd-spec-template.md) |
 
-| 主路径 | 技能 |
-|--------|------|
-| 会话 spec 路径 | [session-spec-path.md](../../references/session-spec-path.md) |
-| docs-distill / extract / archive / indexing / build | **docs-*** |
-| 只要 SOLUTION / ANALYSIS / PRD / ASD / TDD，不要 DSD | 对应 **sdx-*** |
-| 明示仅 `/sdx-architect` / PRD / 测试 | 不以本技能为主 |
-| **DSD**、Gd、Qclose、validate-dsd | **本技能** |
+## 最少输入
 
-**负责**：DSD §1–§3、会话 G/Qclose、§2 内实现级契约与追溯表达。  
-**不负责**：用 ASD/PRD/TDD 顶替详设主产物；纯 docs-* 主线。
+- 可对齐的 **`PRD-{IDEA-ID}-{N}.md`**
+- 可对齐的 **`ASD-{IDEA-ID}-{N}.md`** 和/或 `spec-asd-{IDEA-ID}-{N}-{app-name}.md`
+- `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/` 可写
+- 若已给 `IDEA-ID`、`N`、章节范围、深度、上游文档范围，则直接进入参数向导确认
 
----
+## 推进协议
 
-## 最短路径
-
-1. **IDEA-ID**、上游（`ASD-*` 与/或 **`spec-asd-*`**）、**PRD**、`KNOWLEDGE_TYPE`、`--depth`。  
-2. [gates.md](references/gates.md) → [workflow.md](references/workflow.md)。  
-3. [design-session-spec-template.md](assets/design-session-spec-template.md)：G1–G3 → Qclose-1 → `CONFIRMED`。  
-4. 写 **DSD**（[dsd-template.md](assets/dsd-template.md)）。  
-5. 仓库根：`agent/skills/sdx-design/scripts/validate-dsd.sh`（可选 `--gate-check`）；或在 `agent/skills/sdx-design/` 下 `./scripts/validate-dsd.sh`。
-
----
-
-## 前置
-
-**PRD**（硬）；**ASD 与/或 spec-asd**（缺一则须澄清或用户明示例外）；`KNOWLEDGE_TYPE`、`{DOC_DIR}`、`{DOC_DIR}/superpowers/specs/` 位置。指令只要上游或 docs 主线时不要强行套全流程。
-
-**KNOWLEDGE_TYPE**： [references/knowledge-type-modes.md](references/knowledge-type-modes.md)（正文权威在 `sdx-architect`）。
-
----
-
-## 执行路由（先读后写）
-
-0. 可选：[references/README.md](references/README.md)。  
-1. [gates.md](references/gates.md)  
-2. [workflow.md](references/workflow.md)  
-3. [brainstorming-integration.md](references/brainstorming-integration.md)  
-4. [design-principles.md](references/design-principles.md)  
-5. [anti-patterns.md](references/anti-patterns.md)  
-6. [gotchas.md](gotchas.md)  
-7. [audience-and-language.md](references/audience-and-language.md)  
-8. [quality-checklist.md](references/quality-checklist.md)  
-9. 模板：会话 `assets/design-session-spec-template.md`；DSD `assets/dsd-template.md`；**spec-asd** 对齐 [asd-spec-template](../sdx-architect/assets/asd-spec-template.md)。
-
----
-
-## 门禁
-
-总确认前禁止 **`{DOC_DIR}/requirements/**/DSD-*.md`**；HTML 注释与例外见 [gates.md](references/gates.md)。
-
----
+段落推进、前文回改、自动 `grilling` 与用户动作 `C/M/G/F` 见 [gates.md](references/gates.md)。
 
 ## 产出与校验
 
-- **会话 spec**：`{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-sdx-design.md`  
-- **DSD**：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/DSD-{IDEA-ID}-{N}.md`  
+- 正式：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/DSD-{IDEA-ID}-{N}.md`
 
 ```bash
 agent/skills/sdx-design/scripts/validate-dsd.sh
-agent/skills/sdx-design/scripts/validate-dsd.sh --file path/to/DSD-xxx.md --gate-check
+agent/skills/sdx-design/scripts/validate-dsd.sh --file path/to/DSD-xxx.md
 ```
 
----
+## 评测 / 钩子
 
-## 评测与工程化
-
-[schemas.md](references/schemas.md)、`evals/evals.json`、`evals/eval-metadata-template.json`、`agents/grader.md`、`agents/analyzer.md`。钩子（仓库根）：`python3 agent/hooks/sdx_gate_common.py --gate design`。
-
-**ASD 模板**：[asd-template.md](../sdx-architect/assets/asd-template.md) · [asd-spec-template.md](../sdx-architect/assets/asd-spec-template.md)
+评测：`evals/evals.json`、[grader.md](agents/grader.md)。
+`sdx-design` 评测聚焦当前段推进协议与结构校验。

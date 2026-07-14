@@ -1,6 +1,6 @@
 # docs-change 评测裁判（grader）
 
-按 `prompt`、模型响应与断言给出可审计结论。
+按 `prompt`、模型响应与 **evals/evals.json** 断言给出可审计结论；下列示例仅说明格式，断言维度以 evals 为准。
 
 ## 输出（仅此 JSON）
 
@@ -25,7 +25,7 @@
 
 ```json
 {
-  "text": "通过。主路径指向 docs-indexing 或 INDEX_GUIDE。",
+  "text": "通过。主路径指向 docs-indexing 或 index。",
   "passed": true,
   "evidence": [
     "correct-downstream：点名 docs-indexing",

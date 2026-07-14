@@ -5,6 +5,7 @@
 ## 技术栈规范
 
 ### 核心框架
+
 - **Java版本**: Java 17+ (使用最新LTS版本特性)
 - **Spring Boot**: 2.7.10+ (使用自动配置和启动器机制)
 - **构建工具**: Maven 3.6+
@@ -13,6 +14,7 @@
 - **数据库**: MySQL 8.0+
 
 ### 辅助工具
+
 - **对象映射**: MapStruct 1.5+
 - **代码简化**: Lombok 1.18+
 - **测试框架**: JUnit 5 + Mockito
@@ -22,6 +24,7 @@
 ## 编码规范
 
 ### 1. 命名规范
+
 - **类名**: PascalCase（例：`OrderService`）
 - **方法名**: camelCase（例：`createOrder()`）
 - **变量名**: camelCase（例：`orderAmount`）
@@ -29,6 +32,7 @@
 - **包名**: 全小写，域名反写（例：`com.ai.master.order.domain`）
 
 ### 2. 类设计规范
+
 ```java
 // 领域模型示例
 package com.ai.master.order.domain.model;
@@ -68,6 +72,7 @@ public class Order {
 ```
 
 ### 3. 接口设计规范
+
 ```java
 // API接口示例
 package com.ai.master.order.api.service;
@@ -96,19 +101,22 @@ public interface OrderService {
 ### 4. 异常处理规范
 
 #### 异常分类
+
 - **业务异常**: `BusinessException` - 业务规则不满足
 - **系统异常**: `SystemException` - 系统级错误
 - **参数异常**: `ValidationException` - 参数验证失败
 - **数据异常**: `DataNotFoundException` - 数据不存在
 
 #### 异常处理层级
+
 ```java
 // 全局异常处理器
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<ErrorResponse> handleValidation(ValidationException e) {
+    public ResponseEntity<ErrorResponse> handleValidation(
+            ValidationException e) {
         return ResponseEntity.badRequest()
             .body(ErrorResponse.of("INVALID_PARAMETER", e.getMessage()));
     }
@@ -124,6 +132,7 @@ public class GlobalExceptionHandler {
 ### 5. 数据访问规范
 
 #### Repository模式
+
 ```java
 // 领域仓储接口
 package com.ai.master.order.domain.repository;
@@ -141,6 +150,7 @@ public interface OrderRepository {
 ```
 
 #### MyBatis使用规范
+
 ```java
 // Mapper接口示例
 @Mapper
@@ -157,6 +167,7 @@ public interface OrderMapper extends Mapper<OrderEntity> {
 ## 日志规范
 
 ### 1. 日志级别使用
+
 - **ERROR**: 系统异常、需要立即处理的问题
 - **WARN**: 潜在问题、业务异常
 - **INFO**: 业务关键路径、重要状态变更
@@ -164,6 +175,7 @@ public interface OrderMapper extends Mapper<OrderEntity> {
 - **TRACE**: 最详细信息，通常不开启
 
 ### 2. 日志格式
+
 ```java
 @Slf4j
 public class OrderApplicationService {

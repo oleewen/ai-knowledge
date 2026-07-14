@@ -18,8 +18,8 @@ trap cleanup EXIT
 mkdir -p "$DOCS_DIR"
 git -C "$PROJECT_DIR" init -q
 
-APP_INDEX="$ROOT_DIR/application/INDEX_GUIDE.md"
-SYS_INDEX="$ROOT_DIR/system/INDEX_GUIDE.md"
+APP_INDEX="$ROOT_DIR/application/index.md"
+SYS_INDEX="$ROOT_DIR/system/index.md"
 APP_SLOT_GLOB="$ROOT_DIR/system/application-*"
 SYS_SLOT_GLOB="$ROOT_DIR/company/system-*"
 
@@ -53,9 +53,9 @@ APP_SLOT_COUNT_AFTER="$(count_glob_matches "$APP_SLOT_GLOB")"
 SYS_SLOT_COUNT_AFTER="$(count_glob_matches "$SYS_SLOT_GLOB")"
 
 [[ "$APP_INDEX_SUM_BEFORE" == "$APP_INDEX_SUM_AFTER" ]] \
-  || fail "application/INDEX_GUIDE.md 不应被修改"
+  || fail "application/index.md 不应被修改"
 [[ "$SYS_INDEX_SUM_BEFORE" == "$SYS_INDEX_SUM_AFTER" ]] \
-  || fail "system/INDEX_GUIDE.md 不应被修改"
+  || fail "system/index.md 不应被修改"
 [[ "$APP_SLOT_COUNT_BEFORE" == "$APP_SLOT_COUNT_AFTER" ]] \
   || fail "system/application-* 联邦槽位数量发生变化"
 [[ "$SYS_SLOT_COUNT_BEFORE" == "$SYS_SLOT_COUNT_AFTER" ]] \

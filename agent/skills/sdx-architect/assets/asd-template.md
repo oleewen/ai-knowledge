@@ -1,3 +1,17 @@
+---
+id: "ASD-{IDEA-ID}-{N}"
+title: "{架构设计说明书标题}"
+version: "1.0.0"
+status: "draft"
+created: "{YYYY-MM-DD}"
+updated: "{YYYY-MM-DD}"
+author: "architect"
+reviewers: []
+parent: "PRD-{IDEA-ID}-{N}"
+mvp_phase: "MVP-Phase-{N}"
+tags: ["ASD"]
+---
+
 # {架构设计说明书（ASD）标题}
 
 > 读者：**架构师**（主笔与验收）；**分析、产品、研发**参评可行性与范围。
@@ -151,21 +165,3 @@ erDiagram
 | 应用 | 规约文件 | 规约描述 |
 | ---- | -------- | -------- |
 | `{APP-ID}` | `./specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md` | **Spec结构**：参照 `asd-spec-template.md`（第1-6节）<br/>**范围（1）**：能力边界 / 覆盖 FR-UC-BR-EX / SSOT 来源<br/>**术语（2）**：核心业务概念与字段口径<br/>**需求条目（3-4）**：FR-{n} / UC-{n}<br/>**接口定义（5）**：接口签名、入参、出参、BR、EX（message/suggestions）<br/>**元数据（6）**：id/title/version/status/created/updated/parent/refs/scope |
-
-## 文档元数据
-
-<!-- 文末唯一 fenced YAML；禁用文件头 --- frontmatter -->
-
-```yaml
-id: "ASD-{IDEA-ID}"
-title: "{架构设计说明书标题}"
-version: "1.0.0"
-status: "draft"
-created: "{YYYY-MM-DD}"
-updated: "{YYYY-MM-DD}"
-author: "architect"
-reviewers: []
-parent: "PRD-{IDEA-ID}"
-mvp_phase: "MVP-Phase-{N}"
-tags: ["ASD"]
-```

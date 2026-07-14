@@ -1,6 +1,9 @@
-# 业务视角元数据（application/knowledge/business）
+---
+type: Perspective Meta
+title: 业务视角元数据（application/knowledge/business）
+---
 
-应用侧 DDD 业务版图（BD→BSD→BC→AGG→AB）实体登记与实现映射元数据。实例索引见 [business-entities.md](business-entities.md)。
+应用侧 DDD 业务版图（BD→BSD→BC→AGG→AB）实体登记与实现映射元数据。实例索引见 [../index.md](../index.md)（§1，扫描生成；实体文件 `{ID}.md` 为 SSOT）。
 
 ---
 
@@ -11,7 +14,8 @@
 | meta_id | `DIR-KNOWLEDGE-BUSINESS` |
 | 视角 | business |
 | 层级范围 | application |
-| 说明 | DDD 业务版图；公司级 BD/CAP 在 `company/ea/business/` 首次定义，系统层自 BSD 起首次定义，本层承接实现映射与实例登记。 |
+| 说明 | DDD 业务版图；公司级 BD/CAP 在 `company/knowledge/business/` 首次定义，系统层自 BSD 起首次定义，本层承接实现映射与实例登记。 |
+| entities_shape | 实体文件 `{ID}.md`（OKF 概念实体）；`BSD` 为目录锚点，`BC/AGG` 采用容器目录，`AB` 为 `AGG` 下叶子文件；索引见 KNOWLEDGE_INDEX §1 |
 
 ---
 
@@ -50,6 +54,7 @@
 | name | 中文名称 |
 | description | 实体描述 |
 | evidence_source | 证据来源 |
+| layer_scope | 固定为 `application` |
 
 ### 各层专属
 
@@ -79,8 +84,8 @@
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 人类可读说明 |
-| [business-entities.md](business-entities.md) | 扁平实体索引与登记主表 |
-| [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) | 五视角索引 |
-| [../../INDEX_GUIDE.md](../../INDEX_GUIDE.md) | 联邦索引 |
+| [../index.md](../index.md) | §1 业务视角实例索引（扫描生成） |
+| [../index.md](../index.md) | 五视角索引 |
+| [../../index.md](../../index.md) | 联邦索引 |
 
-**索引**：`readme_index_table: true`；变更 ID 时同步 README、KNOWLEDGE_INDEX.md、INDEX_GUIDE.md（按需）。
+**索引**：`readme_index_table: true`；变更 ID 时同步 README、index.md、index.md（按需）。

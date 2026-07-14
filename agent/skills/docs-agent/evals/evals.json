@@ -1,19 +1,26 @@
 {
   "skill_name": "docs-agent",
-  "version": "1.0.0",
-  "description": "评估触发边界、步骤 0 门禁、INDEX 驱动入口文档；供 grader 断言。",
+  "version": "2.0.0",
+  "description": "评估触发边界、参数向导、当前单元、自动 grilling 与动作停顿；供 grader 断言。",
   "evals": [
     {
       "id": "docs-agent-trigger-001",
       "category": "should-trigger",
-      "prompt": "仓库里 INDEX_GUIDE.md 已经落盘了，帮我走 /docs-agent：output 和 mode 都是默认，把根目录 README 和 AGENTS 对齐 INDEX，写之前先给我参数确认书我点 C。",
-      "expected_output": "步骤 0 确认书→C 后读 Index 生成双文件；未确认不写；INDEX 驱动、不调索引技能内重写；提及 validate-guide.sh。",
+      "prompt": "仓库里 INDEX_GUIDE.md 已经落盘了，帮我走 /docs-agent：output 和 mode 都是默认，把根目录 README 和 AGENTS 对齐 INDEX。请先收口参数，再按单个文件逐个处理，写完 README 先 grill 一轮再说。",
+      "expected_output": "以 /docs-agent 为主路径：先收口 output/mode，再只处理一个当前单元；README 收敛后停下等 C/M/G/S/F，不能自动推进到 AGENTS；INDEX 驱动、不替代 docs-indexing；可提 validate-guide.sh。",
       "assertions": [
         {
-          "id": "gate-step0",
-          "name": "步骤 0 门禁",
+          "id": "parameter-guidance",
+          "name": "参数向导",
           "type": "must_include",
-          "check": "写 README/AGENTS 前须有确认书与用户 C/S（或未确认不写）；禁止未确认覆盖。",
+          "check": "须体现先收口 output、mode 或等价参数，不得直接一口气写双文件。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-unit-stop",
+          "name": "单单元停顿",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前单元，README 收敛后给出 C/M/G/S/F 或等价动作等待用户选择；不得自动推进 AGENTS。",
           "priority": "P0"
         },
         {
@@ -21,6 +28,13 @@
           "name": "INDEX 驱动",
           "type": "must_include",
           "check": "以落盘 INDEX 为地图、最小阅读；本流程不替代 docs-indexing。",
+          "priority": "P0"
+        },
+        {
+          "id": "semantic-change-gated",
+          "name": "语义改动确认",
+          "type": "must_include",
+          "check": "若 README/AGENTS 职责边界、覆盖还是合并存在歧义，须先给推荐方案并等待确认，未获确认不得执行。",
           "priority": "P0"
         },
         {
@@ -35,8 +49,8 @@
     {
       "id": "docs-agent-trigger-002",
       "category": "should-trigger",
-      "prompt": "只更新 AGENTS.md，在已有 README 上不动，mode 用 update，帮我执行文档入口同步。",
-      "expected_output": "--output agents、--mode update；仍须确认后再写 AGENTS；不重复 README 命令块；README 为命令事实源指针。",
+      "prompt": "只更新 AGENTS.md，在已有 README 上不动，mode 用 update，帮我执行文档入口同步。当前轮只处理 AGENTS，别自动碰 README。",
+      "expected_output": "采纳 output=agents、mode=update；当前单元仅 AGENTS；收敛后停下等待动作；README 仍是命令事实源，不应被顺手改动。",
       "assertions": [
         {
           "id": "output-agents",
@@ -46,10 +60,17 @@
           "priority": "P0"
         },
         {
-          "id": "gate-step0",
-          "name": "步骤 0 门禁",
+          "id": "single-unit-stop",
+          "name": "单单元停顿",
           "type": "must_include",
-          "check": "仅改 AGENTS 也不得跳过步骤 0 与用户同意。",
+          "check": "只处理 AGENTS 这一当前单元；不得因 output=agents 仍自动扩展到 README。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-auto-advance-to-second-file",
+          "name": "不自动推进第二文件",
+          "type": "must_not_conflict",
+          "check": "不得表述成『顺手也把 README 一起补齐』或等价自动推进。",
           "priority": "P0"
         }
       ]

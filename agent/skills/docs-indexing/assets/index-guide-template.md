@@ -67,7 +67,7 @@ flowchart TD
 
 ```
 {DOC_DIR}/
-├── INDEX_GUIDE.md    # 系统索引指南（本文件）
+├── index.md    # 系统索引指南（本文件）
 ├── knowledge/        # 知识库
 └── changelogs/       # 变更日志
 ```
@@ -248,6 +248,8 @@ public enum {EnumName} {
 | {Project} | {dependency type} | {描述} |
 
 ### 9.3 工具链
+
+<!-- §9.3：仅路径/命令索引（命令 | 目录）；不写 Skill 长描述。用法 SSOT：agent/skills/README.md -->
 
 | 工具 | 版本 | 用途 |
 |------|------|------|

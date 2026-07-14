@@ -1,36 +1,90 @@
-# docs-archive 门禁
+# docs-archive 风险控制与推进协议
 
 操作层易错：[gotchas.md](../gotchas.md)。路径与链接：[links-and-index.md](links-and-index.md)。
 
-## 仓库级闸门
+## 定位
 
-写入落在 [AGENTS.md](../../../../AGENTS.md) 所述**文档产出闸门**（如 `{DOC_DIR}` 受管终稿、`system/architecture/`、`company/ea/`）时，须对照 [CONVENTIONS.md](../../../rules/CONVENTIONS.md) 第三节与相关 `sdx-*` / `docs-distill`，**不绕过总确认**。
+本文件定义 `docs-archive` 的风险控制与用户动作协议，用于约束：
 
-## HARD-GATE（本技能）
+- 当前确认书何时可转为落盘动作
+- 哪些场景必须先确认
+- 当前单元与 overview 回写如何保持原子性
+- `C/M/G/S/F` 的语义
 
-用户确认**方案确认书**（[../assets/archive-template.md](../assets/archive-template.md)）前，**禁止写任何目标文档**。
+`docs-archive` 默认采用“参数向导 -> 当前确认书 -> 当前单元 -> 自动 grilling -> 用户动作推进”。
+确认书未收口前，停留在参数向导与确认书阶段；确认书收口后直接处理当前单元。
 
-| 行为 | 是否允许 |
-| ---- | --------- |
-| 改目标、在目标目录新增/覆盖终稿 | **否**（确认前） |
-| 读 overview、目标章、列目录、方案对比、预览稿 | **是** |
+## 当前确认书收口条件
 
-**标记**：spec 中 `<!-- docs-archive-gate: PENDING -->` → 确认后 `CONFIRMED`；正文须含目标文件 **basename**（钩子证据）。  
-无环境变量 bypass；用户同会话**明示**跳过仍须一句方案+风险并取得**明确同意**。  
-进度表锚点与 `sdx-*` 同构时，两列指**本会话稿内**小节（例：[sdx-solution 会话模板](../../sdx-solution/assets/solution-session-spec-template.md)「门禁进度」）。
+满足以下条件即可进入当前单元落盘：
 
-## 钩子
+1. 来源范围已明确
+2. 目标章节或目标行块已明确
+3. 冲突策略已明确
+4. 来源清理策略已明确
+5. 当前确认书已得到会话内确认
 
-`agent/hooks.json` → `preToolUse`（Write/StrReplace）→ [sdx_gate_common.py](../../hooks/sdx_gate_common.py) `--gate archive`。  
-**证据**：符合 `{DOC_DIR}/superpowers/specs/`（见 [session-spec-path.md](../../../references/session-spec-path.md)）的 spec 中含 `docs-archive-gate: CONFIRMED` 且出现目标 basename。
+若以上任一条件未明确，继续停留在确认书收口，不得落盘。
 
-**范围说明**（见 [knowledge-layout.md](../../../references/knowledge-layout.md)）：hook **仅拦截** `*/overview/*.md` 回写；视角章节（`system/architecture/{视角}/`、`company/ea/{视角}/`）落盘由本会话**方案确认书** HARD-GATE 约束，不经 overview collector。
+## 高风险场景
 
-## 与 workflow
+以下情形必须先给出结论、推荐方案与数字选项，待用户确认后再执行：
 
-| 阶段 | 含义 |
-| ---- | ---- |
-| 步骤 3 未获肯定 | 不得步骤 4（落目标 + 回写 overview） |
-| dry-run | 属步骤 3；可 PENDING 下预览，**不写终稿** |
+- 来源与目标冲突，无法自动消解
+- overview 行内链接缺失或断链
+- 用户要求直接全量归档多个视角
+- 用户要求直接删 overview 而不保留索引壳
+- 目标章节体例与来源结构差异很大
+
+## 当前单元原子性
+
+- 当前单元必须先落目标章节，再回写 overview
+- 目标章节落盘失败时，禁止回写 overview
+- 若 overview 回写后发现断链或悬空半句，当前单元视为未收敛，必须继续修复或暂存
+- 当前单元未收敛前，不得自动推进下一章节或下一行块
+
+## 自动 grilling 默认授权
+
+自动 `grilling` 只可直接修订当前单元内的非语义问题：
+
+- 错别字
+- 标题级别微调
+- 编号
+- 排版
+
+若涉及语义性问题，必须先确认。典型语义问题包括：
+
+- 来源范围变化
+- 目标章节变化
+- 冲突策略变化
+- 来源清理策略变化
+- 索引壳与否
+
+## 用户动作
+
+### C：确认
+
+- 当前确认书和当前单元均已收敛
+- 进入下一章节/行块或结束
+
+### M：修改
+
+- 修改确认书或当前单元策略
+- 修改后重新自动 `grilling`
+
+### G：继续 grill
+
+- 在当前单元已收敛的基础上继续深挖冲突、断链或摘要力度
+
+### S：暂存
+
+- 保留当前确认书与分析结果
+- 不落盘当前单元或停止后续同批处理
+
+### F：补齐剩余范围
+
+- 仅在当前单元已收敛后使用
+- 沿用已确认策略处理剩余同批章节/行块
+- 中途若触发新的语义问题，必须再次停下确认
 
 详 [workflow.md](workflow.md)。

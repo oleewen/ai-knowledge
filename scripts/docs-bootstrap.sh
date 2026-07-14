@@ -39,6 +39,10 @@ if [[ -n "$_BOOTSTRAP_SCRIPT_DIR" && -f "${_BOOTSTRAP_SCRIPT_DIR}/../agent/scrip
   # shellcheck source=/dev/null
   source "${_BOOTSTRAP_SCRIPT_DIR}/../agent/scripts/docs-core.sh"
 fi
+if [[ -n "$_BOOTSTRAP_SCRIPT_DIR" && -f "${_BOOTSTRAP_SCRIPT_DIR}/agent-config.sh" ]]; then
+  # shellcheck source=./agent-config.sh
+  source "${_BOOTSTRAP_SCRIPT_DIR}/agent-config.sh"
+fi
 
 if ! declare -F require_bash5 >/dev/null 2>&1; then
   require_bash5() {
@@ -75,20 +79,30 @@ SDX_BS_CLONE_DIR=''
 SDX_BS_DOC_TARGET=''      # --doc-target
 SDX_BS_AGENTS=''          # --agents（规范化后逗号分隔）
 SDX_BS_AGENT_SCOPE='home' # --agent-scope: home | project
-SDX_BS_AGENT_TARGET=''    # 推导结果：$HOME 或 dirname(doc-target)
+SDX_BS_AGENT_TARGET=''
 
-# 与 agent-install 一致；含 all（安装层展开关键字）
-readonly -a SDX_BS_AGENT_CHOICES=(cursor trae claude kiro all)
-
-# =============================================================================
-# § 3  日志与错误处理（回退逻辑以支持 standalone curl | bash）
-# =============================================================================
+if declare -p SDX_SUPPORTED_AGENTS >/dev/null 2>&1; then
+  SDX_BS_AGENT_CHOICES=("${SDX_SUPPORTED_AGENTS[@]}" all)
+else
+  readonly -a SDX_BS_AGENT_CHOICES=(cursor trae claude kiro all)
+fi
 
 if ! declare -F sdx_log >/dev/null 2>&1; then
   sdx_log()   { printf '%s\n'       "$*" >&2; }
   sdx_info()  { printf '[INFO]  %s\n' "$*" >&2; }
   sdx_error() { printf '[ERROR] %s\n' "$*" >&2; exit 1; }
 fi
+
+sdx_bs_require_value() {
+  local flag="${1:?flag}"
+  local value="${2-}"
+  [[ -n "$value" ]] || sdx_error "缺少 ${flag} 值"
+}
+
+sdx_bs_unknown_arg() {
+  local arg="${1:?arg}"
+  sdx_error "未知参数: ${arg}（使用 -h 查看帮助）"
+}
 
 # =============================================================================
 # § 4  环境检查（Bash 版本见 docs-core.sh 之 require_bash5；预载失败时 §1 回退已定义）
@@ -172,16 +186,28 @@ EOF
 EOF
 }
 
-# 将 / 或 , 分隔的 agents 字符串规范化为逗号分隔
 sdx_bs_normalize_agents() {
   local raw="${1:-}"
-  printf '%s' "$raw" | tr '/' ',' | tr -s ',' | sed 's/^,//;s/,$//'
+  raw="$(printf '%s' "$raw" | tr '/' ',')"
+  if declare -f sdx_agents_normalize >/dev/null; then
+    sdx_agents_normalize "$raw"
+  else
+    printf '%s' "$raw" | tr -s ',' | sed 's/^,//;s/,$//'
+  fi
 }
 
-# 校验 agents 字符串（逗号分隔）中每个值是否合法
 sdx_bs_validate_agents() {
-  local agents_csv="${1:-}"
-  local agent ok v msg legal
+  local agents_csv="${1:-}" agent
+  if declare -f sdx_agents_validate >/dev/null; then
+    IFS=',' read -ra parts <<< "$agents_csv"
+    for agent in "${parts[@]}"; do
+      agent="${agent// /}"
+      [[ -z "$agent" ]] && continue
+      sdx_agents_validate "$agent" || sdx_error "无效 agent: ${agent}"
+    done
+    return 0
+  fi
+  local ok v legal
   legal="$(IFS=' '; printf '%s' "${SDX_BS_AGENT_CHOICES[*]}")"
   IFS=',' read -ra parts <<< "$agents_csv"
   for agent in "${parts[@]}"; do
@@ -191,10 +217,7 @@ sdx_bs_validate_agents() {
     for v in "${SDX_BS_AGENT_CHOICES[@]}"; do
       [[ "$agent" == "$v" ]] && { ok=1; break; }
     done
-    if [[ $ok -ne 1 ]]; then
-      msg="无效 agent: ${agent}（合法值：${legal}）"
-      sdx_error "$msg"
-    fi
+    [[ $ok -eq 1 ]] || sdx_error "无效 agent: ${agent}（合法值：${legal}）"
   done
 }
 
@@ -207,7 +230,7 @@ sdx_bs_parse_args() {
         ;;
       --doc-target)
         shift
-        [[ -n "${1:-}" ]] || sdx_error "缺少 --doc-target 值"
+        sdx_bs_require_value "--doc-target" "${1:-}"
         SDX_BS_DOC_TARGET="$1"
         shift
         ;;
@@ -217,7 +240,7 @@ sdx_bs_parse_args() {
         ;;
       --agents)
         shift
-        [[ -n "${1:-}" ]] || sdx_error "缺少 --agents 值"
+        sdx_bs_require_value "--agents" "${1:-}"
         SDX_BS_AGENTS="$(sdx_bs_normalize_agents "$1")"
         shift
         ;;
@@ -227,7 +250,7 @@ sdx_bs_parse_args() {
         ;;
       --agent-scope)
         shift
-        [[ -n "${1:-}" ]] || sdx_error "缺少 --agent-scope 值"
+        sdx_bs_require_value "--agent-scope" "${1:-}"
         SDX_BS_AGENT_SCOPE="$1"
         shift
         ;;
@@ -236,7 +259,7 @@ sdx_bs_parse_args() {
         exit 0
         ;;
       *)
-        sdx_error "未知参数: $1（使用 -h 查看帮助）"
+        sdx_bs_unknown_arg "$1"
         ;;
     esac
   done
@@ -386,6 +409,23 @@ sdx_bs_collect_params() {
 # § 7  主流程
 # =============================================================================
 
+sdx_bs_run_docs_install() {
+  local docs_install="${1:?docs_install}"
+  sdx_log ''
+  sdx_info '>>> 执行 docs-install.sh...'
+  export REPO_ROOT="$SDX_BS_CLONE_DIR"
+  bash "$docs_install" --target "$SDX_BS_DOC_TARGET" \
+    || sdx_error "docs-install 执行失败，已中止"
+}
+
+sdx_bs_run_agent_install() {
+  local agent_install="${1:?agent_install}"
+  sdx_log ''
+  sdx_info '>>> 执行 agent-install.sh...'
+  bash "$agent_install" --agents="$SDX_BS_AGENTS" --target "$SDX_BS_AGENT_TARGET" \
+    || sdx_error "agent-install 执行失败"
+}
+
 sdx_bs_main() {
   require_bash5
   sdx_bs_check_deps
@@ -429,18 +469,8 @@ sdx_bs_main() {
   sdx_log ''
   sdx_info "已加载共享配置（agent/scripts/docs-core.sh）"
 
-  # § 8  执行 docs-install
-  sdx_log ''
-  sdx_info '>>> 执行 docs-install.sh...'
-  export REPO_ROOT="$SDX_BS_CLONE_DIR"
-  bash "$docs_install" --target "$SDX_BS_DOC_TARGET" \
-    || sdx_error "docs-install 执行失败，已中止"
-
-  # § 9  执行 agent-install
-  sdx_log ''
-  sdx_info '>>> 执行 agent-install.sh...'
-  bash "$agent_install" --agents="$SDX_BS_AGENTS" --target "$SDX_BS_AGENT_TARGET" \
-    || sdx_error "agent-install 执行失败"
+  sdx_bs_run_docs_install "$docs_install"
+  sdx_bs_run_agent_install "$agent_install"
 
   sdx_log ''
   sdx_info '完成：docs-bootstrap'

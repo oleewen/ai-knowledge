@@ -1,6 +1,12 @@
-# requirements — 需求交付
+---
+type: Documentation
+title: requirements（需求交付）
+---
+# requirements（需求交付）
 
-将 **analysis** 中的高层次需求按 MVP / 阶段落为可执行交付版本（PRD / **ASD** / **DSD** / TDD 等）。阶段约定 SSOT 为本 README（无 `{dirname}_meta.yaml`）；各 `REQUIREMENT-{IDEA-ID}/` 内不复制根级 meta。
+索引入口见 [index.md](index.md)。
+
+将 `analysis/` 中的高层次需求按 MVP / 阶段落为可执行交付版本（PRD / **ASD** / **DSD** / TDD 等）。阶段约定 SSOT 为本 README（无 `{dirname}_meta.yaml`）；各 `REQUIREMENT-{IDEA-ID}/` 内不复制根级 meta。
 
 ## 层级与交付物
 
@@ -8,7 +14,7 @@
 |------|---------------|------|
 | 交付包 | `REQUIREMENT-{IDEA-ID}/` | 与 `ANALYSIS-{IDEA-ID}.md` **同 IDEA-ID**（见 [../../agent/knowledge/naming-conventions.md](../../agent/knowledge/naming-conventions.md)） |
 | MVP 阶段 | `MVP-Phase-{N}/` | 阶段目录，其下平铺阶段产物 |
-| 阶段产物 | `PRD-{IDEA-ID}.md`、`ASD-{IDEA-ID}-{N}.md`、`DSD-{IDEA-ID}-{N}.md`、`TDD-{IDEA-ID}.md` 等 | 文末 `## 文档元数据`（ fenced `yaml`）；**勿**在文首使用 `---` YAML frontmatter |
+| 阶段产物 | `PRD-{IDEA-ID}.md`、`ASD-{IDEA-ID}-{N}.md`、`DSD-{IDEA-ID}-{N}.md`、`TDD-{IDEA-ID}.md` 等 | 文首 YAML frontmatter（必填） |
 | 规约 | `MVP-Phase-{N}/specs/` | `spec-asd-*.md` 等（见 `sdx-architect`） |
 
 ## 阶段文档元数据
@@ -66,4 +72,4 @@ requirements/
 
 ## 索引维护
 
-变更交付包或 MVP 阶段时，须同步更新上表；重大结构变更时按需更新根 `INDEX_GUIDE.md`。
+变更交付包或 MVP 阶段时，须同步更新上表；重大结构变更时按需更新根 `index.md`。

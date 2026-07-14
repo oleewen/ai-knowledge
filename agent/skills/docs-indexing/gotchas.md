@@ -1,6 +1,6 @@
 # docs-indexing 常见陷阱
 
-**错** vs **对**（门禁与扫描）。
+**错** vs **对**（参数收口与扫描）。
 
 ## 参数
 
@@ -29,7 +29,7 @@
 
 - **不写 LOG** → 每次成功 INDEX 后主表插一行（最新在上）；否则下轮增量无主表锚  
 - **主表缺列** → `indexing_finished_ms`/`mode`/`depth`/`output_path` 等齐全（[indexing-log-spec.md](references/indexing-log-spec.md)）  
-- **output 优先级记不清** → 用户指定 > `{DOC_DIR}/` > `doc/` > 根 `INDEX_GUIDE`；默认须确认  
+- **output 优先级记不清** → 用户指定 > `{DOC_DIR}/` > `doc/` > 根 `index.md`（仓库根索引为 `index.md`）；默认须确认  
 
 ## 上下游
 

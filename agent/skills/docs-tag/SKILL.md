@@ -1,50 +1,73 @@
 ---
 name: docs-tag
 description: >
-  为 Markdown 概览（`system/architecture/overview/` 或 `company/ea/overview/` 下 *-overview.md）做关键词相关度：扫目录候选 → 选词 → YAML 附录 → 表行 ✅ → 架构摘录（phase 3）。
-  触发：`/docs-tag`、`扫描关键词`、`给概览打标签`、`表格打勾`、`架构摘录`、`刷新摘录`、`phase 3`。
-  仅第三列提炼 / 全文术语替换 / INDEX → 分流 docs-extract、docs-upgrade、docs-indexing。
+  为 system/company overview 下 *-overview.md 做关键词相关度：候选词 → YAML 附录 → 表行 ✅ → 架构摘录（phase 3）。
+  触发：/docs-tag、「扫描关键词」「给概览打标签」「phase 3」。
+  分流：第三列提炼 / 全文术语 / INDEX → docs-extract、docs-upgrade、docs-indexing。
+  推进协议：参数向导、当前单元、phase 执行、自动 grilling、C/M/G/S/F 见 references/workflow.md 与 references/gates.md。
 ---
 
 # docs-tag（关键词标记）
 
-门禁 → `keyword_tag.py`：`1-scan` → 选词 → `1-write` → `2` → `3`。**自动化禁用** `--phase 1`（`input()`，见 gotchas §7）。
+参数向导 → 处理单个 overview 当前单元 → `keyword_tag.py` 子阶段执行 → 自动 grilling → 用户动作推进。
+自动化禁用 `--phase 1`（见 gotchas）。
 
-概览附录维护；INDEX→**docs-indexing**；段落业务→**docs-extract**。
+## 输出硬约束（P0）
+
+- 一次只处理一个“当前单元”：单个 overview 文件。
+- 参数未收口前，不得对 `--file` 执行写入。
+- 当前单元内每个 phase 结果产生后，必须进入自动 `grilling`；当前单元未收敛前，不得自动推进下一个 overview 文件。
+- 语义性变更（`--file`、`--phase`、`--keywords`、`--scan-dir`、`--top-n`、是否继续下一 phase）必须先给出结论、推荐方案与数字选项；未获确认不得执行。
+- `phase 3` / `excerpt` 不需要 `keywords`；`phase 2` 无附录时不得静默继续，必须提示先 `1-scan` + `1-write`。
 
 ## 边界
 
 | 负责 | 不负责 |
-|------|--------|
-| `--file`、`--phase`、`1-scan`/`1-write`/`2`/`3`、附录、表行 ✅（phase 2 忽略 HTML 注释）、`## 架构摘录` 投影 | `INDEX_GUIDE`；extract 第三列；upgrade 全库替换 |
+| ---- | ------ |
+| `--file`、`--phase`、附录、表行 ✅、架构摘录 | index；extract 第三列；upgrade 全库替换 |
 
-分流：overview 提炼→extract；术语→upgrade；九章→indexing。
+## 不这样用
 
-## 前置
+- 不把旧“步骤 1 参数确认”当唯一主线；主线是参数向导收口后处理当前单元
+- 不把单个 phase 当成独立当前单元；当前单元始终是单个 overview 文件
+- 不把第三列表提炼、全库术语替换、INDEX 重建收成 `docs-tag`
 
-- `--file` 存在（系统库或公司库 overview，见 [knowledge-layout.md](../../references/knowledge-layout.md)）  
-- phase 含 1 时 keywords 齐备；Skill 用 `1-scan`+`1-write`+`2`+`3`（`3` 不需 keywords）  
-- **仓库根**：`agent/skills/docs-tag/scripts/keyword_tag.py`
+## 最短路径
 
-## 阅读顺序
+1. [gates.md](references/gates.md)
+2. [workflow.md](references/workflow.md)（含前置与 phase 说明）
+3. [algorithm.md](references/algorithm.md)
+4. [gotchas.md](gotchas.md)
+5. [grilling-skill.md](../../references/grilling-skill.md) — 自动 grilling 公共能力
 
-1. `references/gates.md`  
-2. `references/workflow.md`  
-3. `references/algorithm.md`（候选词原理）  
-4. `gotchas.md`
+## 最少输入
 
-## 门禁
+- `--file`
+- `--phase`
+- 若 phase 含 `1` 或 `all`，`--keywords`
+- `--scan-dir`、`--top-n` 已展示默认值或已收口
 
-脚本前：步骤 1 逐项确认 + **一次性复述**全参数（[gates.md](references/gates.md)）。低风险（[CONVENTIONS.md](../../rules/CONVENTIONS.md)）；无 specs gate。
+## 当前单元
+
+- 单个 overview 文件
+
+当前单元收敛后，由用户用 `C/M/G/S/F` 推进：
+
+- `C`：确认当前单元并结束或进入下一个 overview 文件
+- `M`：修改参数或 phase 策略，再重新 grill
+- `G`：继续深挖当前单元的候选词、表行命中或摘录结果
+- `S`：暂存当前单元，跳过写入或跳过后续 phase
+- `F`：在当前单元已收敛后，按既定参数补齐剩余 overview 文件
 
 ```bash
 python3 agent/skills/docs-tag/scripts/keyword_tag.py ...
 ```
 
-## 评测
+## 产出
 
-`evals/evals.json`、`eval-metadata-template.json`、`agents/grader.md`、`agents/analyzer.md`。
+更新后的 overview.md（附录、表行、架构摘录）。
 
-```bash
-cd agent/skills/docs-tag && python3 -m pytest tests/ -q
-```
+## 评测 / 脚本
+
+评测：`evals/evals.json`、[grader.md](agents/grader.md)。单测：`python3 -m pytest tests/ -q`（在技能目录下）。
+评测重点：参数收口、单单元停顿、phase 结果 grill、不得静默推进下一文件。

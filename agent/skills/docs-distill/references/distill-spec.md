@@ -4,7 +4,7 @@
 
 目标路径（复述一句）：
 
-`system/architecture/overview/{APPNAME}-overview.md`（不存在则用 `NAME-overview.md` 模板，**文件名与 `# {NAME} 架构概览` 同步替换**。）
+`system/knowledge/overview/{APPNAME}-overview.md`（不存在则用 `NAME-overview.md` 模板，**文件名与 `# {NAME} 架构概览` 同步替换**。）
 
 以下内容**仅来源**，不单列作蒸馏终稿：各视角长篇、`system/application-{name}/` knowledge、SDD 目录。  
 `DISTILL-LOG`：全应用共用，见 [distill-log-spec.md](distill-log-spec.md)。

@@ -1,75 +1,76 @@
 ---
 name: docs-archive
 description: >
-  将 overview 知识按表格行内副标题链接归档到架构视角章节（`system/architecture/` 或 `company/ea/`），并在确认后清理 overview、做冲突检查。
-  触发：/docs-archive，或「知识归档」「overview 落盘」「补架构视角」「合并进目标章」「冲突检查」「结构对齐」等同类表述（不必等用户说命令名）。
-  工作流：探索 → 澄清 → 2～3 方案 → 方案确认书 → 用户确认后落盘；禁止未确认批量改写。
-  若用户只要 docs-extract、docs-distill、docs-build、docs-upgrade、仅 SDD 终稿或仅 KNOWLEDGE_INDEX，则分流，不以本技能为主路径。
+  将 overview 知识按表格行内副标题链接归档到 system/company 视角章节；
+  先收口方案确认书，再按当前单元落目标章并按策略回写 overview。
+  触发：/docs-archive、「知识归档」「overview 落盘」「冲突检查」等。
+  分流：用户只要 extract/distill/build/upgrade 或仅 SDD/KNOWLEDGE_INDEX → 对应技能。
+  推进协议：参数向导、当前单元、自动 grilling、C/M/G/S/F 见 references/workflow.md 与 references/gates.md。
 ---
 
-# docs-archive：overview → 架构视角章节
+# docs-archive
 
-调度器：判定归属 → 读 `references/` → **方案确认书 + 门禁** → 写目标章并可选回写 overview。目标路径由 overview **行内副标题链接**解析（见 [references/core-concepts.md](references/core-concepts.md)）。
+读 references/ → 参数向导 → 形成当前确认书 → 处理单个归档单元 → 自动 grilling → 用户动作推进。
+主路径是“overview 行块 -> 目标章节”，并按策略回写 overview。
+
+## 输出硬约束（P0）
+
+- 一次只处理一个“当前单元”：单个目标章节，或单个 overview 行块。
+- 当前单元落盘前，必须先形成并收口当前确认书；确认书未收口前，不得写目标章节或回写 overview。
+- 语义性变更（来源范围、目标章节、冲突策略、来源清理策略、索引壳与否）必须先给结论、推荐方案与数字选项；未获确认不得落盘。
+- 当前单元落盘后，必须进入自动 `grilling`；未收敛前，不得自动推进下一章节或下一 overview 行块。
+- overview 回写必须保留行内副标题链接；若改为索引壳，也不得承载新的业务事实。
 
 ## 边界
 
-| 负责 | 不负责 |
-| ---- | ------ |
-| overview（可选锚点）→ 链接指向的视角章节；确认书；来源清理；步骤 5～6 质量与摘要 | 任意源 → overview 第三列（**docs-extract**）；上行蒸馏（**docs-distill**）；实体 ID / KNOWLEDGE_INDEX（**docs-build**）；全库术语与引用链（**docs-upgrade**）；SDD 终稿代写（**sdx-***） |
+- 负责：overview -> 链接指向的视角章节；确认书；冲突检查；overview 按策略回写
+- 不负责：extract；distill；docs-build；docs-upgrade；SDD 终稿
 
-## 前置
+## 不这样用
 
-- 路径契约：[session-spec-path.md](../../references/session-spec-path.md)、[knowledge-layout.md](../../references/knowledge-layout.md)
-- 有 **overview 路径**（`system/architecture/overview/` 或 `company/ea/overview/`，及可选 `#锚点`）；知目标来自**表格行链接**。
-- 知会话 spec：`{DOC_DIR}/superpowers/specs/`，钩子要 `CONFIRMED` + 目标 **basename**（见 `references/gates.md`）。
+- 确认书收口后直接处理当前单元
+- 不把 `docs-archive` 偷换成 `docs-build`、`docs-upgrade` 或 `docs-extract`
 
-## 读序（先读后写）
+## 路由
 
-1. `references/gates.md`
-2. `references/workflow.md`（步骤 0～6、澄清维度）
-3. `references/links-and-index.md`（路径、链接、Git）
-4. `references/core-concepts.md`（overview 语法、简写陷阱）
-5. `references/design-principles.md`、`references/anti-patterns.md`（对齐方案）
-6. 长澄清链：`references/brainstorming-integration.md`
-7. 落盘前后：`references/quality-checklist.md`
-8. 易错：`gotchas.md`
-9. 索：`references/README.md`
-10. 确认书：`assets/archive-template.md`；会话骨架：`assets/docs-archive-session-spec-template.md`
+| 目的 | 文件 |
+| --- | --- |
+| 流程 | [workflow.md](references/workflow.md) |
+| 风险控制 / 推进协议 | [gates.md](references/gates.md) |
+| grilling 能力 | [grilling-skill.md](../../references/grilling-skill.md) |
+| 链接与索引 | [links-and-index.md](references/links-and-index.md) |
+| 核心概念 | [core-concepts.md](references/core-concepts.md) |
+| 原则 / 反模式 | [design-principles.md](references/design-principles.md)、[anti-patterns.md](references/anti-patterns.md) |
+| 终检 / 易错 | [quality-checklist.md](references/quality-checklist.md)、[gotchas.md](gotchas.md) |
+| 确认书模板 | [archive-template.md](assets/archive-template.md) |
 
-## 门禁
+## 最少输入
 
-用户确认**方案确认书**前，**禁止写任何目标文档**。见 `references/gates.md`、[agent/rules/CONVENTIONS.md](../../rules/CONVENTIONS.md#artifact-gates)。
+- overview 来源路径或锚点
+- 可解析的目标章节或 overview 行内链接
+- 来源清理策略
+- 初始冲突策略
+
+## 当前单元
+
+- 单个目标章节
+- 或单个 overview 行块
+
+当前单元收敛后，由用户用 `C/M/G/S/F` 推进：
+
+- `C`：确认当前单元并进入下一个章节/行块或结束
+- `M`：修改确认书、冲突策略或回写策略，再重新 grill
+- `G`：继续深挖当前单元
+- `S`：暂存当前单元，跳过落盘
+- `F`：在当前单元已收敛后，沿用已确认策略补齐剩余同批范围
 
 ## 产出
 
-- 会话 spec（可选）：`{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-docs-archive.md`
-- 正式：按目标体例增补的 Markdown（链接指向章节）；overview 按确认策略回写
+- 工作产物：当前确认书
+- 正式：目标章节增补
+- 正式：overview 按策略回写
 
-## 评测
+## 评测 / 脚本
 
-`evals/evals.json`、`evals/eval-metadata-template.json`、`agents/grader.md`、`agents/analyzer.md`
-
-## 工程化
-
-`python3 agent/hooks/sdx_gate_common.py --gate archive`（见 `agent/hooks.json`）；细则 `references/gates.md`、`agent/hooks/README.md`。
-
-## 相近技能
-
-| 场景 | 技能 |
-| ---- | ---- |
-| 实体与 KNOWLEDGE_INDEX | `docs-build` |
-| 术语 + 引用链 | `docs-upgrade` |
-| 源 → overview 第三列 | `docs-extract` |
-| SDD 标准产物 | `sdx-*` |
-| overview 行链接 → 视角章节 + 冲突处理 | **本技能** |
-
-**HARD-GATE**：步骤 3 用户确认前，不得执行步骤 4（详见 `references/workflow.md`）。
-
-## 依赖
-
-| 类型 | 说明 |
-| ---- | ---- |
-| 可选上游 | `docs-indexing` — 查 `INDEX_GUIDE.md` |
-| 相邻 | `docs-build` / `docs-upgrade` / `docs-extract` / `sdx-*` |
-
-澄清维度与参数表与步骤 0～6 合一，见 [references/workflow.md](references/workflow.md)。
+评测：`evals/evals.json`、[grader.md](agents/grader.md)。
+评测重点：确认书先收口、目标章节先落盘、overview 后回写。

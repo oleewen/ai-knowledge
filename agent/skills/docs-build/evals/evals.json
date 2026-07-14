@@ -1,16 +1,17 @@
 {
   "skill_name": "docs-build",
+  "version": "2.0.0",
   "evals": [
     {
       "id": 1,
       "prompt": "主 INDEX 已经跑过 docs-indexing 了，帮我把四视角实体从代码里抽一遍，更新 KNOWLEDGE_INDEX，先给我看下会动哪些文件再写",
-      "expected_output": "docs-build；阶段1末 Qclose-1；gate+spec；列 knowledge 改动；CONFIRMED 后进 2–4；提 validate-extraction.sh",
+      "expected_output": "docs-build：先收口视角范围与输出策略；以单个构建单元给出会动文件预览；确认后写 `{DOC_DIR}/knowledge/`；跑 validate-extraction.sh；收敛后停下等 C/M/G/S/F。",
       "files": []
     },
     {
       "id": 2,
       "prompt": "/docs-build --perspectives application,data --confidence-threshold high",
-      "expected_output": "docs-build；仅 application+data；仍 Qclose-1+gate；非 distill/overview",
+      "expected_output": "docs-build：仅 application+data；把高置信度策略视为语义参数；一次只推进一个视角批次或实体批次；非 distill/overview。",
       "files": []
     },
     {

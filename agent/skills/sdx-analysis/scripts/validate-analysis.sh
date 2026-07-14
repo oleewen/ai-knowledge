@@ -1,24 +1,20 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ANALYSIS 结构校验（六章模板；门禁不改变结构）。
-# 用法：validate-analysis.sh [--file <path>] [--gate-check] [--gate-strict]
+# ANALYSIS 结构校验（六章模板；不承担写前门禁）。
+# 用法：validate-analysis.sh [--file <path>]
 # DOC_ROOT：resolve_repo_doc_root（.docsconfig）；先 config-bootstrap.sh
 #
-# 要点：文末 YAML、六章、`### FR-`、小节标题、FR/BR/R/MVP、--gate-check 查 CONFIRMED spec；
-#       --gate-strict：门禁失败记 ERROR。
+# 要点：文首 frontmatter、六章、`### FR-`、小节标题、FR/BR/R/MVP、与 SOLUTION 关联；
+#       不校验会话 spec、CONFIRMED、HTML gate 或写前 hook。
 
 TARGET_FILE=""
 ERRORS=0
 WARNINGS=0
-GATE_CHECK=false
-GATE_STRICT=false
 
 while [[ $# -gt 0 ]]; do
   case $1 in
     --file) TARGET_FILE="$2"; shift 2 ;;
-    --gate-check) GATE_CHECK=true; shift ;;
-    --gate-strict) GATE_CHECK=true; GATE_STRICT=true; shift ;;
     *) echo "未知参数: $1"; exit 1 ;;
   esac
 done
@@ -40,50 +36,17 @@ warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
 error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
 
-# shellcheck source=../../../scripts/check-session-spec-gate.sh
-source "${REPO_ROOT}/agent/scripts/check-session-spec-gate.sh"
-
-# 会话 spec 闸门：{DOC_DIR}/superpowers/specs/（见 agent/references/session-spec-path.md）
-check_analysis_gate() {
-  local file="$1"
-  local base
-  base=$(basename "${file}")
-  if check_session_spec_gate "<!-- sdx-analysis-gate: CONFIRMED -->" "${base}"; then
-    success "闸门：已找到引用 ${base} 且 CONFIRMED 的会话 spec"
-  else
-    local msg="闸门：未找到引用 ${base} 且 <!-- sdx-analysis-gate: CONFIRMED --> 的会话 spec（见 agent/skills/sdx-analysis/SKILL.md）"
-    if [[ "${GATE_STRICT}" == true ]]; then
-      error "${msg}"
-    else
-      warn "${msg}"
-    fi
-  fi
-}
-
 echo "=== 需求分析文档结构校验 ==="
 echo "DOC_ROOT: ${DOC_ROOT}"
 echo ""
 
-# 0. 模板文件
 if [[ -f "${TEMPLATE}" ]]; then
   success "analysis-template.md 存在"
 else
   warn "analysis-template.md 不存在: ${TEMPLATE}"
 fi
 
-# 1. 文档目录
-if [[ -d "${ANALYSIS_DIR}" ]]; then
-  FILE_COUNT=$(find "${ANALYSIS_DIR}" -name "ANALYSIS-*.md" 2>/dev/null | wc -l | tr -d ' ')
-  success "analysis/ 目录存在 (${FILE_COUNT} 个需求分析文档)"
-else
-  warn "analysis/ 目录不存在: ${ANALYSIS_DIR}"
-  echo ""
-  echo "=== 校验结果 ==="
-  echo "错误: ${ERRORS}  警告: ${WARNINGS}"
-  exit 0
-fi
-
-# 收集要校验的文件
+FILES=()
 if [[ -n "${TARGET_FILE}" ]]; then
   if [[ -f "${TARGET_FILE}" ]]; then
     FILES=("${TARGET_FILE}")
@@ -95,7 +58,17 @@ if [[ -n "${TARGET_FILE}" ]]; then
     exit 1
   fi
 else
-  FILES=()
+  if [[ -d "${ANALYSIS_DIR}" ]]; then
+    FILE_COUNT=$(find "${ANALYSIS_DIR}" -name "ANALYSIS-*.md" 2>/dev/null | wc -l | tr -d ' ')
+    success "analysis/ 目录存在 (${FILE_COUNT} 个需求分析文档)"
+  else
+    warn "analysis/ 目录不存在: ${ANALYSIS_DIR}"
+    echo ""
+    echo "=== 校验结果 ==="
+    echo "错误: ${ERRORS}  警告: ${WARNINGS}"
+    exit 0
+  fi
+
   while IFS= read -r -d '' f; do
     FILES+=("$f")
   done < <(find "${ANALYSIS_DIR}" -name "ANALYSIS-*.md" -print0 2>/dev/null)
@@ -109,31 +82,46 @@ if [[ ${#FILES[@]} -eq 0 ]]; then
   exit 0
 fi
 
-# 校验每个文档
 for file in "${FILES[@]}"; do
   BASENAME=$(basename "${file}")
   echo "--- 校验: ${BASENAME} ---"
 
   FIRST_LINE=$(head -1 "${file}" 2>/dev/null || true)
-  if [[ "${FIRST_LINE}" == "---" ]]; then
-    warn "${BASENAME}: 首行为 ---（疑似 YAML frontmatter，应移除）；元数据须仅在文末「## 文档元数据」的 yaml 代码块中"
-  fi
-
-  if grep -qF "## 文档元数据" "${file}"; then
-    success "${BASENAME}: 「文档元数据」章节存在"
+  if [[ "${FIRST_LINE}" != "---" ]]; then
+    error "${BASENAME}: 缺少文首 YAML frontmatter（首行应为 ---）"
   else
-    warn "${BASENAME}: 缺少「## 文档元数据」章节（须在文末放置 YAML 元数据）"
+    FRONTMATTER_END_LINE=$(awk 'NR>1 && $0=="---"{print NR; exit}' "${file}" 2>/dev/null || true)
+    if [[ -z "${FRONTMATTER_END_LINE}" ]]; then
+      error "${BASENAME}: YAML frontmatter 未闭合（缺少第二个 ---）"
+    else
+      FRONTMATTER_CONTENT=$(sed -n "2,$((FRONTMATTER_END_LINE - 1))p" "${file}" 2>/dev/null || true)
+      success "${BASENAME}: YAML frontmatter 存在"
+      for field in "id:" "title:" "version:" "status:" "created:" "updated:" "author:" "reviewers:" "parent:" "tags:"; do
+        if echo "${FRONTMATTER_CONTENT}" | grep -qE "^${field}"; then
+          success "${BASENAME}: ${field} 字段存在"
+        else
+          warn "${BASENAME}: 缺少 ${field} 字段"
+        fi
+      done
+
+      ID_LINE=$(echo "${FRONTMATTER_CONTENT}" | grep -E '^id:' 2>/dev/null | head -1 || true)
+      if [[ -n "${ID_LINE}" ]]; then
+        if echo "${ID_LINE}" | grep -qE 'ANALYSIS-'; then
+          success "${BASENAME}: id 含 ANALYSIS- 前缀"
+        else
+          warn "${BASENAME}: id 建议符合 ANALYSIS-{IDEA-ID}，实际: ${ID_LINE}"
+        fi
+      fi
+
+      PARENT_LINE=$(echo "${FRONTMATTER_CONTENT}" | grep -E '^parent:' 2>/dev/null | head -1 || true)
+      if echo "${PARENT_LINE}" | grep -q 'SOLUTION-'; then
+        success "${BASENAME}: parent 已关联 SOLUTION-*"
+      else
+        warn "${BASENAME}: parent 建议关联 SOLUTION-{IDEA-ID}，实际: ${PARENT_LINE}"
+      fi
+    fi
   fi
 
-  for field in "id:" "title:" "version:" "status:" "created:" "updated:" "author:" "reviewers:" "parent:" "tags:"; do
-    if grep -q "${field}" "${file}"; then
-      success "${BASENAME}: ${field} 字段存在"
-    else
-      warn "${BASENAME}: 缺少 ${field} 字段（应出现在文末 yaml 块）"
-    fi
-  done
-
-  # 六章结构（与 assets/analysis-template.md 一致）
   REQUIRED_SECTIONS=(
     "## 1. 背景目标"
     "## 2. 功能需求"
@@ -206,10 +194,6 @@ for file in "${FILES[@]}"; do
     success "${BASENAME}: 关联解决方案文档"
   else
     warn "${BASENAME}: 未发现关联解决方案编号 (SOLUTION-*)"
-  fi
-
-  if [[ "${GATE_CHECK}" == true ]]; then
-    check_analysis_gate "${file}"
   fi
 
   echo ""

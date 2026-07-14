@@ -6,6 +6,7 @@
 
 | 文件 | 说明 |
 | --- | --- |
+| [okf-spec.md](okf-spec.md) | company / system / application 共享知识规范 SSOT |
 | [knowledge-governance.md](knowledge-governance.md) | 三层知识库治理边界与使用顺序 |
 | [naming-conventions.md](naming-conventions.md) | 实体 ID 命名规范（全局 SSOT） |
 | [glossary.md](glossary.md) | 全局术语表 |
@@ -17,4 +18,5 @@
 
 1. 新词 / 歧义 → [glossary.md](glossary.md)
 2. 新实体 / 文件 → [naming-conventions.md](naming-conventions.md)
-3. 跨域或长期后果的决策 → [application/adr/](../../application/adr/README.md) 或 [system/adr/](../../system/adr/README.md)，按 [adr-template.md](adr-template.md)
+3. 判断文件是否 concept / 索引入口 / 叙事 / 元数据 → [okf-spec.md](okf-spec.md)
+4. 跨域或长期后果的决策 → [application/adr/](../../application/adr/README.md) 或 [system/adr/](../../system/adr/README.md)，按 [adr-template.md](adr-template.md)

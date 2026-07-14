@@ -1,13 +1,13 @@
 {
   "skill_name": "docs-tag",
-  "version": "1.0.0",
-  "description": "docs-tag 触发边界、门禁、1-scan/1-write/2 分流；对齐 grader 断言。",
+  "version": "2.0.0",
+  "description": "docs-tag 触发边界、参数向导、当前单元、phase 执行与自动 grilling；对齐 grader 断言。",
   "evals": [
     {
       "id": "docs-tag-trigger-001",
       "category": "should-trigger",
-      "prompt": "帮我对 system/architecture/overview/billing-overview.md 做 /docs-tag：phase all，关键词「计费」「结算」，scan-dir 和 top-n 用默认；先复述参数再 1-scan，我选好候选词后再 1-write 和 phase 2。",
-      "expected_output": "/docs-tag：gates+复述→keyword_tag.py 1-scan→选→1-write→2；不写 extract 第三列。",
+      "prompt": "帮我对 system/architecture/overview/billing-overview.md 做 /docs-tag：phase all，关键词「计费」「结算」，scan-dir 和 top-n 用默认；先收口参数，只处理这个 overview，1-scan 之后先 grill 一轮，我选好候选词后再继续。",
+      "expected_output": "/docs-tag：参数收口→当前单元=billing-overview→keyword_tag.py 1-scan→自动 grilling→选→1-write→grill→2→grill→3；不写 extract 第三列，也不自动滚到别的 overview。",
       "assertions": [
         {
           "id": "param-gate",
@@ -17,10 +17,24 @@
           "priority": "P0"
         },
         {
+          "id": "single-unit-stop",
+          "name": "单单元停顿",
+          "type": "must_include",
+          "check": "须体现一次只处理一个 overview 当前单元，收敛后给出 C/M/G/S/F 或等价动作等待用户选择；不得自动推进下一文件。",
+          "priority": "P0"
+        },
+        {
           "id": "subphase-path",
           "name": "子阶段与路径",
           "type": "must_include",
           "check": "须含 1-scan、1-write、phase 2/3 与 `agent/skills/docs-tag/scripts/keyword_tag.py`。",
+          "priority": "P0"
+        },
+        {
+          "id": "phase-result-must-grill",
+          "name": "phase 结果先 grill",
+          "type": "must_include",
+          "check": "须体现 1-scan 或后续 phase 结果后先自动 grilling，再决定继续当前单元。",
           "priority": "P0"
         },
         {
@@ -36,13 +50,20 @@
       "id": "docs-tag-trigger-002",
       "category": "should-trigger",
       "prompt": "YAML 里已经有 spec-tags 了，只要对同一文件跑表格打勾，/docs-tag phase 2。",
-      "expected_output": "确认 file/phase 2→`keyword_tag.py --phase 2`；无附录会败；匹配时忽略 HTML 注释（gotchas §6b）。",
+      "expected_output": "确认 file/phase 2，只处理一个 overview 当前单元；`keyword_tag.py --phase 2` 后先 grill 结果；无附录会败；匹配时忽略 HTML 注释（gotchas §6b）。",
       "assertions": [
         {
           "id": "phase2-only",
           "name": "仅阶段 2",
           "type": "must_include",
           "check": "仅 phase 2；主轴≠ docs-extract。",
+          "priority": "P0"
+        },
+        {
+          "id": "phase-result-must-grill",
+          "name": "phase 结果先 grill",
+          "type": "must_include",
+          "check": "须体现 phase 2 执行后先检查 ✅ 命中质量或前置条件，再决定继续。",
           "priority": "P0"
         },
         {
@@ -65,7 +86,7 @@
       "id": "docs-tag-trigger-003",
       "category": "should-trigger",
       "prompt": "billing-overview 表格已经打好 ✅ 了，帮我刷新顶部的架构摘录表，/docs-tag phase 3 就行。",
-      "expected_output": "确认 file/phase 3→keyword_tag.py --phase 3；不要求 keywords。",
+      "expected_output": "确认 file/phase 3，只处理一个 overview 当前单元；keyword_tag.py --phase 3 后先 grill 摘录结果；不要求 keywords。",
       "assertions": [
         {
           "id": "phase3-only",
@@ -73,13 +94,20 @@
           "type": "must_include",
           "check": "仅 phase 3 或 excerpt；生成架构摘录。",
           "priority": "P0"
+        },
+        {
+          "id": "single-unit-stop",
+          "name": "单单元停顿",
+          "type": "must_include",
+          "check": "须体现当前 overview 收敛后停下，不得自动推进下一 overview 文件。",
+          "priority": "P0"
         }
       ]
     },
     {
       "id": "docs-tag-not-trigger-001",
       "category": "should-not-trigger",
-      "prompt": "从 applications/app-billing/design.md 和 README 里把计费规则提炼进 billing-overview.md 第三列，做 A/U/D 合并。",
+      "prompt": "从 system/application-billing/design.md 和 README 里把计费规则提炼进 billing-overview.md 第三列，做 A/U/D 合并。",
       "expected_output": "主轴 docs-extract（第三列/AUD）；≠ tag 附录+✅。",
       "assertions": [
         {
@@ -101,14 +129,21 @@
     {
       "id": "docs-tag-trigger-002",
       "category": "should-trigger",
-      "prompt": "对 company/ea/overview/COMPANY-overview.md 做 /docs-tag：keywords「价值链」「商业模式」，scan-dir 用 company/ea/，先 1-scan 我选词后再 2 和 3",
-      "expected_output": "docs-tag：公司库 overview；--scan-dir company/ea/；1-scan→1-write→2→3；不写 extract 第三列。",
+      "prompt": "对 company/knowledge/overview/COMPANY-overview.md 做 /docs-tag：keywords「价值链」「商业模式」，scan-dir 用 company/knowledge/，先 1-scan 我选词后再 2 和 3",
+      "expected_output": "docs-tag：公司库 overview；--scan-dir company/knowledge/；以单个 COMPANY-overview 为当前单元；1-scan→grill→1-write→grill→2→grill→3；不写 extract 第三列。",
       "assertions": [
         {
           "id": "company-scan-dir",
           "name": "公司库扫描目录",
           "type": "must_include",
-          "check": "须提 company/ea/ 或公司库 scan-dir。",
+          "check": "须提 company/knowledge/ 或公司库 scan-dir。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-silent-next-file",
+          "name": "不静默推进下一文件",
+          "type": "must_not_conflict",
+          "check": "不得表述成处理完 COMPANY-overview 后顺手推进其他 overview 文件。",
           "priority": "P0"
         }
       ]

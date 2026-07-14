@@ -32,13 +32,15 @@
 
 - **§11.3**：须与 [../../references/quality-checklist.md](../../references/quality-checklist.md) 逐项对照后勾选，禁止未复核全选。
 
-**文末元数据（示意，`yaml` 代码块置于「## 文档元数据」下；全文勿以 `---` 开头）**
+**文首 frontmatter（示意，使用 `---` YAML frontmatter 开头）**
 
-```yaml
+```markdown
+---
 id: "PRD-DEMO-01-1"
 title: 审核待办聚合（PRD·示意）
 version: "0.1"
 status: draft
 parent: "ANALYSIS-DEMO-01"
 mvp_phase: "MVP-Phase-1"
+---
 ```

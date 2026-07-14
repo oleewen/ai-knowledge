@@ -1,3 +1,16 @@
+---
+id: "PRD-{IDEA-ID}-{N}"
+title: "{产品需求标题}"
+version: "1.0.0"
+status: "draft"
+created: "{YYYY-MM-DD}"
+updated: "{YYYY-MM-DD}"
+author: "product-designer"
+reviewers: []
+parent: "ANALYSIS-{IDEA-ID}"
+mvp_phase: "MVP-Phase-{N}"
+---
+
 # 产品需求标题
 
 > 读者：**产品**（主笔与验收）；**分析、架构、研发**参评可行性与范围。
@@ -291,19 +304,4 @@ graph TD
 - [ ] **术语与引用**  
 *通过标准*：§8.1、§11.2 变更历史已落位；对外链接（原型、规约）可访问或已说明待补。
 - [ ] **格式与元数据**  
-*通过标准*：US/UC/BR/EX/AC/NAC 编号在文内连续可辨；文末「## 文档元数据」内 fenced `yaml` 含 `id`、`title`、`version`、`status`、`created`、`updated`、`author`、`reviewers`、`parent`、`mvp_phase`；**文件第一行不是** `---`；`id` 与 `PRD-{IDEA-ID}.md` 及目录 **REQUIREMENT-{IDEA-ID}** 一致。
-
-## 文档元数据
-
-```yaml
-id: "PRD-{IDEA-ID}"
-title: "{产品需求标题}"
-version: "1.0.0"
-status: "draft"
-created: "{YYYY-MM-DD}"
-updated: "{YYYY-MM-DD}"
-author: "product-designer"
-reviewers: []
-parent: "ANALYSIS-{IDEA-ID}"
-mvp_phase: "MVP-Phase-{N}"
-```
+*通过标准*：US/UC/BR/EX/AC/NAC 编号在文内连续可辨；文首 frontmatter 含 `id`、`title`、`version`、`status`、`created`、`updated`、`author`、`reviewers`、`parent`、`mvp_phase`；`id` 与 `PRD-{IDEA-ID}-{N}.md` 及目录 **REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}** 一致。

@@ -1,25 +1,88 @@
 {
   "skill_name": "docs-pull",
-  "version": "1.0.0",
-  "description": "冒烟：镜像拉取、dry-run、与 distill 分流",
+  "version": "2.0.0",
+  "description": "评测 docs-pull 触发、当前槽位单元、批量继续确认与同步后 CHANGE-LOG 追溯。",
   "evals": [
     {
-      "id": 1,
-      "prompt": "billing-appeal 那边应用库又合并了几个 PR，帮我把联邦镜像 applications/app-billing-appeal/ 从远端拉一下最新文档，先 dry-run 我看下计划",
-      "expected_output": "docs-pull：读 manifest→ gates 语义→ `--dry-run` 计划→ 不误称已更新 system overview 第三列→ 不写 HTML spec gate。",
-      "files": []
+      "id": "docs-pull-trigger-001",
+      "category": "should-trigger",
+      "prompt": "帮我在 system 知识库根执行 /docs-pull，把 billing 应用的本地 docs 回拉到 application-billing 槽位，只处理这一个槽位，别一口气跑全部。",
+      "expected_output": "docs-pull：收口 mode=system、--app=billing；以单个 application-billing 为当前槽位单元；同步后先校核 CHANGE-LOG 追溯，再停下等 C/M/S/F。",
+      "assertions": [
+        {
+          "id": "single-slot-stop",
+          "name": "单槽位停顿",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前槽位单元，收敛后给出 C/M/S/F 或等价动作等待用户选择。",
+          "priority": "P0"
+        },
+        {
+          "id": "changelog-must-follow-sync",
+          "name": "同步后追溯",
+          "type": "must_include",
+          "check": "须体现槽位 CHANGE-LOG.md 追溯记录要跟随同步追加。",
+          "priority": "P0"
+        }
+      ]
     },
     {
-      "id": 2,
-      "prompt": "/docs-pull --app payment --branch release/1.2",
-      "expected_output": "docs-pull：复述 repo/docs_root→ HARD-GATE 或一句许可→ `pull-docs.sh`→ 追加 pull-log→ distill **不是**同一步默认主交付。",
-      "files": []
+      "id": "docs-pull-trigger-002",
+      "category": "should-trigger",
+      "prompt": "在 company 库跑 /docs-pull --all，把所有 system link 都同步进 system-* 槽位。",
+      "expected_output": "docs-pull：收口 mode=company 与 --all；先选择一个当前槽位单元执行并校核，再由用户用 F 决定是否补齐剩余 system-* 槽位。",
+      "assertions": [
+        {
+          "id": "all-mode-requires-batch-confirmation",
+          "name": "all 模式批量确认",
+          "type": "must_include",
+          "check": "须体现 --all 也先处理一个当前槽位单元，不能静默一次性跑完整批。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-slot-stop",
+          "name": "单槽位停顿",
+          "type": "must_include",
+          "check": "须体现当前槽位单元收敛后再决定是否继续剩余槽位。",
+          "priority": "P0"
+        }
+      ]
     },
     {
-      "id": 3,
-      "prompt": "帮我把 payment-overview 第三列从应用库蒸馏到系统库，顺便拉一下最新镜像",
-      "expected_output": "**分流**：overview 主线 distill（或 extract）；拉镜像 docs-pull→ 不能只 pull 顶替 distill。",
-      "files": []
+      "id": "docs-pull-trigger-003",
+      "category": "should-trigger",
+      "prompt": "同步 order-service 时提示 path 不是 Git 工作区，但我想继续，你帮我处理。",
+      "expected_output": "docs-pull：识别 path 非 Git 工作区为风险项；给出结论与推荐方案；未获确认不得继续同步。",
+      "assertions": [
+        {
+          "id": "risk-must-confirm",
+          "name": "风险先确认",
+          "type": "must_include",
+          "check": "须体现 path 非 Git 工作区、.docsconfig 缺失、links 缺字段等风险需先确认或中止。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-pull-not-trigger-001",
+      "category": "should-not-trigger",
+      "prompt": "把中央库 specs 推到 myapp 应用仓 requirements 目录里，先 dry-run 再 copy。",
+      "expected_output": "主路径 docs-push。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须点名 docs-push 或中央规约下发为主任务。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-push",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得把中央规约下发写成 docs-pull 主路径。",
+          "priority": "P0"
+        }
+      ]
     }
   ]
 }

@@ -1,3 +1,16 @@
+---
+id: "SOLUTION-{IDEA-ID}"
+title: "{解决方案标题}"
+version: "1.0.0"
+status: "draft"
+created: "{YYYY-MM-DD}"
+updated: "{YYYY-MM-DD}"
+author: "{agent_name}"
+parent: "{父文档编号，如有}"
+dependencies: []
+tags: []
+---
+
 # 解决方案标题
 
 > 读者：**业务与产品**。
@@ -208,23 +221,4 @@
   *通过标准*：§7.1 专用术语；§7.2 已引路径。
 
 - [ ] **格式与元数据**  
-  *通过标准*：文末 fenced `yaml` 完整；首行非 `---`；`id` 与文件名一致。
-
----
-
-## 文档元数据
-
-<!-- 仅此一处 fenced yaml；禁止文首 `---` frontmatter -->
-
-```yaml
-id: "SOLUTION-{IDEA-ID}"
-title: "{解决方案标题}"
-version: "1.0.0"
-status: "draft"
-created: "{YYYY-MM-DD}"
-updated: "{YYYY-MM-DD}"
-author: "{agent_name}"
-parent: "{父文档编号，如有}"
-dependencies: []
-tags: []
-```
+  *通过标准*：文首 frontmatter 完整；`id` 与文件名一致。

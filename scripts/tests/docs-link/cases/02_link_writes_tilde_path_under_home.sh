@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# link 写入的 path 在 $HOME 下为 ~/ 前缀（集成：company → system）
+# link 写入的 path 在 $HOME 下为 ~/ 前缀（集成：company → system）；并创建 system 槽位 + 写入 sys_* 与 repository
 set -euo pipefail
 
 TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -16,7 +16,7 @@ ROOT_DIR="$(cd "$TEST_DIR/../../../.." && pwd)"
 DOCS_LINK="$ROOT_DIR/scripts/docs-link.sh"
 FAKEHOME="$TMP_DIR/fakehome"
 COMPANY="$FAKEHOME/ws/company-repo"
-SYSTEM="$FAKEHOME/ws/system-target"
+SYSTEM="$FAKEHOME/ws/sys-foo"
 
 cleanup() {
   rm -rf "$TMP_DIR"
@@ -26,6 +26,9 @@ trap cleanup EXIT
 mkdir -p "$COMPANY/docs" "$SYSTEM/docs"
 git -C "$COMPANY" init -q
 git -C "$SYSTEM" init -q
+git -C "$SYSTEM" remote add origin "https://example.com/org/sys-foo.git"
+
+cp -R "$ROOT_DIR/company/system-SYSNAME" "$COMPANY/docs/system-SYSNAME"
 
 cat >"$COMPANY/.docsconfig" <<EOF
 DOC_ROOT=docs
@@ -49,7 +52,16 @@ EOF
   || fail "docs-link --link 应成功"
 
 assert_file_exists "$COMPANY/docs/knowledge-links.yaml"
-grep -Fq 'path: "~/ws/system-target"' "$COMPANY/docs/knowledge-links.yaml" \
+grep -Fq 'path: "~/ws/sys-foo"' "$COMPANY/docs/knowledge-links.yaml" \
   || fail "path 应为 ~/ 前缀的 \$HOME 相对路径"
+grep -Fq 'repository: "https://example.com/org/sys-foo.git"' "$COMPANY/docs/knowledge-links.yaml" \
+  || fail "repository 应写入 target remote URL"
+grep -Fq 'doc_dir: "system"' "$COMPANY/docs/knowledge-links.yaml" \
+  || fail "doc_dir 应为 system"
+grep -Fq 'sys_name: "sys-foo"' "$COMPANY/docs/knowledge-links.yaml" \
+  || fail "sys_name 应写入"
+grep -Fq 'sys_label: "sys-foo"' "$COMPANY/docs/knowledge-links.yaml" \
+  || fail "sys_label 应写入"
+assert_dir_exists "$COMPANY/docs/system-sys-foo"
 
-pass "link 在 \$HOME 下写出 path: \"~/ws/system-target\""
+pass "link 在 \$HOME 下写出 path: \"~/ws/sys-foo\" 并创建槽位"

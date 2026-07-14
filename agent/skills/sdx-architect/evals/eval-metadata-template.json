@@ -3,36 +3,29 @@
   "eval_id": "REPLACE_WITH_EVAL_ID",
   "expected_category": "should-trigger | should-not-trigger",
   "expected_route": "/sdx-architect | （not-trigger 时填主分流目标）",
-  "expected_output": "与同 id 的 evals.json expected_output 对齐。",
-  "notes": "复制为 <eval-id>-metadata.json；断言同 grader.md。",
+  "expected_output": "与 evals.json 同 id 的 expected_output 对齐的一两句期望。",
+  "notes": "复制为 <eval-id>-metadata.json；断言与 agents/grader.md 一致。",
   "assertions_should_trigger_example": [
     {
-      "id": "gate-compliance",
-      "name": "门禁合规",
+      "id": "parameter-guidance",
+      "name": "参数向导",
       "type": "must_include",
-      "check": "总确认前禁写 `{DOC_DIR}/requirements/**/ASD-*.md`；可提例外或 `SDX_ARCHITECT_ALLOW_ASD_WRITE`。",
+      "check": "响应需明确：存在逐项确认参数或快捷组合入口，不得仍以前置会话 spec / 集中门禁作为默认第一步。",
       "priority": "P0"
     },
     {
-      "id": "structure-integrity",
-      "name": "结构完整",
+      "id": "section-cycle",
+      "name": "分段直写",
       "type": "must_include",
-      "check": "§1/§2/§3 + 边界/变更/规约摘要；≠ DSD 级 API/DDL/规约全文。",
+      "check": "响应需体现 ASD 阶段：基于 PRD，按 §1-§3 分段直写 `ASD-{IDEA-ID}-{N}.md`，而非先整份 spec 再统一定稿。",
       "priority": "P0"
     },
     {
-      "id": "boundary-routing",
-      "name": "边界分流",
-      "type": "must_not_conflict",
-      "check": "should-trigger：勿误判主路径为仅 `/sdx-design` 或纯 docs-*。",
+      "id": "single-section-stop",
+      "name": "单段停住",
+      "type": "must_include",
+      "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 `C/M/G/F` 等待用户选择。",
       "priority": "P0"
-    },
-    {
-      "id": "upstream-awareness",
-      "name": "上游依赖",
-      "type": "should_include",
-      "check": "应提 PRD（可选 ANALYSIS）为输入。",
-      "priority": "P1"
     }
   ],
   "assertions_should_not_trigger_example": [
@@ -40,22 +33,15 @@
       "id": "correct-downstream",
       "name": "正确下游",
       "type": "must_include",
-      "check": "须点与 prompt 一致的下游（如 sdx-design+DSD、docs-distill）；≠ 仅 sdx-architect。",
+      "check": "须点名与 prompt 一致的下游技能或产物（如 sdx-design + DSD、docs-distill 等），不得以 sdx-architect 为唯一主路径。",
       "priority": "P0"
     },
     {
       "id": "no-false-architect-primary",
-      "name": "勿假主架构阶段",
+      "name": "勿假主 ASD 阶段",
       "type": "must_not_conflict",
-      "check": "勿写成「默认只跑 architect 出 ASD」而忽略已定下游。",
+      "check": "不得将本请求描述为默认完整执行 sdx-architect 的参数向导 + 分段直写并产出 ASD 作为终点。",
       "priority": "P0"
-    },
-    {
-      "id": "optional-defer-asd",
-      "name": "可声明本阶段不做",
-      "type": "should_include",
-      "check": "可加：不写 ASD 终稿或先走所列下游。",
-      "priority": "P1"
     }
   ],
   "scoring": {

@@ -1,12 +1,12 @@
 # Index 解析、探索与错误处理
 
-步骤 0：[gates.md](gates.md)。分工：[three-file-spec.md](three-file-spec.md)。验收：[quality-standards.md](quality-standards.md)。
+参数确认与风险边界见 [gates.md](gates.md)。分工：[three-file-spec.md](three-file-spec.md)。验收：[quality-standards.md](quality-standards.md)。
 
 ## 1. Index 解析
 
 **路径（命中即停）**，记下相对路径为「当前 INDEX」：
 
-1. `REPO_ROOT/INDEX_GUIDE.md`、`INDEX-GUIDE.md`
+1. `REPO_ROOT/index.md`、`index.md`
 2. `DOC_ROOT/` 同上
 
 **命中后**：仅以该文件为地图；不调 docs-indexing；不以用户粘贴替换磁盘（磁盘优先）。

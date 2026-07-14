@@ -31,6 +31,7 @@ mkdir -p "$SYS_SRC/docs" "$APP_TGT/docs"
 cp -R "$TPL" "$SYS_SRC/docs/application-APPNAME"
 git -C "$SYS_SRC" init -q
 git -C "$APP_TGT" init -q
+git -C "$APP_TGT" remote add origin "https://example.com/org/my-application-repo.git"
 
 cat >"$SYS_SRC/.docsconfig" <<EOF
 DOC_ROOT=docs
