@@ -1,33 +1,90 @@
-# docs-extract 门禁
+# docs-extract 风险控制与推进协议
 
-路径契约：[session-spec-path.md](../../../references/session-spec-path.md)（会话 spec 落在 `{DOC_DIR}/superpowers/specs/`，排除 `requirements/**/specs/`）。
-五阶段与参数见 [workflow.md](workflow.md)；交互见 [interaction-gate.md](interaction-gate.md)。
+主干：[SKILL.md](../SKILL.md)。流程：[workflow.md](workflow.md)。
 
-## 核心
+## 定位
 
-- **未总确认 → 禁止阶段 4 落盘**（目标 overview 第三列）。阶段 1–3 允许路径校验、读附录、筛选、**`--dry-run`**（dry-run 不落盘第三列）。
-- **例外**：同会话用户**明示**跳过闸门、仅预览、或授权直写。无环境变量 bypass（与 [agent/rules/CONVENTIONS.md](../../../rules/CONVENTIONS.md#artifact-gates) 一致）。
+本文件定义 `docs-extract` 的风险控制与用户动作协议，用于约束：
 
-## Spec
+- 当前单元何时可以执行
+- 哪些写入场景必须先确认
+- 无命中与写入失败时如何停止
+- `C/M/G/S/F` 的语义
 
-- 路径：`{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-docs-extract.md`
-- 文末：`<!-- docs-extract-gate: PENDING -->` → 确认后 `CONFIRMED`
-- 正文须出现目标 `XX-overview.md` basename（与 `--overview` 一致）
-- 至少含：`--sources` 列表、`--overview`、命中数与章节摘要、是否 `dry-run` 及结论
-- 若含与 `sdx-*` 同构进度表，锚点指向**本会话稿**内小节，无需引用外部技能模板
+`docs-extract` 默认采用“参数向导 -> 当前单元 -> 自动 grilling -> 用户动作推进”。
+参数未收口前，停留在参数向导；参数收口后直接处理当前单元。
 
-## HARD-GATE（须 dry-run 或总确认后再写）
+## 当前单元执行条件
 
-| 条件 | 动作 |
-|------|------|
-| 首次实质写第三列（原全空/`—`） | 先 `--dry-run`；确认后写 |
-| 命中异常多（如 >50） | 警告收窄关键词 |
-| 源含敏感名（`.env`、`credentials` 等） | 警告并确认 |
-| 第三列已有大量内容且本次大量 `[U]`（如 >10） | 先 `dry-run` |
-| 4.3 写入失败 | **整体回滚**（见 workflow） |
+满足以下条件即可处理当前单元：
 
-gotchas 要求「须警告并确认」的情形，**同等**按 HARD-GATE 处理。
+- `--sources` 可解析
+- `--overview` 可解析
+- 已读取 overview 的关键词附录
+- 已明确本轮是 `--dry-run` 还是正式写入
 
-## 钩子
+若以上任一条件未明确，继续停留在参数向导，不得落盘。
 
-[hooks.json](../../../hooks.json) 注册 `sdx_gate_common.py --gate extract`（`Write` / `StrReplace`）。放行与会话 spec、`CONFIRMED`、目标文件名一致；见 [hooks/README.md](../../../hooks/README.md)。**规范真源**在本目录与 `SKILL.md`；钩子未启用时对话中同等遵守。
+## 高风险场景
+
+以下情形必须先给出结论、推荐方案与数字选项，待用户确认后再执行：
+
+- 首次实质写第三列
+- 命中异常多，需收窄关键词或来源范围
+- 来源包含敏感文件或敏感目录
+- 第三列已有大量内容，且本轮 `[U]` 影响面很大
+- 用户要求跳过预览直接写入
+
+`--dry-run` 是推荐方案，用于先看命中质量与影响面再决定是否落盘。
+
+## 当前单元原子性
+
+- 4.1 无命中时，禁止进入写入
+- 4.3 写入失败时，当前单元整体回滚，禁止部分落盘
+- `--dry-run` 不写第三列
+- 当前单元未收敛前，不得自动推进到下一个 overview 或下一批来源
+
+## 自动 grilling 默认授权
+
+自动 `grilling` 只可直接修订当前单元内的非语义问题：
+
+- 错别字
+- 编号
+- 排版
+- 当前单元内不改变含义的轻微重述
+
+若涉及语义性问题，必须先确认。典型语义问题包括：
+
+- 来源范围变化
+- 关键词口径变化
+- overview 目标变化
+- `A/U/D` 策略变化
+- 是否改为直接写入而非预览
+
+## 用户动作
+
+### C：确认
+
+- 当前单元已收敛
+- 进入下一批来源或结束
+
+### M：修改
+
+- 按用户要求修改来源范围、关键词口径或写入策略
+- 修改后重新自动 `grilling`
+
+### G：继续 grill
+
+- 在当前单元已收敛的基础上，继续深挖命中质量、冲突或摘要力度
+
+### S：暂存
+
+- 保留本轮命中与影响面分析
+- 不落盘当前单元
+- 结束当前单元或切换其他目标
+
+### F：补齐剩余范围
+
+- 仅在当前单元已收敛后使用
+- 沿用已确认参数继续处理剩余来源
+- 中途若触发新的语义问题，必须再次停下确认

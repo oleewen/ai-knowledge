@@ -13,7 +13,7 @@
 
 - **F1** 路由误判  
 - **F2** 与 docs-indexing / docs-build / sdx-solution / docs-upgrade 混淆  
-- **F3** 门禁：缺步骤 0、未 C/S 即写入口  
+- **F3** 协议执行：缺参数向导、未按当前单元停顿、未做自动 grilling  
 - **F4** 结构：顺序/三文件校验/缺失  
 - **F5** INDEX 幻觉  
 - **F6** 证据不足  

@@ -6,7 +6,7 @@
 | ------ | ------ |
 | [gates.md](gates.md) | 确认书、快路径、分流 |
 | [workflow.md](workflow.md) | 步骤 1–5 |
-| [brainstorming-integration.md](brainstorming-integration.md) | 预检、同步前闸门 |
+| [brainstorming-integration.md](brainstorming-integration.md) | 预检、范围预检 |
 | [related-doc-discovery.md](related-doc-discovery.md) | 入站/出站 |
 | [semantic-keyword-discovery.md](semantic-keyword-discovery.md) | 关键词/语义 |
 | [core-concepts.md](core-concepts.md) | 简写、范围用语 |

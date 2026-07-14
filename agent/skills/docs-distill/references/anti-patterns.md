@@ -4,7 +4,7 @@
 
 | 反模式 | 纠正 |
 | ------ | ------ |
-| PENDING/无例外即写 overview 或 DISTILL | [gates.md](gates.md)；dry-run + CONFIRMED 或 `DOCS_DISTILL_ALLOW_WRITE` |
+| 参数未收口即写 overview 或 DISTILL | 先收口 `--app`、范围、是否 `--full`/`--dry-run`；[gates.md](gates.md) |
 | 4.3 败仍 4.4 | 仅成功后追加；[workflow.md](workflow.md) |
 | 混淆 CHANGE-LOG 与 DISTILL-LOG | [workflow.md](workflow.md)；[distill-log-spec.md](distill-log-spec.md) |
 | `--full` 无预览直盖 | gates + gotchas |

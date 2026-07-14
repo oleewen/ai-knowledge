@@ -7,24 +7,24 @@
   "notes": "复制 <eval-id>-metadata.json；断言同 grader。",
   "assertions_should_trigger_example": [
     {
-      "id": "gate-compliance",
-      "name": "门禁合规",
+      "id": "single-unit-stop",
+      "name": "单单元停顿",
       "type": "must_include",
-      "check": "Qclose-1；CONFIRMED 前禁写 INDEX/LOG 或合法同会话例外。",
+      "check": "一次只推进一个索引输出组，并在当前单元收敛后停下等待动作。",
       "priority": "P0"
     },
     {
-      "id": "path-evidence",
-      "name": "路径证据",
+      "id": "semantic-change-needs-confirmation",
+      "name": "语义变更先确认",
       "type": "must_include",
-      "check": "spec 须列完整根相对路径（防多域同名）。",
+      "check": "mode、depth、output、since 或基线策略变化时，先给结论、推荐方案与数字选项。",
       "priority": "P0"
     },
     {
-      "id": "no-false-low-risk",
-      "name": "勿误称中等风险",
-      "type": "must_not_conflict",
-      "check": "勿称无需 specs 或无 indexing gate/hook（违 CONVENTIONS）。",
+      "id": "no-silent-full-on-missing-baseline",
+      "name": "无基线不静默全量",
+      "type": "must_include",
+      "check": "请求 incremental 且无有效基线时，必须停下确认 full、补 since 或中止。",
       "priority": "P0"
     }
   ],
@@ -33,7 +33,7 @@
       "id": "no-blind-write",
       "name": "禁止默许直写",
       "type": "must_include",
-      "check": "拒跳闸；或仅在用户明示例外时说明直写条件。",
+      "check": "拒绝跳过参数收口直接写索引；或仅在用户明示例外时说明直写条件。",
       "priority": "P0"
     }
   ],

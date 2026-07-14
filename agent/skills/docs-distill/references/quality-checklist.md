@@ -2,11 +2,11 @@
 
 原则 [design-principles.md](design-principles.md)。
 
-## 门禁与范围
+## 参数与范围
 
-- [ ] Spec **CONFIRMED**（或有合法例外依据）  
-- [ ] basename `{APPNAME}-overview.md` 已出现在 spec  
-- [ ] 增量/`--full` 影响已说明；HARD-GATE 场景已过 **dry-run**（若适用）
+- [ ] `--app`、增量范围、`--full`/`--dry-run` 已收口
+- [ ] 当前单元目标 `{APPNAME}-overview.md` 已明确
+- [ ] 高风险场景已给出推荐方案与确认结论（若适用）
 
 ## overview / 第三列
 

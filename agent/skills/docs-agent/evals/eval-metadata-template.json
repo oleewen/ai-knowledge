@@ -7,10 +7,10 @@
   "notes": "复制为 `<eval-id>-metadata.json` 或流水线内联；断言与 agents/grader.md 一致。",
   "assertions_should_trigger_example": [
     {
-      "id": "gate-step0",
-      "name": "步骤 0 门禁",
+      "id": "parameter-guidance",
+      "name": "参数向导",
       "type": "must_include",
-      "check": "写根 README/AGENTS 前须有确认书与 C/S（或未确认不写）。",
+      "check": "写根 README/AGENTS 前须先收口 output、mode 与风险边界。",
       "priority": "P0"
     },
     {
@@ -18,6 +18,13 @@
       "name": "INDEX 驱动",
       "type": "must_include",
       "check": "落盘 INDEX 为地图、最小阅读；本技能不调 docs-indexing 重建。",
+      "priority": "P0"
+    },
+    {
+      "id": "single-unit-stop",
+      "name": "单单元停顿",
+      "type": "must_include",
+      "check": "须体现一次只处理一个当前单元（README.md 或 AGENTS.md），收敛后等待动作推进。",
       "priority": "P0"
     },
     {

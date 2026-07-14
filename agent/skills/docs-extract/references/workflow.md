@@ -1,45 +1,83 @@
 # docs-extract 工作流
 
-写入门禁见 [gates.md](gates.md)。
+主干：[SKILL.md](../SKILL.md)。风险控制与动作协议：[gates.md](gates.md)。
 
-## 前置
+## 目标
 
-- 路径：[session-spec-path.md](../../../references/session-spec-path.md)、[knowledge-layout.md](../../../references/knowledge-layout.md)
-- `--sources`、`--overview` 可解析；overview 含 `## 文档关键词`（缺则补，见 gotchas）
-- 会话 spec：`{DOC_DIR}/superpowers/specs/`；目标常位于 `system/knowledge/overview/` 或 `company/knowledge/overview/`
+通过“参数向导 + 当前单元 + 自动 grilling”的方式，
+把 `--sources` 中与关键词附录相关的内容整理进单个 `--overview` 第三列，
+并以 `A/U/D` 形式表达新增、更新与删除。
 
 ## 与 docs-distill
 
 任意 `--sources` 补充路径；共享目标（overview 第三列）与 A/U/D；**无** `DISTILL-LOG` / 应用蒸馏锚点。
 
 | 维度 | docs-distill | docs-extract |
-|------|---------------|--------------|
+| ------ | ------ | ------ |
 | 源 | `system/application-{name}/` | 用户 `--sources` |
 | 过滤 | 联邦规则 | **必须**段落级关键词（[extract-spec.md](extract-spec.md)） |
 | 增量锚点 | 有 | **无** |
 | 写入 | overview + DISTILL-LOG | **仅**第三列 |
 
-## 参数
+## 前置
 
-| 参数 | 默认 | 说明 |
-|-----|------|------|
-| `--sources` | 必填 | 空格分隔；目录递归（隐藏项见 gotchas） |
-| `--overview` | 必填 | 目标 `XX-overview.md` |
-| `--dry-run` | `false` | 预览：命中摘要、A/U/D 列表 |
+- 路径：[knowledge-layout.md](../../../references/knowledge-layout.md)
+- `--sources` 可解析
+- `--overview` 可解析
+- overview 含 `## 文档关键词`
+- 若环境未安装 `grilling` Skill，则按 [grilling-skill.md](../../../references/grilling-skill.md) 的 fallback 协议执行
 
-## 五阶段
+## 参数向导
 
-| 阶段 | 名 | 摘要 | 详见 |
-|------|-----|------|------|
-| 1 | EXPLORE | 校验路径；读关键词附录 | extract-spec |
-| 2 | CLARIFY | 关键词与源规模；单次一问 | extract-spec |
-| 3 | CONFIRM | HARD-GATE；`dry-run`；spec `CONFIRMED` 后解锁 4 | gates |
-| 4 | EXECUTE | 4.1 筛选 → 4.2 读第三列 → 4.3 写入 A/U/D | extract-spec |
-| 5 | CLOSE | 摘要；**不**自动 commit；**不**写 `DISTILL-LOG` / 应用 `CHANGE-LOG` | — |
+按以下顺序收口参数；用户已明确时可跳过对应项：
 
-**HARD-GATE**：阶段 3 未 `CONFIRMED` → 禁止阶段 4；`dry-run` 属阶段 3。
+1. `--sources`
+2. `--overview`
+3. 关键词口径或过滤范围
+4. 是否 `--dry-run`
 
-**阶段 4 原子**：4.1 无命中 → 禁止 4.2/4.3；4.3 失败 → **整篇回滚**，禁止部分落盘。
+参数未收口前，不进入执行。
+
+## 当前单元
+
+一个当前单元由两部分组成：
+
+1. 单个 `--overview`
+2. 单批命中段落与对应的 `A/U/D` 集合
+
+一次只处理一个当前单元，不并行推进多个 overview。
+
+## 执行循环
+
+```mermaid
+flowchart TD
+    A["参数向导收口"] --> B["选定当前单元"]
+    B --> C["读关键词附录与 sources"]
+    C --> D["筛选命中段落"]
+    D --> E{"是否有命中"}
+    E -->|否| F["结束当前单元，不写入"]
+    E -->|是| G{"是否 dry-run"}
+    G -->|是| H["输出命中摘要与 A/U/D 预览"]
+    G -->|否| I["读取现有第三列并写入 A/U/D"]
+    I --> J{"写入是否成功"}
+    J -->|否| K["回滚当前单元"]
+    J -->|是| L["自动 grilling"]
+    H --> L
+    F --> L
+    K --> L
+    L --> M["等待 C/M/G/S/F"]
+```
+
+## 自动 grilling
+
+当前单元执行或预览后，立即做自动 `grilling`：
+
+- 检查关键词命中是否合理
+- 检查 `A/U/D` 口径是否稳定
+- 检查来源是否含敏感内容
+- 检查第三列摘要是否避免整段照抄
+
+若发现语义性问题，先停下给结论、推荐方案和数字选项。
 
 ## 命令示例
 
@@ -51,6 +89,7 @@
 
 ## 执行摘要
 
-- 关键词附录为筛选**唯一**依据；弱相关不入。
-- 禁止整段复制源文；第三列无来源脚注。
-- 只更新有命中的章节；写入前先读现有第三列再定 A/U/D。
+- 关键词附录为筛选**唯一**依据；弱相关不入
+- 禁止整段复制源文；第三列无来源脚注
+- 只更新有命中的章节；写入前先读现有第三列再定 `A/U/D`
+- 当前单元完成后必须停下，等待 `C/M/G/S/F`

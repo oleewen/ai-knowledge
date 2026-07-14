@@ -305,7 +305,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 每个 per-entity concept **必须**含非空 frontmatter `full_id`（及 [consolidation-spec.md](consolidation-spec.md) 所列字段）。
 
-**统计**（各层级计数、`extraction_basis`、`schema_notes`、`changes_from_previous`）为可选：可写入 `--emit-report` 的 `extraction_report.md`、会话 spec，或 `{perspective}-meta.md` 备注；**不**再要求单独的 `{perspective}-entities.md` 统计节。
+**统计**（各层级计数、`extraction_basis`、`schema_notes`、`changes_from_previous`）为可选：可写入 `--emit-report` 的 `extraction_report.md` 或 `{perspective}-meta.md` 备注；**不**再要求单独的 `{perspective}-entities.md` 统计节。
 
 | 字段 | 说明 |
 |------|------|

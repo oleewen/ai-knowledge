@@ -11,7 +11,7 @@ description: >
   <第三人称能力句>。
   触发：<`/slash` 与口述同义>。
   分流：<docs vs sdx / 其他技能一句>。
-  门禁：<禁写路径或「无 SDD gate」一句>。
+  推进协议或约束：<参数向导 / 当前单元 / 轻量校核 / 真实硬约束一句>。
 ---
 
 # <title>（一行定位）
@@ -28,9 +28,9 @@ description: >
 2. [workflow.md](references/workflow.md)
 3. …（仅文件名，无长解释）
 
-## 门禁
+## 最少输入 / 风险约束
 
-（1–3 句 + 链 gates.md；HARD-GATE 路径保留字面量）
+（1–3 句 + 链 gates.md；描述参数向导、风险确认或真实硬约束）
 
 ## 产出
 
@@ -43,9 +43,9 @@ description: >
 
 ## description 规范
 
-1. **第三人称**、动词开头；含触发、分流、门禁；≤1024 字符。
+1. **第三人称**、动词开头；含触发、分流、推进协议或真实约束；≤1024 字符。
 2. **不与**正文「边界」表逐字重复。
-3. 无 SDD 式 HTML gate 的技能：description 写「有歧义须确认」或 `.docsconfig` 硬门禁等本技能真实约束。
+3. 采用当前交互主线的技能：description 写「参数向导 / 当前单元 / 轻量校核」或 `.docsconfig` 硬门禁等本技能真实约束。
 
 ## 禁止出现在 SKILL.md
 
@@ -57,8 +57,8 @@ description: >
 ## references 分工（技能内）
 
 | 文件 | SSOT |
-|------|------|
-| `gates.md` | CONFIRMED、路径证据、钩子、例外 |
-| `workflow.md` | 步骤、参数、脚本 invocation |
+| ---- | ---- |
+| `gates.md` | 参数确认、风险边界、动作协议、例外 |
+| `workflow.md` | 主线步骤、当前单元、参数与脚本 invocation |
 | `brainstorming-integration.md` | ≤20 行 + 链 gates |
 | `references/README.md` | 索引表（何时读） |

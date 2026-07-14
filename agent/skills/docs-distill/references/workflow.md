@@ -1,43 +1,79 @@
-# 工作流
+# docs-distill 工作流
 
-主干：[SKILL.md](../SKILL.md)；写入门禁：[gates.md](gates.md)。
+主干：[SKILL.md](../SKILL.md)。风险控制与动作协议：[gates.md](gates.md)。
+
+## 目标
+
+通过“参数向导 + 当前单元 + 自动 grilling”的方式，
+把单个应用的已核实变更蒸馏进 `system/knowledge/overview/{APPNAME}-overview.md` 第三列，
+并在 overview 成功写入后追加 `system/changelogs/DISTILL-LOG.md`。
 
 ## 前置
 
-- 路径：[session-spec-path.md](../../../references/session-spec-path.md)、[knowledge-layout.md](../../../references/knowledge-layout.md)
-- 可读 `system/application-{name}/changelogs/CHANGE-LOG.md`；明确 `{APPNAME}` / `--app`
-- `{DOC_DIR}/superpowers/specs/`、`system/knowledge/overview/` 可写（公司侧见 knowledge-layout）
+- 路径：[knowledge-layout.md](../../../references/knowledge-layout.md)
+- 可读 `system/application-{name}/changelogs/CHANGE-LOG.md`
+- overview 目标路径可解析
+- `system/changelogs/DISTILL-LOG.md` 可写
+- 若环境未安装 `grilling` Skill，则按 [grilling-skill.md](../../../references/grilling-skill.md) 的 fallback 协议执行
 
 ## 两日志
 
 | 文件 | 职责 | 本技能写入 |
 | ---- | ----- | --------- |
 | `system/application-{name}/changelogs/CHANGE-LOG.md` | 增量候选来源 | **否** |
-| `system/changelogs/DISTILL-LOG.md` | 记录 + 锚点（按 **`app`** 取该应用最新一条） | **是**（4.3 成功后） |
+| `system/changelogs/DISTILL-LOG.md` | 蒸馏记录与下次锚点 | **是**（overview 成功后） |
 
-混用会导致锚点错、漏蒸馏。
+不得把这两份日志混用。`CHANGE-LOG` 负责提供应用增量来源；`DISTILL-LOG` 负责记录蒸馏完成点。
 
-## 参数
+## 参数向导
 
-| 参数 | 默认 | 说明 |
-| ---- | ----- | ---- |
-| `--app` | 全部已登记 | 指定应用目录名 |
-| `--since` | 自动推导 | 覆盖锚点起点 |
-| `--full` | 否 | 全量忽略锚点；须先门禁与预览 |
-| `--dry-run` | 否 | 仅预览区间、目标状态、拟写 DISTILL-LOG |
+按以下顺序收口参数；用户已明确时可跳过对应项：
 
-## 五阶段
+1. `--app`
+2. `--since` 或自动锚点
+3. 是否 `--full`
+4. 是否 `--dry-run`
+5. 当前 overview 是新建还是更新
 
-| 阶段 | 名 | 要点 |
-| ---- | ----- | ----- |
-| 1 EXPLORE | 读 CHANGE-LOG、应用 `ARCHIVE-LOG.md`（若有）；算范围 | [distill-log-spec.md](distill-log-spec.md) |
-| 2 CLARIFY | 确认 `--app`/`--since`/`--full`；单次一问 | [interaction-gate.md](interaction-gate.md) |
-| 3 CONFIRM | HARD-GATE：`dry-run`、spec **CONFIRMED** 后解锁 4 | [gates.md](gates.md) |
-| 4 EXECUTE | 4.1 overview 检查/创建 → 4.2 读应用知识 → **4.3 写第三列** → **4.4 DISTILL-LOG** | [federation-spec.md](federation-spec.md) |
-| 5 CLOSE | 摘要；DISTILL **最新在前**；不自动 commit | — |
+参数未收口前，不进入执行。
 
-**HARD-GATE**：阶段 3 未 `CONFIRMED` → 禁止阶段 4（含 `system/knowledge/` overview 内容与 DISTILL-LOG）。`dry-run` 属阶段 3。  
-**原子**：**4.3 失败禁止 4.4**。
+## 当前单元
+
+一个当前单元由两部分组成：
+
+1. 单个 `{APPNAME}-overview.md`
+2. 单次增量范围或单次 `--full` 范围
+
+一次只处理一个当前单元，不并行推进多个应用。
+
+## 执行循环
+
+```mermaid
+flowchart TD
+    A["参数向导收口"] --> B["选定当前单元"]
+    B --> C["读 CHANGE-LOG 与现有 overview"]
+    C --> D["计算增量范围或 full 范围"]
+    D --> E{"是否 dry-run"}
+    E -->|是| F["输出预览"]
+    E -->|否| G["写第三列"]
+    G --> H{"overview 写入是否成功"}
+    H -->|是| I["追加 DISTILL-LOG"]
+    H -->|否| J["停止，禁止写日志"]
+    F --> K["自动 grilling"]
+    I --> K
+    K --> L["等待 C/M/G/S/F"]
+```
+
+## 自动 grilling
+
+当前单元执行或预览后，立即做自动 `grilling`：
+
+- 检查增量范围是否合理
+- 检查冲突是否已交代
+- 检查第三列写法是否符合五视角摘要要求
+- 检查 `DISTILL-LOG` 是否只在 overview 成功后追加
+
+若发现语义性问题，先停下给结论、推荐方案和数字选项。
 
 ## 命令示例
 
@@ -61,6 +97,7 @@
 
 ## 执行摘要
 
-- 默认增量；`--full` 须先预览与确认。
-- 第三列五视角逐节写；不写 `(来源…)`。
-- 落盘前先读现有 overview，做 **A/U/D**。
+- 默认增量；`--full` 属高风险场景，推荐先 `--dry-run`
+- 第三列五视角逐节写；不写 `(来源…)`
+- 先写 overview，后记 `DISTILL-LOG`
+- 当前单元完成后必须停下，等待 `C/M/G/S/F`

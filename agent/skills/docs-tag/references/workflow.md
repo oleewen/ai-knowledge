@@ -1,6 +1,6 @@
-# docs-tag 工作流（步骤 2–4）
+# docs-tag 工作流
 
-[SKILL.md](../SKILL.md)；步骤 1 [gates.md](gates.md)。
+[SKILL.md](../SKILL.md)；风险控制与动作协议 [gates.md](gates.md)。
 
 ## 前置
 
@@ -11,18 +11,38 @@
 ## 参数
 
 | 参数 | 必需 | 默认 | 说明 |
-|------|------|------|------|
+| ---- | ---- | ---- | ---- |
 | `--file` | 是 | — | 目标 MD |
 | `--phase` | 是 | — | `1`/交互、`2`、`3`/`excerpt`、`all`；Skill 用 `1-scan`/`1-write`/`2`/`3` |
 | `--keywords` | 1/all 时 | — | 种子词，空格分隔 |
 | `--scan-dir` | 否 | `docs/architecture/` | 扫目录；公司 `ea` overview 场景用 `company/knowledge/` |
 | `--top-n` | 否 | `30` | Top 候选数 |
 
-Skill：`1-scan` → 列表/JSON → 用户选 → `1-write` → `2` → `3`。勿用 `--phase 1` 的 `input()`（gotchas §7）。
+## 参数向导
 
----
+按以下顺序收口参数；用户已明确时可跳过对应项：
 
-## 步骤 2：执行扫描（phase 1 或 all 时）
+1. `--file`
+2. `--phase`
+3. `--keywords`（phase 含 `1` 或 `all` 时）
+4. `--scan-dir`
+5. `--top-n`
+
+参数未收口前，不进入执行。
+
+## 当前单元
+
+一个当前单元就是单个 overview 文件。
+
+一次只处理一个当前单元，不并行推进多个 overview 文件。phase 只是当前单元内部子阶段，不是独立当前单元。
+
+## 执行循环
+
+### 1 选定当前单元
+
+基于 `--file` 确定本轮只处理一个 overview 文件。
+
+### 2 执行 phase 1-scan（phase 1 或 all 时）
 
 在仓库根 `{REPO_ROOT}` 执行：
 
@@ -36,25 +56,25 @@ python3 agent/skills/docs-tag/scripts/keyword_tag.py \
 
 解析 stdout JSON，以编号列表展示候选词：
 
-```
+```text
 === 候选关键词列表（按共现频率排序，Top 30）===
 
    1. [██████] (42次)  费用类型
    2. [█████ ] (31次)  计费规则
    3. [███   ] (18次)  PolicyType
    ...
-
-输入编号选择（逗号分隔，如 1,3,5），输入 all 全选，输入 q 退出：
 ```
 
-条形：最高频=6 格，其余按比例，最少 1 格。
+phase 1-scan 后立即做自动 `grilling`：
 
----
+- 检查种子词是否足够支撑当前 overview
+- 检查候选词是否需要缩窄或扩展
+- 检查 `scan-dir`、`top-n` 是否仍合适
 
-## 步骤 3：用户选择（phase 1 或 all）
+### 3 用户选择并执行 phase 1-write（phase 1 或 all 时）
 
 | 输入 | 行为 |
-|------|------|
+| ---- | ---- |
 | `1,3,5` 等 | 对应词 → `1-write` |
 | `all` | 全选 → `1-write` |
 | `q` | 退出，不写 |
@@ -70,9 +90,13 @@ python3 agent/skills/docs-tag/scripts/keyword_tag.py \
   --selected TERM1,TERM2,...
 ```
 
----
+phase 1-write 后自动 `grilling`：
 
-## 步骤 4：标记（phase 2 或 all）
+- 检查附录是否幂等
+- 检查候选词是否明显越义
+- 检查是否继续 phase 2 或需要回调参数
+
+### 4 执行 phase 2（phase 2 或 all 时）
 
 ```bash
 python3 agent/skills/docs-tag/scripts/keyword_tag.py --file FILE --phase 2
@@ -80,9 +104,13 @@ python3 agent/skills/docs-tag/scripts/keyword_tag.py --file FILE --phase 2
 
 汇报脚本统计（✅ 行数、跳过行数）。判定章节相关性时**忽略 HTML 注释**（`<!-- … -->`），见 gotchas §6b。
 
----
+phase 2 后自动 `grilling`：
 
-## 步骤 5：架构摘录（phase 3 或 excerpt）
+- 检查 ✅ 是否过宽或过窄
+- 检查无附录场景是否应先回到 phase 1
+- 检查当前 overview 是否适合继续 phase 3
+
+### 5 执行 phase 3（phase 3 / excerpt 或 all 时）
 
 ```bash
 python3 agent/skills/docs-tag/scripts/keyword_tag.py --file FILE --phase 3
@@ -92,15 +120,26 @@ python3 agent/skills/docs-tag/scripts/keyword_tag.py --file FILE --phase 3
 
 汇报摘录行数；**勿手改**摘录表数据行（gotchas §9）。
 
-| 场景 | 要点 |
-|------|------|
-| 仅 phase 3 | gates → `--phase 3`（或 `excerpt`）；不需 keywords |
-| 完整 Skill | `1-scan`→选→`1-write`→`2`→`3` |
+phase 3 后自动 `grilling`：
+
+- 检查摘录是否与 ✅ 行一致
+- 检查无 ✅ 场景是否正确写入空占位
+- 检查当前单元是否已收敛
+
+### 6 输出与动作停顿
+
+当前单元收敛后，停下等待 `C/M/G/S/F`：
+
+- `C`：确认当前单元并结束或进入下一 overview 文件
+- `M`：修改参数或 phase 策略，再重新 grill
+- `G`：继续深挖当前单元的候选词、表行命中或摘录结果
+- `S`：跳过当前单元写入，或保留当前结果但不继续后续 phase
+- `F`：按已确认参数补齐剩余 overview 文件
 
 ## 示例摘要
 
 | 场景 | 要点 |
-|------|------|
-| 仅 phase 1 | gates → `1-scan` → 选词 → `1-write` |
-| 仅 phase 2 | gates → `--phase 2` → 汇报 N✅ / M skip |
-| all | gates → `1-scan`→选→`1-write`→`2`→`3`，默认 scan-dir/top-n 已复述 |
+| ---- | ---- |
+| 仅 phase 1 | 参数向导 → `1-scan` → grill → 选词 → `1-write` → grill |
+| 仅 phase 2 | 参数向导 → `--phase 2` → grill → 汇报 N✅ / M skip |
+| all | 参数向导 → `1-scan` → grill → `1-write` → grill → `2` → grill → `3` → grill |

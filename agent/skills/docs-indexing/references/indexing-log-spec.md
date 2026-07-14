@@ -14,7 +14,7 @@
 ${DOC_DIR}/changelogs/INDEXING-LOG.md
 ```
 
-例：`application/changelogs/INDEXING-LOG.md`。无存档=无锚点→增量须经门禁选 full **或中止**，勿静默降级。
+例：`application/changelogs/INDEXING-LOG.md`。无存档 = 无锚点：增量时须让用户确认改走 full **或中止**，勿静默降级。
 
 ---
 
@@ -52,7 +52,7 @@ ${DOC_DIR}/changelogs/INDEXING-LOG.md
 ## 锚点列 `indexing_finished_ms`
 
 - **唯一机器锚点**：从主表**第一行数据**读取 `indexing_finished_ms`。
-- 解析失败（表缺失、无数据行、该格非正整数）→ 本文件**无有效锚点**；增量须走门禁，不得臆造基线。
+- 解析失败（表缺失、无数据行、该格非正整数）→ 本文件**无有效锚点**；增量时须停下确认，不得臆造基线。
 
 ---
 
@@ -85,7 +85,7 @@ elif INDEXING-LOG 主表存在且第一行 indexing_finished_ms 可解析:
     基线 = 该值
 
 else:
-    无有效基线 → 停在与用户确认的门禁（不静默降级）
+    无有效基线 → 停下等待用户确认（不静默降级）
 ```
 
 变更文件列表仍靠 `docs-change`/`CHANGE-LOG`；本文件只管**索引成功结束时间**。

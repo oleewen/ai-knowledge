@@ -8,4 +8,4 @@
 4. **日志原子**：4.3 成后再 4.4；失败不前移锚点。  
 5. **正文无出处脚注**：追溯 CHANGE-LOG / DISTILL / spec。  
 6. **联邦消解冲突**：按 [federation-spec.md](federation-spec.md)，勿硬盖系统权威。  
-7. **风险先预览**：HARD-GATE 默认 dry-run → CONFIRMED。
+7. **风险先预览**：高风险场景默认先 `--dry-run`，再按会话内确认推进。

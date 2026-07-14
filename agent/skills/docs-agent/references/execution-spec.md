@@ -1,6 +1,6 @@
 # Index 解析、探索与错误处理
 
-步骤 0：[gates.md](gates.md)。分工：[three-file-spec.md](three-file-spec.md)。验收：[quality-standards.md](quality-standards.md)。
+参数确认与风险边界见 [gates.md](gates.md)。分工：[three-file-spec.md](three-file-spec.md)。验收：[quality-standards.md](quality-standards.md)。
 
 ## 1. Index 解析
 

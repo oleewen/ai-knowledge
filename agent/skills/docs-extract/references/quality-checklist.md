@@ -2,12 +2,12 @@
 
 阶段 4 末与 CLOSE 前核对。原则见 [design-principles.md](design-principles.md)、[anti-patterns.md](anti-patterns.md)。
 
-## 门禁与范围
+## 参数与范围
 
-- [ ] spec `CONFIRMED`（或合法例外已记）
-- [ ] spec 正文含目标 `XX-overview.md` basename
+- [ ] `--sources`、`--overview`、关键词口径、`--dry-run` 已收口
+- [ ] 当前单元目标 `XX-overview.md` 已明确
 - [ ] `--sources` 存在；`--overview` 存在且含 `## 文档关键词`
-- [ ] 适用 HARD-GATE 时已 dry-run 且结论入 spec
+- [ ] 高风险场景已给出推荐方案与确认结论（若适用）
 
 ## 命中与写入
 

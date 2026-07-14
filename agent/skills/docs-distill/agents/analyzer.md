@@ -13,9 +13,9 @@
 
 - **F1** 路由误判  
 - **F2** extract/archive/索引 混淆为完整 distill 写盘  
-- **F3** 门禁：缺 CONFIRMED / 例外 / `DOCS_DISTILL_ALLOW_WRITE`  
-- **F4** 缺：五阶段、双日志、4.3→4.4  
-- **F5** 未确认自称写完  
+- **F3** 缺参数向导或当前单元  
+- **F4** 缺双日志顺序、overview -> `DISTILL-LOG` 原子性  
+- **F5** 语义变更未确认或未停下等待 `C/M/G/S/F`  
 - **F6** 证据不足  
 
 ## 回归
@@ -23,3 +23,4 @@
 1. P0 后全 `evals`  
 2. 成对：distill vs extract / archive / `sdx-*`  
 3. 同模式连挂 2 轮 → 收紧规则而非只改话术  
+4. 修复优先补参数向导、当前单元、日志原子性与动作停顿

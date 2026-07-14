@@ -7,5 +7,5 @@
 3. **顺序** — 技术→数据→业务→产品；后序只引用前序
 4. **README 与 JSON 一致** — 阶段 3/4 不打架
 5. **INDEX 四段同轮**
-6. **闸门先于写盘** — Qclose-1、`CONFIRMED`
+6. **参数先于写盘** — 参数向导收口、当前单元确认后再写盘
 7. **可验证** — `validate-extraction.sh` + [quality-checklist.md](quality-checklist.md)

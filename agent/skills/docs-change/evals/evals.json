@@ -1,19 +1,26 @@
 {
   "skill_name": "docs-change",
-  "version": "1.0.0",
-  "description": "评测 docs-change 触发、分流及三源/基线表述；含 expected_output 与断言供 grader 打分。",
+  "version": "2.0.0",
+  "description": "评测 docs-change 触发、参数向导、当前输出单元与基线风险表述；含 expected_output 与断言供 grader 打分。",
   "evals": [
     {
       "id": "change-trigger-001",
       "category": "should-trigger",
       "prompt": "帮我跑一下 /docs-change，把最近两周的文档改动聚到 application/changelogs/CHANGE-LOG.md，下游要给 docs-indexing 用",
-      "expected_output": "docs-change：三源、--output、`CHANGE-LOG.md`、文末基线；衔接 docs-indexing；歧义先确认。",
+      "expected_output": "docs-change：先收口时间基准与输出目录；以单个 `CHANGE-LOG.md` 为当前输出单元；写后轻量校核并停下等 C/M/S/F；衔接 docs-indexing。",
       "assertions": [
         {
           "id": "structure-integrity",
           "name": "结构完整",
           "type": "must_include",
           "check": "含三源语义、CHANGE-LOG.md、增量或基线。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-output-stop",
+          "name": "单输出单元停顿",
+          "type": "must_include",
+          "check": "须体现一次只处理一个 CHANGE-LOG 输出，收敛后给出 C/M/S/F 或等价动作等待用户选择。",
           "priority": "P0"
         },
         {
@@ -36,7 +43,7 @@
       "id": "change-trigger-002",
       "category": "should-trigger",
       "prompt": "记录一下最近改了什么，生成变更日志，默认输出到 changelogs 就行",
-      "expected_output": "触发 docs-change：默认 `${DOC_DIR}/changelogs/`（须 .docsconfig）、`CHANGE-LOG.md`、三源、倒序插入；无歧义可执行。",
+      "expected_output": "触发 docs-change：默认 `${DOC_DIR}/changelogs/`（须 .docsconfig）、`CHANGE-LOG.md`、三源、倒序插入；以单个输出单元执行；无歧义可执行。",
       "assertions": [
         {
           "id": "structure-integrity",
@@ -58,13 +65,20 @@
       "id": "change-trigger-003",
       "category": "should-trigger",
       "prompt": "/docs-change --since 2026-04-01 --output ./application/changelogs/ ，注意别用错 baseline 和 cutoff",
-      "expected_output": "docs-change：`--since`、`--output`；Git→baseline，CHANGELOG/local→cutoff（或引文档）。",
+      "expected_output": "docs-change：先确认 `--since`、`--output`；Git→baseline，CHANGELOG/local→cutoff；若基线语义有歧义，先给推荐方案。",
       "assertions": [
         {
           "id": "baseline-awareness",
           "name": "基线语义",
           "type": "must_include",
           "check": "区分 baseline_time 与 cutoff_time，或说明不可混用。",
+          "priority": "P0"
+        },
+        {
+          "id": "baseline-ambiguity-must-confirm",
+          "name": "基线歧义先确认",
+          "type": "must_include",
+          "check": "时间基准不清时须先确认或给推荐方案，不得静默选一个时间继续。",
           "priority": "P0"
         },
         {
@@ -124,7 +138,7 @@
       "id": "change-gate-001",
       "category": "should-trigger",
       "prompt": "在中央库 ai-knowledge 根目录跑 /docs-change，这里没有 .docsconfig",
-      "expected_output": "中止并提示 docs-install；不得用手写 changelogs 路径继续。",
+      "expected_output": "中止并提示 docs-install；不得用手写 changelogs 路径继续，也不得静默降级到猜路径全量聚合。",
       "assertions": [
         {
           "id": "docsconfig-gate",
@@ -138,6 +152,13 @@
           "name": "禁止启发式绕过",
           "type": "must_not_conflict",
           "check": "不得在无配置时仍扫描 **/changelogs/ 并写入 CHANGE-LOG。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-silent-full-fallback",
+          "name": "不静默全量降级",
+          "type": "must_not_conflict",
+          "check": "不得因无基线或无配置就自动改成全量扫描并继续写入。",
           "priority": "P0"
         }
       ]

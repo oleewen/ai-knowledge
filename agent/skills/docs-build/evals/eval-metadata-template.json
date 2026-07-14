@@ -7,24 +7,24 @@
   "notes": "复制为 <eval-id>-metadata.json；断言同 grader.md。",
   "assertions_should_trigger_example": [
     {
-      "id": "gate-compliance",
-      "name": "门禁合规",
+      "id": "single-unit-stop",
+      "name": "单单元停顿",
       "type": "must_include",
-      "check": "Qclose-1；CONFIRMED 前禁写 `{DOC_DIR}/knowledge/` 或合法同会话例外。",
+      "check": "一次只推进一个当前单元，并在当前单元收敛后停下等待动作。",
       "priority": "P0"
     },
     {
-      "id": "scope-knowledge",
-      "name": "知识产物范围",
+      "id": "semantic-change-needs-confirmation",
+      "name": "语义变更先确认",
       "type": "must_include",
-      "check": "点到四 JSON、README、KNOWLEDGE_INDEX 或 validate 之一。",
+      "check": "参数、视角范围、输出路径或重建策略变化时，先给结论、推荐方案与数字选项。",
       "priority": "P0"
     },
     {
-      "id": "no-false-low-risk",
-      "name": "勿误称低风险",
-      "type": "must_not_conflict",
-      "check": "勿称无需 specs 或无 build gate/hook（违 CONVENTIONS）。",
+      "id": "validate-before-continue",
+      "name": "校验后再继续",
+      "type": "must_include",
+      "check": "当前单元写入后需运行或提及 `validate-extraction.sh`，失败时停止并先澄清策略。",
       "priority": "P0"
     },
     {
@@ -47,7 +47,7 @@
       "id": "no-false-build-primary",
       "name": "勿假主 build",
       "type": "must_not_conflict",
-      "check": "勿仅以 docs-build 盖住用户已定 indexing/SDD 主轴。",
+      "check": "勿仅以 docs-build 盖住用户已定 indexing、overview 或 SDD 主轴。",
       "priority": "P0"
     }
   ],

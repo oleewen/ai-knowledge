@@ -1,28 +1,35 @@
 {
   "skill_name": "docs-extract",
+  "version": "2.0.0",
   "evals": [
     {
       "id": 1,
       "prompt": "帮我从 docs/design.md 和 docs/adr/ 这两个来源提炼业务知识，写进 system/architecture/overview/billing-overview.md，先 dry-run 看看会命中哪些内容",
-      "expected_output": "docs-extract：校 sources；读 billing-overview 关键词；阶段 3 dry-run（命中摘要 + A/U/D 预览）；不写盘",
+      "expected_output": "docs-extract：收口 `--sources` 与 `--overview`；以 billing-overview 为当前单元读取关键词附录；dry-run 只输出命中摘要与 A/U/D 预览；收敛后停下等 C/M/G/S/F。",
       "files": []
     },
     {
       "id": 2,
       "prompt": "/docs-extract --sources docs/ --overview system/architecture/overview/payment-overview.md",
-      "expected_output": "docs-extract：读附录；评估规模；HARD-GATE 时先 dry-run 与 CONFIRMED；阶段 4 写第三列；失败回滚",
+      "expected_output": "docs-extract：识别来源规模偏大，需要先给结论与推荐方案；当前单元只处理 payment-overview；若直接写入则须先确认；写入失败时整体回滚。",
       "files": []
     },
     {
       "id": 3,
       "prompt": "我们 order-service 有一批设计文档在 docs/specs/ 下，帮我把里面跟业务规则相关的内容整理进 order-service-overview.md，不需要 dry-run 直接写",
-      "expected_output": "仍走 extract + HARD-GATE：说明不可因「直接写」跳过；读附录与规模；先 dry-run/确认再落盘",
+      "expected_output": "仍走 docs-extract：把“直接写”识别为语义性高风险；先给结论、推荐方案和数字选项；未确认前不能宣称已写第三列。",
       "files": []
     },
     {
       "id": 4,
       "prompt": "从 company/knowledge/business/business-overview.md 提炼公司级业务背景，写进 company/knowledge/overview/COMPANY-overview.md 第三列，先 dry-run",
-      "expected_output": "docs-extract：--overview 指向 company/knowledge/overview/；读公司库表行关键词；dry-run + CONFIRMED；不写 DISTILL-LOG",
+      "expected_output": "docs-extract：以 COMPANY-overview 为当前单元；先读取关键词附录并 dry-run；不写 DISTILL-LOG；收敛后停下等动作。",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "这个 overview 先不看关键词了，直接把 docs/ 里看起来相关的都塞进去吧",
+      "expected_output": "docs-extract：拒绝绕过关键词附录；先指出这是语义性规则变更，给出推荐方案与数字选项；未确认前不能直接写入。",
       "files": []
     }
   ]

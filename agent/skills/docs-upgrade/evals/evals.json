@@ -1,26 +1,33 @@
 {
   "skill_name": "docs-upgrade",
-  "version": "1.0.0",
-  "description": "评估触发、确认书/快路径、与 archive/change/index 分流",
+  "version": "2.0.0",
+  "description": "评估触发、参数向导、当前单元、自动 grilling 与 upgrade 分流",
   "evals": [
     {
       "id": "upgrade-trigger-001",
       "category": "should-trigger",
-      "prompt": "把 system/architecture/overview/billing-overview.md 里所有「订金」统一成「预付款」，并同步引用这个 overview 的架构章节和全库注释里的同类说法",
-      "expected_output": "docs-upgrade：多文件+关键词前须范围确认或等效；主改→链→词；未确认勿批量写。",
+      "prompt": "把 system/architecture/overview/billing-overview.md 里所有「订金」统一成「预付款」，并同步引用这个 overview 的架构章节和全库注释里的同类说法。先收口范围，再按单个当前单元处理，改完第一批先 grill 一轮。",
+      "expected_output": "docs-upgrade：先收口主文件、扩展范围与当前单元；先处理一个当前单元并自动 grilling，收敛后停下等 C/M/G/S/F；语义扩展未确认前不得批量推进。",
       "assertions": [
         {
-          "id": "gate-awareness",
-          "name": "门禁意识",
+          "id": "scope-must-confirm-before-write",
+          "name": "范围先确认",
           "type": "must_include",
-          "check": "须含范围确认、C/S/M、或先列命中规模再请用户确认后写。",
+          "check": "须体现先收口主文件、改动摘要、是否允许关联扩展，不得直接批量写。",
           "priority": "P0"
         },
         {
-          "id": "structure-integrity",
-          "name": "结构完整",
+          "id": "single-unit-stop",
+          "name": "单单元停顿",
           "type": "must_include",
-          "check": "须含主文件、关联/关键词或链式、术语统一语义。",
+          "check": "须体现一次只处理一个当前单元，当前单元收敛后给出 C/M/G/S/F 或等价动作等待用户选择；不得自动推进下一批关联文件。",
+          "priority": "P0"
+        },
+        {
+          "id": "semantic-expansion-must-confirm",
+          "name": "语义扩展先确认",
+          "type": "must_include",
+          "check": "若要从主文件扩展到引用链、关键词链或全库注释，须先给推荐方案并等待确认，未获确认不得扩展。",
           "priority": "P0"
         },
         {
@@ -43,20 +50,20 @@
       "id": "upgrade-trigger-002",
       "category": "should-trigger",
       "prompt": "application/README.md 第三段有个错别字「索引」写成「索隐」，只改这一处，不要动别的文件",
-      "expected_output": "快路径：单点+用户限范围→一句话复述确认；不扩展关联。",
+      "expected_output": "快路径：单点+用户限范围；当前单元只含该 README 修改；不扩展关联；收敛后停下。",
       "assertions": [
         {
-          "id": "gate-awareness",
-          "name": "门禁意识",
+          "id": "scope-must-confirm-before-write",
+          "name": "范围先确认",
           "type": "must_include",
           "check": "须快路径式一句话确认或明确仅本文件不扩。",
           "priority": "P0"
         },
         {
-          "id": "structure-integrity",
-          "name": "结构完整",
+          "id": "single-unit-stop",
+          "name": "单单元停顿",
           "type": "must_include",
-          "check": "指向 README 单处修改；勿宣称全库链式。",
+          "check": "指向 README 单处修改这一当前单元；勿宣称自动进入其他文件。",
           "priority": "P0"
         },
         {
@@ -72,7 +79,7 @@
       "id": "upgrade-trigger-003",
       "category": "should-trigger",
       "prompt": "用 docs-upgrade：把 XTerm - YTerm 应用到 docs/design.md 以及同义英文注释里",
-      "expected_output": "识别简写；主 design.md；注释/关键词；多文件前确认或先列命中。",
+      "expected_output": "识别简写；先收口 design.md 与扩展范围；先处理一个当前单元，若要扩展到注释或关键词命中，需经 grill 收敛后再停下确认。",
       "assertions": [
         {
           "id": "structure-integrity",
@@ -82,10 +89,10 @@
           "priority": "P0"
         },
         {
-          "id": "gate-awareness",
-          "name": "门禁意识",
+          "id": "semantic-expansion-must-confirm",
+          "name": "语义扩展先确认",
           "type": "must_include",
-          "check": "若涉多文件或注释面大，须提确认或先列命中规模。",
+          "check": "若涉多文件或注释面大，须提确认或先列命中规模；不得静默全库扩展。",
           "priority": "P0"
         }
       ]

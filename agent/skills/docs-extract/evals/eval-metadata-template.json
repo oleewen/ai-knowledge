@@ -7,32 +7,32 @@
   "notes": "复制为 <eval-id>-metadata.json 或流水线内联；断言对齐 agents/grader.md。",
   "assertions_should_trigger_example": [
     {
-      "id": "gate-compliance",
-      "name": "门禁",
+      "id": "single-unit-stop",
+      "name": "单单元停顿",
       "type": "must_include",
-      "check": "未 CONFIRMED（无合法例外）禁写第三列；讨论写盘时含同会话例外。",
+      "check": "一次只处理一个 overview 当前单元，并在当前单元收敛后停下等待动作。",
       "priority": "P0"
     },
     {
-      "id": "structure-integrity",
-      "name": "结构",
+      "id": "semantic-change-needs-confirmation",
+      "name": "语义变更先确认",
       "type": "must_include",
-      "check": "五阶段、--sources/--overview、关键词附录、dry-run 两层预览、4.1 无命中禁 4.3、失败回滚。",
+      "check": "来源范围、overview 目标、关键词口径或写入策略变化时，先给结论、推荐方案与数字选项。",
       "priority": "P0"
     },
     {
-      "id": "boundary-routing",
-      "name": "分流",
-      "type": "must_not_conflict",
-      "check": "should-trigger 时不得误判为仅 distill/archive/SDD。",
+      "id": "dry-run-no-write",
+      "name": "dry-run 只预览",
+      "type": "must_include",
+      "check": "`--dry-run` 只预览，不宣称已写第三列。",
       "priority": "P0"
     },
     {
-      "id": "session-spec-awareness",
-      "name": "spec",
-      "type": "should_include",
-      "check": "提及 …-docs-extract.md 或等价，及 PENDING→CONFIRMED。",
-      "priority": "P1"
+      "id": "no-empty-write",
+      "name": "无命中不空写",
+      "type": "must_include",
+      "check": "4.1 无命中时不能进入写入，失败时需整体回滚。",
+      "priority": "P0"
     }
   ],
   "assertions_should_not_trigger_example": [

@@ -2,6 +2,16 @@
 
 入口：[SKILL.md](../SKILL.md)。
 
+## 参数向导
+
+按以下顺序收口；用户已明确时可跳过对应项：
+
+1. 目标工程目录
+2. 模式：`refresh` / `validate` / `viz` / `dry-run`
+3. `--bundle`（默认由 `.docsconfig` 的 `DOC_DIR` 解析）
+
+参数未收口前，不进入执行。
+
 ## 前置
 
 读 [path-resolution.md](path-resolution.md)。先 `cd` 到目标工程目录；须有效 `.docsconfig`（含 `KNOWLEDGE_TYPE`）。解析后：
@@ -9,6 +19,8 @@
 - `BUNDLE` = `{DOC_DIR}`
 - viz `--out` = `{KNOWLEDGE_TYPE}/viz.html`
 - viz `--name` = `"{KNOWLEDGE_TYPE} OKF"`
+
+若 `.docsconfig` 缺失、解析失败或缺 `KNOWLEDGE_TYPE`，立即中止。
 
 ## 三步
 
@@ -27,6 +39,13 @@
 
 环境变量 `BUNDLE` 或 CLI `--bundle` 可覆盖 `{DOC_DIR}`。
 
+结果摘要至少包含：
+
+- bundle 路径
+- 是否写入 `index.md` / `KNOWLEDGE_INDEX`
+- `validate-okf` 是否通过
+- `viz.html` 是否生成
+
 ### 2 validate（门禁）
 
 **入口**：`/docs-okf`（内部脚本：`bash agent/skills/docs-okf/scripts/okf-validate.sh [--bundle "${DOC_DIR}"]`）
@@ -34,6 +53,12 @@
 检查 frontmatter、`full_id` 唯一性、bundle-relative 链接、`index.md` 条目。有 **ERROR** exit 1；仅 WARN exit 0。
 
 单独校验：`/docs-okf --validate` 或 `--validate --bundle "${DOC_DIR}"`。
+
+若出现 **ERROR**：
+
+- 停止后续 refresh / viz
+- 展示错误摘要
+- 指向失败环节（frontmatter / full_id / links / index）
 
 ### 3 viz（可视化）
 
@@ -50,6 +75,12 @@ python3 agent/skills/docs-okf/scripts/visualize.py \
 
 单独刷新：`/docs-okf --viz`。
 
+若输出失败：
+
+- 展示失败原因
+- 不冒充 refresh 成功
+- 若 validate 已通过，应明确“校验通过但可视化失败”
+
 ## 参数组合
 
 | 用户意图 | 命令 |
@@ -59,6 +90,16 @@ python3 agent/skills/docs-okf/scripts/visualize.py \
 | 仅校验 | `/docs-okf`（内部脚本：`bash agent/skills/docs-okf/scripts/okf-validate.sh`） |
 | 仅 viz | `/docs-okf`（内部脚本：`python3 agent/skills/docs-okf/scripts/visualize.py --bundle "${DOC_DIR}" --out "${KNOWLEDGE_TYPE}/viz.html" --name "${KNOWLEDGE_TYPE} OKF"`） |
 | index 后补 OKF index | `/docs-okf`（内部脚本：`python3 agent/skills/docs-okf/scripts/generate_index.py --bundle "${DOC_DIR}" --recursive` 然后 validate） |
+
+## 失败分流
+
+| 场景 | 行为 |
+| ---------- | ------ |
+| `.docsconfig` 缺失 | 立即中止，提示补配置 |
+| `KNOWLEDGE_TYPE` 缺失 | 立即中止，提示补类型 |
+| bundle 解析失败 | 展示解析失败点，不继续 refresh |
+| validate 出现 ERROR | 展示错误摘要，不继续后续步骤 |
+| viz 输出失败 | 展示 viz 错误，不冒充成功 |
 
 ## 与 docs-indexing 协作
 

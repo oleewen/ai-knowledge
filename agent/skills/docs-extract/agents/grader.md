@@ -8,14 +8,30 @@
 - `passed`：布尔
 - `evidence`：对应断言或失败原因
 
+## 判定
+
+1. `should-trigger` / `should-not-trigger`
+2. **should-trigger**：主路径 `/docs-extract`；能识别参数向导、当前单元、关键词附录、`--sources`/`--overview`、`--dry-run`、自动 grilling 与 `C/M/G/S/F`；勿误判为 distill/archive/indexing
+3. **should-not-trigger**：按用户声明分流；勿把 docs-distill 或 docs-archive 混成 extract 主答
+4. **P0** 任一失败 → `passed: false`
+5. 只评测，不提技能改写
+
+## P0 断言
+
+- `single-unit-stop`：一次只处理一个 overview 当前单元，并在收敛后停下等待动作
+- `semantic-change-needs-confirmation`：来源范围、overview 目标、关键词口径等语义变更必须先确认
+- `dry-run-no-write`：`--dry-run` 只预览，不宣称已写第三列
+- `no-empty-write`：4.1 无命中时不能空写入
+
 **should-trigger**
 
 ```json
 {
-  "text": "通过。门禁与 dry-run 到位，未在 PENDING 下宣称已写入。",
+  "text": "通过。识别当前单元、关键词附录与 dry-run，停在动作选择前。",
   "passed": true,
   "evidence": [
-    "gate-compliance：CONFIRMED 前禁阶段 4",
+    "single-unit-stop",
+    "dry-run-no-write",
     "extract-scope：--sources、关键词附录、A/U/D"
   ]
 }
@@ -33,11 +49,3 @@
   ]
 }
 ```
-
-## 判定
-
-1. `should-trigger` / `should-not-trigger`
-2. **should-trigger**：主路径 `/docs-extract`；含 HARD-GATE、`PENDING`/`CONFIRMED` 或合法例外、`--sources`/`--overview`/关键词与适用 **dry-run**；勿误判为仅 distill/archive/indexing
-3. **should-not-trigger**：按用户声明分流；勿以「完整五阶段写 overview」为唯一主答而忽略下游
-4. **P0** 任一失败 → `passed: false`
-5. 只评测，不提技能改写

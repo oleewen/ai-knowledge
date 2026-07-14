@@ -1,26 +1,87 @@
-# docs-indexing 门禁
+# docs-indexing 风险控制与推进协议
 
-主干 [SKILL.md](../SKILL.md)；流程 [workflow.md](workflow.md)；节奏 [interaction-gate.md](interaction-gate.md)。
+主干：[SKILL.md](../SKILL.md)。流程：[workflow.md](workflow.md)。
 
-## CONVENTIONS
+## 定位
 
-[CONVENTIONS §artifact-gates](../../../rules/CONVENTIONS.md#artifact-gates)：高风险 → `{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-docs-indexing.md`，`PENDING`→`CONFIRMED`，Hooks 下 `sdx_gate_common.py --gate indexing`。
+本文件定义 `docs-indexing` 的风险控制与用户动作协议，用于约束：
 
-## 双层确认
+- 参数何时收口
+- 当前单元何时可以执行
+- 增量基线异常时如何停止
+- `C/M/G/S/F` 的语义
 
-1. **Qclose-1**：`mode`/`depth`/`output`/`since` — **C/M/S**（[workflow.md](workflow.md) 步骤 2）；摘要写入 spec 为佳  
-2. **写入**：未 `CONFIRMED` 前禁止工具写受管索引指南（如 `index.md` / `index.md`）、`*/changelogs/INDEXING-LOG`
+`docs-indexing` 默认采用“参数向导 -> 当前单元 -> 自动 grilling -> 用户动作推进”。
+参数未收口前，停留在参数向导；参数收口后直接处理当前单元。
 
-## 路径证据（多域同名）
+## 当前单元执行条件
 
-多份索引指南、`INDEXING-LOG` 并存时：spec **逐字含**本轮**仓库根相对路径**（如 `application/index.md`、`index.md`），与工具 payload 一致。仅 `basename` 不足。
+满足以下条件即可处理当前单元：
 
-**会话 spec 目录**：`{DOC_DIR}/superpowers/specs/`，`{DOC_DIR}` 从 **`.docsconfig`** 读取，无效时默认 **`docs`**（见 [session-spec-path.md](../../../references/session-spec-path.md)）。无 `.docsconfig` 时可在同一 spec 中列出多条索引指南路径（如根 `index.md` 与 `system/index.md`）。
+1. 仓库根可解析
+2. `mode`、`depth` 已收口
+3. `output` 已收口
+4. 若为 incremental，`since` 或基线策略已收口
 
-## 标记
+若以上任一条件未明确，继续停留在参数向导，不得写索引。
 
-文末 `<!-- docs-indexing-gate: PENDING -->` → 总确认后 `CONFIRMED`。无 env bypass。
+## 高风险场景
 
-## 钩子
+以下情形必须先给出结论、推荐方案与数字选项，待用户确认后再执行：
 
-[hooks.json](../../../hooks.json)：`python3 agent/hooks/sdx_gate_common.py --gate indexing`。[hooks/README.md](../../../hooks/README.md)。
+- 请求 incremental，但无可用基线
+- 同时涉及多个输出组，且路径容易混淆
+- `output` 指向不常见位置
+- depth 较深，扫描面明显扩大
+- 用户要求跳过参数确认直接写索引
+
+## 当前单元原子性
+
+- 当前单元写入失败时，不得继续写后续输出组
+- 当前单元索引指南落盘失败时，禁止追加 `INDEXING-LOG`
+- 当前单元未收敛前，不得自动推进到下一输出组
+
+## 自动 grilling 默认授权
+
+自动 `grilling` 只可直接修订当前单元内的非语义问题：
+
+- 错别字
+- 编号
+- 排版
+- 当前单元内不改变含义的轻微重述
+
+若涉及语义性问题，必须先确认。典型语义问题包括：
+
+- `mode` 变化
+- `depth` 变化
+- `output` 变化
+- `since` / 基线策略变化
+- 是否补写 `INDEXING-LOG`
+
+## 用户动作
+
+### C：确认
+
+- 当前单元已收敛
+- 进入下一输出组或结束
+
+### M：修改
+
+- 修改参数或路径
+- 修改后重新自动 `grilling`
+
+### G：继续 grill
+
+- 在当前单元已收敛的基础上继续深挖覆盖面、路径或基线问题
+
+### S：暂存
+
+- 保留当前分析结果
+- 不写当前单元
+- 结束或切换其他输出组
+
+### F：补齐剩余范围
+
+- 仅在当前单元已收敛后使用
+- 沿用已确认策略处理剩余输出组
+- 中途若触发新的语义问题，必须再次停下确认

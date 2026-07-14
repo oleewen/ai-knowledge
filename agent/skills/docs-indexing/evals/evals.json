@@ -1,22 +1,23 @@
 {
   "skill_name": "docs-indexing",
+  "version": "2.0.0",
   "evals": [
     {
       "id": 1,
       "prompt": "帮我全量跑一遍根目录 INDEX_GUIDE，depth 用 2，mode full，写完 application 那边 changelog 里的索引日志",
-      "expected_output": "docs-indexing；Qclose-1；spec+gate；路径清单（根相对）；CONFIRMED 后写 INDEX/LOG；提 indexing hook",
+      "expected_output": "docs-indexing：先收口 `mode=full`、`depth=2`、输出组与日志策略；一次只处理一个索引输出组；索引成功后再写 INDEXING-LOG；收敛后停下等 C/M/G/S/F。",
       "files": []
     },
     {
       "id": 2,
       "prompt": "/docs-indexing --mode incremental --depth 3 --output application/INDEX_GUIDE.md",
-      "expected_output": "仍 spec+gate；depth3→scan-spec 应读尽读；incremental→since/基线",
+      "expected_output": "docs-indexing：识别 incremental + depth3；先确认 `since`/基线策略；无基线时不能静默 full；一次只处理 `application/INDEX_GUIDE.md` 这一输出组。",
       "files": []
     },
     {
       "id": 3,
       "prompt": "直接帮我把 system/INDEX_GUIDE.md 改一下，我急用，不用走那些确认",
-      "expected_output": "拒或说明闸门；勿默许无 spec/CONFIRMED；仅用户明示例外可谈直写",
+      "expected_output": "拒或说明仍需先收口参数与路径；勿默许跳过确认；仅用户明示例外可谈直写。",
       "files": []
     }
   ]

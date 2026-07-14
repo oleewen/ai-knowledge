@@ -1,30 +1,87 @@
-# docs-build 门禁
+# docs-build 风险控制与推进协议
 
-主干 [SKILL.md](../SKILL.md)；流程 [workflow.md](workflow.md)；节奏 [interaction-gate.md](interaction-gate.md)。
+主干：[SKILL.md](../SKILL.md)。流程：[workflow.md](workflow.md)。
 
-## CONVENTIONS
+## 定位
 
-[CONVENTIONS.md §artifact-gates](../../../rules/CONVENTIONS.md#artifact-gates)：docs-build **高风险** → `{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-docs-build.md`，`PENDING`→`CONFIRMED`，Hooks 下 `sdx_gate_common.py --gate build` 证据链。
+本文件定义 `docs-build` 的风险控制与用户动作协议，用于约束：
 
-## 核心
+- 参数何时收口
+- 当前单元何时可以执行
+- 校验失败时如何停止
+- `C/M/G/S/F` 的语义
 
-总确认前禁止写 `{DOC_DIR}/knowledge/`（per-entity `{ID}.md`、`README`、`KNOWLEDGE_INDEX` 等）。
+`docs-build` 默认采用“参数向导 -> 当前单元 -> 自动 grilling -> 用户动作推进”。
+参数未收口前，停留在参数向导；参数收口后直接处理当前单元。
 
-例外：同会话用户**明示**跳过、只要草稿或授权直写。无 env bypass。
+## 当前单元执行条件
 
-## spec 与标记
+满足以下条件即可处理当前单元：
 
-- 文末：`<!-- docs-build-gate: PENDING -->` → 总确认后 `CONFIRMED`
-- 正文须含目标之一：`KNOWLEDGE_INDEX.md` 或本轮 per-entity `{ID}.md` / `README.md` basename
+1. 主 Index Guide 可用
+2. `{DOC_DIR}` 可解析
+3. 当前视角范围或当前批次已明确
+4. `--skip-existing`、`--confidence-threshold`、`--emit-report` 等策略已收口
 
-**Qclose-1**（阶段 1 末）：列视角、路径、文件清单，问：
+若以上任一条件未明确，继续停留在参数向导，不得写 `{DOC_DIR}/knowledge/`。
 
-> 是否按上述参数提取并写入 `{DOC_DIR}/knowledge/`？（C / M / S）
+## 高风险场景
 
-**C 或 S** 后改 `CONFIRMED`，进阶段 2。
+以下情形必须先给出结论、推荐方案与数字选项，待用户确认后再执行：
 
-进度表与 `sdx-*` 同构时锚到本会话内小节，无需引用外部技能模板。
+- 主 Index Guide 缺失
+- `{DOC_DIR}` 或知识输出路径不明
+- 视角范围过大或需跨多批次重建
+- 校验失败，且存在多种修复策略
+- 用户要求跳过参数确认直接批量重建 knowledge
 
-## 钩子
+## 当前单元原子性
 
-[hooks.json](../../../hooks.json)：`python3 agent/hooks/sdx_gate_common.py --gate build`。证据：`CONFIRMED` + 目标文件名。详 [hooks/README.md](../../../hooks/README.md)。
+- 当前单元写入失败时，不得继续写后续批次
+- 当前单元校验失败时，不得继续归并或生成 `KNOWLEDGE_INDEX`
+- 当前单元未收敛前，不得自动推进下一视角或下一批实体
+
+## 自动 grilling 默认授权
+
+自动 `grilling` 只可直接修订当前单元内的非语义问题：
+
+- 错别字
+- 编号
+- 排版
+- 当前单元内不改变含义的轻微重述
+
+若涉及语义性问题，必须先确认。典型语义问题包括：
+
+- 视角范围变化
+- 输出路径变化
+- 跳过策略变化
+- 置信度策略变化
+- 是否生成 README / `KNOWLEDGE_INDEX`
+
+## 用户动作
+
+### C：确认
+
+- 当前单元已收敛
+- 进入下一批或结束
+
+### M：修改
+
+- 修改参数或范围
+- 修改后重新自动 `grilling`
+
+### G：继续 grill
+
+- 在当前单元已收敛的基础上继续深挖实体边界、证据或校验策略
+
+### S：暂存
+
+- 保留当前分析结果
+- 不写当前单元
+- 结束或切换其他批次
+
+### F：补齐剩余范围
+
+- 仅在当前单元已收敛后使用
+- 沿用已确认策略处理剩余视角或批次
+- 中途若触发新的语义问题，必须再次停下确认

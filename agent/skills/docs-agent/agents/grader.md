@@ -10,13 +10,13 @@
 
 **材料**：`SKILL.md`、`references/gates.md`、`references/workflow.md`、`gotchas.md`、本条 eval 的 `expected_output`、`evals.json` 断言。
 
-**示例**
+## 示例
 
 ```json
 {
-  "text": "通过。含步骤 0 与 C 后再写入；INDEX 驱动且未包揽 docs-indexing。",
+  "text": "通过。含参数向导、单个当前单元停顿与自动 grilling；INDEX 驱动且未包揽 docs-indexing。",
   "passed": true,
-  "evidence": ["gate-step0", "index-driven"]
+  "evidence": ["parameter-guidance", "single-unit-stop", "index-driven"]
 }
 ```
 

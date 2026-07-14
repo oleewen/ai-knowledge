@@ -7,7 +7,7 @@
 - Skill 路径：`agent/skills/<skill-name>/SKILL.md`
 - 命令名约定：目录名即 Slash 命令（如 `docs-indexing` -> `/docs-indexing`）
 - 调用方式：在 Chat 输入 `/` 选择命令，或使用 `@<skill-name>` 作为上下文附加
-- 高风险技能的**会话 spec** 路径契约：[session-spec-path.md](../references/session-spec-path.md)（`{DOC_DIR}/superpowers/specs/`，以当次会话 spec 为准）
+- `sdx-*` 与 `docs-distill / docs-extract / docs-archive / docs-build / docs-indexing / docs-upgrade` 默认走参数向导 + 当前段/当前单元推进；语义性变更先确认
 - **知识库布局**（双库路径、overview、流水线）：[knowledge-layout.md](../references/knowledge-layout.md)
 - **grilling 能力契约**（Skill 优先、fallback 提问协议、统一输出）：[grilling-skill.md](../references/grilling-skill.md)
 
@@ -15,23 +15,23 @@
 
 | 命令 | 说明 |
 | ---- | ---- |
-| `/docs-indexing` | 生成结构化 `index.md`（九章文档地图），作为 Agent 导航与 RAG 权威来源；`INDEXING-LOG.md` 用主表记录运行（**最新在上**，锚点见 [docs-indexing/references/indexing-log-spec.md](docs-indexing/references/indexing-log-spec.md)）；支持全量/增量与深度 1/2/3；高风险落盘 spec + `sdx_gate_common.py --gate indexing`（见 [docs-indexing/references/gates.md](docs-indexing/references/gates.md)）。 |
+| `/docs-indexing` | 通过参数向导确认 `mode/depth/output/since`，按当前输出路径组生成九章 `index.md` 与 `INDEXING-LOG.md`；当前单元自动 grilling 收敛后由用户用 `C/M/G/F` 推进。 |
 | `/docs-change` | 从 git commit、CHANGELOG/CHANGE-LOG、本地文件 mtime 采集变更，落盘 `CHANGE-LOG.md`（文末 HTML 注释承载增量基线）；供下游增量索引等使用。 |
 | `/docs-tag` | 为 Markdown 概览做关键词驱动标记：候选词附录、表格行 ✅、架构摘录（phase 3）；流程见 [docs-tag/references/workflow.md](docs-tag/references/workflow.md)。 |
-| `/docs-upgrade` | 定向增改 Markdown、源代码注释与配置文本；落盘后链式同步引用链，并辅以关键词检索（同义/近义/中英文）对齐同类表述；支持替换简写 `a - b` / `a > b` / `a 2 b`。 |
+| `/docs-upgrade` | 通过参数向导确认范围、替换策略与链式同步范围；按当前范围块/同步块推进 Markdown、注释与配置文本升级，当前单元自动 grilling 收敛后由用户用 `C/M/G/F` 推进。 |
 | `/docs-agent` | 生成或更新根目录 `README.md`（人类）与 `AGENTS.md`（Agent）；以落盘 `index.md` 为唯一地图，与 Index 职责不重叠。 |
-| `/docs-distill` | 将 `system/application-{name}/` 已核实内容蒸馏到 `system/knowledge/overview/`；支持 `--app` `--since` `--full` `--dry-run`，默认按增量锚点蒸馏。 |
-| `/docs-extract` | 从用户指定的任意文件或目录中，按段落级关键词相关度筛选，提炼业务知识写入 `system/knowledge/overview/` 或 `company/knowledge/overview/` 第三列（A/U/D 合并更新）；支持 `--sources` `--overview` `--dry-run`。 |
+| `/docs-distill` | 通过参数向导确认 `--app / --since / --full / --dry-run`，按当前目标块蒸馏 `overview` 第三列与 `DISTILL-LOG`；当前单元自动 grilling 收敛后由用户用 `C/M/G/F` 推进。 |
+| `/docs-extract` | 通过参数向导确认 `--sources / --overview / --dry-run`，按当前来源批次与目标块提炼业务知识写入 `system/knowledge/overview/` 或 `company/knowledge/overview/` 第三列。 |
 | `/docs-pull` | 按 `knowledge-links.yaml` 从本地 `path` 同步到联邦槽位（`system/application-{APPNAME}/` 或 `company/system-{SYSNAME}/`），并追加槽位 `changelogs/CHANGE-LOG.md`；不做远端 clone。 |
 | `/docs-push` | 将 `spec-{yyMMdd}-{n}-{app_name}.md` 推送到 `knowledge-links.yaml` 登记的本机 `path` 下 `{doc_dir}/specs/`；支持 `path` / `repo+feature` 与 Git 四档（`push-specs.sh`）。 |
-| `/docs-build` | 从工程代码与文档按五视角（应用→数据→技术→业务→产品）提取链上实体 ID，生成 `{perspective}-entities.md`（schema 2.1 语义），刷新各视角 README 与 `{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md`。 |
-| `/docs-archive` | 从 `system/knowledge/overview/` 或 `company/knowledge/overview/` 各视角归档知识到表行副标题链接对应章节；先澄清与方案确认再落盘，补充后做一致性检查与冲突分步确认。 |
+| `/docs-build` | 通过参数向导确认视角、阈值与输出策略，按当前实体批次/视角批次提取链上实体 ID，刷新各视角 README 与 `{DOC_DIR}/knowledge/KNOWLEDGE_INDEX.md`。 |
+| `/docs-archive` | 通过参数向导确认归档范围、目标章节与冲突策略；按当前归档块把 `overview` 知识归档到目标章节，当前单元自动 grilling 收敛后由用户用 `C/M/G/F` 推进。 |
 | `/sdx-solution` | 产出解决方案阶段文档（Solution 阶段）。 |
 | `/sdx-analysis` | 产出需求分析阶段文档（Analysis 阶段）。 |
-| `/sdx-prd` | 产出 PRD 阶段文档（Requirements 阶段）；总确认前默认禁止写入 `{DOC_DIR}/requirements/**/PRD-*.md`（见技能 HARD-GATE）。 |
-| `/sdx-architect` | 产出架构设计说明书 **ASD**（§1–§3，含与 DSD 同构的 §3 需求规约摘要表；System/Company 联邦概要主场）；可选 **`spec-asd-*.md`**（[asd-spec-template](sdx-architect/assets/asd-spec-template.md)）。 |
-| `/sdx-design` | 产出详细设计说明书 **DSD**（§1–§3，§1 与 ASD §1 对齐；实现级正文在 §2）；上游可含 **`{DOC_DIR}/specs/spec-asd-*.md`**（[asd-spec-template](sdx-architect/assets/asd-spec-template.md)）；门禁与流程见 [sdx-design/references/gates.md](sdx-design/references/gates.md)、[workflow.md](sdx-design/references/workflow.md)，评测见 `sdx-design/evals/`。 |
-| `/sdx-test` | 产出测试设计与验证阶段文档（Test 阶段）；总确认前默认禁止写入 `{DOC_DIR}/requirements/**/TDD-*.md`（见 [sdx-test/references/gates.md](sdx-test/references/gates.md)）；流程见 [workflow.md](sdx-test/references/workflow.md)，评测见 `sdx-test/evals/`。 |
+| `/sdx-prd` | 基于 ANALYSIS 当前 MVP 通过参数向导与分段直写产出 PRD 阶段文档（Requirements 阶段）；每段自动 grilling 收敛后由用户用 `C/M/G/F` 推进。 |
+| `/sdx-architect` | 基于 PRD 通过参数向导与分段直写产出架构设计说明书 **ASD**（§1–§3，System/Company 联邦概要主场）；每段自动 grilling 收敛后由用户用 `C/M/G/F` 推进，可选 **`spec-asd-*.md`**。 |
+| `/sdx-design` | 基于 PRD 与 ASD/spec-asd 通过参数向导与分段直写产出详细设计说明书 **DSD**（§1–§3，实现在 §2）；每段自动 grilling 收敛后由用户用 `C/M/G/F` 推进，上游可含 **`{DOC_DIR}/specs/spec-asd-*.md`**（[asd-spec-template](sdx-architect/assets/asd-spec-template.md)）。 |
+| `/sdx-test` | 基于 PRD 与 DSD/ASD 通过参数向导与分段直写产出测试设计文档 **TDD**；每段自动 grilling 收敛后由用户用 `C/M/G/F` 推进，聚焦用例、回归、进出标准、数据与环境。 |
 | `/skill-creator` | 创建、评测与迭代技能的官方工作流（含 `scripts/`、`eval-viewer/`）。来源：Anthropic 仓库 [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) 中 `plugins/skill-creator/skills/skill-creator`；本仓库副本在 `agent/skills/skill-creator/`。 |
 
 ## 使用说明
