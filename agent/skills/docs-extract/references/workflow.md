@@ -22,7 +22,7 @@
 ## 前置
 
 - 路径：[knowledge-layout.md](../../../references/knowledge-layout.md)
-- `--sources` 可解析
+- `--sources` 可解析（路径或文本）
 - `--overview` 可解析
 - overview 含 `## 文档关键词`
 - 若环境未安装 `grilling` Skill，则按 [grilling-skill.md](../../../references/grilling-skill.md) 的 fallback 协议执行
@@ -85,6 +85,7 @@ flowchart TD
 /docs-extract --sources docs/design.md --overview system/knowledge/overview/billing-overview.md --dry-run
 /docs-extract --sources docs/ --overview system/knowledge/overview/billing-overview.md
 /docs-extract --sources docs/design.md docs/adr/ --overview system/knowledge/overview/billing-overview.md
+/docs-extract --sources "这里是一段临时业务说明文本，用于提炼进 overview 第三列" --overview system/knowledge/overview/billing-overview.md --dry-run
 ```
 
 ## 执行摘要

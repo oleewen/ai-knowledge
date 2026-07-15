@@ -1,6 +1,6 @@
 {
   "skill_name": "docs-extract",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "evals": [
     {
       "id": 1,
@@ -30,6 +30,12 @@
       "id": 5,
       "prompt": "这个 overview 先不看关键词了，直接把 docs/ 里看起来相关的都塞进去吧",
       "expected_output": "docs-extract：拒绝绕过关键词附录；先指出这是语义性规则变更，给出推荐方案与数字选项；未确认前不能直接写入。",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "/docs-extract --sources \"这是一段临时业务说明：支持用户下单、支付、退款三个流程，订单状态有 CREATED/PAID/REFUNDED\" --overview system/knowledge/overview/order-overview.md --dry-run",
+      "expected_output": "docs-extract：识别 --sources 为文本内容；仍按参数向导与当前单元处理 order-overview；dry-run 只输出命中摘要与 A/U/D 预览；收敛后停下等 C/M/G/S/F。",
       "files": []
     }
   ]

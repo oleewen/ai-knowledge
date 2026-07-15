@@ -11,7 +11,7 @@
 ## 判定
 
 1. `should-trigger` / `should-not-trigger`
-2. **should-trigger**：主路径 `/docs-extract`；能识别参数向导、当前单元、关键词附录、`--sources`/`--overview`、`--dry-run`、自动 grilling 与 `C/M/G/S/F`；勿误判为 distill/archive/indexing
+2. **should-trigger**：主路径 `/docs-extract`；能识别参数向导、当前单元、关键词附录、`--sources`（路径或文本）/`--overview`、`--dry-run`、自动 grilling 与 `C/M/G/S/F`；勿误判为 distill/archive/indexing
 3. **should-not-trigger**：按用户声明分流；勿把 docs-distill 或 docs-archive 混成 extract 主答
 4. **P0** 任一失败 → `passed: false`
 5. 只评测，不提技能改写

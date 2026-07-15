@@ -45,7 +45,7 @@ description: >
 
 ## 最少输入
 
-- 可解析的 `--sources`
+- 可解析的 `--sources`（路径或文本）
 - 可解析的 `--overview`
 - overview 内可读关键词附录
 - 是否只做 `--dry-run`
