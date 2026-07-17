@@ -55,7 +55,7 @@
 ## 路径解析
 
 - 基于项目根目录的相对路径
-- 输出路径优先级：用户指定 > `./{DOC_DIR}/index.md` > `./doc/index.md` > `./index.md`
+- 输出路径优先级：用户指定 > `./{DOC_DIR}/INDEX-GUIDE.md` > `./doc/INDEX-GUIDE.md` > `./INDEX-GUIDE.md`
 
 ---
 

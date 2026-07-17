@@ -93,7 +93,7 @@
     {
       "id": "change-not-trigger-001",
       "category": "should-not-trigger",
-      "prompt": "帮我全量更新根目录 INDEX_GUIDE.md，按九章结构扫描仓库，不用 CHANGE-LOG",
+      "prompt": "帮我全量更新根目录 INDEX-GUIDE.md，按九章结构扫描仓库，不用 CHANGE-LOG",
       "expected_output": "主路径 docs-indexing；不以 CHANGE-LOG 聚合为唯一主任务。",
       "assertions": [
         {

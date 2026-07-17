@@ -10,7 +10,7 @@ title: 贡献指南 — application/
 
 ## 先读这些入口
 
-1. [index.md](index.md)：九章索引（含中央知识库挂载建联登记）、与仓库根 [index.md](../index.md) 分工见各文件说明
+1. [INDEX-GUIDE.md](INDEX-GUIDE.md)：九章索引指南（含中央知识库挂载建联登记）；目录索引页见 [index.md](index.md)，与仓库根 [INDEX-GUIDE.md](../INDEX-GUIDE.md) 分工见各文件说明
 2. [DESIGN.md](DESIGN.md)：元模型、字段语义与跨视角映射
 3. [AGENTS.md](../AGENTS.md)：仓库级约束与禁止项
 4. 目标目录 `README.md` + 对应 `{perspective}-meta.md`：落盘与命名的最终约束
@@ -22,7 +22,7 @@ title: 贡献指南 — application/
 1. **引用优先**：能链接到权威文档就不在本文件重复定义。
 2. **ID 稳定**：禁止未评估影响面即修改已有实体 ID；若调整，必须同步全链路引用。
 3. **仅写 ID**：跨文件、跨视角关联只写 ID 字符串，不复制目标定义正文。
-4. **变更可检索**：新增/调整文档后，更新目标目录 `README.md` 索引表；必要时同步 [index.md](index.md) 或根目录 [index.md](../index.md)。
+4. **变更可检索**：新增/调整文档后，更新目标目录 `README.md` 索引表；必要时同步 [INDEX-GUIDE.md](INDEX-GUIDE.md)、[index.md](index.md) 或根目录 [INDEX-GUIDE.md](../INDEX-GUIDE.md)。
 5. **提交规范**：使用 Conventional Commits；跨目录/规则变更建议补 ADR。
 
 ---
@@ -37,4 +37,4 @@ title: 贡献指南 — application/
 
 ---
 
-模板、阶段细则、技能入口见 [README.md](README.md)、[index.md](index.md) 与根目录 [index.md](../index.md)。
+模板、阶段细则、技能入口见 [README.md](README.md)、[INDEX-GUIDE.md](INDEX-GUIDE.md)、[index.md](index.md) 与根目录 [INDEX-GUIDE.md](../INDEX-GUIDE.md)。

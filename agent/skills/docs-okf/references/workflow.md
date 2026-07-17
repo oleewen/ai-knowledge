@@ -103,11 +103,11 @@ python3 agent/skills/docs-okf/scripts/visualize.py \
 
 ## 与 docs-indexing 协作
 
-更新九章索引 `index.md` 后（docs-indexing 步骤 6 落盘），**建议**：
+更新九章索引 `INDEX-GUIDE.md` 后，**建议**：
 
 ```bash
 python3 agent/skills/docs-okf/scripts/generate_index.py --bundle "${DOC_DIR}" --recursive
 bash agent/skills/docs-okf/scripts/okf-validate.sh
 ```
 
-九章索引为 `index.md`；OKF 渐进披露入口为 bundle 根 `index.md` 的 OKF 区块与各级子目录 `index.md`（双索引并存）。
+九章索引为 `INDEX-GUIDE.md`；OKF 渐进披露入口为 bundle 根 `index.md` 的 OKF 区块与各级子目录 `index.md`（双索引并存）。

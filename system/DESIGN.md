@@ -41,7 +41,7 @@ title: 系统知识库设计（精简版）
 
 | 层级 | 目录 | 职责 |
 | --- | --- | --- |
-| 根导航 | [README.md](README.md)、[index.md](index.md)、[docs-meta.md](docs-meta.md) | 人类入口、Agent 九章索引、目录元数据 |
+| 根导航 | [README.md](README.md)、[INDEX-GUIDE.md](INDEX-GUIDE.md)、[index.md](index.md)、[docs-meta.md](docs-meta.md) | 人类入口、Agent 九章索引、目录索引、目录元数据 |
 | 治理规则 | [agent/knowledge/](../agent/knowledge/knowledge-governance.md) | 术语边界、命名 SSOT、ADR 模板与原则（全仓库） |
 | ADR 正文 | [adr/](adr/README.md) | 系统层架构决策记录正文 |
 | 架构层 | `knowledge/` | 五架构视角聚合视图；含 `overview/` 蒸馏缓冲区 |
@@ -138,7 +138,7 @@ title: 系统知识库设计（精简版）
 
 质量门禁采用“轻规范、强可追溯”：
 
-- **一致性门禁**：术语、目录职责与引用路径应与 `README.md`、`AGENTS.md`、`index.md` 对齐；
+- **一致性门禁**：术语、目录职责与引用路径应与 `README.md`、`AGENTS.md`、`INDEX-GUIDE.md`、`index.md` 对齐；
 - **边界门禁**：跨层实体不得在 `system` 与 `application` 形成双份主定义；应用层仅补实现映射与下游锚点；
 - **同步门禁**：涉及 `application-{name}/` 更新须记录来源、影响范围与回写策略；
 - **演进门禁**：新增目录或流程，先更新本文件契约，再更新实现文档。
@@ -154,6 +154,7 @@ title: 系统知识库设计（精简版）
 ## 参考
 
 - [README.md](README.md)
+- [INDEX-GUIDE.md](INDEX-GUIDE.md)
 - [index.md](index.md)
 - [agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md)
 - [knowledge/README.md](knowledge/README.md)

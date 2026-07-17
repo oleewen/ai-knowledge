@@ -201,7 +201,8 @@ your-project/
 ├── .docsconfig                    # 可选：由 docs-install/agent-install 写入（至少 DOC_*；scope=knowledge 含 KNOWLEDGE_TYPE）
 ├── application/                          # 文档目录（application/ 模板拷贝）
 │   ├── README.md                  # 应用知识库 README
-│   ├── index.md             # 九章索引（docs-indexing）；中央知识库挂载建联登记见「十」
+│   ├── INDEX-GUIDE.md            # 九章索引指南（docs-indexing）；中央知识库挂载建联登记见「十」
+│   ├── index.md                  # 目录索引与 OKF 渐进披露入口
 │   ├── docs-meta.md               # 根目录元数据（OKF）
 │   ├── knowledge/                 # 知识库（四视角）；治理 SSOT 见 agent/knowledge/
 │   │   ├── README.md

@@ -67,7 +67,8 @@ flowchart TD
 
 ```
 {DOC_DIR}/
-├── index.md    # 系统索引指南（本文件）
+├── INDEX-GUIDE.md    # 九章索引指南（本文件）
+├── index.md          # 目录索引与 OKF 渐进披露入口
 ├── knowledge/        # 知识库
 └── changelogs/       # 变更日志
 ```

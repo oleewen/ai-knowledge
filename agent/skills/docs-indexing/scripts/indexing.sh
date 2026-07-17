@@ -14,7 +14,7 @@ DOC_ROOT="$(resolve_repo_doc_root)"
 cd "$REPO_ROOT" || exit 1
 
 # cwd=仓库根；路径见 .docsconfig / resolve_repo_doc_root
-DEFAULT_OUTPUT="${DOC_ROOT}/index.md"
+DEFAULT_OUTPUT="${DOC_ROOT}/INDEX-GUIDE.md"
 LOG_FILE="${DOC_ROOT}/changelogs/INDEXING-LOG.md"
 CHANGE_LOG_FILE="${DOC_ROOT}/changelogs/CHANGE-LOG.md"
 INDEXING_LOG_PY="${SCRIPT_DIR}/indexing_log.py"
@@ -33,7 +33,7 @@ show_help() {
     echo ""
     echo "  --mode f|full|i|incremental"
     echo "  --depth 1|2|3"
-    echo "  --output PATH   (默认文档根 index.md)"
+    echo "  --output PATH   (默认文档根 INDEX-GUIDE.md；文件名固定)"
     echo "  --since MS      增量 epoch ms"
     echo "  -h, --help"
 }
@@ -107,6 +107,11 @@ START_TIME=$(date '+%Y-%m-%d %H:%M:%S')
 # 检查输出目录
 OUTPUT_DIR=$(dirname "$OUTPUT")
 mkdir -p "$OUTPUT_DIR"
+
+if [[ "$(basename "$OUTPUT")" != "INDEX-GUIDE.md" ]]; then
+    echo "Error: docs-indexing 输出文件名固定为 INDEX-GUIDE.md，当前为 '$(basename "$OUTPUT")'" >&2
+    exit 1
+fi
 
 # 获取上次索引时间（用于增量模式）；主表首行，否则回退文内 HTML 注释（见 indexing-log-spec）
 BASE_INDEXING_TIME_MS=0

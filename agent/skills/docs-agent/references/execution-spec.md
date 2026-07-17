@@ -2,17 +2,17 @@
 
 参数确认与风险边界见 [gates.md](gates.md)。分工：[three-file-spec.md](three-file-spec.md)。验收：[quality-standards.md](quality-standards.md)。
 
-## 1. Index 解析
+## 1. Index Guide 解析
 
-**路径（命中即停）**，记下相对路径为「当前 INDEX」：
+**路径（命中即停）**，记下相对路径为「当前 INDEX-GUIDE」：
 
-1. `REPO_ROOT/index.md`、`index.md`
-2. `DOC_ROOT/` 同上
+1. `REPO_ROOT/INDEX-GUIDE.md`
+2. `DOC_ROOT/INDEX-GUIDE.md`
 
 **命中后**：仅以该文件为地图；不调 docs-indexing；不以用户粘贴替换磁盘（磁盘优先）。
 
 **未命中**：默认终止 → `/docs-indexing`。  
-**例外**：用户**明确**授权「无 Index、仅用根 README/顶层摸底」→ 可写**极简**双文件并声明「建议补 indexing」；仍禁止捏造模块细节。
+**例外**：用户**明确**授权「无 Index Guide、仅用根 README/顶层摸底」→ 可写**极简**双文件并声明「建议补 indexing」；仍禁止捏造模块细节。
 
 ## 2. 探索
 

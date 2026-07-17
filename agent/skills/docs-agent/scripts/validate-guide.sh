@@ -33,14 +33,14 @@ log_error() { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 log_warn()  { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
 log_ok()    { echo "[OK]    $1"; }
 
-# --- 1. INDEX 落盘检测（REPO_ROOT 优先，再 DOC_ROOT）---
+# --- 1. INDEX-GUIDE 落盘检测（REPO_ROOT 优先，再 DOC_ROOT）---
 
 DOC_SEG="${DOC_ROOT#"$REPO_ROOT"/}"
 INDEX_PATH=""
 for candidate in \
-    "index.md" \
-    "${DOC_SEG}/index.md" \
-    "${DOC_DIR}/index.md"; do
+    "INDEX-GUIDE.md" \
+    "${DOC_SEG}/INDEX-GUIDE.md" \
+    "${DOC_DIR}/INDEX-GUIDE.md"; do
     [[ -z "$candidate" ]] && continue
     if [[ -f "$ROOT/$candidate" ]]; then
         INDEX_PATH="$candidate"
@@ -49,9 +49,9 @@ for candidate in \
 done
 
 if [[ -n "$INDEX_PATH" ]]; then
-    log_ok "INDEX 落盘路径: $INDEX_PATH"
+    log_ok "INDEX-GUIDE 落盘路径: $INDEX_PATH"
 else
-    log_error "未找到 INDEX 落盘文件（index.md、${DOC_DIR}/index.md 等）"
+    log_error "未找到 INDEX-GUIDE 落盘文件（INDEX-GUIDE.md、${DOC_DIR}/INDEX-GUIDE.md 等）"
 fi
 
 # --- 提取 markdown 文件中的相对路径链接 ---
@@ -98,12 +98,12 @@ if [[ -f "$AGENTS" ]]; then
         fi
     done < <(extract_links "$AGENTS")
 
-    # --- 5. AGENTS 首条参考指向 INDEX ---
+    # --- 5. AGENTS 首条参考指向 INDEX-GUIDE ---
     if [[ -n "$INDEX_PATH" ]]; then
         if grep -qF "$INDEX_PATH" "$AGENTS" 2>/dev/null; then
-            log_ok "AGENTS.md 引用了 INDEX: $INDEX_PATH"
+            log_ok "AGENTS.md 引用了 INDEX-GUIDE: $INDEX_PATH"
         else
-            log_warn "AGENTS.md 未引用当前 INDEX ($INDEX_PATH)"
+            log_warn "AGENTS.md 未引用当前 INDEX-GUIDE ($INDEX_PATH)"
         fi
     fi
 else

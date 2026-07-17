@@ -2,7 +2,7 @@
 type: Design Document
 title: 应用知识文档库 — 设计方案摘录
 ---
-本文件是《应用知识文档库设计方案》的**精简版**：治理依据与演进参考。细节与入口仍以 [README.md](README.md)、[index.md](index.md) 及仓库根 [index.md](../index.md) 为准。
+本文件是《应用知识文档库设计方案》的**精简版**：治理依据与演进参考。细节与入口仍以 [README.md](README.md)、[INDEX-GUIDE.md](INDEX-GUIDE.md)、[index.md](index.md) 及仓库根 [INDEX-GUIDE.md](../INDEX-GUIDE.md) 为准。
 
 ---
 

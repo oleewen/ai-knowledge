@@ -24,13 +24,13 @@ description: >
 
 | 负责 | 不负责 |
 | ------ | -------- |
-| OKF refresh 编排、index、KNOWLEDGE_INDEX、validate-okf、viz、产物校验 | index（docs-indexing）；新实体提取（docs-build）；SDD |
+| OKF refresh 编排、`index.md`、KNOWLEDGE_INDEX、validate-okf、viz、产物校验 | `INDEX-GUIDE.md`（docs-indexing）；新实体提取（docs-build）；SDD |
 
 ## 最短路径
 
 1. [path-resolution.md](references/path-resolution.md) → [workflow.md](references/workflow.md)
 2. [naming-conventions.md](../../../agent/knowledge/naming-conventions.md) §OKF
-3. INDEX 落盘后 index 刷新：见 [docs-indexing/SKILL.md](../docs-indexing/SKILL.md) 产出节
+3. `INDEX-GUIDE.md` 落盘后，再按需刷新 `index.md`：见 [docs-indexing/SKILL.md](../docs-indexing/SKILL.md) 产出节
 
 ## 最少输入
 

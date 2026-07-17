@@ -70,7 +70,7 @@
 | **联邦** | 独立成库 | 分层挂载、跨团队引用 |
 | **溯源** | 不知谁改了什么 | Git + 变更日志 + 抽取/蒸馏闭环 |
 
-Agent 读 [AGENTS.md](AGENTS.md) 作契约、[index.md](index.md) 作地图，按需下钻——而非碰运气检索。
+Agent 读 [AGENTS.md](AGENTS.md) 作契约、[INDEX-GUIDE.md](INDEX-GUIDE.md) 作九章地图、[index.md](index.md) 作目录索引页，按需下钻——而非碰运气检索。
 
 ---
 
@@ -125,17 +125,17 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 
 > 根据 [ai-knowledge README](https://github.com/oleewen/ai-knowledge) 的说明，初始化知识库到当前工程 `./docs`。
 
-技术栈与仓库元信息见 [index.md](index.md) §1.2。
+技术栈与仓库元信息见 [INDEX-GUIDE.md](INDEX-GUIDE.md) §1.2。
 
 ---
 
 ## 📂 项目结构
 
-> 与 [index.md](index.md) §2.1 一致。
+> 与 [INDEX-GUIDE.md](INDEX-GUIDE.md) §2.1 一致。
 
 ```text
 ./
-├── README.md / AGENTS.md / index.md / quick-start.md
+├── README.md / AGENTS.md / INDEX-GUIDE.md / index.md / quick-start.md
 ├── application/          # 应用知识主库：knowledge、阶段产物、changelogs
 ├── system/               # 系统库：architecture/、application-{name}/ 槽位
 ├── company/              # 公司库：knowledge/、system-{name}/ 槽位
@@ -149,7 +149,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 
 ## 🤖 Agent 工作流与推荐流程
 
-`docs-*` 维护 SSOT 知识库，`sdx-*` 产出可评审规约；OKF bundle 迁移与校验见 `/docs-okf`（与 [index.md](index.md) 九章地图、`index.md` 渐进披露双索引并存）。场景分步见 [quick-start.md](quick-start.md)。
+`docs-*` 维护 SSOT 知识库，`sdx-*` 产出可评审规约；OKF bundle 迁移与校验见 `/docs-okf`（九章地图见 [INDEX-GUIDE.md](INDEX-GUIDE.md)，目录索引与渐进披露见 [index.md](index.md)）。场景分步见 [quick-start.md](quick-start.md)。
 
 ```mermaid
 flowchart TD
@@ -179,7 +179,8 @@ Skill 清单见 [agent/skills/README.md](agent/skills/README.md)。
 | 需求 | 文档 |
 | --- | --- |
 | 从零落地（场景 A–D） | [quick-start.md](quick-start.md) |
-| 全库路径地图 | [index.md](index.md) |
+| 九章索引指南 | [INDEX-GUIDE.md](INDEX-GUIDE.md) |
+| 目录索引与渐进披露 | [index.md](index.md) |
 | Agent 契约 | [AGENTS.md](AGENTS.md) |
 | 应用 / 系统 / 公司元模型 | [application/DESIGN.md](application/DESIGN.md)、[system/DESIGN.md](system/DESIGN.md)、[company/DESIGN.md](company/DESIGN.md) |
 | 初始化脚本 | [scripts/README.md](scripts/README.md) |
@@ -192,7 +193,7 @@ Skill 清单见 [agent/skills/README.md](agent/skills/README.md)。
 
 修改前请阅读：
 
-1. [index.md](index.md) — 知识登记与路径地图
+1. [INDEX-GUIDE.md](INDEX-GUIDE.md) — 九章索引指南与路径地图
 2. [application/DESIGN.md](application/DESIGN.md) — 五视角元模型
 3. [application/CONTRIBUTING.md](application/CONTRIBUTING.md) — 贡献流程与门禁
 
