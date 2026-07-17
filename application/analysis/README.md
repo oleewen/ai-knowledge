@@ -4,7 +4,7 @@ title: analysis — 需求分析文档
 ---
 # analysis — 需求分析文档
 
-索引入口见 [index.md](index.md)。
+索引入口见 [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 与 [index.md](index.md)。前者负责 `application/` 九章地图，后者负责当前目录索引。
 
 SDD **需求分析**阶段目录：产出 `ANALYSIS-{IDEA-ID}.md`，作为 [../requirements](../requirements) 输入；上游 [../solutions](../solutions) 中 `SOLUTION-{IDEA-ID}.md`。
 

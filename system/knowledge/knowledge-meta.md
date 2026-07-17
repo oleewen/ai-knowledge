@@ -75,7 +75,7 @@ title: 知识树元数据（system/knowledge）
 | --- | --- |
 | [README.md](README.md) | 五视角架构入口 |
 | [../index.md](../index.md) | system 索引 |
-| [../../index.md](../../index.md) | 仓库根索引 |
+| [../../index.md](../../index.md) | 仓库根目录索引页 |
 | [../DESIGN.md](../DESIGN.md) | 系统库设计契约 |
 | [../../company/knowledge/knowledge-meta.md](../../company/knowledge/knowledge-meta.md) | 公司级知识树元数据 |
 | [../../agent/knowledge/naming-conventions.md](../../agent/knowledge/naming-conventions.md) | 命名 SSOT |

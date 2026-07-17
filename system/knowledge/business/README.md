@@ -1,10 +1,9 @@
 ---
 type: Documentation
-title: 业务架构
 ---
 # 业务架构
 
-索引入口见 [index.md](index.md)。
+索引入口见 [../../INDEX-GUIDE.md](../../INDEX-GUIDE.md) 与 [index.md](index.md)。前者负责 `system/` 九章地图，后者负责当前视角目录索引。
 
 [返回上一级 · 架构文档索引](../README.md)
 

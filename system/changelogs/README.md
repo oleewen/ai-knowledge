@@ -4,7 +4,7 @@ title: changelogs（变更留痕与索引运维）
 ---
 # changelogs（变更留痕与索引运维）
 
-索引入口见 [index.md](index.md)。
+索引入口见 [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 与 [index.md](index.md)。前者负责 `system/` 九章地图，后者负责当前目录索引。
 
 `system/` 知识库变更可追溯入口：仅约定 **Markdown** 日志产物，不重复阶段文档写作规范。阶段约定 SSOT 为本 README（无 `{dirname}_meta.yaml`）。
 

@@ -4,7 +4,7 @@ title: 应用架构章节
 ---
 # 应用架构章节
 
-索引入口见 [index.md](index.md)。
+索引入口见 [../../../INDEX-GUIDE.md](../../../INDEX-GUIDE.md) 与 [index.md](index.md)。前者负责 `system/` 九章地图，后者负责当前目录索引。
 
 [返回上一级 · 应用架构目录](../README.md)
 

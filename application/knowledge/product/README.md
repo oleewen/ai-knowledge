@@ -1,8 +1,9 @@
 ---
 type: Documentation
-title: product（产品视角）
 ---
-索引入口见 [index.md](index.md)。
+# product（产品视角）
+
+索引入口见 [../../INDEX-GUIDE.md](../../INDEX-GUIDE.md) 与 [index.md](index.md)。前者负责 `application/` 九章地图，后者负责当前视角目录索引。
 
 本目录描述产品功能、用户故事与需求规格，并通过 ID 与其他视角建立映射。本树承接产品实体登记与交互映射；元数据与实例索引见 [product-meta.md](product-meta.md)、[../index.md](../index.md)（§2）。
 
@@ -58,4 +59,4 @@ title: product（产品视角）
 - **产品 → 业务**：`relies_on_context_ids` → BC。
 - **产品 → 技术**：`invokes_api_ids` / `map_to_api_id` → API（manifest）。
 
-仓库根 Index Guide：[index.md](../../../index.md)；设计：[../../DESIGN.md](../../DESIGN.md)。
+仓库根 Index Guide：[../../../INDEX-GUIDE.md](../../../INDEX-GUIDE.md)；设计：[../../DESIGN.md](../../DESIGN.md)。

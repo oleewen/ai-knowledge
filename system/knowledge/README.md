@@ -1,10 +1,9 @@
 ---
 type: Documentation
-title: 系统知识库 — 架构文档
 ---
 # 系统知识库 — 架构文档
 
-索引入口见 [index.md](index.md)。
+索引入口见 [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 与 [index.md](index.md)。前者负责 `system/` 九章地图，后者负责 `knowledge/` 目录索引与渐进披露。
 
 [返回上一级 · 系统知识库顶层](../README.md)
 
@@ -20,4 +19,4 @@ title: 系统知识库 — 架构文档
 | [data/README.md](data/README.md) | 数据架构 | 本系统数据模型、存储与流转，支撑数据生命周期。 |
 | [technical/README.md](technical/README.md) | 技术架构 | 本系统部署、中间件、性能扩展与高可用，支撑运行与交付。实体 SSOT：`technical-meta.md`、`index.md`（TSD） |
 
-与公司知识库侧 [`../../company/knowledge/`](../../company/knowledge/README.md) 对照阅读；顶层索引见 [`../README.md`](../README.md)。
+与公司知识库侧 [`../../company/knowledge/`](../../company/knowledge/README.md) 对照阅读；系统库入口见 [`../README.md`](../README.md)，系统库目录索引页见 [`../index.md`](../index.md)。

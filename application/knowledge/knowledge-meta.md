@@ -58,7 +58,7 @@ title: 知识树元数据（application/knowledge）
 | --- | --- |
 | [README.md](README.md) | 知识树说明 |
 | [../index.md](../index.md) | 应用索引 |
-| [../../index.md](../../index.md) | 仓库根索引 |
+| [../../index.md](../../index.md) | 仓库根目录索引页 |
 | [../../README.md](../../README.md) | 应用 README |
 | [../../AGENTS.md](../../AGENTS.md) | Agent 契约 |
 | [../../agent/knowledge/naming-conventions.md](../../agent/knowledge/naming-conventions.md) | 命名 SSOT |

@@ -1,27 +1,28 @@
 ---
 type: Documentation
-title: technical（技术视角）
 ---
-索引入口见 [index.md](index.md)。
+# technical（技术视角）
 
-本目录描述中间件绑定、关键运行时组件，并通过 ID 与其他视角建立映射。公司级 **TPL-***、系统级 **TSD-*** 在对应层目录首次定义；本层补齐 `TSD` reference 并主定义登记 **MW-*** 与 **CMP-***。元数据与实例索引见 [technical-meta.md](technical-meta.md)、[../index.md](../index.md)（§5）。
+索引入口见 [../../INDEX-GUIDE.md](../../INDEX-GUIDE.md) 与 [index.md](index.md)。前者负责 `application/` 九章地图，后者负责当前视角目录索引。
+
+本目录描述中间件绑定、关键运行时组件，并通过 ID 与其他视角建立映射。公司级 `TPL-*`、系统级 `TSD-*` 在对应层目录首次定义；本层补齐 `TSD` reference 并主定义登记 `MW-*` 与 `CMP-*`。元数据与实例索引见 [technical-meta.md](technical-meta.md)、[../index.md](../index.md)（§5）。
 
 ---
 
 ## 技术线索引表（示例）
 
-| 链序 | 层级 | 类型 | 名称 | 锚点 |
+|链序|层级|类型|名称|锚点|
 |:----:|------|------|------|------|
-| — | 索引 | 技术视角 | 技术视角 | [technical-meta.md](technical-meta.md) |
-| L1 | 技术域 | TSD | 示例技术域 | [TSD-EXAMPLE.md](TSD-EXAMPLE.md) |
-| L2 | 中间件绑定 | MW | 示例中间件绑定 | [MW-EXAMPLE/MW-EXAMPLE.md](MW-EXAMPLE/MW-EXAMPLE.md) |
-| L3 | 组件 | CMP | 示例组件 | [MW-EXAMPLE/CMP-EXAMPLE.md](MW-EXAMPLE/CMP-EXAMPLE.md) |
+|—|索引|技术视角|技术视角|[technical-meta.md](technical-meta.md)|
+|L1|技术域|TSD|示例技术域|[TSD-EXAMPLE.md](TSD-EXAMPLE.md)|
+|L2|中间件绑定|MW|示例中间件绑定|[MW-EXAMPLE/MW-EXAMPLE.md](MW-EXAMPLE/MW-EXAMPLE.md)|
+|L3|组件|CMP|示例组件|[MW-EXAMPLE/CMP-EXAMPLE.md](MW-EXAMPLE/CMP-EXAMPLE.md)|
 
 ---
 
 ## 层级结构
 
-```
+```text
 技术域 (TSD) → 中间件绑定 (MW) → 组件 (CMP)   （实体文件 `{ID}.md` 为 SSOT；扫描索引见 KNOWLEDGE_INDEX §5）
 ```
 
@@ -44,4 +45,4 @@ title: technical（技术视角）
 - **技术 ← 应用**：`bound_app_id` → APP；`implements_tpl_ids`（APP 字段）→ TPL。
 - **技术 ← 数据**：`related_ds_id` → DS（数据源类绑定）。
 
-仓库根 Index Guide：[index.md](../../../index.md)；设计：[../../DESIGN.md](../../DESIGN.md)；命名：[../../../agent/knowledge/naming-conventions.md](../../../agent/knowledge/naming-conventions.md)。
+仓库根 Index Guide：[../../../INDEX-GUIDE.md](../../../INDEX-GUIDE.md)；设计：[../../DESIGN.md](../../DESIGN.md)；命名：[../../../agent/knowledge/naming-conventions.md](../../../agent/knowledge/naming-conventions.md)。

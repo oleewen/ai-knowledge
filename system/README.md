@@ -1,11 +1,10 @@
 ---
 type: Documentation Root
 tags: [governance]
-title: "系统知识库（顶层 `system/`）"
 ---
 # 系统知识库（顶层 `system/`）
 
-索引入口见 [index.md](index.md)。
+索引入口见 [INDEX-GUIDE.md](INDEX-GUIDE.md) 与 [index.md](index.md)。前者负责九章地图与路径索引，后者负责目录索引与渐进披露。
 
 本目录为 **目标态下的「系统知识库」语义**：组织级视图、架构文档与 **`application-{name}/`** 联邦槽位（应用镜像经 [`/docs-pull`](../agent/skills/docs-pull/SKILL.md) 同步）。
 
