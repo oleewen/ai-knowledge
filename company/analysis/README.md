@@ -4,35 +4,24 @@ title: analysis — 需求分析文档
 ---
 # analysis — 需求分析文档
 
-索引入口见 [index.md](index.md)。
+公司层 SDD **分析**目录：产出 `ANALYSIS-{IDEA-ID}.md`。
 
-SDD **需求分析**阶段目录：产出 `ANALYSIS-{IDEA-ID}.md`，下游由各系统侧 [`system/solutions/`](../../system/solutions/README.md) 承接（`company/` 层不设 requirements 目录）；上游 [../solutions](../solutions) 中 `SOLUTION-{IDEA-ID}.md`。
+- 上游：[../solutions/](../solutions/README.md) 的 `SOLUTION-{IDEA-ID}.md`
+- 下游：拆解系统归属后，由各系统侧 [`system/requirements/`](../../system/requirements/README.md) 承接 PRD/ASD/DSD/TDD（`company/` 不设 `requirements/`）
+- 企业架构参照：[../knowledge/](../knowledge/README.md)
 
 ## 交付物
 
 | 项 | 约定 |
 |----|------|
 | 文件 | 根目录平铺 `ANALYSIS-{IDEA-ID}.md` |
-| IDEA-ID | 与 `SOLUTION-{IDEA-ID}.md`、`REQUIREMENT-{IDEA-ID}/` **同链**（见 [../../agent/knowledge/naming-conventions.md](../../agent/knowledge/naming-conventions.md)） |
-| 文档元数据 | 文首 YAML frontmatter：`id` 与文件名一致；`parent` → 对应 `SOLUTION-{IDEA-ID}` |
+| IDEA-ID | 与 SOLUTION / 各系统 REQUIREMENT **同链** |
+| frontmatter | `id` 与文件名一致；`parent` → 对应 SOLUTION |
 
-## 输入
+## 索引
 
-- [../solutions/](../solutions/) — `SOLUTION-{IDEA-ID}.md`
-- [../knowledge/](../knowledge/README.md) — 企业架构五视角文档
-- 规约：各需求包内 `specs/`
+| 文档 | 标题 | 关联方案 | 说明 |
+|------|------|----------|------|
+| ANALYSIS-EXAMPLE.md | 示例跨系统需求分析 | SOLUTION-EXAMPLE | 最小演示链 |
 
-## 分析索引表
-
-| 文档文件名 | 标题 | 关联解决方案 | 简要说明 |
-|------------|------|--------------|----------|
-| ANALYSIS-EXAMPLE.md | 示例跨系统需求分析 | SOLUTION-EXAMPLE | SDD 链演示模板 |
-
-## 规范
-
-- 工作流：[../../agent/skills/sdx-analysis/SKILL.md](../../agent/skills/sdx-analysis/SKILL.md)
-- 模板：[../../agent/skills/sdx-analysis/assets/analysis-template.md](../../agent/skills/sdx-analysis/assets/analysis-template.md)
-
-## 索引维护
-
-每新增或评审一份 `ANALYSIS-{IDEA-ID}.md`，须同步更新上表；重大结构变更时按需更新根 `index.md`。
+规范：[sdx-analysis](../../agent/skills/sdx-analysis/SKILL.md) · 模板见该技能 `assets/`。

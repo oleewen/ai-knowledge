@@ -1,10 +1,13 @@
 ---
 type: Documentation
 tags: [federation]
-title: system-{SYSNAME} 槽位（模板）
+title: system-{SYSNAME} 槽位
 ---
-# system-SYSNAME 槽位（模板）
+<!-- markdownlint-disable-next-line MD025 -->
+# system-SYSNAME 槽位
 
-索引入口见 [index.md](index.md)。
+公司根下挂载 `system/` 镜像。建联：[../knowledge-links.yaml](../knowledge-links.yaml)。
 
-将 **`SYSNAME`** 替换为实际系统标识。本目录用于在 **公司知识库根** 下挂载各 `system/` 知识库同步来的镜像内容（建联见 [`../knowledge-links.yaml`](../knowledge-links.yaml)）。
+- 只承载公司层可见镜像与导航，不主写系统实现  
+- 同步日志：[changelogs/CHANGE-LOG.md](changelogs/CHANGE-LOG.md)  
+- 落地时将 `SYSNAME` 换为实际 `sys_name`

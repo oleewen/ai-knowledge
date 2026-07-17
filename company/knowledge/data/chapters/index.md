@@ -8,19 +8,14 @@
 
 ## 目录文件
 
-* [README.md](README.md)
-* [data-overview.md](data-overview.md)
 * [data-governance.md](data-governance.md)
-* [data-warehouse-lake.md](data-warehouse-lake.md)
+* [data-overview.md](data-overview.md)
 * [data-security-privacy.md](data-security-privacy.md)
+* [data-warehouse-lake.md](data-warehouse-lake.md)
 
 ## 阅读顺序
 
-1. [README.md](README.md)
-2. [data-overview.md](data-overview.md)
-3. [data-governance.md](data-governance.md)
-4. [data-warehouse-lake.md](data-warehouse-lake.md)
-5. [data-security-privacy.md](data-security-privacy.md)
+（待补充）
 
 ## 关联索引
 

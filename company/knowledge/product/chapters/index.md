@@ -8,19 +8,14 @@
 
 ## 目录文件
 
-* [README.md](README.md)
-* [product-overview.md](product-overview.md)
 * [product-architecture.md](product-architecture.md)
 * [product-metrics.md](product-metrics.md)
+* [product-overview.md](product-overview.md)
 * [product-ux.md](product-ux.md)
 
 ## 阅读顺序
 
-1. [README.md](README.md)
-2. [product-overview.md](product-overview.md)
-3. [product-architecture.md](product-architecture.md)
-4. [product-metrics.md](product-metrics.md)
-5. [product-ux.md](product-ux.md)
+（待补充）
 
 ## 关联索引
 

@@ -2,16 +2,15 @@
 type: Change Log
 title: CHANGE-LOG
 ---
+<!-- markdownlint-disable-next-line MD025 -->
 # CHANGE-LOG
 
-本文件为 `company/` 侧**维护性变更与文档聚合**的 Markdown 日志入口。
+本文件记录 `company/` 目录级变更留痕。
 
-## 2026-04-25 09:30:00（时间示例）
+## 写入约定
 
-### 变更摘要
-
-**变更点：**
-
-- 变更点1
+- 新记录按时间倒序追加。
+- 仅记录 `company/` 目录级变更与汇总事件。
+- 详细索引运行记录写入 `INDEXING-LOG.md`。
 
 <!-- change_time=2026-04-26 00:00:00 -->

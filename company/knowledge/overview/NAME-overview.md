@@ -1,15 +1,12 @@
 ---
 type: Architecture Overview Buffer
-tags: [overview, distill]
+tags: [overview, buffer]
 title: "{域名称}架构概览（{slug}-overview）"
 ---
+<!-- markdownlint-disable-next-line MD025 -->
 # {域名称}架构概览（{slug}-overview）
 
-> **维护说明**
-> - 副标题列 `✅`：由 `docs-tag --phase 2` 根据附录 keywords 与链接章节正文判定。
-> - `## 架构摘录`：由 `docs-tag --phase 3`（同义 `excerpt`）从下方五视角表中 ✅ 行投影生成，请勿手改摘录表数据行。
-> - 推荐顺序：`1-write`（或已有 keywords）→ `2` → `3`。
-> - 表行范围：各视角 README 文件；副标题锚点与各章节 `##` 标题同步维护。
+> **维护**：`docs-tag` phase 2（✅）→ phase 3（架构摘录，勿手改摘录行）。表行 ↔ 视角章节 `##`。公司 overview **非** docs-distill 目标。占位 `NAME`/`{域名称}`/`{slug}` 实例化时替换。
 
 ## 架构摘录
 
@@ -41,27 +38,28 @@ title: "{域名称}架构概览（{slug}-overview）"
 
 | 主标题 | 副标题 | 归档业务知识 |
 | --- | --- | --- |
-| [产品概述](../product/chapters/product-overview.md) | [产品定位](../product/chapters/product-overview.md#产品定位) | — |
+| [产品概述](../product/chapters/product-overview.md) | [价值主张](../product/chapters/product-overview.md#价值主张) | — |
 | [产品概述](../product/chapters/product-overview.md) | [目标用户](../product/chapters/product-overview.md#目标用户) | — |
 | [产品概述](../product/chapters/product-overview.md) | [产品路线](../product/chapters/product-overview.md#产品路线) | — |
 | [产品线](../product/chapters/product-architecture.md) | [产品线清单](../product/chapters/product-architecture.md#产品线清单pl) | — |
 | [产品线](../product/chapters/product-architecture.md) | [职责与边界](../product/chapters/product-architecture.md#产品线职责与边界) | — |
 | [产品线](../product/chapters/product-architecture.md) | [产品线关系图](../product/chapters/product-architecture.md#产品线关系图) | — |
-| [度量标准](../product/chapters/product-metrics.md) | [指标框架](../product/chapters/product-metrics.md#指标框架) | — |
-| [度量标准](../product/chapters/product-metrics.md) | [实验原则](../product/chapters/product-metrics.md#实验原则) | — |
+| [度量标准](../product/chapters/product-metrics.md) | [北极星](../product/chapters/product-metrics.md#北极星) | — |
+| [度量标准](../product/chapters/product-metrics.md) | [核心指标](../product/chapters/product-metrics.md#核心指标) | — |
+| [度量标准](../product/chapters/product-metrics.md) | [A/B 测试](../product/chapters/product-metrics.md#ab-测试) | — |
 | [体验设计](../product/chapters/product-ux.md) | [设计规范](../product/chapters/product-ux.md#设计规范) | — |
-| [体验设计](../product/chapters/product-ux.md) | [无障碍标准](../product/chapters/product-ux.md#无障碍标准) | — |
+| [体验设计](../product/chapters/product-ux.md) | [无障碍](../product/chapters/product-ux.md#无障碍) | — |
 
 ## [应用架构](../application/README.md)
 
 | 主标题 | 副标题 | 归档业务知识 |
 | --- | --- | --- |
-| [系统概述](../application/chapters/application-overview.md) | [系统清单](../application/chapters/application-overview.md#系统清单) | — |
-| [系统概述](../application/chapters/application-overview.md) | [系统使命标准](../application/chapters/application-overview.md#系统使命标准) | — |
-| [系统概述](../application/chapters/application-overview.md) | [系统范围标准](../application/chapters/application-overview.md#系统范围标准) | — |
+| [系统概述](../application/chapters/application-overview.md) | [系统使命](../application/chapters/application-overview.md#系统使命) | — |
+| [系统概述](../application/chapters/application-overview.md) | [用户场景](../application/chapters/application-overview.md#用户场景) | — |
+| [系统概述](../application/chapters/application-overview.md) | [系统范围](../application/chapters/application-overview.md#系统范围) | — |
 | [应用架构](../application/chapters/application-architecture.md) | [系统上下文](../application/chapters/application-architecture.md#系统上下文) | — |
-| [应用架构](../application/chapters/application-architecture.md) | [C4 架构标准](../application/chapters/application-architecture.md#c4-架构标准) | — |
-| [应用架构](../application/chapters/application-architecture.md) | [系统边界](../application/chapters/application-architecture.md#系统边界) | — |
+| [应用架构](../application/chapters/application-architecture.md) | [职责边界](../application/chapters/application-architecture.md#职责边界) | — |
+| [应用架构](../application/chapters/application-architecture.md) | [分层结构](../application/chapters/application-architecture.md#分层结构) | — |
 
 ## [技术架构](../technical/README.md)
 
@@ -75,13 +73,13 @@ title: "{域名称}架构概览（{slug}-overview）"
 | [云基础设施](../technical/chapters/technical-infrastructure.md) | [云资源规划](../technical/chapters/technical-infrastructure.md#云资源规划) | — |
 | [云基础设施](../technical/chapters/technical-infrastructure.md) | [容器编排](../technical/chapters/technical-infrastructure.md#容器编排) | — |
 | [DevOps](../technical/chapters/technical-devops.md) | [CI/CD 流程](../technical/chapters/technical-devops.md#cicd-流程) | — |
-| [DevOps](../technical/chapters/technical-devops.md) | [分支策略](../technical/chapters/technical-devops.md#分支策略) | — |
-| [DevOps](../technical/chapters/technical-devops.md) | [质量门禁](../technical/chapters/technical-devops.md#质量门禁) | — |
-| [技术安全](../technical/chapters/technical-security.md) | [身份认证](../technical/chapters/technical-security.md#身份认证) | — |
+| [DevOps](../technical/chapters/technical-devops.md) | [分支管理](../technical/chapters/technical-devops.md#分支管理) | — |
+| [DevOps](../technical/chapters/technical-devops.md) | [自动化测试](../technical/chapters/technical-devops.md#自动化测试) | — |
+| [技术安全](../technical/chapters/technical-security.md) | [认证授权](../technical/chapters/technical-security.md#认证授权) | — |
 | [技术安全](../technical/chapters/technical-security.md) | [数据加密](../technical/chapters/technical-security.md#数据加密) | — |
-| [技术安全](../technical/chapters/technical-security.md) | [合规基线](../technical/chapters/technical-security.md#合规基线) | — |
+| [技术安全](../technical/chapters/technical-security.md) | [安全合规](../technical/chapters/technical-security.md#安全合规) | — |
 | [开发环境](../technical/chapters/technical-dev-environment.md) | [本地环境](../technical/chapters/technical-dev-environment.md#本地环境) | — |
-| [开发环境](../technical/chapters/technical-dev-environment.md) | [工具链标准](../technical/chapters/technical-dev-environment.md#工具链标准) | — |
+| [开发环境](../technical/chapters/technical-dev-environment.md) | [开发工具](../technical/chapters/technical-dev-environment.md#开发工具) | — |
 
 ## [数据架构](../data/README.md)
 
@@ -91,14 +89,14 @@ title: "{域名称}架构概览（{slug}-overview）"
 | [数据架构概述](../data/chapters/data-overview.md) | [架构全景](../data/chapters/data-overview.md#架构全景) | — |
 | [数据架构概述](../data/chapters/data-overview.md) | [生命周期](../data/chapters/data-overview.md#生命周期) | — |
 | [数据治理](../data/chapters/data-governance.md) | [数据标准](../data/chapters/data-governance.md#数据标准) | — |
-| [数据治理](../data/chapters/data-governance.md) | [元数据管理](../data/chapters/data-governance.md#元数据管理) | — |
+| [数据治理](../data/chapters/data-governance.md) | [数据字典](../data/chapters/data-governance.md#数据字典) | — |
 | [数据治理](../data/chapters/data-governance.md) | [数据质量](../data/chapters/data-governance.md#数据质量) | — |
 | [数据治理](../data/chapters/data-governance.md) | [数据血缘](../data/chapters/data-governance.md#数据血缘) | — |
-| [数仓与湖](../data/chapters/data-warehouse-lake.md) | [分层架构](../data/chapters/data-warehouse-lake.md#分层架构) | — |
-| [数仓与湖](../data/chapters/data-warehouse-lake.md) | [湖仓一体](../data/chapters/data-warehouse-lake.md#湖仓一体) | — |
-| [数仓与湖](../data/chapters/data-warehouse-lake.md) | [建模规范](../data/chapters/data-warehouse-lake.md#建模规范) | — |
+| [数仓与湖](../data/chapters/data-warehouse-lake.md) | [数仓分层](../data/chapters/data-warehouse-lake.md#数仓分层) | — |
+| [数仓与湖](../data/chapters/data-warehouse-lake.md) | [维度建模](../data/chapters/data-warehouse-lake.md#维度建模) | — |
+| [数仓与湖](../data/chapters/data-warehouse-lake.md) | [数据湖](../data/chapters/data-warehouse-lake.md#数据湖) | — |
 | [数据安全](../data/chapters/data-security-privacy.md) | [分类分级](../data/chapters/data-security-privacy.md#分类分级) | — |
-| [数据安全](../data/chapters/data-security-privacy.md) | [脱敏规范](../data/chapters/data-security-privacy.md#脱敏规范) | — |
+| [数据安全](../data/chapters/data-security-privacy.md) | [数据脱敏](../data/chapters/data-security-privacy.md#数据脱敏) | — |
 | [数据安全](../data/chapters/data-security-privacy.md) | [访问控制](../data/chapters/data-security-privacy.md#访问控制) | — |
 
 ---

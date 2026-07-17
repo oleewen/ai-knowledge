@@ -1,9 +1,14 @@
 # 知识库建联清单（可由 docs-link.sh 维护）
+# 这是 company 层系统建联的唯一事实源；允许为空。
+# 空状态约定：
+# - `links: []` 表示当前仓库尚未挂载任何 system 槽位，属于合法模板状态。
+# - 初始化模板时可以保留空数组；实例化后再按实际系统逐项追加。
+#
 # 字段约定见 scripts/README.md（repository + path；path 不得为 URL；system 建联含 sys_name / sys_label）。
-# 示例（勿把 URL 写在 path）：
-#   - repository: "https://example.com/org/sys-foo.git"
+# 最小样例（勿把 URL 写在 path）：
+#   - repository: "git@github.com:example/sys-foo.git"
 #     path: "~/workspaces/sys-foo"
 #     doc_dir: "system"
 #     sys_name: "sys-foo"
-#     sys_label: "sys-foo"
-links:
+#     sys_label: "订单中台"
+links: []

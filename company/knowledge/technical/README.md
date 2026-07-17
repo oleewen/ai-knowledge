@@ -1,25 +1,23 @@
 ---
 type: Documentation
-title: 技术架构
 ---
 # 技术架构
 
-索引入口见 [index.md](index.md)。
+[返回上一级 · 企业架构](../README.md)
 
-[返回上一级 · 架构文档索引](../README.md)
-
-本目录为技术架构**目录与入口**，聚焦公司级云基础设施、DevOps、技术安全与开发环境顶层内容。技术章节现集中在 [`chapters/`](chapters/README.md) 子目录；实体 SSOT：[technical-meta.md](technical-meta.md)、[../index.md](../index.md)（**TPL-***）；实体文件见下表。
+公司层技术架构入口：平台能力叙事 + TPL 实体。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
-| 技术概述 | [technical-overview.md](chapters/technical-overview.md) | 公司级技术选型、雷达与决策记录标准。 |
-| 云基础设施 | [technical-infrastructure.md](chapters/technical-infrastructure.md) | 公司级云部署、网络与资源标准。 |
-| DevOps | [technical-devops.md](chapters/technical-devops.md) | 公司级 CI/CD、分支与发布标准。 |
-| 技术安全 | [technical-security.md](chapters/technical-security.md) | 公司级认证、加密与合规标准。 |
-| 开发环境 | [technical-dev-environment.md](chapters/technical-dev-environment.md) | 公司级本地环境与工具链标准。 |
+| 技术概述 | [chapters/technical-overview.md](chapters/technical-overview.md) | 选型、雷达与决策记录 |
+| 云基础设施 | [chapters/technical-infrastructure.md](chapters/technical-infrastructure.md) | 云部署、网络与资源 |
+| DevOps | [chapters/technical-devops.md](chapters/technical-devops.md) | CI/CD、分支与发布 |
+| 技术安全 | [chapters/technical-security.md](chapters/technical-security.md) | 认证、加密与合规 |
+| 开发环境 | [chapters/technical-dev-environment.md](chapters/technical-dev-environment.md) | 本地环境与工具链 |
 
-## 实体索引（实体文件）
+## 实体
 
-| 层级 | full_id | 名称 | 实体文件 |
-|------|---------|------|------------|
-| TPL | TPL-EXAMPLE | 示例技术平台能力 | [TPL-EXAMPLE.md](TPL-EXAMPLE.md) |
+* 元数据：[technical-meta.md](technical-meta.md)
+* 样例：[TPL-EXAMPLE.md](TPL-EXAMPLE.md)
+
+目录索引：[index.md](index.md)

@@ -3,11 +3,20 @@ type: Documentation Root
 tags: [governance]
 title: "公司知识库（顶层 `company/`）"
 ---
+<!-- markdownlint-disable-next-line MD025 -->
 # 公司知识库（顶层 `company/`）
 
-索引入口见 [index.md](index.md)。
+公司层治理与导航根：`knowledge/` = 公司级实体 SSOT；`system-{name}/` = 系统镜像槽位；`solutions/` + `analysis/` = 跨系统 SDD 上游。
 
-本目录为 **公司知识库根** 语义：公司级企业架构（`knowledge/`）与各 **`system-{name}/`** 系统镜像槽位。
+| 读什么 | 文件 |
+|--------|------|
+| 九章地图 | [INDEX-GUIDE.md](INDEX-GUIDE.md) |
+| 目录索引 | [index.md](index.md) |
+| 边界与同步 | [DESIGN.md](DESIGN.md) |
+| 五视角入口 | [knowledge/README.md](knowledge/README.md) |
 
-> **共享规范 SSOT**：知识文件分型与 OKF concept 结构统一遵循 [../agent/knowledge/okf-spec.md](../agent/knowledge/okf-spec.md)。
-> **路径 SSOT**：公司侧五视角目录为 **`knowledge/`**（与 `application/knowledge`、`system/knowledge` 三轨同名）。详见 [DESIGN.md](DESIGN.md) 与 [agent/references/knowledge-layout.md](../agent/references/knowledge-layout.md)。
+按需：`knowledge-links.yaml`（可空）· [system-SYSNAME/](system-SYSNAME/README.md) · [changelogs/](changelogs/README.md)
+
+模板占位：`system-SYSNAME/`、`knowledge/overview/NAME-overview.md`、`*-EXAMPLE`（最小演示链，可替换）。
+
+规范：[DESIGN.md](DESIGN.md) · [okf-spec](../agent/knowledge/okf-spec.md) · [knowledge-layout](../agent/references/knowledge-layout.md)

@@ -12,7 +12,9 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md) — 先确认 solution 目录职责、命名规则与归档方式
+2. [SOLUTION-EXAMPLE.md](SOLUTION-EXAMPLE.md) — 查看现行协议下的最小示例
+3. [../analysis/README.md](../analysis/README.md) — 了解下游 analysis 承接入口
 
 ## 关联索引
 

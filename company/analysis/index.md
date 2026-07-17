@@ -12,7 +12,9 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md) — 先确认 analysis 目录职责、命名规则与承接边界
+2. [ANALYSIS-EXAMPLE.md](ANALYSIS-EXAMPLE.md) — 查看现行协议下的最小示例
+3. [../solutions/README.md](../solutions/README.md) — 回看上游 solution 入口
 
 ## 关联索引
 

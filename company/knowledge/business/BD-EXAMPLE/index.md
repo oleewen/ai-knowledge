@@ -14,7 +14,9 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md) — 先理解示例业务域目录用途
+2. [BD-EXAMPLE.md](BD-EXAMPLE.md) — 查看示例业务域定义
+3. [CAP-EXAMPLE-L1.md](CAP-EXAMPLE-L1.md) -> [CAP-EXAMPLE.md](CAP-EXAMPLE.md) — 按能力层级下钻
 
 ## 关联索引
 

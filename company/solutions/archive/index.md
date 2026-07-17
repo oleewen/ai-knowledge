@@ -8,11 +8,12 @@
 
 ## 目录文件
 
-（无）
+* [.gitkeep](.gitkeep)
 
 ## 阅读顺序
 
-（待补充）
+1. [../README.md](../README.md) — 先确认 solutions 主目录的归档规则
+2. 当前目录文件 — 如有归档方案，按时间或 superseded 关系阅读
 
 ## 关联索引
 

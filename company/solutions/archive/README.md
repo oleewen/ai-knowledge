@@ -1,7 +1,7 @@
 ---
 type: Documentation
-title: archive
+title: solutions/archive
 ---
 # archive
 
-索引入口见 [index.md](index.md)。
+已完结或 superseded 的 `SOLUTION-*` 归档目录。现行方案见 [../](../README.md)。

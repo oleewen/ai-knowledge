@@ -1,24 +1,22 @@
 ---
 type: Documentation
-title: 产品架构
 ---
 # 产品架构
 
-索引入口见 [index.md](index.md)。
+[返回上一级 · 企业架构](../README.md)
 
-[返回上一级 · 架构文档索引](../README.md)
-
-本目录为产品架构**目录与入口**，聚焦公司级产品架构顶层内容。产品章节现集中在 [`chapters/`](chapters/README.md) 子目录；实体 SSOT：[product-meta.md](product-meta.md)、[../index.md](../index.md)（**PL-***）；实体文件见下表。
+公司层产品架构入口：章节叙事 + PL 实体。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
-| 产品概述 | [product-overview.md](chapters/product-overview.md) | 公司级产品全景概述与定位。 |
-| 产品线 | [product-architecture.md](chapters/product-architecture.md) | 公司级产品线（PL）划分、职责与组合关系。 |
-| 度量标准 | [product-metrics.md](chapters/product-metrics.md) | 公司级指标框架与实验原则标准。 |
-| 体验设计 | [product-ux.md](chapters/product-ux.md) | 公司级设计规范与无障碍标准。 |
+| 产品概述 | [chapters/product-overview.md](chapters/product-overview.md) | 产品全景与定位 |
+| 产品线 | [chapters/product-architecture.md](chapters/product-architecture.md) | PL 划分与组合关系 |
+| 度量标准 | [chapters/product-metrics.md](chapters/product-metrics.md) | 指标框架与实验原则 |
+| 体验设计 | [chapters/product-ux.md](chapters/product-ux.md) | 设计规范与无障碍 |
 
-## 实体索引（实体文件）
+## 实体
 
-| 层级 | full_id | 名称 | 实体文件 |
-|------|---------|------|------------|
-| PL | PL-EXAMPLE | 示例产品线 | [PL-EXAMPLE.md](PL-EXAMPLE.md) |
+* 元数据：[product-meta.md](product-meta.md)
+* 样例：[PL-EXAMPLE.md](PL-EXAMPLE.md)
+
+目录索引：[index.md](index.md)

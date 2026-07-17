@@ -2,8 +2,13 @@
 type: Change Log
 title: CHANGE-LOG（system-SYSNAME 槽位）
 ---
-# CHANGE LOG - SYSNAME
+<!-- markdownlint-disable-next-line MD025 -->
+# CHANGE-LOG（system-SYSNAME 槽位）
 
-## v0.1.0 - 2026-04-07
+本文件记录单个系统槽位的同步留痕。
 
-- 初始化应用知识样例条目，用于 docs-distill dry-run 演练。
+## 写入约定
+
+- 新记录按时间倒序追加。
+- 记录 `system -> company` 的同步与校核事件。
+- 每条记录注明来源、时间与影响范围。

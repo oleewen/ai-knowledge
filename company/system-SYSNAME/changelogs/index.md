@@ -12,7 +12,9 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md) — 先确认槽位日志职责与写入时机
+2. [CHANGE-LOG.md](CHANGE-LOG.md) — 查看该槽位的同步事件记录
+3. [../README.md](../README.md) — 回到槽位入口查看上下文
 
 ## 关联索引
 

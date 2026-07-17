@@ -1,7 +1,7 @@
 ---
 type: Documentation
-title: changelogs
+title: system-SYSNAME/changelogs
 ---
 # changelogs
 
-索引入口见 [index.md](index.md)。
+本槽位同步留痕：[CHANGE-LOG.md](CHANGE-LOG.md)

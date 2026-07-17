@@ -1,28 +1,24 @@
 ---
 type: Documentation
-title: 业务架构
 ---
 # 业务架构
 
-索引入口见 [index.md](index.md)。
+[返回上一级 · 企业架构](../README.md)
 
-[返回上一级 · 架构文档索引](../README.md)
-
-本目录为业务架构**目录与入口**，聚焦公司级业务架构顶层内容。业务章节现集中在 [`chapters/`](chapters/README.md) 子目录；实体 SSOT：[business-meta.md](business-meta.md)、[../index.md](../index.md)（**BD-***、**CAP-***）；实体文件见下表。
+公司层业务架构入口：章节叙事 + BD/CAP 实体。系统/应用仅引用 ID，不重复字段语义。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
-| 业务概述 | [business-overview.md](chapters/business-overview.md) | 公司级背景、目标与范围，供各系统业务语境参照。 |
-| 业务域划分 | [business-domain-division.md](chapters/business-domain-division.md) | 一级业务域（L1）定义及域间关系，供 L2–L5 子树对齐。 |
-| 商业模式 | [business-model.md](chapters/business-model.md) | 商业画布与收支模型框架。 |
-| 价值链 | [business-value-chain.md](chapters/business-value-chain.md) | 价值创造环节与竞争壁垒框架。 |
-| 业务能力 | [business-capability.md](chapters/business-capability.md) | 公司级能力框架与成熟度标准。 |
-| 组织角色 | [business-roles-and-organization.md](chapters/business-roles-and-organization.md) | 干系人、角色与组织协作标准。 |
+| 业务概述 | [chapters/business-overview.md](chapters/business-overview.md) | 公司级背景、目标与范围 |
+| 业务域划分 | [chapters/business-domain-division.md](chapters/business-domain-division.md) | L1 业务域及域间关系 |
+| 商业模式 | [chapters/business-model.md](chapters/business-model.md) | 商业画布与收支模型 |
+| 价值链 | [chapters/business-value-chain.md](chapters/business-value-chain.md) | 价值创造与竞争壁垒 |
+| 业务能力 | [chapters/business-capability.md](chapters/business-capability.md) | 能力框架与成熟度 |
+| 组织角色 | [chapters/business-roles-and-organization.md](chapters/business-roles-and-organization.md) | 干系人与组织协作 |
 
-## 实体索引（实体文件）
+## 实体
 
-| 层级 | full_id | 名称 | 实体文件 |
-|------|---------|------|------------|
-| BD | BD-EXAMPLE | 示例业务域 | [BD-EXAMPLE/BD-EXAMPLE.md](BD-EXAMPLE/BD-EXAMPLE.md) |
-| CAP | CAP-EXAMPLE-L1 | 示例一级能力 | [BD-EXAMPLE/CAP-EXAMPLE-L1.md](BD-EXAMPLE/CAP-EXAMPLE-L1.md) |
-| CAP | CAP-EXAMPLE | 示例二级能力 | [BD-EXAMPLE/CAP-EXAMPLE.md](BD-EXAMPLE/CAP-EXAMPLE.md) |
+* 元数据：[business-meta.md](business-meta.md)
+* 样例：[BD-EXAMPLE/](BD-EXAMPLE/README.md)（含 CAP / CAP-L1）
+
+目录索引：[index.md](index.md)

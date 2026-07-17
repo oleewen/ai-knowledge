@@ -12,7 +12,9 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md) — 先理解槽位职责、占位语义与同步来源
+2. [changelogs/README.md](changelogs/README.md) — 查看槽位级日志规则
+3. [../knowledge-links.yaml](../knowledge-links.yaml) — 回看该槽位对应的建联配置
 
 ## 关联索引
 
