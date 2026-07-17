@@ -5,6 +5,7 @@
 | 反模式 | 纠正 |
 | ------ | ------ |
 | 参数未收口即写 overview 或 DISTILL | 先收口 `--app`、范围、是否 `--full`/`--dry-run`；[gates.md](gates.md) |
+| 跳过写前意图澄清 | 须六项清单 + 写前 C；[intent-clarify.md](../../../references/intent-clarify.md) |
 | 4.3 败仍 4.4 | 仅成功后追加；[workflow.md](workflow.md) |
 | 混淆 CHANGE-LOG 与 DISTILL-LOG | [workflow.md](workflow.md)；[distill-log-spec.md](distill-log-spec.md) |
 | `--full` 无预览直盖 | gates + gotchas |

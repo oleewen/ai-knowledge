@@ -1,12 +1,19 @@
 # docs-indexing 工作流
 
-[SKILL.md](../SKILL.md)；风险控制与动作协议 [gates.md](gates.md)。
+[SKILL.md](../SKILL.md)；推进协议 [gates.md](gates.md)。
+
+契约分工：
+
+- 写前**意图澄清**：[intent-clarify.md](../../../references/intent-clarify.md)
+- 写后**烤干** `grilling`：[grilling-skill.md](../../../references/grilling-skill.md)
+
+本文只定义二者在 `docs-indexing` Unit Cycle 中的 binding。
 
 ## I/O
 
 - 必需：仓库根、`mode`、`depth`（用户确认）
 - 可选：`output`、`since`；基线候选为 LOG **主表首行** `indexing_finished_ms`（只展示；HTML 回退见 [indexing-log-spec.md](indexing-log-spec.md)）
-- 产出：索引指南（仓库根或各 DOC_DIR 的 `index.md`）、`changelogs/INDEXING-LOG.md`（新行在表顶）
+- 产出：索引指南（仓库根或各 DOC_DIR 的 `INDEX-GUIDE.md`）、`changelogs/INDEXING-LOG.md`（新行在表顶）
 - 不产出：知识实体；不改 README/AGENTS；无 CHANGELOG
 
 ## 参数
@@ -27,64 +34,52 @@
 3. `output`
 4. `since` 或基线策略
 
-参数未收口前，不进入执行。
+参数未收口前，不进入 Unit Cycle。
 
 ## 当前单元
 
 一个当前单元就是单个索引输出组，例如：
 
-- 根 `index.md`
-- 某个 `DOC_DIR/index.md`
-- 单次 `INDEXING-LOG.md` 插入
+- 根 `INDEX-GUIDE.md` + 根 `changelogs/INDEXING-LOG.md`
+- 某个 `DOC_DIR/INDEX-GUIDE.md` + `{DOC_DIR}/changelogs/INDEXING-LOG.md`
 
 一次只处理一个当前单元，不并行推进多个输出组。
 
-## 执行循环
+## Unit Cycle（澄清 → 生成 → 烤干）
 
-### 1 环境与基线
+### 写后默认表
 
-读 `INDEXING-LOG` 主表首行或旧 HTML → **候选** `indexing_finished_ms`（不自动定 mode）。输出可写。[scan-config-onboarding.md](scan-config-onboarding.md) 对齐 DOC_ROOT、基线与输出路径。
+`docs-indexing`：**各索引输出组默认必须烤干**（启发式只可升级、不可降级跳过）。
 
-### 2 选定当前单元
+强制升级（本就默认必须，仍须显式标注）：
 
-基于 `output` 与当前批次策略，确定当前只处理一个输出组。
+- 本轮改导航路径、索引路径或 `output` 指向
+- 实体 ID、跨单元依赖或前文前提变更（若索引内容牵涉）
+- 未确认决策写入正文
 
-无基线且无 `--since`：请 **full 或中止**；勿静默 full；incremental 无基线脚本 **exit≠0**。
+### 固定循环
 
-### 3 变更
-
-增量：`docs-change` + 变更列表；full：跳过。
-
-### 4 扫描
-
-[scan-spec.md](scan-spec.md)。depth=3：应读尽读；未读→§八。
+1. 选定当前单元（单个输出组）
+2. **意图澄清**：输出公共六项清单，标明「当前阶段：意图澄清」
+   - 第 6 项须列出本轮将写入的**仓库根相对路径**：`INDEX-GUIDE.md` 与 `changelogs/INDEXING-LOG.md`
+   - 可追加技能字段：`mode/depth`、增量基线、扫描范围摘要
+   - 有缺口则一问一答；用户写前 `C` 后方可写入
+3. 环境与基线：读 `INDEXING-LOG` 主表首行或旧 HTML → 候选 `indexing_finished_ms`。[scan-config-onboarding.md](scan-config-onboarding.md) 对齐 DOC_ROOT、基线与输出路径
+4. 增量：`docs-change` + 变更列表；full：跳过
+5. 扫描：[scan-spec.md](scan-spec.md)；depth=3：应读尽读；未读→§八
 
 ```bash
 agent/skills/docs-indexing/scripts/indexing.sh --mode <mode> --depth <depth>
 ```
 
-### 5 质量与自动 grilling
-
-[quality-standards.md](quality-standards.md)。
-
-当前单元写入后，立即做自动 `grilling`：
-
-- 检查覆盖面是否与 `mode/depth` 一致
-- 检查路径是否仍正确
-- 检查增量基线是否解释充分
-- 检查 `INDEXING-LOG` 是否只在索引指南成功后追加
-
-### 6 输出与动作停顿
-
-[nine-chapter-spec.md](nine-chapter-spec.md)，[index-guide-template.md](../assets/index-guide-template.md)。INDEX 落盘后再插 LOG（[indexing-log-spec.md](indexing-log-spec.md)、`indexing_log.py`）。
-
-当前单元收敛后，停下等待 `C/M/G/S/F`：
-
-- `C`：确认当前单元并进入下一个输出组或结束
-- `M`：修改参数或路径，再重新 grill
-- `G`：继续深挖当前单元
-- `S`：暂存当前单元，跳过写入
-- `F`：按已确认策略补齐剩余输出组
+6. 生成并写入：按 [nine-chapter-spec.md](nine-chapter-spec.md)、[index-guide-template.md](../assets/index-guide-template.md) 写入 `INDEX-GUIDE.md`；成功后插 LOG（[indexing-log-spec.md](indexing-log-spec.md)、`indexing_log.py`）
+7. **烤干**：对当前单元执行自动 `grilling` 直到收敛；标明「当前阶段：烤干」
+   - 检查覆盖面是否与 `mode/depth` 一致
+   - 检查路径是否仍正确
+   - 检查增量基线是否解释充分
+   - 检查 `INDEXING-LOG` 是否只在索引指南成功后追加
+8. 若打出语义性问题，暂停等待用户确认
+9. 当前单元收敛后，用户用 `C/M/G/S/F` 做写后动作选择
 
 **OKF 索引（建议，非阻断）**：索引指南落盘后运行：
 
@@ -93,7 +88,7 @@ python3 agent/skills/docs-okf/scripts/generate_index.py --bundle application --r
 bash agent/skills/docs-okf/scripts/okf-validate.sh --bundle application
 ```
 
-九章索引指南（仓库根或各 DOC_DIR 的 `index.md`）与各级 OKF `index.md`（渐进披露）职责分离；见 [docs-okf/references/workflow.md](../../docs-okf/references/workflow.md)。
+九章索引指南与各级 OKF `index.md` 职责分离；见 [docs-okf/references/workflow.md](../../docs-okf/references/workflow.md)。
 
 ## 核心约束
 

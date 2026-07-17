@@ -7,24 +7,45 @@
   "notes": "复制为 <eval-id>-metadata.json；断言同 grader.md。",
   "assertions_should_trigger_example": [
     {
+      "id": "intent-clarify",
+      "name": "意图澄清",
+      "type": "must_include",
+      "check": "写前须完成六项清单 + 写前 C；主线含澄清 → 生成 → 烤干。",
+      "priority": "P0"
+    },
+    {
+      "id": "knowledge-path-container",
+      "name": "knowledge 路径容器",
+      "type": "must_include",
+      "check": "路径/容器须写明视角批次或实体批次与 {DOC_DIR}/knowledge/ 下根相对路径。",
+      "priority": "P0"
+    },
+    {
       "id": "single-unit-stop",
       "name": "单单元停顿",
       "type": "must_include",
-      "check": "一次只推进一个当前单元，并在当前单元收敛后停下等待动作。",
+      "check": "一次只推进一个当前单元，烤干收敛后停下等待 C/M/G/S/F。",
+      "priority": "P0"
+    },
+    {
+      "id": "grilling-after-write",
+      "name": "写后烤干",
+      "type": "must_include",
+      "check": "写入并 validate 通过后默认必须自动 grilling 至收敛。",
       "priority": "P0"
     },
     {
       "id": "semantic-change-needs-confirmation",
       "name": "语义变更先确认",
       "type": "must_include",
-      "check": "参数、视角范围、输出路径或重建策略变化时，先给结论、推荐方案与数字选项。",
+      "check": "参数、视角范围、实体 ID、输出路径或重建策略变化时，先给结论、推荐方案与数字选项。",
       "priority": "P0"
     },
     {
       "id": "validate-before-continue",
       "name": "校验后再继续",
       "type": "must_include",
-      "check": "当前单元写入后需运行或提及 `validate-extraction.sh`，失败时停止并先澄清策略。",
+      "check": "当前单元写入后需运行或提及 validate-extraction.sh，失败时停止并先澄清策略。",
       "priority": "P0"
     },
     {

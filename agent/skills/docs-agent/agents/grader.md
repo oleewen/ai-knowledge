@@ -8,13 +8,13 @@
 
 **原则**：`must_include` → 可被合理推断满足即可；同义表述可接受。`must_not_conflict` → 不得与断言矛盾。P0 失败 → `passed: false`。
 
-**材料**：`SKILL.md`、`references/gates.md`、`references/workflow.md`、`gotchas.md`、本条 eval 的 `expected_output`、`evals.json` 断言。
+**材料**：`SKILL.md`、`references/gates.md`、`references/workflow.md`、`intent-clarify.md`、`gotchas.md`、本条 eval 的 `expected_output`、`evals.json` 断言。
 
 ## 示例
 
 ```json
 {
-  "text": "通过。含参数向导、单个当前单元停顿与自动 grilling；INDEX 驱动且未包揽 docs-indexing。",
+  "text": "通过。含参数向导、写前意图澄清、单单元烤干停顿；INDEX 驱动且未包揽 docs-indexing。",
   "passed": true,
   "evidence": ["parameter-guidance", "single-unit-stop", "index-driven"]
 }

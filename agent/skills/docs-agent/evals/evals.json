@@ -1,13 +1,13 @@
 {
   "skill_name": "docs-agent",
-  "version": "2.0.0",
-  "description": "评估触发边界、参数向导、当前单元、自动 grilling 与动作停顿；供 grader 断言。",
+  "version": "3.0.0",
+  "description": "评估触发边界、参数向导、写前意图澄清、当前单元、烤干与动作停顿；供 grader 断言。",
   "evals": [
     {
       "id": "docs-agent-trigger-001",
       "category": "should-trigger",
-      "prompt": "仓库里 INDEX_GUIDE.md 已经落盘了，帮我走 /docs-agent：output 和 mode 都是默认，把根目录 README 和 AGENTS 对齐 INDEX。请先收口参数，再按单个文件逐个处理，写完 README 先 grill 一轮再说。",
-      "expected_output": "以 /docs-agent 为主路径：先收口 output/mode，再只处理一个当前单元；README 收敛后停下等 C/M/G/S/F，不能自动推进到 AGENTS；INDEX 驱动、不替代 docs-indexing；可提 validate-guide.sh。",
+      "prompt": "仓库里 INDEX-GUIDE.md 已经落盘了，帮我走 /docs-agent：output 和 mode 都是默认，把根目录 README 和 AGENTS 对齐 INDEX。请先收口参数，再按单个文件逐个处理，写完 README 先 grill 一轮再说。",
+      "expected_output": "以 /docs-agent 为主路径：先收口 output/mode，再对 README 做写前意图澄清（六项清单 + 阶段横幅），写前 C 后写入；烤干收敛后停下等 C/M/G/S/F，不能自动推进到 AGENTS；INDEX 驱动、不替代 docs-indexing；可提 validate-guide.sh。",
       "assertions": [
         {
           "id": "parameter-guidance",
@@ -17,10 +17,17 @@
           "priority": "P0"
         },
         {
+          "id": "intent-clarify-before-write",
+          "name": "写前意图澄清",
+          "type": "must_include",
+          "check": "须体现写前意图澄清（六项清单或等价）、阶段横幅「当前阶段：意图澄清」、写前 C 后方可写入；未获写前 C 不得落盘。",
+          "priority": "P0"
+        },
+        {
           "id": "single-unit-stop",
           "name": "单单元停顿",
           "type": "must_include",
-          "check": "须体现一次只处理一个当前单元，README 收敛后给出 C/M/G/S/F 或等价动作等待用户选择；不得自动推进 AGENTS。",
+          "check": "须体现一次只处理一个当前单元，README 烤干收敛后给出 C/M/G/S/F 或等价动作等待用户选择；须标明「当前阶段：烤干」；不得自动推进 AGENTS。",
           "priority": "P0"
         },
         {
@@ -50,13 +57,20 @@
       "id": "docs-agent-trigger-002",
       "category": "should-trigger",
       "prompt": "只更新 AGENTS.md，在已有 README 上不动，mode 用 update，帮我执行文档入口同步。当前轮只处理 AGENTS，别自动碰 README。",
-      "expected_output": "采纳 output=agents、mode=update；当前单元仅 AGENTS；收敛后停下等待动作；README 仍是命令事实源，不应被顺手改动。",
+      "expected_output": "采纳 output=agents、mode=update；对 AGENTS 做写前意图澄清后写入；烤干收敛后停下等待动作；README 仍是命令事实源，不应被顺手改动。",
       "assertions": [
         {
           "id": "output-agents",
           "name": "输出范围",
           "type": "must_include",
           "check": "仅更新 AGENTS；update 为合并而非全量抹除。",
+          "priority": "P0"
+        },
+        {
+          "id": "intent-clarify-before-write",
+          "name": "写前意图澄清",
+          "type": "must_include",
+          "check": "须对 AGENTS 当前单元做写前意图澄清，写前 C 后方可写入。",
           "priority": "P0"
         },
         {
@@ -78,7 +92,7 @@
     {
       "id": "docs-agent-not-trigger-001",
       "category": "should-not-trigger",
-      "prompt": "INDEX_GUIDE.md 里 §2 目录树过时了，帮我直接重写整个索引文件并更新九章结构。",
+      "prompt": "INDEX-GUIDE.md 里 §2 目录树过时了，帮我直接重写整个索引文件并更新九章结构。",
       "expected_output": "主路径 docs-indexing；docs-agent 不生成/不替代 INDEX 正文。",
       "assertions": [
         {

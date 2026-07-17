@@ -1,24 +1,109 @@
 {
   "skill_name": "docs-indexing",
-  "version": "2.0.0",
+  "version": "2.1.0",
+  "description": "评估 docs-indexing 在「澄清 → 生成 → 烤干」流程下的触发、分流与单元推进协议表述；断言供 grader 评分。",
   "evals": [
     {
-      "id": 1,
-      "prompt": "帮我全量跑一遍根目录 INDEX_GUIDE，depth 用 2，mode full，写完 application 那边 changelog 里的索引日志",
-      "expected_output": "docs-indexing：先收口 `mode=full`、`depth=2`、输出组与日志策略；一次只处理一个索引输出组；索引成功后再写 INDEXING-LOG；收敛后停下等 C/M/G/S/F。",
-      "files": []
+      "id": "indexing-trigger-001",
+      "category": "should-trigger",
+      "prompt": "帮我全量跑一遍根目录 INDEX-GUIDE.md，depth 用 2，mode full，写完 application 那边 changelog 里的索引日志",
+      "expected_output": "docs-indexing：先收口 mode/depth/output 与日志策略；当前单元写前意图澄清（六项含 INDEX-GUIDE.md 与 INDEXING-LOG.md 双路径）；写入后自动 grilling 至收敛；停下等 C/M/G/S/F。",
+      "assertions": [
+        {
+          "id": "parameter-guidance",
+          "name": "参数向导",
+          "type": "must_include",
+          "check": "须收口 mode/depth/output/since 或基线策略后再进入当前单元。",
+          "priority": "P0"
+        },
+        {
+          "id": "intent-clarify",
+          "name": "意图澄清",
+          "type": "must_include",
+          "check": "须体现写前意图澄清（六项清单或等价门禁），未获写前 C 不得写入 INDEX/LOG。",
+          "priority": "P0"
+        },
+        {
+          "id": "dual-path-container",
+          "name": "双路径容器",
+          "type": "must_include",
+          "check": "须体现路径/容器列出 INDEX-GUIDE.md 与 changelogs/INDEXING-LOG.md 的仓库根相对路径。",
+          "priority": "P0"
+        },
+        {
+          "id": "grilling-loop",
+          "name": "单元烤干",
+          "type": "must_include",
+          "check": "须体现写入后自动 grilling（烤干）至收敛后再推进。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-unit-stop",
+          "name": "单单元停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个索引输出组，烤干收敛后给出 C/M/G/S/F 并停住。",
+          "priority": "P0"
+        }
+      ]
     },
     {
-      "id": 2,
-      "prompt": "/docs-indexing --mode incremental --depth 3 --output application/INDEX_GUIDE.md",
-      "expected_output": "docs-indexing：识别 incremental + depth3；先确认 `since`/基线策略；无基线时不能静默 full；一次只处理 `application/INDEX_GUIDE.md` 这一输出组。",
-      "files": []
+      "id": "indexing-trigger-002",
+      "category": "should-trigger",
+      "prompt": "/docs-indexing --mode incremental --depth 3 --output application/INDEX-GUIDE.md",
+      "expected_output": "docs-indexing：识别 incremental + depth3；先确认 since/基线策略；无基线时不能静默 full；一次只处理 application/INDEX-GUIDE.md 这一输出组；写前意图澄清含 application/INDEX-GUIDE.md 与 application/changelogs/INDEXING-LOG.md。",
+      "assertions": [
+        {
+          "id": "baseline-gate",
+          "name": "基线门禁",
+          "type": "must_include",
+          "check": "须体现 incremental 无基线时不能静默 full，须用户确认 full/中止/补 since。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-unit-stop",
+          "name": "单输出组",
+          "type": "must_include",
+          "check": "须体现一次只处理 application/INDEX-GUIDE.md 这一输出组。",
+          "priority": "P0"
+        },
+        {
+          "id": "intent-clarify",
+          "name": "意图澄清",
+          "type": "must_include",
+          "check": "须体现写前意图澄清后再写入。",
+          "priority": "P0"
+        }
+      ]
     },
     {
-      "id": 3,
-      "prompt": "直接帮我把 system/INDEX_GUIDE.md 改一下，我急用，不用走那些确认",
-      "expected_output": "拒或说明仍需先收口参数与路径；勿默许跳过确认；仅用户明示例外可谈直写。",
-      "files": []
+      "id": "indexing-trigger-003",
+      "category": "should-trigger",
+      "prompt": "直接帮我把 system/INDEX-GUIDE.md 改一下，我急用，不用走那些确认",
+      "expected_output": "拒或说明仍需先收口参数与写前意图澄清；勿默许跳过确认；仅用户明示例外可谈直写。",
+      "assertions": [
+        {
+          "id": "no-skip-intent-clarify",
+          "name": "不可默许跳过澄清",
+          "type": "must_include",
+          "check": "须拒绝或说明仍需意图澄清与参数收口，不得默许跳过。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "indexing-not-trigger-001",
+      "category": "should-not-trigger",
+      "prompt": "主 INDEX 有了，帮我把四视角实体从代码里抽一遍，更新 KNOWLEDGE_INDEX",
+      "expected_output": "分流至 docs-build；勿以 docs-indexing 为主路径写 knowledge 实体。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 docs-build 或 KNOWLEDGE_INDEX/实体提取为当前主任务。",
+          "priority": "P0"
+        }
+      ]
     }
   ]
 }

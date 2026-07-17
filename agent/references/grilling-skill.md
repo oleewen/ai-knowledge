@@ -1,9 +1,10 @@
 # grilling 能力契约（Agent SSOT）
 
-> **定位**：跨 skill 复用的 `grilling` 能力唯一真源。若环境已安装 `grilling` Skill，则优先调用；若未安装，则按本文 fallback 协议执行。
+> **定位**：跨 skill 复用的 `grilling`（写后**烤干**）能力唯一真源。若环境已安装 `grilling` Skill，则优先调用；若未安装，则按本文 fallback 协议执行。
 > **边界**：本文只定义能力选择、fallback 提问协议、探索优先与统一输出格式；不定义具体 skill 的写入权限、前文回改边界或段落推进动作。
+> **分工**：写前**意图澄清**见 [intent-clarify.md](intent-clarify.md)；主线口令 `澄清 → 生成 → 烤干`。本文不承担写前门禁。
 
-**最后更新**: 2026-07-02
+**最后更新**: 2026-07-17
 
 ---
 

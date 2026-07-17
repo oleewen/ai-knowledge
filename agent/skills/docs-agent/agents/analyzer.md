@@ -1,6 +1,6 @@
 # docs-agent 失败分析器
 
-输入：失败样本（prompt、分类、响应、grader evidence）+ `SKILL.md`、`gates`、`workflow`、`execution-spec`、`gotchas`。
+输入：失败样本（prompt、分类、响应、grader evidence）+ `SKILL.md`、`gates`、`workflow`、`intent-clarify`、`execution-spec`、`gotchas`。
 
 ## 输出
 
@@ -13,7 +13,7 @@
 
 - **F1** 路由误判  
 - **F2** 与 docs-indexing / docs-build / sdx-solution / docs-upgrade 混淆  
-- **F3** 协议执行：缺参数向导、未按当前单元停顿、未做自动 grilling  
+- **F3** 协议执行：缺参数向导、跳过写前意图澄清、未按当前单元停顿、未做烤干  
 - **F4** 结构：顺序/三文件校验/缺失  
 - **F5** INDEX 幻觉  
 - **F6** 证据不足  

@@ -1,6 +1,13 @@
 # docs-build 工作流
 
-主干：[SKILL.md](../SKILL.md)。风险控制与动作协议：[gates.md](gates.md)。
+主干：[SKILL.md](../SKILL.md)。推进协议：[gates.md](gates.md)。
+
+契约分工：
+
+- 写前**意图澄清**：[intent-clarify.md](../../../references/intent-clarify.md)
+- 写后**烤干** `grilling`：[grilling-skill.md](../../../references/grilling-skill.md)
+
+本文只定义二者在 `docs-build` Unit Cycle 中的 binding。
 
 ## 前置
 
@@ -33,19 +40,19 @@
 
 默认不逐项问。仅在：用户改参数或视角、`DOC_DIR` 不明、校验失败要选策略、规则未覆盖 — **每次只澄清一点**。
 
-参数未收口前，不进入执行。
+参数未收口前，不进入 Unit Cycle。
 
 ## 当前单元
 
 一个当前单元可以是：
 
-- 单个视角批次
+- 单个视角批次（如 technical / data / business / product）
 - 单个路径组
 - 单批实体集合
 
 一次只处理一个当前单元，不并行推进多个批次。
 
-### 阶段 2 顺序
+### 视角顺序
 
 | 序 | 视角 | 前缀 | 输入概要 |
 | --- | --- | --- | --- |
@@ -56,27 +63,54 @@
 
 API：**Dubbo / HTTP / MQ Consumer / Job**，`api_type` 必填。
 
-## 执行循环
+## Unit Cycle（澄清 → 生成 → 烤干）
+
+### 写后默认表
+
+`docs-build`：**各视角批次 / 实体批次默认必须烤干**（启发式只可升级、不可降级跳过）。
+
+强制升级（本就默认必须，仍须显式标注）：
+
+- 涉及实体 ID 变更、重命名或跨批次 ID 对齐
+- 未确认决策写入正文
+- 跨单元依赖或前文前提变更
+
+### 固定循环
 
 ```mermaid
 flowchart TD
     A["参数向导收口"] --> B["选定当前单元"]
-    B --> C["按 extraction-rules 提取实体"]
+    B --> IC["意图澄清（六项清单）"]
+    IC -->|写前 C| C["按 extraction-rules 提取实体"]
     C --> D["按 readme-fill-spec 更新 README"]
     D --> E["按 consolidation-spec 归并 KNOWLEDGE_INDEX"]
     E --> F["运行 validate-extraction.sh"]
     F --> G{"校验是否通过"}
     G -->|否| H["停止并澄清策略"]
-    G -->|是| I["自动 grilling"]
-    H --> I
+    G -->|是| I["烤干：自动 grilling"]
+    H --> IC
     I --> J["等待 C/M/G/S/F"]
 ```
 
-## 校验
+1. 选定当前单元（视角批次 / 路径组 / 实体批次）
+2. **意图澄清**：输出公共六项清单，标明「当前阶段：意图澄清」
+   - 第 6 项须写明：当前批次类型（视角/路径/实体）与 `{DOC_DIR}/knowledge/` 下本轮将写入的仓库根相对路径
+   - 可追加技能字段：视角范围、`--skip-existing`、置信度策略、预计实体 ID 列表摘要
+   - 有缺口则一问一答；用户写前 `C` 后方可写入
+3. 按 [extraction-rules.md](extraction-rules.md) 提取实体
+4. 按 [readme-fill-spec.md](readme-fill-spec.md) 更新 README
+5. 按 [consolidation-spec.md](consolidation-spec.md) 归并 KNOWLEDGE_INDEX
+6. 运行校验：
 
 ```bash
 agent/skills/docs-build/scripts/validate-extraction.sh
 ```
+
+7. **烤干**：对当前单元执行自动 `grilling` 直到收敛；标明「当前阶段：烤干」
+8. 若打出语义性问题，暂停等待用户确认
+9. 当前单元收敛后，用户用 `C/M/G/S/F` 做写后动作选择
+
+## 校验
 
 若校验失败：
 

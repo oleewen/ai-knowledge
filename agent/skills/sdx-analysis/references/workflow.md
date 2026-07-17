@@ -1,15 +1,18 @@
-<!-- markdownlint-disable-file MD040 MD060 -->
 # sdx-analysis 工作流
 
 主干：[SKILL.md](../SKILL.md)。推进协议：[gates.md](gates.md)。
 
 ## 目标
 
-通过**参数向导 + 分段直写终稿 + 自动 grilling 补强**的方式，逐步形成可评审的 `ANALYSIS-{IDEA-ID}.md`（六章）。
+通过**参数向导 + 分段「澄清 → 生成 → 烤干」**，逐步形成可评审的 `ANALYSIS-{IDEA-ID}.md`（六章）。
 本技能默认采用**单段收敛**的工作方式，而不是先准备整份前置草稿、再一次性集中收口。
-`grilling` 的公共能力契约见
-[grilling-skill.md](../../../references/grilling-skill.md)；
-本文只定义其在 `sdx-analysis` Section Cycle 中的绑定方式。
+
+契约分工：
+
+- 写前**意图澄清**：[intent-clarify.md](../../../references/intent-clarify.md)
+- 写后**烤干** `grilling`：[grilling-skill.md](../../../references/grilling-skill.md)
+
+本文只定义二者在 `sdx-analysis` Section Cycle 中的绑定。
 
 **公司库**（`KNOWLEDGE_TYPE=company`）：
 上游为 `company/solutions/SOLUTION-*.md`；
@@ -32,8 +35,9 @@ flowchart TD
 
     F --> G["创建 ANALYSIS-*.md 终稿骨架"]
     G --> H["选择当前段落 / 小节 / 单个 FR"]
-    H --> I["按模板生成当前段到终稿"]
-    I --> J["自动 grilling 直到当前段收敛"]
+    H --> IC["意图澄清（六项清单）"]
+    IC -->|写前 C| I["按模板生成当前段到终稿"]
+    I --> J["烤干：自动 grilling 直到收敛"]
 
     J --> K{"是否遇到语义性问题或前文回改"}
     K -->|否| L["进入用户动作选择"]
@@ -45,7 +49,7 @@ flowchart TD
     O -->|C| P{"是否还有下一段"}
     O -->|M| Q["按用户要求修改当前段"]
     O -->|G| R["追加一轮深挖 grilling"]
-    O -->|F| S["批量补齐剩余章节"]
+    O -->|F| S["批确认剩余段意图表后批量补齐"]
     Q --> J
     R --> J
 
@@ -108,10 +112,11 @@ flowchart TD
 - 当前未写章节可保留占位说明
 
 此阶段目标是建立**可持续增量写入**的终稿容器，而非等待整篇草稿成熟后再落盘。
+骨架创建**不**替代各章写入前的意图澄清。
 
 ---
 
-## 阶段三：Section Cycle
+## 阶段三：Section Cycle（澄清 → 生成 → 烤干）
 
 ### 基本单位
 
@@ -119,19 +124,24 @@ flowchart TD
 默认顺序按模板推进，也可由用户指定跳转到任意段。
 在 `§2` 中可进一步细化到单个 `FR` 分节作为当前段。
 
+### 写后默认表
+
+`sdx-analysis`：**各章节/FR 段默认必须烤干**（启发式只可升级、不可降级跳过）。
+
 ### 固定循环
 
 1. 选定当前段
-2. 按模板生成当前段
-3. 直接写入终稿对应位置
+2. **意图澄清**：输出公共六项清单，标明「当前阶段：意图澄清」；有缺口则一问一答；用户写前 `C` 后方可写入
+3. 按模板生成当前段，直接写入终稿对应位置
 4. 若当前段存在 `>=2` 条真实分析路径，先在当前段内完成方案比选
-5. 对当前段执行自动 `grilling`，直到“烤干”
+5. **烤干**：对当前段执行自动 `grilling`，直到收敛；标明「当前阶段：烤干」
 6. 若打出语义性问题或前文回改，暂停等待用户确认
-7. 当前段收敛后，用户用 `C/M/G/F` 做动作选择
-8. 收口后再进入下一段，或在用户选 `F` 后批量补齐余段
+7. 当前段收敛后，用户用 `C/M/G/F` 做写后动作选择
+8. 收口后再进入下一段，或在用户选 `F` 后先批确认剩余意图再批量补齐
 
 ### 约束
 
+- 未完成写前意图澄清（无写前 `C`），不得写入当前段正文
 - `grilling` 默认只拷当前段，不跨多段发散
 - 若环境未安装 `grilling` Skill，
   则按 [grilling-skill.md](../../../references/grilling-skill.md) 的 fallback 协议执行
@@ -139,7 +149,7 @@ flowchart TD
 - `grilling` 打出**语义性问题**时，必须先输出结论、推荐修订与数字选项并等待用户确认；未获确认不得修订当前段
 - 自动 `grilling` 收敛前，不默认推进到下一段
 - `G` 不是每轮必选动作，只在自动收敛后由用户手动追加深挖
-- 若本段依赖前文结论，则前文变更会触发本段重开
+- 若本段依赖前文结论，则前文变更会触发本段重开（重开后须再意图澄清）
 
 ---
 
@@ -153,9 +163,10 @@ flowchart TD
 一旦前文被改，当前段必须：
 
 1. 重新读取受影响前提
-2. 回到当前段
-3. 重新进入自动 `grilling`
-4. 再进入用户确认或批量补齐
+2. 状态 `reopened`，回到**意图澄清**
+3. 写前 `C` 后重写或修订当前段
+4. 重新进入自动 `grilling`
+5. 再进入用户确认或批量补齐
 
 也就是说，**前文回改不会直接视为当前段已通过**。
 
@@ -164,7 +175,7 @@ flowchart TD
 - `grilling` 可直接识别“需要回改前文”，但不得把前文回改视为当前段默认授权的一部分
 - 涉及前文时，先输出受影响前提、推荐方案与数字选项，再等待用户选择
 - 只有用户明确选择后，才执行前文回改
-- 前文一旦被改，当前段立即 `reopened`，并按本流程重新 grill
+- 前文一旦被改，当前段立即 `reopened`，并按本流程重新澄清与烤干
 
 ---
 
@@ -173,28 +184,32 @@ flowchart TD
 ```mermaid
 stateDiagram-v2
     [*] --> selected: 选定当前段
-    selected --> draft: 生成当前段到终稿
-    draft --> grilling: 进入自动 grilling
+    selected --> clarifying: 意图澄清
+    clarifying --> intent_confirmed: 写前 C
+    intent_confirmed --> draft: 生成当前段到终稿
+    draft --> grilling: 进入烤干
     grilling --> revised: 自动修订当前段
     revised --> grilling: 继续自动收口
     grilling --> reopened: 前文被回改
-    reopened --> draft: 基于新前提重写当前段
+    reopened --> clarifying: 基于新前提再澄清
     grilling --> grilled: 当前段已收敛
-    grilled --> confirmed: C 确认当前段
+    grilled --> confirmed: 写后 C 确认当前段
     grilled --> revised: M 修改当前段
     grilled --> grilling: G 继续深挖当前段
-    grilled --> [*]: F 进入批量补齐
+    grilled --> batch_intent: F 批确认剩余意图
     confirmed --> [*]
 ```
 
 状态含义：
 
+- `clarifying`：写前意图澄清中，尚未写入
+- `intent_confirmed`：写前 `C` 已过，即将/正在生成
 - `draft`：当前段已写入终稿，但仍是初稿
-- `grilling`：当前段处于自动收口中
+- `grilling`：当前段处于烤干中
 - `revised`：当前段刚被自动或人工修改，待继续收口
 - `reopened`：因前文改动，当前段重新打开
-- `grilled`：当前段已自动收敛，可等待用户动作
-- `confirmed`：用户确认通过
+- `grilled`：当前段已烤干收敛，可等待写后用户动作
+- `confirmed`：用户写后确认通过
 
 ---
 
@@ -205,9 +220,10 @@ stateDiagram-v2
 ### `F` 的执行方式
 
 - 保留已确认或已收敛的前文
-- 从当前段之后开始批量生成剩余章节
+- **先**汇总剩余未完成章节/FR 的意图表（公共六项摘要），用户一次写前语境 `C` 确认
+- 确认后再从当前段之后连续生成剩余章节（段间不再单独停意图澄清）
 - 每个剩余章节写入后都要自动 `grilling` 到收敛
-- 中途若遇到语义性问题或前文回改，立即停下等待用户确认
+- 中途若遇到语义性问题或前文回改，立即停下等待用户确认；回改后受影响段须再澄清
 
 ### 验证目标
 

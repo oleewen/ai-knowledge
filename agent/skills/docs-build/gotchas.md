@@ -1,6 +1,15 @@
 # docs-build 常见陷阱
 
-视角顺序、ID、API、README、归并问题时读本文。**错** vs **对**。
+视角顺序、ID、API、README、归并、意图澄清问题时读本文。**错** vs **对**。
+
+## 意图澄清
+
+- **参数收口即写 knowledge** → 还须完成六项清单 + 写前 `C`；须标「当前阶段：意图澄清」
+- **路径/容器缺批次信息** → 第 6 项须写明视角批次或实体批次 + `{DOC_DIR}/knowledge/` 下根相对路径
+- **把写前澄清当 grilling** → 写前用 intent-clarify；写后才烤干
+- **无横幅发 C/M/G/S/F** → 须区分意图澄清 `C` 与烤干 `C`
+- **用 G 做写前澄清** → `G` 仅写后深挖
+- **改实体 ID 不烤干** → 实体 ID 变更须强制烤干（默认本就必须）
 
 ## 初始化
 
@@ -50,11 +59,14 @@
 ## 速查（完整见 quality-checklist）
 
 - [ ] INDEX 已就绪，未盲扫全仓
+- [ ] 写前意图澄清六项 + knowledge 批次路径
 - [ ] 顺序 技术→数据→业务→产品
 - [ ] API 四类 + `api_type`；仅 Dubbo Provider
 - [ ] 每实体一 `{ID}.md`；frontmatter 含 `full_id`
 - [ ] 每实体有 evidence_chain
 - [ ] 先 README 后 INDEX（扫描/regen）
+- [ ] validate 通过后再烤干
+- [ ] 写后烤干收敛再 C/M/G/S/F
 - [ ] 无单独.rename 旧 ID
 
 完整：[references/quality-checklist.md](references/quality-checklist.md)。

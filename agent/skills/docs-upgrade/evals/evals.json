@@ -1,26 +1,40 @@
 {
   "skill_name": "docs-upgrade",
-  "version": "2.0.0",
-  "description": "评估触发、参数向导、当前单元、自动 grilling 与 upgrade 分流",
+  "version": "2.1.0",
+  "description": "评估触发、参数向导、当前单元「澄清→生成→烤干」、意图澄清与 upgrade 分流",
   "evals": [
     {
       "id": "upgrade-trigger-001",
       "category": "should-trigger",
       "prompt": "把 system/architecture/overview/billing-overview.md 里所有「订金」统一成「预付款」，并同步引用这个 overview 的架构章节和全库注释里的同类说法。先收口范围，再按单个当前单元处理，改完第一批先 grill 一轮。",
-      "expected_output": "docs-upgrade：先收口主文件、扩展范围与当前单元；先处理一个当前单元并自动 grilling，收敛后停下等 C/M/G/S/F；语义扩展未确认前不得批量推进。",
+      "expected_output": "docs-upgrade：参数向导后按当前单元执行澄清→生成→烤干；写前意图澄清（六项）后处理一个当前单元；烤干收敛后停下等 C/M/G/S/F；语义扩展未确认前不得批量推进。",
       "assertions": [
         {
-          "id": "scope-must-confirm-before-write",
-          "name": "范围先确认",
+          "id": "intent-clarify",
+          "name": "意图澄清",
           "type": "must_include",
-          "check": "须体现先收口主文件、改动摘要、是否允许关联扩展，不得直接批量写。",
+          "check": "须体现当前单元写入前做意图澄清（六项或等价写前门禁），未获写前 C 不得写入。",
+          "priority": "P0"
+        },
+        {
+          "id": "unit-cycle",
+          "name": "单元循环",
+          "type": "must_include",
+          "check": "主线含澄清→生成→烤干；须体现先收口主文件、改动摘要、是否允许关联扩展。",
+          "priority": "P0"
+        },
+        {
+          "id": "grilling-loop",
+          "name": "单元烤干",
+          "type": "must_include",
+          "check": "当前单元写入后须自动 grilling（默认必须烤干）并收敛后再推进。",
           "priority": "P0"
         },
         {
           "id": "single-unit-stop",
           "name": "单单元停顿",
           "type": "must_include",
-          "check": "须体现一次只处理一个当前单元，当前单元收敛后给出 C/M/G/S/F 或等价动作等待用户选择；不得自动推进下一批关联文件。",
+          "check": "烤干收敛后给出 C/M/G/S/F 或等价动作等待用户选择；不得自动推进下一批关联文件。",
           "priority": "P0"
         },
         {
@@ -50,13 +64,13 @@
       "id": "upgrade-trigger-002",
       "category": "should-trigger",
       "prompt": "application/README.md 第三段有个错别字「索引」写成「索隐」，只改这一处，不要动别的文件",
-      "expected_output": "快路径：单点+用户限范围；当前单元只含该 README 修改；不扩展关联；收敛后停下。",
+      "expected_output": "快路径：单点+用户限范围；澄清阶段一屏六项摘要；写前 C 后只改该 README；烤干收敛后停下。",
       "assertions": [
         {
-          "id": "scope-must-confirm-before-write",
-          "name": "范围先确认",
+          "id": "intent-clarify",
+          "name": "意图澄清",
           "type": "must_include",
-          "check": "须快路径式一句话确认或明确仅本文件不扩。",
+          "check": "须快路径式意图澄清或明确仅本文件不扩，未获写前 C 不得写。",
           "priority": "P0"
         },
         {
@@ -70,7 +84,7 @@
           "id": "boundary-routing",
           "name": "边界分流",
           "type": "must_not_conflict",
-          "check": "不得在用户已限「一处」时仍强制完整模板化确认书压倒约束。",
+          "check": "不得在用户已限「一处」时仍强制完整模板压倒约束。",
           "priority": "P0"
         }
       ]
@@ -79,7 +93,7 @@
       "id": "upgrade-trigger-003",
       "category": "should-trigger",
       "prompt": "用 docs-upgrade：把 XTerm - YTerm 应用到 docs/design.md 以及同义英文注释里",
-      "expected_output": "识别简写；先收口 design.md 与扩展范围；先处理一个当前单元，若要扩展到注释或关键词命中，需经 grill 收敛后再停下确认。",
+      "expected_output": "识别简写；澄清阶段收口 design.md 与扩展范围；写前 C 后处理一个当前单元；若要扩展到注释或关键词命中，须经烤干收敛后再停下确认。",
       "assertions": [
         {
           "id": "structure-integrity",
@@ -144,7 +158,7 @@
     {
       "id": "upgrade-not-trigger-003",
       "category": "should-not-trigger",
-      "prompt": "全量重建根目录 INDEX_GUIDE.md，九章结构，不要改业务文档正文",
+      "prompt": "全量重建根目录 INDEX-GUIDE.md，九章结构，不要改业务文档正文",
       "expected_output": "主路径 docs-indexing。",
       "assertions": [
         {

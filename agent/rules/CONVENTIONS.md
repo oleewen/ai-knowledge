@@ -84,11 +84,16 @@
 2. 一次只处理一个**当前段/当前单元**：
    - `sdx-*` 以章节、子章节或单一设计块为主；
    - `docs-*` 以单个目标块、单个路径组、单个实体批次、单个归档块或单个范围确认块为主。
-3. 当前段/当前单元生成或落入目标容器后，必须进入自动 `grilling`；
-   当前单元收敛后，再由用户用 `C/M/G/F` 或技能本地等价动作推进。
-4. 语义性变更（目标、范围、路径、批量策略、风险口径、术语等）须先给出结论、推荐方案与数字选项，待用户确认后再改。
-5. 默认采用参数向导、当前段/当前单元、自动 `grilling` 与用户动作推进；
-   若个别技能保留独立校验脚本或参数确认书，以该技能 `SKILL.md` 为准。
+3. **主线口令**目标为 `澄清 → 生成 → 烤干`：
+   - **意图澄清**（写前）：见 [intent-clarify.md](../references/intent-clarify.md)；
+   - **生成**：写入当前段/当前单元；
+   - **烤干**（写后）：按默认表 + 启发式强制升级进入自动 `grilling`，见 [grilling-skill.md](../references/grilling-skill.md)。
+4. **试点/铺开**：全部 `/sdx-*` 与语义族 docs-*（含 indexing/build）已绑定意图澄清；
+   `docs-okf` / `docs-change` / `docs-pull` / `docs-push` / `docs-tag` 维持轻流程。
+5. 当前段/单元在烤干收敛（或合法跳过烤干）后，再由用户用 `C/M/G/F` 或技能本地等价动作推进；
+   `C` 在意图澄清与写后确认阶段同符异义，须靠阶段横幅区分（见意图澄清契约）。
+6. 语义性变更（目标、范围、路径、批量策略、风险口径、术语等）须先给出结论、推荐方案与数字选项，待用户确认后再改。
+7. 若个别技能保留独立校验脚本或参数确认书，以该技能 `SKILL.md` 为准。
 
 完整流程、HARD-GATE 与校验命令见各阶段 `agent/skills/<...>/SKILL.md`。
 
@@ -96,18 +101,18 @@
 
 | 阶段 | 规则 globs（Cursor） | 终稿 / 写入范围 | 辅助工作稿 | 推进协议 | 环境变量例外 | Skill |
 | --- | --- | --- | --- | --- | --- | --- |
-| sdx-solution | `application/solutions/**/*`、`company/solutions/**/*` | `{DOC_DIR}/solutions/SOLUTION-*.md` | 可选工作稿（无固定后缀要求） | 无 HTML gate；按当前段状态与 `C/M/G/F` 推进 | 无 | [sdx-solution/SKILL.md](../skills/sdx-solution/SKILL.md) |
-| sdx-analysis | `application/analysis/**/*`、`company/analysis/**/*` | `{DOC_DIR}/analysis/ANALYSIS-*.md` | 可选工作稿（无固定后缀要求） | 无 HTML gate；按当前段状态与 `C/M/G/F` 推进 | 无 | [sdx-analysis/SKILL.md](../skills/sdx-analysis/SKILL.md) |
-| sdx-architect | `application/requirements/**/ASD-*.md` | `application/requirements/**/ASD-*.md` | 可选工作稿（无固定后缀要求） | 无 HTML gate；按当前段状态与 `C/M/G/F` 推进 | 无 | [sdx-architect/SKILL.md](../skills/sdx-architect/SKILL.md) |
-| sdx-design | `application/requirements/**/DSD-*.md` | `application/requirements/**/DSD-*.md` | 可选工作稿（无固定后缀要求） | 无 HTML gate；按当前段状态与 `C/M/G/F` 推进 | 无 | [sdx-design/SKILL.md](../skills/sdx-design/SKILL.md) |
-| sdx-prd | `application/requirements/**/*` | `application/requirements/**/PRD-*.md` | 可选工作稿（无固定后缀要求） | 无 HTML gate；按当前段状态与 `C/M/G/F` 推进 | 无 | [sdx-prd/SKILL.md](../skills/sdx-prd/SKILL.md) |
-| sdx-test | `application/requirements/**/TDD-*.md` | `application/requirements/**/TDD-*.md` | 可选工作稿（无固定后缀要求） | 无 HTML gate；按当前段状态与 `C/M/G/F` 推进 | 无 | [sdx-test/SKILL.md](../skills/sdx-test/SKILL.md) |
-| docs-distill | `system/knowledge/**/*`、`company/knowledge/**/*` | `system/knowledge/overview/` 受管区块及蒸馏相关日志的写入 | 可选工作稿（无固定后缀要求） | 参数向导 + 当前目标块/应用批次收敛 + `C/M/G/F` | 无 | [docs-distill/SKILL.md](../skills/docs-distill/SKILL.md) |
-| docs-extract | `system/knowledge/overview/**/*`、`company/knowledge/overview/**/*` | `system/knowledge/overview/*.md`、`company/knowledge/overview/*.md` 写入 | 可选工作稿（无固定后缀要求） | 参数向导 + 当前目标块/来源批次收敛 + `C/M/G/F` | 无 | [docs-extract/SKILL.md](../skills/docs-extract/SKILL.md) |
-| docs-archive | `system/knowledge/overview/**/*`、`company/knowledge/overview/**/*` | `system/knowledge/overview/*.md`、`company/knowledge/overview/*.md` 写入 | 可选工作稿（无固定后缀要求） | 参数向导 + 当前归档块收敛 + `C/M/G/F` | 无 | [docs-archive/SKILL.md](../skills/docs-archive/SKILL.md) |
-| docs-build | `{DOC_DIR}/knowledge/**/*` | `{DOC_DIR}/knowledge/` 下 JSON、README、KNOWLEDGE_INDEX 写入 | 可选工作稿（无固定后缀要求） | 参数向导 + 当前实体批次/视角批次收敛 + `C/M/G/F` | 无 | [docs-build/SKILL.md](../skills/docs-build/SKILL.md) |
-| docs-indexing | `**/index.md`、`**/changelogs/INDEXING-LOG.md` | 各文档根下 `index.md` 与对应 `changelogs/INDEXING-LOG.md` 主表写入 | 可选工作稿（无固定后缀要求） | 参数向导 + 当前输出路径组收敛 + `C/M/G/F` | 无 | [docs-indexing/SKILL.md](../skills/docs-indexing/SKILL.md) |
-| docs-upgrade | 不固定（按用户确认范围） | 已确认 Markdown / 注释 / 配置文本范围内的写入 | 可选工作稿（无固定后缀要求） | 参数向导 + 当前范围块/同步块收敛 + `C/M/G/F` | 无 | [docs-upgrade/SKILL.md](../skills/docs-upgrade/SKILL.md) |
+| sdx-solution | `application/solutions/**/*`、`company/solutions/**/*` | `{DOC_DIR}/solutions/SOLUTION-*.md` | 可选工作稿（无固定后缀要求） | 无 HTML gate；`澄清 → 生成 → 烤干` + 当前段状态与 `C/M/G/F`（意图澄清试点） | 无 | [sdx-solution/SKILL.md](../skills/sdx-solution/SKILL.md) |
+| sdx-analysis | `application/analysis/**/*`、`company/analysis/**/*` | `{DOC_DIR}/analysis/ANALYSIS-*.md` | 可选工作稿（无固定后缀要求） | 无 HTML gate；`澄清 → 生成 → 烤干` + 当前段状态与 `C/M/G/F` | 无 | [sdx-analysis/SKILL.md](../skills/sdx-analysis/SKILL.md) |
+| sdx-architect | `application/requirements/**/ASD-*.md` | `application/requirements/**/ASD-*.md` | 可选工作稿（无固定后缀要求） | 无 HTML gate；`澄清 → 生成 → 烤干` + 当前段状态与 `C/M/G/F` | 无 | [sdx-architect/SKILL.md](../skills/sdx-architect/SKILL.md) |
+| sdx-design | `application/requirements/**/DSD-*.md` | `application/requirements/**/DSD-*.md` | 可选工作稿（无固定后缀要求） | 无 HTML gate；`澄清 → 生成 → 烤干` + 当前段状态与 `C/M/G/F` | 无 | [sdx-design/SKILL.md](../skills/sdx-design/SKILL.md) |
+| sdx-prd | `application/requirements/**/*` | `application/requirements/**/PRD-*.md` | 可选工作稿（无固定后缀要求） | 无 HTML gate；`澄清 → 生成 → 烤干` + 当前段状态与 `C/M/G/F` | 无 | [sdx-prd/SKILL.md](../skills/sdx-prd/SKILL.md) |
+| sdx-test | `application/requirements/**/TDD-*.md` | `application/requirements/**/TDD-*.md` | 可选工作稿（无固定后缀要求） | 无 HTML gate；`澄清 → 生成 → 烤干` + 当前段状态与 `C/M/G/F` | 无 | [sdx-test/SKILL.md](../skills/sdx-test/SKILL.md) |
+| docs-distill | `system/knowledge/**/*`、`company/knowledge/**/*` | `system/knowledge/overview/` 受管区块及蒸馏相关日志的写入 | 可选工作稿（无固定后缀要求） | `澄清 → 生成 → 烤干` + 当前单元 + `C/M/G/S/F` | 无 | [docs-distill/SKILL.md](../skills/docs-distill/SKILL.md) |
+| docs-extract | `system/knowledge/overview/**/*`、`company/knowledge/overview/**/*` | `system/knowledge/overview/*.md`、`company/knowledge/overview/*.md` 写入 | 可选工作稿（无固定后缀要求） | `澄清 → 生成 → 烤干` + 当前单元 + `C/M/G/S/F` | 无 | [docs-extract/SKILL.md](../skills/docs-extract/SKILL.md) |
+| docs-archive | `system/knowledge/overview/**/*`、`company/knowledge/overview/**/*` | `system/knowledge/overview/*.md`、`company/knowledge/overview/*.md` 写入 | 可选工作稿（无固定后缀要求） | `澄清 → 生成 → 烤干`（确认书=意图澄清）+ `C/M/G/S/F` | 无 | [docs-archive/SKILL.md](../skills/docs-archive/SKILL.md) |
+| docs-build | `{DOC_DIR}/knowledge/**/*` | `{DOC_DIR}/knowledge/` 下 JSON、README、KNOWLEDGE_INDEX 写入 | 可选工作稿（无固定后缀要求） | `澄清 → 生成 → 烤干` + 当前单元 + `C/M/G/S/F` | 无 | [docs-build/SKILL.md](../skills/docs-build/SKILL.md) |
+| docs-indexing | `**/INDEX-GUIDE.md`、`**/changelogs/INDEXING-LOG.md` | 各文档根下 `INDEX-GUIDE.md` 与对应 `changelogs/INDEXING-LOG.md` 主表写入 | 可选工作稿（无固定后缀要求） | `澄清 → 生成 → 烤干` + 当前单元 + `C/M/G/S/F` | 无 | [docs-indexing/SKILL.md](../skills/docs-indexing/SKILL.md) |
+| docs-upgrade | 不固定（按用户确认范围） | 已确认 Markdown / 注释 / 配置文本范围内的写入 | 可选工作稿（无固定后缀要求） | `澄清 → 生成 → 烤干` + 当前单元 + `C/M/G/S/F` | 无 | [docs-upgrade/SKILL.md](../skills/docs-upgrade/SKILL.md) |
 
 **说明**：`sdx-prd` 与 `sdx-test` 的规则 globs
 均覆盖 `application/requirements/**/*`，
@@ -120,15 +125,15 @@
 <!-- markdownlint-disable MD013 -->
 | 层级 | 技能 | 闸门形式 | hook 保护 |
 | --- | --- | --- | --- |
-| **中高风险**（直写目标产物 + 单元推进协议） | sdx-solution、sdx-analysis、sdx-prd、sdx-architect、sdx-design、sdx-test、docs-distill、docs-extract、docs-archive、docs-build、docs-indexing、docs-upgrade | 参数向导 + 当前段/当前单元直写目标产物 + `C/M/G/F`；可选工作稿仅作暂存，不要求落盘 spec / HTML gate | ❌ |
-| **中等风险**（会话内确认书） | docs-agent | 会话内参数确认书 + Qclose-1，无需落盘 spec 文件；SKILL.md 中有 HARD-GATE 描述 | ❌（写入路径不固定或契约不要求 hook） |
+| **中高风险**（直写目标产物 + 单元推进协议） | sdx-solution、sdx-analysis、sdx-prd、sdx-architect、sdx-design、sdx-test、docs-distill、docs-extract、docs-archive、docs-build、docs-indexing、docs-upgrade | 参数向导 + 当前段/当前单元直写目标产物 + `C/M/G/F`（docs 另有 `S`）；主线 `澄清 → 生成 → 烤干`（目标语义族已全绑）；可选工作稿仅作暂存，不要求落盘 spec / HTML gate | ❌ |
+| **中等风险**（会话内确认书） | docs-agent | 会话内参数确认 + 意图澄清 + `澄清 → 生成 → 烤干` + `C/M/G/S/F`；SKILL.md 中有 HARD-GATE 描述 | ❌（写入路径不固定或契约不要求 hook） |
 | **低风险**（现有参数确认） | docs-change、docs-tag、docs-pull | 保持现有参数确认机制，不加 spec gate | ❌ |
 <!-- markdownlint-enable MD013 -->
 
 补充说明：
 
 - `docs-indexing` 当前单元须显式列出本轮将写入的仓库根相对路径，
-  以区分多域同名 `index.md` 与 `INDEXING-LOG.md`。
+  以区分多域同名 `INDEX-GUIDE.md` 与 `INDEXING-LOG.md`。
 
 ### docs-distill 补充
 
@@ -145,9 +150,9 @@
 ### docs-indexing 补充
 
 - 当前单元除参数确认外，
-  须列出本轮将写入的 **`index.md` 与
+  须列出本轮将写入的 **`INDEX-GUIDE.md` 与
   `*/changelogs/INDEXING-LOG.md` 的完整仓库根相对路径**
-  （例如 `application/index.md`），
+  （例如 `application/INDEX-GUIDE.md`），
   以便区分多域同名文件。
   参数 `mode` / `depth` / `output` / `since`
   摘要建议与该当前单元一并确认。

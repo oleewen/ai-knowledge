@@ -5,6 +5,7 @@
 | 反模式 | 纠正 |
 | ------ | ------ |
 | 参数未收口即写第三列 | 先收口 `--sources`、`--overview`、关键词口径与是否 `--dry-run`；[gates.md](gates.md) |
+| 跳过写前意图澄清 | 须六项清单 + 写前 C；[intent-clarify.md](../../../references/intent-clarify.md) |
 | 4.1 无命中仍 4.3 | 无命中则 CLOSE，不落盘；[workflow.md](workflow.md) |
 | overview 当 `--sources` | 只扫 sources；gotchas |
 | 关键词过宽、命中爆炸 | 收窄或分批；先 dry-run；gates |

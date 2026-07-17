@@ -1,24 +1,116 @@
 {
   "skill_name": "docs-build",
-  "version": "2.0.0",
+  "version": "2.1.0",
+  "description": "评估 docs-build 在「澄清 → 生成 → 烤干」流程下的触发、分流与单元推进协议表述；断言供 grader 评分。",
   "evals": [
     {
-      "id": 1,
+      "id": "build-trigger-001",
+      "category": "should-trigger",
       "prompt": "主 INDEX 已经跑过 docs-indexing 了，帮我把四视角实体从代码里抽一遍，更新 KNOWLEDGE_INDEX，先给我看下会动哪些文件再写",
-      "expected_output": "docs-build：先收口视角范围与输出策略；以单个构建单元给出会动文件预览；确认后写 `{DOC_DIR}/knowledge/`；跑 validate-extraction.sh；收敛后停下等 C/M/G/S/F。",
-      "files": []
+      "expected_output": "docs-build：先收口视角范围与输出策略；当前单元写前意图澄清（六项含视角批次与 knowledge 路径）；确认后写 {DOC_DIR}/knowledge/；跑 validate-extraction.sh；烤干收敛后停下等 C/M/G/S/F。",
+      "assertions": [
+        {
+          "id": "parameter-guidance",
+          "name": "参数向导",
+          "type": "must_include",
+          "check": "须收口视角范围、输出策略与 DOC_DIR 后再进入当前单元。",
+          "priority": "P0"
+        },
+        {
+          "id": "intent-clarify",
+          "name": "意图澄清",
+          "type": "must_include",
+          "check": "须体现写前意图澄清（六项清单或等价门禁），未获写前 C 不得写入 knowledge。",
+          "priority": "P0"
+        },
+        {
+          "id": "knowledge-path-container",
+          "name": "knowledge 路径容器",
+          "type": "must_include",
+          "check": "须体现路径/容器写明视角批次或实体批次与 {DOC_DIR}/knowledge/ 下根相对路径。",
+          "priority": "P0"
+        },
+        {
+          "id": "grilling-loop",
+          "name": "单元烤干",
+          "type": "must_include",
+          "check": "须体现写入并 validate 通过后自动 grilling（烤干）至收敛。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-unit-stop",
+          "name": "单单元停住",
+          "type": "must_include",
+          "check": "须体现一次只推进一个构建单元，烤干收敛后给出 C/M/G/S/F 并停住。",
+          "priority": "P0"
+        },
+        {
+          "id": "validate-before-continue",
+          "name": "校验门禁",
+          "type": "must_include",
+          "check": "须体现 validate-extraction.sh 或等价校验后再继续/烤干。",
+          "priority": "P0"
+        }
+      ]
     },
     {
-      "id": 2,
+      "id": "build-trigger-002",
+      "category": "should-trigger",
       "prompt": "/docs-build --perspectives application,data --confidence-threshold high",
-      "expected_output": "docs-build：仅 application+data；把高置信度策略视为语义参数；一次只推进一个视角批次或实体批次；非 distill/overview。",
-      "files": []
+      "expected_output": "docs-build：仅 application+data；高置信度策略视为语义参数；一次只推进一个视角批次；写前意图澄清含 knowledge 路径；非 distill/overview。",
+      "assertions": [
+        {
+          "id": "single-unit-stop",
+          "name": "单批次",
+          "type": "must_include",
+          "check": "须体现一次只推进一个视角批次或实体批次。",
+          "priority": "P0"
+        },
+        {
+          "id": "semantic-change-gated",
+          "name": "语义参数确认",
+          "type": "must_include",
+          "check": "须体现高置信度等语义参数变化须先确认或在意图澄清中收口。",
+          "priority": "P0"
+        },
+        {
+          "id": "intent-clarify",
+          "name": "意图澄清",
+          "type": "must_include",
+          "check": "须体现写前意图澄清后再写入。",
+          "priority": "P0"
+        }
+      ]
     },
     {
-      "id": 3,
-      "prompt": "帮我重新生成根目录的 INDEX_GUIDE.md，顺便把 knowledge 实体也建一下",
-      "expected_output": "分流：INDEX_GUIDE→docs-indexing；实体→docs-build；勿单用 build 吞 indexing",
-      "files": []
+      "id": "build-trigger-003",
+      "category": "should-trigger",
+      "prompt": "帮我重新生成根目录的 INDEX-GUIDE.md，顺便把 knowledge 实体也建一下",
+      "expected_output": "分流：INDEX-GUIDE→docs-indexing；实体→docs-build；勿单用 build 吞 indexing。",
+      "assertions": [
+        {
+          "id": "routing-split",
+          "name": "分流",
+          "type": "must_include",
+          "check": "须分别指向 docs-indexing 与 docs-build，不得单用 build 覆盖 indexing。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "build-not-trigger-001",
+      "category": "should-not-trigger",
+      "prompt": "帮我全量跑一遍根目录 INDEX-GUIDE.md，depth 用 2",
+      "expected_output": "主路径为 docs-indexing；不以 docs-build 写 INDEX-GUIDE 为终点。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 docs-indexing 或 INDEX-GUIDE 为当前主任务。",
+          "priority": "P0"
+        }
+      ]
     }
   ]
 }

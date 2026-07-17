@@ -1,26 +1,40 @@
 {
   "skill_name": "docs-archive",
-  "version": "2.0.0",
-  "description": "评估触发、分流、当前确认书、当前单元与动作停顿；供 grader 断言。",
+  "version": "2.1.0",
+  "description": "评估触发、分流、确认书（意图澄清）、当前单元「澄清→落盘→烤干」与动作停顿；供 grader 断言。",
   "evals": [
     {
       "id": "archive-trigger-001",
       "category": "should-trigger",
       "prompt": "帮我把 system/architecture/overview/billing-appeal-overview.md 里业务架构视角的内容归档到对应的章节文件里，归档完之后把 overview 里已归档的部分替换成索引壳",
-      "expected_output": "/docs-archive：解析行内链；澄清索引壳；形成当前确认书；确认后只处理一个归档单元；落目标后再回写 overview；收敛后停下等 C/M/G/S/F。",
+      "expected_output": "/docs-archive：解析行内链；澄清阶段形成确认书（含意图澄清六项）；写前 C 后只处理一个归档单元；落目标后再回写 overview；烤干收敛后停下等 C/M/G/S/F。",
       "assertions": [
         {
-          "id": "confirmation-book-first",
-          "name": "确认书优先",
+          "id": "intent-clarify-via-confirmation-book",
+          "name": "确认书即意图澄清",
           "type": "must_include",
-          "check": "当前确认书收口前禁止写目标或回写 overview。",
+          "check": "确认书收口前禁止写目标或回写 overview；确认书须承载写前意图澄清（六项或等价），未获写前 C 不得落盘。",
+          "priority": "P0"
+        },
+        {
+          "id": "unit-cycle",
+          "name": "单元循环",
+          "type": "must_include",
+          "check": "主线含澄清→落盘→烤干；一次只处理一个目标章节或 overview 行块。",
+          "priority": "P0"
+        },
+        {
+          "id": "grilling-loop",
+          "name": "单元烤干",
+          "type": "must_include",
+          "check": "当前单元落盘后须自动 grilling（默认必须烤干）并收敛后再推进。",
           "priority": "P0"
         },
         {
           "id": "single-unit-stop",
           "name": "单单元停顿",
           "type": "must_include",
-          "check": "一次只处理一个目标章节或一个 overview 行块，收敛后停下等待动作。",
+          "check": "烤干收敛后停下等待 C/M/G/S/F；不得自动推进下一单元。",
           "priority": "P0"
         },
         {
@@ -43,13 +57,13 @@
       "id": "archive-trigger-002",
       "category": "should-trigger",
       "prompt": "我想把 payment-overview.md#技术架构 这一节的内容补充进架构文档，但不确定要怎么处理冲突，你帮我看看",
-      "expected_output": "docs-archive：读锚点节与目标；澄清冲突；当前确认书给出方案候选与推荐；确认前不落盘；收敛后等动作。",
+      "expected_output": "docs-archive：读锚点节与目标；澄清阶段确认书给出方案候选与推荐（含六项）；写前 C 前不落盘；落盘→烤干后等动作。",
       "assertions": [
         {
-          "id": "confirmation-book-first",
-          "name": "确认书优先",
+          "id": "intent-clarify-via-confirmation-book",
+          "name": "确认书即意图澄清",
           "type": "must_include",
-          "check": "含未确认不写目标或等价确认书优先语义。",
+          "check": "含未获写前 C 不写目标或等价确认书优先语义。",
           "priority": "P0"
         },
         {
@@ -79,13 +93,13 @@
       "id": "archive-trigger-003",
       "category": "should-trigger",
       "prompt": "order-service 的 overview 更新了好几个视角，需要全部归档到架构文档，直接帮我改吧",
-      "expected_output": "仍须先收口当前确认书；概括多视角风险；一次只处理一个归档单元；不得无确认即落盘。",
+      "expected_output": "仍须先澄清收口确认书（含六项）；概括多视角风险；写前 C 后一次只处理一个归档单元；落盘→烤干；不得无确认即落盘。",
       "assertions": [
         {
           "id": "semantic-change-needs-confirmation",
           "name": "语义变更先确认",
           "type": "must_include",
-          "check": "即使用户说直接改，仍须先确认来源范围、目标章节与清理策略。",
+          "check": "即使用户说直接改，仍须先确认来源范围、目标章节与清理策略（写前 C）。",
           "priority": "P0"
         },
         {
@@ -108,13 +122,13 @@
       "id": "archive-trigger-004",
       "category": "should-trigger",
       "prompt": "帮我把 company/knowledge/overview/COMPANY-overview.md 里产品架构视角的内容归档到 company/knowledge/product/ 对应章节，归档后 overview 保留索引壳",
-      "expected_output": "docs-archive：公司库 overview -> knowledge 视角章；先收口当前确认书；确认后处理单个归档单元并保留索引壳；收敛后停下等动作。",
+      "expected_output": "docs-archive：公司库 overview -> knowledge 视角章；澄清阶段收口确认书；写前 C 后处理单个归档单元并保留索引壳；烤干收敛后停下等动作。",
       "assertions": [
         {
-          "id": "confirmation-book-first",
-          "name": "确认书优先",
+          "id": "intent-clarify-via-confirmation-book",
+          "name": "确认书即意图澄清",
           "type": "must_include",
-          "check": "当前确认书收口前禁止写目标或回写 overview。",
+          "check": "确认书收口前禁止写目标或回写 overview。",
           "priority": "P0"
         },
         {

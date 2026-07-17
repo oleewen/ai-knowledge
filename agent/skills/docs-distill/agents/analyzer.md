@@ -1,6 +1,6 @@
 # docs-distill 失败分析器
 
-输入：失败样本 + `SKILL.md`、`gates`、`workflow`、`anti-patterns`、`gotchas`。
+输入：失败样本 + `SKILL.md`、`gates`、`workflow`、`intent-clarify`、`anti-patterns`、`gotchas`。
 
 ## 输出
 
@@ -13,7 +13,7 @@
 
 - **F1** 路由误判  
 - **F2** extract/archive/索引 混淆为完整 distill 写盘  
-- **F3** 缺参数向导或当前单元  
+- **F3** 缺参数向导、跳过写前意图澄清或当前单元  
 - **F4** 缺双日志顺序、overview -> `DISTILL-LOG` 原子性  
 - **F5** 语义变更未确认或未停下等待 `C/M/G/S/F`  
 - **F6** 证据不足  

@@ -1,13 +1,13 @@
 {
   "skill_name": "sdx-design",
-  "version": "3.0.0",
-  "description": "评估 sdx-design 在新流程下的触发、分流与段落推进协议表述。",
+  "version": "3.1.0",
+  "description": "评估 sdx-design 在「澄清 → 生成 → 烤干」流程下的触发、分流与段落推进协议表述；断言供 grader 评分。",
   "evals": [
     {
       "id": "design-trigger-001",
       "category": "should-trigger",
       "prompt": "我已经有 PRD 和 ASD 了，请走 /sdx-design 产出 DSD，先只写当前段“### 2.2 API详细设计”里的下单接口。",
-      "expected_output": "主路径 /sdx-design：基于 PRD 与 ASD 走参数向导，再分段直写 DSD；围绕当前 API 契约自动 grilling 到收敛后再等用户动作。",
+      "expected_output": "以 /sdx-design 为主路径：先走参数向导，再按模板分段「澄清 → 生成 → 烤干」直写 DSD；当前 API 段写前意图澄清、写入后自动 grilling 至收敛，再由用户确认后推进。",
       "assertions": [
         {
           "id": "parameter-guidance",
@@ -20,7 +20,14 @@
           "id": "section-cycle",
           "name": "分段直写",
           "type": "must_include",
-          "check": "体现分段直写 DSD-*.md，而非先整份 spec 再统一落盘。",
+          "check": "体现分段直写 DSD-*.md，主线含澄清 → 生成 → 烤干，而非先整份 spec 再统一落盘。",
+          "priority": "P0"
+        },
+        {
+          "id": "intent-clarify",
+          "name": "意图澄清",
+          "type": "must_include",
+          "check": "须体现当前段写入前做意图澄清（六项清单或等价写前门禁），未确认不得写入正文。",
           "priority": "P0"
         },
         {
@@ -43,13 +50,20 @@
       "id": "design-trigger-002",
       "category": "should-trigger",
       "prompt": "当前只补 DSD-PAY-1-1.md 里的单个 DDL 块：表结构、索引、审计字段和事务边界，请按 sdx-design 当前段协议来。",
-      "expected_output": "采用 sdx-design：体现单个 DDL 当前段、自动 grilling、收敛后停在 C/M/G/F。",
+      "expected_output": "采用 sdx-design：体现单个 DDL 当前段、写前意图澄清、自动 grilling、收敛后停在 C/M/G/F。",
       "assertions": [
         {
           "id": "section-cycle",
           "name": "分段直写",
           "type": "must_include",
           "check": "须体现只处理单个 DDL/TBL 当前段。",
+          "priority": "P0"
+        },
+        {
+          "id": "intent-clarify",
+          "name": "意图澄清",
+          "type": "must_include",
+          "check": "须体现写前意图澄清后再写入当前 DDL 段。",
           "priority": "P0"
         },
         {
@@ -101,13 +115,13 @@
       "id": "design-trigger-004",
       "category": "should-trigger",
       "prompt": "我就是想让你直接把 DSD-ORDER-1-1.md 全写完，别分段。",
-      "expected_output": "仍以 /sdx-design 为主路径：不得从空白状态一口气补齐整篇；应先完成当前段并自动 grilling 到收敛，再通过 F 批量补齐剩余章节。",
+      "expected_output": "仍以 /sdx-design 为主路径：不得从空白状态一口气补齐整篇；应先完成当前段「澄清 → 生成 → 烤干」，再通过 F（含剩余意图批确认）批量补齐剩余章节。",
       "assertions": [
         {
           "id": "exception-full-draft-gated",
           "name": "破例需选择",
           "type": "must_include",
-          "check": "须体现先完成当前段并自动 grilling 到收敛，再通过 F 进入剩余章节批量补齐。",
+          "check": "须体现先完成当前段「澄清 → 生成 → 烤干」，再通过 F（先批确认剩余意图）进入剩余章节批量补齐。",
           "priority": "P0"
         },
         {
@@ -115,6 +129,71 @@
           "name": "单段停住",
           "type": "must_include",
           "check": "须强调默认仍按单段 Section Cycle 推进。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "design-trigger-005",
+      "category": "should-trigger",
+      "prompt": "请执行 /sdx-design，但这轮只写一个当前段：先意图澄清，再把 `## 2. 详细设计 / ### 2.2 API详细设计` 里的支付回调接口写进 DSD-PAY-1-1.md。写完后让当前段自动 grill 到烤干，然后给我 C/M/G/F 并停住等待。",
+      "expected_output": "以 /sdx-design 为主路径：明确一次只处理当前 API 段，写前意图澄清、写入后自动 grilling 到收敛，再给出 C/M/G/F 并等待用户选择。",
+      "assertions": [
+        {
+          "id": "section-cycle",
+          "name": "分段直写",
+          "type": "must_include",
+          "check": "须体现按模板将当前 API 段直写入 DSD-PAY-1-1.md，而非一口气补齐多段或整篇。",
+          "priority": "P0"
+        },
+        {
+          "id": "intent-clarify",
+          "name": "意图澄清",
+          "type": "must_include",
+          "check": "须体现写前意图澄清，且未确认不得写入正文。",
+          "priority": "P0"
+        },
+        {
+          "id": "grilling-loop",
+          "name": "段内烤干",
+          "type": "must_include",
+          "check": "须体现当前段写完后自动 grilling 到收敛，围绕当前段补强，不跨段发散。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-section-stop",
+          "name": "单段停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；需出现明确的停住/等待措辞。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "design-trigger-006",
+      "category": "should-trigger",
+      "prompt": "当前段“### 2.3 DDL详细设计”已经确认通过，我现在直接选 F。请按 sdx-design 把剩余未完成章节全部生成，但不要覆盖已经确认的前文；如果后文打出前文语义冲突，要先停下来让我选。",
+      "expected_output": "以 /sdx-design 为主路径：说明 F 用于补齐剩余未完成章节，保留已确认前文；若批量补齐过程中触发语义性问题或前文回改，必须先停下等待用户确认。",
+      "assertions": [
+        {
+          "id": "f-batch-fill",
+          "name": "F 批量补齐",
+          "type": "must_include",
+          "check": "须体现 F 表示补齐剩余未完成章节，而不是提前结束流程或整篇重生成。",
+          "priority": "P0"
+        },
+        {
+          "id": "preserve-confirmed-prefix",
+          "name": "保留已确认前文",
+          "type": "must_include",
+          "check": "须体现 F 不覆盖已确认前文，至少复述保留既有确认内容或不重写前文。",
+          "priority": "P0"
+        },
+        {
+          "id": "semantic-change-gated",
+          "name": "批量补齐仍受语义门禁",
+          "type": "must_include",
+          "check": "须体现 F 过程中若后文打出前文语义冲突或其他语义性问题，必须先给推荐方案与数字选项并等待用户确认。",
           "priority": "P0"
         }
       ]

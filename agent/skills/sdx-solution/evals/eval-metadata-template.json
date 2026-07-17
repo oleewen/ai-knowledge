@@ -17,12 +17,19 @@
       "id": "section-cycle",
       "name": "分段直写",
       "type": "must_include",
-      "check": "含分段直写 SOLUTION 与当前段收口；非以 ANALYSIS/PRD/ASD 正文为主产物。",
+      "check": "含分段「澄清 → 生成 → 烤干」直写 SOLUTION 与当前段收口；非以 ANALYSIS/PRD/ASD 正文为主产物。",
+      "priority": "P0"
+    },
+    {
+      "id": "intent-clarify",
+      "name": "意图澄清",
+      "type": "must_include",
+      "check": "含写前意图澄清（六项清单或等价），未确认不得写入正文。",
       "priority": "P0"
     },
     {
       "id": "grilling-loop",
-      "name": "段内拷问",
+      "name": "段内烤干",
       "type": "must_include",
       "check": "含当前段自动 grilling 到收敛，以及 `C/M/G/F` 或等价推进协议。",
       "priority": "P0"
@@ -31,7 +38,7 @@
       "id": "reopen-rule",
       "name": "前文回改",
       "type": "should_include",
-      "check": "提及前文回改后当前段重开，并至少再 grill 一轮。",
+      "check": "提及前文回改后当前段重开：再意图澄清并至少再 grill 一轮。",
       "priority": "P1"
     }
   ],

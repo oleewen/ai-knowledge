@@ -1,30 +1,30 @@
 {
   "skill_name": "docs-distill",
-  "version": "2.0.0",
-  "description": "冒烟样本：参数向导、当前单元、dry-run、双日志顺序、语义确认",
+  "version": "3.0.0",
+  "description": "冒烟样本：参数向导、写前意图澄清、当前单元、dry-run、双日志顺序、烤干与语义确认",
   "evals": [
     {
       "id": 1,
       "prompt": "帮我把 billing-appeal 应用的最新变更蒸馏到系统库，上次蒸馏后又合并了几个 PR，CHANGE-LOG 里有 v1.4.0 和 v1.5.0 两个新条目",
-      "expected_output": "docs-distill：收口 `--app=billing-appeal` 与增量范围；以 billing-appeal-overview 为当前单元先给 dry-run 预览；overview 成功写入后才允许追加 DISTILL-LOG；收敛后停下等 C/M/G/S/F。",
+      "expected_output": "docs-distill：收口 `--app=billing-appeal` 与增量范围；对 billing-appeal-overview 做写前意图澄清，写前 C 后 dry-run 预览；overview 成功写入后才允许追加 DISTILL-LOG；烤干收敛后停下等 C/M/G/S/F。",
       "files": []
     },
     {
       "id": 2,
       "prompt": "/docs-distill --app payment --full --dry-run",
-      "expected_output": "docs-distill：识别 `--full` 为高风险语义参数；当前单元只做预览，不写 overview，不写 DISTILL-LOG；给出推荐与后续动作。",
+      "expected_output": "docs-distill：识别 `--full` 为高风险语义参数；写前意图澄清后当前单元只做预览，不写 overview，不写 DISTILL-LOG；烤干后给出推荐与后续动作。",
       "files": []
     },
     {
       "id": 3,
       "prompt": "系统库的 overview 需要更新了，我们 order-service 这边知识库改了不少，你帮我看看要同步哪些内容",
-      "expected_output": "docs-distill：先澄清 `--app=order-service` 与时间范围；只处理一个 order-service 当前单元；给出 preview 或推荐方案，不能直接宣称已写完。",
+      "expected_output": "docs-distill：先澄清 `--app=order-service` 与时间范围；写前意图澄清后对 order-service 只处理一个当前单元；给出 preview 或推荐方案，不能直接宣称已写完。",
       "files": []
     },
     {
       "id": 4,
       "prompt": "直接把 inventory-service 全量蒸馏进去，不用预览了，日志你也顺手补掉",
-      "expected_output": "docs-distill：把 `--full` 与“跳过预览直接写”识别为语义性高风险；先给结论、推荐方案和数字选项；未确认前不能写 overview 或 DISTILL-LOG。",
+      "expected_output": "docs-distill：把 `--full` 与“跳过预览直接写”识别为语义性高风险；先写前意图澄清再给结论、推荐方案和数字选项；未确认前不能写 overview 或 DISTILL-LOG。",
       "files": []
     }
   ]

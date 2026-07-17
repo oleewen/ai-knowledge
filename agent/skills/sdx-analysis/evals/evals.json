@@ -1,13 +1,13 @@
 {
   "skill_name": "sdx-analysis",
-  "version": "2.0.0",
-  "description": "评估 sdx-analysis 在新流程下的触发、分流与段落推进协议表述；断言供 grader 评分。",
+  "version": "2.1.0",
+  "description": "评估 sdx-analysis 在「澄清 → 生成 → 烤干」流程下的触发、分流与段落推进协议表述；断言供 grader 评分。",
   "evals": [
     {
       "id": "analysis-trigger-001",
       "category": "should-trigger",
-      "prompt": "SOLUTION-BILL-01.md 已经评审过了，请走 /sdx-analysis：先逐步确认参数，再一段一段写进 ANALYSIS-BILL-01.md，重点补 FR、MVP、依赖和风险。",
-      "expected_output": "以 /sdx-analysis 为主路径：先走参数向导，再按模板分段直写 ANALYSIS-BILL-01.md；每段写完进入自动 grilling 至收敛，再由用户确认后推进下一段。",
+      "prompt": "SOLUTION-BILL-01.md 已经评审过了，请走 /sdx-analysis：先逐步确认参数，再一段一段写进 ANALYSIS-BILL-01.md，每段先意图澄清再写，写完再 grill，重点补 FR、MVP、依赖和风险。",
+      "expected_output": "以 /sdx-analysis 为主路径：先走参数向导，再按模板分段「澄清 → 生成 → 烤干」直写 ANALYSIS-BILL-01.md；每段写前意图澄清、写入后自动 grilling 至收敛，再由用户确认后推进下一段。",
       "assertions": [
         {
           "id": "parameter-guidance",
@@ -20,14 +20,21 @@
           "id": "section-cycle",
           "name": "分段直写",
           "type": "must_include",
-          "check": "体现按模板分段生成并直写 ANALYSIS-BILL-01.md，而非先整份 spec、再统一定稿。",
+          "check": "体现按模板分段生成并直写 ANALYSIS-BILL-01.md，而非先整份 spec、再统一定稿；主线含澄清 → 生成 → 烤干。",
+          "priority": "P0"
+        },
+        {
+          "id": "intent-clarify",
+          "name": "意图澄清",
+          "type": "must_include",
+          "check": "须体现当前段写入前做意图澄清（六项清单或等价写前门禁），未确认不得写入正文。",
           "priority": "P0"
         },
         {
           "id": "grilling-loop",
-          "name": "段内拷问",
+          "name": "段内烤干",
           "type": "must_include",
-          "check": "体现每段生成后执行自动 grilling 并收敛后再推进；可提及 C/M/G/F 或等价动作。",
+          "check": "体现每段生成后执行自动 grilling（烤干）并收敛后再推进；可提及 C/M/G/F 或等价动作。",
           "priority": "P0"
         },
         {
@@ -92,8 +99,8 @@
     {
       "id": "analysis-trigger-003",
       "category": "should-trigger",
-      "prompt": "请执行 /sdx-analysis，但这轮只写一个当前段：先把 `## 2. 功能需求 / ### FR-001` 写进 ANALYSIS-CRM-01.md。写完后让当前段自动 grill 到烤干，然后给我 C/M/G/F 并停住等待。",
-      "expected_output": "以 /sdx-analysis 为主路径：明确一次只处理当前段（FR-001），写入后先对当前段自动 grilling 到收敛，再给出 C/M/G/F 并等待用户选择。",
+      "prompt": "请执行 /sdx-analysis，但这轮只写一个当前段：先意图澄清，再把 `## 2. 功能需求 / ### FR-001` 写进 ANALYSIS-CRM-01.md。写完后让当前段自动 grill 到烤干，然后给我 C/M/G/F 并停住等待。",
+      "expected_output": "以 /sdx-analysis 为主路径：明确一次只处理当前段（FR-001），写前意图澄清、写入后自动 grilling 到收敛，再给出 C/M/G/F 并等待用户选择。",
       "assertions": [
         {
           "id": "section-cycle",
@@ -106,7 +113,7 @@
           "id": "grilling-loop",
           "name": "段内拷问",
           "type": "must_include",
-          "check": "须体现当前段写完后自动 grilling 到收敛，围绕当前段补强，不跨段发散。",
+          "check": "须体现写前意图澄清，且当前段写完后自动 grilling 到收敛，围绕当前段补强，不跨段发散。",
           "priority": "P0"
         },
         {
@@ -151,13 +158,13 @@
       "id": "analysis-trigger-005",
       "category": "should-trigger",
       "prompt": "我就是想要你直接一口气把 ANALYSIS-BILL-01.md 六章都写完，别分段、别停、别问我，直接输出完整版。",
-      "expected_output": "仍以 /sdx-analysis 为主路径：不得直接从空白状态一口气补齐整篇；应先完成当前段并自动 grilling 到收敛，再通过 `F` 一次性补齐剩余章节。",
+      "expected_output": "仍以 /sdx-analysis 为主路径：不得直接从空白状态一口气补齐整篇；应先完成当前段「澄清 → 生成 → 烤干」，再通过 `F`（含剩余意图批确认）一次性补齐剩余章节。",
       "assertions": [
         {
           "id": "exception-full-draft-gated",
           "name": "破例需选择",
           "type": "must_include",
-          "check": "须体现用户要求一口气整篇时，先完成当前段并自动 grilling 到收敛，再通过 `F` 进入剩余章节批量补齐；不得直接从空白状态输出完整六章正文。",
+          "check": "须体现用户要求一口气整篇时，先完成当前段「澄清 → 生成 → 烤干」，再通过 `F`（先批确认剩余意图）进入批量补齐；不得直接从空白状态输出完整六章正文。",
           "priority": "P0"
         },
         {

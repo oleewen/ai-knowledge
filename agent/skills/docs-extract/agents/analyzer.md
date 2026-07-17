@@ -4,7 +4,7 @@
 
 ## 输入
 
-失败样本 + `SKILL.md`、`gates.md`、`workflow.md`、`anti-patterns.md`、`gotchas.md`。
+失败样本 + `SKILL.md`、`gates.md`、`workflow.md`、`intent-clarify.md`、`anti-patterns.md`、`gotchas.md`。
 
 ## 输出
 
@@ -17,7 +17,7 @@
 
 - `F1` 路由误判  
 - `F2` 边界混淆（distill/archive/SDD vs extract）  
-- `F3` 缺参数向导或当前单元  
+- `F3` 缺参数向导、跳过写前意图澄清或当前单元  
 - `F4` 结构缺（无命中仍写、回滚缺失、未停在动作选择）  
 - `F5` 语义变更未确认即宣称落盘  
 - `F6` 证据不足  

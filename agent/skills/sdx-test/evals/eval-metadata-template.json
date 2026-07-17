@@ -17,7 +17,14 @@
       "id": "section-cycle",
       "name": "分段直写",
       "type": "must_include",
-      "check": "响应需体现 TDD 阶段：基于 PRD 与 DSD/ASD，按六章分段直写 `TDD-{IDEA-ID}-{N}.md`，而非先整份 spec 再统一定稿。",
+      "check": "响应需体现 TDD 阶段：基于 PRD 与 DSD/ASD，按六章分段「澄清 → 生成 → 烤干」直写 `TDD-{IDEA-ID}-{N}.md`，而非先整份 spec 再统一定稿。",
+      "priority": "P0"
+    },
+    {
+      "id": "intent-clarify",
+      "name": "意图澄清",
+      "type": "must_include",
+      "check": "须体现当前段写入前做意图澄清（六项清单或等价写前门禁），未确认不得写入正文。",
       "priority": "P0"
     },
     {

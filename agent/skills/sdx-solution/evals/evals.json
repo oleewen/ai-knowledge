@@ -1,13 +1,13 @@
 {
   "skill_name": "sdx-solution",
-  "version": "2.3.2",
-  "description": "评估 sdx-solution 在新流程下的触发、分流与段落推进协议表述；断言供 grader 评分。",
+  "version": "2.4.0",
+  "description": "评估 sdx-solution 在「澄清 → 生成 → 烤干」流程下的触发、分流与段落推进协议表述；断言供 grader 评分。",
   "evals": [
     {
       "id": "solution-trigger-001",
       "category": "should-trigger",
-      "prompt": "业务方丢了一段会议纪要，需求比较模糊，帮我走 /sdx-solution：先逐步确认参数，再一段一段写进 SOLUTION-BILL-01.md，每段写完都 grill 一轮，把冲突点和 MVP 里程碑补强。",
-      "expected_output": "以 /sdx-solution 为主路径：说明先走参数向导，再按模板分段直写 SOLUTION-BILL-01.md；每段写完进入自动 grilling 至收敛，再由用户确认后推进下一段；应覆盖冲突点与 MVP/里程碑的业务表述。",
+      "prompt": "业务方丢了一段会议纪要，需求比较模糊，帮我走 /sdx-solution：先逐步确认参数，再一段一段写进 SOLUTION-BILL-01.md，每段先意图澄清再写，写完再 grill 一轮，把冲突点和 MVP 里程碑补强。",
+      "expected_output": "以 /sdx-solution 为主路径：说明先走参数向导，再按模板分段「澄清 → 生成 → 烤干」直写 SOLUTION-BILL-01.md；每段写前意图澄清、写入后自动 grilling 至收敛，再由用户确认后推进下一段；应覆盖冲突点与 MVP/里程碑的业务表述。",
       "assertions": [
         {
           "id": "parameter-guidance",
@@ -20,14 +20,21 @@
           "id": "section-cycle",
           "name": "分段直写",
           "type": "must_include",
-          "check": "体现按模板分段生成并直写 SOLUTION-BILL-01.md，而非先整份 spec、再统一定稿。",
+          "check": "体现按模板分段生成并直写 SOLUTION-BILL-01.md，而非先整份 spec、再统一定稿；主线含澄清 → 生成 → 烤干。",
+          "priority": "P0"
+        },
+        {
+          "id": "intent-clarify",
+          "name": "意图澄清",
+          "type": "must_include",
+          "check": "须体现当前段写入前做意图澄清（六项清单或等价写前门禁），未确认不得写入正文。",
           "priority": "P0"
         },
         {
           "id": "grilling-loop",
-          "name": "段内拷问",
+          "name": "段内烤干",
           "type": "must_include",
-          "check": "体现每段生成后执行自动 grilling 并收敛后再推进；可提及 C/M/G/F 或等价动作。",
+          "check": "体现每段生成后执行自动 grilling（烤干）并收敛后再推进；可提及 C/M/G/F 或等价动作。",
           "priority": "P0"
         },
         {
@@ -113,7 +120,7 @@
           "id": "reopen-rule",
           "name": "前文回改",
           "type": "must_include",
-          "check": "体现当前段 grilling 打出前文缺口时，可以回改前文；回改后当前段必须重开并再 grill 一轮。",
+          "check": "体现当前段 grilling 打出前文缺口时，可以回改前文；回改后当前段必须重开：再意图澄清并再 grill 一轮。",
           "priority": "P0"
         },
         {
@@ -178,8 +185,8 @@
     {
       "id": "solution-trigger-005",
       "category": "should-trigger",
-      "prompt": "请执行 /sdx-solution，但这轮只写一个当前段：只生成并写入「## 1. 背景与目标 / ### 1.1 业务现状」到 SOLUTION-BILL-01.md。写完后让当前段自动 grill 到烤干，然后给我 C/M/G/F 选项并停住等待，不要自动写下一段。",
-      "expected_output": "以 /sdx-solution 为主路径：明确一次只处理当前段（1.1），写入后先对当前段自动 grilling 到收敛，再给出 C/M/G/F 并等待用户选择，不自动推进下一段。",
+      "prompt": "请执行 /sdx-solution，但这轮只写一个当前段：只处理「## 1. 背景与目标 / ### 1.1 业务现状」到 SOLUTION-BILL-01.md。先意图澄清再写入，写完后让当前段自动 grill 到烤干，然后给我 C/M/G/F 选项并停住等待，不要自动写下一段。",
+      "expected_output": "以 /sdx-solution 为主路径：明确一次只处理当前段（1.1），写前意图澄清、写入后自动 grilling 到收敛，再给出 C/M/G/F 并等待用户选择，不自动推进下一段。",
       "assertions": [
         {
           "id": "section-cycle",
@@ -192,7 +199,7 @@
           "id": "grilling-loop",
           "name": "段内拷问",
           "type": "must_include",
-          "check": "须体现当前段写完后自动 grilling 到收敛，围绕当前段补强，不跨段发散。",
+          "check": "须体现写前意图澄清，且当前段写完后自动 grilling 到收敛，围绕当前段补强，不跨段发散。",
           "priority": "P0"
         },
         {
@@ -215,13 +222,13 @@
       "id": "solution-trigger-006",
       "category": "should-trigger",
       "prompt": "我就是想要你直接一口气把 SOLUTION-BILL-01.md 七章都写完，别分段、别停、别问我，直接输出完整版。",
-      "expected_output": "仍以 /sdx-solution 为主路径：不得直接从空白状态一口气补齐整篇；应先完成当前段并自动 grilling 到收敛，再通过 `F` 一次性补齐剩余章节。",
+      "expected_output": "仍以 /sdx-solution 为主路径：不得直接从空白状态一口气补齐整篇；应先完成当前段「澄清 → 生成 → 烤干」，再通过 `F`（含剩余意图批确认）一次性补齐剩余章节。",
       "assertions": [
         {
           "id": "exception-full-draft-gated",
           "name": "破例需选择",
           "type": "must_include",
-          "check": "须体现用户要求一口气整篇时，先完成当前段并自动 grilling 到收敛，再通过 `F` 进入剩余章节批量补齐；不得直接从空白状态输出完整七章正文。",
+          "check": "须体现用户要求一口气整篇时，先完成当前段「澄清 → 生成 → 烤干」，再通过 `F`（先批确认剩余意图）进入批量补齐；不得直接从空白状态输出完整七章正文。",
           "priority": "P0"
         },
         {
@@ -447,8 +454,8 @@
     {
       "id": "solution-not-trigger-006",
       "category": "should-not-trigger",
-      "prompt": "更新仓库 INDEX_GUIDE.md，目录变动大，跑 docs-indexing。",
-      "expected_output": "主路径为 docs-indexing 与 INDEX_GUIDE.md；不是 sdx-solution。",
+      "prompt": "更新仓库 INDEX-GUIDE.md，目录变动大，跑 docs-indexing。",
+      "expected_output": "主路径为 docs-indexing 与 INDEX-GUIDE.md；不是 sdx-solution。",
       "assertions": [
         {
           "id": "correct-downstream",

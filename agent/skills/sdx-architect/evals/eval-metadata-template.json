@@ -17,7 +17,14 @@
       "id": "section-cycle",
       "name": "分段直写",
       "type": "must_include",
-      "check": "响应需体现 ASD 阶段：基于 PRD，按 §1-§3 分段直写 `ASD-{IDEA-ID}-{N}.md`，而非先整份 spec 再统一定稿。",
+      "check": "响应需体现 ASD 阶段：基于 PRD，按 §1-§3 分段「澄清 → 生成 → 烤干」直写 `ASD-{IDEA-ID}-{N}.md`，而非先整份 spec 再统一定稿。",
+      "priority": "P0"
+    },
+    {
+      "id": "intent-clarify",
+      "name": "意图澄清",
+      "type": "must_include",
+      "check": "须体现当前段写入前做意图澄清（六项清单或等价写前门禁），未确认不得写入正文。",
       "priority": "P0"
     },
     {
@@ -40,7 +47,7 @@
       "id": "no-false-architect-primary",
       "name": "勿假主 ASD 阶段",
       "type": "must_not_conflict",
-      "check": "不得将本请求描述为默认完整执行 sdx-architect 的参数向导 + 分段直写并产出 ASD 作为终点。",
+      "check": "不得将本请求描述为默认完整执行 sdx-architect 的参数向导 + 分段「澄清 → 生成 → 烤干」并产出 ASD 作为终点。",
       "priority": "P0"
     }
   ],

@@ -2,7 +2,9 @@
 
 ## 意图
 
-模糊仍直接生成 → 走 [gates.md](references/gates.md) 澄清；确认前不落盘。快速路径仅当参数可唯一推断。
+- **跳过写前意图澄清**：不得在未输出六项清单、未获写前 `C` 时写入；见 [intent-clarify.md](../../references/intent-clarify.md)、[gates.md](references/gates.md)。
+- **把写前澄清当 grilling**：写前只收口意图，不写后深挖；烤干在写入后。
+- 模糊仍直接生成 → 走 gates 澄清；确认前不落盘。快速路径仅当参数可唯一推断且仍须六项清单 + 写前 `C`。
 
 ## Index
 
@@ -33,7 +35,7 @@
 
 ## 自查
 
-- [ ] 澄清/gates 已过或未触发澄清
+- [ ] 写前意图澄清六项 + 写前 C；烤干阶段横幅；无横幅裸发 C/M/G/S/F
 - [ ] Index 磁盘版；未命中已停；查找顺序 REPO→DOC
 - [ ] 最小阅读；§3 §6 合规；先读后顺；树一源；overview≤3；update 合并
 - [ ] 校验脚本；首链可点；未内调 docs-indexing

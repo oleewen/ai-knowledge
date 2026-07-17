@@ -18,13 +18,14 @@
 - **F1 路由**：should-trigger / should-not-trigger 误判
 - **F2 边界**：SOLUTION、PRD、ASD、DSD、TDD 与 ANALYSIS 混淆
 - **F3 协议回退**：退回会话 spec、`Qclose-1`、`PENDING/CONFIRMED`、写前 gate/hook
-- **F4 当前段协议缺失**：缺参数向导、Section Cycle、自动 grilling、`C/M/G/F`、单段停住
+- **F4 当前段协议缺失**：缺参数向导、意图澄清、Section Cycle「澄清 → 生成 → 烤干」、`C/M/G/F`、单段停住
 - **F5 语义越权**：语义性结论未确认就直接修订当前段或前文
 - **F6 证据**：断言难以复核或样本覆盖不足
+- **F7 意图澄清缺失**：跳过写前六项清单/写前 `C` 直接写正文
 
 ## 修复（P0/P1/P2）
 
-- **P0**：误路由、协议回退、单段停住缺失、语义越权
+- **P0**：误路由、协议回退、意图澄清/单段停住缺失、语义越权
 - **P1**：边界不清、结构不全、与 SOLUTION 衔接弱
 - **P2**：文案与样本覆盖
 

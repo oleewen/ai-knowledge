@@ -1,33 +1,47 @@
 {
   "skill_name": "sdx-test",
-  "version": "3.0.0",
-  "description": "评估 sdx-test 在新流程下的触发、分流与段落推进协议表述。",
+  "version": "3.1.0",
+  "description": "评估 sdx-test 在「澄清 → 生成 → 烤干」流程下的触发、分流与段落推进协议表述；断言供 grader 评分。",
   "evals": [
     {
       "id": "test-trigger-001",
       "category": "should-trigger",
-      "prompt": "PRD 和 DSD 都有了，请走 /sdx-test：先只写当前段“### 2.2 接口测试用例”里的下单接口异常组和回归范围。",
-      "expected_output": "以 /sdx-test 为主路径：基于 PRD 与 DSD 走参数向导，再分段直写 TDD；围绕接口异常组与回归块自动 grilling 到收敛后再等用户动作。",
+      "prompt": "PRD 和 DSD 都有了，请走 /sdx-test：先逐步确认参数，再一段一段写进 TDD-BILL-1-1.md，每段先意图澄清再写，写完再 grill，先只写当前段“### 2.2 接口测试用例”里的下单接口异常组和回归范围。",
+      "expected_output": "以 /sdx-test 为主路径：先走参数向导，再按模板分段「澄清 → 生成 → 烤干」直写 TDD-BILL-1-1.md；每段写前意图澄清、写入后自动 grilling 至收敛，再由用户确认后推进下一段；围绕接口异常组与回归块处理。",
       "assertions": [
         {
           "id": "parameter-guidance",
           "name": "参数向导",
           "type": "must_include",
-          "check": "明确存在逐项确认参数或快捷组合入口。",
+          "check": "明确存在逐项确认参数或快捷组合入口，不得仍以整份前置草稿和集中收口作为默认第一步。",
           "priority": "P0"
         },
         {
           "id": "section-cycle",
           "name": "分段直写",
           "type": "must_include",
-          "check": "体现分段直写 TDD-*.md，而非先整份 spec 再统一落盘。",
+          "check": "体现按模板分段生成并直写 TDD-*.md，而非先整份 spec、再统一定稿；主线含澄清 → 生成 → 烤干。",
+          "priority": "P0"
+        },
+        {
+          "id": "intent-clarify",
+          "name": "意图澄清",
+          "type": "must_include",
+          "check": "须体现当前段写入前做意图澄清（六项清单或等价写前门禁），未确认不得写入正文。",
+          "priority": "P0"
+        },
+        {
+          "id": "grilling-loop",
+          "name": "段内烤干",
+          "type": "must_include",
+          "check": "体现每段生成后执行自动 grilling（烤干）并收敛后再推进；可提及 C/M/G/F 或等价动作。",
           "priority": "P0"
         },
         {
           "id": "single-section-stop",
           "name": "单段停住",
           "type": "must_include",
-          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择。",
+          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；不得自动推进下一段。",
           "priority": "P0"
         },
         {
@@ -42,9 +56,16 @@
     {
       "id": "test-trigger-002",
       "category": "should-trigger",
-      "prompt": "当前只补 TDD-BILL-1-1.md 的单个回归范围块：根据 DSD §2 变更列出 TC-REG 清单和退出标准，请按 sdx-test 当前段协议来。",
-      "expected_output": "采用 sdx-test：体现单个回归范围当前段、自动 grilling、收敛后停在 C/M/G/F。",
+      "prompt": "当前只补 TDD-BILL-1-1.md 的单个回归范围块：根据 DSD §2 变更列出 TC-REG 清单和退出标准，请按 sdx-test 当前段协议来，先意图澄清。",
+      "expected_output": "采用 sdx-test：体现写前意图澄清、单个回归范围当前段、自动 grilling、收敛后停在 C/M/G/F。",
       "assertions": [
+        {
+          "id": "intent-clarify",
+          "name": "意图澄清",
+          "type": "must_include",
+          "check": "须体现写前意图澄清后再写入当前段。",
+          "priority": "P0"
+        },
         {
           "id": "section-cycle",
           "name": "分段直写",
@@ -71,28 +92,28 @@
     {
       "id": "test-trigger-003",
       "category": "should-trigger",
-      "prompt": "请按 SDX 进入测试设计阶段：当前段写完后不要每轮 grill 都停下来问我，要自动连续 grill 到烤干，再统一给我 C/M/G/F。",
-      "expected_output": "以 /sdx-test 为主路径：明确当前段写入后进入自动连续 grilling，直到收敛才回到用户动作菜单。",
+      "prompt": "请执行 /sdx-test，但这轮只写一个当前段：先意图澄清，再把 `### 2.2 接口测试用例` 写进 TDD-CRM-1-1.md。写完后让当前段自动 grill 到烤干，然后给我 C/M/G/F 并停住等待。",
+      "expected_output": "以 /sdx-test 为主路径：明确一次只处理当前段（接口测试用例），写前意图澄清、写入后自动 grilling 到收敛，再给出 C/M/G/F 并等待用户选择。",
       "assertions": [
         {
-          "id": "auto-grilling-loop",
-          "name": "自动连续 grilling",
+          "id": "section-cycle",
+          "name": "分段直写",
           "type": "must_include",
-          "check": "须体现当前段写完后自动连续 grilling 到收敛。",
+          "check": "须体现按模板将当前段直写入 TDD-CRM-1-1.md，而非一口气补齐多段或整篇。",
           "priority": "P0"
         },
         {
-          "id": "g-not-required-per-round",
-          "name": "G 非每轮必选",
+          "id": "grilling-loop",
+          "name": "段内拷问",
           "type": "must_include",
-          "check": "须体现 G 仅用于当前段已收敛后的额外深挖。",
+          "check": "须体现写前意图澄清，且当前段写完后自动 grilling 到收敛，围绕当前段补强，不跨段发散。",
           "priority": "P0"
         },
         {
           "id": "single-section-stop",
-          "name": "收敛后再停住",
+          "name": "单段停住",
           "type": "must_include",
-          "check": "须体现自动收敛后再给出 C/M/G/F 等待用户选择。",
+          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；需出现明确的停住/等待措辞。",
           "priority": "P0"
         }
       ]
@@ -100,21 +121,79 @@
     {
       "id": "test-trigger-004",
       "category": "should-trigger",
+      "prompt": "请按 SDX 进入测试设计阶段：当前段写完后不要每一轮 grill 都停下来问我，要自动连续 grill 到这部分内容烤干，再统一给我 C/M/G/F 选项。",
+      "expected_output": "以 /sdx-test 为主路径：明确当前段写入后进入自动连续 grilling，直到当前段收敛才回到用户动作菜单；不得把 G 当作每轮继续 grill 的必选按钮。",
+      "assertions": [
+        {
+          "id": "auto-grilling-loop",
+          "name": "自动连续 grilling",
+          "type": "must_include",
+          "check": "须体现当前段写完后自动连续 grilling 到收敛，而非每一轮都停下等待用户继续。",
+          "priority": "P0"
+        },
+        {
+          "id": "g-not-required-per-round",
+          "name": "G 非每轮必选",
+          "type": "must_include",
+          "check": "须体现 G 仅用于当前段已收敛后的额外深挖，不能把 G 表述为每轮继续 grill 的必选动作。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-section-stop",
+          "name": "收敛后再停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后再给出 C/M/G/F 等待用户选择。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "test-trigger-005",
+      "category": "should-trigger",
       "prompt": "我就是想让你直接把 TDD-ORDER-1-1.md 全写完，别分段。",
-      "expected_output": "仍以 /sdx-test 为主路径：不得从空白状态一口气补齐整篇；应先完成当前段并自动 grilling 到收敛，再通过 F 批量补齐剩余章节。",
+      "expected_output": "仍以 /sdx-test 为主路径：不得从空白状态一口气补齐整篇；应先完成当前段「澄清 → 生成 → 烤干」，再通过 F（含剩余意图批确认）一次性补齐剩余章节。",
       "assertions": [
         {
           "id": "exception-full-draft-gated",
           "name": "破例需选择",
           "type": "must_include",
-          "check": "须体现先完成当前段并自动 grilling 到收敛，再通过 F 进入剩余章节批量补齐。",
+          "check": "须体现用户要求一口气整篇时，先完成当前段「澄清 → 生成 → 烤干」，再通过 F（先批确认剩余意图）进入批量补齐；不得直接从空白状态输出完整六章正文。",
           "priority": "P0"
         },
         {
           "id": "single-section-stop",
           "name": "单段停住",
           "type": "must_include",
-          "check": "须强调默认仍按单段 Section Cycle 推进。",
+          "check": "须强调默认仍按单段 Section Cycle 推进，不因用户一句话要求而自动破例；需体现 F 是显式用户动作。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "test-trigger-006",
+      "category": "should-trigger",
+      "prompt": "当前段“§2.6 回归范围”已经确认通过，我现在直接选 F。请按 sdx-test 把剩余未完成章节全部生成，但不要覆盖已经确认的前文；如果后文打出前文语义冲突，要先停下来让我选。",
+      "expected_output": "以 /sdx-test 为主路径：说明 F 用于补齐剩余未完成章节，保留已确认前文；若批量补齐过程中触发语义性问题或前文回改，必须先停下等待用户确认。",
+      "assertions": [
+        {
+          "id": "f-batch-fill",
+          "name": "F 批量补齐",
+          "type": "must_include",
+          "check": "须体现 F 表示补齐剩余未完成章节，而不是提前结束流程或整篇重生成。",
+          "priority": "P0"
+        },
+        {
+          "id": "preserve-confirmed-prefix",
+          "name": "保留已确认前文",
+          "type": "must_include",
+          "check": "须体现 F 不覆盖已确认前文，至少复述保留既有确认内容或不重写前文。",
+          "priority": "P0"
+        },
+        {
+          "id": "semantic-change-gated",
+          "name": "批量补齐仍受语义门禁",
+          "type": "must_include",
+          "check": "须体现 F 过程中若后文打出前文语义冲突或其他语义性问题，必须先给推荐方案与数字选项并等待用户确认。",
           "priority": "P0"
         }
       ]

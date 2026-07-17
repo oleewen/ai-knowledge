@@ -13,11 +13,11 @@
 
 - **F1** 路由误判  
 - **F2** archive/change/indexing 混淆  
-- **F3** 缺确认、C/S、未确认多写  
-- **F4** 缺 主→链→词  
+- **F3** 缺意图澄清、写前 C、未确认多写  
+- **F4** 缺澄清→生成→烤干或落盘后跳过烤干  
 - **F5** 越权承诺 CHANGE-LOG / INDEX  
 - **F6** 证据不足  
 
 ## 回归
 
-成对：upgrade vs archive、change、indexing；同模式连挂 2 轮 → 收紧规则。
+成对：upgrade vs archive、change、indexing；同模式连挂 2 轮 → 收紧 `gates.md` 或 workflow。

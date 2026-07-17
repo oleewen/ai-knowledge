@@ -1,6 +1,14 @@
 # docs-indexing 常见陷阱
 
-**错** vs **对**（参数收口与扫描）。
+**错** vs **对**（参数收口、意图澄清与扫描）。
+
+## 意图澄清
+
+- **参数收口即写** → 还须完成六项清单 + 写前 `C`；须标「当前阶段：意图澄清」
+- **路径/容器只写 INDEX** → 第 6 项须同时列出 `INDEX-GUIDE.md` 与 `changelogs/INDEXING-LOG.md` 的仓库根相对路径
+- **把写前澄清当 grilling** → 写前用 intent-clarify；写后才烤干
+- **无横幅发 C/M/G/S/F** → 须区分意图澄清 `C` 与烤干 `C`
+- **用 G 做写前澄清** → `G` 仅写后深挖
 
 ## 参数
 
@@ -29,7 +37,8 @@
 
 - **不写 LOG** → 每次成功 INDEX 后主表插一行（最新在上）；否则下轮增量无主表锚  
 - **主表缺列** → `indexing_finished_ms`/`mode`/`depth`/`output_path` 等齐全（[indexing-log-spec.md](references/indexing-log-spec.md)）  
-- **output 优先级记不清** → 用户指定 > `{DOC_DIR}/` > `doc/` > 根 `index.md`（仓库根索引为 `index.md`）；默认须确认  
+- **output 文件名漂移** → 输出文件名固定为 `INDEX-GUIDE.md`；`output` 只用于确认文档根，不得改成其他文件名；默认须确认  
+- **改导航路径不烤干** → 导航/索引路径变更须强制烤干（默认本就必须）
 
 ## 上下游
 
@@ -39,6 +48,7 @@
 ## 速查
 
 - [ ] mode/depth 用户确认  
+- [ ] 写前意图澄清六项 + 双路径（INDEX-GUIDE + INDEXING-LOG）  
 - [ ] since/output 已展示或有字面量  
 - [ ] 九章无缺段（或 `[未索引]`）  
 - [ ] 条目 15–30 字、根相对路径  
@@ -47,3 +57,4 @@
 - [ ] LOG 主表已插行  
 - [ ] 增量未误删未变章节  
 - [ ] depth=3 无不合理抽样  
+- [ ] 写后烤干收敛再 C/M/G/S/F  
