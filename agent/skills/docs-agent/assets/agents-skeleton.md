@@ -1,6 +1,7 @@
 # AGENTS.md 骨架
 
 `{...}` 替换；`<!-- optional -->` 可略。路径相对仓库根；落盘时用可点链接。
+分类：`AGENTS.md` 默认属于 **A 类：人类入口文档**，优先保留可见 `# H1`；如保留 frontmatter `title` 造成 `MD025`，须按全局文档分类矩阵判断是否属于必要豁免。
 
 ```markdown
 # {项目名} AI Agent 指南
@@ -15,12 +16,12 @@
 
 ## 项目概述（精要）
 
-{≤3 句；详 README / INDEX §1}
+{≤3 句；详 README / INDEX-GUIDE §1}
 
 ## 核心契约
 
 ### 行为
-- **先读后写**：本文件、README、`index.md`…
+- **先读后写**：本文件、README、`INDEX-GUIDE.md`…
 - **最小变更 · 保持一致 · 不假设要验证**
 
 ### 沟通 · 约定 · 禁止

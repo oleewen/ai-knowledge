@@ -5,7 +5,7 @@ description: company、system、application 三层共享的知识文件分类与
 tags: [okf, governance, shared-spec]
 timestamp: "2026-06-25T00:00:00Z"
 ---
-
+<!-- markdownlint-disable-next-line MD025 -->
 # OKF 共享规范
 
 > **谷歌 OKF v0.1 规范**：[`GoogleCloudPlatform/knowledge-catalog/okf/SPEC.md`](https://raw.githubusercontent.com/GoogleCloudPlatform/knowledge-catalog/main/okf/SPEC.md)
@@ -23,6 +23,7 @@ timestamp: "2026-06-25T00:00:00Z"
 - 只有“实体概念（per-entity）”才必须满足：frontmatter 10 字段必填 + 正文 4 段中文 H2（见 §2～§4）。
 - 其他三类文件不按实体概念 Profile 处理：它们的首要目标是“导航/说明/契约/运维”，不是“稳定事实主定义”（见 §5～§7）。
 - OKF Core 兼容原则：`type` 是 OKF 唯一必填字段；允许扩展字段（extensions）。本仓库对“实体概念”增加更强约束，但不否定 OKF Core（见 §0、§2）。
+- 对应仓库文档分类矩阵时：实体概念、机器规约模板与被规则消费的规约样例默认按**机器规约类**处理，`frontmatter title` 属于契约字段，不得仅为消除 `MD025` 而删除。
 
 快速判断：
 
@@ -335,7 +336,8 @@ MAY：
 适用于：
 
 - `README.md`
-- `index.md`（仅 bundle 根；含 okf 区块 + 九章区块）
+- `INDEX-GUIDE.md`（九章索引指南；仅仓库根或各 DOC_DIR 根）
+- `index.md`（bundle 根与子目录的 OKF 渐进披露/目录索引入口）
 - `index.md`（OKF 渐进披露入口：bundle 子目录）
 - `knowledge/index.md`（知识实体扫描索引）
 
@@ -350,8 +352,8 @@ MUST：
 SHOULD：
 
 - `README.md`：人类入口
-- `index.md`：当前目录渐进披露（bundle 根为 OKF 区块 + 九章区块；子目录为渐进披露入口）
-- `<DOC_DIR>/index.md`：九章机器索引（仓库根或各 DOC_DIR）
+- `index.md`：当前目录渐进披露（bundle 根为 OKF 区块 + 目录索引；子目录为渐进披露入口）
+- `<DOC_DIR>/INDEX-GUIDE.md`：九章机器索引（仓库根或各 DOC_DIR）
 - `knowledge/index.md`：知识实体扫描索引
 
 MAY：
@@ -362,7 +364,7 @@ MAY：
 
 - 根/入口：`company/README.md`、`system/README.md`、`application/README.md`
 - 渐进披露：bundle 根 `index.md` 的 OKF 区块、以及各级子目录 `index.md`
-- 机器索引：`company/index.md`、`system/index.md`、`application/index.md`、根 `index.md`
+- 机器索引：`company/INDEX-GUIDE.md`、`system/INDEX-GUIDE.md`、`application/INDEX-GUIDE.md`、根 `INDEX-GUIDE.md`
 - 实体枚举：`application/knowledge/index.md`
 
 ---

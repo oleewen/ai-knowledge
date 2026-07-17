@@ -70,6 +70,36 @@
   上游 decouple 设计备忘位于 `docs/superpowers/specs/`
   （superpowers 内部，库外不链具名文件）。
 
+### 5) 文档分类矩阵（`title` / `H1` / `MD025`）
+
+- 新增或改造 Markdown 文档前，**先判类，再决定**
+  `frontmatter title`、可见 `# H1` 与 `MD025` 处理方式；
+  细则见
+  [document/document-guidelines.md](document/document-guidelines.md)。
+- `A 类：人类入口文档`
+  （如 `README.md`、`AGENTS.md`、`INDEX-GUIDE.md`、`index.md`、
+  导航型 README）：
+  默认**保留可见 `# H1`**；
+  `frontmatter title` 仅在已存在约束或生成链依赖时保留。
+- `B 类：机器规约文档`
+  （如 per-entity `{ID}.md`、`SOLUTION-*`、`ANALYSIS-*`、
+  `PRD-*`、`ASD-*`、`DSD-*`、`TDD-*`、
+  模板/样例/被规则消费的规约文件）：
+  默认**保留 `frontmatter title`**；
+  不得仅为消除 `MD025` 而删除 `title`。
+- `C 类：元数据/混合文档`
+  （如 `docs-meta.md`、`knowledge-meta.md`、`CHANGE-LOG.md`、
+  少数兼具人读与机读约束的说明文件）：
+  允许阶段性保留
+  `frontmatter title` + 可见 `# H1` + `MD025` 单行豁免。
+- `MD025` 判定规则：
+  若文件同时需要 `frontmatter title`
+  与可见 `# H1` 才能满足现有契约，
+  则 `<!-- markdownlint-disable-next-line MD025 -->`
+  属于**必要豁免**；
+  若文件已不再同时依赖两者，仍保留该注释，则视为**多余禁用**，
+  应在当前修改范围内清理。
+
 ---
 
 ## 三、文档产出协议（SDD 与 docs-*）

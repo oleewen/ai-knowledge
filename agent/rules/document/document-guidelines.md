@@ -1,5 +1,43 @@
 # 文档规范
 
+## Markdown 文档分类规范
+
+### 先判类，再写结构
+
+- 新增或修改 Markdown 文档前，先判断该文件属于
+  `A 人类入口类`、`B 机器规约类`、`C 元数据/混合类`
+  中的哪一类，再决定是否保留 `frontmatter title`、
+  可见 `# H1` 与 `MD025` 豁免。
+
+### A 类：人类入口类
+
+- 典型文件：`README.md`、`AGENTS.md`、`INDEX-GUIDE.md`、
+  `index.md`、导航型 `README.md`
+- 默认保留可见 `# H1` 作为读者首标题。
+- `frontmatter title` 仅在已有生成链或读取约束明确需要时保留。
+
+### B 类：机器规约类
+
+- 典型文件：per-entity `{ID}.md`、`SOLUTION-*`、`ANALYSIS-*`、
+  `PRD-*`、`ASD-*`、`DSD-*`、`TDD-*`、模板/样例/规约文档
+- 默认保留 `frontmatter title` 作为机器消费字段。
+- 不得只为消除 `MD025` 而删除 `title`。
+
+### C 类：元数据/混合类
+
+- 典型文件：`docs-meta.md`、`knowledge-meta.md`、`CHANGE-LOG.md`
+  及兼具阅读与规则消费的说明文件
+- 在边界未完全拆清前，允许阶段性保留
+  `frontmatter title` + 可见 `# H1` +
+  `<!-- markdownlint-disable-next-line MD025 -->`。
+
+### `MD025` 使用规则
+
+- 若文件同时依赖 `frontmatter title` 与可见 `# H1`，
+  则 `MD025` 单行豁免属于必要豁免。
+- 若文件已经只保留其中一种标题机制，则不得继续保留该豁免。
+- 新文档创建时，必须先判类；禁止先复制旧文件再事后补判断。
+
 ## 代码文档规范
 
 ### Java文档注释

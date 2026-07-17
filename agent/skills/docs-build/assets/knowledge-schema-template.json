@@ -86,7 +86,7 @@
       "total_services": 1,
       "total_apis": 1,
       "total_entities": 4,
-      "extraction_basis": "INDEX_GUIDE.md + 源代码",
+      "extraction_basis": "INDEX-GUIDE.md + 源代码",
       "schema_notes": "schema 2.1 应用视角使用分类 entities 对象",
       "changes_from_previous": ""
     }
@@ -109,7 +109,7 @@
         "owned_by_app_id": ["APP-BILLING-APPEAL-SERVICE"],
         "notes": ["@MultiTransactional(\"计费\")"],
         "evidence_chain": [
-          { "source": "INDEX_GUIDE.md §6.1 数据源", "confidence": "high", "type": "document" }
+          { "source": "INDEX-GUIDE.md §6.1 数据源", "confidence": "high", "type": "document" }
         ],
         "cross_references": { "business": ["BD-001"] }
       },
@@ -132,7 +132,7 @@
       "total_datasources": 1,
       "total_entities": 1,
       "total_items": 2,
-      "extraction_basis": "INDEX_GUIDE.md §6",
+      "extraction_basis": "INDEX-GUIDE.md §6",
       "schema_notes": "schema 2.1 扁平 entities 数组",
       "changes_from_previous": ""
     }
