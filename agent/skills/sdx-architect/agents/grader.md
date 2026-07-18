@@ -11,27 +11,16 @@
 ## 判定
 
 1. 读 `category`：`should-trigger` / `should-not-trigger`
-2. **should-trigger**：
-主路径须为 `/sdx-architect`；
-须含参数向导、写前**意图澄清**、分段「澄清 → 生成 → 烤干」直写 `ASD-*.md`、
-当前段自动 `grilling` 至收敛、`C/M/G/F` 或等价推进协议；
-须体现一次只处理一个当前段，
-并在自动 `grilling` 收敛后输出动作等待用户。
-若跳过写前意图澄清直接写正文，判失败。
-若表述成“每轮 grill 完都停下等待用户继续”，判失败。
-若把 `G` 写成每轮必选动作或意图澄清，判失败。
-`G` 仅表示当前段已收敛后的额外深挖。
-`F` 须含剩余意图批确认后再补齐章节。
-若把 `F` 写成整篇重生成、覆盖前文重写或跳过意图批确认，判失败。
-若出现语义性结论/建议
-（范围 / 边界 / 服务归属 / 规约口径 / 联邦模式 / 优先级 / 风险 / 术语等），
-必须先给推荐方案与数字选项并等待选择。
-不得退回已删除的 HTML gate、`PENDING→CONFIRMED`、会话 spec 或写前 hook 作为默认前置；主线见 unit-cycle-protocol。
-须体现基于 `PRD-{IDEA-ID}-{N}.md` 承接，
-并保持 ASD 与 DSD 的边界。
-3. **should-not-trigger**：
-须拒绝以 `sdx-architect` 为主路径，或明确分流至用户要的技能/产物。
-不得用“先参数向导再分段写 ASD”作为对下游请求的统一框架。
+2. **should-trigger**（须全部满足；共通环见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)）：
+   - 主路径 `/sdx-architect`；直写 `ASD-*.md`
+   - 参数向导 → 写前意图澄清 → 分段「澄清 → 生成 → 烤干」→ `C/M/G/F`
+   - 一次只处理当前段；烤干收敛后输出动作等待用户
+   - **失败**：跳过写前澄清；把每轮 grill 写成必停等用户；把 `G` 当每轮必选或意图澄清；把 `F` 当整篇重写 / 跳过意图批确认
+   - **`G`/`F`**：`G`=收敛后深挖当前段；`F`=须先批确认剩余意图再补齐
+   - **语义变更**（范围/边界/服务归属/规约口径/联邦模式/优先级/风险/术语等）：先推荐 + 数字选项，未选不得直接改当前段
+   - **禁止**：已删除的 HTML gate / `PENDING→CONFIRMED` / 会话 spec / 写前 hook
+   - **上游**：基于 `PRD-{IDEA-ID}-{N}.md`；保持 ASD 与 DSD 边界
+3. **should-not-trigger**：须拒绝以 `sdx-architect` 为主路径，或明确分流；不得用「先参数向导再分段写 ASD」框下游
 4. 按 `priority` 判：**P0** 任一失败 → `passed: false`
 5. `evidence` 须可映射 `assertions[].id` 或 `check` 语义
 

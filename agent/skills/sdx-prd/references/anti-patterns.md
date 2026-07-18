@@ -7,7 +7,7 @@
 | 1 | 未确认当前段就自动推进下一段 | [gates.md](gates.md)：烤干收敛后必须停在 `C/M/G/F` |
 | 2 | 跳过写前意图澄清直接写正文 | [intent-clarify.md](../../../references/intent-clarify.md) + [gates.md](gates.md)：写前六项清单 + 写前 `C` |
 | 3 | 无 ANALYSIS 硬写 PRD | 停并指 `sdx-analysis`，或收窄并标注产品基线盲区 |
-| 4 | 退回已删除的 HTML gate / CONFIRMED / 会话 spec 主线 | 主线是参数向导 + 「澄清 → 生成 → 烤干」；见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) |
+| 4 | 退回已删除 gate 主线（HTML gate / CONFIRMED / 会话 spec / 写前 hook） | 见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) |
 | 5 | 把 `11G/6G` 当流程门禁继续使用 | 仅保留模板章节，不再以旧门禁驱动推进 |
 | 6 | 当前段未收口就一口气补齐多段 | 一次只处理一个当前段；批量补齐仅能走 `F`（含意图批确认） |
 | 7 | `G` 被当成每轮继续 grill 的必选按钮或意图澄清 | 自动 grill 应连续收敛；`G` 仅表示额外深挖当前段 |

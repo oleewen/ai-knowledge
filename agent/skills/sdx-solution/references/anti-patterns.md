@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | 1 | 把集中式前置收口当默认起点 | [workflow.md](workflow.md)：先参数向导，再直写终稿 |
 | 2 | 把参数发散或段内比选搬出主流程 | 参数澄清留在参数向导；多方案比选留在当前段循环 |
-| 3 | 退回已删除的 HTML gate / CONFIRMED / 会话 spec 主线 | 主线是参数向导 + 「澄清 → 生成 → 烤干」；见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) |
+| 3 | 退回已删除 gate 主线（HTML gate / CONFIRMED / 会话 spec / 写前 hook） | 见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) |
 | 4 | 跳过写前意图澄清直接写正文 | 先六项清单 + 写前 `C`，再生成 |
 | 4b | 当前段初稿一写完就算完成 | 先烤干到收敛，再由用户用 `C/M/G/F` 收口 |
 | 5 | 当前段未收口就偷偷推进下一段 | [gates.md](gates.md)：当前段优先，除非用户显式 `F` 批量补齐余段 |
