@@ -4,7 +4,7 @@ description: >
   从 Git、CHANGELOG*、本地 mtime 三源采集变更，写入 {output_dir}/CHANGE-LOG.md，文末保留增量基线注释。
   触发：/docs-change、变更聚合、口述「记录改动」「最近改了什么」。
   分流：用户只要 docs-indexing/docs-build/docs-archive/docs-upgrade 为主路径 → 对应技能。
-  推进协议：参数向导、当前输出单元、轻量校核、C/M/S/F 见 references/workflow.md 与 references/gates.md。
+  推进协议：轻流程；参数向导、当前输出单元、轻量校核、C/M/S/F 见 references 与 [light-flow-actions.md](../../references/light-flow-actions.md)。
 ---
 
 # docs-change：变更聚合
@@ -35,13 +35,9 @@ description: >
 
 1. [gates.md](references/gates.md)
 2. [workflow.md](references/workflow.md)
-3. [collection-rules.md](references/collection-rules.md)
-4. [core-concepts.md](references/core-concepts.md)
-5. [design-principles.md](references/design-principles.md)
-6. [anti-patterns.md](references/anti-patterns.md)
-7. [quality-checklist.md](references/quality-checklist.md)
-8. [gotchas.md](gotchas.md)
-9. 结构模板：[changes-index-template.md](assets/changes-index-template.md)
+3. [light-flow-actions.md](../../references/light-flow-actions.md) — `C/M/S/F`
+4. [collection-rules.md](references/collection-rules.md)
+5. [gotchas.md](gotchas.md)
 
 ## 最少输入
 
@@ -54,12 +50,7 @@ description: >
 
 - 单个 `CHANGE-LOG.md` 输出
 
-当前输出单元收敛后，由用户用 `C/M/S/F` 推进：
-
-- `C`：确认当前输出单元并结束或进入下一输出目录
-- `M`：修改时间基准、输出目录或来源范围，再重新校核
-- `S`：跳过当前输出单元，不写入
-- `F`：在当前输出单元已收敛后，按既定参数补齐剩余输出目录
+当前输出单元收敛后，动作字母见 [light-flow-actions.md](../../references/light-flow-actions.md)（`C/M/S/F`，无 `G`）。
 
 ## 产出
 

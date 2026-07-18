@@ -1,7 +1,7 @@
 {
   "skill_name": "docs-pull",
   "version": "2.0.0",
-  "description": "评测 docs-pull 触发、当前槽位单元、批量继续确认与同步后 CHANGE-LOG 追溯。",
+  "description": "评测 docs-pull：轻流程（C/M/S/F，见 light-flow-actions）；当前槽位单元、批量继续确认与同步后 CHANGE-LOG 追溯。",
   "evals": [
     {
       "id": "docs-pull-trigger-001",

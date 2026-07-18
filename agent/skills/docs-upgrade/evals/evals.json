@@ -1,7 +1,7 @@
 {
   "skill_name": "docs-upgrade",
   "version": "2.1.0",
-  "description": "评估触发、参数向导、当前单元「澄清→生成→烤干」、意图澄清与 upgrade 分流",
+  "description": "评估触发、参数向导、当前单元「澄清→生成→烤干」、意图澄清与 upgrade 分流；协议见 unit-cycle-protocol / intent-clarify。",
   "evals": [
     {
       "id": "upgrade-trigger-001",

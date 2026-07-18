@@ -4,7 +4,7 @@ description: >
   按 knowledge-links.yaml 从本地 path 同步到联邦槽位（system/application-{APPNAME}/ 或 company/system-{SYSNAME}/），并追加槽位 changelogs/CHANGE-LOG.md。
   触发：/docs-pull、从应用/系统本地仓回拉到联邦槽位、同步槽位、按 knowledge-links 拉取。
   分流：推送中央规约到应用库 → docs-push；overview 蒸馏 / 归档 / SDD → 对应技能。
-  推进协议：参数向导、当前槽位单元、风险校核、C/M/S/F 见 references/workflow.md 与 references/gates.md。
+  推进协议：轻流程；参数向导、当前槽位单元、风险校核、C/M/S/F 见 references 与 [light-flow-actions.md](../../references/light-flow-actions.md)。
 ---
 
 # docs-pull
@@ -35,7 +35,7 @@ description: >
 
 1. [references/gates.md](references/gates.md)
 2. [references/workflow.md](references/workflow.md)
-3. [references/README.md](references/README.md)
+3. [light-flow-actions.md](../../references/light-flow-actions.md) — `C/M/S/F`
 4. [gotchas.md](gotchas.md)
 
 ## 最少输入
@@ -50,12 +50,7 @@ description: >
 - 单个 `application-{app_name}` 槽位
 - 单个 `system-{sys_name}` 槽位
 
-当前槽位单元收敛后，由用户用 `C/M/S/F` 推进：
-
-- `C`：确认当前槽位单元并结束或进入下一槽位
-- `M`：修改参数或目标范围，再重新校核
-- `S`：跳过当前槽位单元
-- `F`：在当前槽位单元已收敛后，按既定参数补齐剩余槽位
+当前槽位单元收敛后，动作字母见 [light-flow-actions.md](../../references/light-flow-actions.md)（`C/M/S/F`，无 `G`）。
 
 ## 产出
 

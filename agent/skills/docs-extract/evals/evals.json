@@ -1,7 +1,7 @@
 {
   "skill_name": "docs-extract",
   "version": "3.0.0",
-  "description": "冒烟样本：参数向导、写前意图澄清、当前单元、dry-run、烤干、A/U/D 与语义确认",
+  "description": "冒烟样本：参数向导、写前意图澄清、当前单元、dry-run、烤干、A/U/D 与语义确认；协议见 unit-cycle-protocol / intent-clarify。",
   "evals": [
     {
       "id": 1,

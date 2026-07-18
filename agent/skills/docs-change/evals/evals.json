@@ -1,7 +1,7 @@
 {
   "skill_name": "docs-change",
   "version": "2.0.0",
-  "description": "评测 docs-change 触发、参数向导、当前输出单元与基线风险表述；含 expected_output 与断言供 grader 打分。",
+  "description": "评测 docs-change：轻流程（C/M/S/F，见 light-flow-actions）；参数向导、当前输出单元、轻量校核；含 expected_output 与断言。",
   "evals": [
     {
       "id": "change-trigger-001",

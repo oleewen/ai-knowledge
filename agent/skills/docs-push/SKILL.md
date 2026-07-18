@@ -4,7 +4,7 @@ description: >
   按 knowledge-links.yaml 将中央规约复制到各应用本机 path×doc_dir（legacy spec → specs/；spec-asd → requirements/…/specs/）。
   触发：推 spec 到应用库、按 knowledge-links 同步、docs-push。
   分流：仅 docs-pull/distill/SDD/overview 时 → 对应技能；DSD 正文一般不经本技能。
-  推进协议：参数向导、当前目标单元、风险校核、C/M/S/F 见 references/workflow.md 与 references/gates.md。
+  推进协议：轻流程；参数向导、当前目标单元、风险校核、C/M/S/F 见 references 与 [light-flow-actions.md](../../references/light-flow-actions.md)。
 ---
 
 # docs-push：spec 推送到建联目标
@@ -36,7 +36,8 @@ description: >
 1. [gates.md](references/gates.md)
 2. [parameters.md](references/parameters.md)
 3. [workflow.md](references/workflow.md)
-4. [gotchas.md](gotchas.md)
+4. [light-flow-actions.md](../../references/light-flow-actions.md) — `C/M/S/F`
+5. [gotchas.md](gotchas.md)
 
 ## 最少输入
 
@@ -49,12 +50,7 @@ description: >
 
 - 单个目标 repo/path 组
 
-当前目标单元收敛后，由用户用 `C/M/S/F` 推进：
-
-- `C`：确认当前目标单元并结束或进入下一目标
-- `M`：修改参数、路由或 Git 档位，再重新校核
-- `S`：跳过当前目标单元
-- `F`：在当前目标单元已收敛后，按既定参数补齐剩余目标
+当前目标单元收敛后，动作字母见 [light-flow-actions.md](../../references/light-flow-actions.md)（`C/M/S/F`，无 `G`）。
 
 ## 产出
 

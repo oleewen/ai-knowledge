@@ -1,7 +1,7 @@
 {
   "skill_name": "docs-agent",
   "version": "3.0.0",
-  "description": "评估触发边界、参数向导、写前意图澄清、当前单元、烤干与动作停顿；供 grader 断言。",
+  "description": "评估触发边界、参数向导、写前意图澄清、当前单元、烤干与动作停顿；供 grader 断言；协议见 unit-cycle-protocol / intent-clarify。",
   "evals": [
     {
       "id": "docs-agent-trigger-001",

@@ -82,11 +82,9 @@ timestamp: "2026-06-25T00:00:00Z"
 
 典型文件：
 
-- `company/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md`
-- `company/knowledge/product/PL-EXAMPLE.md`
-- `system/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md`
-- `system/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md`
-- `application/knowledge/data/ENT-EXAMPLE/ENT-EXAMPLE.md`
+- 模式：`{DOC_DIR}/knowledge/<perspective>/…/{ID}.md`（含父子同目录 `/{ID}/{ID}.md`）
+- 路径根与视角目录见 [knowledge-layout.md](../references/knowledge-layout.md)；ID 前缀见 [naming-conventions.md](naming-conventions.md)
+- EXAMPLE 样例树见各层 `knowledge/`（如 `*-EXAMPLE.md`），勿在本规范维护长路径清单
 
 处理规则：
 
@@ -102,10 +100,8 @@ timestamp: "2026-06-25T00:00:00Z"
 
 典型文件：
 
-- `README.md`
-- `index.md`
-- `index.md`
-- `index.md`
+- `README.md`、各级 `index.md`、`knowledge/index.md`
+- 各文档根 `INDEX-GUIDE.md`（路径见 [knowledge-layout.md](../references/knowledge-layout.md) / 九章约定）
 
 处理规则：
 
@@ -264,9 +260,8 @@ MAY：
 
 代表性文件：
 
-- company：`company/knowledge/product/PL-EXAMPLE.md`、`company/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md`
-- system：`system/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md`、`system/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md`
-- application：`application/knowledge/data/ENT-EXAMPLE/ENT-EXAMPLE.md`
+- 落点模式见 [knowledge-layout.md](../references/knowledge-layout.md)；EXAMPLE 见各层 `knowledge/` 样例树
+- ID / type 映射见 [naming-conventions.md](naming-conventions.md) 与本文 §3
 
 每个 per-entity 文件必须包含 4 个二级标题，标题统一使用中文：
 
@@ -363,10 +358,8 @@ MAY：
 
 代表性文件：
 
-- 根/入口：`company/README.md`、`system/README.md`、`application/README.md`
-- 渐进披露：bundle 根 `index.md` 的 OKF 区块、以及各级子目录 `index.md`
-- 机器索引：`company/INDEX-GUIDE.md`、`system/INDEX-GUIDE.md`、`application/INDEX-GUIDE.md`、根 `INDEX-GUIDE.md`
-- 实体枚举：`application/knowledge/index.md`
+- 人类入口 / 渐进披露 / 九章地图：见各 `{DOC_DIR}/README.md`、`index.md`、`INDEX-GUIDE.md`（布局见 [knowledge-layout.md](../references/knowledge-layout.md)）
+- 知识实体扫描索引：`{DOC_DIR}/knowledge/index.md`
 
 ---
 
@@ -400,9 +393,8 @@ MAY：
 
 代表性文件：
 
-- company：`company/knowledge/product/chapters/product-overview.md`、`company/knowledge/overview/NAME-overview.md`
-- system：`system/knowledge/product/chapters/product-multi-platform.md`、`system/knowledge/overview/NAME-overview.md`
-- application：`application/DESIGN.md`（治理叙事型设计摘录）
+- overview 缓冲与章节叙事路径见 [knowledge-layout.md](../references/knowledge-layout.md)
+- 治理叙事型设计摘录：各层 `DESIGN.md`（非 per-entity）
 
 ---
 
@@ -434,9 +426,9 @@ MAY：
 
 代表性文件：
 
-- 目录元数据：`company/docs-meta.md`、`system/docs-meta.md`、`application/docs-meta.md`
-- 知识树元数据：`application/knowledge/knowledge-meta.md`、`system/knowledge/knowledge-meta.md`、`company/knowledge/knowledge-meta.md`
-- 视角元数据：`system/knowledge/business/business-meta.md`、`application/knowledge/application/application-meta.md`
+- 模式：`{DOC_DIR}/docs-meta.md`、`{DOC_DIR}/knowledge/knowledge-meta.md`、`{DOC_DIR}/knowledge/<perspective>/*-meta.md`
+- 联邦链接：`{DOC_DIR}/knowledge-links.yaml`（路径语义见 [knowledge-layout.md](../references/knowledge-layout.md)）
+- 运维日志：`CHANGE-LOG.md` / `INDEXING-LOG.md`（落在约定 `changelogs/`）
 
 ---
 
@@ -444,34 +436,11 @@ MAY：
 
 ### 8.1 父子同目录可见
 
-对于有下层概念的目录，父子实体应尽量在同一父层目录下肉眼可见。例如：
-
-```text
-business/
-├── BD-EXAMPLE.md
-├── BSD-EXAMPLE/
-│   ├── BSD-EXAMPLE.md
-│   ├── BC-EXAMPLE.md
-│   ├── AGG-EXAMPLE.md
-│   ├── AB-EXAMPLE.md
-│   └── index.md
-```
+对于有下层概念的目录，父子实体应尽量在同一父层目录下肉眼可见（如 `BSD-{ID}/` 下同时可见 `BSD-{ID}.md` 与子概念 `{ID}.md`）。完整树形与落点见 [knowledge-layout.md](../references/knowledge-layout.md)、[naming-conventions.md](naming-conventions.md)。
 
 ### 8.2 父层目录的 `index.md`
 
-每个含子概念目录必须提供 `index.md` 罗列子概念。模板如下：
-
-```text
-BSD-EXAMPLE
-
-## Concepts
-
-* [示例业务能力](AB-EXAMPLE.md)
-* [示例聚合](AGG-EXAMPLE.md)
-* [示例限界上下文](BC-EXAMPLE.md)
-* [示例业务子域](BSD-EXAMPLE.md)
-```
-
+每个含子概念目录必须提供 `index.md` 罗列子概念（OKF Concepts 列表）；样例见各层 `knowledge/` EXAMPLE 树，勿在本规范维护长清单。
 ---
 
 ## 9. 跨视角引用规则

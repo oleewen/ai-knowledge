@@ -1,7 +1,7 @@
 {
   "skill_name": "docs-indexing",
   "version": "2.1.0",
-  "description": "评估 docs-indexing 在「澄清 → 生成 → 烤干」流程下的触发、分流与单元推进协议表述；断言供 grader 评分。",
+  "description": "评估 docs-indexing 在「澄清 → 生成 → 烤干」流程下的触发、分流与单元推进协议表述；断言供 grader 评分；协议见 unit-cycle-protocol / intent-clarify。",
   "evals": [
     {
       "id": "indexing-trigger-001",
