@@ -2,25 +2,22 @@
 name: docs-upgrade
 description: >
   定向改 Markdown、注释、配置文本；统一术语并沿引用链 + 关键词链式同步。
-  按当前单元执行「澄清 → 生成 → 烤干」：写前意图澄清，写入后自动 grilling 至收敛。
   触发：/docs-upgrade、「改文档」「统一术语」「把 X 换成 Y」；简写 a - b / a > b / a 2 b 均为 a→b。
   分流：用户只要 docs-archive/change/indexing/build 或仅 CHANGE-LOG/INDEX → 对应技能。
-  推进协议：参数向导、意图澄清、当前单元、烤干与用户动作 C/M/G/S/F 见 references/gates.md。
+  推进协议：参数向导、当前单元、自动 grilling、C/M/G/S/F 见 references/gates.md、intent-clarify、unit-cycle-protocol、grilling-skill。
 ---
 
 # docs-upgrade：定向升级与链式对齐
 
-判定归属 → 读 references/ → 参数向导 → 按当前单元执行 **澄清 → 生成 → 烤干** → 用户动作推进。
+主路径：按当前单元定向改文档，并在允许时沿引用链 + 关键词链式同步。
 
 ## 输出硬约束（P0）
 
-- 一次只处理一个“当前单元”：单个主文件，或单个已确认关联批次（除非用户显式 `F` 且已完成剩余意图批确认）。
-- 当前单元**写入前**必须完成**意图澄清**（公共六项 + 阶段横幅「当前阶段：意图澄清」）；未获写前 `C` 不得写入主文件或扩展到关联文件。契约见 [intent-clarify.md](../../references/intent-clarify.md)。
-- 范围确认书须并入公共六项，作为写前意图澄清容器；快路径（单点、用户已限「仅本文件」）可一屏六项摘要后写前 `C`。
-- 当前单元写入后，必须进入自动 `grilling`（烤干）；本技能**默认必须烤干**；未收敛前，不得自动推进下一批关联文件。
-- 自动 `grilling` 收敛后，输出 `C/M/G/S/F` 并停止等待用户选择；须标明「当前阶段：烤干」；`C` 同符异义，靠阶段横幅区分。
-- 语义性变更（术语边界、引用链影响面、关键词扩展范围、是否只改本文件）必须先给出结论、推荐方案与数字选项；未获确认不得执行。
-- 用户明示“只改本文件 / 不要关联 / 不要全库搜”时，不得静默重开链式扩展。
+- 当前单元：单个主文件，或单个已确认关联批次。
+- 写前意图澄清 → [intent-clarify.md](../../references/intent-clarify.md)；范围确认书并入公共六项；未获写前 `C` 不得写入或扩展关联。
+- 推进环 `C/M/G/S/F` → [unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)。
+- 烤干 → [grilling-skill.md](../../references/grilling-skill.md)；本技能默认必须烤干；收敛后停等用户。
+- 用户明示「只改本文件 / 不要关联 / 不要全库搜」时，不得静默重开链式扩展。
 
 ## 边界
 
@@ -40,7 +37,7 @@ description: >
 | 目的 | 文件 |
 | --- | --- |
 | 流程 | [workflow.md](references/workflow.md) |
-| 推进协议 | [gates.md](references/gates.md) |
+| 推进协议 | [gates.md](references/gates.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md) |
 | 意图澄清 | [intent-clarify.md](../../references/intent-clarify.md) |
 | grilling / 烤干 | [grilling-skill.md](../../references/grilling-skill.md) |
 | 范围模板 | [docs-upgrade-scope-ack-template.md](assets/docs-upgrade-scope-ack-template.md) |
@@ -57,17 +54,9 @@ description: >
 
 ## 当前单元
 
-- 单个主文件
-- 单个已确认关联批次
-- 单个回链修复批次
+- 单个主文件、已确认关联批次，或回链修复批次
 
-当前单元烤干收敛后，由用户用 `C/M/G/S/F` 推进（须打印阶段横幅）：
-
-- `C`：确认当前单元并进入下一批或结束
-- `M`：修改范围、术语边界或同步策略，再重新烤干
-- `G`：继续深挖当前单元的引用链或关键词覆盖（仅写后）
-- `S`：暂存当前单元，跳过关联扩展或写入
-- `F`：在当前单元已收敛后，先批确认剩余单元意图，再按既定范围补齐
+收敛后用户动作见 [unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)；本技能有 `S`。
 
 ## 产出
 

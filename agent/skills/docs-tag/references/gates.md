@@ -1,6 +1,7 @@
 # docs-tag 风险控制与确认点
 
-[SKILL.md](../SKILL.md)；命令 [workflow.md](workflow.md)。
+[SKILL.md](../SKILL.md)；命令 [workflow.md](workflow.md)。  
+轻流程：参数确认 + phase **轻量校核**；不绑意图澄清 / unit-cycle / 强制 grilling。
 
 ## 参数确认
 

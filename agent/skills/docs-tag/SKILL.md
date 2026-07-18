@@ -4,19 +4,19 @@ description: >
   为 system/company overview 下 *-overview.md 做关键词相关度：候选词 → YAML 附录 → 表行 ✅ → 架构摘录（phase 3）。
   触发：/docs-tag、「扫描关键词」「给概览打标签」「phase 3」。
   分流：第三列提炼 / 全文术语 / INDEX → docs-extract、docs-upgrade、docs-indexing。
-  推进协议：参数向导、当前单元、phase 执行、轻量校核、C/M/S/F 见 references/workflow.md、references/gates.md 与 light-flow-actions。
+  推进协议：轻流程；参数向导、当前单元、phase 执行、轻量校核、C/M/S/F 见 references 与 light-flow-actions。
 ---
 
 # docs-tag（关键词标记）
 
-参数向导 → 处理单个 overview 当前单元 → `keyword_tag.py` 子阶段执行 → 自动 grilling → 用户动作推进。
-自动化禁用 `--phase 1`（见 gotchas）。
+参数向导 → 处理单个 overview 当前单元 → `keyword_tag.py` 子阶段 → **轻量校核** → 用户动作推进。  
+**不**绑定意图澄清 / unit-cycle / 强制写后 grilling。自动化禁用 `--phase 1`（见 gotchas）。
 
 ## 输出硬约束（P0）
 
 - 一次只处理一个“当前单元”：单个 overview 文件。
 - 参数未收口前，不得对 `--file` 执行写入。
-- 当前单元内每个 phase 结果产生后，必须进入自动 `grilling`；当前单元未收敛前，不得自动推进下一个 overview 文件。
+- 每个 phase 结果后做**轻量校核**（摘要检查点，见 workflow）；当前单元未收敛前，不得自动推进下一个 overview 文件。
 - 语义性变更（`--file`、`--phase`、`--keywords`、`--scan-dir`、`--top-n`、是否继续下一 phase）必须先给出结论、推荐方案与数字选项；未获确认不得执行。
 - `phase 3` / `excerpt` 不需要 `keywords`；`phase 2` 无附录时不得静默继续，必须提示先 `1-scan` + `1-write`。
 
@@ -31,6 +31,7 @@ description: >
 - 不把旧“步骤 1 参数确认”当唯一主线；主线是参数向导收口后处理当前单元
 - 不把单个 phase 当成独立当前单元；当前单元始终是单个 overview 文件
 - 不把第三列表提炼、全库术语替换、INDEX 重建收成 `docs-tag`
+- 不把本技能写成语义族「澄清 → 生成 → 烤干」
 
 ## 最短路径
 
@@ -38,7 +39,7 @@ description: >
 2. [workflow.md](references/workflow.md)（含前置与 phase 说明）
 3. [algorithm.md](references/algorithm.md)
 4. [gotchas.md](gotchas.md)
-5. [grilling-skill.md](../../references/grilling-skill.md) — 自动 grilling 公共能力
+5. [light-flow-actions.md](../../references/light-flow-actions.md) — 轻流程 `C/M/S/F`
 
 ## 最少输入
 
@@ -70,5 +71,5 @@ python3 agent/skills/docs-tag/scripts/keyword_tag.py ...
 
 ## 评测 / 脚本
 
-评测：`evals/evals.json`、[grader.md](agents/grader.md)。单测：`python3 -m pytest tests/ -q`（在技能目录下）。
-评测重点：参数收口、单单元停顿、phase 结果 grill、不得静默推进下一文件。
+评测：`evals/evals.json`、[grader.md](agents/grader.md)。单测：`python3 -m pytest tests/ -q`（在技能目录下）。  
+评测重点：参数收口、单单元停顿、phase 后轻量校核、不得静默推进下一文件、不得要求语义族 grilling。

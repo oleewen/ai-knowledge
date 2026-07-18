@@ -1,13 +1,13 @@
 {
   "skill_name": "docs-tag",
-  "version": "2.0.0",
-  "description": "docs-tag 触发边界、参数向导、当前单元、phase 执行与自动 grilling；对齐 grader 断言。",
+  "version": "2.1.0",
+  "description": "docs-tag 触发边界、参数向导、当前单元、phase 执行与轻量校核（轻流程，非语义族 grilling）；对齐 grader 断言。",
   "evals": [
     {
       "id": "docs-tag-trigger-001",
       "category": "should-trigger",
-      "prompt": "帮我对 system/knowledge/overview/billing-overview.md 做 /docs-tag：phase all，关键词「计费」「结算」，scan-dir 和 top-n 用默认；先收口参数，只处理这个 overview，1-scan 之后先 grill 一轮，我选好候选词后再继续。",
-      "expected_output": "/docs-tag：参数收口→当前单元=billing-overview→keyword_tag.py 1-scan→自动 grilling→选→1-write→grill→2→grill→3；不写 extract 第三列，也不自动滚到别的 overview。",
+      "prompt": "帮我对 system/knowledge/overview/billing-overview.md 做 /docs-tag：phase all，关键词「计费」「结算」，scan-dir 和 top-n 用默认；先收口参数，只处理这个 overview，1-scan 之后先做结果校核，我选好候选词后再继续。",
+      "expected_output": "/docs-tag：参数收口→当前单元=billing-overview→keyword_tag.py 1-scan→轻量校核→选→1-write→校核→2→校核→3；不写 extract 第三列，也不自动滚到别的 overview；不要求意图澄清或写后 grilling Skill。",
       "assertions": [
         {
           "id": "param-gate",
@@ -31,10 +31,10 @@
           "priority": "P0"
         },
         {
-          "id": "phase-result-must-grill",
-          "name": "phase 结果先 grill",
+          "id": "phase-result-light-check",
+          "name": "phase 结果轻量校核",
           "type": "must_include",
-          "check": "须体现 1-scan 或后续 phase 结果后先自动 grilling，再决定继续当前单元。",
+          "check": "须体现 1-scan 或后续 phase 结果后做轻量校核/结果摘要检查，再决定继续；不得要求必须跑 grilling Skill 或语义族烤干。",
           "priority": "P0"
         },
         {
@@ -50,7 +50,7 @@
       "id": "docs-tag-trigger-002",
       "category": "should-trigger",
       "prompt": "YAML 里已经有 spec-tags 了，只要对同一文件跑表格打勾，/docs-tag phase 2。",
-      "expected_output": "确认 file/phase 2，只处理一个 overview 当前单元；`keyword_tag.py --phase 2` 后先 grill 结果；无附录会败；匹配时忽略 HTML 注释（gotchas §6b）。",
+      "expected_output": "确认 file/phase 2，只处理一个 overview 当前单元；`keyword_tag.py --phase 2` 后轻量校核 ✅ 质量；无附录会败；匹配时忽略 HTML 注释（gotchas §6b）。",
       "assertions": [
         {
           "id": "phase2-only",
@@ -60,10 +60,10 @@
           "priority": "P0"
         },
         {
-          "id": "phase-result-must-grill",
-          "name": "phase 结果先 grill",
+          "id": "phase-result-light-check",
+          "name": "phase 结果轻量校核",
           "type": "must_include",
-          "check": "须体现 phase 2 执行后先检查 ✅ 命中质量或前置条件，再决定继续。",
+          "check": "须体现 phase 2 执行后先检查 ✅ 命中质量或前置条件，再决定继续；不得要求语义族 grilling。",
           "priority": "P0"
         },
         {
@@ -86,7 +86,7 @@
       "id": "docs-tag-trigger-003",
       "category": "should-trigger",
       "prompt": "billing-overview 表格已经打好 ✅ 了，帮我刷新顶部的架构摘录表，/docs-tag phase 3 就行。",
-      "expected_output": "确认 file/phase 3，只处理一个 overview 当前单元；keyword_tag.py --phase 3 后先 grill 摘录结果；不要求 keywords。",
+      "expected_output": "确认 file/phase 3，只处理一个 overview 当前单元；keyword_tag.py --phase 3 后轻量校核摘录；不要求 keywords。",
       "assertions": [
         {
           "id": "phase3-only",
@@ -127,10 +127,10 @@
       ]
     },
     {
-      "id": "docs-tag-trigger-002",
+      "id": "docs-tag-trigger-004",
       "category": "should-trigger",
       "prompt": "对 company/knowledge/overview/COMPANY-overview.md 做 /docs-tag：keywords「价值链」「商业模式」，scan-dir 用 company/knowledge/，先 1-scan 我选词后再 2 和 3",
-      "expected_output": "docs-tag：公司库 overview；--scan-dir company/knowledge/；以单个 COMPANY-overview 为当前单元；1-scan→grill→1-write→grill→2→grill→3；不写 extract 第三列。",
+      "expected_output": "docs-tag：公司库 overview；--scan-dir company/knowledge/；以单个 COMPANY-overview 为当前单元；1-scan→轻量校核→1-write→校核→2→校核→3；不写 extract 第三列。",
       "assertions": [
         {
           "id": "company-scan-dir",

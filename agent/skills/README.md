@@ -19,7 +19,7 @@
 | ---- | ---- |
 | `/docs-indexing` | 参数 `mode/depth/output/since`；产出九章 `INDEX-GUIDE.md` + `changelogs/INDEXING-LOG.md`（须列完整仓库根相对路径） |
 | `/docs-change` | 三源采集变更 → `{output_dir}/CHANGE-LOG.md`（文末增量基线注释）；轻流程 |
-| `/docs-tag` | overview 关键词：候选附录、表行 ✅、架构摘录（phase 3）；轻流程。见 [workflow.md](docs-tag/references/workflow.md) |
+| `/docs-tag` | overview 关键词：候选附录、表行 ✅、架构摘录（phase 3）；轻流程 + phase 轻量校核（非语义族 grilling）。见 [workflow.md](docs-tag/references/workflow.md) |
 | `/docs-upgrade` | 范围/替换策略/链式同步；改 Markdown、注释、配置文本 |
 | `/docs-agent` | 根 `README.md` + `AGENTS.md`；九章地图以已落盘 `INDEX-GUIDE.md` 为准，与 `index.md` 职责不重叠 |
 | `/docs-distill` | `--app / --since / --full / --dry-run` → 系统 `overview` 第三列 + `DISTILL-LOG` |

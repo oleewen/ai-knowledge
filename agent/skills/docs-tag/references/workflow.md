@@ -1,6 +1,7 @@
 # docs-tag 工作流
 
-[SKILL.md](../SKILL.md)；风险控制与动作协议 [gates.md](gates.md)。
+[SKILL.md](../SKILL.md)；风险控制与动作协议 [gates.md](gates.md)。  
+动作字母：[light-flow-actions.md](../../../references/light-flow-actions.md)（`C/M/S/F`，无 `G`）。
 
 ## 前置
 
@@ -36,6 +37,14 @@
 
 一次只处理一个当前单元，不并行推进多个 overview 文件。phase 只是当前单元内部子阶段，不是独立当前单元。
 
+## 轻量校核（非 grilling）
+
+每个 phase 结果后，用短摘要做检查点即可，**不**调用 grilling Skill / unit-cycle 烤干：
+
+- 汇报脚本关键统计（候选数、✅ 行数、摘录行数等）
+- 对照 [gates.md](gates.md) 风险项：明显越义、缺附录、参数是否仍合适
+- 若触及语义风险：给结论、推荐与数字选项，确认后再继续
+
 ## 执行循环
 
 ### 1 选定当前单元
@@ -65,11 +74,7 @@ python3 agent/skills/docs-tag/scripts/keyword_tag.py \
    ...
 ```
 
-phase 1-scan 后立即做自动 `grilling`：
-
-- 检查种子词是否足够支撑当前 overview
-- 检查候选词是否需要缩窄或扩展
-- 检查 `scan-dir`、`top-n` 是否仍合适
+**轻量校核**：种子词是否够用；候选是否需缩窄/扩展；`scan-dir`、`top-n` 是否仍合适。
 
 ### 3 用户选择并执行 phase 1-write（phase 1 或 all 时）
 
@@ -90,11 +95,7 @@ python3 agent/skills/docs-tag/scripts/keyword_tag.py \
   --selected TERM1,TERM2,...
 ```
 
-phase 1-write 后自动 `grilling`：
-
-- 检查附录是否幂等
-- 检查候选词是否明显越义
-- 检查是否继续 phase 2 或需要回调参数
+**轻量校核**：附录是否幂等；候选是否明显越义；是否继续 phase 2 或回调参数。
 
 ### 4 执行 phase 2（phase 2 或 all 时）
 
@@ -104,11 +105,7 @@ python3 agent/skills/docs-tag/scripts/keyword_tag.py --file FILE --phase 2
 
 汇报脚本统计（✅ 行数、跳过行数）。判定章节相关性时**忽略 HTML 注释**（`<!-- … -->`），见 gotchas §6b。
 
-phase 2 后自动 `grilling`：
-
-- 检查 ✅ 是否过宽或过窄
-- 检查无附录场景是否应先回到 phase 1
-- 检查当前 overview 是否适合继续 phase 3
+**轻量校核**：✅ 是否过宽/过窄；无附录是否应先回 phase 1；是否适合继续 phase 3。
 
 ### 5 执行 phase 3（phase 3 / excerpt 或 all 时）
 
@@ -120,15 +117,11 @@ python3 agent/skills/docs-tag/scripts/keyword_tag.py --file FILE --phase 3
 
 汇报摘录行数；**勿手改**摘录表数据行（gotchas §9）。
 
-phase 3 后自动 `grilling`：
-
-- 检查摘录是否与 ✅ 行一致
-- 检查无 ✅ 场景是否正确写入空占位
-- 检查当前单元是否已收敛
+**轻量校核**：摘录是否与 ✅ 一致；无 ✅ 时是否正确空占位；当前单元是否可视为收敛。
 
 ### 6 输出与动作停顿
 
-当前单元收敛后，停下等待 `C/M/S/F`（见 [light-flow-actions.md](../../../references/light-flow-actions.md)）：
+当前单元收敛后，停下等待 `C/M/S/F`：
 
 - `C`：确认当前单元并结束或进入下一 overview 文件
 - `M`：修改参数或 phase 策略后重跑
@@ -141,6 +134,6 @@ phase 3 后自动 `grilling`：
 
 | 场景 | 要点 |
 | ---- | ---- |
-| 仅 phase 1 | 参数向导 → `1-scan` → grill → 选词 → `1-write` → grill |
-| 仅 phase 2 | 参数向导 → `--phase 2` → grill → 汇报 N✅ / M skip |
-| all | 参数向导 → `1-scan` → grill → `1-write` → grill → `2` → grill → `3` → grill |
+| 仅 phase 1 | 参数向导 → `1-scan` → 轻量校核 → 选词 → `1-write` → 轻量校核 |
+| 仅 phase 2 | 参数向导 → `--phase 2` → 轻量校核 → 汇报 N✅ / M skip |
+| all | 参数向导 → `1-scan` → 校核 → `1-write` → 校核 → `2` → 校核 → `3` → 校核 → `C/M/S/F` |
