@@ -1,51 +1,29 @@
 ---
 type: Documentation
-title: application（应用知识库，mode=c）
+title: application（mode=c · central）
 ---
-# application（应用知识库，mode=c）
+# application（mode=c · central）
 
-`application/` 维护应用侧稳定事实、实现登记与治理线索，是全仓库的重要知识中枢。  
-本文件面向中央知识库挂载建联（`mode=c`）阅读与维护场景，聚焦「按什么顺序读、到哪里写」；九章索引指南见 [INDEX-GUIDE.md](INDEX-GUIDE.md)，目录索引页见 [index.md](index.md)，**中央知识库挂载建联登记**见 [INDEX-GUIDE.md](INDEX-GUIDE.md) §十。
+中央挂载建联：本树以 **knowledge** 与 **changelogs** 为主。共享入口见 [README.md](README.md)；安装差异见仓库根 [INDEX-GUIDE.md](../INDEX-GUIDE.md) §7.2。
 
-## 推荐阅读路径
-
-1. [INDEX-GUIDE.md](INDEX-GUIDE.md)：九章索引指南（docs-indexing 产出），含 **「十、中央知识库接入工程」**
-2. [index.md](index.md)：目录索引页与 OKF 渐进披露入口
-3. [DESIGN.md](DESIGN.md)：元模型与跨视角关系
-4. [CONTRIBUTING.md](CONTRIBUTING.md)：新增/修改流程与模板约束
-
-## 文档流（一页纸）
+## 维护主线
 
 ```text
-agent/rules（治理基线：术语/原则/命名/ADR）
-      │
-      ├──→ knowledge（五视角实体登记、实现映射与应用层实体主库）
-      │          ↑
-      │          └── 蒸馏 / 回写（如 docs-distill）
-      │
-      └──→ changelogs（变更留痕与索引运维）
+agent/knowledge（治理 / 命名）
+  ├──→ knowledge（五视角 + 实现级实体 SSOT）
+  └──→ changelogs（变更 / 索引运维）
 ```
 
-**推荐落地顺序**：先核对 [agent/knowledge/knowledge-governance.md](../agent/knowledge/knowledge-governance.md) 治理约束，再查 / 补 **knowledge** 实体与 ID（读 [DESIGN.md](DESIGN.md)、[CONTRIBUTING.md](CONTRIBUTING.md)），最后在 **changelogs** 留痕并维护索引链路。
+**落地顺序**：核 [knowledge-governance](../agent/knowledge/knowledge-governance.md) → 补 knowledge ID（[DESIGN.md](DESIGN.md)、[CONTRIBUTING.md](CONTRIBUTING.md)）→ changelogs 留痕。
 
-## 中央知识库挂载建联维护主线
+上行：`docs-pull` 入系统槽位；**docs-distill 只写 system overview**，不回写本库 knowledge。
 
-| 主线 | 目录 | 主要内容 |
-|------|------|----------|
-| 治理基线 | [agent/knowledge/](../agent/knowledge/knowledge-governance.md) | 术语、原则、命名、ADR |
-| 知识基线 | [knowledge](knowledge) | 五视角实体登记、实现映射与应用层实体主库 |
-| 变更留痕 | [changelogs](changelogs/README.md) | 变更记录与索引运维文件 |
+## 主线目录
 
-## 子目录入口
+| 主线 | 目录 | 内容 |
+|------|------|------|
+| 治理基线 | [agent/knowledge](../agent/knowledge/knowledge-governance.md) | 术语、原则、命名、ADR |
+| 知识基线 | [knowledge](knowledge/README.md) | 五视角与实现级实体 |
+| 变更留痕 | [changelogs](changelogs/README.md) | `CHANGE-LOG` / `INDEXING-LOG` |
 
-| 目录 | 入口说明 |
-|------|----------|
-| [knowledge/README.md](knowledge/README.md) | 五视角知识实体组织与映射规则 |
-| [changelogs/README.md](changelogs/README.md) | 变更记录与索引运维文件 |
-
-## 机器可读元数据
-
-- 根元数据：[docs-meta.md](docs-meta.md)
-- 子目录元数据：`knowledge/knowledge-meta.md`（阶段目录见各 `README.md`，含 [changelogs/README.md](changelogs/README.md)）
-
-> 约束细则以 `docs-meta.md` 与 `DESIGN.md` 为准，本文件不复写字段定义。
+机器元数据：[docs-meta.md](docs-meta.md)。

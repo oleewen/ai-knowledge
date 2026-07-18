@@ -1,17 +1,29 @@
 ---
 type: Documentation Root
 tags: [governance]
+title: "应用知识库（顶层 `application/`）"
 ---
-# application（应用知识库）
+<!-- markdownlint-disable-next-line MD025 -->
+# 应用知识库（顶层 `application/`）
 
-索引入口见 [INDEX-GUIDE.md](INDEX-GUIDE.md) 与 [index.md](index.md)。
+应用层治理与导航根：`knowledge/` = 实现级实体 SSOT（API/TBL/MW/CMP）+ 五视角映射；`solutions/` → `analysis/` → `requirements/` = 应用 SDD。
 
-`application/` 维护应用侧稳定事实、实现登记与阶段交付，是全仓库的重要知识中枢。  
-按初始化模式读取对应入口：
+| 读什么 | 文件 |
+|--------|------|
+| 九章地图 | [INDEX-GUIDE.md](INDEX-GUIDE.md) |
+| 目录索引 | [index.md](index.md) |
+| 边界与 §2.2.1 | [DESIGN.md](DESIGN.md) |
+| 五视角入口 | [knowledge/README.md](knowledge/README.md) |
 
-- `mode=s`（`--mode=standalone`）：请读 [README-s.md](README-s.md)
-- `mode=c`（`--mode=central`，**中央知识库挂载建联**）：请读 [README-c.md](README-c.md)
+按初始化模式：
 
-九章索引指南见 [INDEX-GUIDE.md](INDEX-GUIDE.md)；目录索引页见 [index.md](index.md)。
+- `mode=s`（standalone）→ [README-s.md](README-s.md)
+- `mode=c`（central）→ [README-c.md](README-c.md)
+
+按需：[CONTRIBUTING.md](CONTRIBUTING.md) · [adr/](adr/README.md) · [changelogs/](changelogs/README.md)
+
+模板占位：`*-EXAMPLE`（最小演示链，可替换）。
 
 机器元数据（非人类必读）：[docs-meta.md](docs-meta.md)
+
+规范：[DESIGN.md](DESIGN.md) · [okf-spec](../agent/knowledge/okf-spec.md) · [knowledge-layout](../agent/references/knowledge-layout.md)

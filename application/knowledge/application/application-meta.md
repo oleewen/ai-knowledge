@@ -41,27 +41,20 @@ title: 应用视角元数据（application/knowledge/application）
 
 ---
 
-## 4. 必填字段
+## 4. 字段（OKF）
 
-### 通用字段
+**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2。
 
-| 字段 | 说明 |
-| --- | --- |
-| hierarchy | `SYS` / `APP` / `MS` / `API` |
-| full_id 或 id | 规范 ID（API 可用 `id` 字段） |
-| name | 中文名称 |
-| description | 实体描述 |
-| evidence_source | 证据来源 |
-| layer_scope | 固定为 `application` |
+**正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。
 
-### 各层专属
+### 各层专属（正文）
 
-| 层级 | 必填字段 |
-| --- | --- |
-| SYS | `architecture`（apps / external_dependencies / ddd_layers） |
-| APP | `parent_sys_id`、`startup_class`、`maven_module`、`service_ids` |
-| MS | `host_class`、`host_module`、`protocol` |
-| API | `service_id`、`alias`、`method_signature`、`api_type`（DUBBO/HTTP/MQ/JOB） |
+| 层级 | 字段 | 建议段落 |
+| --- | --- | --- |
+| SYS | `architecture`（apps / external_dependencies / ddd_layers） | 详细说明 |
+| APP | `parent_sys_id`、`service_ids`、`startup_class`、`maven_module` | 关系 / 详细说明 |
+| MS | `host_class`、`host_module`、`protocol` | 详细说明 |
+| API | `service_id`、`alias`、`method_signature`、`api_type`（DUBBO/HTTP/MQ/JOB） | 关系 / 详细说明 |
 
 ---
 

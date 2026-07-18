@@ -410,7 +410,7 @@
     {
       "id": "solution-not-trigger-004",
       "category": "should-not-trigger",
-      "prompt": "帮我把 system/application-billing 蒸馏进 system/architecture/overview/billing-overview.md，按 docs-distill 流程。",
+      "prompt": "帮我把 system/application-billing 蒸馏进 system/knowledge/overview/billing-overview.md，按 docs-distill 流程。",
       "expected_output": "主路径为 docs-distill 与 billing-overview；不是 sdx-solution。",
       "assertions": [
         {

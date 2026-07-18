@@ -20,7 +20,7 @@ layer_scope: application
 
 ## 详细说明
 
-- (none)
+- physical_name: example_table
 
 ## 依据与证据
 

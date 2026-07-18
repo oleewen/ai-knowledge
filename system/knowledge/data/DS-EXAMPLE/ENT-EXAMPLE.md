@@ -20,7 +20,8 @@ layer_scope: system
 
 ## 详细说明
 
-- (none)
+- logical_name: ExampleEntity
+- physical_table: example_table
 
 ## 依据与证据
 

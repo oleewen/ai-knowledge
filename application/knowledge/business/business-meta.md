@@ -43,28 +43,21 @@ title: 业务视角元数据（application/knowledge/business）
 
 ---
 
-## 4. 必填字段
+## 4. 字段（OKF）
 
-### 通用字段
+**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2。
 
-| 字段 | 说明 |
-| --- | --- |
-| hierarchy | `BD` / `BSD` / `BC` / `AGG` / `AB` |
-| full_id | 规范 ID |
-| name | 中文名称 |
-| description | 实体描述 |
-| evidence_source | 证据来源 |
-| layer_scope | 固定为 `application` |
+**正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。业务属性写正文，勿堆 frontmatter。
 
-### 各层专属
+### 各层专属（正文）
 
-| 层级 | 必填字段 |
-| --- | --- |
-| BD | `strategic_classification`、`children`（子 BSD full_id 列表） |
-| BSD | `parent_id`、`bounded_contexts` |
-| BC | `parent_id`、`implemented_by_app_id`、`aggregates` |
-| AGG | `parent_id`、`root_entity`、`persisted_as_entity_ids`、`implemented_by_service_ids`、`abilities` |
-| AB | `parent_id`、`capability`、`apis`（含 `id`、`method`、`description`） |
+| 层级 | 字段 | 建议段落 |
+| --- | --- | --- |
+| BD | `strategic_classification`、`children` | 关系 / 详细说明 |
+| BSD | `bounded_contexts` | 关系 |
+| BC | `aggregates`、`implemented_by_app_id` | 关系 / 跨视角 |
+| AGG | `abilities`、`root_entity`、`persisted_as_entity_ids`、`implemented_by_service_ids` | 关系 / 跨视角 / 详细说明 |
+| AB | `capability`、`apis`（链 API） | 详细说明 / 跨视角 |
 
 ---
 

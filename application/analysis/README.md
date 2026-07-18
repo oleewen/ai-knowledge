@@ -4,7 +4,7 @@ title: analysis（需求分析）
 ---
 # analysis（需求分析）
 
-SDD 分析阶段：平铺 `ANALYSIS-{IDEA-ID}.md`；上游 [../solutions](../solutions)，下游 [../requirements](../requirements)。
+SDD 分析阶段：平铺 `ANALYSIS-{IDEA-ID}.md`。上游 [../solutions](../solutions/README.md)，下游 [../requirements](../requirements/README.md)。
 
 | 文档 | 标题 | 关联解决方案 |
 |------|------|--------------|

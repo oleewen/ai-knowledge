@@ -22,6 +22,10 @@ layer_scope: system
 ## 详细说明
 
 - 上游主定义：`company/knowledge/application/SYS-EXAMPLE.md`（公司层 OKF SSOT）。
+- architecture:
+  - apps: [APP-EXAMPLE]
+  - external_dependencies: [ExternalExample/HTTP]
+  - ddd_layers: [interface, application, domain, infrastructure]
 - definition_scope: reference
 
 ## 依据与证据

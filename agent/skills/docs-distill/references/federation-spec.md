@@ -9,7 +9,7 @@
 
 **公司库** overview 缓冲区：`company/knowledge/overview/{NAME}-overview.md`（`docs-extract` / `docs-archive` / `docs-tag` 同工作流；`docs-distill` 上行目标仍为系统库 overview）。
 
-**非目标**（只当来源）：各层 `architecture/` 或 `ea/` 下五视角长篇、应用 knowledge、应用 SDD。
+**非目标**（只当来源）：各层 `knowledge/` 下五视角长篇（含 chapters）、应用 knowledge、应用 SDD。legacy `architecture/` / `ea/` 路径已废弃。
 
 ## 联邦层级（摘要）
 
@@ -17,7 +17,7 @@
 | -- | ---- | ------ |
 | 应用库 | 规则细节、故事、接口/类图、部署、表结构 | 跨应用映射、系统级摘要 |
 | 系统库 | 五视角**摘要**、ID 契约 | OpenAPI 全文、DDL、故事原文 |
-| 公司库（`ea/`） | 企业架构顶层标准、跨系统方案输入 | 系统实现细节、应用字段定义 |
+| 公司库 | 企业架构顶层标准、跨系统方案输入 | 系统实现细节、应用字段定义 |
 
 ## 规则（第三列）
 

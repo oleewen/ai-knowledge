@@ -6,7 +6,7 @@
     {
       "id": "docs-tag-trigger-001",
       "category": "should-trigger",
-      "prompt": "帮我对 system/architecture/overview/billing-overview.md 做 /docs-tag：phase all，关键词「计费」「结算」，scan-dir 和 top-n 用默认；先收口参数，只处理这个 overview，1-scan 之后先 grill 一轮，我选好候选词后再继续。",
+      "prompt": "帮我对 system/knowledge/overview/billing-overview.md 做 /docs-tag：phase all，关键词「计费」「结算」，scan-dir 和 top-n 用默认；先收口参数，只处理这个 overview，1-scan 之后先 grill 一轮，我选好候选词后再继续。",
       "expected_output": "/docs-tag：参数收口→当前单元=billing-overview→keyword_tag.py 1-scan→自动 grilling→选→1-write→grill→2→grill→3；不写 extract 第三列，也不自动滚到别的 overview。",
       "assertions": [
         {

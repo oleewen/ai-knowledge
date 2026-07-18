@@ -12,7 +12,8 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md)
+2. `REQUIREMENT-*/` → `MVP-Phase-*/`（PRD → ASD → DSD → TDD）
 
 ## 关联索引
 

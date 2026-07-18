@@ -15,7 +15,8 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md) · [application-meta.md](application-meta.md)
+2. `SYS-EXAMPLE.md` · `APP-EXAMPLE.md` → [MS-EXAMPLE/](MS-EXAMPLE/index.md)（API）
 
 ## 关联索引
 

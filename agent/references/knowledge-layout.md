@@ -3,19 +3,19 @@
 > **定位**：`system/`、`company/` 路径、overview 缓冲区与表行对齐的**唯一 Agent 侧真源**。  
 > 会话 spec 路径见 [session-spec-path.md](session-spec-path.md)；闸门总表见 [CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates)。
 
-**最后更新**: 2026-06-15
+**最后更新**: 2026-07-18
 
 ---
 
 ## 三层文档根
 
-| 文档根 `{DOC_DIR}` | 人类入口 | 架构五视角 | overview 缓冲区 | 联邦镜像槽位 |
+| 文档根 `{DOC_DIR}` | 人类入口 | 五视角知识 | overview 缓冲区 | 联邦镜像槽位 |
 | --- | --- | --- | --- | --- |
-| `application/` | [application/README.md](../../application/README.md) | `{DOC_DIR}/architecture/`（应用库若有） | — | — |
+| `application/` | [application/README.md](../../application/README.md) | [application/knowledge/](../../application/knowledge/README.md) | — | — |
 | `system/` | [system/README.md](../../system/README.md) | [system/knowledge/](../../system/knowledge/README.md) | [system/knowledge/overview/](../../system/knowledge/overview/NAME-overview.md) | `system/application-{APPNAME}/` |
 | `company/` | [company/README.md](../../company/README.md) | [company/knowledge/](../../company/knowledge/README.md) | [company/knowledge/overview/](../../company/knowledge/overview/NAME-overview.md) | `company/system-{SYSNAME}/` |
 
-**公司侧企业架构**目录为 **`company/knowledge/`**（非 `company/architecture/`）。
+**路径约定**：三层五视角均为 **`{DOC_DIR}/knowledge/`**（legacy `architecture/` / `ea/` 已废弃）。应用层无 overview；本层首次实体（API/TBL/MW/CMP）见 [application/DESIGN.md](../../application/DESIGN.md) §2.2.1。
 
 ---
 
@@ -70,7 +70,7 @@ company/knowledge/{business,product,application,data,technical}/
 | 技能 | hook 拦截写入路径 | 说明 |
 | --- | --- | --- |
 | docs-distill / docs-extract | `system/knowledge/overview/*.md`、`company/knowledge/overview/*.md` | 第三列与 overview 回写 |
-| docs-archive | 同上（overview 回写） | **章节落盘**靠会话**方案确认书** HARD-GATE；hook **不**拦截 `knowledge/` 或 `ea/` 下视角章节 |
+| docs-archive | 同上（overview 回写） | **章节落盘**靠会话**方案确认书** HARD-GATE；hook **不**拦截 `knowledge/` 下视角章节 |
 | docs-indexing | 各 `index.md`、`*/changelogs/INDEXING-LOG.md` | 见 CONVENTIONS |
 
 ---

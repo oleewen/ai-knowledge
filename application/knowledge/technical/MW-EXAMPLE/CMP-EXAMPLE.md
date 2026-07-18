@@ -13,6 +13,7 @@ layer_scope: application
 ## 关系
 
 - parent: [MW-EXAMPLE](/knowledge/technical/MW-EXAMPLE/MW-EXAMPLE.md)
+- parent_mw_id: [MW-EXAMPLE](/knowledge/technical/MW-EXAMPLE/MW-EXAMPLE.md)
 
 ## 跨视角
 

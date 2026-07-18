@@ -21,6 +21,10 @@ layer_scope: company
 ## 详细说明
 
 - definition_scope: local（本层主定义）
+- architecture:
+  - apps: [APP-EXAMPLE]
+  - external_dependencies: [ExternalExample/HTTP]
+  - ddd_layers: [interface, application, domain, infrastructure]
 
 ## 依据与证据
 

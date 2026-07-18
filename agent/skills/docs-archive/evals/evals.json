@@ -6,7 +6,7 @@
     {
       "id": "archive-trigger-001",
       "category": "should-trigger",
-      "prompt": "帮我把 system/architecture/overview/billing-appeal-overview.md 里业务架构视角的内容归档到对应的章节文件里，归档完之后把 overview 里已归档的部分替换成索引壳",
+      "prompt": "帮我把 system/knowledge/overview/billing-appeal-overview.md 里业务架构视角的内容归档到对应的章节文件里，归档完之后把 overview 里已归档的部分替换成索引壳",
       "expected_output": "/docs-archive：解析行内链；澄清阶段形成确认书（含意图澄清六项）；写前 C 后只处理一个归档单元；落目标后再回写 overview；烤干收敛后停下等 C/M/G/S/F。",
       "assertions": [
         {

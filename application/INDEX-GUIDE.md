@@ -13,18 +13,18 @@ title: application INDEX-GUIDE
 
 ### 1.1 速查
 
-* [README.md](README.md) — 人类入口（standalone → [README-s.md](README-s.md)；central → [README-c.md](README-c.md)）  
-* [index.md](index.md) — OKF 目录索引  
-* [DESIGN.md](DESIGN.md) — 设计契约与 §2.2.1  
-* [knowledge/README.md](knowledge/README.md) — 五视角  
-* [CONTRIBUTING.md](CONTRIBUTING.md) — 贡献约定  
-* [changelogs/README.md](changelogs/README.md) — 变更/索引  
+* [README.md](README.md) — 人类入口（standalone → [README-s.md](README-s.md)；central → [README-c.md](README-c.md)）
+* [index.md](index.md) — OKF 目录索引
+* [DESIGN.md](DESIGN.md) — 设计契约与 §2.2.1
+* [knowledge/README.md](knowledge/README.md) — 五视角
+* [CONTRIBUTING.md](CONTRIBUTING.md) — 贡献约定
+* [changelogs/README.md](changelogs/README.md) — 变更/索引
 
 ### 1.2 元信息
 
-* **角色**: 应用知识库；实现级实体（API/TBL/MW/CMP）SSOT + 五视角映射  
-* **栈**: Markdown、YAML  
-* **范围**: `knowledge/` · `solutions/` · `analysis/` · `requirements/` · `adr/` · `changelogs/`  
+* **角色**: 应用知识库；实现级实体（API/TBL/MW/CMP）SSOT + 五视角映射
+* **栈**: Markdown、YAML
+* **范围**: `knowledge/` · `solutions/` · `analysis/` · `requirements/` · `adr/` · `changelogs/`
 
 ---
 
@@ -49,9 +49,9 @@ application/
 
 ## 四、模块依赖
 
-* `knowledge/` ↔ `system/knowledge/`：系统 SSOT / 本层实现映射  
-* `knowledge/` ↔ `company/knowledge/`：公司实体 reference  
-* `solutions/` → `analysis/` → `requirements/`  
+* `knowledge/` ↔ `system/knowledge/`：系统 SSOT / 本层实现映射；上行 pull → distill（系统 overview）
+* `knowledge/` ↔ `company/knowledge/`：公司实体 reference
+* `solutions/` → `analysis/` → `requirements/`（mode=s）
 
 ---
 
@@ -77,12 +77,18 @@ API/TBL 实体在 `knowledge/`；不承载运行时 OpenAPI/DDL 全文（可链�
 
 ## 八、技能与脚本
 
-* `/docs-okf` — 刷新 `index.md` / `viz.html`  
-* `/docs-build` · `/docs-indexing` — 实体与九章  
-* [docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md)  
+* `/docs-okf` — 刷新 `index.md` / `viz.html`
+* `/docs-build` · `/docs-indexing` — 实体与九章
+* [docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md)
 
 ---
 
 ## 九、附录
 
 [viz.html](viz.html) · [manifest.md](manifest.md) · 系统对照 [../system/INDEX-GUIDE.md](../system/INDEX-GUIDE.md)
+
+---
+
+## 十、中央知识库接入
+
+standalone / central 差异与安装约定见仓库根 [INDEX-GUIDE.md](../INDEX-GUIDE.md) §7.2 与 [scripts/README.md](../scripts/README.md)。本库 mode 入口：[README-s.md](README-s.md) · [README-c.md](README-c.md)。

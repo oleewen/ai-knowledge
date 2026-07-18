@@ -23,6 +23,7 @@ layer_scope: system
 
 - 上游主定义：`company/knowledge/data/MDG-EXAMPLE.md`（公司层 OKF SSOT）。
 - definition_scope: reference
+- governance_owner: 示例责任方
 
 ## 依据与证据
 

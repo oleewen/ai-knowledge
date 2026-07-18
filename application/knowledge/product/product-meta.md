@@ -45,29 +45,22 @@ title: 产品视角元数据（application/knowledge/product）
 
 ---
 
-## 4. 必填字段
+## 4. 字段（OKF）
 
-### 通用字段
+**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2。
 
-| 字段 | 说明 |
-| --- | --- |
-| hierarchy | `PL` / `PM` / `FT` / `FR` / `UC` / `BR` |
-| full_id | 规范 ID |
-| name | 中文名称 |
-| description | 实体描述（PM 可省略） |
-| evidence_source | 证据来源 |
-| layer_scope | 固定为 `application` |
+**正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。
 
-### 各层专属
+### 各层专属（正文）
 
-| 层级 | 必填字段 |
-| --- | --- |
-| PL | `target_users` |
-| PM | `parent_id` |
-| FT | `parent_id`、`invokes_api_ids`、`acceptance_criteria`（推荐） |
-| FR | `parent_id`、`children`（UC/BR 文件 full_id 列表） |
-| UC | `parent_id`、`map_to_api_id`（推荐） |
-| BR | `parent_id` |
+| 层级 | 字段 | 建议段落 |
+| --- | --- | --- |
+| PL | `target_users` | 详细说明 |
+| PM | `relies_on_context_ids` | 跨视角 |
+| FT | `invokes_api_ids`、`acceptance_criteria`（推荐） | 跨视角 / 详细说明 |
+| FR | `children`（UC/BR） | 关系 |
+| UC | `map_to_api_id`（推荐） | 跨视角 |
+| BR | （实现映射按需） | 跨视角 / 详细说明 |
 
 ---
 
@@ -75,17 +68,17 @@ title: 产品视角元数据（application/knowledge/product）
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| PM.cross_references.business | BC / AGG | 模块依赖业务上下文 |
-| FT.invokes_api_ids | API.id | 功能调用 API |
-| UC.map_to_api_id | API.id | 用例映射 API |
+| PM.relies_on_context_ids | BC.full_id | 模块依赖限界上下文 |
+| FT.invokes_api_ids | API.full_id | 功能调用 API |
+| UC.map_to_api_id | API.full_id | 用例映射 API |
 
-## 6. BP 叙事文件（不属于 hierarchy）
+## 6. BP 流程叙事（旁路实体）
 
-本视角可选维护 `BP-{NAME}.md` 作为流程叙事文件：
+可选 `BP-{NAME}.md`（OKF：`hierarchy: BP`）：
 
-- 与 `PL-{NAME}.md` 同目录
-- 文件内分 `M`、`S`、`B` 三层（用标题分节），仅通过正文引用 `PL/PM/FT`
-- 不进入 `PL -> PM -> FT -> FR -> UC/BR` 正式实体链，不使用 `hierarchy`、`parent_id`、`children`
+- 与 `PL-{NAME}.md` 同目录；`parent_id` 可为 `null`
+- 正文可分 M/S/B 节，引用 `PL/PM/FT`
+- **不**挂入 `PL → PM → FT → FR → UC/BR` 父子链
 
 ---
 

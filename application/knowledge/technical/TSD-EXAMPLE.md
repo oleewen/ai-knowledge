@@ -22,7 +22,7 @@ definition_scope: reference
 
 ## 详细说明
 
-- (none)
+- definition_scope: reference
 
 ## 依据与证据
 

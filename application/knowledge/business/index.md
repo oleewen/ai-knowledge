@@ -14,7 +14,8 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md) · [business-meta.md](business-meta.md)
+2. `BD-EXAMPLE.md`（ref）→ [BSD-EXAMPLE/](BSD-EXAMPLE/index.md)
 
 ## 关联索引
 

@@ -13,6 +13,7 @@ layer_scope: system
 ## 关系
 
 - parent: [SYS-EXAMPLE](/knowledge/application/SYS-EXAMPLE.md)
+- parent_sys_id: [SYS-EXAMPLE](/knowledge/application/SYS-EXAMPLE.md)
 - service_ids:
   - [MS-EXAMPLE](/knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md)
 

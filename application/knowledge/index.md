@@ -17,7 +17,9 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md)
+2. 五视角 README：business → product → application → data → technical
+3. 各 `*-meta.md`（字段 SSOT）
 
 ## 关联索引
 

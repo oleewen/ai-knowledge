@@ -14,7 +14,8 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md) · [data-meta.md](data-meta.md)
+2. `MDG-EXAMPLE.md`（ref）→ [DS-EXAMPLE/](DS-EXAMPLE/index.md)（ENT/TBL）
 
 ## 关联索引
 

@@ -41,33 +41,20 @@ title: 数据视角元数据（application/knowledge/data）
 
 ---
 
-## 4. 必填字段
+## 4. 字段（OKF）
 
-### 通用字段
+**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2。
 
-| 字段 | 说明 |
-| --- | --- |
-| hierarchy | `MDG` / `DS` / `ENT` / `TBL` |
-| full_id | 规范 ID |
-| name | 中文名称 |
-| description | 实体描述 |
-| evidence_source | 证据来源 |
-| layer_scope | 固定为 `application` |
+**正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。`definition_scope` 等可作 frontmatter 扩展。
 
-### 各层专属
+### 各层专属（正文 / 扩展）
 
-| 层级 | 必填字段 |
-| --- | --- |
-| MDG | `definition_scope: reference`、`governance_owner` |
-| DS | `type`、`config_key`、`owned_by_app_id` |
-| ENT | `parent_id`、`logical_name`、`physical_table` |
-| TBL | `parent_id`、`physical_name` |
-
-### 推荐字段
-
-| 层级 | 字段 | 说明 |
+| 层级 | 字段 | 建议段落 |
 | --- | --- | --- |
-| ENT | `maps_to_aggregate_id` | 映射业务聚合 AGG |
+| MDG | `definition_scope: reference`、`governance_owner` | FM 扩展 / 详细说明 |
+| DS | 存储 `type`、`config_key`、`owned_by_app_id` | 详细说明 / 跨视角（勿与 OKF `type` 混淆） |
+| ENT | `logical_name`、`physical_table`、`maps_to_aggregate_id`（推荐） | 详细说明 / 跨视角 |
+| TBL | `physical_name` | 详细说明 |
 
 ---
 

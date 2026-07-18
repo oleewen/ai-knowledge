@@ -16,7 +16,7 @@ layer_scope: application
 
 ## 跨视角
 
-- (none)
+- relies_on_context_ids: [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE/BC-EXAMPLE.md)
 
 ## 详细说明
 

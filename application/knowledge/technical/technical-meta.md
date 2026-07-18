@@ -39,26 +39,19 @@ title: 技术视角元数据（application/knowledge/technical）
 
 ---
 
-## 4. 必填字段
+## 4. 字段（OKF）
 
-### 通用字段
+**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2。
 
-| 字段 | 说明 |
-| --- | --- |
-| hierarchy | `TSD` / `MW` / `CMP` |
-| full_id | 规范 ID |
-| name | 中文名称 |
-| description | 实体描述 |
-| evidence_source | 证据来源 |
-| layer_scope | 固定为 `application` |
+**正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。
 
-### 各层专属
+### 各层专属（正文 / 扩展）
 
-| 层级 | 必填字段 |
-| --- | --- |
-| TSD | `definition_scope: reference` |
-| MW | `binding_type`、`config_key`、`parent_tsd_id`、`bound_app_id` |
-| CMP | `maven_coordinates`、`parent_mw_id` 或 `parent_app_id`（二选一） |
+| 层级 | 字段 | 建议段落 |
+| --- | --- | --- |
+| TSD | `definition_scope: reference` | FM 扩展 / 详细说明 |
+| MW | `binding_type`、`config_key`、`parent_tsd_id`、`bound_app_id` | 详细说明 / 关系 / 跨视角 |
+| CMP | `maven_coordinates`；`parent_mw_id` 或 `parent_app_id`（二选一） | 详细说明 / 关系 |
 
 ---
 

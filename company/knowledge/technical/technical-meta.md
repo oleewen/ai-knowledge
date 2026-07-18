@@ -35,19 +35,13 @@ title: 技术视角元数据（company/knowledge/technical）
 
 ---
 
-## 4. 必填字段
+## 4. 字段（OKF）
 
-### 通用字段
+**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `company`）。详见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2。
 
-| 字段 | 说明 |
-| --- | --- |
-| hierarchy | 固定为 `TPL` |
-| full_id | 规范 ID，如 `TPL-K8S-PLATFORM` |
-| name | 中文名称 |
-| description | 实体描述 |
-| evidence_source | 证据来源（如 `chapters/technical-overview.md`） |
+**正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。
 
-### TPL 专属
+### TPL 专属（正文）
 
 | 字段 | 说明 |
 | --- | --- |

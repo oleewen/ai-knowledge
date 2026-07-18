@@ -37,31 +37,18 @@ title: 业务视角元数据（company/knowledge/business）
 
 ---
 
-## 4. 必填字段
+## 4. 字段（OKF）
 
-### 通用字段（BD、CAP 均须）
+**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `company`）。详见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2。
 
-| 字段 | 说明 |
-| --- | --- |
-| hierarchy | 层级标识：`BD` 或 `CAP` |
-| full_id | 规范 ID，如 `BD-CHARGING-APPEAL` |
-| name | 中文名称 |
-| description | 实体描述 |
-| evidence_source | 证据来源（叙事文档或章节，如 `chapters/business-domain-division.md`） |
+**正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。
 
-### BD 专属
+### BD / CAP 专属（正文）
 
-| 字段 | 说明 |
-| --- | --- |
-| strategic_classification | 战略分类：`core_domain` / `supporting` / `generic` |
-
-### CAP 专属
-
-| 字段 | 说明 |
-| --- | --- |
-| level | 能力层级：`L1` / `L2` / `L3` |
-| parent_id | 上级 CAP 的 `full_id`；L1 留空 |
-| maps_to_bd_id | 关联业务域 BD 的 `full_id`（推荐） |
+| 层级 | 字段 | 建议段落 |
+| --- | --- | --- |
+| BD | `strategic_classification`（`core_domain` / `supporting` / `generic`） | 详细说明 |
+| CAP | `level`（L1/L2/L3）、`parent_id`（L1 可空）、`maps_to_bd_id`（推荐） | 关系 / 跨视角 |
 
 ---
 

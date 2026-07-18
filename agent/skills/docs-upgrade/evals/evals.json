@@ -6,7 +6,7 @@
     {
       "id": "upgrade-trigger-001",
       "category": "should-trigger",
-      "prompt": "把 system/architecture/overview/billing-overview.md 里所有「订金」统一成「预付款」，并同步引用这个 overview 的架构章节和全库注释里的同类说法。先收口范围，再按单个当前单元处理，改完第一批先 grill 一轮。",
+      "prompt": "把 system/knowledge/overview/billing-overview.md 里所有「订金」统一成「预付款」，并同步引用这个 overview 的架构章节和全库注释里的同类说法。先收口范围，再按单个当前单元处理，改完第一批先 grill 一轮。",
       "expected_output": "docs-upgrade：参数向导后按当前单元执行澄清→生成→烤干；写前意图澄清（六项）后处理一个当前单元；烤干收敛后停下等 C/M/G/S/F；语义扩展未确认前不得批量推进。",
       "assertions": [
         {

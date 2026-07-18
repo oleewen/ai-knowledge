@@ -14,7 +14,8 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md) · [technical-meta.md](technical-meta.md)
+2. `TSD-EXAMPLE.md`（ref）→ [MW-EXAMPLE/](MW-EXAMPLE/index.md)（CMP）
 
 ## 关联索引
 

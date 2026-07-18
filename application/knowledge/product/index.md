@@ -15,7 +15,8 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md) · [product-meta.md](product-meta.md)
+2. `PL-EXAMPLE.md`（ref）→ [PM-EXAMPLE/](PM-EXAMPLE/index.md) · `BP-EXAMPLE.md`
 
 ## 关联索引
 

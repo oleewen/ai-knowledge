@@ -22,6 +22,7 @@ layer_scope: application
 ## 详细说明
 
 - alias: ExampleService.create
+- api_type: HTTP
 - host_class: ExampleApiImpl
 - host_module: example-module
 - method_signature: create(ExampleReq req)

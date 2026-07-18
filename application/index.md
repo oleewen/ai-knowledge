@@ -30,7 +30,10 @@ okf_version: 1.0
 
 ### 阅读顺序
 
-（待补充）
+1. [README.md](README.md)（mode → [README-s](README-s.md) / [README-c](README-c.md)）
+2. [DESIGN.md](DESIGN.md)（§2.2.1）
+3. [knowledge/](knowledge/README.md) → 五视角
+4. mode=s：solutions → analysis → requirements
 
 ### 关联索引
 

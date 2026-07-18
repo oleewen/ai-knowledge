@@ -54,8 +54,8 @@ def parse_args():
                         help='1=交互候选; 2=打勾; 3/excerpt=架构摘录; all=1→2→3; 1-scan/1-write=Skill')
     parser.add_argument('--keywords', nargs='+', default=[],
                         help='种子词（phase 含 1/1-scan/1-write/all 时必填）')
-    parser.add_argument('--scan-dir', default='docs/architecture/',
-                        help='共现扫描目录')
+    parser.add_argument('--scan-dir', default='system/knowledge/',
+                        help='共现扫描目录（系统默认 system/knowledge/；公司用 company/knowledge/）')
     parser.add_argument('--top-n', type=positive_int, default=30,
                         help='Top-N 候选（正整数）')
     parser.add_argument('--selected', default=None,
@@ -108,8 +108,8 @@ def find_relevant_sections(seed_keywords, scan_dir, target_file):
 
     排除逻辑：计算 target_file 所在目录相对于 scan_dir 的直接子目录名，
     在 os.walk 的 dirs 过滤中排除该子目录名。
-    示例：target_file=docs/architecture/overview/spec-overview.md，
-          scan_dir=docs/architecture/，则排除 overview 子目录。
+    示例：target_file=system/knowledge/overview/NAME-overview.md，
+          scan_dir=system/knowledge/，则排除 overview 子目录。
     """
     matched_texts = []
     cache = {}  # filepath -> sections

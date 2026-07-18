@@ -15,7 +15,7 @@
 示例提示：
 
 ```text
---scan-dir 默认 docs/architecture/（回车确认或改路径）
+--scan-dir 默认 system/knowledge/（回车确认或改路径；公司用 company/knowledge/）
 --top-n 默认 30（回车确认或改数字）
 ```
 

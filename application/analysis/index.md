@@ -12,7 +12,8 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md)
+2. 上游 [../solutions/](../solutions/README.md) → `ANALYSIS-*.md` → [../requirements/](../requirements/README.md)
 
 ## 关联索引
 

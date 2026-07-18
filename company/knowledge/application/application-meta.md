@@ -35,17 +35,18 @@ title: 应用视角元数据（company/knowledge/application）
 
 ---
 
-## 4. 必填字段
+## 4. 字段（OKF）
 
-### 通用字段
+**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `company`）。详见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2。
+
+**正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。
+
+### SYS 专属（正文）
 
 | 字段 | 说明 |
 | --- | --- |
-| hierarchy | 固定为 `SYS` |
-| full_id | 规范 ID，如 `SYS-BILLING-APPEAL` |
-| name | 中文名称 |
-| description | 实体描述 |
-| evidence_source | 证据来源（如 `chapters/application-overview.md`） |
+| architecture | apps / external_dependencies / ddd_layers（摘要即可） |
+| definition_scope | 本层主定义多为 `local` |
 
 ---
 
