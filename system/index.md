@@ -14,7 +14,7 @@ okf_version: 0.1
 * [analysis](analysis/README.md)
 * [application-APPNAME](application-APPNAME/README.md)
 * [changelogs](changelogs/README.md)
-* [knowledge](knowledge/README.md) - 知识库 · 五视角实体 ID 索引（SSOT）
+* [knowledge](knowledge/README.md)
 * [requirements](requirements/README.md)
 * [solutions](solutions/README.md)
 
@@ -39,14 +39,3 @@ okf_version: 0.1
 
 * 上一级说明：[../README.md](../README.md)
 <!-- okf:end -->
-
-
-
-
-### 目录索引
-
-* [INDEX-GUIDE.md](INDEX-GUIDE.md)
-* [README.md](README.md)
-* [DESIGN.md](DESIGN.md)
-* [knowledge/README.md](knowledge/README.md)
-* [changelogs/README.md](changelogs/README.md)

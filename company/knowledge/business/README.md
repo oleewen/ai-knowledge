@@ -14,10 +14,10 @@ title: 业务架构
 | 业务域划分 | [chapters/business-domain-division.md](chapters/business-domain-division.md) | L1 业务域及域间关系 |
 | 商业模式 | [chapters/business-model.md](chapters/business-model.md) | 商业画布与收支模型 |
 | 价值链 | [chapters/business-value-chain.md](chapters/business-value-chain.md) | 价值创造与竞争壁垒 |
-| 业务能力 | [chapters/business-capability.md](chapters/business-capability.md) | 能力框架与成熟度 |
 | 组织角色 | [chapters/business-roles-and-organization.md](chapters/business-roles-and-organization.md) | 干系人与组织协作 |
+| 业务能力 | [chapters/business-capability.md](chapters/business-capability.md) | 能力框架与成熟度 |
 
 ## 实体
 
 * 元数据：[business-meta.md](business-meta.md)
-* 样例：[BD-EXAMPLE/](BD-EXAMPLE/README.md)（含 CAP / CAP-L1）
+* 样例：[BD-EXAMPLE/](BD-EXAMPLE/index.md)（含 CAP / CAP-L1）

@@ -3,29 +3,14 @@ type: Documentation
 ---
 # knowledge（应用侧知识主体）
 
-索引入口见 [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 与 [index.md](index.md)。前者负责 `application/` 九章地图，后者负责 `knowledge/` 实体索引与当前目录导航。
+五视角实体 SSOT。九章：[../INDEX-GUIDE.md](../INDEX-GUIDE.md)；索引：[index.md](index.md)；契约：[../DESIGN.md](../DESIGN.md)。
 
-**应用侧知识树**（联邦单元内 `knowledge/`）：承接 **业务 / 产品 / 应用 / 数据 / 技术** 五视角的实体登记、实现映射与应用层实体主定义；治理与命名 SSOT 见 [`../../agent/knowledge/knowledge-governance.md`](../../agent/knowledge/knowledge-governance.md)。与中央库 `application/knowledge/` 同构。中央库阶段文档（solutions、analysis）见 [`../solutions`](../solutions/README.md)、[`../analysis`](../analysis/README.md)；本应用 requirements 以本树及中央库为事实源；归档时可回写。
+| 文件 | 视角 | 概述 |
+|------|------|------|
+| [business/README.md](business/README.md) | 业务 | BD→AB 映射与实现引用 |
+| [product/README.md](product/README.md) | 产品 | PL→UC/BR、BP |
+| [application/README.md](application/README.md) | 应用 | SYS/APP/MS + API SSOT |
+| [data/README.md](data/README.md) | 数据 | MDG ref + DS/ENT + TBL SSOT |
+| [technical/README.md](technical/README.md) | 技术 | TSD ref + MW/CMP SSOT |
 
----
-
-## 五视角实体 ID 与登记
-
-- **链上实体 ID 登记表**：[index.md](index.md) — business / product / application / data / technical 五视角（**不含** `DIR-*` 联邦/阶段）。`application/` 入口见 [../README.md](../README.md)；仓库根 Index Guide 见 [../../INDEX-GUIDE.md](../../INDEX-GUIDE.md) **§1.2**。
-- **视角实例索引**：各视角实体文件 `{ID}.md`（OKF 概念实体 SSOT）；ID 登记表 [index.md](index.md)（扫描生成）。
-- **机器契约**：[../../agent/skills/docs-build/SKILL.md](../../agent/skills/docs-build/SKILL.md)（ssot、symmetry、meta_read_order）；[knowledge-meta.md](knowledge-meta.md) 保留联邦/目录元数据。
-
-## 维护（三步）
-
-1. 改前读 **机器契约**（见上）、本目录 [knowledge-meta.md](knowledge-meta.md)（目录元数据）与目标视角 `README.md`、相关 `{perspective}-meta.md`
-2. 只增删改 **ID** 与 Markdown 约定字段；跨视角不写重复叙述
-3. 更新 [index.md](index.md)（各视角实体 ID）或该视角 README 中的登记 / 示例（若影响导航）
-
-**索引指针**：各视角实体 ID [index.md](index.md)；仓库根九章索引 [../../INDEX-GUIDE.md](../../INDEX-GUIDE.md)；`application/` 九章索引与中央知识库挂载建联登记 [../INDEX-GUIDE.md](../INDEX-GUIDE.md)；`application/` 目录索引页 [../index.md](../index.md)。
-
----
-
-## 约定（最小集）
-
-- 文内路径优先可解析的相对路径（如自 `knowledge/` 起）
-- PL/PM/FT、SYS、DS/ENT、MW/CMP 等元数据 **集中在各视角根目录**，细则见各 `README.md` 与 DESIGN §2
+机器契约：[knowledge-meta.md](knowledge-meta.md) · [naming-conventions](../../agent/knowledge/naming-conventions.md)

@@ -4,11 +4,12 @@
 
 ## 子目录
 
-* [MW-EXAMPLE](MW-EXAMPLE/README.md) - 仅用于演示技术视角 MW 数据结构（示例）。
+* [MW-EXAMPLE](MW-EXAMPLE/index.md) - 仅用于演示技术视角 MW 数据结构（示例）。
 
 ## 目录文件
 
-* [TSD-EXAMPLE.md](TSD-EXAMPLE.md)
+* [示例技术域](TSD-EXAMPLE.md) - 仅用于演示技术视角 TSD 根层结构（示例）。
+
 * [technical-meta.md](technical-meta.md)
 
 ## 阅读顺序

@@ -12,4 +12,6 @@ tags: [governance]
 - `mode=s`（`--mode=standalone`）：请读 [README-s.md](README-s.md)
 - `mode=c`（`--mode=central`，**中央知识库挂载建联**）：请读 [README-c.md](README-c.md)
 
-九章索引指南见 [INDEX-GUIDE.md](INDEX-GUIDE.md)；目录索引页与 **中央知识库挂载建联登记**见 [index.md](index.md)。
+九章索引指南见 [INDEX-GUIDE.md](INDEX-GUIDE.md)；目录索引页见 [index.md](index.md)。
+
+机器元数据（非人类必读）：[docs-meta.md](docs-meta.md)

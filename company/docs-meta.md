@@ -35,6 +35,7 @@ child_directories:
 child_files:
   - "README.md"
   - "index.md"
+  - "INDEX-GUIDE.md"
   - "DESIGN.md"
   - "docs-meta.md"
   - "knowledge-links.yaml"

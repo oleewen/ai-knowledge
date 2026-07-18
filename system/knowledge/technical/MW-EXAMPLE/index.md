@@ -1,7 +1,5 @@
 # MW-EXAMPLE
 
-目录说明见 [README.md](README.md)。
-
 ## 子目录
 
 （无）

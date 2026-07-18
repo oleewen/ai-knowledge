@@ -19,4 +19,6 @@ title: "系统知识库（顶层 `system/`）"
 
 模板占位：`application-APPNAME/`、`knowledge/overview/NAME-overview.md`、`*-EXAMPLE`（最小演示链，可替换）。
 
+机器元数据（非人类必读）：[docs-meta.md](docs-meta.md)
+
 规范：[DESIGN.md](DESIGN.md) · [okf-spec](../agent/knowledge/okf-spec.md) · [knowledge-layout](../agent/references/knowledge-layout.md)

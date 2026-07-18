@@ -1,10 +1,8 @@
 # BSD-EXAMPLE
 
-目录说明见 [README.md](README.md)。
-
 ## 子目录
 
-* [BC-EXAMPLE](BC-EXAMPLE/README.md) - 仅用于演示业务视角数据结构（示例）。
+* [BC-EXAMPLE](BC-EXAMPLE/index.md) - 仅用于演示业务视角数据结构（示例）。
 
 ## 目录文件
 

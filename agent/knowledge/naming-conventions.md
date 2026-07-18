@@ -106,7 +106,7 @@
 | business | `knowledge/business/BSD-EXAMPLE/{ID}.md`（域扁平树） | `Business Domain` / … |
 | product | `knowledge/product/PM-EXAMPLE/{ID}.md` | `Product Line` / … |
 | application | `knowledge/application/MS-EXAMPLE/{ID}.md` | `System` / … |
-| data | `knowledge/data/ENT-EXAMPLE/{ID}.md` | `Data Store` / `Entity` |
+| data | `knowledge/data/DS-EXAMPLE/{ID}.md`（ENT 挂 DS 目录） | `Data Store` / `Entity` |
 | technical | `knowledge/technical/MW-EXAMPLE/{ID}.md` | `Middleware Binding` / `Component` |
 
 ---

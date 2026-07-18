@@ -35,7 +35,7 @@ title: 应用视角元数据（system/knowledge/application）
 | --- | --- | --- | --- | --- |
 | 1 | sys | SYS | `SYS-{NAME}` | —（reference → company） |
 | 2 | app | APP | `APP-{NAME}` | SYS |
-| 3 | ms | MS | `MS-{NNN}` 或 `MS-{NAME}` | APP |
+| 3 | ms | MS | `MS-{NAME}` | APP |
 
 ---
 

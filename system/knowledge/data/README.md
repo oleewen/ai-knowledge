@@ -13,11 +13,12 @@ title: 数据架构
 | 数据概述 | [chapters/data-overview.md](chapters/data-overview.md) | 原则与生命周期 |
 | 数据模型 | [chapters/data-model.md](chapters/data-model.md) | 源与结构 |
 | 数据存储 | [chapters/data-storage.md](chapters/data-storage.md) | 选型与分布 |
+| 数据分析 | [chapters/data-analytics.md](chapters/data-analytics.md) | 主题与口径 |
 | 数据流转 | [chapters/data-flow.md](chapters/data-flow.md) | 管道（按需） |
 
 ## 实体
 
 * 元数据：[data-meta.md](data-meta.md)
-* 样例：`MDG-EXAMPLE.md`（ref）· `DS-EXAMPLE/`
+* 样例：`MDG-EXAMPLE.md`（ref）· [DS-EXAMPLE/](DS-EXAMPLE/index.md)
 
 公司层对照：[company/knowledge/data](../../../company/knowledge/data/README.md)

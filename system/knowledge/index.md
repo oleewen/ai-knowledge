@@ -1,5 +1,4 @@
-# 知识库 · 五视角实体 ID 索引（SSOT）
-
+# knowledge
 
 目录说明见 [README.md](README.md)。
 
@@ -61,7 +60,7 @@
 
 ---
 
-## §3 应用视角（application · SYS → APP → MS → API）
+## §3 应用视角（application · SYS → APP → MS）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
@@ -71,10 +70,11 @@
 
 ---
 
-## §4 数据视角（data · DS → ENT）
+## §4 数据视角（data · MDG → DS → ENT）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
+| MDG | EXAMPLE |  | 示例主数据域 | `data/MDG-EXAMPLE.md` |
 | DS | EXAMPLE |  | 示例数据源 | `data/DS-EXAMPLE/DS-EXAMPLE.md` |
 | ENT | EXAMPLE |  | 示例实体 | `data/DS-EXAMPLE/ENT-EXAMPLE.md` |
 
@@ -98,8 +98,9 @@
 | 索引 ID | 命名式 ID（锚点目录） |
 |---------|----------------------|
 | BD-EXAMPLE | `business/BD-EXAMPLE.md` |
-| PL-EXAMPLE | `product/PL-EXAMPLE/` |
-| SYS-EXAMPLE | `application/SYS-EXAMPLE/` |
+| PL-EXAMPLE | `product/PL-EXAMPLE.md` |
+| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |
+| MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |
 | DS-EXAMPLE | `data/DS-EXAMPLE/` |
 
 ---

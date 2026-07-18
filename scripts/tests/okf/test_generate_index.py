@@ -108,12 +108,44 @@ def test_knowledge_index_strips_frontmatter():
         assert rendered.lstrip().startswith("# 知识库")
 
 
+def test_system_knowledge_index_sections_and_mapping():
+    with tempfile.TemporaryDirectory() as tmp:
+        bundle = Path(tmp) / "system"
+        (bundle / "knowledge").mkdir(parents=True)
+        rendered = generate_knowledge_index.render_knowledge_index(
+            bundle, None, bundle="system"
+        )
+        assert "§3 应用视角（application · SYS → APP → MS）" in rendered
+        assert "§4 数据视角（data · MDG → DS → ENT）" in rendered
+        assert "| PL-EXAMPLE | `product/PL-EXAMPLE.md` |" in rendered
+        assert "| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |" in rendered
+        assert "| MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |" in rendered
+        assert "SYS → APP → MS → API" not in rendered
+
+
+def test_application_knowledge_index_sections_and_mapping():
+    with tempfile.TemporaryDirectory() as tmp:
+        bundle = Path(tmp) / "application"
+        (bundle / "knowledge").mkdir(parents=True)
+        rendered = generate_knowledge_index.render_knowledge_index(
+            bundle, None, bundle="application"
+        )
+        assert "§4 数据视角（data · MDG → DS → ENT → TBL）" in rendered
+        assert "§5 技术视角（technical · TSD → MW → CMP）" in rendered
+        assert "| PL-EXAMPLE | `product/PL-EXAMPLE.md` |" in rendered
+        assert "| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |" in rendered
+        assert "| TBL-EXAMPLE | `data/DS-EXAMPLE/TBL-EXAMPLE.md` |" in rendered
+        assert "business/BSD-EXAMPLE/" not in rendered
+
+
 def main() -> None:
     tests = [
         test_render_index_lists_concepts_and_subdirs,
         test_preserve_bundle_root_okf_version,
         test_knowledge_index_id_suffix_and_evidence,
         test_knowledge_index_strips_frontmatter,
+        test_system_knowledge_index_sections_and_mapping,
+        test_application_knowledge_index_sections_and_mapping,
     ]
     for fn in tests:
         fn()

@@ -4,8 +4,8 @@
 
 ## 子目录
 
-* [MW-EXAMPLE](MW-EXAMPLE/README.md) - 系统层 reference；正文 SSOT 在 application。
-* [chapters](chapters/README.md)
+* [MW-EXAMPLE](MW-EXAMPLE/index.md) - 系统层 reference；正文 SSOT 在 application。
+* [chapters](chapters/index.md)
 
 ## 目录文件
 
@@ -17,7 +17,7 @@
 
 1. [README.md](README.md)
 2. [technical-meta.md](technical-meta.md)
-3. [chapters/README.md](chapters/README.md)
+3. [chapters/index.md](chapters/index.md)
 4. [TSD-EXAMPLE.md](TSD-EXAMPLE.md)
 
 ## 关联索引

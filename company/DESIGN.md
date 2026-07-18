@@ -62,9 +62,9 @@ title: 公司知识库设计
 | 产品 | PL、度量、体验 |
 | 应用 | SYS、系统目录与治理 |
 | 数据 | MDG、治理、湖仓、安全 |
-| 技术 | TPL：云、DevOps、安全、开发环境、可观测标准 |
+| 技术 | TPL：云、DevOps、安全、开发环境、可观测 |
 
-系统层落地见 [system/DESIGN.md](../system/DESIGN.md) §五架构视角。
+系统层落地见 [system/DESIGN.md](../system/DESIGN.md#五视角系统层聚焦)。
 
 ### 系统镜像槽位
 

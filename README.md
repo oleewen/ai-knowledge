@@ -137,7 +137,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 ./
 ├── README.md / AGENTS.md / INDEX-GUIDE.md / index.md / quick-start.md
 ├── application/          # 应用知识主库：knowledge、阶段产物、changelogs
-├── system/               # 系统库：architecture/、application-{name}/ 槽位
+├── system/               # 系统库：knowledge/、application-{name}/ 槽位、SDD
 ├── company/              # 公司库：knowledge/、system-{name}/ 槽位
 ├── scripts/              # docs-install、agent-install、bootstrap、OKF（validate-okf、okf-migrate）
 ├── agent/                # rules/、skills/（含 docs-okf）、hooks/、scripts/

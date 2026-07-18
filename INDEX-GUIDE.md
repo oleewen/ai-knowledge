@@ -1,7 +1,7 @@
 # ai-knowledge INDEX-GUIDE
 
-> **最后更新**: 2026-06-22  
-> **文档定位**: 面向 AI Agent 与维护者的仓库根九章索引指南；目录索引页见 [index.md](index.md)，与 [application/index.md](application/index.md)、[system/index.md](system/index.md) 互为补充。
+> **最后更新**: 2026-07-18  
+> **文档定位**: 面向 AI Agent 与维护者的仓库根九章索引指南；目录索引页见 [index.md](index.md)，与 [application/index.md](application/index.md)、[system/index.md](system/index.md)、[company/index.md](company/index.md) 互为补充。
 
 ---
 
@@ -19,7 +19,7 @@
 | 应用侧知识主库 | [application/README.md](application/README.md) | SDD 主线、五视角、实现登记与应用层实体主库 |
 | 应用侧目录索引 | [application/index.md](application/index.md) | 应用目录索引与 OKF 渐进披露入口 |
 | 应用侧九章索引 | [application/INDEX-GUIDE.md](application/INDEX-GUIDE.md) | `application/` 文档根九章索引指南 |
-| 系统知识库 | [system/README.md](system/README.md) | `architecture/`（五视角文档）、`application-{name}/` 联邦槽位、`analysis/` |
+| 系统知识库 | [system/README.md](system/README.md) | `knowledge/`（五视角 + overview）、`application-{name}/` 联邦槽位、SDD（solutions/analysis/requirements） |
 | 系统侧目录索引 | [system/index.md](system/index.md) | `system/` 树内目录索引与 OKF 渐进披露入口 |
 | 系统侧九章索引 | [system/INDEX-GUIDE.md](system/INDEX-GUIDE.md) | `system/` 文档根九章索引指南 |
 | 公司知识库 | [company/README.md](company/README.md) | `knowledge/`（五视角企业架构）、`system-{name}/` 联邦槽位、`changelogs/`、`solutions/`、`analysis/` |
@@ -37,7 +37,7 @@
 - **核心定位**: 企业级全局知识底座（Markdown/YAML + Bash 初始化链）；**无业务应用运行时**
 - **技术栈**: Markdown、YAML；Bash 5+；Git；可选 `curl`、`rsync`（脚本可回退 `cp`）
 - **语言/构建**: 不适用传统应用「启动类」；可运行项为 Bash 脚本与可选 `scripts/tests/run.sh`（见 [scripts/README.md](scripts/README.md)）
-- **仓库规模（git 已跟踪）**: 共 **657** 个文件；扩展名约 **503** `.md`、**78** `.sh`、**36** `.json`、**28** `.py`、**3** `.yaml`、**3** `.html`（统计来源：`git ls-files`，2026-06-22）
+- **仓库规模（git 已跟踪）**: 共 **708** 个文件；扩展名约 **549** `.md`、**86** `.sh`、**35** `.json`、**29** `.py`、**3** `.yaml`、**3** `.html`（统计来源：`git ls-files`，2026-07-18）
 
 ---
 
@@ -73,7 +73,7 @@ flowchart LR
   sc -->|"agent-install"| ag
   sc --> tgt
   app -->|"DESIGN/CONTRIBUTING 约束"| app
-  sys -->|"architecture/ 五视角文档"| sys
+  sys -->|"knowledge/ 五视角 + overview"| sys
   co -->|"knowledge/ 五视角企业架构"| co
 ```
 
@@ -123,7 +123,7 @@ flowchart LR
 | 聚合 | 职责 | 关键落点 |
 | ------ | ------ | ---------- |
 | 治理规则 | 术语、原则、命名、ADR 模板 | [agent/knowledge/knowledge-governance.md](agent/knowledge/knowledge-governance.md)、[agent/knowledge/README.md](agent/knowledge/README.md) |
-| 五视角实体 | BC/AGG、PL/PM/FT/UC、SYS/APP/MS、DS/ENT、MW/CMP 等 | [application/knowledge/](application/knowledge/) |
+| 五视角实体 | 应用层首次含 API/TBL/MW/CMP；另有 BC/AGG、PL/PM/FT/UC、SYS/APP/MS、DS/ENT 等映射与 reference | [application/knowledge/](application/knowledge/)（索引见 [knowledge/index.md](application/knowledge/index.md)） |
 | 阶段产物 | SOLUTION / ANALYSIS / REQUIREMENT 包 | `application/solutions/` 等 |
 
 ### 4.3 领域服务（协作能力）
@@ -188,8 +188,8 @@ stateDiagram-v2
 
 | 数据源 | 类型 | 用途 |
 | -------- | ------ | ------ |
-| `application/knowledge/**/*.yaml` 等 | YAML 元数据与实体 | 五视角实体与关系 |
-| `{ID}.md` / `*-meta.md` | Markdown | OKF 概念实体与视角元数据，见各视角目录 |
+| `{ID}.md`（OKF concept） | Markdown + YAML frontmatter | 五视角实体 SSOT；索引见各 bundle `knowledge/index.md` |
+| `*-meta.md` / `docs-meta.md` | Markdown | 视角/目录机器契约 |
 | Git 仓库 | 文本与脚本 | 版本与协作真相源 |
 
 ### 6.2 实体映射
@@ -238,11 +238,11 @@ stateDiagram-v2
 
 | 类型 | 数量（已跟踪） | 描述 |
 | ------ | ---------------- | ------ |
-| 全库文件 | 657 | `git ls-files` 2026-06-22 |
-| Markdown | 503 | 主体文档、OKF concept 与 Skill |
-| Shell | 78 | 初始化、OKF 与测试脚本 |
-| JSON | 36 | 评测与知识提取等 |
-| Python | 28 | 钩子、OKF 与辅助脚本 |
+| 全库文件 | 708 | `git ls-files` 2026-07-18 |
+| Markdown | 549 | 主体文档、OKF concept 与 Skill |
+| Shell | 86 | 初始化、OKF 与测试脚本 |
+| JSON | 35 | 评测与知识提取等 |
+| Python | 29 | 钩子、OKF 与辅助脚本 |
 | YAML | 3 | 元数据与 knowledge-links |
 | HTML | 3 | OKF viz 等 |
 
@@ -322,4 +322,4 @@ stateDiagram-v2
 
 ---
 
-**索引元数据**: 本次运行 **mode=full**，**depth=3**，**since_ms=0**（全量），输出 **./INDEX-GUIDE.md**；运行记录见 [application/changelogs/INDEXING-LOG.md](application/changelogs/INDEXING-LOG.md)（2026-06-22 四域 full d3）。
+**索引元数据**: 指针对齐修订 **2026-07-18**（`architecture/` → `knowledge/`、规模统计刷新）；完整九章重扫仍以 `/docs-indexing` 与 [application/changelogs/INDEXING-LOG.md](application/changelogs/INDEXING-LOG.md) 为准。

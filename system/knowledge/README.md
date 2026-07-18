@@ -3,20 +3,14 @@ type: Documentation
 ---
 # 系统知识库 — 架构文档
 
-索引入口见 [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 与 [index.md](index.md)。前者负责 `system/` 九章地图，后者负责 `knowledge/` 目录索引与渐进披露。
-
-[返回上一级 · 系统知识库顶层](../README.md)
-
-本目录为 **系统知识库** 侧五视角架构入口；体例见各视角 README（二级导语 + 三级小节）。
-
-> **共享规范 SSOT**：概念实体、索引入口、叙事与元数据的分型规则统一见 [../../agent/knowledge/okf-spec.md](../../agent/knowledge/okf-spec.md)。
+五视角入口。九章地图：[../INDEX-GUIDE.md](../INDEX-GUIDE.md)；目录索引：[index.md](index.md)；契约：[../DESIGN.md](../DESIGN.md)；OKF：[okf-spec](../../agent/knowledge/okf-spec.md)。
 
 | 文件 | 视角 | 概述 |
 | ------ | ------ | ------ |
-| [business/README.md](business/README.md) | 业务架构 | 本系统业务背景、域划分、流程、能力地图与术语，支撑业务决策与跨团队对齐。 |
-| [product/README.md](product/README.md) | 产品架构 | 本产品定位、功能结构与用户旅程，衔接业务目标与系统交付。 |
-| [application/README.md](application/README.md) | 应用架构 | 本系统边界、服务与领域模型、集成与接口。 |
-| [data/README.md](data/README.md) | 数据架构 | 本系统数据模型、存储与流转，支撑数据生命周期。 |
-| [technical/README.md](technical/README.md) | 技术架构 | 本系统部署、中间件、性能扩展与高可用，支撑运行与交付。实体 SSOT：`technical-meta.md`、`index.md`（TSD） |
+| [business/README.md](business/README.md) | 业务 | 域划分、流程、能力与术语 |
+| [product/README.md](product/README.md) | 产品 | 定位、功能与旅程 |
+| [application/README.md](application/README.md) | 应用 | 边界、服务与领域模型 |
+| [data/README.md](data/README.md) | 数据 | 模型、存储、分析与流转 |
+| [technical/README.md](technical/README.md) | 技术 | 部署、中间件、性能、HA、可观测 |
 
-与公司知识库侧 [`../../company/knowledge/`](../../company/knowledge/README.md) 对照阅读；系统库入口见 [`../README.md`](../README.md)，系统库目录索引页见 [`../index.md`](../index.md)。
+公司对照：[company/knowledge](../../company/knowledge/README.md)

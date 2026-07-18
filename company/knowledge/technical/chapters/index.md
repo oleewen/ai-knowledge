@@ -9,6 +9,7 @@
 * [technical-dev-environment.md](technical-dev-environment.md)
 * [technical-devops.md](technical-devops.md)
 * [technical-infrastructure.md](technical-infrastructure.md)
+* [technical-observability.md](technical-observability.md)
 * [technical-overview.md](technical-overview.md)
 * [technical-security.md](technical-security.md)
 

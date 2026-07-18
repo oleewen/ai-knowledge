@@ -4,9 +4,9 @@
 
 ## 子目录
 
-* [APP-EXAMPLE](APP-EXAMPLE/README.md) - 示例应用
+* [APP-EXAMPLE](APP-EXAMPLE/index.md) - 示例应用
 * [MS-EXAMPLE](MS-EXAMPLE/index.md) - 示例微服务
-* [chapters](chapters/README.md)
+* [chapters](chapters/index.md)
 
 ## 目录文件
 
@@ -18,7 +18,7 @@
 
 1. [README.md](README.md)
 2. [application-meta.md](application-meta.md)
-3. [chapters/README.md](chapters/README.md)
+3. [chapters/index.md](chapters/index.md)
 4. [SYS-EXAMPLE.md](SYS-EXAMPLE.md)
 
 ## 关联索引

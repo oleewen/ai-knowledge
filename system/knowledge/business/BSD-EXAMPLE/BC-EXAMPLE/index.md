@@ -1,10 +1,8 @@
 # BC-EXAMPLE
 
-目录说明见 [README.md](README.md)。
-
 ## 子目录
 
-* [AGG-EXAMPLE](AGG-EXAMPLE/README.md) - 仅用于演示业务视角数据结构（示例）。
+* [AGG-EXAMPLE](AGG-EXAMPLE/index.md) - 仅用于演示业务视角数据结构（示例）。
 
 ## 目录文件
 

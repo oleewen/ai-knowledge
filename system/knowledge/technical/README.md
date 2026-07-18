@@ -15,10 +15,11 @@ title: 技术架构
 | 中间件 | [chapters/technical-middleware.md](chapters/technical-middleware.md) | 平台能力与绑定（指向 MW） |
 | 性能扩展 | [chapters/technical-performance-scalability.md](chapters/technical-performance-scalability.md) | 容量与扩展 |
 | 高可用与容灾 | [chapters/technical-ha-and-dr.md](chapters/technical-ha-and-dr.md) | 可用性与韧性 |
+| 可观测性 | [chapters/technical-observability.md](chapters/technical-observability.md) | 指标、日志、链路与告警 |
 
 ## 实体
 
 * 元数据：[technical-meta.md](technical-meta.md)
-* 样例：[TSD-EXAMPLE.md](TSD-EXAMPLE.md) · [MW-EXAMPLE/](MW-EXAMPLE/README.md)（ref → application）
+* 样例：[TSD-EXAMPLE.md](TSD-EXAMPLE.md) · [MW-EXAMPLE/](MW-EXAMPLE/index.md)（ref → application）
 
 公司层对照：[company/knowledge/technical](../../../company/knowledge/technical/README.md)

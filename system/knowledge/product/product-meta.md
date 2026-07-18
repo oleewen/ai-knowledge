@@ -4,7 +4,7 @@ title: 产品视角元数据（system/knowledge/product）
 ---
 # 产品视角元数据（system/knowledge/product）
 
-系统级产品版图（PL→PM→FT→FR→UC/BR）视角元数据 SSOT。实例索引见 [../index.md](../index.md)。
+系统级产品版图（PL→PM→FT→FR→UC/BR · BP）视角元数据 SSOT。实例索引见 [../index.md](../index.md)。
 
 ---
 
@@ -28,6 +28,7 @@ title: 产品视角元数据（system/knowledge/product）
 | 3 | FT | 功能点（系统层首次定义） |
 | 4 | FR | 功能需求（系统层首次定义） |
 | 5 | UC / BR | 用例 / 业务规则（系统层首次定义；挂 FR） |
+| 6 | BP | 业务流程（系统层首次定义；可挂 PL/PM，非 FR 子树） |
 
 ---
 
@@ -41,6 +42,7 @@ title: 产品视角元数据（system/knowledge/product）
 | 4 | fr | FR | `FR-{NAME}` | FT |
 | 5 | uc | UC | `UC-{NAME}` | FR |
 | 6 | br | BR | `BR-{NAME}` | FR |
+| 7 | bp | BP | `BP-{NAME}` | PL / PM（可选） |
 
 ---
 
@@ -50,7 +52,7 @@ title: 产品视角元数据（system/knowledge/product）
 
 | 字段 | 说明 |
 | --- | --- |
-| hierarchy | `PL` / `PM` / `FT` / `FR` / `UC` / `BR` |
+| hierarchy | `PL` / `PM` / `FT` / `FR` / `UC` / `BR` / `BP` |
 | full_id | 规范 ID |
 | name | 中文名称 |
 | description | 实体描述 |
@@ -67,6 +69,7 @@ title: 产品视角元数据（system/knowledge/product）
 | FR | `parent_id` |
 | UC | `parent_id`、`map_to_api_id`（推荐；应用层补全） |
 | BR | `parent_id` |
+| BP | `parent_id`（可选） |
 
 ---
 

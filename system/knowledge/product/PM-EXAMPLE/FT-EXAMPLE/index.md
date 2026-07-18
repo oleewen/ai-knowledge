@@ -1,10 +1,8 @@
 # FT-EXAMPLE
 
-目录说明见 [README.md](README.md)。
-
 ## 子目录
 
-* [FR-EXAMPLE](FR-EXAMPLE/README.md) - 仅用于演示产品视角数据结构（示例）。
+* [FR-EXAMPLE](FR-EXAMPLE/index.md) - 仅用于演示产品视角数据结构（示例）。
 
 ## 目录文件
 

@@ -94,7 +94,7 @@ title: 应用知识文档库 — 设计方案摘录
 - **层级**：TSD → MW → CMP（公司 **TPL**、系统 **TSD** 在对应层首次定义；本层补齐 TSD reference）
 - **约定**：`technical-meta.md` 在 `knowledge/technical/` 根目录；`TSD-{NAME}.md` 作为 reference 根文件；目录从 `MW-{NAME}/` 开始。MW 含 `parent_tsd_id`、`bound_app_id`；CMP 含 `maven_coordinates`、`parent_mw_id` 或 `parent_app_id`。
 
-> 系统层五视角关注域见 [system/DESIGN.md](../system/DESIGN.md) §五架构视角；公司层五视角见 [company/DESIGN.md](../company/DESIGN.md) §公司层五视角聚焦范围；跨层实体首次定义见 §2.2.1。
+> 系统层五视角关注域见 [system/DESIGN.md](../system/DESIGN.md#五视角系统层聚焦)；公司层五视角见 [company/DESIGN.md](../company/DESIGN.md#五视角聚焦)；跨层实体首次定义见 §2.2.1。
 
 ### 2.2.1 跨层实体首次定义层级
 

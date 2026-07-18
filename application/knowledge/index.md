@@ -1,4 +1,4 @@
-# 知识库 · 五视角实体 ID 索引（SSOT）
+# knowledge
 
 目录说明见 [README.md](README.md)。
 
@@ -76,25 +76,28 @@
 
 ---
 
-## §4 数据视角（data · DS → ENT）
+## §4 数据视角（data · MDG → DS → ENT → TBL）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
+| MDG | EXAMPLE |  | 示例主数据域 | `data/MDG-EXAMPLE.md` |
 | DS | EXAMPLE |  | 示例数据源 | `data/DS-EXAMPLE/DS-EXAMPLE.md` |
 | ENT | EXAMPLE |  | 示例实体 | `data/DS-EXAMPLE/ENT-EXAMPLE.md` |
+| TBL | EXAMPLE |  | 示例数据表 | `data/DS-EXAMPLE/TBL-EXAMPLE.md` |
 
 ---
 
-## §5 技术视角（technical · MW → CMP）
+## §5 技术视角（technical · TSD → MW → CMP）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
+| TSD | EXAMPLE |  | 示例技术域 | `technical/TSD-EXAMPLE.md` |
 | MW | EXAMPLE |  | 示例中间件绑定 | `technical/MW-EXAMPLE/MW-EXAMPLE.md` |
 | CMP | EXAMPLE |  | 示例组件 | `technical/MW-EXAMPLE/CMP-EXAMPLE.md` |
 
 ---
 
-> 公司级 **TPL-***、系统级 **TSD-*** 不在本索引登记；见 `company/knowledge/technical/`、`system/knowledge/technical/`。
+> 公司级 **TPL-*** 不在本索引登记（见 `company/knowledge/technical/`）。本层登记 **TSD/MDG** reference 与 **API/TBL/MW/CMP** SSOT。
 
 ---
 
@@ -102,9 +105,12 @@
 
 | 索引 ID | 命名式 ID（锚点目录） |
 |---------|----------------------|
-| BD-EXAMPLE | `business/BSD-EXAMPLE/` |
-| PL-EXAMPLE | `product/PL-EXAMPLE/` |
-| SYS-EXAMPLE | `application/SYS-EXAMPLE/` |
+| BD-EXAMPLE | `business/BD-EXAMPLE.md` |
+| PL-EXAMPLE | `product/PL-EXAMPLE.md` |
+| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |
+| MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |
+| TBL-EXAMPLE | `data/DS-EXAMPLE/TBL-EXAMPLE.md` |
+| TSD-EXAMPLE | `technical/TSD-EXAMPLE.md` |
 | DS-EXAMPLE | `data/DS-EXAMPLE/` |
 
 ---

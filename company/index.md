@@ -36,14 +36,3 @@ okf_version: 0.1
 
 * 上一级说明：[../README.md](../README.md)
 <!-- okf:end -->
-
-
-
-
-## 目录索引
-
-* [INDEX-GUIDE.md](INDEX-GUIDE.md)
-* [README.md](README.md)
-* [DESIGN.md](DESIGN.md)
-* [knowledge/README.md](knowledge/README.md)
-* [changelogs/README.md](changelogs/README.md)

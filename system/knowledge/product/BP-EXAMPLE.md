@@ -21,21 +21,7 @@ layer_scope: system
 
 ## 详细说明
 
-## BP-M
-
-- (none)
-
-## BP-S
-
-### BP-S-001
-
-- (none)
-
-## BP-B
-
-### BP-B-001
-
-- (none)
+结构占位：演示 `BP-{NAME}.md` 平铺于 `knowledge/product/`。
 
 ## 依据与证据
 

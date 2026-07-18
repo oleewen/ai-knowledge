@@ -4,7 +4,7 @@
 
 ## 子目录
 
-* [BSD-EXAMPLE](BSD-EXAMPLE/README.md) - 仅用于演示业务视角数据结构（示例）。
+* [BSD-EXAMPLE](BSD-EXAMPLE/index.md) - 仅用于演示业务视角数据结构（示例）。
 
 ## 目录文件
 

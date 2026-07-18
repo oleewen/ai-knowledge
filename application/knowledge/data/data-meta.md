@@ -3,7 +3,7 @@ type: Perspective Meta
 title: 数据视角元数据（application/knowledge/data）
 ---
 
-应用侧数据版图（MDG→DS→ENT）实体登记与物理落地元数据。实例索引见 [../index.md](../index.md)（§4，扫描生成；实体文件 `{ID}.md` 为 SSOT）。
+应用侧数据版图（MDG→DS→ENT→TBL）实体登记与物理落地元数据。实例索引见 [../index.md](../index.md)（§4，扫描生成；实体文件 `{ID}.md` 为 SSOT）。
 
 ---
 
@@ -25,7 +25,8 @@ title: 数据视角元数据（application/knowledge/data）
 | --- | --- | --- |
 | 1 | MDG | 主数据域（公司层 SSOT；本层为视角根 reference） |
 | 2 | DS | 数据存储（系统层首次定义） |
-| 3 | ENT | 数据实体（表/集合，系统层首次定义；应用层补充物理落地） |
+| 3 | ENT | 数据实体（表/集合，系统层首次定义） |
+| 4 | TBL | 物理表锚点（应用层首次定义；挂 DS） |
 
 ---
 
@@ -36,6 +37,7 @@ title: 数据视角元数据（application/knowledge/data）
 | 1 | mdg | MDG | `MDG-{NAME}` | —（reference → company） |
 | 2 | ds | DS | `DS-{NAME}` | MDG（逻辑归属，`authoritative_mdg_id` 推荐） |
 | 3 | ent | ENT | `ENT-{NNN}` 或 `ENT-{NAME}` | DS |
+| 4 | tbl | TBL | `TBL-{NAME}` | DS |
 
 ---
 
@@ -45,7 +47,7 @@ title: 数据视角元数据（application/knowledge/data）
 
 | 字段 | 说明 |
 | --- | --- |
-| hierarchy | `MDG` / `DS` / `ENT` |
+| hierarchy | `MDG` / `DS` / `ENT` / `TBL` |
 | full_id | 规范 ID |
 | name | 中文名称 |
 | description | 实体描述 |
@@ -59,6 +61,7 @@ title: 数据视角元数据（application/knowledge/data）
 | MDG | `definition_scope: reference`、`governance_owner` |
 | DS | `type`、`config_key`、`owned_by_app_id` |
 | ENT | `parent_id`、`logical_name`、`physical_table` |
+| TBL | `parent_id`、`physical_name` |
 
 ### 推荐字段
 

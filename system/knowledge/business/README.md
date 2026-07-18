@@ -20,6 +20,6 @@ title: 业务架构
 ## 实体
 
 * 元数据：[business-meta.md](business-meta.md)
-* 样例：`BD-EXAMPLE.md`（ref）· `BSD-EXAMPLE/` 树
+* 样例：`BD-EXAMPLE.md`（ref）· [BSD-EXAMPLE/](BSD-EXAMPLE/index.md) 树
 
 公司层对照：[company/knowledge/business](../../../company/knowledge/business/README.md)

@@ -15,6 +15,7 @@ title: 技术架构
 | DevOps | [chapters/technical-devops.md](chapters/technical-devops.md) | CI/CD、分支与发布 |
 | 技术安全 | [chapters/technical-security.md](chapters/technical-security.md) | 认证、加密与合规 |
 | 开发环境 | [chapters/technical-dev-environment.md](chapters/technical-dev-environment.md) | 本地环境与工具链 |
+| 可观测性 | [chapters/technical-observability.md](chapters/technical-observability.md) | 指标、日志、链路与告警 |
 
 ## 实体
 

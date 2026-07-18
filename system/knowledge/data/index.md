@@ -4,8 +4,8 @@
 
 ## 子目录
 
-* [DS-EXAMPLE](DS-EXAMPLE/README.md) - 仅用于演示数据视角数据结构（示例）。
-* [chapters](chapters/README.md)
+* [DS-EXAMPLE](DS-EXAMPLE/index.md) - 仅用于演示数据视角数据结构（示例）。
+* [chapters](chapters/index.md)
 
 ## 目录文件
 
@@ -17,7 +17,7 @@
 
 1. [README.md](README.md)
 2. [data-meta.md](data-meta.md)
-3. [chapters/README.md](chapters/README.md)
+3. [chapters/index.md](chapters/index.md)
 4. [MDG-EXAMPLE.md](MDG-EXAMPLE.md)
 
 ## 关联索引

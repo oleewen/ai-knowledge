@@ -1,7 +1,5 @@
 # chapters
 
-目录说明见 [README.md](README.md)。
-
 ## 子目录
 
 （无）
@@ -11,17 +9,18 @@
 * [technical-ha-and-dr.md](technical-ha-and-dr.md)
 * [technical-infrastructure.md](technical-infrastructure.md)
 * [technical-middleware.md](technical-middleware.md)
+* [technical-observability.md](technical-observability.md)
 * [technical-overview.md](technical-overview.md)
 * [technical-performance-scalability.md](technical-performance-scalability.md)
 
 ## 阅读顺序
 
-1. [README.md](README.md)
-2. [technical-overview.md](technical-overview.md)
-3. [technical-infrastructure.md](technical-infrastructure.md)
-4. [technical-middleware.md](technical-middleware.md)
-5. [technical-performance-scalability.md](technical-performance-scalability.md)
-6. [technical-ha-and-dr.md](technical-ha-and-dr.md)
+1. [technical-overview.md](technical-overview.md)
+2. [technical-infrastructure.md](technical-infrastructure.md)
+3. [technical-middleware.md](technical-middleware.md)
+4. [technical-performance-scalability.md](technical-performance-scalability.md)
+5. [technical-ha-and-dr.md](technical-ha-and-dr.md)
+6. [technical-observability.md](technical-observability.md)
 
 ## 关联索引
 

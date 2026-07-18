@@ -4,8 +4,8 @@
 
 ## 子目录
 
-* [BSD-EXAMPLE](BSD-EXAMPLE/README.md) - 仅用于演示业务视角数据结构（示例）。
-* [chapters](chapters/README.md)
+* [BSD-EXAMPLE](BSD-EXAMPLE/index.md) - 仅用于演示业务视角数据结构（示例）。
+* [chapters](chapters/index.md)
 
 ## 目录文件
 
@@ -17,7 +17,7 @@
 
 1. [README.md](README.md)
 2. [business-meta.md](business-meta.md)
-3. [chapters/README.md](chapters/README.md)
+3. [chapters/index.md](chapters/index.md)
 4. [BD-EXAMPLE.md](BD-EXAMPLE.md)
 
 ## 关联索引

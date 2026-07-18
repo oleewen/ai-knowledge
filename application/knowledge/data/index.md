@@ -4,11 +4,11 @@
 
 ## 子目录
 
-* [DS-EXAMPLE](DS-EXAMPLE/README.md)
+* [DS-EXAMPLE](DS-EXAMPLE/index.md) - 仅用于演示数据视角数据结构（示例）。
 
 ## 目录文件
 
-* [MDG-EXAMPLE.md](MDG-EXAMPLE.md)
+* [示例主数据域](MDG-EXAMPLE.md) - 仅用于演示数据视角 MDG 根层结构（示例）。
 
 * [data-meta.md](data-meta.md)
 

@@ -306,10 +306,10 @@ flowchart LR
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
 | 1 | 人工核实高优先级行（先术语与边界，再流程与接口） | 可归档条目 |
-| 2 | `/docs-archive` | 知识落入 `architecture/` 各视角章节 |
-| 3 | `/docs-build` | 四视角实体、`index.md` |
+| 2 | `/docs-archive` | 知识落入 `system/knowledge/{perspective}/chapters/`（公司场景则 `company/knowledge/.../chapters/`） |
+| 3 | `/docs-build` | 五视角实体、`knowledge/index.md` |
 
-> **原则**：先 overview 缓冲区，再 archive，再 entity — 不要一步到位硬造 YAML。overview 与归档约定见 [system/DESIGN.md](system/DESIGN.md)。
+> **原则**：先 overview 缓冲区，再 archive，再 entity — 不要一步到位硬造 YAML。overview 与归档约定见 [system/DESIGN.md](system/DESIGN.md)、[knowledge-layout](agent/references/knowledge-layout.md)。
 
 ### 阶段三：聚合变更，按需接续需求交付
 

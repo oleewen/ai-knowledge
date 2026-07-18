@@ -69,9 +69,17 @@ title: 系统知识库设计
 | MS | `knowledge/application/MS-{NAME}/MS-{NAME}.md` |
 | MW（ref） | `knowledge/technical/MW-{NAME}/MW-{NAME}.md` → application SSOT |
 
+#### 系统层 BD 落盘
+
+公司 SSOT：`company/knowledge/business/BD-{NAME}/`。本层仅视角根单文件 reference（`definition_scope: reference`），路径见上表 BD 行；BSD→AB 为本层域树 SSOT。
+
 ### Overview
 
-`knowledge/overview/*-overview.md` = distill/extract 缓冲区，非实体 SSOT。归档后落入各视角 chapters。
+`knowledge/overview/*-overview.md` = distill/extract 缓冲区，非实体 SSOT。归档后落入各视角 chapters。核心行序见 [knowledge-layout](../agent/references/knowledge-layout.md)；📎 按需章可不进 overview。
+
+### ADR
+
+`adr/` 存系统层决策正文；**无强制 EXAMPLE**。overview 应用视角末行链 [adr/](adr/README.md)，不进 `knowledge/*/chapters/`。
 
 ### 章节 SSOT 继承
 

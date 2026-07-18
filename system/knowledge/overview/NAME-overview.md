@@ -87,6 +87,8 @@ title: "{域名称}架构概览（{slug}-overview）"
 | [服务设计](../application/chapters/application-service-design.md) | [服务容器图](../application/chapters/application-service-design.md#服务容器图) | — |
 | [服务设计](../application/chapters/application-service-design.md) | [组件图](../application/chapters/application-service-design.md#组件图) | — |
 | [领域能力](../application/chapters/application-domain-capability.md) | [领域能力](../application/chapters/application-domain-capability.md#领域能力) | — |
+| [ADR](../../adr/README.md) | [系统层决策](../../adr/README.md) | — |
+
 ## [技术架构](../technical/README.md)
 
 | 主标题 | 副标题 | 归档业务知识 |
@@ -113,6 +115,11 @@ title: "{域名称}架构概览（{slug}-overview）"
 | [高可用与容灾](../technical/chapters/technical-ha-and-dr.md) | [容灾方案](../technical/chapters/technical-ha-and-dr.md#容灾方案) | — |
 | [高可用与容灾](../technical/chapters/technical-ha-and-dr.md) | [熔断降级](../technical/chapters/technical-ha-and-dr.md#熔断降级) | — |
 | [高可用与容灾](../technical/chapters/technical-ha-and-dr.md) | [混沌工程](../technical/chapters/technical-ha-and-dr.md#混沌工程) | — |
+| [可观测性](../technical/chapters/technical-observability.md) | [指标](../technical/chapters/technical-observability.md#指标) | — |
+| [可观测性](../technical/chapters/technical-observability.md) | [日志](../technical/chapters/technical-observability.md#日志) | — |
+| [可观测性](../technical/chapters/technical-observability.md) | [链路追踪](../technical/chapters/technical-observability.md#链路追踪) | — |
+| [可观测性](../technical/chapters/technical-observability.md) | [告警与值班](../technical/chapters/technical-observability.md#告警与值班) | — |
+
 ## [数据架构](../data/README.md)
 
 | 主标题 | 副标题 | 归档业务知识 |
@@ -129,6 +136,9 @@ title: "{域名称}架构概览（{slug}-overview）"
 | [数据存储方案](../data/chapters/data-storage.md) | [冷热分离](../data/chapters/data-storage.md#冷热分离) | — |
 | [数据存储方案](../data/chapters/data-storage.md) | [数据归档](../data/chapters/data-storage.md#数据归档) | — |
 | [数据存储方案](../data/chapters/data-storage.md) | [服务存储分布](../data/chapters/data-storage.md#服务存储分布) | — |
+| [数据分析](../data/chapters/data-analytics.md) | [分析主题](../data/chapters/data-analytics.md#分析主题) | — |
+| [数据分析](../data/chapters/data-analytics.md) | [指标口径](../data/chapters/data-analytics.md#指标口径) | — |
+| [数据分析](../data/chapters/data-analytics.md) | [消费路径](../data/chapters/data-analytics.md#消费路径) | — |
 | [数据流转](../data/chapters/data-flow.md) | [数据流图](../data/chapters/data-flow.md#数据流图) | — |
 | [数据流转](../data/chapters/data-flow.md) | [ETL 流程](../data/chapters/data-flow.md#etl-流程) | — |
 | [数据流转](../data/chapters/data-flow.md) | [实时数据流](../data/chapters/data-flow.md#实时数据流) | — |

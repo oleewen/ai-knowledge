@@ -29,14 +29,14 @@ _APPLICATION_PERSPECTIVE_SECTIONS: List[Tuple[str, str, List[str]]] = [
         ["SYS", "APP", "MS", "API"],
     ),
     (
-        "§4 数据视角（data · DS → ENT）",
+        "§4 数据视角（data · MDG → DS → ENT → TBL）",
         "data",
-        ["DS", "ENT"],
+        ["MDG", "DS", "ENT", "TBL"],
     ),
     (
-        "§5 技术视角（technical · MW → CMP）",
+        "§5 技术视角（technical · TSD → MW → CMP）",
         "technical",
-        ["MW", "CMP"],
+        ["TSD", "MW", "CMP"],
     ),
 ]
 
@@ -75,6 +75,17 @@ def _perspective_sections(bundle: str) -> List[Tuple[str, str, List[str]]]:
         return list(_COMPANY_PERSPECTIVE_SECTIONS)
     sections = list(_APPLICATION_PERSPECTIVE_SECTIONS)
     if bundle == "system":
+        # API 仅 application SSOT；MDG 为本层 company reference
+        sections[2] = (
+            "§3 应用视角（application · SYS → APP → MS）",
+            "application",
+            ["SYS", "APP", "MS"],
+        )
+        sections[3] = (
+            "§4 数据视角（data · MDG → DS → ENT）",
+            "data",
+            ["MDG", "DS", "ENT"],
+        )
         sections[4] = (
             "§5 技术视角（technical · TSD → MW）",
             "technical",
@@ -277,19 +288,23 @@ def _default_suffix(bundle: str) -> str:
         )
         mapping_rows = [
             "| BD-EXAMPLE | `business/BD-EXAMPLE.md` |",
-            "| PL-EXAMPLE | `product/PL-EXAMPLE/` |",
-            "| SYS-EXAMPLE | `application/SYS-EXAMPLE/` |",
+            "| PL-EXAMPLE | `product/PL-EXAMPLE.md` |",
+            "| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |",
+            "| MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |",
             "| DS-EXAMPLE | `data/DS-EXAMPLE/` |",
         ]
     else:
         footer_note = (
-            "> 公司级 **TPL-***、系统级 **TSD-*** 不在本索引登记；见 "
-            "`company/knowledge/technical/`、`system/knowledge/technical/`。"
+            "> 公司级 **TPL-*** 不在本索引登记（见 `company/knowledge/technical/`）。"
+            "本层登记 **TSD/MDG** reference 与 **API/TBL/MW/CMP** SSOT。"
         )
         mapping_rows = [
-            "| BD-EXAMPLE | `business/BSD-EXAMPLE/` |",
-            "| PL-EXAMPLE | `product/PL-EXAMPLE/` |",
-            "| SYS-EXAMPLE | `application/SYS-EXAMPLE/` |",
+            "| BD-EXAMPLE | `business/BD-EXAMPLE.md` |",
+            "| PL-EXAMPLE | `product/PL-EXAMPLE.md` |",
+            "| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |",
+            "| MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |",
+            "| TBL-EXAMPLE | `data/DS-EXAMPLE/TBL-EXAMPLE.md` |",
+            "| TSD-EXAMPLE | `technical/TSD-EXAMPLE.md` |",
             "| DS-EXAMPLE | `data/DS-EXAMPLE/` |",
         ]
 

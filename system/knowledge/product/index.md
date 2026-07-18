@@ -4,8 +4,8 @@
 
 ## 子目录
 
-* [PM-EXAMPLE](PM-EXAMPLE/README.md) - 示例产品模块
-* [chapters](chapters/README.md)
+* [PM-EXAMPLE](PM-EXAMPLE/index.md) - 示例产品模块
+* [chapters](chapters/index.md)
 
 ## 目录文件
 
@@ -16,7 +16,10 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md)
+2. [product-meta.md](product-meta.md)
+3. [chapters/index.md](chapters/index.md)
+4. [PL-EXAMPLE.md](PL-EXAMPLE.md)
 
 ## 关联索引
 

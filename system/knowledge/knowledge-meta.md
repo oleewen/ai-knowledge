@@ -56,7 +56,7 @@ title: 知识树元数据（system/knowledge）
 
 ## 5. 系统层 BD 落盘例外
 
-与 `company/`、`application/` 区分；实现 SSOT 见 [../DESIGN.md](../DESIGN.md) §系统层 BD 落盘。
+与 `company/`、`application/` 区分；实现 SSOT 见 [../DESIGN.md](../DESIGN.md#系统层-bd-落盘)。
 
 | 层级 | 路径 | 说明 |
 | --- | --- | --- |

@@ -4,7 +4,7 @@
 
 ## 子目录
 
-* [MS-EXAMPLE](MS-EXAMPLE/README.md) - 示例微服务
+* [MS-EXAMPLE](MS-EXAMPLE/index.md) - 示例微服务
 
 ## 目录文件
 
