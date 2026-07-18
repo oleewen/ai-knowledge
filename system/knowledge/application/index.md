@@ -4,8 +4,9 @@
 
 ## 子目录
 
-* [chapters](chapters/README.md) - 应用架构章节目录。
-* [APP-EXAMPLE](APP-EXAMPLE/README.md) - 示例应用。
+* [APP-EXAMPLE](APP-EXAMPLE/README.md) - 示例应用
+* [MS-EXAMPLE](MS-EXAMPLE/index.md) - 示例微服务
+* [chapters](chapters/README.md)
 
 ## 目录文件
 

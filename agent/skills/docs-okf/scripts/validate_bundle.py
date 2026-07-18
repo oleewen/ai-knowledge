@@ -27,11 +27,27 @@ SECTION_HEADING_RE = re.compile(r"^(#{1,2})\s+(\S.*?)\s*$", re.MULTILINE)
 # Cross-perspective 段内链接提取（与 BUNDLE_LINK_RE 不同：相对路径也校验）
 SECTION_LINK_RE = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
 
+# 本 bundle 无目标时，绝对 `/knowledge/...` 可回退查下游 bundle（跨层首次定义）
+CROSS_BUNDLE_LINK_FALLBACK: Dict[str, tuple[str, ...]] = {
+    "system": ("application",),
+    "company": ("system", "application"),
+}
+
 
 class Validator:
-    def __init__(self, bundle_root: Path, bundle_name: str = "") -> None:
+    def __init__(
+        self,
+        bundle_root: Path,
+        bundle_name: str = "",
+        repo_root: Optional[Path] = None,
+    ) -> None:
         self.bundle_root = bundle_root.resolve()
         self.bundle_name = bundle_name  # 例 "system" / "company" / "application"
+        self.repo_root = (
+            repo_root.resolve()
+            if repo_root is not None
+            else self.bundle_root.parent
+        )
         self.errors = 0
         self.warnings = 0
         # 全仓 full_id → file 索引（供 R6 parent_id 与 R7 Cross-perspective 引用校验）
@@ -263,12 +279,24 @@ class Validator:
     def _target_exists(self, target: Path) -> bool:
         return target.exists()
 
+    def _absolute_bundle_link_exists(self, link: str) -> bool:
+        """本 bundle 命中，或按跨层回退表查下游 bundle。"""
+        if self._target_exists(self._resolve_bundle_target(link)):
+            return True
+        if not link.startswith("/knowledge/"):
+            return False
+        normalized = link.lstrip("/")
+        for other in CROSS_BUNDLE_LINK_FALLBACK.get(self.bundle_name, ()):
+            cand = self.repo_root / other / normalized
+            if cand.exists():
+                return True
+        return False
+
     def _check_bundle_links(self, path: Path, text: str) -> None:
         relpath = self.relpath(path)
         for match in BUNDLE_LINK_RE.finditer(text):
             link = match.group(1)
-            target = self._resolve_bundle_target(link)
-            if not self._target_exists(target):
+            if not self._absolute_bundle_link_exists(link):
                 self.warn(f"{relpath}: 链接目标不存在 {link}")
 
     def _check_index_links(self, index_path: Path, text: str) -> None:
@@ -278,6 +306,10 @@ class Validator:
             if link.startswith("#"):
                 continue
             if link.startswith(("http://", "https://", "mailto:")):
+                continue
+            if link.startswith("/"):
+                if not self._absolute_bundle_link_exists(link):
+                    self.warn(f"{relpath}: index 链接目标不存在 {link}")
                 continue
             target = self._resolve_index_target(index_path, link)
             if not self._target_exists(target):
@@ -318,7 +350,9 @@ def main(argv: Optional[List[str]] = None) -> int:
     print(f"BUNDLE_ROOT: {bundle_root}")
     print("")
 
-    return Validator(bundle_root, bundle_name=args.bundle).run()
+    return Validator(
+        bundle_root, bundle_name=args.bundle, repo_root=repo
+    ).run()
 
 
 if __name__ == "__main__":

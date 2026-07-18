@@ -4,8 +4,8 @@
 
 ## 子目录
 
-* [chapters](chapters/README.md) - 业务架构章节目录。
 * [BSD-EXAMPLE](BSD-EXAMPLE/README.md) - 仅用于演示业务视角数据结构（示例）。
+* [chapters](chapters/README.md)
 
 ## 目录文件
 

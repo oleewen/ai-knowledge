@@ -4,7 +4,7 @@
 
 ## 子目录
 
-* [BC-EXAMPLE](BC-EXAMPLE/README.md) - 示例限界上下文
+* [BC-EXAMPLE](BC-EXAMPLE/README.md) - 仅用于演示业务视角数据结构（示例）。
 
 ## 目录文件
 

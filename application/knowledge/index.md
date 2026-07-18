@@ -31,8 +31,6 @@
 
 ---
 
----
-
 ## 统一表头规范
 
 - **标准表头**：`["层级","ID","别名（英文名）","名称","证据链"]`
@@ -53,7 +51,7 @@
 
 ---
 
-## §2 产品视角（product · PL → PM → FT → FR → UC/BR）
+## §2 产品视角（product · PL → PM → FT → FR → UC/BR · BP）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
@@ -63,8 +61,7 @@
 | FR | EXAMPLE |  | 示例功能需求 | `product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/FR-EXAMPLE.md` |
 | UC | EXAMPLE |  | 示例用例 | `product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md` |
 | BR | EXAMPLE |  | 示例规则 | `product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/BR-EXAMPLE.md` |
-
-BP（流程叙事文件，不属于 hierarchy）：`product/BP-EXAMPLE.md`
+| BP | EXAMPLE |  | 示例业务流程（BP） | `product/BP-EXAMPLE.md` |
 
 ---
 
@@ -75,31 +72,29 @@ BP（流程叙事文件，不属于 hierarchy）：`product/BP-EXAMPLE.md`
 | SYS | EXAMPLE |  | 示例系统 | `application/SYS-EXAMPLE.md` |
 | APP | EXAMPLE |  | 示例应用 | `application/APP-EXAMPLE.md` |
 | MS | EXAMPLE |  | 示例微服务 | `application/MS-EXAMPLE/MS-EXAMPLE.md` |
-| API | EXAMPLE-001 | ExampleService.create | 示例 API：创建 | `application/MS-EXAMPLE/API-EXAMPLE-001.md` |
+| API | EXAMPLE-001 |  | 示例 API：创建 | `application/MS-EXAMPLE/API-EXAMPLE-001.md` |
 
 ---
 
-## §4 数据视角（data · MDG → DS → ENT）
+## §4 数据视角（data · DS → ENT）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| MDG | EXAMPLE |  | 示例主数据域 | `data/MDG-EXAMPLE.md` |
 | DS | EXAMPLE |  | 示例数据源 | `data/DS-EXAMPLE/DS-EXAMPLE.md` |
 | ENT | EXAMPLE |  | 示例实体 | `data/DS-EXAMPLE/ENT-EXAMPLE.md` |
 
 ---
 
-## §5 技术视角（technical · TSD → MW → CMP）
+## §5 技术视角（technical · MW → CMP）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| TSD | EXAMPLE |  | 示例技术域 | `technical/TSD-EXAMPLE.md` |
 | MW | EXAMPLE |  | 示例中间件绑定 | `technical/MW-EXAMPLE/MW-EXAMPLE.md` |
 | CMP | EXAMPLE |  | 示例组件 | `technical/MW-EXAMPLE/CMP-EXAMPLE.md` |
 
 ---
 
-> 公司级 **TPL-***、系统级 **TSD-*** 的 SSOT 不在本索引登记；见 `company/knowledge/technical/`、`system/knowledge/technical/`。本索引中的 `TSD-EXAMPLE` 为 application 层 reference 示例。
+> 公司级 **TPL-***、系统级 **TSD-*** 不在本索引登记；见 `company/knowledge/technical/`、`system/knowledge/technical/`。
 
 ---
 
@@ -107,18 +102,18 @@ BP（流程叙事文件，不属于 hierarchy）：`product/BP-EXAMPLE.md`
 
 | 索引 ID | 命名式 ID（锚点目录） |
 |---------|----------------------|
-| BD-EXAMPLE | `business/BSD-EXAMPLE/BSD-EXAMPLE.md` |
-| PL-EXAMPLE | `product/PL-EXAMPLE.md` |
-| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |
-| DS-EXAMPLE | `data/DS-EXAMPLE/DS-EXAMPLE.md` |
+| BD-EXAMPLE | `business/BSD-EXAMPLE/` |
+| PL-EXAMPLE | `product/PL-EXAMPLE/` |
+| SYS-EXAMPLE | `application/SYS-EXAMPLE/` |
+| DS-EXAMPLE | `data/DS-EXAMPLE/` |
 
 ---
 
 ## 交叉引用
 
-- 应用：[application/index.md](application/index.md) · [index.md](index.md) §3
-- 业务：[business/index.md](business/index.md) · §1
-- 产品：[product/index.md](product/index.md) · §2
-- 数据：[data/index.md](data/index.md) · §4
-- 技术：[technical/index.md](technical/index.md) · §5
-- 知识库总说明：[README.md](README.md)
+- 应用：`application/`
+- 业务：`business/`
+- 产品：`product/`
+- 数据：`data/`
+- 技术：`technical/`
+- 知识库总说明：`README.md`

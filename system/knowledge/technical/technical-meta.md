@@ -15,7 +15,7 @@ title: 技术视角元数据（system/knowledge/technical）
 | meta_id | `DIR-SYSTEM-ARCH-TECHNICAL` |
 | 视角 | technical |
 | 层级范围 | system |
-| 说明 | 系统级技术域落地；引用公司级 TPL，应用层 MW/CMP 引用本层 TSD。 |
+| 说明 | 系统级 TSD SSOT；MW/CMP 首次在 application；本层可挂 MW reference。 |
 
 ---
 
@@ -24,6 +24,7 @@ title: 技术视角元数据（system/knowledge/technical）
 | 链序 | 层级代码 | 说明 |
 | --- | --- | --- |
 | 1 | TSD | 系统级技术域（中间件域、可观测域等） |
+| 2 | MW | 应用层首次定义；本层可为 reference |
 
 ---
 

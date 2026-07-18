@@ -116,6 +116,22 @@ def test_entity_relpath_company_tpl():
     assert path == "knowledge/technical/TPL-EXAMPLE.md"
 
 
+def test_entity_relpath_system_ms_and_mw():
+    assert (
+        okf_lib.entity_relpath("application", "MS-EXAMPLE", bundle="system")
+        == "knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md"
+    )
+    assert (
+        okf_lib.entity_relpath("application", "APP-EXAMPLE", bundle="system")
+        == "knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md"
+    )
+    assert (
+        okf_lib.entity_relpath("technical", "MW-EXAMPLE", bundle="system")
+        == "knowledge/technical/MW-EXAMPLE/MW-EXAMPLE.md"
+    )
+    assert okf_lib.hierarchy_to_type("FR") == "Functional Requirement"
+
+
 def test_entity_relpath_system_bd_at_perspective_root():
     path = okf_lib.entity_relpath("business", "BD-EXAMPLE", bundle="system")
     assert path == "knowledge/business/BD-EXAMPLE.md"
@@ -139,6 +155,7 @@ def main() -> None:
         test_entity_relpath_company_bd_in_domain_folder,
         test_entity_relpath_company_cap,
         test_entity_relpath_company_tpl,
+        test_entity_relpath_system_ms_and_mw,
         test_entity_relpath_system_bd_at_perspective_root,
     ]
     for fn in tests:

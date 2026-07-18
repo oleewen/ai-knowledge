@@ -29,6 +29,10 @@ def test_render_index_lists_concepts_and_subdirs():
         )
         sub = root / "BSD-EXAMPLE"
         sub.mkdir()
+        (sub / "README.md").write_text(
+            "---\ntype: Documentation\ntitle: BSD-EXAMPLE\n---\n# BSD-EXAMPLE\n\n子域描述\n",
+            encoding="utf-8",
+        )
         (sub / "BSD-EXAMPLE.md").write_text(
             "---\n"
             "title: 示例子域\n"
@@ -44,7 +48,8 @@ def test_render_index_lists_concepts_and_subdirs():
         assert "## 阅读顺序" in body
         assert "## 关联索引" in body
         assert "* [示例业务域](BD-EXAMPLE.md) - 演示用" in body
-        assert "* [BSD-EXAMPLE](BSD-EXAMPLE/README.md) - 子域描述" in body
+        assert "* [BSD-EXAMPLE](BSD-EXAMPLE/README.md)" in body
+        assert "子域描述" in body
 
 
 def test_preserve_bundle_root_okf_version():
@@ -84,11 +89,31 @@ def test_knowledge_index_id_suffix_and_evidence():
         assert "`business/BD-EXAMPLE.md`" in rendered
 
 
+def test_knowledge_index_strips_frontmatter():
+    with tempfile.TemporaryDirectory() as tmp:
+        bundle = Path(tmp) / "system"
+        (bundle / "knowledge").mkdir(parents=True)
+        existing = (
+            "---\n"
+            "type: Knowledge Index\n"
+            "title: 知识库 · 五视角实体 ID 索引（SSOT）\n"
+            "---\n"
+            "# 知识库 · 五视角实体 ID 索引（SSOT）\n\n"
+            "目录说明见 [README.md](README.md)。\n"
+        )
+        rendered = generate_knowledge_index.render_knowledge_index(
+            bundle, existing, bundle="system"
+        )
+        assert not rendered.startswith("---")
+        assert rendered.lstrip().startswith("# 知识库")
+
+
 def main() -> None:
     tests = [
         test_render_index_lists_concepts_and_subdirs,
         test_preserve_bundle_root_okf_version,
         test_knowledge_index_id_suffix_and_evidence,
+        test_knowledge_index_strips_frontmatter,
     ]
     for fn in tests:
         fn()

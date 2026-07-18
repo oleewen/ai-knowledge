@@ -111,6 +111,7 @@ title: 应用知识文档库 — 设计方案摘录
 |**产品** product|产品线 PL|公司|
 |**产品** product|产品模块 PM|系统|
 |**产品** product|产品功能 FT|系统|
+|**产品** product|功能需求 FR|系统|
 |**产品** product|用户场景 UC|系统|
 |**产品** product|业务流程 BP|系统|
 |**产品** product|业务规则 BR|系统|

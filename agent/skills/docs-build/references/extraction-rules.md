@@ -291,7 +291,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 | 字段 | 必需 | 说明 |
 |------|------|------|
-| `hierarchy` | 是 | 层级标识（SYS/APP/MS/API/DS/ENT/MW/CMP/TPL/TSD/BD/BSD/BC/AGG/AB/PL/PM/FT/UC） |
+| `hierarchy` | 是 | 层级标识（SYS/APP/MS/API/DS/ENT/MW/CMP/TPL/TSD/BD/BSD/BC/AGG/AB/PL/PM/FT/FR/UC/BR/BP） |
 | `id` | 是 | 数字编码（001、002...），同层级唯一 |
 | `alias` | 是 | 英文编码，机器可读标识 |
 | `name` | 是 | 中文名称，面向业务阅读 |

@@ -8,11 +8,10 @@
 
 ## 目录文件
 
-* [README.md](README.md)
-* [data-overview.md](data-overview.md)
-* [data-model.md](data-model.md)
-* [data-storage.md](data-storage.md)
 * [data-flow.md](data-flow.md)
+* [data-model.md](data-model.md)
+* [data-overview.md](data-overview.md)
+* [data-storage.md](data-storage.md)
 
 ## 阅读顺序
 

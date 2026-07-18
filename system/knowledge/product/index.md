@@ -5,11 +5,12 @@
 ## 子目录
 
 * [PM-EXAMPLE](PM-EXAMPLE/README.md) - 示例产品模块
+* [chapters](chapters/README.md)
 
 ## 目录文件
 
-* [BP-EXAMPLE.md](BP-EXAMPLE.md)
-* [示例产品线](PL-EXAMPLE.md) - 仅用于演示产品视角数据结构（示例）。
+* [示例业务流程（BP）](BP-EXAMPLE.md) - 仅用于演示产品视角流程叙事结构（示例）。
+* [示例产品线](PL-EXAMPLE.md)
 
 * [product-meta.md](product-meta.md)
 

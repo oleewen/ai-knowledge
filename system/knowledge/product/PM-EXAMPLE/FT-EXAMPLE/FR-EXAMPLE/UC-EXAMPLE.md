@@ -16,7 +16,7 @@ layer_scope: system
 
 ## 跨视角
 
-- map_to_api_id: [API-EXAMPLE-001](/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md)
+- map_to_api_id: [API-EXAMPLE-001](../../../../../../application/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md)
 
 ## 详细说明
 

@@ -86,7 +86,7 @@ SSOT_BODY: Dict[str, str] = {
     ),
     "MS-EXAMPLE": (
         "# SSOT\n\n"
-        "上游主定义：`system/knowledge/application/APP-EXAMPLE/MS-EXAMPLE.md`（系统层 OKF SSOT）。\n"
+        "上游主定义：`system/knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md`（系统层 OKF SSOT）。\n"
     ),
     "DS-EXAMPLE": (
         "# SSOT\n\n"

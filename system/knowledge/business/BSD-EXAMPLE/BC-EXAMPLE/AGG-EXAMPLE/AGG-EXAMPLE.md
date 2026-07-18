@@ -18,7 +18,7 @@ layer_scope: system
 
 ## 跨视角
 
-- implemented_by_service_ids: [MS-EXAMPLE](/knowledge/application/APP-EXAMPLE/MS-EXAMPLE.md)
+- implemented_by_service_ids: [MS-EXAMPLE](/knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md)
 - persisted_as_entity_ids: [ENT-EXAMPLE](/knowledge/data/DS-EXAMPLE/ENT-EXAMPLE.md)
 
 ## 详细说明

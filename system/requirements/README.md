@@ -59,7 +59,7 @@ requirements/
 
 | REQUIREMENT 目录 | 标题 | 关联 ANALYSIS | 状态 | 更新时间 |
 |------------------|------|---------------|------|----------|
-| ... | ... | ... | ... | ... |
+| REQUIREMENT-EXAMPLE | 示例需求包 | ANALYSIS-EXAMPLE | draft | 2026-07-18 |
 
 ## 模板与命令
 

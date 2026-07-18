@@ -1,24 +1,25 @@
 ---
 type: Documentation
+title: 应用架构
 ---
 # 应用架构
 
-索引入口见 [../../INDEX-GUIDE.md](../../INDEX-GUIDE.md) 与 [index.md](index.md)。前者负责 `system/` 九章地图，后者负责当前视角目录索引。
+[返回 · 架构索引](../README.md)
 
-[返回上一级 · 架构文档索引](../README.md)
+系统层应用架构：APP/MS SSOT；SYS 为 company reference；API 在 application。
 
-本目录为应用架构**目录与入口**。🔑 核心文件为必维护项；📎 补充文件按系统复杂度按需启用；📐 决策记录与架构变更同步。应用章节现集中在 [`chapters/`](chapters/README.md) 子目录。
+| 章节 | 文件 | 概述 |
+|------|------|------|
+| 系统概述 | [chapters/application-overview.md](chapters/application-overview.md) | 一页纸语境 |
+| 应用架构 | [chapters/application-architecture.md](chapters/application-architecture.md) | 结构与边界 |
+| 领域模型 | [chapters/application-domain-model.md](chapters/application-domain-model.md) | BC/AGG 落地 |
+| 服务设计 | [chapters/application-service-design.md](chapters/application-service-design.md) | MS 拆分 |
+| 领域能力 | [chapters/application-domain-capability.md](chapters/application-domain-capability.md) | AB 与 SLA |
+| 集成 / 交互 / 接口 / 多租户 | chapters 下 📎 | 按需 |
 
-| 类型 | 章节 | 文件 | 概述 |
-|------|------|------|------|
-| 🔑 | 系统概述 | [application-overview.md](chapters/application-overview.md) | 一页纸 SSOT，为全景图、服务设计与集成提供语境。 |
-| 🔑 | 应用架构 | [application-architecture.md](chapters/application-architecture.md) | 应用结构、职责边界与分层演进。 |
-| 🔑 | 领域模型 | [application-domain-model.md](chapters/application-domain-model.md) | 聚合/实体边界、类图及关键属性。 |
-| 🔑 | 服务设计 | [application-service-design.md](chapters/application-service-design.md) | 服务单元拆分至容器与组件粒度。 |
-| 🔑 | 领域能力 | [application-domain-capability.md](chapters/application-domain-capability.md) | 领域能力及 SLA，对应业务能力承载。 |
-| 📎 | 集成架构 | [application-integration.md](chapters/application-integration.md) | 第三方与遗留系统集成及防腐边界。 |
-| 📎 | 服务交互 | [application-inter-service.md](chapters/application-inter-service.md) | 同步/异步协作、编排与依赖治理。 |
-| 📎 | 接口管理 | [application-interface-management.md](chapters/application-interface-management.md) | 内外接口的发现、规范与演进。 |
-| 📎 | 多租户环境 | [application-multi-tenant-environment.md](chapters/application-multi-tenant-environment.md) | 租户隔离、环境拓扑与发布控制。 |
+## 实体
 
-> ADR 正文见 [system/adr/README.md](../../adr/README.md)、[application/adr/README.md](../../../application/adr/README.md)；模板见 [agent/knowledge/adr-guidelines.md](../../../agent/knowledge/adr-guidelines.md)。
+* 元数据：[application-meta.md](application-meta.md)
+* 样例：`SYS-EXAMPLE.md`（ref）· [APP-EXAMPLE/](APP-EXAMPLE/README.md) · [MS-EXAMPLE/](MS-EXAMPLE/index.md)
+
+ADR：[../../adr/README.md](../../adr/README.md)

@@ -8,15 +8,14 @@
 
 ## 目录文件
 
-* [README.md](README.md)
-* [product-overview.md](product-overview.md)
 * [product-architecture.md](product-architecture.md)
-* [product-information-architecture.md](product-information-architecture.md)
 * [product-feature.md](product-feature.md)
-* [product-user-journeys.md](product-user-journeys.md)
-* [product-release.md](product-release.md)
-* [product-operations-support.md](product-operations-support.md)
+* [product-information-architecture.md](product-information-architecture.md)
 * [product-multi-platform.md](product-multi-platform.md)
+* [product-operations-support.md](product-operations-support.md)
+* [product-overview.md](product-overview.md)
+* [product-release.md](product-release.md)
+* [product-user-journeys.md](product-user-journeys.md)
 
 ## 阅读顺序
 

@@ -22,7 +22,8 @@ layer_scope: application
 
 ## 详细说明
 
-- (none)
+- definition_scope: instance
+- 上游主定义：`system/knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md`（系统层 OKF SSOT）。
 
 ## 依据与证据
 

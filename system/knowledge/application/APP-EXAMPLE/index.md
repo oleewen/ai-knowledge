@@ -9,7 +9,6 @@
 ## 目录文件
 
 * [示例应用](APP-EXAMPLE.md)
-* [示例微服务](MS-EXAMPLE.md)
 
 ## 阅读顺序
 

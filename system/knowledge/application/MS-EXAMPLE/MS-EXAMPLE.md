@@ -22,7 +22,9 @@ layer_scope: system
 
 ## 详细说明
 
-- (none)
+- host_class: ExampleApiImpl
+- host_module: example-module
+- protocol: HTTP
 
 ## 依据与证据
 

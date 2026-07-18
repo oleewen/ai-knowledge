@@ -20,8 +20,8 @@ okf_version: 0.1
 
 ### 目录文件
 
-* [INDEX-GUIDE.md](INDEX-GUIDE.md)
 * [DESIGN.md](DESIGN.md)
+* [INDEX-GUIDE.md](INDEX-GUIDE.md)
 * [docs-meta.md](docs-meta.md)
 * [knowledge-links.yaml](knowledge-links.yaml)
 * [viz.html](viz.html)
@@ -39,6 +39,9 @@ okf_version: 0.1
 
 * 上一级说明：[../README.md](../README.md)
 <!-- okf:end -->
+
+
+
 
 ### 目录索引
 

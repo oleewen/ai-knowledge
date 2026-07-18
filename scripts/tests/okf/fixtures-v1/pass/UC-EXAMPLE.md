@@ -4,15 +4,15 @@ title: 示例用例
 description: null
 tags: [product, UC]
 timestamp: "2026-06-21T00:00:00Z"
-full_id: UC-EXAMPLE-001
+full_id: UC-EXAMPLE
 perspective: product
 hierarchy: UC
-parent_id: FT-EXAMPLE
+parent_id: FR-EXAMPLE
 layer_scope: system
 ---
 # Relations
 
-- parent: [FT-EXAMPLE](/knowledge/product/PM-EXAMPLE/FT-EXAMPLE.md)
+- parent: [FR-EXAMPLE](/knowledge/product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/FR-EXAMPLE.md)
 
 # Cross-perspective
 

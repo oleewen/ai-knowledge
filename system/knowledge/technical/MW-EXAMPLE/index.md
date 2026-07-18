@@ -1,4 +1,4 @@
-# MW
+# MW-EXAMPLE
 
 目录说明见 [README.md](README.md)。
 
@@ -8,7 +8,7 @@
 
 ## 目录文件
 
-* [示例中间件绑定](MW-EXAMPLE.md) - 仅用于演示技术视角 MW 数据结构（示例）。
+* [示例中间件绑定](MW-EXAMPLE.md) - 系统层 reference；正文 SSOT 在 application。
 
 ## 阅读顺序
 

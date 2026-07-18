@@ -4,8 +4,8 @@
 
 ## 子目录
 
-* [chapters](chapters/README.md) - 数据架构章节目录。
 * [DS-EXAMPLE](DS-EXAMPLE/README.md) - 仅用于演示数据视角数据结构（示例）。
+* [chapters](chapters/README.md)
 
 ## 目录文件
 

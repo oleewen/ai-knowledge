@@ -1,11 +1,22 @@
 ---
 type: Documentation Root
 tags: [governance]
+title: "系统知识库（顶层 `system/`）"
 ---
+<!-- markdownlint-disable-next-line MD025 -->
 # 系统知识库（顶层 `system/`）
 
-索引入口见 [INDEX-GUIDE.md](INDEX-GUIDE.md) 与 [index.md](index.md)。前者负责九章地图与路径索引，后者负责目录索引与渐进披露。
+系统层治理与导航根：`knowledge/` = 系统级实体 SSOT + 五视角落地；`application-{name}/` = 应用镜像槽位；`solutions/` → `analysis/` → `requirements/` = 系统 SDD。
 
-本目录为 **目标态下的「系统知识库」语义**：组织级视图、架构文档与 **`application-{name}/`** 联邦槽位（应用镜像经 [`/docs-pull`](../agent/skills/docs-pull/SKILL.md) 同步）。
+| 读什么 | 文件 |
+|--------|------|
+| 九章地图 | [INDEX-GUIDE.md](INDEX-GUIDE.md) |
+| 目录索引 | [index.md](index.md) |
+| 边界与同步 | [DESIGN.md](DESIGN.md) |
+| 五视角入口 | [knowledge/README.md](knowledge/README.md) |
 
-> **共享规范 SSOT**：知识文件分型与 OKF 概念实体结构统一遵循 [../agent/knowledge/okf-spec.md](../agent/knowledge/okf-spec.md)。
+按需：`knowledge-links.yaml` · [application-APPNAME/](application-APPNAME/README.md) · [changelogs/](changelogs/README.md)
+
+模板占位：`application-APPNAME/`、`knowledge/overview/NAME-overview.md`、`*-EXAMPLE`（最小演示链，可替换）。
+
+规范：[DESIGN.md](DESIGN.md) · [okf-spec](../agent/knowledge/okf-spec.md) · [knowledge-layout](../agent/references/knowledge-layout.md)

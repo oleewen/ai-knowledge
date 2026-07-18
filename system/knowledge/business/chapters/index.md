@@ -8,12 +8,11 @@
 
 ## 目录文件
 
-* [README.md](README.md)
-* [business-overview.md](business-overview.md)
+* [business-capability-map.md](business-capability-map.md)
 * [business-domain-division.md](business-domain-division.md)
 * [business-glossary.md](business-glossary.md)
+* [business-overview.md](business-overview.md)
 * [business-processes.md](business-processes.md)
-* [business-capability-map.md](business-capability-map.md)
 * [business-rules-and-strategies.md](business-rules-and-strategies.md)
 
 ## 阅读顺序

@@ -1,6 +1,10 @@
+---
+type: Documentation
+title: application INDEX-GUIDE
+---
 # application INDEX-GUIDE
 
-> **最后更新**: 2026-06-22  
+> **最后更新**: 2026-07-18  
 > **文档定位**: 面向 AI Agent 的 **`application/` 文档根**九章索引指南；与目录索引页 [index.md](index.md) 互补。中央知识库挂载建联登记见 **§十**。
 
 ---

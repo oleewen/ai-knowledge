@@ -19,9 +19,9 @@ _APPLICATION_PERSPECTIVE_SECTIONS: List[Tuple[str, str, List[str]]] = [
         ["BD", "BSD", "BC", "AGG", "AB"],
     ),
     (
-        "§2 产品视角（product · PL → PM → FT → UC）",
+        "§2 产品视角（product · PL → PM → FT → FR → UC/BR · BP）",
         "product",
-        ["PL", "PM", "FT", "UC"],
+        ["PL", "PM", "FT", "FR", "UC", "BR", "BP"],
     ),
     (
         "§3 应用视角（application · SYS → APP → MS → API）",
@@ -216,8 +216,15 @@ def _render_section(
     return "\n".join(lines)
 
 
+def _strip_frontmatter(text: str) -> str:
+    """knowledge/index.md 按 OKF §6 禁止 frontmatter；生成时一律剥除。"""
+    _, body = okf_lib.parse_frontmatter(text)
+    return body.lstrip("\n") if text.startswith("---") else text
+
+
 def _split_existing(text: str) -> Tuple[str, str]:
     """返回 (header_prefix, footer_suffix)。"""
+    text = _strip_frontmatter(text)
     lines = text.splitlines()
     prefix_lines: List[str] = []
     suffix_lines: List[str] = []
@@ -321,12 +328,11 @@ def render_knowledge_index(
     if existing_text:
         prefix, _suffix = _split_existing(existing_text)
     else:
-        prefix = okf_lib.format_frontmatter(
-            {
-                "type": "Knowledge Index",
-                "title": "知识库 · 五视角实体 ID 索引（SSOT）",
-            }
-        ).rstrip() + "\n# 知识库 · 五视角实体 ID 索引（SSOT）"
+        # 无 frontmatter（OKF §6：子目录 index.md 不含 YAML）
+        prefix = "# 知识库 · 五视角实体 ID 索引（SSOT）"
+
+    if not prefix.strip():
+        prefix = "# 知识库 · 五视角实体 ID 索引（SSOT）"
 
     suffix = _default_suffix(bundle)
 

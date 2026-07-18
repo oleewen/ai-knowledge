@@ -1,21 +1,25 @@
 ---
 type: Documentation
+title: 业务架构
 ---
 # 业务架构
 
-索引入口见 [../../INDEX-GUIDE.md](../../INDEX-GUIDE.md) 与 [index.md](index.md)。前者负责 `system/` 九章地图，后者负责当前视角目录索引。
+[返回 · 架构索引](../README.md)
 
-[返回上一级 · 架构文档索引](../README.md)
+系统层业务架构：BSD→AB SSOT；BD 为 company reference。
 
-本目录为业务架构**目录与入口**。🔑 核心文件为必维护项；📎 补充文件按系统复杂度按需启用；📐 决策记录与架构变更同步。业务章节现集中在 [`chapters/`](chapters/README.md) 子目录。
+| 章节 | 文件 | 概述 |
+|------|------|------|
+| 业务概述 | [chapters/business-overview.md](chapters/business-overview.md) | 本系统业务定位与范围 |
+| 业务域划分 | [chapters/business-domain-division.md](chapters/business-domain-division.md) | 域清单与父级关系 |
+| 业务术语 | [chapters/business-glossary.md](chapters/business-glossary.md) | 术语与概念模型 |
+| 业务流程 | [chapters/business-processes.md](chapters/business-processes.md) | 主责流程与能力映射 |
+| 能力地图 | [chapters/business-capability-map.md](chapters/business-capability-map.md) | 能力落地与成熟度 |
+| 规则策略 | [chapters/business-rules-and-strategies.md](chapters/business-rules-and-strategies.md) | 策略与合规（按需） |
 
-| 类型 | 章节 | 文件 | 概述 |
-|------|------|------|------|
-| 🔑 | 业务概述 | [business-overview.md](chapters/business-overview.md) | 本系统在业务全景中的定位、目标与范围裁剪。 |
-| 🔑 | 业务域划分 | [business-domain-division.md](chapters/business-domain-division.md) | L1–L5 业务域清单及父级关系，支撑流程与系统映射。 |
-| 🔑 | 业务术语 | [business-glossary.md](chapters/business-glossary.md) | 概念模型与术语表，衔接应用层领域模型与数据模型。 |
-| 🔑 | 业务流程 | [business-processes.md](chapters/business-processes.md) | 主责流程子集及与系统能力的映射关系。 |
-| 🔑 | 能力地图 | [business-capability-map.md](chapters/business-capability-map.md) | 本系统业务能力落地、成熟度及与业务域对应。 |
-| 📎 | 规则策略 | [business-rules-and-strategies.md](chapters/business-rules-and-strategies.md) | 业务策略与合规约束落地，作为产品与风控依据。 |
+## 实体
 
-> 商业模式与价值链、组织角色见 [公司业务架构](../../../company/knowledge/business/README.md)。
+* 元数据：[business-meta.md](business-meta.md)
+* 样例：`BD-EXAMPLE.md`（ref）· `BSD-EXAMPLE/` 树
+
+公司层对照：[company/knowledge/business](../../../company/knowledge/business/README.md)

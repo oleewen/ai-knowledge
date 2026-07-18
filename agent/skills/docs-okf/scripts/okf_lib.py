@@ -68,6 +68,7 @@ HIERARCHY_TO_TYPE: Dict[str, str] = {
     "PL": "Product Line",
     "PM": "Product Module",
     "FT": "Feature",
+    "FR": "Functional Requirement",
     "UC": "Use Case",
     "SYS": "System",
     "APP": "Application",
@@ -97,9 +98,9 @@ APPLICATION_PERSPECTIVE_DOMAIN_ANCHOR: Dict[str, str] = {
 SYSTEM_PERSPECTIVE_DOMAIN_ANCHOR: Dict[str, str] = {
     "business": "BSD-EXAMPLE",
     "product": "PM-EXAMPLE",
-    "application": "APP-EXAMPLE",
+    "application": "MS-EXAMPLE",
     "data": "DS-EXAMPLE",
-    "technical": "MW",
+    "technical": "MW-EXAMPLE",
 }
 
 COMPANY_PERSPECTIVE_DOMAIN_ANCHOR: Dict[str, str] = {
@@ -265,10 +266,16 @@ def entity_relpath(
             return f"knowledge/product/{full_id}.md"
         if perspective == "application" and prefix == "SYS":
             return f"knowledge/application/{full_id}.md"
+        if perspective == "application" and prefix == "APP":
+            return f"knowledge/application/{full_id}/{full_id}.md"
+        if perspective == "application" and prefix == "MS":
+            return f"knowledge/application/{full_id}/{full_id}.md"
         if perspective == "data" and prefix == "MDG":
             return f"knowledge/data/{full_id}.md"
         if perspective == "technical" and prefix == "TSD":
             return f"knowledge/technical/{full_id}.md"
+        if perspective == "technical" and prefix == "MW":
+            return f"knowledge/technical/{full_id}/{full_id}.md"
         anchor = perspective_domain_anchor(perspective, full_id, bundle)
         if not anchor:
             return f"knowledge/{perspective}/{full_id}.md"

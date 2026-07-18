@@ -71,11 +71,105 @@ def test_validator_rejects_missing_section() -> None:
         assert code == 1
 
 
+def test_validator_cross_bundle_knowledge_link_fallback() -> None:
+    """system 绝对 /knowledge/… 本层缺失时，回退查 application。"""
+    with tempfile.TemporaryDirectory() as tmp:
+        repo = Path(tmp)
+        api = (
+            repo
+            / "application"
+            / "knowledge"
+            / "application"
+            / "MS-EXAMPLE"
+            / "API-EXAMPLE-001.md"
+        )
+        api.parent.mkdir(parents=True)
+        api.write_text("# API\n", encoding="utf-8")
+
+        sys_root = repo / "system"
+        (sys_root / "knowledge" / "product").mkdir(parents=True)
+        (sys_root / "index.md").write_text(
+            '---\nokf_version: "0.1"\n---\n', encoding="utf-8"
+        )
+        concept = sys_root / "knowledge" / "product" / "UC-EXAMPLE.md"
+        concept.write_text(
+            "---\n"
+            "type: Use Case\n"
+            "title: 示例用例\n"
+            "description: 示例\n"
+            "tags: [product, UC]\n"
+            'timestamp: "2026-07-18T00:00:00Z"\n'
+            "full_id: UC-EXAMPLE\n"
+            "perspective: product\n"
+            "hierarchy: UC\n"
+            "parent_id: null\n"
+            "layer_scope: system\n"
+            "---\n"
+            "## 关系\n\n"
+            "- (none)\n\n"
+            "## 跨视角\n\n"
+            "- map_to_api_id: [API-EXAMPLE-001]"
+            "(/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md)\n\n"
+            "## 详细说明\n\n"
+            "- (none)\n\n"
+            "## 依据与证据\n\n"
+            "示例\n",
+            encoding="utf-8",
+        )
+
+        validator = validate_bundle.Validator(
+            sys_root, "system", repo_root=repo
+        )
+        code = validator.run()
+        assert code == 0
+        assert validator.warnings == 0
+
+
+def test_validator_cross_bundle_missing_still_warns() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        repo = Path(tmp)
+        (repo / "application").mkdir()
+        sys_root = repo / "system"
+        (sys_root / "knowledge" / "product").mkdir(parents=True)
+        (sys_root / "index.md").write_text(
+            '---\nokf_version: "0.1"\n---\n', encoding="utf-8"
+        )
+        (sys_root / "knowledge" / "product" / "UC-EXAMPLE.md").write_text(
+            "---\n"
+            "type: Use Case\n"
+            "title: 示例用例\n"
+            "description: 示例\n"
+            "tags: [product, UC]\n"
+            'timestamp: "2026-07-18T00:00:00Z"\n'
+            "full_id: UC-EXAMPLE\n"
+            "perspective: product\n"
+            "hierarchy: UC\n"
+            "parent_id: null\n"
+            "layer_scope: system\n"
+            "---\n"
+            "## 关系\n\n- (none)\n\n"
+            "## 跨视角\n\n"
+            "- map_to_api_id: [API-MISSING]"
+            "(/knowledge/application/MS-EXAMPLE/API-MISSING.md)\n\n"
+            "## 详细说明\n\n- (none)\n\n"
+            "## 依据与证据\n\n示例\n",
+            encoding="utf-8",
+        )
+        validator = validate_bundle.Validator(
+            sys_root, "system", repo_root=repo
+        )
+        code = validator.run()
+        assert code == 0
+        assert validator.warnings >= 1
+
+
 def main() -> None:
     tests = [
         test_validator_accepts_legacy_english_h1_sections,
         test_validator_accepts_target_chinese_h2_sections,
         test_validator_rejects_missing_section,
+        test_validator_cross_bundle_knowledge_link_fallback,
+        test_validator_cross_bundle_missing_still_warns,
     ]
     for fn in tests:
         fn()

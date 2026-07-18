@@ -1,13 +1,13 @@
 ---
 type: Middleware Binding
 title: 示例中间件绑定
-description: 仅用于演示技术视角 MW 数据结构（示例）。
+description: 系统层 reference；正文 SSOT 在 application。
 tags: [technical, MW]
 timestamp: "2026-06-21T00:00:00Z"
 full_id: MW-EXAMPLE
 perspective: technical
 hierarchy: MW
-parent_id: null
+parent_id: TSD-EXAMPLE
 layer_scope: system
 ---
 ## 关系
@@ -20,6 +20,8 @@ layer_scope: system
 
 ## 详细说明
 
+- definition_scope: reference
+- 上游主定义：`application/knowledge/technical/MW-EXAMPLE/MW-EXAMPLE.md`（应用层 OKF SSOT）。
 - binding_type: kafka
 - config_key: example.kafka.topic
 

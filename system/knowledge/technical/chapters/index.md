@@ -8,12 +8,11 @@
 
 ## 目录文件
 
-* [README.md](README.md)
-* [technical-overview.md](technical-overview.md)
+* [technical-ha-and-dr.md](technical-ha-and-dr.md)
 * [technical-infrastructure.md](technical-infrastructure.md)
 * [technical-middleware.md](technical-middleware.md)
+* [technical-overview.md](technical-overview.md)
 * [technical-performance-scalability.md](technical-performance-scalability.md)
-* [technical-ha-and-dr.md](technical-ha-and-dr.md)
 
 ## 阅读顺序
 

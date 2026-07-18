@@ -18,7 +18,7 @@ layer_scope: system
 
 ## 跨视角
 
-- invokes_api_ids: [API-EXAMPLE-001](/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md)
+- invokes_api_ids: [API-EXAMPLE-001](../../../../../application/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md)
 - realizes_use_case_ids: [UC-EXAMPLE](/knowledge/product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md)
 
 ## 详细说明

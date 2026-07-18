@@ -38,6 +38,7 @@
 | PM- | Product Module   | 产品模块 | 系统 |
 | BP- | Business Process | 业务流程 | 系统 |
 | FT- | Feature | 功能点  | 系统 |
+| FR- | Functional Requirement | 功能需求 | 系统 |
 | UC- | Use Case         | 用例   | 系统 |
 | BR- | Business Rule    | 业务规则 | 系统 |
 
@@ -80,15 +81,15 @@
   - **`application/`、`system/`、`company/` 根**：`docs-meta.md`（阶段子目录与 `knowledge/` 指针、`index`/`DESIGN` 等导航约定摘要）。
   - **`{DOC_DIR}/knowledge/` 根**：`knowledge-meta.md`（本树 SSOT 索引说明）。
   - **治理与命名 SSOT**：`agent/knowledge/`（`naming-conventions.md`、`glossary.md`、`architecture-principles.md`、`adr-template.md`、`adr-guidelines.md`）；ADR 正文为 `application/adr/ADR-{序号}-{短标题}.md` 或 `system/adr/ADR-{序号}-{短标题}.md`（按决策范围）。
-  - **`{DOC_DIR}/` 下阶段目录**：**solutions**、**analysis**、**requirements**、**changelogs** 约定收敛于各目录 `README.md`（无 `{dirname}_meta.yaml`）。`knowledge/` 五视角等使用 `{perspective}-meta.md` + `{perspective}-entities.md`。
+  - **`{DOC_DIR}/` 下阶段目录**：**solutions**、**analysis**、**requirements**、**changelogs** 约定收敛于各目录 `README.md`（无 `{dirname}_meta.yaml`）。`knowledge/` 五视角使用 `{perspective}-meta.md` + per-entity `{ID}.md`（OKF）；`index.md` 由扫描生成。legacy `*-entities.md` 已废弃。
   - **应用知识库根目录**（`applications/{app}/`）：`application_meta.yaml`（联邦单元根索引）；子目录同模式，如 `knowledge/knowledge-meta.md`、`requirements/README.md`、`changelogs/README.md`；命名与治理规则引用系统库 `agent/knowledge/`。
-  - **系统库五视角**（`system/knowledge/{perspective}/`）：与**应用知识库** `applications/{app}/knowledge/{perspective}/` 同构；采用 `{perspective}-meta.md` + `{perspective}-entities.md`，**集中放在该视角根目录**（子目录仅作导航锚点）。
-- **系统库 · 业务视角**（`system/knowledge/business/`）：`business-meta.md`；域文件夹 `{登记入口-ID}/`（示例 `BD-EXAMPLE/`）内扁平 `{ID}.md` + `index.md`。
-- **系统库 · 产品视角**（`application/knowledge/product/`）：`product-meta.md`（PL/PM/FT/UC）；`{PL-ID}/{PM-ID}/` 作层级锚点。
-- **系统库 · 应用视角**（`system/knowledge/application/`）：`application-meta.md`（SYS/APP/MS/API）；`{SYS-ID}/` 为系统锚点，其下为应用注册 YAML。
-- **系统库 · 数据视角**（`system/knowledge/data/`）：`data-meta.md`（DS/ENT）；`{DS-ID}/` 作存储锚点。
-- **系统库 · 技术视角**（`system/knowledge/technical/`）：`technical-meta.md`（MW/CMP）；`technical-entities.md` 为实体 SSOT。
-- **公司层五视角**（`company/knowledge/{perspective}/`）：叙事 Markdown + `{perspective}-meta.md` + `{perspective}-entities.md`（公司级实体：BD/CAP、PL、SYS、MDG、TPL）。
+  - **系统库五视角**（`system/knowledge/{perspective}/`）：与应用 `knowledge/{perspective}/` 同构；`{perspective}-meta.md` 在视角根；实体为 `{ID}.md`。
+- **系统库 · 业务视角**（`system/knowledge/business/`）：`business-meta.md`；`BD-{NAME}.md` 为 company reference；`BSD-{NAME}/` 起为系统 SSOT 树。
+- **系统库 · 产品视角**（`system/knowledge/product/`）：`product-meta.md`；`PL-{NAME}.md` 为 company reference；`PM-{NAME}/` 起为 PM→FT→FR→UC/BR。
+- **系统库 · 应用视角**（`system/knowledge/application/`）：`application-meta.md`；`SYS-{NAME}.md` 为 company reference；`APP-{NAME}/APP-{NAME}.md`；`MS-{NAME}/MS-{NAME}.md`（与 application 同构）。
+- **系统库 · 数据视角**（`system/knowledge/data/`）：`data-meta.md`；`MDG-{NAME}.md` 为 company reference；`DS-{NAME}/` 含 DS/ENT。
+- **系统库 · 技术视角**（`system/knowledge/technical/`）：`technical-meta.md`；`TSD-{NAME}.md` 为系统 SSOT；`MW-{NAME}/` 可为 application MW 的 reference。
+- **公司层五视角**（`company/knowledge/{perspective}/`）：叙事 Markdown + `{perspective}-meta.md` + 公司级实体 `{ID}.md`（BD/CAP、PL、SYS、MDG、TPL）。
 - **IDEA-ID（需求链统一标识）**：统一命名格式 `*-{YYMMDD}-{主题slug}` 中的 `{YYMMDD}-{主题slug}` 段；各阶段类型前缀为 `SOLUTION` / `ANALYSIS` / `REQUIREMENT`（目录）/ `PRD` / `ASD` / `DSD` / `TDD` 等。
 - **系统库 · requirements 阶段**（`system/requirements/`）：`README.md` 为阶段约定入口；`REQUIREMENT-{IDEA-ID}/` 为交付包锚点（与 `ANALYSIS-{IDEA-ID}.md` 共用同一 **IDEA-ID**），不在包内并列根级 `*_meta.yaml` 拷贝。
 - **系统库 · solutions 阶段**（`system/solutions/`）：`README.md` 为阶段约定入口；根目录平铺 `SOLUTION-{IDEA-ID}.md`；`archive/` 归档。

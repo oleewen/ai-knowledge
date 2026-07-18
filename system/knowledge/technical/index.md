@@ -4,8 +4,8 @@
 
 ## 子目录
 
-* [chapters](chapters/README.md) - 技术架构章节目录。
-* [MW](MW/README.md) - 中间件绑定示例目录。
+* [MW-EXAMPLE](MW-EXAMPLE/README.md) - 系统层 reference；正文 SSOT 在 application。
+* [chapters](chapters/README.md)
 
 ## 目录文件
 
