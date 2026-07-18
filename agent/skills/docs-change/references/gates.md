@@ -43,7 +43,7 @@ Agent 与 `change-indexing.sh` **均须**走此门禁，不得仅改文档而不
 - `--output` 是否偏离默认目录
 - 聚合完成后是否继续下一输出目录
 
-推荐会话格式：
+推荐会话格式（字母见 [light-flow-actions.md](../../../references/light-flow-actions.md)）：
 
 ```text
 即将执行 /docs-change，当前参数如下：

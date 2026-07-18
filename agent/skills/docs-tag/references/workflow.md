@@ -128,13 +128,14 @@ phase 3 后自动 `grilling`：
 
 ### 6 输出与动作停顿
 
-当前单元收敛后，停下等待 `C/M/G/S/F`：
+当前单元收敛后，停下等待 `C/M/S/F`（见 [light-flow-actions.md](../../../references/light-flow-actions.md)）：
 
 - `C`：确认当前单元并结束或进入下一 overview 文件
-- `M`：修改参数或 phase 策略，再重新 grill
-- `G`：继续深挖当前单元的候选词、表行命中或摘录结果
+- `M`：修改参数或 phase 策略后重跑
 - `S`：跳过当前单元写入，或保留当前结果但不继续后续 phase
 - `F`：按已确认参数补齐剩余 overview 文件
+
+加深候选词/表行/摘录：`M` 或口述下一 phase；**无 `G`**。
 
 ## 示例摘要
 

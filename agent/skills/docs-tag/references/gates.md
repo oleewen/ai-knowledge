@@ -30,7 +30,7 @@
 - `scan-dir`、`top-n` 是否需要调整
 - `phase 2` 无附录、`phase 3` 无 ✅、或结果明显越义
 
-推荐会话格式：
+推荐会话格式（字母见 [light-flow-actions.md](../../../references/light-flow-actions.md)）：
 
 ```text
 即将执行 /docs-tag，当前参数如下：
@@ -41,8 +41,10 @@
 - top-n: <数字>
 - 当前单元: <overview 文件>
 
-C 确认当前单元 / M 修改参数 / S 跳过当前单元或后续 phase / G 继续深挖 / F 补齐剩余 overview 文件
+C 确认当前单元 / M 修改参数 / S 跳过当前单元或后续 phase / F 补齐剩余 overview 文件
 ```
+
+加深候选词/表行/摘录：用 `M` 调参后重跑，或口述指定下一 phase；**无 `G`**。
 
 ## 默认授权边界
 

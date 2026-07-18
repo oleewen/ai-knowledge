@@ -4,7 +4,7 @@ description: >
   为 system/company overview 下 *-overview.md 做关键词相关度：候选词 → YAML 附录 → 表行 ✅ → 架构摘录（phase 3）。
   触发：/docs-tag、「扫描关键词」「给概览打标签」「phase 3」。
   分流：第三列提炼 / 全文术语 / INDEX → docs-extract、docs-upgrade、docs-indexing。
-  推进协议：参数向导、当前单元、phase 执行、自动 grilling、C/M/G/S/F 见 references/workflow.md 与 references/gates.md。
+  推进协议：参数向导、当前单元、phase 执行、轻量校核、C/M/S/F 见 references/workflow.md、references/gates.md 与 light-flow-actions。
 ---
 
 # docs-tag（关键词标记）
@@ -51,13 +51,14 @@ description: >
 
 - 单个 overview 文件
 
-当前单元收敛后，由用户用 `C/M/G/S/F` 推进：
+当前单元收敛后，由用户用 `C/M/S/F` 推进（见 [light-flow-actions.md](../../references/light-flow-actions.md)）：
 
 - `C`：确认当前单元并结束或进入下一个 overview 文件
-- `M`：修改参数或 phase 策略，再重新 grill
-- `G`：继续深挖当前单元的候选词、表行命中或摘录结果
+- `M`：修改参数或 phase 策略后重跑
 - `S`：暂存当前单元，跳过写入或跳过后续 phase
 - `F`：在当前单元已收敛后，按既定参数补齐剩余 overview 文件
+
+加深分析：`M` 调参重跑，或口述指定下一 phase；**无 `G`**。
 
 ```bash
 python3 agent/skills/docs-tag/scripts/keyword_tag.py ...

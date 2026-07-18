@@ -1,7 +1,7 @@
 # 知识库布局契约（Agent SSOT）
 
 > **定位**：`system/`、`company/` 路径、overview 缓冲区与表行对齐的**唯一 Agent 侧真源**。  
-> 会话 spec 路径见 [session-spec-path.md](session-spec-path.md)；闸门总表见 [CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates)。
+> 会话工作稿路径见 [session-spec-path.md](session-spec-path.md)；闸门总表见 [CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates)；推进环见 [unit-cycle-protocol.md](unit-cycle-protocol.md)。
 
 **最后更新**: 2026-07-18
 

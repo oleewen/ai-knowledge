@@ -1,70 +1,92 @@
-# 会话 spec 路径契约
+# 会话工作稿路径契约（Agent SSOT）
+
+> **定位**：`{DOC_DIR}/superpowers/specs/` 的路径解析、合法落点与库外引用隔离。  
+> **主线**：文档产出走参数向导 + `澄清 → 生成 → 烤干` 直写终稿（见 [CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates)）；**不要求** HTML gate / `CONFIRMED` / 写前 hook。  
+> **本文职责**：可选工作稿与 brainstorming 备忘的路径规则；非默认推进协议。
+
+**最后更新**: 2026-07-18
+
+---
 
 ## 合法路径
 
 `{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-<阶段后缀>.md`
 
-- **DOC_DIR**：**优先**从目标工程仓库根 **`.docsconfig`** 的 `DOC_DIR=` 读取（与 [config-bootstrap.sh](../scripts/config-bootstrap.sh) / `validate_bootstrap_docsconfig` 一致）。
-- **未找到 `.docsconfig` 或其中无有效 `DOC_DIR`**：默认为 **`docs`**。
-- **`application` / `system` / `company` 仅当为 `.docsconfig` 中声明的 `DOC_DIR` 时才合法**；不得在未声明的文档根下创建会话 spec。
-- **中间目录**：固定为 **`superpowers/specs/`**（会话中间稿；通常被 `.gitignore` 忽略，不入库）。
-- **阶段后缀**：见 [CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates) 总表（如 `-sdx-prd.md`、`-docs-indexing.md`、`-design.md`）。
+- **DOC_DIR**：优先读目标工程 **`.docsconfig`** 的 `DOC_DIR=`（与 [config-bootstrap.sh](../scripts/config-bootstrap.sh) 一致）；无配置或无效时默认为 **`docs`**。
+- **`application` / `system` / `company`** 仅当已在 `.docsconfig` 声明为 `DOC_DIR` 时合法。
+- **中间目录**：固定 **`superpowers/specs/`**（通常 `.gitignore`，不入库）。
+- **阶段后缀**：可选，便于区分主题（如 `-sdx-prd.md`、`-docs-indexing.md`、`-design.md`）；非闸门凭证。
 
-### 统一落点
+### 用途（可选，非主线前置）
 
-**闸门 spec**（用户总确认、`CONFIRMED`、钩子证据）与 **brainstorming 设计备忘**（`-design.md`）均落在 **`{DOC_DIR}/superpowers/specs/`**（`DOC_DIR` 按上表解析）。
+| 用途 | 说明 |
+| --- | --- |
+| 可选工作稿 | 会话暂存、路径清单草稿；**不**替代写前意图澄清或用户 `C` |
+| brainstorming 备忘 | 如 `-design.md`；非正式 SSOT |
 
-示例（`.docsconfig` 中 `DOC_DIR=docs`）：
+示例（`DOC_DIR=docs` 或无配置默认）：
 
-- `docs/superpowers/specs/YYYY-MM-DD-<topic>-sdx-prd.md`
+- `docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-indexing.md`
+- `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`
 
-示例（中央库 **无** `.docsconfig`，或 `DOC_DIR` 无效时默认 `docs`）：
+---
 
-- `docs/superpowers/specs/YYYY-MM-DD-<topic>-docs-indexing.md`（可一次列出 `index.md`、`system/index.md` 等多条写入路径）
-- `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`（brainstorming 设计备忘）
-
-## DOC_DIR 解析（与 hooks 一致）
+## DOC_DIR 解析
 
 | 条件 | 有效 `{DOC_DIR}` |
 | --- | --- |
-| 存在 `.docsconfig` 且 `DOC_DIR=application`（或 `system` / `company` / `docs`） | **配置值**（首段路径；`.` 或空视为无效） |
-| 无 `.docsconfig`，或缺少 / 无效 `DOC_DIR` | **`docs`** |
+| `.docsconfig` 且 `DOC_DIR=` 为 `application` / `system` / `company` / `docs` | 配置值（`.` 或空无效） |
+| 无配置或 `DOC_DIR` 无效 | **`docs`** |
 
-**跨域写入**：当有效 `{DOC_DIR}` 为 `docs` 时，会话 spec 仍可在 §3 **写入路径清单**中列出任意仓库根相对终稿路径（如 `system/index.md`）；spec 文件本身须落在 `docs/superpowers/specs/`。
+**跨域写入**：有效根为 `docs` 时，工作稿可在清单中列出任意仓库根相对终稿路径（如 `system/INDEX-GUIDE.md`）；工作稿文件本身仍落在 `docs/superpowers/specs/`。
 
-## 实现判定（与 hooks 一致）
+参数向导与当前单元确认的**输出根**亦按上表解析（与 [docs-indexing/gates.md](../skills/docs-indexing/references/gates.md) 一致）。
 
-仓库根相对路径须同时满足：
+---
 
-1. 路径形如 `{docroot}/superpowers/specs/...`，且 `{docroot}` **等于**当前仓库 **`resolve_session_spec_doc_dir(repo)`**。
-2. 路径中**不含** `/requirements/`。
+## 路径合法性（实现侧）
+
+若工具扫描该目录，仓库根相对路径须同时满足：
+
+1. 形如 `{docroot}/superpowers/specs/...`，且 `{docroot}` 等于当前解析的 `DOC_DIR`。
+2. 不含 `/requirements/`。
 3. 以 `.md` 结尾。
 
-因此未在 `.docsconfig` 声明的 `application/`、`system/`、`company/` 下 `superpowers/specs/` **不合法**；`{docroot}/specs/`、`superpower/specs/`、requirements 内 `specs/` 亦均不合法。
+未声明的 `application|system|company/superpowers/specs/`、`{docroot}/specs/`、`superpower/specs/`、requirements 内 `specs/` **均不合法**（会话工作稿语义下）。
+
+---
 
 ## 禁止
 
-- 不得将 `{DOC_DIR}/specs/`（无 `superpowers/` 段）、`{docroot}/superpower/specs/` 或 requirements 内 `specs/` 当作会话闸门 spec。
-- 另禁止引用 `ideas/**`。
-- **库外不得引用具名 superpowers 文件**：除 `{docroot}/superpowers/**` 内部外，全仓 Markdown 或字面量不得指向 `…/superpowers/(specs|plans)/YYYY-MM-DD-*.md`；目录契约与占位符允许。细则见 [CONVENTIONS.md](../rules/CONVENTIONS.md#superpowers-ref-isolation)。
+- 不得将无 `superpowers/` 段的 `{DOC_DIR}/specs/`、拼写错误的 `superpower/specs/`，或 requirements 内 `specs/`，当作本契约下的会话工作稿根。
+- 禁止引用 `ideas/**`。
+- **库外不得引用具名 superpowers 文件**：除 `{docroot}/superpowers/**` 内部外，全仓不得指向 `…/superpowers/(specs|plans)/YYYY-MM-DD-*.md`。见 [CONVENTIONS.md](../rules/CONVENTIONS.md#superpowers-ref-isolation)。
 
-## 迁移
+---
+
+## 遗留：HTML gate / hook（非默认）
+
+历史上曾用会话 spec 的 `PENDING`/`CONFIRMED` 与 `sdx_gate_common` 作写前钩子证据。  
+**当前默认主线已废弃该前置**；技能 anti-patterns 禁止退回该路径。  
+若仓库仍保留相关 hook/脚本，仅作遗留兼容，**不得**再写成 Skill 默认步骤。
+
+---
+
+## 与 spec-asd / docs-push 区分
+
+| 类型 | 路径示例 | 用途 |
+| --- | --- | --- |
+| 会话工作稿 / 设计备忘 | `{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-*.md` | 可选暂存；非正式 SSOT |
+| 规约 spec-asd | `application/requirements/…/specs/spec-asd-*.md` 或 `{DOC_DIR}/specs/spec-asd-*.md` | 架构规约；docs-push |
+| legacy spec | `application/specs/spec-{yyMMdd}-*.md` | docs-push legacy |
+
+---
+
+## 迁移（目录名）
 
 ```bash
 mv application/superpower application/superpowers   # 各 DOC_DIR 同理
 ```
 
-- 无 `.docsconfig` 时：将会话 spec 迁至 **`docs/superpowers/specs/`**（含原 `application/` / `system/` 下仅用于放行的 spec）。
-- 有 `.docsconfig` 时：spec 须与 **`DOC_DIR=`** 对齐（如 `DOC_DIR=system` → `system/superpowers/specs/`）。
-
-## 会话权威
-
-当次会话维护的 spec 由 `sdx_session_state.session_specs` 记录；`sdx_gate_common` **优先**只检查这些文件，再回退 **`iter_session_spec_files(repo)`**（仅扫描有效 `{DOC_DIR}/superpowers/specs/`）。
-
-## 与 spec-asd / docs-push 区分
-
-| 类型 | 路径示例 | 用途 |
-|------|----------|------|
-| 会话 spec（闸门 / 设计备忘） | `{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-sdx-prd.md` | 用户总确认、`CONFIRMED`、钩子证据；或 brainstorming `-design.md` |
-| 规约 spec-asd | `application/requirements/…/specs/spec-asd-*.md` 或 `{DOC_DIR}/specs/spec-asd-*.md` | 架构规约，由 docs-push 推送 |
-| legacy spec | `application/specs/spec-{yyMMdd}-*.md` | docs-push legacy |
+无 `.docsconfig` 时，将会话工作稿迁至 **`docs/superpowers/specs/`**。  
+有配置时与 **`DOC_DIR=`** 对齐。

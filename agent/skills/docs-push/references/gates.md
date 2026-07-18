@@ -30,7 +30,7 @@
 - `git-op=commit` 或 `push`
 - 当前目标单元涉及覆盖已有目标文件
 
-推荐会话格式：
+推荐会话格式（字母见 [light-flow-actions.md](../../../references/light-flow-actions.md)）：
 
 ```text
 即将执行 /docs-push，当前参数如下：

@@ -1,13 +1,12 @@
 # docs-extract 工作流
 
-主干：[SKILL.md](../SKILL.md)。推进协议：[gates.md](gates.md)。
+主干：[SKILL.md](../SKILL.md)。推进 binding：[gates.md](gates.md)。
 
-契约分工：
+契约：
 
-- 写前**意图澄清**：[intent-clarify.md](../../../references/intent-clarify.md)
-- 写后**烤干** `grilling`：[grilling-skill.md](../../../references/grilling-skill.md)
-
-本文只定义二者在 `docs-extract` Unit Cycle 中的绑定。
+- 写前澄清：[intent-clarify.md](../../../references/intent-clarify.md)
+- 单元推进 / `C/M/G/S/F`：[unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)
+- 写后烤干：[grilling-skill.md](../../../references/grilling-skill.md)
 
 ## 目标
 
@@ -32,11 +31,11 @@
 - `--sources` 可解析（路径或文本）
 - `--overview` 可解析
 - overview 含 `## 文档关键词`
-- 若环境未安装 `grilling` Skill，则按 [grilling-skill.md](../../../references/grilling-skill.md) 的 fallback 协议执行
+- 若环境未安装 `grilling` Skill，则按 grilling-skill fallback
 
 ## 参数向导
 
-按以下顺序收口参数；用户已明确时可跳过对应项：
+按序收口；用户已明确时可跳过对应项：
 
 1. `--sources`
 2. `--overview`
@@ -47,58 +46,28 @@
 
 ## 当前单元
 
-一个当前单元由两部分组成：
+单个 `--overview` + 单批命中段落与 `A/U/D`。定义见 [gates.md](gates.md)。
 
-1. 单个 `--overview`
-2. 单批命中段落与对应的 `A/U/D` 集合
+## 写后默认表
 
-一次只处理一个当前单元，不并行推进多个 overview。
+| 对象 | 默认烤干 | 强制升级 |
+| --- | --- | --- |
+| 单个 overview 提炼单元（含 `--dry-run` 预览） | **必须** | 首次实质写第三列；命中面过大；`[U]` 影响面大；未确认决策写入 |
 
-## Unit Cycle（澄清 → 生成 → 烤干）
+启发式只可升级为必须，不可把默认「必须」降为跳过。
 
-### 写后默认表
+## 技能步骤
 
-`docs-extract`：**各 overview 当前单元默认必须烤干**（含 `--dry-run` 预览结果；启发式只可升级、不可降级跳过）。
-
-### 固定循环
-
-```mermaid
-flowchart TD
-    A["参数向导收口"] --> B["选定当前单元"]
-    B --> IC["意图澄清（六项清单）"]
-    IC -->|写前 C| C["读关键词附录与 sources"]
-    C --> D["筛选命中段落"]
-    D --> E{"是否有命中"}
-    E -->|否| F["结束当前单元，不写入"]
-    E -->|是| G{"是否 dry-run"}
-    G -->|是| H["输出命中摘要与 A/U/D 预览"]
-    G -->|否| I["读取现有第三列并写入 A/U/D"]
-    I --> J{"写入是否成功"}
-    J -->|否| K["回滚当前单元"]
-    J -->|是| L["烤干：自动 grilling"]
-    H --> L
-    F --> L
-    K --> L
-    L --> M["等待 C/M/G/S/F"]
-```
+推进环见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)；本技能只补提炼特有步骤：
 
 1. 选定当前单元
-2. **意图澄清**：输出公共六项清单，标明「当前阶段：意图澄清」；有缺口则一问一答；用户写前 `C` 后方可执行或预览
+2. **意图澄清**：公共六项 + [gates.md](gates.md) 追加字段（`--sources` / `--overview` / dry-run / 关键词附录）；写前 `C` 后方可执行或预览
 3. 读关键词附录与 sources，筛选命中段落
 4. 无命中 → 结束当前单元，不写入
 5. `--dry-run` → 输出命中摘要与 `A/U/D` 预览（不写第三列）
 6. 正式写入 → 读现有第三列并写入 `A/U/D`；失败则整体回滚
-7. **烤干**：对当前单元（含预览结果）执行自动 `grilling`，直到收敛；标明「当前阶段：烤干」
-8. 若打出语义性问题，暂停等待用户确认
-9. 当前单元收敛后，用户用 `C/M/G/S/F` 做写后动作选择
-
-### 约束
-
-- 未完成写前意图澄清（无写前 `C`），不得写入第三列或输出正式预览结论
-- `grilling` 默认只拷当前单元，不跨多 overview 发散
-- 进入 `grilling` 阶段，默认授权仅用于**非语义性修订**
-- `grilling` 打出**语义性问题**时，必须先输出结论、推荐修订与数字选项并等待用户确认
-- 自动 `grilling` 收敛前，不默认推进到下一 overview 或下一批来源
+7. **烤干**：按写后默认表（含预览结果）
+8. 用户动作：`C/M/G/S/F` 见 unit-cycle-protocol
 
 ## 命令示例
 
@@ -114,4 +83,4 @@ flowchart TD
 - 关键词附录为筛选**唯一**依据；弱相关不入
 - 禁止整段复制源文；第三列无来源脚注
 - 只更新有命中的章节；写入前先读现有第三列再定 `A/U/D`
-- 当前单元完成后必须停下，等待 `C/M/G/S/F`
+- 当前单元完成后必须停下，等待用户动作（见 unit-cycle-protocol）

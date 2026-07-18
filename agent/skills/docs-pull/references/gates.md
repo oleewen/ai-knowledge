@@ -26,7 +26,7 @@
 - `knowledge-links.yaml` 缺字段
 - `--all` 准备继续后续槽位
 
-推荐会话格式：
+推荐会话格式（字母见 [light-flow-actions.md](../../../references/light-flow-actions.md)）：
 
 ```text
 即将执行 /docs-pull，当前参数如下：

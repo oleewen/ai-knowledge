@@ -1,76 +1,30 @@
 # sdx-analysis 工作流
 
-主干：[SKILL.md](../SKILL.md)。推进协议：[gates.md](gates.md)。
+主干：[SKILL.md](../SKILL.md)。推进 binding：[gates.md](gates.md)。
 
 ## 目标
 
-通过**参数向导 + 分段「澄清 → 生成 → 烤干」**，逐步形成可评审的 `ANALYSIS-{IDEA-ID}.md`（六章）。
-本技能默认采用**单段收敛**的工作方式，而不是先准备整份前置草稿、再一次性集中收口。
+通过**参数向导 + 分段「澄清 → 生成 → 烤干」**，逐步形成可评审的 `ANALYSIS-{IDEA-ID}.md`（六章）。  
+单段收敛；不先攒整篇再集中收口。
 
 契约分工：
 
-- 写前**意图澄清**：[intent-clarify.md](../../../references/intent-clarify.md)
-- 写后**烤干** `grilling`：[grilling-skill.md](../../../references/grilling-skill.md)
+- 写前意图澄清：[intent-clarify.md](../../../references/intent-clarify.md)
+- 段落推进环 / `C·M·G·F` / 重开 / 前文回改：[unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)（**无 `S`**）
+- 写后烤干：[grilling-skill.md](../../../references/grilling-skill.md)
 
-本文只定义二者在 `sdx-analysis` Section Cycle 中的绑定。
-
-**公司库**（`KNOWLEDGE_TYPE=company`）：
-上游为 `company/solutions/SOLUTION-*.md`；
-分析须明确跨系统功能归属、协作依赖与残余风险；
-交付物落在 `company/analysis/`，
-下游 `company/requirements/` 再承接 PRD/ASD/DSD/TDD。
+**公司库**（`KNOWLEDGE_TYPE=company`）：上游为 `company/solutions/SOLUTION-*.md`；分析须明确跨系统功能归属、协作依赖与残余风险；交付物落在 `company/analysis/`，下游 `company/requirements/` 再承接 PRD/ASD/DSD/TDD。
 
 ---
 
-## 总流程
-
-```mermaid
-flowchart TD
-    A["开始 /sdx-analysis"] --> B{"参数向导模式"}
-    B -->|逐项模式| C["一次确认一个参数"]
-    B -->|快捷组合模式| D["选择参数组合预设"]
-    D --> E["局部改写参数"]
-    C --> F["参数集收口"]
-    E --> F
-
-    F --> G["创建 ANALYSIS-*.md 终稿骨架"]
-    G --> H["选择当前段落 / 小节 / 单个 FR"]
-    H --> IC["意图澄清（六项清单）"]
-    IC -->|写前 C| I["按模板生成当前段到终稿"]
-    I --> J["烤干：自动 grilling 直到收敛"]
-
-    J --> K{"是否遇到语义性问题或前文回改"}
-    K -->|否| L["进入用户动作选择"]
-    K -->|是| M["停下并等待用户确认"]
-    M --> N["确认后修订当前段或前文"]
-    N --> J
-
-    L --> O{"用户动作"}
-    O -->|C| P{"是否还有下一段"}
-    O -->|M| Q["按用户要求修改当前段"]
-    O -->|G| R["追加一轮深挖 grilling"]
-    O -->|F| S["批确认剩余段意图表后批量补齐"]
-    Q --> J
-    R --> J
-
-    P -->|有| H
-    P -->|无| T["整体验证"]
-    S --> T
-    T --> U["完成"]
-```
-
----
-
-## 阶段一：参数向导
+## 参数向导
 
 ### 模式
 
 1. **逐项模式**：一次只确认一个参数。
-2. **快捷组合模式**：先选预设参数组合，再按需改单项。
+2. **快捷组合模式**：先选预设，再按需改单项。
 
 ### 最小可写条件
-
-满足以下条件即可创建终稿骨架：
 
 - 上游 `SOLUTION-{IDEA-ID}.md` 已明确，或已有等价共识材料
 - `IDEA-ID` 已给出或可按规则生成
@@ -87,153 +41,60 @@ flowchart TD
 
 ### 快捷组合
 
-快捷组合用于减少重复确认，允许如下一次性输入：
-
 - `标准全篇`：`depth=standard`，从 `§1` 开始，默认完整六章
 - `快速补段`：`depth=quick`，只处理用户指定章节
 - `深度评审`：`depth=deep`，强化 `FR/MVP/依赖/风险` 的分析力度
 
-用户选定组合后，仍可局部修改任一参数。
-参数未收口时，继续留在参数向导逐项澄清，不引入额外协同机制名。
+参数未收口时留在向导，不进入 Section Cycle。
 
 ---
 
-## 阶段二：终稿骨架初始化
+## 终稿骨架初始化
 
-参数达到最小可写条件后，立即创建：
+参数达标后立即创建：
 
 - `{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md`
 
-初始化内容包括：
-
-- 文档标题
-- 六章标题与必要表头
-- 文首 frontmatter 元数据占位
-- 当前未写章节可保留占位说明
-
-此阶段目标是建立**可持续增量写入**的终稿容器，而非等待整篇草稿成熟后再落盘。
+初始化：文档标题、六章标题与必要表头、文首 frontmatter 占位、未写章节占位说明。  
 骨架创建**不**替代各章写入前的意图澄清。
 
 ---
 
-## 阶段三：Section Cycle（澄清 → 生成 → 烤干）
+## 产物路径
 
-### 基本单位
-
-一次只处理一个章节或子章节。
-默认顺序按模板推进，也可由用户指定跳转到任意段。
-在 `§2` 中可进一步细化到单个 `FR` 分节作为当前段。
-
-### 写后默认表
-
-`sdx-analysis`：**各章节/FR 段默认必须烤干**（启发式只可升级、不可降级跳过）。
-
-### 固定循环
-
-1. 选定当前段
-2. **意图澄清**：输出公共六项清单，标明「当前阶段：意图澄清」；有缺口则一问一答；用户写前 `C` 后方可写入
-3. 按模板生成当前段，直接写入终稿对应位置
-4. 若当前段存在 `>=2` 条真实分析路径，先在当前段内完成方案比选
-5. **烤干**：对当前段执行自动 `grilling`，直到收敛；标明「当前阶段：烤干」
-6. 若打出语义性问题或前文回改，暂停等待用户确认
-7. 当前段收敛后，用户用 `C/M/G/F` 做写后动作选择
-8. 收口后再进入下一段，或在用户选 `F` 后先批确认剩余意图再批量补齐
-
-### 约束
-
-- 未完成写前意图澄清（无写前 `C`），不得写入当前段正文
-- `grilling` 默认只拷当前段，不跨多段发散
-- 若环境未安装 `grilling` Skill，
-  则按 [grilling-skill.md](../../../references/grilling-skill.md) 的 fallback 协议执行
-- 进入 `grilling` 阶段，默认授权仅用于**非语义性修订**（不改变含义的错别字、编号、排版等）
-- `grilling` 打出**语义性问题**时，必须先输出结论、推荐修订与数字选项并等待用户确认；未获确认不得修订当前段
-- 自动 `grilling` 收敛前，不默认推进到下一段
-- `G` 不是每轮必选动作，只在自动收敛后由用户手动追加深挖
-- 若本段依赖前文结论，则前文变更会触发本段重开（重开后须再意图澄清）
+| 项 | 路径 |
+| --- | --- |
+| 终稿 | `{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md` |
+| 公司库终稿 | `company/analysis/ANALYSIS-{IDEA-ID}.md` |
+| 结构校验 | `../scripts/validate-analysis.sh` |
 
 ---
 
-## 前文回改规则
+## 写后默认表
 
-若当前段 `grilling` 打出的问题仅影响当前段，则只修当前段。
-若问题涉及前文设定错误、范围漂移、术语冲突、目标变化、MVP 切分失真等，则允许回改前面段落。
+| 对象 | 默认烤干 | 强制升级 |
+| --- | --- | --- |
+| 各章节 / 单个 `FR` | **必须** | 未确认决策写入；跨段依赖 / 前文前提变更；MVP·优先级·范围口径变更 |
 
-### 回改后的强制动作
-
-一旦前文被改，当前段必须：
-
-1. 重新读取受影响前提
-2. 状态 `reopened`，回到**意图澄清**
-3. 写前 `C` 后重写或修订当前段
-4. 重新进入自动 `grilling`
-5. 再进入用户确认或批量补齐
-
-也就是说，**前文回改不会直接视为当前段已通过**。
-
-### 回改授权边界
-
-- `grilling` 可直接识别“需要回改前文”，但不得把前文回改视为当前段默认授权的一部分
-- 涉及前文时，先输出受影响前提、推荐方案与数字选项，再等待用户选择
-- 只有用户明确选择后，才执行前文回改
-- 前文一旦被改，当前段立即 `reopened`，并按本流程重新澄清与烤干
+启发式只可升级为必须，不可降级跳过。
 
 ---
 
-## 段落状态
+## Section Cycle（指针）
 
-```mermaid
-stateDiagram-v2
-    [*] --> selected: 选定当前段
-    selected --> clarifying: 意图澄清
-    clarifying --> intent_confirmed: 写前 C
-    intent_confirmed --> draft: 生成当前段到终稿
-    draft --> grilling: 进入烤干
-    grilling --> revised: 自动修订当前段
-    revised --> grilling: 继续自动收口
-    grilling --> reopened: 前文被回改
-    reopened --> clarifying: 基于新前提再澄清
-    grilling --> grilled: 当前段已收敛
-    grilled --> confirmed: 写后 C 确认当前段
-    grilled --> revised: M 修改当前段
-    grilled --> grilling: G 继续深挖当前段
-    grilled --> batch_intent: F 批确认剩余意图
-    confirmed --> [*]
-```
+选定当前段后，严格按 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) + [intent-clarify.md](../../../references/intent-clarify.md) 执行。
 
-状态含义：
+本技能附加：
 
-- `clarifying`：写前意图澄清中，尚未写入
-- `intent_confirmed`：写前 `C` 已过，即将/正在生成
-- `draft`：当前段已写入终稿，但仍是初稿
-- `grilling`：当前段处于烤干中
-- `revised`：当前段刚被自动或人工修改，待继续收口
-- `reopened`：因前文改动，当前段重新打开
-- `grilled`：当前段已烤干收敛，可等待写后用户动作
-- `confirmed`：用户写后确认通过
+- `§2` 可细化到单个 `FR` 作为当前段
+- 当前段存在 `>=2` 条真实分析路径时，先段内比选再收敛
+- 动作字母仅 `C/M/G/F`（无 `S`）
+- grilling fallback 见 [grilling-skill.md](../../../references/grilling-skill.md)
 
 ---
 
-## 阶段四：批量补齐与整体验证
+## 整体验证与质量基线
 
-当全部目标段落已完成，或用户选择 `F` 进入全部生成时，进入收尾阶段。
+至少检查：章节完整性、术语一致、编号连续（`G-n` / `FR-n` / `BR-n` / `R-n` / `MVP-n`）、跨段无未解释矛盾、frontmatter 完整、需求分析可读且不混入实现级细节。
 
-### `F` 的执行方式
-
-- 保留已确认或已收敛的前文
-- **先**汇总剩余未完成章节/FR 的意图表（公共六项摘要），用户一次写前语境 `C` 确认
-- 确认后再从当前段之后连续生成剩余章节（段间不再单独停意图澄清）
-- 每个剩余章节写入后都要自动 `grilling` 到收敛
-- 中途若遇到语义性问题或前文回改，立即停下等待用户确认；回改后受影响段须再澄清
-
-### 验证目标
-
-- 章节完整性
-- 术语一致性
-- 编号连续性（`G-n` / `FR-n` / `BR-n` / `R-n` / `MVP-n`）
-- 跨段无未解释矛盾
-- 文首 frontmatter 完整
-- 正文保持需求分析可读，不混入实现级细节
-
-### 质量基线
-
-终检对齐 [quality-checklist.md](quality-checklist.md)。
+终检对齐 [quality-checklist.md](quality-checklist.md)；收口前跑 `validate-analysis.sh`。

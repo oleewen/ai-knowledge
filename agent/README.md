@@ -5,35 +5,34 @@
 
 ## 职责边界
 
-- `rules/`：编码、设计、测试、文档等协作规范与模板入口。
+- `rules/`：编码、设计、测试、文档等协作规范与闸门总表入口。
+- `references/`：跨 Skill 协议（意图澄清、单元推进、轻流程动作、grilling、布局、会话工作稿路径）。
 - `knowledge/`：知识库治理 SSOT（命名、术语、原则、ADR；原 `*/constitution/`）。
-- `skills/`：以 `SKILL.md` 为核心的工作流定义，由 Agent 按步骤执行并生成产物。
-- `agent/scripts/`：与 Skill 配套的共享 Bash 库（如 `config-bootstrap.sh`、`validate-agent-md-links.sh`）
-- `scripts/`（仓库根）：初始化与分发工具链，负责把 `agent/` 与知识库模板同步到目标项目。
+- `skills/`：以 `SKILL.md` 为核心的工作流定义。
+- `agent/scripts/`：与 Skill 配套的共享 Bash 库。
+- `scripts/`（仓库根）：初始化与分发工具链，把 `agent/` 与知识库模板同步到目标项目。
 
-> `skills/` 是“流程定义”；仓库根 `scripts/` 是“环境初始化”；`agent/scripts/` 是「技能脚本共享库」，二者职责不同。
+> `skills/` = 流程定义；仓库根 `scripts/` = 环境初始化；`agent/scripts/` = 技能脚本共享库。
 
 ## 结构导览
 
-| 路径                                                                                           | 用途                                                                    |
-| -------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| [rules/CONVENTIONS.md](rules/CONVENTIONS.md)                                                 | 规则总入口（编码/设计/测试/文档交付规范）                                                |
-| [knowledge/README.md](knowledge/README.md)                                                   | 知识治理 SSOT（命名、术语、原则、ADR）                                                |
-| [rules](rules)                                                                               | 分域规则与模板集合                                                             |
-| [skills](skills)                                                                             | Skill 工作流目录（每个子目录对应一个能力域）                                             |
-| [scripts/](scripts) | 共享 Bash 库（`config-bootstrap.sh` 依赖同目录 **`docs-core.sh`**（路径/`.docsconfig`/ **`knowledge-links.yaml` 只读解析**）；加载 **`DOC_ROOT`/`REPO_ROOT`/`DOC_DIR`** 及可选 **`AGENT_ROOT`/`AGENT_DIRS`**、`resolve_repo_doc_root`、`validate-agent-md-links.sh` 等） |
-| [skills/README.md](skills/README.md)                                                         | Skills 使用入口与命令清单（权威）                                                  |
-| [skills/docs-agent/assets/agents-skeleton.md](skills/docs-agent/assets/agents-skeleton.md) | `AGENTS.md` 推荐骨架模板                                                    |
-
+| 路径 | 用途 |
+| --- | --- |
+| [rules/CONVENTIONS.md](rules/CONVENTIONS.md) | 规则总入口与产出协议总表 |
+| [knowledge/README.md](knowledge/README.md) | 知识治理 SSOT |
+| [references/](references) | 跨 Skill 契约（澄清 / 推进环 / 轻流程动作 / 烤干 / 布局 / 工作稿路径） |
+| [skills/README.md](skills/README.md) | Slash 命令清单（权威） |
+| [scripts/](scripts) | 共享 Bash 库（路径与 `.docsconfig` 解析等；细节见各脚本头注释） |
+| [skills/docs-agent/assets/agents-skeleton.md](skills/docs-agent/assets/agents-skeleton.md) | `AGENTS.md` 推荐骨架 |
 
 ## 与全仓库文档关系
 
-- 总体协作契约见仓库根 `AGENTS.md`。
-- 全局路径与九章地图见仓库根 `INDEX-GUIDE.md`；目录索引与渐进披露见仓库根 `index.md`。
-- 知识库建模与维护流程见**系统知识库根目录**（路径前缀 `application/`）下 `DESIGN.md` 与 `CONTRIBUTING.md`。
+- 总体协作契约：仓库根 `AGENTS.md`
+- 九章地图：`INDEX-GUIDE.md`；目录索引：`index.md`
+- 知识库建模：各文档根下 `DESIGN.md` / `CONTRIBUTING.md`（如 `application/`）
 
 ## 维护原则
 
-- 优先保持稳定：尽量增量更新，不破坏既有目录语义与引用路径。
-- 规则先于内容：新增工作流前先确认是否已有规则或模板可复用。
-- 入口单一：Slash 命令与技能说明统一维护在 [skills/README.md](skills/README.md)，避免在本文件重复定义。
+- 增量更新，不破坏既有目录语义与引用路径。
+- 规则先于内容：新工作流前先复用已有规则或模板。
+- 入口单一：Slash 命令只维护在 [skills/README.md](skills/README.md)。
