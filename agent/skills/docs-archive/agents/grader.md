@@ -4,8 +4,10 @@
 
 ## 判定
 
-- `should-trigger`：主路径须为 `/docs-archive` 或等价；能识别参数向导、确认书（= 意图澄清）、当前单元「澄清→落盘→烤干」与 `C/M/G/S/F`
-- `should-not-trigger`：须正确分流，不误判为纯 extract/distill/upgrade/build
+- **should-trigger**（须全部满足；共通环见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)）：
+  - 主路径 `/docs-archive` 或等价
+  - 参数向导 → 确认书（= 写前意图澄清）→ 当前单元「澄清 → 落盘 → 烤干」→ `C/M/G/S/F`
+- **should-not-trigger**：须正确分流，不误判为纯 extract / distill / upgrade / build
 - **P0** 任一失败 → `passed: false`
 
 ## P0 断言

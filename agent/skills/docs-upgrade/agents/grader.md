@@ -4,8 +4,12 @@
 
 ## 判定
 
-- **should-trigger**：主路径 `/docs-upgrade` 或等价；含意图澄清、澄清→生成→烤干、当前单元与 `C/M/G/S/F`；勿误判成纯下游
-- **should-not-trigger**：正确分流 archive/change/indexing。**P0** 任一失败 → `passed: false`。只评测。
+- **should-trigger**（须全部满足；共通环见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)）：
+  - 主路径 `/docs-upgrade` 或等价
+  - 写前意图澄清 → 「澄清 → 生成 → 烤干」→ 当前单元与 `C/M/G/S/F`
+  - 勿误判成纯下游
+- **should-not-trigger**：正确分流 archive / change / indexing
+- **P0** 任一失败 → `passed: false`；只评测
 
 ## P0 断言
 
