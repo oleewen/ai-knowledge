@@ -1,9 +1,10 @@
 ---
 type: Documentation
+title: 数据架构
 ---
 # 数据架构
 
-[返回上一级 · 企业架构](../README.md)
+[返回 · 企业架构](../README.md)
 
 公司层数据架构入口：治理/湖仓/安全叙事 + MDG 实体。
 
@@ -18,5 +19,3 @@ type: Documentation
 
 * 元数据：[data-meta.md](data-meta.md)
 * 样例：[MDG-EXAMPLE.md](MDG-EXAMPLE.md)
-
-目录索引：[index.md](index.md)

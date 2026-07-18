@@ -5,7 +5,7 @@ title: overview
 <!-- markdownlint-disable-next-line MD025 -->
 # overview
 
-[返回上一级 · 企业架构](../README.md)
+[返回 · 企业架构](../README.md)
 
 公司层五视角 **overview 缓冲区**（表行 ↔ 各视角章节 `##` 锚点）。
 

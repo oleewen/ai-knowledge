@@ -4,7 +4,7 @@
 
 ## 子目录
 
-* [chapters](chapters/README.md)
+* [chapters](chapters/index.md)
 
 ## 目录文件
 
@@ -15,7 +15,7 @@
 ## 阅读顺序
 
 1. [README.md](README.md) — 先看产品视角范围
-2. [chapters/README.md](chapters/README.md) — 再看产品章节入口
+2. [chapters/index.md](chapters/index.md) — 再进 chapters 目录
 3. [product-meta.md](product-meta.md) — 按需查看元数据
 4. [PL-EXAMPLE.md](PL-EXAMPLE.md) — 按需查看实体样本
 

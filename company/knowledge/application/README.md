@@ -1,9 +1,10 @@
 ---
 type: Documentation
+title: 应用架构
 ---
 # 应用架构
 
-[返回上一级 · 企业架构](../README.md)
+[返回 · 企业架构](../README.md)
 
 公司层应用架构入口：系统全景叙事 + SYS 实体。
 
@@ -16,5 +17,3 @@ type: Documentation
 
 * 元数据：[application-meta.md](application-meta.md)
 * 样例：[SYS-EXAMPLE.md](SYS-EXAMPLE.md)
-
-目录索引：[index.md](index.md)

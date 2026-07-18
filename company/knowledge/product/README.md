@@ -1,9 +1,10 @@
 ---
 type: Documentation
+title: 产品架构
 ---
 # 产品架构
 
-[返回上一级 · 企业架构](../README.md)
+[返回 · 企业架构](../README.md)
 
 公司层产品架构入口：章节叙事 + PL 实体。
 
@@ -18,5 +19,3 @@ type: Documentation
 
 * 元数据：[product-meta.md](product-meta.md)
 * 样例：[PL-EXAMPLE.md](PL-EXAMPLE.md)
-
-目录索引：[index.md](index.md)

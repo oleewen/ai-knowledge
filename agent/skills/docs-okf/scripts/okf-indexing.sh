@@ -55,6 +55,11 @@ if [[ "$BUNDLE_OVERRIDE" -eq 0 ]]; then
   BUNDLE="$OKF_BUNDLE"
 elif [[ "$BUNDLE" != "$OKF_BUNDLE" ]]; then
   echo "[okf] BUNDLE 已由环境变量覆盖为 ${BUNDLE}（.docsconfig DOC_DIR=${DOC_DIR}）" >&2
+  # 覆盖 bundle 时 viz 跟随 bundle 目录名，避免写到主 KNOWLEDGE_TYPE 路径
+  _okf_bundle_base="${BUNDLE##*/}"
+  OKF_VIZ_OUT="${_okf_bundle_base}/viz.html"
+  OKF_VIZ_NAME="${_okf_bundle_base} OKF"
+  echo "[okf] OKF_VIZ_OUT 跟随 bundle → ${OKF_VIZ_OUT}" >&2
 fi
 
 OKF_DIR="$REPO_ROOT/agent/skills/docs-okf/scripts"

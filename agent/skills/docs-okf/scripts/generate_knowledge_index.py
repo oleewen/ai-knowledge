@@ -41,7 +41,38 @@ _APPLICATION_PERSPECTIVE_SECTIONS: List[Tuple[str, str, List[str]]] = [
 ]
 
 
+_COMPANY_PERSPECTIVE_SECTIONS: List[Tuple[str, str, List[str]]] = [
+    (
+        "§1 业务视角（business · BD / CAP）",
+        "business",
+        ["BD", "CAP"],
+    ),
+    (
+        "§2 产品视角（product · PL）",
+        "product",
+        ["PL"],
+    ),
+    (
+        "§3 应用视角（application · SYS）",
+        "application",
+        ["SYS"],
+    ),
+    (
+        "§4 数据视角（data · MDG）",
+        "data",
+        ["MDG"],
+    ),
+    (
+        "§5 技术视角（technical · TPL）",
+        "technical",
+        ["TPL"],
+    ),
+]
+
+
 def _perspective_sections(bundle: str) -> List[Tuple[str, str, List[str]]]:
+    if bundle == "company":
+        return list(_COMPANY_PERSPECTIVE_SECTIONS)
     sections = list(_APPLICATION_PERSPECTIVE_SECTIONS)
     if bundle == "system":
         sections[4] = (
@@ -63,13 +94,6 @@ def _id_suffix(full_id: str) -> str:
     if "-" not in full_id:
         return full_id
     return full_id.split("-", 1)[1]
-
-
-def _hierarchy_rank(hierarchy: str, order: List[str]) -> int:
-    try:
-        return order.index(hierarchy)
-    except ValueError:
-        return len(order)
 
 
 def _load_concepts(bundle_root: Path) -> List[Dict[str, Any]]:
@@ -104,6 +128,36 @@ def _load_concepts(bundle_root: Path) -> List[Dict[str, Any]]:
     return concepts
 
 
+def _forest_sort(concepts: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """同批实体：无 parent 在前，父先于子；环/断链按 full_id 回退。"""
+    by_id = {c["full_id"]: c for c in concepts}
+    children: Dict[Optional[str], List[str]] = {}
+    for c in concepts:
+        parent = c["parent_id"] if c["parent_id"] in by_id else None
+        children.setdefault(parent, []).append(c["full_id"])
+    for kids in children.values():
+        kids.sort()
+
+    ordered: List[Dict[str, Any]] = []
+    seen: set[str] = set()
+
+    def walk(node_id: str) -> None:
+        if node_id in seen or node_id not in by_id:
+            return
+        seen.add(node_id)
+        ordered.append(by_id[node_id])
+        for child_id in children.get(node_id, []):
+            walk(child_id)
+
+    for root_id in children.get(None, []):
+        walk(root_id)
+    # 断链残留（parent 不在本批）
+    for c in sorted(concepts, key=lambda x: x["full_id"]):
+        if c["full_id"] not in seen:
+            walk(c["full_id"])
+    return ordered
+
+
 def _filter_for_section(
     concepts: List[Dict[str, Any]],
     perspective: str,
@@ -116,13 +170,17 @@ def _filter_for_section(
         if c["hierarchy"] in allowed
         and (not c["perspective"] or c["perspective"] == perspective)
     ]
-    filtered.sort(
-        key=lambda c: (
-            _hierarchy_rank(c["hierarchy"], hierarchies),
-            c["full_id"],
-        )
-    )
-    return filtered
+    # 先按 hierarchy 分组序，组内森林序
+    grouped: List[Dict[str, Any]] = []
+    for hierarchy in hierarchies:
+        group = [c for c in filtered if c["hierarchy"] == hierarchy]
+        grouped.extend(_forest_sort(group))
+    # 未在 hierarchies 显式列出的（不应出现）按 full_id 追加
+    listed = {c["full_id"] for c in grouped}
+    for c in sorted(filtered, key=lambda x: x["full_id"]):
+        if c["full_id"] not in listed:
+            grouped.append(c)
+    return grouped
 
 
 def _render_table_rows(concepts: List[Dict[str, Any]]) -> List[str]:
@@ -191,18 +249,42 @@ def _split_existing(text: str) -> Tuple[str, str]:
 
 
 def _default_suffix(bundle: str) -> str:
-    if bundle == "system":
+    if bundle == "company":
+        footer_note = (
+            "> 本索引登记公司级 **BD / CAP / PL / SYS / MDG / TPL**；"
+            "系统层与应用层实体见对应 bundle 的 `knowledge/index.md`。"
+        )
+        mapping_rows = [
+            "| BD-EXAMPLE | `business/BD-EXAMPLE/` |",
+            "| CAP-EXAMPLE-L1 | `business/BD-EXAMPLE/CAP-EXAMPLE-L1.md` |",
+            "| CAP-EXAMPLE | `business/BD-EXAMPLE/CAP-EXAMPLE.md` |",
+            "| PL-EXAMPLE | `product/PL-EXAMPLE.md` |",
+            "| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |",
+            "| MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |",
+            "| TPL-EXAMPLE | `technical/TPL-EXAMPLE.md` |",
+        ]
+    elif bundle == "system":
         footer_note = (
             "> 公司级 **TPL-*** 不在本索引登记；见 `company/knowledge/technical/`。"
             "系统级 **TSD-*** 在本索引 §5 登记。"
         )
-        bd_mapping = "| BD-EXAMPLE | `business/BD-EXAMPLE.md` |"
+        mapping_rows = [
+            "| BD-EXAMPLE | `business/BD-EXAMPLE.md` |",
+            "| PL-EXAMPLE | `product/PL-EXAMPLE/` |",
+            "| SYS-EXAMPLE | `application/SYS-EXAMPLE/` |",
+            "| DS-EXAMPLE | `data/DS-EXAMPLE/` |",
+        ]
     else:
         footer_note = (
             "> 公司级 **TPL-***、系统级 **TSD-*** 不在本索引登记；见 "
             "`company/knowledge/technical/`、`system/knowledge/technical/`。"
         )
-        bd_mapping = "| BD-EXAMPLE | `business/BSD-EXAMPLE/` |"
+        mapping_rows = [
+            "| BD-EXAMPLE | `business/BSD-EXAMPLE/` |",
+            "| PL-EXAMPLE | `product/PL-EXAMPLE/` |",
+            "| SYS-EXAMPLE | `application/SYS-EXAMPLE/` |",
+            "| DS-EXAMPLE | `data/DS-EXAMPLE/` |",
+        ]
 
     return "\n".join(
         [
@@ -214,10 +296,7 @@ def _default_suffix(bundle: str) -> str:
             "",
             "| 索引 ID | 命名式 ID（锚点目录） |",
             "|---------|----------------------|",
-            bd_mapping,
-            "| PL-EXAMPLE | `product/PL-EXAMPLE/` |",
-            "| SYS-EXAMPLE | `application/SYS-EXAMPLE/` |",
-            "| DS-EXAMPLE | `data/DS-EXAMPLE/` |",
+            *mapping_rows,
             "",
             "---",
             "",
@@ -252,8 +331,14 @@ def render_knowledge_index(
     suffix = _default_suffix(bundle)
 
     header = prefix.rstrip()
-    if header.endswith("---"):
-        header = header[:-3].rstrip()
+    # 反复去掉尾部分隔线，避免多轮生成累积双 ---
+    while True:
+        stripped = header.rstrip()
+        if stripped.endswith("---"):
+            header = stripped[:-3].rstrip()
+            continue
+        header = stripped
+        break
 
     parts = [header, "", "---", ""]
     parts.append("## 统一表头规范")

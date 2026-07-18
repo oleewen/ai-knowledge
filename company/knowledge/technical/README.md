@@ -1,9 +1,10 @@
 ---
 type: Documentation
+title: 技术架构
 ---
 # 技术架构
 
-[返回上一级 · 企业架构](../README.md)
+[返回 · 企业架构](../README.md)
 
 公司层技术架构入口：平台能力叙事 + TPL 实体。
 
@@ -19,5 +20,3 @@ type: Documentation
 
 * 元数据：[technical-meta.md](technical-meta.md)
 * 样例：[TPL-EXAMPLE.md](TPL-EXAMPLE.md)
-
-目录索引：[index.md](index.md)

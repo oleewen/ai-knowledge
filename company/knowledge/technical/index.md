@@ -4,7 +4,7 @@
 
 ## 子目录
 
-* [chapters](chapters/README.md)
+* [chapters](chapters/index.md)
 
 ## 目录文件
 
@@ -15,7 +15,7 @@
 ## 阅读顺序
 
 1. [README.md](README.md) — 先看技术视角范围
-2. [chapters/README.md](chapters/README.md) — 再看技术章节入口
+2. [chapters/index.md](chapters/index.md) — 再进 chapters 目录
 3. [technical-meta.md](technical-meta.md) — 按需查看元数据
 4. [TPL-EXAMPLE.md](TPL-EXAMPLE.md) — 按需查看实体样本
 

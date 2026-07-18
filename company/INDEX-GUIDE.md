@@ -1,3 +1,7 @@
+---
+type: Documentation
+title: company INDEX-GUIDE
+---
 # company INDEX-GUIDE
 
 > **最后更新**: 2026-07-17  

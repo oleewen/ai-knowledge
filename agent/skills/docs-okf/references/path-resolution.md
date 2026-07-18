@@ -19,21 +19,27 @@
 
 | 参数 | 来源 |
 | ---- | ---- |
-| `--bundle` | `{DOC_DIR}` |
-| `--out` | `{KNOWLEDGE_TYPE}/viz.html` |
-| `--name` | `"{KNOWLEDGE_TYPE} OKF"` |
+| `--bundle` | `{DOC_DIR}`（默认可被覆盖） |
+| `--out` | `{KNOWLEDGE_TYPE}/viz.html`（**未**覆盖 bundle 时） |
+| `--name` | `"{KNOWLEDGE_TYPE} OKF"`（**未**覆盖 bundle 时） |
 
-`DOC_DIR=docs` + `KNOWLEDGE_TYPE=application` 时：bundle 扫描 `docs/knowledge/`，viz 写入 `application/viz.html`。
+`DOC_DIR=docs` + `KNOWLEDGE_TYPE=application` 时：默认 bundle 扫描 `docs/`，viz 写入 `application/viz.html`。
 
 ## Agent 步骤
 
 1. 进入目标工程目录，确认 `.docsconfig` 与 `KNOWLEDGE_TYPE`；或由入口脚本调用 `resolve-okf-paths.sh`
-2. 复述 `DOC_DIR` → bundle、`KNOWLEDGE_TYPE` → viz
+2. 复述 `DOC_DIR` → 默认 bundle、`KNOWLEDGE_TYPE` → 默认 viz
 3. 执行 [workflow.md](workflow.md) 对应命令
 
 ## 覆盖
 
-CLI/env `--bundle` 可覆盖 `DOC_DIR`；viz 仍用 `KNOWLEDGE_TYPE`。覆盖时 stderr 一行 warn。
+CLI/env `--bundle` / `BUNDLE` 可覆盖 `DOC_DIR`。覆盖且与 config 推导值不同时：
+
+- stderr 警告覆盖
+- **viz 跟随 bundle 目录名**：`--out` → `{bundle_basename}/viz.html`，`--name` → `"{bundle_basename} OKF"`
+- 例：`BUNDLE=company` → `company/viz.html`（不再写到主 `KNOWLEDGE_TYPE` 路径）
+
+未覆盖时 viz 仍跟 `KNOWLEDGE_TYPE`。
 
 ## 脚本
 

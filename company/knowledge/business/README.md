@@ -1,9 +1,10 @@
 ---
 type: Documentation
+title: 业务架构
 ---
 # 业务架构
 
-[返回上一级 · 企业架构](../README.md)
+[返回 · 企业架构](../README.md)
 
 公司层业务架构入口：章节叙事 + BD/CAP 实体。系统/应用仅引用 ID，不重复字段语义。
 
@@ -20,5 +21,3 @@ type: Documentation
 
 * 元数据：[business-meta.md](business-meta.md)
 * 样例：[BD-EXAMPLE/](BD-EXAMPLE/README.md)（含 CAP / CAP-L1）
-
-目录索引：[index.md](index.md)

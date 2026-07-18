@@ -5,7 +5,7 @@ title: 企业架构
 <!-- markdownlint-disable-next-line MD025 -->
 # 企业架构
 
-[返回上一级 · 公司知识库](../README.md)
+[返回 · 公司知识库](../README.md)
 
 公司层五视角入口。治理叙事；不写系统实现细节。分型见 [okf-spec](../../agent/knowledge/okf-spec.md)。
 

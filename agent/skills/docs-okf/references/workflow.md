@@ -16,9 +16,9 @@
 
 读 [path-resolution.md](path-resolution.md)。先 `cd` 到目标工程目录；须有效 `.docsconfig`（含 `KNOWLEDGE_TYPE`）。解析后：
 
-- `BUNDLE` = `{DOC_DIR}`
-- viz `--out` = `{KNOWLEDGE_TYPE}/viz.html`
-- viz `--name` = `"{KNOWLEDGE_TYPE} OKF"`
+- 默认 `BUNDLE` = `{DOC_DIR}`
+- 默认 viz `--out` = `{KNOWLEDGE_TYPE}/viz.html`，`--name` = `"{KNOWLEDGE_TYPE} OKF"`
+- 若 CLI/env 覆盖 `BUNDLE` 且与 `{DOC_DIR}` 不同：viz 改为 `{bundle_basename}/viz.html`（见 path-resolution「覆盖」）
 
 若 `.docsconfig` 缺失、解析失败或缺 `KNOWLEDGE_TYPE`，立即中止。
 
@@ -32,12 +32,14 @@
 
 1. `inject_frontmatter.py --bundle "${DOC_DIR}"`
 2. `generate_index.py --bundle "${DOC_DIR}" --recursive`
-3. `generate_knowledge_index.py --bundle "${DOC_DIR}"`
-4. `visualize.py` → `{KNOWLEDGE_TYPE}/viz.html`
+3. `generate_knowledge_index.py --bundle "${DOC_DIR}"`（**必接**：见下方 HARD）
+4. `visualize.py` → `{KNOWLEDGE_TYPE}/viz.html`（`BUNDLE` 覆盖时跟 bundle 名）
 5. `okf-validate.sh`
 6. `validate_viz_index.py`
 
-环境变量 `BUNDLE` 或 CLI `--bundle` 可覆盖 `{DOC_DIR}`。
+环境变量 `BUNDLE` 或 CLI `--bundle` 可覆盖 `{DOC_DIR}`；覆盖时 viz 输出跟随 bundle 目录名（非主 `KNOWLEDGE_TYPE`）。
+
+> **HARD**：`generate_index.py` 会重写各目录 `index.md`，其中 `knowledge/index.md` 的目录段会覆盖既有内容，**实体分表（§1–§5）会被冲掉**。单跑 `generate_index` 后必须立刻跑 `generate_knowledge_index.py`；或直接用全量 `okf-indexing.sh`，勿只跑 index 再 validate。
 
 结果摘要至少包含：
 
@@ -89,7 +91,7 @@ python3 agent/skills/docs-okf/scripts/visualize.py \
 | 预览 | `/docs-okf`（内部脚本：`bash agent/skills/docs-okf/scripts/okf-indexing.sh --dry-run`） |
 | 仅校验 | `/docs-okf`（内部脚本：`bash agent/skills/docs-okf/scripts/okf-validate.sh`） |
 | 仅 viz | `/docs-okf`（内部脚本：`python3 agent/skills/docs-okf/scripts/visualize.py --bundle "${DOC_DIR}" --out "${KNOWLEDGE_TYPE}/viz.html" --name "${KNOWLEDGE_TYPE} OKF"`） |
-| index 后补 OKF index | `/docs-okf`（内部脚本：`python3 agent/skills/docs-okf/scripts/generate_index.py --bundle "${DOC_DIR}" --recursive` 然后 validate） |
+| index 后补 OKF index | `generate_index.py --recursive` → `generate_knowledge_index.py` → `okf-validate.sh`（推荐直接 `okf-indexing.sh`） |
 
 ## 失败分流
 
@@ -103,10 +105,14 @@ python3 agent/skills/docs-okf/scripts/visualize.py \
 
 ## 与 docs-indexing 协作
 
-更新九章索引 `INDEX-GUIDE.md` 后，**建议**：
+更新九章索引 `INDEX-GUIDE.md` 后，**建议**（须含 knowledge-index，见上方 HARD）：
 
 ```bash
+# 推荐全量
+bash agent/skills/docs-okf/scripts/okf-indexing.sh
+# 或分步（顺序不可省 generate_knowledge_index）
 python3 agent/skills/docs-okf/scripts/generate_index.py --bundle "${DOC_DIR}" --recursive
+python3 agent/skills/docs-okf/scripts/generate_knowledge_index.py --bundle "${DOC_DIR}"
 bash agent/skills/docs-okf/scripts/okf-validate.sh
 ```
 

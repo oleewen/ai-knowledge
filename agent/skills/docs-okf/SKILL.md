@@ -2,7 +2,7 @@
 name: docs-okf
 description: >
   OKF bundle refresh、校验与可视化：刷新 index.md、validate-okf、viz.html 与产物校验。
-  须先读 .docsconfig：DOC_DIR→--bundle，KNOWLEDGE_TYPE→viz --out/--name；无 config 或缺 KNOWLEDGE_TYPE 硬中止。
+  须先读 .docsconfig：DOC_DIR→默认 bundle，KNOWLEDGE_TYPE→默认 viz；BUNDLE/--bundle 覆盖时 viz 跟随 bundle 目录名；无 config 或缺 KNOWLEDGE_TYPE 硬中止。
   触发：/docs-okf、OKF refresh、刷新 viz、DOC_DIR、DOC_ROOT、KNOWLEDGE_TYPE、目标工程 OKF。
   分流：用户只要 docs-build 提取或 docs-indexing 九章为主路径 → 对应技能。
   推进协议：轻量参数向导、refresh/validate/viz、结果摘要与失败分流见 references/workflow.md。

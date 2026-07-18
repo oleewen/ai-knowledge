@@ -57,12 +57,30 @@ def _subdir_description(subdir: Path) -> str:
     return ""
 
 
+def _subdir_link(subdir: Path) -> Optional[str]:
+    """子目录入口：优先 README.md，否则 index.md；都无则返回 None（不写死链）。"""
+    readme = subdir / "README.md"
+    if readme.is_file():
+        return f"{subdir.name}/README.md"
+    index = subdir / "index.md"
+    if index.is_file():
+        return f"{subdir.name}/index.md"
+    return None
+
+
 def _subdir_entries(directory: Path) -> List[Tuple[str, str, str]]:
     entries: List[Tuple[str, str, str]] = []
     for path in sorted(directory.iterdir()):
         if not path.is_dir() or path.name.startswith("."):
             continue
-        entries.append((path.name, f"{path.name}/README.md", _subdir_description(path)))
+        link = _subdir_link(path)
+        if link is None:
+            print(
+                f"warn: 跳过无 README/index 的子目录: {path}",
+                file=sys.stderr,
+            )
+            continue
+        entries.append((path.name, link, _subdir_description(path)))
     return entries
 
 
@@ -160,7 +178,9 @@ def render_index_body(directory: Path) -> str:
         existing["阅读顺序"] = _sanitize_preserved_section(_extract_section(body, "阅读顺序"))
         existing["关联索引"] = _sanitize_preserved_section(_extract_section(body, "关联索引"))
 
-    lines = [f"# {directory.name}", "", "目录说明见 [README.md](README.md)。", ""]
+    lines = [f"# {directory.name}", ""]
+    if (directory / "README.md").is_file():
+        lines.extend(["目录说明见 [README.md](README.md)。", ""])
 
     lines.append("## 子目录")
     lines.append("")

@@ -185,8 +185,8 @@ aside {
     },
     "INDEX-GUIDE": {
       "id": "INDEX-GUIDE",
-      "type": "",
-      "title": "INDEX-GUIDE",
+      "type": "Documentation",
+      "title": "company INDEX-GUIDE",
       "description": null,
       "tags": [],
       "body": "# company INDEX-GUIDE\n\n> **最后更新**: 2026-07-17  \n> **定位**: `company/` 九章索引指南。目录索引见 [index.md](index.md)。\n\n---\n\n## 一、项目概览\n\n### 1.1 速查\n\n* [README.md](README.md) — 人类入口  \n* [index.md](index.md) — OKF 目录索引  \n* [DESIGN.md](DESIGN.md) — 设计契约  \n* [knowledge/README.md](knowledge/README.md) — 五视角  \n* [knowledge-links.yaml](knowledge-links.yaml) — 建联清单  \n* [changelogs/README.md](changelogs/README.md) — 变更/索引  \n\n### 1.2 元信息\n\n* **角色**: 公司知识库；`knowledge/` = BD/CAP/PL/SYS/MDG/TPL SSOT；`system-{name}/` = 镜像槽位  \n* **栈**: Markdown、YAML  \n* **范围**: `knowledge/` · `solutions/` · `analysis/` · `system-{name}/` · `changelogs/`  \n\n---\n\n## 二、架构视图\n\n```text\ncompany/\n├── README.md / INDEX-GUIDE.md / index.md / DESIGN.md / docs-meta.md\n├── knowledge-links.yaml\n├── knowledge/ · solutions/ · analysis/\n├── system-SYSNAME/\n└── changelogs/\n```\n\n入口：[knowledge/](knowledge/README.md) · [solutions/](solutions/README.md) · [analysis/](analysis/README.md) · [system-SYSNAME/](system-SYSNAME/README.md)\n\n---\n\n## 三、接口清单\n\n无运行时 API。契约 = 目录 + Markdown + `knowledge-links.yaml`。\n\n---\n\n## 四、模块依赖\n\n* `knowledge/` ↔ `system/knowledge/`：公司实体参照  \n* `solutions/` → `analysis/` → 各系统 `requirements/`  \n* `knowledge-links.yaml` → `system-{name}/`  \n\n---\n\n## 五、详细索引\n\n样本实体与视角：[knowledge/index.md](knowledge/index.md)\n\n---\n\n## 六、API / 字典边界\n\n不承载运行时 API。overview：[knowledge/overview/](knowledge/overview/README.md)\n\n---\n\n## 七、变更与运维\n\n[changelogs/](changelogs/README.md)：`CHANGE-LOG.md` · `INDEXING-LOG.md`；槽位日志在 `system-{name}/changelogs/`\n\n---\n\n## 八、技能与脚本\n\n* `/docs-okf` — 刷新 `index.md` / `viz.html`  \n* [docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md)  \n\n---\n\n## 九、附录\n\n[viz.html](viz.html) · 索引记录 [INDEXING-LOG.md](changelogs/INDEXING-LOG.md)",
