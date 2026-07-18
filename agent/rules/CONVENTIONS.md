@@ -85,33 +85,40 @@
 
 ### 总表
 
+**推进协议短码**（全文见上文「共通模式」；无 HTML gate / 无写前 hook）：
+
+| 短码 | 含义 |
+| --- | --- |
+| **语义** | 意图澄清 + `澄清 → 生成 → 烤干` + `C/M/G/F`（`sdx-*`） |
+| **语义-docs** | 同上，动作含 `S` → `C/M/G/S/F` |
+| **轻** | 不绑意图澄清；`C/M/S/F` 见 [light-flow-actions.md](../references/light-flow-actions.md)（本表不列轻流程技能行） |
+
 | 阶段 | 规则 globs（Cursor） | 终稿 / 写入范围 | 辅助工作稿 | 推进协议 | 环境变量例外 | Skill |
 | --- | --- | --- | --- | --- | --- | --- |
-| sdx-solution | `application/solutions/**/*`、`company/solutions/**/*` | `{DOC_DIR}/solutions/SOLUTION-*.md` | 可选工作稿 | 无 HTML gate；`澄清 → 生成 → 烤干` + `C/M/G/F` | 无 | [sdx-solution/SKILL.md](../skills/sdx-solution/SKILL.md) |
-| sdx-analysis | `application/analysis/**/*`、`company/analysis/**/*` | `{DOC_DIR}/analysis/ANALYSIS-*.md` | 可选工作稿 | 无 HTML gate；`澄清 → 生成 → 烤干` + `C/M/G/F` | 无 | [sdx-analysis/SKILL.md](../skills/sdx-analysis/SKILL.md) |
-| sdx-architect | `application/requirements/**/ASD-*.md` | `application/requirements/**/ASD-*.md` | 可选工作稿 | 无 HTML gate；`澄清 → 生成 → 烤干` + `C/M/G/F` | 无 | [sdx-architect/SKILL.md](../skills/sdx-architect/SKILL.md) |
-| sdx-design | `application/requirements/**/DSD-*.md` | `application/requirements/**/DSD-*.md` | 可选工作稿 | 无 HTML gate；`澄清 → 生成 → 烤干` + `C/M/G/F` | 无 | [sdx-design/SKILL.md](../skills/sdx-design/SKILL.md) |
-| sdx-prd | `application/requirements/**/*` | `application/requirements/**/PRD-*.md` | 可选工作稿 | 无 HTML gate；`澄清 → 生成 → 烤干` + `C/M/G/F` | 无 | [sdx-prd/SKILL.md](../skills/sdx-prd/SKILL.md) |
-| sdx-test | `application/requirements/**/TDD-*.md` | `application/requirements/**/TDD-*.md` | 可选工作稿 | 无 HTML gate；`澄清 → 生成 → 烤干` + `C/M/G/F` | 无 | [sdx-test/SKILL.md](../skills/sdx-test/SKILL.md) |
-| docs-distill | `system/knowledge/**/*`、`company/knowledge/**/*` | `system/knowledge/overview/` 受管区块及蒸馏日志 | 可选工作稿 | `澄清 → 生成 → 烤干` + `C/M/G/S/F` | 无 | [docs-distill/SKILL.md](../skills/docs-distill/SKILL.md) |
-| docs-extract | `system/knowledge/overview/**/*`、`company/knowledge/overview/**/*` | `system|company/knowledge/overview/*.md` | 可选工作稿 | `澄清 → 生成 → 烤干` + `C/M/G/S/F` | 无 | [docs-extract/SKILL.md](../skills/docs-extract/SKILL.md) |
-| docs-archive | `system/knowledge/overview/**/*`、`company/knowledge/overview/**/*` | `system|company/knowledge/overview/*.md` | 可选工作稿 | `澄清 → 生成 → 烤干` + `C/M/G/S/F` | 无 | [docs-archive/SKILL.md](../skills/docs-archive/SKILL.md) |
-| docs-build | `{DOC_DIR}/knowledge/**/*` | `{DOC_DIR}/knowledge/` 下 JSON、README、KNOWLEDGE_INDEX | 可选工作稿 | `澄清 → 生成 → 烤干` + `C/M/G/S/F` | 无 | [docs-build/SKILL.md](../skills/docs-build/SKILL.md) |
-| docs-indexing | `**/INDEX-GUIDE.md`、`**/changelogs/INDEXING-LOG.md` | 各文档根 `INDEX-GUIDE.md` 与对应 `INDEXING-LOG.md` | 可选工作稿 | `澄清 → 生成 → 烤干` + `C/M/G/S/F` | 无 | [docs-indexing/SKILL.md](../skills/docs-indexing/SKILL.md) |
-| docs-upgrade | 不固定（按用户确认范围） | 已确认范围内的 Markdown / 注释 / 配置文本 | 可选工作稿 | `澄清 → 生成 → 烤干` + `C/M/G/S/F` | 无 | [docs-upgrade/SKILL.md](../skills/docs-upgrade/SKILL.md) |
+| sdx-solution | `application/solutions/**/*`、`company/solutions/**/*` | `{DOC_DIR}/solutions/SOLUTION-*.md` | 可选工作稿 | 语义 | 无 | [sdx-solution/SKILL.md](../skills/sdx-solution/SKILL.md) |
+| sdx-analysis | `application/analysis/**/*`、`company/analysis/**/*` | `{DOC_DIR}/analysis/ANALYSIS-*.md` | 可选工作稿 | 语义 | 无 | [sdx-analysis/SKILL.md](../skills/sdx-analysis/SKILL.md) |
+| sdx-architect | `application/requirements/**/ASD-*.md` | `application/requirements/**/ASD-*.md` | 可选工作稿 | 语义 | 无 | [sdx-architect/SKILL.md](../skills/sdx-architect/SKILL.md) |
+| sdx-design | `application/requirements/**/DSD-*.md` | `application/requirements/**/DSD-*.md` | 可选工作稿 | 语义 | 无 | [sdx-design/SKILL.md](../skills/sdx-design/SKILL.md) |
+| sdx-prd | `application/requirements/**/*` | `application/requirements/**/PRD-*.md` | 可选工作稿 | 语义 | 无 | [sdx-prd/SKILL.md](../skills/sdx-prd/SKILL.md) |
+| sdx-test | `application/requirements/**/TDD-*.md` | `application/requirements/**/TDD-*.md` | 可选工作稿 | 语义 | 无 | [sdx-test/SKILL.md](../skills/sdx-test/SKILL.md) |
+| docs-agent | `README.md`、`AGENTS.md`（仓库根） | 根 `README.md` / `AGENTS.md`（一次只其一） | 可选工作稿 | 语义-docs | 无 | [docs-agent/SKILL.md](../skills/docs-agent/SKILL.md) |
+| docs-distill | `system/knowledge/**/*`、`company/knowledge/**/*` | `system/knowledge/overview/` 受管区块及蒸馏日志 | 可选工作稿 | 语义-docs | 无 | [docs-distill/SKILL.md](../skills/docs-distill/SKILL.md) |
+| docs-extract | `system/knowledge/overview/**/*`、`company/knowledge/overview/**/*` | `system|company/knowledge/overview/*.md` | 可选工作稿 | 语义-docs | 无 | [docs-extract/SKILL.md](../skills/docs-extract/SKILL.md) |
+| docs-archive | `system/knowledge/overview/**/*`、`company/knowledge/overview/**/*` | `system|company/knowledge/overview/*.md` | 可选工作稿 | 语义-docs | 无 | [docs-archive/SKILL.md](../skills/docs-archive/SKILL.md) |
+| docs-build | `{DOC_DIR}/knowledge/**/*` | `{DOC_DIR}/knowledge/` 下 JSON、README、KNOWLEDGE_INDEX | 可选工作稿 | 语义-docs | 无 | [docs-build/SKILL.md](../skills/docs-build/SKILL.md) |
+| docs-indexing | `**/INDEX-GUIDE.md`、`**/changelogs/INDEXING-LOG.md` | 各文档根 `INDEX-GUIDE.md` 与对应 `INDEXING-LOG.md` | 可选工作稿 | 语义-docs | 无 | [docs-indexing/SKILL.md](../skills/docs-indexing/SKILL.md) |
+| docs-upgrade | 不固定（按用户确认范围） | 已确认范围内的 Markdown / 注释 / 配置文本 | 可选工作稿 | 语义-docs | 无 | [docs-upgrade/SKILL.md](../skills/docs-upgrade/SKILL.md) |
 
 **说明**：`sdx-prd` / `sdx-test` 的 globs 均覆盖 `application/requirements/**/*`，以文件名 `PRD-*.md` / `TDD-*.md` 区分。  
-技能专细则见各 [docs-distill/gates.md](../skills/docs-distill/references/gates.md)、[docs-indexing/gates.md](../skills/docs-indexing/references/gates.md) 等，不在本文件展开。
+技能专细则见各 skill `gates.md`，不在本文件展开。
 
 ### 闸门分层说明
 
-<!-- markdownlint-disable MD013 -->
-| 层级 | 技能 | 闸门形式 | hook |
+| 层级 | 技能 | 推进协议 | hook |
 | --- | --- | --- | --- |
-| **中高风险** | sdx-*、docs-distill、docs-extract、docs-archive、docs-build、docs-indexing、docs-upgrade | 参数向导 + 直写 + `澄清 → 生成 → 烤干` + `C/M/G/F`（docs 另有 `S`）；无 HTML gate | ❌ |
-| **中等风险** | docs-agent | 会话内确认 + 意图澄清 + 同上 + `C/M/G/S/F` | ❌ |
-| **低风险** | docs-change、docs-tag、docs-pull、docs-okf、docs-push | 参数确认 / 轻流程；动作字母见 [light-flow-actions.md](../references/light-flow-actions.md)（`C/M/S/F`，无 `G`）；不加 spec gate | ❌ |
-<!-- markdownlint-enable MD013 -->
+| **中高风险** | sdx-*、docs-distill、docs-extract、docs-archive、docs-build、docs-indexing、docs-upgrade | 语义 / 语义-docs | ❌ |
+| **中等风险** | docs-agent | 语义-docs | ❌ |
+| **低风险** | docs-change、docs-tag、docs-pull、docs-okf、docs-push | 轻 | ❌ |
 
 ---
 
