@@ -24,8 +24,9 @@
 
 ## 规则
 
-- `must_include`：可归入满足即可（同义可）  
-- `must_not_conflict`：无明文反 `check`  
+- `must_include`：可归入满足即可（同义可）
+- `must_not_conflict`：无明文反 `check`
 - 任一 **P0** 败 → `passed: false`
+- **推进协议**：轻流程 `C/M/S/F`（无 `G`、不绑意图澄清 / 语义族 grilling）；见 [light-flow-actions.md](../../../references/light-flow-actions.md)
 
 材料：`SKILL.md`、`gates`/`workflow`、`gotchas`、eval 断言表。

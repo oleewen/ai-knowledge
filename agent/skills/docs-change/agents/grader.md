@@ -37,7 +37,7 @@
 ## 判定
 
 1. 类别：`should-trigger` / `should-not-trigger`
-2. **should-trigger**：主路径为 `/docs-change`（或等价）；含三源、`CHANGE-LOG.md`、`--since`/`--output` 或基线语义；不得误为仅索引或仅实体构建
+2. **should-trigger**：主路径为 `/docs-change`（或等价）；含三源、`CHANGE-LOG.md`、`--since`/`--output` 或基线语义；不得误为仅索引或仅实体构建。推进为**轻流程** `C/M/S/F`（无 `G`、不绑意图澄清），见 [light-flow-actions.md](../../../references/light-flow-actions.md)
 3. **should-not-trigger**：按用户声明分流；不得以「完整聚合 CHANGE-LOG」为唯一主答案而忽略下游
 4. **P0** 任一失败 → `passed: false`
 5. 只评测，不改写技能

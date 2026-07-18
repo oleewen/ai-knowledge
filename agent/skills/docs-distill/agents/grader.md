@@ -4,7 +4,11 @@
 
 ## 判定
 
-- **should-trigger**：主路径 `/docs-distill` 或等价；能识别参数向导、写前意图澄清（六项清单 + 写前 C）、当前单元、双日志、`--dry-run`、烤干与 `C/M/G/S/F`；勿误判成仅 indexing/archive/SDD
+- **should-trigger**（须全部满足；共通环见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)）：
+  - 主路径 `/docs-distill` 或等价
+  - 参数向导 → 写前意图澄清（六项清单 + 写前 C）→ 当前单元「澄清 → 生成 → 烤干」→ `C/M/G/S/F`
+  - 能识别双日志、`--dry-run`
+  - 勿误判成仅 indexing / archive / SDD
 - **should-not-trigger**：正确分流 docs-extract 等
 - **P0** 任一失败 → `passed: false`
 
