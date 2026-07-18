@@ -57,8 +57,7 @@
 （测试范围 / 优先级 / 回归边界 / 数据或环境约束 / 退出标准 / 术语等），
 必须先给推荐方案与数字选项并等待选择，
 未获选择不得直接修订当前段。
-不得退回会话 spec、`Qclose-1`、`PENDING -> CONFIRMED`、
-HTML gate 或写前 hook 作为 `sdx-test` 默认前置。
+不得退回已删除的 HTML gate、`PENDING→CONFIRMED`、会话 spec 或写前 hook 作为默认前置；主线见 unit-cycle-protocol。
 须体现基于 `PRD-{IDEA-ID}-{N}.md` 与 `DSD/ASD` 承接，
 并保持 TDD 与 PRD/DSD/ASD/docs-* 的边界。
 3. **should-not-trigger**：

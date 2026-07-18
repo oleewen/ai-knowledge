@@ -64,7 +64,7 @@
       "id": "prd-trigger-002",
       "category": "should-trigger",
       "prompt": "我们要在 {DOC_DIR}/requirements/REQUIREMENT-BILL-01/MVP-Phase-1/ 写 PRD 文档，按十一章模板，先确认参数，再只写一个当前段并自动 grill 到收敛，不要先写会话 spec。",
-      "expected_output": "明确采用 sdx-prd：先参数确认，再分段直写终稿，并说明不要求会话 spec、Qclose 或写前 gate。",
+      "expected_output": "明确采用 sdx-prd：先参数确认，再分段直写终稿，并说明不得要求已删除的 HTML gate / CONFIRMED / 会话 spec；主线是澄清→生成→烤干。",
       "assertions": [
         {
           "id": "parameter-guidance",
@@ -91,7 +91,7 @@
           "id": "no-session-spec-gate-regression",
           "name": "不回退旧门禁",
           "type": "must_not_conflict",
-          "check": "不得要求会话 spec、Qclose-1、PENDING -> CONFIRMED、HTML gate 或写前 hook 作为 sdx-prd 默认前置条件。",
+          "check": "不得要求已删除的 HTML gate、PENDING→CONFIRMED、会话 spec 或写前 hook 作为 sdx-prd 默认前置；主线是澄清→生成→烤干。",
           "priority": "P0"
         }
       ]

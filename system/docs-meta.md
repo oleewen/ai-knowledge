@@ -12,7 +12,7 @@ description: "企业级知识库 system/ 根目录：人类与 Agent 的主导�
 role:
   kind: "documentation_root"
   ssot_subdirectory: "knowledge/"
-  # 治理与命名 SSOT 见 agent/knowledge/knowledge-governance.md
+  # 治理入口见 agent/knowledge/README.md；三层边界见 knowledge-governance.md
   # 文件分型与概念实体结构 SSOT 见 agent/knowledge/okf-spec.md
 
 child_directories:

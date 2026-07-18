@@ -12,7 +12,7 @@ description: "公司级知识库 company/ 根目录：公司层治理与导航�
 role:
   kind: "documentation_root"
   ssot_subdirectory: "knowledge/"
-  # 治理与命名 SSOT 见 agent/knowledge/knowledge-governance.md
+  # 治理入口见 agent/knowledge/README.md；三层边界见 knowledge-governance.md
   # 文件分型与 concept 结构 SSOT 见 agent/knowledge/okf-spec.md
 
 child_directories:

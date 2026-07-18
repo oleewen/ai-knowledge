@@ -44,4 +44,4 @@
 ## 与脚本
 
 - [validate-dsd.sh](../scripts/validate-dsd.sh)：章节/启发式校验，非 JSON schema。  
-- `agent/hooks/sdx_gate_common.py --gate design`：写入拦截。
+- 写前不再经 `preToolUse` gate；推进协议见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)。

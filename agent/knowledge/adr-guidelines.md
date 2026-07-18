@@ -25,8 +25,4 @@
 - [glossary.md](glossary.md) — 术语一致性
 - [architecture-principles.md](architecture-principles.md) — 原则基线
 
-## 使用顺序
-
-1. 新词 / 歧义 → 先查或补 [glossary.md](glossary.md)
-2. 新实体 / 文件 → 遵守 [naming-conventions.md](naming-conventions.md)
-3. 跨域或长期后果的决策 → 在 [application/adr/](../../application/adr/README.md) 或 [system/adr/](../../system/adr/README.md) 新增 ADR，按 [adr-template.md](adr-template.md)
+完整使用顺序见 [README.md](README.md)。

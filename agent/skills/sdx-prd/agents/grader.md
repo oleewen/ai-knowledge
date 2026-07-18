@@ -57,8 +57,7 @@
 （目标 / 范围 / 承诺 / 口径 / 取舍 / 风险 / MVP / 优先级 / 角色 / 流程 / 验收 / 术语等），
 必须先给推荐方案与数字选项并等待选择，
 未获选择不得直接修订当前段。
-不得退回会话 spec、`Qclose-1`、`PENDING -> CONFIRMED`、
-HTML gate 或写前 hook 作为 `sdx-prd` 默认前置。
+不得退回已删除的 HTML gate、`PENDING→CONFIRMED`、会话 spec 或写前 hook 作为默认前置；主线见 unit-cycle-protocol。
 须体现基于 `ANALYSIS-{IDEA-ID}.md`
 与当前 `MVP-Phase-{N}` 承接细化。
 3. **should-not-trigger**：

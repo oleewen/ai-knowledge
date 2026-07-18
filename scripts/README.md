@@ -7,7 +7,8 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 
 **维护策略（当前）**：`docs-install.sh` / `docs-link.sh` / `agent-install.sh` 分别 `source` 对应 `*-config.sh`；三者中路径与 `.docsconfig` 相关能力统一复用 `agent/scripts/docs-core.sh`。改对应脚本行为时需同步其 config 脚本与本文档。
 
-**升级提示（2026-04）**：Hooks 配置 SSOT 已从 `agent/hooks/hooks.json` 迁移到 `agent/hooks.json`。目标工程安装产物 `.cursor/hooks.json` 保持不变。
+**升级提示（2026-04）**：Hooks 配置 SSOT 已从 `agent/hooks/hooks.json` 迁移到 `agent/hooks.json`。目标工程安装产物 `.cursor/hooks.json` 保持不变。  
+**升级提示（2026-07）**：写前 gate 脚本已从 `agent/hooks/` 删除；`hooks.json` 的 `preToolUse` 为空。目标工程须刷新 `.cursor/hooks.json`，勿再引用已删的 `sdx_gate_common.py` 等。见 [agent/hooks/README.md](../agent/hooks/README.md)。
 
 ## 推荐入口（一分为三）
 

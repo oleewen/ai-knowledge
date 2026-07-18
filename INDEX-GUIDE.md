@@ -122,7 +122,7 @@ flowchart LR
 
 | 聚合 | 职责 | 关键落点 |
 | ------ | ------ | ---------- |
-| 治理规则 | 术语、原则、命名、ADR 模板 | [agent/knowledge/knowledge-governance.md](agent/knowledge/knowledge-governance.md)、[agent/knowledge/README.md](agent/knowledge/README.md) |
+| 治理规则 | 三层边界；术语、原则、命名、ADR | [agent/knowledge/knowledge-governance.md](agent/knowledge/knowledge-governance.md)（边界）、[agent/knowledge/README.md](agent/knowledge/README.md)（组件入口） |
 | 五视角实体 | 应用层首次含 API/TBL/MW/CMP；另有 BC/AGG、PL/PM/FT/UC、SYS/APP/MS、DS/ENT 等映射与 reference | [application/knowledge/](application/knowledge/)（索引见 [knowledge/index.md](application/knowledge/index.md)） |
 | 阶段产物 | SOLUTION / ANALYSIS / REQUIREMENT 包 | `application/solutions/` 等 |
 

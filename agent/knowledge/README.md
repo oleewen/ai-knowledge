@@ -1,13 +1,18 @@
 # agent/knowledge — 知识库治理 SSOT
 
-本目录承载原 `*/constitution/` 迁移内容：术语、命名、原则与 ADR 约定。协作闸门与编码规范仍在 [../rules/CONVENTIONS.md](../rules/CONVENTIONS.md)。
+本目录承载原 `*/constitution/` 迁移内容：术语、命名、原则与 ADR 约定。
+
+- **三层边界**：[knowledge-governance.md](knowledge-governance.md)
+- **协作闸门**：[CONVENTIONS.md](../rules/CONVENTIONS.md)
+- **路径 / overview / 流水线**：[knowledge-layout.md](../references/knowledge-layout.md)
+- **文件分型 / concept Profile**：[okf-spec.md](okf-spec.md)
 
 ## 组件
 
 | 文件 | 说明 |
 | --- | --- |
+| [knowledge-governance.md](knowledge-governance.md) | 三层职责边界与使命 |
 | [okf-spec.md](okf-spec.md) | company / system / application 共享知识规范 SSOT |
-| [knowledge-governance.md](knowledge-governance.md) | 三层知识库治理边界与使用顺序 |
 | [naming-conventions.md](naming-conventions.md) | 实体 ID 命名规范（全局 SSOT） |
 | [glossary.md](glossary.md) | 全局术语表 |
 | [architecture-principles.md](architecture-principles.md) | 架构原则条目 |
@@ -20,3 +25,7 @@
 2. 新实体 / 文件 → [naming-conventions.md](naming-conventions.md)
 3. 判断文件是否 concept / 索引入口 / 叙事 / 元数据 → [okf-spec.md](okf-spec.md)
 4. 跨域或长期后果的决策 → [application/adr/](../../application/adr/README.md) 或 [system/adr/](../../system/adr/README.md)，按 [adr-template.md](adr-template.md)
+
+## 仓库地图
+
+- 根：[INDEX-GUIDE.md](../../INDEX-GUIDE.md)、[index.md](../../index.md)、[AGENTS.md](../../AGENTS.md)

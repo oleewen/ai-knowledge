@@ -25,7 +25,7 @@ title: 应用知识文档库 — 设计方案摘录
 | **五视角** | 业务 / 产品 / 应用 / 数据 / 技术；关联写在 meta 与实体 `{ID}.md`；**不**维护独立映射矩阵；legacy `*-entities.md` 已废弃 |
 | **分层同构** | 五视角各层同构；首次定义见 §2.2.1 与 [naming-conventions.md](../agent/knowledge/naming-conventions.md) |
 
-**目录约定**：根导航与 meta 指针见 [docs-meta.md](docs-meta.md)；知识树见 [knowledge-meta.md](knowledge/knowledge-meta.md)；治理 SSOT 见 [knowledge-governance.md](../agent/knowledge/knowledge-governance.md)。阶段约定在各目录 `README.md`。`index.md` 由 `/docs-okf` 扫描生成。
+**目录约定**：根导航与 meta 指针见 [docs-meta.md](docs-meta.md)；知识树见 [knowledge-meta.md](knowledge/knowledge-meta.md)；治理 SSOT 见 [agent/knowledge/README.md](../agent/knowledge/README.md)（三层边界见 [knowledge-governance.md](../agent/knowledge/knowledge-governance.md)）。阶段约定在各目录 `README.md`。`index.md` 由 `/docs-okf` 扫描生成。
 
 **OKF**：每实体一文件（`{ID}.md` + frontmatter + bundle-relative 跨链）；路径与 type 见 naming-conventions §OKF。
 

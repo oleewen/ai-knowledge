@@ -26,7 +26,7 @@
 若出现语义性结论/建议
 （范围 / 边界 / 服务归属 / 规约口径 / 联邦模式 / 优先级 / 风险 / 术语等），
 必须先给推荐方案与数字选项并等待选择。
-不得退回会话 spec、`PENDING -> CONFIRMED`、HTML gate 或写前 hook 作为 `sdx-architect` 默认前置。
+不得退回已删除的 HTML gate、`PENDING→CONFIRMED`、会话 spec 或写前 hook 作为默认前置；主线见 unit-cycle-protocol。
 须体现基于 `PRD-{IDEA-ID}-{N}.md` 承接，
 并保持 ASD 与 DSD 的边界。
 3. **should-not-trigger**：

@@ -4,7 +4,8 @@
 
 ## 参数向导
 
-- 支持逐项确认与快捷组合；不要强制退回会话 spec。
+- 支持逐项确认与快捷组合。
+- 禁止退回已删除的 HTML gate / `PENDING→CONFIRMED` / 会话 spec 写前主线；主线=参数向导 + 「澄清 → 生成 → 烤干」（见 [unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)）。
 - `IDEA-ID`、`N` 须与 `PRD-{IDEA-ID}-{N}.md` 同链。
 - `KNOWLEDGE_TYPE=system|company` 时优先约束输出粒度，避免写成应用级详设。
 

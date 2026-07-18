@@ -11,6 +11,7 @@ timestamp: "2026-06-25T00:00:00Z"
 > **谷歌 OKF v0.1 规范**：[`GoogleCloudPlatform/knowledge-catalog/okf/SPEC.md`](https://raw.githubusercontent.com/GoogleCloudPlatform/knowledge-catalog/main/okf/SPEC.md)
 > **参考实现/讨论**：[github.com/google/open-knowledge-framework](https://github.com/google/open-knowledge-framework)
 > **共享 SSOT**：本仓库 `agent/knowledge/okf-spec.md`
+> **边界**：本文管**文件分型**与 **per-entity Profile**（frontmatter/正文/引用）。三层路径、overview 缓冲、联邦流水线 → [knowledge-layout.md](../references/knowledge-layout.md)；实体 ID 前缀 → [naming-conventions.md](naming-conventions.md)。
 > **适用对象**：`company/`、`system/`、`application/` 三层知识库，以及围绕知识库组织的索引入口、叙事文档与元数据文件
 
 ---
@@ -391,6 +392,7 @@ SHOULD：
 
 - 采用结构化 Markdown（标题、表格、列表）提升检索与可维护性。
 - overview 类文档按“主标题/副标题/归档列”结构稳定维护，便于 docs-tag/docs-archive/docs-extract 联动。
+- **路径、行序、第三列技能落点**以 [knowledge-layout.md](../references/knowledge-layout.md) 为准；本文只定「叙事/非 concept」分型。
 
 MAY：
 

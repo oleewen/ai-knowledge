@@ -251,13 +251,13 @@
       "id": "solution-trigger-007",
       "category": "should-trigger",
       "prompt": "请执行 /sdx-solution，直接开始参数向导并把当前段写进 SOLUTION-CRM-01.md；不要再让我先写会话 spec、改什么 CONFIRMED，按新流程来。",
-      "expected_output": "以 /sdx-solution 为主路径：直接进入参数向导与当前段写作，不要求会话 spec、PENDING/CONFIRMED、HTML gate 或写前 hook 作为默认前置。",
+      "expected_output": "以 /sdx-solution 为主路径：直接进入参数向导与当前段写作，不得要求已删除的 HTML gate、PENDING→CONFIRMED、会话 spec 或写前 hook 作为默认前置；主线是澄清→生成→烤干。",
       "assertions": [
         {
           "id": "parameter-guidance",
           "name": "参数向导",
           "type": "must_include",
-          "check": "须体现直接进入参数向导，不把会话 spec 当作默认起点。",
+          "check": "须体现直接进入参数向导，不把已删除的 HTML gate / 会话 spec 当作默认起点；主线是澄清→生成→烤干。",
           "priority": "P0"
         },
         {
@@ -271,7 +271,7 @@
           "id": "no-session-spec-gate-regression",
           "name": "不回退旧门禁",
           "type": "must_not_conflict",
-          "check": "不得要求会话 spec、PENDING -> CONFIRMED、HTML gate 或写前 hook 作为 sdx-solution 默认前置条件。",
+          "check": "不得要求已删除的 HTML gate、PENDING→CONFIRMED、会话 spec 或写前 hook 作为 sdx-solution 默认前置；主线是澄清→生成→烤干。",
           "priority": "P0"
         },
         {

@@ -1,6 +1,7 @@
 # 知识库布局契约（Agent SSOT）
 
-> **定位**：`system/`、`company/` 路径、overview 缓冲区与表行对齐的**唯一 Agent 侧真源**。  
+> **定位**：三层 `{DOC_DIR}` **路径**、overview 缓冲区、联邦流水线、技能落点与 SDD×`KNOWLEDGE_TYPE` 的唯一 Agent 侧真源。  
+> **不分管**：文件四类分型、per-entity Profile、frontmatter/正文结构 → [okf-spec.md](../knowledge/okf-spec.md)；实体 ID 前缀 → [naming-conventions.md](../knowledge/naming-conventions.md)。  
 > 会话工作稿路径见 [session-spec-path.md](session-spec-path.md)；闸门总表见 [CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates)；推进环见 [unit-cycle-protocol.md](unit-cycle-protocol.md)。
 
 **最后更新**: 2026-07-18
@@ -65,13 +66,18 @@ company/knowledge/{business,product,application,data,technical}/
 
 ---
 
-## 闸门与 hook 范围
+## 写入路径与协议（非 hook）
 
-| 技能 | hook 拦截写入路径 | 说明 |
+写前拦截 **已移除**（`agent/hooks.json` 的 `preToolUse` 为空）。overview / 索引写入靠技能内参数向导与推进协议：
+
+| 技能 | 典型写入 | 协议 |
 | --- | --- | --- |
-| docs-distill / docs-extract | `system/knowledge/overview/*.md`、`company/knowledge/overview/*.md` | 第三列与 overview 回写 |
-| docs-archive | 同上（overview 回写） | **章节落盘**靠会话**方案确认书** HARD-GATE；hook **不**拦截 `knowledge/` 下视角章节 |
-| docs-indexing | 各 `index.md`、`*/changelogs/INDEXING-LOG.md` | 见 CONVENTIONS |
+| docs-distill / docs-extract | `system|company/knowledge/overview/*.md` 第三列等 | 语义族：澄清 → 生成 → 烤干 |
+| docs-archive | overview 回写 + 视角章节落盘 | 同上（确认书=意图澄清） |
+| docs-indexing | `INDEX-GUIDE.md`、`*/changelogs/INDEXING-LOG.md` | 同上 |
+| docs-tag | overview 附录 / ✅ / 摘录 | 轻流程 + 轻量校核 |
+
+总表见 [CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates)。
 
 ---
 

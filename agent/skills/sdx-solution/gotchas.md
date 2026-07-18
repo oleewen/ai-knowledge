@@ -7,6 +7,7 @@
 - 参数可逐项确认，也可走快捷组合；勿强制一次性抛全。
 - IDEA-ID：主题以中文为主；若用 ASCII slug，本行备注中文题名。
 - 快捷组合只是起点；用户仍可改单项，勿把预设当硬锁。
+- 禁止退回已删除的 HTML gate / `PENDING→CONFIRMED` / 会话 spec 写前主线；主线=参数向导 + 「澄清 → 生成 → 烤干」（见 [unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)）。
 
 ## Section Cycle（澄清 → 生成 → 烤干）
 

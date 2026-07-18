@@ -17,7 +17,7 @@
 
 - **F1 路由**：should-trigger / should-not-trigger 误判
 - **F2 边界**：SOLUTION、PRD、ASD、DSD、TDD 与 ANALYSIS 混淆
-- **F3 协议回退**：退回会话 spec、`Qclose-1`、`PENDING/CONFIRMED`、写前 gate/hook
+- **F3 协议回退**：退回已删除的 HTML gate / CONFIRMED / 会话 spec / 写前 hook 主线
 - **F4 当前段协议缺失**：缺参数向导、意图澄清、Section Cycle「澄清 → 生成 → 烤干」、`C/M/G/F`、单段停住
 - **F5 语义越权**：语义性结论未确认就直接修订当前段或前文
 - **F6 证据**：断言难以复核或样本覆盖不足

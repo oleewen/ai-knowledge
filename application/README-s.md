@@ -23,7 +23,7 @@ solutions ──→ analysis ──→ requirements
 
 | 阶段 | 目录 | 主要产物 |
 |------|------|----------|
-| 知识基线 | [knowledge](knowledge/README.md) | 五视角实体；治理见 [knowledge-governance](../agent/knowledge/knowledge-governance.md) |
+| 知识基线 | [knowledge](knowledge/README.md) | 五视角实体；治理见 [agent/knowledge](../agent/knowledge/README.md) |
 | 方案 | [solutions](solutions/README.md) | `SOLUTION-{IDEA-ID}.md` |
 | 分析 | [analysis](analysis/README.md) | `ANALYSIS-{IDEA-ID}.md` |
 | 交付 | [requirements](requirements/README.md) | `REQUIREMENT-{IDEA-ID}/MVP-Phase-*` |

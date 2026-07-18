@@ -10,7 +10,7 @@
       "id": "parameter-guidance",
       "name": "参数向导",
       "type": "must_include",
-      "check": "响应需明确：存在逐项确认参数或快捷组合入口，不得仍以前置会话 spec / 集中门禁作为默认第一步。",
+      "check": "响应需明确：存在逐项确认参数或快捷组合入口，不得仍以已删除的 HTML gate / 会话 spec / CONFIRMED 作为默认第一步；主线是澄清→生成→烤干。",
       "priority": "P0"
     },
     {

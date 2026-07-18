@@ -64,11 +64,12 @@
 
 ---
 
-## 遗留：HTML gate / hook（非默认）
+## 遗留：HTML gate / hook（已移除）
 
 历史上曾用会话 spec 的 `PENDING`/`CONFIRMED` 与 `sdx_gate_common` 作写前钩子证据。  
-**当前默认主线已废弃该前置**；技能 anti-patterns 禁止退回该路径。  
-若仓库仍保留相关 hook/脚本，仅作遗留兼容，**不得**再写成 Skill 默认步骤。
+**脚本与测试已从本仓删除**；`agent/hooks.json` 的 `preToolUse` 为空。  
+目标工程若仍引用旧 hook 路径，须刷新安装产物（见 [hooks/README.md](../hooks/README.md)）。  
+技能 anti-patterns 仍禁止退回该主线。
 
 ---
 
