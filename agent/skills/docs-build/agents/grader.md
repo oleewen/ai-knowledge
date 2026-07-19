@@ -1,25 +1,24 @@
-# docs-build — grader
+# docs-build Grader
 
-据 **evals/evals.json** 与下列原则输出 JSON：`text`、`passed`、`evidence`。
+据 **evals/evals.json** 输出 JSON：`text`、`passed`、`evidence`。
 
-## 原则
+## 判定
 
-1. **should-trigger**（须全部满足；共通环见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)）：
-   - 主轴 `/docs-build` 或等价
-   - 参数向导 → 写前意图澄清 → 当前单元「澄清 → 生成 → 烤干」→ `C/M/G/S/F`
-   - 能识别四视角或 `{DOC_DIR}/knowledge/`；≠ 仅 indexing 或仅 SDD 终稿
-2. **should-not-trigger**：须点到用户要的下游（如 docs-indexing）及产物
-3. 一次只推进一个构建单元；语义参数变化前须先确认
-4. 路径/容器须写明视角/实体批次与 knowledge 路径
-5. 任一 P0 败 → `passed: false`
+1. 读 `category`：`should-trigger` / `should-not-trigger`
+2. **硬门**：以本 eval 的 `assertions`（按 `priority`）为准；`evidence` 映射 `assertions[].id`
+3. **协议释义**（仅当 assertions / prompt 覆盖时强制）：参数向导 → 写前意图澄清 → 「澄清 → 生成 → 烤干」→ `C/M/G/S/F`；路径/容器含 knowledge 批次；校验后再继续。见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)
+4. **P0** 任一失败 → `passed: false`
 
-## P0 断言
+### should-not-trigger P0 摘要
 
-- `intent-clarify-before-write`
-- `knowledge-path-container`
-- `single-unit-stop`
-- `grilling-after-write`
-- `semantic-change-needs-confirmation`
-- `validate-before-continue`
+- `correct-downstream`：点名下游技能/产物（如 docs-indexing / INDEX-GUIDE）
 
-只判分，不改 SKILL。
+**例**（对齐 `build-trigger-001`）
+
+```json
+{
+  "text": "通过。意图澄清、knowledge 路径、校验门禁与单单元停顿正确。",
+  "passed": true,
+  "evidence": ["parameter-guidance", "intent-clarify", "knowledge-path-container", "grilling-loop", "single-unit-stop", "validate-before-continue"]
+}
+```

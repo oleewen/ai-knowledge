@@ -1,25 +1,24 @@
-# docs-indexing — grader
+# docs-indexing Grader
 
-据 `prompt`、响应与 **evals/evals.json** 断言输出：`text`、`passed`、`evidence`。细则以 evals 为准；本文件仅列评分原则。
+据 **evals/evals.json** 输出 JSON：`text`、`passed`、`evidence`。
 
-## 原则
+## 判定
 
-1. **should-trigger**（须全部满足；共通环见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)）：
-   - 主轴 `/docs-indexing`
-   - 参数向导 → 写前意图澄清 → 当前单元「澄清 → 生成 → 烤干」→ `C/M/G/S/F`
-   - 能识别根相对路径、INDEX / LOG 双路径语义之一
-2. **勿默许跳过澄清**：无写前意图澄清直写须拒（仅限用户明示例外）
-3. 一次只推进一个索引输出组；语义参数变化前须先确认
-4. 路径/容器须同时列出 `INDEX-GUIDE.md` 与 `INDEXING-LOG.md`
-5. 任一 P0 败 → `passed: false`
+1. 读 `category`：`should-trigger` / `should-not-trigger`
+2. **硬门**：以本 eval 的 `assertions`（按 `priority`）为准；`evidence` 映射 `assertions[].id`
+3. **协议释义**（仅当 assertions / prompt 覆盖时强制）：参数向导 → 写前意图澄清 → 「澄清 → 生成 → 烤干」→ `C/M/G/S/F`；双路径含 `INDEX-GUIDE.md` 与 `INDEXING-LOG.md`。见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)
+4. **P0** 任一失败 → `passed: false`
 
-## P0 断言
+### should-not-trigger P0 摘要
 
-- `intent-clarify-before-write`
-- `dual-path-container`
-- `single-unit-stop`
-- `grilling-after-write`
-- `semantic-change-needs-confirmation`
-- `no-silent-full-on-missing-baseline`
+- `correct-downstream`：点名下游技能/产物（如 docs-build / KNOWLEDGE_INDEX）
 
-只判分，不改 SKILL。
+**例**（对齐 `indexing-trigger-001`）
+
+```json
+{
+  "text": "通过。参数向导、意图澄清、双路径与单单元停顿正确。",
+  "passed": true,
+  "evidence": ["parameter-guidance", "intent-clarify", "dual-path-container", "grilling-loop", "single-unit-stop"]
+}
+```

@@ -1,31 +1,25 @@
 # docs-agent Grader
 
-按 prompt、响应与断言输出**仅**一个 JSON：
+据 **evals/evals.json** 输出 JSON：`text`、`passed`、`evidence`。
 
-- `text`：1～3 句结论
-- `passed`：布尔
-- `evidence`：逐项对应断言或失败原因
+## 判定
 
-**原则**：`must_include` → 可被合理推断满足即可；同义表述可接受。`must_not_conflict` → 不得与断言矛盾。P0 失败 → `passed: false`。
+1. 读 `category`：`should-trigger` / `should-not-trigger`
+2. **硬门**：以本 eval 的 `assertions`（按 `priority`）为准；`evidence` 映射 `assertions[].id`
+3. **协议释义**（仅当 assertions / prompt 覆盖时强制）：参数向导 → 写前意图澄清 → 单单元「澄清 → 生成 → 烤干」→ `C/M/G/S/F`；INDEX 驱动且不包揽 docs-indexing。见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)
+4. **P0** 任一失败 → `passed: false`
 
-**should-trigger 口径**（语义-docs；见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)）：参数向导 → 写前意图澄清 → 单单元「澄清 → 生成 → 烤干」→ `C/M/G/S/F`；INDEX 驱动且不包揽 docs-indexing。
+### should-not-trigger P0 摘要
 
-**材料**：`SKILL.md`、`references/gates.md`、`references/workflow.md`、`intent-clarify.md`、`gotchas.md`、本条 eval 的 `expected_output`、`evals.json` 断言。
+- `correct-downstream`：点名下游技能/产物
+- `no-false-indexing`：不以本技能重写九章 INDEX
 
-## 示例
-
-```json
-{
-  "text": "通过。含参数向导、写前意图澄清、单单元烤干停顿；INDEX 驱动且未包揽 docs-indexing。",
-  "passed": true,
-  "evidence": ["parameter-guidance", "single-unit-stop", "index-driven"]
-}
-```
+**例**（对齐 `docs-agent-trigger-001`）
 
 ```json
 {
-  "text": "通过。主路径指向 docs-indexing，未谎称本技能可重写九章 INDEX。",
+  "text": "通过。参数向导、写前澄清、单单元烤干停顿；INDEX 驱动且未包揽 docs-indexing。",
   "passed": true,
-  "evidence": ["correct-downstream", "no-false-indexing"]
+  "evidence": ["parameter-guidance", "intent-clarify-before-write", "single-unit-stop", "index-driven"]
 }
 ```

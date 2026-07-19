@@ -1,32 +1,25 @@
 # docs-upgrade Grader
 
-**仅输出** JSON：`text`（1–3 句）、`passed`、`evidence`。
+据 **evals/evals.json** 输出 JSON：`text`、`passed`、`evidence`。
 
 ## 判定
 
-- **should-trigger**（须全部满足；共通环见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)）：
-  - 主路径 `/docs-upgrade` 或等价
-  - 写前意图澄清 → 「澄清 → 生成 → 烤干」→ 当前单元与 `C/M/G/S/F`
-  - 勿误判成纯下游
-- **should-not-trigger**：正确分流 archive / change / indexing
-- **P0** 任一失败 → `passed: false`；只评测
+1. 读 `category`：`should-trigger` / `should-not-trigger`
+2. **硬门**：以本 eval 的 `assertions`（按 `priority`）为准；`evidence` 映射 `assertions[].id`
+3. **协议释义**（仅当 assertions / prompt 覆盖时强制）：参数向导 → 写前意图澄清 → 「澄清 → 生成 → 烤干」→ `C/M/G/S/F`；关联/关键词扩展须先确认。见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)
+4. **P0** 任一失败 → `passed: false`
 
-## P0 断言
+### should-not-trigger P0 摘要
 
-- `intent-clarify`：写前六项清单 + 写前 `C` 门禁
-- `unit-cycle`：澄清→生成→烤干主线
-- `grilling-loop`：各当前单元默认必须烤干
-- `single-unit-stop`：烤干收敛后停下等待动作
-- `semantic-expansion-must-confirm`：关联/关键词扩展须先确认
+- `correct-downstream`：点名下游技能/产物
+- `no-false-upgrade-primary`：不以链式术语升级框下游请求
 
-材料：`SKILL.md`、`gates`、`workflow`、`anti-patterns`、`gotchas`、本条 `expected_output`、`evals.json`。
-
-**例**
+**例**（对齐 `upgrade-trigger-001`）
 
 ```json
 {
-  "text": "通过。含意图澄清与澄清→生成→烤干，并区分主文件与关联。",
+  "text": "通过。写前澄清、单单元烤干停顿与语义扩展确认正确。",
   "passed": true,
-  "evidence": ["intent-clarify", "unit-cycle", "grilling-loop"]
+  "evidence": ["intent-clarify", "unit-cycle", "grilling-loop", "single-unit-stop", "semantic-expansion-must-confirm"]
 }
 ```

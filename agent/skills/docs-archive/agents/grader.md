@@ -1,42 +1,25 @@
 # docs-archive Grader
 
-据 **evals/evals.json** 与下列原则输出 JSON：`text`、`passed`、`evidence`。
+据 **evals/evals.json** 输出 JSON：`text`、`passed`、`evidence`。
 
 ## 判定
 
-- **should-trigger**（须全部满足；共通环见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)）：
-  - 主路径 `/docs-archive` 或等价
-  - 参数向导 → 确认书（= 写前意图澄清）→ 当前单元「澄清 → 落盘 → 烤干」→ `C/M/G/S/F`
-- **should-not-trigger**：须正确分流，不误判为纯 extract / distill / upgrade / build
-- **P0** 任一失败 → `passed: false`
+1. 读 `category`：`should-trigger` / `should-not-trigger`
+2. **硬门**：以本 eval 的 `assertions`（按 `priority`）为准；`evidence` 映射 `assertions[].id`
+3. **协议释义**（仅当 assertions / prompt 覆盖时强制）：参数向导 → 确认书（= 写前意图澄清）→ 「澄清 → 落盘 → 烤干」→ `C/M/G/S/F`。见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)
+4. **P0** 任一失败 → `passed: false`
 
-## P0 断言
+### should-not-trigger P0 摘要
 
-- `intent-clarify-via-confirmation-book`：确认书 = 写前意图澄清门禁；未获写前 `C` 不得落盘
-- `unit-cycle`：主线含澄清→落盘→烤干；一次只处理一个当前单元
-- `grilling-loop`：各当前单元默认必须烤干；落盘后须自动 grilling 至收敛
-- `single-unit-stop`：烤干收敛后停下等待动作，不得自动推进下一单元
-- `semantic-change-needs-confirmation`：来源范围、目标章节、冲突策略、来源清理策略等语义变更必须先确认
-- `overview-link-preserved`：overview 回写后保留行内副标题链接，不得静默断链
+- `correct-downstream`：点名下游技能/产物
+- `no-false-archive-primary`：不以 overview 行链归档为主路径框下游请求
 
-只评测，不改写技能。
-
-材料：`SKILL.md`、`gates`、`workflow`、`anti-patterns`、`gotchas`、本条 `expected_output`、`evals.json`。
-
-**例**
+**例**（对齐 `archive-trigger-001`）
 
 ```json
 {
   "text": "通过。确认书即意图澄清，单单元落盘→烤干，停在动作选择前。",
   "passed": true,
   "evidence": ["intent-clarify-via-confirmation-book", "unit-cycle", "grilling-loop", "single-unit-stop"]
-}
-```
-
-```json
-{
-  "text": "通过。主路径指向 docs-build；未把本任务当完整 archive。",
-  "passed": true,
-  "evidence": ["correct-downstream", "no-false-archive-primary"]
 }
 ```
