@@ -1,32 +1,25 @@
-# docs-tag — grader
+# docs-tag Grader
 
-据 prompt、响应与断言输出 **仅** JSON：`text`、`passed`、`evidence`。
+据 **evals/evals.json** 输出 JSON：`text`、`passed`、`evidence`。
 
-**should-trigger** 例：
+## 判定
+
+1. 读 `category`：`should-trigger` / `should-not-trigger`
+2. **硬门**：以本 eval 的 `assertions`（按 `priority`）为准；`evidence` 映射 `assertions[].id`
+3. **协议释义**（仅当 assertions / prompt 覆盖时强制）：轻流程参数向导 → phase 轻量校核 → `C/M/S/F`（无 `G`、不绑意图澄清 / 语义族 grilling）。见 [light-flow-actions.md](../../../references/light-flow-actions.md)
+4. **P0** 任一失败 → `passed: false`
+
+### should-not-trigger P0 摘要
+
+- `correct-downstream`：点名下游技能/产物
+- `no-false-tag-primary` / `boundary-upgrade`：不以 tag 附录+✅ 框第三列提炼或全库术语
+
+**例**（对齐 docs-tag-trigger-001）
 
 ```json
 {
-  "text": "通过。复述参数、1-scan→1-write→2、根相对脚本路径。",
+  "text": "通过。参数门禁、单单元停顿、子阶段路径与 phase 轻量校核正确。",
   "passed": true,
-  "evidence": ["param-gate", "subphase-path"]
+  "evidence": ["param-gate", "single-unit-stop", "subphase-path", "phase-result-light-check"]
 }
 ```
-
-**should-not-trigger** 例：
-
-```json
-{
-  "text": "通过。主轴 docs-extract，未框 tag 扛第三列。",
-  "passed": true,
-  "evidence": ["correct-downstream", "no-false-tag-primary"]
-}
-```
-
-## 规则
-
-- `must_include`：可归入满足即可（同义可）
-- `must_not_conflict`：无明文反 `check`
-- 任一 **P0** 败 → `passed: false`
-- **推进协议**：轻流程 `C/M/S/F`（无 `G`、不绑意图澄清 / 语义族 grilling）；见 [light-flow-actions.md](../../../references/light-flow-actions.md)
-
-材料：`SKILL.md`、`gates`/`workflow`、`gotchas`、eval 断言表。

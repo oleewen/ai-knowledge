@@ -61,9 +61,4 @@ bash agent/skills/docs-pull/scripts/pull-slots.sh --all
 
 ### 5 输出与动作停顿
 
-当前槽位单元收敛后，停下等待 `C/M/S/F`：
-
-- `C`：确认当前槽位单元并结束或进入下一槽位
-- `M`：修改参数、范围或模式，再重新校核
-- `S`：跳过当前槽位单元
-- `F`：按已确认参数补齐剩余槽位
+当前槽位单元收敛后，停下等待用户动作（字母见 [light-flow-actions.md](../../../references/light-flow-actions.md)，`C/M/S/F`，无 `G`）。

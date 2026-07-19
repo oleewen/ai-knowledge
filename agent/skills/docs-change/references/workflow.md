@@ -77,9 +77,4 @@ agent/skills/docs-change/scripts/change-indexing.sh \
 - 是否出现重复条目或来源遗漏
 - 输出路径是否仍是已确认目录
 
-当前输出单元收敛后，停下等待 `C/M/S/F`：
-
-- `C`：确认当前输出单元并结束或进入下一输出目录
-- `M`：修改时间基准、输出目录或来源范围，再重新校核
-- `S`：跳过当前输出单元，不写入
-- `F`：按已确认参数补齐剩余输出目录
+当前输出单元收敛后，停下等待用户动作（字母见 [light-flow-actions.md](../../../references/light-flow-actions.md)，`C/M/S/F`，无 `G`）。

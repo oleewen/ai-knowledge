@@ -1,43 +1,25 @@
-# docs-change 评测裁判（grader）
+# docs-change Grader
 
-按 `prompt`、模型响应与 **evals/evals.json** 断言给出可审计结论；下列示例仅说明格式，断言维度以 evals 为准。
-
-## 输出（仅此 JSON）
-
-- `text`：1～3 句结论
-- `passed`：布尔
-- `evidence`：逐条对应断言或失败原因
-
-**should-trigger 示例**
-
-```json
-{
-  "text": "通过。主路径为 docs-change，含三源与 CHANGE-LOG 文末基线。",
-  "passed": true,
-  "evidence": [
-    "structure-integrity：git/changelog/local 与 CHANGE-LOG.md",
-    "baseline-awareness：baseline 或文末注释"
-  ]
-}
-```
-
-**should-not-trigger 示例**
-
-```json
-{
-  "text": "通过。主路径指向 docs-indexing 或 index。",
-  "passed": true,
-  "evidence": [
-    "correct-downstream：点名 docs-indexing",
-    "no-false-change-primary：未将仅索引误判为完整 docs-change"
-  ]
-}
-```
+据 **evals/evals.json** 输出 JSON：`text`、`passed`、`evidence`。
 
 ## 判定
 
-1. 类别：`should-trigger` / `should-not-trigger`
-2. **should-trigger**：主路径为 `/docs-change`（或等价）；含三源、`CHANGE-LOG.md`、`--since`/`--output` 或基线语义；不得误为仅索引或仅实体构建。推进为**轻流程** `C/M/S/F`（无 `G`、不绑意图澄清），见 [light-flow-actions.md](../../../references/light-flow-actions.md)
-3. **should-not-trigger**：按用户声明分流；不得以「完整聚合 CHANGE-LOG」为唯一主答案而忽略下游
+1. 读 `category`：`should-trigger` / `should-not-trigger`
+2. **硬门**：以本 eval 的 `assertions`（按 `priority`）为准；`evidence` 映射 `assertions[].id`
+3. **协议释义**（仅当 assertions / prompt 覆盖时强制）：轻流程参数向导 → 轻量校核 → `C/M/S/F`（无 `G`、不绑意图澄清）。见 [light-flow-actions.md](../../../references/light-flow-actions.md)
 4. **P0** 任一失败 → `passed: false`
-5. 只评测，不改写技能
+
+### should-not-trigger P0 摘要
+
+- `correct-downstream`：点名下游技能/产物
+- `no-false-change-primary`：不以 CHANGE-LOG 聚合框下游请求
+
+**例**（对齐 change-trigger-001）
+
+```json
+{
+  "text": "通过。三源聚合、单输出单元停顿与轻流程动作正确。",
+  "passed": true,
+  "evidence": ["structure-integrity", "single-output-stop", "boundary-routing"]
+}
+```

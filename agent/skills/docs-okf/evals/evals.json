@@ -1,0 +1,62 @@
+{
+  "skill_name": "docs-okf",
+  "version": "1.0.0",
+  "description": "冒烟样本：.docsconfig/KNOWLEDGE_TYPE 硬中止、dry-run、validate ERROR 停顿、与 docs-indexing/docs-build 分流。",
+  "evals": [
+    {
+      "id": "okf-trigger-001",
+      "category": "should-trigger",
+      "prompt": "在当前应用仓跑 /docs-okf 全量刷新 index 和 viz，先确认 .docsconfig 里 DOC_DIR 和 KNOWLEDGE_TYPE 都在。",
+      "expected_output": "docs-okf：先读 .docsconfig；参数收口后 refresh；无 config 或缺 KNOWLEDGE_TYPE 须硬中止；给出结果摘要。",
+      "files": [],
+      "assertions": [
+        {"id": "docsconfig-hard-stop", "name": "docsconfig 硬门", "type": "must_include", "check": "须先读 .docsconfig；缺失或解析失败须中止，不得猜路径。", "priority": "P0"},
+        {"id": "knowledge-type-required", "name": "KNOWLEDGE_TYPE 必填", "type": "must_include", "check": "缺 KNOWLEDGE_TYPE 须硬中止，不得默认 viz.html。", "priority": "P0"},
+        {"id": "light-flow-no-grilling", "name": "轻流程", "type": "must_not_conflict", "check": "不得把本技能主线写成意图澄清/单元循环/grilling。", "priority": "P0"}
+      ]
+    },
+    {
+      "id": "okf-trigger-002",
+      "category": "should-trigger",
+      "prompt": "/docs-okf --dry-run，只预览不要写盘",
+      "expected_output": "识别 dry-run；只预览，不宣称已写 index/viz。",
+      "files": [],
+      "assertions": [
+        {"id": "dry-run-no-write", "name": "dry-run 不写盘", "type": "must_include", "check": "dry-run 只预览，不宣称已写盘。", "priority": "P0"},
+        {"id": "docsconfig-hard-stop", "name": "docsconfig 硬门", "type": "must_include", "check": "仍须先读 .docsconfig，缺失则中止。", "priority": "P0"}
+      ]
+    },
+    {
+      "id": "okf-trigger-003",
+      "category": "should-trigger",
+      "prompt": "只跑 validate-okf；如果有 ERROR 就停，别继续 refresh",
+      "expected_output": "validate 出现 ERROR 须汇报并停下，不得静默继续 refresh/viz。",
+      "files": [],
+      "assertions": [
+        {"id": "validate-error-stop", "name": "ERROR 停顿", "type": "must_include", "check": "validate ERROR 须停下后续步骤。", "priority": "P0"}
+      ]
+    },
+    {
+      "id": "okf-not-trigger-001",
+      "category": "should-not-trigger",
+      "prompt": "INDEX-GUIDE.md 过时了，帮我按九章结构全量重建索引，跑 docs-indexing",
+      "expected_output": "主路径 docs-indexing；不以 docs-okf refresh 为终点。",
+      "files": [],
+      "assertions": [
+        {"id": "correct-downstream", "name": "正确下游", "type": "must_include", "check": "点名 docs-indexing。", "priority": "P0"},
+        {"id": "no-false-okf-primary", "name": "勿假主 OKF", "type": "must_not_conflict", "check": "不得以 OKF refresh/viz 为主路径完成九章 INDEX。", "priority": "P0"}
+      ]
+    },
+    {
+      "id": "okf-not-trigger-002",
+      "category": "should-not-trigger",
+      "prompt": "从五视角提取实体 ID，跑 docs-build 生成 per-entity 文件和 KNOWLEDGE_INDEX",
+      "expected_output": "主路径 docs-build；不以 docs-okf 为实体提取终点。",
+      "files": [],
+      "assertions": [
+        {"id": "correct-downstream", "name": "正确下游", "type": "must_include", "check": "点名 docs-build。", "priority": "P0"},
+        {"id": "no-false-okf-primary", "name": "勿假主 OKF", "type": "must_not_conflict", "check": "不得用 OKF refresh 代替实体提取。", "priority": "P0"}
+      ]
+    }
+  ]
+}
