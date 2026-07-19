@@ -1,0 +1,140 @@
+{
+  "skill_name": "sdx-solution",
+  "description": "逐步确认参数，按模板分段「澄清 → 生成 → 烤干」直写 SOLUTION-{IDEA-ID}.md； 每段写前意图澄清，写入后自动 grilling 至收敛，再由用户确认推进。 用户提到 /sdx-solution、写方案、整理业务目标、需求模糊要结构化成共识级解决方案、 写 SOLUTION-*.md / 七章方案、一口气写完整版、选 F 补齐剩余章节时，务必使用本技能（分段协议与 F 门禁；非法整篇覆盖也须加载本技能以拒绝）。 分流：ANALYSIS/PRD/ASD/DSD/TDD 或 docs-* 主路径 → 对应技能，不以本技能代跑。 推进见 references/gates.md。",
+  "mode": "installed-skill-name-detection",
+  "results": [
+    {
+      "query": "业务方丢了一段会议纪要，需求比较模糊，帮我走 /sdx-solution：先逐步确认参数，再一段一段写进 SOLUTION-BILL-01.md，每段先意图澄清再写，写完再 grill 一轮，把冲突点和 MVP 里程碑补强。",
+      "should_trigger": true,
+      "trigger_rate": 1.0,
+      "triggers": 1,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "我们要在 {DOC_DIR}/solutions/ 写共识级方案文档，按七章模板，先评估影响面再定 MVP，请用 sdx-solution 流程，不要直接进需求分析。希望参数可以一步步确认，必要时也能用快捷组合。",
+      "should_trigger": true,
+      "trigger_rate": 1.0,
+      "triggers": 1,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "老板要一版「订单域改造」解决方案给评审用，只要业务语言、不写接口。请执行 /sdx-solution，IDEA-ID 用 260504-订单域改造；如果当前段 grill 出前文设定有问题，允许回改前文再继续 grill 当前段。",
+      "should_trigger": true,
+      "trigger_rate": 1.0,
+      "triggers": 1,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "请按 SDX 流程先做解决方案阶段：识别矛盾、给 2～3 套化解路径对比，当前段写完后先自动 grill 到收敛，用户再选 C/M/G/F；如果用户选 G，就继续深挖当前段。",
+      "should_trigger": true,
+      "trigger_rate": 1.0,
+      "triggers": 1,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "请执行 /sdx-solution，但这轮只写一个当前段：只处理「## 1. 背景与目标 / ### 1.1 业务现状」到 SOLUTION-BILL-01.md。先意图澄清再写入，写完后让当前段自动 grill 到烤干，然后给我 C/M/G/F 选项并停住等待，不要自动写下一段。",
+      "should_trigger": true,
+      "trigger_rate": 1.0,
+      "triggers": 1,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "我就是想要你直接一口气把 SOLUTION-BILL-01.md 七章都写完，别分段、别停、别问我，直接输出完整版。",
+      "should_trigger": true,
+      "trigger_rate": 1.0,
+      "triggers": 1,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "请执行 /sdx-solution，直接开始参数向导并把当前段写进 SOLUTION-CRM-01.md；不要再让我先写会话 spec、改什么 CONFIRMED，按新流程来。",
+      "should_trigger": true,
+      "trigger_rate": 1.0,
+      "triggers": 1,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "请执行 /sdx-solution：当前段写完后不要每一轮 grill 都停下来问我，要自动连续 grill 到这部分内容烤干，再统一给我 C/M/G/F 选项。",
+      "should_trigger": true,
+      "trigger_rate": 1.0,
+      "triggers": 1,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "当前段“### 1.2 存在问题”已经确认通过，我现在直接选 F。请按 sdx-solution 把剩余未完成章节全部生成，但不要覆盖已经确认的前文；如果后文打出前文语义冲突，要先停下来让我选。",
+      "should_trigger": true,
+      "trigger_rate": 1.0,
+      "triggers": 1,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "SOLUTION 已经有了，请接着做 /sdx-analysis，把 MVP 拆细、依赖和风险写进 ANALYSIS-CRM-1.md。",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "请用 /sdx-prd 把用户故事和验收标准补全，我要可评审的 PRD-ORDER-1.md。",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "请用 /sdx-architect 基于现有 PRD 产出 ASD，画服务边界和服务变更表。",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "帮我把 system/application-billing 蒸馏进 system/knowledge/overview/billing-overview.md，按 docs-distill 流程。",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "从 design 目录抽取段落写进 payment-overview 第三列，执行 docs-extract。",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "更新仓库 INDEX-GUIDE.md，目录变动大，跑 docs-indexing。",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "我已经确认过前两章了。现在别按当前段流程，直接用 F 把整份 SOLUTION-ORDER-1.md 从头到尾重写一遍，前面已确认内容也一起覆盖掉。",
+      "should_trigger": true,
+      "trigger_rate": 1.0,
+      "triggers": 1,
+      "runs": 1,
+      "pass": true
+    }
+  ],
+  "summary": {
+    "total": 16,
+    "passed": 16,
+    "failed": 0
+  }
+}

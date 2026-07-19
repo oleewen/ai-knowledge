@@ -1,0 +1,93 @@
+{
+  "skill_name": "docs-distill",
+  "description": "将 system/application-{name}/ 已核实内容蒸馏写入 system/knowledge/overview/{APPNAME}-overview.md 第三列； overview 成功后再追加 DISTILL-LOG。 用户提到 /docs-distill、知识蒸馏、DISTILL-LOG、同步应用知识到系统 overview、更新系统库 overview、 某应用知识库改了要同步、看看要同步哪些内容、系统库 overview 需要更新， 或要把 application-* 已核实变更上行到系统库时，务必使用本技能。 分流：任意源提炼 → docs-extract；overview 归档 → docs-archive；INDEX → docs-indexing；SDD → 对应技能。 推进见 references/gates.md。",
+  "mode": "installed-skill-name-detection",
+  "results": [
+    {
+      "query": "帮我把 billing-appeal 应用的最新变更蒸馏到系统库，上次蒸馏后又合并了几个 PR，CHANGE-LOG 里有 v1.4.0 和 v1.5.0 两个新条目",
+      "should_trigger": true,
+      "trigger_rate": 1.0,
+      "triggers": 1,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "/docs-distill --app payment --full --dry-run",
+      "should_trigger": true,
+      "trigger_rate": 1.0,
+      "triggers": 1,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "系统库的 overview 需要更新了，我们 order-service 这边知识库改了不少，你帮我看看要同步哪些内容",
+      "should_trigger": true,
+      "trigger_rate": 0.6666666666666666,
+      "triggers": 2,
+      "runs": 3,
+      "pass": true,
+      "note": "isolated recheck after suite flake"
+    },
+    {
+      "query": "直接把 inventory-service 全量蒸馏进去，不用预览了，日志你也顺手补掉",
+      "should_trigger": true,
+      "trigger_rate": 1.0,
+      "triggers": 1,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "把 application-billing 已核实内容同步到 system/knowledge/overview/billing-overview.md 第三列，并记 DISTILL-LOG",
+      "should_trigger": true,
+      "trigger_rate": 1.0,
+      "triggers": 1,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "从 design/ 目录按关键词提炼段落写进 payment-overview 第三列，跑 docs-extract，不要蒸馏日志",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "把 overview 表行归档到 system/knowledge 视角章节，执行 /docs-archive",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "目录变动大，更新仓库 INDEX-GUIDE.md，跑 /docs-indexing",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "需求模糊，先写 SOLUTION-ORDER-1.md 共识方案，走 /sdx-solution",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 1,
+      "pass": true
+    },
+    {
+      "query": "SOLUTION 已有，接着 /sdx-analysis 拆 MVP 写进 ANALYSIS-CRM-1.md",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 1,
+      "pass": true
+    }
+  ],
+  "summary": {
+    "total": 10,
+    "passed": 10,
+    "failed": 0
+  }
+}

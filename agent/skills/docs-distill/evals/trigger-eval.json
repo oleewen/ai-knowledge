@@ -1,0 +1,12 @@
+[
+  {"query": "帮我把 billing-appeal 应用的最新变更蒸馏到系统库，上次蒸馏后又合并了几个 PR，CHANGE-LOG 里有 v1.4.0 和 v1.5.0 两个新条目", "should_trigger": true},
+  {"query": "/docs-distill --app payment --full --dry-run", "should_trigger": true},
+  {"query": "系统库的 overview 需要更新了，我们 order-service 这边知识库改了不少，你帮我看看要同步哪些内容", "should_trigger": true},
+  {"query": "直接把 inventory-service 全量蒸馏进去，不用预览了，日志你也顺手补掉", "should_trigger": true},
+  {"query": "把 application-billing 已核实内容同步到 system/knowledge/overview/billing-overview.md 第三列，并记 DISTILL-LOG", "should_trigger": true},
+  {"query": "从 design/ 目录按关键词提炼段落写进 payment-overview 第三列，跑 docs-extract，不要蒸馏日志", "should_trigger": false},
+  {"query": "把 overview 表行归档到 system/knowledge 视角章节，执行 /docs-archive", "should_trigger": false},
+  {"query": "目录变动大，更新仓库 INDEX-GUIDE.md，跑 /docs-indexing", "should_trigger": false},
+  {"query": "需求模糊，先写 SOLUTION-ORDER-1.md 共识方案，走 /sdx-solution", "should_trigger": false},
+  {"query": "SOLUTION 已有，接着 /sdx-analysis 拆 MVP 写进 ANALYSIS-CRM-1.md", "should_trigger": false}
+]

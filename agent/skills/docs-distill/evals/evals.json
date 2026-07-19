@@ -1,31 +1,66 @@
 {
   "skill_name": "docs-distill",
-  "version": "3.0.0",
-  "description": "冒烟样本：参数向导、写前意图澄清、当前单元、dry-run、双日志顺序、烤干与语义确认；协议见 unit-cycle-protocol / intent-clarify。",
+  "version": "3.1.0",
+  "description": "冒烟样本：参数向导、写前意图澄清、当前单元、dry-run、双日志顺序、烤干与语义确认；含 1 条负向分流。",
   "evals": [
     {
       "id": 1,
+      "category": "should-trigger",
       "prompt": "帮我把 billing-appeal 应用的最新变更蒸馏到系统库，上次蒸馏后又合并了几个 PR，CHANGE-LOG 里有 v1.4.0 和 v1.5.0 两个新条目",
-      "expected_output": "docs-distill：收口 `--app=billing-appeal` 与增量范围；对 billing-appeal-overview 做写前意图澄清，写前 C 后 dry-run 预览；overview 成功写入后才允许追加 DISTILL-LOG；烤干收敛后停下等 C/M/G/S/F。",
-      "files": []
+      "expected_output": "docs-distill：收口 `--app=billing-appeal` 与增量范围；写前意图澄清后 dry-run；overview 成功后再 DISTILL-LOG；烤干后等 C/M/G/S/F。",
+      "files": [],
+      "assertions": [
+        {"id": "intent-clarify-before-write", "name": "写前意图澄清", "type": "must_include", "check": "写前须意图澄清与写前 C。", "priority": "P0"},
+        {"id": "single-unit-stop", "name": "单单元停顿", "type": "must_include", "check": "一次只处理一个 overview 当前单元，收敛后停下。", "priority": "P0"},
+        {"id": "distill-log-after-overview", "name": "日志顺序", "type": "must_include", "check": "overview 成功后再追加 DISTILL-LOG。", "priority": "P0"},
+        {"id": "dry-run-no-write", "name": "dry-run 预览", "type": "must_include", "check": "推荐或执行 dry-run 预览时不宣称已写盘。", "priority": "P0"}
+      ]
     },
     {
       "id": 2,
+      "category": "should-trigger",
       "prompt": "/docs-distill --app payment --full --dry-run",
-      "expected_output": "docs-distill：识别 `--full` 为高风险语义参数；写前意图澄清后当前单元只做预览，不写 overview，不写 DISTILL-LOG；烤干后给出推荐与后续动作。",
-      "files": []
+      "expected_output": "识别 `--full` 高风险；写前澄清后只预览，不写 overview / DISTILL-LOG。",
+      "files": [],
+      "assertions": [
+        {"id": "intent-clarify-before-write", "name": "写前意图澄清", "type": "must_include", "check": "写前须意图澄清。", "priority": "P0"},
+        {"id": "semantic-change-needs-confirmation", "name": "语义变更确认", "type": "must_include", "check": "`--full` 须先确认。", "priority": "P0"},
+        {"id": "dry-run-no-write", "name": "dry-run 不落盘", "type": "must_include", "check": "不写 overview / DISTILL-LOG。", "priority": "P0"}
+      ]
     },
     {
       "id": 3,
+      "category": "should-trigger",
       "prompt": "系统库的 overview 需要更新了，我们 order-service 这边知识库改了不少，你帮我看看要同步哪些内容",
-      "expected_output": "docs-distill：先澄清 `--app=order-service` 与时间范围；写前意图澄清后对 order-service 只处理一个当前单元；给出 preview 或推荐方案，不能直接宣称已写完。",
-      "files": []
+      "expected_output": "澄清 `--app=order-service` 与范围；单当前单元；未确认不宣称已写完。",
+      "files": [],
+      "assertions": [
+        {"id": "intent-clarify-before-write", "name": "写前意图澄清", "type": "must_include", "check": "写前须意图澄清。", "priority": "P0"},
+        {"id": "single-unit-stop", "name": "单单元停顿", "type": "must_include", "check": "一次一个 overview 单元。", "priority": "P0"}
+      ]
     },
     {
       "id": 4,
+      "category": "should-trigger",
       "prompt": "直接把 inventory-service 全量蒸馏进去，不用预览了，日志你也顺手补掉",
-      "expected_output": "docs-distill：把 `--full` 与“跳过预览直接写”识别为语义性高风险；先写前意图澄清再给结论、推荐方案和数字选项；未确认前不能写 overview 或 DISTILL-LOG。",
-      "files": []
+      "expected_output": "识别全量与跳过预览为高风险；未确认不写 overview / DISTILL-LOG。",
+      "files": [],
+      "assertions": [
+        {"id": "semantic-change-needs-confirmation", "name": "语义变更确认", "type": "must_include", "check": "全量/跳过预览须先确认。", "priority": "P0"},
+        {"id": "intent-clarify-before-write", "name": "写前意图澄清", "type": "must_include", "check": "写前须意图澄清。", "priority": "P0"},
+        {"id": "distill-log-after-overview", "name": "日志顺序", "type": "must_include", "check": "未确认前不得写日志。", "priority": "P0"}
+      ]
+    },
+    {
+      "id": 5,
+      "category": "should-not-trigger",
+      "prompt": "从 design 目录抽取段落写进 payment-overview 第三列，执行 docs-extract，不要记 DISTILL-LOG",
+      "expected_output": "主路径 docs-extract；不以 docs-distill + DISTILL-LOG 为终点。",
+      "files": [],
+      "assertions": [
+        {"id": "correct-downstream", "name": "正确下游", "type": "must_include", "check": "点名 docs-extract。", "priority": "P0"},
+        {"id": "no-false-distill-primary", "name": "勿假主蒸馏", "type": "must_not_conflict", "check": "不得以蒸馏上行 + DISTILL-LOG 为主路径。", "priority": "P0"}
+      ]
     }
   ]
 }
