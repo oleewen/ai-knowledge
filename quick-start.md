@@ -1,12 +1,12 @@
 # 从零起步构建知识库
 
-> **定位**：落地操作指南（canonical SSOT）。概念与元模型见 [README.md](README.md)、各层 [application/DESIGN.md](application/DESIGN.md)。
+> **定位**：落地操作指南（canonical SSOT）。概念见 [README.md](README.md)；元模型见各层 DESIGN。
 
 ---
 
 ## 选型
 
-**口诀**：有应用仓 → 先 bootstrap + build；有多应用 → 中央 link + pull/distill；只有 legacy → extract → archive → build。
+**口诀**（与 [README 从零选型](README.md#从零选型) 同口径）：有应用仓 → bootstrap + build；有多应用 → 中央 link + pull/distill；只有 legacy → extract → archive → build。
 
 | 场景 | 适用 | 一句话 |
 | --- | --- | --- |
@@ -15,13 +15,13 @@
 | **C** | 老系统（多应用）+ 中央库 | 先各应用 SSOT，再中央 pull/distill/archive |
 | **D** | 仅有 Wiki/协作文档等 legacy | overview 缓冲区 → archive → build |
 
-脚本参数与 mode 详见 [scripts/README.md](scripts/README.md)。
+脚本参数与 mode 见 [scripts/README.md](scripts/README.md)。
 
 ---
 
 ## 场景 A：独立应用系统
 
-**目标**：在单一应用仓建立 SSOT，无需系统/公司联邦。
+**目标**：单一应用仓建 SSOT，无需系统/公司联邦。
 
 ```mermaid
 flowchart LR
@@ -65,7 +65,7 @@ flowchart LR
 
 ## 场景 B：新系统（多应用）+ 中央知识库
 
-**目标**：系统/公司库承载需求与概设 SSOT，应用库承接规约落地与变更闭环。
+**目标**：系统/公司库承载需求与概设；应用库承接规约落地与变更闭环。
 
 ```mermaid
 flowchart LR
@@ -108,7 +108,7 @@ flowchart LR
     A6 --> Z((结束))
 ```
 
-### 阶段一：从系统知识库入手，完成需求分析设计
+### 阶段一：系统库 — 需求分析设计
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
@@ -116,7 +116,7 @@ flowchart LR
 | 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `index.md`、`README.md`、`AGENTS.md` |
 | 3 | 需求分析设计链路：`/sdx-solution` → `/sdx-analysis` → `/sdx-prd` → `/sdx-architect` | `SOLUTION`、`ANALYSIS`、`PRD`、`ASD`、`spec-asd` |
 
-### 阶段二：安装应用知识库，同步概设规约，详设与规约开发
+### 阶段二：应用库 — 同步概设、详设与开发
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
@@ -126,9 +126,9 @@ flowchart LR
 | 4 | 规约开发实现链路：`brainstorming` → `opsx:*` → `superpowers:sdd` | 代码实现 + 规格归档 |
 | 5 | `/docs-build`（按需） | 四视角实体、`index.md` |
 
-应用库 **mode**：**standalone** 单应用全量模板；**central** 仅同步 `knowledge/`、`changelogs/` 等子集并与系统库 `docs-link` 建联（见 [scripts/README.md](scripts/README.md)）。
+应用库 **mode**：**standalone** = 单应用全量模板；**central** = 仅同步 `knowledge/`、`changelogs/` 等子集并 `docs-link` 建联（见 [scripts/README.md](scripts/README.md)）。
 
-### 阶段三：聚合变更到应用知识库
+### 阶段三：变更聚合
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
@@ -139,7 +139,7 @@ flowchart LR
 
 ## 场景 C：老系统（多应用）+ 中央知识库
 
-**目标**：先在各现存应用落地知识库 SSOT，再建中央/系统库聚合上行，接续增量需求分析与规约开发。
+**目标**：先各应用落地 SSOT，再建中央/系统库上行聚合，再接需求分析与规约开发。
 
 ```mermaid
 flowchart LR
@@ -223,7 +223,7 @@ flowchart LR
 | 4 | `/docs-build` | 各应用四视角实体、`index.md` |
 | 5 | `/docs-change` | 变更聚合至各应用 `changelogs/` |
 
-### 阶段二：新建系统知识库，登记已有应用，拉取镜像并蒸馏归档
+### 阶段二：中央库 — 登记、拉取、蒸馏、归档
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
@@ -234,13 +234,13 @@ flowchart LR
 | 5 | `/docs-distill --app {APPNAME}`（配合 `--since` 增量） | `system/knowledge/overview/{APPNAME}-overview.md` 第三列 |
 | 6 | `/docs-archive`（人工核实高优先级行后） | 知识落入 `system/knowledge/` 各视角章节 |
 
-### 阶段三：接续系统知识库需求分析、概要设计
+### 阶段三：系统库需求分析、概要设计
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
 | 1 | 需求分析设计链路：`/sdx-solution` → `/sdx-analysis` → `/sdx-prd` → `/sdx-architect` | `SOLUTION`、`ANALYSIS`、`PRD`、`ASD`、`spec-asd` |
 
-### 阶段四：应用知识库详设、规约开发，变更聚合
+### 阶段四：应用库详设、开发与变更
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
@@ -254,7 +254,7 @@ flowchart LR
 
 ## 场景 D：从现存文档抽取结构化知识库
 
-**目标**：仅有 Wiki / 协作文档等 legacy 散落知识；以 overview 为缓冲区，低成本抽取为 SSOT。
+**目标**：仅有 Wiki / 协作文档等 legacy；overview 作缓冲区，再抽成 SSOT。
 
 ```mermaid
 flowchart LR
@@ -292,7 +292,7 @@ flowchart LR
     H --> Z((结束))
 ```
 
-### 阶段一：安装知识库，文档源盘点并抽取入 overview
+### 阶段一：安装、盘点源、写入 overview
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
@@ -301,7 +301,7 @@ flowchart LR
 | 3 | 复制 overview 模板，盘点源（Wiki / Confluence / Word / 代码注释等） | `{APPNAME}-overview.md` 骨架 |
 | 4 | `/docs-extract` 段落筛选提炼入第三列 | overview 第三列草稿 |
 
-### 阶段二：核实归档并构建四视角实体
+### 阶段二：核实归档与实体
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
@@ -309,9 +309,9 @@ flowchart LR
 | 2 | `/docs-archive` | 知识落入 `system/knowledge/{perspective}/chapters/`（公司场景则 `company/knowledge/.../chapters/`） |
 | 3 | `/docs-build` | 五视角实体、`knowledge/index.md` |
 
-> **原则**：先 overview 缓冲区，再 archive，再 entity — 不要一步到位硬造 YAML。overview 与归档约定见 [system/DESIGN.md](system/DESIGN.md)、[knowledge-layout](agent/references/knowledge-layout.md)。
+> **原则**：overview → archive → entity，勿一步硬造 YAML。约定见 [system/DESIGN.md](system/DESIGN.md)、[knowledge-layout](agent/references/knowledge-layout.md)。
 
-### 阶段三：聚合变更，按需接续需求交付
+### 阶段三：变更与按需需求交付
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
@@ -325,7 +325,7 @@ flowchart LR
 
 | 需求 | 文档 |
 | --- | --- |
-| 流程总览图 | [README.md](README.md#-agent-工作流与推荐流程) |
+| 流程总览图 | [README.md — Agent 工作流](README.md#agent-工作流) |
 | 元模型与实体层级 | [application/DESIGN.md](application/DESIGN.md)、[system/DESIGN.md](system/DESIGN.md)、[company/DESIGN.md](company/DESIGN.md) |
 | 初始化脚本 | [scripts/README.md](scripts/README.md) |
 | Skill 清单 | [agent/skills/README.md](agent/skills/README.md) |
