@@ -13,7 +13,7 @@ compatibility: Bash 5+；校验脚本 agent/skills/docs-agent/scripts/validate-g
 ## 输出硬约束（P0）
 
 - 当前单元：`README.md` 或 `AGENTS.md`（一次只其一）。
-- 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写入；收敛后停等用户，不得自动推进下一入口文件。
+- 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[docs-simplify.md](../../references/docs-simplify.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写入；收敛后停等用户，不得自动推进下一入口文件。
 - **INDEX 锚点**：须已落盘 `INDEX-GUIDE.md`（例外见 execution-spec）；不在本技能内重写 INDEX。
 - `both` 默认先 README 后 AGENTS；前一单元未收敛前不得静默写后一单元。
 

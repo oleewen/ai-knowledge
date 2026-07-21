@@ -14,7 +14,7 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-design/scripts/validate-d
 ## 输出硬门禁（P0）
 
 - 对象=当前段（章节 / `API` / `DDL`/`TBL` / `LOGIC` / 错误码组 / 幂等·时序·安全块）；一次一段（除非 `F` 且已批确认意图）。
-- 写前澄清 / 推进环 `C/M/G/F`（无 `S`）/ 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)；细节 [gates.md](references/gates.md)。
+- 写前澄清 / 推进环 `C/M/G/F`（无 `S`）/ 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[docs-simplify.md](../../references/docs-simplify.md)；细节 [gates.md](references/gates.md)。
 - 上游须可对齐 `PRD` 与 `ASD/spec-asd`；缺 PRD → `sdx-prd`；缺 ASD/spec-asd → `sdx-architect` 或按缺口标注受限继续。**不写 ASD，不产 TDD。**
 - 结构校验：`scripts/validate-dsd.sh`（见「产出与校验」）。
 

@@ -14,7 +14,7 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-test/scripts/validate-tes
 ## 输出硬门禁（P0）
 
 - 对象=当前段（章节 / 用例组 / 回归块 / 进出标准 / 数据·环境块）；一次一段（除非 `F` 且已批确认意图）。
-- 写前澄清 / 推进环 `C/M/G/F`（无 `S`）/ 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)；细节 [gates.md](references/gates.md)。
+- 写前澄清 / 推进环 `C/M/G/F`（无 `S`）/ 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[docs-simplify.md](../../references/docs-simplify.md)；细节 [gates.md](references/gates.md)。
 - 上游须可对齐 `PRD`；缺 PRD → `sdx-prd`；缺 DSD 时按范围收窄并标基线盲区。**不产自动化代码与执行报告。**
 
 ## 边界

@@ -73,8 +73,9 @@
 3. **主线口令** `澄清 → 生成 → 烤干`：
    - **意图澄清**（写前）：[intent-clarify.md](../references/intent-clarify.md)；
    - **生成 → 烤干 → 动作/重开**：[unit-cycle-protocol.md](../references/unit-cycle-protocol.md)；
-   - **烤干提问能力**：[grilling-skill.md](../references/grilling-skill.md)。
-4. 全部 `/sdx-*` 与语义族 docs-*（含 indexing/build/agent）已绑定意图澄清；
+   - **烤干提问能力**：[grilling-skill.md](../references/grilling-skill.md)；
+   - **生成步写作原则**：[docs-simplify.md](../references/docs-simplify.md)（默认强制；用户明示可豁免）。
+4. 全部 `/sdx-*` 与语义族 docs-*（含 indexing/build/agent/simplify）已绑定意图澄清；
    `docs-okf` / `docs-change` / `docs-pull` / `docs-push` / `docs-tag` 维持轻流程。
 5. 烤干收敛（或合法跳过）后，由用户用 `C/M/G/F`（docs 另有 `S`）推进；
    `C` 同符异义，靠阶段横幅区分。
@@ -108,6 +109,7 @@
 | docs-build | `{DOC_DIR}/knowledge/**/*` | `{DOC_DIR}/knowledge/` 下 JSON、README、KNOWLEDGE_INDEX | 可选工作稿 | 语义-docs | 无 | [docs-build/SKILL.md](../skills/docs-build/SKILL.md) |
 | docs-indexing | `**/INDEX-GUIDE.md`、`**/changelogs/INDEXING-LOG.md` | 各文档根 `INDEX-GUIDE.md` 与对应 `INDEXING-LOG.md` | 可选工作稿 | 语义-docs | 无 | [docs-indexing/SKILL.md](../skills/docs-indexing/SKILL.md) |
 | docs-upgrade | 不固定（按用户确认范围） | 已确认范围内的 Markdown / 注释 / 配置文本 | 可选工作稿 | 语义-docs | 无 | [docs-upgrade/SKILL.md](../skills/docs-upgrade/SKILL.md) |
+| docs-simplify | 不固定（按用户确认范围） | 已确认范围内的 Markdown（默认排除索引/日志/生成物，点名则纳入） | 可选工作稿 | 语义-docs | 无 | [docs-simplify/SKILL.md](../skills/docs-simplify/SKILL.md) |
 
 **说明**：`sdx-prd` / `sdx-test` 的 globs 均覆盖 `application/requirements/**/*`，以文件名 `PRD-*.md` / `TDD-*.md` 区分。  
 技能专细则见各 skill `gates.md`，不在本文件展开。
@@ -116,7 +118,7 @@
 
 | 层级 | 技能 | 推进协议 | hook |
 | --- | --- | --- | --- |
-| **中高风险** | sdx-*、docs-distill、docs-extract、docs-archive、docs-build、docs-indexing、docs-upgrade | 语义 / 语义-docs | ❌ |
+| **中高风险** | sdx-*、docs-distill、docs-extract、docs-archive、docs-build、docs-indexing、docs-upgrade、docs-simplify | 语义 / 语义-docs | ❌ |
 | **中等风险** | docs-agent | 语义-docs | ❌ |
 | **低风险** | docs-change、docs-tag、docs-pull、docs-okf、docs-push | 轻 | ❌ |
 
@@ -126,4 +128,4 @@
 
 - AI 协作说明：[../README.md](../README.md)
 - 知识库布局：[knowledge-layout.md](../references/knowledge-layout.md)
-- 意图澄清 / 推进环 / 烤干：[intent-clarify.md](../references/intent-clarify.md) · [unit-cycle-protocol.md](../references/unit-cycle-protocol.md) · [grilling-skill.md](../references/grilling-skill.md)
+- 意图澄清 / 推进环 / 烤干 / 精简原则：[intent-clarify.md](../references/intent-clarify.md) · [unit-cycle-protocol.md](../references/unit-cycle-protocol.md) · [grilling-skill.md](../references/grilling-skill.md) · [docs-simplify.md](../references/docs-simplify.md)

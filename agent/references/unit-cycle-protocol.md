@@ -4,9 +4,11 @@
 > **分工**：写前意图澄清见 [intent-clarify.md](intent-clarify.md)；写后提问能力见 [grilling-skill.md](grilling-skill.md)。  
 > **主线口令**：`澄清 → 生成 → 烤干`。
 
-**最后更新**: 2026-07-18
+**最后更新**: 2026-07-20
 
 **适用**：全部 `/sdx-*` 与语义族 docs-*（与 intent-clarify 启用名单一致）。轻流程技能不绑本文。
+
+**生成步写作原则**：进入「生成并写入」前，须读并遵循 [docs-simplify.md](docs-simplify.md)（A 结构 / B 简明 / C 真源），除非用户明示「跳过精简 / 草稿优先」等豁免。原则正文只维护于该契约；各 Skill 仅短链。
 
 ---
 

@@ -4,9 +4,9 @@
 > **分工**：推进环 / 用户动作 / 重开 / 前文回改见 [unit-cycle-protocol.md](unit-cycle-protocol.md)；写后提问能力见 [grilling-skill.md](grilling-skill.md)。  
 > **主线口令**：`澄清 → 生成 → 烤干`。
 
-**最后更新**: 2026-07-18
+**最后更新**: 2026-07-20
 
-**落地状态**：全部 `/sdx-*` 与语义族 docs-*（`docs-agent` / `docs-extract` / `docs-distill` / `docs-archive` / `docs-upgrade` / `docs-indexing` / `docs-build`）已绑定。**未绑定（轻流程）**：`docs-okf` / `docs-change` / `docs-pull` / `docs-push` / `docs-tag`。
+**落地状态**：全部 `/sdx-*` 与语义族 docs-*（`docs-agent` / `docs-extract` / `docs-distill` / `docs-archive` / `docs-upgrade` / `docs-simplify` / `docs-indexing` / `docs-build`）已绑定。**未绑定（轻流程）**：`docs-okf` / `docs-change` / `docs-pull` / `docs-push` / `docs-tag`。
 
 ---
 

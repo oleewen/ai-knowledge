@@ -3,7 +3,7 @@ name: docs-upgrade
 description: >
   定向改 Markdown、注释、配置文本；统一术语并沿引用链 + 关键词链式同步。
   用户提到 /docs-upgrade、改文档、统一术语、把 X 换成 Y，或简写 a - b / a > b / a 2 b（均为 a→b）时，使用本技能。
-  分流：用户只要 docs-archive/change/indexing/build 或仅 CHANGE-LOG/INDEX → 对应技能。
+  分流：用户只要 docs-archive/change/indexing/build 或仅 CHANGE-LOG/INDEX → 对应技能；结构精简/SSOT 去重 → docs-simplify。
   推进见 references/gates.md。
 ---
 
@@ -12,14 +12,14 @@ description: >
 ## 输出硬约束（P0）
 
 - 当前单元：单个主文件，或单个已确认关联批次。
-- 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写入或扩展关联；写入后须烤干，收敛后停等用户。
+- 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[docs-simplify.md](../../references/docs-simplify.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写入或扩展关联；写入后须烤干，收敛后停等用户。
 - 用户明示「只改本文件 / 不要关联 / 不要全库搜」时，不得静默重开链式扩展。
 
 ## 边界
 
 | 负责 | 不负责 |
 | ---- | ------ |
-| MD/注释/配置文档性文本；引用链 + 关键词；意图澄清与范围收口；当前单元推进 | docs-change、docs-indexing、docs-archive、docs-build 主流程 |
+| MD/注释/配置文档性文本；引用链 + 关键词；意图澄清与范围收口；当前单元推进 | docs-change、docs-indexing、docs-archive、docs-build、docs-simplify 主流程 |
 
 ## 不这样用
 

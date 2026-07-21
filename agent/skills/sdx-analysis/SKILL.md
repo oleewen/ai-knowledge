@@ -14,7 +14,7 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-analysis/scripts/validate
 ## 输出硬门禁（P0）
 
 - 对象=当前段（§2 可细到单个 `FR`）；一次一段（除非 `F` 且已批确认意图）。
-- 写前澄清 / 推进环 `C/M/G/F`（无 `S`）/ 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)；细节 [gates.md](references/gates.md)。
+- 写前澄清 / 推进环 `C/M/G/F`（无 `S`）/ 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[docs-simplify.md](../../references/docs-simplify.md)；细节 [gates.md](references/gates.md)。
 - 无已共识 SOLUTION → 引导 [sdx-solution](../sdx-solution/SKILL.md)，不以本技能代写。
 
 ## 边界

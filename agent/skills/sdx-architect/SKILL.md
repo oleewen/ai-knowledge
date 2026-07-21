@@ -14,7 +14,7 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-architect/scripts/validat
 ## 输出硬门禁（P0）
 
 - 对象=当前段（章节 / `DD` / 服务变更项 / 规约摘要行）；一次一段（除非 `F` 且已批确认意图）。
-- 写前澄清 / 推进环 `C/M/G/F`（无 `S`）/ 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)；细节 [gates.md](references/gates.md)。
+- 写前澄清 / 推进环 `C/M/G/F`（无 `S`）/ 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[docs-simplify.md](../../references/docs-simplify.md)；细节 [gates.md](references/gates.md)。
 - 上游须可对齐 `PRD-{IDEA-ID}-{N}.md`；否则引导 `sdx-prd`。**DSD 正文 → sdx-design**。
 - `KNOWLEDGE_TYPE` / 联邦模式约束见 [knowledge-type-modes.md](references/knowledge-type-modes.md)。
 

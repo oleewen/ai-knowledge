@@ -14,7 +14,7 @@ compatibility: Bash 5+；无专用校验脚本。
 ## 输出硬约束（P0）
 
 - 当前单元：单个目标章节，或单个 overview 行块。
-- 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得落盘或回写 overview；本技能默认必须烤干，收敛后停等用户。
+- 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[docs-simplify.md](../../references/docs-simplify.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得落盘或回写 overview；本技能默认必须烤干，收敛后停等用户。
 - **确认书 = 意图澄清门禁**：批次级确认书收口即完成写前澄清；单元落盘前不再重复六项全清单，仅摘取本单元目标与路径。
 - overview 回写须保留行内副标题链接；若改为索引壳，也不得承载新业务事实。
 

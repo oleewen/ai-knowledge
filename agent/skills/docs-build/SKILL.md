@@ -12,7 +12,7 @@ description: >
 ## 输出硬约束（P0）
 
 - 当前单元：单个视角批次、单个路径组，或单批实体集合。
-- 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写 `{DOC_DIR}/knowledge/`；收敛后停等用户，不得自动推进下一批。
+- 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[docs-simplify.md](../../references/docs-simplify.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写 `{DOC_DIR}/knowledge/`；收敛后停等用户，不得自动推进下一批。
 - 意图澄清第 6 项须写明当前批次及本轮 `{DOC_DIR}/knowledge/` 下仓库根相对路径（含 `{ID}.md`、README、`KNOWLEDGE_INDEX.md` 等）。
 - 校验失败、路径不明或规则未覆盖时须停下澄清，不得静默继续。
 

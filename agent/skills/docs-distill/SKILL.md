@@ -15,7 +15,7 @@ description: >
 ## 输出硬约束（P0）
 
 - 当前单元：单个 `{APPNAME}-overview.md` + 单次增量/全量预览范围。
-- 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写入或输出正式预览结论；写入或 `--dry-run` 预览后均须烤干，收敛后停等用户。
+- 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[docs-simplify.md](../../references/docs-simplify.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写入或输出正式预览结论；写入或 `--dry-run` 预览后均须烤干，收敛后停等用户。
 - **原子性**：`DISTILL-LOG` 仅在 overview 第三列成功写入后追加；写入失败禁止记日志。`--dry-run` 仍须写前澄清，不写 overview / `DISTILL-LOG`。
 
 ## 边界

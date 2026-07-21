@@ -21,6 +21,7 @@
 | `/docs-change` | 三源采集变更 → `{output_dir}/CHANGE-LOG.md`（文末增量基线注释）；轻流程 |
 | `/docs-tag` | overview 关键词：候选附录、表行 ✅、架构摘录（phase 3）；轻流程 + phase 轻量校核（非语义族 grilling）。见 [workflow.md](docs-tag/references/workflow.md) |
 | `/docs-upgrade` | 范围/替换策略/链式同步；改 Markdown、注释、配置文本 |
+| `/docs-simplify` | 金字塔结构 + 激进精简 + SSOT 去重引用；原则见 [docs-simplify.md](../references/docs-simplify.md) |
 | `/docs-agent` | 根 `README.md` + `AGENTS.md`；九章地图以已落盘 `INDEX-GUIDE.md` 为准，与 `index.md` 职责不重叠 |
 | `/docs-distill` | `--app / --since / --full / --dry-run` → 系统 `overview` 第三列 + `DISTILL-LOG` |
 | `/docs-extract` | `--sources / --overview / --dry-run` → 系统或公司 overview 第三列；不写 `DISTILL-LOG` |

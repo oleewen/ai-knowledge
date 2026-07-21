@@ -1,0 +1,152 @@
+{
+  "skill_name": "docs-simplify",
+  "version": "1.0.0",
+  "description": "评估触发、参数向导、当前单元「澄清→生成→烤干」、A/B/C 原则与 docs-upgrade 分流；协议见 unit-cycle-protocol / intent-clarify / docs-simplify。",
+  "evals": [
+    {
+      "id": "simplify-trigger-001",
+      "category": "should-trigger",
+      "prompt": "用 /docs-simplify 把 system/knowledge/product/PM-EXAMPLE/FT-EXAMPLE/FT-EXAMPLE.md 按金字塔精简：删啰嗦、结论先行，并扫全仓看有没有重复定义要改成引用。先收口再改，改完 grill。",
+      "expected_output": "docs-simplify：参数向导后澄清→生成→烤干；写前六项；生成遵循 A/B/C；疑似重复须确认；烤干后停等 C/M/G/S/F。",
+      "assertions": [
+        {
+          "id": "intent-clarify",
+          "name": "意图澄清",
+          "type": "must_include",
+          "check": "须体现当前单元写入前做意图澄清（六项或等价），未获写前 C 不得写入。",
+          "priority": "P0"
+        },
+        {
+          "id": "unit-cycle",
+          "name": "单元循环",
+          "type": "must_include",
+          "check": "主线含澄清→生成→烤干；须体现目标文件与精简/去重目标。",
+          "priority": "P0"
+        },
+        {
+          "id": "principles-abc",
+          "name": "ABC原则",
+          "type": "must_include",
+          "check": "须体现结构（结论/金字塔/MECE）、简明、SSOT/引用中至少两方面，或显式引用 docs-simplify 原则。",
+          "priority": "P0"
+        },
+        {
+          "id": "ssot-confirm",
+          "name": "疑似须确认",
+          "type": "must_include",
+          "check": "若做全仓重复扫描或去重，须说明疑似候选需人确认，未确认不得删段/改引用。",
+          "priority": "P0"
+        },
+        {
+          "id": "grilling-loop",
+          "name": "单元烤干",
+          "type": "must_include",
+          "check": "当前单元写入后须自动 grilling（默认必须烤干）并收敛后再推进。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-unit-stop",
+          "name": "单单元停顿",
+          "type": "must_include",
+          "check": "烤干收敛后给出 C/M/G/S/F 或等价等待；不得自动扩批。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "simplify-trigger-002",
+      "category": "should-trigger",
+      "prompt": "精简 application/README.md，只要更短更好读，只改这一个文件，不要动别的",
+      "expected_output": "快路径：仅本文件；澄清六项；激进精简但保留约束类内容；烤干后停。",
+      "assertions": [
+        {
+          "id": "intent-clarify",
+          "name": "意图澄清",
+          "type": "must_include",
+          "check": "须快路径式意图澄清或明确仅本文件不扩，未获写前 C 不得写。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-file",
+          "name": "仅本文件",
+          "type": "must_include",
+          "check": "须尊重只改 application/README.md，不宣称自动改其他文件。",
+          "priority": "P0"
+        },
+        {
+          "id": "keep-constraints",
+          "name": "保留约束",
+          "type": "should_include",
+          "check": "应提及保留约束/关键可执行信息，或 B3 可执行底线。",
+          "priority": "P1"
+        }
+      ]
+    },
+    {
+      "id": "simplify-trigger-003",
+      "category": "should-trigger",
+      "prompt": "把这段又啰嗦又和别处重复的设计说明按金字塔改短，同时把「订金」统一成「预付款」",
+      "expected_output": "先问主目标或确认串行顺序（simplify 与 upgrade）；不得静默单技能吞并术语链。",
+      "assertions": [
+        {
+          "id": "routing-dual",
+          "name": "双目标分流",
+          "type": "must_include",
+          "check": "须体现与 docs-upgrade 分流、问主目标或串行顺序确认。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-silent-merge",
+          "name": "勿静默合并",
+          "type": "must_not_conflict",
+          "check": "不得宣称一次改写同时静默完成全库术语链且无需确认顺序。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "simplify-not-trigger-001",
+      "category": "should-not-trigger",
+      "prompt": "把 system/knowledge/overview 里所有「订金」统一成「预付款」，并同步引用链和注释",
+      "expected_output": "主路径 docs-upgrade。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须点名 docs-upgrade 或术语/链式替换。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-simplify-primary",
+          "name": "勿假主 simplify",
+          "type": "must_not_conflict",
+          "check": "不得唯一主路径写成 docs-simplify 金字塔精简。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "simplify-not-trigger-002",
+      "category": "should-not-trigger",
+      "prompt": "全量重建根目录 INDEX-GUIDE.md，九章结构，不要改业务文档正文",
+      "expected_output": "主路径 docs-indexing。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须点名 docs-indexing 或 INDEX-GUIDE。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-simplify-primary",
+          "name": "勿假主 simplify",
+          "type": "must_not_conflict",
+          "check": "不得主路径写成 docs-simplify。",
+          "priority": "P0"
+        }
+      ]
+    }
+  ]
+}
