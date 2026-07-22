@@ -7,7 +7,7 @@ title: 企业架构
 
 [返回 · 公司知识库](../README.md)
 
-公司层五视角入口。治理叙事；不写系统实现细节。分型见 [okf-spec](../../agent/knowledge/okf-spec.md)。
+公司层五视角入口；治理叙事，不写系统实现。分型：[okf-spec](../../agent/knowledge/okf-spec.md)。
 
 | 视角 | 入口 |
 |------|------|

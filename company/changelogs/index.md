@@ -1,6 +1,6 @@
 # changelogs
 
-目录说明见 [README.md](README.md)。
+目录说明：[README.md](README.md)。
 
 ## 子目录
 
@@ -13,9 +13,9 @@
 
 ## 阅读顺序
 
-1. [README.md](README.md) — 先确认 changelogs 的职责
-2. [CHANGE-LOG.md](CHANGE-LOG.md) — 查看目录级变更留痕
-3. [INDEXING-LOG.md](INDEXING-LOG.md) — 查看索引生成记录与时间锚点
+1. [README.md](README.md) — 职责  
+2. [CHANGE-LOG.md](CHANGE-LOG.md) — 目录级变更  
+3. [INDEXING-LOG.md](INDEXING-LOG.md) — 索引运行记录  
 
 ## 关联索引
 

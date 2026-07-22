@@ -1,6 +1,6 @@
 # knowledge
 
-目录说明见 [README.md](README.md)。
+目录说明：[README.md](README.md)。
 
 ## 子目录
 
@@ -17,10 +17,10 @@
 
 ## 阅读顺序
 
-1. [README.md](README.md) — 先理解五视角职责、实体 SSOT 与 overview 缓冲区
-2. [overview/README.md](overview/README.md) — 确认 overview 模板与自动回写入口
-3. 各视角 `README.md` — 按业务、产品、应用、数据、技术顺序下钻
-4. 视角 `chapters/` 与 `*-EXAMPLE` 实体 — 查看模板章节和最小样例链
+1. [README.md](README.md) — 五视角与实体 SSOT  
+2. [overview/README.md](overview/README.md) — overview 缓冲  
+3. 各视角 `README.md` — 业务→产品→应用→数据→技术  
+4. `chapters/` 与 `*-EXAMPLE` — 章节骨架与样例  
 
 ## 关联索引
 
@@ -32,8 +32,8 @@
 ## 统一表头规范
 
 - **标准表头**：`["层级","ID","别名（英文名）","名称","证据链"]`
-- **字段语义**：`ID` 为示例编码，`别名（英文名）` 为英文编码，`名称` 为中文名称
-- **唯一性约束**：`层级+ID` 全知识库唯一；`层级+别名（英文名）` 全知识库唯一
+- **字段语义**：`ID` = 示例编码；`别名（英文名）` = 英文编码；`名称` = 中文名称
+- **唯一性**：`层级+ID`、`层级+别名（英文名）` 全库唯一
 
 ---
 
@@ -79,7 +79,7 @@
 
 ---
 
-> 本索引登记公司级 **BD / CAP / PL / SYS / MDG / TPL**；系统层与应用层实体见对应 bundle 的 `knowledge/index.md`。
+> 登记公司级 **BD / CAP / PL / SYS / MDG / TPL**；系统/应用层实体见对应 bundle 的 `knowledge/index.md`。
 
 ---
 

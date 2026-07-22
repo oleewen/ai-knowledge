@@ -1,7 +1,7 @@
 ---
 type: System
 title: 示例系统
-description: 仅用于演示公司级 SYS 数据结构。
+description: 演示公司级 SYS 结构。
 tags: [application, SYS]
 timestamp: "2026-06-21T00:00:00Z"
 full_id: SYS-EXAMPLE
@@ -20,7 +20,7 @@ layer_scope: company
 
 ## 详细说明
 
-- definition_scope: local（本层主定义）
+- definition_scope: local
 - architecture:
   - apps: [APP-EXAMPLE]
   - external_dependencies: [ExternalExample/HTTP]

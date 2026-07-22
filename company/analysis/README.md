@@ -4,11 +4,11 @@ title: analysis — 需求分析文档
 ---
 # analysis — 需求分析文档
 
-公司层 SDD **分析**目录：产出 `ANALYSIS-{IDEA-ID}.md`。
+公司层 SDD 分析目录：`ANALYSIS-{IDEA-ID}.md`。
 
-- 上游：[../solutions/](../solutions/README.md) 的 `SOLUTION-{IDEA-ID}.md`
-- 下游：拆解系统归属后，由各系统侧 [`system/requirements/`](../../system/requirements/README.md) 承接 PRD/ASD/DSD/TDD（`company/` 不设 `requirements/`）
-- 企业架构参照：[../knowledge/](../knowledge/README.md)
+- 上游：[../solutions/](../solutions/README.md) `SOLUTION-{IDEA-ID}.md`
+- 下游：各系统 [`system/requirements/`](../../system/requirements/README.md) 承接 PRD/ASD/DSD/TDD（`company/` 无 `requirements/`）
+- 企业架构：[../knowledge/](../knowledge/README.md)
 
 ## 交付物
 

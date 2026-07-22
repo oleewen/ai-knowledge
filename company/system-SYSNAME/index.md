@@ -1,6 +1,6 @@
 # system-SYSNAME
 
-目录说明见 [README.md](README.md)。
+目录说明：[README.md](README.md)。
 
 ## 子目录
 
@@ -12,11 +12,11 @@
 
 ## 阅读顺序
 
-1. [README.md](README.md) — 先理解槽位职责、占位语义与同步来源
-2. [changelogs/README.md](changelogs/README.md) — 查看槽位级日志规则
-3. [../knowledge-links.yaml](../knowledge-links.yaml) — 回看该槽位对应的建联配置
+1. [README.md](README.md) — 槽位职责与同步来源  
+2. [changelogs/README.md](changelogs/README.md) — 槽位日志  
+3. [../knowledge-links.yaml](../knowledge-links.yaml) — 建联配置  
 
 ## 关联索引
 
-- 上一级索引：[../index.md](../index.md)
-- 上一级说明：[../README.md](../README.md)
+* 上一级索引：[../index.md](../index.md)
+* 上一级说明：[../README.md](../README.md)

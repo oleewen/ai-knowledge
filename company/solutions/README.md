@@ -4,7 +4,7 @@ title: solutions — 解决方案文档
 ---
 # solutions — 解决方案文档
 
-公司层 SDD **方案**目录：`SOLUTION-{IDEA-ID}.md` → [../analysis/](../analysis/README.md)。
+公司层 SDD 方案目录：`SOLUTION-{IDEA-ID}.md` → [../analysis/](../analysis/README.md)。
 
 | 项 | 约定 |
 |----|------|

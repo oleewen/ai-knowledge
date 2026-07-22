@@ -4,7 +4,7 @@ title: 业务视角元数据（company/knowledge/business）
 ---
 # 业务视角元数据（company/knowledge/business）
 
-公司级业务域（BD）与业务能力目录（CAP）的视角元数据 SSOT。实例索引见 [../index.md](../index.md)。
+公司级 BD / CAP 视角元数据 SSOT。实例索引：[../index.md](../index.md)。
 
 ---
 
@@ -15,7 +15,7 @@ title: 业务视角元数据（company/knowledge/business）
 | meta_id | `DIR-COMPANY-KNOWLEDGE-BUSINESS` |
 | 视角 | business |
 | 层级范围 | company |
-| 说明 | 公司级业务域划分与 L1/L2/L3 能力目录；系统/应用层引用 BD/CAP ID，不重复字段语义。 |
+| 说明 | 公司级业务域与 L1/L2/L3 能力目录；系统/应用引用 BD/CAP ID，不重复字段语义。 |
 
 ---
 
@@ -24,7 +24,7 @@ title: 业务视角元数据（company/knowledge/business）
 | 链序 | 层级代码 | 说明 |
 | --- | --- | --- |
 | 1 | BD | 公司级业务域 |
-| 2 | CAP | 公司级业务能力目录（L1/L2/L3，通过 `level` 与 `parent_id` 表达树形） |
+| 2 | CAP | 公司级业务能力目录（L1/L2/L3，`level` + `parent_id` 树形） |
 
 ---
 
@@ -39,9 +39,7 @@ title: 业务视角元数据（company/knowledge/business）
 
 ## 4. 字段（OKF）
 
-**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `company`）。详见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2。
-
-**正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。
+Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`）见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2；本层 `layer_scope` 固定 `company`。
 
 ### BD / CAP 专属（正文）
 

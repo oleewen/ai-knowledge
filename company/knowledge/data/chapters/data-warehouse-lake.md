@@ -1,9 +1,9 @@
 ---
 type: Architecture Chapter
 tags: [architecture, chapter]
-title: 数据仓库与数据湖
+title: 数仓与湖
 ---
-# 数据仓库与数据湖
+# 数仓与湖
 
 [返回 · 数据架构](../README.md)
 
@@ -11,16 +11,16 @@ title: 数据仓库与数据湖
 
 ## 数仓分层
 
-规定 ODS/DWD/DWS/ADS 职责与刷新频率。
+ODS/DWD/DWS/ADS 职责与刷新频率。
 
 ## 维度建模
 
-规定粒度、维度、度量与口径对齐。
+粒度、维度、度量与口径对齐。
 
 ## 数据湖
 
-规定湖格式、catalog、分区与湖仓关系。
+湖格式、catalog、分区与湖仓关系。
 
 ## 数据集市
 
-规定主题集市范围、刷新与防重复建设。
+主题集市范围、刷新与防重复建设。

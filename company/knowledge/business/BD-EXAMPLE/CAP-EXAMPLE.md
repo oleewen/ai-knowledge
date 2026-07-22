@@ -1,7 +1,7 @@
 ---
 type: Business Capability
 title: 示例二级能力
-description: 仅用于演示 CAP L2 与 parent_id 关系。
+description: 演示 CAP L2 与 parent_id。
 tags: [business, CAP]
 timestamp: "2026-06-21T00:00:00Z"
 full_id: CAP-EXAMPLE
@@ -21,8 +21,8 @@ layer_scope: company
 
 ## 详细说明
 
-- level: L2（二级能力）
-- definition_scope: local（本层主定义）
+- level: L2
+- definition_scope: local
 
 ## 依据与证据
 

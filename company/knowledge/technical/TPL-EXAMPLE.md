@@ -1,7 +1,7 @@
 ---
 type: Technical Platform
 title: 示例技术平台能力
-description: 仅用于演示公司级 TPL 数据结构（示例）。
+description: 演示公司级 TPL 结构。
 tags: [technical, TPL]
 timestamp: "2026-06-21T00:00:00Z"
 full_id: TPL-EXAMPLE
@@ -21,7 +21,7 @@ layer_scope: company
 ## 详细说明
 
 - domain: 云基础设施
-- definition_scope: local（本层主定义）
+- definition_scope: local
 
 ## 依据与证据
 

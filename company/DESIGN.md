@@ -5,7 +5,7 @@ title: 公司知识库设计
 <!-- markdownlint-disable-next-line MD025 -->
 # 公司知识库设计
 
-`company/`：公司层知识编排与系统槽位治理。不承载系统实现细节。路径 SSOT 见 [knowledge-layout](../agent/references/knowledge-layout.md)。
+`company/`：公司层知识编排与系统槽位治理；不写系统实现细节。路径 SSOT：[knowledge-layout](../agent/references/knowledge-layout.md)。
 
 ## 阅读顺序
 
@@ -22,16 +22,18 @@ title: 公司知识库设计
 | `system/` | 系统层治理与架构聚合 |
 | `application/` | 实现级实体与字段语义 SSOT |
 
-- **治理**：公司层结构语义、导航、归档入口  
-- **内容**：公司级实体与企业架构顶层在 `company/knowledge/`；实现细节在 system/application  
-- **流程**：`solutions/` + `analysis/` 跨系统上游；PRD/ASD/DSD/TDD 在各系统 `requirements/`  
-- **引用**：路径与槽位映射，不复制下游正文  
+| 面 | 规则 |
+|----|------|
+| 治理 | 公司层结构语义、导航、归档入口 |
+| 内容 | 公司级实体与企业架构顶层 ∈ `knowledge/`；实现细节 ∈ system/application |
+| 流程 | `solutions/` + `analysis/` = 跨系统上游；PRD/ASD/DSD/TDD ∈ 各系统 `requirements/` |
+| 引用 | 路径与槽位映射；不复制下游正文 |
 
 ## 2. 目录契约
 
 | 层级 | 目录 | 职责 |
 | --- | --- | --- |
-| 企业架构 | `knowledge/` | 五视角治理叙事；[`overview/`](knowledge/overview/NAME-overview.md) 为 extract/archive/tag 缓冲区（非 docs-distill） |
+| 企业架构 | `knowledge/` | 五视角治理叙事；[`overview/`](knowledge/overview/NAME-overview.md) = extract/archive/tag 缓冲区（**非** docs-distill） |
 | 方案 | `solutions/` | 跨系统 SOLUTION → `analysis/` |
 | 分析 | `analysis/` | 跨系统 ANALYSIS → 各系统 `requirements/` |
 | 槽位 | `system-{name}/` | 系统镜像入口 |
@@ -42,29 +44,17 @@ title: 公司知识库设计
 
 ### 公司级实体（正文 SSOT ∈ `knowledge/**`）
 
-系统/应用仅引用 ID。overview 非实体 SSOT。完整字段表见 [application/DESIGN.md](../application/DESIGN.md) §2.2.1。
+系统/应用只引用 ID；overview 非实体 SSOT。字段表：[application/DESIGN.md](../application/DESIGN.md) §2.2.1。命名：[naming-conventions](../agent/knowledge/naming-conventions.md)。
 
-| 视角 | 实体 | 说明 |
+| 视角 | 实体 | 公司层聚焦 |
 | --- | --- | --- |
-| 业务 | BD / CAP | 业务域；能力目录 L1–L3 |
-| 产品 | PL | 跨系统产品族 |
-| 应用 | SYS | 公司内系统边界 |
-| 数据 | MDG | 主数据治理目录 |
-| 技术 | TPL | 平台能力（云/DevOps/安全/开发环境） |
+| 业务 | BD / CAP | 域；能力 L1–L3；商业模式、价值链 |
+| 产品 | PL | 跨系统产品族；度量、体验 |
+| 应用 | SYS | 系统边界与目录治理 |
+| 数据 | MDG | 主数据治理；湖仓、安全 |
+| 技术 | TPL | 云 / DevOps / 安全 / 开发环境 / 可观测 |
 
-命名：[naming-conventions](../agent/knowledge/naming-conventions.md)
-
-### 五视角聚焦
-
-| 视角 | 公司层聚焦 |
-| --- | --- |
-| 业务 | BD、CAP、商业模式、价值链 |
-| 产品 | PL、度量、体验 |
-| 应用 | SYS、系统目录与治理 |
-| 数据 | MDG、治理、湖仓、安全 |
-| 技术 | TPL：云、DevOps、安全、开发环境、可观测 |
-
-系统层落地见 [system/DESIGN.md](../system/DESIGN.md#五视角系统层聚焦)。
+系统层落地：[system/DESIGN.md](../system/DESIGN.md#五视角系统层聚焦)。
 
 ### 系统镜像槽位
 
@@ -80,7 +70,7 @@ title: 公司知识库设计
 
 同 IDEA-ID：`ANALYSIS` 拆归属 → 各系统 `REQUIREMENT-{IDEA-ID}/`。
 
-治理：槽位名 `system-{sys_name}`；不写实现/字段；跨层用链接；改目录语义先改本文。
+约束：槽位名 `system-{sys_name}`；不写实现/字段；跨层用链接；改目录语义先改本文。
 
 ## 3. 同步与追溯
 

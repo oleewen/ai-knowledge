@@ -4,8 +4,8 @@ title: company INDEX-GUIDE
 ---
 # company INDEX-GUIDE
 
-> **最后更新**: 2026-07-17  
-> **定位**: `company/` 九章索引指南。目录索引见 [index.md](index.md)。
+> **最后更新**: 2026-07-22  
+> **定位**: `company/` 九章索引指南。目录索引：[index.md](index.md)。
 
 ---
 
@@ -71,7 +71,7 @@ company/
 
 ## 七、变更与运维
 
-[changelogs/](changelogs/README.md)：`CHANGE-LOG.md` · `INDEXING-LOG.md`；槽位日志在 `system-{name}/changelogs/`
+[changelogs/](changelogs/README.md)：`CHANGE-LOG.md` · `INDEXING-LOG.md`；槽位日志 ∈ `system-{name}/changelogs/`
 
 ---
 

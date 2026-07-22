@@ -4,7 +4,7 @@ title: 产品视角元数据（company/knowledge/product）
 ---
 # 产品视角元数据（company/knowledge/product）
 
-公司级产品线（PL）的视角元数据 SSOT。实例索引见 [../index.md](../index.md)。
+公司级 PL 视角元数据 SSOT。实例索引：[../index.md](../index.md)。
 
 ---
 
@@ -37,9 +37,7 @@ title: 产品视角元数据（company/knowledge/product）
 
 ## 4. 字段（OKF）
 
-**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `company`）。详见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2。
-
-**正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。
+Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`）见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2；本层 `layer_scope` 固定 `company`。
 
 ### PL 专属（正文）
 

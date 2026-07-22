@@ -4,21 +4,21 @@ title: company 目录元数据
 ---
 
 ```yaml
-# company/ 目录元数据（根导航与 SSOT 指针）
+# company/ 根目录元数据（导航与 SSOT 指针）
 id: "DIR-COMPANY"
 name: "公司知识库根（company）"
-description: "公司级知识库 company/ 根目录：公司层治理与导航入口；knowledge/ 承载公司级实体正文 SSOT，system-{name}/ 承载系统镜像槽位。"
+description: "公司层治理与导航根；knowledge/=公司级实体 SSOT；system-{name}/=系统镜像槽位。"
 
 role:
   kind: "documentation_root"
   ssot_subdirectory: "knowledge/"
-  # 治理入口见 agent/knowledge/README.md；三层边界见 knowledge-governance.md
-  # 文件分型与 concept 结构 SSOT 见 agent/knowledge/okf-spec.md
+  # 治理入口：agent/knowledge/README.md；三层边界：knowledge-governance.md
+  # 文件分型 / concept：agent/knowledge/okf-spec.md
 
 child_directories:
   knowledge:
     readme: "knowledge/README.md"
-    description: "五架构视角企业架构；含 overview/ 缓冲区（docs-extract / docs-archive / docs-tag；非 docs-distill 落盘目标）"
+    description: "五视角企业架构；overview/=extract·archive·tag 缓冲（非 docs-distill 目标）"
   solutions:
     readme: "solutions/README.md"
     description: "公司级跨系统解决方案"
@@ -48,7 +48,7 @@ inputs:
 outputs:
   primary_artifact:
     pattern: "README.md, index.md, DESIGN.md, knowledge/**/*, system-{name}/**"
-    description: "根级导航与设计、knowledge/ 公司层 OKF 概念实体，以及按需实例化的系统槽位镜像"
+    description: "根导航与设计、knowledge/ 公司层 OKF 实体、按需系统槽位镜像"
 
 naming_conventions:
   directory_index:
@@ -63,7 +63,7 @@ integration:
     - path: "../system/"
       description: "系统层 reference 引用公司层 BD/PL/SYS/MDG/TPL SSOT"
   traceability:
-    description: "阶段链 solutions → analysis；各系统 PRD/ASD 在对应 system/requirements/"
+    description: "阶段链 solutions → analysis；各系统 PRD/ASD ∈ system/requirements/"
 
 references:
   - path: "./README.md"
