@@ -2,11 +2,12 @@
 type: Documentation
 title: 数据架构
 ---
+<!-- markdownlint-disable-next-line MD025 -->
 # 数据架构
 
-[返回 · 架构索引](../README.md)
+[返回 · 系统知识库 — 架构文档](../README.md)
 
-系统层数据架构：DS/ENT SSOT；MDG 为 company reference；TBL 在 application。
+系统层数据入口：DS/ENT SSOT；MDG 为 company reference；TBL 在 application。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
@@ -21,4 +22,4 @@ title: 数据架构
 * 元数据：[data-meta.md](data-meta.md)
 * 样例：`MDG-EXAMPLE.md`（ref）· [DS-EXAMPLE/](DS-EXAMPLE/index.md)
 
-公司层对照：[company/knowledge/data](../../../company/knowledge/data/README.md)
+对照：[company/knowledge/data](../../../company/knowledge/data/README.md)

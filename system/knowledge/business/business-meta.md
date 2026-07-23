@@ -4,7 +4,7 @@ title: 业务视角元数据（system/knowledge/business）
 ---
 # 业务视角元数据（system/knowledge/business）
 
-系统级业务版图（BD→BSD→BC→AGG→AB）视角元数据 SSOT。实例索引见 [../index.md](../index.md)。
+系统级业务版图（BD→BSD→BC→AGG→AB）视角元数据 SSOT。实例索引：[../index.md](../index.md)。
 
 ---
 
@@ -15,7 +15,7 @@ title: 业务视角元数据（system/knowledge/business）
 | meta_id | `DIR-SYSTEM-KNOWLEDGE-BUSINESS` |
 | 视角 | business |
 | 层级范围 | system |
-| 说明 | 系统级 DDD 业务版图；公司级 BD 在 `company/knowledge/business/` 首次定义，本层 BD 为视角根 reference，自 BSD 起为系统 SSOT；应用层承接实现映射。 |
+| 说明 | 系统级 DDD 业务版图；BD 为 company reference，自 BSD 起为本层 SSOT；应用层承接实现映射。 |
 
 ---
 
@@ -56,9 +56,7 @@ title: 业务视角元数据（system/knowledge/business）
 
 ## 5. 字段（OKF）
 
-**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `system`）。详见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2。
-
-**正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。
+Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`）见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2；本层 `layer_scope` 固定 `system`。
 
 ### 各层专属（正文 / 扩展）
 
@@ -90,7 +88,7 @@ title: 业务视角元数据（system/knowledge/business）
 | --- | --- |
 | [README.md](README.md) | 叙事文档索引 |
 | [../index.md](../index.md) | BD/BSD/BC/AGG/AB 实例 SSOT |
-| [../../DESIGN.md](../../DESIGN.md) | 系统库设计契约（含 BD 落盘） |
+| [../../DESIGN.md](../../DESIGN.md) | 系统库设计契约 |
 | [../../../company/knowledge/business/business-meta.md](../../../company/knowledge/business/business-meta.md) | 公司级 BD/CAP 元数据 |
 | [../../../agent/knowledge/naming-conventions.md](../../../agent/knowledge/naming-conventions.md) | ID 命名 SSOT |
 

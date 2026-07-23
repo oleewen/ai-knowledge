@@ -4,7 +4,7 @@ title: 数据视角元数据（system/knowledge/data）
 ---
 # 数据视角元数据（system/knowledge/data）
 
-系统级数据版图（MDG→DS→ENT）视角元数据 SSOT。实例索引见 [../index.md](../index.md)。
+系统级数据版图（MDG→DS→ENT）视角元数据 SSOT。实例索引：[../index.md](../index.md)。
 
 ---
 
@@ -15,7 +15,7 @@ title: 数据视角元数据（system/knowledge/data）
 | meta_id | `DIR-SYSTEM-KNOWLEDGE-DATA` |
 | 层级范围 | system |
 | 视角 | data |
-| 说明 | 系统级数据存储与实体建模；公司级 MDG 在 `company/knowledge/data/` 首次定义，本层 MDG 为视角根 reference，自 DS/ENT 起为系统 SSOT；应用层补充物理表锚点。 |
+| 说明 | 系统级数据存储与实体建模；MDG 为 company reference，自 DS/ENT 起为本层 SSOT；应用层补充物理表锚点。 |
 
 ---
 
@@ -41,9 +41,7 @@ title: 数据视角元数据（system/knowledge/data）
 
 ## 4. 字段（OKF）
 
-**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `system`）。详见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2。
-
-**正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。
+Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`）见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2；本层 `layer_scope` 固定 `system`。
 
 ### 各层专属（正文 / 扩展）
 

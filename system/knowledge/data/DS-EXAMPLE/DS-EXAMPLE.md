@@ -1,7 +1,7 @@
 ---
 type: Data Store
 title: 示例数据源
-description: 仅用于演示数据视角数据结构（示例）。
+description: 示例数据实体。
 tags: [data, DS]
 timestamp: "2026-06-21T00:00:00Z"
 full_id: DS-EXAMPLE

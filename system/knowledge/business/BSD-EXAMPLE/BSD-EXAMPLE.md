@@ -1,7 +1,7 @@
 ---
 type: Business Subdomain
 title: 示例业务子域
-description: 仅用于演示业务视角数据结构（示例）。
+description: 示例业务实体。
 tags: [business, BSD]
 timestamp: "2026-06-21T00:00:00Z"
 full_id: BSD-EXAMPLE

@@ -4,7 +4,7 @@ title: 知识树元数据（system/knowledge）
 ---
 # 知识树元数据（system/knowledge）
 
-系统知识库五视角知识树元数据 SSOT。实例索引见 [index.md](index.md)。
+系统层五视角知识树元数据 SSOT。实例索引：[index.md](index.md)。
 
 ---
 
@@ -28,7 +28,7 @@ title: 知识树元数据（system/knowledge）
 | data/ | 数据 | [data-meta.md](data/data-meta.md) | [index.md](index.md) §4 |
 | technical/ | 技术 | [technical-meta.md](technical/technical-meta.md) | [index.md](index.md) §5 |
 
-**子文件**：[README.md](README.md)
+**子文件**：[README.md](README.md) · [overview/](overview/README.md)
 
 ---
 
@@ -47,16 +47,15 @@ title: 知识树元数据（system/knowledge）
 | 类型 | 路径 |
 | --- | --- |
 | system_index | [../index.md](../index.md) |
-| per_perspective_readmes | business/README.md, product/README.md, application/README.md, data/README.md, technical/README.md |
-| governance | [../../agent/knowledge/knowledge-governance.md](../../agent/knowledge/knowledge-governance.md) |
 | entity_index | [index.md](index.md) |
 | design | [../DESIGN.md](../DESIGN.md) |
+| governance | [../../agent/knowledge/knowledge-governance.md](../../agent/knowledge/knowledge-governance.md) |
 
 ---
 
 ## 5. 系统层 BD 落盘例外
 
-与 `company/`、`application/` 区分；实现 SSOT 见 [../DESIGN.md](../DESIGN.md#系统层-bd-落盘)。
+与 company / application 区分；路径契约见 [../DESIGN.md](../DESIGN.md#关键路径约定)。
 
 | 层级 | 路径 | 说明 |
 | --- | --- | --- |
@@ -74,8 +73,6 @@ title: 知识树元数据（system/knowledge）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 五视角架构入口 |
-| [../index.md](../index.md) | system 索引 |
-| [../../index.md](../../index.md) | 仓库根目录索引页 |
 | [../DESIGN.md](../DESIGN.md) | 系统库设计契约 |
 | [../../company/knowledge/knowledge-meta.md](../../company/knowledge/knowledge-meta.md) | 公司级知识树元数据 |
 | [../../agent/knowledge/naming-conventions.md](../../agent/knowledge/naming-conventions.md) | 命名 SSOT |

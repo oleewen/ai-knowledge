@@ -1,16 +1,21 @@
 ---
 type: Documentation
+title: 系统知识库 — 架构文档
 ---
+<!-- markdownlint-disable-next-line MD025 -->
 # 系统知识库 — 架构文档
 
-五视角入口。九章地图：[../INDEX-GUIDE.md](../INDEX-GUIDE.md)；目录索引：[index.md](index.md)；契约：[../DESIGN.md](../DESIGN.md)；OKF：[okf-spec](../../agent/knowledge/okf-spec.md)。
+[返回 · 系统知识库](../README.md)
 
-| 文件 | 视角 | 概述 |
-| ------ | ------ | ------ |
-| [business/README.md](business/README.md) | 业务 | 域划分、流程、能力与术语 |
-| [product/README.md](product/README.md) | 产品 | 定位、功能与旅程 |
-| [application/README.md](application/README.md) | 应用 | 边界、服务与领域模型 |
-| [data/README.md](data/README.md) | 数据 | 模型、存储、分析与流转 |
-| [technical/README.md](technical/README.md) | 技术 | 部署、中间件、性能、HA、可观测 |
+系统层五视角入口。分型：[okf-spec](../../agent/knowledge/okf-spec.md)。契约：[../DESIGN.md](../DESIGN.md)。
 
-公司对照：[company/knowledge](../../company/knowledge/README.md)
+| 视角 | 入口 |
+|------|------|
+| 业务 | [business/](business/README.md) |
+| 产品 | [product/](product/README.md) |
+| 应用 | [application/](application/README.md) |
+| 数据 | [data/](data/README.md) |
+| 技术 | [technical/](technical/README.md) |
+| overview 缓冲 | [overview/](overview/README.md) |
+
+对照：[company/knowledge/](../../company/knowledge/README.md) · 地图 [../INDEX-GUIDE.md](../INDEX-GUIDE.md) · 索引 [index.md](index.md)

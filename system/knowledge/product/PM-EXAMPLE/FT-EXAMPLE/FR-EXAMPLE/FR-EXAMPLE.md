@@ -1,7 +1,7 @@
 ---
 type: Functional Requirement
 title: 示例功能需求
-description: 仅用于演示产品视角数据结构（示例）。
+description: 示例产品实体。
 tags: [product, FR]
 timestamp: "2026-06-26T00:00:00Z"
 full_id: FR-EXAMPLE

@@ -2,11 +2,12 @@
 type: Documentation
 title: 产品架构
 ---
+<!-- markdownlint-disable-next-line MD025 -->
 # 产品架构
 
-[返回 · 架构索引](../README.md)
+[返回 · 系统知识库 — 架构文档](../README.md)
 
-系统层产品架构：PM→FT→FR→UC/BR、BP；PL 为 company reference。
+系统层产品入口：PM→FT→FR→UC/BR、BP；PL 为 company reference。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
@@ -22,4 +23,4 @@ title: 产品架构
 * 元数据：[product-meta.md](product-meta.md)
 * 样例：`PL-EXAMPLE.md`（ref）· [PM-EXAMPLE/](PM-EXAMPLE/index.md) · [BP-EXAMPLE.md](BP-EXAMPLE.md)
 
-公司层对照：[company/knowledge/product](../../../company/knowledge/product/README.md)
+对照：[company/knowledge/product](../../../company/knowledge/product/README.md)

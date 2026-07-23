@@ -2,11 +2,12 @@
 type: Documentation
 title: 业务架构
 ---
+<!-- markdownlint-disable-next-line MD025 -->
 # 业务架构
 
-[返回 · 架构索引](../README.md)
+[返回 · 系统知识库 — 架构文档](../README.md)
 
-系统层业务架构：BSD→AB SSOT；BD 为 company reference。
+系统层业务入口：BSD→AB SSOT；BD 为 company reference。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
@@ -22,4 +23,4 @@ title: 业务架构
 * 元数据：[business-meta.md](business-meta.md)
 * 样例：`BD-EXAMPLE.md`（ref）· [BSD-EXAMPLE/](BSD-EXAMPLE/index.md) 树
 
-公司层对照：[company/knowledge/business](../../../company/knowledge/business/README.md)
+对照：[company/knowledge/business](../../../company/knowledge/business/README.md)

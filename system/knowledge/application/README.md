@@ -2,11 +2,12 @@
 type: Documentation
 title: 应用架构
 ---
+<!-- markdownlint-disable-next-line MD025 -->
 # 应用架构
 
-[返回 · 架构索引](../README.md)
+[返回 · 系统知识库 — 架构文档](../README.md)
 
-系统层应用架构：APP/MS SSOT；SYS 为 company reference；API 在 application。
+系统层应用入口：APP/MS SSOT；SYS 为 company reference；API 在 application。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
@@ -23,4 +24,4 @@ title: 应用架构
 * 元数据：[application-meta.md](application-meta.md)
 * 样例：`SYS-EXAMPLE.md`（ref）· [APP-EXAMPLE/](APP-EXAMPLE/index.md) · [MS-EXAMPLE/](MS-EXAMPLE/index.md)
 
-ADR：[../../adr/README.md](../../adr/README.md)
+对照：[company/knowledge/application](../../../company/knowledge/application/README.md)

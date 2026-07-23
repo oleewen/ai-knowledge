@@ -1,7 +1,7 @@
 ---
 type: Master Data Domain
 title: 示例主数据域
-description: 仅用于演示公司级 MDG 数据结构（示例）。
+description: 示例主数据域（系统层 reference）。
 tags: [data, MDG]
 timestamp: "2026-06-21T00:00:00Z"
 full_id: MDG-EXAMPLE

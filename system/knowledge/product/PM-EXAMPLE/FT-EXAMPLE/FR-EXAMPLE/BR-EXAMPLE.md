@@ -1,7 +1,7 @@
 ---
 type: Business Rule
 title: 示例规则
-description: 仅用于演示产品视角数据结构（示例）。
+description: 示例产品实体。
 tags: [product, BR]
 timestamp: "2026-06-26T00:00:00Z"
 full_id: BR-EXAMPLE

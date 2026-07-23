@@ -4,7 +4,7 @@ title: 产品视角元数据（system/knowledge/product）
 ---
 # 产品视角元数据（system/knowledge/product）
 
-系统级产品版图（PL→PM→FT→FR→UC/BR · BP）视角元数据 SSOT。实例索引见 [../index.md](../index.md)。
+系统级产品版图（PL→PM→FT→FR→UC/BR · BP）视角元数据 SSOT。实例索引：[../index.md](../index.md)。
 
 ---
 
@@ -15,7 +15,7 @@ title: 产品视角元数据（system/knowledge/product）
 | meta_id | `DIR-SYSTEM-KNOWLEDGE-PRODUCT` |
 | 视角 | product |
 | 层级范围 | system |
-| 说明 | 系统级产品功能组织；公司级 PL 在 `company/knowledge/product/` 首次定义，本层 PL 为视角根 reference，自 PM 起为系统 SSOT；应用层承接 API / 验收映射。 |
+| 说明 | 系统级产品功能组织；PL 为 company reference，自 PM 起为本层 SSOT；应用层承接 API / 验收映射。 |
 
 ---
 
@@ -48,9 +48,7 @@ title: 产品视角元数据（system/knowledge/product）
 
 ## 4. 字段（OKF）
 
-**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `system`）。详见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2。
-
-**正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。
+Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`）见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2；本层 `layer_scope` 固定 `system`。
 
 ### 各层专属（正文 / 扩展）
 

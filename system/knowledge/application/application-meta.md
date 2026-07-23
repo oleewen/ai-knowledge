@@ -4,7 +4,7 @@ title: 应用视角元数据（system/knowledge/application）
 ---
 # 应用视角元数据（system/knowledge/application）
 
-系统级应用版图（SYS→APP→MS）视角元数据 SSOT。实例索引见 [../index.md](../index.md)。
+系统级应用版图（SYS→APP→MS）视角元数据 SSOT。实例索引：[../index.md](../index.md)。
 
 ---
 
@@ -15,7 +15,7 @@ title: 应用视角元数据（system/knowledge/application）
 | meta_id | `DIR-SYSTEM-KNOWLEDGE-APPLICATION` |
 | 视角 | application |
 | 层级范围 | system |
-| 说明 | 系统级服务拆分与集成边界；公司级 SYS 在 `company/knowledge/application/` 首次定义，本层 SYS 为视角根 reference，自 APP 起为系统 SSOT；API 在应用层首次定义。 |
+| 说明 | 系统级服务拆分与集成边界；SYS 为 company reference，自 APP 起为本层 SSOT；API 在应用层首次定义。 |
 
 ---
 
@@ -41,9 +41,7 @@ title: 应用视角元数据（system/knowledge/application）
 
 ## 4. 字段（OKF）
 
-**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `system`）。详见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2。
-
-**正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。
+Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`）见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2；本层 `layer_scope` 固定 `system`。
 
 ### 各层专属（正文 / 扩展）
 

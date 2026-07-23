@@ -3,13 +3,10 @@ type: Architecture Overview Buffer
 tags: [overview, distill]
 title: "{域名称}架构概览（{slug}-overview）"
 ---
+<!-- markdownlint-disable-next-line MD025 -->
 # {域名称}架构概览（{slug}-overview）
 
-> **维护说明**
-> - 副标题列 `✅`：由 `docs-tag --phase 2` 根据附录 keywords 与链接章节正文判定。
-> - `## 架构摘录`：由 `docs-tag --phase 3`（同义 `excerpt`）从下方五视角表中 ✅ 行投影生成，请勿手改摘录表数据行。
-> - 推荐顺序：`1-write`（或已有 keywords）→ `2` → `3`。
-> - 表行范围：各视角 README 🔑 核心文件；副标题锚点与各章节 `##` 标题同步维护。
+> **维护**：`docs-tag` phase 2（✅）→ phase 3（架构摘录，勿手改摘录行）。表行 ↔ 视角章节 `##`。系统 overview **是** docs-distill 目标。占位 `{域名称}`/`{slug}` 实例化时替换。
 
 ## 架构摘录
 

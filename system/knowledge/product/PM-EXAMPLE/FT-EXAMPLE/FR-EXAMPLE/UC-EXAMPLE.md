@@ -1,7 +1,7 @@
 ---
 type: Use Case
 title: 示例用例
-description: 仅用于演示产品视角数据结构（示例）。
+description: 示例产品实体。
 tags: [product, UC]
 timestamp: "2026-06-21T00:00:00Z"
 full_id: UC-EXAMPLE

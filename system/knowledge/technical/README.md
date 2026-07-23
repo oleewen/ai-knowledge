@@ -2,11 +2,12 @@
 type: Documentation
 title: 技术架构
 ---
+<!-- markdownlint-disable-next-line MD025 -->
 # 技术架构
 
-[返回 · 架构索引](../README.md)
+[返回 · 系统知识库 — 架构文档](../README.md)
 
-系统层技术架构：TSD SSOT；MW/CMP 首次在 application（本层可 reference）。
+系统层技术入口：TSD SSOT；MW/CMP 首次在 application（本层可 reference）。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
@@ -22,4 +23,4 @@ title: 技术架构
 * 元数据：[technical-meta.md](technical-meta.md)
 * 样例：[TSD-EXAMPLE.md](TSD-EXAMPLE.md) · [MW-EXAMPLE/](MW-EXAMPLE/index.md)（ref → application）
 
-公司层对照：[company/knowledge/technical](../../../company/knowledge/technical/README.md)
+对照：[company/knowledge/technical](../../../company/knowledge/technical/README.md)

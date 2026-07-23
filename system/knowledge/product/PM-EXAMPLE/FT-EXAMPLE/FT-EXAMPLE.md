@@ -1,7 +1,7 @@
 ---
 type: Feature
 title: 示例功能
-description: 仅用于演示产品视角数据结构（示例）。
+description: 示例产品实体。
 tags: [product, FT]
 timestamp: "2026-06-21T00:00:00Z"
 full_id: FT-EXAMPLE
