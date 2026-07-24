@@ -25,7 +25,7 @@ layer_scope: application
 
 ## 详细说明
 
-- 上游主定义：`system/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md`（系统层 OKF SSOT）。
+- 上游主定义：`system/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md`（系统层 OKF SSOT）
 - startup_class: ExampleApp
 - maven_module: example-module
 - repo_url: `git@example.com:org/example.git`

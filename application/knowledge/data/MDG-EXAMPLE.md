@@ -1,7 +1,7 @@
 ---
 type: Master Data Domain
 title: 示例主数据域
-description: 仅用于演示数据视角 MDG 根层结构（示例）。
+description: 演示数据视角 MDG 根层结构（示例）。
 tags: [data, MDG]
 timestamp: "2026-06-26T00:00:00Z"
 full_id: MDG-EXAMPLE

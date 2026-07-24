@@ -1,7 +1,7 @@
 ---
 type: Technical Subdomain
 title: 示例技术域
-description: 仅用于演示技术视角 TSD 根层结构（示例）。
+description: 演示技术视角 TSD 根层结构（示例）。
 tags: [technical, TSD]
 timestamp: "2026-06-26T00:00:00Z"
 full_id: TSD-EXAMPLE

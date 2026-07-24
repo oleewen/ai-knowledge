@@ -1,7 +1,7 @@
 ---
 type: Business Domain
 title: 示例业务域
-description: 仅用于演示业务视角数据结构（示例）。
+description: 演示业务视角数据结构（示例）。
 tags: [business, BD]
 timestamp: "2026-06-21T00:00:00Z"
 full_id: BD-EXAMPLE
@@ -21,7 +21,7 @@ layer_scope: application
 
 ## 详细说明
 
-- 上游主定义：`company/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md`（公司层 OKF SSOT）。
+- 上游主定义：`company/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md`（公司层 OKF SSOT）
 - strategic_classification: supporting_domain
 - definition_scope: reference
 

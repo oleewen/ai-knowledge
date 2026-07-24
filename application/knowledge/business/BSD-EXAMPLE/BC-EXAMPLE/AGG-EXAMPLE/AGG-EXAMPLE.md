@@ -1,7 +1,7 @@
 ---
 type: Aggregate
 title: 示例聚合
-description: 仅用于演示业务视角数据结构（示例）。
+description: 演示业务视角数据结构（示例）。
 tags: [business, AGG]
 timestamp: "2026-06-21T00:00:00Z"
 full_id: AGG-EXAMPLE

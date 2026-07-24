@@ -20,7 +20,7 @@ layer_scope: application
 
 ## 详细说明
 
-- 上游主定义：`system/knowledge/data/DS-EXAMPLE/ENT-EXAMPLE.md`（系统层 OKF SSOT）。
+- 上游主定义：`system/knowledge/data/DS-EXAMPLE/ENT-EXAMPLE.md`（系统层 OKF SSOT）
 - logical_name: ExampleEntity
 - physical_table: example_table
 - definition_scope: reference

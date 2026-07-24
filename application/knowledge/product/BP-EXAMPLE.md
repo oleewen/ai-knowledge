@@ -1,7 +1,7 @@
 ---
 type: Business Process
 title: 示例业务流程（BP）
-description: 仅用于演示产品视角流程叙事结构（示例）。
+description: 演示产品视角流程叙事结构（示例）。
 tags: [product, BP]
 timestamp: "2026-06-26T00:00:00Z"
 full_id: BP-EXAMPLE
