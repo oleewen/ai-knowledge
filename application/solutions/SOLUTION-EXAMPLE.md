@@ -13,7 +13,7 @@ tags: [example]
 <!-- markdownlint-disable-next-line MD025 -->
 # 示例应用解决方案
 
-> 结构占位：演示 `application/solutions/` 平铺 `SOLUTION-{IDEA-ID}.md`。  
+> 结构占位：`application/solutions/` 平铺 `SOLUTION-{IDEA-ID}.md`。  
 > 下游：[../analysis/ANALYSIS-EXAMPLE.md](../analysis/ANALYSIS-EXAMPLE.md)
 
 ## 1. 背景与目标

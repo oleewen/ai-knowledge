@@ -14,7 +14,7 @@ dependencies: []
 <!-- markdownlint-disable-next-line MD025 -->
 # 示例应用需求分析
 
-> 结构占位：演示 `application/analysis/` 平铺 `ANALYSIS-{IDEA-ID}.md`。  
+> 结构占位：`application/analysis/` 平铺 `ANALYSIS-{IDEA-ID}.md`。  
 > 上游：[../solutions/SOLUTION-EXAMPLE.md](../solutions/SOLUTION-EXAMPLE.md)  
 > 下游：[../requirements/REQUIREMENT-EXAMPLE/](../requirements/REQUIREMENT-EXAMPLE/README.md)
 
