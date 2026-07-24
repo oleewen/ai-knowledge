@@ -6,7 +6,7 @@ title: 应用视角
 
 [返回 · knowledge](../README.md)
 
-应用侧应用：SYS/APP/MS + **API SSOT**（字段见 [application-meta.md](application-meta.md)）。索引：[../index.md](../index.md)。
+应用侧应用：SYS/APP/MS + **API SSOT**（字段 [application-meta.md](application-meta.md)）。索引 [../index.md](../index.md)。
 
 ## 实体样例
 

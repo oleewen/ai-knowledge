@@ -6,7 +6,7 @@ title: 产品视角
 
 [返回 · knowledge](../README.md)
 
-应用侧产品：PL→UC/BR、BP（字段见 [product-meta.md](product-meta.md)）。索引：[../index.md](../index.md)。
+应用侧产品：PL→UC/BR、BP（字段 [product-meta.md](product-meta.md)）。索引 [../index.md](../index.md)。
 
 ## 实体样例
 

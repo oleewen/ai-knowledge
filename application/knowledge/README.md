@@ -3,7 +3,7 @@ type: Documentation
 ---
 # knowledge（应用侧知识主体）
 
-五视角实体 SSOT；本层首次：**API / TBL / MW / CMP**。九章：[../INDEX-GUIDE.md](../INDEX-GUIDE.md)；索引：[index.md](index.md)；契约：[../DESIGN.md](../DESIGN.md) §2.2.1。
+五视角实体 SSOT；本层首次：**API / TBL / MW / CMP**。九章 [../INDEX-GUIDE.md](../INDEX-GUIDE.md)；索引 [index.md](index.md)；契约 [../DESIGN.md](../DESIGN.md) §2.2.1。
 
 | 文件 | 视角 | 概述 |
 |------|------|------|

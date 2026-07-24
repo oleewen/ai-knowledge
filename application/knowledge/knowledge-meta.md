@@ -4,9 +4,7 @@ title: 知识树元数据（application/knowledge）
 ---
 # 知识树元数据（application/knowledge）
 
-应用知识库五视角知识树的联邦单元元数据 SSOT。
-
----
+应用层五视角知识树元数据 SSOT。
 
 ## 1. 概览
 
@@ -15,8 +13,6 @@ title: 知识树元数据（application/knowledge）
 | meta_id | `DIR-KNOWLEDGE` |
 | 名称 | 应用知识库（knowledge） |
 | 说明 | 五视角 business / product / application / data / technical；治理与命名 SSOT 见 agent/knowledge/。 |
-
----
 
 ## 2. 子目录
 
@@ -30,16 +26,12 @@ title: 知识树元数据（application/knowledge）
 
 **子文件**：[README.md](README.md)
 
----
-
 ## 3. 角色
 
 | 字段 | 值 |
 | --- | --- |
 | is_single_source_of_truth | true |
 | perspectives | business, product, application, data, technical |
-
----
 
 ## 4. 索引
 
@@ -50,8 +42,6 @@ title: 知识树元数据（application/knowledge）
 | governance | [../../agent/knowledge/knowledge-governance.md](../../agent/knowledge/knowledge-governance.md) |
 | entity_index | [index.md](index.md) |
 
----
-
 ## 5. 关联文档
 
 | 路径 | 说明 |
@@ -59,11 +49,9 @@ title: 知识树元数据（application/knowledge）
 | [README.md](README.md) | 知识树说明 |
 | [../index.md](../index.md) | 应用索引 |
 | [../../index.md](../../index.md) | 仓库根目录索引页 |
-| [../../README.md](../../README.md) | 应用 README |
+| [../README.md](../README.md) | 应用 README |
 | [../../AGENTS.md](../../AGENTS.md) | Agent 契约 |
 | [../../agent/knowledge/naming-conventions.md](../../agent/knowledge/naming-conventions.md) | 命名 SSOT |
-
----
 
 ## 6. docs-build meta_read_order
 
