@@ -4,15 +4,15 @@ title: application 目录元数据
 ---
 
 ```yaml
-# application/ 目录元数据（根导航与 SSOT 指针）
+# application/ 根目录元数据（导航与 SSOT 指针）
 id: "DIR-APPLICATION"
 name: "应用知识库根（application）"
-description: "application/ 根：导航（README、index）、设计（DESIGN、CONTRIBUTING）、SDD 阶段与 knowledge SSOT。"
+description: "application/ 根：导航、设计、SDD 阶段与 knowledge SSOT。"
 
 role:
   kind: "documentation_root"
   ssot_subdirectory: "knowledge/"
-  # 治理入口见 agent/knowledge/README.md；三层边界见 knowledge-governance.md
+  # 治理入口：agent/knowledge/README.md；三层边界：knowledge-governance.md
 
 child_directories:
   knowledge:
@@ -53,11 +53,11 @@ inputs:
 outputs:
   primary_artifact:
     pattern: "README.md, index.md, DESIGN.md, CONTRIBUTING.md, knowledge/**/*"
-    description: "根级入口 + knowledge/（{perspective}-meta.md + 实体 {ID}.md，OKF SSOT）"
+    description: "根入口 + knowledge/（{perspective}-meta.md + 实体 {ID}.md，OKF SSOT）"
 
 naming_conventions:
   directory_index:
-    description: "knowledge/ 见 knowledge-meta.md；五视角见 {perspective}-meta.md + 实体 {ID}.md"
+    description: "knowledge/ → knowledge-meta.md；五视角 → {perspective}-meta.md + 实体 {ID}.md"
     reference: "../agent/knowledge/naming-conventions.md"
 
 integration:
@@ -65,7 +65,7 @@ integration:
     - path: "../agent/"
       description: "规范、模板与 Agent 技能"
   traceability:
-    description: "solutions → analysis → requirements；规约在 specs/ 或 knowledge/application/；上行 distill 仅写 system overview"
+    description: "solutions → analysis → requirements；规约 ∈ specs/ 或 knowledge/application/；上行 distill 仅写 system overview"
 
 references:
   - path: "./README.md"

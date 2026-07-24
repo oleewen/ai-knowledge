@@ -2,36 +2,30 @@
 type: Design Document
 title: 应用知识文档库 — 设计方案摘录
 ---
-本文件是《应用知识文档库设计方案》的**精简版**：原则、目录总表、跨层首次定义与映射。入口见 [README.md](README.md)；九章见 [INDEX-GUIDE.md](INDEX-GUIDE.md)；目录索引见 [index.md](index.md)。
-
----
+应用层设计摘录：原则、目录、跨层首次定义与映射。入口 [README.md](README.md)；九章 [INDEX-GUIDE.md](INDEX-GUIDE.md)；目录 [index.md](index.md)。
 
 ## 阅读顺序
 
 1. [README.md](README.md) — 定位与 mode 路由
 2. 本文 — 原则、§2.2.1、映射
 3. [naming-conventions.md](../agent/knowledge/naming-conventions.md) — ID 规则
-4. [knowledge/README.md](knowledge/README.md) — 五视角落盘；字段见各 `*-meta.md`
-
----
+4. [knowledge/README.md](knowledge/README.md) — 五视角；字段见各 `*-meta.md`
 
 ## 1. 原则与约定
 
 | 原则 | 说明 |
 | --- | --- |
-| **SSOT** | 实体只在一处定义；他处仅 **ID 引用** |
+| **SSOT** | 实体只一处定义；他处仅 **ID 引用** |
 | **联邦治理** | 系统库管边界与索引；应用库管实现细节并 **上行对齐** |
-| **闭环** | 阶段链 solutions → analysis → requirements；knowledge 为事实源；上行 pull → distill（**仅**系统 overview）→ archive（系统/公司章节）；**不**回写本库 knowledge |
-| **五视角** | 业务 / 产品 / 应用 / 数据 / 技术；关联写在 meta 与实体 `{ID}.md`；**不**维护独立映射矩阵；legacy `*-entities.md` 已废弃 |
+| **闭环** | solutions → analysis → requirements；knowledge = 事实源；上行 pull → distill（**仅**系统 overview）→ archive；**不**回写本库 knowledge |
+| **五视角** | 业务 / 产品 / 应用 / 数据 / 技术；关联 ∈ meta 与 `{ID}.md`；**无**独立映射矩阵；legacy `*-entities.md` 已废弃 |
 | **分层同构** | 五视角各层同构；首次定义见 §2.2.1 与 [naming-conventions.md](../agent/knowledge/naming-conventions.md) |
 
-**目录约定**：根导航与 meta 指针见 [docs-meta.md](docs-meta.md)；知识树见 [knowledge-meta.md](knowledge/knowledge-meta.md)；治理 SSOT 见 [agent/knowledge/README.md](../agent/knowledge/README.md)（三层边界见 [knowledge-governance.md](../agent/knowledge/knowledge-governance.md)）。阶段约定在各目录 `README.md`。`index.md` 由 `/docs-okf` 扫描生成。
+**指针**：根导航/meta → [docs-meta.md](docs-meta.md)；知识树 → [knowledge-meta.md](knowledge/knowledge-meta.md)；治理 → [agent/knowledge/README.md](../agent/knowledge/README.md)（三层边界 [knowledge-governance.md](../agent/knowledge/knowledge-governance.md)）；阶段约定 ∈ 各目录 `README.md`；`index.md` ← `/docs-okf`。
 
-**OKF**：每实体一文件（`{ID}.md` + frontmatter + bundle-relative 跨链）；路径与 type 见 naming-conventions §OKF。
+**OKF**：一实体一文件（`{ID}.md` + frontmatter + bundle-relative 跨链）；路径/type 见 naming-conventions §OKF。
 
-**协同（目标态）**：应用仓维护文档树与 `manifest.md`；系统侧可抓取 manifest 做一致性检查。
-
----
+**协同（目标态）**：应用仓维护文档树与 `manifest.md`；系统侧可抓 manifest 做一致性检查。
 
 ## 2. 目录与元模型
 
@@ -50,7 +44,7 @@ title: 应用知识文档库 — 设计方案摘录
 
 ### 2.2 五视角（指针）
 
-层级、路径与字段以各视角 **`*-meta.md` + README** 为准；勿在本文复写细则。
+细则 ∈ 各视角 **`*-meta.md` + README**；本文不复写。
 
 | 视角 | meta / README | 层级（摘要） | 本层角色 |
 | --- | --- | --- | --- |
@@ -60,11 +54,11 @@ title: 应用知识文档库 — 设计方案摘录
 | data | [data-meta](knowledge/data/data-meta.md) · [README](knowledge/data/README.md) | MDG → DS → ENT → **TBL** | **TBL SSOT** |
 | technical | [technical-meta](knowledge/technical/technical-meta.md) · [README](knowledge/technical/README.md) | TSD → **MW** → **CMP** | **MW/CMP SSOT** |
 
-系统/公司层聚焦见 [system/DESIGN.md](../system/DESIGN.md)、[company/DESIGN.md](../company/DESIGN.md)。
+对照：[system/DESIGN.md](../system/DESIGN.md)、[company/DESIGN.md](../company/DESIGN.md)。
 
 ### 2.2.1 跨层实体首次定义层级
 
-实体在联邦三层中**首次定义**的层级如下；他处仅 ID 引用，不重复定义字段语义。
+联邦三层**首次定义**层级如下；他处仅 ID 引用，不重复字段语义。
 
 | 视角 | 实体 | 首次定义层级 |
 | --- | --- | --- |
@@ -105,11 +99,9 @@ title: 应用知识文档库 — 设计方案摘录
 | **requirements** | `REQUIREMENT-{IDEA-ID}/MVP-Phase-*/`：PRD/ASD/DSD/TDD；详设正文仅 `DSD-*`；`spec-asd-*` 仅在 `specs/` |
 | **changelogs** | `CHANGE-LOG.md`（docs-change）；`INDEXING-LOG.md`（docs-indexing） |
 
----
-
 ## 3. 核心映射（分布式引用）
 
-在源实体 frontmatter 中写**目标实体 ID**。
+源实体 frontmatter 写**目标实体 ID**。
 
 | 方向 | 源 | 目标 | 字段 | 含义 |
 | --- | --- | --- | --- | --- |
@@ -122,9 +114,7 @@ title: 应用知识文档库 — 设计方案摘录
 | 持久化 | AGG | ENT | `persisted_as_entity_ids` | 模型落哪些实体 |
 | 归属 | ENT / DS | MS / APP | `owned_by_service_id` / `app_id` 等 | 写入与归属 |
 
----
-
 ## 4. ADR 与 ID 前缀
 
-- **ADR**：`application/adr/ADR-{序号}-{标题}.md`；模板见 [adr-template.md](../agent/knowledge/adr-template.md)
-- **前缀**：BD、BSD、BC、AGG、AB、CAP、PL、PM、FT、UC、SYS、APP、MS、API、MDG、DS、ENT、TPL、TSD、MW、CMP — 全文见 [naming-conventions.md](../agent/knowledge/naming-conventions.md)
+- **ADR**：`application/adr/ADR-{序号}-{标题}.md`；模板 [adr-template.md](../agent/knowledge/adr-template.md)
+- **前缀**：BD、BSD、BC、AGG、AB、CAP、PL、PM、FT、UC、SYS、APP、MS、API、MDG、DS、ENT、TPL、TSD、MW、CMP — 全文 [naming-conventions.md](../agent/knowledge/naming-conventions.md)

@@ -4,9 +4,7 @@ title: 贡献指南 — application/
 ---
 # 贡献指南 — application/
 
-最小贡献规则；结构、字段与模板一律引用权威入口，避免重复维护。
-
----
+最小贡献规则；结构/字段/模板一律链权威入口，不复写。
 
 ## 先读
 
@@ -15,9 +13,7 @@ title: 贡献指南 — application/
 3. [AGENTS.md](../AGENTS.md) — 仓库级禁止项
 4. 目标目录 `README.md` + `{perspective}-meta.md` — 落盘与命名
 
-九章 / 目录索引：[INDEX-GUIDE.md](INDEX-GUIDE.md) · [index.md](index.md)
-
----
+九章 / 目录：[INDEX-GUIDE.md](INDEX-GUIDE.md) · [index.md](index.md)
 
 ## 必须遵守
 
@@ -27,10 +23,8 @@ title: 贡献指南 — application/
 4. **变更可检索**：改文档后更新目标目录 README 索引表；按需同步 INDEX-GUIDE / index。
 5. **提交规范**：Conventional Commits；跨目录/规则变更建议补 ADR。
 
----
-
 ## 最小清单
 
 定范围 → 读目标 README + meta → 落盘 → 回链索引 → 搜受影响 ID/字段自检。
 
-模板与技能入口见 [README.md](README.md)、[INDEX-GUIDE.md](INDEX-GUIDE.md)。
+模板与技能：[README.md](README.md) · [INDEX-GUIDE.md](INDEX-GUIDE.md)
