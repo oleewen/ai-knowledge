@@ -16,6 +16,8 @@
 | 9 | 仅 `§2/§4` 才做多方案 | 任一当前段 `>=2` 条真实路径都应段内比选 |
 | 10 | §1–§5、§6.1–§6.2 堆工程名 | 需求分析阶段保持业务语；线索收 `§6.3` |
 | 11 | §6.4 假勾 | [quality-checklist.md](quality-checklist.md) 逐项自检 |
-| 12 | MVP 无价值或依赖成环 | 业务价值问句 + `§4.3` 验环 |
+| 12 | MVP 无价值、另起阶段或依赖成环 | 对齐上游里程碑 1:1；业务价值问句 + `§4.3` 验环 |
+| 12b | 跳过 `### 概览` 直接写 FR / 概览 `F` 冲过写后确认 | [gates.md](gates.md) 概览门禁 |
+| 12c | §6.1 不可用仍自拟 MVP 骨架 | 硬停回补 SOLUTION |
 | 13 | `IDEA-ID` 与 `SOLUTION` 脱节 | 参数向导阶段锁同链 [core-concepts.md](core-concepts.md) |
 | 14 | 未跑 validate | [SKILL.md](../SKILL.md) 校验 |

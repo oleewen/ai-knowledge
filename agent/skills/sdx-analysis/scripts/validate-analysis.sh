@@ -5,7 +5,8 @@ set -euo pipefail
 # 用法：validate-analysis.sh [--file <path>]
 # DOC_ROOT：resolve_repo_doc_root（.docsconfig）；先 config-bootstrap.sh
 #
-# 要点：文首 frontmatter、六章、`### FR-`、小节标题、FR/BR/R/MVP、与 SOLUTION 关联；
+# 要点：文首 frontmatter、六章、`### FR-`、小节标题、FR/BR/R/MVP、概览「需求概要」、
+#       所属 MVP 形如 MVP-n（…）、与 SOLUTION 关联；
 #       不校验会话 spec、CONFIRMED、HTML gate 或写前 hook。
 
 TARGET_FILE=""
@@ -188,6 +189,20 @@ for file in "${FILES[@]}"; do
 
   if [[ ${MVP_COUNT} -eq 0 ]]; then
     warn "${BASENAME}: 未发现 MVP 阶段编号 (MVP-n)"
+  fi
+
+  # 概览表：需求概要列 + 所属 MVP 形如 MVP-n（…）
+  if grep -qF '### 概览' "${file}" 2>/dev/null; then
+    if grep -qF '需求概要' "${file}" 2>/dev/null; then
+      success "${BASENAME}: 概览含「需求概要」列"
+    else
+      warn "${BASENAME}: 概览缺少「需求概要」列（模板要求）"
+    fi
+    if grep -qE 'MVP-[0-9]+（[^）]+）|MVP-[0-9]+\([^)]+\)' "${file}" 2>/dev/null; then
+      success "${BASENAME}: 发现所属 MVP 形如 MVP-n（里程碑名）"
+    else
+      warn "${BASENAME}: 未发现 MVP-n（里程碑名）写法（建议对齐 SOLUTION §6.1）"
+    fi
   fi
 
   if grep -q 'SOLUTION-' "${file}"; then

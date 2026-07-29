@@ -22,7 +22,7 @@
 | Q-n | §5.2 问题决策（待确认或已决策） | `Q-1 …` |
 
 `G-n`、`C-n`、`R-n`、`Q-n` 均是终稿内的业务编号；本技能不再使用 `G{n}` 作为默认门禁编号主线。  
-MVP 切分编号（`MVP-n`）归下游 `ANALYSIS`，不在 SOLUTION 正文强制。
+§6.1 关键里程碑是下游 ANALYSIS 的**阶段骨架**：ANALYSIS 按表序 1:1 映射为 `MVP-n（{里程碑名}）`，**不另起阶段**；阶段内 FR 拆解归 ANALYSIS。SOLUTION 正文不强制写 `MVP-n`。
 
 ## `--depth`
 

@@ -1,7 +1,7 @@
 {
   "skill_name": "sdx-analysis",
-  "version": "2.1.0",
-  "description": "评估 sdx-analysis 在「澄清 → 生成 → 烤干」流程下的触发、分流与段落推进协议表述；断言供 grader 评分。",
+  "version": "2.2.0",
+  "description": "评估 sdx-analysis 在「澄清 → 生成 → 烤干」流程下的触发、分流与段落推进协议表述；断言供 grader 评分。含 §2 概览独立确认与里程碑↔MVP 1:1。",
   "evals": [
     {
       "id": "analysis-trigger-001",
@@ -64,6 +64,13 @@
           "type": "must_include",
           "check": "须体现 ANALYSIS 基于已共识 SOLUTION 承接细化。",
           "priority": "P0"
+        },
+        {
+          "id": "mvp-milestone-align",
+          "name": "里程碑对齐 MVP",
+          "type": "must_include",
+          "check": "须体现 MVP 与 SOLUTION §6.1 里程碑 1:1（不另起阶段），或 §2 概览先确认 FR 清单。",
+          "priority": "P1"
         }
       ]
     },
@@ -107,13 +114,20 @@
       "id": "analysis-trigger-003",
       "category": "should-trigger",
       "prompt": "请执行 /sdx-analysis，但这轮只写一个当前段：先意图澄清，再把 `## 2. 功能需求 / ### FR-001` 写进 ANALYSIS-CRM-01.md。写完后让当前段自动 grill 到烤干，然后给我 C/M/G/F 并停住等待。",
-      "expected_output": "以 /sdx-analysis 为主路径：明确一次只处理当前段（FR-001），写前意图澄清、写入后自动 grilling 到收敛，再给出 C/M/G/F 并等待用户选择。",
+      "expected_output": "以 /sdx-analysis 为主路径：若概览尚未写后确认，应先提示须先完成 `### 概览`；若概览已确认，则一次只处理 FR-001，写前意图澄清、写后自动 grilling 到收敛，再给出 C/M/G/F 并等待。",
       "assertions": [
+        {
+          "id": "overview-gate-or-fr",
+          "name": "概览门禁或单 FR",
+          "type": "must_include",
+          "check": "须体现：概览未确认时不得直接写 FR-001（应先走 `### 概览`）；或在概览已确认前提下按单段写 FR-001。",
+          "priority": "P0"
+        },
         {
           "id": "section-cycle",
           "name": "分段直写",
           "type": "must_include",
-          "check": "须体现按模板将当前段（FR-001）直写入 ANALYSIS-CRM-01.md，而非一口气补齐多段或整篇。",
+          "check": "须体现按模板将当前段直写入 ANALYSIS-CRM-01.md，而非一口气补齐多段或整篇。",
           "priority": "P0"
         },
         {
@@ -128,6 +142,42 @@
           "name": "单段停住",
           "type": "must_include",
           "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；需出现明确的停住/等待措辞。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "analysis-trigger-003b",
+      "category": "should-trigger",
+      "prompt": "SOLUTION-CRM-01 已共识且 §6.1 有里程碑。请 /sdx-analysis 只写 `### 概览`：从方案拆 FR 清单供我确认，表要有需求概要，所属 MVP 写成 MVP-n（里程碑名）。",
+      "expected_output": "以 /sdx-analysis 为主路径：当前段为独立 `### 概览`；按 SOLUTION §6.1 覆盖范围拆 FR；概览含需求概要列与 MVP-n（里程碑名）；写后烤干并等待写后 C；不得跳过概览确认去写 FR 正文。",
+      "assertions": [
+        {
+          "id": "overview-as-section",
+          "name": "概览独立段",
+          "type": "must_include",
+          "check": "须体现 `### 概览` 为独立当前段，写前澄清→生成→烤干后停住等待 C/M/G/F。",
+          "priority": "P0"
+        },
+        {
+          "id": "fr-from-milestone",
+          "name": "按里程碑拆 FR",
+          "type": "must_include",
+          "check": "须体现 FR 清单主料来自 SOLUTION §6.1 覆盖范围，所属 MVP 与里程碑 1:1。",
+          "priority": "P0"
+        },
+        {
+          "id": "overview-summary-col",
+          "name": "需求概要列",
+          "type": "must_include",
+          "check": "须体现概览表含「需求概要」（一句话能力），且所属 MVP 形如 MVP-n（里程碑名）。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-fr-body-before-confirm",
+          "name": "确认前不写 FR 正文",
+          "type": "must_not_conflict",
+          "check": "不得在概览未写后确认前展开各 `### FR-xxx` 正文（描述/BR/验收等）。",
           "priority": "P0"
         }
       ]
