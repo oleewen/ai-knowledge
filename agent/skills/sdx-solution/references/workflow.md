@@ -94,6 +94,6 @@
 
 ## 整体验证与质量基线
 
-`F` 或全部段完成后，至少检查：章节完整性、术语一致、编号连续（`G-n` / `C-n` / `R-n` / `MVP-n`）、跨段无未解释矛盾、frontmatter 完整、正文业务可读且不混入实现级细节。
+`F` 或全部段完成后，至少检查：章节完整性、术语一致、编号连续（`G-n` / `C-n` / `R-n` / `Q-n`）、跨段无未解释矛盾、frontmatter 完整、正文业务可读且不混入实现级细节。MVP 切分不在 SOLUTION（归 ANALYSIS）。
 
 终检对齐 [quality-checklist.md](quality-checklist.md)；收口前跑 `validate-solution.sh`。

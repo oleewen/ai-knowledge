@@ -1,10 +1,10 @@
 [
   {
-    "query": "业务方丢了一段会议纪要，需求比较模糊，帮我走 /sdx-solution：先逐步确认参数，再一段一段写进 SOLUTION-BILL-01.md，每段先意图澄清再写，写完再 grill 一轮，把冲突点和 MVP 里程碑补强。",
+    "query": "业务方丢了一段会议纪要，需求比较模糊，帮我走 /sdx-solution：先逐步确认参数，再一段一段写进 SOLUTION-BILL-01.md，每段先意图澄清再写，写完再 grill 一轮，把冲突点和关键里程碑/切换方案补强。",
     "should_trigger": true
   },
   {
-    "query": "我们要在 {DOC_DIR}/solutions/ 写共识级方案文档，按七章模板，先评估影响面再定 MVP，请用 sdx-solution 流程，不要直接进需求分析。希望参数可以一步步确认，必要时也能用快捷组合。",
+    "query": "我们要在 {DOC_DIR}/solutions/ 写共识级方案文档，按七章模板，先评估影响面再定里程碑与切换方案，请用 sdx-solution 流程，不要直接进需求分析。希望参数可以一步步确认，必要时也能用快捷组合。",
     "should_trigger": true
   },
   {

@@ -6,8 +6,8 @@
     {
       "id": "solution-trigger-001",
       "category": "should-trigger",
-      "prompt": "业务方丢了一段会议纪要，需求比较模糊，帮我走 /sdx-solution：先逐步确认参数，再一段一段写进 SOLUTION-BILL-01.md，每段先意图澄清再写，写完再 grill 一轮，把冲突点和 MVP 里程碑补强。",
-      "expected_output": "以 /sdx-solution 为主路径：说明先走参数向导，再按模板分段「澄清 → 生成 → 烤干」直写 SOLUTION-BILL-01.md；每段写前意图澄清、写入后自动 grilling 至收敛，再由用户确认后推进下一段；应覆盖冲突点与 MVP/里程碑的业务表述。",
+      "prompt": "业务方丢了一段会议纪要，需求比较模糊，帮我走 /sdx-solution：先逐步确认参数，再一段一段写进 SOLUTION-BILL-01.md，每段先意图澄清再写，写完再 grill 一轮，把冲突点和关键里程碑/切换方案补强。",
+      "expected_output": "以 /sdx-solution 为主路径：说明先走参数向导，再按模板分段「澄清 → 生成 → 烤干」直写 SOLUTION-BILL-01.md；每段写前意图澄清、写入后自动 grilling 至收敛，再由用户确认后推进下一段；应覆盖冲突点与里程碑/切换方案的业务表述。",
       "assertions": [
         {
           "id": "parameter-guidance",
@@ -48,7 +48,7 @@
           "id": "semantic-change-gated",
           "name": "语义改动确认",
           "type": "must_include",
-          "check": "须体现语义性结论/建议（目标/范围/承诺/口径/取舍/风险/MVP/里程碑/术语等）必须先给推荐方案与数字选项并等待用户确认，未获确认不得修订当前段。",
+          "check": "须体现语义性结论/建议（目标/范围/承诺/口径/取舍/风险/里程碑/切换方案/术语等）必须先给推荐方案与数字选项并等待用户确认，未获确认不得修订当前段。",
           "priority": "P0"
         },
         {
@@ -62,7 +62,7 @@
           "id": "deliverable-naming",
           "name": "产物对齐",
           "type": "should_include",
-          "check": "应出现 SOLUTION-BILL-01 或 BILL-01 与冲突/MVP/里程碑中至少两类关键词的规划说明。",
+          "check": "应出现 SOLUTION-BILL-01 或 BILL-01 与冲突/里程碑/切换中至少两类关键词的规划说明。",
           "priority": "P1"
         }
       ]
@@ -70,7 +70,7 @@
     {
       "id": "solution-trigger-002",
       "category": "should-trigger",
-      "prompt": "我们要在 {DOC_DIR}/solutions/ 写共识级方案文档，按七章模板，先评估影响面再定 MVP，请用 sdx-solution 流程，不要直接进需求分析。希望参数可以一步步确认，必要时也能用快捷组合。",
+      "prompt": "我们要在 {DOC_DIR}/solutions/ 写共识级方案文档，按七章模板，先评估影响面再定里程碑与切换方案，请用 sdx-solution 流程，不要直接进需求分析。希望参数可以一步步确认，必要时也能用快捷组合。",
       "expected_output": "明确采用 sdx-solution：先参数确认，再分段直写终稿，并支持逐项参数与快捷组合两种模式；说明不应跳过解决方案阶段直接进入 ANALYSIS。",
       "assertions": [
         {
@@ -84,7 +84,7 @@
           "id": "section-cycle",
           "name": "分段直写",
           "type": "must_include",
-          "check": "体现七章模板、影响面、MVP 与分段直写终稿的主线，并区分于「直接需求分析」。",
+          "check": "体现七章模板、影响面、里程碑/切换与分段直写终稿的主线，并区分于「直接需求分析」。",
           "priority": "P0"
         },
         {
@@ -141,7 +141,7 @@
           "id": "semantic-change-gated",
           "name": "语义改动确认",
           "type": "must_include",
-          "check": "须体现语义性结论/建议（目标/范围/承诺/口径/取舍/风险/MVP/里程碑/术语等）必须先给推荐方案与数字选项并等待用户确认，未获确认不得修订当前段。",
+          "check": "须体现语义性结论/建议（目标/范围/承诺/口径/取舍/风险/里程碑/切换方案/术语等）必须先给推荐方案与数字选项并等待用户确认，未获确认不得修订当前段。",
           "priority": "P0"
         },
         {
@@ -177,7 +177,7 @@
           "id": "section-cycle",
           "name": "当前段收口",
           "type": "must_include",
-          "check": "须体现多方案对比在当前段内完成，再由用户决定是否推进。",
+          "check": "须体现多方案取舍在当前段内完成（写入 §5.2 问题决策），再由用户决定是否推进。",
           "priority": "P0"
         },
         {
