@@ -24,6 +24,13 @@
           "priority": "P0"
         },
         {
+          "id": "audience-check-ab",
+          "name": "受众 A/B",
+          "type": "must_include",
+          "check": "须体现写后（或结果摘要出口）跑受众维 A/B，或对照轻流程默认读者表；未过不得宣称单元/本轮完成。",
+          "priority": "P0"
+        },
+        {
           "id": "subphase-path",
           "name": "子阶段与路径",
           "type": "must_include",
@@ -166,6 +173,28 @@
           "name": "边界分流",
           "type": "must_not_conflict",
           "check": "勿称全库术语替换只靠 docs-tag。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-tag-audience-001",
+      "category": "should-trigger",
+      "prompt": "docs-tag 某 phase 结束后，你无依据扩写了一大段业务正文，关键词命中摘要反而没有。请按受众 A/B 处理。",
+      "expected_output": "检出 A/B 违例；应收口为 phase 结果与关键词命中摘要；未过不得宣称完成。",
+      "assertions": [
+        {
+          "id": "audience-violation-visible",
+          "name": "违例可见",
+          "type": "must_include",
+          "check": "须指出无依据扩写业务正文或 A/B 未过。",
+          "priority": "P0"
+        },
+        {
+          "id": "audience-rewrite-or-gate",
+          "name": "改写或停问",
+          "type": "must_include",
+          "check": "须改写为 phase/命中摘要或停问；不得未处理就宣称完成。",
           "priority": "P0"
         }
       ]

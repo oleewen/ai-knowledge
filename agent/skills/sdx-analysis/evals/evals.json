@@ -38,6 +38,13 @@
           "priority": "P0"
         },
         {
+          "id": "audience-check",
+          "name": "受众质检",
+          "type": "must_include",
+          "check": "须体现烤干含受众维 A/B/C/E，或对照 audience-and-language；未过不得宣称对象已烤干收敛。",
+          "priority": "P0"
+        },
+        {
           "id": "single-section-stop",
           "name": "单段停住",
           "type": "must_include",
@@ -333,6 +340,35 @@
           "name": "勿把 F 当整篇重写",
           "type": "must_not_conflict",
           "check": "不得将 F 描述为覆盖已确认前文的整篇重生成、整篇重写或整篇覆盖。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "analysis-audience-001",
+      "category": "should-trigger",
+      "prompt": "继续 /sdx-analysis 当前 FR 段烤干：正文写了调用 OrderService.submit() 和 order_item 表字段。请按受众质检处理后再给动作字母。",
+      "expected_output": "检出受众维违例并给出短表；可改写为业务/验收表述则自动修订再烤干；未过不得宣称收敛；烤干阶段给出 C/M/G/F。",
+      "assertions": [
+        {
+          "id": "audience-violation-visible",
+          "name": "违例可见",
+          "type": "must_include",
+          "check": "须出现受众质检违例说明或 A/B/C/E 短表，不得对 Service/表字段口吻静默放过。",
+          "priority": "P0"
+        },
+        {
+          "id": "audience-rewrite-or-gate",
+          "name": "改写或停问",
+          "type": "must_include",
+          "check": "须体现自动改为场景/规则/验收表述，或语义停问；不得未处理违例就写后 C。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-tech-jargon-pass",
+          "name": "勿放行技术口吻",
+          "type": "must_not_conflict",
+          "check": "不得声称受众已通过却仍以 OrderService.submit() / order_item 字段作 FR 主表述。",
           "priority": "P0"
         }
       ]

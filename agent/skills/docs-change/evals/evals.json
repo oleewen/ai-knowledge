@@ -20,7 +20,14 @@
           "id": "single-output-stop",
           "name": "单输出单元停顿",
           "type": "must_include",
-          "check": "须体现一次只处理一个 CHANGE-LOG 输出，收敛后给出 C/M/S/F 或等价动作等待用户选择。",
+          "check": "须体现一次只处理一个 CHANGE-LOG 输出，写后轻量校核与受众 A/B 后给出 C/M/S/F 或等价动作等待用户选择。",
+          "priority": "P0"
+        },
+        {
+          "id": "audience-check-ab",
+          "name": "受众 A/B",
+          "type": "must_include",
+          "check": "须体现写后（或结果摘要出口）跑受众维 A/B，或对照轻流程默认读者表；未过不得宣称单元/本轮完成。",
           "priority": "P0"
         },
         {
@@ -203,6 +210,28 @@
           "name": "勿假主 docs-change",
           "type": "must_not_conflict",
           "check": "不得将主路径写成 docs-change 聚合 git/CHANGELOG。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "change-audience-001",
+      "category": "should-trigger",
+      "prompt": "docs-change 已聚好 CHANGE-LOG，但摘要臆造了一堆业务原因，路径与基线反而含糊。请按写后受众 A/B 处理再给动作字母。",
+      "expected_output": "检出 A/B 违例；摘要应收口为可核对变更/路径/基线；未过不得宣称单元完成。",
+      "assertions": [
+        {
+          "id": "audience-violation-visible",
+          "name": "违例可见",
+          "type": "must_include",
+          "check": "须体现写后 A/B 未过或指出臆造原因/缺路径基线。",
+          "priority": "P0"
+        },
+        {
+          "id": "audience-rewrite-or-gate",
+          "name": "改写或停问",
+          "type": "must_include",
+          "check": "须改写为维护者可读变更摘要或停问；不得未处理就宣称完成。",
           "priority": "P0"
         }
       ]

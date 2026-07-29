@@ -38,6 +38,13 @@
           "priority": "P0"
         },
         {
+          "id": "audience-check",
+          "name": "受众质检",
+          "type": "must_include",
+          "check": "须体现烤干含受众维 A/B/C/E，或对照 audience-and-language；未过不得宣称对象已烤干收敛。",
+          "priority": "P0"
+        },
+        {
           "id": "single-section-stop",
           "name": "单段停住",
           "type": "must_include",
@@ -282,6 +289,28 @@
           "name": "勿把 F 当整篇重写",
           "type": "must_not_conflict",
           "check": "不得将 F 描述为覆盖已确认前文的整篇重生成或整篇重写。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "test-audience-001",
+      "category": "should-trigger",
+      "prompt": "继续 /sdx-test 当前段烤干：TDD 大段粘贴 OpenAPI，并写成缺陷单口吻，几乎没有用例表与追溯。请按受众质检处理。",
+      "expected_output": "检出信息边界违例；应收口为测什么/如何验收/用例表，OpenAPI 仅作锚点；未过不得宣称收敛。",
+      "assertions": [
+        {
+          "id": "audience-violation-visible",
+          "name": "违例可见",
+          "type": "must_include",
+          "check": "须指出 TDD 不宜大段粘贴 OpenAPI/写成缺陷单，或给出受众违例短表。",
+          "priority": "P0"
+        },
+        {
+          "id": "audience-rewrite-or-gate",
+          "name": "改写或停问",
+          "type": "must_include",
+          "check": "须体现改为用例/覆盖/追溯表述，或停问；不得未处理就写后 C。",
           "priority": "P0"
         }
       ]

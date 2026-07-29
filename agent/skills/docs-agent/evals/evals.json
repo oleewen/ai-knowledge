@@ -31,6 +31,13 @@
           "priority": "P0"
         },
         {
+          "id": "audience-check",
+          "name": "受众质检",
+          "type": "must_include",
+          "check": "须体现烤干含受众维 A/B/C/E，或对照 audience-and-language；未过不得宣称对象已烤干收敛。",
+          "priority": "P0"
+        },
+        {
           "id": "index-driven",
           "name": "INDEX 驱动",
           "type": "must_include",
@@ -129,6 +136,28 @@
           "name": "边界分流",
           "type": "must_not_conflict",
           "check": "不得把共识 SOLUTION 落盘说成 docs-agent 标准产出。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-agent-audience-001",
+      "category": "should-trigger",
+      "prompt": "继续 /docs-agent 烤干：你把完整命令手册写进了 AGENTS.md，README 反而几乎没有 Quick start。请按受众质检处理。",
+      "expected_output": "对照三文件读者矩阵检出违例；命令应回 README、AGENTS 保留契约短链；未过不得宣称单元已烤干。",
+      "assertions": [
+        {
+          "id": "audience-violation-visible",
+          "name": "违例可见",
+          "type": "must_include",
+          "check": "须指出 AGENTS/README 读者错位或给出受众违例短表。",
+          "priority": "P0"
+        },
+        {
+          "id": "audience-rewrite-or-gate",
+          "name": "改写或停问",
+          "type": "must_include",
+          "check": "须体现按 three-file-spec 调整，或停问；不得未处理就写后 C。",
           "priority": "P0"
         }
       ]

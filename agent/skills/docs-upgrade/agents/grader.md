@@ -6,7 +6,7 @@
 
 1. 读 `category`：`should-trigger` / `should-not-trigger`
 2. **硬门**：以本 eval 的 `assertions`（按 `priority`）为准；`evidence` 映射 `assertions[].id`
-3. **协议释义**（仅当 assertions / prompt 覆盖时强制）：参数向导 → 写前意图澄清 → 「澄清 → 生成 → 烤干」→ `C/M/G/S/F`；关联/关键词扩展须先确认。见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)
+3. **协议释义**（仅当 assertions / prompt 覆盖时强制）：参数向导 → 写前意图澄清 → 「澄清 → 生成 → 烤干」→ `C/M/G/S/F`；烤干须含受众维 A/B/C/E（见 [audience-and-language.md](../../../references/audience-and-language.md)）；关联/关键词扩展须先确认。见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)
 4. **P0** 任一失败 → `passed: false`
 
 ### should-not-trigger P0 摘要
@@ -20,6 +20,6 @@
 {
   "text": "通过。写前澄清、单单元烤干停顿与语义扩展确认正确。",
   "passed": true,
-  "evidence": ["intent-clarify", "unit-cycle", "grilling-loop", "single-unit-stop", "semantic-expansion-must-confirm"]
+  "evidence": ["intent-clarify", "unit-cycle", "grilling-loop", "audience-check", "single-unit-stop", "semantic-expansion-must-confirm"]
 }
 ```

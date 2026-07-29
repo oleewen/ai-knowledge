@@ -31,6 +31,13 @@
           "priority": "P0"
         },
         {
+          "id": "audience-check",
+          "name": "受众质检",
+          "type": "must_include",
+          "check": "须体现烤干含受众维 A/B/C/E，或对照 audience-and-language；未过不得宣称对象已烤干收敛。",
+          "priority": "P0"
+        },
+        {
           "id": "single-unit-stop",
           "name": "单单元停顿",
           "type": "must_include",
@@ -209,6 +216,28 @@
           "name": "勿假主 archive",
           "type": "must_not_conflict",
           "check": "不得主路径写为按 overview 行链写入视角文件。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "archive-audience-001",
+      "category": "should-trigger",
+      "prompt": "继续 /docs-archive 烤干：未等确认书收口就落盘，索引壳塞满业务长文。请按受众质检处理。",
+      "expected_output": "检出违例；确认书先收口；索引壳只留导航；未过不得宣称收敛。",
+      "assertions": [
+        {
+          "id": "audience-violation-visible",
+          "name": "违例可见",
+          "type": "must_include",
+          "check": "须指出未确认落盘或索引壳塞长文，或给出受众违例短表。",
+          "priority": "P0"
+        },
+        {
+          "id": "audience-rewrite-or-gate",
+          "name": "改写或停问",
+          "type": "must_include",
+          "check": "须回到确认书/调整落盘形态，或停问；不得未处理就写后 C。",
           "priority": "P0"
         }
       ]

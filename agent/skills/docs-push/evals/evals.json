@@ -22,6 +22,13 @@
           "type": "must_include",
           "check": "须体现 dry-run 后先核对目标路径，再决定是否实跑 copy。",
           "priority": "P0"
+        },
+        {
+          "id": "audience-check-ab",
+          "name": "受众 A/B",
+          "type": "must_include",
+          "check": "须体现写后（或结果摘要出口）跑受众维 A/B，或对照轻流程默认读者表；未过不得宣称单元/本轮完成。",
+          "priority": "P0"
         }
       ],
       "files": []
@@ -89,6 +96,28 @@
         }
       ],
       "files": []
+    },
+    {
+      "id": "docs-push-audience-001",
+      "category": "should-trigger",
+      "prompt": "docs-push 结束后把中央规约全文粘进会话总结，目标 path×doc_dir 与风险确认反而没有。请按受众 A/B 处理。",
+      "expected_output": "检出信息边界违例；应收口为目标路径、复制结果与风险确认；未过不得宣称完成。",
+      "assertions": [
+        {
+          "id": "audience-violation-visible",
+          "name": "违例可见",
+          "type": "must_include",
+          "check": "须指出不宜全文粘贴规约或 A/B 未过。",
+          "priority": "P0"
+        },
+        {
+          "id": "audience-rewrite-or-gate",
+          "name": "改写或停问",
+          "type": "must_include",
+          "check": "须改写为 path×doc_dir/结果/风险摘要或停问；不得未处理就宣称完成。",
+          "priority": "P0"
+        }
+      ]
     }
   ]
 }

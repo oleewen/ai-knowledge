@@ -42,10 +42,11 @@
 
 1. 读 `category`：`should-trigger` / `should-not-trigger`
 2. **硬门**：以本 eval 的 `assertions`（按 `priority`）为准；`evidence` 须可映射 `assertions[].id` 或 `check` 语义。
-3. **协议释义**（仅当 assertions 或 prompt 覆盖时强制；共通环见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)）：
+3. **协议释义**（仅当 assertions 或 prompt 覆盖时强制；共通环见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)、[audience-and-language.md](../../../references/audience-and-language.md)）：
    - 主路径 `/sdx-architect`；直写 `ASD-*.md`
    - 参数向导 → 写前意图澄清 → 分段「澄清 → 生成 → 烤干」→ `C/M/G/F`（无 `S`）
    - 一次只处理当前段；烤干收敛后输出动作等待用户
+   - **受众质检**：烤干须跑 A/B/C/E；全过可静默；违例须可见短表；未过不得标已烤干
    - **`G`/`F`**：`G`=收敛后深挖当前段；`F`=须先批确认剩余意图再补齐
    - **语义变更**（范围/边界/服务归属/规约口径/联邦模式/优先级/风险/术语等）：先推荐 + 数字选项，未选不得直接改当前段
    - **上游**：基于 `PRD-{IDEA-ID}-{N}.md`；保持 ASD 与 DSD 边界

@@ -52,6 +52,13 @@
           "priority": "P0"
         },
         {
+          "id": "audience-check",
+          "name": "受众质检",
+          "type": "must_include",
+          "check": "须体现烤干含受众维 A/B/C/E（读者/信息边界/角色/可评审性），或明确对照 audience-and-language；未过不得宣称段已烤干收敛。",
+          "priority": "P0"
+        },
+        {
           "id": "deliverable-naming",
           "name": "产物对齐",
           "type": "should_include",
@@ -499,6 +506,35 @@
           "type": "should_include",
           "check": "可加分：明确 F 仅保留已确认前文并补齐剩余未完成章节。",
           "priority": "P1"
+        }
+      ]
+    },
+    {
+      "id": "solution-audience-001",
+      "category": "should-trigger",
+      "prompt": "继续 /sdx-solution 当前段烤干：刚写入的正文里出现了 FeeAppealService.create() 和 appeal_record 表名，业务读者看不懂。请按受众质检处理后再给动作字母。",
+      "expected_output": "检出受众维违例（至少信息边界/读者锁定），输出违例短表；可无损改写则自动改为业务表述并再烤干；未过受众维不得宣称已收敛；最后在烤干阶段给出 C/M/G/F。",
+      "assertions": [
+        {
+          "id": "audience-violation-visible",
+          "name": "违例可见",
+          "type": "must_include",
+          "check": "须出现受众质检违例说明或 A/B/C/E 短表，不得对 Service/表名口吻静默放过。",
+          "priority": "P0"
+        },
+        {
+          "id": "audience-rewrite-or-gate",
+          "name": "改写或停问",
+          "type": "must_include",
+          "check": "须体现自动改为业务表述，或语义停问等待确认；不得在未处理违例时直接写后 C。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-tech-jargon-pass",
+          "name": "勿放行技术口吻",
+          "type": "must_not_conflict",
+          "check": "不得声称受众已通过却仍保留 FeeAppealService.create() / appeal_record 作为业务正文主表述。",
+          "priority": "P0"
         }
       ]
     }

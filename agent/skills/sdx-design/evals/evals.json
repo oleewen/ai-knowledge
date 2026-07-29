@@ -38,6 +38,13 @@
           "priority": "P0"
         },
         {
+          "id": "audience-check",
+          "name": "受众质检",
+          "type": "must_include",
+          "check": "须体现烤干含受众维 A/B/C/E，或对照 audience-and-language；未过不得宣称对象已烤干收敛。",
+          "priority": "P0"
+        },
+        {
           "id": "upstream-input",
           "name": "上游承接",
           "type": "must_include",
@@ -282,6 +289,28 @@
           "name": "勿把 F 当整篇重写",
           "type": "must_not_conflict",
           "check": "不得将 F 描述为覆盖已确认前文的整篇重生成或整篇重写。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "design-audience-001",
+      "category": "should-trigger",
+      "prompt": "继续 /sdx-design 当前段烤干：DSD 里长篇复述 PRD 故事，几乎没有契约/错误码/DDL。请按受众质检处理。",
+      "expected_output": "检出读者/信息边界违例；应收口为可实现技术表述并以 US-n/FR-n 追溯；未过不得宣称收敛。",
+      "assertions": [
+        {
+          "id": "audience-violation-visible",
+          "name": "违例可见",
+          "type": "must_include",
+          "check": "须指出 DSD 不应长篇复述 PRD 或给出受众违例短表。",
+          "priority": "P0"
+        },
+        {
+          "id": "audience-rewrite-or-gate",
+          "name": "改写或停问",
+          "type": "must_include",
+          "check": "须体现补契约/数据等宜写内容并压缩 PRD 复述，或停问；不得未处理就写后 C。",
           "priority": "P0"
         }
       ]

@@ -38,6 +38,13 @@
           "priority": "P0"
         },
         {
+          "id": "audience-check",
+          "name": "受众质检",
+          "type": "must_include",
+          "check": "须体现烤干含受众维 A/B/C/E，或对照 audience-and-language；未过不得宣称对象已烤干收敛。",
+          "priority": "P0"
+        },
+        {
           "id": "single-section-stop",
           "name": "单段停住",
           "type": "must_include",
@@ -209,6 +216,35 @@
           "name": "勿把 F 当整篇重写",
           "type": "must_not_conflict",
           "check": "不得将 F 描述为覆盖已确认前文的整篇重生成或整篇重写。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "architect-audience-001",
+      "category": "should-trigger",
+      "prompt": "继续 /sdx-architect 当前段烤干：ASD 正文大段粘贴 PRD 用户故事，并把完整 OpenAPI path 与 DDL 写进 ASD。请按受众质检处理后再给动作字母。",
+      "expected_output": "检出受众维违例（宜弱化：PRD 全文/DSD 级细节）；应收口为边界与协议级表述并引用 US-n/FR-n；细节指向 DSD；未过不得宣称收敛。",
+      "assertions": [
+        {
+          "id": "audience-violation-visible",
+          "name": "违例可见",
+          "type": "must_include",
+          "check": "须出现受众违例短表或明确指出 ASD 不宜塞 PRD 全文/完整 API·DDL。",
+          "priority": "P0"
+        },
+        {
+          "id": "audience-rewrite-or-gate",
+          "name": "改写或停问",
+          "type": "must_include",
+          "check": "须体现改为架构边界表述并外置 DSD，或语义停问；不得未处理就写后 C。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-dsd-dump-pass",
+          "name": "勿放行 DSD 倾倒",
+          "type": "must_not_conflict",
+          "check": "不得声称受众已通过却仍把完整 OpenAPI/DDL 当 ASD 主正文。",
           "priority": "P0"
         }
       ]
