@@ -1,10 +1,10 @@
 # 单元/段落推进协议（Agent SSOT）
 
 > **定位**：跨 skill 复用的 **Section/Unit Cycle**（生成 → 烤干 → 用户动作 → 重开）唯一真源。  
-> **分工**：写前意图澄清见 [intent-clarify.md](intent-clarify.md)；写后提问能力见 [grilling-skill.md](grilling-skill.md)。  
+> **分工**：写前意图澄清见 [intent-clarify.md](intent-clarify.md)；写后提问能力见 [grilling-skill.md](grilling-skill.md)；受众质检见 [audience-and-language.md](audience-and-language.md)。  
 > **主线口令**：`澄清 → 生成 → 烤干`。
 
-**最后更新**: 2026-07-20
+**最后更新**: 2026-07-29
 
 **适用**：全部 `/sdx-*` 与语义族 docs-*（与 intent-clarify 启用名单一致）。轻流程技能不绑本文。
 
@@ -91,7 +91,8 @@ stateDiagram-v2
 1. 已通过写前意图澄清并完成写入（或技能允许的 dry-run 预览）
 2. 已按本地**写后默认表**进入烤干（或合法跳过）
 3. 烤干已收敛，或语义问题经用户确认修订后再次收敛
-4. 用户在「当前阶段：烤干」下给出写后 `C`
+4. 烤干中已通过受众维 **A/B/C/E**（见 [audience-and-language.md](audience-and-language.md)）；未过不得进入 `grilled`
+5. 用户在「当前阶段：烤干」下给出写后 `C`
 
 ---
 

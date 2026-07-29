@@ -106,7 +106,7 @@ flowchart LR
 | 应用五视角实体 SSOT | `application/knowledge/{business,product,application,data,technical}/` |
 | 系统/公司架构 + overview | `system/knowledge/`、`company/knowledge/`（含 `overview/`、`chapters/`） |
 | 治理与命名 / OKF 规范 | `agent/knowledge/`（`glossary`、`naming-conventions`、`okf-spec`、`knowledge-governance` 等） |
-| 共享推进契约 | `agent/references/`（`intent-clarify`、`unit-cycle-protocol`、`grilling-skill`、`light-flow-actions`、`knowledge-layout`、`session-spec-path`） |
+| 共享推进契约 | `agent/references/`（`intent-clarify`、`unit-cycle-protocol`、`grilling-skill`、`audience-and-language`、`light-flow-actions`、`knowledge-layout`、`session-spec-path`） |
 | 可执行初始化 | `scripts/*.sh` + `agent/scripts/docs-core.sh` 等共享库 |
 | Slash 工作流 | `agent/skills/<name>/SKILL.md` |
 
@@ -227,7 +227,7 @@ stateDiagram-v2
 | [AGENTS.md](AGENTS.md) | 禁止擅自改实体 ID、未确认不 `git commit`、文档产出闸门、会话启动 `/caveman` |
 | [application/CONTRIBUTING.md](application/CONTRIBUTING.md) | 贡献流程与阶段规则 |
 | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md) | 全局命名与交付约定；artifact gates |
-| [intent-clarify.md](agent/references/intent-clarify.md) / [unit-cycle-protocol.md](agent/references/unit-cycle-protocol.md) | 语义族写前澄清与 `C/M/G/S/F` |
+| [intent-clarify.md](agent/references/intent-clarify.md) / [unit-cycle-protocol.md](agent/references/unit-cycle-protocol.md) / [audience-and-language.md](agent/references/audience-and-language.md) | 语义族写前澄清、`C/M/G/S/F`、烤干受众维 |
 | [light-flow-actions.md](agent/references/light-flow-actions.md) | 轻流程 `C/M/S/F`（无 `G`） |
 
 ### 5.4 枚举与模式（初始化）

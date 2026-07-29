@@ -74,6 +74,7 @@
    - **意图澄清**（写前）：[intent-clarify.md](../references/intent-clarify.md)；
    - **生成 → 烤干 → 动作/重开**：[unit-cycle-protocol.md](../references/unit-cycle-protocol.md)；
    - **烤干提问能力**：[grilling-skill.md](../references/grilling-skill.md)；
+   - **受众质检**：[audience-and-language.md](../references/audience-and-language.md)（烤干 A/B/C/E；轻流程写后 A/B）；
    - **生成步写作原则**：[docs-simplify.md](../references/docs-simplify.md)（默认强制；用户明示可豁免）。
 4. 全部 `/sdx-*` 与语义族 docs-*（含 indexing/build/agent/simplify）已绑定意图澄清；
    `docs-okf` / `docs-change` / `docs-pull` / `docs-push` / `docs-tag` 维持轻流程。
@@ -128,4 +129,4 @@
 
 - AI 协作说明：[../README.md](../README.md)
 - 知识库布局：[knowledge-layout.md](../references/knowledge-layout.md)
-- 意图澄清 / 推进环 / 烤干 / 精简原则：[intent-clarify.md](../references/intent-clarify.md) · [unit-cycle-protocol.md](../references/unit-cycle-protocol.md) · [grilling-skill.md](../references/grilling-skill.md) · [docs-simplify.md](../references/docs-simplify.md)
+- 意图澄清 / 推进环 / 烤干 / 受众 / 精简原则：[intent-clarify.md](../references/intent-clarify.md) · [unit-cycle-protocol.md](../references/unit-cycle-protocol.md) · [grilling-skill.md](../references/grilling-skill.md) · [audience-and-language.md](../references/audience-and-language.md) · [docs-simplify.md](../references/docs-simplify.md)

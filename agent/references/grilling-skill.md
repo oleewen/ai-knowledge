@@ -2,9 +2,9 @@
 
 > **定位**：跨 skill 复用的 `grilling`（写后**烤干**）能力唯一真源。若环境已安装 `grilling` Skill，则优先调用；若未安装，则按本文 fallback 协议执行。
 > **边界**：本文只定义能力选择、fallback 提问协议、探索优先与统一输出格式；不定义具体 skill 的写入权限、前文回改边界或段落推进动作。
-> **分工**：写前**意图澄清**见 [intent-clarify.md](intent-clarify.md)；推进环/动作/重开见 [unit-cycle-protocol.md](unit-cycle-protocol.md)；主线口令 `澄清 → 生成 → 烤干`。本文不承担写前门禁或动作字母定义。
+> **分工**：写前**意图澄清**见 [intent-clarify.md](intent-clarify.md)；推进环/动作/重开见 [unit-cycle-protocol.md](unit-cycle-protocol.md)；受众质检维见 [audience-and-language.md](audience-and-language.md)；主线口令 `澄清 → 生成 → 烤干`。本文不承担写前门禁或动作字母定义。
 
-**最后更新**: 2026-07-18
+**最后更新**: 2026-07-29
 
 ---
 
@@ -59,6 +59,19 @@ fallback 的每一轮问题建议使用如下结构：
 - 快捷数字选项
 - 是否建议修订当前对象
 - 是否涉及上游前提、前文或跨段影响
+
+---
+
+## 受众质检（烤干必跑）
+
+`sdx-*` 与语义族 docs-* 在写后烤干中**必须**按 [audience-and-language.md](audience-and-language.md) 跑 **A/B/C/E**：
+
+1. 对照技能本地 `references/audience-and-language.md`（主读者 / 宜写宜弱化 / 特殊允许区）。
+2. 违例分流与举证格式以该契约为准（全过静默；违例短表）。
+3. 统一输出在违例时应能表达：哪一维未过、是否建议自动修订、是否须语义停问。
+4. 受众维未过 → 当前 skill 不得将对象标为已烤干收敛。
+
+轻流程 A/B 不经本文；见 [light-flow-actions.md](light-flow-actions.md)。
 
 ---
 
