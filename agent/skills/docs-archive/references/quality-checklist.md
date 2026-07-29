@@ -34,3 +34,4 @@
 - [ ] 导航/索引如需已更  
 - [ ] 未擅自扩范围  
 - [ ] 会话末变更摘要；未自动 commit/push  
+- [ ] 已按 [audience-and-language.md](../../../references/audience-and-language.md) + 本地 [audience-and-language.md](audience-and-language.md) 通过烤干受众维 A/B/C/E

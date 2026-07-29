@@ -18,3 +18,4 @@
 - [ ] 写入前已读「应填内容 + 产出建议」
 - [ ] 第三列为提炼摘要；A/U/D 正确；无脚注堆叠
 - [ ] 失败已整体回滚
+- [ ] 已按 [audience-and-language.md](../../../references/audience-and-language.md) + 本地 [audience-and-language.md](audience-and-language.md) 通过烤干受众维 A/B/C/E

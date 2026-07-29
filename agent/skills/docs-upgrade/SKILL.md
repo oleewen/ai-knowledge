@@ -33,6 +33,7 @@ description: >
 | 目的 | 文件 |
 | --- | --- |
 | 流程 / 推进 binding | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
+| 受众与语言 | [audience-and-language.md](references/audience-and-language.md) |
 | 范围模板 | [docs-upgrade-scope-ack-template.md](assets/docs-upgrade-scope-ack-template.md) |
 | 关联发现 | [related-doc-discovery.md](references/related-doc-discovery.md)、[semantic-keyword-discovery.md](references/semantic-keyword-discovery.md) |
 | 原则 / 反模式 | [design-principles.md](references/design-principles.md)、[anti-patterns.md](references/anti-patterns.md) |

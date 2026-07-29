@@ -38,6 +38,7 @@ description: >
 | --- | --- |
 | 原则 SSOT | [docs-simplify.md](../../references/docs-simplify.md) |
 | 流程 / 推进 binding | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
+| 受众与语言 | [audience-and-language.md](references/audience-and-language.md) |
 | 范围模板 | [docs-simplify-scope-ack-template.md](assets/docs-simplify-scope-ack-template.md) |
 | 原则摘要 / 反模式 | [design-principles.md](references/design-principles.md)、[anti-patterns.md](references/anti-patterns.md) |
 | 终检 / 易错 | [quality-checklist.md](references/quality-checklist.md)、[gotchas.md](gotchas.md) |

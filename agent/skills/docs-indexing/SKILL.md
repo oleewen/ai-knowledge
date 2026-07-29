@@ -31,6 +31,7 @@ description: >
 | 目的 | 文件 |
 | --- | --- |
 | 流程 / 推进 binding | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
+| 受众与语言 | [audience-and-language.md](references/audience-and-language.md) |
 | 参数与基线 | [scan-config-onboarding.md](references/scan-config-onboarding.md) |
 | 扫描规范 | [scan-spec.md](references/scan-spec.md) |
 | 质量与九章 | [quality-standards.md](references/quality-standards.md)、[nine-chapter-spec.md](references/nine-chapter-spec.md) |

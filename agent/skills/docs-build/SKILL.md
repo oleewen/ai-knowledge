@@ -31,6 +31,7 @@ description: >
 | 目的 | 文件 |
 | --- | --- |
 | 流程 / 推进 binding | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
+| 受众与语言 | [audience-and-language.md](references/audience-and-language.md) |
 | 配置 / 规则 | [builtin-config.md](references/builtin-config.md)、[extraction-rules.md](references/extraction-rules.md) |
 | README / 归并 | [readme-fill-spec.md](references/readme-fill-spec.md)、[consolidation-spec.md](references/consolidation-spec.md) |
 | 核心概念 | [core-concepts.md](references/core-concepts.md) |

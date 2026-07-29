@@ -23,3 +23,4 @@
 
 - [ ] **4.3 成功后**才追加 DISTILL-LOG；新行**最前**  
 - [ ] 若影响 `system/knowledge/index.md` 或视角 README → 评估同步（gotchas）
+- [ ] 已按 [audience-and-language.md](../../../references/audience-and-language.md) + 本地 [audience-and-language.md](audience-and-language.md) 通过烤干受众维 A/B/C/E

@@ -16,7 +16,7 @@ description: >
 - 缺 `KNOWLEDGE_TYPE` 时立即中止；不得生成默认 `viz.html` 路径继续。
 - `--dry-run` 只预览，不写盘。
 - `validate` 出现 **ERROR** 时不得静默继续后续步骤；必须汇报错误并停下。
-- 轻量运维技能：参数向导 → refresh / validate / viz → 结果摘要或失败分流；**不**引入当前单元循环或 `grilling` 协议。
+- 轻量运维技能：参数向导 → refresh / validate / viz → 结果摘要或失败分流；**不**引入当前单元循环或 `grilling` 协议。结果摘要出口须做受众 **A/B**（见 [audience-and-language.md](../../references/audience-and-language.md)、[light-flow-actions.md](../../references/light-flow-actions.md)）。
 
 ## 边界
 

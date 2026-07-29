@@ -32,6 +32,7 @@ description: >
 | 目的 | 文件 |
 | --- | --- |
 | 流程 / 推进 binding | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
+| 受众与语言 | [audience-and-language.md](references/audience-and-language.md) |
 | 核心概念 | [core-concepts.md](references/core-concepts.md) |
 | 提炼规范 | [extract-spec.md](references/extract-spec.md) |
 | 原则 / 反模式 | [design-principles.md](references/design-principles.md)、[anti-patterns.md](references/anti-patterns.md) |

@@ -44,3 +44,4 @@
 
 - [ ] 每 JSON 完整 `metadata`
 - [ ] 增量填 `changes_from_previous`
+- [ ] 已按 [audience-and-language.md](../../../references/audience-and-language.md) + 本地 [audience-and-language.md](audience-and-language.md) 通过烤干受众维 A/B/C/E

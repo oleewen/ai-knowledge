@@ -34,6 +34,7 @@ description: >
 | 目的 | 文件 |
 | --- | --- |
 | 流程 / 推进 binding | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
+| 受众与语言 | [audience-and-language.md](references/audience-and-language.md) |
 | 核心概念 | [core-concepts.md](references/core-concepts.md) |
 | 蒸馏规范 | [distill-spec.md](references/distill-spec.md)、[distill-log-spec.md](references/distill-log-spec.md) |
 | 联邦规则 | [federation-spec.md](references/federation-spec.md) |

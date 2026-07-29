@@ -48,6 +48,8 @@
 - `validate-okf` 是否通过
 - `viz.html` 是否生成
 
+**受众 A/B**：交用户结果摘要前，按 [audience-and-language.md](../../../references/audience-and-language.md) 轻流程默认读者表跑 A/B（工程维护者口吻；失败分流可读）。纯机器校验 JSON/退出码可跳过。全过静默；违例才报。未过不得宣称本轮完成。
+
 ### 2 validate（门禁）
 
 **入口**：`/docs-okf`（内部脚本：`bash agent/skills/docs-okf/scripts/okf-validate.sh [--bundle "${DOC_DIR}"]`）

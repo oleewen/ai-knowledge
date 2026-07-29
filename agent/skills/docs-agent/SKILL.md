@@ -35,6 +35,7 @@ compatibility: Bash 5+；校验脚本 agent/skills/docs-agent/scripts/validate-g
 | 目的 | 文件 |
 | ---- | ---- |
 | 流程 / 推进 binding | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
+| 受众与语言 | [audience-and-language.md](references/audience-and-language.md) |
 | 执行细则 | [execution-spec.md](references/execution-spec.md)、[three-file-spec.md](references/three-file-spec.md) |
 | 质量 / 易错 | [quality-standards.md](references/quality-standards.md)、[gotchas.md](gotchas.md) |
 | 模板 | [readme-skeleton.md](assets/readme-skeleton.md)、[agents-skeleton.md](assets/agents-skeleton.md) |

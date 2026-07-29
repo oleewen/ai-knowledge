@@ -14,3 +14,7 @@
 - 定时或提交后跑，保持新鲜
 - CI 生成产物可纳入 git
 - 定期备份 `CHANGE-LOG.md` 防基线丢失
+
+## 受众（写后 A/B）
+
+- [ ] 已按 [audience-and-language.md](../../../references/audience-and-language.md) 轻流程默认读者表通过 A/B（维护者可读变更摘要；无臆造原因）

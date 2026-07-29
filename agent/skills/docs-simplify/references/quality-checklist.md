@@ -26,4 +26,5 @@
 
 - [ ] 写前曾意图澄清且获 `C`
 - [ ] 写后已烤干收敛
+- [ ] 已按 [audience-and-language.md](../../../references/audience-and-language.md) + 本地 [audience-and-language.md](audience-and-language.md) 通过烤干受众维 A/B/C/E
 - [ ] 链接 / `#anchor` / 相对路径仍有效

@@ -34,6 +34,7 @@ compatibility: Bash 5+；无专用校验脚本。
 | 目的 | 文件 |
 | --- | --- |
 | 流程 / 推进 binding | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
+| 受众与语言 | [audience-and-language.md](references/audience-and-language.md) |
 | 链接与索引 | [links-and-index.md](references/links-and-index.md) |
 | 核心概念 | [core-concepts.md](references/core-concepts.md) |
 | 原则 / 反模式 | [design-principles.md](references/design-principles.md)、[anti-patterns.md](references/anti-patterns.md) |
