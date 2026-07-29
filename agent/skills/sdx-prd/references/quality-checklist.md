@@ -22,6 +22,7 @@
 
 ## 语言与一致
 
+- [ ] 已按 [audience-and-language.md](../../../references/audience-and-language.md) + 本地 [audience-and-language.md](audience-and-language.md) 通过烤干受众维 A/B/C/E
 - [ ] 产品/业务表述为主；少散落成堆技术名词
 - [ ] 与 ANALYSIS/SOLUTION 范围、MVP、目标无未解释冲突
 - [ ] 与引用的 knowledge 矛盾则有盲区说明

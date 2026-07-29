@@ -38,6 +38,7 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-architect/scripts/validat
 | 流程 / 推进 binding | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
 | KNOWLEDGE_TYPE / 联邦模式 | [knowledge-type-modes.md](references/knowledge-type-modes.md) |
 | 原则 / 反模式 / 终检 | [anti-patterns.md](references/anti-patterns.md)、[quality-checklist.md](references/quality-checklist.md) |
+| 受众与语言 | [audience-and-language.md](references/audience-and-language.md) |
 | 易错 | [gotchas.md](gotchas.md) |
 | 模板 | [asd-template.md](assets/asd-template.md)、[asd-spec-template.md](assets/asd-spec-template.md) |
 

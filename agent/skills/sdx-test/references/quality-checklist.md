@@ -24,5 +24,6 @@
 ## 4) 当前段协议与校验
 
 - [ ] 自动 grilling 已收敛后再停在 `C/M/G/F`
+- [ ] 已按 [audience-and-language.md](../../../references/audience-and-language.md) + 本地 [audience-and-language.md](audience-and-language.md) 通过烤干受众维 A/B/C/E
 - [ ] 语义性改动已先确认，未越权直改
 - [ ] 已跑 `validate-test.sh` 并处理失败项

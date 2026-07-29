@@ -15,6 +15,7 @@
 
 ## 受众与语言
 
+- [ ] 已按 [audience-and-language.md](../../../references/audience-and-language.md) + 本地 [audience-and-language.md](audience-and-language.md) 通过烤干受众维 A/B/C/E
 - [ ] 正文（§1–§6、§7.1–§7.2）无接口/表字段/中间件/模块/协议栈等
 - [ ] 技术线索仅在 §7.3 且含「待研发确认」
 
