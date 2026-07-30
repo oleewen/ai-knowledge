@@ -12,6 +12,7 @@
 - 写前意图澄清：[intent-clarify.md](../../../references/intent-clarify.md)
 - 段落推进环 / `C·M·G·F` / 重开 / 前文回改：[unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)（**无 `S`**）
 - 写后烤干：[grilling-skill.md](../../../references/grilling-skill.md)
+- 技术决策落 ADR / CONTEXT：[sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)
 
 **公司库**（`KNOWLEDGE_TYPE=company`）：输入含 [`company/knowledge/`](../../../../company/knowledge/README.md) 五视角；方案须明确跨系统需求下**各系统负责的功能边界**；交付物落在 `company/solutions/`，下游 `company/analysis/` 衔接各 `system/` 侧 requirements。
 
@@ -66,6 +67,7 @@
 | --- | --- |
 | 终稿 | `{DOC_DIR}/solutions/SOLUTION-{IDEA-ID}.md` |
 | 公司库终稿 | `company/solutions/SOLUTION-{IDEA-ID}.md` |
+| 技术决策 | `{DOC_DIR}/adr/ADR-*.md` + `CONTEXT.md`（见 [sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)） |
 | 结构校验 | `../scripts/validate-solution.sh`（见 [SKILL.md](../SKILL.md)） |
 
 ---
@@ -87,6 +89,8 @@
 本技能附加：
 
 - 当前段存在 `>=2` 条真实业务路径时，先在段内完成方案比选再收敛
+- **业务**多方案取舍写入 §5.2 Q-n；**技术/架构**选型按 [sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md) 落 ADR + CONTEXT，不入 Q-n；表后须链 CONTEXT
+- 烤干收敛后、选 **C** 前：本段新技术决策须已落盘且占位已清（可先写 `ADR-待定`，推进前清除）
 - `grilling` 默认只烤当前段；fallback 见 [grilling-skill.md](../../../references/grilling-skill.md)
 - 动作字母仅 `C/M/G/F`（无 `S`）
 

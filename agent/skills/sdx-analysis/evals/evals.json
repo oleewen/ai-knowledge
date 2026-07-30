@@ -71,6 +71,13 @@
           "type": "must_include",
           "check": "须体现 MVP 与 SOLUTION §6.1 里程碑 1:1（不另起阶段），或 §2 概览先确认 FR 清单。",
           "priority": "P1"
+        },
+        {
+          "id": "adr-tech-gate",
+          "name": "技术决策 ADR",
+          "type": "must_include",
+          "check": "若涉及技术/架构选型，须体现落 ADR + CONTEXT（§6.2 引用），实现向可新建、改边界回 SOLUTION；或引用 sdx-adr-protocol。",
+          "priority": "P1"
         }
       ]
     },

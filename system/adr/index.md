@@ -8,11 +8,13 @@
 
 ## 目录文件
 
-（无）
+- [CONTEXT.md](CONTEXT.md) — 决策台账
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md)
+2. [CONTEXT.md](CONTEXT.md)
+3. `ADR-*-*.md`（按需）
 
 ## 关联索引
 

@@ -21,3 +21,4 @@
 | 12c | §6.1 不可用仍自拟 MVP 骨架 | 硬停回补 SOLUTION |
 | 13 | `IDEA-ID` 与 `SOLUTION` 脱节 | 参数向导阶段锁同链 [core-concepts.md](core-concepts.md) |
 | 14 | 未跑 validate | [SKILL.md](../SKILL.md) 校验 |
+| 15 | 改边界的技术决策只在 ANALYSIS 落 ADR，或不链 CONTEXT | [sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)：实现向可新建；改边界回 SOLUTION |

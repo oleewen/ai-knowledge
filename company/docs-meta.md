@@ -25,6 +25,9 @@ child_directories:
   analysis:
     readme: "analysis/README.md"
     description: "公司级跨系统需求分析"
+  adr:
+    readme: "adr/README.md"
+    description: "公司层 ADR 正文与 CONTEXT 决策台账"
   system-SYSNAME:
     readme: "system-SYSNAME/README.md"
     description: "系统镜像槽位（占位 SYSNAME）"

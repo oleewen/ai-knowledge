@@ -15,7 +15,7 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-solution/scripts/validate
 ## 输出硬门禁（P0）
 
 - 对象=当前段；一次一段（除非 `F` 且已批确认意图）。
-- 写前澄清 / 推进环 `C/M/G/F`（无 `S`）/ 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[docs-simplify.md](../../references/docs-simplify.md)；细节 [gates.md](references/gates.md)。
+- 写前澄清 / 推进环 `C/M/G/F`（无 `S`）/ 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[docs-simplify.md](../../references/docs-simplify.md)、[sdx-adr-protocol.md](../../references/sdx-adr-protocol.md)；细节 [gates.md](references/gates.md)。
 
 ## 边界
 
@@ -38,6 +38,7 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-solution/scripts/validate
 | IDEA-ID / depth | [core-concepts.md](references/core-concepts.md) |
 | 原则 / 反模式 | [design-principles.md](references/design-principles.md)、[anti-patterns.md](references/anti-patterns.md) |
 | 易错 / 受众 / 终检 | [gotchas.md](gotchas.md)、[audience-and-language.md](references/audience-and-language.md)、[quality-checklist.md](references/quality-checklist.md) |
+| 技术决策 ADR | [sdx-adr-protocol.md](../../references/sdx-adr-protocol.md) |
 | 模板 | [solution-template.md](assets/solution-template.md) |
 | sdx 族结构 | [sdx-skill-skeleton.md](references/sdx-skill-skeleton.md) |
 

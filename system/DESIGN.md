@@ -34,7 +34,7 @@ title: 系统知识库设计
 | 层级 | 目录 | 职责 |
 | --- | --- | --- |
 | 根导航 | README / INDEX-GUIDE / index / docs-meta | 入口与索引 |
-| ADR | [adr/](adr/README.md) | 系统层决策正文；**无强制 EXAMPLE**；overview 应用视角末行链此，不进 `knowledge/*/chapters/` |
+| ADR | [adr/](adr/README.md) | 系统层决策正文 + `CONTEXT.md`；**无强制 EXAMPLE**；overview 应用视角末行链此，不进 `knowledge/*/chapters/` |
 | 架构 | `knowledge/` | 五视角 + [`overview/`](knowledge/overview/NAME-overview.md) 蒸馏缓冲区（非实体 SSOT；归档入 chapters；行序见 [knowledge-layout](../agent/references/knowledge-layout.md)；📎 按需章可不进 overview） |
 | SDD | solutions → analysis → requirements | 见下表 |
 | 槽位 | `application-{name}/` | docs-pull 镜像 |

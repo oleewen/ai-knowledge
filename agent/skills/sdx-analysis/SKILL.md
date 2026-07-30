@@ -14,7 +14,7 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-analysis/scripts/validate
 ## 输出硬门禁（P0）
 
 - 对象=当前段（`§2` 先独立确认 `### 概览`，再可细到单个 `FR`）；一次一段（除非 `F` 且已批确认意图；概览段 `F` 不得跳过写后确认）。
-- 写前澄清 / 推进环 `C/M/G/F`（无 `S`）/ 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[docs-simplify.md](../../references/docs-simplify.md)；细节 [gates.md](references/gates.md)。
+- 写前澄清 / 推进环 `C/M/G/F`（无 `S`）/ 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[docs-simplify.md](../../references/docs-simplify.md)、[sdx-adr-protocol.md](../../references/sdx-adr-protocol.md)；细节 [gates.md](references/gates.md)。
 - 无已共识 SOLUTION → 引导 [sdx-solution](../sdx-solution/SKILL.md)，不以本技能代写。
 - 上游 §6.1 里程碑不可用 → 硬停回补；MVP 与里程碑 1:1，不另起阶段。
 
@@ -39,6 +39,7 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-analysis/scripts/validate
 | IDEA-ID / depth | [core-concepts.md](references/core-concepts.md) |
 | 原则 / 反模式 | [design-principles.md](references/design-principles.md)、[anti-patterns.md](references/anti-patterns.md) |
 | 易错 / 受众 / 终检 | [gotchas.md](gotchas.md)、[audience-and-language.md](references/audience-and-language.md)、[quality-checklist.md](references/quality-checklist.md) |
+| 技术决策 ADR | [sdx-adr-protocol.md](../../references/sdx-adr-protocol.md) |
 | 模板 | [analysis-template.md](assets/analysis-template.md) |
 
 ## 最少输入

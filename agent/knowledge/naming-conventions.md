@@ -80,7 +80,7 @@
 - **元数据文件（目录索引）**：
   - **`application/`、`system/`、`company/` 根**：`docs-meta.md`（阶段子目录与 `knowledge/` 指针、`index`/`DESIGN` 等导航约定摘要）。
   - **`{DOC_DIR}/knowledge/` 根**：`knowledge-meta.md`（本树 SSOT 索引说明）。
-  - **治理与命名 SSOT**：`agent/knowledge/`（`naming-conventions.md`、`glossary.md`、`architecture-principles.md`、`adr-template.md`、`adr-guidelines.md`）；ADR 正文为 `application/adr/ADR-{序号}-{短标题}.md` 或 `system/adr/ADR-{序号}-{短标题}.md`（按决策范围）。
+  - **治理与命名 SSOT**：`agent/knowledge/`（`naming-conventions.md`、`glossary.md`、`architecture-principles.md`、`adr-template.md`、`adr-guidelines.md`）；ADR 正文为 `application/adr/`、`system/adr/` 或 `company/adr/` 下 `ADR-{序号}-{短标题}.md`（按决策范围）；台账 `CONTEXT.md`。
   - **`{DOC_DIR}/` 下阶段目录**：**solutions**、**analysis**、**requirements**、**changelogs** 约定收敛于各目录 `README.md`（无 `{dirname}_meta.yaml`）。`knowledge/` 五视角使用 `{perspective}-meta.md` + per-entity `{ID}.md`（OKF）；`index.md` 由扫描生成。legacy `*-entities.md` 已废弃。
   - **应用知识库根目录**（`applications/{app}/`）：`application_meta.yaml`（联邦单元根索引）；子目录同模式，如 `knowledge/knowledge-meta.md`、`requirements/README.md`、`changelogs/README.md`；命名与治理规则引用系统库 `agent/knowledge/`。
   - **系统库五视角**（`system/knowledge/{perspective}/`）：与应用 `knowledge/{perspective}/` 同构；`{perspective}-meta.md` 在视角根；实体为 `{ID}.md`。
@@ -95,7 +95,7 @@
 - **系统库 · solutions 阶段**（`system/solutions/`）：`README.md` 为阶段约定入口；根目录平铺 `SOLUTION-{IDEA-ID}.md`；`archive/` 归档。
 - **系统库 · analysis 阶段**（`system/analysis/`）：`README.md` 为阶段约定入口；根目录平铺 `ANALYSIS-{IDEA-ID}.md`。
 - **系统库 · changelogs**（`system/changelogs/`）：`README.md` 为阶段约定入口；`CHANGE-LOG.md`（变更聚合）；`INDEXING-LOG.md`（索引运行日志）。
-- **ADR 落盘**：结构见 [adr-guidelines.md](adr-guidelines.md) 与 [adr-template.md](adr-template.md)；正文目录为 `application/adr/` 或 `system/adr/`。
+- **ADR 落盘**：结构见 [adr-guidelines.md](adr-guidelines.md) 与 [adr-template.md](adr-template.md)；正文目录为 `application/adr/`、`system/adr/` 或 `company/adr/`；SDX 运行时见 [sdx-adr-protocol.md](../references/sdx-adr-protocol.md)。
 
 ### OKF concept 路径与 type 映射
 

@@ -32,7 +32,7 @@ child_directories:
     description: "CHANGE-LOG.md、INDEXING-LOG.md"
   adr:
     readme: "adr/README.md"
-    description: "应用层 ADR（ADR-{序号}-{标题}.md）"
+    description: "应用层 ADR（ADR-{序号}-{标题}.md）+ CONTEXT 决策台账"
 
 child_files:
   - "README.md"

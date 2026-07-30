@@ -10,6 +10,7 @@ okf_version: 0.1
 
 ### 子目录
 
+* [adr](adr/README.md)
 * [analysis](analysis/README.md)
 * [changelogs](changelogs/README.md)
 * [knowledge](knowledge/README.md)

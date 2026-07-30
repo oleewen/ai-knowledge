@@ -1,6 +1,9 @@
 # ADR 编写约定
 
-架构决策记录（ADR）的结构、状态与文件命名约定。正文按决策范围落盘于 `application/adr/`（应用层）或 `system/adr/`（系统层）。
+架构决策记录（ADR）的结构、状态与文件命名约定。正文按决策范围落盘于 `application/adr/`、`system/adr/` 或 `company/adr/`。
+
+决策台账：各层 `adr/CONTEXT.md`（与导航用 `index.md` 并存）。  
+**SDX 运行时**（何时写、与 SOLUTION/ANALYSIS 如何引用）：[sdx-adr-protocol.md](../references/sdx-adr-protocol.md)。
 
 ## 文件命名
 

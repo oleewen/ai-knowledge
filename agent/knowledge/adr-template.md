@@ -28,4 +28,4 @@
 
 ---
 
-*ADR 编号与文件名格式：`ADR-{序号}-{短标题}.md`；应用层落盘于 `application/adr/`，系统层落盘于 `system/adr/`，例如 `ADR-002-api-versioning.md`。*
+*ADR 编号与文件名格式：`ADR-{序号}-{短标题}.md`；按范围落盘于 `application/adr/`、`system/adr/` 或 `company/adr/`，例如 `ADR-002-api-versioning.md`。决策索引见同目录 `CONTEXT.md`；SDX 运行时见 [sdx-adr-protocol.md](../references/sdx-adr-protocol.md)。*

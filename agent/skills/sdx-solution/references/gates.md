@@ -12,6 +12,7 @@
 - [intent-clarify.md](../../../references/intent-clarify.md) — 写前意图澄清
 - [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) — 段落推进环 / `C·M·G·F` / 重开 / 前文回改（**`sdx-*` 无 `S`**）
 - [grilling-skill.md](../../../references/grilling-skill.md) — 写后烤干能力
+- [sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md) — 技术决策落 ADR / CONTEXT
 
 主线口令：`澄清 → 生成 → 烤干`。
 
@@ -43,7 +44,14 @@
 
 - 业务目标、范围 / 非范围、承诺口径
 - 取舍、风险、里程碑、切换方案（阶段骨架在 SOLUTION；`MVP-n`/FR 拆解归 ANALYSIS）
+- **技术/架构选型**（落 ADR；见 [sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)）
 - 术语定义、冲突化解策略
+
+---
+
+## 技术决策推进门禁
+
+烤干收敛后、用户选 **C** 前：本段涉及的新技术决策须已写 `{DOC_DIR}/adr/ADR-*.md`、已登记 `CONTEXT.md`，SOLUTION §5.2 表后已链 CONTEXT；禁止残留 `ADR-待定`。业务取舍仍只写 §5.2 Q-n。
 
 ---
 

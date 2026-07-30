@@ -4,6 +4,7 @@ title: ADR 正文目录（应用层）
 ---
 # ADR 正文目录（应用层）
 
-应用层架构决策正文。命名与结构：[adr-guidelines](../../agent/knowledge/adr-guidelines.md) · [adr-template](../../agent/knowledge/adr-template.md)
+应用层架构决策正文。命名与结构：[adr-guidelines](../../agent/knowledge/adr-guidelines.md) · [adr-template](../../agent/knowledge/adr-template.md)。  
+决策台账：[CONTEXT.md](CONTEXT.md)。SDX 运行时：[sdx-adr-protocol](../../agent/references/sdx-adr-protocol.md)。
 
-系统层 ADR：[system/adr/README.md](../../system/adr/README.md)
+系统层 ADR：[system/adr/README.md](../../system/adr/README.md) · 公司层：[company/adr/README.md](../../company/adr/README.md)

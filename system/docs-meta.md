@@ -21,7 +21,7 @@ child_directories:
     description: "五视角架构；overview/=docs-distill·archive 缓冲"
   adr:
     readme: "adr/README.md"
-    description: "系统层 ADR 正文"
+    description: "系统层 ADR 正文 + CONTEXT 决策台账"
   application-APPNAME:
     readme: "application-APPNAME/README.md"
     description: "应用镜像槽位（占位 APPNAME）"

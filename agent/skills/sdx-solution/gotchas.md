@@ -14,6 +14,8 @@
 协议正文见 [unit-cycle-protocol.md](../../references/unit-cycle-protocol.md) 与 [intent-clarify.md](../../references/intent-clarify.md)（sdx 无 `S`）。本文件只补技能特有陷阱。
 
 - 当前段若存在 ≥2 条真实路径，须在**本段**内比选收口。
+- **业务**取舍 → §5.2 Q-n；**技术/架构** → ADR + CONTEXT（不入 Q-n）；见 [sdx-adr-protocol.md](../../references/sdx-adr-protocol.md)。
+- 选 **C** 前清 `ADR-待定`；写前查 CONTEXT，冲突停问。
 
 ## 输入与歧义
 

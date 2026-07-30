@@ -246,6 +246,39 @@ for file in "${FILES[@]}"; do
     success "${BASENAME}: 未发现明显技术语言"
   fi
 
+  # 7. 轻量 ADR / CONTEXT（有 ADR 引用或占位才验）
+  if grep -qE 'ADR-[0-9]+|ADR-待定' "${file}" 2>/dev/null; then
+    LAYER_ROOT="$(cd "$(dirname "${file}")/.." && pwd)"
+    CONTEXT_FILE="${LAYER_ROOT}/adr/CONTEXT.md"
+    if grep -qE 'adr/CONTEXT\.md|CONTEXT\.md' "${file}" 2>/dev/null; then
+      success "${BASENAME}: 已引用 CONTEXT.md"
+    else
+      warn "${BASENAME}: 出现 ADR 引用/占位，但未链 adr/CONTEXT.md（§5.2 表后）"
+    fi
+    if [[ -f "${CONTEXT_FILE}" ]]; then
+      success "${BASENAME}: CONTEXT.md 存在"
+      while IFS= read -r adr_id; do
+        [[ -z "${adr_id}" ]] && continue
+        if grep -qF "${adr_id}" "${CONTEXT_FILE}" 2>/dev/null; then
+          success "${BASENAME}: CONTEXT 已登记 ${adr_id}"
+        else
+          warn "${BASENAME}: CONTEXT 未登记 ${adr_id}"
+        fi
+        ADR_HITS=$(find "${LAYER_ROOT}/adr" -maxdepth 1 -name "${adr_id}-*.md" 2>/dev/null | wc -l | tr -d ' ')
+        if [[ "${ADR_HITS}" -gt 0 ]]; then
+          success "${BASENAME}: 找到 ${adr_id}-*.md"
+        else
+          warn "${BASENAME}: 未找到 ${LAYER_ROOT}/adr/${adr_id}-*.md"
+        fi
+      done < <(grep -oE 'ADR-[0-9]+' "${file}" 2>/dev/null | sort -u || true)
+    else
+      warn "${BASENAME}: 缺少 ${CONTEXT_FILE}"
+    fi
+    if grep -q 'ADR-待定' "${file}" 2>/dev/null; then
+      warn "${BASENAME}: 仍有 ADR-待定 占位，推进前须落盘"
+    fi
+  fi
+
   echo ""
 done
 

@@ -11,7 +11,7 @@
 - [ ] **§3**：§3.1–§3.5 落位或「不适用」
 - [ ] **§4**：阶段数=上游里程碑；§4.1–§4.3；依赖无环
 - [ ] **§5**：§5.1、§5.2 **R-n**
-- [ ] **§6**：§6.1–§6.4；§6.4 已逐项判定
+- [ ] **§6**：§6.1–§6.4；§6.2 含 CONTEXT/ADR（若有技术决策）；§6.4 已逐项判定
 
 ## 受众与语言
 
@@ -31,9 +31,10 @@
 - [ ] BR-n → FR-n
 - [ ] MVP → FR 列表；MVP ↔ SOLUTION §6.1 里程碑 1:1
 - [ ] R-n → 依赖或影响分析
+- [ ] 本轮技术决策：CONTEXT 已登记且 §6.2 可链到 ADR（见 [sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)）
 
 ## 格式
 
 - [ ] 文首 frontmatter 完整（id、title、version、status、created、updated、author、reviewers、parent、tags）
 - [ ] 六章与 [analysis-template.md](../assets/analysis-template.md) 一致
-- [ ] §6.1 术语；§6.2 SOLUTION / 知识库路径
+- [ ] §6.1 术语；§6.2 SOLUTION / 知识库路径 / 技术决策索引

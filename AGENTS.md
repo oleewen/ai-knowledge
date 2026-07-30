@@ -62,7 +62,7 @@
 | 应用 / 系统 / 公司 | [application/README.md](application/README.md)、[system/README.md](system/README.md)、[company/README.md](company/README.md) |
 | 元模型与贡献 | [application/DESIGN.md](application/DESIGN.md)、[application/CONTRIBUTING.md](application/CONTRIBUTING.md) |
 | 约定与 Slash 技能 | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/skills/README.md](agent/skills/README.md) |
-| 布局 / 澄清 / 推进 / 轻流程 / 烤干 / 受众 / 精简 | [knowledge-layout.md](agent/references/knowledge-layout.md)、[intent-clarify.md](agent/references/intent-clarify.md)、[unit-cycle-protocol.md](agent/references/unit-cycle-protocol.md)、[light-flow-actions.md](agent/references/light-flow-actions.md)、[grilling-skill.md](agent/references/grilling-skill.md)、[audience-and-language.md](agent/references/audience-and-language.md)、[docs-simplify.md](agent/references/docs-simplify.md) |
+| 布局 / 澄清 / 推进 / 轻流程 / 烤干 / 受众 / 精简 / SDX-ADR | [knowledge-layout.md](agent/references/knowledge-layout.md)、[intent-clarify.md](agent/references/intent-clarify.md)、[unit-cycle-protocol.md](agent/references/unit-cycle-protocol.md)、[light-flow-actions.md](agent/references/light-flow-actions.md)、[grilling-skill.md](agent/references/grilling-skill.md)、[audience-and-language.md](agent/references/audience-and-language.md)、[docs-simplify.md](agent/references/docs-simplify.md)、[sdx-adr-protocol.md](agent/references/sdx-adr-protocol.md) |
 | 初始化与 `.docsconfig` | [scripts/README.md](scripts/README.md) |
 | 根索引运行日志 | [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md) |
 | OKF | [docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) |

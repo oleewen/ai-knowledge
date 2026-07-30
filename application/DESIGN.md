@@ -40,7 +40,7 @@ title: 应用知识文档库 — 设计方案摘录
 | **analysis/** | `ANALYSIS-{IDEA-ID}.md` |
 | **requirements/** | `REQUIREMENT-{IDEA-ID}/`（规约可在包内 `specs/`） |
 | **changelogs/** | 变更与索引运维（可选） |
-| **adr/** | 应用层 ADR（`ADR-{序号}-{标题}.md`） |
+| **adr/** | 应用层 ADR（`ADR-{序号}-{标题}.md`）+ 决策台账 `CONTEXT.md` |
 
 ### 2.2 五视角（指针）
 
@@ -116,5 +116,5 @@ title: 应用知识文档库 — 设计方案摘录
 
 ## 4. ADR 与 ID 前缀
 
-- **ADR**：`application/adr/ADR-{序号}-{标题}.md`；模板 [adr-template.md](../agent/knowledge/adr-template.md)
+- **ADR**：`application/adr/ADR-{序号}-{标题}.md`；台账 `CONTEXT.md`；模板 [adr-template.md](../agent/knowledge/adr-template.md)；SDX 运行时 [sdx-adr-protocol.md](../agent/references/sdx-adr-protocol.md)
 - **前缀**：BD、BSD、BC、AGG、AB、CAP、PL、PM、FT、UC、SYS、APP、MS、API、MDG、DS、ENT、TPL、TSD、MW、CMP — 全文 [naming-conventions.md](../agent/knowledge/naming-conventions.md)

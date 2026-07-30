@@ -12,6 +12,7 @@
 - 写前意图澄清：[intent-clarify.md](../../../references/intent-clarify.md)
 - 段落推进环 / `C·M·G·F` / 重开 / 前文回改：[unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)（**无 `S`**）
 - 写后烤干：[grilling-skill.md](../../../references/grilling-skill.md)
+- 技术决策落 ADR / CONTEXT：[sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)
 
 **公司库**（`KNOWLEDGE_TYPE=company`）：上游为 `company/solutions/SOLUTION-*.md`；分析须明确跨系统功能归属、协作依赖与残余风险；交付物落在 `company/analysis/`，下游 `company/requirements/` 再承接 PRD/ASD/DSD/TDD。
 
@@ -66,6 +67,7 @@
 | --- | --- |
 | 终稿 | `{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md` |
 | 公司库终稿 | `company/analysis/ANALYSIS-{IDEA-ID}.md` |
+| 技术决策 | `{DOC_DIR}/adr/ADR-*.md` + `CONTEXT.md`（见 [sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)） |
 | 结构校验 | `../scripts/validate-analysis.sh` |
 
 ---
@@ -94,6 +96,8 @@
 - FR 段可同步改对应概览行；**§2 整章收口**须强制对齐概览与 FR 正文
 - §4：继承上游里程碑骨架 + 挂 FR / 依赖；不另造阶段与验收口径
 - 当前段存在 `>=2` 条真实分析路径时，先段内比选再收敛
+- **技术/架构**选型按 [sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)：实现向可新建 ADR；改边界/集成硬停回 SOLUTION；引用落 §6.2
+- 烤干收敛后、选 **C** 前：本段新技术决策须已落盘且占位已清
 - 动作字母仅 `C/M/G/F`（无 `S`）
 - grilling fallback 见 [grilling-skill.md](../../../references/grilling-skill.md)
 

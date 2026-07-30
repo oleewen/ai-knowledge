@@ -177,8 +177,15 @@
           "id": "section-cycle",
           "name": "当前段收口",
           "type": "must_include",
-          "check": "须体现多方案取舍在当前段内完成（写入 §5.2 问题决策），再由用户决定是否推进。",
+          "check": "须体现多方案取舍在当前段内完成：业务取舍写入 §5.2 问题决策；技术/架构选型落 ADR + CONTEXT（不入 Q-n），再由用户决定是否推进。",
           "priority": "P0"
+        },
+        {
+          "id": "adr-tech-gate",
+          "name": "技术决策 ADR",
+          "type": "must_include",
+          "check": "若涉及技术/架构选型，须体现烤干收敛后、选 C 前落 ADR 与 CONTEXT，或引用 sdx-adr-protocol / adr/CONTEXT。",
+          "priority": "P1"
         },
         {
           "id": "boundary-routing",

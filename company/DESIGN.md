@@ -36,6 +36,7 @@ title: 公司知识库设计
 | 企业架构 | `knowledge/` | 五视角治理叙事；[`overview/`](knowledge/overview/NAME-overview.md) = extract/archive/tag 缓冲区（**非** docs-distill） |
 | 方案 | `solutions/` | 跨系统 SOLUTION → `analysis/` |
 | 分析 | `analysis/` | 跨系统 ANALYSIS → 各系统 `requirements/` |
+| ADR | `adr/` | 公司层跨系统决策正文 + `CONTEXT.md` |
 | 槽位 | `system-{name}/` | 系统镜像入口 |
 | 清单 | `knowledge-links.yaml` | 建联与同步编排（可空） |
 | 运维 | `changelogs/` | CHANGE-LOG / INDEXING-LOG |
