@@ -186,6 +186,14 @@ for file in "${FILES[@]}"; do
   done
   info "${BASENAME}: 模板小节 ${SUB_COUNT}/${SUB_TOTAL} 个标题命中"
 
+  if grep -qF '### 6.1 关键里程碑' "${file}" 2>/dev/null; then
+    if grep -qE 'M[0-9]+（[^）]+）|M[0-9]+\([^)]+\)' "${file}" 2>/dev/null; then
+      success "${BASENAME}: 发现里程碑形如 M{n}（短名）"
+    else
+      warn "${BASENAME}: 未发现 M{n}（短名）写法（§6.1 模板要求）"
+    fi
+  fi
+
   # 4. 空章节检测（有章节标题但无实质内容，且未标注「不适用」或「待补充」）
   EMPTY_SECTION_COUNT=0
   TOTAL_LINES=$(wc -l < "${file}" | tr -d ' ')

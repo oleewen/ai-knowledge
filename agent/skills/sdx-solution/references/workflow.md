@@ -98,6 +98,6 @@
 
 ## 整体验证与质量基线
 
-`F` 或全部段完成后，至少检查：章节完整性、术语一致、编号连续（`G-n` / `C-n` / `R-n` / `Q-n`）、跨段无未解释矛盾、frontmatter 完整、正文业务可读且不混入实现级细节。§6.1 为阶段骨架（覆盖范围可落到能力）；`MVP-n` 编号与 FR 拆解归 ANALYSIS（1:1 映射，不另起阶段）。
+`F` 或全部段完成后，至少检查：章节完整性、术语一致、编号连续（`G-n` / `C-n` / `R-n` / `Q-n` / `M{n}`）、跨段无未解释矛盾、frontmatter 完整、正文业务可读且不混入实现级细节。§6.1 为范围骨架（`M{n}（短名）`；覆盖范围可落到能力）；ANALYSIS 概览抄 `M{n}`，`MVP{n}` 与 FR 挂载在 ANALYSIS §4（与里程碑不硬对齐）。
 
 终检对齐 [quality-checklist.md](quality-checklist.md)；收口前跑 `validate-solution.sh`。

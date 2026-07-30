@@ -43,7 +43,7 @@
 改变以下任一项时，须先给结论 / 推荐 / 数字选项，用户确认前不得修订：
 
 - 业务目标、范围 / 非范围、承诺口径
-- 取舍、风险、里程碑、切换方案（阶段骨架在 SOLUTION；`MVP-n`/FR 拆解归 ANALYSIS）
+- 取舍、风险、里程碑、切换方案（阶段骨架在 SOLUTION：`M{n}（短名）`；ANALYSIS 概览抄整串，`MVP{n}`/FR 挂载归 §4）
 - **技术/架构选型**（落 ADR；见 [sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)）
 - 术语定义、冲突化解策略
 
