@@ -16,9 +16,11 @@
 | 9 | 仅 `§2/§4` 才做多方案 | 任一当前段 `>=2` 条真实路径都应段内比选 |
 | 10 | §1–§5、§6.1–§6.2 堆工程名 | 需求分析阶段保持业务语；线索收 `§6.3` |
 | 11 | §6.4 假勾 | [quality-checklist.md](quality-checklist.md) 逐项自检 |
-| 12 | MVP 无价值、另起阶段或依赖成环 | 对齐上游里程碑 1:1；业务价值问句 + `§4.3` 验环 |
+| 12 | MVP 无价值或依赖成环 | 业务价值问句 + `§4.3` 验环；个数 ≈ 里程碑，偏离须说明 |
 | 12b | 跳过 `### 概览` 直接写 FR / 概览 `F` 冲过写后确认 | [gates.md](gates.md) 概览门禁 |
-| 12c | §6.1 不可用仍自拟 MVP 骨架 | 硬停回补 SOLUTION |
+| 12c | §6.1 不可用仍自拟里程碑骨架拆 FR | 硬停回补 SOLUTION |
+| 12d | 概览「所属里程碑」写 `MVP{n}` / 多里程碑 / 空值 / 非 `M{n}（短名）` | 抄上游整串；一 FR 一里程碑；FR→MVP 到 §4 |
+| 12f | 需求名称 >30 / 概要 >60，或 FR 标题 ≠ 概览名称 | Unicode 码点计；烤干压缩；标题与概览同串 |
 | 13 | `IDEA-ID` 与 `SOLUTION` 脱节 | 参数向导阶段锁同链 [core-concepts.md](core-concepts.md) |
 | 14 | 未跑 validate | [SKILL.md](../SKILL.md) 校验 |
 | 15 | 改边界的技术决策只在 ANALYSIS 落 ADR，或不链 CONTEXT | [sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)：实现向可新建；改边界回 SOLUTION |

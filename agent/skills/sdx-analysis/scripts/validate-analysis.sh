@@ -6,7 +6,8 @@ set -euo pipefail
 # DOC_ROOT：resolve_repo_doc_root（.docsconfig）；先 config-bootstrap.sh
 #
 # 要点：文首 frontmatter、六章、`### FR-`、小节标题、FR/BR/R/MVP、概览「需求概要」、
-#       所属 MVP 形如 MVP-n（…）、与 SOLUTION 关联；
+#       概览列「所属里程碑」（非「所属 MVP」）、需求名称≤30 / 概要≤60、与 SOLUTION 关联；
+#       MVP{n}（…）属 §4，不作概览通过条件；
 #       不校验会话 spec、CONFIRMED、HTML gate 或写前 hook。
 
 TARGET_FILE=""
@@ -179,29 +180,110 @@ for file in "${FILES[@]}"; do
   FR_COUNT=$(grep -cE 'FR-[0-9]{3}|FR-[0-9][0-9]' "${file}" 2>/dev/null || true)
   BR_COUNT=$(grep -c 'BR-[0-9]' "${file}" 2>/dev/null || true)
   R_COUNT=$(grep -c 'R-[0-9]' "${file}" 2>/dev/null || true)
-  MVP_COUNT=$(grep -c 'MVP-[0-9]' "${file}" 2>/dev/null || true)
+  MVP_COUNT=$(grep -cE 'MVP[0-9]+' "${file}" 2>/dev/null || true)
 
-  info "${BASENAME}: FR 引用=${FR_COUNT} BR-n=${BR_COUNT} R-n=${R_COUNT} MVP-n=${MVP_COUNT}"
+  info "${BASENAME}: FR 引用=${FR_COUNT} BR-n=${BR_COUNT} R-n=${R_COUNT} MVP{n}=${MVP_COUNT}"
 
   if ! grep -qE '### FR-[0-9]' "${file}" 2>/dev/null; then
     warn "${BASENAME}: 未发现「### FR-n」功能需求分节标题"
   fi
 
   if [[ ${MVP_COUNT} -eq 0 ]]; then
-    warn "${BASENAME}: 未发现 MVP 阶段编号 (MVP-n)"
+    warn "${BASENAME}: 未发现 MVP 阶段编号 (MVP{n})"
   fi
 
-  # 概览表：需求概要列 + 所属 MVP 形如 MVP-n（…）
+  # 概览表：需求概要列 + 所属里程碑列（禁「所属 MVP」；MVP{n} 不作概览通过条件）
   if grep -qF '### 概览' "${file}" 2>/dev/null; then
     if grep -qF '需求概要' "${file}" 2>/dev/null; then
       success "${BASENAME}: 概览含「需求概要」列"
     else
       warn "${BASENAME}: 概览缺少「需求概要」列（模板要求）"
     fi
-    if grep -qE 'MVP-[0-9]+（[^）]+）|MVP-[0-9]+\([^)]+\)' "${file}" 2>/dev/null; then
-      success "${BASENAME}: 发现所属 MVP 形如 MVP-n（里程碑名）"
+    if grep -qF '所属里程碑' "${file}" 2>/dev/null; then
+      success "${BASENAME}: 概览含「所属里程碑」列"
     else
-      warn "${BASENAME}: 未发现 MVP-n（里程碑名）写法（建议对齐 SOLUTION §6.1）"
+      warn "${BASENAME}: 概览缺少「所属里程碑」列（模板要求）"
+    fi
+    if grep -qF '所属 MVP' "${file}" 2>/dev/null; then
+      warn "${BASENAME}: 概览仍用「所属 MVP」（应改为「所属里程碑」；格内禁 MVP{n}）"
+    fi
+    if grep -qE 'M[0-9]+（[^）]+）|M[0-9]+\([^)]+\)' "${file}" 2>/dev/null; then
+      success "${BASENAME}: 发现所属里程碑形如 M{n}（短名）"
+    else
+      warn "${BASENAME}: 未发现 M{n}（短名）写法（建议对齐 SOLUTION §6.1）"
+    fi
+
+    # 需求名称 ≤30、需求概要 ≤60（Unicode 码点；优先 python3）
+    if ! command -v python3 >/dev/null 2>&1; then
+      warn "${BASENAME}: 未找到 python3，跳过需求名称/概要字数校验"
+    else
+      _in_overview=0
+      while IFS= read -r _line || [[ -n "${_line}" ]]; do
+        if [[ "${_line}" == '### 概览'* ]]; then
+          _in_overview=1
+          continue
+        fi
+        if [[ ${_in_overview} -eq 1 && "${_line}" =~ ^#{1,3}[[:space:]] ]]; then
+          break
+        fi
+        if [[ ${_in_overview} -eq 1 && "${_line}" =~ ^\|[[:space:]]*FR-[0-9]+ ]]; then
+          _rest="${_line#|}"
+          _id_cell="${_rest%%|*}"
+          _rest="${_rest#*|}"
+          _name_cell="${_rest%%|*}"
+          _rest="${_rest#*|}"
+          _sum_cell="${_rest%%|*}"
+          _name_cell="${_name_cell#"${_name_cell%%[![:space:]]*}"}"
+          _name_cell="${_name_cell%"${_name_cell##*[![:space:]]}"}"
+          _sum_cell="${_sum_cell#"${_sum_cell%%[![:space:]]*}"}"
+          _sum_cell="${_sum_cell%"${_sum_cell##*[![:space:]]}"}"
+          _id_trim="${_id_cell#"${_id_cell%%[![:space:]]*}"}"
+          _id_trim="${_id_trim%"${_id_trim##*[![:space:]]}"}"
+          # 跳过模板空占位行
+          if [[ -z "${_name_cell}" && -z "${_sum_cell}" ]]; then
+            continue
+          fi
+          _name_len="$(python3 -c 'import sys; print(len(sys.argv[1]))' "${_name_cell}")"
+          _sum_len="$(python3 -c 'import sys; print(len(sys.argv[1]))' "${_sum_cell}")"
+          if [[ "${_name_len}" -gt 30 ]]; then
+            warn "${BASENAME}: ${_id_trim} 需求名称超长（${_name_len}>30）"
+          fi
+          if [[ "${_sum_len}" -gt 60 ]]; then
+            warn "${BASENAME}: ${_id_trim} 需求概要超长（${_sum_len}>60）"
+          fi
+        fi
+      done < "${file}"
+    fi
+  fi
+
+  # ### FR-n: 标题名称 ≤30
+  if command -v python3 >/dev/null 2>&1; then
+    while IFS= read -r _hline || [[ -n "${_hline}" ]]; do
+      if [[ "${_hline}" =~ ^###[[:space:]]+(FR-[0-9]+)[[:space:]]*:[[:space:]]*(.*)$ ]]; then
+        _fr_id="${BASH_REMATCH[1]}"
+        _fr_title="${BASH_REMATCH[2]}"
+        _fr_title="${_fr_title#"${_fr_title%%[![:space:]]*}"}"
+        _fr_title="${_fr_title%"${_fr_title##*[![:space:]]}"}"
+        # 跳过模板占位 {需求名称}
+        if [[ -z "${_fr_title}" || "${_fr_title}" == '{需求名称}' ]]; then
+          continue
+        fi
+        _title_len="$(python3 -c 'import sys; print(len(sys.argv[1]))' "${_fr_title}")"
+        if [[ "${_title_len}" -gt 30 ]]; then
+          warn "${BASENAME}: ${_fr_id} 标题名称超长（${_title_len}>30）"
+        fi
+      fi
+    done < "${file}"
+  fi
+  # §4 交付计划：期望 MVP{n}（短名）写法
+  if grep -qF '## 4. 交付计划' "${file}" 2>/dev/null; then
+    if grep -qE 'MVP[0-9]+（[^）]+）|MVP[0-9]+\([^)]+\)' "${file}" 2>/dev/null; then
+      success "${BASENAME}: §4 发现 MVP{n}（短名）写法"
+    else
+      warn "${BASENAME}: §4 未发现 MVP{n}（短名）写法"
+    fi
+    if grep -qE 'MVP-[0-9]' "${file}" 2>/dev/null; then
+      warn "${BASENAME}: §4 仍用 MVP-n 连字符写法（应改为 MVP{n}）"
     fi
   fi
 
