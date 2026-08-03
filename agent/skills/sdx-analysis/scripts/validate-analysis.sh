@@ -6,8 +6,8 @@ set -euo pipefail
 # DOC_ROOT：resolve_repo_doc_root（.docsconfig）；先 config-bootstrap.sh
 #
 # 要点：文首 frontmatter、六章、`### FR-`、小节标题、FR/BR/R/MVP、概览「需求概要」、
-#       概览列「所属里程碑」（非「所属 MVP」）、需求名称≤30 / 概要≤60、与 SOLUTION 关联；
-#       MVP{n}（…）属 §4，不作概览通过条件；
+#       概览列「所属模块」「所属里程碑」（非「所属 MVP」）、需求名称≤30 / 概要≤60、与 SOLUTION 关联；
+#       所属模块：非空、禁逗号多值（语义越权不验）；MVP{n}（…）属 §4，不作概览通过条件；
 #       不校验会话 spec、CONFIRMED、HTML gate 或写前 hook。
 
 TARGET_FILE=""
@@ -192,12 +192,17 @@ for file in "${FILES[@]}"; do
     warn "${BASENAME}: 未发现 MVP 阶段编号 (MVP{n})"
   fi
 
-  # 概览表：需求概要列 + 所属里程碑列（禁「所属 MVP」；MVP{n} 不作概览通过条件）
+  # 概览表：需求概要 + 所属模块 + 所属里程碑（禁「所属 MVP」；MVP{n} 不作概览通过条件）
   if grep -qF '### 概览' "${file}" 2>/dev/null; then
     if grep -qF '需求概要' "${file}" 2>/dev/null; then
       success "${BASENAME}: 概览含「需求概要」列"
     else
       warn "${BASENAME}: 概览缺少「需求概要」列（模板要求）"
+    fi
+    if grep -qF '所属模块' "${file}" 2>/dev/null; then
+      success "${BASENAME}: 概览含「所属模块」列"
+    else
+      warn "${BASENAME}: 概览缺少「所属模块」列（模板要求）"
     fi
     if grep -qF '所属里程碑' "${file}" 2>/dev/null; then
       success "${BASENAME}: 概览含「所属里程碑」列"
@@ -213,9 +218,9 @@ for file in "${FILES[@]}"; do
       warn "${BASENAME}: 未发现 M{n}（短名）写法（建议对齐 SOLUTION §6.1）"
     fi
 
-    # 需求名称 ≤30、需求概要 ≤60（Unicode 码点；优先 python3）
+    # 需求名称 ≤30、需求概要 ≤60；所属模块非空且无逗号多值（Unicode 码点；优先 python3）
     if ! command -v python3 >/dev/null 2>&1; then
-      warn "${BASENAME}: 未找到 python3，跳过需求名称/概要字数校验"
+      warn "${BASENAME}: 未找到 python3，跳过需求名称/概要/所属模块字数与格值校验"
     else
       _in_overview=0
       while IFS= read -r _line || [[ -n "${_line}" ]]; do
@@ -233,13 +238,19 @@ for file in "${FILES[@]}"; do
           _name_cell="${_rest%%|*}"
           _rest="${_rest#*|}"
           _sum_cell="${_rest%%|*}"
+          _rest="${_rest#*|}"
+          _="${_rest%%|*}" # 优先级列（跳过）
+          _rest="${_rest#*|}"
+          _mod_cell="${_rest%%|*}"
           _name_cell="${_name_cell#"${_name_cell%%[![:space:]]*}"}"
           _name_cell="${_name_cell%"${_name_cell##*[![:space:]]}"}"
           _sum_cell="${_sum_cell#"${_sum_cell%%[![:space:]]*}"}"
           _sum_cell="${_sum_cell%"${_sum_cell##*[![:space:]]}"}"
+          _mod_cell="${_mod_cell#"${_mod_cell%%[![:space:]]*}"}"
+          _mod_cell="${_mod_cell%"${_mod_cell##*[![:space:]]}"}"
           _id_trim="${_id_cell#"${_id_cell%%[![:space:]]*}"}"
           _id_trim="${_id_trim%"${_id_trim##*[![:space:]]}"}"
-          # 跳过模板空占位行
+          # 跳过模板空占位行（名称与概要皆空）
           if [[ -z "${_name_cell}" && -z "${_sum_cell}" ]]; then
             continue
           fi
@@ -250,6 +261,11 @@ for file in "${FILES[@]}"; do
           fi
           if [[ "${_sum_len}" -gt 60 ]]; then
             warn "${BASENAME}: ${_id_trim} 需求概要超长（${_sum_len}>60）"
+          fi
+          if [[ -z "${_mod_cell}" || "${_mod_cell}" == '{能力域短名}' ]]; then
+            warn "${BASENAME}: ${_id_trim} 所属模块为空（须业务能力域短名）"
+          elif [[ "${_mod_cell}" == *","* || "${_mod_cell}" == *"，"* ]]; then
+            warn "${BASENAME}: ${_id_trim} 所属模块含多值（一 FR 一模块；禁逗号分隔）"
           fi
         fi
       done < "${file}"

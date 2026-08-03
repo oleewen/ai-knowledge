@@ -1,7 +1,7 @@
 {
   "skill_name": "sdx-analysis",
   "version": "2.2.0",
-  "description": "评估 sdx-analysis 在「澄清 → 生成 → 烤干」流程下的触发、分流与段落推进协议表述；断言供 grader 评分。含 §2 概览独立确认（所属里程碑 M{n}）与 §4 MVP{n} 装载（不与里程碑硬对齐）。",
+  "description": "评估 sdx-analysis 在「澄清 → 生成 → 烤干」流程下的触发、分流与段落推进协议表述；断言供 grader 评分。含 §2 概览独立确认（所属模块 + 所属里程碑 M{n}）与 §4 MVP{n} 装载（不与里程碑硬对齐）。",
   "evals": [
     {
       "id": "analysis-trigger-001",
@@ -69,7 +69,7 @@
           "id": "mvp-milestone-align",
           "name": "里程碑与 MVP 时序",
           "type": "must_include",
-          "check": "须体现概览挂所属里程碑（M{n}）、§4 再划 MVP{n}（与里程碑不硬对齐），或 §2 概览先确认 FR 清单。",
+          "check": "须体现概览挂所属模块（一 FR 一）与所属里程碑（M{n}）、§4 再划 MVP{n}（与里程碑不硬对齐），或 §2 概览先确认 FR 清单。",
           "priority": "P1"
         },
         {
@@ -156,8 +156,8 @@
     {
       "id": "analysis-trigger-003b",
       "category": "should-trigger",
-      "prompt": "SOLUTION-CRM-01 已共识且 §6.1 有里程碑（形如 M1（短名））。请 /sdx-analysis 只写 `### 概览`：从方案拆 FR 清单供我确认，表要有需求概要，所属里程碑写成 §6.1 整串（不要写 MVP{n}）。",
-      "expected_output": "以 /sdx-analysis 为主路径：当前段为独立 `### 概览`；按 SOLUTION §6.1 覆盖范围拆 FR；概览含需求概要列与所属里程碑（M{n}（短名）、禁 MVP{n}）；写后烤干并等待写后 C；不得跳过概览确认去写 FR 正文；不得在概览划 MVP。",
+      "prompt": "SOLUTION-CRM-01 已共识且 §6.1 有里程碑（形如 M1（短名））。请 /sdx-analysis 只写 `### 概览`：从方案拆 FR 清单供我确认，表要有需求概要与所属模块（业务能力域、一 FR 一模块），所属里程碑写成 §6.1 整串（不要写 MVP{n}）。",
+      "expected_output": "以 /sdx-analysis 为主路径：当前段为独立 `### 概览`；按 SOLUTION §6.1 覆盖范围拆 FR（可独立验收 ∧ 一 FR 一模块）；概览含需求概要、所属模块与所属里程碑（M{n}（短名）、禁 MVP{n}）；写后烤干并等待写后 C；不得跳过概览确认去写 FR 正文；不得在概览划 MVP。",
       "assertions": [
         {
           "id": "overview-as-section",
@@ -170,14 +170,14 @@
           "id": "fr-from-milestone",
           "name": "按里程碑拆 FR",
           "type": "must_include",
-          "check": "须体现 FR 清单主料来自 SOLUTION §6.1 覆盖范围，所属里程碑原样承接上游 `M{n}（短名）`（一 FR 一里程碑）。",
+          "check": "须体现 FR 清单主料来自 SOLUTION §6.1 覆盖范围，所属里程碑原样承接上游 `M{n}（短名）`（一 FR 一里程碑）；拆分同时满足一 FR 一模块。",
           "priority": "P0"
         },
         {
           "id": "overview-summary-col",
-          "name": "需求概要列",
+          "name": "概览关键列",
           "type": "must_include",
-          "check": "须体现概览表含「需求概要」（一句话能力，≤60 字）与「所属里程碑」（`M{n}（短名）`、非空、禁 MVP{n}）；需求名称 ≤30 字；`### FR-n:` 标题与概览名称一致。",
+          "check": "须体现概览表含「需求概要」（一句话能力，≤60 字）、「所属模块」（业务能力域短名、一 FR 一模块）与「所属里程碑」（`M{n}（短名）`、非空、禁 MVP{n}）；需求名称 ≤30 字；`### FR-n:` 标题与概览名称一致；名称/概要不越模块职责。",
           "priority": "P0"
         },
         {
