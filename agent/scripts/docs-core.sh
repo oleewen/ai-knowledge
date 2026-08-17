@@ -42,7 +42,8 @@ strip_trailing_slash() {
 if [[ -n "${_AGENT_SHARED_DOCS_CONFIG_LOADED:-}" ]]; then
   return 0
 fi
-readonly _AGENT_SHARED_DOCS_CONFIG_LOADED=1
+# 不可 readonly：联邦仓会按 AGENT_* 再 source 另一份副本，须能 unset 后重新加载。
+_AGENT_SHARED_DOCS_CONFIG_LOADED=1
 
 readonly SDX_MIN_BASH_VERSION=5
 
@@ -415,7 +416,8 @@ docsconfig_read_into() {
   _doc=''; _repo=''; _ddir=''
   [[ -f "$path" ]] || return 1
 
-  local raw_doc='' raw_repo='' raw_ddir='' raw_ar='' raw_ads='' raw_kt=''
+  # 局部名须避开调用方 nameref 目标（如 raw_ar / AGENT_ROOT），否则 Bash 会写空调用方变量。
+  local _dc_raw_doc='' _dc_raw_repo='' _dc_raw_ddir='' _dc_raw_ar='' _dc_raw_ads='' _dc_raw_kt=''
   local line k v
   while IFS= read -r line || [[ -n "$line" ]]; do
     [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
@@ -428,31 +430,31 @@ docsconfig_read_into() {
           v="${v:1:${#v}-2}"
         fi
         case "$k" in
-          DOC_ROOT) raw_doc="$v" ;;
-          REPO_ROOT) raw_repo="$v" ;;
-          DOC_DIR) raw_ddir="$v" ;;
-          AGENT_ROOT) raw_ar="$v" ;;
-          AGENT_DIRS) raw_ads="$v" ;;
-          KNOWLEDGE_TYPE) raw_kt="$v" ;;
+          DOC_ROOT) _dc_raw_doc="$v" ;;
+          REPO_ROOT) _dc_raw_repo="$v" ;;
+          DOC_DIR) _dc_raw_ddir="$v" ;;
+          AGENT_ROOT) _dc_raw_ar="$v" ;;
+          AGENT_DIRS) _dc_raw_ads="$v" ;;
+          KNOWLEDGE_TYPE) _dc_raw_kt="$v" ;;
         esac
         ;;
     esac
   done <"$path"
 
-  [[ -n "$raw_doc" ]] && _doc="$(docsconfig_normalize_root_value "$raw_doc")"
-  [[ -n "$raw_repo" ]] && _repo="$(docsconfig_normalize_root_value "$raw_repo")"
-  _ddir="$raw_ddir"
+  [[ -n "$_dc_raw_doc" ]] && _doc="$(docsconfig_normalize_root_value "$_dc_raw_doc")"
+  [[ -n "$_dc_raw_repo" ]] && _repo="$(docsconfig_normalize_root_value "$_dc_raw_repo")"
+  _ddir="$_dc_raw_ddir"
 
   if (( $# >= 6 )); then
     local -n _aroot="${5:?}"
     local -n _adirs="${6:?}"
     _aroot=''
-    [[ -n "$raw_ar" ]] && _aroot="$(docsconfig_normalize_root_value "$raw_ar")"
-    _adirs="$raw_ads"
+    [[ -n "$_dc_raw_ar" ]] && _aroot="$(docsconfig_normalize_root_value "$_dc_raw_ar")"
+    _adirs="$_dc_raw_ads"
   fi
   if (( $# >= 7 )); then
     local -n _ktype="${7:?}"
-    _ktype="$raw_kt"
+    _ktype="$_dc_raw_kt"
   fi
   return 0
 }
@@ -580,6 +582,19 @@ sdx_resolve_docs_core_path() {
   return 1
 }
 
+# 同源（含符号链接同一 inode）则跳过；否则 unset 哨兵后 source。
+_sdx_docs_core_source_if_needed() {
+  local target="${1:?}"
+  local already="${2:-}"
+  [[ -f "$target" ]] || return 1
+  if [[ -n "$already" && -e "$already" && "$target" -ef "$already" ]]; then
+    return 0
+  fi
+  unset _AGENT_SHARED_DOCS_CONFIG_LOADED
+  # shellcheck source=/dev/null
+  source "$target"
+}
+
 sdx_source_docs_core_from_layout() {
   local link_config_dir="${1:?}"
   local core bootstrap_used=''
@@ -603,16 +618,16 @@ sdx_source_docs_core_from_layout() {
     done
   fi
   if [[ -n "$bootstrap_used" && -f "$bootstrap_used" ]]; then
-    unset _AGENT_SHARED_DOCS_CONFIG_LOADED
-    # shellcheck source=/dev/null
-    source "$bootstrap_used"
+    if ! declare -f abs_path >/dev/null 2>&1; then
+      _sdx_docs_core_source_if_needed "$bootstrap_used"
+    fi
   elif ! declare -f abs_path >/dev/null 2>&1; then
     printf '错误: 未找到中央库 %s，且未安装 Agent scripts（~/.cursor/scripts/docs-core.sh）。\n' \
       "${link_config_dir}/../agent/scripts/docs-core.sh" >&2
     return 1
   fi
 
-  local repo_root cfg raw_ar raw_ads line v
+  local repo_root cfg _layout_ar _layout_ads line v
   repo_root="$(cd "$(dirname "${link_config_dir}")" && pwd)"
   cfg="${repo_root}/.docsconfig"
   if [[ ! -f "$cfg" ]]; then
@@ -621,19 +636,19 @@ sdx_source_docs_core_from_layout() {
     return 1
   fi
 
-  raw_ar=''
-  raw_ads=''
+  _layout_ar=''
+  _layout_ads=''
   if declare -f docsconfig_read_into >/dev/null 2>&1; then
     local _cfg_dr _cfg_rr _cfg_dd
-    docsconfig_read_into "$cfg" _cfg_dr _cfg_rr _cfg_dd raw_ar raw_ads || return 1
+    docsconfig_read_into "$cfg" _cfg_dr _cfg_rr _cfg_dd _layout_ar _layout_ads || return 1
   else
     local v
     while IFS= read -r line || [[ -n "$line" ]]; do
       [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
       case "$line" in
         AGENT_ROOT=*)
-          raw_ar="${line#*=}"
-          raw_ar="${raw_ar%$'\r'}"
+          _layout_ar="${line#*=}"
+          _layout_ar="${_layout_ar%$'\r'}"
           ;;
         AGENT_DIRS=*)
           v="${line#*=}"
@@ -641,28 +656,24 @@ sdx_source_docs_core_from_layout() {
           if [[ ${#v} -ge 2 && "${v:0:1}" == '"' && "${v: -1}" == '"' ]]; then
             v="${v:1:${#v}-2}"
           fi
-          raw_ads="$v"
+          _layout_ads="$v"
           ;;
       esac
     done <"$cfg"
   fi
 
   local ar_base='' resolved_core=''
-  if [[ -n "$raw_ar" ]]; then
-    ar_base="$(abs_path "$raw_ar")"
+  if [[ -n "$_layout_ar" ]]; then
+    ar_base="$(abs_path "$_layout_ar")"
     resolved_core="${ar_base}/scripts/docs-core.sh"
     if [[ -f "$resolved_core" ]]; then
-      if [[ -n "$bootstrap_used" && "$resolved_core" != "$bootstrap_used" ]]; then
-        unset _AGENT_SHARED_DOCS_CONFIG_LOADED
-      fi
-      # shellcheck source=/dev/null
-      source "$resolved_core"
+      _sdx_docs_core_source_if_needed "$resolved_core" "$bootstrap_used"
       return 0
     fi
   fi
 
   local d d_base
-  for d in $raw_ads; do
+  for d in $_layout_ads; do
     [[ -z "$d" ]] && continue
     d_base="$d"
     if [[ -n "$ar_base" && "$d_base" != /* && "$d_base" != "~"* ]]; then
@@ -670,11 +681,7 @@ sdx_source_docs_core_from_layout() {
     fi
     resolved_core="$(abs_path "$d_base")/scripts/docs-core.sh"
     if [[ -f "$resolved_core" ]]; then
-      if [[ -n "$bootstrap_used" && "$resolved_core" != "$bootstrap_used" ]]; then
-        unset _AGENT_SHARED_DOCS_CONFIG_LOADED
-      fi
-      # shellcheck source=/dev/null
-      source "$resolved_core"
+      _sdx_docs_core_source_if_needed "$resolved_core" "$bootstrap_used"
       return 0
     fi
   done
