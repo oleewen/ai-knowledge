@@ -375,7 +375,7 @@ layer_scope: system
 
 - parent: [SYS-EXAMPLE](/knowledge/application/SYS-EXAMPLE.md)
 - service_ids:
-  - [MS-EXAMPLE](/knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md)
+  - [MS-EXAMPLE](/knowledge/application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md)
 
 ## 跨视角
 
@@ -391,7 +391,7 @@ layer_scope: system
 """,
     ),
     (
-        "knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md",
+        "knowledge/application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md",
         """---
 type: Microservice
 title: 示例微服务

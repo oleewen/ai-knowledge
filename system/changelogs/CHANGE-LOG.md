@@ -6,6 +6,18 @@ title: CHANGE-LOG
 
 本文件为 `system/` 侧**维护性变更与文档聚合**的 Markdown 日志入口。
 
+## 2026-08-20
+
+### 变更摘要
+
+**system MS 改挂 parent APP 目录：**
+
+- 样例：`system/knowledge/application/APP-EXAMPLE/MS-EXAMPLE/`
+- `entity_relpath(bundle=system, MS)` 用 `parent_id`；缺则报错
+- 约定：`application-meta`、`naming-conventions`、`system/DESIGN.md`；application 层 MS 仍平铺
+
+<!-- change_time=2026-08-20 00:00:00 -->
+
 ## 2026-07-18
 
 ### 变更摘要

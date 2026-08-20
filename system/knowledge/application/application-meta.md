@@ -55,13 +55,13 @@ Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详�
 
 ## 5. 跨层路径映射（MS/API）
 
-MS 路径三层同构：`MS-{NAME}/MS-{NAME}.md`。APP 在 system 为目录锚点，在 application 可为视角根单文件。
+system MS 挂 APP：`APP-{NAME}/MS-{NAME}/MS-{NAME}.md`（`parent_id`）。application 层 MS 仍 `MS-{NAME}/MS-{NAME}.md`；APP 在 application 可为视角根单文件。
 
 | 实体 | system 路径 | application 路径 | 说明 |
 |------|-------------|-------------------|------|
 | SYS-EXAMPLE | `system/knowledge/application/SYS-EXAMPLE.md` | `application/knowledge/application/SYS-EXAMPLE.md` | company reference |
 | APP-EXAMPLE | `system/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md` | `application/knowledge/application/APP-EXAMPLE.md` | system SSOT；app 可为实例 |
-| MS-EXAMPLE | `system/knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md` | `application/knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md` | 同构；system SSOT |
+| MS-EXAMPLE | `system/knowledge/application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md` | `application/knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md` | system 挂 APP；application 平铺；system SSOT |
 | API-EXAMPLE-001 | （system 不登记） | `application/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md` | API 仅 application SSOT |
 
 **链接约定**：同 bundle 用 `/knowledge/...`；跨层（如 system→application API/TBL/MW/CMP）用仓库相对路径，勿写他层不存在的 bundle-absolute `/knowledge/...`。

@@ -269,7 +269,11 @@ def entity_relpath(
         if perspective == "application" and prefix == "APP":
             return f"knowledge/application/{full_id}/{full_id}.md"
         if perspective == "application" and prefix == "MS":
-            return f"knowledge/application/{full_id}/{full_id}.md"
+            if not parent_id:
+                raise ValueError(
+                    "entity_relpath: system MS requires parent_id (APP full_id)"
+                )
+            return f"knowledge/application/{parent_id}/{full_id}/{full_id}.md"
         if perspective == "data" and prefix == "MDG":
             return f"knowledge/data/{full_id}.md"
         if perspective == "technical" and prefix == "TSD":

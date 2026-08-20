@@ -86,7 +86,7 @@
   - **系统库五视角**（`system/knowledge/{perspective}/`）：与应用 `knowledge/{perspective}/` 同构；`{perspective}-meta.md` 在视角根；实体为 `{ID}.md`。
 - **系统库 · 业务视角**（`system/knowledge/business/`）：`business-meta.md`；`BD-{NAME}.md` 为 company reference；`BSD-{NAME}/` 起为系统 SSOT 树。
 - **系统库 · 产品视角**（`system/knowledge/product/`）：`product-meta.md`；`PL-{NAME}.md` 为 company reference；`PM-{NAME}/` 起为 PM→FT→FR→UC/BR。
-- **系统库 · 应用视角**（`system/knowledge/application/`）：`application-meta.md`；`SYS-{NAME}.md` 为 company reference；`APP-{NAME}/APP-{NAME}.md`；`MS-{NAME}/MS-{NAME}.md`（与 application 同构）。
+- **系统库 · 应用视角**（`system/knowledge/application/`）：`application-meta.md`；`SYS-{NAME}.md` 为 company reference；`APP-{NAME}/APP-{NAME}.md`；`APP-{NAME}/MS-{NAME}/MS-{NAME}.md`。
 - **系统库 · 数据视角**（`system/knowledge/data/`）：`data-meta.md`；`MDG-{NAME}.md` 为 company reference；`DS-{NAME}/` 含 DS/ENT。
 - **系统库 · 技术视角**（`system/knowledge/technical/`）：`technical-meta.md`；`TSD-{NAME}.md` 为系统 SSOT；`MW-{NAME}/` 可为 application MW 的 reference。
 - **公司层五视角**（`company/knowledge/{perspective}/`）：叙事 Markdown + `{perspective}-meta.md` + 公司级实体 `{ID}.md`（BD/CAP、PL、SYS、MDG、TPL）。

@@ -66,7 +66,7 @@
 |------|----|--------------|------|---------|
 | SYS | EXAMPLE |  | 示例系统边界 | `application/SYS-EXAMPLE.md` |
 | APP | EXAMPLE |  | 示例应用 | `application/APP-EXAMPLE/APP-EXAMPLE.md` |
-| MS | EXAMPLE |  | 示例微服务 | `application/MS-EXAMPLE/MS-EXAMPLE.md` |
+| MS | EXAMPLE |  | 示例微服务 | `application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md` |
 
 ---
 

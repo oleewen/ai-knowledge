@@ -2,7 +2,7 @@
 
 ## 子目录
 
-（无）
+* [MS-EXAMPLE](MS-EXAMPLE/index.md) - 示例微服务
 
 ## 目录文件
 

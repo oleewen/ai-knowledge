@@ -68,7 +68,7 @@ title: 系统知识库设计
 | BD（ref） | `knowledge/business/BD-{NAME}.md`（company SSOT：`company/knowledge/business/BD-{NAME}/`；`definition_scope: reference`） |
 | BSD→AB | `knowledge/business/BSD-{NAME}/…`（本层域树 SSOT） |
 | APP | `knowledge/application/APP-{NAME}/APP-{NAME}.md` |
-| MS | `knowledge/application/MS-{NAME}/MS-{NAME}.md` |
+| MS | `knowledge/application/APP-{NAME}/MS-{NAME}/MS-{NAME}.md`（`{parent_id}` 为 APP） |
 | MW（ref） | `knowledge/technical/MW-{NAME}/MW-{NAME}.md` → application SSOT |
 
 ### 章节 SSOT 继承

@@ -22,6 +22,6 @@ title: 应用架构
 ## 实体
 
 * 元数据：[application-meta.md](application-meta.md)
-* 样例：`SYS-EXAMPLE.md`（ref）· [APP-EXAMPLE/](APP-EXAMPLE/index.md) · [MS-EXAMPLE/](MS-EXAMPLE/index.md)
+* 样例：`SYS-EXAMPLE.md`（ref）· [APP-EXAMPLE/](APP-EXAMPLE/index.md)（内含 MS）
 
 对照：[company/knowledge/application](../../../company/knowledge/application/README.md)

@@ -118,8 +118,10 @@ def test_entity_relpath_company_tpl():
 
 def test_entity_relpath_system_ms_and_mw():
     assert (
-        okf_lib.entity_relpath("application", "MS-EXAMPLE", bundle="system")
-        == "knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md"
+        okf_lib.entity_relpath(
+            "application", "MS-EXAMPLE", parent_id="APP-EXAMPLE", bundle="system"
+        )
+        == "knowledge/application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md"
     )
     assert (
         okf_lib.entity_relpath("application", "APP-EXAMPLE", bundle="system")
@@ -130,6 +132,15 @@ def test_entity_relpath_system_ms_and_mw():
         == "knowledge/technical/MW-EXAMPLE/MW-EXAMPLE.md"
     )
     assert okf_lib.hierarchy_to_type("FR") == "Functional Requirement"
+
+
+def test_entity_relpath_system_ms_requires_parent():
+    try:
+        okf_lib.entity_relpath("application", "MS-EXAMPLE", bundle="system")
+    except ValueError as exc:
+        assert "parent_id" in str(exc)
+        return
+    raise AssertionError("expected ValueError when system MS parent_id missing")
 
 
 def test_entity_relpath_system_bd_at_perspective_root():
@@ -156,6 +167,7 @@ def main() -> None:
         test_entity_relpath_company_cap,
         test_entity_relpath_company_tpl,
         test_entity_relpath_system_ms_and_mw,
+        test_entity_relpath_system_ms_requires_parent,
         test_entity_relpath_system_bd_at_perspective_root,
     ]
     for fn in tests:

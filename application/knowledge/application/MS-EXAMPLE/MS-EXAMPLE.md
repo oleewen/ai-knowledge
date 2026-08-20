@@ -25,7 +25,7 @@ layer_scope: application
 
 ## 详细说明
 
-- 上游主定义：`system/knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md`（系统层 OKF SSOT）
+- 上游主定义：`system/knowledge/application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md`（系统层 OKF SSOT）
 - host_class: ExampleApiImpl
 - host_module: example-module
 - protocol: HTTP

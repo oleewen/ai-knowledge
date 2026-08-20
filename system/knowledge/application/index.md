@@ -5,7 +5,6 @@
 ## 子目录
 
 * [APP-EXAMPLE](APP-EXAMPLE/index.md) - 示例应用
-* [MS-EXAMPLE](MS-EXAMPLE/index.md) - 示例微服务
 * [chapters](chapters/index.md)
 
 ## 目录文件
