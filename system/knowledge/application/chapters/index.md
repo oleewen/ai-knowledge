@@ -23,6 +23,10 @@
 3. [application-domain-model.md](application-domain-model.md)
 4. [application-service-design.md](application-service-design.md)
 5. [application-domain-capability.md](application-domain-capability.md)
+6. [application-integration.md](application-integration.md)
+7. [application-inter-service.md](application-inter-service.md)
+8. [application-interface-management.md](application-interface-management.md)
+9. [application-multi-tenant-environment.md](application-multi-tenant-environment.md)
 
 ## 关联索引
 

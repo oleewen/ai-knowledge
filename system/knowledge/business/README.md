@@ -16,7 +16,7 @@ title: 业务架构
 | 业务术语 | [chapters/business-glossary.md](chapters/business-glossary.md) | 术语与概念模型 |
 | 业务流程 | [chapters/business-processes.md](chapters/business-processes.md) | 主责流程与能力映射 |
 | 能力地图 | [chapters/business-capability-map.md](chapters/business-capability-map.md) | 能力落地与成熟度 |
-| 规则策略 | [chapters/business-rules-and-strategies.md](chapters/business-rules-and-strategies.md) | 策略与合规（按需） |
+| 业务规则与策略 | [chapters/business-rules-and-strategies.md](chapters/business-rules-and-strategies.md) | 策略与合规（按需） |
 
 ## 实体
 

@@ -16,8 +16,11 @@ title: 应用架构
 | 领域模型 | [chapters/application-domain-model.md](chapters/application-domain-model.md) | BC/AGG 落地 |
 | 服务设计 | [chapters/application-service-design.md](chapters/application-service-design.md) | MS 拆分 |
 | 领域能力 | [chapters/application-domain-capability.md](chapters/application-domain-capability.md) | AB 与 SLA |
+| 集成架构 | [chapters/application-integration.md](chapters/application-integration.md) | 第三方与遗留集成（按需） |
+| 服务间交互 | [chapters/application-inter-service.md](chapters/application-inter-service.md) | 同步/异步协作（按需） |
+| 接口管理 | [chapters/application-interface-management.md](chapters/application-interface-management.md) | 内外 API 与版本（按需） |
+| 多租户多环境 | [chapters/application-multi-tenant-environment.md](chapters/application-multi-tenant-environment.md) | 租户隔离与环境（按需） |
 | ADR | [../../adr/README.md](../../adr/README.md) | 系统层决策（无强制 EXAMPLE） |
-| 集成 / 交互 / 接口 / 多租户 | chapters 下 📎 | 按需 |
 
 ## 实体
 

@@ -22,6 +22,9 @@
 3. [product-information-architecture.md](product-information-architecture.md)
 4. [product-feature.md](product-feature.md)
 5. [product-user-journeys.md](product-user-journeys.md)
+6. [product-release.md](product-release.md)
+7. [product-operations-support.md](product-operations-support.md)
+8. [product-multi-platform.md](product-multi-platform.md)
 
 ## 关联索引
 
