@@ -16,3 +16,5 @@
 | 与 docs-build / docs-upgrade 抢活 | 分流；上级 `SKILL.md` 边界 |
 | 确认书外扩写 | 先更确认书再获写前 `C`；[gates.md](gates.md) |
 | 步骤 5 前就硬删 overview | 按行+自检；索引壳优先；[gotchas.md](../gotchas.md) |
+| `[D]` 只清第三列不改目标章 | federation-spec + [workflow.md](workflow.md) 第三列 delta |
+| 归档后第三列仍留 delta/`[D]` | 回写 `—` 或索引壳 |

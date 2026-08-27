@@ -7,5 +7,6 @@
 3. **结构服从目标**：层级与体例以目标为准。  
 4. **冲突显式**：矛盾须分步裁决，勿静默合并。  
 5. **先读后写**：overview、目标章、同级体例读完再映射。  
-6. **契约对齐**：[AGENTS.md](../../../../AGENTS.md)、[CONVENTIONS.md](../../../rules/CONVENTIONS.md)。  
-7. **不替 docs-build**：不编造/批量维护实体 ID 与 KNOWLEDGE_INDEX 链字段。
+6. **delta 闭环**：第三列 delta 落目标章后回写 `—`；`[D]` 先删章节再清空。  
+7. **契约对齐**：[AGENTS.md](../../../../AGENTS.md)、[CONVENTIONS.md](../../../rules/CONVENTIONS.md)。  
+8. **不替 docs-build**：不编造/批量维护实体 ID 与 KNOWLEDGE_INDEX 链字段。

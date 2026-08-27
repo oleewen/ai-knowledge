@@ -19,6 +19,10 @@
 - **缺链** → 写入冲突清单并请用户决策，勿猜；可先对照 README 表行与章节 H2 排查。
 - 解析结果写入确认书，不单靠口头。
 
+## 第三列 delta
+
+overview **第三列**由 extract/distill 写入 delta 并标 A/U/D；archive **消费**后回写 `—`。`[D]` = 删除说明，须在目标章落实后再清空第三列。细则 [federation-spec.md](../../docs-distill/references/federation-spec.md)。
+
 ## 「来源—目标」简写
 
 先解析两端再读文件；`-`/空格/数字邻接易误切 → 用 `→`、`到` 或引号；详见 [gotchas.md](../gotchas.md)。
