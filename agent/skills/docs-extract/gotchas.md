@@ -17,9 +17,7 @@
 
 - **跳过写前意图澄清**：不得在未输出六项清单、未获写前 `C` 时写入或输出正式预览；见 [intent-clarify.md](../../references/intent-clarify.md)、[gates.md](references/gates.md)。
 - **dry-run 仍须澄清**：预览前也要意图澄清；烤干可针对预览结果。
-- **第三列**：提炼摘要，非粘贴长原文。
-- **A/U/D**：新增/实质改/删 须标对；无变化不加标。
-- **无命中章节**：禁止用 `—` 盖掉已有内容。
+- **第三列 / A/U/D**：[federation-spec.md](../../docs-distill/references/federation-spec.md)；无命中章节勿用 `—` 盖旧内容。
 - **写前**：读该节「应填内容 + 产出建议」。
 - **4.3 失败**：整体回滚，勿部分落盘。
 

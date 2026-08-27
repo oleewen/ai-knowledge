@@ -1,13 +1,13 @@
 {
   "skill_name": "docs-extract",
   "version": "3.1.0",
-  "description": "冒烟样本：参数向导、写前意图澄清、当前单元、dry-run、烤干、A/U/D 与语义确认；含 1 条负向分流。",
+  "description": "冒烟样本：参数向导、写前意图澄清、当前单元、dry-run 三分区、去重 delta、烤干、A/U/D 与语义确认；含 1 条负向分流。",
   "evals": [
     {
       "id": 1,
       "category": "should-trigger",
       "prompt": "帮我从 docs/design.md 和 docs/adr/ 这两个来源提炼业务知识，写进 system/knowledge/overview/billing-overview.md，先 dry-run 看看会命中哪些内容",
-      "expected_output": "docs-extract：收口 `--sources` 与 `--overview`；对 billing-overview 做写前意图澄清（六项清单 + 阶段横幅），写前 C 后 dry-run 只输出命中摘要与 A/U/D 预览；烤干收敛后停下等 C/M/G/S/F。",
+      "expected_output": "docs-extract：收口参数；写前澄清 + C 后 dry-run 三分区预览，不写第三列；federation-spec 去重；烤干后停等 C/M/G/S/F。",
       "files": [],
       "assertions": [
         {

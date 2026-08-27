@@ -9,7 +9,7 @@
 | 4.1 无命中仍 4.3 | 无命中则 CLOSE，不落盘；[workflow.md](workflow.md) |
 | overview 当 `--sources` | 只扫 sources；gotchas |
 | 关键词过宽、命中爆炸 | 收窄或分批；先 dry-run；gates |
-| 第三列整段粘贴源文 | [extract-spec.md](extract-spec.md) 提炼 |
+| 第三列贴原文或重复已覆盖要点 | [federation-spec.md](../../docs-distill/references/federation-spec.md) |
 | 4.3 失败留部分写入 | 回滚重试；workflow |
 | 无命中章节清空 | 保持原样；gotchas |
 | 第三列堆 `(来源：…)` | 删脚注，追溯放 spec；design-principles |

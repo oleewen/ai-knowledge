@@ -1,7 +1,7 @@
 ---
 name: docs-extract
 description: >
-  按段落关键词相关度从 `--sources` 提炼业务知识，写入 `--overview` 第三列（A/U/D）；
+  从 `--sources` 按关键词命中提炼，去重后仅将 delta 写入 `--overview` 第三列（A/U/D）；细则 federation-spec。
   支持 `--dry-run`，不写 `DISTILL-LOG`。
   用户提到 /docs-extract、提炼进 overview、从设计文档整理进知识库、sources 写第三列时，使用本技能。
   分流：应用上行蒸馏 → docs-distill；overview 归档 → docs-archive；INDEX → docs-indexing；SDD → 对应技能。
@@ -14,7 +14,8 @@ description: >
 
 - 当前单元：单个 `--overview` 目标 + 单批命中段落。
 - 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[docs-simplify.md](../../references/docs-simplify.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写入或输出正式预览结论；执行或预览后均须烤干，收敛后停等用户。
-- `--dry-run` 仍须写前澄清，只预览命中与 A/U/D 影响面，不写第三列；无命中时当前单元直接结束，禁止空写入。
+- `--dry-run`：三分区预览，不写第三列；无命中即结束单元。
+- **第三列**：去重后仅写 delta；[federation-spec.md](../docs-distill/references/federation-spec.md)。
 - **knowledge 引用边界**：写入 `*/knowledge/overview/**` 须遵守 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「业务 knowledge 引用边界」。可读 `--sources` 外源；落盘第三列不链源文件路径、不链下层 knowledge、禁手写跨 `DOC_DIR` 爬层（跨层写实体 ID）。违规能修则修，不明则停。
 
 ## 边界
@@ -49,7 +50,7 @@ description: >
 ## 产出
 
 - 正式：`--overview` 第三列 `A/U/D`
-- 预览：命中摘要与 `A/U/D` 影响面
+- 预览：三分区 dry-run 摘要（将写入 / 跳过已覆盖 / 无命中）
 - 收敛后动作见 [unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)（本技能有 `S`）
 
 ## 评测

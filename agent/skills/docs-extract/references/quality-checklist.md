@@ -15,7 +15,6 @@
 - [ ] 未把 overview 当源扫描
 - [ ] 命中量合理；代码块未当业务知识写入
 - [ ] 仅更新有命中章节；无命中保持原样
-- [ ] 写入前已读「应填内容 + 产出建议」
-- [ ] 第三列为提炼摘要；A/U/D 正确；无脚注堆叠
+- [ ] federation-spec 自检（去重、delta、A/U/D）
 - [ ] 失败已整体回滚
 - [ ] 已按 [audience-and-language.md](../../../references/audience-and-language.md) + 本地 [audience-and-language.md](audience-and-language.md) 通过烤干受众维 A/B/C/E
