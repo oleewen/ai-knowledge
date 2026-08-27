@@ -20,11 +20,14 @@
 
 ### 行为准则
 
-- **先读后写** · **最小变更** · **保持一致** · **不假设，要验证**
-- **响应**：尽量图形化/表格化；下一步须数字编号选项
-- **会话启动**：新开会话或 clear 后先执行 `/caveman`
-- **提交前确认**：未获明确同意不得 `git commit` / `git push`。见 [agent/rules/coding/git-guidelines.md](agent/rules/coding/git-guidelines.md)
-- **SSH 优先**：远程默认 SSH；`origin` 为 HTTPS 时静默改 SSH 并说明。见同上
+| 项 | 要求 |
+| --- | --- |
+| 先读后写 | 本文件 → [README.md](README.md) → [docs/index.md](docs/index.md) → 任务路径（架构序见 [docs/README.md](docs/README.md)） |
+| 最小变更 | 只改任务直接相关文件；匹配现有 Markdown 体例 |
+| 零幻觉 | 无落盘 INDEX 或未读路径，不写死为已核实事实；未覆盖见 INDEX §8 |
+| 响应形态 | 优先图形/表格/HTML；重点突出；默认允许 Visual Companion；下一步须数字编号快捷选项 |
+| 会话启动 | 每次新会话须先自动执行一次 `/caveman` Skill |
+| 沟通 | 简体中文；`git commit` 前提用户确认（默认不自动提交） |
 
 ### 沟通协议
 
