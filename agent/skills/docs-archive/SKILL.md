@@ -17,6 +17,7 @@ compatibility: Bash 5+；无专用校验脚本。
 - 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[docs-simplify.md](../../references/docs-simplify.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得落盘或回写 overview；本技能默认必须烤干，收敛后停等用户。
 - **确认书 = 意图澄清门禁**：批次级确认书收口即完成写前澄清；单元落盘前不再重复六项全清单，仅摘取本单元目标与路径。
 - overview 回写须保留行内副标题链接；若改为索引壳，也不得承载新业务事实。
+- **knowledge 引用边界**：写入 `*/knowledge/**` 须遵守 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「业务 knowledge 引用边界」。可读外源；落盘不链 knowledge 外文档、不链下层/槽位、禁手写跨 `DOC_DIR` 爬层路径（跨层写实体 ID）。违规能修则修（去链、路径→ID），不明则停。
 
 ## 边界
 

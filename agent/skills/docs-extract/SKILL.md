@@ -15,6 +15,7 @@ description: >
 - 当前单元：单个 `--overview` 目标 + 单批命中段落。
 - 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[docs-simplify.md](../../references/docs-simplify.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写入或输出正式预览结论；执行或预览后均须烤干，收敛后停等用户。
 - `--dry-run` 仍须写前澄清，只预览命中与 A/U/D 影响面，不写第三列；无命中时当前单元直接结束，禁止空写入。
+- **knowledge 引用边界**：写入 `*/knowledge/overview/**` 须遵守 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「业务 knowledge 引用边界」。可读 `--sources` 外源；落盘第三列不链源文件路径、不链下层 knowledge、禁手写跨 `DOC_DIR` 爬层（跨层写实体 ID）。违规能修则修，不明则停。
 
 ## 边界
 
