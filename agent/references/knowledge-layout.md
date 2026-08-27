@@ -29,7 +29,7 @@
 
 **表行真源**：同层 `overview/NAME-overview.md` 五视角表 ↔ 同层五视角 **README 表行**；副标题锚点与各章 `##` 标题对齐。
 
-**第三列规则**（A/U/D、禁止来源脚注）：详见 [docs-distill/references/federation-spec.md](../skills/docs-distill/references/federation-spec.md)。
+**第三列规则**（去重、delta、A/U/D）：[federation-spec.md](../skills/docs-distill/references/federation-spec.md)「规则（第三列）」。
 
 ---
 
