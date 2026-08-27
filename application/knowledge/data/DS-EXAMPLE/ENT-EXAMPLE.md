@@ -12,15 +12,15 @@ layer_scope: application
 ---
 ## 关系
 
-- parent: [DS-EXAMPLE](/knowledge/data/DS-EXAMPLE/DS-EXAMPLE.md)
+- parent: DS-EXAMPLE
 
 ## 跨视角
 
-- maps_to_aggregate_id: [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)
+- maps_to_aggregate_id: AGG-EXAMPLE
 
 ## 详细说明
 
-- 上游主定义：`system/knowledge/data/DS-EXAMPLE/ENT-EXAMPLE.md`（系统层 OKF SSOT）
+- 上游主定义：`DS-EXAMPLE`（系统层 OKF SSOT）
 - logical_name: ExampleEntity
 - physical_table: example_table
 - definition_scope: reference

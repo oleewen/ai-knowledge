@@ -23,8 +23,8 @@
 
 ## 关联索引
 
-- 上一级索引：[../index.md](../index.md)
-- 上一级说明：[../README.md](../README.md)
+- 上一级索引：index.md（库外）
+- 上一级说明：README.md（库外）
 
 ---
 
@@ -99,7 +99,7 @@
 
 ---
 
-> 公司级 **TPL-*** 不在本索引登记（见 `company/knowledge/technical/`）。本层登记 **TSD/MDG** reference 与 **API/TBL/MW/CMP** SSOT。
+> 公司级 **TPL-*** 不在本索引登记（见 ）。本层登记 **TSD/MDG** reference 与 **API/TBL/MW/CMP** SSOT。
 
 ---
 

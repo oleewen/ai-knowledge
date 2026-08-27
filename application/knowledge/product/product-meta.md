@@ -3,7 +3,7 @@ type: Perspective Meta
 title: 产品视角元数据（application/knowledge/product）
 ---
 
-应用侧产品版图（PL→PM→FT→FR→UC/BR）实体登记与交互映射元数据。实例索引 [../index.md](../index.md)（§2，扫描生成；实体 `{ID}.md` = SSOT）。
+应用侧产品版图（PL→PM→FT→FR→UC/BR）实体登记与交互映射元数据。实例索引 [index.md](../index.md)（§2，扫描生成；实体 `{ID}.md` = SSOT）。
 
 ## 1. 概览
 
@@ -12,7 +12,7 @@ title: 产品视角元数据（application/knowledge/product）
 | meta_id | `DIR-KNOWLEDGE-PRODUCT` |
 | 视角 | product |
 | 层级范围 | application |
-| 说明 | 产品版图；公司级 PL ∈ `company/knowledge/product/` 首次定义，系统层自 PM 起首次定义，本层承接 API / 验收映射与实例登记（示例含 PL/PM/FT/FR/UC/BR；另有 BP 叙事文件）。 |
+| 说明 | 产品版图；公司级 PL ∈  首次定义，系统层自 PM 起首次定义，本层承接 API / 验收映射与实例登记（示例含 PL/PM/FT/FR/UC/BR；另有 BP 叙事文件）。 |
 | entities_shape | 实体 `{ID}.md`（OKF）；索引见 KNOWLEDGE_INDEX §2 |
 
 ## 2. 层级链
@@ -39,7 +39,7 @@ title: 产品视角元数据（application/knowledge/product）
 
 ## 4. 字段（OKF）
 
-**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2。
+**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。
 
 **正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。
 
@@ -75,6 +75,8 @@ title: 产品视角元数据（application/knowledge/product）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 人类可读说明 |
-| [../index.md](../index.md) | §2 产品视角 + 五视角实例索引（扫描生成） |
+| [index.md](../index.md) | §2 产品视角 + 五视角实例索引（扫描生成） |
+| PL-* | 公司层 SSOT（reference） |
+| PM-*, FT-*, FR-*, UC-*, BR-* | 系统层 SSOT（reference） |
 
 **索引**：`readme_index_table: true`；变更 ID 时同步 README、index.md（按需）。

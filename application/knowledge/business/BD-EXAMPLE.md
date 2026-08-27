@@ -13,7 +13,7 @@ layer_scope: application
 ## 关系
 
 - children:
-  - [BSD-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md)
+  - BSD-EXAMPLE
 
 ## 跨视角
 
@@ -21,7 +21,7 @@ layer_scope: application
 
 ## 详细说明
 
-- 上游主定义：`company/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md`（公司层 OKF SSOT）
+- 上游主定义：`BD-EXAMPLE`（公司层 OKF SSOT）
 - strategic_classification: supporting_domain
 - definition_scope: reference
 

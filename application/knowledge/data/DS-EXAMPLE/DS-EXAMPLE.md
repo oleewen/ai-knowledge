@@ -12,17 +12,17 @@ layer_scope: application
 ---
 ## 关系
 
-- parent: [MDG-EXAMPLE](/knowledge/data/MDG-EXAMPLE.md)
+- parent: MDG-EXAMPLE
 - children:
-  - [ENT-EXAMPLE](/knowledge/data/DS-EXAMPLE/ENT-EXAMPLE.md)
+  - ENT-EXAMPLE
 
 ## 跨视角
 
-- owned_by_app_id: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE.md)
+- owned_by_app_id: APP-EXAMPLE
 
 ## 详细说明
 
-- 上游主定义：`system/knowledge/data/DS-EXAMPLE/DS-EXAMPLE.md`（系统层 OKF SSOT）
+- 上游主定义：`DS-EXAMPLE`（系统层 OKF SSOT）
 - config_key: example_config_key
 - definition_scope: reference
 

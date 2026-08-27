@@ -12,12 +12,12 @@ layer_scope: application
 ---
 ## 关系
 
-- parent: [TSD-EXAMPLE](/knowledge/technical/TSD-EXAMPLE.md)
-- parent_tsd_id: [TSD-EXAMPLE](/knowledge/technical/TSD-EXAMPLE.md)
+- parent: TSD-EXAMPLE
+- parent_tsd_id: TSD-EXAMPLE
 
 ## 跨视角
 
-- bound_app_id: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE.md)
+- bound_app_id: APP-EXAMPLE
 
 ## 详细说明
 

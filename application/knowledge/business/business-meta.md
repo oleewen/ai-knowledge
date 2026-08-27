@@ -3,7 +3,7 @@ type: Perspective Meta
 title: 业务视角元数据（application/knowledge/business）
 ---
 
-应用侧 DDD 业务版图（BD→BSD→BC→AGG→AB）实体登记与实现映射元数据。实例索引 [../index.md](../index.md)（§1，扫描生成；实体 `{ID}.md` = SSOT）。
+应用侧 DDD 业务版图（BD→BSD→BC→AGG→AB）实体登记与实现映射元数据。实例索引 [index.md](../index.md)（§1，扫描生成；实体 `{ID}.md` = SSOT）。
 
 ## 1. 概览
 
@@ -12,7 +12,7 @@ title: 业务视角元数据（application/knowledge/business）
 | meta_id | `DIR-KNOWLEDGE-BUSINESS` |
 | 视角 | business |
 | 层级范围 | application |
-| 说明 | DDD 业务版图；公司级 BD/CAP ∈ `company/knowledge/business/` 首次定义，系统层自 BSD 起首次定义，本层承接实现映射与实例登记。 |
+| 说明 | DDD 业务版图；公司级 BD/CAP ∈  首次定义，系统层自 BSD 起首次定义，本层承接实现映射与实例登记。 |
 | entities_shape | 实体 `{ID}.md`（OKF）；`BSD` = 目录锚点，`BC/AGG` = 容器目录，`AB` = `AGG` 下叶子；索引见 KNOWLEDGE_INDEX §1 |
 
 ## 2. 层级链
@@ -37,7 +37,7 @@ title: 业务视角元数据（application/knowledge/business）
 
 ## 4. 字段（OKF）
 
-**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2。
+**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。
 
 **正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。业务属性写正文，勿堆 frontmatter。
 
@@ -65,7 +65,9 @@ title: 业务视角元数据（application/knowledge/business）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 人类可读说明 |
-| [../index.md](../index.md) | §1 业务视角 + 五视角实例索引（扫描生成） |
-| [../../index.md](../../index.md) | 联邦索引 |
+| [index.md](../index.md) | §1 业务视角 + 五视角实例索引（扫描生成） |
+| BD-*, CAP-* | 公司层 SSOT（reference） |
+| BSD-*, BC-*, AGG-*, AB-* | 系统层 SSOT（reference） |
+| index.md（库外） | 联邦索引 |
 
 **索引**：`readme_index_table: true`；变更 ID 时同步 README、index.md（按需）。

@@ -12,9 +12,9 @@ layer_scope: application
 ---
 ## 关系
 
-- parent: [BD-EXAMPLE](/knowledge/business/BD-EXAMPLE.md)
+- parent: BD-EXAMPLE
 - bounded_contexts:
-  - [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE/BC-EXAMPLE.md)
+  - BC-EXAMPLE
 
 ## 跨视角
 
@@ -23,7 +23,7 @@ layer_scope: application
 ## 详细说明
 
 - definition_scope: instance
-- 上游主定义：`system/knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md`（系统层 OKF SSOT）
+- 上游主定义：`BSD-EXAMPLE`（系统层 OKF SSOT）
 
 ## 依据与证据
 

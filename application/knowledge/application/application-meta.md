@@ -3,7 +3,7 @@ type: Perspective Meta
 title: 应用视角元数据（application/knowledge/application）
 ---
 
-应用侧实现版图（SYS→APP→MS→API）实体登记与接口实现元数据。实例索引 [../index.md](../index.md)（§3，扫描生成；实体 `{ID}.md` = SSOT）。
+应用侧实现版图（SYS→APP→MS→API）实体登记与接口实现元数据。实例索引 [index.md](../index.md)（§3，扫描生成；实体 `{ID}.md` = SSOT）。
 
 ## 1. 概览
 
@@ -12,7 +12,7 @@ title: 应用视角元数据（application/knowledge/application）
 | meta_id | `DIR-KNOWLEDGE-APPLICATION` |
 | 视角 | application |
 | 层级范围 | application |
-| 说明 | 实现版图；公司级 SYS ∈ `company/knowledge/application/` 首次定义，系统层自 APP 起首次定义，本层重点登记 API 与应用实现映射（示例含 SYS/APP/MS/API）。 |
+| 说明 | 实现版图；公司级 SYS ∈  首次定义，系统层自 APP 起首次定义，本层重点登记 API 与应用实现映射（示例含 SYS/APP/MS/API）。 |
 | entities_shape | 实体 `{ID}.md`（OKF）；索引见 KNOWLEDGE_INDEX §3 |
 
 ## 2. 层级链
@@ -35,7 +35,7 @@ title: 应用视角元数据（application/knowledge/application）
 
 ## 4. 字段（OKF）
 
-**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2。
+**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。
 
 **正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。
 
@@ -54,10 +54,10 @@ MS 路径同构：`MS-{NAME}/MS-{NAME}.md`。本层：`SYS`/`APP` 为根文件�
 
 | 实体 | system 路径 | application 路径 | 说明 |
 | --- | --- | --- | --- |
-| SYS-EXAMPLE | `system/knowledge/application/SYS-EXAMPLE.md` | `application/knowledge/application/SYS-EXAMPLE.md` | company reference |
-| APP-EXAMPLE | `system/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md` | `application/knowledge/application/APP-EXAMPLE.md` | system SSOT；本层实例 |
-| MS-EXAMPLE | `system/knowledge/application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md` | `application/knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md` | system 挂 APP；本层平铺；system SSOT |
-| API-EXAMPLE-001 | （system 不登记） | `application/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md` | API 仅 application SSOT |
+| SYS-EXAMPLE | `SYS-EXAMPLE` | `SYS-EXAMPLE` | company reference |
+| APP-EXAMPLE | `APP-EXAMPLE` | `APP-EXAMPLE` | system SSOT；本层实例 |
+| MS-EXAMPLE | `APP-EXAMPLE` | `MS-EXAMPLE` | system 挂 APP；本层平铺；system SSOT |
+| API-EXAMPLE-001 | （system 不登记） | `MS-EXAMPLE` | API 仅 application SSOT |
 
 **链接约定**：同 bundle 用 `/knowledge/...`；跨 bundle `# SSOT` 用仓库根相对路径。
 
@@ -75,6 +75,8 @@ MS 路径同构：`MS-{NAME}/MS-{NAME}.md`。本层：`SYS`/`APP` 为根文件�
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 人类可读说明 |
-| [../index.md](../index.md) | §3 应用视角 + 五视角实例索引（扫描生成） |
+| [index.md](../index.md) | §3 应用视角 + 五视角实例索引（扫描生成） |
+| SYS-* | 公司层 SSOT（reference） |
+| APP-*, MS-* | 系统层 SSOT（reference） |
 
 **索引**：`readme_index_table: true`；变更 ID 时同步 README、index.md、manifest/OpenAPI（按需）。

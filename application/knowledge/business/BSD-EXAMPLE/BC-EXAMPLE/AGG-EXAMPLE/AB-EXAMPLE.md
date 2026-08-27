@@ -12,11 +12,11 @@ layer_scope: application
 ---
 ## 关系
 
-- parent: [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)
+- parent: AGG-EXAMPLE
 
 ## 跨视角
 
-- apis: [API-EXAMPLE-001](/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md)
+- apis: API-EXAMPLE-001
 
 ## 详细说明
 

@@ -3,7 +3,7 @@ type: Perspective Meta
 title: 数据视角元数据（application/knowledge/data）
 ---
 
-应用侧数据版图（MDG→DS→ENT→TBL）实体登记与物理落地元数据。实例索引 [../index.md](../index.md)（§4，扫描生成；实体 `{ID}.md` = SSOT）。
+应用侧数据版图（MDG→DS→ENT→TBL）实体登记与物理落地元数据。实例索引 [index.md](../index.md)（§4，扫描生成；实体 `{ID}.md` = SSOT）。
 
 ## 1. 概览
 
@@ -12,7 +12,7 @@ title: 数据视角元数据（application/knowledge/data）
 | meta_id | `DIR-KNOWLEDGE-DATA` |
 | 视角 | data |
 | 层级范围 | application |
-| 说明 | 数据存储与实体；公司级 MDG ∈ `company/knowledge/data/` 首次定义，系统层自 DS/ENT 起首次定义，本层补齐 MDG reference 并承接物理表锚点与应用归属。 |
+| 说明 | 数据存储与实体；公司级 MDG ∈  首次定义，系统层自 DS/ENT 起首次定义，本层补齐 MDG reference 并承接物理表锚点与应用归属。 |
 | entities_shape | 实体 `{ID}.md`（OKF）；索引见 KNOWLEDGE_INDEX §4 |
 
 ## 2. 层级链
@@ -35,7 +35,7 @@ title: 数据视角元数据（application/knowledge/data）
 
 ## 4. 字段（OKF）
 
-**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2。
+**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。
 
 **正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。`definition_scope` 等可作 frontmatter 扩展。
 
@@ -63,6 +63,8 @@ title: 数据视角元数据（application/knowledge/data）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 人类可读说明 |
-| [../index.md](../index.md) | §4 数据视角 + 五视角实例索引（扫描生成） |
+| [index.md](../index.md) | §4 数据视角 + 五视角实例索引（扫描生成） |
+| MDG-* | 公司层 SSOT（reference） |
+| DS-*, ENT-* | 系统层 SSOT（reference） |
 
 **索引**：`readme_index_table: true`；变更 ID 时同步 README、index.md（按需）。

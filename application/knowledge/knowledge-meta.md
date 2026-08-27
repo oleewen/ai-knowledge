@@ -12,7 +12,7 @@ title: 知识树元数据（application/knowledge）
 | --- | --- |
 | meta_id | `DIR-KNOWLEDGE` |
 | 名称 | 应用知识库（knowledge） |
-| 说明 | 五视角 business / product / application / data / technical；治理与命名 SSOT 见 agent/knowledge/。 |
+| 说明 | 五视角 business / product / application / data / technical；治理与命名 SSOT 见 Agent 元知识（库外）。 |
 
 ## 2. 子目录
 
@@ -37,9 +37,9 @@ title: 知识树元数据（application/knowledge）
 
 | 类型 | 路径 |
 | --- | --- |
-| application_index | [../index.md](../index.md) |
+| application_index | index.md（库外） |
 | per_perspective_readmes | business/README.md, product/README.md, application/README.md, data/README.md, technical/README.md |
-| governance | [../../agent/knowledge/knowledge-governance.md](../../agent/knowledge/knowledge-governance.md) |
+| governance | knowledge-governance（Agent 元知识） |
 | entity_index | [index.md](index.md) |
 
 ## 5. 关联文档
@@ -47,11 +47,11 @@ title: 知识树元数据（application/knowledge）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 知识树说明 |
-| [../index.md](../index.md) | 应用索引 |
-| [../../index.md](../../index.md) | 仓库根目录索引页 |
-| [../README.md](../README.md) | 应用 README |
-| [../../AGENTS.md](../../AGENTS.md) | Agent 契约 |
-| [../../agent/knowledge/naming-conventions.md](../../agent/knowledge/naming-conventions.md) | 命名 SSOT |
+| index.md（库外） | 应用索引 |
+| index.md（库外） | 仓库根目录索引页 |
+| README.md（库外） | 应用 README |
+| AGENTS（库外） | Agent 契约 |
+| naming-conventions（Agent 元知识） | 命名 SSOT |
 
 ## 6. docs-build meta_read_order
 
@@ -66,4 +66,4 @@ title: 知识树元数据（application/knowledge）
 | 7 | knowledge/technical/technical-meta.md |
 | 8 | requirements/README.md |
 | 9 | changelogs/README.md |
-| 10 | ../agent/knowledge/knowledge-governance.md |
+| 10 | knowledge-governance（Agent 元知识） |

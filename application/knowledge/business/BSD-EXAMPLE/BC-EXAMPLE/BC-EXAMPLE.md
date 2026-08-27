@@ -12,13 +12,13 @@ layer_scope: application
 ---
 ## 关系
 
-- parent: [BSD-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md)
+- parent: BSD-EXAMPLE
 - aggregates:
-  - [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)
+  - AGG-EXAMPLE
 
 ## 跨视角
 
-- implemented_by_app_id: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE.md)
+- implemented_by_app_id: APP-EXAMPLE
 
 ## 详细说明
 

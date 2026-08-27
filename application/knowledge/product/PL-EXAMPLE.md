@@ -20,7 +20,7 @@ layer_scope: application
 
 ## 详细说明
 
-- 上游主定义：`company/knowledge/product/PL-EXAMPLE.md`（公司层 OKF SSOT）
+- 上游主定义：`PL-EXAMPLE`（公司层 OKF SSOT）
 - target_users: 示例用户
 - definition_scope: reference
 

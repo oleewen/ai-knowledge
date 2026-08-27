@@ -3,7 +3,7 @@ type: Perspective Meta
 title: 技术视角元数据（application/knowledge/technical）
 ---
 
-应用层技术版图（TSD→MW→CMP）视角元数据 SSOT。实例索引 [../index.md](../index.md)（§5，扫描生成；实体 `{ID}.md` = SSOT）。
+应用层技术版图（TSD→MW→CMP）视角元数据 SSOT。实例索引 [index.md](../index.md)（§5，扫描生成；实体 `{ID}.md` = SSOT）。
 
 ## 1. 概览
 
@@ -33,7 +33,7 @@ title: 技术视角元数据（application/knowledge/technical）
 
 ## 4. 字段（OKF）
 
-**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2。
+**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。
 
 **正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。
 
@@ -61,10 +61,8 @@ title: 技术视角元数据（application/knowledge/technical）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 人类可读说明 |
-| [../index.md](../index.md) | MW/CMP 实例索引 |
-| [../../../company/knowledge/technical/technical-meta.md](../../../company/knowledge/technical/technical-meta.md) | 公司级 TPL 元数据 |
-| [../../../company/knowledge/index.md](../../../company/knowledge/index.md) | 公司级 TPL 实例 |
-| [../../../system/knowledge/technical/technical-meta.md](../../../system/knowledge/technical/technical-meta.md) | 系统级 TSD 元数据 |
-| [../../../system/knowledge/index.md](../../../system/knowledge/index.md) | 系统级 TSD 实例 |
+| [index.md](../index.md) | MW/CMP 实例索引 |
+| TPL-* | 公司层 TPL SSOT（reference） |
+| TSD-* | 系统层 TSD SSOT（reference） |
 
 **索引**：`readme_index_table: true`；变更 ID 时同步 README、index.md（按需）。

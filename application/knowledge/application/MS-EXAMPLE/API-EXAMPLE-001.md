@@ -12,8 +12,8 @@ layer_scope: application
 ---
 ## 关系
 
-- parent: [MS-EXAMPLE](/knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md)
-- service_id: [MS-EXAMPLE](/knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md)
+- parent: MS-EXAMPLE
+- service_id: MS-EXAMPLE
 
 ## 跨视角
 

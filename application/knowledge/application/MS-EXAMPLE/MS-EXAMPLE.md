@@ -12,20 +12,20 @@ layer_scope: application
 ---
 ## 关系
 
-- parent: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE.md)
+- parent: APP-EXAMPLE
 - children:
-  - [API-EXAMPLE-001](/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md)
+  - API-EXAMPLE-001
 
 ## 跨视角
 
 - cross_references:
-  - [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE/BC-EXAMPLE.md)
-  - [PM-EXAMPLE](/knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md)
-  - [API-EXAMPLE-001](/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md)
+  - BC-EXAMPLE
+  - PM-EXAMPLE
+  - API-EXAMPLE-001
 
 ## 详细说明
 
-- 上游主定义：`system/knowledge/application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md`（系统层 OKF SSOT）
+- 上游主定义：`APP-EXAMPLE`（系统层 OKF SSOT）
 - host_class: ExampleApiImpl
 - host_module: example-module
 - protocol: HTTP

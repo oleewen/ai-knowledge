@@ -16,4 +16,4 @@
 
 ## 关联索引
 
-- 上一级索引：[../index.md](../index.md)
+- 上一级索引：[index.md](../index.md)

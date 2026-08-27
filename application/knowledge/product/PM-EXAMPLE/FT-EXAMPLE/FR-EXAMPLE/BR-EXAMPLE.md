@@ -13,7 +13,7 @@ layer_scope: application
 
 ## 关系
 
-- parent: [FR-EXAMPLE](/knowledge/product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/FR-EXAMPLE.md)
+- parent: FR-EXAMPLE
 
 ## 跨视角
 
