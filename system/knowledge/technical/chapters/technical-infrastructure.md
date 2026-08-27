@@ -9,7 +9,7 @@ title: 基础设施架构
 
 本系统计算、网络与边缘交付落地。
 
-> **基础设施 SSOT**：公司级部署、网络与云资源标准见 [`technical-infrastructure.md`](../../../../company/knowledge/technical/chapters/technical-infrastructure.md)。
+> **基础设施 SSOT**：公司级部署、网络与云资源标准见 公司层 technical · technical-infrastructure 章节。
 
 ## 部署架构
 

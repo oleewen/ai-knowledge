@@ -23,4 +23,4 @@ title: 技术架构
 * 元数据：[technical-meta.md](technical-meta.md)
 * 样例：[TSD-EXAMPLE.md](TSD-EXAMPLE.md) · [MW-EXAMPLE/](MW-EXAMPLE/index.md)（ref → application）
 
-对照：[company/knowledge/technical](../../../company/knowledge/technical/README.md)
+上层 reference：TPL-*

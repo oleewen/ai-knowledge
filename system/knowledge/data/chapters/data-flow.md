@@ -9,7 +9,7 @@ title: 数据流转
 
 本系统数据流动、加工与一致性保障。
 
-> **数据流转 SSOT**：公司级数据框架见 [company/knowledge/data/README.md](../../../../company/knowledge/data/README.md)。
+> **数据流转 SSOT**：公司级数据框架见 公司层 data 视角章节。
 
 ## 数据流图
 

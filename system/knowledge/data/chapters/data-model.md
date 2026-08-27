@@ -9,7 +9,7 @@ title: 数据模型
 
 本系统数据源与物理层结构。
 
-> **数据模型 SSOT**：公司级数据原则见 [`data-overview.md`](../../../../company/knowledge/data/chapters/data-overview.md)。
+> **数据模型 SSOT**：公司级数据原则见 公司层 data · data-overview 章节。
 
 与 [领域模型](../../application/chapters/application-domain-model.md)、[概念模型](../../business/chapters/business-glossary.md#概念模型) 交叉对齐。
 

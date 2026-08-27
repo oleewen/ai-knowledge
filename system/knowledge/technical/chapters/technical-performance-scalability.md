@@ -9,7 +9,7 @@ title: 性能与扩展性
 
 本系统性能目标、容量与扩展策略。
 
-> **性能与扩展 SSOT**：公司级技术框架见 [company/knowledge/technical/README.md](../../../../company/knowledge/technical/README.md)。
+> **性能与扩展 SSOT**：公司级技术框架见 公司层 technical 视角章节。
 
 ## 性能基线
 

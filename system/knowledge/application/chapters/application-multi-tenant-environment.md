@@ -9,7 +9,7 @@ title: 多租户多环境
 
 本系统租户隔离、环境拓扑与发布控制。
 
-> **多租户多环境 SSOT**：公司级应用框架见 [company/knowledge/application/README.md](../../../../company/knowledge/application/README.md)。
+> **多租户多环境 SSOT**：公司级应用框架见 公司层 application 视角章节。
 
 ## 租户隔离
 

@@ -4,7 +4,7 @@ title: 应用视角元数据（system/knowledge/application）
 ---
 # 应用视角元数据（system/knowledge/application）
 
-系统级应用版图（SYS→APP→MS）视角元数据 SSOT。实例索引：[../index.md](../index.md)。
+系统级应用版图（SYS→APP→MS）视角元数据 SSOT。实例索引：[index.md](../index.md)。
 
 ---
 
@@ -41,7 +41,7 @@ title: 应用视角元数据（system/knowledge/application）
 
 ## 4. 字段（OKF）
 
-Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`）见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2；本层 `layer_scope` 固定 `system`。
+Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`）见 okf-spec §2；本层 `layer_scope` 固定 `system`。
 
 ### 各层专属（正文 / 扩展）
 
@@ -59,10 +59,10 @@ system MS 挂 APP：`APP-{NAME}/MS-{NAME}/MS-{NAME}.md`（`parent_id`）。appli
 
 | 实体 | system 路径 | application 路径 | 说明 |
 |------|-------------|-------------------|------|
-| SYS-EXAMPLE | `system/knowledge/application/SYS-EXAMPLE.md` | `application/knowledge/application/SYS-EXAMPLE.md` | company reference |
-| APP-EXAMPLE | `system/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md` | `application/knowledge/application/APP-EXAMPLE.md` | system SSOT；app 可为实例 |
-| MS-EXAMPLE | `system/knowledge/application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md` | `application/knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md` | system 挂 APP；application 平铺；system SSOT |
-| API-EXAMPLE-001 | （system 不登记） | `application/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md` | API 仅 application SSOT |
+| SYS-EXAMPLE | `SYS-EXAMPLE` | `SYS-EXAMPLE` | company reference |
+| APP-EXAMPLE | `APP-EXAMPLE` | `APP-EXAMPLE` | system SSOT；app 可为实例 |
+| MS-EXAMPLE | `APP-EXAMPLE` | `MS-EXAMPLE` | system 挂 APP；application 平铺；system SSOT |
+| API-EXAMPLE-001 | （system 不登记） | `MS-EXAMPLE` | API 仅 application SSOT |
 
 **链接约定**：同 bundle 用 `/knowledge/...`；跨层（如 system→application API/TBL/MW/CMP）用仓库相对路径，勿写他层不存在的 bundle-absolute `/knowledge/...`。
 
@@ -84,9 +84,9 @@ system MS 挂 APP：`APP-{NAME}/MS-{NAME}/MS-{NAME}.md`（`parent_id`）。appli
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 叙事文档索引 |
-| [../index.md](../index.md) | SYS/APP/MS 实例 SSOT |
-| [../../DESIGN.md](../../DESIGN.md) | 系统库设计契约 |
-| [../../../company/knowledge/application/application-meta.md](../../../company/knowledge/application/application-meta.md) | 公司级 SYS 元数据 |
-| [../../../agent/knowledge/naming-conventions.md](../../../agent/knowledge/naming-conventions.md) | ID 命名 SSOT |
+| [index.md](../index.md) | SYS/APP/MS 实例 SSOT |
+| DESIGN（库外，纯文本） | 系统库设计契约 |
+| SYS-* | 公司层系统 SSOT（reference） |
+| naming-conventions（Agent 元知识） | ID 命名 SSOT |
 
 **索引**：`readme_index_table: false`；变更 ID 时同步 index.md 与 narrative 章节（按需）。

@@ -20,11 +20,11 @@ title: 应用架构
 | 服务间交互 | [chapters/application-inter-service.md](chapters/application-inter-service.md) | 同步/异步协作（按需） |
 | 接口管理 | [chapters/application-interface-management.md](chapters/application-interface-management.md) | 内外 API 与版本（按需） |
 | 多租户多环境 | [chapters/application-multi-tenant-environment.md](chapters/application-multi-tenant-environment.md) | 租户隔离与环境（按需） |
-| ADR | [../../adr/README.md](../../adr/README.md) | 系统层决策（无强制 EXAMPLE） |
+| ADR | — | 系统层决策（无强制 EXAMPLE） |
 
 ## 实体
 
 * 元数据：[application-meta.md](application-meta.md)
 * 样例：`SYS-EXAMPLE.md`（ref）· [APP-EXAMPLE/](APP-EXAMPLE/index.md)（内含 MS）
 
-对照：[company/knowledge/application](../../../company/knowledge/application/README.md)
+上层 reference：SYS-*

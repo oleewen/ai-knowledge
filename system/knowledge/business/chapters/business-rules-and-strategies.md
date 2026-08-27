@@ -9,7 +9,7 @@ title: 业务规则与策略
 
 本系统业务策略与合规约束；产品、风控与合规共用依据。
 
-> **规则与策略 SSOT**：公司级业务治理框架见 [company/knowledge/business/README.md](../../../../company/knowledge/business/README.md)。
+> **规则与策略 SSOT**：公司级业务治理框架见 公司层 business 视角章节。
 
 > **范围说明**：本文件聚焦策略与约束；功能级 BR 见 [用户旅程 · 业务规则清单](../../product/chapters/product-user-journeys.md#业务规则清单)。
 

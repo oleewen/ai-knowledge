@@ -4,7 +4,7 @@ title: 产品视角元数据（system/knowledge/product）
 ---
 # 产品视角元数据（system/knowledge/product）
 
-系统级产品版图（PL→PM→FT→FR→UC/BR · BP）视角元数据 SSOT。实例索引：[../index.md](../index.md)。
+系统级产品版图（PL→PM→FT→FR→UC/BR · BP）视角元数据 SSOT。实例索引：[index.md](../index.md)。
 
 ---
 
@@ -48,7 +48,7 @@ title: 产品视角元数据（system/knowledge/product）
 
 ## 4. 字段（OKF）
 
-Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`）见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2；本层 `layer_scope` 固定 `system`。
+Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`）见 okf-spec §2；本层 `layer_scope` 固定 `system`。
 
 ### 各层专属（正文 / 扩展）
 
@@ -81,9 +81,9 @@ Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详�
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 叙事文档索引 |
-| [../index.md](../index.md) | PL/PM/FT/FR/UC/BR/BP 实例 SSOT |
-| [../../DESIGN.md](../../DESIGN.md) | 系统库设计契约 |
-| [../../../company/knowledge/product/product-meta.md](../../../company/knowledge/product/product-meta.md) | 公司级 PL 元数据 |
-| [../../../agent/knowledge/naming-conventions.md](../../../agent/knowledge/naming-conventions.md) | ID 命名 SSOT |
+| [index.md](../index.md) | PL/PM/FT/FR/UC/BR/BP 实例 SSOT |
+| DESIGN（库外，纯文本） | 系统库设计契约 |
+| PL-* | 公司层产品线 SSOT（reference） |
+| naming-conventions（Agent 元知识） | ID 命名 SSOT |
 
 **索引**：`readme_index_table: false`；变更 ID 时同步 index.md 与 narrative 章节（按需）。

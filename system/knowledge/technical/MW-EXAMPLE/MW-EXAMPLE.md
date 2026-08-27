@@ -12,16 +12,16 @@ layer_scope: system
 ---
 ## 关系
 
-- parent_tsd_id: [TSD-EXAMPLE](/knowledge/technical/TSD-EXAMPLE.md)
+- parent_tsd_id: TSD-EXAMPLE
 
 ## 跨视角
 
-- bound_app_id: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
+- bound_app_id: APP-EXAMPLE
 
 ## 详细说明
 
 - definition_scope: reference
-- 上游主定义：`application/knowledge/technical/MW-EXAMPLE/MW-EXAMPLE.md`（应用层 OKF SSOT）。
+- 上游主定义：`MW-EXAMPLE`（应用层 OKF SSOT）。
 - binding_type: kafka
 - config_key: example.kafka.topic
 

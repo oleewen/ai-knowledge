@@ -9,7 +9,7 @@ title: 版本管理与发布
 
 本系统版本实践、发布记录、灰度与功能开关。
 
-> **版本与发布 SSOT**：公司级产品治理框架见 [company/knowledge/product/README.md](../../../../company/knowledge/product/README.md)。
+> **版本与发布 SSOT**：公司级产品治理框架见 公司层 product 视角章节。
 
 ## 版本规范
 

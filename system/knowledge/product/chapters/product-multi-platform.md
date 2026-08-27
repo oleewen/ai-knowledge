@@ -9,7 +9,7 @@ title: 多端策略
 
 本系统各端覆盖与差异。
 
-> **多端策略 SSOT**：公司级产品治理框架见 [company/knowledge/product/README.md](../../../../company/knowledge/product/README.md)。
+> **多端策略 SSOT**：公司级产品治理框架见 公司层 product 视角章节。
 
 ## 端覆盖
 

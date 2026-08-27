@@ -9,7 +9,7 @@ title: 领域模型
 
 本系统聚合/实体边界、类图及关键属性。
 
-> **领域模型 SSOT**：公司级应用框架见 [company/knowledge/application/README.md](../../../../company/knowledge/application/README.md)。
+> **领域模型 SSOT**：公司级应用框架见 公司层 application 视角章节。
 
 与 [概念模型](../../business/chapters/business-glossary.md#概念模型) 及 [数据模型](../../data/chapters/data-model.md) 交叉对齐。
 

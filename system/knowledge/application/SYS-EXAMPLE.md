@@ -13,7 +13,7 @@ layer_scope: system
 ## 关系
 
 - children:
-  - [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
+  - APP-EXAMPLE
 
 ## 跨视角
 
@@ -21,7 +21,7 @@ layer_scope: system
 
 ## 详细说明
 
-- 上游主定义：`company/knowledge/application/SYS-EXAMPLE.md`（公司层 OKF SSOT）。
+- 上游主定义：`SYS-EXAMPLE`（公司层 OKF SSOT）。
 - architecture:
   - apps: [APP-EXAMPLE]
   - external_dependencies: [ExternalExample/HTTP]

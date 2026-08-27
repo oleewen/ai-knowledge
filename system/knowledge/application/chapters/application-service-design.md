@@ -9,7 +9,7 @@ title: 服务设计
 
 业务能力落地为可部署、可契约化服务单元。
 
-> **服务设计 SSOT**：公司级 C4 与系统边界标准见 [`application-architecture.md`](../../../../company/knowledge/application/chapters/application-architecture.md)。
+> **服务设计 SSOT**：公司级 C4 与系统边界标准见 公司层 application · application-architecture 章节。
 
 ## 设计原则
 

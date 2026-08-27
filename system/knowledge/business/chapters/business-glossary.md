@@ -9,7 +9,7 @@ title: 业务术语
 
 本系统概念模型与术语表。
 
-> **业务术语 SSOT**：公司级业务治理框架见 [company/knowledge/business/README.md](../../../../company/knowledge/business/README.md)。
+> **业务术语 SSOT**：公司级业务治理框架见 公司层 business 视角章节。
 
 ## 概念模型
 

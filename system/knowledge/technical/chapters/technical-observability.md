@@ -9,7 +9,7 @@ title: 可观测性
 
 本系统指标、日志、链路与告警约定。
 
-> **可观测性 SSOT**：公司级技术框架见 [company/knowledge/technical/README.md](../../../../company/knowledge/technical/README.md)。
+> **可观测性 SSOT**：公司级技术框架见 公司层 technical 视角章节。
 
 ## 指标
 

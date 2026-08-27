@@ -5,9 +5,9 @@ title: 系统知识库 — 架构文档
 <!-- markdownlint-disable-next-line MD025 -->
 # 系统知识库 — 架构文档
 
-[返回 · 系统知识库](../README.md)
+返回 · 系统知识库
 
-系统层五视角入口。分型：[okf-spec](../../agent/knowledge/okf-spec.md)。契约：[../DESIGN.md](../DESIGN.md)。
+系统层五视角入口。分型：okf-spec。契约：DESIGN（库外，纯文本）。
 
 | 视角 | 入口 |
 |------|------|
@@ -18,4 +18,4 @@ title: 系统知识库 — 架构文档
 | 技术 | [technical/](technical/README.md) |
 | overview 缓冲 | [overview/](overview/README.md) |
 
-对照：[company/knowledge/](../../company/knowledge/README.md) · 地图 [../INDEX-GUIDE.md](../INDEX-GUIDE.md) · 索引 [index.md](index.md)
+导航：[index.md](index.md) · 上层 reference：BD-*, PL-*, SYS-*, MDG-*, TPL-*, CAP-*

@@ -4,7 +4,7 @@ title: 技术视角元数据（system/knowledge/technical）
 ---
 # 技术视角元数据（system/knowledge/technical）
 
-系统级技术域（TSD）视角元数据 SSOT。实例索引：[../index.md](../index.md)。
+系统级技术域（TSD）视角元数据 SSOT。实例索引：[index.md](../index.md)。
 
 ---
 
@@ -38,7 +38,7 @@ title: 技术视角元数据（system/knowledge/technical）
 
 ## 4. 字段（OKF）
 
-Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`）见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2；本层 `layer_scope` 固定 `system`。
+Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`）见 okf-spec §2；本层 `layer_scope` 固定 `system`。
 
 ### TSD 专属（正文 / 扩展）
 
@@ -63,9 +63,8 @@ Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详�
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 叙事文档索引 |
-| [../index.md](../index.md) | TSD 实例 SSOT |
-| [../../../company/knowledge/technical/technical-meta.md](../../../company/knowledge/technical/technical-meta.md) | 公司级 TPL 元数据 |
-| [../../../company/knowledge/index.md](../../../company/knowledge/index.md) | 公司级 TPL 实例 |
-| [../../../agent/knowledge/naming-conventions.md](../../../agent/knowledge/naming-conventions.md) | 命名 SSOT |
+| [index.md](../index.md) | TSD 实例 SSOT |
+| TPL-* | 公司层 TPL SSOT（reference） |
+| naming-conventions（Agent 元知识） | 命名 SSOT |
 
 **索引**：`readme_index_table: false`；变更 TSD ID 时同步 system/DESIGN.md 与 overview（按需）。

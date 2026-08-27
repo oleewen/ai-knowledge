@@ -12,9 +12,9 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: [BD-EXAMPLE](/knowledge/business/BD-EXAMPLE.md)
+- parent: BD-EXAMPLE
 - bounded_contexts:
-  - [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE/BC-EXAMPLE.md)
+  - BC-EXAMPLE
 
 ## 跨视角
 

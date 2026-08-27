@@ -12,14 +12,14 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE/BC-EXAMPLE.md)
+- parent: BC-EXAMPLE
 - abilities:
-  - [AB-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md)
+  - AB-EXAMPLE
 
 ## 跨视角
 
-- implemented_by_service_ids: [MS-EXAMPLE](/knowledge/application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md)
-- persisted_as_entity_ids: [ENT-EXAMPLE](/knowledge/data/DS-EXAMPLE/ENT-EXAMPLE.md)
+- implemented_by_service_ids: MS-EXAMPLE
+- persisted_as_entity_ids: ENT-EXAMPLE
 
 ## 详细说明
 

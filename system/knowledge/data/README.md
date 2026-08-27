@@ -22,4 +22,4 @@ title: 数据架构
 * 元数据：[data-meta.md](data-meta.md)
 * 样例：`MDG-EXAMPLE.md`（ref）· [DS-EXAMPLE/](DS-EXAMPLE/index.md)
 
-对照：[company/knowledge/data](../../../company/knowledge/data/README.md)
+上层 reference：MDG-*

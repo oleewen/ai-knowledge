@@ -9,7 +9,7 @@ title: 产品功能
 
 价值主张拆解为可交付功能模块与优先级。
 
-> **产品功能 SSOT**：公司级产品治理框架见 [company/knowledge/product/README.md](../../../../company/knowledge/product/README.md)；本层 FT/FR/UC 见实体树。
+> **产品功能 SSOT**：公司级产品治理框架见 公司层 product 视角章节；本层 FT/FR/UC 见实体树。
 
 ## 产品模块全景图
 

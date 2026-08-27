@@ -9,7 +9,7 @@ title: 产品概述
 
 本系统产品定位、用户、竞争与路线。
 
-> **产品概述 SSOT**：公司级定位与路线标准见 [`product-overview.md`](../../../../company/knowledge/product/chapters/product-overview.md)。
+> **产品概述 SSOT**：公司级定位与路线标准见 公司层 product · product-overview 章节。
 
 ## 价值主张
 

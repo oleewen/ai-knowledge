@@ -9,7 +9,7 @@ title: 业务域划分
 
 本系统 L1–L5 业务域清单及父级关系。
 
-> **L1 定义 SSOT**：公司级一级业务域见 [`business-domain-division.md`](../../../../company/knowledge/business/chapters/business-domain-division.md)。
+> **L1 定义 SSOT**：公司级一级业务域见 公司层 business · business-domain-division 章节。
 
 ## 业务域清单
 

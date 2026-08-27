@@ -9,7 +9,7 @@ title: 中间件与基础组件
 
 本系统共享平台能力选型与使用规范。
 
-> **中间件 SSOT**：MW/CMP 定义在 application；本章为落地叙事与 TSD 边界。样例 [MW-EXAMPLE](../MW-EXAMPLE/MW-EXAMPLE.md) → `application/knowledge/technical/MW-EXAMPLE/`；公司框架见 [company/knowledge/technical/README.md](../../../../company/knowledge/technical/README.md)。
+> **中间件 SSOT**：MW/CMP 定义在 application（MW-*/CMP-* 实体）；本章为落地叙事与 TSD 边界。样例 MW-EXAMPLE；公司框架见 公司层 technical · TPL-* 与公司 technical 章节。
 
 ## 消息队列
 

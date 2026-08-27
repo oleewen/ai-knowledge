@@ -9,7 +9,7 @@ title: 领域能力
 
 本系统领域能力与 SLA，对应业务能力承载。
 
-> **领域能力 SSOT**：公司级能力框架见 [`business-capability.md`](../../../../company/knowledge/business/chapters/business-capability.md)。
+> **领域能力 SSOT**：公司级能力框架见 公司层 business · business-capability 章节。
 
 ## 领域能力
 

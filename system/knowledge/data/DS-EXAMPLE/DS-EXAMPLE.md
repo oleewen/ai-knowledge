@@ -12,11 +12,11 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: [MDG-EXAMPLE](/knowledge/data/MDG-EXAMPLE.md)
+- parent: MDG-EXAMPLE
 
 ## 跨视角
 
-- owned_by_app_id: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
+- owned_by_app_id: APP-EXAMPLE
 
 ## 详细说明
 

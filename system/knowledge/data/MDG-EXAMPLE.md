@@ -13,7 +13,7 @@ layer_scope: system
 ## 关系
 
 - children:
-  - [DS-EXAMPLE](/knowledge/data/DS-EXAMPLE/DS-EXAMPLE.md)
+  - DS-EXAMPLE
 
 ## 跨视角
 
@@ -21,7 +21,7 @@ layer_scope: system
 
 ## 详细说明
 
-- 上游主定义：`company/knowledge/data/MDG-EXAMPLE.md`（公司层 OKF SSOT）。
+- 上游主定义：`MDG-EXAMPLE`（公司层 OKF SSOT）。
 - definition_scope: reference
 - governance_owner: 示例责任方
 

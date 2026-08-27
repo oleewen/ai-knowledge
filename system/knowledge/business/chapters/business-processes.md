@@ -9,7 +9,7 @@ title: 业务流程
 
 本系统主责业务流程及与能力的映射。
 
-> **业务流程 SSOT**：公司级业务治理框架见 [company/knowledge/business/README.md](../../../../company/knowledge/business/README.md)。
+> **业务流程 SSOT**：公司级业务治理框架见 公司层 business 视角章节。
 
 ## 核心流程
 

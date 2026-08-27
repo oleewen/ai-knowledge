@@ -13,7 +13,7 @@ layer_scope: system
 ## 关系
 
 - children:
-  - [PM-EXAMPLE](/knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md)
+  - PM-EXAMPLE
 
 ## 跨视角
 
@@ -21,7 +21,7 @@ layer_scope: system
 
 ## 详细说明
 
-- 上游主定义：`company/knowledge/product/PL-EXAMPLE.md`（公司层 OKF SSOT）。
+- 上游主定义：`PL-EXAMPLE`（公司层 OKF SSOT）。
 - definition_scope: reference
 - target_users: 示例用户角色
 

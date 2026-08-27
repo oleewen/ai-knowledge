@@ -25,4 +25,4 @@ title: 产品架构
 * 元数据：[product-meta.md](product-meta.md)
 * 样例：`PL-EXAMPLE.md`（ref）· [PM-EXAMPLE/](PM-EXAMPLE/index.md) · [BP-EXAMPLE.md](BP-EXAMPLE.md)
 
-对照：[company/knowledge/product](../../../company/knowledge/product/README.md)
+上层 reference：PL-*

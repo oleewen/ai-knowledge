@@ -9,7 +9,7 @@ title: 技术架构概述
 
 本系统技术选型、雷达与决策基线。
 
-> **技术架构 SSOT**：公司级选型与雷达标准见 [`technical-overview.md`](../../../../company/knowledge/technical/chapters/technical-overview.md)。
+> **技术架构 SSOT**：公司级选型与雷达标准见 公司层 technical · technical-overview 章节。
 
 ## 技术选型
 

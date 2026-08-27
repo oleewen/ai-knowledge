@@ -13,8 +13,8 @@ layer_scope: system
 ## 关系
 
 - children:
-  - [MW-EXAMPLE](/knowledge/technical/MW-EXAMPLE/MW-EXAMPLE.md)
-- parent_tpl_id: [TPL-EXAMPLE](../../../company/knowledge/technical/TPL-EXAMPLE.md)
+  - MW-EXAMPLE
+- parent_tpl_id: TPL-EXAMPLE
 
 ## 跨视角
 

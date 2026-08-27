@@ -9,7 +9,7 @@ title: 数据分析
 
 本系统分析主题、指标口径与消费路径。
 
-> **数据分析 SSOT**：公司级数据框架见 [company/knowledge/data/README.md](../../../../company/knowledge/data/README.md)。
+> **数据分析 SSOT**：公司级数据框架见 公司层 data 视角章节。
 
 ## 分析主题
 

@@ -12,10 +12,10 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: [SYS-EXAMPLE](/knowledge/application/SYS-EXAMPLE.md)
-- parent_sys_id: [SYS-EXAMPLE](/knowledge/application/SYS-EXAMPLE.md)
+- parent: SYS-EXAMPLE
+- parent_sys_id: SYS-EXAMPLE
 - service_ids:
-  - [MS-EXAMPLE](/knowledge/application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md)
+  - MS-EXAMPLE
 
 ## 跨视角
 

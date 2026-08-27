@@ -9,7 +9,7 @@ title: 应用架构
 
 本系统 C4、职责边界与分层演进落地。
 
-> **应用架构 SSOT**：公司级 C4、分层与演进标准见 [`application-architecture.md`](../../../../company/knowledge/application/chapters/application-architecture.md)。
+> **应用架构 SSOT**：公司级 C4、分层与演进标准见 公司层 application · application-architecture 章节。
 
 ## 系统上下文
 

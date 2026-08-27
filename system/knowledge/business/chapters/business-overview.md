@@ -9,7 +9,7 @@ title: 业务概述
 
 本系统业务定位、目标与范围。
 
-> **业务概述 SSOT**：公司级背景、目标与范围见 [`business-overview.md`](../../../../company/knowledge/business/chapters/business-overview.md)。
+> **业务概述 SSOT**：公司级背景、目标与范围见 公司层 business · business-overview 章节。
 
 ## 背景与愿景
 

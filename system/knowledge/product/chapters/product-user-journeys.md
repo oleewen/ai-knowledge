@@ -9,7 +9,7 @@ title: 用户旅程与场景
 
 用户视角触点与情绪，驱动故事与用例。
 
-> **用户旅程 SSOT**：公司级体验标准见 [`product-ux.md`](../../../../company/knowledge/product/chapters/product-ux.md)；本层 UC 挂 FR。
+> **用户旅程 SSOT**：公司级体验标准见 公司层 product · product-ux 章节；本层 UC 挂 FR。
 
 ## 用户旅程地图
 

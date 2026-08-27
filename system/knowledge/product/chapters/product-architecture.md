@@ -9,7 +9,7 @@ title: 产品架构
 
 本系统产品板块及与 PM、SYS 映射。
 
-> **PL 定义 SSOT**：公司级产品线清单见 [`product-architecture.md`](../../../../company/knowledge/product/chapters/product-architecture.md)。
+> **PL 定义 SSOT**：公司级产品线清单见 公司层 product · product-architecture 章节。
 
 ## 产品板块
 

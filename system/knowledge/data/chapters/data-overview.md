@@ -9,7 +9,7 @@ title: 数据架构概述
 
 本系统数据原则、全景与生命周期。
 
-> **数据架构 SSOT**：公司级数据原则、全景与生命周期标准见 [`data-overview.md`](../../../../company/knowledge/data/chapters/data-overview.md)。
+> **数据架构 SSOT**：公司级数据原则、全景与生命周期标准见 公司层 data · data-overview 章节。
 
 ## 设计原则
 

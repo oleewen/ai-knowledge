@@ -12,11 +12,11 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: [PL-EXAMPLE](/knowledge/product/PL-EXAMPLE.md)
+- parent: PL-EXAMPLE
 
 ## 跨视角
 
-- relies_on_context_ids: [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE/BC-EXAMPLE.md)
+- relies_on_context_ids: BC-EXAMPLE
 
 ## 详细说明
 

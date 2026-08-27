@@ -114,7 +114,7 @@ title: "{域名称}架构概览（{slug}-overview）"
 | [多租户多环境](../application/chapters/application-multi-tenant-environment.md) | [租户隔离](../application/chapters/application-multi-tenant-environment.md#租户隔离) | — |
 | [多租户多环境](../application/chapters/application-multi-tenant-environment.md) | [多环境](../application/chapters/application-multi-tenant-environment.md#多环境) | — |
 | [多租户多环境](../application/chapters/application-multi-tenant-environment.md) | [功能开关](../application/chapters/application-multi-tenant-environment.md#功能开关) | — |
-| [ADR](../../adr/README.md) | [系统层决策](../../adr/README.md) | — |
+| ADR | 系统层决策 | — |
 
 ## [技术架构](../technical/README.md)
 
@@ -178,9 +178,9 @@ title: "{域名称}架构概览（{slug}-overview）"
 
 ### 文档关键词
 
-```yaml
+`yaml
 keywords:
   - SYSNAME
   - 示例术语A
   - 示例术语B
-```
+`

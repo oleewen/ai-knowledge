@@ -13,4 +13,4 @@ title: overview
 - 技能：`docs-distill` / `docs-extract` / `docs-archive`
 - 归档后落入各视角 `chapters/`
 
-路径契约：[DESIGN.md](../../DESIGN.md) · [knowledge-layout](../../../agent/references/knowledge-layout.md) · 索引 [index.md](index.md)
+导航：[index.md](index.md) · DESIGN / knowledge-layout（库外）

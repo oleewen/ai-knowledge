@@ -9,7 +9,7 @@ title: 数据存储方案
 
 本系统存储选型、分布与扩展策略。
 
-> **数据存储 SSOT**：公司级数据框架见 [company/knowledge/data/README.md](../../../../company/knowledge/data/README.md)。
+> **数据存储 SSOT**：公司级数据框架见 公司层 data 视角章节。
 
 ## 库选型
 

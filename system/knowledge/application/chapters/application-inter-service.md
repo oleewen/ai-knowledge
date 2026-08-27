@@ -9,7 +9,7 @@ title: 服务间交互
 
 本系统同步/异步协作、编排与依赖治理。
 
-> **服务交互 SSOT**：公司级应用框架见 [company/knowledge/application/README.md](../../../../company/knowledge/application/README.md)。
+> **服务交互 SSOT**：公司级应用框架见 公司层 application 视角章节。
 
 ## 同步链路
 

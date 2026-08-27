@@ -23,4 +23,4 @@ title: 业务架构
 * 元数据：[business-meta.md](business-meta.md)
 * 样例：`BD-EXAMPLE.md`（ref）· [BSD-EXAMPLE/](BSD-EXAMPLE/index.md) 树
 
-对照：[company/knowledge/business](../../../company/knowledge/business/README.md)
+上层 reference：BD-*, CAP-*

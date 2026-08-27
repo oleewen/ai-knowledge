@@ -9,7 +9,7 @@ title: 信息架构
 
 本系统导航、层级与内容模型。
 
-> **信息架构 SSOT**：公司级产品治理框架见 [company/knowledge/product/README.md](../../../../company/knowledge/product/README.md)。
+> **信息架构 SSOT**：公司级产品治理框架见 公司层 product 视角章节。
 
 ## 导航结构
 

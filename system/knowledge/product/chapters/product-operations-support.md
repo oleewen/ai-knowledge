@@ -9,7 +9,7 @@ title: 产品运营支撑
 
 本系统运营、内容、触达与反馈能力。
 
-> **运营支撑 SSOT**：公司级产品治理框架见 [company/knowledge/product/README.md](../../../../company/knowledge/product/README.md)。
+> **运营支撑 SSOT**：公司级产品治理框架见 公司层 product 视角章节。
 
 ## 运营后台
 

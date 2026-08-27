@@ -9,7 +9,7 @@ title: 高可用与容灾
 
 本系统可用性目标、容灾与韧性实践。
 
-> **高可用与容灾 SSOT**：公司级技术框架见 [company/knowledge/technical/README.md](../../../../company/knowledge/technical/README.md)。
+> **高可用与容灾 SSOT**：公司级技术框架见 公司层 technical 视角章节。
 
 ## 高可用设计
 

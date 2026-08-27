@@ -12,13 +12,13 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
+- parent: APP-EXAMPLE
 
 ## 跨视角
 
 - cross_references:
-  - [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE/BC-EXAMPLE.md)
-  - [PM-EXAMPLE](/knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md)
+  - BC-EXAMPLE
+  - PM-EXAMPLE
 
 ## 详细说明
 
