@@ -14,9 +14,9 @@
 
 1. [README.md](README.md) — overview 作用  
 2. [NAME-overview.md](NAME-overview.md) — 文件结构  
-3. [../README.md](../README.md) — 五视角总入口  
+3. [README.md](../README.md) — 五视角总入口  
 
 ## 关联索引
 
-* 上一级索引：[../index.md](../index.md)
-* 上一级说明：[../README.md](../README.md)
+* 上一级索引：[index.md](../index.md)
+* 上一级说明：[README.md](../README.md)

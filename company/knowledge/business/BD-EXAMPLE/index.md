@@ -12,11 +12,11 @@
 
 ## 阅读顺序
 
-1. [../README.md](../README.md) — 业务视角入口  
+1. [README.md](../README.md) — 业务视角入口  
 2. [BD-EXAMPLE.md](BD-EXAMPLE.md) — BD 定义  
 3. [CAP-EXAMPLE-L1.md](CAP-EXAMPLE-L1.md) → [CAP-EXAMPLE.md](CAP-EXAMPLE.md) — 能力层级 
 
 ## 关联索引
 
-* 上一级索引：[../index.md](../index.md)
-* 上一级说明：[../README.md](../README.md)
+* 上一级索引：[index.md](../index.md)
+* 上一级说明：[README.md](../README.md)

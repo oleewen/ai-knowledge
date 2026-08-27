@@ -12,7 +12,7 @@ layer_scope: company
 ---
 ## 关系
 
-- maps_to_bd_id: [BD-EXAMPLE](/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md)
+- maps_to_bd_id: BD-EXAMPLE
 
 ## 跨视角
 

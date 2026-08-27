@@ -38,7 +38,7 @@ title: 知识树元数据（company/knowledge）
 | --- | --- |
 | is_single_source_of_truth | true（公司级实体正文 SSOT） |
 | upstream | —（联邦顶层） |
-| downstream | `system/knowledge/`、`application/knowledge/`（引用公司 ID） |
+| downstream | 系统层、应用层（引用公司 ID） |
 
 ---
 
@@ -46,10 +46,10 @@ title: 知识树元数据（company/knowledge）
 
 | 类型 | 路径 |
 | --- | --- |
-| company_index | [../index.md](../index.md) |
+| company_index | index.md（库外） |
 | entity_index | [index.md](index.md) |
-| design | [../DESIGN.md](../DESIGN.md) |
-| governance | [../../agent/knowledge/knowledge-governance.md](../../agent/knowledge/knowledge-governance.md) |
+| design | DESIGN（库外，纯文本） |
+| governance | knowledge-governance（Agent 元知识） |
 
 ---
 
@@ -58,8 +58,8 @@ title: 知识树元数据（company/knowledge）
 | 层级 | 路径 | 说明 |
 | --- | --- | --- |
 | company | `knowledge/business/BD-{NAME}/BD-{NAME}.md` | 公司 SSOT（目录锚点） |
-| system | `system/knowledge/business/BD-{NAME}.md` | 视角根 reference |
-| application | `application/knowledge/business/BD-{NAME}.md` | 视角根 reference |
+| system | `BD-{NAME}.md` | 视角根 reference |
+| application | `BD-{NAME}.md` | 视角根 reference |
 
 ---
 
@@ -68,5 +68,5 @@ title: 知识树元数据（company/knowledge）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 五视角架构入口 |
-| [../DESIGN.md](../DESIGN.md) | 公司库设计契约 |
-| [../../agent/knowledge/naming-conventions.md](../../agent/knowledge/naming-conventions.md) | 命名 SSOT |
+| DESIGN（库外，纯文本） | 公司库设计契约 |
+| naming-conventions（Agent 元知识） | 命名 SSOT |

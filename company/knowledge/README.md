@@ -5,9 +5,9 @@ title: 企业架构
 <!-- markdownlint-disable-next-line MD025 -->
 # 企业架构
 
-[返回 · 公司知识库](../README.md)
+返回 · 公司知识库
 
-公司层五视角入口；治理叙事，不写系统实现。分型：[okf-spec](../../agent/knowledge/okf-spec.md)。
+公司层五视角入口；治理叙事，不写系统实现。分型：okf-spec。
 
 | 视角 | 入口 |
 |------|------|
@@ -18,4 +18,4 @@ title: 企业架构
 | 技术 | [technical/](technical/README.md) |
 | overview 缓冲 | [overview/](overview/README.md) |
 
-对照：[system/knowledge/](../../system/knowledge/README.md) · 地图 [../INDEX-GUIDE.md](../INDEX-GUIDE.md) · 索引 [index.md](index.md)
+导航：[index.md](index.md) · 下游 system/application 仅引用本层 ID（BD-*, PL-*, SYS-*, MDG-*, TPL-*, CAP-*）

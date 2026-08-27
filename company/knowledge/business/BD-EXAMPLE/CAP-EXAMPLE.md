@@ -12,8 +12,8 @@ layer_scope: company
 ---
 ## 关系
 
-- parent: [CAP-EXAMPLE-L1](/knowledge/business/BD-EXAMPLE/CAP-EXAMPLE-L1.md)
-- maps_to_bd_id: [BD-EXAMPLE](/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md)
+- parent: CAP-EXAMPLE-L1
+- maps_to_bd_id: BD-EXAMPLE
 
 ## 跨视角
 
