@@ -10,9 +10,7 @@
 
 ## 目标
 
-通过**参数向导 + 分段「澄清 → 生成 → 烤干」**，
-把单个应用的已核实变更蒸馏进 `system/knowledge/overview/{APPNAME}-overview.md` 第三列，
-并在 overview 成功写入后追加 `system/changelogs/DISTILL-LOG.md`。
+参数向导 +「澄清 → 生成 → 烤干」：将应用已核实变更按 [federation-spec.md](federation-spec.md) 去重后以 delta 写入 overview 第三列；成功后追加 `DISTILL-LOG`。
 
 ## 前置
 
@@ -61,11 +59,12 @@
 
 1. 选定当前单元
 2. **意图澄清**：公共六项 + [gates.md](gates.md) 追加字段（`--app` / `--since` / `--full` / `--dry-run` / overview 新建或更新）；写前 `C` 后方可执行或预览
-3. 读 `CHANGE-LOG` 与现有 overview，计算增量或 `--full` 范围
-4. `--dry-run` → 输出预览（不写 overview，不写 `DISTILL-LOG`）
-5. 正式写入 → 写第三列；成功后追加 `DISTILL-LOG`；失败则停止，禁止写日志（含 CHANGE-LOG/ARCHIVE-LOG 相关追加与锚点更新的同一原子事务约束，见 gates）
-6. **烤干**：按写后默认表（含预览结果）
-7. 用户动作：`C/M/G/S/F` 见 unit-cycle-protocol
+3. 读 CHANGE-LOG 与 overview，定增量或 `--full` 范围
+4. 按 federation-spec 去重、定 delta / A/U/D
+5. `--dry-run` → 三分区预览（跳过 >10 行折叠），不写 overview / `DISTILL-LOG`
+6. 写入第三列 delta；成功后追加 `DISTILL-LOG`；失败禁止写日志（见 gates）
+7. **烤干**：按写后默认表（含预览结果）
+8. 用户动作：`C/M/G/S/F` 见 unit-cycle-protocol
 
 ## 命令示例
 
@@ -89,7 +88,6 @@
 
 ## 执行摘要
 
-- 默认增量；`--full` 属高风险场景，推荐先 `--dry-run`
-- 第三列五视角逐节写；不写 `(来源…)`
-- 先写 overview，后记 `DISTILL-LOG`
-- 当前单元完成后必须停下，等待用户动作（见 unit-cycle-protocol）
+- 默认增量；`--full` 先 dry-run
+- 第三列：federation-spec；不写 `(来源…)`
+- 先 overview，后 `DISTILL-LOG`；单元结束须停等用户动作

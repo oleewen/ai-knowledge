@@ -18,4 +18,4 @@
 
 ## 第三列语义
 
-业务知识列：系统级**摘要**，标 **A/U/D**（相对上一版第三列）；无变化可不标（以 federation-spec、gotchas 为准）。
+相对链接段落的 **delta** 缓冲区；细则 [federation-spec.md](federation-spec.md)。

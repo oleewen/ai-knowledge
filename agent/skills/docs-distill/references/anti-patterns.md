@@ -9,7 +9,7 @@
 | 4.3 败仍 4.4 | 仅成功后追加；[workflow.md](workflow.md) |
 | 混淆 CHANGE-LOG 与 DISTILL-LOG | [workflow.md](workflow.md)；[distill-log-spec.md](distill-log-spec.md) |
 | `--full` 无预览直盖 | gates + gotchas |
-| 第三列贴应用正文 | [federation-spec.md](federation-spec.md) |
+| 第三列贴原文或重复已覆盖要点 | [federation-spec.md](federation-spec.md) |
 | 锚点 id 失联仍静默全量 | gates |
 | 五视角跳行 | 全表处理，`—` 占位；gotchas |
 | 新建 overview 只改名不改标题 | 文件名 + `# …架构概览` 同步 APPNAME |

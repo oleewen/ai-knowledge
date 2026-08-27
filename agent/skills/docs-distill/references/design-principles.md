@@ -4,7 +4,7 @@
 
 1. **单行上行**：可晋升知识只进 overview **第三列**；不以应用原文为终态。  
 2. **默认可重入增量**：DISTILL + 应用日志定区间；`--full` 须确认。  
-3. **先读后写**：先看现有第三列再 A/U/D。  
+3. **先读后写**：federation-spec 去重后仅写 delta / A/U/D。  
 4. **日志原子**：4.3 成后再 4.4；失败不前移锚点。  
 5. **正文无出处脚注**：追溯 CHANGE-LOG / DISTILL / spec。  
 6. **联邦消解冲突**：按 [federation-spec.md](federation-spec.md)，勿硬盖系统权威。  

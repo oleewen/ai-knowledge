@@ -1,8 +1,7 @@
 ---
 name: docs-distill
 description: >
-  将 system/application-{name}/ 已核实内容蒸馏写入 system/knowledge/overview/{APPNAME}-overview.md 第三列；
-  overview 成功后再追加 DISTILL-LOG。
+  将 application-{name}/ 已核实内容去重后以 delta 写入 overview 第三列；细则 federation-spec。overview 成功后追加 DISTILL-LOG。
   用户提到 /docs-distill、知识蒸馏、DISTILL-LOG、同步应用知识到系统 overview、更新系统库 overview、
   某应用知识库改了要同步、看看要同步哪些内容、系统库 overview 需要更新，
   或要把 application-* 已核实变更上行到系统库时，务必使用本技能。
@@ -16,7 +15,8 @@ description: >
 
 - 当前单元：单个 `{APPNAME}-overview.md` + 单次增量/全量预览范围。
 - 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[docs-simplify.md](../../references/docs-simplify.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写入或输出正式预览结论；写入或 `--dry-run` 预览后均须烤干，收敛后停等用户。
-- **原子性**：`DISTILL-LOG` 仅在 overview 第三列成功写入后追加；写入失败禁止记日志。`--dry-run` 仍须写前澄清，不写 overview / `DISTILL-LOG`。
+- **原子性**：overview 第三列成功后才追加 `DISTILL-LOG`；失败禁止记日志。`--dry-run`：三分区预览，不写 overview / `DISTILL-LOG`。
+- **第三列**：去重后仅写 delta；[federation-spec.md](references/federation-spec.md)。
 - **knowledge 引用边界**：写入 `system/knowledge/**` 须遵守 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「业务 knowledge 引用边界」。可读槽位/应用外源；落盘 overview 不链外源路径、不链下层 knowledge、禁手写跨 `DOC_DIR` 爬层（跨层写实体 ID）。违规能修则修，不明则停。
 
 ## 边界
