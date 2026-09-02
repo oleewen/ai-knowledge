@@ -8,7 +8,7 @@
 
 - [intent-clarify.md](../../../references/intent-clarify.md)
 - [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) — `C/M/G/S/F`
-- [grilling-skill.md](../../../references/grilling-skill.md) — 写后烤干；**生成中冲突亦 grilling 一问一答**
+- [grilling-skill.md](../../../references/grilling-skill.md) — 写后烤干；**生成中每项变更以提问逐项确认**（一次只问一项）
 
 主线：`澄清 → 生成 → 烤干`。
 
@@ -24,6 +24,7 @@
 - `<target>`（已存在单个 `.md`）
 - 写入模式：正式 / `--dry-run`
 - 落位策略摘要：已对齐 / 已确认新建；**写前 `C`（正式写入）前未落位须为空**
+- **变更清单**：待新增 `<A>` / 待更新 `<U>` / 合计 `<N>`
 - **dry-run → 正式写入**：须**重新**写前 `C`，并证明未落位已空；禁止沿用 dry-run 次 C 直接落盘
 
 ## 写后默认
@@ -38,13 +39,16 @@
 - 目标在 `*/knowledge/**`；跳过预览直接写
 - source/target 歧义
 - dry-run 后请求「按预览直接写」而未重新澄清
+- 请求跳过逐项确认、批量写入全部新增/更新
+- 跳过变更清单（未识别项数）直接进入提问或落盘
+- 用决策表/清单一趟抛多项变更而不逐问
 
 `--dry-run` 推荐；**仍须写前澄清**。
 
 ## 原子性 / 失败停顿
 
-见 merge-spec §6。补充：当前单元未收敛，不得推进下一 target / 下一批 source；dry-run 授权 ≠ 正式写入授权。
+见 merge-spec §7。补充：当前单元未收敛，不得推进下一 target / 下一批 source；dry-run 授权 ≠ 正式写入授权；**逐项未决完不得落盘**；**须先出变更清单再逐项提问**。
 
 ## 典型语义问题（烤干）
 
-- source/target 与落位；新增 vs 合并；冲突决议；knowledge 边界
+- source/target 与落位；新增/更新逐项是否已确认；冲突决议；knowledge 边界

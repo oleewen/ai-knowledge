@@ -1,7 +1,7 @@
 {
   "skill_name": "docs-merge",
-  "version": "1.1.0",
-  "description": "冒烟样本：参数向导、写前意图澄清、章节落位、dry-run 计划、dry-run 后重新 C、冲突 grilling、一次落盘、烤干；含 1 条负向分流。",
+  "version": "1.3.0",
+  "description": "冒烟样本：变更清单（待新增/更新项数）、逐项提问确认（确认完一条再流转）、dry-run 后重新 C、冲突 grilling、一次落盘、烤干；含 1 条负向分流。",
   "evals": [
     {
       "id": 1,
@@ -44,7 +44,7 @@
       "id": 2,
       "category": "should-trigger",
       "prompt": "/docs-merge \"支持下单支付退款\" docs/guide.md",
-      "expected_output": "docs-merge：识别内联文本 source + 已存在 target；写前澄清；落位不明则停问候选章节；冲突 grilling 逐条；一次落盘。",
+      "expected_output": "docs-merge：识别内联文本 source + 已存在 target；写前澄清；落位不明则停问；新增/更新逐项 grilling 确认；一次落盘。",
       "files": [],
       "assertions": [
         {
@@ -219,6 +219,36 @@
           "name": "写前意图澄清",
           "type": "must_include",
           "check": "正式写入前仍须意图澄清。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "category": "should-trigger",
+      "prompt": "计划里 3 条新增 2 条更新，别一条条问了，预览 OK 就全部写进 docs/guide.md",
+      "expected_output": "docs-merge：先识别并公布待新增/更新项数与变更清单；再逐项提问（预览+问题+推荐+选项）；确认完一条再流转下一条；未逐项答完前不得宣称已全部写入。",
+      "files": [],
+      "assertions": [
+        {
+          "id": "change-inventory-first",
+          "name": "先出变更清单",
+          "type": "must_include",
+          "check": "须先识别并公布待新增/待更新项数或变更清单，再进入逐项提问。",
+          "priority": "P0"
+        },
+        {
+          "id": "item-by-item-add-update",
+          "name": "逐项提问确认",
+          "type": "must_include",
+          "check": "须以提问方式逐项确认；确认完一条再流转下一条；不得批量静默写入。",
+          "priority": "P0"
+        },
+        {
+          "id": "semantic-change-needs-confirmation",
+          "name": "语义变更确认",
+          "type": "must_include",
+          "check": "跳过逐项确认须先拦下并给推荐与选项。",
           "priority": "P0"
         }
       ]
