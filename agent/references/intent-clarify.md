@@ -6,7 +6,7 @@
 
 **最后更新**: 2026-07-20
 
-**落地状态**：全部 `/sdx-*` 与语义族 docs-*（`docs-agent` / `docs-extract` / `docs-distill` / `docs-archive` / `docs-upgrade` / `docs-simplify` / `docs-indexing` / `docs-build`）已绑定。**未绑定（轻流程）**：`docs-okf` / `docs-change` / `docs-pull` / `docs-push` / `docs-tag`。
+**落地状态**：全部 `/sdx-*` 与语义族 docs-*（`docs-agent` / `docs-extract` / `docs-merge` / `docs-distill` / `docs-archive` / `docs-upgrade` / `docs-simplify` / `docs-indexing` / `docs-build`）已绑定。**未绑定（轻流程）**：`docs-okf` / `docs-change` / `docs-pull` / `docs-push` / `docs-tag`。
 
 ---
 

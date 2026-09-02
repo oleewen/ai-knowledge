@@ -25,6 +25,7 @@
 | `/docs-agent` | 根 `README.md` + `AGENTS.md`；九章地图以已落盘 `INDEX-GUIDE.md` 为准，与 `index.md` 职责不重叠 |
 | `/docs-distill` | `--app / --since / --full / --dry-run` → 系统 `overview` 第三列 + `DISTILL-LOG` |
 | `/docs-extract` | `--sources / --overview / --dry-run` → 系统或公司 overview 第三列；不写 `DISTILL-LOG` |
+| `/docs-merge` | `<source> <target>`〔`--dry-run`〕→ 按目标 H2/H3 章节合入；新增确认、类似合并、冲突 grilling；源只读 |
 | `/docs-pull` | 按 `knowledge-links.yaml` 本地 path → 联邦槽位 + 槽位 `CHANGE-LOG`；无远端 clone；轻流程 |
 | `/docs-push` | 中央规约 → 各应用 `path×doc_dir`（legacy / spec-asd）；轻流程 |
 | `/docs-build` | 五视角实体 ID → per-entity `{ID}.md`、视角 README、`KNOWLEDGE_INDEX.md` |

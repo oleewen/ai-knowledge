@@ -13,7 +13,7 @@
 | 族 | 技能 | 强制维 | 本地 audience |
 | --- | --- | --- | --- |
 | `sdx-*` | 全部 | **A/B/C/E**（烤干内） | 必有；统一模板 |
-| 语义族 docs-* | agent / extract / distill / archive / upgrade / simplify / indexing / build | **A/B/C/E**（烤干内） | 必有；统一模板 |
+| 语义族 docs-* | agent / extract / merge / distill / archive / upgrade / simplify / indexing / build | **A/B/C/E**（烤干内） | 必有；统一模板 |
 | 轻流程 | change / pull / push / tag | **A/B**（写后、宣称完成前） | 无；用下文默认读者表 |
 | docs-okf | okf | **A/B**（结果摘要出口；纯机器输出可跳过） | 无；用默认读者表 |
 

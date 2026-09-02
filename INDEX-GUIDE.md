@@ -218,7 +218,7 @@ stateDiagram-v2
 4. **联邦登记**: `docs-link.sh` 维护 `system|company/knowledge-links.yaml`。
 5. **维护索引与变更**: `/docs-indexing` 更新对应 `INDEX-GUIDE.md` + `changelogs/INDEXING-LOG.md`；`/docs-change` 更新 `CHANGE-LOG.md`。
 6. **OKF refresh 与校验**: `/docs-okf`（须 `.docsconfig` 的 `DOC_DIR`+`KNOWLEDGE_TYPE`）。
-7. **知识工程**: `/docs-build`、`/docs-distill`、`/docs-extract`、`/docs-archive`、`/docs-upgrade`、`/docs-simplify` 等按 [agent/skills/README.md](agent/skills/README.md)。
+7. **知识工程**: `/docs-build`、`/docs-distill`、`/docs-extract`、`/docs-merge`、`/docs-archive`、`/docs-upgrade`、`/docs-simplify` 等按 [agent/skills/README.md](agent/skills/README.md)。
 
 ### 5.3 业务规则（协作）
 
@@ -394,6 +394,7 @@ stateDiagram-v2
 | `/docs-simplify` | [agent/skills/docs-simplify/SKILL.md](agent/skills/docs-simplify/SKILL.md) |
 | `/docs-distill` | [agent/skills/docs-distill/SKILL.md](agent/skills/docs-distill/SKILL.md) |
 | `/docs-extract` | [agent/skills/docs-extract/SKILL.md](agent/skills/docs-extract/SKILL.md) |
+| `/docs-merge` | [agent/skills/docs-merge/SKILL.md](agent/skills/docs-merge/SKILL.md) |
 | `/docs-archive` | [agent/skills/docs-archive/SKILL.md](agent/skills/docs-archive/SKILL.md) |
 | `/sdx-solution` | [agent/skills/sdx-solution/SKILL.md](agent/skills/sdx-solution/SKILL.md) |
 | `/sdx-analysis` | [agent/skills/sdx-analysis/SKILL.md](agent/skills/sdx-analysis/SKILL.md) |

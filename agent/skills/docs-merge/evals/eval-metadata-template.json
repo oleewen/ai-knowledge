@@ -1,0 +1,66 @@
+{
+  "skill_name": "docs-merge",
+  "eval_id": "REPLACE_WITH_EVAL_ID",
+  "expected_category": "should-trigger | should-not-trigger",
+  "expected_route": "/docs-merge | （not-trigger 填分流）",
+  "expected_output": "与同 id 的 evals.json 一致的一两句要点。",
+  "notes": "复制为 <eval-id>-metadata.json 或流水线内联；断言对齐 agents/grader.md。",
+  "assertions_should_trigger_example": [
+    {
+      "id": "single-unit-stop",
+      "name": "单单元停顿",
+      "type": "must_include",
+      "check": "一次只处理一个 target 当前单元，并在当前单元收敛后停下等待动作。",
+      "priority": "P0"
+    },
+    {
+      "id": "semantic-change-needs-confirmation",
+      "name": "语义变更先确认",
+      "type": "must_include",
+      "check": "落位、合并策略或写入策略变化时，先给结论、推荐方案与数字选项。",
+      "priority": "P0"
+    },
+    {
+      "id": "dry-run-no-write",
+      "name": "dry-run 只预览",
+      "type": "must_include",
+      "check": "`--dry-run` 只出合入计划，不宣称已改 target。",
+      "priority": "P0"
+    },
+    {
+      "id": "dry-run-re-clarify-before-formal",
+      "name": "dry-run 后须重新 C",
+      "type": "must_include",
+      "check": "dry-run 结束后正式写入须重新写前澄清与写前 C，且证明未落位已空；不得沿用 dry-run 次 C 直接落盘。",
+      "priority": "P0"
+    },
+    {
+      "id": "conflict-grilling",
+      "name": "冲突逐条",
+      "type": "must_include",
+      "check": "冲突须 grilling 一问一答，全部决完后一次落盘。",
+      "priority": "P0"
+    }
+  ],
+  "assertions_should_not_trigger_example": [
+    {
+      "id": "correct-downstream",
+      "name": "下游",
+      "type": "must_include",
+      "check": "点名与 prompt 一致的下游（如 docs-extract）。",
+      "priority": "P0"
+    },
+    {
+      "id": "no-false-merge-primary",
+      "name": "勿假主 merge",
+      "type": "must_not_conflict",
+      "check": "不得默认章节 merge 而忽略用户指定下游。",
+      "priority": "P0"
+    }
+  ],
+  "scoring": {
+    "pass_rule_should_trigger": "P0 全过；有 P1 则至少过 1 项，否则仅 P0",
+    "pass_rule_should_not_trigger": "P0 全过；P1 可选",
+    "fail_rule": "任一 P0 失败即不通过"
+  }
+}
