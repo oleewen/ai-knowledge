@@ -1,57 +1,68 @@
 ---
 name: docs-upgrade
 description: >
-  定向改 Markdown、注释、配置文本；统一术语并沿引用链 + 关键词链式同步。
-  用户提到 /docs-upgrade、改文档、统一术语、把 X 换成 Y，或简写 a - b / a > b / a 2 b（均为 a→b）时，使用本技能。
-  分流：用户只要 docs-archive/change/indexing/build 或仅 CHANGE-LOG/INDEX → 对应技能；结构精简/SSOT 去重 → docs-simplify。
-  推进见 references/gates.md。
+  将当前工程知识库（读 .docsconfig）对齐元库最新模板结构：结构/模板以元库为准，
+  正文以本库为准；已改 md 按元库 H2/H3 重填本库正文；未落位节清单逐项确认。
+  元库来自 DOC_ROOT/knowledge-links.yaml 的唯一 type: meta（path 优先 + fetch）。
+  用户提到 /docs-upgrade、升级知识库、对齐元库模板、从 meta 刷新骨架、不丢已有知识升级时，使用本技能。
+  分流：首次装机 → docs-bootstrap；Agent 树 → docs-bootstrap/agent-install；联邦槽位 → docs-pull；规约下发 → docs-push。
+  推进见 light-flow-actions（C/M/S/F，无 G）与 references/gates.md。
 ---
 
 # docs-upgrade
 
 ## 输出硬约束（P0）
 
-- 当前单元：单个主文件，或单个已确认关联批次。
-- 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[docs-simplify.md](../../references/docs-simplify.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写入或扩展关联；写入后须烤干，收敛后停等用户。
-- 用户明示「只改本文件 / 不要关联 / 不要全库搜」时，不得静默重开链式扩展。
-- **knowledge 引用边界**：改写 `application|system|company` 下 `*/knowledge/**` 时须遵守 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「业务 knowledge 引用边界」。替换/同步不得引入 knowledge 外文档链、下层链或手写爬层；跨层 HTTP 仅生成函数，无 parent 则纯 ID。违规能修则修，不明则停。
+- 当前单元：单个工程 `DOC_ROOT` 的一次升级计划（仅文档树，不含 Agent）。
+- 轻流程：参数向导 → 风险校核 → `C/M/S/F`（无 `G`、不绑意图澄清）→ [light-flow-actions.md](../../references/light-flow-actions.md)；细节 [gates.md](references/gates.md)。参数未收口前不得写盘。
+- 默认先 **dry-run 清单**；清单未 `C` 前不得实跑。
+- **禁止**调用会清空 `DOC_DIR` 的 `docs-install.sh --scope=knowledge` 主路径。
+- 合并契约：结构/模板=元库；正文=本库；已改判定=规范化后与元库同路径内容不等；已改 md=本库正文填入元库 H2/H3；未落位节=清单确认后才落；本库独有路径永不删。
+- `knowledge-links.yaml` 永不被元库模板覆盖。
+- 相对 `DOC_ROOT` 首段为 `application-*` / `system-*` 的联邦槽位（模板与实例）硬忽略：不进四桶、不 scaffold、不重填、不问未落位。
+- 宣称单元完成前须按 [audience-and-language.md](../../references/audience-and-language.md) 轻流程默认读者表做写后 **A/B**。
 
 ## 边界
 
 | 负责 | 不负责 |
-| ---- | ------ |
-| MD/注释/配置文档性文本；引用链 + 关键词；意图澄清与范围收口；当前单元推进 | docs-change、docs-indexing、docs-archive、docs-build、docs-simplify 主流程 |
+| --- | --- |
+| 读 `.docsconfig` + `type: meta`；fetch 元库；出变更清单；备份；新增骨架；编排 H2/H3 结构重填与未落位确认 | 首次装机；Agent 安装；docs-link 改建联；docs-pull/push；语义改文 |
 
 ## 不这样用
 
-- 不走「范围确认后直接写、跳过意图澄清」的旧主线；默认参数向导后「澄清 → 生成 → 烤干」
-- 不在用户已限定“只改本文件”时强制扩展整条引用链
-- 不把 CHANGE-LOG 聚合、INDEX 重建、overview 行归档、实体索引主路径收成 `docs-upgrade`
-- 不把写前意图澄清称作 grilling；`G` 仅写后深挖
+- 不把升级写成「清空 DOC_DIR 再 docs-install」
+- 不在未确认时覆盖已改正文或丢弃未落位节
+- 不把 Agent / 联邦槽位 / 首次装机收成本技能
+- 缺少 `.docsconfig` 或唯一 `type: meta` 时不得猜测元库
 
 ## 路由
 
 | 目的 | 文件 |
 | --- | --- |
-| 流程 / 推进 binding | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
-| 受众与语言 | [audience-and-language.md](references/audience-and-language.md) |
-| 范围模板 | [docs-upgrade-scope-ack-template.md](assets/docs-upgrade-scope-ack-template.md) |
-| 关联发现 | [related-doc-discovery.md](references/related-doc-discovery.md)、[semantic-keyword-discovery.md](references/semantic-keyword-discovery.md) |
-| 原则 / 反模式 | [design-principles.md](references/design-principles.md)、[anti-patterns.md](references/anti-patterns.md) |
-| 终检 / 易错 | [quality-checklist.md](references/quality-checklist.md)、[gotchas.md](gotchas.md) |
+| 流程 / 风险 | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
+| 参数 / 合并规则 | [parameters.md](references/parameters.md)、[merge-rules.md](references/merge-rules.md) |
+| 轻流程动作 | [light-flow-actions.md](../../references/light-flow-actions.md) |
+| 脚本说明 | [scripts/docs-upgrade.sh](scripts/docs-upgrade.sh) · [scripts/README.md](../../../scripts/README.md) |
+| 易错 | [gotchas.md](gotchas.md) |
 
 ## 最少输入
 
-- 主目标文件或可确认的候选范围
-- 改动摘要或术语替换目标
-- 是否允许关联扩展已收口
-- 若涉及术语或路径迁移，语义边界已确认
+- 当前工程可读的 `.docsconfig`（含 `DOC_ROOT` / `REPO_ROOT` / `DOC_DIR` / `KNOWLEDGE_TYPE`）
+- `{DOC_ROOT}/knowledge-links.yaml` 恰好一条 `type: meta`（或本次 `--meta-path`）
+- 是否 dry-run（默认是）已收口
 
-## 产出
+## 产出与脚本
 
-- 正式：已改主文件与已确认关联；链校验见 [quality-checklist.md](references/quality-checklist.md)
-- 收敛后动作见 [unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)（本技能有 `S`）
+- 正式：对齐后的 `DOC_ROOT`（新骨架 + 已确认重填 + 已确认未落位）；备份在 `{REPO_ROOT}/.docs-init/upgrade-{stamp}/`
+- 预览：四桶清单（新增骨架 / 跳过 / 结构重填 / 本库独有）+ 后续未落位节清单
+- 收敛后：产物校核 + 受众 A/B → [light-flow-actions.md](../../references/light-flow-actions.md)
+
+```bash
+# 在目标工程根（含 .docsconfig）执行；脚本位于中央库本技能
+bash /path/to/ai-knowledge/agent/skills/docs-upgrade/scripts/docs-upgrade.sh --dry-run
+bash /path/to/ai-knowledge/agent/skills/docs-upgrade/scripts/docs-upgrade.sh --apply-scaffold
+```
 
 ## 评测
 
-`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。
+`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。重点：禁清空 install、meta 解析、清单闸门、未落位逐项、写后 A/B、与 bootstrap 分流。
