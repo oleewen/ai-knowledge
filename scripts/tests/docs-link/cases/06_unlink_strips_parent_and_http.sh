@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# unlink 删除目标 knowledge-parent.yaml，并将匹配 web_base 的跨层 HTTP 改为纯 ID
+# unlink 删除目标 links 中 type:parent；不改正文跨层 HTTP
 set -euo pipefail
 
 TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -32,6 +32,7 @@ git -C "$COMPANY" remote add origin "https://github.com/example/company-ea.git"
 git -C "$SYSTEM" remote add origin "https://example.com/org/sys-foo.git"
 
 cp -R "$ROOT_DIR/company/system-SYSNAME" "$COMPANY/docs/system-SYSNAME"
+printf '%s\n' 'links: []' >"$SYSTEM/docs/knowledge-links.yaml"
 
 cat >"$COMPANY/.docsconfig" <<EOF
 DOC_ROOT=docs
@@ -60,7 +61,8 @@ run_unlink() {
 }
 
 run_link || fail "docs-link --link 应成功"
-assert_file_exists "$SYSTEM/docs/knowledge-parent.yaml"
+grep -Fq 'type: parent' "$SYSTEM/docs/knowledge-links.yaml" \
+  || fail "link 后目标应含 type: parent"
 assert_file_exists "$COMPANY/docs/knowledge-links.yaml"
 grep -Fq 'sys_name: "sys-foo"' "$COMPANY/docs/knowledge-links.yaml" \
   || fail "link 后清单应含 sys-foo"
@@ -75,13 +77,12 @@ EOF
 
 run_unlink || fail "docs-link --unlink 应成功"
 
-assert_file_not_exists "$SYSTEM/docs/knowledge-parent.yaml"
-grep -Fq "$HREF" "$STUB" && fail "unlink 后不应残留匹配 web_base 的 HTTP"
-grep -Fq '[BD-EXAMPLE]' "$STUB" && fail "unlink 后应去掉 Markdown 链，只留锚文本"
-grep -Fq 'BD-EXAMPLE' "$STUB" || fail "unlink 后应保留实体 ID 文本"
-grep -Fq '其它：保留' "$STUB" || fail "unlink 不得改写无关行"
+grep -Fq 'type: parent' "$SYSTEM/docs/knowledge-links.yaml" \
+  && fail "unlink 后不应残留 type: parent"
+grep -Fq "$HREF" "$STUB" || fail "unlink 不应改正文跨层 HTTP"
+
 if grep -Fq 'sys_name: "sys-foo"' "$COMPANY/docs/knowledge-links.yaml"; then
-  fail "unlink 后源清单不应再含 sys-foo"
+  fail "源仓 child 登记应已移除"
 fi
 
-pass "unlink 删除 knowledge-parent.yaml 并将跨层 HTTP 改为纯 ID"
+pass "unlink 删除目标 type:parent，且不改正文 HTTP"

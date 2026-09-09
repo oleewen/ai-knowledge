@@ -45,8 +45,8 @@ MODE="${KNOWLEDGE_TYPE:-}"
 LINKS_FILE="${DOC_ROOT%/}/knowledge-links.yaml"
 [[ -f "$LINKS_FILE" ]] || { printf '缺少 knowledge-links.yaml: %s\n' "$LINKS_FILE" >&2; exit 1; }
 
-declare -a paths=() repos=() doc_dirs=() names=() labels=()
-knowledge_links_load_into_arrays "$LINKS_FILE" paths repos doc_dirs names labels
+declare -a paths=() repos=() doc_dirs=() names=() labels=() types=()
+knowledge_links_load_into_arrays "$LINKS_FILE" paths repos doc_dirs names labels types
 
 if ! command -v rsync >/dev/null 2>&1; then
   printf '缺少 rsync，无法执行槽位同步\n' >&2
@@ -80,11 +80,13 @@ select_indices() {
   _out=()
   if [[ "$ALL" -eq 1 ]]; then
     for i in "${!paths[@]}"; do
+      [[ "${types[i]:-child}" == "parent" ]] && continue
       _out+=("$i")
     done
     return 0
   fi
   for i in "${!paths[@]}"; do
+    [[ "${types[i]:-child}" == "parent" ]] && continue
     [[ "${names[i]:-}" == "$name_value" ]] || continue
     _out+=("$i")
     return 0

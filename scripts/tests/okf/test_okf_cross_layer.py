@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""跨层 HTTP / knowledge-parent.yaml 单元测试。"""
+"""跨层 HTTP / knowledge-links type:parent 单元测试。"""
 
 from __future__ import annotations
 
@@ -64,6 +64,8 @@ def test_href_and_validate(tmp_path: Path) -> None:
             path=str(company),
             doc_dir="company",
             ref="main",
+            parent_name="ea",
+            parent_label="ea",
         ),
     )
     href = x.cross_layer_href(sys_root, "BD-EXAMPLE")
@@ -81,7 +83,7 @@ def test_http_without_parent_errors(tmp_path: Path) -> None:
         doc,
         "https://github.com/org/ea/blob/main/company/knowledge/business/BD-X/BD-X.md",
     )
-    assert err and "缺少 knowledge-parent.yaml" in err
+    assert err and "type: parent" in err
 
 
 def test_rewrite_to_id() -> None:

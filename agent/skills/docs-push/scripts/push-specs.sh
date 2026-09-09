@@ -162,12 +162,13 @@ if [[ "$CMD" == git ]]; then
 fi
 
 # shellcheck disable=SC2034
-paths=() repos=() doc_dirs=() app_names=() app_labels=()
-knowledge_links_load_into_arrays "$LINKS_FILE" paths repos doc_dirs app_names app_labels
+paths=() repos=() doc_dirs=() app_names=() app_labels=() types=()
+knowledge_links_load_into_arrays "$LINKS_FILE" paths repos doc_dirs app_names app_labels types
 
 find_link_index_for_app() {
   local want="${1:?}" i
   for ((i = 0; i < ${#app_names[@]}; i++)); do
+    [[ "${types[i]:-child}" == "parent" ]] && continue
     if [[ "${app_names[i]:-}" == "$want" ]]; then
       printf '%s' "$i"
       return 0

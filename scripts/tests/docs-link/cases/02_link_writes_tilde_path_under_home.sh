@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# link 写入的 path 在 $HOME 下为 ~/ 前缀（集成：company → system）；并创建 system 槽位 + 写入 sys_* 与 repository
+# link 写入的 path 在 $HOME 下为 ~/ 前缀（集成：company → system）；子仓 links 写 type:parent
 set -euo pipefail
 
 TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -30,6 +30,7 @@ git -C "$COMPANY" remote add origin "https://github.com/example/company-ea.git"
 git -C "$SYSTEM" remote add origin "https://example.com/org/sys-foo.git"
 
 cp -R "$ROOT_DIR/company/system-SYSNAME" "$COMPANY/docs/system-SYSNAME"
+printf '%s\n' 'links: []' >"$SYSTEM/docs/knowledge-links.yaml"
 
 cat >"$COMPANY/.docsconfig" <<EOF
 DOC_ROOT=docs
@@ -65,13 +66,15 @@ grep -Fq 'sys_label: "sys-foo"' "$COMPANY/docs/knowledge-links.yaml" \
   || fail "sys_label 应写入"
 assert_dir_exists "$COMPANY/docs/system-sys-foo"
 
-assert_file_exists "$SYSTEM/docs/knowledge-parent.yaml"
-grep -Fq 'knowledge_type: company' "$SYSTEM/docs/knowledge-parent.yaml" \
-  || fail "parent.knowledge_type 应为 company"
+assert_file_exists "$SYSTEM/docs/knowledge-links.yaml"
+grep -Fq 'type: parent' "$SYSTEM/docs/knowledge-links.yaml" \
+  || fail "目标 links 应含 type: parent"
+grep -Fq 'company_name: "company-repo"' "$SYSTEM/docs/knowledge-links.yaml" \
+  || fail "parent.company_name 应为源仓目录名"
 grep -Fq 'repository: "https://github.com/example/company-ea.git"' \
-  "$SYSTEM/docs/knowledge-parent.yaml" \
+  "$SYSTEM/docs/knowledge-links.yaml" \
   || fail "parent.repository 应为源仓 origin"
-grep -Fq 'doc_dir: "docs"' "$SYSTEM/docs/knowledge-parent.yaml" \
-  || fail "parent.doc_dir 应为源 DOC_ROOT 相对仓库根"
+grep -Fq 'doc_dir: "docs"' "$SYSTEM/docs/knowledge-links.yaml" \
+  || fail "parent.doc_dir 应为源 DOC_DIR"
 
-pass "link 在 \$HOME 下写出 path: \"~/ws/sys-foo\" 并创建槽位与 knowledge-parent.yaml"
+pass "link 写出 ~/ path、槽位，并在目标 links 写入 type:parent"

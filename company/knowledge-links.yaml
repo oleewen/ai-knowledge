@@ -1,6 +1,6 @@
 # 知识库建联清单（docs-link.sh 可维护）
 # company 层系统建联唯一事实源；允许空。
-# `links: []` = 尚未挂载 system 槽位（合法模板态）；实例化后按系统追加。
+# `links: []` = 尚未挂载 system 槽位（合法模板态）；实例化后按系统追加 child。
 #
 # 字段：scripts/README.md（repository + path；path 非 URL；含 sys_name / sys_label）
 # 样例：

@@ -728,7 +728,8 @@ knowledge_link_expand_stored_path() {
   abs_path "${home%/}/$p"
 }
 
-# 读入 knowledge-links.yaml 填入数组（下标对齐）；非法旧形态 path=URL 时报错退出
+# 读入 knowledge-links.yaml 填入数组（下标对齐）；非法旧形态 path=URL 时报错退出。
+# 第 7 参 types：每条 type（缺省 child）；parent 与 child 均载入，调用方自行过滤。
 knowledge_links_load_into_arrays() {
   local f="${1:?}"
   local -n _paths="${2:?}"
@@ -736,13 +737,16 @@ knowledge_links_load_into_arrays() {
   local -n _dirs="${4:?}"
   local -n _apps="${5:?}"
   local -n _labels="${6:?}"
+  local -n _types="${7:?}"
   local line key val path="" repo="" doc_dir="" app_name="" app_label="" sys_name="" sys_label=""
+  local company_name="" company_label="" entry_type=""
 
   _paths=()
   _repos=()
   _dirs=()
   _apps=()
   _labels=()
+  _types=()
 
   [[ -f "$f" ]] || return 0
 
@@ -752,18 +756,27 @@ knowledge_links_load_into_arrays() {
       _paths+=("$path")
       _repos+=("${repo:-}")
       _dirs+=("${doc_dir:-}")
-      # sys_* / app_* 以 YAML 键为准（doc_dir 现为物理 DOC_DIR，不再表示层级类型）
-      if [[ -n "${sys_name}${sys_label}" ]]; then
+      _types+=("${entry_type:-child}")
+      if [[ "${entry_type:-child}" == 'parent' ]]; then
+        if [[ -n "${company_name}${company_label}" ]]; then
+          _apps+=("${company_name:-}")
+          _labels+=("${company_label:-}")
+        else
+          _apps+=("${sys_name:-}")
+          _labels+=("${sys_label:-}")
+        fi
+      elif [[ -n "${sys_name}${sys_label}" ]]; then
         _apps+=("${sys_name:-}")
         _labels+=("${sys_label:-}")
       else
         _apps+=("${app_name:-}")
         _labels+=("${app_label:-}")
       fi
-    elif [[ -n "$repo$doc_dir$app_name$app_label$sys_name$sys_label" ]]; then
-      sdx_error "knowledge-links.yaml 中存在未写完的条目（有 repository/doc_dir/app_name/app_label/sys_name/sys_label 但缺少 path）: $f"
+    elif [[ -n "$repo$doc_dir$app_name$app_label$sys_name$sys_label$company_name$company_label$entry_type" ]]; then
+      sdx_error "knowledge-links.yaml 中存在未写完的条目（有字段但缺少 path）: $f"
     fi
     path='' repo='' doc_dir='' app_name='' app_label='' sys_name='' sys_label=''
+    company_name='' company_label='' entry_type=''
   }
 
   set_kv() {
@@ -771,10 +784,13 @@ knowledge_links_load_into_arrays() {
       path) path="$2" ;;
       repository) repo="$2" ;;
       doc_dir) doc_dir="$2" ;;
+      type) entry_type="$2" ;;
       app_name) app_name="$2" ;;
       app_label) app_label="$2" ;;
       sys_name) sys_name="$2" ;;
       sys_label) sys_label="$2" ;;
+      company_name) company_name="$2" ;;
+      company_label) company_label="$2" ;;
       *) ;;
     esac
   }

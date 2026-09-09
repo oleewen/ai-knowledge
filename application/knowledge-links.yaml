@@ -1,0 +1,11 @@
+# 知识库建联清单（docs-link.sh 维护）
+# application：通常仅含一条 type: parent（上级 system）；缺省无 type 的条目视为 child。
+# 样例：
+# links:
+#   - type: parent
+#     repository: "git@github.com:example/sys-foo.git"
+#     path: "~/workspaces/sys-foo"
+#     doc_dir: "docs"
+#     sys_name: "sys-foo"
+#     sys_label: "订单中台"
+links: []

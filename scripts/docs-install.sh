@@ -273,7 +273,7 @@ install_application_subset_to_docs() {
   done
 
   local base
-  for base in index.md docs-meta.md manifest.md; do
+  for base in index.md docs-meta.md manifest.md knowledge-links.yaml; do
     [[ -f "$src_root/$base" ]] || continue
     sdx_io_copy_file "$src_root/$base" "$dst_root/$base" || return 0
   done
@@ -322,23 +322,22 @@ install_docs_link_scripts_to_target_repo() {
   sdx_io_copy_file "${CFG[repo_root]}/scripts/link-config.sh" "$dst_dir/link-config.sh" || true
 }
 
-# 步骤 1 分发：按 type × mode 将知识库模板安装至目标文档目录
-# 重装时保留已有 knowledge-parent.yaml（与 docs-link 1:1 parent 契约）
-_DOCS_INSTALL_PARENT_STASH=""
+# 步骤 1：重装时保留已有 knowledge-links.yaml（含 type:parent 与向下 child）
+_DOCS_INSTALL_LINKS_STASH=""
 
-docs_install_stash_knowledge_parent() {
-  local src="${CFG[docs_abs]}/knowledge-parent.yaml"
-  _DOCS_INSTALL_PARENT_STASH=""
+docs_install_stash_knowledge_links() {
+  local src="${CFG[docs_abs]}/knowledge-links.yaml"
+  _DOCS_INSTALL_LINKS_STASH=""
   [[ -n "${CFG[docs_abs]}" && -f "$src" ]] || return 0
-  _DOCS_INSTALL_PARENT_STASH="$(mktemp "${TMPDIR:-/tmp}/knowledge-parent.XXXXXX")"
-  cp "$src" "$_DOCS_INSTALL_PARENT_STASH"
+  _DOCS_INSTALL_LINKS_STASH="$(mktemp "${TMPDIR:-/tmp}/knowledge-links.XXXXXX")"
+  cp "$src" "$_DOCS_INSTALL_LINKS_STASH"
 }
 
-docs_install_restore_knowledge_parent() {
-  [[ -n "${_DOCS_INSTALL_PARENT_STASH:-}" && -f "$_DOCS_INSTALL_PARENT_STASH" ]] || return 0
+docs_install_restore_knowledge_links() {
+  [[ -n "${_DOCS_INSTALL_LINKS_STASH:-}" && -f "$_DOCS_INSTALL_LINKS_STASH" ]] || return 0
   mkdir -p "${CFG[docs_abs]}"
-  mv "$_DOCS_INSTALL_PARENT_STASH" "${CFG[docs_abs]}/knowledge-parent.yaml"
-  _DOCS_INSTALL_PARENT_STASH=""
+  mv "$_DOCS_INSTALL_LINKS_STASH" "${CFG[docs_abs]}/knowledge-links.yaml"
+  _DOCS_INSTALL_LINKS_STASH=""
 }
 
 docs_install_copy_templates() {
@@ -725,14 +724,14 @@ docs_install_run() {
   sdx_have_perl || sdx_warn "未检测到 perl：文件内容替换将被跳过，建议安装 perl。"
 
   # ── 步骤 1：知识库同步 ────────────────────────────────────────────────────
-  docs_install_stash_knowledge_parent
+  docs_install_stash_knowledge_links
   if should_reset_docs_dir_before_sync; then
     reset_docs_dir_with_backup
   fi
 
   if [[ -n "${CFG[docs_abs]}" && "${CFG[scope]}" == 'knowledge' ]]; then
     docs_install_copy_templates
-    docs_install_restore_knowledge_parent
+    docs_install_restore_knowledge_links
     install_docs_link_scripts_to_target_repo
     docs_install_write_docsconfig
     docs_install_rewrite_agent_paths

@@ -1,9 +1,16 @@
 # 知识库建联清单（可由 docs-link.sh 维护）
-# 字段约定见 scripts/README.md（repository + path；path 不得为 URL；application 建联含 app_name / app_label）。
-# 示例（勿把 URL 写在 path）：
+# 可含一条 type: parent（上级 company：company_name/label）与若干向下 application child。
+# 缺省无 type 的条目视为 child。字段约定见 scripts/README.md。
+# 示例：
+#   - type: parent
+#     repository: "git@github.com:example/company-ea.git"
+#     path: "~/workspaces/company-ea"
+#     doc_dir: "docs"
+#     company_name: "company-ea"
+#     company_label: "company-ea"
 #   - repository: "https://example.com/org/app-foo.git"
 #     path: "~/workspaces/app-foo"
 #     doc_dir: "docs"
 #     app_name: "app-foo"
 #     app_label: "app-foo"
-links:
+links: []

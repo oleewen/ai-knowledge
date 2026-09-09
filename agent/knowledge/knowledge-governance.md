@@ -27,11 +27,11 @@
 | 允许 | 禁止 |
 | --- | --- |
 | 同层 `…/knowledge/**` 内互引（bundle-relative） | 引同层 knowledge **外**（`adr/`、`solutions/`、`analysis/`、`requirements/`、`DESIGN.md`、`INDEX-GUIDE.md`、根 `index.md`、`agent/**` 等） |
-| 有 `{DOC_ROOT}/knowledge-parent.yaml`：上层实体 Markdown 链到 **首次定义层 SSOT 文件的 HTTP**（见下） | 手写 `../` 爬层、仓库相对跨 `DOC_DIR`、`/company/knowledge/...` 逻辑前缀、与生成函数结果不一致的 URL |
-| 无 `knowledge-parent.yaml`：正文只写实体 ID / `full_id`（纯文本） | 无 parent 时仍写跨层 HTTP 或跨层文件路径 |
+| 有 `{DOC_ROOT}/knowledge-links.yaml` 中 `type: parent`：上层实体 Markdown 链到 **首次定义层 SSOT 文件的 HTTP**（见下） | 手写 `../` 爬层、仓库相对跨 `DOC_DIR`、`/company/knowledge/...` 逻辑前缀、与生成函数结果不一致的 URL |
+| 无 `type: parent`：正文只写实体 ID / `full_id`（纯文本） | 无 parent 时仍写跨层 HTTP 或跨层文件路径 |
 | `resource` / 依据段：外部 **URI、表名、API 名、仓名**（非库外文档相对路径） | Markdown 链或路径字面量指向库外 **文档文件**（ADR 等：**留字去链**） |
 
-**parent（1:1）**：`docs-link` 在下级写入 `{DOC_ROOT}/knowledge-parent.yaml` 单对象 `parent:`：`knowledge_type`、`repository`、`path`、`doc_dir`、`ref`（默认 `main`）。上级 `knowledge-links.yaml` 仍是向下建联 SSOT。一个 application 只对应一个 system parent，一个 system 只对应一个 company parent；换上级即覆盖并替换旧 HTTP 前缀。`docs-install` 重装须保留已有 parent。company 无此文件。
+**parent（1:1）**：`docs-link` 在下级 `knowledge-links.yaml` 写入恰好一条 `type: parent`：`repository`、`path`、`doc_dir`（=上级 DOC_DIR）、以及层相关 name/label（system 子仓用 `company_*`，application 子仓用 `sys_*`）；HTTP `ref` 固定 `main`。上级清单仍向下登记 child（缺省无 `type`）。一个 application 只对应一个 system parent，一个 system 只对应一个 company parent；换上级且传 `--rewrite-http` 时才替换旧 HTTP 前缀。`docs-install` 重装保留已有 `knowledge-links.yaml`。不再读写 `knowledge-parent.yaml`（旧文件可留盘，读忽略）。company 无 parent 条。
 
 **HTTP 生成（唯一函数；技能 / docs-link / 校验共用）**：输入 `full_id` 与首次定义层。沿 parent 链走到该层，解析根优先 `{repository}/{doc_dir}`，否则 `{path}/{doc_dir}`。`repository`：SSH→HTTPS、去 `.git`；GitHub `/blob/{ref}/`，GitLab `/-/blob/{ref}/`，Gitee `/blob/{ref}/`；未知宿主不写 HTTP，只用 `path`+`doc_dir`（本机不存在则正文保持 ID）。文件相对路径用 **目标层** `entity_relpath`，不链中间层 stub。禁止手写与推导不同的 href。`docs-link` 变更 `repository`/`ref`/`doc_dir` 时扫描下级 `*/knowledge/**` 替换旧 web_base；`unlink` 能改为纯 ID 则改，否则停并列清单。
 
