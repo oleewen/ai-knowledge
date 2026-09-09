@@ -34,7 +34,8 @@
 
 | 前缀  | 英文全称 | 含义   | 首次定义 |
 | --- | ---------------- | ---- | ---- |
-| PL- | Product Line     | 产品线  | 公司 |
+| PL- | Product Line     | 产品线（一套解决方案集合） | 公司 |
+| PD- | Product          | 产品（单个解决方案） | 公司 |
 | PM- | Product Module   | 产品模块 | 系统 |
 | BP- | Business Process | 业务流程 | 系统 |
 | FT- | Feature | 功能点  | 系统 |
@@ -85,11 +86,11 @@
   - **应用知识库根目录**（`applications/{app}/`）：`application_meta.yaml`（联邦单元根索引）；子目录同模式，如 `knowledge/knowledge-meta.md`、`requirements/README.md`、`changelogs/README.md`；命名与治理规则引用系统库 `agent/knowledge/`。
   - **系统库五视角**（`system/knowledge/{perspective}/`）：与应用 `knowledge/{perspective}/` 同构；`{perspective}-meta.md` 在视角根；实体为 `{ID}.md`。
 - **系统库 · 业务视角**（`system/knowledge/business/`）：`business-meta.md`；`BD-{NAME}.md` 为 company reference；`BSD-{NAME}/` 起为系统 SSOT 树。
-- **系统库 · 产品视角**（`system/knowledge/product/`）：`product-meta.md`；`PL-{NAME}.md` 为 company reference；`PM-{NAME}/` 起为 PM→FT→FR→UC/BR。
+- **系统库 · 产品视角**（`system/knowledge/product/`）：`product-meta.md`；不落 PL/PD 文件；`PM.parent_id` → 公司 `PD-*`（有 parent 则 HTTP，否则纯 ID）；`PM-{NAME}/` 起为 PM→FT→FR→UC/BR。
 - **系统库 · 应用视角**（`system/knowledge/application/`）：`application-meta.md`；`SYS-{NAME}.md` 为 company reference；`APP-{NAME}/APP-{NAME}.md`；`APP-{NAME}/MS-{NAME}/MS-{NAME}.md`。
 - **系统库 · 数据视角**（`system/knowledge/data/`）：`data-meta.md`；`MDG-{NAME}.md` 为 company reference；`DS-{NAME}/` 含 DS/ENT。
 - **系统库 · 技术视角**（`system/knowledge/technical/`）：`technical-meta.md`；`TSD-{NAME}.md` 为系统 SSOT；`MW-{NAME}/` 可为 application MW 的 reference。
-- **公司层五视角**（`company/knowledge/{perspective}/`）：叙事 Markdown + `{perspective}-meta.md` + 公司级实体 `{ID}.md`（BD/CAP、PL、SYS、MDG、TPL）。
+- **公司层五视角**（`company/knowledge/{perspective}/`）：叙事 Markdown + `{perspective}-meta.md` + 公司级实体（BD/CAP、`PL-{NAME}/` 含 PL+PD、SYS、MDG、TPL）。
 - **IDEA-ID（需求链统一标识）**：统一命名格式 `*-{YYMMDD}-{主题slug}` 中的 `{YYMMDD}-{主题slug}` 段；各阶段类型前缀为 `SOLUTION` / `ANALYSIS` / `REQUIREMENT`（目录）/ `PRD` / `ASD` / `DSD` / `TDD` 等。
 - **系统库 · requirements 阶段**（`system/requirements/`）：`README.md` 为阶段约定入口；`REQUIREMENT-{IDEA-ID}/` 为交付包锚点（与 `ANALYSIS-{IDEA-ID}.md` 共用同一 **IDEA-ID**），不在包内并列根级 `*_meta.yaml` 拷贝。
 - **系统库 · solutions 阶段**（`system/solutions/`）：`README.md` 为阶段约定入口；根目录平铺 `SOLUTION-{IDEA-ID}.md`；`archive/` 归档。
@@ -104,7 +105,7 @@
 | 视角 | 典型 concept 路径 | OKF `type`（摘录） |
 |------|-------------------|-------------------|
 | business | `knowledge/business/BSD-EXAMPLE/{ID}.md`（域扁平树） | `Business Domain` / … |
-| product | `knowledge/product/PM-EXAMPLE/{ID}.md` | `Product Line` / … |
+| product | `knowledge/product/PM-EXAMPLE/{ID}.md`（公司：`PL-*/PL-*.md` + `PD-*.md`） | `Product Line` / `Product` / … |
 | application | `knowledge/application/MS-EXAMPLE/{ID}.md` | `System` / … |
 | data | `knowledge/data/DS-EXAMPLE/{ID}.md`（ENT 挂 DS 目录） | `Data Store` / `Entity` |
 | technical | `knowledge/technical/MW-EXAMPLE/{ID}.md` | `Middleware Binding` / `Component` |

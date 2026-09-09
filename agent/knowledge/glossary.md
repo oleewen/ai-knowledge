@@ -36,7 +36,7 @@ tags: ["glossary", "terminology", "governance"]
 | 术语   | 含义                                                                                              |
 | ---- | ----------------------------------------------------------------------------------------------- |
 | 业务视角 | 业务域、子域、限界上下文、聚合等，不依赖技术实现。                                                                       |
-| 产品视角 | 产品线、模块、功能点、用例、业务流程、业务规则。                                                                        |
+| 产品视角 | 产品线（PL）、产品（PD，解决方案）、模块、功能点、用例、业务流程、业务规则。                                        |
 | 应用视角 | 系统、应用、**MS（入口能力簇）**、API；其中 **MS-*** 为 **对外入口宿主类聚类**，**不**等于 Maven 子模块（见 **docs-build §8.1.2**）。 |
 | 数据视角 | 数据存储、数据实体、主数据域目录、字段、敏感级别、数据流向。 |
 | 技术视角 | 技术平台能力（TPL）、技术域（TSD）、中间件绑定（MW）、关键组件（CMP）；叙事与实体 ID 并存，见 [naming-conventions.md](naming-conventions.md)。 |
@@ -78,6 +78,7 @@ tags: ["glossary", "terminology", "governance"]
 | implemented_by_app_id      | 限界上下文由哪个应用（代码库）实现。                                                  |
 | implemented_by_service_ids | 聚合根由哪些 **MS-*（入口簇）** 实现；**MS-*** 须可指回 **API 宿主类**，**非** artifactId。 |
 | relies_on_context_ids      | 产品模块依赖哪些限界上下文。                                                      |
+| depends_pm_ids             | 消费方产品模块依赖的其它 PM（同 PD 或跨 PD）；主属仍看 `parent_id→PD`。              |
 | invokes_api_ids            | 功能点调用的 API 列表。                                                      |
 | apis                       | 能力（AB）绑定的 API 列表；跨视角引用见 `apis[].id` → API.id（落盘 SSOT 见 `business-meta.md` §5）。 |
 | map_to_api_id              | 用例（UC）映射到 API 的关系。                                                  |
