@@ -56,7 +56,7 @@ title: 系统知识库设计
 | 视角 | 系统层聚焦 | 入口 |
 | --- | --- | --- |
 | 业务 | BSD→AB；BD 为 company reference | [knowledge/business/](knowledge/business/README.md) |
-| 产品 | PM→FT→FR→UC/BR、BP；PL 为 company reference | [knowledge/product/](knowledge/product/README.md) |
+| 产品 | PM→FT→FR→UC/BR、BP；PL/PD 为公司 SSOT（本层不落盘；PM→公司 PD） | [knowledge/product/](knowledge/product/README.md) |
 | 应用 | APP/MS；SYS 为 company reference；API 在 application | [knowledge/application/](knowledge/application/README.md) |
 | 数据 | DS/ENT；MDG 为 company reference；TBL 在 application | [knowledge/data/](knowledge/data/README.md) |
 | 技术 | TSD；MW/CMP 在 application（本层可 reference） | [knowledge/technical/](knowledge/technical/README.md) |

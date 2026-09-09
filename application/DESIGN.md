@@ -49,7 +49,7 @@ title: 应用知识文档库 — 设计方案摘录
 | 视角 | meta / README | 层级（摘要） | 本层角色 |
 | --- | --- | --- | --- |
 | business | [business-meta](knowledge/business/business-meta.md) · [README](knowledge/business/README.md) | BD → BSD → BC → AGG → AB | 实现映射；BD 多为 ref |
-| product | [product-meta](knowledge/product/product-meta.md) · [README](knowledge/product/README.md) | PL → PM → FT → FR → UC/BR（+ BP） | 实现映射；PL 多为 ref |
+| product | [product-meta](knowledge/product/product-meta.md) · [README](knowledge/product/README.md) | PL → PD → PM → FT → FR → UC/BR（+ BP） | 实现映射；PL/PD 公司 SSOT（本层不落盘） |
 | application | [application-meta](knowledge/application/application-meta.md) · [README](knowledge/application/README.md) | SYS → APP → MS → **API** | **API SSOT** |
 | data | [data-meta](knowledge/data/data-meta.md) · [README](knowledge/data/README.md) | MDG → DS → ENT → **TBL** | **TBL SSOT** |
 | technical | [technical-meta](knowledge/technical/technical-meta.md) · [README](knowledge/technical/README.md) | TSD → **MW** → **CMP** | **MW/CMP SSOT** |
@@ -69,6 +69,7 @@ title: 应用知识文档库 — 设计方案摘录
 | **业务** business | 聚合 AGG | 系统 |
 | **业务** business | 能力 AB | 系统 |
 | **产品** product | 产品线 PL | 公司 |
+| **产品** product | 产品 PD | 公司 |
 | **产品** product | 产品模块 PM | 系统 |
 | **产品** product | 产品功能 FT | 系统 |
 | **产品** product | 功能需求 FR | 系统 |

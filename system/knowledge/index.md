@@ -46,11 +46,10 @@
 
 ---
 
-## §2 产品视角（product · PL → PM → FT → FR → UC/BR · BP）
+## §2 产品视角（product · PL → PD → PM → FT → FR → UC/BR · BP）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| PL | EXAMPLE |  | 示例产品线 | `product/PL-EXAMPLE.md` |
 | PM | EXAMPLE |  | 示例产品模块 | `product/PM-EXAMPLE/PM-EXAMPLE.md` |
 | FT | EXAMPLE |  | 示例功能 | `product/PM-EXAMPLE/FT-EXAMPLE/FT-EXAMPLE.md` |
 | FR | EXAMPLE |  | 示例功能需求 | `product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/FR-EXAMPLE.md` |
@@ -89,7 +88,7 @@
 
 ---
 
-> 公司级 **TPL-*** 不在本索引登记；见 。系统级 **TSD-*** 在本索引 §5 登记。
+> 公司级 **TPL-*** 不在本索引登记；见 `company/knowledge/technical/`。系统级 **TSD-*** 在本索引 §5 登记。产品 **PL/PD** 见公司层；本层自 **PM** 起。
 
 ---
 
@@ -98,7 +97,7 @@
 | 索引 ID | 命名式 ID（锚点目录） |
 |---------|----------------------|
 | BD-EXAMPLE | `business/BD-EXAMPLE.md` |
-| PL-EXAMPLE | `product/PL-EXAMPLE.md` |
+| PM-EXAMPLE | `product/PM-EXAMPLE/` |
 | SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |
 | MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |
 | DS-EXAMPLE | `data/DS-EXAMPLE/` |
