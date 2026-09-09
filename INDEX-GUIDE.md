@@ -26,7 +26,7 @@
 | 公司知识库 | [company/README.md](company/README.md) | `knowledge/`（五视角企业架构）、`system-{name}/` 联邦槽位、SDD 上游 |
 | 公司侧目录索引 | [company/index.md](company/index.md) | `company/` 树内目录索引与 OKF 渐进披露入口 |
 | 公司侧九章索引 | [company/INDEX-GUIDE.md](company/INDEX-GUIDE.md) | `company/` 文档根九章索引指南 |
-| 初始化脚本 | [scripts/README.md](scripts/README.md) | `docs-install`/`agent-install`/`docs-link`/`docs-bootstrap` |
+| 初始化脚本 | [scripts/README.md](scripts/README.md) | `docs-install`/`agent-install`/`docs-link`/`docs-bootstrap`；升级见 `/docs-upgrade` |
 | 规范与 Slash | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/skills/README.md](agent/skills/README.md) | 全局约定与 Skill 清单（18 个） |
 | 共享推进契约 | [agent/references/](agent/references/) | 意图澄清 / 单元推进 / 烤干 / 轻流程 / 布局 / 会话路径 |
 | 根索引运行日志 | [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md) | 根输出组增量基线（本单元） |
@@ -144,6 +144,7 @@ flowchart LR
 | `agent-install.sh` | Bash | [scripts/agent-install.sh](scripts/agent-install.sh) | Agent 树安装 |
 | `docs-link.sh` | Bash | [scripts/docs-link.sh](scripts/docs-link.sh) | `knowledge-links.yaml` 登记 |
 | `docs-bootstrap.sh` | Bash | [scripts/docs-bootstrap.sh](scripts/docs-bootstrap.sh) | 远程 curl 后 clone+install |
+| `/docs-upgrade` 脚本 | Bash | [agent/skills/docs-upgrade/scripts/docs-upgrade.sh](agent/skills/docs-upgrade/scripts/docs-upgrade.sh) | 已有库对齐元库清单/骨架（不清空） |
 | `/docs-*` · `/sdx-*` | Slash | [agent/skills/README.md](agent/skills/README.md) | 见 §9.3 |
 
 ---
@@ -218,7 +219,7 @@ stateDiagram-v2
 4. **联邦登记**: `docs-link.sh` 维护 `system|company/knowledge-links.yaml`。
 5. **维护索引与变更**: `/docs-indexing` 更新对应 `INDEX-GUIDE.md` + `changelogs/INDEXING-LOG.md`；`/docs-change` 更新 `CHANGE-LOG.md`。
 6. **OKF refresh 与校验**: `/docs-okf`（须 `.docsconfig` 的 `DOC_DIR`+`KNOWLEDGE_TYPE`）。
-7. **知识工程**: `/docs-build`、`/docs-distill`、`/docs-extract`、`/docs-merge`、`/docs-archive`、`/docs-upgrade`、`/docs-simplify` 等按 [agent/skills/README.md](agent/skills/README.md)。
+7. **知识工程**: `/docs-build`、`/docs-distill`、`/docs-extract`、`/docs-merge`、`/docs-archive`、`/docs-revise`、`/docs-simplify` 等按 [agent/skills/README.md](agent/skills/README.md)。
 
 ### 5.3 业务规则（协作）
 
@@ -390,7 +391,7 @@ stateDiagram-v2
 | `/docs-indexing` | [agent/skills/docs-indexing/SKILL.md](agent/skills/docs-indexing/SKILL.md) |
 | `/docs-agent` | [agent/skills/docs-agent/SKILL.md](agent/skills/docs-agent/SKILL.md) |
 | `/docs-build` | [agent/skills/docs-build/SKILL.md](agent/skills/docs-build/SKILL.md) |
-| `/docs-upgrade` | [agent/skills/docs-upgrade/SKILL.md](agent/skills/docs-upgrade/SKILL.md) |
+| `/docs-revise` | [agent/skills/docs-revise/SKILL.md](agent/skills/docs-revise/SKILL.md) |
 | `/docs-simplify` | [agent/skills/docs-simplify/SKILL.md](agent/skills/docs-simplify/SKILL.md) |
 | `/docs-distill` | [agent/skills/docs-distill/SKILL.md](agent/skills/docs-distill/SKILL.md) |
 | `/docs-extract` | [agent/skills/docs-extract/SKILL.md](agent/skills/docs-extract/SKILL.md) |
@@ -411,6 +412,8 @@ stateDiagram-v2
 | `/docs-tag` | [agent/skills/docs-tag/SKILL.md](agent/skills/docs-tag/SKILL.md) |
 | `/docs-pull` | [agent/skills/docs-pull/SKILL.md](agent/skills/docs-pull/SKILL.md) |
 | `/docs-push` | [agent/skills/docs-push/SKILL.md](agent/skills/docs-push/SKILL.md) |
+| `/docs-bootstrap` | [agent/skills/docs-bootstrap/SKILL.md](agent/skills/docs-bootstrap/SKILL.md) |
+| `/docs-upgrade` | [agent/skills/docs-upgrade/SKILL.md](agent/skills/docs-upgrade/SKILL.md) |
 | `/docs-okf` | [agent/skills/docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) |
 
 ---

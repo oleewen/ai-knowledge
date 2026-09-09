@@ -15,8 +15,8 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 | 脚本 | 用途 |
 | ------ | ------ |
 | `agent-install.sh` | 安装 Agent 树（`hooks` / `scripts` / `rules` / `skills` / `knowledge` / `references`）；`--scope`=`a`/`r`/`s`/`h`/`sh`/`k`（`k` 或 `knowledge` 仅 knowledge+references），`--target`（默认 `$HOME`），`--agents`（默认 `cursor`，可 `all` 或多选），`--dry-run`。 |
-| `docs-install.sh` | 知识库同步与配置分流；默认 `--scope=k`（knowledge）。`--scope=knowledge` 同步知识库并写 `.docsconfig`（含 **`KNOWLEDGE_TYPE`**）；`--scope=config` 仅更新 `.docsconfig` 的路径与 `AGENT_*`，不写 `KNOWLEDGE_TYPE`。两种 scope 都会调用 `install_agent_path`，但仅当 `AGENT_ROOT` 为空时补默认 `AGENT_*`。 |
-| `docs-link.sh` | 在**当前 Git 仓库（源知识库）**内维护 `DOC_ROOT/knowledge-links.yaml`（`company` / `system` 源），登记/注销目标库（`--link` / `--unlink`，`--target`）；清单字段：**`repository`**、**`path`**（本机 `~/…`；**不得** URL）、**`doc_dir`**（=目标 **`DOC_DIR`**）、child 用 **`sys_*`** / **`app_*`**。另在目标 `knowledge-links.yaml` 写入恰好一条 **`type: parent`**（`repository`/`path`/`doc_dir` + **`company_*`** 或 **`sys_*`**；HTTP ref=`main`）；目标须已有该文件（application 由 docs-install 落盘）。**不再**写 `knowledge-parent.yaml`。换父且 **`--rewrite-http`** 才替换跨层 HTTP；`--unlink` 删目标 parent 条且**不改正文**。 |
+| `docs-install.sh` | 知识库同步与配置分流；默认 `--scope=k`（knowledge）。`--scope=knowledge` 同步知识库并写 `.docsconfig`（含 **`KNOWLEDGE_TYPE`**）；完成后在目标 `knowledge-links.yaml` **upsert** 一条 **`type: meta`**（`repository`/`path`=装机源仓，`doc_dir`=目标 **`KNOWLEDGE_TYPE`**，供后续对齐元库模板）。`--scope=config` 仅更新 `.docsconfig` 的路径与 `AGENT_*`，不写 `KNOWLEDGE_TYPE`、不改 links。两种 scope 都会调用 `install_agent_path`，但仅当 `AGENT_ROOT` 为空时补默认 `AGENT_*`。 |
+| `docs-link.sh` | 在**当前 Git 仓库（源知识库）**内维护 `DOC_ROOT/knowledge-links.yaml`（`company` / `system` 源），登记/注销目标库（`--link` / `--unlink`，`--target`）；清单字段：**`repository`**、**`path`**（本机 `~/…`；**不得** URL）、**`doc_dir`**（=目标 **`DOC_DIR`**；**`type: meta` 例外**：=`KNOWLEDGE_TYPE`）、child 用 **`sys_*`** / **`app_*`**。另在目标 `knowledge-links.yaml` 写入恰好一条 **`type: parent`**（`repository`/`path`/`doc_dir` + **`company_*`** 或 **`sys_*`**；HTTP ref=`main`）；写回时**保活**已有 **`type: meta`**。目标须已有该文件（application 由 docs-install 落盘）。**不再**写 `knowledge-parent.yaml`。换父且 **`--rewrite-http`** 才替换跨层 HTTP；`--unlink` 删目标 parent 条且**不改正文**。 |
 
 ### push-specs（Slash `/docs-push` 配套脚本）
 
@@ -30,6 +30,8 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 `--scope=knowledge` 完成同步并写入 `.docsconfig` 后，会将 `DOC_ROOT` 内文本中的路径段 `agent/` 按 `AGENT_DIRS` **首项**重写为对应目录（如 `.cursor/`），并在 `README.md` 注入说明块（列出其余可用 Agent 根目录）。
 
 **`docs-bootstrap.sh`**：远程 `curl` 下载后执行；临时 **clone** 本仓库，再依次调用 **`docs-install.sh`**（知识库与 `.docsconfig`）与 **`agent-install.sh`**（由 `--agents` / `--agent-scope` 决定安装目标）。**仅**想本地分步执行时，可 clone 后分别运行上述两脚本。
+
+**Slash**：[`/docs-bootstrap`](../agent/skills/docs-bootstrap/SKILL.md) 编排装机脚本（可选 `docs` / `agent` / `both`；本仓快路径或 bootstrap；轻流程 `C/M/S/F`）。已有库对齐元库：[`/docs-upgrade`](../agent/skills/docs-upgrade/SKILL.md)（脚本在技能目录 `scripts/docs-upgrade.sh`）。
 
 ## 功能概述
 
@@ -143,7 +145,7 @@ bash scripts/tests/run.sh --suite okf  # 单套件
 | 套件 | 命令 | 说明 |
 | ------ | ------ | ------ |
 | 聚合 | `bash scripts/tests/run.sh` | 默认 `--quick` |
-| docs-install | `bash scripts/tests/docs-install/run.sh` | 知识库安装集成测（10 案） |
+| docs-install | `bash scripts/tests/docs-install/run.sh` | 知识库安装集成测（含 type:meta） |
 | docs-link | `bash scripts/tests/docs-link/run.sh` | 建联 YAML（须 Bash 5+） |
 | docs-push | `bash scripts/tests/docs-push/run.sh` | push-specs（须 Bash 5+） |
 | docs-change | `bash scripts/tests/docs-change/run.sh` | change-indexing 集成测 |

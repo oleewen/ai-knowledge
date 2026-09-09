@@ -1,11 +1,11 @@
 # 轻流程用户动作（Agent SSOT）
 
 > **定位**：未绑定意图澄清 / 单元推进环的 docs 技能共用动作字母。  
-> **适用**：`docs-change` / `docs-pull` / `docs-push` / `docs-tag`（及同类参数确认型技能）。  
+> **适用**：`docs-change` / `docs-pull` / `docs-push` / `docs-tag` / `docs-bootstrap` / `docs-upgrade`（及同类参数确认型技能）。  
 > **不适用**：语义族（见 [unit-cycle-protocol.md](unit-cycle-protocol.md) 的 `C/M/G/S/F`）；`docs-okf` 无当前单元循环、不强制本字母表（自有 workflow 推进）。  
 > **受众**：写后 **A/B** 见 [audience-and-language.md](audience-and-language.md)（轻流程默认读者表；okf 在结果摘要出口）。
 
-**最后更新**: 2026-07-29
+**最后更新**: 2026-09-09
 
 ---
 
