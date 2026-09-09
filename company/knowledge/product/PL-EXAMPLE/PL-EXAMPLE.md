@@ -1,7 +1,7 @@
 ---
 type: Product Line
 title: 示例产品线
-description: 演示公司级 PL 结构。
+description: 演示公司级 PL 结构（一套解决方案集合）。
 tags: [product, PL]
 timestamp: "2026-06-21T00:00:00Z"
 full_id: PL-EXAMPLE
@@ -12,7 +12,8 @@ layer_scope: company
 ---
 ## 关系
 
-- (none)
+- children:
+  - PD-EXAMPLE
 
 ## 跨视角
 

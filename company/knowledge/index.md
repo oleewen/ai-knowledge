@@ -32,8 +32,8 @@
 ## 统一表头规范
 
 - **标准表头**：`["层级","ID","别名（英文名）","名称","证据链"]`
-- **字段语义**：`ID` = 示例编码；`别名（英文名）` = 英文编码；`名称` = 中文名称
-- **唯一性**：`层级+ID`、`层级+别名（英文名）` 全库唯一
+- **字段语义**：`ID` 为示例编码，`别名（英文名）` 为英文编码，`名称` 为中文名称
+- **唯一性约束**：`层级+ID` 全知识库唯一；`层级+别名（英文名）` 全知识库唯一
 
 ---
 
@@ -47,11 +47,12 @@
 
 ---
 
-## §2 产品视角（product · PL）
+## §2 产品视角（product · PL → PD）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| PL | EXAMPLE |  | 示例产品线 | `product/PL-EXAMPLE.md` |
+| PL | EXAMPLE |  | 示例产品线 | `product/PL-EXAMPLE/PL-EXAMPLE.md` |
+| PD | EXAMPLE |  | 示例产品 | `product/PL-EXAMPLE/PD-EXAMPLE.md` |
 
 ---
 
@@ -79,7 +80,7 @@
 
 ---
 
-> 登记公司级 **BD / CAP / PL / SYS / MDG / TPL**；系统/应用层实体见对应 bundle 的 `knowledge/index.md`。
+> 本索引登记公司级 **BD / CAP / PL / PD / SYS / MDG / TPL**；系统层与应用层实体见对应 bundle 的 `knowledge/index.md`。
 
 ---
 
@@ -90,7 +91,8 @@
 | BD-EXAMPLE | `business/BD-EXAMPLE/` |
 | CAP-EXAMPLE-L1 | `business/BD-EXAMPLE/CAP-EXAMPLE-L1.md` |
 | CAP-EXAMPLE | `business/BD-EXAMPLE/CAP-EXAMPLE.md` |
-| PL-EXAMPLE | `product/PL-EXAMPLE.md` |
+| PL-EXAMPLE | `product/PL-EXAMPLE/` |
+| PD-EXAMPLE | `product/PL-EXAMPLE/PD-EXAMPLE.md` |
 | SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |
 | MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |
 | TPL-EXAMPLE | `technical/TPL-EXAMPLE.md` |
