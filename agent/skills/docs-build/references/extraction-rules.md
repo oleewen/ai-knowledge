@@ -211,14 +211,20 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 #### PL（产品线层级）
 
-- 提取自 README.md 产品概述、SYS-* 系统定义，与 SYS-* 一一对应
+- 提取自 README.md 产品概述、SYS-* 系统定义（公司层）
 - **必须字段**：`full_id`（如 `PL-BILLING-APPEAL`）、`description`、`target_users`（目标用户角色列表）
+
+#### PD（产品 / 解决方案层级）
+
+- 提取自产品架构、解决方案边界；`parent_id` 所属 PL（公司层 SSOT）
+- **必须字段**：`full_id`（如 `PD-BILLING-APPEAL`）、`parent_id`（所属 PL）
+- 系统/应用不落 PD 文件；`PM.parent_id` 引用公司 `PD-*`（有 parent 则 HTTP，否则纯 ID）
 
 #### PM（产品模块层级）
 
 - 提取自应用视角 MS-* 服务列表，与 MS-* 一一对应
-- **必须字段**：`full_id`（如 `PM-BILLING-APPEAL-CORE`）、`parent_id`（所属 PL）
-- **禁止**：无 MS-* 对应的 PM-ID、单 MS-* 对应多个 PM-ID
+- **必须字段**：`full_id`（如 `PM-BILLING-APPEAL-CORE`）、`parent_id`（所属 PD）
+- **禁止**：无 MS-* 对应的 PM-ID、单 MS-* 对应多个 PM-ID；`parent_id` 直挂 PL
 
 #### FT（功能特性层级）
 
@@ -233,7 +239,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 ### 输出结构
 
-产品视角每个 PL/PM/FT/UC 各一 `{ID}.md`；PL→PM→FT→UC 通过 frontmatter `parent_id` 关联。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)。
+产品视角公司层 PL/PD、系统层起 PM/FT/UC 各一 `{ID}.md`；`PL→PD→PM→FT→UC` 通过 frontmatter `parent_id` 关联。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)。
 
 ---
 
@@ -279,7 +285,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
                     ┌─────────────────────┴─────────────────────┐
                     ▼                                           ▼
               业务视角                                    产品视角
-       BD → BSD → BC → AGG → AB                  PL → PM → FT → UC
+       BD → BSD → BC → AGG → AB                  PL → PD → PM → FT → UC
             引用 MS-*    引用 API-*            引用 SYS-*  引用 MS-*  引用 API-*
 ```
 
@@ -291,7 +297,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 | 字段 | 必需 | 说明 |
 |------|------|------|
-| `hierarchy` | 是 | 层级标识（SYS/APP/MS/API/DS/ENT/MW/CMP/TPL/TSD/BD/BSD/BC/AGG/AB/PL/PM/FT/FR/UC/BR/BP） |
+| `hierarchy` | 是 | 层级标识（SYS/APP/MS/API/DS/ENT/MW/CMP/TPL/TSD/BD/BSD/BC/AGG/AB/PL/PD/PM/FT/FR/UC/BR/BP） |
 | `id` | 是 | 数字编码（001、002...），同层级唯一 |
 | `alias` | 是 | 英文编码，机器可读标识 |
 | `name` | 是 | 中文名称，面向业务阅读 |

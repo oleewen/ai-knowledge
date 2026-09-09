@@ -66,6 +66,7 @@ HIERARCHY_TO_TYPE: Dict[str, str] = {
     "AGG": "Aggregate",
     "AB": "Ability",
     "PL": "Product Line",
+    "PD": "Product",
     "PM": "Product Module",
     "FT": "Feature",
     "FR": "Functional Requirement",
@@ -225,6 +226,7 @@ HIERARCHY_TO_PERSPECTIVE: Dict[str, str] = {
     "AB": "business",
     "CAP": "business",
     "PL": "product",
+    "PD": "product",
     "PM": "product",
     "FT": "product",
     "FR": "product",
@@ -250,6 +252,7 @@ HIERARCHY_FIRST_LAYER: Dict[str, str] = {
     "BD": "company",
     "CAP": "company",
     "PL": "company",
+    "PD": "company",
     "SYS": "company",
     "MDG": "company",
     "TPL": "company",
@@ -314,7 +317,10 @@ def entity_relpath(
             bd = parent_id or "BD-EXAMPLE"
             return f"knowledge/business/{bd}/{full_id}.md"
         if perspective == "product" and prefix == "PL":
-            return f"knowledge/product/{full_id}.md"
+            return f"knowledge/product/{full_id}/{full_id}.md"
+        if perspective == "product" and prefix == "PD":
+            pl = parent_id or _DEFAULT_PRODUCT_PL
+            return f"knowledge/product/{pl}/{full_id}.md"
         if perspective == "application" and prefix == "SYS":
             return f"knowledge/application/{full_id}.md"
         if perspective == "data" and prefix == "MDG":

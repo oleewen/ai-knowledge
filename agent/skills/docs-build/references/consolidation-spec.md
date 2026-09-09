@@ -29,7 +29,7 @@ graph TD
 | application | SYS- APP- MS- API- |
 | data | DS- ENT- |
 | business | BD- BSD- BC- AGG- AB- |
-| product | PL- PM- FT- UC- |
+| product | PL- PD- PM- FT- UC- |
 | technical | MW- CMP- |
 
 ### 2. 唯一

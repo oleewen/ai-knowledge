@@ -229,6 +229,19 @@
         "cross_references": { "application": ["SYS-001"], "business": ["BD-001"] }
       },
       {
+        "hierarchy": "PD",
+        "id": "001",
+        "full_id": "PD-BILLING-APPEAL",
+        "parent_id": "PL-BILLING-APPEAL",
+        "alias": "BillingAppealSolution",
+        "name": "计费申诉解决方案",
+        "description": "计费申诉产品线下的可交付解决方案",
+        "evidence_chain": [
+          { "source": "README.md §产品架构", "confidence": "high", "type": "document" }
+        ],
+        "cross_references": { "product": ["PL-001"], "application": ["SYS-001"] }
+      },
+      {
         "hierarchy": "FT",
         "id": "001",
         "full_id": "FT-BILLING-APPEAL-LIFECYCLE",
@@ -257,10 +270,11 @@
     ],
     "metadata": {
       "total_products": 1,
+      "total_product_deliveries": 1,
       "total_modules": 0,
       "total_features": 1,
       "total_use_cases": 1,
-      "total_entities": 3,
+      "total_entities": 4,
       "extraction_basis": "README 功能特性 + INDEX_GUIDE §3 + MS-* 技术实体",
       "schema_notes": "schema 2.1 扁平 entities 数组",
       "changes_from_previous": ""

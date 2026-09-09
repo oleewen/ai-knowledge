@@ -128,6 +128,19 @@ def test_entity_relpath_company_tpl():
     assert path == "knowledge/technical/TPL-EXAMPLE.md"
 
 
+def test_entity_relpath_company_pl_and_pd():
+    assert (
+        okf_lib.entity_relpath("product", "PL-EXAMPLE", bundle="company")
+        == "knowledge/product/PL-EXAMPLE/PL-EXAMPLE.md"
+    )
+    assert (
+        okf_lib.entity_relpath(
+            "product", "PD-EXAMPLE", parent_id="PL-EXAMPLE", bundle="company"
+        )
+        == "knowledge/product/PL-EXAMPLE/PD-EXAMPLE.md"
+    )
+
+
 def test_entity_relpath_system_ms_and_mw():
     assert (
         okf_lib.entity_relpath(
@@ -180,6 +193,7 @@ def main() -> None:
         test_entity_relpath_company_cap,
         test_entity_relpath_company_cap_with_parent,
         test_entity_relpath_company_tpl,
+        test_entity_relpath_company_pl_and_pd,
         test_entity_relpath_system_ms_and_mw,
         test_entity_relpath_system_ms_requires_parent,
         test_entity_relpath_system_bd_at_perspective_root,

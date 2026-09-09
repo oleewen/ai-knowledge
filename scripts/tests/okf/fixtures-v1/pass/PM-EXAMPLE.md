@@ -7,12 +7,12 @@ timestamp: "2026-06-21T00:00:00Z"
 full_id: PM-EXAMPLE
 perspective: product
 hierarchy: PM
-parent_id: PL-EXAMPLE
+parent_id: PD-EXAMPLE
 layer_scope: system
 ---
 # Relations
 
-- parent: [PL-EXAMPLE](/knowledge/product/PL-EXAMPLE.md)
+- parent: PD-EXAMPLE
 
 # Cross-perspective
 

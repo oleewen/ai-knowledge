@@ -117,7 +117,7 @@ def test_system_knowledge_index_sections_and_mapping():
         )
         assert "§3 应用视角（application · SYS → APP → MS）" in rendered
         assert "§4 数据视角（data · MDG → DS → ENT）" in rendered
-        assert "| PL-EXAMPLE | `product/PL-EXAMPLE.md` |" in rendered
+        assert "| PM-EXAMPLE | `product/PM-EXAMPLE/` |" in rendered
         assert "| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |" in rendered
         assert "| MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |" in rendered
         assert "SYS → APP → MS → API" not in rendered
@@ -132,7 +132,7 @@ def test_application_knowledge_index_sections_and_mapping():
         )
         assert "§4 数据视角（data · MDG → DS → ENT → TBL）" in rendered
         assert "§5 技术视角（technical · TSD → MW → CMP）" in rendered
-        assert "| PL-EXAMPLE | `product/PL-EXAMPLE.md` |" in rendered
+        assert "| PM-EXAMPLE | `product/PM-EXAMPLE/` |" in rendered
         assert "| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |" in rendered
         assert "| TBL-EXAMPLE | `data/DS-EXAMPLE/TBL-EXAMPLE.md` |" in rendered
         assert "business/BSD-EXAMPLE/" not in rendered

@@ -19,9 +19,9 @@ _APPLICATION_PERSPECTIVE_SECTIONS: List[Tuple[str, str, List[str]]] = [
         ["BD", "BSD", "BC", "AGG", "AB"],
     ),
     (
-        "§2 产品视角（product · PL → PM → FT → FR → UC/BR · BP）",
+        "§2 产品视角（product · PL → PD → PM → FT → FR → UC/BR · BP）",
         "product",
-        ["PL", "PM", "FT", "FR", "UC", "BR", "BP"],
+        ["PM", "FT", "FR", "UC", "BR", "BP"],
     ),
     (
         "§3 应用视角（application · SYS → APP → MS → API）",
@@ -48,9 +48,9 @@ _COMPANY_PERSPECTIVE_SECTIONS: List[Tuple[str, str, List[str]]] = [
         ["BD", "CAP"],
     ),
     (
-        "§2 产品视角（product · PL）",
+        "§2 产品视角（product · PL → PD）",
         "product",
-        ["PL"],
+        ["PL", "PD"],
     ),
     (
         "§3 应用视角（application · SYS）",
@@ -269,14 +269,15 @@ def _split_existing(text: str) -> Tuple[str, str]:
 def _default_suffix(bundle: str) -> str:
     if bundle == "company":
         footer_note = (
-            "> 本索引登记公司级 **BD / CAP / PL / SYS / MDG / TPL**；"
+            "> 本索引登记公司级 **BD / CAP / PL / PD / SYS / MDG / TPL**；"
             "系统层与应用层实体见对应 bundle 的 `knowledge/index.md`。"
         )
         mapping_rows = [
             "| BD-EXAMPLE | `business/BD-EXAMPLE/` |",
             "| CAP-EXAMPLE-L1 | `business/BD-EXAMPLE/CAP-EXAMPLE-L1.md` |",
             "| CAP-EXAMPLE | `business/BD-EXAMPLE/CAP-EXAMPLE.md` |",
-            "| PL-EXAMPLE | `product/PL-EXAMPLE.md` |",
+            "| PL-EXAMPLE | `product/PL-EXAMPLE/` |",
+            "| PD-EXAMPLE | `product/PL-EXAMPLE/PD-EXAMPLE.md` |",
             "| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |",
             "| MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |",
             "| TPL-EXAMPLE | `technical/TPL-EXAMPLE.md` |",
@@ -285,10 +286,11 @@ def _default_suffix(bundle: str) -> str:
         footer_note = (
             "> 公司级 **TPL-*** 不在本索引登记；见 `company/knowledge/technical/`。"
             "系统级 **TSD-*** 在本索引 §5 登记。"
+            "产品 **PL/PD** 见公司层；本层自 **PM** 起。"
         )
         mapping_rows = [
             "| BD-EXAMPLE | `business/BD-EXAMPLE.md` |",
-            "| PL-EXAMPLE | `product/PL-EXAMPLE.md` |",
+            "| PM-EXAMPLE | `product/PM-EXAMPLE/` |",
             "| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |",
             "| MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |",
             "| DS-EXAMPLE | `data/DS-EXAMPLE/` |",
@@ -297,10 +299,11 @@ def _default_suffix(bundle: str) -> str:
         footer_note = (
             "> 公司级 **TPL-*** 不在本索引登记（见 `company/knowledge/technical/`）。"
             "本层登记 **TSD/MDG** reference 与 **API/TBL/MW/CMP** SSOT。"
+            "产品 **PL/PD** 见公司层；本层自 **PM** 起。"
         )
         mapping_rows = [
             "| BD-EXAMPLE | `business/BD-EXAMPLE.md` |",
-            "| PL-EXAMPLE | `product/PL-EXAMPLE.md` |",
+            "| PM-EXAMPLE | `product/PM-EXAMPLE/` |",
             "| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |",
             "| MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |",
             "| TBL-EXAMPLE | `data/DS-EXAMPLE/TBL-EXAMPLE.md` |",

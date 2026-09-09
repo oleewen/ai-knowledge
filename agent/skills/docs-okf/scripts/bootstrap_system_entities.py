@@ -181,44 +181,6 @@ layer_scope: system
 """,
     ),
     (
-        "knowledge/product/PL-EXAMPLE.md",
-        """---
-type: Product Line
-title: 示例产品线
-description: null
-tags: [product, PL]
-timestamp: "%s"
-full_id: PL-EXAMPLE
-perspective: product
-hierarchy: PL
-parent_id: null
-definition_scope: reference
-ssot_layer: company
-layer_scope: system
----
-# SSOT
-
-上游主定义：`company/knowledge/product/PL-EXAMPLE.md`（公司层 OKF SSOT）。
-
-## 关系
-
-- children:
-  - [PM-EXAMPLE](/knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md)
-
-## 跨视角
-
-- (none)
-
-## 详细说明
-
-- (none)
-
-## 依据与证据
-
-示例数据
-""",
-    ),
-    (
         "knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md",
         """---
 type: Product Module
@@ -229,12 +191,13 @@ timestamp: "%s"
 full_id: PM-EXAMPLE
 perspective: product
 hierarchy: PM
-parent_id: PL-EXAMPLE
+parent_id: PD-EXAMPLE
 layer_scope: system
 ---
 ## 关系
 
-- parent: [PL-EXAMPLE](/knowledge/product/PL-EXAMPLE.md)
+- parent: PD-EXAMPLE
+- depends_pm_ids: []
 
 ## 跨视角
 
@@ -242,7 +205,7 @@ layer_scope: system
 
 ## 详细说明
 
-- (none)
+- 上游产品 SSOT：公司层 `PD-EXAMPLE`（有 parent 则 HTTP，否则纯 ID；本层不落 PD 文件）
 
 ## 依据与证据
 

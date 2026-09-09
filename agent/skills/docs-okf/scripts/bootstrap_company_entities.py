@@ -116,24 +116,23 @@ business-capability.md（示例）
 """,
     ),
     (
-        "knowledge/product/PL-EXAMPLE.md",
+        "knowledge/product/PL-EXAMPLE/PL-EXAMPLE.md",
         """---
 type: Product Line
 title: 示例产品线
-description: 仅用于演示公司级 PL 数据结构。
+description: 仅用于演示公司级 PL 数据结构（一套解决方案集合）。
 tags: [product, PL]
 timestamp: "%s"
 full_id: PL-EXAMPLE
 perspective: product
 hierarchy: PL
 parent_id: null
-target_users: [内部运营, 业务方]
 layer_scope: company
-definition_scope: local
 ---
 ## 关系
 
-- (none)
+- children:
+  - PD-EXAMPLE
 
 ## 跨视角
 
@@ -141,7 +140,39 @@ definition_scope: local
 
 ## 详细说明
 
+- target_users: [内部运营, 业务方]
+- definition_scope: local
+
+## 依据与证据
+
+product-architecture.md（示例）
+""",
+    ),
+    (
+        "knowledge/product/PL-EXAMPLE/PD-EXAMPLE.md",
+        """---
+type: Product
+title: 示例产品
+description: 演示公司级 PD（单个解决方案）。
+tags: [product, PD]
+timestamp: "%s"
+full_id: PD-EXAMPLE
+perspective: product
+hierarchy: PD
+parent_id: PL-EXAMPLE
+layer_scope: company
+---
+## 关系
+
+- parent: PL-EXAMPLE
+
+## 跨视角
+
 - (none)
+
+## 详细说明
+
+- definition_scope: local
 
 ## 依据与证据
 
