@@ -103,7 +103,8 @@ knowledge_link_stored_path_from_absolute() {
   docsconfig_format_root_for_write "${1:?}"
 }
 
-# 覆盖写出 knowledge-links.yaml（repository、path、doc_dir、app_name、app_label 数组下标对齐）
+# 覆盖写出 knowledge-links.yaml（repository、path、doc_dir、app_name/app_label 或 sys_* 数组下标对齐）
+# 第 7 参 name_mode：system|application（由源 expect_target 决定写 sys_* 还是 app_*；与 doc_dir 无关）
 knowledge_links_write_quads() {
   local f="${1:?}"
   local -n _repos="${2:?}"
@@ -111,9 +112,14 @@ knowledge_links_write_quads() {
   local -n _dirs="${4:?}"
   local -n _apps="${5:?}"
   local -n _labels="${6:?}"
+  local name_mode="${7:?}"
   local d i n lab
   d="$(dirname "$f")"
   n="${#_paths[@]}"
+  case "$name_mode" in
+    system|application) ;;
+    *) sdx_error "knowledge_links_write_quads: name_mode 须为 system|application（收到: ${name_mode})" ;;
+  esac
   [[ "$DRY" == '1' ]] && { printf '[dry-run] 将写入 %s（%d 条 links）\n' "$f" "$n" >&2; return 0; }
   mkdir -p "$d"
   umask 022
@@ -127,7 +133,7 @@ knowledge_links_write_quads() {
       if [[ -n "${_dirs[i]:-}" ]]; then
         printf '    doc_dir: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_dirs[i]}")"
       fi
-      if [[ "${_dirs[i]:-}" == 'system' ]]; then
+      if [[ "$name_mode" == 'system' ]]; then
         [[ -n "${_apps[i]:-}" ]] || sdx_error "knowledge-links.yaml(system) 条目缺少 sys_name（必填）: $f"
         [[ -n "${_labels[i]:-}" ]] || sdx_error "knowledge-links.yaml(system) 条目缺少 sys_label（必填）: $f"
         printf '    sys_name: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_apps[i]}")"
@@ -453,7 +459,7 @@ docs_link_usage() {
   --target      目标知识库仓库根（或已登记的 remote URL）；兼容旧参数 --path（已弃用）。
   --app-name    仅 system→application 建联有效：显式指定 YAML 中的 app_name 及槽位目录名。
                 若省略：登记文件中该 path 已有 app_name 则沿用、不再推断；否则由目标本地 Git 仓库根目录名推断。
-  每条 link 记录：repository（有 Git remote 时）、path（本机在 \$HOME 下为 ~/… 或 ~/，否则绝对路径；兼容旧无 ~ 的 \$HOME 相对片段）、doc_dir、application 时的 app_name 与 app_label（无 app_label 时默认等于 app_name；重复 link 时若已有 app_label 则保留）。
+  每条 link 记录：repository（有 Git remote 时）、path（本机在 \$HOME 下为 ~/… 或 ~/，否则绝对路径；兼容旧无 ~ 的 \$HOME 相对片段）、doc_dir（=目标 .docsconfig 的 DOC_DIR）、application 时的 app_name 与 app_label（无 app_label 时默认等于 app_name；重复 link 时若已有 app_label 则保留）。
   system→application：在源 DOC_ROOT 下自 application-APPNAME 模板生成 application-<APPNAME>/（已存在则跳过）。
   同一 target 重复 link：不新增行，只更新已存在且 identity 相同的那条记录。
   unlink 时：注销该条目的同时将 application-<APPNAME>/ 备份到工程根 .docs-init/ 再移除（若目录存在）。
@@ -568,10 +574,12 @@ if [[ "$CMD" == 'link' ]]; then
   [[ -n "$_tkt" ]] || sdx_error "目标 .docsconfig 缺少 KNOWLEDGE_TYPE"
   docsconfig_validate_knowledge_type "$_tkt" || exit 1
   [[ "$_tkt" == "$expect_target" ]] || sdx_error "目标须为 ${expect_target} 知识库（KNOWLEDGE_TYPE=${_tkt}）"
+  [[ -n "$_tdd" ]] || sdx_error "目标 .docsconfig 缺少 DOC_DIR"
   REGISTER_KEY="$(knowledge_link_register_value_from_dir "$TGT_ROOT")"
   REGISTER_REPO="$(knowledge_link_git_remote_url_prefer_origin "$TGT_ROOT" || true)"
   [[ -n "$REGISTER_REPO" ]] || sdx_error "目标仓库缺少 Git remote URL（repository 必填）。请为目标仓库配置 origin（或任一 remote）后重试: $TGT_ROOT"
-  TARGET_DOC_DIR="$expect_target"
+  # doc_dir = 目标物理 DOC_DIR（非 KNOWLEDGE_TYPE）；sys_*/app_* 由 expect_target 决定
+  TARGET_DOC_DIR="$_tdd"
   REGISTER_PATH_STORED="$(knowledge_link_stored_path_from_absolute "$TGT_ROOT")"
 else
   REGISTER_KEY="$(knowledge_link_identity_from_raw_target "$TARGET_RAW")" || sdx_error "目标路径非法: $TARGET_RAW"
@@ -633,7 +641,7 @@ docs_link_execute_link() {
     repos[matched_idx]="$REGISTER_REPO"
     paths[matched_idx]="$REGISTER_PATH_STORED"
     doc_dirs[matched_idx]="$TARGET_DOC_DIR"
-    if [[ "$TARGET_DOC_DIR" == 'system' ]]; then
+    if [[ "$expect_target" == 'system' ]]; then
       app_names[matched_idx]="${TARGET_SYS_NAME:-}"
       app_labels[matched_idx]="${TARGET_SYS_LABEL:-}"
     else
@@ -644,7 +652,7 @@ docs_link_execute_link() {
     repos+=("$REGISTER_REPO")
     paths+=("$REGISTER_PATH_STORED")
     doc_dirs+=("$TARGET_DOC_DIR")
-    if [[ "$TARGET_DOC_DIR" == 'system' ]]; then
+    if [[ "$expect_target" == 'system' ]]; then
       app_names+=("${TARGET_SYS_NAME:-}")
       app_labels+=("${TARGET_SYS_LABEL:-}")
     else
@@ -653,12 +661,12 @@ docs_link_execute_link() {
     fi
   fi
 
-  knowledge_links_write_quads "$LIST_FILE" repos paths doc_dirs app_names app_labels
+  knowledge_links_write_quads "$LIST_FILE" repos paths doc_dirs app_names app_labels "$expect_target"
   docs_link_write_child_parent
 
   [[ "$link_is_update" -eq 1 ]] && link_verb='已更新登记'
-  if [[ "$TARGET_DOC_DIR" == 'system' && -n "$TARGET_SYS_NAME" ]]; then
-    link_info=" (doc_dir=system, system-${TARGET_SYS_NAME})"
+  if [[ "$expect_target" == 'system' && -n "$TARGET_SYS_NAME" ]]; then
+    link_info=" (doc_dir=${TARGET_DOC_DIR}, system-${TARGET_SYS_NAME})"
   elif [[ -n "$TARGET_APP_NAME" && -n "$TARGET_DOC_DIR" ]]; then
     link_info=" (doc_dir=${TARGET_DOC_DIR}, application-${TARGET_APP_NAME})"
   elif [[ -n "$TARGET_APP_NAME" ]]; then
@@ -700,7 +708,7 @@ docs_link_execute_unlink() {
     newl+=("${app_labels[i]:-}")
   done
 
-  knowledge_links_write_quads "$LIST_FILE" newr newp newd newa newl
+  knowledge_links_write_quads "$LIST_FILE" newr newp newd newa newl "$expect_target"
   if [[ -n "$unlink_app_name" ]]; then
     knowledge_link_remove_application_slot "$_sdoc" "$unlink_app_name"
   fi

@@ -36,7 +36,7 @@ git -C "$APP_TGT" remote add origin "https://example.com/org/my-application-repo
 cat >"$SYS_SRC/.docsconfig" <<EOF
 DOC_ROOT=docs
 REPO_ROOT=$SYS_SRC
-DOC_DIR=system
+DOC_DIR=docs
 KNOWLEDGE_TYPE=system
 AGENT_ROOT=$ROOT_DIR/agent
 AGENT_DIRS=.cursor
@@ -45,7 +45,7 @@ EOF
 cat >"$APP_TGT/.docsconfig" <<EOF
 DOC_ROOT=docs
 REPO_ROOT=$APP_TGT
-DOC_DIR=application
+DOC_DIR=docs
 KNOWLEDGE_TYPE=application
 AGENT_ROOT=$ROOT_DIR/agent
 AGENT_DIRS=.cursor

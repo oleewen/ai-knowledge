@@ -16,7 +16,7 @@ printf '# nope\n' >"${SRC}/spec-250504-1-nopeapp.md"
 cat >"${TMP}/knowledge-links.yaml" <<EOF
 links:
   - path: "${TARGET}"
-    doc_dir: application
+    doc_dir: docs
     app_name: myapp
 EOF
 

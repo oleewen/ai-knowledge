@@ -3,7 +3,7 @@
 # 示例（勿把 URL 写在 path）：
 #   - repository: "https://example.com/org/app-foo.git"
 #     path: "~/workspaces/app-foo"
-#     doc_dir: "application"
+#     doc_dir: "docs"
 #     app_name: "app-foo"
 #     app_label: "app-foo"
 links:

@@ -36,7 +36,7 @@ cp -R "$ROOT_DIR/company/system-SYSNAME" "$COMPANY/docs/system-SYSNAME"
 cat >"$COMPANY/.docsconfig" <<EOF
 DOC_ROOT=docs
 REPO_ROOT=$COMPANY
-DOC_DIR=system
+DOC_DIR=docs
 KNOWLEDGE_TYPE=company
 AGENT_ROOT=$ROOT_DIR/agent
 AGENT_DIRS=.cursor
@@ -45,7 +45,7 @@ EOF
 cat >"$SYSTEM/.docsconfig" <<EOF
 DOC_ROOT=docs
 REPO_ROOT=$SYSTEM
-DOC_DIR=system
+DOC_DIR=docs
 KNOWLEDGE_TYPE=system
 AGENT_ROOT=$ROOT_DIR/agent
 AGENT_DIRS=.cursor

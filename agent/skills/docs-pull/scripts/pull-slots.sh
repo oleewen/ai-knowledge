@@ -53,18 +53,18 @@ if ! command -v rsync >/dev/null 2>&1; then
   exit 1
 fi
 
-expected_doc_dir=""
+expected_target_type=""
 slot_prefix=""
 name_flag=""
 name_value=""
 
 if [[ "$MODE" == "system" ]]; then
-  expected_doc_dir="application"
+  expected_target_type="application"
   slot_prefix="application"
   name_flag="--app"
   name_value="$APP"
 else
-  expected_doc_dir="system"
+  expected_target_type="system"
   slot_prefix="system"
   name_flag="--sys-name"
   name_value="$SYS_NAME"
@@ -80,13 +80,11 @@ select_indices() {
   _out=()
   if [[ "$ALL" -eq 1 ]]; then
     for i in "${!paths[@]}"; do
-      [[ "${doc_dirs[i]:-}" == "$expected_doc_dir" ]] || continue
       _out+=("$i")
     done
     return 0
   fi
   for i in "${!paths[@]}"; do
-    [[ "${doc_dirs[i]:-}" == "$expected_doc_dir" ]] || continue
     [[ "${names[i]:-}" == "$name_value" ]] || continue
     _out+=("$i")
     return 0
@@ -98,7 +96,7 @@ validate_link_fields() {
   local idx="${1:?}"
   [[ -n "${repos[idx]:-}" ]] || { printf 'link 缺少 repository（必填）: idx=%s\n' "$idx" >&2; return 1; }
   [[ -n "${paths[idx]:-}" ]] || { printf 'link 缺少 path（必填）: idx=%s\n' "$idx" >&2; return 1; }
-  [[ "${doc_dirs[idx]:-}" == "$expected_doc_dir" ]] || { printf 'link doc_dir 不匹配: idx=%s\n' "$idx" >&2; return 1; }
+  [[ -n "${doc_dirs[idx]:-}" ]] || { printf 'link 缺少 doc_dir（必填，=目标 DOC_DIR）: idx=%s\n' "$idx" >&2; return 1; }
   [[ -n "${names[idx]:-}" ]] || { printf 'link 缺少 name（必填）: idx=%s\n' "$idx" >&2; return 1; }
   [[ -n "${labels[idx]:-}" ]] || { printf 'link 缺少 label（必填）: idx=%s\n' "$idx" >&2; return 1; }
   return 0
@@ -148,7 +146,7 @@ pull_one() {
   cd "$saved_pwd"
   [[ -n "$t_doc_root" && -n "$t_doc_dir" && -n "$t_ktype" ]] || { printf '目标 .docsconfig 缺少 DOC_ROOT/DOC_DIR/KNOWLEDGE_TYPE: %s\n' "$target_cfg" >&2; return 1; }
 
-  if [[ "$expected_doc_dir" == "application" ]]; then
+  if [[ "$expected_target_type" == "application" ]]; then
     [[ "$t_ktype" == "application" ]] || { printf '目标 KNOWLEDGE_TYPE 不匹配（应为 application）: %s\n' "$t_ktype" >&2; return 1; }
   else
     [[ "$t_ktype" == "system" ]] || { printf '目标 KNOWLEDGE_TYPE 不匹配（应为 system）: %s\n' "$t_ktype" >&2; return 1; }
@@ -182,7 +180,7 @@ pull_one() {
   commit="$(git -C "$path_expanded" rev-parse --short HEAD 2>/dev/null || printf 'unknown')"
   scope="DOC_DIR=${t_doc_dir}"
 
-  slot_key="$([[ "$expected_doc_dir" == "application" ]] && printf 'app_name' || printf 'sys_name')"
+  slot_key="$([[ "$expected_target_type" == "application" ]] && printf 'app_name' || printf 'sys_name')"
   append_change_log "$slot_dir" "$slot_key" "$name" "$repo" "$commit" "$scope" "$added" "$modified" "$deleted" || return 1
 
   printf 'SYNC_OK: %s (%s)\n' "$name" "$label"
@@ -191,7 +189,7 @@ pull_one() {
 
 declare -a indices=()
 if ! select_indices indices; then
-  printf '未找到匹配的 link（doc_dir=%s, %s=%s）\n' "$expected_doc_dir" "$name_flag" "$name_value" >&2
+  printf '未找到匹配的 link（target=%s, %s=%s）\n' "$expected_target_type" "$name_flag" "$name_value" >&2
   exit 1
 fi
 

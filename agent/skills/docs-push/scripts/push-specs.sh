@@ -251,7 +251,7 @@ write_validated_plan() {
       had_skip=1
       continue
     fi
-    doc_dir="${doc_dirs[idx]:-application}"
+    doc_dir="${doc_dirs[idx]:-docs}"
     exp_root="$(knowledge_link_expand_stored_path "${paths[idx]}")"
     exp_root="$(cd "$exp_root" 2>/dev/null && pwd)" || sdx_error "无法进入 path 目录: ${paths[idx]} → $exp_root"
     dest="${exp_root}/${doc_dir}/specs/${base}"
@@ -295,7 +295,7 @@ write_validated_plan() {
       had_skip=1
       continue
     fi
-    doc_dir="${doc_dirs[idx]:-application}"
+    doc_dir="${doc_dirs[idx]:-docs}"
     exp_root="$(knowledge_link_expand_stored_path "${paths[idx]}")"
     exp_root="$(cd "$exp_root" 2>/dev/null && pwd)" || sdx_error "无法进入 path 目录: ${paths[idx]} → $exp_root"
     doc_base="${exp_root}/${doc_dir}"

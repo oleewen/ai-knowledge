@@ -752,7 +752,8 @@ knowledge_links_load_into_arrays() {
       _paths+=("$path")
       _repos+=("${repo:-}")
       _dirs+=("${doc_dir:-}")
-      if [[ "$doc_dir" == 'system' ]]; then
+      # sys_* / app_* 以 YAML 键为准（doc_dir 现为物理 DOC_DIR，不再表示层级类型）
+      if [[ -n "${sys_name}${sys_label}" ]]; then
         _apps+=("${sys_name:-}")
         _labels+=("${sys_label:-}")
       else

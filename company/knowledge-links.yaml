@@ -6,7 +6,7 @@
 # 样例：
 #   - repository: "git@github.com:example/sys-foo.git"
 #     path: "~/workspaces/sys-foo"
-#     doc_dir: "system"
+#     doc_dir: "docs"
 #     sys_name: "sys-foo"
 #     sys_label: "订单中台"
 links: []

@@ -16,7 +16,7 @@ printf '# spec asd relocate\n' >"${SRC}/spec-asd-ORDER-1-myapp.md"
 cat >"${TMP}/knowledge-links.yaml" <<EOF
 links:
   - path: "${TARGET}"
-    doc_dir: application
+    doc_dir: docs
     app_name: myapp
 EOF
 
@@ -26,7 +26,7 @@ out="$("${BASH:-bash}" "$PUSH" copy \
   --mode path \
   --dry-run 2>&1)"
 
-printf '%s\n' "$out" | grep -Fq 'application/requirements/REQUIREMENT-ORDER/MVP-Phase-1/specs/spec-asd-ORDER-1-myapp.md' \
+printf '%s\n' "$out" | grep -Fq 'docs/requirements/REQUIREMENT-ORDER/MVP-Phase-1/specs/spec-asd-ORDER-1-myapp.md' \
   || {
     printf '期望 dry-run 含 REQUIREMENT/MVP/specs 归位路径，实际:\n%s\n' "$out" >&2
     exit 1

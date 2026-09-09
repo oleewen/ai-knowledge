@@ -55,7 +55,7 @@ cat >"$COMPANY/docs/knowledge-links.yaml" <<EOF
 links:
   - repository: "https://example.com/org/sys-foo.git"
     path: "$SYS"
-    doc_dir: "system"
+    doc_dir: "docs"
     sys_name: "sys-foo"
     sys_label: "sys-foo"
 EOF

@@ -55,12 +55,12 @@ cat >"$SYSTEM/docs/knowledge-links.yaml" <<EOF
 links:
   - repository: "https://example.com/org/app-ok.git"
     path: "$APP_OK"
-    doc_dir: "application"
+    doc_dir: "docs"
     app_name: "app-ok"
     app_label: "app-ok"
   - repository: "https://example.com/org/app-bad.git"
     path: "$APP_BAD"
-    doc_dir: "application"
+    doc_dir: "docs"
     app_name: "app-bad"
     app_label: "app-bad"
 EOF

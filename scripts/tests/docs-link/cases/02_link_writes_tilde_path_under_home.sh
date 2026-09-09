@@ -34,7 +34,7 @@ cp -R "$ROOT_DIR/company/system-SYSNAME" "$COMPANY/docs/system-SYSNAME"
 cat >"$COMPANY/.docsconfig" <<EOF
 DOC_ROOT=docs
 REPO_ROOT=$COMPANY
-DOC_DIR=system
+DOC_DIR=docs
 KNOWLEDGE_TYPE=company
 AGENT_ROOT=$ROOT_DIR/agent
 AGENT_DIRS=.cursor
@@ -43,7 +43,7 @@ EOF
 cat >"$SYSTEM/.docsconfig" <<EOF
 DOC_ROOT=docs
 REPO_ROOT=$SYSTEM
-DOC_DIR=system
+DOC_DIR=docs
 KNOWLEDGE_TYPE=system
 AGENT_ROOT=$ROOT_DIR/agent
 AGENT_DIRS=.cursor
@@ -57,8 +57,8 @@ grep -Fq 'path: "~/ws/sys-foo"' "$COMPANY/docs/knowledge-links.yaml" \
   || fail "path 应为 ~/ 前缀的 \$HOME 相对路径"
 grep -Fq 'repository: "https://example.com/org/sys-foo.git"' "$COMPANY/docs/knowledge-links.yaml" \
   || fail "repository 应写入 target remote URL"
-grep -Fq 'doc_dir: "system"' "$COMPANY/docs/knowledge-links.yaml" \
-  || fail "doc_dir 应为 system"
+grep -Fq 'doc_dir: "docs"' "$COMPANY/docs/knowledge-links.yaml" \
+  || fail "doc_dir 应为目标 .docsconfig 的 DOC_DIR"
 grep -Fq 'sys_name: "sys-foo"' "$COMPANY/docs/knowledge-links.yaml" \
   || fail "sys_name 应写入"
 grep -Fq 'sys_label: "sys-foo"' "$COMPANY/docs/knowledge-links.yaml" \

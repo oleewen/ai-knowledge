@@ -19,7 +19,7 @@ printf '# mirror\n' >"${SRC}/${rel}"
 cat >"${TMP}/knowledge-links.yaml" <<EOF
 links:
   - path: "${TARGET}"
-    doc_dir: application
+    doc_dir: docs
     app_name: myapp
 EOF
 
@@ -29,9 +29,9 @@ out="$("${BASH:-bash}" "$PUSH" copy \
   --mode path \
   --dry-run 2>&1)"
 
-printf '%s\n' "$out" | grep -Fq "application/${rel}" \
+printf '%s\n' "$out" | grep -Fq "docs/${rel}" \
   || {
-    printf '期望 dry-run 输出含 application/%s ，实际:\n%s\n' "$rel" "$out" >&2
+    printf '期望 dry-run 输出含 docs/%s ，实际:\n%s\n' "$rel" "$out" >&2
     exit 1
   }
 

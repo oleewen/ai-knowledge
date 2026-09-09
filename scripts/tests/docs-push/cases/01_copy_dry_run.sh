@@ -16,7 +16,7 @@ printf '# x\n' >"${SRC}/spec-250504-1-myapp.md"
 cat >"${TMP}/knowledge-links.yaml" <<EOF
 links:
   - path: "${TARGET}"
-    doc_dir: application
+    doc_dir: docs
     app_name: myapp
 EOF
 
@@ -26,9 +26,9 @@ out="$("${BASH:-bash}" "$PUSH" copy \
   --mode path \
   --dry-run 2>&1)"
 
-printf '%s\n' "$out" | grep -Fq 'application/specs/spec-250504-1-myapp.md' \
+printf '%s\n' "$out" | grep -Fq 'docs/specs/spec-250504-1-myapp.md' \
   || {
-    printf '期望 dry-run 输出包含 application/specs/spec-250504-1-myapp.md，实际:\n%s\n' "$out" >&2
+    printf '期望 dry-run 输出包含 docs/specs/spec-250504-1-myapp.md，实际:\n%s\n' "$out" >&2
     exit 1
   }
 
