@@ -1,7 +1,7 @@
 {
   "skill_name": "docs-simplify",
   "version": "1.0.0",
-  "description": "评估触发、参数向导、当前单元「澄清→生成→烤干」、A/B/C 原则与 docs-upgrade 分流；协议见 unit-cycle-protocol / intent-clarify / docs-simplify。",
+  "description": "评估触发、参数向导、当前单元「澄清→生成→烤干」、A/B/C 原则与 docs-revise 分流；协议见 unit-cycle-protocol / intent-clarify / docs-simplify。",
   "evals": [
     {
       "id": "simplify-trigger-001",
@@ -93,13 +93,13 @@
       "id": "simplify-trigger-003",
       "category": "should-trigger",
       "prompt": "把这段又啰嗦又和别处重复的设计说明按金字塔改短，同时把「订金」统一成「预付款」",
-      "expected_output": "先问主目标或确认串行顺序（simplify 与 upgrade）；不得静默单技能吞并术语链。",
+      "expected_output": "先问主目标或确认串行顺序（simplify 与 revise）；不得静默单技能吞并术语链。",
       "assertions": [
         {
           "id": "routing-dual",
           "name": "双目标分流",
           "type": "must_include",
-          "check": "须体现与 docs-upgrade 分流、问主目标或串行顺序确认。",
+          "check": "须体现与 docs-revise 分流、问主目标或串行顺序确认。",
           "priority": "P0"
         },
         {
@@ -115,13 +115,13 @@
       "id": "simplify-not-trigger-001",
       "category": "should-not-trigger",
       "prompt": "把 system/knowledge/overview 里所有「订金」统一成「预付款」，并同步引用链和注释",
-      "expected_output": "主路径 docs-upgrade。",
+      "expected_output": "主路径 docs-revise。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "须点名 docs-upgrade 或术语/链式替换。",
+          "check": "须点名 docs-revise 或术语/链式替换。",
           "priority": "P0"
         },
         {

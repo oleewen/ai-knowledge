@@ -1,4 +1,4 @@
-# docs-upgrade 失败分析器
+# docs-revise 失败分析器
 
 输入：失败样本 + `SKILL.md`、`gates`、`workflow`、`anti-patterns`、`gotchas`。
 
@@ -20,4 +20,4 @@
 
 ## 回归
 
-成对：upgrade vs archive、change、indexing；同模式连挂 2 轮 → 收紧 `gates.md` 或 workflow。
+成对：revise vs archive、change、indexing；同模式连挂 2 轮 → 收紧 `gates.md` 或 workflow。

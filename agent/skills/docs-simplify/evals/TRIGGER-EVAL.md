@@ -8,8 +8,8 @@
 | --- | --- |
 | 全流程 + ABC + SSOT 确认 | simplify-trigger-001 |
 | 仅本文件快路径 | simplify-trigger-002 |
-| 与 docs-upgrade 双目标分流 | simplify-trigger-003 |
-| 勿抢 upgrade | simplify-not-trigger-001 |
+| 与 docs-revise 双目标分流 | simplify-trigger-003 |
+| 勿抢 revise | simplify-not-trigger-001 |
 | 勿抢 indexing | simplify-not-trigger-002 |
 
 跑评测时以 P0 assertions 为准；见 [grader.md](../agents/grader.md)。

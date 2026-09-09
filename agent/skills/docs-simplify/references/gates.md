@@ -31,9 +31,9 @@
 公共六项落点示例见 [workflow.md](workflow.md)。可用 [docs-simplify-scope-ack-template.md](../assets/docs-simplify-scope-ack-template.md)。
 
 本技能：结构 + 激进精简 + SSOT 去重引用。  
-**不作为主路径**：术语统一（docs-upgrade）、CHANGE-LOG、INDEX、overview 归档、实体索引，除非用户明说附加。
+**不作为主路径**：术语统一（docs-revise）、CHANGE-LOG、INDEX、overview 归档、实体索引，除非用户明说附加。
 
-澄清阶段须额外关注：是否点名默认排除类文件；疑似重复候选如何处理；与 docs-upgrade 主目标是否冲突。
+澄清阶段须额外关注：是否点名默认排除类文件；疑似重复候选如何处理；与 docs-revise 主目标是否冲突；若来自 revise `grilled` 提示，默认范围是否钉在改动 hunk。
 
 ## 写后默认
 
@@ -46,7 +46,7 @@
 - 是否扩批改第二份文件
 - 疑似重复是否改成引用 / 删段
 - 是否改动 C4 契约面（ID、frontmatter、稳定锚、代码字面量、扫描列）
-- 与 docs-upgrade 双目标时的执行顺序
+- 与 docs-revise 双目标时的执行顺序
 
 ## 原子性 / 失败停顿
 

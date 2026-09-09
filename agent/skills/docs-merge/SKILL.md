@@ -4,7 +4,7 @@ description: >
   将源文件或内联文本按目标 md 的 H2/H3 章节落位合入；先识别待新增/更新项数并出变更清单，再逐项提问与候选选项确认，确认完一条再流转下一条；冲突 grilling 逐条决策。
   调用：/docs-merge <source> <target>〔--dry-run〕。source 为已存在路径则读文件，否则当内联文本；歧义或 target 不清则停问。
   用户提到 /docs-merge、合并进文档、合入章节、把这段写进某 md、章节合并冲突时，使用本技能。
-  分流：overview 第三列关键词提炼 A/U/D → docs-extract；结构精简/SSOT → docs-simplify；术语替换 → docs-upgrade。
+  分流：overview 第三列关键词提炼 A/U/D → docs-extract；结构精简/SSOT → docs-simplify；术语替换 → docs-revise。
   推进见 references/gates.md。
 ---
 
@@ -22,7 +22,7 @@ description: >
 
 | 负责 | 不负责 |
 | --- | --- |
-| 已存在 md 章节合入；新增/更新逐项确认；冲突 grilling；dry-run 计划 | overview 第三列 A/U/D（docs-extract）；精简/SSOT（docs-simplify）；术语链（docs-upgrade）；新建 target |
+| 已存在 md 章节合入；新增/更新逐项确认；冲突 grilling；dry-run 计划 | overview 第三列 A/U/D（docs-extract）；精简/SSOT（docs-simplify）；术语链（docs-revise）；新建 target |
 
 ## 不这样用
 

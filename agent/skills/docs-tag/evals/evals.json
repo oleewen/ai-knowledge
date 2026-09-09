@@ -159,13 +159,13 @@
       "id": "docs-tag-not-trigger-002",
       "category": "should-not-trigger",
       "prompt": "把全仓库 Markdown 里的「帐单」统一改成「账单」，用关键词检索对齐。",
-      "expected_output": "主轴 docs-upgrade（术语链式）；≠ docs-tag。",
+      "expected_output": "主轴 docs-revise（术语链式）；≠ docs-tag。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "须点 `docs-upgrade` 或术语链式等价。",
+          "check": "须点 `docs-revise` 或术语链式等价。",
           "priority": "P0"
         },
         {

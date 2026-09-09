@@ -4,7 +4,7 @@ description: >
   将 overview 知识按表格行内副标题链接归档到 system/company 视角章节；
   先收口方案确认书，再按当前单元落目标章并按策略回写 overview。
   用户提到 /docs-archive、知识归档、overview 落盘、冲突检查、确认书归档时，使用本技能。
-  分流：任意源提炼 → docs-extract；应用蒸馏 → docs-distill；实体/KNOWLEDGE_INDEX → docs-build；术语替换 → docs-upgrade；SDD → 对应技能。
+  分流：任意源提炼 → docs-extract；应用蒸馏 → docs-distill；实体/KNOWLEDGE_INDEX → docs-build；术语替换 → docs-revise；SDD → 对应技能。
   推进见 references/gates.md。
 compatibility: Bash 5+；无专用校验脚本。
 ---
@@ -23,13 +23,13 @@ compatibility: Bash 5+；无专用校验脚本。
 ## 边界
 
 - 负责：overview → 链接指向的视角章节；确认书（意图澄清）；冲突检查；overview 按策略回写
-- 不负责：docs-extract；docs-distill；docs-build；docs-upgrade；SDD 终稿
+- 不负责：docs-extract；docs-distill；docs-build；docs-revise；SDD 终稿
 
 ## 不这样用
 
 - 不把写前意图澄清与确认书拆成两套停顿
 - 不把写前步骤称作「写前 grilling」；`G` 仅写后深挖
-- 不把本技能偷换成 `docs-build`、`docs-upgrade` 或 `docs-extract`
+- 不把本技能偷换成 `docs-build`、`docs-revise` 或 `docs-extract`
 
 ## 路由
 

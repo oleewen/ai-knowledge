@@ -1,8 +1,8 @@
 {
-  "skill_name": "docs-upgrade",
+  "skill_name": "docs-revise",
   "eval_id": "REPLACE_WITH_EVAL_ID",
   "expected_category": "should-trigger | should-not-trigger",
-  "expected_route": "/docs-upgrade | （not-trigger 填下游）",
+  "expected_route": "/docs-revise | （not-trigger 填下游）",
   "expected_output": "与同 id eval 一致的一两句要点",
   "notes": "复制为 `<id>-metadata.json`；断言与 grader 一致",
   "assertions_should_trigger_example": [
@@ -44,17 +44,17 @@
       "priority": "P0"
     },
     {
-      "id": "no-false-upgrade-primary",
-      "name": "勿假主 upgrade",
+      "id": "no-false-revise-primary",
+      "name": "勿假主 revise",
       "type": "must_not_conflict",
-      "check": "勿描述为默认完整多文件 upgrade 而忽略指定下游。",
+      "check": "勿描述为默认完整多文件 revise 而忽略指定下游。",
       "priority": "P0"
     },
     {
       "id": "optional-quality-hint",
       "name": "可拒越权",
       "type": "should_include",
-      "check": "可加：不应以 upgrade 替代所列下游。",
+      "check": "可加：不应以 revise 替代所列下游。",
       "priority": "P1"
     }
   ],

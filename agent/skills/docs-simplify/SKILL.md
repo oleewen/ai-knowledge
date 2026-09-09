@@ -3,7 +3,8 @@ name: docs-simplify
 description: >
   就地优化 Markdown：金字塔结构、激进精简、SSOT 去重改引用。
   用户提到 /docs-simplify、精简文档、去啰嗦、金字塔、去重引用、结构化改写、压缩正文时，使用本技能。
-  分流：术语统一 → docs-upgrade；INDEX/CHANGE-LOG/归档/实体主路径 → 对应技能。
+  分流：术语统一 / 定向纠错 → docs-revise；INDEX/CHANGE-LOG/归档/实体主路径 → 对应技能。
+  亦可承接 docs-revise `grilled` 后的整篇结构/去重；写前 C 可将范围钉在改动 hunk。
   写作原则 SSOT：[agent/references/docs-simplify.md](../../references/docs-simplify.md)。推进见 references/gates.md。
 ---
 
@@ -23,7 +24,7 @@ description: >
 
 | 负责 | 不负责 |
 | ---- | ------ |
-| 点名 MD 的结构重组、激进精简、去重改引用；意图澄清与范围收口 | 术语链式替换（docs-upgrade）；INDEX/CHANGE-LOG/归档/实体索引主流程 |
+| 点名 MD 的结构重组、激进精简、去重改引用；意图澄清与范围收口；承接 revise `grilled` 后整篇改善 | 术语链式替换 / 定向纠错主路径（docs-revise）；协议内 simplify 遍（非本技能完整环）；INDEX/CHANGE-LOG/归档/实体索引主流程 |
 
 ## 不这样用
 

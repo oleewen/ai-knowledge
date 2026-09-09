@@ -3,7 +3,7 @@ name: docs-agent
 description: >
   维护或初始化仓库根目录 README.md 与 AGENTS.md。
   用户提到 /docs-agent、入口与 INDEX 不同步、口述「写 README」「更新 AGENTS」时，使用本技能。
-  分流：用户只要 docs-indexing/docs-build/docs-upgrade 或 SDD/distill/extract → 对应技能。
+  分流：用户只要 docs-indexing/docs-build/docs-revise 或 SDD/distill/extract → 对应技能。
   推进见 references/gates.md。
 compatibility: Bash 5+；校验脚本 agent/skills/docs-agent/scripts/validate-guide.sh。
 ---
@@ -21,7 +21,7 @@ compatibility: Bash 5+；校验脚本 agent/skills/docs-agent/scripts/validate-g
 
 | 负责 | 不负责 |
 | ---- | ------ |
-| 根 README.md、AGENTS.md；`--output` / `--mode`；与 `INDEX-GUIDE.md` 对齐 | index（docs-indexing）；实体（docs-build）；术语批量（docs-upgrade）；SDD / distill / extract 主流程 |
+| 根 README.md、AGENTS.md；`--output` / `--mode`；与 `INDEX-GUIDE.md` 对齐 | index（docs-indexing）；实体（docs-build）；术语批量（docs-revise）；SDD / distill / extract 主流程 |
 
 ## 不这样用
 

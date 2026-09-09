@@ -10,6 +10,7 @@
 | 未 C/S 已多文件写 | [gates.md](gates.md) |
 | 过度统一 | [related-doc-discovery.md](related-doc-discovery.md)「同类」；gotchas |
 | 短词全库一把梭 | 缩范围/确认；[semantic-keyword-discovery.md](semantic-keyword-discovery.md) |
-| upgrade 当 archive/change | [gates.md](gates.md) 分流 |
+| revise 当 archive/change | [gates.md](gates.md) 分流 |
+| 在 revise 里整篇结构大砍 | 协议 simplify 遍只动 hunk；整篇交 `/docs-simplify` |
 | 编造不可核实事实 | [workflow.md](workflow.md)；上级 SKILL |
 | 断链、破 fence | [workflow.md](workflow.md) 烤干；[quality-checklist.md](quality-checklist.md) |

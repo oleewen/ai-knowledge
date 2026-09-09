@@ -40,7 +40,7 @@
       "id": "correct-downstream",
       "name": "正确下游",
       "type": "must_include",
-      "check": "点名与 prompt 一致的下游（如 docs-build、docs-upgrade、docs-extract）。",
+      "check": "点名与 prompt 一致的下游（如 docs-build、docs-revise、docs-extract）。",
       "priority": "P0"
     },
     {

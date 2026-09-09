@@ -1,4 +1,4 @@
-# 受众与语言（docs-upgrade）
+# 受众与语言（docs-revise）
 
 > 公共维与烤干门禁：[audience-and-language.md](../../../references/audience-and-language.md)
 
@@ -12,7 +12,7 @@
 | --- | --- |
 | 约定范围内的术语/表述统一 | 超范围顺手大改结构 |
 | 沿引用链的必要同步 | 无依据改 ID、断链 |
-| 范围确认书中的替换映射 | 把精简/归档主路径偷换成 upgrade |
+| 范围确认书中的替换映射 | 把精简/归档主路径偷换成 revise |
 
 ## 反例
 

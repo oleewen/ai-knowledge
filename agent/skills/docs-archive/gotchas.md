@@ -34,4 +34,4 @@
 ## 分流
 
 - 实体与 KNOWLEDGE_INDEX → **docs-build**（勿在此造 ID）。  
-- 全库术语+引用链 → **docs-upgrade**。
+- 全库术语+引用链 → **docs-revise**。

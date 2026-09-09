@@ -4,7 +4,7 @@
 > **分工**：写前意图澄清见 [intent-clarify.md](intent-clarify.md)；写后提问能力见 [grilling-skill.md](grilling-skill.md)；受众质检见 [audience-and-language.md](audience-and-language.md)。  
 > **主线口令**：`澄清 → 生成 → 烤干`。
 
-**最后更新**: 2026-07-29
+**最后更新**: 2026-09-09
 
 **适用**：全部 `/sdx-*` 与语义族 docs-*（与 intent-clarify 启用名单一致）。轻流程技能不绑本文。
 
@@ -35,16 +35,17 @@ flowchart TD
     C -->|无，已烤干| D["用户动作"]
     C -->|非语义且仅影响当前对象| E["直接修订"]
     C -->|语义或影响前文| F["停下：结论/推荐/数字选项"]
-    E --> B
+    E --> SP["simplify 遍"]
     F --> G["用户确认后修订"]
-    G --> B
+    G --> SP
+    SP --> B
     D --> H{"动作"}
     H -->|C| I["确认 → 下一对象或收尾"]
-    H -->|M| J["修改 → 再烤干"]
+    H -->|M| J["修改"]
     H -->|G| K["深挖 grilling"]
     H -->|S docs| L["暂存，跳过写入"]
     H -->|F| M["批确认剩余意图后批量补齐"]
-    J --> B
+    J --> SP
     K --> B
 ```
 
@@ -61,8 +62,9 @@ stateDiagram-v2
     intent_confirmed --> draft: 生成并写入
     draft --> grilling: 写后触发烤干
     draft --> grilled: 默认表允许跳过且无强制升级
-    grilling --> revised: 非语义自动修订
-    revised --> grilling: 继续收口
+    grilling --> revised: 非语义自动修订 / 用户确认后修订
+    revised --> simplify_pass: 进入 simplify 遍
+    simplify_pass --> grilling: 继续收口
     grilling --> reopened: 前文被回改
     reopened --> clarifying: 重开后须再澄清
     grilling --> grilled: 已收敛
@@ -79,6 +81,7 @@ stateDiagram-v2
 | `intent_confirmed` | 写前 `C` 已过 |
 | `draft` | 初稿已写入目标容器 |
 | `grilling` | 写后自动烤干中 |
+| `simplify_pass` | 修订后按 [docs-simplify.md](docs-simplify.md) 改善本轮改动行 |
 | `grilled` | 已收敛（或合法跳过烤干），待写后动作 |
 | `revised` / `reopened` / `confirmed` | 修订中 / 须回澄清 / 写后已确认 |
 
@@ -90,7 +93,7 @@ stateDiagram-v2
 
 1. 已通过写前意图澄清并完成写入（或技能允许的 dry-run 预览）
 2. 已按本地**写后默认表**进入烤干（或合法跳过）
-3. 烤干已收敛，或语义问题经用户确认修订后再次收敛
+3. 烤干已收敛，或语义问题经用户确认修订后（含 simplify 遍）再次收敛
 4. 烤干中已通过受众维 **A/B/C/E**（见 [audience-and-language.md](audience-and-language.md)）；未过不得进入 `grilled`
 5. 用户在「当前阶段：烤干」下给出写后 `C`
 
@@ -104,6 +107,23 @@ stateDiagram-v2
 
 - **适用**：当前对象及其直接容器内微调  
 - **不适用**：前文章节、其他未打开对象、全文级结构重排（须走前文回改）
+
+---
+
+## simplify 遍（修订后）
+
+`直接修订` 与 `用户确认后修订` 写入后，**不得**立刻回到烤干提问；须先跑 **simplify 遍**，再回烤干。
+
+| 项 | 规则 |
+| --- | --- |
+| 做什么 | 按 [docs-simplify.md](docs-simplify.md) A/B/C，只改善**本轮修订触及的行 / hunk** |
+| 不做什么 | **不**另开完整 `/docs-simplify` 技能环（无嵌套写前 `C` / 第二套 `C/M/G/S/F`） |
+| 空 diff | 修订无实质 diff，或仅空白/标点 → 立即结束本遍，回烤干 |
+| 豁免 | 用户明示「跳过精简 / 草稿优先」等 → 跳过本遍 |
+| 次数 | **同一对象、同一烤干周期**最多 1 次 simplify 遍；本周期内再修订 → 只烤干、不再 simplify |
+| `grilled` 后 | 若仍需整篇结构重组 / SSOT 去重 → 提示可开 `/docs-simplify`（独立技能单元） |
+
+生成步已强制读精简原则；本遍补的是「烤干中修订之后」再收一次被改行。
 
 ---
 

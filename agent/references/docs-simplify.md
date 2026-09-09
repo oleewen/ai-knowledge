@@ -1,10 +1,10 @@
 # 文档精简写作契约（Agent SSOT）
 
 > **定位**：跨 skill 复用的文档**结构 / 简明 / 真源**写作原则唯一真源。就地改写执行见 [docs-simplify/SKILL.md](../skills/docs-simplify/SKILL.md)。  
-> **边界**：不负责术语统一（→ `docs-upgrade`）；不负责 A/B/C 判类（→ [document-guidelines.md](../rules/document/document-guidelines.md)）。  
-> **主线口令**：生成类产出在「生成」步须遵循本文；用户明示「跳过精简 / 草稿优先」可临时豁免。
+> **边界**：不负责术语统一 / 定向纠错主路径（→ `docs-revise`）；不负责 A/B/C 判类（→ [document-guidelines.md](../rules/document/document-guidelines.md)）。  
+> **主线口令**：生成类产出在「生成」步须遵循本文；烤干中修订后另有 **simplify 遍**（见 [unit-cycle-protocol.md](unit-cycle-protocol.md)）；用户明示「跳过精简 / 草稿优先」可临时豁免。
 
-**最后更新**: 2026-07-21
+**最后更新**: 2026-09-09
 
 ---
 
@@ -14,6 +14,7 @@
 | --- | --- |
 | `/docs-simplify` 就地改写 | 按本文三方面改写当前单元 |
 | 语义族 `sdx-*` / docs-* **生成**步 | 写前读本文；落笔按 A/B/C；豁免须用户明示 |
+| 语义族烤干中 **simplify 遍** | `直接修订` / `用户确认后修订` 后，只改善本轮 hunk；规则见 unit-cycle-protocol |
 | 轻流程 docs-* | 不强制；产出若为人类可读正文，建议遵守 |
 
 ---
@@ -67,13 +68,15 @@
 
 ---
 
-## 与 docs-upgrade 分流
+## 与 docs-revise 分流
 
-| 主目标 | 技能 |
+| 主目标 | 技能 / 步骤 |
 | --- | --- |
 | 结构重组 / 删冗余 / SSOT 去重引用 | `docs-simplify` |
-| 统一术语 / 链式替换 | `docs-upgrade` |
-| 两者都要 | 先问主目标；串行执行且顺序须用户确认（推荐：先 simplify 再 upgrade） |
+| 统一术语 / 链式替换 / 定向纠错 | `docs-revise` |
+| 烤干中修订后的被改行 | 协议内 **simplify 遍**（本文原则；非完整技能环） |
+| `grilled` 后仍要整篇结构 | 提示再开 `/docs-simplify` |
+| 两者都要（独立技能） | 先问主目标；串行且顺序须用户确认（推荐：先 revise 再 simplify） |
 
 ---
 

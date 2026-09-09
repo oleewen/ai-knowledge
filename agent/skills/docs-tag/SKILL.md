@@ -3,7 +3,7 @@ name: docs-tag
 description: >
   为 system/company overview 下 *-overview.md 做关键词相关度：候选词 → YAML 附录 → 表行 ✅ → 架构摘录（phase 3）。
   用户提到 /docs-tag、扫描关键词、给概览打标签、phase 3 时，使用本技能。
-  分流：第三列提炼 / 全文术语 / INDEX → docs-extract、docs-upgrade、docs-indexing。
+  分流：第三列提炼 / 全文术语 / INDEX → docs-extract、docs-revise、docs-indexing。
   推进见 light-flow-actions（C/M/S/F，无 G）与 references/gates.md。
 ---
 

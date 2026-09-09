@@ -84,7 +84,7 @@
           "id": "boundary-routing",
           "name": "边界分流",
           "type": "must_not_conflict",
-          "check": "不得仅答成 docs-upgrade 替换而无归档/确认流程。",
+          "check": "不得仅答成 docs-revise 替换而无归档/确认流程。",
           "priority": "P0"
         },
         {
@@ -180,13 +180,13 @@
       "id": "archive-not-trigger-002",
       "category": "should-not-trigger",
       "prompt": "把全仓库 Markdown 里的「订金」统一改成「预付款」，并同步所有引用链",
-      "expected_output": "主路径 docs-upgrade。",
+      "expected_output": "主路径 docs-revise。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "须明确 docs-upgrade 或等价定向替换+引用链。",
+          "check": "须明确 docs-revise 或等价定向替换+引用链。",
           "priority": "P0"
         },
         {

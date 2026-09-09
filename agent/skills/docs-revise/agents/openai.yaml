@@ -1,0 +1,6 @@
+interface:
+  display_name: "文档修订"
+  short_description: >
+    定向修订文档与注释；术语/路径链式同步 + 事实表述链接纠错；简写 a-b / a>b / a 2 b；
+    烤干修订后走 simplify 遍；整篇结构交 /docs-simplify。
+  default_prompt: "/docs-revise 更新 docs/example.md 及相关注释：术语 X→Y，并同步引用该路径的文件及同类表述。"

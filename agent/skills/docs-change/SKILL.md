@@ -3,7 +3,7 @@ name: docs-change
 description: >
   从 Git、CHANGELOG*、本地 mtime 三源采集变更，写入 {output_dir}/CHANGE-LOG.md，文末保留增量基线注释。
   用户提到 /docs-change、变更聚合、「记录改动」「最近改了什么」时，使用本技能。
-  分流：INDEX / 实体 / 归档 / 术语为主路径 → docs-indexing、docs-build、docs-archive、docs-upgrade。
+  分流：INDEX / 实体 / 归档 / 术语为主路径 → docs-indexing、docs-build、docs-archive、docs-revise。
   推进见 light-flow-actions（C/M/S/F，无 G）与 references/gates.md。
 ---
 
@@ -21,7 +21,7 @@ description: >
 
 | 负责 | 不负责 |
 | --- | --- |
-| 三源聚合、倒序插入、文末基线 | index、KNOWLEDGE_INDEX、overview 归档、全库术语；docs-indexing / docs-build / docs-archive / docs-upgrade |
+| 三源聚合、倒序插入、文末基线 | index、KNOWLEDGE_INDEX、overview 归档、全库术语；docs-indexing / docs-build / docs-archive / docs-revise |
 
 ## 不这样用
 
