@@ -30,10 +30,11 @@ EOF
 
 bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS_DIR" >"$OUT_FILE" 2>&1
 
-IDX="$DOCS_DIR/index.md"
-assert_file_exists "$IDX"
-assert_contains ".claude/skills/docs-indexing" "$IDX"
-assert_not_contains "agent/skills/docs-indexing" "$IDX"
+# index.md 可能不含 agent/ 引用；用仍含技能链的 changelogs/README.md 校验重写
+CHG_README="$DOCS_DIR/changelogs/README.md"
+assert_file_exists "$CHG_README"
+assert_contains ".claude/skills/docs-indexing" "$CHG_README"
+assert_not_contains "agent/skills/docs-indexing" "$CHG_README"
 
 ROOT_README="$DOCS_DIR/README.md"
 assert_file_exists "$ROOT_README"

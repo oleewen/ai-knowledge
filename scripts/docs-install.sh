@@ -322,7 +322,7 @@ install_docs_link_scripts_to_target_repo() {
   sdx_io_copy_file "${CFG[repo_root]}/scripts/link-config.sh" "$dst_dir/link-config.sh" || true
 }
 
-# 步骤 1：重装时保留已有 knowledge-links.yaml（含 type:parent 与向下 child）
+# 步骤 1：重装时保留已有 knowledge-links.yaml（含 type:parent / type:meta 与向下 child）
 _DOCS_INSTALL_LINKS_STASH=""
 
 docs_install_stash_knowledge_links() {
@@ -338,6 +338,77 @@ docs_install_restore_knowledge_links() {
   mkdir -p "${CFG[docs_abs]}"
   mv "$_DOCS_INSTALL_LINKS_STASH" "${CFG[docs_abs]}/knowledge-links.yaml"
   _DOCS_INSTALL_LINKS_STASH=""
+}
+
+# 在 DOC_ROOT/knowledge-links.yaml upsert 恰好一条 type:meta（指向装机源仓）
+# doc_dir = 目标 KNOWLEDGE_TYPE（= CFG[type]）；多条时保留第一条并覆盖，丢弃其余 meta
+docs_install_upsert_knowledge_meta() {
+  local links_file meta_repo meta_path child_kind parent_kind
+  local -a repos=() paths=() doc_dirs=() apps=() labels=() types=()
+  local -a nrepos=() npaths=() ndirs=() napps=() nlabels=() ntypes=()
+  local i meta_seen=0
+
+  [[ -n "${CFG[docs_abs]:-}" ]] || return 0
+  links_file="${CFG[docs_abs]}/knowledge-links.yaml"
+
+  meta_repo="$(knowledge_link_git_remote_url_prefer_origin "${CFG[repo_root]}" || true)"
+  [[ -n "$meta_repo" ]] \
+    || sdx_error "元知识库缺少 Git remote URL（type:meta.repository 必填）。请为装机源仓配置 origin（或任一 remote）后重试: ${CFG[repo_root]}"
+  meta_path="$(knowledge_link_stored_path_from_absolute "${CFG[repo_root]}")"
+
+  case "${CFG[type]}" in
+    application) child_kind='app'; parent_kind='sys' ;;
+    system)      child_kind='app'; parent_kind='company' ;;
+    company)     child_kind='sys'; parent_kind='none' ;;
+    *) sdx_error "内部错误：未知 type=${CFG[type]}" ;;
+  esac
+
+  if [[ "${CFG[dry_run]}" == '1' ]]; then
+    sdx_log "[dry-run] upsert type:meta → ${links_file}"
+    sdx_log "[dry-run]   repository=${meta_repo}"
+    sdx_log "[dry-run]   path=${meta_path}"
+    sdx_log "[dry-run]   doc_dir=${CFG[type]}"
+    return 0
+  fi
+
+  if [[ ! -f "$links_file" ]]; then
+    mkdir -p "${CFG[docs_abs]}"
+    printf '%s\n' '# 知识库建联清单（可由 docs-link.sh / docs-install.sh 维护）' 'links: []' >"$links_file"
+  fi
+
+  knowledge_links_load_into_arrays "$links_file" paths repos doc_dirs apps labels types
+  for i in "${!paths[@]}"; do
+    if [[ "${types[i]:-child}" == 'meta' ]]; then
+      if [[ "$meta_seen" -eq 0 ]]; then
+        nrepos+=("$meta_repo")
+        npaths+=("$meta_path")
+        ndirs+=("${CFG[type]}")
+        napps+=('')
+        nlabels+=('')
+        ntypes+=('meta')
+        meta_seen=1
+      fi
+      continue
+    fi
+    nrepos+=("${repos[i]:-}")
+    npaths+=("${paths[i]}")
+    ndirs+=("${doc_dirs[i]:-}")
+    napps+=("${apps[i]:-}")
+    nlabels+=("${labels[i]:-}")
+    ntypes+=("${types[i]:-child}")
+  done
+  if [[ "$meta_seen" -eq 0 ]]; then
+    nrepos+=("$meta_repo")
+    npaths+=("$meta_path")
+    ndirs+=("${CFG[type]}")
+    napps+=('')
+    nlabels+=('')
+    ntypes+=('meta')
+  fi
+
+  DRY=0 knowledge_links_write_entries "$links_file" nrepos npaths ndirs napps nlabels ntypes \
+    "$child_kind" "$parent_kind"
+  sdx_info "已登记 type:meta → ${links_file}（doc_dir=${CFG[type]}）"
 }
 
 docs_install_copy_templates() {
@@ -732,6 +803,7 @@ docs_install_run() {
   if [[ -n "${CFG[docs_abs]}" && "${CFG[scope]}" == 'knowledge' ]]; then
     docs_install_copy_templates
     docs_install_restore_knowledge_links
+    docs_install_upsert_knowledge_meta
     install_docs_link_scripts_to_target_repo
     docs_install_write_docsconfig
     docs_install_rewrite_agent_paths

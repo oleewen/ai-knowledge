@@ -10,6 +10,7 @@
 # unlink 支持目标失联场景（按登记 identity 注销）；system 源注销 application 建联时先将
 # DOC_ROOT 下 application-<APPNAME>/ 备份至 REPO_ROOT/.docs-init/<时间戳>/（与 docs-install 一致）再移除。
 # 登记值：repository 存 Git remote URL；path 存本机路径（$HOME 下 ~/…）；doc_dir=对方 DOC_DIR。
+# type:meta（docs-install 写入）写回时保活；meta.doc_dir=目标 KNOWLEDGE_TYPE。pull/push 跳过 meta。
 # 不再读写 knowledge-parent.yaml；跨层 HTTP 前缀替换仅当 --rewrite-http。
 set -euo pipefail
 
@@ -73,139 +74,16 @@ docs_link_abs_under_repo() {
 }
 
 # =============================================================================
-# knowledge-links.yaml
+# knowledge-links.yaml（解析/写出见 docs-core.sh；此处仅编排）
 # =============================================================================
-
-_knowledge_link_yaml_escape_dq() {
-  local s="${1-}"
-  s="${s//\\/\\\\}"
-  s="${s//\"/\\\"}"
-  printf '%s' "$s"
-}
 
 _knowledge_link_doc_root_abs_ns() {
   strip_trailing_slash "$(abs_path "${1:?}")"
 }
 
-knowledge_link_stored_path_from_absolute() {
-  docsconfig_format_root_for_write "${1:?}"
-}
-
-# 覆盖写出 knowledge-links.yaml（可含 type:parent + child）
-# child_kind: sys|app；parent_kind: company|sys（仅 type=parent 条使用）
-knowledge_links_write_entries() {
-  local f="${1:?}"
-  local -n _repos="${2:?}"
-  local -n _paths="${3:?}"
-  local -n _dirs="${4:?}"
-  local -n _apps="${5:?}"
-  local -n _labels="${6:?}"
-  local -n _types="${7:?}"
-  local child_kind="${8:?}"
-  local parent_kind="${9:?}"
-  local d i n lab t
-  d="$(dirname "$f")"
-  n="${#_paths[@]}"
-  case "$child_kind" in
-    sys|app) ;;
-    *) sdx_error "knowledge_links_write_entries: child_kind 须为 sys|app（收到: ${child_kind})" ;;
-  esac
-  case "$parent_kind" in
-    company|sys|none) ;;
-    *) sdx_error "knowledge_links_write_entries: parent_kind 须为 company|sys|none（收到: ${parent_kind})" ;;
-  esac
-  [[ "$DRY" == '1' ]] && { printf '[dry-run] 将写入 %s（%d 条 links）\n' "$f" "$n" >&2; return 0; }
-  mkdir -p "$d"
-  umask 022
-  {
-    printf '%s\n' '# 知识库建联清单（可由 docs-link.sh 维护）'
-    if [[ "$n" -eq 0 ]]; then
-      printf '%s\n' 'links: []'
-    else
-      printf '%s\n' 'links:'
-      for ((i = 0; i < n; i++)); do
-        [[ -n "${_repos[i]:-}" ]] || sdx_error "knowledge-links.yaml 条目缺少 repository（必填）: $f"
-        [[ -n "${_paths[i]:-}" ]] || sdx_error "knowledge-links.yaml 条目缺少 path（必填）: $f"
-        t="${_types[i]:-child}"
-        if [[ "$t" == 'parent' ]]; then
-          printf '  - type: parent\n'
-          printf '    repository: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_repos[i]}")"
-          printf '    path: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_paths[i]}")"
-          if [[ -n "${_dirs[i]:-}" ]]; then
-            printf '    doc_dir: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_dirs[i]}")"
-          fi
-          [[ -n "${_apps[i]:-}" ]] || sdx_error "knowledge-links.yaml(parent) 条目缺少 name（必填）: $f"
-          lab="${_labels[i]:-${_apps[i]}}"
-          if [[ "$parent_kind" == 'company' ]]; then
-            printf '    company_name: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_apps[i]}")"
-            printf '    company_label: "%s"\n' "$(_knowledge_link_yaml_escape_dq "$lab")"
-          else
-            printf '    sys_name: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_apps[i]}")"
-            printf '    sys_label: "%s"\n' "$(_knowledge_link_yaml_escape_dq "$lab")"
-          fi
-        else
-          printf '  - repository: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_repos[i]}")"
-          printf '    path: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_paths[i]}")"
-          if [[ -n "${_dirs[i]:-}" ]]; then
-            printf '    doc_dir: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_dirs[i]}")"
-          fi
-          [[ -n "${_apps[i]:-}" ]] || sdx_error "knowledge-links.yaml(child) 条目缺少 name（必填）: $f"
-          lab="${_labels[i]:-${_apps[i]}}"
-          if [[ "$child_kind" == 'sys' ]]; then
-            printf '    sys_name: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_apps[i]}")"
-            printf '    sys_label: "%s"\n' "$(_knowledge_link_yaml_escape_dq "$lab")"
-          else
-            printf '    app_name: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_apps[i]}")"
-            printf '    app_label: "%s"\n' "$(_knowledge_link_yaml_escape_dq "$lab")"
-          fi
-        fi
-      done
-    fi
-  } >"$f"
-}
-
 # -----------------------------------------------------------------------------
 # 登记 path：Git 优先 remote URL，否则仓库根路径 / 文件系统路径
 # -----------------------------------------------------------------------------
-
-# 打印 origin 或第一个可用的 remote URL；若无则返回 1 且无输出
-knowledge_link_git_remote_url_prefer_origin() {
-  local top="${1:?}" git_dir cfg url
-  git_dir=''
-  if [[ -d "$top/.git" ]]; then
-    git_dir="$top/.git"
-  elif [[ -f "$top/.git" ]]; then
-    git_dir="$(sed -n 's/^gitdir: //p' "$top/.git" | head -n 1)"
-    [[ -n "$git_dir" ]] || return 1
-    [[ "$git_dir" == /* ]] || git_dir="$top/$git_dir"
-  else
-    return 1
-  fi
-  cfg="$git_dir/config"
-  [[ -f "$cfg" ]] || return 1
-  url="$(
-    awk '
-      BEGIN { in_remote=0; remote=""; first_url=""; }
-      /^\[remote "[^"]+"\]$/ {
-        in_remote=1;
-        remote=$0;
-        sub(/^\[remote "/, "", remote);
-        sub(/"\]$/, "", remote);
-        next;
-      }
-      /^\[.*\]$/ { in_remote=0; remote=""; next; }
-      in_remote && /^[[:space:]]*url[[:space:]]*=[[:space:]]*/ {
-        u=$0;
-        sub(/^[[:space:]]*url[[:space:]]*=[[:space:]]*/, "", u);
-        if (remote == "origin") { print u; exit 0; }
-        if (first_url == "") { first_url=u; }
-      }
-      END { if (first_url != "") print first_url; }
-    ' "$cfg"
-  )"
-  [[ -n "$url" ]] || return 1
-  printf '%s\n' "$url"
-}
 
 # 给定已存在的本地目录：得到与 link 时一致的登记字符串（用于去重 / unlink）
 knowledge_link_register_value_from_dir() {
@@ -634,7 +512,9 @@ knowledge_links_load_into_arrays "$LIST_FILE" paths repos doc_dirs app_names app
 have=0
 new_identity="${REGISTER_KEY}"
 for i in "${!paths[@]}"; do
-  [[ "${types[i]:-child}" == "parent" ]] && continue
+  case "${types[i]:-child}" in
+    parent|meta) continue ;;
+  esac
   if [[ "$(knowledge_link_identity_from_stored_entry "${repos[i]:-}" "${paths[i]}")" == "$new_identity" ]]; then
     have=1
     matched_idx=$i
@@ -814,10 +694,15 @@ docs_link_execute_unlink() {
   fi
 
   for i in "${!paths[@]}"; do
-    if [[ "${types[i]:-child}" != "parent" ]] \
-      && [[ "$(knowledge_link_identity_from_stored_entry "${repos[i]:-}" "${paths[i]}")" == "$new_identity" ]]; then
-      continue
-    fi
+    case "${types[i]:-child}" in
+      meta) ;; # 保活 type:meta
+      parent) ;;
+      *)
+        if [[ "$(knowledge_link_identity_from_stored_entry "${repos[i]:-}" "${paths[i]}")" == "$new_identity" ]]; then
+          continue
+        fi
+        ;;
+    esac
     newr+=("${repos[i]:-}")
     newp+=("${paths[i]}")
     newd+=("${doc_dirs[i]:-}")

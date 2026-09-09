@@ -80,13 +80,13 @@ select_indices() {
   _out=()
   if [[ "$ALL" -eq 1 ]]; then
     for i in "${!paths[@]}"; do
-      [[ "${types[i]:-child}" == "parent" ]] && continue
+      [[ "${types[i]:-child}" == "parent" || "${types[i]:-child}" == "meta" ]] && continue
       _out+=("$i")
     done
     return 0
   fi
   for i in "${!paths[@]}"; do
-    [[ "${types[i]:-child}" == "parent" ]] && continue
+    [[ "${types[i]:-child}" == "parent" || "${types[i]:-child}" == "meta" ]] && continue
     [[ "${names[i]:-}" == "$name_value" ]] || continue
     _out+=("$i")
     return 0

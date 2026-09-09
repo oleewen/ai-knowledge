@@ -1,9 +1,14 @@
-# 知识库建联清单（docs-link.sh 可维护）
+# 知识库建联清单（docs-link.sh / docs-install.sh 可维护）
 # company 层系统建联唯一事实源；允许空。
 # `links: []` = 尚未挂载 system 槽位（合法模板态）；实例化后按系统追加 child。
+# docs-install 会写入一条 type: meta（装机源元库；doc_dir=company，指向元仓模板子树）。
 #
-# 字段：scripts/README.md（repository + path；path 非 URL；含 sys_name / sys_label）
+# 字段：scripts/README.md（repository + path；path 非 URL；含 sys_name / sys_label；type:meta）
 # 样例：
+#   - type: meta
+#     repository: "git@github.com:example/ai-knowledge.git"
+#     path: "~/workspaces/ai-knowledge"
+#     doc_dir: "company"
 #   - repository: "git@github.com:example/sys-foo.git"
 #     path: "~/workspaces/sys-foo"
 #     doc_dir: "docs"

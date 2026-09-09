@@ -1,7 +1,12 @@
-# 知识库建联清单（docs-link.sh 维护）
-# application：通常仅含一条 type: parent（上级 system）；缺省无 type 的条目视为 child。
+# 知识库建联清单（docs-link.sh / docs-install.sh 维护）
+# application：可含 type: parent（上级 system）、type: meta（装机源元库）；缺省无 type 的条目视为 child。
+# meta.doc_dir = 本库 KNOWLEDGE_TYPE（application），指向元仓内模板子树，非 DOC_DIR。
 # 样例：
 # links:
+#   - type: meta
+#     repository: "git@github.com:example/ai-knowledge.git"
+#     path: "~/workspaces/ai-knowledge"
+#     doc_dir: "application"
 #   - type: parent
 #     repository: "git@github.com:example/sys-foo.git"
 #     path: "~/workspaces/sys-foo"

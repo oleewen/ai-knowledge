@@ -168,7 +168,9 @@ knowledge_links_load_into_arrays "$LINKS_FILE" paths repos doc_dirs app_names ap
 find_link_index_for_app() {
   local want="${1:?}" i
   for ((i = 0; i < ${#app_names[@]}; i++)); do
-    [[ "${types[i]:-child}" == "parent" ]] && continue
+    case "${types[i]:-child}" in
+      parent|meta) continue ;;
+    esac
     if [[ "${app_names[i]:-}" == "$want" ]]; then
       printf '%s' "$i"
       return 0

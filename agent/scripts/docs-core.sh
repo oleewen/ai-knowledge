@@ -728,8 +728,141 @@ knowledge_link_expand_stored_path() {
   abs_path "${home%/}/$p"
 }
 
+# 本机绝对路径 → 登记 path（$HOME 下写成 ~/…）
+knowledge_link_stored_path_from_absolute() {
+  docsconfig_format_root_for_write "${1:?}"
+}
+
+# 打印 origin 或第一个可用的 remote URL；若无则返回 1 且无输出
+knowledge_link_git_remote_url_prefer_origin() {
+  local top="${1:?}" git_dir cfg url
+  git_dir=''
+  if [[ -d "$top/.git" ]]; then
+    git_dir="$top/.git"
+  elif [[ -f "$top/.git" ]]; then
+    git_dir="$(sed -n 's/^gitdir: //p' "$top/.git" | head -n 1)"
+    [[ -n "$git_dir" ]] || return 1
+    [[ "$git_dir" == /* ]] || git_dir="$top/$git_dir"
+  else
+    return 1
+  fi
+  cfg="$git_dir/config"
+  [[ -f "$cfg" ]] || return 1
+  url="$(
+    awk '
+      BEGIN { in_remote=0; remote=""; first_url=""; }
+      /^\[remote "[^"]+"\]$/ {
+        in_remote=1;
+        remote=$0;
+        sub(/^\[remote "/, "", remote);
+        sub(/"\]$/, "", remote);
+        next;
+      }
+      /^\[.*\]$/ { in_remote=0; remote=""; next; }
+      in_remote && /^[[:space:]]*url[[:space:]]*=[[:space:]]*/ {
+        u=$0;
+        sub(/^[[:space:]]*url[[:space:]]*=[[:space:]]*/, "", u);
+        if (remote == "origin") { print u; exit 0; }
+        if (first_url == "") { first_url=u; }
+      }
+      END { if (first_url != "") print first_url; }
+    ' "$cfg"
+  )"
+  [[ -n "$url" ]] || return 1
+  printf '%s\n' "$url"
+}
+
+_knowledge_link_yaml_escape_dq() {
+  local s="${1-}"
+  s="${s//\\/\\\\}"
+  s="${s//\"/\\\"}"
+  printf '%s' "$s"
+}
+
+# 覆盖写出 knowledge-links.yaml（可含 type:parent / type:meta + child）
+# child_kind: sys|app；parent_kind: company|sys|none（仅 type=parent 条使用）
+# type:meta：只写 repository/path/doc_dir（doc_dir=目标 KNOWLEDGE_TYPE，无 name/label）
+# DRY=1 时只打印将写入条数，不落盘
+knowledge_links_write_entries() {
+  local f="${1:?}"
+  local -n _repos="${2:?}"
+  local -n _paths="${3:?}"
+  local -n _dirs="${4:?}"
+  local -n _apps="${5:?}"
+  local -n _labels="${6:?}"
+  local -n _types="${7:?}"
+  local child_kind="${8:?}"
+  local parent_kind="${9:?}"
+  local d i n lab t
+  d="$(dirname "$f")"
+  n="${#_paths[@]}"
+  case "$child_kind" in
+    sys|app) ;;
+    *) sdx_error "knowledge_links_write_entries: child_kind 须为 sys|app（收到: ${child_kind})" ;;
+  esac
+  case "$parent_kind" in
+    company|sys|none) ;;
+    *) sdx_error "knowledge_links_write_entries: parent_kind 须为 company|sys|none（收到: ${parent_kind})" ;;
+  esac
+  [[ "${DRY:-0}" == '1' ]] && { printf '[dry-run] 将写入 %s（%d 条 links）\n' "$f" "$n" >&2; return 0; }
+  mkdir -p "$d"
+  umask 022
+  {
+    printf '%s\n' '# 知识库建联清单（可由 docs-link.sh / docs-install.sh 维护）'
+    if [[ "$n" -eq 0 ]]; then
+      printf '%s\n' 'links: []'
+    else
+      printf '%s\n' 'links:'
+      for ((i = 0; i < n; i++)); do
+        [[ -n "${_repos[i]:-}" ]] || sdx_error "knowledge-links.yaml 条目缺少 repository（必填）: $f"
+        [[ -n "${_paths[i]:-}" ]] || sdx_error "knowledge-links.yaml 条目缺少 path（必填）: $f"
+        t="${_types[i]:-child}"
+        if [[ "$t" == 'parent' ]]; then
+          printf '  - type: parent\n'
+          printf '    repository: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_repos[i]}")"
+          printf '    path: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_paths[i]}")"
+          if [[ -n "${_dirs[i]:-}" ]]; then
+            printf '    doc_dir: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_dirs[i]}")"
+          fi
+          [[ -n "${_apps[i]:-}" ]] || sdx_error "knowledge-links.yaml(parent) 条目缺少 name（必填）: $f"
+          lab="${_labels[i]:-${_apps[i]}}"
+          if [[ "$parent_kind" == 'company' ]]; then
+            printf '    company_name: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_apps[i]}")"
+            printf '    company_label: "%s"\n' "$(_knowledge_link_yaml_escape_dq "$lab")"
+          else
+            printf '    sys_name: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_apps[i]}")"
+            printf '    sys_label: "%s"\n' "$(_knowledge_link_yaml_escape_dq "$lab")"
+          fi
+        elif [[ "$t" == 'meta' ]]; then
+          printf '  - type: meta\n'
+          printf '    repository: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_repos[i]}")"
+          printf '    path: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_paths[i]}")"
+          if [[ -n "${_dirs[i]:-}" ]]; then
+            printf '    doc_dir: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_dirs[i]}")"
+          fi
+        else
+          printf '  - repository: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_repos[i]}")"
+          printf '    path: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_paths[i]}")"
+          if [[ -n "${_dirs[i]:-}" ]]; then
+            printf '    doc_dir: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_dirs[i]}")"
+          fi
+          [[ -n "${_apps[i]:-}" ]] || sdx_error "knowledge-links.yaml(child) 条目缺少 name（必填）: $f"
+          lab="${_labels[i]:-${_apps[i]}}"
+          if [[ "$child_kind" == 'sys' ]]; then
+            printf '    sys_name: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_apps[i]}")"
+            printf '    sys_label: "%s"\n' "$(_knowledge_link_yaml_escape_dq "$lab")"
+          else
+            printf '    app_name: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_apps[i]}")"
+            printf '    app_label: "%s"\n' "$(_knowledge_link_yaml_escape_dq "$lab")"
+          fi
+        fi
+      done
+    fi
+  } >"$f"
+}
+
 # 读入 knowledge-links.yaml 填入数组（下标对齐）；非法旧形态 path=URL 时报错退出。
-# 第 7 参 types：每条 type（缺省 child）；parent 与 child 均载入，调用方自行过滤。
+# 第 7 参 types：每条 type（缺省 child）；parent / meta / child 均载入，调用方自行过滤。
 knowledge_links_load_into_arrays() {
   local f="${1:?}"
   local -n _paths="${2:?}"
@@ -765,6 +898,9 @@ knowledge_links_load_into_arrays() {
           _apps+=("${sys_name:-}")
           _labels+=("${sys_label:-}")
         fi
+      elif [[ "${entry_type:-child}" == 'meta' ]]; then
+        _apps+=('')
+        _labels+=('')
       elif [[ -n "${sys_name}${sys_label}" ]]; then
         _apps+=("${sys_name:-}")
         _labels+=("${sys_label:-}")
