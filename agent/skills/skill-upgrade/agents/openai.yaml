@@ -1,0 +1,6 @@
+interface:
+  display_name: "技能与 Agent 追新"
+  short_description: >
+    双轨升级已装环境；无源时经确认按 find-skills 补源；
+    建议桶/待决策问人；默认 dry-run 清单后再实跑。
+  default_prompt: "/skill-upgrade 把 ~/.agents 升到最新；无源先列出并问是否 find，先 dry-run 清单。"
