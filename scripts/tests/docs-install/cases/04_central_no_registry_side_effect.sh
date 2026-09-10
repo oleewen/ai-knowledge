@@ -20,7 +20,7 @@ git -C "$PROJECT_DIR" init -q
 
 APP_INDEX="$ROOT_DIR/application/index.md"
 SYS_INDEX="$ROOT_DIR/system/index.md"
-APP_SLOT_GLOB="$ROOT_DIR/system/application-*"
+APP_SLOT_GLOB="$ROOT_DIR/system/application-slots/application-*"
 SYS_SLOT_GLOB="$ROOT_DIR/company/system-slots/system-*"
 
 [[ -f "$APP_INDEX" ]] || fail "缺少索引文件: $APP_INDEX"
@@ -57,7 +57,7 @@ SYS_SLOT_COUNT_AFTER="$(count_glob_matches "$SYS_SLOT_GLOB")"
 [[ "$SYS_INDEX_SUM_BEFORE" == "$SYS_INDEX_SUM_AFTER" ]] \
   || fail "system/index.md 不应被修改"
 [[ "$APP_SLOT_COUNT_BEFORE" == "$APP_SLOT_COUNT_AFTER" ]] \
-  || fail "system/application-* 联邦槽位数量发生变化"
+  || fail "system/application-slots/application-* 联邦槽位数量发生变化"
 [[ "$SYS_SLOT_COUNT_BEFORE" == "$SYS_SLOT_COUNT_AFTER" ]] \
   || fail "company/system-slots/system-* 联邦槽位数量发生变化"
 

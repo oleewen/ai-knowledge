@@ -1,7 +1,7 @@
 ---
 name: docs-pull
 description: >
-  按 knowledge-links.yaml 从本地 path 同步到联邦槽位（system/application-{APPNAME}/ 或 company/system-slots/system-{NAME}/），并追加槽位 changelogs/CHANGE-LOG.md。
+  按 knowledge-links.yaml 从本地 path 同步到联邦槽位（system/application-slots/application-{NAME}/ 或 company/system-slots/system-{NAME}/），并追加槽位 changelogs/CHANGE-LOG.md。
   用户提到 /docs-pull、从应用/系统本地仓回拉到联邦槽位、同步槽位、按 knowledge-links 拉取时，使用本技能。
   分流：推送中央规约到应用库 → docs-push；overview 蒸馏 / 归档 / SDD → 对应技能。
   推进见 light-flow-actions（C/M/S/F，无 G）与 references/gates.md。
@@ -11,7 +11,7 @@ description: >
 
 ## 输出硬约束（P0）
 
-- 当前单元：单个 `application-{app}` 或 `system-slots/system-{NAME}` 槽位。
+- 当前单元：单个 `application-slots/application-{NAME}` 或 `system-slots/system-{NAME}` 槽位。
 - 轻流程：参数向导 → 风险校核 → `C/M/S/F`（无 `G`、不绑意图澄清）→ [light-flow-actions.md](../../references/light-flow-actions.md)；细节 [gates.md](references/gates.md)。参数未收口前不得执行同步。
 - `--all` 也须先处理并校核一个当前槽位；未收敛前不得静默推进后续槽位。
 - 路径不存在、非 Git 工作区、目标 `.docsconfig` 缺失、槽位不存在、links 字段不完整等风险须先确认；未确认不得继续。

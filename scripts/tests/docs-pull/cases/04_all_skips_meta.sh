@@ -44,8 +44,8 @@ AGENT_ROOT=$ROOT_DIR/agent
 AGENT_DIRS=.cursor
 EOF
 
-mkdir -p "$SYSTEM/docs/application-app-ok/changelogs"
-echo "# CHANGE LOG - APPNAME" >"$SYSTEM/docs/application-app-ok/changelogs/CHANGE-LOG.md"
+mkdir -p "$SYSTEM/docs/application-slots/application-app-ok/changelogs"
+echo "# CHANGE LOG - NAME" >"$SYSTEM/docs/application-slots/application-app-ok/changelogs/CHANGE-LOG.md"
 echo "content" >"$APP_OK/docs/sync-me.md"
 git -C "$APP_OK" add . && git -C "$APP_OK" commit -m "ok" -q
 
@@ -63,6 +63,6 @@ links:
 EOF
 
 ( cd "$SYSTEM" && "${BASH:-bash}" "$PULL" --all ) || fail "--all 含 meta 时应成功"
-assert_file_exists "$SYSTEM/docs/application-app-ok/sync-me.md"
+assert_file_exists "$SYSTEM/docs/application-slots/application-app-ok/sync-me.md"
 
 pass "--all 跳过 type:meta"

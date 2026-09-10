@@ -58,12 +58,13 @@ slot_prefix=""
 name_flag=""
 name_value=""
 
-# company 槽位落在 DOC_ROOT/system-slots/system-{NAME}/；system 仍为 DOC_ROOT/application-{NAME}/
+# company 槽位：DOC_ROOT/system-slots/system-{NAME}/
+# system 槽位：DOC_ROOT/application-slots/application-{NAME}/
 slot_parent=""
 if [[ "$MODE" == "system" ]]; then
   expected_target_type="application"
   slot_prefix="application"
-  slot_parent=""
+  slot_parent="application-slots"
   name_flag="--app"
   name_value="$APP"
 else

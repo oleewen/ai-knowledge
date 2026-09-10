@@ -18,7 +18,7 @@ FAKEHOME="$TMP_DIR/fakehome"
 SYS_SRC="$FAKEHOME/ws/system-kb"
 APP_TGT="$FAKEHOME/ws/my-application-repo"
 LIST="$SYS_SRC/docs/knowledge-links.yaml"
-TPL="$ROOT_DIR/system/application-APPNAME"
+TPL="$ROOT_DIR/system/application-slots"
 
 cleanup() {
   rm -rf "$TMP_DIR"
@@ -28,7 +28,7 @@ trap cleanup EXIT
 [[ -d "$TPL" ]] || fail "缺少模板目录: $TPL"
 
 mkdir -p "$SYS_SRC/docs" "$APP_TGT/docs"
-cp -R "$TPL" "$SYS_SRC/docs/application-APPNAME"
+cp -R "$TPL" "$SYS_SRC/docs/application-slots"
 printf '%s\n' 'links: []' >"$APP_TGT/docs/knowledge-links.yaml"
 git -C "$SYS_SRC" init -q
 git -C "$APP_TGT" init -q

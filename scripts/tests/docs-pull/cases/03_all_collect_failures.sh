@@ -46,8 +46,8 @@ AGENT_ROOT=$ROOT_DIR/agent
 AGENT_DIRS=.cursor
 EOF
 
-mkdir -p "$SYSTEM/docs/application-app-ok/changelogs"
-echo "# CHANGE LOG - APPNAME" >"$SYSTEM/docs/application-app-ok/changelogs/CHANGE-LOG.md"
+mkdir -p "$SYSTEM/docs/application-slots/application-app-ok/changelogs"
+echo "# CHANGE LOG - NAME" >"$SYSTEM/docs/application-slots/application-app-ok/changelogs/CHANGE-LOG.md"
 echo "content" >"$APP_OK/docs/sync-me.md"
 git -C "$APP_OK" add . && git -C "$APP_OK" commit -m "ok" -q
 
@@ -72,6 +72,6 @@ set -e
 
 [[ "$code" -ne 0 ]] || fail "--all 有失败时应 exit 1"
 printf '%s\n' "$out" | grep -Fq 'FAILED:' || fail "应输出失败清单"
-assert_file_exists "$SYSTEM/docs/application-app-ok/sync-me.md"
+assert_file_exists "$SYSTEM/docs/application-slots/application-app-ok/sync-me.md"
 
 pass "--all 汇总失败并整体失败"

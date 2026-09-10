@@ -45,10 +45,10 @@ AGENT_ROOT=$ROOT_DIR/agent
 AGENT_DIRS=.cursor
 EOF
 
-mkdir -p "$SYSTEM/docs/application-app-foo/changelogs"
-echo "# CHANGE LOG - APPNAME" >"$SYSTEM/docs/application-app-foo/changelogs/CHANGE-LOG.md"
-echo "# slot wrapper" >"$SYSTEM/docs/application-app-foo/README.md"
-echo "# slot index" >"$SYSTEM/docs/application-app-foo/index.md"
+mkdir -p "$SYSTEM/docs/application-slots/application-app-foo/changelogs"
+echo "# CHANGE LOG - NAME" >"$SYSTEM/docs/application-slots/application-app-foo/changelogs/CHANGE-LOG.md"
+echo "# slot wrapper" >"$SYSTEM/docs/application-slots/application-app-foo/README.md"
+echo "# slot index" >"$SYSTEM/docs/application-slots/application-app-foo/index.md"
 
 echo "content" >"$APP/docs/sync-me.md"
 
@@ -72,8 +72,8 @@ set -e
 [[ "$code" -eq 0 ]] || fail "docs-pull 应成功：$out"
 printf '%s\n' "$out" | grep -Fq 'SYNC_OK:' || fail "应输出 SYNC_OK"
 
-assert_file_exists "$SYSTEM/docs/application-app-foo/sync-me.md"
-grep -Fq 'https://example.com/org/app-foo.git' "$SYSTEM/docs/application-app-foo/changelogs/CHANGE-LOG.md" \
+assert_file_exists "$SYSTEM/docs/application-slots/application-app-foo/sync-me.md"
+grep -Fq 'https://example.com/org/app-foo.git' "$SYSTEM/docs/application-slots/application-app-foo/changelogs/CHANGE-LOG.md" \
   || fail "应写入 repository 作为 source"
 
 pass "system: pull single app syncs content and writes changelog"

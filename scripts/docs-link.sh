@@ -8,7 +8,7 @@
 # 须在源 Git 仓库内执行；link 需校验源、目标 .docsconfig 与 KNOWLEDGE_TYPE；
 # 目标须已有 knowledge-links.yaml（application 由 docs-install 落盘）；缺则失败。
 # unlink 支持目标失联场景（按登记 identity 注销）；system 源注销 application 建联时先将
-# DOC_ROOT 下 application-<APPNAME>/ 备份至 REPO_ROOT/.docs-init/<时间戳>/（与 docs-install 一致）再移除。
+# DOC_ROOT 下 application-slots/application-<NAME>/ 备份至 REPO_ROOT/.docs-init/<时间戳>/（与 docs-install 一致）再移除。
 # 登记值：repository 存 Git remote URL；path 存本机路径（$HOME 下 ~/…）；doc_dir=对方 DOC_DIR。
 # type:meta（docs-install 写入）写回时保活；meta.doc_dir=目标 KNOWLEDGE_TYPE。pull/push 跳过 meta。
 # 不再读写 knowledge-parent.yaml；跨层 HTTP 前缀替换仅当 --rewrite-http。
@@ -139,7 +139,8 @@ knowledge_link_identity_from_stored_entry() {
 }
 
 # -----------------------------------------------------------------------------
-# 应用槽位 application-${APPNAME}（自 DOC_ROOT 下 application-APPNAME 模板生成）
+# 应用槽位 application-slots/application-${NAME}（自 DOC_ROOT/application-slots/application-NAME 模板生成）
+# 替换白名单：禁止裸替 NAME（会误伤英文词）
 # -----------------------------------------------------------------------------
 
 # 校验并规范化 app_name（小写）；非法则报错
@@ -165,7 +166,7 @@ knowledge_link_guess_app_name() {
   knowledge_link_validate_app_name "$base"
 }
 
-# 将模板目录中的占位符替换为实际 APPNAME（仅处理常见文本后缀）
+# 将模板目录中的占位符替换为实际 app（仅处理常见文本后缀）
 knowledge_link_apply_app_slot_substitutions() {
   local dest="${1:?}" app="${2:?}" f tmp
   while IFS= read -r f; do
@@ -176,21 +177,21 @@ knowledge_link_apply_app_slot_substitutions() {
     esac
     tmp="${f}.tmp.$$"
     sed \
-      -e "s/CHANGE LOG - APPNAME/CHANGE LOG - ${app}/g" \
-      -e "s/application-{app-name}/application-${app}/g" \
-      -e "s/{app-name}/${app}/g" \
-      -e "s/\`APPNAME\`/\`${app}\`/g" \
+      -e "s/CHANGE LOG - NAME/CHANGE LOG - ${app}/g" \
+      -e "s/application-{NAME}/application-${app}/g" \
+      -e "s/application-NAME/application-${app}/g" \
       "$f" >"$tmp" && mv "$tmp" "$f"
   done < <(find "$dest" -type f 2>/dev/null)
 }
 
-# 在源 DOC_ROOT 下生成 application-${APPNAME}（参考 application-APPNAME 模板）
+# 在源 DOC_ROOT/application-slots 下生成 application-${app}（参考 application-NAME 模板）
 knowledge_link_ensure_application_slot() {
   local doc_root="${1:?}" app="${2:?}"
-  local dr tpl dest
+  local dr slots tpl dest
   dr="$(_knowledge_link_doc_root_abs_ns "$doc_root")"
-  tpl="${dr}/application-APPNAME"
-  dest="${dr}/application-${app}"
+  slots="${dr}/application-slots"
+  tpl="${slots}/application-NAME"
+  dest="${slots}/application-${app}"
   [[ -d "$tpl" ]] || sdx_error "源 DOC_ROOT 下缺少模板目录: $tpl"
   if [[ -d "$dest" ]]; then
     return 0
@@ -199,6 +200,7 @@ knowledge_link_ensure_application_slot() {
     sdx_log "[dry-run] 将自模板创建目录: %s → %s" "$tpl" "$dest"
     return 0
   fi
+  mkdir -p "$slots"
   cp -R "$tpl" "$dest"
   knowledge_link_apply_app_slot_substitutions "$dest" "$app"
 }
@@ -293,16 +295,16 @@ knowledge_link_repo_root_for_backup() {
   printf '%s\n' "$(strip_trailing_slash "$rr")"
 }
 
-# 备份至 REPO_ROOT/.docs-init/<stamp>/ 后移除 application-${app}/（与 docs-install 的 backup_path 同源：sdx_docs_backup_path_to_init）
+# 备份至 REPO_ROOT/.docs-init/<stamp>/ 后移除 application-slots/application-${app}/（与 docs-install 的 backup_path 同源：sdx_docs_backup_path_to_init）
 knowledge_link_remove_application_slot() {
   local doc_root="${1:?}" app="${2:?}"
   local dest repo_root
   [[ -n "$app" ]] || return 0
-  if [[ "$app" == 'APPNAME' ]]; then
-    sdx_warn "APPNAME 为保留名，跳过删除槽位目录"
+  if [[ "$app" == 'NAME' || "$app" == 'APPNAME' ]]; then
+    sdx_warn "NAME/APPNAME 为保留名，跳过删除槽位目录"
     return 0
   fi
-  dest="$(_knowledge_link_doc_root_abs_ns "$doc_root")/application-${app}"
+  dest="$(_knowledge_link_doc_root_abs_ns "$doc_root")/application-slots/application-${app}"
   if [[ ! -d "$dest" ]]; then
     return 0
   fi
