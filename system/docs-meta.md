@@ -7,7 +7,7 @@ title: system 目录元数据
 # system/ 根目录元数据（导航与 SSOT 指针）
 id: "DIR-SYSTEM"
 name: "系统知识库根（system）"
-description: "系统层治理与导航根；knowledge/=系统级实体 SSOT；application-{name}/=应用镜像槽位；solutions→analysis→requirements=系统 SDD。"
+description: "系统层治理与导航根；knowledge/=系统级实体 SSOT；application-slots/application-{NAME}/=应用镜像槽位；solutions→analysis→requirements=系统 SDD。"
 
 role:
   kind: "documentation_root"
@@ -22,9 +22,9 @@ child_directories:
   adr:
     readme: "adr/README.md"
     description: "系统层 ADR 正文 + CONTEXT 决策台账"
-  application-APPNAME:
-    readme: "application-APPNAME/README.md"
-    description: "应用镜像槽位（占位 APPNAME）"
+  application-slots:
+    readme: "application-slots/README.md"
+    description: "应用联邦槽位根（模板 application-NAME；实例 application-{NAME}）"
   solutions:
     readme: "solutions/README.md"
     description: "系统级 SOLUTION-{IDEA-ID}.md"
@@ -53,7 +53,7 @@ inputs:
 
 outputs:
   primary_artifact:
-    pattern: "README.md, index.md, DESIGN.md, knowledge/**/*, application-{name}/**"
+    pattern: "README.md, index.md, DESIGN.md, knowledge/**/*, application-slots/**"
     description: "根导航与设计、knowledge/ 系统层 OKF 实体、按需应用槽位镜像"
 
 naming_conventions:

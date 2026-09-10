@@ -19,7 +19,7 @@ title: 系统知识库设计
 | 层 | 职责 |
 |----|------|
 | `company/` | 公司级实体正文 SSOT（BD/CAP/PL/SYS/MDG/TPL） |
-| `system/` | 系统层首次定义实体 SSOT + 五视角落地 + `application-{name}/` 槽位 |
+| `system/` | 系统层首次定义实体 SSOT + 五视角落地 + `application-slots/application-{NAME}/` 槽位 |
 | `application/` | 应用层首次定义（API/TBL/MW/CMP）+ 实现映射与实例登记 |
 
 | 面 | 规则 |
@@ -37,7 +37,7 @@ title: 系统知识库设计
 | ADR | [adr/](adr/README.md) | 系统层决策正文 + `CONTEXT.md`；**无强制 EXAMPLE**；overview 应用视角末行链此，不进 `knowledge/*/chapters/` |
 | 架构 | `knowledge/` | 五视角 + [`overview/`](knowledge/overview/NAME-overview.md) 蒸馏缓冲区（非实体 SSOT；归档入 chapters；行序见 [knowledge-layout](../agent/references/knowledge-layout.md)；📎 按需章可不进 overview） |
 | SDD | solutions → analysis → requirements | 见下表 |
-| 槽位 | `application-{name}/` | docs-pull 镜像 |
+| 槽位 | `application-slots/application-{NAME}/` | docs-pull 镜像 |
 | 清单 | [knowledge-links.yaml](knowledge-links.yaml) | 建联 |
 | 运维 | [changelogs/](changelogs/README.md) | CHANGE-LOG / INDEXING-LOG |
 
@@ -81,7 +81,7 @@ title: 系统知识库设计
 
 ## 3. 同步闭环
 
-1. **docs-pull** → `application-{name}/`  
+1. **docs-pull** → `application-slots/application-{NAME}/`  
 2. 校核 `knowledge/` 与治理约定  
 3. **docs-distill / docs-archive** 上行  
 4. **changelogs** 追溯  

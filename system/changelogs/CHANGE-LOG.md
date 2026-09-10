@@ -6,6 +6,20 @@ title: CHANGE-LOG
 
 本文件为 `system/` 侧**维护性变更与文档聚合**的 Markdown 日志入口。
 
+## 2026-09-10
+
+### 变更摘要
+
+**联邦应用槽位迁入 application-slots：**
+
+- 新增 `application-slots/`（README + index + docs-meta 一级）
+- 模板 `application-APPNAME/` → `application-slots/application-NAME/`；路径契约 `application-slots/application-{NAME}/`
+- 旧根路径 `system/application-*` 硬切；CLI 仍 `--app` / `--app-name`
+- 与 `company/system-slots` 对称；根 `GRILL-LOG` 对应代办已勾销
+- `system/viz.html` 仍含旧路径快照，需 `/docs-okf` 刷新
+
+<!-- change_time=2026-09-10 17:00:00 -->
+
 ## 2026-08-20
 
 ### 变更摘要

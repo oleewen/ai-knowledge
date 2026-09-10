@@ -12,7 +12,7 @@ okf_version: 0.1
 
 * [adr](adr/README.md)
 * [analysis](analysis/README.md)
-* [application-APPNAME](application-APPNAME/README.md)
+* [application-slots](application-slots/README.md)
 * [changelogs](changelogs/README.md)
 * [knowledge](knowledge/README.md)
 * [requirements](requirements/README.md)

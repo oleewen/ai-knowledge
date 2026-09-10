@@ -22,9 +22,9 @@ title: system INDEX-GUIDE
 
 ### 1.2 元信息
 
-* **角色**: 系统知识库；`knowledge/` = 系统层实体 SSOT + 五视角；`application-{name}/` = 镜像槽位  
+* **角色**: 系统知识库；`knowledge/` = 系统层实体 SSOT + 五视角；`application-slots/application-{NAME}/` = 镜像槽位  
 * **栈**: Markdown、YAML  
-* **范围**: `knowledge/` · `solutions/` · `analysis/` · `requirements/` · `application-{name}/` · `adr/` · `changelogs/`  
+* **范围**: `knowledge/` · `solutions/` · `analysis/` · `requirements/` · `application-slots/` · `adr/` · `changelogs/`  
 
 ---
 
@@ -35,11 +35,12 @@ system/
 ├── README.md / INDEX-GUIDE.md / index.md / DESIGN.md / docs-meta.md
 ├── knowledge-links.yaml
 ├── knowledge/ · solutions/ · analysis/ · requirements/ · adr/
-├── application-APPNAME/
+├── application-slots/
+│   └── application-NAME/       # 应用镜像槽位模板
 └── changelogs/
 ```
 
-入口：[knowledge/](knowledge/README.md) · [solutions/](solutions/README.md) · [analysis/](analysis/README.md) · [requirements/](requirements/README.md) · [application-APPNAME/](application-APPNAME/README.md)
+入口：[knowledge/](knowledge/README.md) · [solutions/](solutions/README.md) · [analysis/](analysis/README.md) · [requirements/](requirements/README.md) · [application-slots/](application-slots/README.md)
 
 ---
 
@@ -54,7 +55,7 @@ system/
 * `knowledge/` ↔ `company/knowledge/`：公司实体 reference  
 * `knowledge/` ↔ `application/knowledge/`：系统 SSOT / 应用实现映射  
 * `solutions/` → `analysis/` → `requirements/`  
-* `knowledge-links.yaml` → `application-{name}/`  
+* `knowledge-links.yaml` → `application-slots/application-{NAME}/`  
 
 ---
 
@@ -74,7 +75,7 @@ system/
 
 ## 七、变更与运维
 
-[changelogs/](changelogs/README.md)：`CHANGE-LOG.md` · `INDEXING-LOG.md`；槽位日志在 `application-{name}/changelogs/`
+[changelogs/](changelogs/README.md)：`CHANGE-LOG.md` · `INDEXING-LOG.md`；槽位日志在 `application-slots/application-{NAME}/changelogs/`
 
 ---
 
@@ -82,7 +83,7 @@ system/
 
 * `/docs-okf` — 刷新 `index.md` / `viz.html`  
 * `/docs-distill` · `/docs-archive` — overview 上行  
-* `/docs-pull` — 填充 `application-{name}/`  
+* `/docs-pull` — 填充 `application-slots/application-{NAME}/`  
 * [docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md)  
 
 ---
