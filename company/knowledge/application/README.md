@@ -6,7 +6,7 @@ title: 应用架构
 
 [返回 · 企业架构](../README.md)
 
-公司层应用入口：系统全景 + SYS。
+公司层应用入口：系统全景 + SYS。实体以 per-entity 与 [../index.md](../index.md) §3 为准。本 README 表登记 SYS-EXAMPLE。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
@@ -15,5 +15,6 @@ title: 应用架构
 
 ## 实体
 
-* 元数据：[application-meta.md](application-meta.md)
-* 样例：[SYS-EXAMPLE.md](SYS-EXAMPLE.md)
+| 链序 | 层级 | ID | 名称 | 文件/目录 |
+|------|------|----|------|-----------|
+| L1 | SYS | SYS-EXAMPLE | 示例系统 | [SYS-EXAMPLE.md](SYS-EXAMPLE.md) |

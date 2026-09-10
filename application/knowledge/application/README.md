@@ -1,15 +1,15 @@
 ---
 type: Documentation
-title: 应用视角
+title: 应用架构
 ---
-# application（应用视角）
+# 应用架构
 
 [返回 · knowledge](../README.md)
 
-应用侧应用：SYS/APP/MS + **API SSOT**（字段 [application-meta.md](application-meta.md)）。索引 [index.md](../index.md)。
+应用侧应用入口：API SSOT；SYS 公司首次定义，APP/MS 系统首次定义。实体以 per-entity 与 [../index.md](../index.md) §3 为准。本 README 表仅登记本层 SSOT 样例；reference 见 §3。
 
-## 实体样例
+## 实体
 
-* `SYS-EXAMPLE.md` · `APP-EXAMPLE.md` · [MS-EXAMPLE/](MS-EXAMPLE/index.md)（含 API）
-
-上层 reference：SYS-* · APP-*, MS-*
+| 链序 | 层级 | ID | 名称 | 文件/目录 |
+|------|------|----|------|-----------|
+| L4 | API | API-EXAMPLE-001 | 示例 API：创建 | [MS-EXAMPLE/API-EXAMPLE-001.md](MS-EXAMPLE/API-EXAMPLE-001.md) |

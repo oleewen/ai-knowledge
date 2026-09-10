@@ -6,7 +6,7 @@ title: 业务架构
 
 [返回 · 企业架构](../README.md)
 
-公司层业务入口：章节叙事 + BD/CAP。系统/应用只引 ID，不重复字段语义。
+公司层业务入口：章节叙事 + BD。实体以 per-entity 与 [../index.md](../index.md) §1 为准。本 README 表登记 BD-EXAMPLE 与样例 CAP-EXAMPLE。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
@@ -19,5 +19,7 @@ title: 业务架构
 
 ## 实体
 
-* 元数据：[business-meta.md](business-meta.md)
-* 样例：[BD-EXAMPLE/](BD-EXAMPLE/index.md)（含 CAP / CAP-L1）
+| 链序 | 层级 | ID | 名称 | 文件/目录 |
+|------|------|----|------|-----------|
+| L1 | BD | BD-EXAMPLE | 示例业务域 | [BD-EXAMPLE/BD-EXAMPLE.md](BD-EXAMPLE/BD-EXAMPLE.md) |
+| L2 | CAP | CAP-EXAMPLE | 示例业务能力 | [BD-EXAMPLE/CAP-EXAMPLE.md](BD-EXAMPLE/CAP-EXAMPLE.md) |

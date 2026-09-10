@@ -7,7 +7,7 @@ title: 技术架构
 
 [返回 · 系统知识库 — 架构文档](../README.md)
 
-系统层技术入口：TSD SSOT；MW/CMP 首次在 application（本层可 reference）。
+系统层技术入口：TSD SSOT；MW/CMP 首次在 application（本层可 reference）。实体以 per-entity 与 [../index.md](../index.md) §5 为准。本 README 表仅登记本层 SSOT 样例；reference 见 §5。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
@@ -20,7 +20,6 @@ title: 技术架构
 
 ## 实体
 
-* 元数据：[technical-meta.md](technical-meta.md)
-* 样例：[TSD-EXAMPLE.md](TSD-EXAMPLE.md) · [MW-EXAMPLE/](MW-EXAMPLE/index.md)（ref → application）
-
-上层 reference：TPL-*
+| 链序 | 层级 | ID | 名称 | 文件/目录 |
+|------|------|----|------|-----------|
+| L1 | TSD | TSD-EXAMPLE | 中间件域 | [TSD-EXAMPLE.md](TSD-EXAMPLE.md) |

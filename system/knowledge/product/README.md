@@ -7,7 +7,7 @@ title: 产品架构
 
 [返回 · 系统知识库 — 架构文档](../README.md)
 
-系统层产品入口：PM→FT→FR→UC/BR、BP；PL/PD 为公司 SSOT（本层不落盘；`PM.parent_id` → 公司 `PD-*`）。
+系统层产品入口：PM→FT→FR→UC/BR、BP；PL/PD 为公司 SSOT（本层不落盘）。实体以 per-entity 与 [../index.md](../index.md) §2 为准。本 README 表仅登记本层 SSOT 样例；reference 见 §2。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
@@ -22,7 +22,11 @@ title: 产品架构
 
 ## 实体
 
-* 元数据：[product-meta.md](product-meta.md)
-* 样例：[PM-EXAMPLE/](PM-EXAMPLE/index.md) · [BP-EXAMPLE.md](BP-EXAMPLE.md)
-
-上层 SSOT：公司 `PD-*`（有 parent 则 HTTP，否则纯 ID）
+| 链序 | 层级 | ID | 名称 | 文件/目录 |
+|------|------|----|------|-----------|
+| L3 | PM | PM-EXAMPLE | 示例产品模块 | [PM-EXAMPLE/PM-EXAMPLE.md](PM-EXAMPLE/PM-EXAMPLE.md) |
+| L4 | FT | FT-EXAMPLE | 示例功能 | [PM-EXAMPLE/FT-EXAMPLE/FT-EXAMPLE.md](PM-EXAMPLE/FT-EXAMPLE/FT-EXAMPLE.md) |
+| L5 | FR | FR-EXAMPLE | 示例功能需求 | [PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/FR-EXAMPLE.md](PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/FR-EXAMPLE.md) |
+| L6 | UC | UC-EXAMPLE | 示例用例 | [PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md](PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md) |
+| L6 | BR | BR-EXAMPLE | 示例规则 | [PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/BR-EXAMPLE.md](PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/BR-EXAMPLE.md) |
+| L7 | BP | BP-EXAMPLE | 示例业务流程（BP） | [BP-EXAMPLE.md](BP-EXAMPLE.md) |

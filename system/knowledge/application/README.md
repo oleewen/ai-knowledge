@@ -7,7 +7,7 @@ title: 应用架构
 
 [返回 · 系统知识库 — 架构文档](../README.md)
 
-系统层应用入口：APP/MS SSOT；SYS 为 company reference；API 在 application。
+系统层应用入口：APP/MS SSOT；SYS 为 company reference；API 在 application。实体以 per-entity 与 [../index.md](../index.md) §3 为准。本 README 表仅登记本层 SSOT 样例；reference 见 §3。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
@@ -24,7 +24,7 @@ title: 应用架构
 
 ## 实体
 
-* 元数据：[application-meta.md](application-meta.md)
-* 样例：`SYS-EXAMPLE.md`（ref）· [APP-EXAMPLE/](APP-EXAMPLE/index.md)（内含 MS）
-
-上层 reference：SYS-*
+| 链序 | 层级 | ID | 名称 | 文件/目录 |
+|------|------|----|------|-----------|
+| L2 | APP | APP-EXAMPLE | 示例应用 | [APP-EXAMPLE/APP-EXAMPLE.md](APP-EXAMPLE/APP-EXAMPLE.md) |
+| L3 | MS | MS-EXAMPLE | 示例微服务 | [APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md](APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md) |

@@ -1,15 +1,16 @@
 ---
 type: Documentation
-title: 产品视角
+title: 产品架构
 ---
-# product（产品视角）
+# 产品架构
 
 [返回 · knowledge](../README.md)
 
-应用侧产品：PM→UC/BR、BP（字段 [product-meta.md](product-meta.md)）。PL/PD 在公司层；`PM.parent_id` → 公司 `PD-*`。索引 [index.md](../index.md)。
+应用侧产品入口：承接 API / 验收映射与实例登记；PL/PD 公司首次定义，PM 起系统首次定义。实体以 per-entity 与 [../index.md](../index.md) §2 为准。本 README 表仅登记本层 SSOT 样例；reference 见 §2。
 
-## 实体样例
+## 实体
 
-* [PM-EXAMPLE/](PM-EXAMPLE/index.md) · [BP-EXAMPLE.md](BP-EXAMPLE.md)
+| 链序 | 层级 | ID | 名称 | 文件/目录 |
+|------|------|----|------|-----------|
 
-上层 SSOT：公司 `PD-*` · 系统 `PM-*` / `FT-*` / `FR-*` / `UC-*` / `BR-*`
+（本层无首次定义实体；reference/实例见 [../index.md](../index.md) §2）

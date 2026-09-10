@@ -7,7 +7,7 @@ title: 数据架构
 
 [返回 · 系统知识库 — 架构文档](../README.md)
 
-系统层数据入口：DS/ENT SSOT；MDG 为 company reference；TBL 在 application。
+系统层数据入口：DS/ENT SSOT；MDG 为 company reference；TBL 在 application。实体以 per-entity 与 [../index.md](../index.md) §4 为准。本 README 表仅登记本层 SSOT 样例；reference 见 §4。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
@@ -19,7 +19,7 @@ title: 数据架构
 
 ## 实体
 
-* 元数据：[data-meta.md](data-meta.md)
-* 样例：`MDG-EXAMPLE.md`（ref）· [DS-EXAMPLE/](DS-EXAMPLE/index.md)
-
-上层 reference：MDG-*
+| 链序 | 层级 | ID | 名称 | 文件/目录 |
+|------|------|----|------|-----------|
+| L2 | DS | DS-EXAMPLE | 示例数据源 | [DS-EXAMPLE/DS-EXAMPLE.md](DS-EXAMPLE/DS-EXAMPLE.md) |
+| L3 | ENT | ENT-EXAMPLE | 示例实体 | [DS-EXAMPLE/ENT-EXAMPLE.md](DS-EXAMPLE/ENT-EXAMPLE.md) |
