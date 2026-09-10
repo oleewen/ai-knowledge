@@ -58,14 +58,18 @@ slot_prefix=""
 name_flag=""
 name_value=""
 
+# company 槽位落在 DOC_ROOT/system-slots/system-{NAME}/；system 仍为 DOC_ROOT/application-{NAME}/
+slot_parent=""
 if [[ "$MODE" == "system" ]]; then
   expected_target_type="application"
   slot_prefix="application"
+  slot_parent=""
   name_flag="--app"
   name_value="$APP"
 else
   expected_target_type="system"
   slot_prefix="system"
+  slot_parent="system-slots"
   name_flag="--sys-name"
   name_value="$SYS_NAME"
 fi
@@ -158,7 +162,11 @@ pull_one() {
   source_dir="${t_doc_root%/}"
   [[ -d "$source_dir" ]] || { printf '源目录不存在: %s\n' "$source_dir" >&2; return 1; }
 
-  slot_dir="${DOC_ROOT%/}/${slot_prefix}-${name}"
+  if [[ -n "$slot_parent" ]]; then
+    slot_dir="${DOC_ROOT%/}/${slot_parent}/${slot_prefix}-${name}"
+  else
+    slot_dir="${DOC_ROOT%/}/${slot_prefix}-${name}"
+  fi
   [[ -d "$slot_dir" ]] || { printf '槽位目录不存在，请先 docs-link 建联并创建槽位: %s\n' "$slot_dir" >&2; return 1; }
 
   rsync_stats="$(

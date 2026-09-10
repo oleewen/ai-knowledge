@@ -35,8 +35,8 @@
     {
       "id": "docs-pull-trigger-002",
       "category": "should-trigger",
-      "prompt": "在 company 库跑 /docs-pull --all，把所有 system link 都同步进 system-* 槽位。",
-      "expected_output": "docs-pull：收口 mode=company 与 --all；先选择一个当前槽位单元执行并校核，再由用户用 F 决定是否补齐剩余 system-* 槽位。",
+      "prompt": "在 company 库跑 /docs-pull --all，把所有 system link 都同步进 system-slots/system-* 槽位。",
+      "expected_output": "docs-pull：收口 mode=company 与 --all；先选择一个当前槽位单元执行并校核，再由用户用 F 决定是否补齐剩余 system-slots/system-* 槽位。",
       "assertions": [
         {
           "id": "all-mode-requires-batch-confirmation",

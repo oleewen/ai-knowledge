@@ -1,6 +1,6 @@
 ---
 type: Documentation
-title: system-SYSNAME/changelogs
+title: system-NAME/changelogs
 ---
 # changelogs
 

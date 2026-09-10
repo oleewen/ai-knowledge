@@ -21,7 +21,7 @@ git -C "$PROJECT_DIR" init -q
 APP_INDEX="$ROOT_DIR/application/index.md"
 SYS_INDEX="$ROOT_DIR/system/index.md"
 APP_SLOT_GLOB="$ROOT_DIR/system/application-*"
-SYS_SLOT_GLOB="$ROOT_DIR/company/system-*"
+SYS_SLOT_GLOB="$ROOT_DIR/company/system-slots/system-*"
 
 [[ -f "$APP_INDEX" ]] || fail "缺少索引文件: $APP_INDEX"
 [[ -f "$SYS_INDEX" ]] || fail "缺少索引文件: $SYS_INDEX"
@@ -59,6 +59,6 @@ SYS_SLOT_COUNT_AFTER="$(count_glob_matches "$SYS_SLOT_GLOB")"
 [[ "$APP_SLOT_COUNT_BEFORE" == "$APP_SLOT_COUNT_AFTER" ]] \
   || fail "system/application-* 联邦槽位数量发生变化"
 [[ "$SYS_SLOT_COUNT_BEFORE" == "$SYS_SLOT_COUNT_AFTER" ]] \
-  || fail "company/system-* 联邦槽位数量发生变化"
+  || fail "company/system-slots/system-* 联邦槽位数量发生变化"
 
 pass "central 不触发登记副作用（dry-run）"

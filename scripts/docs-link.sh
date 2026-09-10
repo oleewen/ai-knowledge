@@ -204,7 +204,8 @@ knowledge_link_ensure_application_slot() {
 }
 
 # -----------------------------------------------------------------------------
-# 系统槽位 system-${SYSNAME}（自 DOC_ROOT 下 system-SYSNAME 模板生成）
+# 系统槽位 system-slots/system-${NAME}（自 DOC_ROOT/system-slots/system-NAME 模板生成）
+# 替换白名单：禁止裸替 NAME（会误伤英文词）
 # -----------------------------------------------------------------------------
 
 knowledge_link_validate_sys_name() {
@@ -238,20 +239,20 @@ knowledge_link_apply_sys_slot_substitutions() {
     esac
     tmp="${f}.tmp.$$"
     sed \
-      -e "s/CHANGE LOG - SYSNAME/CHANGE LOG - ${sys}/g" \
-      -e "s/system-{SYSNAME}/system-${sys}/g" \
-      -e "s/system-SYSNAME/system-${sys}/g" \
-      -e "s/SYSNAME/${sys}/g" \
+      -e "s/CHANGE LOG - NAME/CHANGE LOG - ${sys}/g" \
+      -e "s/system-{NAME}/system-${sys}/g" \
+      -e "s/system-NAME/system-${sys}/g" \
       "$f" >"$tmp" && mv "$tmp" "$f"
   done < <(find "$dest" -type f 2>/dev/null)
 }
 
 knowledge_link_ensure_system_slot() {
   local doc_root="${1:?}" sys="${2:?}"
-  local dr tpl dest
+  local dr slots tpl dest
   dr="$(_knowledge_link_doc_root_abs_ns "$doc_root")"
-  tpl="${dr}/system-SYSNAME"
-  dest="${dr}/system-${sys}"
+  slots="${dr}/system-slots"
+  tpl="${slots}/system-NAME"
+  dest="${slots}/system-${sys}"
   [[ -d "$tpl" ]] || sdx_error "源 DOC_ROOT 下缺少模板目录: $tpl"
   if [[ -d "$dest" ]]; then
     return 0
@@ -260,6 +261,7 @@ knowledge_link_ensure_system_slot() {
     sdx_log "[dry-run] 将自模板创建目录: %s → %s" "$tpl" "$dest"
     return 0
   fi
+  mkdir -p "$slots"
   cp -R "$tpl" "$dest"
   knowledge_link_apply_sys_slot_substitutions "$dest" "$sys"
 }

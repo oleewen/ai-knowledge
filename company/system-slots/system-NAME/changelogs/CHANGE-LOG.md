@@ -1,9 +1,9 @@
 ---
 type: Change Log
-title: CHANGE-LOG（system-SYSNAME 槽位）
+title: CHANGE-LOG（system-NAME 槽位）
 ---
 <!-- markdownlint-disable-next-line MD025 -->
-# CHANGE-LOG（system-SYSNAME 槽位）
+# CHANGE-LOG（system-NAME 槽位）
 
 单系统槽位同步留痕。
 

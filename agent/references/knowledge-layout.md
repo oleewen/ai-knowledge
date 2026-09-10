@@ -14,7 +14,7 @@
 | --- | --- | --- | --- | --- |
 | `application/` | [application/README.md](../../application/README.md) | [application/knowledge/](../../application/knowledge/README.md) | — | — |
 | `system/` | [system/README.md](../../system/README.md) | [system/knowledge/](../../system/knowledge/README.md) | [system/knowledge/overview/](../../system/knowledge/overview/NAME-overview.md) | `system/application-{APPNAME}/` |
-| `company/` | [company/README.md](../../company/README.md) | [company/knowledge/](../../company/knowledge/README.md) | [company/knowledge/overview/](../../company/knowledge/overview/NAME-overview.md) | `company/system-{SYSNAME}/` |
+| `company/` | [company/README.md](../../company/README.md) | [company/knowledge/](../../company/knowledge/README.md) | [company/knowledge/overview/](../../company/knowledge/overview/NAME-overview.md) | `company/system-slots/system-{NAME}/` |
 
 **路径约定**：三层五视角均为 **`{DOC_DIR}/knowledge/`**（legacy `architecture/` / `ea/` 已废弃）。应用层无 overview；本层首次实体（API/TBL/MW/CMP）见 [application/DESIGN.md](../../application/DESIGN.md) §2.2.1。
 
@@ -55,7 +55,7 @@
 应用库（本地 path，HEAD） ──docs-pull──► system/application-{APPNAME}/（联邦槽位，不可被 knowledge 引用）
 系统库（本地 path，HEAD） ──docs-link──► company/knowledge-links.yaml（建联 + 建槽位）
                               └──► 系统库 knowledge-parent.yaml
-系统库（本地 path，HEAD） ──docs-pull──► company/system-{SYSNAME}/（联邦槽位，不可被 knowledge 引用）
+系统库（本地 path，HEAD） ──docs-pull──► company/system-slots/system-{NAME}/（联邦槽位，不可被 knowledge 引用）
          │
          ▼ docs-distill（仅系统 overview）
 system/knowledge/overview/{APPNAME}-overview.md

@@ -29,7 +29,7 @@ git -C "$SYSTEM" init -q
 git -C "$COMPANY" remote add origin "https://github.com/example/company-ea.git"
 git -C "$SYSTEM" remote add origin "https://example.com/org/sys-foo.git"
 
-cp -R "$ROOT_DIR/company/system-SYSNAME" "$COMPANY/docs/system-SYSNAME"
+cp -R "$ROOT_DIR/company/system-slots" "$COMPANY/docs/system-slots"
 
 cat >"$COMPANY/docs/knowledge-links.yaml" <<'EOF'
 links:

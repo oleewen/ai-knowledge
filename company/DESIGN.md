@@ -37,7 +37,7 @@ title: 公司知识库设计
 | 方案 | `solutions/` | 跨系统 SOLUTION → `analysis/` |
 | 分析 | `analysis/` | 跨系统 ANALYSIS → 各系统 `requirements/` |
 | ADR | `adr/` | 公司层跨系统决策正文 + `CONTEXT.md` |
-| 槽位 | `system-{name}/` | 系统镜像入口 |
+| 槽位 | `system-slots/system-{NAME}/` | 系统镜像入口 |
 | 清单 | `knowledge-links.yaml` | 建联与同步编排（可空） |
 | 运维 | `changelogs/` | CHANGE-LOG / INDEXING-LOG |
 
@@ -71,12 +71,12 @@ title: 公司知识库设计
 
 同 IDEA-ID：`ANALYSIS` 拆归属 → 各系统 `REQUIREMENT-{IDEA-ID}/`。
 
-约束：槽位名 `system-{sys_name}`；不写实现/字段；跨层用链接；改目录语义先改本文。
+约束：槽位名 `system-slots/system-{NAME}`；不写实现/字段；跨层用链接；改目录语义先改本文。
 
 ## 3. 同步与追溯
 
 1. 下游 `system/` 整理可同步内容  
-2. docs-pull → `company/system-{sys_name}/`（读目标 `.docsconfig` 的 DOC_ROOT/DOC_DIR）  
+2. docs-pull → `company/system-slots/system-{NAME}/`（读目标 `.docsconfig` 的 DOC_ROOT/DOC_DIR）  
 3. 校核 `knowledge/` 与 `knowledge-links.yaml`  
 4. 追加槽位 `changelogs/CHANGE-LOG.md`（根 CHANGE-LOG 可选汇总）  
 
@@ -92,4 +92,4 @@ title: 公司知识库设计
 
 ## 参考
 
-[README](README.md) · [knowledge/](knowledge/README.md) · [system-SYSNAME](system-SYSNAME/README.md) · [knowledge-links.yaml](knowledge-links.yaml) · [knowledge-layout](../agent/references/knowledge-layout.md) · [system/DESIGN](../system/DESIGN.md)
+[README](README.md) · [knowledge/](knowledge/README.md) · [system-slots](system-slots/README.md) · [knowledge-links.yaml](knowledge-links.yaml) · [knowledge-layout](../agent/references/knowledge-layout.md) · [system/DESIGN](../system/DESIGN.md)

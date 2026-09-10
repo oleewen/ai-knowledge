@@ -17,7 +17,7 @@
 一个当前槽位单元就是单个联邦槽位：
 
 - system 库下的 `application-{app_name}`
-- company 库下的 `system-{sys_name}`
+- company 库下的 `system-slots/system-{NAME}`
 
 一次只处理一个当前槽位单元，不并行推进多个槽位。
 
@@ -26,7 +26,7 @@
 ### 1 建联前提
 
 - 在 system 知识库根执行 docs-link 建联（创建 `application-{app_name}/` 槽位）
-- 在 company 知识库根执行 docs-link 建联（创建 `system-{sys_name}/` 槽位）
+- 在 company 知识库根执行 docs-link 建联（创建 `system-slots/system-{NAME}/` 槽位）
 - 必须先有槽位目录，否则 `pull-slots.sh` 失败退出
 
 ### 2 选择当前槽位单元

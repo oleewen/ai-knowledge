@@ -22,9 +22,9 @@ title: company INDEX-GUIDE
 
 ### 1.2 元信息
 
-* **角色**: 公司知识库；`knowledge/` = BD/CAP/PL/SYS/MDG/TPL SSOT；`system-{name}/` = 镜像槽位  
+* **角色**: 公司知识库；`knowledge/` = BD/CAP/PL/SYS/MDG/TPL SSOT；`system-slots/system-{NAME}/` = 镜像槽位  
 * **栈**: Markdown、YAML  
-* **范围**: `knowledge/` · `solutions/` · `analysis/` · `system-{name}/` · `changelogs/`  
+* **范围**: `knowledge/` · `solutions/` · `analysis/` · `system-slots/` · `changelogs/`  
 
 ---
 
@@ -35,11 +35,12 @@ company/
 ├── README.md / INDEX-GUIDE.md / index.md / DESIGN.md / docs-meta.md
 ├── knowledge-links.yaml
 ├── knowledge/ · solutions/ · analysis/
-├── system-SYSNAME/
+├── system-slots/
+│   └── system-NAME/            # 系统镜像槽位模板
 └── changelogs/
 ```
 
-入口：[knowledge/](knowledge/README.md) · [solutions/](solutions/README.md) · [analysis/](analysis/README.md) · [system-SYSNAME/](system-SYSNAME/README.md)
+入口：[knowledge/](knowledge/README.md) · [solutions/](solutions/README.md) · [analysis/](analysis/README.md) · [system-slots/](system-slots/README.md)
 
 ---
 
@@ -53,7 +54,7 @@ company/
 
 * `knowledge/` ↔ `system/knowledge/`：公司实体参照  
 * `solutions/` → `analysis/` → 各系统 `requirements/`  
-* `knowledge-links.yaml` → `system-{name}/`  
+* `knowledge-links.yaml` → `system-slots/system-{NAME}/`  
 
 ---
 
@@ -71,7 +72,7 @@ company/
 
 ## 七、变更与运维
 
-[changelogs/](changelogs/README.md)：`CHANGE-LOG.md` · `INDEXING-LOG.md`；槽位日志 ∈ `system-{name}/changelogs/`
+[changelogs/](changelogs/README.md)：`CHANGE-LOG.md` · `INDEXING-LOG.md`；槽位日志 ∈ `system-slots/system-{NAME}/changelogs/`
 
 ---
 

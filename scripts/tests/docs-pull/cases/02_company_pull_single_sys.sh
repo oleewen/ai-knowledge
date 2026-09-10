@@ -44,10 +44,10 @@ AGENT_ROOT=$ROOT_DIR/agent
 AGENT_DIRS=.cursor
 EOF
 
-mkdir -p "$COMPANY/docs/system-sys-foo/changelogs"
-echo "# CHANGE LOG - SYSNAME" >"$COMPANY/docs/system-sys-foo/changelogs/CHANGE-LOG.md"
-echo "# slot wrapper" >"$COMPANY/docs/system-sys-foo/README.md"
-echo "# slot index" >"$COMPANY/docs/system-sys-foo/index.md"
+mkdir -p "$COMPANY/docs/system-slots/system-sys-foo/changelogs"
+echo "# CHANGE LOG - NAME" >"$COMPANY/docs/system-slots/system-sys-foo/changelogs/CHANGE-LOG.md"
+echo "# slot wrapper" >"$COMPANY/docs/system-slots/system-sys-foo/README.md"
+echo "# slot index" >"$COMPANY/docs/system-slots/system-sys-foo/index.md"
 
 echo "content" >"$SYS/docs/sync-me.md"
 
@@ -71,8 +71,8 @@ set -e
 [[ "$code" -eq 0 ]] || fail "docs-pull 应成功：$out"
 printf '%s\n' "$out" | grep -Fq 'SYNC_OK:' || fail "应输出 SYNC_OK"
 
-assert_file_exists "$COMPANY/docs/system-sys-foo/sync-me.md"
-grep -Fq 'https://example.com/org/sys-foo.git' "$COMPANY/docs/system-sys-foo/changelogs/CHANGE-LOG.md" \
+assert_file_exists "$COMPANY/docs/system-slots/system-sys-foo/sync-me.md"
+grep -Fq 'https://example.com/org/sys-foo.git' "$COMPANY/docs/system-slots/system-sys-foo/changelogs/CHANGE-LOG.md" \
   || fail "应写入 repository 作为 source"
 
 pass "company: pull single sys syncs content and writes changelog"

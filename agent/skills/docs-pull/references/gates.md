@@ -32,7 +32,7 @@
 即将执行 /docs-pull，当前参数如下：
 - mode: <system|company>
 - selector: <--app X|--sys-name Y|--all>
-- 当前槽位单元: <application-{app}|system-{sys}>
+- 当前槽位单元: <application-{app}|system-slots/system-{NAME}>
 
 C 确认当前槽位单元 / M 修改参数 / S 跳过当前槽位 / F 补齐剩余槽位
 ```

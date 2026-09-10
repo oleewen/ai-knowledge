@@ -29,7 +29,7 @@ git -C "$SYSTEM" init -q
 git -C "$COMPANY" remote add origin "https://github.com/example/company-ea.git"
 git -C "$SYSTEM" remote add origin "https://example.com/org/sys-foo.git"
 
-cp -R "$ROOT_DIR/company/system-SYSNAME" "$COMPANY/docs/system-SYSNAME"
+cp -R "$ROOT_DIR/company/system-slots" "$COMPANY/docs/system-slots"
 printf '%s\n' 'links: []' >"$SYSTEM/docs/knowledge-links.yaml"
 
 cat >"$COMPANY/.docsconfig" <<EOF
@@ -64,7 +64,7 @@ grep -Fq 'sys_name: "sys-foo"' "$COMPANY/docs/knowledge-links.yaml" \
   || fail "sys_name 应写入"
 grep -Fq 'sys_label: "sys-foo"' "$COMPANY/docs/knowledge-links.yaml" \
   || fail "sys_label 应写入"
-assert_dir_exists "$COMPANY/docs/system-sys-foo"
+assert_dir_exists "$COMPANY/docs/system-slots/system-sys-foo"
 
 assert_file_exists "$SYSTEM/docs/knowledge-links.yaml"
 grep -Fq 'type: parent' "$SYSTEM/docs/knowledge-links.yaml" \

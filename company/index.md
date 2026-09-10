@@ -15,7 +15,7 @@ okf_version: 0.1
 * [changelogs](changelogs/README.md)
 * [knowledge](knowledge/README.md)
 * [solutions](solutions/README.md)
-* [system-SYSNAME](system-SYSNAME/README.md)
+* [system-slots](system-slots/README.md)
 
 ### 目录文件
 

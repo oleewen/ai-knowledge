@@ -7,7 +7,7 @@ title: company 目录元数据
 # company/ 根目录元数据（导航与 SSOT 指针）
 id: "DIR-COMPANY"
 name: "公司知识库根（company）"
-description: "公司层治理与导航根；knowledge/=公司级实体 SSOT；system-{name}/=系统镜像槽位。"
+description: "公司层治理与导航根；knowledge/=公司级实体 SSOT；system-slots/system-{NAME}/=系统镜像槽位。"
 
 role:
   kind: "documentation_root"
@@ -28,9 +28,9 @@ child_directories:
   adr:
     readme: "adr/README.md"
     description: "公司层 ADR 正文与 CONTEXT 决策台账"
-  system-SYSNAME:
-    readme: "system-SYSNAME/README.md"
-    description: "系统镜像槽位（占位 SYSNAME）"
+  system-slots:
+    readme: "system-slots/README.md"
+    description: "系统联邦槽位根（模板 system-NAME；实例 system-{NAME}）"
   changelogs:
     readme: "changelogs/README.md"
     description: "变更留痕与索引运维"
@@ -50,7 +50,7 @@ inputs:
 
 outputs:
   primary_artifact:
-    pattern: "README.md, index.md, DESIGN.md, knowledge/**/*, system-{name}/**"
+    pattern: "README.md, index.md, DESIGN.md, knowledge/**/*, system-slots/**"
     description: "根导航与设计、knowledge/ 公司层 OKF 实体、按需系统槽位镜像"
 
 naming_conventions:
