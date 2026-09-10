@@ -24,7 +24,7 @@ description: >
 - 合并契约：结构/模板=元库；正文=本库；已改判定=规范化后与元库同路径内容不等；已改 md=本库正文填入元库 H2/H3；未落位节=清单确认后才落；本库独有路径永不删。
 - 文件模式强制：指定路径两边都有的 `.md` **破跳过**，一律结构重填；本缺元有 → 仅 scaffold 该路径；元缺/联邦槽位 → 该条拒绝。非 md：可进名单；已存在不覆盖；仅缺则可 scaffold。
 - `knowledge-links.yaml` 永不被元库模板覆盖。
-- 相对 `DOC_ROOT` 首段为 `application-*` / `system-slots` / 遗留 `system-*` 的联邦槽位（模板与实例）硬忽略：不进四桶、不 scaffold、不重填、不问未落位；文件模式亦拒绝指定。
+- 相对 `DOC_ROOT` 首段为 `application-slots` / 遗留 `application-*` / `system-slots` / 遗留 `system-*` 的联邦槽位（模板与实例）硬忽略：不进四桶、不 scaffold、不重填、不问未落位；文件模式亦拒绝指定。
 - `system`/`company`：整树将元库 `{META_ROOT}/scripts/docs-link.sh`、`link-config.sh` 同步到 `{REPO_ROOT}/scripts/`（同则跳过，异/缺则元库整文件覆盖；并入 `--apply-scaffold`）。文件模式可 `@` 这两文件或 `@` `{REPO_ROOT}/scripts/`（只展开这两文件名），每文件 `C` 后元库整文件覆盖。
 - 文件模式**不强制** `{REPO_ROOT}/.docs-init/` 备份（依赖 git）。整树 scaffold 仍按脚本备份。
 - 文件模式由 Skill/Agent 编排写盘；脚本暂不加 `--path`。

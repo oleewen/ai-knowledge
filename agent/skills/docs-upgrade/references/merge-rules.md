@@ -28,7 +28,7 @@
 
 排除（永不从元库装入目标）：根级 `DESIGN.md`、`CONTRIBUTING.md`；以及 `knowledge-links.yaml`（本库保活，不作骨架覆盖源）。
 
-**联邦槽位（双闸硬忽略）**：相对 `DOC_ROOT` 路径**首段**匹配 `application-*`、`system-slots` 或遗留 `system-*`（含模板 `application-APPNAME` / `system-slots/system-NAME` 与实例槽位）——不进四桶；清单仅摘要「忽略槽位」顶层目录名；**禁止** `--apply-scaffold` 写入、禁止结构重填、禁止未落位提问。槽位内容归 `/docs-pull`。
+**联邦槽位（双闸硬忽略）**：相对 `DOC_ROOT` 路径**首段**匹配 `application-slots`、遗留 `application-*`、`system-slots` 或遗留 `system-*`（含模板 `application-slots/application-NAME` / `system-slots/system-NAME` 与实例槽位）——不进四桶；清单仅摘要「忽略槽位」顶层目录名；**禁止** `--apply-scaffold` 写入、禁止结构重填、禁止未落位提问。槽位内容归 `/docs-pull`。
 
 application 的 README 映射：本库 `README.md` 对照元库 `README-s.md`（若无则 `README.md`）；不把 `README-c.md`/`README-s.md` 作为额外目标文件名写入（除非本库已有同名）。
 
@@ -62,7 +62,7 @@ application 的 README 映射：本库 `README.md` 对照元库 `README-s.md`（
 
 | 条件 | 动作 |
 | --- | --- |
-| 联邦槽位首段 `application-*` / `system-slots` / `system-*` | **拒绝**该条；提示 `/docs-pull` |
+| 联邦槽位首段 `application-slots` / `application-*` / `system-slots` / `system-*` | **拒绝**该条；提示 `/docs-pull` |
 | 元库无对应路径（README 映射后仍无） | **硬停该条**（报错；不猜替代）；其余路径可继续 |
 | 两边都无 | **硬停该条** |
 | 本库无、元库有 | **scaffold** 该路径（须该文件 `C`）；Agent 复制，不经脚本 `--path` |

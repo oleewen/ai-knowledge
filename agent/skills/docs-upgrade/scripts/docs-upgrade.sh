@@ -34,7 +34,7 @@ Usage: docs-upgrade.sh [--dry-run | --apply-scaffold] [--meta-path PATH] [--ref 
   -h, --help         本帮助
 
 禁止：不会调用 docs-install 清空 DOC_DIR；不会覆盖 knowledge-links.yaml；
-忽略 DOC_ROOT 下首段为 application-* / system-slots / system-* 的联邦槽位（模板与实例）。
+忽略 DOC_ROOT 下首段为 application-slots / application-* / system-slots / system-* 的联邦槽位（模板与实例）。
 system|company：另将元库 scripts/docs-link.sh、link-config.sh 同步到 {REPO_ROOT}/scripts/（元库整文件覆盖）。
 EOF
 }
@@ -79,12 +79,12 @@ files_equal_normalized() {
   [[ "$ha" == "$hb" ]]
 }
 
-# 联邦槽位：DOC_ROOT 相对路径首段 application-* | system-slots | system-*（旧根挂遗留）
+# 联邦槽位：DOC_ROOT 相对路径首段 application-slots | application-* | system-slots | system-*（旧根挂遗留）
 is_federal_slot_rel() {
   local rel="$1"
   local top="${rel%%/*}"
   case "$top" in
-    application-*|system-slots|system-*) return 0 ;;
+    application-slots|application-*|system-slots|system-*) return 0 ;;
   esac
   return 1
 }
