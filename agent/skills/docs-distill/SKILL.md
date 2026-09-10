@@ -1,10 +1,10 @@
 ---
 name: docs-distill
 description: >
-  将 application-{name}/ 已核实内容去重后以 delta 写入 overview 第三列；细则 federation-spec。overview 成功后追加 DISTILL-LOG。
+  将 application-slots/application-{NAME}/ 已核实内容去重后以 delta 写入 overview 第三列；细则 federation-spec。overview 成功后追加 DISTILL-LOG。
   用户提到 /docs-distill、知识蒸馏、DISTILL-LOG、同步应用知识到系统 overview、更新系统库 overview、
   某应用知识库改了要同步、看看要同步哪些内容、系统库 overview 需要更新，
-  或要把 application-* 已核实变更上行到系统库时，务必使用本技能。
+  或要把 application-slots/application-* 已核实变更上行到系统库时，务必使用本技能。
   分流：任意源提炼 → docs-extract；overview 归档 → docs-archive；INDEX → docs-indexing；SDD → 对应技能。
   推进见 references/gates.md。
 ---

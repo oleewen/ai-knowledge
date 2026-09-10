@@ -18,7 +18,7 @@
 
 | 维度 | docs-distill | docs-extract |
 | ------ | ------ | ------ |
-| 源 | `system/application-{name}/` | 用户 `--sources` |
+| 源 | `system/application-slots/application-{NAME}/` | 用户 `--sources` |
 | 过滤 | 联邦规则 | **必须**段落级关键词（[extract-spec.md](extract-spec.md)） |
 | 增量锚点 | 有 | **无** |
 | 写入 | overview + DISTILL-LOG | **仅**第三列 |

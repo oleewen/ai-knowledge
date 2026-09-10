@@ -53,7 +53,7 @@
 - overview 第三列写入成功后，才能追加 `DISTILL-LOG`
 - overview 写入失败时，禁止追加 `DISTILL-LOG`
 - `--dry-run` 不写 overview，也不写 `DISTILL-LOG`
-- 涉及 `system/changelogs/CHANGE-LOG.md` 与 `system/application-*/changelogs/ARCHIVE-LOG.md` 的追加与锚点更新，与当前蒸馏写入**同一原子事务**，适用同一交互与确认要求
+- 涉及 `system/changelogs/CHANGE-LOG.md` 与 `system/application-slots/application-*/changelogs/ARCHIVE-LOG.md` 的追加与锚点更新，与当前蒸馏写入**同一原子事务**，适用同一交互与确认要求
 - 当前单元未收敛前，不得自动推进到下一应用或下一批范围
 
 ## 典型语义问题（烤干）

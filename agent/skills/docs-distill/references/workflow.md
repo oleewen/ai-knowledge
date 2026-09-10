@@ -15,7 +15,7 @@
 ## 前置
 
 - 路径：[knowledge-layout.md](../../../references/knowledge-layout.md)
-- 可读 `system/application-{name}/changelogs/CHANGE-LOG.md`
+- 可读 `system/application-slots/application-{NAME}/changelogs/CHANGE-LOG.md`
 - overview 目标路径可解析
 - `system/changelogs/DISTILL-LOG.md` 可写
 - 若环境未安装 `grilling` Skill，则按 grilling-skill fallback
@@ -24,7 +24,7 @@
 
 | 文件 | 职责 | 本技能写入 |
 | ---- | ----- | --------- |
-| `system/application-{name}/changelogs/CHANGE-LOG.md` | 增量候选来源 | **否** |
+| `system/application-slots/application-{NAME}/changelogs/CHANGE-LOG.md` | 增量候选来源 | **否** |
 | `system/changelogs/DISTILL-LOG.md` | 蒸馏记录与下次锚点 | **是**（overview 成功后） |
 
 不得把这两份日志混用。`CHANGE-LOG` 负责提供应用增量来源；`DISTILL-LOG` 负责记录蒸馏完成点。

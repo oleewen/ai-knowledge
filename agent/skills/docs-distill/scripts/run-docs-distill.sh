@@ -9,7 +9,7 @@ Usage:
   run-docs-distill.sh --app APP [--since ID_OR_TIME] [--full] [--dry-run] [--root DIR]
 
 Options:
-  --app       应用名（对应 system/application-{app}/）
+  --app       应用名（对应 system/application-slots/application-{NAME}/）
   --since     手动起点（覆盖 DISTILL-LOG 锚点）
   --full      全量模式（忽略锚点）
   --dry-run   仅预览，不落盘
@@ -61,7 +61,7 @@ if [[ ! "$APP" =~ ^[a-zA-Z0-9][a-zA-Z0-9_-]*$ ]]; then
 fi
 
 SCRIPTS_DIR="${SCRIPT_DIR}"
-APP_DIR="system/application-${APP}"
+APP_DIR="system/application-slots/application-${APP}"
 APP_CHANGE_LOG="${APP_DIR}/changelogs/CHANGE-LOG.md"  # 只读：应用侧变更来源
 DISTILL_LOG="system/changelogs/DISTILL-LOG.md"        # 读写：蒸馏记录兼锚点（步骤 4.4）
 OVERVIEW_DIR="system/knowledge/overview"

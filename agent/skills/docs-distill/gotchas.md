@@ -26,7 +26,7 @@
 
 ## 多应用
 
-- 无 `--app`：轻量扫 `system/application-*/`，只读 CHANGE/ARCHIVE，**不深读全库**。  
+- 无 `--app`：轻量扫 `system/application-slots/application-*/`，只读 CHANGE/ARCHIVE，**不深读全库**。  
 - DISTILL：**按 app 过滤**最新行锚，勿取文件末行 blindly。
 
 ## 自查
