@@ -42,8 +42,7 @@
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
 | BD | EXAMPLE |  | 示例业务域 | `business/BD-EXAMPLE/BD-EXAMPLE.md` |
-| CAP | EXAMPLE-L1 |  | 示例一级能力 | `business/BD-EXAMPLE/CAP-EXAMPLE-L1.md` |
-| CAP | EXAMPLE |  | 示例二级能力 | `business/BD-EXAMPLE/CAP-EXAMPLE.md` |
+| CAP | EXAMPLE |  | 示例业务能力 | `business/BD-EXAMPLE/CAP-EXAMPLE.md` |
 
 ---
 
@@ -89,7 +88,6 @@
 | 索引 ID | 命名式 ID（锚点目录） |
 |---------|----------------------|
 | BD-EXAMPLE | `business/BD-EXAMPLE/` |
-| CAP-EXAMPLE-L1 | `business/BD-EXAMPLE/CAP-EXAMPLE-L1.md` |
 | CAP-EXAMPLE | `business/BD-EXAMPLE/CAP-EXAMPLE.md` |
 | PL-EXAMPLE | `product/PL-EXAMPLE/` |
 | PD-EXAMPLE | `product/PL-EXAMPLE/PD-EXAMPLE.md` |

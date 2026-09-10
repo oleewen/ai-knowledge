@@ -24,7 +24,7 @@
 | 前缀   | 英文全称   | 含义    | 首次定义 |
 | ---- | ------------------ | ----- | ---- |
 | BD-  | Business Domain    | 业务域   | 公司 |
-| CAP- | Business Capability | 业务能力（L1/L2/L3 能力目录） | 公司 |
+| CAP- | Business Capability | 业务能力（挂 BD 的单层能力目录） | 公司 |
 | BSD- | Business Subdomain | 业务子域  | 系统 |
 | BC-  | Bounded Context    | 限界上下文 | 系统 |
 | AGG- | Aggregate | 聚合根   | 系统 |

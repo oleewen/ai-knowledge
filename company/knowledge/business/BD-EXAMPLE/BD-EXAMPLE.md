@@ -13,7 +13,6 @@ layer_scope: company
 ## 关系
 
 - children:
-  - CAP-EXAMPLE-L1
   - CAP-EXAMPLE
 
 ## 跨视角

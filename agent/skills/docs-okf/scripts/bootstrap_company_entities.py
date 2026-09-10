@@ -30,7 +30,6 @@ definition_scope: local
 ## 关系
 
 - children:
-  - [CAP-EXAMPLE-L1](/knowledge/business/BD-EXAMPLE/CAP-EXAMPLE-L1.md)
   - [CAP-EXAMPLE](/knowledge/business/BD-EXAMPLE/CAP-EXAMPLE.md)
 
 ## 跨视角
@@ -47,60 +46,22 @@ business-domain-division.md（示例）
 """,
     ),
     (
-        "knowledge/business/BD-EXAMPLE/CAP-EXAMPLE-L1.md",
-        """---
-type: Business Capability
-title: 示例一级能力
-description: 仅用于演示 CAP L1 占位。
-tags: [business, CAP]
-timestamp: "%s"
-full_id: CAP-EXAMPLE-L1
-perspective: business
-hierarchy: CAP
-parent_id: null
-level: L1
-maps_to_bd_id: BD-EXAMPLE
-layer_scope: company
-definition_scope: local
----
-## 关系
-
-- maps_to_bd_id: [BD-EXAMPLE](/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md)
-
-## 跨视角
-
-- (none)
-
-## 详细说明
-
-- (none)
-
-## 依据与证据
-
-business-capability.md（示例）
-""",
-    ),
-    (
         "knowledge/business/BD-EXAMPLE/CAP-EXAMPLE.md",
         """---
 type: Business Capability
-title: 示例二级能力
-description: 仅用于演示 CAP L2 与 parent_id 关系。
+title: 示例业务能力
+description: 仅用于演示公司级单层 CAP；parent_id 指向所属 BD。
 tags: [business, CAP]
 timestamp: "%s"
 full_id: CAP-EXAMPLE
 perspective: business
 hierarchy: CAP
-parent_id: CAP-EXAMPLE-L1
-level: L2
-maps_to_bd_id: BD-EXAMPLE
+parent_id: BD-EXAMPLE
 layer_scope: company
-definition_scope: local
 ---
 ## 关系
 
-- parent: [CAP-EXAMPLE-L1](/knowledge/business/BD-EXAMPLE/CAP-EXAMPLE-L1.md)
-- maps_to_bd_id: [BD-EXAMPLE](/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md)
+- parent: [BD-EXAMPLE](/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md)
 
 ## 跨视角
 
@@ -108,7 +69,7 @@ definition_scope: local
 
 ## 详细说明
 
-- (none)
+- definition_scope: local
 
 ## 依据与证据
 

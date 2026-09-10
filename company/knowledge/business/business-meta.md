@@ -15,7 +15,7 @@ title: 业务视角元数据（company/knowledge/business）
 | meta_id | `DIR-COMPANY-KNOWLEDGE-BUSINESS` |
 | 视角 | business |
 | 层级范围 | company |
-| 说明 | 公司级业务域与 L1/L2/L3 能力目录；系统/应用引用 BD/CAP ID，不重复字段语义。 |
+| 说明 | 公司级业务域与单层能力目录；系统/应用引用 BD/CAP ID，不重复字段语义。 |
 
 ---
 
@@ -24,7 +24,7 @@ title: 业务视角元数据（company/knowledge/business）
 | 链序 | 层级代码 | 说明 |
 | --- | --- | --- |
 | 1 | BD | 公司级业务域 |
-| 2 | CAP | 公司级业务能力目录（L1/L2/L3，`level` + `parent_id` 树形） |
+| 2 | CAP | 公司级业务能力（单层；`parent_id` → 所属 BD） |
 
 ---
 
@@ -33,7 +33,7 @@ title: 业务视角元数据（company/knowledge/business）
 | order | key | code | id_pattern | parent |
 | --- | --- | --- | --- | --- |
 | 1 | bd | BD | `BD-{NAME}` | — |
-| 2 | cap | CAP | `CAP-{NAME}` | CAP（L2/L3 的 `parent_id` 指向上级 CAP；L1 为空） |
+| 2 | cap | CAP | `CAP-{NAME}` | BD（`parent_id` 指向所属 `BD-*`） |
 
 ---
 
@@ -46,7 +46,7 @@ Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详�
 | 层级 | 字段 | 建议段落 |
 | --- | --- | --- |
 | BD | `strategic_classification`（`core_domain` / `supporting` / `generic`） | 详细说明 |
-| CAP | `level`（L1/L2/L3）、`parent_id`（L1 可空）、`maps_to_bd_id`（推荐） | 关系 / 跨视角 |
+| CAP | （无专属正文扩展；归属由 frontmatter `parent_id` → BD） | 关系可复述 parent |
 
 ---
 
@@ -54,7 +54,7 @@ Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详�
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| CAP.maps_to_bd_id | BD.full_id | 能力归属业务域 |
+| CAP.parent_id | BD.full_id | 能力归属业务域 |
 | 系统层 maps_to_cap_ids | CAP.full_id | 系统能力映射到公司级 CAP（下游引用，不在此定义） |
 
 ---
