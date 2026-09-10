@@ -20,7 +20,7 @@
 | 应用侧知识主库 | [application/README.md](application/README.md) | SDD 主线、五视角、实现登记与应用层实体主库 |
 | 应用侧目录索引 | [application/index.md](application/index.md) | 应用目录索引与 OKF 渐进披露入口 |
 | 应用侧九章索引 | [application/INDEX-GUIDE.md](application/INDEX-GUIDE.md) | `application/` 文档根九章索引指南 |
-| 系统知识库 | [system/README.md](system/README.md) | `knowledge/`（五视角 + overview）、`application-{name}/` 联邦槽位、SDD |
+| 系统知识库 | [system/README.md](system/README.md) | `knowledge/`（五视角 + overview）、`application-slots/application-{NAME}/` 联邦槽位、SDD |
 | 系统侧目录索引 | [system/index.md](system/index.md) | `system/` 树内目录索引与 OKF 渐进披露入口 |
 | 系统侧九章索引 | [system/INDEX-GUIDE.md](system/INDEX-GUIDE.md) | `system/` 文档根九章索引指南 |
 | 公司知识库 | [company/README.md](company/README.md) | `knowledge/`（五视角企业架构）、`system-slots/system-{NAME}/` 联邦槽位、SDD 上游 |
@@ -57,7 +57,8 @@
 │   └── changelogs/
 ├── system/                     # 系统层 + overview + 联邦槽位
 │   ├── knowledge/ · overview/
-│   ├── application-APPNAME/    # 应用镜像槽位模板
+│   ├── application-slots/           # 应用联邦槽位根
+│   │   └── application-NAME/    # 应用镜像槽位模板
 │   ├── knowledge-links.yaml · viz.html
 │   └── solutions/ · analysis/ · requirements/ · adr/ · changelogs/
 ├── company/                    # 公司层 + overview + 联邦槽位
@@ -159,7 +160,7 @@ flowchart LR
 | ------ | ------ | ---------- |
 | SSOT | 单一事实源；`application/` 为应用知识稳定事实中枢 | 与联邦镜像、目标工程对齐 |
 | 五视角 | 业务 / 产品 / 应用 / 数据 / 技术 知识分层与映射字段 | [application/DESIGN.md](application/DESIGN.md) |
-| 联邦治理 | `system/`、`company/` 槽位与迁移叙事；`system/application-{name}/`、`company/system-slots/system-{NAME}/` | docs-link / docs-pull / distill |
+| 联邦治理 | `system/`、`company/` 槽位与迁移叙事；`system/application-slots/application-{NAME}/`、`company/system-slots/system-{NAME}/` | docs-link / docs-pull / distill |
 | SDD | 方案 → 分析 → PRD/设计/测试 阶段交付链 | `sdx-*` Skill 与各层 `solutions/` 等 |
 | 中央知识库挂载建联 | `docs-install --mode=central` 等约定 | [README.md](README.md)、[scripts/README.md](scripts/README.md) |
 | 五架构视角 | 业务 / 产品 / 应用 / 技术 / 数据；`system\|company/knowledge/` 均按此组织 | docs-distill、docs-archive、overview |

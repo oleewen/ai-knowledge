@@ -230,7 +230,7 @@ flowchart LR
 | 1 | 克隆 `ai-knowledge` 作为中央库；`docs-bootstrap` 安装系统/公司知识库 | 中央 `/docs` 骨架 + `.docsconfig` + Agent |
 | 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `index.md`、`README.md`、`AGENTS.md` |
 | 3 | `docs-link` 登记各已有应用库（`--link --target=… --app_name=…`） | `knowledge-links.yaml`（`repository` + `path` + `doc_dir` + `app_name`） |
-| 4 | `/docs-pull` 拉取各应用联邦镜像 | `system/application-{APPNAME}/` |
+| 4 | `/docs-pull` 拉取各应用联邦镜像 | `system/application-slots/application-{NAME}/` |
 | 5 | `/docs-distill --app {APPNAME}`（配合 `--since` 增量） | `system/knowledge/overview/{APPNAME}-overview.md` 第三列 |
 | 6 | `/docs-archive`（人工核实高优先级行后） | 知识落入 `system/knowledge/` 各视角章节 |
 

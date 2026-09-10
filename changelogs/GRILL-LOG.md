@@ -4,7 +4,4 @@
 
 ---
 
-- [ ] 系统层对称：引入 `system/application-slots/application-{app}/`，与 company 侧 `system-slots` 对齐
-  - [ ] 改 `docs-link` / `docs-pull` / `knowledge-layout` / INDEX 与相关测试
-  - [ ] 迁移现有 `system/application-*` 槽位进 `application-slots/`
-  - 依赖：company 侧 `system-slots` 落地并验证后再开
+当前无开放代办。

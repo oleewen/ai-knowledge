@@ -22,7 +22,7 @@
 
 **适用范围**：仅 `application|system|company` 下 `*/knowledge/**`（含 overview、视角章、per-entity、meta、README）。**不含** `agent/knowledge/**`（Agent 元知识可链规则与布局文档）。
 
-**层级方向**（高 → 低）：`company` > `system` > `application`。只许向上引用；禁止引下层 knowledge 与联邦槽位（`system/application-*`、`company/system-slots/system-*`）。
+**层级方向**（高 → 低）：`company` > `system` > `application`。只许向上引用；禁止引下层 knowledge 与联邦槽位（`system/application-slots/application-*`、`company/system-slots/system-*`）。
 
 | 允许 | 禁止 |
 | --- | --- |

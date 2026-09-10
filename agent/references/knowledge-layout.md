@@ -13,7 +13,7 @@
 | 文档根 `{DOC_DIR}` | 人类入口 | 五视角知识 | overview 缓冲区 | 联邦镜像槽位 |
 | --- | --- | --- | --- | --- |
 | `application/` | [application/README.md](../../application/README.md) | [application/knowledge/](../../application/knowledge/README.md) | — | — |
-| `system/` | [system/README.md](../../system/README.md) | [system/knowledge/](../../system/knowledge/README.md) | [system/knowledge/overview/](../../system/knowledge/overview/NAME-overview.md) | `system/application-{APPNAME}/` |
+| `system/` | [system/README.md](../../system/README.md) | [system/knowledge/](../../system/knowledge/README.md) | [system/knowledge/overview/](../../system/knowledge/overview/NAME-overview.md) | `system/application-slots/application-{NAME}/` |
 | `company/` | [company/README.md](../../company/README.md) | [company/knowledge/](../../company/knowledge/README.md) | [company/knowledge/overview/](../../company/knowledge/overview/NAME-overview.md) | `company/system-slots/system-{NAME}/` |
 
 **路径约定**：三层五视角均为 **`{DOC_DIR}/knowledge/`**（legacy `architecture/` / `ea/` 已废弃）。应用层无 overview；本层首次实体（API/TBL/MW/CMP）见 [application/DESIGN.md](../../application/DESIGN.md) §2.2.1。
@@ -52,7 +52,7 @@
 ```text
 应用库（本地 path，HEAD） ──docs-link──► system/knowledge-links.yaml（建联 + 建槽位）
                               └──► 应用库 knowledge-parent.yaml（1:1 上级 identity）
-应用库（本地 path，HEAD） ──docs-pull──► system/application-{APPNAME}/（联邦槽位，不可被 knowledge 引用）
+应用库（本地 path，HEAD） ──docs-pull──► system/application-slots/application-{NAME}/（联邦槽位，不可被 knowledge 引用）
 系统库（本地 path，HEAD） ──docs-link──► company/knowledge-links.yaml（建联 + 建槽位）
                               └──► 系统库 knowledge-parent.yaml
 系统库（本地 path，HEAD） ──docs-pull──► company/system-slots/system-{NAME}/（联邦槽位，不可被 knowledge 引用）

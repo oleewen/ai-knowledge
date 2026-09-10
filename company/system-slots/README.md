@@ -22,4 +22,4 @@ title: system-slots（系统联邦槽位根）
 - 同步：`/docs-pull --sys-name <slug>`；排除槽位 `README.md` / `index.md` / `changelogs/`
 - 追溯：各槽 `changelogs/CHANGE-LOG.md`
 
-系统层对称（`application-slots`）见根 [GRILL-LOG](../../changelogs/GRILL-LOG.md)。
+系统层对称见 [system/application-slots](../../system/application-slots/README.md)。
