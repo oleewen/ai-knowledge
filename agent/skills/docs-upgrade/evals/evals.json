@@ -1,7 +1,7 @@
 {
   "skill_name": "docs-upgrade",
-  "version": "1.0.0",
-  "description": "评测 docs-upgrade：轻流程；meta 解析；禁清空 install；未落位确认；与 bootstrap 分流。",
+  "version": "1.1.0",
+  "description": "评测 docs-upgrade：轻流程；meta 解析；禁清空 install；未落位确认；与 bootstrap 分流；@ 文件强制对齐。",
   "evals": [
     {
       "id": "upgrade-trigger-001",
@@ -35,6 +35,66 @@
           "name": "受众 A/B",
           "type": "must_include",
           "check": "须体现写后或结果摘要出口跑受众维 A/B，或对照轻流程默认读者表。",
+          "priority": "P0"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": "upgrade-trigger-004",
+      "category": "should-trigger",
+      "prompt": "对当前知识库执行 /docs-upgrade，并用 @ 指定 DOC_ROOT 下两个已有 md 文件，要求对齐元库对应文件。",
+      "expected_output": "文件强制对齐模式；与整树互斥；总览 C 后逐文件 C；md 破跳过做结构重填；不调用脚本 --path；整单结束 A/B。",
+      "assertions": [
+        {
+          "id": "file-mode-mutex",
+          "name": "文件模式互斥",
+          "type": "must_include",
+          "check": "须走指定文件强制对齐，不得同时跑整树四桶 dry-run/apply-scaffold 主路径。",
+          "priority": "P0"
+        },
+        {
+          "id": "file-mode-gates",
+          "name": "总览与逐文件 C",
+          "type": "must_include",
+          "check": "须先解析名单总览等待 C，再对每个文件单独 C 后写盘；不得一批写完所有指定文件。",
+          "priority": "P0"
+        },
+        {
+          "id": "file-mode-force-refill",
+          "name": "强制结构重填",
+          "type": "must_include",
+          "check": "须体现指定 md 破跳过、按元库 H2/H3 结构重填且正文保本库；未落位仍逐项确认。",
+          "priority": "P0"
+        },
+        {
+          "id": "file-mode-no-script-path",
+          "name": "无脚本 path",
+          "type": "must_include",
+          "check": "不得宣称或依赖 docs-upgrade.sh --path；写盘由 Skill/Agent 编排。",
+          "priority": "P0"
+        },
+        {
+          "id": "file-mode-audience-ab",
+          "name": "整单 A/B",
+          "type": "must_include",
+          "check": "须体现全部预定文件处理完后整单一次受众维 A/B，方可宣称单元完成。",
+          "priority": "P0"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": "upgrade-trigger-005",
+      "category": "should-trigger",
+      "prompt": "/docs-upgrade 时 @ 了一个 application-foo 槽位下的 md，要求对齐元库。",
+      "expected_output": "拒绝该条；提示 docs-pull；不 scaffold、不重填槽位文件。",
+      "assertions": [
+        {
+          "id": "file-mode-reject-slot",
+          "name": "槽位拒绝",
+          "type": "must_include",
+          "check": "须拒绝联邦槽位路径并提示 docs-pull，不得对该路径 scaffold 或结构重填。",
           "priority": "P0"
         }
       ],

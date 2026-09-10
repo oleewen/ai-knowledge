@@ -28,7 +28,7 @@
 
 排除（永不从元库装入目标）：根级 `DESIGN.md`、`CONTRIBUTING.md`；以及 `knowledge-links.yaml`（本库保活，不作骨架覆盖源）。
 
-**联邦槽位（双闸硬忽略）**：相对 `DOC_ROOT` 路径**首段**匹配 `application-*` 或 `system-*`（含模板 `application-APPNAME` / `system-SYSNAME` 与实例槽位）——不进四桶；清单仅摘要「忽略槽位」顶层目录名；**禁止** `--apply-scaffold` 写入、禁止结构重填、禁止未落位提问。槽位内容归 `/docs-pull`。
+**联邦槽位（双闸硬忽略）**：相对 `DOC_ROOT` 路径**首段**匹配 `application-*`、`system-slots` 或遗留 `system-*`（含模板 `application-APPNAME` / `system-slots/system-NAME` 与实例槽位）——不进四桶；清单仅摘要「忽略槽位」顶层目录名；**禁止** `--apply-scaffold` 写入、禁止结构重填、禁止未落位提问。槽位内容归 `/docs-pull`。
 
 application 的 README 映射：本库 `README.md` 对照元库 `README-s.md`（若无则 `README.md`）；不把 `README-c.md`/`README-s.md` 作为额外目标文件名写入（除非本库已有同名）。
 
@@ -49,6 +49,28 @@ application 的 README 映射：本库 `README.md` 对照元库 `README-s.md`（
 
 ## 6. 确认粒度
 
-- 一批写前 `C`：批准新增骨架 + 工具脚本覆盖 + 可对齐结构重填
+- 整树一批写前 `C`：批准新增骨架 + 工具脚本覆盖 + 可对齐结构重填
+- 文件模式：总览 `C` + 逐文件 `C`（见 [gates.md](gates.md)）
 - 未落位：一次一项
 - 本库独有文件：只报告，不删
+
+## 7. 文件强制对齐（`@` 模式）
+
+与整树互斥。输入与展开见 [parameters.md](parameters.md)；流程见 [workflow.md](workflow.md)。
+
+对规范化后每条路径：
+
+| 条件 | 动作 |
+| --- | --- |
+| 联邦槽位首段 `application-*` / `system-slots` / `system-*` | **拒绝**该条；提示 `/docs-pull` |
+| 元库无对应路径（README 映射后仍无） | **硬停该条**（报错；不猜替代）；其余路径可继续 |
+| 两边都无 | **硬停该条** |
+| 本库无、元库有 | **scaffold** 该路径（须该文件 `C`）；Agent 复制，不经脚本 `--path` |
+| 两边有、且为 `.md` | **强制结构重填**（破 §2「跳过」；契约同 §5） |
+| 两边有、非 `.md`（非建联例外） | **不覆盖**；清单标「指定但非 md：不覆盖」 |
+| 建联例外两脚本（`system`/`company`） | **元库整文件覆盖**（同「工具脚本」桶）；每文件 `C` |
+| `@scripts/` 展开 | 只保留上述两文件名；其它忽略并注明 |
+
+排除项仍生效：不把 `knowledge-links.yaml` 当骨架覆盖目标；根级 `DESIGN.md` / `CONTRIBUTING.md` 不从元库装入（与整树一致）。
+
+文件模式不强制 `.docs-init` 备份。
