@@ -34,11 +34,10 @@
 
 ---
 
-## §1 业务视角（business · BD → BSD → BC → AGG → AB）
+## §1 业务视角（business · BSD → BC → AGG → AB）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| BD | EXAMPLE |  | 示例业务域 | `business/BD-EXAMPLE.md` |
 | BSD | EXAMPLE |  | 示例业务子域 | `business/BSD-EXAMPLE/BSD-EXAMPLE.md` |
 | BC | EXAMPLE |  | 示例限界上下文 | `business/BSD-EXAMPLE/BC-EXAMPLE/BC-EXAMPLE.md` |
 | AGG | EXAMPLE |  | 示例聚合 | `business/BSD-EXAMPLE/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md` |
@@ -46,7 +45,7 @@
 
 ---
 
-## §2 产品视角（product · PL → PD → PM → FT → FR → UC/BR · BP）
+## §2 产品视角（product · PM → FT → FR → UC/BR · BP）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
@@ -59,36 +58,33 @@
 
 ---
 
-## §3 应用视角（application · SYS → APP → MS）
+## §3 应用视角（application · APP → MS）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| SYS | EXAMPLE |  | 示例系统边界 | `application/SYS-EXAMPLE.md` |
 | APP | EXAMPLE |  | 示例应用 | `application/APP-EXAMPLE/APP-EXAMPLE.md` |
 | MS | EXAMPLE |  | 示例微服务 | `application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md` |
 
 ---
 
-## §4 数据视角（data · MDG → DS → ENT）
+## §4 数据视角（data · DS → ENT）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| MDG | EXAMPLE |  | 示例主数据域 | `data/MDG-EXAMPLE.md` |
 | DS | EXAMPLE |  | 示例数据源 | `data/DS-EXAMPLE/DS-EXAMPLE.md` |
 | ENT | EXAMPLE |  | 示例实体 | `data/DS-EXAMPLE/ENT-EXAMPLE.md` |
 
 ---
 
-## §5 技术视角（technical · TSD → MW）
+## §5 技术视角（technical · TSD）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
 | TSD | EXAMPLE |  | 中间件域 | `technical/TSD-EXAMPLE.md` |
-| MW | EXAMPLE |  | 示例中间件绑定 | `technical/MW-EXAMPLE/MW-EXAMPLE.md` |
 
 ---
 
-> 公司级 **TPL-*** 不在本索引登记；见 `company/knowledge/technical/`。系统级 **TSD-*** 在本索引 §5 登记。产品 **PL/PD** 见公司层；本层自 **PM** 起。
+> 本索引仅登记本层 SSOT 样例。公司级 **BD/CAP/PL/PD/SYS/MDG/TPL** 与应用层 **API/TBL/MW/CMP** 见对应 bundle 的 `knowledge/index.md`。产品 **PL/PD** 见公司层；本层自 **PM** 起。
 
 ---
 
@@ -96,11 +92,11 @@
 
 | 索引 ID | 命名式 ID（锚点目录） |
 |---------|----------------------|
-| BD-EXAMPLE | `business/BD-EXAMPLE.md` |
+| BSD-EXAMPLE | `business/BSD-EXAMPLE/` |
 | PM-EXAMPLE | `product/PM-EXAMPLE/` |
-| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |
-| MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |
+| APP-EXAMPLE | `application/APP-EXAMPLE/` |
 | DS-EXAMPLE | `data/DS-EXAMPLE/` |
+| TSD-EXAMPLE | `technical/TSD-EXAMPLE.md` |
 
 ---
 

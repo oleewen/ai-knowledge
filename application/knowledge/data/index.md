@@ -4,20 +4,19 @@
 
 ## 子目录
 
-* [DS-EXAMPLE](DS-EXAMPLE/index.md) - 仅用于演示数据视角数据结构（示例）。
+* [DS-EXAMPLE](DS-EXAMPLE/index.md) - TBL SSOT 样例宿主目录
 
 ## 目录文件
-
-* [示例主数据域](MDG-EXAMPLE.md) - 仅用于演示数据视角 MDG 根层结构（示例）。
 
 * [data-meta.md](data-meta.md)
 
 ## 阅读顺序
 
 1. [README.md](README.md) · [data-meta.md](data-meta.md)
-2. `MDG-EXAMPLE.md`（ref）→ [DS-EXAMPLE/](DS-EXAMPLE/index.md)（ENT/TBL）
+2. [DS-EXAMPLE/TBL-EXAMPLE.md](DS-EXAMPLE/TBL-EXAMPLE.md)
 
 ## 关联索引
 
 - 上一级索引：[index.md](../index.md)
 - 上一级说明：[README.md](../README.md)
+- 上游 MDG/DS/ENT：公司/系统 SSOT（本层不落 reference 文件）

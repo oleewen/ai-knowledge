@@ -29,7 +29,7 @@
 ---
 
 
-> 本文件仅保留示例，用于演示五视角索引结构与字段形状。
+> 本文件仅保留本层首次定义 EXAMPLE，用于演示五视角索引结构与字段形状。
 
 ---
 
@@ -41,64 +41,50 @@
 
 ---
 
-## §1 业务视角（business · BD → BSD → BC → AGG → AB）
+## §1 业务视角（business）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| BD | EXAMPLE |  | 示例业务域 | `business/BD-EXAMPLE.md` |
-| BSD | EXAMPLE |  | 示例业务子域 | `business/BSD-EXAMPLE/BSD-EXAMPLE.md` |
-| BC | EXAMPLE |  | 示例限界上下文 | `business/BSD-EXAMPLE/BC-EXAMPLE/BC-EXAMPLE.md` |
-| AGG | EXAMPLE |  | 示例聚合 | `business/BSD-EXAMPLE/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md` |
-| AB | EXAMPLE |  | 示例能力 | `business/BSD-EXAMPLE/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md` |
+
+（本层无首次定义实体；BD/CAP 见公司，BSD→AB 见系统。）
 
 ---
 
-## §2 产品视角（product · PL → PD → PM → FT → FR → UC/BR · BP）
+## §2 产品视角（product）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| PM | EXAMPLE |  | 示例产品模块 | `product/PM-EXAMPLE/PM-EXAMPLE.md` |
-| FT | EXAMPLE |  | 示例功能 | `product/PM-EXAMPLE/FT-EXAMPLE/FT-EXAMPLE.md` |
-| FR | EXAMPLE |  | 示例功能需求 | `product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/FR-EXAMPLE.md` |
-| UC | EXAMPLE |  | 示例用例 | `product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md` |
-| BR | EXAMPLE |  | 示例规则 | `product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/BR-EXAMPLE.md` |
-| BP | EXAMPLE |  | 示例业务流程（BP） | `product/BP-EXAMPLE.md` |
+
+（本层无首次定义实体；PL/PD 见公司，PM→BP 见系统。）
 
 ---
 
-## §3 应用视角（application · SYS → APP → MS → API）
+## §3 应用视角（application · API）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| SYS | EXAMPLE |  | 示例系统 | `application/SYS-EXAMPLE.md` |
-| APP | EXAMPLE |  | 示例应用 | `application/APP-EXAMPLE.md` |
-| MS | EXAMPLE |  | 示例微服务 | `application/MS-EXAMPLE/MS-EXAMPLE.md` |
 | API | EXAMPLE-001 |  | 示例 API：创建 | `application/MS-EXAMPLE/API-EXAMPLE-001.md` |
 
 ---
 
-## §4 数据视角（data · MDG → DS → ENT → TBL）
+## §4 数据视角（data · TBL）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| MDG | EXAMPLE |  | 示例主数据域 | `data/MDG-EXAMPLE.md` |
-| DS | EXAMPLE |  | 示例数据源 | `data/DS-EXAMPLE/DS-EXAMPLE.md` |
-| ENT | EXAMPLE |  | 示例实体 | `data/DS-EXAMPLE/ENT-EXAMPLE.md` |
 | TBL | EXAMPLE |  | 示例数据表 | `data/DS-EXAMPLE/TBL-EXAMPLE.md` |
 
 ---
 
-## §5 技术视角（technical · TSD → MW → CMP）
+## §5 技术视角（technical · MW → CMP）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| TSD | EXAMPLE |  | 示例技术域 | `technical/TSD-EXAMPLE.md` |
 | MW | EXAMPLE |  | 示例中间件绑定 | `technical/MW-EXAMPLE/MW-EXAMPLE.md` |
 | CMP | EXAMPLE |  | 示例组件 | `technical/MW-EXAMPLE/CMP-EXAMPLE.md` |
 
 ---
 
-> 公司级 **TPL-*** 不在本索引登记（见 `company/knowledge/technical/`）。本层登记 **TSD/MDG** reference 与 **API/TBL/MW/CMP** SSOT。产品 **PL/PD** 见公司层；本层自 **PM** 起。
+> 本索引仅登记本层首次定义样例。上游 ID 以纯 `parent_id` / 跨层引用指向公司或系统 SSOT，本层不落 reference 文件。
 
 ---
 
@@ -106,13 +92,9 @@
 
 | 索引 ID | 命名式 ID（锚点目录） |
 |---------|----------------------|
-| BD-EXAMPLE | `business/BD-EXAMPLE.md` |
-| PM-EXAMPLE | `product/PM-EXAMPLE/` |
-| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |
-| MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |
+| API-EXAMPLE-001 | `application/MS-EXAMPLE/API-EXAMPLE-001.md` |
 | TBL-EXAMPLE | `data/DS-EXAMPLE/TBL-EXAMPLE.md` |
-| TSD-EXAMPLE | `technical/TSD-EXAMPLE.md` |
-| DS-EXAMPLE | `data/DS-EXAMPLE/` |
+| MW-EXAMPLE | `technical/MW-EXAMPLE/` |
 
 ---
 

@@ -59,10 +59,10 @@ system MS 挂 APP：`APP-{NAME}/MS-{NAME}/MS-{NAME}.md`（`parent_id`）。appli
 
 | 实体 | system 路径 | application 路径 | 说明 |
 |------|-------------|-------------------|------|
-| SYS-EXAMPLE | `SYS-EXAMPLE` | `SYS-EXAMPLE` | company reference |
-| APP-EXAMPLE | `APP-EXAMPLE` | `APP-EXAMPLE` | system SSOT；app 可为实例 |
-| MS-EXAMPLE | `APP-EXAMPLE` | `MS-EXAMPLE` | system 挂 APP；application 平铺；system SSOT |
-| API-EXAMPLE-001 | （system 不登记） | `MS-EXAMPLE` | API 仅 application SSOT |
+| SYS-EXAMPLE | （不落盘；纯 ID → 公司） | （不落盘） | company SSOT |
+| APP-EXAMPLE | `APP-EXAMPLE/` | （不落盘；纯 ID → 系统） | system SSOT |
+| MS-EXAMPLE | `APP-EXAMPLE/MS-EXAMPLE/` | （不落盘；目录可宿主 API） | system SSOT |
+| API-EXAMPLE-001 | （system 不登记） | `MS-EXAMPLE/` | API 仅 application SSOT |
 
 **链接约定**：同 bundle 用 `/knowledge/...`。指向上层 SSOT 守 [knowledge-governance](../../../agent/knowledge/knowledge-governance.md)（HTTP 或纯 ID）。禁止链下层 application 的 API/TBL/MW/CMP 或联邦槽位。
 

@@ -4,18 +4,16 @@
 
 ## 子目录
 
-* [BSD-EXAMPLE](BSD-EXAMPLE/index.md) - 仅用于演示业务视角数据结构（示例）。
+（无本层首次定义 EXAMPLE）
 
 ## 目录文件
-
-* [示例业务域](BD-EXAMPLE.md) - 仅用于演示业务视角数据结构（示例）。
 
 * [business-meta.md](business-meta.md)
 
 ## 阅读顺序
 
 1. [README.md](README.md) · [business-meta.md](business-meta.md)
-2. `BD-EXAMPLE.md`（ref）→ [BSD-EXAMPLE/](BSD-EXAMPLE/index.md)
+2. 上游：公司 `BD-*` / 系统 `BSD-*`→`AB-*`（本层不落 EXAMPLE）
 
 ## 关联索引
 

@@ -4,13 +4,11 @@
 
 ## 子目录
 
-* [MW-EXAMPLE](MW-EXAMPLE/index.md) - 系统层 reference；正文 SSOT 在 application。
 * [chapters](chapters/index.md)
 
 ## 目录文件
 
-* [中间件域](TSD-EXAMPLE.md) - 系统级中间件与基础组件落地域（示例）。
-
+* [中间件域](TSD-EXAMPLE.md) - 系统级 TSD SSOT 样例
 * [technical-meta.md](technical-meta.md)
 
 ## 阅读顺序
@@ -24,3 +22,4 @@
 
 - 上一级索引：[index.md](../index.md)
 - 上一级说明：[README.md](../README.md)
+- 下游 MW/CMP SSOT：应用层（本层不落 MW reference 文件）

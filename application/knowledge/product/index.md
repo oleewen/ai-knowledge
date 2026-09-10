@@ -4,18 +4,16 @@
 
 ## 子目录
 
-* [PM-EXAMPLE](PM-EXAMPLE/index.md) - 示例产品模块
+（无本层首次定义 EXAMPLE）
 
 ## 目录文件
-
-* [示例业务流程（BP）](BP-EXAMPLE.md) - 仅用于演示产品视角流程叙事结构（示例）。
 
 * [product-meta.md](product-meta.md)
 
 ## 阅读顺序
 
 1. [README.md](README.md) · [product-meta.md](product-meta.md)
-2. [PM-EXAMPLE/](PM-EXAMPLE/index.md) · `BP-EXAMPLE.md`（上游公司 `PD-*`）
+2. 上游：公司 `PD-*` / 系统 `PM-*`→`BP-*`（本层不落 EXAMPLE）
 
 ## 关联索引
 

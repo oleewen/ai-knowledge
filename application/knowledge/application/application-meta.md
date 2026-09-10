@@ -50,14 +50,14 @@ title: 应用视角元数据（application/knowledge/application）
 
 ## 5. 跨层路径映射（MS/API）
 
-MS 路径同构：`MS-{NAME}/MS-{NAME}.md`。本层：`SYS`/`APP` 为根文件；目录从 `MS-{NAME}/` 开始，`API` 为 MS 下叶子。
+本层不落 SYS/APP/MS 实体文件；`MS-{NAME}/` 可作 API 宿主目录，`API` 为叶子。
 
 | 实体 | system 路径 | application 路径 | 说明 |
 | --- | --- | --- | --- |
-| SYS-EXAMPLE | `SYS-EXAMPLE` | `SYS-EXAMPLE` | company reference |
-| APP-EXAMPLE | `APP-EXAMPLE` | `APP-EXAMPLE` | system SSOT；本层实例 |
-| MS-EXAMPLE | `APP-EXAMPLE` | `MS-EXAMPLE` | system 挂 APP；本层平铺；system SSOT |
-| API-EXAMPLE-001 | （system 不登记） | `MS-EXAMPLE` | API 仅 application SSOT |
+| SYS-EXAMPLE | （不落盘；纯 ID → 公司） | （不落盘） | company SSOT |
+| APP-EXAMPLE | `APP-EXAMPLE/` | （不落盘；纯 ID → 系统） | system SSOT |
+| MS-EXAMPLE | `APP-EXAMPLE/MS-EXAMPLE/` | （不落 MS 实体；可宿主 API） | system SSOT |
+| API-EXAMPLE-001 | （system 不登记） | `MS-EXAMPLE/API-*.md` | API 仅 application SSOT |
 
 **链接约定**：同 bundle 用 `/knowledge/...`；跨 bundle `# SSOT` 用仓库根相对路径。
 
