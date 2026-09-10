@@ -17,7 +17,7 @@
 - docs（若选）：`--target` / `--doc-target`，以及透传的 `--type` / `--mode` / `--scope` / `--force` / `--dry-run` 等
 - agent（若选）：`--agents`、`--target` 或 `--agent-scope`（`home`|`project`），以及透传的 agent `--scope` / `--dry-run`
 
-建议默认先 **dry-run**（分步路径对两脚本加 `--dry-run`）。仅当走 `docs-bootstrap.sh`（both + 表面三参）时用计划摘要等价校核。
+建议默认先 **dry-run**（分步路径对两脚本加 `--dry-run`）。仅当走 `docs-bootstrap.sh`（remote + 表面参）时用计划摘要等价校核。
 
 宣称完成前须写后 **A/B**（[audience-and-language.md](../../../references/audience-and-language.md) 轻流程默认读者表）。
 
@@ -29,7 +29,7 @@
 - `--force` 覆盖已有目标文档树
 - Agent 安装到 `$HOME`（`agent-scope=home` 或 agent `--target $HOME`）
 - 目标父目录不存在、`.docsconfig` 将被改写
-- `components=both` 但环境只能跑 bootstrap（会临时 clone）
+- remote bootstrap（会临时 clone）
 
 推荐会话格式（字母见 [light-flow-actions.md](../../../references/light-flow-actions.md)）：
 

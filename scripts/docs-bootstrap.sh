@@ -3,25 +3,29 @@
 # docs-bootstrap.sh — SDX 知识库初始化引导脚本
 #
 # 职责：
-#   无需预先克隆 ai-knowledge：克隆到临时目录后，交互引导用户完成
-#   docs-install（知识库初始化）和 agent-install（Agent 安装）。
+#   无需预先克隆 ai-knowledge：克隆到临时目录后，按 --components 执行
+#   docs-install（知识库初始化）和/或 agent-install（Agent 安装）。
 #
-# 依赖：Bash 5+、Git、网络连接（可访问 GitHub）
+# 依赖：Bash 5+、Git、网络连接（可访问 GitHub；本地 GIT_REPO_URL 路径时可免网）
 #
 # 用法：
 #   # 交互模式（推荐）
 #   bash docs-bootstrap.sh
 #
-#   # 全参数模式
+#   # 全参数模式（both）
 #   bash docs-bootstrap.sh --doc-target ~/workspace/my-app/docs --agents=cursor,kiro
+#
+#   # 仅 Agent（任意目录 / curl）
+#   bash docs-bootstrap.sh --components=agent --agents=cursor --agent-scope=home
 #
 #   # curl | bash
 #   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh | bash -s -- --doc-target ~/workspace/my-app/docs --agents=cursor,trae
 #
 # 参数：
-#   --doc-target PATH          目标工程文档目录（必填，或交互询问；仍兼容 --doc-target=PATH）
-#   --agents=LIST              要安装的 Agent，/ 或 , 分隔（缺省交互询问，默认 cursor）
-#   --agent-scope=home|project Agent 安装位置（默认 home=$HOME）
+#   --components=docs|agent|both  装机范围（默认 both）
+#   --doc-target PATH          目标工程文档目录（components 含 docs 时必填或交互询问；仍兼容 --doc-target=PATH）
+#   --agents=LIST              要安装的 Agent，/ 或 , 分隔（components 含 agent 时；缺省交互询问，默认 cursor）
+#   --agent-scope=home|project Agent 安装位置（默认 home=$HOME；project 需 --doc-target 以推导工程根）
 #
 # 配置项（GIT_REPO_URL/GIT_REF）：agent/scripts/docs-core.sh
 #
@@ -76,11 +80,25 @@ fi
 # =============================================================================
 
 SDX_BS_CLONE_DIR=''
+SDX_BS_COMPONENTS='both'  # --components: docs | agent | both
 SDX_BS_DOC_TARGET=''      # --doc-target
 SDX_BS_AGENTS=''          # --agents（规范化后逗号分隔）
 SDX_BS_AGENT_SCOPE='home' # --agent-scope: home | project
 SDX_BS_AGENT_TARGET=''
 
+sdx_bs_want_docs() {
+  case "$SDX_BS_COMPONENTS" in
+    docs|both) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+sdx_bs_want_agent() {
+  case "$SDX_BS_COMPONENTS" in
+    agent|both) return 0 ;;
+    *) return 1 ;;
+  esac
+}
 if declare -p SDX_SUPPORTED_AGENTS >/dev/null 2>&1; then
   SDX_BS_AGENT_CHOICES=("${SDX_SUPPORTED_AGENTS[@]}" all)
 else
@@ -153,7 +171,12 @@ sdx_bs_usage() {
   docs-bootstrap.sh [选项]
 
 选项
-  --doc-target PATH          目标工程文档目录（必填，或交互询问；仍兼容 --doc-target=PATH）
+  --components=docs|agent|both  装机范围（默认 both）
+                             docs  → 仅 docs-install
+                             agent → 仅 agent-install
+                             both  → 二者依次执行
+  --doc-target PATH          目标工程文档目录（components 含 docs 时必填，或交互询问；
+                             agent-scope=project 时亦需，用于推导工程根；仍兼容 --doc-target=PATH）
   --agents=LIST              要安装的 Agent，支持 / 或 , 分隔
 EOF
   (
@@ -163,22 +186,25 @@ EOF
     printf '\n'
   ) >&2
   cat >&2 <<'EOF'
-                             （缺省时交互询问，默认 cursor）
+                             （components 含 agent 且缺省时交互询问，默认 cursor）
   --agent-scope=home|project Agent 安装位置（默认 home）
                              home    → 安装到 $HOME
                              project → 安装到 dirname(--doc-target)
   -h, --help                 显示此帮助
 
 环境变量
-  GIT_REPO_URL   覆盖中央库 Git 地址
+  GIT_REPO_URL   覆盖中央库 Git 地址（可为本地路径）
   GIT_REF        覆盖克隆分支/标签
 
 示例
   # 交互模式
   bash docs-bootstrap.sh
 
-  # 全参数模式
+  # both
   bash docs-bootstrap.sh --doc-target ~/workspace/my-app/docs --agents=cursor,kiro
+
+  # 仅 Agent（任意目录）
+  bash docs-bootstrap.sh --components=agent --agents=cursor --agent-scope=home
 
   # curl | bash
   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh \
@@ -224,6 +250,16 @@ sdx_bs_validate_agents() {
 sdx_bs_parse_args() {
   while (( $# > 0 )); do
     case "$1" in
+      --components=*)
+        SDX_BS_COMPONENTS="${1#*=}"
+        shift
+        ;;
+      --components)
+        shift
+        sdx_bs_require_value "--components" "${1:-}"
+        SDX_BS_COMPONENTS="$1"
+        shift
+        ;;
       --doc-target=*)
         SDX_BS_DOC_TARGET="${1#*=}"
         shift
@@ -263,6 +299,11 @@ sdx_bs_parse_args() {
         ;;
     esac
   done
+
+  case "$SDX_BS_COMPONENTS" in
+    docs|agent|both) ;;
+    *) sdx_error "无效 --components: ${SDX_BS_COMPONENTS}（合法值：docs agent both）" ;;
+  esac
 
   # 校验 --agent-scope
   case "$SDX_BS_AGENT_SCOPE" in
@@ -349,7 +390,8 @@ sdx_bs_resolve_agent_target() {
       SDX_BS_AGENT_TARGET="$HOME"
       ;;
     project)
-      [[ -n "$SDX_BS_DOC_TARGET" ]] || sdx_error "内部错误：doc-target 未就绪"
+      [[ -n "$SDX_BS_DOC_TARGET" ]] \
+        || sdx_error "agent-scope=project 需要 --doc-target（用于 dirname 推导工程根）；或改用 --agent-scope=home"
       SDX_BS_AGENT_TARGET="$(dirname "$SDX_BS_DOC_TARGET")"
       ;;
   esac
@@ -357,11 +399,18 @@ sdx_bs_resolve_agent_target() {
 
 # 展示汇总并请求确认
 sdx_bs_confirm_plan() {
+  local step=1
   sdx_log ''
   sdx_log '=========================================='
   sdx_log '即将执行以下操作：'
-  sdx_log "  1. docs-install  --target ${SDX_BS_DOC_TARGET}"
-  sdx_log "  2. agent-install --agents=${SDX_BS_AGENTS} --target ${SDX_BS_AGENT_TARGET}"
+  if sdx_bs_want_docs; then
+    sdx_log "  ${step}. docs-install  --target ${SDX_BS_DOC_TARGET}"
+    step=$((step + 1))
+  fi
+  if sdx_bs_want_agent; then
+    sdx_log "  ${step}. agent-install --agents=${SDX_BS_AGENTS} --target ${SDX_BS_AGENT_TARGET}"
+  fi
+  sdx_log "  components: ${SDX_BS_COMPONENTS}"
   sdx_log '=========================================='
   printf '确认执行？[Y/n]：' >&2
   local ans
@@ -373,31 +422,40 @@ sdx_bs_confirm_plan() {
 
 # 收集所有缺失参数（交互或报错）
 sdx_bs_collect_params() {
-  # doc-target
-  if [[ -z "$SDX_BS_DOC_TARGET" ]]; then
-    if sdx_bs_is_interactive; then
-      sdx_bs_prompt_doc_target
+  # doc-target：docs 需要；或 agent + project 需要
+  local need_doc_target=0
+  if sdx_bs_want_docs; then
+    need_doc_target=1
+  elif sdx_bs_want_agent && [[ "$SDX_BS_AGENT_SCOPE" == 'project' ]]; then
+    need_doc_target=1
+  fi
+
+  if (( need_doc_target == 1 )); then
+    if [[ -z "$SDX_BS_DOC_TARGET" ]]; then
+      if sdx_bs_is_interactive; then
+        sdx_bs_prompt_doc_target
+      else
+        sdx_error "非交互环境：请通过 --doc-target PATH 指定目标工程文档目录（仍兼容 --doc-target=PATH）"
+      fi
     else
-      sdx_error "非交互环境：请通过 --doc-target PATH 指定目标工程文档目录（仍兼容 --doc-target=PATH）"
+      local parent
+      SDX_BS_DOC_TARGET="${SDX_BS_DOC_TARGET/#\~/$HOME}"
+      parent="$(dirname "$SDX_BS_DOC_TARGET")"
+      [[ -d "$parent" ]] || sdx_error "父目录不存在：$parent"
     fi
-  else
-    local parent
-    SDX_BS_DOC_TARGET="${SDX_BS_DOC_TARGET/#\~/$HOME}"
-    parent="$(dirname "$SDX_BS_DOC_TARGET")"
-    [[ -d "$parent" ]] || sdx_error "父目录不存在：$parent"
   fi
 
   # agents
-  if [[ -z "$SDX_BS_AGENTS" ]]; then
-    if sdx_bs_is_interactive; then
-      sdx_bs_prompt_agents
-    else
-      sdx_error "非交互环境：请通过 --agents=LIST 指定要安装的 Agent（$(IFS=' '; printf '%s' "${SDX_BS_AGENT_CHOICES[*]}")）"
+  if sdx_bs_want_agent; then
+    if [[ -z "$SDX_BS_AGENTS" ]]; then
+      if sdx_bs_is_interactive; then
+        sdx_bs_prompt_agents
+      else
+        sdx_error "非交互环境：请通过 --agents=LIST 指定要安装的 Agent（$(IFS=' '; printf '%s' "${SDX_BS_AGENT_CHOICES[*]}")）"
+      fi
     fi
+    sdx_bs_resolve_agent_target
   fi
-
-  # 推导 agent-target
-  sdx_bs_resolve_agent_target
 
   # 汇总确认（仅交互环境）
   if sdx_bs_is_interactive; then
@@ -446,9 +504,14 @@ sdx_bs_main() {
   sdx_log 'docs-bootstrap'
   sdx_info "仓库:        $repo_url"
   sdx_info "引用:        $ref"
-  sdx_info "文档目录:    $SDX_BS_DOC_TARGET"
-  sdx_info "Agents:      $SDX_BS_AGENTS"
-  sdx_info "Agent 安装:  $SDX_BS_AGENT_TARGET"
+  sdx_info "components:  $SDX_BS_COMPONENTS"
+  if sdx_bs_want_docs; then
+    sdx_info "文档目录:    $SDX_BS_DOC_TARGET"
+  fi
+  if sdx_bs_want_agent; then
+    sdx_info "Agents:      $SDX_BS_AGENTS"
+    sdx_info "Agent 安装:  $SDX_BS_AGENT_TARGET"
+  fi
   sdx_log '=========================================='
   sdx_log ''
 
@@ -458,8 +521,12 @@ sdx_bs_main() {
   local agent_install="${SDX_BS_CLONE_DIR}/scripts/agent-install.sh"
   local shared_config="${SDX_BS_CLONE_DIR}/agent/scripts/docs-core.sh"
 
-  [[ -f "$docs_install" ]] || sdx_error "仓库中未找到 scripts/docs-install.sh"
-  [[ -f "$agent_install" ]] || sdx_error "仓库中未找到 scripts/agent-install.sh"
+  if sdx_bs_want_docs; then
+    [[ -f "$docs_install" ]] || sdx_error "仓库中未找到 scripts/docs-install.sh"
+  fi
+  if sdx_bs_want_agent; then
+    [[ -f "$agent_install" ]] || sdx_error "仓库中未找到 scripts/agent-install.sh"
+  fi
   [[ -f "$shared_config" ]] || sdx_error "仓库中未找到 agent/scripts/docs-core.sh"
 
   # 克隆后统一加载 SSOT（若预载阶段已 source，此处因 _AGENT_SHARED_DOCS_CONFIG_LOADED 短路）
@@ -469,8 +536,12 @@ sdx_bs_main() {
   sdx_log ''
   sdx_info "已加载共享配置（agent/scripts/docs-core.sh）"
 
-  sdx_bs_run_docs_install "$docs_install"
-  sdx_bs_run_agent_install "$agent_install"
+  if sdx_bs_want_docs; then
+    sdx_bs_run_docs_install "$docs_install"
+  fi
+  if sdx_bs_want_agent; then
+    sdx_bs_run_agent_install "$agent_install"
+  fi
 
   sdx_log ''
   sdx_info '完成：docs-bootstrap'

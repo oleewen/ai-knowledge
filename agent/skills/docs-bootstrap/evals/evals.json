@@ -37,13 +37,13 @@
       "id": "bootstrap-trigger-002",
       "category": "should-trigger",
       "prompt": "只要给工程装知识库，不要装 agent：--target ~/ws/app/docs --type=application，先预览。",
-      "expected_output": "components=docs；只调 docs-install.sh --dry-run；明确不跑 agent-install 与 docs-bootstrap.sh。",
+      "expected_output": "components=docs；本仓则只调 docs-install.sh --dry-run；明确不跑 agent-install。",
       "assertions": [
         {
           "id": "components-docs-only",
           "name": "仅 docs",
           "type": "must_include",
-          "check": "须体现仅 docs-install，且不调用 docs-bootstrap.sh。",
+          "check": "须体现仅 docs-install（local 分步或不带 agent 的 bootstrap），且不跑 agent-install。",
           "priority": "P0"
         }
       ],
@@ -73,7 +73,39 @@
       "files": []
     },
     {
+      "id": "bootstrap-trigger-004",
+      "category": "should-trigger",
+      "prompt": "当前不是中央库，只要装 cursor agent 到 home，不要知识库。",
+      "expected_output": "components=agent；remote + 表面参 → docs-bootstrap.sh --components=agent --agents=cursor --agent-scope=home；或取得脚本树后 agent-install；先计划/确认。",
+      "assertions": [
+        {
+          "id": "components-agent-remote",
+          "name": "远程仅 agent",
+          "type": "must_include",
+          "check": "须体现 components=agent，且允许 docs-bootstrap.sh --components=agent 或等价 agent-install；不要求 doc-target（home）。",
+          "priority": "P0"
+        }
+      ],
+      "files": []
+    },
+    {
       "id": "bootstrap-not-trigger-001",
+      "category": "should-not-trigger",
+      "prompt": "把 ~/.agents 里技能和 Agent 树升到最新。",
+      "expected_output": "主路径 skill-upgrade，不是 docs-bootstrap。",
+      "assertions": [
+        {
+          "id": "correct-downstream-upgrade",
+          "name": "追新走 skill-upgrade",
+          "type": "must_include",
+          "check": "须指向 skill-upgrade 或等价已装追新，不得主路径写成首次装机 bootstrap。",
+          "priority": "P0"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": "bootstrap-not-trigger-002",
       "category": "should-not-trigger",
       "prompt": "按 knowledge-links 把中央 spec 推到应用库。",
       "expected_output": "主路径 docs-push，不是 docs-bootstrap。",

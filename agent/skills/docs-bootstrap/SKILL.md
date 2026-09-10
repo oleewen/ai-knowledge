@@ -2,11 +2,13 @@
 name: docs-bootstrap
 description: >
   知识库与 Agent 装机编排：可选 docs / agent / both。本仓按 components 分步调
-  docs-install.sh / agent-install.sh 并透传各自全参数；仅 non-local 且 both 且参数未超出
-  bootstrap 表面三参时，才调 docs-bootstrap.sh。单选 docs/agent 禁止用 bootstrap 冒充。
+  docs-install.sh / agent-install.sh 并透传各自全参数；remote 且参数未超出
+  bootstrap 表面时，可调 docs-bootstrap.sh（现支持 --components）。单选 docs/agent
+  在 local 仍分步；remote + 仅表面参可用 bootstrap --components=docs|agent|both。
   默认 dry-run（或计划摘要）后确认再实跑。
   用户提到 /docs-bootstrap、初始化知识库、装 agent、docs-install、agent-install、curl bootstrap 时，使用本技能。
-  分流：已有库对齐元库最新（不丢正文）→ docs-upgrade；联邦建联 → docs-link 脚本；规约下发/回拉 → docs-push / docs-pull；日常改文 → docs-revise / docs-simplify。
+  分流：已装环境追新（双轨）→ skill-upgrade；已有库对齐元库最新（不丢正文）→ docs-upgrade；
+  发现/新增生态技能 → find-skills；联邦建联 → docs-link 脚本；规约下发/回拉 → docs-push / docs-pull；日常改文 → docs-revise / docs-simplify。
   推进见 light-flow-actions（C/M/S/F，无 G）与 references/gates.md。
 ---
 
@@ -18,22 +20,22 @@ description: >
 - 轻流程：参数向导 → 风险校核 → `C/M/S/F`（无 `G`、不绑意图澄清）→ [light-flow-actions.md](../../references/light-flow-actions.md)；细节 [gates.md](references/gates.md)。参数未收口前不得实跑写盘。
 - 默认先 **dry-run**；dry-run 摘要未确认前，不得静默实跑。
 - `--force`、覆盖已有目标 docs、`agent-scope=home` / `--target $HOME` 写 Agent 树等须用户明示；未确认不得默认开启。
-- `--components=docs|agent|both`（默认 `both`）。仅 docs 或仅 agent 时**不得**调用 `docs-bootstrap.sh`（该脚本固定两步）。
-- 本仓快路径判定：工作区根同时存在 `scripts/docs-bootstrap.sh`、`scripts/docs-install.sh`、`agent/scripts/docs-core.sh` → 本地分步。`docs-bootstrap.sh` 仅当 non-local + `both` + 未超出表面三参。
+- `--components=docs|agent|both`（默认 `both`）。脚本与技能同名同义。
+- 本仓快路径判定：工作区根同时存在 `scripts/docs-bootstrap.sh`、`scripts/docs-install.sh`、`agent/scripts/docs-core.sh` → 本地分步。`docs-bootstrap.sh` 仅当 remote + 未超出表面参时可用（含单选 docs/agent）。
 - 宣称单元完成前须按 [audience-and-language.md](../../references/audience-and-language.md) 轻流程默认读者表做写后 **A/B**。
 
 ## 边界
 
 | 负责 | 不负责 |
 | --- | --- |
-| 编排 `docs-install.sh` / `agent-install.sh` / `docs-bootstrap.sh`；参数向导与写盘闸门 | `docs-link.sh` 联邦登记；docs-push / docs-pull；语义改文；改装机脚本契约本身 |
+| 编排 `docs-install.sh` / `agent-install.sh` / `docs-bootstrap.sh`；参数向导与写盘闸门 | 已装追新（→ skill-upgrade）；`docs-link.sh` 联邦登记；docs-push / docs-pull；语义改文；改装机脚本契约本身 |
 
 ## 不这样用
 
 - 不把「先 dry-run 再实跑」写成无停顿流水线
 - 不在未确认时对 `$HOME` 或已有文档树强制 `--force`
-- 不把 docs-link / push / pull / revise 主路径收成本技能
-- 单选 components 时不假装跑完 bootstrap 全流程
+- 不把 docs-link / push / pull / revise / skill-upgrade 主路径收成本技能
+- 超出表面参时不假装可走 `docs-bootstrap.sh` 全透传
 
 ## 路由
 
@@ -62,8 +64,9 @@ description: >
 bash scripts/docs-install.sh --target PATH --dry-run
 bash scripts/agent-install.sh --agents=cursor --target "$HOME" --dry-run
 
-# 非本仓 + both + 仅表面三参
-bash scripts/docs-bootstrap.sh --doc-target PATH --agents=cursor --agent-scope=home
+# 远程 + 表面参（含单选）
+bash scripts/docs-bootstrap.sh --components=both --doc-target PATH --agents=cursor --agent-scope=home
+bash scripts/docs-bootstrap.sh --components=agent --agents=cursor --agent-scope=home
 ```
 
 ## 评测
