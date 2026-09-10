@@ -17,7 +17,7 @@
 | 模式 | 行为 |
 | --- | --- |
 | `--dry-run` | fetch/解析 meta；打印四桶清单；不写盘、不备份 |
-| `--apply-scaffold` | fetch/解析；备份将动路径；只写入「新增骨架」桶；不重填 md、不删本库独有 |
+| `--apply-scaffold` | fetch/解析；备份将动路径；写入「新增骨架」桶；`system`/`company` 另写入「工具脚本」桶；不重填 md、不删本库独有 |
 
 结构重填与未落位由 Skill/Agent 执行，不在脚本内自动合正文。
 

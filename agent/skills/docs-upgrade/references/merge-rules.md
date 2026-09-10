@@ -24,6 +24,7 @@
 | 跳过 | 两边规范化后相同 | 无动作 |
 | 结构重填 | 两边有、已改、且为 `.md` | Agent：元库 H2/H3 为骨，本库同标题节正文填入 |
 | 本库独有 | 本库有、元库无该路径 | **保留不删**；清单注明 |
+| 工具脚本 | 仅 `system`/`company`：`{META_ROOT}/scripts/docs-link.sh`、`link-config.sh` 相对 `{REPO_ROOT}/scripts/` 缺或内容不等 | 一批 `C` 后 `--apply-scaffold` **元库整文件覆盖**（备份后写入） |
 
 排除（永不从元库装入目标）：根级 `DESIGN.md`、`CONTRIBUTING.md`；以及 `knowledge-links.yaml`（本库保活，不作骨架覆盖源）。
 
@@ -34,7 +35,8 @@ application 的 README 映射：本库 `README.md` 对照元库 `README-s.md`（
 ## 4. 非 Markdown
 
 - `knowledge-links.yaml`：**永不**被元库覆盖
-- 其它非 md：已改 → 本库胜（清单记跳过覆盖）；元库新增且本库无 → 可进新增骨架
+- **建联工具脚本**（上表「工具脚本」）：例外，**元库整文件胜**（非「已改本库胜」）
+- 其它非 md（在 `DOC_ROOT` 内）：已改 → 本库胜（清单记跳过覆盖）；元库新增且本库无 → 可进新增骨架
 - 无 H2/H3 的 md：整文件本库胜；仅当本库无该路径时作新增骨架
 
 ## 5. 结构重填（Agent）
@@ -47,6 +49,6 @@ application 的 README 映射：本库 `README.md` 对照元库 `README-s.md`（
 
 ## 6. 确认粒度
 
-- 一批写前 `C`：批准新增骨架 + 可对齐结构重填
+- 一批写前 `C`：批准新增骨架 + 工具脚本覆盖 + 可对齐结构重填
 - 未落位：一次一项
 - 本库独有文件：只报告，不删

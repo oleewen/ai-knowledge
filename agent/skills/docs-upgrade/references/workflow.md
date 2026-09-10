@@ -42,13 +42,13 @@ bash agent/skills/docs-upgrade/scripts/docs-upgrade.sh --dry-run [--meta-path PA
 
 ### 3 实跑（用户 `C` 后）
 
-1. **备份 + 新增骨架**（机械）：
+1. **备份 + 新增骨架 + 工具脚本**（机械）：
 
    ```bash
    bash agent/skills/docs-upgrade/scripts/docs-upgrade.sh --apply-scaffold [--meta-path PATH] [--ref REF]
    ```
 
-   将改路径 mirror 到 `{REPO_ROOT}/.docs-init/upgrade-{stamp}/`，再写入元库新增且本库缺失的允许文件。
+   将改路径 mirror 到 `{REPO_ROOT}/.docs-init/upgrade-{stamp}/`，再写入元库新增且本库缺失的允许文件；`system`/`company` 另覆盖/补齐 `{REPO_ROOT}/scripts/docs-link.sh`、`link-config.sh`。
 
 2. **结构重填**（Agent）：对「结构重填」桶中每个 `.md`，以元库同路径（或 README 映射）为 H2/H3 骨架，填入本库同标题节正文；产出**未落位节清单**（本库有、元库无的节）。
 

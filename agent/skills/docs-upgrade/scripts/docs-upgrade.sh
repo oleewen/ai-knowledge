@@ -24,7 +24,8 @@ usage() {
 Usage: docs-upgrade.sh [--dry-run | --apply-scaffold] [--meta-path PATH] [--ref REF]
 
 在含 .docsconfig 的工程内执行。读 DOC_ROOT/knowledge-links.yaml 的 type: meta，
-对齐元库 {meta}/{doc_dir}/，输出变更清单；--apply-scaffold 时备份并写入「新增骨架」。
+对齐元库 {meta}/{doc_dir}/，输出变更清单；--apply-scaffold 时备份并写入「新增骨架」
+与（system|company）工具脚本 docs-link.sh / link-config.sh。
 
   --dry-run          只打印清单（默认）
   --apply-scaffold   备份将动路径后写入新增骨架（须已由 Skill 取得确认）
@@ -34,6 +35,7 @@ Usage: docs-upgrade.sh [--dry-run | --apply-scaffold] [--meta-path PATH] [--ref 
 
 禁止：不会调用 docs-install 清空 DOC_DIR；不会覆盖 knowledge-links.yaml；
 忽略 DOC_ROOT 下首段为 application-* / system-* 的联邦槽位（模板与实例）。
+system|company：另将元库 scripts/docs-link.sh、link-config.sh 同步到 {REPO_ROOT}/scripts/（元库整文件覆盖）。
 EOF
 }
 
@@ -304,6 +306,30 @@ while IFS= read -r -d '' rel; do
   fi
 done < <(cd "${DOC_ROOT}" && find . -type f -print0)
 
+# system|company：元库根 scripts/ 建联工具 → {REPO_ROOT}/scripts/
+declare -a TOOL_SCRIPT_LIST=() TOOL_SCRIPT_SKIP=()
+classify_link_tool_scripts() {
+  case "${KNOWLEDGE_TYPE}" in
+    system|company) ;;
+    *) return 0 ;;
+  esac
+  local name src dst
+  for name in docs-link.sh link-config.sh; do
+    src="${META_ROOT%/}/scripts/${name}"
+    dst="${REPO_ROOT%/}/scripts/${name}"
+    if [[ ! -f "$src" ]]; then
+      sdx_warn "元库缺少工具脚本，跳过: $src"
+      continue
+    fi
+    if [[ -f "$dst" ]] && files_equal_normalized "$src" "$dst"; then
+      TOOL_SCRIPT_SKIP+=("scripts/${name}")
+    else
+      TOOL_SCRIPT_LIST+=("scripts/${name}")
+    fi
+  done
+}
+classify_link_tool_scripts
+
 print_bucket() {
   local title="$1"
   shift
@@ -321,9 +347,13 @@ print_bucket '新增骨架' "${ADD_LIST[@]+"${ADD_LIST[@]}"}"
 print_bucket '跳过' "${SKIP_LIST[@]+"${SKIP_LIST[@]}"}"
 print_bucket '结构重填' "${RESTRUCTURE_LIST[@]+"${RESTRUCTURE_LIST[@]}"}"
 print_bucket '本库独有(保留)' "${LOCAL_ONLY_LIST[@]+"${LOCAL_ONLY_LIST[@]}"}"
+print_bucket '工具脚本' "${TOOL_SCRIPT_LIST[@]+"${TOOL_SCRIPT_LIST[@]}"}"
+if ((${#TOOL_SCRIPT_SKIP[@]} > 0)); then
+  print_bucket '工具脚本(已对齐)' "${TOOL_SCRIPT_SKIP[@]+"${TOOL_SCRIPT_SKIP[@]}"}"
+fi
 
 if [[ "$APPLY_SCAFFOLD" != '1' ]]; then
-  sdx_info "dry-run 完成；实跑骨架写入请用 --apply-scaffold（须 Skill 已取得 C）"
+  sdx_info "dry-run 完成；实跑骨架/工具脚本写入请用 --apply-scaffold（须 Skill 已取得 C）"
   exit 0
 fi
 
@@ -354,4 +384,16 @@ for rel in "${ADD_LIST[@]+"${ADD_LIST[@]}"}"; do
   sdx_info "写入骨架: $rel"
 done
 
-sdx_info "骨架写入完成。结构重填与未落位请由 /docs-upgrade Skill 继续。"
+for rel in "${TOOL_SCRIPT_LIST[@]+"${TOOL_SCRIPT_LIST[@]}"}"; do
+  src="${META_ROOT%/}/${rel}"
+  dst="${REPO_ROOT%/}/${rel}"
+  [[ -f "$src" ]] || continue
+  if [[ -e "$dst" ]]; then
+    backup_file_to_stamp "$dst" "$rel"
+  fi
+  mkdir -p "$(dirname "$dst")"
+  cp "$src" "$dst"
+  sdx_info "写入工具脚本: $rel"
+done
+
+sdx_info "骨架与工具脚本写入完成。结构重填与未落位请由 /docs-upgrade Skill 继续。"

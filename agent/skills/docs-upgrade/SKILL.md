@@ -3,8 +3,10 @@ name: docs-upgrade
 description: >
   将当前工程知识库（读 .docsconfig）对齐元库最新模板结构：结构/模板以元库为准，
   正文以本库为准；已改 md 按元库 H2/H3 重填本库正文；未落位节清单逐项确认。
+  system/company 另同步元库 scripts/docs-link.sh 与 link-config.sh 到工程根 scripts/。
   元库来自 DOC_ROOT/knowledge-links.yaml 的唯一 type: meta（path 优先 + fetch）。
-  用户提到 /docs-upgrade、升级知识库、对齐元库模板、从 meta 刷新骨架、不丢已有知识升级时，使用本技能。
+  用户提到 /docs-upgrade、升级知识库、对齐元库模板、从 meta 刷新骨架、不丢已有知识升级、
+  升级 docs-link 时，使用本技能。
   分流：首次装机 → docs-bootstrap；Agent 树 → docs-bootstrap/agent-install；联邦槽位 → docs-pull；规约下发 → docs-push。
   推进见 light-flow-actions（C/M/S/F，无 G）与 references/gates.md。
 ---
@@ -13,20 +15,21 @@ description: >
 
 ## 输出硬约束（P0）
 
-- 当前单元：单个工程 `DOC_ROOT` 的一次升级计划（仅文档树，不含 Agent）。
+- 当前单元：单个工程 `DOC_ROOT` 的一次升级计划（文档树；`system`/`company` 另含工程根建联脚本；不含 Agent）。
 - 轻流程：参数向导 → 风险校核 → `C/M/S/F`（无 `G`、不绑意图澄清）→ [light-flow-actions.md](../../references/light-flow-actions.md)；细节 [gates.md](references/gates.md)。参数未收口前不得写盘。
 - 默认先 **dry-run 清单**；清单未 `C` 前不得实跑。
 - **禁止**调用会清空 `DOC_DIR` 的 `docs-install.sh --scope=knowledge` 主路径。
 - 合并契约：结构/模板=元库；正文=本库；已改判定=规范化后与元库同路径内容不等；已改 md=本库正文填入元库 H2/H3；未落位节=清单确认后才落；本库独有路径永不删。
 - `knowledge-links.yaml` 永不被元库模板覆盖。
 - 相对 `DOC_ROOT` 首段为 `application-*` / `system-*` 的联邦槽位（模板与实例）硬忽略：不进四桶、不 scaffold、不重填、不问未落位。
+- `system`/`company`：将元库 `{META_ROOT}/scripts/docs-link.sh`、`link-config.sh` 同步到 `{REPO_ROOT}/scripts/`（同则跳过，异/缺则元库整文件覆盖；并入 `--apply-scaffold`）。
 - 宣称单元完成前须按 [audience-and-language.md](../../references/audience-and-language.md) 轻流程默认读者表做写后 **A/B**。
 
 ## 边界
 
 | 负责 | 不负责 |
 | --- | --- |
-| 读 `.docsconfig` + `type: meta`；fetch 元库；出变更清单；备份；新增骨架；编排 H2/H3 结构重填与未落位确认 | 首次装机；Agent 安装；docs-link 改建联；docs-pull/push；语义改文 |
+| 读 `.docsconfig` + `type: meta`；fetch 元库；出变更清单；备份；新增骨架；`system`/`company` 建联脚本同步；编排 H2/H3 结构重填与未落位确认 | 首次装机；Agent 安装；docs-link **登记操作**；docs-pull/push；语义改文 |
 
 ## 不这样用
 
