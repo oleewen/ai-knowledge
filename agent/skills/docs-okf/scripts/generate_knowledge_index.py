@@ -274,7 +274,6 @@ def _default_suffix(bundle: str) -> str:
         )
         mapping_rows = [
             "| BD-EXAMPLE | `business/BD-EXAMPLE/` |",
-            "| CAP-EXAMPLE-L1 | `business/BD-EXAMPLE/CAP-EXAMPLE-L1.md` |",
             "| CAP-EXAMPLE | `business/BD-EXAMPLE/CAP-EXAMPLE.md` |",
             "| PL-EXAMPLE | `product/PL-EXAMPLE/` |",
             "| PD-EXAMPLE | `product/PL-EXAMPLE/PD-EXAMPLE.md` |",
@@ -289,26 +288,22 @@ def _default_suffix(bundle: str) -> str:
             "产品 **PL/PD** 见公司层；本层自 **PM** 起。"
         )
         mapping_rows = [
-            "| BD-EXAMPLE | `business/BD-EXAMPLE.md` |",
+            "| BSD-EXAMPLE | `business/BSD-EXAMPLE/` |",
             "| PM-EXAMPLE | `product/PM-EXAMPLE/` |",
-            "| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |",
-            "| MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |",
+            "| APP-EXAMPLE | `application/APP-EXAMPLE/` |",
             "| DS-EXAMPLE | `data/DS-EXAMPLE/` |",
+            "| TSD-EXAMPLE | `technical/TSD-EXAMPLE.md` |",
         ]
     else:
         footer_note = (
-            "> 公司级 **TPL-*** 不在本索引登记（见 `company/knowledge/technical/`）。"
-            "本层登记 **TSD/MDG** reference 与 **API/TBL/MW/CMP** SSOT。"
-            "产品 **PL/PD** 见公司层；本层自 **PM** 起。"
+            "> 本索引仅登记本层首次定义样例（API/TBL/MW/CMP）。"
+            "上游 BD/SYS/MDG/TSD 等以纯 ID 引用公司/系统 SSOT，本层不落 reference 文件。"
+            "产品 **PL/PD** 见公司层；**PM** 起见系统层。"
         )
         mapping_rows = [
-            "| BD-EXAMPLE | `business/BD-EXAMPLE.md` |",
-            "| PM-EXAMPLE | `product/PM-EXAMPLE/` |",
-            "| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |",
-            "| MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |",
+            "| API-EXAMPLE-001 | `application/MS-EXAMPLE/API-EXAMPLE-001.md` |",
             "| TBL-EXAMPLE | `data/DS-EXAMPLE/TBL-EXAMPLE.md` |",
-            "| TSD-EXAMPLE | `technical/TSD-EXAMPLE.md` |",
-            "| DS-EXAMPLE | `data/DS-EXAMPLE/` |",
+            "| MW-EXAMPLE | `technical/MW-EXAMPLE/` |",
         ]
 
     return "\n".join(

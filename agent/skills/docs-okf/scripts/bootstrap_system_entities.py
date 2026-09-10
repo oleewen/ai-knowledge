@@ -12,45 +12,6 @@ TS = "2026-06-21T00:00:00Z"
 
 ENTITIES: list[tuple[str, str]] = [
     (
-        "knowledge/business/BD-EXAMPLE.md",
-        """---
-type: Business Domain
-title: 示例业务域
-description: 仅用于演示业务视角数据结构（示例）。
-tags: [business, BD]
-timestamp: "%s"
-full_id: BD-EXAMPLE
-perspective: business
-hierarchy: BD
-parent_id: null
-strategic_classification: supporting_domain
-definition_scope: reference
-ssot_layer: company
-layer_scope: system
----
-# SSOT
-
-上游主定义：`company/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md`（公司层 OKF SSOT）。
-
-## 关系
-
-- children:
-  - [BSD-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md)
-
-## 跨视角
-
-- (none)
-
-## 详细说明
-
-- (none)
-
-## 依据与证据
-
-示例数据
-""",
-    ),
-    (
         "knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md",
         """---
 type: Business Subdomain
@@ -66,7 +27,7 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: [BD-EXAMPLE](/knowledge/business/BD-EXAMPLE.md)
+- parent: BD-EXAMPLE
 - bounded_contexts:
   - [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md)
 
@@ -280,44 +241,6 @@ layer_scope: system
 """,
     ),
     (
-        "knowledge/application/SYS-EXAMPLE.md",
-        """---
-type: System
-title: 示例系统边界
-description: null
-tags: [application, SYS]
-timestamp: "%s"
-full_id: SYS-EXAMPLE
-perspective: application
-hierarchy: SYS
-parent_id: null
-definition_scope: reference
-ssot_layer: company
-layer_scope: system
----
-# SSOT
-
-上游主定义：`company/knowledge/application/SYS-EXAMPLE.md`（公司层 OKF SSOT）。
-
-## 关系
-
-- children:
-  - [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
-
-## 跨视角
-
-- (none)
-
-## 详细说明
-
-- (none)
-
-## 依据与证据
-
-示例数据
-""",
-    ),
-    (
         "knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md",
         """---
 type: Application
@@ -336,7 +259,7 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: [SYS-EXAMPLE](/knowledge/application/SYS-EXAMPLE.md)
+- parent: SYS-EXAMPLE
 - service_ids:
   - [MS-EXAMPLE](/knowledge/application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md)
 
@@ -403,7 +326,7 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: [MDG-EXAMPLE](/knowledge/data/MDG-EXAMPLE.md)
+- parent: MDG-EXAMPLE
 
 ## 跨视角
 

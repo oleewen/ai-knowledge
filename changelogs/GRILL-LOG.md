@@ -4,4 +4,4 @@
 
 ---
 
-- [ ] 确认后提交本轮相关 git 变更（含 EXAMPLE 清理、视角 README、viz、本文件与 grilling 契约）
+当前无开放代办。
