@@ -23,10 +23,10 @@
 | 系统知识库 | [system/README.md](system/README.md) | `knowledge/`（五视角 + overview）、`application-{name}/` 联邦槽位、SDD |
 | 系统侧目录索引 | [system/index.md](system/index.md) | `system/` 树内目录索引与 OKF 渐进披露入口 |
 | 系统侧九章索引 | [system/INDEX-GUIDE.md](system/INDEX-GUIDE.md) | `system/` 文档根九章索引指南 |
-| 公司知识库 | [company/README.md](company/README.md) | `knowledge/`（五视角企业架构）、`system-{name}/` 联邦槽位、SDD 上游 |
+| 公司知识库 | [company/README.md](company/README.md) | `knowledge/`（五视角企业架构）、`system-slots/system-{NAME}/` 联邦槽位、SDD 上游 |
 | 公司侧目录索引 | [company/index.md](company/index.md) | `company/` 树内目录索引与 OKF 渐进披露入口 |
 | 公司侧九章索引 | [company/INDEX-GUIDE.md](company/INDEX-GUIDE.md) | `company/` 文档根九章索引指南 |
-| 初始化脚本 | [scripts/README.md](scripts/README.md) | `docs-install`/`agent-install`/`docs-link`/`docs-bootstrap`；升级见 `/docs-upgrade` |
+| 初始化脚本 | [scripts/README.md](scripts/README.md) | `docs-install`/`agent-install`/`docs-link`/`docs-bootstrap`；升级见 `/docs-upgrade`；已装 Agent/skills 追新见 `/skill-upgrade` |
 | 规范与 Slash | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/skills/README.md](agent/skills/README.md) | 全局约定与 Skill 清单（18 个） |
 | 共享推进契约 | [agent/references/](agent/references/) | 意图澄清 / 单元推进 / 烤干 / 轻流程 / 布局 / 会话路径 |
 | 根索引运行日志 | [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md) | 根输出组增量基线（本单元） |
@@ -62,7 +62,8 @@
 │   └── solutions/ · analysis/ · requirements/ · adr/ · changelogs/
 ├── company/                    # 公司层 + overview + 联邦槽位
 │   ├── knowledge/ · overview/
-│   ├── system-SYSNAME/         # 系统镜像槽位模板
+│   ├── system-slots/           # 系统联邦槽位根
+│   │   └── system-NAME/        # 系统镜像槽位模板
 │   ├── knowledge-links.yaml · viz.html
 │   └── solutions/ · analysis/ · changelogs/
 ├── scripts/                    # 初始化分发（docs-*/agent-install）
@@ -143,8 +144,9 @@ flowchart LR
 | `docs-install.sh` | Bash | [scripts/docs-install.sh](scripts/docs-install.sh) | 知识库同步 + `.docsconfig` |
 | `agent-install.sh` | Bash | [scripts/agent-install.sh](scripts/agent-install.sh) | Agent 树安装 |
 | `docs-link.sh` | Bash | [scripts/docs-link.sh](scripts/docs-link.sh) | `knowledge-links.yaml` 登记 |
-| `docs-bootstrap.sh` | Bash | [scripts/docs-bootstrap.sh](scripts/docs-bootstrap.sh) | 远程 curl 后 clone+install |
+| `docs-bootstrap.sh` | Bash | [scripts/docs-bootstrap.sh](scripts/docs-bootstrap.sh) | 远程 curl 后 clone；按 `--components` install |
 | `/docs-upgrade` 脚本 | Bash | [agent/skills/docs-upgrade/scripts/docs-upgrade.sh](agent/skills/docs-upgrade/scripts/docs-upgrade.sh) | 已有库对齐元库清单/骨架（不清空） |
+| `/skill-upgrade` | Skill | [agent/skills/skill-upgrade/SKILL.md](agent/skills/skill-upgrade/SKILL.md) | 已装 Agent 树 + 生态 skills 追新 |
 | `/docs-*` · `/sdx-*` | Slash | [agent/skills/README.md](agent/skills/README.md) | 见 §9.3 |
 
 ---
@@ -157,7 +159,7 @@ flowchart LR
 | ------ | ------ | ---------- |
 | SSOT | 单一事实源；`application/` 为应用知识稳定事实中枢 | 与联邦镜像、目标工程对齐 |
 | 五视角 | 业务 / 产品 / 应用 / 数据 / 技术 知识分层与映射字段 | [application/DESIGN.md](application/DESIGN.md) |
-| 联邦治理 | `system/`、`company/` 槽位与迁移叙事；`system/application-{name}/`、`company/system-{name}/` | docs-link / docs-pull / distill |
+| 联邦治理 | `system/`、`company/` 槽位与迁移叙事；`system/application-{name}/`、`company/system-slots/system-{NAME}/` | docs-link / docs-pull / distill |
 | SDD | 方案 → 分析 → PRD/设计/测试 阶段交付链 | `sdx-*` Skill 与各层 `solutions/` 等 |
 | 中央知识库挂载建联 | `docs-install --mode=central` 等约定 | [README.md](README.md)、[scripts/README.md](scripts/README.md) |
 | 五架构视角 | 业务 / 产品 / 应用 / 技术 / 数据；`system\|company/knowledge/` 均按此组织 | docs-distill、docs-archive、overview |
@@ -414,6 +416,7 @@ stateDiagram-v2
 | `/docs-push` | [agent/skills/docs-push/SKILL.md](agent/skills/docs-push/SKILL.md) |
 | `/docs-bootstrap` | [agent/skills/docs-bootstrap/SKILL.md](agent/skills/docs-bootstrap/SKILL.md) |
 | `/docs-upgrade` | [agent/skills/docs-upgrade/SKILL.md](agent/skills/docs-upgrade/SKILL.md) |
+| `/skill-upgrade` | [agent/skills/skill-upgrade/SKILL.md](agent/skills/skill-upgrade/SKILL.md) |
 | `/docs-okf` | [agent/skills/docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) |
 
 ---

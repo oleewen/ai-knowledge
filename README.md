@@ -29,7 +29,7 @@ Agent = LLM + Harness。平台给模型与工具，**工程知识**须由团队�
 
 | 层级 | 目录 | 职责 |
 | --- | --- | --- |
-| **公司** | [company/](company/README.md) | 顶层架构；`system-{name}/` 镜像槽位 |
+| **公司** | [company/](company/README.md) | 顶层架构；`system-slots/system-{NAME}/` 镜像槽位 |
 | **系统** | [system/](system/README.md) | 五架构视角；`application-{name}/` 联邦槽位 |
 | **应用** | [application/](application/README.md) | 实现细节与实体 SSOT |
 
@@ -86,7 +86,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 ├── changelogs/           # 根输出组 INDEXING-LOG
 ├── application/          # 应用层 SSOT + SDD（knowledge、阶段产物、changelogs）
 ├── system/               # 系统库：knowledge/ + overview、application-{name}/ 槽位、SDD
-├── company/              # 公司库：knowledge/ + overview、system-{name}/ 槽位
+├── company/              # 公司库：knowledge/ + overview、system-slots/system-{NAME}/ 槽位
 ├── scripts/              # docs-install、agent-install、docs-link、docs-bootstrap + tests/
 ├── agent/                # skills/（18）、rules/、knowledge/、references/、scripts/、hooks.json
 ├── docs/                 # .docsconfig 的 DOC_DIR；会话稿 superpowers/（通常未入库）

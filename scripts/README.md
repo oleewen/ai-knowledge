@@ -29,9 +29,9 @@ Slash 技能以仓库 `agent/skills/` 下各 `SKILL.md` 为准（若存在总览
 
 `--scope=knowledge` 完成同步并写入 `.docsconfig` 后，会将 `DOC_ROOT` 内文本中的路径段 `agent/` 按 `AGENT_DIRS` **首项**重写为对应目录（如 `.cursor/`），并在 `README.md` 注入说明块（列出其余可用 Agent 根目录）。
 
-**`docs-bootstrap.sh`**：远程 `curl` 下载后执行；临时 **clone** 本仓库，再依次调用 **`docs-install.sh`**（知识库与 `.docsconfig`）与 **`agent-install.sh`**（由 `--agents` / `--agent-scope` 决定安装目标）。**仅**想本地分步执行时，可 clone 后分别运行上述两脚本。
+**`docs-bootstrap.sh`**：远程 `curl` 下载后执行；临时 **clone** 本仓库，再按 **`--components=docs|agent|both`**（默认 `both`）调用 **`docs-install.sh`** 和/或 **`agent-install.sh`**（由 `--agents` / `--agent-scope` 决定安装目标）。**仅**想本地分步执行时，可 clone 后分别运行上述两脚本。
 
-**Slash**：[`/docs-bootstrap`](../agent/skills/docs-bootstrap/SKILL.md) 编排装机脚本（可选 `docs` / `agent` / `both`；本仓快路径或 bootstrap；轻流程 `C/M/S/F`）。已有库对齐元库：[`/docs-upgrade`](../agent/skills/docs-upgrade/SKILL.md)（脚本在技能目录 `scripts/docs-upgrade.sh`）。
+**Slash**：[`/docs-bootstrap`](../agent/skills/docs-bootstrap/SKILL.md) 编排装机脚本（可选 `docs` / `agent` / `both`；本仓快路径或 bootstrap；轻流程 `C/M/S/F`）。已装环境追新：[`/skill-upgrade`](../agent/skills/skill-upgrade/SKILL.md)。已有库对齐元库：[`/docs-upgrade`](../agent/skills/docs-upgrade/SKILL.md)（脚本在技能目录 `scripts/docs-upgrade.sh`；可选 `@` 指定文件强制对齐，由 Skill 编排、脚本暂无 `--path`）。
 
 ## 功能概述
 
@@ -95,15 +95,17 @@ cd ai-knowledge
 
 ### 方式一（续）：远程 curl（无预先 clone，由 bootstrap 临时克隆）
 
-在**目标工程**目录执行（由 **`docs-bootstrap.sh`** 解析 **`--doc-target`** / **`--agents`** / **`--agent-scope`**，克隆后依次调用 **`docs-install.sh`** 与 **`agent-install.sh`**；`GIT_REPO_URL` / `GIT_REF` 可选）：
+在**目标工程**目录执行（由 **`docs-bootstrap.sh`** 解析 **`--components`** / **`--doc-target`** / **`--agents`** / **`--agent-scope`**，克隆后按 components 调用 **`docs-install.sh`** 和/或 **`agent-install.sh`**；`GIT_REPO_URL` / `GIT_REF` 可选）：
 
 ```bash
 cd /path/to/your-project
 curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- --doc-target ./docs
 curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- --doc-target /path/to/your-project/docs --agents=cursor
+# 仅 Agent（任意目录；无需 doc-target）
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- --components=agent --agents=cursor --agent-scope=home
 ```
 
-**说明**：若**只要** Agent、不要本流程中的 knowledge 安装，请 **git clone** 后单独执行 **`./scripts/agent-install.sh`**。
+**说明**：本地已有中央库树时，可直接 **`./scripts/agent-install.sh`**；远程仅 Agent 也可用上式 `--components=agent`。
 
 ## OKF 工具与校验（docs-okf）
 
@@ -277,7 +279,7 @@ your-project/
 | `docs-install.sh` | knowledge 安装编排入口；默认 `--scope=k`（knowledge），并 `source` `docs-config.sh` |
 | `link-config.sh` | **docs-link** 共用；配置层；**knowledge-links.yaml 只读解析**在 **`agent/scripts/docs-core.sh`**；优先 `../agent/scripts/docs-core.sh`，否则按目标工程 `.docsconfig` 之 **AGENT_ROOT** / **AGENT_DIRS** 定位 **`scripts/docs-core.sh`**。**push-specs** 直接 `source` 中央库 **`agent/scripts/docs-core.sh`**。 |
 | `docs-link.sh` | 登记/注销目标知识库；`source link-config.sh`；`knowledge-links.yaml` 使用 **`repository` + `path`**，及 **`app_name` / `app_label`**（见上表）；`--link` 校验源/目标 `.docsconfig` 与边关系，`--unlink` 支持失联目标注销 |
-| `docs-bootstrap.sh` | 临时 clone 后依次执行 **`docs-install.sh`** 与 **`agent-install.sh`**（链路：clone → docs-install → agent-install；CLI 见脚本 `-h`） |
+| `docs-bootstrap.sh` | 临时 clone 后按 **`--components`** 执行 **`docs-install.sh`** 和/或 **`agent-install.sh`**（CLI 见脚本 `-h`） |
 
 ## 版本历史
 
@@ -293,7 +295,7 @@ your-project/
 | 2.7.0 | 拆分 **`agent-install.sh`** / **`docs-install.sh`** / **`docs-link.sh`**；核心逻辑迁至 **`lib/docs-init-core.sh`**；`.docsconfig` 增加 **`KNOWLEDGE_TYPE`**；**`docs-bootstrap.sh`** 改为调用 **`docs-install.sh`** |
 | 2.6.0 | **`--scope`**：**移除 `ck`**；**`k`/`knowledge`** 表示原 `ck` 行为（同步知识库 + `.docsconfig`）；默认 **`SCOPE`** 改为 **`knowledge`** |
 | 2.5.0 | **`--scope`**：新增 **`agent`/`a`**，一次安装 scripts + rules + skills；**移除** scope **`skills`/`s`、`rules`/`r`、`rs`**（请改用 **`--scope=agent`**） |
-| 2.4.0 | `central`：`--type` 仅 `application`\|`system`，默认 `application`；移除 `--app-id`；`system` 中央登记写入 `system/index.md` 与 `company/system-<slug>/`；`-r` 时自动创建文档目录 |
+| 2.4.0 | `central`：`--type` 仅 `application`\|`system`，默认 `application`；移除 `--app-id`；`system` 中央登记写入 `system/index.md` 与 `company/system-slots/system-<slug>/`（历史上曾直挂 `company/system-<slug>/`）；`-r` 时自动创建文档目录 |
 | 2.1.3 | `sdx-doc-root` 默认首段改为 `docs`；目录探测优先 `docs/` 下标记 |
 | 2.1.2 | 落地方案 A：`SDX_DOC_ROOT`、`.sdx-doc-root` 与目录探测统一由 `agent/scripts/sdx-doc-root.sh` 提供；各 `validate-*.sh` 接入 |
 | 2.1.1 | `standalone` 下 `--scope` 为 `agent` 时，`<目标工程文档目录>` 可省略；未指定时 Agent 内 `application/` → 文档前缀替换默认为 `docs/` |

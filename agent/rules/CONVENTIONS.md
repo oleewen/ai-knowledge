@@ -77,7 +77,7 @@
    - **受众质检**：[audience-and-language.md](../references/audience-and-language.md)（烤干 A/B/C/E；轻流程写后 A/B）；
    - **生成步写作原则**：[docs-simplify.md](../references/docs-simplify.md)（默认强制；用户明示可豁免）。烤干中修订后另有协议 **simplify 遍**（见 [unit-cycle-protocol.md](../references/unit-cycle-protocol.md)）。
 4. 全部 `/sdx-*` 与语义族 docs-*（含 indexing/build/agent/simplify）已绑定意图澄清；
-   `docs-okf` / `docs-change` / `docs-pull` / `docs-push` / `docs-tag` / `docs-bootstrap` / `docs-upgrade` 维持轻流程。
+   `docs-okf` / `docs-change` / `docs-pull` / `docs-push` / `docs-tag` / `docs-bootstrap` / `docs-upgrade` / `skill-upgrade` 维持轻流程。
 5. 烤干收敛（或合法跳过）后，由用户用 `C/M/G/F`（docs 另有 `S`）推进；
    `C` 同符异义，靠阶段横幅区分。
 6. 语义性变更须先给结论、推荐与数字选项，确认后再改。
@@ -121,7 +121,7 @@
 | --- | --- | --- | --- |
 | **中高风险** | sdx-*、docs-distill、docs-extract、docs-archive、docs-build、docs-indexing、docs-revise、docs-simplify | 语义 / 语义-docs | ❌ |
 | **中等风险** | docs-agent | 语义-docs | ❌ |
-| **低风险** | docs-change、docs-tag、docs-pull、docs-okf、docs-push、docs-bootstrap、docs-upgrade | 轻 | ❌ |
+| **低风险** | docs-change、docs-tag、docs-pull、docs-okf、docs-push、docs-bootstrap、docs-upgrade、skill-upgrade | 轻 | ❌ |
 
 ---
 
