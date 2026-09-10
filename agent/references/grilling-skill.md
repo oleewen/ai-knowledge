@@ -4,7 +4,23 @@
 > **边界**：本文只定义能力选择、fallback 提问协议、探索优先与统一输出格式；不定义具体 skill 的写入权限、前文回改边界或段落推进动作。
 > **分工**：写前**意图澄清**见 [intent-clarify.md](intent-clarify.md)；推进环/动作/重开见 [unit-cycle-protocol.md](unit-cycle-protocol.md)；受众质检维见 [audience-and-language.md](audience-and-language.md)；主线口令 `澄清 → 生成 → 烤干`。本文不承担写前门禁或动作字母定义。
 
-**最后更新**: 2026-07-29
+**最后更新**: 2026-09-10
+
+---
+
+## GRILL-LOG
+
+根路径 [`changelogs/GRILL-LOG.md`](../../changelogs/GRILL-LOG.md) 是烤干**未闭合代办**清单，不是决策日志或运行史。
+
+| 项 | 约定 |
+| --- | --- |
+| 职责 | 只记可执行、未勾销的烤干代办 |
+| 格式 | 顶层 `- [ ]` 动作句 + 可选依赖；明细用子 checkbox |
+| 写入 | 烤干收敛后，若仍有未执行动作，Agent 自动落盘/更新；纯问答不成动作则不写 |
+| 勾销 | 用户确认已完成后**即删条**；不留已完成史（落痕用 `CHANGE-LOG` / 域 changelog） |
+| 空壳 | 无开放代办时保留文件：标题 + 导语 +「当前无开放代办」 |
+
+不替代 `CHANGE-LOG` / `INDEXING-LOG`。
 
 ---
 
