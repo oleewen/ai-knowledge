@@ -4,7 +4,7 @@ description: >
   按 knowledge-links.yaml 校验/修复联邦槽位软链（system/application-slots/application-{NAME} 或 company/system-slots/system-{NAME}），
   软链失效时按 type=child 的 repository clone/pull 到 path，并追加层共用 changelogs/CHANGE-LOG.md。
   用户提到 /docs-pull、从应用/系统本地仓回拉到联邦槽位、同步槽位、按 knowledge-links 拉取时，使用本技能。
-  分流：推送中央规约到应用库 → docs-push；overview 蒸馏 / 归档 / SDD → 对应技能。
+  分流：推送中央规约到应用库 → docs-push；联邦建联 → docs-link；overview 蒸馏 / 归档 / SDD → 对应技能。
   推进见 light-flow-actions（C/M/S/F，无 G）与 references/gates.md。
 ---
 
@@ -22,7 +22,7 @@ description: >
 
 | 负责 | 不负责 |
 | --- | --- |
-| 软链校验/修复；child clone/pull（默认分支）；旧真目录静默迁移；共用 CHANGE-LOG | docs-push 中央规约下发；docs-distill / docs-archive / SDD 正文；docs-link 建联写 yaml |
+| 软链校验/修复；child clone/pull（默认分支）；旧真目录静默迁移；共用 CHANGE-LOG | docs-push 中央规约下发；docs-distill / docs-archive / SDD 正文；docs-link 建联写 yaml（→ `/docs-link`） |
 
 ## 不这样用
 

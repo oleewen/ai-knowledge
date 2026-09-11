@@ -9,11 +9,11 @@
 - **联邦槽位根**：`application-slots` / `system-slots` 下**真文件**可升级；**软链一律跳过**。勿跟随实例软链改下级仓（实例同步用 `/docs-pull`）。
 - **顶层遗留**：DOC_ROOT 顶层 `application-*` / `system-*`（非 `*-slots`）仍忽略。
 - **`*-slots/changelogs`**：本有整文件本库胜；勿对其强制结构重填。
-- **建联脚本**：仅 `system`/`company` 同步；源在元库根 `scripts/`，不是 `{doc_dir}/`。application 无此桶。文件模式仅允许两文件名或 `@scripts/` 只展开这两条。
+- **建联脚本**：不在本技能同步；登记走 `/docs-link`（`agent/skills/docs-link/scripts/`）。
 - **整树与文件模式混用**：禁止同单元；有 `@` 只走文件强制对齐。
 - **文件模式无脚本 `--path`**：scaffold/重填由 Agent 写；勿臆造 CLI 过滤。
 - **文件模式无强制备份**：依赖 git；勿假设已有 `upgrade-{stamp}`。
 - **`@` 目录展开过大**：总览未 `C` 前不写盘；注意递归「所有文件」后非 md 仅可 scaffold。
-- **Agent 树 / 生态技能追新**：本技能不管；走 `/skill-upgrade`（装机仍用 `/docs-bootstrap --components=agent`）。
+- **Agent 树 / 生态技能追新**：本技能不管；本仓树走 `/agent-install`，生态走 `/skill-upgrade`。
 - **Bash 5+**、Git 必需（整树脚本路径）。
 - **中央脚本路径**：整树在目标工程执行时须指向元库/中央库的 `agent/skills/docs-upgrade/scripts/docs-upgrade.sh`。

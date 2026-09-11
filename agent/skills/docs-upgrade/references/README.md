@@ -9,4 +9,4 @@
 | [parameters.md](parameters.md) | 技能层 + 脚本参数 |
 | [merge-rules.md](merge-rules.md) | 结构/正文合并与未落位 |
 
-脚本总说明：[../../../../scripts/README.md](../../../../scripts/README.md)。实操：[../gotchas.md](../gotchas.md)。
+装机分流：[../../docs-install/SKILL.md](../../docs-install/SKILL.md)、[../../agent-install/SKILL.md](../../agent-install/SKILL.md)。实操：[../gotchas.md](../gotchas.md)。

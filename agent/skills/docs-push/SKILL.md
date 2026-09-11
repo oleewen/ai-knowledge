@@ -3,7 +3,7 @@ name: docs-push
 description: >
   按 knowledge-links.yaml 将中央规约复制到各应用本机 path×doc_dir（legacy spec → specs/；spec-asd → requirements/…/specs/）。
   用户提到 /docs-push、推 spec 到应用库、按 knowledge-links 同步规约时，使用本技能。
-  分流：仅 docs-pull / distill / SDD / overview 时 → 对应技能；DSD 正文一般不经本技能。
+  分流：联邦建联 → docs-link；仅 docs-pull / distill / SDD / overview 时 → 对应技能；DSD 正文一般不经本技能。
   推进见 light-flow-actions（C/M/S/F，无 G）与 references/gates.md。
 ---
 

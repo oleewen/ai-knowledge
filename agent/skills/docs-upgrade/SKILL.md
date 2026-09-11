@@ -4,11 +4,11 @@ description: >
   将当前工程知识库（读 .docsconfig）对齐元库最新模板结构：结构/模板以元库为准，
   正文以本库为准；已改 md 按元库 H2/H3 重填本库正文；未落位节清单逐项确认。
   支持 @ 指定文件/目录强制对齐元库对应路径（与整树互斥；破跳过；逐文件 C）。
-  system/company 另同步元库 scripts/docs-link.sh 与 link-config.sh 到工程根 scripts/。
   元库来自 DOC_ROOT/knowledge-links.yaml 的唯一 type: meta（path 优先 + fetch）。
   用户提到 /docs-upgrade、升级知识库、对齐元库模板、从 meta 刷新骨架、不丢已有知识升级、
-  指定文件对齐元库、@ 文件升级 docs-link 时，使用本技能。
-  分流：首次装机 → docs-bootstrap；已装 Agent/生态技能追新 → skill-upgrade；联邦槽位 → docs-pull；规约下发 → docs-push。
+  指定文件对齐元库、@ 文件强制对齐时，使用本技能。
+  分流：首次装机 → docs-install / agent-install；本仓 Agent 树追新 → agent-install；生态 skills 追新 → skill-upgrade；
+  联邦登记 → docs-link；联邦槽位 → docs-pull；规约下发 → docs-push。
   推进见 light-flow-actions（C/M/S/F，无 G）与 references/gates.md。
 ---
 
@@ -16,7 +16,7 @@ description: >
 
 ## 输出硬约束（P0）
 
-- 当前单元：单个工程 `DOC_ROOT` 的一次升级计划（文档树；`system`/`company` 另含工程根建联脚本；不含 Agent）。
+- 当前单元：单个工程 `DOC_ROOT` 的一次升级计划（文档树；不含 Agent）。
 - **两模式互斥**：调用带 ≥1 个有效 `@` 文件/目录 → **指定文件强制对齐**；无 `@` → **整树**。同一次调用不混用。
 - 轻流程：参数向导 → 风险校核 → `C/M/S/F`（无 `G`、不绑意图澄清）→ [light-flow-actions.md](../../references/light-flow-actions.md)；细节 [gates.md](references/gates.md)。参数未收口前不得写盘。
 - 整树：默认先 **dry-run 清单**；清单未 `C` 前不得实跑。文件模式：先 **解析总览 `C`**，再 **逐文件 `C`**。
@@ -26,7 +26,6 @@ description: >
 - `knowledge-links.yaml` 永不被元库模板覆盖。
 - **槽位根放开**：`application-slots/`、`system-slots/` 下**非软链真文件**进四桶 / 重填 / 文件模式（与普通路径同）。**凡软链一律跳过**（不跟随）。顶层遗留 `application-*` / `system-*`（不含上述两 slots 名）仍硬忽略。槽位**实例**同步仍归 `/docs-pull`。
 - `*-slots/changelogs/**`：本无可 scaffold；本有整文件本库胜（不进结构重填）。
-- `system`/`company`：整树将元库 `{META_ROOT}/scripts/docs-link.sh`、`link-config.sh` 同步到 `{REPO_ROOT}/scripts/`（同则跳过，异/缺则元库整文件覆盖；并入 `--apply-scaffold`）。文件模式可 `@` 这两文件或 `@` `{REPO_ROOT}/scripts/`（只展开这两文件名），每文件 `C` 后元库整文件覆盖。
 - 文件模式**不强制** `{REPO_ROOT}/.docs-init/` 备份（依赖 git）。整树 scaffold 仍按脚本备份。
 - 文件模式由 Skill/Agent 编排写盘；脚本暂不加 `--path`。
 - 宣称单元完成前须按 [audience-and-language.md](../../references/audience-and-language.md) 轻流程默认读者表做写后 **A/B**（文件模式：整单结束一次）。
@@ -35,7 +34,7 @@ description: >
 
 | 负责 | 不负责 |
 | --- | --- |
-| 读 `.docsconfig` + `type: meta`；fetch 元库；出变更清单；备份（整树）；新增骨架；`system`/`company` 建联脚本同步；编排 H2/H3 结构重填与未落位确认；`@` 指定文件/目录强制对齐 | 首次装机；Agent 安装；docs-link **登记操作**；docs-pull/push；语义改文；脚本 `--path` 过滤（暂无） |
+| 读 `.docsconfig` + `type: meta`；fetch 元库；出变更清单；备份（整树）；新增骨架；编排 H2/H3 结构重填与未落位确认；`@` 指定文件/目录强制对齐 | 首次装机（→ docs-install / agent-install）；Agent 树追新（→ agent-install）；生态 skills（→ skill-upgrade）；docs-link **登记操作**（→ `/docs-link`）；docs-pull/push；语义改文；脚本 `--path` 过滤（暂无） |
 
 ## 不这样用
 
@@ -53,7 +52,7 @@ description: >
 | 流程 / 风险 | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
 | 参数 / 合并规则 | [parameters.md](references/parameters.md)、[merge-rules.md](references/merge-rules.md) |
 | 轻流程动作 | [light-flow-actions.md](../../references/light-flow-actions.md) |
-| 脚本说明 | [scripts/docs-upgrade.sh](scripts/docs-upgrade.sh) · [scripts/README.md](../../../scripts/README.md) |
+| 脚本说明 | [scripts/docs-upgrade.sh](scripts/docs-upgrade.sh) |
 | 易错 | [gotchas.md](gotchas.md) |
 
 ## 最少输入
@@ -66,9 +65,9 @@ description: >
 ## 产出与脚本
 
 - 正式（整树）：对齐后的 `DOC_ROOT`（新骨架 + 已确认重填 + 已确认未落位）；备份在 `{REPO_ROOT}/.docs-init/upgrade-{stamp}/`
-- 正式（文件）：已 `C` 的指定路径（强制重填 / scaffold / 建联脚本覆盖）；无强制 `.docs-init` 备份
+- 正式（文件）：已 `C` 的指定路径（强制重填 / scaffold）；无强制 `.docs-init` 备份
 - 预览（整树）：四桶清单（新增骨架 / 跳过 / 结构重填 / 本库独有）+ 后续未落位节清单
-- 预览（文件）：`@` 展开去重后的动作总览（强制重填 / scaffold / 非 md 跳过覆盖 / 元缺拒绝 / 软链拒绝 / 遗留槽位拒绝 / changelogs 本库胜 / 建联覆盖）
+- 预览（文件）：`@` 展开去重后的动作总览（强制重填 / scaffold / 非 md 跳过覆盖 / 元缺拒绝 / 软链拒绝 / 遗留槽位拒绝 / changelogs 本库胜）
 - 收敛后：产物校核 + 受众 A/B → [light-flow-actions.md](../../references/light-flow-actions.md)
 
 ```bash
@@ -80,4 +79,4 @@ bash /path/to/ai-knowledge/agent/skills/docs-upgrade/scripts/docs-upgrade.sh --a
 
 ## 评测
 
-`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。重点：禁清空 install、meta 解析、清单闸门、未落位逐项、写后 A/B、与 bootstrap 分流、文件模式互斥与逐文件 `C`。
+`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。重点：禁清空 install、meta 解析、清单闸门、未落位逐项、写后 A/B、与 docs-install 分流、文件模式互斥与逐文件 `C`。

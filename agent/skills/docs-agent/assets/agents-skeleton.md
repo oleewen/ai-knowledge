@@ -46,5 +46,5 @@
 ## 参考
 
 1. `{INDEX}` — 地图
-2. README.md、`{scripts/README 等}`
+2. README.md、`{bootstrap.sh / agent/skills 装机技能 等}`
 ```

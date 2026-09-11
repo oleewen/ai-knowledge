@@ -1,6 +1,6 @@
 # docs-upgrade 参数
 
-脚本 SSOT：`bash agent/skills/docs-upgrade/scripts/docs-upgrade.sh -h`。装机类总览仍见 [scripts/README.md](../../../../scripts/README.md)。本文列技能编排层。
+脚本 SSOT：`bash agent/skills/docs-upgrade/scripts/docs-upgrade.sh -h`。本文列技能编排层。
 
 ## 技能层
 
@@ -23,7 +23,6 @@
 | 解析 | 只用 `@` 展开后的真实路径；不模糊匹配文件名 |
 | `DOC_ROOT` 内 | 须落在当前工程 `DOC_ROOT`；规范化为相对 `DOC_ROOT` 路径；禁止 `..` 逃出；再在元库 `{meta}/{doc_dir}/` 找同相对路径（README：`README.md`↔`README-s.md`） |
 | `@` 目录 | 递归收集目录下**所有文件**；再按合并规则分类动作（重填仅 `.md`） |
-| 建联例外 | 仅 `system`/`company`：允许 `@` `{REPO_ROOT}/scripts/docs-link.sh`、`link-config.sh`，或 `@` `{REPO_ROOT}/scripts/`（展开**只收这两文件名**，其它忽略并在总览注明） |
 | 去重 | 展开后按规范化路径去重，再出总览 |
 
 ## 脚本行为摘要（整树）
@@ -31,9 +30,9 @@
 | 模式 | 行为 |
 | --- | --- |
 | `--dry-run` | fetch/解析 meta；打印四桶清单；不写盘、不备份 |
-| `--apply-scaffold` | fetch/解析；备份将动路径；写入「新增骨架」桶；`system`/`company` 另写入「工具脚本」桶；不重填 md、不删本库独有 |
+| `--apply-scaffold` | fetch/解析；备份将动路径；写入「新增骨架」桶；不重填 md、不删本库独有 |
 
-结构重填与未落位由 Skill/Agent 执行，不在脚本内自动合正文。文件模式的 scaffold / 强制重填 / 建联覆盖亦由 Agent 执行。
+结构重填与未落位由 Skill/Agent 执行，不在脚本内自动合正文。文件模式的 scaffold / 强制重填亦由 Agent 执行。
 
 ## 示例
 

@@ -20,8 +20,8 @@ config_bootstrap_fail() {
   local msg="${1:-[config] 配置校验失败。}"
   printf '%s\n' "$msg" >&2
   cat >&2 <<'EOF'
-[config] 请使用 docs-install.sh 初始化并写入 .docsconfig，例如：
-  bash scripts/docs-install.sh --scope=config --target <目标工程文档目录>
+[config] 请使用 /docs-install 或 docs-install.sh 初始化并写入 .docsconfig，例如：
+  bash agent/skills/docs-install/scripts/docs-install.sh --scope=config --target <目标工程文档目录>
 （在已克隆 ai-knowledge 的仓库根执行；路径请按实际工程调整；仍兼容 --target=<目录>）
 EOF
   if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then

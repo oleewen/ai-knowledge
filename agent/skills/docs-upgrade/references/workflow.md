@@ -13,14 +13,14 @@
 
 ## 当前单元
 
-**一次升级计划** = 一个当前单元（单个 `DOC_ROOT`；文件模式另可含已允许的建联脚本路径）。
+**一次升级计划** = 一个当前单元（单个 `DOC_ROOT`）。
 
 一次只推进一个工程；不并行多仓。
 
 ## 源解析
 
 1. `validate_bootstrap_docsconfig`（或等价）读 `.docsconfig`
-2. 缺 config → 硬停，提示 `/docs-bootstrap`
+2. 缺 config → 硬停，提示 `/docs-install`
 3. 读 links；缺唯一 `type: meta` 且无 `--meta-path` → 硬停，列修复选项（补 meta / `--meta-path` / 重跑 install upsert）
 4. 展开 `path`；若为 git 仓 → `git fetch` 并对齐 ref；path 无效 → 用 `repository` 临时 clone 到工作目录
 5. 结构源根 = `{meta_root}/{doc_dir}/`，其中 `doc_dir` 优先 meta 条，否则 `KNOWLEDGE_TYPE`
@@ -42,13 +42,13 @@ bash agent/skills/docs-upgrade/scripts/docs-upgrade.sh --dry-run [--meta-path PA
 
 ### 3 实跑（用户 `C` 后）
 
-1. **备份 + 新增骨架 + 工具脚本**（机械）：
+1. **备份 + 新增骨架**（机械）：
 
    ```bash
    bash agent/skills/docs-upgrade/scripts/docs-upgrade.sh --apply-scaffold [--meta-path PATH] [--ref REF]
    ```
 
-   将改路径 mirror 到 `{REPO_ROOT}/.docs-init/upgrade-{stamp}/`，再写入元库新增且本库缺失的允许文件；`system`/`company` 另覆盖/补齐 `{REPO_ROOT}/scripts/docs-link.sh`、`link-config.sh`。
+   将改路径 mirror 到 `{REPO_ROOT}/.docs-init/upgrade-{stamp}/`，再写入元库新增且本库缺失的允许文件。
 
 2. **结构重填**（Agent）：对「结构重填」桶中每个 `.md`，以元库同路径（或 README 映射）为 H2/H3 骨架，填入本库同标题节正文；产出**未落位节清单**（本库有、元库无的节）。
 
@@ -69,7 +69,7 @@ bash agent/skills/docs-upgrade/scripts/docs-upgrade.sh --dry-run [--meta-path PA
 ### 1 解析 `@`
 
 1. 收集 `@` 文件与目录；目录递归收**所有文件**
-2. 校验：`DOC_ROOT` 内路径规范化为相对路径；建联例外见 [parameters.md](parameters.md)；软链 / 顶层遗留槽位名拒绝；`DOC_ROOT` 外非例外拒绝；`*-slots` 根真文件允许
+2. 校验：`DOC_ROOT` 内路径规范化为相对路径；软链 / 顶层遗留槽位名拒绝；`DOC_ROOT` 外路径拒绝；`*-slots` 根真文件允许
 3. 去重；对每条判定动作（见 [merge-rules.md](merge-rules.md) §7）
 4. fetch/解析 meta（与整树同源规则）
 
@@ -83,10 +83,10 @@ bash agent/skills/docs-upgrade/scripts/docs-upgrade.sh --dry-run [--meta-path PA
 
 对名单中每条**可处理**项（拒绝项只报告）：
 
-1. 展示该文件预览（将 scaffold / 强制重填摘要 / 建联覆盖；`.md` 可含未落位预告）
+1. 展示该文件预览（将 scaffold / 强制重填摘要；`.md` 可含未落位预告）
 2. 停等该文件 `C/M/S/F`：`C` 写盘；`S` 跳过本文件继续；`M` 只重开本文件；已写盘不回滚
 3. `.md` 强制重填：契约同整树结构重填；未落位仍一次一项
-4. 本缺元有：Agent 复制元库该相对路径（或建联脚本）到目标
+4. 本缺元有：Agent 复制元库该相对路径到目标
 5. 非 md 两边都有：不覆盖（总览已标跳过则本步可略）
 6. **不**写 `{REPO_ROOT}/.docs-init/`（依赖 git）
 
@@ -100,4 +100,4 @@ bash agent/skills/docs-upgrade/scripts/docs-upgrade.sh --dry-run [--meta-path PA
 - 静默删除本库独有文件
 - 用元库覆盖 `knowledge-links.yaml`
 - 文件模式与整树混在同一单元
-- 文件模式把 `@scripts/` 展开成除两建联脚本外的其它文件并覆盖
+- 文件模式把 `@` 指向 `DOC_ROOT` 外路径（非允许范围）

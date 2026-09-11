@@ -1,13 +1,13 @@
 {
   "skill_name": "skill-upgrade",
-  "version": "1.1.0",
-  "description": "评测 skill-upgrade：双轨清单；无源 find 闸门；建议桶确认；执行序；分流。",
+  "version": "1.2.0",
+  "description": "评测 skill-upgrade：生态 update 清单；无源 find 闸门；建议桶确认；与 agent-install 分流。",
   "evals": [
     {
       "id": "upgrade-trigger-001",
       "category": "should-trigger",
-      "prompt": "把家里 ~/.agents 的 Agent 树和生态 skills 都升到最新，先预览。",
-      "expected_output": "tracks=both；先出双轨 dry-run 清单等 C/M/S/F；执行序先生态后本仓；若有无源须问是否 find；target=$HOME；不得直接写盘。",
+      "prompt": "把家里生态 skills 都升到最新，先预览。",
+      "expected_output": "生态轨 dry-run 清单等 C/M/S/F；若有无源须问是否 find；不得直接写盘。",
       "assertions": [
         {
           "id": "light-flow-stop",
@@ -17,10 +17,10 @@
           "priority": "P0"
         },
         {
-          "id": "dual-track-order",
-          "name": "双轨与序",
+          "id": "ecosystem-track",
+          "name": "生态轨",
           "type": "must_include",
-          "check": "须体现本仓+生态两轨，且双轨执行序为先生态后本仓（补源 add 若有则在生态 update 前或按技能约定写清）。",
+          "check": "须体现 npx skills update 或等价生态追新，不主路径跑 agent-install。",
           "priority": "P0"
         },
         {
@@ -37,7 +37,7 @@
       "id": "upgrade-trigger-002",
       "category": "should-trigger",
       "prompt": "只更新生态 skills。很多目录没 lock，先预览。",
-      "expected_output": "tracks=ecosystem；列出无源；问是否 find-skills；不得未确认就搜或 add；不跑 agent-install。",
+      "expected_output": "生态轨；列出无源；问是否 find-skills；不得未确认就搜或 add；不跑 agent-install。",
       "assertions": [
         {
           "id": "ecosystem-only",
@@ -58,22 +58,6 @@
     },
     {
       "id": "upgrade-trigger-003",
-      "category": "should-trigger",
-      "prompt": "当前不在 ai-knowledge 仓库，只把本仓 Agent skills/rules 升到最新到 home。",
-      "expected_output": "本仓轨 remote 或 --repo-path；docs-bootstrap --components=agent 或 clone 后 agent-install；scope 子树可勾选；先清单。",
-      "assertions": [
-        {
-          "id": "agent-remote-path",
-          "name": "远程本仓轨",
-          "type": "must_include",
-          "check": "须体现 components=agent 的 bootstrap 或等价 agent-install，且默认 target home。",
-          "priority": "P0"
-        }
-      ],
-      "files": []
-    },
-    {
-      "id": "upgrade-trigger-004",
       "category": "should-trigger",
       "prompt": "追新时无源技能搜到多个候选，帮我定。",
       "expected_output": "待决策总表列出候选；不自动挑选；用户选后再进清单；建议桶若有仍须汇总确认才 add。",
@@ -115,13 +99,13 @@
       "id": "upgrade-not-trigger-002",
       "category": "should-not-trigger",
       "prompt": "给新工程 ~/ws/app/docs 初始化知识库并装 cursor。",
-      "expected_output": "主路径 docs-bootstrap，不是 skill-upgrade。",
+      "expected_output": "主路径 docs-install + agent-install，不是 skill-upgrade。",
       "assertions": [
         {
-          "id": "correct-downstream-bootstrap",
-          "name": "装机走 bootstrap",
+          "id": "correct-downstream-install",
+          "name": "装机分流",
           "type": "must_include",
-          "check": "须指向 docs-bootstrap，不得主路径写成已装追新。",
+          "check": "须指向 docs-install/agent-install 或 bootstrap，不得主路径写成已装追新。",
           "priority": "P0"
         }
       ],
@@ -137,7 +121,23 @@
           "id": "correct-downstream-docs-upgrade",
           "name": "模板对齐走 docs-upgrade",
           "type": "must_include",
-          "check": "须指向 docs-upgrade，不得主路径写成 Agent/skills 追新。",
+          "check": "须指向 docs-upgrade，不得主路径写成生态 skills 追新。",
+          "priority": "P0"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": "upgrade-not-trigger-004",
+      "category": "should-not-trigger",
+      "prompt": "当前不在 ai-knowledge 仓库，只把本仓 Agent skills/rules 升到最新到 home。",
+      "expected_output": "主路径 agent-install，不是 skill-upgrade。",
+      "assertions": [
+        {
+          "id": "correct-downstream-agent-install",
+          "name": "本仓树走 agent-install",
+          "type": "must_include",
+          "check": "须指向 agent-install，不得主路径写成 skill-upgrade。",
           "priority": "P0"
         }
       ],

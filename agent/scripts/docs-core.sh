@@ -599,12 +599,15 @@ _sdx_docs_core_source_if_needed() {
 sdx_source_docs_core_from_layout() {
   local link_config_dir="${1:?}"
   local core bootstrap_used=''
-  core="${link_config_dir}/../agent/scripts/docs-core.sh"
-  if [[ -f "$core" ]]; then
-    # shellcheck source=/dev/null
-    source "$core"
-    return 0
-  fi
+  for core in \
+    "${link_config_dir}/../../../scripts/docs-core.sh" \
+    "${link_config_dir}/../agent/scripts/docs-core.sh"; do
+    if [[ -f "$core" ]]; then
+      # shellcheck source=/dev/null
+      source "$core"
+      break
+    fi
+  done
 
   bootstrap_used=''
   if declare -f sdx_resolve_docs_core_path >/dev/null 2>&1; then
@@ -631,11 +634,19 @@ sdx_source_docs_core_from_layout() {
   fi
 
   local repo_root cfg _layout_ar _layout_ads line v
-  repo_root="$(cd "$(dirname "${link_config_dir}")" && pwd)"
-  cfg="${repo_root}/.docsconfig"
+  cfg=''
+  if declare -f docsconfig_find_path >/dev/null 2>&1; then
+    cfg="$(docsconfig_find_path 2>/dev/null || true)"
+  fi
+  if [[ -n "$cfg" && -f "$cfg" ]]; then
+    repo_root="$(dirname "$cfg")"
+  else
+    repo_root="$(cd "$(dirname "${link_config_dir}")" && pwd)"
+    cfg="${repo_root}/.docsconfig"
+  fi
   if [[ ! -f "$cfg" ]]; then
-    printf '错误: 未找到 %s，且目标工程根无 .docsconfig（%s）。请使用中央库 clone 执行 docs-link，或在目标工程先 docs-install --scope=config 并安装 agent 脚本（含 docs-core.sh）。\n' \
-      "${link_config_dir}/../agent/scripts/docs-core.sh" "$cfg" >&2
+    printf '错误: 未找到 docs-core 布局，且当前工程无 .docsconfig（%s）。请在源 Git 仓库根执行 docs-link，或先 docs-install --scope=config 并安装 agent 脚本（含 docs-core.sh）。\n' \
+      "$cfg" >&2
     return 1
   fi
 
