@@ -2,9 +2,9 @@
 # link-config.sh — docs-link 配置层；knowledge-links 解析见 docs-core.sh
 
 readonly LINK_CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-_core="${LINK_CONFIG_DIR}/../agent/scripts/docs-core.sh"
+_core="${LINK_CONFIG_DIR}/../../../scripts/docs-core.sh"
 if [[ -f "$_core" ]]; then
-  # shellcheck source=../agent/scripts/docs-core.sh
+  # shellcheck source=../../../scripts/docs-core.sh
   source "$_core"
 else
   for _bootstrap in \

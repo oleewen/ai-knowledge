@@ -3,8 +3,8 @@
 set -euo pipefail
 
 TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=../../docs-install/test-lib.sh
-source "$TEST_DIR/../../docs-install/test-lib.sh"
+# shellcheck source=../../../docs-install/tests/test-lib.sh
+source "$TEST_DIR/../../../docs-install/tests/test-lib.sh"
 
 if [[ "${BASH_VERSINFO[0]:-0}" -lt 5 ]]; then
   pass "跳过（需 Bash 5+）"
@@ -12,7 +12,7 @@ if [[ "${BASH_VERSINFO[0]:-0}" -lt 5 ]]; then
 fi
 
 TMP_DIR="$(new_tmp_dir)"
-ROOT_DIR="$(cd "$TEST_DIR/../../../.." && pwd)"
+ROOT_DIR="$(cd "$TEST_DIR/../../../../.." && pwd)"
 CORE="$ROOT_DIR/agent/scripts/docs-core.sh"
 FAKE_HOME="$TMP_DIR/home"
 SRC="$TMP_DIR/src"
@@ -27,8 +27,8 @@ cp "$CORE" "$FAKE_HOME/.agents/scripts/docs-core.sh"
 cp "$ROOT_DIR/agent/scripts/federation-slot-symlink.sh" "$FAKE_HOME/.agents/scripts/federation-slot-symlink.sh"
 ln -s "$FAKE_HOME/.agents/scripts/docs-core.sh" "$FAKE_HOME/.cursor/scripts/docs-core.sh"
 ln -s "$FAKE_HOME/.agents/scripts/federation-slot-symlink.sh" "$FAKE_HOME/.cursor/scripts/federation-slot-symlink.sh"
-cp "$ROOT_DIR/scripts/docs-link.sh" "$SRC/scripts/docs-link.sh"
-cp "$ROOT_DIR/scripts/link-config.sh" "$SRC/scripts/link-config.sh"
+cp "$ROOT_DIR/agent/skills/docs-link/scripts/docs-link.sh" "$SRC/scripts/docs-link.sh"
+cp "$ROOT_DIR/agent/skills/docs-link/scripts/link-config.sh" "$SRC/scripts/link-config.sh"
 chmod +x "$SRC/scripts/docs-link.sh"
 git -C "$SRC" init -q
 

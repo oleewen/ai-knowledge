@@ -1,0 +1,132 @@
+{
+  "skill_name": "docs-link",
+  "version": "1.0.0",
+  "description": "评测 docs-link：轻流程（C/M/S/F）；源仓闸门、单目标、默认 dry-run、rewrite-http 明示、与 pull/push/docs-install 分流。",
+  "evals": [
+    {
+      "id": "docs-link-trigger-001",
+      "category": "should-trigger",
+      "prompt": "我在 system 知识库根，想把本地 ~/workspaces/billing-app 登记进联邦，应用名 billing，先别真写。",
+      "expected_output": "docs-link：校验源为 system；收口 --link --target=~/workspaces/billing-app --app-name=billing；先 --dry-run，确认后再真写；停下等 C/M/S/F。",
+      "assertions": [
+        {
+          "id": "dry-run-first",
+          "name": "默认 dry-run",
+          "type": "must_include",
+          "check": "须体现先 --dry-run（或等价预览）再等确认，不得未确认真写。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-target-unit",
+          "name": "单目标单元",
+          "type": "must_include",
+          "check": "须体现当前单元为单一 --target 的 link/unlink，收敛后给出 C/M/S/F。",
+          "priority": "P0"
+        },
+        {
+          "id": "app-name-confirm",
+          "name": "名称确认",
+          "type": "must_include",
+          "check": "须体现 app_name/系统名经向导确认（可预填）后再传 --app-name。",
+          "priority": "P0"
+        },
+        {
+          "id": "audience-check-ab",
+          "name": "受众 A/B",
+          "type": "must_include",
+          "check": "须体现写后（或结果摘要出口）跑受众维 A/B，或对照轻流程默认读者表；未过不得宣称单元完成。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-link-trigger-002",
+      "category": "should-trigger",
+      "prompt": "当前工作区是 application 仓 billing-app，帮我 /docs-link 挂到上级 system。",
+      "expected_output": "docs-link：识别非法源边（application）；停止并要求切换到 system/company 源仓工作区；不代跑脚本。",
+      "assertions": [
+        {
+          "id": "source-cwd-gate",
+          "name": "源仓闸门",
+          "type": "must_include",
+          "check": "须体现当前仓非 company/system 时停止，要求切换源仓工作区，不得静默代 cd 执行。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-link-trigger-003",
+      "category": "should-trigger",
+      "prompt": "换父了，link 时把目标 knowledge 里旧跨层 HTTP 前缀一并改掉。",
+      "expected_output": "docs-link：识别 --rewrite-http 为高风险改正文；默认关；仅在用户明示后二次确认再加旗标。",
+      "assertions": [
+        {
+          "id": "rewrite-http-explicit",
+          "name": "rewrite-http 明示",
+          "type": "must_include",
+          "check": "须体现 --rewrite-http 默认不开启，须用户明示并二次确认。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-link-not-trigger-001",
+      "category": "should-not-trigger",
+      "prompt": "软链断了，把 billing 应用从本地 path clone/pull 回 application-billing 槽位，并写 CHANGE-LOG。",
+      "expected_output": "主路径 docs-pull。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须点名 docs-pull 或槽位回拉/修复为主任务。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-pull",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得把槽位 clone/pull + CHANGE-LOG 写成 docs-link 主路径。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-link-not-trigger-002",
+      "category": "should-not-trigger",
+      "prompt": "把中央库 specs 推到 myapp 应用仓 requirements，先 dry-run 再 copy。",
+      "expected_output": "主路径 docs-push。",
+      "assertions": [
+        {
+          "id": "correct-downstream-push",
+          "name": "正确下游 push",
+          "type": "must_include",
+          "check": "须点名 docs-push 或中央规约下发为主任务。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-link-audience-001",
+      "category": "should-trigger",
+      "prompt": "docs-link 建联完，结果说明写成应用内部实现长文，links 路径与槽位名缺失。请按受众 A/B 处理。",
+      "expected_output": "检出 A/B 违例；应收口为源/目标 links、槽位、dry-run/真写结果要点；未过不得宣称完成。",
+      "assertions": [
+        {
+          "id": "audience-violation-visible",
+          "name": "违例可见",
+          "type": "must_include",
+          "check": "须指出联邦维护者摘要口吻错位或 A/B 未过。",
+          "priority": "P0"
+        },
+        {
+          "id": "audience-rewrite-or-gate",
+          "name": "改写或停问",
+          "type": "must_include",
+          "check": "须改写为建联可读摘要或停问；不得未处理就宣称完成。",
+          "priority": "P0"
+        }
+      ]
+    }
+  ]
+}

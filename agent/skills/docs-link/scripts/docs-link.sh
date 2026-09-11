@@ -4,7 +4,7 @@
 # application 建联时 app_name：--app-name > 登记文件已有 > Git 仓库根目录名推断
 # app_label：新登记或条目中尚无 app_label 时默认等于 app_name；重复 link 且已有 app_label 则保留不覆盖
 # 同一 target 重复 link：合并更新同一条记录，不追加重复行
-# 用法: ./scripts/docs-link.sh --link|--unlink --target <目标仓库根> [--app-name=名] [--rewrite-http] [--dry-run]
+# 用法: bash agent/skills/docs-link/scripts/docs-link.sh --link|--unlink --target <目标仓库根> [--app-name=名] [--rewrite-http] [--dry-run]
 # 须在源 Git 仓库内执行；link 需校验源、目标 .docsconfig 与 KNOWLEDGE_TYPE；
 # 目标须已有 knowledge-links.yaml（application 由 docs-install 落盘）；缺则失败。
 # unlink 支持目标失联场景（按登记 identity 注销）；注销时移除槽位软链（共用 changelogs 保留）。
@@ -19,11 +19,15 @@ readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/link-config.sh"
 
 docs_link_source_federation_helpers() {
-  local c ar=''
+  local c
   for c in \
-    "${SCRIPT_DIR}/../agent/scripts/federation-slot-symlink.sh" \
+    "${SCRIPT_DIR}/../../../scripts/federation-slot-symlink.sh" \
     "${HOME}/.agents/scripts/federation-slot-symlink.sh" \
-    "${HOME}/.cursor/scripts/federation-slot-symlink.sh"
+    "${HOME}/.cursor/scripts/federation-slot-symlink.sh" \
+    "${HOME}/.trae/scripts/federation-slot-symlink.sh" \
+    "${HOME}/.claude/scripts/federation-slot-symlink.sh" \
+    "${HOME}/.kiro/scripts/federation-slot-symlink.sh" \
+    "${HOME}/.codex/scripts/federation-slot-symlink.sh"
   do
     if [[ -f "$c" ]]; then
       # shellcheck source=/dev/null
@@ -31,16 +35,6 @@ docs_link_source_federation_helpers() {
       return 0
     fi
   done
-  if declare -f abs_path >/dev/null 2>&1; then
-    for c in \
-      "$(abs_path "${SCRIPT_DIR}/../agent" 2>/dev/null || true)/scripts/federation-slot-symlink.sh"
-    do
-      [[ -f "$c" ]] || continue
-      # shellcheck source=/dev/null
-      source "$c"
-      return 0
-    done
-  fi
   sdx_error "未找到 federation-slot-symlink.sh（请安装 Agent 或在中央库执行）"
 }
 docs_link_source_federation_helpers
@@ -54,7 +48,7 @@ docs_link_okf_parent_py() {
     ar="$(abs_path "$_sar")" || ar="$_sar"
   fi
   for c in \
-    "${SCRIPT_DIR}/../agent/skills/docs-okf/scripts/okf_parent.py" \
+    "${SCRIPT_DIR}/../../docs-okf/scripts/okf_parent.py" \
     "${ar}/skills/docs-okf/scripts/okf_parent.py"
   do
     [[ -n "$c" && -f "$c" ]] && { printf '%s\n' "$c"; return 0; }
@@ -342,7 +336,7 @@ docs_link_unknown_arg() {
 
 docs_link_usage() {
   cat >&2 <<'EOF'
-用法: ./scripts/docs-link.sh --link|--unlink --target <目标知识库仓库根> [--app-name 名] [--rewrite-http] [--dry-run]
+用法: bash agent/skills/docs-link/scripts/docs-link.sh --link|--unlink --target <目标知识库仓库根> [--app-name 名] [--rewrite-http] [--dry-run]
 
   --link / --unlink 二选一，不得同时出现。
 
@@ -363,9 +357,9 @@ docs_link_usage() {
   不再读写 knowledge-parent.yaml。unlink 删除子仓 parent 条与槽位软链，不改正文 HTTP，共用日志保留。
 
 示例:
-  ./scripts/docs-link.sh --target ~/workspaces/target-repo --link
-  ./scripts/docs-link.sh --target ~/workspaces/target-repo --link --app-name=my-app --rewrite-http
-  ./scripts/docs-link.sh --target ~/workspaces/target-repo --unlink --dry-run
+  bash agent/skills/docs-link/scripts/docs-link.sh --target ~/workspaces/target-repo --link
+  bash agent/skills/docs-link/scripts/docs-link.sh --target ~/workspaces/target-repo --link --app-name=my-app --rewrite-http
+  bash agent/skills/docs-link/scripts/docs-link.sh --target ~/workspaces/target-repo --unlink --dry-run
 EOF
 }
 

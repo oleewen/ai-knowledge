@@ -3,8 +3,8 @@
 set -euo pipefail
 
 TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=../../docs-install/test-lib.sh
-source "$TEST_DIR/../../docs-install/test-lib.sh"
+# shellcheck source=../../../docs-install/tests/test-lib.sh
+source "$TEST_DIR/../../../docs-install/tests/test-lib.sh"
 
 if [[ "${BASH_VERSINFO[0]:-0}" -lt 5 ]]; then
   pass "跳过（需 Bash 5+）"
@@ -12,9 +12,9 @@ if [[ "${BASH_VERSINFO[0]:-0}" -lt 5 ]]; then
 fi
 
 TMP_DIR="$(new_tmp_dir)"
-ROOT_DIR="$(cd "$TEST_DIR/../../../.." && pwd)"
+ROOT_DIR="$(cd "$TEST_DIR/../../../../.." && pwd)"
 SRC="$TMP_DIR/src"
-DOCS_LINK="$ROOT_DIR/scripts/docs-link.sh"
+DOCS_LINK="$ROOT_DIR/agent/skills/docs-link/scripts/docs-link.sh"
 
 cleanup() {
   rm -rf "$TMP_DIR"
