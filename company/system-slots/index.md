@@ -8,7 +8,7 @@ title: system-slots 目录索引
 
 ## 子目录
 
-* [system-NAME](system-NAME/README.md) — 槽位模板（占位 `NAME`）
+（实例槽为软链 `system-{NAME}` → 下级系统 `DOC_ROOT`；由 `docs-link` / `/docs-pull` 维护。）
 
 ## 已登记槽
 
@@ -17,12 +17,14 @@ title: system-slots 目录索引
 ## 目录文件
 
 * [README.md](README.md)
+* [changelogs/CHANGE-LOG.md](changelogs/CHANGE-LOG.md)
+* [changelogs/ARCHIVE-LOG.md](changelogs/ARCHIVE-LOG.md)
 
 ## 阅读顺序
 
-1. [README.md](README.md) — 职责与路径硬切  
-2. [system-NAME/README.md](system-NAME/README.md) — 模板槽位  
-3. [../knowledge-links.yaml](../knowledge-links.yaml) — 建联  
+1. [README.md](README.md) — 职责与软链约定
+2. [changelogs/CHANGE-LOG.md](changelogs/CHANGE-LOG.md) — 同步留痕
+3. [../knowledge-links.yaml](../knowledge-links.yaml) — 建联
 
 ## 关联索引
 
