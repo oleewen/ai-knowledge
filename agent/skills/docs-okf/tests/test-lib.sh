@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
 RESOLVE_SCRIPT="$ROOT_DIR/agent/skills/docs-okf/scripts/resolve-okf-paths.sh"
 VALIDATE_SCRIPT="$ROOT_DIR/agent/skills/docs-okf/scripts/okf-validate.sh"
 

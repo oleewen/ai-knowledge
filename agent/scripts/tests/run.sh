@@ -2,22 +2,37 @@
 set -euo pipefail
 
 TEST_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$TEST_ROOT/../.." && pwd)"
+REPO_ROOT="$(cd "$TEST_ROOT/../../.." && pwd)"
 source "$REPO_ROOT/agent/scripts/test-core.sh"
 
-QUICK_SUITES=("agent/scripts/tests/forbidden-file-refs/run.sh" docs-link docs-pull docs-change okf docs-okf agent-install docs-bootstrap docs-meta-naming)
-FULL_SUITES=("agent/scripts/tests/forbidden-file-refs/run.sh" docs-link docs-pull docs-change okf docs-okf agent-install docs-bootstrap docs-meta-naming docs-install docs-push)
+# 短名 → 相对仓库根的 runner；含路径者按仓库根解析
+declare -A SUITE_RUNNERS=(
+  [docs-link]='agent/skills/docs-link/tests/run.sh'
+  [docs-pull]='agent/skills/docs-pull/tests/run.sh'
+  [docs-push]='agent/skills/docs-push/tests/run.sh'
+  [docs-change]='agent/skills/docs-change/tests/run.sh'
+  [docs-okf]='agent/skills/docs-okf/tests/run.sh'
+  [docs-install]='agent/skills/docs-install/tests/run.sh'
+  [agent-install]='agent/skills/agent-install/tests/run.sh'
+  [bootstrap]='agent/scripts/tests/bootstrap/run.sh'
+  [okf]='agent/scripts/tests/okf/run.sh'
+  [docs-meta-naming]='agent/scripts/tests/docs-meta-naming/run.sh'
+  [forbidden-file-refs]='agent/scripts/tests/forbidden-file-refs/run.sh'
+)
+
+QUICK_SUITES=(forbidden-file-refs docs-link docs-pull docs-change okf docs-okf agent-install bootstrap docs-meta-naming)
+FULL_SUITES=(forbidden-file-refs docs-link docs-pull docs-change okf docs-okf agent-install bootstrap docs-meta-naming docs-install docs-push)
 
 MODE='quick'
 SUITE=''
 
 usage() {
   cat <<EOF
-用法: bash scripts/tests/run.sh [--quick|--full] [--suite NAME]
+用法: bash agent/scripts/tests/run.sh [--quick|--full] [--suite NAME]
 
   --quick（默认）  ${QUICK_SUITES[*]}
   --full           ${FULL_SUITES[*]}
-  --suite NAME     仅运行指定套件
+  --suite NAME     仅运行指定套件（短名或 agent/.../run.sh）
 EOF
 }
 
@@ -39,7 +54,9 @@ parse_args() {
 run_suite() {
   local name="${1:?suite name is required}"
   local runner
-  if [[ "$name" == */* ]]; then
+  if [[ -n "${SUITE_RUNNERS[$name]:-}" ]]; then
+    runner="$REPO_ROOT/${SUITE_RUNNERS[$name]}"
+  elif [[ "$name" == */* ]]; then
     runner="$REPO_ROOT/$name"
   else
     runner="$TEST_ROOT/$name/run.sh"
@@ -73,7 +90,7 @@ main() {
   done
 
   printf '\n'
-  printf '== scripts/tests 聚合结果 ==\n'
+  printf '== agent/scripts/tests 聚合结果 ==\n'
   if [[ "$failed" -gt 0 ]]; then
     printf '失败套件数: %d\n' "$failed"
     exit 1
