@@ -14,10 +14,10 @@
 
 ## 当前槽位单元
 
-一个当前槽位单元就是单个联邦槽位：
+一个当前槽位单元就是单个联邦槽位软链：
 
-- system 库下的 `application-slots/application-{NAME}`
-- company 库下的 `system-slots/system-{NAME}`
+- system 库下的 `application-slots/application-{NAME}` → 应用 `DOC_ROOT`
+- company 库下的 `system-slots/system-{NAME}` → 系统 `DOC_ROOT`
 
 一次只处理一个当前槽位单元，不并行推进多个槽位。
 
@@ -25,9 +25,8 @@
 
 ### 1 建联前提
 
-- 在 system 知识库根执行 docs-link 建联（创建 `application-slots/application-{NAME}/` 槽位）
-- 在 company 知识库根执行 docs-link 建联（创建 `system-slots/system-{NAME}/` 槽位）
-- 必须先有槽位目录，否则 `pull-slots.sh` 失败退出
+- 优先已用 docs-link 建联（写 yaml + 建软链；可悬空）
+- 共用日志目录：`application-slots/changelogs/` 或 `system-slots/changelogs/`
 
 ### 2 选择当前槽位单元
 
@@ -45,19 +44,20 @@ bash agent/skills/docs-pull/scripts/pull-slots.sh --all
 
 脚本约束：
 
-- 仅使用本地 `path`，不 clone
-- 要求源 `path` 为 Git 工作区
-- 目标仓库 `.docsconfig` 必须完整可解析
-- 同步时排除 `README.md`、`index.md`、`changelogs/`
+- path 不存在 → `git clone <repository> <path>`
+- path 已存在 → `origin` 须匹配 `repository`；脏工作区拒绝；否则 `git pull --ff-only`（远端默认分支）
+- 软链目标：有 `.docsconfig` 用其 `DOC_ROOT`，否则 `{path}/{doc_dir}`
+- 旧真目录槽位：合并旧日志进共用文件后删除，再建软链（静默）
+- 追溯写入层共用 `changelogs/CHANGE-LOG.md`（字段：synced_at / name / source / commit / action）
 
 ### 4 风险校核
 
 当前槽位单元同步后，立即校核：
 
 - `knowledge-links.yaml` 字段是否完整
-- `path` 是否存在且为 Git 工作区
+- path / origin / 软链是否有效
 - 目标 `.docsconfig` 与 `KNOWLEDGE_TYPE` 是否匹配
-- 槽位 `changelogs/CHANGE-LOG.md` 是否已追加追溯记录
+- 层共用 `changelogs/CHANGE-LOG.md` 是否已追加追溯记录
 
 ### 5 输出与动作停顿
 

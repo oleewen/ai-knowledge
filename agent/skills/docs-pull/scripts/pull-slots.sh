@@ -3,6 +3,8 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../../../../agent/scripts/config-bootstrap.sh"
+# shellcheck source=/dev/null
+source "$SCRIPT_DIR/../../../../agent/scripts/federation-slot-symlink.sh"
 
 APP=""
 SYS_NAME=""
@@ -48,19 +50,12 @@ LINKS_FILE="${DOC_ROOT%/}/knowledge-links.yaml"
 declare -a paths=() repos=() doc_dirs=() names=() labels=() types=()
 knowledge_links_load_into_arrays "$LINKS_FILE" paths repos doc_dirs names labels types
 
-if ! command -v rsync >/dev/null 2>&1; then
-  printf '缺少 rsync，无法执行槽位同步\n' >&2
-  exit 1
-fi
-
 expected_target_type=""
 slot_prefix=""
 name_flag=""
 name_value=""
-
-# company 槽位：DOC_ROOT/system-slots/system-{NAME}/
-# system 槽位：DOC_ROOT/application-slots/application-{NAME}/
 slot_parent=""
+
 if [[ "$MODE" == "system" ]]; then
   expected_target_type="application"
   slot_prefix="application"
@@ -109,49 +104,104 @@ validate_link_fields() {
   return 0
 }
 
-append_change_log() {
-  local slot_dir="${1:?}" slot_key="${2:?}" slot_name="${3:?}" source_repo="${4:?}" commit="${5:?}" scope="${6:?}" added="${7:?}" modified="${8:?}" deleted="${9:?}"
-  local log_file synced_at
-  log_file="${slot_dir%/}/changelogs/CHANGE-LOG.md"
-  [[ -f "$log_file" ]] || { printf '缺少槽位 CHANGE-LOG.md: %s\n' "$log_file" >&2; return 1; }
-  synced_at="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-  {
-    printf '\n'
-    printf '## synced_at: %s\n' "$synced_at"
-    printf '\n'
-    printf -- '- %s: %s\n' "$slot_key" "$slot_name"
-    printf -- '- source: %s\n' "$source_repo"
-    printf -- '- commit: %s\n' "$commit"
-    printf -- '- scope: %s\n' "$scope"
-    printf -- '- stats: added=%s modified=%s deleted=%s\n' "$added" "$modified" "$deleted"
-  } >>"$log_file"
+join_actions() {
+  local out="" part
+  for part in "$@"; do
+    [[ -n "$part" ]] || continue
+    if [[ -z "$out" ]]; then
+      out="$part"
+    else
+      out="${out}+${part}"
+    fi
+  done
+  printf '%s' "$out"
+}
+
+ensure_child_repo() {
+  # stdout: action fragment (clone|pull|空); 失败 return 1
+  local path_expanded="${1:?}" repo="${2:?}"
+  local origin expect actual parent_dir
+  local -a acts=()
+
+  if [[ ! -e "$path_expanded" ]]; then
+    parent_dir="$(dirname "$path_expanded")"
+    mkdir -p "$parent_dir"
+    if ! git clone --quiet "$repo" "$path_expanded" >/dev/null; then
+      printf 'git clone 失败: %s → %s\n' "$repo" "$path_expanded" >&2
+      return 1
+    fi
+    acts+=("clone")
+    printf '%s' "$(join_actions "${acts[@]}")"
+    return 0
+  fi
+
+  [[ -d "$path_expanded/.git" || -f "$path_expanded/.git" ]] \
+    || { printf 'path 不是 Git 工作区: %s\n' "$path_expanded" >&2; return 1; }
+
+  origin="$(federation_git_origin_url "$path_expanded")"
+  [[ -n "$origin" ]] || { printf 'path 缺少 origin remote: %s\n' "$path_expanded" >&2; return 1; }
+  expect="$(federation_normalize_git_url "$repo")"
+  actual="$(federation_normalize_git_url "$origin")"
+  [[ "$expect" == "$actual" ]] \
+    || { printf 'origin 与 knowledge-links.repository 不匹配: origin=%s repository=%s\n' "$origin" "$repo" >&2; return 1; }
+
+  if federation_git_is_dirty "$path_expanded"; then
+    printf '工作区有未提交改动，拒绝 git pull: %s\n' "$path_expanded" >&2
+    return 1
+  fi
+
+  local branch
+  branch="$(git -C "$path_expanded" rev-parse --abbrev-ref HEAD 2>/dev/null || true)"
+  [[ -n "$branch" && "$branch" != "HEAD" ]] || branch="master"
+  if ! git -C "$path_expanded" pull --ff-only origin "$branch" >/dev/null; then
+    # 远端默认分支名可能不同：探测 origin/HEAD
+    if git -C "$path_expanded" remote set-head origin -a >/dev/null 2>&1; then
+      branch="$(git -C "$path_expanded" symbolic-ref -q refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || true)"
+    fi
+    [[ -n "$branch" ]] || { printf 'git pull 失败（无法解析远端分支）: %s\n' "$path_expanded" >&2; return 1; }
+    if ! git -C "$path_expanded" pull --ff-only origin "$branch" >/dev/null; then
+      printf 'git pull 失败: %s\n' "$path_expanded" >&2
+      return 1
+    fi
+  fi
+  acts+=("pull")
+  printf '%s' "$(join_actions "${acts[@]}")"
+  return 0
 }
 
 pull_one() {
   local idx="${1:?}"
   validate_link_fields "$idx" || return 1
 
-  local repo path_expanded name label target_cfg t_doc_root t_repo_root t_doc_dir t_agent_root t_agent_dirs t_ktype
-  local source_dir slot_dir commit synced_at scope
-  local rsync_stats added modified deleted
+  local repo path_expanded name label
+  local source_dir slot_dir slots_dir shared_log_dir shared_change_log
+  local commit action git_action link_action slot_key
+  local target_cfg t_doc_root='' t_repo_root='' t_doc_dir='' t_agent_root='' t_agent_dirs='' t_ktype=''
+  local saved_pwd
 
   repo="${repos[idx]}"
   path_expanded="$(knowledge_link_expand_stored_path "${paths[idx]}")"
   name="${names[idx]}"
   label="${labels[idx]}"
 
-  [[ -d "$path_expanded" ]] || { printf 'path 不存在: %s\n' "$path_expanded" >&2; return 1; }
-  [[ -d "$path_expanded/.git" || -f "$path_expanded/.git" ]] || { printf 'path 不是 Git 工作区: %s\n' "$path_expanded" >&2; return 1; }
+  slots_dir="${DOC_ROOT%/}/${slot_parent}"
+  slot_dir="${slots_dir}/${slot_prefix}-${name}"
+  shared_log_dir="${slots_dir}/changelogs"
+  shared_change_log="${shared_log_dir}/CHANGE-LOG.md"
+  federation_ensure_shared_changelogs "$slots_dir"
+
+  git_action="$(ensure_child_repo "$path_expanded" "$repo")" || return 1
 
   target_cfg="${path_expanded%/}/.docsconfig"
   [[ -f "$target_cfg" ]] || { printf '目标仓库缺少 .docsconfig: %s\n' "$target_cfg" >&2; return 1; }
 
-  t_doc_root='' t_repo_root='' t_doc_dir='' t_agent_root='' t_agent_dirs='' t_ktype=''
-  local saved_pwd="$PWD"
+  saved_pwd="$PWD"
   cd "$path_expanded"
-  docsconfig_read_into "$target_cfg" t_doc_root t_repo_root t_doc_dir t_agent_root t_agent_dirs t_ktype || { cd "$saved_pwd"; printf '无法解析目标 .docsconfig: %s\n' "$target_cfg" >&2; return 1; }
+  docsconfig_read_into "$target_cfg" t_doc_root t_repo_root t_doc_dir t_agent_root t_agent_dirs t_ktype \
+    || { cd "$saved_pwd"; printf '无法解析目标 .docsconfig: %s\n' "$target_cfg" >&2; return 1; }
   cd "$saved_pwd"
-  [[ -n "$t_doc_root" && -n "$t_doc_dir" && -n "$t_ktype" ]] || { printf '目标 .docsconfig 缺少 DOC_ROOT/DOC_DIR/KNOWLEDGE_TYPE: %s\n' "$target_cfg" >&2; return 1; }
+  [[ -n "$t_doc_root" && -n "$t_doc_dir" && -n "$t_ktype" ]] \
+    || { printf '目标 .docsconfig 缺少 DOC_ROOT/DOC_DIR/KNOWLEDGE_TYPE: %s\n' "$target_cfg" >&2; return 1; }
 
   if [[ "$expected_target_type" == "application" ]]; then
     [[ "$t_ktype" == "application" ]] || { printf '目标 KNOWLEDGE_TYPE 不匹配（应为 application）: %s\n' "$t_ktype" >&2; return 1; }
@@ -159,42 +209,19 @@ pull_one() {
     [[ "$t_ktype" == "system" ]] || { printf '目标 KNOWLEDGE_TYPE 不匹配（应为 system）: %s\n' "$t_ktype" >&2; return 1; }
   fi
 
-  # DOC_ROOT 即文档根（REPO_ROOT+DOC_DIR=DOC_ROOT）；禁止再拼 DOC_DIR，否则 docs/docs
-  source_dir="${t_doc_root%/}"
+  source_dir="$(federation_resolve_doc_root "$path_expanded" "${doc_dirs[idx]}")" \
+    || { printf '无法解析下级 DOC_ROOT: path=%s doc_dir=%s\n' "$path_expanded" "${doc_dirs[idx]}" >&2; return 1; }
   [[ -d "$source_dir" ]] || { printf '源目录不存在: %s\n' "$source_dir" >&2; return 1; }
 
-  if [[ -n "$slot_parent" ]]; then
-    slot_dir="${DOC_ROOT%/}/${slot_parent}/${slot_prefix}-${name}"
-  else
-    slot_dir="${DOC_ROOT%/}/${slot_prefix}-${name}"
-  fi
-  [[ -d "$slot_dir" ]] || { printf '槽位目录不存在，请先 docs-link 建联并创建槽位: %s\n' "$slot_dir" >&2; return 1; }
-
-  rsync_stats="$(
-    rsync -ani --delete \
-      --exclude 'README.md' \
-      --exclude 'index.md' \
-      --exclude 'changelogs/' \
-      "${source_dir%/}/" "${slot_dir%/}/" 2>/dev/null || true
-  )"
-
-  added="$(printf '%s\n' "$rsync_stats" | awk 'BEGIN{n=0} /^>f\\+\\+\\+\\+\\+\\+\\+\\+\\+/{n++} END{print n}')"
-  modified="$(printf '%s\n' "$rsync_stats" | awk 'BEGIN{n=0} /^>f/ && $0 !~ /^>f\\+\\+\\+\\+\\+\\+\\+\\+\\+/{n++} END{print n}')"
-  deleted="$(printf '%s\n' "$rsync_stats" | awk 'BEGIN{n=0} /^\\*deleting /{n++} END{print n}')"
-
-  rsync -a --delete \
-    --exclude 'README.md' \
-    --exclude 'index.md' \
-    --exclude 'changelogs/' \
-    "${source_dir%/}/" "${slot_dir%/}/"
+  link_action="$(federation_ensure_slot_symlink "$slot_dir" "$source_dir" "$shared_log_dir" "$name")"
+  action="$(join_actions "$git_action" "$link_action")"
+  [[ -n "$action" ]] || action="pull"
 
   commit="$(git -C "$path_expanded" rev-parse --short HEAD 2>/dev/null || printf 'unknown')"
-  scope="DOC_DIR=${t_doc_dir}"
-
   slot_key="$([[ "$expected_target_type" == "application" ]] && printf 'app_name' || printf 'sys_name')"
-  append_change_log "$slot_dir" "$slot_key" "$name" "$repo" "$commit" "$scope" "$added" "$modified" "$deleted" || return 1
+  federation_append_pull_change_log "$shared_change_log" "$slot_key" "$name" "$repo" "$commit" "$action" || return 1
 
-  printf 'SYNC_OK: %s (%s)\n' "$name" "$label"
+  printf 'SYNC_OK: %s (%s) action=%s\n' "$name" "$label" "$action"
   return 0
 }
 

@@ -20,7 +20,7 @@
           "id": "changelog-must-follow-sync",
           "name": "同步后追溯",
           "type": "must_include",
-          "check": "须体现槽位 CHANGE-LOG.md 追溯记录要跟随同步追加。",
+          "check": "须体现 application-slots/changelogs/CHANGE-LOG.md（层共用）追溯记录要跟随同步追加。",
           "priority": "P0"
         },
         {

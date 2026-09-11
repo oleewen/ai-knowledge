@@ -20,11 +20,13 @@
 
 以下情况属于风险项，必须先给出结论、推荐方案与动作选项，再等待用户确认：
 
-- 槽位目录不存在，需先 `docs-link`
-- `path` 不存在或不是 Git 工作区
+- `path` 不存在（将 clone）或不是 Git 工作区
+- `origin` 与 `repository` 不匹配
+- 工作区 dirty（拒绝 pull）
 - 目标 `.docsconfig` 缺失或无法解析
 - `knowledge-links.yaml` 缺字段
 - `--all` 准备继续后续槽位
+- clone/pull 需网络与凭据
 
 推荐会话格式（字母见 [light-flow-actions.md](../../../references/light-flow-actions.md)）：
 
@@ -39,11 +41,11 @@ C 确认当前槽位单元 / M 修改参数 / S 跳过当前槽位 / F 补齐剩
 
 ## 默认授权边界
 
-- 已收口参数下，可直接执行非语义性动作：读取 links、解析 `.docsconfig`、校核槽位存在性
+- 已收口参数下，可直接执行非语义性动作：读取 links、解析 `.docsconfig`、校核软链
 - 涉及是否继续下一槽位、是否接受 `--all` 批量推进，按语义性处理
 
 ## 约束
 
-- 必须先有 `docs-link` 创建槽位
-- 同步写槽位根目录时排除 `README.md`、`index.md`、`changelogs/`
-- 槽位 `CHANGE-LOG.md` 追溯记录必须跟随同步追加
+- 槽位为软链，不再 rsync 拷贝正文
+- 层共用 `changelogs/CHANGE-LOG.md` 追溯记录必须跟随同步追加
+- 脏工作区不得 pull

@@ -19,13 +19,12 @@ trap cleanup EXIT
 
 SYSTEM="$TMP_DIR/system"
 APP="$TMP_DIR/app-foo"
+BARE="$TMP_DIR/app-foo.bare.git"
 
 mkdir -p "$SYSTEM/docs" "$APP/docs"
 git -C "$SYSTEM" init -q
 git -C "$APP" init -q
-git -C "$APP" remote add origin "https://example.com/org/app-foo.git"
 
-# 联邦侧：槽位与 knowledge-links 落在 DOC_ROOT 下
 cat >"$SYSTEM/.docsconfig" <<EOF
 DOC_ROOT=docs
 REPO_ROOT=$SYSTEM
@@ -35,7 +34,6 @@ AGENT_ROOT=$ROOT_DIR/agent
 AGENT_DIRS=.cursor
 EOF
 
-# 目标应用仓：DOC_ROOT 即正文根（REPO_ROOT+DOC_DIR=DOC_ROOT）
 cat >"$APP/.docsconfig" <<EOF
 DOC_ROOT=docs
 REPO_ROOT=$APP
@@ -45,24 +43,25 @@ AGENT_ROOT=$ROOT_DIR/agent
 AGENT_DIRS=.cursor
 EOF
 
-mkdir -p "$SYSTEM/docs/application-slots/application-app-foo/changelogs"
-echo "# CHANGE LOG - NAME" >"$SYSTEM/docs/application-slots/application-app-foo/changelogs/CHANGE-LOG.md"
-echo "# slot wrapper" >"$SYSTEM/docs/application-slots/application-app-foo/README.md"
-echo "# slot index" >"$SYSTEM/docs/application-slots/application-app-foo/index.md"
-
 echo "content" >"$APP/docs/sync-me.md"
+git -C "$APP" add .
+git -C "$APP" commit -m "init app docs" -q
+git clone --bare "$APP" "$BARE" -q
+git -C "$APP" remote add origin "$BARE"
+
+mkdir -p "$SYSTEM/docs/application-slots"
+# 旧真目录槽位：应被静默迁移为软链
+mkdir -p "$SYSTEM/docs/application-slots/application-app-foo/changelogs"
+echo "# old slot log" >"$SYSTEM/docs/application-slots/application-app-foo/changelogs/CHANGE-LOG.md"
 
 cat >"$SYSTEM/docs/knowledge-links.yaml" <<EOF
 links:
-  - repository: "https://example.com/org/app-foo.git"
+  - repository: "$BARE"
     path: "$APP"
     doc_dir: "docs"
     app_name: "app-foo"
     app_label: "app-foo"
 EOF
-
-git -C "$APP" add .
-git -C "$APP" commit -m "init app docs" -q
 
 set +e
 out="$(cd "$SYSTEM" && "${BASH:-bash}" "$PULL" --app app-foo 2>&1)"
@@ -72,8 +71,13 @@ set -e
 [[ "$code" -eq 0 ]] || fail "docs-pull 应成功：$out"
 printf '%s\n' "$out" | grep -Fq 'SYNC_OK:' || fail "应输出 SYNC_OK"
 
+[[ -L "$SYSTEM/docs/application-slots/application-app-foo" ]] \
+  || fail "槽位应为软链"
 assert_file_exists "$SYSTEM/docs/application-slots/application-app-foo/sync-me.md"
-grep -Fq 'https://example.com/org/app-foo.git' "$SYSTEM/docs/application-slots/application-app-foo/changelogs/CHANGE-LOG.md" \
+assert_file_exists "$SYSTEM/docs/application-slots/changelogs/CHANGE-LOG.md"
+grep -Fq "$BARE" "$SYSTEM/docs/application-slots/changelogs/CHANGE-LOG.md" \
   || fail "应写入 repository 作为 source"
+grep -Fq 'migrated_from: app-foo' "$SYSTEM/docs/application-slots/changelogs/CHANGE-LOG.md" \
+  || fail "应合并旧槽位日志"
 
-pass "system: pull single app syncs content and writes changelog"
+pass "system: pull single app symlink + changelog"

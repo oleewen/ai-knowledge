@@ -20,13 +20,12 @@ trap cleanup EXIT
 SYSTEM="$TMP_DIR/system"
 APP_OK="$TMP_DIR/app-ok"
 APP_BAD="$TMP_DIR/app-bad"
+BARE_OK="$TMP_DIR/app-ok.bare.git"
 
 mkdir -p "$SYSTEM/docs" "$APP_OK/docs" "$APP_BAD/docs"
 git -C "$SYSTEM" init -q
 git -C "$APP_OK" init -q
-git -C "$APP_OK" remote add origin "https://example.com/org/app-ok.git"
 git -C "$APP_BAD" init -q
-git -C "$APP_BAD" remote add origin "https://example.com/org/app-bad.git"
 
 cat >"$SYSTEM/.docsconfig" <<EOF
 DOC_ROOT=docs
@@ -46,14 +45,19 @@ AGENT_ROOT=$ROOT_DIR/agent
 AGENT_DIRS=.cursor
 EOF
 
-mkdir -p "$SYSTEM/docs/application-slots/application-app-ok/changelogs"
-echo "# CHANGE LOG - NAME" >"$SYSTEM/docs/application-slots/application-app-ok/changelogs/CHANGE-LOG.md"
 echo "content" >"$APP_OK/docs/sync-me.md"
 git -C "$APP_OK" add . && git -C "$APP_OK" commit -m "ok" -q
+git clone --bare "$APP_OK" "$BARE_OK" -q
+git -C "$APP_OK" remote add origin "$BARE_OK"
+
+git -C "$APP_BAD" remote add origin "https://example.com/org/app-bad-OTHER.git"
+# APP_BAD：origin 与 links.repository 不匹配 → 失败
+
+mkdir -p "$SYSTEM/docs/application-slots"
 
 cat >"$SYSTEM/docs/knowledge-links.yaml" <<EOF
 links:
-  - repository: "https://example.com/org/app-ok.git"
+  - repository: "$BARE_OK"
     path: "$APP_OK"
     doc_dir: "docs"
     app_name: "app-ok"
