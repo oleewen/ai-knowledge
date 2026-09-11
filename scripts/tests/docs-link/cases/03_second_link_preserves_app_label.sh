@@ -18,17 +18,12 @@ FAKEHOME="$TMP_DIR/fakehome"
 SYS_SRC="$FAKEHOME/ws/system-kb"
 APP_TGT="$FAKEHOME/ws/my-application-repo"
 LIST="$SYS_SRC/docs/knowledge-links.yaml"
-TPL="$ROOT_DIR/system/application-slots"
-
 cleanup() {
   rm -rf "$TMP_DIR"
 }
 trap cleanup EXIT
 
-[[ -d "$TPL" ]] || fail "缺少模板目录: $TPL"
-
-mkdir -p "$SYS_SRC/docs" "$APP_TGT/docs"
-cp -R "$TPL" "$SYS_SRC/docs/application-slots"
+mkdir -p "$SYS_SRC/docs/application-slots" "$APP_TGT/docs"
 printf '%s\n' 'links: []' >"$APP_TGT/docs/knowledge-links.yaml"
 git -C "$SYS_SRC" init -q
 git -C "$APP_TGT" init -q
@@ -73,5 +68,8 @@ fi
 
 run_link || fail "第二次 link 应成功"
 grep -Fq 'app_label: "保留测签"' "$LIST" || fail "再次 link 应保留已有 app_label"
+[[ -L "$SYS_SRC/docs/application-slots/application-my-application-repo" ]] \
+  || fail "建联后槽位应为软链"
+assert_file_exists "$SYS_SRC/docs/application-slots/changelogs/CHANGE-LOG.md"
 
 pass "再次 link 保留已有 app_label"

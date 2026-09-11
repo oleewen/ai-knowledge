@@ -254,9 +254,11 @@ install_agent_scripts() {
   (( INSTALL_SCRIPTS == 1 )) || return 0
   install_agent_resource "scripts" "agent/scripts" "scripts"
 
-  # 补充 docs-core.sh
+  # 补充 docs-core.sh / federation-slot-symlink.sh（联邦槽位软链辅助）
   local src_docs_ssot="${CFG[repo_root]}/agent/scripts/docs-core.sh"
+  local src_fed_ssot="${CFG[repo_root]}/agent/scripts/federation-slot-symlink.sh"
   copy_file_plain "$src_docs_ssot" "$(agent_store_root)/scripts/docs-core.sh"
+  [[ -f "$src_fed_ssot" ]] && copy_file_plain "$src_fed_ssot" "$(agent_store_root)/scripts/federation-slot-symlink.sh"
 }
 
 install_agent_skills() {

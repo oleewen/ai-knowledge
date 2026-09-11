@@ -24,7 +24,9 @@ trap cleanup EXIT
 
 mkdir -p "$FAKE_HOME/.agents/scripts" "$FAKE_HOME/.cursor/scripts" "$SRC/scripts" "$SRC/docs"
 cp "$CORE" "$FAKE_HOME/.agents/scripts/docs-core.sh"
+cp "$ROOT_DIR/agent/scripts/federation-slot-symlink.sh" "$FAKE_HOME/.agents/scripts/federation-slot-symlink.sh"
 ln -s "$FAKE_HOME/.agents/scripts/docs-core.sh" "$FAKE_HOME/.cursor/scripts/docs-core.sh"
+ln -s "$FAKE_HOME/.agents/scripts/federation-slot-symlink.sh" "$FAKE_HOME/.cursor/scripts/federation-slot-symlink.sh"
 cp "$ROOT_DIR/scripts/docs-link.sh" "$SRC/scripts/docs-link.sh"
 cp "$ROOT_DIR/scripts/link-config.sh" "$SRC/scripts/link-config.sh"
 chmod +x "$SRC/scripts/docs-link.sh"

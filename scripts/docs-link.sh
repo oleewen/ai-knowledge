@@ -7,16 +7,44 @@
 # 用法: ./scripts/docs-link.sh --link|--unlink --target <目标仓库根> [--app-name=名] [--rewrite-http] [--dry-run]
 # 须在源 Git 仓库内执行；link 需校验源、目标 .docsconfig 与 KNOWLEDGE_TYPE；
 # 目标须已有 knowledge-links.yaml（application 由 docs-install 落盘）；缺则失败。
-# unlink 支持目标失联场景（按登记 identity 注销）；system 源注销 application 建联时先将
-# DOC_ROOT 下 application-slots/application-<NAME>/ 备份至 REPO_ROOT/.docs-init/<时间戳>/（与 docs-install 一致）再移除。
+# unlink 支持目标失联场景（按登记 identity 注销）；注销时移除槽位软链（共用 changelogs 保留）。
 # 登记值：repository 存 Git remote URL；path 存本机路径（$HOME 下 ~/…）；doc_dir=对方 DOC_DIR。
 # type:meta（docs-install 写入）写回时保活；meta.doc_dir=目标 KNOWLEDGE_TYPE。pull/push 跳过 meta。
 # 不再读写 knowledge-parent.yaml；跨层 HTTP 前缀替换仅当 --rewrite-http。
+# 槽位：application-slots/application-{NAME} 或 system-slots/system-{NAME} 为指向下级 DOC_ROOT 的软链。
 set -euo pipefail
 
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=./link-config.sh
 source "${SCRIPT_DIR}/link-config.sh"
+
+docs_link_source_federation_helpers() {
+  local c ar=''
+  for c in \
+    "${SCRIPT_DIR}/../agent/scripts/federation-slot-symlink.sh" \
+    "${HOME}/.agents/scripts/federation-slot-symlink.sh" \
+    "${HOME}/.cursor/scripts/federation-slot-symlink.sh"
+  do
+    if [[ -f "$c" ]]; then
+      # shellcheck source=/dev/null
+      source "$c"
+      return 0
+    fi
+  done
+  if declare -f abs_path >/dev/null 2>&1; then
+    for c in \
+      "$(abs_path "${SCRIPT_DIR}/../agent" 2>/dev/null || true)/scripts/federation-slot-symlink.sh"
+    do
+      [[ -f "$c" ]] || continue
+      # shellcheck source=/dev/null
+      source "$c"
+      return 0
+    done
+  fi
+  sdx_error "未找到 federation-slot-symlink.sh（请安装 Agent 或在中央库执行）"
+}
+docs_link_source_federation_helpers
+
 
 REWRITE_HTTP=0
 
@@ -139,8 +167,7 @@ knowledge_link_identity_from_stored_entry() {
 }
 
 # -----------------------------------------------------------------------------
-# 应用槽位 application-slots/application-${NAME}（自 DOC_ROOT/application-slots/application-NAME 模板生成）
-# 替换白名单：禁止裸替 NAME（会误伤英文词）
+# 应用槽位 application-slots/application-${NAME} = 指向下级 DOC_ROOT 的软链
 # -----------------------------------------------------------------------------
 
 # 校验并规范化 app_name（小写）；非法则报错
@@ -166,48 +193,26 @@ knowledge_link_guess_app_name() {
   knowledge_link_validate_app_name "$base"
 }
 
-# 将模板目录中的占位符替换为实际 app（仅处理常见文本后缀）
-knowledge_link_apply_app_slot_substitutions() {
-  local dest="${1:?}" app="${2:?}" f tmp
-  while IFS= read -r f; do
-    [[ -f "$f" ]] || continue
-    case "$f" in
-      *.md|*.yaml|*.yml) ;;
-      *) continue ;;
-    esac
-    tmp="${f}.tmp.$$"
-    sed \
-      -e "s/CHANGE LOG - NAME/CHANGE LOG - ${app}/g" \
-      -e "s/application-{NAME}/application-${app}/g" \
-      -e "s/application-NAME/application-${app}/g" \
-      "$f" >"$tmp" && mv "$tmp" "$f"
-  done < <(find "$dest" -type f 2>/dev/null)
-}
-
-# 在源 DOC_ROOT/application-slots 下生成 application-${app}（参考 application-NAME 模板）
+# 在源 DOC_ROOT/application-slots 下确保 application-${app} 软链 + 共用 changelogs
+# target_doc_root：下级 DOC_ROOT 绝对路径（可尚不存在 → 悬空软链）
 knowledge_link_ensure_application_slot() {
-  local doc_root="${1:?}" app="${2:?}"
-  local dr slots tpl dest
+  local doc_root="${1:?}" app="${2:?}" target_doc_root="${3:?}"
+  local dr slots dest shared
   dr="$(_knowledge_link_doc_root_abs_ns "$doc_root")"
   slots="${dr}/application-slots"
-  tpl="${slots}/application-NAME"
   dest="${slots}/application-${app}"
-  [[ -d "$tpl" ]] || sdx_error "源 DOC_ROOT 下缺少模板目录: $tpl"
-  if [[ -d "$dest" ]]; then
-    return 0
-  fi
+  shared="${slots}/changelogs"
   if [[ "$DRY" == '1' ]]; then
-    sdx_log "[dry-run] 将自模板创建目录: %s → %s" "$tpl" "$dest"
+    sdx_log "[dry-run] 将确保软链: %s → %s" "$dest" "$target_doc_root"
     return 0
   fi
   mkdir -p "$slots"
-  cp -R "$tpl" "$dest"
-  knowledge_link_apply_app_slot_substitutions "$dest" "$app"
+  federation_ensure_shared_changelogs "$slots"
+  federation_ensure_slot_symlink "$dest" "$target_doc_root" "$shared" "$app" >/dev/null
 }
 
 # -----------------------------------------------------------------------------
-# 系统槽位 system-slots/system-${NAME}（自 DOC_ROOT/system-slots/system-NAME 模板生成）
-# 替换白名单：禁止裸替 NAME（会误伤英文词）
+# 系统槽位 system-slots/system-${NAME} = 指向下级 DOC_ROOT 的软链
 # -----------------------------------------------------------------------------
 
 knowledge_link_validate_sys_name() {
@@ -231,41 +236,20 @@ knowledge_link_guess_sys_name() {
   knowledge_link_validate_sys_name "$base"
 }
 
-knowledge_link_apply_sys_slot_substitutions() {
-  local dest="${1:?}" sys="${2:?}" f tmp
-  while IFS= read -r f; do
-    [[ -f "$f" ]] || continue
-    case "$f" in
-      *.md|*.yaml|*.yml) ;;
-      *) continue ;;
-    esac
-    tmp="${f}.tmp.$$"
-    sed \
-      -e "s/CHANGE LOG - NAME/CHANGE LOG - ${sys}/g" \
-      -e "s/system-{NAME}/system-${sys}/g" \
-      -e "s/system-NAME/system-${sys}/g" \
-      "$f" >"$tmp" && mv "$tmp" "$f"
-  done < <(find "$dest" -type f 2>/dev/null)
-}
-
 knowledge_link_ensure_system_slot() {
-  local doc_root="${1:?}" sys="${2:?}"
-  local dr slots tpl dest
+  local doc_root="${1:?}" sys="${2:?}" target_doc_root="${3:?}"
+  local dr slots dest shared
   dr="$(_knowledge_link_doc_root_abs_ns "$doc_root")"
   slots="${dr}/system-slots"
-  tpl="${slots}/system-NAME"
   dest="${slots}/system-${sys}"
-  [[ -d "$tpl" ]] || sdx_error "源 DOC_ROOT 下缺少模板目录: $tpl"
-  if [[ -d "$dest" ]]; then
-    return 0
-  fi
+  shared="${slots}/changelogs"
   if [[ "$DRY" == '1' ]]; then
-    sdx_log "[dry-run] 将自模板创建目录: %s → %s" "$tpl" "$dest"
+    sdx_log "[dry-run] 将确保软链: %s → %s" "$dest" "$target_doc_root"
     return 0
   fi
   mkdir -p "$slots"
-  cp -R "$tpl" "$dest"
-  knowledge_link_apply_sys_slot_substitutions "$dest" "$sys"
+  federation_ensure_shared_changelogs "$slots"
+  federation_ensure_slot_symlink "$dest" "$target_doc_root" "$shared" "$sys" >/dev/null
 }
 
 # 从登记 identity（repository URL 或已展开本地路径）推断 APPNAME，供旧数据或无 app_name 时 unlink 删槽位
@@ -295,30 +279,45 @@ knowledge_link_repo_root_for_backup() {
   printf '%s\n' "$(strip_trailing_slash "$rr")"
 }
 
-# 备份至 REPO_ROOT/.docs-init/<stamp>/ 后移除 application-slots/application-${app}/（与 docs-install 的 backup_path 同源：sdx_docs_backup_path_to_init）
+# 移除槽位软链（或残留真目录）；共用 application-slots/changelogs 保留
 knowledge_link_remove_application_slot() {
   local doc_root="${1:?}" app="${2:?}"
-  local dest repo_root
+  local dest
   [[ -n "$app" ]] || return 0
   if [[ "$app" == 'NAME' || "$app" == 'APPNAME' ]]; then
-    sdx_warn "NAME/APPNAME 为保留名，跳过删除槽位目录"
+    sdx_warn "NAME/APPNAME 为保留名，跳过删除槽位"
     return 0
   fi
   dest="$(_knowledge_link_doc_root_abs_ns "$doc_root")/application-slots/application-${app}"
-  if [[ ! -d "$dest" ]]; then
+  if [[ ! -e "$dest" && ! -L "$dest" ]]; then
     return 0
   fi
-  repo_root="$(knowledge_link_repo_root_for_backup "$doc_root")" || {
-    sdx_warn "无法解析 REPO_ROOT，跳过备份，将直接删除: $dest"
-    if [[ "$DRY" == '1' ]]; then
-      sdx_log "[dry-run] 将删除目录: $dest"
-      return 0
-    fi
-    rm -rf "$dest"
-    sdx_info "已删除槽位目录: $dest"
+  if [[ "$DRY" == '1' ]]; then
+    sdx_log "[dry-run] 将删除槽位软链/目录: $dest"
     return 0
-  }
-  sdx_docs_backup_path_to_init "$repo_root" "$dest" "" "$DRY"
+  fi
+  federation_remove_slot_path "$dest"
+  sdx_info "已删除槽位: $dest"
+}
+
+knowledge_link_remove_system_slot() {
+  local doc_root="${1:?}" sys="${2:?}"
+  local dest
+  [[ -n "$sys" ]] || return 0
+  if [[ "$sys" == 'NAME' || "$sys" == 'SYSNAME' ]]; then
+    sdx_warn "NAME/SYSNAME 为保留名，跳过删除槽位"
+    return 0
+  fi
+  dest="$(_knowledge_link_doc_root_abs_ns "$doc_root")/system-slots/system-${sys}"
+  if [[ ! -e "$dest" && ! -L "$dest" ]]; then
+    return 0
+  fi
+  if [[ "$DRY" == '1' ]]; then
+    sdx_log "[dry-run] 将删除槽位软链/目录: $dest"
+    return 0
+  fi
+  federation_remove_slot_path "$dest"
+  sdx_info "已删除槽位: $dest"
 }
 
 # =============================================================================
@@ -360,7 +359,8 @@ docs_link_usage() {
 
   源仓 links：向下 child（不写 type；缺省=child）；doc_dir=目标 DOC_DIR；company→system 用 sys_*，system→application 用 app_*。
   子仓 links：恰好一条 type:parent（repository/path/doc_dir + company_* 或 sys_*）；HTTP ref 固定 main。
-  不再读写 knowledge-parent.yaml。unlink 删除子仓 parent 条，不改正文 HTTP。
+  槽位：建联时创建指向下级 DOC_ROOT 的软链；同步日志在 application-slots/changelogs/ 或 system-slots/changelogs/。
+  不再读写 knowledge-parent.yaml。unlink 删除子仓 parent 条与槽位软链，不改正文 HTTP，共用日志保留。
 
 示例:
   ./scripts/docs-link.sh --target ~/workspaces/target-repo --link
@@ -534,7 +534,8 @@ if [[ "$CMD" == 'link' && "$expect_target" == 'application' ]]; then
   else
     TARGET_APP_NAME="$(knowledge_link_guess_app_name "$TGT_ROOT")" || exit 1
   fi
-  knowledge_link_ensure_application_slot "$_sdoc" "$TARGET_APP_NAME"
+  TARGET_SLOT_DOC_ROOT="$(docs_link_abs_under_repo "$TGT_ROOT" "$_tdoc")"
+  knowledge_link_ensure_application_slot "$_sdoc" "$TARGET_APP_NAME" "$TARGET_SLOT_DOC_ROOT"
   if [[ "$have" -eq 1 && "$matched_idx" -ge 0 && -n "${app_labels[matched_idx]:-}" ]]; then
     TARGET_APP_LABEL="${app_labels[matched_idx]}"
   else
@@ -546,7 +547,8 @@ elif [[ "$CMD" == 'link' && "$expect_target" == 'system' ]]; then
   else
     TARGET_SYS_NAME="$(knowledge_link_guess_sys_name "$TGT_ROOT")" || exit 1
   fi
-  knowledge_link_ensure_system_slot "$_sdoc" "$TARGET_SYS_NAME"
+  TARGET_SLOT_DOC_ROOT="$(docs_link_abs_under_repo "$TGT_ROOT" "$_tdoc")"
+  knowledge_link_ensure_system_slot "$_sdoc" "$TARGET_SYS_NAME" "$TARGET_SLOT_DOC_ROOT"
   if [[ "$have" -eq 1 && "$matched_idx" -ge 0 && -n "${app_labels[matched_idx]:-}" ]]; then
     TARGET_SYS_LABEL="${app_labels[matched_idx]}"
   else
@@ -680,19 +682,19 @@ docs_link_execute_link() {
 }
 
 docs_link_execute_unlink() {
-  local unlink_app_name='' exp='' i
+  local unlink_name='' exp='' i
   declare -a newr=() newp=() newd=() newa=() newl=() newt=()
 
   [[ "$have" -eq 0 ]] && { printf '提示: 未找到登记项，跳过: %s\n' "$REGISTER_KEY" >&2; exit 0; }
   docs_link_remove_target_parent
-  if [[ "$matched_idx" -ge 0 && "$_skt" == 'system' ]]; then
-    unlink_app_name="${app_names[matched_idx]:-}"
-    if [[ -z "$unlink_app_name" ]]; then
+  if [[ "$matched_idx" -ge 0 ]]; then
+    unlink_name="${app_names[matched_idx]:-}"
+    if [[ -z "$unlink_name" ]]; then
       if [[ -n "${repos[matched_idx]:-}" ]]; then
-        unlink_app_name="$(knowledge_link_app_name_from_register_key "${repos[matched_idx]}")" || unlink_app_name=''
+        unlink_name="$(knowledge_link_app_name_from_register_key "${repos[matched_idx]}")" || unlink_name=''
       else
         exp="$(knowledge_link_expand_stored_path "${paths[matched_idx]}")"
-        unlink_app_name="$(knowledge_link_app_name_from_register_key "$exp")" || unlink_app_name=''
+        unlink_name="$(knowledge_link_app_name_from_register_key "$exp")" || unlink_name=''
       fi
     fi
   fi
@@ -717,8 +719,12 @@ docs_link_execute_unlink() {
 
   knowledge_links_write_entries "$LIST_FILE" newr newp newd newa newl newt \
     "$SRC_CHILD_KIND" "$SRC_PARENT_KIND"
-  if [[ -n "$unlink_app_name" ]]; then
-    knowledge_link_remove_application_slot "$_sdoc" "$unlink_app_name"
+  if [[ -n "$unlink_name" ]]; then
+    if [[ "$_skt" == 'system' ]]; then
+      knowledge_link_remove_application_slot "$_sdoc" "$unlink_name"
+    elif [[ "$_skt" == 'company' ]]; then
+      knowledge_link_remove_system_slot "$_sdoc" "$unlink_name"
+    fi
   fi
   printf '已注销: %s 中的 %s\n' "$LIST_FILE" "$REGISTER_KEY"
 }

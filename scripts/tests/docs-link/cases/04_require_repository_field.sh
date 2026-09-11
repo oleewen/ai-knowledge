@@ -17,17 +17,12 @@ DOCS_LINK="$ROOT_DIR/scripts/docs-link.sh"
 FAKEHOME="$TMP_DIR/fakehome"
 SYS_SRC="$FAKEHOME/ws/system-kb"
 APP_TGT="$FAKEHOME/ws/app-no-remote"
-TPL="$ROOT_DIR/system/application-slots"
-
 cleanup() {
   rm -rf "$TMP_DIR"
 }
 trap cleanup EXIT
 
-[[ -d "$TPL" ]] || fail "缺少模板目录: $TPL"
-
-mkdir -p "$SYS_SRC/docs" "$APP_TGT/docs"
-cp -R "$TPL" "$SYS_SRC/docs/application-slots"
+mkdir -p "$SYS_SRC/docs/application-slots" "$APP_TGT/docs"
 printf '%s\n' 'links: []' >"$APP_TGT/docs/knowledge-links.yaml"
 git -C "$SYS_SRC" init -q
 git -C "$APP_TGT" init -q
