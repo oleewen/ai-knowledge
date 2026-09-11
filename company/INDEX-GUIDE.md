@@ -22,7 +22,7 @@ title: company INDEX-GUIDE
 
 ### 1.2 元信息
 
-* **角色**: 公司知识库；`knowledge/` = BD/CAP/PL/SYS/MDG/TPL SSOT；`system-slots/system-{NAME}/` = 镜像槽位  
+* **角色**: 公司知识库；`knowledge/` = BD/CAP/PL/SYS/MDG/TPL SSOT；`system-slots/system-{NAME}` = 软链槽位  
 * **栈**: Markdown、YAML  
 * **范围**: `knowledge/` · `solutions/` · `analysis/` · `system-slots/` · `changelogs/`  
 
@@ -36,7 +36,8 @@ company/
 ├── knowledge-links.yaml
 ├── knowledge/ · solutions/ · analysis/
 ├── system-slots/
-│   └── system-NAME/            # 系统镜像槽位模板
+│   ├── system-{NAME}           # 软链 → 系统 DOC_ROOT
+│   └── changelogs/             # 层共用 CHANGE-LOG / ARCHIVE-LOG
 └── changelogs/
 ```
 

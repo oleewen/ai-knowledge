@@ -7,7 +7,7 @@ title: company 目录元数据
 # company/ 根目录元数据（导航与 SSOT 指针）
 id: "DIR-COMPANY"
 name: "公司知识库根（company）"
-description: "公司层治理与导航根；knowledge/=公司级实体 SSOT；system-slots/system-{NAME}/=系统镜像槽位。"
+description: "公司层治理与导航根；knowledge/=公司级实体 SSOT；system-slots/system-{NAME}=系统软链槽位。"
 
 role:
   kind: "documentation_root"

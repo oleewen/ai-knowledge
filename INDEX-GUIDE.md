@@ -58,13 +58,15 @@
 ├── system/                     # 系统层 + overview + 联邦槽位
 │   ├── knowledge/ · overview/
 │   ├── application-slots/           # 应用联邦槽位根
-│   │   └── application-NAME/    # 应用镜像槽位模板
+│   │   ├── application-{NAME}   # 软链 → 应用 DOC_ROOT
+│   │   └── changelogs/          # 层共用同步/蒸馏日志
 │   ├── knowledge-links.yaml · viz.html
 │   └── solutions/ · analysis/ · requirements/ · adr/ · changelogs/
 ├── company/                    # 公司层 + overview + 联邦槽位
 │   ├── knowledge/ · overview/
 │   ├── system-slots/           # 系统联邦槽位根
-│   │   └── system-NAME/        # 系统镜像槽位模板
+│   │   ├── system-{NAME}       # 软链 → 系统 DOC_ROOT
+│   │   └── changelogs/         # 层共用同步/蒸馏日志
 │   ├── knowledge-links.yaml · viz.html
 │   └── solutions/ · analysis/ · changelogs/
 ├── scripts/                    # 初始化分发（docs-*/agent-install）

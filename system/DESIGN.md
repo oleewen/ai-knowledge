@@ -37,7 +37,7 @@ title: 系统知识库设计
 | ADR | [adr/](adr/README.md) | 系统层决策正文 + `CONTEXT.md`；**无强制 EXAMPLE**；overview 应用视角末行链此，不进 `knowledge/*/chapters/` |
 | 架构 | `knowledge/` | 五视角 + [`overview/`](knowledge/overview/NAME-overview.md) 蒸馏缓冲区（非实体 SSOT；归档入 chapters；行序见 [knowledge-layout](../agent/references/knowledge-layout.md)；📎 按需章可不进 overview） |
 | SDD | solutions → analysis → requirements | 见下表 |
-| 槽位 | `application-slots/application-{NAME}/` | docs-pull 镜像 |
+| 槽位 | `application-slots/application-{NAME}` | 软链 → 应用 DOC_ROOT（docs-link / docs-pull） |
 | 清单 | [knowledge-links.yaml](knowledge-links.yaml) | 建联 |
 | 运维 | [changelogs/](changelogs/README.md) | CHANGE-LOG / INDEXING-LOG |
 
@@ -81,16 +81,16 @@ title: 系统知识库设计
 
 ## 3. 同步闭环
 
-1. **docs-pull** → `application-slots/application-{NAME}/`  
+1. **docs-pull** → 校验/修复 `application-slots/application-{NAME}` 软链（必要时 clone/pull）  
 2. 校核 `knowledge/` 与治理约定  
 3. **docs-distill / docs-archive** 上行  
-4. **changelogs** 追溯  
+4. **application-slots/changelogs/** 追溯（CHANGE-LOG / ARCHIVE-LOG）  
 
 ## 4. 门禁
 
 - 术语/目录/链接与 README、INDEX-GUIDE、index 一致  
 - 跨层无双份主定义  
-- 槽位更新记来源与回写策略  
+- 槽位同步记 commit 与 action；脏工作区不得 pull  
 - 改目录语义先改本文  
 
 ## 参考

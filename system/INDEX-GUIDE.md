@@ -22,7 +22,7 @@ title: system INDEX-GUIDE
 
 ### 1.2 元信息
 
-* **角色**: 系统知识库；`knowledge/` = 系统层实体 SSOT + 五视角；`application-slots/application-{NAME}/` = 镜像槽位  
+* **角色**: 系统知识库；`knowledge/` = 系统层实体 SSOT + 五视角；`application-slots/application-{NAME}` = 软链槽位  
 * **栈**: Markdown、YAML  
 * **范围**: `knowledge/` · `solutions/` · `analysis/` · `requirements/` · `application-slots/` · `adr/` · `changelogs/`  
 
@@ -36,7 +36,8 @@ system/
 ├── knowledge-links.yaml
 ├── knowledge/ · solutions/ · analysis/ · requirements/ · adr/
 ├── application-slots/
-│   └── application-NAME/       # 应用镜像槽位模板
+│   ├── application-{NAME}      # 软链 → 应用 DOC_ROOT
+│   └── changelogs/             # 层共用 CHANGE-LOG / ARCHIVE-LOG
 └── changelogs/
 ```
 
@@ -75,7 +76,7 @@ system/
 
 ## 七、变更与运维
 
-[changelogs/](changelogs/README.md)：`CHANGE-LOG.md` · `INDEXING-LOG.md`；槽位日志在 `application-slots/application-{NAME}/changelogs/`
+[changelogs/](changelogs/README.md)：`CHANGE-LOG.md` · `INDEXING-LOG.md`；槽位同步/蒸馏日志在 `application-slots/changelogs/`
 
 ---
 

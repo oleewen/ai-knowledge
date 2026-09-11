@@ -76,9 +76,9 @@ title: 公司知识库设计
 ## 3. 同步与追溯
 
 1. 下游 `system/` 整理可同步内容  
-2. docs-pull → `company/system-slots/system-{NAME}/`（读目标 `.docsconfig` 的 DOC_ROOT/DOC_DIR）  
+2. docs-pull → 校验/修复 `company/system-slots/system-{NAME}` 软链（读目标 `.docsconfig` 的 DOC_ROOT）  
 3. 校核 `knowledge/` 与 `knowledge-links.yaml`  
-4. 追加槽位 `changelogs/CHANGE-LOG.md`（根 CHANGE-LOG 可选汇总）  
+4. 追加 `system-slots/changelogs/CHANGE-LOG.md`（根 CHANGE-LOG 可选汇总）  
 
 冲突以下游事实源为准；company 只修映射与导航。
 
@@ -86,7 +86,7 @@ title: 公司知识库设计
 
 - 命名统一；禁止实现细节入 company 正文  
 - 跨层描述可追溯至 system/application  
-- 槽位同步禁止覆盖槽位 `README.md` / `index.md` / `changelogs/`；默认单槽位（`--sys-name`），`--all` 才全量；仅本地 Git `path`  
+- 槽位为软链；默认单槽位（`--sys-name`），`--all` 才全量；脏工作区拒绝 pull；失效时可按 repository clone  
 
 演进：稳契约 → 完善 links 元数据 → 自动化巡检。
 

@@ -6,7 +6,7 @@ title: "系统知识库（顶层 `system/`）"
 <!-- markdownlint-disable-next-line MD025 -->
 # 系统知识库（顶层 `system/`）
 
-系统层治理根：`knowledge/` = 系统级实体 SSOT；`application-slots/application-{NAME}/` = 应用镜像槽位；`solutions/` → `analysis/` → `requirements/` = 系统 SDD。
+系统层治理根：`knowledge/` = 系统级实体 SSOT；`application-slots/application-{NAME}` = 应用软链槽位；`solutions/` → `analysis/` → `requirements/` = 系统 SDD。
 
 | 读什么 | 文件 |
 |--------|------|
@@ -18,6 +18,6 @@ title: "系统知识库（顶层 `system/`）"
 
 按需：`knowledge-links.yaml` · [application-slots/](application-slots/README.md) · [changelogs/](changelogs/README.md)
 
-模板占位：`application-slots/application-NAME/`、`knowledge/overview/NAME-overview.md`、`*-EXAMPLE`（最小演示链，可替换）。
+模板占位：`knowledge/overview/NAME-overview.md`、`*-EXAMPLE`（最小演示链，可替换）。联邦槽位由 `docs-link` 建软链，日志在 `application-slots/changelogs/`。
 
 规范：[okf-spec](../agent/knowledge/okf-spec.md) · [knowledge-layout](../agent/references/knowledge-layout.md)

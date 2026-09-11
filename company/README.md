@@ -6,7 +6,7 @@ title: "公司知识库（顶层 `company/`）"
 <!-- markdownlint-disable-next-line MD025 -->
 # 公司知识库（顶层 `company/`）
 
-公司层治理根：`knowledge/` = 公司级实体 SSOT；`system-slots/system-{NAME}/` = 系统镜像槽位；`solutions/` + `analysis/` = 跨系统 SDD 上游。
+公司层治理根：`knowledge/` = 公司级实体 SSOT；`system-slots/system-{NAME}` = 系统软链槽位；`solutions/` + `analysis/` = 跨系统 SDD 上游。
 
 | 读什么 | 文件 |
 |--------|------|

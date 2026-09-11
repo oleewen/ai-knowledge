@@ -6,7 +6,7 @@
 
 - **跳过写前意图澄清**：不得在未输出六项清单、未获写前 `C` 时写入或输出正式预览；见 [intent-clarify.md](../../references/intent-clarify.md)、[gates.md](references/gates.md)。
 - **dry-run 仍须澄清**：预览前也要意图澄清；烤干可针对预览结果。
-- 无 **`ARCHIVE-LOG.md`** 不是「跳过」——通常等价**从未蒸馏**，应全量首轮，之后建锚。  
+- 无 **`ARCHIVE-LOG.md`**（`system/application-slots/changelogs/ARCHIVE-LOG.md`）不是「跳过」——通常等价**从未蒸馏**，应全量首轮，之后建锚。  
 - `changelog_id` 在 CHANGE-LOG **不存在**→ 勿静默全量；警告并请用户修正/`--since`/授权全量（防重复蒸馏）。  
 - **4.3 败不写 DISTILL**，防锚前移、漏蒸馏。  
 - **`--full`** 忽略锚→ 可先 `dry-run`，防盖系统库既有摘要。
