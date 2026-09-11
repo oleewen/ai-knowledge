@@ -1,7 +1,7 @@
 {
   "skill_name": "docs-upgrade",
-  "version": "1.1.0",
-  "description": "评测 docs-upgrade：轻流程；meta 解析；禁清空 install；未落位确认；与 bootstrap 分流；@ 文件强制对齐。",
+  "version": "1.2.0",
+  "description": "评测 docs-upgrade：轻流程；meta 解析；禁清空 install；未落位确认；与 bootstrap 分流；@ 文件强制对齐；*-slots 根可升级与软链跳过。",
   "evals": [
     {
       "id": "upgrade-trigger-001",
@@ -87,14 +87,37 @@
     {
       "id": "upgrade-trigger-005",
       "category": "should-trigger",
-      "prompt": "/docs-upgrade 时 @ 了一个 application-foo 槽位下的 md，要求对齐元库。",
-      "expected_output": "拒绝该条；提示 docs-pull；不 scaffold、不重填槽位文件。",
+      "prompt": "/docs-upgrade 时 @ 了一个 application-slots 下指向应用仓的软链路径里的 md，要求对齐元库。",
+      "expected_output": "拒绝该软链路径；提示 docs-pull；不 scaffold、不重填。若 @ 的是 application-slots/README.md 等真文件则允许升级。",
       "assertions": [
         {
-          "id": "file-mode-reject-slot",
-          "name": "槽位拒绝",
+          "id": "file-mode-reject-symlink",
+          "name": "软链拒绝",
           "type": "must_include",
-          "check": "须拒绝联邦槽位路径并提示 docs-pull，不得对该路径 scaffold 或结构重填。",
+          "check": "须拒绝软链（或软链下）路径并提示 docs-pull，不得对该路径 scaffold 或结构重填。",
+          "priority": "P0"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": "upgrade-trigger-006",
+      "category": "should-trigger",
+      "prompt": "对公司库做整树 /docs-upgrade dry-run，确认 system-slots/README.md 会进清单而不是整段忽略 system-slots。",
+      "expected_output": "system-slots 根真文件可进新增/跳过/重填桶；软链实例在跳过软链；顶层遗留 system-* 仍忽略。",
+      "assertions": [
+        {
+          "id": "slots-root-included",
+          "name": "槽位根可升级",
+          "type": "must_include",
+          "check": "须体现 application-slots/system-slots 根下非软链真文件进入升级清单，不得再整段硬忽略两个 slots 目录。",
+          "priority": "P0"
+        },
+        {
+          "id": "symlink-skipped",
+          "name": "软链跳过",
+          "type": "must_include",
+          "check": "须体现软链跳过或不跟随写入。",
           "priority": "P0"
         }
       ],

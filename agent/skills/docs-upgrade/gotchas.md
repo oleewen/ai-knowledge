@@ -6,7 +6,9 @@
 - **path 未 fetch**：本机工作区脏/旧 ≠ 远端最新。脚本须 fetch 对齐 ref；文件模式同源。
 - **把未落位自动追加文末**：禁止；须清单确认。
 - **覆盖 knowledge-links.yaml**：禁止；会丢 parent/child/meta。
-- **联邦槽位**：`application-slots` / 遗留 `application-*` / `system-slots` / 遗留 `system-*` 首段路径一律忽略/拒绝；勿把槽位当本层骨架升级（用 `/docs-pull`）。
+- **联邦槽位根**：`application-slots` / `system-slots` 下**真文件**可升级；**软链一律跳过**。勿跟随实例软链改下级仓（实例同步用 `/docs-pull`）。
+- **顶层遗留**：DOC_ROOT 顶层 `application-*` / `system-*`（非 `*-slots`）仍忽略。
+- **`*-slots/changelogs`**：本有整文件本库胜；勿对其强制结构重填。
 - **建联脚本**：仅 `system`/`company` 同步；源在元库根 `scripts/`，不是 `{doc_dir}/`。application 无此桶。文件模式仅允许两文件名或 `@scripts/` 只展开这两条。
 - **整树与文件模式混用**：禁止同单元；有 `@` 只走文件强制对齐。
 - **文件模式无脚本 `--path`**：scaffold/重填由 Agent 写；勿臆造 CLI 过滤。

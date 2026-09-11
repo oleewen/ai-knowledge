@@ -38,7 +38,7 @@
 bash agent/skills/docs-upgrade/scripts/docs-upgrade.sh --dry-run [--meta-path PATH] [--ref REF]
 ```
 
-脚本输出四桶 +「忽略槽位」摘要（见 [merge-rules.md](merge-rules.md)）。展示后立即校核，停等 `C/M/S/F`。
+脚本输出四桶 +「忽略遗留槽位」+「跳过软链」摘要（见 [merge-rules.md](merge-rules.md)）。展示后立即校核，停等 `C/M/S/F`。
 
 ### 3 实跑（用户 `C` 后）
 
@@ -69,7 +69,7 @@ bash agent/skills/docs-upgrade/scripts/docs-upgrade.sh --dry-run [--meta-path PA
 ### 1 解析 `@`
 
 1. 收集 `@` 文件与目录；目录递归收**所有文件**
-2. 校验：`DOC_ROOT` 内路径规范化为相对路径；建联例外见 [parameters.md](parameters.md)；联邦槽位首段拒绝；`DOC_ROOT` 外非例外拒绝
+2. 校验：`DOC_ROOT` 内路径规范化为相对路径；建联例外见 [parameters.md](parameters.md)；软链 / 顶层遗留槽位名拒绝；`DOC_ROOT` 外非例外拒绝；`*-slots` 根真文件允许
 3. 去重；对每条判定动作（见 [merge-rules.md](merge-rules.md) §7）
 4. fetch/解析 meta（与整树同源规则）
 

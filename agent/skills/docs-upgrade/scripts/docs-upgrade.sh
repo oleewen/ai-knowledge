@@ -34,7 +34,9 @@ Usage: docs-upgrade.sh [--dry-run | --apply-scaffold] [--meta-path PATH] [--ref 
   -h, --help         本帮助
 
 禁止：不会调用 docs-install 清空 DOC_DIR；不会覆盖 knowledge-links.yaml；
-忽略 DOC_ROOT 下首段为 application-slots / application-* / system-slots / system-* 的联邦槽位（模板与实例）。
+忽略 DOC_ROOT 顶层遗留 application-* / system-*（不含 application-slots / system-slots）；
+凡软链（文件或目录）一律跳过不跟随；application-slots / system-slots 根下真文件可升级；
+*-slots/changelogs/** 本有则整文件本库胜（不重填），本无则可 scaffold。
 system|company：另将元库 scripts/docs-link.sh、link-config.sh 同步到 {REPO_ROOT}/scripts/（元库整文件覆盖）。
 EOF
 }
@@ -79,19 +81,28 @@ files_equal_normalized() {
   [[ "$ha" == "$hb" ]]
 }
 
-# 联邦槽位：DOC_ROOT 相对路径首段 application-slots | application-* | system-slots | system-*（旧根挂遗留）
-is_federal_slot_rel() {
+# 顶层遗留联邦槽位名（不含 application-slots / system-slots）
+is_legacy_federal_slot_rel() {
   local rel="$1"
   local top="${rel%%/*}"
   case "$top" in
-    application-slots|application-*|system-slots|system-*) return 0 ;;
+    application-slots|system-slots) return 1 ;;
+    application-*|system-*) return 0 ;;
+  esac
+  return 1
+}
+
+# *-slots/changelogs/**：本有整文件本库胜；本无可 scaffold
+is_slots_changelog_rel() {
+  case "$1" in
+    application-slots/changelogs/*|system-slots/changelogs/*) return 0 ;;
   esac
   return 1
 }
 
 is_excluded_meta_rel() {
   local rel="$1"
-  is_federal_slot_rel "$rel" && return 0
+  is_legacy_federal_slot_rel "$rel" && return 0
   case "$rel" in
     DESIGN.md|CONTRIBUTING.md|knowledge-links.yaml) return 0 ;;
     README-s.md|README-c.md) return 0 ;;
@@ -99,13 +110,34 @@ is_excluded_meta_rel() {
   return 1
 }
 
-note_ignored_slot_dir() {
+note_ignored_legacy_slot_dir() {
   local rel="$1" top
-  is_federal_slot_rel "$rel" || return 0
+  is_legacy_federal_slot_rel "$rel" || return 0
   top="${rel%%/*}"
   [[ -n "${IGNORED_SLOT_SEEN[$top]:-}" ]] && return 0
   IGNORED_SLOT_SEEN["$top"]=1
   IGNORED_SLOT_DIRS+=("$top")
+}
+
+# 路径自身或任一已存在祖先为软链 → 跳过
+path_is_or_under_symlink() {
+  local root="$1" rel="$2"
+  local cur="${root%/}" part rest="$rel"
+  [[ -z "$rel" ]] && return 1
+  while [[ -n "$rest" ]]; do
+    part="${rest%%/*}"
+    if [[ "$rest" == */* ]]; then
+      rest="${rest#*/}"
+    else
+      rest=""
+    fi
+    cur="${cur}/${part}"
+    if [[ -L "$cur" ]]; then
+      return 0
+    fi
+    [[ -e "$cur" ]] || return 1
+  done
+  return 1
 }
 
 meta_src_for_local_rel() {
@@ -228,14 +260,32 @@ LINKS_FILE="${DOC_ROOT%/}/knowledge-links.yaml"
 resolve_meta_root "$LINKS_FILE"
 
 declare -a ADD_LIST=() SKIP_LIST=() RESTRUCTURE_LIST=() LOCAL_ONLY_LIST=()
-declare -a IGNORED_SLOT_DIRS=()
-declare -A IGNORED_SLOT_SEEN=()
+declare -a IGNORED_SLOT_DIRS=() SKIP_SYMLINK_LIST=()
+declare -A IGNORED_SLOT_SEEN=() SKIP_SYMLINK_SEEN=()
+
+note_skip_symlink() {
+  local rel="$1"
+  [[ -n "${SKIP_SYMLINK_SEEN[$rel]:-}" ]] && return 0
+  SKIP_SYMLINK_SEEN["$rel"]=1
+  SKIP_SYMLINK_LIST+=("$rel")
+}
+
+# 本库软链清单（find 不跟随目录软链；另列 -type l）
+while IFS= read -r -d '' rel; do
+  rel="${rel#./}"
+  [[ -z "$rel" ]] && continue
+  if is_legacy_federal_slot_rel "$rel"; then
+    note_ignored_legacy_slot_dir "$rel"
+    continue
+  fi
+  note_skip_symlink "$rel"
+done < <(cd "${DOC_ROOT}" && find . -type l -print0)
 
 while IFS= read -r -d '' rel; do
   rel="${rel#./}"
   [[ -z "$rel" ]] && continue
-  if is_federal_slot_rel "$rel"; then
-    note_ignored_slot_dir "$rel"
+  if is_legacy_federal_slot_rel "$rel"; then
+    note_ignored_legacy_slot_dir "$rel"
     continue
   fi
   is_excluded_meta_rel "$rel" && continue
@@ -244,11 +294,20 @@ while IFS= read -r -d '' rel; do
   src_f="$META_SRC/$rel"
   dst_f="${DOC_ROOT%/}/$local_rel"
 
+  if path_is_or_under_symlink "${DOC_ROOT%/}" "$local_rel"; then
+    note_skip_symlink "$local_rel"
+    continue
+  fi
+
   if [[ ! -e "$dst_f" ]]; then
     ADD_LIST+=("$local_rel")
     continue
   fi
   if [[ -f "$dst_f" && -f "$src_f" ]]; then
+    if is_slots_changelog_rel "$local_rel"; then
+      SKIP_LIST+=("$local_rel (changelogs·本库胜)")
+      continue
+    fi
     if files_equal_normalized "$src_f" "$dst_f"; then
       SKIP_LIST+=("$local_rel")
     else
@@ -284,8 +343,8 @@ declare -A META_RELS=()
 while IFS= read -r -d '' rel; do
   rel="${rel#./}"
   [[ -z "$rel" ]] && continue
-  if is_federal_slot_rel "$rel"; then
-    note_ignored_slot_dir "$rel"
+  if is_legacy_federal_slot_rel "$rel"; then
+    note_ignored_legacy_slot_dir "$rel"
     continue
   fi
   is_excluded_meta_rel "$rel" && continue
@@ -297,8 +356,12 @@ while IFS= read -r -d '' rel; do
   rel="${rel#./}"
   [[ -z "$rel" ]] && continue
   [[ "$rel" == 'knowledge-links.yaml' ]] && continue
-  if is_federal_slot_rel "$rel"; then
-    note_ignored_slot_dir "$rel"
+  if is_legacy_federal_slot_rel "$rel"; then
+    note_ignored_legacy_slot_dir "$rel"
+    continue
+  fi
+  if path_is_or_under_symlink "${DOC_ROOT%/}" "$rel"; then
+    note_skip_symlink "$rel"
     continue
   fi
   if [[ -z "${META_RELS[$rel]:-}" ]]; then
@@ -342,7 +405,8 @@ print_bucket() {
 }
 
 sdx_info "DOC_ROOT=$DOC_ROOT  KNOWLEDGE_TYPE=$KNOWLEDGE_TYPE  dry_run=$DRY_RUN apply_scaffold=$APPLY_SCAFFOLD"
-print_bucket '忽略槽位' "${IGNORED_SLOT_DIRS[@]+"${IGNORED_SLOT_DIRS[@]}"}"
+print_bucket '忽略遗留槽位' "${IGNORED_SLOT_DIRS[@]+"${IGNORED_SLOT_DIRS[@]}"}"
+print_bucket '跳过软链' "${SKIP_SYMLINK_LIST[@]+"${SKIP_SYMLINK_LIST[@]}"}"
 print_bucket '新增骨架' "${ADD_LIST[@]+"${ADD_LIST[@]}"}"
 print_bucket '跳过' "${SKIP_LIST[@]+"${SKIP_LIST[@]}"}"
 print_bucket '结构重填' "${RESTRUCTURE_LIST[@]+"${RESTRUCTURE_LIST[@]}"}"
@@ -364,8 +428,12 @@ for rel in "${RESTRUCTURE_LIST[@]+"${RESTRUCTURE_LIST[@]}"}"; do
 done
 
 for rel in "${ADD_LIST[@]+"${ADD_LIST[@]}"}"; do
-  if is_federal_slot_rel "$rel"; then
-    sdx_warn "跳过槽位骨架（不应出现在新增桶）: $rel"
+  if is_legacy_federal_slot_rel "$rel"; then
+    sdx_warn "跳过遗留槽位骨架（不应出现在新增桶）: $rel"
+    continue
+  fi
+  if path_is_or_under_symlink "${DOC_ROOT%/}" "$rel"; then
+    sdx_warn "跳过软链路径骨架: $rel"
     continue
   fi
   src=""
