@@ -9,7 +9,8 @@
 - [README.md](README.md)
 - [AGENTS.md](AGENTS.md)
 - [quick-start.md](quick-start.md)
-- [scripts/README.md](scripts/README.md)
+- [bootstrap.sh](bootstrap.sh)
+- [agent/skills/README.md](agent/skills/README.md)
 
 ## 子目录
 
@@ -17,7 +18,8 @@
 - [system/](system/index.md)
 - [company/](company/index.md)
 - [agent/](agent/README.md)
-- [scripts/](scripts/README.md)
+- [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)
+- [agent/skills/agent-install/SKILL.md](agent/skills/agent-install/SKILL.md)
 - [docs/](docs/)
 
 ## 阅读顺序

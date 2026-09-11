@@ -91,4 +91,4 @@ API/TBL 实体在 `knowledge/`；不承载运行时 OpenAPI/DDL 全文（可链�
 
 ## 十、中央知识库接入
 
-standalone / central 差异与安装约定见仓库根 [INDEX-GUIDE.md](../INDEX-GUIDE.md) §7.2 与 [scripts/README.md](../scripts/README.md)。本库 mode 入口：[README-s.md](README-s.md) · [README-c.md](README-c.md)。
+standalone / central 差异与安装约定见仓库根 [INDEX-GUIDE.md](../INDEX-GUIDE.md) §7.2 与 [agent/skills/docs-install/SKILL.md](../agent/skills/docs-install/SKILL.md)。本库 mode 入口：[README-s.md](README-s.md) · [README-c.md](README-c.md)。

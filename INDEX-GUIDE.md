@@ -26,7 +26,7 @@
 | 公司知识库 | [company/README.md](company/README.md) | `knowledge/`（五视角企业架构）、`system-slots/system-{NAME}/` 联邦槽位、SDD 上游 |
 | 公司侧目录索引 | [company/index.md](company/index.md) | `company/` 树内目录索引与 OKF 渐进披露入口 |
 | 公司侧九章索引 | [company/INDEX-GUIDE.md](company/INDEX-GUIDE.md) | `company/` 文档根九章索引指南 |
-| 初始化脚本 | [scripts/README.md](scripts/README.md) | `docs-install`/`agent-install`/`docs-link`/`docs-bootstrap`；升级见 `/docs-upgrade`；已装 Agent/skills 追新见 `/skill-upgrade` |
+| 初始化脚本 | [bootstrap.sh](bootstrap.sh)、[agent/skills/README.md](agent/skills/README.md) | `/docs-install`、`/agent-install`、`/docs-link`；升级 `/docs-upgrade`；生态 skills 追新 `/skill-upgrade` |
 | 规范与 Slash | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/skills/README.md](agent/skills/README.md) | 全局约定与 Skill 清单（18 个） |
 | 共享推进契约 | [agent/references/](agent/references/) | 意图澄清 / 单元推进 / 烤干 / 轻流程 / 布局 / 会话路径 |
 | 根索引运行日志 | [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md) | 根输出组增量基线（本单元） |
@@ -37,7 +37,7 @@
 - **项目名称**: `ai-knowledge`
 - **核心定位**: 企业级全局知识底座（Markdown/YAML + Bash 初始化链）；**无业务应用运行时**
 - **技术栈**: Markdown、YAML；Bash 5+；Git；可选 `curl`、`rsync`（脚本可回退 `cp`）；Python 3（Skill 辅助脚本）
-- **语言/构建**: 不适用传统应用「启动类」；可运行项为 Bash 脚本与 `scripts/tests/run.sh`（见 [scripts/README.md](scripts/README.md)）
+- **语言/构建**: 不适用传统应用「启动类」；可运行项为 Bash 脚本与 `agent/scripts/tests/run.sh`（见 [agent/skills/README.md](agent/skills/README.md)）
 - **仓库规模（git 已跟踪）**: 共 **701** 个文件；扩展名约 **543** `.md`、**86** `.sh`、**40** `.json`、**23** `.py`、**3** `.yaml`、**3** `.html`（统计来源：`git ls-files`，2026-07-20）
 - **顶层文件分布**: `agent/` 324 · `system/` 128 · `application/` 85 · `company/` 80 · `scripts/` 77 · 根文件 6 · `.githooks` 1
 
@@ -111,7 +111,7 @@ flowchart LR
 | 系统/公司架构 + overview | `system/knowledge/`、`company/knowledge/`（含 `overview/`、`chapters/`） |
 | 治理与命名 / OKF 规范 | `agent/knowledge/`（`glossary`、`naming-conventions`、`okf-spec`、`knowledge-governance` 等） |
 | 共享推进契约 | `agent/references/`（`intent-clarify`、`unit-cycle-protocol`、`grilling-skill`、`audience-and-language`、`light-flow-actions`、`knowledge-layout`、`session-spec-path`） |
-| 可执行初始化 | `scripts/*.sh` + `agent/scripts/docs-core.sh` 等共享库 |
+| 可执行初始化 | `agent/skills/docs-install/scripts/`、`agent/skills/agent-install/scripts/`、`bootstrap.sh` + `agent/scripts/docs-core.sh` 等共享库 |
 | Slash 工作流 | `agent/skills/<name>/SKILL.md` |
 
 ### 2.4 文档目录
@@ -144,10 +144,10 @@ flowchart LR
 
 | 入口 | 类型 | 路径/命令 | 说明 |
 | ------ | ------ | ----------- | ------ |
-| `docs-install.sh` | Bash | [scripts/docs-install.sh](scripts/docs-install.sh) | 知识库同步 + `.docsconfig` |
-| `agent-install.sh` | Bash | [scripts/agent-install.sh](scripts/agent-install.sh) | Agent 树安装 |
-| `docs-link.sh` | Bash | [scripts/docs-link.sh](scripts/docs-link.sh) | `knowledge-links.yaml` 登记 |
-| `docs-bootstrap.sh` | Bash | [scripts/docs-bootstrap.sh](scripts/docs-bootstrap.sh) | 远程 curl 后 clone；按 `--components` install |
+| `/docs-install` 脚本 | Bash | [agent/skills/docs-install/scripts/docs-install.sh](agent/skills/docs-install/scripts/docs-install.sh) | 知识库同步 + `.docsconfig` |
+| `/agent-install` 脚本 | Bash | [agent/skills/agent-install/scripts/agent-install.sh](agent/skills/agent-install/scripts/agent-install.sh) | Agent 树安装 |
+| `/docs-link` 脚本 | Bash | [agent/skills/docs-link/scripts/docs-link.sh](agent/skills/docs-link/scripts/docs-link.sh) | `knowledge-links.yaml` 登记 |
+| `bootstrap.sh` | Bash | [bootstrap.sh](bootstrap.sh) | 远程 curl 后 clone；按 `--components` 编排 install |
 | `/docs-upgrade` 脚本 | Bash | [agent/skills/docs-upgrade/scripts/docs-upgrade.sh](agent/skills/docs-upgrade/scripts/docs-upgrade.sh) | 已有库对齐元库清单/骨架（不清空） |
 | `/skill-upgrade` | Skill | [agent/skills/skill-upgrade/SKILL.md](agent/skills/skill-upgrade/SKILL.md) | 已装 Agent 树 + 生态 skills 追新 |
 | `/docs-*` · `/sdx-*` | Slash | [agent/skills/README.md](agent/skills/README.md) | 见 §9.3 |
@@ -164,7 +164,7 @@ flowchart LR
 | 五视角 | 业务 / 产品 / 应用 / 数据 / 技术 知识分层与映射字段 | [application/DESIGN.md](application/DESIGN.md) |
 | 联邦治理 | `system/`、`company/` 槽位与迁移叙事；`system/application-slots/application-{NAME}/`、`company/system-slots/system-{NAME}/` | docs-link / docs-pull / distill |
 | SDD | 方案 → 分析 → PRD/设计/测试 阶段交付链 | `sdx-*` Skill 与各层 `solutions/` 等 |
-| 中央知识库挂载建联 | `docs-install --mode=central` 等约定 | [README.md](README.md)、[scripts/README.md](scripts/README.md) |
+| 中央知识库挂载建联 | `docs-install --mode=central` 等约定 | [README.md](README.md)、[agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md) |
 | 五架构视角 | 业务 / 产品 / 应用 / 技术 / 数据；`system\|company/knowledge/` 均按此组织 | docs-distill、docs-archive、overview |
 | 语义族 / 轻流程 | 语义族绑意图澄清+烤干；轻流程用 `C/M/S/F`（无 `G`） | [agent/skills/README.md](agent/skills/README.md)、[light-flow-actions.md](agent/references/light-flow-actions.md) |
 | OKF | 开放知识格式；concept / index / viz 与九章 INDEX 职责分离 | [agent/knowledge/okf-spec.md](agent/knowledge/okf-spec.md)、`/docs-okf` |
@@ -184,7 +184,7 @@ flowchart LR
 | 能力 | 功能 | 依赖 |
 | ------ | ------ | ------ |
 | Slash Skills（18） | 索引、变更、SDD、归档、OKF、联邦 push/pull 等 | `agent/skills/*/SKILL.md` |
-| 初始化链 | 拷贝知识库、写 `.docsconfig`、安装 Agent 文件 | `scripts/*.sh`、`agent/scripts/docs-core.sh` |
+| 初始化链 | 拷贝知识库、写 `.docsconfig`、安装 Agent 文件 | `agent/skills/docs-install/scripts/`、`agent/skills/agent-install/scripts/`、`agent/scripts/docs-core.sh` |
 | 联邦同步 | link 登记、pull 槽位、push 规约、distill overview | `knowledge-links.yaml` + 对应 Skill |
 
 ### 4.4 领域事件
@@ -218,9 +218,9 @@ stateDiagram-v2
 
 ### 5.2 核心流程
 
-1. **从零选型与落地**: [quick-start.md](quick-start.md) 场景 A–D → [scripts/README.md](scripts/README.md) bootstrap / install。
-2. **目标工程接入知识库**: `git clone` 或 `docs-bootstrap.sh` → `./scripts/docs-install.sh --target=...`（可选 `--mode=central`、`--scope`、`--type`）。
-3. **仅安装 Agent 配置**: `./scripts/agent-install.sh`（`--target`、`--agents`、`--scope` 等）。
+1. **从零选型与落地**: [quick-start.md](quick-start.md) 场景 A–D → [bootstrap.sh](bootstrap.sh) 或 `/docs-install` + `/agent-install`。
+2. **目标工程接入知识库**: `git clone` 或 `bootstrap.sh` → `agent/skills/docs-install/scripts/docs-install.sh --target=...`（可选 `--mode=central`、`--scope`、`--type`）。
+3. **仅安装 Agent 配置**: `agent/skills/agent-install/scripts/agent-install.sh`（`--target`、`--agents`、`--scope` 等）。
 4. **联邦登记**: `docs-link.sh` 维护 `system|company/knowledge-links.yaml`。
 5. **维护索引与变更**: `/docs-indexing` 更新对应 `INDEX-GUIDE.md` + `changelogs/INDEXING-LOG.md`；`/docs-change` 更新 `CHANGE-LOG.md`。
 6. **OKF refresh 与校验**: `/docs-okf`（须 `.docsconfig` 的 `DOC_DIR`+`KNOWLEDGE_TYPE`）。
@@ -240,7 +240,7 @@ stateDiagram-v2
 
 | 名称 | 取值 | 说明 |
 | ------ | ------ | ------ |
-| `docs-install --mode` | `standalone` / `central` | 见 [scripts/README.md](scripts/README.md) |
+| `docs-install --mode` | `standalone` / `central` | 见 [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md) |
 | `docs-install --scope` | `config` / `knowledge` | 默认 `k`（knowledge） |
 | `docs-install --type` | `application` / `system` / `company` | 与 scope 组合 |
 | `docs-indexing --mode` | `full` / `incremental` | 增量须有效 LOG 基线 |
@@ -289,9 +289,9 @@ stateDiagram-v2
 
 | 配置项/参数 | 所在位置 | 说明 |
 | ------------- | ---------- | ------ |
-| `GIT_REPO_URL` / `GIT_REF` | [scripts/docs-bootstrap.sh](scripts/docs-bootstrap.sh) | bootstrap 克隆地址与引用 |
+| `GIT_REPO_URL` / `GIT_REF` | [bootstrap.sh](bootstrap.sh) | bootstrap 克隆地址与引用 |
 | `REPO_ROOT`（环境变量） | `docs-install.sh` 等 | 指向本中央库根 |
-| `--target` / `--mode` / `--scope` / `--type` / `--force` / `--dry-run` | `docs-install.sh` | 见 [scripts/README.md](scripts/README.md) |
+| `--target` / `--mode` / `--scope` / `--type` / `--force` / `--dry-run` | `docs-install.sh` | 见 [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md) |
 | `.docsconfig` 键 | 目标工程或本仓根 | `DOC_ROOT`、`REPO_ROOT`、`DOC_DIR`、`KNOWLEDGE_TYPE`；可选 `AGENT_*` |
 | 本仓 `.docsconfig` | `.docsconfig` | 当前：`DOC_DIR=docs`、`KNOWLEDGE_TYPE=application`（索引输出默认勿与「根单元」混淆） |
 | Hooks SSOT | [agent/hooks.json](agent/hooks.json) | `preToolUse` 为空；旧 gate 脚本已删 |
@@ -417,7 +417,9 @@ stateDiagram-v2
 | `/docs-tag` | [agent/skills/docs-tag/SKILL.md](agent/skills/docs-tag/SKILL.md) |
 | `/docs-pull` | [agent/skills/docs-pull/SKILL.md](agent/skills/docs-pull/SKILL.md) |
 | `/docs-push` | [agent/skills/docs-push/SKILL.md](agent/skills/docs-push/SKILL.md) |
-| `/docs-bootstrap` | [agent/skills/docs-bootstrap/SKILL.md](agent/skills/docs-bootstrap/SKILL.md) |
+| `/docs-install` | [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md) |
+| `/agent-install` | [agent/skills/agent-install/SKILL.md](agent/skills/agent-install/SKILL.md) |
+| `/docs-link` | [agent/skills/docs-link/SKILL.md](agent/skills/docs-link/SKILL.md) |
 | `/docs-upgrade` | [agent/skills/docs-upgrade/SKILL.md](agent/skills/docs-upgrade/SKILL.md) |
 | `/skill-upgrade` | [agent/skills/skill-upgrade/SKILL.md](agent/skills/skill-upgrade/SKILL.md) |
 | `/docs-okf` | [agent/skills/docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) |

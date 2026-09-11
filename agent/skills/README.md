@@ -8,7 +8,7 @@
 - 命令名约定：目录名即 Slash 命令（如 `docs-indexing` → `/docs-indexing`）
 - 调用方式：Chat 输入 `/` 选择，或 `@<skill-name>` 附加上下文
 - **共通协议**（重闸门族）：参数向导 → **澄清 → 生成 → 烤干** → `C/M/G/F`（docs 另有 `S`）；语义性变更先确认。契约：[intent-clarify.md](../references/intent-clarify.md)、[unit-cycle-protocol.md](../references/unit-cycle-protocol.md)、[grilling-skill.md](../references/grilling-skill.md)、[CONVENTIONS.md §3](../rules/CONVENTIONS.md#artifact-gates)
-- **轻流程**（不绑意图澄清）：`docs-okf` / `docs-change` / `docs-tag` / `docs-pull` / `docs-push` / `docs-bootstrap` / `docs-upgrade` / `skill-upgrade`；动作 `C/M/S/F` 见 [light-flow-actions.md](../references/light-flow-actions.md)（无 `G`）
+- **轻流程**（不绑意图澄清）：`docs-okf` / `docs-change` / `docs-tag` / `docs-link` / `docs-pull` / `docs-push` / `docs-install` / `agent-install` / `docs-upgrade` / `skill-upgrade`；动作 `C/M/S/F` 见 [light-flow-actions.md](../references/light-flow-actions.md)（无 `G`）
 - **知识库布局**：[knowledge-layout.md](../references/knowledge-layout.md)
 
 下表**只写差异**（产物、关键参数、特殊产物）；协议不逐行复述。
@@ -26,9 +26,11 @@
 | `/docs-distill` | `--app / --since / --full / --dry-run` → 系统 `overview` 第三列 + `DISTILL-LOG` |
 | `/docs-extract` | `--sources / --overview / --dry-run` → 系统或公司 overview 第三列；不写 `DISTILL-LOG` |
 | `/docs-merge` | `<source> <target>`〔`--dry-run`〕→ 按目标 H2/H3 章节合入；新增确认、类似合并、冲突 grilling；源只读 |
-| `/docs-bootstrap` | 知识库+Agent 装机编排；`--components=docs\|agent\|both`；本仓快路径或 bootstrap（脚本亦支持 `--components`）；默认 dry-run 后确认 |
-| `/skill-upgrade` | 已装环境追新：本仓 Agent 树 + 生态 update；无源经确认走 find-skills 补源（建议桶/待决策）；默认 dry-run 清单；轻流程 |
+| `/docs-install` | 知识库同步 + `.docsconfig`；`--target`/`--scope`/`--type`/`--mode`；默认 dry-run；轻流程 |
+| `/agent-install` | 整棵 Agent 树；`--agents`/`--target`/`--scope`；默认 dry-run；轻流程 |
+| `/skill-upgrade` | 生态 skills 追新（`npx skills update`）；无源经确认走 find-skills 补源；本仓 Agent 树 → `/agent-install`；轻流程 |
 | `/docs-upgrade` | 读 `.docsconfig` + `type: meta` 对齐元库最新结构；正文保本库；H2/H3 重填；未落位清单确认；可选 `@` 指定文件/目录强制对齐（与整树互斥）；禁清空式 install |
+| `/docs-link` | `--link`/`--unlink` + `--target`〔`--app-name`〕〔`--rewrite-http`〕→ 双边 `knowledge-links.yaml` + 槽位软链；脚本 `agent/skills/docs-link/scripts/`；默认 dry-run；轻流程 |
 | `/docs-pull` | 按 `knowledge-links.yaml` 本地 path → 联邦槽位 + 槽位 `CHANGE-LOG`；无远端 clone；轻流程 |
 | `/docs-push` | 中央规约 → 各应用 `path×doc_dir`（legacy / spec-asd）；轻流程 |
 | `/docs-build` | 五视角实体 ID → per-entity `{ID}.md`、视角 README、`KNOWLEDGE_INDEX.md` |
@@ -45,5 +47,5 @@
 
 - 由 Agent 按对应 `SKILL.md` 执行并落盘。
 - **`git commit` / `git push`**：须 [git-guidelines.md](../rules/coding/git-guidelines.md)「提交前用户确认」；步骤中「Commit」= 确认后再提交。
-- 仓库根 `scripts/` = 初始化分发；`agent/scripts/` = Skill 共享 Bash 库——二者不同。
+- 装机脚本在 `agent/skills/docs-install/scripts/`、`agent/skills/agent-install/scripts/`；仓根 `bootstrap.sh` 编排双轨；`agent/scripts/` = 共享 Bash 库。
 - 索引/变更类产物路径以约定为准（`INDEX-GUIDE.md`、`index.md`、`{DOC_DIR}/changelogs/`）。

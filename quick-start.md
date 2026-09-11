@@ -15,7 +15,7 @@
 | **C** | 老系统（多应用）+ 中央库 | 先各应用 SSOT，再中央 pull/distill/archive |
 | **D** | 仅有 Wiki/协作文档等 legacy | overview 缓冲区 → archive → build |
 
-脚本参数与 mode 见 [scripts/README.md](scripts/README.md)。
+脚本参数与 mode 见 [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)；双轨自动化见 [bootstrap.sh](bootstrap.sh)。
 
 ---
 
@@ -30,7 +30,7 @@ flowchart LR
 
     subgraph KB["知识库构建"]
         direction LR
-        A["docs-bootstrap<br/>应用知识库 · 独立模式"]
+        A["/docs-install + /agent-install<br/>应用知识库 · 独立模式"]
         B["/docs-indexing<br/>产出：知识库索引"]
         F["/docs-agent<br/>生成 AGENTS｜README"]
         C["/docs-build<br/>产出：五视角实体"]
@@ -55,7 +55,7 @@ flowchart LR
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
-| 1 | `docs-bootstrap` 安装应用知识库（`--mode=standalone`，`--type=application`） | 应用 `/docs` 骨架 + `.docsconfig` + Agent |
+| 1 | `/docs-install` 安装应用知识库（`--mode=standalone`，`--type=application`）+ `/agent-install` | 应用 `/docs` 骨架 + `.docsconfig` + Agent |
 | 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `index.md`、`README.md`、`AGENTS.md` |
 | 3 | `/docs-build` | 四视角实体、`index.md` |
 | 4 | 需求交付链路按需：`/sdx-solution` → … → `/sdx-architect` → `/sdx-design` → `/sdx-test` | `SOLUTION` … `DSD`、`TDD` |
@@ -112,7 +112,7 @@ flowchart LR
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
-| 1 | `docs-bootstrap` 安装系统/公司知识库（`--type=system` 或 `company`） | `/docs` 骨架 + `.docsconfig` + Agent |
+| 1 | `/docs-install` 安装系统/公司知识库（`--type=system` 或 `company`）+ `/agent-install` | `/docs` 骨架 + `.docsconfig` + Agent |
 | 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `index.md`、`README.md`、`AGENTS.md` |
 | 3 | 需求分析设计链路：`/sdx-solution` → `/sdx-analysis` → `/sdx-prd` → `/sdx-architect` | `SOLUTION`、`ANALYSIS`、`PRD`、`ASD`、`spec-asd` |
 
@@ -120,13 +120,13 @@ flowchart LR
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
-| 1 | `docs-bootstrap` 安装应用知识库 + `docs-link` 与系统/中央库建联 | 应用 `/docs` + 联邦登记 |
+| 1 | `/docs-install` 安装应用知识库 + `/agent-install` + `/docs-link` 与系统/中央库建联 | 应用 `/docs` + 联邦登记 |
 | 2 | `/docs-push` 推送概设规约（`spec-asd`）到应用库 | 应用仓 `requirements/**/specs/` |
 | 3 | 规约详细设计链路：`/sdx-design` → `/sdx-test` | `DSD`、`TDD` |
 | 4 | 规约开发实现链路：`brainstorming` → `opsx:*` → `superpowers:sdd` | 代码实现 + 规格归档 |
 | 5 | `/docs-build`（按需） | 四视角实体、`index.md` |
 
-应用库 **mode**：**standalone** = 单应用全量模板；**central** = 仅同步 `knowledge/`、`changelogs/` 等子集并 `docs-link` 建联（见 [scripts/README.md](scripts/README.md)）。
+应用库 **mode**：**standalone** = 单应用全量模板；**central** = 仅同步 `knowledge/`、`changelogs/` 等子集并 `docs-link` 建联（见 [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)）。
 
 ### 阶段三：变更聚合
 
@@ -217,7 +217,7 @@ flowchart LR
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
-| 1 | 各现存应用 `docs-bootstrap` 安装知识库（`--mode=standalone` 或 `central`） | 应用 `/docs` 骨架 + `.docsconfig` + Agent |
+| 1 | 各现存应用 `/docs-install` 安装知识库（`--mode=standalone` 或 `central`）+ `/agent-install` | 应用 `/docs` 骨架 + `.docsconfig` + Agent |
 | 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `index.md`、`README.md`、`AGENTS.md` |
 | 3 | `/docs-extract` 从 Wiki / 协作文档 / 代码注释等 legacy 源提炼（按需） | 应用侧结构化草稿或 overview 素材 |
 | 4 | `/docs-build` | 各应用四视角实体、`index.md` |
@@ -227,9 +227,9 @@ flowchart LR
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
-| 1 | 克隆 `ai-knowledge` 作为中央库；`docs-bootstrap` 安装系统/公司知识库 | 中央 `/docs` 骨架 + `.docsconfig` + Agent |
+| 1 | 克隆 `ai-knowledge` 作为中央库；`/docs-install` 安装系统/公司知识库 + `/agent-install` | 中央 `/docs` 骨架 + `.docsconfig` + Agent |
 | 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `index.md`、`README.md`、`AGENTS.md` |
-| 3 | `docs-link` 登记各已有应用库（`--link --target=… --app_name=…`） | `knowledge-links.yaml`（`repository` + `path` + `doc_dir` + `app_name`） |
+| 3 | `/docs-link` 登记各已有应用库（`--link --target=… --app-name=…`） | `knowledge-links.yaml`（`repository` + `path` + `doc_dir` + `app_name`） |
 | 4 | `/docs-pull` 拉取各应用联邦镜像 | `system/application-slots/application-{NAME}/` |
 | 5 | `/docs-distill --app {APPNAME}`（配合 `--since` 增量） | `system/knowledge/overview/{APPNAME}-overview.md` 第三列 |
 | 6 | `/docs-archive`（人工核实高优先级行后） | 知识落入 `system/knowledge/` 各视角章节 |
@@ -296,7 +296,7 @@ flowchart LR
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
-| 1 | `docs-bootstrap` 安装应用或系统/公司知识库 | `/docs` 骨架 + `.docsconfig` + Agent |
+| 1 | `/docs-install` 安装应用或系统/公司知识库 + `/agent-install` | `/docs` 骨架 + `.docsconfig` + Agent |
 | 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `index.md`、`README.md`、`AGENTS.md` |
 | 3 | 复制 overview 模板，盘点源（Wiki / Confluence / Word / 代码注释等） | `{APPNAME}-overview.md` 骨架 |
 | 4 | `/docs-extract` 段落筛选提炼入第三列 | overview 第三列草稿 |
@@ -327,5 +327,5 @@ flowchart LR
 | --- | --- |
 | 流程总览图 | [README.md — Agent 工作流](README.md#agent-工作流) |
 | 元模型与实体层级 | [application/DESIGN.md](application/DESIGN.md)、[system/DESIGN.md](system/DESIGN.md)、[company/DESIGN.md](company/DESIGN.md) |
-| 初始化脚本 | [scripts/README.md](scripts/README.md) |
+| 初始化脚本 | [bootstrap.sh](bootstrap.sh)、[agent/skills/README.md](agent/skills/README.md) |
 | Skill 清单 | [agent/skills/README.md](agent/skills/README.md) |

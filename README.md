@@ -58,14 +58,15 @@ Agent = LLM + Harness。平台给模型与工具，**工程知识**须由团队�
 ```bash
 git clone https://github.com/oleewen/ai-knowledge.git
 cd ai-knowledge
-./scripts/docs-bootstrap.sh --doc-target=/path/to/your-project/docs
+bash agent/skills/docs-install/scripts/docs-install.sh --target=/path/to/your-project/docs --dry-run
+bash agent/skills/agent-install/scripts/agent-install.sh --agents=cursor --dry-run
 ```
 
 ### 2. 远程 Bootstrap（无需克隆）
 
 ```bash
 cd /path/to/your-project
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh" | bash -s -- --doc-target /path/to/your-project/docs --agents cursor,trae
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/bootstrap.sh" | bash -s -- --doc-target /path/to/your-project/docs --agents cursor,trae
 ```
 
 ### 3. Agent 自动化安装
@@ -87,8 +88,8 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/do
 ├── application/          # 应用层 SSOT + SDD（knowledge、阶段产物、changelogs）
 ├── system/               # 系统库：knowledge/ + overview、application-slots/application-{NAME}/ 槽位、SDD
 ├── company/              # 公司库：knowledge/ + overview、system-slots/system-{NAME}/ 槽位
-├── scripts/              # docs-install、agent-install、docs-link、docs-bootstrap + tests/
-├── agent/                # skills/（18）、rules/、knowledge/、references/、scripts/、hooks.json
+├── bootstrap.sh          # 远程/本地双轨装机编排（docs-install → agent-install）
+├── agent/                # skills/、rules/、knowledge/、references/、scripts/、hooks.json
 ├── docs/                 # .docsconfig 的 DOC_DIR；会话稿 superpowers/（通常未入库）
 └── .gitignore
 ```
@@ -128,7 +129,7 @@ flowchart TD
 | 九章地图 / 目录索引 | [INDEX-GUIDE.md](INDEX-GUIDE.md) · [index.md](index.md) |
 | Agent 契约与查阅顺序 | [AGENTS.md](AGENTS.md) |
 | 三层元模型 | [application/DESIGN.md](application/DESIGN.md)、[system/DESIGN.md](system/DESIGN.md)、[company/DESIGN.md](company/DESIGN.md) |
-| 初始化脚本 | [scripts/README.md](scripts/README.md) |
+| 初始化脚本 | [bootstrap.sh](bootstrap.sh)、[agent/skills/README.md](agent/skills/README.md) |
 | 共享推进契约 | [agent/references/](agent/references/) |
 | 根索引运行日志 | [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md) |
 | OKF / Skill 清单 | [docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) · [agent/skills/README.md](agent/skills/README.md) |
