@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
-DOCS_BOOTSTRAP_SCRIPT="$ROOT_DIR/scripts/docs-bootstrap.sh"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
+DOCS_BOOTSTRAP_SCRIPT="$ROOT_DIR/bootstrap.sh"
 source "$ROOT_DIR/agent/scripts/test-core.sh"
 
 new_fake_home() {

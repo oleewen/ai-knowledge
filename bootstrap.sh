@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# docs-bootstrap.sh — SDX 知识库初始化引导脚本
+# bootstrap.sh — SDX 知识库初始化引导脚本
 #
 # 职责：
 #   无需预先克隆 ai-knowledge：克隆到临时目录后，按 --components 执行
@@ -10,16 +10,16 @@
 #
 # 用法：
 #   # 交互模式（推荐）
-#   bash docs-bootstrap.sh
+#   bash bootstrap.sh
 #
 #   # 全参数模式（both）
-#   bash docs-bootstrap.sh --doc-target ~/workspace/my-app/docs --agents=cursor,kiro
+#   bash bootstrap.sh --doc-target ~/workspace/my-app/docs --agents=cursor,kiro
 #
 #   # 仅 Agent（任意目录 / curl）
-#   bash docs-bootstrap.sh --components=agent --agents=cursor --agent-scope=home
+#   bash bootstrap.sh --components=agent --agents=cursor --agent-scope=home
 #
 #   # curl | bash
-#   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh | bash -s -- --doc-target ~/workspace/my-app/docs --agents=cursor,trae
+#   curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/bootstrap.sh | bash -s -- --doc-target ~/workspace/my-app/docs --agents=cursor,trae
 #
 # 参数：
 #   --components=docs|agent|both  装机范围（默认 both）
@@ -39,13 +39,13 @@ _BOOTSTRAP_SCRIPT_DIR=''
 if [[ -n "${BASH_SOURCE[0]:-}" && "${BASH_SOURCE[0]}" != '-' ]]; then
   _BOOTSTRAP_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)" || true
 fi
-if [[ -n "$_BOOTSTRAP_SCRIPT_DIR" && -f "${_BOOTSTRAP_SCRIPT_DIR}/../agent/scripts/docs-core.sh" ]]; then
+if [[ -n "$_BOOTSTRAP_SCRIPT_DIR" && -f "${_BOOTSTRAP_SCRIPT_DIR}/agent/scripts/docs-core.sh" ]]; then
   # shellcheck source=/dev/null
-  source "${_BOOTSTRAP_SCRIPT_DIR}/../agent/scripts/docs-core.sh"
+  source "${_BOOTSTRAP_SCRIPT_DIR}/agent/scripts/docs-core.sh"
 fi
-if [[ -n "$_BOOTSTRAP_SCRIPT_DIR" && -f "${_BOOTSTRAP_SCRIPT_DIR}/agent-config.sh" ]]; then
-  # shellcheck source=./agent-config.sh
-  source "${_BOOTSTRAP_SCRIPT_DIR}/agent-config.sh"
+if [[ -n "$_BOOTSTRAP_SCRIPT_DIR" && -f "${_BOOTSTRAP_SCRIPT_DIR}/agent/skills/agent-install/scripts/agent-config.sh" ]]; then
+  # shellcheck source=/dev/null
+  source "${_BOOTSTRAP_SCRIPT_DIR}/agent/skills/agent-install/scripts/agent-config.sh"
 fi
 
 if ! declare -F require_bash5 >/dev/null 2>&1; then
@@ -142,6 +142,20 @@ sdx_bs_clone_repo() {
     rm -rf "$dest_dir"
   fi
 
+  # 本地路径：镜像工作区（含未提交文件），便于本仓测与本地 GIT_REPO_URL
+  if [[ -d "$repo_url" ]]; then
+    sdx_info "同步本地仓库工作区: $repo_url → $dest_dir"
+    mkdir -p "$dest_dir"
+    if command -v rsync >/dev/null 2>&1; then
+      rsync -a --delete --exclude '.git' "${repo_url%/}/" "${dest_dir}/" \
+        || sdx_error "本地同步失败: $repo_url"
+    else
+      cp -R "${repo_url%/}/." "$dest_dir/" || sdx_error "本地复制失败: $repo_url"
+      rm -rf "${dest_dir}/.git"
+    fi
+    return 0
+  fi
+
   sdx_info "克隆仓库: $repo_url → $dest_dir"
 
   if [[ "$ref" == 'HEAD' || -z "$ref" ]]; then
@@ -168,7 +182,7 @@ sdx_bs_cleanup() {
 sdx_bs_usage() {
   cat >&2 <<'EOF'
 用法
-  docs-bootstrap.sh [选项]
+  bootstrap.sh [选项]
 
 选项
   --components=docs|agent|both  装机范围（默认 both）
@@ -198,16 +212,16 @@ EOF
 
 示例
   # 交互模式
-  bash docs-bootstrap.sh
+  bash bootstrap.sh
 
   # both
-  bash docs-bootstrap.sh --doc-target ~/workspace/my-app/docs --agents=cursor,kiro
+  bash bootstrap.sh --doc-target ~/workspace/my-app/docs --agents=cursor,kiro
 
   # 仅 Agent（任意目录）
-  bash docs-bootstrap.sh --components=agent --agents=cursor --agent-scope=home
+  bash bootstrap.sh --components=agent --agents=cursor --agent-scope=home
 
   # curl | bash
-  curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/scripts/docs-bootstrap.sh \
+  curl -sL https://raw.githubusercontent.com/oleewen/ai-knowledge/main/bootstrap.sh \
     | bash -s -- --doc-target ~/workspace/my-app/docs --agents=cursor,kiro
 EOF
 }
@@ -501,7 +515,7 @@ sdx_bs_main() {
 
   sdx_log ''
   sdx_log '=========================================='
-  sdx_log 'docs-bootstrap'
+  sdx_log 'bootstrap'
   sdx_info "仓库:        $repo_url"
   sdx_info "引用:        $ref"
   sdx_info "components:  $SDX_BS_COMPONENTS"
@@ -517,15 +531,15 @@ sdx_bs_main() {
 
   sdx_bs_clone_repo "$repo_url" "$ref" "$SDX_BS_CLONE_DIR"
 
-  local docs_install="${SDX_BS_CLONE_DIR}/scripts/docs-install.sh"
-  local agent_install="${SDX_BS_CLONE_DIR}/scripts/agent-install.sh"
+  local docs_install="${SDX_BS_CLONE_DIR}/agent/skills/docs-install/scripts/docs-install.sh"
+  local agent_install="${SDX_BS_CLONE_DIR}/agent/skills/agent-install/scripts/agent-install.sh"
   local shared_config="${SDX_BS_CLONE_DIR}/agent/scripts/docs-core.sh"
 
   if sdx_bs_want_docs; then
-    [[ -f "$docs_install" ]] || sdx_error "仓库中未找到 scripts/docs-install.sh"
+    [[ -f "$docs_install" ]] || sdx_error "仓库中未找到 agent/skills/docs-install/scripts/docs-install.sh"
   fi
   if sdx_bs_want_agent; then
-    [[ -f "$agent_install" ]] || sdx_error "仓库中未找到 scripts/agent-install.sh"
+    [[ -f "$agent_install" ]] || sdx_error "仓库中未找到 agent/skills/agent-install/scripts/agent-install.sh"
   fi
   [[ -f "$shared_config" ]] || sdx_error "仓库中未找到 agent/scripts/docs-core.sh"
 
@@ -544,7 +558,7 @@ sdx_bs_main() {
   fi
 
   sdx_log ''
-  sdx_info '完成：docs-bootstrap'
+  sdx_info '完成：bootstrap'
 }
 
 sdx_bs_main "$@"

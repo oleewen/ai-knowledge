@@ -1,6 +1,0 @@
-interface:
-  display_name: "文档装机引导"
-  short_description: >
-    编排 docs-install / agent-install / docs-bootstrap；可选 docs、agent 或二者；
-    本仓快路径分步，remote 表面参可 bootstrap（含 --components）；默认 dry-run 后确认。
-  default_prompt: "/docs-bootstrap 给 ~/workspace/my-app/docs 初始化知识库并安装 cursor（home），先 dry-run。"
