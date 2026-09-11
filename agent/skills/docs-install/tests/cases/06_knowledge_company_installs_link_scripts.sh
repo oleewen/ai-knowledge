@@ -20,11 +20,12 @@ git -C "$PROJECT_DIR" init -q
 
 bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=company --target "$COMPANY_DIR" >"$OUT_FILE" 2>&1
 
-assert_file_exists "$PROJECT_DIR/scripts/docs-link.sh"
-assert_file_exists "$PROJECT_DIR/scripts/link-config.sh"
+# 建联改走 /docs-link；不再向目标仓落盘 docs-link 脚本
+assert_file_not_exists "$PROJECT_DIR/scripts/docs-link.sh"
+assert_file_not_exists "$PROJECT_DIR/scripts/link-config.sh"
 
 DOCS_CONFIG_PATH="$PROJECT_DIR/.docsconfig"
 assert_file_exists "$DOCS_CONFIG_PATH"
 assert_contains "KNOWLEDGE_TYPE=company" "$DOCS_CONFIG_PATH"
 
-pass "scope=knowledge + type=company 安装 link 脚本并写 KNOWLEDGE_TYPE=company"
+pass "scope=knowledge + type=company 写 KNOWLEDGE_TYPE=company（不安装 link 脚本）"

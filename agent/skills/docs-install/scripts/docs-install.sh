@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # docs-install.sh — 知识库初始化 + .docsconfig（入口脚本，source docs-config.sh）
-# 语义应与 scripts/docs-config.sh 对齐；修改时请同步。
+# 语义应与同目录 docs-config.sh 对齐；修改时请同步。
 set -euo pipefail
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # 配置层与 .docsconfig 工具统一下沉到 docs-config.sh
 # shellcheck source=./docs-config.sh
 source "$SCRIPT_DIR/docs-config.sh"
-# shellcheck source=../agent/scripts/cli-core.sh
-source "$SCRIPT_DIR/../agent/scripts/cli-core.sh"
+# shellcheck source=../../../scripts/cli-core.sh
+source "$SCRIPT_DIR/../../../scripts/cli-core.sh"
 
 # =============================================================================
 # § 1  全局状态
@@ -309,18 +309,7 @@ install_org_template_to_docs() {
   sdx_info "    ${label}/ 同步完成"
 }
 
-# 步骤 1d：type=system|company 时，将 docs-link.sh / link-config.sh 安装至目标工程根 scripts/
-install_docs_link_scripts_to_target_repo() {
-  case "${CFG[type]}" in
-    system|company) ;;
-    *) return 0 ;;
-  esac
-  local dst_dir="${CFG[target_dir]}/scripts"
-  sdx_info ">>> 安装建联脚本至目标工程: ${dst_dir}（docs-link.sh、link-config.sh）"
-  sdx_ensure_dir "$dst_dir"
-  sdx_io_copy_file "${CFG[repo_root]}/scripts/docs-link.sh" "$dst_dir/docs-link.sh" || true
-  sdx_io_copy_file "${CFG[repo_root]}/scripts/link-config.sh" "$dst_dir/link-config.sh" || true
-}
+# 建联改由 /docs-link 技能（agent-install 已装技能树）；不再向目标仓拷贝 docs-link 脚本。
 
 # 步骤 1：重装时保留已有 knowledge-links.yaml（含 type:parent / type:meta 与向下 child）
 _DOCS_INSTALL_LINKS_STASH=""
@@ -582,12 +571,12 @@ docs_install_usage() {
   FORCE                 1=强制覆盖
 
 示例
-  ./scripts/docs-install.sh --target ~/workspace/my-app/docs
-  ./scripts/docs-install.sh --target ~/workspace/my-app/docs --scope=k
-  ./scripts/docs-install.sh --target ~/workspace/my-app/docs --scope=c
-  ./scripts/docs-install.sh --target ~/workspace/my-app/docs --scope=k --type=application --mode=central
-  ./scripts/docs-install.sh --target ~/workspace/my-app/docs --scope=k --type=system
-  ./scripts/docs-install.sh --target ~/workspace/my-app/docs --dry-run
+  bash agent/skills/docs-install/scripts/docs-install.sh --target ~/workspace/my-app/docs
+  bash agent/skills/docs-install/scripts/docs-install.sh --target ~/workspace/my-app/docs --scope=k
+  bash agent/skills/docs-install/scripts/docs-install.sh --target ~/workspace/my-app/docs --scope=c
+  bash agent/skills/docs-install/scripts/docs-install.sh --target ~/workspace/my-app/docs --scope=k --type=application --mode=central
+  bash agent/skills/docs-install/scripts/docs-install.sh --target ~/workspace/my-app/docs --scope=k --type=system
+  bash agent/skills/docs-install/scripts/docs-install.sh --target ~/workspace/my-app/docs --dry-run
 EOF
 }
 
@@ -630,7 +619,7 @@ docs_install_parse_args() {
 # 初始化并校验 REPO_ROOT
 docs_install_init_repo_root() {
   if [[ -z "${CFG[repo_root]}" ]]; then
-    CFG[repo_root]="$(abs_path "$SCRIPT_DIR/..")"
+    CFG[repo_root]="$(abs_path "$SCRIPT_DIR/../../../..")"
   fi
   [[ -d "${CFG[repo_root]}/application"    ]] || sdx_error "未找到 application 目录: ${CFG[repo_root]}/application"
 }
@@ -804,7 +793,6 @@ docs_install_run() {
     docs_install_copy_templates
     docs_install_restore_knowledge_links
     docs_install_upsert_knowledge_meta
-    install_docs_link_scripts_to_target_repo
     docs_install_write_docsconfig
     docs_install_rewrite_agent_paths
   fi

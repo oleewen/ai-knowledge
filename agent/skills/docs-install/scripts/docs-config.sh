@@ -9,8 +9,8 @@ readonly _SDX_DOCS_CONFIG_SH_LOADED=1
 if ! declare -p DOCS_CONFIG_DIR >/dev/null 2>&1; then
   readonly DOCS_CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 fi
-# shellcheck source=../agent/scripts/docs-core.sh
-source "${DOCS_CONFIG_DIR}/../agent/scripts/docs-core.sh"
+# shellcheck source=../../../scripts/docs-core.sh
+source "${DOCS_CONFIG_DIR}/../../../scripts/docs-core.sh"
 
 readonly -a SDX_SUPPORTED_MODES=(standalone central)
 
