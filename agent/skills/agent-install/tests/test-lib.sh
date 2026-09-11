@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
-AGENT_INSTALL_SCRIPT="$ROOT_DIR/scripts/agent-install.sh"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
+AGENT_INSTALL_SCRIPT="$ROOT_DIR/agent/skills/agent-install/scripts/agent-install.sh"
 source "$ROOT_DIR/agent/scripts/test-core.sh"
 
 new_fake_home() {

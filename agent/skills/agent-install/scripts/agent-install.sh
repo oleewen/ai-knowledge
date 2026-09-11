@@ -8,10 +8,10 @@ set -euo pipefail
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=agent-config.sh
 source "${SCRIPT_DIR}/agent-config.sh"
-# shellcheck source=../agent/scripts/shell-utils.sh
-source "${SCRIPT_DIR}/../agent/scripts/shell-utils.sh"
-# shellcheck source=../agent/scripts/cli-core.sh
-source "${SCRIPT_DIR}/../agent/scripts/cli-core.sh"
+# shellcheck source=../../../scripts/shell-utils.sh
+source "${SCRIPT_DIR}/../../../scripts/shell-utils.sh"
+# shellcheck source=../../../scripts/cli-core.sh
+source "${SCRIPT_DIR}/../../../scripts/cli-core.sh"
 
 # =============================================================================
 # 全局状态
@@ -192,7 +192,7 @@ link_store_into_agent_root() {
 
 agent_install_init_repo_root() {
   if [[ -z "${CFG[repo_root]}" ]]; then
-    CFG[repo_root]="$(abs_path "$SCRIPT_DIR/..")"
+    CFG[repo_root]="$(abs_path "$SCRIPT_DIR/../../../..")"
   fi
   local rr="${CFG[repo_root]}"
   [[ -d "$rr/agent/rules"   ]] || sdx_error "未找到 agent/rules: $rr/agent/rules"
@@ -371,11 +371,11 @@ agent_install_usage() {
   AGENTS_OPT      未传 --agents 时作为默认值（否则以命令行 --agents 为准）
 
 示例
-  ./scripts/agent-install.sh
-  ./scripts/agent-install.sh --agents=cursor,claude
-  ./scripts/agent-install.sh --scope=sh --dry-run
-  ./scripts/agent-install.sh --scope=k --dry-run
-  ./scripts/agent-install.sh --target ~/workspace/my-repo --agents=all
+  bash agent/skills/agent-install/scripts/agent-install.sh
+  bash agent/skills/agent-install/scripts/agent-install.sh --agents=cursor,claude
+  bash agent/skills/agent-install/scripts/agent-install.sh --scope=sh --dry-run
+  bash agent/skills/agent-install/scripts/agent-install.sh --scope=k --dry-run
+  bash agent/skills/agent-install/scripts/agent-install.sh --target ~/workspace/my-repo --agents=all
 EOF
 }
 

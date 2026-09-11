@@ -8,8 +8,8 @@ fi
 readonly _SDX_AGENT_CONFIG_SH_LOADED=1
 
 readonly AGENT_CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=../agent/scripts/docs-core.sh
-source "${AGENT_CONFIG_DIR}/../agent/scripts/docs-core.sh"
+# shellcheck source=../../../scripts/docs-core.sh
+source "${AGENT_CONFIG_DIR}/../../../scripts/docs-core.sh"
 
 readonly SDX_VERSION='3.0.0'
 

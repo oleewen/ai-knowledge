@@ -1,0 +1,37 @@
+{
+  "skill_name": "agent-install",
+  "version": "1.0.0",
+  "description": "评测 agent-install：轻流程；dry-run；home/target 高风险；与 docs-install 分流。",
+  "evals": [
+    {
+      "id": "agent-install-trigger-001",
+      "category": "should-trigger",
+      "prompt": "把 cursor 的 agent 树装到 home，先预览。",
+      "expected_output": "agent-install：--agents=cursor --target $HOME；先 --dry-run；等 C/M/S/F。",
+      "assertions": [
+        {
+          "id": "dry-run-first",
+          "name": "默认 dry-run",
+          "type": "must_include",
+          "check": "须体现先 --dry-run 再等确认。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "agent-install-not-trigger-001",
+      "category": "should-not-trigger",
+      "prompt": "给 ~/ws/app/docs 初始化应用知识库 standalone。",
+      "expected_output": "主路径 docs-install。",
+      "assertions": [
+        {
+          "id": "correct-downstream-docs",
+          "name": "知识库分流",
+          "type": "must_include",
+          "check": "须指向 docs-install，不得主路径写成 agent-install。",
+          "priority": "P0"
+        }
+      ]
+    }
+  ]
+}
