@@ -57,28 +57,11 @@ federation_resolve_doc_root() {
 
 federation_ensure_shared_changelogs() {
   local slots_parent="${1:?}" # .../application-slots 或 .../system-slots
-  local log_dir change_log archive_log
+  local log_dir archive_log
   log_dir="${slots_parent%/}/changelogs"
-  change_log="${log_dir}/CHANGE-LOG.md"
   archive_log="${log_dir}/ARCHIVE-LOG.md"
   mkdir -p "$log_dir"
-  if [[ ! -f "$change_log" ]]; then
-    cat >"$change_log" <<'EOF'
----
-type: Change Log
-title: CHANGE-LOG（联邦槽位同步）
----
-<!-- markdownlint-disable-next-line MD025 -->
-# CHANGE-LOG（联邦槽位同步）
-
-层内共用同步留痕。条目含 name / source / commit / action。
-
-## 写入约定
-
-- 新记录按时间倒序追加
-- action：pull / clone / link-fix / migrate（可组合，如 migrate+pull）
-EOF
-  fi
+  # 变更溯源改用 git；不再维护 CHANGE-LOG.md
   if [[ ! -f "$archive_log" ]]; then
     cat >"$archive_log" <<'EOF'
 ---
@@ -95,7 +78,7 @@ EOF
 
 # 将旧槽位 changelogs 正文追加进共用日志（跳过 front matter 与首个 H1）
 federation_merge_old_slot_changelog() {
-  local old_file="${1:?}" shared_file="${2:?}" slot_name="${3:?}" kind="${4:-CHANGE-LOG}"
+  local old_file="${1:?}" shared_file="${2:?}" slot_name="${3:?}" kind="${4:-legacy-changelog}"
   local tmp body
   [[ -f "$old_file" ]] || return 0
   [[ -f "$shared_file" ]] || return 0
@@ -117,11 +100,9 @@ federation_merge_old_slot_changelog() {
 
 federation_migrate_real_slot_dir() {
   local slot_dir="${1:?}" shared_log_dir="${2:?}" slot_name="${3:?}"
-  local old_change old_archive
+  local old_archive
   [[ -d "$slot_dir" && ! -L "$slot_dir" ]] || return 0
-  old_change="${slot_dir%/}/changelogs/CHANGE-LOG.md"
   old_archive="${slot_dir%/}/changelogs/ARCHIVE-LOG.md"
-  federation_merge_old_slot_changelog "$old_change" "${shared_log_dir%/}/CHANGE-LOG.md" "$slot_name" "CHANGE-LOG"
   federation_merge_old_slot_changelog "$old_archive" "${shared_log_dir%/}/ARCHIVE-LOG.md" "$slot_name" "ARCHIVE-LOG"
   rm -rf "$slot_dir"
 }
@@ -175,22 +156,6 @@ federation_remove_slot_path() {
   if [[ -d "$slot_dir" ]]; then
     rm -rf "$slot_dir"
   fi
-}
-
-federation_append_pull_change_log() {
-  local shared_change_log="${1:?}" slot_key="${2:?}" slot_name="${3:?}" source_repo="${4:?}" commit="${5:?}" action="${6:?}"
-  local synced_at
-  [[ -f "$shared_change_log" ]] || return 1
-  synced_at="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-  {
-    printf '\n'
-    printf '## synced_at: %s\n' "$synced_at"
-    printf '\n'
-    printf -- '- %s: %s\n' "$slot_key" "$slot_name"
-    printf -- '- source: %s\n' "$source_repo"
-    printf -- '- commit: %s\n' "$commit"
-    printf -- '- action: %s\n' "$action"
-  } >>"$shared_change_log"
 }
 
 federation_git_origin_url() {

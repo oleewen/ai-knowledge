@@ -47,8 +47,8 @@ bash agent/skills/docs-pull/scripts/pull-slots.sh --all
 - path 不存在 → `git clone <repository> <path>`
 - path 已存在 → `origin` 须匹配 `repository`；脏工作区拒绝；否则 `git pull --ff-only`（远端默认分支）
 - 软链目标：有 `.docsconfig` 用其 `DOC_ROOT`，否则 `{path}/{doc_dir}`
-- 旧真目录槽位：合并旧日志进共用文件后删除，再建软链（静默）
-- 追溯写入层共用 `changelogs/CHANGE-LOG.md`（字段：synced_at / name / source / commit / action）
+- 旧真目录槽位：合并旧 `ARCHIVE-LOG` 进共用文件后删除，再建软链（静默）；不再维护 CHANGE-LOG
+- 追溯：`SYNC_OK` 含 commit / source / action；变更看下级仓 git
 
 ### 4 风险校核
 
@@ -57,7 +57,7 @@ bash agent/skills/docs-pull/scripts/pull-slots.sh --all
 - `knowledge-links.yaml` 字段是否完整
 - path / origin / 软链是否有效
 - 目标 `.docsconfig` 与 `KNOWLEDGE_TYPE` 是否匹配
-- 层共用 `changelogs/CHANGE-LOG.md` 是否已追加追溯记录
+- `SYNC_OK` 是否含可核对的 `commit`
 
 ### 5 输出与动作停顿
 

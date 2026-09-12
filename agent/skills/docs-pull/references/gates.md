@@ -47,5 +47,5 @@ C 确认当前槽位单元 / M 修改参数 / S 跳过当前槽位 / F 补齐剩
 ## 约束
 
 - 槽位为软链，不再 rsync 拷贝正文
-- 层共用 `changelogs/CHANGE-LOG.md` 追溯记录必须跟随同步追加
+- 同步追溯以 git 为准（`SYNC_OK` 含 commit）；不再写 `CHANGE-LOG.md`
 - 脏工作区不得 pull

@@ -71,7 +71,8 @@ printf '%s\n' "$out" | grep -Fq 'SYNC_OK:' || fail "应输出 SYNC_OK"
 [[ -L "$COMPANY/docs/system-slots/system-sys-foo" ]] \
   || fail "槽位应为软链"
 assert_file_exists "$COMPANY/docs/system-slots/system-sys-foo/sync-me.md"
-grep -Fq "$BARE" "$COMPANY/docs/system-slots/changelogs/CHANGE-LOG.md" \
-  || fail "应写入 repository 作为 source"
+printf '%s\n' "$out" | grep -Fq "source=$BARE" || fail "SYNC_OK 应含 source"
+printf '%s\n' "$out" | grep -Eq 'commit=[0-9a-f]+' || fail "SYNC_OK 应含 commit"
+assert_file_exists "$COMPANY/docs/system-slots/changelogs/ARCHIVE-LOG.md"
 
-pass "company: pull single sys symlink + changelog"
+pass "company: pull single sys symlink + git trace"

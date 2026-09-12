@@ -18,8 +18,8 @@
 
 ```json
 {
-  "text": "通过。单槽位停顿与同步后 CHANGE-LOG 追溯正确。",
+  "text": "通过。单槽位停顿与同步后 git commit 追溯正确。",
   "passed": true,
-  "evidence": ["single-slot-stop", "changelog-must-follow-sync"]
+  "evidence": ["single-slot-stop", "git-trace-must-follow-sync"]
 }
 ```

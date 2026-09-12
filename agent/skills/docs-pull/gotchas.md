@@ -6,4 +6,4 @@
 - `knowledge-links.yaml` 字段合同为强约束：缺字段直接失败
 - `origin` 必须与 `repository` 匹配（规范化比较）；脏工作区拒绝 `git pull`
 - 旧真目录槽位会静默迁移（合并旧日志进共用 `changelogs/` 后删除）
-- 追溯在 `application-slots/changelogs/CHANGE-LOG.md` 或 `system-slots/changelogs/CHANGE-LOG.md`，不在槽位内部
+- 追溯在下级仓 `git log` / `SYNC_OK` 的 `commit` 字段，不写 `CHANGE-LOG.md`

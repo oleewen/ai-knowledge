@@ -174,8 +174,8 @@ pull_one() {
   validate_link_fields "$idx" || return 1
 
   local repo path_expanded name label
-  local source_dir slot_dir slots_dir shared_log_dir shared_change_log
-  local commit action git_action link_action slot_key
+  local source_dir slot_dir slots_dir shared_log_dir
+  local commit action git_action link_action
   local target_cfg t_doc_root='' t_repo_root='' t_doc_dir='' t_agent_root='' t_agent_dirs='' t_ktype=''
   local saved_pwd
 
@@ -187,7 +187,6 @@ pull_one() {
   slots_dir="${DOC_ROOT%/}/${slot_parent}"
   slot_dir="${slots_dir}/${slot_prefix}-${name}"
   shared_log_dir="${slots_dir}/changelogs"
-  shared_change_log="${shared_log_dir}/CHANGE-LOG.md"
   federation_ensure_shared_changelogs "$slots_dir"
 
   git_action="$(ensure_child_repo "$path_expanded" "$repo")" || return 1
@@ -218,10 +217,8 @@ pull_one() {
   [[ -n "$action" ]] || action="pull"
 
   commit="$(git -C "$path_expanded" rev-parse --short HEAD 2>/dev/null || printf 'unknown')"
-  slot_key="$([[ "$expected_target_type" == "application" ]] && printf 'app_name' || printf 'sys_name')"
-  federation_append_pull_change_log "$shared_change_log" "$slot_key" "$name" "$repo" "$commit" "$action" || return 1
-
-  printf 'SYNC_OK: %s (%s) action=%s\n' "$name" "$label" "$action"
+  # 变更溯源：下级仓 git（commit）；不再写 CHANGE-LOG.md
+  printf 'SYNC_OK: %s (%s) action=%s commit=%s source=%s\n' "$name" "$label" "$action" "$commit" "$repo"
   return 0
 }
 

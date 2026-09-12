@@ -25,7 +25,7 @@ description: >
 
 | 负责 | 不负责 |
 | --- | --- |
-| 编排 `docs-link.sh` 的 link/unlink；参数向导与写盘闸门；双边 links + 槽位软链 | 槽位 clone/pull 与 CHANGE-LOG 追溯（→ docs-pull）；中央规约复制（→ docs-push）；装机（→ docs-install / agent-install）；改正文（除用户明示的 `--rewrite-http`） |
+| 编排 `docs-link.sh` 的 link/unlink；参数向导与写盘闸门；双边 links + 槽位软链 | 槽位 clone/pull 与 git 追溯（→ docs-pull）；中央规约复制（→ docs-push）；装机（→ docs-install / agent-install）；改正文（除用户明示的 `--rewrite-http`） |
 
 ## 不这样用
 

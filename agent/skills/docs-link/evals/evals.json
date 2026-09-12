@@ -72,7 +72,7 @@
     {
       "id": "docs-link-not-trigger-001",
       "category": "should-not-trigger",
-      "prompt": "软链断了，把 billing 应用从本地 path clone/pull 回 application-billing 槽位，并写 CHANGE-LOG。",
+      "prompt": "软链断了，把 billing 应用从本地 path clone/pull 回 application-billing 槽位，并用 git commit 追溯。",
       "expected_output": "主路径 docs-pull。",
       "assertions": [
         {
@@ -86,7 +86,7 @@
           "id": "boundary-pull",
           "name": "边界分流",
           "type": "must_not_conflict",
-          "check": "不得把槽位 clone/pull + CHANGE-LOG 写成 docs-link 主路径。",
+          "check": "不得把槽位 clone/pull + git 追溯写成 docs-link 主路径。",
           "priority": "P0"
         }
       ]

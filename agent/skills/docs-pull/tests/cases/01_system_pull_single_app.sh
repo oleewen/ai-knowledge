@@ -52,7 +52,7 @@ git -C "$APP" remote add origin "$BARE"
 mkdir -p "$SYSTEM/docs/application-slots"
 # 旧真目录槽位：应被静默迁移为软链
 mkdir -p "$SYSTEM/docs/application-slots/application-app-foo/changelogs"
-echo "# old slot log" >"$SYSTEM/docs/application-slots/application-app-foo/changelogs/CHANGE-LOG.md"
+echo "# old archive" >"$SYSTEM/docs/application-slots/application-app-foo/changelogs/ARCHIVE-LOG.md"
 
 cat >"$SYSTEM/docs/knowledge-links.yaml" <<EOF
 links:
@@ -70,14 +70,14 @@ set -e
 
 [[ "$code" -eq 0 ]] || fail "docs-pull 应成功：$out"
 printf '%s\n' "$out" | grep -Fq 'SYNC_OK:' || fail "应输出 SYNC_OK"
+printf '%s\n' "$out" | grep -Fq "source=$BARE" || fail "SYNC_OK 应含 source"
+printf '%s\n' "$out" | grep -Eq 'commit=[0-9a-f]+' || fail "SYNC_OK 应含 commit"
 
 [[ -L "$SYSTEM/docs/application-slots/application-app-foo" ]] \
   || fail "槽位应为软链"
 assert_file_exists "$SYSTEM/docs/application-slots/application-app-foo/sync-me.md"
-assert_file_exists "$SYSTEM/docs/application-slots/changelogs/CHANGE-LOG.md"
-grep -Fq "$BARE" "$SYSTEM/docs/application-slots/changelogs/CHANGE-LOG.md" \
-  || fail "应写入 repository 作为 source"
-grep -Fq 'migrated_from: app-foo' "$SYSTEM/docs/application-slots/changelogs/CHANGE-LOG.md" \
-  || fail "应合并旧槽位日志"
+assert_file_exists "$SYSTEM/docs/application-slots/changelogs/ARCHIVE-LOG.md"
+grep -Fq 'migrated_from: app-foo' "$SYSTEM/docs/application-slots/changelogs/ARCHIVE-LOG.md" \
+  || fail "应合并旧槽位 ARCHIVE-LOG"
 
-pass "system: pull single app symlink + changelog"
+pass "system: pull single app symlink + git trace"

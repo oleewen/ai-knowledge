@@ -1,13 +1,13 @@
 {
   "skill_name": "docs-pull",
   "version": "2.0.0",
-  "description": "评测 docs-pull：轻流程（C/M/S/F，见 light-flow-actions）；当前槽位单元、批量继续确认与同步后 CHANGE-LOG 追溯。",
+  "description": "评测 docs-pull：轻流程（C/M/S/F，见 light-flow-actions）；当前槽位单元、批量继续确认与同步后 git commit 追溯。",
   "evals": [
     {
       "id": "docs-pull-trigger-001",
       "category": "should-trigger",
       "prompt": "帮我在 system 知识库根执行 /docs-pull，把 billing 应用的本地 docs 回拉到 application-billing 槽位，只处理这一个槽位，别一口气跑全部。",
-      "expected_output": "docs-pull：收口 mode=system、--app=billing；以单个 application-billing 为当前槽位单元；同步后先校核 CHANGE-LOG 追溯，再停下等 C/M/S/F。",
+      "expected_output": "docs-pull：收口 mode=system、--app=billing；以单个 application-billing 为当前槽位单元；同步后先校核 SYNC_OK 中的 git commit 追溯，再停下等 C/M/S/F。",
       "assertions": [
         {
           "id": "single-slot-stop",
@@ -17,10 +17,10 @@
           "priority": "P0"
         },
         {
-          "id": "changelog-must-follow-sync",
+          "id": "git-trace-must-follow-sync",
           "name": "同步后追溯",
           "type": "must_include",
-          "check": "须体现 application-slots/changelogs/CHANGE-LOG.md（层共用）追溯记录要跟随同步追加。",
+          "check": "须体现 SYNC_OK 含 commit/source，变更溯源以下级仓 git 为准。",
           "priority": "P0"
         },
         {
@@ -94,8 +94,8 @@
     {
       "id": "docs-pull-audience-001",
       "category": "should-trigger",
-      "prompt": "docs-pull 同步完槽位，结果说明写成应用内部实现长文，槽位路径与 CHANGE-LOG 要点缺失。请按受众 A/B 处理。",
-      "expected_output": "检出 A/B 违例；应收口为槽位/同步结果/CHANGE-LOG 要点；未过不得宣称完成。",
+      "prompt": "docs-pull 同步完槽位，结果说明写成应用内部实现长文，槽位路径与 commit/SYNC_OK 要点缺失。请按受众 A/B 处理。",
+      "expected_output": "检出 A/B 违例；应收口为槽位/同步结果/commit 要点；未过不得宣称完成。",
       "assertions": [
         {
           "id": "audience-violation-visible",
