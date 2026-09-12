@@ -1,6 +1,6 @@
 # ai-knowledge 目录索引（index）
 
-> **最后更新**: 2026-07-17  
+> **最后更新**: 2026-09-12  
 > **文档定位**: 面向人类与 Agent 的仓库根目录索引页；九章地图见 [INDEX-GUIDE.md](INDEX-GUIDE.md)。
 
 ## 目录文件
@@ -11,6 +11,7 @@
 - [quick-start.md](quick-start.md)
 - [bootstrap.sh](bootstrap.sh)
 - [agent/skills/README.md](agent/skills/README.md)
+- [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)
 
 ## 子目录
 
@@ -20,7 +21,8 @@
 - [agent/](agent/README.md)
 - [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)
 - [agent/skills/agent-install/SKILL.md](agent/skills/agent-install/SKILL.md)
-- [docs/](docs/)
+
+约定会话稿根 `docs/`（`.docsconfig` 的 `DOC_DIR`）通常未入库；当前工作树可缺席。
 
 ## 阅读顺序
 

@@ -8,11 +8,10 @@
 - `rules/`：编码、设计、测试、文档等协作规范与闸门总表入口。
 - `references/`：跨 Skill 协议（意图澄清、单元推进、轻流程动作、grilling、布局、会话工作稿路径）。
 - `knowledge/`：知识库治理 SSOT（命名、术语、原则、ADR；原 `*/constitution/`）。
-- `skills/`：以 `SKILL.md` 为核心的工作流定义。
-- `agent/scripts/`：与 Skill 配套的共享 Bash 库。
-- `scripts/`（仓库根）：初始化与分发工具链，把 `agent/` 与知识库模板同步到目标项目。
+- `skills/`：以 `SKILL.md` 为核心的工作流定义；装机类脚本在对应 `skills/*/scripts/`。
+- `scripts/`：与 Skill 配套的共享 Bash 库（路径与 `.docsconfig` 解析等）。
 
-> `skills/` = 流程定义；仓库根 `scripts/` = 环境初始化；`agent/scripts/` = 技能脚本共享库。
+> `skills/` = 流程定义；仓根 [bootstrap.sh](../bootstrap.sh) = 装机编排入口；`agent/scripts/` = 技能脚本共享库。根目录 `scripts/` 已移除。
 
 ## 结构导览
 
@@ -21,7 +20,7 @@
 | [rules/CONVENTIONS.md](rules/CONVENTIONS.md) | 规则总入口与产出协议总表 |
 | [knowledge/README.md](knowledge/README.md) | 知识治理 SSOT |
 | [references/](references) | 跨 Skill 契约（澄清 / 推进环 / 轻流程动作 / 烤干 / 布局 / 工作稿路径） |
-| [skills/README.md](skills/README.md) | Slash 命令清单（权威） |
+| [skills/README.md](skills/README.md) | Slash 命令清单（权威；25 个） |
 | [scripts/](scripts) | 共享 Bash 库（路径与 `.docsconfig` 解析等；细节见各脚本头注释） |
 | [skills/docs-agent/assets/agents-skeleton.md](skills/docs-agent/assets/agents-skeleton.md) | `AGENTS.md` 推荐骨架 |
 
@@ -30,6 +29,7 @@
 - 总体协作契约：仓库根 `AGENTS.md`
 - 九章地图：`INDEX-GUIDE.md`；目录索引：`index.md`
 - 知识库建模：各文档根下 `DESIGN.md` / `CONTRIBUTING.md`（如 `application/`）
+- 装机：仓根 `bootstrap.sh`；Skill 入口见 [skills/docs-install](skills/docs-install/SKILL.md)、[skills/agent-install](skills/agent-install/SKILL.md)
 
 ## 维护原则
 
