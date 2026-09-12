@@ -2,9 +2,9 @@
 
 > **企业级元知识底座**：SSOT + 联邦治理，为 AI Agent 提供结构化知识与协作规范。
 
-[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/oleewen/ai-knowledge/graphs/commit-activity)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](application/CONTRIBUTING.md)
 
 **结论**：纯文档型底座——无业务运行时；用 Bash 注入任意工程，建立 SDD 协作环境。Agent 契约见 [AGENTS.md](AGENTS.md)；九章地图 [INDEX-GUIDE.md](INDEX-GUIDE.md)；目录索引 [index.md](index.md)。
 
@@ -79,7 +79,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/bootstrap.
 
 ## 项目结构
 
-> 与 [INDEX-GUIDE.md](INDEX-GUIDE.md) §2.1 一致（目录树唯一起源）。
+> 与 [INDEX-GUIDE.md](INDEX-GUIDE.md) §2.1 一致（目录树唯一起源）。根 `scripts/` 已移除；装机入口用 [bootstrap.sh](bootstrap.sh)。
 
 ```text
 ./
@@ -89,10 +89,12 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/bootstrap.
 ├── system/               # 系统库：knowledge/ + overview、application-slots/application-{NAME}/ 槽位、SDD
 ├── company/              # 公司库：knowledge/ + overview、system-slots/system-{NAME}/ 槽位
 ├── bootstrap.sh          # 远程/本地双轨装机编排（docs-install → agent-install）
-├── agent/                # skills/、rules/、knowledge/、references/、scripts/、hooks.json
-├── docs/                 # .docsconfig 的 DOC_DIR；会话稿 superpowers/（通常未入库）
+├── agent/                # skills/（25）、rules/、knowledge/、references/、scripts/、hooks.json
+├── .docsconfig           # DOC_DIR=docs（目录可缺席）· KNOWLEDGE_TYPE=company
 └── .gitignore
 ```
+
+约定会话稿根 `docs/`（含 `superpowers/`）通常未入库；当前工作树可缺席。
 
 ---
 
@@ -129,10 +131,10 @@ flowchart TD
 | 九章地图 / 目录索引 | [INDEX-GUIDE.md](INDEX-GUIDE.md) · [index.md](index.md) |
 | Agent 契约与查阅顺序 | [AGENTS.md](AGENTS.md) |
 | 三层元模型 | [application/DESIGN.md](application/DESIGN.md)、[system/DESIGN.md](system/DESIGN.md)、[company/DESIGN.md](company/DESIGN.md) |
-| 初始化脚本 | [bootstrap.sh](bootstrap.sh)、[agent/skills/README.md](agent/skills/README.md) |
+| 初始化脚本 | [bootstrap.sh](bootstrap.sh)、[agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)、[agent/skills/agent-install/SKILL.md](agent/skills/agent-install/SKILL.md) |
 | 共享推进契约 | [agent/references/](agent/references/) |
 | 根索引运行日志 | [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md) |
-| OKF / Skill 清单 | [docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) · [agent/skills/README.md](agent/skills/README.md) |
+| OKF / Skill 清单（25） | [docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) · [agent/skills/README.md](agent/skills/README.md) |
 
 ---
 
@@ -142,4 +144,4 @@ flowchart TD
 2. [application/DESIGN.md](application/DESIGN.md) — 五视角元模型  
 3. [application/CONTRIBUTING.md](application/CONTRIBUTING.md) — 贡献流程与门禁  
 
-**许可**：[Apache-2.0](LICENSE)。
+**许可**：Apache-2.0（根目录暂无 `LICENSE` 文件；badge 链 OSI 条文）。

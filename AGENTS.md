@@ -2,7 +2,7 @@
 
 > **契约定位**：角色、硬约束、必读索引；细则链向 SSOT，本文不抄全文。
 
-**最后更新**: 2026-07-21
+**最后更新**: 2026-09-12
 
 ---
 
@@ -22,7 +22,7 @@
 
 | 项 | 要求 |
 | --- | --- |
-| 先读后写 | 本文件 → [README.md](README.md) → [docs/index.md](docs/index.md) → 任务路径（架构序见 [docs/README.md](docs/README.md)） |
+| 先读后写 | 本文件 → [README.md](README.md) → [INDEX-GUIDE.md](INDEX-GUIDE.md) → 任务路径（渐进披露见 [index.md](index.md)） |
 | 最小变更 | 只改任务直接相关文件；匹配现有 Markdown 体例 |
 | 零幻觉 | 无落盘 INDEX 或未读路径，不写死为已核实事实；未覆盖见 INDEX §8 |
 | 响应形态 | 优先图形/表格/HTML；重点突出；默认允许 Visual Companion；下一步须数字编号快捷选项 |
