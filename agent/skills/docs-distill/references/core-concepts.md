@@ -1,21 +1,21 @@
 # 核心概念
 
-联邦与细节：[federation-spec.md](federation-spec.md)、[distill-log-spec.md](distill-log-spec.md)。
+联邦与细节：[federation-spec.md](federation-spec.md)。
 
 ## 路径与标识
 
 | 术语 | 含义 |
 | ------ | ------ |
-| `{name}`/`{APPNAME}` | 应用目录名（如 `billing-appeal`），与 `system/application-slots/application-{NAME}/` 一致 |
-| `{APPNAME}-overview.md` | `system/knowledge/overview/` 下产物 |
-| `changelog_id` | CHANGE-LOG 条目稳定 id；规则见 distill-log-spec |
+| `DOC_DIR` | 目标层：`system` 或 `company`（蒸馏目标；非 application） |
+| `{NAME}` | system 边=应用名；company 边=系统名 |
+| 源槽位 | `system/application-slots/application-{NAME}/` 或 `company/system-slots/system-{NAME}/` |
+| `{NAME}-overview.md` | 目标层 `knowledge/overview/` 下产物 |
 
-## 日志（摘要）
+## 模式
 
-- **应用 CHANGE-LOG**：候选增量；本技能**不写**。
-- **DISTILL-LOG**：历史 + 下次锚点；按 **`app` 列取该应用最新一行**（文件内最新在前）。
-- **应用 `ARCHIVE-LOG.md`**：与批次锚点联读 → distill-log-spec。
+- **仅全量**：整表扫描槽位源，按 federation-spec 写第三列 delta。
+- **不写 DISTILL-LOG**：无增量锚点；勿再依赖历史 DISTILL-LOG 文件。
 
 ## 第三列语义
 
-相对链接段落的 **delta** 缓冲区；细则 [federation-spec.md](federation-spec.md)。
+相对链接段落的 **delta** 缓冲区；细则 [federation-spec.md](federation-spec.md)。表行随目标层（系统库 vs 公司库）。

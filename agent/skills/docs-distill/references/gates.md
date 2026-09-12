@@ -16,20 +16,20 @@
 
 ## 单元定义
 
-**当前单元** = 单个 `{APPNAME}-overview.md` + 单次增量范围或单次 `--full` 范围。
+**当前单元** = 单个 `{NAME}-overview.md` + 单次全量范围。
 
-一次只处理一个应用；含 `--dry-run` 预览结果。
+一次只处理一个源名；含 `--dry-run` 预览结果。
 
 ## 技能追加澄清字段
 
 在公共六项之外追加（不可删减公共项）：
 
-- **`--app`**：目标应用
-- **时间范围**：自动锚点 / `--since` / `--full`
+- **`DOC_DIR` / `--doc-dir`**：`system` 或 `company`
+- **`--name`**：应用名（system 边）或系统名（company 边）
 - **写入模式**：正式写入 / `--dry-run` 预览
 - **overview 状态**：新建 / 更新
 
-意图澄清须写明目标应用与 `--full` / `--since` / `--dry-run` 等关键参数摘要。
+意图澄清须写明边（源槽位 → 目标 overview）与 `--dry-run` 等关键参数摘要。模式恒为全量。
 
 ## 写后默认
 
@@ -39,25 +39,25 @@
 
 须先给结论、推荐与数字选项，确认后再执行：
 
-- `--full`
-- 锚点缺失或 `CHANGE-LOG` 无法定位增量起点
-- 首次创建 `{APPNAME}-overview.md`
-- 多应用但未指定 `--app`
-- 应用侧与系统侧知识冲突，且规则无法自动消解
+- 全量覆盖已有第三列
+- 首次创建 `{NAME}-overview.md`
+- 未指定 `--name` 或多源候选
+- `DOC_DIR` 不明（非 `system|company`）
+- 槽位缺失或为空
+- 源侧与目标层知识冲突，且规则无法自动消解
 - 要求跳过预览直接写入
 
 这些情形下，`--dry-run` 是推荐方案；**仍须写前意图澄清**。
 
 ## 原子性 / 失败停顿
 
-- overview 第三列写入成功后，才能追加 `DISTILL-LOG`
-- overview 写入失败时，禁止追加 `DISTILL-LOG`
-- `--dry-run` 不写 overview，也不写 `DISTILL-LOG`
-- 涉及 `system/changelogs/CHANGE-LOG.md` 与 `system/application-slots/changelogs/ARCHIVE-LOG.md` 的追加与锚点更新，与当前蒸馏写入**同一原子事务**，适用同一交互与确认要求
-- 当前单元未收敛前，不得自动推进到下一应用或下一批范围
+- 只写目标 overview 第三列；**不写** `DISTILL-LOG`
+- `--dry-run` 不写 overview
+- 槽位空/未 pull → 停，不写
+- 当前单元未收敛前，不得自动推进到下一源或另一边
 
 ## 典型语义问题（烤干）
 
-- 应用范围、增量/全量策略、冲突处理口径
+- 边选择（system vs company）、全量覆盖口径、冲突处理
 - 已覆盖行与 `[U]` 整段重摘要口径
-- 首次建 overview、是否补写 `DISTILL-LOG`
+- 首次建 overview；误把非槽位源当 distill（应 extract）

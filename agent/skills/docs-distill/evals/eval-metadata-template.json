@@ -17,21 +17,21 @@
       "id": "semantic-change-needs-confirmation",
       "name": "语义变更先确认",
       "type": "must_include",
-      "check": "应用范围、增量/全量策略、冲突口径等语义变更时，先给结论、推荐方案与数字选项。",
+      "check": "全量直写、跳过预览、冲突口径等语义变更时，先给结论、推荐方案与数字选项。",
       "priority": "P0"
     },
     {
-      "id": "distill-log-after-overview",
-      "name": "日志顺序正确",
+      "id": "full-only-no-distill-log",
+      "name": "仅全量无日志",
       "type": "must_include",
-      "check": "overview 成功写入后才允许追加 `DISTILL-LOG`；overview 失败时不得写日志。",
+      "check": "仅全量；不得以追加 DISTILL-LOG 为成功条件。",
       "priority": "P0"
     },
     {
       "id": "dry-run-no-write",
       "name": "dry-run 只预览",
       "type": "must_include",
-      "check": "`--dry-run` 只预览，不宣称已写 overview 或 `DISTILL-LOG`。",
+      "check": "`--dry-run` 只预览，不宣称已写 overview。",
       "priority": "P0"
     }
   ],
@@ -47,7 +47,7 @@
       "id": "no-false-distill-primary",
       "name": "勿假主蒸馏",
       "type": "must_not_conflict",
-      "check": "勿描述为默认走完五阶段+DISTILL 而忽略指定下游。",
+      "check": "勿以槽位 distill 上行为主路径而忽略指定下游。",
       "priority": "P0"
     },
     {

@@ -12,14 +12,14 @@
 ### should-not-trigger P0 摘要
 
 - `correct-downstream`：点名下游技能/产物
-- `no-false-distill-primary`：不以蒸馏 + DISTILL-LOG 框下游请求
+- `no-false-distill-primary`：不以槽位 distill 上行框下游请求
 
 **例**（对齐 eval id 1）
 
 ```json
 {
-  "text": "通过。写前澄清、单单元、dry-run 与双日志顺序正确。",
+  "text": "通过。写前澄清、系统边、全量无 DISTILL-LOG、dry-run 正确。",
   "passed": true,
-  "evidence": ["intent-clarify-before-write", "single-unit-stop", "distill-log-after-overview", "dry-run-no-write"]
+  "evidence": ["intent-clarify-before-write", "system-edge", "full-only-no-distill-log", "dry-run-no-write", "single-unit-stop"]
 }
 ```

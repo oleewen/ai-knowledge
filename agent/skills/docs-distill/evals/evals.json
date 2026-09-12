@@ -1,13 +1,13 @@
 {
   "skill_name": "docs-distill",
-  "version": "3.1.0",
-  "description": "冒烟样本：参数向导、写前意图澄清、当前单元、dry-run、双日志顺序、烤干与语义确认；含 1 条负向分流。",
+  "version": "4.0.0",
+  "description": "冒烟：双边全量、DOC_DIR、槽位边界、dry-run、与 extract 分流；无 DISTILL-LOG。",
   "evals": [
     {
       "id": 1,
       "category": "should-trigger",
-      "prompt": "帮我把 billing-appeal 应用的最新变更蒸馏到系统库，上次蒸馏后又合并了几个 PR，CHANGE-LOG 里有 v1.4.0 和 v1.5.0 两个新条目",
-      "expected_output": "docs-distill：收口 `--app=billing-appeal` 与增量范围；写前意图澄清后 dry-run；overview 成功后再 DISTILL-LOG；烤干后等 C/M/G/S/F。",
+      "prompt": "帮我把 billing-appeal 应用槽位全量蒸馏到系统库 overview，先预览一下要改哪些第三列",
+      "expected_output": "docs-distill：DOC_DIR=system、`--name=billing-appeal`、全量、写前澄清后 dry-run；不写 DISTILL-LOG；烤干后等 C/M/G/S/F。",
       "files": [],
       "assertions": [
         {
@@ -18,24 +18,17 @@
           "priority": "P0"
         },
         {
-          "id": "single-unit-stop",
-          "name": "单单元停顿",
+          "id": "system-edge",
+          "name": "系统边路径",
           "type": "must_include",
-          "check": "一次只处理一个 overview 当前单元，收敛后停下。",
+          "check": "须体现 application-slots → system/knowledge/overview。",
           "priority": "P0"
         },
         {
-          "id": "audience-check",
-          "name": "受众质检",
+          "id": "full-only-no-distill-log",
+          "name": "仅全量无日志",
           "type": "must_include",
-          "check": "须体现烤干含受众维 A/B/C/E，或对照 audience-and-language；未过不得宣称对象已烤干收敛。",
-          "priority": "P0"
-        },
-        {
-          "id": "distill-log-after-overview",
-          "name": "日志顺序",
-          "type": "must_include",
-          "check": "overview 成功后再追加 DISTILL-LOG。",
+          "check": "仅全量；不得以追加 DISTILL-LOG 为成功条件。",
           "priority": "P0"
         },
         {
@@ -44,14 +37,21 @@
           "type": "must_include",
           "check": "推荐或执行 dry-run 预览时不宣称已写盘。",
           "priority": "P0"
+        },
+        {
+          "id": "single-unit-stop",
+          "name": "单单元停顿",
+          "type": "must_include",
+          "check": "一次只处理一个 overview 当前单元，收敛后停下。",
+          "priority": "P0"
         }
       ]
     },
     {
       "id": 2,
       "category": "should-trigger",
-      "prompt": "/docs-distill --app payment --full --dry-run",
-      "expected_output": "识别 `--full` 高风险；写前澄清后只预览，不写 overview / DISTILL-LOG。",
+      "prompt": "/docs-distill --doc-dir company --name payment-platform --dry-run",
+      "expected_output": "识别 company 边：system-slots → company overview；写前澄清后只预览，不写 overview / DISTILL-LOG。",
       "files": [],
       "assertions": [
         {
@@ -62,10 +62,10 @@
           "priority": "P0"
         },
         {
-          "id": "semantic-change-needs-confirmation",
-          "name": "语义变更确认",
+          "id": "company-edge",
+          "name": "公司边路径",
           "type": "must_include",
-          "check": "`--full` 须先确认。",
+          "check": "须体现 company/system-slots → company/knowledge/overview。",
           "priority": "P0"
         },
         {
@@ -80,8 +80,8 @@
     {
       "id": 3,
       "category": "should-trigger",
-      "prompt": "系统库的 overview 需要更新了，我们 order-service 这边知识库改了不少，你帮我看看要同步哪些内容",
-      "expected_output": "澄清 `--app=order-service` 与范围；单当前单元；未确认不宣称已写完。",
+      "prompt": "公司库 overview 要更新了，payment-platform 系统槽位知识改了不少，帮我全量同步看看差哪些",
+      "expected_output": "澄清 DOC_DIR=company 与 `--name=payment-platform`；单当前单元；未确认不宣称已写完。",
       "files": [],
       "assertions": [
         {
@@ -89,6 +89,13 @@
           "name": "写前意图澄清",
           "type": "must_include",
           "check": "写前须意图澄清。",
+          "priority": "P0"
+        },
+        {
+          "id": "company-edge",
+          "name": "公司边",
+          "type": "must_include",
+          "check": "须走 system 槽 → 公司 overview，而非只谈系统边。",
           "priority": "P0"
         },
         {
@@ -103,15 +110,22 @@
     {
       "id": 4,
       "category": "should-trigger",
-      "prompt": "直接把 inventory-service 全量蒸馏进去，不用预览了，日志你也顺手补掉",
-      "expected_output": "识别全量与跳过预览为高风险；未确认不写 overview / DISTILL-LOG。",
+      "prompt": "直接把 inventory-service 全量蒸馏进系统 overview，不用预览，日志也顺手补上 DISTILL-LOG",
+      "expected_output": "识别跳过预览为高风险；纠正「不写 DISTILL-LOG」；未确认不写 overview。",
       "files": [],
       "assertions": [
         {
           "id": "semantic-change-needs-confirmation",
           "name": "语义变更确认",
           "type": "must_include",
-          "check": "全量/跳过预览须先确认。",
+          "check": "跳过预览/全量直写须先确认。",
+          "priority": "P0"
+        },
+        {
+          "id": "full-only-no-distill-log",
+          "name": "拒绝写日志",
+          "type": "must_include",
+          "check": "须明确不写 DISTILL-LOG（已废止）。",
           "priority": "P0"
         },
         {
@@ -120,21 +134,14 @@
           "type": "must_include",
           "check": "写前须意图澄清。",
           "priority": "P0"
-        },
-        {
-          "id": "distill-log-after-overview",
-          "name": "日志顺序",
-          "type": "must_include",
-          "check": "未确认前不得写日志。",
-          "priority": "P0"
         }
       ]
     },
     {
       "id": 5,
       "category": "should-not-trigger",
-      "prompt": "从 design 目录抽取段落写进 payment-overview 第三列，执行 docs-extract，不要记 DISTILL-LOG",
-      "expected_output": "主路径 docs-extract；不以 docs-distill + DISTILL-LOG 为终点。",
+      "prompt": "从 design 目录抽取段落写进 payment-overview 第三列，执行 docs-extract",
+      "expected_output": "主路径 docs-extract；不以 docs-distill 槽位上行为终点。",
       "files": [],
       "assertions": [
         {
@@ -148,7 +155,7 @@
           "id": "no-false-distill-primary",
           "name": "勿假主蒸馏",
           "type": "must_not_conflict",
-          "check": "不得以蒸馏上行 + DISTILL-LOG 为主路径。",
+          "check": "不得以槽位蒸馏上行为主路径。",
           "priority": "P0"
         }
       ]
@@ -156,21 +163,21 @@
     {
       "id": "distill-audience-001",
       "category": "should-trigger",
-      "prompt": "继续 /docs-distill 烤干：上行把 application 类名/接口原样写进系统 overview，且 overview 失败仍追加了 DISTILL-LOG。请按受众质检处理。",
-      "expected_output": "检出违例；转为系统可读能力表述；LOG 仅 overview 成功后；未过不得宣称收敛。",
+      "prompt": "继续 /docs-distill 烤干：上行把 application 类名/接口原样写进系统 overview。请按受众质检处理。",
+      "expected_output": "检出违例；转为系统可读能力表述；未过不得宣称收敛。",
       "assertions": [
         {
           "id": "audience-violation-visible",
           "name": "违例可见",
           "type": "must_include",
-          "check": "须指出实现细节原样上行或失败仍写 LOG 的问题，或给出受众违例短表。",
+          "check": "须指出实现细节原样上行问题，或给出受众违例短表。",
           "priority": "P0"
         },
         {
           "id": "audience-rewrite-or-gate",
           "name": "改写或停问",
           "type": "must_include",
-          "check": "须改写第三列口吻并纠正 LOG 顺序，或停问；不得未处理就写后 C。",
+          "check": "须改写第三列口吻或停问；不得未处理就写后 C。",
           "priority": "P0"
         }
       ]

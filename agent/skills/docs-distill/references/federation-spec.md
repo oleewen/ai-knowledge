@@ -4,12 +4,18 @@
 
 ## 目标
 
-**系统库**唯一落盘：`system/knowledge/overview/{APPNAME}-overview.md`。  
-新建：从 `NAME-overview.md` 拷；**文件名 + 文内标题** `NAME` → `APPNAME`。
+`docs-distill` 落盘（按 `DOC_DIR`）：
 
-**公司库** overview 缓冲区：`company/knowledge/overview/{NAME}-overview.md`（`docs-extract` / `docs-archive` / `docs-tag` 同工作流；`docs-distill` 上行目标仍为系统库 overview）。
+| 边 | 源槽位 | 落盘 |
+| --- | --- | --- |
+| system | `system/application-slots/application-{NAME}/` | `system/knowledge/overview/{NAME}-overview.md` |
+| company | `company/system-slots/system-{NAME}/` | `company/knowledge/overview/{NAME}-overview.md` |
 
-**非目标**（只当来源）：各层 `knowledge/` 下五视角长篇（含 chapters）、应用 knowledge、应用 SDD。legacy `architecture/` / `ea/` 路径已废弃。
+新建：从同层 `NAME-overview.md` 拷；**文件名 + 文内标题** `NAME` → 实际 `{NAME}`。
+
+公司 / 系统 overview 亦供 `docs-extract` / `docs-archive` / `docs-tag` 写入；**槽位上行全量**归 distill，**非槽位任意源**归 extract。
+
+**非目标**（只当来源）：各层 `knowledge/` 下五视角长篇（含 chapters）、槽位外应用/系统正文、SDD 原文整段。legacy `architecture/` / `ea/` 路径已废弃。
 
 ## 联邦层级（摘要）
 
@@ -78,9 +84,9 @@
 - 技术：技术概述 → 云基础设施 → DevOps → 技术安全 → 开发环境
 - 数据：数据概述 → 数据治理 → 数仓与湖 → 数据安全
 
-`docs-distill` **落盘目标仍为** `system/knowledge/overview/{APPNAME}-overview.md`；公司侧表行仅作模板对照与 `docs-extract` / `docs-archive` / `docs-tag` 落盘依据。
+`docs-distill` 写哪一层，就用哪一层表行；勿用系统表行蒸公司 overview（或相反）。
 
-**其它**：第三列可多段/列表/小表；无证写 `—`；不写 `(来源…)` 堆链。
+**其它**：第三列可多段/列表/小表；无证写 `—`；不写 `(来源…)` 堆链。不写 DISTILL-LOG。
 
 ## 自检
 

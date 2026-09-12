@@ -10,46 +10,44 @@
 
 ## 目标
 
-参数向导 +「澄清 → 生成 → 烤干」：将应用已核实变更按 [federation-spec.md](federation-spec.md) 去重后以 delta 写入 overview 第三列；成功后追加 `DISTILL-LOG`。
+参数向导 +「澄清 → 生成 → 烤干」：将联邦槽位已核实内容按 [federation-spec.md](federation-spec.md) **全量**去重后以 delta 写入目标层 overview 第三列。**不写** `DISTILL-LOG`。
+
+## 边与路径
+
+| `DOC_DIR` | 源槽位 | 目标 overview |
+| --- | --- | --- |
+| `system` | `system/application-slots/application-{NAME}/` | `system/knowledge/overview/{NAME}-overview.md` |
+| `company` | `company/system-slots/system-{NAME}/` | `company/knowledge/overview/{NAME}-overview.md` |
+
+`DOC_DIR`：`.docsconfig` / 环境变量优先；须为 `system|company`；否则向导必选。`--doc-dir` 可覆盖。
 
 ## 前置
 
 - 路径：[knowledge-layout.md](../../../references/knowledge-layout.md)
-- 可读 `system/application-slots/changelogs/CHANGE-LOG.md`（按 app 条目过滤）
-- overview 目标路径可解析
-- `system/changelogs/DISTILL-LOG.md` 可写
+- 源槽位已 pull 且非空
+- overview 目标路径可解析；模板 `NAME-overview.md` 存在
 - 若环境未安装 `grilling` Skill，则按 grilling-skill fallback
-
-## 两日志
-
-| 文件 | 职责 | 本技能写入 |
-| ---- | ----- | --------- |
-| `system/application-slots/changelogs/CHANGE-LOG.md` | 增量候选来源（按 app 过滤） | **否** |
-| `system/changelogs/DISTILL-LOG.md` | 蒸馏记录与下次锚点 | **是**（overview 成功后） |
-
-不得把这两份日志混用。`CHANGE-LOG` 负责提供应用增量来源；`DISTILL-LOG` 负责记录蒸馏完成点。
 
 ## 参数向导
 
 按序收口；用户已明确时可跳过对应项：
 
-1. `--app`
-2. `--since` 或自动锚点
-3. 是否 `--full`
-4. 是否 `--dry-run`
-5. 当前 overview 是新建还是更新
+1. `DOC_DIR` / `--doc-dir`（`system|company`）
+2. `--name`
+3. 是否 `--dry-run`
+4. 当前 overview 是新建还是更新
 
-参数未收口前，不进入执行。
+参数未收口前，不进入执行。模式恒为全量。
 
 ## 当前单元
 
-单个 `{APPNAME}-overview.md` + 单次增量或 `--full` 范围。定义与原子性见 [gates.md](gates.md)。
+单个 `{NAME}-overview.md` + 单次全量范围。定义见 [gates.md](gates.md)。
 
 ## 写后默认表
 
 | 对象 | 默认烤干 | 强制升级 |
 | --- | --- | --- |
-| 单个 overview 蒸馏单元（含 `--dry-run` 预览） | **必须** | `--full`；首次建 overview；锚点/增量起点不明；冲突消解；未确认决策写入 |
+| 单个 overview 蒸馏单元（含 `--dry-run` 预览） | **必须** | 首次建 overview；冲突消解；未确认决策写入；跳过预览直写 |
 
 启发式只可升级为必须，不可把默认「必须」降为跳过。
 
@@ -57,37 +55,35 @@
 
 推进环见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)；本技能只补蒸馏特有步骤：
 
-1. 选定当前单元
-2. **意图澄清**：公共六项 + [gates.md](gates.md) 追加字段（`--app` / `--since` / `--full` / `--dry-run` / overview 新建或更新）；写前 `C` 后方可执行或预览
-3. 读 CHANGE-LOG 与 overview，定增量或 `--full` 范围
-4. 按 federation-spec 去重、定 delta / A/U/D
-5. `--dry-run` → 三分区预览（跳过 >10 行折叠），不写 overview / `DISTILL-LOG`
-6. 写入第三列 delta；成功后追加 `DISTILL-LOG`；失败禁止写日志（见 gates）
+1. 选定当前单元（边 + `--name`）
+2. **意图澄清**：公共六项 + [gates.md](gates.md) 追加字段；写前 `C` 后方可执行或预览
+3. 校验槽位非空；读槽位 knowledge/SDD 与目标 overview（全量）
+4. 按目标层表行 + federation-spec 去重、定 delta / A/U/D
+5. `--dry-run` → 三分区预览（跳过 >10 行折叠），不写 overview
+6. 写入第三列 delta（不写 DISTILL-LOG）
 7. **烤干**：按写后默认表（含预览结果）
 8. 用户动作：`C/M/G/S/F` 见 unit-cycle-protocol
 
 ## 命令示例
 
 ```bash
-/docs-distill --app billing-appeal --dry-run
-/docs-distill --app billing-appeal --since v1.2.0
-/docs-distill --app billing-appeal --full
-/docs-distill --app billing-appeal
+/docs-distill --doc-dir system --name billing-appeal --dry-run
+/docs-distill --doc-dir system --name billing-appeal
+/docs-distill --doc-dir company --name payment-platform --dry-run
+```
+
+校验壳：
+
+```bash
+agent/skills/docs-distill/scripts/run-docs-distill.sh --doc-dir system --name billing-appeal
 ```
 
 ## 脚本
 
-`scripts/`：**编排日志**，不代工「内容提炼」。新记录一律**最新在前**。
-
-| 脚本 | 用途 |
-| ---- | ---- |
-| `run-docs-distill.sh` | `--dry-run` / 编排；仓库根或 `--root` |
-| `append-change-log.sh` | 追加 DISTILL-LOG（含 `app`） |
-
-内容提炼步骤 4.2–4.3：`federation-spec.md`。
+`scripts/run-docs-distill.sh`：**薄校验**（路径/槽位/模板），不代工正文、不写 LOG。
 
 ## 执行摘要
 
-- 默认增量；`--full` 先 dry-run
-- 第三列：federation-spec；不写 `(来源…)`
-- 先 overview，后 `DISTILL-LOG`；单元结束须停等用户动作
+- 仅全量；高风险时先 dry-run
+- 第三列：federation-spec（按目标层表行）；不写 `(来源…)`
+- 不写 DISTILL-LOG；单元结束须停等用户动作
