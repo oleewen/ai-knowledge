@@ -1,20 +1,10 @@
 ---
 type: Documentation
-title: 应用架构
+title: 公司应用视角
 ---
-# 应用架构
+# 应用视角（公司）
 
-[返回 · 企业架构](../README.md)
+企业 **AA 台账** = 本视角 **SLN**（解决方案）。
 
-公司层应用入口：系统全景 + SYS。实体以 per-entity 与 [../index.md](../index.md) §3 为准。本 README 表登记 SYS-EXAMPLE。
-
-| 章节 | 文件 | 概述 |
-|------|------|------|
-| 系统概述 | [chapters/application-overview.md](chapters/application-overview.md) | 系统清单与一页纸标准 |
-| 应用架构 | [chapters/application-architecture.md](chapters/application-architecture.md) | C4 上下文与系统边界 |
-
-## 实体
-
-| 链序 | 层级 | ID | 名称 | 文件/目录 |
-|------|------|----|------|-----------|
-| L1 | SYS | SYS-EXAMPLE | 示例系统 | [SYS-EXAMPLE.md](SYS-EXAMPLE.md) |
+- 样例：[SLN-EXAMPLE.md](SLN-EXAMPLE.md)（`maps_to_pl_id → PL-EXAMPLE`）
+- 公司**不登记 SYS**；系统 SSOT 见各系统库 `knowledge/application/SYS-*.md`（`parent_id → 公司 SLN`）

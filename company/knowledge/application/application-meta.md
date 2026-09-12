@@ -4,7 +4,7 @@ title: 应用视角元数据（company/knowledge/application）
 ---
 # 应用视角元数据（company/knowledge/application）
 
-公司级 SYS 视角元数据 SSOT。实例索引：[index.md](../index.md)。
+公司级 **SLN**（解决方案）= 企业 AA 台账 SSOT。**不落 SYS**（SYS ∈ 系统库，`parent_id→SLN`）。
 
 ---
 
@@ -15,7 +15,7 @@ title: 应用视角元数据（company/knowledge/application）
 | meta_id | `DIR-COMPANY-KNOWLEDGE-APPLICATION` |
 | 视角 | application |
 | 层级范围 | company |
-| 说明 | 公司内系统边界目录；系统层 APP、应用层 MS/API 引用 SYS ID。 |
+| 说明 | SLN 公司首次定义（AA）；与 PL 经 `maps_to_pl_id` 1:1 同建。 |
 
 ---
 
@@ -23,7 +23,7 @@ title: 应用视角元数据（company/knowledge/application）
 
 | 链序 | 层级代码 | 说明 |
 | --- | --- | --- |
-| 1 | SYS | 公司内系统层 |
+| 1 | SLN | 解决方案（企业 AA 台账） |
 
 ---
 
@@ -31,20 +31,18 @@ title: 应用视角元数据（company/knowledge/application）
 
 | order | key | code | id_pattern | parent |
 | --- | --- | --- | --- | --- |
-| 1 | sys | SYS | `SYS-{NAME}` | — |
+| 1 | sln | SLN | `SLN-{NAME}` | —（`maps_to_pl_id→PL`） |
+
+落盘：`application/SLN-{NAME}.md` 平铺。
 
 ---
 
 ## 4. 字段（OKF）
 
-Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`）见 okf-spec §2；本层 `layer_scope` 固定 `company`。
-
-### SYS 专属（正文）
-
-| 字段 | 说明 |
-| --- | --- |
-| architecture | apps / external_dependencies / ddd_layers（摘要即可） |
-| definition_scope | 本层主定义多为 `local` |
+| 层级 | 字段 | 说明 |
+| --- | --- | --- |
+| SLN | `maps_to_pl_id` | **必填**；与 PL 同建 1:1 |
+| SLN | `uses_mdg_ids` | AA uses DA（可选） |
 
 ---
 
@@ -52,8 +50,8 @@ Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详�
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| 系统层 APP.parent_sys_id | SYS.full_id | 应用归属系统（下游引用） |
-| 系统层 PL 与 SYS 对齐 | SYS.full_id | 产品线常与 SYS 一一对应（叙事层约定） |
+| SLN.maps_to_pl_id | PL.full_id | 方案对标产品线 |
+| 系统 SYS.parent_id | SLN.full_id | 系统归属解决方案 |
 
 ---
 
@@ -61,7 +59,6 @@ Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详�
 
 | 路径 | 说明 |
 | --- | --- |
-| [README.md](README.md) | 叙事文档索引 |
-| [index.md](../index.md) | SYS 实例 SSOT |
-| DESIGN（库外，纯文本） | 公司级实体定义 |
-| naming-conventions（Agent 元知识） | ID 命名 SSOT |
+| [README.md](README.md) | 入口 |
+| [index.md](../index.md) | SLN 实例 |
+| 各系统 `SYS-*.md` | 系统 SSOT |

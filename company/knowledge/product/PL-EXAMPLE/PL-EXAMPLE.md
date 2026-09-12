@@ -1,9 +1,9 @@
 ---
 type: Product Line
 title: 示例产品线
-description: 演示公司级 PL 结构（一套解决方案集合）。
+description: 与 BD 对标的解决方案产品线；一 PL 一 SLN（SLN 在 AA）。
 tags: [product, PL]
-timestamp: "2026-06-21T00:00:00Z"
+timestamp: "2026-09-13T00:00:00Z"
 full_id: PL-EXAMPLE
 perspective: product
 hierarchy: PL
@@ -12,17 +12,18 @@ layer_scope: company
 ---
 ## 关系
 
-- children:
-  - PD-EXAMPLE
+- (none)
 
 ## 跨视角
 
-- (none)
+- 对标业务域：BD-EXAMPLE（经 BD.maps_to_pl_id）
+- 对标解决方案：SLN-EXAMPLE（经 SLN.maps_to_pl_id，AA）
 
 ## 详细说明
 
 - target_users: [内部运营, 业务方]
 - definition_scope: local
+- 支撑 CAP：由 CAP.maps_to_bd_id + BD.maps_to_pl_id 推导；不列 PD ID
 
 ## 依据与证据
 

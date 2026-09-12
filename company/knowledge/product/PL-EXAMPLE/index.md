@@ -1,21 +1,14 @@
+---
+type: Documentation
+title: PL-EXAMPLE 索引
+---
 # PL-EXAMPLE
 
-## 子目录
+* [示例产品线](PL-EXAMPLE.md) — 公司级 PL
 
-（无）
+对标解决方案见公司应用视角 [SLN-EXAMPLE](../../application/SLN-EXAMPLE.md)。
 
-## 目录文件
+阅读顺序：
 
-* [示例产品线](PL-EXAMPLE.md) — 演示公司级 PL 结构
-* [示例产品](PD-EXAMPLE.md) — 演示公司级 PD；parent_id → PL
-
-## 阅读顺序
-
-1. [README.md](../README.md) — 产品视角入口
-2. [PL-EXAMPLE.md](PL-EXAMPLE.md) — PL 定义
-3. [PD-EXAMPLE.md](PD-EXAMPLE.md) — 归属该 PL 的 PD
-
-## 关联索引
-
-* 上一级索引：[index.md](../index.md)
-* 上一级说明：[README.md](../README.md)
+1. [PL-EXAMPLE.md](PL-EXAMPLE.md)
+2. [../../application/SLN-EXAMPLE.md](../../application/SLN-EXAMPLE.md)

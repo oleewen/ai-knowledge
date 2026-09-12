@@ -6,7 +6,7 @@ title: 业务架构
 
 [返回 · 企业架构](../README.md)
 
-公司层业务入口：章节叙事 + BD。实体以 per-entity 与 [../index.md](../index.md) §1 为准。本 README 表登记 BD-EXAMPLE 与样例 CAP-EXAMPLE。
+公司层业务入口：章节叙事 + BU/BD/CAP。实体以 per-entity 与 [../index.md](../index.md) §1 为准。本 README 表登记 BU/BD/CAP 样例。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
@@ -21,5 +21,6 @@ title: 业务架构
 
 | 链序 | 层级 | ID | 名称 | 文件/目录 |
 |------|------|----|------|-----------|
-| L1 | BD | BD-EXAMPLE | 示例业务域 | [BD-EXAMPLE/BD-EXAMPLE.md](BD-EXAMPLE/BD-EXAMPLE.md) |
-| L2 | CAP | CAP-EXAMPLE | 示例业务能力 | [BD-EXAMPLE/CAP-EXAMPLE.md](BD-EXAMPLE/CAP-EXAMPLE.md) |
+| L1 | BU | BU-EXAMPLE | 示例业务单元 | [BU-EXAMPLE/BU-EXAMPLE.md](BU-EXAMPLE/BU-EXAMPLE.md) |
+| L1 | BD | BD-EXAMPLE | 示例业务域 | [BD-EXAMPLE.md](BD-EXAMPLE.md) |
+| L2 | CAP | CAP-EXAMPLE | 示例业务能力 | [BU-EXAMPLE/CAP-EXAMPLE.md](BU-EXAMPLE/CAP-EXAMPLE.md) |

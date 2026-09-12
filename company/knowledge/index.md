@@ -37,29 +37,29 @@
 
 ---
 
-## §1 业务视角（business · BD / CAP）
+## §1 业务视角（business · BU / BD / CAP）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| BD | EXAMPLE |  | 示例业务域 | `business/BD-EXAMPLE/BD-EXAMPLE.md` |
-| CAP | EXAMPLE |  | 示例业务能力 | `business/BD-EXAMPLE/CAP-EXAMPLE.md` |
+| BU | EXAMPLE |  | 示例业务单元 | `business/BU-EXAMPLE/BU-EXAMPLE.md` |
+| BD | EXAMPLE |  | 示例业务域 | `business/BU-EXAMPLE/BD-EXAMPLE.md` |
+| CAP | EXAMPLE |  | 示例业务能力 | `business/BU-EXAMPLE/CAP-EXAMPLE.md` |
 
 ---
 
-## §2 产品视角（product · PL → PD）
+## §2 产品视角（product · PL）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
 | PL | EXAMPLE |  | 示例产品线 | `product/PL-EXAMPLE/PL-EXAMPLE.md` |
-| PD | EXAMPLE |  | 示例产品 | `product/PL-EXAMPLE/PD-EXAMPLE.md` |
 
 ---
 
-## §3 应用视角（application · SYS）
+## §3 应用视角（application · SLN）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| SYS | EXAMPLE |  | 示例系统 | `application/SYS-EXAMPLE.md` |
+| SLN | EXAMPLE |  | 示例解决方案 | `application/SLN-EXAMPLE.md` |
 
 ---
 
@@ -79,7 +79,7 @@
 
 ---
 
-> 本索引登记公司级 **BD / CAP / PL / PD / SYS / MDG / TPL**；系统层与应用层实体见对应 bundle 的 `knowledge/index.md`。
+> 本索引登记公司级 **BU / BD / CAP / PL / SLN / MDG / TPL**；SLN ∈ application（AA）；无 PD/SYS（见系统库）。
 
 ---
 
@@ -87,11 +87,11 @@
 
 | 索引 ID | 命名式 ID（锚点目录） |
 |---------|----------------------|
-| BD-EXAMPLE | `business/BD-EXAMPLE/` |
-| CAP-EXAMPLE | `business/BD-EXAMPLE/CAP-EXAMPLE.md` |
+| BU-EXAMPLE | `business/BU-EXAMPLE/` |
+| BD-EXAMPLE | `business/BD-EXAMPLE.md` |
+| CAP-EXAMPLE | `business/BU-EXAMPLE/CAP-EXAMPLE.md` |
 | PL-EXAMPLE | `product/PL-EXAMPLE/` |
-| PD-EXAMPLE | `product/PL-EXAMPLE/PD-EXAMPLE.md` |
-| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |
+| SLN-EXAMPLE | `application/SLN-EXAMPLE.md` |
 | MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |
 | TPL-EXAMPLE | `technical/TPL-EXAMPLE.md` |
 
