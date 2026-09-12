@@ -18,14 +18,14 @@ title: 系统知识库设计
 
 | 层 | 职责 |
 |----|------|
-| `company/` | 公司级实体正文 SSOT（BD/CAP/PL/SYS/MDG/TPL） |
-| `system/` | 系统层首次定义实体 SSOT + 五视角落地 + `application-slots/application-{NAME}/` 槽位 |
+| `company/` | 公司级实体正文 SSOT（BU/BD/CAP/PL/SLN/MDG/TPL；SLN∈application；无 PD/SYS） |
+| `system/` | 系统层首次定义实体 SSOT（含 PD/SYS）+ 五视角落地 + `application-slots/application-{NAME}/` 槽位 |
 | `application/` | 应用层首次定义（API/TBL/MW/CMP）+ 实现映射与实例登记 |
 
 | 面 | 规则 |
 |----|------|
-| 系统层 SSOT | `BSD/BC/AGG/AB/PM/FT/FR/UC/BP/BR/APP/MS/DS/ENT/TSD` |
-| 公司层 reference | 视角根单文件 `BD/PL/SYS/MDG-*.md`（正文 SSOT ∈ company） |
+| 系统层 SSOT | `BSD/BC/AGG/AB/PD/PM/FT/FR/UC/BP/BR/SYS/APP/MS/DS/ENT/TSD` |
+| 公司层 reference | 视角根可引用公司 `BD/PL/SLN/MDG/TPL`（正文 SSOT ∈ company）；**无**公司 PD/SYS |
 | 应用层 reference | `MW` 等可留本层 reference → application SSOT |
 | 禁止 | 跨层字段语义双源 |
 
@@ -55,18 +55,21 @@ title: 系统知识库设计
 
 | 视角 | 系统层聚焦 | 入口 |
 | --- | --- | --- |
-| 业务 | BSD→AB；BD 为 company reference | [knowledge/business/](knowledge/business/README.md) |
-| 产品 | PM→FT→FR→UC/BR、BP；PL/PD 为公司 SSOT（本层不落盘；PM→公司 PD） | [knowledge/product/](knowledge/product/README.md) |
-| 应用 | APP/MS；SYS 为 company reference；API 在 application | [knowledge/application/](knowledge/application/README.md) |
-| 数据 | DS/ENT；MDG 为 company reference；TBL 在 application | [knowledge/data/](knowledge/data/README.md) |
-| 技术 | TSD；MW/CMP 在 application（本层可 reference） | [knowledge/technical/](knowledge/technical/README.md) |
+| 业务 | BSD→AB；BD 为 company reference；首层 BSD `maps_to_pd_id` | [knowledge/business/](knowledge/business/README.md) |
+| 产品 | PD→PM→FT→FR→UC/BR、BP；PL 公司 SSOT（本层不落盘）；PD 本层 SSOT | [knowledge/product/](knowledge/product/README.md) |
+| 应用 | SYS→APP/MS；SYS 本层 SSOT（`parent_id→公司 SLN`）；SLN 公司 AA | [knowledge/application/](knowledge/application/README.md) |
+| 数据 | DS/ENT；MDG 为 company reference；TBL 在 application；AA `uses_*` | [knowledge/data/](knowledge/data/README.md) |
+| 技术 | TSD；MW/CMP 在 application；AA `uses_*` | [knowledge/technical/](knowledge/technical/README.md) |
 
 ### 关键路径约定
 
 | 实体 | system 路径 |
 | --- | --- |
-| BD（ref） | `knowledge/business/BD-{NAME}.md`（company SSOT：`company/knowledge/business/BD-{NAME}/`；`definition_scope: reference`） |
+| BD（ref） | `knowledge/business/BD-{NAME}.md`（company SSOT：`company/knowledge/business/BD-{NAME}.md`） |
 | BSD→AB | `knowledge/business/BSD-{NAME}/…`（本层域树 SSOT） |
+| PD | `knowledge/product/PD-{NAME}/PD-{NAME}.md` |
+| PM→… | `knowledge/product/PD-{NAME}/PM-{NAME}/…` |
+| SYS | `knowledge/application/SYS-{NAME}.md` |
 | APP | `knowledge/application/APP-{NAME}/APP-{NAME}.md` |
 | MS | `knowledge/application/APP-{NAME}/MS-{NAME}/MS-{NAME}.md`（`{parent_id}` 为 APP） |
 | MW（ref） | `knowledge/technical/MW-{NAME}/MW-{NAME}.md` → application SSOT |

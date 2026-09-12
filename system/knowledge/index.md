@@ -34,7 +34,7 @@
 
 ---
 
-## §1 业务视角（business · BSD → BC → AGG → AB）
+## §1 业务视角（business · BD → BSD → BC → AGG → AB）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
@@ -45,29 +45,31 @@
 
 ---
 
-## §2 产品视角（product · PM → FT → FR → UC/BR · BP）
+## §2 产品视角（product · PD → PM → FT → FR → UC/BR · BP）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| PM | EXAMPLE |  | 示例产品模块 | `product/PM-EXAMPLE/PM-EXAMPLE.md` |
-| FT | EXAMPLE |  | 示例功能 | `product/PM-EXAMPLE/FT-EXAMPLE/FT-EXAMPLE.md` |
-| FR | EXAMPLE |  | 示例功能需求 | `product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/FR-EXAMPLE.md` |
-| UC | EXAMPLE |  | 示例用例 | `product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md` |
-| BR | EXAMPLE |  | 示例规则 | `product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/BR-EXAMPLE.md` |
+| PD | EXAMPLE |  | 示例产品能力 | `product/PD-EXAMPLE/PD-EXAMPLE.md` |
+| PM | EXAMPLE |  | 示例产品模块 | `product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE.md` |
+| FT | EXAMPLE |  | 示例功能 | `product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FT-EXAMPLE.md` |
+| FR | EXAMPLE |  | 示例功能需求 | `product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/FR-EXAMPLE.md` |
+| UC | EXAMPLE |  | 示例用例 | `product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md` |
+| BR | EXAMPLE |  | 示例规则 | `product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/BR-EXAMPLE.md` |
 | BP | EXAMPLE |  | 示例业务流程（BP） | `product/BP-EXAMPLE.md` |
 
 ---
 
-## §3 应用视角（application · APP → MS）
+## §3 应用视角（application · SYS → APP → MS）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
+| SYS | EXAMPLE |  | 示例系统 | `application/SYS-EXAMPLE.md` |
 | APP | EXAMPLE |  | 示例应用 | `application/APP-EXAMPLE/APP-EXAMPLE.md` |
 | MS | EXAMPLE |  | 示例微服务 | `application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md` |
 
 ---
 
-## §4 数据视角（data · DS → ENT）
+## §4 数据视角（data · MDG → DS → ENT）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
@@ -76,7 +78,7 @@
 
 ---
 
-## §5 技术视角（technical · TSD）
+## §5 技术视角（technical · TSD → MW）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
@@ -84,7 +86,7 @@
 
 ---
 
-> 本索引仅登记本层 SSOT 样例。公司级 **BD/CAP/PL/PD/SYS/MDG/TPL** 与应用层 **API/TBL/MW/CMP** 见对应 bundle 的 `knowledge/index.md`。产品 **PL/PD** 见公司层；本层自 **PM** 起。
+> 公司级 **TPL-*** / **SLN-*** / **PL-*** 不在本索引登记。本层 **PD / SYS** 首次定义；产品自 **PD** 起；应用自 **SYS** 起。
 
 ---
 
@@ -93,7 +95,9 @@
 | 索引 ID | 命名式 ID（锚点目录） |
 |---------|----------------------|
 | BSD-EXAMPLE | `business/BSD-EXAMPLE/` |
-| PM-EXAMPLE | `product/PM-EXAMPLE/` |
+| PD-EXAMPLE | `product/PD-EXAMPLE/` |
+| PM-EXAMPLE | `product/PD-EXAMPLE/PM-EXAMPLE/` |
+| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |
 | APP-EXAMPLE | `application/APP-EXAMPLE/` |
 | DS-EXAMPLE | `data/DS-EXAMPLE/` |
 | TSD-EXAMPLE | `technical/TSD-EXAMPLE.md` |

@@ -16,6 +16,8 @@ layer_scope: system
 
 ## 跨视角
 
+- implements_agg_ids: [AGG-EXAMPLE]
+- uses_ent_ids: []
 - cross_references:
   - BC-EXAMPLE
   - PM-EXAMPLE

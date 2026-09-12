@@ -19,7 +19,9 @@ layer_scope: system
 
 ## 跨视角
 
-- (none)
+- implements_bc_ids: [BC-EXAMPLE]
+- uses_ds_ids: [DS-EXAMPLE]
+- implements_tpl_ids: []
 
 ## 详细说明
 
