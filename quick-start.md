@@ -231,7 +231,7 @@ flowchart LR
 | 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `index.md`、`README.md`、`AGENTS.md` |
 | 3 | `/docs-link` 登记各已有应用库（`--link --target=… --app-name=…`） | `knowledge-links.yaml`（`repository` + `path` + `doc_dir` + `app_name`） |
 | 4 | `/docs-pull` 拉取各应用联邦镜像 | `system/application-slots/application-{NAME}/` |
-| 5 | `/docs-distill --app {APPNAME}`（配合 `--since` 增量） | `system/knowledge/overview/{APPNAME}-overview.md` 第三列 |
+| 5 | `/docs-distill --doc-dir system --name {APPNAME}`（仅全量；可先 `--dry-run`） | `system/knowledge/overview/{APPNAME}-overview.md` 第三列 |
 | 6 | `/docs-archive`（人工核实高优先级行后） | 知识落入 `system/knowledge/` 各视角章节 |
 
 ### 阶段三：系统库需求分析、概要设计
@@ -247,7 +247,7 @@ flowchart LR
 | 1 | `/docs-push` 推送概设规约（`spec-asd`）到各应用库 | 应用仓 `requirements/**/specs/` |
 | 2 | 规约详细设计链路：`/sdx-design` → `/sdx-test` | `DSD`、`TDD` |
 | 3 | 规约开发实现链路：`brainstorming` → `opsx:*` → `superpowers:sdd` | 代码实现 + 规格归档 |
-| 4 | `/docs-change` + 定期 `/docs-pull` + `/docs-distill --since` | 应用变更可追溯，联邦镜像与系统视图增量对齐 |
+| 4 | `/docs-change` + 定期 `/docs-pull` + `/docs-distill --doc-dir system --name {APPNAME}` | 应用变更可追溯，联邦镜像与系统视图全量对齐 |
 | 5 | `/docs-indexing`（增量，完成 gate 确认） | 中央与应用 `index.md` 一致 |
 
 ---

@@ -33,7 +33,7 @@ title: 公司知识库设计
 
 | 层级 | 目录 | 职责 |
 | --- | --- | --- |
-| 企业架构 | `knowledge/` | 五视角治理叙事；[`overview/`](knowledge/overview/NAME-overview.md) = extract/archive/tag 缓冲区（**非** docs-distill） |
+| 企业架构 | `knowledge/` | 五视角治理叙事；[`overview/`](knowledge/overview/NAME-overview.md) = distill（system 槽位上行）/ extract / archive / tag 缓冲区 |
 | 方案 | `solutions/` | 跨系统 SOLUTION → `analysis/` |
 | 分析 | `analysis/` | 跨系统 ANALYSIS → 各系统 `requirements/` |
 | ADR | `adr/` | 公司层跨系统决策正文 + `CONTEXT.md` |
@@ -60,7 +60,7 @@ title: 公司知识库设计
 ### 系统镜像槽位
 
 - 下行：`knowledge-links.yaml` → docs-link 建槽 → docs-pull（本地 `path`，不 clone）  
-- 上行：公司 overview 用 extract/archive/tag；**docs-distill 仅写** `system/knowledge/overview/`  
+- 上行：`docs-distill`（`company/system-slots/system-{NAME}/` → 公司 overview）；其它非槽位源用 extract/archive/tag 
 
 ### SDD 衔接
 

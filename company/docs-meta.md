@@ -18,7 +18,7 @@ role:
 child_directories:
   knowledge:
     readme: "knowledge/README.md"
-    description: "五视角企业架构；overview/=extract·archive·tag 缓冲（非 docs-distill 目标）"
+    description: "五视角企业架构；overview/=distill(system槽)·extract·archive·tag 缓冲"
   solutions:
     readme: "solutions/README.md"
     description: "公司级跨系统解决方案"
