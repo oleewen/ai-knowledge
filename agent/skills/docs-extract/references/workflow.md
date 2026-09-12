@@ -14,14 +14,14 @@
 
 ## 与 docs-distill
 
-任意 `--sources` 补充路径；共享目标（overview 第三列）与 A/U/D；**无** `DISTILL-LOG` / 应用蒸馏锚点。
+**非槽位**任意 `--sources` → extract；**联邦槽位上行全量** → distill。共享第三列与 A/U/D；双方均不写 DISTILL-LOG。
 
 | 维度 | docs-distill | docs-extract |
 | ------ | ------ | ------ |
-| 源 | `system/application-slots/application-{NAME}/` | 用户 `--sources` |
-| 过滤 | 联邦规则 | **必须**段落级关键词（[extract-spec.md](extract-spec.md)） |
-| 增量锚点 | 有 | **无** |
-| 写入 | overview + DISTILL-LOG | **仅**第三列 |
+| 源 | `application-slots` 或 `system-slots` | 用户 `--sources`（非槽位主路径） |
+| 过滤 | 联邦规则 + 目标层表行 | **必须**段落级关键词（[extract-spec.md](extract-spec.md)） |
+| 模式 | 仅全量 | 按命中批次 |
+| 写入 | 仅 overview 第三列 | 仅 overview 第三列 |
 
 ## 前置
 

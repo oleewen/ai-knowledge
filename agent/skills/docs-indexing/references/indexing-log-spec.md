@@ -1,6 +1,6 @@
 # 索引运行日志（INDEXING-LOG）
 
-每次运行记录 + **下次 incremental 时间锚**。形近 [distill-log-spec.md](../../docs-distill/references/distill-log-spec.md)：主表、**新行在上**、先 INDEX 后 LOG。
+每次运行记录 + **下次 incremental 时间锚**。形近旧 distill 日志体例（主表、**新行在上**、先 INDEX 后 LOG）。注：`docs-distill` 已废止 DISTILL-LOG，本文件仍为 indexing 锚点 SSOT。
 
 节：位置 · 表格式 · `indexing_finished_ms` · 基线优先级 · 写入时机 · dry-run · HTML 回退 · 示例
 

@@ -104,7 +104,7 @@
 | sdx-prd | `application/requirements/**/*` | `application/requirements/**/PRD-*.md` | 可选工作稿 | 语义 | 无 | [sdx-prd/SKILL.md](../skills/sdx-prd/SKILL.md) |
 | sdx-test | `application/requirements/**/TDD-*.md` | `application/requirements/**/TDD-*.md` | 可选工作稿 | 语义 | 无 | [sdx-test/SKILL.md](../skills/sdx-test/SKILL.md) |
 | docs-agent | `README.md`、`AGENTS.md`（仓库根） | 根 `README.md` / `AGENTS.md`（一次只其一） | 可选工作稿 | 语义-docs | 无 | [docs-agent/SKILL.md](../skills/docs-agent/SKILL.md) |
-| docs-distill | `system/knowledge/**/*`、`company/knowledge/**/*` | `system/knowledge/overview/` 受管区块及蒸馏日志 | 可选工作稿 | 语义-docs | 无 | [docs-distill/SKILL.md](../skills/docs-distill/SKILL.md) |
+| docs-distill | `system/knowledge/**/*`、`company/knowledge/**/*` | `system\|company/knowledge/overview/` 受管第三列 | 可选工作稿 | 语义-docs | 无 | [docs-distill/SKILL.md](../skills/docs-distill/SKILL.md) |
 | docs-extract | `system/knowledge/overview/**/*`、`company/knowledge/overview/**/*` | `system|company/knowledge/overview/*.md` | 可选工作稿 | 语义-docs | 无 | [docs-extract/SKILL.md](../skills/docs-extract/SKILL.md) |
 | docs-archive | `system/knowledge/overview/**/*`、`company/knowledge/overview/**/*` | `system|company/knowledge/overview/*.md` | 可选工作稿 | 语义-docs | 无 | [docs-archive/SKILL.md](../skills/docs-archive/SKILL.md) |
 | docs-build | `{DOC_DIR}/knowledge/**/*` | `{DOC_DIR}/knowledge/` 下 JSON、README、KNOWLEDGE_INDEX | 可选工作稿 | 语义-docs | 无 | [docs-build/SKILL.md](../skills/docs-build/SKILL.md) |

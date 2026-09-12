@@ -23,8 +23,8 @@
 | `/docs-revise` | 术语/路径链式同步 + 定向纠错；烤干修订后走协议 simplify 遍；整篇结构交 `/docs-simplify` |
 | `/docs-simplify` | 金字塔结构 + 激进精简 + SSOT 去重引用；原则见 [docs-simplify.md](../references/docs-simplify.md) |
 | `/docs-agent` | 根 `README.md` + `AGENTS.md`；九章地图以已落盘 `INDEX-GUIDE.md` 为准，与 `index.md` 职责不重叠 |
-| `/docs-distill` | `--app / --since / --full / --dry-run` → 系统 `overview` 第三列 + `DISTILL-LOG` |
-| `/docs-extract` | `--sources / --overview / --dry-run` → 系统或公司 overview 第三列；不写 `DISTILL-LOG` |
+| `/docs-distill` | `--doc-dir system\|company` + `--name` + 可选 `--dry-run` → 槽位上行全量写目标层 `overview` 第三列（不写 DISTILL-LOG） |
+| `/docs-extract` | `--sources / --overview / --dry-run` → 非槽位源写系统或公司 overview 第三列 |
 | `/docs-merge` | `<source> <target>`〔`--dry-run`〕→ 按目标 H2/H3 章节合入；新增确认、类似合并、冲突 grilling；源只读 |
 | `/docs-install` | 知识库同步 + `.docsconfig`；`--target`/`--scope`/`--type`/`--mode`；默认 dry-run；轻流程 |
 | `/agent-install` | 整棵 Agent 树；`--agents`/`--target`/`--scope`；默认 dry-run；轻流程 |

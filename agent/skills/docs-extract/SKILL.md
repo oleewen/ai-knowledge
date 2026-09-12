@@ -2,9 +2,10 @@
 name: docs-extract
 description: >
   从 `--sources` 按关键词命中提炼，去重后仅将 delta 写入 `--overview` 第三列（A/U/D）；细则 federation-spec。
-  支持 `--dry-run`，不写 `DISTILL-LOG`。
-  用户提到 /docs-extract、提炼进 overview、从设计文档整理进知识库、sources 写第三列时，使用本技能。
-  分流：应用上行蒸馏 → docs-distill；overview 归档 → docs-archive；INDEX → docs-indexing；SDD → 对应技能。
+  支持 `--dry-run`。目标可为系统或公司 overview。
+  用户提到 /docs-extract、提炼进 overview、从设计文档整理进知识库、sources 写第三列、
+  非槽位源写入 overview 时，使用本技能。
+  分流：联邦槽位上行全量 → docs-distill；overview 归档 → docs-archive；INDEX → docs-indexing；SDD → 对应技能。
   推进见 references/gates.md。
 ---
 
@@ -21,7 +22,7 @@ description: >
 ## 边界
 
 - 负责：任意源 → overview 第三列；`A/U/D`；当前单元推进
-- 不负责：docs-distill 上行 / `DISTILL-LOG`；docs-archive；docs-indexing；SDD 终稿
+- 不负责：docs-distill 槽位上行；docs-archive；docs-indexing；SDD 终稿
 
 ## 不这样用
 

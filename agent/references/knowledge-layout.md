@@ -4,7 +4,7 @@
 > **不分管**：文件四类分型、per-entity Profile、frontmatter/正文结构 → [okf-spec.md](../knowledge/okf-spec.md)；实体 ID 前缀 → [naming-conventions.md](../knowledge/naming-conventions.md)。  
 > 会话工作稿路径见 [session-spec-path.md](session-spec-path.md)；闸门总表见 [CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates)；推进环见 [unit-cycle-protocol.md](unit-cycle-protocol.md)。
 
-**最后更新**: 2026-07-18
+**最后更新**: 2026-09-12
 
 ---
 
@@ -24,8 +24,8 @@
 
 | 库 | 路径模式 | 新建模板 | 第三列写入技能 |
 | --- | --- | --- | --- |
-| 系统库 | `system/knowledge/overview/{APPNAME}-overview.md` | 拷 `NAME-overview.md`，替换 `NAME`/`APPNAME` | **docs-distill**（上行）、**docs-extract**、**docs-tag** |
-| 公司库 | `company/knowledge/overview/{NAME}-overview.md` | 拷 `NAME-overview.md`，替换 `NAME` | **docs-extract**、**docs-archive**、**docs-tag**（**非** docs-distill 落盘目标） |
+| 系统库 | `system/knowledge/overview/{APPNAME}-overview.md` | 拷 `NAME-overview.md`，替换 `NAME`/`APPNAME` | **docs-distill**（application 槽位上行）、**docs-extract**、**docs-tag** |
+| 公司库 | `company/knowledge/overview/{NAME}-overview.md` | 拷 `NAME-overview.md`，替换 `NAME` | **docs-distill**（system 槽位上行）、**docs-extract**、**docs-archive**、**docs-tag** |
 
 **表行真源**：同层 `overview/NAME-overview.md` 五视角表 ↔ 同层五视角 **README 表行**；副标题锚点与各章 `##` 标题对齐。
 
@@ -57,9 +57,10 @@
                               └──► 系统库 knowledge-parent.yaml
 系统库（本地 path，HEAD） ──docs-pull──► company/system-slots/system-{NAME}/（联邦槽位，不可被 knowledge 引用）
          │
-         ▼ docs-distill（仅系统 overview）
+         ▼ docs-distill（槽位上行全量；不写 DISTILL-LOG）
 system/knowledge/overview/{APPNAME}-overview.md
-         │ docs-extract（任意源 → 系统/公司 overview）
+company/knowledge/overview/{NAME}-overview.md
+         │ docs-extract（非槽位任意源 → 系统/公司 overview）
          │ docs-tag（关键词 ✅、架构摘录）
          ▼ docs-archive
 system/knowledge/{business,product,application,data,technical}/
