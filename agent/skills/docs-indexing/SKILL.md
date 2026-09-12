@@ -44,7 +44,7 @@ description: >
 - 仓库根可解析
 - `mode`、`depth` 已收口
 - `output` 与 `since` 策略已收口
-- 若增量模式，已确认基线策略
+- 若增量模式，已确认基线策略；Agent 将用 git 列 `DOC_DIR` 变更（提交 + 工作区）
 
 ## 产出与脚本
 

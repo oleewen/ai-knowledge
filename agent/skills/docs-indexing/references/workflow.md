@@ -56,7 +56,29 @@
 1. 选定当前单元（单个输出组）
 2. **意图澄清**：公共六项 + [gates.md](gates.md) 追加字段；第 6 项须列出本轮 `INDEX-GUIDE.md` 与 `*/changelogs/INDEXING-LOG.md` 的**完整仓库根相对路径**；写前 `C` 后方可写入
 3. 环境与基线：读 `INDEXING-LOG` 主表首行或旧 HTML → 候选 `indexing_finished_ms`。[scan-config-onboarding.md](scan-config-onboarding.md) 对齐 DOC_ROOT、基线与输出路径
-4. 增量：`docs-change` + 变更列表；full：跳过
+4. 增量：Agent 按锚点（主表首行 `indexing_finished_ms`，或显式 `--since` epoch ms）用 git 列 **`DOC_DIR` 下**变更（已提交 + 工作区）；full：跳过。可复制流程（仓库根执行；将 `SINCE_MS`、`DOC_DIR` 换成本轮值）：
+
+```bash
+# 1) epoch ms → UTC ISO（供 --since）
+SINCE_MS=1714108800000   # 例：INDEXING-LOG 首行或 --since
+DOC_DIR=application      # 例：.docsconfig 的 DOC_DIR
+SINCE_ISO="$(python3 -c "from datetime import datetime, timezone; print(datetime.fromtimestamp(${SINCE_MS}/1000, tz=timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'))")"
+
+# 2) 锚点以来已提交变更（仅 DOC_DIR）
+git log --since="$SINCE_ISO" --name-only --pretty=format: -- "$DOC_DIR"
+
+# 3) 工作区未提交（已跟踪改动 + 未跟踪），仍限 DOC_DIR
+git diff --name-only -- "$DOC_DIR"
+git ls-files --others --exclude-standard -- "$DOC_DIR"
+
+# 4) 合并去重（示例：写入临时列表供扫描）
+{
+  git log --since="$SINCE_ISO" --name-only --pretty=format: -- "$DOC_DIR"
+  git diff --name-only -- "$DOC_DIR"
+  git ls-files --others --exclude-standard -- "$DOC_DIR"
+} | sed '/^$/d' | sort -u
+```
+
 5. 扫描：[scan-spec.md](scan-spec.md)；depth=3：应读尽读；未读→§八
 
 ```bash
@@ -87,6 +109,6 @@ bash agent/skills/docs-okf/scripts/okf-validate.sh --bundle application
 
 ## 依赖
 
-- 前置：docs-change（增量）
+- 前置：增量时 Agent 用 git 定变更范围（锚点见 INDEXING-LOG）
 - 下游：docs-build
 - 关联：docs-agent

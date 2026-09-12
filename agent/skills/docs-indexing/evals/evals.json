@@ -57,13 +57,20 @@
       "id": "indexing-trigger-002",
       "category": "should-trigger",
       "prompt": "/docs-indexing --mode incremental --depth 3 --output application/INDEX-GUIDE.md",
-      "expected_output": "docs-indexing：识别 incremental + depth3；先确认 since/基线策略；无基线时不能静默 full；一次只处理 application/INDEX-GUIDE.md 这一输出组；写前意图澄清含 application/INDEX-GUIDE.md 与 application/changelogs/INDEXING-LOG.md。",
+      "expected_output": "docs-indexing：识别 incremental + depth3；先确认 since/基线策略；无基线时不能静默 full；有基线时用 git 列 application/ 下变更（提交 + 工作区）；一次只处理 application/INDEX-GUIDE.md 这一输出组；写前意图澄清含 application/INDEX-GUIDE.md 与 application/changelogs/INDEXING-LOG.md。",
       "assertions": [
         {
           "id": "baseline-gate",
           "name": "基线门禁",
           "type": "must_include",
           "check": "须体现 incremental 无基线时不能静默 full，须用户确认 full/中止/补 since。",
+          "priority": "P0"
+        },
+        {
+          "id": "git-change-scan",
+          "name": "git 列变更",
+          "type": "must_include",
+          "check": "须体现增量按锚点/`--since` 用 git 列出 DOC_DIR（本例 application/）变更，含已提交与工作区；不得再依赖 CHANGE-LOG/docs-change。",
           "priority": "P0"
         },
         {

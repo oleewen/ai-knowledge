@@ -16,7 +16,7 @@
 - **选预设≠已确认** → 仍复述 mode/depth/output/since，再 **C**  
 - **擅自降 depth** → 可告知成本；深度由用户定  
 - **默认 output/since 不展示** → 「默认」亦须确认或用户给字面量  
-- **混淆基线** → 增量锚点首选 LOG **主表首行** `indexing_finished_ms`；`CHANGE-LOG` 文末 `docs-change:baseline_time_ms` 是 **docs-change** 用，≠ 索引锚点  
+- **混淆基线** → 增量锚点首选 LOG **主表首行** `indexing_finished_ms`；变更文件列表用 git（非独立 CHANGE-LOG）  
 
 ## 扫描
 
@@ -42,11 +42,12 @@
 
 ## 上下游
 
-- **增量跳过 docs-change** → 须 `CHANGE-LOG` 驱范围  
+- **增量跳过 git 列变更** → 须按锚点/`--since` 用 `git log`/`git diff` + 工作区定范围  
 - **与 docs-agent §二矛盾** → 更 INDEX §二后 README 目录树应对齐  
 
 ## 速查
 
+- [ ] 增量已按锚点用 git 列 `DOC_DIR` 变更（提交 + 工作区）
 - [ ] mode/depth 用户确认  
 - [ ] 写前意图澄清六项 + 双路径（INDEX-GUIDE + INDEXING-LOG）  
 - [ ] since/output 已展示或有字面量  

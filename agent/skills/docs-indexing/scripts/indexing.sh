@@ -16,7 +16,6 @@ cd "$REPO_ROOT" || exit 1
 # cwd=仓库根；路径见 .docsconfig / resolve_repo_doc_root
 DEFAULT_OUTPUT="${DOC_ROOT}/INDEX-GUIDE.md"
 LOG_FILE="${DOC_ROOT}/changelogs/INDEXING-LOG.md"
-CHANGE_LOG_FILE="${DOC_ROOT}/changelogs/CHANGE-LOG.md"
 INDEXING_LOG_PY="${SCRIPT_DIR}/indexing_log.py"
 mkdir -p "${DOC_ROOT}/changelogs"
 
@@ -209,7 +208,6 @@ if [[ -z "$TOP_FILES" ]]; then
 fi
 
 REL_LOG="./${LOG_FILE#"$REPO_ROOT"/}"
-REL_CHANGE_LOG="./${CHANGE_LOG_FILE#"$REPO_ROOT"/}"
 REL_DEFAULT_OUT="./${DEFAULT_OUTPUT#"$REPO_ROOT"/}"
 
 TMP_OUT="$(mktemp)"
@@ -257,7 +255,7 @@ ${TOP_FILES}
 
 ## 八、日志与追溯（Traceability）
 - 索引运行日志（Markdown）：\`${REL_LOG}\`
-- 变更聚合日志（Markdown）：\`${REL_CHANGE_LOG}\`（docs-change）
+- 变更溯源：\`git log\` / \`git diff\`（相对 \`INDEXING-LOG\` 锚点；含工作区未提交）
 
 ## 九、附录（Appendix）
 - 生成器：\`agent/skills/docs-indexing/scripts/indexing.sh\`
