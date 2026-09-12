@@ -146,7 +146,6 @@ timestamp: "2026-06-25T00:00:00Z"
 - `*-meta.md`
 - `docs-meta.md`
 - `knowledge-links.yaml`
-- `CHANGE-LOG.md`
 - `INDEXING-LOG.md`
 - `DESIGN.md`
 
@@ -407,7 +406,6 @@ MAY：
 - `*-meta.md`
 - `docs-meta.md`
 - `knowledge-links.yaml`
-- `CHANGE-LOG.md`
 - `INDEXING-LOG.md`
 - `DESIGN.md`
 
@@ -430,7 +428,7 @@ MAY：
 
 - 模式：`{DOC_DIR}/docs-meta.md`、`{DOC_DIR}/knowledge/knowledge-meta.md`、`{DOC_DIR}/knowledge/<perspective>/*-meta.md`
 - 联邦链接：`{DOC_DIR}/knowledge-links.yaml`（路径语义见 [knowledge-layout.md](../references/knowledge-layout.md)）
-- 运维日志：`CHANGE-LOG.md` / `INDEXING-LOG.md`（落在约定 `changelogs/`）
+- 运维日志：`INDEXING-LOG.md`（落在约定 `changelogs/`）；变更溯源 `git log` / `git diff`
 
 ---
 

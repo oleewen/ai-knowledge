@@ -95,7 +95,7 @@
 - **系统库 · requirements 阶段**（`system/requirements/`）：`README.md` 为阶段约定入口；`REQUIREMENT-{IDEA-ID}/` 为交付包锚点（与 `ANALYSIS-{IDEA-ID}.md` 共用同一 **IDEA-ID**），不在包内并列根级 `*_meta.yaml` 拷贝。
 - **系统库 · solutions 阶段**（`system/solutions/`）：`README.md` 为阶段约定入口；根目录平铺 `SOLUTION-{IDEA-ID}.md`；`archive/` 归档。
 - **系统库 · analysis 阶段**（`system/analysis/`）：`README.md` 为阶段约定入口；根目录平铺 `ANALYSIS-{IDEA-ID}.md`。
-- **系统库 · changelogs**（`system/changelogs/`）：`README.md` 为阶段约定入口；`CHANGE-LOG.md`（变更聚合）；`INDEXING-LOG.md`（索引运行日志）。
+- **系统库 · changelogs**（`system/changelogs/`）：`README.md` 为阶段约定入口；`INDEXING-LOG.md`（索引运行日志）；变更溯源 `git log` / `git diff`。
 - **ADR 落盘**：结构见 [adr-guidelines.md](adr-guidelines.md) 与 [adr-template.md](adr-template.md)；正文目录为 `application/adr/`、`system/adr/` 或 `company/adr/`；SDX 运行时见 [sdx-adr-protocol.md](../references/sdx-adr-protocol.md)。
 
 ### OKF concept 路径与 type 映射

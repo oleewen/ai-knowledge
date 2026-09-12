@@ -39,7 +39,7 @@ title: 系统知识库设计
 | SDD | solutions → analysis → requirements | 见下表 |
 | 槽位 | `application-slots/application-{NAME}` | 软链 → 应用 DOC_ROOT（docs-link / docs-pull） |
 | 清单 | [knowledge-links.yaml](knowledge-links.yaml) | 建联 |
-| 运维 | [changelogs/](changelogs/README.md) | CHANGE-LOG / INDEXING-LOG |
+| 运维 | [changelogs/](changelogs/README.md) | INDEXING-LOG；变更溯源 git |
 
 ### SDD（system 模式）
 
@@ -84,7 +84,7 @@ title: 系统知识库设计
 1. **docs-pull** → 校验/修复 `application-slots/application-{NAME}` 软链（必要时 clone/pull）  
 2. 校核 `knowledge/` 与治理约定  
 3. **docs-distill / docs-archive** 上行  
-4. **application-slots/changelogs/** 追溯（CHANGE-LOG / ARCHIVE-LOG）  
+4. **application-slots/changelogs/** 蒸馏锚点（ARCHIVE-LOG）；同步追溯 git / `SYNC_OK` commit  
 
 ## 4. 门禁
 

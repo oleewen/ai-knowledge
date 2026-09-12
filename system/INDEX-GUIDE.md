@@ -37,7 +37,7 @@ system/
 ├── knowledge/ · solutions/ · analysis/ · requirements/ · adr/
 ├── application-slots/
 │   ├── application-{NAME}      # 软链 → 应用 DOC_ROOT
-│   └── changelogs/             # 层共用 CHANGE-LOG / ARCHIVE-LOG
+│   └── changelogs/             # 层共用 ARCHIVE-LOG；同步追溯 git / SYNC_OK
 └── changelogs/
 ```
 
@@ -76,7 +76,7 @@ system/
 
 ## 七、变更与运维
 
-[changelogs/](changelogs/README.md)：`CHANGE-LOG.md` · `INDEXING-LOG.md`；槽位同步/蒸馏日志在 `application-slots/changelogs/`
+[changelogs/](changelogs/README.md)：`INDEXING-LOG.md`；变更溯源 `git log` / `git diff`；槽位蒸馏日志在 `application-slots/changelogs/ARCHIVE-LOG.md`
 
 ---
 

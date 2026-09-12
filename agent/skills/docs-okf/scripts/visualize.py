@@ -116,7 +116,7 @@ def _type_color(type_name: str, index: int) -> str:
 
 def _viz_concept_paths(bundle_root: Path) -> List[Path]:
     """viz 跳过 changelogs 运维聚合文件（全量 Git 历史会污染嵌入 JSON）。"""
-    skip_names = frozenset({"CHANGE-LOG.md", "INDEXING-LOG.md"})
+    skip_names = frozenset({"INDEXING-LOG.md"})
     return [p for p in okf_lib.scan_concepts(bundle_root) if p.name not in skip_names]
 
 

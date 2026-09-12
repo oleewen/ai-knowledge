@@ -4,11 +4,11 @@ title: changelogs（变更留痕与索引运维）
 ---
 # changelogs（变更留痕与索引运维）
 
-`system/` 变更可追溯：`CHANGE-LOG.md`（docs-change）· `INDEXING-LOG.md`（docs-indexing）。
+`system/` 运维日志：`INDEXING-LOG.md`（docs-indexing）；变更溯源：`git log` / `git diff`。
 
-| Skill | 说明 |
+| 产物 / 溯源 | 说明 |
 |-------|------|
-| [docs-change](../../agent/skills/docs-change/SKILL.md) | 写入/更新 `CHANGE-LOG.md` |
 | [docs-indexing](../../agent/skills/docs-indexing/SKILL.md) | 九章索引；`INDEXING-LOG.md` 主表插入一行 |
+| git | 目录级变更历史 |
 
 入口：[../README.md](../README.md) · [index.md](index.md)

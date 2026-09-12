@@ -31,7 +31,7 @@
 公共六项落点示例见 [workflow.md](workflow.md)。可用 [docs-simplify-scope-ack-template.md](../assets/docs-simplify-scope-ack-template.md)。
 
 本技能：结构 + 激进精简 + SSOT 去重引用。  
-**不作为主路径**：术语统一（docs-revise）、CHANGE-LOG、INDEX、overview 归档、实体索引，除非用户明说附加。
+**不作为主路径**：术语统一（docs-revise）、变更聚合（git）、INDEX、overview 归档、实体索引，除非用户明说附加。
 
 澄清阶段须额外关注：是否点名默认排除类文件；疑似重复候选如何处理；与 docs-revise 主目标是否冲突；若来自 revise `grilled` 提示，默认范围是否钉在改动 hunk。
 

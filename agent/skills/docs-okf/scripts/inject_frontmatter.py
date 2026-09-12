@@ -29,7 +29,6 @@ EXACT_GOVERNANCE: Dict[str, Dict[str, Any]] = {
     "requirements/README.md": {"type": "Documentation"},
     "adr/README.md": {"type": "Documentation"},
     "changelogs/README.md": {"type": "Documentation"},
-    "changelogs/CHANGE-LOG.md": {"type": "Change Log"},
     "changelogs/INDEXING-LOG.md": {"type": "Indexing Log"},
     "docs-meta.md": {"type": "Directory Meta"},
     "application-APPNAME/README.md": {"type": "Documentation", "tags": ["federation"]},

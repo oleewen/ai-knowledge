@@ -5,9 +5,9 @@ title: changelogs — 变更留痕与索引运维
 <!-- markdownlint-disable-next-line MD025 -->
 # changelogs
 
-`company/` 变更与索引记录。
+`company/` 索引运维与变更溯源。
 
-* [CHANGE-LOG.md](CHANGE-LOG.md) — 目录级变更  
 * [INDEXING-LOG.md](INDEXING-LOG.md) — 索引运行  
+* 变更历史 — `git log` / `git diff`
 
-技能：`docs-change` · `docs-indexing`
+技能：`docs-indexing`

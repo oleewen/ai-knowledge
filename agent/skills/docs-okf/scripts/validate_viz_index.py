@@ -15,7 +15,7 @@ import okf_lib  # noqa: E402
 ROOT_INDEX_MARKERS = ("<!-- okf:begin -->", "<!-- okf:end -->")
 KNOWLEDGE_SECTION_MARKERS = ("## §1 ", "## 统一表头规范")
 VIZ_MARKERS = ('"concepts"', '"edges"', "<html")
-SKIP_VIZ_NAMES = frozenset({"CHANGE-LOG.md", "INDEXING-LOG.md"})
+SKIP_VIZ_NAMES = frozenset({"INDEXING-LOG.md"})
 
 
 def _error(msg: str) -> int:

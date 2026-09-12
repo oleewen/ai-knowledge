@@ -133,7 +133,7 @@ flowchart LR
 - **应用知识库**: [application/](application/) — [README](application/README.md) · [index](application/index.md) · [INDEX-GUIDE](application/INDEX-GUIDE.md) · [DESIGN](application/DESIGN.md) · [CONTRIBUTING](application/CONTRIBUTING.md)
 - **系统知识库树**: [system/](system/) — [README](system/README.md) · [index](system/index.md) · [INDEX-GUIDE](system/INDEX-GUIDE.md) · [DESIGN](system/DESIGN.md)
 - **公司知识库树**: [company/](company/) — [README](company/README.md) · [index](company/index.md) · [INDEX-GUIDE](company/INDEX-GUIDE.md) · [DESIGN](company/DESIGN.md)
-- **子域运维日志**: `application|system|company/changelogs/`（各域自管 `INDEXING-LOG` / `CHANGE-LOG`）
+- **子域运维日志**: `application|system|company/changelogs/`（各域自管 `INDEXING-LOG`）；变更溯源用 `git log` / `git diff`
 - **会话工作稿根**（`.docsconfig` `DOC_DIR=docs`）: 约定 `docs/superpowers/specs/`；**当前工作树无 `docs/`**（通常未跟踪）
 - **布局 SSOT**: [agent/references/knowledge-layout.md](agent/references/knowledge-layout.md)
 
@@ -207,7 +207,7 @@ flowchart LR
 | 日志 | 路径 | 维护方 |
 | ------ | ------ | -------- |
 | 根索引运行 | [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md) | docs-indexing（本单元） |
-| 应用变更聚合 | [application/changelogs/CHANGE-LOG.md](application/changelogs/CHANGE-LOG.md) | docs-change |
+| 应用变更溯源 | `git log` / `git diff`（application 仓） | git |
 | 应用索引运行 | [application/changelogs/INDEXING-LOG.md](application/changelogs/INDEXING-LOG.md) | docs-indexing（application 单元） |
 | 系统/公司索引 | `system|company/changelogs/INDEXING-LOG.md` | docs-indexing（对应单元） |
 
@@ -235,7 +235,7 @@ stateDiagram-v2
 2. **目标工程接入知识库**: `git clone` 或 `bootstrap.sh` → `agent/skills/docs-install/scripts/docs-install.sh --target=...`（可选 `--mode=central`、`--scope`、`--type`）。
 3. **仅安装 Agent 配置**: `agent/skills/agent-install/scripts/agent-install.sh`（`--target`、`--agents`、`--scope` 等）。
 4. **联邦登记**: `docs-link.sh` 维护 `system|company/knowledge-links.yaml`（当前三层 `links: []`）。
-5. **维护索引与变更**: `/docs-indexing` 更新对应 `INDEX-GUIDE.md` + `changelogs/INDEXING-LOG.md`；`/docs-change` 更新 `CHANGE-LOG.md`。
+5. **维护索引与变更**: `/docs-indexing` 更新对应 `INDEX-GUIDE.md` + `changelogs/INDEXING-LOG.md`；变更溯源用 `git log` / `git diff`（联邦同步见 `/docs-pull` 的 `SYNC_OK` commit）。
 6. **OKF refresh 与校验**: `/docs-okf`（须 `.docsconfig` 的 `DOC_DIR`+`KNOWLEDGE_TYPE`）。
 7. **知识工程**: `/docs-build`、`/docs-distill`、`/docs-extract`、`/docs-merge`、`/docs-archive`、`/docs-revise`、`/docs-simplify` 等按 [agent/skills/README.md](agent/skills/README.md)。
 
@@ -367,7 +367,7 @@ stateDiagram-v2
 - **本单元增量基线**: [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md) 主表**第一行** `indexing_finished_ms`；显式 `--since` 优先。
 - **子域单元**: 各自 `{DOC_DIR}/changelogs/INDEXING-LOG.md`（application/system/company），与根 LOG **分文件**。
 - **注意**: 辅助脚本 `indexing.sh` 默认跟 `.docsconfig` 的 `DOC_DIR`（本仓为 `docs/`）；根单元须显式 `--output INDEX-GUIDE.md` 并把 LOG 落到根 `changelogs/`，勿静默写到不存在的 `docs/`。
-- **联动**: 变更聚合见 `/docs-change`；索引后建议按需 `/docs-okf` refresh（非阻断）。
+- **联动**: 变更溯源见 `git log` / `git diff`；索引后建议按需 `/docs-okf` refresh（非阻断）。
 
 ---
 
@@ -433,7 +433,6 @@ stateDiagram-v2
 
 | 命令 | 目录 |
 | ------ | ------ |
-| `/docs-change` | [agent/skills/docs-change/SKILL.md](agent/skills/docs-change/SKILL.md) |
 | `/docs-tag` | [agent/skills/docs-tag/SKILL.md](agent/skills/docs-tag/SKILL.md) |
 | `/docs-pull` | [agent/skills/docs-pull/SKILL.md](agent/skills/docs-pull/SKILL.md) |
 | `/docs-push` | [agent/skills/docs-push/SKILL.md](agent/skills/docs-push/SKILL.md) |

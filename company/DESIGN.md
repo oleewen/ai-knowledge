@@ -39,7 +39,7 @@ title: 公司知识库设计
 | ADR | `adr/` | 公司层跨系统决策正文 + `CONTEXT.md` |
 | 槽位 | `system-slots/system-{NAME}/` | 系统镜像入口 |
 | 清单 | `knowledge-links.yaml` | 建联与同步编排（可空） |
-| 运维 | `changelogs/` | CHANGE-LOG / INDEXING-LOG |
+| 运维 | `changelogs/` | INDEXING-LOG；变更溯源 git |
 
 入口：[README](README.md) · [INDEX-GUIDE](INDEX-GUIDE.md) · [index.md](index.md) · [docs-meta](docs-meta.md)
 
@@ -78,7 +78,7 @@ title: 公司知识库设计
 1. 下游 `system/` 整理可同步内容  
 2. docs-pull → 校验/修复 `company/system-slots/system-{NAME}` 软链（读目标 `.docsconfig` 的 DOC_ROOT）  
 3. 校核 `knowledge/` 与 `knowledge-links.yaml`  
-4. 追加 `system-slots/changelogs/CHANGE-LOG.md`（根 CHANGE-LOG 可选汇总）  
+4. 同步结果记 `SYNC_OK`（含 commit）；变更溯源 `git log` / `git diff`  
 
 冲突以下游事实源为准；company 只修映射与导航。
 

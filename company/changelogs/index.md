@@ -8,14 +8,13 @@
 
 ## 目录文件
 
-* [CHANGE-LOG.md](CHANGE-LOG.md)
 * [INDEXING-LOG.md](INDEXING-LOG.md)
 
 ## 阅读顺序
 
 1. [README.md](README.md) — 职责  
-2. [CHANGE-LOG.md](CHANGE-LOG.md) — 目录级变更  
-3. [INDEXING-LOG.md](INDEXING-LOG.md) — 索引运行记录  
+2. [INDEXING-LOG.md](INDEXING-LOG.md) — 索引运行记录  
+3. 变更溯源：`git log` / `git diff`
 
 ## 关联索引
 

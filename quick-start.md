@@ -45,7 +45,7 @@ flowchart LR
 
     subgraph CHG["变更闭环"]
         direction LR
-        E["/docs-change<br/>增量变更记录"]
+        E["git log / git diff<br/>变更溯源"]
     end
 
     S --> A
@@ -59,7 +59,7 @@ flowchart LR
 | 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `index.md`、`README.md`、`AGENTS.md` |
 | 3 | `/docs-build` | 四视角实体、`index.md` |
 | 4 | 需求交付链路按需：`/sdx-solution` → … → `/sdx-architect` → `/sdx-design` → `/sdx-test` | `SOLUTION` … `DSD`、`TDD` |
-| 5 | `/docs-change` + 定期 `/docs-indexing` | 变更可追溯 |
+| 5 | `git log` / `git diff` + 定期 `/docs-indexing` | 变更可追溯 |
 
 ---
 
@@ -81,7 +81,7 @@ flowchart LR
         S6["/sdx-analysis<br/>产出：需求分析文档"]
         S7["/sdx-prd<br/>产出：产品设计文档"]
         S8["/sdx-architect<br/>产出：概要设计文档"]
-        S9["/docs-change<br/>产出：变更聚合"]
+        S9["git log / git diff<br/>变更溯源"]
         S10["/docs-push<br/>推送：概设规约"]
 
         S0 --> S2 --> S3 --> S4 --> S5 --> S6 --> S7 --> S8 --> S9 -.-> S2
@@ -96,7 +96,7 @@ flowchart LR
         A3["/docs-build<br/>产出：五视角实体"]
         A4["/sdx-design<br/>产出：详细设计文档"]
         A5["/sdx-test<br/>产出：测试设计文档"]
-        A6["/docs-change<br/>产出：增量变更记录"]
+        A6["git log / git diff<br/>变更溯源"]
 
         A0 --> A1 --> A2 --> A3 --> A4 --> A5 --> A6
         A1 <-.-> A6
@@ -128,12 +128,12 @@ flowchart LR
 
 应用库 **mode**：**standalone** = 单应用全量模板；**central** = 仅同步 `knowledge/`、`changelogs/` 等子集并 `docs-link` 建联（见 [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)）。
 
-### 阶段三：变更聚合
+### 阶段三：变更溯源与索引
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
-| 1 | `/docs-change` | 变更聚合至 `changelogs/` |
-| 2 | `/docs-indexing`（增量，完成 gate 确认） | `index.md` 与变更对齐、可追溯 |
+| 1 | `git log` / `git diff` | 变更历史（仓内 commit） |
+| 2 | `/docs-indexing`（增量，完成 gate 确认） | `index.md` 与 `INDEXING-LOG` 对齐、可追溯 |
 
 ---
 
@@ -164,7 +164,7 @@ flowchart LR
 
         subgraph APP_CHG["变更闭环"]
             direction LR
-            D["/docs-change<br/>增量变更记录"]
+            D["git log / git diff<br/>变更溯源"]
         end
 
         D0 --> D
@@ -195,7 +195,7 @@ flowchart LR
 
         subgraph CEN_CHG["变更闭环"]
             direction LR
-            H["/docs-change<br/>增量变更记录"]
+            H["git log / git diff<br/>变更溯源"]
         end
 
         C1 <-.-> H
@@ -221,7 +221,7 @@ flowchart LR
 | 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `index.md`、`README.md`、`AGENTS.md` |
 | 3 | `/docs-extract` 从 Wiki / 协作文档 / 代码注释等 legacy 源提炼（按需） | 应用侧结构化草稿或 overview 素材 |
 | 4 | `/docs-build` | 各应用四视角实体、`index.md` |
-| 5 | `/docs-change` | 变更聚合至各应用 `changelogs/` |
+| 5 | `git log` / `git diff` | 各应用仓变更历史 |
 
 ### 阶段二：中央库 — 登记、拉取、蒸馏、归档
 
@@ -247,7 +247,7 @@ flowchart LR
 | 1 | `/docs-push` 推送概设规约（`spec-asd`）到各应用库 | 应用仓 `requirements/**/specs/` |
 | 2 | 规约详细设计链路：`/sdx-design` → `/sdx-test` | `DSD`、`TDD` |
 | 3 | 规约开发实现链路：`brainstorming` → `opsx:*` → `superpowers:sdd` | 代码实现 + 规格归档 |
-| 4 | `/docs-change` + 定期 `/docs-pull` + `/docs-distill --doc-dir system --name {APPNAME}` | 应用变更可追溯，联邦镜像与系统视图全量对齐 |
+| 4 | `git log` / `git diff` + 定期 `/docs-pull` + `/docs-distill --doc-dir system --name {APPNAME}` | 应用变更可追溯（git + `SYNC_OK` commit），联邦镜像与系统视图全量对齐 |
 | 5 | `/docs-indexing`（增量，完成 gate 确认） | 中央与应用 `index.md` 一致 |
 
 ---
@@ -281,7 +281,7 @@ flowchart LR
 
         subgraph DEP["变更闭环"]
             direction LR
-            H["/docs-change<br/>增量变更记录"]
+            H["git log / git diff<br/>变更溯源"]
 
             E --> H
         end
@@ -311,12 +311,12 @@ flowchart LR
 
 > **原则**：overview → archive → entity，勿一步硬造 YAML。约定见 [system/DESIGN.md](system/DESIGN.md)、[knowledge-layout](agent/references/knowledge-layout.md)。
 
-### 阶段三：变更与按需需求交付
+### 阶段三：变更溯源与按需需求交付
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
-| 1 | `/docs-change` | 变更聚合至 `changelogs/` |
-| 2 | `/docs-indexing`（增量，完成 gate 确认） | `index.md` 与变更对齐 |
+| 1 | `git log` / `git diff` | 变更历史（仓内 commit） |
+| 2 | `/docs-indexing`（增量，完成 gate 确认） | `index.md` 与 `INDEXING-LOG` 对齐 |
 | 3 | 需求交付链路按需：`/sdx-solution` → … → `/sdx-architect` → `/sdx-design` → `/sdx-test` | `SOLUTION` … `DSD`、`TDD` |
 
 ---

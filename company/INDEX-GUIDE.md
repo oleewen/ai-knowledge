@@ -37,7 +37,7 @@ company/
 ├── knowledge/ · solutions/ · analysis/
 ├── system-slots/
 │   ├── system-{NAME}           # 软链 → 系统 DOC_ROOT
-│   └── changelogs/             # 层共用 CHANGE-LOG / ARCHIVE-LOG
+│   └── changelogs/             # 层共用 ARCHIVE-LOG；同步追溯 git / SYNC_OK
 └── changelogs/
 ```
 
@@ -73,7 +73,7 @@ company/
 
 ## 七、变更与运维
 
-[changelogs/](changelogs/README.md)：`CHANGE-LOG.md` · `INDEXING-LOG.md`；槽位日志 ∈ `system-slots/system-{NAME}/changelogs/`
+[changelogs/](changelogs/README.md)：`INDEXING-LOG.md`；变更溯源 `git log` / `git diff`；槽位蒸馏日志 ∈ `system-slots/changelogs/ARCHIVE-LOG.md`
 
 ---
 

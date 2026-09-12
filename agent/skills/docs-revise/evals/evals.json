@@ -143,14 +143,14 @@
     {
       "id": "revise-not-trigger-002",
       "category": "should-not-trigger",
-      "prompt": "跑一下变更聚合，更新 application/changelogs/CHANGE-LOG.md，给后面索引用",
-      "expected_output": "主路径 docs-change。",
+      "prompt": "跑一下变更聚合，给后面索引用",
+      "expected_output": "主路径 git log / git diff 或 docs-indexing。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "须点名 docs-change 或 CHANGE-LOG 聚合。",
+          "check": "须点名 git log / git diff 或 docs-indexing，而非 docs-revise。",
           "priority": "P0"
         },
         {

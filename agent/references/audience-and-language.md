@@ -14,7 +14,7 @@
 | --- | --- | --- | --- |
 | `sdx-*` | 全部 | **A/B/C/E**（烤干内） | 必有；统一模板 |
 | 语义族 docs-* | agent / extract / merge / distill / archive / upgrade / simplify / indexing / build | **A/B/C/E**（烤干内） | 必有；统一模板 |
-| 轻流程 | change / pull / push / tag | **A/B**（写后、宣称完成前） | 无；用下文默认读者表 |
+| 轻流程 | pull / push / tag | **A/B**（写后、宣称完成前） | 无；用下文默认读者表 |
 | docs-okf | okf | **A/B**（结果摘要出口；纯机器输出可跳过） | 无；用默认读者表 |
 
 ---
@@ -72,8 +72,7 @@
 
 | 技能 | 主读者 | 宜写 | 宜弱化 |
 | --- | --- | --- | --- |
-| docs-change | 维护者 / Agent | 变更摘要、路径、基线 | 无关业务长文、臆造原因 |
-| docs-pull | 联邦维护者 | 槽位、同步结果、CHANGE-LOG 要点 | 应用内部实现细节 |
+| docs-pull | 联邦维护者 | 槽位、同步结果、commit / `SYNC_OK` 要点 | 应用内部实现细节 |
 | docs-push | 应用库维护者 | 目标 path×doc_dir、复制结果、风险确认 | 中央规约全文粘贴 |
 | docs-tag | overview 维护者 | phase 结果、关键词命中摘要 | 无依据扩写业务正文 |
 | docs-okf | 工程维护者 | refresh/validate/viz 结论与失败分流 | 把机器日志当知识正文 |

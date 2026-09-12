@@ -71,7 +71,7 @@ API/TBL 实体在 `knowledge/`；不承载运行时 OpenAPI/DDL 全文（可链�
 
 ## 七、变更与运维
 
-[changelogs/](changelogs/README.md)：`CHANGE-LOG.md` · `INDEXING-LOG.md`
+[changelogs/](changelogs/README.md)：`INDEXING-LOG.md`；变更溯源 `git log` / `git diff`
 
 ---
 

@@ -91,7 +91,7 @@ archive 特有字段见 [archive-template.md](../assets/archive-template.md)。�
 
 ## 收尾摘要
 
-列：**改动的文件**、**每文件一句**、**待用户事**。写 `CHANGE-LOG.md` 则**新条插最前**。不自动 `git commit` / `push`（[links-and-index.md](links-and-index.md)）。
+列：**改动的文件**、**每文件一句**、**待用户事**。变更溯源靠 `git log` / `git diff`。不自动 `git commit` / `push`（[links-and-index.md](links-and-index.md)）。
 
 ## 临时文件（可选）
 

@@ -29,7 +29,7 @@ child_directories:
     description: "REQUIREMENT-{IDEA-ID}/ 树（约定见 README）"
   changelogs:
     readme: "changelogs/README.md"
-    description: "CHANGE-LOG.md、INDEXING-LOG.md"
+    description: "INDEXING-LOG.md；变更溯源 git"
   adr:
     readme: "adr/README.md"
     description: "应用层 ADR（ADR-{序号}-{标题}.md）+ CONTEXT 决策台账"

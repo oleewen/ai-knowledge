@@ -5,7 +5,7 @@ description: >
   亦覆盖事实/表述/链接纠错（不做整篇结构大砍）。
   用户提到 /docs-revise、修订文档、改文档、统一术语、把 X 换成 Y，
   或简写 a - b / a > b / a 2 b（均为 a→b）时，使用本技能。
-  分流：用户只要 docs-archive/change/indexing/build 或仅 CHANGE-LOG/INDEX → 对应技能；
+  分流：用户只要 docs-archive/indexing/build 或仅 INDEX → 对应技能；变更溯源用 git；
   结构精简/SSOT 去重 → docs-simplify。
   推进见 references/gates.md。烤干中修订后的 simplify 遍见 unit-cycle-protocol。
 ---
@@ -23,13 +23,13 @@ description: >
 
 | 负责 | 不负责 |
 | ---- | ------ |
-| MD/注释/配置文档性文本；术语/路径链式同步；定向事实/表述/链接纠错；意图澄清与范围收口；当前单元推进 | docs-change、docs-indexing、docs-archive、docs-build；整篇结构重组 / SSOT 去重主流程（docs-simplify） |
+| MD/注释/配置文档性文本；术语/路径链式同步；定向事实/表述/链接纠错；意图澄清与范围收口；当前单元推进 | docs-indexing、docs-archive、docs-build；变更溯源 git；整篇结构重组 / SSOT 去重主流程（docs-simplify） |
 
 ## 不这样用
 
 - 不走「范围确认后直接写、跳过意图澄清」的旧主线；默认参数向导后「澄清 → 生成 → 烤干」
 - 不在用户已限定“只改本文件”时强制扩展整条引用链
-- 不把 CHANGE-LOG 聚合、INDEX 重建、overview 行归档、实体索引主路径收成 `docs-revise`
+- 不把变更聚合（git）、INDEX 重建、overview 行归档、实体索引主路径收成 `docs-revise`
 - 不把写前意图澄清称作 grilling；`G` 仅写后深挖
 - 不把整篇金字塔精简/去重当本技能主路径（交 `/docs-simplify`）
 

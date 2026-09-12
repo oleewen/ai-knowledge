@@ -34,7 +34,7 @@
 公共六项落点示例见 [workflow.md](workflow.md)。可用 [docs-revise-scope-ack-template.md](../assets/docs-revise-scope-ack-template.md) 承载。
 
 本技能：定向改文（术语/路径链 + 事实/表述/链接纠错）+ 默认链式（引用 + 关键词）；简写 `a - b` / `a > b` / `a 2 b`。  
-**不作为主路径**：CHANGE-LOG 聚合（docs-change）、INDEX 重建（docs-indexing）、overview 行归档（docs-archive）、实体索引（docs-build）、整篇结构重组（docs-simplify），除非用户明说附加。
+**不作为主路径**：变更聚合（`git log` / `git diff`）、INDEX 重建（docs-indexing）、overview 行归档（docs-archive）、实体索引（docs-build）、整篇结构重组（docs-simplify），除非用户明说附加。
 
 澄清阶段须额外关注：多文件或大目录替换；术语边界不清；是否扩展关联未说明；意图可能越过 docs-revise 边界。
 

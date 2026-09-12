@@ -98,7 +98,7 @@ title: 应用知识文档库 — 设计方案摘录
 | **solutions** | 平铺 `SOLUTION-{IDEA-ID}.md`；`archive/` 归档；frontmatter：`id`，可选 `parent`/`dependencies` |
 | **analysis** | 平铺 `ANALYSIS-{IDEA-ID}.md`；`parent` → Solution |
 | **requirements** | `REQUIREMENT-{IDEA-ID}/MVP-Phase-*/`：PRD/ASD/DSD/TDD；详设正文仅 `DSD-*`；`spec-asd-*` 仅在 `specs/` |
-| **changelogs** | `CHANGE-LOG.md`（docs-change）；`INDEXING-LOG.md`（docs-indexing） |
+| **changelogs** | `INDEXING-LOG.md`（docs-indexing）；变更溯源 `git log` / `git diff` |
 
 ## 3. 核心映射（分布式引用）
 

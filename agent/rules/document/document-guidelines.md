@@ -25,7 +25,7 @@
 
 ### C 类：元数据/混合类
 
-- 典型文件：`docs-meta.md`、`knowledge-meta.md`、`CHANGE-LOG.md`
+- 典型文件：`docs-meta.md`、`knowledge-meta.md`、`INDEXING-LOG.md`
   及兼具阅读与规则消费的说明文件
 - 在边界未完全拆清前，允许阶段性保留
   `frontmatter title` + 可见 `# H1` +
