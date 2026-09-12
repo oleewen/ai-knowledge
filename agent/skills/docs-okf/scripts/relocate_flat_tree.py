@@ -60,7 +60,7 @@ FILE_MOVES: List[Tuple[str, str]] = [
 REFERENCE_META: Dict[str, Dict[str, str]] = {
     "BD-EXAMPLE": {"definition_scope": "reference", "ssot_layer": "company"},
     "PL-EXAMPLE": {"definition_scope": "reference", "ssot_layer": "company"},
-    "SYS-EXAMPLE": {"definition_scope": "reference", "ssot_layer": "company"},
+    "SYS-EXAMPLE": {"definition_scope": "local", "ssot_layer": "system"},
     "APP-EXAMPLE": {"definition_scope": "reference", "ssot_layer": "system"},
     "MS-EXAMPLE": {"definition_scope": "reference", "ssot_layer": "system"},
     "DS-EXAMPLE": {"definition_scope": "reference", "ssot_layer": "system"},

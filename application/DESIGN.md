@@ -49,7 +49,7 @@ title: 应用知识文档库 — 设计方案摘录
 | 视角 | meta / README | 层级（摘要） | 本层角色 |
 | --- | --- | --- | --- |
 | business | [business-meta](knowledge/business/business-meta.md) · [README](knowledge/business/README.md) | BD → BSD → BC → AGG → AB | 实现映射；BD 多为 ref |
-| product | [product-meta](knowledge/product/product-meta.md) · [README](knowledge/product/README.md) | PL → PD → PM → FT → FR → UC/BR（+ BP） | 实现映射；PL/PD 公司 SSOT（本层不落盘） |
+| product | [product-meta](knowledge/product/product-meta.md) · [README](knowledge/product/README.md) | PL；PD → PM → FT → FR → UC/BR（+ BP） | 实现映射；PL 公司 SSOT；SLN 公司 AA；PD 系统 SSOT（本层不落盘） |
 | application | [application-meta](knowledge/application/application-meta.md) · [README](knowledge/application/README.md) | SYS → APP → MS → **API** | **API SSOT** |
 | data | [data-meta](knowledge/data/data-meta.md) · [README](knowledge/data/README.md) | MDG → DS → ENT → **TBL** | **TBL SSOT** |
 | technical | [technical-meta](knowledge/technical/technical-meta.md) · [README](knowledge/technical/README.md) | TSD → **MW** → **CMP** | **MW/CMP SSOT** |
@@ -62,21 +62,23 @@ title: 应用知识文档库 — 设计方案摘录
 
 | 视角 | 实体 | 首次定义层级 |
 | --- | --- | --- |
-| **业务** business | 业务域 BD | 公司 [company/](../company/DESIGN.md) |
+| **业务** business | 业务单元 BU | 公司 [company/](../company/DESIGN.md) |
+| **业务** business | 业务域 BD | 公司 |
 | **业务** business | 业务能力 CAP | 公司 |
 | **业务** business | 业务子域 BSD | 系统 [system/](../system/DESIGN.md) |
 | **业务** business | 限界上下文 BC | 系统 |
 | **业务** business | 聚合 AGG | 系统 |
 | **业务** business | 能力 AB | 系统 |
 | **产品** product | 产品线 PL | 公司 |
-| **产品** product | 产品 PD | 公司 |
+| **应用** application | 解决方案 SLN | 公司 |
+| **产品** product | 产品（产品能力） PD | 系统 |
 | **产品** product | 产品模块 PM | 系统 |
 | **产品** product | 产品功能 FT | 系统 |
 | **产品** product | 功能需求 FR | 系统 |
 | **产品** product | 用户场景 UC | 系统 |
 | **产品** product | 业务流程 BP | 系统 |
 | **产品** product | 业务规则 BR | 系统 |
-| **应用** application | 系统层 SYS | 公司 |
+| **应用** application | 系统层 SYS | 系统 |
 | **应用** application | 应用层 APP | 系统 |
 | **应用** application | 模块层 MS | 系统 |
 | **应用** application | 接口层 API | 应用（本层） |
@@ -102,20 +104,28 @@ title: 应用知识文档库 — 设计方案摘录
 
 ## 3. 核心映射（分布式引用）
 
-源实体 frontmatter 写**目标实体 ID**。
+源实体 frontmatter 写**目标实体 ID**。4A 边方向：AA **implements** BA；AA **uses** DA/TA。
 
 | 方向 | 源 | 目标 | 字段 | 含义 |
 | --- | --- | --- | --- | --- |
-| 实现 | BC | APP | `implemented_by_app_id` | 上下文由哪个 APP 实现 |
-| 实现 | AGG | MS | `implemented_by_service_ids` | 聚合根被哪些 MS 实现 |
+| 对标 | CAP | BD | `maps_to_bd_id` | 能力由哪个业务域提供 |
+| 对标 | BD | PL | `maps_to_pl_id` | 域对标产品线（同建） |
+| 对标 | SLN | PL | `maps_to_pl_id` | 解决方案对标产品线（AA；同建） |
+| 对标 | BSD | PD | `maps_to_pd_id` | 首层子域对标产品能力（与 PD/SYS 同建） |
+| 对标 | PD | SYS | `maps_to_sys_id` | 产品能力对标系统 |
+| 实现（SSOT） | APP | BC | `implements_bc_ids` | 应用实现哪些上下文 |
+| 实现（SSOT） | MS | AGG | `implements_agg_ids` | 入口簇实现哪些聚合 |
+| 实现（过渡） | BC | APP | `implemented_by_app_id` | 旧镜像；迁至 `implements_bc_ids` |
+| 实现（过渡） | AGG | MS | `implemented_by_service_ids` | 旧镜像；迁至 `implements_agg_ids` |
 | 实现 | AB | API | `apis`（`apis[].id`） | 能力绑定的 API |
+| 使用 DA | SLN / APP / MS | MDG / DS / ENT / TBL | `uses_mdg_ids` 等 | AA uses DA |
+| 使用 TA | SYS / APP | TSD / MW / TPL / CMP | `uses_tsd_ids` 等 | AA uses TA |
 | 需求支撑 | PM | BC | `relies_on_context_ids` | 模块依赖的上下文 |
 | 接口 | FT | API | `invokes_api_ids` | 功能调用的 API |
 | 接口 | UC | API | `map_to_api_id` | 用例映射的 API |
 | 持久化 | AGG | ENT | `persisted_as_entity_ids` | 模型落哪些实体 |
-| 归属 | ENT / DS | MS / APP | `owned_by_service_id` / `app_id` 等 | 写入与归属 |
 
 ## 4. ADR 与 ID 前缀
 
 - **ADR**：`application/adr/ADR-{序号}-{标题}.md`；台账 `CONTEXT.md`；模板 [adr-template.md](../agent/knowledge/adr-template.md)；SDX 运行时 [sdx-adr-protocol.md](../agent/references/sdx-adr-protocol.md)
-- **前缀**：BD、BSD、BC、AGG、AB、CAP、PL、PM、FT、UC、SYS、APP、MS、API、MDG、DS、ENT、TPL、TSD、MW、CMP — 全文 [naming-conventions.md](../agent/knowledge/naming-conventions.md)
+- **前缀**：BU、BD、BSD、BC、AGG、AB、CAP、PL、SLN、PD、PM、FT、UC、SYS、APP、MS、API、MDG、DS、ENT、TPL、TSD、MW、CMP — 全文 [naming-conventions.md](../agent/knowledge/naming-conventions.md)

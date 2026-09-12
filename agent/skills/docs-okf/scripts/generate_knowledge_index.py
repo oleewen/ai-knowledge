@@ -19,9 +19,9 @@ _APPLICATION_PERSPECTIVE_SECTIONS: List[Tuple[str, str, List[str]]] = [
         ["BD", "BSD", "BC", "AGG", "AB"],
     ),
     (
-        "§2 产品视角（product · PL → PD → PM → FT → FR → UC/BR · BP）",
+        "§2 产品视角（product · PD → PM → FT → FR → UC/BR · BP）",
         "product",
-        ["PM", "FT", "FR", "UC", "BR", "BP"],
+        ["PD", "PM", "FT", "FR", "UC", "BR", "BP"],
     ),
     (
         "§3 应用视角（application · SYS → APP → MS → API）",
@@ -43,19 +43,19 @@ _APPLICATION_PERSPECTIVE_SECTIONS: List[Tuple[str, str, List[str]]] = [
 
 _COMPANY_PERSPECTIVE_SECTIONS: List[Tuple[str, str, List[str]]] = [
     (
-        "§1 业务视角（business · BD / CAP）",
+        "§1 业务视角（business · BU / BD / CAP）",
         "business",
-        ["BD", "CAP"],
+        ["BU", "BD", "CAP"],
     ),
     (
-        "§2 产品视角（product · PL → PD）",
+        "§2 产品视角（product · PL）",
         "product",
-        ["PL", "PD"],
+        ["PL"],
     ),
     (
-        "§3 应用视角（application · SYS）",
+        "§3 应用视角（application · SLN）",
         "application",
-        ["SYS"],
+        ["SLN"],
     ),
     (
         "§4 数据视角（data · MDG）",
@@ -269,27 +269,28 @@ def _split_existing(text: str) -> Tuple[str, str]:
 def _default_suffix(bundle: str) -> str:
     if bundle == "company":
         footer_note = (
-            "> 本索引登记公司级 **BD / CAP / PL / PD / SYS / MDG / TPL**；"
-            "系统层与应用层实体见对应 bundle 的 `knowledge/index.md`。"
+            "> 本索引登记公司级 **BU / BD / CAP / PL / SLN / MDG / TPL**；"
+            "SLN ∈ application（AA）；无 PD/SYS（见系统库）。"
         )
         mapping_rows = [
-            "| BD-EXAMPLE | `business/BD-EXAMPLE/` |",
-            "| CAP-EXAMPLE | `business/BD-EXAMPLE/CAP-EXAMPLE.md` |",
+            "| BU-EXAMPLE | `business/BU-EXAMPLE/` |",
+            "| BD-EXAMPLE | `business/BD-EXAMPLE.md` |",
+            "| CAP-EXAMPLE | `business/BU-EXAMPLE/CAP-EXAMPLE.md` |",
             "| PL-EXAMPLE | `product/PL-EXAMPLE/` |",
-            "| PD-EXAMPLE | `product/PL-EXAMPLE/PD-EXAMPLE.md` |",
-            "| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |",
+            "| SLN-EXAMPLE | `application/SLN-EXAMPLE.md` |",
             "| MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |",
             "| TPL-EXAMPLE | `technical/TPL-EXAMPLE.md` |",
         ]
     elif bundle == "system":
         footer_note = (
-            "> 公司级 **TPL-*** 不在本索引登记；见 `company/knowledge/technical/`。"
-            "系统级 **TSD-*** 在本索引 §5 登记。"
-            "产品 **PL/PD** 见公司层；本层自 **PM** 起。"
+            "> 公司级 **TPL-*** / **SLN-*** / **PL-*** 不在本索引登记。"
+            "本层 **PD / SYS** 首次定义；产品自 **PD** 起；应用自 **SYS** 起。"
         )
         mapping_rows = [
             "| BSD-EXAMPLE | `business/BSD-EXAMPLE/` |",
-            "| PM-EXAMPLE | `product/PM-EXAMPLE/` |",
+            "| PD-EXAMPLE | `product/PD-EXAMPLE/` |",
+            "| PM-EXAMPLE | `product/PD-EXAMPLE/PM-EXAMPLE/` |",
+            "| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |",
             "| APP-EXAMPLE | `application/APP-EXAMPLE/` |",
             "| DS-EXAMPLE | `data/DS-EXAMPLE/` |",
             "| TSD-EXAMPLE | `technical/TSD-EXAMPLE.md` |",
@@ -298,7 +299,7 @@ def _default_suffix(bundle: str) -> str:
         footer_note = (
             "> 本索引仅登记本层首次定义样例（API/TBL/MW/CMP）。"
             "上游 BD/SYS/MDG/TSD 等以纯 ID 引用公司/系统 SSOT，本层不落 reference 文件。"
-            "产品 **PL/PD** 见公司层；**PM** 起见系统层。"
+            "产品 **PL/SLN** 见公司；**PD/PM** 见系统层。"
         )
         mapping_rows = [
             "| API-EXAMPLE-001 | `application/MS-EXAMPLE/API-EXAMPLE-001.md` |",

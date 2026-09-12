@@ -101,26 +101,26 @@ def test_hierarchy_to_type_cap():
     assert okf_lib.hierarchy_to_type("CAP") == "Business Capability"
 
 
-def test_entity_relpath_company_bd_in_domain_folder():
+def test_entity_relpath_company_bd_flat():
     path = okf_lib.entity_relpath("business", "BD-EXAMPLE", bundle="company")
-    assert path == "knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md"
+    assert path == "knowledge/business/BD-EXAMPLE.md"
 
 
 def test_entity_relpath_company_bd_uses_full_id():
     path = okf_lib.entity_relpath("business", "BD-CHARGING", bundle="company")
-    assert path == "knowledge/business/BD-CHARGING/BD-CHARGING.md"
+    assert path == "knowledge/business/BD-CHARGING.md"
 
 
 def test_entity_relpath_company_cap_with_parent():
     path = okf_lib.entity_relpath(
-        "business", "CAP-ORDER", parent_id="BD-CHARGING", bundle="company"
+        "business", "CAP-ORDER", parent_id="BU-EXPRESS", bundle="company"
     )
-    assert path == "knowledge/business/BD-CHARGING/CAP-ORDER.md"
+    assert path == "knowledge/business/BU-EXPRESS/CAP-ORDER.md"
 
 
 def test_entity_relpath_company_cap():
     path = okf_lib.entity_relpath("business", "CAP-EXAMPLE", bundle="company")
-    assert path == "knowledge/business/BD-EXAMPLE/CAP-EXAMPLE.md"
+    assert path == "knowledge/business/BU-EXAMPLE/CAP-EXAMPLE.md"
 
 
 def test_entity_relpath_company_tpl():
@@ -128,17 +128,36 @@ def test_entity_relpath_company_tpl():
     assert path == "knowledge/technical/TPL-EXAMPLE.md"
 
 
-def test_entity_relpath_company_pl_and_pd():
+def test_entity_relpath_company_pl_and_sln():
     assert (
         okf_lib.entity_relpath("product", "PL-EXAMPLE", bundle="company")
         == "knowledge/product/PL-EXAMPLE/PL-EXAMPLE.md"
     )
     assert (
-        okf_lib.entity_relpath(
-            "product", "PD-EXAMPLE", parent_id="PL-EXAMPLE", bundle="company"
-        )
-        == "knowledge/product/PL-EXAMPLE/PD-EXAMPLE.md"
+        okf_lib.entity_relpath("application", "SLN-EXAMPLE", bundle="company")
+        == "knowledge/application/SLN-EXAMPLE.md"
     )
+
+
+def test_entity_relpath_system_pd_and_pm():
+    assert (
+        okf_lib.entity_relpath("product", "PD-EXAMPLE", bundle="system")
+        == "knowledge/product/PD-EXAMPLE/PD-EXAMPLE.md"
+    )
+    assert (
+        okf_lib.entity_relpath(
+            "product", "PM-EXAMPLE", parent_id="PD-EXAMPLE", bundle="system"
+        )
+        == "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE.md"
+    )
+
+
+def test_hierarchy_first_layer_pd_sys():
+    assert okf_lib.hierarchy_first_layer("PD") == "system"
+    assert okf_lib.hierarchy_first_layer("SYS") == "system"
+    assert okf_lib.hierarchy_first_layer("SLN") == "company"
+    assert okf_lib.hierarchy_to_perspective("SLN") == "application"
+    assert okf_lib.hierarchy_first_layer("BU") == "company"
 
 
 def test_entity_relpath_system_ms_and_mw():
@@ -188,12 +207,14 @@ def main() -> None:
         test_scan_concepts,
         test_is_concept_file,
         test_hierarchy_to_type_cap,
-        test_entity_relpath_company_bd_in_domain_folder,
+        test_entity_relpath_company_bd_flat,
         test_entity_relpath_company_bd_uses_full_id,
         test_entity_relpath_company_cap,
         test_entity_relpath_company_cap_with_parent,
         test_entity_relpath_company_tpl,
-        test_entity_relpath_company_pl_and_pd,
+        test_entity_relpath_company_pl_and_sln,
+        test_entity_relpath_system_pd_and_pm,
+        test_hierarchy_first_layer_pd_sys,
         test_entity_relpath_system_ms_and_mw,
         test_entity_relpath_system_ms_requires_parent,
         test_entity_relpath_system_bd_at_perspective_root,

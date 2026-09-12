@@ -23,8 +23,9 @@
 
 | 前缀   | 英文全称   | 含义    | 首次定义 |
 | ---- | ------------------ | ----- | ---- |
-| BD-  | Business Domain    | 业务域   | 公司 |
-| CAP- | Business Capability | 业务能力（挂 BD 的单层能力目录） | 公司 |
+| BU-  | Business Unit      | 业务单元（能力目录根；下挂 CAP） | 公司 |
+| BD-  | Business Domain    | 业务域（∥BU；对标 PL） | 公司 |
+| CAP- | Business Capability | 业务能力（`parent_id→BU`；`maps_to_bd_id`→BD） | 公司 |
 | BSD- | Business Subdomain | 业务子域  | 系统 |
 | BC-  | Bounded Context    | 限界上下文 | 系统 |
 | AGG- | Aggregate | 聚合根   | 系统 |
@@ -34,8 +35,8 @@
 
 | 前缀  | 英文全称 | 含义   | 首次定义 |
 | --- | ---------------- | ---- | ---- |
-| PL- | Product Line     | 产品线（一套解决方案集合） | 公司 |
-| PD- | Product          | 产品（单个解决方案） | 公司 |
+| PL- | Product Line     | 产品线（与 BD 对标的解决方案） | 公司 |
+| PD- | Product          | 产品能力（系统首次定义；`parent_id→PL`） | 系统 |
 | PM- | Product Module   | 产品模块 | 系统 |
 | BP- | Business Process | 业务流程 | 系统 |
 | FT- | Feature | 功能点  | 系统 |
@@ -47,7 +48,8 @@
 
 | 前缀   | 英文全称    | 含义       | 首次定义 |
 | ---- | -------------------------- | ------------------------------------------------------------------------------------------------------- | ---- |
-| SYS- | System  | 系统       | 公司 |
+| SLN- | Solution        | 解决方案（企业 AA 台账；`maps_to_pl_id→PL`；一 PL 一 SLN） | 公司 |
+| SYS- | System  | 系统（`parent_id→公司 SLN`） | 系统 |
 | APP- | Application    | 应用（代码仓库/部署单元）   | 系统 |
 | MS-  | Microservice | 微服务（**入口簇**） | 系统 |
 | API- | API Endpoint   | 接口端点     | 应用 |
@@ -86,11 +88,11 @@
   - **应用知识库根目录**（`applications/{app}/`）：`application_meta.yaml`（联邦单元根索引）；子目录同模式，如 `knowledge/knowledge-meta.md`、`requirements/README.md`、`changelogs/README.md`；命名与治理规则引用系统库 `agent/knowledge/`。
   - **系统库五视角**（`system/knowledge/{perspective}/`）：与应用 `knowledge/{perspective}/` 同构；`{perspective}-meta.md` 在视角根；实体为 `{ID}.md`。
 - **系统库 · 业务视角**（`system/knowledge/business/`）：`business-meta.md`；`BD-{NAME}.md` 为 company reference；`BSD-{NAME}/` 起为系统 SSOT 树。
-- **系统库 · 产品视角**（`system/knowledge/product/`）：`product-meta.md`；不落 PL/PD 文件；`PM.parent_id` → 公司 `PD-*`（有 parent 则 HTTP，否则纯 ID）；`PM-{NAME}/` 起为 PM→FT→FR→UC/BR。
-- **系统库 · 应用视角**（`system/knowledge/application/`）：`application-meta.md`；`SYS-{NAME}.md` 为 company reference；`APP-{NAME}/APP-{NAME}.md`；`APP-{NAME}/MS-{NAME}/MS-{NAME}.md`。
-- **系统库 · 数据视角**（`system/knowledge/data/`）：`data-meta.md`；`MDG-{NAME}.md` 为 company reference；`DS-{NAME}/` 含 DS/ENT。
-- **系统库 · 技术视角**（`system/knowledge/technical/`）：`technical-meta.md`；`TSD-{NAME}.md` 为系统 SSOT；`MW-{NAME}/` 可为 application MW 的 reference。
-- **公司层五视角**（`company/knowledge/{perspective}/`）：叙事 Markdown + `{perspective}-meta.md` + 公司级实体（BD/CAP、`PL-{NAME}/` 含 PL+PD、SYS、MDG、TPL）。
+- **系统库 · 产品视角**（`system/knowledge/product/`）：`product-meta.md`；不落 PL/SLN；`PD-{NAME}/` 为本层 SSOT（`PD.parent_id→公司 PL`，`maps_to_sys_id`）；其下 `PM-{NAME}/` 为 PM→FT→FR→UC/BR（`PM` 须与 PD 同库）。
+- **系统库 · 应用视角**（`system/knowledge/application/`）：`application-meta.md`；`SYS-{NAME}.md` 为本层 SSOT（`parent_id→公司 SLN`）；`APP-{NAME}/APP-{NAME}.md`；`APP-{NAME}/MS-{NAME}/MS-{NAME}.md`。
+- **系统库 · 数据视角**（`system/knowledge/data/`）：`data-meta.md`；`MDG-{NAME}.md` 为 company reference；`DS-{NAME}/` 含 DS/ENT。AA 侧 `uses_*` 声明使用关系。
+- **系统库 · 技术视角**（`system/knowledge/technical/`）：`technical-meta.md`；`TSD-{NAME}.md` 为系统 SSOT；`MW-{NAME}/` 可为 application MW 的 reference。AA 侧 `uses_*` 声明使用关系。
+- **公司层五视角**（`company/knowledge/{perspective}/`）：叙事 Markdown + `{perspective}-meta.md` + 公司级实体（`BU-*`/BD/CAP、`PL-{NAME}/`、**`application/SLN-*.md`（AA）**、MDG、TPL；**无 PD/SYS**）。
 - **IDEA-ID（需求链统一标识）**：统一命名格式 `*-{YYMMDD}-{主题slug}` 中的 `{YYMMDD}-{主题slug}` 段；各阶段类型前缀为 `SOLUTION` / `ANALYSIS` / `REQUIREMENT`（目录）/ `PRD` / `ASD` / `DSD` / `TDD` 等。
 - **系统库 · requirements 阶段**（`system/requirements/`）：`README.md` 为阶段约定入口；`REQUIREMENT-{IDEA-ID}/` 为交付包锚点（与 `ANALYSIS-{IDEA-ID}.md` 共用同一 **IDEA-ID**），不在包内并列根级 `*_meta.yaml` 拷贝。
 - **系统库 · solutions 阶段**（`system/solutions/`）：`README.md` 为阶段约定入口；根目录平铺 `SOLUTION-{IDEA-ID}.md`；`archive/` 归档。
@@ -105,8 +107,8 @@
 | 视角 | 典型 concept 路径 | OKF `type`（摘录） |
 |------|-------------------|-------------------|
 | business | `knowledge/business/BSD-EXAMPLE/{ID}.md`（域扁平树） | `Business Domain` / … |
-| product | `knowledge/product/PM-EXAMPLE/{ID}.md`（公司：`PL-*/PL-*.md` + `PD-*.md`） | `Product Line` / `Product` / … |
-| application | `knowledge/application/MS-EXAMPLE/{ID}.md` | `System` / … |
+| product | `knowledge/product/PD-EXAMPLE/{ID}.md`（公司：`PL-*/PL-*.md`） | `Product Line` / `Product` / … |
+| application | `knowledge/application/…`（公司：`SLN-*.md`） | `Solution` / `System` / … |
 | data | `knowledge/data/DS-EXAMPLE/{ID}.md`（ENT 挂 DS 目录） | `Data Store` / `Entity` |
 | technical | `knowledge/technical/MW-EXAMPLE/{ID}.md` | `Middleware Binding` / `Component` |
 

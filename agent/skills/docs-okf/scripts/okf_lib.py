@@ -60,12 +60,14 @@ def normalize_section_heading(title: str) -> Optional[str]:
     return LEGACY_SECTION_ALIASES.get(title)
 
 HIERARCHY_TO_TYPE: Dict[str, str] = {
+    "BU": "Business Unit",
     "BD": "Business Domain",
     "BSD": "Business Subdomain",
     "BC": "Bounded Context",
     "AGG": "Aggregate",
     "AB": "Ability",
     "PL": "Product Line",
+    "SLN": "Solution",
     "PD": "Product",
     "PM": "Product Module",
     "FT": "Feature",
@@ -98,16 +100,16 @@ APPLICATION_PERSPECTIVE_DOMAIN_ANCHOR: Dict[str, str] = {
 
 SYSTEM_PERSPECTIVE_DOMAIN_ANCHOR: Dict[str, str] = {
     "business": "BSD-EXAMPLE",
-    "product": "PM-EXAMPLE",
+    "product": "PD-EXAMPLE",
     "application": "MS-EXAMPLE",
     "data": "DS-EXAMPLE",
     "technical": "MW-EXAMPLE",
 }
 
 COMPANY_PERSPECTIVE_DOMAIN_ANCHOR: Dict[str, str] = {
-    "business": "BD-EXAMPLE",
+    "business": "BU-EXAMPLE",
     "product": "PL-EXAMPLE",
-    "application": "SYS-EXAMPLE",
+    "application": "SLN-EXAMPLE",
     "data": "MDG-EXAMPLE",
     "technical": "TPL-EXAMPLE",
 }
@@ -137,7 +139,9 @@ REFERENCE_FULL_IDS = frozenset(
 )
 
 _DEFAULT_PRODUCT_PL = "PL-EXAMPLE"
+_DEFAULT_PRODUCT_PD = "PD-EXAMPLE"
 _DEFAULT_PRODUCT_PM = "PM-EXAMPLE"
+_DEFAULT_BUSINESS_BU = "BU-EXAMPLE"
 _DEFAULT_DATA_DS = "DS-EXAMPLE"
 
 
@@ -219,6 +223,7 @@ def hierarchy_to_type(hierarchy: str) -> str:
 
 
 HIERARCHY_TO_PERSPECTIVE: Dict[str, str] = {
+    "BU": "business",
     "BD": "business",
     "BSD": "business",
     "BC": "business",
@@ -226,6 +231,7 @@ HIERARCHY_TO_PERSPECTIVE: Dict[str, str] = {
     "AB": "business",
     "CAP": "business",
     "PL": "product",
+    "SLN": "application",
     "PD": "product",
     "PM": "product",
     "FT": "product",
@@ -249,23 +255,25 @@ HIERARCHY_TO_PERSPECTIVE: Dict[str, str] = {
 
 # 首次定义层（SSOT：application/DESIGN.md §2.2.1）
 HIERARCHY_FIRST_LAYER: Dict[str, str] = {
+    "BU": "company",
     "BD": "company",
     "CAP": "company",
     "PL": "company",
-    "PD": "company",
-    "SYS": "company",
+    "SLN": "company",
     "MDG": "company",
     "TPL": "company",
     "BSD": "system",
     "BC": "system",
     "AGG": "system",
     "AB": "system",
+    "PD": "system",
     "PM": "system",
     "BP": "system",
     "FT": "system",
     "FR": "system",
     "UC": "system",
     "BR": "system",
+    "SYS": "system",
     "APP": "system",
     "MS": "system",
     "DS": "system",
@@ -311,17 +319,16 @@ def entity_relpath(
     """相对 bundle 根的 concept 路径（域扁平树）。"""
     prefix = _id_prefix(full_id)
     if bundle == "company":
-        if perspective == "business" and prefix == "BD":
+        if perspective == "business" and prefix == "BU":
             return f"knowledge/business/{full_id}/{full_id}.md"
+        if perspective == "business" and prefix == "BD":
+            return f"knowledge/business/{full_id}.md"
         if perspective == "business" and prefix == "CAP":
-            bd = parent_id or "BD-EXAMPLE"
-            return f"knowledge/business/{bd}/{full_id}.md"
+            bu = parent_id or _DEFAULT_BUSINESS_BU
+            return f"knowledge/business/{bu}/{full_id}.md"
         if perspective == "product" and prefix == "PL":
             return f"knowledge/product/{full_id}/{full_id}.md"
-        if perspective == "product" and prefix == "PD":
-            pl = parent_id or _DEFAULT_PRODUCT_PL
-            return f"knowledge/product/{pl}/{full_id}.md"
-        if perspective == "application" and prefix == "SYS":
+        if perspective == "application" and prefix == "SLN":
             return f"knowledge/application/{full_id}.md"
         if perspective == "data" and prefix == "MDG":
             return f"knowledge/data/{full_id}.md"
@@ -337,6 +344,11 @@ def entity_relpath(
             return f"knowledge/business/{full_id}.md"
         if perspective == "product" and prefix == "PL":
             return f"knowledge/product/{full_id}.md"
+        if perspective == "product" and prefix == "PD":
+            return f"knowledge/product/{full_id}/{full_id}.md"
+        if perspective == "product" and prefix == "PM":
+            pd = parent_id or _DEFAULT_PRODUCT_PD
+            return f"knowledge/product/{pd}/{full_id}/{full_id}.md"
         if perspective == "application" and prefix == "SYS":
             return f"knowledge/application/{full_id}.md"
         if perspective == "application" and prefix == "APP":
