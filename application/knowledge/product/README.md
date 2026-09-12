@@ -6,7 +6,7 @@ title: 产品架构
 
 [返回 · knowledge](../README.md)
 
-应用侧产品入口：承接 API / 验收映射与实例登记；PL/PD 公司首次定义，PM 起系统首次定义。实体以 per-entity 与 [../index.md](../index.md) §2 为准。本 README 表仅登记本层 SSOT 样例；reference 见 §2。
+应用侧产品入口：承接 API / 验收映射；PL 公司产品 SSOT，SLN 公司 AA，PD 系统首次定义（本层不落）。
 
 ## 实体
 

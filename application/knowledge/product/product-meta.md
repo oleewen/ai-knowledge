@@ -12,15 +12,15 @@ title: 产品视角元数据（application/knowledge/product）
 | meta_id | `DIR-KNOWLEDGE-PRODUCT` |
 | 视角 | product |
 | 层级范围 | application |
-| 说明 | 产品版图；公司 PL/PD 首次定义（本层不落 PL/PD 文件）；系统自 PM 起首次定义；本层承接 API / 验收映射与实例登记。`PM.parent_id` → 公司 `PD-*`（有 parent 则 HTTP，否则纯 ID）。 |
+| 说明 | 产品版图；公司 PL 首次定义；公司 SLN（AA）首次定义（本层不落）；系统 PD 首次定义（本层不落 PD）。`PM.parent_id` → 系统 `PD-*`。 |
 | entities_shape | 实体 `{ID}.md`（OKF）；索引见 KNOWLEDGE_INDEX §2 |
 
 ## 2. 层级链
 
 | 链序 | 层级代码 | 说明 |
 | --- | --- | --- |
-| 1 | PL | 产品线（公司层首次定义；本层不落盘） |
-| 2 | PD | 产品（公司层首次定义；本层不落盘） |
+| 1 | PL | 产品线（公司层；本层不落盘） |
+| 2 | PD | 产品能力（系统层首次定义；本层不落盘） |
 | 3 | PM | 产品模块（系统层首次定义） |
 | 4 | FT | 功能点（系统层首次定义，应用层承接 API / 验收映射） |
 | 5 | FR | 功能需求（系统层首次定义，应用层承接验收与接口映射） |
@@ -32,8 +32,8 @@ title: 产品视角元数据（application/knowledge/product）
 | order | key | code | id_pattern | parent |
 | --- | --- | --- | --- | --- |
 | 1 | pl | PL | `PL-{NAME}` | —（公司） |
-| 2 | pd | PD | `PD-{NAME}` | PL（公司） |
-| 3 | pm | PM | `PM-{NAME}` | PD（只许 PD） |
+| 2 | pd | PD | `PD-{NAME}` | PL（系统 SSOT） |
+| 3 | pm | PM | `PM-{NAME}` | PD（只许本系统 PD） |
 | 4 | ft | FT | `FT-{NAME}` | PM |
 | 5 | fr | FR | `FR-{NAME}` | FT |
 | 6 | uc | UC | `UC-{NAME}` | FR |
@@ -59,7 +59,7 @@ title: 产品视角元数据（application/knowledge/product）
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| PM.parent_id | 公司 PD.full_id | 模块归属产品 |
+| PM.parent_id | 系统 PD.full_id | 模块归属产品能力 |
 | PM.depends_pm_ids | PM.full_id | 模块依赖其它模块 |
 | PM.relies_on_context_ids | BC.full_id | 模块依赖限界上下文 |
 | FT.invokes_api_ids | API.full_id | 功能调用 API |
