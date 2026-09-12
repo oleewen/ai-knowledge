@@ -10,7 +10,6 @@ declare -A SUITE_RUNNERS=(
   [docs-link]='agent/skills/docs-link/tests/run.sh'
   [docs-pull]='agent/skills/docs-pull/tests/run.sh'
   [docs-push]='agent/skills/docs-push/tests/run.sh'
-  [docs-change]='agent/skills/docs-change/tests/run.sh'
   [docs-okf]='agent/skills/docs-okf/tests/run.sh'
   [docs-install]='agent/skills/docs-install/tests/run.sh'
   [agent-install]='agent/skills/agent-install/tests/run.sh'
@@ -20,8 +19,8 @@ declare -A SUITE_RUNNERS=(
   [forbidden-file-refs]='agent/scripts/tests/forbidden-file-refs/run.sh'
 )
 
-QUICK_SUITES=(forbidden-file-refs docs-link docs-pull docs-change okf docs-okf agent-install bootstrap docs-meta-naming)
-FULL_SUITES=(forbidden-file-refs docs-link docs-pull docs-change okf docs-okf agent-install bootstrap docs-meta-naming docs-install docs-push)
+QUICK_SUITES=(forbidden-file-refs docs-link docs-pull okf docs-okf agent-install bootstrap docs-meta-naming)
+FULL_SUITES=(forbidden-file-refs docs-link docs-pull okf docs-okf agent-install bootstrap docs-meta-naming docs-install docs-push)
 
 MODE='quick'
 SUITE=''
