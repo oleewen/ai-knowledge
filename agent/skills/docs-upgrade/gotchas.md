@@ -1,6 +1,8 @@
 # docs-upgrade 陷阱
 
 - **误跑 docs-install knowledge**：会清空 DOC_DIR。升级只用 `docs-upgrade.sh` + Agent 重填（文件模式亦禁清空 install）。
+- **路径重写挂点**：仅 `--apply-scaffold` 末尾（同装机 `sdx_rewrite_docs_agent_paths`）。结构重填 / 文件模式若再写入裸 `agent/`，本技能不强制再扫——接受缝；勿误以为整单结束必已重写。
+- **dry-run 无路径副作用**：`--dry-run` 不 rewrite、不改 README。
 - **缺 type:meta**：装机未完成或 links 被手改。硬停；用 install upsert 或 `--meta-path`，勿猜。
 - **多条 type:meta**：非法；硬停至剩一条。
 - **path 未 fetch**：本机工作区脏/旧 ≠ 远端最新。脚本须 fetch 对齐 ref；文件模式同源。

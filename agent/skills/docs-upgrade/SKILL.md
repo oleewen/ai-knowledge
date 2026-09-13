@@ -3,6 +3,7 @@ name: docs-upgrade
 description: >
   将当前工程知识库（读 .docsconfig）对齐元库最新模板结构：结构/模板以元库为准，
   正文以本库为准；已改 md 按元库 H2/H3 重填本库正文；未落位节清单逐项确认。
+  --apply-scaffold 收尾按 AGENT_DIRS 首项重写 agent/ 路径（同 docs-install）。
   支持 @ 指定文件/目录强制对齐元库对应路径（与整树互斥；破跳过；逐文件 C）。
   元库来自 DOC_ROOT/knowledge-links.yaml 的唯一 type: meta（path 优先 + fetch）。
   用户提到 /docs-upgrade、升级知识库、对齐元库模板、从 meta 刷新骨架、不丢已有知识升级、
@@ -21,6 +22,7 @@ description: >
 - 轻流程：参数向导 → 风险校核 → `C/M/S/F`（无 `G`、不绑意图澄清）→ [light-flow-actions.md](../../references/light-flow-actions.md)；细节 [gates.md](references/gates.md)。参数未收口前不得写盘。
 - 整树：默认先 **dry-run 清单**；清单未 `C` 前不得实跑。文件模式：先 **解析总览 `C`**，再 **逐文件 `C`**。
 - **禁止**调用会清空 `DOC_DIR` 的 `docs-install.sh --scope=knowledge` 主路径。
+- **路径重写（同 docs-install）**：`--apply-scaffold` 收尾须对整棵 `DOC_ROOT` 将裸 `agent/` 重写为 `.docsconfig` 的 `AGENT_DIRS` 首项，并幂等更新 README「Agent 路径」注记（共享 `sdx_rewrite_docs_agent_paths`）。`--dry-run` 不重写。空骨架桶亦跑。结构重填 / 文件模式**不**强制再跑（已知缝）。
 - 合并契约：结构/模板=元库；正文=本库；已改判定=规范化后与元库同路径内容不等；已改 md=本库正文填入元库 H2/H3；未落位节=清单确认后才落；本库独有路径永不删。
 - 文件模式强制：指定路径两边都有的 `.md` **破跳过**，一律结构重填；本缺元有 → 仅 scaffold 该路径；元缺 / 软链路径 / 顶层遗留槽位名 → 该条拒绝。非 md：可进名单；已存在不覆盖；仅缺则可 scaffold。`*-slots/changelogs/**` 本有则整文件本库胜（强制也不破）。
 - `knowledge-links.yaml` 永不被元库模板覆盖。
@@ -64,7 +66,7 @@ description: >
 
 ## 产出与脚本
 
-- 正式（整树）：对齐后的 `DOC_ROOT`（新骨架 + 已确认重填 + 已确认未落位）；备份在 `{REPO_ROOT}/.docs-init/upgrade-{stamp}/`
+- 正式（整树）：对齐后的 `DOC_ROOT`（新骨架 + `agent/`→`AGENT_DIRS` 首项 + README 注记 + 已确认重填 + 已确认未落位）；备份在 `{REPO_ROOT}/.docs-init/upgrade-{stamp}/`
 - 正式（文件）：已 `C` 的指定路径（强制重填 / scaffold）；无强制 `.docs-init` 备份
 - 预览（整树）：四桶清单（新增骨架 / 跳过 / 结构重填 / 本库独有）+ 后续未落位节清单
 - 预览（文件）：`@` 展开去重后的动作总览（强制重填 / scaffold / 非 md 跳过覆盖 / 元缺拒绝 / 软链拒绝 / 遗留槽位拒绝 / changelogs 本库胜）
@@ -79,4 +81,4 @@ bash /path/to/ai-knowledge/agent/skills/docs-upgrade/scripts/docs-upgrade.sh --a
 
 ## 评测
 
-`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。重点：禁清空 install、meta 解析、清单闸门、未落位逐项、写后 A/B、与 docs-install 分流、文件模式互斥与逐文件 `C`。
+`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。重点：禁清空 install、meta 解析、清单闸门、未落位逐项、写后 A/B、与 docs-install 分流、`--apply-scaffold` 后路径重写、文件模式互斥与逐文件 `C`。

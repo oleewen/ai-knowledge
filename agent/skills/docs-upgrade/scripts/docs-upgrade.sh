@@ -27,7 +27,7 @@ Usage: docs-upgrade.sh [--dry-run | --apply-scaffold] [--meta-path PATH] [--ref 
 对齐元库 {meta}/{doc_dir}/，输出变更清单；--apply-scaffold 时备份并写入「新增骨架」。
 
   --dry-run          只打印清单（默认）
-  --apply-scaffold   备份将动路径后写入新增骨架（须已由 Skill 取得确认）
+  --apply-scaffold   备份将动路径后写入新增骨架；收尾按 AGENT_DIRS 首项重写 agent/（同 docs-install）
   --meta-path PATH   覆盖 meta 本机 path（不改 yaml）
   --ref REF          git 对齐引用（默认 main）
   -h, --help         本帮助
@@ -36,6 +36,7 @@ Usage: docs-upgrade.sh [--dry-run | --apply-scaffold] [--meta-path PATH] [--ref 
 忽略 DOC_ROOT 顶层遗留 application-* / system-*（不含 application-slots / system-slots）；
 凡软链（文件或目录）一律跳过不跟随；application-slots / system-slots 根下真文件可升级；
 *-slots/changelogs/** 本有则整文件本库胜（不重填），本无则可 scaffold。
+--dry-run 不重写路径、不改 README；--apply-scaffold 即使新增骨架为空也跑全树重写。
 EOF
 }
 
@@ -423,3 +424,8 @@ for rel in "${ADD_LIST[@]+"${ADD_LIST[@]}"}"; do
 done
 
 sdx_info "骨架写入完成。结构重填与未落位请由 /docs-upgrade Skill 继续。"
+
+# 与 docs-install knowledge 同契约：扫整棵 DOC_ROOT，AGENT_DIRS 首项 + README 注记
+# （空骨架桶亦跑；dry-run 已在上方退出，不会到达此处）
+sdx_rewrite_docs_agent_paths "${DOC_ROOT}" "${AGENT_DIRS:-}"
+sdx_info "agent/ 路径重写完成（与 docs-install 同实现）。"
