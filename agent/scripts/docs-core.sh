@@ -504,6 +504,93 @@ sdx_rewrite_agent_path_segment_in_tree() {
   )
 }
 
+# 在 README.md 注入或更新「Agent 路径」说明（HTML 注释标记块，幂等）
+# 用法：sdx_inject_readme_agent_note <readme_path> <primary_dir> [other_dir ...]
+sdx_inject_readme_agent_note() {
+  local readme="$1" primary="$2"
+  shift 2
+  local -a others=("$@")
+  [[ -f "$readme" ]] || return 0
+  sdx_have_perl || return 0
+
+  local oline
+  if (( ${#others[@]} > 0 )); then
+    local oj
+    oj=$(printf '%s、' "${others[@]}")
+    oj="${oj%、}"
+    oline="**其他可用 Agent 根目录**：${oj}（可通过 \`agent-install --agents=...\` 安装对应目录）。"
+  else
+    oline="**其他可用 Agent 根目录**：无（当前 \`AGENT_DIRS\` 仅含主目录）。"
+  fi
+
+  local note_tmp
+  note_tmp="$(mktemp "${TMPDIR:-/tmp}/sdx-agent-readme-note.XXXXXX")" || return 0
+  {
+    printf '%s\n' '<!-- sdx-agent-dirs-note:begin -->'
+    printf '%s\n' "> **Agent 路径**：知识库内指向中央库 **agent** 树的路径已重写为当前主目录 \`${primary}/\`（与 \`.docsconfig\` 的 \`AGENT_DIRS\` 首项一致）。"
+    printf '%s\n' "> ${oline}"
+    printf '%s\n' '<!-- sdx-agent-dirs-note:end -->'
+  } > "$note_tmp"
+
+  SDX_NOTE_FILE="$note_tmp" perl -CSD -e '
+    use strict;
+    use warnings;
+    use utf8;
+    my $path = $ARGV[0];
+    open my $fh, "<:encoding(UTF-8)", $path or exit 0;
+    local $/;
+    my $t = <$fh>;
+    close $fh;
+    open my $nf, "<:encoding(UTF-8)", $ENV{SDX_NOTE_FILE} or exit 0;
+    my $nb = <$nf>;
+    close $nf;
+    chomp $nb;
+    my $b = "<!-- sdx-agent-dirs-note:begin -->";
+    my $e = "<!-- sdx-agent-dirs-note:end -->";
+    if ($t =~ /\Q$b\E/s && $t =~ /\Q$e\E/s) {
+      $t =~ s{\Q$b\E[\s\S]*?\Q$e\E}{$nb}s;
+    } else {
+      $t .= "\n\n" . $nb . "\n";
+    }
+    open $fh, ">:encoding(UTF-8)", $path or exit 0;
+    print $fh $t;
+    close $fh;
+  ' "$readme" 2>/dev/null || true
+  rm -f "$note_tmp"
+}
+
+# 按 AGENT_DIRS 将知识库树中 agent/ 重写为首项，并更新 README 注记（docs-install / docs-upgrade 共用）
+# 用法：sdx_rewrite_docs_agent_paths <docs_abs> [agent_dirs]
+# agent_dirs 为空或未传时默认 .cursor
+sdx_rewrite_docs_agent_paths() {
+  local docs_abs="${1:?}"
+  local ads="${2:-}"
+  [[ -d "$docs_abs" ]] || return 0
+
+  if [[ -z "$ads" ]]; then
+    ads='.cursor'
+    sdx_info "AGENT_DIRS 为空，agent/ 路径重写默认使用首项: $ads"
+  fi
+
+  local -a ads_arr=()
+  read -ra ads_arr <<< "$ads"
+  local primary="${ads_arr[0]:-.cursor}"
+  local -a others=()
+  local i
+  for (( i=1; i<${#ads_arr[@]}; i++ )); do
+    others+=("${ads_arr[i]}")
+  done
+
+  local primary_slash="${primary%/}/"
+  sdx_info ">>> 重写知识库中的 agent/ 路径段为 ${primary_slash}（AGENT_DIRS 首项）"
+  sdx_rewrite_agent_path_segment_in_tree "$docs_abs" "$primary_slash"
+
+  local readme="${docs_abs%/}/README.md"
+  if [[ -f "$readme" ]]; then
+    sdx_inject_readme_agent_note "$readme" "$primary" "${others[@]}"
+  fi
+}
+
 # 自 start 目录向上找首个含 relative_path 文件的目录，打印该目录绝对路径
 sdx_find_upward_with_file() {
   local relative_path="${1:?}" start d
