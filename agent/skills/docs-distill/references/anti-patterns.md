@@ -6,6 +6,10 @@
 | ------ | ------ |
 | 参数未收口即写 overview | 先收口 `DOC_DIR`、`--name`、是否 `--dry-run`；[gates.md](gates.md) |
 | 跳过写前意图澄清 | 须六项清单 + 写前 C；[intent-clarify.md](../../../references/intent-clarify.md) |
+| 跳过职责/粒度闭合或从正文猜职责 | [scope-clarity.md](scope-clarity.md)；只信落盘契约；摘要必出 |
+| 契约未闭合仍 dry-run / 写入 | 硬停；决策后先落盘再蒸 |
+| 职责冲突自动偏目标或源 | 一律提问；落盘后再继续 |
+| 把写前契约闭合当成完整 grilling | 写前闭合 ≠ 写后烤干；见 scope-clarity |
 | 仍写 DISTILL-LOG / 用 `--since` | 已废止；仅全量写第三列 |
 | 非槽位 path 当 distill | 走 [docs-extract](../../docs-extract/SKILL.md) |
 | 槽位空仍写 | 停；先 docs-pull |

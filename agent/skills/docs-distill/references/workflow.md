@@ -10,7 +10,7 @@
 
 ## 目标
 
-参数向导 +「澄清 → 生成 → 烤干」：将联邦槽位已核实内容按 [federation-spec.md](federation-spec.md) **全量**去重后以 delta 写入目标层 overview 第三列。**不写** `DISTILL-LOG`。
+参数向导 +「澄清 → 生成 → 烤干」：写前按 [scope-clarity.md](scope-clarity.md) 闭合职责/粒度后，将联邦槽位已核实内容按 [federation-spec.md](federation-spec.md) **全量**去重后以 delta 写入目标层 overview 第三列。**不写** `DISTILL-LOG`。
 
 ## 边与路径
 
@@ -56,12 +56,16 @@
 推进环见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)；本技能只补蒸馏特有步骤：
 
 1. 选定当前单元（边 + `--name`）
-2. **意图澄清**：公共六项 + [gates.md](gates.md) 追加字段；写前 `C` 后方可执行或预览
+2. **意图澄清**（含职责/粒度闭合）：
+   - 公共六项 + [gates.md](gates.md) 追加字段
+   - 按 [scope-clarity.md](scope-clarity.md) 读必读契约清单，双边对照；只信落盘契约
+   - 缺失 / 模糊 / 冲突 → 硬停一次一问 → 结论**先落盘契约** → 再出「职责与粒度摘要」
+   - 契约齐全也须输出该摘要；人确认写前 `C` 后，方可执行或预览
 3. 校验槽位非空；读槽位 knowledge/SDD 与目标 overview（全量）
-4. 按目标层表行 + federation-spec 去重、定 delta / A/U/D
+4. 按目标层表行 + federation-spec 去重、定 delta / A/U/D（遵守已闭合的粒度与收束）
 5. `--dry-run` → 三分区预览（跳过 >10 行折叠），不写 overview
 6. 写入第三列 delta（不写 DISTILL-LOG）
-7. **烤干**：按写后默认表（含预览结果）
+7. **烤干**：按写后默认表（含预览结果）；不等于写前契约闭合
 8. 用户动作：`C/M/G/S/F` 见 unit-cycle-protocol
 
 ## 命令示例
@@ -84,6 +88,7 @@ agent/skills/docs-distill/scripts/run-docs-distill.sh --doc-dir system --name bi
 
 ## 执行摘要
 
-- 仅全量；高风险时先 dry-run
+- 写前先职责/粒度契约闭合（scope-clarity）；未闭合不预览、不写
+- 仅全量；高风险写入时先 dry-run（职责未闭合除外）
 - 第三列：federation-spec（按目标层表行）；不写 `(来源…)`
 - 不写 DISTILL-LOG；单元结束须停等用户动作

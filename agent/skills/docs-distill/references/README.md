@@ -6,6 +6,7 @@
 | ------ | ------ |
 | [gates.md](gates.md) | 风险控制、当前单元、动作协议 |
 | [workflow.md](workflow.md) | 边、参数向导、当前单元、执行循环 |
+| [scope-clarity.md](scope-clarity.md) | 写前职责/粒度/跨层收束契约闭合 |
 | [core-concepts.md](core-concepts.md) | DOC_DIR、NAME、全量、第三列 |
 | [distill-spec.md](distill-spec.md) | 源范围、产物 |
 | [federation-spec.md](federation-spec.md) | 联邦、第三列去重/delta（SSOT）、自检 |

@@ -19,3 +19,7 @@
 ## 第三列语义
 
 相对链接段落的 **delta** 缓冲区；细则 [federation-spec.md](federation-spec.md)。表行随目标层（系统库 vs 公司库）。
+
+## 写前职责与粒度
+
+蒸馏前契约闭合见 [scope-clarity.md](scope-clarity.md)：目标/源职责、要点粒度、跨层收束；只信落盘契约。

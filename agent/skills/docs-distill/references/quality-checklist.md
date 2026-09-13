@@ -7,6 +7,7 @@
 - [ ] `DOC_DIR`（`system|company`）、`--name`、`--dry-run` 已收口
 - [ ] 当前单元目标 `{NAME}-overview.md` 与边（槽位→overview）已明确
 - [ ] 槽位存在且非空
+- [ ] 职责/粒度契约闭合完成（必读清单 + 摘要 + 写前 C）；见 [scope-clarity.md](scope-clarity.md)
 - [ ] 高风险场景已给出推荐方案与确认结论（若适用）
 
 ## overview / 第三列
