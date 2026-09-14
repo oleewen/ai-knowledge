@@ -7,8 +7,8 @@
 - **缺 type:meta**：装机未完成或 links 被手改。硬停；用 install upsert 或 `--meta-path`，勿猜。
 - **多条 type:meta**：非法；硬停至剩一条。
 - **path 未 fetch**：本机工作区脏/旧 ≠ 远端最新。脚本须 fetch 对齐 ref；文件模式同源。
-- **把未落位自动追加文末**：禁止；须清单确认。
-- **覆盖 knowledge-links.yaml**：禁止；会丢 parent/child/meta。
+- **把未落位自动追加文末**：禁止；须清单确认。普通 md 逐项。仅根级 `DESIGN.md` / `CONTRIBUTING.md` 且 ≥2 条可批（全追加 / 全跳过）；并入必须 `M` 逐项，本轮不切回批。
+- **覆盖 knowledge-links.yaml**：禁止；会丢 parent/child/meta。根级 `DESIGN.md` / `CONTRIBUTING.md` 已按普通 md 升级（与 install 整文件覆盖不同）。
 - **联邦槽位根**：`application-slots` / `system-slots` 下**真文件**可升级；**软链一律跳过**。勿跟随实例软链改下级仓（实例同步用 `/docs-pull`）。
 - **顶层遗留**：DOC_ROOT 顶层 `application-*` / `system-*`（非 `*-slots`）仍忽略。
 - **`*-slots/changelogs`**：本有整文件本库胜；勿对其强制结构重填。

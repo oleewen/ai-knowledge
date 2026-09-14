@@ -156,8 +156,8 @@ install_application_full_to_docs() {
   while IFS= read -r -d '' rel; do
     rel="${rel#./}"
     [[ -z "$rel" ]] && continue
-    # 仅排除 application/ 根部的元文件与多版本 README（子目录 README.md 须照常同步）
-    [[ "$rel" == 'DESIGN.md' || "$rel" == 'CONTRIBUTING.md' ]] && continue
+    # 仅排除 application/ 根部多版本 README（子目录 README.md 须照常同步）
+    # 根级 DESIGN.md / CONTRIBUTING.md 整文件覆盖同步（与 docs-upgrade 普通 md 互补）
     [[ "$rel" == 'README.md' || "$rel" == 'README-s.md' || "$rel" == 'README-c.md' ]] && continue
 
     src_f="$src_root/$rel"
@@ -196,7 +196,7 @@ install_application_subset_to_docs() {
   done
 
   local base
-  for base in index.md docs-meta.md manifest.md knowledge-links.yaml; do
+  for base in index.md docs-meta.md manifest.md knowledge-links.yaml DESIGN.md CONTRIBUTING.md; do
     [[ -f "$src_root/$base" ]] || continue
     sdx_io_copy_file "$src_root/$base" "$dst_root/$base" || return 0
   done

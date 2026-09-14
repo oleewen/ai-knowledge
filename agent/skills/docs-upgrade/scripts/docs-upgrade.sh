@@ -33,6 +33,8 @@ Usage: docs-upgrade.sh [--dry-run | --apply-scaffold] [--meta-path PATH] [--ref 
   -h, --help         本帮助
 
 禁止：不会调用 docs-install 清空 DOC_DIR；不会覆盖 knowledge-links.yaml；
+不会把 README-s.md / README-c.md 当作目标文件名写入（README.md 映射除外）。
+根级 DESIGN.md / CONTRIBUTING.md 按普通 md 进清单（本无则 scaffold）。
 忽略 DOC_ROOT 顶层遗留 application-* / system-*（不含 application-slots / system-slots）；
 凡软链（文件或目录）一律跳过不跟随；application-slots / system-slots 根下真文件可升级；
 *-slots/changelogs/** 本有则整文件本库胜（不重填），本无则可 scaffold。
@@ -103,7 +105,7 @@ is_excluded_meta_rel() {
   local rel="$1"
   is_legacy_federal_slot_rel "$rel" && return 0
   case "$rel" in
-    DESIGN.md|CONTRIBUTING.md|knowledge-links.yaml) return 0 ;;
+    knowledge-links.yaml) return 0 ;;
     README-s.md|README-c.md) return 0 ;;
   esac
   return 1

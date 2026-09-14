@@ -23,5 +23,12 @@ bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS
 assert_file_exists "$DOCS_DIR/README.md"
 assert_file_exists "$DOCS_DIR/knowledge/README.md"
 assert_file_exists "$DOCS_DIR/changelogs/README.md"
+assert_file_exists "$DOCS_DIR/DESIGN.md"
+assert_file_exists "$DOCS_DIR/CONTRIBUTING.md"
 
-pass "standalone 全量安装同步子目录 README.md"
+printf '\n%s\n' 'LOCAL-DESIGN-CUSTOM-MARKER' >>"$DOCS_DIR/DESIGN.md"
+bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS_DIR" --force >>"$OUT_FILE" 2>&1
+assert_file_exists "$DOCS_DIR/DESIGN.md"
+assert_not_contains "LOCAL-DESIGN-CUSTOM-MARKER" "$DOCS_DIR/DESIGN.md"
+
+pass "standalone 全量安装同步子目录 README.md 与根级 DESIGN.md/CONTRIBUTING.md（重装整文件覆盖）"
