@@ -104,26 +104,17 @@ title: 应用知识文档库 — 设计方案摘录
 
 ## 3. 核心映射（分布式引用）
 
-源实体 frontmatter 写**目标实体 ID**。4A 边方向：AA **implements** BA；AA **uses** DA/TA。
+源实体 frontmatter 写**目标实体 ID**。字段语义 **SSOT**：[glossary.md § 映射关系](../agent/knowledge/glossary.md#映射关系常用)。各层 `*-meta.md` 同引，不复制字段全文。
 
-| 方向 | 源 | 目标 | 字段 | 含义 |
-| --- | --- | --- | --- | --- |
-| 对标 | CAP | BD | `maps_to_bd_id` | 能力由哪个业务域提供 |
-| 对标 | BD | PL | `maps_to_pl_id` | 域对标产品线（同建） |
-| 对标 | SLN | PL | `maps_to_pl_id` | 解决方案对标产品线（AA；同建） |
-| 对标 | BSD | PD | `maps_to_pd_id` | 首层子域对标产品能力（与 PD/SYS 同建） |
-| 对标 | PD | SYS | `maps_to_sys_id` | 产品能力对标系统 |
-| 实现（SSOT） | APP | BC | `implements_bc_ids` | 应用实现哪些上下文 |
-| 实现（SSOT） | MS | AGG | `implements_agg_ids` | 入口簇实现哪些聚合 |
-| 实现（过渡） | BC | APP | `implemented_by_app_id` | 旧镜像；迁至 `implements_bc_ids` |
-| 实现（过渡） | AGG | MS | `implemented_by_service_ids` | 旧镜像；迁至 `implements_agg_ids` |
-| 实现 | AB | API | `apis`（`apis[].id`） | 能力绑定的 API |
-| 使用 DA | SLN / APP / MS | MDG / DS / ENT / TBL | `uses_mdg_ids` 等 | AA uses DA |
-| 使用 TA | SYS / APP | TSD / MW / TPL / CMP | `uses_tsd_ids` 等 | AA uses TA |
-| 需求支撑 | PM | BC | `relies_on_context_ids` | 模块依赖的上下文 |
-| 接口 | FT | API | `invokes_api_ids` | 功能调用的 API |
-| 接口 | UC | API | `map_to_api_id` | 用例映射的 API |
-| 持久化 | AGG | ENT | `persisted_as_entity_ids` | 模型落哪些实体 |
+方向摘要（4A）：
+
+| 边类 | 方向 | 代表 |
+| --- | --- | --- |
+| 对标 | `maps_to_*` | CAP→BD；BD/SLN→PL；BSD→PD；PD→SYS |
+| AA → BA | **implements** | `implements_bc_ids` / `implements_agg_ids` |
+| AA → DA / TA | **uses** | `uses_mdg_ids` / `uses_ds_ids` / `uses_tsd_ids` 等 |
+| 产品 → BA / AA | 依赖 / 调用 | `relies_on_context_ids`；`invokes_api_ids` |
+| BA ↔ DA | 持久化 | `persisted_as_entity_ids` / `maps_to_aggregate_id` |
 
 ## 4. ADR 与 ID 前缀
 
