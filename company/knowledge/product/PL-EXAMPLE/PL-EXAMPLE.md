@@ -1,7 +1,7 @@
 ---
 type: Product Line
 title: 示例产品线
-description: 与 BD 对标的解决方案产品线；一 PL 一 SLN（SLN 在 AA）。
+description: 产品线（支持 BD）；一 PL 一 SLN（SLN 在 AA）。
 tags: [product, PL]
 timestamp: "2026-09-13T00:00:00Z"
 full_id: PL-EXAMPLE

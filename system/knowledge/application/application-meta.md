@@ -23,7 +23,7 @@ title: 应用视角元数据（system/knowledge/application）
 
 | 链序 | 层级代码 | 说明 |
 | --- | --- | --- |
-| 1 | SYS | 系统（本层 SSOT；挂公司 SLN） |
+| 1 | SYS | 系统（别名：应用服务；本层 SSOT；挂公司 SLN） |
 | 2 | APP | 应用 |
 | 3 | MS | 入口簇 |
 
@@ -58,7 +58,7 @@ title: 应用视角元数据（system/knowledge/application）
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
 | SYS.parent_id | 公司 SLN.full_id | 系统归属解决方案 |
-| PD.maps_to_sys_id | SYS.full_id | 产品能力对标（产品侧） |
+| PD.maps_to_sys_id | SYS.full_id | 产品服务对标（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
 | APP.parent_id | SYS.full_id | 应用归属系统 |
 
 ---

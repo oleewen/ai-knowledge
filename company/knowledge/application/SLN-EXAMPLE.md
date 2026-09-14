@@ -1,7 +1,7 @@
 ---
 type: Solution
 title: 示例解决方案
-description: 企业 AA 台账；maps_to_pl_id→PL；SYS.parent_id→本 SLN。
+description: 解决方案（对应 PL）；maps_to_pl_id→PL；SYS.parent_id→本 SLN。
 tags: [application, SLN]
 timestamp: "2026-09-13T00:00:00Z"
 full_id: SLN-EXAMPLE

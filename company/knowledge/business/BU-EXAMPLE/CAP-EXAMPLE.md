@@ -1,7 +1,7 @@
 ---
 type: Business Capability
 title: 示例业务能力
-description: 演示公司级 CAP；parent_id→BU；maps_to_bd_id→BD。
+description: 演示公司级 CAP；parent_id→BU；CAP 由 BD 支撑（maps_to_bd_id）。
 tags: [business, CAP]
 timestamp: "2026-09-13T00:00:00Z"
 full_id: CAP-EXAMPLE

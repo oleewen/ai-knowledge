@@ -50,8 +50,8 @@ title: 公司知识库设计
 | 视角 | 实体 | 公司层聚焦 |
 | --- | --- | --- |
 | 业务 | BU / BD / CAP | 业务单元（能力目录）；业务域（∥BU，对标 PL）；能力经 `maps_to_bd_id` |
-| 产品 | PL | 产品线（对标 BD）；**无 PD / 无 SLN** |
-| 应用 | SLN | 解决方案（AA 台账；`maps_to_pl_id→PL`）；**无 SYS**（SYS ∈ 系统库） |
+| 产品 | PL | 产品线（支持 BD）；**无 PD / 无 SLN** |
+| 应用 | SLN | 解决方案（对应 PL）（AA 台账）；**无 SYS**（SYS ∈ 系统库） |
 | 数据 | MDG | 主数据治理；由 SLN/APP/MS `uses_*` 引用 |
 | 技术 | TPL | 云 / DevOps / 安全 / 开发环境 / 可观测；由 AA `uses_*` 引用 |
 

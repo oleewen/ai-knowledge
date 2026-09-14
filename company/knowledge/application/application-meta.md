@@ -15,7 +15,7 @@ title: 应用视角元数据（company/knowledge/application）
 | meta_id | `DIR-COMPANY-KNOWLEDGE-APPLICATION` |
 | 视角 | application |
 | 层级范围 | company |
-| 说明 | SLN 公司首次定义（AA）；与 PL 经 `maps_to_pl_id` 1:1 同建。 |
+| 说明 | SLN=解决方案（对应 PL）（公司 AA 台账）；与 PL 经 `maps_to_pl_id` 1:1 同建。 |
 
 ---
 
@@ -50,7 +50,7 @@ title: 应用视角元数据（company/knowledge/application）
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| SLN.maps_to_pl_id | PL.full_id | 方案对标产品线 |
+| SLN.maps_to_pl_id | PL.full_id | 方案对标产品线（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
 | 系统 SYS.parent_id | SLN.full_id | 系统归属解决方案 |
 
 ---

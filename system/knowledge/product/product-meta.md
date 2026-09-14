@@ -15,7 +15,7 @@ title: 产品视角元数据（system/knowledge/product）
 | meta_id | `DIR-SYSTEM-KNOWLEDGE-PRODUCT` |
 | 视角 | product |
 | 层级范围 | system |
-| 说明 | PD 本层首次定义（产品能力）；PL 为公司产品 SSOT；SLN 为公司 AA（本层不落盘）。PM 须与 PD 同库。 |
+| 说明 | PD=产品服务（别名业务服务）；本层首次定义。PL 公司产品 SSOT；SLN 公司 AA（本层不落盘）。PM 须与 PD 同库。 |
 
 ---
 
@@ -25,7 +25,7 @@ title: 产品视角元数据（system/knowledge/product）
 | --- | --- | --- |
 | — | PL | 公司产品 SSOT；本层不落盘 |
 | — | SLN | 公司 AA SSOT；本层不落盘 |
-| 1 | PD | 产品能力（系统首次定义） |
+| 1 | PD | 产品服务（别名：业务服务；系统首次定义） |
 | 2 | PM | 产品模块 |
 | 3 | FT | 功能点 |
 | 4 | FR | 功能需求 |
@@ -67,9 +67,9 @@ title: 产品视角元数据（system/knowledge/product）
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| PD.parent_id | 公司 PL.full_id | 产品能力归属产品线 |
-| PD.maps_to_sys_id | 本库 SYS.full_id | 对标系统 |
-| PM.parent_id | 本库 PD.full_id | 模块归属产品能力 |
+| PD.parent_id | 公司 PL.full_id | 产品服务归属产品线 |
+| PD.maps_to_sys_id | 本库 SYS.full_id | 对标系统（应用服务；字段语义 [glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
+| PM.parent_id | 本库 PD.full_id | 模块归属产品服务 |
 | PM.relies_on_context_ids | BC.full_id | 模块依赖上下文 |
 
 ---

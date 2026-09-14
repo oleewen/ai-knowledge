@@ -48,7 +48,7 @@ Frontmatter 10 必填 + 正文四段见 okf-spec §2；本层 `layer_scope` 固�
 | 层级 | 字段 | 说明 |
 | --- | --- | --- |
 | BD | `maps_to_pl_id` | **必填**；与 PL 同建 1:1 |
-| CAP | `maps_to_bd_id` | **必填**；一 CAP 一 BD |
+| CAP | `maps_to_bd_id` | **必填**；CAP 由 BD 支撑（一 CAP 一 BD） |
 | BD | `strategic_classification` | 正文扩展 |
 
 ---
@@ -58,8 +58,8 @@ Frontmatter 10 必填 + 正文四段见 okf-spec §2；本层 `layer_scope` 固�
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
 | CAP.parent_id | BU.full_id | 能力归属业务单元 |
-| CAP.maps_to_bd_id | BD.full_id | 能力由哪个域提供 |
-| BD.maps_to_pl_id | PL.full_id | 域对标产品线 |
+| CAP.maps_to_bd_id | BD.full_id | CAP 由 BD 支撑（语义见 [glossary 映射](../../../agent/knowledge/glossary.md#映射关系常用)） |
+| BD.maps_to_pl_id | PL.full_id | BD 由 PL 提供产品支撑（同上） |
 
 ---
 

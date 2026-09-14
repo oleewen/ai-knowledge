@@ -15,7 +15,7 @@ title: 产品视角元数据（company/knowledge/product）
 | meta_id | `DIR-COMPANY-KNOWLEDGE-PRODUCT` |
 | 视角 | product |
 | 层级范围 | company |
-| 说明 | PL=与 BD 对标的解决方案产品线。**不落 PD**（系统首次定义）。**不落 SLN**（SLN ∈ 公司 application / AA）。 |
+| 说明 | PL=产品线（支持 BD）。**不落 PD**（系统首次定义）。**不落 SLN**（SLN ∈ 公司 application / AA）。 |
 
 ---
 
@@ -53,9 +53,9 @@ title: 产品视角元数据（company/knowledge/product）
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| BD.maps_to_pl_id | PL.full_id | 域对标产品线 |
-| SLN.maps_to_pl_id | PL.full_id | 方案对标产品线（AA） |
-| 系统 PD.parent_id | PL.full_id | 产品能力挂产品线 |
+| BD.maps_to_pl_id | PL.full_id | BD 由 PL 提供产品支撑（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
+| SLN.maps_to_pl_id | PL.full_id | 解决方案对标产品线（AA；同上） |
+| 系统 PD.parent_id | PL.full_id | 产品服务挂产品线 |
 
 ---
 

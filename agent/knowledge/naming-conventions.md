@@ -25,7 +25,7 @@
 | ---- | ------------------ | ----- | ---- |
 | BU-  | Business Unit      | 业务单元（能力目录根；下挂 CAP） | 公司 |
 | BD-  | Business Domain    | 业务域（∥BU；对标 PL） | 公司 |
-| CAP- | Business Capability | 业务能力（`parent_id→BU`；`maps_to_bd_id`→BD） | 公司 |
+| CAP- | Business Capability | 业务能力（`parent_id→BU`；**CAP 由 BD 支撑**，`maps_to_bd_id`） | 公司 |
 | BSD- | Business Subdomain | 业务子域  | 系统 |
 | BC-  | Bounded Context    | 限界上下文 | 系统 |
 | AGG- | Aggregate | 聚合根   | 系统 |
@@ -35,8 +35,8 @@
 
 | 前缀  | 英文全称 | 含义   | 首次定义 |
 | --- | ---------------- | ---- | ---- |
-| PL- | Product Line     | 产品线（与 BD 对标的解决方案） | 公司 |
-| PD- | Product          | 产品能力（系统首次定义；`parent_id→PL`） | 系统 |
+| PL- | Product Line     | 产品线（支持 BD）（`BD.maps_to_pl_id`） | 公司 |
+| PD- | Product          | **产品服务**（别名：业务服务；系统首次定义；`parent_id→PL`；`maps_to_sys_id`） | 系统 |
 | PM- | Product Module   | 产品模块 | 系统 |
 | BP- | Business Process | 业务流程 | 系统 |
 | FT- | Feature | 功能点  | 系统 |
@@ -48,8 +48,8 @@
 
 | 前缀   | 英文全称    | 含义       | 首次定义 |
 | ---- | -------------------------- | ------------------------------------------------------------------------------------------------------- | ---- |
-| SLN- | Solution        | 解决方案（企业 AA 台账；`maps_to_pl_id→PL`；一 PL 一 SLN） | 公司 |
-| SYS- | System  | 系统（`parent_id→公司 SLN`） | 系统 |
+| SLN- | Solution        | 解决方案（对应 PL）（企业 AA 台账；`maps_to_pl_id→PL`；一 PL 一 SLN） | 公司 |
+| SYS- | System  | **系统**（别名：应用服务；`parent_id→公司 SLN`） | 系统 |
 | APP- | Application    | 应用（代码仓库/部署单元）   | 系统 |
 | MS-  | Microservice | 微服务（**入口簇**） | 系统 |
 | API- | API Endpoint   | 接口端点     | 应用 |
