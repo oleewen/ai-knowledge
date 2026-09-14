@@ -18,7 +18,7 @@ trap cleanup EXIT
 mkdir -p "$DOCS_DIR"
 git -C "$PROJECT_DIR" init -q
 
-# 预置多 Agent，验证首项为主路径、README 含「其他可用」提示
+# AGENT_DIRS 故意以 .claude 为首：重写须忽略，固定落 ~/.agents/
 cat >"$PROJECT_DIR/.docsconfig" <<EOF
 DOC_ROOT=$DOCS_DIR
 REPO_ROOT=$PROJECT_DIR
@@ -33,13 +33,15 @@ bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS
 # index.md 可能不含 agent/ 引用；用仍含技能链的 changelogs/README.md 校验重写
 CHG_README="$DOCS_DIR/changelogs/README.md"
 assert_file_exists "$CHG_README"
-assert_contains ".claude/skills/docs-indexing" "$CHG_README"
+assert_contains "~/.agents/skills/docs-indexing" "$CHG_README"
 assert_not_contains "agent/skills/docs-indexing" "$CHG_README"
+assert_not_contains ".claude/skills/docs-indexing" "$CHG_README"
 
 ROOT_README="$DOCS_DIR/README.md"
 assert_file_exists "$ROOT_README"
 assert_contains "<!-- sdx-agent-dirs-note:begin -->" "$ROOT_README"
-assert_contains "其他可用 Agent 根目录" "$ROOT_README"
+assert_contains "~/.agents/" "$ROOT_README"
+assert_contains "IDE 软链目录" "$ROOT_README"
 assert_contains ".cursor" "$ROOT_README"
 
-pass "knowledge 安装后将 agent/ 重写为 AGENT_DIRS 首项，并注入 README 多 Agent 提示"
+pass "knowledge 安装后将 agent/ 重写为 ~/.agents/，并注入 README Agent 路径注记"

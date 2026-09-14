@@ -122,8 +122,8 @@ reset_docs_dir_with_backup() {
 # § 5  内容替换函数
 # =============================================================================
 
-# 知识库安装并写入 .docsconfig 后：按 AGENT_DIRS 首项将 agent/ 重写为主 Agent 目录，并更新 README 提示
-# 实现见 docs-core：sdx_rewrite_docs_agent_paths / sdx_inject_readme_agent_note
+# 知识库安装并写入 .docsconfig 后：将 agent/ 与已知 IDE Agent 路径重写为 ~/.agents/，并更新 README 提示
+# 实现见 docs-core：sdx_rewrite_docs_agent_paths / sdx_inject_readme_agent_note（不读 AGENT_DIRS）
 docs_install_rewrite_agent_paths() {
   [[ "${CFG[dry_run]}" == '1' ]] && return 0
   [[ "${CFG[scope]}" == 'knowledge' ]] || return 0
@@ -135,10 +135,7 @@ docs_install_rewrite_agent_paths() {
   local cfg="$repo_target/.docsconfig"
   [[ -f "$cfg" ]] || { sdx_warn "未找到 $cfg，跳过 agent/ 路径重写"; return 0; }
 
-  local _d _r _dd _ar ads _kt
-  docsconfig_read_into "$cfg" _d _r _dd _ar ads _kt || true
-
-  sdx_rewrite_docs_agent_paths "${CFG[docs_abs]}" "${ads:-}"
+  sdx_rewrite_docs_agent_paths "${CFG[docs_abs]}"
 }
 
 # =============================================================================

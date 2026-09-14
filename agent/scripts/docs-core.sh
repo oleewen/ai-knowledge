@@ -473,26 +473,39 @@ sdx_is_text_file() {
   return 1
 }
 
+# 知识库路径重写目标（与 agent-install 实体树一致；字面 tilde，不展开 $HOME）
+readonly SDX_DOCS_AGENT_REWRITE_TARGET='~/.agents/'
+# 与 agent-install SDX_AGENT_DIR_MAP 对齐；不读 .docsconfig AGENT_DIRS
+readonly SDX_DOCS_AGENT_IDE_DIR_RE='cursor|trae|claude|kiro|codex'
+
 sdx_rewrite_agent_path_segment_in_file() {
-  local file="$1" agent_slash="${2:?}"
+  local file="$1"
+  local target="${SDX_DOCS_AGENT_REWRITE_TARGET}"
   [[ -f "$file" ]] && sdx_is_text_file "$file" || return 0
-  grep -q 'agent/' "$file" 2>/dev/null || return 0
+  grep -qE "agent/|\\.(${SDX_DOCS_AGENT_IDE_DIR_RE})/" "$file" 2>/dev/null || return 0
   sdx_have_cmd perl || return 0
-  if ! SDX_AGENT_SLASH="$agent_slash" \
-    perl -CSD -i -pe 'BEGIN { die "SDX_AGENT_SLASH unset\n" unless defined $ENV{SDX_AGENT_SLASH} && length $ENV{SDX_AGENT_SLASH} } s{\bagent/}{$ENV{SDX_AGENT_SLASH}}g' \
-    "$file" 2>/dev/null; then
+  if ! SDX_AGENT_SLASH="$target" SDX_IDE_DIR_RE="$SDX_DOCS_AGENT_IDE_DIR_RE" \
+    perl -CSD -i -pe '
+      BEGIN {
+        die "SDX_AGENT_SLASH unset\n" unless defined $ENV{SDX_AGENT_SLASH} && length $ENV{SDX_AGENT_SLASH};
+        die "SDX_IDE_DIR_RE unset\n" unless defined $ENV{SDX_IDE_DIR_RE} && length $ENV{SDX_IDE_DIR_RE};
+        our $ide = $ENV{SDX_IDE_DIR_RE};
+      }
+      s{\.(?:$ide)/}{$ENV{SDX_AGENT_SLASH}}g;
+      s{\bagent/}{$ENV{SDX_AGENT_SLASH}}g;
+    ' "$file" 2>/dev/null; then
     sdx_warn "重写 agent/ 路径失败：$file"
   fi
 }
 
 # 遍历 root 下待重写路径的文件：排除常见依赖/缓存/版本库目录，避免 ~/.cursor/skills 等目录残留导致 find 极慢或“假死”
 sdx_rewrite_agent_path_segment_in_tree() {
-  local root="$1" agent_slash="${2:?}"
+  local root="$1"
   [[ -d "$root" ]] || return 0
-  sdx_info "  重写 agent/ 路径引用（跳过 node_modules/.git 等）: ${root}"
+  sdx_info "  重写 agent/ 与 IDE Agent 路径引用 → ${SDX_DOCS_AGENT_REWRITE_TARGET}（跳过 node_modules/.git 等）: ${root}"
   local f
   while IFS= read -r -d '' f; do
-    sdx_rewrite_agent_path_segment_in_file "$f" "$agent_slash"
+    sdx_rewrite_agent_path_segment_in_file "$f"
   done < <(
     find "$root" \
       \( -name node_modules -o -name .git -o -name __pycache__ -o -name .venv -o -name .cache -o -name dist -o -name build -o -name target \) \
@@ -505,30 +518,18 @@ sdx_rewrite_agent_path_segment_in_tree() {
 }
 
 # 在 README.md 注入或更新「Agent 路径」说明（HTML 注释标记块，幂等）
-# 用法：sdx_inject_readme_agent_note <readme_path> <primary_dir> [other_dir ...]
+# 用法：sdx_inject_readme_agent_note <readme_path>
 sdx_inject_readme_agent_note() {
-  local readme="$1" primary="$2"
-  shift 2
-  local -a others=("$@")
+  local readme="$1"
   [[ -f "$readme" ]] || return 0
   sdx_have_perl || return 0
-
-  local oline
-  if (( ${#others[@]} > 0 )); then
-    local oj
-    oj=$(printf '%s、' "${others[@]}")
-    oj="${oj%、}"
-    oline="**其他可用 Agent 根目录**：${oj}（可通过 \`agent-install --agents=...\` 安装对应目录）。"
-  else
-    oline="**其他可用 Agent 根目录**：无（当前 \`AGENT_DIRS\` 仅含主目录）。"
-  fi
 
   local note_tmp
   note_tmp="$(mktemp "${TMPDIR:-/tmp}/sdx-agent-readme-note.XXXXXX")" || return 0
   {
     printf '%s\n' '<!-- sdx-agent-dirs-note:begin -->'
-    printf '%s\n' "> **Agent 路径**：知识库内指向中央库 **agent** 树的路径已重写为当前主目录 \`${primary}/\`（与 \`.docsconfig\` 的 \`AGENT_DIRS\` 首项一致）。"
-    printf '%s\n' "> ${oline}"
+    printf '%s\n' "> **Agent 路径**：知识库内指向中央库 **agent** 树及 IDE Agent 目录（\`.cursor\` / \`.trae\` / \`.claude\` / \`.kiro\` / \`.codex\`）的路径已重写为 \`${SDX_DOCS_AGENT_REWRITE_TARGET}\`（与 agent-install 实体树一致）。"
+    printf '%s\n' "> **IDE 软链目录**：\`.cursor\`、\`.trae\`、\`.claude\`、\`.kiro\`、\`.codex\`（可通过 \`agent-install --agents=...\` 安装对应目录）。"
     printf '%s\n' '<!-- sdx-agent-dirs-note:end -->'
   } > "$note_tmp"
 
@@ -559,35 +560,19 @@ sdx_inject_readme_agent_note() {
   rm -f "$note_tmp"
 }
 
-# 按 AGENT_DIRS 将知识库树中 agent/ 重写为首项，并更新 README 注记（docs-install / docs-upgrade 共用）
-# 用法：sdx_rewrite_docs_agent_paths <docs_abs> [agent_dirs]
-# agent_dirs 为空或未传时默认 .cursor
+# 将知识库树中 agent/ 与已知 IDE Agent 路径重写为 ~/.agents/，并更新 README 注记（docs-install / docs-upgrade 共用）
+# 用法：sdx_rewrite_docs_agent_paths <docs_abs> [ignored_legacy_agent_dirs]
+# 第二参若传入则忽略（兼容旧调用）；不读 AGENT_DIRS
 sdx_rewrite_docs_agent_paths() {
   local docs_abs="${1:?}"
-  local ads="${2:-}"
   [[ -d "$docs_abs" ]] || return 0
 
-  if [[ -z "$ads" ]]; then
-    ads='.cursor'
-    sdx_info "AGENT_DIRS 为空，agent/ 路径重写默认使用首项: $ads"
-  fi
-
-  local -a ads_arr=()
-  read -ra ads_arr <<< "$ads"
-  local primary="${ads_arr[0]:-.cursor}"
-  local -a others=()
-  local i
-  for (( i=1; i<${#ads_arr[@]}; i++ )); do
-    others+=("${ads_arr[i]}")
-  done
-
-  local primary_slash="${primary%/}/"
-  sdx_info ">>> 重写知识库中的 agent/ 路径段为 ${primary_slash}（AGENT_DIRS 首项）"
-  sdx_rewrite_agent_path_segment_in_tree "$docs_abs" "$primary_slash"
+  sdx_info ">>> 重写知识库中的 agent/ 与 IDE Agent 路径段为 ${SDX_DOCS_AGENT_REWRITE_TARGET}"
+  sdx_rewrite_agent_path_segment_in_tree "$docs_abs"
 
   local readme="${docs_abs%/}/README.md"
   if [[ -f "$readme" ]]; then
-    sdx_inject_readme_agent_note "$readme" "$primary" "${others[@]}"
+    sdx_inject_readme_agent_note "$readme"
   fi
 }
 

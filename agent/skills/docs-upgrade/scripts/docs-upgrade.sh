@@ -27,7 +27,7 @@ Usage: docs-upgrade.sh [--dry-run | --apply-scaffold] [--meta-path PATH] [--ref 
 对齐元库 {meta}/{doc_dir}/，输出变更清单；--apply-scaffold 时备份并写入「新增骨架」。
 
   --dry-run          只打印清单（默认）
-  --apply-scaffold   备份将动路径后写入新增骨架；收尾按 AGENT_DIRS 首项重写 agent/（同 docs-install）
+  --apply-scaffold   备份将动路径后写入新增骨架；收尾将 agent/ 与 IDE Agent 路径重写为 ~/.agents/（同 docs-install）
   --meta-path PATH   覆盖 meta 本机 path（不改 yaml）
   --ref REF          git 对齐引用（默认 main）
   -h, --help         本帮助
@@ -425,7 +425,7 @@ done
 
 sdx_info "骨架写入完成。结构重填与未落位请由 /docs-upgrade Skill 继续。"
 
-# 与 docs-install knowledge 同契约：扫整棵 DOC_ROOT，AGENT_DIRS 首项 + README 注记
+# 与 docs-install knowledge 同契约：扫整棵 DOC_ROOT → ~/.agents/ + README 注记
 # （空骨架桶亦跑；dry-run 已在上方退出，不会到达此处）
-sdx_rewrite_docs_agent_paths "${DOC_ROOT}" "${AGENT_DIRS:-}"
+sdx_rewrite_docs_agent_paths "${DOC_ROOT}"
 sdx_info "agent/ 路径重写完成（与 docs-install 同实现）。"
