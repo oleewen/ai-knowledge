@@ -7,16 +7,17 @@
 - **缺 type:meta**：装机未完成或 links 被手改。硬停；用 install upsert 或 `--meta-path`，勿猜。
 - **多条 type:meta**：非法；硬停至剩一条。
 - **path 未 fetch**：本机工作区脏/旧 ≠ 远端最新。脚本须 fetch 对齐 ref；文件模式同源。
-- **把未落位自动追加文末**：禁止；须清单确认。普通 md 逐项。仅根级 `CONTRIBUTING.md` 且 ≥2 条可批（全追加 / 全跳过）；并入必须 `M` 逐项，本轮不切回批。
+- **把未落位自动追加文末**：禁止静默；须经确认。清单/总览或整文件 `C` 可采用默认推荐；下钻逐项时普通 md 逐项。仅根级 `CONTRIBUTING.md` 且 ≥2 条可批（全追加 / 全跳过）；并入必须 `M` 逐项，本轮不切回批。
 - **覆盖 knowledge-links.yaml**：禁止；会丢 parent/child/meta。根级 `CONTRIBUTING.md` 已按普通 md 升级（与 install 整文件覆盖不同）。
 - **联邦槽位根**：`application-slots` / `system-slots` 下**真文件**可升级；**软链一律跳过**。勿跟随实例软链改下级仓（实例同步用 `/docs-pull`）。
 - **顶层遗留**：DOC_ROOT 顶层 `application-*` / `system-*`（非 `*-slots`）仍忽略。
 - **`*-slots/changelogs`**：本有整文件本库胜；勿对其强制结构重填。
 - **建联脚本**：不在本技能同步；登记走 `/docs-link`（`agent/skills/docs-link/scripts/`）。
-- **整树与文件模式混用**：禁止同单元；有 `@` 只走文件强制对齐。
+- **整树与文件模式混用**：禁止同单元；有可解析指定路径只走文件强制对齐。
 - **文件模式无脚本 `--path`**：scaffold/重填由 Agent 写；勿臆造 CLI 过滤。
 - **文件模式无强制备份**：依赖 git；勿假设已有 `upgrade-{stamp}`。
-- **`@` 目录展开过大**：总览未 `C` 前不写盘；注意递归「所有文件」后非 md 仅可 scaffold。
+- **指定目录展开过大**：总览未 `C` 前不写盘；注意递归「所有文件」后非 md 仅可 scaffold。
+- **勿把 `@` 当技能语法**：路径触发看可解析真实路径（含 IDE 附件），不要求消息里写 `@`。
 - **Agent 树 / 生态技能追新**：本技能不管；本仓树走 `/agent-install`，生态走 `/skill-upgrade`。
 - **Bash 5+**、Git 必需（整树脚本路径）。
 - **中央脚本路径**：整树在目标工程执行时须指向元库/中央库的 `agent/skills/docs-upgrade/scripts/docs-upgrade.sh`。
