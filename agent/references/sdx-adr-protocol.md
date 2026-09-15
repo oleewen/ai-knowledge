@@ -1,10 +1,11 @@
 # SDX ↔ ADR 协议
 
 > **定位**：`sdx-solution` / `sdx-analysis` 运行时如何落技术决策到 `{DOC_DIR}/adr/`。  
-> **结构/命名 SSOT**：仍见 [adr-guidelines.md](../knowledge/adr-guidelines.md)、[adr-template.md](../knowledge/adr-template.md)。  
+> **命名/落盘 SSOT**：[adr-template.md](../knowledge/adr-template.md)。  
+> **必备章节/状态 SSOT**：[adr-guidelines.md](../knowledge/adr-guidelines.md)。  
 > **不负责**：业务/范围/优先级决策（仍用 SOLUTION §5.2 Q-n 等）。
 
-**最后更新**: 2026-07-29
+**最后更新**: 2026-09-15
 
 ---
 

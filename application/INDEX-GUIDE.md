@@ -59,7 +59,7 @@ application/
 
 样本实体：[knowledge/index.md](knowledge/index.md)
 
-应用层首次：`API` · `TBL` · `MW` · `CMP`（见 [knowledge-governance](../agent/knowledge/knowledge-governance.md#跨层实体首次定义)）
+应用层首次：`API` · `TBL` · `MW` · `CMP`（见 [knowledge-governance](../agent/knowledge/knowledge-governance.md#各层聚焦摘要)）
 
 ---
 

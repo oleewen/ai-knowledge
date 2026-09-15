@@ -68,7 +68,7 @@
 
 历史上曾用会话 spec 的 `PENDING`/`CONFIRMED` 与 `sdx_gate_common` 作写前钩子证据。  
 **脚本与测试已从本仓删除**；`agent/hooks.json` 的 `preToolUse` 为空。  
-目标工程若仍引用旧 hook 路径，须刷新安装产物（见 [hooks/README.md](../hooks/README.md)）。  
+目标工程若仍引用旧 hook 路径，须刷新安装产物（见 [agent-install](../skills/agent-install/SKILL.md)）。  
 技能 anti-patterns 仍禁止退回该主线。
 
 ---

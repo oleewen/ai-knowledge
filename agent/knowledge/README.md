@@ -11,21 +11,22 @@
 
 | 文件 | 说明 |
 | --- | --- |
-| [knowledge-governance.md](knowledge-governance.md) | 三层语义设计 SSOT（职责、首次定义、聚焦、5A、引用边界） |
+| [knowledge-governance.md](knowledge-governance.md) | 三层语义设计 SSOT（职责、各层聚焦/首次定义、5A 边类、引用边界） |
+| [glossary.md](glossary.md) | 词义 + 实体缩写登记 + 映射字段语义 SSOT |
+| [naming-conventions.md](naming-conventions.md) | 实体 ID / IDEA-ID 字面语法 |
 | [okf-spec.md](okf-spec.md) | company / system / application 共享知识规范 SSOT |
-| [naming-conventions.md](naming-conventions.md) | 实体 ID 命名规范（全局 SSOT） |
-| [glossary.md](glossary.md) | 全局术语表 |
 | [architecture-principles.md](architecture-principles.md) | 架构原则条目 |
-| [adr-template.md](adr-template.md) · [adr-guidelines.md](adr-guidelines.md) | ADR 模板与落盘约定 |
+| [adr-template.md](adr-template.md) · [adr-guidelines.md](adr-guidelines.md) | 命名/落盘（template）· 章节/状态（guidelines） |
 | [sdx-adr-protocol.md](../references/sdx-adr-protocol.md) | SDX 写 SOLUTION/ANALYSIS 时落 ADR / CONTEXT |
 | [application/adr/](../../application/adr/README.md) · [system/adr/](../../system/adr/README.md) · [company/adr/](../../company/adr/README.md) | ADR 正文目录（按决策范围分域；含 `CONTEXT.md`） |
 
 ## 使用顺序
 
-1. 新词 / 歧义 → [glossary.md](glossary.md)
-2. 新实体 / 文件 → [naming-conventions.md](naming-conventions.md)
-3. 判断文件是否 concept / 索引入口 / 叙事 / 元数据 → [okf-spec.md](okf-spec.md)
-4. 跨域或长期后果的决策 → [application/adr/](../../application/adr/README.md) / [system/adr/](../../system/adr/README.md) / [company/adr/](../../company/adr/README.md)，按 [adr-template.md](adr-template.md)；SDX 流程见 [sdx-adr-protocol.md](../references/sdx-adr-protocol.md)
+1. 新词 / 歧义 / 缩写短义 / 映射字段 → [glossary.md](glossary.md)
+2. 新实体 ID 怎么写 → [naming-conventions.md](naming-conventions.md)
+3. 首次定义层 / 能否跨层链 → [knowledge-governance.md](knowledge-governance.md)
+4. 判断文件是否 concept / 索引入口 / 叙事 / 元数据 → [okf-spec.md](okf-spec.md)
+5. 跨域或长期后果的决策 → [application/adr/](../../application/adr/README.md) / [system/adr/](../../system/adr/README.md) / [company/adr/](../../company/adr/README.md)，按 [adr-template.md](adr-template.md)；SDX 流程见 [sdx-adr-protocol.md](../references/sdx-adr-protocol.md)
 
 ## 仓库地图
 

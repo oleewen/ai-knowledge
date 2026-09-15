@@ -8,7 +8,7 @@
 - 命令名约定：目录名即 Slash 命令（如 `docs-indexing` → `/docs-indexing`）
 - 调用方式：Chat 输入 `/` 选择，或 `@<skill-name>` 附加上下文
 - **共通协议**（重闸门族）：参数向导 → **澄清 → 生成 → 烤干** → `C/M/G/F`（docs 另有 `S`）；语义性变更先确认。契约：[intent-clarify.md](../references/intent-clarify.md)、[unit-cycle-protocol.md](../references/unit-cycle-protocol.md)、[grilling-skill.md](../references/grilling-skill.md)、[CONVENTIONS.md §3](../rules/CONVENTIONS.md#artifact-gates)
-- **轻流程**（不绑意图澄清）：`docs-okf` / `docs-tag` / `docs-link` / `docs-pull` / `docs-push` / `docs-install` / `agent-install` / `docs-upgrade` / `skill-upgrade`；动作 `C/M/S/F` 见 [light-flow-actions.md](../references/light-flow-actions.md)（无 `G`）
+- **轻流程**（不绑意图澄清）：`docs-okf` / `docs-link` / `docs-pull` / `docs-push` / `docs-tag` / `docs-install` / `agent-install` / `docs-upgrade` / `skill-upgrade`；动作 `C/M/S/F` 见 [light-flow-actions.md](../references/light-flow-actions.md)（无 `G`）
 - **知识库布局**：[knowledge-layout.md](../references/knowledge-layout.md)
 
 下表**只写差异**（产物、关键参数、特殊产物）；协议不逐行复述。
@@ -20,7 +20,7 @@
 | `/docs-indexing` | 参数 `mode/depth/output/since`；产出九章 `INDEX-GUIDE.md` + `changelogs/INDEXING-LOG.md`（须列完整仓库根相对路径） |
 | `/docs-tag` | overview 关键词：候选附录、表行 ✅、架构摘录（phase 3）；轻流程 + phase 轻量校核（非语义族 grilling）。见 [workflow.md](docs-tag/references/workflow.md) |
 | `/docs-revise` | 术语/路径链式同步 + 定向纠错；烤干修订后走协议 simplify 遍；整篇结构交 `/docs-simplify` |
-| `/docs-simplify` | 金字塔结构 + 激进精简 + SSOT 去重引用；原则见 [docs-simplify.md](../references/docs-simplify.md) |
+| `/docs-simplify` | 金字塔结构 + 激进精简 + SSOT 去重引用；原则见 [simplify-principles.md](../references/simplify-principles.md) |
 | `/docs-agent` | 根 `README.md` + `AGENTS.md`；九章地图以已落盘 `INDEX-GUIDE.md` 为准，与 `index.md` 职责不重叠 |
 | `/docs-distill` | `--doc-dir system\|company` + `--name` + 可选 `--dry-run` → 槽位上行全量写目标层 `overview` 第三列（不写 DISTILL-LOG） |
 | `/docs-extract` | `--sources / --overview / --dry-run` → 非槽位源写系统或公司 overview 第三列 |

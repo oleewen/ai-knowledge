@@ -2,7 +2,7 @@
 
 主干：[SKILL.md](../SKILL.md)。binding：[gates.md](gates.md)。算法：[merge-spec.md](merge-spec.md)。
 
-契约链： [intent-clarify.md](../../../references/intent-clarify.md) · [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) · [grilling-skill.md](../../../references/grilling-skill.md) · [docs-simplify.md](../../../references/docs-simplify.md)
+契约链： [intent-clarify.md](../../../references/intent-clarify.md) · [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) · [grilling-skill.md](../../../references/grilling-skill.md) · [simplify-principles.md](../../../references/simplify-principles.md)
 
 ## 目标
 

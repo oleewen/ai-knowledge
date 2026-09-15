@@ -11,7 +11,7 @@
 - [intent-clarify.md](../../../references/intent-clarify.md) — 写前意图澄清
 - [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) — 单元推进、`C/M/G/S/F`、simplify 遍、重开与前文回改
 - [grilling-skill.md](../../../references/grilling-skill.md) — 写后烤干能力
-- [docs-simplify.md](../../../references/docs-simplify.md) — simplify 遍原则 SSOT
+- [simplify-principles.md](../../../references/simplify-principles.md) — simplify 遍原则 SSOT
 
 主线口令：`澄清 → 生成 → 烤干`。用户动作与状态机见 unit-cycle-protocol（含 docs 语义族 `S`）。
 

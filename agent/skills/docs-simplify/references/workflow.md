@@ -7,7 +7,7 @@
 - 写前澄清：[intent-clarify.md](../../../references/intent-clarify.md)
 - 单元推进 / `C/M/G/S/F`：[unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)
 - 写后烤干：[grilling-skill.md](../../../references/grilling-skill.md)
-- 写作原则：[docs-simplify.md](../../../references/docs-simplify.md)
+- 写作原则：[simplify-principles.md](../../../references/simplify-principles.md)
 
 ## 参数向导
 
@@ -58,7 +58,7 @@
 
 ### 3. 生成（改写）
 
-写前读 [docs-simplify.md](../../../references/docs-simplify.md)。按 A→B→C 顺序处理当前单元：
+写前读 [simplify-principles.md](../../../references/simplify-principles.md)。按 A→B→C 顺序处理当前单元：
 
 1. **A**：结论上提、MECE 分组、渐进披露、表/列表替换长散文；**若属模板硬结构**，保留章号与节标题，只在节内 BLUF  
 2. **B**：激进删套话与装饰例；保留约束/例外/验收与必要表行；不期待表密文档大幅降行数  

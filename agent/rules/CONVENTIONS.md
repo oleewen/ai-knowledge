@@ -75,9 +75,9 @@
    - **生成 → 烤干 → 动作/重开**：[unit-cycle-protocol.md](../references/unit-cycle-protocol.md)；
    - **烤干提问能力**：[grilling-skill.md](../references/grilling-skill.md)；
    - **受众质检**：[audience-and-language.md](../references/audience-and-language.md)（烤干 A/B/C/E；轻流程写后 A/B）；
-   - **生成步写作原则**：[docs-simplify.md](../references/docs-simplify.md)（默认强制；用户明示可豁免）。烤干中修订后另有协议 **simplify 遍**（见 [unit-cycle-protocol.md](../references/unit-cycle-protocol.md)）。
+   - **生成步写作原则**：[simplify-principles.md](../references/simplify-principles.md)（默认强制；用户明示可豁免）。烤干中修订后另有协议 **simplify 遍**（见 [unit-cycle-protocol.md](../references/unit-cycle-protocol.md)）。
 4. 全部 `/sdx-*` 与语义族 docs-*（含 indexing/build/agent/simplify）已绑定意图澄清；
-   `docs-okf` / `docs-pull` / `docs-push` / `docs-tag` / `docs-install` / `agent-install` / `docs-upgrade` / `skill-upgrade` 维持轻流程。
+   `docs-okf` / `docs-link` / `docs-pull` / `docs-push` / `docs-tag` / `docs-install` / `agent-install` / `docs-upgrade` / `skill-upgrade` 维持轻流程。
 5. 烤干收敛（或合法跳过）后，由用户用 `C/M/G/F`（docs 另有 `S`）推进；
    `C` 同符异义，靠阶段横幅区分。
 6. 语义性变更须先给结论、推荐与数字选项，确认后再改。
@@ -129,4 +129,4 @@
 
 - AI 协作说明：[../README.md](../README.md)
 - 知识库布局：[knowledge-layout.md](../references/knowledge-layout.md)
-- 意图澄清 / 推进环 / 烤干 / 受众 / 精简原则：[intent-clarify.md](../references/intent-clarify.md) · [unit-cycle-protocol.md](../references/unit-cycle-protocol.md) · [grilling-skill.md](../references/grilling-skill.md) · [audience-and-language.md](../references/audience-and-language.md) · [docs-simplify.md](../references/docs-simplify.md)
+- 意图澄清 / 推进环 / 烤干 / 受众 / 精简原则：[intent-clarify.md](../references/intent-clarify.md) · [unit-cycle-protocol.md](../references/unit-cycle-protocol.md) · [grilling-skill.md](../references/grilling-skill.md) · [audience-and-language.md](../references/audience-and-language.md) · [simplify-principles.md](../references/simplify-principles.md)

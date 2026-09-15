@@ -64,7 +64,7 @@ system/
 
 样本实体与视角：[knowledge/index.md](knowledge/index.md)
 
-系统层首次：含 PD/SYS/MDG/BSD/…（见 [knowledge-governance](../agent/knowledge/knowledge-governance.md#跨层实体首次定义)）
+系统层首次：含 PD/SYS/MDG/BSD/…（见 [knowledge-governance](../agent/knowledge/knowledge-governance.md#各层聚焦摘要)）
 
 ---
 

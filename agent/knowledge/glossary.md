@@ -1,7 +1,7 @@
 ---
 id: "knowledge-glossary"
 title: "全局术语表"
-version: "0.3.0"
+version: "0.4.0"
 status: "draft"
 created: "2025-03-13"
 updated: "2026-09-15"
@@ -10,82 +10,66 @@ tags: ["glossary", "terminology", "governance"]
 
 # 全局术语表
 
-本文件存放**释义、别名、易混区分**与**跨视角映射字段**语义，便于跨团队与 Agent 无歧义引用。
+> **定位**：词义、别名、易混区分、**实体缩写/类型登记**，以及**跨视角映射字段语义** SSOT。  
+> **不分管**：首次定义层 / 5A 边类 / 引用边界 → [knowledge-governance.md](knowledge-governance.md)；ID 语法 `{TYPE}-{NAME}` → [naming-conventions.md](naming-conventions.md)；路径树 → [knowledge-layout.md](../references/knowledge-layout.md)。
 
-> 统一术语表：释义与映射字段以本表为准。前缀、首次定义层、路径见 [naming-conventions.md](naming-conventions.md)；分层角色见 [knowledge-governance.md](knowledge-governance.md) / 各层 `*-meta.md`（字段语义回链本节）。
+**首次定义层**不在本表列写，见 [knowledge-governance.md#各层聚焦摘要](knowledge-governance.md#各层聚焦摘要)。
 
-## 使用说明
+## 知识库术语
 
-- OKF 实体缩写见「缩写对照」；治理词见「知识库相关」
-- 映射字段语义 **SSOT** 在「映射关系（常用）」；[knowledge-governance.md](knowledge-governance.md#核心映射5a方向) 与各层 `*-meta.md` 引用本表，不另写字段全文
-- 前缀与首次定义层不在本表展开（见 naming）
-
----
-
-## 知识库相关
-
-| 术语     | 英文                                 | 定义                                 |
-| ------ | ---------------------------------- | ---------------------------------- |
-| 单一事实源  | SSOT (Single Source of Truth)      | 每个知识实体只在一处定义，其他地方通过 ID 引用。         |
-| 联邦治理   | Federated Governance               | 系统级仓库集中管理宏观架构与索引，应用级仓库分散管理微观设计并上报。 |
-| 限界上下文  | Bounded Context                    | DDD 中明确边界的业务上下文，拥有统一语言与领域模型。       |
-| 聚合根    | Aggregate Root                     | DDD 中聚合的根实体，保证聚合内一致性边界。            |
-| 架构决策记录 | ADR (Architecture Decision Record) | 记录架构决策的上下文、决定与后果的文档。               |
-
-## 视角与层级
-
-| 术语   | 含义 |
-| ---- | --- |
-| 5A | **BA**（业务）· **PA**（产品）· **AA**（应用）· **DA**（数据）· **TA**（技术）；经典 4A + **PA**。边方向见 [knowledge-governance §5A](knowledge-governance.md#核心映射5a方向)。 |
-| BA | Business Architecture；业务架构（能力目录 ∥ 域模型等）。 |
-| PA | Product Architecture；产品架构（PL/PD/PM…；与五视角 `product/` 对齐）。 |
-| AA | Application Architecture；应用架构（SLN/SYS/APP/MS/API）。 |
-| DA | Data Architecture；数据架构（MDG/DS/ENT/TBL）。 |
-| TA | Technology Architecture；技术架构（TPL/TSD/MW/CMP）。 |
-| 业务视角 | 业务单元（BU）、业务域（BD）、业务能力（CAP）、子域、限界上下文、聚合等；BU∥BD 为 BA 两张图。 |
-| 产品视角 | 产品线（PL）、产品服务（PD）、模块、功能点、用例、业务流程、业务规则；对应 **PA**。 |
-| 应用视角 | 解决方案（SLN）、系统（SYS）、应用、**MS（入口能力簇）**、API。 |
-| 数据视角 | 数据存储、数据实体、主数据域目录、字段、敏感级别、数据流向。 |
-| 技术视角 | 技术平台能力（TPL）、技术域（TSD）、中间件绑定（MW）、关键组件（CMP）；叙事与实体 ID 并存，见 [naming-conventions.md](naming-conventions.md)。 |
-
-## 缩写对照
-
-| 缩写 | 全称 | 说明 |
+| 术语 | 英文 | 定义 |
 | --- | --- | --- |
-| ADR | Architecture Decision Record | 架构决策记录 |
-| SSOT | Single Source of Truth | 单一事实源 |
-| BU | Business Unit | 业务单元 |
-| BD | Business Domain | 业务域（∥BU） |
-| CAP | Business Capability | 业务能力（由 BD 支撑） |
-| BSD | Business Subdomain | 业务子域 |
-| BC | Bounded Context | 限界上下文 |
-| AGG | Aggregate | 聚合根 |
-| AB | Ability | 领域能力 |
-| PL | Product Line | 产品线（支持 BD） |
-| PD | Product | 产品服务（别名：业务服务） |
-| PM | Product Module | 产品模块 |
-| BP | Business Process | 业务流程 |
-| FT | Feature | 功能点 |
-| FR | Functional Requirement | 功能需求 |
-| UC | Use Case | 用例 |
-| BR | Business Rule | 业务规则 |
-| SLN | Solution | 解决方案（对应 PL） |
-| SYS | System | 系统（别名：应用服务） |
-| APP | Application | 应用 |
-| MS | Microservice | 微服务（入口簇） |
-| API | API Endpoint | 接口端点 |
-| MDG | Master Data Domain | 主数据域 |
-| DS | Data Store | 数据存储 |
-| ENT | Entity | 数据实体 |
-| TBL | Data Table | 数据表（物理锚点） |
-| TPL | Technology Platform | 技术平台能力 |
-| TSD | Technical Domain | 技术域 |
-| MW | Middleware Binding | 中间件绑定 |
-| CMP | Component | 关键组件 |
+| 单一事实源 | SSOT (Single Source of Truth) | 每个知识实体只在一处定义，其他地方通过 ID 引用。 |
+| 联邦治理 | Federated Governance | 系统级仓库集中管理宏观架构与索引，应用级仓库分散管理微观设计并上报。 |
+| 限界上下文 | Bounded Context | DDD 中明确边界的业务上下文，拥有统一语言与领域模型。 |
+| 聚合根 | Aggregate Root | DDD 中聚合的根实体，保证聚合内一致性边界。 |
+| 架构决策记录 | ADR (Architecture Decision Record) | 记录架构决策的上下文、决定与后果的文档。 |
+| 业务架构 | BA (Business Architecture) | 业务能力目录 ∥ 域模型等；对应五视角 `business/`。 |
+| 产品架构 | PA (Product Architecture) | 产品线/服务/模块等；对应五视角 `product/`。 |
+| 应用架构 | AA (Application Architecture) | 解决方案/系统/应用/入口簇/接口；对应五视角 `application/`。 |
+| 数据架构 | DA (Data Architecture) | 主数据域/存储/实体/表；对应五视角 `data/`。 |
+| 技术架构 | TA (Technology Architecture) | 平台能力/技术域/中间件绑定/组件；对应五视角 `technical/`。 |
+
+## 实体缩写登记
+
+仅登记可作 `{TYPE}-{NAME}` 的知识实体前缀（非 ADR/SSOT/5A 等术语）。按 5A：BA → PA → AA → DA → TA。
+
+| 所属视角 | 缩写 | 英文全称 | 短义 | 说明 |
+| --- | --- | --- | --- | --- |
+| BA | BU | Business Unit | 业务单元 | 能力目录根；下挂 CAP |
+| BA | BD | Business Domain | 业务域 | ∥BU；对标 PL；勿与 BSD 混淆 |
+| BA | CAP | Business Capability | 业务能力 | `parent_id→BU`；由 BD 支撑 |
+| BA | BSD | Business Subdomain | 业务子域 | — |
+| BA | BC | Bounded Context | 限界上下文 | — |
+| BA | AGG | Aggregate | 聚合根 | — |
+| BA | AB | Ability | 领域能力 | 能力边界 |
+| PA | PL | Product Line | 产品线 | 支持 BD |
+| PA | PD | Product | 产品服务 | 别名：业务服务 |
+| PA | PM | Product Module | 产品模块 | — |
+| PA | BP | Business Process | 业务流程 | — |
+| PA | FT | Feature | 功能点 | — |
+| PA | FR | Functional Requirement | 功能需求 | — |
+| PA | UC | Use Case | 用例 | — |
+| PA | BR | Business Rule | 业务规则 | — |
+| AA | SLN | Solution | 解决方案 | 对应 PL；企业 AA 台账 |
+| AA | SYS | System | 系统 | 别名：应用服务 |
+| AA | APP | Application | 应用 | 代码仓库/部署单元 |
+| AA | MS | Microservice | 微服务 | 入口能力簇；非 MW 替代 |
+| AA | API | API Endpoint | 接口端点 | — |
+| DA | MDG | Master Data Domain | 主数据域 | 治理目录；非 DS/ENT 替代 |
+| DA | DS | Data Store | 数据存储 | — |
+| DA | ENT | Entity | 数据实体 | 表/集合 |
+| DA | TBL | Data Table | 数据表 | 物理锚点 |
+| TA | TPL | Technology Platform | 技术平台能力 | 公司级 |
+| TA | TSD | Technical Domain | 技术域 | 系统级 |
+| TA | MW | Middleware Binding | 中间件绑定 | 实例级；非 MS/API 替代 |
+| TA | CMP | Component | 关键组件 | Maven / 共享运行时 |
+
+ID 前缀写作 `BU-` / `BD-` 等，语法见 [naming-conventions.md](naming-conventions.md)。
 
 ## 映射关系（常用）
 
-> 本表为跨视角映射字段语义 **SSOT**。他处（knowledge-governance / `*-meta.md`）只引用，不复制全文。
+> 本表为跨视角映射字段语义 **SSOT**。源实体写目标实体 ID；边类方向见 [knowledge-governance.md § 核心映射](knowledge-governance.md#核心映射5a方向)。他处（governance / `*-meta.md`）只引用，不复制全文。
 
 | 关系 | 含义 |
 | --- | --- |
@@ -121,9 +105,6 @@ tags: ["glossary", "terminology", "governance"]
 
 | 日期 | 术语ID | 变更类型 | 变更说明 |
 | --- | --- | --- | --- |
-| 2026-09-15 | — | 修订 | 4A→5A：增加 PA（产品架构）；映射节锚点同步 |
+| 2026-09-15 | — | 重划 | 缩写表仅实体前缀；ADR/SSOT/5A 归「知识库相关」；映射字段仍为本表 SSOT |
+| 2026-09-15 | — | 修订 | 4A→5A：增加 PA（产品架构） |
 | 2026-09-14 | — | 修订 | 删 BT/TT 样例与 OMS/SKU；补全 OKF 缩写；映射节定为字段 SSOT |
-
----
-
-*可在此目录下新增 YAML 格式的术语表，便于机器可读与检索。*

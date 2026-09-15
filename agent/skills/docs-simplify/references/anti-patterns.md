@@ -1,6 +1,6 @@
 # 反模式（docs-simplify）
 
-原则 SSOT：[docs-simplify.md](../../../references/docs-simplify.md)。
+原则 SSOT：[simplify-principles.md](../../../references/simplify-principles.md)。
 
 | 反模式 | 为何错 | 应做 |
 | --- | --- | --- |

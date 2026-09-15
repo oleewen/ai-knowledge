@@ -12,7 +12,7 @@
 | --- | --- |
 | 金字塔结构、删冗余、改引用 SSOT | 改变业务承诺或范围 |
 | 节首句可独立传达要点 | 为短而删掉验收/约束 |
-| 与 [docs-simplify.md](../../../references/docs-simplify.md) 原则一致 | 把索引/日志默认大砍（除非用户点名） |
+| 与 [simplify-principles.md](../../../references/simplify-principles.md) 原则一致 | 把索引/日志默认大砍（除非用户点名） |
 
 ## 反例
 

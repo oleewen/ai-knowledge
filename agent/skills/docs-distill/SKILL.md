@@ -15,7 +15,7 @@ description: >
 ## 输出硬约束（P0）
 
 - 当前单元：单个 `{NAME}-overview.md` + **仅全量**范围（可含 `--dry-run` 预览）。
-- 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[docs-simplify.md](../../references/docs-simplify.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写入或输出正式预览结论；写入或 `--dry-run` 预览后均须烤干，收敛后停等用户。
+- 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[simplify-principles.md](../../references/simplify-principles.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写入或输出正式预览结论；写入或 `--dry-run` 预览后均须烤干，收敛后停等用户。
 - **职责/粒度闭合（写前 `C` 内）**：蒸馏前须按 [scope-clarity.md](references/scope-clarity.md) 摸清目标层与源槽位职责、要点粒度与跨层收束；只信落盘契约。缺失/模糊/双边冲突 → 硬停决策 → **先落盘契约** → 再出职责/粒度短摘要；未闭合不算写前 `C`，不得 dry-run / 写入。此为契约级闭合，**不等于**写后 grilling。
 - **边**：`DOC_DIR=system` → 读 `system/application-slots/application-{NAME}/`，写 `system/knowledge/overview/{NAME}-overview.md`；`DOC_DIR=company` → 读 `company/system-slots/system-{NAME}/`，写 `company/knowledge/overview/{NAME}-overview.md`。应用层无 overview，不作目标。
 - **DOC_DIR**：优先 `.docsconfig` / 环境变量；须为 `system|company`；否则参数向导必选。`--doc-dir` 可显式覆盖。

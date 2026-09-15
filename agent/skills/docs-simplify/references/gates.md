@@ -11,7 +11,7 @@
 - [intent-clarify.md](../../../references/intent-clarify.md) — 写前意图澄清
 - [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) — 单元推进、`C/M/G/S/F`、重开与前文回改
 - [grilling-skill.md](../../../references/grilling-skill.md) — 写后烤干能力
-- [docs-simplify.md](../../../references/docs-simplify.md) — A/B/C 写作原则
+- [simplify-principles.md](../../../references/simplify-principles.md) — A/B/C 写作原则
 
 主线口令：`澄清 → 生成 → 烤干`。
 

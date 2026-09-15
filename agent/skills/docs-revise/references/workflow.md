@@ -7,7 +7,7 @@
 - 写前澄清：[intent-clarify.md](../../../references/intent-clarify.md)
 - 单元推进 / `C/M/G/S/F` / simplify 遍：[unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)
 - 写后烤干：[grilling-skill.md](../../../references/grilling-skill.md)
-- simplify 遍原则：[docs-simplify.md](../../../references/docs-simplify.md)
+- simplify 遍原则：[simplify-principles.md](../../../references/simplify-principles.md)
 
 ## 参数向导
 

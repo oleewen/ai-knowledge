@@ -253,7 +253,7 @@ HIERARCHY_TO_PERSPECTIVE: Dict[str, str] = {
     "CMP": "technical",
 }
 
-# 首次定义层（SSOT：agent/knowledge/knowledge-governance.md「跨层实体首次定义」）
+# 首次定义层（SSOT：agent/knowledge/knowledge-governance.md「各层聚焦摘要」）
 HIERARCHY_FIRST_LAYER: Dict[str, str] = {
     "BU": "company",
     "BD": "company",

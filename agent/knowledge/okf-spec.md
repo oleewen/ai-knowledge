@@ -11,7 +11,7 @@ timestamp: "2026-06-25T00:00:00Z"
 > **谷歌 OKF v0.1 规范**：[`GoogleCloudPlatform/knowledge-catalog/okf/SPEC.md`](https://raw.githubusercontent.com/GoogleCloudPlatform/knowledge-catalog/main/okf/SPEC.md)
 > **参考实现/讨论**：[github.com/google/open-knowledge-framework](https://github.com/google/open-knowledge-framework)
 > **共享 SSOT**：本仓库 `agent/knowledge/okf-spec.md`
-> **边界**：本文管**文件分型**与 **per-entity Profile**（frontmatter/正文/引用）。三层路径、overview 缓冲、联邦流水线 → [knowledge-layout.md](../references/knowledge-layout.md)；实体 ID 前缀 → [naming-conventions.md](naming-conventions.md)。
+> **边界**：本文管**文件分型**与 **per-entity Profile**（frontmatter/正文/引用）。三层路径、overview 缓冲、联邦流水线 → [knowledge-layout.md](../references/knowledge-layout.md)；ID **语法** → [naming-conventions.md](naming-conventions.md)；缩写/短义/映射字段 → [glossary.md](glossary.md)；首次定义 / 引用边界 → [knowledge-governance.md](knowledge-governance.md)。
 > **适用对象**：`company/`、`system/`、`application/` 三层知识库，以及围绕知识库组织的索引入口、叙事文档与元数据文件
 
 ---
@@ -83,7 +83,7 @@ timestamp: "2026-06-25T00:00:00Z"
 典型文件：
 
 - 模式：`{DOC_DIR}/knowledge/<perspective>/…/{ID}.md`（含父子同目录 `/{ID}/{ID}.md`）
-- 路径根与视角目录见 [knowledge-layout.md](../references/knowledge-layout.md)；ID 前缀见 [naming-conventions.md](naming-conventions.md)
+- 路径根与视角目录见 [knowledge-layout.md](../references/knowledge-layout.md)；ID 语法见 [naming-conventions.md](naming-conventions.md)；缩写登记见 [glossary.md](glossary.md)
 - EXAMPLE 样例树见各层 `knowledge/`（如 `*-EXAMPLE.md`），勿在本规范维护长路径清单
 
 处理规则：
@@ -264,7 +264,7 @@ MAY：
 代表性文件：
 
 - 落点模式见 [knowledge-layout.md](../references/knowledge-layout.md)；EXAMPLE 见各层 `knowledge/` 样例树
-- ID / type 映射见 [naming-conventions.md](naming-conventions.md) 与本文 §3
+- ID 语法见 [naming-conventions.md](naming-conventions.md)；缩写见 [glossary.md](glossary.md)；`type` 见本文 §3
 
 每个 per-entity 文件必须包含 4 个二级标题，标题统一使用中文：
 
@@ -438,7 +438,7 @@ MAY：
 
 ### 8.1 父子同目录可见
 
-对于有下层概念的目录，父子实体应尽量在同一父层目录下肉眼可见（如 `BSD-{ID}/` 下同时可见 `BSD-{ID}.md` 与子概念 `{ID}.md`）。完整树形与落点见 [knowledge-layout.md](../references/knowledge-layout.md)、[naming-conventions.md](naming-conventions.md)。
+对于有下层概念的目录，父子实体应尽量在同一父层目录下肉眼可见（如 `BSD-{ID}/` 下同时可见 `BSD-{ID}.md` 与子概念 `{ID}.md`）。完整树形与落点见 [knowledge-layout.md](../references/knowledge-layout.md)。
 
 ### 8.2 父层目录的 `index.md`
 

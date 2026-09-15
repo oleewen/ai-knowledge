@@ -12,7 +12,7 @@ title: "应用知识库（顶层 `application/`）"
 |--------|------|
 | 九章地图 | [INDEX-GUIDE.md](INDEX-GUIDE.md) |
 | 目录索引 | [index.md](index.md) |
-| 边界与首次定义 | [knowledge-governance](../agent/knowledge/knowledge-governance.md#跨层实体首次定义) |
+| 边界与首次定义 | [knowledge-governance](../agent/knowledge/knowledge-governance.md#各层聚焦摘要) |
 | 五视角入口 | [knowledge/README.md](knowledge/README.md) |
 | 机器元数据 | [docs-meta.md](docs-meta.md) |
 

@@ -1,25 +1,37 @@
-# 文档精简写作契约（Agent SSOT）
+# 精简写作原则（Agent SSOT）
 
 > **定位**：跨 skill 复用的文档**结构 / 简明 / 真源**写作原则唯一真源。就地改写执行见 [docs-simplify/SKILL.md](../skills/docs-simplify/SKILL.md)。  
 > **边界**：不负责术语统一 / 定向纠错主路径（→ `docs-revise`）；不负责 A/B/C 判类（→ [document-guidelines.md](../rules/document/document-guidelines.md)）。  
-> **主线口令**：生成类产出在「生成」步须遵循本文；烤干中修订后另有 **simplify 遍**（见 [unit-cycle-protocol.md](unit-cycle-protocol.md)）；用户明示「跳过精简 / 草稿优先」可临时豁免。
+> **主线**：生成类产出在「生成」步须遵循本文；烤干中修订后另有 **simplify 遍**（见 [unit-cycle-protocol.md](unit-cycle-protocol.md)）；用户明示「跳过精简 / 草稿优先」等可临时豁免。
 
-**最后更新**: 2026-09-09
+**最后更新**: 2026-09-15
 
 ---
 
-## 适用
+## 适用与强制
 
 | 场景 | 要求 |
 | --- | --- |
 | `/docs-simplify` 就地改写 | 按本文三方面改写当前单元 |
 | 语义族 `sdx-*` / docs-* **生成**步 | 写前读本文；落笔按 A/B/C；豁免须用户明示 |
-| 语义族烤干中 **simplify 遍** | `直接修订` / `用户确认后修订` 后，只改善本轮 hunk；规则见 unit-cycle-protocol |
-| 轻流程 docs-* | 不强制；产出若为人类可读正文，建议遵守 |
+| 语义族烤干中 **simplify 遍** | 只改善本轮 hunk；规则见 unit-cycle-protocol |
+| 轻流程 docs-* | 不强制；人类可读正文建议遵守 |
+
+1. 绑定 [unit-cycle-protocol.md](unit-cycle-protocol.md) 的技能，在「生成并写入」前须读本文（或已缓存等价要点）。  
+2. 豁免口令示例：「跳过精简」「草稿优先」「先堆素材再精简」——仅对本轮/当前对象有效。  
+3. 原则正文只维护于此；各 Skill 仅短链，禁止复制整表。
+
+| 主目标 | 技能 / 步骤 |
+| --- | --- |
+| 结构重组 / 删冗余 / SSOT 去重引用 | `/docs-simplify` |
+| 统一术语 / 链式替换 / 定向纠错 | `docs-revise` |
+| 烤干中修订后的被改行 | 协议内 **simplify 遍**（本文原则；非完整技能环） |
+| `grilled` 后仍要整篇结构 | 再开 `/docs-simplify` |
+| 两者都要 | 先问主目标；串行顺序须确认（推荐：先 revise 再 simplify） |
 
 ---
 
-## 共识
+## 模板硬结构
 
 对 **SDD / 示例方案 / 固定章模板**：
 
@@ -41,6 +53,8 @@
 | A3 | 渐进披露 | 入口短；细节下钻链接，不在入口堆全量 |
 | A4 | 结构适切 | 并列→表/列表；流程→编号；禁空壳「概述/说明」标题 |
 
+烤干快检：删掉首段/节首句后是否仍知「要什么」；同级标题能否画成无重叠树。
+
 ### B · 简明（Concise）
 
 | ID | 细则 | 陈述 |
@@ -48,6 +62,8 @@
 | B1 | 单意单元 | 一句一意、一段一题；段首句立意 |
 | B2 | 极简措辞 | **激进**删套话、同义反复、装饰性举例；**不**为缩短而删必要表行 |
 | B3 | 可执行底线 | **约束 / 例外 / 验收条件强制保留**；激进≠删需求真源 |
+
+烤干快检：删装饰后是否仍可执行、可验收。
 
 ### C · 真源（SSOT）
 
@@ -58,40 +74,10 @@
 | C3 | 疑似确认 | 全仓语义相似扫到疑似重复时，**须人确认**后再改引用或删段 |
 | C4 | 契约面禁改 | 默认不动：实体 ID、YAML frontmatter **契约字段**（如 `id`/`type`/`full_id`）、已有稳定锚点链接目标、代码块/命令字面量、标明扫描/生成的表列。**允许**：刷新 `updated` / `last_reviewed` 等日期类元数据。用户明示可破其余项 |
 
----
-
-## 生成期强制与豁免
-
-1. 绑定 [unit-cycle-protocol.md](unit-cycle-protocol.md) 的技能，在「生成并写入」前须读本文（或已缓存等价要点）。  
-2. 豁免口令示例：「跳过精简」「草稿优先」「先堆素材再精简」。豁免仅对本轮/当前对象有效。  
-3. 原则正文只维护于此；各 Skill 仅短链，禁止复制整表。
-
----
-
-## 与 docs-revise 分流
-
-| 主目标 | 技能 / 步骤 |
-| --- | --- |
-| 结构重组 / 删冗余 / SSOT 去重引用 | `docs-simplify` |
-| 统一术语 / 链式替换 / 定向纠错 | `docs-revise` |
-| 烤干中修订后的被改行 | 协议内 **simplify 遍**（本文原则；非完整技能环） |
-| `grilled` 后仍要整篇结构 | 提示再开 `/docs-simplify` |
-| 两者都要（独立技能） | 先问主目标；串行且顺序须用户确认（推荐：先 revise 再 simplify） |
-
----
-
-## 验法（烤干可用）
-
-| 方面 | 快速检查 |
-| --- | --- |
-| A | 删掉首段/节首句后，读者是否仍知「要什么」；同级标题能否画成无重叠树 |
-| B | 删装饰后是否仍可执行、可验收 |
-| C | 同事实是否仍有第二份正文；diff 是否误伤 C4 契约面 |
+烤干快检：同事实是否仍有第二份正文；diff 是否误伤 C4 契约面。
 
 ---
 
 ## 参考来源（不入库抄全文）
 
-- Minto Pyramid / MECE / BLUF  
-- Google Technical Writing（段首句、单主题、删多余词）  
-- 本仓 [architecture-principles.md](../knowledge/architecture-principles.md) KP-01；OKF 渐进披露  
+Minto Pyramid / MECE / BLUF；Google Technical Writing；本仓 [architecture-principles.md](../knowledge/architecture-principles.md) KP-01；OKF 渐进披露。

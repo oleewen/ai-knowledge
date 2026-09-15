@@ -13,7 +13,7 @@ description: >
 ## 输出硬约束（P0）
 
 - 当前单元：单个已存在 `<target>` + 本批 `<source>` 的一次合入计划。算法与落盘：[merge-spec.md](references/merge-spec.md)。
-- 写前澄清 / `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[docs-simplify.md](../../references/docs-simplify.md)；binding：[gates.md](references/gates.md)。未落位须在澄清收口；未获写前 `C` 不得写 target；`--dry-run` 只出计划仍须澄清。**dry-run 结束后若要正式写入，须重新写前 `C`，且证明未落位已空**（不得沿用 dry-run 那次 C）。执行/预览后须烤干，收敛后停等。
+- 写前澄清 / `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[simplify-principles.md](../../references/simplify-principles.md)；binding：[gates.md](references/gates.md)。未落位须在澄清收口；未获写前 `C` 不得写 target；`--dry-run` 只出计划仍须澄清。**dry-run 结束后若要正式写入，须重新写前 `C`，且证明未落位已空**（不得沿用 dry-run 那次 C）。执行/预览后须烤干，收敛后停等。
 - **落位**：仅 H2/H3；不明则停（候选节 + 新建）。**变更确认**：先识别并公布 **待新增 X 项 / 待更新 Y 项**（变更清单，见 merge-spec §5）→ 再 **逐项提问**（预览 + 问题 + 推荐 + 候选选项，进度 `i/N`）→ **确认完一条再流转下一条**；仅已确认项纳入落盘集。**冲突**（更新内）：同项内继续提问（`k/M`）→ 全部决完后一次落盘。
 - **源只读**；**target 必须已存在**（不新建）。
 - **knowledge**：写 `application|system|company` 下 `*/knowledge/**` 须守 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「业务 knowledge 引用边界」；违规能修则修，不明则停。

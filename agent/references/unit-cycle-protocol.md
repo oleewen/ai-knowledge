@@ -8,7 +8,7 @@
 
 **适用**：全部 `/sdx-*` 与语义族 docs-*（与 intent-clarify 启用名单一致）。轻流程技能不绑本文。
 
-**生成步写作原则**：进入「生成并写入」前，须读并遵循 [docs-simplify.md](docs-simplify.md)（A 结构 / B 简明 / C 真源），除非用户明示「跳过精简 / 草稿优先」等豁免。原则正文只维护于该契约；各 Skill 仅短链。
+**生成步写作原则**：进入「生成并写入」前，须读并遵循 [simplify-principles.md](simplify-principles.md)（A 结构 / B 简明 / C 真源），除非用户明示「跳过精简 / 草稿优先」等豁免。原则正文只维护于该契约；各 Skill 仅短链。
 
 ---
 
@@ -81,7 +81,7 @@ stateDiagram-v2
 | `intent_confirmed` | 写前 `C` 已过 |
 | `draft` | 初稿已写入目标容器 |
 | `grilling` | 写后自动烤干中 |
-| `simplify_pass` | 修订后按 [docs-simplify.md](docs-simplify.md) 改善本轮改动行 |
+| `simplify_pass` | 修订后按 [simplify-principles.md](simplify-principles.md) 改善本轮改动行 |
 | `grilled` | 已收敛（或合法跳过烤干），待写后动作 |
 | `revised` / `reopened` / `confirmed` | 修订中 / 须回澄清 / 写后已确认 |
 
@@ -116,7 +116,7 @@ stateDiagram-v2
 
 | 项 | 规则 |
 | --- | --- |
-| 做什么 | 按 [docs-simplify.md](docs-simplify.md) A/B/C，只改善**本轮修订触及的行 / hunk** |
+| 做什么 | 按 [simplify-principles.md](simplify-principles.md) A/B/C，只改善**本轮修订触及的行 / hunk** |
 | 不做什么 | **不**另开完整 `/docs-simplify` 技能环（无嵌套写前 `C` / 第二套 `C/M/G/S/F`） |
 | 空 diff | 修订无实质 diff，或仅空白/标点 → 立即结束本遍，回烤干 |
 | 豁免 | 用户明示「跳过精简 / 草稿优先」等 → 跳过本遍 |

@@ -31,7 +31,7 @@ okf_version: 1.0
 ### 阅读顺序
 
 1. [README.md](README.md)（mode → [README-s](README-s.md) / [README-c](README-c.md)）
-2. [knowledge-governance](../agent/knowledge/knowledge-governance.md#跨层实体首次定义)
+2. [knowledge-governance](../agent/knowledge/knowledge-governance.md#各层聚焦摘要)
 3. [knowledge/](knowledge/README.md) → 五视角
 4. mode=s：solutions → analysis → requirements
 

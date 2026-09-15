@@ -210,7 +210,7 @@
       "id": "revise-simplify-pass-001",
       "category": "should-trigger",
       "prompt": "继续 /docs-revise 烤干：已对当前单元做了用户确认后修订（改了三段表述）。下一步应如何处理？",
-      "expected_output": "先跑协议 simplify 遍（docs-simplify.md 原则，只动本轮 hunk），不另开完整 /docs-simplify 技能环；再回烤干。空 diff 快退；同对象同周期最多一次；grilled 后若需整篇结构再提示 /docs-simplify。",
+      "expected_output": "先跑协议 simplify 遍（simplify-principles.md 原则，只动本轮 hunk），不另开完整 /docs-simplify 技能环；再回烤干。空 diff 快退；同对象同周期最多一次；grilled 后若需整篇结构再提示 /docs-simplify。",
       "assertions": [
         {
           "id": "simplify-pass-before-regrill",

@@ -4,7 +4,7 @@
 > **分工**：烤干能力见 [grilling-skill.md](grilling-skill.md)；推进完成条件见 [unit-cycle-protocol.md](unit-cycle-protocol.md)；轻流程完成条件见 [light-flow-actions.md](light-flow-actions.md)。  
 > **本地覆盖**：各 skill `references/audience-and-language.md` 只写**差额**（主读者、宜写/宜弱化、反例、特殊允许区），不复制本文维表。
 
-**最后更新**: 2026-07-29
+**最后更新**: 2026-09-15
 
 ---
 
@@ -13,9 +13,11 @@
 | 族 | 技能 | 强制维 | 本地 audience |
 | --- | --- | --- | --- |
 | `sdx-*` | 全部 | **A/B/C/E**（烤干内） | 必有；统一模板 |
-| 语义族 docs-* | agent / extract / merge / distill / archive / upgrade / simplify / indexing / build | **A/B/C/E**（烤干内） | 必有；统一模板 |
-| 轻流程 | pull / push / tag | **A/B**（写后、宣称完成前） | 无；用下文默认读者表 |
-| docs-okf | okf | **A/B**（结果摘要出口；纯机器输出可跳过） | 无；用默认读者表 |
+| 语义族 | docs-agent / docs-extract / docs-merge / docs-distill / docs-archive / docs-revise / docs-simplify / docs-indexing / docs-build | **A/B/C/E**（烤干内） | 必有；统一模板 |
+| 轻流程 | docs-link / docs-pull / docs-push / docs-tag / docs-install / agent-install / docs-upgrade / skill-upgrade | **A/B**（写后、宣称完成前） | 无；用下文默认读者表 |
+| docs-okf | docs-okf | **A/B**（结果摘要出口；纯机器输出可跳过） | 无；用默认读者表 |
+
+语义族名单与 [intent-clarify.md](intent-clarify.md) 落地状态对齐；轻流程名单与 [light-flow-actions.md](light-flow-actions.md) 适用表对齐（okf 单独一行）。
 
 ---
 
@@ -61,10 +63,9 @@
 
 ## 轻流程 A/B（含 okf）
 
-1. **时机**：写入或脚本完成后、宣称单元/本轮完成前。`docs-okf`：在结果摘要交用户前；纯校验 JSON/退出码可跳过。
-2. **锚点**：下文「轻流程默认读者表」；不建本地 audience。
-3. **举证**：同烤干（全过静默；违例才报 A/B）。
-4. **门禁**：A/B 未过 → 不得宣称当前单元完成；不新增动作字母。
+1. **时机**：写入或脚本完成后、宣称单元/本轮完成前。`docs-okf`：结果摘要交用户前；纯校验 JSON/退出码可跳过。
+2. **锚点**：下文默认读者表；不建本地 audience。
+3. **举证 / 门禁**：同烤干节（全过静默；违例报 A/B）。A/B 未过 → 不得宣称当前单元完成；不新增动作字母。动作字母见 [light-flow-actions.md](light-flow-actions.md)。
 
 ---
 
@@ -75,7 +76,13 @@
 | docs-pull | 联邦维护者 | 槽位、同步结果、commit / `SYNC_OK` 要点 | 应用内部实现细节 |
 | docs-push | 应用库维护者 | 目标 path×doc_dir、复制结果、风险确认 | 中央规约全文粘贴 |
 | docs-tag | overview 维护者 | phase 结果、关键词命中摘要 | 无依据扩写业务正文 |
+| docs-link | 联邦维护者 | link/unlink 结果、槽位软链、风险确认 | 改正文当知识更新 |
+| docs-install | 知识库装机者 | target/scope/mode、dry-run 与写入结果 | 业务实体正文 |
+| agent-install | Agent 装机者 | agents/target/scope、同步结果与风险 | 把 hooks/rules 当业务知识讲解 |
+| docs-upgrade | 知识库升级者 | 升级清单、四桶/未落位结论、路径重写要点 | 元库全文粘贴、清空式重装叙事 |
+| skill-upgrade | 技能升级者 | update/补源清单、待决策与确认结果 | 本仓 Agent 树装机细节（归 agent-install） |
 | docs-okf | 工程维护者 | refresh/validate/viz 结论与失败分流 | 把机器日志当知识正文 |
+| （兜底）其它 light-flow 所列 | 工程维护者 | 参数、执行结果、风险确认 | 当知识正文 |
 
 ---
 
@@ -111,15 +118,9 @@
 
 ---
 
-## 与 quality-checklist
+## 边界
 
-- **烤干 / 轻流程写后**：过程门（本文维）
-- **quality-checklist**：终检短勾「已按共享契约 + 本地 audience 通过受众维」；细则不双写
-
----
-
-## 非目标
-
-- 不替代各 skill 模板结构或 quality-checklist 完整性项
-- 不把轻流程升级为语义族推进环
-- 不在本文维护各 skill 宜写表全文（只在本地差额）
+- **过程门 vs 终检**：烤干 / 轻流程写后跑本文维；`quality-checklist` 只勾「已按共享契约 + 本地 audience 通过」，细则不双写。
+- 不替代各 skill 模板结构或 quality-checklist 完整性项。
+- 不把轻流程升级为语义族推进环。
+- 不在本文维护各 skill 宜写表全文（只在本地差额）。
