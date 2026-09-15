@@ -6,11 +6,11 @@
 
 **最后更新**: 2026-09-15
 
-**落地状态**：全部 `/sdx-*` 与语义族 docs-*（`docs-agent` / `docs-extract` / `docs-merge` / `docs-distill` / `docs-archive` / `docs-revise` / `docs-simplify` / `docs-indexing` / `docs-build`）已绑定。**未绑定（轻流程）**：`docs-okf` / `docs-link` / `docs-pull` / `docs-push` / `docs-tag` / `docs-install` / `agent-install` / `docs-upgrade` / `skill-upgrade`。
+**落地状态**：全部 `/sdx-*` 与语义族 docs-*（`docs-agent` / `docs-extract` / `docs-merge` / `docs-distill` / `docs-archive` / `docs-revise` / `docs-simplify` / `docs-indexing` / `docs-build`）已绑定。**未绑定（轻流程）**：`docs-okf` / `docs-link` / `docs-pull` / `docs-push` / `docs-tag` / `docs-install` / `agent-install` / `docs-upgrade` / `skill-upgrade`。未启用技能维持既有轻流程。
 
 ---
 
-## 与grilling / 推进环的边界
+## 与 grilling / 推进环的边界
 
 | 能力 | 时机 | 目的 | SSOT |
 | --- | --- | --- | --- |
@@ -19,12 +19,6 @@
 | **grilling / 烤干** | 写入后 | 成品缺口、冲突、可评审性 | [grilling-skill.md](grilling-skill.md) |
 
 禁止：把写前步骤称作「写前 grilling」；用 `G` 表示意图澄清（`G` 仅写后深挖，见推进协议）。
-
----
-
-## 适用范围
-
-与上文「落地状态」名单一致。未启用技能维持既有轻流程。
 
 ---
 
@@ -53,7 +47,7 @@
 
 ---
 
-## 写后「烤干」触发（默认表 + 启发式升级）
+## 写后「烤干」触发
 
 1. 各 skill 在本地 **workflow** 维护**写后默认表**（是否默认 grilling）。  
 2. 出现以下任一情况时，**强制升级为必须烤干**（不可降级跳过）：  
@@ -68,21 +62,8 @@
 
 ---
 
-## 技能 Binding 要求
+## 边界
 
-启用本契约的 skill 须在本地 `workflow.md` / `gates.md`：
+启用本契约的 skill 须在本地 `workflow.md` / `gates.md`：引用本文与 [unit-cycle-protocol.md](unit-cycle-protocol.md)（不复制全文）；声明写后默认表（建议仅 `workflow.md`）；推进遵循 `澄清 → 生成 → 烤干`；只补技能特有字段、路径、高风险与原子性；更新 SKILL.md / evals 中推进协议断言（若有）。
 
-1. 引用本文与 [unit-cycle-protocol.md](unit-cycle-protocol.md)，**不复制**二者全文  
-2. 声明写后默认表（建议仅 `workflow.md`）  
-3. Section/Unit Cycle 遵循 `澄清 → 生成 → 烤干`  
-4. 只补技能特有字段、路径、高风险与原子性  
-5. 更新 SKILL.md / evals 中推进协议断言（若有）
-
----
-
-## 非目标
-
-- 不取代参数向导（参数向导在首轮容器创建前；意图澄清在每段/单元写入前）  
-- 不定义用户动作字母与状态机全文（见推进协议）  
-- 不取代 [grilling-skill.md](grilling-skill.md)  
-- 不规定具体业务模板章节内容  
+本文不负责：取代参数向导（向导在首轮容器创建前；澄清在每段/单元写入前）；定义用户动作字母与状态机全文；取代 [grilling-skill.md](grilling-skill.md)；规定具体业务模板章节内容。

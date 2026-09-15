@@ -1,8 +1,8 @@
 # 知识库布局契约（Agent SSOT）
 
-> **定位**：三层 `{DOC_DIR}` **路径**、文件/目录落点、overview 缓冲区、联邦流水线、技能落点与 SDD×`KNOWLEDGE_TYPE` 的唯一 Agent 侧真源。  
+> **定位**：三层 `{DOC_DIR}` **路径**、文件/目录落点、overview 缓冲区、联邦流水线与 SDD×`KNOWLEDGE_TYPE` 的唯一 Agent 侧真源。  
 > **不分管**：文件四类分型、per-entity Profile、frontmatter/正文结构 → [okf-spec.md](../knowledge/okf-spec.md)；ID **语法** / IDEA-ID 字面 → [naming-conventions.md](../knowledge/naming-conventions.md)；缩写/短义/映射字段 → [glossary.md](../knowledge/glossary.md)；首次定义 / 引用边界 → [knowledge-governance.md](../knowledge/knowledge-governance.md)。  
-> 会话工作稿路径见 [session-spec-path.md](session-spec-path.md)；闸门总表见 [CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates)；推进环见 [unit-cycle-protocol.md](unit-cycle-protocol.md)。
+> 会话工作稿见 [session-spec-path.md](session-spec-path.md)；闸门总表见 [CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates)；推进环见 [unit-cycle-protocol.md](unit-cycle-protocol.md)。写前 hook 已空；技能清单见 [skills/README.md](../skills/README.md)。
 
 **最后更新**: 2026-09-15
 
@@ -50,21 +50,11 @@
 - **IDEA-ID 字面格式**：见 [naming-conventions.md § IDEA-ID](../knowledge/naming-conventions.md#2-idea-id)
 - **ADR 落盘**：`application|system|company/adr/`；命名/落盘见 [adr-template.md](../knowledge/adr-template.md)；章节/状态见 [adr-guidelines.md](../knowledge/adr-guidelines.md)；SDX 运行时见 [sdx-adr-protocol.md](sdx-adr-protocol.md)
 
-### 典型 concept 路径（摘录）
-
-`type` 与 Profile → [okf-spec.md](../knowledge/okf-spec.md)。路径示例：
-
-| 视角 | 典型路径 |
-| --- | --- |
-| business | `knowledge/business/BSD-EXAMPLE/{ID}.md`（域扁平树） |
-| product | `knowledge/product/PD-EXAMPLE/{ID}.md`（公司：`PL-*/PL-*.md`） |
-| application | `knowledge/application/…`（公司：`SLN-*.md`） |
-| data | `knowledge/data/DS-EXAMPLE/{ID}.md`（ENT 挂 DS） |
-| technical | `knowledge/technical/MW-EXAMPLE/{ID}.md` |
+典型 concept 路径模式见 [okf-spec.md](../knowledge/okf-spec.md) 与各层 `knowledge/` 样例树。
 
 ---
 
-## overview 缓冲区
+## overview
 
 | 库 | 路径模式 | 新建模板 | 第三列写入技能 |
 | --- | --- | --- | --- |
@@ -75,11 +65,7 @@
 
 **第三列规则**（去重、delta、A/U/D）：[federation-spec.md](../skills/docs-distill/references/federation-spec.md)「规则（第三列）」。
 
----
-
-## 系统库 overview 主标题行序（摘要）
-
-自上而下逐节，勿跳行：
+**系统库主标题行序**（自上而下逐节，勿跳行）：
 
 - 业务：概述 → 域划分 → 术语 → 流程 → 能力地图 → 业务规则与策略
 - 产品：概述 → 产品架构 → 信息架构 → 产品功能 → 用户旅程与场景 → 版本管理与发布 → 产品运营支撑 → 多端策略
@@ -113,21 +99,6 @@ company/knowledge/{business,product,application,data,technical}/
 
 ---
 
-## 写入路径与协议（非 hook）
-
-写前拦截 **已移除**（`agent/hooks.json` 的 `preToolUse` 为空）。overview / 索引写入靠技能内参数向导与推进协议：
-
-| 技能 | 典型写入 | 协议 |
-| --- | --- | --- |
-| docs-distill / docs-extract | `system|company/knowledge/overview/*.md` 第三列等 | 语义族：澄清 → 生成 → 烤干 |
-| docs-archive | overview 回写 + 视角章节落盘 | 同上（确认书=意图澄清） |
-| docs-indexing | `INDEX-GUIDE.md`、`*/changelogs/INDEXING-LOG.md` | 同上 |
-| docs-tag | overview 附录 / ✅ / 摘录 | 轻流程 + 轻量校核 |
-
-总表见 [CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates)。
-
----
-
 ## SDD 与 KNOWLEDGE_TYPE
 
 | 模式 | 方案/分析落盘 | 架构输入 | PRD/ASD/DSD |
@@ -137,16 +108,3 @@ company/knowledge/{business,product,application,data,technical}/
 | `company` | `company/solutions/`、`company/analysis/` | [company/knowledge/](../../company/knowledge/README.md) | 公司 ANALYSIS 拆解系统归属；各系统 PRD/ASD/DSD 在对应 **`system/requirements/`** |
 
 详见 [sdx-architect/references/knowledge-type-modes.md](../skills/sdx-architect/references/knowledge-type-modes.md)。
-
----
-
-## 相关 Skill
-
-| 场景 | 技能 |
-| --- | --- |
-| 上行蒸馏 | docs-distill |
-| 任意源 → overview | docs-extract |
-| overview → 视角章节 | docs-archive |
-| 关键词 / 摘录 | docs-tag |
-| 索引地图 | docs-indexing |
-| 入口契约 | docs-agent |

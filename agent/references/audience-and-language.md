@@ -14,10 +14,10 @@
 | --- | --- | --- | --- |
 | `sdx-*` | 全部 | **A/B/C/E**（烤干内） | 必有；统一模板 |
 | 语义族 | docs-agent / docs-extract / docs-merge / docs-distill / docs-archive / docs-revise / docs-simplify / docs-indexing / docs-build | **A/B/C/E**（烤干内） | 必有；统一模板 |
-| 轻流程 | docs-link / docs-pull / docs-push / docs-tag / docs-install / agent-install / docs-upgrade / skill-upgrade | **A/B**（写后、宣称完成前） | 无；用下文默认读者表 |
+| 轻流程 | 见 [intent-clarify.md](intent-clarify.md)「落地状态」未绑定行（okf 除外） | **A/B**（写后、宣称完成前） | 无；用下文默认读者表 |
 | docs-okf | docs-okf | **A/B**（结果摘要出口；纯机器输出可跳过） | 无；用默认读者表 |
 
-语义族名单与 [intent-clarify.md](intent-clarify.md) 落地状态对齐；轻流程名单与 [light-flow-actions.md](light-flow-actions.md) 适用表对齐（okf 单独一行）。
+语义族与轻流程名单均与 [intent-clarify.md](intent-clarify.md)「落地状态」对齐（okf 单独一行）；动作字母见 [light-flow-actions.md](light-flow-actions.md)。
 
 ---
 

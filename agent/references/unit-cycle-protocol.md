@@ -1,14 +1,13 @@
 # 单元/段落推进协议（Agent SSOT）
 
 > **定位**：跨 skill 复用的 **Section/Unit Cycle**（生成 → 烤干 → 用户动作 → 重开）唯一真源。  
-> **分工**：写前意图澄清见 [intent-clarify.md](intent-clarify.md)；写后提问能力见 [grilling-skill.md](grilling-skill.md)；受众质检见 [audience-and-language.md](audience-and-language.md)。  
+> **分工**：写前 [intent-clarify.md](intent-clarify.md)；写后提问 [grilling-skill.md](grilling-skill.md)；受众质检 [audience-and-language.md](audience-and-language.md)。  
 > **主线口令**：`澄清 → 生成 → 烤干`。
 
-**最后更新**: 2026-09-09
+**最后更新**: 2026-09-15
 
-**适用**：全部 `/sdx-*` 与语义族 docs-*（与 intent-clarify 启用名单一致）。轻流程技能不绑本文。
-
-**生成步写作原则**：进入「生成并写入」前，须读并遵循 [simplify-principles.md](simplify-principles.md)（A 结构 / B 简明 / C 真源），除非用户明示「跳过精简 / 草稿优先」等豁免。原则正文只维护于该契约；各 Skill 仅短链。
+**适用**：`/sdx-*` 与语义族 docs-*（名单见 [intent-clarify.md](intent-clarify.md)「落地状态」）；轻流程不绑。  
+**生成步**：写入前须遵 [simplify-principles.md](simplify-principles.md)（豁免：用户明示「跳过精简 / 草稿优先」等）；原则正文只在该契约，Skill 仅短链。
 
 ---
 
@@ -123,8 +122,6 @@ stateDiagram-v2
 | 次数 | **同一对象、同一烤干周期**最多 1 次 simplify 遍；本周期内再修订 → 只烤干、不再 simplify |
 | `grilled` 后 | 若仍需整篇结构重组 / SSOT 去重 → 提示可开 `/docs-simplify`（独立技能单元） |
 
-生成步已强制读精简原则；本遍补的是「烤干中修订之后」再收一次被改行。
-
 ---
 
 ## 用户动作
@@ -155,17 +152,13 @@ stateDiagram-v2
 
 ---
 
-## 前文回改
+## 前文回改与重开
 
 涉及前文设定错误、范围漂移、目标/术语冲突等时：
 
-1. 先给受影响前提、推荐方案、数字选项；确认前不执行回改。  
-2. 回改后：当前对象 → `reopened` → 必须回到意图澄清 → 写前 `C` → 修订/重写 → 再烤干。  
+1. 先给受影响前提、推荐方案、数字选项；确认前不执行回改。
+2. 回改后：当前对象 → `reopened` → 必须回到意图澄清 → 写前 `C` → 修订/重写 → 再烤干。
 3. **前文回改 ≠ 当前对象自动通过**。
-
----
-
-## 重开规则
 
 导致重开：前文被改且影响前提；`M` 后未再收敛；用户显式重审；`F` 过程中后续对象打穿前提。
 
