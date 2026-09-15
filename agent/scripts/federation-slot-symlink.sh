@@ -15,35 +15,40 @@ federation_normalize_git_url() {
   printf '%s' "$u"
 }
 
+# path 为绝对则直接 abs；否则相对 base 再 abs。stdout 无换行。
+_federation_abs_under() {
+  local base="${1:?}" path="${2:?}"
+  if [[ "$path" == /* ]]; then
+    printf '%s' "$(strip_trailing_slash "$(abs_path "$path")")"
+  else
+    printf '%s' "$(strip_trailing_slash "$(abs_path "${base}/${path}")")"
+  fi
+}
+
+_federation_emit_actions() {
+  local -n _fed_acts="${1:?}"
+  ((${#_fed_acts[@]} > 0)) || return 0
+  local IFS='+'
+  printf '%s' "${_fed_acts[*]}"
+}
+
 # 解析槽位软链目标：有 .docsconfig 用 DOC_ROOT，否则 {path}/{doc_dir}
 # Usage: federation_resolve_doc_root <repo_path> <doc_dir> → stdout abs path
 federation_resolve_doc_root() {
   local repo_path="${1:?}" doc_dir="${2:-}"
   local cfg t_doc_root='' t_repo_root='' t_doc_dir='' t_agent_root='' t_unused_ads='' t_ktype=''
-  local saved_pwd fallback
+  local saved_pwd fallback=''
 
   repo_path="$(strip_trailing_slash "$(abs_path "$repo_path")")"
-  fallback=""
-  if [[ -n "$doc_dir" ]]; then
-    if [[ "$doc_dir" == /* ]]; then
-      fallback="$(strip_trailing_slash "$(abs_path "$doc_dir")")"
-    else
-      fallback="$(strip_trailing_slash "$(abs_path "${repo_path}/${doc_dir}")")"
-    fi
-  fi
+  [[ -n "$doc_dir" ]] && fallback="$(_federation_abs_under "$repo_path" "$doc_dir")"
 
   cfg="${repo_path}/.docsconfig"
   if [[ -f "$cfg" ]]; then
     saved_pwd="$PWD"
-    cd "$repo_path" || return 1
-    if docsconfig_read_into "$cfg" t_doc_root t_repo_root t_doc_dir t_agent_root t_unused_ads t_ktype; then
+    if cd "$repo_path" && docsconfig_read_into "$cfg" t_doc_root t_repo_root t_doc_dir t_agent_root t_unused_ads t_ktype; then
       cd "$saved_pwd" || true
       if [[ -n "$t_doc_root" ]]; then
-        if [[ "$t_doc_root" == /* ]]; then
-          printf '%s' "$(strip_trailing_slash "$(abs_path "$t_doc_root")")"
-        else
-          printf '%s' "$(strip_trailing_slash "$(abs_path "${repo_path}/${t_doc_root}")")"
-        fi
+        _federation_abs_under "$repo_path" "$t_doc_root"
         return 0
       fi
     else
@@ -79,13 +84,10 @@ EOF
 # 将旧槽位 changelogs 正文追加进共用日志（跳过 front matter 与首个 H1）
 federation_merge_old_slot_changelog() {
   local old_file="${1:?}" shared_file="${2:?}" slot_name="${3:?}" kind="${4:-legacy-changelog}"
-  local tmp body
   [[ -f "$old_file" ]] || return 0
   [[ -f "$shared_file" ]] || return 0
-  tmp="$(mktemp)"
   {
     printf '\n\n## migrated_from: %s (%s)\n\n' "$slot_name" "$kind"
-    # 去掉 YAML front matter
     awk '
       BEGIN { in_fm=0; fm_done=0; skip_h1=1 }
       /^---$/ && !fm_done { if (!in_fm) { in_fm=1; next } else { in_fm=0; fm_done=1; next } }
@@ -93,9 +95,7 @@ federation_merge_old_slot_changelog() {
       skip_h1 && /^# / { skip_h1=0; next }
       { print }
     ' "$old_file"
-  } >>"$tmp"
-  cat "$tmp" >>"$shared_file"
-  rm -f "$tmp"
+  } >>"$shared_file"
 }
 
 federation_migrate_real_slot_dir() {
@@ -115,7 +115,7 @@ federation_ensure_slot_symlink() {
   target_abs="$(strip_trailing_slash "$(abs_path "$target_abs")")"
   parent="$(dirname "$slot_dir")"
   mkdir -p "$parent"
-  federation_ensure_shared_changelogs "$(dirname "$slot_dir")"
+  federation_ensure_shared_changelogs "$parent"
 
   if [[ -d "$slot_dir" && ! -L "$slot_dir" ]]; then
     federation_migrate_real_slot_dir "$slot_dir" "$shared_log_dir" "$slot_name"
@@ -125,10 +125,7 @@ federation_ensure_slot_symlink() {
   if [[ -L "$slot_dir" ]]; then
     current="$(readlink "$slot_dir" 2>/dev/null || true)"
     if [[ "$current" == "$target_abs" ]]; then
-      if [[ ${#actions[@]} -gt 0 ]]; then
-        local IFS='+'
-        printf '%s' "${actions[*]}"
-      fi
+      _federation_emit_actions actions
       return 0
     fi
     rm -f "$slot_dir"
@@ -139,12 +136,9 @@ federation_ensure_slot_symlink() {
   fi
 
   ln -s "$target_abs" "$slot_dir"
-  if [[ ${#actions[@]} -eq 0 ]]; then
-    # 新建软链也记 link-fix，便于追溯
-    actions+=("link-fix")
-  fi
-  local IFS='+'
-  printf '%s' "${actions[*]}"
+  # 新建软链也记 link-fix，便于追溯
+  ((${#actions[@]} > 0)) || actions+=("link-fix")
+  _federation_emit_actions actions
 }
 
 federation_remove_slot_path() {
@@ -153,9 +147,7 @@ federation_remove_slot_path() {
     rm -f "$slot_dir"
     return 0
   fi
-  if [[ -d "$slot_dir" ]]; then
-    rm -rf "$slot_dir"
-  fi
+  [[ -d "$slot_dir" ]] && rm -rf "$slot_dir"
 }
 
 federation_git_origin_url() {

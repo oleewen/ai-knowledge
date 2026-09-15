@@ -1,16 +1,37 @@
 #!/usr/bin/env bash
+#
 # config-bootstrap.sh — 从目标工程根 .docsconfig 读入文档根与仓库根约定到当前 shell
 # 禁止 export DOC_ROOT / REPO_ROOT / DOC_DIR / AGENT_*（仅当前 shell 赋值）。
 # 依赖同目录 docs-core.sh（由 agent-install 安装）
+# 幂等：可重复 source（_SDX_CONFIG_BOOTSTRAP_SH_LOADED）
+#
 
-_BOOTSTRAP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-_CFG_SH="${_BOOTSTRAP_DIR}/docs-core.sh"
-if [[ ! -f "$_CFG_SH" ]]; then
-  printf '[config] 未找到同目录 docs-core.sh（请执行 agent-install.sh 安装 Agent）: %s\n' "$_CFG_SH" >&2
-  if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then exit 1; else return 1; fi
+if [[ -n "${_SDX_CONFIG_BOOTSTRAP_SH_LOADED:-}" ]]; then
+  return 0 2>/dev/null || exit 0
 fi
-# shellcheck source=/dev/null
-source "$_CFG_SH"
+# 不可 readonly：换 AGENT_* 安装根再 source 时须能重新加载。
+_SDX_CONFIG_BOOTSTRAP_SH_LOADED=1
+
+_config_bootstrap_load_docs_core() {
+  local dir cfg
+  dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  cfg="${dir}/docs-core.sh"
+  if [[ ! -f "$cfg" ]]; then
+    printf '[config] 未找到同目录 docs-core.sh（请执行 agent-install.sh 安装 Agent）: %s\n' "$cfg" >&2
+    if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+      exit 1
+    fi
+    return 1
+  fi
+  # shellcheck source=/dev/null
+  source "$cfg"
+}
+
+_config_bootstrap_load_docs_core || {
+  unset -f _config_bootstrap_load_docs_core
+  return 1 2>/dev/null || exit 1
+}
+unset -f _config_bootstrap_load_docs_core
 
 resolve_repo_doc_root() {
   printf '%s' "${DOC_ROOT:-}"
@@ -30,28 +51,24 @@ EOF
   return 1
 }
 
-# Usage: validate_bootstrap_docsconfig
+# Usage: validate_bootstrap_docsconfig [ignored_caller_script_dir...]
+# 可选位置参数保留兼容（旧调用方传 caller_script_dir），已不参与查找。
 validate_bootstrap_docsconfig() {
   local cfg_path config_owner_root
-  if [[ $# -gt 0 ]]; then
-    # 过渡兼容：旧调用方仍可能传入 caller_script_dir，但已不再参与查找决策。
-    :
-  fi
 
-  if ! cfg_path="$(docsconfig_find_path)"; then
+  cfg_path="$(docsconfig_find_path)" || {
     config_bootstrap_fail "[config] 未找到当前工程的 .docsconfig。"
     return 1
-  fi
+  }
   config_owner_root="$(dirname "$cfg_path")"
 
   KNOWLEDGE_TYPE=""
   DOCSCONFIG_PATH="$cfg_path"
   CONFIG_OWNER_ROOT="$config_owner_root"
-  docsconfig_read_into "$cfg_path" DOC_ROOT REPO_ROOT DOC_DIR AGENT_ROOT _SDX_UNUSED_ADS KNOWLEDGE_TYPE \
-    || {
-      config_bootstrap_fail "[config] 解析 .docsconfig 失败。"
-      return 1
-    }
+  docsconfig_read_into "$cfg_path" DOC_ROOT REPO_ROOT DOC_DIR AGENT_ROOT _SDX_UNUSED_ADS KNOWLEDGE_TYPE || {
+    config_bootstrap_fail "[config] 解析 .docsconfig 失败。"
+    return 1
+  }
   unset _SDX_UNUSED_ADS
 
   if [[ -z "${DOC_ROOT:-}" || -z "${REPO_ROOT:-}" || -z "${DOC_DIR:-}" ]]; then
@@ -59,9 +76,8 @@ validate_bootstrap_docsconfig() {
     return 1
   fi
 
-  docsconfig_validate_owner_matches_repo_root "$config_owner_root" "$REPO_ROOT" \
-    || {
-      config_bootstrap_fail "[config] .docsconfig 与 REPO_ROOT 不一致。请重新执行 docs-install。"
-      return 1
-    }
+  docsconfig_validate_owner_matches_repo_root "$config_owner_root" "$REPO_ROOT" || {
+    config_bootstrap_fail "[config] .docsconfig 与 REPO_ROOT 不一致。请重新执行 docs-install。"
+    return 1
+  }
 }

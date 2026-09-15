@@ -218,6 +218,7 @@ docsconfig_repo_root_from_doc_root() {
   cd -P "$(dirname "$doc_root")" 2>/dev/null && pwd || true
 }
 
+# API 别名：docs-install / docs-link 历史调用名，行为同 docsconfig_repo_root_from_doc_root
 docsconfig_repo_root_fallback_from_doc_root() {
   docsconfig_repo_root_from_doc_root "$@"
 }
@@ -324,6 +325,38 @@ docsconfig_validate_knowledge_type() {
 # 与 docsconfig_knowledge_type_is_valid 允许集合一致（供 *-config 枚举/文档对齐）
 readonly -a SDX_SUPPORTED_KNOWLEDGE_TYPES=(application system company)
 readonly -a SDX_SUPPORTED_AGENTS=(cursor trae claude kiro codex)
+
+# 打印本机 Agent 安装树下 docs-core.sh 候选路径（~/.agents 优先，再按 SDX_SUPPORTED_AGENTS）
+_sdx_docs_core_iter_home_script_paths() {
+  local home="${1:-${HOME:-}}" ide
+  [[ -n "$home" ]] || return 1
+  printf '%s\n' "${home}/.agents/scripts/docs-core.sh"
+  for ide in "${SDX_SUPPORTED_AGENTS[@]}"; do
+    printf '%s\n' "${home}/.${ide}/scripts/docs-core.sh"
+  done
+}
+
+# 返回首个存在文件的 abs_path；无则 1
+_sdx_docs_core_first_existing_file() {
+  local p
+  for p in "$@"; do
+    [[ -f "$p" ]] || continue
+    abs_path "$p"
+    return 0
+  done
+  return 1
+}
+
+_sdx_docs_core_first_home_script() {
+  local home="${1:-${HOME:-}}" dc
+  [[ -n "$home" ]] || return 1
+  while IFS= read -r dc; do
+    [[ -f "$dc" ]] || continue
+    abs_path "$dc"
+    return 0
+  done < <(_sdx_docs_core_iter_home_script_paths "$home")
+  return 1
+}
 
 sdx_agents_normalize() {
   local agents_str="${1:-}"
@@ -592,7 +625,7 @@ sdx_find_upward_with_file() {
 
 # 解析 docs-core.sh 绝对路径（不 source）；顺序见 agent/skills/docs-push/references/parameters.md
 sdx_resolve_docs_core_path() {
-  local hint="${1:-${PWD}}" d home="${HOME:-}" dc
+  local hint="${1:-${PWD}}" d found
 
   if [[ -n "${DOCS_CORE_SH:-}" ]]; then
     [[ -f "$DOCS_CORE_SH" ]] || return 1
@@ -600,47 +633,25 @@ sdx_resolve_docs_core_path() {
     return 0
   fi
 
-  for dc in \
+  if found="$(_sdx_docs_core_first_existing_file \
     "${hint}/../agent/scripts/docs-core.sh" \
     "${hint}/agent/scripts/docs-core.sh" \
-    "${hint}/../../../scripts/docs-core.sh"; do
-    if [[ -f "$dc" ]]; then
-      abs_path "$dc"
-      return 0
-    fi
-  done
-
-  if [[ -n "$home" ]]; then
-    for dc in \
-      "${home}/.agents/scripts/docs-core.sh" \
-      "${home}/.cursor/scripts/docs-core.sh" \
-      "${home}/.trae/scripts/docs-core.sh" \
-      "${home}/.claude/scripts/docs-core.sh" \
-      "${home}/.kiro/scripts/docs-core.sh" \
-      "${home}/.codex/scripts/docs-core.sh"; do
-      if [[ -f "$dc" ]]; then
-        abs_path "$dc"
-        return 0
-      fi
-    done
+    "${hint}/../../../scripts/docs-core.sh")"; then
+    printf '%s\n' "$found"
+    return 0
   fi
 
-  d="$(cd -P "$hint" 2>/dev/null && pwd -P || printf '%s' "$hint")"
-  while [[ -n "$d" && "$d" != "/" ]]; do
-    if [[ -f "$d/agent/scripts/docs-core.sh" ]]; then
-      abs_path "$d/agent/scripts/docs-core.sh"
-      return 0
-    fi
-    d="$(dirname "$d")"
-  done
+  if found="$(_sdx_docs_core_first_home_script)"; then
+    printf '%s\n' "$found"
+    return 0
+  fi
 
-  d="$(pwd -P 2>/dev/null || pwd)"
-  while [[ -n "$d" && "$d" != "/" ]]; do
-    if [[ -f "$d/agent/scripts/docs-core.sh" ]]; then
-      abs_path "$d/agent/scripts/docs-core.sh"
-      return 0
-    fi
-    d="$(dirname "$d")"
+  for d in \
+    "$(cd -P "$hint" 2>/dev/null && pwd -P || printf '%s' "$hint")" \
+    "$(pwd -P 2>/dev/null || pwd)"; do
+    d="$(sdx_find_upward_with_file "agent/scripts/docs-core.sh" "$d" 2>/dev/null)" || continue
+    abs_path "$d/agent/scripts/docs-core.sh"
+    return 0
   done
 
   if [[ -n "${AIK_ROOT:-}" && -f "${AIK_ROOT}/agent/scripts/docs-core.sh" ]]; then
@@ -666,6 +677,7 @@ _sdx_docs_core_source_if_needed() {
 sdx_source_docs_core_from_layout() {
   local link_config_dir="${1:?}"
   local core bootstrap_used=''
+
   for core in \
     "${link_config_dir}/../../../scripts/docs-core.sh" \
     "${link_config_dir}/../agent/scripts/docs-core.sh"; do
@@ -680,16 +692,7 @@ sdx_source_docs_core_from_layout() {
   if declare -f sdx_resolve_docs_core_path >/dev/null 2>&1; then
     bootstrap_used="$(sdx_resolve_docs_core_path "$link_config_dir" 2>/dev/null || true)"
   else
-    for bootstrap_used in \
-      "${HOME}/.agents/scripts/docs-core.sh" \
-      "${HOME}/.cursor/scripts/docs-core.sh" \
-      "${HOME}/.trae/scripts/docs-core.sh" \
-      "${HOME}/.claude/scripts/docs-core.sh" \
-      "${HOME}/.kiro/scripts/docs-core.sh" \
-      "${HOME}/.codex/scripts/docs-core.sh"; do
-      [[ -f "$bootstrap_used" ]] && break
-      bootstrap_used=''
-    done
+    bootstrap_used="$(_sdx_docs_core_first_home_script 2>/dev/null || true)"
   fi
   if [[ -n "$bootstrap_used" && -f "$bootstrap_used" ]]; then
     if ! declare -f abs_path >/dev/null 2>&1; then
@@ -844,6 +847,22 @@ _knowledge_link_yaml_escape_dq() {
   printf '%s' "$s"
 }
 
+# 打印条目公共字段；first_prefix 为首行前缀（如 '  - ' 或 '    '），续行固定四空格
+_knowledge_links_print_repo_path_docdir() {
+  local first_prefix="${1:?}" repo="${2:?}" path="${3:?}" doc_dir="${4:-}"
+  printf '%srepository: "%s"\n' "$first_prefix" "$(_knowledge_link_yaml_escape_dq "$repo")"
+  printf '    path: "%s"\n' "$(_knowledge_link_yaml_escape_dq "$path")"
+  if [[ -n "$doc_dir" ]]; then
+    printf '    doc_dir: "%s"\n' "$(_knowledge_link_yaml_escape_dq "$doc_dir")"
+  fi
+}
+
+_knowledge_links_print_name_label() {
+  local kind="${1:?}" name="${2:?}" label="${3:?}"
+  printf '    %s_name: "%s"\n' "$kind" "$(_knowledge_link_yaml_escape_dq "$name")"
+  printf '    %s_label: "%s"\n' "$kind" "$(_knowledge_link_yaml_escape_dq "$label")"
+}
+
 # 覆盖写出 knowledge-links.yaml（可含 type:parent / type:meta + child）
 # child_kind: sys|app；parent_kind: company|sys|none（仅 type=parent 条使用）
 # type:meta：只写 repository/path/doc_dir（doc_dir=目标 KNOWLEDGE_TYPE，无 name/label）
@@ -858,7 +877,7 @@ knowledge_links_write_entries() {
   local -n _types="${7:?}"
   local child_kind="${8:?}"
   local parent_kind="${9:?}"
-  local d i n lab t
+  local d i n lab t name_kind
   d="$(dirname "$f")"
   n="${#_paths[@]}"
   case "$child_kind" in
@@ -884,42 +903,22 @@ knowledge_links_write_entries() {
         t="${_types[i]:-child}"
         if [[ "$t" == 'parent' ]]; then
           printf '  - type: parent\n'
-          printf '    repository: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_repos[i]}")"
-          printf '    path: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_paths[i]}")"
-          if [[ -n "${_dirs[i]:-}" ]]; then
-            printf '    doc_dir: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_dirs[i]}")"
-          fi
+          _knowledge_links_print_repo_path_docdir '    ' "${_repos[i]}" "${_paths[i]}" "${_dirs[i]:-}"
           [[ -n "${_apps[i]:-}" ]] || sdx_error "knowledge-links.yaml(parent) 条目缺少 name（必填）: $f"
           lab="${_labels[i]:-${_apps[i]}}"
-          if [[ "$parent_kind" == 'company' ]]; then
-            printf '    company_name: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_apps[i]}")"
-            printf '    company_label: "%s"\n' "$(_knowledge_link_yaml_escape_dq "$lab")"
-          else
-            printf '    sys_name: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_apps[i]}")"
-            printf '    sys_label: "%s"\n' "$(_knowledge_link_yaml_escape_dq "$lab")"
-          fi
+          name_kind='sys'
+          [[ "$parent_kind" == 'company' ]] && name_kind='company'
+          _knowledge_links_print_name_label "$name_kind" "${_apps[i]}" "$lab"
         elif [[ "$t" == 'meta' ]]; then
           printf '  - type: meta\n'
-          printf '    repository: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_repos[i]}")"
-          printf '    path: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_paths[i]}")"
-          if [[ -n "${_dirs[i]:-}" ]]; then
-            printf '    doc_dir: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_dirs[i]}")"
-          fi
+          _knowledge_links_print_repo_path_docdir '    ' "${_repos[i]}" "${_paths[i]}" "${_dirs[i]:-}"
         else
-          printf '  - repository: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_repos[i]}")"
-          printf '    path: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_paths[i]}")"
-          if [[ -n "${_dirs[i]:-}" ]]; then
-            printf '    doc_dir: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_dirs[i]}")"
-          fi
+          _knowledge_links_print_repo_path_docdir '  - ' "${_repos[i]}" "${_paths[i]}" "${_dirs[i]:-}"
           [[ -n "${_apps[i]:-}" ]] || sdx_error "knowledge-links.yaml(child) 条目缺少 name（必填）: $f"
           lab="${_labels[i]:-${_apps[i]}}"
-          if [[ "$child_kind" == 'sys' ]]; then
-            printf '    sys_name: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_apps[i]}")"
-            printf '    sys_label: "%s"\n' "$(_knowledge_link_yaml_escape_dq "$lab")"
-          else
-            printf '    app_name: "%s"\n' "$(_knowledge_link_yaml_escape_dq "${_apps[i]}")"
-            printf '    app_label: "%s"\n' "$(_knowledge_link_yaml_escape_dq "$lab")"
-          fi
+          name_kind='app'
+          [[ "$child_kind" == 'sys' ]] && name_kind='sys'
+          _knowledge_links_print_name_label "$name_kind" "${_apps[i]}" "$lab"
         fi
       done
     fi
