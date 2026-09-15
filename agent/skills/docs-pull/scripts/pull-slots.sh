@@ -176,7 +176,7 @@ pull_one() {
   local repo path_expanded name label
   local source_dir slot_dir slots_dir shared_log_dir
   local commit action git_action link_action
-  local target_cfg t_doc_root='' t_repo_root='' t_doc_dir='' t_agent_root='' t_agent_dirs='' t_ktype=''
+  local target_cfg t_doc_root='' t_repo_root='' t_doc_dir='' t_agent_root='' t_unused_ads='' t_ktype=''
   local saved_pwd
 
   repo="${repos[idx]}"
@@ -196,7 +196,7 @@ pull_one() {
 
   saved_pwd="$PWD"
   cd "$path_expanded"
-  docsconfig_read_into "$target_cfg" t_doc_root t_repo_root t_doc_dir t_agent_root t_agent_dirs t_ktype \
+  docsconfig_read_into "$target_cfg" t_doc_root t_repo_root t_doc_dir t_agent_root t_unused_ads t_ktype \
     || { cd "$saved_pwd"; printf '无法解析目标 .docsconfig: %s\n' "$target_cfg" >&2; return 1; }
   cd "$saved_pwd"
   [[ -n "$t_doc_root" && -n "$t_doc_dir" && -n "$t_ktype" ]] \

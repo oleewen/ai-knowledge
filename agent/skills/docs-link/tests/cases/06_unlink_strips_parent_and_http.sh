@@ -40,7 +40,6 @@ REPO_ROOT=$COMPANY
 DOC_DIR=docs
 KNOWLEDGE_TYPE=company
 AGENT_ROOT=$ROOT_DIR/agent
-AGENT_DIRS=.cursor
 EOF
 
 cat >"$SYSTEM/.docsconfig" <<EOF
@@ -49,7 +48,6 @@ REPO_ROOT=$SYSTEM
 DOC_DIR=docs
 KNOWLEDGE_TYPE=system
 AGENT_ROOT=$ROOT_DIR/agent
-AGENT_DIRS=.cursor
 EOF
 
 run_link() {

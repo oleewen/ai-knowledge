@@ -31,7 +31,6 @@ REPO_ROOT=$SYSTEM
 DOC_DIR=docs
 KNOWLEDGE_TYPE=system
 AGENT_ROOT=$ROOT_DIR/agent
-AGENT_DIRS=.cursor
 EOF
 
 cat >"$APP/.docsconfig" <<EOF
@@ -40,7 +39,6 @@ REPO_ROOT=$APP
 DOC_DIR=docs
 KNOWLEDGE_TYPE=application
 AGENT_ROOT=$ROOT_DIR/agent
-AGENT_DIRS=.cursor
 EOF
 
 echo "content" >"$APP/docs/sync-me.md"

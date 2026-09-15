@@ -19,7 +19,7 @@ federation_normalize_git_url() {
 # Usage: federation_resolve_doc_root <repo_path> <doc_dir> → stdout abs path
 federation_resolve_doc_root() {
   local repo_path="${1:?}" doc_dir="${2:-}"
-  local cfg t_doc_root='' t_repo_root='' t_doc_dir='' t_agent_root='' t_agent_dirs='' t_ktype=''
+  local cfg t_doc_root='' t_repo_root='' t_doc_dir='' t_agent_root='' t_unused_ads='' t_ktype=''
   local saved_pwd fallback
 
   repo_path="$(strip_trailing_slash "$(abs_path "$repo_path")")"
@@ -36,7 +36,7 @@ federation_resolve_doc_root() {
   if [[ -f "$cfg" ]]; then
     saved_pwd="$PWD"
     cd "$repo_path" || return 1
-    if docsconfig_read_into "$cfg" t_doc_root t_repo_root t_doc_dir t_agent_root t_agent_dirs t_ktype; then
+    if docsconfig_read_into "$cfg" t_doc_root t_repo_root t_doc_dir t_agent_root t_unused_ads t_ktype; then
       cd "$saved_pwd" || true
       if [[ -n "$t_doc_root" ]]; then
         if [[ "$t_doc_root" == /* ]]; then

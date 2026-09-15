@@ -43,27 +43,16 @@ docs_link_source_federation_helpers
 REWRITE_HTTP=0
 
 docs_link_okf_parent_py() {
-  local c d base ar=''
+  local c ar=''
   if [[ -n "${_sar:-}" ]]; then
     ar="$(abs_path "$_sar")" || ar="$_sar"
   fi
   for c in \
     "${SCRIPT_DIR}/../../docs-okf/scripts/okf_parent.py" \
-    "${ar}/skills/docs-okf/scripts/okf_parent.py"
+    "${ar}/skills/docs-okf/scripts/okf_parent.py" \
+    "${HOME}/.agents/skills/docs-okf/scripts/okf_parent.py"
   do
     [[ -n "$c" && -f "$c" ]] && { printf '%s\n' "$c"; return 0; }
-  done
-  for d in ${_sads:-}; do
-    [[ -z "$d" ]] && continue
-    if [[ "$d" == /* || "$d" == '~'* ]]; then
-      base="$(abs_path "$d")" || continue
-    elif [[ -n "$ar" ]]; then
-      base="$(abs_path "${ar}/${d}")" || continue
-    else
-      continue
-    fi
-    c="${base}/skills/docs-okf/scripts/okf_parent.py"
-    [[ -f "$c" ]] && { printf '%s\n' "$c"; return 0; }
   done
   sdx_error "未找到 okf_parent.py（跨层 HTTP 改写）"
 }
@@ -429,8 +418,8 @@ SRC_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || sdx_error "请在 Git
 SRC_CFG="$SRC_ROOT/.docsconfig"
 [[ -f "$SRC_CFG" ]] || sdx_error "源仓库缺少 .docsconfig: $SRC_CFG"
 
-_sdoc='' _srepo='' _sdd='' _sar='' _sads='' _skt=''
-docsconfig_read_into "$SRC_CFG" _sdoc _srepo _sdd _sar _sads _skt || sdx_error "无法解析源 .docsconfig"
+_sdoc='' _srepo='' _sdd='' _sar='' _unused_ads='' _skt=''
+docsconfig_read_into "$SRC_CFG" _sdoc _srepo _sdd _sar _unused_ads _skt || sdx_error "无法解析源 .docsconfig"
 [[ -n "$_sdoc" ]] || sdx_error "源 .docsconfig 缺少 DOC_ROOT"
 [[ -n "$_skt" ]] || sdx_error "源 .docsconfig 缺少 KNOWLEDGE_TYPE"
 docsconfig_validate_knowledge_type "$_skt" || exit 1
@@ -474,8 +463,8 @@ if [[ "$CMD" == 'link' ]]; then
   TGT_CFG="$TGT_ROOT/.docsconfig"
   [[ -f "$TGT_CFG" ]] || sdx_error "目标仓库缺少 .docsconfig: $TGT_CFG"
 
-  _tdoc='' _trepo='' _tdd='' _tar='' _tads='' _tkt=''
-  docsconfig_read_into "$TGT_CFG" _tdoc _trepo _tdd _tar _tads _tkt || sdx_error "无法解析目标 .docsconfig"
+  _tdoc='' _trepo='' _tdd='' _tar='' _unused_ads='' _tkt=''
+  docsconfig_read_into "$TGT_CFG" _tdoc _trepo _tdd _tar _unused_ads _tkt || sdx_error "无法解析目标 .docsconfig"
   [[ -n "$_tkt" ]] || sdx_error "目标 .docsconfig 缺少 KNOWLEDGE_TYPE"
   docsconfig_validate_knowledge_type "$_tkt" || exit 1
   [[ "$_tkt" == "$expect_target" ]] || sdx_error "目标须为 ${expect_target} 知识库（KNOWLEDGE_TYPE=${_tkt}）"
@@ -497,8 +486,8 @@ else
   REGISTER_KEY="$(knowledge_link_identity_from_raw_target "$TARGET_RAW")" || sdx_error "目标路径非法: $TARGET_RAW"
   [[ -z "$CLI_APP_NAME" ]] || sdx_warn "--app-name 仅在 --link 时有效，已忽略"
   if [[ -d "$TARGET_KEY" ]]; then
-    _tdoc='' _trepo='' _tdd='' _tar='' _tads='' _tkt=''
-    if [[ -f "$TARGET_KEY/.docsconfig" ]] && docsconfig_read_into "$TARGET_KEY/.docsconfig" _tdoc _trepo _tdd _tar _tads _tkt; then
+    _tdoc='' _trepo='' _tdd='' _tar='' _unused_ads='' _tkt=''
+    if [[ -f "$TARGET_KEY/.docsconfig" ]] && docsconfig_read_into "$TARGET_KEY/.docsconfig" _tdoc _trepo _tdd _tar _unused_ads _tkt; then
       [[ -n "$_tdoc" ]] && TGT_LINKS="$(docs_link_abs_under_repo "$TARGET_KEY" "$_tdoc")/knowledge-links.yaml"
     fi
   fi

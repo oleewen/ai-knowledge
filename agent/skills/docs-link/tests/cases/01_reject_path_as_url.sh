@@ -30,7 +30,6 @@ REPO_ROOT=$SRC
 DOC_DIR=application
 KNOWLEDGE_TYPE=system
 AGENT_ROOT=$ROOT_DIR/agent
-AGENT_DIRS=.cursor
 EOF
 
 cat >"$SRC/docs/knowledge-links.yaml" <<'EOF'
