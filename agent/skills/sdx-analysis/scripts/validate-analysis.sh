@@ -25,7 +25,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck disable=SC1091
 source "$_AGENT_HOME/scripts/lib/docsconfig.sh"
-docsconfig_bootstrap_validate "$SCRIPT_DIR"
+docsconfig_bootstrap_validate
 
 DOC_ROOT="$(docsconfig_resolve_doc_root)"
 cd "$REPO_ROOT" || exit 1

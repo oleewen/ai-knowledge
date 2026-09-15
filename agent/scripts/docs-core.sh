@@ -3,6 +3,9 @@
 # docs-core.sh — 共享库聚合入口（实现在 lib/）
 # 供 *-config.sh / bootstrap / 联邦布局按文件名解析；IDE home 仍查找本文件名。
 #
+# 换根重载契约：调用方先 unset _AGENT_SHARED_DOCS_CONFIG_LOADED，再 source 本文件；
+# 本文件仅在哨兵未置位时清空子模块哨兵并重新加载 lib/*（见 resolve.sh）。
+#
 
 _SCRIPTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _LIB_DIR="${_SCRIPTS_DIR}/lib"

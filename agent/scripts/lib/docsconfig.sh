@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 #
 # lib/docsconfig.sh — .docsconfig 读写校验、bootstrap 注入当前 shell、Git 默认常量
-# 依赖：lib/path.sh、lib/log-io.sh
+# 依赖：仅 lib/path.sh（轻量；tools 可只 source 本文件，不拖入 log-io / docs-core）
 # 禁止 export DOC_ROOT / REPO_ROOT / DOC_DIR / AGENT_*（仅当前 shell 赋值）
 #
 
-_LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=log-io.sh
-source "${_LIB_DIR}/log-io.sh"
+_DOCSCONFIG_LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=path.sh
+source "${_DOCSCONFIG_LIB_DIR}/path.sh"
+unset _DOCSCONFIG_LIB_DIR
 
 if [[ -n "${_LIB_DOCSCONFIG_LOADED:-}" ]]; then
   return 0 2>/dev/null || exit 0
@@ -18,21 +19,30 @@ DEFAULT_GIT_REPO_URL='https://github.com/oleewen/ai-knowledge.git'
 DEFAULT_GIT_REF='HEAD'
 SUPPORTED_KNOWLEDGE_TYPES=(application system company)
 
-docs_bootstrap_get_repo_url() {
+# 日志：聚合入口已加载 log-io 时复用 info；轻量 source 时回退 printf
+_docsconfig_info() {
+  if declare -F info >/dev/null 2>&1; then
+    info "$@"
+  else
+    printf '%s\n' "$*"
+  fi
+}
+
+docsconfig_bootstrap_get_repo_url() {
   printf '%s' "${GIT_REPO_URL:-$DEFAULT_GIT_REPO_URL}"
 }
 
-docs_bootstrap_get_ref() {
+docsconfig_bootstrap_get_ref() {
   printf '%s' "${GIT_REF:-$DEFAULT_GIT_REF}"
 }
 
-docs_bootstrap_get_tmpdir() {
+docsconfig_bootstrap_get_tmpdir() {
   local tmpdir="${TMPDIR:-/tmp}"
   [[ -d "$tmpdir" ]] || tmpdir='/tmp'
   printf '%s' "$tmpdir"
 }
 
-docs_bootstrap_gen_clone_dir() {
+docsconfig_bootstrap_gen_clone_dir() {
   printf '%s/ai-knowledge-%s' "${1:?tmpdir}" "$$"
 }
 
@@ -146,13 +156,13 @@ docs_backup_path_to_init() {
   fi
 
   if [[ "$dry_run" == '1' ]]; then
-    info "[dry-run] 将备份：$existing → $backup_target"
+    _docsconfig_info "[dry-run] 将备份：$existing → $backup_target"
     return 0
   fi
 
   mkdir -p "$(dirname "$backup_target")" 2>/dev/null || true
   mv "$existing" "$backup_target"
-  info "已备份：$existing → $backup_target"
+  _docsconfig_info "已备份：$existing → $backup_target"
 }
 
 docsconfig_knowledge_type_is_valid() {
@@ -275,7 +285,7 @@ docsconfig_bootstrap_fail() {
   cat >&2 <<'EOF'
 [config] 请使用 /docs-install 或 docs-install.sh 初始化并写入 .docsconfig，例如：
   bash agent/skills/docs-install/scripts/docs-install.sh --scope=config --target <目标工程文档目录>
-（在已克隆 ai-knowledge 的仓库根执行；路径请按实际工程调整；仍兼容 --target=<目录>）
+（在已克隆 ai-knowledge 的仓库根执行；路径请按实际工程调整）
 EOF
   if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     exit 1
@@ -283,8 +293,8 @@ EOF
   return 1
 }
 
-# Usage: docsconfig_bootstrap_validate [ignored_caller_script_dir...]
-# 可选位置参数保留兼容（旧调用方传 caller_script_dir），已不参与查找。
+# Usage: docsconfig_bootstrap_validate
+# 自 cwd 上溯查找 .docsconfig，注入 DOC_ROOT / REPO_ROOT / DOC_DIR（及可选字段）到当前 shell。
 docsconfig_bootstrap_validate() {
   local cfg_path config_owner_root
 

@@ -39,12 +39,12 @@
 
 ## 步骤 1：Index 解析
 
-`source` `agent/scripts/lib/docsconfig.sh`，`docsconfig_bootstrap_validate` 指向本技能 `scripts/`，解析 `.docsconfig` 得 **`REPO_ROOT`**、**`DOC_ROOT`**（及可选 `AGENT_*`）。
+`source` `agent/scripts/lib/docsconfig.sh`，`docsconfig_bootstrap_validate` 解析 `.docsconfig` 得 **`REPO_ROOT`**、**`DOC_ROOT`**（及可选 `AGENT_*`）。
 
 ```bash
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 source "$REPO_ROOT/agent/scripts/lib/docsconfig.sh"
-docsconfig_bootstrap_validate "$REPO_ROOT/agent/skills/docs-agent/scripts"
+docsconfig_bootstrap_validate
 DOC_ROOT="$(docsconfig_resolve_doc_root)"
 ```
 

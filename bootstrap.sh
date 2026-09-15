@@ -56,21 +56,21 @@ if ! declare -F require_bash5 >/dev/null 2>&1; then
     fi
   }
 fi
-if ! declare -F docs_bootstrap_get_repo_url >/dev/null 2>&1; then
+if ! declare -F docsconfig_bootstrap_get_repo_url >/dev/null 2>&1; then
   _GIT_REPO_URL_FALLBACK='https://github.com/oleewen/ai-knowledge.git'
   _GIT_DEFAULT_REF_FALLBACK='HEAD'
-  docs_bootstrap_get_repo_url() {
+  docsconfig_bootstrap_get_repo_url() {
     printf '%s' "${GIT_REPO_URL:-$_GIT_REPO_URL_FALLBACK}"
   }
-  docs_bootstrap_get_ref() {
+  docsconfig_bootstrap_get_ref() {
     printf '%s' "${GIT_REF:-$_GIT_DEFAULT_REF_FALLBACK}"
   }
-  docs_bootstrap_get_tmpdir() {
+  docsconfig_bootstrap_get_tmpdir() {
     local tmpdir="${TMPDIR:-/tmp}"
     [[ -d "$tmpdir" ]] || tmpdir='/tmp'
     printf '%s' "$tmpdir"
   }
-  docs_bootstrap_gen_clone_dir() {
+  docsconfig_bootstrap_gen_clone_dir() {
     printf '%s/ai-knowledge-%s' "${1:?tmpdir}" "$$"
   }
 fi
@@ -506,11 +506,11 @@ bs_main() {
   bs_collect_params
 
   local repo_url ref tmpdir
-  repo_url="$(docs_bootstrap_get_repo_url)"
-  ref="$(docs_bootstrap_get_ref)"
-  tmpdir="$(docs_bootstrap_get_tmpdir)"
+  repo_url="$(docsconfig_bootstrap_get_repo_url)"
+  ref="$(docsconfig_bootstrap_get_ref)"
+  tmpdir="$(docsconfig_bootstrap_get_tmpdir)"
 
-  BS_CLONE_DIR="$(docs_bootstrap_gen_clone_dir "$tmpdir")"
+  BS_CLONE_DIR="$(docsconfig_bootstrap_gen_clone_dir "$tmpdir")"
   trap bs_cleanup EXIT
 
   log ''

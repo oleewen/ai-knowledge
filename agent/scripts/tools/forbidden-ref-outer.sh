@@ -8,7 +8,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/../lib/docsconfig.sh"
-docsconfig_bootstrap_validate "$SCRIPT_DIR"
+docsconfig_bootstrap_validate
 
 REPO_ROOT="${REPO_ROOT:?docsconfig_bootstrap_validate 未注入 REPO_ROOT}"
 
