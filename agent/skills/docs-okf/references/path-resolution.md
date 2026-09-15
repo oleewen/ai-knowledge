@@ -7,7 +7,7 @@
 | 条件 | 行为 |
 | ---- | ---- |
 | 无 `.docsconfig` | **中止** → `docs-install --scope=config --target <DOC_ROOT>` |
-| 缺 `DOC_ROOT` / `REPO_ROOT` / `DOC_DIR` | **中止**（config-bootstrap 标准文案） |
+| 缺 `DOC_ROOT` / `REPO_ROOT` / `DOC_DIR` | **中止**（docsconfig 标准文案） |
 | `.docsconfig` 所在目录与 `REPO_ROOT` 不一致 | **中止** → 视为配置漂移，重新执行 `docs-install` 修复 |
 | 缺 `KNOWLEDGE_TYPE` | **中止** → `docs-install --scope=knowledge --target <DOC_ROOT>` |
 

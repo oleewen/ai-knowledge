@@ -30,7 +30,7 @@
 
 - `agent/` 内：相对当前文件。
 - `agent/` 外：仓库根 **`REPO_ROOT`** 相对路径（与 `.docsconfig` 的 `REPO_ROOT` 一致，见 [docs-install/SKILL.md](../skills/docs-install/SKILL.md)）。
-- 自检：`bash agent/scripts/validate-agent-md-links.sh`。
+- 自检：`bash agent/scripts/tools/validate-link-reachable.sh`。
 
 ### 2) Skills 与脚本边界
 
@@ -50,7 +50,7 @@
 
 - **禁止**：除 `{application|system|company|docs}/superpowers/**` **内部**外，全仓不得引用 superpowers 下**具名文件**（路径含 `superpowers/(specs|plans)/YYYY-MM-DD-` 且指向 `.md`）。
 - **允许**：目录契约、占位模式、hooks 通用正则、无日期测试桩。
-- **验收**：`bash agent/scripts/check-forbidden-file-refs.sh`；套件：`bash agent/scripts/tests/forbidden-file-refs/run.sh`。
+- **验收**：`bash agent/scripts/tools/forbidden-ref-outer.sh`；套件：`bash agent/scripts/tests/forbidden-file-refs/run.sh`。
 - **细则**：[session-spec-path.md](../references/session-spec-path.md)。
 
 ### 5) 文档分类矩阵（`title` / `H1` / `MD025`）

@@ -1,14 +1,26 @@
 #!/usr/bin/env bash
-# federation-slot-symlink.sh — 联邦槽位软链与共用日志辅助（docs-link / docs-pull）
-# 依赖：已 source docs-core.sh（abs_path / strip_trailing_slash）
+# lib/slot-softlink.sh — 联邦槽位软链与共用日志辅助（docs-link / docs-pull）
+# 依赖：lib/path.sh、lib/docsconfig.sh、lib/git-remote.sh；未加载时自动 source
 
-if [[ -n "${_FEDERATION_SLOT_SYMLINK_SH_LOADED:-}" ]]; then
+if [[ -n "${_LIB_SLOT_SOFTLINK_LOADED:-}" ]]; then
   return 0 2>/dev/null || exit 0
 fi
-readonly _FEDERATION_SLOT_SYMLINK_SH_LOADED=1
+# 不可 readonly：docs-core 换根重载时须 unset 后重新加载
+_LIB_SLOT_SOFTLINK_LOADED=1
+
+_SLOT_LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if ! declare -f abs_path >/dev/null 2>&1 || ! declare -f docsconfig_read_into >/dev/null 2>&1; then
+  # shellcheck source=docsconfig.sh
+  source "${_SLOT_LIB_DIR}/docsconfig.sh"
+fi
+if ! declare -f git_remote_url_prefer_origin >/dev/null 2>&1; then
+  # shellcheck source=git-remote.sh
+  source "${_SLOT_LIB_DIR}/git-remote.sh"
+fi
+unset _SLOT_LIB_DIR
 
 # 规范化 remote URL 便于比较（去尾部 .git、统一小写 scheme/host 不做过度猜测）
-federation_normalize_git_url() {
+slot_normalize_git_url() {
   local u="${1:-}"
   u="${u%.git}"
   u="${u%/}"
@@ -16,7 +28,7 @@ federation_normalize_git_url() {
 }
 
 # path 为绝对则直接 abs；否则相对 base 再 abs。stdout 无换行。
-_federation_abs_under() {
+_slot_abs_under() {
   local base="${1:?}" path="${2:?}"
   if [[ "$path" == /* ]]; then
     printf '%s' "$(strip_trailing_slash "$(abs_path "$path")")"
@@ -25,7 +37,7 @@ _federation_abs_under() {
   fi
 }
 
-_federation_emit_actions() {
+_slot_emit_actions() {
   local -n _fed_acts="${1:?}"
   ((${#_fed_acts[@]} > 0)) || return 0
   local IFS='+'
@@ -33,22 +45,22 @@ _federation_emit_actions() {
 }
 
 # 解析槽位软链目标：有 .docsconfig 用 DOC_ROOT，否则 {path}/{doc_dir}
-# Usage: federation_resolve_doc_root <repo_path> <doc_dir> → stdout abs path
-federation_resolve_doc_root() {
+# Usage: slot_resolve_doc_root <repo_path> <doc_dir> → stdout abs path
+slot_resolve_doc_root() {
   local repo_path="${1:?}" doc_dir="${2:-}"
-  local cfg t_doc_root='' t_repo_root='' t_doc_dir='' t_agent_root='' t_unused_ads='' t_ktype=''
+  local cfg t_doc_root='' t_repo_root='' t_doc_dir='' t_agent_root='' t_ktype=''
   local saved_pwd fallback=''
 
   repo_path="$(strip_trailing_slash "$(abs_path "$repo_path")")"
-  [[ -n "$doc_dir" ]] && fallback="$(_federation_abs_under "$repo_path" "$doc_dir")"
+  [[ -n "$doc_dir" ]] && fallback="$(_slot_abs_under "$repo_path" "$doc_dir")"
 
   cfg="${repo_path}/.docsconfig"
   if [[ -f "$cfg" ]]; then
     saved_pwd="$PWD"
-    if cd "$repo_path" && docsconfig_read_into "$cfg" t_doc_root t_repo_root t_doc_dir t_agent_root t_unused_ads t_ktype; then
+    if cd "$repo_path" && docsconfig_read_into "$cfg" t_doc_root t_repo_root t_doc_dir t_agent_root t_ktype; then
       cd "$saved_pwd" || true
       if [[ -n "$t_doc_root" ]]; then
-        _federation_abs_under "$repo_path" "$t_doc_root"
+        _slot_abs_under "$repo_path" "$t_doc_root"
         return 0
       fi
     else
@@ -60,7 +72,7 @@ federation_resolve_doc_root() {
   printf '%s' "$fallback"
 }
 
-federation_ensure_shared_changelogs() {
+slot_ensure_shared_changelogs() {
   local slots_parent="${1:?}" # .../application-slots 或 .../system-slots
   local log_dir archive_log
   log_dir="${slots_parent%/}/changelogs"
@@ -82,7 +94,7 @@ EOF
 }
 
 # 将旧槽位 changelogs 正文追加进共用日志（跳过 front matter 与首个 H1）
-federation_merge_old_slot_changelog() {
+slot_merge_old_slot_changelog() {
   local old_file="${1:?}" shared_file="${2:?}" slot_name="${3:?}" kind="${4:-legacy-changelog}"
   [[ -f "$old_file" ]] || return 0
   [[ -f "$shared_file" ]] || return 0
@@ -98,34 +110,34 @@ federation_merge_old_slot_changelog() {
   } >>"$shared_file"
 }
 
-federation_migrate_real_slot_dir() {
+slot_migrate_real_slot_dir() {
   local slot_dir="${1:?}" shared_log_dir="${2:?}" slot_name="${3:?}"
   local old_archive
   [[ -d "$slot_dir" && ! -L "$slot_dir" ]] || return 0
   old_archive="${slot_dir%/}/changelogs/ARCHIVE-LOG.md"
-  federation_merge_old_slot_changelog "$old_archive" "${shared_log_dir%/}/ARCHIVE-LOG.md" "$slot_name" "ARCHIVE-LOG"
+  slot_merge_old_slot_changelog "$old_archive" "${shared_log_dir%/}/ARCHIVE-LOG.md" "$slot_name" "ARCHIVE-LOG"
   rm -rf "$slot_dir"
 }
 
 # 确保 slot_dir 为指向 target_abs 的绝对路径软链；真目录则先迁移
 # stdout: action 片段（空|migrate|link-fix）
-federation_ensure_slot_symlink() {
+slot_ensure_slot_symlink() {
   local slot_dir="${1:?}" target_abs="${2:?}" shared_log_dir="${3:?}" slot_name="${4:?}"
   local actions=() current parent
   target_abs="$(strip_trailing_slash "$(abs_path "$target_abs")")"
   parent="$(dirname "$slot_dir")"
   mkdir -p "$parent"
-  federation_ensure_shared_changelogs "$parent"
+  slot_ensure_shared_changelogs "$parent"
 
   if [[ -d "$slot_dir" && ! -L "$slot_dir" ]]; then
-    federation_migrate_real_slot_dir "$slot_dir" "$shared_log_dir" "$slot_name"
+    slot_migrate_real_slot_dir "$slot_dir" "$shared_log_dir" "$slot_name"
     actions+=("migrate")
   fi
 
   if [[ -L "$slot_dir" ]]; then
     current="$(readlink "$slot_dir" 2>/dev/null || true)"
     if [[ "$current" == "$target_abs" ]]; then
-      _federation_emit_actions actions
+      _slot_emit_actions actions
       return 0
     fi
     rm -f "$slot_dir"
@@ -138,10 +150,10 @@ federation_ensure_slot_symlink() {
   ln -s "$target_abs" "$slot_dir"
   # 新建软链也记 link-fix，便于追溯
   ((${#actions[@]} > 0)) || actions+=("link-fix")
-  _federation_emit_actions actions
+  _slot_emit_actions actions
 }
 
-federation_remove_slot_path() {
+slot_remove_slot_path() {
   local slot_dir="${1:?}"
   if [[ -L "$slot_dir" ]]; then
     rm -f "$slot_dir"
@@ -150,12 +162,12 @@ federation_remove_slot_path() {
   [[ -d "$slot_dir" ]] && rm -rf "$slot_dir"
 }
 
-federation_git_origin_url() {
+slot_git_origin_url() {
   local repo="${1:?}"
-  git -C "$repo" remote get-url origin 2>/dev/null || true
+  git_remote_url_prefer_origin "$repo" 2>/dev/null || true
 }
 
-federation_git_is_dirty() {
+slot_git_is_dirty() {
   local repo="${1:?}"
   [[ -n "$(git -C "$repo" status --porcelain 2>/dev/null || true)" ]]
 }

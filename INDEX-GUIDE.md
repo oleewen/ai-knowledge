@@ -163,7 +163,7 @@ flowchart LR
 | `/docs-upgrade` 脚本 | Bash | [agent/skills/docs-upgrade/scripts/docs-upgrade.sh](agent/skills/docs-upgrade/scripts/docs-upgrade.sh) | 已有库对齐元库清单/骨架（不清空） |
 | `/skill-upgrade` | Skill | [agent/skills/skill-upgrade/SKILL.md](agent/skills/skill-upgrade/SKILL.md) | 已装 Agent 树 + 生态 skills 追新 |
 | `/docs-*` · `/sdx-*` | Slash | [agent/skills/README.md](agent/skills/README.md) | 见 §9.3（25 个） |
-| 共享库 / 回归 | Bash | [agent/scripts/](agent/scripts/) · [agent/scripts/tests/run.sh](agent/scripts/tests/run.sh) | `docs-core` / `config-bootstrap` / `test-core` 等 |
+| 共享库 / 回归 | Bash | [agent/scripts/](agent/scripts/) · [agent/scripts/tests/run.sh](agent/scripts/tests/run.sh) | `docs-core`（聚合）· `lib/*` · `tools/*` · `test-core` 等 |
 
 ---
 
@@ -197,7 +197,7 @@ flowchart LR
 | 能力 | 功能 | 依赖 |
 | ------ | ------ | ------ |
 | Slash Skills（25） | 索引、变更、SDD、归档、OKF、联邦 push/pull、装机与升级等 | `agent/skills/*/SKILL.md` |
-| 初始化链 | 拷贝知识库、写 `.docsconfig`、安装 Agent 文件 | `agent/skills/docs-install/scripts/`、`agent/skills/agent-install/scripts/`、`agent/scripts/docs-core.sh` |
+| 初始化链 | 拷贝知识库、写 `.docsconfig`、安装 Agent 文件 | `agent/skills/docs-install/scripts/`、`agent/skills/agent-install/scripts/`、`agent/scripts/docs-core.sh`（聚合）+ `agent/scripts/lib/` |
 | 联邦同步 | link 登记、pull 槽位、push 规约、distill overview | `knowledge-links.yaml` + 对应 Skill |
 
 ### 4.4 领域事件
@@ -303,7 +303,7 @@ stateDiagram-v2
 
 | 配置项/参数 | 所在位置 | 说明 |
 | ------------- | ---------- | ------ |
-| `GIT_REPO_URL` / `GIT_REF` | [bootstrap.sh](bootstrap.sh) / [agent/scripts/docs-core.sh](agent/scripts/docs-core.sh) | bootstrap 克隆地址与引用 |
+| `GIT_REPO_URL` / `GIT_REF` | [bootstrap.sh](bootstrap.sh) / [agent/scripts/lib/docsconfig.sh](agent/scripts/lib/docsconfig.sh) | bootstrap 克隆地址与引用 |
 | `REPO_ROOT`（环境变量） | `docs-install.sh` 等 | 指向本中央库根 |
 | `--target` / `--mode` / `--scope` / `--type` / `--force` / `--dry-run` | `docs-install.sh` | 见 [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md) |
 | `.docsconfig` 键 | 目标工程或本仓根 | `DOC_ROOT`、`REPO_ROOT`、`DOC_DIR`、`KNOWLEDGE_TYPE`；可选 `AGENT_*` |

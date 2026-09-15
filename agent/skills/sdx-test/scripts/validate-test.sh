@@ -20,10 +20,10 @@ done
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck disable=SC1091
-source "$_AGENT_HOME/scripts/config-bootstrap.sh"
-validate_bootstrap_docsconfig "$SCRIPT_DIR"
+source "$_AGENT_HOME/scripts/lib/docsconfig.sh"
+docsconfig_bootstrap_validate "$SCRIPT_DIR"
 
-DOC_ROOT="$(resolve_repo_doc_root)"
+DOC_ROOT="$(docsconfig_resolve_doc_root)"
 cd "$REPO_ROOT" || exit 1
 
 TEMPLATE="${SCRIPT_DIR}/../assets/tdd-template.md"

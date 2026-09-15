@@ -39,13 +39,13 @@
 
 ## 步骤 1：Index 解析
 
-`source` `agent/scripts/config-bootstrap.sh`，`validate_bootstrap_docsconfig` 指向本技能 `scripts/`，解析 `.docsconfig` 得 **`REPO_ROOT`**、**`DOC_ROOT`**（及可选 `AGENT_*`）。
+`source` `agent/scripts/lib/docsconfig.sh`，`docsconfig_bootstrap_validate` 指向本技能 `scripts/`，解析 `.docsconfig` 得 **`REPO_ROOT`**、**`DOC_ROOT`**（及可选 `AGENT_*`）。
 
 ```bash
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-source "$REPO_ROOT/agent/scripts/config-bootstrap.sh"
-validate_bootstrap_docsconfig "$REPO_ROOT/agent/skills/docs-agent/scripts"
-DOC_ROOT="$(resolve_repo_doc_root)"
+source "$REPO_ROOT/agent/scripts/lib/docsconfig.sh"
+docsconfig_bootstrap_validate "$REPO_ROOT/agent/skills/docs-agent/scripts"
+DOC_ROOT="$(docsconfig_resolve_doc_root)"
 ```
 
 按序查找落盘 Index Guide，命中即停并记录相对路径：`REPO_ROOT/INDEX-GUIDE.md`，再 `DOC_ROOT/INDEX-GUIDE.md`。未命中 → 终止并提示 `/docs-indexing`。细则与降级见 [execution-spec.md](execution-spec.md)。

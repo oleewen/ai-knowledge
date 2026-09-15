@@ -2,18 +2,18 @@
 # agent-config.sh — 仅供 agent-install.sh source（Agent CLI 默认值、校验、.docsconfig）
 # 依赖 Bash 5+；source agent/scripts/docs-core.sh
 
-if [[ -n "${_SDX_AGENT_CONFIG_SH_LOADED:-}" ]]; then
+if [[ -n "${_AGENT_CONFIG_SH_LOADED:-}" ]]; then
   return 0 2>/dev/null || exit 0
 fi
-readonly _SDX_AGENT_CONFIG_SH_LOADED=1
+readonly _AGENT_CONFIG_SH_LOADED=1
 
 readonly AGENT_CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=../../../scripts/docs-core.sh
 source "${AGENT_CONFIG_DIR}/../../../scripts/docs-core.sh"
 
-readonly SDX_VERSION='3.0.0'
+readonly VERSION='3.0.0'
 
-declare -A SDX_AGENT_DIR_MAP=(
+declare -A AGENT_DIR_MAP=(
   [cursor]='.cursor'
   [trae]='.trae'
   [claude]='.claude'
@@ -21,8 +21,8 @@ declare -A SDX_AGENT_DIR_MAP=(
   [codex]='.codex'
 )
 
-readonly SDX_DEFAULT_AGENT_SCOPE='a'
-readonly SDX_DEFAULT_AGENTS_OPT='cursor'
+readonly DEFAULT_AGENT_SCOPE='a'
+readonly DEFAULT_AGENTS_OPT='cursor'
 
 # scope=a：hooks + rules + scripts + skills + knowledge + references
 # scope=k|knowledge：仅 knowledge/ + references/
@@ -51,9 +51,9 @@ validate_agent_scope_token() {
   agent_scope_apply "${1:-}" _ir _is _ih _ish _ik
 }
 
-validate_agents() { sdx_agents_validate "${1:-}"; }
+validate_agents() { agents_validate "${1:-}"; }
 
-normalize_agents() { sdx_agents_normalize "${1:-}"; }
+normalize_agents() { agents_normalize "${1:-}"; }
 
 agent_dirs_space_separated_for() {
   local ag d out=''
@@ -65,5 +65,5 @@ agent_dirs_space_separated_for() {
 }
 
 get_agent_dir() {
-  printf '%s' "${SDX_AGENT_DIR_MAP[${1:-}]:-agent}"
+  printf '%s' "${AGENT_DIR_MAP[${1:-}]:-agent}"
 }

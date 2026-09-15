@@ -7,13 +7,13 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck disable=SC1091
-source "$_AGENT_HOME/scripts/config-bootstrap.sh"
-validate_bootstrap_docsconfig "$SCRIPT_DIR"
+source "$_AGENT_HOME/scripts/lib/docsconfig.sh"
+docsconfig_bootstrap_validate "$SCRIPT_DIR"
 
-DOC_ROOT="$(resolve_repo_doc_root)"
+DOC_ROOT="$(docsconfig_resolve_doc_root)"
 cd "$REPO_ROOT" || exit 1
 
-# cwd=仓库根；路径见 .docsconfig / resolve_repo_doc_root
+# cwd=仓库根；路径见 .docsconfig / docsconfig_resolve_doc_root
 DEFAULT_OUTPUT="${DOC_ROOT}/INDEX-GUIDE.md"
 LOG_FILE="${DOC_ROOT}/changelogs/INDEXING-LOG.md"
 INDEXING_LOG_PY="${SCRIPT_DIR}/indexing_log.py"

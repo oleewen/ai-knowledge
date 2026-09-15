@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # docs-config.sh — 仅供 docs-install.sh source（docs-install 配置层 + docs-core）
 
-if [[ -n "${_SDX_DOCS_CONFIG_SH_LOADED:-}" ]]; then
+if [[ -n "${_DOCS_CONFIG_SH_LOADED:-}" ]]; then
   return 0 2>/dev/null || exit 0
 fi
-readonly _SDX_DOCS_CONFIG_SH_LOADED=1
+readonly _DOCS_CONFIG_SH_LOADED=1
 
 if ! declare -p DOCS_CONFIG_DIR >/dev/null 2>&1; then
   readonly DOCS_CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -12,9 +12,9 @@ fi
 # shellcheck source=../../../scripts/docs-core.sh
 source "${DOCS_CONFIG_DIR}/../../../scripts/docs-core.sh"
 
-readonly -a SDX_SUPPORTED_MODES=(standalone central)
+readonly -a SUPPORTED_MODES=(standalone central)
 
-declare -A SDX_DEFAULTS=(
+declare -A DEFAULTS=(
   [docs_dir]='docs'
   [mode]='standalone'
 )
@@ -54,7 +54,7 @@ normalize_scope() {
   esac
 }
 
-cfg_default() { printf '%s' "${SDX_DEFAULTS[${1:-}]:-}"; }
+cfg_default() { printf '%s' "${DEFAULTS[${1:-}]:-}"; }
 
 post_init_checklist() {
   local docs_abs="${1:-}"

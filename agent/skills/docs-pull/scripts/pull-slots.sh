@@ -2,9 +2,13 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/../../../../agent/scripts/config-bootstrap.sh"
+_AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck source=/dev/null
-source "$SCRIPT_DIR/../../../../agent/scripts/federation-slot-symlink.sh"
+source "$_AGENT_HOME/scripts/lib/docsconfig.sh"
+# shellcheck source=/dev/null
+source "$_AGENT_HOME/scripts/lib/knowledge-links.sh"
+# shellcheck source=/dev/null
+source "$_AGENT_HOME/scripts/lib/slot-softlink.sh"
 
 APP=""
 SYS_NAME=""
@@ -39,7 +43,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-validate_bootstrap_docsconfig
+docsconfig_bootstrap_validate
 
 MODE="${KNOWLEDGE_TYPE:-}"
 [[ "$MODE" == "system" || "$MODE" == "company" ]] || { printf '不支持的 KNOWLEDGE_TYPE: %s\n' "$MODE" >&2; exit 1; }
@@ -138,14 +142,14 @@ ensure_child_repo() {
   [[ -d "$path_expanded/.git" || -f "$path_expanded/.git" ]] \
     || { printf 'path 不是 Git 工作区: %s\n' "$path_expanded" >&2; return 1; }
 
-  origin="$(federation_git_origin_url "$path_expanded")"
+  origin="$(slot_git_origin_url "$path_expanded")"
   [[ -n "$origin" ]] || { printf 'path 缺少 origin remote: %s\n' "$path_expanded" >&2; return 1; }
-  expect="$(federation_normalize_git_url "$repo")"
-  actual="$(federation_normalize_git_url "$origin")"
+  expect="$(slot_normalize_git_url "$repo")"
+  actual="$(slot_normalize_git_url "$origin")"
   [[ "$expect" == "$actual" ]] \
     || { printf 'origin 与 knowledge-links.repository 不匹配: origin=%s repository=%s\n' "$origin" "$repo" >&2; return 1; }
 
-  if federation_git_is_dirty "$path_expanded"; then
+  if slot_git_is_dirty "$path_expanded"; then
     printf '工作区有未提交改动，拒绝 git pull: %s\n' "$path_expanded" >&2
     return 1
   fi
@@ -176,7 +180,7 @@ pull_one() {
   local repo path_expanded name label
   local source_dir slot_dir slots_dir shared_log_dir
   local commit action git_action link_action
-  local target_cfg t_doc_root='' t_repo_root='' t_doc_dir='' t_agent_root='' t_unused_ads='' t_ktype=''
+  local target_cfg t_doc_root='' t_repo_root='' t_doc_dir='' t_agent_root='' t_ktype=''
   local saved_pwd
 
   repo="${repos[idx]}"
@@ -187,7 +191,7 @@ pull_one() {
   slots_dir="${DOC_ROOT%/}/${slot_parent}"
   slot_dir="${slots_dir}/${slot_prefix}-${name}"
   shared_log_dir="${slots_dir}/changelogs"
-  federation_ensure_shared_changelogs "$slots_dir"
+  slot_ensure_shared_changelogs "$slots_dir"
 
   git_action="$(ensure_child_repo "$path_expanded" "$repo")" || return 1
 
@@ -196,7 +200,7 @@ pull_one() {
 
   saved_pwd="$PWD"
   cd "$path_expanded"
-  docsconfig_read_into "$target_cfg" t_doc_root t_repo_root t_doc_dir t_agent_root t_unused_ads t_ktype \
+  docsconfig_read_into "$target_cfg" t_doc_root t_repo_root t_doc_dir t_agent_root t_ktype \
     || { cd "$saved_pwd"; printf '无法解析目标 .docsconfig: %s\n' "$target_cfg" >&2; return 1; }
   cd "$saved_pwd"
   [[ -n "$t_doc_root" && -n "$t_doc_dir" && -n "$t_ktype" ]] \
@@ -208,11 +212,11 @@ pull_one() {
     [[ "$t_ktype" == "system" ]] || { printf '目标 KNOWLEDGE_TYPE 不匹配（应为 system）: %s\n' "$t_ktype" >&2; return 1; }
   fi
 
-  source_dir="$(federation_resolve_doc_root "$path_expanded" "${doc_dirs[idx]}")" \
+  source_dir="$(slot_resolve_doc_root "$path_expanded" "${doc_dirs[idx]}")" \
     || { printf '无法解析下级 DOC_ROOT: path=%s doc_dir=%s\n' "$path_expanded" "${doc_dirs[idx]}" >&2; return 1; }
   [[ -d "$source_dir" ]] || { printf '源目录不存在: %s\n' "$source_dir" >&2; return 1; }
 
-  link_action="$(federation_ensure_slot_symlink "$slot_dir" "$source_dir" "$shared_log_dir" "$name")"
+  link_action="$(slot_ensure_slot_symlink "$slot_dir" "$source_dir" "$shared_log_dir" "$name")"
   action="$(join_actions "$git_action" "$link_action")"
   [[ -n "$action" ]] || action="pull"
 

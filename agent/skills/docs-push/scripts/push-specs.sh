@@ -67,22 +67,22 @@ usage() {
 EOF
 }
 
-# 相对 --links 的仓库根：AIK_ROOT → 上溯含 links 文件 → 上溯 agent/scripts 标记（见 docs-core sdx_find_upward_with_file）
+# 相对 --links 的仓库根：AIK_ROOT → 上溯含 links 文件 → 上溯 agent/scripts 标记（见 docs-core find_upward_with_file）
 _aik_resolve_root_for_links() {
   local rel="${1:?}" root
   if [[ -n "${AIK_ROOT:-}" ]]; then
     root="$(cd -P "${AIK_ROOT}" 2>/dev/null && pwd -P)" || \
-      sdx_error "AIK_ROOT 无法进入: ${AIK_ROOT}"
+      error "AIK_ROOT 无法进入: ${AIK_ROOT}"
     [[ -f "$root/$rel" ]] || \
-      sdx_error "AIK_ROOT 下不存在 ${rel}（当前 AIK_ROOT=$root）"
+      error "AIK_ROOT 下不存在 ${rel}（当前 AIK_ROOT=$root）"
     printf '%s\n' "$root"
     return 0
   fi
-  if root="$(sdx_find_upward_with_file "$rel" "${_INVOCATION_PWD}")"; then
+  if root="$(find_upward_with_file "$rel" "${_INVOCATION_PWD}")"; then
     printf '%s\n' "$root"
     return 0
   fi
-  sdx_find_upward_with_file "agent/scripts/docs-core.sh" "${_INVOCATION_PWD}" "${_PS_SCRIPT_DIR}"
+  find_upward_with_file "agent/scripts/docs-core.sh" "${_INVOCATION_PWD}" "${_PS_SCRIPT_DIR}"
 }
 
 CMD="${1:-}"
@@ -128,36 +128,36 @@ while [[ $# -gt 0 ]]; do
     -h|--help)
       usage; exit 0 ;;
     *)
-      sdx_error "未知参数: $1" ;;
+      error "未知参数: $1" ;;
   esac
 done
 
-[[ -n "$SPECS_DIR" ]] || sdx_error "缺少 --specs-dir"
-[[ -n "$LINKS_FILE" ]] || sdx_error "缺少 --links"
-[[ -d "$SPECS_DIR" ]] || sdx_error "specs 目录不存在或不是目录: $SPECS_DIR"
+[[ -n "$SPECS_DIR" ]] || error "缺少 --specs-dir"
+[[ -n "$LINKS_FILE" ]] || error "缺少 --links"
+[[ -d "$SPECS_DIR" ]] || error "specs 目录不存在或不是目录: $SPECS_DIR"
 
 if [[ "$LINKS_FILE" != /* ]]; then
-  [[ "$LINKS_FILE" != *..* ]] || sdx_error "相对 --links 不得包含 ..: $LINKS_FILE"
-  _AIK_ROOT="$(_aik_resolve_root_for_links "$LINKS_FILE")" || sdx_error \
+  [[ "$LINKS_FILE" != *..* ]] || error "相对 --links 不得包含 ..: $LINKS_FILE"
+  _AIK_ROOT="$(_aik_resolve_root_for_links "$LINKS_FILE")" || error \
     "无法解析相对 --links 的仓库根（未找到 ${LINKS_FILE} 于当前目录任一上级，且未找到 agent/scripts/docs-core.sh）。请 cd 到中央库根或其子目录，或 export AIK_ROOT=含该文件的仓库根，或改用绝对路径 --links。"
   LINKS_FILE="${_AIK_ROOT}/${LINKS_FILE}"
 fi
-[[ -f "$LINKS_FILE" ]] || sdx_error "knowledge-links 文件不存在: $LINKS_FILE"
+[[ -f "$LINKS_FILE" ]] || error "knowledge-links 文件不存在: $LINKS_FILE"
 
 # 物理路径：避免 macOS /var ↔ /private/var 等与 find -print 前缀不一致导致相对路径计算失败
 SPECS_DIR="$(cd -P "$SPECS_DIR" && pwd)"
 
-[[ "$MODE" == path || "$MODE" == repo ]] || sdx_error "--mode 须为 path 或 repo: $MODE"
+[[ "$MODE" == path || "$MODE" == repo ]] || error "--mode 须为 path 或 repo: $MODE"
 if [[ "$MODE" == repo ]]; then
-  [[ -n "$BRANCH" ]] || sdx_error "repo 模式必须提供 --branch"
+  [[ -n "$BRANCH" ]] || error "repo 模式必须提供 --branch"
 fi
 
 if [[ "$CMD" == git ]]; then
-  [[ -n "$GIT_OP" ]] || sdx_error "git 子命令必须提供 --git-op"
+  [[ -n "$GIT_OP" ]] || error "git 子命令必须提供 --git-op"
   [[ "$GIT_OP" == none || "$GIT_OP" == stage || "$GIT_OP" == commit || "$GIT_OP" == push ]] || \
-    sdx_error "--git-op 须为 none|stage|commit|push: $GIT_OP"
+    error "--git-op 须为 none|stage|commit|push: $GIT_OP"
   if [[ "$GIT_OP" == commit || "$GIT_OP" == push ]]; then
-    [[ -n "$MESSAGE" ]] || sdx_error "git-op=$GIT_OP 时必须提供 --message"
+    [[ -n "$MESSAGE" ]] || error "git-op=$GIT_OP 时必须提供 --message"
   fi
 fi
 
@@ -190,7 +190,7 @@ _ps_rel_from_specs_root() {
   local abs="${1:?}" root="${2:?}"
   local pfx="${root}/"
   [[ "$abs" == "$pfx"* ]] || {
-    sdx_error "内部错误: 源文件不在 --specs-dir 下: $abs"
+    error "内部错误: 源文件不在 --specs-dir 下: $abs"
     return 1
   }
   printf '%s' "${abs#"$pfx"}"
@@ -244,19 +244,19 @@ write_validated_plan() {
     base="$(basename "$f")"
     [[ "$base" == spec-asd-*.md ]] && continue
     if [[ ! "$base" =~ $spec_re ]]; then
-      sdx_warn "[skip] 文件名不符合 spec-{yyMMdd}-{n}-{app_name}.md: $base"
+      warn "[skip] 文件名不符合 spec-{yyMMdd}-{n}-{app_name}.md: $base"
       had_skip=1
       continue
     fi
     app="${BASH_REMATCH[3]}"
     if ! idx="$(find_link_index_for_app "$app")"; then
-      sdx_warn "[skip] 未在 knowledge-links 中找到 app_name=$app: $base"
+      warn "[skip] 未在 knowledge-links 中找到 app_name=$app: $base"
       had_skip=1
       continue
     fi
     doc_dir="${doc_dirs[idx]:-docs}"
     exp_root="$(knowledge_link_expand_stored_path "${paths[idx]}")"
-    exp_root="$(cd "$exp_root" 2>/dev/null && pwd)" || sdx_error "无法进入 path 目录: ${paths[idx]} → $exp_root"
+    exp_root="$(cd "$exp_root" 2>/dev/null && pwd)" || error "无法进入 path 目录: ${paths[idx]} → $exp_root"
     dest="${exp_root}/${doc_dir}/specs/${base}"
     printf '%s\t%s\t%s\n' "$f" "$dest" "$exp_root" >>"$out"
   done
@@ -271,13 +271,13 @@ write_validated_plan() {
     abs_asd="$(cd -P "$(dirname "$f")" && pwd)/$(basename "$f")"
     rel="$(_ps_rel_from_specs_root "$abs_asd" "$SPECS_DIR")"
     if _ps_rel_has_dot_dot "$rel"; then
-      sdx_warn "[skip] 相对路径非法（含 ..）: $rel （源 $abs_asd）"
+      warn "[skip] 相对路径非法（含 ..）: $rel （源 $abs_asd）"
       had_skip=1
       continue
     fi
     base="$(basename "$abs_asd")"
     if ! parsed_blob="$(_ps_parse_spec_asd_basename "$base")"; then
-      sdx_warn "[skip] spec-asd 文件名无法解析（期望 spec-asd-{IDEA-ID}-{PHASE}-{app-name}.md）: $base"
+      warn "[skip] spec-asd 文件名无法解析（期望 spec-asd-{IDEA-ID}-{PHASE}-{app-name}.md）: $base"
       had_skip=1
       continue
     fi
@@ -288,26 +288,26 @@ write_validated_plan() {
       IFS= read -r parsed_app || true
     } <<< "$parsed_blob"
     if [[ -z "${parsed_idea:-}" || -z "${parsed_phase:-}" || -z "${parsed_app:-}" ]]; then
-      sdx_warn "[skip] spec-asd 解析字段不完整: $base"
+      warn "[skip] spec-asd 解析字段不完整: $base"
       had_skip=1
       continue
     fi
 
     if ! idx="$(find_link_index_for_app "$parsed_app")"; then
-      sdx_warn "[skip] 未在 knowledge-links 中找到 app_name=$parsed_app: $base"
+      warn "[skip] 未在 knowledge-links 中找到 app_name=$parsed_app: $base"
       had_skip=1
       continue
     fi
     doc_dir="${doc_dirs[idx]:-docs}"
     exp_root="$(knowledge_link_expand_stored_path "${paths[idx]}")"
-    exp_root="$(cd "$exp_root" 2>/dev/null && pwd)" || sdx_error "无法进入 path 目录: ${paths[idx]} → $exp_root"
+    exp_root="$(cd "$exp_root" 2>/dev/null && pwd)" || error "无法进入 path 目录: ${paths[idx]} → $exp_root"
     doc_base="${exp_root}/${doc_dir}"
 
     if [[ "$rel" == requirements/* ]]; then
       dest="${doc_base}/${rel}"
       dest_rel="${rel}"
       if ! _ps_spec_asd_mirror_dd_ok "$dest_rel"; then
-        sdx_warn "[skip] spec-asd 镜像目标须位于 requirements/REQUIREMENT-*/MVP-Phase-*/specs/ 下: $dest"
+        warn "[skip] spec-asd 镜像目标须位于 requirements/REQUIREMENT-*/MVP-Phase-*/specs/ 下: $dest"
         had_skip=1
         continue
       fi
@@ -357,7 +357,7 @@ check_worktree_clean_for_plan() {
         fi
       done
       if [[ "$ok" -eq 0 ]]; then
-        sdx_error "Git 工作区存在与本次推送无关的变更（path=$root 文件: $p）。请先提交或清理，或使用 --allow-dirty。"
+        error "Git 工作区存在与本次推送无关的变更（path=$root 文件: $p）。请先提交或清理，或使用 --allow-dirty。"
       fi
     done
   done < <(git -C "$root" status --porcelain)
@@ -366,7 +366,7 @@ check_worktree_clean_for_plan() {
 rel_under_root() {
   local dest="${1:?}" root="${2:?}"
   if [[ "$dest" != "$root"/* ]]; then
-    sdx_error "目标路径不在仓库根下: dest=$dest root=$root"
+    error "目标路径不在仓库根下: dest=$dest root=$root"
   fi
   printf '%s' "${dest#"${root}"/}"
 }
@@ -380,11 +380,11 @@ run_copy() {
   plan_file="$(mktemp)"
   if ! write_validated_plan "$plan_file"; then
     rm -f "$plan_file"
-    sdx_error "strict 模式：存在无法路由的 spec，已中止（未写任何目标文件）"
+    error "strict 模式：存在无法路由的 spec，已中止（未写任何目标文件）"
   fi
   if [[ ! -s "$plan_file" ]]; then
     rm -f "$plan_file"
-    sdx_error "没有可复制的 spec 文件（检查命名与 app_name 登记）"
+    error "没有可复制的 spec 文件（检查命名与 app_name 登记）"
   fi
 
   # repo 模式：按 root 分组，首次遇到 root 时 dirty + checkout
@@ -415,7 +415,7 @@ run_copy() {
       else
         check_worktree_clean_for_plan "$r" "${planned_for_r[@]}"
         git -C "$r" rev-parse --is-inside-work-tree >/dev/null 2>&1 || \
-          sdx_error "repo 模式要求 path 为 Git 工作区: $r"
+          error "repo 模式要求 path 为 Git 工作区: $r"
         git -C "$r" checkout -B "$BRANCH"
       fi
     done
@@ -445,11 +445,11 @@ run_git() {
   plan_file="$(mktemp)"
   if ! write_validated_plan "$plan_file"; then
     rm -f "$plan_file"
-    sdx_error "strict 模式：存在无法路由的 spec，已中止"
+    error "strict 模式：存在无法路由的 spec，已中止"
   fi
   [[ -s "$plan_file" ]] || {
     rm -f "$plan_file"
-    sdx_error "没有可处理的 spec 文件"
+    error "没有可处理的 spec 文件"
   }
 
   while IFS= read -r plan_line || [[ -n "$plan_line" ]]; do
@@ -477,7 +477,7 @@ run_git() {
       else
         check_worktree_clean_for_plan "$r" "${planned_for_r[@]}"
         git -C "$r" rev-parse --is-inside-work-tree >/dev/null 2>&1 || \
-          sdx_error "repo 模式要求 path 为 Git 工作区: $r"
+          error "repo 模式要求 path 为 Git 工作区: $r"
         git -C "$r" checkout -B "$BRANCH"
       fi
     done
@@ -489,7 +489,7 @@ run_git() {
     [[ -z "$plan_line" ]] && continue
     IFS=$'\t' read -r src dest root <<<"$plan_line"
     if ! git -C "$root" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-      sdx_warn "[skip] 非 Git 目录，跳过 git 操作: $root"
+      warn "[skip] 非 Git 目录，跳过 git 操作: $root"
       continue
     fi
     local found=0 u
@@ -533,7 +533,7 @@ run_git() {
         else
           [[ "${#rels[@]}" -gt 0 ]] && git -C "$root" add -- "${rels[@]}"
           if git -C "$root" diff-index --cached --quiet HEAD -- 2>/dev/null; then
-            sdx_warn "无暂存变更，跳过 commit: $root"
+            warn "无暂存变更，跳过 commit: $root"
           else
             git -C "$root" commit -m "$MESSAGE"
           fi
@@ -548,7 +548,7 @@ run_git() {
         else
           [[ "${#rels[@]}" -gt 0 ]] && git -C "$root" add -- "${rels[@]}"
           if git -C "$root" diff-index --cached --quiet HEAD -- 2>/dev/null; then
-            sdx_warn "无暂存变更，跳过 commit/push: $root"
+            warn "无暂存变更，跳过 commit/push: $root"
           else
             git -C "$root" commit -m "$MESSAGE"
             git -C "$root" push "$REMOTE" HEAD

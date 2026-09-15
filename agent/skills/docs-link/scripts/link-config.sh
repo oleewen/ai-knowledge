@@ -21,11 +21,11 @@ else
     fi
   done
 fi
-declare -f sdx_source_docs_core_from_layout >/dev/null 2>&1 || {
+declare -f source_docs_core_from_layout >/dev/null 2>&1 || {
   printf '错误: 未找到 docs-core（中央库或 ~/.agents|cursor/scripts/docs-core.sh）。\n' >&2
   exit 1
 }
-sdx_source_docs_core_from_layout "$LINK_CONFIG_DIR" || exit 1
+source_docs_core_from_layout "$LINK_CONFIG_DIR" || exit 1
 
 readonly KLINK_DEFAULT_DRY_RUN='0'
 

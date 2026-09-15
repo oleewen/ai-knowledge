@@ -19,7 +19,7 @@
 
 ## 源解析
 
-1. `validate_bootstrap_docsconfig`（或等价）读 `.docsconfig`
+1. `docsconfig_bootstrap_validate`（或等价）读 `.docsconfig`
 2. 缺 config → 硬停，提示 `/docs-install`
 3. 读 links；缺唯一 `type: meta` 且无 `--meta-path` → 硬停，列修复选项（补 meta / `--meta-path` / 重跑 install upsert）
 4. 展开 `path`；若为 git 仓 → `git fetch` 并对齐 ref；path 无效 → 用 `repository` 临时 clone 到工作目录

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../../.." && pwd)"
-SCRIPT="$ROOT/agent/scripts/check-forbidden-file-refs.sh"
+SCRIPT="$ROOT/agent/scripts/tools/forbidden-ref-outer.sh"
 
 # 优先检查目标脚本是否存在；不存在即直接失败（RED 状态正确表现）
 if [[ ! -f "$SCRIPT" ]]; then

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # test-core.sh — 测试断言、用例收集与套件运行（供 agent/scripts/tests 与 skills/*/tests source）
 
-if [[ -n "${_SDX_TEST_CORE_SH_LOADED:-}" ]]; then
+if [[ -n "${_TEST_CORE_SH_LOADED:-}" ]]; then
   return 0 2>/dev/null || exit 0
 fi
-readonly _SDX_TEST_CORE_SH_LOADED=1
+readonly _TEST_CORE_SH_LOADED=1
 
 test_fail() {
   printf 'FAIL: %s\n' "$*" >&2
@@ -19,11 +19,10 @@ test_pass() {
 fail() { test_fail "$@"; }
 pass() { test_pass "$@"; }
 
-# 与 assert_symlink_points_to 一致：dirname 规范化失败时前缀为空
-_test_path_canonical() {
-  local p="${1:?}"
-  printf '%s/%s' "$(cd "$(dirname "$p")" 2>/dev/null && pwd -P)" "$(basename "$p")"
-}
+_TEST_SCRIPTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib/path.sh
+source "${_TEST_SCRIPTS_DIR}/lib/path.sh"
+unset _TEST_SCRIPTS_DIR
 
 _test_rg_fixed() {
   local needle="${1:?}" path="${2:?}"
@@ -74,8 +73,9 @@ assert_symlink_points_to() {
   actual="$(readlink "$link" 2>/dev/null || true)"
   [[ -n "$actual" ]] || test_fail "readlink 失败: $link"
 
-  resolved_expect="$(_test_path_canonical "$expect")"
-  actual="$(_test_path_canonical "$actual")"
+  # 规范化比对（与生产侧 symlink_points_to 的精确字符串比对不同：测试容忍相对/绝对等价）
+  resolved_expect="$(path_canonical "$expect")"
+  actual="$(path_canonical "$actual")"
   [[ "$actual" == "$resolved_expect" ]] \
     || test_fail "软链不匹配: $link -> $actual（期望 $resolved_expect）"
 }

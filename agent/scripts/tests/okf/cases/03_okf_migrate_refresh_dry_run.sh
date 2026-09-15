@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../../.." && pwd)"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
@@ -16,8 +16,8 @@ cp "$ROOT/agent/skills/docs-okf/scripts/"*.py \
   "$TMP/repo/agent/skills/docs-okf/scripts/"
 
 mkdir -p "$TMP/repo/agent/scripts"
-cp "$ROOT/agent/scripts/config-bootstrap.sh" "$TMP/repo/agent/scripts/config-bootstrap.sh"
 cp "$ROOT/agent/scripts/docs-core.sh" "$TMP/repo/agent/scripts/docs-core.sh"
+cp -R "$ROOT/agent/scripts/lib" "$TMP/repo/agent/scripts/lib"
 
 cat > "$TMP/repo/.docsconfig" <<EOF
 DOC_ROOT=$TMP/repo/application

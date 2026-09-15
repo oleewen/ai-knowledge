@@ -24,7 +24,8 @@ trap cleanup EXIT
 
 mkdir -p "$FAKE_HOME/.agents/scripts" "$SRC/scripts" "$SRC/docs"
 cp "$CORE" "$FAKE_HOME/.agents/scripts/docs-core.sh"
-cp "$ROOT_DIR/agent/scripts/federation-slot-symlink.sh" "$FAKE_HOME/.agents/scripts/federation-slot-symlink.sh"
+cp -R "$ROOT_DIR/agent/scripts/lib" "$FAKE_HOME/.agents/scripts/lib"
+cp "$ROOT_DIR/agent/scripts/lib/slot-softlink.sh" "$FAKE_HOME/.agents/scripts/lib/slot-softlink.sh"
 cp "$ROOT_DIR/agent/skills/docs-link/scripts/docs-link.sh" "$SRC/scripts/docs-link.sh"
 cp "$ROOT_DIR/agent/skills/docs-link/scripts/link-config.sh" "$SRC/scripts/link-config.sh"
 chmod +x "$SRC/scripts/docs-link.sh"
@@ -43,11 +44,10 @@ EOF
 set -euo pipefail
 source "$1"
 raw_ar=""
-_unused=""
 _cfg_dr=""
 _cfg_rr=""
 _cfg_dd=""
-docsconfig_read_into "$2" _cfg_dr _cfg_rr _cfg_dd raw_ar _unused
+docsconfig_read_into "$2" _cfg_dr _cfg_rr _cfg_dd raw_ar
 [[ -n "$raw_ar" ]]
 [[ "$raw_ar" == *".agents"* ]]
 ' _ "$CORE" "$SRC/.docsconfig" || fail "docsconfig_read_into 同名 raw_ar 应读出 AGENT_ROOT=~/.agents"

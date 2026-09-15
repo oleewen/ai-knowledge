@@ -14,6 +14,7 @@ STORE="${TMP}/.agents"
 CENTRAL="${TMP}/central"
 mkdir -p "${STORE}/scripts" "${STORE}/skills/docs-push/scripts" "${CENTRAL}/system"
 cp "$REAL_CORE" "${STORE}/scripts/docs-core.sh"
+cp -R "${ROOT_DIR}/agent/scripts/lib" "${STORE}/scripts/lib"
 cp "$REAL_PUSH" "${STORE}/skills/docs-push/scripts/push-specs.sh"
 
 SRC="${TMP}/specs-src"

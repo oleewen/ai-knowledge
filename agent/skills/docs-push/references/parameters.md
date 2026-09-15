@@ -4,7 +4,7 @@
 
 ## `docs-core.sh` 解析顺序
 
-`source` 前须找到 `docs-core.sh`：见 `agent/scripts/docs-core.sh` 中 **`sdx_resolve_docs_core_path`**（`DOCS_CORE_SH` → 技能树 `../../../scripts` → `~/.agents|cursor|…/scripts` → 上溯 `agent/scripts` → `AIK_ROOT`）。
+`source` 前须找到 `docs-core.sh`（聚合入口，实现见 `agent/scripts/lib/`）：**`resolve_docs_core_path`** 在 `lib/resolve.sh`（`DOCS_CORE_SH` → 技能树 `../../../scripts` → `~/.agents|cursor|…/scripts` → 上溯 `agent/scripts` → `AIK_ROOT`）。
 
 ## 相对 `--links` 的中央根
 

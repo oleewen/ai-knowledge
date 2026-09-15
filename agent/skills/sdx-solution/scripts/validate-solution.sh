@@ -3,7 +3,7 @@ set -euo pipefail
 
 # SOLUTION 结构校验（七章模板；不承担写前门禁）。
 # 用法：validate-solution.sh [--file <path>]
-# 文档根：resolve_repo_doc_root（.docsconfig）；先 source config-bootstrap.sh
+# 文档根：docsconfig_resolve_doc_root（.docsconfig）；先 source docsconfig.sh
 #
 # 要点：文首 frontmatter、`id`、`## 1`–`## 7`、小节标题、空节标注、编号、正文技术词筛查；
 #       不校验会话 spec、CONFIRMED、HTML gate 或写前 hook。
@@ -22,10 +22,10 @@ done
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck disable=SC1091
-source "$_AGENT_HOME/scripts/config-bootstrap.sh"
-validate_bootstrap_docsconfig "$SCRIPT_DIR"
+source "$_AGENT_HOME/scripts/lib/docsconfig.sh"
+docsconfig_bootstrap_validate "$SCRIPT_DIR"
 
-DOC_ROOT="$(resolve_repo_doc_root)"
+DOC_ROOT="$(docsconfig_resolve_doc_root)"
 cd "$REPO_ROOT" || exit 1
 
 SOLUTIONS_DIR="${DOC_ROOT}/solutions"

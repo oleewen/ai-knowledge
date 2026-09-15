@@ -7,7 +7,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(ROOT / "agent" / "skills" / "docs-okf" / "scripts"))
 import generate_index  # noqa: E402
 import generate_knowledge_index  # noqa: E402
@@ -117,9 +117,9 @@ def test_system_knowledge_index_sections_and_mapping():
         )
         assert "§3 应用视角（application · SYS → APP → MS）" in rendered
         assert "§4 数据视角（data · MDG → DS → ENT）" in rendered
-        assert "| PM-EXAMPLE | `product/PM-EXAMPLE/` |" in rendered
+        assert "| PM-EXAMPLE | `product/PD-EXAMPLE/PM-EXAMPLE/` |" in rendered
         assert "| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |" in rendered
-        assert "| MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |" in rendered
+        assert "| DS-EXAMPLE | `data/DS-EXAMPLE/` |" in rendered
         assert "SYS → APP → MS → API" not in rendered
 
 
@@ -132,10 +132,12 @@ def test_application_knowledge_index_sections_and_mapping():
         )
         assert "§4 数据视角（data · MDG → DS → ENT → TBL）" in rendered
         assert "§5 技术视角（technical · TSD → MW → CMP）" in rendered
-        assert "| PM-EXAMPLE | `product/PM-EXAMPLE/` |" in rendered
-        assert "| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |" in rendered
+        assert "| API-EXAMPLE-001 | `application/MS-EXAMPLE/API-EXAMPLE-001.md` |" in rendered
         assert "| TBL-EXAMPLE | `data/DS-EXAMPLE/TBL-EXAMPLE.md` |" in rendered
+        assert "| MW-EXAMPLE | `technical/MW-EXAMPLE/` |" in rendered
         assert "business/BSD-EXAMPLE/" not in rendered
+        assert "| PM-EXAMPLE |" not in rendered
+        assert "| SYS-EXAMPLE |" not in rendered
 
 
 def main() -> None:

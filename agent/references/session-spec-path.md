@@ -3,7 +3,7 @@
 > **定位**：`{DOC_DIR}/superpowers/specs/` 的路径解析、合法落点与库外引用隔离。  
 > **主线**：文档产出走参数向导 + `澄清 → 生成 → 烤干` 直写终稿（见 [CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates)）；**不要求** HTML gate / `CONFIRMED` / 写前 hook。  
 > **本文职责**：可选工作稿与 brainstorming 备忘的路径规则；非默认推进协议。  
-> **遗留**：`sdx_gate_*` 与写前 hook 脚本已删；`agent/hooks.json` 的 `preToolUse` 为空。旧目标工程配置见 [agent-install](../skills/agent-install/SKILL.md)。技能 anti-patterns 仍禁止退回该主线。
+> **遗留**：`gate_*` 与写前 hook 脚本已删；`agent/hooks.json` 的 `preToolUse` 为空。旧目标工程配置见 [agent-install](../skills/agent-install/SKILL.md)。技能 anti-patterns 仍禁止退回该主线。
 
 **最后更新**: 2026-09-15
 
@@ -18,7 +18,7 @@
 | `.docsconfig` 且 `DOC_DIR=` 为 `application` / `system` / `company` / `docs` | 配置值（`.` 或空无效） |
 | 无配置或 `DOC_DIR` 无效 | **`docs`** |
 
-- **DOC_DIR**：优先读目标工程 **`.docsconfig`**（与 [config-bootstrap.sh](../scripts/config-bootstrap.sh) 一致）。  
+- **DOC_DIR**：优先读目标工程 **`.docsconfig`**（与 [docsconfig.sh](../scripts/lib/docsconfig.sh) 一致）。  
 - **`application` / `system` / `company`** 仅当已声明为 `DOC_DIR` 时合法。  
 - **中间目录**：固定 **`superpowers/specs/`**（通常 `.gitignore`，不入库）。  
 - **阶段后缀**：可选（如 `-sdx-prd.md`、`-docs-indexing.md`、`-design.md`）；非闸门凭证。  

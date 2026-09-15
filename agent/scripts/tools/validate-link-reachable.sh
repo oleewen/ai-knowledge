@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
-# validate-agent-md-links.sh — 校验 agent 下 Markdown 链接：agent 内互链须存在；跨出 agent 须落在
+# validate-link-reachable.sh — 校验 agent 下 Markdown 链接：agent 内互链须存在；跨出 agent 须落在
 # REPO_ROOT 或 DOC_ROOT 下（且非 .git），落实 link-reachability §1.1 强校验。
-# 在仓库根执行：bash agent/scripts/validate-agent-md-links.sh
-# 文档根路径来自目标仓库根 .docsconfig（见 config-bootstrap.sh；§2.2.2 不向子进程 export，仅前缀传参）。
+# 在仓库根执行：bash agent/scripts/tools/validate-link-reachable.sh
+# 文档根路径来自目标仓库根 .docsconfig（见 lib/docsconfig.sh；§2.2.2 不向子进程 export，仅前缀传参）。
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck disable=SC1091
-source "$SCRIPT_DIR/config-bootstrap.sh"
-validate_bootstrap_docsconfig "$SCRIPT_DIR"
+source "$SCRIPT_DIR/../lib/docsconfig.sh"
+docsconfig_bootstrap_validate "$SCRIPT_DIR"
 
-REPO_ROOT="${REPO_ROOT:?validate_bootstrap_docsconfig 未注入 REPO_ROOT}"
-DOC_ROOT="${DOC_ROOT:?validate_bootstrap_docsconfig 未注入 DOC_ROOT}"
+REPO_ROOT="${REPO_ROOT:?docsconfig_bootstrap_validate 未注入 REPO_ROOT}"
+DOC_ROOT="${DOC_ROOT:?docsconfig_bootstrap_validate 未注入 DOC_ROOT}"
 AGENT_DIR="$REPO_ROOT/agent"
 
 readonly EXIT_FAIL=1

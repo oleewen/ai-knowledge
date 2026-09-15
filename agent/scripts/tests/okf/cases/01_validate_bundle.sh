@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../../.." && pwd)"
 VALIDATE_SCRIPT="$ROOT/agent/skills/docs-okf/scripts/okf-validate.sh"
 BUNDLE_ROOT="$ROOT/application"
 VIZ_HTML="$BUNDLE_ROOT/viz.html"

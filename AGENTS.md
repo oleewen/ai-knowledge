@@ -51,7 +51,7 @@
 - **不在本文粘贴** INDEX §3 级接口全表，或 [index.md](index.md) 渐进披露全表；**不复制** INDEX §9.3 Skill 长表
 - **禁止库外引用 superpowers 具名文件**；验收见 [CONVENTIONS.md](agent/rules/CONVENTIONS.md#superpowers-ref-isolation)
 - **禁止未经确认即 commit**（Skill 步骤中「Commit」= 确认后再提交）
-- 写前 gate 脚本已移除；勿再引用已删 hook / `sdx_gate_common` 路径
+- 写前 gate 脚本已移除；勿再引用已删 hook / `gate_common` 路径
 
 ---
 

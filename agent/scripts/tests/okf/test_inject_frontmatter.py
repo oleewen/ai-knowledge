@@ -6,7 +6,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(ROOT / "agent" / "skills" / "docs-okf" / "scripts"))
 import inject_frontmatter  # noqa: E402
 import okf_lib  # noqa: E402

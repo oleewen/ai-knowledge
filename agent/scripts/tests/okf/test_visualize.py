@@ -7,7 +7,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(ROOT / "agent" / "skills" / "docs-okf" / "scripts"))
 import visualize  # noqa: E402
 

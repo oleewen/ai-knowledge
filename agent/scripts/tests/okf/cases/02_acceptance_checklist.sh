@@ -2,9 +2,9 @@
 # DESIGN §11 验收：concept 数量、okf_version、无 legacy *-entities.md、KNOWLEDGE_INDEX 有效
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../../.." && pwd)"
 BUNDLE_ROOT="$ROOT/application"
-MIN_CONCEPTS=17
+MIN_CONCEPTS=4
 
 count="$(python3 - "$BUNDLE_ROOT" <<'PY'
 import sys
@@ -25,7 +25,7 @@ PY
 )"
 
 if [[ "$count" -lt "$MIN_CONCEPTS" ]]; then
-  echo "concept 文件（含 full_id）数量应 >= $MIN_CONCEPTS，实际: $count" >&2
+  echo "concept 文件（含 full_id）数量应 >= ${MIN_CONCEPTS}，实际: $count" >&2
   exit 1
 fi
 

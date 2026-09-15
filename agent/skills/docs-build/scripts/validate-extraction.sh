@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# 校验 docs-build 产物。无 CLI 参数；路径来自 .docsconfig（config-bootstrap.sh）
+# 校验 docs-build 产物。无 CLI 参数；路径来自 .docsconfig（docsconfig.sh）
 # 检查：KNOWLEDGE_INDEX 存在；各视角至少一个含 full_id 的 per-entity .md；
 #       *-entities.md 若仍存在则 WARN（已废弃）
 
@@ -16,10 +16,10 @@ fi
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck disable=SC1091
-source "$_AGENT_HOME/scripts/config-bootstrap.sh"
-validate_bootstrap_docsconfig "$SCRIPT_DIR"
+source "$_AGENT_HOME/scripts/lib/docsconfig.sh"
+docsconfig_bootstrap_validate "$SCRIPT_DIR"
 
-DOC_ROOT="$(resolve_repo_doc_root)"
+DOC_ROOT="$(docsconfig_resolve_doc_root)"
 cd "$REPO_ROOT" || exit 1
 
 KNOWLEDGE_DIR="${REPO_ROOT}/${DOC_DIR}/knowledge"

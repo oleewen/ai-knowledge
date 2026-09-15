@@ -4,9 +4,12 @@
 set -euo pipefail
 
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=../../../scripts/config-bootstrap.sh
-source "$SCRIPT_DIR/../../../scripts/config-bootstrap.sh"
-# sdx_* 已由 docs-core（经 config-bootstrap）提供；无需再 source cli-core
+# shellcheck source=../../../scripts/lib/docsconfig.sh
+source "$SCRIPT_DIR/../../../scripts/lib/docsconfig.sh"
+# knowledge-links / rewrite 等不在轻量 bootstrap 内
+# shellcheck source=../../../scripts/docs-core.sh
+source "$SCRIPT_DIR/../../../scripts/docs-core.sh"
+# error/info/rewrite_* / knowledge_links_* 由 docs-core 聚合提供；无需再 source log-io
 
 DRY_RUN=1
 APPLY_SCAFFOLD=0
@@ -48,18 +51,18 @@ while [[ $# -gt 0 ]]; do
     --apply-scaffold) APPLY_SCAFFOLD=1; DRY_RUN=0; shift ;;
     --meta-path)
       shift
-      [[ -n "${1:-}" ]] || sdx_error "缺少 --meta-path 值"
+      [[ -n "${1:-}" ]] || error "缺少 --meta-path 值"
       META_PATH_OVERRIDE="$1"
       shift
       ;;
     --ref)
       shift
-      [[ -n "${1:-}" ]] || sdx_error "缺少 --ref 值"
+      [[ -n "${1:-}" ]] || error "缺少 --ref 值"
       REF_OVERRIDE="$1"
       shift
       ;;
     -h|--help) usage; exit 0 ;;
-    *) sdx_error "未知参数: $1" ;;
+    *) error "未知参数: $1" ;;
   esac
 done
 
@@ -168,10 +171,10 @@ resolve_meta_tree() {
   local work
 
   if [[ -d "$meta_path/.git" ]]; then
-    sdx_info ">>> git fetch @ $meta_path (ref=$ref)"
+    info ">>> git fetch @ $meta_path (ref=$ref)"
     git -C "$meta_path" fetch --quiet origin "$ref" 2>/dev/null \
       || git -C "$meta_path" fetch --quiet origin 2>/dev/null \
-      || sdx_warn "git fetch 失败，将使用本机工作区现状: $meta_path"
+      || warn "git fetch 失败，将使用本机工作区现状: $meta_path"
     if git -C "$meta_path" rev-parse --verify "origin/$ref" >/dev/null 2>&1; then
       work="$(mktemp -d "${TMPDIR:-/tmp}/docs-upgrade-meta.XXXXXX")"
       git -C "$meta_path" archive "origin/$ref" | tar -x -C "$work"
@@ -186,14 +189,14 @@ resolve_meta_tree() {
     META_CLEANUP=""
   elif [[ -n "$meta_repo" ]]; then
     work="$(mktemp -d "${TMPDIR:-/tmp}/docs-upgrade-clone.XXXXXX")"
-    sdx_info ">>> clone $meta_repo @ $ref → $work"
+    info ">>> clone $meta_repo @ $ref → $work"
     if ! git clone --depth 1 --branch "$ref" "$meta_repo" "$work" 2>/dev/null; then
       git clone --depth 1 "$meta_repo" "$work"
     fi
     META_ROOT="$work"
     META_CLEANUP="$work"
   else
-    sdx_error "meta path 不可用且无 repository: path=$meta_path"
+    error "meta path 不可用且无 repository: path=$meta_path"
   fi
 }
 
@@ -209,7 +212,7 @@ resolve_meta_root() {
     meta_doc_dir="${KNOWLEDGE_TYPE}"
     ref="${REF_OVERRIDE:-main}"
   else
-    [[ -f "$links_file" ]] || sdx_error "缺少 knowledge-links.yaml: $links_file（请先装机或补 type: meta）"
+    [[ -f "$links_file" ]] || error "缺少 knowledge-links.yaml: $links_file（请先装机或补 type: meta）"
     knowledge_links_load_into_arrays "$links_file" paths repos doc_dirs apps labels types
     for ((i = 0; i < ${#types[@]}; i++)); do
       if [[ "${types[i]}" == 'meta' ]]; then
@@ -217,7 +220,7 @@ resolve_meta_root() {
         meta_idx=$i
       fi
     done
-    [[ "$meta_count" -eq 1 ]] || sdx_error "须恰好一条 type: meta（当前 ${meta_count}）。可 --meta-path 覆盖，或修复 links / 重跑 docs-install upsert"
+    [[ "$meta_count" -eq 1 ]] || error "须恰好一条 type: meta（当前 ${meta_count}）。可 --meta-path 覆盖，或修复 links / 重跑 docs-install upsert"
     meta_path="$(knowledge_link_expand_stored_path "${paths[meta_idx]}")"
     meta_repo="${repos[meta_idx]}"
     meta_doc_dir="${doc_dirs[meta_idx]:-$KNOWLEDGE_TYPE}"
@@ -228,8 +231,8 @@ resolve_meta_root() {
 
   META_DOC_DIR="$meta_doc_dir"
   META_SRC="${META_ROOT%/}/${META_DOC_DIR}"
-  [[ -d "$META_SRC" ]] || sdx_error "元库缺少模板目录: $META_SRC"
-  sdx_info "结构源: $META_SRC"
+  [[ -d "$META_SRC" ]] || error "元库缺少模板目录: $META_SRC"
+  info "结构源: $META_SRC"
 }
 
 backup_file_to_stamp() {
@@ -244,7 +247,7 @@ ensure_backup_root() {
   UPGRADE_STAMP="$(date +%Y-%m-%d_%H-%M-%S)"
   BACKUP_ROOT="${REPO_ROOT%/}/.docs-init/upgrade-${UPGRADE_STAMP}"
   mkdir -p "$BACKUP_ROOT"
-  sdx_info "备份根: $BACKUP_ROOT"
+  info "备份根: $BACKUP_ROOT"
 }
 
 cleanup() {
@@ -254,8 +257,8 @@ cleanup() {
 }
 trap cleanup EXIT
 
-validate_bootstrap_docsconfig
-[[ -n "${KNOWLEDGE_TYPE:-}" ]] || sdx_error ".docsconfig 缺少 KNOWLEDGE_TYPE"
+docsconfig_bootstrap_validate
+[[ -n "${KNOWLEDGE_TYPE:-}" ]] || error ".docsconfig 缺少 KNOWLEDGE_TYPE"
 
 LINKS_FILE="${DOC_ROOT%/}/knowledge-links.yaml"
 resolve_meta_root "$LINKS_FILE"
@@ -381,7 +384,7 @@ print_bucket() {
   done
 }
 
-sdx_info "DOC_ROOT=$DOC_ROOT  KNOWLEDGE_TYPE=$KNOWLEDGE_TYPE  dry_run=$DRY_RUN apply_scaffold=$APPLY_SCAFFOLD"
+info "DOC_ROOT=$DOC_ROOT  KNOWLEDGE_TYPE=$KNOWLEDGE_TYPE  dry_run=$DRY_RUN apply_scaffold=$APPLY_SCAFFOLD"
 print_bucket '忽略遗留槽位' "${IGNORED_SLOT_DIRS[@]+"${IGNORED_SLOT_DIRS[@]}"}"
 print_bucket '跳过软链' "${SKIP_SYMLINK_LIST[@]+"${SKIP_SYMLINK_LIST[@]}"}"
 print_bucket '新增骨架' "${ADD_LIST[@]+"${ADD_LIST[@]}"}"
@@ -390,7 +393,7 @@ print_bucket '结构重填' "${RESTRUCTURE_LIST[@]+"${RESTRUCTURE_LIST[@]}"}"
 print_bucket '本库独有(保留)' "${LOCAL_ONLY_LIST[@]+"${LOCAL_ONLY_LIST[@]}"}"
 
 if [[ "$APPLY_SCAFFOLD" != '1' ]]; then
-  sdx_info "dry-run 完成；实跑骨架写入请用 --apply-scaffold（须 Skill 已取得 C）"
+  info "dry-run 完成；实跑骨架写入请用 --apply-scaffold（须 Skill 已取得 C）"
   exit 0
 fi
 
@@ -402,11 +405,11 @@ done
 
 for rel in "${ADD_LIST[@]+"${ADD_LIST[@]}"}"; do
   if is_legacy_federal_slot_rel "$rel"; then
-    sdx_warn "跳过遗留槽位骨架（不应出现在新增桶）: $rel"
+    warn "跳过遗留槽位骨架（不应出现在新增桶）: $rel"
     continue
   fi
   if path_is_or_under_symlink "${DOC_ROOT%/}" "$rel"; then
-    sdx_warn "跳过软链路径骨架: $rel"
+    warn "跳过软链路径骨架: $rel"
     continue
   fi
   src=""
@@ -422,12 +425,12 @@ for rel in "${ADD_LIST[@]+"${ADD_LIST[@]}"}"; do
   fi
   mkdir -p "$(dirname "$dst")"
   cp "$src" "$dst"
-  sdx_info "写入骨架: $rel"
+  info "写入骨架: $rel"
 done
 
-sdx_info "骨架写入完成。结构重填与未落位请由 /docs-upgrade Skill 继续。"
+info "骨架写入完成。结构重填与未落位请由 /docs-upgrade Skill 继续。"
 
 # 与 docs-install knowledge 同契约：扫整棵 DOC_ROOT → ~/.agents/ + README 注记
 # （空骨架桶亦跑；dry-run 已在上方退出，不会到达此处）
-sdx_rewrite_docs_agent_paths "${DOC_ROOT}"
-sdx_info "agent/ 路径重写完成（与 docs-install 同实现）。"
+rewrite_docs_agent_paths "${DOC_ROOT}"
+info "agent/ 路径重写完成（与 docs-install 同实现）。"

@@ -27,7 +27,7 @@
 #   --agents=LIST              要安装的 Agent，/ 或 , 分隔（components 含 agent 时；缺省交互询问，默认 cursor）
 #   --agent-scope=home|project Agent 安装位置（默认 home=$HOME；project 需 --doc-target 以推导工程根）
 #
-# 配置项（GIT_REPO_URL/GIT_REF）：agent/scripts/docs-core.sh
+# 配置项（GIT_REPO_URL/GIT_REF）：agent/scripts/lib/docsconfig.sh（经 docs-core.sh 聚合）
 #
 set -euo pipefail
 
@@ -56,21 +56,21 @@ if ! declare -F require_bash5 >/dev/null 2>&1; then
     fi
   }
 fi
-if ! declare -F sdx_docs_bootstrap_get_repo_url >/dev/null 2>&1; then
-  _SDX_GIT_REPO_URL_FALLBACK='https://github.com/oleewen/ai-knowledge.git'
-  _SDX_GIT_DEFAULT_REF_FALLBACK='HEAD'
-  sdx_docs_bootstrap_get_repo_url() {
-    printf '%s' "${GIT_REPO_URL:-$_SDX_GIT_REPO_URL_FALLBACK}"
+if ! declare -F docs_bootstrap_get_repo_url >/dev/null 2>&1; then
+  _GIT_REPO_URL_FALLBACK='https://github.com/oleewen/ai-knowledge.git'
+  _GIT_DEFAULT_REF_FALLBACK='HEAD'
+  docs_bootstrap_get_repo_url() {
+    printf '%s' "${GIT_REPO_URL:-$_GIT_REPO_URL_FALLBACK}"
   }
-  sdx_docs_bootstrap_get_ref() {
-    printf '%s' "${GIT_REF:-$_SDX_GIT_DEFAULT_REF_FALLBACK}"
+  docs_bootstrap_get_ref() {
+    printf '%s' "${GIT_REF:-$_GIT_DEFAULT_REF_FALLBACK}"
   }
-  sdx_docs_bootstrap_get_tmpdir() {
+  docs_bootstrap_get_tmpdir() {
     local tmpdir="${TMPDIR:-/tmp}"
     [[ -d "$tmpdir" ]] || tmpdir='/tmp'
     printf '%s' "$tmpdir"
   }
-  sdx_docs_bootstrap_gen_clone_dir() {
+  docs_bootstrap_gen_clone_dir() {
     printf '%s/ai-knowledge-%s' "${1:?tmpdir}" "$$"
   }
 fi
@@ -79,99 +79,99 @@ fi
 # § 2  运行时状态
 # =============================================================================
 
-SDX_BS_CLONE_DIR=''
-SDX_BS_COMPONENTS='both'  # --components: docs | agent | both
-SDX_BS_DOC_TARGET=''      # --doc-target
-SDX_BS_AGENTS=''          # --agents（规范化后逗号分隔）
-SDX_BS_AGENT_SCOPE='home' # --agent-scope: home | project
-SDX_BS_AGENT_TARGET=''
+BS_CLONE_DIR=''
+BS_COMPONENTS='both'  # --components: docs | agent | both
+BS_DOC_TARGET=''      # --doc-target
+BS_AGENTS=''          # --agents（规范化后逗号分隔）
+BS_AGENT_SCOPE='home' # --agent-scope: home | project
+BS_AGENT_TARGET=''
 
-sdx_bs_want_docs() {
-  case "$SDX_BS_COMPONENTS" in
+bs_want_docs() {
+  case "$BS_COMPONENTS" in
     docs|both) return 0 ;;
     *) return 1 ;;
   esac
 }
 
-sdx_bs_want_agent() {
-  case "$SDX_BS_COMPONENTS" in
+bs_want_agent() {
+  case "$BS_COMPONENTS" in
     agent|both) return 0 ;;
     *) return 1 ;;
   esac
 }
-if declare -p SDX_SUPPORTED_AGENTS >/dev/null 2>&1; then
-  SDX_BS_AGENT_CHOICES=("${SDX_SUPPORTED_AGENTS[@]}" all)
+if declare -p SUPPORTED_AGENTS >/dev/null 2>&1; then
+  BS_AGENT_CHOICES=("${SUPPORTED_AGENTS[@]}" all)
 else
-  readonly -a SDX_BS_AGENT_CHOICES=(cursor trae claude kiro codex all)
+  readonly -a BS_AGENT_CHOICES=(cursor trae claude kiro codex all)
 fi
 
-if ! declare -F sdx_log >/dev/null 2>&1; then
-  sdx_log()   { printf '%s\n'       "$*" >&2; }
-  sdx_info()  { printf '[INFO]  %s\n' "$*" >&2; }
-  sdx_error() { printf '[ERROR] %s\n' "$*" >&2; exit 1; }
+if ! declare -F log >/dev/null 2>&1; then
+  log()   { printf '%s\n'       "$*" >&2; }
+  info()  { printf '[INFO]  %s\n' "$*" >&2; }
+  error() { printf '[ERROR] %s\n' "$*" >&2; exit 1; }
 fi
 
-sdx_bs_require_value() {
+bs_require_value() {
   local flag="${1:?flag}"
   local value="${2-}"
-  [[ -n "$value" ]] || sdx_error "缺少 ${flag} 值"
+  [[ -n "$value" ]] || error "缺少 ${flag} 值"
 }
 
-sdx_bs_unknown_arg() {
+bs_unknown_arg() {
   local arg="${1:?arg}"
-  sdx_error "未知参数: ${arg}（使用 -h 查看帮助）"
+  error "未知参数: ${arg}（使用 -h 查看帮助）"
 }
 
 # =============================================================================
 # § 4  环境检查（Bash 版本见 docs-core.sh 之 require_bash5；预载失败时 §1 回退已定义）
 # =============================================================================
 
-sdx_bs_check_deps() {
-  command -v git >/dev/null 2>&1 || sdx_error "未找到 git 命令，请先安装 Git"
+bs_check_deps() {
+  command -v git >/dev/null 2>&1 || error "未找到 git 命令，请先安装 Git"
 }
 
 # =============================================================================
 # § 5  Git
 # =============================================================================
 
-sdx_bs_clone_repo() {
+bs_clone_repo() {
   local repo_url="$1" ref="$2" dest_dir="$3"
 
   if [[ -d "$dest_dir" ]]; then
-    sdx_info "清理已存在的临时目录: $dest_dir"
+    info "清理已存在的临时目录: $dest_dir"
     rm -rf "$dest_dir"
   fi
 
   # 本地路径：镜像工作区（含未提交文件），便于本仓测与本地 GIT_REPO_URL
   if [[ -d "$repo_url" ]]; then
-    sdx_info "同步本地仓库工作区: $repo_url → $dest_dir"
+    info "同步本地仓库工作区: $repo_url → $dest_dir"
     mkdir -p "$dest_dir"
     if command -v rsync >/dev/null 2>&1; then
       rsync -a --delete --exclude '.git' "${repo_url%/}/" "${dest_dir}/" \
-        || sdx_error "本地同步失败: $repo_url"
+        || error "本地同步失败: $repo_url"
     else
-      cp -R "${repo_url%/}/." "$dest_dir/" || sdx_error "本地复制失败: $repo_url"
+      cp -R "${repo_url%/}/." "$dest_dir/" || error "本地复制失败: $repo_url"
       rm -rf "${dest_dir}/.git"
     fi
     return 0
   fi
 
-  sdx_info "克隆仓库: $repo_url → $dest_dir"
+  info "克隆仓库: $repo_url → $dest_dir"
 
   if [[ "$ref" == 'HEAD' || -z "$ref" ]]; then
     git clone --depth 1 "$repo_url" "$dest_dir" \
-      || sdx_error "克隆失败: $repo_url"
+      || error "克隆失败: $repo_url"
   else
-    sdx_info "  分支/标签: $ref"
+    info "  分支/标签: $ref"
     git clone --depth 1 --single-branch -b "$ref" "$repo_url" "$dest_dir" \
-      || sdx_error "克隆失败: $repo_url (ref: $ref)"
+      || error "克隆失败: $repo_url (ref: $ref)"
   fi
 }
 
-sdx_bs_cleanup() {
-  if [[ -n "$SDX_BS_CLONE_DIR" && -d "$SDX_BS_CLONE_DIR" ]]; then
-    sdx_info "清理临时目录: $SDX_BS_CLONE_DIR"
-    rm -rf "$SDX_BS_CLONE_DIR"
+bs_cleanup() {
+  if [[ -n "$BS_CLONE_DIR" && -d "$BS_CLONE_DIR" ]]; then
+    info "清理临时目录: $BS_CLONE_DIR"
+    rm -rf "$BS_CLONE_DIR"
   fi
 }
 
@@ -179,7 +179,7 @@ sdx_bs_cleanup() {
 # § 6  参数解析
 # =============================================================================
 
-sdx_bs_usage() {
+bs_usage() {
   cat >&2 <<'EOF'
 用法
   bootstrap.sh [选项]
@@ -196,7 +196,7 @@ EOF
   (
     printf '                             合法值：'
     IFS=' '
-    printf '%s' "${SDX_BS_AGENT_CHOICES[*]}"
+    printf '%s' "${BS_AGENT_CHOICES[*]}"
     printf '\n'
   ) >&2
   cat >&2 <<'EOF'
@@ -226,107 +226,107 @@ EOF
 EOF
 }
 
-sdx_bs_normalize_agents() {
+bs_normalize_agents() {
   local raw="${1:-}"
   raw="$(printf '%s' "$raw" | tr '/' ',')"
-  if declare -f sdx_agents_normalize >/dev/null; then
-    sdx_agents_normalize "$raw"
+  if declare -f agents_normalize >/dev/null; then
+    agents_normalize "$raw"
   else
     printf '%s' "$raw" | tr -s ',' | sed 's/^,//;s/,$//'
   fi
 }
 
-sdx_bs_validate_agents() {
+bs_validate_agents() {
   local agents_csv="${1:-}" agent
-  if declare -f sdx_agents_validate >/dev/null; then
+  if declare -f agents_validate >/dev/null; then
     IFS=',' read -ra parts <<< "$agents_csv"
     for agent in "${parts[@]}"; do
       agent="${agent// /}"
       [[ -z "$agent" ]] && continue
-      sdx_agents_validate "$agent" || sdx_error "无效 agent: ${agent}"
+      agents_validate "$agent" || error "无效 agent: ${agent}"
     done
     return 0
   fi
   local ok v legal
-  legal="$(IFS=' '; printf '%s' "${SDX_BS_AGENT_CHOICES[*]}")"
+  legal="$(IFS=' '; printf '%s' "${BS_AGENT_CHOICES[*]}")"
   IFS=',' read -ra parts <<< "$agents_csv"
   for agent in "${parts[@]}"; do
     agent="${agent// /}"
     [[ -z "$agent" ]] && continue
     ok=0
-    for v in "${SDX_BS_AGENT_CHOICES[@]}"; do
+    for v in "${BS_AGENT_CHOICES[@]}"; do
       [[ "$agent" == "$v" ]] && { ok=1; break; }
     done
-    [[ $ok -eq 1 ]] || sdx_error "无效 agent: ${agent}（合法值：${legal}）"
+    [[ $ok -eq 1 ]] || error "无效 agent: ${agent}（合法值：${legal}）"
   done
 }
 
-sdx_bs_parse_args() {
+bs_parse_args() {
   while (( $# > 0 )); do
     case "$1" in
       --components=*)
-        SDX_BS_COMPONENTS="${1#*=}"
+        BS_COMPONENTS="${1#*=}"
         shift
         ;;
       --components)
         shift
-        sdx_bs_require_value "--components" "${1:-}"
-        SDX_BS_COMPONENTS="$1"
+        bs_require_value "--components" "${1:-}"
+        BS_COMPONENTS="$1"
         shift
         ;;
       --doc-target=*)
-        SDX_BS_DOC_TARGET="${1#*=}"
+        BS_DOC_TARGET="${1#*=}"
         shift
         ;;
       --doc-target)
         shift
-        sdx_bs_require_value "--doc-target" "${1:-}"
-        SDX_BS_DOC_TARGET="$1"
+        bs_require_value "--doc-target" "${1:-}"
+        BS_DOC_TARGET="$1"
         shift
         ;;
       --agents=*)
-        SDX_BS_AGENTS="$(sdx_bs_normalize_agents "${1#*=}")"
+        BS_AGENTS="$(bs_normalize_agents "${1#*=}")"
         shift
         ;;
       --agents)
         shift
-        sdx_bs_require_value "--agents" "${1:-}"
-        SDX_BS_AGENTS="$(sdx_bs_normalize_agents "$1")"
+        bs_require_value "--agents" "${1:-}"
+        BS_AGENTS="$(bs_normalize_agents "$1")"
         shift
         ;;
       --agent-scope=*)
-        SDX_BS_AGENT_SCOPE="${1#*=}"
+        BS_AGENT_SCOPE="${1#*=}"
         shift
         ;;
       --agent-scope)
         shift
-        sdx_bs_require_value "--agent-scope" "${1:-}"
-        SDX_BS_AGENT_SCOPE="$1"
+        bs_require_value "--agent-scope" "${1:-}"
+        BS_AGENT_SCOPE="$1"
         shift
         ;;
       -h|--help)
-        sdx_bs_usage
+        bs_usage
         exit 0
         ;;
       *)
-        sdx_bs_unknown_arg "$1"
+        bs_unknown_arg "$1"
         ;;
     esac
   done
 
-  case "$SDX_BS_COMPONENTS" in
+  case "$BS_COMPONENTS" in
     docs|agent|both) ;;
-    *) sdx_error "无效 --components: ${SDX_BS_COMPONENTS}（合法值：docs agent both）" ;;
+    *) error "无效 --components: ${BS_COMPONENTS}（合法值：docs agent both）" ;;
   esac
 
   # 校验 --agent-scope
-  case "$SDX_BS_AGENT_SCOPE" in
+  case "$BS_AGENT_SCOPE" in
     home|project) ;;
-    *) sdx_error "无效 --agent-scope: ${SDX_BS_AGENT_SCOPE}（合法值：home project）" ;;
+    *) error "无效 --agent-scope: ${BS_AGENT_SCOPE}（合法值：home project）" ;;
   esac
 
   # 若已传 --agents，立即校验
-  [[ -z "$SDX_BS_AGENTS" ]] || sdx_bs_validate_agents "$SDX_BS_AGENTS"
+  [[ -z "$BS_AGENTS" ]] || bs_validate_agents "$BS_AGENTS"
 }
 
 # =============================================================================
@@ -334,32 +334,32 @@ sdx_bs_parse_args() {
 # =============================================================================
 
 # 检测是否为交互环境（stdin 为 tty）
-sdx_bs_is_interactive() {
+bs_is_interactive() {
   [[ -t 0 ]]
 }
 
 # 询问目标工程文档目录（循环直到父目录存在）
-sdx_bs_prompt_doc_target() {
+bs_prompt_doc_target() {
   local input parent
   while true; do
     printf '请输入目标工程文档目录（如 ~/workspace/my-app/docs）：' >&2
-    IFS= read -r input || sdx_error "读取输入失败"
+    IFS= read -r input || error "读取输入失败"
     input="${input/#\~/$HOME}"
     parent="$(dirname "$input")"
     if [[ -d "$parent" ]]; then
-      SDX_BS_DOC_TARGET="$input"
+      BS_DOC_TARGET="$input"
       return 0
     else
-      sdx_log "父目录不存在：$parent，请重新输入。"
+      log "父目录不存在：$parent，请重新输入。"
     fi
   done
 }
 
 # 询问要安装的 agent（展示编号列表，支持编号或名称输入）
-sdx_bs_prompt_agents() {
-  local -a agent_list=("${SDX_BS_AGENT_CHOICES[@]}")
-  sdx_log ''
-  sdx_log '请选择要安装的 Agent（输入编号，多选用 / 或 , 分隔，直接回车选 1）：'
+bs_prompt_agents() {
+  local -a agent_list=("${BS_AGENT_CHOICES[@]}")
+  log ''
+  log '请选择要安装的 Agent（输入编号，多选用 / 或 , 分隔，直接回车选 1）：'
   local i
   for (( i=0; i<${#agent_list[@]}; i++ )); do
     printf '  %d) %s\n' $(( i+1 )) "${agent_list[$i]}" >&2
@@ -367,7 +367,7 @@ sdx_bs_prompt_agents() {
   printf '选择：' >&2
 
   local input
-  IFS= read -r input || sdx_error "读取输入失败"
+  IFS= read -r input || error "读取输入失败"
   [[ -z "$input" ]] && input='1'
 
   local normalized
@@ -382,7 +382,7 @@ sdx_bs_prompt_agents() {
       if (( idx >= 0 && idx < ${#agent_list[@]} )); then
         result_parts+=("${agent_list[$idx]}")
       else
-        sdx_error "无效编号: ${part}（合法范围 1-${#agent_list[@]}）"
+        error "无效编号: ${part}（合法范围 1-${#agent_list[@]}）"
       fi
     else
       result_parts+=("$part")
@@ -391,89 +391,89 @@ sdx_bs_prompt_agents() {
 
   local _ifs=$IFS
   IFS=','
-  SDX_BS_AGENTS="${result_parts[*]}"
+  BS_AGENTS="${result_parts[*]}"
   IFS=$_ifs
-  sdx_bs_validate_agents "$SDX_BS_AGENTS"
+  bs_validate_agents "$BS_AGENTS"
 }
 
 # 推导 agent-target
-sdx_bs_resolve_agent_target() {
-  case "$SDX_BS_AGENT_SCOPE" in
+bs_resolve_agent_target() {
+  case "$BS_AGENT_SCOPE" in
     home)
-      [[ -n "${HOME:-}" ]] || sdx_error "需要 HOME 环境变量"
-      SDX_BS_AGENT_TARGET="$HOME"
+      [[ -n "${HOME:-}" ]] || error "需要 HOME 环境变量"
+      BS_AGENT_TARGET="$HOME"
       ;;
     project)
-      [[ -n "$SDX_BS_DOC_TARGET" ]] \
-        || sdx_error "agent-scope=project 需要 --doc-target（用于 dirname 推导工程根）；或改用 --agent-scope=home"
-      SDX_BS_AGENT_TARGET="$(dirname "$SDX_BS_DOC_TARGET")"
+      [[ -n "$BS_DOC_TARGET" ]] \
+        || error "agent-scope=project 需要 --doc-target（用于 dirname 推导工程根）；或改用 --agent-scope=home"
+      BS_AGENT_TARGET="$(dirname "$BS_DOC_TARGET")"
       ;;
   esac
 }
 
 # 展示汇总并请求确认
-sdx_bs_confirm_plan() {
+bs_confirm_plan() {
   local step=1
-  sdx_log ''
-  sdx_log '=========================================='
-  sdx_log '即将执行以下操作：'
-  if sdx_bs_want_docs; then
-    sdx_log "  ${step}. docs-install  --target ${SDX_BS_DOC_TARGET}"
+  log ''
+  log '=========================================='
+  log '即将执行以下操作：'
+  if bs_want_docs; then
+    log "  ${step}. docs-install  --target ${BS_DOC_TARGET}"
     step=$((step + 1))
   fi
-  if sdx_bs_want_agent; then
-    sdx_log "  ${step}. agent-install --agents=${SDX_BS_AGENTS} --target ${SDX_BS_AGENT_TARGET}"
+  if bs_want_agent; then
+    log "  ${step}. agent-install --agents=${BS_AGENTS} --target ${BS_AGENT_TARGET}"
   fi
-  sdx_log "  components: ${SDX_BS_COMPONENTS}"
-  sdx_log '=========================================='
+  log "  components: ${BS_COMPONENTS}"
+  log '=========================================='
   printf '确认执行？[Y/n]：' >&2
   local ans
   IFS= read -r ans || ans='y'
   case "$ans" in
-    n|N) sdx_log '已取消。'; exit 0 ;;
+    n|N) log '已取消。'; exit 0 ;;
   esac
 }
 
 # 收集所有缺失参数（交互或报错）
-sdx_bs_collect_params() {
+bs_collect_params() {
   # doc-target：docs 需要；或 agent + project 需要
   local need_doc_target=0
-  if sdx_bs_want_docs; then
+  if bs_want_docs; then
     need_doc_target=1
-  elif sdx_bs_want_agent && [[ "$SDX_BS_AGENT_SCOPE" == 'project' ]]; then
+  elif bs_want_agent && [[ "$BS_AGENT_SCOPE" == 'project' ]]; then
     need_doc_target=1
   fi
 
   if (( need_doc_target == 1 )); then
-    if [[ -z "$SDX_BS_DOC_TARGET" ]]; then
-      if sdx_bs_is_interactive; then
-        sdx_bs_prompt_doc_target
+    if [[ -z "$BS_DOC_TARGET" ]]; then
+      if bs_is_interactive; then
+        bs_prompt_doc_target
       else
-        sdx_error "非交互环境：请通过 --doc-target PATH 指定目标工程文档目录（仍兼容 --doc-target=PATH）"
+        error "非交互环境：请通过 --doc-target PATH 指定目标工程文档目录（仍兼容 --doc-target=PATH）"
       fi
     else
       local parent
-      SDX_BS_DOC_TARGET="${SDX_BS_DOC_TARGET/#\~/$HOME}"
-      parent="$(dirname "$SDX_BS_DOC_TARGET")"
-      [[ -d "$parent" ]] || sdx_error "父目录不存在：$parent"
+      BS_DOC_TARGET="${BS_DOC_TARGET/#\~/$HOME}"
+      parent="$(dirname "$BS_DOC_TARGET")"
+      [[ -d "$parent" ]] || error "父目录不存在：$parent"
     fi
   fi
 
   # agents
-  if sdx_bs_want_agent; then
-    if [[ -z "$SDX_BS_AGENTS" ]]; then
-      if sdx_bs_is_interactive; then
-        sdx_bs_prompt_agents
+  if bs_want_agent; then
+    if [[ -z "$BS_AGENTS" ]]; then
+      if bs_is_interactive; then
+        bs_prompt_agents
       else
-        sdx_error "非交互环境：请通过 --agents=LIST 指定要安装的 Agent（$(IFS=' '; printf '%s' "${SDX_BS_AGENT_CHOICES[*]}")）"
+        error "非交互环境：请通过 --agents=LIST 指定要安装的 Agent（$(IFS=' '; printf '%s' "${BS_AGENT_CHOICES[*]}")）"
       fi
     fi
-    sdx_bs_resolve_agent_target
+    bs_resolve_agent_target
   fi
 
   # 汇总确认（仅交互环境）
-  if sdx_bs_is_interactive; then
-    sdx_bs_confirm_plan
+  if bs_is_interactive; then
+    bs_confirm_plan
   fi
 }
 
@@ -481,84 +481,84 @@ sdx_bs_collect_params() {
 # § 7  主流程
 # =============================================================================
 
-sdx_bs_run_docs_install() {
+bs_run_docs_install() {
   local docs_install="${1:?docs_install}"
-  sdx_log ''
-  sdx_info '>>> 执行 docs-install.sh...'
-  export REPO_ROOT="$SDX_BS_CLONE_DIR"
-  bash "$docs_install" --target "$SDX_BS_DOC_TARGET" \
-    || sdx_error "docs-install 执行失败，已中止"
+  log ''
+  info '>>> 执行 docs-install.sh...'
+  # 仅前缀传参，不 export（与 lib/docsconfig §禁止 export 一致）
+  REPO_ROOT="$BS_CLONE_DIR" bash "$docs_install" --target "$BS_DOC_TARGET" \
+    || error "docs-install 执行失败，已中止"
 }
 
-sdx_bs_run_agent_install() {
+bs_run_agent_install() {
   local agent_install="${1:?agent_install}"
-  sdx_log ''
-  sdx_info '>>> 执行 agent-install.sh...'
-  bash "$agent_install" --agents="$SDX_BS_AGENTS" --target "$SDX_BS_AGENT_TARGET" \
-    || sdx_error "agent-install 执行失败"
+  log ''
+  info '>>> 执行 agent-install.sh...'
+  bash "$agent_install" --agents="$BS_AGENTS" --target "$BS_AGENT_TARGET" \
+    || error "agent-install 执行失败"
 }
 
-sdx_bs_main() {
+bs_main() {
   require_bash5
-  sdx_bs_check_deps
+  bs_check_deps
 
-  sdx_bs_parse_args "$@"
-  sdx_bs_collect_params
+  bs_parse_args "$@"
+  bs_collect_params
 
   local repo_url ref tmpdir
-  repo_url="$(sdx_docs_bootstrap_get_repo_url)"
-  ref="$(sdx_docs_bootstrap_get_ref)"
-  tmpdir="$(sdx_docs_bootstrap_get_tmpdir)"
+  repo_url="$(docs_bootstrap_get_repo_url)"
+  ref="$(docs_bootstrap_get_ref)"
+  tmpdir="$(docs_bootstrap_get_tmpdir)"
 
-  SDX_BS_CLONE_DIR="$(sdx_docs_bootstrap_gen_clone_dir "$tmpdir")"
-  trap sdx_bs_cleanup EXIT
+  BS_CLONE_DIR="$(docs_bootstrap_gen_clone_dir "$tmpdir")"
+  trap bs_cleanup EXIT
 
-  sdx_log ''
-  sdx_log '=========================================='
-  sdx_log 'bootstrap'
-  sdx_info "仓库:        $repo_url"
-  sdx_info "引用:        $ref"
-  sdx_info "components:  $SDX_BS_COMPONENTS"
-  if sdx_bs_want_docs; then
-    sdx_info "文档目录:    $SDX_BS_DOC_TARGET"
+  log ''
+  log '=========================================='
+  log 'bootstrap'
+  info "仓库:        $repo_url"
+  info "引用:        $ref"
+  info "components:  $BS_COMPONENTS"
+  if bs_want_docs; then
+    info "文档目录:    $BS_DOC_TARGET"
   fi
-  if sdx_bs_want_agent; then
-    sdx_info "Agents:      $SDX_BS_AGENTS"
-    sdx_info "Agent 安装:  $SDX_BS_AGENT_TARGET"
+  if bs_want_agent; then
+    info "Agents:      $BS_AGENTS"
+    info "Agent 安装:  $BS_AGENT_TARGET"
   fi
-  sdx_log '=========================================='
-  sdx_log ''
+  log '=========================================='
+  log ''
 
-  sdx_bs_clone_repo "$repo_url" "$ref" "$SDX_BS_CLONE_DIR"
+  bs_clone_repo "$repo_url" "$ref" "$BS_CLONE_DIR"
 
-  local docs_install="${SDX_BS_CLONE_DIR}/agent/skills/docs-install/scripts/docs-install.sh"
-  local agent_install="${SDX_BS_CLONE_DIR}/agent/skills/agent-install/scripts/agent-install.sh"
-  local shared_config="${SDX_BS_CLONE_DIR}/agent/scripts/docs-core.sh"
+  local docs_install="${BS_CLONE_DIR}/agent/skills/docs-install/scripts/docs-install.sh"
+  local agent_install="${BS_CLONE_DIR}/agent/skills/agent-install/scripts/agent-install.sh"
+  local shared_config="${BS_CLONE_DIR}/agent/scripts/docs-core.sh"
 
-  if sdx_bs_want_docs; then
-    [[ -f "$docs_install" ]] || sdx_error "仓库中未找到 agent/skills/docs-install/scripts/docs-install.sh"
+  if bs_want_docs; then
+    [[ -f "$docs_install" ]] || error "仓库中未找到 agent/skills/docs-install/scripts/docs-install.sh"
   fi
-  if sdx_bs_want_agent; then
-    [[ -f "$agent_install" ]] || sdx_error "仓库中未找到 agent/skills/agent-install/scripts/agent-install.sh"
+  if bs_want_agent; then
+    [[ -f "$agent_install" ]] || error "仓库中未找到 agent/skills/agent-install/scripts/agent-install.sh"
   fi
-  [[ -f "$shared_config" ]] || sdx_error "仓库中未找到 agent/scripts/docs-core.sh"
+  [[ -f "$shared_config" ]] || error "仓库中未找到 agent/scripts/docs-core.sh"
 
   # 克隆后统一加载 SSOT（若预载阶段已 source，此处因 _AGENT_SHARED_DOCS_CONFIG_LOADED 短路）
   # shellcheck disable=SC1090
   source "$shared_config"
 
-  sdx_log ''
-  sdx_info "已加载共享配置（agent/scripts/docs-core.sh）"
+  log ''
+  info "已加载共享配置（agent/scripts/docs-core.sh）"
 
-  if sdx_bs_want_docs; then
-    sdx_bs_run_docs_install "$docs_install"
+  if bs_want_docs; then
+    bs_run_docs_install "$docs_install"
   fi
-  if sdx_bs_want_agent; then
-    sdx_bs_run_agent_install "$agent_install"
+  if bs_want_agent; then
+    bs_run_agent_install "$agent_install"
   fi
 
-  sdx_log ''
-  sdx_info '完成：bootstrap'
+  log ''
+  info '完成：bootstrap'
 }
 
-sdx_bs_main "$@"
+bs_main "$@"

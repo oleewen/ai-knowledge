@@ -7,7 +7,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(ROOT / "agent" / "skills" / "docs-okf" / "scripts"))
 import okf_cross_layer as x  # noqa: E402
 
@@ -51,9 +51,9 @@ def test_unknown_host_no_web_base() -> None:
 def test_href_and_validate(tmp_path: Path) -> None:
     company = tmp_path / "ea"
     cdoc = company / "company"
-    bd = cdoc / "knowledge" / "business" / "BD-EXAMPLE"
-    bd.mkdir(parents=True)
-    (bd / "BD-EXAMPLE.md").write_text("# bd\n", encoding="utf-8")
+    biz = cdoc / "knowledge" / "business"
+    biz.mkdir(parents=True)
+    (biz / "BD-EXAMPLE.md").write_text("# bd\n", encoding="utf-8")
     sys_root = tmp_path / "sys" / "system"
     sys_root.mkdir(parents=True)
     x.write_parent(
@@ -71,7 +71,7 @@ def test_href_and_validate(tmp_path: Path) -> None:
     href = x.cross_layer_href(sys_root, "BD-EXAMPLE")
     assert href == (
         "https://github.com/org/ea/blob/main/company/"
-        "knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md"
+        "knowledge/business/BD-EXAMPLE.md"
     )
     assert x.validate_http_href(sys_root, href) is None
 

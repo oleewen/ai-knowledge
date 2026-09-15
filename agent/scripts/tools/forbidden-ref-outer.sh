@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
-# check-forbidden-file-refs.sh — 库外禁止的文件引用（当前：superpowers 具名文件）
-# 在仓库根执行：bash agent/scripts/check-forbidden-file-refs.sh
+# forbidden-ref-outer.sh — 库外禁止的文件引用（当前：superpowers 具名文件）
+# 在仓库根执行：bash agent/scripts/tools/forbidden-ref-outer.sh
 # 规则见 agent/rules/CONVENTIONS.md §superpowers 引用隔离
-# 风格与 agent/scripts/validate-agent-md-links.sh 对齐：source config-bootstrap.sh
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck disable=SC1091
-source "$SCRIPT_DIR/config-bootstrap.sh"
-validate_bootstrap_docsconfig "$SCRIPT_DIR"
+source "$SCRIPT_DIR/../lib/docsconfig.sh"
+docsconfig_bootstrap_validate "$SCRIPT_DIR"
 
-REPO_ROOT="${REPO_ROOT:?validate_bootstrap_docsconfig 未注入 REPO_ROOT}"
+REPO_ROOT="${REPO_ROOT:?docsconfig_bootstrap_validate 未注入 REPO_ROOT}"
 
 readonly EXIT_VIOLATION=1
 readonly EXIT_MISSING_TOOL=2

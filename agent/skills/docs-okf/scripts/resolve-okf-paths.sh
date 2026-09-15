@@ -13,18 +13,18 @@ resolve_okf_paths() {
   local agent_home bootstrap
 
   agent_home="$(_resolve_okf_agent_home)"
-  bootstrap="${agent_home}/scripts/config-bootstrap.sh"
+  bootstrap="${agent_home}/scripts/lib/docsconfig.sh"
   if [[ ! -f "$bootstrap" ]]; then
-    printf '[okf] 未找到 config-bootstrap.sh: %s\n' "$bootstrap" >&2
+    printf '[okf] 未找到 docsconfig.sh: %s\n' "$bootstrap" >&2
     exit 1
   fi
 
   # shellcheck disable=SC1091
   source "$bootstrap"
-  validate_bootstrap_docsconfig || exit 1
+  docsconfig_bootstrap_validate || exit 1
 
   if [[ -z "${KNOWLEDGE_TYPE:-}" ]]; then
-    config_bootstrap_fail "[okf] .docsconfig 缺少 KNOWLEDGE_TYPE。请使用 docs-install.sh --scope=knowledge --target <目标工程文档目录> 写入 KNOWLEDGE_TYPE。"
+    docsconfig_bootstrap_fail "[okf] .docsconfig 缺少 KNOWLEDGE_TYPE。请使用 docs-install.sh --scope=knowledge --target <目标工程文档目录> 写入 KNOWLEDGE_TYPE。"
   fi
 
   docsconfig_validate_knowledge_type "$KNOWLEDGE_TYPE" || exit 1

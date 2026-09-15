@@ -3,7 +3,7 @@ set -euo pipefail
 
 # ANALYSIS 结构校验（六章模板；不承担写前门禁）。
 # 用法：validate-analysis.sh [--file <path>]
-# DOC_ROOT：resolve_repo_doc_root（.docsconfig）；先 config-bootstrap.sh
+# DOC_ROOT：docsconfig_resolve_doc_root（.docsconfig）；先 docsconfig.sh
 #
 # 要点：文首 frontmatter、六章、`### FR-`、小节标题、FR/BR/R/MVP、概览「需求概要」、
 #       概览列「所属模块」「所属里程碑」（非「所属 MVP」）、需求名称≤30 / 概要≤60、与 SOLUTION 关联；
@@ -24,10 +24,10 @@ done
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck disable=SC1091
-source "$_AGENT_HOME/scripts/config-bootstrap.sh"
-validate_bootstrap_docsconfig "$SCRIPT_DIR"
+source "$_AGENT_HOME/scripts/lib/docsconfig.sh"
+docsconfig_bootstrap_validate "$SCRIPT_DIR"
 
-DOC_ROOT="$(resolve_repo_doc_root)"
+DOC_ROOT="$(docsconfig_resolve_doc_root)"
 cd "$REPO_ROOT" || exit 1
 
 ANALYSIS_DIR="${DOC_ROOT}/analysis"
