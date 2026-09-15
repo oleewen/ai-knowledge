@@ -304,17 +304,15 @@ agent_install_install() {
   done
 }
 
-# 计算 agent-install 写回 .docsconfig 所需 AGENT_*
-# 用法：install_agent_path <nameref_agent_root_out> <nameref_agent_dirs_out>
+# 计算 agent-install 写回 .docsconfig 所需 AGENT_ROOT（固定 ~/.agents）
+# 用法：install_agent_path <nameref_agent_root_out>
 install_agent_path() {
   local -n _ar_out="${1:?}"
-  local -n _ads_out="${2:?}"
-  _ar_out="$(strip_trailing_slash "${CFG[target_abs]}")"
-  _ads_out="$(agent_dirs_space_separated_for "${ENABLED_AGENTS[@]}")"
+  _ar_out="$(strip_trailing_slash "$(abs_path "${CFG[home_abs]}/.agents")")"
 }
 
 # =============================================================================
-# install config：target ≠ $HOME 时更新 AGENT_ROOT / AGENT_DIRS
+# install config：target ≠ $HOME 时更新 AGENT_ROOT
 # =============================================================================
 
 agent_install_update_docsconfig() {
@@ -327,18 +325,18 @@ agent_install_update_docsconfig() {
   [[ -f "$cfg" ]] \
     || sdx_error "未找到 ${cfg}。请先在该工程执行 docs-install（或 docs-install --scope=config <目标工程文档目录>）生成 .docsconfig。"
 
-  local doc_root repo_root doc_dir _ar_old _ads_old kt
-  docsconfig_read_into "$cfg" doc_root repo_root doc_dir _ar_old _ads_old kt \
+  local doc_root repo_root doc_dir _ar_old _unused_ads kt
+  docsconfig_read_into "$cfg" doc_root repo_root doc_dir _ar_old _unused_ads kt \
     || sdx_error "无法解析: ${cfg}"
 
   [[ -n "$doc_root" && -n "$repo_root" && -n "$doc_dir" ]] \
     || sdx_error ".docsconfig 缺少 DOC_ROOT/REPO_ROOT/DOC_DIR，请重新执行 docs-install。"
 
-  local ar ads
-  install_agent_path ar ads
+  local ar
+  install_agent_path ar
 
-  sdx_info ">>> 更新 .docsconfig 中的 AGENT_ROOT / AGENT_DIRS（按本次参数重算）: ${cfg}"
-  docsconfig_write "$t" "$doc_root" "$doc_dir" "${CFG[dry_run]}" "$ar" "$ads" "${kt:-}"
+  sdx_info ">>> 更新 .docsconfig 中的 AGENT_ROOT（规范 ~/.agents）: ${cfg}"
+  docsconfig_write "$t" "$doc_root" "$doc_dir" "${CFG[dry_run]}" "$ar" "" "${kt:-}"
 }
 
 # =============================================================================
@@ -356,7 +354,7 @@ agent_install_usage() {
   hooks/rules/scripts/skills/knowledge/references 等子目录下的各文件/目录）。
   scripts 阶段会从本仓库复制 agent/scripts/docs-core.sh 到 $HOME/.agents/scripts/docs-core.sh。
   不安装 README。
-  当 --target 不是 $HOME 时，更新 <target>/.docsconfig 的 AGENT_ROOT 与 AGENT_DIRS（与当前 --agents 一致）；
+  当 --target 不是 $HOME 时，更新 <target>/.docsconfig 的 AGENT_ROOT 为 ~/.agents；
   若该文件不存在，请先对目标工程执行 docs-install。
 
 选项

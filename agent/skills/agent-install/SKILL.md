@@ -50,7 +50,7 @@ description: >
 
 ## 产出与脚本
 
-- 正式：`~/.agents/` 实体树 + 各 IDE 目录软链；可选更新目标 `.docsconfig` 的 `AGENT_ROOT`/`AGENT_DIRS`
+- 正式：`~/.agents/` 实体树 + 各 IDE 目录软链；可选更新目标 `.docsconfig` 的 `AGENT_ROOT=~/.agents`
 - 收敛后：产物校核 + 受众 A/B → [light-flow-actions.md](../../references/light-flow-actions.md)
 
 ```bash
