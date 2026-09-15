@@ -15,14 +15,14 @@ title: company INDEX-GUIDE
 
 * [README.md](README.md) — 人类入口  
 * [index.md](index.md) — OKF 目录索引  
-* [DESIGN.md](DESIGN.md) — 设计契约  
+* [knowledge-governance](../agent/knowledge/knowledge-governance.md) — 三层设计契约  
 * [knowledge/README.md](knowledge/README.md) — 五视角  
 * [knowledge-links.yaml](knowledge-links.yaml) — 建联清单  
 * [changelogs/README.md](changelogs/README.md) — 变更/索引  
 
 ### 1.2 元信息
 
-* **角色**: 公司知识库；`knowledge/` = BD/CAP/PL/SYS/MDG/TPL SSOT；`system-slots/system-{NAME}` = 软链槽位  
+* **角色**: 公司知识库；`knowledge/` = BU/BD/CAP/PL/SLN/TPL SSOT（无 PD/SYS/MDG）；`system-slots/system-{NAME}` = 软链槽位  
 * **栈**: Markdown、YAML  
 * **范围**: `knowledge/` · `solutions/` · `analysis/` · `system-slots/` · `changelogs/`  
 
@@ -32,7 +32,7 @@ title: company INDEX-GUIDE
 
 ```text
 company/
-├── README.md / INDEX-GUIDE.md / index.md / DESIGN.md / docs-meta.md
+├── README.md / INDEX-GUIDE.md / index.md / docs-meta.md
 ├── knowledge-links.yaml
 ├── knowledge/ · solutions/ · analysis/
 ├── system-slots/

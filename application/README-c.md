@@ -14,7 +14,7 @@ agent/knowledge（治理 / 命名）
   └──→ changelogs（变更 / 索引运维）
 ```
 
-**落地顺序**：核 [agent/knowledge](../agent/knowledge/README.md) → 补 knowledge ID（[DESIGN.md](DESIGN.md)、[CONTRIBUTING.md](CONTRIBUTING.md)）→ changelogs 留痕。
+**落地顺序**：核 [agent/knowledge](../agent/knowledge/README.md) → 补 knowledge ID（[knowledge-governance](../agent/knowledge/knowledge-governance.md)、[CONTRIBUTING.md](CONTRIBUTING.md)）→ changelogs 留痕。
 
 上行：`docs-pull` 入系统槽位；**docs-distill 只写 system overview**，不回写本库 knowledge。
 

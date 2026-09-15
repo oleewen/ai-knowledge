@@ -15,7 +15,7 @@ title: system INDEX-GUIDE
 
 * [README.md](README.md) — 人类入口  
 * [index.md](index.md) — OKF 目录索引  
-* [DESIGN.md](DESIGN.md) — 设计契约  
+* [knowledge-governance](../agent/knowledge/knowledge-governance.md) — 三层设计契约  
 * [knowledge/README.md](knowledge/README.md) — 五视角  
 * [knowledge-links.yaml](knowledge-links.yaml) — 建联清单  
 * [changelogs/README.md](changelogs/README.md) — 变更/索引  
@@ -32,7 +32,7 @@ title: system INDEX-GUIDE
 
 ```text
 system/
-├── README.md / INDEX-GUIDE.md / index.md / DESIGN.md / docs-meta.md
+├── README.md / INDEX-GUIDE.md / index.md / docs-meta.md
 ├── knowledge-links.yaml
 ├── knowledge/ · solutions/ · analysis/ · requirements/ · adr/
 ├── application-slots/
@@ -64,7 +64,7 @@ system/
 
 样本实体与视角：[knowledge/index.md](knowledge/index.md)
 
-系统层首次：`BSD/BC/AGG/AB/PM/FT/FR/UC/BP/BR/APP/MS/DS/ENT/TSD`（见 [DESIGN.md](DESIGN.md)、[application/DESIGN.md](../application/DESIGN.md) §2.2.1）
+系统层首次：含 PD/SYS/MDG/BSD/…（见 [knowledge-governance](../agent/knowledge/knowledge-governance.md#跨层实体首次定义)）
 
 ---
 

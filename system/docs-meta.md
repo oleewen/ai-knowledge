@@ -42,7 +42,6 @@ child_files:
   - "README.md"
   - "index.md"
   - "INDEX-GUIDE.md"
-  - "DESIGN.md"
   - "docs-meta.md"
   - "knowledge-links.yaml"
   - "viz.html"
@@ -53,7 +52,7 @@ inputs:
 
 outputs:
   primary_artifact:
-    pattern: "README.md, index.md, DESIGN.md, knowledge/**/*, application-slots/**"
+    pattern: "README.md, index.md, knowledge/**/*, application-slots/**"
     description: "根导航与设计、knowledge/ 系统层 OKF 实体、按需应用槽位镜像"
 
 naming_conventions:
@@ -71,7 +70,6 @@ integration:
 references:
   - path: "./README.md"
   - path: "./index.md"
-  - path: "./DESIGN.md"
   - path: "./knowledge-links.yaml"
   - path: "../agent/knowledge/knowledge-governance.md"
   - path: "../agent/knowledge/okf-spec.md"

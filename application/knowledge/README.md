@@ -3,7 +3,7 @@ type: Documentation
 ---
 # knowledge（应用侧知识主体）
 
-五视角实体 SSOT；本层首次：**API / TBL / MW / CMP**。索引 [index.md](index.md) · DESIGN（库外） §2.2.1。
+五视角实体 SSOT；本层首次：**API / TBL / MW / CMP**。索引 [index.md](index.md) · 首次定义见 [knowledge-governance](../../agent/knowledge/knowledge-governance.md#跨层实体首次定义)。
 
 | 文件 | 视角 | 概述 |
 |------|------|------|

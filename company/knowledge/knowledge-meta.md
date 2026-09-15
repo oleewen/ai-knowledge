@@ -48,7 +48,7 @@ title: 知识树元数据（company/knowledge）
 | --- | --- |
 | company_index | index.md（库外） |
 | entity_index | [index.md](index.md) |
-| design | DESIGN（库外，纯文本） |
+| design | knowledge-governance（agent/knowledge） |
 | governance | knowledge-governance（Agent 元知识） |
 
 ---
@@ -68,5 +68,5 @@ title: 知识树元数据（company/knowledge）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 五视角架构入口 |
-| DESIGN（库外，纯文本） | 公司库设计契约 |
+| knowledge-governance（agent/knowledge） | 公司库设计契约 |
 | naming-conventions（Agent 元知识） | 命名 SSOT |

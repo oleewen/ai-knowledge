@@ -28,7 +28,7 @@
 
 - 总体协作契约：仓库根 `AGENTS.md`
 - 九章地图：`INDEX-GUIDE.md`；目录索引：`index.md`
-- 知识库建模：各文档根下 `DESIGN.md` / `CONTRIBUTING.md`（如 `application/`）
+- 知识库建模：[knowledge-governance.md](knowledge/knowledge-governance.md)；应用贡献见 `application/CONTRIBUTING.md`
 - 装机：仓根 `bootstrap.sh`；Skill 入口见 [skills/docs-install](skills/docs-install/SKILL.md)、[skills/agent-install](skills/agent-install/SKILL.md)
 
 ## 维护原则

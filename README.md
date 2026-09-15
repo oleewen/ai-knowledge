@@ -37,7 +37,7 @@ Agent = LLM + Harness。平台给模型与工具，**工程知识**须由团队�
 - **联邦**：公司管划分、系统管边界、应用管实现并上行对齐。
 - **闭环**：knowledge ← 归档；solutions → analysis → requirements。
 
-元模型：[application/DESIGN.md](application/DESIGN.md)、[system/DESIGN.md](system/DESIGN.md)、[company/DESIGN.md](company/DESIGN.md)。
+元模型：[knowledge-governance.md](agent/knowledge/knowledge-governance.md)。
 
 ---
 
@@ -130,7 +130,7 @@ flowchart TD
 | 从零落地（场景 A–D） | [quick-start.md](quick-start.md) |
 | 九章地图 / 目录索引 | [INDEX-GUIDE.md](INDEX-GUIDE.md) · [index.md](index.md) |
 | Agent 契约与查阅顺序 | [AGENTS.md](AGENTS.md) |
-| 三层元模型 | [application/DESIGN.md](application/DESIGN.md)、[system/DESIGN.md](system/DESIGN.md)、[company/DESIGN.md](company/DESIGN.md) |
+| 三层元模型 | [knowledge-governance.md](agent/knowledge/knowledge-governance.md) |
 | 初始化脚本 | [bootstrap.sh](bootstrap.sh)、[agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)、[agent/skills/agent-install/SKILL.md](agent/skills/agent-install/SKILL.md) |
 | 共享推进契约 | [agent/references/](agent/references/) |
 | 根索引运行日志 | [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md) |
@@ -141,7 +141,7 @@ flowchart TD
 ## 参与贡献
 
 1. [INDEX-GUIDE.md](INDEX-GUIDE.md) — 路径地图  
-2. [application/DESIGN.md](application/DESIGN.md) — 五视角元模型  
+2. [knowledge-governance.md](agent/knowledge/knowledge-governance.md) — 三层设计与首次定义  
 3. [application/CONTRIBUTING.md](application/CONTRIBUTING.md) — 贡献流程与门禁  
 
 **许可**：Apache-2.0（根目录暂无 `LICENSE` 文件；badge 链 OSI 条文）。

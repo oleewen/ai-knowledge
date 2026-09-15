@@ -67,4 +67,4 @@ Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详�
 | TPL-* | 公司层 TPL SSOT（reference） |
 | naming-conventions（Agent 元知识） | 命名 SSOT |
 
-**索引**：`readme_index_table: false`；变更 TSD ID 时同步 system/DESIGN.md 与 overview（按需）。
+**索引**：`readme_index_table: false`；变更 TSD ID 时同步 index/overview（按需）；层语义见 knowledge-governance。

@@ -12,7 +12,7 @@ title: "系统知识库（顶层 `system/`）"
 |--------|------|
 | 九章地图 | [INDEX-GUIDE.md](INDEX-GUIDE.md) |
 | 目录索引 | [index.md](index.md) |
-| 边界与同步 | [DESIGN.md](DESIGN.md) |
+| 边界与聚焦 | [knowledge-governance](../agent/knowledge/knowledge-governance.md) |
 | 五视角入口 | [knowledge/README.md](knowledge/README.md) |
 | 机器元数据 | [docs-meta.md](docs-meta.md) |
 
@@ -20,4 +20,4 @@ title: "系统知识库（顶层 `system/`）"
 
 模板占位：`knowledge/overview/NAME-overview.md`、`*-EXAMPLE`（最小演示链，可替换）。联邦槽位由 `docs-link` 建软链，日志在 `application-slots/changelogs/`。
 
-规范：[okf-spec](../agent/knowledge/okf-spec.md) · [knowledge-layout](../agent/references/knowledge-layout.md)
+规范：[okf-spec](../agent/knowledge/okf-spec.md) · [knowledge-layout](../agent/references/knowledge-layout.md) · [knowledge-governance](../agent/knowledge/knowledge-governance.md)

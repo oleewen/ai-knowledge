@@ -88,7 +88,7 @@ Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详�
 | --- | --- |
 | [README.md](README.md) | 叙事文档索引 |
 | [index.md](../index.md) | BD/BSD/BC/AGG/AB 实例 SSOT |
-| DESIGN（库外，纯文本） | 系统库设计契约 |
+| knowledge-governance（agent/knowledge） | 系统库设计契约 |
 | BD-*, CAP-* | 公司层业务 SSOT（reference） |
 | naming-conventions（Agent 元知识） | ID 命名 SSOT |
 

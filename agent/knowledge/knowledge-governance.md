@@ -1,22 +1,150 @@
 # 知识库治理规则
 
-本文件只定义 **三层知识库职责边界** 与 **业务 knowledge 引用边界**。组件索引、使用顺序见同目录 [README.md](README.md)。
+> **定位**：三层知识库**语义设计** SSOT（职责、实体首次定义、各层聚焦、5A 方向、引用边界）。  
+> **不分管**：路径 / overview / 槽位 / 联邦流水线 → [knowledge-layout.md](../references/knowledge-layout.md)；ID 前缀 → [naming-conventions.md](naming-conventions.md)；文件分型 → [okf-spec.md](okf-spec.md)；映射字段全文 → [glossary.md](glossary.md)。  
+> 组件索引与使用顺序见同目录 [README.md](README.md)。协作闸门见 [CONVENTIONS.md](../rules/CONVENTIONS.md)。
 
-协作闸门与编码规范见 [CONVENTIONS.md](../rules/CONVENTIONS.md)。路径/overview/流水线见 [knowledge-layout.md](../references/knowledge-layout.md)。
+**最后更新**: 2026-09-15
+
+---
 
 ## 使命
 
 决策 **透明、一致、可追溯**，避免架构随口语漂移。
 
+---
+
 ## 三层职责边界
 
-| 层级 | 目录 | 治理职责 | 实体 SSOT |
+| 层级 | 目录 | 治理职责 | 实体 SSOT（首次定义） |
 | --- | --- | --- | --- |
-| 公司 | `company/` | 公司级 EA 叙事、跨系统方案与分析、系统槽位 | BD、PL、SYS、CAP、MDG、TPL（公司级目录实体） |
-| 系统 | `system/` | 系统级架构聚合、应用镜像槽位、蒸馏归档 | BSD、PM、APP、DS、TSD 等（见各层 DESIGN §2.2.1） |
-| 应用 | `application/` | 五视角实体事实源、SDD 阶段交付 | BC、AGG、AB、FT、UC、MS、API、ENT、MW、CMP 等 |
+| 公司 | `company/` | 公司级 EA 叙事、跨系统方案与分析、系统槽位 | BU、BD、CAP、PL、SLN、TPL |
+| 系统 | `system/` | 系统级架构聚合、应用镜像槽位、蒸馏归档 | PD、SYS、MDG、BSD、BC、AGG、AB、PM、FT、FR、UC、BP、BR、APP、MS、DS、ENT、TSD 等 |
+| 应用 | `application/` | 实现级实体、SDD 阶段交付、物理锚点 | API、TBL、MW、CMP |
 
-**命名、术语与 OKF 文件分型**：统一以 `agent/knowledge/` 为准（见 [README.md](README.md)）；`system/` / `company/` 维护本层目录语义与映射。
+**命名、术语与 OKF 文件分型**：统一以 `agent/knowledge/` 为准（见 [README.md](README.md)）。路径与槽位名见 [knowledge-layout.md](../references/knowledge-layout.md)。
+
+| 面 | 规则 |
+| --- | --- |
+| 联邦 | 系统管边界与索引；应用管实现细节并上行对齐；公司聚合导航与公司级 SSOT |
+| 禁止 | 跨层字段语义双源；公司正文写实现细节 |
+| 引用 | 有 parent → HTTP 到首次定义层 SSOT；无 parent → 纯 ID（详见下文「业务 knowledge 引用边界」） |
+
+---
+
+## 跨层实体首次定义
+
+联邦三层**首次定义**层级如下；他处不重复字段语义。引用形态见下文「业务 knowledge 引用边界」。
+
+| 视角 | 实体 | 首次定义层级 |
+| --- | --- | --- |
+| **业务** business | 业务单元 BU | 公司 |
+| **业务** business | 业务域 BD | 公司 |
+| **业务** business | 业务能力 CAP | 公司 |
+| **业务** business | 业务子域 BSD | 系统 |
+| **业务** business | 限界上下文 BC | 系统 |
+| **业务** business | 聚合 AGG | 系统 |
+| **业务** business | 能力 AB | 系统 |
+| **产品** product | 产品线 PL | 公司 |
+| **应用** application | 解决方案 SLN | 公司 |
+| **产品** product | 产品服务 PD（别名：业务服务） | 系统 |
+| **产品** product | 产品模块 PM | 系统 |
+| **产品** product | 产品功能 FT | 系统 |
+| **产品** product | 功能需求 FR | 系统 |
+| **产品** product | 用户场景 UC | 系统 |
+| **产品** product | 业务流程 BP | 系统 |
+| **产品** product | 业务规则 BR | 系统 |
+| **应用** application | 系统 SYS（别名：应用服务） | 系统 |
+| **应用** application | 应用 APP | 系统 |
+| **应用** application | 模块 MS | 系统 |
+| **应用** application | 接口 API | 应用 |
+| **数据** data | 主数据域 MDG | 系统 |
+| **数据** data | 数据存储 DS | 系统 |
+| **数据** data | 实体 ENT | 系统 |
+| **数据** data | 数据表 TBL | 应用 |
+| **技术** technical | 技术平台能力 TPL | 公司 |
+| **技术** technical | 技术域 TSD | 系统 |
+| **技术** technical | 中间件绑定 MW | 应用 |
+| **技术** technical | 组件 CMP | 应用 |
+
+> **首次定义** = 治理语义、字段口径与上游主定义所在层；下游可做实例登记、实现映射、物理锚点或 reference，不等同于「只允许在该层出现」。
+
+---
+
+## 各层聚焦摘要
+
+### 公司层
+
+| 视角 | 实体 | 公司层聚焦 |
+| --- | --- | --- |
+| 业务 | BU | 业务单元 |
+| 业务 | CAP | 业务能力目录；`maps_to_bd_id`→BD；对标 PL/SLN 为推导（CAP→BD→PL↔SLN） |
+| 业务 | BD | 业务域，对标 PL（`maps_to_pl_id`） |
+| 产品 | PL | 产品线（支持 BD）；**无 PD / 无 SLN**（PD ∈ 系统；SLN ∈ 公司 application） |
+| 应用 | SLN | 解决方案（对应 PL）（AA 台账）；**无 SYS**；**无** `uses_mdg_ids` |
+| 数据 | — | **无 MDG**（MDG ∈ 系统；SYS `uses_mdg_ids`） |
+| 技术 | TPL | 云 / DevOps / 安全 / 开发环境 / 可观测；由 AA `uses_*` 引用 |
+
+- SDD：`solutions/` + `analysis/` = 跨系统上游；**无** `requirements/`（交付 ∈ 各系统）
+- 槽位 / 同步：见 [knowledge-layout.md](../references/knowledge-layout.md)（`system-slots/system-{NAME}`）
+- 入口：[company/README.md](../../company/README.md) · [company/knowledge/](../../company/knowledge/README.md)
+
+### 系统层
+
+| 视角 | 系统层聚焦 |
+| --- | --- |
+| 业务 | BSD→AB；BD 为 company reference；首层 BSD `maps_to_pd_id` |
+| 产品 | PD→PM→FT→FR→UC/BR、BP；PL 公司 SSOT（本层不落盘）；PD 本层 SSOT |
+| 应用 | SYS→APP/MS；SYS 本层 SSOT（`parent_id→公司 SLN`）；`uses_mdg_ids` / `uses_tsd_ids` / `uses_tpl_ids` |
+| 数据 | MDG/DS/ENT 本层 SSOT；TBL ∈ application |
+| 技术 | TSD；MW/CMP ∈ application；AA `uses_*` |
+
+- 公司层 reference（可留薄文件）：`BU/BD/CAP/PL/SLN/TPL`（正文 SSOT ∈ company）；**无**公司 PD/SYS/MDG
+- SDD：solutions → analysis → `requirements/REQUIREMENT-{IDEA-ID}/`
+- 槽位 / 同步：见 layout（`application-slots/application-{NAME}`）
+- 入口：[system/README.md](../../system/README.md) · [system/knowledge/](../../system/knowledge/README.md)
+
+### 应用层
+
+| 原则 | 说明 |
+| --- | --- |
+| **SSOT** | 实体只一处定义；他处仅 ID 引用 |
+| **本层角色** | API / TBL / MW / CMP 首次定义；上游 ref 或纯 ID |
+| **闭环** | solutions → analysis → requirements；上行 pull → distill（**仅**系统 overview）→ archive；**不**回写本库 knowledge |
+| **五视角 / 5A** | 层级链与本层角色见下节「核心映射（5A）」；细则 ∈ 各 `*-meta.md` + README |
+
+- 入口：[application/README.md](../../application/README.md) · [application/knowledge/](../../application/knowledge/README.md)
+
+---
+
+## 核心映射（5A 方向）
+
+**5A** = **BA**（业务）· **PA**（产品）· **AA**（应用）· **DA**（数据）· **TA**（技术）。在经典 4A（BA/AA/DA/TA）上增加 **PA（产品架构）**，与五视角目录对齐。
+
+### 5A ↔ 五视角层级
+
+| 5A | 视角目录 | 层级（摘要） | 应用层角色 |
+| --- | --- | --- | --- |
+| BA | business | BD → BSD → BC → AGG → AB | 实现映射；BD 多为 ref |
+| PA | product | PL；PD → PM → … | 实现映射；PL/SLN 公司；PD 系统（本层不落盘） |
+| AA | application | SYS → APP → MS → **API** | **API SSOT** |
+| DA | data | MDG → DS → ENT → **TBL** | **TBL SSOT**（MDG/DS/ENT ∈ 系统） |
+| TA | technical | TSD → **MW** → **CMP** | **MW/CMP SSOT** |
+
+### 跨 A 边
+
+源实体 frontmatter 写**目标实体 ID**。字段语义 **SSOT**：[glossary.md § 映射关系](glossary.md#映射关系常用)。各层 `*-meta.md` 同引，不复制字段全文。
+
+| 边类 | 方向 | 代表 |
+| --- | --- | --- |
+| 对标 | `maps_to_*` | BA：CAP→BD；**PA**：BD/SLN→PL、BSD→PD；PA↔AA：PD→SYS |
+| PA → BA | 依赖 | `relies_on_context_ids` |
+| PA → AA | 调用 | `invokes_api_ids` |
+| AA → BA | **implements** | `implements_bc_ids` / `implements_agg_ids` |
+| AA → DA / TA | **uses** | `uses_mdg_ids`（挂 **SYS**）/ `uses_ds_ids` / `uses_tsd_ids` 等 |
+| BA ↔ DA | 持久化 | `persisted_as_entity_ids` / `maps_to_aggregate_id` |
+
+---
 
 ## 业务 knowledge 引用边界
 
@@ -26,7 +154,7 @@
 
 | 允许 | 禁止 |
 | --- | --- |
-| 同层 `…/knowledge/**` 内互引（bundle-relative） | 引同层 knowledge **外**（`adr/`、`solutions/`、`analysis/`、`requirements/`、`DESIGN.md`、`INDEX-GUIDE.md`、根 `index.md`、`agent/**` 等） |
+| 同层 `…/knowledge/**` 内互引（bundle-relative） | 引同层 knowledge **外**（`adr/`、`solutions/`、`analysis/`、`requirements/`、`INDEX-GUIDE.md`、根 `index.md`、`agent/**` 等） |
 | 有 `{DOC_ROOT}/knowledge-links.yaml` 中 `type: parent`：上层实体 Markdown 链到 **首次定义层 SSOT 文件的 HTTP**（见下） | 手写 `../` 爬层、仓库相对跨 `DOC_DIR`、`/company/knowledge/...` 逻辑前缀、与生成函数结果不一致的 URL |
 | 无 `type: parent`：正文只写实体 ID / `full_id`（纯文本） | 无 parent 时仍写跨层 HTTP 或跨层文件路径 |
 | `resource` / 依据段：外部 **URI、表名、API 名、仓名**（非库外文档相对路径） | Markdown 链或路径字面量指向库外 **文档文件**（ADR 等：**留字去链**） |
@@ -45,8 +173,14 @@
 
 **SSOT**：本节；OKF 段结构对齐见 [okf-spec.md](okf-spec.md) §4。
 
-## 设计入口
+---
 
-- [application/DESIGN.md](../../application/DESIGN.md)
-- [system/DESIGN.md](../../system/DESIGN.md)
-- [company/DESIGN.md](../../company/DESIGN.md)
+## 相关契约
+
+| 主题 | 去读 |
+| --- | --- |
+| 路径 / overview / 槽位 / 流水线 / SDD×类型 | [knowledge-layout.md](../references/knowledge-layout.md) |
+| ID 前缀与落盘路径 | [naming-conventions.md](naming-conventions.md) |
+| 文件分型 / concept Profile | [okf-spec.md](okf-spec.md) |
+| 术语与映射字段 | [glossary.md](glossary.md) |
+| 公司 / 系统 / 应用入口 | [company/README](../../company/README.md) · [system/README](../../system/README.md) · [application/README](../../application/README.md) |

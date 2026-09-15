@@ -16,7 +16,7 @@
 | `system/` | [system/README.md](../../system/README.md) | [system/knowledge/](../../system/knowledge/README.md) | [system/knowledge/overview/](../../system/knowledge/overview/NAME-overview.md) | `system/application-slots/application-{NAME}/` |
 | `company/` | [company/README.md](../../company/README.md) | [company/knowledge/](../../company/knowledge/README.md) | [company/knowledge/overview/](../../company/knowledge/overview/NAME-overview.md) | `company/system-slots/system-{NAME}/` |
 
-**路径约定**：三层五视角均为 **`{DOC_DIR}/knowledge/`**（legacy `architecture/` / `ea/` 已废弃）。应用层无 overview；本层首次实体（API/TBL/MW/CMP）见 [application/DESIGN.md](../../application/DESIGN.md) §2.2.1。
+**路径约定**：三层五视角均为 **`{DOC_DIR}/knowledge/`**（legacy `architecture/` / `ea/` 已废弃）。应用层无 overview；本层首次实体（API/TBL/MW/CMP）见 [knowledge-governance.md](../knowledge/knowledge-governance.md#跨层实体首次定义)。
 
 ---
 

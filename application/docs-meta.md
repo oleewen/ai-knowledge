@@ -40,7 +40,6 @@ child_files:
   - "README-c.md"
   - "index.md"
   - "INDEX-GUIDE.md"
-  - "DESIGN.md"
   - "CONTRIBUTING.md"
   - "docs-meta.md"
   - "manifest.md"
@@ -52,7 +51,7 @@ inputs:
 
 outputs:
   primary_artifact:
-    pattern: "README.md, index.md, DESIGN.md, CONTRIBUTING.md, knowledge/**/*"
+    pattern: "README.md, index.md, CONTRIBUTING.md, knowledge/**/*"
     description: "根入口 + knowledge/（{perspective}-meta.md + 实体 {ID}.md，OKF SSOT）"
 
 naming_conventions:
@@ -70,7 +69,6 @@ integration:
 references:
   - path: "./README.md"
   - path: "./index.md"
-  - path: "./DESIGN.md"
   - path: "./CONTRIBUTING.md"
   - path: "../agent/knowledge/knowledge-governance.md"
 ```

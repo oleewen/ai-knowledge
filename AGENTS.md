@@ -45,7 +45,7 @@
 ### 禁止事项
 
 - 禁止随意改 `application/knowledge/` 实体 **ID** 或破坏跨视角 ID 引用（除非同步全部引用）
-- 禁止未读 DESIGN.md、CONTRIBUTING.md 即新增 knowledge 实体或 ADR
+- 禁止未读 [knowledge-governance.md](agent/knowledge/knowledge-governance.md)、应用层 CONTRIBUTING.md 即新增 knowledge 实体或 ADR
 - 禁止无约定变更即删改 `agent/rules/`、`agent/skills/` 核心结构
 - 禁止未评估影响即改导航表导致断链
 - **不在本文粘贴** INDEX §3 级接口全表，或 [index.md](index.md) 渐进披露全表；**不复制** INDEX §9.3 Skill 长表
@@ -63,7 +63,7 @@
 | 九章地图 / Skill 路径 | [INDEX-GUIDE.md](INDEX-GUIDE.md) |
 | 目录索引与渐进披露 | [index.md](index.md) |
 | 应用 / 系统 / 公司 | [application/README.md](application/README.md)、[system/README.md](system/README.md)、[company/README.md](company/README.md) |
-| 元模型与贡献 | [application/DESIGN.md](application/DESIGN.md)、[application/CONTRIBUTING.md](application/CONTRIBUTING.md) |
+| 元模型与贡献 | [knowledge-governance.md](agent/knowledge/knowledge-governance.md)、[application/CONTRIBUTING.md](application/CONTRIBUTING.md) |
 | 约定与 Slash 技能 | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/skills/README.md](agent/skills/README.md) |
 | 布局 / 澄清 / 推进 / 轻流程 / 烤干 / 受众 / 精简 / SDX-ADR | [knowledge-layout.md](agent/references/knowledge-layout.md)、[intent-clarify.md](agent/references/intent-clarify.md)、[unit-cycle-protocol.md](agent/references/unit-cycle-protocol.md)、[light-flow-actions.md](agent/references/light-flow-actions.md)、[grilling-skill.md](agent/references/grilling-skill.md)、[audience-and-language.md](agent/references/audience-and-language.md)、[docs-simplify.md](agent/references/docs-simplify.md)、[sdx-adr-protocol.md](agent/references/sdx-adr-protocol.md) |
 | 烤干未闭合代办 | [changelogs/GRILL-LOG.md](changelogs/GRILL-LOG.md)（契约见 [grilling-skill.md § GRILL-LOG](agent/references/grilling-skill.md#grill-log)） |

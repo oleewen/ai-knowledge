@@ -39,7 +39,6 @@ child_files:
   - "README.md"
   - "index.md"
   - "INDEX-GUIDE.md"
-  - "DESIGN.md"
   - "docs-meta.md"
   - "knowledge-links.yaml"
   - "viz.html"
@@ -50,8 +49,8 @@ inputs:
 
 outputs:
   primary_artifact:
-    pattern: "README.md, index.md, DESIGN.md, knowledge/**/*, system-slots/**"
-    description: "根导航与设计、knowledge/ 公司层 OKF 实体、按需系统槽位镜像"
+    pattern: "README.md, index.md, knowledge/**/*, system-slots/**"
+    description: "根导航、knowledge/ 公司层 OKF 实体、按需系统槽位镜像"
 
 naming_conventions:
   directory_index:
@@ -64,14 +63,13 @@ integration:
       description: "规范、模板与 Agent 技能（命名 SSOT：agent/knowledge/；闸门：agent/rules/）"
   downstream:
     - path: "../system/"
-      description: "系统层 reference 引用公司层 BD/PL/SYS/MDG/TPL SSOT"
+      description: "系统层 reference 引用公司层 BD/PL/SLN/TPL SSOT；MDG/SYS/PD 为本层或系统 SSOT"
   traceability:
     description: "阶段链 solutions → analysis；各系统 PRD/ASD ∈ system/requirements/"
 
 references:
   - path: "./README.md"
   - path: "./index.md"
-  - path: "./DESIGN.md"
   - path: "./knowledge-links.yaml"
   - path: "../agent/knowledge/knowledge-governance.md"
   - path: "../agent/knowledge/okf-spec.md"

@@ -19,7 +19,7 @@ okf_version: 0.1
 
 ### 目录文件
 
-* [DESIGN.md](DESIGN.md)
+* [knowledge-governance](../agent/knowledge/knowledge-governance.md)
 * [INDEX-GUIDE.md](INDEX-GUIDE.md)
 * [docs-meta.md](docs-meta.md)
 * [knowledge-links.yaml](knowledge-links.yaml)
@@ -28,7 +28,7 @@ okf_version: 0.1
 ### 阅读顺序
 
 1. [README.md](README.md) — 职责与路径  
-2. [DESIGN.md](DESIGN.md) — 边界、SSOT、同步  
+2. [knowledge-governance](../agent/knowledge/knowledge-governance.md) — 边界、SSOT、聚焦  
 3. [knowledge/README.md](knowledge/README.md) — 五视角  
 
 对照：[../system/knowledge/](../system/knowledge/README.md)。

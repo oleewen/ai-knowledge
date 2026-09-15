@@ -106,7 +106,7 @@ flowchart LR
   ai --> tgt
   dl --> sys
   dl --> co
-  app -->|"DESIGN/CONTRIBUTING"| app
+  app -->|"CONTRIBUTING"| app
   sys -->|"overview + application-slots"| sys
   co -->|"overview + system-slots"| co
   ag -->|"skills/rules/refs"| tgt
@@ -130,9 +130,9 @@ flowchart LR
 - **仓库根九章索引指南**: 本文件 [INDEX-GUIDE.md](INDEX-GUIDE.md)
 - **根目录索引页**: [index.md](index.md)
 - **根索引运行日志**: [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)
-- **应用知识库**: [application/](application/) — [README](application/README.md) · [index](application/index.md) · [INDEX-GUIDE](application/INDEX-GUIDE.md) · [DESIGN](application/DESIGN.md) · [CONTRIBUTING](application/CONTRIBUTING.md)
-- **系统知识库树**: [system/](system/) — [README](system/README.md) · [index](system/index.md) · [INDEX-GUIDE](system/INDEX-GUIDE.md) · [DESIGN](system/DESIGN.md)
-- **公司知识库树**: [company/](company/) — [README](company/README.md) · [index](company/index.md) · [INDEX-GUIDE](company/INDEX-GUIDE.md) · [DESIGN](company/DESIGN.md)
+- **应用知识库**: [application/](application/) — [README](application/README.md) · [index](application/index.md) · [INDEX-GUIDE](application/INDEX-GUIDE.md) · [CONTRIBUTING](application/CONTRIBUTING.md)
+- **系统知识库树**: [system/](system/) — [README](system/README.md) · [index](system/index.md) · [INDEX-GUIDE](system/INDEX-GUIDE.md)
+- **公司知识库树**: [company/](company/) — [README](company/README.md) · [index](company/index.md) · [INDEX-GUIDE](company/INDEX-GUIDE.md)
 - **子域运维日志**: `application|system|company/changelogs/`（各域自管 `INDEXING-LOG`）；变更溯源用 `git log` / `git diff`
 - **会话工作稿根**（`.docsconfig` `DOC_DIR=docs`）: 约定 `docs/superpowers/specs/`；**当前工作树无 `docs/`**（通常未跟踪）
 - **布局 SSOT**: [agent/references/knowledge-layout.md](agent/references/knowledge-layout.md)
@@ -174,7 +174,7 @@ flowchart LR
 | 术语 | 定义 | 使用场景 |
 | ------ | ------ | ---------- |
 | SSOT | 单一事实源；`application/` 为应用知识稳定事实中枢 | 与联邦镜像、目标工程对齐 |
-| 五视角 | 业务 / 产品 / 应用 / 数据 / 技术 知识分层与映射字段 | [application/DESIGN.md](application/DESIGN.md) |
+| 五视角 | 业务 / 产品 / 应用 / 数据 / 技术 知识分层与映射字段 | [knowledge-governance.md](agent/knowledge/knowledge-governance.md) |
 | 联邦治理 | `system/`、`company/` 槽位与迁移叙事；`system/application-slots/application-{NAME}/`、`company/system-slots/system-{NAME}/` | docs-link / docs-pull / distill |
 | SDD | 方案 → 分析 → PRD/设计/测试 阶段交付链 | `sdx-*` Skill 与各层 `solutions/` 等 |
 | 中央知识库挂载建联 | `docs-install --mode=central` 等约定 | [README.md](README.md)、[agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md) |
@@ -281,9 +281,9 @@ stateDiagram-v2
 | application | MS → API | `application/knowledge/application/MS-EXAMPLE/` |
 | data | DS → TBL | `application/knowledge/data/DS-EXAMPLE/` |
 | technical | MW → CMP | `application/knowledge/technical/MW-EXAMPLE/` |
-| business / product | [未索引样例目录] | 现盘无 `*-EXAMPLE` 实体目录；术语与前缀见 DESIGN / glossary |
+| business / product | [未索引样例目录] | 现盘无 `*-EXAMPLE` 实体目录；术语与前缀见 knowledge-governance / glossary |
 
-映射字段 SSOT：[application/DESIGN.md](application/DESIGN.md)、[agent/knowledge/glossary.md](agent/knowledge/glossary.md)。**禁止**未同步引用链时改实体 ID。
+映射字段 SSOT：[knowledge-governance.md](agent/knowledge/knowledge-governance.md)、[glossary.md](agent/knowledge/glossary.md)。**禁止**未同步引用链时改实体 ID。
 
 系统侧样例含 `APP-EXAMPLE`、`BSD-EXAMPLE`、`DS-EXAMPLE`、`PM-EXAMPLE` 等；公司侧含 `BD-EXAMPLE`、`PL-EXAMPLE` 等（路径在对应 `knowledge/`）。
 
@@ -383,7 +383,7 @@ stateDiagram-v2
 | 应用侧九章 | [application/INDEX-GUIDE.md](application/INDEX-GUIDE.md) | application 文档根 |
 | 系统侧九章 | [system/INDEX-GUIDE.md](system/INDEX-GUIDE.md) | system 文档根 |
 | 公司侧九章 | [company/INDEX-GUIDE.md](company/INDEX-GUIDE.md) | company 文档根 |
-| 设计原则 | [application/DESIGN.md](application/DESIGN.md) | 应用元模型 |
+| 设计原则 | [knowledge-governance.md](agent/knowledge/knowledge-governance.md) | 三层语义设计 |
 | 贡献流程 | [application/CONTRIBUTING.md](application/CONTRIBUTING.md) | 阶段与模板指针 |
 | 布局契约 | [agent/references/knowledge-layout.md](agent/references/knowledge-layout.md) | 三层路径 / 联邦 / overview |
 | OKF 规范 | [agent/knowledge/okf-spec.md](agent/knowledge/okf-spec.md) | OKF SSOT |

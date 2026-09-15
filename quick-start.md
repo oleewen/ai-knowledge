@@ -1,6 +1,6 @@
 # 从零起步构建知识库
 
-> **定位**：落地操作指南（canonical SSOT）。概念见 [README.md](README.md)；元模型见各层 DESIGN。
+> **定位**：落地操作指南（canonical SSOT）。概念见 [README.md](README.md)；元模型见 [knowledge-governance](agent/knowledge/knowledge-governance.md)。
 
 ---
 
@@ -309,7 +309,7 @@ flowchart LR
 | 2 | `/docs-archive` | 知识落入 `system/knowledge/{perspective}/chapters/`（公司场景则 `company/knowledge/.../chapters/`） |
 | 3 | `/docs-build` | 五视角实体、`knowledge/index.md` |
 
-> **原则**：overview → archive → entity，勿一步硬造 YAML。约定见 [system/DESIGN.md](system/DESIGN.md)、[knowledge-layout](agent/references/knowledge-layout.md)。
+> **原则**：overview → archive → entity，勿一步硬造 YAML。约定见 [knowledge-governance](agent/knowledge/knowledge-governance.md)、[knowledge-layout](agent/references/knowledge-layout.md)。
 
 ### 阶段三：变更溯源与按需需求交付
 
@@ -326,6 +326,6 @@ flowchart LR
 | 需求 | 文档 |
 | --- | --- |
 | 流程总览图 | [README.md — Agent 工作流](README.md#agent-工作流) |
-| 元模型与实体层级 | [application/DESIGN.md](application/DESIGN.md)、[system/DESIGN.md](system/DESIGN.md)、[company/DESIGN.md](company/DESIGN.md) |
+| 元模型与实体层级 | [knowledge-governance.md](agent/knowledge/knowledge-governance.md) |
 | 初始化脚本 | [bootstrap.sh](bootstrap.sh)、[agent/skills/README.md](agent/skills/README.md) |
 | Skill 清单 | [agent/skills/README.md](agent/skills/README.md) |

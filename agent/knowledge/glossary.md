@@ -4,7 +4,7 @@ title: "全局术语表"
 version: "0.3.0"
 status: "draft"
 created: "2025-03-13"
-updated: "2026-09-14"
+updated: "2026-09-15"
 tags: ["glossary", "terminology", "governance"]
 ---
 
@@ -12,12 +12,12 @@ tags: ["glossary", "terminology", "governance"]
 
 本文件存放**释义、别名、易混区分**与**跨视角映射字段**语义，便于跨团队与 Agent 无歧义引用。
 
-> **统一术语表**：释义与映射字段以本表为准。前缀、首次定义层、路径见 [naming-conventions.md](naming-conventions.md)；分层角色见各库 DESIGN / `*-meta.md`（字段语义回链本节）。
+> 统一术语表：释义与映射字段以本表为准。前缀、首次定义层、路径见 [naming-conventions.md](naming-conventions.md)；分层角色见 [knowledge-governance.md](knowledge-governance.md) / 各层 `*-meta.md`（字段语义回链本节）。
 
 ## 使用说明
 
 - OKF 实体缩写见「缩写对照」；治理词见「知识库相关」
-- 映射字段语义 **SSOT** 在「映射关系（常用）」；`application/DESIGN.md` §3 与各层 `*-meta.md` 引用本表，不另写字段全文
+- 映射字段语义 **SSOT** 在「映射关系（常用）」；[knowledge-governance.md](knowledge-governance.md#核心映射5a方向) 与各层 `*-meta.md` 引用本表，不另写字段全文
 - 前缀与首次定义层不在本表展开（见 naming）
 
 ---
@@ -36,8 +36,14 @@ tags: ["glossary", "terminology", "governance"]
 
 | 术语   | 含义 |
 | ---- | --- |
+| 5A | **BA**（业务）· **PA**（产品）· **AA**（应用）· **DA**（数据）· **TA**（技术）；经典 4A + **PA**。边方向见 [knowledge-governance §5A](knowledge-governance.md#核心映射5a方向)。 |
+| BA | Business Architecture；业务架构（能力目录 ∥ 域模型等）。 |
+| PA | Product Architecture；产品架构（PL/PD/PM…；与五视角 `product/` 对齐）。 |
+| AA | Application Architecture；应用架构（SLN/SYS/APP/MS/API）。 |
+| DA | Data Architecture；数据架构（MDG/DS/ENT/TBL）。 |
+| TA | Technology Architecture；技术架构（TPL/TSD/MW/CMP）。 |
 | 业务视角 | 业务单元（BU）、业务域（BD）、业务能力（CAP）、子域、限界上下文、聚合等；BU∥BD 为 BA 两张图。 |
-| 产品视角 | 产品线（PL）、产品服务（PD）、模块、功能点、用例、业务流程、业务规则。 |
+| 产品视角 | 产品线（PL）、产品服务（PD）、模块、功能点、用例、业务流程、业务规则；对应 **PA**。 |
 | 应用视角 | 解决方案（SLN）、系统（SYS）、应用、**MS（入口能力簇）**、API。 |
 | 数据视角 | 数据存储、数据实体、主数据域目录、字段、敏感级别、数据流向。 |
 | 技术视角 | 技术平台能力（TPL）、技术域（TSD）、中间件绑定（MW）、关键组件（CMP）；叙事与实体 ID 并存，见 [naming-conventions.md](naming-conventions.md)。 |
@@ -79,7 +85,7 @@ tags: ["glossary", "terminology", "governance"]
 
 ## 映射关系（常用）
 
-> 本表为跨视角映射字段语义 **SSOT**。他处（DESIGN / `*-meta.md`）只引用，不复制全文。
+> 本表为跨视角映射字段语义 **SSOT**。他处（knowledge-governance / `*-meta.md`）只引用，不复制全文。
 
 | 关系 | 含义 |
 | --- | --- |
@@ -89,7 +95,7 @@ tags: ["glossary", "terminology", "governance"]
 | maps_to_sys_id | **PD-*** 对标的本库 **SYS-***（与首层 BSD 同建）。 |
 | implements_bc_ids | **APP-*** 实现哪些 **BC-***（AA implements BA；SSOT 在 AA）。 |
 | implements_agg_ids | **MS-*** 实现哪些 **AGG-***（AA implements BA）。 |
-| uses_mdg_ids / uses_ds_ids / uses_ent_ids / uses_tbl_ids | AA **uses** DA（挂 SLN/APP/MS）。 |
+| uses_mdg_ids / uses_ds_ids / uses_ent_ids / uses_tbl_ids | AA **uses** DA（`uses_mdg_ids` 挂 SYS；细粒度挂 APP/MS）。 |
 | uses_tsd_ids / uses_mw_ids / uses_tpl_ids / uses_cmp_ids | AA **uses** TA。 |
 | implemented_by_app_id | （过渡）限界上下文由哪个应用实现；SSOT 迁至 `implements_bc_ids`。 |
 | implemented_by_service_ids | （过渡）聚合由哪些 MS 实现；SSOT 迁至 `implements_agg_ids`。 |
@@ -115,7 +121,7 @@ tags: ["glossary", "terminology", "governance"]
 
 | 日期 | 术语ID | 变更类型 | 变更说明 |
 | --- | --- | --- | --- |
-| 2026-06-15 | — | 修订 | 五视角：技术 MW/CMP/TSD；CAP/MDG/TPL 并入各视角前缀表 |
+| 2026-09-15 | — | 修订 | 4A→5A：增加 PA（产品架构）；映射节锚点同步 |
 | 2026-09-14 | — | 修订 | 删 BT/TT 样例与 OMS/SKU；补全 OKF 缩写；映射节定为字段 SSOT |
 
 ---

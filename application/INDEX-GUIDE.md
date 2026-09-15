@@ -15,7 +15,7 @@ title: application INDEX-GUIDE
 
 * [README.md](README.md) — 人类入口（standalone → [README-s.md](README-s.md)；central → [README-c.md](README-c.md)）
 * [index.md](index.md) — OKF 目录索引
-* [DESIGN.md](DESIGN.md) — 设计契约与 §2.2.1
+* [knowledge-governance](../agent/knowledge/knowledge-governance.md) — 三层设计契约与首次定义
 * [knowledge/README.md](knowledge/README.md) — 五视角
 * [CONTRIBUTING.md](CONTRIBUTING.md) — 贡献约定
 * [changelogs/README.md](changelogs/README.md) — 变更/索引
@@ -32,7 +32,7 @@ title: application INDEX-GUIDE
 
 ```text
 application/
-├── README.md / INDEX-GUIDE.md / index.md / DESIGN.md / docs-meta.md
+├── README.md / INDEX-GUIDE.md / index.md / docs-meta.md
 ├── knowledge/ · solutions/ · analysis/ · requirements/ · adr/
 └── changelogs/
 ```
@@ -59,7 +59,7 @@ application/
 
 样本实体：[knowledge/index.md](knowledge/index.md)
 
-应用层首次：`API` · `TBL` · `MW` · `CMP`（见 [DESIGN.md](DESIGN.md) §2.2.1）
+应用层首次：`API` · `TBL` · `MW` · `CMP`（见 [knowledge-governance](../agent/knowledge/knowledge-governance.md#跨层实体首次定义)）
 
 ---
 

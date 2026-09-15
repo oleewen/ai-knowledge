@@ -179,7 +179,7 @@ dependencies: []
 ### 7.2 参考文档
 
 - `company/README.md`
-- `company/DESIGN.md`
+- `agent/knowledge/knowledge-governance.md`
 - `company/solutions/SOLUTION-EXAMPLE.md`
 
 ### 7.3 内部参考（仅供研发接力）

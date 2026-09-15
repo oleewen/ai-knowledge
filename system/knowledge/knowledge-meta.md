@@ -37,7 +37,7 @@ title: 知识树元数据（system/knowledge）
 | 字段 | 值 |
 | --- | --- |
 | is_single_source_of_truth | true（系统层实体与叙事 SSOT） |
-| upstream | （公司级 BD/CAP/PL/SYS/MDG/TPL 首次定义） |
+| upstream | （公司级 BU/BD/CAP/PL/SLN/TPL 首次定义） |
 | downstream | （API/TBL/MW/CMP 及实现映射） |
 
 ---
@@ -48,14 +48,14 @@ title: 知识树元数据（system/knowledge）
 | --- | --- |
 | system_index | index.md（库外） |
 | entity_index | [index.md](index.md) |
-| design | DESIGN（库外，纯文本） |
+| design | knowledge-governance（agent/knowledge） |
 | governance | knowledge-governance（Agent 元知识） |
 
 ---
 
 ## 5. 系统层 BD 落盘例外
 
-与 company / application 区分；路径契约见 DESIGN（库外，纯文本）。
+与 company / application 区分；路径契约见 knowledge-governance（agent/knowledge）。
 
 | 层级 | 路径 | 说明 |
 | --- | --- | --- |
@@ -73,8 +73,8 @@ title: 知识树元数据（system/knowledge）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 五视角架构入口 |
-| DESIGN（库外，纯文本） | 系统库设计契约 |
-| BD-*, PL-*, SYS-*, MDG-*, TPL-*, CAP-* | 公司层实体 SSOT（上层 reference） |
+| knowledge-governance（agent/knowledge） | 系统库设计契约 |
+| BD-*, PL-*, SLN-*, TPL-*, CAP-*, BU-* | 公司层实体 SSOT（上层 reference） |
 | naming-conventions（Agent 元知识） | 命名 SSOT |
 
 ---

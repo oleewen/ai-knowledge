@@ -12,7 +12,7 @@ title: "应用知识库（顶层 `application/`）"
 |--------|------|
 | 九章地图 | [INDEX-GUIDE.md](INDEX-GUIDE.md) |
 | 目录索引 | [index.md](index.md) |
-| 边界与 §2.2.1 | [DESIGN.md](DESIGN.md) |
+| 边界与首次定义 | [knowledge-governance](../agent/knowledge/knowledge-governance.md#跨层实体首次定义) |
 | 五视角入口 | [knowledge/README.md](knowledge/README.md) |
 | 机器元数据 | [docs-meta.md](docs-meta.md) |
 
@@ -22,4 +22,4 @@ title: "应用知识库（顶层 `application/`）"
 
 模板占位：`*-EXAMPLE`（最小演示链，可替换）。
 
-规范：[okf-spec](../agent/knowledge/okf-spec.md) · [knowledge-layout](../agent/references/knowledge-layout.md)
+规范：[okf-spec](../agent/knowledge/okf-spec.md) · [knowledge-layout](../agent/references/knowledge-layout.md) · [knowledge-governance](../agent/knowledge/knowledge-governance.md)
