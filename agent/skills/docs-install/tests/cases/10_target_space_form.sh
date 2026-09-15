@@ -20,7 +20,6 @@ git -C "$PROJECT_DIR" init -q
 
 cat >"$PROJECT_DIR/.docsconfig" <<EOF
 AGENT_ROOT=$PROJECT_DIR/missing-agent-root
-AGENT_DIRS=".claude .cursor"
 EOF
 
 bash "$DOCS_INSTALL_SCRIPT" --scope=config --type=application --target "$DOCS_DIR" >"$OUT_FILE" 2>&1

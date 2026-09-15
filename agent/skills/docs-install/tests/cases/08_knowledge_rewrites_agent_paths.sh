@@ -18,19 +18,16 @@ trap cleanup EXIT
 mkdir -p "$DOCS_DIR"
 git -C "$PROJECT_DIR" init -q
 
-# AGENT_DIRS 故意以 .claude 为首：重写须忽略，固定落 ~/.agents/
 cat >"$PROJECT_DIR/.docsconfig" <<EOF
 DOC_ROOT=$DOCS_DIR
 REPO_ROOT=$PROJECT_DIR
 DOC_DIR=docs
 AGENT_ROOT=$PROJECT_DIR
-AGENT_DIRS=".claude .cursor"
 KNOWLEDGE_TYPE=application
 EOF
 
 bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS_DIR" >"$OUT_FILE" 2>&1
 
-# index.md 可能不含 agent/ 引用；用仍含技能链的 changelogs/README.md 校验重写
 CHG_README="$DOCS_DIR/changelogs/README.md"
 assert_file_exists "$CHG_README"
 assert_contains "~/.agents/skills/docs-indexing" "$CHG_README"

@@ -20,7 +20,6 @@ git -C "$PROJECT_DIR" init -q
 
 cat >"$PROJECT_DIR/.docsconfig" <<EOF
 AGENT_ROOT=$PROJECT_DIR/missing-agent-root
-AGENT_DIRS=".claude .cursor"
 EOF
 
 bash "$DOCS_INSTALL_SCRIPT" --scope=config --type=application --target="$DOCS_DIR" >"$OUT_FILE" 2>&1
@@ -35,7 +34,5 @@ if rg --fixed-strings "KNOWLEDGE_TYPE=" "$DOCS_CONFIG_PATH" >/dev/null; then
 fi
 
 assert_contains "AGENT_ROOT=" "$DOCS_CONFIG_PATH"
-assert_contains "AGENT_DIRS=" "$DOCS_CONFIG_PATH"
 assert_contains "missing-agent-root" "$DOCS_CONFIG_PATH"
-assert_contains "AGENT_DIRS=\".claude .cursor\"" "$DOCS_CONFIG_PATH"
 pass "scope=config 写入 .docsconfig（不写 KNOWLEDGE_TYPE）"

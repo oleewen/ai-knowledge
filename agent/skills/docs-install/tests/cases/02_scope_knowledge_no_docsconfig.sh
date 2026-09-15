@@ -27,6 +27,6 @@ assert_contains "REPO_ROOT=" "$DOCS_CONFIG_PATH"
 assert_contains "DOC_DIR=" "$DOCS_CONFIG_PATH"
 assert_contains "KNOWLEDGE_TYPE=application" "$DOCS_CONFIG_PATH"
 assert_contains "AGENT_ROOT=" "$DOCS_CONFIG_PATH"
-assert_contains "AGENT_DIRS=\".cursor\"" "$DOCS_CONFIG_PATH"
+assert_contains ".agents" "$DOCS_CONFIG_PATH"
 
-pass "scope=knowledge 写 .docsconfig（含 KNOWLEDGE_TYPE）"
+pass "scope=knowledge 写 .docsconfig（含 KNOWLEDGE_TYPE；AGENT_ROOT=~/.agents）"

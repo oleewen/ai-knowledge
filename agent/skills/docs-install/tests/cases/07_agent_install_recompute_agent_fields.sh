@@ -18,7 +18,6 @@ trap cleanup EXIT
 mkdir -p "$DOCS_DIR"
 git -C "$PROJECT_DIR" init -q
 
-# 先生成 .docsconfig，再注入旧 AGENT_*，用于验证 agent-install 会重算覆盖
 bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS_DIR" >"$OUT_FILE" 2>&1
 cat >"$PROJECT_DIR/.docsconfig" <<EOF
 DOC_ROOT=$DOCS_DIR
@@ -26,16 +25,16 @@ REPO_ROOT=$PROJECT_DIR
 DOC_DIR=docs
 KNOWLEDGE_TYPE=application
 AGENT_ROOT=/tmp/legacy-agent-root
-AGENT_DIRS=".cursor"
 EOF
 
-# 非 a 的 scope 也应触发重算覆盖
 bash "$AGENT_INSTALL_SCRIPT" --scope=r --target="$PROJECT_DIR" --agents=claude >>"$OUT_FILE" 2>&1
 
 DOCS_CONFIG_PATH="$PROJECT_DIR/.docsconfig"
-EXPECTED_PROJECT="$(cd "$PROJECT_DIR" && pwd -P)"
 assert_file_exists "$DOCS_CONFIG_PATH"
-assert_contains "AGENT_ROOT=$EXPECTED_PROJECT" "$DOCS_CONFIG_PATH"
-assert_contains "AGENT_DIRS=\".claude\"" "$DOCS_CONFIG_PATH"
+assert_contains "AGENT_ROOT=" "$DOCS_CONFIG_PATH"
+assert_contains ".agents" "$DOCS_CONFIG_PATH"
+if rg --fixed-strings "/tmp/legacy-agent-root" "$DOCS_CONFIG_PATH" >/dev/null; then
+  fail "应覆盖旧 AGENT_ROOT: $DOCS_CONFIG_PATH"
+fi
 
-pass "agent-install 任意 scope 安装后重算并覆盖 AGENT_*"
+pass "agent-install 任意 scope 安装后重算并覆盖 AGENT_ROOT=~/.agents"
