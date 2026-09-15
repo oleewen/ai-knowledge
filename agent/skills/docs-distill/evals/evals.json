@@ -200,7 +200,7 @@
           "id": "contract-only-sources",
           "name": "只信落盘契约",
           "type": "must_include",
-          "check": "须体现读 governance/DESIGN/overview 表行/knowledge-layout 或槽位 DESIGN，而非从正文猜职责。",
+          "check": "须体现读 knowledge-governance/overview 表行/knowledge-layout 或槽位 README，而非从正文猜职责。",
           "priority": "P0"
         },
         {
@@ -215,7 +215,7 @@
     {
       "id": 7,
       "category": "should-trigger",
-      "prompt": "假设 system/application-slots/application-ghost-app/ 槽位已 pull 且非空，但槽位根没有 DESIGN.md；目标侧 governance、system/DESIGN、overview 模板均在。请执行 /docs-distill --doc-dir system --name ghost-app --dry-run。",
+      "prompt": "假设 system/application-slots/application-ghost-app/ 槽位已 pull 且非空，但槽位根没有 README.md；目标侧 knowledge-governance、overview 模板均在。请执行 /docs-distill --doc-dir system --name ghost-app --dry-run。",
       "expected_output": "硬停：列缺失路径；不得执行 dry-run；给决策选项且要求先落盘契约。",
       "files": [],
       "assertions": [
@@ -223,7 +223,7 @@
           "id": "hard-stop-missing-contract",
           "name": "缺契约硬停",
           "type": "must_include",
-          "check": "须指出槽位 DESIGN.md 缺失并硬停。",
+          "check": "须指出槽位 README（或约定契约）缺失并硬停。",
           "priority": "P0"
         },
         {
@@ -245,7 +245,7 @@
     {
       "id": 8,
       "category": "should-trigger",
-      "prompt": "假设契约齐：system/DESIGN 写明「应用实现细节与类名不上行 overview」；槽位 application-slots/application-billing-appeal/DESIGN.md 写明「实现映射与类名应全量蒸馏进系统 overview」。执行 /docs-distill --doc-dir system --name billing-appeal --dry-run。",
+      "prompt": "假设契约齐：knowledge-governance 系统层聚焦写明「应用实现细节与类名不上行 overview」；槽位 application-slots/application-billing-appeal/README.md 写明「实现映射与类名应全量蒸馏进系统 overview」。执行 /docs-distill --doc-dir system --name billing-appeal --dry-run。",
       "expected_output": "双边冲突硬停提问；不自动偏目标或源；未决策落盘前不 dry-run。",
       "files": [],
       "assertions": [

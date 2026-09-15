@@ -9,7 +9,7 @@
 |------|------|
 |格式同源|沿用现有 README 表头/章节/静态段；只换索引表数据行|
 |数据同源|行只来自对应 per-entity concept，字段取自 frontmatter 与正文|
-|不删固定段|保留层级说明、跨视角、INDEX/DESIGN 链等|
+|不删固定段|保留层级说明、跨视角、INDEX / knowledge-governance 链等|
 |链接可点|相对当前 README 指向 per-entity `{ID}.md`、meta、`../KNOWLEDGE_INDEX.md`|
 
 ---
@@ -78,7 +78,7 @@ ENT 的 `parent_id` 可用于排序或链序说明。
 |层级|`PL` / `PD` / `PM` / `FT` / `UC`|
 |类型|产品线 / 产品 / 产品模块 / 功能 / 用例（与 README 示例一致）|
 |名称|frontmatter `title` 或 `name`|
-|锚点目录|相对链接至 concept（公司 PL/PD；系统起 PM，如 `[PM-EXAMPLE/](PM-EXAMPLE/)`）|
+|锚点目录|相对链接至 concept（公司 PL；系统 PD 起 PM，如 `[PM-EXAMPLE/](PM-EXAMPLE/)`）|
 
 ---
 

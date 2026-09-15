@@ -17,7 +17,7 @@ description: >
 - 轻流程：参数向导 → 风险校核 → `C/M/S/F`（无 `G`、不绑意图澄清）→ [light-flow-actions.md](../../references/light-flow-actions.md)；细节 [gates.md](references/gates.md)。参数未收口前不得实跑写盘。
 - 默认先 **--dry-run**；dry-run 摘要未确认前，不得静默实跑。
 - `--force`、覆盖已有目标 docs、`--scope=knowledge` 重置 DOC_DIR 等须用户明示；未确认不得默认开启。
-- knowledge 同步含根级 `DESIGN.md` / `CONTRIBUTING.md`（整文件覆盖；`--mode=central` 子集亦种；源无则不造）。只写 `--target`（`DOC_DIR`），不覆盖仓根 `CONTRIBUTING.md`。`knowledge-links.yaml` 仍 stash/restore。
+- knowledge 同步含根级 `CONTRIBUTING.md`（整文件覆盖；`--mode=central` 子集亦种；源无则不造）。层设计见 `agent/knowledge/knowledge-governance.md`（不种 `DESIGN.md`）。只写 `--target`（`DOC_DIR`），不覆盖仓根 `CONTRIBUTING.md`。`knowledge-links.yaml` 仍 stash/restore。
 - 建联脚本**不**向目标仓落盘；联邦登记走 `/docs-link`（脚本在 `agent/skills/docs-link/scripts/`）。
 - 宣称单元完成前须按 [audience-and-language.md](../../references/audience-and-language.md) 轻流程默认读者表做写后 **A/B**。
 
@@ -61,4 +61,4 @@ bash agent/skills/docs-install/scripts/docs-install.sh --target PATH [--scope=kn
 
 ## 评测
 
-`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。重点：dry-run 闸门、高风险确认、不写 link 脚本、与 agent-install 分流、根级 DESIGN.md/CONTRIBUTING.md 整文件覆盖。
+`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。重点：dry-run 闸门、高风险确认、不写 link 脚本、与 agent-install 分流、根级 CONTRIBUTING.md 整文件覆盖。

@@ -17,7 +17,7 @@
 ### scope-clarity（eval 6–8）P0 摘要
 
 - `scope-summary-before-c` / `contract-only-sources` / `no-preview-before-c`：写前职责粒度摘要、只信契约、C 前无正式预览
-- `hard-stop-missing-contract` / `no-dry-run-when-open` / `land-before-continue`：缺槽位 DESIGN 硬停、禁 dry-run、先落盘
+- `hard-stop-missing-contract` / `no-dry-run-when-open` / `land-before-continue`：缺槽位契约/README 硬停、禁 dry-run、先落盘
 - `conflict-hard-stop` / `no-auto-side` / `decision-options`：双边冲突硬停、不偏边、数字选项+落盘路径
 
 **例**（对齐 eval id 1）

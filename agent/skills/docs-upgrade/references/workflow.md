@@ -53,7 +53,7 @@ bash agent/skills/docs-upgrade/scripts/docs-upgrade.sh --dry-run [--meta-path PA
 
 2. **结构重填**（Agent）：对「结构重填」桶中每个 `.md`，以元库同路径（或 README 映射）为 H2/H3 骨架，填入本库同标题节正文；产出**未落位节清单**（本库有、元库无的节）。本步**不**自动再跑路径重写。
 
-3. **未落位**：普通 md 按 [gates.md](gates.md) 一次一项。仅根级 `DESIGN.md` / `CONTRIBUTING.md` 且未落位 ≥2：一批确认（全部追加文末 / 全部跳过）；并入须 `M`，该文件本轮锁死逐项。1 条不走批。仅已确认项写入。
+3. **未落位**：普通 md 按 [gates.md](gates.md) 一次一项。仅根级 `CONTRIBUTING.md` 且未落位 ≥2：一批确认（全部追加文末 / 全部跳过）；并入须 `M`，该文件本轮锁死逐项。1 条不走批。仅已确认项写入。
 
 失败则整单停，不静默改桶策略重试。
 
@@ -86,7 +86,7 @@ bash agent/skills/docs-upgrade/scripts/docs-upgrade.sh --dry-run [--meta-path PA
 
 1. 展示该文件预览（将 scaffold / 强制重填摘要；`.md` 可含未落位预告）
 2. 停等该文件 `C/M/S/F`：`C` 写盘；`S` 跳过本文件继续；`M` 只重开本文件；已写盘不回滚
-3. `.md` 强制重填：契约同整树结构重填；未落位规则同整树（普通 md 一次一项；根级 `DESIGN.md` / `CONTRIBUTING.md` 多条可批）
+3. `.md` 强制重填：契约同整树结构重填；未落位规则同整树（普通 md 一次一项；根级 `CONTRIBUTING.md` 多条可批）
 4. 本缺元有：Agent 复制元库该相对路径到目标
 5. 非 md 两边都有：不覆盖（总览已标跳过则本步可略）
 6. **不**写 `{REPO_ROOT}/.docs-init/`（依赖 git）

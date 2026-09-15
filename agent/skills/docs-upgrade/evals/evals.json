@@ -1,7 +1,7 @@
 {
   "skill_name": "docs-upgrade",
   "version": "1.4.0",
-  "description": "评测 docs-upgrade：轻流程；meta 解析；禁清空 install；apply-scaffold 后 agent/ 路径重写；未落位确认；根级 DESIGN.md/CONTRIBUTING.md 按普通 md；与 bootstrap 分流；@ 文件强制对齐；*-slots 根可升级与软链跳过。",
+  "description": "评测 docs-upgrade：轻流程；meta 解析；禁清空 install；apply-scaffold 后 agent/ 路径重写；未落位确认；根级 CONTRIBUTING.md 按普通 md；不种 DESIGN.md；与 bootstrap 分流；@ 文件强制对齐；*-slots 根可升级与软链跳过。",
   "evals": [
     {
       "id": "upgrade-trigger-001",
@@ -71,7 +71,7 @@
           "id": "file-mode-force-refill",
           "name": "强制结构重填",
           "type": "must_include",
-          "check": "须体现指定 md 破跳过、按元库 H2/H3 结构重填且正文保本库；未落位默认逐项确认（根级 DESIGN.md/CONTRIBUTING.md 多条可批除外）。",
+          "check": "须体现指定 md 破跳过、按元库 H2/H3 结构重填且正文保本库；未落位默认逐项确认（根级 CONTRIBUTING.md 多条可批除外）。",
           "priority": "P0"
         },
         {
@@ -133,14 +133,14 @@
     {
       "id": "upgrade-trigger-007",
       "category": "should-trigger",
-      "prompt": "整树 /docs-upgrade dry-run，确认本库缺少的根级 DESIGN.md 和 CONTRIBUTING.md 会进新增骨架，而 knowledge-links.yaml 不会被元库覆盖。",
-      "expected_output": "根级 DESIGN.md/CONTRIBUTING.md 按普通 md 进四桶（本无 scaffold / 已改结构重填）；knowledge-links.yaml 仍永不覆盖；@ 这两份同样强制重填。",
+      "prompt": "整树 /docs-upgrade dry-run，确认本库缺少的根级 CONTRIBUTING.md 会进新增骨架（不种 DESIGN.md），而 knowledge-links.yaml 不会被元库覆盖。",
+      "expected_output": "根级 CONTRIBUTING.md 按普通 md 进四桶（本无 scaffold / 已改结构重填）；knowledge-links.yaml 仍永不覆盖；@ 这两份同样强制重填。",
       "assertions": [
         {
           "id": "design-contributing-ordinary-md",
-          "name": "DESIGN/CONTRIBUTING 进四桶",
+          "name": "CONTRIBUTING 进四桶",
           "type": "must_include",
-          "check": "须体现根级 DESIGN.md 与 CONTRIBUTING.md 按普通 md 升级（本无则骨架、已改则 H2/H3 重填，或 @ 强制重填），不得再整份硬排除这两份。",
+          "check": "须体现根级 CONTRIBUTING.md 按普通 md 升级（本无则骨架、已改则 H2/H3 重填，或 @ 强制重填），不得再整份硬排除这两份。",
           "priority": "P0"
         },
         {
@@ -157,13 +157,13 @@
       "id": "upgrade-trigger-002",
       "category": "should-trigger",
       "prompt": "升级后有些章节元库没有、只有本库有，怎么处理？",
-      "expected_output": "未落位清单；普通 md 一次一项确认；根级 DESIGN.md/CONTRIBUTING.md 且 ≥2 条可批（全追加/全跳过）；不得自动追加或丢弃。",
+      "expected_output": "未落位清单；普通 md 一次一项确认；根级 CONTRIBUTING.md 且 ≥2 条可批（全追加/全跳过）；不得自动追加或丢弃。",
       "assertions": [
         {
           "id": "unplaced-confirm",
           "name": "未落位确认",
           "type": "must_include",
-          "check": "须体现未落位进清单并确认后才写入：普通 md 逐项；仅根级 DESIGN.md/CONTRIBUTING.md 且 ≥2 条允许一批全追加或全跳过；禁止静默追加或删除。",
+          "check": "须体现未落位进清单并确认后才写入：普通 md 逐项；仅根级 CONTRIBUTING.md 且 ≥2 条允许一批全追加或全跳过；禁止静默追加或删除。",
           "priority": "P0"
         }
       ],

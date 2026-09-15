@@ -25,9 +25,9 @@
 
 | 侧 | 必读 |
 | --- | --- |
-| 跨层 | [knowledge-governance.md](../../../knowledge/knowledge-governance.md)「三层职责边界」 |
-| 目标层 | `{DOC_DIR}/DESIGN.md`；同层 `knowledge/overview/NAME-overview.md` 表行真源；[knowledge-layout.md](../../../references/knowledge-layout.md) 中 overview / 表行相关节 |
-| 源侧 | 槽位根下 `DESIGN.md`（`system` 边 → `application-slots/application-{NAME}/DESIGN.md`；`company` 边 → `system-slots/system-{NAME}/DESIGN.md`） |
+| 跨层 | [knowledge-governance.md](../../../knowledge/knowledge-governance.md)「三层职责边界」「各层聚焦摘要」 |
+| 目标层 | [knowledge-governance.md](../../../knowledge/knowledge-governance.md) 对应层聚焦；同层 `knowledge/overview/NAME-overview.md` 表行真源；[knowledge-layout.md](../../../references/knowledge-layout.md) 中 overview / 表行相关节 |
+| 源侧 | 槽位根 `README.md` 与槽位 `knowledge/` 入口（`system` 边 → `application-slots/application-{NAME}/`；`company` 边 → `system-slots/system-{NAME}/`）；跨层边界仍以 knowledge-governance 为准 |
 
 任一项缺失 → 硬停，列缺失路径。README 叙事不作本闭合的硬依赖。
 
@@ -40,9 +40,9 @@
 ## 双边对照顺序
 
 1. 读目标侧清单 → 归纳本层职责与粒度（仅摘契约原文要点，不发明）
-2. 读源侧 `DESIGN.md` → 对照
+2. 读源侧槽位 README / knowledge 入口 → 对照
 3. **冲突或一边有、一边无** → 一律硬停提问；**不**自动偏目标或源
-4. 人选定后 → **先落盘**（改目标/源 DESIGN 或 governance 相关节，路径在决策面写明）→ 再输出完整澄清摘要 → 写前 `C`
+4. 人选定后 → **先落盘**（改 knowledge-governance 相关节或 layout，路径在决策面写明）→ 再输出完整澄清摘要 → 写前 `C`
 
 ## 写前摘要（必出）
 
@@ -65,7 +65,7 @@
 
 - 缺失路径或冲突摘录（短引契约原文）
 - 推荐选项（数字编号）与推荐项
-- 落盘目标路径（改哪份 DESIGN / 哪一节）
+- 落盘目标路径（改 knowledge-governance / layout 哪一节）
 - 明确：未落盘且未再确认前，不预览、不写入
 
 一次一问填缺口（与 intent-clarify「有缺口」一致）；全部闭合后再出一屏总确认。

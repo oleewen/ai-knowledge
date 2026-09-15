@@ -1,7 +1,7 @@
 {
   "skill_name": "docs-install",
   "version": "1.1.0",
-  "description": "评测 docs-install：轻流程；dry-run 闸门；不写 link 脚本；与 agent-install 分流；根级 DESIGN.md/CONTRIBUTING.md 整文件覆盖同步。",
+  "description": "评测 docs-install：轻流程；dry-run 闸门；不写 link 脚本；与 agent-install 分流；根级 CONTRIBUTING.md 整文件覆盖同步。",
   "evals": [
     {
       "id": "docs-install-trigger-001",
@@ -58,14 +58,14 @@
     {
       "id": "docs-install-trigger-003",
       "category": "should-trigger",
-      "prompt": "给工程 docs 初始化 application 知识库，standalone 全量和 central 子集都要带上根级 DESIGN.md。",
-      "expected_output": "docs-install knowledge 同步根级 DESIGN.md / CONTRIBUTING.md（整文件覆盖）；central 子集亦种；源无则不造。保正文重填走 docs-upgrade。",
+      "prompt": "给工程 docs 初始化 application 知识库，standalone 全量和 central 子集都要带上（层设计见 knowledge-governance；根级 CONTRIBUTING.md）。",
+      "expected_output": "docs-install knowledge 同步根级 CONTRIBUTING.md（整文件覆盖）；central 子集亦种；源无则不造。保正文重填走 docs-upgrade。",
       "assertions": [
         {
           "id": "install-design-contributing",
           "name": "种 DESIGN/CONTRIBUTING",
           "type": "must_include",
-          "check": "须体现 knowledge 同步含根级 DESIGN.md 与 CONTRIBUTING.md（standalone 全量与 central 子集均整文件覆盖），不得再跳过这两份。",
+          "check": "须体现 knowledge 同步含根级 CONTRIBUTING.md（standalone 全量与 central 子集均整文件覆盖），不得再跳过这两份。",
           "priority": "P0"
         }
       ]

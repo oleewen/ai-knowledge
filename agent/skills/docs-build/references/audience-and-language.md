@@ -23,4 +23,4 @@
 
 ## 特殊允许区
 
-无。须对齐 DESIGN/CONTRIBUTING；未读不得滥增实体。
+无。须对齐 knowledge-governance / CONTRIBUTING；未读不得滥增实体。
