@@ -49,7 +49,7 @@
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| PD | EXAMPLE |  | 示例产品能力 | `product/PD-EXAMPLE/PD-EXAMPLE.md` |
+| PD | EXAMPLE |  | 示例产品服务 | `product/PD-EXAMPLE/PD-EXAMPLE.md` |
 | PM | EXAMPLE |  | 示例产品模块 | `product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE.md` |
 | FT | EXAMPLE |  | 示例功能 | `product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FT-EXAMPLE.md` |
 | FR | EXAMPLE |  | 示例功能需求 | `product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/FR-EXAMPLE.md` |
@@ -73,6 +73,7 @@
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
+| MDG | EXAMPLE |  | 示例主数据域 | `data/MDG-EXAMPLE.md` |
 | DS | EXAMPLE |  | 示例数据源 | `data/DS-EXAMPLE/DS-EXAMPLE.md` |
 | ENT | EXAMPLE |  | 示例实体 | `data/DS-EXAMPLE/ENT-EXAMPLE.md` |
 
@@ -86,7 +87,7 @@
 
 ---
 
-> 公司级 **TPL-*** / **SLN-*** / **PL-*** 不在本索引登记。本层 **PD / SYS** 首次定义；产品自 **PD** 起；应用自 **SYS** 起。
+> 公司级 **TPL-*** / **SLN-*** / **PL-*** 不在本索引登记。本层 **PD / SYS / MDG** 首次定义；产品自 **PD** 起；应用自 **SYS** 起；数据自 **MDG** 起。
 
 ---
 
@@ -99,6 +100,7 @@
 | PM-EXAMPLE | `product/PD-EXAMPLE/PM-EXAMPLE/` |
 | SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |
 | APP-EXAMPLE | `application/APP-EXAMPLE/` |
+| MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |
 | DS-EXAMPLE | `data/DS-EXAMPLE/` |
 | TSD-EXAMPLE | `technical/TSD-EXAMPLE.md` |
 

@@ -6,7 +6,7 @@ title: 数据架构
 
 [返回 · knowledge](../README.md)
 
-应用侧数据入口：TBL SSOT；MDG 公司首次定义，DS/ENT 系统首次定义。实体以 per-entity 与 [../index.md](../index.md) §4 为准。本 README 表仅登记本层 SSOT 样例；reference 见 §4。
+应用侧数据入口：TBL SSOT；MDG/DS/ENT 系统首次定义。实体以 per-entity 与 [../index.md](../index.md) §4 为准。本 README 表仅登记本层 SSOT 样例；reference 见 §4。
 
 ## 实体
 

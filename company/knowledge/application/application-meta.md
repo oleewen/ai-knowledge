@@ -42,7 +42,6 @@ title: 应用视角元数据（company/knowledge/application）
 | 层级 | 字段 | 说明 |
 | --- | --- | --- |
 | SLN | `maps_to_pl_id` | **必填**；与 PL 同建 1:1 |
-| SLN | `uses_mdg_ids` | AA uses DA（可选） |
 
 ---
 

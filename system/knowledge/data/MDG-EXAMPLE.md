@@ -1,14 +1,14 @@
 ---
 type: Master Data Domain
 title: 示例主数据域
-description: 演示公司级 MDG 结构。
+description: 演示系统级 MDG 结构。
 tags: [data, MDG]
 timestamp: "2026-06-21T00:00:00Z"
 full_id: MDG-EXAMPLE
 perspective: data
 hierarchy: MDG
 parent_id: null
-layer_scope: company
+layer_scope: system
 ---
 ## 关系
 
@@ -16,7 +16,8 @@ layer_scope: company
 
 ## 跨视角
 
-- (none)
+- 被 SYS-EXAMPLE 经 uses_mdg_ids 引用
+- DS-EXAMPLE.authoritative_mdg_id / parent → 本 MDG
 
 ## 详细说明
 
@@ -25,4 +26,4 @@ layer_scope: company
 
 ## 依据与证据
 
-chapters/data-governance.md（示例）
+chapters/data-model.md（主数据节，示例）

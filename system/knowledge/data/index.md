@@ -9,6 +9,7 @@
 
 ## 目录文件
 
+* [MDG-EXAMPLE.md](MDG-EXAMPLE.md) — 系统层 MDG SSOT 样例
 * [data-meta.md](data-meta.md)
 
 ## 阅读顺序
@@ -16,10 +17,10 @@
 1. [README.md](README.md)
 2. [data-meta.md](data-meta.md)
 3. [chapters/index.md](chapters/index.md)
-4. [DS-EXAMPLE/](DS-EXAMPLE/index.md)
+4. [MDG-EXAMPLE.md](MDG-EXAMPLE.md)
+5. [DS-EXAMPLE/](DS-EXAMPLE/index.md)
 
 ## 关联索引
 
 - 上一级索引：[index.md](../index.md)
 - 上一级说明：[README.md](../README.md)
-- 上游 MDG SSOT：公司层 `MDG-*`（本层不落 reference 文件）

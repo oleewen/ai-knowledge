@@ -6,17 +6,15 @@ title: 数据架构
 
 [返回 · 企业架构](../README.md)
 
-公司层数据入口：治理/湖仓/安全叙事 + MDG。实体以 per-entity 与 [../index.md](../index.md) §4 为准。本 README 表登记 MDG-EXAMPLE。
+公司层数据入口：治理/湖仓/安全叙事。**无公司级数据实体**（MDG ∈ 系统库）。实体以 per-entity 与 [../index.md](../index.md) §4 为准。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
 | 数据概述 | [chapters/data-overview.md](chapters/data-overview.md) | 数据原则、全景与生命周期 |
-| 数据治理 | [chapters/data-governance.md](chapters/data-governance.md) | 标准、质量、血缘与主数据 |
+| 数据治理 | [chapters/data-governance.md](chapters/data-governance.md) | 标准、质量、血缘 |
 | 数仓与湖 | [chapters/data-warehouse-lake.md](chapters/data-warehouse-lake.md) | 分析域分层与湖仓一体 |
 | 数据安全 | [chapters/data-security-privacy.md](chapters/data-security-privacy.md) | 分类分级与隐私合规 |
 
 ## 实体
 
-| 链序 | 层级 | ID | 名称 | 文件/目录 |
-|------|------|----|------|-----------|
-| L1 | MDG | MDG-EXAMPLE | 示例主数据域 | [MDG-EXAMPLE.md](MDG-EXAMPLE.md) |
+本层无实体登记。

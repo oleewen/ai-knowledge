@@ -42,7 +42,7 @@
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
 | BU | EXAMPLE |  | 示例业务单元 | `business/BU-EXAMPLE/BU-EXAMPLE.md` |
-| BD | EXAMPLE |  | 示例业务域 | `business/BU-EXAMPLE/BD-EXAMPLE.md` |
+| BD | EXAMPLE |  | 示例业务域 | `business/BD-EXAMPLE.md` |
 | CAP | EXAMPLE |  | 示例业务能力 | `business/BU-EXAMPLE/CAP-EXAMPLE.md` |
 
 ---
@@ -63,11 +63,11 @@
 
 ---
 
-## §4 数据视角（data · MDG）
+## §4 数据视角（data · 无公司级实体）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| MDG | EXAMPLE |  | 示例主数据域 | `data/MDG-EXAMPLE.md` |
+| — | — | — | （无） | MDG ∈ 系统库 |
 
 ---
 
@@ -79,7 +79,7 @@
 
 ---
 
-> 本索引登记公司级 **BU / BD / CAP / PL / SLN / MDG / TPL**；SLN ∈ application（AA）；无 PD/SYS（见系统库）。
+> 本索引登记公司级 **BU / BD / CAP / PL / SLN / TPL**；SLN ∈ application（AA）；无 PD/SYS/MDG（见系统库）。
 
 ---
 
@@ -92,7 +92,6 @@
 | CAP-EXAMPLE | `business/BU-EXAMPLE/CAP-EXAMPLE.md` |
 | PL-EXAMPLE | `product/PL-EXAMPLE/` |
 | SLN-EXAMPLE | `application/SLN-EXAMPLE.md` |
-| MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |
 | TPL-EXAMPLE | `technical/TPL-EXAMPLE.md` |
 
 ---

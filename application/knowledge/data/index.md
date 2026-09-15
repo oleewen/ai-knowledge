@@ -19,4 +19,4 @@
 
 - 上一级索引：[index.md](../index.md)
 - 上一级说明：[README.md](../README.md)
-- 上游 MDG/DS/ENT：公司/系统 SSOT（本层不落 reference 文件）
+- 上游 MDG/DS/ENT：系统 SSOT（本层不落 reference 文件）

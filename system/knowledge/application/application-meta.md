@@ -15,7 +15,7 @@ title: 应用视角元数据（system/knowledge/application）
 | meta_id | `DIR-SYSTEM-KNOWLEDGE-APPLICATION` |
 | 视角 | application |
 | 层级范围 | system |
-| 说明 | SYS 本层首次定义（`parent_id→公司 SLN`）；APP/MS 本层 SSOT；API 在应用层。4A：AA implements BA；AA uses DA/TA。 |
+| 说明 | SYS 本层首次定义（`parent_id→公司 SLN`）；APP/MS 本层 SSOT；API 在应用层。5A：AA implements BA；AA uses DA/TA；PA↔AA 经 PD/SYS。 |
 
 ---
 
@@ -45,7 +45,7 @@ title: 应用视角元数据（system/knowledge/application）
 
 | 层级 | 字段 | 说明 |
 | --- | --- | --- |
-| SYS | `uses_tsd_ids`、`uses_tpl_ids` | AA uses TA |
+| SYS | `uses_mdg_ids`、`uses_tsd_ids`、`uses_tpl_ids` | AA uses DA/TA |
 | APP | `implements_bc_ids`、`uses_ds_ids`、`uses_mw_ids`、`implements_tpl_ids` | implements BA / uses DA·TA |
 | MS | `implements_agg_ids`、`uses_ent_ids`、`uses_tbl_ids` | implements BA / uses DA |
 
@@ -58,6 +58,7 @@ title: 应用视角元数据（system/knowledge/application）
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
 | SYS.parent_id | 公司 SLN.full_id | 系统归属解决方案 |
+| SYS.uses_mdg_ids | MDG.full_id | 系统声明使用的主数据域 |
 | PD.maps_to_sys_id | SYS.full_id | 产品服务对标（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
 | APP.parent_id | SYS.full_id | 应用归属系统 |
 

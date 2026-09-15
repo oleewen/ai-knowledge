@@ -15,7 +15,7 @@
 
 ## 2. 各视角前缀一览
 
-五视角：**业务 / 产品 / 应用 / 数据 / 技术**。跨层实体首次定义层级见 [application/DESIGN.md](../../../application/DESIGN.md) §2.2.1；公司层目录语义见 [company/DESIGN.md](../../../company/DESIGN.md)。
+五视角：**业务 / 产品 / 应用 / 数据 / 技术**。跨层实体首次定义层级见 [knowledge-governance.md](knowledge-governance.md#跨层实体首次定义)；各层聚焦见同文「各层聚焦摘要」。
 
 > 说明：**首次定义** 指该实体的治理语义、字段口径与上游主定义层级；下游层可继续做实例登记、实现映射、物理锚点或引用，不等同于“只允许在该层出现”。
 
@@ -58,7 +58,7 @@
 
 | 前缀   | 英文全称       | 含义         | 首次定义 |
 | ---- | ---------- | ---------- | ---- |
-| MDG- | Master Data Domain | 主数据域（治理目录，非 DS/ENT 替代） | 公司 |
+| MDG- | Master Data Domain | 主数据域（治理目录，非 DS/ENT 替代） | 系统 |
 | DS-  | Data Store | 数据存储       | 系统 |
 | ENT- | Entity     | 数据实体（表/集合） | 系统 |
 | TBL- | Table      | 数据表（物理表锚点） | 应用 |
@@ -81,7 +81,7 @@
 - **目录**：与实体 ID 一致（如 `BD-CHARGING-APPEAL`、`PL-BILLING-APPEAL`），或以 ID 为准在索引中查找。
 - **实体定义文件**：应用注册等可为 `{id}.yaml`（如 `APP-BILLING-APPEAL-SERVICE.yaml`）；数据实体字段模板见各视角 `{perspective}-meta.md` §4 必填字段；若需逐实体落盘（如应用侧增量），可采用 `{ENT-ID}_ENT_meta.yaml` 约定；业务各层字段模板收敛于 **`business-meta.md`** §4。
 - **元数据文件（目录索引）**：
-  - **`application/`、`system/`、`company/` 根**：`docs-meta.md`（阶段子目录与 `knowledge/` 指针、`index`/`DESIGN` 等导航约定摘要）。
+  - **`application/`、`system/`、`company/` 根**：`docs-meta.md`（阶段子目录与 `knowledge/` 指针、`index` 等导航约定摘要；层设计见 knowledge-governance）。
   - **`{DOC_DIR}/knowledge/` 根**：`knowledge-meta.md`（本树 SSOT 索引说明）。
   - **治理与命名 SSOT**：`agent/knowledge/`（`naming-conventions.md`、`glossary.md`、`architecture-principles.md`、`adr-template.md`、`adr-guidelines.md`）；ADR 正文为 `application/adr/`、`system/adr/` 或 `company/adr/` 下 `ADR-{序号}-{短标题}.md`（按决策范围）；台账 `CONTEXT.md`。
   - **`{DOC_DIR}/` 下阶段目录**：**solutions**、**analysis**、**requirements**、**changelogs** 约定收敛于各目录 `README.md`（无 `{dirname}_meta.yaml`）。`knowledge/` 五视角使用 `{perspective}-meta.md` + per-entity `{ID}.md`（OKF）；`index.md` 由扫描生成。legacy `*-entities.md` 已废弃。
@@ -90,9 +90,9 @@
 - **系统库 · 业务视角**（`system/knowledge/business/`）：`business-meta.md`；`BD-{NAME}.md` 为 company reference；`BSD-{NAME}/` 起为系统 SSOT 树。
 - **系统库 · 产品视角**（`system/knowledge/product/`）：`product-meta.md`；不落 PL/SLN；`PD-{NAME}/` 为本层 SSOT（`PD.parent_id→公司 PL`，`maps_to_sys_id`）；其下 `PM-{NAME}/` 为 PM→FT→FR→UC/BR（`PM` 须与 PD 同库）。
 - **系统库 · 应用视角**（`system/knowledge/application/`）：`application-meta.md`；`SYS-{NAME}.md` 为本层 SSOT（`parent_id→公司 SLN`）；`APP-{NAME}/APP-{NAME}.md`；`APP-{NAME}/MS-{NAME}/MS-{NAME}.md`。
-- **系统库 · 数据视角**（`system/knowledge/data/`）：`data-meta.md`；`MDG-{NAME}.md` 为 company reference；`DS-{NAME}/` 含 DS/ENT。AA 侧 `uses_*` 声明使用关系。
+- **系统库 · 数据视角**（`system/knowledge/data/`）：`data-meta.md`；`MDG-{NAME}.md` 为本层 SSOT；`DS-{NAME}/` 含 DS/ENT。SYS 经 `uses_mdg_ids` 声明使用关系。
 - **系统库 · 技术视角**（`system/knowledge/technical/`）：`technical-meta.md`；`TSD-{NAME}.md` 为系统 SSOT；`MW-{NAME}/` 可为 application MW 的 reference。AA 侧 `uses_*` 声明使用关系。
-- **公司层五视角**（`company/knowledge/{perspective}/`）：叙事 Markdown + `{perspective}-meta.md` + 公司级实体（`BU-*`/BD/CAP、`PL-{NAME}/`、**`application/SLN-*.md`（AA）**、MDG、TPL；**无 PD/SYS**）。
+- **公司层五视角**（`company/knowledge/{perspective}/`）：叙事 Markdown + `{perspective}-meta.md` + 公司级实体（`BU-*`/BD/CAP、`PL-{NAME}/`、**`application/SLN-*.md`（AA）**、TPL；**无 PD/SYS/MDG**）。
 - **IDEA-ID（需求链统一标识）**：统一命名格式 `*-{YYMMDD}-{主题slug}` 中的 `{YYMMDD}-{主题slug}` 段；各阶段类型前缀为 `SOLUTION` / `ANALYSIS` / `REQUIREMENT`（目录）/ `PRD` / `ASD` / `DSD` / `TDD` 等。
 - **系统库 · requirements 阶段**（`system/requirements/`）：`README.md` 为阶段约定入口；`REQUIREMENT-{IDEA-ID}/` 为交付包锚点（与 `ANALYSIS-{IDEA-ID}.md` 共用同一 **IDEA-ID**），不在包内并列根级 `*_meta.yaml` 拷贝。
 - **系统库 · solutions 阶段**（`system/solutions/`）：`README.md` 为阶段约定入口；根目录平铺 `SOLUTION-{IDEA-ID}.md`；`archive/` 归档。
@@ -121,4 +121,4 @@
 
 ---
 
-*本规范与系统库 [application/DESIGN.md](../../../application/DESIGN.md) 中的「ID 命名规范」一致。*
+*本规范与 [knowledge-governance.md](knowledge-governance.md) / 本文件前缀表一致。*

@@ -17,8 +17,7 @@ maps_to_pl_id: PL-EXAMPLE
 
 ## 跨视角
 
-- uses_mdg_ids: [MDG-EXAMPLE]
-- 下游系统：SYS-EXAMPLE（系统库；parent_id→本 SLN）
+- 下游系统：SYS-EXAMPLE（系统库；parent_id→本 SLN；SYS.uses_mdg_ids 见系统库）
 
 ## 详细说明
 

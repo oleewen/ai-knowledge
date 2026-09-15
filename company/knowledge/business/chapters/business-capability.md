@@ -17,6 +17,12 @@ title: 业务能力
 
 评估维度、等级、周期与责任人。
 
-## 系统映射
+## 产品与方案映射
 
-CAP↔SYS 映射及缺口治理原则。
+CAP 对标 PL / SLN 为**推导路径**（不新增 CAP 直连字段）：
+
+1. `CAP.maps_to_bd_id` → BD  
+2. `BD.maps_to_pl_id` → PL  
+3. `SLN.maps_to_pl_id` → 同一 PL（一 PL 一 SLN）
+
+公司只记原则与缺口；不落 PD/SYS。

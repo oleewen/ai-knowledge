@@ -147,7 +147,7 @@ timestamp: "2026-06-25T00:00:00Z"
 - `docs-meta.md`
 - `knowledge-links.yaml`
 - `INDEXING-LOG.md`
-- `DESIGN.md`
+- （层设计 SSOT 见 `agent/knowledge/knowledge-governance.md`）
 
 处理规则：
 
@@ -208,7 +208,7 @@ timestamp: "2026-06-25T00:00:00Z"
 | CAP | `Business Capability` | business | company |
 | PL | `Product Line` | product | company |
 | SLN | `Solution` | application | company |
-| MDG | `Master Data Domain` | data | company |
+| MDG | `Master Data Domain` | data | system |
 | TPL | `Technical Platform` | technical | company |
 | BSD | `Business Subdomain` | business | system |
 | BC | `Bounded Context` | business | system |
@@ -397,7 +397,7 @@ MAY：
 代表性文件：
 
 - overview 缓冲与章节叙事路径见 [knowledge-layout.md](../references/knowledge-layout.md)
-- 治理叙事型设计摘录：各层 `DESIGN.md`（非 per-entity）
+- 治理叙事型设计摘录：`agent/knowledge/knowledge-governance.md`（非 per-entity；各层根不落 DESIGN.md）
 
 ---
 
@@ -409,7 +409,7 @@ MAY：
 - `docs-meta.md`
 - `knowledge-links.yaml`
 - `INDEXING-LOG.md`
-- `DESIGN.md`
+- （层设计 SSOT 见 `agent/knowledge/knowledge-governance.md`）
 
 MUST：
 
@@ -466,13 +466,13 @@ MAY：
 
 ### 10.1 company
 
-- 重点概念：`BD / CAP / PL / SYS / MDG / TPL`
+- 重点概念：`BU / BD / CAP / PL / SLN / TPL`
 - 文件组成以 company 级概念实体 + 治理叙事 + 系统槽位为主
 - 叙事和元数据占比高，必须严格区分 concept 与非 concept
 
 ### 10.2 system
 
-- 重点概念：`BSD / BC / AGG / AB / PM / BP / FT / UC / BR / APP / MS / DS / ENT / TSD`
+- 重点概念：`BSD / BC / AGG / AB / PD / PM / BP / FT / UC / BR / SYS / APP / MS / MDG / DS / ENT / TSD`
 - 既有丰富 example，又有更复杂的叙事与目录组织
 - 是 company 语义向 application 实现映射的中间层
 
