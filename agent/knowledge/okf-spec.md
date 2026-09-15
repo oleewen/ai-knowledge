@@ -18,151 +18,56 @@ timestamp: "2026-06-25T00:00:00Z"
 
 ## 规范总览
 
-你要做的事只有一件：先分型，再写入。
-
-- 先把文件分到 4 类之一：实体概念（per-entity）/ 索引入口 / 叙事文件 / 元数据（见 §1）。
-- 只有“实体概念（per-entity）”才必须满足：frontmatter 10 字段必填 + 正文 4 段中文 H2（见 §2～§4）。
-- 其他三类文件不按实体概念 Profile 处理：它们的首要目标是“导航/说明/契约/运维”，不是“稳定事实主定义”（见 §5～§7）。
-- OKF Core 兼容原则：`type` 是 OKF 唯一必填字段；允许扩展字段（extensions）。本仓库对“实体概念”增加更强约束，但不否定 OKF Core（见 §0、§2）。
-- 对应仓库文档分类矩阵时：实体概念、机器规约模板与被规则消费的规约样例默认按**机器规约类**处理，`frontmatter title` 属于契约字段，不得仅为消除 `MD025` 而删除。
-
-快速判断：
+先分型，再写入。实体概念须 frontmatter 10 字段 + 正文 4 段中文 H2（§2～§4）；索引/叙事/元数据不按实体 Profile（§5～§7）。OKF Core：`type` 唯一必填，允许 extensions；本仓库对实体概念加严（§0、§2）。机器规约类文件的 `frontmatter title` 为契约字段，不得仅为消 `MD025` 而删。
 
 | 问题 | 是 | 否 |
 | --- | --- | --- |
-| 这个文件描述的是“一个可被引用的对象”，且需要稳定 `full_id`？ | 实体概念（per-entity） | 继续判断 |
-| 这个文件用于“从哪读/怎么读/怎么下钻/怎么枚举”？ | 索引入口 | 继续判断 |
-| 这个文件用于“主题说明/架构叙事/综述/治理专题”？ | 叙事文件 | 元数据 |
+| 可被引用的对象，且需稳定 `full_id`？ | 实体概念（per-entity） | 继续判断 |
+| 从哪读 / 怎么下钻 / 怎么枚举？ | 索引入口 | 继续判断 |
+| 主题说明 / 架构叙事 / 综述 / 治理专题？ | 叙事文件 | 元数据 |
 
 ## 0. 规范定位
 
-本文是三层知识库的共享治理模板，主要面向 AI Agent（读/写/校验）。
-
-目标（优先级从高到低）：
-
-1. 降低误用：避免把 README/overview/meta 等文件当作实体概念写入与维护。
-2. 统一预期：同一类文件在 company/system/application 三层保持一致的结构与职责边界。
-3. 兼容 OKF：以 OKF v0.1 为 Core（`type` 必填、允许扩展字段），在此之上定义本仓库的实体概念（per-entity）Profile。
-
-本文回答：
-
-- 什么文件属于“实体概念（per-entity）”，什么文件属于“索引/叙事/元数据”？
-- 不同类别文件分别必须满足哪些最小要求（MUST/SHOULD/MAY）？
-- 三层目录如何复用同一套规则而不混写？
+面向 AI Agent 的三层共享治理模板。目标：降误用（勿把 README/overview/meta 当实体）→ 三层同类结构一致 → 兼容 OKF v0.1 Core 并定义本仓 per-entity Profile。答：分型、各类 MUST/SHOULD/MAY、三层如何复用。
 
 ---
 
 ## 1. 文件分类方式
 
-所有知识文件必须先分类，再决定是否按实体概念（per-entity）Profile 处理。
-
-分型决策流程（建议按顺序）：
-
-1. 先看用途：这是“对象事实”还是“导航/说明/契约/运维”？
-2. 再看形态：是否需要稳定 `full_id` 作为跨文件引用主键？
-3. 最后看落点：文件路径是否处于 `*/knowledge/<perspective>/...` 的实体树中？
-
-说明：
-
-- OKF Core 视角下：除 `index.md` / `log.md` 外，其他 `.md` 文件均可视为 concept（是否具备 frontmatter 与结构由生产者决定）。
-- 本仓库治理视角下：为可维护性与检索稳定性，把 concept 再分为“实体概念（per-entity）”与“索引/叙事/元数据”等非实体文件。
+先分类，再决定是否按实体概念 Profile。顺序：用途（对象事实 vs 导航/说明/契约/运维）→ 是否需稳定 `full_id` → 是否在 `*/knowledge/<perspective>/...` 实体树。OKF Core 可将多数 `.md` 视作 concept；本仓再拆「实体概念」与「索引/叙事/元数据」。
 
 ### 1.1 实体概念（per-entity）
 
-定义：
+有明确边界、唯一 `full_id`、可被引用的对象（通常 `{ID}.md`）。
 
-- 表示一个具有明确边界、唯一标识、可被其他文件引用的知识实体。
-- 通常对应一个 `{ID}.md` 文件，并使用 `full_id` 作为稳定主键。
-
-判断标准：
-
-- 文件存在稳定 `full_id` 语义。
-- 文件描述的是“一个对象”，而不是“一个目录如何阅读”或“一个主题总览”。
-- 文件适合使用 `parent_id`、关系段和跨视角段表达结构。
-
-典型文件：
-
-- 模式：`{DOC_DIR}/knowledge/<perspective>/…/{ID}.md`（含父子同目录 `/{ID}/{ID}.md`）
-- 路径根与视角目录见 [knowledge-layout.md](../references/knowledge-layout.md)；ID 语法见 [naming-conventions.md](naming-conventions.md)；缩写登记见 [glossary.md](glossary.md)
-- EXAMPLE 样例树见各层 `knowledge/`（如 `*-EXAMPLE.md`），勿在本规范维护长路径清单
-
-处理规则：
-
-- 必须遵循本规范 §2-§10 的实体概念 Profile 规则。
-- 必须包含中文 H2 的四段正文。
-- frontmatter 必须包含 10 个必填字段；允许附加扩展字段（OKF extensions），但更推荐将业务属性下沉到正文。
+- 模式：`{DOC_DIR}/knowledge/<perspective>/…/{ID}.md`（含 `/{ID}/{ID}.md`）
+- 路径 / ID / 缩写：见 [knowledge-layout.md](../references/knowledge-layout.md)、[naming-conventions.md](naming-conventions.md)、[glossary.md](glossary.md)；EXAMPLE 见各层 `knowledge/`，勿在本规范维护长清单
+- MUST：遵 §2–§10；四段中文 H2；frontmatter 10 必填（可 extensions；业务属性优先下沉正文）
 
 ### 1.2 索引入口
 
-定义：
+目录导航、阅读顺序、渐进披露、索引聚合。
 
-- 用于目录导航、阅读顺序、渐进披露、索引聚合的入口文件。
-
-典型文件：
-
-- `README.md`、各级 `index.md`、`knowledge/index.md`
-- 各文档根 `INDEX-GUIDE.md`（路径见 [knowledge-layout.md](../references/knowledge-layout.md) / 九章约定）
-
-处理规则：
-
-- 不按实体概念 Profile 改造。
-- 重点保证：
-  - 当前目录说明清晰
-  - 子目录/关键文件入口齐全
-  - 与共享规范术语一致
-  - 引用路径与下钻链路正确
+- 典型：`README.md`、各级 `index.md`、`knowledge/index.md`、各根 `INDEX-GUIDE.md`（见 [knowledge-layout.md](../references/knowledge-layout.md)）
+- MUST：不按实体 Profile；目录说明清晰、入口齐全、术语一致、下钻链路正确
 
 ### 1.3 叙事文件
 
-定义：
+主题 / 架构 / 综述 / 治理专题说明。
 
-- 面向主题、架构、综述、治理或专题说明的叙事型文件。
-
-典型文件：
-
-- `*-overview.md`
-- `business-*.md`
-- `product-*.md`
-- `application-*.md`
-- `data-*.md`
-- `technical-*.md`
-
-处理规则：
-
-- 不强制按实体概念 Profile 处理。
-- 重点保证：
-  - 术语与实体概念一致
-  - 引用实体路径正确
-  - 叙事与索引链路不冲突
+- 典型：`*-overview.md`、`business-*.md`、`product-*.md`、`application-*.md`、`data-*.md`、`technical-*.md`
+- MUST：不强制实体 Profile；术语与实体一致、引用路径正确、与索引链路不冲突
 
 ### 1.4 元数据
 
-定义：
+目录、规则、链接、日志或治理元信息。
 
-- 描述目录、规则、链接关系、日志或治理元信息的文件。
-
-典型文件：
-
-- `*-meta.md`
-- `docs-meta.md`
-- `knowledge-links.yaml`
-- `INDEXING-LOG.md`
-- （层设计 SSOT 见 `agent/knowledge/knowledge-governance.md`）
-
-处理规则：
-
-- 不按实体概念 Profile 改造。
-- 重点保证其字段、职责与规范引用一致。
+- 典型：`*-meta.md`、`docs-meta.md`、`knowledge-links.yaml`、`INDEXING-LOG.md`；层设计 SSOT 见 [knowledge-governance.md](knowledge-governance.md)
+- MUST：不按实体 Profile；字段/职责与规范引用一致
 
 ### 1.5 分型优先级
 
-- 同时满足多类特征时，按以下优先级判断：
-  - concept
-  - 索引入口
-  - 元数据
-  - 叙事文件
-- `README.md`、`index.md`、`index.md`、`index.md` 默认优先归为索引入口。
-- `*-meta.md`、`docs-meta.md`、`knowledge-links.yaml`、变更日志默认优先归为元数据。
+多类特征并存时：concept → 索引入口 → 元数据 → 叙事文件。`README.md` / `index.md` 默认索引入口；`*-meta.md` / `docs-meta.md` / `knowledge-links.yaml` / 变更日志默认元数据。
 
 ---
 
@@ -332,105 +237,46 @@ MAY：
 
 ## 5. 索引入口处理规则
 
-适用于：
-
-- `README.md`
-- `INDEX-GUIDE.md`（九章索引指南；仅仓库根或各 DOC_DIR 根）
-- `index.md`（bundle 根与子目录的 OKF 渐进披露/目录索引入口）
-- `index.md`（OKF 渐进披露入口：bundle 子目录）
-- `knowledge/index.md`（知识实体扫描索引）
+典型见 §1.2。路径布局见 [knowledge-layout.md](../references/knowledge-layout.md)。
 
 MUST：
 
-- 目录说明清晰
-- 当前目录关键文件与子目录入口齐全
-- 与 concept、叙事、元数据分型保持一致
-- 不强行加入 concept frontmatter
-- OKF 渐进披露入口（bundle 根 `index.md` 的 OKF 区块）仅允许 `okf_version` 作为 frontmatter
+- 目录说明清晰；当前目录关键文件与子目录入口齐全
+- 与 concept / 叙事 / 元数据分型一致；不强行加 concept frontmatter
+- bundle 根 `index.md` 的 OKF 区块 frontmatter **仅允许** `okf_version`
 
 SHOULD：
 
-- `README.md`：人类入口
-- `index.md`：当前目录渐进披露（bundle 根为 OKF 区块 + 目录索引；子目录为渐进披露入口）
-- `<DOC_DIR>/INDEX-GUIDE.md`：九章机器索引（仓库根或各 DOC_DIR）
-- `knowledge/index.md`：知识实体扫描索引
+- `README.md`：人类入口；`index.md`：渐进披露（根 = OKF 区块 + 目录索引；子目录 = 渐进披露）
+- `<DOC_DIR>/INDEX-GUIDE.md`：九章机器索引；`knowledge/index.md`：实体扫描索引
 
-MAY：
-
-- 在索引入口中加入“常见问题/反例”（例如：哪些文件不应按实体概念写），用于降低误用率。
-
-代表性文件：
-
-- 人类入口 / 渐进披露 / 九章地图：见各 `{DOC_DIR}/README.md`、`index.md`、`INDEX-GUIDE.md`（布局见 [knowledge-layout.md](../references/knowledge-layout.md)）
-- 知识实体扫描索引：`{DOC_DIR}/knowledge/index.md`
+MAY：索引入口可加「常见问题/反例」（哪些文件不应按实体概念写）。
 
 ---
 
 ## 6. 叙事文件处理规则
 
-适用于：
+典型见 §1.3。overview 路径/行序/第三列落点见 [knowledge-layout.md](../references/knowledge-layout.md)；本文只定「叙事 / 非 concept」分型。
 
-- `*-overview.md`
-- `business-*.md`
-- `product-*.md`
-- `application-*.md`
-- `data-*.md`
-- `technical-*.md`
+MUST：保持主题说明/架构叙事角色；不伪装成 concept；引用实体用稳定路径与术语（与本规范及实体文件一致）。
 
-MUST：
+SHOULD：结构化 Markdown；overview 按「主标题/副标题/归档列」稳定维护（docs-tag / archive / extract 联动）。
 
-- 保持其“主题说明/架构叙事”角色
-- 不伪装成 concept
-- 若引用概念实体，应使用稳定路径与术语
-- 术语应与本规范和实体文件一致
-
-SHOULD：
-
-- 采用结构化 Markdown（标题、表格、列表）提升检索与可维护性。
-- overview 类文档按“主标题/副标题/归档列”结构稳定维护，便于 docs-tag/docs-archive/docs-extract 联动。
-- **路径、行序、第三列技能落点**以 [knowledge-layout.md](../references/knowledge-layout.md) 为准；本文只定「叙事/非 concept」分型。
-
-MAY：
-
-- 使用 HTML 注释给出写作提示与产出建议（用于模板/占位），但不影响正文可读性。
-
-代表性文件：
-
-- overview 缓冲与章节叙事路径见 [knowledge-layout.md](../references/knowledge-layout.md)
-- 治理叙事型设计摘录：`agent/knowledge/knowledge-governance.md`（非 per-entity；各层根不落 DESIGN.md）
+MAY：HTML 注释作写作提示/占位，不影响正文可读性。
 
 ---
 
 ## 7. 元数据文件处理规则
 
-适用于：
+典型见 §1.4。层设计 SSOT 见 [knowledge-governance.md](knowledge-governance.md)；链接路径语义见 [knowledge-layout.md](../references/knowledge-layout.md)。
 
-- `*-meta.md`
-- `docs-meta.md`
-- `knowledge-links.yaml`
-- `INDEXING-LOG.md`
-- （层设计 SSOT 见 `agent/knowledge/knowledge-governance.md`）
+MUST：保持规则 / 目录元信息 / 链接编排 / 运维日志职责；不按 concept schema 改造；引用本规范时统一指向本文件。
 
-MUST：
+SHOULD：区分约定/枚举字段与解释性文字；运维留痕遵循各目录 README，避免多处定义同一条规则。
 
-- 保持规则、目录元信息、链接编排或运维日志职责
-- 不按 concept schema 改造
-- 引用规范路径时统一指向本文件
+MAY：工具链 extensions 字段可加，须可控长期维护。
 
-SHOULD：
-
-- 在 meta 内说明“哪些字段为约定/枚举、哪些为解释性文字”，避免把可变叙事塞进结构字段。
-- 变更留痕与索引运维文件遵循各自目录 README 的约定，避免在多个地方定义同一条运维规则。
-
-MAY：
-
-- 增加面向工具链的附加字段（OKF extensions），用于自动化生成/校验/索引，但需保证长期维护成本可控。
-
-代表性文件：
-
-- 模式：`{DOC_DIR}/docs-meta.md`、`{DOC_DIR}/knowledge/knowledge-meta.md`、`{DOC_DIR}/knowledge/<perspective>/*-meta.md`
-- 联邦链接：`{DOC_DIR}/knowledge-links.yaml`（路径语义见 [knowledge-layout.md](../references/knowledge-layout.md)）
-- 运维日志：`INDEXING-LOG.md`（落在约定 `changelogs/`）；变更溯源 `git log` / `git diff`
+模式：`{DOC_DIR}/docs-meta.md`、`knowledge/knowledge-meta.md`、`knowledge/<perspective>/*-meta.md`；`knowledge-links.yaml`；`INDEXING-LOG.md`（`changelogs/`）；变更溯源 `git log` / `git diff`。
 
 ---
 
@@ -438,11 +284,12 @@ MAY：
 
 ### 8.1 父子同目录可见
 
-对于有下层概念的目录，父子实体应尽量在同一父层目录下肉眼可见（如 `BSD-{ID}/` 下同时可见 `BSD-{ID}.md` 与子概念 `{ID}.md`）。完整树形与落点见 [knowledge-layout.md](../references/knowledge-layout.md)。
+有下层概念的目录，父子实体尽量同父层目录可见（如 `BSD-{ID}/` 下同时见 `BSD-{ID}.md` 与子 `{ID}.md`）。树形与落点见 [knowledge-layout.md](../references/knowledge-layout.md)。
 
 ### 8.2 父层目录的 `index.md`
 
 每个含子概念目录必须提供 `index.md` 罗列子概念（OKF Concepts 列表）；样例见各层 `knowledge/` EXAMPLE 树，勿在本规范维护长清单。
+
 ---
 
 ## 9. 跨视角引用规则
@@ -464,23 +311,19 @@ MAY：
 
 ## 10. company / system / application 三层共享模板
 
+各层**重点概念 / 首次定义**见 [knowledge-governance.md § 各层聚焦摘要](knowledge-governance.md#各层聚焦摘要)。本节只补 OKF 文件组成差异：
+
 ### 10.1 company
 
-- 重点概念：`BU / BD / CAP / PL / SLN / TPL`
-- 文件组成以 company 级概念实体 + 治理叙事 + 系统槽位为主
-- 叙事和元数据占比高，必须严格区分 concept 与非 concept
+公司级实体 + 治理叙事 + 系统槽位为主；叙事/元数据占比高，须严格区分 concept 与非 concept。
 
 ### 10.2 system
 
-- 重点概念：`BSD / BC / AGG / AB / PD / PM / BP / FT / UC / BR / SYS / APP / MS / MDG / DS / ENT / TSD`
-- 既有丰富 example，又有更复杂的叙事与目录组织
-- 是 company 语义向 application 实现映射的中间层
+example 与叙事/目录组织更密；company 语义 → application 实现的中间层。
 
 ### 10.3 application
 
-- 重点概念：`API / TBL / MW / CMP`
-- 也承接上游 concept 的投影与实现细节
-- 对物理锚点、宿主信息与配置证据要求更高
+承接上游投影与实现细节；物理锚点、宿主信息与配置证据要求更高。
 
 ---
 

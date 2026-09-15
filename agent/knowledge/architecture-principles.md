@@ -1,8 +1,8 @@
 ---
 id: architecture-principles
 title: 架构原则
-version: "2.0"
-last_reviewed: null
+version: "2.1"
+last_reviewed: 2026-09-15
 next_review: null
 approved_by: Architecture Board
 tags: ["architecture", "principles", "governance"]
@@ -28,11 +28,10 @@ tags: ["architecture", "principles", "governance"]
 | AP-03 | 数据所有权明确 | data-governance | 每个数据实体有唯一权威来源服务。 |
 | AP-04 | 事件作为一等公民 | data-governance | 跨服务状态传播优先领域事件，配合幂等与契约版本。 |
 | AP-05 | API 优先 | technical-excellence | 服务能力通过定义良好的 API 暴露，契约先于实现。 |
-| AP-06 | 故障隔离 | technical-excellence | 单组件故障不导致全站不可用；限流、熔断、降级内建。 |
-| AP-07 | 可观测性内建 | technical-excellence | 服务内建日志、指标、链路追踪等可观测性。 |
-| AP-08 | 零信任安全 | security | 服务间默认不信任，认证授权与最小权限。 |
-| AP-09 | 团队自治与对齐 | organization | 团队在服务边界内自治，跨团队接口与标准对齐。 |
-| AP-10 | 文档即代码 | organization | 架构文档与代码同仓、版本化，关键一致性可 CI 校验。 |
+| AP-06 | 韧性与可观测 | technical-excellence | 单组件故障不导致全站不可用；限流、熔断、降级内建；服务内建日志、指标、链路追踪。 |
+| AP-07 | 零信任安全 | security | 服务间默认不信任，认证授权与最小权限。 |
+| AP-08 | 团队自治与对齐 | organization | 团队在服务边界内自治，跨团队接口与标准对齐。 |
+| AP-09 | 文档即代码 | organization | 架构文档与代码同仓、版本化，关键一致性可 CI 校验。 |
 
 ## 知识库原则
 

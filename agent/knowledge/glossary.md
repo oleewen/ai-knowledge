@@ -13,8 +13,6 @@ tags: ["glossary", "terminology", "governance"]
 > **定位**：词义、别名、易混区分、**实体缩写/类型登记**，以及**跨视角映射字段语义** SSOT。  
 > **不分管**：首次定义层 / 5A 边类 / 引用边界 → [knowledge-governance.md](knowledge-governance.md)；ID 语法 `{TYPE}-{NAME}` → [naming-conventions.md](naming-conventions.md)；路径树 → [knowledge-layout.md](../references/knowledge-layout.md)。
 
-**首次定义层**不在本表列写，见 [knowledge-governance.md#各层聚焦摘要](knowledge-governance.md#各层聚焦摘要)。
-
 ## 知识库术语
 
 | 术语 | 英文 | 定义 |
@@ -100,11 +98,3 @@ ID 前缀写作 `BU-` / `BD-` 等，语法见 [naming-conventions.md](naming-con
 | parent_app_id | **CMP-*** 挂载的 **APP-***（与 `parent_mw_id` 二选一）。 |
 | maven_coordinates | **CMP-*** 的 Maven 坐标 `groupId:artifactId:version`。 |
 | parent_tpl_id | **TSD-*** 归属的公司级 **TPL-*** 平台能力。 |
-
-## 术语变更记录
-
-| 日期 | 术语ID | 变更类型 | 变更说明 |
-| --- | --- | --- | --- |
-| 2026-09-15 | — | 重划 | 缩写表仅实体前缀；ADR/SSOT/5A 归「知识库相关」；映射字段仍为本表 SSOT |
-| 2026-09-15 | — | 修订 | 4A→5A：增加 PA（产品架构） |
-| 2026-09-14 | — | 修订 | 删 BT/TT 样例与 OMS/SKU；补全 OKF 缩写；映射节定为字段 SSOT |

@@ -71,7 +71,7 @@
 
 | 原则 | 说明 |
 | --- | --- |
-| **SSOT** | 实体只一处定义；他处仅 ID 引用 |
+| **SSOT** | 见 [glossary.md](glossary.md)「单一事实源」 |
 | **本层角色** | API / TBL / MW / CMP 首次定义；上游 ref 或纯 ID |
 | **闭环** | solutions → analysis → requirements；上行 pull → distill（**仅**系统 overview）→ archive；**不**回写本库 knowledge |
 | **五视角 / 5A** | 层级链与本层角色见下节「核心映射（5A）」；细则 ∈ 各 `*-meta.md` + README |
@@ -82,7 +82,7 @@
 
 ## 核心映射（5A 方向）
 
-**5A** = **BA**（业务）· **PA**（产品）· **AA**（应用）· **DA**（数据）· **TA**（技术）。在经典 4A（BA/AA/DA/TA）上增加 **PA（产品架构）**，与五视角目录对齐。缩写短义见 [glossary.md](glossary.md)。
+**5A** 短义（BA/PA/AA/DA/TA）见 [glossary.md § 知识库术语](glossary.md#知识库术语)；边类方向与层级以本节为准。
 
 ### 5A ↔ 五视角层级
 
@@ -98,7 +98,7 @@
 
 ### 跨 A 边
 
-源实体 frontmatter 写**目标实体 ID**。字段语义 **SSOT**：[glossary.md § 映射关系](glossary.md#映射关系常用)。各层 `*-meta.md` 同引，不复制字段全文。
+源实体 frontmatter 写**目标实体 ID**。字段语义见 [glossary.md § 映射关系](glossary.md#映射关系常用)。
 
 | 边类 | 方向 | 代表 |
 | --- | --- | --- |
@@ -137,15 +137,3 @@
 **违规处理（写技能）**：能机械修复则修（库外/下层去链或纯 ID；跨层手写路径改为生成函数 HTTP，无 parent 则纯 ID）；目标层或实体不明则停，列清单交人。
 
 **SSOT**：本节；OKF 段结构对齐见 [okf-spec.md](okf-spec.md) §4。
-
----
-
-## 相关契约
-
-| 主题 | 去读 |
-| --- | --- |
-| 路径 / overview / 槽位 / 流水线 / SDD×类型 | [knowledge-layout.md](../references/knowledge-layout.md) |
-| ID 语法 | [naming-conventions.md](naming-conventions.md) |
-| 缩写与词义 / 映射字段 | [glossary.md](glossary.md) |
-| 文件分型 / concept Profile | [okf-spec.md](okf-spec.md) |
-| 公司 / 系统 / 应用入口 | [company/README](../../company/README.md) · [system/README](../../system/README.md) · [application/README](../../application/README.md) |
