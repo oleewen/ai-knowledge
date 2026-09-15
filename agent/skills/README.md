@@ -28,7 +28,7 @@
 | `/docs-install` | 知识库同步 + `.docsconfig`；`--target`/`--scope`/`--type`/`--mode`；默认 dry-run；轻流程 |
 | `/agent-install` | 整棵 Agent 树；`--agents`/`--target`/`--scope`；默认 dry-run；轻流程 |
 | `/skill-upgrade` | 生态 skills 追新（`npx skills update`）；无源经确认走 find-skills 补源；本仓 Agent 树 → `/agent-install`；轻流程 |
-| `/docs-upgrade` | 读 `.docsconfig` + `type: meta` 对齐元库最新结构；正文保本库；H2/H3 重填；未落位清单确认（根级 CONTRIBUTING.md 多条可批）；可选 `@` 指定文件/目录强制对齐（与整树互斥）；禁清空式 install |
+| `/docs-upgrade` | 读 `.docsconfig` + `type: meta` 对齐元库最新结构；正文保本库；H2/H3 重填；未落位清单确认（根级 CONTRIBUTING.md 多条可批）；指定文件/目录则只强制对齐（与整树互斥；C 一键全量）；禁清空式 install |
 | `/docs-link` | `--link`/`--unlink` + `--target`〔`--app-name`〕〔`--rewrite-http`〕→ 双边 `knowledge-links.yaml` + 槽位软链；脚本 `agent/skills/docs-link/scripts/`；默认 dry-run；轻流程 |
 | `/docs-pull` | 按 `knowledge-links.yaml` 本地 path → 联邦槽位；`SYNC_OK` 含 commit；变更溯源 git；无远端 clone；轻流程 |
 | `/docs-push` | 中央规约 → 各应用 `path×doc_dir`（legacy / spec-asd）；轻流程 |
