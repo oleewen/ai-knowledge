@@ -2,7 +2,7 @@
 # agent-install 布局：core 在 ~/.agents/scripts；技能在 .agents/skills/...；相对 --links 依赖 cwd 上溯到「含该文件的根」。
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../../.." && pwd)"
 REAL_PUSH="${ROOT_DIR}/agent/skills/docs-push/scripts/push-specs.sh"
 REAL_CORE="${ROOT_DIR}/agent/scripts/docs-core.sh"
 

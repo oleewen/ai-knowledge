@@ -2,7 +2,7 @@
 # 模拟 ~/.cursor/skills/docs-push/scripts/ 扁平安装：脚本不在仓库树内，须从 cwd 解析根。
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../../.." && pwd)"
 REAL_PUSH="${ROOT_DIR}/agent/skills/docs-push/scripts/push-specs.sh"
 
 TMP="$(mktemp -d)"

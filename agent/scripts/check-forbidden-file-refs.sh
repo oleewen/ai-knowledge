@@ -13,12 +13,13 @@ validate_bootstrap_docsconfig "$SCRIPT_DIR"
 
 REPO_ROOT="${REPO_ROOT:?validate_bootstrap_docsconfig 未注入 REPO_ROOT}"
 
-if ! command -v rg >/dev/null 2>&1; then
-  echo "[ERROR] 需要 ripgrep (rg)" >&2
-  exit 2
-fi
+readonly EXIT_VIOLATION=1
+readonly EXIT_MISSING_TOOL=2
 
-cd "$REPO_ROOT"
+# 具名文件路径公共段（specs|plans 下带日期前缀）
+readonly SUPERPOWERS_NAMED_PREFIX='(application|system|company|docs)/superpowers/(specs|plans)/'
+readonly PATTERN_LITERAL="${SUPERPOWERS_NAMED_PREFIX}[0-9]{4}-[0-9]{2}-[0-9]{2}-"
+readonly PATTERN_MD_LINK="\]\([^)]*${SUPERPOWERS_NAMED_PREFIX}[0-9]{4}-"
 
 GLOBS=(
   --glob '!**/superpowers/**'
@@ -28,10 +29,24 @@ GLOBS=(
   --glob '!**/target/**'
 )
 
-PATTERN_LITERAL='(application|system|company|docs)/superpowers/(specs|plans)/[0-9]{4}-[0-9]{2}-[0-9]{2}-'
-PATTERN_MD_LINK='\]\([^)]*(application|system|company|docs)/superpowers/(specs|plans)/[0-9]{4}-'
-
 violations=0
+
+require_ripgrep() {
+  if ! command -v rg >/dev/null 2>&1; then
+    echo "[ERROR] 需要 ripgrep (rg)" >&2
+    exit "$EXIT_MISSING_TOOL"
+  fi
+}
+
+count_nonempty_lines() {
+  local text="$1"
+  local n=0
+  local line
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    [[ -n "$line" ]] && n=$((n + 1))
+  done <<<"$text"
+  printf '%s' "$n"
+}
 
 run_scan() {
   local label="$1"
@@ -41,20 +56,25 @@ run_scan() {
   if [[ -n "$out" ]]; then
     echo "== $label ==" >&2
     echo "$out" >&2
-    local count
-    count="$(echo "$out" | wc -l | tr -d ' ')"
-    violations=$((violations + count))
+    violations=$((violations + $(count_nonempty_lines "$out")))
   fi
 }
 
-run_scan "具名 superpowers 路径字面量" "$PATTERN_LITERAL"
-run_scan "Markdown 链接指向具名 superpowers 文件" "$PATTERN_MD_LINK"
+main() {
+  require_ripgrep
+  cd "$REPO_ROOT"
 
-if [[ "$violations" -gt 0 ]]; then
-  echo "[FAIL] 发现 ${violations} 处 superpowers 具名文件引用（库外）" >&2
-  echo "规则见 agent/rules/CONVENTIONS.md §superpowers 引用隔离" >&2
-  exit 1
-fi
+  run_scan "具名 superpowers 路径字面量" "$PATTERN_LITERAL"
+  run_scan "Markdown 链接指向具名 superpowers 文件" "$PATTERN_MD_LINK"
 
-echo "[OK] 未发现库外 superpowers 具名文件引用"
-exit 0
+  if [[ "$violations" -gt 0 ]]; then
+    echo "[FAIL] 发现 ${violations} 处 superpowers 具名文件引用（库外）" >&2
+    echo "规则见 agent/rules/CONVENTIONS.md §superpowers 引用隔离" >&2
+    exit "$EXIT_VIOLATION"
+  fi
+
+  echo "[OK] 未发现库外 superpowers 具名文件引用"
+  exit 0
+}
+
+main "$@"
