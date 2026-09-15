@@ -357,15 +357,15 @@ sdx_agents_validate() {
   return 0
 }
 
-# 打印 .docsconfig 正文键值（不含文件头）；参数：dr rr doc_dir knowledge_type agent_root agent_dirs
+# 打印 .docsconfig 正文键值（不含文件头）；参数：dr rr doc_dir knowledge_type agent_root
 docsconfig_print_kv_block() {
-  local dr="$1" rr="$2" doc_dir="$3" knowledge_type="$4" agent_root="$5" agent_dirs="$6"
+  local dr="$1" rr="$2" doc_dir="$3" knowledge_type="$4" agent_root="$5"
   local ar
   printf 'DOC_ROOT=%s\nREPO_ROOT=%s\nDOC_DIR=%s\n' "$dr" "$rr" "$doc_dir"
   [[ -n "$knowledge_type" ]] && printf 'KNOWLEDGE_TYPE=%s\n' "$knowledge_type"
   if [[ -n "$agent_root" ]]; then
     ar="$(docsconfig_format_root_for_write "$agent_root")"
-    printf 'AGENT_ROOT=%s\nAGENT_DIRS="%s"\n' "$ar" "$agent_dirs"
+    printf 'AGENT_ROOT=%s\n' "$ar"
   fi
 }
 
@@ -375,10 +375,10 @@ docsconfig_write() {
   local doc_dir="${3:?doc_dir}"
   local dry="${4:-0}"
   local agent_root_in="${5:-}"
-  local agent_dirs_in="${6:-}"
+  local _legacy_slot="${6:-}" # 旧调用第 6 位；忽略
   local knowledge_type_in="${7:-}"
 
-  if [[ -n "$agent_root_in" && -z "$agent_dirs_in" && -z "$knowledge_type_in" ]]; then
+  if [[ -n "$agent_root_in" && -z "$_legacy_slot" && -z "$knowledge_type_in" ]]; then
     case "$agent_root_in" in
       application|system|company)
         knowledge_type_in="$agent_root_in"
@@ -398,13 +398,13 @@ docsconfig_write() {
 
   if [[ "$dry" == '1' ]]; then
     printf 'Would write %s:\n' "$out"
-    docsconfig_print_kv_block "$dr" "$rr" "$doc_dir" "$knowledge_type_in" "$agent_root_in" "$agent_dirs_in"
+    docsconfig_print_kv_block "$dr" "$rr" "$doc_dir" "$knowledge_type_in" "$agent_root_in"
     return 0
   fi
 
   umask 022
   {
-    docsconfig_print_kv_block "$dr" "$rr" "$doc_dir" "$knowledge_type_in" "$agent_root_in" "$agent_dirs_in"
+    docsconfig_print_kv_block "$dr" "$rr" "$doc_dir" "$knowledge_type_in" "$agent_root_in"
   } >"$out"
 }
 
@@ -417,24 +417,20 @@ docsconfig_read_into() {
   [[ -f "$path" ]] || return 1
 
   # 局部名须避开调用方 nameref 目标（如 raw_ar / AGENT_ROOT），否则 Bash 会写空调用方变量。
-  local _dc_raw_doc='' _dc_raw_repo='' _dc_raw_ddir='' _dc_raw_ar='' _dc_raw_ads='' _dc_raw_kt=''
+  local _dc_raw_doc='' _dc_raw_repo='' _dc_raw_ddir='' _dc_raw_ar='' _dc_raw_kt=''
   local line k v
   while IFS= read -r line || [[ -n "$line" ]]; do
     [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
     case "$line" in
-      DOC_ROOT=*|REPO_ROOT=*|DOC_DIR=*|AGENT_ROOT=*|AGENT_DIRS=*|KNOWLEDGE_TYPE=*)
+      DOC_ROOT=*|REPO_ROOT=*|DOC_DIR=*|AGENT_ROOT=*|KNOWLEDGE_TYPE=*)
         k="${line%%=*}"
         v="${line#*=}"
         v="${v%$'\r'}"
-        if [[ "$k" == 'AGENT_DIRS' && ${#v} -ge 2 && "${v:0:1}" == '"' && "${v: -1}" == '"' ]]; then
-          v="${v:1:${#v}-2}"
-        fi
         case "$k" in
           DOC_ROOT) _dc_raw_doc="$v" ;;
           REPO_ROOT) _dc_raw_repo="$v" ;;
           DOC_DIR) _dc_raw_ddir="$v" ;;
           AGENT_ROOT) _dc_raw_ar="$v" ;;
-          AGENT_DIRS) _dc_raw_ads="$v" ;;
           KNOWLEDGE_TYPE) _dc_raw_kt="$v" ;;
         esac
         ;;
@@ -450,7 +446,7 @@ docsconfig_read_into() {
     local -n _adirs="${6:?}"
     _aroot=''
     [[ -n "$_dc_raw_ar" ]] && _aroot="$(docsconfig_normalize_root_value "$_dc_raw_ar")"
-    _adirs="$_dc_raw_ads"
+    _adirs='' # 旧调用第 6 位 nameref；恒空
   fi
   if (( $# >= 7 )); then
     local -n _ktype="${7:?}"
@@ -475,7 +471,7 @@ sdx_is_text_file() {
 
 # 知识库路径重写目标（与 agent-install 实体树一致；字面 tilde，不展开 $HOME）
 readonly SDX_DOCS_AGENT_REWRITE_TARGET='~/.agents/'
-# 与 agent-install SDX_AGENT_DIR_MAP 对齐；不读 .docsconfig AGENT_DIRS
+# 与 agent-install SDX_AGENT_DIR_MAP 对齐的 IDE 段
 readonly SDX_DOCS_AGENT_IDE_DIR_RE='cursor|trae|claude|kiro|codex'
 
 sdx_rewrite_agent_path_segment_in_file() {
@@ -561,8 +557,7 @@ sdx_inject_readme_agent_note() {
 }
 
 # 将知识库树中 agent/ 与已知 IDE Agent 路径重写为 ~/.agents/，并更新 README 注记（docs-install / docs-upgrade 共用）
-# 用法：sdx_rewrite_docs_agent_paths <docs_abs> [ignored_legacy_agent_dirs]
-# 第二参若传入则忽略（兼容旧调用）；不读 AGENT_DIRS
+# 用法：sdx_rewrite_docs_agent_paths <docs_abs> [ignored_legacy_arg]
 sdx_rewrite_docs_agent_paths() {
   local docs_abs="${1:?}"
   [[ -d "$docs_abs" ]] || return 0
@@ -686,6 +681,7 @@ sdx_source_docs_core_from_layout() {
     bootstrap_used="$(sdx_resolve_docs_core_path "$link_config_dir" 2>/dev/null || true)"
   else
     for bootstrap_used in \
+      "${HOME}/.agents/scripts/docs-core.sh" \
       "${HOME}/.cursor/scripts/docs-core.sh" \
       "${HOME}/.trae/scripts/docs-core.sh" \
       "${HOME}/.claude/scripts/docs-core.sh" \
@@ -700,12 +696,12 @@ sdx_source_docs_core_from_layout() {
       _sdx_docs_core_source_if_needed "$bootstrap_used"
     fi
   elif ! declare -f abs_path >/dev/null 2>&1; then
-    printf '错误: 未找到中央库 %s，且未安装 Agent scripts（~/.cursor/scripts/docs-core.sh）。\n' \
+    printf '错误: 未找到中央库 %s，且未安装 Agent scripts（~/.agents/scripts/docs-core.sh）。\n' \
       "${link_config_dir}/../agent/scripts/docs-core.sh" >&2
     return 1
   fi
 
-  local repo_root cfg _layout_ar _layout_ads line v
+  local repo_root cfg _layout_ar _layout_ads_ignored line
   cfg=''
   if declare -f docsconfig_find_path >/dev/null 2>&1; then
     cfg="$(docsconfig_find_path 2>/dev/null || true)"
@@ -723,26 +719,17 @@ sdx_source_docs_core_from_layout() {
   fi
 
   _layout_ar=''
-  _layout_ads=''
+  _layout_ads_ignored=''
   if declare -f docsconfig_read_into >/dev/null 2>&1; then
     local _cfg_dr _cfg_rr _cfg_dd
-    docsconfig_read_into "$cfg" _cfg_dr _cfg_rr _cfg_dd _layout_ar _layout_ads || return 1
+    docsconfig_read_into "$cfg" _cfg_dr _cfg_rr _cfg_dd _layout_ar _layout_ads_ignored || return 1
   else
-    local v
     while IFS= read -r line || [[ -n "$line" ]]; do
       [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
       case "$line" in
         AGENT_ROOT=*)
           _layout_ar="${line#*=}"
           _layout_ar="${_layout_ar%$'\r'}"
-          ;;
-        AGENT_DIRS=*)
-          v="${line#*=}"
-          v="${v%$'\r'}"
-          if [[ ${#v} -ge 2 && "${v:0:1}" == '"' && "${v: -1}" == '"' ]]; then
-            v="${v:1:${#v}-2}"
-          fi
-          _layout_ads="$v"
           ;;
       esac
     done <"$cfg"
@@ -758,21 +745,16 @@ sdx_source_docs_core_from_layout() {
     fi
   fi
 
-  local d d_base
-  for d in $_layout_ads; do
-    [[ -z "$d" ]] && continue
-    d_base="$d"
-    if [[ -n "$ar_base" && "$d_base" != /* && "$d_base" != "~"* ]]; then
-      d_base="${ar_base}/${d_base}"
-    fi
-    resolved_core="$(abs_path "$d_base")/scripts/docs-core.sh"
+  # 兜底：仅再试 ~/.agents
+  if [[ -n "${HOME:-}" ]]; then
+    resolved_core="$(abs_path "${HOME}/.agents")/scripts/docs-core.sh"
     if [[ -f "$resolved_core" ]]; then
       _sdx_docs_core_source_if_needed "$resolved_core" "$bootstrap_used"
       return 0
     fi
-  done
+  fi
 
-  printf '错误: .docsconfig 已存在（%s），但 AGENT_ROOT/AGENT_DIRS 下均未找到 scripts/docs-core.sh。请执行 agent-install.sh --scope=sh 或等价安装。\n' "$cfg" >&2
+  printf '错误: .docsconfig 已存在（%s），但 AGENT_ROOT 与 ~/.agents 下均未找到 scripts/docs-core.sh。请执行 agent-install.sh --scope=sh 或等价安装。\n' "$cfg" >&2
   return 1
 }
 

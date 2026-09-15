@@ -47,11 +47,12 @@ validate_bootstrap_docsconfig() {
   KNOWLEDGE_TYPE=""
   DOCSCONFIG_PATH="$cfg_path"
   CONFIG_OWNER_ROOT="$config_owner_root"
-  docsconfig_read_into "$cfg_path" DOC_ROOT REPO_ROOT DOC_DIR AGENT_ROOT AGENT_DIRS KNOWLEDGE_TYPE \
+  docsconfig_read_into "$cfg_path" DOC_ROOT REPO_ROOT DOC_DIR AGENT_ROOT _SDX_UNUSED_ADS KNOWLEDGE_TYPE \
     || {
       config_bootstrap_fail "[config] 解析 .docsconfig 失败。"
       return 1
     }
+  unset _SDX_UNUSED_ADS
 
   if [[ -z "${DOC_ROOT:-}" || -z "${REPO_ROOT:-}" || -z "${DOC_DIR:-}" ]]; then
     config_bootstrap_fail "[config] .docsconfig 缺少必需的 DOC_ROOT、REPO_ROOT 或 DOC_DIR。"
