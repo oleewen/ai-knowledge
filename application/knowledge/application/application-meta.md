@@ -12,15 +12,15 @@ title: 应用视角元数据（application/knowledge/application）
 | meta_id | `DIR-KNOWLEDGE-APPLICATION` |
 | 视角 | application |
 | 层级范围 | application |
-| 说明 | 实现版图；公司级 SYS ∈  首次定义，系统层自 APP 起首次定义，本层重点登记 API 与应用实现映射（示例含 SYS/APP/MS/API）。 |
+| 说明 | 实现版图；SYS/APP/MS 系统首次定义；本层 SSOT 为 **API**，上游可留 reference / 纯 ID。 |
 | entities_shape | 实体 `{ID}.md`（OKF）；索引见 KNOWLEDGE_INDEX §3 |
 
 ## 2. 层级链
 
 | 链序 | 层级代码 | 说明 |
 | --- | --- | --- |
-| 1 | SYS | 系统（公司层首次定义） |
-| 2 | APP | 应用（代码仓库/部署单元，系统层首次定义） |
+| 1 | SYS | 系统（系统层首次定义；本层可为 reference） |
+| 2 | APP | 应用（系统层首次定义） |
 | 3 | MS | 对外入口宿主类聚类（系统层首次定义） |
 | 4 | API | 接口端点（HTTP/Dubbo/MQ/Job，应用层首次定义） |
 
@@ -28,7 +28,7 @@ title: 应用视角元数据（application/knowledge/application）
 
 | order | key | code | id_pattern | parent |
 | --- | --- | --- | --- | --- |
-| 1 | sys | SYS | `SYS-{NAME}` | — |
+| 1 | sys | SYS | `SYS-{NAME}` | SLN（公司） |
 | 2 | app | APP | `APP-{NAME}` | SYS |
 | 3 | ms | MS | `MS-{NNN}` 或 `MS-{NAME}` | APP |
 | 4 | api | API | `API-{NNN}` 或 `API-{NAME}-{NNN}` | MS |
@@ -54,7 +54,7 @@ title: 应用视角元数据（application/knowledge/application）
 
 | 实体 | system 路径 | application 路径 | 说明 |
 | --- | --- | --- | --- |
-| SYS-EXAMPLE | （不落盘；纯 ID → 公司） | （不落盘） | company SSOT |
+| SYS-EXAMPLE | `SYS-EXAMPLE.md` | （不落盘；纯 ID → 系统） | system SSOT |
 | APP-EXAMPLE | `APP-EXAMPLE/` | （不落盘；纯 ID → 系统） | system SSOT |
 | MS-EXAMPLE | `APP-EXAMPLE/MS-EXAMPLE/` | （不落 MS 实体；可宿主 API） | system SSOT |
 | API-EXAMPLE-001 | （system 不登记） | `MS-EXAMPLE/API-*.md` | API 仅 application SSOT |
@@ -76,7 +76,6 @@ title: 应用视角元数据（application/knowledge/application）
 | --- | --- |
 | [README.md](README.md) | 人类可读说明 |
 | [index.md](../index.md) | §3 应用视角 + 五视角实例索引（扫描生成） |
-| SYS-* | 公司层 SSOT（reference） |
-| APP-*, MS-* | 系统层 SSOT（reference） |
+| SYS-* / APP-* / MS-* | 系统层 SSOT（reference / 纯 ID） |
 
 **索引**：`readme_index_table: true`；变更 ID 时同步 README、index.md、manifest/OpenAPI（按需）。

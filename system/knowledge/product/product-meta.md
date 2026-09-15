@@ -4,7 +4,7 @@ title: 产品视角元数据（system/knowledge/product）
 ---
 # 产品视角元数据（system/knowledge/product）
 
-系统级产品能力版图（PD→PM→FT→FR→UC/BR · BP）视角元数据 SSOT。实例索引：[index.md](../index.md)。
+系统级产品服务版图（PD→PM→FT→FR→UC/BR · BP）视角元数据 SSOT。实例索引：[index.md](../index.md)。
 
 ---
 

@@ -3,7 +3,7 @@ type: Perspective Meta
 title: 产品视角元数据（application/knowledge/product）
 ---
 
-应用侧产品版图（PL→PD→PM→FT→FR→UC/BR）实体登记与交互映射元数据。实例索引 [index.md](../index.md)（§2，扫描生成；实体 `{ID}.md` = SSOT）。
+应用侧产品版图（PL 公司；PD 系统；本层映射 PM→…）实体登记与交互映射元数据。实例索引 [index.md](../index.md)（§2，扫描生成；实体 `{ID}.md` = SSOT）。
 
 ## 1. 概览
 
@@ -20,7 +20,7 @@ title: 产品视角元数据（application/knowledge/product）
 | 链序 | 层级代码 | 说明 |
 | --- | --- | --- |
 | 1 | PL | 产品线（公司层；本层不落盘） |
-| 2 | PD | 产品能力（系统层首次定义；本层不落盘） |
+| 2 | PD | 产品服务（系统层首次定义；本层不落盘） |
 | 3 | PM | 产品模块（系统层首次定义） |
 | 4 | FT | 功能点（系统层首次定义，应用层承接 API / 验收映射） |
 | 5 | FR | 功能需求（系统层首次定义，应用层承接验收与接口映射） |
@@ -59,7 +59,7 @@ title: 产品视角元数据（application/knowledge/product）
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| PM.parent_id | 系统 PD.full_id | 模块归属产品能力 |
+| PM.parent_id | 系统 PD.full_id | 模块归属产品服务 |
 | PM.depends_pm_ids | PM.full_id | 模块依赖其它模块 |
 | PM.relies_on_context_ids | BC.full_id | 模块依赖限界上下文 |
 | FT.invokes_api_ids | API.full_id | 功能调用 API |
@@ -79,7 +79,8 @@ title: 产品视角元数据（application/knowledge/product）
 | --- | --- |
 | [README.md](README.md) | 人类可读说明 |
 | [index.md](../index.md) | §2 产品视角 + 五视角实例索引（扫描生成） |
-| 公司 PD-* | 产品 SSOT（本层不落盘） |
+| 系统 PD-* | 产品服务 SSOT（本层不落盘） |
+| 公司 PL-* / SLN-* | 产品线 / 解决方案（本层不落盘） |
 | PM-*, FT-*, FR-*, UC-*, BR-* | 系统层 SSOT（reference / 本层映射） |
 
 **索引**：`readme_index_table: true`；变更 ID 时同步 README、index.md（按需）。

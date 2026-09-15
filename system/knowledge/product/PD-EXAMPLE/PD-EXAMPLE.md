@@ -26,7 +26,7 @@ maps_to_sys_id: SYS-EXAMPLE
 ## 详细说明
 
 - definition_scope: local
-- 4A：PD=产品能力；与 BA 首层 BSD、AA SYS 原子对齐
+- 5A：PD∈PA；与 BA 首层 BSD、AA SYS 原子对齐
 
 ## 依据与证据
 

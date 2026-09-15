@@ -214,11 +214,11 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 - 提取自 README.md 产品概述、SYS-* 系统定义（公司层）
 - **必须字段**：`full_id`（如 `PL-BILLING-APPEAL`）、`description`、`target_users`（目标用户角色列表）
 
-#### PD（产品 / 解决方案层级）
+#### PD（产品服务层级）
 
-- 提取自产品架构、解决方案边界；`parent_id` 所属 PL（公司层 SSOT）
-- **必须字段**：`full_id`（如 `PD-BILLING-APPEAL`）、`parent_id`（所属 PL）
-- 系统/应用不落 PD 文件；`PM.parent_id` 引用公司 `PD-*`（有 parent 则 HTTP，否则纯 ID）
+- 提取自产品架构、解决方案边界；`parent_id` 所属 PL（公司层 SSOT）；**PD 系统层首次定义**
+- **必须字段**：`full_id`（如 `PD-BILLING-APPEAL`）、`parent_id`（所属 PL）、`maps_to_sys_id`
+- 公司/应用不落 PD 文件；`PM.parent_id` 引用系统 `PD-*`（有 parent 则 HTTP，否则纯 ID）
 
 #### PM（产品模块层级）
 
@@ -239,7 +239,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 ### 输出结构
 
-产品视角公司层 PL/PD、系统层起 PM/FT/UC 各一 `{ID}.md`；`PL→PD→PM→FT→UC` 通过 frontmatter `parent_id` 关联。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)。
+产品视角：公司层 PL；系统层 PD/PM/FT/UC 各一 `{ID}.md`；`PL→PD→PM→FT→UC` 通过 frontmatter `parent_id` 关联（跨层纯 ID 或 HTTP）。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)。
 
 ---
 

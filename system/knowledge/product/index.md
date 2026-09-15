@@ -24,4 +24,4 @@
 
 - 上一级索引：[index.md](../index.md)
 - 上一级说明：[README.md](../README.md)
-- 上游产品 SSOT：公司层 `PD-*`（本层不落盘）
+- 上游：公司 `PL-*`；本层 `PD-*` SSOT

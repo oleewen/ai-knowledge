@@ -20,7 +20,7 @@ maps_to_pd_id: PD-EXAMPLE
 
 ## 跨视角
 
-- 对标产品能力：PD-EXAMPLE（再经 PD→SYS）
+- 对标产品服务：PD-EXAMPLE（再经 PD→SYS）
 
 ## 详细说明
 

@@ -233,9 +233,9 @@
         "id": "001",
         "full_id": "PD-BILLING-APPEAL",
         "parent_id": "PL-BILLING-APPEAL",
-        "alias": "BillingAppealSolution",
-        "name": "计费申诉解决方案",
-        "description": "计费申诉产品线下的可交付解决方案",
+        "alias": "BillingAppealProductService",
+        "name": "计费申诉产品服务",
+        "description": "计费申诉产品线下的产品服务（系统层 PD）",
         "evidence_chain": [
           { "source": "README.md §产品架构", "confidence": "high", "type": "document" }
         ],
