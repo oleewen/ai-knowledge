@@ -2,25 +2,21 @@
 
 > **按需启用**：目标工程采用 DDD/六边形时使用；**非本仓（Markdown/YAML 知识库）默认约束**。
 
-> DDD六边形架构规范，详细定义各模块职责和代码组织
+**结论**：八模块固定分层；依赖只向内（boot/service → application → domain ← infrastructure；api/common 为契约与共享）。按聚合根组织代码；每层只暴露本层对象。
 
-## 架构概述
-
-### DDD六边形架构
+## 模块总览
 
 ```text
-{project-name}/                          # 根目录
-├── {project-name}-api/                  # API接口层 (用户接口层)
-├── {project-name}-service/              # 服务适配层 (用户接口层)
-├── {project-name}-application/          # 应用服务层 (应用层)
-├── {project-name}-domain/               # 领域服务层 (领域层)
-├── {project-name}-infrastructure/       # 基础设施层 (基础设施层)
-├── {project-name}-common/               # 共享模块
-├── {project-name}-client/               # 富客户端
-└── {project-name}-boot/                 # 应用启动模块
+{project-name}/
+├── {project-name}-api/             # 用户接口层 · 契约
+├── {project-name}-service/         # 用户接口层 · 适配
+├── {project-name}-application/     # 应用层
+├── {project-name}-domain/          # 领域层
+├── {project-name}-infrastructure/  # 基础设施层
+├── {project-name}-common/          # 共享
+├── {project-name}-client/          # 富客户端
+└── {project-name}-boot/            # 启动
 ```
-
-### 模块依赖关系
 
 ```mermaid
 graph TD
@@ -34,343 +30,163 @@ graph TD
     C ---> F
 ```
 
-## 分层架构规范
+包根模板：`com.{company}.{business}.{businessdomain}.{context}`（common 无 `{context}`，落在 `...common`）。
 
-### 1. 用户接口模块（api层）
+## 分层规范
 
-#### API层职责定位
+每层格式：**职责 / 边界 → 目录 → 命名 → 约束**。
 
-- **对应领域分层**: 用户接口层的接口定义
-- **核心职责**: 定义服务接口、公共常量、通用定义
-- **边界**: 定义服务契约，不包含任何实现
+### 1. api（用户接口 · 契约）
 
-#### API层代码结构
+| 项 | 内容 |
+| --- | --- |
+| 职责 | 服务接口、公共常量、通用定义 |
+| 边界 | 只定契约，无实现 |
+| 命名 | `{Aggregate}Service`；`{Aggregate}{Action}Request/Response`；`{Aggregate}{Entity}DTO` |
+| 包 | `...{context}.api` |
 
 ```text
 {project-name}-api/
-├── src/main/java/com/{company}/{business}/{businessdomain}/
-│   └── {context}/api/
-│       ├── request/     # 请求参数对象
-│       ├── response/    # 响应结果对象
-│       ├── dto/         # 数据传输对象
-│       └── {Aggregate}Service.java  # RPC服务接口
-└── pom.xml
+└── .../{context}/api/
+    ├── request/ | response/ | dto/
+    └── {Aggregate}Service.java
 ```
 
-#### API层命名规范
+**约束**：禁止直接暴露领域对象；接口须完整 JavaDoc；POJO 可用 `@Data`；参数用 Bean Validation。
 
-- **服务接口**: `{Aggregate}Service`
-- **请求对象**: `{Aggregate}{Action}Request`
-- **响应对象**: `{Aggregate}{Action}Response`
-- **DTO对象**: `{Aggregate}{Entity}DTO`
-- **包路径**: `com.{company}.{business}.{businessdomain}.{context}.api`
+### 2. service（用户接口 · 适配）
 
-#### API层约束规则
-
-- 禁止直接暴露领域对象
-- 所有接口方法必须有完整的JavaDoc
-- 使用`@Data`注解简化POJO
-- 参数验证使用Bean Validation注解
-
-### 2. 服务适配模块（service层）
-
-#### service层职责定位
-
-- **对应领域分层**: 用户接口层的适配器实现
-- **核心职责**: 输入输出转换、全局异常处理、状态码封装
-- **边界**: 接收外部请求，转换为内部命令
-
-#### service层代码结构
+| 项 | 内容 |
+| --- | --- |
+| 职责 | I/O 转换、全局异常、状态码封装 |
+| 边界 | 外请求 → 内部命令；不承载核心业务规则 |
+| 命名 | RPC `{Aggregate}Provider`；HTTP `{Aggregate}Controller`；`{Aggregate}ProviderFactory` |
+| 包 | `...{context}`（provider/mq/job/factory/config） |
 
 ```text
 {project-name}-service/
-├── src/main/java/com/{company}/{business}/{businessdomain}/
-│   └── {context}/
-│       ├── provider/
-│       │   ├── rpc/
-│       │   │   └── {Aggregate}Provider.java  # RPC实现
-│       │   └── web/
-│       │       ├── controller/
-│       │       │   └── {Aggregate}Controller.java  # HTTP控制器
-│       │       └── filter/  # 过滤器
-│       ├── mq/
-│       │   ├── consumer/  # 消息消费者
-│       │   └── listener/  # 事件监听器
-│       ├── job/
-│       │   ├── task/      # 定时任务
-│       │   └── handler/   # 任务处理器
-│       ├── factory/
-│       │   └── {Aggregate}ProviderFactory.java  # 转换工厂
-│       └── config/        # 配置类
-└── pom.xml
+└── .../{context}/
+    ├── provider/rpc|{Aggregate}Provider.java
+    ├── provider/web/controller|{Aggregate}Controller.java · filter/
+    ├── mq/consumer|listener · job/task|handler
+    ├── factory|{Aggregate}ProviderFactory.java
+    └── config/
 ```
 
-#### service层命名规范
+**转换**：MapStruct；逻辑集中 Factory；`Request→Command`，`Result→Response`。
 
-- **实现类**: `{Aggregate}Provider` (RPC) / `{Aggregate}Controller` (HTTP)
-- **工厂类**: `{Aggregate}ProviderFactory`
-- **包路径**: `com.{company}.{business}.{businessdomain}.{context}`
+### 3. application（应用层）
 
-#### 转换规范
-
-- 使用MapStruct进行对象转换
-- 转换逻辑统一放在Factory类中
-- 输入: `Request` → `Command`
-- 输出: `Result` → `Response`
-
-### 3. 应用服务模块（application层）
-
-#### application层职责定位
-
-- **对应领域分层**: 应用服务层
-- **核心职责**: 用例编排、事务边界、流程控制
-- **边界**: 协调领域对象完成业务用例
-
-#### application层代码结构
+| 项 | 内容 |
+| --- | --- |
+| 职责 | 用例编排、事务边界、流程控制 |
+| 边界 | 协调领域对象完成用例；不实现领域规则细节 |
+| 命名 | `{Aggregate}ApplicationService`；`{Aggregate}{Action}Command`；`{Aggregate}{Query}Query`；`{Aggregate}{Action}Result`；`{Aggregate}CommandFactory` |
+| 包 | `...{context}.application` |
 
 ```text
 {project-name}-application/
-├── src/main/java/com/{company}/{business}/{businessdomain}/
-│   └── {context}/application/
-│       ├── service/
-│       │   └── {Aggregate}ApplicationService.java  # 应用服务
-│       ├── action/           # 业务动作
-│       ├── command/          # 命令对象
-│       ├── query/            # 查询对象
-│       ├── result/           # 结果对象
-│       └── factory/
-│           └── {Aggregate}CommandFactory.java  # 命令工厂
-└── pom.xml
+└── .../{context}/application/
+    ├── service|{Aggregate}ApplicationService.java
+    ├── action/ · command/ · query/ · result/
+    └── factory|{Aggregate}CommandFactory.java
 ```
 
-#### application层命名规范
+**约束**：只收 Command/Query、返回 Result；事务注解控边界；不直接改领域对象内部状态。
 
-- **应用服务**: `{Aggregate}ApplicationService`
-- **命令对象**: `{Aggregate}{Action}Command`
-- **查询对象**: `{Aggregate}{Query}Query`
-- **结果对象**: `{Aggregate}{Action}Result`
-- **包路径**: `com.{company}.{business}.{businessdomain}.{context}.application`
+### 4. domain（领域层）
 
-#### application层约束规则
-
-- 应用服务只接收Command/Query对象
-- 应用服务返回Result对象
-- 使用事务注解控制事务边界
-- 不直接操作领域对象的内部状态
-
-### 4. 领域服务模块（domain层）
-
-#### domain层职责定位
-
-- **对应领域分层**: 领域服务层
-- **核心职责**: 核心业务逻辑、领域模型、业务规则
-- **边界**: 包含所有业务逻辑，不依赖任何技术细节
-
-#### domain层代码结构
+| 项 | 内容 |
+| --- | --- |
+| 职责 | 核心业务逻辑、领域模型、业务规则 |
+| 边界 | 含全部业务逻辑；不依赖技术细节 |
+| 命名 | 聚合 `{Aggregate}`；实体 `{Entity}`；值对象 `{ValueObject}`；`{Aggregate}DomainService` / `QueryFacade` / `Repository` |
+| 包 | `...{context}.domain` |
 
 ```text
 {project-name}-domain/
-├── src/main/java/com/{company}/{business}/{businessdomain}/
-│   └── {context}/domain/
-│       ├── model/        # 领域模型
-│       │   ├── {Aggregate}.java      # 聚合根
-│       │   ├── {Entity}.java         # 实体
-│       │   └── {ValueObject}.java    # 值对象
-│       ├── service/      # 领域服务
-│       │   └── {Aggregate}DomainService.java
-│       ├── facade/       # 查询门面
-│       │   └── {Aggregate}QueryFacade.java
-│       ├── repository/   # 仓储接口
-│       │   └── {Aggregate}Repository.java
-│       ├── event/        # 领域事件
-│       └── specification/ # 规格模式
-└── pom.xml
+└── .../{context}/domain/
+    ├── model|{Aggregate}|{Entity}|{ValueObject}
+    ├── service|{Aggregate}DomainService.java
+    ├── facade|{Aggregate}QueryFacade.java
+    ├── repository|{Aggregate}Repository.java
+    ├── event/ · specification/
 ```
 
-#### domain层命名规范
+**模型要点**：聚合根管生命周期；实体有唯一标识；值对象无标识靠属性；领域服务跨聚合；仓储接口只定持久化契约。
 
-- **聚合根**: `{Aggregate}`
-- **实体**: `{Entity}`
-- **值对象**: `{ValueObject}`
-- **领域服务**: `{Aggregate}DomainService`
-- **查询门面**: `{Aggregate}QueryFacade`
-- **仓储接口**: `{Aggregate}Repository`
-- **包路径**: `com.{company}.{business}.{businessdomain}.{context}.domain`
+### 5. infrastructure（基础设施层）
 
-#### 领域模型规范
-
-- **聚合根**: 管理聚合内所有对象的生命周期
-- **实体**: 具有唯一标识的领域对象
-- **值对象**: 无标识，通过属性值区分
-- **领域服务**: 处理跨聚合的业务逻辑
-- **仓储接口**: 定义聚合持久化契约
-
-### 5. 基础设施模块（infrastructure层）
-
-#### infrastructure层职责定位
-
-- **对应领域分层**: 基础设施层
-- **核心职责**: 技术实现、持久化、外部系统集成
-- **边界**: 实现领域层定义的所有技术接口
-
-#### infrastructure层代码结构
+| 项 | 内容 |
+| --- | --- |
+| 职责 | 技术实现、持久化、外部集成 |
+| 边界 | 实现领域层定义的技术接口 |
+| 命名 | `{Aggregate}Dao` / `Entity` / `Mapper` / `EntityFactory` |
+| 包 | `...{context}.infrastructure` |
 
 ```text
 {project-name}-infrastructure/
-├── src/main/java/com/{company}/{business}/{businessdomain}/
-│   └── {context}/infrastructure/
-│       ├── dao/          # 数据访问对象
-│       │   └── {Aggregate}Dao.java
-│       ├── entity/       # 持久化实体
-│       │   └── {Aggregate}Entity.java
-│       ├── mapper/       # MyBatis Mapper
-│       │   └── {Aggregate}Mapper.java
-│       ├── factory/      # 实体工厂
-│       │   └── {Aggregate}EntityFactory.java
-│       ├── config/       # 配置类
-│       └── message/      # 消息处理
-└── pom.xml
+└── .../{context}/infrastructure/
+    ├── dao/ · entity/ · mapper/ · factory/ · config/ · message/
 ```
 
-#### infrastructure层命名规范
+**技术**：MyBatis + tk.mybatis；实体可用 JPA 注解映表；工厂 MapStruct；事务用 Spring `@Transactional`。
 
-- **DAO实现**: `{Aggregate}Dao`
-- **实体类**: `{Aggregate}Entity`
-- **Mapper接口**: `{Aggregate}Mapper`
-- **工厂类**: `{Aggregate}EntityFactory`
-- **包路径**: `com.{company}.{business}.{businessdomain}.{context}.infrastructure`
+### 6. common（共享）
 
-#### 技术实现规范
+| 项 | 内容 |
+| --- | --- |
+| 职责 | 常量、枚举、工具、异常 |
+| 边界 | 无业务逻辑，只通用能力 |
+| 命名 | `{Business}Constants` / `Status|Type`；`{Utility}Utils`；`{Business}Exception` |
+| 包 | `...common`（consts/enums/utils/exception） |
 
-- 使用MyBatis + tk.mybatis访问数据
-- 实体类使用JPA注解映射数据库表
-- 工厂类使用MapStruct进行对象转换
-- 事务控制使用Spring的`@Transactional`
+### 7. boot（启动）
 
-### 6. 共享模块（common层）
+| 项 | 内容 |
+| --- | --- |
+| 职责 | Spring Boot 入口与环境配置 |
+| 边界 | 只启动，无业务逻辑 |
+| 命名 | `Application`；包 `...boot` |
+| 配置 | `application.yml` + `application-{dev|prod|test}.yml`；`spring.profiles.active` |
 
-#### common层职责定位
+### 8. client（富客户端）
 
-- **共享组件**: 被多个模块依赖的通用代码
-- **核心职责**: 常量定义、枚举类型、工具类、异常定义
-- **边界**: 不包含业务逻辑，只提供通用能力
+依赖 `api`；本规范不另定目录骨架（与 api 契约对齐即可）。
 
-#### common层代码结构
+## 按聚合组织（推荐）
 
-```text
-{project-name}-common/
-├── src/main/java/com/{company}/{business}/{businessdomain}/common/
-│   ├── consts/     # 常量定义
-│   ├── enums/      # 枚举类型
-│   ├── utils/      # 工具类
-│   └── exception/  # 异常定义
-└── pom.xml
-```
-
-#### common层命名规范
-
-- **常量类**: `{Business}Constants`
-- **枚举类**: `{Business}Status` / `{Business}Type`
-- **工具类**: `{Utility}Utils`
-- **异常类**: `{Business}Exception`
-- **包路径**: `com.{company}.{business}.{businessdomain}.common`
-
-### 7. 应用启动模块（boot层）
-
-#### boot层职责定位
-
-- **应用启动**: Spring Boot应用的启动入口
-- **配置管理**: 环境配置、启动参数
-- **边界**: 只负责启动应用，不包含业务逻辑
-
-#### boot层代码结构
+同上下文内按聚合根切目录，跨层镜像同名聚合：
 
 ```text
-{project-name}-boot/
-├── src/main/java/com/{company}/{business}/{businessdomain}/
-│   └── boot/
-│       └── Application.java  # 启动类
-├── src/main/resources/
-│   ├── application.yml       # 主配置文件
-│   ├── application-dev.yml   # 开发环境配置
-│   ├── application-prod.yml  # 生产环境配置
-│   └── application-test.yml  # 测试环境配置
-└── pom.xml
-```
-
-#### boot层命名规范
-
-- **启动类**: `Application`
-- **包路径**: `com.{company}.{business}.{businessdomain}.boot`
-
-## 包结构规范
-
-### 通用包结构模板
-
-```text
-com.{company}.{business}.{businessdomain}.{subdomain}.{context}
-├── {layer}/
-│   ├── {submodule}/
-│   │   ├── {Component}.java
-│   │   └── {Component}Factory.java
-│   └── ...
-```
-
-## 代码组织最佳实践
-
-### 1. 领域模型组织
-
-```text
-// 按聚合根组织代码
 order/
-├── api/
-├── application/
+├── api/ · application/
 ├── domain/
-│   ├── model/
-│   │   ├── Order.java          # 聚合根
-│   │   ├── OrderItem.java      # 实体
-│   │   ├── OrderId.java        # 值对象
-│   │   └── OrderStatus.java    # 枚举
-│   ├── service/
-│   │   └── OrderDomainService.java
-│   ├── repository/
-│   │   └── OrderRepository.java
+│   ├── model/Order.java · OrderItem.java · OrderId.java · OrderStatus.java
+│   ├── service/OrderDomainService.java
+│   ├── repository/OrderRepository.java
 │   └── event/
 └── infrastructure/
 ```
 
-### 2. 配置管理规范
+## 质量门禁
 
-```yaml
-# application.yml
-spring:
-  profiles:
-    active: dev
+**结构**
 
-# application-dev.yml 开发环境
-# application-prod.yml 生产环境
-# application-test.yml 测试环境
-```
-
-## 质量门禁检查
-
-### 1. 代码结构检查
-
-- [ ] 包结构符合DDD分层
-- [ ] 命名规范一致性
-- [ ] 依赖方向正确性
+- [ ] 包结构符合 DDD 分层
+- [ ] 命名一致
+- [ ] 依赖方向正确（不向外/跨层违规）
 - [ ] 接口与实现分离
 
-### 2. 模块边界检查
+**边界**
 
-- [ ] API层不直接依赖领域对象
+- [ ] API 不直接依赖领域对象
 - [ ] 领域层不依赖技术框架
-- [ ] 基础设施层实现领域接口
-- [ ] 应用层协调但不实现业务逻辑
+- [ ] 基础设施实现领域接口
+- [ ] 应用层协调但不实现领域业务逻辑
 
-### 3. 代码质量检查
+**质量**
 
-- [ ] 每个类有明确职责
-- [ ] 方法复杂度不超过10
-- [ ] 包内聚性高
-- [ ] 模块间耦合度低
+- [ ] 每类职责单一
+- [ ] 方法圈复杂度 ≤ 10
+- [ ] 包内聚高、模块耦合低

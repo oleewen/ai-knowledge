@@ -1,9 +1,11 @@
 # AI AGENTS 开发约定
 
+> **结论**：本文是 `agent/rules/` 总入口；产出走参数向导 + `澄清 → 生成 → 烤干`；闸门见 [#artifact-gates](#artifact-gates)。  
+> **范围**：本仓 Markdown/YAML 知识库 + Bash 初始化；勿套无关业务代码约束。
+
 ## 适用范围
 
-本文件是 `agent/rules/` 的规则总入口，适用于本仓库的文档工程与知识库治理工作。  
-本仓库核心形态为 **Markdown/YAML 知识库 + Bash 初始化脚本**，不应套用与当前仓库无关的业务代码约束。
+适用于本仓库文档工程与知识库治理。
 
 ---
 
@@ -26,14 +28,14 @@
 
 ### 1) 文件引用强校验
 
-- `agent/` 内引用：相对当前文件。
-- `agent/` 外引用：仓库根 **`REPO_ROOT`** 相对路径（与 `.docsconfig` 的 `REPO_ROOT` 语义一致，见 [agent/skills/docs-install/SKILL.md](../skills/docs-install/SKILL.md)）。
+- `agent/` 内：相对当前文件。
+- `agent/` 外：仓库根 **`REPO_ROOT`** 相对路径（与 `.docsconfig` 的 `REPO_ROOT` 一致，见 [docs-install/SKILL.md](../skills/docs-install/SKILL.md)）。
 - 自检：`bash agent/scripts/validate-agent-md-links.sh`。
 
 ### 2) Skills 与脚本边界
 
-- `skills/` 中 `SKILL.md` 是工作流定义，不是可执行脚本。
-- Slash 清单以 [../skills/README.md](../skills/README.md) 为准，本文件不重复命令详情。
+- `skills/` 中 `SKILL.md` = 工作流定义，非可执行脚本。
+- Slash 清单以 [../skills/README.md](../skills/README.md) 为准；本文不重复命令详情。
 
 ### 3) Git：提交前确认与 SSH 优先
 
@@ -53,10 +55,10 @@
 
 ### 5) 文档分类矩阵（`title` / `H1` / `MD025`）
 
-新增或改造 Markdown 前**先判类**，再决定 `frontmatter title`、可见 `# H1` 与 `MD025`：
+新增或改造 Markdown 前**先判类**，再定 `frontmatter title`、可见 `# H1` 与 `MD025`：
 
 - **A** 人类入口 · **B** 机器规约 · **C** 元数据/混合。
-- 细则与豁免规则见 [document/document-guidelines.md](document/document-guidelines.md)（本文不复述全文）。
+- 细则与豁免见 [document/document-guidelines.md](document/document-guidelines.md)（本文不复述）。
 
 ---
 
@@ -64,30 +66,26 @@
 
 ### artifact-gates
 
-### 共通模式
+受管终稿或等价写入（含工具调用）前：
 
-对受管终稿或等价写入（含工具调用）前：
-
-1. 默认走**参数向导**，先收口关键参数、目标范围、输出路径与批量策略。
-2. 一次只处理一个**当前段/当前单元**（`sdx-*` 以章节/设计块为主；`docs-*` 以目标块/路径组/实体批次/归档块等为主）。
-3. **主线口令** `澄清 → 生成 → 烤干`：
-   - **意图澄清**（写前）：[intent-clarify.md](../references/intent-clarify.md)；
-   - **生成 → 烤干 → 动作/重开**：[unit-cycle-protocol.md](../references/unit-cycle-protocol.md)；
-   - **烤干提问能力**：[grilling-skill.md](../references/grilling-skill.md)；
-   - **受众质检**：[audience-and-language.md](../references/audience-and-language.md)（烤干 A/B/C/E；轻流程写后 A/B）；
-   - **生成步写作原则**：[simplify-principles.md](../references/simplify-principles.md)（默认强制；用户明示可豁免）。烤干中修订后另有协议 **simplify 遍**（见 [unit-cycle-protocol.md](../references/unit-cycle-protocol.md)）。
-4. 全部 `/sdx-*` 与语义族 docs-*（含 indexing/build/agent/simplify）已绑定意图澄清；
-   `docs-okf` / `docs-link` / `docs-pull` / `docs-push` / `docs-tag` / `docs-install` / `agent-install` / `docs-upgrade` / `skill-upgrade` 维持轻流程。
-5. 烤干收敛（或合法跳过）后，由用户用 `C/M/G/F`（docs 另有 `S`）推进；
-   `C` 同符异义，靠阶段横幅区分。
-6. 语义性变更须先给结论、推荐与数字选项，确认后再改。
-7. 技能特有校验或确认书以该技能 `SKILL.md` / `gates.md` 为准。
+1. **参数向导**：收口关键参数、目标范围、输出路径与批量策略。
+2. **一次一单元**：`sdx-*` 以章节/设计块为主；`docs-*` 以目标块/路径组/实体批次/归档块等为主。
+3. **主线** `澄清 → 生成 → 烤干`：
+   - 写前澄清：[intent-clarify.md](../references/intent-clarify.md)
+   - 生成 → 烤干 → 动作/重开：[unit-cycle-protocol.md](../references/unit-cycle-protocol.md)
+   - 烤干提问：[grilling-skill.md](../references/grilling-skill.md)
+   - 受众质检：[audience-and-language.md](../references/audience-and-language.md)（烤干 A/B/C/E；轻流程写后 A/B）
+   - 生成步原则：[simplify-principles.md](../references/simplify-principles.md)（默认强制；用户明示可豁免）；烤干修订后另有 **simplify 遍**（见 unit-cycle-protocol）
+4. **绑定**：全部 `/sdx-*` 与语义族 docs-*（含 indexing/build/agent/simplify）绑意图澄清；`docs-okf` / `docs-link` / `docs-pull` / `docs-push` / `docs-tag` / `docs-install` / `agent-install` / `docs-upgrade` / `skill-upgrade` 维持轻流程。
+5. **动作**：烤干收敛（或合法跳过）后，用户以 `C/M/G/F`（docs 另有 `S`）推进；`C` 同符异义，靠阶段横幅区分。
+6. **语义变更**：先结论、推荐与数字选项，确认后再改。
+7. **技能特有**：校验或确认书以该技能 `SKILL.md` / `gates.md` 为准。
 
 完整流程见各 `agent/skills/<...>/SKILL.md`。
 
 ### 总表
 
-**推进协议短码**（全文见上文「共通模式」；无 HTML gate / 无写前 hook）：
+**推进协议短码**（全文见上文；无 HTML gate / 无写前 hook）：
 
 | 短码 | 含义 |
 | --- | --- |

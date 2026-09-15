@@ -2,71 +2,38 @@
 
 > **按需启用**：目标工程为 Maven 时使用；**非本仓默认约束**。
 
-> 基于Maven的企业级项目管理规范，涵盖依赖管理、构建配置、版本控制的最佳实践
+**结论**：多模块骨架与依赖方向以 [project-structure.md](project-structure.md) 为 SSOT；本文只管父 POM、依赖/版本、构建与质量门禁。
 
-## Maven项目结构规范
+## 与模块结构的关系
 
-### 多模块项目架构
+- 八模块目录与依赖图 → [project-structure.md](project-structure.md)
+- Maven 侧补充：仓库根保留**父 `pom.xml`**；各模块自有 `pom.xml`；版本用父 POM `dependencyManagement` / revision 统一锁定
 
-```text
-{project-name}/
-├── pom.xml (父POM)
-├── {project-name}-api/pom.xml
-├── {project-name}-service/pom.xml
-├── {project-name}-application/pom.xml
-├── {project-name}-domain/pom.xml
-├── {project-name}-infrastructure/pom.xml
-├── {project-name}-common/pom.xml
-├── {project-name}-client/pom.xml
-└── {project-name}-boot/pom.xml
-```
+> 烤干待决：原文依赖图含 `service → api`，project-structure 图未画该边。本轮**未**改 structure。
 
-### 模块依赖关系
+## 依赖管理
 
-箭头方向：**自依赖方指向被依赖方**（与 Maven 中「谁 `depends on` 谁」一致）。
+| 规则 | 要求 |
+| --- | --- |
+| 最小依赖 | 只引入必要依赖 |
+| 版本锁定 | 父 POM 统一管理 revision / BOM |
+| 版本号 | 语义化 `主.次.修订`：主=不兼容；次=兼容新功能；修订=兼容修复 |
+| 分析 | 定期 `mvn dependency:analyze` |
+| 安全 | OWASP 依赖检查；高危须清零（见门禁） |
 
-```mermaid
-flowchart TD
-    boot["{project-name}-boot"]
-    service["{project-name}-service"]
-    client["{project-name}-client"]
-    api["{project-name}-api"]
-    application["{project-name}-application"]
-    domain["{project-name}-domain"]
-    common["{project-name}-common"]
-    infrastructure["{project-name}-infrastructure"]
+## 构建
 
-    client --> api
-    service --> api --> common
-    boot --> service --> application --> domain --> common
-    boot --> infrastructure
-    infrastructure ---> domain
-  
-```
+| 手段 | 做法 |
+| --- | --- |
+| 并行 | `mvn -T 4 clean package`（线程数按机器调整） |
+| 增量 | 用好 Maven 增量编译 |
+| 缓存 | 合理配本地/远程仓库缓存与构建缓存 |
 
-## 最佳实践
+## 质量门禁
 
-### 1. 依赖管理最佳实践
-
-- **最小依赖原则**：只引入必要的依赖
-- **版本锁定**：在父POM中统一管理revision版本
-- **版本规范**：采用语义化，主版本.次版本.修订号
-  - **主版本(X.0.0)**：不向后兼容的重大变更
-  - **次版本(X.Y.0)**：向后兼容的功能增加
-  - **修订版本(X.Y.Z)**：向后兼容的bug修复
-- **依赖分析**：定期使用`mvn dependency:analyze`分析依赖
-- **安全扫描**：使用OWASP依赖检查工具
-
-### 2. 构建优化
-
-- **并行构建**：使用`mvn -T 4 clean package`并行构建
-- **增量编译**：利用Maven的增量编译特性
-- **缓存优化**：合理配置本地和远程仓库缓存
-- **构建缓存**：使用构建缓存加速重复构建
-
-### 3. 质量门禁
-
-- **编译警告**：零编译警告策略
-- **测试覆盖率**：单元测试覆盖率≥80%
-- **依赖漏洞**：零高危漏洞
-- **代码规范**：遵循Checkstyle和PMD规范
+| 项 | 标准 |
+| --- | --- |
+| 编译警告 | 零警告 |
+| 单测覆盖率 | ≥ 80% |
+| 依赖漏洞 | 零高危 |
+| 静态检查 | Checkstyle + PMD |
