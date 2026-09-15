@@ -20,17 +20,14 @@ trap cleanup EXIT
 mkdir -p "$DOCS_DIR" "$META_ROOT/application"
 git -C "$PROJECT_DIR" init -q
 
-# AGENT_DIRS 故意以 .claude 为首：须被忽略
 cat >"$PROJECT_DIR/.docsconfig" <<EOF
 DOC_ROOT=$DOCS_DIR
 REPO_ROOT=$PROJECT_DIR
 DOC_DIR=docs
-AGENT_ROOT=$PROJECT_DIR
-AGENT_DIRS=".claude .cursor"
+AGENT_ROOT=~/.agents
 KNOWLEDGE_TYPE=application
 EOF
 
-# 元库：将 scaffold 的新文件含裸 agent/；README 供注记注入
 cat >"$META_ROOT/application/README.md" <<'EOF'
 # App docs
 
@@ -43,7 +40,6 @@ cat >"$META_ROOT/application/scaffold-new.md" <<'EOF'
 Link: agent/skills/docs-upgrade
 EOF
 
-# 本库已有等值文件 + 本库独有残留 agent/ + 旧 IDE 路径
 cat >"$DOCS_DIR/README.md" <<'EOF'
 # App docs
 
@@ -57,7 +53,6 @@ Still points to agent/skills/docs-install
 Also old IDE: .claude/skills/docs-tag
 EOF
 
-# dry-run：不得改写路径
 (
   cd "$PROJECT_DIR"
   bash "$DOCS_UPGRADE_SCRIPT" --dry-run --meta-path "$META_ROOT" >"$OUT_FILE" 2>&1
@@ -69,7 +64,6 @@ assert_contains ".claude/skills/docs-tag" "$DOCS_DIR/local-only.md"
 assert_not_contains "~/.agents/skills" "$DOCS_DIR/README.md"
 [[ ! -f "$DOCS_DIR/scaffold-new.md" ]] || fail "dry-run 不应写入 scaffold-new.md"
 
-# apply-scaffold：写入新骨架 + 全树 rewrite（含本库独有与旧 IDE 段）
 (
   cd "$PROJECT_DIR"
   bash "$DOCS_UPGRADE_SCRIPT" --apply-scaffold --meta-path "$META_ROOT" >"$OUT_FILE" 2>&1
@@ -91,7 +85,6 @@ assert_contains "~/.agents/skills/docs-tag" "$DOCS_DIR/local-only.md"
 assert_not_contains "agent/skills/docs-install" "$DOCS_DIR/local-only.md"
 assert_not_contains ".claude/skills/docs-tag" "$DOCS_DIR/local-only.md"
 
-# 空骨架桶仍 rewrite：再跑一次（ADD 应为空），改回残留再验证扫全树
 printf '%s\n' '# Local again' 'agent/skills/docs-tag' '.cursor/skills/docs-link' >"$DOCS_DIR/local-only.md"
 (
   cd "$PROJECT_DIR"

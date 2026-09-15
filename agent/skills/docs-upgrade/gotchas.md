@@ -2,7 +2,7 @@
 
 - **误跑 docs-install knowledge**：会清空 DOC_DIR。升级只用 `docs-upgrade.sh` + Agent 重填（文件模式亦禁清空 install）。
 - **路径重写挂点**：仅 `--apply-scaffold` 末尾（同装机 `sdx_rewrite_docs_agent_paths` → `~/.agents/`）。结构重填 / 文件模式若再写入裸 `agent/`，本技能不强制再扫——接受缝；勿误以为整单结束必已重写。
-- **路径重写目标**：固定字面 `~/.agents/`（不读 `AGENT_DIRS`）；顺带收 `.cursor/` `.trae/` `.claude/` `.kiro/` `.codex/`。
+- **路径重写目标**：固定字面 `~/.agents/`；顺带收 `.cursor/` `.trae/` `.claude/` `.kiro/` `.codex/`。
 - **dry-run 无路径副作用**：`--dry-run` 不 rewrite、不改 README。
 - **缺 type:meta**：装机未完成或 links 被手改。硬停；用 install upsert 或 `--meta-path`，勿猜。
 - **多条 type:meta**：非法；硬停至剩一条。

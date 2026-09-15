@@ -30,7 +30,7 @@
 | 模式 | 行为 |
 | --- | --- |
 | `--dry-run` | fetch/解析 meta；打印四桶清单；不写盘、不备份、不重写 `agent/`、不改 README |
-| `--apply-scaffold` | fetch/解析；备份将动路径；写入「新增骨架」桶；收尾全树 `agent/`/IDE 段→`~/.agents/` + README 注记（空桶亦跑；不读 `AGENT_DIRS`）；不重填 md、不删本库独有 |
+| `--apply-scaffold` | fetch/解析；备份将动路径；写入「新增骨架」桶；收尾全树 `agent/`/IDE 段→`~/.agents/` + README 注记（空桶亦跑）；不重填 md、不删本库独有 |
 
 结构重填与未落位由 Skill/Agent 执行，不在脚本内自动合正文。文件模式的 scaffold / 强制重填亦由 Agent 执行。
 

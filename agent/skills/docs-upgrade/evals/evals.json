@@ -34,7 +34,7 @@
           "id": "scaffold-rewrite-agent-paths",
           "name": "scaffold 后路径重写",
           "type": "must_include",
-          "check": "须体现 --apply-scaffold 收尾将 DOC_ROOT 内 agent/ 与已知 IDE 段重写为 ~/.agents/（同 docs-install；不读 AGENT_DIRS），且 dry-run 不重写；不得改走清空 DOC_DIR 的 install。",
+          "check": "须体现 --apply-scaffold 收尾将 DOC_ROOT 内 agent/ 与已知 IDE 段重写为 ~/.agents/（同 docs-install），且 dry-run 不重写；不得改走清空 DOC_DIR 的 install。",
           "priority": "P0"
         },
         {
