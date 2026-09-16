@@ -58,14 +58,14 @@
     {
       "id": "docs-install-trigger-003",
       "category": "should-trigger",
-      "prompt": "给工程 docs 初始化 application 知识库，standalone 全量和 central 子集都要带上（层设计见 knowledge-governance；根级 CONTRIBUTING.md）。",
-      "expected_output": "docs-install knowledge 同步根级 CONTRIBUTING.md（整文件覆盖）；central 子集亦种；源无则不造。保正文重填走 docs-upgrade。",
+      "prompt": "给工程 docs 初始化 application 知识库，standalone 全量和 central 子集都要带上根级 CONTRIBUTING.md 与 DESIGN.md（语义 SSOT 仍见 knowledge-governance）。",
+      "expected_output": "docs-install knowledge 同步根级 CONTRIBUTING.md 与 DESIGN.md（整文件覆盖）；central 子集亦种；源无则不造。保正文重填走 docs-upgrade（DESIGN 为整文件覆盖特例）。",
       "assertions": [
         {
           "id": "install-design-contributing",
           "name": "种 DESIGN/CONTRIBUTING",
           "type": "must_include",
-          "check": "须体现 knowledge 同步含根级 CONTRIBUTING.md（standalone 全量与 central 子集均整文件覆盖），不得再跳过这两份。",
+          "check": "须体现 knowledge 同步含根级 CONTRIBUTING.md 与 DESIGN.md（standalone 全量与 central 子集均整文件覆盖），不得再跳过这两份。",
           "priority": "P0"
         }
       ]

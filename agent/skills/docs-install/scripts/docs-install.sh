@@ -157,7 +157,7 @@ install_application_full_to_docs() {
     rel="${rel#./}"
     [[ -z "$rel" ]] && continue
     # 仅排除 application/ 根部多版本 README（子目录 README.md 须照常同步）
-    # 根级 CONTRIBUTING.md 整文件覆盖同步（与 docs-upgrade 普通 md 互补；DESIGN 已并入 agent/knowledge/knowledge-governance.md）
+    # 根级 CONTRIBUTING.md / DESIGN.md 随源树整文件覆盖同步（DESIGN = 层设计入口模板）
     [[ "$rel" == 'README.md' || "$rel" == 'README-s.md' || "$rel" == 'README-c.md' ]] && continue
 
     src_f="$src_root/$rel"
@@ -196,7 +196,7 @@ install_application_subset_to_docs() {
   done
 
   local base
-  for base in index.md docs-meta.md manifest.md knowledge-links.yaml CONTRIBUTING.md; do
+  for base in index.md docs-meta.md manifest.md knowledge-links.yaml CONTRIBUTING.md DESIGN.md; do
     [[ -f "$src_root/$base" ]] || continue
     io_copy_file "$src_root/$base" "$dst_root/$base" || return 0
   done
