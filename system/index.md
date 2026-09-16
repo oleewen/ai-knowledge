@@ -20,7 +20,7 @@ okf_version: 0.1
 
 ### 目录文件
 
-* [knowledge-governance](../agent/knowledge/knowledge-governance.md)
+* [DESIGN.md](DESIGN.md)
 * [INDEX-GUIDE.md](INDEX-GUIDE.md)
 * [docs-meta.md](docs-meta.md)
 * [knowledge-links.yaml](knowledge-links.yaml)
@@ -28,7 +28,7 @@ okf_version: 0.1
 
 ### 阅读顺序
 
-1. [knowledge-governance](../agent/knowledge/knowledge-governance.md) — 三层设计与 SSOT  
+1. [DESIGN.md](DESIGN.md) — 本层契约与治理引用  
 2. [knowledge/README.md](knowledge/README.md) — 五视角索引入口  
 3. [knowledge/business/README.md](knowledge/business/README.md) / [knowledge/product/README.md](knowledge/product/README.md) — 业务与产品语境  
 4. [knowledge/application/README.md](knowledge/application/README.md) / [knowledge/data/README.md](knowledge/data/README.md) / [knowledge/technical/README.md](knowledge/technical/README.md) — 系统、数据与技术落地  

@@ -12,7 +12,7 @@ description: "系统层治理与导航根；knowledge/=系统级实体 SSOT；ap
 role:
   kind: "documentation_root"
   ssot_subdirectory: "knowledge/"
-  # 治理入口：agent/knowledge/README.md；三层边界：knowledge-governance.md
+  # 层设计入口：DESIGN.md；语义 SSOT：knowledge-governance.md；组件：agent/knowledge/README.md
   # 文件分型 / concept：agent/knowledge/okf-spec.md
 
 child_directories:

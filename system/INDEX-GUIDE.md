@@ -15,7 +15,7 @@ title: system INDEX-GUIDE
 
 * [README.md](README.md) — 人类入口  
 * [index.md](index.md) — OKF 目录索引  
-* [knowledge-governance](../agent/knowledge/knowledge-governance.md) — 三层设计契约  
+* [DESIGN.md](DESIGN.md) — 本层设计入口（契约短表 + 治理引用）  
 * [knowledge/README.md](knowledge/README.md) — 五视角  
 * [knowledge-links.yaml](knowledge-links.yaml) — 建联清单  
 * [changelogs/README.md](changelogs/README.md) — 变更/索引  
@@ -32,7 +32,7 @@ title: system INDEX-GUIDE
 
 ```text
 system/
-├── README.md / INDEX-GUIDE.md / index.md / docs-meta.md
+├── README.md / DESIGN.md / INDEX-GUIDE.md / index.md / docs-meta.md
 ├── knowledge-links.yaml
 ├── knowledge/ · solutions/ · analysis/ · requirements/ · adr/
 ├── application-slots/

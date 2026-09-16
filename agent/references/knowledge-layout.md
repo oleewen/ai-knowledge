@@ -12,9 +12,9 @@
 
 | 文档根 `{DOC_DIR}` | 人类入口 | 五视角知识 | overview 缓冲区 | 联邦镜像槽位 |
 | --- | --- | --- | --- | --- |
-| `application/` | [application/README.md](../../application/README.md) | [application/knowledge/](../../application/knowledge/README.md) | — | — |
-| `system/` | [system/README.md](../../system/README.md) | [system/knowledge/](../../system/knowledge/README.md) | [system/knowledge/overview/](../../system/knowledge/overview/NAME-overview.md) | `system/application-slots/application-{NAME}/` |
-| `company/` | [company/README.md](../../company/README.md) | [company/knowledge/](../../company/knowledge/README.md) | [company/knowledge/overview/](../../company/knowledge/overview/NAME-overview.md) | `company/system-slots/system-{NAME}/` |
+| `application/` | [README](../../application/README.md) · [DESIGN](../../application/DESIGN.md) | [application/knowledge/](../../application/knowledge/README.md) | — | — |
+| `system/` | [README](../../system/README.md) · [DESIGN](../../system/DESIGN.md) | [system/knowledge/](../../system/knowledge/README.md) | [system/knowledge/overview/](../../system/knowledge/overview/NAME-overview.md) | `system/application-slots/application-{NAME}/` |
+| `company/` | [README](../../company/README.md) · [DESIGN](../../company/DESIGN.md) | [company/knowledge/](../../company/knowledge/README.md) | [company/knowledge/overview/](../../company/knowledge/overview/NAME-overview.md) | `company/system-slots/system-{NAME}/` |
 
 **路径约定**：三层五视角均为 **`{DOC_DIR}/knowledge/`**（legacy `architecture/` / `ea/` 已废弃）。应用层无 overview；本层首次实体（API/TBL/MW/CMP）见 [knowledge-governance.md](../knowledge/knowledge-governance.md#各层聚焦摘要)。
 
@@ -39,7 +39,7 @@
   | application | `application-meta.md`；`SYS-*.md` 本层 SSOT（`parent_id→公司 SLN`）；`APP-*/APP-*.md`；`APP-*/MS-*/MS-*.md` |
   | data | `data-meta.md`；`MDG-*.md` 本层 SSOT；`DS-*/` 含 DS/ENT；SYS 经 `uses_mdg_ids` |
   | technical | `technical-meta.md`；`TSD-*.md` 系统 SSOT；`MW-*/` 可为 application MW reference；AA `uses_*` |
-- **公司层五视角**（`company/knowledge/{perspective}/`）：叙事 + `{perspective}-meta.md` + 公司级实体（`BU-*`/BD/CAP、`PL-*/`、**`application/SLN-*.md`**、TPL）；**无 PD/SYS/MDG**
+- **公司层五视角**（`company/knowledge/{perspective}/`）：叙事 + `{perspective}-meta.md` + 公司级实体（`BU-*`/BD/CAP、`PL-*.md`、**`application/SLN-*.md`**、TPL）；**无 PD/SYS/MDG**
 - **系统阶段目录**：
   | 目录 | 约定 |
   | --- | --- |

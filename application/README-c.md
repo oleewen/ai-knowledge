@@ -14,7 +14,7 @@ agent/knowledge（治理 / 命名）
   └──→ changelogs（变更 / 索引运维）
 ```
 
-**落地顺序**：核 [agent/knowledge](../agent/knowledge/README.md) → 补 knowledge ID（[knowledge-governance](../agent/knowledge/knowledge-governance.md)、[CONTRIBUTING.md](CONTRIBUTING.md)）→ changelogs 留痕。
+**落地顺序**：核 [DESIGN.md](DESIGN.md)（→ [knowledge-governance](../agent/knowledge/knowledge-governance.md)）→ 补 knowledge ID（[CONTRIBUTING.md](CONTRIBUTING.md)）→ changelogs 留痕。
 
 上行：`docs-pull` 入系统槽位；**docs-distill 只写 system overview**，不回写本库 knowledge。
 
@@ -22,7 +22,8 @@ agent/knowledge（治理 / 命名）
 
 | 主线 | 目录 | 内容 |
 |------|------|------|
-| 治理基线 | [agent/knowledge](../agent/knowledge/README.md) | 术语、原则、命名、ADR；三层边界 [knowledge-governance](../agent/knowledge/knowledge-governance.md) |
+| 本层设计入口 | [DESIGN.md](DESIGN.md) | 契约短表 + 治理引用；语义 SSOT → [knowledge-governance](../agent/knowledge/knowledge-governance.md) |
+| 治理基线 | [agent/knowledge](../agent/knowledge/README.md) | 术语、原则、命名、ADR |
 | 知识基线 | [knowledge](knowledge/README.md) | 五视角与实现级实体 |
 | 变更留痕 | [changelogs](changelogs/README.md) | `INDEXING-LOG`；变更溯源 git |
 

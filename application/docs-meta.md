@@ -12,7 +12,7 @@ description: "application/ 根：导航、设计、SDD 阶段与 knowledge SSOT�
 role:
   kind: "documentation_root"
   ssot_subdirectory: "knowledge/"
-  # 治理入口：agent/knowledge/README.md；三层边界：knowledge-governance.md
+  # 层设计入口：DESIGN.md；语义 SSOT：knowledge-governance.md；组件：agent/knowledge/README.md
 
 child_directories:
   knowledge:

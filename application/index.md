@@ -19,8 +19,8 @@ okf_version: 1.0
 
 ### 目录文件
 
+* [DESIGN.md](DESIGN.md)
 * [CONTRIBUTING.md](CONTRIBUTING.md)
-* [knowledge-governance](../agent/knowledge/knowledge-governance.md)
 * [INDEX-GUIDE.md](INDEX-GUIDE.md)
 * [README-c.md](README-c.md)
 * [README-s.md](README-s.md)
@@ -31,7 +31,7 @@ okf_version: 1.0
 ### 阅读顺序
 
 1. [README.md](README.md)（mode → [README-s](README-s.md) / [README-c](README-c.md)）
-2. [knowledge-governance](../agent/knowledge/knowledge-governance.md#各层聚焦摘要)
+2. [DESIGN.md](DESIGN.md) — 本层契约与治理引用
 3. [knowledge/](knowledge/README.md) → 五视角
 4. mode=s：solutions → analysis → requirements
 

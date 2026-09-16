@@ -1,6 +1,7 @@
 # 知识库治理规则
 
 > **定位**：三层知识库**语义设计** SSOT（职责、各层聚焦/首次定义、5A 边类方向、引用边界）。  
+> **层根人类入口**：[`company/DESIGN.md`](../../company/DESIGN.md) · [`system/DESIGN.md`](../../system/DESIGN.md) · [`application/DESIGN.md`](../../application/DESIGN.md)（契约短表 + 引用本文；本文仍为语义 SSOT）。  
 > **不分管**：路径 / overview / 槽位 / 联邦流水线 → [knowledge-layout.md](../references/knowledge-layout.md)；ID 语法 → [naming-conventions.md](naming-conventions.md)；缩写/词义/映射字段 → [glossary.md](glossary.md)；文件分型 → [okf-spec.md](okf-spec.md)。  
 > 组件索引与使用顺序见同目录 [README.md](README.md)。协作闸门见 [CONVENTIONS.md](../rules/CONVENTIONS.md)。
 

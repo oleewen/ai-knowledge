@@ -2,6 +2,7 @@
 
 本目录承载原 `*/constitution/` 迁移内容：术语、命名、原则与 ADR 约定。
 
+- **层根人类入口**：[company/DESIGN.md](../../company/DESIGN.md) · [system/DESIGN.md](../../system/DESIGN.md) · [application/DESIGN.md](../../application/DESIGN.md)（契约短表 + 引用；语义仍以本目录为准）
 - **三层边界**：[knowledge-governance.md](knowledge-governance.md)
 - **协作闸门**：[CONVENTIONS.md](../rules/CONVENTIONS.md)
 - **路径 / overview / 流水线**：[knowledge-layout.md](../references/knowledge-layout.md)
