@@ -7,6 +7,6 @@
 | [gates.md](gates.md) | 风险闸门、会话模板 |
 | [workflow.md](workflow.md) | 参数向导、执行环 |
 | [parameters.md](parameters.md) | 技能层 + 脚本参数 |
-| [merge-rules.md](merge-rules.md) | 结构/正文合并与未落位 |
+| [merge-rules.md](merge-rules.md) | H2至H6 元库结构重填、正文平移（封顶 H6）、未落位挂靠/追加 |
 
 装机分流：[../../docs-install/SKILL.md](../../docs-install/SKILL.md)、[../../agent-install/SKILL.md](../../agent-install/SKILL.md)。实操：[../gotchas.md](../gotchas.md)。
