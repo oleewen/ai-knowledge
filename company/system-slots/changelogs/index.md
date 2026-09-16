@@ -1,6 +1,4 @@
-# adr
-
-目录说明见 [README.md](README.md)。
+# changelogs
 
 ## 子目录
 
@@ -8,13 +6,11 @@
 
 ## 目录文件
 
-* [CONTEXT.md](CONTEXT.md)
+* [ARCHIVE-LOG.md](ARCHIVE-LOG.md)
 
 ## 阅读顺序
 
-1. [README.md](README.md)
-2. [CONTEXT.md](CONTEXT.md)
-3. `ADR-*-*.md`（按需）
+（待补充）
 
 ## 关联索引
 

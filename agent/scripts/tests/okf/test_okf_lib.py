@@ -131,7 +131,7 @@ def test_entity_relpath_company_tpl():
 def test_entity_relpath_company_pl_and_sln():
     assert (
         okf_lib.entity_relpath("product", "PL-EXAMPLE", bundle="company")
-        == "knowledge/product/PL-EXAMPLE/PL-EXAMPLE.md"
+        == "knowledge/product/PL-EXAMPLE.md"
     )
     assert (
         okf_lib.entity_relpath("application", "SLN-EXAMPLE", bundle="company")

@@ -19,4 +19,4 @@ title: 产品架构
 
 | 链序 | 层级 | ID | 名称 | 文件/目录 |
 |------|------|----|------|-----------|
-| L1 | PL | PL-EXAMPLE | 示例产品线 | [PL-EXAMPLE/PL-EXAMPLE.md](PL-EXAMPLE/PL-EXAMPLE.md) |
+| L1 | PL | PL-EXAMPLE | 示例产品线 | [PL-EXAMPLE.md](PL-EXAMPLE.md) |

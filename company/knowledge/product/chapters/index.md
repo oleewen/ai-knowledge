@@ -6,9 +6,9 @@
 
 ## 目录文件
 
-* [product-overview.md](product-overview.md)
 * [product-architecture.md](product-architecture.md)
 * [product-metrics.md](product-metrics.md)
+* [product-overview.md](product-overview.md)
 * [product-ux.md](product-ux.md)
 
 ## 阅读顺序

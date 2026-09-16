@@ -6,10 +6,10 @@
 
 ## 目录文件
 
-* [data-overview.md](data-overview.md)
 * [data-governance.md](data-governance.md)
-* [data-warehouse-lake.md](data-warehouse-lake.md)
+* [data-overview.md](data-overview.md)
 * [data-security-privacy.md](data-security-privacy.md)
+* [data-warehouse-lake.md](data-warehouse-lake.md)
 
 ## 阅读顺序
 

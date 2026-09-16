@@ -1,6 +1,6 @@
 # changelogs
 
-目录说明：[README.md](README.md)。
+目录说明见 [README.md](README.md)。
 
 ## 子目录
 

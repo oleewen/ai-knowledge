@@ -1,6 +1,6 @@
 # analysis
 
-目录说明：[README.md](README.md)。
+目录说明见 [README.md](README.md)。
 
 ## 子目录
 
@@ -14,7 +14,7 @@
 
 1. [README.md](README.md) — 职责、命名、承接边界  
 2. [ANALYSIS-EXAMPLE.md](ANALYSIS-EXAMPLE.md) — 最小示例  
-3. [../solutions/README.md](../solutions/README.md) — 上游 solution  
+3. [../solutions/README.md](../solutions/README.md) — 上游 solution
 
 ## 关联索引
 

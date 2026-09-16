@@ -6,12 +6,12 @@
 
 ## 目录文件
 
-* [business-overview.md](business-overview.md)
+* [business-capability.md](business-capability.md)
 * [business-domain-division.md](business-domain-division.md)
 * [business-model.md](business-model.md)
-* [business-value-chain.md](business-value-chain.md)
+* [business-overview.md](business-overview.md)
 * [business-roles-and-organization.md](business-roles-and-organization.md)
-* [business-capability.md](business-capability.md)
+* [business-value-chain.md](business-value-chain.md)
 
 ## 阅读顺序
 

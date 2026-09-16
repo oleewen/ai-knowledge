@@ -6,12 +6,12 @@
 
 ## 目录文件
 
-* [technical-overview.md](technical-overview.md)
-* [technical-infrastructure.md](technical-infrastructure.md)
-* [technical-devops.md](technical-devops.md)
-* [technical-security.md](technical-security.md)
 * [technical-dev-environment.md](technical-dev-environment.md)
+* [technical-devops.md](technical-devops.md)
+* [technical-infrastructure.md](technical-infrastructure.md)
 * [technical-observability.md](technical-observability.md)
+* [technical-overview.md](technical-overview.md)
+* [technical-security.md](technical-security.md)
 
 ## 阅读顺序
 

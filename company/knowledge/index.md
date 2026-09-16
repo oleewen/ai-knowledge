@@ -1,6 +1,6 @@
 # knowledge
 
-目录说明：[README.md](README.md)。
+目录说明见 [README.md](README.md)。
 
 ## 子目录
 
@@ -20,7 +20,7 @@
 1. [README.md](README.md) — 五视角与实体 SSOT  
 2. [overview/README.md](overview/README.md) — overview 缓冲  
 3. 各视角 `README.md` — 业务→产品→应用→数据→技术  
-4. `chapters/` 与 `*-EXAMPLE` — 章节骨架与样例  
+4. `chapters/` 与 `*-EXAMPLE` — 章节骨架与样例
 
 ## 关联索引
 
@@ -51,7 +51,7 @@
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| PL | EXAMPLE |  | 示例产品线 | `product/PL-EXAMPLE/PL-EXAMPLE.md` |
+| PL | EXAMPLE |  | 示例产品线 | `product/PL-EXAMPLE.md` |
 
 ---
 
@@ -63,11 +63,11 @@
 
 ---
 
-## §4 数据视角（data · 无公司级实体）
+## §4 数据视角（data · MDG）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| — | — | — | （无） | MDG ∈ 系统库 |
+| — | — | — | — | — |
 
 ---
 
@@ -79,7 +79,7 @@
 
 ---
 
-> 本索引登记公司级 **BU / BD / CAP / PL / SLN / TPL**；SLN ∈ application（AA）；无 PD/SYS/MDG（见系统库）。
+> 本索引登记公司级 **BU / BD / CAP / PL / SLN / MDG / TPL**；SLN ∈ application（AA）；无 PD/SYS（见系统库）。
 
 ---
 
@@ -90,8 +90,9 @@
 | BU-EXAMPLE | `business/BU-EXAMPLE/` |
 | BD-EXAMPLE | `business/BD-EXAMPLE.md` |
 | CAP-EXAMPLE | `business/BU-EXAMPLE/CAP-EXAMPLE.md` |
-| PL-EXAMPLE | `product/PL-EXAMPLE/` |
+| PL-EXAMPLE | `product/PL-EXAMPLE.md` |
 | SLN-EXAMPLE | `application/SLN-EXAMPLE.md` |
+| MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |
 | TPL-EXAMPLE | `technical/TPL-EXAMPLE.md` |
 
 ---

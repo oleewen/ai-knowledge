@@ -276,7 +276,7 @@ def _default_suffix(bundle: str) -> str:
             "| BU-EXAMPLE | `business/BU-EXAMPLE/` |",
             "| BD-EXAMPLE | `business/BD-EXAMPLE.md` |",
             "| CAP-EXAMPLE | `business/BU-EXAMPLE/CAP-EXAMPLE.md` |",
-            "| PL-EXAMPLE | `product/PL-EXAMPLE/` |",
+            "| PL-EXAMPLE | `product/PL-EXAMPLE.md` |",
             "| SLN-EXAMPLE | `application/SLN-EXAMPLE.md` |",
             "| MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |",
             "| TPL-EXAMPLE | `technical/TPL-EXAMPLE.md` |",

@@ -6,8 +6,8 @@
 
 ## 目录文件
 
-* [application-overview.md](application-overview.md)
 * [application-architecture.md](application-architecture.md)
+* [application-overview.md](application-overview.md)
 
 ## 阅读顺序
 

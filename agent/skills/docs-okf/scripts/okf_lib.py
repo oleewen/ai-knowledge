@@ -327,7 +327,7 @@ def entity_relpath(
             bu = parent_id or _DEFAULT_BUSINESS_BU
             return f"knowledge/business/{bu}/{full_id}.md"
         if perspective == "product" and prefix == "PL":
-            return f"knowledge/product/{full_id}/{full_id}.md"
+            return f"knowledge/product/{full_id}.md"
         if perspective == "application" and prefix == "SLN":
             return f"knowledge/application/{full_id}.md"
         if perspective == "data" and prefix == "MDG":
