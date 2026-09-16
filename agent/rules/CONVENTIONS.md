@@ -105,7 +105,7 @@
 | docs-distill | `system/knowledge/**/*`、`company/knowledge/**/*` | `system\|company/knowledge/overview/` 受管第三列 | 可选工作稿 | 语义-docs | 无 | [docs-distill/SKILL.md](../skills/docs-distill/SKILL.md) |
 | docs-extract | `system/knowledge/overview/**/*`、`company/knowledge/overview/**/*` | `system|company/knowledge/overview/*.md` | 可选工作稿 | 语义-docs | 无 | [docs-extract/SKILL.md](../skills/docs-extract/SKILL.md) |
 | docs-archive | `system/knowledge/overview/**/*`、`company/knowledge/overview/**/*` | `system|company/knowledge/overview/*.md` | 可选工作稿 | 语义-docs | 无 | [docs-archive/SKILL.md](../skills/docs-archive/SKILL.md) |
-| docs-build | `{DOC_DIR}/knowledge/**/*` | `{DOC_DIR}/knowledge/` 下 JSON、README、KNOWLEDGE_INDEX | 可选工作稿 | 语义-docs | 无 | [docs-build/SKILL.md](../skills/docs-build/SKILL.md) |
+| docs-build | `{DOC_DIR}/knowledge/**/*` | `{DOC_DIR}/knowledge/` 下 JSON、README、KNOWLEDGE-INDEX | 可选工作稿 | 语义-docs | 无 | [docs-build/SKILL.md](../skills/docs-build/SKILL.md) |
 | docs-indexing | `**/INDEX-GUIDE.md`、`**/changelogs/INDEXING-LOG.md` | 各文档根 `INDEX-GUIDE.md` 与对应 `INDEXING-LOG.md` | 可选工作稿 | 语义-docs | 无 | [docs-indexing/SKILL.md](../skills/docs-indexing/SKILL.md) |
 | docs-revise | 不固定（按用户确认范围） | 已确认范围内的 Markdown / 注释 / 配置文本 | 可选工作稿 | 语义-docs | 无 | [docs-revise/SKILL.md](../skills/docs-revise/SKILL.md) |
 | docs-simplify | 不固定（按用户确认范围） | 已确认范围内的 Markdown（默认排除索引/日志/生成物，点名则纳入） | 可选工作稿 | 语义-docs | 无 | [docs-simplify/SKILL.md](../skills/docs-simplify/SKILL.md) |

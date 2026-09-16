@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# DESIGN §11 验收：concept 数量、okf_version、无 legacy *-entities.md、KNOWLEDGE_INDEX 有效
+# 验收：concept 数量、okf_version、无 legacy *-entities.md、KNOWLEDGE-INDEX 有效
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../../.." && pwd)"
@@ -17,6 +17,8 @@ import okf_lib  # noqa: E402
 
 n = 0
 for path in okf_lib.scan_concepts(bundle_root):
+    if path.name == "KNOWLEDGE-INDEX.md":
+        continue
     meta, _ = okf_lib.parse_frontmatter(path.read_text(encoding="utf-8"))
     if meta.get("full_id"):
         n += 1
@@ -41,15 +43,26 @@ if [[ -n "$entities" ]]; then
   exit 1
 fi
 
-ki="$BUNDLE_ROOT/knowledge/index.md"
+nav="$BUNDLE_ROOT/knowledge/index.md"
+[[ -f "$nav" ]] || {
+  echo "缺少目录索引: $nav" >&2
+  exit 1
+}
+
+ki="$BUNDLE_ROOT/knowledge/KNOWLEDGE-INDEX.md"
 [[ -f "$ki" ]] || {
-  echo "缺少 index.md: $ki" >&2
+  echo "缺少 KNOWLEDGE-INDEX.md: $ki" >&2
   exit 1
 }
 
-grep -qE 'BD-EXAMPLE|business' "$ki" || {
-  echo "index.md 应提及 BD-EXAMPLE 或 business" >&2
+grep -qE 'API-EXAMPLE|TBL-EXAMPLE|MW-EXAMPLE' "$ki" || {
+  echo "KNOWLEDGE-INDEX.md 应含本层 EXAMPLE 实体" >&2
   exit 1
 }
 
-echo "[OK] acceptance checklist (concepts=$count, okf_version, no *-entities.md, KNOWLEDGE_INDEX)"
+grep -q 'KNOWLEDGE-INDEX' "$nav" || {
+  echo "knowledge/index.md 应链到 KNOWLEDGE-INDEX.md" >&2
+  exit 1
+}
+
+echo "[OK] acceptance checklist (concepts=$count, okf_version, no *-entities.md, KNOWLEDGE-INDEX)"

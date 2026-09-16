@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# OKF refresh 编排：frontmatter → index → knowledge index → viz → 校验。
+# OKF refresh 编排：frontmatter → index → viz → 校验。
+# 实体分表 KNOWLEDGE-INDEX.md 由 /docs-build 生成，本脚本不写。
 # 用法: bash agent/skills/docs-okf/scripts/okf-indexing.sh [--dry-run]
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -18,10 +19,11 @@ usage() {
 按序执行 OKF refresh / validate（可重复运行）：
   1. inject_frontmatter
   2. generate_index（--recursive）
-  3. generate_knowledge_index
-  4. visualize
-  5. validate-okf
-  6. validate-viz-index
+  3. visualize
+  4. validate-okf
+  5. validate-viz-index
+
+实体扫描索引 knowledge/KNOWLEDGE-INDEX.md → /docs-build（generate_knowledge_index.py）。
 
 须有效 .docsconfig（含 KNOWLEDGE_TYPE）。bundle 默认取自 DOC_DIR；viz 输出取自 KNOWLEDGE_TYPE。
 
@@ -105,15 +107,6 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
   index_args+=(--dry-run)
 fi
 run_cmd "generate_index" python3 "${index_args[@]}"
-
-knowledge_index_args=(
-  "$OKF_DIR/generate_knowledge_index.py"
-  --bundle "$BUNDLE"
-)
-if [[ "$DRY_RUN" -eq 1 ]]; then
-  knowledge_index_args+=(--dry-run)
-fi
-run_cmd "generate_knowledge_index" python3 "${knowledge_index_args[@]}"
 
 run_cmd "visualize" python3 \
   "$OKF_DIR/visualize.py" \

@@ -8,4 +8,4 @@
 | product | PL→UC | 锚点目录 + 叶子 `{ID}.md` |
 | technical | MW/CMP | 扁平 `technical/{ID}.md` |
 
-层级与必填字段见各视角 `{perspective}-meta.md`；聚合索引由扫描生成 `KNOWLEDGE_INDEX.md`（非 SSOT）。
+层级与必填字段见各视角 `{perspective}-meta.md`；聚合索引由扫描生成 `KNOWLEDGE-INDEX.md`（非 SSOT）。

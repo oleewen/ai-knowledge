@@ -13,7 +13,7 @@ title: 应用视角元数据（application/knowledge/application）
 | 视角 | application |
 | 层级范围 | application |
 | 说明 | 实现版图；SYS/APP/MS 系统首次定义；本层 SSOT 为 **API**，上游可留 reference / 纯 ID。 |
-| entities_shape | 实体 `{ID}.md`（OKF）；索引见 KNOWLEDGE_INDEX §3 |
+| entities_shape | 实体 `{ID}.md`（OKF）；索引见 KNOWLEDGE-INDEX §3 |
 
 ## 2. 层级链
 

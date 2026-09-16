@@ -8,10 +8,16 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[4]
+# docs-build 为 KNOWLEDGE-INDEX 生成权威实现；docs-okf 脚本仅 generate_index / okf_lib
 sys.path.insert(0, str(ROOT / "agent" / "skills" / "docs-okf" / "scripts"))
+sys.path.insert(0, str(ROOT / "agent" / "skills" / "docs-build" / "scripts"))
 import generate_index  # noqa: E402
 import generate_knowledge_index  # noqa: E402
 import okf_lib  # noqa: E402
+
+assert hasattr(generate_knowledge_index, "render_knowledge_index"), (
+    "须从 docs-build/scripts 加载 generate_knowledge_index"
+)
 
 
 def test_render_index_lists_concepts_and_subdirs():
@@ -69,7 +75,7 @@ def test_preserve_bundle_root_okf_version():
         assert "# Root" in body
 
 
-def test_knowledge_index_id_suffix_and_evidence():
+def test_knowledge_index_full_id_and_evidence():
     with tempfile.TemporaryDirectory() as tmp:
         bundle = Path(tmp)
         concept_path = bundle / "knowledge" / "business" / "BD-EXAMPLE.md"
@@ -85,27 +91,10 @@ def test_knowledge_index_id_suffix_and_evidence():
             encoding="utf-8",
         )
         rendered = generate_knowledge_index.render_knowledge_index(bundle)
-        assert "| BD | EXAMPLE |" in rendered
+        assert rendered.lstrip().startswith("# KNOWLEDGE-INDEX")
+        assert "| BD | BD-EXAMPLE |" in rendered
         assert "`business/BD-EXAMPLE.md`" in rendered
-
-
-def test_knowledge_index_strips_frontmatter():
-    with tempfile.TemporaryDirectory() as tmp:
-        bundle = Path(tmp) / "system"
-        (bundle / "knowledge").mkdir(parents=True)
-        existing = (
-            "---\n"
-            "type: Knowledge Index\n"
-            "title: 知识库 · 五视角实体 ID 索引（SSOT）\n"
-            "---\n"
-            "# 知识库 · 五视角实体 ID 索引（SSOT）\n\n"
-            "目录说明见 [README.md](README.md)。\n"
-        )
-        rendered = generate_knowledge_index.render_knowledge_index(
-            bundle, existing, bundle="system"
-        )
         assert not rendered.startswith("---")
-        assert rendered.lstrip().startswith("# 知识库")
 
 
 def test_system_knowledge_index_sections_and_mapping():
@@ -113,7 +102,7 @@ def test_system_knowledge_index_sections_and_mapping():
         bundle = Path(tmp) / "system"
         (bundle / "knowledge").mkdir(parents=True)
         rendered = generate_knowledge_index.render_knowledge_index(
-            bundle, None, bundle="system"
+            bundle, bundle="system"
         )
         assert "§3 应用视角（application · SYS → APP → MS）" in rendered
         assert "§4 数据视角（data · MDG → DS → ENT）" in rendered
@@ -128,7 +117,7 @@ def test_application_knowledge_index_sections_and_mapping():
         bundle = Path(tmp) / "application"
         (bundle / "knowledge").mkdir(parents=True)
         rendered = generate_knowledge_index.render_knowledge_index(
-            bundle, None, bundle="application"
+            bundle, bundle="application"
         )
         assert "§4 数据视角（data · MDG → DS → ENT → TBL）" in rendered
         assert "§5 技术视角（technical · TSD → MW → CMP）" in rendered
@@ -144,8 +133,7 @@ def main() -> None:
     tests = [
         test_render_index_lists_concepts_and_subdirs,
         test_preserve_bundle_root_okf_version,
-        test_knowledge_index_id_suffix_and_evidence,
-        test_knowledge_index_strips_frontmatter,
+        test_knowledge_index_full_id_and_evidence,
         test_system_knowledge_index_sections_and_mapping,
         test_application_knowledge_index_sections_and_mapping,
     ]

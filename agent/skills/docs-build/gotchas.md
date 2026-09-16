@@ -28,7 +28,7 @@
 - **AGG 无 MS** → 无根则不造 AGG；标待补充
 - **FT/UC 无 API** → 须绑 API；无则标待补充
 - **未读文件造 ID** → 零幻觉；未读勿写已核实 evidence；可 `confidence: low` 并述因
-- **concept 缺 full_id** → 每个 per-entity `{ID}.md` frontmatter 须非空 `full_id`；否则扫描无法纳入 KNOWLEDGE_INDEX
+- **concept 缺 full_id** → 每个 per-entity `{ID}.md` frontmatter 须非空 `full_id`；否则扫描无法纳入 KNOWLEDGE-INDEX
 
 ## API 四类
 
@@ -42,7 +42,7 @@
 
 - **无 evidence_chain** → 每实体 ≥1 条 `{source, confidence, type}`；high 须代码/配置直证
 - **应用层仍写聚合表** → 须一 concept 一文件；`hierarchy` 写在 frontmatter，勿回退 `{perspective}-entities.md`
-- **手写 INDEX 当 SSOT** → INDEX 由扫描/regen 生成；改实体先改 per-entity，再跑 [consolidation-spec.md](references/consolidation-spec.md) 或 `generate_knowledge_index.py`
+- **手写 INDEX 当 SSOT** → INDEX 由扫描/regen 生成；改实体先改 per-entity，再跑 [consolidation-spec.md](references/consolidation-spec.md) 或 `docs-build/scripts/generate_knowledge_index.py`
 
 ## README 与归并
 

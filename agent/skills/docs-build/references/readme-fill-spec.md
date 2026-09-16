@@ -1,6 +1,6 @@
 # README 填充规范
 
-各视角 per-entity `{ID}.md` 就绪后、**写 `KNOWLEDGE_INDEX.md` 前**，按此更新各视角 `README.md`。禁止示例行冒充；无实体则说明+待补充（[quality-checklist.md](quality-checklist.md)、[gotchas.md](../gotchas.md)）。
+各视角 per-entity `{ID}.md` 就绪后、**写 `KNOWLEDGE-INDEX.md` 前**，按此更新各视角 `README.md`。禁止示例行冒充；无实体则说明+待补充（[quality-checklist.md](quality-checklist.md)、[gotchas.md](../gotchas.md)）。
 这些视角 `README.md` 归属仓库文档分类矩阵中的 **A 类：人类入口文档**：默认保留可见 `# H1`；若因既有 frontmatter `title` 触发 `MD025`，须按全局文档规则判断是否保留必要豁免，不得自行假设可删除 `title`。
 
 ## 原则
@@ -10,7 +10,7 @@
 |格式同源|沿用现有 README 表头/章节/静态段；只换索引表数据行|
 |数据同源|行只来自对应 per-entity concept，字段取自 frontmatter 与正文|
 |不删固定段|保留层级说明、跨视角、INDEX / knowledge-governance 链等|
-|链接可点|相对当前 README 指向 per-entity `{ID}.md`、meta、`../KNOWLEDGE_INDEX.md`|
+|链接可点|相对当前 README 指向 per-entity `{ID}.md`、meta、`../KNOWLEDGE-INDEX.md`|
 
 ---
 
@@ -29,13 +29,13 @@
 
 ### application —「技术索引表」
 
-表头：`| 类型 | 名称 | ID (KNOWLEDGE_INDEX) | 路径 / 说明 |`
+表头：`| 类型 | 名称 | ID (KNOWLEDGE-INDEX) | 路径 / 说明 |`
 
 |列|取值|
 |----|------|
 |类型|系统 / 应用 / 微服务（MS）/ 接口（与 `hierarchy` 一致的中文）|
 |名称|frontmatter `title` 或 `name`|
-|ID (KNOWLEDGE_INDEX)|SYS/APP：`full_id`；MS/API：`full_id` 或规范 `id`|
+|ID (KNOWLEDGE-INDEX)|SYS/APP：`full_id`；MS/API：`full_id` 或规范 `id`|
 |路径 / 说明|相对链接至 concept 文件（如 `[SYS-EXAMPLE.md](SYS-EXAMPLE.md)`、`[MS-EXAMPLE/MS-EXAMPLE.md](MS-EXAMPLE/MS-EXAMPLE.md)`）；可附 `alias` 或证据摘要|
 
 按 `hierarchy` 分组遍历：`SYS` → `APP` → `MS` → `API`。
@@ -66,7 +66,7 @@ ENT 的 `parent_id` 可用于排序或链序说明。
 |名称|frontmatter `title` 或 `name`|
 |文件/目录|相对链接至 concept（如 `[BD-EXAMPLE.md](BD-EXAMPLE.md)`）|
 
-扁平分组排序；有真实 ID 后标题可改「业务索引表」，并注「以 per-entity `{ID}.md` 与 [../KNOWLEDGE_INDEX.md](../KNOWLEDGE_INDEX.md) 为准」。
+扁平分组排序；有真实 ID 后标题可改「业务索引表」，并注「以 per-entity `{ID}.md` 与 [../KNOWLEDGE-INDEX.md](../KNOWLEDGE-INDEX.md) 为准」。
 
 ### product —「产品线索引表」
 
@@ -82,10 +82,10 @@ ENT 的 `parent_id` 可用于排序或链序说明。
 
 ---
 
-## 相对 KNOWLEDGE_INDEX 的顺序
+## 相对 KNOWLEDGE-INDEX 的顺序
 
 1. 各视角 per-entity `{ID}.md` 就绪  
 2. 本规范更 README  
-3. [consolidation-spec.md](consolidation-spec.md) 扫描生成 `KNOWLEDGE_INDEX.md`  
+3. [consolidation-spec.md](consolidation-spec.md) 扫描生成 `KNOWLEDGE-INDEX.md`  
 
 保证 README、per-entity、INDEX 一致。

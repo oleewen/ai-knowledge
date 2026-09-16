@@ -13,9 +13,10 @@ sys.path.insert(0, str(SCRIPT_DIR))
 import okf_lib  # noqa: E402
 
 ROOT_INDEX_MARKERS = ("<!-- okf:begin -->", "<!-- okf:end -->")
-KNOWLEDGE_SECTION_MARKERS = ("## §1 ", "## 统一表头规范")
+KNOWLEDGE_NAV_MARKERS = ("## 子目录", "## 目录文件")
+KNOWLEDGE_ENTITY_MARKERS = ("## §1 ", "## 统一表头规范")
 VIZ_MARKERS = ('"concepts"', '"edges"', "<html")
-SKIP_VIZ_NAMES = frozenset({"INDEXING-LOG.md"})
+SKIP_VIZ_NAMES = frozenset({"INDEXING-LOG.md", "KNOWLEDGE-INDEX.md"})
 
 
 def _error(msg: str) -> int:
@@ -34,13 +35,16 @@ def validate(bundle_root: Path, viz_path: Path) -> int:
     bundle_root = bundle_root.resolve()
     knowledge_root = bundle_root / "knowledge"
     root_index = bundle_root / "index.md"
-    knowledge_index = knowledge_root / "index.md"
+    knowledge_nav = knowledge_root / "index.md"
+    knowledge_entity_index = knowledge_root / "KNOWLEDGE-INDEX.md"
     if not knowledge_root.is_dir():
         return _error(f"missing-knowledge-root: {knowledge_root}")
     if not root_index.is_file():
         return _error(f"missing-index: {root_index}")
-    if not knowledge_index.is_file():
-        return _error(f"missing-knowledge-index: {knowledge_index}")
+    if not knowledge_nav.is_file():
+        return _error(f"missing-knowledge-nav: {knowledge_nav}")
+    if not knowledge_entity_index.is_file():
+        return _error(f"missing-knowledge-entity-index: {knowledge_entity_index}")
 
     for path in sorted(knowledge_root.rglob("*")):
         if path.is_dir() and not (path / "index.md").is_file():
@@ -50,9 +54,13 @@ def validate(bundle_root: Path, viz_path: Path) -> int:
     if not all(marker in root_text for marker in ROOT_INDEX_MARKERS):
         return _error(f"missing-okf-block: {root_index}")
 
-    knowledge_text = knowledge_index.read_text(encoding="utf-8")
-    if not any(marker in knowledge_text for marker in KNOWLEDGE_SECTION_MARKERS):
-        return _error(f"missing-knowledge-sections: {knowledge_index}")
+    nav_text = knowledge_nav.read_text(encoding="utf-8")
+    if not any(marker in nav_text for marker in KNOWLEDGE_NAV_MARKERS):
+        return _error(f"missing-knowledge-nav-sections: {knowledge_nav}")
+
+    entity_text = knowledge_entity_index.read_text(encoding="utf-8")
+    if not any(marker in entity_text for marker in KNOWLEDGE_ENTITY_MARKERS):
+        return _error(f"missing-knowledge-entity-sections: {knowledge_entity_index}")
 
     if not viz_path.is_file():
         return _error(f"missing-viz: {viz_path}")

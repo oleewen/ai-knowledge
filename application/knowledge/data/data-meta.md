@@ -13,7 +13,7 @@ title: 数据视角元数据（application/knowledge/data）
 | 视角 | data |
 | 层级范围 | application |
 | 说明 | MDG/DS/ENT 系统首次定义；本层可留 MDG/DS/ENT reference，SSOT 为 **TBL**。 |
-| entities_shape | 实体 `{ID}.md`（OKF）；索引见 KNOWLEDGE_INDEX §4 |
+| entities_shape | 实体 `{ID}.md`（OKF）；索引见 KNOWLEDGE-INDEX §4 |
 
 ## 2. 层级链
 

@@ -54,7 +54,7 @@ evidence:
 symmetry:
   rules:
     - id: same_round_four_sections
-      text: "KNOWLEDGE_INDEX.md 的 §1～§4 同一轮维护"
+      text: "KNOWLEDGE-INDEX.md 的 §1～§4 同一轮维护"
     - id: no_template_only
       text: "禁止以非本应用模板 ID 作为 INDEX/README 唯一内容"
     - id: index_over_template

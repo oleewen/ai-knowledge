@@ -32,90 +32,47 @@
 
 1. `inject_frontmatter.py --bundle "${DOC_DIR}"`
 2. `generate_index.py --bundle "${DOC_DIR}" --recursive`
-3. `generate_knowledge_index.py --bundle "${DOC_DIR}"`（**必接**：见下方 HARD）
-4. `visualize.py` → `{KNOWLEDGE_TYPE}/viz.html`（`BUNDLE` 覆盖时跟 bundle 名）
-5. `okf-validate.sh`
-6. `validate_viz_index.py`
+3. `visualize.py` → `{KNOWLEDGE_TYPE}/viz.html`（`BUNDLE` 覆盖时跟 bundle 名）
+4. `okf-validate.sh`
+5. `validate_viz_index.py`
+
+实体扫描索引 `knowledge/KNOWLEDGE-INDEX.md` **不由本技能写入**；改实体后跑 `/docs-build` 或：
+
+```bash
+python3 agent/skills/docs-build/scripts/generate_knowledge_index.py --bundle "${DOC_DIR}"
+```
 
 环境变量 `BUNDLE` 或 CLI `--bundle` 可覆盖 `{DOC_DIR}`；覆盖时 viz 输出跟随 bundle 目录名（非主 `KNOWLEDGE_TYPE`）。
 
-> **HARD**：`generate_index.py` 会重写各目录 `index.md`，其中 `knowledge/index.md` 的目录段会覆盖既有内容，**实体分表（§1–§5）会被冲掉**。单跑 `generate_index` 后必须立刻跑 `generate_knowledge_index.py`；或直接用全量 `okf-indexing.sh`，勿只跑 index 再 validate。
+> **HARD**：`generate_index.py` 会重写各目录 `index.md`（含 `knowledge/index.md` 目录导航）。实体分表在独立文件 `KNOWLEDGE-INDEX.md`，不被 `generate_index` 冲掉。`validate_viz_index` 要求该文件已存在（由 docs-build 生成）。
 
 结果摘要至少包含：
 
 - bundle 路径
-- 是否写入 `index.md` / `KNOWLEDGE_INDEX`
+- 是否写入目录 `index.md`
 - `validate-okf` 是否通过
 - `viz.html` 是否生成
+- `KNOWLEDGE-INDEX.md` 是否存在（缺则提示跑 docs-build）
 
-**受众 A/B**：交用户结果摘要前，按 [audience-and-language.md](../../../references/audience-and-language.md) 轻流程默认读者表跑 A/B（工程维护者口吻；失败分流可读）。纯机器校验 JSON/退出码可跳过。全过静默；违例才报。未过不得宣称本轮完成。
+### 2 validate
 
-### 2 validate（门禁）
+跑 `okf-validate.sh` + `validate_viz_index.py`；不写盘（除校验脚本自身无副作用约定外）。
 
-**入口**：`/docs-okf`（内部脚本：`bash agent/skills/docs-okf/scripts/okf-validate.sh [--bundle "${DOC_DIR}"]`）
+### 3 viz
 
-检查 frontmatter、`full_id` 唯一性、bundle-relative 链接、`index.md` 条目。有 **ERROR** exit 1；仅 WARN exit 0。
+单独重跑 `visualize.py`。
 
-单独校验：`/docs-okf --validate` 或 `--validate --bundle "${DOC_DIR}"`。
-
-若出现 **ERROR**：
-
-- 停止后续 refresh / viz
-- 展示错误摘要
-- 指向失败环节（frontmatter / full_id / links / index）
-
-### 3 viz（可视化）
-
-**内部脚本**：
+## 常用命令
 
 ```bash
-python3 agent/skills/docs-okf/scripts/visualize.py \
-  --bundle "${DOC_DIR}" \
-  --out "${KNOWLEDGE_TYPE}/viz.html" \
-  --name "${KNOWLEDGE_TYPE} OKF"
-```
-
-扫描所有 concept，解析 Markdown 链接构图，输出自包含 HTML（Cytoscape + marked）。
-
-单独刷新：`/docs-okf --viz`。
-
-若输出失败：
-
-- 展示失败原因
-- 不冒充 refresh 成功
-- 若 validate 已通过，应明确“校验通过但可视化失败”
-
-## 参数组合
-
-| 用户意图 | 命令 |
-| ---------- | ------ |
-| 全量刷新 | `/docs-okf`（内部脚本：`bash agent/skills/docs-okf/scripts/okf-indexing.sh`） |
-| 预览 | `/docs-okf`（内部脚本：`bash agent/skills/docs-okf/scripts/okf-indexing.sh --dry-run`） |
-| 仅校验 | `/docs-okf`（内部脚本：`bash agent/skills/docs-okf/scripts/okf-validate.sh`） |
-| 仅 viz | `/docs-okf`（内部脚本：`python3 agent/skills/docs-okf/scripts/visualize.py --bundle "${DOC_DIR}" --out "${KNOWLEDGE_TYPE}/viz.html" --name "${KNOWLEDGE_TYPE} OKF"`） |
-| index 后补 OKF index | `generate_index.py --recursive` → `generate_knowledge_index.py` → `okf-validate.sh`（推荐直接 `okf-indexing.sh`） |
-
-## 失败分流
-
-| 场景 | 行为 |
-| ---------- | ------ |
-| `.docsconfig` 缺失 | 立即中止，提示补配置 |
-| `KNOWLEDGE_TYPE` 缺失 | 立即中止，提示补类型 |
-| bundle 解析失败 | 展示解析失败点，不继续 refresh |
-| validate 出现 ERROR | 展示错误摘要，不继续后续步骤 |
-| viz 输出失败 | 展示 viz 错误，不冒充成功 |
-
-## 与 docs-indexing 协作
-
-更新九章索引 `INDEX-GUIDE.md` 后，**建议**（须含 knowledge-index，见上方 HARD）：
-
-```bash
-# 推荐全量
+# 全量 OKF refresh
 bash agent/skills/docs-okf/scripts/okf-indexing.sh
-# 或分步（顺序不可省 generate_knowledge_index）
-python3 agent/skills/docs-okf/scripts/generate_index.py --bundle "${DOC_DIR}" --recursive
-python3 agent/skills/docs-okf/scripts/generate_knowledge_index.py --bundle "${DOC_DIR}"
-bash agent/skills/docs-okf/scripts/okf-validate.sh
+
+# 仅目录 index
+python3 agent/skills/docs-okf/scripts/generate_index.py --bundle application --recursive
+
+# 实体扫描索引（docs-build）
+python3 agent/skills/docs-build/scripts/generate_knowledge_index.py --bundle application
 ```
 
-九章索引为 `INDEX-GUIDE.md`；OKF 渐进披露入口为 bundle 根 `index.md` 的 OKF 区块与各级子目录 `index.md`（双索引并存）。
+更新九章索引 `INDEX-GUIDE.md` 后，建议跑全量 `okf-indexing.sh`；实体有增删再补 `generate_knowledge_index.py`。

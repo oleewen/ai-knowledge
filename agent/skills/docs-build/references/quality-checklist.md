@@ -37,7 +37,7 @@
 ## 归并（阶段 4）
 
 - [ ] 前缀 ∈ `contains_prefixes`
-- [ ] `KNOWLEDGE_INDEX.md` §1–§4 同轮且无纯模板行
+- [ ] `KNOWLEDGE-INDEX.md` §1–§4 同轮且无纯模板行
 - [ ] 旧 ID 无单独更名（引用完整）
 
 ## metadata

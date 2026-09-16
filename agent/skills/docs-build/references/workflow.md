@@ -24,7 +24,7 @@
 | --- | --- |
 | 必需 | 主 Index Guide（否则停，先 `/docs-indexing`） |
 | 可选 | README、AGENTS、PRD、源码 |
-| 固定输出 | `{DOC_DIR}/knowledge/{p}/` 下 per-entity `{ID}.md`、`README`、`KNOWLEDGE_INDEX.md`（扫描生成） |
+| 固定输出 | `{DOC_DIR}/knowledge/{p}/` 下 per-entity `{ID}.md`、`README`、`KNOWLEDGE-INDEX.md`（扫描生成） |
 | `--emit-report` | `{DOC_DIR}/knowledge/{p}/extraction_report.md` |
 | 不产出 | 锚点文档、CHANGELOG、目录树 |
 
@@ -72,7 +72,7 @@ API：**Dubbo / HTTP / MQ Consumer / Job**，`api_type` 必填。
 2. **意图澄清**：公共六项 + [gates.md](gates.md) 追加字段；第 6 项写明批次类型与 `{DOC_DIR}/knowledge/` 下仓库根相对路径；写前 `C` 后方可写入
 3. 按 [extraction-rules.md](extraction-rules.md) 提取实体
 4. 按 [readme-fill-spec.md](readme-fill-spec.md) 更新 README
-5. 按 [consolidation-spec.md](consolidation-spec.md) 归并 KNOWLEDGE_INDEX
+5. 按 [consolidation-spec.md](consolidation-spec.md) 归并 KNOWLEDGE-INDEX
 6. 运行校验：
 
 ```bash

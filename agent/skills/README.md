@@ -32,7 +32,7 @@
 | `/docs-link` | `--link`/`--unlink` + `--target`〔`--app-name`〕〔`--rewrite-http`〕→ 双边 `knowledge-links.yaml` + 槽位软链；脚本 `agent/skills/docs-link/scripts/`；默认 dry-run；轻流程 |
 | `/docs-pull` | 按 `knowledge-links.yaml` 本地 path → 联邦槽位；`SYNC_OK` 含 commit；变更溯源 git；无远端 clone；轻流程 |
 | `/docs-push` | 中央规约 → 各应用 `path×doc_dir`（legacy / spec-asd）；轻流程 |
-| `/docs-build` | 五视角实体 ID → per-entity `{ID}.md`、视角 README、`KNOWLEDGE_INDEX.md` |
+| `/docs-build` | 五视角实体 ID → per-entity `{ID}.md`、视角 README、`KNOWLEDGE-INDEX.md` |
 | `/docs-archive` | overview 表行 → 目标视角章节；冲突策略；方案确认书=意图澄清 |
 | `/docs-okf` | OKF refresh / validate / viz；须 `.docsconfig` 的 `DOC_DIR`+`KNOWLEDGE_TYPE`；轻流程 |
 | `/sdx-solution` | → `{DOC_DIR}/solutions/SOLUTION-*.md` |

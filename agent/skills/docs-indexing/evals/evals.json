@@ -107,14 +107,14 @@
     {
       "id": "indexing-not-trigger-001",
       "category": "should-not-trigger",
-      "prompt": "主 INDEX 有了，帮我把四视角实体从代码里抽一遍，更新 KNOWLEDGE_INDEX",
+      "prompt": "主 INDEX 有了，帮我把四视角实体从代码里抽一遍，更新 KNOWLEDGE-INDEX",
       "expected_output": "分流至 docs-build；勿以 docs-indexing 为主路径写 knowledge 实体。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "须明确 docs-build 或 KNOWLEDGE_INDEX/实体提取为当前主任务。",
+          "check": "须明确 docs-build 或 KNOWLEDGE-INDEX/实体提取为当前主任务。",
           "priority": "P0"
         }
       ]

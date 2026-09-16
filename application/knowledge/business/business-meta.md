@@ -13,7 +13,7 @@ title: 业务视角元数据（application/knowledge/business）
 | 视角 | business |
 | 层级范围 | application |
 | 说明 | DDD 业务版图；公司级 BD/CAP ∈  首次定义，系统层自 BSD 起首次定义，本层承接实现映射与实例登记。 |
-| entities_shape | 实体 `{ID}.md`（OKF）；`BSD` = 目录锚点，`BC/AGG` = 容器目录，`AB` = `AGG` 下叶子；索引见 KNOWLEDGE_INDEX §1 |
+| entities_shape | 实体 `{ID}.md`（OKF）；`BSD` = 目录锚点，`BC/AGG` = 容器目录，`AB` = `AGG` 下叶子；索引见 KNOWLEDGE-INDEX §1 |
 
 ## 2. 层级链
 

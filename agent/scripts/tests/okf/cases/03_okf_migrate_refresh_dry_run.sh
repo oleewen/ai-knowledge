@@ -45,10 +45,10 @@ printf '%s\n' "$output"
 
 [[ "$output" == *"inject_frontmatter"* ]]
 [[ "$output" == *"generate_index"* ]]
-[[ "$output" == *"generate_knowledge_index"* ]]
+[[ "$output" != *"generate_knowledge_index"* ]]
 [[ "$output" == *"visualize"* ]]
 [[ "$output" == *"validate-okf"* ]]
 [[ "$output" == *"validate-viz-index"* ]]
 [[ "$output" != *"migrate_entities"* ]]
 
-echo "[OK] okf-migrate dry-run uses refresh pipeline"
+echo "[OK] okf-migrate dry-run uses refresh pipeline (no knowledge-index step)"

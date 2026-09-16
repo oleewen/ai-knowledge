@@ -40,7 +40,7 @@
 
 - [ ] 模块间依赖引用正确
 - [ ] 文档内链接可点击且指向正确位置
-- [ ] 与 `KNOWLEDGE_INDEX.md`、`README.md`、`AGENTS.md` 的交叉引用一致
+- [ ] 与 `KNOWLEDGE-INDEX.md`、`README.md`、`AGENTS.md` 的交叉引用一致
 
 ## 深度 3（精读）专项
 

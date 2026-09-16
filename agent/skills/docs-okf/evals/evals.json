@@ -105,7 +105,7 @@
     {
       "id": "okf-not-trigger-002",
       "category": "should-not-trigger",
-      "prompt": "从五视角提取实体 ID，跑 docs-build 生成 per-entity 文件和 KNOWLEDGE_INDEX",
+      "prompt": "从五视角提取实体 ID，跑 docs-build 生成 per-entity 文件和 KNOWLEDGE-INDEX",
       "expected_output": "主路径 docs-build；不以 docs-okf 为实体提取终点。",
       "files": [],
       "assertions": [

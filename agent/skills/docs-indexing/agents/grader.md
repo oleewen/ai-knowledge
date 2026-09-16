@@ -11,7 +11,7 @@
 
 ### should-not-trigger P0 摘要
 
-- `correct-downstream`：点名下游技能/产物（如 docs-build / KNOWLEDGE_INDEX）
+- `correct-downstream`：点名下游技能/产物（如 docs-build / KNOWLEDGE-INDEX）
 
 **例**（对齐 `indexing-trigger-001`）
 

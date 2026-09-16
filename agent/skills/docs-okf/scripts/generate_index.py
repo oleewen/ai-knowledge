@@ -181,6 +181,10 @@ def render_index_body(directory: Path) -> str:
     lines = [f"# {directory.name}", ""]
     if (directory / "README.md").is_file():
         lines.extend(["目录说明见 [README.md](README.md)。", ""])
+    if (directory / "KNOWLEDGE-INDEX.md").is_file():
+        lines.extend(
+            ["实体扫描索引见 [KNOWLEDGE-INDEX.md](KNOWLEDGE-INDEX.md)。", ""]
+        )
 
     lines.append("## 子目录")
     lines.append("")

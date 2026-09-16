@@ -9,4 +9,4 @@
 5. **先读后写**：overview、目标章、同级体例读完再映射。  
 6. **delta 闭环**：第三列 delta 落目标章后回写 `—`；`[D]` 先删章节再清空。  
 7. **契约对齐**：[AGENTS.md](../../../../AGENTS.md)、[CONVENTIONS.md](../../../rules/CONVENTIONS.md)。  
-8. **不替 docs-build**：不编造/批量维护实体 ID 与 KNOWLEDGE_INDEX 链字段。
+8. **不替 docs-build**：不编造/批量维护实体 ID 与 KNOWLEDGE-INDEX 链字段。
