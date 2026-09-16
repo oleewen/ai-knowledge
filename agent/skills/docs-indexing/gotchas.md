@@ -37,7 +37,8 @@
 
 - **不写 LOG** → 每次成功 INDEX 后主表插一行（最新在上）；否则下轮增量无主表锚  
 - **主表缺列** → `indexing_finished_ms`/`mode`/`depth`/`output_path` 等齐全（[indexing-log-spec.md](references/indexing-log-spec.md)）  
-- **output 文件名漂移** → 输出文件名固定为 `INDEX-GUIDE.md`；`output` 只用于确认文档根，不得改成其他文件名；默认须确认  
+- **output 文件名漂移** → 输出文件名固定为 `INDEX-GUIDE.md`；`output` 只用于确认文档根，不得改成其他文件名；默认须确认
+- **重写冲掉实体块** → 三层知识库第五章的 `docs-build:entity-index` 块须保留；实体表由 `/docs-build` 扫描写入  
 - **改导航路径不烤干** → 导航/索引路径变更须强制烤干（默认本就必须）
 
 ## 上下游

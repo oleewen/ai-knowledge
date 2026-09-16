@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""从 bundle concept 文件重建 knowledge/KNOWLEDGE-INDEX.md（docs-build 产物）。"""
+"""扫描 concept，写入 {DOC_DIR}/INDEX-GUIDE.md 第五章实体表（docs-build）。"""
 
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -101,7 +102,7 @@ def _load_concepts(bundle_root: Path) -> List[Dict[str, Any]]:
     concepts: List[Dict[str, Any]] = []
     root = bundle_root.resolve()
     for path in okf_lib.scan_concepts(root):
-        if path.name == "KNOWLEDGE-INDEX.md":
+        if path.name in ("KNOWLEDGE-INDEX.md", "INDEX-GUIDE.md"):
             continue
         text = path.read_text(encoding="utf-8")
         meta, _ = okf_lib.parse_frontmatter(text)
@@ -210,7 +211,7 @@ def _render_section(
     concepts: List[Dict[str, Any]],
 ) -> str:
     section_concepts = _filter_for_section(concepts, perspective, hierarchies)
-    lines = [f"## {heading}", ""]
+    lines = [f"### {heading}", ""]
     lines.extend(_render_table_rows(section_concepts))
     lines.append("")
     return "\n".join(lines)
@@ -263,7 +264,7 @@ def _default_suffix(bundle: str) -> str:
             "",
             "---",
             "",
-            "## 物化目录映射（示例）",
+            "### 物化目录映射（示例）",
             "",
             "| 索引 ID | 命名式 ID（锚点目录） |",
             "|---------|----------------------|",
@@ -271,60 +272,88 @@ def _default_suffix(bundle: str) -> str:
             "",
             "---",
             "",
-            "## 交叉引用",
+            "### 交叉引用",
             "",
-            "- 目录索引：`index.md`",
-            "- 应用：`application/`",
-            "- 业务：`business/`",
-            "- 产品：`product/`",
-            "- 数据：`data/`",
-            "- 技术：`technical/`",
-            "- 知识库总说明：`README.md`",
+            "- 目录索引：`knowledge/index.md`",
+            "- 应用：`knowledge/application/`",
+            "- 业务：`knowledge/business/`",
+            "- 产品：`knowledge/product/`",
+            "- 数据：`knowledge/data/`",
+            "- 技术：`knowledge/technical/`",
+            "- 知识库总说明：`knowledge/README.md`",
         ]
     )
+
+
+ENTITY_BEGIN = "<!-- docs-build:entity-index:begin -->"
+ENTITY_END = "<!-- docs-build:entity-index:end -->"
 
 
 def render_knowledge_index(
     bundle_root: Path,
     bundle: str = "application",
 ) -> str:
-    """渲染 KNOWLEDGE-INDEX.md 全文（无 YAML；扫描生成、非 SSOT）。"""
+    """渲染第五章实体表正文（无 YAML；扫描生成、非 SSOT）。供测试与 patch 复用。"""
     concepts = _load_concepts(bundle_root)
     suffix = _default_suffix(bundle)
 
     parts = [
-        "# KNOWLEDGE-INDEX",
+        "> 扫描生成；非 SSOT。实体正文 ∈ 各视角 per-entity `{ID}.md`。九章骨架由 `/docs-indexing` 维护；本块由 `/docs-build` 写入。",
         "",
-        "> 扫描生成；非 SSOT。实体正文 ∈ 各视角 per-entity `{ID}.md`。",
-        "",
-        "---",
-        "",
-        "## 统一表头规范",
+        "### 统一表头规范",
         "",
         '- **标准表头**：`["层级","ID","别名（英文名）","名称","证据链"]`',
         "- **字段语义**：`ID` 为完整实体 ID（如 `BU-EXAMPLE`）；`别名（英文名）` 为英文编码；`名称` 为中文名称",
         "- **唯一性约束**：`层级+ID` 全知识库唯一；`层级+别名（英文名）` 全知识库唯一",
-        "",
-        "---",
         "",
     ]
 
     for heading, perspective, hierarchies in _perspective_sections(bundle):
         parts.append(_render_section(heading, perspective, hierarchies, concepts).rstrip())
         parts.append("")
-        parts.append("---")
-        parts.append("")
 
     parts.append(suffix.rstrip())
     return "\n".join(parts).rstrip() + "\n"
 
 
+def render_entity_index_block(bundle_root: Path, bundle: str = "application") -> str:
+    inner = render_knowledge_index(bundle_root, bundle).rstrip()
+    return f"{ENTITY_BEGIN}\n{inner}\n{ENTITY_END}\n"
+
+
+def patch_index_guide(existing: str, block: str) -> str:
+    """替换 INDEX-GUIDE 第五章内实体块；无标记则替换「五、」至「六、」之间。"""
+    block = block.rstrip() + "\n"
+    if ENTITY_BEGIN in existing and ENTITY_END in existing:
+        pattern = re.compile(
+            re.escape(ENTITY_BEGIN) + r".*?" + re.escape(ENTITY_END),
+            re.DOTALL,
+        )
+        return pattern.sub(block.rstrip(), existing, count=1)
+
+    chapter = re.search(
+        r"(## 五、[^\n]*\n)(.*?)(\n## 六、)",
+        existing,
+        flags=re.DOTALL,
+    )
+    if chapter:
+        return (
+            existing[: chapter.start()]
+            + chapter.group(1)
+            + "\n"
+            + block
+            + chapter.group(3)
+            + existing[chapter.end() :]
+        )
+    raise ValueError("INDEX-GUIDE.md 缺少「## 五、」或实体块标记，无法写入")
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
-        description="重建 bundle knowledge/KNOWLEDGE-INDEX.md（docs-build）"
+        description="将实体扫描表写入 bundle/INDEX-GUIDE.md 第五章（docs-build）"
     )
     parser.add_argument("--bundle", required=True, help="bundle 名称，如 application")
-    parser.add_argument("--dry-run", action="store_true", help="仅输出到 stdout")
+    parser.add_argument("--dry-run", action="store_true", help="仅输出实体块到 stdout")
     args = parser.parse_args(argv)
 
     repo = _repo_root()
@@ -333,16 +362,30 @@ def main(argv: Optional[List[str]] = None) -> int:
         print(f"error: bundle 不存在: {bundle_root}", file=sys.stderr)
         return 1
 
-    out_path = bundle_root / "knowledge" / "KNOWLEDGE-INDEX.md"
-    rendered = render_knowledge_index(bundle_root, args.bundle)
+    out_path = bundle_root / "INDEX-GUIDE.md"
+    block = render_entity_index_block(bundle_root, args.bundle)
 
     if args.dry_run:
-        print(rendered)
+        print(block)
         return 0
 
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(rendered, encoding="utf-8")
-    print(f"wrote {out_path.relative_to(repo)}")
+    if not out_path.is_file():
+        print(f"error: 缺少 INDEX-GUIDE.md（先 /docs-indexing）: {out_path}", file=sys.stderr)
+        return 1
+
+    patched = patch_index_guide(out_path.read_text(encoding="utf-8"), block)
+    if not patched.endswith("\n"):
+        patched += "\n"
+    out_path.write_text(patched, encoding="utf-8")
+    stale = bundle_root / "knowledge" / "KNOWLEDGE-INDEX.md"
+    if stale.is_file():
+        stale.unlink()
+        print(f"removed {stale.relative_to(repo)}")
+    stale_guide = bundle_root / "knowledge" / "INDEX-GUIDE.md"
+    if stale_guide.is_file():
+        stale_guide.unlink()
+        print(f"removed {stale_guide.relative_to(repo)}")
+    print(f"patched {out_path.relative_to(repo)} 第五章")
     return 0
 
 

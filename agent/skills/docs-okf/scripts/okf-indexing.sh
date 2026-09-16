@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # OKF refresh 编排：frontmatter → index → viz → 校验。
-# 实体分表 KNOWLEDGE-INDEX.md 由 /docs-build 生成，本脚本不写。
+# 实体分表 INDEX-GUIDE.md 第五章由 /docs-build 写入，本脚本不写。
 # 用法: bash agent/skills/docs-okf/scripts/okf-indexing.sh [--dry-run]
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -23,7 +23,7 @@ usage() {
   4. validate-okf
   5. validate-viz-index
 
-实体扫描索引 knowledge/KNOWLEDGE-INDEX.md → /docs-build（generate_knowledge_index.py）。
+实体扫描表 {DOC_DIR}/INDEX-GUIDE.md 第五章 → /docs-build（generate_knowledge_index.py）。
 
 须有效 .docsconfig（含 KNOWLEDGE_TYPE）。bundle 默认取自 DOC_DIR；viz 输出取自 KNOWLEDGE_TYPE。
 

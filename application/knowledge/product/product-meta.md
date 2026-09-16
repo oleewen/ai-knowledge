@@ -13,7 +13,7 @@ title: 产品视角元数据（application/knowledge/product）
 | 视角 | product |
 | 层级范围 | application |
 | 说明 | 产品版图；公司 PL 首次定义；公司 SLN（AA）首次定义（本层不落）；系统 PD 首次定义（本层不落 PD）。`PM.parent_id` → 系统 `PD-*`。 |
-| entities_shape | 实体 `{ID}.md`（OKF）；索引见 KNOWLEDGE-INDEX §2 |
+| entities_shape | 实体 `{ID}.md`（OKF）；索引见 INDEX-GUIDE 第五章 §2 |
 
 ## 2. 层级链
 

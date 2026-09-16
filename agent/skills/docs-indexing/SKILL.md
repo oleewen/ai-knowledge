@@ -3,7 +3,7 @@ name: docs-indexing
 description: >
   生成九章索引指南（各文档根固定为 INDEX-GUIDE.md），维护各 DOC_DIR 下 changelogs/INDEXING-LOG.md 主表（最新在上）。
   用户提到 /docs-indexing、建/更索引、文档地图、Onboarding、整理 INDEX 时，使用本技能。
-  分流：实体/KNOWLEDGE-INDEX → docs-build；overview → docs-distill/extract；SDD → 对应技能，勿单跑本技能吞下游。
+  分流：实体/INDEX-GUIDE 第五章 → docs-build；overview → docs-distill/extract；SDD → 对应技能，勿单跑本技能吞下游。
   推进见 references/gates.md。
 ---
 
@@ -18,8 +18,8 @@ description: >
 
 ## 边界
 
-- 负责：各文档根 `INDEX-GUIDE.md`、`INDEXING-LOG.md`、full/incremental、深度 1–3
-- 不负责：实体与 `KNOWLEDGE-INDEX`（docs-build）；OKF（docs-okf）；SDD；overview（distill/extract）
+- 负责：各文档根 `INDEX-GUIDE.md`（九章骨架）、`INDEXING-LOG.md`、full/incremental、深度 1–3。重写 `INDEX-GUIDE.md` 时**必须保留** `<!-- docs-build:entity-index:begin/end -->` 块。
+- 不负责：第五章实体扫描表（docs-build）；OKF（docs-okf）；SDD；overview（distill/extract）
 
 ## 不这样用
 

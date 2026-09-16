@@ -28,6 +28,17 @@
 
 ---
 
+## 烤干结论摘要（INDEX-GUIDE 第五章实体表）
+
+> 执行以本摘要、三层 `{DOC_DIR}/INDEX-GUIDE.md`、[okf-spec.md](../agent/knowledge/okf-spec.md)、[docs-build/SKILL.md](../agent/skills/docs-build/SKILL.md) 为准。
+
+- **目录导航**：`{DOC_DIR}/knowledge/index.md`（docs-okf `generate_index.py`）
+- **实体扫描表**：`{DOC_DIR}/INDEX-GUIDE.md` 第五章，`<!-- docs-build:entity-index -->` 块（docs-build `generate_knowledge_index.py`）
+- **九章骨架**：docs-indexing；重写须保留实体标记块
+- **已删**：`knowledge/KNOWLEDGE-INDEX.md`、`knowledge/INDEX-GUIDE.md`
+
+---
+
 ## 开放代办
 
 - [ ] 三层 `viz.html` 按 `/docs-okf` 再生（现盘可能仍嵌旧 DESIGN / 旧实体归属文案）

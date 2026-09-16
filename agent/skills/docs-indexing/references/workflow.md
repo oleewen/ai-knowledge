@@ -85,7 +85,7 @@ git ls-files --others --exclude-standard -- "$DOC_DIR"
 agent/skills/docs-indexing/scripts/indexing.sh --mode <mode> --depth <depth>
 ```
 
-6. 生成并写入：按 [nine-chapter-spec.md](nine-chapter-spec.md)、[index-guide-template.md](../assets/index-guide-template.md) 写入 `INDEX-GUIDE.md`；成功后插 LOG（[indexing-log-spec.md](indexing-log-spec.md)、`indexing_log.py`）
+6. 生成并写入：按 [nine-chapter-spec.md](nine-chapter-spec.md)、[index-guide-template.md](../assets/index-guide-template.md) 写入 `INDEX-GUIDE.md`；若目标已有 `<!-- docs-build:entity-index:begin/end -->`，须原样并入第五章，不得清空。成功后插 LOG（[indexing-log-spec.md](indexing-log-spec.md)、`indexing_log.py`）
 7. **烤干**：按写后默认表；检查覆盖面与 `mode/depth`、路径、增量基线解释、`INDEXING-LOG` 是否仅在指南成功后追加
 8. 用户动作：`C/M/G/S/F` 见 unit-cycle-protocol
 

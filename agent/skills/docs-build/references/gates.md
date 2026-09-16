@@ -35,7 +35,7 @@
 第 6 项「写入路径/容器」**必须**写明：
 
 - 当前单元类型：视角批次 / 路径组 / 实体批次
-- 本轮将写入的 `{DOC_DIR}/knowledge/` 下仓库根相对路径（如 `application/knowledge/technical/` 下 `{ID}.md`、`README.md`、`KNOWLEDGE-INDEX.md`）
+- 本轮将写入的 `{DOC_DIR}/knowledge/` 下仓库根相对路径（如 `application/knowledge/technical/` 下 `{ID}.md`、`README.md`、`INDEX-GUIDE.md`）
 
 ## 写后默认
 
@@ -64,11 +64,11 @@
 ## 原子性 / 失败停顿
 
 - 当前单元写入失败时，不得继续写后续批次
-- 当前单元校验失败时，不得继续归并或生成 `KNOWLEDGE-INDEX`
+- 当前单元校验失败时，不得继续归并或生成 `INDEX-GUIDE 第五章`
 - 当前单元未收敛前，不得自动推进下一视角或下一批实体
 
 ## 典型语义问题（烤干）
 
 - 视角范围 / 输出路径 / 跳过策略 / 置信度策略变化
 - 实体 ID 变更或重命名
-- 是否生成 README / `KNOWLEDGE-INDEX`
+- 是否生成 README / `INDEX-GUIDE 第五章`

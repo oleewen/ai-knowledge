@@ -1,6 +1,6 @@
 # knowledge
 
-目录说明见 [README.md](README.md)。实体扫描索引见 [KNOWLEDGE-INDEX.md](KNOWLEDGE-INDEX.md)。
+目录说明见 [README.md](README.md)。实体扫描表见 [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 第五章。
 
 ## 子目录
 
@@ -13,13 +13,12 @@
 
 ## 目录文件
 
-* [KNOWLEDGE-INDEX.md](KNOWLEDGE-INDEX.md)
 * [knowledge-meta.md](knowledge-meta.md)
 
 ## 阅读顺序
 
 1. [README.md](README.md) — 五视角与实体 SSOT  
-2. [KNOWLEDGE-INDEX.md](KNOWLEDGE-INDEX.md) — 实体扫描索引  
+2. [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 第五章 — 实体扫描表  
 3. [overview/README.md](overview/README.md) — overview 缓冲  
 4. 各视角 `README.md` — 业务→产品→应用→数据→技术  
 

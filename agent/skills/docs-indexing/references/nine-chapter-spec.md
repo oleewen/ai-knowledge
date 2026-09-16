@@ -47,6 +47,8 @@
 | 5.3 业务规则 | 规则 ID、描述、约束 |
 | 5.4 枚举定义 | 状态和类型枚举（代码级定义） |
 
+三层知识库（`company` / `system` / `application`）本章可落为 **详细索引**：实体扫描表由 `/docs-build` 写入 `<!-- docs-build:entity-index -->` 块。`/docs-indexing` 重写九章时必须原样保留该块。
+
 ## 六、数据映射（Data Mapping）
 
 | 小节 | 内容 |

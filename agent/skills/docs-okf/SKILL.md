@@ -23,7 +23,7 @@ description: >
 
 | 负责 | 不负责 |
 | ------ | -------- |
-| OKF refresh 编排、目录 `index.md`、validate-okf、viz、产物校验 | `INDEX-GUIDE.md`（docs-indexing）；实体提取与 `KNOWLEDGE-INDEX.md`（docs-build）；SDD |
+| OKF refresh 编排、目录 `index.md`、validate-okf、viz、产物校验 | 九章骨架（docs-indexing）；实体提取与第五章实体块（docs-build）；SDD |
 
 ## 不这样用
 

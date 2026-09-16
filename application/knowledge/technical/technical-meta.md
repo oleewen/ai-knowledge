@@ -13,7 +13,7 @@ title: 技术视角元数据（application/knowledge/technical）
 | 视角 | technical |
 | 层级范围 | application |
 | 说明 | 中间件绑定与关键组件；公司级 TPL、系统级 TSD 在对应层首次定义，本层补齐 TSD reference 并登记 MW/CMP。 |
-| entities_shape | 实体 `{ID}.md`（OKF）；索引见 KNOWLEDGE-INDEX §5 |
+| entities_shape | 实体 `{ID}.md`（OKF）；索引见 INDEX-GUIDE 第五章 §5 |
 
 ## 2. 层级链
 

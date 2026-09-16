@@ -150,14 +150,14 @@
     {
       "id": "archive-not-trigger-001",
       "category": "should-not-trigger",
-      "prompt": "代码重构了一批实体，帮我把 application/knowledge 里的实体 ID 对齐并刷新 KNOWLEDGE-INDEX.md",
+      "prompt": "代码重构了一批实体，帮我把 application/knowledge 里的实体 ID 对齐并刷新 INDEX-GUIDE.md",
       "expected_output": "主路径 docs-build；非以 overview 归档为主。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "须明确 docs-build、实体 ID 或 KNOWLEDGE-INDEX。",
+          "check": "须明确 docs-build、实体 ID 或 INDEX-GUIDE 第五章。",
           "priority": "P0"
         },
         {

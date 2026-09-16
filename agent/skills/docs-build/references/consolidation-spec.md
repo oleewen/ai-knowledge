@@ -1,6 +1,6 @@
 # 归并规范（阶段 4）
 
-[readme-fill-spec.md](readme-fill-spec.md) 之后收口：**扫描**五视角 per-entity concept 文件（含 frontmatter `full_id`），前缀/对称校验，写或更新 **`KNOWLEDGE-INDEX.md`**。
+[readme-fill-spec.md](readme-fill-spec.md) 之后收口：**扫描**五视角 per-entity concept 文件（含 frontmatter `full_id`），前缀/对称校验，写入 **`{DOC_DIR}/INDEX-GUIDE.md` 第五章**（`docs-build:entity-index` 标记块）。
 
 ## 流程
 
@@ -8,7 +8,7 @@
 graph TD
     A[扫描 per-entity .md] --> B[合并 full_id]
     B --> C[跨视角校验]
-    C --> D[更新 KNOWLEDGE-INDEX.md]
+    C --> D[更新 INDEX-GUIDE.md 第五章]
     C --> C1[对称]
     C --> C2[前缀]
     C --> C3[证据]
@@ -16,7 +16,7 @@ graph TD
 
 **前置**：各视角 README 已与实体 concept 同步（[readme-fill-spec.md](readme-fill-spec.md)）。
 
-**扫描范围**：`{DOC_DIR}/knowledge/{perspective}/` 下所有 `.md`，排除 `index.md`、`*-meta.md`、`*-entities.md`、`KNOWLEDGE-INDEX.md`；仅纳入 frontmatter 含非空 `full_id` 的 concept 文件。生成脚本：`agent/skills/docs-build/scripts/generate_knowledge_index.py`。
+**扫描范围**：`{DOC_DIR}/knowledge/{perspective}/` 下所有 `.md`，排除 `index.md`、`*-meta.md`、`*-entities.md`、`INDEX-GUIDE.md`；仅纳入 frontmatter 含非空 `full_id` 的 concept 文件。生成脚本：`agent/skills/docs-build/scripts/generate_knowledge_index.py`。
 
 ## 规则
 
@@ -59,7 +59,7 @@ graph TD
 
 详 [knowledge-schema-template.json](../assets/knowledge-schema-template.json)（字段语义仍适用，载体改为 per-entity 文件）。
 
-## KNOWLEDGE-INDEX 列
+## 实体表列
 
 | 列 | 含义 |
 |----|------|
@@ -82,4 +82,4 @@ graph TD
 
 表头模板：[knowledge-index-template.md](../assets/knowledge-index-template.md)。
 
-**生成方式**：调用 `python3 agent/skills/docs-build/scripts/generate_knowledge_index.py --bundle {application|system|company}`；手工维护时须与扫描结果一致。产物路径：`{DOC_DIR}/knowledge/KNOWLEDGE-INDEX.md`（与目录导航 `knowledge/index.md` 分文件）。
+**生成方式**：调用 `python3 agent/skills/docs-build/scripts/generate_knowledge_index.py --bundle {application|system|company}`。产物：`{DOC_DIR}/INDEX-GUIDE.md` 第五章标记块（九章骨架由 `/docs-indexing` 维护）。目录导航仍是 `knowledge/index.md`。

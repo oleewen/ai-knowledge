@@ -8,7 +8,7 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[4]
-# docs-build 为 KNOWLEDGE-INDEX 生成权威实现；docs-okf 脚本仅 generate_index / okf_lib
+# docs-build 为 INDEX-GUIDE 第五章实体表权威实现；docs-okf 脚本仅 generate_index / okf_lib
 sys.path.insert(0, str(ROOT / "agent" / "skills" / "docs-okf" / "scripts"))
 sys.path.insert(0, str(ROOT / "agent" / "skills" / "docs-build" / "scripts"))
 import generate_index  # noqa: E402
@@ -91,10 +91,32 @@ def test_knowledge_index_full_id_and_evidence():
             encoding="utf-8",
         )
         rendered = generate_knowledge_index.render_knowledge_index(bundle)
-        assert rendered.lstrip().startswith("# KNOWLEDGE-INDEX")
+        assert "### 统一表头规范" in rendered
         assert "| BD | BD-EXAMPLE |" in rendered
         assert "`business/BD-EXAMPLE.md`" in rendered
         assert not rendered.startswith("---")
+
+
+def test_patch_index_guide_chapter_five():
+    existing = (
+        "# G\n\n## 四、模块依赖\n\nx\n\n## 五、详细索引\n\nold\n\n## 六、API / 字典边界\n\ny\n"
+    )
+    block = (
+        generate_knowledge_index.ENTITY_BEGIN
+        + "\npatched-body\n"
+        + generate_knowledge_index.ENTITY_END
+        + "\n"
+    )
+    out = generate_knowledge_index.patch_index_guide(existing, block)
+    assert generate_knowledge_index.ENTITY_BEGIN in out
+    assert "patched-body" in out
+    assert "## 六、API / 字典边界" in out
+    assert "old" not in out
+    again = generate_knowledge_index.patch_index_guide(
+        out, block.replace("patched-body", "second")
+    )
+    assert "second" in again
+    assert again.count(generate_knowledge_index.ENTITY_BEGIN) == 1
 
 
 def test_system_knowledge_index_sections_and_mapping():
@@ -134,6 +156,7 @@ def main() -> None:
         test_render_index_lists_concepts_and_subdirs,
         test_preserve_bundle_root_okf_version,
         test_knowledge_index_full_id_and_evidence,
+        test_patch_index_guide_chapter_five,
         test_system_knowledge_index_sections_and_mapping,
         test_application_knowledge_index_sections_and_mapping,
     ]

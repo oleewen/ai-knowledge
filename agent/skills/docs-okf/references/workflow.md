@@ -36,7 +36,7 @@
 4. `okf-validate.sh`
 5. `validate_viz_index.py`
 
-实体扫描索引 `knowledge/KNOWLEDGE-INDEX.md` **不由本技能写入**；改实体后跑 `/docs-build` 或：
+实体扫描表 `{DOC_DIR}/INDEX-GUIDE.md` 第五章 **不由本技能写入**；改实体后跑 `/docs-build` 或：
 
 ```bash
 python3 agent/skills/docs-build/scripts/generate_knowledge_index.py --bundle "${DOC_DIR}"
@@ -44,7 +44,7 @@ python3 agent/skills/docs-build/scripts/generate_knowledge_index.py --bundle "${
 
 环境变量 `BUNDLE` 或 CLI `--bundle` 可覆盖 `{DOC_DIR}`；覆盖时 viz 输出跟随 bundle 目录名（非主 `KNOWLEDGE_TYPE`）。
 
-> **HARD**：`generate_index.py` 会重写各目录 `index.md`（含 `knowledge/index.md` 目录导航）。实体分表在独立文件 `KNOWLEDGE-INDEX.md`，不被 `generate_index` 冲掉。`validate_viz_index` 要求该文件已存在（由 docs-build 生成）。
+> **HARD**：`generate_index.py` 重写目录 `index.md`。实体表在根 `INDEX-GUIDE.md` 第五章标记块，不被 `generate_index` 冲掉。`validate_viz_index` 要求该标记块存在（docs-build 写入）。
 
 结果摘要至少包含：
 
@@ -52,7 +52,7 @@ python3 agent/skills/docs-build/scripts/generate_knowledge_index.py --bundle "${
 - 是否写入目录 `index.md`
 - `validate-okf` 是否通过
 - `viz.html` 是否生成
-- `KNOWLEDGE-INDEX.md` 是否存在（缺则提示跑 docs-build）
+- `INDEX-GUIDE.md` 第五章实体块是否存在（缺则提示跑 docs-build）
 
 ### 2 validate
 

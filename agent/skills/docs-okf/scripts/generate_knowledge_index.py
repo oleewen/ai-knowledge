@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""已退役：实体索引改由 docs-build 写出 knowledge/KNOWLEDGE-INDEX.md。
+"""已退役：实体表改由 docs-build 写入 {DOC_DIR}/INDEX-GUIDE.md 第五章。
 
 兼容入口：转发到 agent/skills/docs-build/scripts/generate_knowledge_index.py。
 OKF 流水线（okf-indexing.sh）不再调用本脚本。
@@ -36,6 +36,10 @@ def _load_build_module():
 
 _build = _load_build_module()
 render_knowledge_index = _build.render_knowledge_index
+patch_index_guide = _build.patch_index_guide
+render_entity_index_block = _build.render_entity_index_block
+ENTITY_BEGIN = _build.ENTITY_BEGIN
+ENTITY_END = _build.ENTITY_END
 main = _build.main
 
 

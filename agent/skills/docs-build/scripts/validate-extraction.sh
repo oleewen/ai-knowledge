@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # 校验 docs-build 产物。无 CLI 参数；路径来自 .docsconfig（docsconfig.sh）
-# 检查：KNOWLEDGE-INDEX 存在；各视角至少一个含 full_id 的 per-entity .md；
+# 检查：{DOC_DIR}/INDEX-GUIDE.md 含实体块；各视角至少一个含 full_id 的 per-entity .md；
 #       *-entities.md 若仍存在则 WARN（已废弃）
 
 ERRORS=0
@@ -23,7 +23,7 @@ DOC_ROOT="$(docsconfig_resolve_doc_root)"
 cd "$REPO_ROOT" || exit 1
 
 KNOWLEDGE_DIR="${REPO_ROOT}/${DOC_DIR}/knowledge"
-INDEX_FILE="${KNOWLEDGE_DIR}/KNOWLEDGE-INDEX.md"
+INDEX_FILE="${REPO_ROOT}/${DOC_DIR}/INDEX-GUIDE.md"
 
 info()    { echo "[INFO]  $1"; }
 warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
@@ -35,7 +35,7 @@ _is_entity_concept_file() {
   local base
   base="$(basename "$file")"
   case "$base" in
-    index.md | *-meta.md | *-entities.md | KNOWLEDGE-INDEX.md)
+    index.md | *-meta.md | *-entities.md | INDEX-GUIDE.md | KNOWLEDGE-INDEX.md)
       return 1
       ;;
   esac
@@ -50,16 +50,16 @@ echo "DOC_DIR:  ${DOC_DIR}"
 echo "KNOWLEDGE_DIR: ${KNOWLEDGE_DIR}"
 echo ""
 
-# 1. KNOWLEDGE-INDEX.md
+# 1. INDEX-GUIDE.md 第五章实体块
 if [[ -f "${INDEX_FILE}" ]]; then
-  LINE_COUNT=$(wc -l < "${INDEX_FILE}" | tr -d ' ')
-  if [[ ${LINE_COUNT} -gt 5 ]]; then
-    success "KNOWLEDGE-INDEX.md 存在 (${LINE_COUNT} 行)"
+  if grep -q 'docs-build:entity-index:begin' "${INDEX_FILE}"; then
+    LINE_COUNT=$(wc -l < "${INDEX_FILE}" | tr -d ' ')
+    success "INDEX-GUIDE.md 含实体块 (${LINE_COUNT} 行)"
   else
-    warn "KNOWLEDGE-INDEX.md 内容过少 (${LINE_COUNT} 行)"
+    error "INDEX-GUIDE.md 缺少 docs-build 实体块: ${INDEX_FILE}"
   fi
 else
-  error "KNOWLEDGE-INDEX.md 不存在: ${INDEX_FILE}"
+  error "INDEX-GUIDE.md 不存在: ${INDEX_FILE}"
 fi
 
 # 2. knowledge-meta.md

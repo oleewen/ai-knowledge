@@ -29,7 +29,7 @@
   - **`{DOC_DIR}/knowledge/` 根**：`knowledge-meta.md`
   - **Agent 治理 SSOT**：`agent/knowledge/`（见该目录 [README.md](../knowledge/README.md)）
   - **阶段目录**（solutions / analysis / requirements / changelogs）：约定在各目录 `README.md`（无 `{dirname}_meta.yaml`）
-  - **五视角**：`{perspective}-meta.md` + per-entity `{ID}.md`；`index.md` 扫描生成。legacy `*-entities.md` 已废弃
+  - **五视角**：`{perspective}-meta.md` + per-entity `{ID}.md`；`knowledge/index.md` 目录导航（docs-okf）；实体表 ∈ `{DOC_DIR}/INDEX-GUIDE.md` 第五章（docs-build）。legacy `*-entities.md` 已废弃
   - **联邦应用根**（`applications/{app}/`）：`application_meta.yaml`；子目录同模式；规则引用系统库 `agent/knowledge/`
 - **系统库五视角**（`system/knowledge/{perspective}/`；应用层同构）：
   | 视角 | 落点要点 |

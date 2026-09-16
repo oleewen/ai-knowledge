@@ -18,4 +18,4 @@ title: 企业架构
 | 技术 | [technical/](technical/README.md) |
 | overview 缓冲 | [overview/](overview/README.md) |
 
-导航：[index.md](index.md) · [KNOWLEDGE-INDEX.md](KNOWLEDGE-INDEX.md) · 下游 system/application 仅引用本层 ID（BU-*, BD-*, CAP-*, PL-*, SLN-*, TPL-*）；PD/SYS/MDG ∈ 系统库
+导航：[index.md](index.md) · [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 第五章 · 下游 system/application 仅引用本层 ID（BU-*, BD-*, CAP-*, PL-*, SLN-*, TPL-*）；PD/SYS/MDG ∈ 系统库

@@ -28,7 +28,7 @@
 - **AGG 无 MS** → 无根则不造 AGG；标待补充
 - **FT/UC 无 API** → 须绑 API；无则标待补充
 - **未读文件造 ID** → 零幻觉；未读勿写已核实 evidence；可 `confidence: low` 并述因
-- **concept 缺 full_id** → 每个 per-entity `{ID}.md` frontmatter 须非空 `full_id`；否则扫描无法纳入 KNOWLEDGE-INDEX
+- **concept 缺 full_id** → 每个 per-entity `{ID}.md` frontmatter 须非空 `full_id`；否则扫描无法纳入 INDEX-GUIDE 第五章
 
 ## API 四类
 
