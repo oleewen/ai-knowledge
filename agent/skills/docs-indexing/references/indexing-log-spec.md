@@ -27,15 +27,17 @@ ${DOC_DIR}/changelogs/INDEXING-LOG.md
 
 | 列 | 说明 |
 |----|------|
-| `indexing_finished_ms` | 本次运行结束时的 epoch 毫秒，**主锚点**；必须为纯数字 |
+| `indexing_finished_ms` | 本次运行结束时的 epoch 毫秒，**主锚点**；必须为纯数字（表内不变） |
 | `indexed_at` | 结束时刻的 ISO 8601 时间，人类可读，建议 UTC（如 `2026-04-26T10:00:00Z`） |
 | `mode` | `full` 或 `incremental` |
 | `depth` | `1`、`2` 或 `3` |
-| `since_ms` | 本 run 在增量时采用的基线（epoch ms）；全量时填 `0` |
+| `since_ms` | 本 run 在增量时采用的基线（epoch ms）；全量时填 `0`（表内不变） |
 | `output_path` | 本次写出的索引指南（如 `INDEX-GUIDE.md` / `{DOC_DIR}/INDEX-GUIDE.md`；或用户指定）相对 `DOC_DIR` 或仓库根的约定路径，与技能输出一致 |
 | `file_count` | 本 run 统计或扫描涉及的文件数（与 `scan-spec`/实现约定一致，在 spec 中保持同一口径） |
 | `duration_ms` | 本 run 耗时（毫秒） |
 | `summary` | 可空；极短说明，如 `incremental depth3` |
+
+> **Agent 对人**：引用本表 `indexing_finished_ms` / `since_ms` 时，勿只甩纯数字；用 `yyyy-MM-dd HH:mm:ss +08`（`{ms}`），时区 Asia/Shanghai。规范见 [scan-config-onboarding.md §2.0](scan-config-onboarding.md)。**写入本表仍只用纯数字。**
 
 ```markdown
 # INDEXING-LOG

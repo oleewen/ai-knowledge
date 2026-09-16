@@ -16,6 +16,7 @@
 - **选预设≠已确认** → 仍复述 mode/depth/output/since，再 **C**  
 - **擅自降 depth** → 可告知成本；深度由用户定  
 - **默认 output/since 不展示** → 「默认」亦须确认或用户给字面量  
+- **对人只甩 epoch 纯数字** → 展示 `since` / `indexing_finished_ms` / `since_ms` 须 `yyyy-MM-dd HH:mm:ss +08`（`{ms}`）；表与 CLI 仍纯数字（[scan-config-onboarding.md §2.0](references/scan-config-onboarding.md)）  
 - **混淆基线** → 增量锚点首选 LOG **主表首行** `indexing_finished_ms`；变更文件列表用 git（非独立 CHANGE-LOG）  
 
 ## 扫描

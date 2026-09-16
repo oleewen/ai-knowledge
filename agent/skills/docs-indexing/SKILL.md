@@ -15,6 +15,7 @@ description: >
 - 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[simplify-principles.md](../../references/simplify-principles.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写入；收敛后停等用户，不得自动推进下一输出组。
 - 意图澄清第 6 项须列出本轮双路径（仓库根相对）：`INDEX-GUIDE.md` 与对应 `changelogs/INDEXING-LOG.md`。
 - 无基线且请求 incremental 时，须先确认 full/中止/补 since，不得静默继续。
+- 对人展示 `since` / `indexing_finished_ms` / `since_ms`：须 `yyyy-MM-dd HH:mm:ss +08`（`{epoch_ms}`），时区 Asia/Shanghai；表与 `--since` 仍纯数字。见 [scan-config-onboarding.md §2.0](references/scan-config-onboarding.md)。
 
 ## 边界
 

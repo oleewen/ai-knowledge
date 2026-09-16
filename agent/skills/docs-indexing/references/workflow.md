@@ -11,7 +11,7 @@
 ## I/O
 
 - 必需：仓库根、`mode`、`depth`（用户确认）
-- 可选：`output`、`since`；基线候选为 LOG **主表首行** `indexing_finished_ms`（只展示；HTML 回退见 [indexing-log-spec.md](indexing-log-spec.md)）
+- 可选：`output`、`since`；基线候选为 LOG **主表首行** `indexing_finished_ms`（对人只展示；须 [scan-config-onboarding.md §2.0](scan-config-onboarding.md) 双写；HTML 回退见 [indexing-log-spec.md](indexing-log-spec.md)）
 - 产出：索引指南（仓库根或各 DOC_DIR 的 `INDEX-GUIDE.md`）、`changelogs/INDEXING-LOG.md`（新行在表顶）
 - 不产出：知识实体；不改 README/AGENTS；无 CHANGELOG
 
@@ -20,7 +20,7 @@
 - `--mode`：必需；`full` / `incremental`
 - `--depth`：必需；`1` / `2` / `3`
 - `--output`：可选；默认值也须展示确认
-- `--since`：增量按需；epoch ms
+- `--since`：增量按需；内部/落盘为 epoch ms；**对人复述**须 `yyyy-MM-dd HH:mm:ss +08`（`{ms}`），见 [scan-config-onboarding.md §2.0](scan-config-onboarding.md)
 
 详 [scan-spec.md](scan-spec.md)。
 
@@ -55,8 +55,8 @@
 
 1. 选定当前单元（单个输出组）
 2. **意图澄清**：公共六项 + [gates.md](gates.md) 追加字段；第 6 项须列出本轮 `INDEX-GUIDE.md` 与 `*/changelogs/INDEXING-LOG.md` 的**完整仓库根相对路径**；写前 `C` 后方可写入
-3. 环境与基线：读 `INDEXING-LOG` 主表首行或旧 HTML → 候选 `indexing_finished_ms`。[scan-config-onboarding.md](scan-config-onboarding.md) 对齐 DOC_ROOT、基线与输出路径
-4. 增量：Agent 按锚点（主表首行 `indexing_finished_ms`，或显式 `--since` epoch ms）用 git 列 **`DOC_DIR` 下**变更（已提交 + 工作区）；full：跳过。可复制流程（仓库根执行；将 `SINCE_MS`、`DOC_DIR` 换成本轮值）：
+3. 环境与基线：读 `INDEXING-LOG` 主表首行或旧 HTML → 候选 `indexing_finished_ms`；向用户展示时按 [scan-config-onboarding.md §2.0](scan-config-onboarding.md) 双写（Asia/Shanghai）。对齐 DOC_ROOT、基线与输出路径
+4. 增量：Agent 按锚点（主表首行 `indexing_finished_ms`，或显式 `--since` epoch ms）用 git 列 **`DOC_DIR` 下**变更（已提交 + 工作区）；full：跳过。对人解释基线时同样 §2.0。可复制流程（仓库根执行；将 `SINCE_MS`、`DOC_DIR` 换成本轮值）：
 
 ```bash
 # 1) epoch ms → UTC ISO（供 --since）

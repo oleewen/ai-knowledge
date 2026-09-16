@@ -20,6 +20,7 @@
 | --- | --- |
 | INDEX 写成操作手册 | 地图 + 链到 README/Skill |
 | LOG 与指南不同步 | 指南成功后再记 LOG |
+| 对话里只甩 `1714108800000` | `2024-04-26 13:20:00 +08`（`1714108800000`）；见 [scan-config-onboarding.md §2.0](scan-config-onboarding.md) |
 
 ## 特殊允许区
 

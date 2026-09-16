@@ -15,6 +15,8 @@
 | 增量前提 | 无有效基线时，增量不可用，须在步骤 2 说明并请用户选全量或中止 |
 | 用户意图（可选问一句） | 首次建索引 / 大改后重扫 / 日常跟进变更 |
 
+对人展示上述时间锚时，**禁止只甩纯数字**；须用 §2.0 双写格式（表内仍存 epoch ms）。
+
 ---
 
 ## 2. 步骤 2：一次性汇总提问（推荐形态）
@@ -24,8 +26,28 @@
 **须同时满足：**
 
 - 展示 **便捷预设**（见下节），用户可回复「用预设 A」或逐字段给出字面量；
-- 用户确认后，Agent **复述**最终定参（mode / depth / output / since）再进入步骤 3；
+- 用户确认后，Agent **复述**最终定参（mode / depth / output / since）再进入步骤 3；复述中的时间锚须符合 §2.0；
 - 禁止因用户选了预设而省略复述与确认。
+
+### 2.0 对人展示时间锚（Agent 输出）
+
+**落盘 / CLI / 表字段不变**：`indexing_finished_ms`、`since_ms`、`--since` 仍为 epoch 毫秒纯数字。
+
+**凡 Agent 对人说出**这些时间锚（含日志候选、复述 `since`、烤干里解释基线），一律双写，禁止只输出纯数字：
+
+```text
+yyyy-MM-dd HH:mm:ss +08（{epoch_ms}）
+```
+
+- 时区固定 **Asia/Shanghai（UTC+8）**，墙钟后带 `+08`（勿跟机器本地时区漂，勿与 LOG 的 UTC `indexed_at` 混读）。
+- 例：`2024-04-26 13:20:00 +08`（`1714108800000`）
+- 全量 `since_ms=0`：对人说「全量（无 since）」即可，不必硬套日期。
+
+换算（只用于展示；写入仍用 ms）：
+
+```bash
+python3 -c "from datetime import datetime; from zoneinfo import ZoneInfo; ms=1714108800000; print(datetime.fromtimestamp(ms/1000, tz=ZoneInfo('Asia/Shanghai')).strftime('%Y-%m-%d %H:%M:%S +08') + f'（{ms}）')"
+```
 
 ### 2.1 参数说明（嵌入汇总表时可复用）
 
@@ -34,7 +56,7 @@
 | mode | `full` 全量扫描；`incremental` 仅基于变更（须增量前提满足） | `full` / `incremental` |
 | depth | `1` 拓扑；`2` 结构；`3` 精读（应读尽读，见 scan-spec） | `1` / `2` / `3` |
 | --output | 索引指南输出路径（固定文件名 `INDEX-GUIDE.md`；默认指向当前文档根）；默认须展示并确认 | 路径或「采用下列默认」 |
-| --since | 增量用 epoch ms；可从日志展示候选，**以用户确认为准** | 数字或「采用日志候选」 |
+| --since | 增量用 epoch ms（内部）；对人展示须 §2.0 双写；可从日志展示候选，**以用户确认为准** | 数字或「采用日志候选」 |
 
 ### 2.2 便捷预设（可改文案）
 
@@ -60,12 +82,12 @@
   - （说明：若选 incremental，需 INDEXING-LOG 有效基线；当前：[有/无]）
 - **depth**：1 / 2 / 3  
 - **output**：[默认路径说明] 或你指定的路径  
-- **since**（仅 incremental 需要）：[日志候选 epoch ms，若有] 或你指定的值  
+- **since**（仅 incremental 需要）：[日志候选须 §2.0，如 `2024-04-26 13:20:00 +08`（`1714108800000`）] 或你指定的 epoch ms  
 
 **便捷选项**（回复字母即可，我仍会复述完整参数请你最终确认）：  
 A 首次摸底 full+1 · B 结构全量 full+2 · C 全量精读 full+3 · …（按需列出）
 
-你也可以直接写出：`mode=... depth=... output=... since=...`
+你也可以直接写出：`mode=... depth=... output=... since=...`（since 仍可用纯数字；我复述时会按 §2.0 双写）
 ```
 
 ---
