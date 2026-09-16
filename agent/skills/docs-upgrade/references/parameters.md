@@ -7,8 +7,8 @@
 | 参数 | 必选 | 说明 |
 | --- | --- | --- |
 | （工程根） | 是 | 含 `.docsconfig`；脚本从 cwd 向上解析 |
-| `--meta-path PATH` | 否 | 覆盖 links 中 meta 的本机 path（仅本次；不改 yaml） |
-| `--ref REF` | 否 | 对齐的 git ref；默认 `main`；仅 CLI 覆盖（yaml meta 条暂无 `ref` 字段） |
+| `--meta-path PATH` | 否 | 覆盖 links 中 meta 的本机 path（仅本次；不改 yaml；规则同 yaml path） |
+| `--ref REF` | 否 | 显式对齐的 git ref；**默认不传**。有则优先于 path 当前 HEAD；仅 path 无效走 clone 且未传时默认 `main`（yaml meta 条暂无 `ref` 字段） |
 | `--dry-run` | 否 | 整树：只出清单（脚本默认模式之一） |
 | `--apply-scaffold` | 否 | 整树：备份并将「新增骨架」写入本库（须已 `C`） |
 | 文件/目录路径 | 否 | 有 ≥1 个可解析路径则进入**指定路径强制对齐**（与整树互斥）；见下节 |
@@ -30,8 +30,8 @@
 
 | 模式 | 行为 |
 | --- | --- |
-| `--dry-run` | fetch/解析 meta；打印四桶清单；不写盘、不备份、不重写 `agent/`、不改 README |
-| `--apply-scaffold` | fetch/解析；备份将动路径；写入「新增骨架」桶；收尾全树 `agent/`/IDE 段→`~/.agents/` + README 注记（空桶亦跑）；不重填 md、不删本库独有 |
+| `--dry-run` | 解析 meta（见源解析优先级）；打印清单（含整文件覆盖桶）；不写盘、不备份、不重写 `agent/`、不改 README |
+| `--apply-scaffold` | 解析 meta；备份将动路径；写入「新增骨架」桶；收尾全树 `agent/`/IDE 段→`~/.agents/` + README 注记（空桶亦跑）；不重填 md、不删本库独有 |
 
 结构重填与未落位由 Skill/Agent 执行（契约见 [merge-rules.md](merge-rules.md) §5），不在脚本内自动合正文。文件模式的 scaffold / 强制重填亦由 Agent 执行。
 

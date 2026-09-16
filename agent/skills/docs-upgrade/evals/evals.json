@@ -1,7 +1,7 @@
 {
   "skill_name": "docs-upgrade",
   "version": "1.7.0",
-  "description": "评测 docs-upgrade：轻流程；meta 解析；禁清空 install；apply-scaffold 后 agent/ 路径重写；H2至H6 元库结构重填与正文平移（级封顶 H6）；未落位 C 后策略三档（批量文件并入/单文件批量并入/逐项并入；原父级同标题并入、层级递增）；根级 CONTRIBUTING.md 按普通 md；不种 DESIGN.md；与 bootstrap 分流；指定路径强制对齐（无 @）；*-slots 根可升级与软链跳过。",
+  "description": "评测 docs-upgrade：轻流程；meta 解析；禁清空 install；apply-scaffold 后 agent/ 路径重写；H2至H6 元库结构重填与正文平移（级封顶 H6）；未落位 C 后策略三档（批量文件并入/单文件批量并入/逐项并入；原父级同标题并入、层级递增）；根级 CONTRIBUTING.md 按普通 md；根级 DESIGN.md 整文件覆盖；与 bootstrap 分流；指定路径强制对齐（无 @）；*-slots 根可升级与软链跳过。",
   "evals": [
     {
       "id": "upgrade-trigger-001",
@@ -154,14 +154,14 @@
     {
       "id": "upgrade-trigger-007",
       "category": "should-trigger",
-      "prompt": "整树 /docs-upgrade dry-run，确认本库缺少的根级 CONTRIBUTING.md 会进新增骨架（不种 DESIGN.md），而 knowledge-links.yaml 不会被元库覆盖。",
-      "expected_output": "根级 CONTRIBUTING.md 按普通 md 进四桶（本无 scaffold / 已改结构重填）；knowledge-links.yaml 仍永不覆盖；指定这两份同样强制重填。",
+      "prompt": "整树 /docs-upgrade dry-run，确认本库缺少的根级 CONTRIBUTING.md 与 DESIGN.md 会进新增骨架，已改 DESIGN 进整文件覆盖，而 knowledge-links.yaml 不会被元库覆盖。",
+      "expected_output": "根级 CONTRIBUTING.md 按普通 md 进清单（本无 scaffold / 已改结构重填）；根级 DESIGN.md 本无 scaffold、已改进整文件覆盖；knowledge-links.yaml 仍永不覆盖。",
       "assertions": [
         {
           "id": "design-contributing-ordinary-md",
-          "name": "CONTRIBUTING 进四桶",
+          "name": "CONTRIBUTING 与 DESIGN 分桶",
           "type": "must_include",
-          "check": "须体现根级 CONTRIBUTING.md 按普通 md 升级（本无则骨架、已改则 H2至H6 重填，或指定路径强制重填），不得再整份硬排除这两份。",
+          "check": "须体现根级 CONTRIBUTING.md 按普通 md 升级；根级 DESIGN.md 本无则骨架、已改则整文件覆盖（不走 H2 结构重填）；不得再排除 DESIGN。",
           "priority": "P0"
         },
         {

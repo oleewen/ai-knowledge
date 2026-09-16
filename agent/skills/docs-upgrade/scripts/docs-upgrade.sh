@@ -27,17 +27,19 @@ usage() {
 Usage: docs-upgrade.sh [--dry-run | --apply-scaffold] [--meta-path PATH] [--ref REF]
 
 在含 .docsconfig 的工程内执行。读 DOC_ROOT/knowledge-links.yaml 的 type: meta，
-对齐元库 {meta}/{doc_dir}/，输出变更清单；--apply-scaffold 时备份并写入「新增骨架」。
+对齐元库 {meta}/{doc_dir}/，输出变更清单；--apply-scaffold 时备份并写入「新增骨架」与根级 DESIGN 整文件覆盖。
 
   --dry-run          只打印清单（默认）
-  --apply-scaffold   备份将动路径后写入新增骨架；收尾将 agent/ 与 IDE Agent 路径重写为 ~/.agents/（同 docs-install）
-  --meta-path PATH   覆盖 meta 本机 path（不改 yaml）
-  --ref REF          git 对齐引用（默认 main）
+  --apply-scaffold   备份将动路径后写入新增骨架 + 根级 DESIGN.md 整文件覆盖；收尾将 agent/ 与 IDE Agent 路径重写为 ~/.agents/（同 docs-install）
+  --meta-path PATH   覆盖 meta 本机 path（不改 yaml；规则同 yaml path）
+  --ref REF          显式 git ref（优先于 path 当前 HEAD）；不传则：有效 git path 用当前 HEAD；
+                     path 无效再 clone 时默认 main
   -h, --help         本帮助
 
 禁止：不会调用 docs-install 清空 DOC_DIR；不会覆盖 knowledge-links.yaml；
 不会把 README-s.md / README-c.md 当作目标文件名写入（README.md 映射除外）。
-根级 CONTRIBUTING.md 按普通 md 进清单（本无则 scaffold）。
+根级 CONTRIBUTING.md 按普通 md 进清单（本无则 scaffold；已改则结构重填）。
+根级 DESIGN.md：本无则 scaffold；已改则进「整文件覆盖」桶（--apply-scaffold 时以元库为准覆盖，不走 H2 结构重填）。
 忽略 DOC_ROOT 顶层遗留 application-* / system-*（不含 application-slots / system-slots）；
 凡软链（文件或目录）一律跳过不跟随；application-slots / system-slots 根下真文件可升级；
 *-slots/changelogs/** 本有则整文件本库胜（不重填），本无则可 scaffold。
@@ -104,6 +106,11 @@ is_slots_changelog_rel() {
   return 1
 }
 
+# 根级 DESIGN.md：元库模板 SSOT；已改则整文件覆盖（不走 H2 结构重填）
+is_root_design_rel() {
+  [[ "$1" == 'DESIGN.md' ]]
+}
+
 is_excluded_meta_rel() {
   local rel="$1"
   is_legacy_federal_slot_rel "$rel" && return 0
@@ -164,39 +171,58 @@ meta_src_for_local_rel() {
   return 1
 }
 
+meta_git_is_dirty() {
+  local repo="$1"
+  [[ -n "$(git -C "$repo" status --porcelain 2>/dev/null || true)" ]]
+}
+
+# ref 非空 = 显式 --ref；空 = 未传 --ref
 resolve_meta_tree() {
   local meta_path="$1"
   local meta_repo="$2"
   local ref="$3"
-  local work
+  local work archive_ref clone_ref
 
   if [[ -d "$meta_path/.git" ]]; then
-    info ">>> git fetch @ $meta_path (ref=$ref)"
-    git -C "$meta_path" fetch --quiet origin "$ref" 2>/dev/null \
-      || git -C "$meta_path" fetch --quiet origin 2>/dev/null \
-      || warn "git fetch 失败，将使用本机工作区现状: $meta_path"
-    if git -C "$meta_path" rev-parse --verify "origin/$ref" >/dev/null 2>&1; then
-      work="$(mktemp -d "${TMPDIR:-/tmp}/docs-upgrade-meta.XXXXXX")"
-      git -C "$meta_path" archive "origin/$ref" | tar -x -C "$work"
-      META_ROOT="$work"
-      META_CLEANUP="$work"
-    else
-      META_ROOT="$meta_path"
-      META_CLEANUP=""
+    if meta_git_is_dirty "$meta_path"; then
+      error "meta path 工作区有未提交改动，拒绝升级: ${meta_path}（请先提交或清理）"
     fi
+    work="$(mktemp -d "${TMPDIR:-/tmp}/docs-upgrade-meta.XXXXXX")"
+    if [[ -n "$ref" ]]; then
+      info ">>> git fetch @ ${meta_path} (ref=${ref})"
+      git -C "$meta_path" fetch --quiet origin "$ref" 2>/dev/null \
+        || git -C "$meta_path" fetch --quiet origin 2>/dev/null \
+        || warn "git fetch 失败，将尝试本地 ref: ${ref}"
+      if git -C "$meta_path" rev-parse --verify "origin/$ref" >/dev/null 2>&1; then
+        archive_ref="origin/$ref"
+      elif git -C "$meta_path" rev-parse --verify "$ref" >/dev/null 2>&1; then
+        archive_ref="$ref"
+      else
+        rm -rf "$work"
+        error "meta path 找不到 ref（origin/${ref} 与本地 ${ref} 均无）: ${meta_path}"
+      fi
+      info ">>> meta 结构源: git archive ${archive_ref} @ ${meta_path}"
+      git -C "$meta_path" archive "$archive_ref" | tar -x -C "$work"
+    else
+      info ">>> meta 结构源: git archive HEAD @ ${meta_path} (当前分支，未传 --ref)"
+      git -C "$meta_path" archive HEAD | tar -x -C "$work"
+    fi
+    META_ROOT="$work"
+    META_CLEANUP="$work"
   elif [[ -d "$meta_path" && ( -d "$meta_path/application" || -d "$meta_path/system" || -d "$meta_path/company" ) ]]; then
     META_ROOT="$meta_path"
     META_CLEANUP=""
   elif [[ -n "$meta_repo" ]]; then
+    clone_ref="${ref:-main}"
     work="$(mktemp -d "${TMPDIR:-/tmp}/docs-upgrade-clone.XXXXXX")"
-    info ">>> clone $meta_repo @ $ref → $work"
-    if ! git clone --depth 1 --branch "$ref" "$meta_repo" "$work" 2>/dev/null; then
+    info ">>> clone ${meta_repo} @ ${clone_ref} -> ${work}"
+    if ! git clone --depth 1 --branch "$clone_ref" "$meta_repo" "$work" 2>/dev/null; then
       git clone --depth 1 "$meta_repo" "$work"
     fi
     META_ROOT="$work"
     META_CLEANUP="$work"
   else
-    error "meta path 不可用且无 repository: path=$meta_path"
+    error "meta path 不可用且无 repository: path=${meta_path}"
   fi
 }
 
@@ -210,7 +236,7 @@ resolve_meta_root() {
     meta_path="$(abs_path "$META_PATH_OVERRIDE")"
     meta_repo=""
     meta_doc_dir="${KNOWLEDGE_TYPE}"
-    ref="${REF_OVERRIDE:-main}"
+    ref="${REF_OVERRIDE:-}"
   else
     [[ -f "$links_file" ]] || error "缺少 knowledge-links.yaml: $links_file（请先装机或补 type: meta）"
     knowledge_links_load_into_arrays "$links_file" paths repos doc_dirs apps labels types
@@ -224,7 +250,7 @@ resolve_meta_root() {
     meta_path="$(knowledge_link_expand_stored_path "${paths[meta_idx]}")"
     meta_repo="${repos[meta_idx]}"
     meta_doc_dir="${doc_dirs[meta_idx]:-$KNOWLEDGE_TYPE}"
-    ref="${REF_OVERRIDE:-main}"
+    ref="${REF_OVERRIDE:-}"
   fi
 
   resolve_meta_tree "$meta_path" "$meta_repo" "$ref"
@@ -263,7 +289,7 @@ docsconfig_bootstrap_validate
 LINKS_FILE="${DOC_ROOT%/}/knowledge-links.yaml"
 resolve_meta_root "$LINKS_FILE"
 
-declare -a ADD_LIST=() SKIP_LIST=() RESTRUCTURE_LIST=() LOCAL_ONLY_LIST=()
+declare -a ADD_LIST=() SKIP_LIST=() RESTRUCTURE_LIST=() OVERWRITE_LIST=() LOCAL_ONLY_LIST=()
 declare -a IGNORED_SLOT_DIRS=() SKIP_SYMLINK_LIST=()
 declare -A IGNORED_SLOT_SEEN=() SKIP_SYMLINK_SEEN=()
 
@@ -315,7 +341,9 @@ while IFS= read -r -d '' rel; do
     if files_equal_normalized "$src_f" "$dst_f"; then
       SKIP_LIST+=("$local_rel")
     else
-      if [[ "$local_rel" == *.md ]]; then
+      if is_root_design_rel "$local_rel"; then
+        OVERWRITE_LIST+=("$local_rel")
+      elif [[ "$local_rel" == *.md ]]; then
         RESTRUCTURE_LIST+=("$local_rel")
       else
         SKIP_LIST+=("$local_rel (非 md 已改·本库胜)")
@@ -390,10 +418,11 @@ print_bucket '跳过软链' "${SKIP_SYMLINK_LIST[@]+"${SKIP_SYMLINK_LIST[@]}"}"
 print_bucket '新增骨架' "${ADD_LIST[@]+"${ADD_LIST[@]}"}"
 print_bucket '跳过' "${SKIP_LIST[@]+"${SKIP_LIST[@]}"}"
 print_bucket '结构重填' "${RESTRUCTURE_LIST[@]+"${RESTRUCTURE_LIST[@]}"}"
+print_bucket '整文件覆盖' "${OVERWRITE_LIST[@]+"${OVERWRITE_LIST[@]}"}"
 print_bucket '本库独有(保留)' "${LOCAL_ONLY_LIST[@]+"${LOCAL_ONLY_LIST[@]}"}"
 
 if [[ "$APPLY_SCAFFOLD" != '1' ]]; then
-  info "dry-run 完成；实跑骨架写入请用 --apply-scaffold（须 Skill 已取得 C）"
+  info "dry-run 完成；实跑骨架写入请用 --apply-scaffold（须 Skill 已取得 C；含根级 DESIGN 整文件覆盖）"
   exit 0
 fi
 
@@ -403,9 +432,9 @@ for rel in "${RESTRUCTURE_LIST[@]+"${RESTRUCTURE_LIST[@]}"}"; do
   backup_file_to_stamp "${DOC_ROOT%/}/$rel" "$rel"
 done
 
-for rel in "${ADD_LIST[@]+"${ADD_LIST[@]}"}"; do
+for rel in "${ADD_LIST[@]+"${ADD_LIST[@]}"}" "${OVERWRITE_LIST[@]+"${OVERWRITE_LIST[@]}"}"; do
   if is_legacy_federal_slot_rel "$rel"; then
-    warn "跳过遗留槽位骨架（不应出现在新增桶）: $rel"
+    warn "跳过遗留槽位骨架（不应出现在新增/覆盖桶）: $rel"
     continue
   fi
   if path_is_or_under_symlink "${DOC_ROOT%/}" "$rel"; then
@@ -425,10 +454,14 @@ for rel in "${ADD_LIST[@]+"${ADD_LIST[@]}"}"; do
   fi
   mkdir -p "$(dirname "$dst")"
   cp "$src" "$dst"
-  info "写入骨架: $rel"
+  if is_root_design_rel "$rel"; then
+    info "整文件覆盖: $rel"
+  else
+    info "写入骨架: $rel"
+  fi
 done
 
-info "骨架写入完成。结构重填与未落位请由 /docs-upgrade Skill 继续。"
+info "骨架/整文件覆盖写入完成。结构重填与未落位请由 /docs-upgrade Skill 继续。"
 
 # 与 docs-install knowledge 同契约：扫整棵 DOC_ROOT → ~/.agents/ + README 注记
 # （空骨架桶亦跑；dry-run 已在上方退出，不会到达此处）

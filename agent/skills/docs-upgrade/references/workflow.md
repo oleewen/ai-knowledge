@@ -6,7 +6,7 @@
 
 1. 当前工程（含 `.docsconfig`；通常即 cwd 所属工程）
 2. meta 源：默认读 `{DOC_ROOT}/knowledge-links.yaml` 的唯一 `type: meta`；可选 `--meta-path`
-3. git ref（默认 `main`；仅 `--ref` CLI 可覆盖）
+3. 可选 `--ref`（**不传则默认不按 main 对齐**；见「源解析」）
 4. 模式：有 ≥1 个可解析的真实文件/目录路径 → 指定路径强制对齐；无 → 整树（默认先 dry-run）
 
 参数未收口前，不进入执行。同一次单元不混两模式。
@@ -19,10 +19,17 @@
 
 ## 源解析
 
+优先级：**`--ref`（若传）> 有效 path > clone**。`--meta-path` 与 yaml `path` 同规则。
+
 1. `docsconfig_bootstrap_validate`（或等价）读 `.docsconfig`
 2. 缺 config → 硬停，提示 `/docs-install`
 3. 读 links；缺唯一 `type: meta` 且无 `--meta-path` → 硬停，列修复选项（补 meta / `--meta-path` / 重跑 install upsert）
-4. 展开 `path`；若为 git 仓 → `git fetch` 并对齐 ref；path 无效 → 用 `repository` 临时 clone 到工作目录
+4. 展开 `path`（或 `--meta-path`）：
+   - 为 git 仓：`git status --porcelain` 非空 → **硬停**（含已传 `--ref`）
+   - 已传 `--ref`：`fetch` 后 `git archive origin/$ref`，否则本地 `$ref`，都无 → 硬停
+   - 未传 `--ref`：**不 fetch**；`git archive HEAD`（当前检出分支 tip）
+   - path 非 git 但含 `application|system|company` → 直接用该目录
+   - path 无效 → 有 `repository` 则临时 clone（`--ref` 或默认 `main`）
 5. 结构源根 = `{meta_root}/{doc_dir}/`，其中 `doc_dir` 优先 meta 条，否则 `KNOWLEDGE_TYPE`
 
 ## 执行循环：整树
@@ -38,7 +45,7 @@
 bash agent/skills/docs-upgrade/scripts/docs-upgrade.sh --dry-run [--meta-path PATH] [--ref REF]
 ```
 
-脚本输出四桶 +「忽略遗留槽位」+「跳过软链」摘要（见 [merge-rules.md](merge-rules.md)）。展示后立即校核，停等 `C/M/S/F`。
+脚本输出清单桶（新增骨架 / 跳过 / 结构重填 / 整文件覆盖 / 本库独有）+「忽略遗留槽位」+「跳过软链」摘要（见 [merge-rules.md](merge-rules.md)）。展示后立即校核，停等 `C/M/S/F`。
 
 ### 3 实跑（用户 `C` 后）
 

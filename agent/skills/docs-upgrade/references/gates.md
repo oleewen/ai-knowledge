@@ -14,7 +14,7 @@
 
 - 工程根 / `.docsconfig` 可用（`DOC_ROOT`、`KNOWLEDGE_TYPE`）
 - meta 源：links 唯一 `type: meta`，或本次 `--meta-path`
-- ref（默认 `main`；meta 条或 CLI 可覆盖）
+- 可选 `--ref`（默认不传；未传则有效 git path 用当前 HEAD）
 - 模式：整树（默认 dry-run）或文件（指定路径已解析）
 
 宣称完成前须写后 **A/B**（[audience-and-language.md](../../../references/audience-and-language.md) 轻流程默认读者表）。文件模式：整单结束一次 A/B。
@@ -40,7 +40,7 @@
 - DOC_ROOT: <路径>
 - KNOWLEDGE_TYPE: <application|system|company>
 - meta: <path 或 repository>
-- ref: <main 或覆盖>
+- ref: <未传=HEAD / 或显式 --ref>
 - dry-run: <yes|no>
 - 清单: 忽略遗留槽位 I / 跳过软链 Y / 新增骨架 N / 跳过 S / 结构重填 R / 本库独有 L / 工具脚本 T
 
@@ -58,7 +58,7 @@ S 跳过 / F 在已确认前提下补齐同类计划
 - DOC_ROOT: <路径>
 - KNOWLEDGE_TYPE: <application|system|company>
 - meta: <path 或 repository>
-- ref: <main 或覆盖>
+- ref: <未传=HEAD / 或显式 --ref>
 - 备份: 不强制 .docs-init（依赖 git）
 - 名单 N=<n>：
   - <相对或 scripts/…> → 强制重填 | scaffold | 非md跳过覆盖 | 元缺拒绝 | 软链拒绝 | 遗留槽位拒绝 | changelogs本库胜 | 建联覆盖
@@ -88,7 +88,7 @@ C 整文件写入（对齐节重填；有未落位则随后出并入策略三档
 
 ### 逐项并入（选了策略 `3` 后）
 
-所有 md（含根级 `CONTRIBUTING.md`）一次一项：
+所有 md（含根级 `CONTRIBUTING.md`；根级 `DESIGN.md` 动作为整文件覆盖）一次一项：
 
 ```text
 未落位 i/N：<相对路径> § <标题>
