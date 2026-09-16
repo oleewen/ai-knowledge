@@ -47,5 +47,5 @@ bash ~/workspaces/ai-knowledge/agent/skills/docs-upgrade/scripts/docs-upgrade.sh
 
 ```text
 # 文件模式（会话）：/docs-upgrade 并给出若干文件或目录路径（或挂附件）
-# → 总览；C=可处理项+未落位逐项 / M=下钻单文件；无脚本 --path
+# → 总览；C=可处理项；有未落位则 C 后策略三档 / M=下钻单文件；无脚本 --path
 ```

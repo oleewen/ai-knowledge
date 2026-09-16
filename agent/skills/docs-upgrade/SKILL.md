@@ -3,9 +3,9 @@ name: docs-upgrade
 description: >
   将当前工程知识库（读 .docsconfig）对齐最新元库结构：结构/模板以元库为准，
   正文以本库为准；已改 md 按元库 H2至H6 结构重填（同标题不比层级；正文标题相对元库标题级平移）；
-  未落位在 C 流程内逐项确认（挂靠骨架标题 / 追加文末 / 跳过）。
+  未落位在 C 之后出策略三档（批量文件并入 / 单文件批量并入 / 逐项并入；并入=原父级，同标题合并，层级递增）。
   --apply-scaffold 收尾将 agent/ 与 IDE Agent 路径重写为 ~/.agents/（同 docs-install）。
-  指定文件/目录则只强制对齐那些路径（与整树互斥；破跳过；C=可处理项+未落位逐项；M 下钻单文件）。
+  指定文件/目录则只强制对齐那些路径（与整树互斥；破跳过；C=可处理项+未落位策略；M 下钻单文件）。
   元库来自 DOC_ROOT/knowledge-links.yaml 的唯一 type: meta（path 优先 + fetch）。
   用户提到 /docs-upgrade、升级知识库、对齐元库模板、从 meta 刷新骨架、不丢已有知识升级、
   指定文件/目录对齐元库、只升某路径时，使用本技能。
@@ -22,11 +22,11 @@ description: >
 - **两模式互斥**：调用带 ≥1 个可解析为 `DOC_ROOT` 内真实文件/目录的路径（含 IDE 附件解析出的路径）→ **指定路径强制对齐**；无此类路径 → **整树**。同一次调用不混用。不依赖 `@` 前缀；模糊像路径但无法解析 → 先澄清，不默整树也不默文件模式。
 - 轻流程：参数向导 → 风险校核 → `C/M/S/F`（无 `G`、不绑意图澄清）→ [light-flow-actions.md](../../references/light-flow-actions.md)；细节 [gates.md](references/gates.md)。参数未收口前不得写盘。
 - 整树：默认先 **dry-run 清单**；清单未 `C` 前不得实跑。文件模式：先 **解析总览**，总览未 `C` 前不得写盘。
-- **确认粒度**：清单/总览 `C` 与单文件 `C` **同语义**——执行全部可处理项；对齐节按元库结构重填；**未落位算进 `C` 流程**且每条须人回（挂靠 / 追加文末 / 跳过）。`M` = 改参数/名单或下钻单文件。
+- **确认粒度**：清单/总览 `C` 与单文件 `C` **同语义**——执行全部可处理项；对齐节按元库结构重填；**有未落位则 `C` 之后出策略三档**（批量文件并入 / 单文件批量并入 / 逐项并入）。并入=本库原父级（同标题并入、层级递增、父消失则追加文末；见 merge-rules）。`M` = 改参数/名单或下钻单文件。
 - **禁止**调用会清空 `DOC_DIR` 的 `docs-install.sh --scope=knowledge` 主路径。
 - **路径重写（同 docs-install）**：`--apply-scaffold` 收尾须对整棵 `DOC_ROOT` 将裸 `agent/` 与已知 IDE 段（`.cursor/` `.trae/` `.claude/` `.kiro/` `.codex/`，对齐 agent-install）重写为字面 `~/.agents/`，并幂等更新 README「Agent 路径」注记（共享 `rewrite_docs_agent_paths`）。`--dry-run` 不重写。空骨架桶亦跑。结构重填 / 文件模式**不**强制再跑（已知缝）。
-- 合并契约：结构/模板=元库；正文=本库；已改判定=规范化后与元库同路径内容不等；已改 md=同标题（不比层级）填入元库骨架，正文标题相对元库标题级统一平移（级封顶 H6）；未落位=挂靠或追加须确认后才落；本库独有路径永不删。
-- 根级 `CONTRIBUTING.md` 按普通 md 进四桶与文件模式（本无 scaffold；指定路径破跳过强制重填）。未落位与普通 md **一律逐项**。轻流程 `S` 不表示全跳过未落位。
+- 合并契约：结构/模板=元库；正文=本库；已改判定=规范化后与元库同路径内容不等；已改 md=同标题（不比层级）填入元库骨架，正文标题相对元库标题级统一平移（级封顶 H6）；未落位=策略确认后才落（原父级并入 / 改挂 / 追加 / 跳过）；本库独有路径永不删。
+- 根级 `CONTRIBUTING.md` 按普通 md 进四桶与文件模式（本无 scaffold；指定路径破跳过强制重填）。未落位策略与普通 md **同规则**。轻流程 `S` 不表示全跳过未落位。
 - 文件模式强制：指定路径两边都有的 `.md` **破跳过**，一律结构重填；本缺元有 → 仅 scaffold 该路径；元缺 / 软链路径 / 顶层遗留槽位名 → 该条拒绝。非 md：可进名单；已存在不覆盖；仅缺则可 scaffold。`*-slots/changelogs/**` 本有则整文件本库胜（强制也不破）。
 - `knowledge-links.yaml` 永不被元库模板覆盖。
 - **槽位根放开**：`application-slots/`、`system-slots/` 下**非软链真文件**进四桶 / 重填 / 文件模式（与普通路径同）。**凡软链一律跳过**（不跟随）。顶层遗留 `application-*` / `system-*`（不含上述两 slots 名）仍硬忽略。槽位**实例**同步仍归 `/docs-pull`。
@@ -85,4 +85,4 @@ bash /path/to/ai-knowledge/agent/skills/docs-upgrade/scripts/docs-upgrade.sh --a
 
 ## 评测
 
-`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。重点：禁清空 install、meta 解析、清单闸门、未落位在 `C` 内逐项、写后 A/B、与 docs-install 分流、`--apply-scaffold` 后路径重写、文件模式互斥与确认粒度（`C` 可处理项+未落位逐项 / `M` 下钻单文件）、根级 CONTRIBUTING.md 进四桶。
+`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。重点：禁清空 install、meta 解析、清单闸门、未落位策略三档（批量文件/单文件批量/逐项并入）、写后 A/B、与 docs-install 分流、`--apply-scaffold` 后路径重写、文件模式互斥与确认粒度、根级 CONTRIBUTING.md 进四桶。

@@ -2,5 +2,5 @@ interface:
   display_name: "知识库升级"
   short_description: >
     按 .docsconfig 与 type:meta 对齐最新元库结构；正文保本库；
-    H2至H6 元库结构重填（同标题；正文级相对平移）；未落位在 C 内逐项；可选指定路径强制对齐；默认 dry-run。
+    H2至H6 元库结构重填（同标题；正文级相对平移）；未落位 C 后三档并入策略；可选指定路径强制对齐；默认 dry-run。
   default_prompt: "/docs-upgrade 先 dry-run，把当前知识库对齐最新元库结构，不丢已有正文。"

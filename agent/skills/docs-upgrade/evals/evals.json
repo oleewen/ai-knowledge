@@ -1,13 +1,13 @@
 {
   "skill_name": "docs-upgrade",
-  "version": "1.6.1",
-  "description": "评测 docs-upgrade：轻流程；meta 解析；禁清空 install；apply-scaffold 后 agent/ 路径重写；H2至H6 元库结构重填与正文平移（级封顶 H6）；未落位在 C 内逐项（挂靠/追加/跳过）；根级 CONTRIBUTING.md 按普通 md 一律逐项；不种 DESIGN.md；与 bootstrap 分流；指定路径强制对齐（无 @）；C 可处理项+未落位逐项 / M 下钻；*-slots 根可升级与软链跳过。",
+  "version": "1.7.0",
+  "description": "评测 docs-upgrade：轻流程；meta 解析；禁清空 install；apply-scaffold 后 agent/ 路径重写；H2至H6 元库结构重填与正文平移（级封顶 H6）；未落位 C 后策略三档（批量文件并入/单文件批量并入/逐项并入；原父级同标题并入、层级递增）；根级 CONTRIBUTING.md 按普通 md；不种 DESIGN.md；与 bootstrap 分流；指定路径强制对齐（无 @）；*-slots 根可升级与软链跳过。",
   "evals": [
     {
       "id": "upgrade-trigger-001",
       "category": "should-trigger",
       "prompt": "当前工程已有 .docsconfig 和 knowledge-links 的 type:meta，请升级知识库到元库最新，先预览，不要丢已有 knowledge。",
-      "expected_output": "走 docs-upgrade；dry-run 清单；结构=元库、正文=本库；等 C/M/S/F（C=可处理项；未落位在 C 内逐项）；不调用 docs-install 清空 DOC_DIR；实跑 scaffold 后将 agent/ 与 IDE 段重写为 ~/.agents/。",
+      "expected_output": "走 docs-upgrade；dry-run 清单；结构=元库、正文=本库；等 C/M/S/F（C=可处理项；有未落位则 C 后出并入策略三档）；不调用 docs-install 清空 DOC_DIR；实跑 scaffold 后将 agent/ 与 IDE 段重写为 ~/.agents/。",
       "assertions": [
         {
           "id": "light-flow-stop",
@@ -20,7 +20,7 @@
           "id": "one-click-c",
           "name": "C 执行可处理项",
           "type": "must_include",
-          "check": "须体现清单/总览 C 执行全部可处理项（含重填），不得要求默认必须逐文件确认；未落位须在 C 流程内逐项（挂靠/追加/跳过）。",
+          "check": "须体现清单/总览 C 执行全部可处理项（含重填），不得要求默认必须逐文件确认；有未落位时须在 C 之后提供策略三档（批量文件并入 / 单文件批量并入 / 逐项并入）。",
           "priority": "P0"
         },
         {
@@ -65,7 +65,7 @@
       "id": "upgrade-trigger-004",
       "category": "should-trigger",
       "prompt": "对当前知识库执行 /docs-upgrade，并指定 DOC_ROOT 下两个已有 md 文件路径（不要用 @ 前缀），要求对齐元库对应文件。",
-      "expected_output": "指定路径强制对齐；与整树互斥；不要求 @；总览 C=可处理项且未落位在 C 内逐项，M 可下钻单文件；md 破跳过做结构重填；不调用脚本 --path；整单结束 A/B。",
+      "expected_output": "指定路径强制对齐；与整树互斥；不要求 @；总览与单文件 C 后有未落位须出并入策略三档，M 可下钻单文件；md 破跳过做结构重填；不调用脚本 --path；整单结束 A/B。",
       "assertions": [
         {
           "id": "file-mode-mutex",
@@ -85,14 +85,14 @@
           "id": "file-mode-gates",
           "name": "总览 C 与 M 下钻",
           "type": "must_include",
-          "check": "须先解析名单总览；C 表示执行全部可处理项且未落位在本流程内逐项；须支持 M 下钻到单文件；不得把「必须逐文件确认」写成唯一合法路径。",
+          "check": "须先解析名单总览；C 表示执行全部可处理项；有未落位时总览与单文件 C 后均须提供并入策略三档；须支持 M 下钻到单文件；不得把「必须逐文件确认」写成唯一合法路径。",
           "priority": "P0"
         },
         {
           "id": "file-mode-force-refill",
           "name": "强制结构重填",
           "type": "must_include",
-          "check": "须体现指定 md 破跳过、按元库 H2至H6 结构重填且正文保本库（同标题；正文级相对元库标题平移或等价）；未落位在 C 内逐项（挂靠/追加/跳过）。",
+          "check": "须体现指定 md 破跳过、按元库 H2至H6 结构重填且正文保本库（同标题；正文级相对元库标题平移或等价）；有未落位时 C 后出策略三档。",
           "priority": "P0"
         },
         {
@@ -178,20 +178,27 @@
       "id": "upgrade-trigger-002",
       "category": "should-trigger",
       "prompt": "升级后有些章节元库没有、只有本库有，怎么处理？",
-      "expected_output": "未落位清单；在清单/单文件 C 流程内逐项确认（挂靠=子标题 min(父+1,6)+正文再平移；追加文末原样保留层级；跳过）；CONTRIBUTING 亦逐项；不得静默丢弃。",
+      "expected_output": "未落位清单；C 后策略三档（批量文件并入 / 单文件批量并入 / 逐项并入）；并入=原父级、同标题并入、层级递增，父消失则追加文末；逐项可选改挂/追加/跳过；不得静默丢弃。",
       "assertions": [
         {
           "id": "unplaced-confirm",
           "name": "未落位确认",
           "type": "must_include",
-          "check": "须体现未落位经确认后才写入：在清单/整文件 C 流程内逐项（挂靠骨架标题 / 追加文末原样 / 跳过）；含根级 CONTRIBUTING.md 亦逐项；禁止静默删除或静默落位。",
+          "check": "须体现未落位经确认后才写入：C 之后提供策略三档（批量文件并入 / 单文件批量并入 / 逐项并入）；禁止静默删除或静默落位。",
           "priority": "P0"
         },
         {
           "id": "unplaced-hang-shape",
-          "name": "挂靠写入形态",
+          "name": "并入写入形态",
           "type": "must_include",
-          "check": "须体现挂靠时整节作子标题（级=min(父级+1,6)）且正文再相对该子标题平移（含 H6 封顶）；追加文末则原样保留本库层级不做平移。",
+          "check": "须体现并入以本库原父级为目标：父在骨架则挂下（同标题则合并正文，否则新建子节）；层级按标题递增（子级=min(父+1,6)，正文再平移、封顶 H6）；父消失则追加文末原样。",
+          "priority": "P0"
+        },
+        {
+          "id": "unplaced-strategy-three",
+          "name": "总览与单文件三档",
+          "type": "must_include",
+          "check": "须体现总览与单文件在有未落位时均提供三档（批量文件并入 / 单文件批量并入 / 逐项并入），不得只提供逐项。",
           "priority": "P0"
         }
       ],
