@@ -7,12 +7,12 @@ timestamp: "2026-06-21T00:00:00Z"
 full_id: BC-EXAMPLE
 perspective: business
 hierarchy: BC
-parent_id: BSD-EXAMPLE
+parent_id: BSD-EXAMPLE-SUB
 layer_scope: system
 ---
 ## 关系
 
-- parent: BSD-EXAMPLE
+- parent: BSD-EXAMPLE-SUB
 - aggregates:
   - AGG-EXAMPLE
 

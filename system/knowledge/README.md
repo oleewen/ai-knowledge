@@ -18,4 +18,4 @@ title: 系统知识库 — 架构文档
 | 技术 | [technical/](technical/README.md) |
 | overview 缓冲 | [overview/](overview/README.md) |
 
-导航：[index.md](index.md) · [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 第五章 · 上层 reference：BU-*, BD-*, CAP-*, PL-*, SLN-*, TPL-*；本层 SSOT：PD/SYS/MDG 等
+导航：[index.md](index.md) · [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 第五章 · 上层 reference：VC-*, BD-*, 一级 BSD-*, CAP-*, PL-*, SLN-*, TPL-*；本层 SSOT：二级 BSD/PD/SYS/MDG 等

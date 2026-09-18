@@ -34,12 +34,12 @@
 - **系统库五视角**（`system/knowledge/{perspective}/`；应用层同构）：
   | 视角 | 落点要点 |
   | --- | --- |
-  | business | `business-meta.md`；`BD-*.md` = company reference；`BSD-*/` 起为系统 SSOT |
+  | business | `business-meta.md`；`BD-*.md` / 一级 `BSD-*.md` = company reference；二级 `BSD-*/` 起为系统 SSOT |
   | product | `product-meta.md`；不落 PL/SLN；`PD-*/` 本层 SSOT（`parent_id→公司 PL`，`maps_to_sys_id`）；下挂 `PM-*/`→FT→FR→UC/BR |
   | application | `application-meta.md`；`SYS-*.md` 本层 SSOT（`parent_id→公司 SLN`）；`APP-*/APP-*.md`；`APP-*/MS-*/MS-*.md` |
   | data | `data-meta.md`；`MDG-*.md` 本层 SSOT；`DS-*/` 含 DS/ENT；SYS 经 `uses_mdg_ids` |
   | technical | `technical-meta.md`；`TSD-*.md` 系统 SSOT；`MW-*/` 可为 application MW reference；AA `uses_*` |
-- **公司层五视角**（`company/knowledge/{perspective}/`）：叙事 + `{perspective}-meta.md` + 公司级实体（`BU-*`/BD/CAP、`PL-*.md`、**`application/SLN-*.md`**、TPL）；**无 PD/SYS/MDG**
+- **公司层五视角**（`company/knowledge/{perspective}/`）：叙事 + `{perspective}-meta.md` + 公司级实体（`VC-*`、BD、一级 BSD、CAP、`PL-*.md`、**`application/SLN-*.md`**、TPL）；**无二级 BSD/PD/SYS/MDG**
 - **系统阶段目录**：
   | 目录 | 约定 |
   | --- | --- |

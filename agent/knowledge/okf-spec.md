@@ -89,7 +89,7 @@ timestamp: "2026-06-25T00:00:00Z"
 | 实体概念核心键 | `timestamp` | ISO8601 字符串 | ✅ | 形如 `2026-06-25T00:00:00Z` | `"2026-06-25T00:00:00Z"` |
 | 实体概念核心键 | `full_id` | 字符串 | ✅ | 全局唯一 ID，格式：`<hierarchy>-<name>` | `BD-EXAMPLE` / `API-EXAMPLE-001` |
 | 实体概念核心键 | `perspective` | 枚举 | ✅ | 与实体所属视角一致 | `business` / `product` / `application` / `data` / `technical` |
-| 实体概念核心键 | `hierarchy` | 枚举 | ✅ | 与 `type` 一一对应 | `BU` / `BD` / `CAP` / `PL` / `SLN` / `PD` / `SYS` / `MDG` / `TPL` / `BSD` / `BC` / `AGG` / `AB` / `PM` / `BP` / `FT` / `UC` / `BR` / `APP` / `MS` / `DS` / `ENT` / `TSD` / `API` / `TBL` / `MW` / `CMP` |
+| 实体概念核心键 | `hierarchy` | 枚举 | ✅ | 与 `type` 一一对应 | `VC` / `BD` / `CAP` / `PL` / `SLN` / `PD` / `SYS` / `MDG` / `TPL` / `BSD` / `BC` / `AGG` / `AB` / `PM` / `BP` / `FT` / `UC` / `BR` / `APP` / `MS` / `DS` / `ENT` / `TSD` / `API` / `TBL` / `MW` / `CMP` |
 | 实体概念核心键 | `parent_id` | 字符串 \| null | ✅ | 父层 full_id；BD 与 PL 允许 `null` | `BD-EXAMPLE` / `PM-EXAMPLE` / `null` |
 | 实体概念核心键 | `layer_scope` | 枚举 | ✅ | 与知识库路径前缀对应 | `company` / `system` / `application` |
 | 非实体文档键 | `okf_version` | 字符串 | - | 当前只出现在 bundle 根 `index.md` | `"0.1"` / `"1.0"` |
@@ -104,18 +104,18 @@ timestamp: "2026-06-25T00:00:00Z"
 
 ## 3. type 与 hierarchy 映射表
 
-27 行精确映射。`type` 与 `hierarchy` 必须一一对应。
+28 行精确映射。`type` 与 `hierarchy` 必须一一对应。
 
 | hierarchy | type | perspective | 首次定义层 |
 | ----------- | ------ | ------------- | ----------- |
-| BU | `Business Unit` | business | company |
+| VC | `Value Chain` | business | company |
 | BD | `Business Domain` | business | company |
 | CAP | `Business Capability` | business | company |
 | PL | `Product Line` | product | company |
 | SLN | `Solution` | application | company |
 | MDG | `Master Data Domain` | data | system |
 | TPL | `Technical Platform` | technical | company |
-| BSD | `Business Subdomain` | business | system |
+| BSD | `Business Subdomain` | business | company（一级）/ system（二级） |
 | BC | `Bounded Context` | business | system |
 | AGG | `Aggregate` | business | system |
 | AB | `Ability` | business | system |

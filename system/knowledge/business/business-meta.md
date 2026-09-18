@@ -4,7 +4,7 @@ title: 业务视角元数据（system/knowledge/business）
 ---
 # 业务视角元数据（system/knowledge/business）
 
-系统级业务版图（BD→BSD→BC→AGG→AB）视角元数据 SSOT。实例索引：[index.md](../index.md)。
+系统级业务版图（一级 BSD→二级 BSD→BC→AGG→AB）视角元数据 SSOT。实例索引：[index.md](../index.md)。
 
 ---
 
@@ -15,7 +15,7 @@ title: 业务视角元数据（system/knowledge/business）
 | meta_id | `DIR-SYSTEM-KNOWLEDGE-BUSINESS` |
 | 视角 | business |
 | 层级范围 | system |
-| 说明 | 系统级 DDD 业务版图；BD 为 company reference，自 BSD 起为本层 SSOT；应用层承接实现映射。 |
+| 说明 | 系统级 DDD 业务版图；BD / 一级 BSD 为 company reference；自二级 BSD 起为本层 SSOT。 |
 
 ---
 
@@ -23,11 +23,12 @@ title: 业务视角元数据（system/knowledge/business）
 
 | 链序 | 层级代码 | 说明 |
 | --- | --- | --- |
-| 1 | BD | 业务域（公司层 SSOT；系统层为视角根 reference 单文件） |
-| 2 | BSD | 业务子域（系统层首次定义） |
-| 3 | BC | 限界上下文（系统层首次定义） |
-| 4 | AGG | 聚合根（系统层首次定义） |
-| 5 | AB | 领域能力（系统层首次定义） |
+| 1 | BD | 业务域（公司层 SSOT；系统层可为视角根 reference） |
+| 2 | 一级 BSD | 业务子域（公司层 SSOT；系统层可为 reference；`level: 1`） |
+| 3 | 二级 BSD | 业务子域（系统层 SSOT；`level: 2`；父级为一级 BSD） |
+| 4 | BC | 限界上下文（系统层首次定义） |
+| 5 | AGG | 聚合根（系统层首次定义） |
+| 6 | AB | 领域能力（系统层首次定义） |
 
 ---
 
@@ -36,10 +37,11 @@ title: 业务视角元数据（system/knowledge/business）
 | order | key | code | id_pattern | parent |
 | --- | --- | --- | --- | --- |
 | 1 | bd | BD | `BD-{NAME}` | —（reference → company） |
-| 2 | bsd | BSD | `BSD-{NAME}` | BD |
-| 3 | bc | BC | `BC-{NAME}` | BSD |
-| 4 | agg | AGG | `AGG-{NAME}` | BC |
-| 5 | ab | AB | `AB-{NAME}` | AGG |
+| 2 | bsd1 | BSD | `BSD-{NAME}` | BD（`level: 1`） |
+| 3 | bsd2 | BSD | `BSD-{NAME}` | 一级 BSD（`level: 2`） |
+| 4 | bc | BC | `BC-{NAME}` | 二级 BSD |
+| 5 | agg | AGG | `AGG-{NAME}` | BC |
+| 6 | ab | AB | `AB-{NAME}` | AGG |
 
 ---
 
@@ -49,7 +51,7 @@ title: 业务视角元数据（system/knowledge/business）
 | --- | --- | --- |
 | company | `BD-{NAME}.md` | 公司 SSOT |
 | system | `knowledge/business/BD-{NAME}.md` | 视角根 reference（非域文件夹） |
-| system | `knowledge/business/BSD-{NAME}/` | BSD→AB 域扁平树 |
+| system | `knowledge/business/一级BSD-{NAME}/二级BSD-{NAME}/` | 一级 BSD→二级 BSD→BC→AGG→AB 域扁平树 |
 | application | `BD-*.md` | 应用 reference |
 
 ---
@@ -62,8 +64,8 @@ Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详�
 
 | 层级 | 字段 | 建议段落 |
 | --- | --- | --- |
-| BD | `definition_scope: reference`、`strategic_classification` | FM 扩展 / 详细说明 |
-| BSD | `bounded_contexts` | 关系 |
+| 一级 BSD | `definition_scope: reference`、`level: 1` | FM 扩展 / 详细说明 |
+| 二级 BSD | `level: 2`、`parent`、`maps_to_pd` | FM / 关系 |
 | BC | `aggregates`、`implemented_by_app_id` | 关系 / 跨视角 |
 | AGG | `abilities`、`root_entity`、`persisted_as_entity_ids`、`implemented_by_service_ids` | 关系 / 跨视角 / 详细说明 |
 | AB | `capability`（`apis` 多在应用层补全） | 详细说明 / 跨视角 |
@@ -74,7 +76,8 @@ Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详�
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| BD（reference） | company BD.full_id | 上游公司 SSOT |
+| BD / 一级 BSD（reference） | company 同名 full_id | 上游公司 SSOT |
+| 二级 BSD.maps_to_pd | 本库 PD.full_id | 二级 BSD 对标产品服务 |
 | BC.implemented_by_app_id | APP.full_id | 上下文实现应用 |
 | AGG.persisted_as_entity_ids | ENT.full_id | 聚合持久化实体 |
 | AGG.implemented_by_service_ids | MS.full_id | 聚合实现入口簇 |

@@ -8,7 +8,7 @@
 
 ## 目录文件
 
-* [示例产品线](PL-EXAMPLE.md) - 产品线（支持 BD）；一 PL 一 SLN（SLN 在 AA）。
+* [示例产品线](PL-EXAMPLE.md) - 产品线；与一级 BSD 一对一，SLN 仍对标 PL（SLN 在 AA）。
 
 * [product-meta.md](product-meta.md)
 

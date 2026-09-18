@@ -34,14 +34,14 @@ tags: ["glossary", "terminology", "governance"]
 
 | 所属视角 | 缩写 | 英文全称 | 短义 | 说明 |
 | --- | --- | --- | --- | --- |
-| BA | BU | Business Unit | 业务单元 | 能力目录根；下挂 CAP |
-| BA | BD | Business Domain | 业务域 | ∥BU；对标 PL；勿与 BSD 混淆 |
-| BA | CAP | Business Capability | 业务能力 | `parent_id→BU`；由 BD 支撑 |
-| BA | BSD | Business Subdomain | 业务子域 | — |
+| BA | VC | Value Chain | 价值链 | 能力目录根；下挂 CAP，并由 BD 支撑 |
+| BA | BD | Business Domain | 业务域 | 支撑 VC；下挂一级 BSD；勿与 BSD 混淆 |
+| BA | CAP | Business Capability | 业务能力 | 实现价值链；与一级 BSD 一对一映射 |
+| BA | BSD | Business Subdomain | 业务子域 | 仅一级 / 二级；一级对应 PL，二级对应 PD |
 | BA | BC | Bounded Context | 限界上下文 | — |
 | BA | AGG | Aggregate | 聚合根 | — |
 | BA | AB | Ability | 领域能力 | 能力边界 |
-| PA | PL | Product Line | 产品线 | 支持 BD |
+| PA | PL | Product Line | 产品线 | 对应一级 BSD |
 | PA | PD | Product | 产品服务 | 别名：业务服务 |
 | PA | PM | Product Module | 产品模块 | — |
 | PA | BP | Business Process | 业务流程 | — |
@@ -63,7 +63,7 @@ tags: ["glossary", "terminology", "governance"]
 | TA | MW | Middleware Binding | 中间件绑定 | 实例级；非 MS/API 替代 |
 | TA | CMP | Component | 关键组件 | Maven / 共享运行时 |
 
-ID 前缀写作 `BU-` / `BD-` 等，语法见 [naming-conventions.md](naming-conventions.md)。
+ID 前缀写作 `VC-` / `BD-` 等，语法见 [naming-conventions.md](naming-conventions.md)。
 
 ## 映射关系（常用）
 
@@ -71,10 +71,18 @@ ID 前缀写作 `BU-` / `BD-` 等，语法见 [naming-conventions.md](naming-con
 
 | 关系 | 含义 |
 | --- | --- |
-| maps_to_bd_id | **CAP-*** 由哪个 **BD-*** 支撑（单值必填）。 |
-| maps_to_pl_id | **BD-***：由 **PL-*** 提供产品支撑（必填同建）；**SLN-***：对标 **PL-***（必填同建）。 |
-| maps_to_pd_id | 首层 **BSD-*** 对标的本库 **PD-***（与 PD/SYS 同建）。 |
-| maps_to_sys_id | **PD-*** 对标的本库 **SYS-***（与首层 BSD 同建）。 |
+| implements_to_vc | **CAP-*** 实现哪个 **VC-***（单值必填）；VC 侧 `implemented_by_cap` 多值必填。 |
+| implemented_by_cap | **VC-*** 被哪些 **CAP-*** 实现（多值必填）。 |
+| supported_by_bd | **VC-*** 由哪些 **BD-*** 支撑（多值必填）。 |
+| supports_to_vc | **BD-*** 支撑哪个 **VC-***（单值必填）；VC 侧 `supported_by_bd` 多值必填。 |
+| maps_to_bsd | **CAP-*** 与一级 **BSD-*** 一对一映射（单值必填）；一级 BSD 侧同名单值必填。 |
+| maps_to_cap | **一级 BSD-*** 与 **CAP-*** 一对一映射（单值必填）。 |
+| maps_to_pl | **一级 BSD-*** 对标 **PL-***（单值必填）；PL 侧 `maps_to_bsd` 同值。 |
+| maps_to_bsd | **PL-*** 对标一级 **BSD-***（单值必填）；一级 BSD 侧 `maps_to_pl` 同值。 |
+| maps_to_pd | **二级 BSD-*** 对标 **PD-***（单值必填）；PD 侧 `maps_to_bsd` 同值。 |
+| maps_to_bsd | **PD-*** 对标二级 **BSD-***（单值必填）；二级 BSD 侧 `maps_to_pd` 同值。 |
+| maps_to_pl_id | **SLN-*** 对标 **PL-***（必填同建）。 |
+| maps_to_sys_id | **PD-*** 对标的本库 **SYS-***（与二级 BSD 同建）。 |
 | implements_bc_ids | **APP-*** 实现哪些 **BC-***（AA implements BA；SSOT 在 AA）。 |
 | implements_agg_ids | **MS-*** 实现哪些 **AGG-***（AA implements BA）。 |
 | uses_mdg_ids / uses_ds_ids / uses_ent_ids / uses_tbl_ids | AA **uses** DA（`uses_mdg_ids` 挂 SYS；细粒度挂 APP/MS）。 |

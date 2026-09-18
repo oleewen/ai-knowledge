@@ -22,4 +22,4 @@
 
 - 上一级索引：[index.md](../index.md)
 - 上一级说明：[README.md](../README.md)
-- 上游 BD SSOT：公司层 `BD-*`（本层不落 reference 文件）
+- 上游 BD / 一级 BSD SSOT：公司层 `BD-*`、一级 `BSD-*`

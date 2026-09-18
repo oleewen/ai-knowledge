@@ -68,17 +68,18 @@ system/
 ### 统一表头规范
 
 - **标准表头**：`["层级","ID","别名（英文名）","名称","证据链"]`
-- **字段语义**：`ID` 为完整实体 ID（如 `BU-EXAMPLE`）；`别名（英文名）` 为英文编码；`名称` 为中文名称
+- **字段语义**：`ID` 为完整实体 ID（如 `VC-EXAMPLE`）；`别名（英文名）` 为英文编码；`名称` 为中文名称
 - **唯一性约束**：`层级+ID` 全知识库唯一；`层级+别名（英文名）` 全知识库唯一
 
-### §1 业务视角（business · BD → BSD → BC → AGG → AB）
+### §1 业务视角（business · 一级 BSD → 二级 BSD → BC → AGG → AB）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| BSD | BSD-EXAMPLE |  | 示例业务子域 | `business/BSD-EXAMPLE/BSD-EXAMPLE.md` |
-| BC | BC-EXAMPLE |  | 示例限界上下文 | `business/BSD-EXAMPLE/BC-EXAMPLE/BC-EXAMPLE.md` |
-| AGG | AGG-EXAMPLE |  | 示例聚合 | `business/BSD-EXAMPLE/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md` |
-| AB | AB-EXAMPLE |  | 示例能力 | `business/BSD-EXAMPLE/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md` |
+| BSD | BSD-EXAMPLE |  | 示例一级业务子域 | `business/BSD-EXAMPLE/BSD-EXAMPLE.md` |
+| BSD | BSD-EXAMPLE-SUB |  | 示例二级业务子域 | `business/BSD-EXAMPLE/BSD-EXAMPLE-SUB/BSD-EXAMPLE-SUB.md` |
+| BC | BC-EXAMPLE |  | 示例限界上下文 | `business/BSD-EXAMPLE/BSD-EXAMPLE-SUB/BC-EXAMPLE/BC-EXAMPLE.md` |
+| AGG | AGG-EXAMPLE |  | 示例聚合 | `business/BSD-EXAMPLE/BSD-EXAMPLE-SUB/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md` |
+| AB | AB-EXAMPLE |  | 示例能力 | `business/BSD-EXAMPLE/BSD-EXAMPLE-SUB/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md` |
 
 ### §2 产品视角（product · PD → PM → FT → FR → UC/BR · BP）
 
@@ -114,7 +115,7 @@ system/
 |------|----|--------------|------|---------|
 | TSD | TSD-EXAMPLE |  | 中间件域 | `technical/TSD-EXAMPLE.md` |
 
-> 公司级 **TPL-*** / **SLN-*** / **PL-*** 不在本索引登记。本层 **PD / SYS / MDG** 首次定义；产品自 **PD** 起；应用自 **SYS** 起。
+> 公司级 **TPL-*** / **SLN-*** / **PL-*** 不在本索引登记。本层 **二级 BSD / PD / SYS / MDG** 首次定义；产品自 **PD** 起；应用自 **SYS** 起。
 
 ---
 
@@ -122,7 +123,8 @@ system/
 
 | 索引 ID | 命名式 ID（锚点目录） |
 |---------|----------------------|
-| BSD-EXAMPLE | `business/BSD-EXAMPLE/` |
+| BSD-EXAMPLE | `business/BSD-EXAMPLE/BSD-EXAMPLE.md`（一级 reference） |
+| BSD-EXAMPLE-SUB | `business/BSD-EXAMPLE/BSD-EXAMPLE-SUB/BSD-EXAMPLE-SUB.md` |
 | PD-EXAMPLE | `product/PD-EXAMPLE/` |
 | PM-EXAMPLE | `product/PD-EXAMPLE/PM-EXAMPLE/` |
 | SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |

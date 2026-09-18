@@ -63,8 +63,8 @@ graph TD
 
 | 列 | 含义 |
 |----|------|
-| 层级 | hierarchy（如 `BU` / `API`） |
-| ID | 完整实体 ID（如 `BU-EXAMPLE`） |
+| 层级 | hierarchy（如 `VC` / `API`） |
+| ID | 完整实体 ID（如 `VC-EXAMPLE`） |
 | 别名（英文名） | 机器可读英文名 |
 | 名称 | 中文标题 |
 | 证据链 | concept 相对 `knowledge/` 路径（可多来源分号隔） |

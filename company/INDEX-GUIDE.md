@@ -22,7 +22,7 @@ title: company INDEX-GUIDE
 
 ### 1.2 元信息
 
-* **角色**: 公司知识库；`knowledge/` = BU/BD/CAP/PL/SLN/TPL SSOT（无 PD/SYS/MDG）；`system-slots/system-{NAME}` = 软链槽位  
+* **角色**: 公司知识库；`knowledge/` = VC/BD/一级 BSD/CAP/PL/SLN/TPL SSOT（无二级 BSD/PD/SYS/MDG）；`system-slots/system-{NAME}` = 软链槽位  
 * **栈**: Markdown、YAML  
 * **范围**: `knowledge/` · `solutions/` · `analysis/` · `system-slots/` · `changelogs/`  
 
@@ -67,16 +67,17 @@ company/
 ### 统一表头规范
 
 - **标准表头**：`["层级","ID","别名（英文名）","名称","证据链"]`
-- **字段语义**：`ID` 为完整实体 ID（如 `BU-EXAMPLE`）；`别名（英文名）` 为英文编码；`名称` 为中文名称
+- **字段语义**：`ID` 为完整实体 ID（如 `VC-EXAMPLE`）；`别名（英文名）` 为英文编码；`名称` 为中文名称
 - **唯一性约束**：`层级+ID` 全知识库唯一；`层级+别名（英文名）` 全知识库唯一
 
-### §1 业务视角（business · BU / BD / CAP）
+### §1 业务视角（business · VC / BD / 一级 BSD / CAP）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| BU | BU-EXAMPLE |  | 示例业务单元 | `business/BU-EXAMPLE/BU-EXAMPLE.md` |
+| VC | VC-EXAMPLE |  | 示例价值链 | `business/VC-EXAMPLE/VC-EXAMPLE.md` |
 | BD | BD-EXAMPLE |  | 示例业务域 | `business/BD-EXAMPLE.md` |
-| CAP | CAP-EXAMPLE |  | 示例业务能力 | `business/BU-EXAMPLE/CAP-EXAMPLE.md` |
+| BSD | BSD-EXAMPLE |  | 示例一级业务子域 | `business/BSD-EXAMPLE.md` |
+| CAP | CAP-EXAMPLE |  | 示例业务能力 | `business/VC-EXAMPLE/CAP-EXAMPLE.md` |
 
 ### §2 产品视角（product · PL）
 
@@ -96,7 +97,7 @@ company/
 |------|----|--------------|------|---------|
 | TPL | TPL-EXAMPLE |  | 示例技术平台能力 | `technical/TPL-EXAMPLE.md` |
 
-> 本索引登记公司级 **BU / BD / CAP / PL / SLN / TPL**；SLN ∈ application（AA）；无 PD/SYS/MDG（见系统库）。
+> 本索引登记公司级 **VC / BD / 一级 BSD / CAP / PL / SLN / TPL**；SLN ∈ application（AA）；无二级 BSD/PD/SYS/MDG（见系统库）。
 
 ---
 
@@ -104,9 +105,10 @@ company/
 
 | 索引 ID | 命名式 ID（锚点目录） |
 |---------|----------------------|
-| BU-EXAMPLE | `business/BU-EXAMPLE/` |
+| VC-EXAMPLE | `business/VC-EXAMPLE/` |
 | BD-EXAMPLE | `business/BD-EXAMPLE.md` |
-| CAP-EXAMPLE | `business/BU-EXAMPLE/CAP-EXAMPLE.md` |
+| BSD-EXAMPLE | `business/BSD-EXAMPLE.md` |
+| CAP-EXAMPLE | `business/VC-EXAMPLE/CAP-EXAMPLE.md` |
 | PL-EXAMPLE | `product/PL-EXAMPLE.md` |
 | SLN-EXAMPLE | `application/SLN-EXAMPLE.md` |
 | TPL-EXAMPLE | `technical/TPL-EXAMPLE.md` |

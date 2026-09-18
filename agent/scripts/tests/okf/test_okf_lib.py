@@ -22,6 +22,7 @@ def test_parse_frontmatter():
 
 def test_hierarchy_to_type():
     assert okf_lib.hierarchy_to_type("BD") == "Business Domain"
+    assert okf_lib.hierarchy_to_type("VC") == "Value Chain"
     assert okf_lib.hierarchy_to_type("API") == "API Endpoint"
 
 
@@ -111,16 +112,21 @@ def test_entity_relpath_company_bd_uses_full_id():
     assert path == "knowledge/business/BD-CHARGING.md"
 
 
+def test_entity_relpath_company_bsd_flat():
+    path = okf_lib.entity_relpath("business", "BSD-EXAMPLE", bundle="company")
+    assert path == "knowledge/business/BSD-EXAMPLE.md"
+
+
 def test_entity_relpath_company_cap_with_parent():
     path = okf_lib.entity_relpath(
-        "business", "CAP-ORDER", parent_id="BU-EXPRESS", bundle="company"
+        "business", "CAP-ORDER", parent_id="VC-EXPRESS", bundle="company"
     )
-    assert path == "knowledge/business/BU-EXPRESS/CAP-ORDER.md"
+    assert path == "knowledge/business/VC-EXPRESS/CAP-ORDER.md"
 
 
 def test_entity_relpath_company_cap():
     path = okf_lib.entity_relpath("business", "CAP-EXAMPLE", bundle="company")
-    assert path == "knowledge/business/BU-EXAMPLE/CAP-EXAMPLE.md"
+    assert path == "knowledge/business/VC-EXAMPLE/CAP-EXAMPLE.md"
 
 
 def test_entity_relpath_company_tpl():
@@ -157,7 +163,7 @@ def test_hierarchy_first_layer_pd_sys():
     assert okf_lib.hierarchy_first_layer("SYS") == "system"
     assert okf_lib.hierarchy_first_layer("SLN") == "company"
     assert okf_lib.hierarchy_to_perspective("SLN") == "application"
-    assert okf_lib.hierarchy_first_layer("BU") == "company"
+    assert okf_lib.hierarchy_first_layer("VC") == "company"
 
 
 def test_entity_relpath_system_ms_and_mw():
@@ -192,6 +198,24 @@ def test_entity_relpath_system_bd_at_perspective_root():
     assert path == "knowledge/business/BD-EXAMPLE.md"
 
 
+def test_entity_relpath_system_bsd_by_parent():
+    assert (
+        okf_lib.entity_relpath(
+            "business", "BSD-EXAMPLE", parent_id="BD-EXAMPLE", bundle="system"
+        )
+        == "knowledge/business/BSD-EXAMPLE.md"
+    )
+    assert (
+        okf_lib.entity_relpath(
+            "business",
+            "BSD-EXAMPLE-SUB",
+            parent_id="BSD-EXAMPLE",
+            bundle="system",
+        )
+        == "knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE-SUB/BSD-EXAMPLE-SUB.md"
+    )
+
+
 def main() -> None:
     tests = [
         test_parse_frontmatter,
@@ -209,6 +233,7 @@ def main() -> None:
         test_hierarchy_to_type_cap,
         test_entity_relpath_company_bd_flat,
         test_entity_relpath_company_bd_uses_full_id,
+        test_entity_relpath_company_bsd_flat,
         test_entity_relpath_company_cap,
         test_entity_relpath_company_cap_with_parent,
         test_entity_relpath_company_tpl,
@@ -218,6 +243,7 @@ def main() -> None:
         test_entity_relpath_system_ms_and_mw,
         test_entity_relpath_system_ms_requires_parent,
         test_entity_relpath_system_bd_at_perspective_root,
+        test_entity_relpath_system_bsd_by_parent,
     ]
     for fn in tests:
         fn()

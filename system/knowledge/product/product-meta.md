@@ -15,7 +15,7 @@ title: 产品视角元数据（system/knowledge/product）
 | meta_id | `DIR-SYSTEM-KNOWLEDGE-PRODUCT` |
 | 视角 | product |
 | 层级范围 | system |
-| 说明 | PD=产品服务（别名业务服务）；本层首次定义。PL 公司产品 SSOT；SLN 公司 AA（本层不落盘）。PM 须与 PD 同库。 |
+| 说明 | PD=产品服务（别名业务服务）；本层首次定义。PL 公司产品 SSOT；SLN 公司 AA（本层不落盘）。PD 与二级 BSD 一对一。PM 须与 PD 同库。 |
 
 ---
 
@@ -48,7 +48,7 @@ title: 产品视角元数据（system/knowledge/product）
 
 目录：`PD-{NAME}/PD-{NAME}.md` + 其下 `PM-{NAME}/` 树。
 
-硬约束：`PD.maps_to_sys_id` 与首层 `BSD.maps_to_pd_id` **同建同填**；禁跨系统 `PM→PD`。
+硬约束：`PD.maps_to_sys_id` 与二级 `BSD.maps_to_pd` **同建同填**；禁跨系统 `PM→PD`。
 
 ---
 
@@ -56,7 +56,7 @@ title: 产品视角元数据（system/knowledge/product）
 
 | 层级 | 字段 | 说明 |
 | --- | --- | --- |
-| PD | `maps_to_sys_id` | 必填；对标本库 SYS |
+| PD | `maps_to_sys_id`、`maps_to_bsd` | 均必填；分别对标本库 SYS、二级 BSD |
 | PM | `relies_on_context_ids`、`depends_pm_ids` | 跨视角 / 关系 |
 | FT | `realizes_use_case_ids`、`invokes_api_ids` | 跨视角 |
 | BP | `parent_id` 可选 PD/PM | 关系 |
@@ -69,6 +69,7 @@ title: 产品视角元数据（system/knowledge/product）
 | --- | --- | --- |
 | PD.parent_id | 公司 PL.full_id | 产品服务归属产品线 |
 | PD.maps_to_sys_id | 本库 SYS.full_id | 对标系统（应用服务；字段语义 [glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
+| PD.maps_to_bsd | 二级 BSD.full_id | 对标二级业务子域 |
 | PM.parent_id | 本库 PD.full_id | 模块归属产品服务 |
 | PM.relies_on_context_ids | BC.full_id | 模块依赖上下文 |
 

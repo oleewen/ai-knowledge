@@ -37,7 +37,7 @@ title: 知识树元数据（system/knowledge）
 | 字段 | 值 |
 | --- | --- |
 | is_single_source_of_truth | true（系统层实体与叙事 SSOT） |
-| upstream | （公司级 BU/BD/CAP/PL/SLN/TPL 首次定义） |
+| upstream | （公司级 VC/BD/一级 BSD/CAP/PL/SLN/TPL 首次定义） |
 | downstream | （API/TBL/MW/CMP 及实现映射） |
 
 ---
@@ -74,7 +74,7 @@ title: 知识树元数据（system/knowledge）
 | --- | --- |
 | [README.md](README.md) | 五视角架构入口 |
 | knowledge-governance（agent/knowledge） | 系统库设计契约 |
-| BD-*, PL-*, SLN-*, TPL-*, CAP-*, BU-* | 公司层实体 SSOT（上层 reference） |
+| BD-*, 一级 BSD-*, PL-*, SLN-*, TPL-*, CAP-*, VC-* | 公司层实体 SSOT（上层 reference） |
 | naming-conventions（Agent 元知识） | 命名 SSOT |
 
 ---

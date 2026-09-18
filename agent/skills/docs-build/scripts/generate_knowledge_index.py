@@ -16,7 +16,7 @@ import okf_lib  # noqa: E402
 
 _APPLICATION_PERSPECTIVE_SECTIONS: List[Tuple[str, str, List[str]]] = [
     (
-        "§1 业务视角（business · BD → BSD → BC → AGG → AB）",
+        "§1 业务视角（business · 一级 BSD → 二级 BSD → BC → AGG → AB）",
         "business",
         ["BD", "BSD", "BC", "AGG", "AB"],
     ),
@@ -45,9 +45,9 @@ _APPLICATION_PERSPECTIVE_SECTIONS: List[Tuple[str, str, List[str]]] = [
 
 _COMPANY_PERSPECTIVE_SECTIONS: List[Tuple[str, str, List[str]]] = [
     (
-        "§1 业务视角（business · BU / BD / CAP）",
+        "§1 业务视角（business · VC / BD / 一级 BSD / CAP）",
         "business",
-        ["BU", "BD", "CAP"],
+        ["VC", "BD", "BSD", "CAP"],
     ),
     (
         "§2 产品视角（product · PL）",
@@ -220,13 +220,14 @@ def _render_section(
 def _default_suffix(bundle: str) -> str:
     if bundle == "company":
         footer_note = (
-            "> 本索引登记公司级 **BU / BD / CAP / PL / SLN / TPL**；"
-            "SLN ∈ application（AA）；无 PD/SYS/MDG（见系统库）。"
+            "> 本索引登记公司级 **VC / BD / 一级 BSD / CAP / PL / SLN / TPL**；"
+            "SLN ∈ application（AA）；无二级 BSD/PD/SYS/MDG（见系统库）。"
         )
         mapping_rows = [
-            "| BU-EXAMPLE | `business/BU-EXAMPLE/` |",
+            "| VC-EXAMPLE | `business/VC-EXAMPLE/` |",
             "| BD-EXAMPLE | `business/BD-EXAMPLE.md` |",
-            "| CAP-EXAMPLE | `business/BU-EXAMPLE/CAP-EXAMPLE.md` |",
+            "| BSD-EXAMPLE | `business/BSD-EXAMPLE.md` |",
+            "| CAP-EXAMPLE | `business/VC-EXAMPLE/CAP-EXAMPLE.md` |",
             "| PL-EXAMPLE | `product/PL-EXAMPLE.md` |",
             "| SLN-EXAMPLE | `application/SLN-EXAMPLE.md` |",
             "| TPL-EXAMPLE | `technical/TPL-EXAMPLE.md` |",
@@ -234,10 +235,11 @@ def _default_suffix(bundle: str) -> str:
     elif bundle == "system":
         footer_note = (
             "> 公司级 **TPL-*** / **SLN-*** / **PL-*** 不在本索引登记。"
-            "本层 **PD / SYS / MDG** 首次定义；产品自 **PD** 起；应用自 **SYS** 起。"
+            "本层 **二级 BSD / PD / SYS / MDG** 首次定义；产品自 **PD** 起；应用自 **SYS** 起。"
         )
         mapping_rows = [
-            "| BSD-EXAMPLE | `business/BSD-EXAMPLE/` |",
+            "| BSD-EXAMPLE | `business/BSD-EXAMPLE/BSD-EXAMPLE.md`（一级 reference） |",
+            "| BSD-EXAMPLE-SUB | `business/BSD-EXAMPLE/BSD-EXAMPLE-SUB/BSD-EXAMPLE-SUB.md` |",
             "| PD-EXAMPLE | `product/PD-EXAMPLE/` |",
             "| PM-EXAMPLE | `product/PD-EXAMPLE/PM-EXAMPLE/` |",
             "| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |",
@@ -303,7 +305,7 @@ def render_knowledge_index(
         "### 统一表头规范",
         "",
         '- **标准表头**：`["层级","ID","别名（英文名）","名称","证据链"]`',
-        "- **字段语义**：`ID` 为完整实体 ID（如 `BU-EXAMPLE`）；`别名（英文名）` 为英文编码；`名称` 为中文名称",
+        "- **字段语义**：`ID` 为完整实体 ID（如 `VC-EXAMPLE`）；`别名（英文名）` 为英文编码；`名称` 为中文名称",
         "- **唯一性约束**：`层级+ID` 全知识库唯一；`层级+别名（英文名）` 全知识库唯一",
         "",
     ]

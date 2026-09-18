@@ -1,32 +1,35 @@
 ---
 type: Business Subdomain
 title: 示例一级业务子域
-description: 公司层一级 BSD 的系统层 reference。
+description: 公司层一级 BSD；挂 BD，对应 PL，并与 CAP 一对一映射。
 tags: [business, BSD]
 timestamp: "2026-09-18T00:00:00Z"
 full_id: BSD-EXAMPLE
 perspective: business
 hierarchy: BSD
 parent_id: BD-EXAMPLE
-layer_scope: system
-definition_scope: reference
+layer_scope: company
 level: 1
 parent: BD-EXAMPLE
+maps_to_pl: PL-EXAMPLE
+maps_to_cap: CAP-EXAMPLE
 ---
 ## 关系
 
 - parent: BD-EXAMPLE
 - children:
   - BSD-EXAMPLE-SUB
+- maps_to_pl: PL-EXAMPLE
+- maps_to_cap: CAP-EXAMPLE
 
 ## 跨视角
 
-- 上游公司 SSOT：公司层 `BSD-EXAMPLE`
+- 对标产品线：PL-EXAMPLE
 
 ## 详细说明
 
-- definition_scope: reference
+- definition_scope: local
 
 ## 依据与证据
 
-公司层 `knowledge/business/BSD-EXAMPLE.md`
+示例数据

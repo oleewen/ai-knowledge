@@ -161,21 +161,28 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 ### 提取规则
 
+#### VC（价值链层级）
+
+- 提取自公司价值链叙事、商业模式资料
+- **必须字段**：`full_id`（如 `VC-ORDER-FULFILLMENT`）、`description`、`supported_by_bd`、`implemented_by_cap`
+- **禁止**：把组织部门直接当 VC；CAP 与 VC 混用
+
 #### BD（业务域层级）
 
 - 提取自包路径域名首段、AGENTS.md 业务域定义
-- **必须字段**：`full_id`（如 `BD-CHARGING-APPEAL`）、`description`、`strategic_classification`（core_domain/supporting/generic）、`children`（子域 full_id 列表）
+- **必须字段**：`full_id`（如 `BD-CHARGING-APPEAL`）、`description`、`strategic_classification`（core_domain/supporting/generic）、`supports_to_vc`、`children`（一级 BSD full_id 列表）
 
 #### BSD（业务子域层级）
 
-- 提取自 BC 与 BD 间的包路径段
-- **必须字段**：`full_id`、`parent_id`（所属 BD）、`description`、`bounded_contexts`（BC full_id 列表）
-- **禁止**：将 BC 直接作为 BSD、跨业务域合并 BSD
+- 一级提取自公司业务版图：`level: 1`、`parent` 所属 BD、`maps_to_pl`、`maps_to_cap`，公司层落盘
+- 二级提取自 BC 与一级 BSD 间的包路径段：`level: 2`、`parent` 所属一级 BSD、`maps_to_pd`，系统层落盘
+- **必须字段**：`full_id`、`parent_id`、`level`、`parent`、`description`
+- **禁止**：三级及以下 BSD、将 BC 直接作为 BSD、跨一级 BSD 合并二级 BSD
 
 #### BC（限界上下文层级）
 
 - 提取自宿主类父包名、限界上下文包路径
-- **必须字段**：`full_id`（如 `BC-BILLING-APPEAL-CORE`）、`parent_id`、`description`、`implemented_by_app_id`、`aggregates`（AGG full_id 列表）
+- **必须字段**：`full_id`（如 `BC-BILLING-APPEAL-CORE`）、`parent_id`（所属二级 BSD）、`description`、`implemented_by_app_id`、`aggregates`（AGG full_id 列表）
 - **可选字段**：`ubiquitous_language`（通用语言词汇表）
 - **禁止**：使用 Maven 模块名作为 BC-ID、单包对应多个 BC-ID
 
@@ -194,7 +201,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 ### 输出结构
 
-业务视角每个 BD/BSD/BC/AGG/AB 各一 `{ID}.md`；`hierarchy` 与 `parent_id`/`children` 写在 frontmatter。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)。
+业务视角：公司层每个 VC/BD/一级 BSD/CAP 各一 `{ID}.md`；系统层每个二级 BSD/BC/AGG/AB 各一 `{ID}.md`；`hierarchy` 与 `parent_id`/`children` 写在 frontmatter。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)。
 
 ---
 
@@ -212,12 +219,12 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 #### PL（产品线层级）
 
 - 提取自 README.md 产品概述、SYS-* 系统定义（公司层）
-- **必须字段**：`full_id`（如 `PL-BILLING-APPEAL`）、`description`、`target_users`（目标用户角色列表）
+- **必须字段**：`full_id`（如 `PL-BILLING-APPEAL`）、`description`、`maps_to_bsd`（一级 BSD）、`target_users`（目标用户角色列表）
 
 #### PD（产品服务层级）
 
 - 提取自产品架构、解决方案边界；`parent_id` 所属 PL（公司层 SSOT）；**PD 系统层首次定义**
-- **必须字段**：`full_id`（如 `PD-BILLING-APPEAL`）、`parent_id`（所属 PL）、`maps_to_sys_id`
+- **必须字段**：`full_id`（如 `PD-BILLING-APPEAL`）、`parent_id`（所属 PL）、`maps_to_sys_id`、`maps_to_bsd`（二级 BSD）
 - 公司/应用不落 PD 文件；`PM.parent_id` 引用系统 `PD-*`（有 parent 则 HTTP，否则纯 ID）
 
 #### PM（产品模块层级）
@@ -285,8 +292,9 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
                     ┌─────────────────────┴─────────────────────┐
                     ▼                                           ▼
               业务视角                                    产品视角
-       BD → BSD → BC → AGG → AB                  PL → PD → PM → FT → UC
-            引用 MS-*    引用 API-*            引用 SYS-*  引用 MS-*  引用 API-*
+  VC ↔ CAP ↔ 一级 BSD → 二级 BSD → BC → AGG → AB    一级 BSD ↔ PL → PD → PM → FT → UC
+      ↑                引用 MS-*  引用 API-*             ↑       引用 SYS-* 引用 MS-* 引用 API-*
+      BD ────────────────────────────────────────────────┘
 ```
 
 ---

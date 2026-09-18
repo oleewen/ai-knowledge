@@ -11,7 +11,7 @@ title: 产品线
 
 ## 产品线清单（PL）
 
-PL 编号、定位、状态及与 BD 对应。PL = 产品线（支持 BD）；对标方案见公司 application · SLN。
+PL 编号、定位、状态及与一级 BSD 对应。PL = 产品线；对标方案见公司 application · SLN。
 
 ## 产品线职责与边界
 

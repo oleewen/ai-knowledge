@@ -21,8 +21,9 @@ title: 业务能力
 
 CAP 对标 PL / SLN 为**推导路径**（不新增 CAP 直连字段）：
 
-1. `CAP.maps_to_bd_id` → BD  
-2. `BD.maps_to_pl_id` → PL  
+1. `CAP.implements_to_vc` → VC  
+2. `CAP.maps_to_bsd` → 一级 BSD  
+3. 一级 BSD `maps_to_pl` → PL  
 3. `SLN.maps_to_pl_id` → 同一 PL（一 PL 一 SLN）
 
 公司只记原则与缺口；不落 PD/SYS。

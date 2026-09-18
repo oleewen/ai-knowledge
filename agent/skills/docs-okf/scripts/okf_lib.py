@@ -60,7 +60,7 @@ def normalize_section_heading(title: str) -> Optional[str]:
     return LEGACY_SECTION_ALIASES.get(title)
 
 HIERARCHY_TO_TYPE: Dict[str, str] = {
-    "BU": "Business Unit",
+    "VC": "Value Chain",
     "BD": "Business Domain",
     "BSD": "Business Subdomain",
     "BC": "Bounded Context",
@@ -107,7 +107,7 @@ SYSTEM_PERSPECTIVE_DOMAIN_ANCHOR: Dict[str, str] = {
 }
 
 COMPANY_PERSPECTIVE_DOMAIN_ANCHOR: Dict[str, str] = {
-    "business": "BU-EXAMPLE",
+    "business": "VC-EXAMPLE",
     "product": "PL-EXAMPLE",
     "application": "SLN-EXAMPLE",
     "data": "MDG-EXAMPLE",
@@ -141,7 +141,7 @@ REFERENCE_FULL_IDS = frozenset(
 _DEFAULT_PRODUCT_PL = "PL-EXAMPLE"
 _DEFAULT_PRODUCT_PD = "PD-EXAMPLE"
 _DEFAULT_PRODUCT_PM = "PM-EXAMPLE"
-_DEFAULT_BUSINESS_BU = "BU-EXAMPLE"
+_DEFAULT_BUSINESS_VC = "VC-EXAMPLE"
 _DEFAULT_DATA_DS = "DS-EXAMPLE"
 
 
@@ -255,7 +255,7 @@ HIERARCHY_TO_PERSPECTIVE: Dict[str, str] = {
 
 # 首次定义层（SSOT：agent/knowledge/knowledge-governance.md「各层聚焦摘要」）
 HIERARCHY_FIRST_LAYER: Dict[str, str] = {
-    "BU": "company",
+    "VC": "company",
     "BD": "company",
     "CAP": "company",
     "PL": "company",
@@ -319,13 +319,15 @@ def entity_relpath(
     """相对 bundle 根的 concept 路径（域扁平树）。"""
     prefix = _id_prefix(full_id)
     if bundle == "company":
-        if perspective == "business" and prefix == "BU":
+        if perspective == "business" and prefix == "VC":
             return f"knowledge/business/{full_id}/{full_id}.md"
         if perspective == "business" and prefix == "BD":
             return f"knowledge/business/{full_id}.md"
+        if perspective == "business" and prefix == "BSD":
+            return f"knowledge/business/{full_id}.md"
         if perspective == "business" and prefix == "CAP":
-            bu = parent_id or _DEFAULT_BUSINESS_BU
-            return f"knowledge/business/{bu}/{full_id}.md"
+            vc = parent_id or _DEFAULT_BUSINESS_VC
+            return f"knowledge/business/{vc}/{full_id}.md"
         if perspective == "product" and prefix == "PL":
             return f"knowledge/product/{full_id}.md"
         if perspective == "application" and prefix == "SLN":
@@ -342,6 +344,10 @@ def entity_relpath(
     if bundle == "system":
         if perspective == "business" and prefix == "BD":
             return f"knowledge/business/{full_id}.md"
+        if perspective == "business" and prefix == "BSD":
+            if not parent_id or parent_id.startswith("BD-"):
+                return f"knowledge/business/{full_id}.md"
+            return f"knowledge/business/{parent_id}/{full_id}/{full_id}.md"
         if perspective == "product" and prefix == "PL":
             return f"knowledge/product/{full_id}.md"
         if perspective == "product" and prefix == "PD":

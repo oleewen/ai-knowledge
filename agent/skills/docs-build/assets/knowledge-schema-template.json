@@ -145,6 +145,20 @@
     "confidence": "high",
     "entities": [
       {
+        "hierarchy": "VC",
+        "id": "001",
+        "full_id": "VC-ORDER-FULFILLMENT",
+        "alias": "OrderFulfillmentValueChain",
+        "name": "订单履约价值链",
+        "description": "端到端订单履约价值链",
+        "supported_by_bd": ["BD-CHARGING-APPEAL"],
+        "implemented_by_cap": ["CAP-ORDER-FULFILLMENT"],
+        "evidence_chain": [
+          { "source": "README.md §价值链", "confidence": "high", "type": "document" }
+        ],
+        "cross_references": { "business": ["BD-CHARGING-APPEAL"] }
+      },
+      {
         "hierarchy": "BD",
         "id": "001",
         "full_id": "BD-CHARGING-APPEAL",
@@ -152,6 +166,7 @@
         "name": "计费申诉域",
         "description": "顶层业务域",
         "strategic_classification": "core_domain",
+        "supports_to_vc": "VC-ORDER-FULFILLMENT",
         "children": ["BSD-BILLING-APPEAL"],
         "evidence_chain": [
           { "source": "com.company.billing.charging.appeal（顶层包路径）", "confidence": "high", "type": "code" }

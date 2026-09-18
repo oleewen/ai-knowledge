@@ -2,6 +2,7 @@
 
 ## 子目录
 
+* [BSD-EXAMPLE-SUB](BSD-EXAMPLE-SUB/index.md) - 二级业务子域样例
 * [BC-EXAMPLE](BC-EXAMPLE/index.md) - 仅用于演示业务视角数据结构（示例）。
 
 ## 目录文件

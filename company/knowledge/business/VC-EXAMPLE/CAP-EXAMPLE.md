@@ -1,20 +1,21 @@
 ---
 type: Business Capability
 title: 示例业务能力
-description: 演示公司级 CAP；parent_id→BU；CAP 由 BD 支撑（maps_to_bd_id）。
+description: 演示公司级 CAP；实现 VC，并与一级 BSD 一对一映射。
 tags: [business, CAP]
-timestamp: "2026-09-13T00:00:00Z"
+timestamp: "2026-09-18T00:00:00Z"
 full_id: CAP-EXAMPLE
 perspective: business
 hierarchy: CAP
-parent_id: BU-EXAMPLE
+parent_id: null
 layer_scope: company
-maps_to_bd_id: BD-EXAMPLE
+implements_to_vc: VC-EXAMPLE
+maps_to_bsd: BSD-EXAMPLE
 ---
 ## 关系
 
-- parent: BU-EXAMPLE
-- maps_to_bd_id: BD-EXAMPLE
+- implements_to_vc: VC-EXAMPLE
+- maps_to_bsd: BSD-EXAMPLE
 
 ## 跨视角
 
