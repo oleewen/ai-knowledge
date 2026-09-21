@@ -34,6 +34,15 @@ assert_contains "~/.agents/skills/docs-indexing" "$CHG_README"
 assert_not_contains "agent/skills/docs-indexing" "$CHG_README"
 assert_not_contains ".claude/skills/docs-indexing" "$CHG_README"
 
+printf '%s\n' '../agent/knowledge/a.md' '../../agent/skills/b.md' '../../../agent/references/c.md' >"$DOCS_DIR/paths.md"
+(
+  cd "$DOCS_DIR"
+  source "$ROOT_DIR/agent/scripts/lib/rewrite.sh"
+  rewrite_agent_path_segment_in_tree "$DOCS_DIR"
+)
+printf '%s\n' '~/.agents/knowledge/a.md' '~/.agents/skills/b.md' '~/.agents/references/c.md' >"$DOCS_DIR/expected-paths.md"
+cmp -s "$DOCS_DIR/paths.md" "$DOCS_DIR/expected-paths.md" || fail "多层 ../agent/ 未全部重写为 ~/.agents/"
+
 ROOT_README="$DOCS_DIR/README.md"
 assert_file_exists "$ROOT_README"
 assert_contains "<!-- sdx-agent-dirs-note:begin -->" "$ROOT_README"

@@ -56,7 +56,7 @@ bash agent/skills/docs-upgrade/scripts/docs-upgrade.sh --dry-run [--meta-path PA
    ```
 
    将改路径 mirror 到 `{REPO_ROOT}/.docs-init/upgrade-{stamp}/`，再写入元库新增且本库缺失的允许文件。
-   脚本收尾：与 `/docs-install` 同契约，对整棵 `DOC_ROOT` 将 `agent/` 与已知 IDE Agent 路径重写为 `~/.agents/`，并更新 README Agent 路径注记（空骨架桶亦跑；`--dry-run` 不做）。
+   脚本收尾：与 `/docs-install` 同契约，对整棵 `DOC_ROOT` 将裸 `agent/`、多层上跳 `../agent/` 与已知 IDE Agent 路径重写为 `~/.agents/`，并更新 README Agent 路径注记（空骨架桶亦跑；`--dry-run` 不做）。
 
 2. **结构重填**（Agent）：对「结构重填」桶中每个 `.md`，按 [merge-rules.md](merge-rules.md) §5（H2至H6 元库结构、同标题不比层级、正文相对元库标题级平移且封顶 H6）；产出**未落位节清单**（本库有、元库无同标题）。本步**不**自动再跑路径重写。
    - 清单 `C`：处理全部可处理重填项；对齐节按 §5 写入；有未落位则随后出策略三档（见 [gates.md](gates.md)）

@@ -44,8 +44,10 @@ rewrite_agent_path_segment_in_file() {
         die "AGENT_SLASH unset\n" unless defined $ENV{AGENT_SLASH} && length $ENV{AGENT_SLASH};
         die "IDE_DIR_RE unset\n" unless defined $ENV{IDE_DIR_RE} && length $ENV{IDE_DIR_RE};
         our $ide = $ENV{IDE_DIR_RE};
+        our $upagent = qr/(?:\.\.\/)+agent\//;
       }
       s{\.(?:$ide)/}{$ENV{AGENT_SLASH}}g;
+      s{$upagent}{$ENV{AGENT_SLASH}}g;
       s{\bagent/}{$ENV{AGENT_SLASH}}g;
     ' "$file" 2>/dev/null; then
     warn "重写 agent/ 路径失败：$file"
@@ -114,7 +116,7 @@ inject_readme_agent_note() {
   rm -f "$note_tmp"
 }
 
-# 将知识库树中 agent/ 与已知 IDE Agent 路径重写为 ~/.agents/，并更新 README 注记（docs-install / docs-upgrade 共用）
+# 将知识库树中 agent/（含 ../agent/、../../agent/ 等多层上跳）与已知 IDE Agent 路径重写为 ~/.agents/，并更新 README 注记（docs-install / docs-upgrade 共用）
 # 用法：rewrite_docs_agent_paths <docs_abs> [ignored_legacy_arg]
 rewrite_docs_agent_paths() {
   local docs_abs="${1:?}"

@@ -25,7 +25,7 @@ description: >
 - 整树：默认先 **dry-run 清单**；清单未 `C` 前不得实跑。文件模式：先 **解析总览**，总览未 `C` 前不得写盘。
 - **确认粒度**：清单/总览 `C` 与单文件 `C` **同语义**——执行全部可处理项；对齐节按元库结构重填；**有未落位则 `C` 之后出策略三档**（批量文件并入 / 单文件批量并入 / 逐项并入）。并入=本库原父级（同标题并入、层级递增、父消失则追加文末；见 merge-rules）。`M` = 改参数/名单或下钻单文件。
 - **禁止**调用会清空 `DOC_DIR` 的 `docs-install.sh --scope=knowledge` 主路径。
-- **路径重写（同 docs-install）**：`--apply-scaffold` 收尾须对整棵 `DOC_ROOT` 将裸 `agent/` 与已知 IDE 段（`.cursor/` `.trae/` `.claude/` `.kiro/` `.codex/`，对齐 agent-install）重写为字面 `~/.agents/`，并幂等更新 README「Agent 路径」注记（共享 `rewrite_docs_agent_paths`）。`--dry-run` 不重写。空骨架桶亦跑。结构重填 / 文件模式**不**强制再跑（已知缝）。
+- **路径重写（同 docs-install）**：`--apply-scaffold` 收尾须对整棵 `DOC_ROOT` 将裸 `agent/`、多层上跳 `../agent/`（含 `../../agent/` 等）与已知 IDE 段（`.cursor/` `.trae/` `.claude/` `.kiro/` `.codex/`，对齐 agent-install）重写为字面 `~/.agents/`，并幂等更新 README「Agent 路径」注记（共享 `rewrite_docs_agent_paths`）。`--dry-run` 不重写。空骨架桶亦跑。结构重填 / 文件模式**不**强制再跑（已知缝）。
 - 合并契约：结构/模板=元库；正文=本库；已改判定=规范化后与元库同路径内容不等；已改 md=同标题（不比层级）填入元库骨架，正文标题相对元库标题级统一平移（级封顶 H6）；未落位=策略确认后才落（原父级并入 / 改挂 / 追加 / 跳过）；本库独有路径永不删。
 - 根级 `CONTRIBUTING.md` 按普通 md 进清单与文件模式（本无 scaffold；指定路径破跳过强制重填）。未落位策略与普通 md **同规则**。轻流程 `S` 不表示全跳过未落位。
 - 根级 `DESIGN.md`：本无 → 新增骨架；已改 → **整文件覆盖**（`--apply-scaffold` 以元库为准；不走 H2 结构重填）。文件模式指定该路径时同样整文件覆盖。

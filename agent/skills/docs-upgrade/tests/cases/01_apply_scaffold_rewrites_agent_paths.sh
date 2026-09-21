@@ -50,6 +50,9 @@ cat >"$DOCS_DIR/local-only.md" <<'EOF'
 # Local
 
 Still points to agent/skills/docs-install
+Nested one: ../agent/knowledge/glossary.md
+Nested two: ../../agent/skills/docs-indexing
+Nested three: ../../../agent/references/knowledge-layout.md
 Also old IDE: .claude/skills/docs-tag
 EOF
 
@@ -81,7 +84,13 @@ assert_contains "~/.agents/" "$DOCS_DIR/README.md"
 assert_contains "IDE 软链目录" "$DOCS_DIR/README.md"
 
 assert_contains "~/.agents/skills/docs-install" "$DOCS_DIR/local-only.md"
+assert_contains "~/.agents/knowledge/glossary.md" "$DOCS_DIR/local-only.md"
+assert_contains "~/.agents/skills/docs-indexing" "$DOCS_DIR/local-only.md"
+assert_contains "~/.agents/references/knowledge-layout.md" "$DOCS_DIR/local-only.md"
 assert_contains "~/.agents/skills/docs-tag" "$DOCS_DIR/local-only.md"
+assert_not_contains "../agent/" "$DOCS_DIR/local-only.md"
+assert_not_contains "../../agent/" "$DOCS_DIR/local-only.md"
+assert_not_contains "../../../agent/" "$DOCS_DIR/local-only.md"
 assert_not_contains "agent/skills/docs-install" "$DOCS_DIR/local-only.md"
 assert_not_contains ".claude/skills/docs-tag" "$DOCS_DIR/local-only.md"
 

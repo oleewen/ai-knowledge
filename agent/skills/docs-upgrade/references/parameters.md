@@ -31,7 +31,7 @@
 | 模式 | 行为 |
 | --- | --- |
 | `--dry-run` | 解析 meta（见源解析优先级）；打印清单（含整文件覆盖桶）；不写盘、不备份、不重写 `agent/`、不改 README |
-| `--apply-scaffold` | 解析 meta；备份将动路径；写入「新增骨架」桶；收尾全树 `agent/`/IDE 段→`~/.agents/` + README 注记（空桶亦跑）；不重填 md、不删本库独有 |
+| `--apply-scaffold` | 解析 meta；备份将动路径；写入「新增骨架」桶；收尾全树裸 `agent/`、多层上跳 `../agent/` 与 IDE 段→`~/.agents/` + README 注记（空桶亦跑）；不重填 md、不删本库独有 |
 
 结构重填与未落位由 Skill/Agent 执行（契约见 [merge-rules.md](merge-rules.md) §5），不在脚本内自动合正文。文件模式的 scaffold / 强制重填亦由 Agent 执行。
 
