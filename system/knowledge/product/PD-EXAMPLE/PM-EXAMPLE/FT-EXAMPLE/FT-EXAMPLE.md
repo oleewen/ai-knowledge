@@ -4,7 +4,7 @@ title: 示例功能
 description: 示例产品实体。
 tags: [product, FT]
 timestamp: "2026-06-21T00:00:00Z"
-full_id: FT-EXAMPLE
+id: FT-EXAMPLE
 perspective: product
 hierarchy: FT
 parent_id: PM-EXAMPLE
@@ -18,7 +18,7 @@ layer_scope: system
 
 ## 跨视角
 
-- invokes_api_ids: API-EXAMPLE-001
+- invokes_api_ids: API-EXAMPLE
 - realizes_use_case_ids: UC-EXAMPLE
 
 ## 详细说明

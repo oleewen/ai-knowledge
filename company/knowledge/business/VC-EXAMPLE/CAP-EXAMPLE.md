@@ -4,7 +4,7 @@ title: 示例业务能力
 description: 演示公司级 CAP；实现 VC，并与一级 BSD 一对一映射。
 tags: [business, CAP]
 timestamp: "2026-09-18T00:00:00Z"
-full_id: CAP-EXAMPLE
+id: CAP-EXAMPLE
 perspective: business
 hierarchy: CAP
 parent_id: null

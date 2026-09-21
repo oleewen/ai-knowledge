@@ -45,8 +45,8 @@ title: 数据视角元数据（company/knowledge/data）
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| 系统 SYS.uses_mdg_ids | 系统 MDG.full_id | 系统声明使用的主数据域 |
-| 系统 DS.authoritative_mdg_id | 系统 MDG.full_id | 数据源归属主数据域 |
+| 系统 SYS.uses_mdg_ids | 系统 MDG.id | 系统声明使用的主数据域 |
+| 系统 DS.authoritative_mdg_id | 系统 MDG.id | 数据源归属主数据域 |
 
 ---
 

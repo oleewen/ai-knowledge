@@ -22,7 +22,7 @@ timestamp: "2026-06-25T00:00:00Z"
 
 | 问题 | 是 | 否 |
 | --- | --- | --- |
-| 可被引用的对象，且需稳定 `full_id`？ | 实体概念（per-entity） | 继续判断 |
+| 可被引用的对象，且需稳定 `id`？ | 实体概念（per-entity） | 继续判断 |
 | 从哪读 / 怎么下钻 / 怎么枚举？ | 索引入口 | 继续判断 |
 | 主题说明 / 架构叙事 / 综述 / 治理专题？ | 叙事文件 | 元数据 |
 
@@ -34,11 +34,11 @@ timestamp: "2026-06-25T00:00:00Z"
 
 ## 1. 文件分类方式
 
-先分类，再决定是否按实体概念 Profile。顺序：用途（对象事实 vs 导航/说明/契约/运维）→ 是否需稳定 `full_id` → 是否在 `*/knowledge/<perspective>/...` 实体树。OKF Core 可将多数 `.md` 视作 concept；本仓再拆「实体概念」与「索引/叙事/元数据」。
+先分类，再决定是否按实体概念 Profile。顺序：用途（对象事实 vs 导航/说明/契约/运维）→ 是否需稳定 `id` → 是否在 `*/knowledge/<perspective>/...` 实体树。OKF Core 可将多数 `.md` 视作 concept；本仓再拆「实体概念」与「索引/叙事/元数据」。
 
 ### 1.1 实体概念（per-entity）
 
-有明确边界、唯一 `full_id`、可被引用的对象（通常 `{ID}.md`）。
+有明确边界、唯一 `id`、可被引用的对象（通常 `{ID}.md`）。
 
 - 模式：`{DOC_DIR}/knowledge/<perspective>/…/{ID}.md`（含 `/{ID}/{ID}.md`）
 - 路径 / ID / 缩写：见 [knowledge-layout.md](../references/knowledge-layout.md)、[naming-conventions.md](naming-conventions.md)、[glossary.md](glossary.md)；EXAMPLE 见各层 `knowledge/`，勿在本规范维护长清单
@@ -87,10 +87,10 @@ timestamp: "2026-06-25T00:00:00Z"
 | 实体概念核心键 | `description` | 字符串 \| null | ✅ | 业务定义短句；无定义时填 `null` | `统一管理主数据定义。` / `null` |
 | 实体概念核心键 | `tags` | 字符串数组 | ✅ | per-entity 必含 `[<perspective>, <hierarchy>]`；其他文档可按用途扩展 | `[business, BD]` / `[okf, governance, shared-spec]` |
 | 实体概念核心键 | `timestamp` | ISO8601 字符串 | ✅ | 形如 `2026-06-25T00:00:00Z` | `"2026-06-25T00:00:00Z"` |
-| 实体概念核心键 | `full_id` | 字符串 | ✅ | 全局唯一 ID，格式：`<hierarchy>-<name>` | `BD-EXAMPLE` / `API-EXAMPLE-001` |
+| 实体概念核心键 | `id` | 字符串 | ✅ | 全局唯一 ID，格式：`<hierarchy>-<name>` | `BD-EXAMPLE` / `API-EXAMPLE` |
 | 实体概念核心键 | `perspective` | 枚举 | ✅ | 与实体所属视角一致 | `business` / `product` / `application` / `data` / `technical` |
 | 实体概念核心键 | `hierarchy` | 枚举 | ✅ | 与 `type` 一一对应 | `VC` / `BD` / `CAP` / `PL` / `SLN` / `PD` / `SYS` / `MDG` / `TPL` / `BSD` / `BC` / `AGG` / `AB` / `PM` / `BP` / `FT` / `UC` / `BR` / `APP` / `MS` / `DS` / `ENT` / `TSD` / `API` / `TBL` / `MW` / `CMP` |
-| 实体概念核心键 | `parent_id` | 字符串 \| null | ✅ | 父层 full_id；BD 与 PL 允许 `null` | `BD-EXAMPLE` / `PM-EXAMPLE` / `null` |
+| 实体概念核心键 | `parent_id` | 字符串 \| null | ✅ | 父层 id；BD 与 PL 允许 `null` | `BD-EXAMPLE` / `PM-EXAMPLE` / `null` |
 | 实体概念核心键 | `layer_scope` | 枚举 | ✅ | 与知识库路径前缀对应 | `company` / `system` / `application` |
 | 非实体文档键 | `okf_version` | 字符串 | - | 当前只出现在 bundle 根 `index.md` | `"0.1"` / `"1.0"` |
 | 非实体文档键 | `status` | 字符串 | - | 当前只出现在公司层示例方案/分析文档 | `draft` / `"draft"` |

@@ -4,7 +4,7 @@ title: 示例聚合
 description: null
 tags: [business, AGG]
 timestamp: "2026-06-21T00:00:00Z"
-full_id: AGG-EXAMPLE
+id: AGG-EXAMPLE
 perspective: business
 hierarchy: AGG
 parent_id: BC-EXAMPLE

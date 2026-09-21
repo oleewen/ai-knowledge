@@ -35,7 +35,7 @@ title: 应用视角元数据（application/knowledge/application）
 
 ## 4. 字段（OKF）
 
-**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。
+**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。
 
 **正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。
 
@@ -57,7 +57,7 @@ title: 应用视角元数据（application/knowledge/application）
 | SYS-EXAMPLE | `SYS-EXAMPLE.md` | （不落盘；纯 ID → 系统） | system SSOT |
 | APP-EXAMPLE | `APP-EXAMPLE/` | （不落盘；纯 ID → 系统） | system SSOT |
 | MS-EXAMPLE | `APP-EXAMPLE/MS-EXAMPLE/` | （不落 MS 实体；可宿主 API） | system SSOT |
-| API-EXAMPLE-001 | （system 不登记） | `MS-EXAMPLE/API-*.md` | API 仅 application SSOT |
+| API-EXAMPLE | （system 不登记） | `MS-EXAMPLE/API-*.md` | API 仅 application SSOT |
 
 **链接约定**：同 bundle 用 `/knowledge/...`；跨 bundle `# SSOT` 用仓库根相对路径。
 
@@ -65,10 +65,10 @@ title: 应用视角元数据（application/knowledge/application）
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| BC.implemented_by_app_id | APP.full_id | 业务上下文实现 |
+| BC.implemented_by_app_id | APP.id | 业务上下文实现 |
 | AB.apis[].id | API.id | 能力 API |
 | FT.invokes_api_ids | API.id | 产品功能调用 |
-| DS.owned_by_app_id | APP.full_id | 数据源归属 |
+| DS.owned_by_app_id | APP.id | 数据源归属 |
 
 ## 7. 关联文档
 

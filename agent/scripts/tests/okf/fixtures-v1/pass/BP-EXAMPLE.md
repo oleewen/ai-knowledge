@@ -4,7 +4,7 @@ title: 示例业务流程
 description: null
 tags: [product, BP]
 timestamp: "2026-06-24T00:00:00Z"
-full_id: BP-EXAMPLE
+id: BP-EXAMPLE
 perspective: product
 hierarchy: BP
 parent_id: PM-EXAMPLE

@@ -20,14 +20,14 @@ for path in okf_lib.scan_concepts(bundle_root):
     if path.name == "INDEX-GUIDE.md":
         continue
     meta, _ = okf_lib.parse_frontmatter(path.read_text(encoding="utf-8"))
-    if meta.get("full_id"):
+    if meta.get("id"):
         n += 1
 print(n)
 PY
 )"
 
 if [[ "$count" -lt "$MIN_CONCEPTS" ]]; then
-  echo "concept 文件（含 full_id）数量应 >= ${MIN_CONCEPTS}，实际: $count" >&2
+  echo "concept 文件（含 id）数量应 >= ${MIN_CONCEPTS}，实际: $count" >&2
   exit 1
 fi
 

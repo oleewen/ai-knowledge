@@ -66,7 +66,7 @@ application/
 - **字段语义**：`ID` 为完整实体 ID（如 `VC-EXAMPLE`）；`别名（英文名）` 为英文编码；`名称` 为中文名称
 - **唯一性约束**：`层级+ID` 全知识库唯一；`层级+别名（英文名）` 全知识库唯一
 
-### §1 业务视角（business · BD → BSD → BC → AGG → AB）
+### §1 业务视角（business · 一级 BSD → 二级 BSD → BC → AGG → AB）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
@@ -82,7 +82,7 @@ application/
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
-| API | API-EXAMPLE-001 |  | 示例 API：创建 | `application/MS-EXAMPLE/API-EXAMPLE-001.md` |
+| API | API-EXAMPLE |  | 示例 API：创建 | `application/MS-EXAMPLE/API-EXAMPLE.md` |
 
 ### §4 数据视角（data · MDG → DS → ENT → TBL）
 
@@ -105,7 +105,7 @@ application/
 
 | 索引 ID | 命名式 ID（锚点目录） |
 |---------|----------------------|
-| API-EXAMPLE-001 | `application/MS-EXAMPLE/API-EXAMPLE-001.md` |
+| API-EXAMPLE | `application/MS-EXAMPLE/API-EXAMPLE.md` |
 | TBL-EXAMPLE | `data/DS-EXAMPLE/TBL-EXAMPLE.md` |
 | MW-EXAMPLE | `technical/MW-EXAMPLE/` |
 

@@ -63,7 +63,7 @@ def _cmd_rewrite_http(args: argparse.Namespace) -> int:
 def _cmd_href(args: argparse.Namespace) -> int:
     href = x.cross_layer_href(
         Path(args.doc_root),
-        args.full_id,
+        args.id,
         parent_id=args.parent_id,
         hierarchy=args.hierarchy,
     )

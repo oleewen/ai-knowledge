@@ -4,7 +4,7 @@ title: 示例主数据域
 description: 演示系统级 MDG 结构。
 tags: [data, MDG]
 timestamp: "2026-06-21T00:00:00Z"
-full_id: MDG-EXAMPLE
+id: MDG-EXAMPLE
 perspective: data
 hierarchy: MDG
 parent_id: null

@@ -4,7 +4,7 @@ title: 示例规则
 description: 示例产品实体。
 tags: [product, BR]
 timestamp: "2026-06-26T00:00:00Z"
-full_id: BR-EXAMPLE
+id: BR-EXAMPLE
 perspective: product
 hierarchy: BR
 parent_id: FR-EXAMPLE

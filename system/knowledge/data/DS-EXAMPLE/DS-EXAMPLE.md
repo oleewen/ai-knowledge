@@ -4,7 +4,7 @@ title: 示例数据源
 description: 示例数据实体。
 tags: [data, DS]
 timestamp: "2026-06-21T00:00:00Z"
-full_id: DS-EXAMPLE
+id: DS-EXAMPLE
 perspective: data
 hierarchy: DS
 parent_id: MDG-EXAMPLE

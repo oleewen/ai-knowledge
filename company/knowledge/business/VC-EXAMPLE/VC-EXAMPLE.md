@@ -4,7 +4,7 @@ title: 示例价值链
 description: 演示公司级 VC；由 BD 支撑，并由 CAP 实现。
 tags: [business, VC]
 timestamp: "2026-09-18T00:00:00Z"
-full_id: VC-EXAMPLE
+id: VC-EXAMPLE
 perspective: business
 hierarchy: VC
 parent_id: null

@@ -59,11 +59,11 @@ Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详�
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| SYS.uses_mdg_ids | MDG.full_id | 系统声明使用的主数据域 |
-| DS.authoritative_mdg_id | MDG.full_id | 数据源归属主数据域 |
-| DS.owned_by_app_id | APP.full_id | 数据源归属应用 |
-| AGG.persisted_as_entity_ids | ENT.full_id | 聚合持久化 |
-| ENT.maps_to_aggregate_id | AGG.full_id | 实体归属聚合 |
+| SYS.uses_mdg_ids | MDG.id | 系统声明使用的主数据域 |
+| DS.authoritative_mdg_id | MDG.id | 数据源归属主数据域 |
+| DS.owned_by_app_id | APP.id | 数据源归属应用 |
+| AGG.persisted_as_entity_ids | ENT.id | 聚合持久化 |
+| ENT.maps_to_aggregate_id | AGG.id | 实体归属聚合 |
 
 ---
 

@@ -4,7 +4,7 @@ title: 示例业务能力
 description: null
 tags: [business, AB]
 timestamp: "2026-06-21T00:00:00Z"
-full_id: AB-EXAMPLE
+id: AB-EXAMPLE
 perspective: business
 hierarchy: AB
 parent_id: AGG-EXAMPLE

@@ -35,7 +35,7 @@
 |----|------|
 |类型|系统 / 应用 / 微服务（MS）/ 接口（与 `hierarchy` 一致的中文）|
 |名称|frontmatter `title` 或 `name`|
-|ID (INDEX-GUIDE)|SYS/APP：`full_id`；MS/API：`full_id` 或规范 `id`|
+|ID (INDEX-GUIDE)|SYS/APP：`id`；MS/API：`id` 或规范 `id`|
 |路径 / 说明|相对链接至 concept 文件（如 `[SYS-EXAMPLE.md](SYS-EXAMPLE.md)`、`[MS-EXAMPLE/MS-EXAMPLE.md](MS-EXAMPLE/MS-EXAMPLE.md)`）；可附 `alias` 或证据摘要|
 
 按 `hierarchy` 分组遍历：`SYS` → `APP` → `MS` → `API`。
@@ -62,7 +62,7 @@ ENT 的 `parent_id` 可用于排序或链序说明。
 |----|------|
 |链序|`L1`…`L5` 对应 BD → BSD → BC → AGG → AB|
 |层级|`BD` / `BSD` / `BC` / `AGG` / `AB`|
-|ID|`full_id`|
+|ID|`id`|
 |名称|frontmatter `title` 或 `name`|
 |文件/目录|相对链接至 concept（如 `[BD-EXAMPLE.md](BD-EXAMPLE.md)`）|
 

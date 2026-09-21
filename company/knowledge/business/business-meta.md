@@ -61,10 +61,10 @@ Frontmatter 10 必填 + 正文四段见 okf-spec §2；本层 `layer_scope` 固�
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| CAP.implements_to_vc | VC.full_id | CAP 实现价值链 |
-| CAP.maps_to_bsd | 一级 BSD.full_id | CAP 与一级 BSD 一对一映射 |
-| BD.supports_to_vc | VC.full_id | BD 支撑价值链 |
-| 一级 BSD.maps_to_pl | PL.full_id | 一级 BSD 对标产品线 |
+| CAP.implements_to_vc | VC.id | CAP 实现价值链 |
+| CAP.maps_to_bsd | 一级 BSD.id | CAP 与一级 BSD 一对一映射 |
+| BD.supports_to_vc | VC.id | BD 支撑价值链 |
+| 一级 BSD.maps_to_pl | PL.id | 一级 BSD 对标产品线 |
 
 ---
 

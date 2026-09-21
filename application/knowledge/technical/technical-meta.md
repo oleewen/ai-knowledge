@@ -33,7 +33,7 @@ title: 技术视角元数据（application/knowledge/technical）
 
 ## 4. 字段（OKF）
 
-**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。
+**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。
 
 **正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。
 
@@ -49,12 +49,12 @@ title: 技术视角元数据（application/knowledge/technical）
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| TSD（reference） | system TSD.full_id | 上游系统 SSOT |
-| MW.parent_tsd_id | TSD.full_id | 归属系统技术域 |
-| MW.bound_app_id | APP.full_id | 绑定应用 |
-| MW.related_ds_id | DS.full_id | 关联数据源（可选） |
-| CMP.parent_mw_id | MW.full_id | 组件挂载中间件 |
-| APP.implements_tpl_ids | TPL.full_id | 应用实现平台能力 |
+| TSD（reference） | system TSD.id | 上游系统 SSOT |
+| MW.parent_tsd_id | TSD.id | 归属系统技术域 |
+| MW.bound_app_id | APP.id | 绑定应用 |
+| MW.related_ds_id | DS.id | 关联数据源（可选） |
+| CMP.parent_mw_id | MW.id | 组件挂载中间件 |
+| APP.implements_tpl_ids | TPL.id | 应用实现平台能力 |
 
 ## 6. 关联文档
 

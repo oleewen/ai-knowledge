@@ -4,7 +4,7 @@ title: 示例限界上下文
 description: 示例业务实体。
 tags: [business, BC]
 timestamp: "2026-06-21T00:00:00Z"
-full_id: BC-EXAMPLE
+id: BC-EXAMPLE
 perspective: business
 hierarchy: BC
 parent_id: BSD-EXAMPLE-SUB

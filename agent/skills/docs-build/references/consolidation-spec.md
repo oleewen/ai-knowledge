@@ -1,12 +1,12 @@
 # 归并规范（阶段 4）
 
-[readme-fill-spec.md](readme-fill-spec.md) 之后收口：**扫描**五视角 per-entity concept 文件（含 frontmatter `full_id`），前缀/对称校验，写入 **`{DOC_DIR}/INDEX-GUIDE.md` 第五章**（`docs-build:entity-index` 标记块）。
+[readme-fill-spec.md](readme-fill-spec.md) 之后收口：**扫描**五视角 per-entity concept 文件（含 frontmatter `id`），前缀/对称校验，写入 **`{DOC_DIR}/INDEX-GUIDE.md` 第五章**（`docs-build:entity-index` 标记块）。
 
 ## 流程
 
 ```mermaid
 graph TD
-    A[扫描 per-entity .md] --> B[合并 full_id]
+    A[扫描 per-entity .md] --> B[合并 id]
     B --> C[跨视角校验]
     C --> D[更新 INDEX-GUIDE.md 第五章]
     C --> C1[对称]
@@ -16,7 +16,7 @@ graph TD
 
 **前置**：各视角 README 已与实体 concept 同步（[readme-fill-spec.md](readme-fill-spec.md)）。
 
-**扫描范围**：`{DOC_DIR}/knowledge/{perspective}/` 下所有 `.md`，排除 `index.md`、`*-meta.md`、`*-entities.md`、`INDEX-GUIDE.md`；仅纳入 frontmatter 含非空 `full_id` 的 concept 文件。生成脚本：`agent/skills/docs-build/scripts/generate_knowledge_index.py`。
+**扫描范围**：`{DOC_DIR}/knowledge/{perspective}/` 下所有 `.md`，排除 `index.md`、`*-meta.md`、`*-entities.md`、`INDEX-GUIDE.md`；仅纳入 frontmatter 含非空 `id` 的 concept 文件。生成脚本：`agent/skills/docs-build/scripts/generate_knowledge_index.py`。
 
 ## 规则
 
@@ -34,7 +34,7 @@ graph TD
 
 ### 2. 唯一
 
-- 层级+ID、层级+别名、`full_id` 全库唯一
+- 层级+ID、层级+别名、`id` 全库唯一
 
 ### 3. 对称
 
@@ -49,7 +49,7 @@ graph TD
 
 ## concept 文件形状
 
-每个实体 concept 为独立 `{ID}.md`，frontmatter 至少含 `full_id`、`perspective`、`hierarchy`、`type`、`title`；跨视角引用写在 `# Cross-perspective` 与 bundle-relative 链接。跨 `DOC_DIR` 守 [knowledge-governance.md](../../../knowledge/knowledge-governance.md) 引用边界（有 parent 则 HTTP SSOT，否则纯 ID）。路径规则见 [naming-conventions.md](../../../knowledge/naming-conventions.md) §OKF concept 路径与 type 映射。
+每个实体 concept 为独立 `{ID}.md`，frontmatter 至少含 `id`、`perspective`、`hierarchy`、`type`、`title`；跨视角引用写在 `# Cross-perspective` 与 bundle-relative 链接。跨 `DOC_DIR` 守 [knowledge-governance.md](../../../knowledge/knowledge-governance.md) 引用边界（有 parent 则 HTTP SSOT，否则纯 ID）。路径规则见 [naming-conventions.md](../../../knowledge/naming-conventions.md) §OKF concept 路径与 type 映射。
 
 | 视角 | 落盘 |
 |------|------|

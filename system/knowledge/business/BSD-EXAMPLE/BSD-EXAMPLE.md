@@ -4,7 +4,7 @@ title: 示例一级业务子域
 description: 公司层一级 BSD 的系统层 reference。
 tags: [business, BSD]
 timestamp: "2026-09-18T00:00:00Z"
-full_id: BSD-EXAMPLE
+id: BSD-EXAMPLE
 perspective: business
 hierarchy: BSD
 parent_id: BD-EXAMPLE

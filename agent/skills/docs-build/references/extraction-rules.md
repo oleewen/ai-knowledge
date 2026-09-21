@@ -39,7 +39,7 @@
 
 - 提取自 README.md 项目结构描述（若存在）
 - 一个仓库通常对应一个 SYS-ID
-- **必须字段**：`full_id`（目录风格，如 `SYS-BILLING-APPEAL`）、`description`、`architecture`（含 apps/external_dependencies/ddd_layers）
+- **必须字段**：`id`（目录风格，如 `SYS-BILLING-APPEAL`）、`description`、`architecture`（含 apps/external_dependencies/ddd_layers）
 
 #### APP（应用层级）
 
@@ -48,7 +48,7 @@
   - 包含 `main(String[] args)` 方法
   - 调用 `Main.run()` 或 `SpringApplication.run()`
   - 配置 `spring-boot-maven-plugin`
-- **必须字段**：`full_id`、`parent_sys_id`、`startup_class`、`maven_module`、`service_ids`
+- **必须字段**：`id`、`parent_sys_id`、`startup_class`、`maven_module`、`service_ids`
 - **可选字段**：`mq_consumers`、`jobs`、`jobs_count`、`repo_url`、`docs_manifest_path`
 
 #### MS（微服务层级）
@@ -134,13 +134,13 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 #### DS（数据源层级）
 
 - 提取自 `application.yml/properties` 多数据源配置
-- **必须字段**：`full_id`（如 `DS-BILLING-APPEAL-TIDB`）、`description`、`type`（如 `TiDB / MySQL 8.0+`）、`config_key`、`owned_by_app_id`
+- **必须字段**：`id`（如 `DS-BILLING-APPEAL-TIDB`）、`description`、`type`（如 `TiDB / MySQL 8.0+`）、`config_key`、`owned_by_app_id`
 - **可选字段**：`notes`（如事务注解说明）
 
 #### ENT（实体层级）
 
 - 提取自 @Table 注解的实体类
-- **必须字段**：`full_id`（如 `ENT-001`）、`parent_id`（所属 DS 的 full_id）、`logical_name`（Java 类名）、`physical_table`（数据库表名）
+- **必须字段**：`id`（如 `ENT-001`）、`parent_id`（所属 DS 的 id）、`logical_name`（Java 类名）、`physical_table`（数据库表名）
 - **同表合并**：相同表名对应的实体类合并为一个 ENT-ID
 - **禁止**：使用包名作为 ENT-ID、单表对应多个 ENT-ID、使用 Mapper 类名作为显示名
 
@@ -164,39 +164,39 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 #### VC（价值链层级）
 
 - 提取自公司价值链叙事、商业模式资料
-- **必须字段**：`full_id`（如 `VC-ORDER-FULFILLMENT`）、`description`、`supported_by_bd`、`implemented_by_cap`
+- **必须字段**：`id`（如 `VC-ORDER-FULFILLMENT`）、`description`、`supported_by_bd`、`implemented_by_cap`
 - **禁止**：把组织部门直接当 VC；CAP 与 VC 混用
 
 #### BD（业务域层级）
 
 - 提取自包路径域名首段、AGENTS.md 业务域定义
-- **必须字段**：`full_id`（如 `BD-CHARGING-APPEAL`）、`description`、`strategic_classification`（core_domain/supporting/generic）、`supports_to_vc`、`children`（一级 BSD full_id 列表）
+- **必须字段**：`id`（如 `BD-CHARGING-APPEAL`）、`description`、`strategic_classification`（core_domain/supporting/generic）、`supports_to_vc`、`children`（一级 BSD id 列表）
 
 #### BSD（业务子域层级）
 
 - 一级提取自公司业务版图：`level: 1`、`parent` 所属 BD、`maps_to_pl`、`maps_to_cap`，公司层落盘
 - 二级提取自 BC 与一级 BSD 间的包路径段：`level: 2`、`parent` 所属一级 BSD、`maps_to_pd`，系统层落盘
-- **必须字段**：`full_id`、`parent_id`、`level`、`parent`、`description`
+- **必须字段**：`id`、`parent_id`、`level`、`parent`、`description`
 - **禁止**：三级及以下 BSD、将 BC 直接作为 BSD、跨一级 BSD 合并二级 BSD
 
 #### BC（限界上下文层级）
 
 - 提取自宿主类父包名、限界上下文包路径
-- **必须字段**：`full_id`（如 `BC-BILLING-APPEAL-CORE`）、`parent_id`（所属二级 BSD）、`description`、`implemented_by_app_id`、`aggregates`（AGG full_id 列表）
+- **必须字段**：`id`（如 `BC-BILLING-APPEAL-CORE`）、`parent_id`（所属二级 BSD）、`description`、`implemented_by_app_id`、`aggregates`（AGG id 列表）
 - **可选字段**：`ubiquitous_language`（通用语言词汇表）
 - **禁止**：使用 Maven 模块名作为 BC-ID、单包对应多个 BC-ID
 
 #### AGG（聚合层级）
 
 - 提取自 MS-* 服务、聚合根实体
-- **必须字段**：`full_id`（如 `AGG-BILLING-APPEAL`）、`parent_id`（所属 BC）、`description`、`root_entity`、`entities`（值对象列表）、`persisted_as_entity_ids`（对应 ENT-ID）、`implemented_by_service_ids`（对应 MS-ID）、`abilities`（对应 AB full_id 列表）
+- **必须字段**：`id`（如 `AGG-BILLING-APPEAL`）、`parent_id`（所属 BC）、`description`、`root_entity`、`entities`（值对象列表）、`persisted_as_entity_ids`（对应 ENT-ID）、`implemented_by_service_ids`（对应 MS-ID）、`abilities`（对应 AB id 列表）
 - **可选字段**：`invariants`（业务不变量/约束列表）
 - **禁止**：无 MS-* 对应的 AGG-ID、单 MS-* 对应多个 AGG-ID
 
 #### AB（聚合边界层级）
 
 - 提取自入口 API、聚合边界定义
-- **必须字段**：`full_id`（如 `AB-APPEAL-LIFECYCLE`）、`parent_id`（所属 AGG）、`description`、`capability`（能力概述）、`apis`（结构化接口列表，每项含 `id`、`method`、`description`）
+- **必须字段**：`id`（如 `AB-APPEAL-LIFECYCLE`）、`parent_id`（所属 AGG）、`description`、`capability`（能力概述）、`apis`（结构化接口列表，每项含 `id`、`method`、`description`）
 - **禁止**：无 API 对应的 AB-ID、AB 缺少能力概述
 
 ### 输出结构
@@ -219,24 +219,24 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 #### PL（产品线层级）
 
 - 提取自 README.md 产品概述、SYS-* 系统定义（公司层）
-- **必须字段**：`full_id`（如 `PL-BILLING-APPEAL`）、`description`、`maps_to_bsd`（一级 BSD）、`target_users`（目标用户角色列表）
+- **必须字段**：`id`（如 `PL-BILLING-APPEAL`）、`description`、`maps_to_bsd`（一级 BSD）、`target_users`（目标用户角色列表）
 
 #### PD（产品服务层级）
 
 - 提取自产品架构、解决方案边界；`parent_id` 所属 PL（公司层 SSOT）；**PD 系统层首次定义**
-- **必须字段**：`full_id`（如 `PD-BILLING-APPEAL`）、`parent_id`（所属 PL）、`maps_to_sys_id`、`maps_to_bsd`（二级 BSD）
+- **必须字段**：`id`（如 `PD-BILLING-APPEAL`）、`parent_id`（所属 PL）、`maps_to_sys_id`、`maps_to_bsd`（二级 BSD）
 - 公司/应用不落 PD 文件；`PM.parent_id` 引用系统 `PD-*`（有 parent 则 HTTP，否则纯 ID）
 
 #### PM（产品模块层级）
 
 - 提取自应用视角 MS-* 服务列表，与 MS-* 一一对应
-- **必须字段**：`full_id`（如 `PM-BILLING-APPEAL-CORE`）、`parent_id`（所属 PD）
+- **必须字段**：`id`（如 `PM-BILLING-APPEAL-CORE`）、`parent_id`（所属 PD）
 - **禁止**：无 MS-* 对应的 PM-ID、单 MS-* 对应多个 PM-ID；`parent_id` 直挂 PL
 
 #### FT（功能特性层级）
 
 - 提取自用户操作提炼、API-* 接口分析
-- **必须字段**：`full_id`、`parent_id`（所属 PM）、`description`、`invokes_api_ids`（调用的 API-ID）、`acceptance_criteria`（验收标准）、`realizes_use_case_ids`（实现的 UC-ID）
+- **必须字段**：`id`、`parent_id`（所属 PM）、`description`、`invokes_api_ids`（调用的 API-ID）、`acceptance_criteria`（验收标准）、`realizes_use_case_ids`（实现的 UC-ID）
 - **禁止**：无 API 绑定的 FT-ID、技术实现细节作为功能特性
 
 #### UC（用例层级）
@@ -264,13 +264,13 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 #### MW（中间件绑定）
 
 - 提取自配置与部署绑定：数据源、缓存、MQ Topic/Group、注册配置等
-- **必须字段**：`full_id`、`binding_type`、`config_key`、`parent_tsd_id`、`bound_app_id`
+- **必须字段**：`id`、`binding_type`、`config_key`、`parent_tsd_id`、`bound_app_id`
 - **禁止**：将 MS/API 宿主类登记为 MW；Consumer 类仍在 API 层
 
 #### CMP（组件）
 
 - 提取自 Maven 依赖 allowlist（Dubbo、MyBatis、Redis、Kafka Client、关键 Spring Starter 等）
-- **必须字段**：`full_id`、`maven_coordinates`、`parent_mw_id` 或 `parent_app_id`
+- **必须字段**：`id`、`maven_coordinates`、`parent_mw_id` 或 `parent_app_id`
 - **禁止**：全量依赖扫描导致 CMP 爆炸
 
 ### 输出结构
@@ -306,18 +306,17 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 | 字段 | 必需 | 说明 |
 |------|------|------|
 | `hierarchy` | 是 | 层级标识（SYS/APP/MS/API/DS/ENT/MW/CMP/TPL/TSD/BD/BSD/BC/AGG/AB/PL/PD/PM/FT/FR/UC/BR/BP） |
-| `id` | 是 | 数字编码（001、002...），同层级唯一 |
 | `alias` | 是 | 英文编码，机器可读标识 |
 | `name` | 是 | 中文名称，面向业务阅读 |
 | `evidence_chain` | 是 | 证据链数组，每项含 `source`、`confidence`、`type` |
 | `cross_references` | 是 | 跨视角引用 |
-| `full_id` | 推荐 | 目录风格规范 ID（如 `SYS-BILLING-APPEAL`） |
+| `id` | 是 | 唯一实体 ID（如 `SYS-BILLING-APPEAL`） |
 | `description` | 推荐 | 实体描述 |
-| `parent_id` | 视情况 | 指向父层 full_id，表达层级归属 |
+| `parent_id` | 视情况 | 指向父层 id，表达层级归属 |
 
 ### metadata 与统计（可选）
 
-每个 per-entity concept **必须**含非空 frontmatter `full_id`（及 [consolidation-spec.md](consolidation-spec.md) 所列字段）。
+每个 per-entity concept **必须**含非空 frontmatter `id`（及 [consolidation-spec.md](consolidation-spec.md) 所列字段）。
 
 **统计**（各层级计数、`extraction_basis`、`schema_notes`、`changes_from_previous`）为可选：可写入 `--emit-report` 的 `extraction_report.md` 或 `{perspective}-meta.md` 备注；**不**再要求单独的 `{perspective}-entities.md` 统计节。
 

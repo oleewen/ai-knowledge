@@ -57,10 +57,10 @@ title: 应用视角元数据（system/knowledge/application）
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| SYS.parent_id | 公司 SLN.full_id | 系统归属解决方案 |
-| SYS.uses_mdg_ids | MDG.full_id | 系统声明使用的主数据域 |
-| PD.maps_to_sys_id | SYS.full_id | 产品服务对标（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
-| APP.parent_id | SYS.full_id | 应用归属系统 |
+| SYS.parent_id | 公司 SLN.id | 系统归属解决方案 |
+| SYS.uses_mdg_ids | MDG.id | 系统声明使用的主数据域 |
+| PD.maps_to_sys_id | SYS.id | 产品服务对标（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
+| APP.parent_id | SYS.id | 应用归属系统 |
 
 ---
 

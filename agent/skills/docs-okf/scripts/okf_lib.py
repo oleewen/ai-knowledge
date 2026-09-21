@@ -17,7 +17,7 @@ REQUIRED_FRONTMATTER_FIELDS = (
     "description",
     "tags",
     "timestamp",
-    "full_id",
+    "id",
     "perspective",
     "hierarchy",
     "parent_id",
@@ -145,8 +145,8 @@ _DEFAULT_BUSINESS_VC = "VC-EXAMPLE"
 _DEFAULT_DATA_DS = "DS-EXAMPLE"
 
 
-def _id_prefix(full_id: str) -> str:
-    return full_id.split("-", 1)[0]
+def _id_prefix(id: str) -> str:
+    return id.split("-", 1)[0]
 
 
 def _parse_scalar(val: str) -> Any:
@@ -296,7 +296,7 @@ def hierarchy_to_perspective(hierarchy: str) -> Optional[str]:
 
 def perspective_domain_anchor(
     perspective: str,
-    full_id: Optional[str] = None,
+    id: Optional[str] = None,
     bundle: str = "application",
 ) -> str:
     """域扁平树：返回 perspective 下域文件夹名。"""
@@ -307,87 +307,87 @@ def perspective_domain_anchor(
         if bundle == "system"
         else APPLICATION_PERSPECTIVE_DOMAIN_ANCHOR
     )
-    return anchor_map.get(perspective, full_id or "")
+    return anchor_map.get(perspective, id or "")
 
 
 def entity_relpath(
     perspective: str,
-    full_id: str,
+    id: str,
     parent_id: Optional[str] = None,
     bundle: str = "application",
 ) -> str:
     """相对 bundle 根的 concept 路径（域扁平树）。"""
-    prefix = _id_prefix(full_id)
+    prefix = _id_prefix(id)
     if bundle == "company":
         if perspective == "business" and prefix == "VC":
-            return f"knowledge/business/{full_id}/{full_id}.md"
+            return f"knowledge/business/{id}/{id}.md"
         if perspective == "business" and prefix == "BD":
-            return f"knowledge/business/{full_id}.md"
+            return f"knowledge/business/{id}.md"
         if perspective == "business" and prefix == "BSD":
-            return f"knowledge/business/{full_id}.md"
+            return f"knowledge/business/{id}.md"
         if perspective == "business" and prefix == "CAP":
             vc = parent_id or _DEFAULT_BUSINESS_VC
-            return f"knowledge/business/{vc}/{full_id}.md"
+            return f"knowledge/business/{vc}/{id}.md"
         if perspective == "product" and prefix == "PL":
-            return f"knowledge/product/{full_id}.md"
+            return f"knowledge/product/{id}.md"
         if perspective == "application" and prefix == "SLN":
-            return f"knowledge/application/{full_id}.md"
+            return f"knowledge/application/{id}.md"
         if perspective == "data" and prefix == "MDG":
-            return f"knowledge/data/{full_id}.md"
+            return f"knowledge/data/{id}.md"
         if perspective == "technical" and prefix == "TPL":
-            return f"knowledge/technical/{full_id}.md"
-        anchor = perspective_domain_anchor(perspective, full_id, bundle)
+            return f"knowledge/technical/{id}.md"
+        anchor = perspective_domain_anchor(perspective, id, bundle)
         if not anchor:
-            return f"knowledge/{perspective}/{full_id}.md"
-        return f"knowledge/{perspective}/{anchor}/{full_id}.md"
+            return f"knowledge/{perspective}/{id}.md"
+        return f"knowledge/{perspective}/{anchor}/{id}.md"
 
     if bundle == "system":
         if perspective == "business" and prefix == "BD":
-            return f"knowledge/business/{full_id}.md"
+            return f"knowledge/business/{id}.md"
         if perspective == "business" and prefix == "BSD":
             if not parent_id or parent_id.startswith("BD-"):
-                return f"knowledge/business/{full_id}.md"
-            return f"knowledge/business/{parent_id}/{full_id}/{full_id}.md"
+                return f"knowledge/business/{id}.md"
+            return f"knowledge/business/{parent_id}/{id}/{id}.md"
         if perspective == "product" and prefix == "PL":
-            return f"knowledge/product/{full_id}.md"
+            return f"knowledge/product/{id}.md"
         if perspective == "product" and prefix == "PD":
-            return f"knowledge/product/{full_id}/{full_id}.md"
+            return f"knowledge/product/{id}/{id}.md"
         if perspective == "product" and prefix == "PM":
             pd = parent_id or _DEFAULT_PRODUCT_PD
-            return f"knowledge/product/{pd}/{full_id}/{full_id}.md"
+            return f"knowledge/product/{pd}/{id}/{id}.md"
         if perspective == "application" and prefix == "SYS":
-            return f"knowledge/application/{full_id}.md"
+            return f"knowledge/application/{id}.md"
         if perspective == "application" and prefix == "APP":
-            return f"knowledge/application/{full_id}/{full_id}.md"
+            return f"knowledge/application/{id}/{id}.md"
         if perspective == "application" and prefix == "MS":
             if not parent_id:
                 raise ValueError(
-                    "entity_relpath: system MS requires parent_id (APP full_id)"
+                    "entity_relpath: system MS requires parent_id (APP id)"
                 )
-            return f"knowledge/application/{parent_id}/{full_id}/{full_id}.md"
+            return f"knowledge/application/{parent_id}/{id}/{id}.md"
         if perspective == "data" and prefix == "MDG":
-            return f"knowledge/data/{full_id}.md"
+            return f"knowledge/data/{id}.md"
         if perspective == "technical" and prefix == "TSD":
-            return f"knowledge/technical/{full_id}.md"
+            return f"knowledge/technical/{id}.md"
         if perspective == "technical" and prefix == "MW":
-            return f"knowledge/technical/{full_id}/{full_id}.md"
-        anchor = perspective_domain_anchor(perspective, full_id, bundle)
+            return f"knowledge/technical/{id}/{id}.md"
+        anchor = perspective_domain_anchor(perspective, id, bundle)
         if not anchor:
-            return f"knowledge/{perspective}/{full_id}.md"
-        return f"knowledge/{perspective}/{anchor}/{full_id}.md"
+            return f"knowledge/{perspective}/{id}.md"
+        return f"knowledge/{perspective}/{anchor}/{id}.md"
 
     if perspective == "application" and prefix in ("SYS", "APP"):
-        return f"knowledge/application/{full_id}.md"
+        return f"knowledge/application/{id}.md"
     if perspective == "business" and prefix == "BD":
-        return f"knowledge/business/{full_id}.md"
+        return f"knowledge/business/{id}.md"
     if perspective == "data" and prefix == "DS":
-        return f"knowledge/data/{full_id}.md"
+        return f"knowledge/data/{id}.md"
     if perspective == "product" and prefix == "PL":
-        return f"knowledge/product/{full_id}.md"
-    anchor = perspective_domain_anchor(perspective, full_id, bundle)
+        return f"knowledge/product/{id}.md"
+    anchor = perspective_domain_anchor(perspective, id, bundle)
     if not anchor:
-        return f"knowledge/{perspective}/{full_id}.md"
-    return f"knowledge/{perspective}/{anchor}/{full_id}.md"
+        return f"knowledge/{perspective}/{id}.md"
+    return f"knowledge/{perspective}/{anchor}/{id}.md"
 
 
 def to_bundle_link(relpath: str) -> str:

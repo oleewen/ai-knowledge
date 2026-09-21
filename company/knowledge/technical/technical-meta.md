@@ -51,8 +51,8 @@ Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详�
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| TSD.parent_tpl_id | TPL.full_id | 系统级技术域归属平台能力（下游引用） |
-| APP.implements_tpl_ids | TPL.full_id | 应用实现的平台能力（下游引用） |
+| TSD.parent_tpl_id | TPL.id | 系统级技术域归属平台能力（下游引用） |
+| APP.implements_tpl_ids | TPL.id | 应用实现的平台能力（下游引用） |
 
 ---
 

@@ -17,7 +17,7 @@ title: 示例业务域
 description: 示例
 tags: [business, BD]
 timestamp: "2026-06-16T00:00:00Z"
-full_id: BD-EXAMPLE
+id: BD-EXAMPLE
 perspective: business
 hierarchy: BD
 parent_id: null
@@ -81,7 +81,7 @@ def test_validator_no_downstream_bundle_fallback() -> None:
             / "knowledge"
             / "application"
             / "MS-EXAMPLE"
-            / "API-EXAMPLE-001.md"
+            / "API-EXAMPLE.md"
         )
         api.parent.mkdir(parents=True)
         api.write_text("# API\n", encoding="utf-8")
@@ -99,7 +99,7 @@ def test_validator_no_downstream_bundle_fallback() -> None:
             "description: 示例\n"
             "tags: [product, UC]\n"
             'timestamp: "2026-07-18T00:00:00Z"\n'
-            "full_id: UC-EXAMPLE\n"
+            "id: UC-EXAMPLE\n"
             "perspective: product\n"
             "hierarchy: UC\n"
             "parent_id: null\n"
@@ -108,8 +108,8 @@ def test_validator_no_downstream_bundle_fallback() -> None:
             "## 关系\n\n"
             "- (none)\n\n"
             "## 跨视角\n\n"
-            "- map_to_api_id: [API-EXAMPLE-001]"
-            "(/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md)\n\n"
+            "- map_to_api_id: [API-EXAMPLE]"
+            "(/knowledge/application/MS-EXAMPLE/API-EXAMPLE.md)\n\n"
             "## 详细说明\n\n"
             "- (none)\n\n"
             "## 依据与证据\n\n"
@@ -163,7 +163,7 @@ def test_validator_cross_bundle_missing_still_warns() -> None:
             "description: 示例\n"
             "tags: [product, UC]\n"
             'timestamp: "2026-07-18T00:00:00Z"\n'
-            "full_id: UC-EXAMPLE\n"
+            "id: UC-EXAMPLE\n"
             "perspective: product\n"
             "hierarchy: UC\n"
             "parent_id: null\n"

@@ -53,9 +53,9 @@ title: 产品视角元数据（company/knowledge/product）
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| PL.maps_to_bsd | 一级 BSD.full_id | PL 对标一级 BSD（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
-| SLN.maps_to_pl_id | PL.full_id | 解决方案对标产品线（AA；同上） |
-| 系统 PD.parent_id | PL.full_id | 产品服务挂产品线；`PD.maps_to_bsd` 指二级 BSD |
+| PL.maps_to_bsd | 一级 BSD.id | PL 对标一级 BSD（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
+| SLN.maps_to_pl_id | PL.id | 解决方案对标产品线（AA；同上） |
+| 系统 PD.parent_id | PL.id | 产品服务挂产品线；`PD.maps_to_bsd` 指二级 BSD |
 
 ---
 

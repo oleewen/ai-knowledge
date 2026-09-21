@@ -15,7 +15,7 @@ usage() {
   cat <<EOF
 用法: bash agent/skills/docs-okf/scripts/okf-validate.sh [--bundle NAME]
 
-校验 OKF bundle（frontmatter、full_id、链接、index 条目）。
+校验 OKF bundle（frontmatter、id、链接、index 条目）。
 bundle 默认取自 .docsconfig 的 DOC_DIR；KNOWLEDGE_TYPE 必填。
 
 环境变量:

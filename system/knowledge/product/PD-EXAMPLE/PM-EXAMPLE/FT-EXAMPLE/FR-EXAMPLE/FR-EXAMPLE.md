@@ -4,7 +4,7 @@ title: 示例功能需求
 description: 示例产品实体。
 tags: [product, FR]
 timestamp: "2026-06-26T00:00:00Z"
-full_id: FR-EXAMPLE
+id: FR-EXAMPLE
 perspective: product
 hierarchy: FR
 parent_id: FT-EXAMPLE

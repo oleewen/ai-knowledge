@@ -106,10 +106,10 @@ def _load_concepts(bundle_root: Path) -> List[Dict[str, Any]]:
             continue
         text = path.read_text(encoding="utf-8")
         meta, _ = okf_lib.parse_frontmatter(text)
-        full_id = meta.get("full_id")
-        if not full_id:
+        id = meta.get("id")
+        if not id:
             continue
-        hierarchy = str(meta.get("hierarchy") or full_id.split("-", 1)[0])
+        hierarchy = str(meta.get("hierarchy") or id.split("-", 1)[0])
         perspective = str(meta.get("perspective") or "")
         parent_id = meta.get("parent_id")
         parent = None if parent_id in (None, "null") else str(parent_id)
@@ -119,11 +119,11 @@ def _load_concepts(bundle_root: Path) -> List[Dict[str, Any]]:
             evidence = evidence[len("knowledge/") :]
         concepts.append(
             {
-                "full_id": str(full_id),
+                "id": str(id),
                 "hierarchy": hierarchy,
                 "perspective": perspective,
                 "parent_id": parent,
-                "title": str(meta.get("title") or full_id),
+                "title": str(meta.get("title") or id),
                 "alias": str(meta.get("alias") or meta.get("name") or ""),
                 "evidence": evidence,
                 "path": path,
@@ -133,12 +133,12 @@ def _load_concepts(bundle_root: Path) -> List[Dict[str, Any]]:
 
 
 def _forest_sort(concepts: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    """同批实体：无 parent 在前，父先于子；环/断链按 full_id 回退。"""
-    by_id = {c["full_id"]: c for c in concepts}
+    """同批实体：无 parent 在前，父先于子；环/断链按 id 回退。"""
+    by_id = {c["id"]: c for c in concepts}
     children: Dict[Optional[str], List[str]] = {}
     for c in concepts:
         parent = c["parent_id"] if c["parent_id"] in by_id else None
-        children.setdefault(parent, []).append(c["full_id"])
+        children.setdefault(parent, []).append(c["id"])
     for kids in children.values():
         kids.sort()
 
@@ -155,9 +155,9 @@ def _forest_sort(concepts: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
 
     for root_id in children.get(None, []):
         walk(root_id)
-    for c in sorted(concepts, key=lambda x: x["full_id"]):
-        if c["full_id"] not in seen:
-            walk(c["full_id"])
+    for c in sorted(concepts, key=lambda x: x["id"]):
+        if c["id"] not in seen:
+            walk(c["id"])
     return ordered
 
 
@@ -177,9 +177,9 @@ def _filter_for_section(
     for hierarchy in hierarchies:
         group = [c for c in filtered if c["hierarchy"] == hierarchy]
         grouped.extend(_forest_sort(group))
-    listed = {c["full_id"] for c in grouped}
-    for c in sorted(filtered, key=lambda x: x["full_id"]):
-        if c["full_id"] not in listed:
+    listed = {c["id"] for c in grouped}
+    for c in sorted(filtered, key=lambda x: x["id"]):
+        if c["id"] not in listed:
             grouped.append(c)
     return grouped
 
@@ -191,9 +191,9 @@ def _render_table_rows(concepts: List[Dict[str, Any]]) -> List[str]:
     ]
     for concept in concepts:
         rows.append(
-            "| {hierarchy} | {full_id} | {alias} | {title} | `{evidence}` |".format(
+            "| {hierarchy} | {id} | {alias} | {title} | `{evidence}` |".format(
                 hierarchy=concept["hierarchy"],
-                full_id=concept["full_id"],
+                id=concept["id"],
                 alias=concept["alias"],
                 title=concept["title"],
                 evidence=concept["evidence"],
@@ -255,7 +255,7 @@ def _default_suffix(bundle: str) -> str:
             "产品 **PL/SLN** 见公司；**PD/PM** 见系统层。"
         )
         mapping_rows = [
-            "| API-EXAMPLE-001 | `application/MS-EXAMPLE/API-EXAMPLE-001.md` |",
+            "| API-EXAMPLE | `application/MS-EXAMPLE/API-EXAMPLE.md` |",
             "| TBL-EXAMPLE | `data/DS-EXAMPLE/TBL-EXAMPLE.md` |",
             "| MW-EXAMPLE | `technical/MW-EXAMPLE/` |",
         ]

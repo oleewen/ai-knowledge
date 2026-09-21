@@ -37,7 +37,7 @@ title: 业务视角元数据（application/knowledge/business）
 
 ## 4. 字段（OKF）
 
-**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。
+**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。
 
 **正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。业务属性写正文，勿堆 frontmatter。
 
@@ -55,9 +55,9 @@ title: 业务视角元数据（application/knowledge/business）
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| BC.implemented_by_app_id | APP.full_id | 上下文实现应用 |
-| AGG.persisted_as_entity_ids | ENT.full_id | 聚合持久化实体 |
-| AGG.implemented_by_service_ids | MS.full_id | 聚合实现入口簇 |
+| BC.implemented_by_app_id | APP.id | 上下文实现应用 |
+| AGG.persisted_as_entity_ids | ENT.id | 聚合持久化实体 |
+| AGG.implemented_by_service_ids | MS.id | 聚合实现入口簇 |
 | AB.apis[].id | API.id | 能力实现 API |
 
 ## 6. 关联文档

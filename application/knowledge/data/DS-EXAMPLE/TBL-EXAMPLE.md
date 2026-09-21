@@ -4,7 +4,7 @@ title: 示例数据表
 description: null
 tags: [data, TBL]
 timestamp: "2026-06-24T00:00:00Z"
-full_id: TBL-EXAMPLE
+id: TBL-EXAMPLE
 perspective: data
 hierarchy: TBL
 parent_id: DS-EXAMPLE

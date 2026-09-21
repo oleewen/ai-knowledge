@@ -4,7 +4,7 @@ title: 示例技术平台能力
 description: 演示公司级 TPL 结构。
 tags: [technical, TPL]
 timestamp: "2026-06-21T00:00:00Z"
-full_id: TPL-EXAMPLE
+id: TPL-EXAMPLE
 perspective: technical
 hierarchy: TPL
 parent_id: null

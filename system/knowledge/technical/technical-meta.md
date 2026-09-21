@@ -45,7 +45,7 @@ Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详�
 | 字段 | 说明 |
 | --- | --- |
 | domain | 技术域分类（如 middleware、observability） |
-| parent_tpl_id | 归属公司级 TPL 的 full_id |
+| parent_tpl_id | 归属公司级 TPL 的 id |
 
 ---
 
@@ -53,8 +53,8 @@ Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详�
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| TSD.parent_tpl_id | TPL.full_id | 归属平台能力 |
-| MW.parent_tsd_id | TSD.full_id | 应用中间件绑定归属（下游引用） |
+| TSD.parent_tpl_id | TPL.id | 归属平台能力 |
+| MW.parent_tsd_id | TSD.id | 应用中间件绑定归属（下游引用） |
 
 ---
 

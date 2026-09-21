@@ -4,7 +4,7 @@ title: 中间件域
 description: 示例技术域（中间件）。
 tags: [technical, TSD]
 timestamp: "2026-06-21T00:00:00Z"
-full_id: TSD-EXAMPLE
+id: TSD-EXAMPLE
 perspective: technical
 hierarchy: TSD
 parent_id: null

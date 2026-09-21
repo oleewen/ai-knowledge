@@ -28,7 +28,7 @@
 - **AGG 无 MS** → 无根则不造 AGG；标待补充
 - **FT/UC 无 API** → 须绑 API；无则标待补充
 - **未读文件造 ID** → 零幻觉；未读勿写已核实 evidence；可 `confidence: low` 并述因
-- **concept 缺 full_id** → 每个 per-entity `{ID}.md` frontmatter 须非空 `full_id`；否则扫描无法纳入 INDEX-GUIDE 第五章
+- **concept 缺 id** → 每个 per-entity `{ID}.md` frontmatter 须非空 `id`；否则扫描无法纳入 INDEX-GUIDE 第五章
 
 ## API 四类
 
@@ -62,7 +62,7 @@
 - [ ] 写前意图澄清六项 + knowledge 批次路径
 - [ ] 顺序 技术→数据→业务→产品
 - [ ] API 四类 + `api_type`；仅 Dubbo Provider
-- [ ] 每实体一 `{ID}.md`；frontmatter 含 `full_id`
+- [ ] 每实体一 `{ID}.md`；frontmatter 含 `id`
 - [ ] 每实体有 evidence_chain
 - [ ] 先 README 后 INDEX（扫描/regen）
 - [ ] validate 通过后再烤干

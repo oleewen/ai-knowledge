@@ -13,7 +13,7 @@
 ## 阅读顺序
 
 1. [README.md](README.md) · [application-meta.md](application-meta.md)
-2. [MS-EXAMPLE/API-EXAMPLE-001.md](MS-EXAMPLE/API-EXAMPLE-001.md)
+2. [MS-EXAMPLE/API-EXAMPLE.md](MS-EXAMPLE/API-EXAMPLE.md)
 
 ## 关联索引
 

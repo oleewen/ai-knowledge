@@ -4,7 +4,7 @@ title: 示例应用
 description: null
 tags: [application, APP]
 timestamp: "2026-06-21T00:00:00Z"
-full_id: APP-EXAMPLE
+id: APP-EXAMPLE
 perspective: application
 hierarchy: APP
 parent_id: SYS-EXAMPLE

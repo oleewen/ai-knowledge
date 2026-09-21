@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""OKF bundle 校验：frontmatter、full_id 唯一性、链接与 index 条目。
+"""OKF bundle 校验：frontmatter、id 唯一性、链接与 index 条目。
 
 OKF v1 SSOT：agent/knowledge/okf-spec.md
 本脚本是 OKF 10 硬规则 R1~R10 的实现入口。
@@ -45,8 +45,8 @@ class Validator:
         )
         self.errors = 0
         self.warnings = 0
-        # 全仓 full_id → file 索引（供 R6 parent_id 与 R7 Cross-perspective 引用校验）
-        self._full_id_index: Dict[str, List[str]] = {}
+        # 全仓 id → file 索引（供 R6 parent_id 与 R7 Cross-perspective 引用校验）
+        self._id_index: Dict[str, List[str]] = {}
         # 缓存扫到的所有 .md 文件
         self._md_files: List[Path] = []
         # R10 layer_scope 与 bundle 名一致
@@ -71,21 +71,21 @@ class Validator:
     def run(self) -> int:
         self._md_files = sorted(self.bundle_root.rglob("*.md"))
 
-        # 第一轮：解析所有 frontmatter，构建 full_id 索引
+        # 第一轮：解析所有 frontmatter，构建 id 索引
         for path in self._md_files:
             relpath = self.relpath(path)
             text = path.read_text(encoding="utf-8")
             self._check_frontmatter(path, relpath, text)
             meta, _ = okf_lib.parse_frontmatter(text)
-            full_id = meta.get("full_id")
-            if full_id:
-                self._full_id_index.setdefault(str(full_id), []).append(relpath)
+            id = meta.get("id")
+            if id:
+                self._id_index.setdefault(str(id), []).append(relpath)
 
-        # 第二轮：full_id 唯一性 + 段结构 + 引用校验
-        for full_id, paths in sorted(self._full_id_index.items()):
+        # 第二轮：id 唯一性 + 段结构 + 引用校验
+        for id, paths in sorted(self._id_index.items()):
             if len(paths) > 1:
                 self.error(
-                    f"R6 full_id 重复: {full_id} -> {', '.join(paths)}"
+                    f"R6 id 重复: {id} -> {', '.join(paths)}"
                 )
 
         for path in self._md_files:
@@ -117,7 +117,7 @@ class Validator:
         print("=== OKF v1 校验结果 ===")
         print(f"bundle: {self.bundle_root}")
         print(f"扫到 .md 文件: {len(self._md_files)}")
-        print(f"full_id 总数: {len(self._full_id_index)}")
+        print(f"id 总数: {len(self._id_index)}")
         print(f"错误: {self.errors}  警告: {self.warnings}")
         if self.errors:
             print("校验失败，请修正后重跑。")
@@ -194,7 +194,7 @@ class Validator:
         # R6 parent_id 引用存在性（BD/PL 允许 null）
         parent_id = meta.get("parent_id")
         if parent_id is not None and str(parent_id) != "" and str(parent_id) != "null":
-            if str(parent_id) not in self._full_id_index:
+            if str(parent_id) not in self._id_index:
                 # 占位策略：第二轮结束后再做严格校验（避免漏判）
                 pass  # 占位，在第二轮统一处理
 

@@ -4,7 +4,7 @@ title: 示例二级业务子域
 description: 系统层二级 BSD；挂一级 BSD，并与 PD 一对一。
 tags: [business, BSD]
 timestamp: "2026-09-18T00:00:00Z"
-full_id: BSD-EXAMPLE-SUB
+id: BSD-EXAMPLE-SUB
 perspective: business
 hierarchy: BSD
 parent_id: BSD-EXAMPLE

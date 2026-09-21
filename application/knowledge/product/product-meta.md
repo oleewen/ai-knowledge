@@ -41,7 +41,7 @@ title: 产品视角元数据（application/knowledge/product）
 
 ## 4. 字段（OKF）
 
-**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。
+**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。
 
 **正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。
 
@@ -59,11 +59,11 @@ title: 产品视角元数据（application/knowledge/product）
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| PM.parent_id | 系统 PD.full_id | 模块归属产品服务 |
-| PM.depends_pm_ids | PM.full_id | 模块依赖其它模块 |
-| PM.relies_on_context_ids | BC.full_id | 模块依赖限界上下文 |
-| FT.invokes_api_ids | API.full_id | 功能调用 API |
-| UC.map_to_api_id | API.full_id | 用例映射 API |
+| PM.parent_id | 系统 PD.id | 模块归属产品服务 |
+| PM.depends_pm_ids | PM.id | 模块依赖其它模块 |
+| PM.relies_on_context_ids | BC.id | 模块依赖限界上下文 |
+| FT.invokes_api_ids | API.id | 功能调用 API |
+| UC.map_to_api_id | API.id | 用例映射 API |
 
 ## 6. BP 流程叙事（旁路实体）
 

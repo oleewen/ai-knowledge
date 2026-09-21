@@ -315,12 +315,12 @@ def collect_web_bases(start_doc_root: Path) -> List[Tuple[Parent, str]]:
 
 def cross_layer_href(
     start_doc_root: Path,
-    full_id: str,
+    id: str,
     *,
     parent_id: Optional[str] = None,
     hierarchy: Optional[str] = None,
 ) -> Optional[str]:
-    prefix = hierarchy or okf_lib._id_prefix(full_id)
+    prefix = hierarchy or okf_lib._id_prefix(id)
     layer = okf_lib.hierarchy_first_layer(prefix)
     perspective = okf_lib.hierarchy_to_perspective(prefix)
     if not layer or not perspective:
@@ -332,7 +332,7 @@ def cross_layer_href(
     if not wb:
         return None
     rel = okf_lib.entity_relpath(
-        perspective, full_id, parent_id=parent_id, bundle=layer
+        perspective, id, parent_id=parent_id, bundle=layer
     )
     return f"{wb}/{rel}"
 
@@ -432,14 +432,14 @@ def validate_http_href(
     name = Path(rel).name
     if not name.endswith(".md"):
         return f"跨层 HTTP 未指向 .md: {href}"
-    full_id = name[:-3]
-    prefix = okf_lib._id_prefix(full_id)
+    id = name[:-3]
+    prefix = okf_lib._id_prefix(id)
     perspective = okf_lib.hierarchy_to_perspective(prefix)
     if not perspective:
-        return f"跨层 HTTP 无法识别实体 ID: {full_id}"
+        return f"跨层 HTTP 无法识别实体 ID: {id}"
     try:
         expected = okf_lib.entity_relpath(
-            perspective, full_id, bundle=parent.knowledge_type
+            perspective, id, bundle=parent.knowledge_type
         )
     except ValueError:
         expected = None

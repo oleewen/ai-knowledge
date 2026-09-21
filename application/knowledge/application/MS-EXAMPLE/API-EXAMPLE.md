@@ -4,7 +4,7 @@ title: 示例 API：创建
 description: null
 tags: [application, API]
 timestamp: "2026-06-21T00:00:00Z"
-full_id: API-EXAMPLE-001
+id: API-EXAMPLE
 perspective: application
 hierarchy: API
 parent_id: MS-EXAMPLE

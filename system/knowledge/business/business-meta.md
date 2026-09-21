@@ -76,11 +76,11 @@ Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详�
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| BD / 一级 BSD（reference） | company 同名 full_id | 上游公司 SSOT |
-| 二级 BSD.maps_to_pd | 本库 PD.full_id | 二级 BSD 对标产品服务 |
-| BC.implemented_by_app_id | APP.full_id | 上下文实现应用 |
-| AGG.persisted_as_entity_ids | ENT.full_id | 聚合持久化实体 |
-| AGG.implemented_by_service_ids | MS.full_id | 聚合实现入口簇 |
+| BD / 一级 BSD（reference） | company 同名 id | 上游公司 SSOT |
+| 二级 BSD.maps_to_pd | 本库 PD.id | 二级 BSD 对标产品服务 |
+| BC.implemented_by_app_id | APP.id | 上下文实现应用 |
+| AGG.persisted_as_entity_ids | ENT.id | 聚合持久化实体 |
+| AGG.implemented_by_service_ids | MS.id | 聚合实现入口簇 |
 | 应用层 AB.apis | API.id | 能力 API（下游引用） |
 
 ---

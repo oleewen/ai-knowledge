@@ -12,7 +12,7 @@
 table_schema:
   header: ["层级", "ID", "别名（英文名）", "名称", "证据链"]
   semantics:
-    id: "数字编码（同一层级下按数字序列管理）"
+    id: "唯一实体 ID（TYPE-NAME）"
     alias: "英文编码（机器可读标识）"
     name: "中文名称（面向业务/阅读）"
   uniqueness:

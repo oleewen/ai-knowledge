@@ -4,7 +4,7 @@ title: 示例产品模块
 description: null
 tags: [product, PM]
 timestamp: "2026-09-13T00:00:00Z"
-full_id: PM-EXAMPLE
+id: PM-EXAMPLE
 perspective: product
 hierarchy: PM
 parent_id: PD-EXAMPLE

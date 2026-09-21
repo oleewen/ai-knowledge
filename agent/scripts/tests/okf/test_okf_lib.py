@@ -13,10 +13,10 @@ import okf_lib  # noqa: E402
 
 
 def test_parse_frontmatter():
-    text = "---\ntype: Business Domain\nfull_id: BD-EXAMPLE\n---\n# Body\n"
+    text = "---\ntype: Business Domain\nid: BD-EXAMPLE\n---\n# Body\n"
     meta, body = okf_lib.parse_frontmatter(text)
     assert meta["type"] == "Business Domain"
-    assert meta["full_id"] == "BD-EXAMPLE"
+    assert meta["id"] == "BD-EXAMPLE"
     assert body.strip() == "# Body"
 
 
@@ -37,8 +37,8 @@ def test_entity_relpath_application_sys():
 
 
 def test_entity_relpath_application_api():
-    path = okf_lib.entity_relpath("application", "API-EXAMPLE-001")
-    assert path == "knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md"
+    path = okf_lib.entity_relpath("application", "API-EXAMPLE")
+    assert path == "knowledge/application/MS-EXAMPLE/API-EXAMPLE.md"
 
 
 def test_parse_frontmatter_list():
@@ -107,7 +107,7 @@ def test_entity_relpath_company_bd_flat():
     assert path == "knowledge/business/BD-EXAMPLE.md"
 
 
-def test_entity_relpath_company_bd_uses_full_id():
+def test_entity_relpath_company_bd_uses_id():
     path = okf_lib.entity_relpath("business", "BD-CHARGING", bundle="company")
     assert path == "knowledge/business/BD-CHARGING.md"
 
@@ -232,7 +232,7 @@ def main() -> None:
         test_is_concept_file,
         test_hierarchy_to_type_cap,
         test_entity_relpath_company_bd_flat,
-        test_entity_relpath_company_bd_uses_full_id,
+        test_entity_relpath_company_bd_uses_id,
         test_entity_relpath_company_bsd_flat,
         test_entity_relpath_company_cap,
         test_entity_relpath_company_cap_with_parent,

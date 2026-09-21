@@ -4,7 +4,7 @@ title: 示例产品线
 description: 产品线；与一级 BSD 一对一，SLN 仍对标 PL（SLN 在 AA）。
 tags: [product, PL]
 timestamp: "2026-09-13T00:00:00Z"
-full_id: PL-EXAMPLE
+id: PL-EXAMPLE
 perspective: product
 hierarchy: PL
 parent_id: null

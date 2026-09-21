@@ -4,7 +4,7 @@ title: 示例实体
 description: null
 tags: [data, ENT]
 timestamp: "2026-06-21T00:00:00Z"
-full_id: ENT-EXAMPLE
+id: ENT-EXAMPLE
 perspective: data
 hierarchy: ENT
 parent_id: DS-EXAMPLE

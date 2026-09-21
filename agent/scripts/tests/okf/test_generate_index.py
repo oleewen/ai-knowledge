@@ -28,7 +28,7 @@ def test_render_index_lists_concepts_and_subdirs():
             "---\n"
             "title: 示例业务域\n"
             "description: 演示用\n"
-            "full_id: BD-EXAMPLE\n"
+            "id: BD-EXAMPLE\n"
             "---\n"
             "# Body\n",
             encoding="utf-8",
@@ -43,7 +43,7 @@ def test_render_index_lists_concepts_and_subdirs():
             "---\n"
             "title: 示例子域\n"
             "description: 子域描述\n"
-            "full_id: BSD-EXAMPLE\n"
+            "id: BSD-EXAMPLE\n"
             "---\n",
             encoding="utf-8",
         )
@@ -75,7 +75,7 @@ def test_preserve_bundle_root_okf_version():
         assert "# Root" in body
 
 
-def test_knowledge_index_full_id_and_evidence():
+def test_knowledge_index_id_and_evidence():
     with tempfile.TemporaryDirectory() as tmp:
         bundle = Path(tmp)
         concept_path = bundle / "knowledge" / "business" / "BD-EXAMPLE.md"
@@ -84,7 +84,7 @@ def test_knowledge_index_full_id_and_evidence():
             "---\n"
             "type: Business Domain\n"
             "title: 示例业务域\n"
-            "full_id: BD-EXAMPLE\n"
+            "id: BD-EXAMPLE\n"
             "perspective: business\n"
             "hierarchy: BD\n"
             "---\n",
@@ -143,7 +143,7 @@ def test_application_knowledge_index_sections_and_mapping():
         )
         assert "§4 数据视角（data · MDG → DS → ENT → TBL）" in rendered
         assert "§5 技术视角（technical · TSD → MW → CMP）" in rendered
-        assert "| API-EXAMPLE-001 | `application/MS-EXAMPLE/API-EXAMPLE-001.md` |" in rendered
+        assert "| API-EXAMPLE | `application/MS-EXAMPLE/API-EXAMPLE.md` |" in rendered
         assert "| TBL-EXAMPLE | `data/DS-EXAMPLE/TBL-EXAMPLE.md` |" in rendered
         assert "| MW-EXAMPLE | `technical/MW-EXAMPLE/` |" in rendered
         assert "business/BSD-EXAMPLE/" not in rendered
@@ -155,7 +155,7 @@ def main() -> None:
     tests = [
         test_render_index_lists_concepts_and_subdirs,
         test_preserve_bundle_root_okf_version,
-        test_knowledge_index_full_id_and_evidence,
+        test_knowledge_index_id_and_evidence,
         test_patch_index_guide_chapter_five,
         test_system_knowledge_index_sections_and_mapping,
         test_application_knowledge_index_sections_and_mapping,

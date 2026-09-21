@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # 校验 docs-build 产物。无 CLI 参数；路径来自 .docsconfig（docsconfig.sh）
-# 检查：{DOC_DIR}/INDEX-GUIDE.md 含实体块；各视角至少一个含 full_id 的 per-entity .md；
+# 检查：{DOC_DIR}/INDEX-GUIDE.md 含实体块；各视角至少一个含 id 的 per-entity .md；
 #       *-entities.md 若仍存在则 WARN（已废弃）
 
 ERRORS=0
@@ -40,7 +40,7 @@ _is_entity_concept_file() {
       ;;
   esac
   [[ "$base" == *.md ]] || return 1
-  grep -q '^full_id:' "$file" 2>/dev/null
+  grep -q '^id:' "$file" 2>/dev/null
 }
 
 echo "=== docs-build 校验 ==="
@@ -96,9 +96,9 @@ for p in "${PERSPECTIVES[@]}"; do
 
   TOTAL_ENTITIES=$((TOTAL_ENTITIES + ENTITY_COUNT))
   if [[ ${ENTITY_COUNT} -gt 0 ]]; then
-    success "${p}: ${ENTITY_COUNT} 个含 full_id 的 per-entity concept 文件"
+    success "${p}: ${ENTITY_COUNT} 个含 id 的 per-entity concept 文件"
   else
-    warn "${p}: 未发现含 full_id 的 per-entity .md（OKF 目标态每视角至少一个）"
+    warn "${p}: 未发现含 id 的 per-entity .md（OKF 目标态每视角至少一个）"
   fi
 
   if [[ -f "${ENTITIES_FILE}" ]]; then

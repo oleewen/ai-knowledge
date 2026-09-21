@@ -19,7 +19,7 @@ title: 示例业务域
 description: 仅用于演示公司级 BD 数据结构。
 tags: [business, BD]
 timestamp: "%s"
-full_id: BD-EXAMPLE
+id: BD-EXAMPLE
 perspective: business
 hierarchy: BD
 parent_id: null
@@ -53,7 +53,7 @@ title: 示例业务能力
 description: 仅用于演示公司级单层 CAP；parent_id 指向所属 BD。
 tags: [business, CAP]
 timestamp: "%s"
-full_id: CAP-EXAMPLE
+id: CAP-EXAMPLE
 perspective: business
 hierarchy: CAP
 parent_id: BD-EXAMPLE
@@ -84,7 +84,7 @@ title: 示例产品线
 description: 产品线（支持 BD）；一 PL 一 SLN（SLN 在 AA）。
 tags: [product, PL]
 timestamp: "%s"
-full_id: PL-EXAMPLE
+id: PL-EXAMPLE
 perspective: product
 hierarchy: PL
 parent_id: null
@@ -118,7 +118,7 @@ title: 示例系统
 description: 仅用于演示公司级 SYS 数据结构。
 tags: [application, SYS]
 timestamp: "%s"
-full_id: SYS-EXAMPLE
+id: SYS-EXAMPLE
 perspective: application
 hierarchy: SYS
 parent_id: null
@@ -150,7 +150,7 @@ title: 示例主数据域
 description: 仅用于演示公司级 MDG 数据结构。
 tags: [data, MDG]
 timestamp: "%s"
-full_id: MDG-EXAMPLE
+id: MDG-EXAMPLE
 perspective: data
 hierarchy: MDG
 parent_id: null
@@ -183,7 +183,7 @@ title: 示例技术平台能力
 description: 仅用于演示公司级 TPL 数据结构（示例）。
 tags: [technical, TPL]
 timestamp: "%s"
-full_id: TPL-EXAMPLE
+id: TPL-EXAMPLE
 perspective: technical
 hierarchy: TPL
 parent_id: null

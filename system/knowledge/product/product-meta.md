@@ -67,11 +67,11 @@ title: 产品视角元数据（system/knowledge/product）
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| PD.parent_id | 公司 PL.full_id | 产品服务归属产品线 |
-| PD.maps_to_sys_id | 本库 SYS.full_id | 对标系统（应用服务；字段语义 [glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
-| PD.maps_to_bsd | 二级 BSD.full_id | 对标二级业务子域 |
-| PM.parent_id | 本库 PD.full_id | 模块归属产品服务 |
-| PM.relies_on_context_ids | BC.full_id | 模块依赖上下文 |
+| PD.parent_id | 公司 PL.id | 产品服务归属产品线 |
+| PD.maps_to_sys_id | 本库 SYS.id | 对标系统（应用服务；字段语义 [glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
+| PD.maps_to_bsd | 二级 BSD.id | 对标二级业务子域 |
+| PM.parent_id | 本库 PD.id | 模块归属产品服务 |
+| PM.relies_on_context_ids | BC.id | 模块依赖上下文 |
 
 ---
 

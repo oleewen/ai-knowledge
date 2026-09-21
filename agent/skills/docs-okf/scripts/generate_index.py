@@ -32,7 +32,7 @@ def _concept_entries(directory: Path) -> List[Tuple[str, str, str]]:
         if not path.is_file() or not okf_lib.is_concept_file(path):
             continue
         meta, _ = okf_lib.parse_frontmatter(path.read_text(encoding="utf-8"))
-        if not meta.get("full_id"):
+        if not meta.get("id"):
             continue
         title = str(meta.get("title") or path.stem)
         desc = meta.get("description")

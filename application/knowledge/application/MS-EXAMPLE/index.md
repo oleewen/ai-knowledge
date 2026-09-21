@@ -6,11 +6,11 @@
 
 ## 目录文件
 
-* [示例 API：创建](API-EXAMPLE-001.md)
+* [示例 API：创建](API-EXAMPLE.md)
 
 ## 阅读顺序
 
-1. [API-EXAMPLE-001.md](API-EXAMPLE-001.md)
+1. [API-EXAMPLE.md](API-EXAMPLE.md)
 
 ## 关联索引
 

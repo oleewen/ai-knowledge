@@ -35,7 +35,7 @@ title: 数据视角元数据（application/knowledge/data）
 
 ## 4. 字段（OKF）
 
-**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `full_id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。
+**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。
 
 **正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。`definition_scope` 等可作 frontmatter 扩展。
 
@@ -52,11 +52,11 @@ title: 数据视角元数据（application/knowledge/data）
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| MDG（reference） | system MDG.full_id | 上游系统 SSOT |
-| DS.authoritative_mdg_id | MDG.full_id | 数据源归属主数据域（推荐） |
-| AGG.persisted_as_entity_ids | ENT.full_id | 聚合持久化 |
-| ENT.maps_to_aggregate_id | AGG.full_id | 实体归属聚合 |
-| DS.owned_by_app_id | APP.full_id | 数据源归属应用 |
+| MDG（reference） | system MDG.id | 上游系统 SSOT |
+| DS.authoritative_mdg_id | MDG.id | 数据源归属主数据域（推荐） |
+| AGG.persisted_as_entity_ids | ENT.id | 聚合持久化 |
+| ENT.maps_to_aggregate_id | AGG.id | 实体归属聚合 |
+| DS.owned_by_app_id | APP.id | 数据源归属应用 |
 
 ## 6. 关联文档
 

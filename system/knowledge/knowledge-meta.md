@@ -64,7 +64,7 @@ title: 知识树元数据（system/knowledge）
 | system | `knowledge/business/BSD-{NAME}/` | BSD→BC→AGG→AB 域扁平树 SSOT |
 | application | `BD-*.md` | 应用 reference |
 
-`okf_lib.entity_relpath(bundle="system", BD)` → `knowledge/business/{full_id}.md`
+`okf_lib.entity_relpath(bundle="system", BD)` → `knowledge/business/{id}.md`
 
 ---
 

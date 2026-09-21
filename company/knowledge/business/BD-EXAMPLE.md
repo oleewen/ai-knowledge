@@ -4,7 +4,7 @@ title: 示例业务域
 description: 演示公司级 BD；支撑 VC，并下挂一级 BSD。
 tags: [business, BD]
 timestamp: "2026-09-18T00:00:00Z"
-full_id: BD-EXAMPLE
+id: BD-EXAMPLE
 perspective: business
 hierarchy: BD
 parent_id: null

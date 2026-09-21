@@ -49,8 +49,8 @@ title: 应用视角元数据（company/knowledge/application）
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| SLN.maps_to_pl_id | PL.full_id | 方案对标产品线（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
-| 系统 SYS.parent_id | SLN.full_id | 系统归属解决方案 |
+| SLN.maps_to_pl_id | PL.id | 方案对标产品线（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
+| 系统 SYS.parent_id | SLN.id | 系统归属解决方案 |
 
 ---
 

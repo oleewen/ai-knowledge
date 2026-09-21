@@ -4,7 +4,7 @@ title: 示例产品服务
 description: 产品服务（别名业务服务）；与 SYS、二级 BSD 同建对标。
 tags: [product, PD]
 timestamp: "2026-09-13T00:00:00Z"
-full_id: PD-EXAMPLE
+id: PD-EXAMPLE
 perspective: product
 hierarchy: PD
 parent_id: PL-EXAMPLE

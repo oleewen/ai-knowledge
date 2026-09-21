@@ -19,7 +19,7 @@ title: 示例业务子域
 description: 仅用于演示业务视角数据结构（示例）。
 tags: [business, BSD]
 timestamp: "%s"
-full_id: BSD-EXAMPLE
+id: BSD-EXAMPLE
 perspective: business
 hierarchy: BSD
 parent_id: BD-EXAMPLE
@@ -52,7 +52,7 @@ title: 示例限界上下文
 description: null
 tags: [business, BC]
 timestamp: "%s"
-full_id: BC-EXAMPLE
+id: BC-EXAMPLE
 perspective: business
 hierarchy: BC
 parent_id: BSD-EXAMPLE
@@ -85,7 +85,7 @@ title: 示例聚合
 description: null
 tags: [business, AGG]
 timestamp: "%s"
-full_id: AGG-EXAMPLE
+id: AGG-EXAMPLE
 perspective: business
 hierarchy: AGG
 parent_id: BC-EXAMPLE
@@ -118,7 +118,7 @@ title: 示例业务能力
 description: null
 tags: [business, AB]
 timestamp: "%s"
-full_id: AB-EXAMPLE
+id: AB-EXAMPLE
 perspective: business
 hierarchy: AB
 parent_id: AGG-EXAMPLE
@@ -149,7 +149,7 @@ title: 示例产品模块
 description: null
 tags: [product, PM]
 timestamp: "%s"
-full_id: PM-EXAMPLE
+id: PM-EXAMPLE
 perspective: product
 hierarchy: PM
 parent_id: PD-EXAMPLE
@@ -181,7 +181,7 @@ title: 示例功能
 description: 仅用于演示产品视角数据结构（示例）。
 tags: [product, FT]
 timestamp: "%s"
-full_id: FT-EXAMPLE
+id: FT-EXAMPLE
 perspective: product
 hierarchy: FT
 parent_id: PM-EXAMPLE
@@ -195,7 +195,7 @@ layer_scope: system
 
 ## 跨视角
 
-- invokes_api_ids: [API-EXAMPLE-001](/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md)
+- invokes_api_ids: [API-EXAMPLE](/knowledge/application/MS-EXAMPLE/API-EXAMPLE.md)
 - realizes_use_case_ids: [UC-EXAMPLE](/knowledge/product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md)
 
 ## 详细说明
@@ -215,7 +215,7 @@ title: 示例用例
 description: 仅用于演示产品视角数据结构（示例）。
 tags: [product, UC]
 timestamp: "%s"
-full_id: UC-EXAMPLE
+id: UC-EXAMPLE
 perspective: product
 hierarchy: UC
 parent_id: FR-EXAMPLE
@@ -227,7 +227,7 @@ layer_scope: system
 
 ## 跨视角
 
-- map_to_api_id: [API-EXAMPLE-001](/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md)
+- map_to_api_id: [API-EXAMPLE](/knowledge/application/MS-EXAMPLE/API-EXAMPLE.md)
 
 ## 详细说明
 
@@ -248,7 +248,7 @@ title: 示例应用
 description: null
 tags: [application, APP]
 timestamp: "%s"
-full_id: APP-EXAMPLE
+id: APP-EXAMPLE
 perspective: application
 hierarchy: APP
 parent_id: SYS-EXAMPLE
@@ -284,7 +284,7 @@ title: 示例微服务
 description: null
 tags: [application, MS]
 timestamp: "%s"
-full_id: MS-EXAMPLE
+id: MS-EXAMPLE
 perspective: application
 hierarchy: MS
 parent_id: APP-EXAMPLE
@@ -317,7 +317,7 @@ title: 示例数据源
 description: 仅用于演示数据视角数据结构（示例）。
 tags: [data, DS]
 timestamp: "%s"
-full_id: DS-EXAMPLE
+id: DS-EXAMPLE
 perspective: data
 hierarchy: DS
 parent_id: MDG-EXAMPLE
@@ -349,7 +349,7 @@ title: 示例实体
 description: null
 tags: [data, ENT]
 timestamp: "%s"
-full_id: ENT-EXAMPLE
+id: ENT-EXAMPLE
 perspective: data
 hierarchy: ENT
 parent_id: DS-EXAMPLE

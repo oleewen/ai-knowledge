@@ -28,7 +28,7 @@ LINK_REWRITES: List[Tuple[str, str]] = [
     ("/knowledge/product/PL-EXAMPLE/PM-EXAMPLE.md", "/knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md"),
     ("/knowledge/application/SYS-EXAMPLE/", "/knowledge/application/MS-EXAMPLE/"),
     ("/knowledge/application/APP-EXAMPLE/MS-EXAMPLE.md", "/knowledge/application/MS-EXAMPLE/MS-EXAMPLE.md"),
-    ("/knowledge/application/API-EXAMPLE-001.md", "/knowledge/application/MS-EXAMPLE/API-EXAMPLE-001.md"),
+    ("/knowledge/application/API-EXAMPLE.md", "/knowledge/application/MS-EXAMPLE/API-EXAMPLE.md"),
     ("/knowledge/data/DS-EXAMPLE/", "/knowledge/data/ENT-EXAMPLE/"),
     ("/knowledge/technical/MW-EXAMPLE.md", "/knowledge/technical/MW-EXAMPLE/MW-EXAMPLE.md"),
     ("/knowledge/technical/CMP-EXAMPLE.md", "/knowledge/technical/MW-EXAMPLE/CMP-EXAMPLE.md"),
@@ -49,8 +49,8 @@ FILE_MOVES: List[Tuple[str, str]] = [
     ("application/SYS-EXAMPLE/SYS-EXAMPLE.md", "application/MS-EXAMPLE/SYS-EXAMPLE.md"),
     ("application/SYS-EXAMPLE/APP-EXAMPLE.md", "application/MS-EXAMPLE/APP-EXAMPLE.md"),
     ("application/MS-EXAMPLE.md", "application/MS-EXAMPLE/MS-EXAMPLE.md"),
-    ("application/API-EXAMPLE-001.md", "application/MS-EXAMPLE/API-EXAMPLE-001.md"),
-    ("application/MS-EXAMPLE/API-EXAMPLE-001.md", "application/MS-EXAMPLE/API-EXAMPLE-001.md"),
+    ("application/API-EXAMPLE.md", "application/MS-EXAMPLE/API-EXAMPLE.md"),
+    ("application/MS-EXAMPLE/API-EXAMPLE.md", "application/MS-EXAMPLE/API-EXAMPLE.md"),
     ("data/DS-EXAMPLE/DS-EXAMPLE.md", "data/ENT-EXAMPLE/DS-EXAMPLE.md"),
     ("data/DS-EXAMPLE/ENT-EXAMPLE.md", "data/ENT-EXAMPLE/ENT-EXAMPLE.md"),
     ("technical/MW-EXAMPLE.md", "technical/MW-EXAMPLE/MW-EXAMPLE.md"),
@@ -119,7 +119,7 @@ def rewrite_links(text: str) -> str:
 def apply_reference_meta(path: Path) -> None:
     text = path.read_text(encoding="utf-8")
     meta, body = okf_lib.parse_frontmatter(text)
-    fid = meta.get("full_id")
+    fid = meta.get("id")
     if not fid or fid not in REFERENCE_META:
         return
     for k, v in REFERENCE_META[fid].items():
