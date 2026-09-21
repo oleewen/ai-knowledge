@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>company</title>
+<title>company OKF</title>
 <script src="https://unpkg.com/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
 <script src="https://unpkg.com/marked/marked.min.js"></script>
 <style>
@@ -146,7 +146,7 @@ aside {
 </head>
 <body>
 <header>
-  <h1>company</h1>
+  <h1>company OKF</h1>
   <div class="controls">
     <input type="search" id="search" placeholder="搜索 title / id / tags…" autocomplete="off">
     <select id="typeFilter">
@@ -164,7 +164,7 @@ aside {
 </main>
 <script id="okf-bundle-data" type="application/json">
 {
-  "name": "company",
+  "name": "company OKF",
   "concepts": {
     "DESIGN": {
       "id": "DESIGN",
@@ -264,7 +264,7 @@ aside {
       "title": "企业架构",
       "description": null,
       "tags": [],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 企业架构\n\n返回 · 公司知识库\n\n公司层五视角入口；治理叙事，不写系统实现。分型：okf-spec。\n\n| 视角 | 入口 |\n|------|------|\n| 业务 | [business/](business/README.md) |\n| 产品 | [product/](product/README.md) |\n| 应用 | [application/](application/README.md) |\n| 数据 | [data/](data/README.md) |\n| 技术 | [technical/](technical/README.md) |\n| overview 缓冲 | [overview/](overview/README.md) |\n\n导航：[index.md](index.md) · [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 第五章 · 下游 system/application 仅引用本层 ID（VC-*, BD-*, 一级 BSD-*, CAP-*, PL-*, SLN-*, TPL-*）；二级 BSD/PD/SYS/MDG ∈ 系统库",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 企业架构\n\n返回 · 公司知识库\n\n公司层五视角入口；治理叙事，不写系统实现。分型：okf-spec。\n\n| 视角 | 入口 |\n|------|------|\n| 业务 | [business/](business/README.md) |\n| 产品 | [product/](product/README.md) |\n| 应用 | [application/](application/README.md) |\n| 数据 | [data/](data/README.md) |\n| 技术 | [technical/](technical/README.md) |\n| overview 缓冲 | [overview/](overview/README.md) |\n\n导航：[index.md](index.md) · [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 第五章 · 下游 system/application 仅引用本层 ID（VC-*, BD-*, BSD-L1-*, CAP-*, PL-*, SLN-*, TPL-*）；BSD(L2)/PD/SYS/MDG ∈ 系统库",
       "backlinks": [
         "DESIGN",
         "README",
@@ -349,7 +349,7 @@ aside {
       "id": "knowledge/business/BD-EXAMPLE",
       "type": "Business Domain",
       "title": "示例业务域",
-      "description": "演示公司级 BD；支撑 VC，并下挂一级 BSD。",
+      "description": "演示公司级 BD；支撑 VC，并下挂 BSD(L1)。",
       "tags": [
         "business",
         "BD"
@@ -363,7 +363,7 @@ aside {
       "id": "knowledge/business/BSD-EXAMPLE",
       "type": "Business Subdomain",
       "title": "示例一级业务子域",
-      "description": "公司层一级 BSD；挂 BD，对应 PL，并与 CAP 一对一映射。",
+      "description": "公司层 BSD(L1)；挂 BD，对应 PL，并与 CAP 一对一映射。",
       "tags": [
         "business",
         "BSD"
@@ -379,7 +379,7 @@ aside {
       "title": "业务架构",
       "description": null,
       "tags": [],
-      "body": "# 业务架构\n\n[返回 · 企业架构](../README.md)\n\n公司层业务入口：章节叙事 + VC/BD/一级 BSD/CAP。实体以 per-entity 与 [../index.md](../index.md) §1 为准。本 README 表登记 VC/BD/一级 BSD/CAP 样例。\n\n| 章节 | 文件 | 概述 |\n|------|------|------|\n| 业务概述 | [chapters/business-overview.md](chapters/business-overview.md) | 公司级背景、目标与范围 |\n| 业务域划分 | [chapters/business-domain-division.md](chapters/business-domain-division.md) | L1 业务域及域间关系 |\n| 商业模式 | [chapters/business-model.md](chapters/business-model.md) | 商业画布与收支模型 |\n| 价值链 | [chapters/business-value-chain.md](chapters/business-value-chain.md) | 价值创造与竞争壁垒 |\n| 组织角色 | [chapters/business-roles-and-organization.md](chapters/business-roles-and-organization.md) | 干系人与组织协作 |\n| 业务能力 | [chapters/business-capability.md](chapters/business-capability.md) | 能力框架与成熟度 |\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n| L1 | VC | VC-EXAMPLE | 示例价值链 | [VC-EXAMPLE/VC-EXAMPLE.md](VC-EXAMPLE/VC-EXAMPLE.md) |\n| L1 | BD | BD-EXAMPLE | 示例业务域 | [BD-EXAMPLE.md](BD-EXAMPLE.md) |\n| L2 | 一级 BSD | BSD-EXAMPLE | 示例一级业务子域 | [BSD-EXAMPLE.md](BSD-EXAMPLE.md) |\n| L3 | CAP | CAP-EXAMPLE | 示例业务能力 | [VC-EXAMPLE/CAP-EXAMPLE.md](VC-EXAMPLE/CAP-EXAMPLE.md) |",
+      "body": "# 业务架构\n\n[返回 · 企业架构](../README.md)\n\n公司层业务入口：章节叙事 + VC/BD/BSD(L1)/CAP。实体以 per-entity 与 [../index.md](../index.md) §1 为准。本 README 表登记 VC/BD/BSD(L1)/CAP 样例。\n\n| 章节 | 文件 | 概述 |\n|------|------|------|\n| 业务概述 | [chapters/business-overview.md](chapters/business-overview.md) | 公司级背景、目标与范围 |\n| 业务域划分 | [chapters/business-domain-division.md](chapters/business-domain-division.md) | L1 业务域及域间关系 |\n| 商业模式 | [chapters/business-model.md](chapters/business-model.md) | 商业画布与收支模型 |\n| 价值链 | [chapters/business-value-chain.md](chapters/business-value-chain.md) | 价值创造与竞争壁垒 |\n| 组织角色 | [chapters/business-roles-and-organization.md](chapters/business-roles-and-organization.md) | 干系人与组织协作 |\n| 业务能力 | [chapters/business-capability.md](chapters/business-capability.md) | 能力框架与成熟度 |\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n| L1 | VC | VC-EXAMPLE | 示例价值链 | [VC-EXAMPLE/VC-EXAMPLE.md](VC-EXAMPLE/VC-EXAMPLE.md) |\n| L1 | BD | BD-EXAMPLE | 示例业务域 | [BD-EXAMPLE.md](BD-EXAMPLE.md) |\n| L2 | BSD(L1) | BSD-EXAMPLE | 示例一级业务子域 | [BSD-EXAMPLE.md](BSD-EXAMPLE.md) |\n| L3 | CAP | CAP-EXAMPLE | 示例业务能力 | [VC-EXAMPLE/CAP-EXAMPLE.md](VC-EXAMPLE/CAP-EXAMPLE.md) |",
       "backlinks": [
         "knowledge/README",
         "knowledge/business/business-meta",
@@ -396,7 +396,7 @@ aside {
       "id": "knowledge/business/VC-EXAMPLE/CAP-EXAMPLE",
       "type": "Business Capability",
       "title": "示例业务能力",
-      "description": "演示公司级 CAP；实现 VC，并与一级 BSD 一对一映射。",
+      "description": "演示公司级 CAP；实现 VC，并与 BSD(L1) 一对一映射。",
       "tags": [
         "business",
         "CAP"
@@ -426,7 +426,7 @@ aside {
       "title": "业务视角元数据（company/knowledge/business）",
       "description": null,
       "tags": [],
-      "body": "# 业务视角元数据（company/knowledge/business）\n\n公司级 VC / BD / 一级 BSD / CAP 视角元数据 SSOT。实例索引：[index.md](../index.md)。\n\n---\n\n## 1. 概览\n\n| 字段 | 值 |\n| --- | --- |\n| meta_id | `DIR-COMPANY-KNOWLEDGE-BUSINESS` |\n| 视角 | business |\n| 层级范围 | company |\n| 说明 | BA：VC→CAP 能力目录 ∥ BD 域模型；一级 BSD 桥接 CAP 与 PL。 |\n\n---\n\n## 2. 层级链\n\n| 链序 | 层级代码 | 说明 |\n| --- | --- | --- |\n| 1 | VC | 价值链（能力目录根） |\n| 2 | BD | 业务域（支撑 VC） |\n| 3 | 一级 BSD | 业务子域（`level: 1`；挂 BD；对标 PL） |\n| 4 | CAP | 业务能力（实现 VC；一对一映射一级 BSD） |\n\n---\n\n## 3. 层定义\n\n| order | key | code | id_pattern | parent |\n| --- | --- | --- | --- | --- |\n| 1 | vc | VC | `VC-{NAME}` | — |\n| 2 | bd | BD | `BD-{NAME}` | —（平铺单文件） |\n| 3 | bsd1 | BSD | `BSD-{NAME}` | BD（`level: 1`） |\n| 4 | cap | CAP | `CAP-{NAME}` | VC（经 `implements_to_vc`，非 `parent_id`） |\n\n目录：`VC-{NAME}/VC-{NAME}.md` + `VC-{NAME}/CAP-*.md`；`BD-{NAME}.md`、一级 `BSD-{NAME}.md` 平铺。\n\n---\n\n## 4. 字段（OKF）\n\nFrontmatter 10 必填 + 正文四段见 okf-spec §2；本层 `layer_scope` 固定 `company`。\n\n| 层级 | 字段 | 说明 |\n| --- | --- | --- |\n| VC | `supported_by_bd`、`implemented_by_cap` | 均为列表必填；与 BD/CAP 双向同步 |\n| BD | `supports_to_vc`、`children` | 单值必填；列表必填；children 仅一级 BSD |\n| 一级 BSD | `level`、`parent`、`maps_to_pl`、`maps_to_cap` | 固定 `1`；均单值必填 |\n| CAP | `implements_to_vc`、`maps_to_bsd` | 均单值必填；目标必须为一级 BSD |\n| BD | `strategic_classification` | 正文扩展 |\n\n---\n\n## 5. 跨视角引用\n\n| 源字段 | 目标 | 说明 |\n| --- | --- | --- |\n| CAP.implements_to_vc | VC.id | CAP 实现价值链 |\n| CAP.maps_to_bsd | 一级 BSD.id | CAP 与一级 BSD 一对一映射 |\n| BD.supports_to_vc | VC.id | BD 支撑价值链 |\n| 一级 BSD.maps_to_pl | PL.id | 一级 BSD 对标产品线 |\n\n---\n\n## 6. 关联文档\n\n| 路径 | 说明 |\n| --- | --- |\n| [README.md](README.md) | 叙事文档索引 |\n| [index.md](../index.md) | VC/BD/一级 BSD/CAP 实例 SSOT |\n| naming-conventions（Agent 元知识） | ID 命名 SSOT |",
+      "body": "# 业务视角元数据（company/knowledge/business）\n\n公司级 VC / BD / BSD(L1) / CAP 视角元数据 SSOT。实例索引：[index.md](../index.md)。\n\n---\n\n## 1. 概览\n\n| 字段 | 值 |\n| --- | --- |\n| meta_id | `DIR-COMPANY-KNOWLEDGE-BUSINESS` |\n| 视角 | business |\n| 层级范围 | company |\n| 说明 | BA：VC→CAP 能力目录 ∥ BD 域模型；BSD(L1) 桥接 CAP 与 PL。 |\n\n---\n\n## 2. 层级链\n\n| 链序 | 层级代码 | 说明 |\n| --- | --- | --- |\n| 1 | VC | 价值链（能力目录根） |\n| 2 | BD | 业务域（支撑 VC） |\n| 3 | BSD(L1) | 业务子域（`level: 1`；挂 BD；对标 PL） |\n| 4 | CAP | 业务能力（实现 VC；一对一映射 BSD(L1)） |\n\n---\n\n## 3. 层定义\n\n| order | key | code | id_pattern | parent |\n| --- | --- | --- | --- | --- |\n| 1 | vc | VC | `VC-{NAME}` | — |\n| 2 | bd | BD | `BD-{NAME}` | —（平铺单文件） |\n| 3 | bsd1 | BSD | `BSD-{NAME}` | BD（`level: 1`） |\n| 4 | cap | CAP | `CAP-{NAME}` | VC（经 `implements_to_vc`，非 `parent_id`） |\n\n目录：`VC-{NAME}/VC-{NAME}.md` + `VC-{NAME}/CAP-*.md`；`BD-{NAME}.md`、一级 `BSD-{NAME}.md` 平铺。\n\n---\n\n## 4. 字段（OKF）\n\nFrontmatter 10 必填 + 正文四段见 okf-spec §2；本层 `layer_scope` 固定 `company`。\n\n| 层级 | 字段 | 说明 |\n| --- | --- | --- |\n| VC | `supported_by_bd`、`implemented_by_cap` | 均为列表必填；与 BD/CAP 双向同步 |\n| BD | `supports_to_vc`、`children` | 单值必填；列表必填；children 仅 BSD(L1) |\n| BSD(L1) | `level`、`parent`、`maps_to_pl`、`maps_to_cap` | 固定 `1`；均单值必填 |\n| CAP | `implements_to_vc`、`maps_to_bsd` | 均单值必填；目标必须为 BSD(L1) |\n| BD | `strategic_classification` | 正文扩展 |\n\n---\n\n## 5. 跨视角引用\n\n| 源字段 | 目标 | 说明 |\n| --- | --- | --- |\n| CAP.implements_to_vc | VC.id | CAP 实现价值链 |\n| CAP.maps_to_bsd | BSD(L1).id | CAP 与 BSD(L1) 一对一映射 |\n| BD.supports_to_vc | VC.id | BD 支撑价值链 |\n| BSD(L1).maps_to_pl | PL.id | BSD(L1) 对标产品线 |\n\n---\n\n## 6. 关联文档\n\n| 路径 | 说明 |\n| --- | --- |\n| [README.md](README.md) | 叙事文档索引 |\n| [index.md](../index.md) | VC/BD/BSD(L1)/CAP 实例 SSOT |\n| naming-conventions（Agent 元知识） | ID 命名 SSOT |",
       "backlinks": [
         "knowledge/knowledge-meta"
       ]
@@ -440,7 +440,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 业务能力\n\n[返回 · 业务架构](../README.md)\n\n公司级能力框架与成熟度标准。\n\n## 能力清单\n\n公司级单层能力清单及与业务域对应。\n\n## 成熟度评估\n\n评估维度、等级、周期与责任人。\n\n## 产品与方案映射\n\nCAP 对标 PL / SLN 为**推导路径**（不新增 CAP 直连字段）：\n\n1. `CAP.implements_to_vc` → VC  \n2. `CAP.maps_to_bsd` → 一级 BSD  \n3. 一级 BSD `maps_to_pl` → PL  \n3. `SLN.maps_to_pl_id` → 同一 PL（一 PL 一 SLN）\n\n公司只记原则与缺口；不落 PD/SYS。",
+      "body": "# 业务能力\n\n[返回 · 业务架构](../README.md)\n\n公司级能力框架与成熟度标准。\n\n## 能力清单\n\n公司级单层能力清单及与业务域对应。\n\n## 成熟度评估\n\n评估维度、等级、周期与责任人。\n\n## 产品与方案映射\n\nCAP 对标 PL / SLN 为**推导路径**（不新增 CAP 直连字段）：\n\n1. `CAP.implements_to_vc` → VC  \n2. `CAP.maps_to_bsd` → BSD(L1)\n3. BSD(L1) `maps_to_pl` → PL\n3. `SLN.maps_to_pl_id` → 同一 PL（一 PL 一 SLN）\n\n公司只记原则与缺口；不落 PD/SYS。",
       "backlinks": [
         "knowledge/business/README",
         "knowledge/overview/NAME-overview"
@@ -649,12 +649,12 @@ aside {
       "id": "knowledge/product/PL-EXAMPLE",
       "type": "Product Line",
       "title": "示例产品线",
-      "description": "产品线；与一级 BSD 一对一，SLN 仍对标 PL（SLN 在 AA）。",
+      "description": "产品线；与 BSD(L1) 一对一，SLN 仍对标 PL（SLN 在 AA）。",
       "tags": [
         "product",
         "PL"
       ],
-      "body": "## 关系\n\n- maps_to_bsd: BSD-EXAMPLE\n\n## 跨视角\n\n- 对标一级业务子域：BSD-EXAMPLE（经 maps_to_bsd）\n- 对标解决方案：SLN-EXAMPLE（经 SLN.maps_to_pl_id，AA）\n\n## 详细说明\n\n- target_users: [内部运营, 业务方]\n- definition_scope: local\n- 不直接对应二级 BSD / PD；产品服务自系统层 PD 起\n\n## 依据与证据\n\nchapters/product-architecture.md（示例）",
+      "body": "## 关系\n\n- maps_to_bsd: BSD-EXAMPLE\n\n## 跨视角\n\n- 对标一级业务子域：BSD-EXAMPLE（经 maps_to_bsd）\n- 对标解决方案：SLN-EXAMPLE（经 SLN.maps_to_pl_id，AA）\n\n## 详细说明\n\n- target_users: [内部运营, 业务方]\n- definition_scope: local\n- 不直接对应 BSD(L2) / PD；产品服务自系统层 PD 起\n\n## 依据与证据\n\nchapters/product-architecture.md（示例）",
       "backlinks": [
         "knowledge/product/README"
       ]
@@ -685,7 +685,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 产品线\n\n[返回 · 产品架构](../README.md)\n\n公司级产品线（PL）划分与组合关系。**不落 PD**（PD ∈ 系统库）。\n\n## 产品线清单（PL）\n\nPL 编号、定位、状态及与一级 BSD 对应。PL = 产品线；对标方案见公司 application · SLN。\n\n## 产品线职责与边界\n\n各 PL 价值、范围内外与协作边界。\n\n## 产品线关系图\n\nPL 协同、依赖与组合全景；下游产品服务（PD）见系统库。",
+      "body": "# 产品线\n\n[返回 · 产品架构](../README.md)\n\n公司级产品线（PL）划分与组合关系。**不落 PD**（PD ∈ 系统库）。\n\n## 产品线清单（PL）\n\nPL 编号、定位、状态及与 BSD(L1) 对应。PL = 产品线；对标方案见公司 application · SLN。\n\n## 产品线职责与边界\n\n各 PL 价值、范围内外与协作边界。\n\n## 产品线关系图\n\nPL 协同、依赖与组合全景；下游产品服务（PD）见系统库。",
       "backlinks": [
         "knowledge/overview/NAME-overview",
         "knowledge/product/README"
@@ -742,7 +742,7 @@ aside {
       "title": "产品视角元数据（company/knowledge/product）",
       "description": null,
       "tags": [],
-      "body": "# 产品视角元数据（company/knowledge/product）\n\n公司级 **PL** 视角元数据 SSOT。实例索引：[index.md](../index.md)。\n\n---\n\n## 1. 概览\n\n| 字段 | 值 |\n| --- | --- |\n| meta_id | `DIR-COMPANY-KNOWLEDGE-PRODUCT` |\n| 视角 | product |\n| 层级范围 | company |\n| 说明 | PL=产品线（与一级 BSD 一对一）。**不落 PD**（系统首次定义）。**不落 SLN**（SLN ∈ 公司 application / AA）。 |\n\n---\n\n## 2. 层级链\n\n| 链序 | 层级代码 | 说明 |\n| --- | --- | --- |\n| 1 | PL | 产品线 |\n\n---\n\n## 3. 层定义\n\n| order | key | code | id_pattern | parent |\n| --- | --- | --- | --- | --- |\n| 1 | pl | PL | `PL-{NAME}` | — |\n\n目录：`PL-{NAME}/PL-{NAME}.md`。\n\n对标：一级 `BSD.maps_to_pl` / `PL.maps_to_bsd`；方案台账：`SLN.maps_to_pl_id`（AA）。\n\n---\n\n## 4. 字段（OKF）\n\n| 层级 | 字段 | 说明 |\n| --- | --- | --- |\n| PL | `maps_to_bsd`、`target_users` | 一级 BSD 单值必填；目标用户 |\n\n**无** `supports_cap_ids`。\n\n---\n\n## 5. 跨视角引用\n\n| 源字段 | 目标 | 说明 |\n| --- | --- | --- |\n| PL.maps_to_bsd | 一级 BSD.id | PL 对标一级 BSD（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |\n| SLN.maps_to_pl_id | PL.id | 解决方案对标产品线（AA；同上） |\n| 系统 PD.parent_id | PL.id | 产品服务挂产品线；`PD.maps_to_bsd` 指二级 BSD |\n\n---\n\n## 6. 关联文档\n\n| 路径 | 说明 |\n| --- | --- |\n| [README.md](README.md) | 叙事文档索引 |\n| [index.md](../index.md) | PL 实例 SSOT |\n| 公司 application · SLN | AA 解决方案台账 |",
+      "body": "# 产品视角元数据（company/knowledge/product）\n\n公司级 **PL** 视角元数据 SSOT。实例索引：[index.md](../index.md)。\n\n---\n\n## 1. 概览\n\n| 字段 | 值 |\n| --- | --- |\n| meta_id | `DIR-COMPANY-KNOWLEDGE-PRODUCT` |\n| 视角 | product |\n| 层级范围 | company |\n| 说明 | PL=产品线（与 BSD(L1) 一对一）。**不落 PD**（系统首次定义）。**不落 SLN**（SLN ∈ 公司 application / AA）。 |\n\n---\n\n## 2. 层级链\n\n| 链序 | 层级代码 | 说明 |\n| --- | --- | --- |\n| 1 | PL | 产品线 |\n\n---\n\n## 3. 层定义\n\n| order | key | code | id_pattern | parent |\n| --- | --- | --- | --- | --- |\n| 1 | pl | PL | `PL-{NAME}` | — |\n\n目录：`PL-{NAME}/PL-{NAME}.md`。\n\n对标：一级 `BSD.maps_to_pl` / `PL.maps_to_bsd`；方案台账：`SLN.maps_to_pl_id`（AA）。\n\n---\n\n## 4. 字段（OKF）\n\n| 层级 | 字段 | 说明 |\n| --- | --- | --- |\n| PL | `maps_to_bsd`、`target_users` | BSD(L1) 单值必填；目标用户 |\n\n**无** `supports_cap_ids`。\n\n---\n\n## 5. 跨视角引用\n\n| 源字段 | 目标 | 说明 |\n| --- | --- | --- |\n| PL.maps_to_bsd | BSD(L1).id | PL 对标 BSD(L1)（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |\n| SLN.maps_to_pl_id | PL.id | 解决方案对标产品线（AA；同上） |\n| 系统 PD.parent_id | PL.id | 产品服务挂产品线；`PD.maps_to_bsd` 指 BSD(L2) |\n\n---\n\n## 6. 关联文档\n\n| 路径 | 说明 |\n| --- | --- |\n| [README.md](README.md) | 叙事文档索引 |\n| [index.md](../index.md) | PL 实例 SSOT |\n| 公司 application · SLN | AA 解决方案台账 |",
       "backlinks": [
         "knowledge/knowledge-meta"
       ]

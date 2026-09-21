@@ -1,7 +1,7 @@
 ---
 type: Product Line
 title: 示例产品线
-description: 产品线；与一级 BSD 一对一，SLN 仍对标 PL（SLN 在 AA）。
+description: 产品线；与 BSD(L1) 一对一，SLN 仍对标 PL（SLN 在 AA）。
 tags: [product, PL]
 timestamp: "2026-09-13T00:00:00Z"
 id: PL-EXAMPLE
@@ -24,7 +24,7 @@ maps_to_bsd: BSD-EXAMPLE
 
 - target_users: [内部运营, 业务方]
 - definition_scope: local
-- 不直接对应二级 BSD / PD；产品服务自系统层 PD 起
+- 不直接对应 BSD(L2) / PD；产品服务自系统层 PD 起
 
 ## 依据与证据
 

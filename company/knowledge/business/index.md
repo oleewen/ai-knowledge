@@ -10,7 +10,7 @@
 ## 目录文件
 
 * [示例业务域](BD-EXAMPLE.md) - 演示公司级 BD；支撑 VC。
-* [示例一级业务子域](BSD-EXAMPLE.md) - 公司层一级 BSD；对应 PL 与 CAP。
+* [示例一级业务子域](BSD-EXAMPLE.md) - 公司层 BSD(L1)；对应 PL 与 CAP。
 * [business-meta.md](business-meta.md)
 
 ## 阅读顺序

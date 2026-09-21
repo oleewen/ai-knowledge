@@ -1,7 +1,7 @@
 ---
 type: Business Domain
 title: 示例业务域
-description: 演示公司级 BD；支撑 VC，并下挂一级 BSD。
+description: 演示公司级 BD；支撑 VC，并下挂 BSD(L1)。
 tags: [business, BD]
 timestamp: "2026-09-18T00:00:00Z"
 id: BD-EXAMPLE

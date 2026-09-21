@@ -18,4 +18,4 @@ title: 企业架构
 | 技术 | [technical/](technical/README.md) |
 | overview 缓冲 | [overview/](overview/README.md) |
 
-导航：[index.md](index.md) · [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 第五章 · 下游 system/application 仅引用本层 ID（VC-*, BD-*, 一级 BSD-*, CAP-*, PL-*, SLN-*, TPL-*）；二级 BSD/PD/SYS/MDG ∈ 系统库
+导航：[index.md](index.md) · [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 第五章 · 下游 system/application 仅引用本层 ID（VC-*, BD-*, BSD-L1-*, CAP-*, PL-*, SLN-*, TPL-*）；BSD(L2)/PD/SYS/MDG ∈ 系统库

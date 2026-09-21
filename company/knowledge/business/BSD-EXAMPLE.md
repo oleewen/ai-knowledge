@@ -1,7 +1,7 @@
 ---
 type: Business Subdomain
 title: 示例一级业务子域
-description: 公司层一级 BSD；挂 BD，对应 PL，并与 CAP 一对一映射。
+description: 公司层 BSD(L1)；挂 BD，对应 PL，并与 CAP 一对一映射。
 tags: [business, BSD]
 timestamp: "2026-09-18T00:00:00Z"
 id: BSD-EXAMPLE

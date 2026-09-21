@@ -22,7 +22,7 @@ title: company INDEX-GUIDE
 
 ### 1.2 元信息
 
-* **角色**: 公司知识库；`knowledge/` = VC/BD/一级 BSD/CAP/PL/SLN/TPL SSOT（无二级 BSD/PD/SYS/MDG）；`system-slots/system-{NAME}` = 软链槽位  
+* **角色**: 公司知识库；`knowledge/` = VC/BD/BSD(L1)/CAP/PL/SLN/TPL SSOT（无 BSD(L2)/PD/SYS/MDG）；`system-slots/system-{NAME}` = 软链槽位
 * **栈**: Markdown、YAML  
 * **范围**: `knowledge/` · `solutions/` · `analysis/` · `system-slots/` · `changelogs/`  
 
@@ -70,7 +70,7 @@ company/
 - **字段语义**：`ID` 为完整实体 ID（如 `VC-EXAMPLE`）；`别名（英文名）` 为英文编码；`名称` 为中文名称
 - **唯一性约束**：`层级+ID` 全知识库唯一；`层级+别名（英文名）` 全知识库唯一
 
-### §1 业务视角（business · VC / BD / 一级 BSD / CAP）
+### §1 业务视角（business · VC / BD / BSD(L1) / CAP）
 
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
@@ -97,7 +97,7 @@ company/
 |------|----|--------------|------|---------|
 | TPL | TPL-EXAMPLE |  | 示例技术平台能力 | `technical/TPL-EXAMPLE.md` |
 
-> 本索引登记公司级 **VC / BD / 一级 BSD / CAP / PL / SLN / TPL**；SLN ∈ application（AA）；无二级 BSD/PD/SYS/MDG（见系统库）。
+> 本索引登记公司级 **VC / BD / BSD(L1) / CAP / PL / SLN / TPL**；SLN ∈ application（AA）；无 BSD(L2)/PD/SYS/MDG（见系统库）。
 
 ---
 
