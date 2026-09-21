@@ -1,7 +1,7 @@
 ---
 type: Product
 title: 示例产品服务
-description: 产品服务（别名业务服务）；与 SYS、二级 BSD 同建对标。
+description: 产品服务（别名业务服务）；与 SYS、BSD(L2) 同建对标。
 tags: [product, PD]
 timestamp: "2026-09-13T00:00:00Z"
 id: PD-EXAMPLE
@@ -28,7 +28,7 @@ maps_to_bsd: BSD-EXAMPLE-SUB
 ## 详细说明
 
 - definition_scope: local
-- 5A：PD∈PA；与 BA 二级 BSD、AA SYS 原子对齐
+- 5A：PD∈PA；与 BA BSD(L2)、AA SYS 原子对齐
 
 ## 依据与证据
 

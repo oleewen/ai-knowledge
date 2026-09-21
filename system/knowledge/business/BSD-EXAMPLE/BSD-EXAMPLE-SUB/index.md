@@ -10,7 +10,7 @@ title: BSD-EXAMPLE-SUB 索引
 
 ## 目录文件
 
-* [示例二级业务子域](BSD-EXAMPLE-SUB.md) - 系统层二级 BSD；对应 PD。
+* [示例二级业务子域](BSD-EXAMPLE-SUB.md) - 系统层 BSD(L2)；对应 PD。
 
 ## 阅读顺序
 

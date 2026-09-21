@@ -1,7 +1,7 @@
 ---
 type: Business Subdomain
 title: 示例二级业务子域
-description: 系统层二级 BSD；挂一级 BSD，并与 PD 一对一。
+description: 系统层 BSD(L2)；挂 BSD(L1)，并与 PD 一对一。
 tags: [business, BSD]
 timestamp: "2026-09-18T00:00:00Z"
 id: BSD-EXAMPLE-SUB
