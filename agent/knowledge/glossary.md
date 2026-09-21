@@ -35,13 +35,13 @@ tags: ["glossary", "terminology", "governance"]
 | 所属视角 | 缩写 | 英文全称 | 短义 | 说明 |
 | --- | --- | --- | --- | --- |
 | BA | VC | Value Chain | 价值链 | 能力目录根；下挂 CAP，并由 BD 支撑 |
-| BA | BD | Business Domain | 业务域 | 支撑 VC；下挂一级 BSD；勿与 BSD 混淆 |
-| BA | CAP | Business Capability | 业务能力 | 实现价值链；与一级 BSD 一对一映射 |
+| BA | BD | Business Domain | 业务域 | 支撑 VC；下挂 BSD(L1)；勿与 BSD 混淆 |
+| BA | CAP | Business Capability | 业务能力 | 实现价值链；与 BSD(L1) 一对一映射 |
 | BA | BSD | Business Subdomain | 业务子域 | 仅一级 / 二级；一级对应 PL，二级对应 PD |
 | BA | BC | Bounded Context | 限界上下文 | — |
 | BA | AGG | Aggregate | 聚合根 | — |
 | BA | AB | Ability | 领域能力 | 能力边界 |
-| PA | PL | Product Line | 产品线 | 对应一级 BSD |
+| PA | PL | Product Line | 产品线 | 对应 BSD(L1) |
 | PA | PD | Product | 产品服务 | 别名：业务服务 |
 | PA | PM | Product Module | 产品模块 | — |
 | PA | BP | Business Process | 业务流程 | — |
@@ -75,14 +75,14 @@ ID 前缀写作 `VC-` / `BD-` 等，语法见 [naming-conventions.md](naming-con
 | implemented_by_cap | **VC-*** 被哪些 **CAP-*** 实现（多值必填）。 |
 | supported_by_bd | **VC-*** 由哪些 **BD-*** 支撑（多值必填）。 |
 | supports_to_vc | **BD-*** 支撑哪个 **VC-***（单值必填）；VC 侧 `supported_by_bd` 多值必填。 |
-| maps_to_bsd | **CAP-*** 与一级 **BSD-*** 一对一映射（单值必填）；一级 BSD 侧同名单值必填。 |
-| maps_to_cap | **一级 BSD-*** 与 **CAP-*** 一对一映射（单值必填）。 |
-| maps_to_pl | **一级 BSD-*** 对标 **PL-***（单值必填）；PL 侧 `maps_to_bsd` 同值。 |
-| maps_to_bsd | **PL-*** 对标一级 **BSD-***（单值必填）；一级 BSD 侧 `maps_to_pl` 同值。 |
-| maps_to_pd | **二级 BSD-*** 对标 **PD-***（单值必填）；PD 侧 `maps_to_bsd` 同值。 |
-| maps_to_bsd | **PD-*** 对标二级 **BSD-***（单值必填）；二级 BSD 侧 `maps_to_pd` 同值。 |
+| maps_to_bsd | **CAP-*** 与**BSD-L1-*** 一对一映射（单值必填）；BSD(L1) 侧同名单值必填。 |
+| maps_to_cap | **BSD-L1-*** 与 **CAP-*** 一对一映射（单值必填）。 |
+| maps_to_pl | **BSD-L1-*** 对标 **PL-***（单值必填）；PL 侧 `maps_to_bsd` 同值。 |
+| maps_to_bsd | **PL-*** 对标**BSD-L1-***（单值必填）；BSD(L1) 侧 `maps_to_pl` 同值。 |
+| maps_to_pd | **BSD-L2-*** 对标 **PD-***（单值必填）；PD 侧 `maps_to_bsd` 同值。 |
+| maps_to_bsd | **PD-*** 对标**BSD-L2-***（单值必填）；BSD(L2) 侧 `maps_to_pd` 同值。 |
 | maps_to_pl_id | **SLN-*** 对标 **PL-***（必填同建）。 |
-| maps_to_sys_id | **PD-*** 对标的本库 **SYS-***（与二级 BSD 同建）。 |
+| maps_to_sys_id | **PD-*** 对标的本库 **SYS-***（与 BSD(L2) 同建）。 |
 | implements_bc_ids | **APP-*** 实现哪些 **BC-***（AA implements BA；SSOT 在 AA）。 |
 | implements_agg_ids | **MS-*** 实现哪些 **AGG-***（AA implements BA）。 |
 | uses_mdg_ids / uses_ds_ids / uses_ent_ids / uses_tbl_ids | AA **uses** DA（`uses_mdg_ids` 挂 SYS；细粒度挂 APP/MS）。 |

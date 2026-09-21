@@ -19,8 +19,8 @@
 
 | 层级 | 目录 | 治理职责 | 实体 SSOT（首次定义） |
 | --- | --- | --- | --- |
-| 公司 | `company/` | 公司级 EA 叙事、跨系统方案与分析、系统槽位 | VC、BD、一级 BSD、CAP、PL、SLN、TPL |
-| 系统 | `system/` | 系统级架构聚合、应用镜像槽位、蒸馏归档 | PD、SYS、MDG、二级 BSD、BC、AGG、AB、PM、FT、FR、UC、BP、BR、APP、MS、DS、ENT、TSD 等 |
+| 公司 | `company/` | 公司级 EA 叙事、跨系统方案与分析、系统槽位 | VC、BD、BSD(L1)、CAP、PL、SLN、TPL |
+| 系统 | `system/` | 系统级架构聚合、应用镜像槽位、蒸馏归档 | PD、SYS、MDG、BSD(L2)、BC、AGG、AB、PM、FT、FR、UC、BP、BR、APP、MS、DS、ENT、TSD 等 |
 | 应用 | `application/` | 实现级实体、SDD 阶段交付、物理锚点 | API、TBL、MW、CMP |
 
 **命名、术语与 OKF 文件分型**：统一以 `agent/knowledge/` 为准（见 [README.md](README.md)）。路径与槽位名见 [knowledge-layout.md](../references/knowledge-layout.md)。实体首次定义细节见下文「各层聚焦摘要」。
@@ -42,10 +42,10 @@
 | 视角 | 实体 | 公司层聚焦 |
 | --- | --- | --- |
 | 业务 | VC | 价值链；`supported_by_bd`→BD，`implemented_by_cap`→CAP |
-| 业务 | BD | 业务域；`supports_to_vc`→VC，`children`→一级 BSD |
-| 业务 | 一级 BSD | 公司层业务子域；`level: 1`，`parent`→BD，`maps_to_pl`→PL，`maps_to_cap`→CAP |
-| 业务 | CAP | 业务能力目录；`implements_to_vc`→VC，`maps_to_bsd`→一级 BSD |
-| 产品 | PL | 产品线；`maps_to_bsd`→一级 BSD；**无 PD / 无 SLN**（PD ∈ 系统；SLN ∈ 公司 application） |
+| 业务 | BD | 业务域；`supports_to_vc`→VC，`children`→BSD(L1) |
+| 业务 | BSD(L1) | 公司层业务子域；`level: 1`，`parent`→BD，`maps_to_pl`→PL，`maps_to_cap`→CAP |
+| 业务 | CAP | 业务能力目录；`implements_to_vc`→VC，`maps_to_bsd`→BSD(L1) |
+| 产品 | PL | 产品线；`maps_to_bsd`→BSD(L1)；**无 PD / 无 SLN**（PD ∈ 系统；SLN ∈ 公司 application） |
 | 应用 | SLN | 解决方案（对应 PL）（AA 台账）；**无 SYS**；**无** `uses_mdg_ids` |
 | 数据 | — | **无 MDG**（MDG ∈ 系统；SYS `uses_mdg_ids`） |
 | 技术 | TPL | 云 / DevOps / 安全 / 开发环境 / 可观测；由 AA `uses_*` 引用 |
@@ -58,13 +58,13 @@
 
 | 视角 | 系统层聚焦 |
 | --- | --- |
-| 业务 | 二级 BSD→AB；一级 BSD / BD 为 company reference；二级 BSD `level: 2`、`parent`→一级 BSD、`maps_to_pd`→PD |
+| 业务 | BSD(L2)→AB；BSD(L1) / BD 为 company reference；BSD(L2) `level: 2`、`parent`→BSD(L1)、`maps_to_pd`→PD |
 | 产品 | PD→PM→FT→FR→UC/BR、BP；PL 公司 SSOT（本层不落盘）；PD 本层 SSOT |
 | 应用 | SYS→APP/MS；SYS 本层 SSOT（`parent_id→公司 SLN`）；`uses_mdg_ids` / `uses_tsd_ids` / `uses_tpl_ids` |
 | 数据 | MDG/DS/ENT 本层 SSOT；TBL ∈ application |
 | 技术 | TSD；MW/CMP ∈ application；AA `uses_*` |
 
-- 公司层 reference（可留薄文件）：`BD/一级BSD/CAP/PL/SLN/TPL`（正文 SSOT ∈ company）；VC 仅公司层；**无**公司二级 BSD/PD/SYS/MDG
+- 公司层 reference（可留薄文件）：`BD/BSD(L1)/CAP/PL/SLN/TPL`（正文 SSOT ∈ company）；VC 仅公司层；**无**公司 BSD(L2)/PD/SYS/MDG
 - SDD：solutions → analysis → `requirements/REQUIREMENT-{IDEA-ID}/`
 - 槽位 / 同步：见 layout（`application-slots/application-{NAME}`）
 - 入口：[system/README.md](../../system/README.md) · [system/knowledge/](../../system/knowledge/README.md)
@@ -105,7 +105,7 @@
 | 边类 | 方向 | 代表 |
 | --- | --- | --- |
 | 实现与支撑 | `implements_to_vc` / `implemented_by_cap` / `supported_by_bd` / `supports_to_vc` | BA：VC↔CAP、VC↔BD |
-| 对标 | `maps_to_*` | BA：CAP↔一级 BSD；**PA**：一级 BSD↔PL、二级 BSD↔PD、SLN→PL；PA↔AA：PD→SYS |
+| 对标 | `maps_to_*` | BA：CAP↔BSD(L1)；**PA**：BSD(L1)↔PL、BSD(L2)↔PD、SLN→PL；PA↔AA：PD→SYS |
 | PA → BA | 依赖 | `relies_on_context_ids` |
 | PA → AA | 调用 | `invokes_api_ids` |
 | AA → BA | **implements** | `implements_bc_ids` / `implements_agg_ids` |

@@ -16,7 +16,7 @@ import okf_lib  # noqa: E402
 
 _APPLICATION_PERSPECTIVE_SECTIONS: List[Tuple[str, str, List[str]]] = [
     (
-        "§1 业务视角（business · 一级 BSD → 二级 BSD → BC → AGG → AB）",
+        "§1 业务视角（business · BSD(L1) → BSD(L2) → BC → AGG → AB）",
         "business",
         ["BD", "BSD", "BC", "AGG", "AB"],
     ),
@@ -45,7 +45,7 @@ _APPLICATION_PERSPECTIVE_SECTIONS: List[Tuple[str, str, List[str]]] = [
 
 _COMPANY_PERSPECTIVE_SECTIONS: List[Tuple[str, str, List[str]]] = [
     (
-        "§1 业务视角（business · VC / BD / 一级 BSD / CAP）",
+        "§1 业务视角（business · VC / BD / BSD(L1) / CAP）",
         "business",
         ["VC", "BD", "BSD", "CAP"],
     ),
@@ -220,8 +220,8 @@ def _render_section(
 def _default_suffix(bundle: str) -> str:
     if bundle == "company":
         footer_note = (
-            "> 本索引登记公司级 **VC / BD / 一级 BSD / CAP / PL / SLN / TPL**；"
-            "SLN ∈ application（AA）；无二级 BSD/PD/SYS/MDG（见系统库）。"
+            "> 本索引登记公司级 **VC / BD / BSD(L1) / CAP / PL / SLN / TPL**；"
+            "SLN ∈ application（AA）；无 BSD(L2)/PD/SYS/MDG（见系统库）。"
         )
         mapping_rows = [
             "| VC-EXAMPLE | `business/VC-EXAMPLE/` |",
@@ -235,7 +235,7 @@ def _default_suffix(bundle: str) -> str:
     elif bundle == "system":
         footer_note = (
             "> 公司级 **TPL-*** / **SLN-*** / **PL-*** 不在本索引登记。"
-            "本层 **二级 BSD / PD / SYS / MDG** 首次定义；产品自 **PD** 起；应用自 **SYS** 起。"
+            "本层 **BSD(L2) / PD / SYS / MDG** 首次定义；产品自 **PD** 起；应用自 **SYS** 起。"
         )
         mapping_rows = [
             "| BSD-EXAMPLE | `business/BSD-EXAMPLE/BSD-EXAMPLE.md`（一级 reference） |",

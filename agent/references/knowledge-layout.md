@@ -39,7 +39,7 @@
   | application | `application-meta.md`；`SYS-*.md` 本层 SSOT（`parent_id→公司 SLN`）；`APP-*/APP-*.md`；`APP-*/MS-*/MS-*.md` |
   | data | `data-meta.md`；`MDG-*.md` 本层 SSOT；`DS-*/` 含 DS/ENT；SYS 经 `uses_mdg_ids` |
   | technical | `technical-meta.md`；`TSD-*.md` 系统 SSOT；`MW-*/` 可为 application MW reference；AA `uses_*` |
-- **公司层五视角**（`company/knowledge/{perspective}/`）：叙事 + `{perspective}-meta.md` + 公司级实体（`VC-*`、BD、一级 BSD、CAP、`PL-*.md`、**`application/SLN-*.md`**、TPL）；**无二级 BSD/PD/SYS/MDG**
+- **公司层五视角**（`company/knowledge/{perspective}/`）：叙事 + `{perspective}-meta.md` + 公司级实体（`VC-*`、BD、BSD(L1)、CAP、`PL-*.md`、**`application/SLN-*.md`**、TPL）；**无 BSD(L2)/PD/SYS/MDG**
 - **系统阶段目录**：
   | 目录 | 约定 |
   | --- | --- |
