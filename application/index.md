@@ -4,11 +4,12 @@ title: application 目录索引（index）
 okf_version: 1.0
 ---
 <!-- okf:begin -->
-## OKF 渐进披露
+<!-- markdownlint-disable-next-line MD025 -->
+# OKF 渐进披露
 
 目录说明见 [README.md](README.md)。
 
-### 子目录
+## 子目录
 
 * [adr](adr/README.md)
 * [analysis](analysis/README.md)
@@ -17,7 +18,7 @@ okf_version: 1.0
 * [requirements](requirements/README.md)
 * [solutions](solutions/README.md)
 
-### 目录文件
+## 目录文件
 
 * [DESIGN.md](DESIGN.md)
 * [CONTRIBUTING.md](CONTRIBUTING.md)
@@ -28,14 +29,14 @@ okf_version: 1.0
 * [manifest.md](manifest.md)
 * [viz.html](viz.html)
 
-### 阅读顺序
+## 阅读顺序
 
 1. [README.md](README.md)（mode → [README-s](README-s.md) / [README-c](README-c.md)）
 2. [DESIGN.md](DESIGN.md) — 本层契约与治理引用
 3. [knowledge/](knowledge/README.md) → 五视角
 4. mode=s：solutions → analysis → requirements
 
-### 关联索引
+## 关联索引
 
 * 上一级说明：[../README.md](../README.md)
 <!-- okf:end -->
