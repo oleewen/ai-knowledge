@@ -53,4 +53,4 @@ title: 公司知识库设计
 
 ## 参考
 
-[README](README.md) · [INDEX-GUIDE](INDEX-GUIDE.md) · [index.md](index.md) · [knowledge/](knowledge/README.md) · [system-slots](system-slots/README.md) · [knowledge-links.yaml](knowledge-links.yaml) · [system/DESIGN](../system/DESIGN.md) · [application/DESIGN](../application/DESIGN.md)
+[README](README.md) · [INDEX-GUIDE](INDEX-GUIDE.md) · [index.md](index.md) · [knowledge/](knowledge/README.md) · [system-slots](system-slots/README.md) · [knowledge-links.yaml](knowledge-links.yaml) · `system/DESIGN` · `application/DESIGN`
