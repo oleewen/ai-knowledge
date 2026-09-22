@@ -29,7 +29,7 @@ description: >
 - 合并契约：结构/模板=元库；正文=本库；已改判定=规范化后与元库同路径内容不等；已改 md=同标题（不比层级）填入元库骨架，正文标题相对元库标题级统一平移（级封顶 H6）；未落位=策略确认后才落（原父级并入 / 改挂 / 追加 / 跳过）；本库独有路径永不删。
 - 根级 `CONTRIBUTING.md` 按普通 md 进清单与文件模式（本无 scaffold；指定路径破跳过强制重填）。未落位策略与普通 md **同规则**。轻流程 `S` 不表示全跳过未落位。
 - 根级 `DESIGN.md`：本无 → 新增骨架；已改 → **整文件覆盖**（`--apply-scaffold` 以元库为准；不走 H2 结构重填）。文件模式指定该路径时同样整文件覆盖。
-- 文件模式强制：指定路径两边都有的 `.md` **破跳过**，一律结构重填；本缺元有 → 仅 scaffold 该路径；元缺 / 软链路径 / 顶层遗留槽位名 → 该条拒绝。非 md：可进名单；已存在不覆盖；仅缺则可 scaffold。`*-slots/changelogs/**` 本有则整文件本库胜（强制也不破）。
+- 文件模式强制：先取指定范围内**本库与元库同相对路径并集**（指定目录必须反向扫描元库 `meta-only` scaffold 项，禁止只 `find DOC_ROOT`）；两边都有的 `.md` **破跳过**，一律结构重填；本缺元有 → 仅 scaffold 该路径；元缺 / 软链路径 / 顶层遗留槽位名 → 该条拒绝。非 md：可进名单；已存在不覆盖；仅缺则可 scaffold。`*-slots/changelogs/**` 本有则整文件本库胜（强制也不破）。
 - `knowledge-links.yaml` 永不被元库模板覆盖。
 - **槽位根放开**：`application-slots/`、`system-slots/` 下**非软链真文件**进四桶 / 重填 / 文件模式（与普通路径同）。**凡软链一律跳过**（不跟随）。顶层遗留 `application-*` / `system-*`（不含上述两 slots 名）仍硬忽略。槽位**实例**同步仍归 `/docs-pull`。
 - `*-slots/changelogs/**`：本无可 scaffold；本有整文件本库胜（不进结构重填）。
@@ -75,7 +75,7 @@ description: >
 - 正式（整树）：对齐后的 `DOC_ROOT`（新骨架 + `agent/`/IDE 段→`~/.agents/` + README 注记 + 已确认重填 + 已确认未落位）；备份在 `{REPO_ROOT}/.docs-init/upgrade-{stamp}/`
 - 正式（文件）：已 `C` 的指定路径（强制重填 / scaffold）；无强制 `.docs-init` 备份
 - 预览（整树）：清单（新增骨架 / 跳过 / 结构重填 / 整文件覆盖 / 本库独有）+ 后续未落位节清单
-- 预览（文件）：指定路径展开去重后的动作总览（强制重填 / scaffold / DESIGN 整文件覆盖 / 非 md 跳过覆盖 / 元缺拒绝 / 软链拒绝 / 遗留槽位拒绝 / changelogs 本库胜）
+- 预览（文件）：指定路径按两侧路径并集展开去重后的动作总览（强制重填 / scaffold / DESIGN 整文件覆盖 / 非 md 跳过覆盖 / 元缺拒绝 / 软链拒绝 / 遗留槽位拒绝 / changelogs 本库胜；须显式列出 `meta-only` scaffold 文件）
 - 收敛后：产物校核 + 受众 A/B → [light-flow-actions.md](../../references/light-flow-actions.md)
 
 ```bash
@@ -87,4 +87,4 @@ bash /path/to/ai-knowledge/agent/skills/docs-upgrade/scripts/docs-upgrade.sh --a
 
 ## 评测
 
-`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。重点：禁清空 install、meta 解析、清单闸门、未落位策略三档（批量文件/单文件批量/逐项并入）、写后 A/B、与 docs-install 分流、`--apply-scaffold` 后路径重写、文件模式互斥与确认粒度、根级 CONTRIBUTING.md 进普通 md、根级 DESIGN.md 整文件覆盖。
+`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。重点：禁清空 install、meta 解析、清单闸门、未落位策略三档（批量文件/单文件批量/逐项并入）、写后 A/B、与 docs-install 分流、`--apply-scaffold` 后路径重写、文件模式互斥与两侧并集展开、根级 CONTRIBUTING.md 进普通 md、根级 DESIGN.md 整文件覆盖。

@@ -78,14 +78,14 @@ bash agent/skills/docs-upgrade/scripts/docs-upgrade.sh --dry-run [--meta-path PA
 
 ### 1 解析指定路径
 
-1. 收集会话/附件中的文件与目录；目录递归收**所有文件**
+1. 收集会话/附件中的文件与目录；文件路径入名单，目录路径取**本库与元库同相对路径并集**（必须反向扫描元库，防漏 `BD-EXAMPLE/**` 这类 `meta-only` scaffold）
 2. 校验：`DOC_ROOT` 内路径规范化为相对路径；软链 / 顶层遗留槽位名拒绝；`DOC_ROOT` 外路径拒绝；`*-slots` 根真文件允许
-3. 去重；对每条判定动作（见 [merge-rules.md](merge-rules.md) §7）
+3. 去重后分类：`meta-only` → scaffold 候选、`local-only` → 元缺拒绝候选、`both` → 按 [merge-rules.md](merge-rules.md) §7 判定动作；动作数断言须覆盖并集总数
 4. fetch/解析 meta（与整树同源规则）
 
 ### 2 总览闸门
 
-展示解析后 N 条及动作类型。停等总览 `C`（可处理项；有未落位则随后出策略三档）/ `M`（改路径名单或下钻）/ `S`（取消整单）/ `F`（不扩到整树）。
+展示解析后 N 条及动作类型，并显式列出 `meta-only` scaffold 文件。停等总览 `C`（可处理项；有未落位则随后出策略三档）/ `M`（改路径名单或下钻）/ `S`（取消整单）/ `F`（不扩到整树）。
 
 总览未 `C` 前不得写任一文件（除非已 `M` 进入单文件并对该文件 `C`）。
 
