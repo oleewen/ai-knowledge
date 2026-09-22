@@ -172,7 +172,7 @@ aside {
       "title": "公司知识库设计",
       "description": null,
       "tags": [],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 公司知识库设计\n\n`company/`：公司层知识编排与系统槽位治理；不写系统实现细节。本文件 = 层根人类入口（契约短表 + 引用）；语义 SSOT ∈ `agent/knowledge/`。\n\n## 阅读顺序\n\n1. [README.md](README.md) — 定位  \n2. 本文 — 本层契约、同步门禁、治理引用  \n3. [knowledge/README.md](knowledge/README.md) — 五视角  \n4. [../system/DESIGN.md](../system/DESIGN.md) — 系统层对照  \n\n## 本层契约\n\n| 目录 | 职责 |\n| --- | --- |\n| `knowledge/` | 公司级实体正文 SSOT；[`overview/`](knowledge/overview/NAME-overview.md) = distill / extract / archive / tag 缓冲区（非实体 SSOT） |\n| `solutions/` · `analysis/` | 跨系统 SDD 上游；**无** `requirements/` |\n| `adr/` | 公司层跨系统决策 + `CONTEXT.md` |\n| `system-slots/system-{NAME}/` | 系统镜像软链入口 |\n| `knowledge-links.yaml` | 建联与同步编排（可空） |\n| `changelogs/` | INDEXING-LOG；变更溯源 git |\n\n路径总则：[knowledge-layout § 三层文档根](../agent/references/knowledge-layout.md#三层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。\n\n## 同步与门禁\n\n1. 下游 `system/` 整理可同步内容  \n2. docs-pull → 校验/修复 `system-slots/system-{NAME}` 软链  \n3. 校核 `knowledge/` 与 `knowledge-links.yaml`  \n4. 同步结果可记 `SYNC_OK`（含 commit）；变更溯源 `git log` / `git diff`  \n\n流水线全图：[knowledge-layout § 知识流水线](../agent/references/knowledge-layout.md#知识流水线)。冲突以下游事实源为准；company 只修映射与导航。禁止实现细节入 company 正文；改目录语义先改**本元库模板**再 upgrade。\n\n## 治理引用\n\n| 主题 | 链 |\n| --- | --- |\n| 三层职责 | [knowledge-governance § 三层职责边界](../agent/knowledge/knowledge-governance.md#三层职责边界) |\n| 本层聚焦 / 首次定义 | [knowledge-governance § 公司层](../agent/knowledge/knowledge-governance.md#公司层) |\n| 5A 映射 | [knowledge-governance § 核心映射（5A 方向）](../agent/knowledge/knowledge-governance.md#核心映射5a方向) |\n| 引用边界 | [knowledge-governance § 业务 knowledge 引用边界](../agent/knowledge/knowledge-governance.md#业务-knowledge-引用边界) |\n| 术语 / 5A 短义 | [glossary § 知识库术语](../agent/knowledge/glossary.md#知识库术语) |\n| 映射字段语义 | [glossary § 映射关系（常用）](../agent/knowledge/glossary.md#映射关系常用) |\n| 实体 ID | [naming-conventions § 实体 ID 格式](../agent/knowledge/naming-conventions.md#1-实体-id-格式) |\n| 文件分型 | [okf-spec § 文件分类方式](../agent/knowledge/okf-spec.md#1-文件分类方式) |\n| 本层 OKF 模板要点 | [okf-spec § 10.1 company](../agent/knowledge/okf-spec.md#101-company) |\n| ADR | [adr-guidelines](../agent/knowledge/adr-guidelines.md) · [adr-template](../agent/knowledge/adr-template.md) |\n\n## 参考\n\n[README](README.md) · [INDEX-GUIDE](INDEX-GUIDE.md) · [index.md](index.md) · [knowledge/](knowledge/README.md) · [system-slots](system-slots/README.md) · [knowledge-links.yaml](knowledge-links.yaml) · [system/DESIGN](../system/DESIGN.md) · [application/DESIGN](../application/DESIGN.md)",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 公司知识库设计\n\n`company/`：公司层知识编排与系统槽位治理；不写系统实现细节。本文件 = 层根人类入口（契约短表 + 引用）；语义 SSOT ∈ `agent/knowledge/`。\n\n## 阅读顺序\n\n1. [README.md](README.md) — 定位  \n2. 本文 — 本层契约、同步门禁、治理引用  \n3. [knowledge/README.md](knowledge/README.md) — 五视角  \n4. [../system/DESIGN.md](../system/DESIGN.md) — 系统层对照  \n\n## 本层契约\n\n| 目录 | 职责 |\n| --- | --- |\n| `knowledge/` | 公司级实体正文 SSOT；[`overview/`](knowledge/overview/NAME-overview.md) = distill / extract / archive / tag 缓冲区（非实体 SSOT） |\n| `solutions/` · `analysis/` | 跨系统 SDD 上游；**无** `requirements/` |\n| `adr/` | 公司层跨系统决策 + `CONTEXT.md` |\n| `system-slots/system-{NAME}/` | 系统镜像软链入口 |\n| `knowledge-links.yaml` | 建联与同步编排（可空） |\n| `changelogs/` | INDEXING-LOG；变更溯源 git |\n\n路径总则：[knowledge-layout § 三层文档根](../agent/references/knowledge-layout.md#三层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。\n\n## 同步与门禁\n\n1. 下游 `system/` 整理可同步内容  \n2. docs-pull → 校验/修复 `system-slots/system-{NAME}` 软链  \n3. 校核 `knowledge/` 与 `knowledge-links.yaml`  \n4. 同步结果可记 `SYNC_OK`（含 commit）；变更溯源 `git log` / `git diff`  \n\n流水线全图：[knowledge-layout § 知识流水线](../agent/references/knowledge-layout.md#知识流水线)。冲突以下游事实源为准；company 只修映射与导航。禁止实现细节入 company 正文；改目录语义先改**本元库模板**再 upgrade。\n\n## 治理引用\n\n| 主题 | 链 |\n| --- | --- |\n| 三层职责 | [knowledge-governance § 三层职责边界](../agent/knowledge/knowledge-governance.md#三层职责边界) |\n| 本层聚焦 / 首次定义 | [knowledge-governance § 公司层](../agent/knowledge/knowledge-governance.md#公司层) |\n| 5A 映射 | [knowledge-governance § 核心映射（5A 方向）](../agent/knowledge/knowledge-governance.md#核心映射5a方向) |\n| 引用边界 | [knowledge-governance § 业务 knowledge 引用边界](../agent/knowledge/knowledge-governance.md#业务-knowledge-引用边界) |\n| 术语 / 5A 短义 | [glossary § 知识库术语](../agent/knowledge/glossary.md#知识库术语) |\n| 映射字段语义 | [glossary § 映射关系（常用）](../agent/knowledge/glossary.md#映射关系常用) |\n| 实体 ID | [naming-conventions § 实体 ID 格式](../agent/knowledge/naming-conventions.md#1-实体-id-格式) |\n| 文件分型 | [okf-spec § 文件分类方式](../agent/knowledge/okf-spec.md#1-文件分类方式) |\n| 本层 OKF 模板要点 | [okf-spec § 10.1 company](../agent/knowledge/okf-spec.md#101-company) |\n| ADR | [adr-guidelines](../agent/knowledge/adr-guidelines.md) · [adr-template](../agent/knowledge/adr-template.md) |\n\n## 参考\n\n[README](README.md) · [INDEX-GUIDE](INDEX-GUIDE.md) · [index.md](index.md) · [knowledge/](knowledge/README.md) · [system-slots](system-slots/README.md) · [knowledge-links.yaml](knowledge-links.yaml) · `system/DESIGN` · `application/DESIGN`",
       "backlinks": [
         "README"
       ]
@@ -345,8 +345,8 @@ aside {
         "knowledge/overview/NAME-overview"
       ]
     },
-    "knowledge/business/BD-EXAMPLE": {
-      "id": "knowledge/business/BD-EXAMPLE",
+    "knowledge/business/BD-EXAMPLE/BD-EXAMPLE": {
+      "id": "knowledge/business/BD-EXAMPLE/BD-EXAMPLE",
       "type": "Business Domain",
       "title": "示例业务域",
       "description": "演示公司级 BD；支撑 VC，并下挂 BSD(L1)。",
@@ -359,8 +359,8 @@ aside {
         "knowledge/business/README"
       ]
     },
-    "knowledge/business/BSD-EXAMPLE": {
-      "id": "knowledge/business/BSD-EXAMPLE",
+    "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE": {
+      "id": "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE",
       "type": "Business Subdomain",
       "title": "示例一级业务子域",
       "description": "公司层 BSD(L1)；挂 BD，对应 PL，并与 CAP 一对一映射。",
@@ -379,7 +379,7 @@ aside {
       "title": "业务架构",
       "description": null,
       "tags": [],
-      "body": "# 业务架构\n\n[返回 · 企业架构](../README.md)\n\n公司层业务入口：章节叙事 + VC/BD/BSD(L1)/CAP。实体以 per-entity 与 [../index.md](../index.md) §1 为准。本 README 表登记 VC/BD/BSD(L1)/CAP 样例。\n\n| 章节 | 文件 | 概述 |\n|------|------|------|\n| 业务概述 | [chapters/business-overview.md](chapters/business-overview.md) | 公司级背景、目标与范围 |\n| 业务域划分 | [chapters/business-domain-division.md](chapters/business-domain-division.md) | L1 业务域及域间关系 |\n| 商业模式 | [chapters/business-model.md](chapters/business-model.md) | 商业画布与收支模型 |\n| 价值链 | [chapters/business-value-chain.md](chapters/business-value-chain.md) | 价值创造与竞争壁垒 |\n| 组织角色 | [chapters/business-roles-and-organization.md](chapters/business-roles-and-organization.md) | 干系人与组织协作 |\n| 业务能力 | [chapters/business-capability.md](chapters/business-capability.md) | 能力框架与成熟度 |\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n| L1 | VC | VC-EXAMPLE | 示例价值链 | [VC-EXAMPLE/VC-EXAMPLE.md](VC-EXAMPLE/VC-EXAMPLE.md) |\n| L1 | BD | BD-EXAMPLE | 示例业务域 | [BD-EXAMPLE.md](BD-EXAMPLE.md) |\n| L2 | BSD(L1) | BSD-EXAMPLE | 示例一级业务子域 | [BSD-EXAMPLE.md](BSD-EXAMPLE.md) |\n| L3 | CAP | CAP-EXAMPLE | 示例业务能力 | [VC-EXAMPLE/CAP-EXAMPLE.md](VC-EXAMPLE/CAP-EXAMPLE.md) |",
+      "body": "# 业务架构\n\n[返回 · 企业架构](../README.md)\n\n公司层业务入口：章节叙事 + VC/BD/BSD(L1)/CAP。实体以 per-entity 与 [../index.md](../index.md) §1 为准。本 README 表登记 VC/BD/BSD(L1)/CAP 样例。\n\n| 章节 | 文件 | 概述 |\n|------|------|------|\n| 业务概述 | [chapters/business-overview.md](chapters/business-overview.md) | 公司级背景、目标与范围 |\n| 业务域划分 | [chapters/business-domain-division.md](chapters/business-domain-division.md) | L1 业务域及域间关系 |\n| 商业模式 | [chapters/business-model.md](chapters/business-model.md) | 商业画布与收支模型 |\n| 价值链 | [chapters/business-value-chain.md](chapters/business-value-chain.md) | 价值创造与竞争壁垒 |\n| 组织角色 | [chapters/business-roles-and-organization.md](chapters/business-roles-and-organization.md) | 干系人与组织协作 |\n| 业务能力 | [chapters/business-capability.md](chapters/business-capability.md) | 能力框架与成熟度 |\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n| L1 | VC | VC-EXAMPLE | 示例价值链 | [VC-EXAMPLE/VC-EXAMPLE.md](VC-EXAMPLE/VC-EXAMPLE.md) |\n| L1 | BD | BD-EXAMPLE | 示例业务域 | [BD-EXAMPLE/BD-EXAMPLE.md](BD-EXAMPLE/BD-EXAMPLE.md) |\n| L2 | BSD(L1) | BSD-EXAMPLE | 示例一级业务子域 | [BD-EXAMPLE/BSD-EXAMPLE.md](BD-EXAMPLE/BSD-EXAMPLE.md) |\n| L3 | CAP | CAP-EXAMPLE | 示例业务能力 | [VC-EXAMPLE/CAP-EXAMPLE.md](VC-EXAMPLE/CAP-EXAMPLE.md) |",
       "backlinks": [
         "knowledge/README",
         "knowledge/business/business-meta",
@@ -440,9 +440,11 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 业务能力\n\n[返回 · 业务架构](../README.md)\n\n公司级能力框架与成熟度标准。\n\n## 能力清单\n\n公司级单层能力清单及与业务域对应。\n\n## 成熟度评估\n\n评估维度、等级、周期与责任人。\n\n## 产品与方案映射\n\nCAP 对标 PL / SLN 为**推导路径**（不新增 CAP 直连字段）：\n\n1. `CAP.implements_to_vc` → VC  \n2. `CAP.maps_to_bsd` → BSD(L1)\n3. BSD(L1) `maps_to_pl` → PL\n3. `SLN.maps_to_pl_id` → 同一 PL（一 PL 一 SLN）\n\n公司只记原则与缺口；不落 PD/SYS。",
+      "body": "# 业务能力\n\n[返回 · 业务架构](../README.md)\n\n公司级能力框架与成熟度标准。\n\n## 能力清单\n\n公司级业务能力按业务环节能力与业务支撑能力两层组织；业务支撑能力跨价值环节提供支撑，不归属单一环节。\n\n### 业务环节能力\n\n| 能力 | 归属环节 | 说明 |\n|------|---------|------|\n\n### 业务支撑能力\n\n| 能力 | 归属域 | 说明 |\n\n## 成熟度评估\n\n评估维度、等级、周期与责任人。\n\n## 产品与方案映射\n\nCAP 对标 PL / SLN 为**推导路径**（不新增 CAP 直连字段）：\n\n1. `CAP.implements_to_vc` → VC  \n2. `CAP.maps_to_bsd` → BSD(L1)\n3. `BSD(L1).maps_to_pl` → PL\n3. `SLN.maps_to_pl_id` → 同一 PL（一 PL 一 SLN）",
       "backlinks": [
         "knowledge/business/README",
+        "knowledge/business/chapters/business-domain-division",
+        "knowledge/business/chapters/business-value-chain",
         "knowledge/overview/NAME-overview"
       ]
     },
@@ -455,9 +457,10 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 业务域划分\n\n[返回 · 业务架构](../README.md)\n\n公司级 L1 业务域划分与域间关系。\n\n## 业务域清单\n\nL1 域编号、名称、分类与职责摘要。\n\n## 业务域职责\n\n各 L1 目标、边界、能力与协作边界。\n\n## 核心域 / 支撑域 / 通用域\n\n战略分类及资源投入原则。\n\n## 业务域关系图\n\nL1 依赖与主数据/事件流向。",
+      "body": "# 业务域划分\n\n[返回 · 业务架构](../README.md)\n\n公司级 L1/L2 业务域划分与域间关系。业务域由价值链VC与业务能力CAP推导而来，遵循 DDD 限界上下文原则划定边界；能力定义见 [业务能力](business-capability.md)，价值链见 [价值链](business-value-chain.md)。\n\n## 核心域\n<!-- 一级业务域：直接实现价值环节 -->\n\n| 业务域 | 职责 | 边界 | 能力 |\n|---|---|---|---|\n| XX域 | 定义与职责 | 做什么，不做什么 | 提供什么能力 |\n\n## 支撑域\n<!-- 一级业务域：横跨环节 -->\n\n| 业务域 | 职责 | 边界 | 能力 |\n|---|---|---|---|\n| XX域 | 定义与职责 | 做什么，不做什么 | 提供什么能力 |\n\n## 通用域\n<!-- 一级业务域：跨业务复用 -->\n\n| 业务域 | 职责 | 边界 | 能力 |\n|---|---|---|---|\n| XX域 | 定义与职责 | 做什么，不做什么 | 提供什么能力 |\n\n## 业务子域\n\n| 业务域 | 业务子域 | 职责 | 边界 | 能力 |\n|---|---|---|---|---|\n| XX域 | XX子域 | 定义与职责 | 做什么，不做什么 | 提供什么能力 |\n\n## 业务域关系图\n\n```mermaid\ngraph TB\n    subgraph 核心域[\"核心域 · 直接实现价值环节\"]\n        direction LR\n        DOM_SALE[\"XX域\"] --> DOM_ORDER[\"XX域\"] \n    end\n\n    subgraph 支撑域群[\"支撑域群 · 横跨环节\"]\n        DOM_FULFILL[\"XX域\"]\n    end\n\n    subgraph 通用域群[\"通用域 · 跨业务复用\"]\n        DOM_COMMON[\"XX域\"]\n    end\n\n    DOM_ORDER -..-> DOM_FULFILL\n    DOM_SALE -..-> DOM_COMMON \n```\n\n## 能力→域映射\n\n完整能力定义见 [业务能力](business-capability.md)。\n\n> 映射一致性约束：每个能力必须有唯一 L1 业务域归属；一个能力可在多个价值环节被调用，但不因跨环节使用而拆成多个能力。\n\n| 能力 | 所在域 | 域群 |\n|------|------|------|\n| XX能力 | XX域 | 核心域 |\n| XX能力 | XX域 | 支撑域 |\n| XX能力 | XX域 | 通用域 |\n\n## 实体对齐\n\n| 业务域/子域 | 实体ID |\n|------|------|\n| XX域 | BD-XX |\n| YY子域 | BSD-YY |",
       "backlinks": [
         "knowledge/business/README",
+        "knowledge/business/chapters/business-value-chain",
         "knowledge/overview/NAME-overview"
       ]
     },
@@ -515,9 +518,10 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 价值链\n\n[返回 · 业务架构](../README.md)\n\n公司级价值链环节与壁垒框架。\n\n## 价值环节\n\n价值环节、核心/外包边界及域对齐。\n\n## 竞争壁垒\n\n差异化能力、护城河与可复制性边界。",
+      "body": "# 价值链\n\n[返回 · 业务架构](../README.md)\n\n公司级价值链环节与壁垒框架。\n\n## 价值环节\n\n价值环节、核心/外包边界及域对齐。\n\n### 域对齐\n\n按业务域展开其在价值环节中的承载能力；域边界与能力定义见 [业务域划分](business-domain-division.md)、[业务能力](business-capability.md)。\n\n| 业务域 | 环节1 | 环节2 | 环节3 | 环节4 | 环节5 | \n|---|---|---|---|---|---|\n\n## 竞争壁垒\n\n差异化能力、护城河与可复制性边界。",
       "backlinks": [
         "knowledge/business/README",
+        "knowledge/business/chapters/business-domain-division",
         "knowledge/overview/NAME-overview"
       ]
     },
@@ -1106,11 +1110,11 @@ aside {
     },
     {
       "source": "knowledge/business/README",
-      "target": "knowledge/business/BD-EXAMPLE"
+      "target": "knowledge/business/BD-EXAMPLE/BD-EXAMPLE"
     },
     {
       "source": "knowledge/business/README",
-      "target": "knowledge/business/BSD-EXAMPLE"
+      "target": "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE"
     },
     {
       "source": "knowledge/business/README",
@@ -1133,6 +1137,14 @@ aside {
       "target": "knowledge/business/README"
     },
     {
+      "source": "knowledge/business/chapters/business-domain-division",
+      "target": "knowledge/business/chapters/business-capability"
+    },
+    {
+      "source": "knowledge/business/chapters/business-domain-division",
+      "target": "knowledge/business/chapters/business-value-chain"
+    },
+    {
       "source": "knowledge/business/chapters/business-model",
       "target": "knowledge/business/README"
     },
@@ -1147,6 +1159,14 @@ aside {
     {
       "source": "knowledge/business/chapters/business-value-chain",
       "target": "knowledge/business/README"
+    },
+    {
+      "source": "knowledge/business/chapters/business-value-chain",
+      "target": "knowledge/business/chapters/business-domain-division"
+    },
+    {
+      "source": "knowledge/business/chapters/business-value-chain",
+      "target": "knowledge/business/chapters/business-capability"
     },
     {
       "source": "knowledge/data/README",

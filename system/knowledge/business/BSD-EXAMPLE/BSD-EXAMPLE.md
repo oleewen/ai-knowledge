@@ -29,4 +29,4 @@ parent: BD-EXAMPLE
 
 ## 依据与证据
 
-公司层 `knowledge/business/BSD-EXAMPLE.md`
+公司层 `knowledge/business/BD-EXAMPLE/BSD-EXAMPLE.md`

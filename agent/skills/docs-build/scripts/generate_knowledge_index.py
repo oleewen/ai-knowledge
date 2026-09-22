@@ -225,8 +225,8 @@ def _default_suffix(bundle: str) -> str:
         )
         mapping_rows = [
             "| VC-EXAMPLE | `business/VC-EXAMPLE/` |",
-            "| BD-EXAMPLE | `business/BD-EXAMPLE.md` |",
-            "| BSD-EXAMPLE | `business/BSD-EXAMPLE.md` |",
+            "| BD-EXAMPLE | `business/BD-EXAMPLE/` |",
+            "| BSD-EXAMPLE | `business/BD-EXAMPLE/BSD-EXAMPLE.md` |",
             "| CAP-EXAMPLE | `business/VC-EXAMPLE/CAP-EXAMPLE.md` |",
             "| PL-EXAMPLE | `product/PL-EXAMPLE.md` |",
             "| SLN-EXAMPLE | `application/SLN-EXAMPLE.md` |",

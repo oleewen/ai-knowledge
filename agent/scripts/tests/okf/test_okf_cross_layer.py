@@ -53,7 +53,9 @@ def test_href_and_validate(tmp_path: Path) -> None:
     cdoc = company / "company"
     biz = cdoc / "knowledge" / "business"
     biz.mkdir(parents=True)
-    (biz / "BD-EXAMPLE.md").write_text("# bd\n", encoding="utf-8")
+    bd_dir = biz / "BD-EXAMPLE"
+    bd_dir.mkdir()
+    (bd_dir / "BD-EXAMPLE.md").write_text("# bd\n", encoding="utf-8")
     sys_root = tmp_path / "sys" / "system"
     sys_root.mkdir(parents=True)
     x.write_parent(
@@ -71,7 +73,7 @@ def test_href_and_validate(tmp_path: Path) -> None:
     href = x.cross_layer_href(sys_root, "BD-EXAMPLE")
     assert href == (
         "https://github.com/org/ea/blob/main/company/"
-        "knowledge/business/BD-EXAMPLE.md"
+        "knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md"
     )
     assert x.validate_http_href(sys_root, href) is None
 

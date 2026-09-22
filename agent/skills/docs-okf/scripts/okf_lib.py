@@ -322,9 +322,10 @@ def entity_relpath(
         if perspective == "business" and prefix == "VC":
             return f"knowledge/business/{id}/{id}.md"
         if perspective == "business" and prefix == "BD":
-            return f"knowledge/business/{id}.md"
+            return f"knowledge/business/{id}/{id}.md"
         if perspective == "business" and prefix == "BSD":
-            return f"knowledge/business/{id}.md"
+            bd = parent_id or "BD-EXAMPLE"
+            return f"knowledge/business/{bd}/{id}.md"
         if perspective == "business" and prefix == "CAP":
             vc = parent_id or _DEFAULT_BUSINESS_VC
             return f"knowledge/business/{vc}/{id}.md"

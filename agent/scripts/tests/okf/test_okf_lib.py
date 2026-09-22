@@ -102,19 +102,26 @@ def test_hierarchy_to_type_cap():
     assert okf_lib.hierarchy_to_type("CAP") == "Business Capability"
 
 
-def test_entity_relpath_company_bd_flat():
+def test_entity_relpath_company_bd_nested():
     path = okf_lib.entity_relpath("business", "BD-EXAMPLE", bundle="company")
-    assert path == "knowledge/business/BD-EXAMPLE.md"
+    assert path == "knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md"
 
 
 def test_entity_relpath_company_bd_uses_id():
     path = okf_lib.entity_relpath("business", "BD-CHARGING", bundle="company")
-    assert path == "knowledge/business/BD-CHARGING.md"
+    assert path == "knowledge/business/BD-CHARGING/BD-CHARGING.md"
 
 
-def test_entity_relpath_company_bsd_flat():
+def test_entity_relpath_company_bsd_nested():
+    path = okf_lib.entity_relpath(
+        "business", "BSD-EXAMPLE", parent_id="BD-EXAMPLE", bundle="company"
+    )
+    assert path == "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE.md"
+
+
+def test_entity_relpath_company_bsd_default_parent():
     path = okf_lib.entity_relpath("business", "BSD-EXAMPLE", bundle="company")
-    assert path == "knowledge/business/BSD-EXAMPLE.md"
+    assert path == "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE.md"
 
 
 def test_entity_relpath_company_cap_with_parent():
@@ -231,9 +238,10 @@ def main() -> None:
         test_scan_concepts,
         test_is_concept_file,
         test_hierarchy_to_type_cap,
-        test_entity_relpath_company_bd_flat,
+        test_entity_relpath_company_bd_nested,
         test_entity_relpath_company_bd_uses_id,
-        test_entity_relpath_company_bsd_flat,
+        test_entity_relpath_company_bsd_nested,
+        test_entity_relpath_company_bsd_default_parent,
         test_entity_relpath_company_cap,
         test_entity_relpath_company_cap_with_parent,
         test_entity_relpath_company_tpl,

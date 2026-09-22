@@ -22,6 +22,6 @@ title: 业务架构
 | 链序 | 层级 | ID | 名称 | 文件/目录 |
 |------|------|----|------|-----------|
 | L1 | VC | VC-EXAMPLE | 示例价值链 | [VC-EXAMPLE/VC-EXAMPLE.md](VC-EXAMPLE/VC-EXAMPLE.md) |
-| L1 | BD | BD-EXAMPLE | 示例业务域 | [BD-EXAMPLE.md](BD-EXAMPLE.md) |
-| L2 | BSD(L1) | BSD-EXAMPLE | 示例一级业务子域 | [BSD-EXAMPLE.md](BSD-EXAMPLE.md) |
+| L1 | BD | BD-EXAMPLE | 示例业务域 | [BD-EXAMPLE/BD-EXAMPLE.md](BD-EXAMPLE/BD-EXAMPLE.md) |
+| L2 | BSD(L1) | BSD-EXAMPLE | 示例一级业务子域 | [BD-EXAMPLE/BSD-EXAMPLE.md](BD-EXAMPLE/BSD-EXAMPLE.md) |
 | L3 | CAP | CAP-EXAMPLE | 示例业务能力 | [VC-EXAMPLE/CAP-EXAMPLE.md](VC-EXAMPLE/CAP-EXAMPLE.md) |

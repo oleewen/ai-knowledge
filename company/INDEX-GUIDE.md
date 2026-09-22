@@ -75,8 +75,8 @@ company/
 | 层级 | ID | 别名（英文名） | 名称 | 证据链 |
 |------|----|--------------|------|---------|
 | VC | VC-EXAMPLE |  | 示例价值链 | `business/VC-EXAMPLE/VC-EXAMPLE.md` |
-| BD | BD-EXAMPLE |  | 示例业务域 | `business/BD-EXAMPLE.md` |
-| BSD | BSD-EXAMPLE |  | 示例一级业务子域 | `business/BSD-EXAMPLE.md` |
+| BD | BD-EXAMPLE |  | 示例业务域 | `business/BD-EXAMPLE/BD-EXAMPLE.md` |
+| BSD | BSD-EXAMPLE |  | 示例一级业务子域 | `business/BD-EXAMPLE/BSD-EXAMPLE.md` |
 | CAP | CAP-EXAMPLE |  | 示例业务能力 | `business/VC-EXAMPLE/CAP-EXAMPLE.md` |
 
 ### §2 产品视角（product · PL）
@@ -106,8 +106,8 @@ company/
 | 索引 ID | 命名式 ID（锚点目录） |
 |---------|----------------------|
 | VC-EXAMPLE | `business/VC-EXAMPLE/` |
-| BD-EXAMPLE | `business/BD-EXAMPLE.md` |
-| BSD-EXAMPLE | `business/BSD-EXAMPLE.md` |
+| BD-EXAMPLE | `business/BD-EXAMPLE/` |
+| BSD-EXAMPLE | `business/BD-EXAMPLE/BSD-EXAMPLE.md` |
 | CAP-EXAMPLE | `business/VC-EXAMPLE/CAP-EXAMPLE.md` |
 | PL-EXAMPLE | `product/PL-EXAMPLE.md` |
 | SLN-EXAMPLE | `application/SLN-EXAMPLE.md` |
