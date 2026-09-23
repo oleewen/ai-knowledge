@@ -25,12 +25,3 @@ title: 业务能力
 ## 成熟度评估
 
 评估维度、等级、周期与责任人。
-
-## 产品与方案映射
-
-CAP 对标 PL / SLN 为**推导路径**（不新增 CAP 直连字段）：
-
-1. `CAP.implements_to_vc` → VC  
-2. `CAP.maps_to_bsd` → BSD(L1)
-3. `BSD(L1).maps_to_pl` → PL
-3. `SLN.maps_to_pl_id` → 同一 PL（一 PL 一 SLN）
