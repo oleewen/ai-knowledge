@@ -9,7 +9,8 @@ if [[ -n "${_LIB_AGENTS_LOADED:-}" ]]; then
 fi
 _LIB_AGENTS_LOADED=1
 
-SUPPORTED_AGENTS=(cursor trae claude kiro codex)
+# 与 agent-layout 探测 IDE 段顺序一致（.agents 另列）
+SUPPORTED_AGENTS=(cursor codex claude trae kiro)
 
 agents_normalize() {
   local agents_str="${1:-}"

@@ -8,3 +8,11 @@ source "$ROOT_DIR/agent/scripts/test-core.sh"
 new_tmp_dir() {
   mktemp -d "${TMPDIR:-/tmp}/docs-upgrade-tests.XXXXXX"
 }
+
+ensure_test_agent_home() {
+  local tmp="${1:?}"
+  local home="${tmp}/fake-home"
+  mkdir -p "${home}/.agents/scripts"
+  printf '%s\n' '#!/usr/bin/env bash' '# test stub' >"${home}/.agents/scripts/docs-core.sh"
+  export HOME="$home"
+}

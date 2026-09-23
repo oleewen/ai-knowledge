@@ -17,7 +17,7 @@ _LIB_DOCSCONFIG_LOADED=1
 
 DEFAULT_GIT_REPO_URL='https://github.com/oleewen/ai-knowledge.git'
 DEFAULT_GIT_REF='HEAD'
-SUPPORTED_KNOWLEDGE_TYPES=(application system company)
+SUPPORTED_KNOWLEDGE_TYPES=(application system company meta)
 
 # 日志：聚合入口已加载 log-io 时复用 info；轻量 source 时回退 printf
 _docsconfig_info() {
@@ -26,6 +26,10 @@ _docsconfig_info() {
   else
     printf '%s\n' "$*"
   fi
+}
+
+_docsconfig_err() {
+  printf '%s\n' "$*" >&2
 }
 
 docsconfig_bootstrap_get_repo_url() {
@@ -140,18 +144,26 @@ docsconfig_doc_dir_from_roots() {
 docs_backup_path_to_init() {
   local repo_root="${1:?}" existing="${2:?}" stamp="${3:-}" dry_run="${4:-0}"
   local backup_root rel backup_target
-  existing="$(abs_path "$existing")"
+  # 软链：只搬链接本身，勿 abs_path/cd -P 跟随到实体树（否则会误迁 ~/.agents）
+  if [[ -L "$existing" ]]; then
+    local parent base
+    parent="$(cd "$(dirname "$existing")" 2>/dev/null && pwd)" || parent="$(dirname "$existing")"
+    base="$(basename "$existing")"
+    existing="${parent}/${base}"
+  else
+    existing="$(abs_path "$existing")"
+  fi
   repo_root="$(strip_trailing_slash "$(abs_path "$repo_root")")"
-  [[ -e "$existing" ]] || return 0
+  [[ -e "$existing" || -L "$existing" ]] || return 0
   [[ -n "$stamp" ]] || stamp="$(date +%Y-%m-%d_%H-%M-%S)"
   backup_root="${repo_root}/.docs-init/${stamp}"
 
   rel="$(backup_rel_under_root "$repo_root" "$existing")"
 
   backup_target="${backup_root}/${rel}"
-  if [[ -e "$backup_target" ]]; then
+  if [[ -e "$backup_target" || -L "$backup_target" ]]; then
     local i=1
-    while [[ -e "${backup_target}.__${i}" ]]; do (( i++ )); done
+    while [[ -e "${backup_target}.__${i}" || -L "${backup_target}.__${i}" ]]; do (( i++ )); done
     backup_target="${backup_target}.__${i}"
   fi
 
@@ -167,19 +179,19 @@ docs_backup_path_to_init() {
 
 docsconfig_knowledge_type_is_valid() {
   local v="${1:-}"
-  [[ "$v" == 'application' || "$v" == 'system' || "$v" == 'company' ]]
+  [[ "$v" == 'application' || "$v" == 'system' || "$v" == 'company' || "$v" == 'meta' ]]
 }
 
 docsconfig_validate_knowledge_type() {
   local v="${1:-}"
   docsconfig_knowledge_type_is_valid "$v" && return 0
-  printf '[docsconfig] 非法 KNOWLEDGE_TYPE: %s（允许: application system company）\n' "$v" >&2
+  printf '[docsconfig] 非法 KNOWLEDGE_TYPE: %s（允许: application system company meta）\n' "$v" >&2
   return 1
 }
 
-# 打印 .docsconfig 正文键值（不含文件头）；参数：dr rr doc_dir knowledge_type agent_root
+# 打印 .docsconfig 正文键值；参数：dr rr doc_dir knowledge_type agent_root agent_dir
 docsconfig_print_kv_block() {
-  local dr="$1" rr="$2" doc_dir="$3" knowledge_type="$4" agent_root="$5"
+  local dr="$1" rr="$2" doc_dir="$3" knowledge_type="$4" agent_root="$5" agent_dir="${6:-}"
   local ar
   printf 'DOC_ROOT=%s\nREPO_ROOT=%s\nDOC_DIR=%s\n' "$dr" "$rr" "$doc_dir"
   [[ -n "$knowledge_type" ]] && printf 'KNOWLEDGE_TYPE=%s\n' "$knowledge_type"
@@ -187,9 +199,10 @@ docsconfig_print_kv_block() {
     ar="$(docsconfig_format_root_for_write "$agent_root")"
     printf 'AGENT_ROOT=%s\n' "$ar"
   fi
+  [[ -n "$agent_dir" ]] && printf 'AGENT_DIR=%s\n' "$agent_dir"
 }
 
-# Usage: docsconfig_write <repo_root> <doc_root> <doc_dir> [dry] [agent_root] [knowledge_type]
+# Usage: docsconfig_write <repo_root> <doc_root> <doc_dir> [dry] [agent_root] [knowledge_type] [agent_dir]
 docsconfig_write() {
   local repo_root="${1:?repo_root}"
   local doc_root="${2:?doc_root}"
@@ -197,11 +210,12 @@ docsconfig_write() {
   local dry="${4:-0}"
   local agent_root_in="${5:-}"
   local knowledge_type_in="${6:-}"
+  local agent_dir_in="${7:-}"
 
   # 兼容旧调用：第 5 位误传 knowledge_type、未传 agent_root
   if [[ -n "$agent_root_in" && -z "$knowledge_type_in" ]]; then
     case "$agent_root_in" in
-      application|system|company)
+      application|system|company|meta)
         knowledge_type_in="$agent_root_in"
         agent_root_in=''
         ;;
@@ -217,19 +231,31 @@ docsconfig_write() {
     docsconfig_validate_knowledge_type "$knowledge_type_in" || return 1
   fi
 
+  if [[ -n "$agent_root_in" ]] && declare -F docsconfig_agent_root_looks_like_entity_tree >/dev/null 2>&1; then
+    if docsconfig_agent_root_looks_like_entity_tree "$agent_root_in"; then
+      _docsconfig_err "[docsconfig] AGENT_ROOT 不能指向实体树（当前像是 ${agent_root_in}）。请改为家目录（如 ~）并设置 AGENT_DIR=.agents（或探测到的 IDE 根名）。"
+      return 1
+    fi
+  fi
+
+  if [[ -n "$agent_root_in" && -z "$agent_dir_in" ]]; then
+    _docsconfig_err "[docsconfig] 已设 AGENT_ROOT 但缺少 AGENT_DIR。请在 .docsconfig 补充 AGENT_DIR=.agents（或探测到的目录名）。"
+    return 1
+  fi
+
   if [[ "$dry" == '1' ]]; then
     printf 'Would write %s:\n' "$out"
-    docsconfig_print_kv_block "$dr" "$rr" "$doc_dir" "$knowledge_type_in" "$agent_root_in"
+    docsconfig_print_kv_block "$dr" "$rr" "$doc_dir" "$knowledge_type_in" "$agent_root_in" "$agent_dir_in"
     return 0
   fi
 
   umask 022
   {
-    docsconfig_print_kv_block "$dr" "$rr" "$doc_dir" "$knowledge_type_in" "$agent_root_in"
+    docsconfig_print_kv_block "$dr" "$rr" "$doc_dir" "$knowledge_type_in" "$agent_root_in" "$agent_dir_in"
   } >"$out"
 }
 
-# Usage: docsconfig_read_into <path> <doc_var> <repo_var> <ddir_var> [aroot_var [ktype_var]]
+# Usage: docsconfig_read_into <path> <doc_var> <repo_var> <ddir_var> [aroot_var [ktype_var [adir_var]]]
 docsconfig_read_into() {
   local path="${1:?path}"
   local -n _doc="${2:?}"
@@ -239,22 +265,31 @@ docsconfig_read_into() {
   [[ -f "$path" ]] || return 1
 
   # 局部名须避开调用方 nameref 目标（如 raw_ar / AGENT_ROOT），否则 Bash 会写空调用方变量。
-  local _dc_raw_doc='' _dc_raw_repo='' _dc_raw_ddir='' _dc_raw_ar='' _dc_raw_kt=''
+  local _dc_raw_doc='' _dc_raw_repo='' _dc_raw_ddir='' _dc_raw_ar='' _dc_raw_kt='' _dc_raw_adir=''
   local line k v
   while IFS= read -r line || [[ -n "$line" ]]; do
     [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
     case "$line" in
-      DOC_ROOT=*|REPO_ROOT=*|DOC_DIR=*|AGENT_ROOT=*|KNOWLEDGE_TYPE=*)
+      DOC_ROOT=*|REPO_ROOT=*|DOC_DIR=*|AGENT_ROOT=*|AGENT_DIR=*|KNOWLEDGE_TYPE=*)
         k="${line%%=*}"
         v="${line#*=}"
         v="${v%$'\r'}"
+        # 去掉 AGENT_DIR 可能带的引号
+        v="${v#\"}"
+        v="${v%\"}"
+        v="${v#\'}"
+        v="${v%\'}"
         case "$k" in
           DOC_ROOT) _dc_raw_doc="$v" ;;
           REPO_ROOT) _dc_raw_repo="$v" ;;
           DOC_DIR) _dc_raw_ddir="$v" ;;
           AGENT_ROOT) _dc_raw_ar="$v" ;;
+          AGENT_DIR) _dc_raw_adir="$v" ;;
           KNOWLEDGE_TYPE) _dc_raw_kt="$v" ;;
         esac
+        ;;
+      AGENT_DIRS=*)
+        # 遗留键：忽略（不再读写 IDE 列表）
         ;;
     esac
   done <"$path"
@@ -271,6 +306,10 @@ docsconfig_read_into() {
   if (( $# >= 6 )); then
     local -n _ktype="${6:?}"
     _ktype="$_dc_raw_kt"
+  fi
+  if (( $# >= 7 )); then
+    local -n _adir="${7:?}"
+    _adir="$_dc_raw_adir"
   fi
   return 0
 }
@@ -305,9 +344,10 @@ docsconfig_bootstrap_validate() {
   config_owner_root="$(dirname "$cfg_path")"
 
   KNOWLEDGE_TYPE=""
+  AGENT_DIR=""
   DOCSCONFIG_PATH="$cfg_path"
   CONFIG_OWNER_ROOT="$config_owner_root"
-  docsconfig_read_into "$cfg_path" DOC_ROOT REPO_ROOT DOC_DIR AGENT_ROOT KNOWLEDGE_TYPE || {
+  docsconfig_read_into "$cfg_path" DOC_ROOT REPO_ROOT DOC_DIR AGENT_ROOT KNOWLEDGE_TYPE AGENT_DIR || {
     docsconfig_bootstrap_fail "[config] 解析 .docsconfig 失败。"
     return 1
   }
@@ -317,8 +357,59 @@ docsconfig_bootstrap_validate() {
     return 1
   fi
 
+  if [[ -n "${AGENT_ROOT:-}" && -z "${AGENT_DIR:-}" ]]; then
+    docsconfig_bootstrap_fail "[config] .docsconfig 已设 AGENT_ROOT 但缺少 AGENT_DIR。请补充 AGENT_DIR=.agents（或探测到的目录名）。"
+    return 1
+  fi
+
+  if [[ -n "${AGENT_ROOT:-}" ]] && declare -F docsconfig_agent_root_looks_like_entity_tree >/dev/null 2>&1; then
+    if docsconfig_agent_root_looks_like_entity_tree "$AGENT_ROOT"; then
+      docsconfig_bootstrap_fail "[config] AGENT_ROOT 不能指向实体树。请改为 ~（或家目录）并设置 AGENT_DIR。"
+      return 1
+    fi
+  fi
+
   docsconfig_validate_owner_matches_repo_root "$config_owner_root" "$REPO_ROOT" || {
     docsconfig_bootstrap_fail "[config] .docsconfig 与 REPO_ROOT 不一致。请重新执行 docs-install。"
     return 1
   }
+}
+
+# 补齐 AGENT_ROOT/AGENT_DIR：已齐且可解析则保留；否则探测写入 nameref。
+# 用法：docsconfig_fill_agent_fields <nameref_root> <nameref_dir> <old_root> <old_dir> [home]
+docsconfig_fill_agent_fields() {
+  local -n _fill_ar="${1:?}"
+  local -n _fill_ad="${2:?}"
+  local old_ar="${3:-}"
+  local old_ad="${4:-}"
+  local home="${5:-${HOME:-}}"
+  local tree=''
+
+  _fill_ar=''
+  _fill_ad=''
+
+  if [[ -n "$old_ar" ]]; then
+    if declare -F docsconfig_agent_root_looks_like_entity_tree >/dev/null 2>&1 \
+      && docsconfig_agent_root_looks_like_entity_tree "$old_ar"; then
+      _docsconfig_err "[docsconfig] 已有 AGENT_ROOT 指向实体树（${old_ar}）。请手改为家目录（如 ~）并设置 AGENT_DIR 后再跑。"
+      return 1
+    fi
+  fi
+
+  if [[ -n "$old_ar" && -n "$old_ad" ]]; then
+    tree="$(strip_trailing_slash "$(abs_path "${old_ar}/${old_ad}")")"
+    if declare -F agent_layout_is_install_root >/dev/null 2>&1 && agent_layout_is_install_root "$tree"; then
+      _fill_ar="$(strip_trailing_slash "$(abs_path "$old_ar")")"
+      _fill_ad="$old_ad"
+      return 0
+    fi
+    _docsconfig_info "已有 AGENT_ROOT/AGENT_DIR 无法解析为安装树，将重新探测…"
+  fi
+
+  if ! declare -F probe_agent_install_root >/dev/null 2>&1; then
+    # shellcheck source=agent-layout.sh
+    source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/agent-layout.sh"
+  fi
+  probe_agent_install_root _fill_ar _fill_ad "$home" || return 1
+  _docsconfig_info "已探测 Agent 安装根: AGENT_ROOT=${_fill_ar} AGENT_DIR=${_fill_ad}"
 }

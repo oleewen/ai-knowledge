@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 #
-# lib/rewrite.sh — 知识库树内 agent/IDE 路径重写与 README 注记
+# lib/rewrite.sh — 知识库树内 agent 路径重写与 README 注记
 # 依赖：lib/log-io.sh（info / have_*）
+#
+# 消费库：收敛为相对 DOC_DIR/.agents 的深度相对路径
+# 云库 meta：收敛为相对 DOC_DIR 视角下深度相对的 agent/
 #
 
 _LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=path.sh
+source "${_LIB_DIR}/path.sh"
 # shellcheck source=log-io.sh
 source "${_LIB_DIR}/log-io.sh"
 
@@ -27,41 +32,85 @@ is_text_file() {
   return 1
 }
 
-# 知识库路径重写目标（与 agent-install 实体树一致；字面 tilde，不展开 $HOME）
-DOCS_AGENT_REWRITE_TARGET='~/.agents/'
-# 与 agent-install AGENT_DIR_MAP 对齐的 IDE 段
-DOCS_AGENT_IDE_DIR_RE='cursor|trae|claude|kiro|codex'
+# 文件相对 docs_root 的目录深度 → 前缀（如 "" / "../" / "../../"）
+# 用法：rewrite_docs_rel_prefix <docs_abs> <file_abs> → 打印前缀（不含段名）
+rewrite_docs_rel_prefix() {
+  local docs_abs="${1:?}"
+  local file_abs="${2:?}"
+  local docs_n file_dir rel depth=0
+  docs_n="$(cd -P "$docs_abs" 2>/dev/null && pwd -P)" || docs_n="$(abs_path "$docs_abs")"
+  file_dir="$(cd -P "$(dirname "$file_abs")" 2>/dev/null && pwd -P)" \
+    || file_dir="$(abs_path "$(dirname "$file_abs")")"
+  if [[ "$file_dir" == "$docs_n" ]]; then
+    printf ''
+    return 0
+  fi
+  case "$file_dir" in
+    "$docs_n"/*)
+      rel="${file_dir#"$docs_n"/}"
+      ;;
+    *)
+      printf ''
+      return 0
+      ;;
+  esac
+  [[ -z "$rel" || "$rel" == '.' ]] && { printf ''; return 0; }
+  depth="$(awk -F'/' '{print NF}' <<<"$rel")"
+  local i prefix=''
+  for ((i = 0; i < depth; i++)); do
+    prefix="../${prefix}"
+  done
+  printf '%s' "$prefix"
+}
 
+# mode=consumer|meta；段名 consumer→.agents/ meta→agent/
 rewrite_agent_path_segment_in_file() {
   local file="$1"
-  local target="${DOCS_AGENT_REWRITE_TARGET}"
+  local docs_abs="$2"
+  local mode="${3:-consumer}"
+  local seg prefix target
   [[ -f "$file" ]] && is_text_file "$file" || return 0
-  grep -qE "agent/|\\.(${DOCS_AGENT_IDE_DIR_RE})/" "$file" 2>/dev/null || return 0
+  grep -qE 'agent/|~/\.agents/' "$file" 2>/dev/null || return 0
   have_cmd perl || return 0
-  if ! AGENT_SLASH="$target" IDE_DIR_RE="$DOCS_AGENT_IDE_DIR_RE" \
+
+  case "$mode" in
+    meta) seg='agent/' ;;
+    *) seg='.agents/' ;;
+  esac
+  prefix="$(rewrite_docs_rel_prefix "$docs_abs" "$file")"
+  target="${prefix}${seg}"
+
+  if ! AGENT_SLASH="$target" \
     perl -CSD -i -pe '
       BEGIN {
         die "AGENT_SLASH unset\n" unless defined $ENV{AGENT_SLASH} && length $ENV{AGENT_SLASH};
-        die "IDE_DIR_RE unset\n" unless defined $ENV{IDE_DIR_RE} && length $ENV{IDE_DIR_RE};
-        our $ide = $ENV{IDE_DIR_RE};
-        our $upagent = qr/(?:\.\.\/)+agent\//;
+        our $upagent = qr/(?:\.\.\/)*agent\//;
+        our $updotagents = qr/(?:\.\.\/)*\.agents\//;
+        our $tilde = qr/~\/\.agents\//;
       }
-      s{\.(?:$ide)/}{$ENV{AGENT_SLASH}}g;
+      s{$tilde}{$ENV{AGENT_SLASH}}g;
+      s{$updotagents}{$ENV{AGENT_SLASH}}g;
       s{$upagent}{$ENV{AGENT_SLASH}}g;
-      s{\bagent/}{$ENV{AGENT_SLASH}}g;
+      # 行首/空白后裸 agent/（非 .agents 内）
+      s{(?<!\.)\bagent/}{$ENV{AGENT_SLASH}}g;
     ' "$file" 2>/dev/null; then
     warn "重写 agent/ 路径失败：$file"
   fi
 }
 
-# 遍历 root 下待重写路径的文件：排除常见依赖/缓存/版本库目录，避免 ~/.cursor/skills 等目录残留导致 find 极慢或“假死”
 rewrite_agent_path_segment_in_tree() {
   local root="$1"
+  local mode="${2:-consumer}"
+  local seg
+  case "$mode" in
+    meta) seg='agent/' ;;
+    *) seg='.agents/' ;;
+  esac
   [[ -d "$root" ]] || return 0
-  info "  重写 agent/ 与 IDE Agent 路径引用 → ${DOCS_AGENT_REWRITE_TARGET}（跳过 node_modules/.git 等）: ${root}"
+  info "  重写 agent 路径引用 → 深度相对 ${seg}（模式=${mode}；跳过 node_modules/.git 等）: ${root}"
   local f
   while IFS= read -r -d '' f; do
-    rewrite_agent_path_segment_in_file "$f"
+    rewrite_agent_path_segment_in_file "$f" "$root" "$mode"
   done < <(
     find "$root" \
       \( -name node_modules -o -name .git -o -name __pycache__ -o -name .venv -o -name .cache -o -name dist -o -name build -o -name target \) \
@@ -73,21 +122,25 @@ rewrite_agent_path_segment_in_tree() {
   )
 }
 
-# 在 README.md 注入或更新「Agent 路径」说明（HTML 注释标记块，幂等）
-# 用法：inject_readme_agent_note <readme_path>
+# 用法：inject_readme_agent_note <readme_path> [mode]
 inject_readme_agent_note() {
   local readme="$1"
+  local mode="${2:-consumer}"
   [[ -f "$readme" ]] || return 0
   have_perl || return 0
 
-  local note_tmp
+  local note_tmp note_line
   note_tmp="$(mktemp "${TMPDIR:-/tmp}/sdx-agent-readme-note.XXXXXX")" || return 0
+  if [[ "$mode" == 'meta' ]]; then
+    note_line='> **Agent 路径**：云库（KNOWLEDGE_TYPE=meta）内指向 agent 树的路径已按相对当前文件深度重写为 `agent/`（相对文档根）。'
+  else
+    note_line='> **Agent 路径**：知识库内指向 Agent 树的路径已按相对当前文件深度重写为 `.agents/`（文档目录下 `.agents` 软链 → `$AGENT_ROOT/$AGENT_DIR`）。'
+  fi
   {
     printf '%s\n' '<!-- sdx-agent-dirs-note:begin -->'
-    printf '%s\n' "> **Agent 路径**：知识库内指向中央库 **agent** 树及 IDE Agent 目录（\`.cursor\` / \`.trae\` / \`.claude\` / \`.kiro\` / \`.codex\`）的路径已重写为 \`${DOCS_AGENT_REWRITE_TARGET}\`（与 agent-install 实体树一致）。"
-    printf '%s\n' "> **IDE 软链目录**：\`.cursor\`、\`.trae\`、\`.claude\`、\`.kiro\`、\`.codex\`（可通过 \`agent-install --agents=...\` 安装对应目录）。"
+    printf '%s\n' "$note_line"
     printf '%s\n' '<!-- sdx-agent-dirs-note:end -->'
-  } > "$note_tmp"
+  } >"$note_tmp"
 
   NOTE_FILE="$note_tmp" perl -CSD -e '
     use strict;
@@ -116,17 +169,17 @@ inject_readme_agent_note() {
   rm -f "$note_tmp"
 }
 
-# 将知识库树中 agent/（含 ../agent/、../../agent/ 等多层上跳）与已知 IDE Agent 路径重写为 ~/.agents/，并更新 README 注记（docs-install / docs-upgrade 共用）
-# 用法：rewrite_docs_agent_paths <docs_abs> [ignored_legacy_arg]
+# 用法：rewrite_docs_agent_paths <docs_abs> [mode=consumer|meta]
 rewrite_docs_agent_paths() {
   local docs_abs="${1:?}"
+  local mode="${2:-consumer}"
   [[ -d "$docs_abs" ]] || return 0
 
-  info ">>> 重写知识库中的 agent/ 与 IDE Agent 路径段为 ${DOCS_AGENT_REWRITE_TARGET}"
-  rewrite_agent_path_segment_in_tree "$docs_abs"
+  info ">>> 重写知识库 agent 路径（模式=${mode}）"
+  rewrite_agent_path_segment_in_tree "$docs_abs" "$mode"
 
   local readme="${docs_abs%/}/README.md"
   if [[ -f "$readme" ]]; then
-    inject_readme_agent_note "$readme"
+    inject_readme_agent_note "$readme" "$mode"
   fi
 }

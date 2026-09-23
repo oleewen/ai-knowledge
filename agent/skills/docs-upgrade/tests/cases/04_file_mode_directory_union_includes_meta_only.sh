@@ -7,6 +7,7 @@ TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$TEST_DIR/../test-lib.sh"
 
 TMP_DIR="$(new_tmp_dir)"
+ensure_test_agent_home "$TMP_DIR"
 PROTOCOL="$TMP_DIR/protocol.md"
 SKILL_DOCS=(
   "$ROOT_DIR/agent/skills/docs-upgrade/SKILL.md"

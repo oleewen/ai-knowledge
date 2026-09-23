@@ -26,6 +26,7 @@ unset \
   _LIB_GIT_REMOTE_LOADED \
   _LIB_DOCSCONFIG_LOADED \
   _LIB_AGENTS_LOADED \
+  _LIB_AGENT_LAYOUT_LOADED \
   _LIB_REWRITE_LOADED \
   _LIB_RESOLVE_LOADED \
   _LIB_KNOWLEDGE_LINKS_LOADED \
@@ -40,6 +41,8 @@ source "${_LIB_DIR}/git-remote.sh"
 source "${_LIB_DIR}/docsconfig.sh"
 # shellcheck source=lib/agents.sh
 source "${_LIB_DIR}/agents.sh"
+# shellcheck source=lib/agent-layout.sh
+source "${_LIB_DIR}/agent-layout.sh"
 # shellcheck source=lib/rewrite.sh
 source "${_LIB_DIR}/rewrite.sh"
 # shellcheck source=lib/resolve.sh

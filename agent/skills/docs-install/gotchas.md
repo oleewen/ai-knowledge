@@ -5,6 +5,6 @@
 - **建联脚本不落盘**：`docs-link.sh` / `link-config.sh` 仅在 `agent/skills/docs-link/scripts/`；联邦登记走 `/docs-link`，勿期待 install 拷贝到目标 `scripts/`。
 - **`.docsconfig` 漂移**：装机后 `REPO_ROOT`/`DOC_ROOT` 与实际不一致 → 再跑 docs-install 修复（`--scope=config` 或 knowledge）。
 - **Agent 树**：本技能不管；走 `/agent-install` 或双轨时在其之后执行。
-- **路径重写**：knowledge 实跑收尾将裸 `agent/`、多层上跳 `../agent/` 与已知 IDE 段重写为字面 `~/.agents/`；dry-run 不重写。
-- **`.docsconfig` AGENT_***：只写 `AGENT_ROOT`（默认/`agent-install` 工程级写回均为 `~/.agents`）。
+- **路径重写**：knowledge 实跑：深度相对 `.agents/`（或 meta→`agent/`）+ `DOC_DIR/.agents` 软链；不重写 IDE 段；dry-run 不做。`--force` 清空时只删 `.agents` 链接、不跟随实体树。
+- **`.docsconfig` AGENT_***：写 `AGENT_ROOT`（家目录式，如 `~`）+ `AGENT_DIR`（如 `.agents`）；由探测补齐；agent-install **不**写回。
 - **Bash 5+** 必需。

@@ -7,6 +7,7 @@ TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$TEST_DIR/../test-lib.sh"
 
 TMP_DIR="$(new_tmp_dir)"
+ensure_test_agent_home "$TMP_DIR"
 PROJECT_DIR="$TMP_DIR/project"
 DOCS_DIR="$PROJECT_DIR/docs"
 OUT_FILE="$TMP_DIR/case12.out"

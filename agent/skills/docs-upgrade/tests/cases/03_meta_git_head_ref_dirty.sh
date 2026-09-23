@@ -7,6 +7,7 @@ TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$TEST_DIR/../test-lib.sh"
 
 TMP_DIR="$(new_tmp_dir)"
+ensure_test_agent_home "$TMP_DIR"
 PROJECT_DIR="$TMP_DIR/project"
 DOCS_DIR="$PROJECT_DIR/docs"
 META_ROOT="$TMP_DIR/meta"
@@ -24,7 +25,8 @@ cat >"$PROJECT_DIR/.docsconfig" <<EOF
 DOC_ROOT=$DOCS_DIR
 REPO_ROOT=$PROJECT_DIR
 DOC_DIR=docs
-AGENT_ROOT=~/.agents
+AGENT_ROOT=~
+AGENT_DIR=.agents
 KNOWLEDGE_TYPE=application
 EOF
 

@@ -6,6 +6,7 @@ TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$TEST_DIR/../test-lib.sh"
 
 TMP_DIR="$(new_tmp_dir)"
+ensure_test_agent_home "$TMP_DIR"
 PROJECT_DIR="$TMP_DIR/project"
 DOCS_DIR="$PROJECT_DIR/docs"
 OUT_FILE="$TMP_DIR/case01.out"
@@ -34,5 +35,6 @@ if rg --fixed-strings "KNOWLEDGE_TYPE=" "$DOCS_CONFIG_PATH" >/dev/null; then
 fi
 
 assert_contains "AGENT_ROOT=" "$DOCS_CONFIG_PATH"
-assert_contains "missing-agent-root" "$DOCS_CONFIG_PATH"
-pass "scope=config 写入 .docsconfig（不写 KNOWLEDGE_TYPE）"
+assert_contains "AGENT_DIR=.agents" "$DOCS_CONFIG_PATH"
+assert_not_contains "missing-agent-root" "$DOCS_CONFIG_PATH"
+pass "scope=config 写入 .docsconfig（探测补齐 AGENT_*；不写 KNOWLEDGE_TYPE）"

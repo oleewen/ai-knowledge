@@ -308,41 +308,6 @@ agent_install_install() {
   done
 }
 
-# 计算 agent-install 写回 .docsconfig 所需 AGENT_ROOT（固定 ~/.agents）
-# 用法：install_agent_path <nameref_agent_root_out>
-install_agent_path() {
-  local -n _ar_out="${1:?}"
-  _ar_out="$(strip_trailing_slash "$(abs_path "${CFG[home_abs]}/.agents")")"
-}
-
-# =============================================================================
-# install config：target ≠ $HOME 时更新 AGENT_ROOT
-# =============================================================================
-
-agent_install_update_docsconfig() {
-  local t h
-  t="$(strip_trailing_slash "${CFG[target_abs]}")"
-  h="$(strip_trailing_slash "${CFG[home_abs]}")"
-  [[ "$t" != "$h" ]] || return 0
-
-  local cfg="$t/.docsconfig"
-  [[ -f "$cfg" ]] \
-    || error "未找到 ${cfg}。请先在该工程执行 docs-install（或 docs-install --scope=config <目标工程文档目录>）生成 .docsconfig。"
-
-  local doc_root repo_root doc_dir _ar_old kt
-  docsconfig_read_into "$cfg" doc_root repo_root doc_dir _ar_old kt \
-    || error "无法解析: ${cfg}"
-
-  [[ -n "$doc_root" && -n "$repo_root" && -n "$doc_dir" ]] \
-    || error ".docsconfig 缺少 DOC_ROOT/REPO_ROOT/DOC_DIR，请重新执行 docs-install。"
-
-  local ar
-  install_agent_path ar
-
-  info ">>> 更新 .docsconfig 中的 AGENT_ROOT（规范 ~/.agents）: ${cfg}"
-  docsconfig_write "$t" "$doc_root" "$doc_dir" "${CFG[dry_run]}" "$ar" "${kt:-}"
-}
-
 # =============================================================================
 # CLI
 # =============================================================================
@@ -353,18 +318,17 @@ agent_install_usage() {
   agent-install.sh [选项]
 
 说明
-  将本仓库 agent/ 树安装到 $HOME/.agents/（单份实体存储），并按 --agents
-  在 ${TARGET}/.{.cursor|.trae|.claude|.kiro|.codex}/ 下建立软链（按条目链接，包含 $HOME/.agents/ 根文件与
+  将本仓库 agent/ 树安装到 $HOME/.agents/（契约：AGENT_ROOT=~、AGENT_DIR=.agents），并按 --agents
+  在 ${TARGET}/.{.cursor|.codex|.claude|.trae|.kiro}/ 下建立软链（按条目链接，包含 $HOME/.agents/ 根文件与
   hooks/rules/scripts/skills/knowledge/references 等子目录下的各文件/目录）。
   scripts 阶段会从本仓库复制 agent/scripts（含 docs-core.sh 聚合入口与 lib/）到 $HOME/.agents/scripts/。
   不安装 README。
-  当 --target 不是 $HOME 时，更新 <target>/.docsconfig 的 AGENT_ROOT 为 ~/.agents；
-  若该文件不存在，请先对目标工程执行 docs-install。
+  不写回工程 .docsconfig（AGENT_ROOT/AGENT_DIR 由 /docs-install 写入）。
 
 选项
   --scope=SCOPE   a=全部 | r=rules | s=skills | h=hooks | sh=scripts | k|knowledge=knowledge+references  [默认: a]
   --target PATH   安装根父目录，其下仅为选中的 agent 创建对应目录  [默认: $HOME；仍兼容 --target=PATH]
-  --agents=LIST   cursor | trae | claude | kiro | codex | all；逗号或空格分隔多选  [默认: cursor]
+  --agents=LIST   cursor | codex | claude | trae | kiro | all；逗号或空格分隔多选  [默认: cursor]
   --dry-run       仅打印将执行的操作
   -h, --help      显示此帮助
 
@@ -460,7 +424,6 @@ agent_install_run() {
   fi
 
   agent_install_install
-  agent_install_update_docsconfig
 
   info "完成：agent-install"
 }

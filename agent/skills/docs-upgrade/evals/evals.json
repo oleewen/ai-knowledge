@@ -7,7 +7,7 @@
       "id": "upgrade-trigger-001",
       "category": "should-trigger",
       "prompt": "当前工程已有 .docsconfig 和 knowledge-links 的 type:meta，请升级知识库到元库最新，先预览，不要丢已有 knowledge。",
-      "expected_output": "走 docs-upgrade；dry-run 清单；结构=元库、正文=本库；等 C/M/S/F（C=可处理项；有未落位则 C 后出并入策略三档）；不调用 docs-install 清空 DOC_DIR；实跑 scaffold 后将 agent/ 与 IDE 段重写为 ~/.agents/。",
+      "expected_output": "走 docs-upgrade；dry-run 清单；结构=元库、正文=本库；等 C/M/S/F（C=可处理项；有未落位则 C 后出并入策略三档）；不调用 docs-install 清空 DOC_DIR；实跑 scaffold 后建 .agents 软链并将 agent/ 按深度重写为 .agents/（不改 IDE 段）。",
       "assertions": [
         {
           "id": "light-flow-stop",
@@ -48,7 +48,7 @@
           "id": "scaffold-rewrite-agent-paths",
           "name": "scaffold 后路径重写",
           "type": "must_include",
-          "check": "须体现 --apply-scaffold 收尾将 DOC_ROOT 内裸 agent/、多层上跳 ../agent/ 与已知 IDE 段重写为 ~/.agents/（同 docs-install），且 dry-run 不重写；不得改走清空 DOC_DIR 的 install。",
+          "check": "须体现 --apply-scaffold 收尾建 DOC_DIR/.agents 软链，并将裸 agent/、../agent/、~/.agents/ 按深度重写为 .agents/（同 docs-install；不改 IDE 段），且 dry-run 不建链不重写；不得改走清空 DOC_DIR 的 install。",
           "priority": "P0"
         },
         {

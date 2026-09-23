@@ -111,8 +111,17 @@ reset_docs_dir_with_backup() {
     return 0
   fi
 
-  local e
-  for e in "${entries[@]}"; do backup_path "$e"; done
+  local e base
+  for e in "${entries[@]}"; do
+    base="$(basename "$e")"
+    # DOC_DIR/.agents 为本地软链：只删链接，不备份/跟随实体树
+    if [[ "$base" == '.agents' && -L "$e" ]]; then
+      rm -f "$e"
+      info "已移除本地 .agents 软链: $e"
+      continue
+    fi
+    backup_path "$e"
+  done
   ensure_dir "$docs_dir"
   info "DOC_DIR 已清空（目录保留）: $docs_dir"
 }
@@ -122,8 +131,8 @@ reset_docs_dir_with_backup() {
 # § 5  内容替换函数
 # =============================================================================
 
-# 知识库安装并写入 .docsconfig 后：将 agent/ 与已知 IDE Agent 路径重写为 ~/.agents/，并更新 README 提示
-# 实现见 lib/rewrite.sh：rewrite_docs_agent_paths / inject_readme_agent_note
+# 知识库安装并写入 .docsconfig 后：建 .agents 软链（非 meta）并按模式重写路径
+# 实现见 lib/rewrite.sh、lib/agent-layout.sh
 docs_install_rewrite_agent_paths() {
   [[ "${CFG[dry_run]}" == '1' ]] && return 0
   [[ "${CFG[scope]}" == 'knowledge' ]] || return 0
@@ -133,9 +142,27 @@ docs_install_rewrite_agent_paths() {
   docs_install_resolve_docsconfig_roots repo_target doc_root dd
 
   local cfg="$repo_target/.docsconfig"
-  [[ -f "$cfg" ]] || { warn "未找到 $cfg，跳过 agent/ 路径重写"; return 0; }
+  [[ -f "$cfg" ]] || { warn "未找到 $cfg，跳过 agent 路径重写"; return 0; }
 
-  rewrite_docs_agent_paths "${CFG[docs_abs]}"
+  local _dr _rr _ddir ar ad kt
+  docsconfig_read_into "$cfg" _dr _rr _ddir ar kt ad || {
+    warn "无法解析 $cfg，跳过 agent 路径重写"
+    return 0
+  }
+
+  local mode='consumer'
+  [[ "${kt:-}" == 'meta' ]] && mode='meta'
+
+  if [[ "$mode" != 'meta' ]]; then
+    [[ -n "$ar" && -n "$ad" ]] || {
+      warn "缺少 AGENT_ROOT/AGENT_DIR，跳过 .agents 软链"
+      rewrite_docs_agent_paths "${CFG[docs_abs]}" "$mode"
+      return 0
+    }
+    ensure_docs_agents_symlink "${CFG[docs_abs]}" "$ar" "$ad" 0 || return 1
+  fi
+
+  rewrite_docs_agent_paths "${CFG[docs_abs]}" "$mode"
 }
 
 # =============================================================================
@@ -382,35 +409,33 @@ install_knowledge_type() {
   esac
 }
 
-# 计算 docsconfig 写入所需 AGENT_ROOT（规范默认 ~/.agents；保留已有 ROOT）
-# 用法：install_agent_path <nameref_agent_root_out> <old_agent_root>
+# 计算 docsconfig 写入所需 AGENT_ROOT / AGENT_DIR（探测补齐；已齐可解析则保留）
+# 用法：install_agent_path <nameref_agent_root_out> <nameref_agent_dir_out> <old_agent_root> <old_agent_dir>
 install_agent_path() {
   local -n _ar_out="${1:?}"
-  local old_agent_root="${2:-}"
+  local -n _ad_out="${2:?}"
+  local old_agent_root="${3:-}"
+  local old_agent_dir="${4:-}"
 
   _ar_out=''
+  _ad_out=''
 
-  [[ -n "${CFG[home_abs]:-}" ]] || error "无法补全 AGENT_ROOT：HOME 未就绪"
+  [[ -n "${CFG[home_abs]:-}" ]] || error "无法补全 AGENT_*：HOME 未就绪"
 
-  if [[ -n "${old_agent_root:-}" ]]; then
-    _ar_out="$old_agent_root"
-    return 0
-  fi
-
-  _ar_out="$(strip_trailing_slash "$(abs_path "${CFG[home_abs]}/.agents")")"
-  info "未配置 AGENT_ROOT 或配置为空，已写入默认: ${_ar_out}"
+  docsconfig_fill_agent_fields _ar_out _ad_out "$old_agent_root" "$old_agent_dir" "${CFG[home_abs]}" \
+    || error "无法补全 AGENT_ROOT/AGENT_DIR（请先 /agent-install 或修正 .docsconfig）"
 }
 
-# 写入目标工程仓库根 .docsconfig（DOC_*、KNOWLEDGE_TYPE；scope=config|knowledge 均按需补全 AGENT_ROOT）
+# 写入目标工程仓库根 .docsconfig（DOC_*、KNOWLEDGE_TYPE、AGENT_ROOT、AGENT_DIR）
 # dry-run 时仅预览，不写入
 docs_install_write_docsconfig() {
   local doc_root='' repo_target='' dd=''
   local old_doc_root='' old_repo_root='' old_doc_dir=''
-  local old_agent_root=''
+  local old_agent_root='' old_agent_dir=''
   local old_knowledge_type=''
   local cfg_file existed=0
   local kt_out=''
-  local ar_out=''
+  local ar_out='' ad_out=''
   docs_install_resolve_docsconfig_roots repo_target doc_root dd
 
   # ── 读取已有 .docsconfig（若存在）────────────────────────────────────────
@@ -418,7 +443,7 @@ docs_install_write_docsconfig() {
   if [[ -f "$cfg_file" ]]; then
     existed=1
     docsconfig_read_into "$cfg_file" old_doc_root old_repo_root old_doc_dir \
-      old_agent_root old_knowledge_type || true
+      old_agent_root old_knowledge_type old_agent_dir || true
   fi
 
   if [[ "$existed" == '1' ]]; then
@@ -429,15 +454,15 @@ docs_install_write_docsconfig() {
 
   install_knowledge_type kt_out
   if [[ "${CFG[scope]}" == 'config' || "${CFG[scope]}" == 'knowledge' ]]; then
-    install_agent_path ar_out "$old_agent_root"
+    install_agent_path ar_out ad_out "$old_agent_root" "$old_agent_dir"
   fi
 
   # ── 写入 ──────────────────────────────────────────────────────────────────
   if [[ -n "$ar_out" ]]; then
     docsconfig_write "$repo_target" "$doc_root" "$dd" "${CFG[dry_run]}" \
-      "$ar_out" "${kt_out:-}"
+      "$ar_out" "${kt_out:-}" "$ad_out"
   else
-    docsconfig_write "$repo_target" "$doc_root" "$dd" "${CFG[dry_run]}" "${kt_out:-}"
+    docsconfig_write "$repo_target" "$doc_root" "$dd" "${CFG[dry_run]}" "" "${kt_out:-}" ""
   fi
 }
 

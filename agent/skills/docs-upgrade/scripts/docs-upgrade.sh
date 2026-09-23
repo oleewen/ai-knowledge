@@ -30,7 +30,7 @@ Usage: docs-upgrade.sh [--dry-run | --apply-scaffold] [--meta-path PATH] [--ref 
 对齐元库 {meta}/{doc_dir}/，输出变更清单；--apply-scaffold 时备份并写入「新增骨架」与根级 DESIGN 整文件覆盖。
 
   --dry-run          只打印清单（默认）
-  --apply-scaffold   备份将动路径后写入新增骨架 + 根级 DESIGN.md 整文件覆盖；收尾将 agent/ 与 IDE Agent 路径重写为 ~/.agents/（同 docs-install）
+  --apply-scaffold   备份将动路径后写入新增骨架 + 根级 DESIGN.md 整文件覆盖；收尾建 DOC_DIR/.agents 软链（非 meta）并将 agent 路径按深度重写为 .agents/ 或 agent/（同 docs-install）
   --meta-path PATH   覆盖 meta 本机 path（不改 yaml；规则同 yaml path）
   --ref REF          显式 git ref（优先于 path 当前 HEAD）；不传则：有效 git path 用当前 HEAD；
                      path 无效再 clone 时默认 main
@@ -43,7 +43,7 @@ Usage: docs-upgrade.sh [--dry-run | --apply-scaffold] [--meta-path PATH] [--ref 
 忽略 DOC_ROOT 顶层遗留 application-* / system-*（不含 application-slots / system-slots）；
 凡软链（文件或目录）一律跳过不跟随；application-slots / system-slots 根下真文件可升级；
 *-slots/changelogs/** 本有则整文件本库胜（不重填），本无则可 scaffold。
---dry-run 不重写路径、不改 README；--apply-scaffold 即使新增骨架为空也跑全树重写。
+--dry-run 不重写路径、不改 README、不建软链；--apply-scaffold 即使新增骨架为空也跑全树重写。
 EOF
 }
 
@@ -463,7 +463,15 @@ done
 
 info "骨架/整文件覆盖写入完成。结构重填与未落位请由 /docs-upgrade Skill 继续。"
 
-# 与 docs-install knowledge 同契约：扫整棵 DOC_ROOT → ~/.agents/ + README 注记
+# 与 docs-install knowledge 同契约：软链（非 meta）+ 深度相对路径重写
 # （空骨架桶亦跑；dry-run 已在上方退出，不会到达此处）
-rewrite_docs_agent_paths "${DOC_ROOT}"
-info "agent/ 路径重写完成（与 docs-install 同实现）。"
+_upgrade_mode='consumer'
+[[ "${KNOWLEDGE_TYPE:-}" == 'meta' ]] && _upgrade_mode='meta'
+if [[ "$_upgrade_mode" != 'meta' ]]; then
+  [[ -n "${AGENT_ROOT:-}" && -n "${AGENT_DIR:-}" ]] \
+    || error "缺少 AGENT_ROOT/AGENT_DIR，无法建 .agents 软链。请先 docs-install --scope=config 或补充 .docsconfig。"
+  ensure_docs_agents_symlink "${DOC_ROOT}" "${AGENT_ROOT}" "${AGENT_DIR}" 0 \
+    || error "创建/校正 .agents 软链失败"
+fi
+rewrite_docs_agent_paths "${DOC_ROOT}" "${_upgrade_mode}"
+info "agent 路径重写完成（模式=${_upgrade_mode}；与 docs-install 同实现）。"

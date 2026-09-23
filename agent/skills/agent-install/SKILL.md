@@ -1,7 +1,7 @@
 ---
 name: agent-install
 description: >
-  安装整棵 Agent 树到 $HOME/.agents/ 并按 --agents 链接 IDE 目录；可选更新目标工程 .docsconfig 的 AGENT_*。
+  安装整棵 Agent 树到 $HOME/.agents/ 并按 --agents 链接 IDE 目录；不写回工程 .docsconfig。
   薄封装 agent/skills/agent-install/scripts/agent-install.sh（--agents/--target/--scope/--dry-run）。
   用户提到 /agent-install、装 agent、更新 ~/.agents、安装 rules/skills/hooks 时，使用本技能。
   分流：知识库骨架 → docs-install；双轨 → 先 docs-install 后本技能；生态 skills 追新 → skill-upgrade；
@@ -30,7 +30,7 @@ description: >
 - 不把「先 dry-run 再实跑」写成无停顿流水线
 - 不在未确认时对 `$HOME` 或工程级 target 静默写盘
 - 不把 docs-install / skill-upgrade 主路径收成本技能
-- 工程级 target 无 `.docsconfig` 时不假装可更新 AGENT_*（应先 docs-install）
+- 工程级 target 只链 IDE 目录；**不**写回 `.docsconfig`（AGENT_* 归 docs-install）
 
 ## 路由
 
@@ -50,7 +50,7 @@ description: >
 
 ## 产出与脚本
 
-- 正式：`~/.agents/` 实体树 + 各 IDE 目录软链；可选更新目标 `.docsconfig` 的 `AGENT_ROOT=~/.agents`
+- 正式：`~/.agents/` 实体树 + 各 IDE 目录软链；**不**更新目标 `.docsconfig`
 - 收敛后：产物校核 + 受众 A/B → [light-flow-actions.md](../../references/light-flow-actions.md)
 
 ```bash

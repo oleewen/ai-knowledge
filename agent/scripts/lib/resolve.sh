@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # lib/resolve.sh — 上溯查找与 docs-core 布局 source
-# 依赖：lib/path.sh、lib/log-io.sh、lib/docsconfig.sh、lib/agents.sh
+# 依赖：lib/path.sh、lib/log-io.sh、lib/docsconfig.sh、lib/agents.sh、lib/agent-layout.sh
 #
 
 _LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -9,19 +9,20 @@ _LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${_LIB_DIR}/docsconfig.sh"
 # shellcheck source=agents.sh
 source "${_LIB_DIR}/agents.sh"
+# shellcheck source=agent-layout.sh
+source "${_LIB_DIR}/agent-layout.sh"
 
 if [[ -n "${_LIB_RESOLVE_LOADED:-}" ]]; then
   return 0 2>/dev/null || exit 0
 fi
 _LIB_RESOLVE_LOADED=1
 
-# 打印本机 Agent 安装树下 docs-core.sh 候选路径（~/.agents 优先，再按 SUPPORTED_AGENTS）
+# 打印本机 Agent 安装树下 docs-core.sh 候选路径（与 AGENT_PROBE_DIR_NAMES 同序）
 _docs_core_iter_home_script_paths() {
-  local home="${1:-${HOME:-}}" ide
+  local home="${1:-${HOME:-}}" name
   [[ -n "$home" ]] || return 1
-  printf '%s\n' "${home}/.agents/scripts/docs-core.sh"
-  for ide in "${SUPPORTED_AGENTS[@]}"; do
-    printf '%s\n' "${home}/.${ide}/scripts/docs-core.sh"
+  for name in "${AGENT_PROBE_DIR_NAMES[@]}"; do
+    printf '%s\n' "${home}/${name}/scripts/docs-core.sh"
   done
 }
 
@@ -46,6 +47,7 @@ _docs_core_first_home_script() {
   done < <(_docs_core_iter_home_script_paths "$home")
   return 1
 }
+
 # 自 start 目录向上找首个含 relative_path 文件的目录，打印该目录绝对路径
 find_upward_with_file() {
   local relative_path="${1:?}" start d
@@ -146,7 +148,7 @@ source_docs_core_from_layout() {
     return 1
   fi
 
-  local repo_root cfg _layout_ar line
+  local repo_root cfg
   cfg=''
   if declare -f docsconfig_find_path >/dev/null 2>&1; then
     cfg="$(docsconfig_find_path 2>/dev/null || true)"
@@ -163,41 +165,36 @@ source_docs_core_from_layout() {
     return 1
   fi
 
-  _layout_ar=''
+  local _layout_ar='' _layout_kt='' _layout_ad='' _cfg_dr='' _cfg_rr='' _cfg_dd=''
   if declare -f docsconfig_read_into >/dev/null 2>&1; then
-    local _cfg_dr _cfg_rr _cfg_dd
-    docsconfig_read_into "$cfg" _cfg_dr _cfg_rr _cfg_dd _layout_ar || return 1
+    docsconfig_read_into "$cfg" _cfg_dr _cfg_rr _cfg_dd _layout_ar _layout_kt _layout_ad || return 1
   else
-    while IFS= read -r line || [[ -n "$line" ]]; do
-      [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
-      case "$line" in
-        AGENT_ROOT=*)
-          _layout_ar="${line#*=}"
-          _layout_ar="${_layout_ar%$'\r'}"
-          ;;
-      esac
-    done <"$cfg"
+    printf '错误: docsconfig_read_into 不可用，无法解析 %s\n' "$cfg" >&2
+    return 1
   fi
 
-  local ar_base='' resolved_core=''
-  if [[ -n "$_layout_ar" ]]; then
-    ar_base="$(abs_path "$_layout_ar")"
-    resolved_core="${ar_base}/scripts/docs-core.sh"
-    if [[ -f "$resolved_core" ]]; then
-      _docs_core_source_if_needed "$resolved_core" "$bootstrap_used"
-      return 0
-    fi
+  if [[ -z "$_layout_ar" ]]; then
+    printf '错误: .docsconfig（%s）缺少 AGENT_ROOT。请执行 docs-install --scope=config 或补充配置。\n' "$cfg" >&2
+    return 1
+  fi
+  if [[ -z "$_layout_ad" ]]; then
+    printf '错误: .docsconfig（%s）缺少 AGENT_DIR。请补充 AGENT_DIR=.agents（或探测到的目录名，如 .cursor）。\n' "$cfg" >&2
+    return 1
+  fi
+  if docsconfig_agent_root_looks_like_entity_tree "$_layout_ar"; then
+    printf '错误: .docsconfig（%s）的 AGENT_ROOT 指向实体树。请改为家目录（如 ~）并设置 AGENT_DIR。\n' "$cfg" >&2
+    return 1
   fi
 
-  # 兜底：仅再试 ~/.agents
-  if [[ -n "${HOME:-}" ]]; then
-    resolved_core="$(abs_path "${HOME}/.agents")/scripts/docs-core.sh"
-    if [[ -f "$resolved_core" ]]; then
-      _docs_core_source_if_needed "$resolved_core" "$bootstrap_used"
-      return 0
-    fi
+  local ar_base resolved_core
+  ar_base="$(abs_path "$_layout_ar")"
+  resolved_core="${ar_base}/${_layout_ad}/scripts/docs-core.sh"
+  if [[ -f "$resolved_core" ]]; then
+    _docs_core_source_if_needed "$resolved_core" "$bootstrap_used"
+    return 0
   fi
 
-  printf '错误: .docsconfig 已存在（%s），但 AGENT_ROOT 与 ~/.agents 下均未找到 scripts/docs-core.sh。请执行 agent-install.sh --scope=sh 或等价安装。\n' "$cfg" >&2
+  printf '错误: .docsconfig（%s）中 AGENT_ROOT=%s AGENT_DIR=%s 下未找到 scripts/docs-core.sh（%s）。请先执行 /agent-install，或修正配置。\n' \
+    "$cfg" "$_layout_ar" "$_layout_ad" "$resolved_core" >&2
   return 1
 }

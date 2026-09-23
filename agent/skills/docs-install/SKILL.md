@@ -17,7 +17,8 @@ description: >
 - 轻流程：参数向导 → 风险校核 → `C/M/S/F`（无 `G`、不绑意图澄清）→ [light-flow-actions.md](../../references/light-flow-actions.md)；细节 [gates.md](references/gates.md)。参数未收口前不得实跑写盘。
 - 默认先 **--dry-run**；dry-run 摘要未确认前，不得静默实跑。
 - `--force`、覆盖已有目标 docs、`--scope=knowledge` 重置 DOC_DIR 等须用户明示；未确认不得默认开启。
-- knowledge 实跑收尾重写 Agent 引用：裸 `agent/`、多层上跳 `../agent/`（含 `../../agent/` 等）与已知 IDE 段统一为字面 `~/.agents/`；`--dry-run` 不重写。
+- knowledge 实跑收尾：非 meta 时在 `DOC_DIR` 建 `.agents` → `$AGENT_ROOT/$AGENT_DIR` 软链；将裸 `agent/`、`../agent/`、`~/.agents/` 按文件深度重写为相对 `.agents/`；meta 不建链、收敛为深度相对 `agent/`。不重写 IDE 段。`--dry-run` 不建链不重写。
+- 写 `.docsconfig` 前探测本机 Agent 树（`.agents` 优先，再 `.cursor`→`.codex`→`.claude`→`.trae`→`.kiro`）；已齐可解析则保留；缺/坏则写入探测结果（`AGENT_ROOT=~` + `AGENT_DIR=<命中名>`）；全无则提醒先 `/agent-install`。`AGENT_ROOT` 不得指向实体树。`--scope=config` 只写配置，不建链不重写。
 - knowledge 同步含根级 `CONTRIBUTING.md` 与 `DESIGN.md`（整文件覆盖；`--mode=central` 子集亦种；源无则不造）。`DESIGN.md` = 层设计入口模板（短表 + 引用 `agent/knowledge`）；语义 SSOT 仍在 `knowledge-governance.md`。只写 `--target`（`DOC_DIR`），不覆盖仓根 `CONTRIBUTING.md`。`knowledge-links.yaml` 仍 stash/restore。
 - 建联脚本**不**向目标仓落盘；联邦登记走 `/docs-link`（脚本在 `agent/skills/docs-link/scripts/`）。
 - 宣称单元完成前须按 [audience-and-language.md](../../references/audience-and-language.md) 轻流程默认读者表做写后 **A/B**。
