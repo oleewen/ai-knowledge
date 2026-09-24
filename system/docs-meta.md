@@ -7,7 +7,7 @@ title: system 目录元数据
 # system/ 根目录元数据（导航与 SSOT 指针）
 id: "DIR-SYSTEM"
 name: "系统知识库根（system）"
-description: "系统层治理与导航根；knowledge/=系统级实体 SSOT；application-slots/application-{NAME}=应用软链槽位；solutions→analysis→requirements=系统 SDD。"
+description: "系统层治理与导航根。契约见 DESIGN.md；knowledge/=实体 SSOT；application-slots/=应用软链；solutions→analysis→requirements=系统 SDD。"
 
 role:
   kind: "documentation_root"
@@ -18,13 +18,13 @@ role:
 child_directories:
   knowledge:
     readme: "knowledge/README.md"
-    description: "五视角架构；overview/=docs-distill·archive 缓冲"
+    description: "五视角；overview/=缓冲（非实体 SSOT）"
   adr:
     readme: "adr/README.md"
-    description: "系统层 ADR 正文 + CONTEXT 决策台账"
+    description: "系统层 ADR + CONTEXT"
   application-slots:
     readme: "application-slots/README.md"
-    description: "应用联邦槽位根（软链 application-{NAME}；日志 changelogs/）"
+    description: "应用联邦槽位（application-{NAME}）"
   solutions:
     readme: "solutions/README.md"
     description: "系统级 SOLUTION-{IDEA-ID}.md"
@@ -33,13 +33,14 @@ child_directories:
     description: "系统级 ANALYSIS-{IDEA-ID}.md"
   requirements:
     readme: "requirements/README.md"
-    description: "需求交付：REQUIREMENT-{IDEA-ID}/ 树"
+    description: "REQUIREMENT-{IDEA-ID}/ 交付树"
   changelogs:
     readme: "changelogs/README.md"
     description: "变更留痕与索引运维"
 
 child_files:
   - "README.md"
+  - "DESIGN.md"
   - "index.md"
   - "INDEX-GUIDE.md"
   - "docs-meta.md"
@@ -48,27 +49,28 @@ child_files:
 
 inputs:
   - path: "(from-repository-and-delivery)"
-    description: "仓库治理、方案/分析/交付产出与归档回写"
+    description: "仓库治理、方案/分析/交付与归档回写"
 
 outputs:
   primary_artifact:
     pattern: "README.md, index.md, knowledge/**/*, application-slots/**"
-    description: "根导航与设计、knowledge/ 系统层 OKF 实体、按需应用槽位镜像"
+    description: "根导航、knowledge/ 实体、按需应用槽位"
 
 naming_conventions:
   directory_index:
-    description: "实体 ID 与 IDEA-ID 命名以 agent/knowledge/naming-conventions.md 为准"
+    description: "实体 ID / IDEA-ID 见 naming-conventions.md"
     reference: "../agent/knowledge/naming-conventions.md"
 
 integration:
   upstream:
     - path: "../agent/"
-      description: "规范、模板与 Agent 技能（命名 SSOT：agent/knowledge/；闸门：agent/rules/）"
+      description: "规范、模板与 Agent 技能"
   traceability:
-    description: "阶段链 solutions → analysis → requirements；架构蒸馏 overview → archive"
+    description: "solutions → analysis → requirements；overview → archive"
 
 references:
   - path: "./README.md"
+  - path: "./DESIGN.md"
   - path: "./index.md"
   - path: "./knowledge-links.yaml"
   - path: "../agent/knowledge/knowledge-governance.md"

@@ -5,9 +5,7 @@ title: 系统知识库 — 架构文档
 <!-- markdownlint-disable-next-line MD025 -->
 # 系统知识库 — 架构文档
 
-返回 · 系统知识库
-
-系统层五视角入口。分型：okf-spec。契约：[knowledge-governance](../../agent/knowledge/knowledge-governance.md)。
+系统层五视角入口。分型见 okf-spec。契约见 [../DESIGN.md](../DESIGN.md) · [knowledge-governance](../../agent/knowledge/knowledge-governance.md)。
 
 | 视角 | 入口 |
 |------|------|
@@ -18,4 +16,4 @@ title: 系统知识库 — 架构文档
 | 技术 | [technical/](technical/README.md) |
 | overview 缓冲 | [overview/](overview/README.md) |
 
-导航：[index.md](index.md) · [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 第五章 · 上层 reference：VC-*, BD-*, BSD-L1-*, CAP-*, PL-*, SLN-*, TPL-*；本层 SSOT：BSD(L2)/PD/SYS/MDG 等
+导航：[index.md](index.md) · [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 第五章。上层 reference：VC-* / BD-* / BSD-L1-* / CAP-* / PL-* / SLN-* / TPL-*；本层 SSOT：BSD(L2) / PD / SYS / MDG 等。

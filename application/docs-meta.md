@@ -36,6 +36,7 @@ child_directories:
 
 child_files:
   - "README.md"
+  - "DESIGN.md"
   - "README-s.md"
   - "README-c.md"
   - "index.md"
@@ -68,6 +69,7 @@ integration:
 
 references:
   - path: "./README.md"
+  - path: "./DESIGN.md"
   - path: "./index.md"
   - path: "./CONTRIBUTING.md"
   - path: "../agent/knowledge/knowledge-governance.md"
