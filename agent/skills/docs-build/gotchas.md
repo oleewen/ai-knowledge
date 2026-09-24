@@ -42,7 +42,7 @@
 
 - **无 evidence_chain** → 每实体 ≥1 条 `{source, confidence, type}`；high 须代码/配置直证
 - **应用层仍写聚合表** → 须一 concept 一文件；`hierarchy` 写在 frontmatter，勿回退 `{perspective}-entities.md`
-- **手写 INDEX 当 SSOT** → INDEX 由扫描/regen 生成；改实体先改 per-entity，再跑 [consolidation-spec.md](references/consolidation-spec.md) 或 `docs-build/scripts/generate_knowledge_index.py`
+- **手写 INDEX 当 SSOT** → 第五章是视角导航（非实体台账）；改实体先改 per-entity + 视角 README，再跑 [consolidation-spec.md](references/consolidation-spec.md) 或 `docs-build/scripts/generate_knowledge_index.py` 刷新导航块
 
 ## README 与归并
 

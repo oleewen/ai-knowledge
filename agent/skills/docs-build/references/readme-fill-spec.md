@@ -86,6 +86,6 @@ ENT 的 `parent_id` 可用于排序或链序说明。
 
 1. 各视角 per-entity `{ID}.md` 就绪  
 2. 本规范更 README  
-3. [consolidation-spec.md](consolidation-spec.md) 扫描生成 `INDEX-GUIDE.md`  
+3. [consolidation-spec.md](consolidation-spec.md) 写入 `INDEX-GUIDE.md` 第五章视角导航块  
 
-保证 README、per-entity、INDEX 一致。
+保证 README、per-entity、INDEX 导航一致（实体台账 ∈ README）。

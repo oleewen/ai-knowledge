@@ -8,7 +8,7 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[4]
-# docs-build 为 INDEX-GUIDE 第五章实体表权威实现；docs-okf 脚本仅 generate_index / okf_lib
+# docs-build 为 INDEX-GUIDE 第五章视角导航块权威实现；docs-okf 脚本仅 generate_index / okf_lib
 sys.path.insert(0, str(ROOT / "agent" / "skills" / "docs-okf" / "scripts"))
 sys.path.insert(0, str(ROOT / "agent" / "skills" / "docs-build" / "scripts"))
 import generate_index  # noqa: E402
@@ -75,25 +75,19 @@ def test_preserve_bundle_root_okf_version():
         assert "# Root" in body
 
 
-def test_knowledge_index_id_and_evidence():
+def test_knowledge_index_nav_links():
     with tempfile.TemporaryDirectory() as tmp:
         bundle = Path(tmp)
-        concept_path = bundle / "knowledge" / "business" / "BD-EXAMPLE.md"
-        concept_path.parent.mkdir(parents=True)
-        concept_path.write_text(
-            "---\n"
-            "type: Business Domain\n"
-            "title: 示例业务域\n"
-            "id: BD-EXAMPLE\n"
-            "perspective: business\n"
-            "hierarchy: BD\n"
-            "---\n",
-            encoding="utf-8",
+        (bundle / "knowledge").mkdir(parents=True)
+        rendered = generate_knowledge_index.render_knowledge_index(
+            bundle, bundle="application"
         )
-        rendered = generate_knowledge_index.render_knowledge_index(bundle)
-        assert "### 统一表头规范" in rendered
-        assert "| BD | BD-EXAMPLE |" in rendered
-        assert "`business/BD-EXAMPLE.md`" in rendered
+        assert "### 视角入口" in rendered
+        assert "[业务](knowledge/business/README.md)" in rendered
+        assert "[知识库总说明](knowledge/README.md)" in rendered
+        assert "[目录索引](knowledge/index.md)" in rendered
+        assert "### 统一表头规范" not in rendered
+        assert "| BD |" not in rendered
         assert not rendered.startswith("---")
 
 
@@ -119,46 +113,55 @@ def test_patch_index_guide_chapter_five():
     assert again.count(generate_knowledge_index.ENTITY_BEGIN) == 1
 
 
-def test_system_knowledge_index_sections_and_mapping():
+def test_system_knowledge_index_scope_and_nav():
     with tempfile.TemporaryDirectory() as tmp:
         bundle = Path(tmp) / "system"
         (bundle / "knowledge").mkdir(parents=True)
         rendered = generate_knowledge_index.render_knowledge_index(
             bundle, bundle="system"
         )
-        assert "§3 应用视角（application · SYS → APP → MS）" in rendered
-        assert "§4 数据视角（data · MDG → DS → ENT）" in rendered
-        assert "| PM-EXAMPLE | `product/PD-EXAMPLE/PM-EXAMPLE/` |" in rendered
-        assert "| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |" in rendered
-        assert "| DS-EXAMPLE | `data/DS-EXAMPLE/` |" in rendered
+        assert "BSD(L2) / PD / SYS / MDG" in rendered
+        assert "### 视角入口" in rendered
+        assert "[技术](knowledge/technical/README.md)" in rendered
+        assert "物化目录映射" not in rendered
         assert "SYS → APP → MS → API" not in rendered
 
 
-def test_application_knowledge_index_sections_and_mapping():
+def test_application_knowledge_index_scope_and_nav():
     with tempfile.TemporaryDirectory() as tmp:
         bundle = Path(tmp) / "application"
         (bundle / "knowledge").mkdir(parents=True)
         rendered = generate_knowledge_index.render_knowledge_index(
             bundle, bundle="application"
         )
-        assert "§4 数据视角（data · MDG → DS → ENT → TBL）" in rendered
-        assert "§5 技术视角（technical · TSD → MW → CMP）" in rendered
-        assert "| API-EXAMPLE | `application/MS-EXAMPLE/API-EXAMPLE.md` |" in rendered
-        assert "| TBL-EXAMPLE | `data/DS-EXAMPLE/TBL-EXAMPLE.md` |" in rendered
-        assert "| MW-EXAMPLE | `technical/MW-EXAMPLE/` |" in rendered
-        assert "business/BSD-EXAMPLE/" not in rendered
-        assert "| PM-EXAMPLE |" not in rendered
-        assert "| SYS-EXAMPLE |" not in rendered
+        assert "API/TBL/MW/CMP" in rendered
+        assert "### 视角入口" in rendered
+        assert "[数据](knowledge/data/README.md)" in rendered
+        assert "物化目录映射" not in rendered
+        assert "| API-EXAMPLE |" not in rendered
+
+
+def test_company_knowledge_index_scope_and_nav():
+    with tempfile.TemporaryDirectory() as tmp:
+        bundle = Path(tmp) / "company"
+        (bundle / "knowledge").mkdir(parents=True)
+        rendered = generate_knowledge_index.render_knowledge_index(
+            bundle, bundle="company"
+        )
+        assert "VC / BD / BSD(L1) / CAP / PL / SLN / TPL" in rendered
+        assert "### 视角入口" in rendered
+        assert "无 BSD(L2)/PD/SYS/MDG" in rendered
 
 
 def main() -> None:
     tests = [
         test_render_index_lists_concepts_and_subdirs,
         test_preserve_bundle_root_okf_version,
-        test_knowledge_index_id_and_evidence,
+        test_knowledge_index_nav_links,
         test_patch_index_guide_chapter_five,
-        test_system_knowledge_index_sections_and_mapping,
-        test_application_knowledge_index_sections_and_mapping,
+        test_system_knowledge_index_scope_and_nav,
+        test_application_knowledge_index_scope_and_nav,
+        test_company_knowledge_index_scope_and_nav,
     ]
     for fn in tests:
         fn()

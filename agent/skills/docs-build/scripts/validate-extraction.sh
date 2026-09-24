@@ -50,13 +50,13 @@ echo "DOC_DIR:  ${DOC_DIR}"
 echo "KNOWLEDGE_DIR: ${KNOWLEDGE_DIR}"
 echo ""
 
-# 1. INDEX-GUIDE.md 第五章实体块
+# 1. INDEX-GUIDE.md 第五章视角导航块
 if [[ -f "${INDEX_FILE}" ]]; then
   if grep -q 'docs-build:entity-index:begin' "${INDEX_FILE}"; then
     LINE_COUNT=$(wc -l < "${INDEX_FILE}" | tr -d ' ')
-    success "INDEX-GUIDE.md 含实体块 (${LINE_COUNT} 行)"
+    success "INDEX-GUIDE.md 含视角导航块 (${LINE_COUNT} 行)"
   else
-    error "INDEX-GUIDE.md 缺少 docs-build 实体块: ${INDEX_FILE}"
+    error "INDEX-GUIDE.md 缺少 docs-build 视角导航块: ${INDEX_FILE}"
   fi
 else
   error "INDEX-GUIDE.md 不存在: ${INDEX_FILE}"

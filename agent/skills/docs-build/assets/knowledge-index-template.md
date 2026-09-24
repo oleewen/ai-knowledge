@@ -1,15 +1,15 @@
 <!-- docs-build:entity-index:begin -->
-> 扫描生成；非 SSOT。实体正文 ∈ 各视角 per-entity `{ID}.md`。写入 `{DOC_DIR}/INDEX-GUIDE.md` 第五章。
+> 本块由 `/docs-build` 写入；实体台账 ∈ 各视角 README；正文 ∈ per-entity `{ID}.md`；九章骨架 ∈ `/docs-indexing`。
 
-### 统一表头规范
+> {层范围短注}
 
-- **标准表头**：`["层级","ID","别名（英文名）","名称","证据链"]`
-- **字段语义**：`ID` 为完整实体 ID（如 `VC-EXAMPLE`）
+### 视角入口
 
-### §1 …（按层）
-
-| 层级 | ID | 别名（英文名） | 名称 | 证据链 |
-|------|----|--------------|------|---------|
-| {TYPE} | {TYPE}-{NAME} | {Alias} | {名称} | `{perspective}/…` |
-
+- [知识库总说明](knowledge/README.md)
+- [目录索引](knowledge/index.md)
+- [业务](knowledge/business/README.md)
+- [产品](knowledge/product/README.md)
+- [应用](knowledge/application/README.md)
+- [数据](knowledge/data/README.md)
+- [技术](knowledge/technical/README.md)
 <!-- docs-build:entity-index:end -->

@@ -37,7 +37,7 @@
 ## 归并（阶段 4）
 
 - [ ] 前缀 ∈ `contains_prefixes`
-- [ ] `INDEX-GUIDE.md` 第五章实体块与 per-entity 同轮且无纯模板行
+- [ ] `INDEX-GUIDE.md` 第五章视角导航块存在且链到各视角 README（实体台账 ∈ README，非本块贴表）
 - [ ] 旧 ID 无单独更名（引用完整）
 
 ## metadata

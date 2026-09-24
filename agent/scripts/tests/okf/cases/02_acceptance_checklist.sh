@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 验收：concept 数量、okf_version、无 legacy *-entities.md、INDEX-GUIDE 第五章实体块
+# 验收：concept 数量、okf_version、无 legacy *-entities.md、INDEX-GUIDE 第五章视角导航块
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../../.." && pwd)"
@@ -60,8 +60,13 @@ grep -q 'docs-build:entity-index:begin' "$ki" || {
   exit 1
 }
 
-grep -qE 'API-EXAMPLE|TBL-EXAMPLE|MW-EXAMPLE' "$ki" || {
-  echo "INDEX-GUIDE.md 第五章应含本层 EXAMPLE 实体" >&2
+grep -q '### 视角入口' "$ki" || {
+  echo "INDEX-GUIDE.md 第五章应含视角入口" >&2
+  exit 1
+}
+
+grep -q 'knowledge/business/README.md' "$ki" || {
+  echo "INDEX-GUIDE.md 第五章应链到各视角 README" >&2
   exit 1
 }
 
@@ -70,4 +75,4 @@ grep -q 'INDEX-GUIDE.md' "$nav" || {
   exit 1
 }
 
-echo "[OK] acceptance checklist (concepts=$count, okf_version, no *-entities.md, INDEX-GUIDE entity block)"
+echo "[OK] acceptance checklist (concepts=$count, okf_version, no *-entities.md, INDEX-GUIDE nav block)"

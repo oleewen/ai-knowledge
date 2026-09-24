@@ -1,7 +1,7 @@
 ---
 name: docs-build
 description: >
-  从五视角提取实体 ID，产出 per-entity {ID}.md、各视角 README、写入 INDEX-GUIDE.md 第五章实体块；依赖主 Index Guide。
+  从五视角提取实体 ID，产出 per-entity {ID}.md、各视角 README、写入 INDEX-GUIDE.md 第五章视角导航块；依赖主 Index Guide。
   用户提到 /docs-build、初始化/同步知识实体、对齐 ID、docs-indexing 下游要实体时，使用本技能。
   分流：仅根 INDEX-GUIDE（九章）→ docs-indexing；overview → distill/extract；归档 → docs-archive；SDD → 对应技能。
   推进见 references/gates.md。
@@ -13,13 +13,13 @@ description: >
 
 - 当前单元：单个视角批次、单个路径组，或单批实体集合。
 - 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[simplify-principles.md](../../references/simplify-principles.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写 `{DOC_DIR}/knowledge/`；收敛后停等用户，不得自动推进下一批。
-- 意图澄清第 6 项须写明当前批次及本轮 `{DOC_DIR}/knowledge/` 下仓库根相对路径，以及将写入的 `{DOC_DIR}/INDEX-GUIDE.md` 第五章实体块。
+- 意图澄清第 6 项须写明当前批次及本轮 `{DOC_DIR}/knowledge/` 下仓库根相对路径，以及将写入的 `{DOC_DIR}/INDEX-GUIDE.md` 第五章视角导航块。
 - 校验失败、路径不明或规则未覆盖时须停下澄清，不得静默继续。
 - **knowledge 引用边界**：写入 `{DOC_DIR}/knowledge/**` 须遵守 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「业务 knowledge 引用边界」。可读外源；落盘不链 knowledge 外文档、不链下层/槽位、禁手写爬层。有 `knowledge-parent.yaml` 时上层实体用约定生成函数写 HTTP SSOT 链，否则纯 ID。违规能修则修，不明则停。
 
 ## 边界
 
-- 负责：五视角 per-entity、README、`{DOC_DIR}/INDEX-GUIDE.md` 第五章实体块、`validate-extraction.sh`
+- 负责：五视角 per-entity、README、`{DOC_DIR}/INDEX-GUIDE.md` 第五章视角导航块、`validate-extraction.sh`
 - 不负责：九章骨架（docs-indexing；须保留 `docs-build:entity-index` 标记块）；OKF 迁移（docs-okf）；distill/extract；docs-archive；SDD
 
 ## 不这样用
@@ -48,7 +48,7 @@ description: >
 
 ## 产出与脚本
 
-- 正式：各视角 `{ID}.md`、README、`INDEX-GUIDE.md` 第五章实体块
+- 正式：各视角 `{ID}.md`、README、`INDEX-GUIDE.md` 第五章视角导航块
 - 收敛后动作见 [unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)（本技能有 `S`）
 
 ```bash

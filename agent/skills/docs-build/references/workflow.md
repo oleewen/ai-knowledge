@@ -24,7 +24,7 @@
 | --- | --- |
 | 必需 | 主 Index Guide（否则停，先 `/docs-indexing`） |
 | 可选 | README、AGENTS、PRD、源码 |
-| 固定输出 | `{DOC_DIR}/knowledge/{p}/` 下 per-entity `{ID}.md`、`README`、`INDEX-GUIDE.md`（扫描生成） |
+| 固定输出 | `{DOC_DIR}/knowledge/{p}/` 下 per-entity `{ID}.md`、`README`、`INDEX-GUIDE.md` 第五章视角导航（静态） |
 | `--emit-report` | `{DOC_DIR}/knowledge/{p}/extraction_report.md` |
 | 不产出 | 锚点文档、CHANGELOG、目录树 |
 
