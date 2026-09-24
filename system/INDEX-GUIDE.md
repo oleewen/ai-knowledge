@@ -63,87 +63,19 @@ system/
 ## 五、详细索引
 
 <!-- docs-build:entity-index:begin -->
-> 扫描生成；非 SSOT。实体正文 ∈ 各视角 per-entity `{ID}.md`。九章骨架由 `/docs-indexing` 维护；本块由 `/docs-build` 写入。
+> 本块由 `/docs-build` 写入；实体台账 ∈ 各视角 README；正文 ∈ per-entity `{ID}.md`；九章骨架 ∈ `/docs-indexing`。
 
-### 统一表头规范
+> 公司级 **TPL-*** / **SLN-*** / **PL-*** 不在本层登记。本层 **BSD(L2) / PD / SYS / MDG** 首次定义；产品自 **PD** 起；应用自 **SYS** 起。
 
-- **标准表头**：`["层级","ID","别名（英文名）","名称","证据链"]`
-- **字段语义**：`ID` 为完整实体 ID（如 `VC-EXAMPLE`）；`别名（英文名）` 为英文编码；`名称` 为中文名称
-- **唯一性约束**：`层级+ID` 全知识库唯一；`层级+别名（英文名）` 全知识库唯一
+### 视角入口
 
-### §1 业务视角（business · BSD(L1) → BSD(L2) → BC → AGG → AB）
-
-| 层级 | ID | 别名（英文名） | 名称 | 证据链 |
-|------|----|--------------|------|---------|
-| BSD | BSD-EXAMPLE |  | 示例一级业务子域 | `business/BSD-EXAMPLE/BSD-EXAMPLE.md` |
-| BSD | BSD-EXAMPLE-SUB |  | 示例二级业务子域 | `business/BSD-EXAMPLE/BSD-EXAMPLE-SUB/BSD-EXAMPLE-SUB.md` |
-| BC | BC-EXAMPLE |  | 示例限界上下文 | `business/BSD-EXAMPLE/BSD-EXAMPLE-SUB/BC-EXAMPLE/BC-EXAMPLE.md` |
-| AGG | AGG-EXAMPLE |  | 示例聚合 | `business/BSD-EXAMPLE/BSD-EXAMPLE-SUB/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md` |
-| AB | AB-EXAMPLE |  | 示例能力 | `business/BSD-EXAMPLE/BSD-EXAMPLE-SUB/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md` |
-
-### §2 产品视角（product · PD → PM → FT → FR → UC/BR · BP）
-
-| 层级 | ID | 别名（英文名） | 名称 | 证据链 |
-|------|----|--------------|------|---------|
-| PD | PD-EXAMPLE |  | 示例产品服务 | `product/PD-EXAMPLE/PD-EXAMPLE.md` |
-| PM | PM-EXAMPLE |  | 示例产品模块 | `product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE.md` |
-| FT | FT-EXAMPLE |  | 示例功能 | `product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FT-EXAMPLE.md` |
-| FR | FR-EXAMPLE |  | 示例功能需求 | `product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/FR-EXAMPLE.md` |
-| UC | UC-EXAMPLE |  | 示例用例 | `product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md` |
-| BR | BR-EXAMPLE |  | 示例规则 | `product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/BR-EXAMPLE.md` |
-| BP | BP-EXAMPLE |  | 示例业务流程（BP） | `product/BP-EXAMPLE.md` |
-
-### §3 应用视角（application · SYS → APP → MS）
-
-| 层级 | ID | 别名（英文名） | 名称 | 证据链 |
-|------|----|--------------|------|---------|
-| SYS | SYS-EXAMPLE |  | 示例系统 | `application/SYS-EXAMPLE.md` |
-| APP | APP-EXAMPLE |  | 示例应用 | `application/APP-EXAMPLE/APP-EXAMPLE.md` |
-| MS | MS-EXAMPLE |  | 示例微服务 | `application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md` |
-
-### §4 数据视角（data · MDG → DS → ENT）
-
-| 层级 | ID | 别名（英文名） | 名称 | 证据链 |
-|------|----|--------------|------|---------|
-| MDG | MDG-EXAMPLE |  | 示例主数据域 | `data/MDG-EXAMPLE.md` |
-| DS | DS-EXAMPLE |  | 示例数据源 | `data/DS-EXAMPLE/DS-EXAMPLE.md` |
-| ENT | ENT-EXAMPLE |  | 示例实体 | `data/DS-EXAMPLE/ENT-EXAMPLE.md` |
-
-### §5 技术视角（technical · TSD → MW）
-
-| 层级 | ID | 别名（英文名） | 名称 | 证据链 |
-|------|----|--------------|------|---------|
-| TSD | TSD-EXAMPLE |  | 中间件域 | `technical/TSD-EXAMPLE.md` |
-
-> 公司级 **TPL-*** / **SLN-*** / **PL-*** 不在本索引登记。本层 **BSD(L2) / PD / SYS / MDG** 首次定义；产品自 **PD** 起；应用自 **SYS** 起。
-
----
-
-### 物化目录映射（示例）
-
-| 索引 ID | 命名式 ID（锚点目录） |
-|---------|----------------------|
-| BSD-EXAMPLE | `business/BSD-EXAMPLE/BSD-EXAMPLE.md`（一级 reference） |
-| BSD-EXAMPLE-SUB | `business/BSD-EXAMPLE/BSD-EXAMPLE-SUB/BSD-EXAMPLE-SUB.md` |
-| PD-EXAMPLE | `product/PD-EXAMPLE/` |
-| PM-EXAMPLE | `product/PD-EXAMPLE/PM-EXAMPLE/` |
-| SYS-EXAMPLE | `application/SYS-EXAMPLE.md` |
-| APP-EXAMPLE | `application/APP-EXAMPLE/` |
-| MDG-EXAMPLE | `data/MDG-EXAMPLE.md` |
-| DS-EXAMPLE | `data/DS-EXAMPLE/` |
-| TSD-EXAMPLE | `technical/TSD-EXAMPLE.md` |
-
----
-
-### 交叉引用
-
-- 目录索引：`knowledge/index.md`
-- 应用：`knowledge/application/`
-- 业务：`knowledge/business/`
-- 产品：`knowledge/product/`
-- 数据：`knowledge/data/`
-- 技术：`knowledge/technical/`
-- 知识库总说明：`knowledge/README.md`
+- [知识库总说明](knowledge/README.md)
+- [目录索引](knowledge/index.md)
+- [业务](knowledge/business/README.md)
+- [产品](knowledge/product/README.md)
+- [应用](knowledge/application/README.md)
+- [数据](knowledge/data/README.md)
+- [技术](knowledge/technical/README.md)
 <!-- docs-build:entity-index:end -->
 
 ## 六、API / 字典边界
