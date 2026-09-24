@@ -28,12 +28,13 @@
 
 ---
 
-## 烤干结论摘要（INDEX-GUIDE 第五章实体表）
+## 烤干结论摘要（INDEX-GUIDE 第五章视角导航）
 
 > 执行以本摘要、三层 `{DOC_DIR}/INDEX-GUIDE.md`、[okf-spec.md](../agent/knowledge/okf-spec.md)、[docs-build/SKILL.md](../agent/skills/docs-build/SKILL.md) 为准。
 
 - **目录导航**：`{DOC_DIR}/knowledge/index.md`（docs-okf `generate_index.py`）
-- **实体扫描表**：`{DOC_DIR}/INDEX-GUIDE.md` 第五章，`<!-- docs-build:entity-index -->` 块（docs-build `generate_knowledge_index.py`）
+- **视角导航**：`{DOC_DIR}/INDEX-GUIDE.md` 第五章，`<!-- docs-build:entity-index -->` 块（docs-build `generate_knowledge_index.py`；静态引用各视角 README，不扫 concept）
+- **实体台账**：各视角 `knowledge/{perspective}/README.md`
 - **九章骨架**：docs-indexing；重写须保留实体标记块
 - **已删**：`knowledge/KNOWLEDGE-INDEX.md`、`knowledge/INDEX-GUIDE.md`
 
