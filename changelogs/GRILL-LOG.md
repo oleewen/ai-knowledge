@@ -44,3 +44,5 @@
 
 - [ ] 三层 `viz.html` 按 `/docs-okf` 再生（现盘可能仍嵌旧 DESIGN / 旧实体归属文案）
 - [ ] （未决）`AB.apis` 是否迁 AA `implements_*`
+- [ ] 对齐 `okf_lib.entity_relpath` system BSD(L1)：现 parent=`BD-*` 时返回 `knowledge/business/{id}.md`（单文件）；EXAMPLE / `business-meta` §4 为 `knowledge/business/BSD-{L1}/BSD-{L1}.md`。改函数 + 测试；L2 已一致
+- [ ] 修 `system/knowledge/application/index.md`：「上游 SYS SSOT：公司层…本层不落」与 `application-meta` / `application/README` / 盘上 `SYS-EXAMPLE.md`（系统层 SSOT）矛盾；按 meta 改正文或重跑生成索引
