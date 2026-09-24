@@ -15,7 +15,7 @@ title: 产品视角元数据（system/knowledge/product）
 | meta_id | `DIR-SYSTEM-KNOWLEDGE-PRODUCT` |
 | 视角 | product |
 | 层级范围 | system |
-| 说明 | PD=产品服务（别名业务服务）；本层首次定义。PL 公司产品 SSOT；SLN 公司 AA（本层不落盘）。PD 与 BSD(L2) 一对一。PM 须与 PD 同库。 |
+| 说明 | PD=产品服务（别名业务服务），本层首次定义。PL / SLN 公司 SSOT（本层不落盘）。PD↔BSD(L2) 一对一；PM 须与 PD 同库。 |
 
 ---
 

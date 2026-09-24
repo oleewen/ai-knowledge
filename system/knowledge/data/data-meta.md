@@ -15,7 +15,7 @@ title: 数据视角元数据（system/knowledge/data）
 | meta_id | `DIR-SYSTEM-KNOWLEDGE-DATA` |
 | 层级范围 | system |
 | 视角 | data |
-| 说明 | MDG/DS/ENT 均为本层 SSOT；应用层补充物理表锚点（TBL）。SYS 经 `uses_mdg_ids` 声明使用关系。 |
+| 说明 | MDG/DS/ENT = 本层 SSOT；应用层补 TBL。SYS 经 `uses_mdg_ids` 声明使用。 |
 
 ---
 
@@ -43,7 +43,7 @@ title: 数据视角元数据（system/knowledge/data）
 
 ## 4. 字段（OKF）
 
-Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`）见 okf-spec §2；本层 `layer_scope` 固定 `system`。
+Frontmatter 10 必填 + 正文四段见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2；本层 `layer_scope` 固定 `system`。
 
 ### 各层专属（正文 / 扩展）
 
@@ -73,7 +73,7 @@ Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详�
 | --- | --- |
 | [README.md](README.md) | 叙事文档索引 |
 | [index.md](../index.md) | MDG/DS/ENT 实例 SSOT |
-| knowledge-governance（agent/knowledge） | 系统库设计契约 |
-| naming-conventions（Agent 元知识） | ID 命名 SSOT |
+| [knowledge-governance](../../../agent/knowledge/knowledge-governance.md) | 系统库设计契约 |
+| [naming-conventions](../../../agent/knowledge/naming-conventions.md) | ID 命名 SSOT |
 
 **索引**：`readme_index_table: false`；变更 ID 时同步 index.md 与 narrative 章节（按需）。

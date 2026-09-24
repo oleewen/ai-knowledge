@@ -15,7 +15,7 @@ title: 应用视角元数据（system/knowledge/application）
 | meta_id | `DIR-SYSTEM-KNOWLEDGE-APPLICATION` |
 | 视角 | application |
 | 层级范围 | system |
-| 说明 | SYS 本层首次定义（`parent_id→公司 SLN`）；APP/MS 本层 SSOT；API 在应用层。5A：AA implements BA；AA uses DA/TA；PA↔AA 经 PD/SYS。 |
+| 说明 | SYS 本层首次定义（`parent_id→公司 SLN`）；APP/MS 本层 SSOT；API ∈ 应用层。5A 映射见 [knowledge-governance](../../../agent/knowledge/knowledge-governance.md#核心映射5a方向)。 |
 
 ---
 

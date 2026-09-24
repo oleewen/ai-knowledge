@@ -15,7 +15,7 @@ title: 业务视角元数据（system/knowledge/business）
 | meta_id | `DIR-SYSTEM-KNOWLEDGE-BUSINESS` |
 | 视角 | business |
 | 层级范围 | system |
-| 说明 | 系统级 DDD 业务版图；BD / BSD(L1) 为 company reference；自 BSD(L2) 起为本层 SSOT。 |
+| 说明 | BD / BSD(L1) = company reference；自 BSD(L2) 起 = 本层 SSOT。 |
 
 ---
 
@@ -51,14 +51,15 @@ title: 业务视角元数据（system/knowledge/business）
 | --- | --- | --- |
 | company | `BD-{NAME}.md` | 公司 SSOT |
 | system | `knowledge/business/BD-{NAME}.md` | 视角根 reference（非域文件夹） |
-| system | `knowledge/business/BSD-L1-{NAME}/BSD-L2-{NAME}/` | BSD(L1)→BSD(L2)→BC→AGG→AB 域扁平树 |
+| system | `knowledge/business/BSD-{L1}/BSD-{L1}.md` | BSD(L1) 锚点目录（示例：`BSD-EXAMPLE/`） |
+| system | `knowledge/business/BSD-{L1}/BSD-{L2}/BSD-{L2}.md` | BSD(L2) 嵌套；其下 BC→AGG→AB（示例：`BSD-EXAMPLE/BSD-EXAMPLE-SUB/`） |
 | application | `BD-*.md` | 应用 reference |
 
 ---
 
 ## 5. 字段（OKF）
 
-Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`）见 okf-spec §2；本层 `layer_scope` 固定 `system`。
+Frontmatter 10 必填 + 正文四段见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2；本层 `layer_scope` 固定 `system`。
 
 ### 各层专属（正文 / 扩展）
 
@@ -91,8 +92,8 @@ Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详�
 | --- | --- |
 | [README.md](README.md) | 叙事文档索引 |
 | [index.md](../index.md) | BD/BSD/BC/AGG/AB 实例 SSOT |
-| knowledge-governance（agent/knowledge） | 系统库设计契约 |
-| BD-*, CAP-* | 公司层业务 SSOT（reference） |
-| naming-conventions（Agent 元知识） | ID 命名 SSOT |
+| [knowledge-governance](../../../agent/knowledge/knowledge-governance.md) | 系统库设计契约 |
+| BD-* / CAP-* | 公司层业务 SSOT（reference） |
+| [naming-conventions](../../../agent/knowledge/naming-conventions.md) | ID 命名 SSOT |
 
 **索引**：`readme_index_table: false`；变更 ID 时同步 index.md 与 narrative 章节（按需）。

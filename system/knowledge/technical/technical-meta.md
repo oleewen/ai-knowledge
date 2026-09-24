@@ -15,7 +15,7 @@ title: 技术视角元数据（system/knowledge/technical）
 | meta_id | `DIR-SYSTEM-ARCH-TECHNICAL` |
 | 视角 | technical |
 | 层级范围 | system |
-| 说明 | 系统级 TSD SSOT；MW/CMP 首次在 application；本层可挂 MW reference。 |
+| 说明 | 系统级 TSD SSOT；MW/CMP 首次 ∈ application；本层可挂 MW reference。 |
 
 ---
 
@@ -38,7 +38,7 @@ title: 技术视角元数据（system/knowledge/technical）
 
 ## 4. 字段（OKF）
 
-Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`）见 okf-spec §2；本层 `layer_scope` 固定 `system`。
+Frontmatter 10 必填 + 正文四段见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2；本层 `layer_scope` 固定 `system`。
 
 ### TSD 专属（正文 / 扩展）
 
@@ -65,6 +65,6 @@ Frontmatter 10 必填 + 正文四段（`## 关系` · `## 跨视角` · `## 详�
 | [README.md](README.md) | 叙事文档索引 |
 | [index.md](../index.md) | TSD 实例 SSOT |
 | TPL-* | 公司层 TPL SSOT（reference） |
-| naming-conventions（Agent 元知识） | 命名 SSOT |
+| [naming-conventions](../../../agent/knowledge/naming-conventions.md) | 命名 SSOT |
 
-**索引**：`readme_index_table: false`；变更 TSD ID 时同步 index/overview（按需）；层语义见 knowledge-governance。
+**索引**：`readme_index_table: false`；变更 TSD ID 时同步 index/overview（按需）；层语义见 [knowledge-governance](../../../agent/knowledge/knowledge-governance.md)。

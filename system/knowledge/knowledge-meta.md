@@ -37,8 +37,8 @@ title: 知识树元数据（system/knowledge）
 | 字段 | 值 |
 | --- | --- |
 | is_single_source_of_truth | true（系统层实体与叙事 SSOT） |
-| upstream | （公司级 VC/BD/BSD(L1)/CAP/PL/SLN/TPL 首次定义） |
-| downstream | （API/TBL/MW/CMP 及实现映射） |
+| upstream | 公司级 VC/BD/BSD(L1)/CAP/PL/SLN/TPL 首次定义 |
+| downstream | API/TBL/MW/CMP 及实现映射 |
 
 ---
 
@@ -48,21 +48,13 @@ title: 知识树元数据（system/knowledge）
 | --- | --- |
 | system_index | index.md（库外） |
 | entity_index | [index.md](index.md) |
-| design | knowledge-governance（agent/knowledge） |
-| governance | knowledge-governance（Agent 元知识） |
+| design / governance | [knowledge-governance](../../agent/knowledge/knowledge-governance.md) |
 
 ---
 
 ## 5. 系统层 BD 落盘例外
 
-与 company / application 区分；路径契约见 knowledge-governance（agent/knowledge）。
-
-| 层级 | 路径 | 说明 |
-| --- | --- | --- |
-| company | `BD-{NAME}.md` | 公司 SSOT |
-| system | `knowledge/business/BD-{NAME}.md` | 视角根单文件 reference（`definition_scope: reference`，`layer_scope: system`；上游 SSOT 见 # SSOT 段） |
-| system | `knowledge/business/BSD-{NAME}/` | BSD→BC→AGG→AB 域扁平树 SSOT |
-| application | `BD-*.md` | 应用 reference |
+路径契约见 [knowledge-governance](../../agent/knowledge/knowledge-governance.md)。视角路径 SSOT：[business-meta §4](business/business-meta.md#4-bd-落盘例外)。
 
 `okf_lib.entity_relpath(bundle="system", BD)` → `knowledge/business/{id}.md`
 
@@ -73,9 +65,9 @@ title: 知识树元数据（system/knowledge）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 五视角架构入口 |
-| knowledge-governance（agent/knowledge） | 系统库设计契约 |
-| BD-*, BSD-L1-*, PL-*, SLN-*, TPL-*, CAP-*, VC-* | 公司层实体 SSOT（上层 reference） |
-| naming-conventions（Agent 元知识） | 命名 SSOT |
+| [knowledge-governance](../../agent/knowledge/knowledge-governance.md) | 系统库设计契约 |
+| BD-* / BSD-L1-* / PL-* / SLN-* / TPL-* / CAP-* / VC-* | 公司层实体 SSOT（上层 reference） |
+| [naming-conventions](../../agent/knowledge/naming-conventions.md) | 命名 SSOT |
 
 ---
 
