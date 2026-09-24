@@ -7,7 +7,7 @@ title: 业务架构
 
 [返回 · 系统知识库 — 架构文档](../README.md)
 
-系统层业务入口：BSD→AB SSOT；BD 为 company reference。实体以 per-entity 与 [../index.md](../index.md) §1 为准。本 README 表仅登记本层 SSOT 样例；reference 见 §1。
+系统层业务入口：BSD(L2)→BC→AGG→AB 为本层 SSOT；BD / BSD(L1) = company reference。实体台账：[../index.md](../index.md) §1；字段：[business-meta.md](business-meta.md)。下表 = 本层 SSOT 样例。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
@@ -22,7 +22,8 @@ title: 业务架构
 
 | 链序 | 层级 | ID | 名称 | 文件/目录 |
 |------|------|----|------|-----------|
-| L2 | BSD | BSD-EXAMPLE | 示例业务子域 | [BSD-EXAMPLE/BSD-EXAMPLE.md](BSD-EXAMPLE/BSD-EXAMPLE.md) |
-| L3 | BC | BC-EXAMPLE | 示例限界上下文 | [BSD-EXAMPLE/BC-EXAMPLE/BC-EXAMPLE.md](BSD-EXAMPLE/BC-EXAMPLE/BC-EXAMPLE.md) |
-| L4 | AGG | AGG-EXAMPLE | 示例聚合 | [BSD-EXAMPLE/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md](BSD-EXAMPLE/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md) |
-| L5 | AB | AB-EXAMPLE | 示例能力 | [BSD-EXAMPLE/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md](BSD-EXAMPLE/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md) |
+| L1 | BSD(L1) | BSD-EXAMPLE | 示例一级业务子域（reference） | [BSD-EXAMPLE/BSD-EXAMPLE.md](BSD-EXAMPLE/BSD-EXAMPLE.md) |
+| L2 | BSD(L2) | BSD-EXAMPLE-SUB | 示例二级业务子域 | [BSD-EXAMPLE/BSD-EXAMPLE-SUB/BSD-EXAMPLE-SUB.md](BSD-EXAMPLE/BSD-EXAMPLE-SUB/BSD-EXAMPLE-SUB.md) |
+| L3 | BC | BC-EXAMPLE | 示例限界上下文 | [BSD-EXAMPLE/BSD-EXAMPLE-SUB/BC-EXAMPLE/BC-EXAMPLE.md](BSD-EXAMPLE/BSD-EXAMPLE-SUB/BC-EXAMPLE/BC-EXAMPLE.md) |
+| L4 | AGG | AGG-EXAMPLE | 示例聚合 | [BSD-EXAMPLE/BSD-EXAMPLE-SUB/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md](BSD-EXAMPLE/BSD-EXAMPLE-SUB/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md) |
+| L5 | AB | AB-EXAMPLE | 示例能力 | [BSD-EXAMPLE/BSD-EXAMPLE-SUB/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md](BSD-EXAMPLE/BSD-EXAMPLE-SUB/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md) |

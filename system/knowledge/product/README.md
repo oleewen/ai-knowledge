@@ -7,7 +7,7 @@ title: 产品架构
 
 [返回 · 系统知识库 — 架构文档](../README.md)
 
-系统层产品入口：PD→PM→FT→FR→UC/BR、BP；PL 公司产品 SSOT；SLN 公司 AA（本层不落盘）。
+系统层产品入口：PD→PM→FT→FR→UC/BR · BP 为本层 SSOT；PL / SLN 公司 SSOT（本层不落盘）。实体台账：[../index.md](../index.md) §2；字段：[product-meta.md](product-meta.md)。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
