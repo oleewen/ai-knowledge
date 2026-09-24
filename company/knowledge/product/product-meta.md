@@ -15,7 +15,7 @@ title: 产品视角元数据（company/knowledge/product）
 | meta_id | `DIR-COMPANY-KNOWLEDGE-PRODUCT` |
 | 视角 | product |
 | 层级范围 | company |
-| 说明 | PL=产品线（与 BSD(L1) 一对一）。**不落 PD**（系统首次定义）。**不落 SLN**（SLN ∈ 公司 application / AA）。 |
+| 说明 | PL=产品线（与 BSD(L1) 一对一）。**不落 PD**（系统首次定义）。**不落 SLN**（SLN ∈ 公司 application，为解决方案）。 |
 
 ---
 
@@ -35,7 +35,7 @@ title: 产品视角元数据（company/knowledge/product）
 
 目录：`PL-{NAME}/PL-{NAME}.md`。
 
-对标：一级 `BSD.maps_to_pl` / `PL.maps_to_bsd`；方案台账：`SLN.maps_to_pl_id`（AA）。
+对标：一级 `BSD.maps_to_pl` / `PL.maps_to_bsd`；解决方案：`SLN.maps_to_pl_id`。
 
 ---
 
@@ -54,7 +54,7 @@ title: 产品视角元数据（company/knowledge/product）
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
 | PL.maps_to_bsd | BSD(L1).id | PL 对标 BSD(L1)（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
-| SLN.maps_to_pl_id | PL.id | 解决方案对标产品线（AA；同上） |
+| SLN.maps_to_pl_id | PL.id | 解决方案对标产品线（同上） |
 | 系统 PD.parent_id | PL.id | 产品服务挂产品线；`PD.maps_to_bsd` 指 BSD(L2) |
 
 ---
@@ -65,4 +65,4 @@ title: 产品视角元数据（company/knowledge/product）
 | --- | --- |
 | [README.md](README.md) | 叙事文档索引 |
 | [index.md](../index.md) | PL 实例 SSOT |
-| 公司 application · SLN | AA 解决方案台账 |
+| 公司 application · SLN | 解决方案 |

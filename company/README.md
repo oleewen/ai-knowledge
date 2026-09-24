@@ -6,7 +6,7 @@ title: "公司知识库（顶层 `company/`）"
 <!-- markdownlint-disable-next-line MD025 -->
 # 公司知识库（顶层 `company/`）
 
-公司层治理根：`knowledge/` = 公司级实体 SSOT；`system-slots/system-{NAME}` = 系统软链槽位；`solutions/` + `analysis/` = 跨系统 SDD 上游。
+公司层治理根。契约与门禁见 [DESIGN.md](DESIGN.md)；语义见 [knowledge-governance](../agent/knowledge/knowledge-governance.md)。
 
 | 读什么 | 文件 |
 |--------|------|
@@ -18,6 +18,4 @@ title: "公司知识库（顶层 `company/`）"
 
 按需：`knowledge-links.yaml`（可空）· [system-slots/](system-slots/README.md) · [changelogs/](changelogs/README.md)
 
-模板占位：`system-slots/system-NAME/`、`knowledge/overview/NAME-overview.md`、`*-EXAMPLE`（最小演示链，可替换）。
-
-规范：[okf-spec](../agent/knowledge/okf-spec.md) · [knowledge-layout](../agent/references/knowledge-layout.md)；语义 SSOT 经 [DESIGN.md](DESIGN.md) → [knowledge-governance](../agent/knowledge/knowledge-governance.md)
+模板占位：`system-slots/system-NAME/`、`knowledge/overview/NAME-overview.md`、`*-EXAMPLE`（可替换）。

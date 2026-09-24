@@ -13,4 +13,4 @@ title: overview
 - 技能：`docs-extract` / `docs-archive` / `docs-tag`
 - **不是** `docs-distill` 目标（蒸馏仅写 system overview）
 
-导航：[index.md](index.md) · knowledge-layout（库外）
+导航：[index.md](index.md)

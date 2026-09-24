@@ -6,7 +6,7 @@ title: 技术架构
 
 [返回 · 企业架构](../README.md)
 
-公司层技术入口：平台能力叙事 + TPL。实体以 per-entity 与 [../index.md](../index.md) §5 为准。本 README 表登记 TPL-EXAMPLE。
+公司层技术入口：章节 + TPL。实体以 per-entity 为准；扫描表见库根 INDEX-GUIDE §4（留字去链）。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|

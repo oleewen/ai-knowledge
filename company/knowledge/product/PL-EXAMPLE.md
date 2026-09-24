@@ -1,7 +1,7 @@
 ---
 type: Product Line
 title: 示例产品线
-description: 产品线；与 BSD(L1) 一对一，SLN 仍对标 PL（SLN 在 AA）。
+description: 产品线；与 BSD(L1) 一对一，SLN（解决方案）仍对标 PL。
 tags: [product, PL]
 timestamp: "2026-09-13T00:00:00Z"
 id: PL-EXAMPLE
@@ -18,7 +18,7 @@ maps_to_bsd: BSD-EXAMPLE
 ## 跨视角
 
 - 对标一级业务子域：BSD-EXAMPLE（经 maps_to_bsd）
-- 对标解决方案：SLN-EXAMPLE（经 SLN.maps_to_pl_id，AA）
+- 对标解决方案：SLN-EXAMPLE（经 SLN.maps_to_pl_id）
 
 ## 详细说明
 

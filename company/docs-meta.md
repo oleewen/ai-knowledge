@@ -7,7 +7,7 @@ title: company 目录元数据
 # company/ 根目录元数据（导航与 SSOT 指针）
 id: "DIR-COMPANY"
 name: "公司知识库根（company）"
-description: "公司层治理与导航根；knowledge/=公司级实体 SSOT；system-slots/system-{NAME}=系统软链槽位。"
+description: "公司层治理与导航根。契约见 DESIGN.md。"
 
 role:
   kind: "documentation_root"
@@ -18,25 +18,26 @@ role:
 child_directories:
   knowledge:
     readme: "knowledge/README.md"
-    description: "五视角企业架构；overview/=distill(system槽)·extract·archive·tag 缓冲"
+    description: "五视角；overview/=缓冲（非实体 SSOT）"
   solutions:
     readme: "solutions/README.md"
-    description: "公司级跨系统解决方案"
+    description: "跨系统解决方案"
   analysis:
     readme: "analysis/README.md"
-    description: "公司级跨系统需求分析"
+    description: "跨系统需求分析"
   adr:
     readme: "adr/README.md"
-    description: "公司层 ADR 正文与 CONTEXT 决策台账"
+    description: "公司层 ADR + CONTEXT"
   system-slots:
     readme: "system-slots/README.md"
-    description: "系统联邦槽位根（模板 system-NAME；实例 system-{NAME}）"
+    description: "系统联邦槽位（system-{NAME}）"
   changelogs:
     readme: "changelogs/README.md"
     description: "变更留痕与索引运维"
 
 child_files:
   - "README.md"
+  - "DESIGN.md"
   - "index.md"
   - "INDEX-GUIDE.md"
   - "docs-meta.md"
@@ -50,7 +51,7 @@ inputs:
 outputs:
   primary_artifact:
     pattern: "README.md, index.md, knowledge/**/*, system-slots/**"
-    description: "根导航、knowledge/ 公司层 OKF 实体、按需系统槽位镜像"
+    description: "根导航、knowledge/ 公司层 OKF 实体、按需联邦槽位镜像"
 
 naming_conventions:
   directory_index:
@@ -69,6 +70,7 @@ integration:
 
 references:
   - path: "./README.md"
+  - path: "./DESIGN.md"
   - path: "./index.md"
   - path: "./knowledge-links.yaml"
   - path: "../agent/knowledge/knowledge-governance.md"

@@ -6,7 +6,7 @@ title: 业务架构
 
 [返回 · 企业架构](../README.md)
 
-公司层业务入口：章节叙事 + VC/BD/BSD(L1)/CAP。实体以 per-entity 与 [../index.md](../index.md) §1 为准。本 README 表登记 VC/BD/BSD(L1)/CAP 样例。
+公司层业务入口：章节 + VC/BD/BSD(L1)/CAP。实体以 per-entity 与 [../index.md](../index.md) §1 为准。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|

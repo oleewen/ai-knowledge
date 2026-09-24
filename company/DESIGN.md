@@ -5,14 +5,15 @@ title: 公司知识库设计
 <!-- markdownlint-disable-next-line MD025 -->
 # 公司知识库设计
 
-`company/`：公司层知识编排与系统槽位治理；不写系统实现细节。本文件 = 层根人类入口（契约短表 + 引用）；语义 SSOT ∈ `agent/knowledge/`。
+本文件 = `company/` 层契约短表 + 治理引用；不写系统实现。定位见 [README](README.md)；语义 SSOT ∈ `agent/knowledge/`。
 
 ## 阅读顺序
 
-1. [README.md](README.md) — 定位  
-2. 本文 — 本层契约、同步门禁、治理引用  
+1. [README.md](README.md) — 定位与导航  
+2. 本文 — 契约、同步门禁、治理链  
 3. [knowledge/README.md](knowledge/README.md) — 五视角  
-4. [../system/DESIGN.md](../system/DESIGN.md) — 系统层对照  
+
+索引：[INDEX-GUIDE.md](INDEX-GUIDE.md) · [index.md](index.md) · [system-slots/](system-slots/README.md) · [knowledge-links.yaml](knowledge-links.yaml)
 
 ## 本层契约
 
@@ -21,7 +22,7 @@ title: 公司知识库设计
 | `knowledge/` | 公司级实体正文 SSOT；[`overview/`](knowledge/overview/NAME-overview.md) = distill / extract / archive / tag 缓冲区（非实体 SSOT） |
 | `solutions/` · `analysis/` | 跨系统 SDD 上游；**无** `requirements/` |
 | `adr/` | 公司层跨系统决策 + `CONTEXT.md` |
-| `system-slots/system-{NAME}/` | 系统镜像软链入口 |
+| `system-slots/system-{NAME}/` | 系统联邦槽位入口（软链） |
 | `knowledge-links.yaml` | 建联与同步编排（可空） |
 | `changelogs/` | INDEXING-LOG；变更溯源 git |
 
@@ -29,12 +30,14 @@ title: 公司知识库设计
 
 ## 同步与门禁
 
+冲突以下游事实源为准；company 只修映射与导航。
+
 1. 下游 `system/` 整理可同步内容  
 2. docs-pull → 校验/修复 `system-slots/system-{NAME}` 软链  
 3. 校核 `knowledge/` 与 `knowledge-links.yaml`  
-4. 同步结果可记 `SYNC_OK`（含 commit）；变更溯源 `git log` / `git diff`  
+4. 可记 `SYNC_OK`（含 commit）；溯源 `git log` / `git diff`  
 
-流水线全图：[knowledge-layout § 知识流水线](../agent/references/knowledge-layout.md#知识流水线)。冲突以下游事实源为准；company 只修映射与导航。禁止实现细节入 company 正文；改目录语义先改**本元库模板**再 upgrade。
+约束：禁止实现细节入 company 正文；改目录语义先改**本元库模板**再 upgrade。全图：[knowledge-layout § 知识流水线](../agent/references/knowledge-layout.md#知识流水线)。
 
 ## 治理引用
 
@@ -50,7 +53,3 @@ title: 公司知识库设计
 | 文件分型 | [okf-spec § 文件分类方式](../agent/knowledge/okf-spec.md#1-文件分类方式) |
 | 本层 OKF 模板要点 | [okf-spec § 10.1 company](../agent/knowledge/okf-spec.md#101-company) |
 | ADR | [adr-guidelines](../agent/knowledge/adr-guidelines.md) · [adr-template](../agent/knowledge/adr-template.md) |
-
-## 参考
-
-[README](README.md) · [INDEX-GUIDE](INDEX-GUIDE.md) · [index.md](index.md) · [knowledge/](knowledge/README.md) · [system-slots](system-slots/README.md) · [knowledge-links.yaml](knowledge-links.yaml) · `system/DESIGN` · `application/DESIGN`

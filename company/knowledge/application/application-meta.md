@@ -4,7 +4,7 @@ title: 应用视角元数据（company/knowledge/application）
 ---
 # 应用视角元数据（company/knowledge/application）
 
-公司级 **SLN**（解决方案）= 企业 AA 台账 SSOT。**不落 SYS**（SYS ∈ 系统库，`parent_id→SLN`）。
+公司级 **SLN**（解决方案）SSOT。
 
 ---
 
@@ -15,7 +15,7 @@ title: 应用视角元数据（company/knowledge/application）
 | meta_id | `DIR-COMPANY-KNOWLEDGE-APPLICATION` |
 | 视角 | application |
 | 层级范围 | company |
-| 说明 | SLN=解决方案（对应 PL）（公司 AA 台账）；与 PL 经 `maps_to_pl_id` 1:1 同建。 |
+| 说明 | SLN=解决方案（对应 PL）；与 PL 经 `maps_to_pl_id` 1:1 同建。 |
 
 ---
 
@@ -23,7 +23,7 @@ title: 应用视角元数据（company/knowledge/application）
 
 | 链序 | 层级代码 | 说明 |
 | --- | --- | --- |
-| 1 | SLN | 解决方案（企业 AA 台账） |
+| 1 | SLN | 解决方案 |
 
 ---
 

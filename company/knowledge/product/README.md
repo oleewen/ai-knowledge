@@ -6,12 +6,12 @@ title: 产品架构
 
 [返回 · 企业架构](../README.md)
 
-公司层产品入口：章节叙事 + PL（无 PD；SLN 见 AA）。实体以 per-entity 与 [../index.md](../index.md) §2 为准。
+公司层产品入口：章节 + PL（无 PD；SLN ∈ 应用视角）。实体以 per-entity 与 [../index.md](../index.md) §2 为准。
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
 | 产品概述 | [chapters/product-overview.md](chapters/product-overview.md) | 产品全景与定位 |
-| 产品线 | [chapters/product-architecture.md](chapters/product-architecture.md) | PL 划分；SLN 见应用视角；PD 见系统库 |
+| 产品线 | [chapters/product-architecture.md](chapters/product-architecture.md) | PL 划分；SLN ∈ 应用视角；PD ∈ 系统库 |
 | 度量标准 | [chapters/product-metrics.md](chapters/product-metrics.md) | 指标框架与实验原则 |
 | 体验设计 | [chapters/product-ux.md](chapters/product-ux.md) | 设计规范与无障碍 |
 

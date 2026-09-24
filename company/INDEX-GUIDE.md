@@ -4,8 +4,8 @@ title: company INDEX-GUIDE
 ---
 # company INDEX-GUIDE
 
-> **最后更新**: 2026-07-22  
-> **定位**: `company/` 九章索引指南。目录索引：[index.md](index.md)。
+> **最后更新**: 2026-09-24  
+> **定位**: `company/` 九章索引指南。目录索引：[index.md](index.md)。契约见 [DESIGN.md](DESIGN.md)。
 
 ---
 
@@ -15,16 +15,16 @@ title: company INDEX-GUIDE
 
 * [README.md](README.md) — 人类入口  
 * [index.md](index.md) — OKF 目录索引  
-* [DESIGN.md](DESIGN.md) — 本层设计入口（契约短表 + 治理引用）  
+* [DESIGN.md](DESIGN.md) — 本层设计入口  
 * [knowledge/README.md](knowledge/README.md) — 五视角  
 * [knowledge-links.yaml](knowledge-links.yaml) — 建联清单  
 * [changelogs/README.md](changelogs/README.md) — 变更/索引  
 
 ### 1.2 元信息
 
-* **角色**: 公司知识库；`knowledge/` = VC/BD/BSD(L1)/CAP/PL/SLN/TPL SSOT（无 BSD(L2)/PD/SYS/MDG）；`system-slots/system-{NAME}` = 软链槽位
+* **角色**: 公司知识库；`knowledge/` = VC/BD/BSD(L1)/CAP/PL/SLN/TPL SSOT（无 BSD(L2)/PD/SYS/MDG）；`system-slots/system-{NAME}` = 联邦槽位（软链）  
 * **栈**: Markdown、YAML  
-* **范围**: `knowledge/` · `solutions/` · `analysis/` · `system-slots/` · `changelogs/`  
+* **范围**: `knowledge/` · `solutions/` · `analysis/` · `adr/` · `system-slots/` · `changelogs/`  
 
 ---
 
@@ -34,20 +34,20 @@ title: company INDEX-GUIDE
 company/
 ├── README.md / DESIGN.md / INDEX-GUIDE.md / index.md / docs-meta.md
 ├── knowledge-links.yaml
-├── knowledge/ · solutions/ · analysis/
+├── knowledge/ · solutions/ · analysis/ · adr/
 ├── system-slots/
 │   ├── system-{NAME}           # 软链 → 系统 DOC_ROOT
-│   └── changelogs/             # 层共用 ARCHIVE-LOG；同步追溯 git / SYNC_OK
+│   └── changelogs/             # ARCHIVE-LOG；同步追溯 git / SYNC_OK
 └── changelogs/
 ```
 
-入口：[knowledge/](knowledge/README.md) · [solutions/](solutions/README.md) · [analysis/](analysis/README.md) · [system-slots/](system-slots/README.md)
+入口：[knowledge/](knowledge/README.md) · [solutions/](solutions/README.md) · [analysis/](analysis/README.md) · [adr/](adr/README.md) · [system-slots/](system-slots/README.md)
 
 ---
 
 ## 三、接口清单
 
-无运行时 API。契约 = 目录 + Markdown + `knowledge-links.yaml`。
+无运行时 API。契约 = 目录 + Markdown + `knowledge-links.yaml`（细则 [DESIGN.md](DESIGN.md)）。
 
 ---
 
@@ -57,73 +57,26 @@ company/
 * `solutions/` → `analysis/` → 各系统 `requirements/`  
 * `knowledge-links.yaml` → `system-slots/system-{NAME}/`  
 
+门禁与同步：[DESIGN.md](DESIGN.md) § 同步与门禁。
+
 ---
 
 ## 五、详细索引
 
 <!-- docs-build:entity-index:begin -->
-> 扫描生成；非 SSOT。实体正文 ∈ 各视角 per-entity `{ID}.md`。九章骨架由 `/docs-indexing` 维护；本块由 `/docs-build` 写入。
+> 本块由 `/docs-build` 写入；实体台账 ∈ 各视角 README；正文 ∈ per-entity `{ID}.md`；九章骨架 ∈ `/docs-indexing`。
 
-### 统一表头规范
+> 本层登记公司级 **VC / BD / BSD(L1) / CAP / PL / SLN / TPL**。
 
-- **标准表头**：`["层级","ID","别名（英文名）","名称","证据链"]`
-- **字段语义**：`ID` 为完整实体 ID（如 `VC-EXAMPLE`）；`别名（英文名）` 为英文编码；`名称` 为中文名称
-- **唯一性约束**：`层级+ID` 全知识库唯一；`层级+别名（英文名）` 全知识库唯一
+### 视角入口
 
-### §1 业务视角（business · VC / BD / BSD(L1) / CAP）
-
-| 层级 | ID | 别名（英文名） | 名称 | 证据链 |
-|------|----|--------------|------|---------|
-| VC | VC-EXAMPLE |  | 示例价值链 | `business/VC-EXAMPLE/VC-EXAMPLE.md` |
-| BD | BD-EXAMPLE |  | 示例业务域 | `business/BD-EXAMPLE/BD-EXAMPLE.md` |
-| BSD | BSD-EXAMPLE |  | 示例一级业务子域 | `business/BD-EXAMPLE/BSD-EXAMPLE.md` |
-| CAP | CAP-EXAMPLE |  | 示例业务能力 | `business/VC-EXAMPLE/CAP-EXAMPLE.md` |
-
-### §2 产品视角（product · PL）
-
-| 层级 | ID | 别名（英文名） | 名称 | 证据链 |
-|------|----|--------------|------|---------|
-| PL | PL-EXAMPLE |  | 示例产品线 | `product/PL-EXAMPLE.md` |
-
-### §3 应用视角（application · SLN）
-
-| 层级 | ID | 别名（英文名） | 名称 | 证据链 |
-|------|----|--------------|------|---------|
-| SLN | SLN-EXAMPLE |  | 示例解决方案 | `application/SLN-EXAMPLE.md` |
-
-### §4 技术视角（technical · TPL）
-
-| 层级 | ID | 别名（英文名） | 名称 | 证据链 |
-|------|----|--------------|------|---------|
-| TPL | TPL-EXAMPLE |  | 示例技术平台能力 | `technical/TPL-EXAMPLE.md` |
-
-> 本索引登记公司级 **VC / BD / BSD(L1) / CAP / PL / SLN / TPL**；SLN ∈ application（AA）；无 BSD(L2)/PD/SYS/MDG（见系统库）。
-
----
-
-### 物化目录映射（示例）
-
-| 索引 ID | 命名式 ID（锚点目录） |
-|---------|----------------------|
-| VC-EXAMPLE | `business/VC-EXAMPLE/` |
-| BD-EXAMPLE | `business/BD-EXAMPLE/` |
-| BSD-EXAMPLE | `business/BD-EXAMPLE/BSD-EXAMPLE.md` |
-| CAP-EXAMPLE | `business/VC-EXAMPLE/CAP-EXAMPLE.md` |
-| PL-EXAMPLE | `product/PL-EXAMPLE.md` |
-| SLN-EXAMPLE | `application/SLN-EXAMPLE.md` |
-| TPL-EXAMPLE | `technical/TPL-EXAMPLE.md` |
-
----
-
-### 交叉引用
-
-- 目录索引：`knowledge/index.md`
-- 应用：`knowledge/application/`
-- 业务：`knowledge/business/`
-- 产品：`knowledge/product/`
-- 数据：`knowledge/data/`
-- 技术：`knowledge/technical/`
-- 知识库总说明：`knowledge/README.md`
+- [知识库总说明](knowledge/README.md)
+- [目录索引](knowledge/index.md)
+- [业务](knowledge/business/README.md)
+- [产品](knowledge/product/README.md)
+- [应用](knowledge/application/README.md)
+- [数据](knowledge/data/README.md)
+- [技术](knowledge/technical/README.md)
 <!-- docs-build:entity-index:end -->
 
 ## 六、API / 字典边界
@@ -134,7 +87,7 @@ company/
 
 ## 七、变更与运维
 
-[changelogs/](changelogs/README.md)：`INDEXING-LOG.md`；变更溯源 `git log` / `git diff`；槽位蒸馏日志 ∈ `system-slots/changelogs/ARCHIVE-LOG.md`
+[changelogs/](changelogs/README.md)：`INDEXING-LOG`；溯源 git；槽位日志 ∈ `system-slots/changelogs/ARCHIVE-LOG.md`
 
 ---
 
@@ -147,4 +100,4 @@ company/
 
 ## 九、附录
 
-[viz.html](viz.html) · 索引记录 [INDEXING-LOG.md](changelogs/INDEXING-LOG.md)
+[viz.html](viz.html) · [INDEXING-LOG.md](changelogs/INDEXING-LOG.md)

@@ -16,7 +16,7 @@ okf_version: 0.1
 * [changelogs](changelogs/README.md)
 * [knowledge](knowledge/README.md)
 * [solutions](solutions/README.md)
-* [system-slots](system-slots/README.md) - system-slots 目录索引
+* [system-slots](system-slots/README.md)
 
 ## 目录文件
 
@@ -28,11 +28,9 @@ okf_version: 0.1
 
 ## 阅读顺序
 
-1. [README.md](README.md) — 职责与路径  
+1. [README.md](README.md) — 定位与导航  
 2. [DESIGN.md](DESIGN.md) — 本层契约与治理引用  
 3. [knowledge/README.md](knowledge/README.md) — 五视角  
-
-对照：[../system/knowledge/](../system/knowledge/README.md)。
 
 ## 关联索引
 
