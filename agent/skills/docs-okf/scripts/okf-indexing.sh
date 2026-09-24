@@ -23,7 +23,7 @@ usage() {
   4. validate-okf
   5. validate-viz-index
 
-实体扫描表 {DOC_DIR}/INDEX-GUIDE.md 第五章 → /docs-build（generate_knowledge_index.py）。
+视角导航块 {DOC_DIR}/INDEX-GUIDE.md 第五章 → /docs-build（generate_knowledge_index.py）。
 
 须有效 .docsconfig（含 KNOWLEDGE_TYPE）。bundle 默认取自 DOC_DIR；viz 输出取自 KNOWLEDGE_TYPE。
 

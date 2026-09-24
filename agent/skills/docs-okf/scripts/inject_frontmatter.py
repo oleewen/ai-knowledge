@@ -23,7 +23,7 @@ EXACT_GOVERNANCE: Dict[str, Dict[str, Any]] = {
     "knowledge/README.md": {"type": "Documentation"},
     "knowledge/knowledge-meta.md": {"type": "Perspective Tree Meta"},
     # knowledge/index.md：OKF §6 保留名，禁止注入 frontmatter（目录导航）
-    # INDEX-GUIDE.md：docs-indexing 九章 + docs-build 第五章实体块；禁止当 concept 注入
+    # INDEX-GUIDE.md：docs-indexing 九章 + docs-build 第五章视角导航块；禁止当 concept 注入
     "knowledge/technical-debt.md": {"type": "Documentation", "tags": ["technical-debt"]},
     "solutions/README.md": {"type": "Documentation"},
     "analysis/README.md": {"type": "Documentation"},

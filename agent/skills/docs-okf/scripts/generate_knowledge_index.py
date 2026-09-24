@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""已退役：实体表改由 docs-build 写入 {DOC_DIR}/INDEX-GUIDE.md 第五章。
-
+"""已退役：视角导航块改由 docs-build 写入 {DOC_DIR}/INDEX-GUIDE.md 第五章。
+¬
 兼容入口：转发到 agent/skills/docs-build/scripts/generate_knowledge_index.py。
 OKF 流水线（okf-indexing.sh）不再调用本脚本。
 """

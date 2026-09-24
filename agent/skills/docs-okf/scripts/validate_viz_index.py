@@ -14,7 +14,11 @@ import okf_lib  # noqa: E402
 
 ROOT_INDEX_MARKERS = ("<!-- okf:begin -->", "<!-- okf:end -->")
 KNOWLEDGE_NAV_MARKERS = ("## 子目录", "## 目录文件")
-KNOWLEDGE_ENTITY_MARKERS = ("### §1 ", "### 统一表头规范")
+KNOWLEDGE_ENTITY_MARKERS = (
+    "### 视角入口",
+    "knowledge/business/README.md",
+    "knowledge/README.md",
+)
 VIZ_MARKERS = ('"concepts"', '"edges"', "<html")
 SKIP_VIZ_NAMES = frozenset({"INDEXING-LOG.md", "KNOWLEDGE-INDEX.md", "INDEX-GUIDE.md"})
 

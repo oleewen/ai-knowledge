@@ -20,7 +20,7 @@ description: >
 ## 边界
 
 - 负责：各文档根 `INDEX-GUIDE.md`（九章骨架）、`INDEXING-LOG.md`、full/incremental、深度 1–3。重写 `INDEX-GUIDE.md` 时**必须保留** `<!-- docs-build:entity-index:begin/end -->` 块。
-- 不负责：第五章实体扫描表（docs-build）；OKF（docs-okf）；SDD；overview（distill/extract）
+- 不负责：第五章视角导航块（docs-build）；OKF（docs-okf）；SDD；overview（distill/extract）
 
 ## 不这样用
 
