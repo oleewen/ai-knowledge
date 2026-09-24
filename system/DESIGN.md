@@ -12,7 +12,6 @@ title: 系统知识库设计
 1. [README.md](README.md) — 定位  
 2. 本文 — 本层契约、同步门禁、治理引用  
 3. [knowledge/README.md](knowledge/README.md) — 五视角  
-4. [../company/DESIGN.md](../company/DESIGN.md) / [../application/DESIGN.md](../application/DESIGN.md) — 上下游对照  
 
 ## 本层契约
 
@@ -54,4 +53,4 @@ title: 系统知识库设计
 
 ## 参考
 
-[README](README.md) · [INDEX-GUIDE](INDEX-GUIDE.md) · [index.md](index.md) · [knowledge/](knowledge/README.md) · [application-slots](application-slots/README.md) · [knowledge-links.yaml](knowledge-links.yaml) · [company/DESIGN](../company/DESIGN.md) · [application/DESIGN](../application/DESIGN.md)
+[README](README.md) · [INDEX-GUIDE](INDEX-GUIDE.md) · [index.md](index.md) · [knowledge/](knowledge/README.md) · [application-slots](application-slots/README.md) · [knowledge-links.yaml](knowledge-links.yaml)

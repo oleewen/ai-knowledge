@@ -12,7 +12,6 @@ title: 应用知识库设计
 1. [README.md](README.md) — 定位与 mode 路由  
 2. 本文 — 本层契约、同步门禁、治理引用  
 3. [knowledge/README.md](knowledge/README.md) — 五视角；字段见各 `*-meta.md`  
-4. [../system/DESIGN.md](../system/DESIGN.md) / [../company/DESIGN.md](../company/DESIGN.md) — 上游对照  
 
 ## 本层契约
 
@@ -54,4 +53,4 @@ title: 应用知识库设计
 
 ## 参考
 
-[README](README.md) · [INDEX-GUIDE](INDEX-GUIDE.md) · [index.md](index.md) · [CONTRIBUTING](CONTRIBUTING.md) · [knowledge/](knowledge/README.md) · [system/DESIGN](../system/DESIGN.md) · [company/DESIGN](../company/DESIGN.md)
+[README](README.md) · [INDEX-GUIDE](INDEX-GUIDE.md) · [index.md](index.md) · [CONTRIBUTING](CONTRIBUTING.md) · [knowledge/](knowledge/README.md)
