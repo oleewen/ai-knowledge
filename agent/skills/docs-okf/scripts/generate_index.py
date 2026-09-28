@@ -306,10 +306,10 @@ def collect_directories(
         if not base.is_dir():
             return []
         if recursive:
-            return [base] + sorted(p for p in base.rglob("*") if p.is_dir())
+            return list(okf_lib.iter_bundle_directories(base))
         return [base]
     if recursive:
-        return [bundle_root] + sorted(p for p in bundle_root.rglob("*") if p.is_dir())
+        return list(okf_lib.iter_bundle_directories(bundle_root))
     return [bundle_root]
 
 

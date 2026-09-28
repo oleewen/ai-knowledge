@@ -50,8 +50,8 @@ def validate(bundle_root: Path, viz_path: Path) -> int:
     if not root_guide.is_file():
         return _error(f"missing-index-guide: {root_guide}")
 
-    for path in sorted(knowledge_root.rglob("*")):
-        if path.is_dir() and not (path / "index.md").is_file():
+    for path in okf_lib.iter_bundle_directories(knowledge_root):
+        if not (path / "index.md").is_file():
             return _error(f"missing-dir-index: {path / 'index.md'}")
 
     root_text = root_index.read_text(encoding="utf-8")

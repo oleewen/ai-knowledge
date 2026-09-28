@@ -69,7 +69,7 @@ class Validator:
         return path.resolve().relative_to(self.bundle_root).as_posix()
 
     def run(self) -> int:
-        self._md_files = sorted(self.bundle_root.rglob("*.md"))
+        self._md_files = sorted(okf_lib.iter_bundle_markdown_files(self.bundle_root))
 
         # 第一轮：解析所有 frontmatter，构建 id 索引
         for path in self._md_files:

@@ -24,7 +24,7 @@ source "$RESOLVE_SCRIPT"
   resolve_okf_paths
 
   [[ "$OKF_BUNDLE" == "docs" ]] || fail "OKF_BUNDLE 应为 docs，得: $OKF_BUNDLE"
-  [[ "$OKF_VIZ_OUT" == "application/viz.html" ]] || fail "OKF_VIZ_OUT 错误: $OKF_VIZ_OUT"
+  [[ "$OKF_VIZ_OUT" == "docs/viz.html" ]] || fail "OKF_VIZ_OUT 错误: $OKF_VIZ_OUT"
   [[ "$OKF_VIZ_NAME" == "application OKF" ]] || fail "OKF_VIZ_NAME 错误: $OKF_VIZ_NAME"
   [[ "$(cd "$REPO_ROOT" && pwd -P)" == "$(cd "$PROJECT_DIR" && pwd -P)" ]] || fail "REPO_ROOT 错误: $REPO_ROOT (expected $PROJECT_DIR)"
   [[ "$DOC_DIR" == "docs" ]] || fail "DOC_DIR 错误: $DOC_DIR"

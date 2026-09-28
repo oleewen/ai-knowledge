@@ -17,7 +17,7 @@
 读 [path-resolution.md](path-resolution.md)。先 `cd` 到目标工程目录；须有效 `.docsconfig`（含 `KNOWLEDGE_TYPE`、`AGENT_DIR`）。解析后：
 
 - 默认 `BUNDLE` = `{DOC_DIR}`
-- 默认 viz `--out` = `{KNOWLEDGE_TYPE}/viz.html`，`--name` = `"{KNOWLEDGE_TYPE} OKF"`
+- 默认 viz `--out` = `{DOC_DIR}/viz.html`，`--name` = `"{KNOWLEDGE_TYPE} OKF"`
 - 脚本树 `OKF_SCRIPTS` = `{DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts`（**不**用 `$REPO_ROOT/agent/`）
 - 若 CLI/env 覆盖 `BUNDLE` 且与 `{DOC_DIR}` 不同：viz 改为 `{bundle_basename}/viz.html`（见 path-resolution「覆盖」）
 
@@ -33,7 +33,7 @@
 
 1. `inject_frontmatter.py --bundle "${DOC_DIR}"`
 2. `generate_index.py --bundle "${DOC_DIR}" --recursive`
-3. `visualize.py` → `{KNOWLEDGE_TYPE}/viz.html`（`BUNDLE` 覆盖时跟 bundle 名）
+3. `visualize.py` → `{DOC_DIR}/viz.html`（`BUNDLE` 覆盖时跟 bundle 名）
 4. `okf-validate.sh`
 5. `validate_viz_index.py`
 
@@ -43,7 +43,7 @@
 python3 "${DOC_DIR}/${AGENT_DIR}/skills/docs-build/scripts/generate_knowledge_index.py" --bundle "${DOC_DIR}"
 ```
 
-环境变量 `BUNDLE` 或 CLI `--bundle` 可覆盖 `{DOC_DIR}`；覆盖时 viz 输出跟随 bundle 目录名（非主 `KNOWLEDGE_TYPE`）。
+环境变量 `BUNDLE` 或 CLI `--bundle` 可覆盖 `{DOC_DIR}`；覆盖时 viz 输出跟随 bundle 目录名。
 
 > **HARD**：`generate_index.py` 重写目录 `index.md`。视角导航在根 `INDEX-GUIDE.md` 第四章标记块，不被 `generate_index` 冲掉。`validate_viz_index` 要求该标记块存在（docs-build 写入）。
 

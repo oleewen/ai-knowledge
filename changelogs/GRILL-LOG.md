@@ -4,4 +4,6 @@
 
 ---
 
-## 当前无开放代办
+## 开放代办
+
+- [ ] `agent-install` 在 macOS `openrsync` 下同步不完整——`sync_dir` 的长选项可能被静默丢弃，`--delete` 未生效；需要显式探测 rsync 实现或改用兼容参数/复制策略

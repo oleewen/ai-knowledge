@@ -42,16 +42,15 @@ agent_layout_is_install_root() {
   [[ -n "$root" && -d "$root" && -f "${root}/scripts/docs-core.sh" ]]
 }
 
-# 探测本机安装根。成功：nameref 写出 agent_root_abs、agent_dir_name（如 .agents）
+# 探测本机安装根。成功：输出变量写出 agent_root_abs、agent_dir_name（如 .agents）
 # 失败：1，并打印提醒先 /agent-install
-# 用法：probe_agent_install_root <nameref_root> <nameref_dir> [home]
+# 用法：probe_agent_install_root <out_root> <out_dir> [home]
 probe_agent_install_root() {
-  local -n _probe_root="${1:?}"
-  local -n _probe_dir="${2:?}"
+  local probe_root probe_dir
   local home="${3:-${HOME:-}}"
   local name cand
-  _probe_root=''
-  _probe_dir=''
+  probe_root=''
+  probe_dir=''
   [[ -n "$home" ]] || {
     _agent_layout_error_msg "错误: 无法探测 Agent 安装根：HOME 未就绪。请先执行 /agent-install。"
     return 1
@@ -60,12 +59,16 @@ probe_agent_install_root() {
   for name in "${AGENT_PROBE_DIR_NAMES[@]}"; do
     cand="${home}/${name}"
     if agent_layout_is_install_root "$cand"; then
-      _probe_root="$home"
-      _probe_dir="$name"
+      probe_root="$home"
+      probe_dir="$name"
+      eval "${1:?}=\$probe_root"
+      eval "${2:?}=\$probe_dir"
       return 0
     fi
   done
   _agent_layout_error_msg "错误: 未在 ${home} 下找到 Agent 安装树（已试: ${AGENT_PROBE_DIR_NAMES[*]}）。请先执行 /agent-install（默认安装到 ~/.agents）。"
+  eval "${1:?}=\$probe_root"
+  eval "${2:?}=\$probe_dir"
   return 1
 }
 

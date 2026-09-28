@@ -16,7 +16,7 @@ usage() {
 用法: bash {DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts/okf-validate.sh [--bundle NAME]
 
 校验 OKF bundle（frontmatter、id、链接、index 条目）。
-bundle 默认取自 .docsconfig 的 DOC_DIR；KNOWLEDGE_TYPE、AGENT_DIR 必填。
+bundle 与默认 viz 输出取自 .docsconfig 的 DOC_DIR；KNOWLEDGE_TYPE、AGENT_DIR 必填。
 脚本路径取自 {DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts（不依赖 \$REPO_ROOT/agent/）。
 
 环境变量:
@@ -70,6 +70,7 @@ if [[ ! -f "$OKF_DIR/validate_bundle.py" ]]; then
 fi
 
 cd "$REPO_ROOT" || exit 1
+export DOCS_OKF_REPO_ROOT="$REPO_ROOT"
 
 echo "=== validate-okf ==="
 echo "REPO_ROOT:      ${REPO_ROOT}"

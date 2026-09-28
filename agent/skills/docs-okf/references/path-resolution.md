@@ -22,11 +22,11 @@
 | 参数 | 来源 |
 | ---- | ---- |
 | `--bundle` | `{DOC_DIR}`（默认可被覆盖） |
-| `--out` | `{KNOWLEDGE_TYPE}/viz.html`（**未**覆盖 bundle 时） |
+| `--out` | `{DOC_DIR}/viz.html`（**未**覆盖 bundle 时） |
 | `--name` | `"{KNOWLEDGE_TYPE} OKF"`（**未**覆盖 bundle 时） |
 | OKF 脚本树 | `{DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts`（`OKF_SCRIPTS`） |
 
-`DOC_DIR=docs` + `KNOWLEDGE_TYPE=application` 时：默认 bundle 扫描 `docs/`，viz 写入 `application/viz.html`；脚本经 `docs/.agents/...`（`AGENT_DIR=.agents`）解析。
+`DOC_DIR=docs` + `KNOWLEDGE_TYPE=application` 时：默认 bundle 扫描 `docs/`，viz 写入 `docs/viz.html`；脚本经 `docs/.agents/...`（`AGENT_DIR=.agents`）解析。
 
 ## Agent 步骤
 
@@ -40,9 +40,9 @@ CLI/env `--bundle` / `BUNDLE` 可覆盖 `DOC_DIR`。覆盖且与 config 推导�
 
 - stderr 警告覆盖
 - **viz 跟随 bundle 目录名**：`--out` → `{bundle_basename}/viz.html`，`--name` → `"{bundle_basename} OKF"`
-- 例：`BUNDLE=company` → `company/viz.html`（不再写到主 `KNOWLEDGE_TYPE` 路径）
+- 例：`BUNDLE=company` → `company/viz.html`
 
-未覆盖时 viz 仍跟 `KNOWLEDGE_TYPE`。脚本树仍跟 `{DOC_DIR}/{AGENT_DIR}`，不随 `BUNDLE` 改。
+未覆盖时 viz 仍跟 `{DOC_DIR}`。脚本树仍跟 `{DOC_DIR}/{AGENT_DIR}`，不随 `BUNDLE` 改。
 
 ## 脚本
 

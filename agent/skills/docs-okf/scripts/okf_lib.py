@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import re
+import os
 from pathlib import Path
 from typing import Any, Dict, Iterator, List, Optional, Tuple
 
@@ -45,12 +46,60 @@ ISO8601_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+08:00$")
 
 
 def find_repo_root(start: Path) -> Path:
-    """向上查找仓库根（含 .docsconfig 或 .git）。"""
-    p = start.resolve()
-    for parent in (p, *p.parents):
-        if (parent / ".docsconfig").exists() or (parent / ".git").exists():
-            return parent
+    """向上查找仓库根；调用方可传提示路径，软链入口优先。"""
+    hint_value = os.environ.get("DOCS_OKF_REPO_ROOT")
+    hint = Path(hint_value).expanduser() if hint_value else None
+    physical = start.resolve()
+    if hint is not None and hint.is_dir():
+        physical = hint
+    lexical = start if start.is_absolute() else Path.cwd() / start
+    lexical = Path(os.path.normpath(str(lexical)))
+
+    seen = set()
+    for p in (physical, *physical.parents, lexical, *lexical.parents):
+        if p in seen:
+            continue
+        seen.add(p)
+        if (p / ".docsconfig").exists() or (p / ".git").exists():
+            return p
     raise RuntimeError(f"无法定位仓库根（未找到 .docsconfig/.git），start={p}")
+
+
+def _bundle_walk(bundle_root: Path):
+    """遍历 bundle；不进入隐藏目录或软链（含 .agents 与系统槽位）。"""
+    root = bundle_root.resolve()
+    if not root.is_dir():
+        return
+    for current, dirnames, filenames in os.walk(root, followlinks=False):
+        dirnames[:] = sorted(
+            name
+            for name in dirnames
+            if not name.startswith(".") and not (Path(current) / name).is_symlink()
+        )
+        for filename in sorted(filenames):
+            if filename.endswith(".md"):
+                yield Path(current) / filename
+
+
+def iter_bundle_markdown_files(bundle_root: Path) -> Iterator[Path]:
+    """遍历 bundle Markdown；不进入隐藏目录或软链。"""
+    return _bundle_walk(bundle_root)
+
+
+def iter_bundle_directories(bundle_root: Path) -> Iterator[Path]:
+    """遍历 bundle 目录；不进入隐藏目录或软链（含 .agents 与系统槽位）。"""
+    root = bundle_root.resolve()
+    if not root.is_dir():
+        return
+    yield root
+    for current, dirnames, _filenames in os.walk(root, followlinks=False):
+        dirnames[:] = sorted(
+            name
+            for name in dirnames
+            if not name.startswith(".") and not (Path(current) / name).is_symlink()
+        )
+        for dirname in dirnames:
+            yield Path(current) / dirname
 
 
 def normalize_section_heading(title: str) -> Optional[str]:
@@ -405,9 +454,6 @@ def is_concept_file(path: Path) -> bool:
 
 def scan_concepts(bundle_root: Path) -> Iterator[Path]:
     """遍历 bundle 下所有 concept 文件路径（相对 bundle_root 的绝对 Path）。"""
-    root = bundle_root.resolve()
-    if not root.is_dir():
-        return
-    for path in sorted(root.rglob("*.md")):
+    for path in iter_bundle_markdown_files(bundle_root):
         if is_concept_file(path):
             yield path

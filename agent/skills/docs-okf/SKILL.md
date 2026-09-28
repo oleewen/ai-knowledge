@@ -2,7 +2,7 @@
 name: docs-okf
 description: >
   OKF bundle refresh、校验与可视化：刷新 index.md、validate-okf、viz.html 与产物校验。
-  须先读 .docsconfig：DOC_DIR→默认 bundle，AGENT_DIR→脚本树 {DOC_DIR}/{AGENT_DIR}/，KNOWLEDGE_TYPE→默认 viz；BUNDLE/--bundle 覆盖时 viz 跟随 bundle 目录名；无 config 或缺 KNOWLEDGE_TYPE/AGENT_DIR 硬中止。
+  须先读 .docsconfig：DOC_DIR→默认 bundle 与 viz，AGENT_DIR→脚本树 {DOC_DIR}/{AGENT_DIR}/，KNOWLEDGE_TYPE→viz 名称；BUNDLE/--bundle 覆盖时 viz 跟随 bundle 目录名；无 config 或缺 KNOWLEDGE_TYPE/AGENT_DIR 硬中止。
   用户提到 /docs-okf、OKF refresh、刷新 viz、DOC_DIR、AGENT_DIR、DOC_ROOT、KNOWLEDGE_TYPE、目标工程 OKF 时，使用本技能。
   分流：用户只要 docs-build 提取或 docs-indexing 九章为主路径 → 对应技能。
   推进见 references/workflow.md。
@@ -52,7 +52,7 @@ description: >
 
 ## 产出与脚本
 
-- 正式：刷新后的 bundle、`viz.html`、校验报告（参数见 [workflow.md](references/workflow.md)）
+- 正式：刷新后的 bundle、`{DOC_DIR}/viz.html`、校验报告（参数见 [workflow.md](references/workflow.md)）
 - 脚本树：`{DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts/`（`DOC_DIR` 下通常为 `.agents` 软链）
 
 ```bash

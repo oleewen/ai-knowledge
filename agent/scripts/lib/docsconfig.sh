@@ -258,13 +258,16 @@ docsconfig_write() {
 # Usage: docsconfig_read_into <path> <doc_var> <repo_var> <ddir_var> [aroot_var [ktype_var [adir_var]]]
 docsconfig_read_into() {
   local path="${1:?path}"
-  local -n _doc="${2:?}"
-  local -n _repo="${3:?}"
-  local -n _ddir="${4:?}"
-  _doc=''; _repo=''; _ddir=''
+  local doc_out repo_out ddir_out
+  doc_out=''; repo_out=''; ddir_out=''
+  local reset_name
+  for reset_name in "${@:2}"; do
+    [[ "$reset_name" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]] || return 2
+    eval "$reset_name"=''
+  done
   [[ -f "$path" ]] || return 1
 
-  # 局部名须避开调用方 nameref 目标（如 raw_ar / AGENT_ROOT），否则 Bash 会写空调用方变量。
+  # 局部名须避开调用方输出变量目标（如 raw_ar / AGENT_ROOT），否则 Bash 会写空调用方变量。
   local _dc_raw_doc='' _dc_raw_repo='' _dc_raw_ddir='' _dc_raw_ar='' _dc_raw_kt='' _dc_raw_adir=''
   local line k v
   while IFS= read -r line || [[ -n "$line" ]]; do
@@ -294,23 +297,24 @@ docsconfig_read_into() {
     esac
   done <"$path"
 
-  [[ -n "$_dc_raw_doc" ]] && _doc="$(docsconfig_normalize_root_value "$_dc_raw_doc")"
-  [[ -n "$_dc_raw_repo" ]] && _repo="$(docsconfig_normalize_root_value "$_dc_raw_repo")"
-  _ddir="$_dc_raw_ddir"
+  [[ -n "$_dc_raw_doc" ]] && doc_out="$(docsconfig_normalize_root_value "$_dc_raw_doc")"
+  [[ -n "$_dc_raw_repo" ]] && repo_out="$(docsconfig_normalize_root_value "$_dc_raw_repo")"
+  ddir_out="$_dc_raw_ddir"
 
   if (( $# >= 5 )); then
-    local -n _aroot="${5:?}"
-    _aroot=''
-    [[ -n "$_dc_raw_ar" ]] && _aroot="$(docsconfig_normalize_root_value "$_dc_raw_ar")"
+    local aroot_out=''
+    [[ -n "$_dc_raw_ar" ]] && aroot_out="$(docsconfig_normalize_root_value "$_dc_raw_ar")"
+    eval "${5:?}=\$aroot_out"
   fi
   if (( $# >= 6 )); then
-    local -n _ktype="${6:?}"
-    _ktype="$_dc_raw_kt"
+    eval "${6:?}=\$_dc_raw_kt"
   fi
   if (( $# >= 7 )); then
-    local -n _adir="${7:?}"
-    _adir="$_dc_raw_adir"
+    eval "${7:?}=\$_dc_raw_adir"
   fi
+  eval "${2:?}=\$doc_out"
+  eval "${3:?}=\$repo_out"
+  eval "${4:?}=\$ddir_out"
   return 0
 }
 
@@ -375,18 +379,17 @@ docsconfig_bootstrap_validate() {
   }
 }
 
-# 补齐 AGENT_ROOT/AGENT_DIR：已齐且可解析则保留；否则探测写入 nameref。
-# 用法：docsconfig_fill_agent_fields <nameref_root> <nameref_dir> <old_root> <old_dir> [home]
+# 补齐 AGENT_ROOT/AGENT_DIR：已齐且可解析则保留；否则探测写入输出变量。
+# 用法：docsconfig_fill_agent_fields <out_root> <out_dir> <old_root> <old_dir> [home]
 docsconfig_fill_agent_fields() {
-  local -n _fill_ar="${1:?}"
-  local -n _fill_ad="${2:?}"
+  local ar_out ad_out
   local old_ar="${3:-}"
   local old_ad="${4:-}"
   local home="${5:-${HOME:-}}"
   local tree=''
 
-  _fill_ar=''
-  _fill_ad=''
+  ar_out=''
+  ad_out=''
 
   if [[ -n "$old_ar" ]]; then
     if declare -F docsconfig_agent_root_looks_like_entity_tree >/dev/null 2>&1 \
@@ -399,8 +402,10 @@ docsconfig_fill_agent_fields() {
   if [[ -n "$old_ar" && -n "$old_ad" ]]; then
     tree="$(strip_trailing_slash "$(abs_path "${old_ar}/${old_ad}")")"
     if declare -F agent_layout_is_install_root >/dev/null 2>&1 && agent_layout_is_install_root "$tree"; then
-      _fill_ar="$(strip_trailing_slash "$(abs_path "$old_ar")")"
-      _fill_ad="$old_ad"
+      ar_out="$(strip_trailing_slash "$(abs_path "$old_ar")")"
+      ad_out="$old_ad"
+      eval "${1:?}=\$ar_out"
+      eval "${2:?}=\$ad_out"
       return 0
     fi
     _docsconfig_info "已有 AGENT_ROOT/AGENT_DIR 无法解析为安装树，将重新探测…"
@@ -410,6 +415,8 @@ docsconfig_fill_agent_fields() {
     # shellcheck source=agent-layout.sh
     source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/agent-layout.sh"
   fi
-  probe_agent_install_root _fill_ar _fill_ad "$home" || return 1
-  _docsconfig_info "已探测 Agent 安装根: AGENT_ROOT=${_fill_ar} AGENT_DIR=${_fill_ad}"
+  probe_agent_install_root ar_out ad_out "$home" || return 1
+  eval "${1:?}=\$ar_out"
+  eval "${2:?}=\$ad_out"
+  _docsconfig_info "已探测 Agent 安装根: AGENT_ROOT=${ar_out} AGENT_DIR=${ad_out}"
 }

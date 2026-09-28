@@ -116,9 +116,7 @@ def inject_file(relpath: str, text: str) -> Optional[str]:
 
 
 def iter_markdown_files(bundle_root: Path) -> Iterator[Path]:
-    for path in sorted(bundle_root.rglob("*.md")):
-        if path.is_file():
-            yield path
+    return okf_lib.iter_bundle_markdown_files(bundle_root)
 
 
 def run_inject(bundle: str, dry_run: bool = False) -> Tuple[int, int, int]:
