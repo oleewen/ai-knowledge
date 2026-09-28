@@ -7,13 +7,12 @@ title: company 目录元数据
 # company/ 根目录元数据（导航与 SSOT 指针）
 id: "DIR-COMPANY"
 name: "公司知识库根（company）"
-description: "公司层治理与导航根。契约见 DESIGN.md。"
+description: "公司层治理与导航根。契约见 DESIGN.md；knowledge/=实体 SSOT；system-slots/=系统软链。"
 
 role:
   kind: "documentation_root"
   ssot_subdirectory: "knowledge/"
-  # 层设计入口：DESIGN.md；语义 SSOT：knowledge-governance.md；组件：agent/knowledge/README.md
-  # 文件分型 / concept：agent/knowledge/okf-spec.md
+  # 层设计入口：DESIGN.md；语义 SSOT：knowledge-governance.md
 
 child_directories:
   knowledge:
@@ -51,22 +50,22 @@ inputs:
 outputs:
   primary_artifact:
     pattern: "README.md, index.md, knowledge/**/*, system-slots/**"
-    description: "根导航、knowledge/ 公司层 OKF 实体、按需联邦槽位镜像"
+    description: "根导航、knowledge/ 公司层 OKF 实体、按需联邦槽位"
 
 naming_conventions:
   directory_index:
-    description: "实体 ID 与 IDEA-ID 命名以 agent/knowledge/naming-conventions.md 为准"
+    description: "实体 ID / IDEA-ID 见 naming-conventions.md"
     reference: "../agent/knowledge/naming-conventions.md"
 
 integration:
   upstream:
     - path: "../agent/"
-      description: "规范、模板与 Agent 技能（命名 SSOT：agent/knowledge/；闸门：agent/rules/）"
+      description: "规范、模板与 Agent 技能"
   downstream:
     - path: "../system/"
-      description: "系统层 reference 引用公司层 BD/PL/SLN/TPL SSOT；MDG/SYS/PD 为本层或系统 SSOT"
+      description: "系统层 reference 公司 BD/PL/SLN/TPL；MDG/SYS/PD 为本层或系统 SSOT"
   traceability:
-    description: "阶段链 solutions → analysis；各系统 PRD/ASD ∈ system/requirements/"
+    description: "solutions → analysis；各系统 PRD/ASD ∈ system/requirements/"
 
 references:
   - path: "./README.md"
