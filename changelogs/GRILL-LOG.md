@@ -46,3 +46,6 @@
 - [ ] （未决）`AB.apis` 是否迁 AA `implements_*`
 - [ ] 对齐 `okf_lib.entity_relpath` system BSD(L1)：现 parent=`BD-*` 时返回 `knowledge/business/{id}.md`（单文件）；EXAMPLE / `business-meta` §4 为 `knowledge/business/BSD-{L1}/BSD-{L1}.md`。改函数 + 测试；L2 已一致
 - [ ] 修 `system/knowledge/application/index.md`：「上游 SYS SSOT：公司层…本层不落」与 `application-meta` / `application/README` / 盘上 `SYS-EXAMPLE.md`（系统层 SSOT）矛盾；按 meta 改正文或重跑生成索引
+- [ ] docs-simplify `system/docs-meta.md` 与 `application/docs-meta.md`，对齐 `company/docs-meta.md` 体例（`feature-1.3.5` 已推远程，company 已做）
+- [ ] （可选）为 `origin/feature-1.3.5` 开 PR（基线：测试 fixture + 系统/公司 knowledge README·meta 同构精简）
+- [ ] （可选）公司非 business 视角 `chapters/` 同构精简（product / application / data / technical；business 六章已在 `0afe5fb`）
