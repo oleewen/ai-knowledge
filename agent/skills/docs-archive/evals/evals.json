@@ -157,7 +157,7 @@
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "须明确 docs-build、实体 ID 或 INDEX-GUIDE 第五章。",
+          "check": "须明确 docs-build、实体 ID 或 INDEX-GUIDE 第四章。",
           "priority": "P0"
         },
         {

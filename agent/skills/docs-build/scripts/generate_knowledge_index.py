@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""写入 {DOC_DIR}/INDEX-GUIDE.md 第五章视角导航块（docs-build；静态引用，不扫 concept）。"""
+"""写入 {DOC_DIR}/INDEX-GUIDE.md 第四章视角导航块（docs-build；静态引用，不扫 concept）。"""
 
 from __future__ import annotations
 
@@ -65,7 +65,7 @@ def render_knowledge_index(
     bundle_root: Path,
     bundle: str = "application",
 ) -> str:
-    """渲染第五章视角导航正文（静态；实体台账 ∈ 各视角 README）。"""
+    """渲染第四章视角导航正文（静态；实体台账 ∈ 各视角 README）。"""
     del bundle_root  # 静态块；保留参数供调用方/测试签名兼容
     return "\n".join(
         [
@@ -85,7 +85,7 @@ def render_entity_index_block(bundle_root: Path, bundle: str = "application") ->
 
 
 def patch_index_guide(existing: str, block: str) -> str:
-    """替换 INDEX-GUIDE 第五章内实体块；无标记则替换「五、」至「六、」之间。"""
+    """替换 INDEX-GUIDE 第四章 §4.5 实体块；无标记则替换「### 4.5」至「## 五、」之间。"""
     block = block.rstrip() + "\n"
     if ENTITY_BEGIN in existing and ENTITY_END in existing:
         pattern = re.compile(
@@ -95,7 +95,7 @@ def patch_index_guide(existing: str, block: str) -> str:
         return pattern.sub(block.rstrip(), existing, count=1)
 
     chapter = re.search(
-        r"(## 五、[^\n]*\n)(.*?)(\n## 六、)",
+        r"(### 4\.5[^\n]*\n)(.*?)(\n## 五、)",
         existing,
         flags=re.DOTALL,
     )
@@ -108,12 +108,12 @@ def patch_index_guide(existing: str, block: str) -> str:
             + chapter.group(3)
             + existing[chapter.end() :]
         )
-    raise ValueError("INDEX-GUIDE.md 缺少「## 五、」或实体块标记，无法写入")
+    raise ValueError("INDEX-GUIDE.md 缺少「### 4.5」或实体块标记，无法写入")
 
 
 def main(argv: Optional[list[str]] = None) -> int:
     parser = argparse.ArgumentParser(
-        description="将视角导航块写入 bundle/INDEX-GUIDE.md 第五章（docs-build）"
+        description="将视角导航块写入 bundle/INDEX-GUIDE.md 第四章（docs-build）"
     )
     parser.add_argument("--bundle", required=True, help="bundle 名称，如 application")
     parser.add_argument("--dry-run", action="store_true", help="仅输出实体块到 stdout")
@@ -148,7 +148,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     if stale_guide.is_file():
         stale_guide.unlink()
         print(f"removed {stale_guide.relative_to(repo)}")
-    print(f"patched {out_path.relative_to(repo)} 第五章")
+    print(f"patched {out_path.relative_to(repo)} 第四章")
     return 0
 
 

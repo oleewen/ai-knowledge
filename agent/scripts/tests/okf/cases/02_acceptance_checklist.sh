@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 验收：concept 数量、okf_version、无 legacy *-entities.md、INDEX-GUIDE 第五章视角导航块
+# 验收：concept 数量、okf_version、无 legacy *-entities.md、INDEX-GUIDE 第四章视角导航块
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../../.." && pwd)"
@@ -61,12 +61,12 @@ grep -q 'docs-build:entity-index:begin' "$ki" || {
 }
 
 grep -q '### 视角入口' "$ki" || {
-  echo "INDEX-GUIDE.md 第五章应含视角入口" >&2
+  echo "INDEX-GUIDE.md 第四章应含视角入口" >&2
   exit 1
 }
 
 grep -q 'knowledge/business/README.md' "$ki" || {
-  echo "INDEX-GUIDE.md 第五章应链到各视角 README" >&2
+  echo "INDEX-GUIDE.md 第四章应链到各视角 README" >&2
   exit 1
 }
 

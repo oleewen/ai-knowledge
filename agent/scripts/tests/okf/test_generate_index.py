@@ -8,7 +8,7 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[4]
-# docs-build 为 INDEX-GUIDE 第五章视角导航块权威实现；docs-okf 脚本仅 generate_index / okf_lib
+# docs-build 为 INDEX-GUIDE 第四章视角导航块权威实现；docs-okf 脚本仅 generate_index / okf_lib
 sys.path.insert(0, str(ROOT / "agent" / "skills" / "docs-okf" / "scripts"))
 sys.path.insert(0, str(ROOT / "agent" / "skills" / "docs-build" / "scripts"))
 import generate_index  # noqa: E402
@@ -91,9 +91,9 @@ def test_knowledge_index_nav_links():
         assert not rendered.startswith("---")
 
 
-def test_patch_index_guide_chapter_five():
+def test_patch_index_guide_chapter_four():
     existing = (
-        "# G\n\n## 四、模块依赖\n\nx\n\n## 五、详细索引\n\nold\n\n## 六、API / 字典边界\n\ny\n"
+        "# G\n\n## 四、领域模型\n\nx\n\n### 4.5 视角导航\n\nold\n\n## 五、业务逻辑\n\ny\n"
     )
     block = (
         generate_knowledge_index.ENTITY_BEGIN
@@ -104,7 +104,7 @@ def test_patch_index_guide_chapter_five():
     out = generate_knowledge_index.patch_index_guide(existing, block)
     assert generate_knowledge_index.ENTITY_BEGIN in out
     assert "patched-body" in out
-    assert "## 六、API / 字典边界" in out
+    assert "## 五、业务逻辑" in out
     assert "old" not in out
     again = generate_knowledge_index.patch_index_guide(
         out, block.replace("patched-body", "second")
@@ -158,7 +158,7 @@ def main() -> None:
         test_render_index_lists_concepts_and_subdirs,
         test_preserve_bundle_root_okf_version,
         test_knowledge_index_nav_links,
-        test_patch_index_guide_chapter_five,
+        test_patch_index_guide_chapter_four,
         test_system_knowledge_index_scope_and_nav,
         test_application_knowledge_index_scope_and_nav,
         test_company_knowledge_index_scope_and_nav,

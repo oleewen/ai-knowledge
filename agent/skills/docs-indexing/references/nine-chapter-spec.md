@@ -37,6 +37,9 @@
 | 4.2 聚合根 | 核心业务实体（职责、关键属性） |
 | 4.3 领域服务 | 业务能力封装（服务、功能、依赖） |
 | 4.4 领域事件 | 状态变更事件（触发条件、处理逻辑） |
+| 4.5 视角导航 | 三层知识库：`/docs-build` 写入 `<!-- docs-build:entity-index -->`（短注 + 链各视角 README） |
+
+三层知识库（`company` / `system` / `application`）§4.5 为视角导航块；`/docs-indexing` 重写九章时必须原样保留该块。
 
 ## 五、业务逻辑（Business Logic）
 
@@ -46,8 +49,6 @@
 | 5.2 核心流程 | 关键业务路径（步骤描述） |
 | 5.3 业务规则 | 规则 ID、描述、约束 |
 | 5.4 枚举定义 | 状态和类型枚举（代码级定义） |
-
-三层知识库（`company` / `system` / `application`）本章可落为 **详细索引**：视角导航块由 `/docs-build` 写入 `<!-- docs-build:entity-index -->`（短注 + 链各视角 README）。`/docs-indexing` 重写九章时必须原样保留该块。
 
 ## 六、数据映射（Data Mapping）
 

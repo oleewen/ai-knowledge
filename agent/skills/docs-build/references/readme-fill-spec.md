@@ -36,7 +36,7 @@
 |类型|系统 / 应用 / 微服务（MS）/ 接口（与 `hierarchy` 一致的中文）|
 |名称|frontmatter `title` 或 `name`|
 |ID (INDEX-GUIDE)|SYS/APP：`id`；MS/API：`id` 或规范 `id`|
-|路径 / 说明|相对链接至 concept 文件（如 `[SYS-EXAMPLE.md](SYS-EXAMPLE.md)`、`[MS-EXAMPLE/MS-EXAMPLE.md](MS-EXAMPLE/MS-EXAMPLE.md)`）；可附 `alias` 或证据摘要|
+|路径 / 说明|相对链接至 concept 文件（示例路径：`SYS-EXAMPLE.md`、`MS-EXAMPLE/MS-EXAMPLE.md`）；可附 `alias` 或证据摘要|
 
 按 `hierarchy` 分组遍历：`SYS` → `APP` → `MS` → `API`。
 
@@ -50,7 +50,7 @@
 |层级|`DS` / `ENT`|
 |类型|`数据存储` / `数据实体`|
 |名称|frontmatter `title` 或 `name`|
-|锚点目录 / 文件|相对链接至 `{ID}.md`（如 `[DS-EXAMPLE.md](DS-EXAMPLE.md)`、`[ENT-EXAMPLE/ENT-EXAMPLE.md](ENT-EXAMPLE/ENT-EXAMPLE.md)`）|
+|锚点目录 / 文件|相对链接至 `{ID}.md`（示例：`DS-EXAMPLE.md`、`ENT-EXAMPLE/ENT-EXAMPLE.md`）|
 
 ENT 的 `parent_id` 可用于排序或链序说明。
 
@@ -64,9 +64,9 @@ ENT 的 `parent_id` 可用于排序或链序说明。
 |层级|`BD` / `BSD` / `BC` / `AGG` / `AB`|
 |ID|`id`|
 |名称|frontmatter `title` 或 `name`|
-|文件/目录|相对链接至 concept（如 `[BD-EXAMPLE.md](BD-EXAMPLE.md)`）|
+|文件/目录|相对链接至 concept（示例：`BD-EXAMPLE.md`）|
 
-扁平分组排序；有真实 ID 后标题可改「业务索引表」，并注「以 per-entity `{ID}.md` 与 [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 为准」。
+扁平分组排序；有真实 ID 后标题可改「业务索引表」，并注「以 per-entity `{ID}.md` 与 `../INDEX-GUIDE.md`（相对视角 README）为准」。
 
 ### product —「产品线索引表」
 
@@ -78,14 +78,14 @@ ENT 的 `parent_id` 可用于排序或链序说明。
 |层级|`PL` / `PD` / `PM` / `FT` / `UC`|
 |类型|产品线 / 产品 / 产品模块 / 功能 / 用例（与 README 示例一致）|
 |名称|frontmatter `title` 或 `name`|
-|锚点目录|相对链接至 concept（公司 PL；系统 PD 起 PM，如 `[PM-EXAMPLE/](PM-EXAMPLE/)`）|
+|锚点目录|相对链接至 concept（公司 PL；系统 PD 起 PM，示例：`PM-EXAMPLE/`）|
 
 ---
 
-## 相对 INDEX-GUIDE 第五章 的顺序
+## 相对 INDEX-GUIDE 第四章 的顺序
 
 1. 各视角 per-entity `{ID}.md` 就绪  
 2. 本规范更 README  
-3. [consolidation-spec.md](consolidation-spec.md) 写入 `INDEX-GUIDE.md` 第五章视角导航块  
+3. [consolidation-spec.md](consolidation-spec.md) 写入 `INDEX-GUIDE.md` 第四章视角导航块  
 
 保证 README、per-entity、INDEX 导航一致（实体台账 ∈ README）。

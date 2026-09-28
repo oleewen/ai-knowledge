@@ -113,7 +113,7 @@ python3 agent/skills/docs-tag/scripts/keyword_tag.py --file FILE --phase 2
 python3 agent/skills/docs-tag/scripts/keyword_tag.py --file FILE --phase 3
 ```
 
-从五视角表（`## [业务架构](…)` 等 H2）中副标题列含 ✅ 的行，按固定顺序写入 `## 架构摘录` 三列表。无 ✅ 时写入 `<!-- excerpt:empty -->` 占位行。
+从五视角表（如 H2「业务架构」等，副标题列含 ✅ 的行）按固定顺序写入 `## 架构摘录` 三列表。无 ✅ 时写入 `<!-- excerpt:empty -->` 占位行。
 
 汇报摘录行数；**勿手改**摘录表数据行（gotchas §9）。
 

@@ -1,13 +1,13 @@
 # 归并规范（阶段 4）
 
-[readme-fill-spec.md](readme-fill-spec.md) 之后收口：写入 **`{DOC_DIR}/INDEX-GUIDE.md` 第五章**（`docs-build:entity-index` 标记块）为**视角导航**——短注 + 链到各视角 README / `knowledge/index.md`。**不扫** concept、不贴实体表；实体台账 SSOT ∈ 各视角 README「实体」节。
+[readme-fill-spec.md](readme-fill-spec.md) 之后收口：写入 **`{DOC_DIR}/INDEX-GUIDE.md` 第四章**（`docs-build:entity-index` 标记块）为**视角导航**——短注 + 链到各视角 README / `knowledge/index.md`。**不扫** concept、不贴实体表；实体台账 SSOT ∈ 各视角 README「实体」节。
 
 ## 流程
 
 ```mermaid
 graph TD
     A[视角 README 已同步] --> B[按层渲染静态导航块]
-    B --> C[写入 INDEX-GUIDE.md 第五章标记块]
+    B --> C[写入 INDEX-GUIDE.md 第四章标记块]
 ```
 
 **前置**：各视角 README 已与实体 concept 同步（[readme-fill-spec.md](readme-fill-spec.md)）。
@@ -18,7 +18,7 @@ graph TD
 
 ### 1. 前缀 / 唯一 / 对称
 
-实体 ID 前缀、唯一性、跨视角对称仍在 **per-entity + 视角 README** 侧维护（见 [readme-fill-spec.md](readme-fill-spec.md)、[builtin-config.md](builtin-config.md)）。本阶段第五章**不再**承载扫描表或证据行列。
+实体 ID 前缀、唯一性、跨视角对称仍在 **per-entity + 视角 README** 侧维护（见 [readme-fill-spec.md](readme-fill-spec.md)、[builtin-config.md](builtin-config.md)）。本阶段第四章**不再**承载扫描表或证据行列。
 
 ### 2. 导航块内容
 
@@ -42,4 +42,4 @@ graph TD
 
 详 [knowledge-schema-template.json](../assets/knowledge-schema-template.json)（字段语义仍适用，载体改为 per-entity 文件）。
 
-**生成方式**：调用 `python3 agent/skills/docs-build/scripts/generate_knowledge_index.py --bundle {application|system|company}`。产物：`{DOC_DIR}/INDEX-GUIDE.md` 第五章标记块（九章骨架由 `/docs-indexing` 维护）。目录导航仍是 `knowledge/index.md`；实体台账仍是各视角 README。
+**生成方式**：调用 `python3 agent/skills/docs-build/scripts/generate_knowledge_index.py --bundle {application|system|company}`。产物：`{DOC_DIR}/INDEX-GUIDE.md` 第四章标记块（九章骨架由 `/docs-indexing` 维护）。目录导航仍是 `knowledge/index.md`；实体台账仍是各视角 README。

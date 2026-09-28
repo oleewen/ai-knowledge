@@ -33,5 +33,5 @@
 
 ## 分流
 
-- 实体与 INDEX-GUIDE 第五章 → **docs-build**（勿在此造 ID）。  
+- 实体与 INDEX-GUIDE 第四章 → **docs-build**（勿在此造 ID）。  
 - 全库术语+引用链 → **docs-revise**。

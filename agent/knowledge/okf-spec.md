@@ -48,7 +48,7 @@ timestamp: "2026-06-25T00:00:00Z"
 
 目录导航、阅读顺序、渐进披露、索引聚合。
 
-- 典型：`README.md`、各级 `index.md`、`knowledge/index.md`（目录）、各根 `INDEX-GUIDE.md`（九章 + 第五章视角导航，见 [knowledge-layout.md](../references/knowledge-layout.md)）
+- 典型：`README.md`、各级 `index.md`、`knowledge/index.md`（目录）、各根 `INDEX-GUIDE.md`（九章 + 第四章视角导航，见 [knowledge-layout.md](../references/knowledge-layout.md)）
 - MUST：不按实体 Profile；目录说明清晰、入口齐全、术语一致、下钻链路正确
 
 ### 1.3 叙事文件
@@ -214,8 +214,8 @@ MAY：
 
 指针格式：
 
-- 同目录：`[X-XXX](X-XXX.md)` 或 `[X-XXX](X-XXX/X-XXX.md)`
-- 跨 perspective（同 bundle）：`[X-XXX](../../<other-perspective>/X-XXX/X-XXX.md)` 或 `/knowledge/...`
+- 同目录：`[X-XXX](X-XXX.md)` 写作示例（非本文件可点链）；或目录锚点 `X-XXX/X-XXX.md`
+- 跨 perspective（同 bundle）：相对路径示例 `../../{other-perspective}/X-XXX/X-XXX.md`，或 `/knowledge/...`
 - 跨层：遵守 [knowledge-governance.md](knowledge-governance.md)（生成函数 HTTP 或纯 ID）；禁止手写跨 `DOC_DIR` 相对路径。
 
 ### 4.2 跨视角段
@@ -257,7 +257,7 @@ MUST：
 SHOULD：
 
 - `README.md`：人类入口；`index.md`：渐进披露（根 = OKF 区块 + 目录索引；子目录 = 渐进披露）
-- `<DOC_DIR>/INDEX-GUIDE.md`：九章机器索引（docs-indexing 骨架；第五章视角导航由 docs-build 写入标记块）；`knowledge/index.md`：目录索引入口；实体台账 ∈ 各视角 README
+- `<DOC_DIR>/INDEX-GUIDE.md`：九章机器索引（docs-indexing 骨架；第四章视角导航由 docs-build 写入标记块）；`knowledge/index.md`：目录索引入口；实体台账 ∈ 各视角 README
 
 MAY：索引入口可加「常见问题/反例」（哪些文件不应按实体概念写）。
 

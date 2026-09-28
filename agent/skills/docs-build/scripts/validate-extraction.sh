@@ -50,7 +50,7 @@ echo "DOC_DIR:  ${DOC_DIR}"
 echo "KNOWLEDGE_DIR: ${KNOWLEDGE_DIR}"
 echo ""
 
-# 1. INDEX-GUIDE.md 第五章视角导航块
+# 1. INDEX-GUIDE.md 第四章视角导航块
 if [[ -f "${INDEX_FILE}" ]]; then
   if grep -q 'docs-build:entity-index:begin' "${INDEX_FILE}"; then
     LINE_COUNT=$(wc -l < "${INDEX_FILE}" | tr -d ' ')

@@ -185,7 +185,7 @@ def render_index_body(directory: Path) -> str:
     if directory.name == "knowledge" and parent_guide.is_file():
         lines.extend(
             [
-                "视角导航见 [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 第五章；实体台账 ∈ 各视角 README。",
+                "视角导航见 [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 第四章；实体台账 ∈ 各视角 README。",
                 "",
             ]
         )

@@ -202,4 +202,4 @@ company/
 |------|------|
 | `/docs-okf` | [docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md) |
 | `/docs-indexing` | 九章骨架（须保留 entity-index 标记块） |
-| `/docs-build` | 刷新 §4.5 标记块（契约文案仍称「第五章」，另开对齐） |
+| `/docs-build` | 刷新 §4.5 标记块 |
