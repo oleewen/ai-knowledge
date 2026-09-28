@@ -14,21 +14,22 @@
 
 ## 前置
 
-读 [path-resolution.md](path-resolution.md)。先 `cd` 到目标工程目录；须有效 `.docsconfig`（含 `KNOWLEDGE_TYPE`）。解析后：
+读 [path-resolution.md](path-resolution.md)。先 `cd` 到目标工程目录；须有效 `.docsconfig`（含 `KNOWLEDGE_TYPE`、`AGENT_DIR`）。解析后：
 
 - 默认 `BUNDLE` = `{DOC_DIR}`
 - 默认 viz `--out` = `{KNOWLEDGE_TYPE}/viz.html`，`--name` = `"{KNOWLEDGE_TYPE} OKF"`
+- 脚本树 `OKF_SCRIPTS` = `{DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts`（**不**用 `$REPO_ROOT/agent/`）
 - 若 CLI/env 覆盖 `BUNDLE` 且与 `{DOC_DIR}` 不同：viz 改为 `{bundle_basename}/viz.html`（见 path-resolution「覆盖」）
 
-若 `.docsconfig` 缺失、解析失败或缺 `KNOWLEDGE_TYPE`，立即中止。
+若 `.docsconfig` 缺失、解析失败或缺 `KNOWLEDGE_TYPE` / `AGENT_DIR`，立即中止。
 
 ## 三步
 
 ### 1 refresh（全量编排）
 
-**入口**：`/docs-okf`（内部脚本：`bash agent/skills/docs-okf/scripts/okf-indexing.sh [--dry-run]`）
+**入口**：`/docs-okf`（内部脚本：`bash "${DOC_DIR}/${AGENT_DIR}/skills/docs-okf/scripts/okf-indexing.sh" [--dry-run]`）
 
-按序执行（可重复运行）；`BUNDLE` / `REPO_ROOT` 由 `resolve-okf-paths` 从当前工程 `.docsconfig` 解析：
+按序执行（可重复运行）；`BUNDLE` / `REPO_ROOT` / `OKF_SCRIPTS` 由 `resolve-okf-paths` 从当前工程 `.docsconfig` 解析：
 
 1. `inject_frontmatter.py --bundle "${DOC_DIR}"`
 2. `generate_index.py --bundle "${DOC_DIR}" --recursive`
@@ -36,15 +37,15 @@
 4. `okf-validate.sh`
 5. `validate_viz_index.py`
 
-视角导航块 `{DOC_DIR}/INDEX-GUIDE.md` 第五章 **不由本技能写入**；改实体后跑 `/docs-build` 或：
+视角导航块 `{DOC_DIR}/INDEX-GUIDE.md` 第四章 **不由本技能写入**；改实体后跑 `/docs-build` 或：
 
 ```bash
-python3 agent/skills/docs-build/scripts/generate_knowledge_index.py --bundle "${DOC_DIR}"
+python3 "${DOC_DIR}/${AGENT_DIR}/skills/docs-build/scripts/generate_knowledge_index.py" --bundle "${DOC_DIR}"
 ```
 
 环境变量 `BUNDLE` 或 CLI `--bundle` 可覆盖 `{DOC_DIR}`；覆盖时 viz 输出跟随 bundle 目录名（非主 `KNOWLEDGE_TYPE`）。
 
-> **HARD**：`generate_index.py` 重写目录 `index.md`。视角导航在根 `INDEX-GUIDE.md` 第五章标记块，不被 `generate_index` 冲掉。`validate_viz_index` 要求该标记块存在（docs-build 写入）。
+> **HARD**：`generate_index.py` 重写目录 `index.md`。视角导航在根 `INDEX-GUIDE.md` 第四章标记块，不被 `generate_index` 冲掉。`validate_viz_index` 要求该标记块存在（docs-build 写入）。
 
 结果摘要至少包含：
 
@@ -52,7 +53,7 @@ python3 agent/skills/docs-build/scripts/generate_knowledge_index.py --bundle "${
 - 是否写入目录 `index.md`
 - `validate-okf` 是否通过
 - `viz.html` 是否生成
-- `INDEX-GUIDE.md` 第五章视角导航块是否存在（缺则提示跑 docs-build）
+- `INDEX-GUIDE.md` 第四章视角导航块是否存在（缺则提示跑 docs-build）
 
 ### 2 validate
 
@@ -65,14 +66,14 @@ python3 agent/skills/docs-build/scripts/generate_knowledge_index.py --bundle "${
 ## 常用命令
 
 ```bash
-# 全量 OKF refresh
-bash agent/skills/docs-okf/scripts/okf-indexing.sh
+# 全量 OKF refresh（路径来自 .docsconfig 的 DOC_DIR + AGENT_DIR）
+bash "${DOC_DIR}/${AGENT_DIR}/skills/docs-okf/scripts/okf-indexing.sh"
 
 # 仅目录 index
-python3 agent/skills/docs-okf/scripts/generate_index.py --bundle application --recursive
+python3 "${DOC_DIR}/${AGENT_DIR}/skills/docs-okf/scripts/generate_index.py" --bundle application --recursive
 
 # 实体扫描索引（docs-build）
-python3 agent/skills/docs-build/scripts/generate_knowledge_index.py --bundle application
+python3 "${DOC_DIR}/${AGENT_DIR}/skills/docs-build/scripts/generate_knowledge_index.py" --bundle application
 ```
 
 更新九章索引 `INDEX-GUIDE.md` 后，建议跑全量 `okf-indexing.sh`；实体有增删再补 `generate_knowledge_index.py`。

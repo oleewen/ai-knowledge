@@ -2,8 +2,8 @@
 set -euo pipefail
 
 # OKF refresh 编排：frontmatter → index → viz → 校验。
-# 实体分表 INDEX-GUIDE.md 第五章由 /docs-build 写入，本脚本不写。
-# 用法: bash agent/skills/docs-okf/scripts/okf-indexing.sh [--dry-run]
+# 实体分表 INDEX-GUIDE.md 第四章由 /docs-build 写入，本脚本不写。
+# 用法: bash {DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts/okf-indexing.sh [--dry-run]
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RESOLVE="${SCRIPT_DIR}/resolve-okf-paths.sh"
@@ -14,7 +14,7 @@ DRY_RUN=0
 
 usage() {
   cat <<EOF
-用法: bash agent/skills/docs-okf/scripts/okf-indexing.sh [--dry-run]
+用法: bash {DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts/okf-indexing.sh [--dry-run]
 
 按序执行 OKF refresh / validate（可重复运行）：
   1. inject_frontmatter
@@ -23,9 +23,10 @@ usage() {
   4. validate-okf
   5. validate-viz-index
 
-视角导航块 {DOC_DIR}/INDEX-GUIDE.md 第五章 → /docs-build（generate_knowledge_index.py）。
+视角导航块 {DOC_DIR}/INDEX-GUIDE.md 第四章 → /docs-build（generate_knowledge_index.py）。
 
-须有效 .docsconfig（含 KNOWLEDGE_TYPE）。bundle 默认取自 DOC_DIR；viz 输出取自 KNOWLEDGE_TYPE。
+须有效 .docsconfig（含 KNOWLEDGE_TYPE、AGENT_DIR）。bundle 默认取自 DOC_DIR；viz 输出取自 KNOWLEDGE_TYPE。
+脚本路径取自 {DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts（不依赖 \$REPO_ROOT/agent/）。
 
 环境变量:
   BUNDLE   覆盖 .docsconfig 推导的 bundle（DOC_DIR）
@@ -64,7 +65,11 @@ elif [[ "$BUNDLE" != "$OKF_BUNDLE" ]]; then
   echo "[okf] OKF_VIZ_OUT 跟随 bundle → ${OKF_VIZ_OUT}" >&2
 fi
 
-OKF_DIR="$REPO_ROOT/agent/skills/docs-okf/scripts"
+OKF_DIR="${OKF_SCRIPTS:?}"
+if [[ ! -d "$OKF_DIR" ]]; then
+  echo "[okf] 未找到 OKF 脚本目录: ${OKF_DIR}（须 {DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts；请 docs-install 建软链或 /agent-install）" >&2
+  exit 1
+fi
 
 run_cmd() {
   local desc="$1"
@@ -82,6 +87,8 @@ cd "$REPO_ROOT"
 echo "=== okf-refresh ==="
 echo "REPO_ROOT:      ${REPO_ROOT}"
 echo "DOC_DIR:        ${DOC_DIR}"
+echo "AGENT_DIR:      ${AGENT_DIR}"
+echo "OKF_SCRIPTS:    ${OKF_DIR}"
 echo "KNOWLEDGE_TYPE: ${KNOWLEDGE_TYPE}"
 echo "BUNDLE:         ${BUNDLE}"
 echo "OKF_VIZ_OUT:    ${OKF_VIZ_OUT}"

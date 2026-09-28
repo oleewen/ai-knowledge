@@ -14,7 +14,7 @@
           "id": "docsconfig-hard-stop",
           "name": "docsconfig 硬门",
           "type": "must_include",
-          "check": "须先读 .docsconfig；缺失或解析失败须中止，不得猜路径。",
+          "check": "须先读 .docsconfig；缺失、解析失败或缺 AGENT_DIR 须中止，不得猜路径或回退 \$REPO_ROOT/agent/。",
           "priority": "P0"
         },
         {
@@ -105,7 +105,7 @@
     {
       "id": "okf-not-trigger-002",
       "category": "should-not-trigger",
-      "prompt": "从五视角提取实体 ID，跑 docs-build 生成 per-entity 文件和 INDEX-GUIDE 第五章",
+      "prompt": "从五视角提取实体 ID，跑 docs-build 生成 per-entity 文件和 INDEX-GUIDE 第四章",
       "expected_output": "主路径 docs-build；不以 docs-okf 为实体提取终点。",
       "files": [],
       "assertions": [

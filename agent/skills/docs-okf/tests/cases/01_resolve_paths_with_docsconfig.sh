@@ -29,6 +29,10 @@ source "$RESOLVE_SCRIPT"
   [[ "$(cd "$REPO_ROOT" && pwd -P)" == "$(cd "$PROJECT_DIR" && pwd -P)" ]] || fail "REPO_ROOT 错误: $REPO_ROOT (expected $PROJECT_DIR)"
   [[ "$DOC_DIR" == "docs" ]] || fail "DOC_DIR 错误: $DOC_DIR"
   [[ "$KNOWLEDGE_TYPE" == "application" ]] || fail "KNOWLEDGE_TYPE 错误: $KNOWLEDGE_TYPE"
+  [[ "$AGENT_DIR" == ".agents" ]] || fail "AGENT_DIR 错误: $AGENT_DIR"
+  # DOC_ROOT 归一后可能 /var vs /private/var；比 DOC_DIR 后缀即可
+  [[ "$OKF_SCRIPTS" == *"/docs/.agents/skills/docs-okf/scripts" ]] \
+    || fail "OKF_SCRIPTS 错误: $OKF_SCRIPTS (expected …/docs/.agents/skills/docs-okf/scripts)"
 )
 
-pass "resolve-okf-paths 正确解析 DOC_DIR 与 KNOWLEDGE_TYPE"
+pass "resolve-okf-paths 正确解析 DOC_DIR、AGENT_DIR 与 KNOWLEDGE_TYPE"

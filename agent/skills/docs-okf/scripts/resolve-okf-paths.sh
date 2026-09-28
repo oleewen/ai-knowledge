@@ -27,11 +27,18 @@ resolve_okf_paths() {
     docsconfig_bootstrap_fail "[okf] .docsconfig 缺少 KNOWLEDGE_TYPE。请使用 docs-install.sh --scope=knowledge --target <目标工程文档目录> 写入 KNOWLEDGE_TYPE。"
   fi
 
+  if [[ -z "${AGENT_DIR:-}" ]]; then
+    docsconfig_bootstrap_fail "[okf] .docsconfig 缺少 AGENT_DIR。OKF 脚本依赖 {DOC_DIR}/{AGENT_DIR}/skills/docs-okf/；请 docs-install --scope=config 补齐。"
+  fi
+
   docsconfig_validate_knowledge_type "$KNOWLEDGE_TYPE" || exit 1
 
   OKF_BUNDLE="$DOC_DIR"
   OKF_VIZ_OUT="${KNOWLEDGE_TYPE}/viz.html"
   OKF_VIZ_NAME="${KNOWLEDGE_TYPE} OKF"
+  # 脚本树：DOC_ROOT/AGENT_DIR（即 {DOC_DIR}/{AGENT_DIR}，通常为软链 .agents）
+  OKF_AGENT_TREE="${DOC_ROOT%/}/${AGENT_DIR}"
+  OKF_SCRIPTS="${OKF_AGENT_TREE}/skills/docs-okf/scripts"
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then

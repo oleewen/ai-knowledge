@@ -24,6 +24,8 @@ DOC_ROOT=$ROOT/application
 REPO_ROOT=$ROOT
 DOC_DIR=application
 KNOWLEDGE_TYPE=application
+AGENT_ROOT=~
+AGENT_DIR=.agents
 EOF
 fi
 

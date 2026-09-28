@@ -5,25 +5,31 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../../.." && pwd)"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
-mkdir -p "$TMP/repo/agent/skills/docs-okf/scripts"
+# Agent 树装在 repo/.agents；DOC_DIR/.agents 软链指向它（契约：DOC_DIR/AGENT_DIR）
+mkdir -p "$TMP/repo/.agents/skills/docs-okf/scripts"
 cp "$ROOT/agent/skills/docs-okf/scripts/resolve-okf-paths.sh" \
-  "$TMP/repo/agent/skills/docs-okf/scripts/resolve-okf-paths.sh"
+  "$TMP/repo/.agents/skills/docs-okf/scripts/resolve-okf-paths.sh"
 cp "$ROOT/agent/skills/docs-okf/scripts/okf-indexing.sh" \
-  "$TMP/repo/agent/skills/docs-okf/scripts/okf-indexing.sh"
+  "$TMP/repo/.agents/skills/docs-okf/scripts/okf-indexing.sh"
 cp "$ROOT/agent/skills/docs-okf/scripts/okf-validate.sh" \
-  "$TMP/repo/agent/skills/docs-okf/scripts/okf-validate.sh"
+  "$TMP/repo/.agents/skills/docs-okf/scripts/okf-validate.sh"
 cp "$ROOT/agent/skills/docs-okf/scripts/"*.py \
-  "$TMP/repo/agent/skills/docs-okf/scripts/"
+  "$TMP/repo/.agents/skills/docs-okf/scripts/"
 
-mkdir -p "$TMP/repo/agent/scripts"
-cp "$ROOT/agent/scripts/docs-core.sh" "$TMP/repo/agent/scripts/docs-core.sh"
-cp -R "$ROOT/agent/scripts/lib" "$TMP/repo/agent/scripts/lib"
+mkdir -p "$TMP/repo/.agents/scripts"
+cp "$ROOT/agent/scripts/docs-core.sh" "$TMP/repo/.agents/scripts/docs-core.sh"
+cp -R "$ROOT/agent/scripts/lib" "$TMP/repo/.agents/scripts/lib"
+
+mkdir -p "$TMP/repo/application"
+ln -sfn ../.agents "$TMP/repo/application/.agents"
 
 cat > "$TMP/repo/.docsconfig" <<EOF
 DOC_ROOT=$TMP/repo/application
 REPO_ROOT=$TMP/repo
 DOC_DIR=application
 KNOWLEDGE_TYPE=application
+AGENT_ROOT=$TMP/repo
+AGENT_DIR=.agents
 EOF
 
 mkdir -p "$TMP/repo/application/knowledge/business"
@@ -40,7 +46,8 @@ cat > "$TMP/repo/application/knowledge/business/index.md" <<'EOF'
 # business
 EOF
 
-output="$(cd "$TMP/repo" && bash "$TMP/repo/agent/skills/docs-okf/scripts/okf-indexing.sh" --dry-run)"
+OKF_SH="$TMP/repo/application/.agents/skills/docs-okf/scripts/okf-indexing.sh"
+output="$(cd "$TMP/repo" && bash "$OKF_SH" --dry-run)"
 printf '%s\n' "$output"
 
 [[ "$output" == *"inject_frontmatter"* ]]
@@ -50,5 +57,7 @@ printf '%s\n' "$output"
 [[ "$output" == *"validate-okf"* ]]
 [[ "$output" == *"validate-viz-index"* ]]
 [[ "$output" != *"migrate_entities"* ]]
+[[ "$output" == *"OKF_SCRIPTS:"* ]]
+[[ "$output" == *"/application/.agents/skills/docs-okf/scripts"* ]]
 
 echo "[OK] okf-migrate dry-run uses refresh pipeline (no knowledge-index step)"

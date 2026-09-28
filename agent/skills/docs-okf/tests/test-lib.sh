@@ -16,10 +16,12 @@ write_docsconfig() {
   local repo_root="$3"
   local doc_dir="$4"
   local knowledge_type="${5:-}"
+  local agent_dir="${6:-.agents}"
   {
     printf 'DOC_ROOT=%s\nREPO_ROOT=%s\nDOC_DIR=%s\n' "$doc_root" "$repo_root" "$doc_dir"
     if [[ -n "$knowledge_type" ]]; then
       printf 'KNOWLEDGE_TYPE=%s\n' "$knowledge_type"
     fi
+    printf 'AGENT_ROOT=~\nAGENT_DIR=%s\n' "$agent_dir"
   } >"$project_dir/.docsconfig"
 }
