@@ -9,21 +9,23 @@ perspective: product
 hierarchy: PD
 parent_id: PL-EXAMPLE
 layer_scope: system
-maps_to_sys_id: SYS-EXAMPLE
-maps_to_bsd: BSD-EXAMPLE-SUB
+maps_to:
+  - SYS-EXAMPLE
+  - BSD-EXAMPLE-SUB
 ---
 ## 关系
 
 - parent: PL-EXAMPLE
-- maps_to_sys_id: SYS-EXAMPLE
-- maps_to_bsd: BSD-EXAMPLE-SUB
+- maps_to:
+  - SYS-EXAMPLE
+  - BSD-EXAMPLE-SUB
 - children:
   - PM-EXAMPLE
 
 ## 跨视角
 
 - 对标系统：SYS-EXAMPLE
-- 二级业务子域：BSD-EXAMPLE-SUB（经 maps_to_bsd）
+- 二级业务子域：BSD-EXAMPLE-SUB（经 maps_to）
 
 ## 详细说明
 

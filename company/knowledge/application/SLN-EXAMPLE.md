@@ -1,7 +1,7 @@
 ---
 type: Solution
 title: 示例解决方案
-description: 解决方案（对应 PL）；maps_to_pl_id→PL；SYS.parent_id→本 SLN。
+description: 解决方案（对应 PL）；maps_to→PL；SYS.parent_id→本 SLN。
 tags: [application, SLN]
 timestamp: "2026-09-13T00:00:00Z"
 id: SLN-EXAMPLE
@@ -9,15 +9,15 @@ perspective: application
 hierarchy: SLN
 parent_id: null
 layer_scope: company
-maps_to_pl_id: PL-EXAMPLE
+maps_to: PL-EXAMPLE
 ---
 ## 关系
 
-- maps_to_pl_id: PL-EXAMPLE
+- maps_to: PL-EXAMPLE
 
 ## 跨视角
 
-- 下游系统：SYS-EXAMPLE（系统库；parent_id→本 SLN；SYS.uses_mdg_ids 见系统库）
+- 下游系统：SYS-EXAMPLE（系统库；parent_id→本 SLN；SYS.uses_to 见系统库）
 
 ## 详细说明
 

@@ -9,13 +9,13 @@ perspective: business
 hierarchy: CAP
 parent_id: null
 layer_scope: company
-implements_to_vc: VC-EXAMPLE
-maps_to_bsd: BSD-EXAMPLE
+implements_to: VC-EXAMPLE
+maps_to: BSD-EXAMPLE
 ---
 ## 关系
 
-- implements_to_vc: VC-EXAMPLE
-- maps_to_bsd: BSD-EXAMPLE
+- implements_to: VC-EXAMPLE
+- maps_to: BSD-EXAMPLE
 
 ## 跨视角
 

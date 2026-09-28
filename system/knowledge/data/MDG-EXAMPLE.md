@@ -16,7 +16,7 @@ layer_scope: system
 
 ## 跨视角
 
-- 被 SYS-EXAMPLE 经 uses_mdg_ids 引用
+- used_by: SYS-EXAMPLE
 - DS-EXAMPLE.authoritative_mdg_id / parent → 本 MDG
 
 ## 详细说明

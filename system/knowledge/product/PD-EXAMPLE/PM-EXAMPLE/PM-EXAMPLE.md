@@ -13,11 +13,11 @@ layer_scope: system
 ## 关系
 
 - parent: PD-EXAMPLE
-- depends_pm_ids: []
+- depends_to: []
 
 ## 跨视角
 
-- relies_on_context_ids: BC-EXAMPLE
+- maps_to: BC-EXAMPLE
 
 ## 详细说明
 

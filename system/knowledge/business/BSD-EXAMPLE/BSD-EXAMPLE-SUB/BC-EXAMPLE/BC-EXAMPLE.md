@@ -12,13 +12,14 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: BSD-EXAMPLE-SUB
-- aggregates:
+- implements_to: BSD-EXAMPLE-SUB
+- implemented_by:
   - AGG-EXAMPLE
 
 ## 跨视角
 
-- implemented_by_app_id: APP-EXAMPLE
+- supported_by: APP-EXAMPLE
+- maps_to: PM-EXAMPLE
 
 ## 详细说明
 

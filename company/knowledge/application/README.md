@@ -7,7 +7,7 @@ title: 公司应用视角
 
 [返回 · 企业架构](../README.md)
 
-**本层 SSOT**：SLN（解决方案）。不登记 SYS（见系统库）。台账 [../index.md](../index.md)；字段 [application-meta.md](application-meta.md)。样例 `maps_to_pl_id` → PL-EXAMPLE。
+**本层 SSOT**：SLN（解决方案）。不登记 SYS（见系统库）。台账 [../index.md](../index.md)；字段 [application-meta.md](application-meta.md)。样例 `maps_to` → PL-EXAMPLE。
 
 ## 章节
 

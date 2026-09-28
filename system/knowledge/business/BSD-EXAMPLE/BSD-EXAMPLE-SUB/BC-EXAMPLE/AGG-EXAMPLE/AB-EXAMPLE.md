@@ -12,11 +12,11 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: AGG-EXAMPLE
+- implements_to: AGG-EXAMPLE
 
 ## 跨视角
 
-- apis: API-EXAMPLE
+- maps_to: API-EXAMPLE
 
 ## 详细说明
 

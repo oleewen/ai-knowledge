@@ -11,16 +11,18 @@ parent_id: BD-EXAMPLE
 layer_scope: company
 level: 1
 parent: BD-EXAMPLE
-maps_to_pl: PL-EXAMPLE
-maps_to_cap: CAP-EXAMPLE
+maps_to:
+  - PL-EXAMPLE
+  - CAP-EXAMPLE
 ---
 ## 关系
 
 - parent: BD-EXAMPLE
 - children:
   - BSD-EXAMPLE-SUB
-- maps_to_pl: PL-EXAMPLE
-- maps_to_cap: CAP-EXAMPLE
+- maps_to:
+  - PL-EXAMPLE
+  - CAP-EXAMPLE
 
 ## 跨视角
 

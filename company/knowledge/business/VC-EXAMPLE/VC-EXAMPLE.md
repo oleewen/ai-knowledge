@@ -9,16 +9,16 @@ perspective: business
 hierarchy: VC
 parent_id: null
 layer_scope: company
-supported_by_bd:
+supported_by:
   - BD-EXAMPLE
-implemented_by_cap:
+implemented_by:
   - CAP-EXAMPLE
 ---
 ## 关系
 
-- supported_by_bd:
+- supported_by:
   - BD-EXAMPLE
-- implemented_by_cap:
+- implemented_by:
   - CAP-EXAMPLE
 
 ## 跨视角

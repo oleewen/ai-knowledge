@@ -9,6 +9,8 @@
 
 ## 目录文件
 
+* [示例系统](SYS-EXAMPLE.md) - 系统（别名应用服务）；parent_id→公司 SLN；与 PD、BSD(L2) 同建。
+
 * [application-meta.md](application-meta.md)
 
 ## 阅读顺序
@@ -22,4 +24,4 @@
 
 - 上一级索引：[index.md](../index.md)
 - 上一级说明：[README.md](../README.md)
-- 上游 SYS SSOT：公司层 `SYS-*`（本层不落 reference 文件）
+- 上游 SYS SSOT：本层 `SYS-*`（挂公司 SLN；API ∈ 应用层）

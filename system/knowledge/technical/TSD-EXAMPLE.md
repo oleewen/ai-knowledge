@@ -12,13 +12,13 @@ layer_scope: system
 ---
 ## 关系
 
-- children:
+- implements_to: TPL-EXAMPLE
+- implemented_by:
   - MW-EXAMPLE
-- parent_tpl_id: TPL-EXAMPLE
 
 ## 跨视角
 
-- (none)
+- used_by: SYS-EXAMPLE
 
 ## 详细说明
 

@@ -18,9 +18,10 @@ layer_scope: system
 
 ## 跨视角
 
-- maps 产品服务：PD-EXAMPLE（经 PD.maps_to_sys_id）
-- uses_mdg_ids: [MDG-EXAMPLE]
-- uses_tsd_ids: [TSD-EXAMPLE]
+- maps_to: PD-EXAMPLE
+- uses_to:
+  - MDG-EXAMPLE
+  - TSD-EXAMPLE
 
 ## 详细说明
 

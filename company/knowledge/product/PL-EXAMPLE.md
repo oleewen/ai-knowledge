@@ -9,16 +9,20 @@ perspective: product
 hierarchy: PL
 parent_id: null
 layer_scope: company
-maps_to_bsd: BSD-EXAMPLE
+maps_to:
+  - BSD-EXAMPLE
+  - SLN-EXAMPLE
 ---
 ## 关系
 
-- maps_to_bsd: BSD-EXAMPLE
+- maps_to:
+  - BSD-EXAMPLE
+  - SLN-EXAMPLE
 
 ## 跨视角
 
-- 对标一级业务子域：BSD-EXAMPLE（经 maps_to_bsd）
-- 对标解决方案：SLN-EXAMPLE（经 SLN.maps_to_pl_id）
+- 对标一级业务子域：BSD-EXAMPLE（经 maps_to）
+- 对标解决方案：SLN-EXAMPLE（经 maps_to）
 
 ## 详细说明
 

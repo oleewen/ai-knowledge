@@ -16,7 +16,7 @@ layer_scope: system
 
 ## 跨视角
 
-- map_to_api_id: API-EXAMPLE
+- maps_to: API-EXAMPLE
 
 ## 详细说明
 

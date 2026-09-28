@@ -12,18 +12,19 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: BC-EXAMPLE
-- abilities:
+- implements_to: BC-EXAMPLE
+- implemented_by:
   - AB-EXAMPLE
 
 ## 跨视角
 
-- implemented_by_service_ids: MS-EXAMPLE
-- persisted_as_entity_ids: ENT-EXAMPLE
+- maps_to:
+  - MS-EXAMPLE
+  - ENT-EXAMPLE
 
 ## 详细说明
 
-- root_entity: ExampleRoot
+- (none)
 
 ## 依据与证据
 

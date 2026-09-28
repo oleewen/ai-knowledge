@@ -16,7 +16,7 @@ layer_scope: system
 
 ## 跨视角
 
-- maps_to_aggregate_id: AGG-EXAMPLE
+- maps_to: AGG-EXAMPLE
 
 ## 详细说明
 

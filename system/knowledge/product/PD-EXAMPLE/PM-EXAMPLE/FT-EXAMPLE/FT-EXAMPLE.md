@@ -18,7 +18,7 @@ layer_scope: system
 
 ## 跨视角
 
-- invokes_api_ids: API-EXAMPLE
+- supported_by: API-EXAMPLE
 - realizes_use_case_ids: UC-EXAMPLE
 
 ## 详细说明

@@ -11,13 +11,13 @@ parent_id: BSD-EXAMPLE
 layer_scope: system
 level: 2
 parent: BSD-EXAMPLE
-maps_to_pd: PD-EXAMPLE
+maps_to: PD-EXAMPLE
 ---
 ## 关系
 
 - parent: BSD-EXAMPLE
-- maps_to_pd: PD-EXAMPLE
-- bounded_contexts:
+- maps_to: PD-EXAMPLE
+- implemented_by:
   - BC-EXAMPLE
 
 ## 跨视角

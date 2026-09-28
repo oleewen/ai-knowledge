@@ -16,7 +16,7 @@ layer_scope: system
 
 ## 跨视角
 
-- owned_by_app_id: APP-EXAMPLE
+- used_by: APP-EXAMPLE
 
 ## 详细说明
 

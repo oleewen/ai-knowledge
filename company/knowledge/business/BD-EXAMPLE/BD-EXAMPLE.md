@@ -9,13 +9,13 @@ perspective: business
 hierarchy: BD
 parent_id: null
 layer_scope: company
-supports_to_vc: VC-EXAMPLE
+supports_to: VC-EXAMPLE
 children:
   - BSD-EXAMPLE
 ---
 ## 关系
 
-- supports_to_vc: VC-EXAMPLE
+- supports_to: VC-EXAMPLE
 - children:
   - BSD-EXAMPLE
 

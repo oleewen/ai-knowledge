@@ -12,8 +12,7 @@ layer_scope: application
 ---
 ## 关系
 
-- parent: MW-EXAMPLE
-- parent_mw_id: MW-EXAMPLE
+- implements_to: MW-EXAMPLE
 
 ## 跨视角
 

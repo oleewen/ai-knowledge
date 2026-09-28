@@ -12,16 +12,16 @@ layer_scope: application
 ---
 ## 关系
 
-- parent: TSD-EXAMPLE
-- parent_tsd_id: TSD-EXAMPLE
+- implements_to: TSD-EXAMPLE
+- implemented_by:
+  - CMP-EXAMPLE
 
 ## 跨视角
 
-- bound_app_id: APP-EXAMPLE
+- used_by: APP-EXAMPLE
 
 ## 详细说明
 
-- parent_tsd_id: TSD-EXAMPLE
 - binding_type: kafka
 - config_key: example.kafka.topic
 
