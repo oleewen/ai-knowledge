@@ -2,7 +2,6 @@
 type: Documentation
 title: overview
 ---
-<!-- markdownlint-disable-next-line MD025 -->
 # overview
 
 [返回 · 系统知识库 — 架构文档](../README.md)

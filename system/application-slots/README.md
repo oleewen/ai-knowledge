@@ -3,7 +3,6 @@ type: Documentation
 tags: [federation]
 title: application-slots（应用联邦槽位根）
 ---
-<!-- markdownlint-disable-next-line MD025 -->
 # application-slots
 
 系统层**应用联邦槽位根**。`application-{NAME}` → 应用库 `DOC_ROOT` 软链；**不是** `knowledge/` SSOT。

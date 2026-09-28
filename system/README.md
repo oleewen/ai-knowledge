@@ -3,7 +3,6 @@ type: Documentation Root
 tags: [governance]
 title: "系统知识库（顶层 `system/`）"
 ---
-<!-- markdownlint-disable-next-line MD025 -->
 # 系统知识库（顶层 `system/`）
 
 系统层治理根。契约与门禁见 [DESIGN.md](DESIGN.md)；语义见 [knowledge-governance](../agent/knowledge/knowledge-governance.md)。

@@ -11,7 +11,6 @@ author: "ai-knowledge"
 parent: "SOLUTION-EXAMPLE"
 dependencies: []
 ---
-<!-- markdownlint-disable-next-line MD025 -->
 # 示例系统需求分析
 
 > 结构占位：`system/analysis/ANALYSIS-{IDEA-ID}.md`。  

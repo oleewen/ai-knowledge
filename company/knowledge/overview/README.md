@@ -2,7 +2,6 @@
 type: Documentation
 title: overview
 ---
-<!-- markdownlint-disable-next-line MD025 -->
 # overview
 
 [返回 · 企业架构](../README.md)

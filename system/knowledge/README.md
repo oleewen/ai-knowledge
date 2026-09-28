@@ -2,7 +2,6 @@
 type: Documentation
 title: 系统知识库 — 架构文档
 ---
-<!-- markdownlint-disable-next-line MD025 -->
 # 系统知识库 — 架构文档
 
 系统层五视角入口。分型见 okf-spec。契约见 [../DESIGN.md](../DESIGN.md) · [knowledge-governance](../../agent/knowledge/knowledge-governance.md)。

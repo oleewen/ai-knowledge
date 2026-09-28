@@ -2,7 +2,6 @@
 type: Design Document
 title: 系统知识库设计
 ---
-<!-- markdownlint-disable-next-line MD025 -->
 # 系统知识库设计
 
 `system/`：系统层知识编排、架构聚合与应用槽位治理。本文件 = 层根人类入口（契约短表 + 引用）；语义 SSOT ∈ `agent/knowledge/`。

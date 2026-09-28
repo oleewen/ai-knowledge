@@ -2,7 +2,6 @@
 type: Design Document
 title: 公司知识库设计
 ---
-
 # 公司知识库设计
 
 本文件 = `company/` 层契约短表 + 治理引用；不写系统实现。定位见 [README](README.md)；语义 SSOT ∈ `agent/knowledge/`。

@@ -2,7 +2,6 @@
 type: Design Document
 title: 应用知识库设计
 ---
-<!-- markdownlint-disable-next-line MD025 -->
 # 应用知识库设计
 
 `application/`：实现级实体与应用 SDD；上行对齐系统 overview，**不**回写本库 knowledge。本文件 = 层根人类入口（契约短表 + 引用）；语义 SSOT ∈ `agent/knowledge/`。

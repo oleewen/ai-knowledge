@@ -2,7 +2,6 @@
 type: Documentation
 title: 产品架构
 ---
-<!-- markdownlint-disable-next-line MD025 -->
 # 产品架构
 
 [返回 · 企业架构](../README.md)

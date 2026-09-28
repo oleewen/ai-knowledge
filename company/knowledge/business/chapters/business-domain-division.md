@@ -3,7 +3,6 @@ type: Architecture Chapter
 tags: [architecture, chapter]
 title: 业务域划分
 ---
-
 # 业务域划分
 
 [返回 · 业务架构](../README.md)

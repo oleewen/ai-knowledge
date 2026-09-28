@@ -11,7 +11,6 @@ author: "ai-knowledge"
 parent: "SOLUTION-EXAMPLE"
 dependencies: []
 ---
-<!-- markdownlint-disable-next-line MD025 -->
 # 示例跨系统需求分析
 
 > **结论**：选方案 A——公司层先收敛跨系统目标/边界/风险，再由各系统承接。  

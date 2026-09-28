@@ -2,7 +2,6 @@
 type: Documentation
 title: ADR 正文目录（系统层）
 ---
-<!-- markdownlint-disable-next-line MD025 -->
 # ADR 正文目录（系统层）
 
 系统层架构决策正文落盘于此。**无强制 EXAMPLE**（路径见 [knowledge-layout](../../agent/references/knowledge-layout.md)；语义见 [knowledge-governance](../../agent/knowledge/knowledge-governance.md)）。

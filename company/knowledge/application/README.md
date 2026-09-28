@@ -2,7 +2,6 @@
 type: Documentation
 title: 公司应用视角
 ---
-<!-- markdownlint-disable-next-line MD025 -->
 # 应用视角（公司）
 
 [返回 · 企业架构](../README.md)

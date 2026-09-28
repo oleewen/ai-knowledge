@@ -3,7 +3,6 @@ type: Documentation Root
 tags: [governance]
 title: "公司知识库（顶层 `company/`）"
 ---
-<!-- markdownlint-disable-next-line MD025 -->
 # 公司知识库（顶层 `company/`）
 
 公司层治理根。契约与门禁见 [DESIGN.md](DESIGN.md)；语义见 [knowledge-governance](../agent/knowledge/knowledge-governance.md)。

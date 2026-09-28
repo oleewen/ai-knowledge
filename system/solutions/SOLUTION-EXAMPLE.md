@@ -10,7 +10,6 @@ parent: null
 dependencies: []
 tags: [example]
 ---
-<!-- markdownlint-disable-next-line MD025 -->
 # 示例系统解决方案
 
 > **结论**：在本系统内对齐「跨应用状态口径 + 运营异常定位入口」，不扩到公司级跨系统编排。  

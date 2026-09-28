@@ -2,7 +2,6 @@
 type: Documentation
 title: 业务架构
 ---
-<!-- markdownlint-disable-next-line MD025 -->
 # 业务架构
 
 [返回 · 企业架构](../README.md)

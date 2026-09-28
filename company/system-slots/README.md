@@ -3,7 +3,6 @@ type: Documentation
 tags: [federation]
 title: system-slots（系统联邦槽位根）
 ---
-<!-- markdownlint-disable-next-line MD025 -->
 # system-slots
 
 公司层**系统联邦槽位根**。`system-{NAME}` 为指向下级系统库 `DOC_ROOT` 的**软链**；**不是** `knowledge/` SSOT。

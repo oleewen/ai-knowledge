@@ -2,7 +2,6 @@
 type: Documentation
 title: solutions（解决方案）文档
 ---
-<!-- markdownlint-disable-next-line MD025 -->
 # solutions（解决方案）
 
 系统层 SDD 方案：平铺 `SOLUTION-{IDEA-ID}.md` → [../analysis/](../analysis/README.md)。契约：[knowledge-layout](../../agent/references/knowledge-layout.md) · [knowledge-governance](../../agent/knowledge/knowledge-governance.md)。

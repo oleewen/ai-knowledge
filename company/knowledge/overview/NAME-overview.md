@@ -3,7 +3,6 @@ type: Architecture Overview Buffer
 tags: [overview, buffer]
 title: "{域名称}架构概览（{slug}-overview）"
 ---
-<!-- markdownlint-disable-next-line MD025 -->
 # {域名称}架构概览（{slug}-overview）
 
 > **维护**：`docs-tag` phase 2（✅）→ phase 3（架构摘录，勿手改摘录行）。表行 ↔ 视角章节 `##`。公司 overview **非** docs-distill 目标。占位 `NAME`/`{域名称}`/`{slug}` 实例化时替换。

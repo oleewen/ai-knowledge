@@ -2,7 +2,6 @@
 type: Documentation
 title: 数据架构
 ---
-<!-- markdownlint-disable-next-line MD025 -->
 # 数据架构
 
 [返回 · 系统知识库 — 架构文档](../README.md)

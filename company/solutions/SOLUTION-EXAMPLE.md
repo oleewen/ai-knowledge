@@ -10,7 +10,6 @@ parent: null
 dependencies: []
 tags: [example]
 ---
-<!-- markdownlint-disable-next-line MD025 -->
 # 示例跨系统解决方案
 
 > **结论**：选方案 A——业务对象中心统一视图，收敛可追溯口径（G-1 / G-2）。  

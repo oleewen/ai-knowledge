@@ -2,7 +2,6 @@
 type: Documentation
 title: 企业架构
 ---
-<!-- markdownlint-disable-next-line MD025 -->
 # 企业架构
 
 公司层五视角入口；治理叙事，不写系统实现。分型见 okf-spec。
