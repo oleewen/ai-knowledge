@@ -8,7 +8,7 @@
 
 ## 目录文件
 
-- [CONTEXT.md](CONTEXT.md) — 决策台账
+* [CONTEXT.md](CONTEXT.md)
 
 ## 阅读顺序
 

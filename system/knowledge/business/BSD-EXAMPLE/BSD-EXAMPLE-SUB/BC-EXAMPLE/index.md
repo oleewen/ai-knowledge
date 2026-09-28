@@ -2,11 +2,11 @@
 
 ## 子目录
 
-* [AGG-EXAMPLE](AGG-EXAMPLE/index.md) - 仅用于演示业务视角数据结构（示例）。
+* [AGG-EXAMPLE](AGG-EXAMPLE/index.md) - 示例业务实体。
 
 ## 目录文件
 
-* [示例限界上下文](BC-EXAMPLE.md) - 仅用于演示业务视角数据结构（示例）。
+* [示例限界上下文](BC-EXAMPLE.md) - 示例业务实体。
 
 ## 阅读顺序
 

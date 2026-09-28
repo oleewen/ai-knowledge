@@ -4,7 +4,7 @@
 
 ## 子目录
 
-* [MW-EXAMPLE](MW-EXAMPLE/index.md) - MW/CMP SSOT 样例
+* [MW-EXAMPLE](MW-EXAMPLE/index.md) - 演示技术视角 MW 数据结构（示例）。
 
 ## 目录文件
 

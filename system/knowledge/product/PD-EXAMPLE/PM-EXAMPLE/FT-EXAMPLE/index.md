@@ -2,11 +2,11 @@
 
 ## 子目录
 
-* [FR-EXAMPLE](FR-EXAMPLE/index.md) - 仅用于演示产品视角数据结构（示例）。
+* [FR-EXAMPLE](FR-EXAMPLE/index.md) - 示例产品实体。
 
 ## 目录文件
 
-* [示例功能](FT-EXAMPLE.md) - 仅用于演示产品视角数据结构（示例）。
+* [示例功能](FT-EXAMPLE.md) - 示例产品实体。
 
 ## 阅读顺序
 

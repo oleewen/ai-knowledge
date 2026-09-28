@@ -2,12 +2,11 @@
 
 ## 子目录
 
-* [BSD-EXAMPLE-SUB](BSD-EXAMPLE-SUB/index.md) - 二级业务子域样例
-* [BC-EXAMPLE](BC-EXAMPLE/index.md) - 仅用于演示业务视角数据结构（示例）。
+* [BSD-EXAMPLE-SUB](BSD-EXAMPLE-SUB/index.md) - BSD-EXAMPLE-SUB 索引
 
 ## 目录文件
 
-* [示例业务子域](BSD-EXAMPLE.md) - 仅用于演示业务视角数据结构（示例）。
+* [示例一级业务子域](BSD-EXAMPLE.md) - 公司层 BSD(L1) 的系统层 reference。
 
 ## 阅读顺序
 

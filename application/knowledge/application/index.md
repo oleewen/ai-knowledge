@@ -4,7 +4,7 @@
 
 ## 子目录
 
-* [MS-EXAMPLE](MS-EXAMPLE/index.md) - API SSOT 样例宿主目录
+* [MS-EXAMPLE](MS-EXAMPLE/index.md)
 
 ## 目录文件
 

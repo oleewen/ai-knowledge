@@ -2,7 +2,7 @@
 
 ## 子目录
 
-* [FT-EXAMPLE](FT-EXAMPLE/index.md) - 仅用于演示产品视角数据结构（示例）。
+* [FT-EXAMPLE](FT-EXAMPLE/index.md) - 示例产品实体。
 
 ## 目录文件
 

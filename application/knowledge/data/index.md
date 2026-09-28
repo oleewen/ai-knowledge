@@ -4,7 +4,7 @@
 
 ## 子目录
 
-* [DS-EXAMPLE](DS-EXAMPLE/index.md) - TBL SSOT 样例宿主目录
+* [DS-EXAMPLE](DS-EXAMPLE/index.md)
 
 ## 目录文件
 

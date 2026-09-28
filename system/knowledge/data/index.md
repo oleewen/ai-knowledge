@@ -4,12 +4,13 @@
 
 ## 子目录
 
-* [DS-EXAMPLE](DS-EXAMPLE/index.md) - 系统层 DS/ENT SSOT 样例
+* [DS-EXAMPLE](DS-EXAMPLE/index.md) - 示例数据实体。
 * [chapters](chapters/index.md)
 
 ## 目录文件
 
-* [MDG-EXAMPLE.md](MDG-EXAMPLE.md) — 系统层 MDG SSOT 样例
+* [示例主数据域](MDG-EXAMPLE.md) - 演示系统级 MDG 结构。
+
 * [data-meta.md](data-meta.md)
 
 ## 阅读顺序

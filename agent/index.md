@@ -1,14 +1,16 @@
-# analysis
+# .agents
 
 目录说明见 [README.md](README.md)。
 
 ## 子目录
 
-（无）
+* [hooks](hooks/README.md)
+* [knowledge](knowledge/README.md)
+* [skills](skills/README.md)
 
 ## 目录文件
 
-* [示例系统需求分析](ANALYSIS-EXAMPLE.md)
+* [hooks.json](hooks.json)
 
 ## 阅读顺序
 

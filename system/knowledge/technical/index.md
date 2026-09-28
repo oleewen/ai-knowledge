@@ -8,7 +8,8 @@
 
 ## 目录文件
 
-* [中间件域](TSD-EXAMPLE.md) - 系统级 TSD SSOT 样例
+* [中间件域](TSD-EXAMPLE.md) - 示例技术域（中间件）。
+
 * [technical-meta.md](technical-meta.md)
 
 ## 阅读顺序

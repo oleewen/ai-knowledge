@@ -4,7 +4,7 @@
 
 ## 子目录
 
-* [BSD-EXAMPLE](BSD-EXAMPLE/index.md) - 系统层 BSD→AB SSOT 样例
+* [BSD-EXAMPLE](BSD-EXAMPLE/index.md) - 公司层 BSD(L1) 的系统层 reference。
 * [chapters](chapters/index.md)
 
 ## 目录文件

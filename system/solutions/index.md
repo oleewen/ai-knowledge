@@ -8,7 +8,7 @@
 
 ## 目录文件
 
-* [SOLUTION-EXAMPLE.md](SOLUTION-EXAMPLE.md)
+* [示例系统解决方案](SOLUTION-EXAMPLE.md)
 
 ## 阅读顺序
 

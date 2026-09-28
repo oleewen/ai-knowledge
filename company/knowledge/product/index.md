@@ -9,7 +9,7 @@
 ## 目录文件
 
 * [示例产品线](PL-EXAMPLE.md) - 产品线；与 BSD(L1) 一对一，SLN（解决方案）仍对标 PL。
-¬¬
+
 * [product-meta.md](product-meta.md)
 
 ## 阅读顺序

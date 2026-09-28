@@ -1,6 +1,8 @@
 # knowledge
 
-目录说明见 [README.md](README.md)。视角导航见 [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 第五章；实体台账 ∈ 各视角 README。
+目录说明见 [README.md](README.md)。
+
+视角导航见 [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 第五章；实体台账 ∈ 各视角 README。
 
 ## 子目录
 

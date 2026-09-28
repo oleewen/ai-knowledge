@@ -1,6 +1,4 @@
-# analysis
-
-目录说明见 [README.md](README.md)。
+# changelogs
 
 ## 子目录
 
@@ -8,7 +6,7 @@
 
 ## 目录文件
 
-* [示例系统需求分析](ANALYSIS-EXAMPLE.md)
+* [ARCHIVE-LOG.md](ARCHIVE-LOG.md)
 
 ## 阅读顺序
 

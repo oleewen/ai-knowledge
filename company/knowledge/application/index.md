@@ -8,7 +8,7 @@
 
 ## 目录文件
 
-* [示例解决方案](SLN-EXAMPLE.md) - 解决方案（对应 PL）；maps_to_pl_id→PL；SYS.parent_id→本 SLN。
+* [示例解决方案](SLN-EXAMPLE.md) - 解决方案（对应 PL）；maps_to→PL；SYS.parent_id→本 SLN。
 
 * [application-meta.md](application-meta.md)
 

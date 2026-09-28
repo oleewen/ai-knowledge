@@ -4,12 +4,12 @@
 
 ## 子目录
 
-* [PM-EXAMPLE](PM-EXAMPLE/index.md) - 示例产品模块
+* [PD-EXAMPLE](PD-EXAMPLE/index.md) - PD-EXAMPLE 索引
 * [chapters](chapters/index.md)
 
 ## 目录文件
 
-* [示例业务流程（BP）](BP-EXAMPLE.md) - 仅用于演示产品视角流程叙事结构（示例）。
+* [示例业务流程（BP）](BP-EXAMPLE.md) - 示例业务流程。
 
 * [product-meta.md](product-meta.md)
 
