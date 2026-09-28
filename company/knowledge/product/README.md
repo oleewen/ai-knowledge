@@ -2,18 +2,21 @@
 type: Documentation
 title: 产品架构
 ---
+<!-- markdownlint-disable-next-line MD025 -->
 # 产品架构
 
 [返回 · 企业架构](../README.md)
 
-公司层产品入口：章节 + PL（无 PD；SLN ∈ 应用视角）。实体以 per-entity 与 [../index.md](../index.md) §2 为准。
+**本层 SSOT**：PL。不落 PD（系统首次）；SLN ∈ 应用视角。台账 [../index.md](../index.md) §2；字段 [product-meta.md](product-meta.md)。
+
+## 章节
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
-| 产品概述 | [chapters/product-overview.md](chapters/product-overview.md) | 产品全景与定位 |
-| 产品线 | [chapters/product-architecture.md](chapters/product-architecture.md) | PL 划分；SLN ∈ 应用视角；PD ∈ 系统库 |
-| 度量标准 | [chapters/product-metrics.md](chapters/product-metrics.md) | 指标框架与实验原则 |
-| 体验设计 | [chapters/product-ux.md](chapters/product-ux.md) | 设计规范与无障碍 |
+| 产品概述 | [chapters/product-overview.md](chapters/product-overview.md) | 全景与定位 |
+| 产品线 | [chapters/product-architecture.md](chapters/product-architecture.md) | PL 划分；PD ∈ 系统库 |
+| 度量标准 | [chapters/product-metrics.md](chapters/product-metrics.md) | 指标与实验原则 |
+| 体验设计 | [chapters/product-ux.md](chapters/product-ux.md) | 规范与无障碍 |
 
 ## 实体
 

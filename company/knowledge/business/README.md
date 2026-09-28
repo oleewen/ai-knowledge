@@ -2,19 +2,22 @@
 type: Documentation
 title: 业务架构
 ---
+<!-- markdownlint-disable-next-line MD025 -->
 # 业务架构
 
 [返回 · 企业架构](../README.md)
 
-公司层业务入口：章节 + VC/BD/BSD(L1)/CAP。实体以 per-entity 与 [../index.md](../index.md) §1 为准。
+**本层 SSOT**：VC / BD / BSD(L1) / CAP。台账 [../index.md](../index.md) §1；字段 [business-meta.md](business-meta.md)。
+
+## 章节
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
-| 业务概述 | [chapters/business-overview.md](chapters/business-overview.md) | 公司级背景、目标与范围 |
-| 业务域划分 | [chapters/business-domain-division.md](chapters/business-domain-division.md) | L1 业务域及域间关系 |
-| 商业模式 | [chapters/business-model.md](chapters/business-model.md) | 商业画布与收支模型 |
-| 价值链 | [chapters/business-value-chain.md](chapters/business-value-chain.md) | 价值创造与竞争壁垒 |
-| 组织角色 | [chapters/business-roles-and-organization.md](chapters/business-roles-and-organization.md) | 干系人与组织协作 |
+| 业务概述 | [chapters/business-overview.md](chapters/business-overview.md) | 背景、目标与范围 |
+| 业务域划分 | [chapters/business-domain-division.md](chapters/business-domain-division.md) | L1 域及域间关系 |
+| 商业模式 | [chapters/business-model.md](chapters/business-model.md) | 画布与收支 |
+| 价值链 | [chapters/business-value-chain.md](chapters/business-value-chain.md) | 价值创造与壁垒 |
+| 组织角色 | [chapters/business-roles-and-organization.md](chapters/business-roles-and-organization.md) | 干系人与协作 |
 | 业务能力 | [chapters/business-capability.md](chapters/business-capability.md) | 能力框架与成熟度 |
 
 ## 实体
