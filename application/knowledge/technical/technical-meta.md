@@ -28,12 +28,12 @@ title: 技术视角元数据（application/knowledge/technical）
 | order | key | code | id_pattern | parent |
 | --- | --- | --- | --- | --- |
 | 1 | tsd | TSD | `TSD-{NAME}` | —（reference → system） |
-| 2 | mw | MW | `MW-{NAME}` | TSD（逻辑归属，`parent_tsd_id`） |
+| 2 | mw | MW | `MW-{NAME}` | TSD（逻辑归属，`implements_to`） |
 | 3 | cmp | CMP | `CMP-{NAME}` | MW |
 
 ## 4. 字段（OKF）
 
-**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。
+**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。关系字段见 [glossary § 映射关系](../../../agent/knowledge/glossary.md#映射关系常用)。无 APP↔CMP / APP↔TPL 直连。
 
 **正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。
 
@@ -42,19 +42,19 @@ title: 技术视角元数据（application/knowledge/technical）
 | 层级 | 字段 | 建议段落 |
 | --- | --- | --- |
 | TSD | `definition_scope: reference` | FM 扩展 / 详细说明 |
-| MW | `binding_type`、`config_key`、`parent_tsd_id`、`bound_app_id` | 详细说明 / 关系 / 跨视角 |
-| CMP | `maven_coordinates`；`parent_mw_id` 或 `parent_app_id`（二选一） | 详细说明 / 关系 |
+| MW | `binding_type`、`config_key`、`implements_to`、`used_by`、`uses_to` | 详细说明 / 关系 / 跨视角 |
+| CMP | `maven_coordinates`、`implements_to` | 详细说明 / 关系 |
 
 ## 5. 跨视角引用
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
 | TSD（reference） | system TSD.id | 上游系统 SSOT |
-| MW.parent_tsd_id | TSD.id | 归属系统技术域 |
-| MW.bound_app_id | APP.id | 绑定应用 |
-| MW.related_ds_id | DS.id | 关联数据源（可选） |
-| CMP.parent_mw_id | MW.id | 组件挂载中间件 |
-| APP.implements_tpl_ids | TPL.id | 应用实现平台能力 |
+| MW.implements_to | TSD.id | 归属系统技术域 |
+| MW.used_by | APP.id | 被应用使用（对端 APP.uses_to） |
+| MW.uses_to | DS.id | 中间件使用数据源（可选） |
+| CMP.implements_to | MW.id | 组件挂载中间件 |
+| MS.uses_to | CMP.id | 入口簇使用组件 |
 
 ## 6. 关联文档
 

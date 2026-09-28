@@ -42,26 +42,27 @@ title: 产品视角元数据（system/knowledge/product）
 
 目录：`PD-{NAME}/PD-{NAME}.md` + 其下 `PM-{NAME}/` 树。
 
-**硬约束**：`PD.maps_to_sys_id` 与二级 `BSD.maps_to_pd` **同建同填**；禁跨系统 `PM→PD`。
+**硬约束**：`PD.maps_to` 与二级 `BSD.maps_to` **同建同填**；禁跨系统 `PM→PD`。组成链用 `implements_to`/`implemented_by`（非同类树 `parent`）。
 
 ## 4. 字段（OKF）
 
 | 层级 | 字段 | 说明 |
 | --- | --- | --- |
-| PD | `maps_to_sys_id`、`maps_to_bsd` | 均必填；对标本库 SYS、BSD(L2) |
-| PM | `relies_on_context_ids`、`depends_pm_ids` | 跨视角 / 关系 |
-| FT | `realizes_use_case_ids`、`invokes_api_ids` | 跨视角 |
-| BP | `parent_id` 可选 PD/PM | 关系 |
+| PD | `implements_to`、`maps_to`、`implemented_by` | `implements_to`→PL；`maps_to` 混列 SYS\|BSD(L2)；`implemented_by`→PM |
+| PM | `implements_to`、`implemented_by`、`maps_to`、`depends_to` | 组成 / 对标 BC / 模块依赖 |
+| FT | `implements_to`、`implemented_by`、`supported_by` | 组成 / 支撑对端 API |
+| BP | `implements_to` 可选 PD/PM | 关系 |
 
 ## 5. 跨视角引用
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| PD.parent_id | 公司 PL.id | 归属产品线 |
-| PD.maps_to_sys_id | 本库 SYS.id | 对标系统（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
-| PD.maps_to_bsd | BSD(L2).id | 对标二级业务子域 |
-| PM.parent_id | 本库 PD.id | 模块归属产品服务 |
-| PM.relies_on_context_ids | BC.id | 模块依赖上下文 |
+| PD.implements_to | 公司 PL.id | 归属产品线 |
+| PD.maps_to | 本库 SYS.id \| BSD(L2).id | 对标系统 / 二级业务子域（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
+| PM.implements_to | 本库 PD.id | 模块归属产品服务 |
+| PM.maps_to | BC.id | 模块对标限界上下文 |
+| PM.depends_to | PM.id | 模块依赖其它模块 |
+| FT.supported_by | API.id | 功能由 API 支撑（对端 API.supports_to） |
 
 ## 6. 关联文档
 

@@ -49,26 +49,25 @@ title: 业务视角元数据（system/knowledge/business）
 
 ## 5. 字段（OKF）
 
-Frontmatter 10 必填 + 正文四段见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2；`layer_scope` = `system`。
+Frontmatter 10 必填 + 正文四段见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2；`layer_scope` = `system`。关系字段见 [glossary § 映射关系](../../../agent/knowledge/glossary.md#映射关系常用)。
 
 | 层级 | 字段 | 建议段落 |
 | --- | --- | --- |
 | BSD(L1) | `definition_scope: reference`、`level: 1` | FM 扩展 / 详细说明 |
-| BSD(L2) | `level: 2`、`parent`、`maps_to_pd` | FM / 关系 |
-| BC | `aggregates`、`implemented_by_app_id` | 关系 / 跨视角 |
-| AGG | `abilities`、`root_entity`、`persisted_as_entity_ids`、`implemented_by_service_ids` | 关系 / 跨视角 / 详细说明 |
-| AB | `capability`（`apis` 多在应用层补全） | 详细说明 / 跨视角 |
+| BSD(L2) | `level: 2`、`parent`、`maps_to` | FM / 关系 / 跨视角 |
+| BC | `implements_to`、`implemented_by`、`supported_by` | 关系 / 跨视角 |
+| AGG | `implements_to`、`implemented_by`、`maps_to` | 关系 / 跨视角 |
+| AB | `implements_to`、`capability`、`maps_to` | 详细说明 / 跨视角 |
 
 ## 6. 跨视角引用
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
 | BD / BSD(L1)（reference） | company 同名 id | 上游公司 SSOT |
-| BSD(L2).maps_to_pd | 本库 PD.id | 对标产品服务 |
-| BC.implemented_by_app_id | APP.id | 上下文实现应用 |
-| AGG.persisted_as_entity_ids | ENT.id | 聚合持久化实体 |
-| AGG.implemented_by_service_ids | MS.id | 聚合实现入口簇 |
-| 应用层 AB.apis | API.id | 能力 API（下游） |
+| BSD(L2).maps_to | 本库 PD.id | 对标产品服务 |
+| BC.supported_by | APP.id | 上下文由应用支撑（对端 APP.supports_to） |
+| AGG.maps_to | ENT.id \| MS.id | 聚合对标实体 / 入口簇 |
+| 应用层 AB.maps_to | API.id | 能力对标 API（下游） |
 
 ## 7. 关联文档
 

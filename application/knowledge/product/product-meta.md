@@ -12,7 +12,7 @@ title: 产品视角元数据（application/knowledge/product）
 | meta_id | `DIR-KNOWLEDGE-PRODUCT` |
 | 视角 | product |
 | 层级范围 | application |
-| 说明 | 产品版图；公司 PL 首次定义；公司 SLN（AA）首次定义（本层不落）；系统 PD 首次定义（本层不落 PD）。`PM.parent_id` → 系统 `PD-*`。 |
+| 说明 | 产品版图；公司 PL 首次定义；公司 SLN（AA）首次定义（本层不落）；系统 PD 首次定义（本层不落 PD）。`PM.implements_to` → 系统 `PD-*`。 |
 | entities_shape | 实体 `{ID}.md`（OKF）；索引见 INDEX-GUIDE 第五章 §2 |
 
 ## 2. 层级链
@@ -41,7 +41,7 @@ title: 产品视角元数据（application/knowledge/product）
 
 ## 4. 字段（OKF）
 
-**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。
+**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。关系字段见 [glossary § 映射关系](../../../agent/knowledge/glossary.md#映射关系常用)。
 
 **正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。
 
@@ -49,29 +49,29 @@ title: 产品视角元数据（application/knowledge/product）
 
 | 层级 | 字段 | 建议段落 |
 | --- | --- | --- |
-| PM | `relies_on_context_ids`、`depends_pm_ids` | 跨视角 / 关系 |
-| FT | `invokes_api_ids`、`acceptance_criteria`（推荐） | 跨视角 / 详细说明 |
-| FR | `children`（UC/BR） | 关系 |
-| UC | `map_to_api_id`（推荐） | 跨视角 |
+| PM | `implements_to`、`maps_to`、`depends_to` | 关系 / 跨视角 |
+| FT | `supported_by`、`acceptance_criteria`（推荐） | 跨视角 / 详细说明 |
+| FR | `implements_to`、`implemented_by`（UC/BR） | 关系 |
+| UC | `implements_to`、`maps_to`（推荐） | 跨视角 |
 | BR | （实现映射按需） | 跨视角 / 详细说明 |
 
 ## 5. 跨视角引用
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| PM.parent_id | 系统 PD.id | 模块归属产品服务 |
-| PM.depends_pm_ids | PM.id | 模块依赖其它模块 |
-| PM.relies_on_context_ids | BC.id | 模块依赖限界上下文 |
-| FT.invokes_api_ids | API.id | 功能调用 API |
-| UC.map_to_api_id | API.id | 用例映射 API |
+| PM.implements_to | 系统 PD.id | 模块归属产品服务 |
+| PM.depends_to | PM.id | 模块依赖其它模块 |
+| PM.maps_to | BC.id | 模块对标限界上下文 |
+| FT.supported_by | API.id | 功能由 API 支撑 |
+| UC.maps_to | API.id | 用例对标 API |
 
 ## 6. BP 流程叙事（旁路实体）
 
 可选 `BP-{NAME}.md`（OKF：`hierarchy: BP`）：
 
-- 与本视角实体同目录级；`parent_id` 可为 `PD-*` / `PM-*` / `null`
+- 与本视角实体同目录级；`implements_to` 可为 `PD-*` / `PM-*`；frontmatter `parent_id` 可空
 - 正文可分 M/S/B 节，引用 `PD/PM/FT`
-- **不**挂入 `PL → PD → PM → FT → FR → UC/BR` 父子链
+- **不**挂入 `PL → PD → PM → FT → FR → UC/BR` 组成链
 
 ## 7. 关联文档
 

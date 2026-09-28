@@ -31,30 +31,30 @@ title: 业务视角元数据（company/knowledge/business）
 | 1 | vc | VC | `VC-{NAME}` | — |
 | 2 | bd | BD | `BD-{NAME}` | —（平铺单文件） |
 | 3 | bsd1 | BSD | `BSD-{NAME}` | BD（`level: 1`） |
-| 4 | cap | CAP | `CAP-{NAME}` | VC（经 `implements_to_vc`，非 `parent_id`） |
+| 4 | cap | CAP | `CAP-{NAME}` | VC（经 `implements_to`，非同类树 `parent`） |
 
 目录：`VC-{NAME}/VC-{NAME}.md` + `VC-{NAME}/CAP-*.md`；`BD-{NAME}.md`、一级 `BSD-{NAME}.md` 平铺。
 
 ## 4. 字段（OKF）
 
-Frontmatter 10 必填 + 正文四段见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2；`layer_scope` = `company`。
+Frontmatter 10 必填 + 正文四段见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2；`layer_scope` = `company`。关系字段见 [glossary § 映射关系](../../../agent/knowledge/glossary.md#映射关系常用)。
 
 | 层级 | 字段 | 说明 |
 | --- | --- | --- |
-| VC | `supported_by_bd`、`implemented_by_cap` | 列表必填；与 BD/CAP 双向同步 |
-| BD | `supports_to_vc`、`children` | 单值/列表必填；children 仅 BSD(L1) |
-| BSD(L1) | `level`、`parent`、`maps_to_pl`、`maps_to_cap` | `level` 固定 `1`；均单值必填 |
-| CAP | `implements_to_vc`、`maps_to_bsd` | 均单值必填；目标必须为 BSD(L1) |
+| VC | `supported_by`、`implemented_by` | 列表必填；与 BD/CAP 双向同步 |
+| BD | `supports_to`、`children` | 单值/列表必填；children 仅 BSD(L1) |
+| BSD(L1) | `level`、`parent`、`maps_to` | `level` 固定 `1`；`maps_to` 混列 PL\|CAP（前缀辨型） |
+| CAP | `implements_to`、`maps_to` | 均单值必填；`maps_to` 目标必须为 BSD(L1) |
 | BD | `strategic_classification` | 正文扩展 |
 
 ## 5. 跨视角引用
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| CAP.implements_to_vc | VC.id | CAP 实现价值链 |
-| CAP.maps_to_bsd | BSD(L1).id | CAP 与 BSD(L1) 一对一 |
-| BD.supports_to_vc | VC.id | BD 支撑价值链 |
-| BSD(L1).maps_to_pl | PL.id | BSD(L1) 对标产品线 |
+| CAP.implements_to | VC.id | CAP 实现价值链 |
+| CAP.maps_to | BSD(L1).id | CAP 与 BSD(L1) 一对一 |
+| BD.supports_to | VC.id | BD 支撑价值链 |
+| BSD(L1).maps_to | PL.id \| CAP.id | BSD(L1) 对标产品线 / 能力 |
 
 ## 6. 关联文档
 

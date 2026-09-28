@@ -13,7 +13,7 @@ title: 数据视角元数据（company/knowledge/data）
 | meta_id | `DIR-COMPANY-KNOWLEDGE-DATA` |
 | 视角 | data |
 | 层级范围 | company |
-| 说明 | 仅治理/湖仓/安全等叙事；不登记 MDG/DS/ENT；MDG 由各系统 `SYS.uses_mdg_ids` 引用。 |
+| 说明 | 仅治理/湖仓/安全等叙事；不登记 MDG/DS/ENT；MDG 由各系统 `SYS.uses_to` 引用。 |
 
 ## 2. 层级链
 
@@ -35,8 +35,8 @@ title: 数据视角元数据（company/knowledge/data）
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| 系统 SYS.uses_mdg_ids | 系统 MDG.id | 系统声明使用的主数据域 |
-| 系统 DS.authoritative_mdg_id | 系统 MDG.id | 数据源归属主数据域 |
+| 系统 SYS.uses_to | 系统 MDG.id | 系统声明使用的主数据域 |
+| 系统 DS.implements_to | 系统 MDG.id | 数据源归属主数据域 |
 
 ## 6. 关联文档
 

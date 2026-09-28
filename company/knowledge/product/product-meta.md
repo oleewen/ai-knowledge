@@ -29,23 +29,21 @@ title: 产品视角元数据（company/knowledge/product）
 
 目录：`PL-{NAME}/PL-{NAME}.md`。
 
-对标：一级 `BSD.maps_to_pl` / `PL.maps_to_bsd`；解决方案：`SLN.maps_to_pl_id`。
+对标：一级 `BSD.maps_to` / `PL.maps_to`；解决方案：`SLN.maps_to`。
 
 ## 4. 字段（OKF）
 
 | 层级 | 字段 | 说明 |
 | --- | --- | --- |
-| PL | `maps_to_bsd`、`target_users` | BSD(L1) 单值必填；目标用户 |
-
-**无** `supports_cap_ids`。
+| PL | `maps_to`、`target_users` | BSD(L1) 单值必填；目标用户 |
 
 ## 5. 跨视角引用
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| PL.maps_to_bsd | BSD(L1).id | PL 对标 BSD(L1)（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
-| SLN.maps_to_pl_id | PL.id | 解决方案对标产品线 |
-| 系统 PD.parent_id | PL.id | 产品服务挂产品线；`PD.maps_to_bsd` 指 BSD(L2) |
+| PL.maps_to | BSD(L1).id | PL 对标 BSD(L1)（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
+| SLN.maps_to | PL.id | 解决方案对标产品线 |
+| 系统 PD.implements_to | PL.id | 产品服务挂产品线；`PD.maps_to` 指 BSD(L2)\|SYS |
 
 ## 6. 关联文档
 

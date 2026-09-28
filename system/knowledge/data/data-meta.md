@@ -4,7 +4,7 @@ title: 数据视角元数据（system/knowledge/data）
 ---
 # 数据视角元数据（system/knowledge/data）
 
-**结论**：MDG→DS→ENT 视角元数据 SSOT；应用层补 TBL。SYS 经 `uses_mdg_ids` 声明使用。实例：[index.md](../index.md)。
+**结论**：MDG→DS→ENT 视角元数据 SSOT；应用层补 TBL。SYS 经 `uses_to` 声明使用。实例：[index.md](../index.md)。
 
 ## 1. 概览
 
@@ -28,7 +28,7 @@ title: 数据视角元数据（system/knowledge/data）
 | order | key | code | id_pattern | parent |
 | --- | --- | --- | --- | --- |
 | 1 | mdg | MDG | `MDG-{NAME}` | — |
-| 2 | ds | DS | `DS-{NAME}` | MDG（逻辑归属，`authoritative_mdg_id`） |
+| 2 | ds | DS | `DS-{NAME}` | MDG（逻辑归属，`implements_to`） |
 | 3 | ent | ENT | `ENT-{NNN}` 或 `ENT-{NAME}` | DS |
 
 落盘：`MDG-{NAME}.md` 平铺；`DS-{NAME}/` 含 DS/ENT。
@@ -39,19 +39,19 @@ Frontmatter 10 必填 + 正文四段见 [okf-spec](../../../agent/knowledge/okf-
 
 | 层级 | 字段 | 建议段落 |
 | --- | --- | --- |
-| MDG | `governance_owner` | 详细说明 |
-| DS | 存储 `type`、`config_key`、`owned_by_app_id`、`authoritative_mdg_id`（推荐） | 详细说明 / 跨视角 |
-| ENT | `logical_name`、`physical_table`、`maps_to_aggregate_id`（推荐） | 详细说明 / 跨视角 |
+| MDG | `governance_owner`、`implemented_by` | 详细说明 / 关系 |
+| DS | 存储 `type`、`config_key`、`implements_to`、`used_by` | 详细说明 / 关系 / 跨视角 |
+| ENT | `logical_name`、`physical_table`、`implements_to`、`maps_to` | 详细说明 / 跨视角 |
 
 ## 5. 跨视角引用
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| SYS.uses_mdg_ids | MDG.id | 系统声明使用的主数据域 |
-| DS.authoritative_mdg_id | MDG.id | 数据源归属主数据域 |
-| DS.owned_by_app_id | APP.id | 数据源归属应用 |
-| AGG.persisted_as_entity_ids | ENT.id | 聚合持久化 |
-| ENT.maps_to_aggregate_id | AGG.id | 实体归属聚合 |
+| SYS.uses_to | MDG.id | 系统声明使用的主数据域 |
+| DS.implements_to | MDG.id | 数据源归属主数据域 |
+| DS.used_by | APP.id | 数据源被应用使用（对端 APP.uses_to） |
+| AGG.maps_to | ENT.id | 聚合对标实体 |
+| ENT.maps_to | AGG.id | 实体对标聚合 |
 
 ## 6. 关联文档
 

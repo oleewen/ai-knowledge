@@ -4,7 +4,7 @@ title: 技术视角元数据（company/knowledge/technical）
 ---
 # 技术视角元数据（company/knowledge/technical）
 
-**结论**：TPL 视角元数据 SSOT。系统 TSD、应用 MW/CMP 引用 TPL ID。实例：[index.md](../index.md)。
+**结论**：TPL 视角元数据 SSOT。系统 TSD、应用 MW/CMP 经组成链引用 TPL（无 APP↔TPL 直连）。实例：[index.md](../index.md)。
 
 ## 1. 概览
 
@@ -39,8 +39,7 @@ Frontmatter 10 必填 + 正文四段见 [okf-spec](../../../agent/knowledge/okf-
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| TSD.parent_tpl_id | TPL.id | 系统技术域归属平台能力（下游） |
-| APP.implements_tpl_ids | TPL.id | 应用实现的平台能力（下游） |
+| TSD.implements_to | TPL.id | 系统技术域归属平台能力（下游） |
 
 ## 6. 关联文档
 

@@ -22,20 +22,20 @@ title: 数据视角元数据（application/knowledge/data）
 | 1 | MDG | 主数据域（系统层 SSOT；本层可为 reference） |
 | 2 | DS | 数据存储（系统层首次定义） |
 | 3 | ENT | 数据实体（表/集合，系统层首次定义） |
-| 4 | TBL | 物理表锚点（应用层首次定义；挂 DS） |
+| 4 | TBL | 物理表锚点（应用层首次定义；挂 ENT） |
 
 ## 3. 层定义
 
 | order | key | code | id_pattern | parent |
 | --- | --- | --- | --- | --- |
 | 1 | mdg | MDG | `MDG-{NAME}` | —（reference → system） |
-| 2 | ds | DS | `DS-{NAME}` | MDG（逻辑归属，`authoritative_mdg_id` 推荐） |
+| 2 | ds | DS | `DS-{NAME}` | MDG（逻辑归属，`implements_to`） |
 | 3 | ent | ENT | `ENT-{NNN}` 或 `ENT-{NAME}` | DS |
-| 4 | tbl | TBL | `TBL-{NAME}` | DS |
+| 4 | tbl | TBL | `TBL-{NAME}` | ENT（`implements_to`） |
 
 ## 4. 字段（OKF）
 
-**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。
+**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。关系字段见 [glossary § 映射关系](../../../agent/knowledge/glossary.md#映射关系常用)。
 
 **正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。`definition_scope` 等可作 frontmatter 扩展。
 
@@ -44,19 +44,19 @@ title: 数据视角元数据（application/knowledge/data）
 | 层级 | 字段 | 建议段落 |
 | --- | --- | --- |
 | MDG | `definition_scope: reference`、`governance_owner` | FM 扩展 / 详细说明 |
-| DS | 存储 `type`、`config_key`、`owned_by_app_id` | 详细说明 / 跨视角（勿与 OKF `type` 混淆） |
-| ENT | `logical_name`、`physical_table`、`maps_to_aggregate_id`（推荐） | 详细说明 / 跨视角 |
-| TBL | `physical_name` | 详细说明 |
+| DS | 存储 `type`、`config_key`、`implements_to`、`used_by` | 详细说明 / 跨视角（勿与 OKF `type` 混淆） |
+| ENT | `logical_name`、`physical_table`、`implements_to`、`maps_to` | 详细说明 / 跨视角 |
+| TBL | `physical_name`、`implements_to` | 详细说明 / 关系 |
 
 ## 5. 跨视角引用
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
 | MDG（reference） | system MDG.id | 上游系统 SSOT |
-| DS.authoritative_mdg_id | MDG.id | 数据源归属主数据域（推荐） |
-| AGG.persisted_as_entity_ids | ENT.id | 聚合持久化 |
-| ENT.maps_to_aggregate_id | AGG.id | 实体归属聚合 |
-| DS.owned_by_app_id | APP.id | 数据源归属应用 |
+| DS.implements_to | MDG.id | 数据源归属主数据域 |
+| AGG.maps_to | ENT.id | 聚合对标实体 |
+| ENT.maps_to | AGG.id | 实体对标聚合 |
+| DS.used_by | APP.id | 数据源被应用使用 |
 
 ## 6. 关联文档
 

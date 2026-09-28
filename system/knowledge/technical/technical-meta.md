@@ -26,7 +26,7 @@ title: 技术视角元数据（system/knowledge/technical）
 
 | order | key | code | id_pattern | parent |
 | --- | --- | --- | --- | --- |
-| 1 | tsd | TSD | `TSD-{NAME}` | TPL（逻辑归属，`parent_tpl_id`） |
+| 1 | tsd | TSD | `TSD-{NAME}` | TPL（逻辑归属，`implements_to`） |
 
 ## 4. 字段（OKF）
 
@@ -35,14 +35,14 @@ Frontmatter 10 必填 + 正文四段见 [okf-spec](../../../agent/knowledge/okf-
 | 字段 | 说明 |
 | --- | --- |
 | domain | 技术域分类（如 middleware、observability） |
-| parent_tpl_id | 归属公司级 TPL 的 id |
+| implements_to | 归属公司级 TPL 的 id |
 
 ## 5. 跨视角引用
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| TSD.parent_tpl_id | TPL.id | 归属平台能力 |
-| MW.parent_tsd_id | TSD.id | 应用中间件绑定（下游） |
+| TSD.implements_to | TPL.id | 归属平台能力 |
+| MW.implements_to | TSD.id | 应用中间件绑定（下游） |
 
 ## 6. 关联文档
 
@@ -55,4 +55,3 @@ Frontmatter 10 必填 + 正文四段见 [okf-spec](../../../agent/knowledge/okf-
 | [knowledge-governance](../../../agent/knowledge/knowledge-governance.md) | 层语义 |
 
 **索引**：`readme_index_table: false`；变更 TSD ID 时同步 index/overview（按需）。
-¬

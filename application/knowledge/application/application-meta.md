@@ -35,7 +35,7 @@ title: 应用视角元数据（application/knowledge/application）
 
 ## 4. 字段（OKF）
 
-**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。
+**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。关系字段见 [glossary § 映射关系](../../../agent/knowledge/glossary.md#映射关系常用)。
 
 **正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。
 
@@ -43,10 +43,10 @@ title: 应用视角元数据（application/knowledge/application）
 
 | 层级 | 字段 | 建议段落 |
 | --- | --- | --- |
-| SYS | `architecture`（apps / external_dependencies / ddd_layers） | 详细说明 |
-| APP | `parent_sys_id`、`service_ids`、`startup_class`、`maven_module` | 关系 / 详细说明 |
-| MS | `host_class`、`host_module`、`protocol` | 详细说明 |
-| API | `service_id`、`alias`、`method_signature`、`api_type`（DUBBO/HTTP/MQ/JOB） | 关系 / 详细说明 |
+| SYS | `architecture`（apps / external_dependencies / ddd_layers）；`uses_to` | 详细说明 / 跨视角 |
+| APP | `implements_to`、`implemented_by`、`supports_to`、`uses_to`、`startup_class`、`maven_module` | 关系 / 跨视角 / 详细说明 |
+| MS | `implements_to`、`implemented_by`、`maps_to`、`uses_to`、`host_class`、`host_module`、`protocol` | 关系 / 跨视角 / 详细说明 |
+| API | `implements_to`、`supports_to`、`maps_to`、`alias`、`method_signature`、`api_type`（DUBBO/HTTP/MQ/JOB） | 关系 / 跨视角 / 详细说明 |
 
 ## 5. 跨层路径映射（MS/API）
 
@@ -65,10 +65,10 @@ title: 应用视角元数据（application/knowledge/application）
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| BC.implemented_by_app_id | APP.id | 业务上下文实现 |
-| AB.apis[].id | API.id | 能力 API |
-| FT.invokes_api_ids | API.id | 产品功能调用 |
-| DS.owned_by_app_id | APP.id | 数据源归属 |
+| BC.supported_by | APP.id | 业务上下文由应用支撑 |
+| AB.maps_to | API.id | 能力对标 API |
+| API.supports_to | FT.id | 接口支撑功能点 |
+| DS.used_by | APP.id | 数据源被应用使用 |
 
 ## 7. 关联文档
 
