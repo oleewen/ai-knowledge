@@ -7,7 +7,9 @@ title: 数据架构
 
 [返回 · 系统知识库 — 架构文档](../README.md)
 
-系统层数据入口：MDG/DS/ENT 为本层 SSOT；TBL ∈ application。实体台账：[../index.md](../index.md) §4；字段：[data-meta.md](data-meta.md)。
+**本层 SSOT**：MDG/DS/ENT。TBL ∈ application。台账 [../index.md](../index.md) §4；字段 [data-meta.md](data-meta.md)。
+
+## 章节
 
 | 章节 | 文件 | 概述 |
 |------|------|------|

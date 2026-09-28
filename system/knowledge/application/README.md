@@ -7,7 +7,9 @@ title: 应用架构
 
 [返回 · 系统知识库 — 架构文档](../README.md)
 
-系统层应用入口：SYS→APP→MS 为本层 SSOT（SYS.`parent_id`→公司 SLN）；API ∈ application 库。实体台账：[../index.md](../index.md) §3；字段：[application-meta.md](application-meta.md)。下表 = 本层 SSOT 样例。
+**本层 SSOT**：SYS→APP→MS（SYS.`parent_id`→公司 SLN）。API ∈ application 库。台账 [../index.md](../index.md) §3；字段 [application-meta.md](application-meta.md)。
+
+## 章节
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
@@ -16,8 +18,8 @@ title: 应用架构
 | 领域模型 | [chapters/application-domain-model.md](chapters/application-domain-model.md) | BC/AGG 落地 |
 | 服务设计 | [chapters/application-service-design.md](chapters/application-service-design.md) | MS 拆分 |
 | 领域能力 | [chapters/application-domain-capability.md](chapters/application-domain-capability.md) | AB 与 SLA |
-| 集成架构 | [chapters/application-integration.md](chapters/application-integration.md) | 第三方与遗留集成（按需） |
-| 服务间交互 | [chapters/application-inter-service.md](chapters/application-inter-service.md) | 同步/异步协作（按需） |
+| 集成架构 | [chapters/application-integration.md](chapters/application-integration.md) | 第三方与遗留（按需） |
+| 服务间交互 | [chapters/application-inter-service.md](chapters/application-inter-service.md) | 同步/异步（按需） |
 | 接口管理 | [chapters/application-interface-management.md](chapters/application-interface-management.md) | 内外 API 与版本（按需） |
 | 多租户多环境 | [chapters/application-multi-tenant-environment.md](chapters/application-multi-tenant-environment.md) | 租户隔离与环境（按需） |
 | ADR | — | 系统层决策（无强制 EXAMPLE） |

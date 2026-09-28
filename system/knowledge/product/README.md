@@ -7,7 +7,9 @@ title: 产品架构
 
 [返回 · 系统知识库 — 架构文档](../README.md)
 
-系统层产品入口：PD→PM→FT→FR→UC/BR · BP 为本层 SSOT；PL / SLN 公司 SSOT（本层不落盘）。实体台账：[../index.md](../index.md) §2；字段：[product-meta.md](product-meta.md)。
+**本层 SSOT**：PD→PM→FT→FR→UC/BR · BP。PL / SLN 公司 SSOT（本层不落盘）。台账 [../index.md](../index.md) §2；字段 [product-meta.md](product-meta.md)。
+
+## 章节
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
@@ -16,7 +18,7 @@ title: 产品架构
 | 信息架构 | [chapters/product-information-architecture.md](chapters/product-information-architecture.md) | 导航与内容模型 |
 | 产品功能 | [chapters/product-feature.md](chapters/product-feature.md) | FT 与优先级 |
 | 用户旅程与场景 | [chapters/product-user-journeys.md](chapters/product-user-journeys.md) | 触点与用例 |
-| 版本管理与发布 | [chapters/product-release.md](chapters/product-release.md) | 版本、灰度与功能开关（按需） |
+| 版本管理与发布 | [chapters/product-release.md](chapters/product-release.md) | 版本、灰度与开关（按需） |
 | 产品运营支撑 | [chapters/product-operations-support.md](chapters/product-operations-support.md) | 运营、内容与触达（按需） |
 | 多端策略 | [chapters/product-multi-platform.md](chapters/product-multi-platform.md) | 端覆盖与差异（按需） |
 
