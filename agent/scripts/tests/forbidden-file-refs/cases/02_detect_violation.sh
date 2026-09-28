@@ -35,8 +35,30 @@ PROBE="$ROOT/superpowers-ref-probe.tmp"
 echo "$(_violation_path probe-violation)" >"$PROBE"
 trap 'rm -f "$ROOT/superpowers-ref-probe.tmp"; rm -rf "$TMP"' EXIT
 
-if bash "$SCRIPT"; then
+set +e
+out="$(cd "$ROOT" && bash "$SCRIPT" 2>&1)"
+code=$?
+set -e
+
+if [[ "$code" -eq 0 ]]; then
   echo "02_detect_violation: 期望 exit 1，实际通过" >&2
+  exit 1
+fi
+
+# 区分「缺配置」与「扫到违规」，避免环境缺失时假绿
+if printf '%s\n' "$out" | grep -Fq '未找到当前工程的 .docsconfig'; then
+  echo "02_detect_violation: FAIL（缺 .docsconfig，非违规检出）" >&2
+  printf '%s\n' "$out" >&2
+  exit 1
+fi
+if printf '%s\n' "$out" | grep -Eq '缺少 AGENT_DIR|AGENT_ROOT 不能指向'; then
+  echo "02_detect_violation: FAIL（.docsconfig 不合法，非违规检出）" >&2
+  printf '%s\n' "$out" >&2
+  exit 1
+fi
+if ! printf '%s\n' "$out" | grep -Fq '[FAIL]'; then
+  echo "02_detect_violation: FAIL（exit!=0 但未见 [FAIL] 违规报告）" >&2
+  printf '%s\n' "$out" >&2
   exit 1
 fi
 

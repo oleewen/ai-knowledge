@@ -52,7 +52,8 @@ DOC_ROOT=docs
 REPO_ROOT=$COMPANY
 DOC_DIR=docs
 KNOWLEDGE_TYPE=company
-AGENT_ROOT=$ROOT_DIR/agent
+AGENT_ROOT=$ROOT_DIR
+AGENT_DIR=agent
 EOF
 
 cat >"$SYSTEM/.docsconfig" <<EOF
@@ -60,7 +61,8 @@ DOC_ROOT=docs
 REPO_ROOT=$SYSTEM
 DOC_DIR=docs
 KNOWLEDGE_TYPE=system
-AGENT_ROOT=$ROOT_DIR/agent
+AGENT_ROOT=$ROOT_DIR
+AGENT_DIR=agent
 EOF
 
 ( cd "$COMPANY" && HOME="$FAKEHOME" "${BASH:-bash}" "$DOCS_LINK" --link --target "$SYSTEM" ) \

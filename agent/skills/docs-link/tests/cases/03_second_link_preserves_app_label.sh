@@ -35,7 +35,8 @@ DOC_ROOT=docs
 REPO_ROOT=$SYS_SRC
 DOC_DIR=docs
 KNOWLEDGE_TYPE=system
-AGENT_ROOT=$ROOT_DIR/agent
+AGENT_ROOT=$ROOT_DIR
+AGENT_DIR=agent
 EOF
 
 cat >"$APP_TGT/.docsconfig" <<EOF
@@ -43,7 +44,8 @@ DOC_ROOT=docs
 REPO_ROOT=$APP_TGT
 DOC_DIR=docs
 KNOWLEDGE_TYPE=application
-AGENT_ROOT=$ROOT_DIR/agent
+AGENT_ROOT=$ROOT_DIR
+AGENT_DIR=agent
 EOF
 
 run_link() {

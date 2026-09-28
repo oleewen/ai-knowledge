@@ -29,7 +29,8 @@ DOC_ROOT=docs
 REPO_ROOT=$SRC
 DOC_DIR=application
 KNOWLEDGE_TYPE=system
-AGENT_ROOT=$ROOT_DIR/agent
+AGENT_ROOT=$ROOT_DIR
+AGENT_DIR=agent
 EOF
 
 cat >"$SRC/docs/knowledge-links.yaml" <<'EOF'

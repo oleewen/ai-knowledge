@@ -24,7 +24,15 @@ def test_validate_viz_index_passes_for_complete_bundle() -> None:
             encoding="utf-8",
         )
         (bundle / "knowledge" / "index.md").write_text(
-            "# 知识索引\n\n## §1 业务视角\n",
+            "# 知识索引\n\n## 子目录\n\n## §1 业务视角\n",
+            encoding="utf-8",
+        )
+        (bundle / "INDEX-GUIDE.md").write_text(
+            "# INDEX-GUIDE\n\n"
+            "<!-- docs-build:entity-index:begin -->\n"
+            "### 视角入口\n"
+            "- [business](knowledge/business/README.md)\n"
+            "<!-- docs-build:entity-index:end -->\n",
             encoding="utf-8",
         )
         (biz_dir / "index.md").write_text("# business\n", encoding="utf-8")

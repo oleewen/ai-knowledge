@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 联邦仓无 agent/scripts：须经 HOME/.agents + .docsconfig AGENT_ROOT 解析 docs-core
+# 联邦仓无 agent/scripts：须经 HOME/.agents + AGENT_ROOT=~ + AGENT_DIR=.agents 解析 docs-core
 set -euo pipefail
 
 TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -36,7 +36,8 @@ DOC_ROOT=~/workspaces/src/docs
 REPO_ROOT=~/workspaces/src
 DOC_DIR=docs
 KNOWLEDGE_TYPE=system
-AGENT_ROOT=~/.agents
+AGENT_ROOT=~
+AGENT_DIR=.agents
 EOF
 
 # nameref 同名变量不得读空（单独 bash）
@@ -44,13 +45,17 @@ EOF
 set -euo pipefail
 source "$1"
 raw_ar=""
+raw_ad=""
 _cfg_dr=""
 _cfg_rr=""
 _cfg_dd=""
-docsconfig_read_into "$2" _cfg_dr _cfg_rr _cfg_dd raw_ar
+_cfg_kt=""
+docsconfig_read_into "$2" _cfg_dr _cfg_rr _cfg_dd raw_ar _cfg_kt raw_ad
 [[ -n "$raw_ar" ]]
-[[ "$raw_ar" == *".agents"* ]]
-' _ "$CORE" "$SRC/.docsconfig" || fail "docsconfig_read_into 同名 raw_ar 应读出 AGENT_ROOT=~/.agents"
+# ~ 经 normalize 为家目录绝对路径，不得仍是实体树名
+[[ "$(basename "$raw_ar")" != ".agents" ]]
+[[ "$raw_ad" == ".agents" ]]
+' _ "$CORE" "$SRC/.docsconfig" || fail "docsconfig_read_into 应读出 AGENT_ROOT=家目录 与 AGENT_DIR=.agents"
 
 set +e
 out="$(
@@ -64,4 +69,4 @@ printf '%s\n' "$out" | grep -Fq 'AGENT_ROOT 与 ~/.agents 下均未找到' && fa
 printf '%s\n' "$out" | grep -Fq 'cannot unset' && fail "不应 unset 只读哨兵失败"
 printf '%s\n' "$out" | grep -Eq '用法:.*docs-link' || fail "stdout 应为用法说明，实际: $out"
 
-pass "联邦仓经 AGENT_ROOT=~/.agents 解析 docs-core"
+pass "联邦仓经 AGENT_ROOT=~ + AGENT_DIR=.agents 解析 docs-core"
