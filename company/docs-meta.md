@@ -2,7 +2,6 @@
 type: Directory Meta
 title: company 目录元数据
 ---
-
 ```yaml
 # company/ 根目录元数据（导航与 SSOT 指针）
 id: "DIR-COMPANY"

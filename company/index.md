@@ -30,6 +30,6 @@ okf_version: 0.1
 2. [DESIGN.md](DESIGN.md) — 本层契约与治理引用  
 3. [knowledge/README.md](knowledge/README.md) — 五视角
 
-### 关联索引
+## 关联索引
 
 * 上一级说明：[../README.md](../README.md)
