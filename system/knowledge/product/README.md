@@ -7,7 +7,7 @@ title: 产品架构
 
 [返回 · 系统知识库 — 架构文档](../README.md)
 
-**本层 SSOT**：PD→PM→FT→FR→UC/BR · BP。PL / SLN 公司 SSOT（本层不落盘）。台账 [../index.md](../index.md) §2；字段 [product-meta.md](product-meta.md)。
+**本层 SSOT**：PD→PM→FT→FR→UC/BR · BP。PL / SLN 公司 SSOT（仅引用）。台账 [../index.md](../index.md) §2；字段 [product-meta.md](product-meta.md)。
 
 ## 章节
 
