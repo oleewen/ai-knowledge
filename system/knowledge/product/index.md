@@ -18,7 +18,7 @@
 1. [README.md](README.md)
 2. [product-meta.md](product-meta.md)
 3. [chapters/index.md](chapters/index.md)
-4. [PM-EXAMPLE/](PM-EXAMPLE/index.md)
+4. [PD-EXAMPLE/](PD-EXAMPLE/index.md)
 
 ## 关联索引
 
