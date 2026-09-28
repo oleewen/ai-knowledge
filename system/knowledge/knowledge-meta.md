@@ -4,9 +4,7 @@ title: 知识树元数据（system/knowledge）
 ---
 # 知识树元数据（system/knowledge）
 
-系统层五视角知识树元数据 SSOT。实例索引：[index.md](index.md)。
-
----
+**结论**：系统层五视角知识树元数据 SSOT。实例：[index.md](index.md)。
 
 ## 1. 概览
 
@@ -15,8 +13,6 @@ title: 知识树元数据（system/knowledge）
 | meta_id | `DIR-SYSTEM-KNOWLEDGE` |
 | layer_scope | system |
 | perspectives | business, product, application, data, technical |
-
----
 
 ## 2. 子目录
 
@@ -30,8 +26,6 @@ title: 知识树元数据（system/knowledge）
 
 **子文件**：[README.md](README.md) · [overview/](overview/README.md)
 
----
-
 ## 3. 角色
 
 | 字段 | 值 |
@@ -39,8 +33,6 @@ title: 知识树元数据（system/knowledge）
 | is_single_source_of_truth | true（系统层实体与叙事 SSOT） |
 | upstream | 公司级 VC/BD/BSD(L1)/CAP/PL/SLN/TPL 首次定义 |
 | downstream | API/TBL/MW/CMP 及实现映射 |
-
----
 
 ## 4. 索引
 
@@ -50,15 +42,11 @@ title: 知识树元数据（system/knowledge）
 | entity_index | [index.md](index.md) |
 | design / governance | [knowledge-governance](../../agent/knowledge/knowledge-governance.md) |
 
----
-
 ## 5. 系统层 BD 落盘例外
 
 路径契约见 [knowledge-governance](../../agent/knowledge/knowledge-governance.md)。视角路径 SSOT：[business-meta §4](business/business-meta.md#4-bd-落盘例外)。
 
 `okf_lib.entity_relpath(bundle="system", BD)` → `knowledge/business/{id}.md`
-
----
 
 ## 6. 关联文档
 
@@ -68,8 +56,6 @@ title: 知识树元数据（system/knowledge）
 | [knowledge-governance](../../agent/knowledge/knowledge-governance.md) | 系统库设计契约 |
 | BD-* / BSD-L1-* / PL-* / SLN-* / TPL-* / CAP-* / VC-* | 公司层实体 SSOT（上层 reference） |
 | [naming-conventions](../../agent/knowledge/naming-conventions.md) | 命名 SSOT |
-
----
 
 ## 7. docs-build meta_read_order
 
