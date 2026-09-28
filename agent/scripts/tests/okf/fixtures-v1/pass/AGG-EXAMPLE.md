@@ -3,7 +3,7 @@ type: Aggregate
 title: 示例聚合
 description: null
 tags: [business, AGG]
-timestamp: "2026-06-21T00:00:00Z"
+timestamp: "2026-06-21T00:00:00+08:00"
 id: AGG-EXAMPLE
 perspective: business
 hierarchy: AGG

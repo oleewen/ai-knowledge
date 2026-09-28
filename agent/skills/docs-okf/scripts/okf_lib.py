@@ -40,8 +40,8 @@ VALID_PERSPECTIVES = frozenset({"business", "product", "application", "data", "t
 # OKF v1 合法 layer_scope 枚举（与全仓现状一致：application / system / company）
 VALID_LAYER_SCOPES = frozenset({"application", "system", "company"})
 
-# ISO8601 时间戳正则（OKF v1 强制 UTC + Z 后缀）
-ISO8601_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
+# ISO8601 时间戳正则（OKF v1 本仓统一北京时间 +08:00）
+ISO8601_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+08:00$")
 
 
 def find_repo_root(start: Path) -> Path:

@@ -3,7 +3,7 @@ type: Business Rule
 title: 示例业务规则
 description: null
 tags: [product, BR]
-timestamp: "2026-06-24T00:00:00Z"
+timestamp: "2026-06-24T00:00:00+08:00"
 id: BR-EXAMPLE
 perspective: product
 hierarchy: BR

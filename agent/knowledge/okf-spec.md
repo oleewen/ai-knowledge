@@ -3,7 +3,7 @@ type: Knowledge Governance
 title: OKF 共享规范
 description: company、system、application 三层共享的知识文件分类与 OKF 概念实体规范。
 tags: [okf, governance, shared-spec]
-timestamp: "2026-06-25T00:00:00Z"
+timestamp: "2026-06-25T00:00:00+08:00"
 ---
 <!-- markdownlint-disable-next-line MD025 -->
 # OKF 共享规范
@@ -86,7 +86,7 @@ timestamp: "2026-06-25T00:00:00Z"
 | 实体概念核心键 | `title` | 字符串 | ✅ | 中文名（实体显示名）；非实体文档中也广泛使用 | `计费业务域` / `应用知识库` |
 | 实体概念核心键 | `description` | 字符串 \| null | ✅ | 业务定义短句；无定义时填 `null` | `统一管理主数据定义。` / `null` |
 | 实体概念核心键 | `tags` | 字符串数组 | ✅ | per-entity 必含 `[<perspective>, <hierarchy>]`；其他文档可按用途扩展 | `[business, BD]` / `[okf, governance, shared-spec]` |
-| 实体概念核心键 | `timestamp` | ISO8601 字符串 | ✅ | 形如 `2026-06-25T00:00:00Z` | `"2026-06-25T00:00:00Z"` |
+| 实体概念核心键 | `timestamp` | ISO8601 字符串 | ✅ | 形如 `2026-06-25T00:00:00+08:00` | `"2026-06-25T00:00:00+08:00"` |
 | 实体概念核心键 | `id` | 字符串 | ✅ | 全局唯一 ID，格式：`<hierarchy>-<name>` | `BD-EXAMPLE` / `API-EXAMPLE` |
 | 实体概念核心键 | `perspective` | 枚举 | ✅ | 与实体所属视角一致 | `business` / `product` / `application` / `data` / `technical` |
 | 实体概念核心键 | `hierarchy` | 枚举 | ✅ | 与 `type` 一一对应 | `VC` / `BD` / `CAP` / `PL` / `SLN` / `PD` / `SYS` / `MDG` / `TPL` / `BSD` / `BC` / `AGG` / `AB` / `PM` / `BP` / `FT` / `UC` / `BR` / `APP` / `MS` / `DS` / `ENT` / `TSD` / `API` / `TBL` / `MW` / `CMP` |
@@ -353,7 +353,7 @@ example 与叙事/目录组织更密；company 语义 → application 实现的�
 ### 11.2 tags 与 timestamp
 
 - `tags` 必含 `[<perspective>, <hierarchy>]`
-- `timestamp` 使用 ISO8601 UTC 格式：`YYYY-MM-DDTHH:MM:SSZ`
+- `timestamp` 使用 ISO8601 北京时间格式：`YYYY-MM-DDTHH:MM:SS+08:00`
 
 ### 11.3 演进
 

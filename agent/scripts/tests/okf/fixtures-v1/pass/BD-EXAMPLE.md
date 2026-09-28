@@ -3,7 +3,7 @@ type: Business Domain
 title: 示例业务域
 description: 仅用于演示业务视角数据结构（示例）。
 tags: [business, BD]
-timestamp: "2026-06-21T00:00:00Z"
+timestamp: "2026-06-21T00:00:00+08:00"
 id: BD-EXAMPLE
 perspective: business
 hierarchy: BD

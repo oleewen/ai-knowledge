@@ -3,7 +3,7 @@ type: Business Subdomain
 title: 示例业务子域
 description: 仅用于演示业务视角数据结构（示例）。
 tags: [business, BSD]
-timestamp: "2026-06-21T00:00:00Z"
+timestamp: "2026-06-21T00:00:00+08:00"
 id: BSD-EXAMPLE
 perspective: business
 hierarchy: BSD

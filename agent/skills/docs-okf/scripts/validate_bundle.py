@@ -216,7 +216,7 @@ class Validator:
         if timestamp is not None and str(timestamp) != "":
             if not okf_lib.ISO8601_RE.match(str(timestamp)):
                 self.error(
-                    f"R9 timestamp 非 ISO8601（YYYY-MM-DDTHH:MM:SSZ）: {timestamp!r} in {relpath}"
+                    f"R9 timestamp 非 ISO8601（YYYY-MM-DDTHH:MM:SS+08:00）: {timestamp!r} in {relpath}"
                 )
 
     def _check_sections(self, path: Path, relpath: str, body: str) -> None:

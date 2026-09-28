@@ -8,7 +8,7 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO = SCRIPT_DIR.parents[1]
 BUNDLE = REPO / "system"
-TS = "2026-06-21T00:00:00Z"
+TS = "2026-06-21T00:00:00+08:00"
 
 ENTITIES: list[tuple[str, str]] = [
     (

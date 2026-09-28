@@ -3,7 +3,7 @@ type: Feature
 title: 示例功能
 description: null
 tags: [product, FT]
-timestamp: "2026-06-21T00:00:00Z"
+timestamp: "2026-06-21T00:00:00+08:00"
 id: FT-EXAMPLE
 perspective: product
 hierarchy: FT

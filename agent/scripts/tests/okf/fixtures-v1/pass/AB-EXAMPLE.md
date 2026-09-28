@@ -3,7 +3,7 @@ type: Ability
 title: 示例业务能力
 description: null
 tags: [business, AB]
-timestamp: "2026-06-21T00:00:00Z"
+timestamp: "2026-06-21T00:00:00+08:00"
 id: AB-EXAMPLE
 perspective: business
 hierarchy: AB

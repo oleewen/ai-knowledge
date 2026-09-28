@@ -16,7 +16,7 @@ type: Business Domain
 title: 示例业务域
 description: 示例
 tags: [business, BD]
-timestamp: "2026-06-16T00:00:00Z"
+timestamp: "2026-06-16T00:00:00+08:00"
 id: BD-EXAMPLE
 perspective: business
 hierarchy: BD
@@ -98,7 +98,7 @@ def test_validator_no_downstream_bundle_fallback() -> None:
             "title: 示例用例\n"
             "description: 示例\n"
             "tags: [product, UC]\n"
-            'timestamp: "2026-07-18T00:00:00Z"\n'
+            'timestamp: "2026-07-18T00:00:00+08:00"\n'
             "id: UC-EXAMPLE\n"
             "perspective: product\n"
             "hierarchy: UC\n"
@@ -162,7 +162,7 @@ def test_validator_cross_bundle_missing_still_warns() -> None:
             "title: 示例用例\n"
             "description: 示例\n"
             "tags: [product, UC]\n"
-            'timestamp: "2026-07-18T00:00:00Z"\n'
+            'timestamp: "2026-07-18T00:00:00+08:00"\n'
             "id: UC-EXAMPLE\n"
             "perspective: product\n"
             "hierarchy: UC\n"
