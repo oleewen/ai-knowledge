@@ -25,6 +25,7 @@ title: application INDEX-GUIDE
 * **角色**: 应用知识库；实现级实体（API/TBL/MW/CMP）SSOT + 五视角映射
 * **栈**: Markdown、YAML
 * **范围**: `knowledge/` · `solutions/` · `analysis/` · `requirements/` · `adr/` · `changelogs/`
+* **规模**（本轮 full/d3，排除 `.agents`）：约 **62** 文件（`.md` 59 · `.yaml` 1 · `viz.html` 1）
 
 ---
 
@@ -47,7 +48,7 @@ application/
 
 ### 2.3 包结构
 
-[未索引] 本层为 Markdown/YAML 知识库，无应用包名树。
+不适用：本层为 Markdown/YAML 知识库，无应用包名 / FQCN 树（实现类名写在实体正文，非本索引展开）。
 
 ### 2.4 文档目录
 
@@ -63,17 +64,19 @@ application/
 
 | 小节 | 状态 | 说明 |
 |------|------|------|
-| 3.1 服务接口 | [未索引] | 无 Dubbo/gRPC |
-| 3.2 HTTP 接口 | [未索引] | 无 REST |
-| 3.3 定时任务 | [未索引] | 无内嵌调度 |
-| 3.4 消息队列 | [未索引] | 无 Topic/消费者 |
+| 3.1 服务接口 | 不适用 | 无 Dubbo/gRPC 运行时；接口形状 ∈ `API-*` 实体 |
+| 3.2 HTTP 接口 | 不适用 | 无 REST 服务；人类读 Markdown / 本地 `viz.html` |
+| 3.3 定时任务 | 不适用 | 无内嵌调度 |
+| 3.4 消息队列 | 不适用 | 无 Topic/消费者 |
 
 ### 3.2 CLI / Slash 入口
 
 | 入口 | 类型 | 路径/命令 | 说明 |
 |------|------|-----------|------|
 | `/docs-okf` | Slash | [docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md) | 刷新本层 `index.md` / `viz.html` |
-| `/docs-build` · `/docs-indexing` | Slash | 见 [agent/skills/README.md](../agent/skills/README.md) | 实体与九章 |
+| `/docs-indexing` | Slash | [docs-indexing/SKILL.md](../agent/skills/docs-indexing/SKILL.md) | 九章骨架（须保留 entity-index） |
+| `/docs-build` | Slash | [docs-build/SKILL.md](../agent/skills/docs-build/SKILL.md) | 刷新 §4.5 视角导航块 |
+| `/docs-install` | Slash | [docs-install/SKILL.md](../agent/skills/docs-install/SKILL.md) | standalone / central 装机 |
 
 ---
 
@@ -81,7 +84,7 @@ application/
 
 ### 4.1 业务术语
 
-[未索引] 术语 SSOT ∈ [glossary.md](../agent/knowledge/glossary.md) / [knowledge-governance.md](../agent/knowledge/knowledge-governance.md)；本层不重复表。
+不适用贴表：术语 SSOT ∈ [glossary.md](../agent/knowledge/glossary.md) / [knowledge-governance.md](../agent/knowledge/knowledge-governance.md)；本层只引不抄。
 
 ### 4.2 聚合根（知识组织）
 
@@ -93,11 +96,11 @@ application/
 
 ### 4.3 领域服务
 
-[未索引] 无运行时领域服务；协作能力见根 [INDEX-GUIDE.md](../INDEX-GUIDE.md) §4.3 与本层 Skill 入口（§3.2 / §9.3）。
+不适用运行时服务：协作能力见根 [INDEX-GUIDE.md](../INDEX-GUIDE.md) §4.3 与本层 Skill 入口（§3.2 / §9.3）。
 
 ### 4.4 领域事件
 
-[未索引] 无运行时领域事件；索引运行见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)。
+不适用运行时事件：索引运行见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)。
 
 ### 4.5 视角导航
 
@@ -121,7 +124,19 @@ application/
 
 ## 五、业务逻辑
 
-[未索引] 本层无运行时状态机 / 枚举实现；SDD 正文 ∈ `solutions/` · `analysis/` · `requirements/`，不在此展开。API/TBL 实体在 `knowledge/`，不承载运行时 OpenAPI/DDL 全文（可链外部）。
+不适用运行时状态机 / 枚举。SDD / 本层首次实体样例：
+
+| 路径 | 说明 |
+|------|------|
+| [solutions/SOLUTION-EXAMPLE.md](solutions/SOLUTION-EXAMPLE.md) | 方案样例 |
+| [analysis/](analysis/README.md) | 分析入口 |
+| [requirements/REQUIREMENT-EXAMPLE/](requirements/REQUIREMENT-EXAMPLE/) | 需求样例目录 |
+| [adr/](adr/README.md) | ADR |
+| `knowledge/application/MS-EXAMPLE/API-EXAMPLE.md` | API SSOT 样例 |
+| `knowledge/data/DS-EXAMPLE/TBL-EXAMPLE.md` | TBL 样例 |
+| `knowledge/technical/MW-EXAMPLE/` · `CMP-EXAMPLE` | MW/CMP 样例 |
+
+OpenAPI/DDL 全文不在九章展开（实体可链外部）。
 
 ---
 
@@ -137,15 +152,15 @@ application/
 
 ### 6.2 实体映射
 
-[未索引] 字段与 ID 链 SSOT ∈ 治理 / 各视角 README；不在此贴表。
+不适用贴表：字段与 ID 链 SSOT ∈ 治理 / 各视角 README；本层首次样例见 §5。
 
 ### 6.3 关系映射
 
-[未索引] 跨视角以 ID / YAML 字段维护；见 [knowledge/README.md](knowledge/README.md)。
+跨视角以 ID + 关系动词维护；入口 [knowledge/README.md](knowledge/README.md)。上游 BD/SYS/MDG/TSD 等纯 ID → 公司/系统 SSOT。
 
 ### 6.4 SQL 索引
 
-[未索引] 无 RDBMS 表结构；`TBL-*` 为字段形状样例，非真实 DDL。
+不适用真实 DDL：`TBL-*` 为字段形状样例，非库表建表脚本。
 
 ---
 
@@ -153,7 +168,7 @@ application/
 
 ### 7.1 配置项
 
-[未索引] 无运行时配置中心键值表。
+不适用运行时配置中心键值表。装机相关：仓库根 [`.docsconfig`](../.docsconfig)；本层 [knowledge-links.yaml](knowledge-links.yaml)（现 `links: []`）；mode 入口 [README-s.md](README-s.md) · [README-c.md](README-c.md)。
 
 ### 7.2 环境差异（接入模式）
 
@@ -161,7 +176,7 @@ standalone / central 差异与安装约定见仓库根 [INDEX-GUIDE.md](../INDEX
 
 ### 7.3 敏感信息
 
-[未索引] 本层文档不承载密钥；勿写入真实凭证。
+不适用承载密钥：本层文档禁止写入真实凭证；样例用占位符。
 
 ---
 
@@ -169,11 +184,15 @@ standalone / central 差异与安装约定见仓库根 [INDEX-GUIDE.md](../INDEX
 
 ### 8.1 覆盖范围
 
-[未索引] 本轮为结构对齐薄版，未做全量文件枚举；范围见 §1.2。
+本轮 **full / depth 3** 覆盖 `application/` 可读文本（约 62 文件）。九章已消减 `[未索引]`；实体台账仍以各视角 README 与 per-entity 为准。
 
 ### 8.2 排除列表
 
-[未索引] 未单列排除模式；生成物以对应 README 与 git 为准。
+| 排除 | 原因 |
+|------|------|
+| `application/.agents/` | Agent 软链树，非知识正文 |
+| `.git/` · IDE · `node_modules/` | 常规 |
+| `viz.html` 内嵌快照 | 生成物；源以 Markdown 为准 |
 
 ### 8.3 维护规则
 
@@ -197,7 +216,11 @@ standalone / central 差异与安装约定见仓库根 [INDEX-GUIDE.md](../INDEX
 
 ### 9.2 相关项目
 
-[未索引] 联邦登记在系统/公司 `knowledge-links.yaml`；本层无槽位目录。
+| 关系 | 状态 |
+|------|------|
+| 本层 `knowledge-links.yaml` | **空**（`links: []`；可挂 `type: parent` → system） |
+| 联邦槽位 | **无**本层槽位目录；登记在公司/系统 `knowledge-links.yaml` |
+| 同仓邻层 | [system/](../system/README.md) · [company/](../company/README.md) |
 
 ### 9.3 工具链
 

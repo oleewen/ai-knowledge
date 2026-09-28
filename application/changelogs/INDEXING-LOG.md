@@ -9,4 +9,5 @@ title: INDEXING-LOG
 
 | indexing_finished_ms | indexed_at | mode | depth | since_ms | output_path | file_count | duration_ms | summary |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1790589316653 | 2026-09-28T09:55:16Z | full | 3 | 0 | application/INDEX-GUIDE.md | 62 | 30 | full d3 application：消减占位；保留 entity-index；links=[] |
 | 1781755355802 | 2026-06-18T04:02:35Z | full | 3 | 0 | index.md | 513 | 120000 | full d3 根索引刷新（quick-start、统计、CHANGE-LOG 联动） |

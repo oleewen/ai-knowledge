@@ -8,4 +8,5 @@ title: INDEXING-LOG
 
 | indexing_finished_ms | indexed_at | mode | depth | since_ms | output_path | file_count | duration_ms | summary |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1790589207832 | 2026-09-28T09:53:27Z | full | 3 | 0 | company/INDEX-GUIDE.md | 83 | 22 | full d3 company：消减 [未索引]；保留 entity-index；links=[] |
 | 1782099595327 | 2026-06-22T03:39:55Z | full | 3 | 0 | company/index.md | 72 | 180000 | full d3 company 索引 |

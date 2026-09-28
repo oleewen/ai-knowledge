@@ -25,6 +25,7 @@ title: company INDEX-GUIDE
 * **角色**: 公司知识库；`knowledge/` = VC/BD/BSD(L1)/CAP/PL/SLN/TPL SSOT（无 BSD(L2)/PD/SYS/MDG）；`system-slots/system-{NAME}` = 联邦槽位（软链）  
 * **栈**: Markdown、YAML  
 * **范围**: `knowledge/` · `solutions/` · `analysis/` · `adr/` · `system-slots/` · `changelogs/`  
+* **规模**（本轮 full/d3，排除 `.agents`）：约 **83** 文件（`.md` 80 · `.yaml` 1 · `viz.html` 1）  
 
 ---
 
@@ -53,7 +54,7 @@ company/
 
 ### 2.3 包结构
 
-[未索引] 本层为 Markdown/YAML 知识库，无应用包名树。
+不适用：本层为 Markdown/YAML 知识库，无应用包名 / FQCN 树。
 
 ### 2.4 文档目录
 
@@ -69,16 +70,19 @@ company/
 
 | 小节 | 状态 | 说明 |
 |------|------|------|
-| 3.1 服务接口 | [未索引] | 无 Dubbo/gRPC |
-| 3.2 HTTP 接口 | [未索引] | 无 REST |
-| 3.3 定时任务 | [未索引] | 无内嵌调度 |
-| 3.4 消息队列 | [未索引] | 无 Topic/消费者 |
+| 3.1 服务接口 | 不适用 | 无 Dubbo/gRPC |
+| 3.2 HTTP 接口 | 不适用 | 无 REST（人类读 Markdown / 本地 `viz.html`） |
+| 3.3 定时任务 | 不适用 | 无内嵌调度 |
+| 3.4 消息队列 | 不适用 | 无 Topic/消费者 |
 
 ### 3.2 CLI / Slash 入口
 
 | 入口 | 类型 | 路径/命令 | 说明 |
 |------|------|-----------|------|
 | `/docs-okf` | Slash | [docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md) | 刷新本层 `index.md` / `viz.html` |
+| `/docs-indexing` | Slash | [docs-indexing/SKILL.md](../agent/skills/docs-indexing/SKILL.md) | 九章骨架（须保留 entity-index） |
+| `/docs-build` | Slash | [docs-build/SKILL.md](../agent/skills/docs-build/SKILL.md) | 刷新 §4.5 视角导航块 |
+| `/docs-link` · `/docs-pull` | Slash | `agent/skills/docs-link` · `docs-pull` | 联邦建联与槽位同步 |
 
 ---
 
@@ -86,7 +90,7 @@ company/
 
 ### 4.1 业务术语
 
-[未索引] 术语 SSOT ∈ [glossary.md](../agent/knowledge/glossary.md) / [knowledge-governance.md](../agent/knowledge/knowledge-governance.md)；本层不重复表。
+不适用贴表：术语 SSOT ∈ [glossary.md](../agent/knowledge/glossary.md) / [knowledge-governance.md](../agent/knowledge/knowledge-governance.md)；本层只引不抄。
 
 ### 4.2 聚合根（知识组织）
 
@@ -99,11 +103,11 @@ company/
 
 ### 4.3 领域服务
 
-[未索引] 无运行时领域服务；协作能力见根 [INDEX-GUIDE.md](../INDEX-GUIDE.md) §4.3 与本层 Skill 入口（§3.2 / §9.3）。
+不适用运行时服务：协作能力见根 [INDEX-GUIDE.md](../INDEX-GUIDE.md) §4.3 与本层 Skill 入口（§3.2 / §9.3）。
 
 ### 4.4 领域事件
 
-[未索引] 无运行时领域事件；索引运行见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)。
+不适用运行时事件：索引运行见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)；归档见 `system-slots/changelogs/`。
 
 ### 4.5 视角导航
 
@@ -127,7 +131,15 @@ company/
 
 ## 五、业务逻辑
 
-[未索引] 本层无运行时状态机 / 枚举实现；SDD 上游正文 ∈ `solutions/` · `analysis/`，不在此展开。
+不适用运行时状态机 / 枚举。SDD 上游样例：
+
+| 路径 | 说明 |
+|------|------|
+| [solutions/SOLUTION-EXAMPLE.md](solutions/SOLUTION-EXAMPLE.md) | 方案样例 |
+| [analysis/ANALYSIS-EXAMPLE.md](analysis/ANALYSIS-EXAMPLE.md) | 分析样例 |
+| [adr/CONTEXT.md](adr/CONTEXT.md) | ADR 索引入口 |
+
+流程叙事章 ∈ 各视角 `knowledge/*/chapters/`（如 business 六章）；不在九章展开正文。
 
 ---
 
@@ -144,21 +156,27 @@ company/
 
 ### 6.2 实体映射
 
-[未索引] 字段与 ID 链 SSOT ∈ 治理 / 各视角 README；不在此贴表。
+不适用贴表：字段与 ID 链 SSOT ∈ 治理 / 各视角 README；样例实体如 `VC-EXAMPLE` / `BD-EXAMPLE` 落在 `knowledge/business/`。
 
 ### 6.3 关系映射
 
-[未索引] 跨视角以 ID / YAML 字段维护；见 [knowledge/README.md](knowledge/README.md)。
+跨视角以 ID + 关系动词（`implements_to` / `maps_to` / `supports_to` 等）维护；入口 [knowledge/README.md](knowledge/README.md) · [glossary.md](../agent/knowledge/glossary.md)。
 
 ### 6.4 SQL 索引
 
-[未索引] 无 RDBMS 表结构。
+不适用：无 RDBMS 表结构。
 
 ---
 
 ## 七、配置中心
 
-[未索引] 本层无运行时配置中心；装机与 `.docsconfig` 见仓库根与 `/docs-install`。
+不适用运行时配置中心。装机与联邦：
+
+| 项 | 落点 |
+|------|------|
+| 文档根 / 类型 | 仓库根 [`.docsconfig`](../.docsconfig)（`DOC_DIR=company`，`KNOWLEDGE_TYPE=meta`） |
+| 建联清单 | [knowledge-links.yaml](knowledge-links.yaml)（现 `links: []`） |
+| 装机 | `/docs-install` · `/docs-link` |
 
 ---
 
@@ -166,11 +184,16 @@ company/
 
 ### 8.1 覆盖范围
 
-[未索引] 本轮为结构对齐薄版，未做全量文件枚举；范围见 §1.2。
+本轮 **full / depth 3** 覆盖 `company/` 可读文本（约 83 文件）。九章已消减 `[未索引]`；实体台账仍以各视角 README 与 per-entity 为准，不在此贴全表。
 
 ### 8.2 排除列表
 
-[未索引] 未单列排除模式；生成物 / 槽位内容以对应 README 与 git 为准。
+| 排除 | 原因 |
+|------|------|
+| `company/.agents/` | Agent 软链树，非知识正文 |
+| `.git/` · IDE · `node_modules/` | 常规 |
+| 槽位目标仓正文 | 经软链外指；以对端仓 INDEX / git 为准 |
+| `viz.html` 内嵌快照 | 生成物；源以 Markdown 为准 |
 
 ### 8.3 维护规则
 
@@ -194,7 +217,11 @@ company/
 
 ### 9.2 相关项目
 
-[未索引] 上下游系统仓由 `knowledge-links.yaml` / `system-slots/` 登记；当前以槽位为准。
+| 关系 | 状态 |
+|------|------|
+| `knowledge-links.yaml` child | **空**（`links: []`，合法未挂载态） |
+| `system-slots/system-*` | **无**现成软链；仅有槽位 README / `changelogs/` |
+| 同仓邻层 | [system/](../system/README.md) · [application/](../application/README.md)（非联邦 path，开发元库并列） |
 
 ### 9.3 工具链
 

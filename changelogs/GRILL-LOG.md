@@ -4,6 +4,4 @@
 
 ---
 
-## 开放代办
-
-- [ ] **I②** 对 company / system / application 各跑一轮 `/docs-indexing`，消减 INDEX `[未索引]`（mode/depth 执行时收口）
+## 当前无开放代办
