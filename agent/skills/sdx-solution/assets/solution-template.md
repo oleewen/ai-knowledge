@@ -123,7 +123,7 @@ tags: []
 | -------- | ------ | ---- | -------- | ------ |
 | Q-1      |        |      |          | 待确认 |
 
-**技术决策索引**：见 [{DOC_DIR}/adr/CONTEXT.md](../adr/CONTEXT.md)（技术/架构选型不入上表；协议 [sdx-adr-protocol](../../../references/sdx-adr-protocol.md)）。
+**技术决策索引**：见 `{DOC_DIR}/adr/CONTEXT.md`（技术/架构选型不入上表；协议 [sdx-adr-protocol](../../../references/sdx-adr-protocol.md)）。
 
 ---
 

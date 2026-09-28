@@ -17,7 +17,7 @@ tags: ["DSD"]
 
 > 读者：**架构师**（主笔与验收）；**分析、产品、研发**参评可行性与范围。
 > 写法：应用架构、API详细设计、业务逻辑设计、数据访问设计、非功能设计，不写内部调用细节。
-> **§1 与 ASD**：下列「设计概述」**章节结构与字段**与 [asd-template.md §1](../../../sdx-architect/assets/asd-template.md) 对齐；可与 ASD 同源复制，或与 ASD §1 **保持可追溯一致**（若仅摘要须说明差异）。
+> **§1 与 ASD**：下列「设计概述」**章节结构与字段**与 [asd-template.md §1](../../sdx-architect/assets/asd-template.md) 对齐；可与 ASD 同源复制，或与 ASD §1 **保持可追溯一致**（若仅摘要须说明差异）。
 
 ---
 
@@ -311,7 +311,7 @@ CREATE INDEX idx_table_name2_name ON table_name2(name);
 
 ### 3.2 质量自查表 (Self-Check)
 
-<!-- 本节与主文 **§1–§3** 对齐；§1「设计概述」与 ASD §1 / [asd-template §1](../../../sdx-architect/assets/asd-template.md) 对齐。-->
+<!-- 本节与主文 **§1–§3** 对齐；§1「设计概述」与 ASD §1 / [asd-template §1](../../sdx-architect/assets/asd-template.md) 对齐。-->
 
 - [ ] **结构与占位**
   *通过标准*：`## 1`–`## 3` 主章节齐全；Mermaid 可渲染；不适用处已标注。

@@ -207,7 +207,7 @@ MVP1（{短名}） ──▶ MVP2（{短名}） ──▶ MVP3（{短名}）
 
 <!-- 上游 SOLUTION、知识库路径；技术决策索引见 ../adr/CONTEXT.md（及具体 ADR-*.md） -->
 
-- 技术决策索引：[{DOC_DIR}/adr/CONTEXT.md](../adr/CONTEXT.md)
+- 技术决策索引：`{DOC_DIR}/adr/CONTEXT.md`
 
 ### 6.3 变更历史
 
