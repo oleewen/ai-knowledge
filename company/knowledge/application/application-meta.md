@@ -4,9 +4,7 @@ title: 应用视角元数据（company/knowledge/application）
 ---
 # 应用视角元数据（company/knowledge/application）
 
-公司级 **SLN**（解决方案）SSOT。
-
----
+**结论**：SLN（解决方案）SSOT；与 PL 经 `maps_to_pl_id` 1:1 同建。
 
 ## 1. 概览
 
@@ -15,17 +13,13 @@ title: 应用视角元数据（company/knowledge/application）
 | meta_id | `DIR-COMPANY-KNOWLEDGE-APPLICATION` |
 | 视角 | application |
 | 层级范围 | company |
-| 说明 | SLN=解决方案（对应 PL）；与 PL 经 `maps_to_pl_id` 1:1 同建。 |
-
----
+| 说明 | SLN=解决方案（对应 PL）；与 PL 1:1 同建。 |
 
 ## 2. 层级链
 
 | 链序 | 层级代码 | 说明 |
 | --- | --- | --- |
 | 1 | SLN | 解决方案 |
-
----
 
 ## 3. 层定义
 
@@ -35,15 +29,11 @@ title: 应用视角元数据（company/knowledge/application）
 
 落盘：`application/SLN-{NAME}.md` 平铺。
 
----
-
 ## 4. 字段（OKF）
 
 | 层级 | 字段 | 说明 |
 | --- | --- | --- |
 | SLN | `maps_to_pl_id` | **必填**；与 PL 同建 1:1 |
-
----
 
 ## 5. 跨视角引用
 
@@ -51,8 +41,6 @@ title: 应用视角元数据（company/knowledge/application）
 | --- | --- | --- |
 | SLN.maps_to_pl_id | PL.id | 方案对标产品线（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
 | 系统 SYS.parent_id | SLN.id | 系统归属解决方案 |
-
----
 
 ## 6. 关联文档
 

@@ -4,9 +4,7 @@ title: 知识树元数据（company/knowledge）
 ---
 # 知识树元数据（company/knowledge）
 
-公司层五视角知识树元数据 SSOT。实例索引：[index.md](index.md)。
-
----
+**结论**：公司层五视角知识树元数据 SSOT。实例：[index.md](index.md)。
 
 ## 1. 概览
 
@@ -15,8 +13,6 @@ title: 知识树元数据（company/knowledge）
 | meta_id | `DIR-COMPANY-KNOWLEDGE` |
 | layer_scope | company |
 | perspectives | business, product, application, data, technical |
-
----
 
 ## 2. 子目录
 
@@ -30,8 +26,6 @@ title: 知识树元数据（company/knowledge）
 
 **子文件**：[README.md](README.md) · [overview/](overview/README.md)
 
----
-
 ## 3. 角色
 
 | 字段 | 值 |
@@ -40,18 +34,13 @@ title: 知识树元数据（company/knowledge）
 | upstream | —（联邦顶层） |
 | downstream | 系统层、应用层（引用公司 ID） |
 
----
-
 ## 4. 索引
 
 | 类型 | 路径 |
 | --- | --- |
 | company_index | index.md（库外） |
 | entity_index | [index.md](index.md) |
-| design | knowledge-governance（agent/knowledge） |
-| governance | knowledge-governance（Agent 元知识） |
-
----
+| design / governance | [knowledge-governance](../../agent/knowledge/knowledge-governance.md) |
 
 ## 5. 公司层 BD 落盘
 
@@ -61,12 +50,10 @@ title: 知识树元数据（company/knowledge）
 | system | `BD-{NAME}.md` | 视角根 reference |
 | application | `BD-{NAME}.md` | 视角根 reference |
 
----
-
 ## 6. 关联文档
 
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 五视角架构入口 |
-| knowledge-governance（agent/knowledge） | 公司库设计契约 |
-| naming-conventions（Agent 元知识） | 命名 SSOT |
+| [knowledge-governance](../../agent/knowledge/knowledge-governance.md) | 公司库设计契约 |
+| [naming-conventions](../../agent/knowledge/naming-conventions.md) | 命名 SSOT |
