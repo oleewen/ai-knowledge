@@ -210,7 +210,7 @@ def test_entity_relpath_system_bsd_by_parent():
         okf_lib.entity_relpath(
             "business", "BSD-EXAMPLE", parent_id="BD-EXAMPLE", bundle="system"
         )
-        == "knowledge/business/BSD-EXAMPLE.md"
+        == "knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md"
     )
     assert (
         okf_lib.entity_relpath(

@@ -12,8 +12,8 @@ layer_scope: system
 ---
 # Relations
 
-- parent: [BSD-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md)
-- aggregates:
+- implements_to: [BSD-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md)
+- implemented_by:
   - [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
 
 # Cross-perspective

@@ -12,11 +12,11 @@ layer_scope: system
 ---
 # Relations
 
-- parent: [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
+- implements_to: [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
 
 # Cross-perspective
 
-- implemented_by_app_id: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
+- (none)
 
 # Details
 

@@ -60,8 +60,8 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: [BSD-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md)
-- aggregates:
+- implements_to: [BSD-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md)
+- implemented_by:
   - [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
 
 ## 跨视角
@@ -93,8 +93,8 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md)
-- abilities:
+- implements_to: [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md)
+- implemented_by:
   - [AB-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AB-EXAMPLE.md)
 
 ## 跨视角
@@ -126,11 +126,11 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
+- implements_to: [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
 
 ## 跨视角
 
-- implemented_by_app_id: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
+- (none)
 
 ## 详细说明
 
@@ -158,7 +158,7 @@ layer_scope: system
 ## 关系
 
 - parent: PD-EXAMPLE
-- depends_pm_ids: []
+- depends_to: []
 
 ## 跨视角
 
@@ -195,7 +195,7 @@ layer_scope: system
 
 ## 跨视角
 
-- invokes_api_ids: [API-EXAMPLE](/knowledge/application/MS-EXAMPLE/API-EXAMPLE.md)
+- supported_by: [API-EXAMPLE](/knowledge/application/MS-EXAMPLE/API-EXAMPLE.md)
 - realizes_use_case_ids: [UC-EXAMPLE](/knowledge/product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md)
 
 ## 详细说明
@@ -227,7 +227,7 @@ layer_scope: system
 
 ## 跨视角
 
-- map_to_api_id: [API-EXAMPLE](/knowledge/application/MS-EXAMPLE/API-EXAMPLE.md)
+- maps_to: [API-EXAMPLE](/knowledge/application/MS-EXAMPLE/API-EXAMPLE.md)
 
 ## 详细说明
 
@@ -330,7 +330,7 @@ layer_scope: system
 
 ## 跨视角
 
-- owned_by_app_id: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
+- used_by: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
 
 ## 详细说明
 
@@ -361,7 +361,7 @@ layer_scope: system
 
 ## 跨视角
 
-- maps_to_aggregate_id: [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
+- maps_to: [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
 
 ## 详细说明
 

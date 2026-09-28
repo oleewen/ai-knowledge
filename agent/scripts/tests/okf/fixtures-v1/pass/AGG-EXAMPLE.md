@@ -12,8 +12,8 @@ layer_scope: system
 ---
 # Relations
 
-- parent: [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md)
-- abilities:
+- implements_to: [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md)
+- implemented_by:
   - [AB-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AB-EXAMPLE.md)
 
 # Cross-perspective

@@ -96,14 +96,14 @@ layer_scope: company
 
 ## 跨视角
 
-- 对标业务域：BD-EXAMPLE（经 BD.maps_to_pl_id）
-- 对标解决方案：SLN-EXAMPLE（经 SLN.maps_to_pl_id，AA）
+- 对标业务域：BD-EXAMPLE（经 maps_to）
+- 对标解决方案：SLN-EXAMPLE（经 SLN.maps_to，AA）
 
 ## 详细说明
 
 - target_users: [内部运营, 业务方]
 - definition_scope: local
-- 支撑 CAP：由 CAP.maps_to_bd_id + BD.maps_to_pl_id 推导；不列 PD ID
+- 支撑 CAP：由 CAP.maps_to + BD.maps_to 推导；不列 PD ID
 
 ## 依据与证据
 

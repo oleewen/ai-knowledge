@@ -346,8 +346,10 @@ def entity_relpath(
         if perspective == "business" and prefix == "BD":
             return f"knowledge/business/{id}.md"
         if perspective == "business" and prefix == "BSD":
+            # L1（parent=BD-* 或空）：knowledge/business/BSD-{L1}/BSD-{L1}.md
+            # L2（parent=BSD-*）：knowledge/business/{parent}/{id}/{id}.md
             if not parent_id or parent_id.startswith("BD-"):
-                return f"knowledge/business/{id}.md"
+                return f"knowledge/business/{id}/{id}.md"
             return f"knowledge/business/{parent_id}/{id}/{id}.md"
         if perspective == "product" and prefix == "PL":
             return f"knowledge/product/{id}.md"
