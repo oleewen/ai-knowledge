@@ -67,42 +67,42 @@ ID 前缀写作 `VC-` / `BD-` 等，语法见 [naming-conventions.md](naming-con
 
 ## 映射关系（常用）
 
-> 本表为跨视角映射字段语义 **SSOT**。源实体写目标实体 ID；边类方向见 [knowledge-governance.md § 核心映射](knowledge-governance.md#核心映射5a方向)。他处（governance / `*-meta.md`）只引用，不复制全文。
+> 本表为关系字段语义 **SSOT**。字段名短化；目标类型靠 ID 前缀。边类方向见 [knowledge-governance.md § 核心映射](knowledge-governance.md#核心映射5a方向)。他处（governance / `*-meta.md`）只引用，不复制全文。  
+> **总则**：不设单侧 SSOT；关系两边均必填（树根省略 `parent` 除外）。混列目标靠前缀辨型。
 
-| 关系 | 含义 |
+### 动词族
+
+| 动词对 | 场景 |
 | --- | --- |
-| implements_to_vc | **CAP-*** 实现哪个 **VC-***（单值必填）；VC 侧 `implemented_by_cap` 多值必填。 |
-| implemented_by_cap | **VC-*** 被哪些 **CAP-*** 实现（多值必填）。 |
-| supported_by_bd | **VC-*** 由哪些 **BD-*** 支撑（多值必填）。 |
-| supports_to_vc | **BD-*** 支撑哪个 **VC-***（单值必填）；VC 侧 `supported_by_bd` 多值必填。 |
-| maps_to_bsd | **CAP-*** 与**BSD-L1-*** 一对一映射（单值必填）；BSD(L1) 侧同名单值必填。 |
-| maps_to_cap | **BSD-L1-*** 与 **CAP-*** 一对一映射（单值必填）。 |
-| maps_to_pl | **BSD-L1-*** 对标 **PL-***（单值必填）；PL 侧 `maps_to_bsd` 同值。 |
-| maps_to_bsd | **PL-*** 对标**BSD-L1-***（单值必填）；BSD(L1) 侧 `maps_to_pl` 同值。 |
-| maps_to_pd | **BSD-L2-*** 对标 **PD-***（单值必填）；PD 侧 `maps_to_bsd` 同值。 |
-| maps_to_bsd | **PD-*** 对标**BSD-L2-***（单值必填）；BSD(L2) 侧 `maps_to_pd` 同值。 |
-| maps_to_pl_id | **SLN-*** 对标 **PL-***（必填同建）。 |
-| maps_to_sys_id | **PD-*** 对标的本库 **SYS-***（与 BSD(L2) 同建）。 |
-| implements_bc_ids | **APP-*** 实现哪些 **BC-***（AA implements BA；SSOT 在 AA）。 |
-| implements_agg_ids | **MS-*** 实现哪些 **AGG-***（AA implements BA）。 |
-| uses_mdg_ids / uses_ds_ids / uses_ent_ids / uses_tbl_ids | AA **uses** DA（`uses_mdg_ids` 挂 SYS；细粒度挂 APP/MS）。 |
-| uses_tsd_ids / uses_mw_ids / uses_tpl_ids / uses_cmp_ids | AA **uses** TA。 |
-| implemented_by_app_id | （过渡）限界上下文由哪个应用实现；SSOT 迁至 `implements_bc_ids`。 |
-| implemented_by_service_ids | （过渡）聚合由哪些 MS 实现；SSOT 迁至 `implements_agg_ids`。 |
-| relies_on_context_ids | 产品模块依赖哪些限界上下文。 |
-| depends_pm_ids | 消费方产品模块依赖的其它 PM（同 PD 或跨 PD）；主属仍看 `parent_id→PD`。 |
-| invokes_api_ids | 功能点调用的 API 列表。 |
-| apis | 能力（AB）绑定的 API 列表；跨视角引用见 `apis[].id` → API.id。 |
-| map_to_api_id | 用例（UC）映射到 API 的关系。 |
-| persisted_as_entity_ids | 聚合持久化对应的数据实体 ID。 |
-| maps_to_aggregate_id | 数据实体对应的业务聚合根。 |
-| owned_by_app_id / bound_app_id | （过渡）旧 DA/TA→AA 归属字段；SSOT 迁至 AA `uses_*`。 |
-| maps_to_cap_ids | （可选）系统或域能力映射到公司级 **CAP-***。 |
-| authoritative_mdg_id | 主数据权威域对应的 **MDG-*** 实体（DA 内边）。 |
-| implements_tpl_ids | **APP-*** 使用/实现的公司级 **TPL-***（归入 AA uses TA）。 |
-| parent_tsd_id | **MW-*** 归属的系统级 **TSD-*** 技术域。 |
-| related_ds_id | **MW-*** 关联的 **DS-*** 数据源（可选）。 |
-| parent_mw_id | **CMP-*** 挂载的 **MW-*** 中间件绑定。 |
-| parent_app_id | **CMP-*** 挂载的 **APP-***（与 `parent_mw_id` 二选一）。 |
-| maven_coordinates | **CMP-*** 的 Maven 坐标 `groupId:artifactId:version`。 |
-| parent_tpl_id | **TSD-*** 归属的公司级 **TPL-*** 平台能力。 |
+| `parent` / `children` | 仅**同类**树（BD↔BSD(L1)、BSD(L1)↔BSD(L2)） |
+| `implements_to` / `implemented_by` | 同视角不同类上下级（组成链）；及 SYS↔SLN、TSD↔TPL、MW↔TSD、CMP↔MW 等 |
+| `maps_to` / `maps_to` | 同级对标（两边同名；含同视角） |
+| `supports_to` / `supported_by` | 支撑（BD↔VC；APP↔BC；API→FT） |
+| `uses_to` / `used_by` | 使用（第五动词） |
+| `depends_to` / `depended_by` | PM↔PM 依赖（第六动词） |
+
+### 允许边（宿主 → 目标）
+
+| 字段（出边） | 宿主 → 目标（摘要） |
+| --- | --- |
+| `parent` / `children` | BSD(L1)↔BD；BSD(L2)↔BSD(L1) |
+| `implements_to` | CAP→VC；AGG→BC；AB→AGG；BC→BSD(L2)；PD→PL；PM→PD；FT→PM；FR→FT；UC\|BR→FR；BP→PD；APP→SYS；MS→APP；API→MS；DS→MDG；ENT→DS；TBL→ENT；SYS→SLN；TSD→TPL；MW→TSD；CMP→MW |
+| `implemented_by` | 上表对端 |
+| `maps_to` | CAP↔BSD(L1)；BSD(L1)↔PL；BSD(L2)↔PD；SLN↔PL；PD↔SYS；MS↔AGG；AB↔API；AGG↔ENT；PM↔BC；UC↔API |
+| `supports_to` | BD→VC；APP→BC；API→FT |
+| `supported_by` | VC→BD；BC→APP；FT→API |
+| `uses_to` | SYS→MDG\|TSD；APP→DS\|MW；MS→ENT\|TBL\|CMP；MW→DS（可空仍双写） |
+| `used_by` | 上表对端 |
+| `depends_to` / `depended_by` | PM↔PM |
+
+### 非边属性
+
+| 字段 | 含义 |
+| --- | --- |
+| `maven_coordinates` | **CMP-*** 的 Maven 坐标 `groupId:artifactId:version` |
+
+### 已废（勿再用）
+
+`implements_*_ids`、`implements_to_vc`、`implemented_by_cap`、`implemented_by_app_id`、`implemented_by_service_ids`、`supports_to_vc`、`supported_by_bd`、`maps_to_*` 带后缀旧名、`uses_*_ids`、`apis`、`aggregates`、`abilities`、`persisted_as_*`、`owned_by_app_id`、`bound_app_id`、`parent_tsd_id` / `parent_tpl_id` / `parent_mw_id` / `parent_app_id`（关系语义改 `implements_to`）、`relies_on_context_ids`、`invokes_api_ids`、`depends_pm_ids`、`map_to_api_id`、`maps_to_cap_ids`、`authoritative_mdg_id`、`root_entity` / `entities`、APP/SYS↔TPL 直连、APP↔CMP、FT↔UC 直连。
+
+OKF frontmatter 技术键 `parent_id`（路径/校验）可与关系段 `implements_to`/`parent` 并存，目标须一致。

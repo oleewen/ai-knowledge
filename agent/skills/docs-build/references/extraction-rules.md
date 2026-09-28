@@ -48,7 +48,7 @@
   - 包含 `main(String[] args)` 方法
   - 调用 `Main.run()` 或 `SpringApplication.run()`
   - 配置 `spring-boot-maven-plugin`
-- **必须字段**：`id`、`parent_sys_id`、`startup_class`、`maven_module`、`service_ids`
+- **必须字段**：`id`、`implements_to`（所属 SYS）、`implemented_by`（MS id 列表）、`startup_class`、`maven_module`
 - **可选字段**：`mq_consumers`、`jobs`、`jobs_count`、`repo_url`、`docs_manifest_path`
 
 #### MS（微服务层级）
@@ -74,7 +74,7 @@
 
 API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监听、定时任务（Job）**。
 
-**通用必须字段**：`service_id`（所属 MS-ID）、`host_class`、`host_module`、`method_signature`、`api_type`（`DUBBO` | `HTTP` | `MQ_CONSUMER` | `JOB`）
+**通用必须字段**：`implements_to`（所属 MS-ID）、`host_class`、`host_module`、`method_signature`、`api_type`（`DUBBO` | `HTTP` | `MQ_CONSUMER` | `JOB`）
 
 **别名命名**：必须以所属 MS 别名为前缀，格式 `{MS别名}.{apiMethodAlias}`
 
@@ -134,19 +134,19 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 #### DS（数据源层级）
 
 - 提取自 `application.yml/properties` 多数据源配置
-- **必须字段**：`id`（如 `DS-BILLING-APPEAL-TIDB`）、`description`、`type`（如 `TiDB / MySQL 8.0+`）、`config_key`、`owned_by_app_id`
+- **必须字段**：`id`（如 `DS-BILLING-APPEAL-TIDB`）、`description`、`type`（如 `TiDB / MySQL 8.0+`）、`config_key`、`implements_to`（所属 MDG）、`used_by`（APP id）
 - **可选字段**：`notes`（如事务注解说明）
 
 #### ENT（实体层级）
 
 - 提取自 @Table 注解的实体类
-- **必须字段**：`id`（如 `ENT-001`）、`parent_id`（所属 DS 的 id）、`logical_name`（Java 类名）、`physical_table`（数据库表名）
+- **必须字段**：`id`（如 `ENT-001`）、`implements_to`（所属 DS）、`logical_name`（Java 类名）、`physical_table`（数据库表名）；可选 `maps_to`（AGG）
 - **同表合并**：相同表名对应的实体类合并为一个 ENT-ID
 - **禁止**：使用包名作为 ENT-ID、单表对应多个 ENT-ID、使用 Mapper 类名作为显示名
 
 ### 输出结构
 
-数据视角每个 DS/ENT 各一 `{ID}.md`；DS 与 ENT 通过 frontmatter `parent_id` 关联。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)。
+数据视角每个 DS/ENT 各一 `{ID}.md`；DS↔ENT 经关系段 `implements_to`/`implemented_by`（OKF `parent_id` 可与之并存且目标一致）。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)。
 
 ---
 
@@ -164,44 +164,44 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 #### VC（价值链层级）
 
 - 提取自公司价值链叙事、商业模式资料
-- **必须字段**：`id`（如 `VC-ORDER-FULFILLMENT`）、`description`、`supported_by_bd`、`implemented_by_cap`
+- **必须字段**：`id`（如 `VC-ORDER-FULFILLMENT`）、`description`、`supported_by`（BD）、`implemented_by`（CAP）
 - **禁止**：把组织部门直接当 VC；CAP 与 VC 混用
 
 #### BD（业务域层级）
 
 - 提取自包路径域名首段、AGENTS.md 业务域定义
-- **必须字段**：`id`（如 `BD-CHARGING-APPEAL`）、`description`、`strategic_classification`（core_domain/supporting/generic）、`supports_to_vc`、`children`（BSD(L1) id 列表）
+- **必须字段**：`id`（如 `BD-CHARGING-APPEAL`）、`description`、`strategic_classification`（core_domain/supporting/generic）、`supports_to`（VC）、`children`（BSD(L1) id 列表）
 
 #### BSD（业务子域层级）
 
-- 一级提取自公司业务版图：`level: 1`、`parent` 所属 BD、`maps_to_pl`、`maps_to_cap`，公司层落盘
-- 二级提取自 BC 与 BSD(L1) 间的包路径段：`level: 2`、`parent` 所属 BSD(L1)、`maps_to_pd`，系统层落盘
-- **必须字段**：`id`、`parent_id`、`level`、`parent`、`description`
+- 一级提取自公司业务版图：`level: 1`、`parent` 所属 BD、`maps_to`（混列 PL\|CAP），公司层落盘
+- 二级提取自 BC 与 BSD(L1) 间的包路径段：`level: 2`、`parent` 所属 BSD(L1)、`maps_to`（PD），系统层落盘
+- **必须字段**：`id`、`level`、`parent`、`description`；一级另须 `maps_to`；二级另须 `maps_to`
 - **禁止**：三级及以下 BSD、将 BC 直接作为 BSD、跨 BSD(L1) 合并 BSD(L2)
 
 #### BC（限界上下文层级）
 
 - 提取自宿主类父包名、限界上下文包路径
-- **必须字段**：`id`（如 `BC-BILLING-APPEAL-CORE`）、`parent_id`（所属 BSD(L2)）、`description`、`implemented_by_app_id`、`aggregates`（AGG id 列表）
+- **必须字段**：`id`（如 `BC-BILLING-APPEAL-CORE`）、`implements_to`（所属 BSD(L2)）、`description`、`supported_by`（APP）、`implemented_by`（AGG id 列表）
 - **可选字段**：`ubiquitous_language`（通用语言词汇表）
 - **禁止**：使用 Maven 模块名作为 BC-ID、单包对应多个 BC-ID
 
 #### AGG（聚合层级）
 
 - 提取自 MS-* 服务、聚合根实体
-- **必须字段**：`id`（如 `AGG-BILLING-APPEAL`）、`parent_id`（所属 BC）、`description`、`root_entity`、`entities`（值对象列表）、`persisted_as_entity_ids`（对应 ENT-ID）、`implemented_by_service_ids`（对应 MS-ID）、`abilities`（对应 AB id 列表）
+- **必须字段**：`id`（如 `AGG-BILLING-APPEAL`）、`implements_to`（所属 BC）、`description`、`implemented_by`（AB id 列表）、`maps_to`（混列 ENT\|MS）
 - **可选字段**：`invariants`（业务不变量/约束列表）
 - **禁止**：无 MS-* 对应的 AGG-ID、单 MS-* 对应多个 AGG-ID
 
 #### AB（聚合边界层级）
 
 - 提取自入口 API、聚合边界定义
-- **必须字段**：`id`（如 `AB-APPEAL-LIFECYCLE`）、`parent_id`（所属 AGG）、`description`、`capability`（能力概述）、`apis`（结构化接口列表，每项含 `id`、`method`、`description`）
+- **必须字段**：`id`（如 `AB-APPEAL-LIFECYCLE`）、`implements_to`（所属 AGG）、`description`、`capability`（能力概述）、`maps_to`（API id 列表）
 - **禁止**：无 API 对应的 AB-ID、AB 缺少能力概述
 
 ### 输出结构
 
-业务视角：公司层每个 VC/BD/BSD(L1)/CAP 各一 `{ID}.md`；系统层每个 BSD(L2)/BC/AGG/AB 各一 `{ID}.md`；`hierarchy` 与 `parent_id`/`children` 写在 frontmatter。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)。
+业务视角：公司层每个 VC/BD/BSD(L1)/CAP 各一 `{ID}.md`；系统层每个 BSD(L2)/BC/AGG/AB 各一 `{ID}.md`；同类树用 `parent`/`children`，组成链用 `implements_to`/`implemented_by`（见 [glossary § 映射关系](../../../knowledge/glossary.md#映射关系常用)）。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)。
 
 ---
 
@@ -219,34 +219,35 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 #### PL（产品线层级）
 
 - 提取自 README.md 产品概述、SYS-* 系统定义（公司层）
-- **必须字段**：`id`（如 `PL-BILLING-APPEAL`）、`description`、`maps_to_bsd`（BSD(L1)）、`target_users`（目标用户角色列表）
+- **必须字段**：`id`（如 `PL-BILLING-APPEAL`）、`description`、`maps_to`（BSD(L1)）、`target_users`（目标用户角色列表）
 
 #### PD（产品服务层级）
 
-- 提取自产品架构、解决方案边界；`parent_id` 所属 PL（公司层 SSOT）；**PD 系统层首次定义**
-- **必须字段**：`id`（如 `PD-BILLING-APPEAL`）、`parent_id`（所属 PL）、`maps_to_sys_id`、`maps_to_bsd`（BSD(L2)）
-- 公司/应用不落 PD 文件；`PM.parent_id` 引用系统 `PD-*`（有 parent 则 HTTP，否则纯 ID）
+- 提取自产品架构、解决方案边界；`implements_to` 所属 PL（公司层 SSOT）；**PD 系统层首次定义**
+- **必须字段**：`id`（如 `PD-BILLING-APPEAL`）、`implements_to`（所属 PL）、`maps_to`（混列 SYS\|BSD(L2)）
+- 公司/应用不落 PD 文件；`PM.implements_to` 引用系统 `PD-*`（有联邦 parent 则 HTTP，否则纯 ID）
 
 #### PM（产品模块层级）
 
 - 提取自应用视角 MS-* 服务列表，与 MS-* 一一对应
-- **必须字段**：`id`（如 `PM-BILLING-APPEAL-CORE`）、`parent_id`（所属 PD）
-- **禁止**：无 MS-* 对应的 PM-ID、单 MS-* 对应多个 PM-ID；`parent_id` 直挂 PL
+- **必须字段**：`id`（如 `PM-BILLING-APPEAL-CORE`）、`implements_to`（所属 PD）；可选 `maps_to`（BC）、`depends_to`（其它 PM）
+- **禁止**：无 MS-* 对应的 PM-ID、单 MS-* 对应多个 PM-ID；`implements_to` 直挂 PL
 
 #### FT（功能特性层级）
 
 - 提取自用户操作提炼、API-* 接口分析
-- **必须字段**：`id`、`parent_id`（所属 PM）、`description`、`invokes_api_ids`（调用的 API-ID）、`acceptance_criteria`（验收标准）、`realizes_use_case_ids`（实现的 UC-ID）
-- **禁止**：无 API 绑定的 FT-ID、技术实现细节作为功能特性
+- **必须字段**：`id`、`implements_to`（所属 PM）、`description`、`supported_by`（API-ID）、`acceptance_criteria`（验收标准）
+- **禁止**：无 API 绑定的 FT-ID、技术实现细节作为功能特性；FT↔UC 直连
 
 #### UC（用例层级）
 
 - 提取自 PRD 文档、用户场景文档、README.md 核心业务
+- **必须字段**：`id`、`implements_to`（所属 FR）；可选 `maps_to`（API）
 - **禁止**：无 API 绑定的 UC-ID、单一技术操作作为用例
 
 ### 输出结构
 
-产品视角：公司层 PL；系统层 PD/PM/FT/UC 各一 `{ID}.md`；`PL→PD→PM→FT→UC` 通过 frontmatter `parent_id` 关联（跨层纯 ID 或 HTTP）。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)。
+产品视角：公司层 PL；系统层 PD/PM/FT/UC 各一 `{ID}.md`；组成链经 `implements_to`/`implemented_by`（跨层纯 ID 或 HTTP）。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)。
 
 ---
 
@@ -264,18 +265,18 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 #### MW（中间件绑定）
 
 - 提取自配置与部署绑定：数据源、缓存、MQ Topic/Group、注册配置等
-- **必须字段**：`id`、`binding_type`、`config_key`、`parent_tsd_id`、`bound_app_id`
-- **禁止**：将 MS/API 宿主类登记为 MW；Consumer 类仍在 API 层
+- **必须字段**：`id`、`binding_type`、`config_key`、`implements_to`（TSD）、`used_by`（APP）；可选 `uses_to`（DS）
+- **禁止**：将 MS/API 宿主类登记为 MW；Consumer 类仍在 API 层；APP↔TPL 直连
 
 #### CMP（组件）
 
 - 提取自 Maven 依赖 allowlist（Dubbo、MyBatis、Redis、Kafka Client、关键 Spring Starter 等）
-- **必须字段**：`id`、`maven_coordinates`、`parent_mw_id` 或 `parent_app_id`
-- **禁止**：全量依赖扫描导致 CMP 爆炸
+- **必须字段**：`id`、`maven_coordinates`、`implements_to`（MW）
+- **禁止**：全量依赖扫描导致 CMP 爆炸；APP↔CMP 直连
 
 ### 输出结构
 
-技术视角每个 MW/CMP 各一 `technical/{ID}.md`；MW→CMP 通过 frontmatter `parent_mw_id` 关联。
+技术视角每个 MW/CMP 各一 `technical/{ID}.md`；MW→CMP 经 `implements_to`/`implemented_by`。
 
 ---
 

@@ -5,7 +5,7 @@
 > **不分管**：路径 / overview / 槽位 / 联邦流水线 → [knowledge-layout.md](../references/knowledge-layout.md)；ID 语法 → [naming-conventions.md](naming-conventions.md)；缩写/词义/映射字段 → [glossary.md](glossary.md)；文件分型 → [okf-spec.md](okf-spec.md)。  
 > 组件索引与使用顺序见同目录 [README.md](README.md)。协作闸门见 [CONVENTIONS.md](../rules/CONVENTIONS.md)。
 
-**最后更新**: 2026-09-15
+**最后更新**: 2026-09-28
 
 ---
 
@@ -41,14 +41,14 @@
 
 | 视角 | 实体 | 公司层聚焦 |
 | --- | --- | --- |
-| 业务 | VC | 价值链；`supported_by_bd`→BD，`implemented_by_cap`→CAP |
-| 业务 | BD | 业务域；`supports_to_vc`→VC，`children`→BSD(L1) |
-| 业务 | BSD(L1) | 公司层业务子域；`level: 1`，`parent`→BD，`maps_to_pl`→PL，`maps_to_cap`→CAP |
-| 业务 | CAP | 业务能力目录；`implements_to_vc`→VC，`maps_to_bsd`→BSD(L1) |
-| 产品 | PL | 产品线；`maps_to_bsd`→BSD(L1)；**无 PD / 无 SLN**（PD ∈ 系统；SLN ∈ 公司 application） |
-| 应用 | SLN | 解决方案（对应 PL）（AA 台账）；**无 SYS**；**无** `uses_mdg_ids` |
-| 数据 | — | **无 MDG**（MDG ∈ 系统；SYS `uses_mdg_ids`） |
-| 技术 | TPL | 云 / DevOps / 安全 / 开发环境 / 可观测；由 AA `uses_*` 引用 |
+| 业务 | VC | 价值链；`supported_by`→BD，`implemented_by`→CAP |
+| 业务 | BD | 业务域；`supports_to`→VC，`children`→BSD(L1) |
+| 业务 | BSD(L1) | 公司层业务子域；`level: 1`，`parent`→BD，`maps_to`→PL\|CAP |
+| 业务 | CAP | 业务能力目录；`implements_to`→VC，`maps_to`→BSD(L1) |
+| 产品 | PL | 产品线；`maps_to`→BSD(L1)\|SLN；**无 PD**（PD ∈ 系统） |
+| 应用 | SLN | 解决方案（AA 台账）；`maps_to`→PL；**无 SYS**；不直连 MDG/TPL |
+| 数据 | — | **无 MDG**（MDG ∈ 系统；SYS `uses_to`→MDG） |
+| 技术 | TPL | 云 / DevOps / 安全 / 开发环境 / 可观测；仅 `TSD.implements_to`→TPL |
 
 - SDD：`solutions/` + `analysis/` = 跨系统上游；**无** `requirements/`（交付 ∈ 各系统）
 - 槽位 / 同步：见 [knowledge-layout.md](../references/knowledge-layout.md)（`system-slots/system-{NAME}`）
@@ -58,11 +58,11 @@
 
 | 视角 | 系统层聚焦 |
 | --- | --- |
-| 业务 | BSD(L2)→AB；BSD(L1) / BD 为 company reference；BSD(L2) `level: 2`、`parent`→BSD(L1)、`maps_to_pd`→PD |
-| 产品 | PD→PM→FT→FR→UC/BR、BP；PL 公司 SSOT（本层不落盘）；PD 本层 SSOT |
-| 应用 | SYS→APP/MS；SYS 本层 SSOT（`parent_id→公司 SLN`）；`uses_mdg_ids` / `uses_tsd_ids` / `uses_tpl_ids` |
-| 数据 | MDG/DS/ENT 本层 SSOT；TBL ∈ application |
-| 技术 | TSD；MW/CMP ∈ application；AA `uses_*` |
+| 业务 | BSD(L2)→AB（`implements_to`/`implemented_by` 链）；BSD(L1)/BD 为 company reference；BSD(L2) `parent`→BSD(L1)、`maps_to`→PD |
+| 产品 | PD→PM→FT→FR→UC/BR、BP（整链 `implements_to`）；PL 公司 SSOT；PD 本层 SSOT |
+| 应用 | SYS→APP→MS→API（`implements_to`）；SYS 本层 SSOT（`implements_to`→SLN）；`uses_to`→MDG\|TSD |
+| 数据 | MDG→DS→ENT（`implements_to`）；TBL ∈ application |
+| 技术 | TSD（`implements_to`→TPL）；MW/CMP ∈ application |
 
 - 公司层 reference（可留薄文件）：`BD/BSD(L1)/CAP/PL/SLN/TPL`（正文 SSOT ∈ company）；VC 仅公司层；**无**公司 BSD(L2)/PD/SYS/MDG
 - SDD：solutions → analysis → `requirements/REQUIREMENT-{IDEA-ID}/`
@@ -96,21 +96,18 @@
 | DA | data | MDG → DS → ENT → **TBL** | **TBL SSOT**（MDG/DS/ENT ∈ 系统） |
 | TA | technical | TSD → **MW** → **CMP** | **MW/CMP SSOT** |
 
-技术链补充：`TPL → TSD → MW`；`CMP` 挂 `MW` 或 `APP`（`parent_mw_id` / `parent_app_id`）。**MW** 登记基础设施绑定；**MS/API** 仍登记业务入口宿主，二者不互替。
+技术链：`TPL ← TSD ← MW ← CMP`（`implements_to`）；**MS `uses_to`→CMP**。无 APP↔TPL、APP↔CMP 直连。**MW** 基础设施绑定；**MS/API** 业务入口，二者不互替。
 
-### 跨 A 边
+关系动词总则与允许边见 [glossary.md § 映射关系](glossary.md#映射关系常用)。摘要：
 
-源实体 frontmatter 写**目标实体 ID**。字段语义见 [glossary.md § 映射关系](glossary.md#映射关系常用)。
-
-| 边类 | 方向 | 代表 |
+| 边类 | 动词 | 代表 |
 | --- | --- | --- |
-| 实现与支撑 | `implements_to_vc` / `implemented_by_cap` / `supported_by_bd` / `supports_to_vc` | BA：VC↔CAP、VC↔BD |
-| 对标 | `maps_to_*` | BA：CAP↔BSD(L1)；**PA**：BSD(L1)↔PL、BSD(L2)↔PD、SLN→PL；PA↔AA：PD→SYS |
-| PA → BA | 依赖 | `relies_on_context_ids` |
-| PA → AA | 调用 | `invokes_api_ids` |
-| AA → BA | **implements** | `implements_bc_ids` / `implements_agg_ids` |
-| AA → DA / TA | **uses** | `uses_mdg_ids`（挂 **SYS**）/ `uses_ds_ids` / `uses_tsd_ids` 等 |
-| BA ↔ DA | 持久化 | `persisted_as_entity_ids` / `maps_to_aggregate_id` |
+| 同类树 | `parent` / `children` | BD↔BSD(L1)↔BSD(L2) |
+| 同视角组成 | `implements_to` / `implemented_by` | BSD(L2)↔BC↔AGG↔AB；产品/应用/数据链；CAP↔VC |
+| 同级对标 | `maps_to` | CAP↔BSD；BSD↔PL/PD；SLN↔PL；PD↔SYS；MS↔AGG；AB↔API；AGG↔ENT；PM↔BC；UC↔API |
+| 支撑 | `supports_to` / `supported_by` | BD↔VC；APP↔BC；API→FT |
+| 使用 | `uses_to` / `used_by` | SYS→MDG\|TSD；APP→DS\|MW；MS→ENT\|TBL\|CMP；MW→DS |
+| 模块依赖 | `depends_to` / `depended_by` | PM↔PM |
 
 ---
 

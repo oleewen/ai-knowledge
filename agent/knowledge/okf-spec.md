@@ -175,33 +175,42 @@ MAY：
 
 | 顺序 | 标题 | 内容 |
 | ------ | ------ | ------ |
-| 1 | `## 关系` | 父子、聚合、能力、应用实现等结构关系 |
+| 1 | `## 关系` | 同类树 / 组成链 / 对标 / 支撑 / 使用 / 依赖等结构关系（字段名见 [glossary § 映射关系](glossary.md#映射关系常用)） |
 | 2 | `## 跨视角` | 跨 perspective 引用 |
 | 3 | `## 详细说明` | 业务定义、职责、不变量、验收标准等 |
 | 4 | `## 依据与证据` | 同层链、上层 SSOT HTTP 或纯 ID；或外部 URI/资产名（见 [knowledge-governance.md](knowledge-governance.md)） |
 
 ### 4.1 关系段
 
-按层级差异化：
+按层级差异化。动词与允许边见 [glossary § 映射关系](glossary.md#映射关系常用)；同类树用 `parent`/`children`，异类组成用 `implements_to`/`implemented_by`。OKF frontmatter `parent_id` 可与关系段并存，目标须一致。
 
 | 层级 | 必含子段 | 选含子段 |
 | ------ | --------- | --------- |
-| BD | `parent: null` + `children: [...]` | — |
-| BSD | `parent: [...]` + `bounded_contexts: [...]` | — |
-| BC | `parent: [...]` + `aggregates: [...]` | — |
-| AGG | `parent: [...]` + `abilities: [...]` | — |
-| AB | `parent: [...]` + `implemented_by_app_id: [...]`（允许 `(none)`） | — |
-| PL | `children: [...]` | `parent: null` |
-| PM | `parent: [...]` + `children: [...]` | — |
-| FT | `parent: [...]` + `children: [...]` | — |
-| UC | `parent: [...]` | — |
-| APP | `parent: [...]` + `service_ids: [...]` | — |
-| SYS | `children: [...]` | `parent: null` |
-| DS | `parent: [...]` 或 `(none)` | — |
-| ENT | `parent: [...]` | — |
-| TSD | `children: [...]` | — |
-| MW | `parent_tsd_id: [...]` 或 `(none)` | — |
-| CMP | `(none)` 或 `parent_mw_id: [...]` | `parent_app_id: [...]` |
+| BD | `children: [...]` | `parent: null`；跨视角 `supports_to` |
+| BSD | `parent: [...]` | `children`（L1→L2）；`implemented_by`（L2→BC）；`maps_to` |
+| BC | `implements_to: [...]` + `implemented_by: [...]` | 跨视角 `supported_by`（APP） |
+| AGG | `implements_to: [...]` + `implemented_by: [...]` | 跨视角 `maps_to`（ENT\|MS） |
+| AB | `implements_to: [...]` | 跨视角 `maps_to`（API） |
+| VC | — | `supported_by`、`implemented_by` |
+| CAP | `implements_to: [...]` + `maps_to: [...]` | — |
+| PL | `maps_to: [...]` | `implemented_by`（PD） |
+| PD | `implements_to: [...]` | `implemented_by`（PM）；`maps_to`（SYS\|BSD） |
+| PM | `implements_to: [...]` + `implemented_by: [...]` | `maps_to`（BC）；`depends_to` |
+| FT | `implements_to: [...]` + `implemented_by: [...]` | `supported_by`（API） |
+| FR | `implements_to: [...]` + `implemented_by: [...]` | — |
+| UC | `implements_to: [...]` | `maps_to`（API） |
+| SLN | `maps_to: [...]` | `implemented_by`（SYS） |
+| SYS | `implements_to: [...]` + `implemented_by: [...]` | `uses_to`（MDG\|TSD） |
+| APP | `implements_to: [...]` + `implemented_by: [...]` | `supports_to`（BC）；`uses_to`（DS\|MW） |
+| MS | `implements_to: [...]` + `implemented_by: [...]` | `maps_to`（AGG）；`uses_to`（ENT\|TBL\|CMP） |
+| API | `implements_to: [...]` | `supports_to`（FT）；`maps_to`（AB\|UC） |
+| MDG | — | `implemented_by`（DS） |
+| DS | `implements_to: [...]` | `implemented_by`（ENT）；`used_by`（APP） |
+| ENT | `implements_to: [...]` | `maps_to`（AGG） |
+| TBL | `implements_to: [...]` | — |
+| TSD | `implements_to: [...]` | `implemented_by`（MW） |
+| MW | `implements_to: [...]` | `implemented_by`（CMP）；`used_by`（APP）；`uses_to`（DS） |
+| CMP | `implements_to: [...]` | — |
 
 指针格式：
 
@@ -296,9 +305,13 @@ MAY：工具链 extensions 字段可加，须可控长期维护。
 
 | 引用类型 | 位置 | 形式 |
 | --------- | ------ | ------ |
-| 父子 / 聚合 / 能力 | `## 关系` | `parent:` / `children:` / `aggregates:` / `abilities:` |
-| 应用实现 | `## 关系` | `implemented_by_app_id:` |
-| 跨 perspective | `## 跨视角` | `business:` / `product:` / `application:` / `data:` / `technical:` |
+| 同类树 | `## 关系` | `parent:` / `children:` |
+| 组成链 | `## 关系` | `implements_to:` / `implemented_by:` |
+| 同级对标 | `## 关系` 或 `## 跨视角` | `maps_to:` |
+| 支撑 | `## 跨视角` | `supports_to:` / `supported_by:` |
+| 使用 | `## 跨视角` | `uses_to:` / `used_by:` |
+| 模块依赖 | `## 关系` | `depends_to:` / `depended_by:` |
+| 跨 perspective 组织 | `## 跨视角` | `business:` / `product:` / `application:` / `data:` / `technical:` |
 | 证据来源 | `## 依据与证据` | 路径 + 锚点 |
 
 补充规则：
