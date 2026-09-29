@@ -19,7 +19,7 @@ trap cleanup EXIT
 mkdir -p "$DOCS_DIR"
 git -C "$PROJECT_DIR" init -q
 
-bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS_DIR" >"$OUT_FILE" 2>&1
+"${BASH:-$(command -v bash)}" "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS_DIR" >"$OUT_FILE" 2>&1
 
 assert_file_exists "$DOCS_DIR/README.md"
 assert_file_exists "$DOCS_DIR/knowledge/README.md"
@@ -29,7 +29,7 @@ assert_file_exists "$DOCS_DIR/CONTRIBUTING.md"
 
 printf '\n%s\n' 'LOCAL-CONTRIB-CUSTOM-MARKER' >>"$DOCS_DIR/CONTRIBUTING.md"
 printf '\n%s\n' 'LOCAL-DESIGN-CUSTOM-MARKER' >>"$DOCS_DIR/DESIGN.md"
-bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS_DIR" --force >>"$OUT_FILE" 2>&1
+"${BASH:-$(command -v bash)}" "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS_DIR" --force >>"$OUT_FILE" 2>&1
 assert_file_exists "$DOCS_DIR/CONTRIBUTING.md"
 assert_file_exists "$DOCS_DIR/DESIGN.md"
 assert_not_contains "LOCAL-CONTRIB-CUSTOM-MARKER" "$DOCS_DIR/CONTRIBUTING.md"

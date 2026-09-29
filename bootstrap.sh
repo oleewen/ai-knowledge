@@ -486,7 +486,7 @@ bs_run_docs_install() {
   log ''
   info '>>> 执行 docs-install.sh...'
   # 仅前缀传参，不 export（与 lib/docsconfig §禁止 export 一致）
-  REPO_ROOT="$BS_CLONE_DIR" bash "$docs_install" --target "$BS_DOC_TARGET" \
+  REPO_ROOT="$BS_CLONE_DIR" "${BASH:-$(command -v bash)}" "$docs_install" --target "$BS_DOC_TARGET" \
     || error "docs-install 执行失败，已中止"
 }
 
@@ -494,7 +494,7 @@ bs_run_agent_install() {
   local agent_install="${1:?agent_install}"
   log ''
   info '>>> 执行 agent-install.sh...'
-  bash "$agent_install" --agents="$BS_AGENTS" --target "$BS_AGENT_TARGET" \
+  "${BASH:-$(command -v bash)}" "$agent_install" --agents="$BS_AGENTS" --target "$BS_AGENT_TARGET" \
     || error "agent-install 执行失败"
 }
 

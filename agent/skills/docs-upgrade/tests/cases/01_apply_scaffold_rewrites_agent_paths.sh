@@ -61,7 +61,7 @@ EOF
 
 (
   cd "$PROJECT_DIR"
-  bash "$DOCS_UPGRADE_SCRIPT" --dry-run --meta-path "$META_ROOT" >"$OUT_FILE" 2>&1
+  "${BASH:-$(command -v bash)}" "$DOCS_UPGRADE_SCRIPT" --dry-run --meta-path "$META_ROOT" >"$OUT_FILE" 2>&1
 )
 
 assert_contains "agent/skills/docs-indexing" "$DOCS_DIR/README.md"
@@ -73,7 +73,7 @@ assert_not_contains ".agents/skills" "$DOCS_DIR/README.md"
 
 (
   cd "$PROJECT_DIR"
-  bash "$DOCS_UPGRADE_SCRIPT" --apply-scaffold --meta-path "$META_ROOT" >"$OUT_FILE" 2>&1
+  "${BASH:-$(command -v bash)}" "$DOCS_UPGRADE_SCRIPT" --apply-scaffold --meta-path "$META_ROOT" >"$OUT_FILE" 2>&1
 )
 
 assert_file_exists "$DOCS_DIR/scaffold-new.md"
@@ -98,7 +98,7 @@ assert_not_contains "agent/skills/docs-install" "$DOCS_DIR/local-only.md"
 printf '%s\n' '# Local again' 'agent/skills/docs-tag' '.cursor/skills/docs-link' >"$DOCS_DIR/local-only.md"
 (
   cd "$PROJECT_DIR"
-  bash "$DOCS_UPGRADE_SCRIPT" --apply-scaffold --meta-path "$META_ROOT" >"$OUT_FILE" 2>&1
+  "${BASH:-$(command -v bash)}" "$DOCS_UPGRADE_SCRIPT" --apply-scaffold --meta-path "$META_ROOT" >"$OUT_FILE" 2>&1
 )
 assert_contains ".agents/skills/docs-tag" "$DOCS_DIR/local-only.md"
 assert_contains ".cursor/skills/docs-link" "$DOCS_DIR/local-only.md"

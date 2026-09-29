@@ -122,7 +122,7 @@ run_cmd "visualize" python3 \
   --out "$OKF_VIZ_OUT" \
   --name "$OKF_VIZ_NAME"
 
-run_cmd "validate-okf" bash "$OKF_DIR/okf-validate.sh" --bundle "$BUNDLE"
+run_cmd "validate-okf" "${BASH:-$(command -v bash)}" "$OKF_DIR/okf-validate.sh" --bundle "$BUNDLE"
 run_cmd "validate-viz-index" python3 \
   "$OKF_DIR/validate_viz_index.py" \
   --bundle "$BUNDLE" \

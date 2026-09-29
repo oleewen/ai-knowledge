@@ -28,7 +28,7 @@ AGENT_DIR=.agents
 KNOWLEDGE_TYPE=application
 EOF
 
-bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS_DIR" >"$OUT_FILE" 2>&1
+"${BASH:-$(command -v bash)}" "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS_DIR" >"$OUT_FILE" 2>&1
 
 CHG_README="$DOCS_DIR/changelogs/README.md"
 assert_file_exists "$CHG_README"

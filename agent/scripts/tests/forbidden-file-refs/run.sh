@@ -4,7 +4,8 @@ set -euo pipefail
 TEST_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CASE_DIR="$TEST_ROOT/cases"
 
-mapfile -t CASES < <(ls "$CASE_DIR"/*.sh 2>/dev/null | sort)
+CASES=()
+while IFS= read -r case_file; do CASES+=("$case_file"); done < <(ls "$CASE_DIR"/*.sh 2>/dev/null | sort)
 
 if [[ "${#CASES[@]}" -eq 0 ]]; then
   echo "未发现测试用例: $CASE_DIR" >&2
@@ -19,7 +20,7 @@ for case_file in "${CASES[@]}"; do
   name="$(basename "$case_file")"
   echo ""
   echo "[$total/${#CASES[@]}] $name"
-  if bash "$case_file"; then
+  if "${BASH:-$(command -v bash)}" "$case_file"; then
     passed=$((passed + 1))
   else
     failed=$((failed + 1))

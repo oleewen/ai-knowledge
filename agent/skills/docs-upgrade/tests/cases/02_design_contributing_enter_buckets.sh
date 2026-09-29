@@ -54,7 +54,7 @@ EOF
 
 (
   cd "$PROJECT_DIR"
-  bash "$DOCS_UPGRADE_SCRIPT" --dry-run --meta-path "$META_ROOT" >"$OUT_FILE" 2>&1
+  "${BASH:-$(command -v bash)}" "$DOCS_UPGRADE_SCRIPT" --dry-run --meta-path "$META_ROOT" >"$OUT_FILE" 2>&1
 )
 
 assert_contains "  CONTRIBUTING.md" "$OUT_FILE"
@@ -68,7 +68,7 @@ assert_not_contains "  README-s.md" "$OUT_FILE"
 
 (
   cd "$PROJECT_DIR"
-  bash "$DOCS_UPGRADE_SCRIPT" --apply-scaffold --meta-path "$META_ROOT" >"$OUT_FILE" 2>&1
+  "${BASH:-$(command -v bash)}" "$DOCS_UPGRADE_SCRIPT" --apply-scaffold --meta-path "$META_ROOT" >"$OUT_FILE" 2>&1
 )
 
 assert_file_exists "$DOCS_DIR/CONTRIBUTING.md"
@@ -82,7 +82,7 @@ printf '%s\n' '# Contributing' '' '## How' 'local body' '## LocalOnly' 'keep me'
 printf '%s\n' '# Local Design' '' '## 阅读顺序' 'local design body' >"$DOCS_DIR/DESIGN.md"
 (
   cd "$PROJECT_DIR"
-  bash "$DOCS_UPGRADE_SCRIPT" --dry-run --meta-path "$META_ROOT" >"$OUT_FILE" 2>&1
+  "${BASH:-$(command -v bash)}" "$DOCS_UPGRADE_SCRIPT" --dry-run --meta-path "$META_ROOT" >"$OUT_FILE" 2>&1
 )
 assert_contains "  CONTRIBUTING.md" "$OUT_FILE"
 assert_contains "== 结构重填" "$OUT_FILE"
@@ -91,7 +91,7 @@ assert_contains "== 整文件覆盖" "$OUT_FILE"
 
 (
   cd "$PROJECT_DIR"
-  bash "$DOCS_UPGRADE_SCRIPT" --apply-scaffold --meta-path "$META_ROOT" >"$OUT_FILE" 2>&1
+  "${BASH:-$(command -v bash)}" "$DOCS_UPGRADE_SCRIPT" --apply-scaffold --meta-path "$META_ROOT" >"$OUT_FILE" 2>&1
 )
 assert_contains "meta design" "$DOCS_DIR/DESIGN.md"
 assert_not_contains "local design body" "$DOCS_DIR/DESIGN.md"

@@ -3,7 +3,7 @@ type: API Endpoint
 title: 示例 API：创建
 description: null
 tags: [application, API]
-timestamp: "2026-06-21T00:00:00Z"
+timestamp: "2026-06-21T08:00:00+08:00"
 id: API-EXAMPLE
 perspective: application
 hierarchy: API

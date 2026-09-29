@@ -18,7 +18,7 @@ if [[ -d "$CASE_DIR" ]]; then
     unset IFS
     for f in "${sorted[@]}"; do
       printf '>>> %s\n' "$(basename "$f")"
-      bash "$f"
+      "${BASH:-$(command -v bash)}" "$f"
     done
   fi
 fi

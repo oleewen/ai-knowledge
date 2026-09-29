@@ -16,7 +16,7 @@ trap cleanup EXIT
 mkdir -p "$DOCS_DIR"
 git -C "$PROJECT_DIR" init -q
 
-bash "$DOCS_INSTALL_SCRIPT" \
+"${BASH:-$(command -v bash)}" "$DOCS_INSTALL_SCRIPT" \
   --scope=knowledge \
   --mode=central \
   --type=application \

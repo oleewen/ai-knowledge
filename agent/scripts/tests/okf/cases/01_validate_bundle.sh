@@ -35,7 +35,7 @@ if [[ ! -x "$VALIDATE_SCRIPT" ]] && [[ ! -f "$VALIDATE_SCRIPT" ]]; then
 fi
 
 set +e
-out="$(bash "$VALIDATE_SCRIPT" --bundle application 2>&1)"
+out="$("${BASH:-$(command -v bash)}" "$VALIDATE_SCRIPT" --bundle application 2>&1)"
 code=$?
 set -e
 

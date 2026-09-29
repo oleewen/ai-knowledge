@@ -21,7 +21,7 @@ unset IFS
 
 for f in "${sorted[@]}"; do
   printf '>>> %s\n' "$(basename "$f")"
-  bash "$f"
+  "${BASH:-$(command -v bash)}" "$f"
 done
 
 echo "[OK] docs-okf tests passed"

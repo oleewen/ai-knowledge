@@ -9,7 +9,7 @@ OUT_FILE="$(mktemp "${TMPDIR:-/tmp}/docs-bootstrap-help.XXXXXX")"
 cleanup() { rm -f "$OUT_FILE"; }
 trap cleanup EXIT
 
-bash "$DOCS_BOOTSTRAP_SCRIPT" -h >"$OUT_FILE" 2>&1 || true
+"${BASH:-$(command -v bash)}" "$DOCS_BOOTSTRAP_SCRIPT" -h >"$OUT_FILE" 2>&1 || true
 
 grep -q -- '--components=docs|agent|both' "$OUT_FILE" \
   || fail "帮助未列出 --components=docs|agent|both"

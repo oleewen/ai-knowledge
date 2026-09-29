@@ -14,7 +14,7 @@ mkdir -p "$PROJECT_DIR"
 git -C "$PROJECT_DIR" init -q
 
 set +e
-out="$(cd "$PROJECT_DIR" && bash "$VALIDATE_SCRIPT" 2>&1)"
+out="$(cd "$PROJECT_DIR" && "${BASH:-$(command -v bash)}" "$VALIDATE_SCRIPT" 2>&1)"
 code=$?
 set -e
 

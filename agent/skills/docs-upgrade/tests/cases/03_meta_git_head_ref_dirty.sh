@@ -50,7 +50,7 @@ git -C "$META_ROOT" commit -q -m "feature tip"
 # 1) 无 --ref：清单须含 scaffold-feat，不含 scaffold-main
 (
   cd "$PROJECT_DIR"
-  bash "$DOCS_UPGRADE_SCRIPT" --dry-run --meta-path "$META_ROOT" >"$OUT_FILE" 2>&1
+  "${BASH:-$(command -v bash)}" "$DOCS_UPGRADE_SCRIPT" --dry-run --meta-path "$META_ROOT" >"$OUT_FILE" 2>&1
 )
 assert_contains "scaffold-feat.md" "$OUT_FILE"
 assert_not_contains "scaffold-main.md" "$OUT_FILE"
@@ -59,7 +59,7 @@ assert_contains "git archive HEAD" "$OUT_FILE"
 # 2) --ref main：清单须含 scaffold-main，不含 scaffold-feat
 (
   cd "$PROJECT_DIR"
-  bash "$DOCS_UPGRADE_SCRIPT" --dry-run --meta-path "$META_ROOT" --ref main >"$OUT_FILE" 2>&1
+  "${BASH:-$(command -v bash)}" "$DOCS_UPGRADE_SCRIPT" --dry-run --meta-path "$META_ROOT" --ref main >"$OUT_FILE" 2>&1
 )
 assert_contains "scaffold-main.md" "$OUT_FILE"
 assert_not_contains "scaffold-feat.md" "$OUT_FILE"
@@ -69,7 +69,7 @@ printf '%s\n' 'dirty' >"$META_ROOT/application/untracked-dirty.md"
 set +e
 (
   cd "$PROJECT_DIR"
-  bash "$DOCS_UPGRADE_SCRIPT" --dry-run --meta-path "$META_ROOT" --ref main >"$OUT_FILE" 2>&1
+  "${BASH:-$(command -v bash)}" "$DOCS_UPGRADE_SCRIPT" --dry-run --meta-path "$META_ROOT" --ref main >"$OUT_FILE" 2>&1
 )
 rc=$?
 set -e

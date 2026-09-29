@@ -15,5 +15,5 @@ run_docs_bootstrap() {
   HOME="$fake_home" \
     GIT_REPO_URL="$ROOT_DIR" \
     GIT_REF='HEAD' \
-    bash "$DOCS_BOOTSTRAP_SCRIPT" "$@"
+    "${BASH:-$(command -v bash)}" "$DOCS_BOOTSTRAP_SCRIPT" "$@"
 }

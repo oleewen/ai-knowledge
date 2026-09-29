@@ -16,7 +16,7 @@ git -C "$PROJECT_DIR" init -q
 write_docsconfig "$PROJECT_DIR" "$DOCS_DIR" "$PROJECT_DIR" "docs"
 
 set +e
-out="$(cd "$PROJECT_DIR" && bash "$VALIDATE_SCRIPT" 2>&1)"
+out="$(cd "$PROJECT_DIR" && "${BASH:-$(command -v bash)}" "$VALIDATE_SCRIPT" 2>&1)"
 code=$?
 set -e
 

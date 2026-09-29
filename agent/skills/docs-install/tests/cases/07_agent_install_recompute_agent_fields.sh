@@ -19,7 +19,7 @@ trap cleanup EXIT
 mkdir -p "$DOCS_DIR"
 git -C "$PROJECT_DIR" init -q
 
-bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS_DIR" >"$OUT_FILE" 2>&1
+"${BASH:-$(command -v bash)}" "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS_DIR" >"$OUT_FILE" 2>&1
 cat >"$PROJECT_DIR/.docsconfig" <<EOF
 DOC_ROOT=$DOCS_DIR
 REPO_ROOT=$PROJECT_DIR
@@ -39,7 +39,7 @@ AGENT_ROOT=/tmp/legacy-agent-root
 AGENT_DIR=.agents
 EOF
 
-bash "$AGENT_INSTALL_SCRIPT" --scope=r --target="$PROJECT_DIR" --agents=claude >>"$OUT_FILE" 2>&1
+"${BASH:-$(command -v bash)}" "$AGENT_INSTALL_SCRIPT" --scope=r --target="$PROJECT_DIR" --agents=claude >>"$OUT_FILE" 2>&1
 
 DOCS_CONFIG_PATH="$PROJECT_DIR/.docsconfig"
 assert_file_exists "$DOCS_CONFIG_PATH"

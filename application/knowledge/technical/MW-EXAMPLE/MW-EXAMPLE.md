@@ -3,7 +3,7 @@ type: Middleware Binding
 title: 示例中间件绑定
 description: 演示技术视角 MW 数据结构（示例）。
 tags: [technical, MW]
-timestamp: "2026-06-21T00:00:00Z"
+timestamp: "2026-06-21T08:00:00+08:00"
 id: MW-EXAMPLE
 perspective: technical
 hierarchy: MW

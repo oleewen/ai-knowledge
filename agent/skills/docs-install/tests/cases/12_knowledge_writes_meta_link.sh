@@ -24,7 +24,7 @@ git -C "$PROJECT_DIR" init -q
 META_REPO="$(git -C "$ROOT_DIR" remote get-url origin 2>/dev/null || true)"
 [[ -n "$META_REPO" ]] || fail "测试依赖中央库 origin remote"
 
-bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS_DIR" \
+"${BASH:-$(command -v bash)}" "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS_DIR" \
   >"$OUT_FILE" 2>&1
 
 assert_file_exists "$LINKS"
@@ -45,7 +45,7 @@ links:
     doc_dir: "application"
 EOF
 
-bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --force --target "$DOCS_DIR" \
+"${BASH:-$(command -v bash)}" "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --force --target "$DOCS_DIR" \
   >"$OUT_FILE" 2>&1
 
 meta_count="$(grep -c 'type: meta' "$LINKS" || true)"
@@ -56,7 +56,7 @@ grep -Fq 'https://example.com/extra-meta.git' "$LINKS" \
 
 # dry-run 不应改写已有 meta
 printf '%s\n' 'links: []' >"$LINKS"
-bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --dry-run --target "$DOCS_DIR" \
+"${BASH:-$(command -v bash)}" "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --dry-run --target "$DOCS_DIR" \
   >"$OUT_FILE" 2>&1
 grep -Fq 'type: meta' "$LINKS" && fail "dry-run 不应落盘 type: meta"
 grep -Fq '[dry-run] upsert type:meta' "$OUT_FILE" || fail "dry-run 应 log upsert meta"

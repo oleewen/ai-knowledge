@@ -23,7 +23,7 @@ cat >"$PROJECT_DIR/.docsconfig" <<EOF
 AGENT_ROOT=$PROJECT_DIR/missing-agent-root
 EOF
 
-bash "$DOCS_INSTALL_SCRIPT" --scope=config --type=application --target="$DOCS_DIR" >"$OUT_FILE" 2>&1
+"${BASH:-$(command -v bash)}" "$DOCS_INSTALL_SCRIPT" --scope=config --type=application --target="$DOCS_DIR" >"$OUT_FILE" 2>&1
 
 DOCS_CONFIG_PATH="$PROJECT_DIR/.docsconfig"
 assert_file_exists "$DOCS_CONFIG_PATH"

@@ -64,7 +64,12 @@ sync_dir() {
   fi
   ensure_dir "$dst"
   if have_cmd rsync; then
-    rsync -a --delete "$@" "$src"/ "$dst"/
+    local rsync_options=(-a --delete)
+    if rsync --version 2>/dev/null | head -1 | grep -qi 'openrsync'; then
+      # openrsync 2.6.9 兼容层的 size/time 快速检查会漏更新小文件。
+      rsync_options+=(--checksum)
+    fi
+    rsync "${rsync_options[@]}" "$@" "$src"/ "$dst"/
   else
     warn "未检测到 rsync，使用 cp -R（无法完全排除或增量同步；建议安装 rsync）"
     [[ -n "$dst" && "$dst" != '/' ]] || {

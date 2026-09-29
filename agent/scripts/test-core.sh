@@ -85,14 +85,17 @@ test_collect_case_scripts() {
   local -a cases=()
 
   [[ -d "$case_dir" ]] || test_fail "未找到测试目录: $case_dir"
-  mapfile -t cases < <(find "$case_dir" -maxdepth 1 -type f -name '*.sh' | sort)
+  local file
+  while IFS= read -r file; do
+    cases+=("$file")
+  done < <(find "$case_dir" -maxdepth 1 -type f -name '*.sh' | sort)
   ((${#cases[@]} > 0)) || test_fail "未发现测试用例: $case_dir"
   printf '%s\n' "${cases[@]}"
 }
 
 test_run_case_suite() {
   local title="${1:?title is required}"
-  local runner_bin="${2:-${BASH:-bash}}"
+  local runner_bin="${2:-${BASH:-$(command -v bash)}}"
   shift 2
 
   local -a cases=("$@")

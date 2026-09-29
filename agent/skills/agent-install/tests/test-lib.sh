@@ -12,5 +12,5 @@ new_fake_home() {
 run_agent_install() {
   local fake_home="$1"
   shift
-  HOME="$fake_home" bash "$AGENT_INSTALL_SCRIPT" "$@"
+  HOME="$fake_home" "${BASH:-$(command -v bash)}" "$AGENT_INSTALL_SCRIPT" "$@"
 }

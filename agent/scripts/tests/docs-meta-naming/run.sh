@@ -6,5 +6,5 @@ CASE_DIR="$TEST_ROOT/cases"
 
 for case_file in "$CASE_DIR"/*.sh; do
   echo "== $(basename "$case_file") =="
-  bash "$case_file"
+  "${BASH:-$(command -v bash)}" "$case_file"
 done

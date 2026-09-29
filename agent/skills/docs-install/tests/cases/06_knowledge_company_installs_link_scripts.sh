@@ -19,7 +19,7 @@ trap cleanup EXIT
 mkdir -p "$COMPANY_DIR"
 git -C "$PROJECT_DIR" init -q
 
-bash "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=company --target "$COMPANY_DIR" >"$OUT_FILE" 2>&1
+"${BASH:-$(command -v bash)}" "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=company --target "$COMPANY_DIR" >"$OUT_FILE" 2>&1
 
 # 建联改走 /docs-link；不再向目标仓落盘 docs-link 脚本
 assert_file_not_exists "$PROJECT_DIR/scripts/docs-link.sh"

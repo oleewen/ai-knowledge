@@ -3,7 +3,7 @@ type: Data Table
 title: 示例数据表
 description: null
 tags: [data, TBL]
-timestamp: "2026-06-24T00:00:00Z"
+timestamp: "2026-06-24T08:00:00+08:00"
 id: TBL-EXAMPLE
 perspective: data
 hierarchy: TBL

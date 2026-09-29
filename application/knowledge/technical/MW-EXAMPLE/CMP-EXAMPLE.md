@@ -3,7 +3,7 @@ type: Component
 title: 示例组件
 description: 演示技术视角 CMP 数据结构（示例）。
 tags: [technical, CMP]
-timestamp: "2026-06-21T00:00:00Z"
+timestamp: "2026-06-21T08:00:00+08:00"
 id: CMP-EXAMPLE
 perspective: technical
 hierarchy: CMP

@@ -47,7 +47,7 @@ cat > "$TMP/repo/application/knowledge/business/index.md" <<'EOF'
 EOF
 
 OKF_SH="$TMP/repo/application/.agents/skills/docs-okf/scripts/okf-indexing.sh"
-output="$(cd "$TMP/repo" && bash "$OKF_SH" --dry-run)"
+output="$(cd "$TMP/repo" && "${BASH:-$(command -v bash)}" "$OKF_SH" --dry-run)"
 printf '%s\n' "$output"
 
 [[ "$output" == *"inject_frontmatter"* ]]

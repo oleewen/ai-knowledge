@@ -6,18 +6,21 @@ REPO_ROOT="$(cd "$TEST_ROOT/../../.." && pwd)"
 source "$REPO_ROOT/agent/scripts/test-core.sh"
 
 # 短名 → 相对仓库根的 runner；含路径者按仓库根解析
-declare -A SUITE_RUNNERS=(
-  [docs-link]='agent/skills/docs-link/tests/run.sh'
-  [docs-pull]='agent/skills/docs-pull/tests/run.sh'
-  [docs-push]='agent/skills/docs-push/tests/run.sh'
-  [docs-okf]='agent/skills/docs-okf/tests/run.sh'
-  [docs-install]='agent/skills/docs-install/tests/run.sh'
-  [agent-install]='agent/skills/agent-install/tests/run.sh'
-  [bootstrap]='agent/scripts/tests/bootstrap/run.sh'
-  [okf]='agent/scripts/tests/okf/run.sh'
-  [docs-meta-naming]='agent/scripts/tests/docs-meta-naming/run.sh'
-  [forbidden-file-refs]='agent/scripts/tests/forbidden-file-refs/run.sh'
-)
+suite_runner() {
+  case "$1" in
+    docs-link) printf '%s\n' 'agent/skills/docs-link/tests/run.sh' ;;
+    docs-pull) printf '%s\n' 'agent/skills/docs-pull/tests/run.sh' ;;
+    docs-push) printf '%s\n' 'agent/skills/docs-push/tests/run.sh' ;;
+    docs-okf) printf '%s\n' 'agent/skills/docs-okf/tests/run.sh' ;;
+    docs-install) printf '%s\n' 'agent/skills/docs-install/tests/run.sh' ;;
+    agent-install) printf '%s\n' 'agent/skills/agent-install/tests/run.sh' ;;
+    bootstrap) printf '%s\n' 'agent/scripts/tests/bootstrap/run.sh' ;;
+    okf) printf '%s\n' 'agent/scripts/tests/okf/run.sh' ;;
+    docs-meta-naming) printf '%s\n' 'agent/scripts/tests/docs-meta-naming/run.sh' ;;
+    forbidden-file-refs) printf '%s\n' 'agent/scripts/tests/forbidden-file-refs/run.sh' ;;
+    *) return 1 ;;
+  esac
+}
 
 QUICK_SUITES=(forbidden-file-refs docs-link docs-pull okf docs-okf agent-install bootstrap docs-meta-naming)
 FULL_SUITES=(forbidden-file-refs docs-link docs-pull okf docs-okf agent-install bootstrap docs-meta-naming docs-install docs-push)
@@ -53,8 +56,8 @@ parse_args() {
 run_suite() {
   local name="${1:?suite name is required}"
   local runner
-  if [[ -n "${SUITE_RUNNERS[$name]:-}" ]]; then
-    runner="$REPO_ROOT/${SUITE_RUNNERS[$name]}"
+  if runner_rel="$(suite_runner "$name")"; then
+    runner="$REPO_ROOT/$runner_rel"
   elif [[ "$name" == */* ]]; then
     runner="$REPO_ROOT/$name"
   else
@@ -63,7 +66,7 @@ run_suite() {
   [[ -f "$runner" ]] || test_fail "未找到套件 runner: $runner"
   printf '\n'
   printf '########## suite: %s ##########\n' "$name"
-  (cd "$REPO_ROOT" && bash "$runner")
+  (cd "$REPO_ROOT" && "${BASH:-$(command -v bash)}" "$runner")
 }
 
 main() {

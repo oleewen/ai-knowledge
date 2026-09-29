@@ -36,7 +36,7 @@ echo "$(_violation_path probe-violation)" >"$PROBE"
 trap 'rm -f "$ROOT/superpowers-ref-probe.tmp"; rm -rf "$TMP"' EXIT
 
 set +e
-out="$(cd "$ROOT" && bash "$SCRIPT" 2>&1)"
+out="$(cd "$ROOT" && "${BASH:-$(command -v bash)}" "$SCRIPT" 2>&1)"
 code=$?
 set -e
 
