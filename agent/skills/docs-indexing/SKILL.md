@@ -21,6 +21,7 @@ description: >
 
 - 负责：各文档根 `INDEX-GUIDE.md`（九章骨架）、`INDEXING-LOG.md`、full/incremental、深度 1–3。重写 `INDEX-GUIDE.md` 时**必须保留** `<!-- docs-build:entity-index:begin/end -->` 块。
 - 不负责：第四章视角导航块（docs-build）；OKF（docs-okf）；SDD；overview（distill/extract）
+- 脚本边界：`indexing.sh` 默认 scan-only，只统计 `DOC_DIR` 并写 `INDEXING-LOG`；`--rewrite` 只更新 `docs-indexing` 运行块。九章正文与基线由 Agent 按规范维护，脚本不得覆盖。
 
 ## 不这样用
 
@@ -54,7 +55,7 @@ description: >
 - INDEX 落盘后建议刷新 OKF：见 [docs-okf/references/workflow.md](../docs-okf/references/workflow.md)
 
 ```bash
-agent/skills/docs-indexing/scripts/indexing.sh --mode <mode> --depth <depth>
+agent/skills/docs-indexing/scripts/indexing.sh --mode <mode> --depth <depth> [--rewrite]
 ```
 
 ## 评测

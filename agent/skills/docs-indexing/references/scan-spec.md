@@ -72,6 +72,8 @@
 | `*.class`、`*.jar` | 二进制文件 |
 | `.idea/`、`.vscode/` | IDE 配置 |
 
+脚本扫描以 `.docsconfig` 的 `DOC_ROOT` 为根；不进入隐藏目录或软链（含 `.agents` 与系统槽位），默认排除 `viz.html` 与 `.DS_Store`。
+
 ---
 
 ## 日志

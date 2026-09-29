@@ -40,6 +40,7 @@
 - **主表缺列** → `indexing_finished_ms`/`mode`/`depth`/`output_path` 等齐全（[indexing-log-spec.md](references/indexing-log-spec.md)）  
 - **output 文件名漂移** → 输出文件名固定为 `INDEX-GUIDE.md`；`output` 只用于确认文档根，不得改成其他文件名；默认须确认
 - **重写冲掉实体块** → 三层知识库第四章的 `docs-build:entity-index` 块须保留；视角导航由 `/docs-build` 写入（不扫 concept）  
+- **脚本覆盖九章** → 默认 scan-only；`--rewrite` 只改 `docs-indexing` 运行块，不得冲掉九章、OKF 或实体块
 - **改导航路径不烤干** → 导航/索引路径变更须强制烤干（默认本就必须）
 
 ## 上下游

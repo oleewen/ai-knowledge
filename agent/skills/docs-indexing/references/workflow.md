@@ -21,6 +21,7 @@
 - `--depth`：必需；`1` / `2` / `3`
 - `--output`：可选；默认值也须展示确认
 - `--since`：增量按需；内部/落盘为 epoch ms；**对人复述**须 `yyyy-MM-dd HH:mm:ss +08`（`{ms}`），见 [scan-config-onboarding.md §2.0](scan-config-onboarding.md)
+- `--rewrite`：只更新 `<!-- docs-indexing -->` 运行块；缺省 scan-only，不修改既有 `INDEX-GUIDE.md`
 
 详 [scan-spec.md](scan-spec.md)。
 
@@ -82,10 +83,10 @@ git ls-files --others --exclude-standard -- "$DOC_DIR"
 5. 扫描：[scan-spec.md](scan-spec.md)；depth=3：应读尽读；未读→§八
 
 ```bash
-agent/skills/docs-indexing/scripts/indexing.sh --mode <mode> --depth <depth>
+agent/skills/docs-indexing/scripts/indexing.sh --mode <mode> --depth <depth> [--rewrite]
 ```
 
-6. 生成并写入：按 [nine-chapter-spec.md](nine-chapter-spec.md)、[index-guide-template.md](../assets/index-guide-template.md) 写入 `INDEX-GUIDE.md`；若目标已有 `<!-- docs-build:entity-index:begin/end -->`，须原样并入第四章，不得清空。成功后插 LOG（[indexing-log-spec.md](indexing-log-spec.md)、`indexing_log.py`）
+6. 生成并写入：脚本先 scan-only 统计并写 LOG；Agent 按 [nine-chapter-spec.md](nine-chapter-spec.md)、[index-guide-template.md](../assets/index-guide-template.md) 维护九章。需要刷新脚本运行块时加 `--rewrite`；若目标已有 `<!-- docs-build:entity-index:begin/end -->`，须原样保留，不得清空。
 7. **烤干**：按写后默认表；检查覆盖面与 `mode/depth`、路径、增量基线解释、`INDEXING-LOG` 是否仅在指南成功后追加
 8. 用户动作：`C/M/G/S/F` 见 unit-cycle-protocol
 
