@@ -33,7 +33,8 @@ show_help() {
     echo "  --mode f|full|i|incremental"
     echo "  --depth 1|2|3"
     echo "  --output PATH   (默认文档根 INDEX-GUIDE.md；文件名固定)"
-    echo "  --since MS      增量 epoch ms"
+  echo "  --since MS      增量 epoch ms"
+  echo "  --rewrite       重建 INDEX-GUIDE；默认只刷新扫描统计并写 LOG"
     echo "  -h, --help"
 }
 
@@ -42,6 +43,7 @@ MODE=""
 DEPTH=""
 OUTPUT="$DEFAULT_OUTPUT"
 SINCE=""
+REWRITE=0
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -60,6 +62,10 @@ while [[ $# -gt 0 ]]; do
         --since)
             SINCE="$2"
             shift 2
+            ;;
+        --rewrite)
+            REWRITE=1
+            shift
             ;;
         -h|--help)
             show_help
@@ -144,16 +150,24 @@ echo "Generating change index..."
 # 执行扫描（根据深度级别）
 echo "Starting scan with mode: $DATA_MODE, depth: $READ_MODE"
 
-# 枚举仓库内待扫描文件（优先 ripgrep；否则 git ls-files；再否则 find）
+# 枚举 DOC_ROOT 内待扫描文件；不进入隐藏目录或软链
 collect_all_files() {
     ALL_FILES=()
-    if command -v rg >/dev/null 2>&1; then
-        while IFS= read -r line; do ALL_FILES+=("$line"); done < <(rg --files)
-    elif git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-        while IFS= read -r line; do ALL_FILES+=("$line"); done < <(git ls-files)
-    else
-        while IFS= read -r line; do ALL_FILES+=("$line"); done < <(find . -type f -not -path './.git/*' 2>/dev/null | sed 's|^\./||')
-    fi
+    local dir file rel
+    while IFS= read -r dir; do
+        for file in "$dir"/*; do
+            [[ -e "$file" && ! -L "$file" && -f "$file" ]] || continue
+            rel="${file#"$REPO_ROOT"/}"
+            case "${rel##*/}" in
+                .DS_Store|viz.html) continue ;;
+            esac
+            ALL_FILES+=("$rel")
+        done
+    done < <(
+        find "$DOC_ROOT" \
+            \( -type d \( -name '.*' -o -name .git -o -name node_modules -o -name target -o -name build \) -prune \) \
+            -o \( -type d ! -type l -print \)
+    )
 }
 
 # 扫描函数
@@ -193,11 +207,15 @@ scan_project() {
 # 执行扫描
 scan_project $READ_MODE $DATA_MODE
 
-# 生成索引指南（九章结构，填充真实统计与路径）
-echo "Generating index guide from scanned data..."
+# 生成扫描运行元数据；默认不改既有 INDEX-GUIDE
+echo "Generating scan metadata..."
 PROJECT_NAME="$(basename "$(pwd)")"
 ISO_TIME="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-TOP_DIRS="$(ls -1d */ 2>/dev/null | sed 's#/$##' | sort | sed 's#^#- `./#;s#$#`#' || true)"
+TOP_DIRS="$(
+    printf '%s\n' "${SCANNED_FILES[@]}" \
+        | sed "s#^${DOC_DIR}/##;s#/[^/]*\$##;s#^\$#.#" | sort -u \
+        | sed 's#^#- `#;s#$#`#'
+)"
 if [[ -z "$TOP_DIRS" ]]; then
     TOP_DIRS="- 无"
 fi
@@ -209,60 +227,29 @@ fi
 
 REL_LOG="./${LOG_FILE#"$REPO_ROOT"/}"
 REL_DEFAULT_OUT="./${DEFAULT_OUTPUT#"$REPO_ROOT"/}"
+REL_LOG="${REL_LOG//.\/././}"
+REL_DEFAULT_OUT="${REL_DEFAULT_OUT//.\/././}"
 
 TMP_OUT="$(mktemp)"
 cat > "$TMP_OUT" << EOF
-# ${PROJECT_NAME} 索引指南
+### 扫描运行（${ISO_TIME}）
 
-> 最后更新：${ISO_TIME}
-> 文档定位：由 docs-indexing 自动生成的九章索引（mode=${DATA_MODE}, depth=${READ_MODE}）
+| 项 | 值 |
+|----|----|
+| mode / depth | \`${DATA_MODE} / ${READ_MODE}\` |
+| 文件总数 | \`${INDEXED_FILES}\` |
+| 输出路径 | \`${REL_DEFAULT_OUT}\` |
+| 运行日志 | \`${REL_LOG}\` |
 
-## 一、项目概览（Project Overview）
-- 项目名称：\`${PROJECT_NAME}\`
-- 扫描模式：\`${DATA_MODE}\`
-- 扫描深度：\`${READ_MODE}\`
-- 索引文件总数：\`${INDEXED_FILES}\`
-- 输出路径：\`${OUTPUT}\`
+<details>
+<summary>扫描目录</summary>
 
-## 二、架构视图（Architecture View）
-### 2.1 顶层目录
 ${TOP_DIRS}
 
-### 2.2 主要文件（样本）
-${TOP_FILES}
-
-## 三、接口清单（Interface Catalog）
-- 本仓库为文档与脚本仓库，未检测到应用运行时 API 接口清单。
-
-## 四、核心流程（Core Flows）
-- docs-indexing 扫描仓库文件并生成索引指南
-- 结果写入 \`${REL_LOG}\` 以支持增量基线
-
-## 五、配置与环境（Config & Environment）
-- \`--mode\`: \`full\` / \`incremental\`
-- \`--depth\`: \`1\` / \`2\` / \`3\`
-- \`--output\`: 输出文件路径（默认 \`${REL_DEFAULT_OUT}\`）
-- \`--since\`: 增量扫描起始时间戳（epoch ms）
-
-## 六、未索引区域声明（Unindexed Scope）
-- 仅索引可读取文件，不推断未读取内容。
-- 当前未进行语义抽取，仅提供结构化路径与统计。
-
-## 七、质量与边界（Quality & Boundaries）
-- 路径均为仓库根相对路径
-- 输出具有幂等性（相同输入得到相同结构）
-- 增量模式须有效基线（见 \`${REL_LOG}\` 主表或 \`--since\`），否则应中止或改全量
-
-## 八、日志与追溯（Traceability）
-- 索引运行日志（Markdown）：\`${REL_LOG}\`
-- 变更溯源：\`git log\` / \`git diff\`（相对 \`INDEXING-LOG\` 锚点；含工作区未提交）
-
-## 九、附录（Appendix）
-- 生成器：\`agent/skills/docs-indexing/scripts/indexing.sh\`
-- 规范参考：\`agent/skills/docs-indexing/references/scan-spec.md\`
+</details>
 EOF
 
-python3 - "$OUTPUT" "$TMP_OUT" <<'PY'
+python3 - "$OUTPUT" "$TMP_OUT" "$REWRITE" <<'PY'
 from __future__ import annotations
 
 import re
@@ -272,6 +259,7 @@ from pathlib import Path
 out_path = Path(sys.argv[1])
 gen_path = Path(sys.argv[2])
 generated = gen_path.read_text(encoding="utf-8").rstrip() + "\n"
+rewrite = sys.argv[3] == "1"
 
 RE_OKF = re.compile(r"<!--\s*okf:begin\s*-->.*?<!--\s*okf:end\s*-->", re.DOTALL)
 RE_IDX = re.compile(
@@ -302,25 +290,29 @@ def split_frontmatter(text: str) -> tuple[str, str]:
 existing = out_path.read_text(encoding="utf-8") if out_path.is_file() else ""
 fm, body = split_frontmatter(existing)
 
-if not RE_OKF.search(body):
-    okf_placeholder = (
-        "<!-- okf:begin -->\n"
-        "## OKF 渐进披露\n\n"
-        "（待生成）\n"
-        "<!-- okf:end -->\n\n"
-    )
-    body = okf_placeholder + body.lstrip("\n")
-
 idx_wrapped = (
     "<!-- docs-indexing:begin -->\n"
     + generated
     + "<!-- docs-indexing:end -->\n"
 )
 
-if RE_IDX.search(body):
-    body = RE_IDX.sub(idx_wrapped, body, count=1)
+if rewrite:
+    if RE_IDX.search(body):
+        body = RE_IDX.sub(idx_wrapped, body, count=1)
+    else:
+        if not body.strip():
+            body = (
+                f"# {out_path.parent.name} INDEX-GUIDE\n\n"
+                "> 由 docs-indexing 生成扫描运行块；九章内容由 Agent 按契约维护。\n\n"
+                + idx_wrapped
+            )
+        else:
+            body = body.rstrip() + "\n\n" + idx_wrapped
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text((fm + body).rstrip() + "\n", encoding="utf-8")
 else:
-    body = body.rstrip() + "\n\n" + idx_wrapped
+    print("scan-only: INDEX-GUIDE 未修改；使用 --rewrite 才更新运行块")
 
 out_path.parent.mkdir(parents=True, exist_ok=True)
 out_path.write_text((fm + body).rstrip() + "\n", encoding="utf-8")
