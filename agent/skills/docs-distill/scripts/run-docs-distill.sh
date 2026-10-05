@@ -6,11 +6,11 @@ set -euo pipefail
 usage() {
   cat <<'EOF'
 Usage:
-  run-docs-distill.sh --name NAME [--doc-dir system|company] [--dry-run] [--root DIR]
+  run-docs-distill.sh --name NAME [--doc-dir system|solution|company] [--dry-run] [--root DIR]
 
 Options:
-  --name      源名称（system 边=应用名；company 边=系统名）
-  --doc-dir   目标层 system|company。缺省：环境变量 DOC_DIR，再试仓库根 .docsconfig（须已为 system|company）
+  --name      源名称（system=应用名；solution=系统名；company=解决方案名）
+  --doc-dir   目标层 system|solution|company。缺省：环境变量 DOC_DIR，再试仓库根 .docsconfig
   --dry-run   对齐 Agent 预览语义；本脚本本来就不写盘
   --root      项目根目录（默认：脚本所在目录上溯四级）
   --app       兼容别名，等同 --name
@@ -79,13 +79,13 @@ resolve_doc_dir() {
 DOC_DIR_RESOLVED="$(resolve_doc_dir)"
 
 case "${DOC_DIR_RESOLVED}" in
-  system|company) ;;
+  system|solution|company) ;;
   "")
-    echo "[ERROR] 无法解析 DOC_DIR。请传 --doc-dir system|company，或设置环境变量 / .docsconfig 为 system|company。" >&2
+    echo "[ERROR] 无法解析 DOC_DIR。请传 --doc-dir system|solution|company，或设置环境变量 / .docsconfig。" >&2
     exit 1
     ;;
   *)
-    echo "[ERROR] DOC_DIR 须为 system|company（当前: ${DOC_DIR_RESOLVED}）。应用层无 overview，不能作蒸馏目标。" >&2
+    echo "[ERROR] DOC_DIR 须为 system|solution|company（当前: ${DOC_DIR_RESOLVED}）。application overview 不是蒸馏目标，用 docs-extract。" >&2
     exit 1
     ;;
 esac
@@ -93,13 +93,16 @@ esac
 if [[ "${DOC_DIR_RESOLVED}" == "system" ]]; then
   SLOT_DIR="system/application-slots/application-${NAME}"
   OVERVIEW_DIR="system/knowledge/overview"
+elif [[ "${DOC_DIR_RESOLVED}" == "solution" ]]; then
+  SLOT_DIR="solution/system-slots/system-${NAME}"
+  OVERVIEW_DIR="solution/knowledge/overview"
 else
-  SLOT_DIR="company/system-slots/system-${NAME}"
+  SLOT_DIR="company/solution-slots/solution-${NAME}"
   OVERVIEW_DIR="company/knowledge/overview"
 fi
+OVERVIEW_TARGET="${OVERVIEW_DIR}/${NAME}-overview.md"
 
 OVERVIEW_TEMPLATE="${OVERVIEW_DIR}/NAME-overview.md"
-OVERVIEW_TARGET="${OVERVIEW_DIR}/${NAME}-overview.md"
 
 ERRORS=0
 

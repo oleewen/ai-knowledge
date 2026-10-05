@@ -5,7 +5,7 @@
 
 ## 前置
 
-- `--file` 须存在（系统/公司 overview，见 [knowledge-layout.md](../../../references/knowledge-layout.md)）
+- `--file` 须存在（四层 `{NAME}-overview.md`，见 [knowledge-layout.md](../../../references/knowledge-layout.md)）
 - phase 含 1 时 keywords 齐备；Skill 用 `1-scan`+`1-write`+`2`+`3`
 - 脚本路径：`agent/skills/docs-tag/scripts/keyword_tag.py`（仓库根执行）
 
@@ -16,7 +16,7 @@
 | `--file` | 是 | — | 目标 MD |
 | `--phase` | 是 | — | `1`/交互、`2`、`3`/`excerpt`、`all`；Skill 用 `1-scan`/`1-write`/`2`/`3` |
 | `--keywords` | 1/all 时 | — | 种子词，空格分隔 |
-| `--scan-dir` | 否 | `system/knowledge/` | 扫目录；公司 overview 用 `company/knowledge/` |
+| `--scan-dir` | 否 | 按 `--file` 推断 `{DOC_DIR}/knowledge/` | 显式优先；无法推断时 `system/knowledge/` |
 | `--top-n` | 否 | `30` | Top 候选数 |
 
 ## 参数向导

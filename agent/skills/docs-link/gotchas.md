@@ -1,6 +1,6 @@
 # gotchas
 
-- **须在源仓 Git 根执行**：company→system 或 system→application；应用仓打开工作区时技能应停，不代跑
+- 须在源仓 Git 根执行：company→solution、solution→system 或 system→application；应用仓打开工作区时技能应停，不代跑
 - 目标须已有 `knowledge-links.yaml`（application 由 docs-install 落盘空清单）；缺则脚本失败
 - `app_name`：`--app-name` > 已有登记 > Git 根目录名；槽位名 `application-{NAME}` / `system-{NAME}` 依赖此名，向导须确认
 - 重复 link：合并更新同一条，不追加重复行；已有 `app_label` 不覆盖

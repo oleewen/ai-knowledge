@@ -9,7 +9,7 @@ title: overview
 系统层五视角 overview 缓冲（表行 ↔ 视角章节 `##`）。**是** `docs-distill` 目标。
 
 - 模板：[NAME-overview.md](NAME-overview.md) → 拷为 `{APPNAME}-overview.md`
-- 技能：`docs-distill` / `docs-extract` / `docs-archive`
+- 技能：`docs-distill` / `docs-extract` / `docs-archive` / `docs-tag`
 - 归档后落入各视角 `chapters/`
 
 导航：[index.md](index.md) · [knowledge-governance](../../../agent/knowledge/knowledge-governance.md) / knowledge-layout

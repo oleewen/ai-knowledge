@@ -10,6 +10,10 @@ GitHub 去标点≠直觉；手动链易空。脚本双规则尝试。**查**：
 
 勿叠多个 `<!-- spec-tags -->`。`write_tags_to_file` 先删旧块再写，幂等。
 
+## 2b 四层与 scan-dir
+
+`--file` 为四层 `{NAME}-overview.md`。省略 `--scan-dir` 时扫同层 `knowledge/`（排除 `overview/` 子目录）。显式 `--scan-dir` 覆盖推断。
+
 ## 3 扫描排除
 
 须排除 `--file` 所在**直接子目录**，防目标污染共现。**注**：目标是 scan-dir **根下** md 时不排除子树。

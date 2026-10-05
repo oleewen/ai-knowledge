@@ -3,7 +3,7 @@ type: Value Chain
 title: 示例价值链
 description: 演示公司级 VC；由 BD 支撑，并由 CAP 实现。
 tags: [business, VC]
-timestamp: "2026-09-18T00:00:00Z"
+timestamp: "2026-09-18T00:00:00+08:00"
 id: VC-EXAMPLE
 perspective: business
 hierarchy: VC

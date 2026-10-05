@@ -178,12 +178,16 @@ knowledge_link_guess_app_name() {
 
 # 在源 DOC_ROOT/application-slots 下确保 application-${app} 软链 + 共用 changelogs
 # target_doc_root：下级 DOC_ROOT 绝对路径（可尚不存在 → 悬空软链）
-knowledge_link_ensure_application_slot() {
-  local doc_root="${1:?}" app="${2:?}" target_doc_root="${3:?}"
+knowledge_link_ensure_kind_slot() {
+  local doc_root="${1:?}" kind="${2:?}" name="${3:?}" target_doc_root="${4:?}"
   local dr slots dest shared
+  case "$kind" in
+    application|system|solution) ;;
+    *) error "槽位 kind 须为 application|system|solution（收到: ${kind})" ;;
+  esac
   dr="$(_knowledge_link_doc_root_abs_ns "$doc_root")"
-  slots="${dr}/application-slots"
-  dest="${slots}/application-${app}"
+  slots="${dr}/${kind}-slots"
+  dest="${slots}/${kind}-${name}"
   shared="${slots}/changelogs"
   if [[ "$DRY" == '1' ]]; then
     log "[dry-run] 将确保软链: %s → %s" "$dest" "$target_doc_root"
@@ -191,7 +195,19 @@ knowledge_link_ensure_application_slot() {
   fi
   mkdir -p "$slots"
   slot_ensure_shared_changelogs "$slots"
-  slot_ensure_slot_symlink "$dest" "$target_doc_root" "$shared" "$app" >/dev/null
+  slot_ensure_slot_symlink "$dest" "$target_doc_root" "$shared" "$name" >/dev/null
+}
+
+knowledge_link_ensure_application_slot() {
+  knowledge_link_ensure_kind_slot "$1" application "$2" "$3"
+}
+
+knowledge_link_ensure_system_slot() {
+  knowledge_link_ensure_kind_slot "$1" system "$2" "$3"
+}
+
+knowledge_link_ensure_solution_slot() {
+  knowledge_link_ensure_kind_slot "$1" solution "$2" "$3"
 }
 
 # -----------------------------------------------------------------------------
@@ -217,22 +233,6 @@ knowledge_link_guess_sys_name() {
   top="$(cd -P "$root" 2>/dev/null && pwd)" || top="$root"
   base="$(basename "$top")"
   knowledge_link_validate_sys_name "$base"
-}
-
-knowledge_link_ensure_system_slot() {
-  local doc_root="${1:?}" sys="${2:?}" target_doc_root="${3:?}"
-  local dr slots dest shared
-  dr="$(_knowledge_link_doc_root_abs_ns "$doc_root")"
-  slots="${dr}/system-slots"
-  dest="${slots}/system-${sys}"
-  shared="${slots}/changelogs"
-  if [[ "$DRY" == '1' ]]; then
-    log "[dry-run] 将确保软链: %s → %s" "$dest" "$target_doc_root"
-    return 0
-  fi
-  mkdir -p "$slots"
-  slot_ensure_shared_changelogs "$slots"
-  slot_ensure_slot_symlink "$dest" "$target_doc_root" "$shared" "$sys" >/dev/null
 }
 
 # 从登记 identity（repository URL 或已展开本地路径）推断 APPNAME，供旧数据或无 app_name 时 unlink 删槽位
@@ -263,15 +263,21 @@ knowledge_link_repo_root_for_backup() {
 }
 
 # 移除槽位软链（或残留真目录）；共用 application-slots/changelogs 保留
-knowledge_link_remove_application_slot() {
-  local doc_root="${1:?}" app="${2:?}"
-  local dest
-  [[ -n "$app" ]] || return 0
-  if [[ "$app" == 'NAME' || "$app" == 'APPNAME' ]]; then
-    warn "NAME/APPNAME 为保留名，跳过删除槽位"
+knowledge_link_remove_kind_slot() {
+  local doc_root="${1:?}" kind="${2:?}" name="${3:?}"
+  local dest reserved
+  [[ -n "$name" ]] || return 0
+  case "$kind" in
+    application) reserved='NAME|APPNAME' ;;
+    system) reserved='NAME|SYSNAME' ;;
+    solution) reserved='NAME|SLNNAME' ;;
+    *) error "槽位 kind 须为 application|system|solution（收到: ${kind})" ;;
+  esac
+  if [[ "$name" == 'NAME' || "$name" == 'APPNAME' || "$name" == 'SYSNAME' || "$name" == 'SLNNAME' ]]; then
+    warn "保留名，跳过删除槽位: $name"
     return 0
   fi
-  dest="$(_knowledge_link_doc_root_abs_ns "$doc_root")/application-slots/application-${app}"
+  dest="$(_knowledge_link_doc_root_abs_ns "$doc_root")/${kind}-slots/${kind}-${name}"
   if [[ ! -e "$dest" && ! -L "$dest" ]]; then
     return 0
   fi
@@ -283,24 +289,16 @@ knowledge_link_remove_application_slot() {
   info "已删除槽位: $dest"
 }
 
+knowledge_link_remove_application_slot() {
+  knowledge_link_remove_kind_slot "$1" application "$2"
+}
+
 knowledge_link_remove_system_slot() {
-  local doc_root="${1:?}" sys="${2:?}"
-  local dest
-  [[ -n "$sys" ]] || return 0
-  if [[ "$sys" == 'NAME' || "$sys" == 'SYSNAME' ]]; then
-    warn "NAME/SYSNAME 为保留名，跳过删除槽位"
-    return 0
-  fi
-  dest="$(_knowledge_link_doc_root_abs_ns "$doc_root")/system-slots/system-${sys}"
-  if [[ ! -e "$dest" && ! -L "$dest" ]]; then
-    return 0
-  fi
-  if [[ "$DRY" == '1' ]]; then
-    log "[dry-run] 将删除槽位软链/目录: $dest"
-    return 0
-  fi
-  slot_remove_slot_path "$dest"
-  info "已删除槽位: $dest"
+  knowledge_link_remove_kind_slot "$1" system "$2"
+}
+
+knowledge_link_remove_solution_slot() {
+  knowledge_link_remove_kind_slot "$1" solution "$2"
 }
 
 # =============================================================================
@@ -331,7 +329,7 @@ docs_link_usage() {
 
   须在「源」知识库 Git 仓库内执行（git rev-parse 取根）。登记文件：源 .docsconfig 的 DOC_ROOT/knowledge-links.yaml
 
-  允许边：company→system、system→application（源/目标 .docsconfig 须含合法 KNOWLEDGE_TYPE）。
+  允许边：company→solution、solution→system、system→application（源/目标 .docsconfig 须含合法 KNOWLEDGE_TYPE）。
   目标须已有 knowledge-links.yaml（缺则失败；application 由 docs-install 落盘空清单）。
   unlink 支持目标失联（路径不存在或目标仓库配置缺失）时按登记 identity 注销。
 
@@ -340,9 +338,10 @@ docs_link_usage() {
   --target        目标知识库仓库根（或已登记的 remote URL）；兼容旧参数 --path（已弃用）。
   --app-name      仅 system→application 建联有效。
 
-  源仓 links：向下 child（不写 type；缺省=child）；doc_dir=目标 DOC_DIR；company→system 用 sys_*，system→application 用 app_*。
-  子仓 links：恰好一条 type:parent（repository/path/doc_dir + company_* 或 sys_*）；HTTP ref 固定 main。
-  槽位：建联时创建指向下级 DOC_ROOT 的软链；同步日志在 application-slots/changelogs/ 或 system-slots/changelogs/。
+  源仓 links：向下 child（不写 type；缺省=child）；doc_dir=目标 DOC_DIR；
+    company→solution 用 solution_*，solution→system 用 sys_*，system→application 用 app_*。
+  子仓 links：恰好一条 type:parent（repository/path/doc_dir + company_* / solution_* / sys_*）；HTTP ref 固定 main。
+  槽位：solution-slots/solution-{NAME}、system-slots/system-{NAME}、application-slots/application-{NAME}。
   不再读写 knowledge-parent.yaml。unlink 删除子仓 parent 条与槽位软链，不改正文 HTTP，共用日志保留。
 
 示例:
@@ -427,22 +426,23 @@ docsconfig_validate_knowledge_type "$_skt" || exit 1
 expect_target=''
 LIST_FILE="$_sdoc/knowledge-links.yaml"
 case "$_skt" in
-  company) expect_target='system' ;;
-  system)  expect_target='application' ;;
-  *) error "源 KNOWLEDGE_TYPE=${_skt} 不支持建联（仅 company 或 system 可作为源）" ;;
+  company)  expect_target='solution' ;;
+  solution) expect_target='system' ;;
+  system)   expect_target='application' ;;
+  *) error "源 KNOWLEDGE_TYPE=${_skt} 不支持建联（仅 company、solution 或 system 可作为源）" ;;
 esac
 
-# 源仓写出：child 用 sys|app；源仓已有 parent 时用 parent_kind
-# 目标仓 child 键族恒为 app（仅 system 文件会同时保留 parent+child）
+# 源仓写出 child 键族；目标仓 parent 键族
 case "$_skt" in
-  company) SRC_CHILD_KIND='sys'; SRC_PARENT_KIND='none' ;;
-  system)  SRC_CHILD_KIND='app'; SRC_PARENT_KIND='company' ;;
+  company)  SRC_CHILD_KIND='solution'; SRC_PARENT_KIND='none' ;;
+  solution) SRC_CHILD_KIND='sys'; SRC_PARENT_KIND='company' ;;
+  system)   SRC_CHILD_KIND='app'; SRC_PARENT_KIND='solution' ;;
 esac
 case "$expect_target" in
-  system) TGT_PARENT_KIND='company' ;;
-  application) TGT_PARENT_KIND='sys' ;;
+  solution)    TGT_PARENT_KIND='company'; TGT_CHILD_KIND='sys' ;;
+  system)      TGT_PARENT_KIND='solution'; TGT_CHILD_KIND='app' ;;
+  application) TGT_PARENT_KIND='sys'; TGT_CHILD_KIND='app' ;;
 esac
-TGT_CHILD_KIND='app'
 TARGET_KEY="$(normalize_target_repo_root "$TARGET_RAW")" || error "目标路径非法: $TARGET_RAW"
 REGISTER_KEY=''
 REGISTER_REPO=''
@@ -452,6 +452,8 @@ TARGET_APP_NAME=''
 TARGET_APP_LABEL=''
 TARGET_SYS_NAME=''
 TARGET_SYS_LABEL=''
+TARGET_SOL_NAME=''
+TARGET_SOL_LABEL=''
 matched_idx=-1
 TGT_LINKS=''
 PARENT_NAME=''
@@ -536,6 +538,19 @@ elif [[ "$CMD" == 'link' && "$expect_target" == 'system' ]]; then
     TARGET_SYS_LABEL="${app_labels[matched_idx]}"
   else
     [[ -n "$TARGET_SYS_NAME" ]] && TARGET_SYS_LABEL="$TARGET_SYS_NAME"
+  fi
+elif [[ "$CMD" == 'link' && "$expect_target" == 'solution' ]]; then
+  if [[ "$have" -eq 1 && "$matched_idx" -ge 0 && -n "${app_names[matched_idx]:-}" ]]; then
+    TARGET_SOL_NAME="$(knowledge_link_validate_sys_name "${app_names[matched_idx]}")" || exit 1
+  else
+    TARGET_SOL_NAME="$(knowledge_link_guess_sys_name "$TGT_ROOT")" || exit 1
+  fi
+  TARGET_SLOT_DOC_ROOT="$(docs_link_abs_under_repo "$TGT_ROOT" "$_tdoc")"
+  knowledge_link_ensure_solution_slot "$_sdoc" "$TARGET_SOL_NAME" "$TARGET_SLOT_DOC_ROOT"
+  if [[ "$have" -eq 1 && "$matched_idx" -ge 0 && -n "${app_labels[matched_idx]:-}" ]]; then
+    TARGET_SOL_LABEL="${app_labels[matched_idx]}"
+  else
+    [[ -n "$TARGET_SOL_NAME" ]] && TARGET_SOL_LABEL="$TARGET_SOL_NAME"
   fi
 elif [[ "$CMD" == 'link' && "$expect_target" != 'application' && -n "$CLI_APP_NAME" ]]; then
   warn "--app-name 仅用于 system→application 建联，已忽略"
@@ -626,6 +641,9 @@ docs_link_execute_link() {
     if [[ "$expect_target" == 'system' ]]; then
       app_names[matched_idx]="${TARGET_SYS_NAME:-}"
       app_labels[matched_idx]="${TARGET_SYS_LABEL:-}"
+    elif [[ "$expect_target" == 'solution' ]]; then
+      app_names[matched_idx]="${TARGET_SOL_NAME:-}"
+      app_labels[matched_idx]="${TARGET_SOL_LABEL:-}"
     else
       app_names[matched_idx]="${TARGET_APP_NAME:-}"
       app_labels[matched_idx]="${TARGET_APP_LABEL:-}"
@@ -638,6 +656,9 @@ docs_link_execute_link() {
     if [[ "$expect_target" == 'system' ]]; then
       app_names+=("${TARGET_SYS_NAME:-}")
       app_labels+=("${TARGET_SYS_LABEL:-}")
+    elif [[ "$expect_target" == 'solution' ]]; then
+      app_names+=("${TARGET_SOL_NAME:-}")
+      app_labels+=("${TARGET_SOL_LABEL:-}")
     else
       app_names+=("${TARGET_APP_NAME:-}")
       app_labels+=("${TARGET_APP_LABEL:-}")
@@ -651,6 +672,8 @@ docs_link_execute_link() {
   [[ "$link_is_update" -eq 1 ]] && link_verb='已更新登记'
   if [[ "$expect_target" == 'system' && -n "$TARGET_SYS_NAME" ]]; then
     link_info=" (doc_dir=${TARGET_DOC_DIR}, system-${TARGET_SYS_NAME})"
+  elif [[ "$expect_target" == 'solution' && -n "$TARGET_SOL_NAME" ]]; then
+    link_info=" (doc_dir=${TARGET_DOC_DIR}, solution-${TARGET_SOL_NAME})"
   elif [[ -n "$TARGET_APP_NAME" && -n "$TARGET_DOC_DIR" ]]; then
     link_info=" (doc_dir=${TARGET_DOC_DIR}, application-${TARGET_APP_NAME})"
   elif [[ -n "$TARGET_APP_NAME" ]]; then
@@ -705,8 +728,10 @@ docs_link_execute_unlink() {
   if [[ -n "$unlink_name" ]]; then
     if [[ "$_skt" == 'system' ]]; then
       knowledge_link_remove_application_slot "$_sdoc" "$unlink_name"
-    elif [[ "$_skt" == 'company' ]]; then
+    elif [[ "$_skt" == 'solution' ]]; then
       knowledge_link_remove_system_slot "$_sdoc" "$unlink_name"
+    elif [[ "$_skt" == 'company' ]]; then
+      knowledge_link_remove_solution_slot "$_sdoc" "$unlink_name"
     fi
   fi
   printf '已注销: %s 中的 %s\n' "$LIST_FILE" "$REGISTER_KEY"

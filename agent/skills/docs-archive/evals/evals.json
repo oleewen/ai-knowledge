@@ -199,6 +199,28 @@
       ]
     },
     {
+      "id": "archive-trigger-app-001",
+      "category": "should-trigger",
+      "prompt": "把 application/knowledge/overview/order-overview.md 里接口管理行归档到应用视角章节，回写 overview 为索引壳",
+      "expected_output": "/docs-archive：应用库 overview；确认书收口后按行内链落入 application/knowledge/application/chapters/；回写 overview；非 distill。",
+      "assertions": [
+        {
+          "id": "intent-clarify-via-confirmation-book",
+          "name": "确认书即意图澄清",
+          "type": "must_include",
+          "check": "确认书收口前禁止写目标或回写 overview。",
+          "priority": "P0"
+        },
+        {
+          "id": "app-archive-target",
+          "name": "应用归档目标",
+          "type": "must_include",
+          "check": "须提 application/knowledge 或应用层 chapters。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
       "id": "archive-not-trigger-003",
       "category": "should-not-trigger",
       "prompt": "从 docs/design.md 和 docs/api.md 提炼业务要点写进 payment-overview.md 第三列，先 dry-run",

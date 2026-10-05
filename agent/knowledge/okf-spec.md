@@ -1,7 +1,7 @@
 ---
 type: Knowledge Governance
 title: OKF 共享规范
-description: company、system、application 三层共享的知识文件分类与 OKF 概念实体规范。
+description: company、solution、system、application 四层共享的知识文件分类与 OKF 概念实体规范。
 tags: [okf, governance, shared-spec]
 timestamp: "2026-06-25T00:00:00+08:00"
 ---
@@ -11,8 +11,8 @@ timestamp: "2026-06-25T00:00:00+08:00"
 > **谷歌 OKF v0.1 规范**：[`GoogleCloudPlatform/knowledge-catalog/okf/SPEC.md`](https://raw.githubusercontent.com/GoogleCloudPlatform/knowledge-catalog/main/okf/SPEC.md)
 > **参考实现/讨论**：[github.com/google/open-knowledge-framework](https://github.com/google/open-knowledge-framework)
 > **共享 SSOT**：本仓库 `agent/knowledge/okf-spec.md`
-> **边界**：本文管**文件分型**与 **per-entity Profile**（frontmatter/正文/引用）。三层路径、overview 缓冲、联邦流水线 → [knowledge-layout.md](../references/knowledge-layout.md)；ID **语法** → [naming-conventions.md](naming-conventions.md)；缩写/短义/映射字段 → [glossary.md](glossary.md)；首次定义 / 引用边界 → [knowledge-governance.md](knowledge-governance.md)。
-> **适用对象**：`company/`、`system/`、`application/` 三层知识库，以及围绕知识库组织的索引入口、叙事文档与元数据文件
+> **边界**：本文管**文件分型**与 **per-entity Profile**（frontmatter/正文/引用）。四层路径、overview 缓冲、联邦流水线 → [knowledge-layout.md](../references/knowledge-layout.md)；ID **语法** → [naming-conventions.md](naming-conventions.md)；缩写/短义/映射字段 → [glossary.md](glossary.md)；首次定义 / 引用边界 → [knowledge-governance.md](knowledge-governance.md)。
+> **适用对象**：`company/`、`solution/`、`system/`、`application/` 四层知识库，以及围绕知识库组织的索引入口、叙事文档与元数据文件
 
 ---
 
@@ -28,7 +28,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 
 ## 0. 规范定位
 
-面向 AI Agent 的三层共享治理模板。目标：降误用（勿把 README/overview/meta 当实体）→ 三层同类结构一致 → 兼容 OKF v0.1 Core 并定义本仓 per-entity Profile。答：分型、各类 MUST/SHOULD/MAY、三层如何复用。
+面向 AI Agent 的四层共享治理模板。目标：降误用（勿把 README/overview/meta 当实体）→ 四层同类结构一致 → 兼容 OKF v0.1 Core 并定义本仓 per-entity Profile。答：分型、各类 MUST/SHOULD/MAY、四层如何复用。
 
 ---
 
@@ -91,7 +91,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 | 实体概念核心键 | `perspective` | 枚举 | ✅ | 与实体所属视角一致 | `business` / `product` / `application` / `data` / `technical` |
 | 实体概念核心键 | `hierarchy` | 枚举 | ✅ | 与 `type` 一一对应 | `VC` / `BD` / `CAP` / `PL` / `SLN` / `PD` / `SYS` / `MDG` / `TPL` / `BSD` / `BC` / `AGG` / `AB` / `PM` / `BP` / `FT` / `UC` / `BR` / `APP` / `MS` / `DS` / `ENT` / `TSD` / `API` / `TBL` / `MW` / `CMP` |
 | 实体概念核心键 | `parent_id` | 字符串 \| null | ✅ | 父层 id；BD 与 PL 允许 `null` | `BD-EXAMPLE` / `PM-EXAMPLE` / `null` |
-| 实体概念核心键 | `layer_scope` | 枚举 | ✅ | 与知识库路径前缀对应 | `company` / `system` / `application` |
+| 实体概念核心键 | `layer_scope` | 枚举 | ✅ | 与知识库路径前缀对应 | `company` / `solution` / `system` / `application` |
 | 非实体文档键 | `okf_version` | 字符串 | - | 当前只出现在 bundle 根 `index.md` | `"0.1"` / `"1.0"` |
 | 非实体文档键 | `status` | 字符串 | - | 当前只出现在公司层示例方案/分析文档 | `draft` / `"draft"` |
 
@@ -112,16 +112,16 @@ timestamp: "2026-06-25T00:00:00+08:00"
 | BD | `Business Domain` | business | company |
 | CAP | `Business Capability` | business | company |
 | PL | `Product Line` | product | company |
-| SLN | `Solution` | application | company |
-| MDG | `Master Data Domain` | data | system |
+| SLN | `Solution` | application | solution |
+| MDG | `Master Data Domain` | data | solution |
 | TPL | `Technical Platform` | technical | company |
-| BSD | `Business Subdomain` | business | company（一级）/ system（二级） |
+| BSD | `Business Subdomain` | business | company（一级）/ solution（二级） |
 | BC | `Bounded Context` | business | system |
 | AGG | `Aggregate` | business | system |
 | AB | `Ability` | business | system |
-| PD | `Product` | product | system |
+| PD | `Product` | product | solution |
 | PM | `Product Module` | product | system |
-| BP | `Business Process` | product | system |
+| BP | `Business Process` | product | solution |
 | FT | `Feature` | product | system |
 | UC | `Use Case` | product | system |
 | BR | `Business Rule` | product | system |
@@ -130,7 +130,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 | MS | `Microservice` | application | system |
 | DS | `Data Store` | data | system |
 | ENT | `Entity` | data | system |
-| TSD | `Technical Subdomain` | technical | system |
+| TSD | `Technical Subdomain` | technical | solution |
 | API | `API Endpoint` | application | application |
 | TBL | `Data Table` | data | application |
 | MW | `Middleware Binding` | technical | application |
@@ -145,15 +145,15 @@ timestamp: "2026-06-25T00:00:00+08:00"
 
 ## 4. per-entity 四段正文结构（实体概念 Profile）
 
-### 三层实证要点（per-entity）
+### 四层实证要点（per-entity）
 
 MUST：
 
-- 文件为 `{ID}.md` 且在三层 `*/knowledge/<perspective>/...` 下，可被其他文件以链接引用。
+- 文件为 `{ID}.md` 且在四层 `*/knowledge/<perspective>/...` 下，可被其他文件以链接引用。
 - frontmatter 满足实体概念 Profile 的 10 字段必填（见 §2），并保持 `type`/`hierarchy`/`perspective`/`layer_scope` 一致。
 - 正文包含 4 个中文 H2（见本节），用于承载关系、跨视角、说明与证据。
 - 关系与跨视角引用使用可解析链接；同一文件内链接风格保持一致。
-- 业务三层 `*/knowledge/**` 的跨文件引用方向与形态遵守 [knowledge-governance.md](knowledge-governance.md)「业务 knowledge 引用边界」（同层 bundle-relative；向上有 parent 则 HTTP 到首次定义层 SSOT，无 parent 则纯 ID；禁下层/槽位/爬层；依据段不链库外文档路径）。
+- 业务四层 `*/knowledge/**` 的跨文件引用方向与形态遵守 [knowledge-governance.md](knowledge-governance.md)「业务 knowledge 引用边界」（同层 bundle-relative；向上有 parent 则 HTTP 到首次定义层 SSOT，无 parent 则纯 ID；禁下层/槽位/爬层；依据段不链库外文档路径）。
 
 SHOULD：
 
@@ -195,11 +195,12 @@ MAY：
 | CAP | `implements_to: [...]` + `maps_to: [...]` | — |
 | PL | `maps_to: [...]` | `implemented_by`（PD） |
 | PD | `implements_to: [...]` | `implemented_by`（PM）；`maps_to`（SYS\|BSD） |
+| BP | `implements_to: [...]`（→SLN） | `maps_to`（多 PD，可选） |
 | PM | `implements_to: [...]` + `implemented_by: [...]` | `maps_to`（BC）；`depends_to` |
 | FT | `implements_to: [...]` + `implemented_by: [...]` | `supported_by`（API） |
 | FR | `implements_to: [...]` + `implemented_by: [...]` | — |
 | UC | `implements_to: [...]` | `maps_to`（API） |
-| SLN | `maps_to: [...]` | `implemented_by`（SYS） |
+| SLN | `maps_to: [...]` | `implemented_by`（SYS\|BP） |
 | SYS | `implements_to: [...]` + `implemented_by: [...]` | `uses_to`（MDG\|TSD） |
 | APP | `implements_to: [...]` + `implemented_by: [...]` | `supports_to`（BC）；`uses_to`（DS\|MW） |
 | MS | `implements_to: [...]` + `implemented_by: [...]` | `maps_to`（AGG）；`uses_to`（ENT\|TBL\|CMP） |
@@ -322,19 +323,23 @@ MAY：工具链 extensions 字段可加，须可控长期维护。
 
 ---
 
-## 10. company / system / application 三层共享模板
+## 10. 四层共享模板
 
 各层**重点概念 / 首次定义**见 [knowledge-governance.md § 各层聚焦摘要](knowledge-governance.md#各层聚焦摘要)。本节只补 OKF 文件组成差异：
 
 ### 10.1 company
 
-公司级实体 + 治理叙事 + 系统槽位为主；叙事/元数据占比高，须严格区分 concept 与非 concept。
+公司级实体 + 域架构叙事 + 解决方案槽位为主；叙事/元数据占比高，须严格区分 concept 与非 concept。
 
-### 10.2 system
+### 10.2 solution
 
-example 与叙事/目录组织更密；company 语义 → application 实现的中间层。
+一仓一 SLN；跨 SYS 共性实体（PD/L2/MDG/TSD/BP）+ SA 叙事；company 语义 → system 实现的中间层。
 
-### 10.3 application
+### 10.3 system
+
+单 SYS 实现链与应用槽位；example 与叙事/目录组织更密。
+
+### 10.4 application
 
 承接上游投影与实现细节；物理锚点、宿主信息与配置证据要求更高。
 
@@ -347,6 +352,7 @@ example 与叙事/目录组织更密；company 语义 → application 实现的�
 | layer_scope | 文件路径前缀 |
 | ------------- | ------------- |
 | `company` | `company/knowledge/...` |
+| `solution` | `solution/knowledge/...` |
 | `system` | `system/knowledge/...` |
 | `application` | `application/knowledge/...` |
 

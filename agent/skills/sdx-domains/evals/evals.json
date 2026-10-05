@@ -1,0 +1,549 @@
+{
+  "skill_name": "sdx-domains",
+  "version": "2.4.0",
+  "description": "评估 sdx-domains 在「澄清 → 生成 → 烤干」流程下的触发、分流与段落推进协议表述；断言供 grader 评分。",
+  "evals": [
+    {
+      "id": "solution-trigger-001",
+      "category": "should-trigger",
+      "prompt": "业务方丢了一段会议纪要，需求比较模糊，帮我走 /sdx-domains：先逐步确认参数，再一段一段写进 DOMAIN-BILL-01.md，每段先意图澄清再写，写完再 grill 一轮，把冲突点和关键里程碑/切换方案补强。",
+      "expected_output": "以 /sdx-domains 为主路径：说明先走参数向导，再按模板分段「澄清 → 生成 → 烤干」直写 DOMAIN-BILL-01.md；每段写前意图澄清、写入后自动 grilling 至收敛，再由用户确认后推进下一段；应覆盖冲突点与里程碑/切换方案的业务表述。",
+      "assertions": [
+        {
+          "id": "parameter-guidance",
+          "name": "参数向导",
+          "type": "must_include",
+          "check": "明确存在逐项确认参数或快捷组合的入口，不得仍以整份前置草稿和集中收口作为默认第一步。",
+          "priority": "P0"
+        },
+        {
+          "id": "section-cycle",
+          "name": "分段直写",
+          "type": "must_include",
+          "check": "体现按模板分段生成并直写 DOMAIN-BILL-01.md，而非先整份 spec、再统一定稿；主线含澄清 → 生成 → 烤干。",
+          "priority": "P0"
+        },
+        {
+          "id": "intent-clarify",
+          "name": "意图澄清",
+          "type": "must_include",
+          "check": "须体现当前段写入前做意图澄清（六项清单或等价写前门禁），未确认不得写入正文。",
+          "priority": "P0"
+        },
+        {
+          "id": "grilling-loop",
+          "name": "段内烤干",
+          "type": "must_include",
+          "check": "体现每段生成后执行自动 grilling（烤干）并收敛后再推进；可提及 C/M/G/F 或等价动作。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-section-stop",
+          "name": "单段停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；不得自动推进下一段。",
+          "priority": "P0"
+        },
+        {
+          "id": "semantic-change-gated",
+          "name": "语义改动确认",
+          "type": "must_include",
+          "check": "须体现语义性结论/建议（目标/范围/承诺/口径/取舍/风险/里程碑/切换方案/术语等）必须先给推荐方案与数字选项并等待用户确认，未获确认不得修订当前段。",
+          "priority": "P0"
+        },
+        {
+          "id": "audience-check",
+          "name": "受众质检",
+          "type": "must_include",
+          "check": "须体现烤干含受众维 A/B/C/E（读者/信息边界/角色/可评审性），或明确对照 audience-and-language；未过不得宣称段已烤干收敛。",
+          "priority": "P0"
+        },
+        {
+          "id": "deliverable-naming",
+          "name": "产物对齐",
+          "type": "should_include",
+          "check": "应出现 DOMAIN-BILL-01 或 BILL-01 与冲突/里程碑/切换中至少两类关键词的规划说明。",
+          "priority": "P1"
+        }
+      ]
+    },
+    {
+      "id": "solution-trigger-002",
+      "category": "should-trigger",
+      "prompt": "我们要在 {DOC_DIR}/domains/ 写共识级方案文档，按七章模板，先评估影响面再定里程碑与切换方案，请用 sdx-domains 流程，不要直接进需求分析。希望参数可以一步步确认，必要时也能用快捷组合。",
+      "expected_output": "明确采用 sdx-domains：先参数确认，再分段直写终稿，并支持逐项参数与快捷组合两种模式；说明不应跳过解决方案阶段直接进入 ANALYSIS。",
+      "assertions": [
+        {
+          "id": "parameter-guidance",
+          "name": "参数向导",
+          "type": "must_include",
+          "check": "须体现参数向导的两种入口：逐项确认或快捷组合。",
+          "priority": "P0"
+        },
+        {
+          "id": "section-cycle",
+          "name": "分段直写",
+          "type": "must_include",
+          "check": "体现七章模板、影响面、里程碑/切换与分段直写终稿的主线，并区分于「直接需求分析」。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-section-stop",
+          "name": "单段停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；不得自动推进下一段。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得同意「跳过解决方案、直接写 ANALYSIS」作为对本 prompt 的遵从答复。",
+          "priority": "P0"
+        },
+        {
+          "id": "analysis-deferred",
+          "name": "下游衔接",
+          "type": "should_include",
+          "check": "可提及定稿 SOLUTION 后再进入 sdx-analysis 等下游（非本轮主路径）。",
+          "priority": "P1"
+        }
+      ]
+    },
+    {
+      "id": "solution-trigger-003",
+      "category": "should-trigger",
+      "prompt": "老板要一版「订单域改造」解决方案给评审用，只要业务语言、不写接口。请执行 /sdx-domains，IDEA-ID 用 260504-订单域改造；如果当前段 grill 出前文设定有问题，允许回改前文再继续 grill 当前段。",
+      "expected_output": "以 /sdx-domains 执行：采纳 IDEA-ID 260504-订单域改造；强调业务语言、接口细节不进正文；体现前文回改后当前段必须重开并再做一轮 grilling。",
+      "assertions": [
+        {
+          "id": "parameter-guidance",
+          "name": "参数回应",
+          "type": "must_include",
+          "check": "应复述或采纳 260504-订单域改造（或 订单域改造 与日期组合）。",
+          "priority": "P0"
+        },
+        {
+          "id": "reopen-rule",
+          "name": "前文回改",
+          "type": "must_include",
+          "check": "体现当前段 grilling 打出前文缺口时，可以回改前文；回改后当前段必须重开：再意图澄清并再 grill 一轮。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-section-stop",
+          "name": "单段停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；不得自动推进下一段。",
+          "priority": "P0"
+        },
+        {
+          "id": "semantic-change-gated",
+          "name": "语义改动确认",
+          "type": "must_include",
+          "check": "须体现语义性结论/建议（目标/范围/承诺/口径/取舍/风险/里程碑/切换方案/术语等）必须先给推荐方案与数字选项并等待用户确认，未获确认不得修订当前段。",
+          "priority": "P0"
+        },
+        {
+          "id": "business-language",
+          "name": "业务语言",
+          "type": "must_include",
+          "check": "须强调只写业务语言，不进入接口/实现细节。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "solution-trigger-004",
+      "category": "should-trigger",
+      "prompt": "请按 SDX 流程先做解决方案阶段：识别矛盾、给 2～3 套化解路径对比，当前段写完后先自动 grill 到收敛，用户再选 C/M/G/F；如果用户选 G，就继续深挖当前段。",
+      "expected_output": "主路径为解决方案阶段：分段写作、段内比选、自动 grilling 到收敛后由用户通过 C/M/G/F 控制推进；选 G 时继续深挖当前段，不推进下一段。",
+      "assertions": [
+        {
+          "id": "grilling-loop",
+          "name": "动作协议",
+          "type": "must_include",
+          "check": "须提及 C/M/G/F 或等价动作；其中 G 表示在当前段已收敛后继续深挖当前段，不进入下一段。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-section-stop",
+          "name": "单段停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择，不得自动推进下一段。",
+          "priority": "P0"
+        },
+        {
+          "id": "section-cycle",
+          "name": "当前段收口",
+          "type": "must_include",
+          "check": "须体现多方案取舍在当前段内完成：业务取舍写入 §5.2 问题决策；技术/架构选型落 ADR + CONTEXT（不入 Q-n），再由用户决定是否推进。",
+          "priority": "P0"
+        },
+        {
+          "id": "adr-tech-gate",
+          "name": "技术决策 ADR",
+          "type": "must_include",
+          "check": "若涉及技术/架构选型，须体现烤干收敛后、选 C 前落 ADR 与 CONTEXT，或引用 sdx-adr-protocol / adr/CONTEXT。",
+          "priority": "P1"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "边界分流",
+          "type": "must_not_conflict",
+          "check": "不得将「先做解决方案」偷换为直接 PRD/ASD 落盘，或退回旧 gate/spec 主线。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "solution-trigger-005",
+      "category": "should-trigger",
+      "prompt": "请执行 /sdx-domains，但这轮只写一个当前段：只处理「## 1. 背景与目标 / ### 1.1 业务现状」到 DOMAIN-BILL-01.md。先意图澄清再写入，写完后让当前段自动 grill 到烤干，然后给我 C/M/G/F 选项并停住等待，不要自动写下一段。",
+      "expected_output": "以 /sdx-domains 为主路径：明确一次只处理当前段（1.1），写前意图澄清、写入后自动 grilling 到收敛，再给出 C/M/G/F 并等待用户选择，不自动推进下一段。",
+      "assertions": [
+        {
+          "id": "section-cycle",
+          "name": "分段直写",
+          "type": "must_include",
+          "check": "须体现按模板将当前段（1.1）直写入 DOMAIN-BILL-01.md，而非一口气补齐多段或整篇。",
+          "priority": "P0"
+        },
+        {
+          "id": "grilling-loop",
+          "name": "段内拷问",
+          "type": "must_include",
+          "check": "须体现写前意图澄清，且当前段写完后自动 grilling 到收敛，围绕当前段补强，不跨段发散。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-section-stop",
+          "name": "单段停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；需出现明确的停住/等待措辞（如「等待用户选择」「停住等待」「不要自动推进」等），不得自动推进下一段。",
+          "priority": "P0"
+        },
+        {
+          "id": "semantic-change-gated",
+          "name": "语义改动确认",
+          "type": "must_include",
+          "check": "须体现语义性结论/建议必须先给推荐方案与数字选项并等待用户确认，未获确认不得修订当前段。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "solution-trigger-006",
+      "category": "should-trigger",
+      "prompt": "我就是想要你直接一口气把 DOMAIN-BILL-01.md 七章都写完，别分段、别停、别问我，直接输出完整版。",
+      "expected_output": "仍以 /sdx-domains 为主路径：不得直接从空白状态一口气补齐整篇；应先完成当前段「澄清 → 生成 → 烤干」，再通过 `F`（含剩余意图批确认）一次性补齐剩余章节。",
+      "assertions": [
+        {
+          "id": "exception-full-draft-gated",
+          "name": "破例需选择",
+          "type": "must_include",
+          "check": "须体现用户要求一口气整篇时，先完成当前段「澄清 → 生成 → 烤干」，再通过 `F`（先批确认剩余意图）进入批量补齐；不得直接从空白状态输出完整七章正文。",
+          "priority": "P0"
+        },
+        {
+          "id": "semantic-change-gated",
+          "name": "语义改动确认",
+          "type": "must_include",
+          "check": "须体现语义性结论/建议必须先给推荐方案与数字选项并等待用户确认，未获确认不得修订当前段。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-section-stop",
+          "name": "单段停住",
+          "type": "must_include",
+          "check": "须强调默认仍按单段 Section Cycle 推进，不因用户一句话要求而自动破例；需体现 `F` 是显式用户动作。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "solution-trigger-007",
+      "category": "should-trigger",
+      "prompt": "请执行 /sdx-domains，直接开始参数向导并把当前段写进 DOMAIN-CRM-01.md；不要再让我先写会话 spec、改什么 CONFIRMED，按新流程来。",
+      "expected_output": "以 /sdx-domains 为主路径：直接进入参数向导与当前段写作，不得要求已删除的 HTML gate、PENDING→CONFIRMED、会话 spec 或写前 hook 作为默认前置；主线是澄清→生成→烤干。",
+      "assertions": [
+        {
+          "id": "parameter-guidance",
+          "name": "参数向导",
+          "type": "must_include",
+          "check": "须体现直接进入参数向导，不把已删除的 HTML gate / 会话 spec 当作默认起点；主线是澄清→生成→烤干。",
+          "priority": "P0"
+        },
+        {
+          "id": "section-cycle",
+          "name": "分段直写",
+          "type": "must_include",
+          "check": "须体现当前段直写 DOMAIN-CRM-01.md，并在当前段内收口。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-session-spec-gate-regression",
+          "name": "不回退旧门禁",
+          "type": "must_not_conflict",
+          "check": "不得要求已删除的 HTML gate、PENDING→CONFIRMED、会话 spec 或写前 hook 作为 sdx-domains 默认前置；主线是澄清→生成→烤干。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-section-stop",
+          "name": "单段停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "solution-trigger-008",
+      "category": "should-trigger",
+      "prompt": "请执行 /sdx-domains：当前段写完后不要每一轮 grill 都停下来问我，要自动连续 grill 到这部分内容烤干，再统一给我 C/M/G/F 选项。",
+      "expected_output": "以 /sdx-domains 为主路径：明确当前段写入后进入自动连续 grilling，直到当前段收敛才回到用户动作菜单；不得把 G 当作每轮继续 grill 的必选按钮。",
+      "assertions": [
+        {
+          "id": "auto-grilling-loop",
+          "name": "自动连续 grilling",
+          "type": "must_include",
+          "check": "须体现当前段写完后自动连续 grilling 到收敛，而非每一轮都停下等待用户继续。",
+          "priority": "P0"
+        },
+        {
+          "id": "g-not-required-per-round",
+          "name": "G 非每轮必选",
+          "type": "must_include",
+          "check": "须体现 G 仅用于当前段已收敛后的额外深挖，不能把 G 表述为每轮继续 grill 的必选动作。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-section-stop",
+          "name": "收敛后再停住",
+          "type": "must_include",
+          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后再给出 C/M/G/F 等待用户选择。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "solution-trigger-009",
+      "category": "should-trigger",
+      "prompt": "当前段“### 1.2 存在问题”已经确认通过，我现在直接选 F。请按 sdx-domains 把剩余未完成章节全部生成，但不要覆盖已经确认的前文；如果后文打出前文语义冲突，要先停下来让我选。",
+      "expected_output": "以 /sdx-domains 为主路径：说明 F 用于补齐剩余未完成章节，保留已确认前文；若批量补齐过程中触发语义性问题或前文回改，必须先停下等待用户确认。",
+      "assertions": [
+        {
+          "id": "f-batch-fill",
+          "name": "F 批量补齐",
+          "type": "must_include",
+          "check": "须体现 F 表示补齐剩余未完成章节，而不是提前结束流程或整篇重生成。",
+          "priority": "P0"
+        },
+        {
+          "id": "preserve-confirmed-prefix",
+          "name": "保留已确认前文",
+          "type": "must_include",
+          "check": "须体现 F 不覆盖已确认前文，至少复述保留既有确认内容或不重写前文。",
+          "priority": "P0"
+        },
+        {
+          "id": "semantic-change-gated",
+          "name": "批量补齐仍受语义门禁",
+          "type": "must_include",
+          "check": "须体现 F 过程中若后文打出前文语义冲突或其他语义性问题，必须先给推荐方案与数字选项并等待用户确认。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "solution-not-trigger-001",
+      "category": "should-not-trigger",
+      "prompt": "SOLUTION 已经有了，请接着做 /sdx-analysis，把 MVP 拆细、依赖和风险写进 ANALYSIS-CRM-1.md。",
+      "expected_output": "主路径为 sdx-analysis：产出或迭代 ANALYSIS-CRM-1.md；不以 sdx-domains 的参数向导 + 分段直写流程写新 SOLUTION 为终点。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 /sdx-analysis 或 ANALYSIS-CRM-1.md（或 ANALYSIS）为当前主任务，而非以 sdx-domains 为唯一主路径。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-solution-primary",
+          "name": "勿假主解决方案阶段",
+          "type": "must_not_conflict",
+          "check": "不得将本请求表述为“仍需先做参数向导、再分段写 SOLUTION”作为主要答案。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "solution-not-trigger-002",
+      "category": "should-not-trigger",
+      "prompt": "请用 /sdx-prd 把用户故事和验收标准补全，我要可评审的 PRD-ORDER-1.md。",
+      "expected_output": "主路径为 sdx-prd 与 PRD-ORDER-1.md；不以 sdx-domains 的参数向导 + Section Cycle + SOLUTION 写作为主交付。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 /sdx-prd 或 PRD-ORDER-1.md（或 PRD）为当前主任务。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-solution-primary",
+          "name": "勿假主解决方案阶段",
+          "type": "must_not_conflict",
+          "check": "不得将本请求框成以 sdx-domains 的参数向导、Section Cycle、SOLUTION 七章为主路径。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "solution-not-trigger-003",
+      "category": "should-not-trigger",
+      "prompt": "请用 /sdx-architect 基于现有 PRD 产出 ASD，画服务边界和服务变更表。",
+      "expected_output": "主路径为 sdx-architect 与 ASD（服务边界、服务变更表）；不以 SOLUTION 为当前主产物。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 /sdx-architect 或 ASD 为当前主任务。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-solution-primary",
+          "name": "勿假主解决方案阶段",
+          "type": "must_not_conflict",
+          "check": "不得将本请求描述为默认先做参数向导、分段写 SOLUTION 再进入架构设计。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "solution-not-trigger-004",
+      "category": "should-not-trigger",
+      "prompt": "帮我把 system/application-billing 蒸馏进 system/knowledge/overview/billing-overview.md，按 docs-distill 流程。",
+      "expected_output": "主路径为 docs-distill 与 billing-overview；不是 sdx-domains。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 docs-distill、蒸馏或 billing-overview 等与应用知识库→系统 overview 相关的技能/流程，而非 sdx-domains。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-solution-primary",
+          "name": "勿假主解决方案阶段",
+          "type": "must_not_conflict",
+          "check": "不得用「先出 SOLUTION 七章」作为完成本请求的主方案。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "solution-not-trigger-005",
+      "category": "should-not-trigger",
+      "prompt": "从 design 目录抽取段落写进 payment-overview 第三列，执行 docs-extract。",
+      "expected_output": "主路径为 docs-extract 与 payment-overview；不是 sdx-domains。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 docs-extract 或抽取写入 overview 第三列，而非 sdx-domains。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-solution-primary",
+          "name": "勿假主解决方案阶段",
+          "type": "must_not_conflict",
+          "check": "不得将本请求框成 sdx-domains 的参数向导、分段直写或任何集中式前置收口主线。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "solution-not-trigger-006",
+      "category": "should-not-trigger",
+      "prompt": "更新仓库 INDEX-GUIDE.md，目录变动大，跑 docs-indexing。",
+      "expected_output": "主路径为 docs-indexing 与 INDEX-GUIDE.md；不是 sdx-domains。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须明确 docs-indexing 或 INDEX_GUIDE 文档索引相关流程，而非 sdx-domains。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-solution-primary",
+          "name": "勿假主解决方案阶段",
+          "type": "must_not_conflict",
+          "check": "不得将本请求描述为解决方案阶段、参数向导或 SOLUTION 落盘主路径。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "solution-not-trigger-007",
+      "category": "should-not-trigger",
+      "prompt": "我已经确认过前两章了。现在别按当前段流程，直接用 F 把整份 DOMAIN-ORDER-1.md 从头到尾重写一遍，前面已确认内容也一起覆盖掉。",
+      "expected_output": "不得把该请求解释为当前 `sdx-domains` 协议下合法的 F 动作；应明确指出 F 只用于保留已确认前文并补齐剩余未完成章节，不能覆盖前文整篇重写。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确拒绝当前协议",
+          "type": "must_include",
+          "check": "须明确指出该请求不符合当前 sdx-domains 协议中的 F 语义，或明确拒绝把它作为合法 F 动作执行。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-f-rewrite",
+          "name": "勿把 F 当整篇重写",
+          "type": "must_not_conflict",
+          "check": "不得将 F 描述为覆盖已确认前文的整篇重生成、整篇重写或整篇覆盖。",
+          "priority": "P0"
+        },
+        {
+          "id": "preserve-confirmed-prefix",
+          "name": "重申 F 的真实语义",
+          "type": "should_include",
+          "check": "可加分：明确 F 仅保留已确认前文并补齐剩余未完成章节。",
+          "priority": "P1"
+        }
+      ]
+    },
+    {
+      "id": "solution-audience-001",
+      "category": "should-trigger",
+      "prompt": "继续 /sdx-domains 当前段烤干：刚写入的正文里出现了 FeeAppealService.create() 和 appeal_record 表名，业务读者看不懂。请按受众质检处理后再给动作字母。",
+      "expected_output": "检出受众维违例（至少信息边界/读者锁定），输出违例短表；可无损改写则自动改为业务表述并再烤干；未过受众维不得宣称已收敛；最后在烤干阶段给出 C/M/G/F。",
+      "assertions": [
+        {
+          "id": "audience-violation-visible",
+          "name": "违例可见",
+          "type": "must_include",
+          "check": "须出现受众质检违例说明或 A/B/C/E 短表，不得对 Service/表名口吻静默放过。",
+          "priority": "P0"
+        },
+        {
+          "id": "audience-rewrite-or-gate",
+          "name": "改写或停问",
+          "type": "must_include",
+          "check": "须体现自动改为业务表述，或语义停问等待确认；不得在未处理违例时直接写后 C。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-tech-jargon-pass",
+          "name": "勿放行技术口吻",
+          "type": "must_not_conflict",
+          "check": "不得声称受众已通过却仍保留 FeeAppealService.create() / appeal_record 作为业务正文主表述。",
+          "priority": "P0"
+        }
+      ]
+    }
+  ]
+}

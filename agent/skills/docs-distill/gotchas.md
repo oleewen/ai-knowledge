@@ -8,7 +8,7 @@
 - **跳过职责/粒度闭合**：未按 [scope-clarity.md](references/scope-clarity.md) 读契约清单、未出摘要、或缺口未落盘 → 不算写前 `C`；不得 dry-run / 写入。
 - **从 overview/槽位正文猜职责**：禁止；只信 knowledge-governance / overview 表行 / knowledge-layout / 槽位 README。
 - **dry-run 仍须澄清**：预览前也要意图澄清（含职责/粒度）；烤干可针对预览结果。职责未闭合时 dry-run 也不能开。
-- **DOC_DIR 非 system/company**（含 monorepo 根、`.docsconfig` 为其它值）→ 向导或 `--doc-dir`，勿猜。
+- **DOC_DIR 非 system|solution|company**（含 application、monorepo 根）→ 向导或 `--doc-dir`，勿猜。application overview 走 extract。
 - **槽位空/缺失**→ 停；先 docs-link / docs-pull，勿直读源仓替代。
 - **误走 extract 源**：design/Wiki 等非槽位 → docs-extract，不是本技能。
 

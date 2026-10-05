@@ -18,12 +18,12 @@ cleanup() { rm -rf "$TMP_DIR"; }
 trap cleanup EXIT
 
 COMPANY="$TMP_DIR/company"
-SYS="$TMP_DIR/sys-foo"
-BARE="$TMP_DIR/sys-foo.bare.git"
+SLN="$TMP_DIR/sln-foo"
+BARE="$TMP_DIR/sln-foo.bare.git"
 
-mkdir -p "$COMPANY/docs" "$SYS/docs"
+mkdir -p "$COMPANY/docs" "$SLN/docs"
 git -C "$COMPANY" init -q
-git -C "$SYS" init -q
+git -C "$SLN" init -q
 
 cat >"$COMPANY/.docsconfig" <<EOF
 DOC_ROOT=docs
@@ -34,45 +34,45 @@ AGENT_ROOT=$ROOT_DIR
 AGENT_DIR=agent
 EOF
 
-cat >"$SYS/.docsconfig" <<EOF
+cat >"$SLN/.docsconfig" <<EOF
 DOC_ROOT=docs
-REPO_ROOT=$SYS
+REPO_ROOT=$SLN
 DOC_DIR=docs
-KNOWLEDGE_TYPE=system
+KNOWLEDGE_TYPE=solution
 AGENT_ROOT=$ROOT_DIR
 AGENT_DIR=agent
 EOF
 
-echo "content" >"$SYS/docs/sync-me.md"
-git -C "$SYS" add .
-git -C "$SYS" commit -m "init sys docs" -q
-git clone --bare "$SYS" "$BARE" -q
-git -C "$SYS" remote add origin "$BARE"
+echo "content" >"$SLN/docs/sync-me.md"
+git -C "$SLN" add .
+git -C "$SLN" commit -m "init sln docs" -q
+git clone --bare "$SLN" "$BARE" -q
+git -C "$SLN" remote add origin "$BARE"
 
-mkdir -p "$COMPANY/docs/system-slots"
+mkdir -p "$COMPANY/docs/solution-slots"
 
 cat >"$COMPANY/docs/knowledge-links.yaml" <<EOF
 links:
   - repository: "$BARE"
-    path: "$SYS"
+    path: "$SLN"
     doc_dir: "docs"
-    sys_name: "sys-foo"
-    sys_label: "sys-foo"
+    solution_name: "sln-foo"
+    solution_label: "sln-foo"
 EOF
 
 set +e
-out="$(cd "$COMPANY" && "${BASH:-bash}" "$PULL" --sys-name sys-foo 2>&1)"
+out="$(cd "$COMPANY" && "${BASH:-bash}" "$PULL" --sln-name sln-foo 2>&1)"
 code=$?
 set -e
 
 [[ "$code" -eq 0 ]] || fail "docs-pull 应成功：$out"
 printf '%s\n' "$out" | grep -Fq 'SYNC_OK:' || fail "应输出 SYNC_OK"
 
-[[ -L "$COMPANY/docs/system-slots/system-sys-foo" ]] \
+[[ -L "$COMPANY/docs/solution-slots/solution-sln-foo" ]] \
   || fail "槽位应为软链"
-assert_file_exists "$COMPANY/docs/system-slots/system-sys-foo/sync-me.md"
+assert_file_exists "$COMPANY/docs/solution-slots/solution-sln-foo/sync-me.md"
 printf '%s\n' "$out" | grep -Fq "source=$BARE" || fail "SYNC_OK 应含 source"
 printf '%s\n' "$out" | grep -Eq 'commit=[0-9a-f]+' || fail "SYNC_OK 应含 commit"
-assert_file_exists "$COMPANY/docs/system-slots/changelogs/ARCHIVE-LOG.md"
+assert_file_exists "$COMPANY/docs/solution-slots/changelogs/ARCHIVE-LOG.md"
 
-pass "company: pull single sys symlink + git trace"
+pass "company: pull single solution symlink + git trace"

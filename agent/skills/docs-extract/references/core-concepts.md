@@ -7,7 +7,7 @@
 | 术语 | 含义 |
 |------|------|
 | `--sources` | 文件/目录路径，或直接文本内容；目录递归（gotchas） |
-| `--overview` | 目标 `system/knowledge/overview/XX-overview.md` |
+| `--overview` | 目标 `{DOC_DIR}/knowledge/overview/{NAME}-overview.md`（application / system / solution / company） |
 | `## 文档关键词` | overview 附录；**筛选唯一依据** |
 | A / U / D | 第三列 delta 标记；见 federation-spec |
 

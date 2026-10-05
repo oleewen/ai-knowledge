@@ -3,7 +3,7 @@ type: Solution
 title: 示例解决方案
 description: 解决方案（对应 PL）；maps_to→PL；SYS.parent_id→本 SLN。
 tags: [application, SLN]
-timestamp: "2026-09-13T00:00:00Z"
+timestamp: "2026-09-13T00:00:00+08:00"
 id: SLN-EXAMPLE
 perspective: application
 hierarchy: SLN

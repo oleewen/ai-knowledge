@@ -1,13 +1,9 @@
 ---
 type: Documentation
-title: analysis（需求分析）
+title: analysis（应用分析）
 ---
-# analysis（需求分析）
+# analysis
 
-SDD 分析阶段：平铺 `ANALYSIS-{IDEA-ID}.md`。上游 [../solutions](../solutions/README.md)，下游 [../requirements](../requirements/README.md)。
+应用层 SDD 第一段：`ANALYSIS-{IDEA-ID}.md`。上游解决方案库 SOLUTION。下游 [../features](../features/README.md)。
 
-| 文档 | 标题 | 关联解决方案 |
-|------|------|--------------|
-| ANALYSIS-EXAMPLE.md | 示例应用需求分析 | SOLUTION-EXAMPLE |
-
-技能：[sdx-analysis](../../agent/skills/sdx-analysis/SKILL.md)
+样例：[ANALYSIS-EXAMPLE.md](ANALYSIS-EXAMPLE.md)。新写走 `/sdx-analysis`。

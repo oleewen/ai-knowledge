@@ -3,7 +3,7 @@ type: Functional Requirement
 title: 示例功能需求
 description: 示例产品实体。
 tags: [product, FR]
-timestamp: "2026-06-26T00:00:00Z"
+timestamp: "2026-06-26T00:00:00+08:00"
 id: FR-EXAMPLE
 perspective: product
 hierarchy: FR

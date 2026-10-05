@@ -21,6 +21,8 @@ from keyword_tag import (
     add_check_mark,
     strip_check_mark,
     phase2,
+    infer_knowledge_scan_dir,
+    resolve_scan_dir,
 )
 
 SCRIPT_PATH = os.path.join(os.path.dirname(__file__), '..', 'scripts', 'keyword_tag.py')
@@ -271,6 +273,49 @@ class TestCheckMark:
         stripped = strip_check_mark(line)
         added = add_check_mark(stripped)
         assert added.count('✅') == 1
+
+
+# ─────────────────────────────────────────────
+# scan-dir 推断
+# ─────────────────────────────────────────────
+
+class TestResolveScanDir:
+    def test_推断系统层(self, tmp_path):
+        overview = tmp_path / 'system' / 'knowledge' / 'overview' / 'billing-overview.md'
+        overview.parent.mkdir(parents=True)
+        overview.write_text('# x', encoding='utf-8')
+        got = infer_knowledge_scan_dir(str(overview))
+        assert got.endswith(os.path.join('system', 'knowledge') + os.sep)
+        assert resolve_scan_dir(None, str(overview)) == got
+
+    def test_推断解决方案层(self, tmp_path):
+        overview = tmp_path / 'solution' / 'knowledge' / 'overview' / 'x-overview.md'
+        overview.parent.mkdir(parents=True)
+        overview.write_text('# x', encoding='utf-8')
+        got = infer_knowledge_scan_dir(str(overview))
+        assert 'solution' in got and got.endswith('knowledge' + os.sep)
+
+    def test_推断公司层(self, tmp_path):
+        overview = tmp_path / 'company' / 'knowledge' / 'overview' / 'c-overview.md'
+        overview.parent.mkdir(parents=True)
+        overview.write_text('# x', encoding='utf-8')
+        got = infer_knowledge_scan_dir(str(overview))
+        assert 'company' in got and got.endswith('knowledge' + os.sep)
+
+    def test_推断应用层(self, tmp_path):
+        overview = tmp_path / 'application' / 'knowledge' / 'overview' / 'a-overview.md'
+        overview.parent.mkdir(parents=True)
+        overview.write_text('# x', encoding='utf-8')
+        got = infer_knowledge_scan_dir(str(overview))
+        assert 'application' in got and got.endswith('knowledge' + os.sep)
+        assert resolve_scan_dir(None, str(overview)) == got
+
+    def test_显式scan_dir优先(self, tmp_path):
+        overview = tmp_path / 'company' / 'knowledge' / 'overview' / 'c-overview.md'
+        overview.parent.mkdir(parents=True)
+        overview.write_text('# x', encoding='utf-8')
+        got = resolve_scan_dir('other/knowledge', str(overview))
+        assert got == 'other/knowledge' + os.sep
 
 
 # ─────────────────────────────────────────────

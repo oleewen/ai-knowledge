@@ -193,6 +193,36 @@
       ]
     },
     {
+      "id": "extract-trigger-app-001",
+      "category": "should-trigger",
+      "prompt": "从 docs/api.md 提炼接口要点，写进 application/knowledge/overview/order-overview.md 第三列，先 dry-run",
+      "expected_output": "docs-extract：应用库 overview；写前澄清 + C 后 dry-run；不走 docs-distill；烤干后停等。",
+      "files": [],
+      "assertions": [
+        {
+          "id": "intent-clarify-before-write",
+          "name": "写前意图澄清",
+          "type": "must_include",
+          "check": "写前须意图澄清与写前 C。",
+          "priority": "P0"
+        },
+        {
+          "id": "app-overview-target",
+          "name": "应用 overview 目标",
+          "type": "must_include",
+          "check": "须提 application/knowledge/overview 或应用库 overview。",
+          "priority": "P0"
+        },
+        {
+          "id": "dry-run-no-write",
+          "name": "dry-run 不落盘",
+          "type": "must_include",
+          "check": "dry-run 只预览，不宣称已写第三列。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
       "id": "extract-audience-001",
       "category": "should-trigger",
       "prompt": "继续 /docs-extract 烤干：第三列把源设计文档的完整 API 表整段塞进去，还无命中也改了 overview。请按受众质检处理。",

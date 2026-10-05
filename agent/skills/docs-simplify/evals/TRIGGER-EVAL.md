@@ -16,7 +16,7 @@
 
 ## 2026-07-21 真人试跑
 
-目标：`company/solutions/SOLUTION-EXAMPLE.md`（写前 C → 改写 → 烤干 → 写后 C）。
+目标：`company/domains/DOMAIN-EXAMPLE.md`（写前 C → 改写 → 烤干 → 写后 C）。
 
 共识回写原则/Skill：
 

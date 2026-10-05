@@ -6,7 +6,7 @@ title: REQUIREMENT-EXAMPLE — 需求包结构示例
 
 结构占位：`REQUIREMENT-{IDEA-ID}/MVP-Phase-*/` + PRD/ASD/DSD/TDD。非生产内容。
 
-上游：[../../analysis/ANALYSIS-EXAMPLE.md](../../analysis/ANALYSIS-EXAMPLE.md)  
+上游：[../../features/FEATURE-EXAMPLE.md](../../features/FEATURE-EXAMPLE.md)  
 约定：[../README.md](../README.md)
 
 ```text

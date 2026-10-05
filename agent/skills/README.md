@@ -18,12 +18,12 @@
 | 命令 | 差异要点 |
 | ---- | ---- |
 | `/docs-indexing` | 参数 `mode/depth/output/since`；产出九章 `INDEX-GUIDE.md` + `changelogs/INDEXING-LOG.md`（须列完整仓库根相对路径） |
-| `/docs-tag` | overview 关键词：候选附录、表行 ✅、架构摘录（phase 3）；轻流程 + phase 轻量校核（非语义族 grilling）。见 [workflow.md](docs-tag/references/workflow.md) |
+| `/docs-tag` | 四层 `{NAME}-overview.md` 关键词：候选附录、表行 ✅、架构摘录；`--scan-dir` 默认同层 `knowledge/`。轻流程。见 [workflow.md](docs-tag/references/workflow.md) |
 | `/docs-revise` | 术语/路径链式同步 + 定向纠错；烤干修订后走协议 simplify 遍；整篇结构交 `/docs-simplify` |
 | `/docs-simplify` | 金字塔结构 + 激进精简 + SSOT 去重引用；原则见 [simplify-principles.md](../references/simplify-principles.md) |
 | `/docs-agent` | 根 `README.md` + `AGENTS.md`；九章地图以已落盘 `INDEX-GUIDE.md` 为准，与 `index.md` 职责不重叠 |
-| `/docs-distill` | `--doc-dir system\|company` + `--name` + 可选 `--dry-run` → 槽位上行全量写目标层 `overview` 第三列（不写 DISTILL-LOG） |
-| `/docs-extract` | `--sources / --overview / --dry-run` → 非槽位源写系统或公司 overview 第三列 |
+| `/docs-distill` | `--doc-dir system\|solution\|company` + `--name` + 可选 `--dry-run` → 槽位上行全量写目标层 `overview` 第三列（不写 DISTILL-LOG） |
+| `/docs-extract` | `--sources / --overview / --dry-run` → 非槽位源写四层 overview 第三列 |
 | `/docs-merge` | `<source> <target>`〔`--dry-run`〕→ 按目标 H2/H3 章节合入；新增确认、类似合并、冲突 grilling；源只读 |
 | `/docs-install` | 知识库同步 + `.docsconfig`；`--target`/`--scope`/`--type`/`--mode`；默认 dry-run；轻流程 |
 | `/agent-install` | 整棵 Agent 树；`--agents`/`--target`/`--scope`；默认 dry-run；轻流程 |
@@ -33,10 +33,12 @@
 | `/docs-pull` | 按 `knowledge-links.yaml` 本地 path → 联邦槽位；`SYNC_OK` 含 commit；变更溯源 git；无远端 clone；轻流程 |
 | `/docs-push` | 中央规约 → 各应用 `path×doc_dir`（legacy / spec-asd）；轻流程 |
 | `/docs-build` | 五视角实体 ID → per-entity `{ID}.md`、视角 README、`INDEX-GUIDE.md` 第四章视角导航块 |
-| `/docs-archive` | overview 表行 → 目标视角章节；冲突策略；方案确认书=意图澄清 |
+| `/docs-archive` | overview 表行 → 四层视角章节；冲突策略；方案确认书=意图澄清 |
 | `/docs-okf` | OKF refresh / validate / viz；须 `.docsconfig` 的 `DOC_DIR`+`AGENT_DIR`+`KNOWLEDGE_TYPE`；脚本走 `{DOC_DIR}/{AGENT_DIR}/`；轻流程 |
-| `/sdx-solution` | → `{DOC_DIR}/solutions/SOLUTION-*.md` |
-| `/sdx-analysis` | → `{DOC_DIR}/analysis/ANALYSIS-*.md` |
+| `/sdx-domains` | → `company/domains/DOMAIN-MAP.md`、`DOMAIN-{BD-ID}.md` |
+| `/sdx-solution` | → 仅 solution 库 `{DOC_DIR}/solutions/SOLUTION-*.md` |
+| `/sdx-analysis` | → 系统/应用 `{DOC_DIR}/analysis/ANALYSIS-*.md` |
+| `/sdx-feature` | → 系统/应用 `{DOC_DIR}/features/FEATURE-*.md` |
 | `/sdx-prd` | 基于 ANALYSIS 当前 MVP → `PRD-*.md` |
 | `/sdx-architect` | 基于 PRD → `ASD-*.md`（§1–§3）；可选 `spec-asd-*.md` |
 | `/sdx-design` | 基于 PRD + ASD/spec-asd → `DSD-*.md`（实现在 §2）；上游可含 `{DOC_DIR}/specs/spec-asd-*.md` |

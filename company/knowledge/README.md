@@ -15,4 +15,6 @@ title: 企业架构
 | 技术 | [technical/](technical/README.md) |
 | overview 缓冲 | [overview/](overview/README.md) |
 
-导航：[index.md](index.md) · 库根 INDEX-GUIDE 第四章。本层 ID：VC-* / BD-* / BSD-L1-* / CAP-* / PL-* / SLN-* / TPL-*。
+本层 ID：VC-* / BD-* / BSD-L1-* / CAP-* / PL-* / TPL-*。
+
+导航：[index.md](index.md) · 库根 INDEX-GUIDE 第四章。

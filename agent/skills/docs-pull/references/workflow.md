@@ -6,7 +6,7 @@
 
 按以下顺序收口参数；用户已明确时可跳过对应项：
 
-1. 运行模式：system（application → system）或 company（system → company）
+1. 运行模式：system（application → system）、solution（system → solution）或 company（solution → company）
 2. `--app` / `--sys-name` / `--all`
 3. 当前轮起始槽位单元
 

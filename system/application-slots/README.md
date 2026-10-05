@@ -21,4 +21,4 @@ title: application-slots（应用联邦槽位根）
 - 同步：`/docs-pull --app <slug>`（校验软链；失效则按 `repository` clone/pull；**脏工作区拒绝 pull**）
 - 追溯：`SYNC_OK`（含 commit）；`git log` / `git diff`；蒸馏锚点 [changelogs/ARCHIVE-LOG.md](changelogs/ARCHIVE-LOG.md)
 
-公司层对称：[company/system-slots](../../company/system-slots/README.md)。
+下游对称：[solution/system-slots](../../solution/system-slots/README.md) · [company/solution-slots](../../company/solution-slots/README.md)。

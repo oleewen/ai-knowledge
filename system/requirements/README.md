@@ -8,6 +8,6 @@ title: requirements（需求交付）
 
 | REQUIREMENT 目录 | 关联 ANALYSIS | 状态 |
 |------------------|---------------|------|
-| REQUIREMENT-EXAMPLE | ANALYSIS-EXAMPLE | draft |
+| REQUIREMENT-EXAMPLE | FEATURE-EXAMPLE | draft |
 
 技能：`sdx-prd` · `sdx-architect` · `sdx-design` · `sdx-test`

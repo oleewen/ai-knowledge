@@ -9,7 +9,9 @@
 | `KNOWLEDGE_TYPE` | ASD | DSD / 落地 |
 | --- | --- | --- |
 | `application` 或未设置 | `§1-§3` 完整 | 应用库 **DSD-*.md**；可选 **spec-asd-*** → `{DOC_DIR}/specs/` |
-| `system` / `company` | `§1-§3` 联邦概要（`§3` 可保留摘要与下游承接） | 本库不落 DSD；详设 → 应用库 `/sdx-design` |
+| `system` | `§1-§3` 联邦概要 | 本库不落 DSD；详设 → 应用库 `/sdx-design` |
+| `solution` | 本层不写 ASD | PRD/DSD 落各 SYS `system/requirements/` |
+| `company` | 本层不写 ASD | 域架构 `/sdx-domains`；不直拆系统 PRD |
 
 ## 联邦概要要点
 

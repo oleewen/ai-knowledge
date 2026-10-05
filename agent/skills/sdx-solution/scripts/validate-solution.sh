@@ -25,6 +25,11 @@ _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 source "$_AGENT_HOME/scripts/lib/docsconfig.sh"
 docsconfig_bootstrap_validate
 
+if [[ "${KNOWLEDGE_TYPE:-}" != "solution" && "${KNOWLEDGE_TYPE:-}" != "sln" ]]; then
+  echo "[ERROR] /sdx-solution 仅允许 KNOWLEDGE_TYPE=solution（别名 sln）；当前=${KNOWLEDGE_TYPE:-unset}"
+  exit 1
+fi
+
 DOC_ROOT="$(docsconfig_resolve_doc_root)"
 cd "$REPO_ROOT" || exit 1
 

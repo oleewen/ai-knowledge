@@ -54,13 +54,39 @@ def parse_args():
                         help='1=交互候选; 2=打勾; 3/excerpt=架构摘录; all=1→2→3; 1-scan/1-write=Skill')
     parser.add_argument('--keywords', nargs='+', default=[],
                         help='种子词（phase 含 1/1-scan/1-write/all 时必填）')
-    parser.add_argument('--scan-dir', default='system/knowledge/',
-                        help='共现扫描目录（系统默认 system/knowledge/；公司用 company/knowledge/）')
+    parser.add_argument('--scan-dir', default=None,
+                        help='共现扫描目录；省略时按 --file 推断 {DOC_DIR}/knowledge/（system|solution|company）；无法推断时 system/knowledge/')
     parser.add_argument('--top-n', type=positive_int, default=30,
                         help='Top-N 候选（正整数）')
     parser.add_argument('--selected', default=None,
                         help='1-write：逗号分隔选中词')
     return parser.parse_args()
+
+
+def infer_knowledge_scan_dir(overview_file):
+    """overview 在 {application|system|solution|company}/knowledge/overview/ 时返回同层 knowledge/。"""
+    abs_dir = os.path.abspath(os.path.dirname(overview_file))
+    if os.path.basename(abs_dir) != 'overview':
+        return None
+    knowledge_dir = os.path.dirname(abs_dir)
+    if os.path.basename(knowledge_dir) != 'knowledge':
+        return None
+    layer = os.path.basename(os.path.dirname(knowledge_dir))
+    if layer not in ('application', 'system', 'solution', 'company'):
+        return None
+    return knowledge_dir + os.sep
+
+
+def resolve_scan_dir(scan_dir, overview_file):
+    """显式 --scan-dir 优先；否则推断；再否则 system/knowledge/。"""
+    if scan_dir:
+        if not scan_dir.endswith(('/', '\\')):
+            scan_dir = scan_dir + os.sep
+        return scan_dir
+    inferred = infer_knowledge_scan_dir(overview_file)
+    if inferred:
+        return inferred
+    return 'system/knowledge/'
 
 
 # ─────────────────────────────────────────────
@@ -722,6 +748,8 @@ def main():
     if not os.path.exists(args.file):
         print(f'错误：文件不存在：{args.file}', file=sys.stderr)
         sys.exit(1)
+
+    args.scan_dir = resolve_scan_dir(args.scan_dir, args.file)
 
     # 仅在实际扫描目录的阶段校验 scan_dir（1-write / 2 不依赖扫描目录）
     _phases_need_scan_dir = ('1-scan', '1', 'all')

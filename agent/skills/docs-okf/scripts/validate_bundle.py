@@ -50,10 +50,10 @@ class Validator:
         # 缓存扫到的所有 .md 文件
         self._md_files: List[Path] = []
         # R10 layer_scope 与 bundle 名一致
-        # bundle ⇒ 期望 layer_scope 白名单（application / system / company 三 bundle 全支持）
         self._bundle_expected_layer_scope: Dict[str, str] = {
             "application": "application",
             "system": "system",
+            "solution": "solution",
             "company": "company",
         }
 
@@ -249,7 +249,7 @@ class Validator:
                 )
 
     def _check_layer_scope(self, path: Path, relpath: str, meta: Dict) -> None:
-        """R10 layer_scope 与 bundle 名一致（system bundle ⇒ layer_scope: system；company bundle ⇒ layer_scope: company）。"""
+        """R10 layer_scope 与 bundle 名一致。"""
         layer_scope = meta.get("layer_scope")
         if layer_scope is None or str(layer_scope) == "":
             return

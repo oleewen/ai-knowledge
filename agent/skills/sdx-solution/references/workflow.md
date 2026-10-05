@@ -14,7 +14,7 @@
 - 写后烤干：[grilling-skill.md](../../../references/grilling-skill.md)
 - 技术决策落 ADR / CONTEXT：[sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)
 
-**公司库**（`KNOWLEDGE_TYPE=company`）：输入含 [`company/knowledge/`](../../../../company/knowledge/README.md) 五视角；方案须明确跨系统需求下**各系统负责的功能边界**；交付物落在 `company/solutions/`，下游 `company/analysis/` 衔接各 `system/` 侧 requirements。
+**仅解决方案库**（`KNOWLEDGE_TYPE=solution` 或 `sln`）：交付物 `solution/solutions/SOLUTION-{IDEA-ID}.md`。公司 → `/sdx-domains`；系统/应用 → `/sdx-analysis`。SA 第一至四章进 `knowledge/`，第五至八章进本文件。
 
 ---
 
@@ -29,7 +29,7 @@
 
 - 主题已明确，或可从材料中归纳出标题
 - `IDEA-ID` 已给出或可按规则生成
-- `{DOC_DIR}/solutions/` 可写
+- `{DOC_DIR}/solutions/` 可写且 `KNOWLEDGE_TYPE=solution|sln`
 - 至少能确定本轮起始章节或默认从 `§1` 开始
 
 ### 推荐参数顺序
@@ -65,8 +65,7 @@
 
 | 项 | 路径 |
 | --- | --- |
-| 终稿 | `{DOC_DIR}/solutions/SOLUTION-{IDEA-ID}.md` |
-| 公司库终稿 | `company/solutions/SOLUTION-{IDEA-ID}.md` |
+| 终稿 | `{DOC_DIR}/solutions/SOLUTION-{IDEA-ID}.md`（仅 solution 库） |
 | 技术决策 | `{DOC_DIR}/adr/ADR-*.md` + `CONTEXT.md`（见 [sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)） |
 | 结构校验 | `../scripts/validate-solution.sh`（见 [SKILL.md](../SKILL.md)） |
 

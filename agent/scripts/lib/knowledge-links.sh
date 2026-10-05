@@ -77,7 +77,7 @@ _knowledge_links_print_name_label() {
 }
 
 # 覆盖写出 knowledge-links.yaml（可含 type:parent / type:meta + child）
-# child_kind: sys|app；parent_kind: company|sys|none（仅 type=parent 条使用）
+# child_kind: sys|app|solution；parent_kind: company|solution|sys|none（仅 type=parent 条使用）
 # type:meta：只写 repository/path/doc_dir（doc_dir=目标 KNOWLEDGE_TYPE，无 name/label）
 # DRY=1 时只打印将写入条数，不落盘
 knowledge_links_write_entries() {
@@ -94,12 +94,12 @@ knowledge_links_write_entries() {
   d="$(dirname "$f")"
   n="${#_paths[@]}"
   case "$child_kind" in
-    sys|app) ;;
-    *) error "knowledge_links_write_entries: child_kind 须为 sys|app（收到: ${child_kind})" ;;
+    sys|app|solution) ;;
+    *) error "knowledge_links_write_entries: child_kind 须为 sys|app|solution（收到: ${child_kind})" ;;
   esac
   case "$parent_kind" in
-    company|sys|none) ;;
-    *) error "knowledge_links_write_entries: parent_kind 须为 company|sys|none（收到: ${parent_kind})" ;;
+    company|solution|sys|none) ;;
+    *) error "knowledge_links_write_entries: parent_kind 须为 company|solution|sys|none（收到: ${parent_kind})" ;;
   esac
   [[ "${DRY:-0}" == '1' ]] && { printf '[dry-run] 将写入 %s（%d 条 links）\n' "$f" "$n" >&2; return 0; }
   mkdir -p "$d"
@@ -121,6 +121,7 @@ knowledge_links_write_entries() {
           lab="${_labels[i]:-${_apps[i]}}"
           name_kind='sys'
           [[ "$parent_kind" == 'company' ]] && name_kind='company'
+          [[ "$parent_kind" == 'solution' ]] && name_kind='solution'
           _knowledge_links_print_name_label "$name_kind" "${_apps[i]}" "$lab"
         elif [[ "$t" == 'meta' ]]; then
           printf '  - type: meta\n'
@@ -131,6 +132,7 @@ knowledge_links_write_entries() {
           lab="${_labels[i]:-${_apps[i]}}"
           name_kind='app'
           [[ "$child_kind" == 'sys' ]] && name_kind='sys'
+          [[ "$child_kind" == 'solution' ]] && name_kind='solution'
           _knowledge_links_print_name_label "$name_kind" "${_apps[i]}" "$lab"
         fi
       done
@@ -149,7 +151,7 @@ knowledge_links_load_into_arrays() {
   local -n _labels="${6:?}"
   local -n _types="${7:?}"
   local line key val path="" repo="" doc_dir="" app_name="" app_label="" sys_name="" sys_label=""
-  local company_name="" company_label="" entry_type=""
+  local company_name="" company_label="" solution_name="" solution_label="" entry_type=""
 
   _paths=()
   _repos=()
@@ -171,6 +173,9 @@ knowledge_links_load_into_arrays() {
         if [[ -n "${company_name}${company_label}" ]]; then
           _apps+=("${company_name:-}")
           _labels+=("${company_label:-}")
+        elif [[ -n "${solution_name}${solution_label}" ]]; then
+          _apps+=("${solution_name:-}")
+          _labels+=("${solution_label:-}")
         else
           _apps+=("${sys_name:-}")
           _labels+=("${sys_label:-}")
@@ -178,6 +183,9 @@ knowledge_links_load_into_arrays() {
       elif [[ "${entry_type:-child}" == 'meta' ]]; then
         _apps+=('')
         _labels+=('')
+      elif [[ -n "${solution_name}${solution_label}" ]]; then
+        _apps+=("${solution_name:-}")
+        _labels+=("${solution_label:-}")
       elif [[ -n "${sys_name}${sys_label}" ]]; then
         _apps+=("${sys_name:-}")
         _labels+=("${sys_label:-}")
@@ -185,11 +193,11 @@ knowledge_links_load_into_arrays() {
         _apps+=("${app_name:-}")
         _labels+=("${app_label:-}")
       fi
-    elif [[ -n "$repo$doc_dir$app_name$app_label$sys_name$sys_label$company_name$company_label$entry_type" ]]; then
+    elif [[ -n "$repo$doc_dir$app_name$app_label$sys_name$sys_label$company_name$company_label$solution_name$solution_label$entry_type" ]]; then
       error "knowledge-links.yaml 中存在未写完的条目（有字段但缺少 path）: $f"
     fi
     path='' repo='' doc_dir='' app_name='' app_label='' sys_name='' sys_label=''
-    company_name='' company_label='' entry_type=''
+    company_name='' company_label='' solution_name='' solution_label='' entry_type=''
   }
 
   set_kv() {
@@ -204,6 +212,8 @@ knowledge_links_load_into_arrays() {
       sys_label) sys_label="$2" ;;
       company_name) company_name="$2" ;;
       company_label) company_label="$2" ;;
+      solution_name) solution_name="$2" ;;
+      solution_label) solution_label="$2" ;;
       *) ;;
     esac
   }

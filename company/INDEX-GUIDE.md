@@ -4,7 +4,7 @@ title: company INDEX-GUIDE
 ---
 # company INDEX-GUIDE
 
-> **最后更新**: 2026-09-28  
+> **最后更新**: 2026-10-05  
 > **定位**: `company/` 九章索引指南。目录索引：[index.md](index.md)。契约见 [DESIGN.md](DESIGN.md)。
 
 ---
@@ -22,9 +22,9 @@ title: company INDEX-GUIDE
 
 ### 1.2 元信息
 
-* **角色**: 公司知识库；`knowledge/` = VC/BD/BSD(L1)/CAP/PL/SLN/TPL SSOT（无 BSD(L2)/PD/SYS/MDG）；`system-slots/system-{NAME}` = 联邦槽位（软链）  
+* **角色**: 公司知识库；`knowledge/` = VC/BD/BSD(L1)/CAP/PL/TPL SSOT（无 SLN/PD/SYS/BSD(L2)/MDG/TSD）；`solution-slots/solution-{NAME}` = 解决方案联邦槽位（软链）  
 * **栈**: Markdown、YAML  
-* **范围**: `knowledge/` · `solutions/` · `analysis/` · `adr/` · `system-slots/` · `changelogs/`  
+* **范围**: `knowledge/` · `domains/` · `adr/` · `solution-slots/` · `changelogs/`  
 * **规模**（本轮 full/d3，排除 `.agents`）：约 **83** 文件（`.md` 80 · `.yaml` 1 · `viz.html` 1）  
 
 ---
@@ -37,18 +37,19 @@ title: company INDEX-GUIDE
 company/
 ├── README.md / DESIGN.md / INDEX-GUIDE.md / index.md / docs-meta.md
 ├── knowledge-links.yaml
-├── knowledge/ · solutions/ · analysis/ · adr/
-├── system-slots/
-│   ├── system-{NAME}           # 软链 → 系统 DOC_ROOT
-│   └── changelogs/             # ARCHIVE-LOG；同步追溯 git / SYNC_OK
+├── knowledge/ · domains/ · adr/
+├── solution-slots/
+│   ├── solution-{NAME}         # 软链 → 解决方案 DOC_ROOT
+│   └── changelogs/
+├── system-slots/               # 遗留；新边不写
 └── changelogs/
 ```
 
 ### 2.2 依赖关系
 
-* `knowledge/` ↔ `system/knowledge/`：公司实体参照  
-* `solutions/` → `analysis/` → 各系统 `requirements/`  
-* `knowledge-links.yaml` → `system-slots/system-{NAME}/`  
+* `knowledge/` ↔ `solution/knowledge/`：公司实体参照（禁止直指系统槽位）
+* `domains/` → 各解决方案 `solutions/` → 各系统 `analysis/` → `features/` → `requirements/`
+* `knowledge-links.yaml` → `solution-slots/solution-{NAME}/`  
 
 门禁与同步：[DESIGN.md](DESIGN.md) § 同步与门禁。
 
@@ -58,7 +59,7 @@ company/
 
 ### 2.4 文档目录
 
-入口：[knowledge/](knowledge/README.md) · [solutions/](solutions/README.md) · [analysis/](analysis/README.md) · [adr/](adr/README.md) · [system-slots/](system-slots/README.md)
+入口：[knowledge/](knowledge/README.md) · [domains/](domains/README.md) · [adr/](adr/README.md) · [solution-slots/](solution-slots/README.md)
 
 ---
 
@@ -96,10 +97,10 @@ company/
 
 | 聚合 | 职责 | 关键落点 |
 |------|------|----------|
-| 公司级实体 | VC / BD / BSD(L1) / CAP / PL / SLN / TPL | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
+| 公司级实体 | VC / BD / BSD(L1) / CAP / PL / TPL | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
 | overview 缓冲 | distill / extract / archive / tag | [knowledge/overview/](knowledge/overview/README.md) |
-| SDD 上游 | 跨系统方案与分析 | `solutions/` · `analysis/`（无 `requirements/`） |
-| 联邦槽位 | 系统 DOC_ROOT 软链 | `system-slots/system-{NAME}/` · [knowledge-links.yaml](knowledge-links.yaml) |
+| SDD 上游 | 域架构 | `domains/`（无 solutions/analysis/requirements） |
+| 联邦槽位 | 解决方案 DOC_ROOT 软链 | `solution-slots/solution-{NAME}/` · [knowledge-links.yaml](knowledge-links.yaml) |
 
 ### 4.3 领域服务
 
@@ -107,14 +108,14 @@ company/
 
 ### 4.4 领域事件
 
-不适用运行时事件：索引运行见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)；归档见 `system-slots/changelogs/`。
+不适用运行时事件：索引运行见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)；归档见 `solution-slots/changelogs/`。
 
 ### 4.5 视角导航
 
 <!-- docs-build:entity-index:begin -->
 > 本块由 `/docs-build` 写入；实体台账 ∈ 各视角 README；正文 ∈ per-entity `{ID}.md`；九章骨架 ∈ `/docs-indexing`。
 
-> 本层登记公司级 **VC / BD / BSD(L1) / CAP / PL / SLN / TPL**。
+> 本层登记 **VC / BD / BSD(L1) / CAP / PL / TPL**。无 SLN/PD/BSD(L2)/MDG/TSD/SYS（见解决方案/系统）。
 
 ### 视角入口
 
@@ -135,8 +136,8 @@ company/
 
 | 路径 | 说明 |
 |------|------|
-| [solutions/SOLUTION-EXAMPLE.md](solutions/SOLUTION-EXAMPLE.md) | 方案样例 |
-| [analysis/ANALYSIS-EXAMPLE.md](analysis/ANALYSIS-EXAMPLE.md) | 分析样例 |
+| [domains/DOMAIN-MAP.md](domains/DOMAIN-MAP.md) | 域架构总图 |
+| [domains/DOMAIN-EXAMPLE.md](domains/DOMAIN-EXAMPLE.md) | 分域样例 |
 | [adr/CONTEXT.md](adr/CONTEXT.md) | ADR 索引入口 |
 
 流程叙事章 ∈ 各视角 `knowledge/*/chapters/`（如 business 六章）；不在九章展开正文。
@@ -198,7 +199,7 @@ company/
 ### 8.3 维护规则
 
 * [changelogs/](changelogs/README.md)：`INDEXING-LOG`；溯源 git  
-* 槽位日志 ∈ `system-slots/changelogs/ARCHIVE-LOG.md`  
+* 槽位日志 ∈ `solution-slots/changelogs/ARCHIVE-LOG.md`  
 * 大目录或契约变更后跑 `/docs-indexing`；索引后按需 `/docs-okf`
 
 ---
@@ -220,8 +221,9 @@ company/
 | 关系 | 状态 |
 |------|------|
 | `knowledge-links.yaml` child | **空**（`links: []`，合法未挂载态） |
-| `system-slots/system-*` | **无**现成软链；仅有槽位 README / `changelogs/` |
-| 同仓邻层 | [system/](../system/README.md) · [application/](../application/README.md)（非联邦 path，开发元库并列） |
+| `solution-slots/solution-*` | **无**现成软链；仅有槽位 README / `changelogs/` |
+| `system-slots/` | 遗留目录；新边不写 |
+| 同仓邻层 | [solution/](../solution/README.md) · [system/](../system/README.md) · [application/](../application/README.md)（非联邦 path，开发元库并列） |
 
 ### 9.3 工具链
 

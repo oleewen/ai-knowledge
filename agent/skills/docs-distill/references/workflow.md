@@ -17,7 +17,8 @@
 | `DOC_DIR` | 源槽位 | 目标 overview |
 | --- | --- | --- |
 | `system` | `system/application-slots/application-{NAME}/` | `system/knowledge/overview/{NAME}-overview.md` |
-| `company` | `company/system-slots/system-{NAME}/` | `company/knowledge/overview/{NAME}-overview.md` |
+| `solution` | `solution/system-slots/system-{NAME}/` | `solution/knowledge/overview/{NAME}-overview.md` |
+| `company` | `company/solution-slots/solution-{NAME}/` | `company/knowledge/overview/{NAME}-overview.md` |
 
 `DOC_DIR`：`.docsconfig` / 环境变量优先；须为 `system|company`；否则向导必选。`--doc-dir` 可覆盖。
 

@@ -39,6 +39,7 @@ normalize_type() {
   case "${1,,}" in
     application|a) printf 'application' ;;
     system|s) printf 'system' ;;
+    solution|sln) printf 'solution' ;;
     company|c) printf 'company' ;;
     *) printf '%s' "${1:-}" ;;
   esac

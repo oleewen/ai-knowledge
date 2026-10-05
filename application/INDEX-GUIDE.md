@@ -4,7 +4,7 @@ title: application INDEX-GUIDE
 ---
 # application INDEX-GUIDE
 
-> **最后更新**: 2026-09-28  
+> **最后更新**: 2026-10-05  
 > **定位**: `application/` 九章索引指南。目录索引见 [index.md](index.md)。
 
 ---
@@ -24,7 +24,7 @@ title: application INDEX-GUIDE
 
 * **角色**: 应用知识库；实现级实体（API/TBL/MW/CMP）SSOT + 五视角映射
 * **栈**: Markdown、YAML
-* **范围**: `knowledge/` · `solutions/` · `analysis/` · `requirements/` · `adr/` · `changelogs/`
+* **范围**: `knowledge/` · `analysis/` · `features/` · `requirements/` · `adr/` · `changelogs/`
 * **规模**（本轮 full/d3，排除 `.agents`）：约 **62** 文件（`.md` 59 · `.yaml` 1 · `viz.html` 1）
 
 ---
@@ -36,15 +36,15 @@ title: application INDEX-GUIDE
 ```text
 application/
 ├── README.md / DESIGN.md / INDEX-GUIDE.md / index.md / docs-meta.md
-├── knowledge/ · solutions/ · analysis/ · requirements/ · adr/
+├── knowledge/（含 overview/） · analysis/ · features/ · requirements/ · adr/
 └── changelogs/
 ```
 
 ### 2.2 依赖关系
 
-* `knowledge/` ↔ `system/knowledge/`：系统 SSOT / 本层实现映射；上行 pull → distill（系统 overview）
-* `knowledge/` ↔ `company/knowledge/`：公司实体 reference
-* `solutions/` → `analysis/` → `requirements/`（mode=s）
+* `knowledge/` 含 `overview/{NAME}-overview.md`（extract / archive）；上行 pull → distill（系统 overview）
+* 上层公司/解决方案实体走 parent 链 reference，禁止直链槽位
+* `analysis/` → `features/` → `requirements/`（mode=s）
 
 ### 2.3 包结构
 
@@ -52,7 +52,7 @@ application/
 
 ### 2.4 文档目录
 
-入口：[knowledge/](knowledge/README.md) · [solutions/](solutions/README.md) · [analysis/](analysis/README.md) · [requirements/](requirements/README.md) · [adr/](adr/README.md)
+入口：[knowledge/](knowledge/README.md) · [knowledge/overview/](knowledge/overview/README.md) · [analysis/](analysis/README.md) · [features/](features/README.md) · [requirements/](requirements/README.md) · [adr/](adr/README.md)
 
 ---
 
@@ -91,8 +91,8 @@ application/
 | 聚合 | 职责 | 关键落点 |
 |------|------|----------|
 | 本层首次实体 | API / TBL / MW / CMP | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
-| 上游引用 | BD/SYS/MDG/TSD 等纯 ID；PL/SLN∈公司，PD/PM∈系统 | 不落 reference 文件 |
-| SDD | 方案 → 分析 → 需求（mode=s） | `solutions/` · `analysis/` · `requirements/` |
+| 上游引用 | 纯 ID 或 parent HTTP；PL∈公司，SLN/PD∈解决方案，SYS 链∈系统 | 不重复字段语义 |
+| SDD | 分析 → 特性 → 需求（mode=s） | `analysis/` · `features/` · `requirements/` |
 
 ### 4.3 领域服务
 
@@ -107,7 +107,7 @@ application/
 <!-- docs-build:entity-index:begin -->
 > 本块由 `/docs-build` 写入；实体台账 ∈ 各视角 README；正文 ∈ per-entity `{ID}.md`；九章骨架 ∈ `/docs-indexing`。
 
-> 本层仅登记本层首次定义样例（API/TBL/MW/CMP）。上游 BD/SYS/MDG/TSD 等以纯 ID 引用公司/系统 SSOT，本层不落 reference 文件。产品 **PL/SLN** 见公司；**PD/PM** 见系统层。
+> 本层仅登记 **API / TBL / MW / CMP**。PL 见公司；SLN/PD/BP/BSD(L2)/MDG/TSD 见解决方案；SYS 链见系统。
 
 ### 视角入口
 
@@ -128,8 +128,10 @@ application/
 
 | 路径 | 说明 |
 |------|------|
-| [solutions/SOLUTION-EXAMPLE.md](solutions/SOLUTION-EXAMPLE.md) | 方案样例 |
+| [analysis/ANALYSIS-EXAMPLE.md](analysis/ANALYSIS-EXAMPLE.md) | 分析样例 |
+| [features/FEATURE-EXAMPLE.md](features/FEATURE-EXAMPLE.md) | 特性样例 |
 | [analysis/](analysis/README.md) | 分析入口 |
+| [features/](features/README.md) | 特性入口 |
 | [requirements/REQUIREMENT-EXAMPLE/](requirements/REQUIREMENT-EXAMPLE/) | 需求样例目录 |
 | [adr/](adr/README.md) | ADR |
 | `knowledge/application/MS-EXAMPLE/API-EXAMPLE.md` | API SSOT 样例 |

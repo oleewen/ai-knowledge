@@ -15,7 +15,8 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-analysis/scripts/validate
 
 - 对象=当前段（`§2` 先独立确认 `### 概览`，再可细到单个 `FR`）；一次一段（除非 `F` 且已批确认意图；概览段 `F` 不得跳过写后确认）。
 - 写前澄清 / 推进环 `C/M/G/F`（无 `S`）/ 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[simplify-principles.md](../../references/simplify-principles.md)、[sdx-adr-protocol.md](../../references/sdx-adr-protocol.md)；细节 [gates.md](references/gates.md)。
-- 无已共识 SOLUTION → 引导 [sdx-solution](../sdx-solution/SKILL.md)，不以本技能代写。
+- 无已共识 SOLUTION（解决方案层）→ 引导 [sdx-solution](../sdx-solution/SKILL.md)，不以本技能代写。
+- 仅 `KNOWLEDGE_TYPE=system|application`。公司 → `/sdx-domains`。
 - 上游 §6.1 里程碑不可用 → 硬停回补；概览按里程碑范围拆 FR（可独立验收 ∧ 一 FR 一模块）；§4 再划 `MVP{n}`（与里程碑不硬对齐）。
 
 ## 边界

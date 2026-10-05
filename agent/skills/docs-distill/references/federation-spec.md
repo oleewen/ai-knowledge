@@ -9,11 +9,12 @@
 | 边 | 源槽位 | 落盘 |
 | --- | --- | --- |
 | system | `system/application-slots/application-{NAME}/` | `system/knowledge/overview/{NAME}-overview.md` |
-| company | `company/system-slots/system-{NAME}/` | `company/knowledge/overview/{NAME}-overview.md` |
+| solution | `solution/system-slots/system-{NAME}/` | `solution/knowledge/overview/{NAME}-overview.md` |
+| company | `company/solution-slots/solution-{NAME}/` | `company/knowledge/overview/{NAME}-overview.md` |
 
 新建：从同层 `NAME-overview.md` 拷；**文件名 + 文内标题** `NAME` → 实际 `{NAME}`。
 
-公司 / 系统 overview 亦供 `docs-extract` / `docs-archive` / `docs-tag` 写入；**槽位上行全量**归 distill，**非槽位任意源**归 extract。
+公司 / 解决方案 / 系统 / 应用 overview 亦供 `docs-extract` / `docs-archive` / `docs-tag` 写入；**槽位上行全量**归 distill（不含 application overview），**非槽位任意源**归 extract。
 
 **非目标**（只当来源）：各层 `knowledge/` 下五视角长篇（含 chapters）、槽位外应用/系统正文、SDD 原文整段。legacy `architecture/` / `ea/` 路径已废弃。
 
@@ -22,8 +23,9 @@
 | 层 | 适合 | 不适合 |
 | -- | ---- | ------ |
 | 应用库 | 规则细节、故事、接口/类图、部署、表结构 | 跨应用映射、系统级摘要 |
+| 解决方案库 | 跨 SYS 共性摘要、SLN/PD 边界 | 单 SYS 实现细节 |
 | 系统库 | 五视角**摘要**、ID 契约 | OpenAPI 全文、DDL、故事原文 |
-| 公司库 | 企业架构顶层标准、跨系统方案输入 | 系统实现细节、应用字段定义 |
+| 公司库 | 企业架构顶层、域支撑 VC | 解决方案实现细节、系统字段定义 |
 
 ## 规则（第三列）
 
@@ -68,6 +70,10 @@
 
 **顺序**（自上而下逐节，勿跳行；与各层 `overview/NAME-overview.md` 模板表行一致，以各视角 **README 表行**为准）：
 
+### 应用库（`application/knowledge/overview/`）
+
+行序同系统库；归档入本层 `chapters/`。第三列只收本应用实现要点。
+
 ### 系统库（`system/knowledge/overview/`）
 
 - 业务：概述 → 域划分 → 术语 → 流程 → 能力地图 → 业务规则与策略
@@ -75,6 +81,10 @@
 - 应用：系统概述 → 应用架构 → 领域模型 → 服务设计 → 领域能力 → 集成架构 → 服务间交互 → 接口管理 → 多租户多环境 → ADR
 - 技术：技术概述 → 基础设施 → 中间件 → 性能扩展 → 高可用 → 可观测性
 - 数据：数据概述 → 数据模型 → 数据存储 → 数据分析 → 数据流转
+
+### 解决方案库（`solution/knowledge/overview/`）
+
+行序对齐 SA 第一至四章落 knowledge 的视角：业务范围、应用与集成、数据主权、技术选型（以同层 README 表行为准）。
 
 ### 公司库（`company/knowledge/overview/`）
 
@@ -84,7 +94,7 @@
 - 技术：技术概述 → 云基础设施 → DevOps → 技术安全 → 开发环境
 - 数据：数据概述 → 数据治理 → 数仓与湖 → 数据安全
 
-`docs-distill` 写哪一层，就用哪一层表行；勿用系统表行蒸公司 overview（或相反）。
+`docs-distill` 写哪一层，就用哪一层表行；勿跨层套用表行。
 
 **其它**：第三列可多段/列表/小表；无证写 `—`；不写 `(来源…)` 堆链。不写 DISTILL-LOG。
 

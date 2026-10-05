@@ -16,6 +16,8 @@ import okf_lib  # noqa: E402
 
 ENTITY_BEGIN = "<!-- docs-build:entity-index:begin -->"
 ENTITY_END = "<!-- docs-build:entity-index:end -->"
+ENTITY_BEGIN_LEGACY = "<!-- docs-build:entity-index -->"
+ENTITY_END_LEGACY = "<!-- /docs-build:entity-index -->"
 
 _LEAD = (
     "> 本块由 `/docs-build` 写入；实体台账 ∈ 各视角 README；"
@@ -24,17 +26,20 @@ _LEAD = (
 
 _SCOPE_NOTE = {
     "company": (
-        "> 本层登记公司级 **VC / BD / BSD(L1) / CAP / PL / SLN / TPL**；"
-        "SLN ∈ application（AA）；无 BSD(L2)/PD/SYS/MDG（见系统库）。"
+        "> 本层登记 **VC / BD / BSD(L1) / CAP / PL / TPL**。"
+        "无 SLN/PD/BSD(L2)/MDG/TSD/SYS（见解决方案/系统）。"
+    ),
+    "solution": (
+        "> 本层登记 **SLN / PD / BSD(L2) / MDG / TSD / BP**。"
+        "公司 VC/BD/L1/PL/TPL 与系统 SYS 链不在本层登记。"
     ),
     "system": (
-        "> 公司级 **TPL-*** / **SLN-*** / **PL-*** 不在本层登记。"
-        "本层 **BSD(L2) / PD / SYS / MDG** 首次定义；产品自 **PD** 起；应用自 **SYS** 起。"
+        "> 公司级与解决方案级首次定义不在本层登记。"
+        "本层 **SYS / BC / AGG / AB / PM / FT / FR / UC / BR / APP / MS / DS / ENT**。"
     ),
     "application": (
-        "> 本层仅登记本层首次定义样例（API/TBL/MW/CMP）。"
-        "上游 BD/SYS/MDG/TSD 等以纯 ID 引用公司/系统 SSOT，本层不落 reference 文件。"
-        "产品 **PL/SLN** 见公司；**PD/PM** 见系统层。"
+        "> 本层仅登记 **API / TBL / MW / CMP**。"
+        "PL 见公司；SLN/PD/BP/BSD(L2)/MDG/TSD 见解决方案；SYS 链见系统。"
     ),
 }
 
@@ -90,6 +95,13 @@ def patch_index_guide(existing: str, block: str) -> str:
     if ENTITY_BEGIN in existing and ENTITY_END in existing:
         pattern = re.compile(
             re.escape(ENTITY_BEGIN) + r".*?" + re.escape(ENTITY_END),
+            re.DOTALL,
+        )
+        return pattern.sub(block.rstrip(), existing, count=1)
+
+    if ENTITY_BEGIN_LEGACY in existing and ENTITY_END_LEGACY in existing:
+        pattern = re.compile(
+            re.escape(ENTITY_BEGIN_LEGACY) + r".*?" + re.escape(ENTITY_END_LEGACY),
             re.DOTALL,
         )
         return pattern.sub(block.rstrip(), existing, count=1)

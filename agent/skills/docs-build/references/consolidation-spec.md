@@ -25,7 +25,7 @@ graph TD
 | 段 | 要点 |
 |----|------|
 | 导语 | docs-build 写入；台账 ∈ README；正文 ∈ per-entity；骨架 ∈ docs-indexing |
-| 范围短注 | 按 company / system / application 各写一层边界 |
+| 范围短注 | 按 company / solution / system / application 各写一层边界 |
 | 视角入口 | Markdown 链：`knowledge/README.md`、`knowledge/index.md`、五视角 `README.md` |
 
 模板：[knowledge-index-template.md](../assets/knowledge-index-template.md)。

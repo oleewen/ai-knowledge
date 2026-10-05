@@ -58,7 +58,7 @@ description: >
 - 收敛后：产物校核 + 受众 A/B → 动作见 [light-flow-actions.md](../../references/light-flow-actions.md)（本技能有 `S`，无 `G`）
 
 ```bash
-bash agent/skills/docs-install/scripts/docs-install.sh --target PATH [--scope=knowledge] [--type=application] [--mode=standalone] --dry-run
+bash agent/skills/docs-install/scripts/docs-install.sh --target PATH [--scope=knowledge] [--type=application|system|solution|company] [--mode=standalone] --dry-run
 ```
 
 ## 评测

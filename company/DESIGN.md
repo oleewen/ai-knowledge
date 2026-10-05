@@ -12,27 +12,29 @@ title: 公司知识库设计
 2. 本文 — 契约、同步门禁、治理链  
 3. [knowledge/README.md](knowledge/README.md) — 五视角  
 
-索引：[INDEX-GUIDE.md](INDEX-GUIDE.md) · [index.md](index.md) · [system-slots/](system-slots/README.md) · [knowledge-links.yaml](knowledge-links.yaml)
+索引：[INDEX-GUIDE.md](INDEX-GUIDE.md) · [index.md](index.md) · [knowledge-links.yaml](knowledge-links.yaml)
 
 ## 本层契约
 
 | 目录 | 职责 |
 | --- | --- |
-| `knowledge/` | 公司级实体正文 SSOT；[`overview/`](knowledge/overview/NAME-overview.md) = distill / extract / archive / tag 缓冲区（非实体 SSOT） |
-| `solutions/` · `analysis/` | 跨系统 SDD 上游；**无** `requirements/` |
-| `adr/` | 公司层跨系统决策 + `CONTEXT.md` |
-| `system-slots/system-{NAME}/` | 系统联邦槽位入口（软链） |
-| `knowledge-links.yaml` | 建联与同步编排（可空） |
+| `knowledge/` | 公司级实体正文 SSOT（VC/BD/CAP/BSD(L1)/PL/TPL）；[`overview/{NAME}-overview.md`](knowledge/overview/NAME-overview.md) = distill 缓冲区（非实体 SSOT） |
+| `domains/` | 域架构（`/sdx-domains`：哪条 BD 支撑 VC）；**无** `solutions/` / `analysis/` / `requirements/` |
+| `adr/` | 公司层决策 + `CONTEXT.md` |
+| `solution-slots/solution-{NAME}/` | 解决方案联邦槽位入口（软链）；**不**再挂 `system-slots` |
+| `knowledge-links.yaml` | 建联与同步编排（可空）；child 用 `solution_*` |
 | `changelogs/` | INDEXING-LOG；变更溯源 git |
 
-路径总则：[knowledge-layout § 三层文档根](../agent/references/knowledge-layout.md#三层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。
+路径总则：[knowledge-layout § 四层文档根](../agent/references/knowledge-layout.md#四层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。
+
+> 现仓仍可能见 `system-slots/`：物理清理见 [GRILL-LOG](../changelogs/GRILL-LOG.md)。
 
 ## 同步与门禁
 
 冲突以下游事实源为准；company 只修映射与导航。
 
-1. 下游 `system/` 整理可同步内容  
-2. docs-pull → 校验/修复 `system-slots/system-{NAME}` 软链  
+1. 下游 `solution/` 整理可同步内容  
+2. docs-pull → 校验/修复 `solution-slots/solution-{NAME}` 软链  
 3. 校核 `knowledge/` 与 `knowledge-links.yaml`  
 4. 可记 `SYNC_OK`（含 commit）；溯源 `git log` / `git diff`  
 
@@ -45,4 +47,4 @@ title: 公司知识库设计
 | 本层聚焦 / 首次定义 | [knowledge-governance § 公司层](../agent/knowledge/knowledge-governance.md#公司层) |
 | 引用边界 | [knowledge-governance § 业务 knowledge 引用边界](../agent/knowledge/knowledge-governance.md#业务-knowledge-引用边界) |
 | 本层 OKF 模板要点 | [okf-spec § 10.1 company](../agent/knowledge/okf-spec.md#101-company) |
-| 其余语义 | [knowledge-governance](../agent/knowledge/knowledge-governance.md)（三层 · 5A）· [glossary](../agent/knowledge/glossary.md) · [naming-conventions](../agent/knowledge/naming-conventions.md) · [okf-spec](../agent/knowledge/okf-spec.md) · [adr-guidelines](../agent/knowledge/adr-guidelines.md) |
+| 其余语义 | [knowledge-governance](../agent/knowledge/knowledge-governance.md)（四层 · 5A）· [glossary](../agent/knowledge/glossary.md) · [naming-conventions](../agent/knowledge/naming-conventions.md) · [okf-spec](../agent/knowledge/okf-spec.md) · [adr-guidelines](../agent/knowledge/adr-guidelines.md) |

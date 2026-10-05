@@ -3,7 +3,7 @@ type: Entity
 title: 示例实体
 description: null
 tags: [data, ENT]
-timestamp: "2026-06-21T00:00:00Z"
+timestamp: "2026-06-21T00:00:00+08:00"
 id: ENT-EXAMPLE
 perspective: data
 hierarchy: ENT

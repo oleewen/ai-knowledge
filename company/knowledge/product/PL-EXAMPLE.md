@@ -3,7 +3,7 @@ type: Product Line
 title: 示例产品线
 description: 产品线；与 BSD(L1) 一对一，SLN（解决方案）仍对标 PL。
 tags: [product, PL]
-timestamp: "2026-09-13T00:00:00Z"
+timestamp: "2026-09-13T00:00:00+08:00"
 id: PL-EXAMPLE
 perspective: product
 hierarchy: PL

@@ -3,7 +3,7 @@ type: Master Data Domain
 title: 示例主数据域
 description: 演示系统级 MDG 结构。
 tags: [data, MDG]
-timestamp: "2026-06-21T00:00:00Z"
+timestamp: "2026-06-21T00:00:00+08:00"
 id: MDG-EXAMPLE
 perspective: data
 hierarchy: MDG

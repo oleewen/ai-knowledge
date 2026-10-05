@@ -24,7 +24,7 @@
 
 在公共六项之外追加（不可删减公共项）：
 
-- **`DOC_DIR` / `--doc-dir`**：`system` 或 `company`
+- **`DOC_DIR` / `--doc-dir`**：`system`、`solution` 或 `company`
 - **`--name`**：应用名（system 边）或系统名（company 边）
 - **写入模式**：正式写入 / `--dry-run` 预览
 - **overview 状态**：新建 / 更新

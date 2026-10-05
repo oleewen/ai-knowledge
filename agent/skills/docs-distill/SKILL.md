@@ -2,7 +2,7 @@
 name: docs-distill
 description: >
   将联邦槽位已核实内容全量去重后以 delta 写入目标层 overview 第三列：
-  application-slots → system/knowledge/overview；system-slots → company/knowledge/overview。
+  application-slots → system overview；system-slots → solution overview；solution-slots → company overview。
   蒸馏前须契约级摸清目标/源职责范围与知识要点粒度，不清则硬停决策并先落盘；仅全量；不写 DISTILL-LOG。细则 federation-spec、scope-clarity。
   用户提到 /docs-distill、知识蒸馏、槽位上行、联邦蒸馏、同步应用到系统 overview、同步系统到公司 overview、
   更新系统库/公司库 overview、某应用或系统知识改了要同步、看看要同步哪些内容、蒸馏前职责边界/粒度不清时，务必使用本技能。
@@ -17,11 +17,11 @@ description: >
 - 当前单元：单个 `{NAME}-overview.md` + **仅全量**范围（可含 `--dry-run` 预览）。
 - 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[simplify-principles.md](../../references/simplify-principles.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写入或输出正式预览结论；写入或 `--dry-run` 预览后均须烤干，收敛后停等用户。
 - **职责/粒度闭合（写前 `C` 内）**：蒸馏前须按 [scope-clarity.md](references/scope-clarity.md) 摸清目标层与源槽位职责、要点粒度与跨层收束；只信落盘契约。缺失/模糊/双边冲突 → 硬停决策 → **先落盘契约** → 再出职责/粒度短摘要；未闭合不算写前 `C`，不得 dry-run / 写入。此为契约级闭合，**不等于**写后 grilling。
-- **边**：`DOC_DIR=system` → 读 `system/application-slots/application-{NAME}/`，写 `system/knowledge/overview/{NAME}-overview.md`；`DOC_DIR=company` → 读 `company/system-slots/system-{NAME}/`，写 `company/knowledge/overview/{NAME}-overview.md`。应用层无 overview，不作目标。
-- **DOC_DIR**：优先 `.docsconfig` / 环境变量；须为 `system|company`；否则参数向导必选。`--doc-dir` 可显式覆盖。
+- **边**：`DOC_DIR=system` → `application-slots/application-{NAME}/` → `system/knowledge/overview/{NAME}-overview.md`；`DOC_DIR=solution` → `system-slots/system-{NAME}/` → `solution/knowledge/overview/{NAME}-overview.md`；`DOC_DIR=company` → `solution-slots/solution-{NAME}/` → `company/knowledge/overview/{NAME}-overview.md`。应用 overview 存在，但**不作**蒸馏目标（走 extract / archive）。
+- **DOC_DIR**：优先 `.docsconfig` / 环境变量；须为 `system|solution|company`；否则参数向导必选。`--doc-dir` 可显式覆盖。
 - **模式**：仅全量；不写 `DISTILL-LOG`；无 `--since` / 增量锚点。`--dry-run`：三分区预览，不写 overview。
 - **第三列**：去重后仅写 delta；[federation-spec.md](references/federation-spec.md)（表行随目标层）。
-- **knowledge 引用边界**：写入 `system|company/knowledge/**` 须遵守 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「业务 knowledge 引用边界」。可读槽位外源；落盘 overview 不链外源路径、不链下层/槽位、禁手写爬层。有 parent 则上层实体用生成函数 HTTP，否则纯 ID。违规能修则修，不明则停。
+- **knowledge 引用边界**：写入 `system|solution|company/knowledge/**` 须遵守 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「业务 knowledge 引用边界」。可读槽位外源；落盘 overview 不链外源路径、不链下层/槽位、禁手写爬层。有 parent 则上层实体用生成函数 HTTP，否则纯 ID。违规能修则修，不明则停。
 
 ## 边界
 

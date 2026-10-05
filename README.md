@@ -16,7 +16,7 @@
 | --- | --- |
 | SSOT | 五视角唯一事实源，跨文件仅 **ID** 引用 |
 | Skills 链 | `docs-*` 构建 × `sdx-*` 交付；产物上行归并 |
-| 联邦 | 公司 → 系统 → 应用；link / pull / distill 对齐 |
+| 联邦 | 公司 → 解决方案 → 系统 → 应用；link / pull / distill 三跳 |
 | Agent 友好 | Rules + Skills；Markdown + YAML + Git |
 
 ### 为何需要
@@ -25,25 +25,26 @@ Agent = LLM + Harness。平台给模型与工具，**工程知识**须由团队�
 
 ---
 
-## 三层联邦架构
+## 四层联邦架构
 
 | 层级 | 目录 | 职责 |
 | --- | --- | --- |
-| **公司** | [company/](company/README.md) | 顶层架构；`system-slots/system-{NAME}/` 镜像槽位 |
-| **系统** | [system/](system/README.md) | 五架构视角；`application-slots/application-{NAME}/` 联邦槽位 |
+| **公司** | [company/](company/README.md) | 顶层架构（VC/BD/PL）；`solution-slots/solution-{NAME}/` |
+| **解决方案** | [solution/](solution/README.md) | 交付包 SLN；`system-slots/system-{NAME}/` |
+| **系统** | [system/](system/README.md) | 五架构视角；`application-slots/application-{NAME}/` |
 | **应用** | [application/](application/README.md) | 实现细节与实体 SSOT |
 
 - **SSOT**：实体一处定义，跨文件 **ID** 引用。
-- **联邦**：公司管划分、系统管边界、应用管实现并上行对齐。
-- **闭环**：knowledge ← 归档；solutions → analysis → requirements。
+- **联邦**：parent 仅 `application → system → solution → company`（1:1）。公司不直管系统。
+- **闭环**：knowledge ← 归档；SDD 目录物理改名见 [GRILL-LOG](changelogs/GRILL-LOG.md)。
 
-元模型入口：[company/DESIGN.md](company/DESIGN.md) · [system/DESIGN.md](system/DESIGN.md) · [application/DESIGN.md](application/DESIGN.md)；语义 SSOT：[knowledge-governance.md](agent/knowledge/knowledge-governance.md)。
+元模型入口：[company/DESIGN.md](company/DESIGN.md) · [solution/DESIGN.md](solution/DESIGN.md) · [system/DESIGN.md](system/DESIGN.md) · [application/DESIGN.md](application/DESIGN.md)；语义 SSOT：[knowledge-governance.md](agent/knowledge/knowledge-governance.md)。
 
 ---
 
 ## 从零选型
 
-**口诀**：有应用仓 → bootstrap + build；有多应用 → 中央 link + pull/distill；只有 legacy → extract → archive → build。
+**口诀**：有应用仓 → bootstrap + build；有多应用 → 系统 link + pull/distill；有多系统 → 解决方案层再 hop；只有 legacy → extract → archive → build。
 
 场景 A–D 逐步操作见 [quick-start.md](quick-start.md)。
 
@@ -85,11 +86,12 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/bootstrap.
 ./
 ├── README.md / AGENTS.md / INDEX-GUIDE.md / index.md / quick-start.md
 ├── changelogs/           # 根输出组 INDEXING-LOG
-├── application/          # 应用层 SSOT + SDD（knowledge、阶段产物、changelogs）
-├── system/               # 系统库：knowledge/ + overview、application-slots/application-{NAME}/ 槽位、SDD
-├── company/              # 公司库：knowledge/ + overview、system-slots/system-{NAME}/ 槽位
+├── application/          # 应用层 SSOT + SDD
+├── system/               # 系统库：knowledge/ + overview、application-slots/application-{NAME}/
+├── solution/             # 解决方案库：knowledge/ + overview、system-slots/system-{NAME}/
+├── company/              # 公司库：knowledge/ + overview、solution-slots/solution-{NAME}/
 ├── bootstrap.sh          # 远程/本地双轨装机编排（docs-install → agent-install）
-├── agent/                # skills/（25）、rules/、knowledge/、references/、scripts/、hooks.json
+├── agent/                # skills/（26）、rules/、knowledge/、references/、scripts/、hooks.json
 ├── .docsconfig           # DOC_DIR=docs（目录可缺席）· KNOWLEDGE_TYPE=company
 └── .gitignore
 ```
@@ -106,8 +108,8 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/bootstrap.
 flowchart TD
     subgraph KB["知识库构建链 docs-*"]
         direction LR
-        KB_CO["company"] -. push .-> KB_SYS["system"] -. push .-> KB_APP["application"]
-        KB_APP -. pull .-> KB_SYS -. pull .-> KB_CO
+        KB_CO["company"] -. push .-> KB_SLN["solution"] -. push .-> KB_SYS["system"] -. push .-> KB_APP["application"]
+        KB_APP -. pull .-> KB_SYS -. pull .-> KB_SLN -. pull .-> KB_CO
     end
     subgraph RD["需求交付链 sdx-*"]
         direction LR
@@ -130,8 +132,8 @@ flowchart TD
 | 从零落地（场景 A–D） | [quick-start.md](quick-start.md) |
 | 九章地图 / 目录索引 | [INDEX-GUIDE.md](INDEX-GUIDE.md) · [index.md](index.md) |
 | Agent 契约与查阅顺序 | [AGENTS.md](AGENTS.md) |
-| 三层设计入口 | [company/DESIGN.md](company/DESIGN.md) · [system/DESIGN.md](system/DESIGN.md) · [application/DESIGN.md](application/DESIGN.md) |
-| 三层语义 SSOT | [knowledge-governance.md](agent/knowledge/knowledge-governance.md) |
+| 四层设计入口 | [company/DESIGN.md](company/DESIGN.md) · [solution/DESIGN.md](solution/DESIGN.md) · [system/DESIGN.md](system/DESIGN.md) · [application/DESIGN.md](application/DESIGN.md) |
+| 四层语义 SSOT | [knowledge-governance.md](agent/knowledge/knowledge-governance.md) |
 | 初始化脚本 | [bootstrap.sh](bootstrap.sh)、[agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)、[agent/skills/agent-install/SKILL.md](agent/skills/agent-install/SKILL.md) |
 | 共享推进契约 | [agent/references/](agent/references/) |
 | 根索引运行日志 | [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md) |
@@ -142,8 +144,8 @@ flowchart TD
 ## 参与贡献
 
 1. [INDEX-GUIDE.md](INDEX-GUIDE.md) — 路径地图  
-2. [application/DESIGN.md](application/DESIGN.md)（或 company/system 同名）— 层设计入口  
-3. [knowledge-governance.md](agent/knowledge/knowledge-governance.md) — 三层语义与首次定义  
+2. [application/DESIGN.md](application/DESIGN.md)（或 company/solution/system 同名）— 层设计入口  
+3. [knowledge-governance.md](agent/knowledge/knowledge-governance.md) — 四层语义与首次定义  
 4. [application/CONTRIBUTING.md](application/CONTRIBUTING.md) — 贡献流程与门禁  
 
 **许可**：Apache-2.0（根目录暂无 `LICENSE` 文件；badge 链 OSI 条文）。

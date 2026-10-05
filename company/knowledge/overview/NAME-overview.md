@@ -5,7 +5,7 @@ title: "{域名称}架构概览（{slug}-overview）"
 ---
 # {域名称}架构概览（{slug}-overview）
 
-> **维护**：`docs-tag` phase 2（✅）→ phase 3（架构摘录，勿手改摘录行）。表行 ↔ 视角章节 `##`。公司 overview **非** docs-distill 目标。占位 `NAME`/`{域名称}`/`{slug}` 实例化时替换。
+> **维护**：`docs-tag` phase 2（✅）→ phase 3（架构摘录，勿手改摘录行）。表行 ↔ 视角章节 `##`。公司 overview **是** docs-distill（解决方案槽位上行）目标。占位 `NAME`/`{域名称}`/`{slug}` 实例化时替换。
 
 ## 架构摘录
 

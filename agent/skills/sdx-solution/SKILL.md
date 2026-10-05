@@ -47,6 +47,7 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-solution/scripts/validate
 - 原始业务描述或待整理材料
 - 可确定的主题或标题线索
 - `{DOC_DIR}/solutions/` 可写
+- `KNOWLEDGE_TYPE=solution`（别名 `sln`）
 - 若已给 `IDEA-ID`、章节范围、深度，则直接进入参数向导确认
 
 ## 产出与校验

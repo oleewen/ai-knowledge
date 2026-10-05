@@ -27,6 +27,7 @@
 | --- | --- | --- |
 | 应用 | `application/adr/` | `CONTEXT.md`（决策台账）+ `index.md`（导航） |
 | 系统 | `system/adr/` | 同上 |
+| 解决方案 | `solution/adr/` | 同上 |
 | 公司 | `company/adr/` | 同上 |
 
 按 `.docsconfig` 的 `KNOWLEDGE_TYPE` / `DOC_DIR` 与决策范围选层。技能**只维护** `CONTEXT.md` 与 `ADR-*.md`；`index.md` 仅导航。

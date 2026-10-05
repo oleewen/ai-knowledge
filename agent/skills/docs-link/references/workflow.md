@@ -6,7 +6,7 @@
 
 按以下顺序收口参数；用户已明确时可跳过对应项：
 
-1. 源仓闸门：当前工作区 `.docsconfig` → `KNOWLEDGE_TYPE` 须为 `company` 或 `system`
+1. 源仓闸门：当前工作区 `.docsconfig` → `KNOWLEDGE_TYPE` 须为 `company`、`solution` 或 `system`
 2. 动作：`--link` 或 `--unlink`
 3. `--target`（目标仓库根或已登记 remote URL）
 4. 名称：system→application 时确认 `app_name`（可预填推断）；company→system 时确认系统名（脚本登记字段同源）
@@ -25,7 +25,7 @@
 ### 1 源仓闸门
 
 - 读当前仓 `.docsconfig` 的 `KNOWLEDGE_TYPE`
-- 允许边：`company→system`、`system→application`
+- 允许边：`company→solution`、`solution→system`、`system→application`
 - 非法源（含 application）：停止并说明须切换到源仓工作区
 
 ### 2 解析目标与名称

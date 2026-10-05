@@ -16,7 +16,7 @@ readonly EXIT_VIOLATION=1
 readonly EXIT_MISSING_TOOL=2
 
 # 具名文件路径公共段（specs|plans 下带日期前缀）
-readonly SUPERPOWERS_NAMED_PREFIX='(application|system|company|docs)/superpowers/(specs|plans)/'
+readonly SUPERPOWERS_NAMED_PREFIX='(application|system|solution|company|docs)/superpowers/(specs|plans)/'
 readonly PATTERN_LITERAL="${SUPERPOWERS_NAMED_PREFIX}[0-9]{4}-[0-9]{2}-[0-9]{2}-"
 readonly PATTERN_MD_LINK="\]\([^)]*${SUPERPOWERS_NAMED_PREFIX}[0-9]{4}-"
 

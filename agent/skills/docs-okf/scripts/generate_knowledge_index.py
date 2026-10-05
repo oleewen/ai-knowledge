@@ -40,6 +40,8 @@ patch_index_guide = _build.patch_index_guide
 render_entity_index_block = _build.render_entity_index_block
 ENTITY_BEGIN = _build.ENTITY_BEGIN
 ENTITY_END = _build.ENTITY_END
+ENTITY_BEGIN_LEGACY = _build.ENTITY_BEGIN_LEGACY
+ENTITY_END_LEGACY = _build.ENTITY_END_LEGACY
 main = _build.main
 
 

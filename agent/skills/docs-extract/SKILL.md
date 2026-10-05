@@ -2,7 +2,7 @@
 name: docs-extract
 description: >
   从 `--sources` 按关键词命中提炼，去重后仅将 delta 写入 `--overview` 第三列（A/U/D）；细则 federation-spec。
-  支持 `--dry-run`。目标可为系统或公司 overview。
+  支持 `--dry-run`。目标可为应用、系统、解决方案或公司 `{NAME}-overview.md`。
   用户提到 /docs-extract、提炼进 overview、从设计文档整理进知识库、sources 写第三列、
   非槽位源写入 overview 时，使用本技能。
   分流：联邦槽位上行全量 → docs-distill；overview 归档 → docs-archive；INDEX → docs-indexing；SDD → 对应技能。

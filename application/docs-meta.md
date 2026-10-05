@@ -65,7 +65,7 @@ integration:
     - path: "../agent/"
       description: "规范、模板与 Agent 技能"
   traceability:
-    description: "solutions → analysis → requirements；规约 ∈ specs/ 或 knowledge/application/；上行 distill 仅写 system overview"
+    description: "solutions → analysis → requirements；规约 ∈ specs/ 或 knowledge/application/；本库 overview 走 extract/archive；上行 distill 仅写 system overview"
 
 references:
   - path: "./README.md"

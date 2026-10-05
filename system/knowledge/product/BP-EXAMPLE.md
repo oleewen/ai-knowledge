@@ -3,7 +3,7 @@ type: Business Process
 title: 示例业务流程（BP）
 description: 示例业务流程。
 tags: [product, BP]
-timestamp: "2026-06-26T00:00:00Z"
+timestamp: "2026-06-26T00:00:00+08:00"
 id: BP-EXAMPLE
 perspective: product
 hierarchy: BP

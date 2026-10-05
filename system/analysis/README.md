@@ -1,13 +1,11 @@
 ---
 type: Documentation
-title: analysis（需求分析）文档
+title: analysis（系统分析）文档
 ---
-# analysis（需求分析）
+# analysis
 
-系统层 SDD 分析：平铺 `ANALYSIS-{IDEA-ID}.md`。上游 [../solutions/](../solutions/README.md) → 下游 [../requirements/](../requirements/README.md)。契约：[knowledge-layout](../../agent/references/knowledge-layout.md)。
+系统层 SDD 第一段：平铺 `ANALYSIS-{IDEA-ID}.md`。上游在解决方案库 `solution/solutions/`。下游 [../features/](../features/README.md)。
 
-| 文档 | 标题 | 关联解决方案 |
-|------|------|--------------|
-| ANALYSIS-EXAMPLE.md | 示例系统需求分析 | SOLUTION-EXAMPLE |
+样例：[ANALYSIS-EXAMPLE.md](ANALYSIS-EXAMPLE.md)。新写走 `/sdx-analysis`。
 
 规范：[sdx-analysis](../../agent/skills/sdx-analysis/SKILL.md)

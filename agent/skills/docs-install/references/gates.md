@@ -34,7 +34,7 @@
 即将执行 /docs-install，当前参数如下：
 - target: <路径>
 - scope: <knowledge|config>
-- type: <application|system|company 或 —>
+- type: <application|system|solution|company 或 —>
 - mode: <standalone|central 或 —>
 - dry-run: <yes|no>
 - force: <yes|no>

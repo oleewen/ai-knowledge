@@ -1,7 +1,7 @@
 ---
 name: docs-pull
 description: >
-  按 knowledge-links.yaml 校验/修复联邦槽位软链（system/application-slots/application-{NAME} 或 company/system-slots/system-{NAME}），
+  按 knowledge-links.yaml 校验/修复联邦槽位软链（application-slots / system-slots / solution-slots），
   软链失效时按 type=child 的 repository clone/pull 到 path；变更溯源用下级仓 git commit。
   用户提到 /docs-pull、从应用/系统本地仓回拉到联邦槽位、同步槽位、按 knowledge-links 拉取时，使用本技能。
   分流：推送中央规约到应用库 → docs-push；联邦建联 → docs-link；overview 蒸馏 / 归档 / SDD → 对应技能。
@@ -12,7 +12,7 @@ description: >
 
 ## 输出硬约束（P0）
 
-- 当前单元：单个 `application-slots/application-{NAME}` 或 `system-slots/system-{NAME}` 槽位（软链）。
+- 当前单元：单个 `application-slots/application-{NAME}`、`system-slots/system-{NAME}` 或 `solution-slots/solution-{NAME}` 槽位（软链）。
 - 轻流程：参数向导 → 风险校核 → `C/M/S/F`（无 `G`、不绑意图澄清）→ [light-flow-actions.md](../../references/light-flow-actions.md)；细节 [gates.md](references/gates.md)。参数未收口前不得执行同步。
 - `--all` 也须先处理并校核一个当前槽位；未收敛前不得静默推进后续槽位。
 - 路径不存在、非 Git 工作区、origin 与 repository 不匹配、工作区 dirty、目标 `.docsconfig` 缺失、links 字段不完整等风险须先确认；未确认不得继续。
@@ -41,7 +41,7 @@ description: >
 ## 最少输入
 
 - `knowledge-links.yaml`
-- `--app` / `--sys-name` / `--all` 三者之一
+- `--app` / `--sys-name` / `--sln-name` / `--all` 四者之一
 - child `repository` + `path`；槽位软链通常已由 `docs-link` 创建（缺失时本技能可建）
 
 ## 产出与脚本
@@ -52,6 +52,7 @@ description: >
 ```bash
 bash agent/skills/docs-pull/scripts/pull-slots.sh --app <app_name>
 bash agent/skills/docs-pull/scripts/pull-slots.sh --sys-name <sys_name>
+bash agent/skills/docs-pull/scripts/pull-slots.sh --sln-name <sln_name>
 bash agent/skills/docs-pull/scripts/pull-slots.sh --all
 ```
 

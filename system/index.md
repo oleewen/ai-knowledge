@@ -14,9 +14,9 @@ okf_version: 0.1
 * [analysis](analysis/README.md)
 * [application-slots](application-slots/README.md) - application-slots 目录索引
 * [changelogs](changelogs/README.md)
+* [features](features/README.md)
 * [knowledge](knowledge/README.md)
 * [requirements](requirements/README.md)
-* [solutions](solutions/README.md)
 
 ### 目录文件
 
@@ -33,12 +33,13 @@ okf_version: 0.1
 3. [knowledge/business/README.md](knowledge/business/README.md) / [knowledge/product/README.md](knowledge/product/README.md) — 业务与产品语境  
 4. [knowledge/application/README.md](knowledge/application/README.md) / [knowledge/data/README.md](knowledge/data/README.md) / [knowledge/technical/README.md](knowledge/technical/README.md) — 系统、数据与技术落地  
 
-与公司知识库侧 [`../company/knowledge/`](../company/knowledge/README.md) 对照阅读。
+与解决方案 [`../solution/knowledge/`](../solution/knowledge/README.md)、公司 [`../company/knowledge/`](../company/knowledge/README.md) 对照阅读。
 
 ### 关联索引
 
 * 上一级说明：[../README.md](../README.md)
 <!-- okf:end -->
+
 
 # OKF 渐进披露
 
@@ -52,7 +53,7 @@ okf_version: 0.1
 * [changelogs](changelogs/README.md)
 * [knowledge](knowledge/README.md)
 * [requirements](requirements/README.md)
-* [solutions](solutions/README.md)
+* [features](features/README.md)
 
 ## 目录文件
 
@@ -69,7 +70,7 @@ okf_version: 0.1
 3. [knowledge/business/README.md](knowledge/business/README.md) / [knowledge/product/README.md](knowledge/product/README.md) — 业务与产品语境  
 4. [knowledge/application/README.md](knowledge/application/README.md) / [knowledge/data/README.md](knowledge/data/README.md) / [knowledge/technical/README.md](knowledge/technical/README.md) — 系统、数据与技术落地  
 
-与公司知识库侧 [`../company/knowledge/`](../company/knowledge/README.md) 对照阅读。
+与解决方案 [`../solution/knowledge/`](../solution/knowledge/README.md)、公司 [`../company/knowledge/`](../company/knowledge/README.md) 对照阅读。
 
 ## 关联索引
 

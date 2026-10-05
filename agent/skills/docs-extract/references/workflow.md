@@ -18,7 +18,7 @@
 
 | 维度 | docs-distill | docs-extract |
 | ------ | ------ | ------ |
-| 源 | `application-slots` 或 `system-slots` | 用户 `--sources`（非槽位主路径） |
+| 源 | `application-slots` / `system-slots` / `solution-slots` | 用户 `--sources`（非槽位主路径） |
 | 过滤 | 联邦规则 + 目标层表行 | **必须**段落级关键词（[extract-spec.md](extract-spec.md)） |
 | 模式 | 仅全量 | 按命中批次 |
 | 写入 | 仅 overview 第三列 | 仅 overview 第三列 |
@@ -71,6 +71,7 @@
 ## 命令示例
 
 ```bash
+/docs-extract --sources docs/api.md --overview application/knowledge/overview/order-overview.md --dry-run
 /docs-extract --sources docs/design.md --overview system/knowledge/overview/billing-overview.md --dry-run
 /docs-extract --sources docs/ --overview system/knowledge/overview/billing-overview.md
 /docs-extract --sources docs/design.md docs/adr/ --overview system/knowledge/overview/billing-overview.md

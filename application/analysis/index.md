@@ -4,16 +4,16 @@
 
 ## 子目录
 
-（无）
+* [archive](archive/README.md)
 
 ## 目录文件
 
-* [示例应用需求分析](ANALYSIS-EXAMPLE.md)
+* [示例应用解决方案](ANALYSIS-EXAMPLE.md)
 
 ## 阅读顺序
 
 1. [README.md](README.md)
-2. 上游 [../solutions/](../solutions/README.md) → `ANALYSIS-*.md` → [../requirements/](../requirements/README.md)
+2. `ANALYSIS-*.md` → [../features/](../features/README.md)
 
 ## 关联索引
 

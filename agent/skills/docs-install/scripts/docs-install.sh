@@ -236,7 +236,7 @@ install_application_subset_to_docs() {
   info "    application/ §2.1 子集同步完成"
 }
 
-# 步骤 1c：仓库顶层 system/ 或 company/ → 目标（组织级 / 公司级知识库根）
+# 步骤 1c：仓库顶层 system/、solution/ 或 company/ → 目标
 # 用法：install_org_template_to_docs <label> <src_root>
 install_org_template_to_docs() {
   local label="$1" src_root="$2"
@@ -297,8 +297,9 @@ docs_install_upsert_knowledge_meta() {
 
   case "${CFG[type]}" in
     application) child_kind='app'; parent_kind='sys' ;;
-    system)      child_kind='app'; parent_kind='company' ;;
-    company)     child_kind='sys'; parent_kind='none' ;;
+    system)      child_kind='app'; parent_kind='solution' ;;
+    solution)    child_kind='sys'; parent_kind='company' ;;
+    company)     child_kind='solution'; parent_kind='none' ;;
     *) error "内部错误：未知 type=${CFG[type]}" ;;
   esac
 
@@ -359,8 +360,9 @@ docs_install_copy_templates() {
         install_application_full_to_docs
       fi
       ;;
-    system)  install_org_template_to_docs 'system'  "${CFG[repo_root]}/system"  ;;
-    company) install_org_template_to_docs 'company' "${CFG[repo_root]}/company" ;;
+    system)   install_org_template_to_docs 'system'   "${CFG[repo_root]}/system"   ;;
+    solution) install_org_template_to_docs 'solution' "${CFG[repo_root]}/solution" ;;
+    company)  install_org_template_to_docs 'company'  "${CFG[repo_root]}/company"  ;;
     *)       error "内部错误：未知 type=${CFG[type]}" ;;
   esac
 }
@@ -488,6 +490,7 @@ docs_install_usage() {
   --type：知识库类型，仅在 scope=knowledge 时有效
     application|a（默认）  应用知识库：standalone 全量；central §2.1 子集
     system|s             仓库顶层 system/ → 目标（全量；mode 固定 standalone）
+    solution|sln         仓库顶层 solution/ → 目标（全量；mode 固定 standalone）
     company|c            仓库顶层 company/ → 目标（全量；mode 固定 standalone）
 
   --mode：模式，仅在 scope=knowledge 时有效
@@ -649,7 +652,7 @@ resolve_type() {
   if [[ "${CFG[type_explicit]}" == '1' ]]; then
     CFG[type]="$(normalize_type "${CFG[type]}")"
     validate_type "${CFG[type]}" \
-      || error "无效 --type: ${CFG[type]}（application(a)|system(s)|company(c)）"
+      || error "无效 --type: ${CFG[type]}（application(a)|system(s)|solution(sln)|company(c)）"
   else
     CFG[type]='application'
   fi
@@ -662,7 +665,7 @@ validate_mode_type_policy() {
 
   case "${CFG[type]}" in
     application) ;;
-    system|company) error "--mode=central 仅支持 --type=application（当前：${CFG[type]}）" ;;
+    system|solution|company) error "--mode=central 仅支持 --type=application（当前：${CFG[type]}）" ;;
     *) error "内部错误：未知 type=${CFG[type]}" ;;
   esac
 }
@@ -672,6 +675,7 @@ validate_type_sources() {
   case "${CFG[type]}" in
     application) [[ -d "${CFG[repo_root]}/application" ]] || error "未找到 application/: ${CFG[repo_root]}/application" ;;
     system)      [[ -d "${CFG[repo_root]}/system"      ]] || error "未找到 system/: ${CFG[repo_root]}/system（type=system）" ;;
+    solution)    [[ -d "${CFG[repo_root]}/solution"    ]] || error "未找到 solution/: ${CFG[repo_root]}/solution（type=solution）" ;;
     company)     [[ -d "${CFG[repo_root]}/company"     ]] || error "未找到 company/: ${CFG[repo_root]}/company（type=company）" ;;
   esac
 }

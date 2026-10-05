@@ -95,16 +95,18 @@
 
 | 阶段 | 规则 globs（Cursor） | 终稿 / 写入范围 | 辅助工作稿 | 推进协议 | 环境变量例外 | Skill |
 | --- | --- | --- | --- | --- | --- | --- |
-| sdx-solution | `application/solutions/**/*`、`company/solutions/**/*` | `{DOC_DIR}/solutions/SOLUTION-*.md` | 可选工作稿 | 语义 | 无 | [sdx-solution/SKILL.md](../skills/sdx-solution/SKILL.md) |
-| sdx-analysis | `application/analysis/**/*`、`company/analysis/**/*` | `{DOC_DIR}/analysis/ANALYSIS-*.md` | 可选工作稿 | 语义 | 无 | [sdx-analysis/SKILL.md](../skills/sdx-analysis/SKILL.md) |
+| sdx-solution | `solution/solutions/**/*` | `{DOC_DIR}/solutions/SOLUTION-*.md`（仅 solution） | 可选工作稿 | 语义 | 无 | [sdx-solution/SKILL.md](../skills/sdx-solution/SKILL.md) |
+| sdx-analysis | `application/analysis/**/*`、`system/analysis/**/*` | `{DOC_DIR}/analysis/ANALYSIS-*.md` | 可选工作稿 | 语义 | 无 | [sdx-analysis/SKILL.md](../skills/sdx-analysis/SKILL.md) |
+| sdx-feature | `application/features/**/*`、`system/features/**/*` | `{DOC_DIR}/features/FEATURE-*.md` | 可选工作稿 | 语义 | 无 | [sdx-feature/SKILL.md](../skills/sdx-feature/SKILL.md) |
+| sdx-domains | `company/domains/**/*` | `company/domains/DOMAIN-MAP.md`、`DOMAIN-{BD-ID}.md` | 可选工作稿 | 语义 | 无 | [sdx-domains/SKILL.md](../skills/sdx-domains/SKILL.md) |
 | sdx-architect | `application/requirements/**/ASD-*.md` | `application/requirements/**/ASD-*.md` | 可选工作稿 | 语义 | 无 | [sdx-architect/SKILL.md](../skills/sdx-architect/SKILL.md) |
 | sdx-design | `application/requirements/**/DSD-*.md` | `application/requirements/**/DSD-*.md` | 可选工作稿 | 语义 | 无 | [sdx-design/SKILL.md](../skills/sdx-design/SKILL.md) |
 | sdx-prd | `application/requirements/**/*` | `application/requirements/**/PRD-*.md` | 可选工作稿 | 语义 | 无 | [sdx-prd/SKILL.md](../skills/sdx-prd/SKILL.md) |
 | sdx-test | `application/requirements/**/TDD-*.md` | `application/requirements/**/TDD-*.md` | 可选工作稿 | 语义 | 无 | [sdx-test/SKILL.md](../skills/sdx-test/SKILL.md) |
 | docs-agent | `README.md`、`AGENTS.md`（仓库根） | 根 `README.md` / `AGENTS.md`（一次只其一） | 可选工作稿 | 语义-docs | 无 | [docs-agent/SKILL.md](../skills/docs-agent/SKILL.md) |
-| docs-distill | `system/knowledge/**/*`、`company/knowledge/**/*` | `system\|company/knowledge/overview/` 受管第三列 | 可选工作稿 | 语义-docs | 无 | [docs-distill/SKILL.md](../skills/docs-distill/SKILL.md) |
-| docs-extract | `system/knowledge/overview/**/*`、`company/knowledge/overview/**/*` | `system|company/knowledge/overview/*.md` | 可选工作稿 | 语义-docs | 无 | [docs-extract/SKILL.md](../skills/docs-extract/SKILL.md) |
-| docs-archive | `system/knowledge/overview/**/*`、`company/knowledge/overview/**/*` | `system|company/knowledge/overview/*.md` | 可选工作稿 | 语义-docs | 无 | [docs-archive/SKILL.md](../skills/docs-archive/SKILL.md) |
+| docs-distill | `system/knowledge/**/*`、`solution/knowledge/**/*`、`company/knowledge/**/*` | `system\|solution\|company/knowledge/overview/` 受管第三列 | 可选工作稿 | 语义-docs | 无 | [docs-distill/SKILL.md](../skills/docs-distill/SKILL.md) |
+| docs-extract | `application/knowledge/overview/**/*`、`system/knowledge/overview/**/*`、`solution/knowledge/overview/**/*`、`company/knowledge/overview/**/*` | `application\|system\|solution\|company/knowledge/overview/*.md` | 可选工作稿 | 语义-docs | 无 | [docs-extract/SKILL.md](../skills/docs-extract/SKILL.md) |
+| docs-archive | `application/knowledge/overview/**/*`、`system/knowledge/overview/**/*`、`solution/knowledge/overview/**/*`、`company/knowledge/overview/**/*` | `application\|system\|solution\|company/knowledge/overview/*.md` | 可选工作稿 | 语义-docs | 无 | [docs-archive/SKILL.md](../skills/docs-archive/SKILL.md) |
 | docs-build | `{DOC_DIR}/knowledge/**/*`、`{DOC_DIR}/INDEX-GUIDE.md` 第四章视角导航块 | `{DOC_DIR}/knowledge/` 下 JSON、README；根 `INDEX-GUIDE.md` 实体标记块 | 可选工作稿 | 语义-docs | 无 | [docs-build/SKILL.md](../skills/docs-build/SKILL.md) |
 | docs-indexing | `**/INDEX-GUIDE.md`、`**/changelogs/INDEXING-LOG.md` | 各文档根 `INDEX-GUIDE.md` 九章骨架与对应 `INDEXING-LOG.md`（须保留 docs-build 实体块） | 可选工作稿 | 语义-docs | 无 | [docs-indexing/SKILL.md](../skills/docs-indexing/SKILL.md) |
 | docs-revise | 不固定（按用户确认范围） | 已确认范围内的 Markdown / 注释 / 配置文本 | 可选工作稿 | 语义-docs | 无 | [docs-revise/SKILL.md](../skills/docs-revise/SKILL.md) |

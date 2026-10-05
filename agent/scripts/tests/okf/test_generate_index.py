@@ -120,7 +120,8 @@ def test_system_knowledge_index_scope_and_nav():
         rendered = generate_knowledge_index.render_knowledge_index(
             bundle, bundle="system"
         )
-        assert "BSD(L2) / PD / SYS / MDG" in rendered
+        assert "SYS / BC / AGG / AB" in rendered
+        assert "BSD(L2) / PD / SYS / MDG" not in rendered
         assert "### 视角入口" in rendered
         assert "[技术](knowledge/technical/README.md)" in rendered
         assert "物化目录映射" not in rendered
@@ -134,7 +135,9 @@ def test_application_knowledge_index_scope_and_nav():
         rendered = generate_knowledge_index.render_knowledge_index(
             bundle, bundle="application"
         )
-        assert "API/TBL/MW/CMP" in rendered
+        assert "API / TBL / MW / CMP" in rendered
+        assert "SLN/PD/BP" in rendered
+        assert "PL/SLN** 见公司" not in rendered
         assert "### 视角入口" in rendered
         assert "[数据](knowledge/data/README.md)" in rendered
         assert "物化目录映射" not in rendered
@@ -148,9 +151,41 @@ def test_company_knowledge_index_scope_and_nav():
         rendered = generate_knowledge_index.render_knowledge_index(
             bundle, bundle="company"
         )
-        assert "VC / BD / BSD(L1) / CAP / PL / SLN / TPL" in rendered
+        assert "VC / BD / BSD(L1) / CAP / PL / TPL" in rendered
         assert "### 视角入口" in rendered
-        assert "无 BSD(L2)/PD/SYS/MDG" in rendered
+        assert "无 SLN/PD/BSD(L2)/MDG/TSD/SYS" in rendered
+        assert "SLN ∈ application" not in rendered
+
+
+def test_patch_index_guide_legacy_markers():
+    existing = (
+        "# G\n\n## 四、\n\n"
+        "<!-- docs-build:entity-index -->\nold\n<!-- /docs-build:entity-index -->\n\n"
+        "## 五、\n"
+    )
+    block = (
+        generate_knowledge_index.ENTITY_BEGIN
+        + "\nnew-body\n"
+        + generate_knowledge_index.ENTITY_END
+        + "\n"
+    )
+    out = generate_knowledge_index.patch_index_guide(existing, block)
+    assert generate_knowledge_index.ENTITY_BEGIN in out
+    assert "new-body" in out
+    assert "old" not in out
+    assert generate_knowledge_index.ENTITY_BEGIN_LEGACY not in out
+
+
+def test_solution_knowledge_index_scope_and_nav():
+    with tempfile.TemporaryDirectory() as tmp:
+        bundle = Path(tmp) / "solution"
+        (bundle / "knowledge").mkdir(parents=True)
+        rendered = generate_knowledge_index.render_knowledge_index(
+            bundle, bundle="solution"
+        )
+        assert "SLN / PD / BSD(L2) / MDG / TSD / BP" in rendered
+        assert "### 视角入口" in rendered
+        assert "[应用](knowledge/application/README.md)" in rendered
 
 
 def main() -> None:
@@ -162,6 +197,8 @@ def main() -> None:
         test_system_knowledge_index_scope_and_nav,
         test_application_knowledge_index_scope_and_nav,
         test_company_knowledge_index_scope_and_nav,
+        test_patch_index_guide_legacy_markers,
+        test_solution_knowledge_index_scope_and_nav,
     ]
     for fn in tests:
         fn()

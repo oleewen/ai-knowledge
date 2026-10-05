@@ -13,9 +13,9 @@ okf_version: 1.0
 * [adr](adr/README.md)
 * [analysis](analysis/README.md)
 * [changelogs](changelogs/README.md)
+* [features](features/README.md)
 * [knowledge](knowledge/README.md)
 * [requirements](requirements/README.md)
-* [solutions](solutions/README.md)
 
 ### 目录文件
 
@@ -34,12 +34,13 @@ okf_version: 1.0
 1. [README.md](README.md)（mode → [README-s](README-s.md) / [README-c](README-c.md)）
 2. [DESIGN.md](DESIGN.md) — 本层契约与治理引用
 3. [knowledge/](knowledge/README.md) → 五视角
-4. mode=s：solutions → analysis → requirements
+4. mode=s：analysis → features → requirements
 
 ### 关联索引
 
 * 上一级说明：[../README.md](../README.md)
 <!-- okf:end -->
+
 
 # OKF 渐进披露
 
@@ -52,7 +53,7 @@ okf_version: 1.0
 * [changelogs](changelogs/README.md)
 * [knowledge](knowledge/README.md)
 * [requirements](requirements/README.md)
-* [solutions](solutions/README.md)
+* [features](features/README.md)
 
 ## 目录文件
 
@@ -71,7 +72,7 @@ okf_version: 1.0
 1. [README.md](README.md)（mode → [README-s](README-s.md) / [README-c](README-c.md)）
 2. [DESIGN.md](DESIGN.md) — 本层契约与治理引用
 3. [knowledge/](knowledge/README.md) → 五视角
-4. mode=s：solutions → analysis → requirements
+4. mode=s：analysis → features → requirements
 
 ## 关联索引
 

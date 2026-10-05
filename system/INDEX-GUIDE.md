@@ -4,7 +4,7 @@ title: system INDEX-GUIDE
 ---
 # system INDEX-GUIDE
 
-> **最后更新**: 2026-09-28  
+> **最后更新**: 2026-10-05  
 > **定位**: `system/` 九章索引指南。目录索引见 [index.md](index.md)。
 
 ---
@@ -24,7 +24,7 @@ title: system INDEX-GUIDE
 
 * **角色**: 系统知识库；`knowledge/` = 系统层实体 SSOT + 五视角；`application-slots/application-{NAME}` = 软链槽位  
 * **栈**: Markdown、YAML  
-* **范围**: `knowledge/` · `solutions/` · `analysis/` · `requirements/` · `application-slots/` · `adr/` · `changelogs/`  
+* **范围**: `knowledge/` · `analysis/` · `features/` · `requirements/` · `application-slots/` · `adr/` · `changelogs/`  
 * **规模**（本轮 full/d3，排除 `.agents`）：约 **128** 文件（`.md` 124 · `.yaml` 1 · `viz.html` 1）  
 
 ---
@@ -37,7 +37,7 @@ title: system INDEX-GUIDE
 system/
 ├── README.md / DESIGN.md / INDEX-GUIDE.md / index.md / docs-meta.md
 ├── knowledge-links.yaml
-├── knowledge/ · solutions/ · analysis/ · requirements/ · adr/
+├── knowledge/ · analysis/ · features/ · requirements/ · adr/
 ├── application-slots/
 │   ├── application-{NAME}      # 软链 → 应用 DOC_ROOT
 │   └── changelogs/             # 层共用 ARCHIVE-LOG；同步追溯 git / SYNC_OK
@@ -46,9 +46,9 @@ system/
 
 ### 2.2 依赖关系
 
-* `knowledge/` ↔ `company/knowledge/`：公司实体 reference  
+* `knowledge/` ↔ `solution/knowledge/`：解决方案实体 reference  
 * `knowledge/` ↔ `application/knowledge/`：系统 SSOT / 应用实现映射  
-* `solutions/` → `analysis/` → `requirements/`  
+* `analysis/` → `features/` → `requirements/`  
 * `knowledge-links.yaml` → `application-slots/application-{NAME}/`  
 
 ### 2.3 包结构
@@ -57,7 +57,7 @@ system/
 
 ### 2.4 文档目录
 
-入口：[knowledge/](knowledge/README.md) · [solutions/](solutions/README.md) · [analysis/](analysis/README.md) · [requirements/](requirements/README.md) · [application-slots/](application-slots/README.md)
+入口：[knowledge/](knowledge/README.md) · [analysis/](analysis/README.md) · [features/](features/README.md) · [requirements/](requirements/README.md) · [application-slots/](application-slots/README.md)
 
 ---
 
@@ -96,9 +96,9 @@ system/
 
 | 聚合 | 职责 | 关键落点 |
 |------|------|----------|
-| 系统级实体 | BSD(L2) / PD / SYS / MDG 等本层首次定义 | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
+| 系统级实体 | SYS / BC / AGG / AB / PM / FT / FR / UC / BR / APP / MS / DS / ENT | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
 | overview 缓冲 | distill / extract / archive / tag | [knowledge/overview/](knowledge/overview/README.md) |
-| SDD | 方案 → 分析 → 需求 | `solutions/` · `analysis/` · `requirements/` |
+| SDD | 分析 → 特性 → 需求 | `analysis/` · `features/` · `requirements/` |
 | 联邦槽位 | 应用 DOC_ROOT 软链 | `application-slots/application-{NAME}/` · [knowledge-links.yaml](knowledge-links.yaml) |
 
 ### 4.3 领域服务
@@ -114,7 +114,7 @@ system/
 <!-- docs-build:entity-index:begin -->
 > 本块由 `/docs-build` 写入；实体台账 ∈ 各视角 README；正文 ∈ per-entity `{ID}.md`；九章骨架 ∈ `/docs-indexing`。
 
-> 公司级 **TPL-*** / **SLN-*** / **PL-*** 不在本层登记。本层 **BSD(L2) / PD / SYS / MDG** 首次定义；产品自 **PD** 起；应用自 **SYS** 起。
+> 公司级与解决方案级首次定义不在本层登记。本层 **SYS / BC / AGG / AB / PM / FT / FR / UC / BR / APP / MS / DS / ENT**。
 
 ### 视角入口
 
@@ -135,8 +135,8 @@ system/
 
 | 路径 | 说明 |
 |------|------|
-| [solutions/SOLUTION-EXAMPLE.md](solutions/SOLUTION-EXAMPLE.md) | 方案样例 |
 | [analysis/ANALYSIS-EXAMPLE.md](analysis/ANALYSIS-EXAMPLE.md) | 分析样例 |
+| [features/FEATURE-EXAMPLE.md](features/FEATURE-EXAMPLE.md) | 特性样例 |
 | [requirements/REQUIREMENT-EXAMPLE/](requirements/REQUIREMENT-EXAMPLE/) | 需求样例目录 |
 | [adr/CONTEXT.md](adr/CONTEXT.md) | ADR 索引入口 |
 | `knowledge/business/BSD-EXAMPLE/` · `SYS-EXAMPLE` · `PD-EXAMPLE` · `MDG-EXAMPLE` · `TSD-EXAMPLE` | 本层首次定义样例 |

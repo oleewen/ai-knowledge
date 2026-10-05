@@ -14,6 +14,8 @@ APP=""
 SYS_NAME=""
 ALL=0
 
+SLN_NAME=""
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --app)
@@ -28,12 +30,18 @@ while [[ $# -gt 0 ]]; do
       SYS_NAME="$1"
       shift
       ;;
+    --sln-name|--solution-name)
+      shift
+      [[ -n "${1:-}" ]] || { printf '缺少 --sln-name 值\n' >&2; exit 2; }
+      SLN_NAME="$1"
+      shift
+      ;;
     --all)
       ALL=1
       shift
       ;;
     -h|--help)
-      printf '%s\n' "Usage: $0 [--app <app_name> | --sys-name <sys_name> | --all]"
+      printf '%s\n' "Usage: $0 [--app <app_name> | --sys-name <sys_name> | --sln-name <sln_name> | --all]"
       exit 0
       ;;
     *)
@@ -46,7 +54,8 @@ done
 docsconfig_bootstrap_validate
 
 MODE="${KNOWLEDGE_TYPE:-}"
-[[ "$MODE" == "system" || "$MODE" == "company" ]] || { printf '不支持的 KNOWLEDGE_TYPE: %s\n' "$MODE" >&2; exit 1; }
+[[ "$MODE" == "system" || "$MODE" == "solution" || "$MODE" == "company" ]] \
+  || { printf '不支持的 KNOWLEDGE_TYPE: %s\n' "$MODE" >&2; exit 1; }
 
 LINKS_FILE="${DOC_ROOT%/}/knowledge-links.yaml"
 [[ -f "$LINKS_FILE" ]] || { printf '缺少 knowledge-links.yaml: %s\n' "$LINKS_FILE" >&2; exit 1; }
@@ -66,12 +75,18 @@ if [[ "$MODE" == "system" ]]; then
   slot_parent="application-slots"
   name_flag="--app"
   name_value="$APP"
-else
+elif [[ "$MODE" == "solution" ]]; then
   expected_target_type="system"
   slot_prefix="system"
   slot_parent="system-slots"
   name_flag="--sys-name"
   name_value="$SYS_NAME"
+else
+  expected_target_type="solution"
+  slot_prefix="solution"
+  slot_parent="solution-slots"
+  name_flag="--sln-name"
+  name_value="$SLN_NAME"
 fi
 
 if [[ "$ALL" -eq 0 ]]; then
@@ -208,6 +223,8 @@ pull_one() {
 
   if [[ "$expected_target_type" == "application" ]]; then
     [[ "$t_ktype" == "application" ]] || { printf '目标 KNOWLEDGE_TYPE 不匹配（应为 application）: %s\n' "$t_ktype" >&2; return 1; }
+  elif [[ "$expected_target_type" == "solution" ]]; then
+    [[ "$t_ktype" == "solution" ]] || { printf '目标 KNOWLEDGE_TYPE 不匹配（应为 solution）: %s\n' "$t_ktype" >&2; return 1; }
   else
     [[ "$t_ktype" == "system" ]] || { printf '目标 KNOWLEDGE_TYPE 不匹配（应为 system）: %s\n' "$t_ktype" >&2; return 1; }
   fi

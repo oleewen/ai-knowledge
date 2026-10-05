@@ -1,71 +1,86 @@
 # 知识库布局契约（Agent SSOT）
 
-> **定位**：三层 `{DOC_DIR}` **路径**、文件/目录落点、overview 缓冲区、联邦流水线与 SDD×`KNOWLEDGE_TYPE` 的唯一 Agent 侧真源。  
+> **定位**：四层 `{DOC_DIR}` **路径**、文件/目录落点、overview 缓冲区、联邦流水线与 SDD×`KNOWLEDGE_TYPE` 的唯一 Agent 侧真源。  
 > **不分管**：文件四类分型、per-entity Profile、frontmatter/正文结构 → [okf-spec.md](../knowledge/okf-spec.md)；ID **语法** / IDEA-ID 字面 → [naming-conventions.md](../knowledge/naming-conventions.md)；缩写/短义/映射字段 → [glossary.md](../knowledge/glossary.md)；首次定义 / 引用边界 → [knowledge-governance.md](../knowledge/knowledge-governance.md)。  
 > 会话工作稿见 [session-spec-path.md](session-spec-path.md)；闸门总表见 [CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates)；推进环见 [unit-cycle-protocol.md](unit-cycle-protocol.md)。写前 hook 已空；技能清单见 [skills/README.md](../skills/README.md)。
 
-**最后更新**: 2026-09-15
+**最后更新**: 2026-10-05
+
+> **目标态**：下文目录名为四层共识。系统/应用 `solutions/`→`analysis/` 与 `analysis/`→`features/` 的落盘改名、docs-link 三跳，见 [GRILL-LOG](../../changelogs/GRILL-LOG.md)。`solution/` 模板树已铺。
 
 ---
 
-## 三层文档根
+## 四层文档根
 
 | 文档根 `{DOC_DIR}` | 人类入口 | 五视角知识 | overview 缓冲区 | 联邦镜像槽位 |
 | --- | --- | --- | --- | --- |
-| `application/` | [README](../../application/README.md) · [DESIGN](../../application/DESIGN.md) | [application/knowledge/](../../application/knowledge/README.md) | — | — |
+| `application/` | [README](../../application/README.md) · [DESIGN](../../application/DESIGN.md) | [application/knowledge/](../../application/knowledge/README.md) | [application/knowledge/overview/](../../application/knowledge/overview/NAME-overview.md) | — |
 | `system/` | [README](../../system/README.md) · [DESIGN](../../system/DESIGN.md) | [system/knowledge/](../../system/knowledge/README.md) | [system/knowledge/overview/](../../system/knowledge/overview/NAME-overview.md) | `system/application-slots/application-{NAME}/` |
-| `company/` | [README](../../company/README.md) · [DESIGN](../../company/DESIGN.md) | [company/knowledge/](../../company/knowledge/README.md) | [company/knowledge/overview/](../../company/knowledge/overview/NAME-overview.md) | `company/system-slots/system-{NAME}/` |
+| `solution/` | [README](../../solution/README.md) · [DESIGN](../../solution/DESIGN.md) | `solution/knowledge/`（五视角同构） | `solution/knowledge/overview/{NAME}-overview.md` | `solution/system-slots/system-{NAME}/` |
+| `company/` | [README](../../company/README.md) · [DESIGN](../../company/DESIGN.md) | [company/knowledge/](../../company/knowledge/README.md) | `company/knowledge/overview/{NAME}-overview.md` | `company/solution-slots/solution-{NAME}/` |
 
-**路径约定**：三层五视角均为 **`{DOC_DIR}/knowledge/`**（legacy `architecture/` / `ea/` 已废弃）。应用层无 overview；本层首次实体（API/TBL/MW/CMP）见 [knowledge-governance.md](../knowledge/knowledge-governance.md#各层聚焦摘要)。
+**路径约定**：四层五视角均为 **`{DOC_DIR}/knowledge/`**。四层均有 `{NAME}-overview.md`。应用 overview **非** distill 目标。本层首次实体见 [knowledge-governance.md](../knowledge/knowledge-governance.md#各层聚焦摘要)。
+
+**parent**：`application → system → solution → company`（向上 1:1）。公司不挂 `system-slots`。
 
 ---
 
 ## 文件与目录落点
 
-- **目录**：与实体 ID 一致（如 `BD-CHARGING-APPEAL`、`PL-BILLING-APPEAL`），或以 ID 为准在索引中查找。
-- **实体定义文件**：应用注册等可为 `{id}.yaml`；字段模板见各视角 `{perspective}-meta.md` §4；逐实体增量可用 `{ENT-ID}_ENT_meta.yaml`；业务字段模板收敛于 **`business-meta.md`** §4。实体正文默认 OKF per-entity `{ID}.md`（见 [okf-spec.md](../knowledge/okf-spec.md)）。
+- **目录**：与实体 ID 一致，或以 ID 为准在索引中查找。
+- **实体定义文件**：应用注册等可为 `{id}.yaml`；字段模板见各视角 `{perspective}-meta.md` §4；实体正文默认 OKF per-entity `{ID}.md`（见 [okf-spec.md](../knowledge/okf-spec.md)）。
 - **元数据 / 索引**：
-  - **`{DOC_DIR}` 根**：`docs-meta.md`（阶段子目录与 `knowledge/` 指针；层设计见 [knowledge-governance.md](../knowledge/knowledge-governance.md)）
+  - **`{DOC_DIR}` 根**：`docs-meta.md`
   - **`{DOC_DIR}/knowledge/` 根**：`knowledge-meta.md`
   - **Agent 治理 SSOT**：`agent/knowledge/`（见该目录 [README.md](../knowledge/README.md)）
-  - **阶段目录**（solutions / analysis / requirements / changelogs）：约定在各目录 `README.md`（无 `{dirname}_meta.yaml`）
-  - **五视角**：`{perspective}-meta.md` + per-entity `{ID}.md`；`knowledge/index.md` 目录导航（docs-okf）；实体台账 ∈ 各视角 README；视角导航 ∈ `{DOC_DIR}/INDEX-GUIDE.md` 第四章（docs-build）。legacy `*-entities.md` 已废弃
-  - **联邦应用根**（`applications/{app}/`）：`application_meta.yaml`；子目录同模式；规则引用系统库 `agent/knowledge/`
-- **系统库五视角**（`system/knowledge/{perspective}/`；应用层同构）：
+  - **阶段目录**：约定在各目录 `README.md`
+  - **五视角**：`{perspective}-meta.md` + per-entity `{ID}.md`；`knowledge/index.md` 目录导航（docs-okf）；实体台账 ∈ 各视角 README；视角导航 ∈ `{DOC_DIR}/INDEX-GUIDE.md` 第四章（docs-build）
+- **解决方案层五视角**（`solution/knowledge/{perspective}/`）：
   | 视角 | 落点要点 |
   | --- | --- |
-  | business | `business-meta.md`；`BD-*.md` / 一级 `BSD-*.md` = company reference；二级 `BSD-*/` 起为系统 SSOT |
-  | product | `product-meta.md`；不落 PL/SLN；`PD-*/` 本层 SSOT（`parent_id→公司 PL`，`maps_to_sys_id`）；下挂 `PM-*/`→FT→FR→UC/BR |
-  | application | `application-meta.md`；`SYS-*.md` 本层 SSOT（`parent_id→公司 SLN`）；`APP-*/APP-*.md`；`APP-*/MS-*/MS-*.md` |
-  | data | `data-meta.md`；`MDG-*.md` 本层 SSOT；`DS-*/` 含 DS/ENT；SYS 经 `uses_mdg_ids` |
-  | technical | `technical-meta.md`；`TSD-*.md` 系统 SSOT；`MW-*/` 可为 application MW reference；AA `uses_*` |
-- **公司层五视角**（`company/knowledge/{perspective}/`）：叙事 + `{perspective}-meta.md` + 公司级实体（`VC-*`、BD、BSD(L1)、CAP、`PL-*.md`、**`application/SLN-*.md`**、TPL）；**无 BSD(L2)/PD/SYS/MDG**
-- **系统阶段目录**：
-  | 目录 | 约定 |
+  | business | BSD(L2) 本层 SSOT（`parent`→公司 L1）；跨 SYS 共性域叙事 |
+  | product | PD、BP 本层 SSOT；不落 PL（PL ∈ 公司） |
+  | application | SLN 本层 SSOT；不落 SYS 正文 |
+  | data | MDG 本层 SSOT |
+  | technical | TSD 本层 SSOT（`implements_to`→公司 TPL） |
+- **系统层五视角**（`system/knowledge/{perspective}/`）：
+  | 视角 | 落点要点 |
   | --- | --- |
-  | `system/requirements/` | `REQUIREMENT-{IDEA-ID}/` 交付包（与 `ANALYSIS-{IDEA-ID}.md` 同 IDEA-ID） |
-  | `system/solutions/` | 平铺 `SOLUTION-{IDEA-ID}.md`；`archive/` 归档 |
-  | `system/analysis/` | 平铺 `ANALYSIS-{IDEA-ID}.md` |
-  | `system/changelogs/` | `INDEXING-LOG.md`；变更溯源 `git log` / `git diff` |
+  | business | BC/AGG/AB 本层 SSOT；BD/L1/L2 = 上层 reference |
+  | product | PM→FT→FR→UC/BR 本层 SSOT；不落 PL/PD/BP 正文 |
+  | application | SYS 本层 SSOT（`maps_to`→PD，`implements_to`→SLN）；APP/MS |
+  | data | DS/ENT 本层 SSOT；MDG = 解决方案 reference |
+  | technical | MW 可为 application reference；TSD = 解决方案 reference |
+- **公司层五视角**（`company/knowledge/{perspective}/`）：VC、BD、BSD(L1)、CAP、PL、TPL；**无** SLN/PD/SYS/BSD(L2)/MDG/TSD
+- **应用层**：API/TBL/MW/CMP 本层 SSOT；其余为 reference 或纯 ID
+- **阶段目录（目标态）**：
+  | 库 | 目录 |
+  | --- | --- |
+  | 公司 | `domains/`（`/sdx-domains`：总图 + `DOMAIN-{BD-ID}.md`）；`adr/`；**无** solutions/analysis/features/requirements |
+  | 解决方案 | `solutions/`（仅 `/sdx-solution`）；`adr/`；**无** analysis/features/requirements |
+  | 系统、应用 | `analysis/`（原 solutions）→ `features/`（原 analysis）→ `requirements/REQUIREMENT-{IDEA-ID}/`；`adr/` |
+  | 迁徙样例 | 系统/应用 `analysis/ANALYSIS-EXAMPLE.md`、`features/FEATURE-EXAMPLE.md`（目录改名后文件已对齐） |
 - **IDEA-ID 字面格式**：见 [naming-conventions.md § IDEA-ID](../knowledge/naming-conventions.md#2-idea-id)
-- **ADR 落盘**：`application|system|company/adr/`；命名/落盘见 [adr-template.md](../knowledge/adr-template.md)；章节/状态见 [adr-guidelines.md](../knowledge/adr-guidelines.md)；SDX 运行时见 [sdx-adr-protocol.md](sdx-adr-protocol.md)
-
-典型 concept 路径模式见 [okf-spec.md](../knowledge/okf-spec.md) 与各层 `knowledge/` 样例树。
+- **ADR 落盘**：`application|system|solution|company/adr/`；命名/落盘见 [adr-template.md](../knowledge/adr-template.md)；章节/状态见 [adr-guidelines.md](../knowledge/adr-guidelines.md)；SDX 运行时见 [sdx-adr-protocol.md](sdx-adr-protocol.md)
 
 ---
 
 ## overview
 
-| 库 | 路径模式 | 新建模板 | 第三列写入技能 |
-| --- | --- | --- | --- |
-| 系统库 | `system/knowledge/overview/{APPNAME}-overview.md` | 拷 `NAME-overview.md`，替换 `NAME`/`APPNAME` | **docs-distill**（application 槽位上行）、**docs-extract**、**docs-tag** |
-| 公司库 | `company/knowledge/overview/{NAME}-overview.md` | 拷 `NAME-overview.md`，替换 `NAME` | **docs-distill**（system 槽位上行）、**docs-extract**、**docs-archive**、**docs-tag** |
+| 库 | 路径模式 | 第三列写入技能 |
+| --- | --- | --- |
+| 应用库 | `application/knowledge/overview/{NAME}-overview.md` | **docs-extract**、**docs-archive**、**docs-tag** |
+| 系统库 | `system/knowledge/overview/{NAME}-overview.md` | **docs-distill**（application 槽位）、**docs-extract**、**docs-archive**、**docs-tag** |
+| 解决方案库 | `solution/knowledge/overview/{NAME}-overview.md` | **docs-distill**（system 槽位）、**docs-extract**、**docs-archive**、**docs-tag** |
+| 公司库 | `company/knowledge/overview/{NAME}-overview.md` | **docs-distill**（solution 槽位）、**docs-extract**、**docs-archive**、**docs-tag** |
 
-**表行真源**：同层 `overview/NAME-overview.md` 五视角表 ↔ 同层五视角 **README 表行**；副标题锚点与各章 `##` 标题对齐。
+**表行真源**：同层 `overview/` 五视角表 ↔ 同层五视角 **README 表行**。
 
-**第三列规则**（去重、delta、A/U/D）：[federation-spec.md](../skills/docs-distill/references/federation-spec.md)「规则（第三列）」。
+**第三列规则**：[federation-spec.md](../skills/docs-distill/references/federation-spec.md)「规则（第三列）」。
 
-**系统库主标题行序**（自上而下逐节，勿跳行）：
+公司第三列只收 SLN 级共性，不收单 SYS 实现细节。应用第三列只收本应用实现要点，不替代实体 `{ID}.md`。
+
+系统库主标题行序（自上而下逐节，勿跳行）；**应用库同行序**（实现侧落盘，归档入本层 `chapters/`）：
 
 - 业务：概述 → 域划分 → 术语 → 流程 → 能力地图 → 业务规则与策略
 - 产品：概述 → 产品架构 → 信息架构 → 产品功能 → 用户旅程与场景 → 版本管理与发布 → 产品运营支撑 → 多端策略
@@ -73,7 +88,7 @@
 - 技术：技术概述 → 基础设施 → 中间件 → **性能扩展 → 高可用** → 可观测性
 - 数据：数据概述 → 数据模型 → 数据存储 → 数据分析 → 数据流转
 
-公司库行序见 `company/knowledge/overview/NAME-overview.md` 与同层 README。
+解决方案 overview 行序对齐 SA 第一至四章落 knowledge 的视角：业务范围、应用与集成、数据主权、技术选型。公司库行序见 `company/knowledge/overview/` 与同层 README。
 
 ---
 
@@ -81,21 +96,26 @@
 
 ```text
 应用库（本地 path，HEAD） ──docs-link──► system/knowledge-links.yaml（建联 + 建槽位）
-                              └──► 应用库 knowledge-parent.yaml（1:1 上级 identity）
-应用库（本地 path，HEAD） ──docs-pull──► system/application-slots/application-{NAME}/（联邦槽位，不可被 knowledge 引用）
-系统库（本地 path，HEAD） ──docs-link──► company/knowledge-links.yaml（建联 + 建槽位）
-                              └──► 系统库 knowledge-parent.yaml
-系统库（本地 path，HEAD） ──docs-pull──► company/system-slots/system-{NAME}/（联邦槽位，不可被 knowledge 引用）
+系统库（本地 path，HEAD） ──docs-link──► solution/knowledge-links.yaml
+解决方案库（本地 path，HEAD） ──docs-link──► company/knowledge-links.yaml
          │
-         ▼ docs-distill（槽位上行全量；不写 DISTILL-LOG）
-system/knowledge/overview/{APPNAME}-overview.md
+         ▼ docs-pull
+system/application-slots/application-{NAME}/
+solution/system-slots/system-{NAME}/
+company/solution-slots/solution-{NAME}/
+（槽位不可被 knowledge 引用）
+         │
+         ▼ docs-distill（槽位上行全量；不写 DISTILL-LOG；**不含** application overview）
+system/knowledge/overview/{NAME}-overview.md
+solution/knowledge/overview/{NAME}-overview.md
 company/knowledge/overview/{NAME}-overview.md
-         │ docs-extract（非槽位任意源 → 系统/公司 overview）
+         │ docs-extract（非槽位任意源 → 四层 `{NAME}-overview.md`，含 `application/knowledge/overview/`）
          │ docs-tag（关键词 ✅、架构摘录）
          ▼ docs-archive
-system/knowledge/{business,product,application,data,technical}/
-company/knowledge/{business,product,application,data,technical}/
+各层 knowledge/{business,product,application,data,technical}/
 ```
+
+允许边：`company→solution`、`solution→system`、`system→application`。禁止公司直连系统。
 
 ---
 
@@ -103,8 +123,11 @@ company/knowledge/{business,product,application,data,technical}/
 
 | 模式 | 方案/分析落盘 | 架构输入 | PRD/ASD/DSD |
 | --- | --- | --- | --- |
-| `application`（默认） | `{DOC_DIR}/solutions/`、`analysis/` | 应用上下文 | `{DOC_DIR}/requirements/**/` |
-| `system` | `system/solutions/`、`system/analysis/` | [system/knowledge/](../../system/knowledge/README.md) | 联邦 ASD 概要；详设 → 应用库 `/sdx-design` |
-| `company` | `company/solutions/`、`company/analysis/` | [company/knowledge/](../../company/knowledge/README.md) | 公司 ANALYSIS 拆解系统归属；各系统 PRD/ASD/DSD 在对应 **`system/requirements/`** |
+| `application` | `{DOC_DIR}/analysis/`、`features/` | 应用上下文 | `{DOC_DIR}/requirements/**/` |
+| `system` | `system/analysis/`、`system/features/` | [system/knowledge/](../../system/knowledge/README.md) | 联邦 ASD 概要；详设 → 应用库 `/sdx-design` |
+| `solution` | `solution/solutions/` 仅此 | [solution knowledge](../../solution/DESIGN.md) | 本层不落 PRD/DSD；拆到各 SYS 的 `system/requirements/` |
+| `company` | `company/domains/`（`/sdx-domains`） | [company/knowledge/](../../company/knowledge/README.md) | 域架构拆到哪个 SLN；不直拆系统 PRD |
+
+`/sdx-solution` 仅 `KNOWLEDGE_TYPE=solution`。`/sdx-prd` `/sdx-architect` `/sdx-design` `/sdx-test` 仍写系统/应用 `requirements/`。
 
 详见 [sdx-architect/references/knowledge-type-modes.md](../skills/sdx-architect/references/knowledge-type-modes.md)。

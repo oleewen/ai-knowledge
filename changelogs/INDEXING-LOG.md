@@ -5,5 +5,6 @@
 
 | indexing_finished_ms | indexed_at | mode | depth | since_ms | output_path | file_count | duration_ms | summary |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1791192152607 | 2026-10-05T09:22:32Z | incremental | 3 | 1789117005684 | INDEX-GUIDE.md | 854 | 120000 | incremental：四层联邦路径回写（solution/、三跳槽位）；未全文重扫 |
 | 1789117005684 | 2026-09-11T08:56:45Z | full | 3 | 0 | INDEX-GUIDE.md | 773 | 240399 | full d3 根索引刷新（scripts 迁 skills、Skill 25、规模 773、DOC_DIR=docs 缺席） |
 | 1784527775497 | 2026-07-20T06:09:35Z | full | 3 | 0 | INDEX-GUIDE.md | 701 | 73931 | full d3 根索引刷新（规模统计、Skill 18、根 INDEXING-LOG、语义/轻流程分流） |

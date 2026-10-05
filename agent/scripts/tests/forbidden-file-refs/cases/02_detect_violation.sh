@@ -22,7 +22,7 @@ _violation_path() {
 
 echo "$(_violation_path fake-violation)" >"$TMP/violation.txt"
 
-if rg -n '(application|system|company|docs)/superpowers/(specs|plans)/[0-9]{4}-[0-9]{2}-[0-9]{2}-' \
+if rg -n '(application|system|solution|company|docs)/superpowers/(specs|plans)/[0-9]{4}-[0-9]{2}-[0-9]{2}-' \
   "$TMP/violation.txt" >/dev/null 2>&1; then
   echo "02_detect_violation: pattern sanity OK"
 else

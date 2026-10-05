@@ -5,7 +5,7 @@ title: "应用知识库（顶层 `application/`）"
 ---
 # 应用知识库（顶层 `application/`）
 
-应用层治理与导航根：`knowledge/` = 实现级实体 SSOT（API/TBL/MW/CMP）+ 五视角映射；`solutions/` → `analysis/` → `requirements/` = 应用 SDD。
+应用层治理与导航根：`knowledge/` = 实现级实体 SSOT（API/TBL/MW/CMP）+ 五视角映射；SDD = `analysis/` → `features/` → `requirements/`。
 
 | 读什么 | 文件 |
 |--------|------|

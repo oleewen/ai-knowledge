@@ -3,7 +3,7 @@ type: Microservice
 title: 示例微服务
 description: null
 tags: [application, MS]
-timestamp: "2026-06-21T00:00:00Z"
+timestamp: "2026-06-21T00:00:00+08:00"
 id: MS-EXAMPLE
 perspective: application
 hierarchy: MS

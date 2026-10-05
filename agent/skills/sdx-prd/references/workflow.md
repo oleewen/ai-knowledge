@@ -13,7 +13,7 @@
 - 段落推进环 / `C·M·G·F` / 重开 / 前文回改：[unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)（**无 `S`**）
 - 写后烤干：[grilling-skill.md](../../../references/grilling-skill.md)
 
-**公司库**（`KNOWLEDGE_TYPE=company`）：上游为 `company/analysis/ANALYSIS-*.md`（含跨系统能力拆解）；本技能在对应 `system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/` 写入 `PRD-*.md`，由下游 `sdx-architect / sdx-design / sdx-test` 继续承接。
+**公司库**（`KNOWLEDGE_TYPE=company`）：上游为 `company/domains/`；本技能在对应 `system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/` 写入 `PRD-*.md`（须已有解决方案层 SOLUTION 与系统 ANALYSIS/FEATURE）。系统/应用上游为 `{DOC_DIR}/features/`（`FEATURE-*` 或迁徙遗留 `ANALYSIS-*`）。
 
 ---
 

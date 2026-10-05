@@ -7,7 +7,8 @@
 | `DOC_DIR` | 源（仅槽位） | 目标 |
 | --- | --- | --- |
 | `system` | `system/application-slots/application-{NAME}/` | `system/knowledge/overview/{NAME}-overview.md` |
-| `company` | `company/system-slots/system-{NAME}/` | `company/knowledge/overview/{NAME}-overview.md` |
+| `solution` | `solution/system-slots/system-{NAME}/` | `solution/knowledge/overview/{NAME}-overview.md` |
+| `company` | `company/solution-slots/solution-{NAME}/` | `company/knowledge/overview/{NAME}-overview.md` |
 
 目标不存在则用同层 `NAME-overview.md` 模板，**文件名与 `# {NAME} 架构概览` 同步替换**。
 

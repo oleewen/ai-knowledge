@@ -16,7 +16,7 @@
 示例提示：
 
 ```text
---scan-dir 默认 system/knowledge/（回车确认或改路径；公司用 company/knowledge/）
+--scan-dir 默认按 --file 推断同层 knowledge/（application|system|solution|company；回车确认或改路径）
 --top-n 默认 30（回车确认或改数字）
 ```
 

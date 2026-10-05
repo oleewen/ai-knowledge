@@ -3,7 +3,7 @@ type: Product
 title: 示例产品服务
 description: 产品服务（别名业务服务）；与 SYS、BSD(L2) 同建对标。
 tags: [product, PD]
-timestamp: "2026-09-13T00:00:00Z"
+timestamp: "2026-09-13T00:00:00+08:00"
 id: PD-EXAMPLE
 perspective: product
 hierarchy: PD

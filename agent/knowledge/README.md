@@ -2,8 +2,8 @@
 
 本目录承载原 `*/constitution/` 迁移内容：术语、命名、原则与 ADR 约定。
 
-- **层根人类入口**：[company/DESIGN.md](../../company/DESIGN.md) · [system/DESIGN.md](../../system/DESIGN.md) · [application/DESIGN.md](../../application/DESIGN.md)（契约短表 + 引用；语义仍以本目录为准）
-- **三层边界**：[knowledge-governance.md](knowledge-governance.md)
+- **层根人类入口**：[company/DESIGN.md](../../company/DESIGN.md) · [solution/DESIGN.md](../../solution/DESIGN.md) · [system/DESIGN.md](../../system/DESIGN.md) · [application/DESIGN.md](../../application/DESIGN.md)（契约短表 + 引用；语义仍以本目录为准）
+- **四层边界**：[knowledge-governance.md](knowledge-governance.md)
 - **协作闸门**：[CONVENTIONS.md](../rules/CONVENTIONS.md)
 - **路径 / overview / 流水线**：[knowledge-layout.md](../references/knowledge-layout.md)
 - **文件分型 / concept Profile**：[okf-spec.md](okf-spec.md)
@@ -12,14 +12,14 @@
 
 | 文件 | 说明 |
 | --- | --- |
-| [knowledge-governance.md](knowledge-governance.md) | 三层语义设计 SSOT（职责、各层聚焦/首次定义、5A 边类、引用边界） |
+| [knowledge-governance.md](knowledge-governance.md) | 四层语义设计 SSOT（职责、各层聚焦/首次定义、5A 边类、引用边界） |
 | [glossary.md](glossary.md) | 词义 + 实体缩写登记 + 映射字段语义 SSOT |
 | [naming-conventions.md](naming-conventions.md) | 实体 ID / IDEA-ID 字面语法 |
-| [okf-spec.md](okf-spec.md) | company / system / application 共享知识规范 SSOT |
+| [okf-spec.md](okf-spec.md) | 四层共享知识规范 SSOT |
 | [architecture-principles.md](architecture-principles.md) | 架构原则条目 |
 | [adr-template.md](adr-template.md) · [adr-guidelines.md](adr-guidelines.md) | 命名/落盘（template）· 章节/状态（guidelines） |
 | [sdx-adr-protocol.md](../references/sdx-adr-protocol.md) | SDX 写 SOLUTION/ANALYSIS 时落 ADR / CONTEXT |
-| [application/adr/](../../application/adr/README.md) · [system/adr/](../../system/adr/README.md) · [company/adr/](../../company/adr/README.md) | ADR 正文目录（按决策范围分域；含 `CONTEXT.md`） |
+| [application/adr/](../../application/adr/README.md) · [system/adr/](../../system/adr/README.md) · [company/adr/](../../company/adr/README.md) | ADR 正文目录（按决策范围分域；含 `CONTEXT.md`）。`solution/adr/` 随模板树补齐 |
 
 ## 使用顺序
 
@@ -27,7 +27,7 @@
 2. 新实体 ID 怎么写 → [naming-conventions.md](naming-conventions.md)
 3. 首次定义层 / 能否跨层链 → [knowledge-governance.md](knowledge-governance.md)
 4. 判断文件是否 concept / 索引入口 / 叙事 / 元数据 → [okf-spec.md](okf-spec.md)
-5. 跨域或长期后果的决策 → [application/adr/](../../application/adr/README.md) / [system/adr/](../../system/adr/README.md) / [company/adr/](../../company/adr/README.md)，按 [adr-template.md](adr-template.md)；SDX 流程见 [sdx-adr-protocol.md](../references/sdx-adr-protocol.md)
+5. 跨域或长期后果的决策 → 各层 `adr/`，按 [adr-template.md](adr-template.md)；SDX 流程见 [sdx-adr-protocol.md](../references/sdx-adr-protocol.md)
 
 ## 仓库地图
 

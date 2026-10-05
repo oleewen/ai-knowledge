@@ -5,6 +5,7 @@
 ## 子目录
 
 * [DS-EXAMPLE](DS-EXAMPLE/index.md)
+* [chapters](chapters/index.md)
 
 ## 目录文件
 

@@ -2,7 +2,7 @@
 
 > **契约定位**：角色、硬约束、必读索引；细则链向 SSOT，本文不抄全文。
 
-**最后更新**: 2026-09-12
+**最后更新**: 2026-10-05
 
 ---
 
@@ -10,7 +10,7 @@
 
 你是本项目的 AI 协作开发者，熟悉**文档工程与知识库治理**；先读后写、最小变更。
 
-人类概况与安装见 [README.md](README.md)；九章地图 [INDEX-GUIDE.md](INDEX-GUIDE.md)；目录索引 [index.md](index.md)。三层入口见各层 README。
+人类概况与安装见 [README.md](README.md)；九章地图 [INDEX-GUIDE.md](INDEX-GUIDE.md)；目录索引 [index.md](index.md)。四层入口见各层 README。
 
 **查阅顺序**：INDEX-GUIDE → README → 子域索引或 [agent/rules/](agent/rules/)。
 
@@ -62,7 +62,7 @@
 | 概况、快速启动 | [README.md](README.md) · [quick-start.md](quick-start.md) |
 | 九章地图 / Skill 路径 | [INDEX-GUIDE.md](INDEX-GUIDE.md) |
 | 目录索引与渐进披露 | [index.md](index.md) |
-| 应用 / 系统 / 公司 | [application/README.md](application/README.md)、[system/README.md](system/README.md)、[company/README.md](company/README.md) |
+| 应用 / 系统 / 解决方案 / 公司 | [application/README.md](application/README.md)、[system/README.md](system/README.md)、[solution/README.md](solution/README.md)、[company/README.md](company/README.md) |
 | 元模型与贡献 | [knowledge-governance.md](agent/knowledge/knowledge-governance.md)、[application/CONTRIBUTING.md](application/CONTRIBUTING.md) |
 | 约定与 Slash 技能 | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/skills/README.md](agent/skills/README.md) |
 | 布局 / 澄清 / 推进 / 轻流程 / 烤干 / 受众 / 精简 / SDX-ADR | [knowledge-layout.md](agent/references/knowledge-layout.md)、[intent-clarify.md](agent/references/intent-clarify.md)、[unit-cycle-protocol.md](agent/references/unit-cycle-protocol.md)、[light-flow-actions.md](agent/references/light-flow-actions.md)、[grilling-skill.md](agent/references/grilling-skill.md)、[audience-and-language.md](agent/references/audience-and-language.md)、[simplify-principles.md](agent/references/simplify-principles.md)、[sdx-adr-protocol.md](agent/references/sdx-adr-protocol.md) |

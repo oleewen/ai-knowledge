@@ -1,7 +1,7 @@
 ---
 name: docs-tag
 description: >
-  为 system/company overview 下 *-overview.md 做关键词相关度：候选词 → YAML 附录 → 表行 ✅ → 架构摘录（phase 3）。
+  为四层 `{DOC_DIR}/knowledge/overview/{NAME}-overview.md` 做关键词相关度：候选词 → YAML 附录 → 表行 ✅ → 架构摘录（phase 3）。
   用户提到 /docs-tag、扫描关键词、给概览打标签、phase 3 时，使用本技能。
   分流：第三列提炼 / 全文术语 / INDEX → docs-extract、docs-revise、docs-indexing。
   推进见 light-flow-actions（C/M/S/F，无 G）与 references/gates.md。
@@ -44,7 +44,7 @@ description: >
 
 - `--file`、`--phase`
 - 若 phase 含 `1` 或 `all`，`--keywords`
-- `--scan-dir`、`--top-n` 已展示默认或已收口
+- `--scan-dir`（省略则按 `--file` 推断同层 `knowledge/`）、`--top-n` 已展示默认或已收口
 
 ## 产出与脚本
 

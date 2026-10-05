@@ -6,8 +6,10 @@
 
 overview 须含 `## 文档关键词`「章节 → 关键词」表。章节名与目标 overview 主标题对齐：
 
-- **系统库**：`system/knowledge/overview/NAME-overview.md` 表行（见各视角 README）
-- **公司库**：`company/knowledge/overview/NAME-overview.md` 表行（见 `company/knowledge/` 各视角 README）
+- **应用库**：`application/knowledge/overview/{NAME}-overview.md` 表行（见各视角 README；行序同系统库）
+- **系统库**：`system/knowledge/overview/{NAME}-overview.md` 表行（见各视角 README）
+- **解决方案库**：`solution/knowledge/overview/{NAME}-overview.md` 表行（见 `solution/knowledge/` 各视角 README）
+- **公司库**：`company/knowledge/overview/{NAME}-overview.md` 表行（见 `company/knowledge/` 各视角 README）
 
 系统库示例附录：
 

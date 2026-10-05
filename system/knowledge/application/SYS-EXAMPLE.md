@@ -3,7 +3,7 @@ type: System
 title: 示例系统
 description: 系统（别名应用服务）；parent_id→公司 SLN；与 PD、BSD(L2) 同建。
 tags: [application, SYS]
-timestamp: "2026-09-13T00:00:00Z"
+timestamp: "2026-09-13T00:00:00+08:00"
 id: SYS-EXAMPLE
 perspective: application
 hierarchy: SYS

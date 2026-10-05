@@ -17,7 +17,7 @@ _LIB_DOCSCONFIG_LOADED=1
 
 DEFAULT_GIT_REPO_URL='https://github.com/oleewen/ai-knowledge.git'
 DEFAULT_GIT_REF='HEAD'
-SUPPORTED_KNOWLEDGE_TYPES=(application system company meta)
+SUPPORTED_KNOWLEDGE_TYPES=(application system solution company meta)
 
 # 日志：聚合入口已加载 log-io 时复用 info；轻量 source 时回退 printf
 _docsconfig_info() {
@@ -179,13 +179,13 @@ docs_backup_path_to_init() {
 
 docsconfig_knowledge_type_is_valid() {
   local v="${1:-}"
-  [[ "$v" == 'application' || "$v" == 'system' || "$v" == 'company' || "$v" == 'meta' ]]
+  [[ "$v" == 'application' || "$v" == 'system' || "$v" == 'solution' || "$v" == 'company' || "$v" == 'meta' ]]
 }
 
 docsconfig_validate_knowledge_type() {
   local v="${1:-}"
   docsconfig_knowledge_type_is_valid "$v" && return 0
-  printf '[docsconfig] 非法 KNOWLEDGE_TYPE: %s（允许: application system company meta）\n' "$v" >&2
+  printf '[docsconfig] 非法 KNOWLEDGE_TYPE: %s（允许: application system solution company meta）\n' "$v" >&2
   return 1
 }
 
@@ -215,7 +215,7 @@ docsconfig_write() {
   # 兼容旧调用：第 5 位误传 knowledge_type、未传 agent_root
   if [[ -n "$agent_root_in" && -z "$knowledge_type_in" ]]; then
     case "$agent_root_in" in
-      application|system|company|meta)
+      application|system|solution|company|meta)
         knowledge_type_in="$agent_root_in"
         agent_root_in=''
         ;;

@@ -3,7 +3,7 @@ type: Product Module
 title: 示例产品模块
 description: null
 tags: [product, PM]
-timestamp: "2026-09-13T00:00:00Z"
+timestamp: "2026-09-13T00:00:00+08:00"
 id: PM-EXAMPLE
 perspective: product
 hierarchy: PM

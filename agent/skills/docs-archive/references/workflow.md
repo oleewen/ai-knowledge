@@ -11,7 +11,7 @@
 ## 前置
 
 - 路径：[knowledge-layout.md](../../../references/knowledge-layout.md)
-- overview 路径（`system/knowledge/overview/` 或 `company/knowledge/overview/`，可选 `#锚点`）；目标由**表格行链接**解析
+- overview 路径（`{DOC_DIR}/knowledge/overview/{NAME}-overview.md`，四层；可选 `#锚点`）；目标由**表格行链接**解析
 - 若环境未安装 `grilling` Skill，则按 grilling-skill fallback
 
 ## 参数向导（含探索）

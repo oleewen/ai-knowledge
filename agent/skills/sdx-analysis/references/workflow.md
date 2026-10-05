@@ -14,7 +14,7 @@
 - 写后烤干：[grilling-skill.md](../../../references/grilling-skill.md)
 - 技术决策落 ADR / CONTEXT：[sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)
 
-**公司库**（`KNOWLEDGE_TYPE=company`）：上游为 `company/solutions/SOLUTION-*.md`；分析须明确跨系统功能归属、协作依赖与残余风险；交付物落在 `company/analysis/`，下游 `company/requirements/` 再承接 PRD/ASD/DSD/TDD。
+**仅系统库 / 应用库**（`KNOWLEDGE_TYPE=system|application`）：上游为解决方案层 `SOLUTION-*.md`；交付物 `{DOC_DIR}/analysis/ANALYSIS-*.md`。公司 → `/sdx-domains`；解决方案仓不写 analysis。
 
 ---
 

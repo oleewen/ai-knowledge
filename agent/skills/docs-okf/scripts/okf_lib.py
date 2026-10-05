@@ -38,8 +38,8 @@ ALL_SECTION_TITLES = frozenset(REQUIRED_SECTIONS) | frozenset(LEGACY_SECTION_ALI
 # OKF v1 合法 perspective 枚举
 VALID_PERSPECTIVES = frozenset({"business", "product", "application", "data", "technical"})
 
-# OKF v1 合法 layer_scope 枚举（与全仓现状一致：application / system / company）
-VALID_LAYER_SCOPES = frozenset({"application", "system", "company"})
+# OKF v1 合法 layer_scope 枚举（okf-spec §2 / §11.1：application / system / solution / company）
+VALID_LAYER_SCOPES = frozenset({"application", "system", "solution", "company"})
 
 # ISO8601 时间戳正则（OKF v1 本仓统一北京时间 +08:00）
 ISO8601_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+08:00$")

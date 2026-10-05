@@ -4,7 +4,7 @@ title: "全局术语表"
 version: "0.4.0"
 status: "draft"
 created: "2025-03-13"
-updated: "2026-09-15"
+updated: "2026-10-04"
 tags: ["glossary", "terminology", "governance"]
 ---
 
@@ -18,7 +18,7 @@ tags: ["glossary", "terminology", "governance"]
 | 术语 | 英文 | 定义 |
 | --- | --- | --- |
 | 单一事实源 | SSOT (Single Source of Truth) | 每个知识实体只在一处定义，其他地方通过 ID 引用。 |
-| 联邦治理 | Federated Governance | 系统级仓库集中管理宏观架构与索引，应用级仓库分散管理微观设计并上报。 |
+| 联邦治理 | Federated Governance | 四层 parent（application→system→solution→company）；下级实现、上级索引与共性，蒸馏按层上收。 |
 | 限界上下文 | Bounded Context | DDD 中明确边界的业务上下文，拥有统一语言与领域模型。 |
 | 聚合根 | Aggregate Root | DDD 中聚合的根实体，保证聚合内一致性边界。 |
 | 架构决策记录 | ADR (Architecture Decision Record) | 记录架构决策的上下文、决定与后果的文档。 |
@@ -37,29 +37,29 @@ tags: ["glossary", "terminology", "governance"]
 | BA | VC | Value Chain | 价值链 | 能力目录根；下挂 CAP，并由 BD 支撑 |
 | BA | BD | Business Domain | 业务域 | 支撑 VC；下挂 BSD(L1)；勿与 BSD 混淆 |
 | BA | CAP | Business Capability | 业务能力 | 实现价值链；与 BSD(L1) 一对一映射 |
-| BA | BSD | Business Subdomain | 业务子域 | 仅一级 / 二级；一级对应 PL，二级对应 PD |
+| BA | BSD | Business Subdomain | 业务子域 | 仅一级 / 二级；L1 公司（对标 PL）；L2 解决方案（对标 PD） |
 | BA | BC | Bounded Context | 限界上下文 | — |
 | BA | AGG | Aggregate | 聚合根 | — |
 | BA | AB | Ability | 领域能力 | 能力边界 |
 | PA | PL | Product Line | 产品线 | 对应 BSD(L1) |
-| PA | PD | Product | 产品服务 | 别名：业务服务 |
+| PA | PD | Product | 产品服务 | 别名：业务服务；解决方案层 SSOT；与 SYS 1:1 |
 | PA | PM | Product Module | 产品模块 | — |
-| PA | BP | Business Process | 业务流程 | — |
+| PA | BP | Business Process | 业务流程 | 解决方案主流程；`implements_to` SLN |
 | PA | FT | Feature | 功能点 | — |
 | PA | FR | Functional Requirement | 功能需求 | — |
 | PA | UC | Use Case | 用例 | — |
 | PA | BR | Business Rule | 业务规则 | — |
-| AA | SLN | Solution | 解决方案 | 对应 PL；企业 AA 台账 |
-| AA | SYS | System | 系统 | 别名：应用服务 |
+| AA | SLN | Solution | 解决方案 | 交付包锚点；一仓一 SLN；`maps_to` PL |
+| AA | SYS | System | 系统 | 别名：应用服务；系统层 SSOT；`maps_to` PD 且 `implements_to` SLN |
 | AA | APP | Application | 应用 | 代码仓库/部署单元 |
 | AA | MS | Microservice | 微服务 | 入口能力簇；非 MW 替代 |
 | AA | API | API Endpoint | 接口端点 | — |
-| DA | MDG | Master Data Domain | 主数据域 | 治理目录；非 DS/ENT 替代 |
+| DA | MDG | Master Data Domain | 主数据域 | 解决方案层 SSOT；一 SLN 可多条；非 DS/ENT 替代 |
 | DA | DS | Data Store | 数据存储 | — |
 | DA | ENT | Entity | 数据实体 | 表/集合 |
 | DA | TBL | Data Table | 数据表 | 物理锚点 |
-| TA | TPL | Technology Platform | 技术平台能力 | 公司级 |
-| TA | TSD | Technical Domain | 技术域 | 系统级 |
+| TA | TPL | Technology Platform | 技术平台能力 | 公司级企业准入 |
+| TA | TSD | Technical Domain | 技术域 | 解决方案级选用与例外；`implements_to` TPL |
 | TA | MW | Middleware Binding | 中间件绑定 | 实例级；非 MS/API 替代 |
 | TA | CMP | Component | 关键组件 | Maven / 共享运行时 |
 
@@ -86,9 +86,9 @@ ID 前缀写作 `VC-` / `BD-` 等，语法见 [naming-conventions.md](naming-con
 | 字段（出边） | 宿主 → 目标（摘要） |
 | --- | --- |
 | `parent` / `children` | BSD(L1)↔BD；BSD(L2)↔BSD(L1) |
-| `implements_to` | CAP→VC；AGG→BC；AB→AGG；BC→BSD(L2)；PD→PL；PM→PD；FT→PM；FR→FT；UC\|BR→FR；BP→PD；APP→SYS；MS→APP；API→MS；DS→MDG；ENT→DS；TBL→ENT；SYS→SLN；TSD→TPL；MW→TSD；CMP→MW |
+| `implements_to` | CAP→VC；AGG→BC；AB→AGG；BC→BSD(L2)；PD→PL；PM→PD；FT→PM；FR→FT；UC\|BR→FR；BP→SLN；APP→SYS；MS→APP；API→MS；DS→MDG；ENT→DS；TBL→ENT；SYS→SLN；TSD→TPL；MW→TSD；CMP→MW |
 | `implemented_by` | 上表对端 |
-| `maps_to` | CAP↔BSD(L1)；BSD(L1)↔PL；BSD(L2)↔PD；SLN↔PL；PD↔SYS；MS↔AGG；AB↔API；AGG↔ENT；PM↔BC；UC↔API |
+| `maps_to` | CAP↔BSD(L1)；BSD(L1)↔PL；BSD(L2)↔PD；SLN↔PL；PD↔SYS；BP 可→多 PD；MS↔AGG；AB↔API；AGG↔ENT；PM↔BC；UC↔API |
 | `supports_to` | BD→VC；APP→BC；API→FT |
 | `supported_by` | VC→BD；BC→APP；FT→API |
 | `uses_to` | SYS→MDG\|TSD；APP→DS\|MW；MS→ENT\|TBL\|CMP；MW→DS（可空仍双写） |
