@@ -26,7 +26,7 @@
 | 解决方案知识库 | [solution/README.md](solution/README.md) | `knowledge/`（五视角 + overview）、`system-slots/system-{NAME}/` 联邦槽位、仅 `solutions/` SDD |
 | 解决方案目录索引 | [solution/index.md](solution/index.md) | `solution/` 树内目录索引与 OKF 渐进披露入口 |
 | 解决方案九章索引 | [solution/INDEX-GUIDE.md](solution/INDEX-GUIDE.md) | `solution/` 文档根九章索引指南 |
-| 公司知识库 | [company/README.md](company/README.md) | `knowledge/`（五视角企业架构）、`solution-slots/solution-{NAME}/` 联邦槽位、SDD 上游（`domains/` 目标态，物理改名见 GRILL-LOG） |
+| 公司知识库 | [company/README.md](company/README.md) | `knowledge/`（五视角企业架构）、`solution-slots/solution-{NAME}/` 联邦槽位、`domains/`（BD/BSD(L1) 如何支撑 VC，不放 SLN） |
 | 公司侧目录索引 | [company/index.md](company/index.md) | `company/` 树内目录索引与 OKF 渐进披露入口 |
 | 公司侧九章索引 | [company/INDEX-GUIDE.md](company/INDEX-GUIDE.md) | `company/` 文档根九章索引指南 |
 | 初始化编排 | [bootstrap.sh](bootstrap.sh)、[agent/skills/README.md](agent/skills/README.md) | `/docs-install`、`/agent-install`、`/docs-link`；升级 `/docs-upgrade`；生态 skills 追新 `/skill-upgrade` |
@@ -79,7 +79,6 @@
 │   ├── solution-slots/              # 解决方案联邦槽位根
 │   │   ├── solution-{NAME}/         # 软链 → 解决方案 DOC_ROOT（当前未挂载）
 │   │   └── changelogs/
-│   ├── system-slots/                # 遗留；新边不写（见 GRILL-LOG）
 │   ├── knowledge-links.yaml · viz.html
 │   └── domains/ · adr/ · changelogs/
 ├── bootstrap.sh                # 远程/本地双轨装机编排

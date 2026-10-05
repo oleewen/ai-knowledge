@@ -19,15 +19,13 @@ title: 公司知识库设计
 | 目录 | 职责 |
 | --- | --- |
 | `knowledge/` | 公司级实体正文 SSOT（VC/BD/CAP/BSD(L1)/PL/TPL）；[`overview/{NAME}-overview.md`](knowledge/overview/NAME-overview.md) = distill 缓冲区（非实体 SSOT） |
-| `domains/` | 域架构（`/sdx-domains`：哪条 BD 支撑 VC）；**无** `solutions/` / `analysis/` / `requirements/` |
+| `domains/` | 域架构（`/sdx-domains`：只写 BD/BSD(L1) 如何支撑 VC，不放 SLN）；**无** `solutions/` / `analysis/` / `features/` / `requirements/` |
 | `adr/` | 公司层决策 + `CONTEXT.md` |
-| `solution-slots/solution-{NAME}/` | 解决方案联邦槽位入口（软链）；**不**再挂 `system-slots` |
+| `solution-slots/solution-{NAME}/` | 解决方案联邦槽位入口（软链）。公司不挂 `system-slots` |
 | `knowledge-links.yaml` | 建联与同步编排（可空）；child 用 `solution_*` |
 | `changelogs/` | INDEXING-LOG；变更溯源 git |
 
 路径总则：[knowledge-layout § 四层文档根](../agent/references/knowledge-layout.md#四层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。
-
-> 现仓仍可能见 `system-slots/`：物理清理见 [GRILL-LOG](../changelogs/GRILL-LOG.md)。
 
 ## 同步与门禁
 

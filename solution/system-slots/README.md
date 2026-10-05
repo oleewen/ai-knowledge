@@ -17,7 +17,7 @@ title: system-slots（系统联邦槽位根）
 ## 约定
 
 - 路径：`solution/system-slots/system-{NAME}` → 系统仓 `DOC_ROOT`
-- 建槽：`docs-link`（yaml + 软链；脚本三跳施工见 GRILL-LOG）
+- 建槽：`docs-link`（yaml + 软链；company→solution、solution→system、system→application）
 - 同步：`/docs-pull`（脏工作区拒绝 pull）
 
-下游对称：[system/application-slots](../../system/application-slots/README.md)。上游：[company 将用 solution-slots](../../company/DESIGN.md)。
+下游对称：[system/application-slots](../../system/application-slots/README.md)。上游：[company/solution-slots](../../company/solution-slots/README.md)。

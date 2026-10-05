@@ -172,7 +172,7 @@ aside {
       "title": "解决方案知识库设计",
       "description": null,
       "tags": [],
-      "body": "# 解决方案知识库设计\n\n`solution/`：一个交付包（一仓一 SLN）的共性知识与 SA。本文件 = 层根契约短表 + 引用；语义 SSOT ∈ `agent/knowledge/`。\n\n## 阅读顺序\n\n1. [README.md](README.md) — 定位  \n2. 本文 — 本层契约、同步门禁、治理引用  \n3. `knowledge/` — 五视角（模板树见 GRILL-LOG）\n\n索引：`INDEX-GUIDE.md` · `index.md` · `knowledge-links.yaml`（装机后）\n\n## 本层契约\n\n| 目录 | 职责 |\n| --- | --- |\n| `knowledge/` | SLN/PD/BSD(L2)/MDG/TSD/BP 首次定义；五视角同构；`overview/{NAME}-overview.md` = 蒸馏缓冲区 |\n| `solutions/` | 仅本层 `/sdx-solution`；SA 第五至八章；**无** analysis/features/requirements |\n| `adr/` | 解决方案层决策 + `CONTEXT.md` |\n| `system-slots/system-{NAME}/` | 系统联邦槽位（软链） |\n| `knowledge-links.yaml` | parent = 公司（`company_*`）；child 系统用 `sys_*` |\n| `changelogs/` | INDEXING-LOG；变更溯源 git |\n\n路径总则：[knowledge-layout § 四层文档根](../agent/references/knowledge-layout.md#四层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。\n\n> 元仓已含 `solution/` 模板树。槽位软链与 docs-link 三跳脚本见 [GRILL-LOG](../changelogs/GRILL-LOG.md)。\n\n## 同步与门禁\n\n1. **docs-pull** → 校验/修复 `system-slots/system-{NAME}`  \n2. 校核 `knowledge/` 与治理约定  \n3. **docs-distill / docs-archive** 上行公司 overview  \n4. 脏工作区不得 pull；改目录语义先改**本元库模板**再 upgrade  \n\n全图：[knowledge-layout § 知识流水线](../agent/references/knowledge-layout.md#知识流水线)。\n\n## 治理引用\n\n| 主题 | 链 |\n| --- | --- |\n| 本层聚焦 / 首次定义 | [knowledge-governance § 解决方案层](../agent/knowledge/knowledge-governance.md#解决方案层) |\n| 引用边界 | [knowledge-governance § 业务 knowledge 引用边界](../agent/knowledge/knowledge-governance.md#业务-knowledge-引用边界) |\n| 本层 OKF 模板要点 | [okf-spec § 10.2 solution](../agent/knowledge/okf-spec.md#102-solution) |\n| 其余语义 | [knowledge-governance](../agent/knowledge/knowledge-governance.md) · [glossary](../agent/knowledge/glossary.md) · [okf-spec](../agent/knowledge/okf-spec.md) |",
+      "body": "# 解决方案知识库设计\n\n`solution/`：一个交付包（一仓一 SLN）的共性知识与 SA。本文件 = 层根契约短表 + 引用；语义 SSOT ∈ `agent/knowledge/`。\n\n## 阅读顺序\n\n1. [README.md](README.md) — 定位  \n2. 本文 — 本层契约、同步门禁、治理引用  \n3. [knowledge/README.md](knowledge/README.md) — 五视角\n\n索引：`INDEX-GUIDE.md` · `index.md` · `knowledge-links.yaml`（装机后）\n\n## 本层契约\n\n| 目录 | 职责 |\n| --- | --- |\n| `knowledge/` | SLN/PD/BSD(L2)/MDG/TSD/BP 首次定义；五视角同构；`overview/{NAME}-overview.md` = 蒸馏缓冲区 |\n| `solutions/` | 仅本层 `/sdx-solution`；SA 第五至八章；**无** analysis/features/requirements |\n| `adr/` | 解决方案层决策 + `CONTEXT.md` |\n| `system-slots/system-{NAME}/` | 系统联邦槽位（软链） |\n| `knowledge-links.yaml` | parent = 公司（`company_*`）；child 系统用 `sys_*` |\n| `changelogs/` | INDEXING-LOG；变更溯源 git |\n\n路径总则：[knowledge-layout § 四层文档根](../agent/references/knowledge-layout.md#四层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。\n\n## 同步与门禁\n\n1. **docs-pull** → 校验/修复 `system-slots/system-{NAME}`  \n2. 校核 `knowledge/` 与治理约定  \n3. **docs-distill / docs-archive** 上行公司 overview  \n4. 脏工作区不得 pull；改目录语义先改**本元库模板**再 upgrade  \n\n全图：[knowledge-layout § 知识流水线](../agent/references/knowledge-layout.md#知识流水线)。\n\n## 治理引用\n\n| 主题 | 链 |\n| --- | --- |\n| 本层聚焦 / 首次定义 | [knowledge-governance § 解决方案层](../agent/knowledge/knowledge-governance.md#解决方案层) |\n| 引用边界 | [knowledge-governance § 业务 knowledge 引用边界](../agent/knowledge/knowledge-governance.md#业务-knowledge-引用边界) |\n| 本层 OKF 模板要点 | [okf-spec § 10.2 solution](../agent/knowledge/okf-spec.md#102-solution) |\n| 其余语义 | [knowledge-governance](../agent/knowledge/knowledge-governance.md) · [glossary](../agent/knowledge/glossary.md) · [okf-spec](../agent/knowledge/okf-spec.md) |",
       "backlinks": [
         "README",
         "knowledge/README"
@@ -244,6 +244,7 @@ aside {
       "tags": [],
       "body": "# 解决方案知识库 — 架构文档\n\n解决方案层五视角入口。分型见 okf-spec。契约见 [../DESIGN.md](../DESIGN.md) · [knowledge-governance](../../agent/knowledge/knowledge-governance.md)。\n\n| 视角 | 入口 | 本层首次定义 |\n|------|------|----------------|\n| 业务 | [business/](business/README.md) | BSD(L2) |\n| 产品 | [product/](product/README.md) | PD、BP |\n| 应用 | [application/](application/README.md) | SLN |\n| 数据 | [data/](data/README.md) | MDG |\n| 技术 | [technical/](technical/README.md) | TSD |\n| overview 缓冲 | [overview/](overview/README.md) | `{NAME}-overview.md` |\n\n导航：[index.md](index.md) · [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 第四章。上层 reference：VC / BD / BSD(L1) / CAP / PL / TPL。SYS 正文 ∈ 系统库。",
       "backlinks": [
+        "DESIGN",
         "README",
         "knowledge/application/README",
         "knowledge/business/README",
@@ -1039,7 +1040,7 @@ aside {
       "tags": [
         "federation"
       ],
-      "body": "# system-slots\n\n解决方案层**系统联邦槽位根**。`system-{NAME}` → 系统库 `DOC_ROOT` 软链；**不是** `knowledge/` SSOT。\n\n| 读什么 | 文件 |\n|--------|------|\n| 本层索引 | [index.md](index.md) |\n| 蒸馏日志 | [changelogs/ARCHIVE-LOG.md](changelogs/ARCHIVE-LOG.md) |\n| 建联清单 | [../knowledge-links.yaml](../knowledge-links.yaml) |\n| 布局契约 | [../../agent/references/knowledge-layout.md](../../agent/references/knowledge-layout.md) |\n\n## 约定\n\n- 路径：`solution/system-slots/system-{NAME}` → 系统仓 `DOC_ROOT`\n- 建槽：`docs-link`（yaml + 软链；脚本三跳施工见 GRILL-LOG）\n- 同步：`/docs-pull`（脏工作区拒绝 pull）\n\n下游对称：[system/application-slots](../../system/application-slots/README.md)。上游：[company 将用 solution-slots](../../company/DESIGN.md)。",
+      "body": "# system-slots\n\n解决方案层**系统联邦槽位根**。`system-{NAME}` → 系统库 `DOC_ROOT` 软链；**不是** `knowledge/` SSOT。\n\n| 读什么 | 文件 |\n|--------|------|\n| 本层索引 | [index.md](index.md) |\n| 蒸馏日志 | [changelogs/ARCHIVE-LOG.md](changelogs/ARCHIVE-LOG.md) |\n| 建联清单 | [../knowledge-links.yaml](../knowledge-links.yaml) |\n| 布局契约 | [../../agent/references/knowledge-layout.md](../../agent/references/knowledge-layout.md) |\n\n## 约定\n\n- 路径：`solution/system-slots/system-{NAME}` → 系统仓 `DOC_ROOT`\n- 建槽：`docs-link`（yaml + 软链；company→solution、solution→system、system→application）\n- 同步：`/docs-pull`（脏工作区拒绝 pull）\n\n下游对称：[system/application-slots](../../system/application-slots/README.md)。上游：[company/solution-slots](../../company/solution-slots/README.md)。",
       "backlinks": [
         "README"
       ]
@@ -1070,6 +1071,10 @@ aside {
     {
       "source": "DESIGN",
       "target": "README"
+    },
+    {
+      "source": "DESIGN",
+      "target": "knowledge/README"
     },
     {
       "source": "README",

@@ -6,7 +6,7 @@
 
 **最后更新**: 2026-10-05
 
-> **目标态**：下文目录名为四层共识。系统/应用 `solutions/`→`analysis/` 与 `analysis/`→`features/` 的落盘改名、docs-link 三跳，见 [GRILL-LOG](../../changelogs/GRILL-LOG.md)。`solution/` 模板树已铺。
+> **阶段目录**：公司只 `domains/`（BD/BSD(L1) 如何支撑 VC，不放 SLN，不建 `solutions/`）。解决方案只 `solutions/`（SA 第五至八章在此，第一至四章进 `knowledge/`）。系统与应用同构：`analysis/` → `features/` → `requirements/`，不建 `solutions/`。联邦三跳：公司 `solution-slots/` → 解决方案 `system-slots/` → 系统 `application-slots/`。
 
 ---
 
@@ -56,7 +56,7 @@
 - **阶段目录（目标态）**：
   | 库 | 目录 |
   | --- | --- |
-  | 公司 | `domains/`（`/sdx-domains`：总图 + `DOMAIN-{BD-ID}.md`）；`adr/`；**无** solutions/analysis/features/requirements |
+  | 公司 | `domains/`（`/sdx-domains`：总图 + `DOMAIN-{BD-ID}.md`；只写 BD/BSD(L1) 如何支撑 VC，不放 SLN）；`adr/`；**无** solutions/analysis/features/requirements |
   | 解决方案 | `solutions/`（仅 `/sdx-solution`）；`adr/`；**无** analysis/features/requirements |
   | 系统、应用 | `analysis/`（原 solutions）→ `features/`（原 analysis）→ `requirements/REQUIREMENT-{IDEA-ID}/`；`adr/` |
   | 迁徙样例 | 系统/应用 `analysis/ANALYSIS-EXAMPLE.md`、`features/FEATURE-EXAMPLE.md`（目录改名后文件已对齐） |

@@ -36,7 +36,7 @@ Agent = LLM + Harness。平台给模型与工具，**工程知识**须由团队�
 
 - **SSOT**：实体一处定义，跨文件 **ID** 引用。
 - **联邦**：parent 仅 `application → system → solution → company`（1:1）。公司不直管系统。
-- **闭环**：knowledge ← 归档；SDD 目录物理改名见 [GRILL-LOG](changelogs/GRILL-LOG.md)。
+- **闭环**：knowledge ← 归档。阶段目录：公司 `domains/`；解决方案 `solutions/`；系统/应用 `analysis/` → `features/` → `requirements/`。
 
 元模型入口：[company/DESIGN.md](company/DESIGN.md) · [solution/DESIGN.md](solution/DESIGN.md) · [system/DESIGN.md](system/DESIGN.md) · [application/DESIGN.md](application/DESIGN.md)；语义 SSOT：[knowledge-governance.md](agent/knowledge/knowledge-governance.md)。
 

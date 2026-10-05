@@ -6,9 +6,9 @@
 
 | 术语 | 含义 |
 | ------ | ------ |
-| `DOC_DIR` | 目标层：`system` 或 `company`（蒸馏目标；非 application） |
-| `{NAME}` | system 边=应用名；company 边=系统名 |
-| 源槽位 | `system/application-slots/application-{NAME}/` 或 `company/system-slots/system-{NAME}/` |
+| `DOC_DIR` | 目标层：`system`、`solution` 或 `company`（蒸馏目标；非 application） |
+| `{NAME}` | system 边=应用名；solution 边=系统名；company 边=解决方案名 |
+| 源槽位 | `system/application-slots/application-{NAME}/`、`solution/system-slots/system-{NAME}/` 或 `company/solution-slots/solution-{NAME}/` |
 | `{NAME}-overview.md` | 目标层 `knowledge/overview/` 下产物 |
 
 ## 模式

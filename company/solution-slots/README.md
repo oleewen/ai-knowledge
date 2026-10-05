@@ -19,6 +19,6 @@ title: solution-slots（解决方案联邦槽位根）
 - 路径：`company/solution-slots/solution-{NAME}` → 软链至解决方案仓 `DOC_ROOT`
 - 建槽：`docs-link`（company→solution）
 - 同步：`/docs-pull --sln-name <slug>`
-- 公司不再挂 `system-slots` 作为默认联邦边（旧目录可留盘至迁移完成）
+- 公司不挂 `system-slots`。系统槽位在解决方案层
 
 下游：[solution/system-slots](../../solution/system-slots/README.md)。

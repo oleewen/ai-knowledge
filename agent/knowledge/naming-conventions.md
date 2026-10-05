@@ -3,7 +3,7 @@
 > **定位**：知识实体 ID 的**字面语法**与 IDEA-ID 格式（必遵）。  
 > **不分管**：缩写/短义/映射字段 → [glossary.md](glossary.md)；首次定义层 / 引用边界 → [knowledge-governance.md](knowledge-governance.md)；目录树 / overview / 槽位 / 阶段路径 → [knowledge-layout.md](../references/knowledge-layout.md)；文件分型与 concept `type` → [okf-spec.md](okf-spec.md)。
 
-**适用范围**：`application/`、`system/`、`company/` 及联邦槽位 `system/application-slots/application-{NAME}/`、`company/system-slots/system-{NAME}/` 下的 `knowledge/` 实体。
+**适用范围**：`application/`、`system/`、`solution/`、`company/` 及联邦槽位 `system/application-slots/application-{NAME}/`、`solution/system-slots/system-{NAME}/`、`company/solution-slots/solution-{NAME}/` 下的 `knowledge/` 实体。
 
 ---
 

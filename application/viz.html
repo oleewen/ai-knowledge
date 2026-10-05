@@ -283,7 +283,7 @@ aside {
       "tags": [
         "example"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例应用解决方案\n\n> **结论**：在本应用内先收敛「申诉提交通道 + 进度可见」，再扩审核协同。  \n> 读者：业务与产品。路径：`application/analysis/`。  \n> 下游：[../features/FEATURE-EXAMPLE.md](../features/FEATURE-EXAMPLE.md)\n\n---\n\n## 1. 背景与目标\n\n### 1.1 业务现状\n\n用户对账单有异议时，经客服或线下渠道发起申诉；进度靠人工转告，业务侧难自助跟踪。\n\n### 1.2 存在问题\n\n入口分散 → 重复提交；进度不可见 → 催单多；口径靠口头 → 争议难收口。\n\n### 1.3 业务目标\n\n| 目标编号 | 目标 | 度量 | 预期收益 |\n| -------- | ---- | ---- | -------- |\n| G-1 | 本应用内提供唯一申诉提交通道 | 主路径申诉经该通道占比达标 | 少重复单、少入口切换 |\n| G-2 | 提交后进度对用户与客服可见 | 催单量下降；自助查进度可用 | 降人工转告成本 |\n\n---\n\n## 2. 范围与约束\n\n### 2.1 核心场景\n\n用户在本应用发起账单申诉 → 填写原因与凭证 → 查看审核进度与结果说明。\n\n### 2.2 涉及角色\n\n| 用户角色 | 角色描述 | 核心关注点 |\n| -------- | -------- | ---------- |\n| 终端用户 | 发起与跟踪申诉 | 入口清晰、进度可见 |\n| 客服 | 协助解释与催办 | 状态一致、少重复问询 |\n| 审核人员 | 处理申诉结论 | 材料齐全、口径可依 |\n\n### 2.3 范围边界\n\n#### 范围内（In Scope）\n\n- 本应用内申诉提交、进度展示、结果说明\n- 与本应用既有账单查询的衔接（业务话术）\n\n#### 范围外（Out of Scope）\n\n- 跨应用系统编排与统一视图（见 `system/solutions/`、`company/solutions/`）\n- 审核规则引擎大改（本轮只对齐展示与提交流程）\n\n#### 成功标准\n\n- 主路径可在本应用完成提交与查进度\n- 典型催单场景显著减少（业务可验收口径）\n\n---\n\n## 3. 影响与冲突\n\n### 3.1 影响面\n\n- 用户：少多入口、可自助看进度\n- 客服：解释口径与系统状态对齐\n- 审核：材料入口更集中\n\n### 3.2 影响业务能力\n\n| 功能/业务能力 | 影响程度 | 影响类型 | 影响说明 |\n| ------------ | -------- | -------- | -------- |\n| 账单查询 | 中 | 衔接增强 | 从查账进入申诉入口 |\n| 申诉提交 | 高 | 流程新建/收敛 | 多入口 → 唯一通道 |\n| 进度查询 | 高 | 能力新增 | 自助可见状态 |\n\n### 3.3 影响传播路径\n\n```text\n[账单查询] → [申诉提交] → [进度查询] → [客服解释]\n```\n\n### 3.4 业务冲突\n\n| 冲突编号 | 冲突描述 | 冲突类型 | 严重程度 | 化解方案 | 化解成本 |\n| -------- | -------- | -------- | -------- | -------- | -------- |\n| C-1 | 旧线下入口与应用内通道并存导致双单 | 流程冲突 | 中 | 宣布主通道并设过渡期引导 | 中 |\n\n---\n\n## 4. 思路与方案\n\n### 4.1 解决思路\n\n**结论**：先收口提交与进度可见（本应用闭环），再视效果扩展审核协同。取舍见 §5.2。\n\n### 4.2 关键约束\n\n| 约束类型 | 约束描述 | 影响 |\n| -------- | -------- | ---- |\n| 业务 | 对外解释须与应用内状态一致 | 进度文案须可对客 |\n| 资源 | 最小改动；优先主路径账单类型 | 分阶段覆盖账单类型 |\n| 技术 | 正文不写实现栈；能力限制用业务话术 | 细节待研发确认 |\n| 交付 | 无外部硬截止；每阶段可独立验收 | 节奏由业务优先级驱动 |\n\n---\n\n## 5. 风险与待定\n\n### 5.1 风险评估\n\n| 风险编号 | 风险描述 | 可能性 | 影响程度 | 应对策略 |\n| -------- | -------- | ------ | -------- | -------- |\n| R-1 | 旧入口未关导致双单 | 中 | 中 | 过渡期双写监测 + 引导关旧 |\n| R-2 | 进度文案与审核实态不一致 | 中 | 高 | 状态词典与审核结论对齐 |\n\n### 5.2 问题决策\n\n| 决策编号 | 决策点 | 影响 | 决策要点 | 状态 |\n| -------- | ------ | ---- | -------- | ---- |\n| Q-1 | 是否本轮就关停全部线下入口 | 双单风险与切换成本 | 推荐：保留过渡期并行，主推应用内；备选：一刀切关旧 | 已决策 |\n| Q-2 | 进度状态对外文案最终词典 | 客服解释与争议 | 待业务/客服共定状态词典 | 待确认 |\n\n**技术决策索引**：见 [application/adr/CONTEXT.md](../adr/CONTEXT.md)（技术/架构选型不入上表）。\n\n---\n\n## 6. 交付计划\n\n### 6.1 关键里程碑\n\n| 里程碑 | 覆盖范围 | 前置条件 | 交付物 | 验收标准 | 退出条件 |\n| ------ | -------- | -------- | ------ | -------- | -------- |\n| 里程碑-1 | 唯一提交通道 + 基础进度可见（主路径账单） | Q-1 已决策 | 可验收提交流程 | 主路径可提交并查进度 | 双单率可控；可独立演示 |\n| 里程碑-2 | 扩账单类型与结果说明完善 | 里程碑-1 退出；Q-2 收敛或有临时词典 | 扩展覆盖 + 结果说明 | 约定类型可走通；催单下降可验收 | 无阻塞性口径缺口 |\n\n### 6.2 切换方案\n\n| 里程碑 | 试点方式 | 通过标准 | 切换流程 | 回退条件 |\n| ------ | -------- | -------- | -------- | -------- |\n| 里程碑-1 | 选定用户群/账单类型试点 | 提交成功率与进度可见达标；双单可控 | 试点通过 → 扩大类型 → 主推应用内入口 | 双单失控或进度不准 → 恢复旧入口并行并修文案 |\n\n---\n\n## 7. 附录\n\n### 7.1 术语表\n\n| 术语 | 定义 |\n| ---- | ---- |\n| 提交通道 | 本应用内发起申诉的主入口路径 |\n| 进度可见 | 用户/客服可自助查看申诉所处阶段 |\n\n### 7.2 参考文档\n\n- `application/README.md`\n- `application/features/FEATURE-EXAMPLE.md`\n\n### 7.3 内部参考（仅供研发接力）\n\n无（示例文档）。\n\n### 7.4 质量自查表 (Self-Check)\n\n- [ ] **结构与占位**：`## 1`–`## 7` 齐全；空节须标「不适用/待补充」\n- [ ] **§1**：§1.1–§1.3 有实质或「不适用」；**G-n** 表含目标/度量/预期收益\n- [ ] **§2**：主路径；§2.3 In/Out + 成功标准\n- [ ] **§3**：与 §3.2 一致；含功能/对外承诺/下游；§3.3 协作链；每 **C-n** 有化解与成本\n- [ ] **§4**：§4.1 可读；§4.2 约束表已填；多方案取舍在 §5.2\n- [ ] **§5**：每 **R-n** 有可能性、影响、应对；**Q-n** 更新（无则「无」）\n- [ ] **§6**：§6.1 含覆盖/前置/交付/验收/退出；§6.2 仅需切换节点；MVP 归 ANALYSIS\n- [ ] **业务可读**：正文无工程标识；技术线索仅 §7.3 且「待研发确认」\n- [ ] **一致性**：与需求、`knowledge/`、领域索引一致或已标盲区\n- [ ] **可追溯**：**G-n**/**C-n**/**R-n**/**Q-n** 可指回；编号连贯\n- [ ] **术语与引用**：§7.1 专用术语；§7.2 已引路径\n- [ ] **格式与元数据**：frontmatter 完整；`id` 与文件名一致",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例应用解决方案\n\n> **结论**：在本应用内先收敛「申诉提交通道 + 进度可见」，再扩审核协同。  \n> 读者：业务与产品。路径：`application/analysis/`。  \n> 下游：[../features/FEATURE-EXAMPLE.md](../features/FEATURE-EXAMPLE.md)\n\n---\n\n## 1. 背景与目标\n\n### 1.1 业务现状\n\n用户对账单有异议时，经客服或线下渠道发起申诉；进度靠人工转告，业务侧难自助跟踪。\n\n### 1.2 存在问题\n\n入口分散 → 重复提交；进度不可见 → 催单多；口径靠口头 → 争议难收口。\n\n### 1.3 业务目标\n\n| 目标编号 | 目标 | 度量 | 预期收益 |\n| -------- | ---- | ---- | -------- |\n| G-1 | 本应用内提供唯一申诉提交通道 | 主路径申诉经该通道占比达标 | 少重复单、少入口切换 |\n| G-2 | 提交后进度对用户与客服可见 | 催单量下降；自助查进度可用 | 降人工转告成本 |\n\n---\n\n## 2. 范围与约束\n\n### 2.1 核心场景\n\n用户在本应用发起账单申诉 → 填写原因与凭证 → 查看审核进度与结果说明。\n\n### 2.2 涉及角色\n\n| 用户角色 | 角色描述 | 核心关注点 |\n| -------- | -------- | ---------- |\n| 终端用户 | 发起与跟踪申诉 | 入口清晰、进度可见 |\n| 客服 | 协助解释与催办 | 状态一致、少重复问询 |\n| 审核人员 | 处理申诉结论 | 材料齐全、口径可依 |\n\n### 2.3 范围边界\n\n#### 范围内（In Scope）\n\n- 本应用内申诉提交、进度展示、结果说明\n- 与本应用既有账单查询的衔接（业务话术）\n\n#### 范围外（Out of Scope）\n\n- 跨应用系统编排与统一视图（见 `system/analysis/`、`solution/solutions/`、`company/domains/`）\n- 审核规则引擎大改（本轮只对齐展示与提交流程）\n\n#### 成功标准\n\n- 主路径可在本应用完成提交与查进度\n- 典型催单场景显著减少（业务可验收口径）\n\n---\n\n## 3. 影响与冲突\n\n### 3.1 影响面\n\n- 用户：少多入口、可自助看进度\n- 客服：解释口径与系统状态对齐\n- 审核：材料入口更集中\n\n### 3.2 影响业务能力\n\n| 功能/业务能力 | 影响程度 | 影响类型 | 影响说明 |\n| ------------ | -------- | -------- | -------- |\n| 账单查询 | 中 | 衔接增强 | 从查账进入申诉入口 |\n| 申诉提交 | 高 | 流程新建/收敛 | 多入口 → 唯一通道 |\n| 进度查询 | 高 | 能力新增 | 自助可见状态 |\n\n### 3.3 影响传播路径\n\n```text\n[账单查询] → [申诉提交] → [进度查询] → [客服解释]\n```\n\n### 3.4 业务冲突\n\n| 冲突编号 | 冲突描述 | 冲突类型 | 严重程度 | 化解方案 | 化解成本 |\n| -------- | -------- | -------- | -------- | -------- | -------- |\n| C-1 | 旧线下入口与应用内通道并存导致双单 | 流程冲突 | 中 | 宣布主通道并设过渡期引导 | 中 |\n\n---\n\n## 4. 思路与方案\n\n### 4.1 解决思路\n\n**结论**：先收口提交与进度可见（本应用闭环），再视效果扩展审核协同。取舍见 §5.2。\n\n### 4.2 关键约束\n\n| 约束类型 | 约束描述 | 影响 |\n| -------- | -------- | ---- |\n| 业务 | 对外解释须与应用内状态一致 | 进度文案须可对客 |\n| 资源 | 最小改动；优先主路径账单类型 | 分阶段覆盖账单类型 |\n| 技术 | 正文不写实现栈；能力限制用业务话术 | 细节待研发确认 |\n| 交付 | 无外部硬截止；每阶段可独立验收 | 节奏由业务优先级驱动 |\n\n---\n\n## 5. 风险与待定\n\n### 5.1 风险评估\n\n| 风险编号 | 风险描述 | 可能性 | 影响程度 | 应对策略 |\n| -------- | -------- | ------ | -------- | -------- |\n| R-1 | 旧入口未关导致双单 | 中 | 中 | 过渡期双写监测 + 引导关旧 |\n| R-2 | 进度文案与审核实态不一致 | 中 | 高 | 状态词典与审核结论对齐 |\n\n### 5.2 问题决策\n\n| 决策编号 | 决策点 | 影响 | 决策要点 | 状态 |\n| -------- | ------ | ---- | -------- | ---- |\n| Q-1 | 是否本轮就关停全部线下入口 | 双单风险与切换成本 | 推荐：保留过渡期并行，主推应用内；备选：一刀切关旧 | 已决策 |\n| Q-2 | 进度状态对外文案最终词典 | 客服解释与争议 | 待业务/客服共定状态词典 | 待确认 |\n\n**技术决策索引**：见 [application/adr/CONTEXT.md](../adr/CONTEXT.md)（技术/架构选型不入上表）。\n\n---\n\n## 6. 交付计划\n\n### 6.1 关键里程碑\n\n| 里程碑 | 覆盖范围 | 前置条件 | 交付物 | 验收标准 | 退出条件 |\n| ------ | -------- | -------- | ------ | -------- | -------- |\n| 里程碑-1 | 唯一提交通道 + 基础进度可见（主路径账单） | Q-1 已决策 | 可验收提交流程 | 主路径可提交并查进度 | 双单率可控；可独立演示 |\n| 里程碑-2 | 扩账单类型与结果说明完善 | 里程碑-1 退出；Q-2 收敛或有临时词典 | 扩展覆盖 + 结果说明 | 约定类型可走通；催单下降可验收 | 无阻塞性口径缺口 |\n\n### 6.2 切换方案\n\n| 里程碑 | 试点方式 | 通过标准 | 切换流程 | 回退条件 |\n| ------ | -------- | -------- | -------- | -------- |\n| 里程碑-1 | 选定用户群/账单类型试点 | 提交成功率与进度可见达标；双单可控 | 试点通过 → 扩大类型 → 主推应用内入口 | 双单失控或进度不准 → 恢复旧入口并行并修文案 |\n\n---\n\n## 7. 附录\n\n### 7.1 术语表\n\n| 术语 | 定义 |\n| ---- | ---- |\n| 提交通道 | 本应用内发起申诉的主入口路径 |\n| 进度可见 | 用户/客服可自助查看申诉所处阶段 |\n\n### 7.2 参考文档\n\n- `application/README.md`\n- `application/features/FEATURE-EXAMPLE.md`\n\n### 7.3 内部参考（仅供研发接力）\n\n无（示例文档）。\n\n### 7.4 质量自查表 (Self-Check)\n\n- [ ] **结构与占位**：`## 1`–`## 7` 齐全；空节须标「不适用/待补充」\n- [ ] **§1**：§1.1–§1.3 有实质或「不适用」；**G-n** 表含目标/度量/预期收益\n- [ ] **§2**：主路径；§2.3 In/Out + 成功标准\n- [ ] **§3**：与 §3.2 一致；含功能/对外承诺/下游；§3.3 协作链；每 **C-n** 有化解与成本\n- [ ] **§4**：§4.1 可读；§4.2 约束表已填；多方案取舍在 §5.2\n- [ ] **§5**：每 **R-n** 有可能性、影响、应对；**Q-n** 更新（无则「无」）\n- [ ] **§6**：§6.1 含覆盖/前置/交付/验收/退出；§6.2 仅需切换节点；MVP 归 ANALYSIS\n- [ ] **业务可读**：正文无工程标识；技术线索仅 §7.3 且「待研发确认」\n- [ ] **一致性**：与需求、`knowledge/`、领域索引一致或已标盲区\n- [ ] **可追溯**：**G-n**/**C-n**/**R-n**/**Q-n** 可指回；编号连贯\n- [ ] **术语与引用**：§7.1 专用术语；§7.2 已引路径\n- [ ] **格式与元数据**：frontmatter 完整；`id` 与文件名一致",
       "backlinks": [
         "analysis/README",
         "features/FEATURE-EXAMPLE"
@@ -295,7 +295,7 @@ aside {
       "title": "analysis（应用分析）",
       "description": null,
       "tags": [],
-      "body": "# analysis\n\n应用层 SDD 第一段：`ANALYSIS-{IDEA-ID}.md`。上游解决方案库 SOLUTION。下游 [../features](../features/README.md)。\n\n样例：[ANALYSIS-EXAMPLE.md](ANALYSIS-EXAMPLE.md)。新写走 `/sdx-analysis`。",
+      "body": "# analysis\n\n应用层 SDD 第一段：`ANALYSIS-{IDEA-ID}.md`。上游 `solution/solutions/`。下游 [../features](../features/README.md)。\n\n样例：[ANALYSIS-EXAMPLE.md](ANALYSIS-EXAMPLE.md)。新写走 `/sdx-analysis`。",
       "backlinks": [
         "README-s",
         "analysis/archive/README",
@@ -451,7 +451,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 应用架构\n\n[返回 · 应用架构](../README.md)\n\n本系统 C4、职责边界与分层演进落地。\n\n> **应用架构 SSOT**：公司级 C4、分层与演进标准见 公司层 application · application-architecture 章节。\n\n## 系统上下文\n\n画 C4 L1：用户、外部系统、本系统边界与主要交互。\n\n## 职责边界\n\n列出各应用/服务的职责、负责人与生命周期状态。\n\n## 服务能力矩阵\n\n对照业务流程活动与归属系统、能力说明及 SLA。\n\n## 分层结构\n\n写分层模型、跨层调用规则与禁止项。\n\n## 演进路线\n\n写当前态/过渡态/目标态、里程碑与回滚策略。",
+      "body": "# 应用架构\n\n[返回 · 应用架构](../README.md)\n\n本应用 C4、职责边界与分层演进落地。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 系统上下文\n\n画 C4 L1：用户、外部系统、本应用边界与主要交互。\n\n## 职责边界\n\n列出各应用/服务的职责、负责人与生命周期状态。\n\n## 服务能力矩阵\n\n对照业务流程活动与归属系统、能力说明及 SLA。\n\n## 分层结构\n\n写分层模型、跨层调用规则与禁止项。\n\n## 演进路线\n\n写当前态/过渡态/目标态、里程碑与回滚策略。",
       "backlinks": [
         "knowledge/application/README",
         "knowledge/business/chapters/business-processes",
@@ -467,7 +467,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 领域能力\n\n[返回 · 应用架构](../README.md)\n\n本系统领域能力与 SLA，对应业务能力承载。\n\n> **领域能力 SSOT**：公司级能力框架见 公司层 business · business-capability 章节。\n\n## 领域能力\n\n列出业务活动、归属系统、能力说明与 SLA 协议。",
+      "body": "# 领域能力\n\n[返回 · 应用架构](../README.md)\n\n本应用领域能力与 SLA，对应业务能力承载。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 领域能力\n\n列出业务活动、归属系统、能力说明与 SLA 协议。",
       "backlinks": [
         "knowledge/application/README",
         "knowledge/overview/NAME-overview"
@@ -482,7 +482,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 领域模型\n\n[返回 · 应用架构](../README.md)\n\n本系统聚合/实体边界、类图及关键属性。\n\n> **领域模型 SSOT**：公司级应用框架见 公司层 application 视角章节。\n\n与 [概念模型](../../business/chapters/business-glossary.md#概念模型) 及 [数据模型](../../data/chapters/data-model.md) 交叉对齐。\n\n## 领域模型\n\n写清有界上下文、聚合根与实体关系。\n\n## 对象模型\n\n给出关键 UML 类图与依赖方向。\n\n## 对象定义\n\n列出领域对象、类型与关键属性/invariant。",
+      "body": "# 领域模型\n\n[返回 · 应用架构](../README.md)\n\n本应用聚合/实体边界、类图及关键属性。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n与 [概念模型](../../business/chapters/business-glossary.md#概念模型) 及 [数据模型](../../data/chapters/data-model.md) 交叉对齐。\n\n## 领域模型\n\n写清有界上下文、聚合根与实体关系。\n\n## 对象模型\n\n给出关键 UML 类图与依赖方向。\n\n## 对象定义\n\n列出领域对象、类型与关键属性/invariant。",
       "backlinks": [
         "knowledge/application/README",
         "knowledge/business/chapters/business-glossary",
@@ -499,7 +499,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 集成架构\n\n[返回 · 应用架构](../README.md)\n\n本系统第三方与遗留集成：协议、数据流与防腐边界。\n\n> **集成架构 SSOT**：公司级应用框架见 公司层 application 视角章节。\n\n## 集成清单\n\n列出外部系统、用途、对接团队与数据敏感度。\n\n## 集成协议\n\n写 HTTP/消息/文件等选型、认证模式与禁止项。\n\n## 集成数据流\n\n写数据流向、频率、批/实时属性与权威源。\n\n## 防腐层\n\n写 ACL/Adapter 位置、映射规则、错误隔离与重试。",
+      "body": "# 集成架构\n\n[返回 · 应用架构](../README.md)\n\n本应用第三方与遗留集成：协议、数据流与防腐边界。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 集成清单\n\n列出外部系统、用途、对接团队与数据敏感度。\n\n## 集成协议\n\n写 HTTP/消息/文件等选型、认证模式与禁止项。\n\n## 集成数据流\n\n写数据流向、频率、批/实时属性与权威源。\n\n## 防腐层\n\n写 ACL/Adapter 位置、映射规则、错误隔离与重试。",
       "backlinks": [
         "knowledge/application/README",
         "knowledge/overview/NAME-overview"
@@ -514,7 +514,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 服务间交互\n\n[返回 · 应用架构](../README.md)\n\n本系统同步/异步协作、编排与依赖治理。\n\n> **服务交互 SSOT**：公司级应用框架见 公司层 application 视角章节。\n\n## 同步链路\n\n写主要调用链、超时/重试/熔断与 Trace 约定。\n\n## 事件流\n\n写主题/队列命名、发布订阅、版本与幂等要求。\n\n## 服务编排\n\n写长事务编排模式、补偿与业务流程对应。\n\n## 依赖矩阵\n\n写服务间依赖类型、方向、循环依赖与禁止模式。",
+      "body": "# 服务间交互\n\n[返回 · 应用架构](../README.md)\n\n本应用同步/异步协作、编排与依赖治理。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 同步链路\n\n写主要调用链、超时/重试/熔断与 Trace 约定。\n\n## 事件流\n\n写主题/队列命名、发布订阅、版本与幂等要求。\n\n## 服务编排\n\n写长事务编排模式、补偿与业务流程对应。\n\n## 依赖矩阵\n\n写服务间依赖类型、方向、循环依赖与禁止模式。",
       "backlinks": [
         "knowledge/application/README",
         "knowledge/overview/NAME-overview"
@@ -529,7 +529,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 接口管理\n\n[返回 · 应用架构](../README.md)\n\n本系统内外接口的发现、规范与演进。\n\n> **接口管理 SSOT**：公司级应用框架见 公司层 application 视角章节。\n\n## 内部 API\n\n写目录结构、命名、认证、错误约定与契约存放位置。\n\n## 开放 API\n\n列出对外 API、用途、SLA 与 DTO/脱敏差异。\n\n## 版本策略\n\n写兼容窗口、弃用公告与破坏性变更审批。\n\n## 变更日志\n\n按服务/API 聚合变更记录与消费者行动项。",
+      "body": "# 接口管理\n\n[返回 · 应用架构](../README.md)\n\n本应用内外接口的发现、规范与演进。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 内部 API\n\n写目录结构、命名、认证、错误约定与契约存放位置。本层 **API** 为 SSOT。\n\n## 开放 API\n\n列出对外 API、用途、SLA 与 DTO/脱敏差异。\n\n## 版本策略\n\n写兼容窗口、弃用公告与破坏性变更审批。\n\n## 变更日志\n\n按服务/API 聚合变更记录与消费者行动项。",
       "backlinks": [
         "knowledge/application/README",
         "knowledge/overview/NAME-overview"
@@ -544,7 +544,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 多租户多环境\n\n[返回 · 应用架构](../README.md)\n\n本系统租户隔离、环境拓扑与发布控制。\n\n> **多租户多环境 SSOT**：公司级应用框架见 公司层 application 视角章节。\n\n## 租户隔离\n\n写租户模型、隔离维度、合规要求与跨租户禁止项。\n\n## 多环境\n\n写各环境用途、数据真实性、发布权限与配置/密钥差异。\n\n## 功能开关\n\n写开关类型、命名、生命周期及与产品发布的对齐。",
+      "body": "# 多租户多环境\n\n[返回 · 应用架构](../README.md)\n\n本应用租户隔离、环境拓扑与发布控制。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 租户隔离\n\n写租户模型、隔离维度、合规要求与跨租户禁止项。\n\n## 多环境\n\n写各环境用途、数据真实性、发布权限与配置/密钥差异。\n\n## 功能开关\n\n写开关类型、命名、生命周期及与产品发布的对齐。",
       "backlinks": [
         "knowledge/application/README",
         "knowledge/overview/NAME-overview"
@@ -559,7 +559,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 系统概述\n\n[返回 · 应用架构](../README.md)\n\n本系统一页纸概述，统一全景、服务与集成语境。\n\n> **系统概述 SSOT**：公司级概述标准见 公司层 application · application-overview 章节。\n\n## 系统使命\n\n写清为谁解决什么问题；可链至业务/产品概述。\n\n## 用户场景\n\n列出主要用户类型与典型场景。\n\n## 系统范围\n\n写清范围内外、不做清单与边界变更入口。\n\n## 外部依赖\n\n摘要外部系统、信任边界与数据出入方向。\n\n## 技术摘要\n\n各用一句写清语言、运行时与部署形态。",
+      "body": "# 系统概述\n\n[返回 · 应用架构](../README.md)\n\n本应用一页纸概述，统一全景、服务与集成语境。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 系统使命\n\n写清为谁解决什么问题；可链至业务/产品概述。\n\n## 用户场景\n\n列出主要用户类型与典型场景。\n\n## 系统范围\n\n写清范围内外、不做清单与边界变更入口。\n\n## 外部依赖\n\n摘要外部系统、信任边界与数据出入方向。\n\n## 技术摘要\n\n各用一句写清语言、运行时与部署形态。",
       "backlinks": [
         "knowledge/application/README",
         "knowledge/overview/NAME-overview"
@@ -574,7 +574,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 服务设计\n\n[返回 · 应用架构](../README.md)\n\n业务能力落地为可部署、可契约化服务单元。\n\n> **服务设计 SSOT**：公司级 C4 与系统边界标准见 公司层 application · application-architecture 章节。\n\n## 设计原则\n\n列出可检验的非功能原则与例外审批方式。\n\n## 服务拆分\n\n写拆分维度、内聚准则与数据库归属。\n\n## 服务设计\n\n每服务写职责、领域模型、契约与状态机摘要。\n\n## 服务容器图\n\n画 C4 L2 容器及技术选型、协议与部署要点。\n\n## 组件图\n\n对核心服务画 C4 L3 组件及与代码模块的对应。",
+      "body": "# 服务设计\n\n[返回 · 应用架构](../README.md)\n\n业务能力落地为可部署、可契约化服务单元。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 设计原则\n\n列出可检验的非功能原则与例外审批方式。\n\n## 服务拆分\n\n写拆分维度、内聚准则与数据库归属。\n\n## 服务设计\n\n每服务写职责、领域模型、契约与状态机摘要。\n\n## 服务容器图\n\n画 C4 L2 容器及技术选型、协议与部署要点。\n\n## 组件图\n\n对核心服务画 C4 L3 组件及与代码模块的对应。",
       "backlinks": [
         "knowledge/application/README",
         "knowledge/overview/NAME-overview"
@@ -619,7 +619,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 能力地图\n\n[返回 · 业务架构](../README.md)\n\n本系统业务能力落地、成熟度及与域对应。\n\n> **能力地图 SSOT**：公司级能力框架与成熟度标准见 公司层 business · business-capability 章节。\n\n## 能力清单\n\n列出分层能力树、价值说明及与公司能力树的对齐与裁剪。\n\n## 成熟度评估\n\n写清评估维度、当前/目标等级、差距与负责人。\n\n## 系统映射\n\n标注每项能力由哪些模块/系统承载及缺口。",
+      "body": "# 能力地图\n\n[返回 · 业务架构](../README.md)\n\n本应用业务能力落地、成熟度及与域对应。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 能力清单\n\n列出分层能力树、价值说明及与公司能力树的对齐与裁剪。\n\n## 成熟度评估\n\n写清评估维度、当前/目标等级、差距与负责人。\n\n## 系统映射\n\n标注每项能力由哪些模块/系统承载及缺口。",
       "backlinks": [
         "knowledge/business/README",
         "knowledge/overview/NAME-overview"
@@ -634,7 +634,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 业务域划分\n\n[返回 · 业务架构](../README.md)\n\n本系统 L1–L5 业务域清单及父级关系。\n\n> **L1 定义 SSOT**：公司级一级业务域见 公司层 business · business-domain-division 章节。\n\n## 业务域清单\n\n列出 L1（引用公司 SSOT）及 L2–L5 子树：级别、ID、名称、父级、分类、实体映射。\n\n## 业务域职责\n\n按域写目标、能力、关键实体与协作方式。\n\n## 核心域 / 支撑域 / 通用域\n\n标注战略分类、理由与资源投入原则。\n\n## 业务域关系图\n\n描述域间依赖与数据/事件流；附关键依赖说明。",
+      "body": "# 业务域划分\n\n[返回 · 业务架构](../README.md)\n\n本应用承接的业务域切片（实现映射）。L1 ∈ 公司，L2 ∈ 解决方案，BC 链 ∈ 系统。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 业务域清单\n\n列出上游域 ID（纯 ID 或 parent HTTP）及本应用实现映射，不重复公司/解决方案/系统字段语义。\n\n## 业务域职责\n\n按域写目标、能力、关键实体与协作方式。\n\n## 核心域 / 支撑域 / 通用域\n\n标注战略分类、理由与资源投入原则。\n\n## 业务域关系图\n\n描述域间依赖与数据/事件流；附关键依赖说明。",
       "backlinks": [
         "knowledge/business/README",
         "knowledge/overview/NAME-overview"
@@ -649,7 +649,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 业务术语\n\n[返回 · 业务架构](../README.md)\n\n本系统概念模型与术语表。\n\n> **业务术语 SSOT**：公司级业务治理框架见 公司层 business 视角章节。\n\n## 概念模型\n\n写清核心对象及关系；对齐 [领域模型](../../application/chapters/application-domain-model.md) 与 [数据模型](../../data/chapters/data-model.md)。\n\n## 业务术语\n\n维护名词/活动术语定义；同名多义进映射表。\n\n| 所属上下文 | 名词 | 英文标识 | 业务定义 |\n| --- | --- | --- | --- |\n| 示例上下文 | 示例术语A | ExampleTermA | 示例定义 |\n| 示例上下文 | 示例术语B | ExampleTermB | 示例定义 |\n\n## 术语映射\n\n维护标准术语与别名、字段、指标名的对照。\n\n## 术语治理\n\n规定新增、变更、退休流程与最小字段要求。",
+      "body": "# 业务术语\n\n[返回 · 业务架构](../README.md)\n\n本应用概念模型与术语表。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 概念模型\n\n写清核心对象及关系；对齐 [领域模型](../../application/chapters/application-domain-model.md) 与 [数据模型](../../data/chapters/data-model.md)。\n\n## 业务术语\n\n维护名词/活动术语定义；同名多义进映射表。\n\n| 所属上下文 | 名词 | 英文标识 | 业务定义 |\n| --- | --- | --- | --- |\n| 示例上下文 | 示例术语A | ExampleTermA | 示例定义 |\n| 示例上下文 | 示例术语B | ExampleTermB | 示例定义 |\n\n## 术语映射\n\n维护标准术语与别名、字段、指标名的对照。\n\n## 术语治理\n\n规定新增、变更、退休流程与最小字段要求。",
       "backlinks": [
         "knowledge/application/chapters/application-domain-model",
         "knowledge/business/README",
@@ -666,7 +666,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 业务概述\n\n[返回 · 业务架构](../README.md)\n\n本系统业务定位、目标与范围。\n\n> **业务概述 SSOT**：公司级背景、目标与范围见 公司层 business · business-overview 章节。\n\n## 背景与愿景\n\n引用公司愿景；写清本系统场景与价值贡献。\n\n## 业务目标\n\n列出本系统 OKR/KPI 及与公司目标的分解关系。\n\n## 业务范围\n\n写清范围内外、不做清单与变更入口。",
+      "body": "# 业务概述\n\n[返回 · 业务架构](../README.md)\n\n本应用业务定位、目标与范围。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 背景与愿景\n\n引用公司愿景；写清本应用场景与价值贡献。\n\n## 业务目标\n\n列出本应用 OKR/KPI 及与公司目标的分解关系。\n\n## 业务范围\n\n写清范围内外、不做清单与变更入口。",
       "backlinks": [
         "knowledge/business/README",
         "knowledge/overview/NAME-overview"
@@ -681,7 +681,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 业务流程\n\n[返回 · 业务架构](../README.md)\n\n本系统主责业务流程及与能力的映射。\n\n> **业务流程 SSOT**：公司级业务治理框架见 公司层 business 视角章节。\n\n## 核心流程\n\n列出业务流程组（`a.b`）与活动（`a.b.c`）编码、定义及关键输入输出。\n\n## 分支流程\n\n展开 L4 子活动（`a.b.c.d`）及与 L3 的从属关系。\n\n## 异常流程\n\n写清补偿、回滚、升级路径、触发条件与 SLA。\n\n## 系统映射\n\n对照流程活动与系统能力、接口及 SLA；链至 [应用架构](../../application/chapters/application-architecture.md)。",
+      "body": "# 业务流程\n\n[返回 · 业务架构](../README.md)\n\n本应用主责业务流程及与能力的映射。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 核心流程\n\n列出业务流程组（`a.b`）与活动（`a.b.c`）编码、定义及关键输入输出。\n\n## 分支流程\n\n展开 L4 子活动（`a.b.c.d`）及与 L3 的从属关系。\n\n## 异常流程\n\n写清补偿、回滚、升级路径、触发条件与 SLA。\n\n## 系统映射\n\n对照流程活动与系统能力、接口及 SLA；链至 [应用架构](../../application/chapters/application-architecture.md)。",
       "backlinks": [
         "knowledge/business/README",
         "knowledge/overview/NAME-overview"
@@ -696,7 +696,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 业务规则与策略\n\n[返回 · 业务架构](../README.md)\n\n本系统业务策略与合规约束；产品、风控与合规共用依据。\n\n> **规则与策略 SSOT**：公司级业务治理框架见 公司层 business 视角章节。\n\n> **范围说明**：本文件聚焦策略与约束；功能级 BR 见 [用户旅程 · 业务规则清单](../../product/chapters/product-user-journeys.md#业务规则清单)。\n\n## 策略规则\n\n列出规则编号、场景、条件、结论、例外与优先级。\n\n## 合规风控\n\n写清法规/政策要求、控制点、审计留痕与落实状态。\n\n## 业务策略\n\n说明定价、授信、路由等策略原则、参数边界与灰度回滚。",
+      "body": "# 业务规则与策略\n\n[返回 · 业务架构](../README.md)\n\n本应用业务策略与合规约束；产品、风控与合规共用依据。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n> **范围说明**：本文件聚焦策略与约束；功能级 BR 见 [用户旅程 · 业务规则清单](../../product/chapters/product-user-journeys.md#业务规则清单)。\n\n## 策略规则\n\n列出规则编号、场景、条件、结论、例外与优先级。\n\n## 合规风控\n\n写清法规/政策要求、控制点、审计留痕与落实状态。\n\n## 业务策略\n\n说明定价、授信、路由等策略原则、参数边界与灰度回滚。",
       "backlinks": [
         "knowledge/business/README",
         "knowledge/overview/NAME-overview"
@@ -754,7 +754,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 数据分析\n\n[返回 · 数据架构](../README.md)\n\n本系统分析主题、指标口径与消费路径。\n\n> **数据分析 SSOT**：公司级数据框架见 公司层 data 视角章节。\n\n## 分析主题\n\n写主题域、服务对象与刷新频率。\n\n## 指标口径\n\n写核心指标定义、维度与权威来源。\n\n## 消费路径\n\n写报表/API/导出等消费方式与权限边界。",
+      "body": "# 数据分析\n\n[返回 · 数据架构](../README.md)\n\n本应用分析主题、指标口径与消费路径。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 分析主题\n\n写主题域、服务对象与刷新频率。\n\n## 指标口径\n\n写核心指标定义、维度与权威来源。\n\n## 消费路径\n\n写报表/API/导出等消费方式与权限边界。",
       "backlinks": [
         "knowledge/data/README",
         "knowledge/overview/NAME-overview"
@@ -769,7 +769,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 数据流转\n\n[返回 · 数据架构](../README.md)\n\n本系统数据流动、加工与一致性保障。\n\n> **数据流转 SSOT**：公司级数据框架见 公司层 data 视角章节。\n\n## 数据流图\n\n画主要 DFD；区分批/实时并与业务流程对齐。\n\n## ETL 流程\n\n写抽取/转换/加载职责、调度与质量校验嵌入点。\n\n## 实时数据流\n\n写 CDC、Topic、顺序语义与 Schema 演进约定。\n\n## 数据同步\n\n写系统间同步模式、幂等与冲突解决。\n\n## 数据一致性\n\n写强一致/最终一致/Saga 选用场景与对账规则。",
+      "body": "# 数据流转\n\n[返回 · 数据架构](../README.md)\n\n本应用数据流动、加工与一致性保障。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 数据流图\n\n画主要 DFD；区分批/实时并与业务流程对齐。\n\n## ETL 流程\n\n写抽取/转换/加载职责、调度与质量校验嵌入点。\n\n## 实时数据流\n\n写 CDC、Topic、顺序语义与 Schema 演进约定。\n\n## 数据同步\n\n写系统间同步模式、幂等与冲突解决。\n\n## 数据一致性\n\n写强一致/最终一致/Saga 选用场景与对账规则。",
       "backlinks": [
         "knowledge/data/README",
         "knowledge/overview/NAME-overview"
@@ -784,7 +784,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 数据模型\n\n[返回 · 数据架构](../README.md)\n\n本系统数据源与物理层结构。\n\n> **数据模型 SSOT**：公司级数据原则见 公司层 data · data-overview 章节。\n\n与 [领域模型](../../application/chapters/application-domain-model.md)、[概念模型](../../business/chapters/business-glossary.md#概念模型) 交叉对齐。\n\n## 物理模型\n\n### 数据源\n\n列出 OLTP、缓存、消息、对象存储等类型、用途与 SSOT 归属。\n\n### 数据实体\n\n写持久化实体定义及与领域模型/主数据的对应。\n\n## 主数据\n\n主数据域（`MDG-*`）、权威源与黄金记录规则。本层 MDG 为 SSOT；SYS 经 `uses_mdg_ids` 声明使用关系；DS 经 `authoritative_mdg_id` 归属域。\n\n### 数据表\n\n写表结构、索引、分区与 DDL 版本入口。\n\n## 服务实体映射\n\n按服务列出核心数据实体及跨服务引用处理方式。\n\n## 模型版本\n\n写 Migration 规范、兼容策略与生产变更审批。",
+      "body": "# 数据模型\n\n[返回 · 数据架构](../README.md)\n\n本应用数据源与物理层结构。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n与 [领域模型](../../application/chapters/application-domain-model.md)、[概念模型](../../business/chapters/business-glossary.md#概念模型) 交叉对齐。\n\n## 物理模型\n\n### 数据源\n\n列出 OLTP、缓存、消息、对象存储等类型、用途与 SSOT 归属。\n\n### 数据实体\n\n写持久化实体定义及与领域模型/主数据的对应。\n\n### 数据表\n\n写表结构、索引、分区与 DDL 版本入口。本层 **TBL** 为 SSOT。\n\n## 主数据\n\n主数据域（`MDG-*`）首次定义在解决方案层。本章只写本应用表如何落实权威源，不重复 MDG 字段语义。\n\n## 服务实体映射\n\n按服务列出核心数据实体及跨服务引用处理方式。\n\n## 模型版本\n\n写 Migration 规范、兼容策略与生产变更审批。",
       "backlinks": [
         "knowledge/application/chapters/application-domain-model",
         "knowledge/business/chapters/business-glossary",
@@ -801,7 +801,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 数据架构概述\n\n[返回 · 数据架构](../README.md)\n\n本系统数据原则、全景与生命周期。\n\n> **数据架构 SSOT**：公司级数据原则、全景与生命周期标准见 公司层 data · data-overview 章节。\n\n## 设计原则\n\n写与业务目标一致的数据原则及可检验方式。\n\n## 架构全景\n\n画 OLTP、消息、数仓/湖到分析的端到端视图。\n\n## 生命周期\n\n写采集、存储、使用、共享、归档、销毁各阶段规则。",
+      "body": "# 数据架构概述\n\n[返回 · 数据架构](../README.md)\n\n本应用数据原则、全景与生命周期。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 设计原则\n\n写与业务目标一致的数据原则及可检验方式。\n\n## 架构全景\n\n画 OLTP、消息、数仓/湖到分析的端到端视图。\n\n## 生命周期\n\n写采集、存储、使用、共享、归档、销毁各阶段规则。",
       "backlinks": [
         "knowledge/data/README",
         "knowledge/overview/NAME-overview"
@@ -816,7 +816,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 数据存储方案\n\n[返回 · 数据架构](../README.md)\n\n本系统存储选型、分布与扩展策略。\n\n> **数据存储 SSOT**：公司级数据框架见 公司层 data 视角章节。\n\n## 库选型\n\n写关系型/文档/宽列等选型、实例拓扑与 SLA 匹配。\n\n## 分库分表\n\n写分片键、路由、全局 ID 与扩容再均衡。\n\n## 读写分离\n\n写主从/只读副本、复制延迟容忍与一致性读法。\n\n## 冷热分离\n\n写冷热判定、存储介质与查询路由。\n\n## 数据归档\n\n写归档触发、介质、可检索性与恢复路径。\n\n## 服务存储分布\n\n列出 DS-ID、服务、存储类型、数据域与 SLA。",
+      "body": "# 数据存储方案\n\n[返回 · 数据架构](../README.md)\n\n本应用存储选型、分布与扩展策略。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 库选型\n\n写关系型/文档/宽列等选型、实例拓扑与 SLA 匹配。\n\n## 分库分表\n\n写分片键、路由、全局 ID 与扩容再均衡。\n\n## 读写分离\n\n写主从/只读副本、复制延迟容忍与一致性读法。\n\n## 冷热分离\n\n写冷热判定、存储介质与查询路由。\n\n## 数据归档\n\n写归档触发、介质、可检索性与恢复路径。\n\n## 服务存储分布\n\n列出 DS-ID、服务、存储类型、数据域与 SLA。",
       "backlinks": [
         "knowledge/data/README",
         "knowledge/overview/NAME-overview"
@@ -888,7 +888,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 产品架构\n\n[返回 · 产品架构](../README.md)\n\n本系统产品板块及与 PD、PM、SYS 映射。\n\n> **SSOT**：PL ∈ 公司层；**PD 本层首次定义**（`parent_id→公司 PL`，`maps_to_sys_id`）。本层不落 PL 文件。\n\n## 产品板块\n\n列出本系统承载的 `PD-*`；写清主责/协同角色与覆盖范围。\n\n## 产品模块映射\n\n列出 `PD-ID` 与本系统 `PM-ID` 对应及每 PM 职责摘要；`PM.parent_id` 只许指向 PD。\n\n## 产品系统映射\n\n可选；写 PD 与承载系统（SYS）对应及跨系统主责。",
+      "body": "# 产品架构\n\n[返回 · 产品架构](../README.md)\n\n本应用产品板块落地；对照上游 PD / PM / SYS（不在本层首次定义）。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。PL ∈ 公司；PD/BP ∈ 解决方案；PM/SYS ∈ 系统。\n\n## 产品板块\n\n列出本应用承接的 `PD-*`（纯 ID 或 parent HTTP）；写清实现范围，不重复 PD 字段语义。\n\n## 产品模块映射\n\n列出本应用实现对应的 `PM-*` / 功能切片；`PM` 首次定义在系统层。\n\n## 产品系统映射\n\n可选；写本应用与承载 `SYS-*` 的实现关系。",
       "backlinks": [
         "knowledge/overview/NAME-overview",
         "knowledge/product/README"
@@ -903,7 +903,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 产品功能\n\n[返回 · 产品架构](../README.md)\n\n价值主张拆解为可交付功能模块与优先级。\n\n> **产品功能 SSOT**：公司级产品治理框架见 公司层 product 视角章节；本层 FT/FR/UC 见实体树。\n\n## 产品模块全景图\n\n画模块层级及与业务能力、应用服务的映射。\n\n## 模块功能清单\n\n列出功能点、状态、负责人与验收入口。\n\n## 功能优先级\n\n说明评分维度、权重与争议升级路径。\n\n## MVP 定义与迭代\n\n写清 MVP 范围、成功标准、迭代节奏与债务取舍。",
+      "body": "# 产品功能\n\n[返回 · 产品架构](../README.md)\n\n价值主张拆解为可交付功能模块与优先级。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 产品模块全景图\n\n画模块层级及与业务能力、应用服务的映射。\n\n## 模块功能清单\n\n列出功能点、状态、负责人与验收入口。\n\n## 功能优先级\n\n说明评分维度、权重与争议升级路径。\n\n## MVP 定义与迭代\n\n写清 MVP 范围、成功标准、迭代节奏与债务取舍。",
       "backlinks": [
         "knowledge/overview/NAME-overview",
         "knowledge/product/README"
@@ -918,7 +918,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 信息架构\n\n[返回 · 产品架构](../README.md)\n\n本系统导航、层级与内容模型。\n\n> **信息架构 SSOT**：公司级产品治理框架见 公司层 product 视角章节。\n\n## 导航结构\n\n写清全局/局部菜单、路由命名与角色可见性。\n\n## 页面层级\n\n规定列表—详情—编辑模式、面包屑与关键路径步数。\n\n## 内容模型\n\n定义内容类型、字段、生命周期及与 CMS/数据字典对齐。",
+      "body": "# 信息架构\n\n[返回 · 产品架构](../README.md)\n\n本应用导航、层级与内容模型。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 导航结构\n\n写清全局/局部菜单、路由命名与角色可见性。\n\n## 页面层级\n\n规定列表—详情—编辑模式、面包屑与关键路径步数。\n\n## 内容模型\n\n定义内容类型、字段、生命周期及与 CMS/数据字典对齐。",
       "backlinks": [
         "knowledge/overview/NAME-overview",
         "knowledge/product/README"
@@ -933,7 +933,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 多端策略\n\n[返回 · 产品架构](../README.md)\n\n本系统各端覆盖与差异。\n\n> **多端策略 SSOT**：公司级产品治理框架见 公司层 product 视角章节。\n\n## 端覆盖\n\n列出各端场景、优先级、维护策略与技术栈摘要。\n\n## 端功能差异\n\n写功能×端可用性矩阵、限制原因与跨端一致性。\n\n## 响应式策略\n\n写断点、布局策略及与设计系统栅格的对齐。",
+      "body": "# 多端策略\n\n[返回 · 产品架构](../README.md)\n\n本应用各端覆盖与差异。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 端覆盖\n\n列出各端场景、优先级、维护策略与技术栈摘要。\n\n## 端功能差异\n\n写功能×端可用性矩阵、限制原因与跨端一致性。\n\n## 响应式策略\n\n写断点、布局策略及与设计系统栅格的对齐。",
       "backlinks": [
         "knowledge/overview/NAME-overview",
         "knowledge/product/README"
@@ -948,7 +948,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 产品运营支撑\n\n[返回 · 产品架构](../README.md)\n\n本系统运营、内容、触达与反馈能力。\n\n> **运营支撑 SSOT**：公司级产品治理框架见 公司层 product 视角章节。\n\n## 运营后台\n\n写后台模块、权限模型、审计与敏感操作管控。\n\n## 内容管理\n\n说明编辑工作流、审核、定时发布与回滚。\n\n## 消息通知\n\n列出通道、模板、触达频率与用户偏好/退订。\n\n## 营销活动\n\n写活动类型、规则边界、风控与财务对账入口。\n\n## 反馈工单\n\n写反馈入口、分类、SLA 与客服/缺陷系统对接。",
+      "body": "# 产品运营支撑\n\n[返回 · 产品架构](../README.md)\n\n本应用运营、内容、触达与反馈能力。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 运营后台\n\n写后台模块、权限模型、审计与敏感操作管控。\n\n## 内容管理\n\n说明编辑工作流、审核、定时发布与回滚。\n\n## 消息通知\n\n列出通道、模板、触达频率与用户偏好/退订。\n\n## 营销活动\n\n写活动类型、规则边界、风控与财务对账入口。\n\n## 反馈工单\n\n写反馈入口、分类、SLA 与客服/缺陷系统对接。",
       "backlinks": [
         "knowledge/overview/NAME-overview",
         "knowledge/product/README"
@@ -963,7 +963,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 产品概述\n\n[返回 · 产品架构](../README.md)\n\n本系统产品定位、用户、竞争与路线。\n\n> **产品概述 SSOT**：公司级定位与路线标准见 公司层 product · product-overview 章节。\n\n## 价值主张\n\n写清核心问题、差异化价值与非目标边界。\n\n## 目标用户\n\n列出 Persona、场景、痛点与关键需求。\n\n## 竞品分析\n\n对比直接/间接竞品的功能、体验、定价与防御点。\n\n## 产品路线\n\n按阶段写交付物、依赖与 Now/Next/Later 承诺。",
+      "body": "# 产品概述\n\n[返回 · 产品架构](../README.md)\n\n本应用产品定位、用户、竞争与路线。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 价值主张\n\n写清核心问题、差异化价值与非目标边界。\n\n## 目标用户\n\n列出 Persona、场景、痛点与关键需求。\n\n## 竞品分析\n\n对比直接/间接竞品的功能、体验、定价与防御点。\n\n## 产品路线\n\n按阶段写交付物、依赖与 Now/Next/Later 承诺。",
       "backlinks": [
         "knowledge/overview/NAME-overview",
         "knowledge/product/README"
@@ -978,7 +978,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 版本管理与发布\n\n[返回 · 产品架构](../README.md)\n\n本系统版本实践、发布记录、灰度与功能开关。\n\n> **版本与发布 SSOT**：公司级产品治理框架见 公司层 product 视角章节。\n\n## 版本规范\n\n引用公司版本规则；写工程版本与对外版本的映射。\n\n## 发布记录\n\n维护 CHANGELOG、已知问题与升级指引。\n\n## 灰度发布\n\n写灰度维度、监控指标、回滚条件与 Runbook 摘要。\n\n## 功能开关\n\n登记开关 ID、类型、生命周期与 Kill Switch 边界。",
+      "body": "# 版本管理与发布\n\n[返回 · 产品架构](../README.md)\n\n本应用版本实践、发布记录、灰度与功能开关。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 版本规范\n\n引用公司版本规则；写工程版本与对外版本的映射。\n\n## 发布记录\n\n维护 CHANGELOG、已知问题与升级指引。\n\n## 灰度发布\n\n写灰度维度、监控指标、回滚条件与 Runbook 摘要。\n\n## 功能开关\n\n登记开关 ID、类型、生命周期与 Kill Switch 边界。",
       "backlinks": [
         "knowledge/overview/NAME-overview",
         "knowledge/product/README"
@@ -993,7 +993,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 用户旅程与场景\n\n[返回 · 产品架构](../README.md)\n\n用户视角触点与情绪，驱动故事与用例。\n\n> **用户旅程 SSOT**：公司级体验标准见 公司层 product · product-ux 章节；本层 UC 挂 FR。\n\n## 用户旅程地图\n\n写清阶段、目标、触点、痛点与机会点。\n\n## 用户故事地图\n\n横向活动、纵向发布切片及与 Backlog 的链接方式。\n\n## 场景用例\n\n写参与者、主/扩展路径及与业务规则、接口的可追溯关系。\n\n## 用户故事清单\n\n维护 As/I want/So that 与 Given/When/Then 验收标准。\n\n## 业务规则清单\n\n列出 BR 编号、场景、条件、结论、优先级与变更记录。",
+      "body": "# 用户旅程与场景\n\n[返回 · 产品架构](../README.md)\n\n用户视角触点与情绪，驱动故事与用例。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 用户旅程地图\n\n写清阶段、目标、触点、痛点与机会点。\n\n## 用户故事地图\n\n横向活动、纵向发布切片及与 Backlog 的链接方式。\n\n## 场景用例\n\n写参与者、主/扩展路径及与业务规则、接口的可追溯关系。\n\n## 用户故事清单\n\n维护 As/I want/So that 与 Given/When/Then 验收标准。\n\n## 业务规则清单\n\n列出 BR 编号、场景、条件、结论、优先级与变更记录。",
       "backlinks": [
         "knowledge/business/chapters/business-rules-and-strategies",
         "knowledge/overview/NAME-overview",
@@ -1067,7 +1067,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 高可用与容灾\n\n[返回 · 技术架构](../README.md)\n\n本系统可用性目标、容灾与韧性实践。\n\n> **高可用与容灾 SSOT**：公司级技术框架见 公司层 technical 视角章节。\n\n## 高可用设计\n\n写同城双活/异地多活/主备模式、复制方向与 RTO/RPO。\n\n## 容灾方案\n\n写灾难场景、恢复目标、备份异地复制与演练频率。\n\n## 熔断降级\n\n写网关/服务/依赖三层限流、熔断条件与降级预案。\n\n## 混沌工程\n\n写实验范围、安全护栏、回滚与结论沉淀。",
+      "body": "# 高可用与容灾\n\n[返回 · 技术架构](../README.md)\n\n本应用可用性目标、容灾与韧性实践。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 高可用设计\n\n写同城双活/异地多活/主备模式、复制方向与 RTO/RPO。\n\n## 容灾方案\n\n写灾难场景、恢复目标、备份异地复制与演练频率。\n\n## 熔断降级\n\n写网关/服务/依赖三层限流、熔断条件与降级预案。\n\n## 混沌工程\n\n写实验范围、安全护栏、回滚与结论沉淀。",
       "backlinks": [
         "knowledge/overview/NAME-overview",
         "knowledge/technical/README"
@@ -1082,7 +1082,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 基础设施架构\n\n[返回 · 技术架构](../README.md)\n\n本系统计算、网络与边缘交付落地。\n\n> **基础设施 SSOT**：公司级部署、网络与云资源标准见 公司层 technical · technical-infrastructure 章节。\n\n## 部署架构\n\n写机房/区域/可用区拓扑与跨区策略。\n\n## 网络拓扑\n\n写 VPC、子网、防火墙与安全域分层。\n\n## 云资源规划\n\n写网段、NAT、安全组、标签与成本分摊。\n\n## 容器编排\n\n写 K8s 集群划分、命名空间、配额与升级策略。\n\n## 流量接入\n\n写 CDN、LB、DNS、证书与 HTTPS 终止。",
+      "body": "# 基础设施架构\n\n[返回 · 技术架构](../README.md)\n\n本应用计算、网络与边缘交付落地。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 部署架构\n\n写机房/区域/可用区拓扑与跨区策略。\n\n## 网络拓扑\n\n写 VPC、子网、防火墙与安全域分层。\n\n## 云资源规划\n\n写网段、NAT、安全组、标签与成本分摊。\n\n## 容器编排\n\n写 K8s 集群划分、命名空间、配额与升级策略。\n\n## 流量接入\n\n写 CDN、LB、DNS、证书与 HTTPS 终止。",
       "backlinks": [
         "knowledge/overview/NAME-overview",
         "knowledge/technical/README"
@@ -1097,7 +1097,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 中间件与基础组件\n\n[返回 · 技术架构](../README.md)\n\n本系统共享平台能力选型与使用规范。\n\n> **中间件 SSOT**：MW/CMP 定义在 application（MW-*/CMP-* 实体）；本章为落地叙事与 TSD 边界。样例见应用层 `MW-EXAMPLE`；公司框架见公司层 technical · TPL-* 与公司 technical 章节。\n\n## 消息队列\n\n写集群划分、主题/队列命名、保留策略与事件流对齐。\n\n## 缓存\n\n写部署模式、淘汰策略、穿透/击穿/雪崩防护与 TTL 约定。\n\n## 搜索引擎\n\n写集群角色、索引生命周期、分片副本与安全隔离。\n\n## 配置注册\n\n写配置分层、敏感处理、灰度回滚与服务发现。\n\n## 任务调度\n\n写批处理/定时平台、幂等、重试与告警。\n\n## 对象存储\n\n写桶命名、生命周期、预签名 URL 与权限策略。",
+      "body": "# 中间件与基础组件\n\n[返回 · 技术架构](../README.md)\n\n本应用共享平台能力选型与使用规范。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义 **MW / CMP**（及 API / TBL）。TSD ∈ 解决方案；TPL ∈ 公司。样例 `MW-EXAMPLE`。\n\n## 消息队列\n\n写集群划分、主题/队列命名、保留策略与事件流对齐。\n\n## 缓存\n\n写部署模式、淘汰策略、穿透/击穿/雪崩防护与 TTL 约定。\n\n## 搜索引擎\n\n写集群角色、索引生命周期、分片副本与安全隔离。\n\n## 配置注册\n\n写配置分层、敏感处理、灰度回滚与服务发现。\n\n## 任务调度\n\n写批处理/定时平台、幂等、重试与告警。\n\n## 对象存储\n\n写桶命名、生命周期、预签名 URL 与权限策略。",
       "backlinks": [
         "knowledge/overview/NAME-overview",
         "knowledge/technical/README"
@@ -1112,7 +1112,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 可观测性\n\n[返回 · 技术架构](../README.md)\n\n本系统指标、日志、链路与告警约定。\n\n> **可观测性 SSOT**：公司级技术框架见 公司层 technical 视角章节。\n\n## 指标\n\n写 RED/USE 或业务 KPI、采集路径与保留周期。\n\n## 日志\n\n写结构化字段、级别、关联 ID 与采样策略。\n\n## 链路追踪\n\n写 Trace 边界、采样率与跨服务传播约定。\n\n## 告警与值班\n\n写告警分级、路由、抑制与值班升级。",
+      "body": "# 可观测性\n\n[返回 · 技术架构](../README.md)\n\n本应用指标、日志、链路与告警约定。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 指标\n\n写 RED/USE 或业务 KPI、采集路径与保留周期。\n\n## 日志\n\n写结构化字段、级别、关联 ID 与采样策略。\n\n## 链路追踪\n\n写 Trace 边界、采样率与跨服务传播约定。\n\n## 告警与值班\n\n写告警分级、路由、抑制与值班升级。",
       "backlinks": [
         "knowledge/overview/NAME-overview",
         "knowledge/technical/README"
@@ -1127,7 +1127,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 技术架构概述\n\n[返回 · 技术架构](../README.md)\n\n本系统技术选型、雷达与决策基线。\n\n> **技术架构 SSOT**：公司级选型与雷达标准见 公司层 technical · technical-overview 章节。\n\n## 技术选型\n\n按层次列出主要技术、用途、负责人与退出条件。\n\n## 技术雷达\n\n写采用/试验/评估/暂缓分类与评审周期。\n\n## 选型决策\n\n索引重大选型 ADR 及决策结论。",
+      "body": "# 技术架构概述\n\n[返回 · 技术架构](../README.md)\n\n本应用技术选型、雷达与决策基线。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 技术选型\n\n按层次列出主要技术、用途、负责人与退出条件。\n\n## 技术雷达\n\n写采用/试验/评估/暂缓分类与评审周期。\n\n## 选型决策\n\n索引重大选型 ADR 及决策结论。",
       "backlinks": [
         "knowledge/overview/NAME-overview",
         "knowledge/technical/README"
@@ -1142,7 +1142,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 性能与扩展性\n\n[返回 · 技术架构](../README.md)\n\n本系统性能目标、容量与扩展策略。\n\n> **性能与扩展 SSOT**：公司级技术框架见 公司层 technical 视角章节。\n\n## 性能基线\n\n写核心链路延迟、吞吐、错误率基线与测量口径。\n\n## 容量规划\n\n写业务指标到资源换算、评估节奏与扩容触发。\n\n## 扩展策略\n\n写无状态/有状态扩展方式及与分库分表触发条件对齐。\n\n## 性能测试\n\n写压测场景、通过标准、报告归档与 CI 门禁关系。",
+      "body": "# 性能与扩展性\n\n[返回 · 技术架构](../README.md)\n\n本应用性能目标、容量与扩展策略。\n\n> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 性能基线\n\n写核心链路延迟、吞吐、错误率基线与测量口径。\n\n## 容量规划\n\n写业务指标到资源换算、评估节奏与扩容触发。\n\n## 扩展策略\n\n写无状态/有状态扩展方式及与分库分表触发条件对齐。\n\n## 性能测试\n\n写压测场景、通过标准、报告归档与 CI 门禁关系。",
       "backlinks": [
         "knowledge/overview/NAME-overview",
         "knowledge/technical/README"

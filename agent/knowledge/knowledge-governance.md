@@ -52,7 +52,7 @@
 | 数据 | — | **无 MDG**（MDG ∈ 解决方案） |
 | 技术 | TPL | 云 / DevOps / 安全 / 开发环境 / 可观测；企业技术准入；`TSD.implements_to`→TPL |
 
-- SDD：`domains/` = 域架构（哪条 BD 支撑 VC）；**无** `solutions/`、`analysis/`、`requirements/`。入口技能 `/sdx-domains`
+- SDD：只 `domains/`。只写 BD/BSD(L1) 如何支撑 VC，不放 SLN，不建 `solutions/` / `analysis/` / `features/` / `requirements/`。入口技能 `/sdx-domains`
 - 槽位 / 同步：见 [knowledge-layout.md](../references/knowledge-layout.md)（`solution-slots/solution-{NAME}`）
 - 入口：[company/README.md](../../company/README.md) · [company/knowledge/](../../company/knowledge/README.md)
 
@@ -81,7 +81,7 @@
 | 技术 | MW/CMP ∈ application；TSD 为解决方案 reference |
 
 - 上层 reference（可留薄文件）：`SLN/PD/BSD(L2)/MDG/TSD/BP` 及公司层实体；`definition_scope: reference`，不重复字段语义
-- SDD：`analysis/` → `features/` → `requirements/REQUIREMENT-{IDEA-ID}/`（目录物理改名见 GRILL-LOG）
+- SDD：`analysis/` → `features/` → `requirements/REQUIREMENT-{IDEA-ID}/`。不建 `solutions/`。`analysis` 上游 `solution/solutions/`
 - 槽位 / 同步：见 layout（`application-slots/application-{NAME}`）
 - 入口：[system/README.md](../../system/README.md) · [system/knowledge/](../../system/knowledge/README.md)
 
@@ -92,7 +92,7 @@
 | **SSOT** | 见 [glossary.md](glossary.md)「单一事实源」 |
 | **本层角色** | API / TBL / MW / CMP 首次定义；上游 ref 或纯 ID |
 | **stub** | 可对系统 / 解决方案 / 公司首次定义实体留薄 reference（HTTP 沿 parent 链） |
-| **闭环** | analysis → features → requirements；本库 extract/archive 写 overview 与 `chapters/`；上行 pull → distill（**仅**系统 overview） |
+| **闭环** | `analysis/` → `features/` → `requirements/`，不建 `solutions/`；`analysis` 上游 `solution/solutions/`。本库 extract/archive 写 overview 与 `chapters/`；上行 pull → distill（**仅**系统 overview） |
 | **五视角 / 5A** | 层级链与本层角色见下节「核心映射（5A）」；细则 ∈ 各 `*-meta.md` + README |
 
 - 入口：[application/README.md](../../application/README.md) · [application/knowledge/](../../application/knowledge/README.md)

@@ -172,7 +172,7 @@ aside {
       "title": "公司知识库设计",
       "description": null,
       "tags": [],
-      "body": "# 公司知识库设计\n\n本文件 = `company/` 层契约短表 + 治理引用；不写系统实现。定位见 [README](README.md)；语义 SSOT ∈ `agent/knowledge/`。\n\n## 阅读顺序\n\n1. [README.md](README.md) — 定位与导航  \n2. 本文 — 契约、同步门禁、治理链  \n3. [knowledge/README.md](knowledge/README.md) — 五视角  \n\n索引：[INDEX-GUIDE.md](INDEX-GUIDE.md) · [index.md](index.md) · [knowledge-links.yaml](knowledge-links.yaml)\n\n## 本层契约\n\n| 目录 | 职责 |\n| --- | --- |\n| `knowledge/` | 公司级实体正文 SSOT（VC/BD/CAP/BSD(L1)/PL/TPL）；[`overview/{NAME}-overview.md`](knowledge/overview/NAME-overview.md) = distill 缓冲区（非实体 SSOT） |\n| `domains/` | 域架构（`/sdx-domains`：哪条 BD 支撑 VC）；**无** `solutions/` / `analysis/` / `requirements/` |\n| `adr/` | 公司层决策 + `CONTEXT.md` |\n| `solution-slots/solution-{NAME}/` | 解决方案联邦槽位入口（软链）；**不**再挂 `system-slots` |\n| `knowledge-links.yaml` | 建联与同步编排（可空）；child 用 `solution_*` |\n| `changelogs/` | INDEXING-LOG；变更溯源 git |\n\n路径总则：[knowledge-layout § 四层文档根](../agent/references/knowledge-layout.md#四层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。\n\n> 现仓仍可能见 `system-slots/`：物理清理见 [GRILL-LOG](../changelogs/GRILL-LOG.md)。\n\n## 同步与门禁\n\n冲突以下游事实源为准；company 只修映射与导航。\n\n1. 下游 `solution/` 整理可同步内容  \n2. docs-pull → 校验/修复 `solution-slots/solution-{NAME}` 软链  \n3. 校核 `knowledge/` 与 `knowledge-links.yaml`  \n4. 可记 `SYNC_OK`（含 commit）；溯源 `git log` / `git diff`  \n\n禁止实现细节入 company 正文；改目录语义先改**本元库模板**再 upgrade。全图：[knowledge-layout § 知识流水线](../agent/references/knowledge-layout.md#知识流水线)。\n\n## 治理引用\n\n| 主题 | 链 |\n| --- | --- |\n| 本层聚焦 / 首次定义 | [knowledge-governance § 公司层](../agent/knowledge/knowledge-governance.md#公司层) |\n| 引用边界 | [knowledge-governance § 业务 knowledge 引用边界](../agent/knowledge/knowledge-governance.md#业务-knowledge-引用边界) |\n| 本层 OKF 模板要点 | [okf-spec § 10.1 company](../agent/knowledge/okf-spec.md#101-company) |\n| 其余语义 | [knowledge-governance](../agent/knowledge/knowledge-governance.md)（四层 · 5A）· [glossary](../agent/knowledge/glossary.md) · [naming-conventions](../agent/knowledge/naming-conventions.md) · [okf-spec](../agent/knowledge/okf-spec.md) · [adr-guidelines](../agent/knowledge/adr-guidelines.md) |",
+      "body": "# 公司知识库设计\n\n本文件 = `company/` 层契约短表 + 治理引用；不写系统实现。定位见 [README](README.md)；语义 SSOT ∈ `agent/knowledge/`。\n\n## 阅读顺序\n\n1. [README.md](README.md) — 定位与导航  \n2. 本文 — 契约、同步门禁、治理链  \n3. [knowledge/README.md](knowledge/README.md) — 五视角  \n\n索引：[INDEX-GUIDE.md](INDEX-GUIDE.md) · [index.md](index.md) · [knowledge-links.yaml](knowledge-links.yaml)\n\n## 本层契约\n\n| 目录 | 职责 |\n| --- | --- |\n| `knowledge/` | 公司级实体正文 SSOT（VC/BD/CAP/BSD(L1)/PL/TPL）；[`overview/{NAME}-overview.md`](knowledge/overview/NAME-overview.md) = distill 缓冲区（非实体 SSOT） |\n| `domains/` | 域架构（`/sdx-domains`：只写 BD/BSD(L1) 如何支撑 VC，不放 SLN）；**无** `solutions/` / `analysis/` / `features/` / `requirements/` |\n| `adr/` | 公司层决策 + `CONTEXT.md` |\n| `solution-slots/solution-{NAME}/` | 解决方案联邦槽位入口（软链）。公司不挂 `system-slots` |\n| `knowledge-links.yaml` | 建联与同步编排（可空）；child 用 `solution_*` |\n| `changelogs/` | INDEXING-LOG；变更溯源 git |\n\n路径总则：[knowledge-layout § 四层文档根](../agent/references/knowledge-layout.md#四层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。\n\n## 同步与门禁\n\n冲突以下游事实源为准；company 只修映射与导航。\n\n1. 下游 `solution/` 整理可同步内容  \n2. docs-pull → 校验/修复 `solution-slots/solution-{NAME}` 软链  \n3. 校核 `knowledge/` 与 `knowledge-links.yaml`  \n4. 可记 `SYNC_OK`（含 commit）；溯源 `git log` / `git diff`  \n\n禁止实现细节入 company 正文；改目录语义先改**本元库模板**再 upgrade。全图：[knowledge-layout § 知识流水线](../agent/references/knowledge-layout.md#知识流水线)。\n\n## 治理引用\n\n| 主题 | 链 |\n| --- | --- |\n| 本层聚焦 / 首次定义 | [knowledge-governance § 公司层](../agent/knowledge/knowledge-governance.md#公司层) |\n| 引用边界 | [knowledge-governance § 业务 knowledge 引用边界](../agent/knowledge/knowledge-governance.md#业务-knowledge-引用边界) |\n| 本层 OKF 模板要点 | [okf-spec § 10.1 company](../agent/knowledge/okf-spec.md#101-company) |\n| 其余语义 | [knowledge-governance](../agent/knowledge/knowledge-governance.md)（四层 · 5A）· [glossary](../agent/knowledge/glossary.md) · [naming-conventions](../agent/knowledge/naming-conventions.md) · [okf-spec](../agent/knowledge/okf-spec.md) · [adr-guidelines](../agent/knowledge/adr-guidelines.md) |",
       "backlinks": [
         "README"
       ]
@@ -196,7 +196,7 @@ aside {
       "title": "company 目录元数据",
       "description": null,
       "tags": [],
-      "body": "```yaml\n# company/ 根目录元数据（导航与 SSOT 指针）\nid: \"DIR-COMPANY\"\nname: \"公司知识库根（company）\"\ndescription: \"公司层治理与导航根。契约见 DESIGN.md；knowledge/=实体 SSOT；system-slots/=系统软链。\"\n\nrole:\n  kind: \"documentation_root\"\n  ssot_subdirectory: \"knowledge/\"\n  # 层设计入口：DESIGN.md；语义 SSOT：knowledge-governance.md\n\nchild_directories:\n  knowledge:\n    readme: \"knowledge/README.md\"\n    description: \"五视角；overview/=缓冲（非实体 SSOT）\"\n  solutions:\n    readme: \"solutions/README.md\"\n    description: \"跨系统解决方案\"\n  analysis:\n    readme: \"analysis/README.md\"\n    description: \"跨系统需求分析\"\n  adr:\n    readme: \"adr/README.md\"\n    description: \"公司层 ADR + CONTEXT\"\n  system-slots:\n    readme: \"system-slots/README.md\"\n    description: \"系统联邦槽位（system-{NAME}）\"\n  changelogs:\n    readme: \"changelogs/README.md\"\n    description: \"变更留痕与索引运维\"\n\nchild_files:\n  - \"README.md\"\n  - \"DESIGN.md\"\n  - \"index.md\"\n  - \"INDEX-GUIDE.md\"\n  - \"docs-meta.md\"\n  - \"knowledge-links.yaml\"\n  - \"viz.html\"\n\ninputs:\n  - path: \"(from-repository-and-delivery)\"\n    description: \"仓库治理、跨系统方案/分析产出与归档回写\"\n\noutputs:\n  primary_artifact:\n    pattern: \"README.md, index.md, knowledge/**/*, system-slots/**\"\n    description: \"根导航、knowledge/ 公司层 OKF 实体、按需联邦槽位\"\n\nnaming_conventions:\n  directory_index:\n    description: \"实体 ID / IDEA-ID 见 naming-conventions.md\"\n    reference: \"../agent/knowledge/naming-conventions.md\"\n\nintegration:\n  upstream:\n    - path: \"../agent/\"\n      description: \"规范、模板与 Agent 技能\"\n  downstream:\n    - path: \"../system/\"\n      description: \"系统层 reference 公司 BD/PL/SLN/TPL；MDG/SYS/PD 为本层或系统 SSOT\"\n  traceability:\n    description: \"solutions → analysis；各系统 PRD/ASD ∈ system/requirements/\"\n\nreferences:\n  - path: \"./README.md\"\n  - path: \"./DESIGN.md\"\n  - path: \"./index.md\"\n  - path: \"./knowledge-links.yaml\"\n  - path: \"../agent/knowledge/knowledge-governance.md\"\n  - path: \"../agent/knowledge/okf-spec.md\"\n```",
+      "body": "```yaml\n# company/ 根目录元数据（导航与 SSOT 指针）\nid: \"DIR-COMPANY\"\nname: \"公司知识库根（company）\"\ndescription: \"公司层治理与导航根。契约见 DESIGN.md；knowledge/=实体 SSOT；solution-slots/=解决方案软链。\"\n\nrole:\n  kind: \"documentation_root\"\n  ssot_subdirectory: \"knowledge/\"\n  # 层设计入口：DESIGN.md；语义 SSOT：knowledge-governance.md\n\nchild_directories:\n  knowledge:\n    readme: \"knowledge/README.md\"\n    description: \"五视角；overview/=缓冲（非实体 SSOT）\"\n  domains:\n    readme: \"domains/README.md\"\n    description: \"域架构（/sdx-domains）\"\n  adr:\n    readme: \"adr/README.md\"\n    description: \"公司层 ADR + CONTEXT\"\n  solution-slots:\n    readme: \"solution-slots/README.md\"\n    description: \"解决方案联邦槽位（solution-{NAME}）\"\n  changelogs:\n    readme: \"changelogs/README.md\"\n    description: \"变更留痕与索引运维\"\n\nchild_files:\n  - \"README.md\"\n  - \"DESIGN.md\"\n  - \"index.md\"\n  - \"INDEX-GUIDE.md\"\n  - \"docs-meta.md\"\n  - \"knowledge-links.yaml\"\n  - \"viz.html\"\n\ninputs:\n  - path: \"(from-repository-and-delivery)\"\n    description: \"仓库治理、跨系统方案/分析产出与归档回写\"\n\noutputs:\n  primary_artifact:\n    pattern: \"README.md, index.md, knowledge/**/*, solution-slots/**\"\n    description: \"根导航、knowledge/ 公司层 OKF 实体、按需联邦槽位\"\n\nnaming_conventions:\n  directory_index:\n    description: \"实体 ID / IDEA-ID 见 naming-conventions.md\"\n    reference: \"../agent/knowledge/naming-conventions.md\"\n\nintegration:\n  upstream:\n    - path: \"../agent/\"\n      description: \"规范、模板与 Agent 技能\"\n  downstream:\n    - path: \"../system/\"\n      description: \"系统层 reference 公司 BD/PL/TPL；SLN/PD/MDG 在解决方案或系统 SSOT\"\n  traceability:\n    description: \"domains → 各 SLN solutions/ → 各系统 analysis/features/requirements/\"\n\nreferences:\n  - path: \"./README.md\"\n  - path: \"./DESIGN.md\"\n  - path: \"./index.md\"\n  - path: \"./knowledge-links.yaml\"\n  - path: \"../agent/knowledge/knowledge-governance.md\"\n  - path: \"../agent/knowledge/okf-spec.md\"\n```",
       "backlinks": [
         "README"
       ]
@@ -262,7 +262,7 @@ aside {
       "title": "domains — 公司域架构",
       "description": null,
       "tags": [],
-      "body": "# domains — 公司域架构\n\n公司层 SDD：**只**本目录。`/sdx-domains` 写总图 + `DOMAIN-{BD-ID}.md`（哪条 BD 支撑 VC）。**不**写 `solutions/` / `analysis/` / `features/` / `requirements/`。不在此新建 knowledge 实体。\n\n| 项 | 约定 |\n|----|------|\n| 总图 | [DOMAIN-MAP.md](DOMAIN-MAP.md) |\n| 分域 | `DOMAIN-{BD-ID}.md` 平铺 |\n| 实体 ID | 引用 `knowledge/` 已有 VC/BD，不新造 |\n\n| 文档 | 对应 BD | 状态 |\n|------|---------|------|\n| DOMAIN-EXAMPLE.md | BD-EXAMPLE | draft |\n\n规范：[sdx-domains](../../agent/skills/sdx-domains/SKILL.md)",
+      "body": "# domains — 公司域架构\n\n公司层 SDD：**只**本目录。`/sdx-domains` 写总图 + `DOMAIN-{BD-ID}.md`（BD/BSD(L1) 如何支撑 VC，不放 SLN）。**不**建 `solutions/` / `analysis/` / `features/` / `requirements/`。不在此新建 knowledge 实体。\n\n| 项 | 约定 |\n|----|------|\n| 总图 | [DOMAIN-MAP.md](DOMAIN-MAP.md) |\n| 分域 | `DOMAIN-{BD-ID}.md` 平铺 |\n| 实体 ID | 引用 `knowledge/` 已有 VC/BD，不新造 |\n\n| 文档 | 对应 BD | 状态 |\n|------|---------|------|\n| DOMAIN-EXAMPLE.md | BD-EXAMPLE | draft |\n\n规范：[sdx-domains](../../agent/skills/sdx-domains/SKILL.md)",
       "backlinks": [
         "README"
       ]
@@ -910,7 +910,7 @@ aside {
       "tags": [
         "federation"
       ],
-      "body": "# solution-slots\n\n公司层**解决方案联邦槽位根**。`solution-{NAME}` 为指向下级解决方案库 `DOC_ROOT` 的**软链**；**不是** `knowledge/` SSOT。\n\n| 读什么 | 文件 |\n|--------|------|\n| 本层索引 | [index.md](index.md) |\n| 蒸馏日志 | [changelogs/ARCHIVE-LOG.md](changelogs/ARCHIVE-LOG.md) |\n| 建联清单 | [../knowledge-links.yaml](../knowledge-links.yaml) |\n| 布局契约 | [../../agent/references/knowledge-layout.md](../../agent/references/knowledge-layout.md) |\n\n## 约定\n\n- 路径：`company/solution-slots/solution-{NAME}` → 软链至解决方案仓 `DOC_ROOT`\n- 建槽：`docs-link`（company→solution）\n- 同步：`/docs-pull --sln-name <slug>`\n- 公司不再挂 `system-slots` 作为默认联邦边（旧目录可留盘至迁移完成）\n\n下游：[solution/system-slots](../../solution/system-slots/README.md)。",
+      "body": "# solution-slots\n\n公司层**解决方案联邦槽位根**。`solution-{NAME}` 为指向下级解决方案库 `DOC_ROOT` 的**软链**；**不是** `knowledge/` SSOT。\n\n| 读什么 | 文件 |\n|--------|------|\n| 本层索引 | [index.md](index.md) |\n| 蒸馏日志 | [changelogs/ARCHIVE-LOG.md](changelogs/ARCHIVE-LOG.md) |\n| 建联清单 | [../knowledge-links.yaml](../knowledge-links.yaml) |\n| 布局契约 | [../../agent/references/knowledge-layout.md](../../agent/references/knowledge-layout.md) |\n\n## 约定\n\n- 路径：`company/solution-slots/solution-{NAME}` → 软链至解决方案仓 `DOC_ROOT`\n- 建槽：`docs-link`（company→solution）\n- 同步：`/docs-pull --sln-name <slug>`\n- 公司不挂 `system-slots`。系统槽位在解决方案层\n\n下游：[solution/system-slots](../../solution/system-slots/README.md)。",
       "backlinks": [
         "README"
       ]
@@ -921,31 +921,9 @@ aside {
       "title": "ARCHIVE-LOG（联邦槽位蒸馏锚点）",
       "description": null,
       "tags": [],
-      "body": "# ARCHIVE-LOG（联邦槽位蒸馏锚点）\n\n`system-slots/` 层内共用蒸馏归档锚点。",
+      "body": "# ARCHIVE-LOG（联邦槽位蒸馏锚点）\n\n`solution-slots/` 层内共用蒸馏归档锚点。",
       "backlinks": [
         "solution-slots/README"
-      ]
-    },
-    "system-slots/README": {
-      "id": "system-slots/README",
-      "type": "Documentation",
-      "title": "system-slots（系统联邦槽位根）",
-      "description": null,
-      "tags": [
-        "federation"
-      ],
-      "body": "# system-slots\n\n公司层**系统联邦槽位根**。`system-{NAME}` 为指向下级系统库 `DOC_ROOT` 的**软链**；**不是** `knowledge/` SSOT。\n\n| 读什么 | 文件 |\n|--------|------|\n| 本层索引 | [index.md](index.md) |\n| 蒸馏日志 | [changelogs/ARCHIVE-LOG.md](changelogs/ARCHIVE-LOG.md) |\n| 建联清单 | [../knowledge-links.yaml](../knowledge-links.yaml) |\n| 布局契约 | [../../agent/references/knowledge-layout.md](../../agent/references/knowledge-layout.md) |\n\n## 约定\n\n- 路径：`company/system-slots/system-{NAME}` → 软链至系统仓 `DOC_ROOT`\n- 建槽：`docs-link`（写 yaml + 建/刷新软链；允许悬空，待 `/docs-pull` 补仓）\n- 同步：`/docs-pull --sys-name <slug>`（校验软链；失效则按 `repository` clone/pull；脏工作区拒绝 pull）\n- 追溯：`SYNC_OK` 含 commit；变更历史 `git log` / `git diff`；蒸馏锚点 [changelogs/ARCHIVE-LOG.md](changelogs/ARCHIVE-LOG.md)\n\n系统层对称见 [system/application-slots](../../system/application-slots/README.md)。",
-      "backlinks": []
-    },
-    "system-slots/changelogs/ARCHIVE-LOG": {
-      "id": "system-slots/changelogs/ARCHIVE-LOG",
-      "type": "Change Log",
-      "title": "ARCHIVE-LOG（联邦槽位蒸馏锚点）",
-      "description": null,
-      "tags": [],
-      "body": "# ARCHIVE-LOG（联邦槽位蒸馏锚点）\n\n`system-slots/` 层内共用蒸馏归档锚点。",
-      "backlinks": [
-        "system-slots/README"
       ]
     }
   },
@@ -1533,14 +1511,6 @@ aside {
     {
       "source": "solution-slots/README",
       "target": "solution-slots/changelogs/ARCHIVE-LOG"
-    },
-    {
-      "source": "system-slots/README",
-      "target": "system-slots/index"
-    },
-    {
-      "source": "system-slots/README",
-      "target": "system-slots/changelogs/ARCHIVE-LOG"
     }
   ],
   "types": [

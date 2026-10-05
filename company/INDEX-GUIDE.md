@@ -41,7 +41,6 @@ company/
 ├── solution-slots/
 │   ├── solution-{NAME}         # 软链 → 解决方案 DOC_ROOT
 │   └── changelogs/
-├── system-slots/               # 遗留；新边不写
 └── changelogs/
 ```
 
@@ -222,7 +221,6 @@ company/
 |------|------|
 | `knowledge-links.yaml` child | **空**（`links: []`，合法未挂载态） |
 | `solution-slots/solution-*` | **无**现成软链；仅有槽位 README / `changelogs/` |
-| `system-slots/` | 遗留目录；新边不写 |
 | 同仓邻层 | [solution/](../solution/README.md) · [system/](../system/README.md) · [application/](../application/README.md)（非联邦 path，开发元库并列） |
 
 ### 9.3 工具链

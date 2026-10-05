@@ -26,9 +26,6 @@ child_directories:
   solution-slots:
     readme: "solution-slots/README.md"
     description: "解决方案联邦槽位（solution-{NAME}）"
-  system-slots:
-    readme: "system-slots/README.md"
-    description: "遗留；新边不写"
   changelogs:
     readme: "changelogs/README.md"
     description: "变更留痕与索引运维"

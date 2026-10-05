@@ -4,4 +4,4 @@ title: ARCHIVE-LOG（联邦槽位蒸馏锚点）
 ---
 # ARCHIVE-LOG（联邦槽位蒸馏锚点）
 
-`system-slots/` 层内共用蒸馏归档锚点。
+`solution-slots/` 层内共用蒸馏归档锚点。

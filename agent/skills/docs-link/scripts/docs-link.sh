@@ -11,7 +11,7 @@
 # 登记值：repository 存 Git remote URL；path 存本机路径（$HOME 下 ~/…）；doc_dir=对方 DOC_DIR。
 # type:meta（docs-install 写入）写回时保活；meta.doc_dir=目标 KNOWLEDGE_TYPE。pull/push 跳过 meta。
 # 不再读写 knowledge-parent.yaml；跨层 HTTP 前缀替换仅当 --rewrite-http。
-# 槽位：application-slots/application-{NAME} 或 system-slots/system-{NAME} 为指向下级 DOC_ROOT 的软链。
+# 槽位：solution-slots/solution-{NAME}、system-slots/system-{NAME}、application-slots/application-{NAME} 为指向下级 DOC_ROOT 的软链。
 set -euo pipefail
 
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

@@ -10,7 +10,7 @@ title: 解决方案知识库设计
 
 1. [README.md](README.md) — 定位  
 2. 本文 — 本层契约、同步门禁、治理引用  
-3. `knowledge/` — 五视角（模板树见 GRILL-LOG）
+3. [knowledge/README.md](knowledge/README.md) — 五视角
 
 索引：`INDEX-GUIDE.md` · `index.md` · `knowledge-links.yaml`（装机后）
 
@@ -26,8 +26,6 @@ title: 解决方案知识库设计
 | `changelogs/` | INDEXING-LOG；变更溯源 git |
 
 路径总则：[knowledge-layout § 四层文档根](../agent/references/knowledge-layout.md#四层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。
-
-> 元仓已含 `solution/` 模板树。槽位软链与 docs-link 三跳脚本见 [GRILL-LOG](../changelogs/GRILL-LOG.md)。
 
 ## 同步与门禁
 

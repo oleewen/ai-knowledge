@@ -15,7 +15,6 @@ okf_version: 0.1
 * [domains](domains/README.md) - company/domains 目录索引
 * [knowledge](knowledge/README.md)
 * [solution-slots](solution-slots/README.md) - solution-slots 目录索引
-* [system-slots](system-slots/README.md) - system-slots 目录索引
 
 ### 目录文件
 
@@ -37,6 +36,7 @@ okf_version: 0.1
 <!-- okf:end -->
 
 
+
 # OKF 渐进披露
 
 目录说明见 [README.md](README.md)。
@@ -48,7 +48,6 @@ okf_version: 0.1
 * [changelogs](changelogs/README.md)
 * [knowledge](knowledge/README.md)
 * [solution-slots](solution-slots/README.md)
-* [system-slots](system-slots/README.md) — 遗留；新边不写
 
 ## 目录文件
 
