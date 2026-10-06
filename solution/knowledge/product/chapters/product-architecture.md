@@ -9,7 +9,7 @@ title: 产品架构
 
 本系统产品板块及与 PD、PM、SYS 映射。
 
-> **SSOT**：PL ∈ 公司层；**PD 本层首次定义**（`parent_id→公司 PL`，`maps_to_sys_id`）。本层不落 PL 文件。
+> **SSOT**：PL、PD 均在本层首次定义。PD 用 `implements_to` 挂 PL，`maps_to` BS。`parent_id` 为空。SYS `maps_to` PD。
 
 ## 产品板块
 

@@ -7,18 +7,10 @@ title: 业务概述
 
 [返回 · 业务架构](../README.md)
 
-本系统业务定位、目标与范围。
+本方案纳入的二级子域与业务服务。
 
-> **业务概述 SSOT**：公司级背景、目标与范围见 公司层 business · business-overview 章节。
+> **业务概述 SSOT**：公司背景、目标与范围见公司层 business · business-overview；商业模式见 business-model；价值链见 business-value-chain；组织角色见 business-roles-and-organization。
 
-## 背景与愿景
+## 方案范围
 
-引用公司愿景；写清本系统场景与价值贡献。
-
-## 业务目标
-
-列出本系统 OKR/KPI 及与公司目标的分解关系。
-
-## 业务范围
-
-写清范围内外、不做清单与变更入口。
+写本方案纳入哪些 BSD(L2) 与 BS，以及相对公司目标的分解。

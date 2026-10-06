@@ -4,12 +4,11 @@
 
 ## 子目录
 
-* [PD-EXAMPLE](PD-EXAMPLE/index.md) - 解决方案层 PD；与 SYS 1:1 maps_to；implements_to 公司 PL。
+* [PL](PL/index.md) - 产品线与产品服务；PL maps_to BL；PD implements_to PL、maps_to BS。
+* [BP](BP/index.md) - 主流程与业务子流程；BP implements_to SLN；BSP parent BP。
 * [chapters](chapters/index.md)
 
 ## 目录文件
-
-* [示例解决方案主流程](BP-EXAMPLE.md) - 跨 PD 黄金流；implements_to SLN。
 
 * [product-meta.md](product-meta.md)
 

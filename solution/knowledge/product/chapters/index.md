@@ -7,6 +7,7 @@
 ## 目录文件
 
 * [product-architecture.md](product-architecture.md)
+* [product-line.md](product-line.md)
 * [product-feature.md](product-feature.md)
 * [product-information-architecture.md](product-information-architecture.md)
 * [product-multi-platform.md](product-multi-platform.md)
@@ -18,13 +19,14 @@
 ## 阅读顺序
 
 1. [product-overview.md](product-overview.md)
-2. [product-architecture.md](product-architecture.md)
-3. [product-information-architecture.md](product-information-architecture.md)
-4. [product-feature.md](product-feature.md)
-5. [product-user-journeys.md](product-user-journeys.md)
-6. [product-release.md](product-release.md)
-7. [product-operations-support.md](product-operations-support.md)
-8. [product-multi-platform.md](product-multi-platform.md)
+2. [product-line.md](product-line.md)
+3. [product-architecture.md](product-architecture.md)
+4. [product-information-architecture.md](product-information-architecture.md)
+5. [product-feature.md](product-feature.md)
+6. [product-user-journeys.md](product-user-journeys.md)
+7. [product-release.md](product-release.md)
+8. [product-operations-support.md](product-operations-support.md)
+9. [product-multi-platform.md](product-multi-platform.md)
 
 ## 关联索引
 

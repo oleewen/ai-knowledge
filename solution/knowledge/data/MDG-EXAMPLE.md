@@ -22,7 +22,8 @@ layer_scope: solution
 
 - definition_scope: local
 - 一 SLN 可多条 MDG
+- governance_owner: 示例：数据治理委员会
 
 ## 依据与证据
 
-chapters/data-overview.md（示例）
+chapters/data-model.md（示例）

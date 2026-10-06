@@ -6,7 +6,7 @@
 
 ## 目录文件
 
-* [示例二级业务子域](BSD-EXAMPLE-L2.md) - BSD(L2)；parent→公司 L1；maps_to→PD 1:1。
+* [示例二级业务子域](BSD-EXAMPLE-L2.md) - BSD(L2)；parent→公司 L1；mapped_by → BS 一对一。
 
 ## 阅读顺序
 

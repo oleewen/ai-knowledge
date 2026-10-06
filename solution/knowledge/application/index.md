@@ -8,7 +8,7 @@
 
 ## 目录文件
 
-* [示例解决方案](SLN-EXAMPLE.md) - 交付包锚点；一仓一 SLN；maps_to→公司 PL。
+* [示例解决方案](SLN-EXAMPLE.md) - 交付包锚点；一仓一 SLN；maps_to→PL 一对一。
 
 * [application-meta.md](application-meta.md)
 

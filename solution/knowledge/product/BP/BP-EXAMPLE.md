@@ -1,22 +1,23 @@
 ---
 type: Business Process
 title: 示例解决方案主流程
-description: 跨 PD 黄金流；implements_to SLN。
+description: 一个 SLN 一条主流程；implements_to SLN。
 tags: [product, BP]
-timestamp: "2026-10-04T00:00:00+08:00"
+timestamp: "2026-10-06T00:00:00+08:00"
 id: BP-EXAMPLE
 perspective: product
 hierarchy: BP
-parent_id: SLN-EXAMPLE
+parent_id: null
 layer_scope: solution
-maps_to:
-  - PD-EXAMPLE
+implements_to: SLN-EXAMPLE
+children:
+  - BSP-EXAMPLE
 ---
 ## 关系
 
 - implements_to: SLN-EXAMPLE
-- maps_to:
-  - PD-EXAMPLE
+- children:
+  - BSP-EXAMPLE
 
 ## 跨视角
 
@@ -25,7 +26,7 @@ maps_to:
 ## 详细说明
 
 - definition_scope: local
-- 解决方案主流程，不强制挂单个 PD
+- 一个 SLN 一条 BP。与 PD 之间无 `maps_to`。
 
 ## 依据与证据
 

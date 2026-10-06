@@ -1,7 +1,7 @@
 ---
 type: Business Subdomain
 title: 示例二级业务子域
-description: BSD(L2)；parent→公司 L1；maps_to→PD 1:1。
+description: BSD(L2)；parent→公司 L1；mapped_by → BS 一对一。
 tags: [business, BSD]
 timestamp: "2026-10-04T00:00:00+08:00"
 id: BSD-EXAMPLE-L2
@@ -10,17 +10,19 @@ hierarchy: BSD
 parent_id: BSD-EXAMPLE
 layer_scope: solution
 level: 2
-maps_to: PD-EXAMPLE
+mapped_by:
+  - BS-EXAMPLE
 ---
 ## 关系
 
 - parent: BSD-EXAMPLE（公司 BSD(L1)，示例 ID）
-- maps_to: PD-EXAMPLE
+- mapped_by:
+  - BS-EXAMPLE
 - implemented_by: BC-EXAMPLE（系统库）
 
 ## 跨视角
 
-- 产品服务：PD-EXAMPLE
+- 业务服务：BS-EXAMPLE
 
 ## 详细说明
 

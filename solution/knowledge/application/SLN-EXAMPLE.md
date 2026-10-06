@@ -1,7 +1,7 @@
 ---
 type: Solution
 title: 示例解决方案
-description: 交付包锚点；一仓一 SLN；maps_to→公司 PL。
+description: 交付包锚点；一仓一 SLN；maps_to→PL 一对一。
 tags: [application, SLN]
 timestamp: "2026-10-04T00:00:00+08:00"
 id: SLN-EXAMPLE

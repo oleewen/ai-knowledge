@@ -9,4 +9,4 @@ title: 技术视角元数据（solution/knowledge/technical）
 | meta_id | `DIR-SOLUTION-KNOWLEDGE-TECHNICAL` |
 | 视角 | technical |
 | 层级范围 | solution |
-| 说明 | TSD 本层 SSOT；TPL 公司准入 |
+| 说明 | TSD 本层 SSOT。`TSD.implements_to` → 公司 TPL。MW/CMP ∈ 应用 |

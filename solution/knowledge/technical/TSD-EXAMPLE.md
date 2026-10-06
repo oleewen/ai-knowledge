@@ -22,6 +22,7 @@ layer_scope: solution
 ## 详细说明
 
 - definition_scope: local
+- domain: middleware
 
 ## 依据与证据
 

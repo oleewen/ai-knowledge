@@ -4,7 +4,8 @@
 
 ## 子目录
 
-* [BSD-EXAMPLE-L2](BSD-EXAMPLE-L2/index.md) - BSD(L2)；parent→公司 L1；maps_to→PD 1:1。
+* [BSD-EXAMPLE-L2](BSD-EXAMPLE-L2/index.md) - BSD(L2)；parent→公司 L1；mapped_by → BS。
+* [BS](BS/index.md) - 业务服务；无 parent；maps_to → BSD(L2) 一对一。
 * [chapters](chapters/index.md)
 
 ## 目录文件

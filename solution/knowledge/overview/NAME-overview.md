@@ -18,27 +18,12 @@ title: "{域名称}架构概览（{slug}-overview）"
 
 | 主标题 | 副标题 | 归档业务知识 |
 | --- | --- | --- |
-| [业务概述](../business/chapters/business-overview.md) | [背景与愿景](../business/chapters/business-overview.md#背景与愿景) | — |
-| [业务概述](../business/chapters/business-overview.md) | [业务目标](../business/chapters/business-overview.md#业务目标) | — |
-| [业务概述](../business/chapters/business-overview.md) | [业务范围](../business/chapters/business-overview.md#业务范围) | — |
-| [业务域划分](../business/chapters/business-domain-division.md) | [业务域清单](../business/chapters/business-domain-division.md#业务域清单) | — |
-| [业务域划分](../business/chapters/business-domain-division.md) | [业务域职责](../business/chapters/business-domain-division.md#业务域职责) | — |
-| [业务域划分](../business/chapters/business-domain-division.md) | [核心域 / 支撑域 / 通用域](../business/chapters/business-domain-division.md#核心域--支撑域--通用域) | — |
-| [业务域划分](../business/chapters/business-domain-division.md) | [业务域关系图](../business/chapters/business-domain-division.md#业务域关系图) | — |
+| [业务概述](../business/chapters/business-overview.md) | [方案范围](../business/chapters/business-overview.md#方案范围) | — |
+| [业务域划分](../business/chapters/business-domain-division.md) | [二级子域](../business/chapters/business-domain-division.md#二级子域) | — |
+| [业务域划分](../business/chapters/business-domain-division.md) | [子域关系](../business/chapters/business-domain-division.md#子域关系) | — |
 | [业务术语](../business/chapters/business-glossary.md) | [概念模型](../business/chapters/business-glossary.md#概念模型) | — |
 | [业务术语](../business/chapters/business-glossary.md) | [业务术语](../business/chapters/business-glossary.md#业务术语) | — |
 | [业务术语](../business/chapters/business-glossary.md) | [术语映射](../business/chapters/business-glossary.md#术语映射) | — |
-| [业务术语](../business/chapters/business-glossary.md) | [术语治理](../business/chapters/business-glossary.md#术语治理) | — |
-| [业务流程](../business/chapters/business-processes.md) | [核心流程](../business/chapters/business-processes.md#核心流程) | — |
-| [业务流程](../business/chapters/business-processes.md) | [分支流程](../business/chapters/business-processes.md#分支流程) | — |
-| [业务流程](../business/chapters/business-processes.md) | [异常流程](../business/chapters/business-processes.md#异常流程) | — |
-| [业务流程](../business/chapters/business-processes.md) | [系统映射](../business/chapters/business-processes.md#系统映射) | — |
-| [能力地图](../business/chapters/business-capability-map.md) | [能力清单](../business/chapters/business-capability-map.md#能力清单) | — |
-| [能力地图](../business/chapters/business-capability-map.md) | [成熟度评估](../business/chapters/business-capability-map.md#成熟度评估) | — |
-| [能力地图](../business/chapters/business-capability-map.md) | [系统映射](../business/chapters/business-capability-map.md#系统映射) | — |
-| [业务规则与策略](../business/chapters/business-rules-and-strategies.md) | [策略规则](../business/chapters/business-rules-and-strategies.md#策略规则) | — |
-| [业务规则与策略](../business/chapters/business-rules-and-strategies.md) | [合规风控](../business/chapters/business-rules-and-strategies.md#合规风控) | — |
-| [业务规则与策略](../business/chapters/business-rules-and-strategies.md) | [业务策略](../business/chapters/business-rules-and-strategies.md#业务策略) | — |
 
 ## [产品架构](../product/README.md)
 
@@ -48,6 +33,9 @@ title: "{域名称}架构概览（{slug}-overview）"
 | [产品概述](../product/chapters/product-overview.md) | [目标用户](../product/chapters/product-overview.md#目标用户) | — |
 | [产品概述](../product/chapters/product-overview.md) | [竞品分析](../product/chapters/product-overview.md#竞品分析) | — |
 | [产品概述](../product/chapters/product-overview.md) | [产品路线](../product/chapters/product-overview.md#产品路线) | — |
+| [产品线](../product/chapters/product-line.md) | [产品线清单（PL）](../product/chapters/product-line.md#产品线清单pl) | — |
+| [产品线](../product/chapters/product-line.md) | [产品线职责与边界](../product/chapters/product-line.md#产品线职责与边界) | — |
+| [产品线](../product/chapters/product-line.md) | [产品线关系图](../product/chapters/product-line.md#产品线关系图) | — |
 | [产品架构](../product/chapters/product-architecture.md) | [产品板块](../product/chapters/product-architecture.md#产品板块) | — |
 | [产品架构](../product/chapters/product-architecture.md) | [产品模块映射](../product/chapters/product-architecture.md#产品模块映射) | — |
 | [产品架构](../product/chapters/product-architecture.md) | [产品系统映射](../product/chapters/product-architecture.md#产品系统映射) | — |
@@ -151,26 +139,9 @@ title: "{域名称}架构概览（{slug}-overview）"
 
 | 主标题 | 副标题 | 归档业务知识 |
 | --- | --- | --- |
-| [数据架构概述](../data/chapters/data-overview.md) | [设计原则](../data/chapters/data-overview.md#设计原则) | — |
-| [数据架构概述](../data/chapters/data-overview.md) | [架构全景](../data/chapters/data-overview.md#架构全景) | — |
-| [数据架构概述](../data/chapters/data-overview.md) | [生命周期](../data/chapters/data-overview.md#生命周期) | — |
-| [数据模型](../data/chapters/data-model.md) | [物理模型](../data/chapters/data-model.md#物理模型) | — |
-| [数据模型](../data/chapters/data-model.md) | [服务实体映射](../data/chapters/data-model.md#服务实体映射) | — |
-| [数据模型](../data/chapters/data-model.md) | [模型版本](../data/chapters/data-model.md#模型版本) | — |
-| [数据存储方案](../data/chapters/data-storage.md) | [库选型](../data/chapters/data-storage.md#库选型) | — |
-| [数据存储方案](../data/chapters/data-storage.md) | [分库分表](../data/chapters/data-storage.md#分库分表) | — |
-| [数据存储方案](../data/chapters/data-storage.md) | [读写分离](../data/chapters/data-storage.md#读写分离) | — |
-| [数据存储方案](../data/chapters/data-storage.md) | [冷热分离](../data/chapters/data-storage.md#冷热分离) | — |
-| [数据存储方案](../data/chapters/data-storage.md) | [数据归档](../data/chapters/data-storage.md#数据归档) | — |
-| [数据存储方案](../data/chapters/data-storage.md) | [服务存储分布](../data/chapters/data-storage.md#服务存储分布) | — |
-| [数据分析](../data/chapters/data-analytics.md) | [分析主题](../data/chapters/data-analytics.md#分析主题) | — |
-| [数据分析](../data/chapters/data-analytics.md) | [指标口径](../data/chapters/data-analytics.md#指标口径) | — |
-| [数据分析](../data/chapters/data-analytics.md) | [消费路径](../data/chapters/data-analytics.md#消费路径) | — |
-| [数据流转](../data/chapters/data-flow.md) | [数据流图](../data/chapters/data-flow.md#数据流图) | — |
-| [数据流转](../data/chapters/data-flow.md) | [ETL 流程](../data/chapters/data-flow.md#etl-流程) | — |
-| [数据流转](../data/chapters/data-flow.md) | [实时数据流](../data/chapters/data-flow.md#实时数据流) | — |
-| [数据流转](../data/chapters/data-flow.md) | [数据同步](../data/chapters/data-flow.md#数据同步) | — |
-| [数据流转](../data/chapters/data-flow.md) | [数据一致性](../data/chapters/data-flow.md#数据一致性) | — |
+| [数据架构概述](../data/chapters/data-overview.md) | [数据主权](../data/chapters/data-overview.md#数据主权) | — |
+| [数据架构概述](../data/chapters/data-overview.md) | [跨系统数据流](../data/chapters/data-overview.md#跨系统数据流) | — |
+| [数据模型](../data/chapters/data-model.md) | [主数据](../data/chapters/data-model.md#主数据) | — |
 
 ---
 
