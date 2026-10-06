@@ -21,7 +21,7 @@ layer_scope: system
 
 ## 详细说明
 
-- 上游产品服务 SSOT：本库 `PD-EXAMPLE`（须与 PM 同系统库）
+- 上游产品服务 SSOT：解决方案 `PD-EXAMPLE`（纯 ID）
 
 ## 依据与证据
 

@@ -18,7 +18,7 @@ layer_scope: system
 
 ## 跨视角
 
-- maps_to:
+- mapped_by:
   - MS-EXAMPLE
   - ENT-EXAMPLE
 

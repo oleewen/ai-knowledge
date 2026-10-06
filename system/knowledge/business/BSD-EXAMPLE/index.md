@@ -2,7 +2,7 @@
 
 ## 子目录
 
-* [BSD-EXAMPLE-SUB](BSD-EXAMPLE-SUB/index.md) - BSD-EXAMPLE-SUB 索引
+* [BSD-EXAMPLE-L2](BSD-EXAMPLE-L2/index.md) - BSD-EXAMPLE-L2 索引
 
 ## 目录文件
 

@@ -16,7 +16,9 @@ layer_scope: system
 
 ## 跨视角
 
-- maps_to: API-EXAMPLE
+- maps_to: AB-EXAMPLE
+- mapped_by:
+  - API-EXAMPLE
 
 ## 详细说明
 

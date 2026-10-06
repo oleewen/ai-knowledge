@@ -8,8 +8,6 @@
 
 ## 目录文件
 
-* [中间件域](TSD-EXAMPLE.md) - 示例技术域（中间件）。
-
 * [technical-meta.md](technical-meta.md)
 
 ## 阅读顺序
@@ -17,7 +15,6 @@
 1. [README.md](README.md)
 2. [technical-meta.md](technical-meta.md)
 3. [chapters/index.md](chapters/index.md)
-4. [TSD-EXAMPLE.md](TSD-EXAMPLE.md)
 
 ## 关联索引
 

@@ -7,19 +7,20 @@ timestamp: "2026-06-21T00:00:00+08:00"
 id: BC-EXAMPLE
 perspective: business
 hierarchy: BC
-parent_id: BSD-EXAMPLE-SUB
+parent_id: BSD-EXAMPLE-L2
 layer_scope: system
 ---
 ## 关系
 
-- implements_to: BSD-EXAMPLE-SUB
+- implements_to: BSD-EXAMPLE-L2
 - implemented_by:
   - AGG-EXAMPLE
 
 ## 跨视角
 
 - supported_by: APP-EXAMPLE
-- maps_to: PM-EXAMPLE
+- mapped_by:
+  - PM-EXAMPLE
 
 ## 详细说明
 

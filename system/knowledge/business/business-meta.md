@@ -4,7 +4,7 @@ title: 业务视角元数据（system/knowledge/business）
 ---
 # 业务视角元数据（system/knowledge/business）
 
-**结论**：BSD(L1)→BSD(L2)→BC→AGG→AB 视角元数据 SSOT。BD / BSD(L1) = company reference；自 BSD(L2) 起 = 本层 SSOT。实例：[index.md](../index.md)。
+**结论**：BC→AGG→AB 本层 SSOT。BD / BSD(L1) = company reference。BSD(L2) 为解决方案 reference。实例：[index.md](../index.md)。
 
 ## 1. 概览
 
@@ -13,7 +13,7 @@ title: 业务视角元数据（system/knowledge/business）
 | meta_id | `DIR-SYSTEM-KNOWLEDGE-BUSINESS` |
 | 视角 | business |
 | 层级范围 | system |
-| 说明 | BD / BSD(L1) = company reference；自 BSD(L2) 起 = 本层 SSOT。 |
+| 说明 | BD / BSD(L1) = company reference；BSD(L2) 为解决方案 reference；BC→AGG→AB = 本层 SSOT。 |
 
 ## 2. 层级链
 
@@ -21,7 +21,7 @@ title: 业务视角元数据（system/knowledge/business）
 | --- | --- | --- |
 | 1 | BD | 业务域（公司 SSOT；系统可为视角根 reference） |
 | 2 | BSD(L1) | 业务子域（公司 SSOT；系统可为 reference；`level: 1`） |
-| 3 | BSD(L2) | 业务子域（系统 SSOT；`level: 2`；父 = BSD(L1)） |
+| — | BSD(L2) | 业务子域（解决方案 SSOT；本层 reference；`level: 2`） |
 | 4 | BC | 限界上下文（系统首次） |
 | 5 | AGG | 聚合根（系统首次） |
 | 6 | AB | 领域能力（系统首次） |
@@ -32,7 +32,7 @@ title: 业务视角元数据（system/knowledge/business）
 | --- | --- | --- | --- | --- |
 | 1 | bd | BD | `BD-{NAME}` | —（reference → company） |
 | 2 | bsd1 | BSD | `BSD-{NAME}` | BD（`level: 1`） |
-| 3 | bsd2 | BSD | `BSD-{NAME}` | BSD(L1)（`level: 2`） |
+| — | bsd2 | BSD | `BSD-{NAME}` | BSD(L1)（`level: 2`；解决方案首次；本层 reference） |
 | 4 | bc | BC | `BC-{NAME}` | BSD(L2) |
 | 5 | agg | AGG | `AGG-{NAME}` | BC |
 | 6 | ab | AB | `AB-{NAME}` | AGG |
@@ -44,7 +44,7 @@ title: 业务视角元数据（system/knowledge/business）
 | company | `BD-{NAME}.md` | 公司 SSOT |
 | system | `knowledge/business/BD-{NAME}.md` | 视角根 reference（非域文件夹） |
 | system | `knowledge/business/BSD-{L1}/BSD-{L1}.md` | BSD(L1) 锚点目录（例：`BSD-EXAMPLE/`） |
-| system | `knowledge/business/BSD-{L1}/BSD-{L2}/BSD-{L2}.md` | BSD(L2) 嵌套；其下 BC→AGG→AB |
+| system | `knowledge/business/BSD-{L1}/BSD-{L2}/` | 不落 BSD(L2) 文件；其下 BC→AGG→AB |
 | application | `BD-*.md` | 应用 reference |
 
 ## 5. 字段（OKF）

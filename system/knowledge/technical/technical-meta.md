@@ -4,7 +4,7 @@ title: 技术视角元数据（system/knowledge/technical）
 ---
 # 技术视角元数据（system/knowledge/technical）
 
-**结论**：TSD 视角元数据 SSOT。MW/CMP 首次 ∈ application；本层可挂 MW reference。实例：[index.md](../index.md)。
+**结论**：本层无 TSD SSOT。TSD 为解决方案 reference。MW/CMP 首次 ∈ application。实例：[index.md](../index.md)。
 
 ## 1. 概览
 
@@ -13,20 +13,20 @@ title: 技术视角元数据（system/knowledge/technical）
 | meta_id | `DIR-SYSTEM-ARCH-TECHNICAL` |
 | 视角 | technical |
 | 层级范围 | system |
-| 说明 | 系统级 TSD SSOT；MW/CMP 首次 ∈ application；本层可挂 MW reference。 |
+| 说明 | TSD 为解决方案 reference；MW/CMP 首次 ∈ application。 |
 
 ## 2. 层级链
 
 | 链序 | 层级代码 | 说明 |
 | --- | --- | --- |
-| 1 | TSD | 系统级技术域（中间件域、可观测域等） |
+| — | TSD | 解决方案 SSOT；本层 reference |
 | 2 | MW | 应用层首次；本层可为 reference |
 
 ## 3. 层定义
 
 | order | key | code | id_pattern | parent |
 | --- | --- | --- | --- | --- |
-| 1 | tsd | TSD | `TSD-{NAME}` | TPL（逻辑归属，`implements_to`） |
+| — | tsd | TSD | `TSD-{NAME}` | TPL（解决方案首次；本层 reference） |
 
 ## 4. 字段（OKF）
 
@@ -49,7 +49,7 @@ Frontmatter 10 必填 + 正文四段见 [okf-spec](../../../agent/knowledge/okf-
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 叙事索引 |
-| [index.md](../index.md) | TSD 实例 SSOT |
+| [index.md](../index.md) | TSD reference |
 | TPL-* | 公司 TPL SSOT（reference） |
 | [naming-conventions](../../../agent/knowledge/naming-conventions.md) | 命名 SSOT |
 | [knowledge-governance](../../../agent/knowledge/knowledge-governance.md) | 层语义 |

@@ -9,8 +9,6 @@
 
 ## 目录文件
 
-* [示例业务流程（BP）](BP-EXAMPLE.md) - 示例业务流程。
-
 * [product-meta.md](product-meta.md)
 
 ## 阅读顺序
@@ -24,4 +22,4 @@
 
 - 上一级索引：[index.md](../index.md)
 - 上一级说明：[README.md](../README.md)
-- 上游：公司 `PL-*`；本层 `PD-*` SSOT
+- 上游：公司 `PL-*`；解决方案 `PD-*` / `BP-*`（不落文件，纯 ID）

@@ -4,7 +4,7 @@ title: 数据视角元数据（system/knowledge/data）
 ---
 # 数据视角元数据（system/knowledge/data）
 
-**结论**：MDG→DS→ENT 视角元数据 SSOT；应用层补 TBL。SYS 经 `uses_to` 声明使用。实例：[index.md](../index.md)。
+**结论**：DS→ENT 本层 SSOT。MDG 为解决方案 reference。应用层补 TBL。实例：[index.md](../index.md)。
 
 ## 1. 概览
 
@@ -13,13 +13,13 @@ title: 数据视角元数据（system/knowledge/data）
 | meta_id | `DIR-SYSTEM-KNOWLEDGE-DATA` |
 | 视角 | data |
 | 层级范围 | system |
-| 说明 | MDG/DS/ENT = 本层 SSOT；应用层补 TBL。 |
+| 说明 | MDG 为解决方案 reference；DS/ENT = 本层 SSOT；应用层补 TBL。 |
 
 ## 2. 层级链
 
 | 链序 | 层级代码 | 说明 |
 | --- | --- | --- |
-| 1 | MDG | 主数据域（本层首次） |
+| — | MDG | 解决方案 SSOT；本层 reference |
 | 2 | DS | 数据存储（本层首次） |
 | 3 | ENT | 数据实体（表/集合，本层首次） |
 
@@ -27,11 +27,11 @@ title: 数据视角元数据（system/knowledge/data）
 
 | order | key | code | id_pattern | parent |
 | --- | --- | --- | --- | --- |
-| 1 | mdg | MDG | `MDG-{NAME}` | — |
+| — | mdg | MDG | `MDG-{NAME}` | —（解决方案首次；本层 reference） |
 | 2 | ds | DS | `DS-{NAME}` | MDG（逻辑归属，`implements_to`） |
 | 3 | ent | ENT | `ENT-{NNN}` 或 `ENT-{NAME}` | DS |
 
-落盘：`MDG-{NAME}.md` 平铺；`DS-{NAME}/` 含 DS/ENT。
+落盘：MDG 不在本层首次；`DS-{NAME}/` 含 DS/ENT。
 
 ## 4. 字段（OKF）
 

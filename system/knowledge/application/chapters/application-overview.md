@@ -9,7 +9,7 @@ title: 系统概述
 
 本系统一页纸概述，统一全景、服务与集成语境。
 
-> **系统概述 SSOT**：公司级概述标准见 公司层 application · application-overview 章节。
+> **系统概述 SSOT**：系统概述见解决方案层 application · application-overview 章节。
 
 ## 系统使命
 

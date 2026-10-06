@@ -17,7 +17,7 @@ parent: BD-EXAMPLE
 
 - parent: BD-EXAMPLE
 - children:
-  - BSD-EXAMPLE-SUB
+  - BSD-EXAMPLE-L2
 
 ## 跨视角
 

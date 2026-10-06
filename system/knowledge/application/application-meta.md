@@ -15,7 +15,7 @@ title: 应用视角元数据（system/knowledge/application）
 | meta_id | `DIR-SYSTEM-KNOWLEDGE-APPLICATION` |
 | 视角 | application |
 | 层级范围 | system |
-| 说明 | SYS 本层首次（`implements_to→公司 SLN`）；APP/MS 本层 SSOT；API ∈ 应用层。 |
+| 说明 | SYS 本层首次（`implements_to→解决方案 SLN`）；APP/MS 本层 SSOT；API ∈ 应用层。 |
 
 ## 2. 层级链
 
