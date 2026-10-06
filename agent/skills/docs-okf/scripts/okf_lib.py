@@ -133,8 +133,11 @@ HIERARCHY_TO_TYPE: Dict[str, str] = {
     "CMP": "Component",
     "TSD": "Technical Subdomain",
     "CAP": "Business Capability",
+    "BL": "Business Line",
+    "BS": "Business Service",
     "TPL": "Technical Platform",
     "BP": "Business Process",
+    "BSP": "Business Subprocess",
     "BR": "Business Rule",
     "TBL": "Data Table",
 }
@@ -279,6 +282,8 @@ HIERARCHY_TO_PERSPECTIVE: Dict[str, str] = {
     "AGG": "business",
     "AB": "business",
     "CAP": "business",
+    "BL": "business",
+    "BS": "business",
     "PL": "product",
     "SLN": "application",
     "PD": "product",
@@ -287,6 +292,7 @@ HIERARCHY_TO_PERSPECTIVE: Dict[str, str] = {
     "FR": "product",
     "UC": "product",
     "BP": "product",
+    "BSP": "product",
     "BR": "product",
     "SYS": "application",
     "APP": "application",
@@ -307,7 +313,8 @@ HIERARCHY_FIRST_LAYER: Dict[str, str] = {
     "VC": "company",
     "BD": "company",
     "CAP": "company",
-    "PL": "company",
+    "BL": "company",
+    "PL": "solution",
     "SLN": "company",
     "MDG": "company",
     "TPL": "company",
@@ -315,9 +322,11 @@ HIERARCHY_FIRST_LAYER: Dict[str, str] = {
     "BC": "system",
     "AGG": "system",
     "AB": "system",
-    "PD": "system",
+    "PD": "solution",
     "PM": "system",
-    "BP": "system",
+    "BP": "solution",
+    "BSP": "solution",
+    "BS": "solution",
     "FT": "system",
     "FR": "system",
     "UC": "system",
@@ -372,14 +381,14 @@ def entity_relpath(
             return f"knowledge/business/{id}/{id}.md"
         if perspective == "business" and prefix == "BD":
             return f"knowledge/business/{id}/{id}.md"
+        if perspective == "business" and prefix == "BL":
+            return f"knowledge/business/BL/{id}.md"
         if perspective == "business" and prefix == "BSD":
             bd = parent_id or "BD-EXAMPLE"
             return f"knowledge/business/{bd}/{id}.md"
         if perspective == "business" and prefix == "CAP":
             vc = parent_id or _DEFAULT_BUSINESS_VC
             return f"knowledge/business/{vc}/{id}.md"
-        if perspective == "product" and prefix == "PL":
-            return f"knowledge/product/{id}.md"
         if perspective == "application" and prefix == "SLN":
             return f"knowledge/application/{id}.md"
         if perspective == "data" and prefix == "MDG":
@@ -427,6 +436,14 @@ def entity_relpath(
         if not anchor:
             return f"knowledge/{perspective}/{id}.md"
         return f"knowledge/{perspective}/{anchor}/{id}.md"
+
+    if bundle == "solution":
+        if perspective == "product" and prefix in ("PL", "PD"):
+            return f"knowledge/product/PL/{id}.md"
+        if perspective == "product" and prefix in ("BP", "BSP"):
+            return f"knowledge/product/BP/{id}.md"
+        if perspective == "business" and prefix == "BS":
+            return f"knowledge/business/BS/{id}.md"
 
     if perspective == "application" and prefix in ("SYS", "APP"):
         return f"knowledge/application/{id}.md"

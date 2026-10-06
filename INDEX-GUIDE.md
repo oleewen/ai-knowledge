@@ -202,8 +202,8 @@ flowchart LR
 | 聚合 | 职责 | 关键落点 |
 | ------ | ------ | ---------- |
 | 治理规则 | 四层边界；术语、原则、命名、ADR | [agent/knowledge/knowledge-governance.md](agent/knowledge/knowledge-governance.md)、[agent/knowledge/README.md](agent/knowledge/README.md) |
-| 应用五视角实体 | BC/AGG、PL/PM/FT/UC、SYS/APP/MS/API、DS/ENT/TBL、MW/CMP 等 | [application/knowledge/](application/knowledge/)（[index](application/knowledge/index.md)）；现盘 EXAMPLE：`MS-EXAMPLE`、`DS-EXAMPLE`、`MW-EXAMPLE` |
-| 系统/解决方案/公司架构实体 | 视角章节 + overview 第三列 | `system/knowledge/`、`solution/knowledge/`、`company/knowledge/`、`*/overview/` |
+| 应用五视角实体 | BC/AGG、PM/FT/UC、SYS/APP/MS/API、DS/ENT/TBL、MW/CMP 等 | [application/knowledge/](application/knowledge/)（[index](application/knowledge/index.md)）；现盘 EXAMPLE：`MS-EXAMPLE`、`DS-EXAMPLE`、`MW-EXAMPLE` |
+| 系统/解决方案/公司架构实体 | 解决方案 PL/PD/BP/BSP/BS；公司 BL；视角章节 + overview 第三列 | `system/knowledge/`、`solution/knowledge/`、`company/knowledge/`、`*/overview/` |
 | 阶段产物 | SOLUTION / ANALYSIS / FEATURE / DOMAIN / REQUIREMENT | `solution/solutions/`；`system|application` 的 `analysis/` · `features/` · `requirements/`；`company/domains/` |
 | Skill 契约 | 参数向导 → 澄清 → 生成 → 烤干（语义族） | `agent/skills/*/SKILL.md` + `agent/references/` |
 
@@ -300,7 +300,7 @@ stateDiagram-v2
 
 映射字段 SSOT：[knowledge-governance.md](agent/knowledge/knowledge-governance.md)、[glossary.md](agent/knowledge/glossary.md)。**禁止**未同步引用链时改实体 ID。
 
-系统侧样例含 `APP-EXAMPLE`、`BSD-EXAMPLE`、`DS-EXAMPLE`、`PM-EXAMPLE` 等；解决方案侧含 `SLN-EXAMPLE`、`PD-EXAMPLE`、`BSD-EXAMPLE-L2`、`MDG-EXAMPLE`、`TSD-EXAMPLE`、`BP-EXAMPLE`；公司侧含 `BD-EXAMPLE`、`PL-EXAMPLE` 等（路径在对应 `knowledge/`）。
+系统侧样例含 `APP-EXAMPLE`、`BSD-EXAMPLE`、`DS-EXAMPLE`、`PM-EXAMPLE` 等；解决方案侧含 `SLN-EXAMPLE`、`PL-EXAMPLE`、`PD-EXAMPLE`、`BS-EXAMPLE`、`BSD-EXAMPLE-L2`、`MDG-EXAMPLE`、`TSD-EXAMPLE`、`BP-EXAMPLE`、`BSP-EXAMPLE`；公司侧含 `BD-EXAMPLE`、`BL-EXAMPLE` 等（路径在对应 `knowledge/`）。
 
 ### 6.3 关系映射
 

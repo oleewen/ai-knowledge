@@ -78,7 +78,7 @@ ENT 的 `parent_id` 可用于排序或链序说明。
 |层级|`PL` / `PD` / `PM` / `FT` / `UC`|
 |类型|产品线 / 产品 / 产品模块 / 功能 / 用例（与 README 示例一致）|
 |名称|frontmatter `title` 或 `name`|
-|锚点目录|相对链接至 concept（公司 PL；系统 PD 起 PM，示例：`PM-EXAMPLE/`）|
+|锚点目录|相对链接至 concept（解决方案 PL / PD；系统 PM 起，示例：`PM-EXAMPLE/`）|
 
 ---
 

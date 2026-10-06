@@ -36,15 +36,18 @@ tags: ["glossary", "terminology", "governance"]
 | --- | --- | --- | --- | --- |
 | BA | VC | Value Chain | 价值链 | 能力目录根；下挂 CAP，并由 BD 支撑 |
 | BA | BD | Business Domain | 业务域 | 支撑 VC；下挂 BSD(L1)；勿与 BSD 混淆 |
-| BA | CAP | Business Capability | 业务能力 | 实现价值链；与 BSD(L1) 一对一映射 |
-| BA | BSD | Business Subdomain | 业务子域 | 仅一级 / 二级；L1 公司（对标 PL）；L2 解决方案（对标 PD） |
+| BA | BL | Business Line | 业务线 | 无 parent；`maps_to` BSD(L1) 一对一；`mapped_by` PL |
+| BA | BS | Business Service | 业务服务 | 无 parent；解决方案首次定义；`maps_to` BSD(L2) 一对一 |
+| BA | CAP | Business Capability | 业务能力 | 实现价值链；由 BSD(L1) 一对一映射 |
+| BA | BSD | Business Subdomain | 业务子域 | 仅一级 / 二级；L1 公司，由 BL 一对一映射，并 `maps_to` CAP；L2 解决方案，由 BS 一对一映射 |
 | BA | BC | Bounded Context | 限界上下文 | — |
 | BA | AGG | Aggregate | 聚合根 | — |
 | BA | AB | Ability | 领域能力 | 能力边界 |
-| PA | PL | Product Line | 产品线 | 对应 BSD(L1) |
-| PA | PD | Product | 产品服务 | 别名：业务服务；解决方案层 SSOT；与 SYS 1:1 |
+| PA | PL | Product Line | 产品线 | 解决方案首次定义；`maps_to` BL 一对一 |
+| PA | PD | Product | 产品服务 | 解决方案层 SSOT；`implements_to` PL；`maps_to` BS 一对一 |
 | PA | PM | Product Module | 产品模块 | — |
-| PA | BP | Business Process | 业务流程 | 解决方案主流程；`implements_to` SLN |
+| PA | BP | Business Process | 业务流程 | 一个 SLN 一条；`implements_to` SLN；`children` 为 BSP |
+| PA | BSP | Business Subprocess | 业务子流程 | `parent`→BP；`implements_to` PD；`kind`：core / branch / exception |
 | PA | FT | Feature | 功能点 | — |
 | PA | FR | Functional Requirement | 功能需求 | — |
 | PA | UC | Use Case | 用例 | — |
@@ -74,9 +77,9 @@ ID 前缀写作 `VC-` / `BD-` 等，语法见 [naming-conventions.md](naming-con
 
 | 动词对 | 场景 |
 | --- | --- |
-| `parent` / `children` | 仅**同类**树（BD↔BSD(L1)、BSD(L1)↔BSD(L2)） |
+| `parent` / `children` | 同类树（BD↔BSD(L1)、BSD(L1)↔BSD(L2)）；另 BSP→BP |
 | `implements_to` / `implemented_by` | 同视角不同类上下级（组成链）；及 SYS↔SLN、TSD↔TPL、MW↔TSD、CMP↔MW 等 |
-| `maps_to` / `maps_to` | 同级对标（两边同名；含同视角） |
+| `maps_to` / `mapped_by` | 同级对标（出边 / 对端列表；含同视角） |
 | `supports_to` / `supported_by` | 支撑（BD↔VC；APP↔BC；API→FT） |
 | `uses_to` / `used_by` | 使用（第五动词） |
 | `depends_to` / `depended_by` | PM↔PM 依赖（第六动词） |
@@ -85,10 +88,11 @@ ID 前缀写作 `VC-` / `BD-` 等，语法见 [naming-conventions.md](naming-con
 
 | 字段（出边） | 宿主 → 目标（摘要） |
 | --- | --- |
-| `parent` / `children` | BSD(L1)↔BD；BSD(L2)↔BSD(L1) |
-| `implements_to` | CAP→VC；AGG→BC；AB→AGG；BC→BSD(L2)；PD→PL；PM→PD；FT→PM；FR→FT；UC\|BR→FR；BP→SLN；APP→SYS；MS→APP；API→MS；DS→MDG；ENT→DS；TBL→ENT；SYS→SLN；TSD→TPL；MW→TSD；CMP→MW |
+| `parent` / `children` | BSD(L1)↔BD；BSD(L2)↔BSD(L1)；BSP→BP |
+| `implements_to` | CAP→VC；AGG→BC；AB→AGG；BC→BSD(L2)；PD→PL；PM→PD；FT→PM；FR→FT；UC\|BR→FR；BP→SLN；BSP→PD；APP→SYS；MS→APP；API→MS；DS→MDG；ENT→DS；TBL→ENT；SYS→SLN；TSD→TPL；MW→TSD；CMP→MW |
 | `implemented_by` | 上表对端 |
-| `maps_to` | CAP↔BSD(L1)；BSD(L1)↔PL；BSD(L2)↔PD；SLN↔PL；PD↔SYS；BP 可→多 PD；MS↔AGG；AB↔API；AGG↔ENT；PM↔BC；UC↔API |
+| `maps_to` | BL→BSD(L1) 1:1；BSD(L1)→CAP；PL→BL 1:1；SLN→PL 1:1；PD→BS 1:1；BS→BSD(L2) 1:1；SYS→PD 1:1；PM→BC；API→UC；UC→AB；MS→AGG；ENT→AGG |
+| `mapped_by` | 上表对端 |
 | `supports_to` | BD→VC；APP→BC；API→FT |
 | `supported_by` | VC→BD；BC→APP；FT→API |
 | `uses_to` | SYS→MDG\|TSD；APP→DS\|MW；MS→ENT\|TBL\|CMP；MW→DS（可空仍双写） |

@@ -31,7 +31,7 @@
 | 联邦 | parent 仅 `application → system → solution → company`（向上 1:1）。公司不直管系统。蒸馏按层上收，禁止跳层当默认 |
 | 禁止 | 跨层字段语义双源；公司/解决方案正文写单应用实现细节 |
 | 引用 | 有 parent → HTTP 到首次定义层 SSOT；无 parent → 纯 ID（详见下文「业务 knowledge 引用边界」） |
-| 基数 | 一仓一 SLN；一 SLN 多个 PD；PD↔SYS **1:1** `maps_to`；BSD(L2)↔PD **1:1**；一 SLN 多个 MDG、多个 TSD |
+| 基数 | 一仓一 SLN；一 SLN 一个 PL、一条 BP、多个 PD；PD→BS→BSD(L2) 均 1:1；SYS→PD **1:1**；一 SLN 多个 MDG、多个 TSD |
 
 ---
 
@@ -45,9 +45,10 @@
 | --- | --- | --- |
 | 业务 | VC | 价值链；`supported_by`→BD，`implemented_by`→CAP |
 | 业务 | BD | 业务域；`supports_to`→VC，`children`→BSD(L1) |
-| 业务 | BSD(L1) | 公司层业务子域；`level: 1`，`parent`→BD，`maps_to`→PL\|CAP |
-| 业务 | CAP | 业务能力目录；`implements_to`→VC，`maps_to`→BSD(L1) |
-| 产品 | PL | 产品线；`maps_to`→BSD(L1)\|SLN；**无 PD**（PD ∈ 解决方案） |
+| 业务 | BL | 业务线；无 `parent`；`maps_to`→BSD(L1) 一对一 |
+| 业务 | BSD(L1) | 公司层业务子域；`level: 1`，`parent`→BD，`children`→BSD(L2)，`maps_to`→CAP，`mapped_by`→BL |
+| 业务 | CAP | 业务能力目录；`implements_to`→VC，`mapped_by`→BSD(L1) |
+| 产品 | — | **无 PL / PD**。企业产品标准（概述、度量、体验） |
 | 应用 | — | **无 SLN**（SLN ∈ 解决方案） |
 | 数据 | — | **无 MDG**（MDG ∈ 解决方案） |
 | 技术 | TPL | 云 / DevOps / 安全 / 开发环境 / 可观测；企业技术准入；`TSD.implements_to`→TPL |
@@ -60,9 +61,9 @@
 
 | 视角 | 解决方案层聚焦 |
 | --- | --- |
-| 业务 | BSD(L2) SSOT（`parent`→公司 BSD(L1)，`maps_to`→本层 PD 1:1）；跨 SYS 共性域叙事 |
-| 产品 | PD SSOT（`implements_to`→公司 PL）；BP SSOT（解决方案主流程：`implements_to`→SLN，可 `maps_to` 多个 PD） |
-| 应用 | SLN SSOT（一仓一 SLN；`maps_to`→公司 PL；`implemented_by`→SYS）；**无 SYS 正文**（SYS ∈ 系统） |
+| 业务 | BSD(L2) SSOT（`parent`→公司 BSD(L1)，`mapped_by`→BS）；BS SSOT（无 `parent`，`maps_to`→BSD(L2) 1:1） |
+| 产品 | PL / PD / BP / BSP SSOT。`SLN.maps_to`→PL 1:1；`PL.maps_to`→BL 1:1；`PD.implements_to`→PL；`BP.implements_to`→SLN；BSP `parent`→BP、`implements_to`→PD |
+| 应用 | SLN SSOT（一仓一 SLN；`maps_to`→PL 1:1；`implemented_by`→SYS）；**无 SYS 正文**（SYS ∈ 系统） |
 | 数据 | MDG SSOT（一 SLN 多个数据域；跨 SYS 逻辑模型与数据主权） |
 | 技术 | TSD SSOT（本方案选用与例外；`implements_to`→公司 TPL；一 SLN 多条） |
 
@@ -108,7 +109,7 @@
 | 5A | 视角目录 | 层级（摘要） | 应用层角色 |
 | --- | --- | --- | --- |
 | BA | business | BD → BSD(L1) → BSD(L2) → BC → AGG → AB | 实现映射；BD/L1/L2 多为 ref |
-| PA | product | PL；PD → PM → …；BP 挂 SLN | 实现映射；PL 公司；PD/BP 解决方案 |
+| PA | product | PL；PD → PM → …；BP 挂 SLN；BSP `parent` BP | 实现映射；PL/PD/BP/BSP 解决方案 |
 | AA | application | SLN → SYS → APP → MS → **API** | **API SSOT** |
 | DA | data | MDG → DS → ENT → **TBL** | **TBL SSOT** |
 | TA | technical | TPL → TSD → **MW** → **CMP** | **MW/CMP SSOT** |
@@ -121,7 +122,7 @@
 | --- | --- | --- |
 | 同类树 | `parent` / `children` | BD↔BSD(L1)↔BSD(L2) |
 | 同视角组成 | `implements_to` / `implemented_by` | BSD(L2)↔BC↔AGG↔AB；产品/应用/数据链；CAP↔VC；BP→SLN；SYS→SLN |
-| 同级对标 | `maps_to` | CAP↔BSD(L1)；BSD(L1)↔PL；BSD(L2)↔PD；SLN↔PL；PD↔SYS；BP 可 `maps_to` 多 PD；MS↔AGG；AB↔API；AGG↔ENT；PM↔BC；UC↔API |
+| 同级对标 | `maps_to` | BL→BSD(L1)；BSD(L1)→CAP；PL→BL；SLN→PL；PD→BS；BS→BSD(L2)；SYS→PD；PM→BC；API→UC；UC→AB；MS→AGG；ENT→AGG |
 | 支撑 | `supports_to` / `supported_by` | BD↔VC；APP↔BC；API→FT |
 | 使用 | `uses_to` / `used_by` | SYS→MDG\|TSD；APP→DS\|MW；MS→ENT\|TBL\|CMP；MW→DS |
 | 模块依赖 | `depends_to` / `depended_by` | PM↔PM |

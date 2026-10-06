@@ -89,8 +89,8 @@ timestamp: "2026-06-25T00:00:00+08:00"
 | 实体概念核心键 | `timestamp` | ISO8601 字符串 | ✅ | 形如 `2026-06-25T00:00:00+08:00` | `"2026-06-25T00:00:00+08:00"` |
 | 实体概念核心键 | `id` | 字符串 | ✅ | 全局唯一 ID，格式：`<hierarchy>-<name>` | `BD-EXAMPLE` / `API-EXAMPLE` |
 | 实体概念核心键 | `perspective` | 枚举 | ✅ | 与实体所属视角一致 | `business` / `product` / `application` / `data` / `technical` |
-| 实体概念核心键 | `hierarchy` | 枚举 | ✅ | 与 `type` 一一对应 | `VC` / `BD` / `CAP` / `PL` / `SLN` / `PD` / `SYS` / `MDG` / `TPL` / `BSD` / `BC` / `AGG` / `AB` / `PM` / `BP` / `FT` / `UC` / `BR` / `APP` / `MS` / `DS` / `ENT` / `TSD` / `API` / `TBL` / `MW` / `CMP` |
-| 实体概念核心键 | `parent_id` | 字符串 \| null | ✅ | 父层 id；BD 与 PL 允许 `null` | `BD-EXAMPLE` / `PM-EXAMPLE` / `null` |
+| 实体概念核心键 | `hierarchy` | 枚举 | ✅ | 与 `type` 一一对应 | `VC` / `BD` / `BL` / `CAP` / `PL` / `SLN` / `PD` / `SYS` / `MDG` / `TPL` / `BSD` / `BC` / `AGG` / `AB` / `PM` / `BP` / `FT` / `UC` / `BR` / `APP` / `MS` / `DS` / `ENT` / `TSD` / `API` / `TBL` / `MW` / `CMP` |
+| 实体概念核心键 | `parent_id` | 字符串 \| null | ✅ | 父层 id；BD、BL 与 PL 允许 `null` | `BD-EXAMPLE` / `PM-EXAMPLE` / `null` |
 | 实体概念核心键 | `layer_scope` | 枚举 | ✅ | 与知识库路径前缀对应 | `company` / `solution` / `system` / `application` |
 | 非实体文档键 | `okf_version` | 字符串 | - | 当前只出现在 bundle 根 `index.md` | `"0.1"` / `"1.0"` |
 | 非实体文档键 | `status` | 字符串 | - | 当前只出现在公司层示例方案/分析文档 | `draft` / `"draft"` |
@@ -111,6 +111,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 | VC | `Value Chain` | business | company |
 | BD | `Business Domain` | business | company |
 | CAP | `Business Capability` | business | company |
+| BL | `Business Line` | business | company |
 | PL | `Product Line` | product | company |
 | SLN | `Solution` | application | solution |
 | MDG | `Master Data Domain` | data | solution |
@@ -187,24 +188,27 @@ MAY：
 | 层级 | 必含子段 | 选含子段 |
 | ------ | --------- | --------- |
 | BD | `children: [...]` | `parent: null`；跨视角 `supports_to` |
-| BSD | `parent: [...]` | `children`（L1→L2）；`implemented_by`（L2→BC）；`maps_to` |
+| BSD | `parent: [...]` | `children`（L1→L2）；`implemented_by`（L2→BC）；`maps_to`（L1→CAP）；`mapped_by`（L1←BL，L2←BS） |
 | BC | `implements_to: [...]` + `implemented_by: [...]` | 跨视角 `supported_by`（APP） |
-| AGG | `implements_to: [...]` + `implemented_by: [...]` | 跨视角 `maps_to`（ENT\|MS） |
-| AB | `implements_to: [...]` | 跨视角 `maps_to`（API） |
+| AGG | `implements_to: [...]` + `implemented_by: [...]` | 跨视角 `mapped_by`（ENT\|MS） |
+| AB | `implements_to: [...]` | 跨视角 `mapped_by`（UC） |
 | VC | — | `supported_by`、`implemented_by` |
 | CAP | `implements_to: [...]` + `maps_to: [...]` | — |
-| PL | `maps_to: [...]` | `implemented_by`（PD） |
-| PD | `implements_to: [...]` | `implemented_by`（PM）；`maps_to`（SYS\|BSD） |
-| BP | `implements_to: [...]`（→SLN） | `maps_to`（多 PD，可选） |
+| BL | `maps_to: [...]`（→BSD(L1)） | `mapped_by`（PL） |
+| BS | `maps_to: [...]`（→BSD(L2)） | `mapped_by`（PD） |
+| PL | `maps_to: [...]`（→BL） | `implemented_by`（PD）；`mapped_by`（SLN） |
+| PD | `implements_to: [...]`（→PL） + `maps_to: [...]`（→BS） | `implemented_by`（PM\|BSP）；`mapped_by`（SYS） |
+| BP | `implements_to: [...]`（→SLN） | `children`（BSP） |
+| BSP | `parent`（→BP） + `implements_to: [...]`（→PD） | `kind`：core / branch / exception |
 | PM | `implements_to: [...]` + `implemented_by: [...]` | `maps_to`（BC）；`depends_to` |
 | FT | `implements_to: [...]` + `implemented_by: [...]` | `supported_by`（API） |
 | FR | `implements_to: [...]` + `implemented_by: [...]` | — |
-| UC | `implements_to: [...]` | `maps_to`（API） |
+| UC | `implements_to: [...]` | `maps_to`（AB）；`mapped_by`（API） |
 | SLN | `maps_to: [...]` | `implemented_by`（SYS\|BP） |
 | SYS | `implements_to: [...]` + `implemented_by: [...]` | `uses_to`（MDG\|TSD） |
 | APP | `implements_to: [...]` + `implemented_by: [...]` | `supports_to`（BC）；`uses_to`（DS\|MW） |
 | MS | `implements_to: [...]` + `implemented_by: [...]` | `maps_to`（AGG）；`uses_to`（ENT\|TBL\|CMP） |
-| API | `implements_to: [...]` | `supports_to`（FT）；`maps_to`（AB\|UC） |
+| API | `implements_to: [...]` | `supports_to`（FT）；`maps_to`（UC） |
 | MDG | — | `implemented_by`（DS） |
 | DS | `implements_to: [...]` | `implemented_by`（ENT）；`used_by`（APP） |
 | ENT | `implements_to: [...]` | `maps_to`（AGG） |

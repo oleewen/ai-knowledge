@@ -136,6 +136,14 @@ def test_entity_relpath_company_cap():
     assert path == "knowledge/business/VC-EXAMPLE/CAP-EXAMPLE.md"
 
 
+def test_entity_relpath_company_bl():
+    path = okf_lib.entity_relpath("business", "BL-EXAMPLE", bundle="company")
+    assert path == "knowledge/business/BL/BL-EXAMPLE.md"
+    assert okf_lib.hierarchy_to_type("BL") == "Business Line"
+    assert okf_lib.hierarchy_first_layer("BL") == "company"
+    assert okf_lib.hierarchy_to_perspective("BL") == "business"
+
+
 def test_entity_relpath_company_tpl():
     path = okf_lib.entity_relpath("technical", "TPL-EXAMPLE", bundle="company")
     assert path == "knowledge/technical/TPL-EXAMPLE.md"
@@ -143,12 +151,28 @@ def test_entity_relpath_company_tpl():
 
 def test_entity_relpath_company_pl_and_sln():
     assert (
-        okf_lib.entity_relpath("product", "PL-EXAMPLE", bundle="company")
-        == "knowledge/product/PL-EXAMPLE.md"
-    )
-    assert (
         okf_lib.entity_relpath("application", "SLN-EXAMPLE", bundle="company")
         == "knowledge/application/SLN-EXAMPLE.md"
+    )
+    assert (
+        okf_lib.entity_relpath("product", "PL-EXAMPLE", bundle="solution")
+        == "knowledge/product/PL/PL-EXAMPLE.md"
+    )
+    assert (
+        okf_lib.entity_relpath("product", "PD-EXAMPLE", bundle="solution")
+        == "knowledge/product/PL/PD-EXAMPLE.md"
+    )
+    assert (
+        okf_lib.entity_relpath("product", "BP-EXAMPLE", bundle="solution")
+        == "knowledge/product/BP/BP-EXAMPLE.md"
+    )
+    assert (
+        okf_lib.entity_relpath("product", "BSP-EXAMPLE", bundle="solution")
+        == "knowledge/product/BP/BSP-EXAMPLE.md"
+    )
+    assert (
+        okf_lib.entity_relpath("business", "BS-EXAMPLE", bundle="solution")
+        == "knowledge/business/BS/BS-EXAMPLE.md"
     )
 
 
@@ -166,7 +190,11 @@ def test_entity_relpath_system_pd_and_pm():
 
 
 def test_hierarchy_first_layer_pd_sys():
-    assert okf_lib.hierarchy_first_layer("PD") == "system"
+    assert okf_lib.hierarchy_first_layer("PD") == "solution"
+    assert okf_lib.hierarchy_first_layer("PL") == "solution"
+    assert okf_lib.hierarchy_first_layer("BP") == "solution"
+    assert okf_lib.hierarchy_first_layer("BS") == "solution"
+    assert okf_lib.hierarchy_first_layer("BSP") == "solution"
     assert okf_lib.hierarchy_first_layer("SYS") == "system"
     assert okf_lib.hierarchy_first_layer("SLN") == "company"
     assert okf_lib.hierarchy_to_perspective("SLN") == "application"
@@ -215,11 +243,11 @@ def test_entity_relpath_system_bsd_by_parent():
     assert (
         okf_lib.entity_relpath(
             "business",
-            "BSD-EXAMPLE-SUB",
+            "BSD-EXAMPLE-L2",
             parent_id="BSD-EXAMPLE",
             bundle="system",
         )
-        == "knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE-SUB/BSD-EXAMPLE-SUB.md"
+        == "knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md"
     )
 
 
@@ -243,6 +271,7 @@ def main() -> None:
         test_entity_relpath_company_bsd_nested,
         test_entity_relpath_company_bsd_default_parent,
         test_entity_relpath_company_cap,
+        test_entity_relpath_company_bl,
         test_entity_relpath_company_cap_with_parent,
         test_entity_relpath_company_tpl,
         test_entity_relpath_company_pl_and_sln,

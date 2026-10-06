@@ -38,8 +38,8 @@
 - **解决方案层五视角**（`solution/knowledge/{perspective}/`）：
   | 视角 | 落点要点 |
   | --- | --- |
-  | business | BSD(L2) 本层 SSOT（`parent`→公司 L1）；跨 SYS 共性域叙事 |
-  | product | PD、BP 本层 SSOT；不落 PL（PL ∈ 公司） |
+  | business | BSD(L2) 本层 SSOT（`parent`→公司 L1）；BS 本层 SSOT（无 parent，`maps_to`→BSD(L2)） |
+  | product | PL、PD、BP、BSP 本层 SSOT |
   | application | SLN 本层 SSOT；不落 SYS 正文 |
   | data | MDG 本层 SSOT |
   | technical | TSD 本层 SSOT（`implements_to`→公司 TPL） |
@@ -51,7 +51,7 @@
   | application | SYS 本层 SSOT（`maps_to`→PD，`implements_to`→SLN）；APP/MS |
   | data | DS/ENT 本层 SSOT；MDG = 解决方案 reference |
   | technical | MW 可为 application reference；TSD = 解决方案 reference |
-- **公司层五视角**（`company/knowledge/{perspective}/`）：VC、BD、BSD(L1)、CAP、PL、TPL；**无** SLN/PD/SYS/BSD(L2)/MDG/TSD
+- **公司层五视角**（`company/knowledge/{perspective}/`）：VC、BD、BL、BSD(L1)、CAP、TPL；产品视角无实体（概述、度量、体验）；**无** SLN/PD/PL/SYS/BSD(L2)/MDG/TSD
 - **应用层**：API/TBL/MW/CMP 本层 SSOT；其余为 reference 或纯 ID
 - **阶段目录（目标态）**：
   | 库 | 目录 |

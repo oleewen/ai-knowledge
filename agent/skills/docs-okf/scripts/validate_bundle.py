@@ -191,7 +191,7 @@ class Validator:
                     f"实得 type={type_val}: {relpath}"
                 )
 
-        # R6 parent_id 引用存在性（BD/PL 允许 null）
+        # R6 parent_id 引用存在性（BD/BL/PL 允许 null）
         parent_id = meta.get("parent_id")
         if parent_id is not None and str(parent_id) != "" and str(parent_id) != "null":
             if str(parent_id) not in self._id_index:
