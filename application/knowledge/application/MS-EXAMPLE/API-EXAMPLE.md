@@ -17,9 +17,7 @@ layer_scope: application
 
 ## 跨视角
 
-- maps_to:
-  - AB-EXAMPLE
-  - UC-EXAMPLE
+- maps_to: UC-EXAMPLE
 - supports_to: FT-EXAMPLE
 
 ## 详细说明

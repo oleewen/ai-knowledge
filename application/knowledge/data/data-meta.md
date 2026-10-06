@@ -12,14 +12,14 @@ title: 数据视角元数据（application/knowledge/data）
 | meta_id | `DIR-KNOWLEDGE-DATA` |
 | 视角 | data |
 | 层级范围 | application |
-| 说明 | MDG/DS/ENT 系统首次定义；本层可留 MDG/DS/ENT reference，SSOT 为 **TBL**。 |
+| 说明 | MDG 解决方案首次定义；DS/ENT 系统首次定义；本层可留 reference，SSOT 为 **TBL**。 |
 | entities_shape | 实体 `{ID}.md`（OKF）；索引见 INDEX-GUIDE 第四章 §4 |
 
 ## 2. 层级链
 
 | 链序 | 层级代码 | 说明 |
 | --- | --- | --- |
-| 1 | MDG | 主数据域（系统层 SSOT；本层可为 reference） |
+| — | MDG | 主数据域（解决方案 SSOT；本层可为 reference） |
 | 2 | DS | 数据存储（系统层首次定义） |
 | 3 | ENT | 数据实体（表/集合，系统层首次定义） |
 | 4 | TBL | 物理表锚点（应用层首次定义；挂 ENT） |
@@ -28,7 +28,7 @@ title: 数据视角元数据（application/knowledge/data）
 
 | order | key | code | id_pattern | parent |
 | --- | --- | --- | --- | --- |
-| 1 | mdg | MDG | `MDG-{NAME}` | —（reference → system） |
+| — | mdg | MDG | `MDG-{NAME}` | —（reference → solution） |
 | 2 | ds | DS | `DS-{NAME}` | MDG（逻辑归属，`implements_to`） |
 | 3 | ent | ENT | `ENT-{NNN}` 或 `ENT-{NAME}` | DS |
 | 4 | tbl | TBL | `TBL-{NAME}` | ENT（`implements_to`） |
@@ -52,7 +52,7 @@ title: 数据视角元数据（application/knowledge/data）
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| MDG（reference） | system MDG.id | 上游系统 SSOT |
+| MDG（reference） | solution MDG.id | 上游解决方案 SSOT |
 | DS.implements_to | MDG.id | 数据源归属主数据域 |
 | AGG.maps_to | ENT.id | 聚合对标实体 |
 | ENT.maps_to | AGG.id | 实体对标聚合 |

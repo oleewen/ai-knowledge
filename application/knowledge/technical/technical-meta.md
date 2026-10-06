@@ -12,7 +12,7 @@ title: 技术视角元数据（application/knowledge/technical）
 | meta_id | `DIR-KNOWLEDGE-TECHNICAL` |
 | 视角 | technical |
 | 层级范围 | application |
-| 说明 | 中间件绑定与关键组件；公司级 TPL、系统级 TSD 在对应层首次定义，本层补齐 TSD reference 并登记 MW/CMP。 |
+| 说明 | 中间件绑定与关键组件；公司级 TPL、解决方案 TSD 在对应层首次定义，本层补齐 TSD reference 并登记 MW/CMP。 |
 | entities_shape | 实体 `{ID}.md`（OKF）；索引见 INDEX-GUIDE 第四章 §5 |
 
 ## 2. 层级链
@@ -49,8 +49,8 @@ title: 技术视角元数据（application/knowledge/technical）
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| TSD（reference） | system TSD.id | 上游系统 SSOT |
-| MW.implements_to | TSD.id | 归属系统技术域 |
+| TSD（reference） | solution TSD.id | 上游解决方案 SSOT |
+| MW.implements_to | TSD.id | 归属解决方案技术域 |
 | MW.used_by | APP.id | 被应用使用（对端 APP.uses_to） |
 | MW.uses_to | DS.id | 中间件使用数据源（可选） |
 | CMP.implements_to | MW.id | 组件挂载中间件 |
@@ -63,6 +63,6 @@ title: 技术视角元数据（application/knowledge/technical）
 | [README.md](README.md) | 人类可读说明 |
 | [index.md](../index.md) | MW/CMP 实例索引 |
 | TPL-* | 公司层 TPL SSOT（reference） |
-| TSD-* | 系统层 TSD SSOT（reference） |
+| TSD-* | 解决方案 TSD SSOT（reference） |
 
 **索引**：`readme_index_table: true`；变更 ID 时同步 README、index.md（按需）。

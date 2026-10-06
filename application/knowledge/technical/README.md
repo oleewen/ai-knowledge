@@ -6,7 +6,7 @@ title: 技术架构
 
 [返回 · knowledge](../README.md)
 
-应用侧技术入口：MW/CMP SSOT；TPL 公司、TSD 系统首次定义。实体以 per-entity 与 [../index.md](../index.md) §5 为准。本 README 表仅登记本层 SSOT 样例；reference 见 §5。归档目标章 ∈ `chapters/`。
+应用侧技术入口：MW/CMP SSOT；TPL 公司、TSD 解决方案首次定义。实体以 per-entity 与 [../index.md](../index.md) §5 为准。本 README 表仅登记本层 SSOT 样例；reference 见 §5。归档目标章 ∈ `chapters/`。
 
 ## 章节
 

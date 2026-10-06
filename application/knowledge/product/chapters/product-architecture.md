@@ -9,7 +9,7 @@ title: 产品架构
 
 本应用产品板块落地；对照上游 PD / PM / SYS（不在本层首次定义）。
 
-> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。PL ∈ 公司；PD/BP ∈ 解决方案；PM/SYS ∈ 系统。
+> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。PL / PD / BP ∈ 解决方案；PM/SYS ∈ 系统。
 
 ## 产品板块
 

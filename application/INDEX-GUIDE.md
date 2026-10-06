@@ -158,7 +158,7 @@ OpenAPI/DDL 全文不在九章展开（实体可链外部）。
 
 ### 6.3 关系映射
 
-跨视角以 ID + 关系动词维护；入口 [knowledge/README.md](knowledge/README.md)。上游 BD/SYS/MDG/TSD 等纯 ID → 公司/系统 SSOT。
+跨视角以 ID + 关系动词维护；入口 [knowledge/README.md](knowledge/README.md)。上游实体纯 ID → 其首次定义层（公司 / 解决方案 / 系统）。
 
 ### 6.4 SQL 索引
 

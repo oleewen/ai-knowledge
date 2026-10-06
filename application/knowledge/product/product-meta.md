@@ -3,7 +3,7 @@ type: Perspective Meta
 title: 产品视角元数据（application/knowledge/product）
 ---
 
-应用侧产品版图（PL 公司；PD 系统；本层映射 PM→…）实体登记与交互映射元数据。实例索引 [index.md](../index.md)（§2，扫描生成；实体 `{ID}.md` = SSOT）。
+应用侧产品版图（PL 公司；PD / BP 解决方案；本层映射 PM→…）实体登记与交互映射元数据。实例索引 [index.md](../index.md)（§2，扫描生成；实体 `{ID}.md` = SSOT）。
 
 ## 1. 概览
 
@@ -12,15 +12,15 @@ title: 产品视角元数据（application/knowledge/product）
 | meta_id | `DIR-KNOWLEDGE-PRODUCT` |
 | 视角 | product |
 | 层级范围 | application |
-| 说明 | 产品版图；公司 PL 首次定义；公司 SLN（AA）首次定义（本层不落）；系统 PD 首次定义（本层不落 PD）。`PM.implements_to` → 系统 `PD-*`。 |
+| 说明 | 产品版图；解决方案 PL / PD 首次定义（本层不落）；解决方案 SLN 首次定义（本层不落）。`PM.implements_to` → 解决方案 `PD-*`。 |
 | entities_shape | 实体 `{ID}.md`（OKF）；索引见 INDEX-GUIDE 第四章 §2 |
 
 ## 2. 层级链
 
 | 链序 | 层级代码 | 说明 |
 | --- | --- | --- |
-| 1 | PL | 产品线（公司层；本层不落盘） |
-| 2 | PD | 产品服务（系统层首次定义；本层不落盘） |
+| 1 | PL | 产品线（解决方案；本层不落盘） |
+| 2 | PD | 产品服务（解决方案首次定义；本层不落盘） |
 | 3 | PM | 产品模块（系统层首次定义） |
 | 4 | FT | 功能点（系统层首次定义，应用层承接 API / 验收映射） |
 | 5 | FR | 功能需求（系统层首次定义，应用层承接验收与接口映射） |
@@ -32,7 +32,7 @@ title: 产品视角元数据（application/knowledge/product）
 | order | key | code | id_pattern | parent |
 | --- | --- | --- | --- | --- |
 | 1 | pl | PL | `PL-{NAME}` | —（公司） |
-| 2 | pd | PD | `PD-{NAME}` | PL（系统 SSOT） |
+| — | pd | PD | `PD-{NAME}` | PL（解决方案 SSOT；本层不落） |
 | 3 | pm | PM | `PM-{NAME}` | PD（只许本系统 PD） |
 | 4 | ft | FT | `FT-{NAME}` | PM |
 | 5 | fr | FR | `FR-{NAME}` | FT |
@@ -69,7 +69,7 @@ title: 产品视角元数据（application/knowledge/product）
 
 可选 `BP-{NAME}.md`（OKF：`hierarchy: BP`）：
 
-- 与本视角实体同目录级；`implements_to` 可为 `PD-*` / `PM-*`；frontmatter `parent_id` 可空
+- BP 首次定义在解决方案；`implements_to` SLN；本层不落 BP
 - 正文可分 M/S/B 节，引用 `PD/PM/FT`
 - **不**挂入 `PL → PD → PM → FT → FR → UC/BR` 组成链
 
@@ -79,8 +79,8 @@ title: 产品视角元数据（application/knowledge/product）
 | --- | --- |
 | [README.md](README.md) | 人类可读说明 |
 | [index.md](../index.md) | §2 产品视角 + 五视角实例索引（扫描生成） |
-| 系统 PD-* | 产品服务 SSOT（本层不落盘） |
-| 公司 PL-* / SLN-* | 产品线 / 解决方案（本层不落盘） |
+| 解决方案 PD-* | 产品服务 SSOT（本层不落盘） |
+| 解决方案 PL-* / SLN-* | 产品线 / 解决方案（本层不落盘） |
 | PM-*, FT-*, FR-*, UC-*, BR-* | 系统层 SSOT（reference / 本层映射） |
 
 **索引**：`readme_index_table: true`；变更 ID 时同步 README、index.md（按需）。

@@ -6,7 +6,7 @@ title: 产品架构
 
 [返回 · knowledge](../README.md)
 
-应用侧产品入口：承接 API / 验收映射；PL 公司产品 SSOT，SLN 公司 AA，PD 系统首次定义（本层不落）。归档目标章 ∈ `chapters/`。
+应用侧产品入口：承接 API / 验收映射；PL 公司产品 SSOT，SLN / PD / BP 解决方案首次定义（本层不落）。归档目标章 ∈ `chapters/`。
 
 ## 章节
 
