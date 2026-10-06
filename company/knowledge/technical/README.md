@@ -8,6 +8,8 @@ title: 技术架构
 
 **本层 SSOT**：TPL。台账见库根 INDEX-GUIDE §4（留字去链）；字段 [technical-meta.md](technical-meta.md)。
 
+六章是企业标准；方案同名 overview / infrastructure / observability 是落地，不是本层副本。
+
 ## 章节
 
 | 章节 | 文件 | 概述 |

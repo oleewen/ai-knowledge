@@ -4,7 +4,7 @@ title: 应用视角元数据（company/knowledge/application）
 ---
 # 应用视角元数据（company/knowledge/application）
 
-**结论**：SLN（解决方案）SSOT；与 PL 经 `maps_to` 1:1 同建。
+**结论**：本层无实体。企业应用架构标准。实例：[index.md](../index.md)（无实体行）。
 
 ## 1. 概览
 
@@ -13,39 +13,32 @@ title: 应用视角元数据（company/knowledge/application）
 | meta_id | `DIR-COMPANY-KNOWLEDGE-APPLICATION` |
 | 视角 | application |
 | 层级范围 | company |
-| 说明 | SLN=解决方案（对应 PL）；与 PL 1:1 同建。 |
+| 说明 | 企业应用架构标准。 |
 
 ## 2. 层级链
 
 | 链序 | 层级代码 | 说明 |
 | --- | --- | --- |
-| 1 | SLN | 解决方案 |
+| — | （无） | 公司层应用视角不落实体 |
 
 ## 3. 层定义
 
 | order | key | code | id_pattern | parent |
 | --- | --- | --- | --- | --- |
-| 1 | sln | SLN | `SLN-{NAME}` | —（`maps_to→PL`） |
-
-落盘：`application/SLN-{NAME}.md` 平铺。
+| — | — | — | — | — |
 
 ## 4. 字段（OKF）
 
-| 层级 | 字段 | 说明 |
-| --- | --- | --- |
-| SLN | `maps_to` | **必填**；与 PL 同建 1:1 |
+本层无 per-entity frontmatter。
 
 ## 5. 跨视角引用
 
-| 源字段 | 目标 | 说明 |
-| --- | --- | --- |
-| SLN.maps_to | PL.id | 方案对标产品线（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
-| 系统 SYS.implements_to | SLN.id | 系统归属解决方案 |
+本层无。
 
 ## 6. 关联文档
 
 | 路径 | 说明 |
 | --- | --- |
-| [README.md](README.md) | 入口 |
-| [index.md](../index.md) | SLN 实例 |
-| 各系统 `SYS-*.md` | 系统 SSOT |
+| [README.md](README.md) | 叙事索引 |
+| [index.md](../index.md) | 公司实体索引（本视角无行） |
+| [naming-conventions](../../../agent/knowledge/naming-conventions.md) | ID 命名 |

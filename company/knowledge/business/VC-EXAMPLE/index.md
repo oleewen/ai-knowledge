@@ -5,7 +5,7 @@ title: VC-EXAMPLE 索引
 # VC-EXAMPLE
 
 * [示例价值链](VC-EXAMPLE.md) — 公司级 VC
-* [示例业务能力](CAP-EXAMPLE.md) — implements_to → VC；maps_to → BSD(L1)
+* [示例业务能力](CAP-EXAMPLE.md) — implements_to → VC；mapped_by → BSD(L1)
 
 阅读顺序：
 

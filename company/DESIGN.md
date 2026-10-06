@@ -19,7 +19,7 @@ title: 公司知识库设计
 | 目录 | 职责 |
 | --- | --- |
 | `knowledge/` | 公司级实体正文 SSOT（VC/BD/CAP/BSD(L1)/PL/TPL）；[`overview/{NAME}-overview.md`](knowledge/overview/NAME-overview.md) = distill 缓冲区（非实体 SSOT） |
-| `domains/` | 域架构（`/sdx-domains`：只写 BD/BSD(L1) 如何支撑 VC，不放 SLN）；**无** `solutions/` / `analysis/` / `features/` / `requirements/` |
+| `domains/` | 域架构（`/sdx-domains`：只写 BD/BSD(L1) 如何支撑 VC，不放方案正文）；**无** `solutions/` / `analysis/` / `features/` / `requirements/` |
 | `adr/` | 公司层决策 + `CONTEXT.md` |
 | `solution-slots/solution-{NAME}/` | 解决方案联邦槽位入口（软链）。公司不挂 `system-slots` |
 | `knowledge-links.yaml` | 建联与同步编排（可空）；child 用 `solution_*` |

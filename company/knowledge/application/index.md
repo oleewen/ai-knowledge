@@ -8,16 +8,13 @@
 
 ## 目录文件
 
-* [示例解决方案](SLN-EXAMPLE.md) - 解决方案（对应 PL）；maps_to→PL；SYS.parent_id→本 SLN。
-
 * [application-meta.md](application-meta.md)
 
 ## 阅读顺序
 
 1. [README.md](README.md) — 视角范围  
 2. [chapters/index.md](chapters/index.md) — chapters  
-3. [application-meta.md](application-meta.md) — 元数据（按需）  
-4. [SLN-EXAMPLE.md](SLN-EXAMPLE.md) — 实体样例（按需）
+3. [application-meta.md](application-meta.md) — 元数据（本层无实体）
 
 ## 关联索引
 

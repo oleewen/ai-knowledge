@@ -4,7 +4,7 @@ title: 数据视角元数据（company/knowledge/data）
 ---
 # 数据视角元数据（company/knowledge/data）
 
-**结论**：本层无实体。MDG ∈ 系统库 `knowledge/data/MDG-*`。实例：[index.md](../index.md) §4（空表）。
+**结论**：本层无实体。企业数据架构标准。实例：[index.md](../index.md) §4（空表）。
 
 ## 1. 概览
 
@@ -13,7 +13,7 @@ title: 数据视角元数据（company/knowledge/data）
 | meta_id | `DIR-COMPANY-KNOWLEDGE-DATA` |
 | 视角 | data |
 | 层级范围 | company |
-| 说明 | 仅治理/湖仓/安全等叙事；不登记 MDG/DS/ENT；MDG 由各系统 `SYS.uses_to` 引用。 |
+| 说明 | 企业数据架构标准。 |
 
 ## 2. 层级链
 
@@ -29,14 +29,11 @@ title: 数据视角元数据（company/knowledge/data）
 
 ## 4. 字段（OKF）
 
-本层无 per-entity frontmatter。MDG 字段见系统 `data-meta.md`。
+本层无 per-entity frontmatter。
 
 ## 5. 跨视角引用
 
-| 源字段 | 目标 | 说明 |
-| --- | --- | --- |
-| 系统 SYS.uses_to | 系统 MDG.id | 系统声明使用的主数据域 |
-| 系统 DS.implements_to | 系统 MDG.id | 数据源归属主数据域 |
+本层无。
 
 ## 6. 关联文档
 
@@ -44,5 +41,4 @@ title: 数据视角元数据（company/knowledge/data）
 | --- | --- |
 | [README.md](README.md) | 叙事索引 |
 | [index.md](../index.md) | 公司实体索引（§4 无行） |
-| 系统 `knowledge/data/` | MDG/DS/ENT SSOT |
 | [naming-conventions](../../../agent/knowledge/naming-conventions.md) | ID 命名 |

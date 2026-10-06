@@ -1,7 +1,7 @@
 ---
 type: Business Capability
 title: 示例业务能力
-description: 演示公司级 CAP；实现 VC，并与 BSD(L1) 一对一映射。
+description: 演示公司级 CAP；实现 VC；由 BSD(L1) 一对一映射。
 tags: [business, CAP]
 timestamp: "2026-09-18T00:00:00+08:00"
 id: CAP-EXAMPLE
@@ -10,12 +10,14 @@ hierarchy: CAP
 parent_id: null
 layer_scope: company
 implements_to: VC-EXAMPLE
-maps_to: BSD-EXAMPLE
+mapped_by:
+  - BSD-EXAMPLE
 ---
 ## 关系
 
 - implements_to: VC-EXAMPLE
-- maps_to: BSD-EXAMPLE
+- mapped_by:
+  - BSD-EXAMPLE
 
 ## 跨视角
 

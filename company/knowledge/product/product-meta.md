@@ -4,7 +4,7 @@ title: 产品视角元数据（company/knowledge/product）
 ---
 # 产品视角元数据（company/knowledge/product）
 
-**结论**：PL 视角元数据 SSOT。与 BSD(L1) 一对一。**不落 PD**（系统首次）；**不落 SLN**（SLN ∈ 公司 application）。实例：[index.md](../index.md)。
+**结论**：本层无实体。企业产品标准（概述、度量、体验）。实例：[index.md](../index.md)。
 
 ## 1. 概览
 
@@ -13,42 +13,32 @@ title: 产品视角元数据（company/knowledge/product）
 | meta_id | `DIR-COMPANY-KNOWLEDGE-PRODUCT` |
 | 视角 | product |
 | 层级范围 | company |
-| 说明 | PL=产品线（与 BSD(L1) 一对一）。不落 PD；不落 SLN。 |
+| 说明 | 企业产品标准。PL / PD / BP / BSP 首次定义在解决方案。 |
 
 ## 2. 层级链
 
 | 链序 | 层级代码 | 说明 |
 | --- | --- | --- |
-| 1 | PL | 产品线 |
+| — | （无） | 公司层产品视角不落实体 |
 
 ## 3. 层定义
 
 | order | key | code | id_pattern | parent |
 | --- | --- | --- | --- | --- |
-| 1 | pl | PL | `PL-{NAME}` | — |
-
-目录：`PL-{NAME}/PL-{NAME}.md`。
-
-对标：一级 `BSD.maps_to` / `PL.maps_to`；解决方案：`SLN.maps_to`。
+| — | — | — | — | — |
 
 ## 4. 字段（OKF）
 
-| 层级 | 字段 | 说明 |
-| --- | --- | --- |
-| PL | `maps_to`、`target_users` | BSD(L1) 单值必填；目标用户 |
+本层无 per-entity frontmatter。
 
 ## 5. 跨视角引用
 
-| 源字段 | 目标 | 说明 |
-| --- | --- | --- |
-| PL.maps_to | BSD(L1).id | PL 对标 BSD(L1)（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
-| SLN.maps_to | PL.id | 解决方案对标产品线 |
-| 系统 PD.implements_to | PL.id | 产品服务挂产品线；`PD.maps_to` 指 BSD(L2)\|SYS |
+本层无。
 
 ## 6. 关联文档
 
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 叙事索引 |
-| [index.md](../index.md) | PL 实例 SSOT |
-| 公司 application · SLN | 解决方案 |
+| [index.md](../index.md) | 公司实体索引 |
+| [naming-conventions](../../../agent/knowledge/naming-conventions.md) | ID 命名 |

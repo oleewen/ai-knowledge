@@ -7,12 +7,10 @@
 ## 目录文件
 
 * [application-architecture.md](application-architecture.md)
-* [application-overview.md](application-overview.md)
 
 ## 阅读顺序
 
-1. [application-overview.md](application-overview.md)
-2. [application-architecture.md](application-architecture.md)
+1. [application-architecture.md](application-architecture.md)
 
 ## 关联索引
 

@@ -5,6 +5,7 @@
 ## 子目录
 
 * [BD-EXAMPLE](BD-EXAMPLE/index.md) - BD-EXAMPLE 索引
+* [BL](BL/index.md) - 业务线；无 parent；maps_to BSD(L1) 一对一
 * [VC-EXAMPLE](VC-EXAMPLE/index.md) - VC-EXAMPLE 索引
 * [chapters](chapters/index.md)
 
@@ -19,6 +20,7 @@
 3. [business-meta.md](business-meta.md) — 元数据（按需）  
 4. [VC-EXAMPLE/index.md](VC-EXAMPLE/index.md) — 实体样例（按需）  
 5. [BD-EXAMPLE/index.md](BD-EXAMPLE/index.md) — BD/BSD 样例（按需）
+6. [BL/index.md](BL/index.md) — BL 样例（按需）
 
 ## 关联索引
 

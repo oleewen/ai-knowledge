@@ -59,9 +59,9 @@ integration:
       description: "规范、模板与 Agent 技能"
   downstream:
     - path: "../system/"
-      description: "系统层 reference 公司 BD/PL/TPL；SLN/PD/MDG 在解决方案或系统 SSOT"
+      description: "下游引用公司 BD/PL/TPL"
   traceability:
-    description: "domains → 各 SLN solutions/ → 各系统 analysis/features/requirements/"
+    description: "domains → 各解决方案 solutions/ → 各系统 analysis/features/requirements/"
 
 references:
   - path: "./README.md"
