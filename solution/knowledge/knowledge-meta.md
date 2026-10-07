@@ -39,4 +39,4 @@ title: 知识树元数据（solution/knowledge）
 | 类型 | 路径 |
 | --- | --- |
 | 目录索引 | [index.md](index.md) |
-| 层九章 | [../INDEX-GUIDE.md](../INDEX-GUIDE.md) |
+| 层九章 | INDEX-GUIDE |

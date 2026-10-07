@@ -41,4 +41,4 @@ title: 产品视角元数据（company/knowledge/product）
 | --- | --- |
 | [README.md](README.md) | 叙事索引 |
 | [index.md](../index.md) | 公司实体索引 |
-| [naming-conventions](../../../agent/knowledge/naming-conventions.md) | ID 命名 |
+| naming-conventions | ID 命名 |

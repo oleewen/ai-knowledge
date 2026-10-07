@@ -2,7 +2,7 @@
 
 目录说明见 [README.md](README.md)。
 
-视角导航见 [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 第四章；实体台账 ∈ 各视角 README。
+视角导航见 INDEX-GUIDE 第四章；实体台账 ∈ 各视角 README。
 
 ## 子目录
 
@@ -21,7 +21,7 @@
 ## 阅读顺序
 
 1. [README.md](README.md)
-2. [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 第四章 — 视角 README 导航
+2. INDEX-GUIDE 第四章 — 视角 README 导航
 3. 五视角 README：business → product → application → data → technical
 4. 各 `*-meta.md`（字段 SSOT）
 

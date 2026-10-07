@@ -58,7 +58,7 @@ title: 产品视角元数据（system/knowledge/product）
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
 | PD.implements_to | 解决方案 PL.id | 归属产品线 |
-| PD.maps_to | 解决方案 BS.id | 对标业务服务（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
+| PD.maps_to | 解决方案 BS.id | 对标业务服务（glossary） |
 | PM.implements_to | 本库 PD.id | 模块归属产品服务 |
 | PM.maps_to | BC.id | 模块对标限界上下文 |
 | PM.depends_to | PM.id | 模块依赖其它模块 |

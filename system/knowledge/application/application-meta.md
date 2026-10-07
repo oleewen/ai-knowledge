@@ -37,7 +37,7 @@ title: 应用视角元数据（system/knowledge/application）
 
 ## 4. 字段（OKF）
 
-关系字段见 [glossary § 映射关系](../../../agent/knowledge/glossary.md#映射关系常用)。无 APP/SYS↔TPL 直连。
+关系字段见 glossary § 映射关系。无 APP/SYS↔TPL 直连。
 
 | 层级 | 字段 | 说明 |
 | --- | --- | --- |
@@ -53,7 +53,7 @@ title: 应用视角元数据（system/knowledge/application）
 | --- | --- | --- |
 | SYS.implements_to | 解决方案 SLN.id | 归属解决方案 |
 | SYS.uses_to | MDG.id \| TSD.id | 声明使用的主数据域 / 技术域 |
-| SYS.maps_to | PD.id | 系统对标产品服务（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
+| SYS.maps_to | PD.id | 系统对标产品服务（glossary） |
 | APP.implements_to | SYS.id | 应用归属系统 |
 | APP.supports_to | BC.id | 应用支撑限界上下文 |
 | MS.maps_to | AGG.id | 入口簇对标聚合 |

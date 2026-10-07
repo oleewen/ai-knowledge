@@ -12,4 +12,4 @@ title: overview
 - 技能：`docs-distill` / `docs-extract` / `docs-archive` / `docs-tag`
 - 归档后落入各视角 `chapters/`
 
-导航：[index.md](index.md) · [knowledge-governance](../../../agent/knowledge/knowledge-governance.md) / knowledge-layout
+导航：[index.md](index.md) · knowledge-governance / knowledge-layout

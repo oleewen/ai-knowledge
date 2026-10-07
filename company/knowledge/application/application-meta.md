@@ -41,4 +41,4 @@ title: 应用视角元数据（company/knowledge/application）
 | --- | --- |
 | [README.md](README.md) | 叙事索引 |
 | [index.md](../index.md) | 公司实体索引（本视角无行） |
-| [naming-conventions](../../../agent/knowledge/naming-conventions.md) | ID 命名 |
+| naming-conventions | ID 命名 |

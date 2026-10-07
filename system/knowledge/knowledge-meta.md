@@ -40,11 +40,11 @@ title: 知识树元数据（system/knowledge）
 | --- | --- |
 | system_index | index.md（库外） |
 | entity_index | [index.md](index.md) |
-| design / governance | [knowledge-governance](../../agent/knowledge/knowledge-governance.md) |
+| design / governance | knowledge-governance |
 
 ## 5. 系统层 BD 落盘例外
 
-路径契约见 [knowledge-governance](../../agent/knowledge/knowledge-governance.md)。视角路径 SSOT：[business-meta §4](business/business-meta.md#4-bd-落盘例外)。
+路径契约见 knowledge-governance。视角路径 SSOT：[business-meta §4](business/business-meta.md#4-bd-落盘例外)。
 
 `okf_lib.entity_relpath(bundle="system", BD)` → `knowledge/business/{id}.md`
 
@@ -53,10 +53,10 @@ title: 知识树元数据（system/knowledge）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 五视角架构入口 |
-| [knowledge-governance](../../agent/knowledge/knowledge-governance.md) | 系统库设计契约 |
+| knowledge-governance | 系统库设计契约 |
 | VC-* / BD-* / BSD-L1-* / CAP-* / BL-* / TPL-* | 公司层实体 SSOT（上层 reference） |
 | SLN-* / PL-* / PD-* / BP-* / BSP-* / BSD-L2-* / BS-* / MDG-* / TSD-* | 解决方案实体 SSOT（上层 reference） |
-| [naming-conventions](../../agent/knowledge/naming-conventions.md) | 命名 SSOT |
+| naming-conventions | 命名 SSOT |
 
 ## 7. docs-build meta_read_order
 
