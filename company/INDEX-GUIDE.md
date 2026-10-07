@@ -22,7 +22,7 @@ title: company INDEX-GUIDE
 
 ### 1.2 元信息
 
-* **角色**: 公司知识库；`knowledge/` = VC/BD/BSD(L1)/CAP/PL/TPL SSOT；`solution-slots/solution-{NAME}` = 解决方案联邦槽位（软链）
+* **角色**: 公司知识库；`knowledge/` = VC/BD/BSD-L1/CAP/BL/TPL SSOT；`solution-slots/solution-{NAME}` = 解决方案联邦槽位（软链）
 * **栈**: Markdown、YAML  
 * **范围**: `knowledge/` · `domains/` · `adr/` · `solution-slots/` · `changelogs/`  
 * **规模**（本轮 full/d3，排除 `.agents`）：约 **83** 文件（`.md` 80 · `.yaml` 1 · `viz.html` 1）  
@@ -96,7 +96,7 @@ company/
 
 | 聚合 | 职责 | 关键落点 |
 |------|------|----------|
-| 公司级实体 | VC / BD / BSD(L1) / CAP / PL / TPL | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
+| 公司级实体 | VC / BD / BSD-L1 / CAP / PL / TPL | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
 | overview 缓冲 | distill / extract / archive / tag | [knowledge/overview/](knowledge/overview/README.md) |
 | SDD 上游 | 域架构 | `domains/`（无 solutions/analysis/requirements） |
 | 联邦槽位 | 解决方案 DOC_ROOT 软链 | `solution-slots/solution-{NAME}/` · [knowledge-links.yaml](knowledge-links.yaml) |
@@ -114,7 +114,7 @@ company/
 <!-- docs-build:entity-index:begin -->
 > 本块由 `/docs-build` 写入；实体台账 ∈ 各视角 README；正文 ∈ per-entity `{ID}.md`；九章骨架 ∈ `/docs-indexing`。
 
-> 本层登记 **VC / BD / BSD(L1) / CAP / PL / TPL**。
+> 本层登记 **VC / BD / BSD-L1 / CAP / PL / TPL**。
 
 ### 视角入口
 

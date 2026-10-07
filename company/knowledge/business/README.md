@@ -6,7 +6,7 @@ title: 业务架构
 
 [返回 · 企业架构](../README.md)
 
-**本层 SSOT**：VC / BD / BL / BSD(L1) / CAP。台账 [../index.md](../index.md) §1；字段 [business-meta.md](business-meta.md)。
+**本层 SSOT**：VC / BD / BL / BSD-L1 / CAP。台账 [../index.md](../index.md) §1；字段 [business-meta.md](business-meta.md)。
 
 ## 章节
 
@@ -25,6 +25,6 @@ title: 业务架构
 |------|------|----|------|-----------|
 | L1 | VC | VC-EXAMPLE | 示例价值链 | [VC-EXAMPLE/VC-EXAMPLE.md](VC-EXAMPLE/VC-EXAMPLE.md) |
 | L1 | BD | BD-EXAMPLE | 示例业务域 | [BD-EXAMPLE/BD-EXAMPLE.md](BD-EXAMPLE/BD-EXAMPLE.md) |
-| L2 | BSD(L1) | BSD-EXAMPLE | 示例一级业务子域 | [BD-EXAMPLE/BSD-EXAMPLE.md](BD-EXAMPLE/BSD-EXAMPLE.md) |
+| L2 | BSD-L1 | BSD-EXAMPLE | 示例一级业务子域 | [BD-EXAMPLE/BSD-EXAMPLE.md](BD-EXAMPLE/BSD-EXAMPLE.md) |
 | L3 | CAP | CAP-EXAMPLE | 示例业务能力 | [VC-EXAMPLE/CAP-EXAMPLE.md](VC-EXAMPLE/CAP-EXAMPLE.md) |
 | — | BL | BL-EXAMPLE | 示例业务线 | [BL/BL-EXAMPLE.md](BL/BL-EXAMPLE.md) |

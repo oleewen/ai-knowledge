@@ -59,7 +59,7 @@ integration:
       description: "规范、模板与 Agent 技能"
   downstream:
     - path: "../system/"
-      description: "下游引用公司 BD/PL/TPL"
+      description: "下游引用公司 BD/BL/TPL"
   traceability:
     description: "domains → 各解决方案 solutions/ → 各系统 analysis/features/requirements/"
 

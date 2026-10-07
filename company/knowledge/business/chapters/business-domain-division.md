@@ -7,7 +7,7 @@ title: 业务域划分
 
 [返回 · 业务架构](../README.md)
 
-**结论**：公司级 BD 与 BSD(L1) 由价值链与能力推导，按 DDD 限界上下文定界。能力见 [业务能力](business-capability.md)；价值链见 [价值链](business-value-chain.md)。
+**结论**：公司级 BD 与 BSD-L1 由价值链与能力推导，按 DDD 限界上下文定界。能力见 [业务能力](business-capability.md)；价值链见 [价值链](business-value-chain.md)。
 
 ## 核心域
 

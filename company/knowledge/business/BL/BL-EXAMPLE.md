@@ -1,7 +1,7 @@
 ---
 type: Business Line
 title: 示例业务线
-description: 演示公司级 BL；无 parent；与 BSD(L1) 一对一映射。
+description: 演示公司级 BL；无 parent；与 BSD-L1 一对一映射。
 tags: [business, BL]
 timestamp: "2026-10-06T00:00:00+08:00"
 id: BL-EXAMPLE

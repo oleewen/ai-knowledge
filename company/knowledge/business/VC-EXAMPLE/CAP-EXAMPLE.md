@@ -1,7 +1,7 @@
 ---
 type: Business Capability
 title: 示例业务能力
-description: 演示公司级 CAP；实现 VC；由 BSD(L1) 一对一映射。
+description: 演示公司级 CAP；实现 VC；由 BSD-L1 一对一映射。
 tags: [business, CAP]
 timestamp: "2026-09-18T00:00:00+08:00"
 id: CAP-EXAMPLE

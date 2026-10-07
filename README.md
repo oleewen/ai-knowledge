@@ -29,7 +29,7 @@ Agent = LLM + Harness。平台给模型与工具，**工程知识**须由团队�
 
 | 层级 | 目录 | 职责 |
 | --- | --- | --- |
-| **公司** | [company/](company/README.md) | 顶层架构（VC/BD/PL）；`solution-slots/solution-{NAME}/` |
+| **公司** | [company/](company/README.md) | 顶层架构（VC/BD/BL）；`solution-slots/solution-{NAME}/` |
 | **解决方案** | [solution/](solution/README.md) | 交付包 SLN；`system-slots/system-{NAME}/` |
 | **系统** | [system/](system/README.md) | 五架构视角；`application-slots/application-{NAME}/` |
 | **应用** | [application/](application/README.md) | 实现细节与实体 SSOT |

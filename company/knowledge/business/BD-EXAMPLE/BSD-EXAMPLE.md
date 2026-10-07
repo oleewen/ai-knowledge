@@ -1,7 +1,7 @@
 ---
 type: Business Subdomain
 title: 示例一级业务子域
-description: 公司层 BSD(L1)；挂 BD；由 BL 一对一映射；maps_to CAP。
+description: 公司层 BSD-L1；挂 BD；由 BL 一对一映射；maps_to CAP。
 tags: [business, BSD]
 timestamp: "2026-09-18T00:00:00+08:00"
 id: BSD-EXAMPLE
