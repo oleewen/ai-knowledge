@@ -107,7 +107,7 @@ application/
 <!-- docs-build:entity-index:begin -->
 > 本块由 `/docs-build` 写入；实体台账 ∈ 各视角 README；正文 ∈ per-entity `{ID}.md`；九章骨架 ∈ `/docs-indexing`。
 
-> 本层仅登记 **API / TBL / MW / CMP**。PL 见公司；SLN/PD/BP/BSD(L2)/MDG/TSD 见解决方案；SYS 链见系统。
+> 本层仅登记 **API / TBL / MW / CMP**。BL 见公司；SLN/PL/PD/BP/BSP/BSD-L2/BS/MDG/TSD 见解决方案；SYS 链见系统。
 
 ### 视角入口
 

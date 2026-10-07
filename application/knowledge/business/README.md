@@ -6,18 +6,11 @@ title: 业务架构
 
 [返回 · knowledge](../README.md)
 
-应用侧业务入口：承接实现映射与实例登记；BD/CAP/BSD(L1) 公司首次定义，BSD(L2) 解决方案首次定义，BC→AB 系统首次定义。实体以 per-entity 与 [../index.md](../index.md) §1 为准。本 README 表仅登记本层 SSOT 样例；reference 见 §1。归档目标章 ∈ `chapters/`（`docs-extract` / `docs-archive`）。
+应用侧业务入口：无本层章，无本层实体。BD/CAP/BSD-L1 公司首次定义，BSD-L2 解决方案首次定义，BC→AB 系统首次定义。此处只写纯 ID。台账见 [../index.md](../index.md) §1。
 
 ## 章节
 
-| 章节 | 文件 | 概述 |
-|------|------|------|
-| 业务概述 | [chapters/business-overview.md](chapters/business-overview.md) | 实现侧背景与范围 |
-| 业务域划分 | [chapters/business-domain-division.md](chapters/business-domain-division.md) | 本应用承接的域切片 |
-| 业务术语 | [chapters/business-glossary.md](chapters/business-glossary.md) | 实现用术语 |
-| 业务流程 | [chapters/business-processes.md](chapters/business-processes.md) | 本应用主责流程 |
-| 能力地图 | [chapters/business-capability-map.md](chapters/business-capability-map.md) | 能力落地 |
-| 业务规则与策略 | [chapters/business-rules-and-strategies.md](chapters/business-rules-and-strategies.md) | 规则实现（按需） |
+本视角无章。
 
 ## 实体
 

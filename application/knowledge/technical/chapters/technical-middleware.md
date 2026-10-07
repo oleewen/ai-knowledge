@@ -7,9 +7,9 @@ title: 中间件与基础组件
 
 [返回 · 技术架构](../README.md)
 
-本应用共享平台能力选型与使用规范。
+本应用 MW / CMP 的集群、TTL、索引与配置。
 
-> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义 **MW / CMP**（及 API / TBL）。TSD ∈ 解决方案；TPL ∈ 公司。样例 `MW-EXAMPLE`。
+> **本章口径**：选型清单在系统层 technical · 中间件与基础组件。本章不重复选型。TSD 在解决方案层，TPL 在公司层。样例 `MW-EXAMPLE`、`CMP-EXAMPLE`。
 
 ## 消息队列
 

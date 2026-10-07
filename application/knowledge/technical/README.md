@@ -6,18 +6,14 @@ title: 技术架构
 
 [返回 · knowledge](../README.md)
 
-应用侧技术入口：MW/CMP SSOT；TPL 公司、TSD 解决方案首次定义。实体以 per-entity 与 [../index.md](../index.md) §5 为准。本 README 表仅登记本层 SSOT 样例；reference 见 §5。归档目标章 ∈ `chapters/`。
+应用侧技术入口：MW/CMP SSOT；TPL 公司、TSD 解决方案首次定义。实体以 per-entity 与 [../index.md](../index.md) §5 为准。本 README 表仅登记本层 SSOT 样例；reference 见 §5。归档目标章 ∈ `chapters/`。选型、高可用、可观测在上游。
 
 ## 章节
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
-| 技术概述 | [chapters/technical-overview.md](chapters/technical-overview.md) | 本应用选型 |
-| 部署架构 | [chapters/technical-infrastructure.md](chapters/technical-infrastructure.md) | 部署与交付 |
-| 中间件 | [chapters/technical-middleware.md](chapters/technical-middleware.md) | MW 绑定 |
-| 性能扩展 | [chapters/technical-performance-scalability.md](chapters/technical-performance-scalability.md) | 容量 |
-| 高可用与容灾 | [chapters/technical-ha-and-dr.md](chapters/technical-ha-and-dr.md) | 可用性 |
-| 可观测性 | [chapters/technical-observability.md](chapters/technical-observability.md) | 指标日志链路 |
+| 中间件 | [chapters/technical-middleware.md](chapters/technical-middleware.md) | 集群、TTL、索引、配置 |
+| 性能扩展 | [chapters/technical-performance-scalability.md](chapters/technical-performance-scalability.md) | 只填本应用数字 |
 
 ## 实体
 
