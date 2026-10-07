@@ -32,7 +32,7 @@ title: 知识树元数据（company/knowledge）
 | --- | --- |
 | is_single_source_of_truth | true（公司级实体正文 SSOT） |
 | upstream | —（联邦顶层） |
-| downstream | 系统层、应用层（引用公司 ID） |
+| downstream | 解决方案层（引用公司 ID） |
 
 ## 4. 索引
 
@@ -40,20 +40,21 @@ title: 知识树元数据（company/knowledge）
 | --- | --- |
 | company_index | index.md（库外） |
 | entity_index | [index.md](index.md) |
-| design / governance | [knowledge-governance](../../agent/knowledge/knowledge-governance.md) |
+| design / governance | knowledge-governance |
 
 ## 5. 公司层 BD 落盘
 
 | 层级 | 路径 | 说明 |
 | --- | --- | --- |
 | company | `knowledge/business/BD-{NAME}/BD-{NAME}.md` | 公司 SSOT（目录锚点） |
-| system | `BD-{NAME}.md` | 视角根 reference |
-| application | `BD-{NAME}.md` | 视角根 reference |
+| solution | — | 不落 BD |
+| system | — | 不落 BD、BSD-L1、BSD-L2 |
+| application | — | 不落 BD；纯 ID |
 
 ## 6. 关联文档
 
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 五视角架构入口 |
-| [knowledge-governance](../../agent/knowledge/knowledge-governance.md) | 公司库设计契约 |
-| [naming-conventions](../../agent/knowledge/naming-conventions.md) | 命名 SSOT |
+| knowledge-governance | 公司库设计契约 |
+| naming-conventions | 命名 SSOT |

@@ -1,9 +1,9 @@
 ---
 type: Architecture Chapter
 tags: [architecture, chapter]
-title: 基础设施架构
+title: 云基础设施
 ---
-# 基础设施架构
+# 云基础设施
 
 [返回 · 技术架构](../README.md)
 

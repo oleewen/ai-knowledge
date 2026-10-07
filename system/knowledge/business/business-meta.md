@@ -44,13 +44,14 @@ title: 业务视角元数据（system/knowledge/business）
 | 层级 | 路径 | 说明 |
 | --- | --- | --- |
 | company | `BD-{NAME}.md` | 公司 SSOT |
+| solution | — | 不落 BD、BSD-L1 |
 | system | `knowledge/business/BSD-{L3}/BSD-{L3}.md` | 本层 SSOT（例：`BSD-EXAMPLE-L3/`）；其下 BC→AGG→AB |
 | system | — | 不落 BD、BSD-L1、BSD-L2 文件 |
-| application | `BD-*.md` | 应用 reference |
+| application | — | 不落 BD；纯 ID |
 
 ## 5. 字段（OKF）
 
-Frontmatter 10 必填 + 正文四段见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2；`layer_scope` = `system`。关系字段见 [glossary § 映射关系](../../../agent/knowledge/glossary.md#映射关系常用)。
+Frontmatter 9 必填 + 正文四段见 okf-spec §2；`layer_scope` = `system`。关系字段见 glossary § 映射关系。
 
 | 层级 | 字段 | 建议段落 |
 | --- | --- | --- |
@@ -74,8 +75,8 @@ Frontmatter 10 必填 + 正文四段见 [okf-spec](../../../agent/knowledge/okf-
 | --- | --- |
 | [README.md](README.md) | 叙事索引 |
 | [index.md](../index.md) | 实例 SSOT |
-| [knowledge-governance](../../../agent/knowledge/knowledge-governance.md) | 系统库契约 |
+| knowledge-governance | 系统库契约 |
 | BD-* / CAP-* | 公司业务 SSOT（纯 ID） |
-| [naming-conventions](../../../agent/knowledge/naming-conventions.md) | ID 命名 |
+| naming-conventions | ID 命名 |
 
 **索引**：`readme_index_table: false`；变更 ID 时同步 index.md 与 narrative（按需）。

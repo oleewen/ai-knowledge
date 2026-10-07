@@ -3,7 +3,7 @@ type: Perspective Meta
 title: 业务视角元数据（application/knowledge/business）
 ---
 
-应用侧 DDD 业务版图（BD→BSD→BC→AGG→AB）实体登记与实现映射元数据。实例索引 [index.md](../index.md)（§1，扫描生成；实体 `{ID}.md` = SSOT）。
+**结论**：本层无章、无首次定义实体。只写纯 ID。
 
 ## 1. 概览
 
@@ -12,61 +12,35 @@ title: 业务视角元数据（application/knowledge/business）
 | meta_id | `DIR-KNOWLEDGE-BUSINESS` |
 | 视角 | business |
 | 层级范围 | application |
-| 说明 | DDD 业务版图；公司级 BD/CAP ∈  首次定义，系统层自 BSD 起首次定义，本层承接实现映射与实例登记。 |
-| entities_shape | 实体 `{ID}.md`（OKF）；`BSD` = 目录锚点，`BC/AGG` = 容器目录，`AB` = `AGG` 下叶子；索引见 INDEX-GUIDE 第四章 §1 |
+| 说明 | 无章、无首次定义实体。归属见 §2。 |
 
 ## 2. 层级链
 
-| 链序 | 层级代码 | 说明 |
+**结论**：本层不落文件。
+
+| 代码 | 首次定义 | 本层 |
 | --- | --- | --- |
-| 1 | BD | 业务域（应用层可登记；公司层 = SSOT） |
-| 2 | BSD | 业务子域（系统层首次定义，应用层可引用/登记） |
-| 3 | BC | 限界上下文（系统层首次定义，应用层承接实现映射） |
-| 4 | AGG | 聚合根（系统层首次定义，应用层补充持久化/服务映射） |
-| 5 | AB | 领域能力（Ability，系统层首次定义，应用层补充 API 映射） |
+| BD、CAP、BSD-L1 | 公司 | 纯 ID |
+| BSD-L2 | 解决方案 | 纯 ID |
+| BSD-L3、BC、AGG、AB | 系统 | 纯 ID |
 
 ## 3. 层定义
 
-| order | key | code | id_pattern | parent |
-| --- | --- | --- | --- | --- |
-| 1 | bd | BD | `BD-{NAME}` | — |
-| 2 | bsd | BSD | `BSD-{NAME}` | BD |
-| 3 | bc | BC | `BC-{NAME}` | BSD |
-| 4 | agg | AGG | `AGG-{NAME}` | BC |
-| 5 | ab | AB | `AB-{NAME}` | AGG |
+本层无。
 
 ## 4. 字段（OKF）
 
-**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。关系字段见 [glossary § 映射关系](../../../agent/knowledge/glossary.md#映射关系常用)。
-
-**正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。业务属性写正文，勿堆 frontmatter。
-
-### 各层专属（正文）
-
-| 层级 | 字段 | 建议段落 |
-| --- | --- | --- |
-| BD | `strategic_classification`、`children` | 关系 / 详细说明 |
-| BSD | `parent`、`implemented_by` | 关系 |
-| BC | `implements_to`、`implemented_by`、`supported_by` | 关系 / 跨视角 |
-| AGG | `implements_to`、`implemented_by`、`maps_to` | 关系 / 跨视角 |
-| AB | `implements_to`、`capability`、`maps_to` | 详细说明 / 跨视角 |
+本层无 per-entity 字段。
 
 ## 5. 跨视角引用
 
-| 源字段 | 目标 | 说明 |
-| --- | --- | --- |
-| BC.supported_by | APP.id | 上下文由应用支撑 |
-| AGG.maps_to | ENT.id \| MS.id | 聚合对标实体 / 入口簇 |
-| AB.maps_to | API.id | 能力对标 API |
+不在本文件写。
 
 ## 6. 关联文档
 
-| 路径 | 说明 |
+| 对象 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 人类可读说明 |
-| [index.md](../index.md) | §1 业务视角 + 五视角实例索引（扫描生成） |
-| BD-*, CAP-* | 公司层 SSOT（reference） |
-| BSD-*, BC-*, AGG-*, AB-* | 系统层 SSOT（reference） |
-| index.md（库外） | 联邦索引 |
+| [index.md](../index.md) | §1 业务视角 |
 
 **索引**：`readme_index_table: true`；变更 ID 时同步 README、index.md（按需）。

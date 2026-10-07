@@ -1,9 +1,9 @@
 ---
 type: Architecture Chapter
 tags: [architecture, chapter]
-title: 数据架构概述
+title: 数据概述
 ---
-# 数据架构概述
+# 数据概述
 
 [返回 · 数据架构](../README.md)
 

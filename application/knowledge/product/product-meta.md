@@ -3,7 +3,7 @@ type: Perspective Meta
 title: 产品视角元数据（application/knowledge/product）
 ---
 
-应用侧产品版图（PL 公司；PD / BP 解决方案；本层映射 PM→…）实体登记与交互映射元数据。实例索引 [index.md](../index.md)（§2，扫描生成；实体 `{ID}.md` = SSOT）。
+**结论**：本层无章、无首次定义实体。只写纯 ID。
 
 ## 1. 概览
 
@@ -12,75 +12,41 @@ title: 产品视角元数据（application/knowledge/product）
 | meta_id | `DIR-KNOWLEDGE-PRODUCT` |
 | 视角 | product |
 | 层级范围 | application |
-| 说明 | 产品版图；解决方案 PL / PD 首次定义（本层不落）；解决方案 SLN 首次定义（本层不落）。`PM.implements_to` → 解决方案 `PD-*`。 |
-| entities_shape | 实体 `{ID}.md`（OKF）；索引见 INDEX-GUIDE 第四章 §2 |
+| 说明 | 无章、无首次定义实体。归属见 §2。 |
 
 ## 2. 层级链
 
-| 链序 | 层级代码 | 说明 |
+**结论**：本层不落文件。
+
+| 代码 | 首次定义 | 本层 |
 | --- | --- | --- |
-| 1 | PL | 产品线（解决方案；本层不落盘） |
-| 2 | PD | 产品服务（解决方案首次定义；本层不落盘） |
-| 3 | PM | 产品模块（系统层首次定义） |
-| 4 | FT | 功能点（系统层首次定义，应用层承接 API / 验收映射） |
-| 5 | FR | 功能需求（系统层首次定义，应用层承接验收与接口映射） |
-| 6 | UC | 用户用例（系统层首次定义，应用层承接 API 映射） |
-| 7 | BR | 业务规则（系统层首次定义，应用层承接实现映射） |
+| PL、PD、BP、BSP | 解决方案 | 纯 ID |
+| PM、FT、FR、UC、BR | 系统 | 纯 ID |
 
 ## 3. 层定义
 
-| order | key | code | id_pattern | parent |
-| --- | --- | --- | --- | --- |
-| 1 | pl | PL | `PL-{NAME}` | —（公司） |
-| — | pd | PD | `PD-{NAME}` | PL（解决方案 SSOT；本层不落） |
-| 3 | pm | PM | `PM-{NAME}` | PD（只许本系统 PD） |
-| 4 | ft | FT | `FT-{NAME}` | PM |
-| 5 | fr | FR | `FR-{NAME}` | FT |
-| 6 | uc | UC | `UC-{NAME}` | FR |
-| 7 | br | BR | `BR-{NAME}` | FR |
+本层无。
 
 ## 4. 字段（OKF）
 
-**Frontmatter（10 必填）**：`type` · `title` · `description` · `tags` · `timestamp` · `id` · `perspective` · `hierarchy` · `parent_id` · `layer_scope`（本层固定 `application`）。详见 okf-spec §2。关系字段见 [glossary § 映射关系](../../../agent/knowledge/glossary.md#映射关系常用)。
-
-**正文四段**：`## 关系` · `## 跨视角` · `## 详细说明` · `## 依据与证据`。
-
-### 各层专属（正文）
-
-| 层级 | 字段 | 建议段落 |
-| --- | --- | --- |
-| PM | `implements_to`、`maps_to`、`depends_to` | 关系 / 跨视角 |
-| FT | `supported_by`、`acceptance_criteria`（推荐） | 跨视角 / 详细说明 |
-| FR | `implements_to`、`implemented_by`（UC/BR） | 关系 |
-| UC | `implements_to`、`maps_to`（推荐） | 跨视角 |
-| BR | （实现映射按需） | 跨视角 / 详细说明 |
+本层无 per-entity 字段。
 
 ## 5. 跨视角引用
 
-| 源字段 | 目标 | 说明 |
-| --- | --- | --- |
-| PM.implements_to | 系统 PD.id | 模块归属产品服务 |
-| PM.depends_to | PM.id | 模块依赖其它模块 |
-| PM.maps_to | BC.id | 模块对标限界上下文 |
-| FT.supported_by | API.id | 功能由 API 支撑 |
-| UC.maps_to | API.id | 用例对标 API |
+不在本文件写 PM / FT / UC 字段。API 对 FT 的绑定写在 API 实体。
 
 ## 6. BP 流程叙事（旁路实体）
 
-可选 `BP-{NAME}.md`（OKF：`hierarchy: BP`）：
+**结论**：本层不落 BP。
 
-- BP 首次定义在解决方案；`implements_to` SLN；本层不落 BP
-- 正文可分 M/S/B 节，引用 `PD/PM/FT`
-- **不**挂入 `PL → PD → PM → FT → FR → UC/BR` 组成链
+- BP 首次定义在解决方案；`implements_to` SLN
+- 不挂入 `PL → PD → PM → FT → FR → UC/BR` 组成链
 
 ## 7. 关联文档
 
-| 路径 | 说明 |
+| 对象 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 人类可读说明 |
-| [index.md](../index.md) | §2 产品视角 + 五视角实例索引（扫描生成） |
-| 解决方案 PD-* | 产品服务 SSOT（本层不落盘） |
-| 解决方案 PL-* / SLN-* | 产品线 / 解决方案（本层不落盘） |
-| PM-*, FT-*, FR-*, UC-*, BR-* | 系统层 SSOT（reference / 本层映射） |
+| [index.md](../index.md) | §2 产品视角 |
 
 **索引**：`readme_index_table: true`；变更 ID 时同步 README、index.md（按需）。

@@ -56,10 +56,10 @@ title: "{域名称}架构概览（{slug}-overview）"
 
 | 主标题 | 副标题 | 归档业务知识 |
 | --- | --- | --- |
-| [技术架构概述](../technical/chapters/technical-overview.md) | [技术选用](../technical/chapters/technical-overview.md#技术选用) | — |
-| [技术架构概述](../technical/chapters/technical-overview.md) | [技术例外](../technical/chapters/technical-overview.md#技术例外) | — |
-| [基础设施架构](../technical/chapters/technical-infrastructure.md) | [基础设施选用](../technical/chapters/technical-infrastructure.md#基础设施选用) | — |
-| [基础设施架构](../technical/chapters/technical-infrastructure.md) | [基础设施例外](../technical/chapters/technical-infrastructure.md#基础设施例外) | — |
+| [技术概述](../technical/chapters/technical-overview.md) | [技术选用](../technical/chapters/technical-overview.md#技术选用) | — |
+| [技术概述](../technical/chapters/technical-overview.md) | [技术例外](../technical/chapters/technical-overview.md#技术例外) | — |
+| [云基础设施](../technical/chapters/technical-infrastructure.md) | [基础设施选用](../technical/chapters/technical-infrastructure.md#基础设施选用) | — |
+| [云基础设施](../technical/chapters/technical-infrastructure.md) | [基础设施例外](../technical/chapters/technical-infrastructure.md#基础设施例外) | — |
 | [可观测性](../technical/chapters/technical-observability.md) | [可观测性选用](../technical/chapters/technical-observability.md#可观测性选用) | — |
 | [可观测性](../technical/chapters/technical-observability.md) | [可观测性例外](../technical/chapters/technical-observability.md#可观测性例外) | — |
 
@@ -67,8 +67,8 @@ title: "{域名称}架构概览（{slug}-overview）"
 
 | 主标题 | 副标题 | 归档业务知识 |
 | --- | --- | --- |
-| [数据架构概述](../data/chapters/data-overview.md) | [数据主权](../data/chapters/data-overview.md#数据主权) | — |
-| [数据架构概述](../data/chapters/data-overview.md) | [跨系统数据流](../data/chapters/data-overview.md#跨系统数据流) | — |
+| [数据概述](../data/chapters/data-overview.md) | [数据主权](../data/chapters/data-overview.md#数据主权) | — |
+| [数据概述](../data/chapters/data-overview.md) | [跨系统数据流](../data/chapters/data-overview.md#跨系统数据流) | — |
 | [数据模型](../data/chapters/data-model.md) | [主数据](../data/chapters/data-model.md#主数据) | — |
 
 ---

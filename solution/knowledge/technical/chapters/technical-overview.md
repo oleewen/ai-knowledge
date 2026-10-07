@@ -1,9 +1,9 @@
 ---
 type: Architecture Chapter
 tags: [architecture, chapter]
-title: 技术架构概述
+title: 技术概述
 ---
-# 技术架构概述
+# 技术概述
 
 [返回 · 技术架构](../README.md)
 

@@ -12,7 +12,7 @@ title: 数据架构
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
-| 数据架构概述 | [chapters/data-overview.md](chapters/data-overview.md) | 本方案数据主权与跨系统交接。企业原则、全景、生命周期见公司层 data · data-overview；仓湖、治理、安全见公司层对应章 |
+| 数据概述 | [chapters/data-overview.md](chapters/data-overview.md) | 本方案数据主权与跨系统交接。企业原则、全景、生命周期见公司层 data · data-overview；仓湖、治理、安全见公司层对应章 |
 | 数据模型 | [chapters/data-model.md](chapters/data-model.md) | 主数据逻辑模型与黄金记录 |
 
 ## 实体
