@@ -6,20 +6,17 @@ title: 产品架构
 
 [返回 · 系统知识库 — 架构文档](../README.md)
 
-**本层 SSOT**：PM→FT→FR→UC/BR。PD / BP 不落文件，纯 ID `PD-EXAMPLE` / `BP-EXAMPLE`（解决方案首次定义）。PL、SLN 仅纯 ID。台账 [../index.md](../index.md) §2；字段 [product-meta.md](product-meta.md)。
+**本层 SSOT**：PM→FT→FR→UC/BR。PD / BP 不落文件，纯 ID `PD-EXAMPLE` / `BP-EXAMPLE`（解决方案首次定义）。PL、SLN 仅纯 ID。企业标准只引用公司 product。方案 SSOT 只引用解决方案 product。台账 [../index.md](../index.md) §2；字段 [product-meta.md](product-meta.md)。
 
 ## 章节
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
-| 产品概述 | [chapters/product-overview.md](chapters/product-overview.md) | 定位、用户与路线 |
-| 产品架构 | [chapters/product-architecture.md](chapters/product-architecture.md) | 板块与 PD/PM/SYS 映射 |
-| 信息架构 | [chapters/product-information-architecture.md](chapters/product-information-architecture.md) | 导航与内容模型 |
-| 产品功能 | [chapters/product-feature.md](chapters/product-feature.md) | FT 与优先级 |
-| 用户旅程与场景 | [chapters/product-user-journeys.md](chapters/product-user-journeys.md) | 触点与用例 |
-| 版本管理与发布 | [chapters/product-release.md](chapters/product-release.md) | 版本、灰度与开关（按需） |
-| 产品运营支撑 | [chapters/product-operations-support.md](chapters/product-operations-support.md) | 运营、内容与触达（按需） |
-| 多端策略 | [chapters/product-multi-platform.md](chapters/product-multi-platform.md) | 端覆盖与差异（按需） |
+| 产品概述 | [chapters/product-overview.md](chapters/product-overview.md) | 本系统纳入的 PM。公司定位、度量、体验与方案产品线、产品服务、流程只引用 |
+| 产品架构 | [chapters/product-architecture.md](chapters/product-architecture.md) | 产品模块 |
+| 信息架构 | [chapters/product-information-architecture.md](chapters/product-information-architecture.md) | 导航与页面层级。设计规范与页面原型见公司层 product · product-ux |
+| 产品功能 | [chapters/product-feature.md](chapters/product-feature.md) | 功能点与功能需求 |
+| 用户旅程与场景 | [chapters/product-user-journeys.md](chapters/product-user-journeys.md) | 旅程、用例与业务规则 |
 
 ## 实体
 

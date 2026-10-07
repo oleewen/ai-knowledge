@@ -7,26 +7,14 @@ title: 应用架构
 
 [返回 · 应用架构](../README.md)
 
-本系统 C4、职责边界与分层演进落地。
+本系统的应用与微服务。
 
-> **应用架构 SSOT**：公司级 C4 L1 画法见公司层 application · application-architecture「系统上下文」。参考分层与跨层禁则见同章「分层结构」。职责边界、服务能力矩阵、演进路线见解决方案层同名章。
+> **应用架构 SSOT**：系统上下文与分层结构见公司层 application · application-architecture。职责边界、服务能力矩阵、演进路线见解决方案层 application · application-architecture。
 
-## 系统上下文
+## 应用
 
-画 C4 L1：用户、外部系统、本系统边界与主要交互。
+写 APP 的编号、名称，各 `implements_to` 哪个 SYS。
 
-## 职责边界
+## 微服务
 
-列出各应用/服务的职责、负责人与生命周期状态。
-
-## 服务能力矩阵
-
-对照业务流程活动与归属系统、能力说明及 SLA。
-
-## 分层结构
-
-写分层模型、跨层调用规则与禁止项。
-
-## 演进路线
-
-写当前态/过渡态/目标态、里程碑与回滚策略。
+写 MS 的编号、名称，各 `implements_to` 哪个 APP，`maps_to` 哪个 AGG。

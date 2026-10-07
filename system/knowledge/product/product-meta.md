@@ -4,7 +4,7 @@ title: 产品视角元数据（system/knowledge/product）
 ---
 # 产品视角元数据（system/knowledge/product）
 
-**结论**：PM→FT→FR→UC/BR 本层 SSOT。PD / BP 为解决方案 reference。PL 公司 SSOT（仅引用）。SLN 解决方案 SSOT（仅引用）。实例：[index.md](../index.md)。
+**结论**：PM→FT→FR→UC/BR 本层 SSOT。PD / BP 为解决方案 reference。PL 解决方案 SSOT（仅引用）。SLN 解决方案 SSOT（仅引用）。实例：[index.md](../index.md)。
 
 ## 1. 概览
 
@@ -19,7 +19,7 @@ title: 产品视角元数据（system/knowledge/product）
 
 | 链序 | 层级代码 | 说明 |
 | --- | --- | --- |
-| — | PL | 公司产品 SSOT；仅引用 |
+| — | PL | 解决方案产品 SSOT；仅引用 |
 | — | SLN | 解决方案 SSOT；仅引用 |
 | — | PD | 产品服务（解决方案 SSOT；本层 reference） |
 | 2 | PM | 产品模块 |
@@ -32,7 +32,7 @@ title: 产品视角元数据（system/knowledge/product）
 
 | order | key | code | id_pattern | parent |
 | --- | --- | --- | --- | --- |
-| — | pd | PD | `PD-{NAME}` | PL（公司；本层 reference） |
+| — | pd | PD | `PD-{NAME}` | PL（解决方案；本层 reference） |
 | 2 | pm | PM | `PM-{NAME}` | PD（只许本库 PD） |
 | 3 | ft | FT | `FT-{NAME}` | PM |
 | 4 | fr | FR | `FR-{NAME}` | FT |

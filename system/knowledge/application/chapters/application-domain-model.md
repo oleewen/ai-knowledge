@@ -7,20 +7,18 @@ title: 领域模型
 
 [返回 · 应用架构](../README.md)
 
-本系统聚合/实体边界、类图及关键属性。
+本系统 APP/MS 使用的对象边界。
 
-> **领域模型 SSOT**：公司级应用框架见 公司层 application 视角章节。
-
-与 [概念模型](../../business/chapters/business-glossary.md#概念模型) 及 [数据模型](../../data/chapters/data-model.md) 交叉对齐。
+> **领域模型 SSOT**：BC、AGG 的登记见系统 business · [能力地图](../../business/chapters/business-capability-map.md)。本层不新编号。
 
 ## 领域模型
 
-写清有界上下文、聚合根与实体关系。
+写本系统用到哪些已登记的 BC、AGG。不新编号。
 
 ## 对象模型
 
-给出关键 UML 类图与依赖方向。
+写这些对象在本系统的依赖方向。不新编号。
 
 ## 对象定义
 
-列出领域对象、类型与关键属性/invariant。
+写本系统关心的属性。不新编号。

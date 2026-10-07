@@ -96,7 +96,7 @@ system/
 
 | 聚合 | 职责 | 关键落点 |
 |------|------|----------|
-| 系统级实体 | SYS / BC / AGG / AB / PM / FT / FR / UC / BR / APP / MS / DS / ENT | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
+| 系统级实体 | SYS / BSD-L3 / BC / AGG / AB / PM / FT / FR / UC / BR / APP / MS / DS / ENT | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
 | overview 缓冲 | distill / extract / archive / tag | [knowledge/overview/](knowledge/overview/README.md) |
 | SDD | 分析 → 特性 → 需求 | `analysis/` · `features/` · `requirements/` |
 | 联邦槽位 | 应用 DOC_ROOT 软链 | `application-slots/application-{NAME}/` · [knowledge-links.yaml](knowledge-links.yaml) |
@@ -114,7 +114,7 @@ system/
 <!-- docs-build:entity-index:begin -->
 > 本块由 `/docs-build` 写入；实体台账 ∈ 各视角 README；正文 ∈ per-entity `{ID}.md`；九章骨架 ∈ `/docs-indexing`。
 
-> 公司级与解决方案级首次定义不在本层登记。本层 **SYS / BC / AGG / AB / PM / FT / FR / UC / BR / APP / MS / DS / ENT**。
+> 公司级与解决方案级首次定义不在本层登记。本层 **SYS / BSD-L3 / BC / AGG / AB / PM / FT / FR / UC / BR / APP / MS / DS / ENT**。
 
 ### 视角入口
 
@@ -139,7 +139,7 @@ system/
 | [features/FEATURE-EXAMPLE.md](features/FEATURE-EXAMPLE.md) | 特性样例 |
 | [requirements/REQUIREMENT-EXAMPLE/](requirements/REQUIREMENT-EXAMPLE/) | 需求样例目录 |
 | [adr/CONTEXT.md](adr/CONTEXT.md) | ADR 索引入口 |
-| `knowledge/business/BSD-EXAMPLE/` 下 BC/AGG/AB · `SYS-EXAMPLE` | 本层首次定义样例 |
+| `knowledge/business/BSD-EXAMPLE-L3/` 下 BSD-L3/BC/AGG/AB · `SYS-EXAMPLE` | 本层首次定义样例 |
 | `PD-EXAMPLE` · `BP-EXAMPLE` · `MDG-EXAMPLE` · `TSD-EXAMPLE` · `BSD-EXAMPLE-L2` | 解决方案首次；本层不落文件，纯 ID |
 
 流程叙事章 ∈ 各视角 `knowledge/*/chapters/`；不在九章展开正文。

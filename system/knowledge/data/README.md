@@ -6,17 +6,14 @@ title: 数据架构
 
 [返回 · 系统知识库 — 架构文档](../README.md)
 
-**本层 SSOT**：DS/ENT。MDG 不落文件，纯 ID `MDG-EXAMPLE`（解决方案首次定义）。TBL ∈ application。台账 [../index.md](../index.md) §4；字段 [data-meta.md](data-meta.md)。
+**本层 SSOT**：DS/ENT。MDG 不落文件，纯 ID `MDG-EXAMPLE`（解决方案首次定义）。TBL ∈ application。企业标准只引用公司 data。方案 SSOT 只引用解决方案 data。台账 [../index.md](../index.md) §4；字段 [data-meta.md](data-meta.md)。
 
 ## 章节
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
-| 数据概述 | [chapters/data-overview.md](chapters/data-overview.md) | 原则与生命周期 |
-| 数据模型 | [chapters/data-model.md](chapters/data-model.md) | 源与结构；含主数据 |
-| 数据存储 | [chapters/data-storage.md](chapters/data-storage.md) | 选型与分布 |
-| 数据分析 | [chapters/data-analytics.md](chapters/data-analytics.md) | 主题与口径 |
-| 数据流转 | [chapters/data-flow.md](chapters/data-flow.md) | 管道（按需） |
+| 数据模型 | [chapters/data-model.md](chapters/data-model.md) | 数据源与数据实体。主数据见方案，表见应用 |
+| 数据存储 | [chapters/data-storage.md](chapters/data-storage.md) | 存储类型与数据分片 |
 
 ## 实体
 

@@ -25,4 +25,4 @@ layer_scope: system
 
 ## 依据与证据
 
-示例数据
+chapters/business-capability-map.md（示例）

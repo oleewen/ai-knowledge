@@ -21,7 +21,7 @@ title: 应用视角元数据（system/knowledge/application）
 
 | 链序 | 层级代码 | 说明 |
 | --- | --- | --- |
-| 1 | SYS | 系统（别名应用服务；本层 SSOT；挂公司 SLN） |
+| 1 | SYS | 系统（别名应用服务；本层 SSOT；`implements_to` 解决方案 SLN） |
 | 2 | APP | 应用 |
 | 3 | MS | 入口簇 |
 
@@ -29,7 +29,7 @@ title: 应用视角元数据（system/knowledge/application）
 
 | order | key | code | id_pattern | parent |
 | --- | --- | --- | --- | --- |
-| 1 | sys | SYS | `SYS-{NAME}` | SLN（公司） |
+| 1 | sys | SYS | `SYS-{NAME}` | SLN（解决方案） |
 | 2 | app | APP | `APP-{NAME}` | SYS |
 | 3 | ms | MS | `MS-{NAME}` | APP |
 
@@ -51,9 +51,9 @@ title: 应用视角元数据（system/knowledge/application）
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
-| SYS.implements_to | 公司 SLN.id | 归属解决方案 |
+| SYS.implements_to | 解决方案 SLN.id | 归属解决方案 |
 | SYS.uses_to | MDG.id \| TSD.id | 声明使用的主数据域 / 技术域 |
-| PD.maps_to | SYS.id | 产品服务对标（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
+| SYS.maps_to | PD.id | 系统对标产品服务（[glossary](../../../agent/knowledge/glossary.md#映射关系常用)） |
 | APP.implements_to | SYS.id | 应用归属系统 |
 | APP.supports_to | BC.id | 应用支撑限界上下文 |
 | MS.maps_to | AGG.id | 入口簇对标聚合 |
@@ -64,4 +64,4 @@ title: 应用视角元数据（system/knowledge/application）
 | --- | --- |
 | [README.md](README.md) | 叙事索引 |
 | [index.md](../index.md) | 实例 SSOT |
-| 公司 SLN-* | 解决方案台账 |
+| 解决方案 SLN-* | 解决方案台账 |
