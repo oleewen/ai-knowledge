@@ -31,7 +31,7 @@ title: 知识树元数据（solution/knowledge）
 | 字段 | 值 |
 | --- | --- |
 | is_single_source_of_truth | true（本层首次定义实体） |
-| upstream | 公司 VC/BD/BSD(L1)/CAP/PL/TPL |
+| upstream | 公司 VC/BD/BSD-L1/CAP/BL/TPL |
 | downstream | SYS 及实现链 ∈ 系统；API/TBL/MW/CMP ∈ 应用 |
 
 ## 4. 索引

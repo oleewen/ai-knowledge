@@ -30,4 +30,4 @@ children:
 
 ## 依据与证据
 
-chapters/product-overview.md（示例）
+chapters/product-architecture.md（示例）

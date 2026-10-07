@@ -7,18 +7,18 @@ title: 产品架构
 
 [返回 · 产品架构](../README.md)
 
-本系统产品板块及与 PD、PM、SYS 映射。
+本方案的产品服务、主流程与业务子流程。
 
-> **SSOT**：PL、PD 均在本层首次定义。PD 用 `implements_to` 挂 PL，`maps_to` BS。`parent_id` 为空。SYS `maps_to` PD。
+PM、FT、UC、BR、SYS 不在本层。
 
-## 产品板块
+## 产品服务
 
-列出本系统承载的 `PD-*`；写清主责/协同角色与覆盖范围。
+写 PD 的 ID、`implements_to`（PL）、`maps_to`（BS）。
 
-## 产品模块映射
+## 主流程
 
-列出 `PD-ID` 与本系统 `PM-ID` 对应及每 PM 职责摘要；`PM.parent_id` 只许指向 PD。
+写本方案的 BP。一个 SLN 一条，`implements_to` SLN。
 
-## 产品系统映射
+## 业务子流程
 
-可选；写 PD 与承载系统（SYS）对应及跨系统主责。
+写 BSP 的 `parent`（BP）、`implements_to`（PD）、kind（核心 / 分支 / 异常）。

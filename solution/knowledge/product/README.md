@@ -6,7 +6,15 @@ title: 产品架构
 
 [返回 · 解决方案知识库 — 架构文档](../README.md)
 
-**本层 SSOT**：PL、PD、BP、BSP。PM→FT ∈ 系统。章节见 [chapters/](chapters/)。字段 [product-meta.md](product-meta.md)。
+**本层 SSOT**：PL、PD、BP、BSP。PM→FT ∈ 系统。企业标准只引用公司 product。章节见 [chapters/](chapters/)。字段 [product-meta.md](product-meta.md)。
+
+## 章节
+
+| 章节 | 文件 | 概述 |
+|------|------|------|
+| 产品概述 | [chapters/product-overview.md](chapters/product-overview.md) | 本方案纳入的 PL、PD、BP、BSP。公司定位、路线、度量、体验只引用 |
+| 产品线 | [chapters/product-line.md](chapters/product-line.md) | 产品线清单、职责边界与关系 |
+| 产品架构 | [chapters/product-architecture.md](chapters/product-architecture.md) | 产品服务、主流程与业务子流程。PM 以下不在本层 |
 
 ## 实体
 

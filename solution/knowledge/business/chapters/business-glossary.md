@@ -11,7 +11,7 @@ title: 业务术语
 
 ## 概念模型
 
-写本方案核心对象及关系。对齐 [领域模型](../../application/chapters/application-domain-model.md) 与 [数据模型](../../data/chapters/data-model.md)。
+写本方案核心对象及关系。对齐 [数据模型](../../data/chapters/data-model.md)。
 
 ## 业务术语
 

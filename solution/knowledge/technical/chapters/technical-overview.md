@@ -7,18 +7,14 @@ title: 技术架构概述
 
 [返回 · 技术架构](../README.md)
 
-本系统技术选型、雷达与决策基线。
+本方案的技术选用与例外。
 
-> **技术架构 SSOT**：公司级选型与雷达标准见 公司层 technical · technical-overview 章节。
+> **技术架构 SSOT**：选型与雷达见公司层 technical · technical-overview；DevOps 见 technical-devops；安全见 technical-security；开发环境见 technical-dev-environment。
 
-## 技术选型
+## 技术选用
 
-按层次列出主要技术、用途、负责人与退出条件。
+写本方案有哪些 TSD，各 `implements_to` 哪条公司 TPL。
 
-## 技术雷达
+## 技术例外
 
-写采用/试验/评估/暂缓分类与评审周期。
-
-## 选型决策
-
-索引重大选型 ADR 及决策结论。
+写相对公司 DevOps、安全、开发环境的偏离。

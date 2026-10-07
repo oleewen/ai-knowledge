@@ -55,7 +55,7 @@ integration:
     - path: "../agent/"
       description: "规范、模板与 Agent 技能"
     - path: "../company/"
-      description: "VC/BD/L1/CAP/PL/TPL"
+      description: "VC/BD/L1/CAP/BL/TPL"
   downstream:
     - path: "../system/"
       description: "SYS 与实现链；PD 1:1 SYS"

@@ -13,8 +13,8 @@ title: 业务域划分
 
 ## 二级子域
 
-写 BSD(L2) 的 ID、名称、parent（公司 L1）、`mapped_by`（BS）。
+写 BSD-L2 的 ID、名称、parent（公司 L1）、`mapped_by`（BS）。
 
 ## 子域关系
 
-写本方案各 BSD(L2) 之间的依赖。不写 L1 分类图。
+写本方案各 BSD-L2 之间的依赖。不写 L1 分类图。

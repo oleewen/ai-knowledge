@@ -18,7 +18,7 @@ title: 解决方案知识库设计
 
 | 目录 | 职责 |
 | --- | --- |
-| `knowledge/` | SLN/PD/BSD(L2)/MDG/TSD/BP 首次定义；五视角同构；`overview/{NAME}-overview.md` = 蒸馏缓冲区 |
+| `knowledge/` | SLN/PL/PD/BP/BSP/BSD-L2/BS/MDG/TSD 首次定义；五视角同构；`overview/{NAME}-overview.md` = 蒸馏缓冲区 |
 | `solutions/` | 仅本层 `/sdx-solution`；SA 第五至八章；**无** analysis/features/requirements |
 | `adr/` | 解决方案层决策 + `CONTEXT.md` |
 | `system-slots/system-{NAME}/` | 系统联邦槽位（软链） |

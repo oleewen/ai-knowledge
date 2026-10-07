@@ -35,7 +35,7 @@ implemented_by:
 ## 详细说明
 
 - definition_scope: local
-- 与 BS、以及 BS 所对标的 BSD(L2) 均为一对一。
+- 与 BS、以及 BS 所对标的 BSD-L2 均为一对一。
 
 ## 依据与证据
 
