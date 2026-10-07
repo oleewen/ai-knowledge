@@ -7,7 +7,6 @@ timestamp: "2026-09-13T00:00:00+08:00"
 id: SYS-EXAMPLE
 perspective: application
 hierarchy: SYS
-parent_id: SLN-EXAMPLE
 layer_scope: system
 ---
 ## 关系

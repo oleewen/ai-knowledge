@@ -7,7 +7,7 @@ timestamp: "2026-10-04T00:00:00+08:00"
 id: TSD-EXAMPLE
 perspective: technical
 hierarchy: TSD
-parent_id: TPL-EXAMPLE
+implements_to: TPL-EXAMPLE
 layer_scope: solution
 ---
 ## 关系

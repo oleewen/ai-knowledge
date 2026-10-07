@@ -7,7 +7,6 @@ timestamp: "2026-10-04T00:00:00+08:00"
 id: SLN-EXAMPLE
 perspective: application
 hierarchy: SLN
-parent_id: null
 layer_scope: solution
 maps_to: PL-EXAMPLE
 ---

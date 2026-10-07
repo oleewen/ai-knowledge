@@ -7,7 +7,6 @@ timestamp: "2026-06-21T00:00:00+08:00"
 id: FT-EXAMPLE
 perspective: product
 hierarchy: FT
-parent_id: PM-EXAMPLE
 layer_scope: system
 ---
 # Relations

@@ -7,7 +7,6 @@ timestamp: "2026-06-21T00:00:00+08:00"
 id: TPL-EXAMPLE
 perspective: technical
 hierarchy: TPL
-parent_id: null
 layer_scope: company
 ---
 ## 关系

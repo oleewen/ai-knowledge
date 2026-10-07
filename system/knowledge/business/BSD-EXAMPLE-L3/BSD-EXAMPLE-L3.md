@@ -7,7 +7,6 @@ timestamp: "2026-10-06T00:00:00+08:00"
 id: BSD-EXAMPLE-L3
 perspective: business
 hierarchy: BSD
-parent_id: BSD-EXAMPLE-L2
 layer_scope: system
 level: 3
 ---

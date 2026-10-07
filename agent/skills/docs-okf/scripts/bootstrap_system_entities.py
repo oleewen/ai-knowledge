@@ -22,7 +22,6 @@ timestamp: "%s"
 id: BSD-EXAMPLE
 perspective: business
 hierarchy: BSD
-parent_id: BD-EXAMPLE
 layer_scope: system
 ---
 ## 关系
@@ -55,7 +54,6 @@ timestamp: "%s"
 id: BC-EXAMPLE
 perspective: business
 hierarchy: BC
-parent_id: BSD-EXAMPLE
 layer_scope: system
 ---
 ## 关系
@@ -88,7 +86,6 @@ timestamp: "%s"
 id: AGG-EXAMPLE
 perspective: business
 hierarchy: AGG
-parent_id: BC-EXAMPLE
 layer_scope: system
 ---
 ## 关系
@@ -121,7 +118,6 @@ timestamp: "%s"
 id: AB-EXAMPLE
 perspective: business
 hierarchy: AB
-parent_id: AGG-EXAMPLE
 layer_scope: system
 ---
 ## 关系
@@ -152,7 +148,6 @@ timestamp: "%s"
 id: PM-EXAMPLE
 perspective: product
 hierarchy: PM
-parent_id: PD-EXAMPLE
 layer_scope: system
 ---
 ## 关系
@@ -184,7 +179,6 @@ timestamp: "%s"
 id: FT-EXAMPLE
 perspective: product
 hierarchy: FT
-parent_id: PM-EXAMPLE
 layer_scope: system
 ---
 ## 关系
@@ -218,7 +212,6 @@ timestamp: "%s"
 id: UC-EXAMPLE
 perspective: product
 hierarchy: UC
-parent_id: FR-EXAMPLE
 layer_scope: system
 ---
 ## 关系
@@ -251,7 +244,6 @@ timestamp: "%s"
 id: APP-EXAMPLE
 perspective: application
 hierarchy: APP
-parent_id: SYS-EXAMPLE
 startup_class: ExampleApp
 maven_module: example-module
 repo_url: "git@example.com:org/example.git"
@@ -287,7 +279,6 @@ timestamp: "%s"
 id: MS-EXAMPLE
 perspective: application
 hierarchy: MS
-parent_id: APP-EXAMPLE
 layer_scope: system
 ---
 ## 关系
@@ -320,7 +311,6 @@ timestamp: "%s"
 id: DS-EXAMPLE
 perspective: data
 hierarchy: DS
-parent_id: MDG-EXAMPLE
 config_key: example_config_key
 layer_scope: system
 ---
@@ -352,7 +342,6 @@ timestamp: "%s"
 id: ENT-EXAMPLE
 perspective: data
 hierarchy: ENT
-parent_id: DS-EXAMPLE
 layer_scope: system
 ---
 ## 关系

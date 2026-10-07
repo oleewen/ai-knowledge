@@ -7,7 +7,6 @@ timestamp: "2026-06-24T08:00:00+08:00"
 id: TBL-EXAMPLE
 perspective: data
 hierarchy: TBL
-parent_id: DS-EXAMPLE
 layer_scope: application
 ---
 ## 关系

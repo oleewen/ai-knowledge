@@ -7,7 +7,6 @@ timestamp: "2026-10-06T00:00:00+08:00"
 id: PD-EXAMPLE
 perspective: product
 hierarchy: PD
-parent_id: null
 layer_scope: solution
 implements_to: PL-EXAMPLE
 maps_to: BS-EXAMPLE

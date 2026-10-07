@@ -22,7 +22,6 @@ timestamp: "%s"
 id: BD-EXAMPLE
 perspective: business
 hierarchy: BD
-parent_id: null
 strategic_classification: core_domain
 layer_scope: company
 definition_scope: local
@@ -50,13 +49,12 @@ business-domain-division.md（示例）
         """---
 type: Business Capability
 title: 示例业务能力
-description: 仅用于演示公司级单层 CAP；parent_id 指向所属 BD。
+description: 仅用于演示公司级单层 CAP；关系段 implements_to 指向所属 VC。
 tags: [business, CAP]
 timestamp: "%s"
 id: CAP-EXAMPLE
 perspective: business
 hierarchy: CAP
-parent_id: BD-EXAMPLE
 layer_scope: company
 ---
 ## 关系
@@ -87,7 +85,6 @@ timestamp: "%s"
 id: PL-EXAMPLE
 perspective: product
 hierarchy: PL
-parent_id: null
 layer_scope: company
 ---
 ## 关系
@@ -121,7 +118,6 @@ timestamp: "%s"
 id: SYS-EXAMPLE
 perspective: application
 hierarchy: SYS
-parent_id: null
 layer_scope: company
 definition_scope: local
 ---
@@ -153,7 +149,6 @@ timestamp: "%s"
 id: MDG-EXAMPLE
 perspective: data
 hierarchy: MDG
-parent_id: null
 governance_owner: 示例：数据治理委员会
 layer_scope: company
 definition_scope: local
@@ -186,7 +181,6 @@ timestamp: "%s"
 id: TPL-EXAMPLE
 perspective: technical
 hierarchy: TPL
-parent_id: null
 domain: 云基础设施
 layer_scope: company
 definition_scope: local

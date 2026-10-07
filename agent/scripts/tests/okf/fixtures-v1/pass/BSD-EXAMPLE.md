@@ -7,7 +7,6 @@ timestamp: "2026-06-21T00:00:00+08:00"
 id: BSD-EXAMPLE
 perspective: business
 hierarchy: BSD
-parent_id: BD-EXAMPLE
 layer_scope: system
 ---
 # Relations

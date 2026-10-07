@@ -7,7 +7,6 @@ timestamp: "2026-09-18T00:00:00+08:00"
 id: CAP-EXAMPLE
 perspective: business
 hierarchy: CAP
-parent_id: null
 layer_scope: company
 implements_to: VC-EXAMPLE
 mapped_by:

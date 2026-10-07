@@ -146,7 +146,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 ### 输出结构
 
-数据视角每个 DS/ENT 各一 `{ID}.md`；DS↔ENT 经关系段 `implements_to`/`implemented_by`（OKF `parent_id` 可与之并存且目标一致）。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)。
+数据视角每个 DS/ENT 各一 `{ID}.md`；DS↔ENT 经关系段 `implements_to`/`implemented_by`。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)。
 
 ---
 
@@ -313,7 +313,6 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 | `cross_references` | 是 | 跨视角引用 |
 | `id` | 是 | 唯一实体 ID（如 `SYS-BILLING-APPEAL`） |
 | `description` | 推荐 | 实体描述 |
-| `parent_id` | 视情况 | 指向父层 id，表达层级归属 |
 
 ### metadata 与统计（可选）
 

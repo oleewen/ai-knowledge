@@ -148,7 +148,7 @@
 
 **HTTP 生成（唯一函数；技能 / docs-link / 校验共用）**：输入 `id` 与首次定义层。沿 parent 链走到该层，解析根优先 `{repository}/{doc_dir}`，否则 `{path}/{doc_dir}`。`repository`：SSH→HTTPS、去 `.git`；GitHub `/blob/{ref}/`，GitLab `/-/blob/{ref}/`，Gitee `/blob/{ref}/`；未知宿主不写 HTTP，只用 `path`+`doc_dir`（本机不存在则正文保持 ID）。文件相对路径用 **目标层** `entity_relpath`，不链中间层 stub。禁止手写与推导不同的 href。`docs-link` 变更 `repository`/`ref`/`doc_dir` 时扫描下级 `*/knowledge/**` 替换旧 web_base；`unlink` 能改为纯 ID 则改，否则停并列清单。
 
-**下层 stub**：首次定义在上层的实体，下层可留同 `id` 的薄 reference（`definition_scope: reference`，`layer_scope` 为本层），不重复字段语义；`parent_id` 仍在本 bundle 解析。有 parent 时 stub 的关系/依据段用上述 HTTP 指向上层 SSOT。**系统仓与应用仓均允许**对非本层首次定义实体建 stub。
+**下层 stub**：首次定义在上层的实体，下层可留同 `id` 的薄 reference（`definition_scope: reference`，`layer_scope` 为本层），不重复字段语义。路径父级取自关系段同层 `parent`，否则同层 `implements_to`。有 knowledge-links 的 `type: parent` 时，stub 的关系/依据段用上述 HTTP 指向上层 SSOT。**系统仓与应用仓均允许**对非本层首次定义实体建 stub。
 
 **校验（默认离线）**：有 parent 则 href 必须等于「推导 web_base + 目标层 relpath」；`path` 在本机存在时再查文件。不 HTTP GET。无 parent 出现跨层 HTTP 则失败。不得把 `/knowledge/...` 回退到下游 bundle。
 

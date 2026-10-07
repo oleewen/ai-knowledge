@@ -109,4 +109,4 @@ ID 前缀写作 `VC-` / `BD-` 等，语法见 [naming-conventions.md](naming-con
 
 `implements_*_ids`、`implements_to_vc`、`implemented_by_cap`、`implemented_by_app_id`、`implemented_by_service_ids`、`supports_to_vc`、`supported_by_bd`、`maps_to_*` 带后缀旧名、`uses_*_ids`、`apis`、`aggregates`、`abilities`、`persisted_as_*`、`owned_by_app_id`、`bound_app_id`、`parent_tsd_id` / `parent_tpl_id` / `parent_mw_id` / `parent_app_id`（关系语义改 `implements_to`）、`relies_on_context_ids`、`invokes_api_ids`、`depends_pm_ids`、`map_to_api_id`、`maps_to_cap_ids`、`authoritative_mdg_id`、`root_entity` / `entities`、APP/SYS↔TPL 直连、APP↔CMP、FT↔UC 直连。
 
-OKF frontmatter 技术键 `parent_id`（路径/校验）可与关系段 `implements_to`/`parent` 并存，目标须一致。
+路径父级不写 frontmatter。先取关系段里的同层 `parent`，没有则取同层 `implements_to`。跨层 `implements_to` 不参与路径。

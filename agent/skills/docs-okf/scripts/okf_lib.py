@@ -11,7 +11,7 @@ from typing import Any, Dict, Iterator, List, Optional, Tuple
 OKF_RESERVED_NAMES = frozenset({"index.md", "log.md", "INDEX-GUIDE.md", "KNOWLEDGE-INDEX.md"})
 FRONTMATTER_RE = re.compile(r"\A---\r?\n(.*?)\r?\n---\r?\n?", re.DOTALL)
 
-# OKF v1 frontmatter 必填 10 字段（SSOT：agent/knowledge/okf-spec.md §2）
+# OKF v1 frontmatter 必填 9 字段（SSOT：agent/knowledge/okf-spec.md §2）
 REQUIRED_FRONTMATTER_FIELDS = (
     "type",
     "title",
@@ -21,7 +21,6 @@ REQUIRED_FRONTMATTER_FIELDS = (
     "id",
     "perspective",
     "hierarchy",
-    "parent_id",
     "layer_scope",
 )
 
@@ -368,13 +367,45 @@ def perspective_domain_anchor(
     return anchor_map.get(perspective, id or "")
 
 
+_REL_ID_RE = re.compile(r"[A-Z][A-Z0-9]*-[A-Za-z0-9_-]+")
+
+
+def relation_path_parent(body: str, local_ids: Optional[set] = None) -> Optional[str]:
+    """路径父级：同层 `parent` 优先，否则同层 `implements_to`。跨层 ID 不返回。
+
+    local_ids 为本 bundle 已有 id。为 None 时不按层过滤。
+    """
+    match = re.search(r"^## 关系\s*$", body, re.M)
+    if not match:
+        return None
+    rest = body[match.end() :]
+    nxt = re.search(r"^## ", rest, re.M)
+    section = rest[: nxt.start()] if nxt else rest
+
+    def pick(verb: str) -> Optional[str]:
+        for line in section.splitlines():
+            found = re.match(rf"^-\s*{verb}\s*:\s*(.*)$", line.strip())
+            if not found:
+                continue
+            for item in _REL_ID_RE.findall(found.group(1)):
+                if local_ids is not None and item not in local_ids:
+                    continue
+                return item
+        return None
+
+    return pick("parent") or pick("implements_to")
+
+
 def entity_relpath(
     perspective: str,
     id: str,
-    parent_id: Optional[str] = None,
+    path_parent: Optional[str] = None,
     bundle: str = "application",
 ) -> str:
-    """相对 bundle 根的 concept 路径（域扁平树）。"""
+    """相对 bundle 根的 concept 路径（域扁平树）。
+
+    path_parent 来自 relation_path_parent，不读 frontmatter。
+    """
     prefix = _id_prefix(id)
     if bundle == "company":
         if perspective == "business" and prefix == "VC":
@@ -384,10 +415,10 @@ def entity_relpath(
         if perspective == "business" and prefix == "BL":
             return f"knowledge/business/BL/{id}.md"
         if perspective == "business" and prefix == "BSD":
-            bd = parent_id or "BD-EXAMPLE"
+            bd = path_parent or "BD-EXAMPLE"
             return f"knowledge/business/{bd}/{id}.md"
         if perspective == "business" and prefix == "CAP":
-            vc = parent_id or _DEFAULT_BUSINESS_VC
+            vc = path_parent or _DEFAULT_BUSINESS_VC
             return f"knowledge/business/{vc}/{id}.md"
         if perspective == "application" and prefix == "SLN":
             return f"knowledge/application/{id}.md"
@@ -406,26 +437,26 @@ def entity_relpath(
         if perspective == "business" and prefix == "BSD":
             # L1（parent=BD-* 或空）：knowledge/business/BSD-{L1}/BSD-{L1}.md
             # L2（parent=BSD-*）：knowledge/business/{parent}/{id}/{id}.md
-            if not parent_id or parent_id.startswith("BD-"):
+            if not path_parent or path_parent.startswith("BD-"):
                 return f"knowledge/business/{id}/{id}.md"
-            return f"knowledge/business/{parent_id}/{id}/{id}.md"
+            return f"knowledge/business/{path_parent}/{id}/{id}.md"
         if perspective == "product" and prefix == "PL":
             return f"knowledge/product/{id}.md"
         if perspective == "product" and prefix == "PD":
             return f"knowledge/product/{id}/{id}.md"
         if perspective == "product" and prefix == "PM":
-            pd = parent_id or _DEFAULT_PRODUCT_PD
+            pd = path_parent or _DEFAULT_PRODUCT_PD
             return f"knowledge/product/{pd}/{id}/{id}.md"
         if perspective == "application" and prefix == "SYS":
             return f"knowledge/application/{id}.md"
         if perspective == "application" and prefix == "APP":
             return f"knowledge/application/{id}/{id}.md"
         if perspective == "application" and prefix == "MS":
-            if not parent_id:
+            if not path_parent:
                 raise ValueError(
-                    "entity_relpath: system MS requires parent_id (APP id)"
+                    "entity_relpath: system MS requires path_parent (APP id)"
                 )
-            return f"knowledge/application/{parent_id}/{id}/{id}.md"
+            return f"knowledge/application/{path_parent}/{id}/{id}.md"
         if perspective == "data" and prefix == "MDG":
             return f"knowledge/data/{id}.md"
         if perspective == "technical" and prefix == "TSD":

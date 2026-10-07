@@ -49,15 +49,15 @@ def test_parse_frontmatter_list():
 
 
 def test_parse_frontmatter_null():
-    text = "---\nparent_id: null\ntitle: Example\n---\n"
+    text = "---\ndescription: null\ntitle: Example\n---\n"
     meta, body = okf_lib.parse_frontmatter(text)
-    assert meta["parent_id"] is None
+    assert meta["description"] is None
     assert meta["title"] == "Example"
     assert body == ""
 
 
 def test_entity_relpath_ent_with_parent():
-    path = okf_lib.entity_relpath("data", "ENT-T_BILLING", parent_id="DS-BILLING")
+    path = okf_lib.entity_relpath("data", "ENT-T_BILLING", path_parent="DS-BILLING")
     assert path == "knowledge/data/ENT-EXAMPLE/ENT-T_BILLING.md"
 
 
@@ -70,13 +70,13 @@ def test_format_frontmatter_roundtrip():
     meta = {
         "type": "Feature",
         "tags": ["product", "FT"],
-        "parent_id": None,
+        "description": None,
     }
     block = okf_lib.format_frontmatter(meta)
     parsed, _ = okf_lib.parse_frontmatter(block)
     assert parsed["type"] == "Feature"
     assert parsed["tags"] == ["product", "FT"]
-    assert parsed["parent_id"] is None
+    assert parsed["description"] is None
 
 
 def test_scan_concepts():
@@ -114,7 +114,7 @@ def test_entity_relpath_company_bd_uses_id():
 
 def test_entity_relpath_company_bsd_nested():
     path = okf_lib.entity_relpath(
-        "business", "BSD-EXAMPLE", parent_id="BD-EXAMPLE", bundle="company"
+        "business", "BSD-EXAMPLE", path_parent="BD-EXAMPLE", bundle="company"
     )
     assert path == "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE.md"
 
@@ -126,7 +126,7 @@ def test_entity_relpath_company_bsd_default_parent():
 
 def test_entity_relpath_company_cap_with_parent():
     path = okf_lib.entity_relpath(
-        "business", "CAP-ORDER", parent_id="VC-EXPRESS", bundle="company"
+        "business", "CAP-ORDER", path_parent="VC-EXPRESS", bundle="company"
     )
     assert path == "knowledge/business/VC-EXPRESS/CAP-ORDER.md"
 
@@ -183,7 +183,7 @@ def test_entity_relpath_system_pd_and_pm():
     )
     assert (
         okf_lib.entity_relpath(
-            "product", "PM-EXAMPLE", parent_id="PD-EXAMPLE", bundle="system"
+            "product", "PM-EXAMPLE", path_parent="PD-EXAMPLE", bundle="system"
         )
         == "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE.md"
     )
@@ -204,7 +204,7 @@ def test_hierarchy_first_layer_pd_sys():
 def test_entity_relpath_system_ms_and_mw():
     assert (
         okf_lib.entity_relpath(
-            "application", "MS-EXAMPLE", parent_id="APP-EXAMPLE", bundle="system"
+            "application", "MS-EXAMPLE", path_parent="APP-EXAMPLE", bundle="system"
         )
         == "knowledge/application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md"
     )
@@ -223,9 +223,31 @@ def test_entity_relpath_system_ms_requires_parent():
     try:
         okf_lib.entity_relpath("application", "MS-EXAMPLE", bundle="system")
     except ValueError as exc:
-        assert "parent_id" in str(exc)
+        assert "path_parent" in str(exc)
         return
-    raise AssertionError("expected ValueError when system MS parent_id missing")
+    raise AssertionError("expected ValueError when system MS path_parent missing")
+
+
+def test_relation_path_parent_prefers_parent_and_skips_cross_layer():
+    body = """## 关系
+
+- parent: BP-EXAMPLE
+- implements_to: PD-EXAMPLE
+
+## 跨视角
+"""
+    assert okf_lib.relation_path_parent(body) == "BP-EXAMPLE"
+    body = """## 关系
+
+- implements_to: TPL-EXAMPLE
+- implements_to: TSD-EXAMPLE
+
+## 详细说明
+"""
+    assert (
+        okf_lib.relation_path_parent(body, local_ids={"TSD-EXAMPLE"}) == "TSD-EXAMPLE"
+    )
+    assert okf_lib.relation_path_parent(body, local_ids={"OTHER"}) is None
 
 
 def test_entity_relpath_system_bd_at_perspective_root():
@@ -236,7 +258,7 @@ def test_entity_relpath_system_bd_at_perspective_root():
 def test_entity_relpath_system_bsd_by_parent():
     assert (
         okf_lib.entity_relpath(
-            "business", "BSD-EXAMPLE", parent_id="BD-EXAMPLE", bundle="system"
+            "business", "BSD-EXAMPLE", path_parent="BD-EXAMPLE", bundle="system"
         )
         == "knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md"
     )
@@ -244,7 +266,7 @@ def test_entity_relpath_system_bsd_by_parent():
         okf_lib.entity_relpath(
             "business",
             "BSD-EXAMPLE-L2",
-            parent_id="BSD-EXAMPLE",
+            path_parent="BSD-EXAMPLE",
             bundle="system",
         )
         == "knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md"
@@ -279,6 +301,7 @@ def main() -> None:
         test_hierarchy_first_layer_pd_sys,
         test_entity_relpath_system_ms_and_mw,
         test_entity_relpath_system_ms_requires_parent,
+        test_relation_path_parent_prefers_parent_and_skips_cross_layer,
         test_entity_relpath_system_bd_at_perspective_root,
         test_entity_relpath_system_bsd_by_parent,
     ]

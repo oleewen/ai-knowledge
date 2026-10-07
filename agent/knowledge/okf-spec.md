@@ -18,7 +18,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 
 ## 规范总览
 
-先分型，再写入。实体概念须 frontmatter 10 字段 + 正文 4 段中文 H2（§2～§4）；索引/叙事/元数据不按实体 Profile（§5～§7）。OKF Core：`type` 唯一必填，允许 extensions；本仓库对实体概念加严（§0、§2）。机器规约类文件的 `frontmatter title` 为契约字段，不得仅为消 `MD025` 而删。
+先分型，再写入。实体概念须 frontmatter 9 字段 + 正文 4 段中文 H2（§2～§4）；索引/叙事/元数据不按实体 Profile（§5～§7）。OKF Core：`type` 唯一必填，允许 extensions；本仓库对实体概念加严（§0、§2）。机器规约类文件的 `frontmatter title` 为契约字段，不得仅为消 `MD025` 而删。
 
 | 问题 | 是 | 否 |
 | --- | --- | --- |
@@ -42,7 +42,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 
 - 模式：`{DOC_DIR}/knowledge/<perspective>/…/{ID}.md`（含 `/{ID}/{ID}.md`）
 - 路径 / ID / 缩写：见 [knowledge-layout.md](../references/knowledge-layout.md)、[naming-conventions.md](naming-conventions.md)、[glossary.md](glossary.md)；EXAMPLE 见各层 `knowledge/`，勿在本规范维护长清单
-- MUST：遵 §2–§10；四段中文 H2；frontmatter 10 必填（可 extensions；业务属性优先下沉正文）
+- MUST：遵 §2–§10；四段中文 H2；frontmatter 9 必填（可 extensions；业务属性优先下沉正文）
 
 ### 1.2 索引入口
 
@@ -71,14 +71,14 @@ timestamp: "2026-06-25T00:00:00+08:00"
 
 ---
 
-## 2. 实体概念 Profile：frontmatter（10 必填 + extensions）
+## 2. 实体概念 Profile：frontmatter（9 必填 + extensions）
 
 本节定义实体概念（per-entity）的 frontmatter Profile。
 
 - OKF Core：仅 `type` 为必填；允许任意扩展字段（extensions）。
-- 本仓库 Profile：对实体概念要求 10 字段齐全，并约束 `type`/`hierarchy`/`layer_scope` 等一致性；同时允许扩展字段。
+- 本仓库 Profile：对实体概念要求 9 字段齐全，并约束 `type`/`hierarchy`/`layer_scope` 等一致性；同时允许扩展字段。
 
-每个 per-entity 文件必须包含以下 10 个字段，并允许附加扩展字段（extensions）。同时，为了帮助读者理解当前 worktree 现状，下表也并列展示当前已观测到的非实体文档键。
+每个 per-entity 文件必须包含以下 9 个字段，并允许附加扩展字段（extensions）。同时，为了帮助读者理解当前 worktree 现状，下表也并列展示当前已观测到的非实体文档键。
 
 | 分类 | 字段 | 类型 | 必填 | 说明 | 举例 |
 | ------ | ------ | ------ | ------ | ------ | ------ |
@@ -90,7 +90,6 @@ timestamp: "2026-06-25T00:00:00+08:00"
 | 实体概念核心键 | `id` | 字符串 | ✅ | 全局唯一 ID，格式：`<hierarchy>-<name>` | `BD-EXAMPLE` / `API-EXAMPLE` |
 | 实体概念核心键 | `perspective` | 枚举 | ✅ | 与实体所属视角一致 | `business` / `product` / `application` / `data` / `technical` |
 | 实体概念核心键 | `hierarchy` | 枚举 | ✅ | 与 `type` 一一对应 | `VC` / `BD` / `BL` / `CAP` / `PL` / `SLN` / `PD` / `SYS` / `MDG` / `TPL` / `BSD` / `BC` / `AGG` / `AB` / `PM` / `BP` / `FT` / `UC` / `BR` / `APP` / `MS` / `DS` / `ENT` / `TSD` / `API` / `TBL` / `MW` / `CMP` |
-| 实体概念核心键 | `parent_id` | 字符串 \| null | ✅ | 父层 id；BD、BL 与 PL 允许 `null` | `BD-EXAMPLE` / `PM-EXAMPLE` / `null` |
 | 实体概念核心键 | `layer_scope` | 枚举 | ✅ | 与知识库路径前缀对应 | `company` / `solution` / `system` / `application` |
 | 非实体文档键 | `okf_version` | 字符串 | - | 当前只出现在 bundle 根 `index.md` | `"0.1"` / `"1.0"` |
 | 非实体文档键 | `status` | 字符串 | - | 当前只出现在公司层示例方案/分析文档 | `draft` / `"draft"` |
@@ -151,7 +150,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 MUST：
 
 - 文件为 `{ID}.md` 且在四层 `*/knowledge/<perspective>/...` 下，可被其他文件以链接引用。
-- frontmatter 满足实体概念 Profile 的 10 字段必填（见 §2），并保持 `type`/`hierarchy`/`perspective`/`layer_scope` 一致。
+- frontmatter 满足实体概念 Profile 的 9 字段必填（见 §2），并保持 `type`/`hierarchy`/`perspective`/`layer_scope` 一致。
 - 正文包含 4 个中文 H2（见本节），用于承载关系、跨视角、说明与证据。
 - 关系与跨视角引用使用可解析链接；同一文件内链接风格保持一致。
 - 业务四层 `*/knowledge/**` 的跨文件引用方向与形态遵守 [knowledge-governance.md](knowledge-governance.md)「业务 knowledge 引用边界」（同层 bundle-relative；向上有 parent 则 HTTP 到首次定义层 SSOT，无 parent 则纯 ID；禁下层/槽位/爬层；依据段不链库外文档路径）。
@@ -183,7 +182,7 @@ MAY：
 
 ### 4.1 关系段
 
-按层级差异化。动词与允许边见 [glossary § 映射关系](glossary.md#映射关系常用)；同类树用 `parent`/`children`，异类组成用 `implements_to`/`implemented_by`。OKF frontmatter `parent_id` 可与关系段并存，目标须一致。
+按层级差异化。动词与允许边见 [glossary § 映射关系](glossary.md#映射关系常用)；同类树用 `parent`/`children`，异类组成用 `implements_to`/`implemented_by`。路径父级不写 frontmatter：先取关系段里的同层 `parent`，没有则取同层 `implements_to`。跨层 `implements_to` 不参与路径。
 
 | 层级 | 必含子段 | 选含子段 |
 | ------ | --------- | --------- |

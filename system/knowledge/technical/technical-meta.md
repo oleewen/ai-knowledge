@@ -30,7 +30,7 @@ title: 技术视角元数据（system/knowledge/technical）
 
 ## 4. 字段（OKF）
 
-Frontmatter 10 必填 + 正文四段见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2；`layer_scope` = `system`。
+Frontmatter 9 必填 + 正文四段见 okf-spec §2；`layer_scope` = `system`。
 
 | 字段 | 说明 |
 | --- | --- |
@@ -51,7 +51,7 @@ Frontmatter 10 必填 + 正文四段见 [okf-spec](../../../agent/knowledge/okf-
 | [README.md](README.md) | 叙事索引 |
 | [index.md](../index.md) | TSD reference |
 | TPL-* | 公司 TPL SSOT（reference） |
-| [naming-conventions](../../../agent/knowledge/naming-conventions.md) | 命名 SSOT |
-| [knowledge-governance](../../../agent/knowledge/knowledge-governance.md) | 层语义 |
+| naming-conventions | 命名 SSOT |
+| knowledge-governance | 层语义 |
 
 **索引**：`readme_index_table: false`；变更 TSD ID 时同步 index/overview（按需）。

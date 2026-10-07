@@ -35,7 +35,7 @@ title: 数据视角元数据（system/knowledge/data）
 
 ## 4. 字段（OKF）
 
-Frontmatter 10 必填 + 正文四段见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2；`layer_scope` = `system`。
+Frontmatter 9 必填 + 正文四段见 okf-spec §2；`layer_scope` = `system`。
 
 | 层级 | 字段 | 建议段落 |
 | --- | --- | --- |
@@ -59,7 +59,7 @@ Frontmatter 10 必填 + 正文四段见 [okf-spec](../../../agent/knowledge/okf-
 | --- | --- |
 | [README.md](README.md) | 叙事索引 |
 | [index.md](../index.md) | 实例 SSOT |
-| [knowledge-governance](../../../agent/knowledge/knowledge-governance.md) | 系统库契约 |
-| [naming-conventions](../../../agent/knowledge/naming-conventions.md) | ID 命名 |
+| knowledge-governance | 系统库契约 |
+| naming-conventions | ID 命名 |
 
 **索引**：`readme_index_table: false`；变更 ID 时同步 index.md 与 narrative（按需）。

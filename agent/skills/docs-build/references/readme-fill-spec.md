@@ -52,7 +52,7 @@
 |名称|frontmatter `title` 或 `name`|
 |锚点目录 / 文件|相对链接至 `{ID}.md`（示例：`DS-EXAMPLE.md`、`ENT-EXAMPLE/ENT-EXAMPLE.md`）|
 
-ENT 的 `parent_id` 可用于排序或链序说明。
+ENT 的路径父级取自关系段同层 `parent`，否则同层 `implements_to`，可用于排序或链序说明。
 
 ### business —「业务索引表」
 

@@ -7,7 +7,6 @@ timestamp: "2026-06-21T00:00:00+08:00"
 id: UC-EXAMPLE
 perspective: product
 hierarchy: UC
-parent_id: FR-EXAMPLE
 layer_scope: system
 ---
 ## 关系

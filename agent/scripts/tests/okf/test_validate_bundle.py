@@ -20,7 +20,6 @@ timestamp: "2026-06-16T00:00:00+08:00"
 id: BD-EXAMPLE
 perspective: business
 hierarchy: BD
-parent_id: null
 layer_scope: application
 ---
 """
@@ -102,7 +101,6 @@ def test_validator_no_downstream_bundle_fallback() -> None:
             "id: UC-EXAMPLE\n"
             "perspective: product\n"
             "hierarchy: UC\n"
-            "parent_id: null\n"
             "layer_scope: system\n"
             "---\n"
             "## 关系\n\n"
@@ -166,7 +164,6 @@ def test_validator_cross_bundle_missing_still_warns() -> None:
             "id: UC-EXAMPLE\n"
             "perspective: product\n"
             "hierarchy: UC\n"
-            "parent_id: null\n"
             "layer_scope: system\n"
             "---\n"
             "## 关系\n\n- (none)\n\n"

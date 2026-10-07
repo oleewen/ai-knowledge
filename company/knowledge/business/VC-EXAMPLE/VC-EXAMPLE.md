@@ -7,7 +7,6 @@ timestamp: "2026-09-18T00:00:00+08:00"
 id: VC-EXAMPLE
 perspective: business
 hierarchy: VC
-parent_id: null
 layer_scope: company
 supported_by:
   - BD-EXAMPLE

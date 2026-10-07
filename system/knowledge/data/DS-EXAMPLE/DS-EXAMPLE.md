@@ -7,7 +7,6 @@ timestamp: "2026-06-21T00:00:00+08:00"
 id: DS-EXAMPLE
 perspective: data
 hierarchy: DS
-parent_id: MDG-EXAMPLE
 layer_scope: system
 ---
 ## 关系

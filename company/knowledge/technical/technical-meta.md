@@ -29,7 +29,7 @@ title: 技术视角元数据（company/knowledge/technical）
 
 ## 4. 字段（OKF）
 
-Frontmatter 10 必填 + 正文四段见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2；`layer_scope` = `company`。
+Frontmatter 9 必填 + 正文四段见 okf-spec §2；`layer_scope` = `company`。
 
 | 字段 | 说明 |
 | --- | --- |
@@ -45,5 +45,5 @@ Frontmatter 10 必填 + 正文四段见 [okf-spec](../../../agent/knowledge/okf-
 | --- | --- |
 | [README.md](README.md) | 叙事索引 |
 | [index.md](../index.md) | TPL 实例 SSOT |
-| [knowledge-governance](../../../agent/knowledge/knowledge-governance.md) | 公司级实体定义 |
-| [naming-conventions](../../../agent/knowledge/naming-conventions.md) | ID 命名 |
+| knowledge-governance | 公司级实体定义 |
+| naming-conventions | ID 命名 |

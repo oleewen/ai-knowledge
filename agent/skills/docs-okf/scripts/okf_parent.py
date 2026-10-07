@@ -64,7 +64,7 @@ def _cmd_href(args: argparse.Namespace) -> int:
     href = x.cross_layer_href(
         Path(args.doc_root),
         args.id,
-        parent_id=args.parent_id,
+        path_parent=args.path_parent,
         hierarchy=args.hierarchy,
     )
     if href:
@@ -108,7 +108,7 @@ def main(argv: Optional[list] = None) -> int:
     h = sub.add_parser("href")
     h.add_argument("--doc-root", required=True)
     h.add_argument("--full-id", required=True)
-    h.add_argument("--parent-id", default=None)
+    h.add_argument("--path-parent", default=None)
     h.add_argument("--hierarchy", default=None)
     h.set_defaults(func=_cmd_href)
 

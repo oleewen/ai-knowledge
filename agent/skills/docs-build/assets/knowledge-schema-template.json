@@ -176,7 +176,6 @@
       {
         "hierarchy": "ENT",
         "id": "ENT-BILLING-APPEAL",
-        "parent_id": "DS-BILLING-APPEAL-TIDB",
         "alias": "BillingAppeal",
         "name": "申诉单表",
         "logical_name": "BillingAppeal",
@@ -269,7 +268,6 @@
       {
         "hierarchy": "AGG",
         "id": "AGG-BILLING-APPEAL",
-        "parent_id": "BC-BILLING-APPEAL-CORE",
         "alias": "BillingAppealAgg",
         "name": "计费申诉聚合",
         "description": "计费申诉核心聚合",
@@ -318,7 +316,6 @@
       {
         "hierarchy": "AB",
         "id": "AB-APPEAL-LIFECYCLE",
-        "parent_id": "AGG-BILLING-APPEAL",
         "alias": "AppealLifecycle",
         "name": "申诉生命周期能力",
         "description": "提供计费申诉完整生命周期能力",
@@ -400,7 +397,6 @@
       {
         "hierarchy": "PD",
         "id": "PD-BILLING-APPEAL",
-        "parent_id": "PL-BILLING-APPEAL",
         "alias": "BillingAppealProductService",
         "name": "计费申诉产品服务",
         "description": "计费申诉产品线下的产品服务（系统层 PD）",
@@ -423,7 +419,6 @@
       {
         "hierarchy": "FT",
         "id": "FT-BILLING-APPEAL-LIFECYCLE",
-        "parent_id": "PM-BILLING-APPEAL-CORE",
         "alias": "BillingAppealLifecycle",
         "name": "申诉单生命周期",
         "description": "计费申诉主单的完整生命周期功能",

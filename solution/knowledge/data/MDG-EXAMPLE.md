@@ -7,7 +7,6 @@ timestamp: "2026-10-04T00:00:00+08:00"
 id: MDG-EXAMPLE
 perspective: data
 hierarchy: MDG
-parent_id: null
 layer_scope: solution
 ---
 ## 关系

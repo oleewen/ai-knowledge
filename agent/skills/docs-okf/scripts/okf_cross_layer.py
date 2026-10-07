@@ -317,7 +317,7 @@ def cross_layer_href(
     start_doc_root: Path,
     id: str,
     *,
-    parent_id: Optional[str] = None,
+    path_parent: Optional[str] = None,
     hierarchy: Optional[str] = None,
 ) -> Optional[str]:
     prefix = hierarchy or okf_lib._id_prefix(id)
@@ -332,7 +332,7 @@ def cross_layer_href(
     if not wb:
         return None
     rel = okf_lib.entity_relpath(
-        perspective, id, parent_id=parent_id, bundle=layer
+        perspective, id, path_parent=path_parent, bundle=layer
     )
     return f"{wb}/{rel}"
 

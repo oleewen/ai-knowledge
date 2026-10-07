@@ -7,7 +7,6 @@ timestamp: "2026-06-21T08:00:00+08:00"
 id: MW-EXAMPLE
 perspective: technical
 hierarchy: MW
-parent_id: TSD-EXAMPLE
 layer_scope: application
 ---
 ## 关系

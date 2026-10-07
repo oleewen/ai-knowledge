@@ -46,7 +46,6 @@ def test_validate_viz_index_passes_for_complete_bundle() -> None:
             "id: BD-EXAMPLE\n"
             "perspective: business\n"
             "hierarchy: BD\n"
-            "parent_id: null\n"
             "layer_scope: application\n"
             "---\n"
             "## 关系\n",
@@ -88,7 +87,6 @@ def test_validate_viz_index_fails_without_okf_block() -> None:
             "id: BD-EXAMPLE\n"
             "perspective: business\n"
             "hierarchy: BD\n"
-            "parent_id: null\n"
             "layer_scope: application\n"
             "---\n"
             "## 关系\n",

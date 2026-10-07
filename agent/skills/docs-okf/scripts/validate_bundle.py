@@ -45,7 +45,7 @@ class Validator:
         )
         self.errors = 0
         self.warnings = 0
-        # 全仓 id → file 索引（供 R6 parent_id 与 R7 Cross-perspective 引用校验）
+        # 全仓 id → file 索引（供 R6 id 重复与 R7 Cross-perspective 引用校验）
         self._id_index: Dict[str, List[str]] = {}
         # 缓存扫到的所有 .md 文件
         self._md_files: List[Path] = []
@@ -167,7 +167,7 @@ class Validator:
         if str(type_val) not in okf_lib.HIERARCHY_TO_TYPE.values():
             return
 
-        # R1 frontmatter 10 字段齐全
+        # R1 frontmatter 9 字段齐全
         missing = [f for f in okf_lib.REQUIRED_FRONTMATTER_FIELDS if f not in meta]
         if missing:
             self.error(
@@ -190,13 +190,6 @@ class Validator:
                     f"R3 type 与 hierarchy 不一致: hierarchy={hierarchy} 应映射 type={expected_type}，"
                     f"实得 type={type_val}: {relpath}"
                 )
-
-        # R6 parent_id 引用存在性（BD/BL/PL 允许 null）
-        parent_id = meta.get("parent_id")
-        if parent_id is not None and str(parent_id) != "" and str(parent_id) != "null":
-            if str(parent_id) not in self._id_index:
-                # 占位策略：第二轮结束后再做严格校验（避免漏判）
-                pass  # 占位，在第二轮统一处理
 
         # R8 tags 必含 [<perspective>, <hierarchy>]
         tags = meta.get("tags")

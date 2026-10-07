@@ -44,7 +44,7 @@ BL 不进上表序号。
 
 ## 4. 字段（OKF）
 
-Frontmatter 10 必填 + 正文四段见 [okf-spec](../../../agent/knowledge/okf-spec.md) §2；`layer_scope` = `company`。关系字段见 [glossary § 映射关系](../../../agent/knowledge/glossary.md#映射关系常用)。
+Frontmatter 9 必填 + 正文四段见 okf-spec §2；`layer_scope` = `company`。关系字段见 glossary § 映射关系。
 
 | 层级 | 字段 | 说明 |
 | --- | --- | --- |
@@ -73,4 +73,4 @@ Frontmatter 10 必填 + 正文四段见 [okf-spec](../../../agent/knowledge/okf-
 | --- | --- |
 | [README.md](README.md) | 叙事索引 |
 | [index.md](../index.md) | 实例 SSOT |
-| [naming-conventions](../../../agent/knowledge/naming-conventions.md) | ID 命名 |
+| naming-conventions | ID 命名 |

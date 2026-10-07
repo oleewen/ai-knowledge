@@ -7,7 +7,6 @@ timestamp: "2026-06-21T08:00:00+08:00"
 id: CMP-EXAMPLE
 perspective: technical
 hierarchy: CMP
-parent_id: MW-EXAMPLE
 layer_scope: application
 ---
 ## 关系

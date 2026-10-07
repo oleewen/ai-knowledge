@@ -7,7 +7,6 @@ timestamp: "2026-06-24T00:00:00+08:00"
 id: BR-EXAMPLE
 perspective: product
 hierarchy: BR
-parent_id: PM-EXAMPLE
 layer_scope: system
 ---
 # Relations

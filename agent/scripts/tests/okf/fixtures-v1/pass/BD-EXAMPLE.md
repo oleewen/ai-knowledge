@@ -7,7 +7,6 @@ timestamp: "2026-06-21T00:00:00+08:00"
 id: BD-EXAMPLE
 perspective: business
 hierarchy: BD
-parent_id: null
 strategic_classification: supporting_domain
 definition_scope: reference
 layer_scope: system
