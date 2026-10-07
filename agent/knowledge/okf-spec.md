@@ -194,8 +194,8 @@ MAY：
 | AB | `implements_to: [...]` | 跨视角 `mapped_by`（UC） |
 | VC | — | `supported_by`、`implemented_by` |
 | CAP | `implements_to: [...]` + `maps_to: [...]` | — |
-| BL | `maps_to: [...]`（→BSD(L1)） | `mapped_by`（PL） |
-| BS | `maps_to: [...]`（→BSD(L2)） | `mapped_by`（PD） |
+| BL | `maps_to: [...]`（→BSD-L1） | `mapped_by`（PL） |
+| BS | `maps_to: [...]`（→BSD-L2） | `mapped_by`（PD） |
 | PL | `maps_to: [...]`（→BL） | `implemented_by`（PD）；`mapped_by`（SLN） |
 | PD | `implements_to: [...]`（→PL） + `maps_to: [...]`（→BS） | `implemented_by`（PM\|BSP）；`mapped_by`（SYS） |
 | BP | `implements_to: [...]`（→SLN） | `children`（BSP） |

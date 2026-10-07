@@ -121,7 +121,7 @@ def test_system_knowledge_index_scope_and_nav():
             bundle, bundle="system"
         )
         assert "SYS / BC / AGG / AB" in rendered
-        assert "BSD(L2) / PD / SYS / MDG" not in rendered
+        assert "BSD-L2 / PD / SYS / MDG" not in rendered
         assert "### 视角入口" in rendered
         assert "[技术](knowledge/technical/README.md)" in rendered
         assert "物化目录映射" not in rendered
@@ -151,9 +151,9 @@ def test_company_knowledge_index_scope_and_nav():
         rendered = generate_knowledge_index.render_knowledge_index(
             bundle, bundle="company"
         )
-        assert "VC / BD / BSD(L1) / CAP / PL / TPL" in rendered
+        assert "VC / BD / BSD-L1 / CAP / PL / TPL" in rendered
         assert "### 视角入口" in rendered
-        assert "无 SLN/PD/BSD(L2)/MDG/TSD/SYS" in rendered
+        assert "无 SLN/PD/BSD-L2/MDG/TSD/SYS" in rendered
         assert "SLN ∈ application" not in rendered
 
 
@@ -183,7 +183,7 @@ def test_solution_knowledge_index_scope_and_nav():
         rendered = generate_knowledge_index.render_knowledge_index(
             bundle, bundle="solution"
         )
-        assert "SLN / PD / BSD(L2) / MDG / TSD / BP" in rendered
+        assert "SLN / PD / BSD-L2 / MDG / TSD / BP" in rendered
         assert "### 视角入口" in rendered
         assert "[应用](knowledge/application/README.md)" in rendered
 

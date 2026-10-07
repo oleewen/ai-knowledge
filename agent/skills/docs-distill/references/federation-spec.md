@@ -72,7 +72,13 @@
 
 ### 应用库（`application/knowledge/overview/`）
 
-行序同系统库；归档入本层 `chapters/`。第三列只收本应用实现要点。
+行序与系统库分开。第三列只收本应用实现要点。归档入本层 `chapters/`；无章的视角不落章。
+
+- 业务：无章
+- 产品：无章
+- 应用：接口管理（ADR 在 `adr/`，不进 chapters）
+- 技术：中间件 → 性能扩展
+- 数据：数据模型
 
 ### 系统库（`system/knowledge/overview/`）
 

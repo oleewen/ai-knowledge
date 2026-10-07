@@ -26,11 +26,11 @@ _LEAD = (
 
 _SCOPE_NOTE = {
     "company": (
-        "> 本层登记 **VC / BD / BSD(L1) / CAP / PL / TPL**。"
-        "无 SLN/PD/BSD(L2)/MDG/TSD/SYS（见解决方案/系统）。"
+        "> 本层登记 **VC / BD / BSD-L1 / CAP / PL / TPL**。"
+        "无 SLN/PD/BSD-L2/MDG/TSD/SYS（见解决方案/系统）。"
     ),
     "solution": (
-        "> 本层登记 **SLN / PD / BSD(L2) / MDG / TSD / BP**。"
+        "> 本层登记 **SLN / PD / BSD-L2 / MDG / TSD / BP**。"
         "公司 VC/BD/L1/PL/TPL 与系统 SYS 链不在本层登记。"
     ),
     "system": (
@@ -39,7 +39,7 @@ _SCOPE_NOTE = {
     ),
     "application": (
         "> 本层仅登记 **API / TBL / MW / CMP**。"
-        "PL 见公司；SLN/PD/BP/BSD(L2)/MDG/TSD 见解决方案；SYS 链见系统。"
+        "PL 见公司；SLN/PD/BP/BSD-L2/MDG/TSD 见解决方案；SYS 链见系统。"
     ),
 }
 

@@ -4,9 +4,9 @@
 > **不分管**：文件四类分型、per-entity Profile、frontmatter/正文结构 → [okf-spec.md](../knowledge/okf-spec.md)；ID **语法** / IDEA-ID 字面 → [naming-conventions.md](../knowledge/naming-conventions.md)；缩写/短义/映射字段 → [glossary.md](../knowledge/glossary.md)；首次定义 / 引用边界 → [knowledge-governance.md](../knowledge/knowledge-governance.md)。  
 > 会话工作稿见 [session-spec-path.md](session-spec-path.md)；闸门总表见 [CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates)；推进环见 [unit-cycle-protocol.md](unit-cycle-protocol.md)。写前 hook 已空；技能清单见 [skills/README.md](../skills/README.md)。
 
-**最后更新**: 2026-10-05
+**最后更新**: 2026-10-07
 
-> **阶段目录**：公司只 `domains/`（BD/BSD(L1) 如何支撑 VC，不放 SLN，不建 `solutions/`）。解决方案只 `solutions/`（SA 第五至八章在此，第一至四章进 `knowledge/`）。系统与应用同构：`analysis/` → `features/` → `requirements/`，不建 `solutions/`。联邦三跳：公司 `solution-slots/` → 解决方案 `system-slots/` → 系统 `application-slots/`。
+> **阶段目录**：公司只 `domains/`（BD/BSD-L1 如何支撑 VC，不放 SLN，不建 `solutions/`）。解决方案只 `solutions/`（SA 第五至八章在此，第一至四章进 `knowledge/`）。系统与应用同构：`analysis/` → `features/` → `requirements/`，不建 `solutions/`。联邦三跳：公司 `solution-slots/` → 解决方案 `system-slots/` → 系统 `application-slots/`。
 
 ---
 
@@ -38,7 +38,7 @@
 - **解决方案层五视角**（`solution/knowledge/{perspective}/`）：
   | 视角 | 落点要点 |
   | --- | --- |
-  | business | BSD(L2) 本层 SSOT（`parent`→公司 L1）；BS 本层 SSOT（无 parent，`maps_to`→BSD(L2)） |
+  | business | BSD-L2 本层 SSOT（`parent`→公司 L1）；BS 本层 SSOT（无 parent，`maps_to`→BSD-L2） |
   | product | PL、PD、BP、BSP 本层 SSOT |
   | application | SLN 本层 SSOT；不落 SYS 正文 |
   | data | MDG 本层 SSOT |
@@ -51,12 +51,12 @@
   | application | SYS 本层 SSOT（`maps_to`→PD，`implements_to`→SLN）；APP/MS |
   | data | DS/ENT 本层 SSOT；MDG = 解决方案 reference |
   | technical | MW 可为 application reference；TSD = 解决方案 reference |
-- **公司层五视角**（`company/knowledge/{perspective}/`）：VC、BD、BL、BSD(L1)、CAP、TPL；产品视角无实体（概述、度量、体验）；**无** SLN/PD/PL/SYS/BSD(L2)/MDG/TSD
+- **公司层五视角**（`company/knowledge/{perspective}/`）：VC、BD、BL、BSD-L1、CAP、TPL；产品视角无实体（概述、度量、体验）；**无** SLN/PD/PL/SYS/BSD-L2/MDG/TSD
 - **应用层**：API/TBL/MW/CMP 本层 SSOT；其余为 reference 或纯 ID
 - **阶段目录（目标态）**：
   | 库 | 目录 |
   | --- | --- |
-  | 公司 | `domains/`（`/sdx-domains`：总图 + `DOMAIN-{BD-ID}.md`；只写 BD/BSD(L1) 如何支撑 VC，不放 SLN）；`adr/`；**无** solutions/analysis/features/requirements |
+  | 公司 | `domains/`（`/sdx-domains`：总图 + `DOMAIN-{BD-ID}.md`；只写 BD/BSD-L1 如何支撑 VC，不放 SLN）；`adr/`；**无** solutions/analysis/features/requirements |
   | 解决方案 | `solutions/`（仅 `/sdx-solution`）；`adr/`；**无** analysis/features/requirements |
   | 系统、应用 | `analysis/`（原 solutions）→ `features/`（原 analysis）→ `requirements/REQUIREMENT-{IDEA-ID}/`；`adr/` |
   | 迁徙样例 | 系统/应用 `analysis/ANALYSIS-EXAMPLE.md`、`features/FEATURE-EXAMPLE.md`（目录改名后文件已对齐） |
@@ -80,13 +80,21 @@
 
 公司第三列只收 SLN 级共性，不收单 SYS 实现细节。应用第三列只收本应用实现要点，不替代实体 `{ID}.md`。
 
-系统库主标题行序（自上而下逐节，勿跳行）；**应用库同行序**（实现侧落盘，归档入本层 `chapters/`）：
+系统库主标题行序（自上而下逐节，勿跳行）：
 
 - 业务：概述 → 域划分 → 术语 → 流程 → 能力地图 → 业务规则与策略
 - 产品：概述 → 产品架构 → 信息架构 → 产品功能 → 用户旅程与场景 → 版本管理与发布 → 产品运营支撑 → 多端策略
 - 应用：系统概述 → 应用架构 → 领域模型 → 服务设计 → 领域能力 → 集成架构 → 服务间交互 → 接口管理 → 多租户多环境 → ADR
 - 技术：技术概述 → 基础设施 → 中间件 → **性能扩展 → 高可用** → 可观测性
 - 数据：数据概述 → 数据模型 → 数据存储 → 数据分析 → 数据流转
+
+应用库行序（与系统分开；实现侧落盘，归档入本层 `chapters/`）：
+
+- 业务：无章（README 只作纯 ID 入口）
+- 产品：无章（README 只作纯 ID 入口）
+- 应用：接口管理（ADR 在 `adr/`，不进 chapters）
+- 技术：中间件 → 性能扩展
+- 数据：数据模型
 
 解决方案 overview 行序对齐 SA 第一至四章落 knowledge 的视角：业务范围、应用与集成、数据主权、技术选型。公司库行序见 `company/knowledge/overview/` 与同层 README。
 

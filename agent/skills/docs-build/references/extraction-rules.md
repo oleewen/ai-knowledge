@@ -170,19 +170,19 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 #### BD（业务域层级）
 
 - 提取自包路径域名首段、AGENTS.md 业务域定义
-- **必须字段**：`id`（如 `BD-CHARGING-APPEAL`）、`description`、`strategic_classification`（core_domain/supporting/generic）、`supports_to`（VC）、`children`（BSD(L1) id 列表）
+- **必须字段**：`id`（如 `BD-CHARGING-APPEAL`）、`description`、`strategic_classification`（core_domain/supporting/generic）、`supports_to`（VC）、`children`（BSD-L1 id 列表）
 
 #### BSD（业务子域层级）
 
 - 一级提取自公司业务版图：`level: 1`、`parent` 所属 BD、`maps_to`（CAP），公司层落盘
-- 二级提取自 BC 与 BSD(L1) 间的包路径段：`level: 2`、`parent` 所属 BSD(L1)、`mapped_by`（BS），解决方案层落盘
+- 二级提取自 BC 与 BSD-L1 间的包路径段：`level: 2`、`parent` 所属 BSD-L1、`mapped_by`（BS），解决方案层落盘
 - **必须字段**：`id`、`level`、`parent`、`description`；一级另须 `maps_to`；二级另须 `mapped_by`
-- **禁止**：三级及以下 BSD、将 BC 直接作为 BSD、跨 BSD(L1) 合并 BSD(L2)
+- **禁止**：三级及以下 BSD、将 BC 直接作为 BSD、跨 BSD-L1 合并 BSD-L2
 
 #### BC（限界上下文层级）
 
 - 提取自宿主类父包名、限界上下文包路径
-- **必须字段**：`id`（如 `BC-BILLING-APPEAL-CORE`）、`implements_to`（所属 BSD(L2)）、`description`、`supported_by`（APP）、`implemented_by`（AGG id 列表）
+- **必须字段**：`id`（如 `BC-BILLING-APPEAL-CORE`）、`implements_to`（所属 BSD-L2）、`description`、`supported_by`（APP）、`implemented_by`（AGG id 列表）
 - **可选字段**：`ubiquitous_language`（通用语言词汇表）
 - **禁止**：使用 Maven 模块名作为 BC-ID、单包对应多个 BC-ID
 
@@ -201,7 +201,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 ### 输出结构
 
-业务视角：公司层每个 VC/BD/BL/BSD(L1)/CAP 各一 `{ID}.md`；解决方案层每个 BSD(L2)、BS 各一 `{ID}.md`；系统层每个 BC/AGG/AB 各一 `{ID}.md`；同类树用 `parent`/`children`（另 BSP→BP），组成链用 `implements_to`/`implemented_by`（见 [glossary § 映射关系](../../../knowledge/glossary.md#映射关系常用)）。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)。
+业务视角：公司层每个 VC/BD/BL/BSD-L1/CAP 各一 `{ID}.md`；解决方案层每个 BSD-L2、BS 各一 `{ID}.md`；系统层每个 BC/AGG/AB 各一 `{ID}.md`；同类树用 `parent`/`children`（另 BSP→BP），组成链用 `implements_to`/`implemented_by`（见 [glossary § 映射关系](../../../knowledge/glossary.md#映射关系常用)）。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)。
 
 ---
 
@@ -293,7 +293,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
                     ┌─────────────────────┴─────────────────────┐
                     ▼                                           ▼
               业务视角                                    产品视角
-  VC ↔ CAP ↔ BSD(L1) → BSD(L2) → BC → AGG → AB    BSD(L1) ↔ PL → PD → PM → FT → UC
+  VC ↔ CAP ↔ BSD-L1 → BSD-L2 → BC → AGG → AB    BSD-L1 ↔ PL → PD → PM → FT → UC
       ↑                引用 MS-*  引用 API-*             ↑       引用 SYS-* 引用 MS-* 引用 API-*
       BD ────────────────────────────────────────────────┘
 ```

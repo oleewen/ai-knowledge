@@ -19,9 +19,9 @@
 
 | 层级 | 目录 | 治理职责 | 实体 SSOT（首次定义） |
 | --- | --- | --- | --- |
-| 公司 | `company/` | 完整价值链 VC；域架构（哪个 BD 支撑 VC）；企业技术准入 | VC、BD、CAP、BSD(L1)、PL、TPL |
-| 解决方案 | `solution/` | 一个交付包（一仓一 SLN）；跨 SYS 共性（架构、模型、主流程、产品框架、数据主权、技术选型） | SLN、PD、BSD(L2)、MDG、TSD、BP |
-| 系统 | `system/` | 一个 SYS 的实现边界与架构聚合；应用镜像槽位 | SYS、BC、AGG、AB、PM、FT、FR、UC、BR、APP、MS、DS、ENT |
+| 公司 | `company/` | 完整价值链 VC；域架构（哪个 BD 支撑 VC）；企业技术准入 | VC、BD、CAP、BSD-L1、BL、TPL |
+| 解决方案 | `solution/` | 一个交付包（一仓一 SLN）；跨 SYS 共性（架构、模型、主流程、产品框架、数据主权、技术选型） | SLN、PL、PD、BP、BSP、BSD-L2、BS、MDG、TSD |
+| 系统 | `system/` | 一个 SYS 的实现边界与架构聚合；应用镜像槽位 | SYS、BSD-L3、BC、AGG、AB、PM、FT、FR、UC、BR、APP、MS、DS、ENT |
 | 应用 | `application/` | 实现级实体、SDD 阶段交付、物理锚点 | API、TBL、MW、CMP |
 
 **命名、术语与 OKF 文件分型**：统一以 `agent/knowledge/` 为准（见 [README.md](README.md)）。路径与槽位名见 [knowledge-layout.md](../references/knowledge-layout.md)。实体首次定义细节见下文「各层聚焦摘要」。
@@ -31,7 +31,7 @@
 | 联邦 | parent 仅 `application → system → solution → company`（向上 1:1）。公司不直管系统。蒸馏按层上收，禁止跳层当默认 |
 | 禁止 | 跨层字段语义双源；公司/解决方案正文写单应用实现细节 |
 | 引用 | 有 parent → HTTP 到首次定义层 SSOT；无 parent → 纯 ID（详见下文「业务 knowledge 引用边界」） |
-| 基数 | 一仓一 SLN；一 SLN 一个 PL、一条 BP、多个 PD；PD→BS→BSD(L2) 均 1:1；SYS→PD **1:1**；一 SLN 多个 MDG、多个 TSD |
+| 基数 | 一仓一 SLN；一 SLN 一个 PL、一条 BP、多个 PD；PD→BS→BSD-L2 均 1:1；SYS→PD **1:1**；一 SLN 多个 MDG、多个 TSD |
 
 ---
 
@@ -44,16 +44,16 @@
 | 视角 | 实体 | 公司层聚焦 |
 | --- | --- | --- |
 | 业务 | VC | 价值链；`supported_by`→BD，`implemented_by`→CAP |
-| 业务 | BD | 业务域；`supports_to`→VC，`children`→BSD(L1) |
-| 业务 | BL | 业务线；无 `parent`；`maps_to`→BSD(L1) 一对一 |
-| 业务 | BSD(L1) | 公司层业务子域；`level: 1`，`parent`→BD，`children`→BSD(L2)，`maps_to`→CAP，`mapped_by`→BL |
-| 业务 | CAP | 业务能力目录；`implements_to`→VC，`mapped_by`→BSD(L1) |
+| 业务 | BD | 业务域；`supports_to`→VC，`children`→BSD-L1 |
+| 业务 | BL | 业务线；无 `parent`；`maps_to`→BSD-L1 一对一 |
+| 业务 | BSD-L1 | 公司层业务子域；`level: 1`，`parent`→BD，`children`→BSD-L2，`maps_to`→CAP，`mapped_by`→BL |
+| 业务 | CAP | 业务能力目录；`implements_to`→VC，`mapped_by`→BSD-L1 |
 | 产品 | — | **无 PL / PD**。企业产品标准（概述、度量、体验） |
 | 应用 | — | **无 SLN**（SLN ∈ 解决方案） |
 | 数据 | — | **无 MDG**（MDG ∈ 解决方案） |
 | 技术 | TPL | 云 / DevOps / 安全 / 开发环境 / 可观测；企业技术准入；`TSD.implements_to`→TPL |
 
-- SDD：只 `domains/`。只写 BD/BSD(L1) 如何支撑 VC，不放 SLN，不建 `solutions/` / `analysis/` / `features/` / `requirements/`。入口技能 `/sdx-domains`
+- SDD：只 `domains/`。只写 BD/BSD-L1 如何支撑 VC，不放 SLN，不建 `solutions/` / `analysis/` / `features/` / `requirements/`。入口技能 `/sdx-domains`
 - 槽位 / 同步：见 [knowledge-layout.md](../references/knowledge-layout.md)（`solution-slots/solution-{NAME}`）
 - 入口：[company/README.md](../../company/README.md) · [company/knowledge/](../../company/knowledge/README.md)
 
@@ -61,7 +61,7 @@
 
 | 视角 | 解决方案层聚焦 |
 | --- | --- |
-| 业务 | BSD(L2) SSOT（`parent`→公司 BSD(L1)，`mapped_by`→BS）；BS SSOT（无 `parent`，`maps_to`→BSD(L2) 1:1） |
+| 业务 | BSD-L2 SSOT（`parent`→公司 BSD-L1，`mapped_by`→BS）；BS SSOT（无 `parent`，`maps_to`→BSD-L2 1:1） |
 | 产品 | PL / PD / BP / BSP SSOT。`SLN.maps_to`→PL 1:1；`PL.maps_to`→BL 1:1；`PD.implements_to`→PL；`BP.implements_to`→SLN；BSP `parent`→BP、`implements_to`→PD |
 | 应用 | SLN SSOT（一仓一 SLN；`maps_to`→PL 1:1；`implemented_by`→SYS）；**无 SYS 正文**（SYS ∈ 系统） |
 | 数据 | MDG SSOT（一 SLN 多个数据域；跨 SYS 逻辑模型与数据主权） |
@@ -75,13 +75,13 @@
 
 | 视角 | 系统层聚焦 |
 | --- | --- |
-| 业务 | BC→AGG→AB（`implements_to`/`implemented_by`）；BSD(L2) 为解决方案 reference |
+| 业务 | BSD-L3→BC→AGG→AB（`parent`→解决方案 BSD-L2；`implements_to`/`implemented_by`）。不落 BSD-L1、BSD-L2 文件 |
 | 产品 | PM→FT→FR→UC/BR（整链 `implements_to`）；PD/BP 为解决方案 reference；PM `implements_to`→PD |
 | 应用 | SYS 本层 SSOT（`maps_to`→解决方案 PD 1:1；`implements_to`→SLN）；APP→MS（`implements_to`）；`uses_to`→MDG\|TSD（上层） |
 | 数据 | DS→ENT（`implements_to` MDG）；MDG 为解决方案 reference；TBL ∈ application |
 | 技术 | MW/CMP ∈ application；TSD 为解决方案 reference |
 
-- 上层 reference（可留薄文件）：`SLN/PD/BSD(L2)/MDG/TSD/BP` 及公司层实体；`definition_scope: reference`，不重复字段语义
+- 上层 reference（可留薄文件）：`SLN/PL/PD/BP/BSP/BSD-L2/BS/MDG/TSD` 及公司层实体；`definition_scope: reference`，不重复字段语义
 - SDD：`analysis/` → `features/` → `requirements/REQUIREMENT-{IDEA-ID}/`。不建 `solutions/`。`analysis` 上游 `solution/solutions/`
 - 槽位 / 同步：见 layout（`application-slots/application-{NAME}`）
 - 入口：[system/README.md](../../system/README.md) · [system/knowledge/](../../system/knowledge/README.md)
@@ -108,7 +108,7 @@
 
 | 5A | 视角目录 | 层级（摘要） | 应用层角色 |
 | --- | --- | --- | --- |
-| BA | business | BD → BSD(L1) → BSD(L2) → BC → AGG → AB | 实现映射；BD/L1/L2 多为 ref |
+| BA | business | BD → BSD-L1 → BSD-L2 → BSD-L3 → BC → AGG → AB | 实现映射；BD/L1/L2 不在系统落文件；BSD-L3 为系统 SSOT |
 | PA | product | PL；PD → PM → …；BP 挂 SLN；BSP `parent` BP | 实现映射；PL/PD/BP/BSP 解决方案 |
 | AA | application | SLN → SYS → APP → MS → **API** | **API SSOT** |
 | DA | data | MDG → DS → ENT → **TBL** | **TBL SSOT** |
@@ -120,9 +120,9 @@
 
 | 边类 | 动词 | 代表 |
 | --- | --- | --- |
-| 同类树 | `parent` / `children` | BD↔BSD(L1)↔BSD(L2) |
-| 同视角组成 | `implements_to` / `implemented_by` | BSD(L2)↔BC↔AGG↔AB；产品/应用/数据链；CAP↔VC；BP→SLN；SYS→SLN |
-| 同级对标 | `maps_to` | BL→BSD(L1)；BSD(L1)→CAP；PL→BL；SLN→PL；PD→BS；BS→BSD(L2)；SYS→PD；PM→BC；API→UC；UC→AB；MS→AGG；ENT→AGG |
+| 同类树 | `parent` / `children` | BD↔BSD-L1↔BSD-L2↔BSD-L3 |
+| 同视角组成 | `implements_to` / `implemented_by` | BSD-L3↔BC↔AGG↔AB；产品/应用/数据链；CAP↔VC；BP→SLN；SYS→SLN |
+| 同级对标 | `maps_to` | BL→BSD-L1；BSD-L1→CAP；PL→BL；SLN→PL；PD→BS；BS→BSD-L2；SYS→PD；PM→BC；API→UC；UC→AB；MS→AGG；ENT→AGG |
 | 支撑 | `supports_to` / `supported_by` | BD↔VC；APP↔BC；API→FT |
 | 使用 | `uses_to` / `used_by` | SYS→MDG\|TSD；APP→DS\|MW；MS→ENT\|TBL\|CMP；MW→DS |
 | 模块依赖 | `depends_to` / `depended_by` | PM↔PM |
