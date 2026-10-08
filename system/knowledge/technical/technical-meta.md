@@ -4,13 +4,13 @@ title: 技术视角元数据（system/knowledge/technical）
 ---
 # 技术视角元数据（system/knowledge/technical）
 
-**结论**：本层无 TSD SSOT。TSD 为解决方案 reference。MW/CMP 首次 ∈ application。实例：[index.md](../index.md)。
+**结论**：本层无 TSD SSOT。TSD 为解决方案 reference。MW/CMP 首次 ∈ application。实例：[../index.md](../index.md)。
 
 ## 1. 概览
 
 | 字段 | 值 |
 | --- | --- |
-| meta_id | `DIR-SYSTEM-ARCH-TECHNICAL` |
+| meta_id | `DIR-SYSTEM-KNOWLEDGE-TECHNICAL` |
 | 视角 | technical |
 | 层级范围 | system |
 | 说明 | TSD 为解决方案 reference；MW/CMP 首次 ∈ application。 |
@@ -49,7 +49,7 @@ Frontmatter 9 必填 + 正文四段见 okf-spec §2；`layer_scope` = `system`�
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 叙事索引 |
-| [index.md](../index.md) | TSD reference |
+| [../index.md](../index.md) | TSD reference |
 | TPL-* | 公司 TPL SSOT（reference） |
 | naming-conventions | 命名 SSOT |
 | knowledge-governance | 层语义 |

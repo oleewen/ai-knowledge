@@ -13,11 +13,11 @@
 ## 阅读顺序
 
 1. [README.md](README.md)
-2. [technical-meta.md](technical-meta.md)
-3. [chapters/index.md](chapters/index.md)
+2. [chapters/index.md](chapters/index.md)
+3. [technical-meta.md](technical-meta.md)
 
 ## 关联索引
 
-- 上一级索引：[index.md](../index.md)
-- 上一级说明：[README.md](../README.md)
+- 上一级索引：[../index.md](../index.md)
+- 上一级说明：[../README.md](../README.md)
 - 下游 MW/CMP SSOT：应用层（本层不落 MW reference 文件）

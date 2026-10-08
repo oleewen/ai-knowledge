@@ -6,7 +6,11 @@ title: 数据架构
 
 [返回 · 系统知识库 — 架构文档](../README.md)
 
-**本层 SSOT**：DS/ENT。MDG 不落文件，纯 ID `MDG-EXAMPLE`（解决方案首次定义）。TBL ∈ application。企业标准只引用公司 data。方案 SSOT 只引用解决方案 data。台账 [../index.md](../index.md) §4；字段 [data-meta.md](data-meta.md)。
+**本层 SSOT**：DS/ENT。MDG 不落文件，纯 ID `MDG-EXAMPLE`（解决方案首次定义）。TBL ∈ application。企业标准只引用公司 data。方案 SSOT 只引用解决方案 data。字段 [data-meta.md](data-meta.md)。
+
+目录与阅读顺序见 [index.md](index.md)。
+
+上一级索引：[../index.md](../index.md)。
 
 ## 章节
 

@@ -11,15 +11,15 @@ layer_scope: system
 ---
 ## 关系
 
-- implements_to: BC-EXAMPLE
+- implements_to: [BC-EXAMPLE](../BC-EXAMPLE.md)
 - implemented_by:
-  - AB-EXAMPLE
+  - [AB-EXAMPLE](AB-EXAMPLE.md)
 
 ## 跨视角
 
 - mapped_by:
-  - MS-EXAMPLE
-  - ENT-EXAMPLE
+  - [MS-EXAMPLE](../../../../application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md)
+  - [ENT-EXAMPLE](../../../../data/DS-EXAMPLE/ENT-EXAMPLE.md)
 
 ## 详细说明
 
@@ -27,4 +27,4 @@ layer_scope: system
 
 ## 依据与证据
 
-chapters/business-capability-map.md（示例）
+[../../../chapters/business-capability-map.md](../../../chapters/business-capability-map.md#聚合)（示例）

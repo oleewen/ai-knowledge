@@ -4,7 +4,7 @@ title: 数据视角元数据（system/knowledge/data）
 ---
 # 数据视角元数据（system/knowledge/data）
 
-**结论**：DS→ENT 本层 SSOT。MDG 为解决方案 reference。应用层补 TBL。实例：[index.md](../index.md)。
+**结论**：DS→ENT 本层 SSOT。MDG 为解决方案 reference。应用层补 TBL。实例：[../index.md](../index.md)。
 
 ## 1. 概览
 
@@ -50,7 +50,6 @@ Frontmatter 9 必填 + 正文四段见 okf-spec §2；`layer_scope` = `system`�
 | SYS.uses_to | MDG.id | 系统声明使用的主数据域 |
 | DS.implements_to | MDG.id | 数据源归属主数据域 |
 | DS.used_by | APP.id | 数据源被应用使用（对端 APP.uses_to） |
-| AGG.maps_to | ENT.id | 聚合对标实体 |
 | ENT.maps_to | AGG.id | 实体对标聚合 |
 
 ## 6. 关联文档
@@ -58,7 +57,7 @@ Frontmatter 9 必填 + 正文四段见 okf-spec §2；`layer_scope` = `system`�
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 叙事索引 |
-| [index.md](../index.md) | 实例 SSOT |
+| [../index.md](../index.md) | 实例 SSOT |
 | knowledge-governance | 系统库契约 |
 | naming-conventions | ID 命名 |
 

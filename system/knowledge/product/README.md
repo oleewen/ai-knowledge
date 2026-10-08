@@ -6,7 +6,11 @@ title: 产品架构
 
 [返回 · 系统知识库 — 架构文档](../README.md)
 
-**本层 SSOT**：PM→FT→FR→UC/BR。PD / BP 不落文件，纯 ID `PD-EXAMPLE` / `BP-EXAMPLE`（解决方案首次定义）。PL、SLN 仅纯 ID。企业标准只引用公司 product。方案 SSOT 只引用解决方案 product。台账 [../index.md](../index.md) §2；字段 [product-meta.md](product-meta.md)。
+**本层 SSOT**：PM→FT→FR→UC/BR。PD 可留薄文件 `PD-EXAMPLE`。BP 不落文件，纯 ID `BP-EXAMPLE`。PL、SLN 仅纯 ID。企业标准只引用公司 product。方案 SSOT 只引用解决方案 product。字段 [product-meta.md](product-meta.md)。
+
+目录与阅读顺序见 [index.md](index.md)。
+
+上一级索引：[../index.md](../index.md)。
 
 ## 章节
 

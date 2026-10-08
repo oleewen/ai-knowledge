@@ -10,8 +10,9 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [BC-EXAMPLE.md](BC-EXAMPLE.md)
+2. [AGG-EXAMPLE/index.md](AGG-EXAMPLE/index.md)
 
 ## 关联索引
 
-- 上一级索引：[index.md](../index.md)
+- 上一级索引：[../index.md](../index.md)

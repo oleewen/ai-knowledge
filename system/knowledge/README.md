@@ -4,7 +4,7 @@ title: 系统知识库 — 架构文档
 ---
 # 系统知识库 — 架构文档
 
-系统层五视角入口。分型见 okf-spec。契约见 [../DESIGN.md](../DESIGN.md) · knowledge-governance。
+系统层五视角入口。分型见 okf-spec。契约见 DESIGN.md · knowledge-governance。
 
 | 视角 | 入口 |
 |------|------|

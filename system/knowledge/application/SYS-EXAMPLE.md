@@ -11,9 +11,9 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: SLN-EXAMPLE
-- children:
-  - APP-EXAMPLE
+- implements_to: SLN-EXAMPLE
+- implemented_by:
+  - [APP-EXAMPLE](APP-EXAMPLE/APP-EXAMPLE.md)
 
 ## 跨视角
 
@@ -26,10 +26,10 @@ layer_scope: system
 
 - definition_scope: local
 - architecture:
-  - apps: [APP-EXAMPLE]
+  - apps: [APP-EXAMPLE](APP-EXAMPLE/APP-EXAMPLE.md)
   - external_dependencies: [ExternalExample/HTTP]
   - ddd_layers: [interface, application, domain, infrastructure]
 
 ## 依据与证据
 
-chapters/application-overview.md（示例）
+[chapters/application-overview.md](chapters/application-overview.md)（示例）

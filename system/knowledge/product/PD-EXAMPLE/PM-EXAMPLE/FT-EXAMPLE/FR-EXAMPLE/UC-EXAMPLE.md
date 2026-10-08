@@ -11,11 +11,11 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: FR-EXAMPLE
+- implements_to: [FR-EXAMPLE](FR-EXAMPLE.md)
 
 ## 跨视角
 
-- maps_to: AB-EXAMPLE
+- maps_to: [AB-EXAMPLE](../../../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md)
 - mapped_by:
   - API-EXAMPLE
 
@@ -27,4 +27,4 @@ layer_scope: system
 
 ## 依据与证据
 
-chapters/product-user-journeys.md（示例）
+[../../../../chapters/product-user-journeys.md](../../../../chapters/product-user-journeys.md#场景用例)（示例）

@@ -14,7 +14,7 @@ level: 3
 
 - parent: BSD-EXAMPLE-L2（解决方案 BSD-L2，示例 ID）
 - implemented_by:
-  - BC-EXAMPLE
+  - [BC-EXAMPLE](BC-EXAMPLE/BC-EXAMPLE.md)
 
 ## 跨视角
 
@@ -27,4 +27,4 @@ level: 3
 
 ## 依据与证据
 
-chapters/business-capability-map.md（示例）
+[../chapters/business-capability-map.md](../chapters/business-capability-map.md#三级子域)（示例）

@@ -9,6 +9,7 @@ title: INDEXING-LOG
 
 | indexing_finished_ms | indexed_at | mode | depth | since_ms | output_path | file_count | duration_ms | summary |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1791431315870 | 2026-10-08T03:48:35Z | full | 3 | 0 | system/INDEX-GUIDE.md | 104 | 83 | full d3 |
 | 1790589269875 | 2026-09-28T09:54:29Z | full | 3 | 0 | system/INDEX-GUIDE.md | 128 | 30 | full d3 system：消减占位；保留 entity-index；links=[] |
 | 1782099595327 | 2026-06-22T03:39:55Z | full | 3 | 0 | system/index.md | 102 | 180000 | full d3 system 索引 |
 

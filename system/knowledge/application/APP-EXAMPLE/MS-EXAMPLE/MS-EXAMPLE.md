@@ -11,15 +11,15 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: APP-EXAMPLE
+- implements_to: [APP-EXAMPLE](../APP-EXAMPLE.md)
 
 ## 跨视角
 
-- maps_to: AGG-EXAMPLE
+- maps_to: [AGG-EXAMPLE](../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)
 - uses_to: []
 - cross_references:
-  - BC-EXAMPLE
-  - PM-EXAMPLE
+  - [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)
+  - [PM-EXAMPLE](../../../product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE.md)
 
 ## 详细说明
 
@@ -29,4 +29,4 @@ layer_scope: system
 
 ## 依据与证据
 
-chapters/application-architecture.md（示例）
+[../../chapters/application-architecture.md](../../chapters/application-architecture.md#微服务)（示例）

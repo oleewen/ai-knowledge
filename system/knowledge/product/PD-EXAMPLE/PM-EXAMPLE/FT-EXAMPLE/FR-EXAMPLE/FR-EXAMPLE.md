@@ -12,10 +12,10 @@ layer_scope: system
 
 ## 关系
 
-- parent: FT-EXAMPLE
-- children:
-  - UC-EXAMPLE
-  - BR-EXAMPLE
+- implements_to: [FT-EXAMPLE](../FT-EXAMPLE.md)
+- implemented_by:
+  - [UC-EXAMPLE](UC-EXAMPLE.md)
+  - [BR-EXAMPLE](BR-EXAMPLE.md)
 
 ## 跨视角
 
@@ -27,4 +27,4 @@ layer_scope: system
 
 ## 依据与证据
 
-chapters/product-feature.md（示例）
+[../../../../chapters/product-feature.md](../../../../chapters/product-feature.md#功能需求)（示例）

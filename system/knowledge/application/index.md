@@ -16,12 +16,13 @@
 ## 阅读顺序
 
 1. [README.md](README.md)
-2. [application-meta.md](application-meta.md)
-3. [chapters/index.md](chapters/index.md)
-4. [APP-EXAMPLE/](APP-EXAMPLE/index.md)
+2. [chapters/index.md](chapters/index.md)
+3. [SYS-EXAMPLE.md](SYS-EXAMPLE.md)
+4. [APP-EXAMPLE/index.md](APP-EXAMPLE/index.md)
+5. [application-meta.md](application-meta.md)
 
 ## 关联索引
 
-- 上一级索引：[index.md](../index.md)
-- 上一级说明：[README.md](../README.md)
+- 上一级索引：[../index.md](../index.md)
+- 上一级说明：[../README.md](../README.md)
 - 上游 SYS SSOT：本层 `SYS-*`（implements_to 解决方案 SLN；API ∈ 应用层）

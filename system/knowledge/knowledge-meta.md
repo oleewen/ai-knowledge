@@ -46,8 +46,6 @@ title: 知识树元数据（system/knowledge）
 
 路径契约见 knowledge-governance。视角路径 SSOT：[business-meta §4](business/business-meta.md#4-bd-落盘例外)。
 
-`okf_lib.entity_relpath(bundle="system", BD)` → `knowledge/business/{id}.md`
-
 ## 6. 关联文档
 
 | 路径 | 说明 |

@@ -6,7 +6,11 @@ title: 应用架构
 
 [返回 · 系统知识库 — 架构文档](../README.md)
 
-**本层 SSOT**：SYS→APP→MS（SYS.`implements_to`→解决方案 SLN）。API ∈ application 库。企业标准只引用公司 application。方案 SSOT 只引用解决方案 application。台账 [../index.md](../index.md) §3；字段 [application-meta.md](application-meta.md)。
+**本层 SSOT**：SYS→APP→MS（SYS.`implements_to`→解决方案 SLN）。API ∈ application 库。企业标准只引用公司 application。方案 SSOT 只引用解决方案 application。字段 [application-meta.md](application-meta.md)。
+
+目录与阅读顺序见 [index.md](index.md)。
+
+上一级索引：[../index.md](../index.md)。
 
 ## 章节
 

@@ -1,8 +1,3 @@
----
-type: Directory Index
-title: system 目录索引（index）
-okf_version: 0.1
----
 <!-- okf:begin -->
 ## OKF 渐进披露
 

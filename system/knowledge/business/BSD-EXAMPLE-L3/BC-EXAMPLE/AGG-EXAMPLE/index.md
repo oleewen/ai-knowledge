@@ -11,8 +11,9 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [AGG-EXAMPLE.md](AGG-EXAMPLE.md)
+2. [AB-EXAMPLE.md](AB-EXAMPLE.md)
 
 ## 关联索引
 
-- 上一级索引：[index.md](../index.md)
+- 上一级索引：[../index.md](../index.md)

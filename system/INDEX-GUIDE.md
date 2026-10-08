@@ -25,7 +25,7 @@ title: system INDEX-GUIDE
 * **角色**: 系统知识库；`knowledge/` = 系统层实体 SSOT + 五视角；`application-slots/application-{NAME}` = 软链槽位  
 * **栈**: Markdown、YAML  
 * **范围**: `knowledge/` · `analysis/` · `features/` · `requirements/` · `application-slots/` · `adr/` · `changelogs/`  
-* **规模**（本轮 full/d3，排除 `.agents`）：约 **128** 文件（`.md` 124 · `.yaml` 1 · `viz.html` 1）  
+* **规模**（本轮 full/d3，排除 `.agents`）：**104** 文件（`.md` 103 · `.yaml` 1；`viz.html` 1 不计入）  
 
 ---
 
@@ -187,7 +187,7 @@ system/
 
 ### 8.1 覆盖范围
 
-本轮 **full / depth 3** 覆盖 `system/` 可读文本（约 128 文件）。九章已消减 `[未索引]`；实体台账仍以各视角 README 与 per-entity 为准。
+本轮 **full / depth 3** 覆盖 `system/` 可读文本（104 文件）。九章已消减 `[未索引]`；实体台账仍以各视角 README 与 per-entity 为准。
 
 ### 8.2 排除列表
 

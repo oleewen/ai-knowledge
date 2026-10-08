@@ -1,6 +1,7 @@
 ---
+type: Analysis Document
 id: "ANALYSIS-EXAMPLE"
-title: "示例系统解决方案"
+title: "示例系统分析"
 version: "0.2.0"
 status: "draft"
 created: "2026-07-18"
@@ -10,7 +11,7 @@ parent: null
 dependencies: []
 tags: [example]
 ---
-# 示例系统解决方案
+# 示例系统分析
 
 > **结论**：在本系统内对齐「跨应用状态口径 + 运营异常定位入口」，不扩到公司级跨系统编排。  
 > 读者：业务与产品。路径：`system/analysis/`。  

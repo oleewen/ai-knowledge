@@ -1,7 +1,3 @@
----
-type: Directory Index
-title: application-slots 目录索引
----
 # application-slots
 
 目录说明：[README.md](README.md)。

@@ -11,14 +11,13 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: PM-EXAMPLE
-- children:
-  - FR-EXAMPLE
+- implements_to: [PM-EXAMPLE](../PM-EXAMPLE.md)
+- implemented_by:
+  - [FR-EXAMPLE](FR-EXAMPLE/FR-EXAMPLE.md)
 
 ## 跨视角
 
 - supported_by: API-EXAMPLE
-- realizes_use_case_ids: UC-EXAMPLE
 
 ## 详细说明
 
@@ -26,4 +25,4 @@ layer_scope: system
 
 ## 依据与证据
 
-chapters/product-feature.md（示例）
+[../../../chapters/product-feature.md](../../../chapters/product-feature.md#功能点)（示例）

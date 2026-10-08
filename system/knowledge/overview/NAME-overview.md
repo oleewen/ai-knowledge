@@ -93,9 +93,9 @@ title: "{域名称}架构概览（{slug}-overview）"
 
 ### 文档关键词
 
-`yaml
+```yaml
 keywords:
-  - SYSNAME
-  - 示例术语A
-  - 示例术语B
-`
+- SYSNAME
+- 示例术语A
+- 示例术语B
+```

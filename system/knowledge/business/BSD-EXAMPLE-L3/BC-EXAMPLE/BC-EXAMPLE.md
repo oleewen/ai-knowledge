@@ -11,15 +11,15 @@ layer_scope: system
 ---
 ## 关系
 
-- implements_to: BSD-EXAMPLE-L3
+- implements_to: [BSD-EXAMPLE-L3](../BSD-EXAMPLE-L3.md)
 - implemented_by:
-  - AGG-EXAMPLE
+  - [AGG-EXAMPLE](AGG-EXAMPLE/AGG-EXAMPLE.md)
 
 ## 跨视角
 
-- supported_by: APP-EXAMPLE
+- supported_by: [APP-EXAMPLE](../../../application/APP-EXAMPLE/APP-EXAMPLE.md)
 - mapped_by:
-  - PM-EXAMPLE
+  - [PM-EXAMPLE](../../../product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE.md)
 
 ## 详细说明
 
@@ -27,4 +27,4 @@ layer_scope: system
 
 ## 依据与证据
 
-chapters/business-capability-map.md（示例）
+[../../chapters/business-capability-map.md](../../chapters/business-capability-map.md#限界上下文)（示例）

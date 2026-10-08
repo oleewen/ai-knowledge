@@ -15,7 +15,12 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md)
+2. [PRD-EXAMPLE.md](PRD-EXAMPLE.md)
+3. [ASD-EXAMPLE-1.md](ASD-EXAMPLE-1.md)
+4. [DSD-EXAMPLE-1.md](DSD-EXAMPLE-1.md)
+5. [TDD-EXAMPLE.md](TDD-EXAMPLE.md)
+6. [specs/index.md](specs/index.md)
 
 ## 关联索引
 

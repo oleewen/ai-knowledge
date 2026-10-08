@@ -11,16 +11,15 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: SYS-EXAMPLE
-- parent_sys_id: SYS-EXAMPLE
-- service_ids:
-  - MS-EXAMPLE
+- implements_to: [SYS-EXAMPLE](../SYS-EXAMPLE.md)
+- implemented_by:
+  - [MS-EXAMPLE](MS-EXAMPLE/MS-EXAMPLE.md)
 
 ## 跨视角
 
-- supports_to: BC-EXAMPLE
+- supports_to: [BC-EXAMPLE](../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)
 - uses_to:
-  - DS-EXAMPLE
+  - [DS-EXAMPLE](../../data/DS-EXAMPLE/DS-EXAMPLE.md)
   - MW-EXAMPLE
 
 ## 详细说明
@@ -31,4 +30,4 @@ layer_scope: system
 
 ## 依据与证据
 
-chapters/application-architecture.md（示例）
+[../chapters/application-architecture.md](../chapters/application-architecture.md#应用)（示例）

@@ -7,7 +7,7 @@ title: system 目录元数据
 # system/ 根目录元数据（导航与 SSOT 指针）
 id: "DIR-SYSTEM"
 name: "系统知识库根（system）"
-description: "系统层治理与导航根。契约见 DESIGN.md；knowledge/=实体 SSOT；application-slots/=应用软链；solutions→analysis→requirements=系统 SDD。"
+description: "系统层治理与导航根。契约见 DESIGN.md；knowledge/=SYS/BSD-L3/BC/AGG/AB/PM/FT/FR/UC/BR/APP/MS/DS/ENT SSOT；application-slots/=应用软链；analysis→features→requirements=系统 SDD。"
 
 role:
   kind: "documentation_root"
@@ -25,12 +25,12 @@ child_directories:
   application-slots:
     readme: "application-slots/README.md"
     description: "应用联邦槽位（application-{NAME}）"
-  solutions:
-    readme: "solutions/README.md"
-    description: "系统级 SOLUTION-{IDEA-ID}.md"
   analysis:
     readme: "analysis/README.md"
     description: "系统级 ANALYSIS-{IDEA-ID}.md"
+  features:
+    readme: "features/README.md"
+    description: "平铺 FEATURE-{IDEA-ID}.md"
   requirements:
     readme: "requirements/README.md"
     description: "REQUIREMENT-{IDEA-ID}/ 交付树"
@@ -66,7 +66,7 @@ integration:
     - path: "../agent/"
       description: "规范、模板与 Agent 技能"
   traceability:
-    description: "solutions → analysis → requirements；overview → archive"
+    description: "analysis → features → requirements；overview → archive"
 
 references:
   - path: "./README.md"

@@ -6,7 +6,11 @@ title: 技术架构
 
 [返回 · 系统知识库 — 架构文档](../README.md)
 
-**本层 SSOT**：无。TSD 不落文件，纯 ID `TSD-EXAMPLE`（解决方案首次定义）。MW/CMP 首次 ∈ application。企业标准只引用公司 technical。方案 SSOT 只引用解决方案 technical。台账 [../index.md](../index.md) §5；字段 [technical-meta.md](technical-meta.md)。
+**本层 SSOT**：无。TSD 不落文件，纯 ID `TSD-EXAMPLE`（解决方案首次定义）。MW/CMP 首次 ∈ application。企业标准只引用公司 technical。方案 SSOT 只引用解决方案 technical。字段 [technical-meta.md](technical-meta.md)。
+
+目录与阅读顺序见 [index.md](index.md)。
+
+上一级索引：[../index.md](../index.md)。
 
 ## 章节
 

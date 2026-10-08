@@ -10,8 +10,9 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [FT-EXAMPLE.md](FT-EXAMPLE.md)
+2. [FR-EXAMPLE/index.md](FR-EXAMPLE/index.md)
 
 ## 关联索引
 
-- 上一级索引：[index.md](../index.md)
+- 上一级索引：[../index.md](../index.md)

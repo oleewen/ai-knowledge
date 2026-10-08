@@ -11,12 +11,12 @@ layer_scope: system
 ---
 ## 关系
 
-- implements_to: AGG-EXAMPLE
+- implements_to: [AGG-EXAMPLE](AGG-EXAMPLE.md)
 
 ## 跨视角
 
 - mapped_by:
-  - UC-EXAMPLE
+  - [UC-EXAMPLE](../../../../product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md)
 
 ## 详细说明
 
@@ -24,4 +24,4 @@ layer_scope: system
 
 ## 依据与证据
 
-chapters/business-capability-map.md（示例）
+[../../../chapters/business-capability-map.md](../../../chapters/business-capability-map.md#领域能力)（示例）

@@ -12,8 +12,10 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [FR-EXAMPLE.md](FR-EXAMPLE.md)
+2. [UC-EXAMPLE.md](UC-EXAMPLE.md)
+3. [BR-EXAMPLE.md](BR-EXAMPLE.md)
 
 ## 关联索引
 
-- 上一级索引：[index.md](../index.md)
+- 上一级索引：[../index.md](../index.md)

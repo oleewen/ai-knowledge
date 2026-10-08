@@ -4,7 +4,7 @@ title: 应用视角元数据（system/knowledge/application）
 ---
 # 应用视角元数据（system/knowledge/application）
 
-系统级应用版图（SYS→APP→MS）视角元数据 SSOT。实例索引：[index.md](../index.md)。
+系统级应用版图（SYS→APP→MS）视角元数据 SSOT。实例索引：[../index.md](../index.md)。
 
 ---
 
@@ -45,7 +45,7 @@ title: 应用视角元数据（system/knowledge/application）
 | APP | `implements_to`、`implemented_by`、`supports_to`、`uses_to` | →SYS；←MS；`supports_to`→BC；`uses_to`→DS\|MW |
 | MS | `implements_to`、`implemented_by`、`maps_to`、`uses_to` | →APP；←API；`maps_to`→AGG；`uses_to`→ENT\|TBL\|CMP |
 
-对端镜像：`BC.supported_by`、`AGG.maps_to`（MS）、`MW.used_by`、`DS.used_by` 须与上表双向同步。
+对端镜像：`BC.supported_by`、`AGG.mapped_by`（MS）、`MW.used_by`、`DS.used_by` 须与上表双向同步。
 
 ## 5. 跨视角引用
 
@@ -63,5 +63,5 @@ title: 应用视角元数据（system/knowledge/application）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 叙事索引 |
-| [index.md](../index.md) | 实例 SSOT |
+| [../index.md](../index.md) | 实例 SSOT |
 | 解决方案 SLN-* | 解决方案台账 |

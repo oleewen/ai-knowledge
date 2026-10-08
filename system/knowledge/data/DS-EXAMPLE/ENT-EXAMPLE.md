@@ -11,11 +11,11 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: DS-EXAMPLE
+- implements_to: [DS-EXAMPLE](DS-EXAMPLE.md)
 
 ## 跨视角
 
-- maps_to: AGG-EXAMPLE
+- maps_to: [AGG-EXAMPLE](../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)
 
 ## 详细说明
 
@@ -24,4 +24,4 @@ layer_scope: system
 
 ## 依据与证据
 
-chapters/data-model.md（示例）
+[../chapters/data-model.md](../chapters/data-model.md#数据实体)（示例）

@@ -4,7 +4,7 @@
 
 ## 子目录
 
-* [DS-EXAMPLE](DS-EXAMPLE/index.md) - 示例数据实体。
+* [DS-EXAMPLE](DS-EXAMPLE/index.md) - 示例数据源。
 * [chapters](chapters/index.md)
 
 ## 目录文件
@@ -14,11 +14,11 @@
 ## 阅读顺序
 
 1. [README.md](README.md)
-2. [data-meta.md](data-meta.md)
-3. [chapters/index.md](chapters/index.md)
-4. [DS-EXAMPLE/](DS-EXAMPLE/index.md)
+2. [chapters/index.md](chapters/index.md)
+3. [DS-EXAMPLE/index.md](DS-EXAMPLE/index.md)
+4. [data-meta.md](data-meta.md)
 
 ## 关联索引
 
-- 上一级索引：[index.md](../index.md)
-- 上一级说明：[README.md](../README.md)
+- 上一级索引：[../index.md](../index.md)
+- 上一级说明：[../README.md](../README.md)

@@ -11,12 +11,12 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: PD-EXAMPLE
+- implements_to: PD-EXAMPLE
 - depends_to: []
 
 ## 跨视角
 
-- maps_to: BC-EXAMPLE
+- maps_to: [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)
 
 ## 详细说明
 
@@ -24,4 +24,4 @@ layer_scope: system
 
 ## 依据与证据
 
-chapters/product-architecture.md（示例）
+[../../chapters/product-architecture.md](../../chapters/product-architecture.md#产品模块)（示例）
