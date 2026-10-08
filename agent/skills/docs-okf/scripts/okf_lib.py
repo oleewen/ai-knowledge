@@ -308,6 +308,7 @@ HIERARCHY_TO_PERSPECTIVE: Dict[str, str] = {
 }
 
 # 首次定义层（SSOT：agent/knowledge/knowledge-governance.md「各层聚焦摘要」）
+# BSD 无 ID 时下表的 system 不够用：L1 在公司、L2 在解决方案、L3 在系统。有 ID 时按后缀，见 hierarchy_first_layer。
 HIERARCHY_FIRST_LAYER: Dict[str, str] = {
     "VC": "company",
     "BD": "company",
@@ -343,7 +344,13 @@ HIERARCHY_FIRST_LAYER: Dict[str, str] = {
 }
 
 
-def hierarchy_first_layer(hierarchy: str) -> Optional[str]:
+def hierarchy_first_layer(hierarchy: str, id: Optional[str] = None) -> Optional[str]:
+    if hierarchy == "BSD" and id:
+        if id.endswith("-L3"):
+            return "system"
+        if id.endswith("-L2"):
+            return "solution"
+        return "company"
     return HIERARCHY_FIRST_LAYER.get(hierarchy)
 
 
@@ -433,13 +440,14 @@ def entity_relpath(
 
     if bundle == "system":
         if perspective == "business" and prefix == "BD":
-            return f"knowledge/business/{id}.md"
+            raise ValueError("entity_relpath: system does not land BD files")
         if perspective == "business" and prefix == "BSD":
-            # L1（parent=BD-* 或空）：knowledge/business/BSD-{L1}/BSD-{L1}.md
-            # L2（parent=BSD-*）：knowledge/business/{parent}/{id}/{id}.md
-            if not path_parent or path_parent.startswith("BD-"):
+            # 系统层只落 L3。L2 的 parent 跨层，不参与路径。
+            if id.endswith("-L3"):
                 return f"knowledge/business/{id}/{id}.md"
-            return f"knowledge/business/{path_parent}/{id}/{id}.md"
+            raise ValueError(
+                "entity_relpath: system does not land BSD-L1 or BSD-L2 files"
+            )
         if perspective == "product" and prefix == "PL":
             return f"knowledge/product/{id}.md"
         if perspective == "product" and prefix == "PD":
@@ -469,6 +477,10 @@ def entity_relpath(
         return f"knowledge/{perspective}/{anchor}/{id}.md"
 
     if bundle == "solution":
+        if perspective == "business" and prefix == "BSD":
+            if id.endswith("-L2"):
+                return f"knowledge/business/{id}/{id}.md"
+            raise ValueError("entity_relpath: solution lands BSD-L2 only")
         if perspective == "product" and prefix in ("PL", "PD"):
             return f"knowledge/product/PL/{id}.md"
         if perspective == "product" and prefix in ("BP", "BSP"):

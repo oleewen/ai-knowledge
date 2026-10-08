@@ -111,7 +111,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 | BD | `Business Domain` | business | company |
 | CAP | `Business Capability` | business | company |
 | BL | `Business Line` | business | company |
-| PL | `Product Line` | product | company |
+| PL | `Product Line` | product | solution |
 | SLN | `Solution` | application | solution |
 | MDG | `Master Data Domain` | data | solution |
 | TPL | `Technical Platform` | technical | company |

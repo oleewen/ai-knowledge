@@ -199,6 +199,10 @@ def test_hierarchy_first_layer_pd_sys():
     assert okf_lib.hierarchy_first_layer("SLN") == "company"
     assert okf_lib.hierarchy_to_perspective("SLN") == "application"
     assert okf_lib.hierarchy_first_layer("VC") == "company"
+    assert okf_lib.hierarchy_first_layer("BSD") == "system"
+    assert okf_lib.hierarchy_first_layer("BSD", "BSD-EXAMPLE-L3") == "system"
+    assert okf_lib.hierarchy_first_layer("BSD", "BSD-EXAMPLE-L2") == "solution"
+    assert okf_lib.hierarchy_first_layer("BSD", "BSD-EXAMPLE") == "company"
 
 
 def test_entity_relpath_system_ms_and_mw():
@@ -250,27 +254,57 @@ def test_relation_path_parent_prefers_parent_and_skips_cross_layer():
     assert okf_lib.relation_path_parent(body, local_ids={"OTHER"}) is None
 
 
-def test_entity_relpath_system_bd_at_perspective_root():
-    path = okf_lib.entity_relpath("business", "BD-EXAMPLE", bundle="system")
-    assert path == "knowledge/business/BD-EXAMPLE.md"
+def test_entity_relpath_system_bd_not_landed():
+    try:
+        okf_lib.entity_relpath("business", "BD-EXAMPLE", bundle="system")
+    except ValueError as exc:
+        assert "does not land BD" in str(exc)
+        return
+    raise AssertionError("expected ValueError when system BD is requested")
 
 
-def test_entity_relpath_system_bsd_by_parent():
+def test_entity_relpath_solution_bsd_l2_flat():
     assert (
-        okf_lib.entity_relpath(
-            "business", "BSD-EXAMPLE", path_parent="BD-EXAMPLE", bundle="system"
-        )
-        == "knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md"
+        okf_lib.entity_relpath("business", "BSD-EXAMPLE-L2", bundle="solution")
+        == "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md"
     )
+    try:
+        okf_lib.entity_relpath("business", "BSD-EXAMPLE-L3", bundle="solution")
+    except ValueError as exc:
+        assert "lands BSD-L2 only" in str(exc)
+        return
+    raise AssertionError("expected ValueError when solution bundle gets non-L2 BSD")
+
+
+def test_entity_relpath_system_bsd_l3_flat():
     assert (
         okf_lib.entity_relpath(
             "business",
-            "BSD-EXAMPLE-L2",
-            path_parent="BSD-EXAMPLE",
+            "BSD-EXAMPLE-L3",
+            path_parent="BSD-EXAMPLE-L2",
             bundle="system",
         )
-        == "knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md"
+        == "knowledge/business/BSD-EXAMPLE-L3/BSD-EXAMPLE-L3.md"
     )
+    assert (
+        okf_lib.entity_relpath("business", "BSD-EXAMPLE-L3", bundle="system")
+        == "knowledge/business/BSD-EXAMPLE-L3/BSD-EXAMPLE-L3.md"
+    )
+
+
+def test_entity_relpath_system_bsd_l1_l2_not_landed():
+    for entity_id, parent in (
+        ("BSD-EXAMPLE", "BD-EXAMPLE"),
+        ("BSD-EXAMPLE-L2", "BSD-EXAMPLE"),
+    ):
+        try:
+            okf_lib.entity_relpath(
+                "business", entity_id, path_parent=parent, bundle="system"
+            )
+        except ValueError as exc:
+            assert "does not land BSD-L1 or BSD-L2" in str(exc)
+            continue
+        raise AssertionError(f"expected ValueError for {entity_id}")
 
 
 def main() -> None:
@@ -302,8 +336,10 @@ def main() -> None:
         test_entity_relpath_system_ms_and_mw,
         test_entity_relpath_system_ms_requires_parent,
         test_relation_path_parent_prefers_parent_and_skips_cross_layer,
-        test_entity_relpath_system_bd_at_perspective_root,
-        test_entity_relpath_system_bsd_by_parent,
+        test_entity_relpath_system_bd_not_landed,
+        test_entity_relpath_solution_bsd_l2_flat,
+        test_entity_relpath_system_bsd_l3_flat,
+        test_entity_relpath_system_bsd_l1_l2_not_landed,
     ]
     for fn in tests:
         fn()

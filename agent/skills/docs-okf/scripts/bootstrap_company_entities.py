@@ -3,10 +3,14 @@
 
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-REPO = SCRIPT_DIR.parents[1]
+sys.path.insert(0, str(SCRIPT_DIR))
+import okf_lib
+
+REPO = okf_lib.find_repo_root(Path(__file__).resolve())
 BUNDLE = REPO / "company"
 TS = "2026-06-21T00:00:00+08:00"
 
@@ -16,20 +20,22 @@ ENTITIES: list[tuple[str, str]] = [
         """---
 type: Business Domain
 title: 示例业务域
-description: 仅用于演示公司级 BD 数据结构。
+description: 演示公司级 BD；支撑 VC，并下挂 BSD-L1。
 tags: [business, BD]
 timestamp: "%s"
 id: BD-EXAMPLE
 perspective: business
 hierarchy: BD
-strategic_classification: core_domain
 layer_scope: company
-definition_scope: local
+supports_to: VC-EXAMPLE
+children:
+  - BSD-EXAMPLE
 ---
 ## 关系
 
+- supports_to: [VC-EXAMPLE](../VC-EXAMPLE/VC-EXAMPLE.md)
 - children:
-  - [CAP-EXAMPLE](/knowledge/business/BD-EXAMPLE/CAP-EXAMPLE.md)
+  - [BSD-EXAMPLE](BSD-EXAMPLE.md)
 
 ## 跨视角
 
@@ -37,29 +43,114 @@ definition_scope: local
 
 ## 详细说明
 
-- (none)
+- strategic_classification: core_domain（枚举值保留英文）
+- definition_scope: local
 
 ## 依据与证据
 
-business-domain-division.md（示例）
+[business-domain-division.md](../chapters/business-domain-division.md)（示例）
 """,
     ),
     (
-        "knowledge/business/BD-EXAMPLE/CAP-EXAMPLE.md",
+        "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE.md",
+        """---
+type: Business Subdomain
+title: 示例一级业务子域
+description: 公司层 BSD-L1；挂 BD；由 BL 一对一映射；maps_to CAP。
+tags: [business, BSD]
+timestamp: "%s"
+id: BSD-EXAMPLE
+perspective: business
+hierarchy: BSD
+layer_scope: company
+level: 1
+parent: BD-EXAMPLE
+maps_to: CAP-EXAMPLE
+mapped_by:
+  - BL-EXAMPLE
+children:
+  - BSD-EXAMPLE-L2
+---
+## 关系
+
+- parent: [BD-EXAMPLE](BD-EXAMPLE.md)
+- children:
+  - BSD-EXAMPLE-L2
+- maps_to: [CAP-EXAMPLE](../VC-EXAMPLE/CAP-EXAMPLE.md)
+- mapped_by:
+  - [BL-EXAMPLE](../BL/BL-EXAMPLE.md)
+
+## 跨视角
+
+- (none)
+
+## 详细说明
+
+- definition_scope: local
+
+## 依据与证据
+
+[business-domain-division.md](../chapters/business-domain-division.md#业务子域)（示例）
+""",
+    ),
+    (
+        "knowledge/business/VC-EXAMPLE/VC-EXAMPLE.md",
+        """---
+type: Value Chain
+title: 示例价值链
+description: 演示公司级 VC；由 BD 支撑，并由 CAP 实现。
+tags: [business, VC]
+timestamp: "%s"
+id: VC-EXAMPLE
+perspective: business
+hierarchy: VC
+layer_scope: company
+supported_by:
+  - BD-EXAMPLE
+implemented_by:
+  - CAP-EXAMPLE
+---
+## 关系
+
+- supported_by:
+  - [BD-EXAMPLE](../BD-EXAMPLE/BD-EXAMPLE.md)
+- implemented_by:
+  - [CAP-EXAMPLE](CAP-EXAMPLE.md)
+
+## 跨视角
+
+- (none)
+
+## 详细说明
+
+- definition_scope: local
+
+## 依据与证据
+
+[business-value-chain.md](../chapters/business-value-chain.md)（示例）
+""",
+    ),
+    (
+        "knowledge/business/VC-EXAMPLE/CAP-EXAMPLE.md",
         """---
 type: Business Capability
 title: 示例业务能力
-description: 仅用于演示公司级单层 CAP；关系段 implements_to 指向所属 VC。
+description: 演示公司级 CAP；实现 VC；由 BSD-L1 一对一映射。
 tags: [business, CAP]
 timestamp: "%s"
 id: CAP-EXAMPLE
 perspective: business
 hierarchy: CAP
 layer_scope: company
+implements_to: VC-EXAMPLE
+mapped_by:
+  - BSD-EXAMPLE
 ---
 ## 关系
 
-- parent: [BD-EXAMPLE](/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md)
+- implements_to: [VC-EXAMPLE](VC-EXAMPLE.md)
+- mapped_by:
+  - [BSD-EXAMPLE](../BD-EXAMPLE/BSD-EXAMPLE.md)
 
 ## 跨视角
 
@@ -71,103 +162,42 @@ layer_scope: company
 
 ## 依据与证据
 
-business-capability.md（示例）
+[business-capability.md](../chapters/business-capability.md)（示例）
 """,
     ),
     (
-        "knowledge/product/PL-EXAMPLE.md",
+        "knowledge/business/BL/BL-EXAMPLE.md",
         """---
-type: Product Line
-title: 示例产品线
-description: 产品线（支持 BD）；一 PL 一 SLN（SLN 在 AA）。
-tags: [product, PL]
+type: Business Line
+title: 示例业务线
+description: 演示公司级 BL；无 parent；与 BSD-L1 一对一映射。
+tags: [business, BL]
 timestamp: "%s"
-id: PL-EXAMPLE
-perspective: product
-hierarchy: PL
+id: BL-EXAMPLE
+perspective: business
+hierarchy: BL
 layer_scope: company
+maps_to: BSD-EXAMPLE
+mapped_by:
+  - PL-EXAMPLE
 ---
 ## 关系
 
-- (none)
+- maps_to: [BSD-EXAMPLE](../BD-EXAMPLE/BSD-EXAMPLE.md)
+- mapped_by:
+  - PL-EXAMPLE
 
 ## 跨视角
 
-- 对标业务域：BD-EXAMPLE（经 maps_to）
-- 对标解决方案：SLN-EXAMPLE（经 SLN.maps_to，AA）
+- (none)
 
 ## 详细说明
 
-- target_users: [内部运营, 业务方]
 - definition_scope: local
-- 支撑 CAP：由 CAP.maps_to + BD.maps_to 推导；不列 PD ID
 
 ## 依据与证据
 
-chapters/product-architecture.md（示例）
-""",
-    ),
-    (
-        "knowledge/application/SYS-EXAMPLE.md",
-        """---
-type: System
-title: 示例系统
-description: 仅用于演示公司级 SYS 数据结构。
-tags: [application, SYS]
-timestamp: "%s"
-id: SYS-EXAMPLE
-perspective: application
-hierarchy: SYS
-layer_scope: company
-definition_scope: local
----
-## 关系
-
-- (none)
-
-## 跨视角
-
-- (none)
-
-## 详细说明
-
-- (none)
-
-## 依据与证据
-
-application-overview.md（示例）
-""",
-    ),
-    (
-        "knowledge/data/MDG-EXAMPLE.md",
-        """---
-type: Master Data Domain
-title: 示例主数据域
-description: 仅用于演示公司级 MDG 数据结构。
-tags: [data, MDG]
-timestamp: "%s"
-id: MDG-EXAMPLE
-perspective: data
-hierarchy: MDG
-governance_owner: 示例：数据治理委员会
-layer_scope: company
-definition_scope: local
----
-## 关系
-
-- (none)
-
-## 跨视角
-
-- (none)
-
-## 详细说明
-
-- (none)
-
-## 依据与证据
-
-data-governance.md（示例）
+示例数据
 """,
     ),
     (
@@ -175,19 +205,18 @@ data-governance.md（示例）
         """---
 type: Technical Platform
 title: 示例技术平台能力
-description: 仅用于演示公司级 TPL 数据结构（示例）。
+description: 演示公司级 TPL 结构。
 tags: [technical, TPL]
 timestamp: "%s"
 id: TPL-EXAMPLE
 perspective: technical
 hierarchy: TPL
-domain: 云基础设施
 layer_scope: company
-definition_scope: local
 ---
 ## 关系
 
-- (none)
+- implemented_by:
+  - TSD-EXAMPLE
 
 ## 跨视角
 
@@ -195,11 +224,12 @@ definition_scope: local
 
 ## 详细说明
 
-- (none)
+- domain: 云基础设施
+- definition_scope: local
 
 ## 依据与证据
 
-technical-overview.md（示例）
+[technical-overview.md](chapters/technical-overview.md)（示例）
 """,
     ),
 ]

@@ -66,6 +66,8 @@ ENT 的路径父级取自关系段同层 `parent`，否则同层 `implements_to`
 |名称|frontmatter `title` 或 `name`|
 |文件/目录|相对链接至 concept（示例：`BD-EXAMPLE.md`）|
 
+公司业务台账例外：表头在「链序」前加「链」，为 `| 链 | 链序 | 层级 | ID | 名称 | 文件/目录 |`。`能力目录` 与 `域模型` 各自从 1 编号（VC→CAP；BD→BSD-L1）。BL 不进链，链与链序均为 `—`。层级用 VC / CAP / BD / BSD-L1 / BL。公司台账不写 `../INDEX-GUIDE.md` 注。
+
 扁平分组排序；有真实 ID 后标题可改「业务索引表」，并注「以 per-entity `{ID}.md` 与 `../INDEX-GUIDE.md`（相对视角 README）为准」。
 
 ### product —「产品线索引表」
@@ -79,6 +81,8 @@ ENT 的路径父级取自关系段同层 `parent`，否则同层 `implements_to`
 |类型|产品线 / 产品 / 产品模块 / 功能 / 用例（与 README 示例一致）|
 |名称|frontmatter `title` 或 `name`|
 |锚点目录|相对链接至 concept（解决方案 PL / PD；系统 PM 起，示例：`PM-EXAMPLE/`）|
+
+解决方案产品台账例外：表头在「链序」前加「链」，为 `| 链 | 链序 | 层级 | ID | 名称 | 文件 |`。`产品线` 与 `流程` 各自从 1 编号（PL→PD；BP→BSP）。PM 及以下不进这两条链。含 PM 的长链仍用 `L1`…`L5`（PL→PD→PM→FT→UC）。
 
 ---
 
