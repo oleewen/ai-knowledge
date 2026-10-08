@@ -19,7 +19,7 @@
 
 ### 1 准备
 
-- Bash 5+；本仓或已 clone 的中央库树
+- Bash 5+；本仓或已 clone 的元库树
 - 工程级 `--target` 时：目标须有 `.docsconfig`（否则先 docs-install）
 
 ### 2 dry-run

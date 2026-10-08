@@ -8,7 +8,7 @@ title: solution-slots 目录索引
 
 ## 子目录
 
-（实例槽为软链 `solution-{NAME}` → 下级解决方案 `DOC_ROOT`。）
+（实例槽为软链 `solution-{NAME}` → 下级解决方案 `文档目录`。）
 
 ## 已登记槽
 

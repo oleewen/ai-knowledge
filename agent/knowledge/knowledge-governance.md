@@ -140,7 +140,7 @@
 | 允许 | 禁止 |
 | --- | --- |
 | 同层 `…/knowledge/**` 内互引（bundle-relative） | 引同层 knowledge **外**（`adr/`、`domains/`、`solutions/`、`analysis/`、`features/`、`requirements/`、`INDEX-GUIDE.md`、根 `index.md`、`agent/**` 等） |
-| 有 `{DOC_ROOT}/knowledge-links.yaml` 中 `type: parent`：上层实体 Markdown 链到 **首次定义层 SSOT 文件的 HTTP**（见下） | 手写 `../` 爬层、仓库相对跨 `DOC_DIR`、`/company/knowledge/...` 逻辑前缀、与生成函数结果不一致的 URL |
+| 有 `{文档目录}/knowledge-links.yaml` 中 `type: parent`：上层实体 Markdown 链到 **首次定义层 SSOT 文件的 HTTP**（见下） | 手写 `../` 爬层、仓库相对跨 `DOC_DIR`、`/company/knowledge/...` 逻辑前缀、与生成函数结果不一致的 URL |
 | 无 `type: parent`：正文只写实体 ID / `id` | 无 parent 时仍写跨层 HTTP 或跨层文件路径 |
 | `resource` / 依据段：外部 **URI、表名、API 名、仓名**（非库外文档相对路径） | Markdown 链或路径字面量指向库外 **文档文件**（ADR 等：**留字去链**） |
 

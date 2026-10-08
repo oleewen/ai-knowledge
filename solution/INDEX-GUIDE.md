@@ -65,7 +65,7 @@ parent：`application → system → solution → company`。
 | 本层首次实体 | SLN / PD / BSD-L2 / MDG / TSD / BP | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
 | overview 缓冲 | extract / archive / tag；distill 来自系统槽位 | [knowledge/overview/](knowledge/overview/README.md) |
 | SDD | 仅方案正文 | `solutions/`（`/sdx-solution`） |
-| 联邦槽位 | 系统 DOC_ROOT 软链 | `system-slots/system-{NAME}/` · [knowledge-links.yaml](knowledge-links.yaml) |
+| 联邦槽位 | 系统 文档目录 软链 | `system-slots/system-{NAME}/` · [knowledge-links.yaml](knowledge-links.yaml) |
 
 ### 4.3 领域服务
 

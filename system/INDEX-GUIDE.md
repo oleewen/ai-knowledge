@@ -39,7 +39,7 @@ system/
 ├── knowledge-links.yaml
 ├── knowledge/ · analysis/ · features/ · requirements/ · adr/
 ├── application-slots/
-│   ├── application-{NAME}      # 软链 → 应用 DOC_ROOT
+│   ├── application-{NAME}      # 软链 → 应用 文档目录
 │   └── changelogs/             # 层共用 ARCHIVE-LOG；同步追溯 git / SYNC_OK
 └── changelogs/
 ```
@@ -99,7 +99,7 @@ system/
 | 系统级实体 | SYS / BSD-L3 / BC / AGG / AB / PM / FT / FR / UC / BR / APP / MS / DS / ENT | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
 | overview 缓冲 | distill / extract / archive / tag | [knowledge/overview/](knowledge/overview/README.md) |
 | SDD | 分析 → 特性 → 需求 | `analysis/` · `features/` · `requirements/` |
-| 联邦槽位 | 应用 DOC_ROOT 软链 | `application-slots/application-{NAME}/` · [knowledge-links.yaml](knowledge-links.yaml) |
+| 联邦槽位 | 应用 文档目录 软链 | `application-slots/application-{NAME}/` · [knowledge-links.yaml](knowledge-links.yaml) |
 
 ### 4.3 领域服务
 

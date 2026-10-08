@@ -64,7 +64,7 @@
     {
       "id": "upgrade-trigger-004",
       "category": "should-trigger",
-      "prompt": "对当前知识库执行 /docs-upgrade，并指定 DOC_ROOT 下两个已有 md 文件路径（不要用 @ 前缀），要求对齐元库对应文件。",
+      "prompt": "对当前知识库执行 /docs-upgrade，并指定 文档目录 下两个已有 md 文件路径（不要用 @ 前缀），要求对齐元库对应文件。",
       "expected_output": "指定路径强制对齐；与整树互斥；不要求 @；总览与单文件 C 后有未落位须出并入策略三档，M 可下钻单文件；md 破跳过做结构重填；不调用脚本 --path；整单结束 A/B。",
       "assertions": [
         {
@@ -113,7 +113,7 @@
           "id": "file-mode-directory-union",
           "name": "指定目录两侧并集",
           "type": "must_include",
-          "check": "指定目录时须取本库与元库同相对路径并集；总览显式列出 meta-only scaffold 文件，并断言动作数覆盖并集总数，不得只扫描 DOC_ROOT。",
+          "check": "指定目录时须取本库与元库同相对路径并集；总览显式列出 meta-only scaffold 文件，并断言动作数覆盖并集总数，不得只扫描 文档目录。",
           "priority": "P0"
         }
       ],

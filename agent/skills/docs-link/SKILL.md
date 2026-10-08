@@ -56,7 +56,7 @@ description: >
 - 收敛后动作见 [light-flow-actions.md](../../references/light-flow-actions.md)（本技能有 `S`，无 `G`）
 
 ```bash
-# 须在源 Git 仓库根执行（或从中央库调用技能脚本路径）
+# 须在源 Git 仓库根执行（或从元库调用技能脚本路径）
 bash agent/skills/docs-link/scripts/docs-link.sh --link --target <目标仓库根> [--app-name=<名>] [--dry-run]
 bash agent/skills/docs-link/scripts/docs-link.sh --unlink --target <目标仓库根> [--dry-run]
 # 仅用户明示换父改正文时：

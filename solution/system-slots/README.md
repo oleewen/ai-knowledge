@@ -5,7 +5,7 @@ title: system-slots（系统联邦槽位根）
 ---
 # system-slots
 
-解决方案层**系统联邦槽位根**。`system-{NAME}` → 系统库 `DOC_ROOT` 软链；**不是** `knowledge/` SSOT。
+解决方案层**系统联邦槽位根**。`system-{NAME}` → 系统库 `文档目录` 软链；**不是** `knowledge/` SSOT。
 
 | 读什么 | 文件 |
 |--------|------|
@@ -16,7 +16,7 @@ title: system-slots（系统联邦槽位根）
 
 ## 约定
 
-- 路径：`solution/system-slots/system-{NAME}` → 系统仓 `DOC_ROOT`
+- 路径：`solution/system-slots/system-{NAME}` → 系统仓 `文档目录`
 - 建槽：`docs-link`（yaml + 软链；company→solution、solution→system、system→application）
 - 同步：`/docs-pull`（脏工作区拒绝 pull）
 

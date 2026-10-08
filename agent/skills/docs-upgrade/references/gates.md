@@ -4,7 +4,7 @@
 
 ## 与 CONVENTIONS
 
-按 [agent/rules/CONVENTIONS.md](../../../rules/CONVENTIONS.md#artifact-gates)，docs-upgrade 为**低风险工程同步**族中的升级编排：副作用写 `DOC_ROOT`（文件模式另可写允许的建联脚本），闸门从严。
+按 [agent/rules/CONVENTIONS.md](../../../rules/CONVENTIONS.md#artifact-gates)，docs-upgrade 为**低风险工程同步**族中的升级编排：副作用写 `文档目录`（文件模式另可写允许的建联脚本），闸门从严。
 
 非 dry-run / 非总览确认的写盘前，须在对话取得用户明确同意（轻流程 `C`）。
 
@@ -12,7 +12,7 @@
 
 参数向导至少收口：
 
-- 工程根 / `.docsconfig` 可用（`DOC_ROOT`、`KNOWLEDGE_TYPE`）
+- 工程根 / `.docsconfig` 可用（`文档目录`、`KNOWLEDGE_TYPE`）
 - meta 源：links 唯一 `type: meta`，或本次 `--meta-path`
 - 可选 `--ref`（默认不传；未传则有效 git path 用当前 HEAD）
 - 模式：整树（默认 dry-run）或文件（指定路径已解析）
@@ -27,7 +27,7 @@
 - 将改已有 md（结构重填或强制重填）
 - 未落位节将并入、追加或改写目标文
 - `--meta-path` 覆盖登记 meta
-- 整树备份目录将写入 `{REPO_ROOT}/.docs-init/`
+- 整树备份目录将写入 `{仓库路径}/.docs-init/`
 - 文件模式无 `.docs-init` 备份（依赖 git）——须在总览或首文件前提示
 - 建联脚本整文件覆盖
 
@@ -37,7 +37,7 @@
 
 ```text
 即将执行 /docs-upgrade（整树），当前参数如下：
-- DOC_ROOT: <路径>
+- 文档目录: <路径>
 - KNOWLEDGE_TYPE: <application|system|company>
 - meta: <path 或 repository>
 - ref: <未传=HEAD / 或显式 --ref>
@@ -55,7 +55,7 @@ S 跳过 / F 在已确认前提下补齐同类计划
 
 ```text
 即将执行 /docs-upgrade（指定路径强制对齐），当前参数如下：
-- DOC_ROOT: <路径>
+- 文档目录: <路径>
 - KNOWLEDGE_TYPE: <application|system|company>
 - meta: <path 或 repository>
 - ref: <未传=HEAD / 或显式 --ref>

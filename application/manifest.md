@@ -7,7 +7,7 @@ title: application 目录清单
 # 机器可读目录清单（与 docs-meta.md 互补）
 schema_version: "1.1"
 template_id: app-APPNAME
-description: 联邦单元目录布局与中央库 application/ 对照
+description: 联邦单元目录布局与元库 application/ 对照
 
 mirrors_system_paths:
   - application/changelogs/README.md → changelogs/README.md

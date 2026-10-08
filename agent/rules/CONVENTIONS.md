@@ -29,7 +29,7 @@
 ### 1) 文件引用强校验
 
 - `agent/` 内：相对当前文件。
-- `agent/` 外：仓库根 **`REPO_ROOT`** 相对路径（与 `.docsconfig` 的 `REPO_ROOT` 一致，见 [docs-install/SKILL.md](../skills/docs-install/SKILL.md)）。
+- `agent/` 外：仓库根相对路径（由 `WORK_SPACE`/`REPO_DIR` 拼出，见 [docs-install/SKILL.md](../skills/docs-install/SKILL.md)）。
 - 自检：`bash agent/scripts/tools/validate-link-reachable.sh`。
 
 ### 2) Skills 与脚本边界

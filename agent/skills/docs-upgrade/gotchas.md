@@ -14,7 +14,7 @@
 - **覆盖 knowledge-links.yaml**：禁止；会丢 parent/child/meta。根级 `CONTRIBUTING.md` 已按普通 md 升级（与 install 整文件覆盖不同）。根级 `DESIGN.md` 已改为**整文件覆盖**特例（与 CONTRIBUTING 不同）。
 - **`DESIGN.md` 手改**：upgrade 会冲掉；改契约短表先改元库模板再 upgrade。
 - **联邦槽位根**：`application-slots` / `system-slots` 下**真文件**可升级；**软链一律跳过**。勿跟随实例软链改下级仓（实例同步用 `/docs-pull`）。
-- **顶层遗留**：DOC_ROOT 顶层 `application-*` / `system-*`（非 `*-slots`）仍忽略。
+- **顶层遗留**：文档目录 顶层 `application-*` / `system-*`（非 `*-slots`）仍忽略。
 - **`*-slots/changelogs`**：本有整文件本库胜；勿对其强制结构重填。
 - **建联脚本**：不在本技能同步；登记走 `/docs-link`（`agent/skills/docs-link/scripts/`）。
 - **整树与文件模式混用**：禁止同单元；有可解析指定路径只走文件强制对齐。
@@ -25,4 +25,4 @@
 - **勿把 `@` 当技能语法**：路径触发看可解析真实路径（含 IDE 附件），不要求消息里写 `@`。
 - **Agent 树 / 生态技能追新**：本技能不管；本仓树走 `/agent-install`，生态走 `/skill-upgrade`。
 - **Bash 5+**、Git 必需（整树脚本路径）。
-- **中央脚本路径**：整树在目标工程执行时须指向元库/中央库的 `agent/skills/docs-upgrade/scripts/docs-upgrade.sh`。
+- **中央脚本路径**：整树在目标工程执行时须指向元库/元库的 `agent/skills/docs-upgrade/scripts/docs-upgrade.sh`。

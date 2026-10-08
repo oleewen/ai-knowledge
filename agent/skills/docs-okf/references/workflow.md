@@ -18,7 +18,7 @@
 
 - 默认 `BUNDLE` = `{DOC_DIR}`
 - 默认 viz `--out` = `{DOC_DIR}/viz.html`，`--name` = `"{KNOWLEDGE_TYPE} OKF"`
-- 脚本树 `OKF_SCRIPTS` = `{DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts`（**不**用 `$REPO_ROOT/agent/`）
+- 脚本树 `OKF_SCRIPTS` = `{DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts`（**不**用 `$仓库路径/agent/`）
 - 若 CLI/env 覆盖 `BUNDLE` 且与 `{DOC_DIR}` 不同：viz 改为 `{bundle_basename}/viz.html`（见 path-resolution「覆盖」）
 
 若 `.docsconfig` 缺失、解析失败或缺 `KNOWLEDGE_TYPE` / `AGENT_DIR`，立即中止。
@@ -29,7 +29,7 @@
 
 **入口**：`/docs-okf`（内部脚本：`bash "${DOC_DIR}/${AGENT_DIR}/skills/docs-okf/scripts/okf-indexing.sh" [--dry-run]`）
 
-按序执行（可重复运行）；`BUNDLE` / `REPO_ROOT` / `OKF_SCRIPTS` 由 `resolve-okf-paths` 从当前工程 `.docsconfig` 解析：
+按序执行（可重复运行）；`BUNDLE` / `仓库路径` / `OKF_SCRIPTS` 由 `resolve-okf-paths` 从当前工程 `.docsconfig` 解析：
 
 1. `inject_frontmatter.py --bundle "${DOC_DIR}"`
 2. `generate_index.py --bundle "${DOC_DIR}" --recursive`

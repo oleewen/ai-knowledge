@@ -5,7 +5,7 @@ title: solution-slots（解决方案联邦槽位根）
 ---
 # solution-slots
 
-公司层**解决方案联邦槽位根**。`solution-{NAME}` 为指向下级解决方案库 `DOC_ROOT` 的**软链**；**不是** `knowledge/` SSOT。
+公司层**解决方案联邦槽位根**。`solution-{NAME}` 为指向下级解决方案库 `文档目录` 的**软链**；**不是** `knowledge/` SSOT。
 
 | 读什么 | 文件 |
 |--------|------|
@@ -16,7 +16,7 @@ title: solution-slots（解决方案联邦槽位根）
 
 ## 约定
 
-- 路径：`company/solution-slots/solution-{NAME}` → 软链至解决方案仓 `DOC_ROOT`
+- 路径：`company/solution-slots/solution-{NAME}` → 软链至解决方案仓 `文档目录`
 - 建槽：`docs-link`（company→solution）
 - 同步：`/docs-pull --sln-name <slug>`
 - 公司不挂 `system-slots`。系统槽位在解决方案层

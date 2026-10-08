@@ -53,7 +53,7 @@
 
 ### 2 执行 phase 1-scan（phase 1 或 all 时）
 
-在仓库根 `{REPO_ROOT}` 执行：
+在仓库根 `{仓库路径}` 执行：
 
 ```bash
 python3 agent/skills/docs-tag/scripts/keyword_tag.py \
@@ -86,7 +86,7 @@ python3 agent/skills/docs-tag/scripts/keyword_tag.py \
 | 越界 | 重输 |
 | 空列表 | 提示调种子词 |
 
-写入命令（在 `{REPO_ROOT}` 执行）：
+写入命令（在 `{仓库路径}` 执行）：
 
 ```bash
 python3 agent/skills/docs-tag/scripts/keyword_tag.py \

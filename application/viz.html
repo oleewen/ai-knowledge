@@ -248,7 +248,7 @@ aside {
       "title": "application 目录清单",
       "description": null,
       "tags": [],
-      "body": "```yaml\n# 机器可读目录清单（与 docs-meta.md 互补）\nschema_version: \"1.1\"\ntemplate_id: app-APPNAME\ndescription: 联邦单元目录布局与中央库 application/ 对照\n\nmirrors_system_paths:\n  - application/changelogs/README.md → changelogs/README.md\n  - application/knowledge/** → knowledge/**\n  - application/requirements/README.md → requirements/README.md\n  - application/docs-meta.md → docs-meta.md（目标工程文件名；安装时内容替换见知识库安装）\n\ncentral_library:\n  system_root: ../../application/\n  repository_root: ../../\n```",
+      "body": "```yaml\n# 机器可读目录清单（与 docs-meta.md 互补）\nschema_version: \"1.1\"\ntemplate_id: app-APPNAME\ndescription: 联邦单元目录布局与元库 application/ 对照\n\nmirrors_system_paths:\n  - application/changelogs/README.md → changelogs/README.md\n  - application/knowledge/** → knowledge/**\n  - application/requirements/README.md → requirements/README.md\n  - application/docs-meta.md → docs-meta.md（目标工程文件名；安装时内容替换见知识库安装）\n\ncentral_library:\n  system_root: ../../application/\n  repository_root: ../../\n```",
       "backlinks": []
     },
     "adr/CONTEXT": {

@@ -63,21 +63,21 @@
 ├── system/                     # 系统层 + overview + 联邦槽位
 │   ├── knowledge/ · overview/
 │   ├── application-slots/           # 应用联邦槽位根
-│   │   ├── application-{NAME}/      # 软链 → 应用 DOC_ROOT（当前未挂载）
+│   │   ├── application-{NAME}/      # 软链 → 应用 文档目录（当前未挂载）
 │   │   └── changelogs/
 │   ├── knowledge-links.yaml · viz.html
 │   └── analysis/ · features/ · requirements/ · adr/ · changelogs/
 ├── solution/                   # 解决方案层 + overview + 系统槽位
 │   ├── knowledge/ · overview/
 │   ├── system-slots/                # 系统联邦槽位根
-│   │   ├── system-{NAME}/           # 软链 → 系统 DOC_ROOT（当前未挂载）
+│   │   ├── system-{NAME}/           # 软链 → 系统 文档目录（当前未挂载）
 │   │   └── changelogs/
 │   ├── knowledge-links.yaml · viz.html
 │   └── solutions/ · adr/ · changelogs/
 ├── company/                    # 公司层 + overview + 解决方案槽位
 │   ├── knowledge/ · overview/
 │   ├── solution-slots/              # 解决方案联邦槽位根
-│   │   ├── solution-{NAME}/         # 软链 → 解决方案 DOC_ROOT（当前未挂载）
+│   │   ├── solution-{NAME}/         # 软链 → 解决方案 文档目录（当前未挂载）
 │   │   └── changelogs/
 │   ├── knowledge-links.yaml · viz.html
 │   └── domains/ · adr/ · changelogs/
@@ -97,7 +97,7 @@
 
 ```mermaid
 flowchart LR
-  subgraph central["中央库 ai-knowledge"]
+  subgraph central["元库 ai-knowledge"]
     app["application/"]
     ag["agent/"]
     sys["system/"]
@@ -319,10 +319,12 @@ stateDiagram-v2
 | 配置项/参数 | 所在位置 | 说明 |
 | ------------- | ---------- | ------ |
 | `GIT_REPO_URL` / `GIT_REF` | [bootstrap.sh](bootstrap.sh) / [agent/scripts/lib/docsconfig.sh](agent/scripts/lib/docsconfig.sh) | bootstrap 克隆地址与引用 |
-| `REPO_ROOT`（环境变量） | `docs-install.sh` 等 | 指向本中央库根 |
+| `--meta` | `docs-install.sh` / `agent-install.sh` | 元库根。默认本脚本所在仓库 |
+| `--workspace` | `agent-install.sh` | 必填。写入 `$AGENT_ROOT/$AGENT_DIR/configs` 的 `WORK_SPACE` |
 | `--target` / `--mode` / `--scope` / `--type` / `--force` / `--dry-run` | `docs-install.sh` | 见 [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md) |
-| `.docsconfig` 键 | 目标工程或本仓根 | `DOC_ROOT`、`REPO_ROOT`、`DOC_DIR`、`KNOWLEDGE_TYPE`；可选 `AGENT_*` |
-| 本仓 `.docsconfig` | `.docsconfig` | 当前：`DOC_DIR=docs`、`KNOWLEDGE_TYPE=company`（**索引根单元**仍写仓根 `INDEX-GUIDE.md`，勿与 DOC_DIR 默认输出混淆） |
+| `.docsconfig` 键 | 目标工程或本仓根 | `AGENT_ROOT`、`AGENT_DIR`、`REPO_DIR`、`DOC_DIR`、`KNOWLEDGE_TYPE` |
+| 工作区文件 | `$AGENT_ROOT/$AGENT_DIR/configs` | 只读 `WORK_SPACE`。文件不存在则提示 `/agent-install` |
+| 本仓 `.docsconfig` | `.docsconfig` | 当前：`REPO_DIR=ai-knowledge`、`DOC_DIR=company`、`KNOWLEDGE_TYPE=meta`（**索引根单元**仍写仓根 `INDEX-GUIDE.md`，勿与 DOC_DIR 默认输出混淆） |
 | Hooks SSOT | [agent/hooks.json](agent/hooks.json) | `preToolUse` 为空；旧 gate 脚本已删 |
 | OKF 路径解析 | `agent/skills/docs-okf/scripts/` | 依赖 `.docsconfig` |
 
@@ -412,7 +414,7 @@ stateDiagram-v2
 
 | 项目 | 关系 | 描述 |
 | ------ | ------ | ------ |
-| oleewen/ai-knowledge | 上游/本仓 | 中央库 |
+| oleewen/ai-knowledge | 上游/本仓 | 元库 |
 | 目标工程 `docs/` | 下游 | 由 `docs-install` 注入 |
 
 ### 9.3 工具链与 Skill 清单

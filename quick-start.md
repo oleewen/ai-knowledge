@@ -11,8 +11,8 @@
 | 场景 | 适用 | 一句话 |
 | --- | --- | --- |
 | **A** | 单一应用，无联邦 | 应用仓 standalone，建 SSOT + 按需 SDD（无 `/sdx-solution`） |
-| **B** | 新交付（多应用）+ 中央库 | 先解决方案/系统需求与概设，再应用库详设 |
-| **C** | 老系统（多应用）+ 中央库 | 先各应用 SSOT，再三跳 pull/distill/archive |
+| **B** | 新交付（多应用）+ 元库 | 先解决方案/系统需求与概设，再应用库详设 |
+| **C** | 老系统（多应用）+ 元库 | 先各应用 SSOT，再三跳 pull/distill/archive |
 | **D** | 仅有 Wiki/协作文档等 legacy | overview 缓冲区 → archive → build |
 
 脚本参数与 mode 见 [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)；双轨自动化见 [bootstrap.sh](bootstrap.sh)。
@@ -71,7 +71,7 @@ flowchart LR
 flowchart LR
     S((开始))
 
-    subgraph SYS["系统/中央库先行"]
+    subgraph SYS["系统/元库先行"]
         direction LR
         S0["bootstrap<br/>安装知识库"]
         S2["/docs-indexing<br/>产出：知识库索引"]
@@ -108,7 +108,7 @@ flowchart LR
     A6 --> Z((结束))
 ```
 
-### 阶段一：中央库 — 分层需求分析设计
+### 阶段一：元库 — 分层需求分析设计
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
@@ -223,7 +223,7 @@ flowchart LR
 | 4 | `/docs-build` | 各应用四视角实体、`index.md` |
 | 5 | `git log` / `git diff` | 各应用仓变更历史 |
 
-### 阶段二：中央库 — 三跳登记、拉取、蒸馏、归档
+### 阶段二：元库 — 三跳登记、拉取、蒸馏、归档
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |

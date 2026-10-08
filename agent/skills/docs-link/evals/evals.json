@@ -94,7 +94,7 @@
     {
       "id": "docs-link-not-trigger-002",
       "category": "should-not-trigger",
-      "prompt": "把中央库 specs 推到 myapp 应用仓 requirements，先 dry-run 再 copy。",
+      "prompt": "把元库 specs 推到 myapp 应用仓 requirements，先 dry-run 再 copy。",
       "expected_output": "主路径 docs-push。",
       "assertions": [
         {

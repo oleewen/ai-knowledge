@@ -6,7 +6,7 @@ description: >
   未落位在 C 之后出策略三档（批量文件并入 / 单文件批量并入 / 逐项并入；并入=原父级，同标题合并，层级递增）。
   --apply-scaffold 收尾建 DOC_DIR/.agents 软链（非 meta）并将 agent 路径按深度重写为 .agents/ 或 agent/（同 docs-install）。
   指定文件/目录则只强制对齐那些路径（与整树互斥；破跳过；C=可处理项+未落位策略；M 下钻单文件）。
-  元库来自 DOC_ROOT/knowledge-links.yaml 的唯一 type: meta（path 优先：无 --ref 用当前 HEAD；
+  元库来自文档目录下 knowledge-links.yaml 的唯一 type: meta（path 优先：无 --ref 用当前 HEAD；
   有 --ref 才对齐该 ref；git path 脏则硬停；path 无效再 clone）。
   用户提到 /docs-upgrade、升级知识库、对齐元库模板、从 meta 刷新骨架、不丢已有知识升级、
   指定文件/目录对齐元库、只升某路径时，使用本技能。
@@ -19,8 +19,8 @@ description: >
 
 ## 输出硬约束（P0）
 
-- 当前单元：单个工程 `DOC_ROOT` 的一次升级计划（文档树；不含 Agent）。
-- **两模式互斥**：调用带 ≥1 个可解析为 `DOC_ROOT` 内真实文件/目录的路径（含 IDE 附件解析出的路径）→ **指定路径强制对齐**；无此类路径 → **整树**。同一次调用不混用。不依赖 `@` 前缀；模糊像路径但无法解析 → 先澄清，不默整树也不默文件模式。
+- 当前单元：单个工程 `文档目录` 的一次升级计划（文档树；不含 Agent）。
+- **两模式互斥**：调用带 ≥1 个可解析为 `文档目录` 内真实文件/目录的路径（含 IDE 附件解析出的路径）→ **指定路径强制对齐**；无此类路径 → **整树**。同一次调用不混用。不依赖 `@` 前缀；模糊像路径但无法解析 → 先澄清，不默整树也不默文件模式。
 - 轻流程：参数向导 → 风险校核 → `C/M/S/F`（无 `G`、不绑意图澄清）→ [light-flow-actions.md](../../references/light-flow-actions.md)；细节 [gates.md](references/gates.md)。参数未收口前不得写盘。
 - 整树：默认先 **dry-run 清单**；清单未 `C` 前不得实跑。文件模式：先 **解析总览**，总览未 `C` 前不得写盘。
 - **确认粒度**：清单/总览 `C` 与单文件 `C` **同语义**——执行全部可处理项；对齐节按元库结构重填；**有未落位则 `C` 之后出策略三档**（批量文件并入 / 单文件批量并入 / 逐项并入）。并入=本库原父级（同标题并入、层级递增、父消失则追加文末；见 merge-rules）。`M` = 改参数/名单或下钻单文件。
@@ -29,11 +29,11 @@ description: >
 - 合并契约：结构/模板=元库；正文=本库；已改判定=规范化后与元库同路径内容不等；已改 md=同标题（不比层级）填入元库骨架，正文标题相对元库标题级统一平移（级封顶 H6）；未落位=策略确认后才落（原父级并入 / 改挂 / 追加 / 跳过）；本库独有路径永不删。
 - 根级 `CONTRIBUTING.md` 按普通 md 进清单与文件模式（本无 scaffold；指定路径破跳过强制重填）。未落位策略与普通 md **同规则**。轻流程 `S` 不表示全跳过未落位。
 - 根级 `DESIGN.md`：本无 → 新增骨架；已改 → **整文件覆盖**（`--apply-scaffold` 以元库为准；不走 H2 结构重填）。文件模式指定该路径时同样整文件覆盖。
-- 文件模式强制：先取指定范围内**本库与元库同相对路径并集**（指定目录必须反向扫描元库 `meta-only` scaffold 项，禁止只 `find DOC_ROOT`）；两边都有的 `.md` **破跳过**，一律结构重填；本缺元有 → 仅 scaffold 该路径；元缺 / 软链路径 / 顶层遗留槽位名 → 该条拒绝。非 md：可进名单；已存在不覆盖；仅缺则可 scaffold。`*-slots/changelogs/**` 本有则整文件本库胜（强制也不破）。
+- 文件模式强制：先取指定范围内**本库与元库同相对路径并集**（指定目录必须反向扫描元库 `meta-only` scaffold 项，禁止只 `find 文档目录`）；两边都有的 `.md` **破跳过**，一律结构重填；本缺元有 → 仅 scaffold 该路径；元缺 / 软链路径 / 顶层遗留槽位名 → 该条拒绝。非 md：可进名单；已存在不覆盖；仅缺则可 scaffold。`*-slots/changelogs/**` 本有则整文件本库胜（强制也不破）。
 - `knowledge-links.yaml` 永不被元库模板覆盖。
 - **槽位根放开**：`application-slots/`、`system-slots/` 下**非软链真文件**进四桶 / 重填 / 文件模式（与普通路径同）。**凡软链一律跳过**（不跟随）。顶层遗留 `application-*` / `system-*`（不含上述两 slots 名）仍硬忽略。槽位**实例**同步仍归 `/docs-pull`。
 - `*-slots/changelogs/**`：本无可 scaffold；本有整文件本库胜（不进结构重填）。
-- 文件模式**不强制** `{REPO_ROOT}/.docs-init/` 备份（依赖 git）。整树 scaffold 仍按脚本备份。
+- 文件模式**不强制** `{仓库路径}/.docs-init/` 备份（依赖 git）。整树 scaffold 仍按脚本备份。
 - 文件模式由 Skill/Agent 编排写盘；脚本暂不加 `--path`。
 - 宣称单元完成前须按 [audience-and-language.md](../../references/audience-and-language.md) 轻流程默认读者表做写后 **A/B**（文件模式：整单结束一次）。
 
@@ -65,21 +65,21 @@ description: >
 
 ## 最少输入
 
-- 当前工程可读的 `.docsconfig`（含 `DOC_ROOT` / `REPO_ROOT` / `DOC_DIR` / `KNOWLEDGE_TYPE`）
-- `{DOC_ROOT}/knowledge-links.yaml` 恰好一条 `type: meta`（或本次 `--meta-path`）
+- 当前工程可读的 `.docsconfig`（含 `文档目录` / `仓库路径` / `DOC_DIR` / `KNOWLEDGE_TYPE`）
+- `{文档目录}/knowledge-links.yaml` 恰好一条 `type: meta`（或本次 `--meta-path`）
 - 整树：是否 dry-run（默认是）已收口
 - 文件模式：≥1 个可解析的真实文件或目录（解析后须有可处理项或明确拒绝项清单）
 
 ## 产出与脚本
 
-- 正式（整树）：对齐后的 `DOC_ROOT`（新骨架 + `agent/`/IDE 段→`~/.agents/` + README 注记 + 已确认重填 + 已确认未落位）；备份在 `{REPO_ROOT}/.docs-init/upgrade-{stamp}/`
+- 正式（整树）：对齐后的 `文档目录`（新骨架 + `agent/`/IDE 段→`~/.agents/` + README 注记 + 已确认重填 + 已确认未落位）；备份在 `{仓库路径}/.docs-init/upgrade-{stamp}/`
 - 正式（文件）：已 `C` 的指定路径（强制重填 / scaffold）；无强制 `.docs-init` 备份
 - 预览（整树）：清单（新增骨架 / 跳过 / 结构重填 / 整文件覆盖 / 本库独有）+ 后续未落位节清单
 - 预览（文件）：指定路径按两侧路径并集展开去重后的动作总览（强制重填 / scaffold / DESIGN 整文件覆盖 / 非 md 跳过覆盖 / 元缺拒绝 / 软链拒绝 / 遗留槽位拒绝 / changelogs 本库胜；须显式列出 `meta-only` scaffold 文件）
 - 收敛后：产物校核 + 受众 A/B → [light-flow-actions.md](../../references/light-flow-actions.md)
 
 ```bash
-# 整树：在目标工程根（含 .docsconfig）执行；脚本位于中央库本技能
+# 整树：在目标工程根（含 .docsconfig）执行；脚本位于元库本技能
 bash /path/to/ai-knowledge/agent/skills/docs-upgrade/scripts/docs-upgrade.sh --dry-run
 bash /path/to/ai-knowledge/agent/skills/docs-upgrade/scripts/docs-upgrade.sh --apply-scaffold
 # 文件模式：无脚本 --path；由 Skill 按会话指定路径编排（见 workflow / parameters）

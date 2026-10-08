@@ -8,5 +8,5 @@
 - **本仓 Agent 树**：走 `/agent-install`，不是本技能。
 - **`npx skills update` 无 dry-run**：用 lock 清单代替。
 - **纯发现 ≠ 本技能**：无追新语境的「找 skill」走 `/find-skills`。
-- **与 docs-upgrade**：不管 DOC_ROOT 模板。
+- **与 docs-upgrade**：不管 文档目录 模板。
 - **生态/find 需 Node/`npx`**。

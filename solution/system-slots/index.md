@@ -8,7 +8,7 @@ title: system-slots 目录索引
 
 ## 子目录
 
-（实例槽为软链 `system-{NAME}` → 下级系统 `DOC_ROOT`。）
+（实例槽为软链 `system-{NAME}` → 下级系统 `文档目录`。）
 
 ## 已登记槽
 

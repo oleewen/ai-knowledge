@@ -39,7 +39,7 @@ company/
 ├── knowledge-links.yaml
 ├── knowledge/ · domains/ · adr/
 ├── solution-slots/
-│   ├── solution-{NAME}         # 软链 → 解决方案 DOC_ROOT
+│   ├── solution-{NAME}         # 软链 → 解决方案 文档目录
 │   └── changelogs/
 └── changelogs/
 ```
@@ -99,7 +99,7 @@ company/
 | 公司级实体 | VC / BD / BSD-L1 / CAP / PL / TPL | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
 | overview 缓冲 | distill / extract / archive / tag | [knowledge/overview/](knowledge/overview/README.md) |
 | SDD 上游 | 域架构 | `domains/`（无 solutions/analysis/requirements） |
-| 联邦槽位 | 解决方案 DOC_ROOT 软链 | `solution-slots/solution-{NAME}/` · [knowledge-links.yaml](knowledge-links.yaml) |
+| 联邦槽位 | 解决方案 文档目录 软链 | `solution-slots/solution-{NAME}/` · [knowledge-links.yaml](knowledge-links.yaml) |
 
 ### 4.3 领域服务
 

@@ -8,7 +8,7 @@ title: application-slots 目录索引
 
 ## 子目录
 
-（实例槽为软链 `application-{NAME}` → 下级应用 `DOC_ROOT`；由 `docs-link` / `/docs-pull` 维护。）
+（实例槽为软链 `application-{NAME}` → 下级应用 `文档目录`；由 `docs-link` / `/docs-pull` 维护。）
 
 ## 已登记槽
 
