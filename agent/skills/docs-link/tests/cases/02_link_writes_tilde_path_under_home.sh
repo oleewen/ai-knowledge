@@ -20,6 +20,7 @@ SOLUTION="$FAKEHOME/ws/sln-foo"
 
 cleanup() {
   rm -rf "$TMP_DIR"
+  rm -f "$ROOT_DIR/agent/configs"
 }
 trap cleanup EXIT
 
@@ -33,22 +34,22 @@ cp -R "$ROOT_DIR/company/solution-slots" "$COMPANY/docs/solution-slots"
 printf '%s\n' 'links: []' >"$SOLUTION/docs/knowledge-links.yaml"
 
 cat >"$COMPANY/.docsconfig" <<EOF
-DOC_ROOT=docs
-REPO_ROOT=$COMPANY
+REPO_DIR=$(basename "$COMPANY")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=company
 AGENT_ROOT=$ROOT_DIR
 AGENT_DIR=agent
 EOF
+pin_workspace_for_repo "$COMPANY" "$ROOT_DIR" agent
 
 cat >"$SOLUTION/.docsconfig" <<EOF
-DOC_ROOT=docs
-REPO_ROOT=$SOLUTION
+REPO_DIR=$(basename "$SOLUTION")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=solution
 AGENT_ROOT=$ROOT_DIR
 AGENT_DIR=agent
 EOF
+pin_workspace_for_repo "$SOLUTION" "$ROOT_DIR" agent
 
 ( cd "$COMPANY" && HOME="$FAKEHOME" "${BASH:-bash}" "$DOCS_LINK" --link --target "$SOLUTION" ) \
   || fail "docs-link --link 应成功"

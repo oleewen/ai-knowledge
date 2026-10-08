@@ -27,8 +27,7 @@ EOF
 
 DOCS_CONFIG_PATH="$PROJECT_DIR/.docsconfig"
 assert_file_exists "$DOCS_CONFIG_PATH"
-assert_contains "DOC_ROOT=" "$DOCS_CONFIG_PATH"
-assert_contains "REPO_ROOT=" "$DOCS_CONFIG_PATH"
+assert_contains "REPO_DIR=" "$DOCS_CONFIG_PATH"
 assert_contains "DOC_DIR=" "$DOCS_CONFIG_PATH"
 if rg --fixed-strings "KNOWLEDGE_TYPE=" "$DOCS_CONFIG_PATH" >/dev/null; then
   fail "scope=config 不应写 KNOWLEDGE_TYPE: $DOCS_CONFIG_PATH"

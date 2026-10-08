@@ -26,22 +26,22 @@ git -C "$COMPANY" init -q
 git -C "$SLN" init -q
 
 cat >"$COMPANY/.docsconfig" <<EOF
-DOC_ROOT=docs
-REPO_ROOT=$COMPANY
+REPO_DIR=$(basename "$COMPANY")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=company
-AGENT_ROOT=$ROOT_DIR
-AGENT_DIR=agent
+AGENT_ROOT=$TMP_DIR/agent-home
+AGENT_DIR=.agents
 EOF
+pin_workspace_for_repo "$COMPANY" "$TMP_DIR/agent-home" .agents
 
 cat >"$SLN/.docsconfig" <<EOF
-DOC_ROOT=docs
-REPO_ROOT=$SLN
+REPO_DIR=$(basename "$SLN")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=solution
-AGENT_ROOT=$ROOT_DIR
-AGENT_DIR=agent
+AGENT_ROOT=$TMP_DIR/agent-home
+AGENT_DIR=.agents
 EOF
+pin_workspace_for_repo "$SLN" "$TMP_DIR/agent-home" .agents
 
 echo "content" >"$SLN/docs/sync-me.md"
 git -C "$SLN" add .

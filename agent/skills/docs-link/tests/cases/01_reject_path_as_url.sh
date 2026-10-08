@@ -18,6 +18,7 @@ DOCS_LINK="$ROOT_DIR/agent/skills/docs-link/scripts/docs-link.sh"
 
 cleanup() {
   rm -rf "$TMP_DIR"
+  rm -f "$ROOT_DIR/agent/configs"
 }
 trap cleanup EXIT
 
@@ -25,13 +26,13 @@ mkdir -p "$SRC/docs"
 git -C "$SRC" init -q
 
 cat >"$SRC/.docsconfig" <<EOF
-DOC_ROOT=docs
-REPO_ROOT=$SRC
-DOC_DIR=application
+REPO_DIR=$(basename "$SRC")
+DOC_DIR=docs
 KNOWLEDGE_TYPE=system
 AGENT_ROOT=$ROOT_DIR
 AGENT_DIR=agent
 EOF
+pin_workspace_for_repo "$SRC" "$ROOT_DIR" agent
 
 cat >"$SRC/docs/knowledge-links.yaml" <<'EOF'
 # 知识库建联清单（可由 docs-link.sh 维护）

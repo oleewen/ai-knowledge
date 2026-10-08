@@ -10,6 +10,14 @@ new_tmp_dir() {
   mktemp -d "${TMPDIR:-/tmp}/docs-install-tests.XXXXXX"
 }
 
+# 把 WORK_SPACE 写到 agent 安装树的 configs。同一 agent 树只保留最后一次写入的工作区。
+# 用法：pin_workspace_for_repo <repo_abs> <agent_root> [agent_dir]
+pin_workspace_for_repo() {
+  local repo="${1:?}" agent_root="${2:?}" agent_dir="${3:-.agents}"
+  mkdir -p "${agent_root}/${agent_dir}"
+  printf 'WORK_SPACE=%s\n' "$(dirname "$repo")" >"${agent_root}/${agent_dir}/configs"
+}
+
 # 在 TMP 下造可探测的 Agent 安装树，并 export HOME（须在 new_tmp_dir 之后调用）
 # 用法：ensure_test_agent_home <tmp_dir>
 ensure_test_agent_home() {

@@ -2,9 +2,9 @@
 set -euo pipefail
 
 TEST_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$TEST_ROOT/../../../.." && pwd)"
+META_ROOT="$(cd "$TEST_ROOT/../../../.." && pwd)"
 CASE_DIR="$TEST_ROOT/cases"
-source "$REPO_ROOT/agent/scripts/test-core.sh"
+source "$META_ROOT/agent/scripts/test-core.sh"
 
 if [[ "${BASH_VERSINFO[0]:-0}" -lt 5 ]]; then
   printf '跳过 docs-push 测试：需要 Bash 5+（当前 %s）\n' "${BASH_VERSION:-?}" >&2

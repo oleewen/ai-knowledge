@@ -20,6 +20,7 @@ APP_TGT="$FAKEHOME/ws/my-application-repo"
 LIST="$SYS_SRC/docs/knowledge-links.yaml"
 cleanup() {
   rm -rf "$TMP_DIR"
+  rm -f "$ROOT_DIR/agent/configs"
 }
 trap cleanup EXIT
 
@@ -31,22 +32,22 @@ git -C "$SYS_SRC" remote add origin "https://example.com/org/system-kb.git"
 git -C "$APP_TGT" remote add origin "https://example.com/org/my-application-repo.git"
 
 cat >"$SYS_SRC/.docsconfig" <<EOF
-DOC_ROOT=docs
-REPO_ROOT=$SYS_SRC
+REPO_DIR=$(basename "$SYS_SRC")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=system
 AGENT_ROOT=$ROOT_DIR
 AGENT_DIR=agent
 EOF
+pin_workspace_for_repo "$SYS_SRC" "$ROOT_DIR" agent
 
 cat >"$APP_TGT/.docsconfig" <<EOF
-DOC_ROOT=docs
-REPO_ROOT=$APP_TGT
+REPO_DIR=$(basename "$APP_TGT")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=application
 AGENT_ROOT=$ROOT_DIR
 AGENT_DIR=agent
 EOF
+pin_workspace_for_repo "$APP_TGT" "$ROOT_DIR" agent
 
 run_link() {
   ( cd "$SYS_SRC" && HOME="$FAKEHOME" "${BASH:-bash}" "$DOCS_LINK" --link --target "$APP_TGT" )

@@ -27,22 +27,22 @@ git -C "$SYSTEM" init -q
 git -C "$APP_OK" init -q
 
 cat >"$SYSTEM/.docsconfig" <<EOF
-DOC_ROOT=docs
-REPO_ROOT=$SYSTEM
+REPO_DIR=$(basename "$SYSTEM")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=system
-AGENT_ROOT=$ROOT_DIR
-AGENT_DIR=agent
+AGENT_ROOT=$TMP_DIR/agent-home
+AGENT_DIR=.agents
 EOF
+pin_workspace_for_repo "$SYSTEM" "$TMP_DIR/agent-home" .agents
 
 cat >"$APP_OK/.docsconfig" <<EOF
-DOC_ROOT=docs
-REPO_ROOT=$APP_OK
+REPO_DIR=$(basename "$APP_OK")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=application
-AGENT_ROOT=$ROOT_DIR
-AGENT_DIR=agent
+AGENT_ROOT=$TMP_DIR/agent-home
+AGENT_DIR=.agents
 EOF
+pin_workspace_for_repo "$APP_OK" "$TMP_DIR/agent-home" .agents
 
 echo "content" >"$APP_OK/docs/sync-me.md"
 git -C "$APP_OK" add . && git -C "$APP_OK" commit -m "ok" -q

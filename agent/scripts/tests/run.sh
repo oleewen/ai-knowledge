@@ -2,8 +2,8 @@
 set -euo pipefail
 
 TEST_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$TEST_ROOT/../../.." && pwd)"
-source "$REPO_ROOT/agent/scripts/test-core.sh"
+META_ROOT="$(cd "$TEST_ROOT/../../.." && pwd)"
+source "$META_ROOT/agent/scripts/test-core.sh"
 
 # 短名 → 相对仓库根的 runner；含路径者按仓库根解析
 suite_runner() {
@@ -57,16 +57,16 @@ run_suite() {
   local name="${1:?suite name is required}"
   local runner
   if runner_rel="$(suite_runner "$name")"; then
-    runner="$REPO_ROOT/$runner_rel"
+    runner="$META_ROOT/$runner_rel"
   elif [[ "$name" == */* ]]; then
-    runner="$REPO_ROOT/$name"
+    runner="$META_ROOT/$name"
   else
     runner="$TEST_ROOT/$name/run.sh"
   fi
   [[ -f "$runner" ]] || test_fail "未找到套件 runner: $runner"
   printf '\n'
   printf '########## suite: %s ##########\n' "$name"
-  (cd "$REPO_ROOT" && "${BASH:-$(command -v bash)}" "$runner")
+  (cd "$META_ROOT" && "${BASH:-$(command -v bash)}" "$runner")
 }
 
 main() {

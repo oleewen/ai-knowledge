@@ -20,13 +20,13 @@ mkdir -p "$DOCS_DIR"
 git -C "$PROJECT_DIR" init -q
 
 cat >"$PROJECT_DIR/.docsconfig" <<EOF
-DOC_ROOT=$DOCS_DIR
-REPO_ROOT=$PROJECT_DIR
+REPO_DIR=$(basename "$PROJECT_DIR")
 DOC_DIR=docs
 AGENT_ROOT=~
 AGENT_DIR=.agents
 KNOWLEDGE_TYPE=application
 EOF
+pin_workspace_for_repo "$PROJECT_DIR" "$HOME" .agents
 
 "${BASH:-$(command -v bash)}" "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS_DIR" >"$OUT_FILE" 2>&1
 

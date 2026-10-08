@@ -15,8 +15,8 @@ mkdir -p "$DOCS_DIR/knowledge"
 git -C "$PROJECT_DIR" init -q
 # 有 KNOWLEDGE_TYPE、无 AGENT_DIR
 {
-  printf 'DOC_ROOT=%s\nREPO_ROOT=%s\nDOC_DIR=docs\nKNOWLEDGE_TYPE=application\n' \
-    "$DOCS_DIR" "$PROJECT_DIR"
+  printf 'REPO_DIR=%s\nDOC_DIR=docs\nKNOWLEDGE_TYPE=application\n' \
+    "$(basename "$PROJECT_DIR")"
 } >"$PROJECT_DIR/.docsconfig"
 
 set +e

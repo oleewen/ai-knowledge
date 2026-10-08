@@ -26,11 +26,12 @@ source "$RESOLVE_SCRIPT"
   [[ "$OKF_BUNDLE" == "docs" ]] || fail "OKF_BUNDLE 应为 docs，得: $OKF_BUNDLE"
   [[ "$OKF_VIZ_OUT" == "docs/viz.html" ]] || fail "OKF_VIZ_OUT 错误: $OKF_VIZ_OUT"
   [[ "$OKF_VIZ_NAME" == "application OKF" ]] || fail "OKF_VIZ_NAME 错误: $OKF_VIZ_NAME"
-  [[ "$(cd "$REPO_ROOT" && pwd -P)" == "$(cd "$PROJECT_DIR" && pwd -P)" ]] || fail "REPO_ROOT 错误: $REPO_ROOT (expected $PROJECT_DIR)"
+  repo_abs="$(docsconfig_repo_abs)"
+  [[ "$(cd "$repo_abs" && pwd -P)" == "$(cd "$PROJECT_DIR" && pwd -P)" ]] || fail "仓库路径错误: $repo_abs (expected $PROJECT_DIR)"
   [[ "$DOC_DIR" == "docs" ]] || fail "DOC_DIR 错误: $DOC_DIR"
   [[ "$KNOWLEDGE_TYPE" == "application" ]] || fail "KNOWLEDGE_TYPE 错误: $KNOWLEDGE_TYPE"
   [[ "$AGENT_DIR" == ".agents" ]] || fail "AGENT_DIR 错误: $AGENT_DIR"
-  # DOC_ROOT 归一后可能 /var vs /private/var；比 DOC_DIR 后缀即可
+  # 文档路径归一后可能 /var vs /private/var；比 DOC_DIR 后缀即可
   [[ "$OKF_SCRIPTS" == *"/docs/.agents/skills/docs-okf/scripts" ]] \
     || fail "OKF_SCRIPTS 错误: $OKF_SCRIPTS (expected …/docs/.agents/skills/docs-okf/scripts)"
 )

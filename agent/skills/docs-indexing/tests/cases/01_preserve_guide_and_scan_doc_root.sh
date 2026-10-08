@@ -15,13 +15,13 @@ mkdir -p "$DOCS/knowledge" "$DOCS/changelogs" "$PROJECT/agent/scripts" "$DOCS/.a
 git -C "$PROJECT" init -q
 
 {
-  printf 'DOC_ROOT=%s\n' "$DOCS"
-  printf 'REPO_ROOT=%s\n' "$PROJECT"
+  printf 'REPO_DIR=%s\n' "$(basename "$PROJECT")"
   printf 'DOC_DIR=docs\n'
   printf 'KNOWLEDGE_TYPE=company\n'
-  printf 'AGENT_ROOT=~\n'
+  printf 'AGENT_ROOT=%s\n' "$TMP_DIR/agent-home"
   printf 'AGENT_DIR=.agents\n'
 } >"$PROJECT/.docsconfig"
+pin_workspace_for_repo "$PROJECT" "$TMP_DIR/agent-home" .agents
 
 printf 'root-agent\n' >"$PROJECT/agent/scripts/should-not-index.txt"
 printf 'docs-agent\n' >"$DOCS/.agents/should-not-index.txt"
@@ -60,4 +60,4 @@ if grep -q 'should-not-index.txt' "$DOCS/INDEX-GUIDE.md"; then
   fail "根外或隐藏目录被索引"
 fi
 
-pass "默认保护既有九章；rewrite 保留实体块并只扫 DOC_ROOT"
+pass "默认保护既有九章；rewrite 保留实体块并只扫文档目录"

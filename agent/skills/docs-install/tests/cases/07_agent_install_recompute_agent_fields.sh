@@ -21,25 +21,24 @@ git -C "$PROJECT_DIR" init -q
 
 "${BASH:-$(command -v bash)}" "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS_DIR" >"$OUT_FILE" 2>&1
 cat >"$PROJECT_DIR/.docsconfig" <<EOF
-DOC_ROOT=$DOCS_DIR
-REPO_ROOT=$PROJECT_DIR
+REPO_DIR=$(basename "$PROJECT_DIR")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=application
 AGENT_ROOT=~
 AGENT_DIR=.agents
 EOF
+pin_workspace_for_repo "$PROJECT_DIR" "$HOME" .agents
 
 # 故意改成 legacy 值；agent-install 不应写回覆盖
 cat >"$PROJECT_DIR/.docsconfig" <<EOF
-DOC_ROOT=$DOCS_DIR
-REPO_ROOT=$PROJECT_DIR
+REPO_DIR=$(basename "$PROJECT_DIR")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=application
 AGENT_ROOT=/tmp/legacy-agent-root
 AGENT_DIR=.agents
 EOF
 
-"${BASH:-$(command -v bash)}" "$AGENT_INSTALL_SCRIPT" --scope=r --target="$PROJECT_DIR" --agents=claude >>"$OUT_FILE" 2>&1
+"${BASH:-$(command -v bash)}" "$AGENT_INSTALL_SCRIPT" --workspace "$TMP_DIR/workspaces" --scope=r --target="$PROJECT_DIR" --agents=claude >>"$OUT_FILE" 2>&1
 
 DOCS_CONFIG_PATH="$PROJECT_DIR/.docsconfig"
 assert_file_exists "$DOCS_CONFIG_PATH"

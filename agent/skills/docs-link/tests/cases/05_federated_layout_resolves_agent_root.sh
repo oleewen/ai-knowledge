@@ -32,8 +32,7 @@ chmod +x "$SRC/scripts/docs-link.sh"
 git -C "$SRC" init -q
 
 cat >"$SRC/.docsconfig" <<EOF
-DOC_ROOT=~/workspaces/src/docs
-REPO_ROOT=~/workspaces/src
+REPO_DIR=$(basename "~/workspaces/src")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=system
 AGENT_ROOT=~
@@ -50,7 +49,7 @@ _cfg_dr=""
 _cfg_rr=""
 _cfg_dd=""
 _cfg_kt=""
-docsconfig_read_into "$2" _cfg_dr _cfg_rr _cfg_dd raw_ar _cfg_kt raw_ad
+docsconfig_read_into "$2" _cfg_rd _cfg_dd raw_ar _cfg_kt raw_ad
 [[ -n "$raw_ar" ]]
 # ~ 经 normalize 为家目录绝对路径，不得仍是实体树名
 [[ "$(basename "$raw_ar")" != ".agents" ]]
