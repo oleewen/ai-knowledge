@@ -12,7 +12,8 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md)
+2. [INDEXING-LOG.md](INDEXING-LOG.md)
 
 ## 关联索引
 

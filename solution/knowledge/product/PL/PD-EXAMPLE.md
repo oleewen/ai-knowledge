@@ -18,17 +18,17 @@ implemented_by:
 ---
 ## 关系
 
-- implements_to: PL-EXAMPLE
-- maps_to: BS-EXAMPLE
+- implements_to: [PL-EXAMPLE](PL-EXAMPLE.md)
+- maps_to: [BS-EXAMPLE](../../business/BS/BS-EXAMPLE.md)
 - mapped_by:
   - SYS-EXAMPLE
 - implemented_by:
   - PM-EXAMPLE（系统库）
-  - BSP-EXAMPLE
+  - [BSP-EXAMPLE](../BP/BSP-EXAMPLE.md)
 
 ## 跨视角
 
-- 对标业务服务：BS-EXAMPLE
+- 对标业务服务：[BS-EXAMPLE](../../business/BS/BS-EXAMPLE.md)
 - 对端系统：SYS-EXAMPLE（系统库）
 
 ## 详细说明
@@ -38,4 +38,4 @@ implemented_by:
 
 ## 依据与证据
 
-chapters/product-architecture.md（示例）
+[../chapters/product-architecture.md](../chapters/product-architecture.md#产品服务)（示例）

@@ -13,3 +13,5 @@ title: solutions（解决方案）文档
 | （实例化后登记） | | |
 
 规范：[sdx-solution](../../agent/skills/sdx-solution/SKILL.md) · 归档 [archive/](archive/README.md)
+
+目录与阅读顺序见 [index.md](index.md)。

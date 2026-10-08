@@ -14,13 +14,13 @@ mapped_by:
 ---
 ## 关系
 
-- maps_to: BSD-EXAMPLE-L2
+- maps_to: [BSD-EXAMPLE-L2](../BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md)
 - mapped_by:
-  - PD-EXAMPLE
+  - [PD-EXAMPLE](../../product/PL/PD-EXAMPLE.md)
 
 ## 跨视角
 
-- 对端产品服务：PD-EXAMPLE
+- 对端产品服务：[PD-EXAMPLE](../../product/PL/PD-EXAMPLE.md)
 
 ## 详细说明
 
@@ -29,4 +29,4 @@ mapped_by:
 
 ## 依据与证据
 
-chapters/business-domain-division.md（示例）
+[../chapters/business-domain-division.md](../chapters/business-domain-division.md)（示例）

@@ -12,12 +12,12 @@ maps_to: PL-EXAMPLE
 ---
 ## 关系
 
-- maps_to: PL-EXAMPLE
-- implemented_by: SYS-EXAMPLE（系统库）；BP-EXAMPLE
+- maps_to: [PL-EXAMPLE](../product/PL/PL-EXAMPLE.md)
+- implemented_by: SYS-EXAMPLE（系统库）；[BP-EXAMPLE](../product/BP/BP-EXAMPLE.md)
 
 ## 跨视角
 
-- 产品服务：PD-EXAMPLE（1:1 SYS-EXAMPLE）
+- 产品服务：[PD-EXAMPLE](../product/PL/PD-EXAMPLE.md)
 
 ## 详细说明
 
@@ -26,4 +26,4 @@ maps_to: PL-EXAMPLE
 
 ## 依据与证据
 
-chapters/application-architecture.md（示例）
+[chapters/application-architecture.md](chapters/application-architecture.md)（示例）

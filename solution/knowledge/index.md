@@ -22,7 +22,7 @@
 1. [README.md](README.md)
 2. INDEX-GUIDE 第四章
 3. [overview/README.md](overview/README.md)
-4. 各视角 `README.md`
+4. 各视角 README：[业务](business/README.md)、[产品](product/README.md)、[应用](application/README.md)、[数据](data/README.md)、[技术](technical/README.md)
 
 ## 关联索引
 

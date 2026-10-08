@@ -13,8 +13,8 @@ implements_to: PD-EXAMPLE
 ---
 ## 关系
 
-- parent: BP-EXAMPLE
-- implements_to: PD-EXAMPLE
+- parent: [BP-EXAMPLE](BP-EXAMPLE.md)
+- implements_to: [PD-EXAMPLE](../PL/PD-EXAMPLE.md)
 
 ## 跨视角
 
@@ -27,4 +27,4 @@ implements_to: PD-EXAMPLE
 
 ## 依据与证据
 
-chapters/product-architecture.md（示例）
+[../chapters/product-architecture.md](../chapters/product-architecture.md#业务子流程)（示例）

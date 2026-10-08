@@ -4,7 +4,7 @@ title: 解决方案知识库 — 架构文档
 ---
 # 解决方案知识库 — 架构文档
 
-解决方案层五视角入口。分型见 okf-spec。契约见 [../DESIGN.md](../DESIGN.md) · knowledge-governance。
+解决方案层五视角入口。分型见 okf-spec。契约见 DESIGN.md · knowledge-governance。
 
 | 视角 | 入口 | 本层首次定义 |
 |------|------|----------------|

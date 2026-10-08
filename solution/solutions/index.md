@@ -4,7 +4,7 @@
 
 ## 子目录
 
-* [archive](archive/README.md)
+* [archive](archive/index.md)
 
 ## 目录文件
 
@@ -12,7 +12,8 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md)
+2. [archive](archive/index.md)
 
 ## 关联索引
 

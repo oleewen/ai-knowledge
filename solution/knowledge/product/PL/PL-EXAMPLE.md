@@ -18,9 +18,9 @@ implemented_by:
 
 - maps_to: BL-EXAMPLE
 - mapped_by:
-  - SLN-EXAMPLE
+  - [SLN-EXAMPLE](../../application/SLN-EXAMPLE.md)
 - implemented_by:
-  - PD-EXAMPLE
+  - [PD-EXAMPLE](PD-EXAMPLE.md)
 
 ## 跨视角
 
@@ -34,4 +34,4 @@ implemented_by:
 
 ## 依据与证据
 
-chapters/product-line.md（示例）
+[../chapters/product-line.md](../chapters/product-line.md)（示例）

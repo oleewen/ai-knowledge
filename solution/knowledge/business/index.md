@@ -14,7 +14,11 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md)
+2. [chapters](chapters/index.md)
+3. [BSD-EXAMPLE-L2](BSD-EXAMPLE-L2/index.md)
+4. [BS](BS/index.md)
+5. [business-meta.md](business-meta.md)
 
 ## 关联索引
 

@@ -14,7 +14,10 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md)
+2. [chapters](chapters/index.md)
+3. [SLN-EXAMPLE.md](SLN-EXAMPLE.md)
+4. [application-meta.md](application-meta.md)
 
 ## 关联索引
 

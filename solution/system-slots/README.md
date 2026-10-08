@@ -20,4 +20,4 @@ title: system-slots（系统联邦槽位根）
 - 建槽：`docs-link`（yaml + 软链；company→solution、solution→system、system→application）
 - 同步：`/docs-pull`（脏工作区拒绝 pull）
 
-下游对称：[system/application-slots](../../system/application-slots/README.md)。上游：[company/solution-slots](../../company/solution-slots/README.md)。
+解决方案不挂 `application-slots`。应用槽位在系统层 `application-slots`。上游：[company/solution-slots](../../company/solution-slots/README.md)。

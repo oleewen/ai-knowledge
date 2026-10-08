@@ -1,7 +1,7 @@
 ---
 type: Business Process
-title: 示例解决方案主流程
-description: 一个 SLN 一条主流程；implements_to SLN。
+title: 示例解决方案业务流程
+description: 一个 SLN 一条业务流程；implements_to SLN。
 tags: [product, BP]
 timestamp: "2026-10-06T00:00:00+08:00"
 id: BP-EXAMPLE
@@ -14,9 +14,9 @@ children:
 ---
 ## 关系
 
-- implements_to: SLN-EXAMPLE
+- implements_to: [SLN-EXAMPLE](../../application/SLN-EXAMPLE.md)
 - children:
-  - BSP-EXAMPLE
+  - [BSP-EXAMPLE](BSP-EXAMPLE.md)
 
 ## 跨视角
 
@@ -29,4 +29,4 @@ children:
 
 ## 依据与证据
 
-chapters/product-architecture.md（示例）
+[../chapters/product-architecture.md](../chapters/product-architecture.md#业务流程)（示例）

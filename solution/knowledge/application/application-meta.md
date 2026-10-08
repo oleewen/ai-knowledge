@@ -32,18 +32,19 @@ title: 应用视角元数据（solution/knowledge/application）
 
 | 层级 | 字段 | 说明 |
 | --- | --- | --- |
-| SLN | `maps_to`、`implemented_by` | `maps_to` → PL，1:1；`implemented_by` → SYS |
+| SLN | `maps_to`、`implemented_by` | `maps_to` → PL，1:1；`implemented_by` → SYS 与 BP |
 
 ## 5. 跨视角引用
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
 | SLN.maps_to | PL.id | 1:1 |
-| SLN.implemented_by | SYS.id | SYS 在系统层 |
+| SLN.implemented_by | SYS.id | SYS 在系统层；正文纯 ID |
+| SLN.implemented_by | BP.id | BP `implements_to` 本 SLN |
 
 ## 6. 关联文档
 
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 叙事索引 |
-| [index.md](../index.md) | 实例索引 |
+| [../index.md](../index.md) | 实例索引 |

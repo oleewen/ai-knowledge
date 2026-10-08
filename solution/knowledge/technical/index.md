@@ -14,7 +14,10 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md)
+2. [chapters](chapters/index.md)
+3. [TSD-EXAMPLE.md](TSD-EXAMPLE.md)
+4. [technical-meta.md](technical-meta.md)
 
 ## 关联索引
 

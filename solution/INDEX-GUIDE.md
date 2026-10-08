@@ -26,6 +26,7 @@ title: solution INDEX-GUIDE
 * **栈**: Markdown、YAML
 * **范围**: `knowledge/` · `solutions/` · `adr/` · `system-slots/` · `changelogs/`
 * **装机**: `KNOWLEDGE_TYPE=solution`
+* **规模**（本轮 full/d3，排除 `.agents`）：**73** 文件（`.md` 72 · `.yaml` 1；`viz.html` 1 不计入）
 
 ---
 
@@ -62,7 +63,7 @@ parent：`application → system → solution → company`。
 
 | 聚合 | 职责 | 关键落点 |
 |------|------|----------|
-| 本层首次实体 | SLN / PD / BSD-L2 / MDG / TSD / BP | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
+| 本层首次实体 | SLN / PL / PD / BP / BSP / BSD-L2 / BS / MDG / TSD | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
 | overview 缓冲 | extract / archive / tag；distill 来自系统槽位 | [knowledge/overview/](knowledge/overview/README.md) |
 | SDD | 仅方案正文 | `solutions/`（`/sdx-solution`） |
 | 联邦槽位 | 系统 文档目录 软链 | `system-slots/system-{NAME}/` · [knowledge-links.yaml](knowledge-links.yaml) |

@@ -5,7 +5,7 @@ title: solution 目录元数据
 ```yaml
 id: "DIR-SOLUTION"
 name: "解决方案知识库根（solution）"
-description: "解决方案层治理根。契约见 DESIGN.md；knowledge/=SLN/PD/L2/MDG/TSD/BP SSOT；system-slots/=系统软链；solutions/=本层 SDD。"
+description: "解决方案层治理根。契约见 DESIGN.md；knowledge/=SLN/PL/PD/BP/BSP/BSD-L2/BS/MDG/TSD SSOT；system-slots/=系统软链；solutions/=本层 SDD。"
 
 role:
   kind: "documentation_root"

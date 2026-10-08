@@ -6,7 +6,9 @@ title: 数据架构
 
 [返回 · 解决方案知识库 — 架构文档](../README.md)
 
-**本层 SSOT**：MDG（一 SLN 可多条）。DS/ENT ∈ 系统；TBL ∈ 应用。企业标准只引用公司 data。章节见 [chapters/](chapters/)。字段 [data-meta.md](data-meta.md)。
+**本层 SSOT**：MDG（一 SLN 可多条）。DS/ENT ∈ 系统；TBL ∈ 应用。企业标准只引用公司 data。章节见 [chapters/index.md](chapters/index.md)。字段 [data-meta.md](data-meta.md)。
+
+目录与阅读顺序见 [index.md](index.md)。
 
 ## 章节
 

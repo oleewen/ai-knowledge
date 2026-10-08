@@ -51,4 +51,4 @@ title: 业务视角元数据（solution/knowledge/business）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 叙事索引 |
-| [index.md](../index.md) | 实例索引 |
+| [../index.md](../index.md) | 实例索引 |

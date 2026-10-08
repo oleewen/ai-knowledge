@@ -30,23 +30,22 @@ title: "{域名称}架构概览（{slug}-overview）"
 | 主标题 | 副标题 | 归档业务知识 |
 | --- | --- | --- |
 | [产品概述](../product/chapters/product-overview.md) | [方案产品](../product/chapters/product-overview.md#方案产品) | — |
-| [产品线](../product/chapters/product-line.md) | [产品线清单（PL）](../product/chapters/product-line.md#产品线清单pl) | — |
+| [产品线](../product/chapters/product-line.md) | [产品线清单（PL）](../product/chapters/product-line.md#产品线清单（PL）) | — |
 | [产品线](../product/chapters/product-line.md) | [产品线职责与边界](../product/chapters/product-line.md#产品线职责与边界) | — |
 | [产品线](../product/chapters/product-line.md) | [产品线关系图](../product/chapters/product-line.md#产品线关系图) | — |
 | [产品架构](../product/chapters/product-architecture.md) | [产品服务](../product/chapters/product-architecture.md#产品服务) | — |
-| [产品架构](../product/chapters/product-architecture.md) | [主流程](../product/chapters/product-architecture.md#主流程) | — |
+| [产品架构](../product/chapters/product-architecture.md) | [业务流程](../product/chapters/product-architecture.md#业务流程) | — |
 | [产品架构](../product/chapters/product-architecture.md) | [业务子流程](../product/chapters/product-architecture.md#业务子流程) | — |
 
 ## [应用架构](../application/README.md)
 
 | 主标题 | 副标题 | 归档业务知识 |
 | --- | --- | --- |
-| [系统概述](../application/chapters/application-overview.md) | [系统使命](../application/chapters/application-overview.md#系统使命) | — |
-| [系统概述](../application/chapters/application-overview.md) | [用户场景](../application/chapters/application-overview.md#用户场景) | — |
-| [系统概述](../application/chapters/application-overview.md) | [系统范围](../application/chapters/application-overview.md#系统范围) | — |
-| [系统概述](../application/chapters/application-overview.md) | [外部依赖](../application/chapters/application-overview.md#外部依赖) | — |
-| [系统概述](../application/chapters/application-overview.md) | [技术摘要](../application/chapters/application-overview.md#技术摘要) | — |
-| [应用架构](../application/chapters/application-architecture.md) | [系统上下文](../application/chapters/application-architecture.md#系统上下文) | — |
+| [方案概述](../application/chapters/application-overview.md) | [方案使命](../application/chapters/application-overview.md#方案使命) | — |
+| [方案概述](../application/chapters/application-overview.md) | [用户场景](../application/chapters/application-overview.md#用户场景) | — |
+| [方案概述](../application/chapters/application-overview.md) | [纳入范围](../application/chapters/application-overview.md#纳入范围) | — |
+| [方案概述](../application/chapters/application-overview.md) | [外部依赖](../application/chapters/application-overview.md#外部依赖) | — |
+| [应用架构](../application/chapters/application-architecture.md) | [方案上下文](../application/chapters/application-architecture.md#方案上下文) | — |
 | [应用架构](../application/chapters/application-architecture.md) | [职责边界](../application/chapters/application-architecture.md#职责边界) | — |
 | [应用架构](../application/chapters/application-architecture.md) | [服务能力矩阵](../application/chapters/application-architecture.md#服务能力矩阵) | — |
 | [应用架构](../application/chapters/application-architecture.md) | [分层结构](../application/chapters/application-architecture.md#分层结构) | — |
@@ -77,9 +76,9 @@ title: "{域名称}架构概览（{slug}-overview）"
 
 ### 文档关键词
 
-`yaml
+```yaml
 keywords:
-  - SYSNAME
-  - 示例术语A
-  - 示例术语B
-`
+- SLNNAME
+- 示例术语A
+- 示例术语B
+```

@@ -17,13 +17,13 @@ title: 产品视角元数据（solution/knowledge/product）
 
 ## 2. 层级链
 
-| 链序 | 代码 | 本层 |
-| --- | --- | --- |
-| — | PL | 本层 SSOT |
-| — | PD | 本层 SSOT |
-| — | BP | 本层 SSOT |
-| — | BSP | 本层 SSOT |
-| — | PM 及以下 | 系统；本层不落 |
+| 链 | 链序 | 代码 | 本层 |
+| --- | --- | --- | --- |
+| 产品线 | 1 | PL | 本层 SSOT |
+| 产品线 | 2 | PD | 本层 SSOT |
+| 流程 | 1 | BP | 本层 SSOT |
+| 流程 | 2 | BSP | 本层 SSOT |
+| — | — | PM 及以下 | 系统；本层不落 |
 
 ## 3. 层定义
 
@@ -51,7 +51,7 @@ title: 产品视角元数据（solution/knowledge/product）
 | PD.implements_to | PL.id | 归属产品线 |
 | PD.maps_to | BS.id | 1:1 |
 | BP.implements_to | SLN.id | 归属方案 |
-| BSP.parent | BP.id | 上级主流程 |
+| BSP.parent | BP.id | 上级业务流程 |
 | BSP.implements_to | PD.id | 归属产品服务 |
 
 ## 6. 关联文档
@@ -59,4 +59,4 @@ title: 产品视角元数据（solution/knowledge/product）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 叙事索引 |
-| [index.md](../index.md) | 实例索引 |
+| [../index.md](../index.md) | 实例索引 |

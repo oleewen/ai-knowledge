@@ -18,11 +18,11 @@ mapped_by:
 - children:
   - BSD-EXAMPLE-L3（系统库）
 - mapped_by:
-  - BS-EXAMPLE
+  - [BS-EXAMPLE](../BS/BS-EXAMPLE.md)
 
 ## 跨视角
 
-- 业务服务：BS-EXAMPLE
+（none）
 
 ## 详细说明
 
@@ -31,4 +31,4 @@ mapped_by:
 
 ## 依据与证据
 
-chapters/business-domain-division.md（示例）
+[../chapters/business-domain-division.md](../chapters/business-domain-division.md#二级子域)（示例）

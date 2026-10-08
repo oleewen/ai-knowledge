@@ -45,4 +45,4 @@ MDG 无 parent。对端关系见 §5。
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 叙事索引 |
-| [index.md](../index.md) | 实例索引 |
+| [../index.md](../index.md) | 实例索引 |

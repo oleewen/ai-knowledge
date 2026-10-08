@@ -25,4 +25,4 @@ layer_scope: solution
 
 ## 依据与证据
 
-chapters/data-model.md（示例）
+[chapters/data-model.md](chapters/data-model.md#主数据)（示例）

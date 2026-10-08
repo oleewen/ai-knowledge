@@ -6,7 +6,9 @@ title: 技术架构
 
 [返回 · 解决方案知识库 — 架构文档](../README.md)
 
-**本层 SSOT**：TSD（`implements_to` 公司 TPL）。MW/CMP ∈ 应用。企业标准只引用公司 technical。章节见 [chapters/](chapters/)。字段 [technical-meta.md](technical-meta.md)。
+**本层 SSOT**：TSD（`implements_to` 公司 TPL）。MW/CMP ∈ 应用。企业标准只引用公司 technical。章节见 [chapters/index.md](chapters/index.md)。字段 [technical-meta.md](technical-meta.md)。
+
+目录与阅读顺序见 [index.md](index.md)。
 
 ## 章节
 
