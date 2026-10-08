@@ -3,7 +3,7 @@ type: Perspective Meta
 title: 数据视角元数据（application/knowledge/data）
 ---
 
-应用侧数据版图（MDG→DS→ENT→TBL）实体登记与物理落地元数据。实例索引 [index.md](../index.md)（§4，扫描生成；实体 `{ID}.md` = SSOT）。
+应用侧数据版图（MDG→DS→ENT→TBL）实体登记与物理落地元数据。目录导航 [../index.md](../index.md)。实体台账见 [README.md](README.md#实体)。实体 `{ID}.md` = SSOT。
 
 ## 1. 概览
 
@@ -13,7 +13,7 @@ title: 数据视角元数据（application/knowledge/data）
 | 视角 | data |
 | 层级范围 | application |
 | 说明 | MDG 解决方案首次定义；DS/ENT 系统首次定义；本层可留 reference，SSOT 为 **TBL**。 |
-| entities_shape | 实体 `{ID}.md`（OKF）；索引见 INDEX-GUIDE 第四章 §4 |
+| entities_shape | 实体 `{ID}.md`（OKF）；实体台账见 [README.md](README.md#实体) |
 
 ## 2. 层级链
 
@@ -54,7 +54,6 @@ title: 数据视角元数据（application/knowledge/data）
 | --- | --- | --- |
 | MDG（reference） | solution MDG.id | 上游解决方案 SSOT |
 | DS.implements_to | MDG.id | 数据源归属主数据域 |
-| AGG.maps_to | ENT.id | 聚合对标实体 |
 | ENT.maps_to | AGG.id | 实体对标聚合 |
 | DS.used_by | APP.id | 数据源被应用使用 |
 
@@ -62,8 +61,9 @@ title: 数据视角元数据（application/knowledge/data）
 
 | 路径 | 说明 |
 | --- | --- |
-| [README.md](README.md) | 人类可读说明 |
-| [index.md](../index.md) | §4 数据视角 + 五视角实例索引（扫描生成） |
-| MDG-* / DS-* / ENT-* | 系统层 SSOT（reference） |
+| [README.md](README.md#实体) | 实体台账 |
+| [../index.md](../index.md) | 目录导航 |
+| MDG-* | 解决方案 SSOT（reference / 纯 ID） |
+| DS-* / ENT-* | 系统层 SSOT（reference / 纯 ID） |
 
 **索引**：`readme_index_table: true`；变更 ID 时同步 README、index.md（按需）。

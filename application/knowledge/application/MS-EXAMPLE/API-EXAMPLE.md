@@ -11,8 +11,7 @@ layer_scope: application
 ---
 ## 关系
 
-- parent: MS-EXAMPLE
-- service_id: MS-EXAMPLE
+- implements_to: MS-EXAMPLE
 
 ## 跨视角
 
@@ -29,4 +28,4 @@ layer_scope: application
 
 ## 依据与证据
 
-示例数据
+[../chapters/application-interface-management.md](../chapters/application-interface-management.md)（示例）

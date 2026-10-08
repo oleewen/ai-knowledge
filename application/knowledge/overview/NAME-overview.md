@@ -1,6 +1,6 @@
 ---
 type: Architecture Overview Buffer
-tags: [overview, distill]
+tags: [overview]
 title: "{域名称}架构概览（{slug}-overview）"
 ---
 <!-- markdownlint-disable-next-line MD025 -->
@@ -30,7 +30,7 @@ title: "{域名称}架构概览（{slug}-overview）"
 | [接口管理](../application/chapters/application-interface-management.md) | [开放 API](../application/chapters/application-interface-management.md#开放-api) | — |
 | [接口管理](../application/chapters/application-interface-management.md) | [版本策略](../application/chapters/application-interface-management.md#版本策略) | — |
 | [接口管理](../application/chapters/application-interface-management.md) | [变更日志](../application/chapters/application-interface-management.md#变更日志) | — |
-| ADR | 应用层决策见 `adr/` | — |
+| ADR | 应用层决策见 ADR | — |
 
 ## [技术架构](../technical/README.md)
 
@@ -60,9 +60,9 @@ title: "{域名称}架构概览（{slug}-overview）"
 
 ### 文档关键词
 
-`yaml
+```yaml
 keywords:
-  - SYSNAME
-  - 示例术语A
-  - 示例术语B
-`
+- APPNAME
+- 示例术语A
+- 示例术语B
+```

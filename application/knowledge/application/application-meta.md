@@ -3,7 +3,7 @@ type: Perspective Meta
 title: 应用视角元数据（application/knowledge/application）
 ---
 
-应用侧实现版图（SYS→APP→MS→API）实体登记与接口实现元数据。实例索引 [index.md](../index.md)（§3，扫描生成；实体 `{ID}.md` = SSOT）。
+应用侧实现版图（SYS→APP→MS→API）实体登记与接口实现元数据。目录导航 [../index.md](../index.md)。实体台账见 [README.md](README.md#实体)。实体 `{ID}.md` = SSOT。
 
 ## 1. 概览
 
@@ -13,7 +13,7 @@ title: 应用视角元数据（application/knowledge/application）
 | 视角 | application |
 | 层级范围 | application |
 | 说明 | 实现版图；SYS/APP/MS 系统首次定义；本层 SSOT 为 **API**，上游可留 reference / 纯 ID。 |
-| entities_shape | 实体 `{ID}.md`（OKF）；索引见 INDEX-GUIDE 第四章 §3 |
+| entities_shape | 实体 `{ID}.md`（OKF）；实体台账见 [README.md](README.md#实体) |
 
 ## 2. 层级链
 
@@ -28,7 +28,7 @@ title: 应用视角元数据（application/knowledge/application）
 
 | order | key | code | id_pattern | parent |
 | --- | --- | --- | --- | --- |
-| 1 | sys | SYS | `SYS-{NAME}` | SLN（公司） |
+| 1 | sys | SYS | `SYS-{NAME}` | SLN（解决方案） |
 | 2 | app | APP | `APP-{NAME}` | SYS |
 | 3 | ms | MS | `MS-{NNN}` 或 `MS-{NAME}` | APP |
 | 4 | api | API | `API-{NNN}` 或 `API-{NAME}-{NNN}` | MS |
@@ -59,14 +59,14 @@ title: 应用视角元数据（application/knowledge/application）
 | MS-EXAMPLE | `APP-EXAMPLE/MS-EXAMPLE/` | （不落 MS 实体；可宿主 API） | system SSOT |
 | API-EXAMPLE | （system 不登记） | `MS-EXAMPLE/API-*.md` | API 仅 application SSOT |
 
-**链接约定**：同 bundle 用 `/knowledge/...`；跨 bundle `# SSOT` 用仓库根相对路径。
+**链接约定**：同 bundle 用相对路径。无 parent 时跨层只写实体 ID。
 
 ## 6. 跨视角引用
 
 | 源字段 | 目标 | 说明 |
 | --- | --- | --- |
 | BC.supported_by | APP.id | 业务上下文由应用支撑 |
-| AB.maps_to | API.id | 能力对标 API |
+| API.maps_to | UC.id | 接口对标用例。用例再对标能力（UC → AB） |
 | API.supports_to | FT.id | 接口支撑功能点 |
 | DS.used_by | APP.id | 数据源被应用使用 |
 
@@ -74,8 +74,8 @@ title: 应用视角元数据（application/knowledge/application）
 
 | 路径 | 说明 |
 | --- | --- |
-| [README.md](README.md) | 人类可读说明 |
-| [index.md](../index.md) | §3 应用视角 + 五视角实例索引（扫描生成） |
+| [README.md](README.md#实体) | 实体台账 |
+| [../index.md](../index.md) | 目录导航 |
 | SYS-* / APP-* / MS-* | 系统层 SSOT（reference / 纯 ID） |
 
 **索引**：`readme_index_table: true`；变更 ID 时同步 README、index.md、manifest/OpenAPI（按需）。

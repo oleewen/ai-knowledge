@@ -4,7 +4,7 @@
 
 ## 子目录
 
-* [DS-EXAMPLE](DS-EXAMPLE/index.md)
+* [ENT-EXAMPLE](ENT-EXAMPLE/index.md)
 * [chapters](chapters/index.md)
 
 ## 目录文件
@@ -13,11 +13,13 @@
 
 ## 阅读顺序
 
-1. [README.md](README.md) · [data-meta.md](data-meta.md)
-2. [DS-EXAMPLE/TBL-EXAMPLE.md](DS-EXAMPLE/TBL-EXAMPLE.md)
+1. [README.md](README.md)
+2. [chapters/index.md](chapters/index.md)
+3. [ENT-EXAMPLE/index.md](ENT-EXAMPLE/index.md)
+4. [data-meta.md](data-meta.md)
 
 ## 关联索引
 
-- 上一级索引：[index.md](../index.md)
-- 上一级说明：[README.md](../README.md)
+- 上一级索引：[../index.md](../index.md)
+- 上一级说明：[../README.md](../README.md)
 - 上游 MDG：解决方案 SSOT；DS/ENT：系统 SSOT（本层不落 reference 文件）

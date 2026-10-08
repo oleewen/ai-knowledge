@@ -1,6 +1,6 @@
 ---
 id: "ANALYSIS-EXAMPLE"
-title: "示例应用解决方案"
+title: "示例应用分析"
 version: "0.2.0"
 status: "draft"
 created: "2026-07-18"
@@ -11,7 +11,7 @@ dependencies: []
 tags: [example]
 ---
 <!-- markdownlint-disable-next-line MD025 -->
-# 示例应用解决方案
+# 示例应用分析
 
 > **结论**：在本应用内先收敛「申诉提交通道 + 进度可见」，再扩审核协同。  
 > 读者：业务与产品。路径：`application/analysis/`。  

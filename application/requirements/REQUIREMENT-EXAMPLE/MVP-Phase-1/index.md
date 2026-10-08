@@ -13,7 +13,11 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [PRD-EXAMPLE.md](PRD-EXAMPLE.md)
+2. [ASD-EXAMPLE-1.md](ASD-EXAMPLE-1.md)
+3. [DSD-EXAMPLE-1.md](DSD-EXAMPLE-1.md)
+4. [TDD-EXAMPLE.md](TDD-EXAMPLE.md)
+5. [specs/index.md](specs/index.md)
 
 ## 关联索引
 

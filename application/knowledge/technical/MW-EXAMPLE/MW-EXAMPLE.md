@@ -13,7 +13,7 @@ layer_scope: application
 
 - implements_to: TSD-EXAMPLE
 - implemented_by:
-  - CMP-EXAMPLE
+  - [CMP-EXAMPLE](CMP-EXAMPLE.md)
 
 ## 跨视角
 
@@ -26,4 +26,4 @@ layer_scope: application
 
 ## 依据与证据
 
-application.yml（示例）
+[../chapters/technical-middleware.md](../chapters/technical-middleware.md)（示例）

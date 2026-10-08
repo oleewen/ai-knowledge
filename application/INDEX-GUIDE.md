@@ -25,7 +25,7 @@ title: application INDEX-GUIDE
 * **角色**: 应用知识库；实现级实体（API/TBL/MW/CMP）SSOT + 五视角映射
 * **栈**: Markdown、YAML
 * **范围**: `knowledge/` · `analysis/` · `features/` · `requirements/` · `adr/` · `changelogs/`
-* **规模**（本轮 full/d3，排除 `.agents`）：约 **62** 文件（`.md` 59 · `.yaml` 1 · `viz.html` 1）
+* **规模**（本轮 full/d3，排除 `.agents`）：**70** 文件（`.md` 69 · `.yaml` 1；`viz.html` 1 不计入）
 
 ---
 
@@ -91,7 +91,7 @@ application/
 | 聚合 | 职责 | 关键落点 |
 |------|------|----------|
 | 本层首次实体 | API / TBL / MW / CMP | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
-| 上游引用 | 纯 ID 或 parent HTTP；PL∈公司，SLN/PD∈解决方案，SYS 链∈系统 | 不重复字段语义 |
+| 上游引用 | 纯 ID 或 parent HTTP；SLN/PL/PD∈解决方案，SYS 链∈系统 | 不重复字段语义 |
 | SDD | 分析 → 特性 → 需求（mode=s） | `analysis/` · `features/` · `requirements/` |
 
 ### 4.3 领域服务
@@ -135,7 +135,7 @@ application/
 | [requirements/REQUIREMENT-EXAMPLE/](requirements/REQUIREMENT-EXAMPLE/) | 需求样例目录 |
 | [adr/](adr/README.md) | ADR |
 | `knowledge/application/MS-EXAMPLE/API-EXAMPLE.md` | API SSOT 样例 |
-| `knowledge/data/DS-EXAMPLE/TBL-EXAMPLE.md` | TBL 样例 |
+| `knowledge/data/ENT-EXAMPLE/TBL-EXAMPLE.md` | TBL 样例 |
 | `knowledge/technical/MW-EXAMPLE/` · `CMP-EXAMPLE` | MW/CMP 样例 |
 
 OpenAPI/DDL 全文不在九章展开（实体可链外部）。
@@ -186,7 +186,7 @@ standalone / central 差异与安装约定见仓库根 [INDEX-GUIDE.md](../INDEX
 
 ### 8.1 覆盖范围
 
-本轮 **full / depth 3** 覆盖 `application/` 可读文本（约 62 文件）。九章已消减 `[未索引]`；实体台账仍以各视角 README 与 per-entity 为准。
+本轮 **full / depth 3** 覆盖 `application/` 可读文本（70 文件）。九章已消减 `[未索引]`；实体台账仍以各视角 README 与 per-entity 为准。
 
 ### 8.2 排除列表
 

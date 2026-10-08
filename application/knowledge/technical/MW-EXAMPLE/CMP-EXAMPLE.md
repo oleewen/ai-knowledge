@@ -11,7 +11,7 @@ layer_scope: application
 ---
 ## 关系
 
-- implements_to: MW-EXAMPLE
+- implements_to: [MW-EXAMPLE](MW-EXAMPLE.md)
 
 ## 跨视角
 
@@ -23,4 +23,4 @@ layer_scope: application
 
 ## 依据与证据
 
-pom.xml（示例）
+[../chapters/technical-middleware.md](../chapters/technical-middleware.md)（示例）

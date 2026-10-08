@@ -7,7 +7,7 @@ title: application 目录元数据
 # application/ 根目录元数据（导航与 SSOT 指针）
 id: "DIR-APPLICATION"
 name: "应用知识库根（application）"
-description: "application/ 根：导航、设计、SDD 阶段与 knowledge SSOT。"
+description: "application/ 根：导航、设计、SDD 阶段与 knowledge/=API/TBL/MW/CMP SSOT。"
 
 role:
   kind: "documentation_root"
@@ -18,12 +18,12 @@ child_directories:
   knowledge:
     meta: "knowledge/knowledge-meta.md"
     description: "五视角；本层首次 API/TBL/MW/CMP"
-  solutions:
-    readme: "solutions/README.md"
-    description: "SOLUTION-{IDEA-ID}.md（约定见 README）"
   analysis:
     readme: "analysis/README.md"
     description: "ANALYSIS-{IDEA-ID}.md（约定见 README）"
+  features:
+    readme: "features/README.md"
+    description: "FEATURE-{IDEA-ID}.md（约定见 README）"
   requirements:
     readme: "requirements/README.md"
     description: "REQUIREMENT-{IDEA-ID}/ 树（约定见 README）"
@@ -65,7 +65,7 @@ integration:
     - path: "../agent/"
       description: "规范、模板与 Agent 技能"
   traceability:
-    description: "solutions → analysis → requirements；规约 ∈ specs/ 或 knowledge/application/；本库 overview 走 extract/archive；上行 distill 仅写 system overview"
+    description: "analysis → features → requirements；规约 ∈ specs/ 或 knowledge/application/；本库 overview 走 extract/archive；上行 distill 仅写 system overview"
 
 references:
   - path: "./README.md"

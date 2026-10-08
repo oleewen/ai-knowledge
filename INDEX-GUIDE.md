@@ -202,7 +202,7 @@ flowchart LR
 | 聚合 | 职责 | 关键落点 |
 | ------ | ------ | ---------- |
 | 治理规则 | 四层边界；术语、原则、命名、ADR | [agent/knowledge/knowledge-governance.md](agent/knowledge/knowledge-governance.md)、[agent/knowledge/README.md](agent/knowledge/README.md) |
-| 应用五视角实体 | BC/AGG、PM/FT/UC、SYS/APP/MS/API、DS/ENT/TBL、MW/CMP 等 | [application/knowledge/](application/knowledge/)（[index](application/knowledge/index.md)）；现盘 EXAMPLE：`MS-EXAMPLE`、`DS-EXAMPLE`、`MW-EXAMPLE` |
+| 应用五视角实体 | BC/AGG、PM/FT/UC、SYS/APP/MS/API、DS/ENT/TBL、MW/CMP 等 | [application/knowledge/](application/knowledge/)（[index](application/knowledge/index.md)）；现盘 EXAMPLE：`MS-EXAMPLE`、`ENT-EXAMPLE`、`MW-EXAMPLE` |
 | 系统/解决方案/公司架构实体 | 解决方案 PL/PD/BP/BSP/BS；公司 BL；视角章节 + overview 第三列 | `system/knowledge/`、`solution/knowledge/`、`company/knowledge/`、`*/overview/` |
 | 阶段产物 | SOLUTION / ANALYSIS / FEATURE / DOMAIN / REQUIREMENT | `solution/solutions/`；`system|application` 的 `analysis/` · `features/` · `requirements/`；`company/domains/` |
 | Skill 契约 | 参数向导 → 澄清 → 生成 → 烤干（语义族） | `agent/skills/*/SKILL.md` + `agent/references/` |
@@ -294,7 +294,7 @@ stateDiagram-v2
 | 视角 | 示例 ID 链 | 路径前缀 |
 | ------ | ----------- | ---------- |
 | application | MS → API | `application/knowledge/application/MS-EXAMPLE/` |
-| data | DS → TBL | `application/knowledge/data/DS-EXAMPLE/` |
+| data | ENT → TBL | `application/knowledge/data/ENT-EXAMPLE/` |
 | technical | MW → CMP | `application/knowledge/technical/MW-EXAMPLE/` |
 | business / product | [未索引样例目录] | 现盘无 `*-EXAMPLE` 实体目录；术语与前缀见 knowledge-governance / glossary |
 

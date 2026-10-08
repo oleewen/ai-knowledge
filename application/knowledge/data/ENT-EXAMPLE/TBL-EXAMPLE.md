@@ -11,7 +11,7 @@ layer_scope: application
 ---
 ## 关系
 
-- parent: DS-EXAMPLE
+- implements_to: ENT-EXAMPLE
 
 ## 跨视角
 
@@ -23,4 +23,4 @@ layer_scope: application
 
 ## 依据与证据
 
-- 示例数据
+- [../chapters/data-model.md](../chapters/data-model.md#数据表)（示例）

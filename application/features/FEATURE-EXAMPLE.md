@@ -1,6 +1,5 @@
 ---
-type: Analysis Document
-title: 示例应用需求分析
+title: 示例应用特性拆解
 tags: [sdd, example]
 status: draft
 id: "FEATURE-EXAMPLE"

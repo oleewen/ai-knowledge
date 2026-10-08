@@ -13,4 +13,4 @@ type: Documentation
 | [data/README.md](data/README.md) | 数据 | MDG ref + DS/ENT + **TBL SSOT** |
 | [technical/README.md](technical/README.md) | 技术 | TSD ref + **MW/CMP SSOT** |
 
-机器契约：[knowledge-meta.md](knowledge-meta.md) · 命名规范（Agent 元知识，库外） · 上层 reference 见各视角 meta §6
+机器契约：[knowledge-meta.md](knowledge-meta.md) · 命名规范（Agent 元知识，库外） · 上层 reference 见各视角 meta §2 层级链

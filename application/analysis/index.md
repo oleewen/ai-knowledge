@@ -8,7 +8,7 @@
 
 ## 目录文件
 
-* [示例应用解决方案](ANALYSIS-EXAMPLE.md)
+* [示例应用分析](ANALYSIS-EXAMPLE.md)
 
 ## 阅读顺序
 

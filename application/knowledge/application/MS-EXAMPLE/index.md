@@ -14,6 +14,6 @@
 
 ## 关联索引
 
-- 上一级索引：[index.md](../index.md)
-- 上一级说明：[README.md](../README.md)
+- 上一级索引：[../index.md](../index.md)
+- 上一级说明：[../README.md](../README.md)
 - 上游 MS SSOT：系统层 `MS-*`（本层不落 MS 实体文件）

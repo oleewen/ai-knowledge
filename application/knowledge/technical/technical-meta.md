@@ -3,7 +3,7 @@ type: Perspective Meta
 title: 技术视角元数据（application/knowledge/technical）
 ---
 
-应用层技术版图（TSD→MW→CMP）视角元数据 SSOT。实例索引 [index.md](../index.md)（§5，扫描生成；实体 `{ID}.md` = SSOT）。
+应用层技术版图（TSD→MW→CMP）视角元数据 SSOT。目录导航 [../index.md](../index.md)。实体台账见 [README.md](README.md#实体)。实体 `{ID}.md` = SSOT。
 
 ## 1. 概览
 
@@ -13,13 +13,13 @@ title: 技术视角元数据（application/knowledge/technical）
 | 视角 | technical |
 | 层级范围 | application |
 | 说明 | 中间件绑定与关键组件；公司级 TPL、解决方案 TSD 在对应层首次定义，本层补齐 TSD reference 并登记 MW/CMP。 |
-| entities_shape | 实体 `{ID}.md`（OKF）；索引见 INDEX-GUIDE 第四章 §5 |
+| entities_shape | 实体 `{ID}.md`（OKF）；实体台账见 [README.md](README.md#实体) |
 
 ## 2. 层级链
 
 | 链序 | 层级代码 | 说明 |
 | --- | --- | --- |
-| 1 | TSD | 系统级技术域（系统层 SSOT；本层为视角根 reference） |
+| 1 | TSD | 技术子域（解决方案层首次定义；本层可为 reference） |
 | 2 | MW | 中间件绑定实例 |
 | 3 | CMP | 关键 Maven 依赖 / 运行时组件 |
 
@@ -27,7 +27,7 @@ title: 技术视角元数据（application/knowledge/technical）
 
 | order | key | code | id_pattern | parent |
 | --- | --- | --- | --- | --- |
-| 1 | tsd | TSD | `TSD-{NAME}` | —（reference → system） |
+| 1 | tsd | TSD | `TSD-{NAME}` | —（reference → solution） |
 | 2 | mw | MW | `MW-{NAME}` | TSD（逻辑归属，`implements_to`） |
 | 3 | cmp | CMP | `CMP-{NAME}` | MW |
 
@@ -60,8 +60,8 @@ title: 技术视角元数据（application/knowledge/technical）
 
 | 路径 | 说明 |
 | --- | --- |
-| [README.md](README.md) | 人类可读说明 |
-| [index.md](../index.md) | MW/CMP 实例索引 |
+| [README.md](README.md#实体) | 实体台账 |
+| [../index.md](../index.md) | 目录导航 |
 | TPL-* | 公司层 TPL SSOT（reference） |
 | TSD-* | 解决方案 TSD SSOT（reference） |
 

@@ -46,7 +46,7 @@ title: 产品视角元数据（application/knowledge/product）
 
 | 对象 | 说明 |
 | --- | --- |
-| [README.md](README.md) | 人类可读说明 |
-| [index.md](../index.md) | §2 产品视角 |
+| [README.md](README.md#实体) | 实体台账 |
+| [../index.md](../index.md) | 目录导航 |
 
 **索引**：`readme_index_table: true`；变更 ID 时同步 README、index.md（按需）。

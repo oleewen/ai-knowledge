@@ -12,7 +12,8 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md)
+2. [MVP-Phase-1/index.md](MVP-Phase-1/index.md)
 
 ## 关联索引
 

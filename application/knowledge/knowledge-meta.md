@@ -18,11 +18,11 @@ title: 知识树元数据（application/knowledge）
 
 | 目录 | 视角 | meta | entities |
 | --- | --- | --- | --- |
-| business/ | 业务 | [business-meta.md](business/business-meta.md) | [index.md](index.md) §1 |
-| product/ | 产品 | [product-meta.md](product/product-meta.md) | [index.md](index.md) §2 |
-| application/ | 应用 | [application-meta.md](application/application-meta.md) | [index.md](index.md) §3 |
-| data/ | 数据 | [data-meta.md](data/data-meta.md) | [index.md](index.md) §4 |
-| technical/ | 技术 | [technical-meta.md](technical/technical-meta.md) | [index.md](index.md) §5 |
+| business/ | 业务 | [business-meta.md](business/business-meta.md) | [README](business/README.md#实体) |
+| product/ | 产品 | [product-meta.md](product/product-meta.md) | [README](product/README.md#实体) |
+| application/ | 应用 | [application-meta.md](application/application-meta.md) | [README](application/README.md#实体) |
+| data/ | 数据 | [data-meta.md](data/data-meta.md) | [README](data/README.md#实体) |
+| technical/ | 技术 | [technical-meta.md](technical/technical-meta.md) | [README](technical/README.md#实体) |
 
 **子文件**：[README.md](README.md)
 
@@ -40,7 +40,7 @@ title: 知识树元数据（application/knowledge）
 | application_index | index.md（库外） |
 | per_perspective_readmes | business/README.md, product/README.md, application/README.md, data/README.md, technical/README.md |
 | governance | knowledge-governance（Agent 元知识） |
-| entity_index | [index.md](index.md) |
+| entity_index | 各视角 README「实体」 |
 
 ## 5. 关联文档
 
