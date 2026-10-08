@@ -23,10 +23,11 @@ _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 source "$_AGENT_HOME/scripts/lib/docsconfig.sh"
 docsconfig_bootstrap_validate
 
-DOC_ROOT="$(docsconfig_resolve_doc_root)"
-cd "$REPO_ROOT" || exit 1
+doc_abs="$(docsconfig_doc_abs)"
+repo_abs="$(docsconfig_repo_abs)"
+cd "$repo_abs" || exit 1
 
-REQUIREMENTS_DIR="${DOC_ROOT}/requirements"
+REQUIREMENTS_DIR="${doc_abs}/requirements"
 TEMPLATE="${SCRIPT_DIR}/../assets/asd-template.md"
 
 info()    { echo "[INFO]  $1"; }
@@ -35,7 +36,7 @@ error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
 
 echo "=== ASD 结构校验 ==="
-echo "DOC_ROOT: ${DOC_ROOT}"
+echo "doc_abs: ${doc_abs}"
 if [[ -n "${KNOWLEDGE_TYPE:-}" ]]; then
   echo "KNOWLEDGE_TYPE: ${KNOWLEDGE_TYPE}"
 fi

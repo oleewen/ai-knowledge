@@ -26,7 +26,7 @@ usage() {
   cat <<'EOF'
 Usage: docs-upgrade.sh [--dry-run | --apply-scaffold] [--meta-path PATH] [--ref REF]
 
-在含 .docsconfig 的工程内执行。读 DOC_ROOT/knowledge-links.yaml 的 type: meta，
+在含 .docsconfig 的工程内执行。读文档目录/knowledge-links.yaml 的 type: meta，
 对齐元库 {meta}/{doc_dir}/，输出变更清单；--apply-scaffold 时备份并写入「新增骨架」与根级 DESIGN 整文件覆盖。
 
   --dry-run          只打印清单（默认）
@@ -40,7 +40,7 @@ Usage: docs-upgrade.sh [--dry-run | --apply-scaffold] [--meta-path PATH] [--ref 
 不会把 README-s.md / README-c.md 当作目标文件名写入（README.md 映射除外）。
 根级 CONTRIBUTING.md 按普通 md 进清单（本无则 scaffold；已改则结构重填）。
 根级 DESIGN.md：本无则 scaffold；已改则进「整文件覆盖」桶（--apply-scaffold 时以元库为准覆盖，不走 H2 结构重填）。
-忽略 DOC_ROOT 顶层遗留 application-* / system-*（不含 application-slots / system-slots）；
+忽略文档目录顶层遗留 application-* / system-*（不含 application-slots / system-slots）；
 凡软链（文件或目录）一律跳过不跟随；application-slots / system-slots 根下真文件可升级；
 *-slots/changelogs/** 本有则整文件本库胜（不重填），本无则可 scaffold。
 --dry-run 不重写路径、不改 README、不建软链；--apply-scaffold 即使新增骨架为空也跑全树重写。
@@ -271,7 +271,7 @@ backup_file_to_stamp() {
 
 ensure_backup_root() {
   UPGRADE_STAMP="$(date +%Y-%m-%d_%H-%M-%S)"
-  BACKUP_ROOT="${REPO_ROOT%/}/.docs-init/upgrade-${UPGRADE_STAMP}"
+  BACKUP_ROOT="${repo_abs%/}/.docs-init/upgrade-${UPGRADE_STAMP}"
   mkdir -p "$BACKUP_ROOT"
   info "备份根: $BACKUP_ROOT"
 }
@@ -284,9 +284,11 @@ cleanup() {
 trap cleanup EXIT
 
 docsconfig_bootstrap_validate
+repo_abs="$(docsconfig_repo_abs)"
+doc_abs="$(docsconfig_doc_abs)"
 [[ -n "${KNOWLEDGE_TYPE:-}" ]] || error ".docsconfig 缺少 KNOWLEDGE_TYPE"
 
-LINKS_FILE="${DOC_ROOT%/}/knowledge-links.yaml"
+LINKS_FILE="${doc_abs%/}/knowledge-links.yaml"
 resolve_meta_root "$LINKS_FILE"
 
 declare -a ADD_LIST=() SKIP_LIST=() RESTRUCTURE_LIST=() OVERWRITE_LIST=() LOCAL_ONLY_LIST=()
@@ -309,7 +311,7 @@ while IFS= read -r -d '' rel; do
     continue
   fi
   note_skip_symlink "$rel"
-done < <(cd "${DOC_ROOT}" && find . -type l -print0)
+done < <(cd "${doc_abs}" && find . -type l -print0)
 
 while IFS= read -r -d '' rel; do
   rel="${rel#./}"
@@ -322,9 +324,9 @@ while IFS= read -r -d '' rel; do
 
   local_rel="$rel"
   src_f="$META_SRC/$rel"
-  dst_f="${DOC_ROOT%/}/$local_rel"
+  dst_f="${doc_abs%/}/$local_rel"
 
-  if path_is_or_under_symlink "${DOC_ROOT%/}" "$local_rel"; then
+  if path_is_or_under_symlink "${doc_abs%/}" "$local_rel"; then
     note_skip_symlink "$local_rel"
     continue
   fi
@@ -354,19 +356,19 @@ done < <(cd "$META_SRC" && find . -type f -print0)
 
 if [[ "$KNOWLEDGE_TYPE" == 'application' ]]; then
   map_src="$(meta_src_for_local_rel "$META_SRC" 'README.md' || true)"
-  if [[ -n "$map_src" && -f "${DOC_ROOT%/}/README.md" ]]; then
+  if [[ -n "$map_src" && -f "${doc_abs%/}/README.md" ]]; then
     already=0
     for x in "${RESTRUCTURE_LIST[@]+"${RESTRUCTURE_LIST[@]}"}" "${SKIP_LIST[@]+"${SKIP_LIST[@]}"}" "${ADD_LIST[@]+"${ADD_LIST[@]}"}"; do
       [[ "$x" == 'README.md' || "$x" == README.md* ]] && already=1
     done
     if [[ "$already" -eq 0 ]]; then
-      if files_equal_normalized "$map_src" "${DOC_ROOT%/}/README.md"; then
+      if files_equal_normalized "$map_src" "${doc_abs%/}/README.md"; then
         SKIP_LIST+=('README.md')
       else
         RESTRUCTURE_LIST+=('README.md')
       fi
     fi
-  elif [[ -n "$map_src" && ! -e "${DOC_ROOT%/}/README.md" ]]; then
+  elif [[ -n "$map_src" && ! -e "${doc_abs%/}/README.md" ]]; then
     ADD_LIST+=('README.md')
   fi
 fi
@@ -392,14 +394,14 @@ while IFS= read -r -d '' rel; do
     note_ignored_legacy_slot_dir "$rel"
     continue
   fi
-  if path_is_or_under_symlink "${DOC_ROOT%/}" "$rel"; then
+  if path_is_or_under_symlink "${doc_abs%/}" "$rel"; then
     note_skip_symlink "$rel"
     continue
   fi
   if [[ -z "${META_RELS[$rel]:-}" ]]; then
     LOCAL_ONLY_LIST+=("$rel")
   fi
-done < <(cd "${DOC_ROOT}" && find . -type f -print0)
+done < <(cd "${doc_abs}" && find . -type f -print0)
 
 print_bucket() {
   local title="$1"
@@ -412,7 +414,7 @@ print_bucket() {
   done
 }
 
-info "DOC_ROOT=$DOC_ROOT  KNOWLEDGE_TYPE=$KNOWLEDGE_TYPE  dry_run=$DRY_RUN apply_scaffold=$APPLY_SCAFFOLD"
+info "doc_abs=$doc_abs  KNOWLEDGE_TYPE=$KNOWLEDGE_TYPE  dry_run=$DRY_RUN apply_scaffold=$APPLY_SCAFFOLD"
 print_bucket '忽略遗留槽位' "${IGNORED_SLOT_DIRS[@]+"${IGNORED_SLOT_DIRS[@]}"}"
 print_bucket '跳过软链' "${SKIP_SYMLINK_LIST[@]+"${SKIP_SYMLINK_LIST[@]}"}"
 print_bucket '新增骨架' "${ADD_LIST[@]+"${ADD_LIST[@]}"}"
@@ -429,7 +431,7 @@ fi
 ensure_backup_root
 
 for rel in "${RESTRUCTURE_LIST[@]+"${RESTRUCTURE_LIST[@]}"}"; do
-  backup_file_to_stamp "${DOC_ROOT%/}/$rel" "$rel"
+  backup_file_to_stamp "${doc_abs%/}/$rel" "$rel"
 done
 
 for rel in "${ADD_LIST[@]+"${ADD_LIST[@]}"}" "${OVERWRITE_LIST[@]+"${OVERWRITE_LIST[@]}"}"; do
@@ -437,7 +439,7 @@ for rel in "${ADD_LIST[@]+"${ADD_LIST[@]}"}" "${OVERWRITE_LIST[@]+"${OVERWRITE_L
     warn "跳过遗留槽位骨架（不应出现在新增/覆盖桶）: $rel"
     continue
   fi
-  if path_is_or_under_symlink "${DOC_ROOT%/}" "$rel"; then
+  if path_is_or_under_symlink "${doc_abs%/}" "$rel"; then
     warn "跳过软链路径骨架: $rel"
     continue
   fi
@@ -448,7 +450,7 @@ for rel in "${ADD_LIST[@]+"${ADD_LIST[@]}"}" "${OVERWRITE_LIST[@]+"${OVERWRITE_L
     src="$META_SRC/$rel"
   fi
   [[ -n "$src" && -f "$src" ]] || continue
-  dst="${DOC_ROOT%/}/$rel"
+  dst="${doc_abs%/}/$rel"
   if [[ -e "$dst" ]]; then
     backup_file_to_stamp "$dst" "$rel"
   fi
@@ -470,8 +472,8 @@ _upgrade_mode='consumer'
 if [[ "$_upgrade_mode" != 'meta' ]]; then
   [[ -n "${AGENT_ROOT:-}" && -n "${AGENT_DIR:-}" ]] \
     || error "缺少 AGENT_ROOT/AGENT_DIR，无法建 .agents 软链。请先 docs-install --scope=config 或补充 .docsconfig。"
-  ensure_docs_agents_symlink "${DOC_ROOT}" "${AGENT_ROOT}" "${AGENT_DIR}" 0 \
+  ensure_docs_agents_symlink "${doc_abs}" "${AGENT_ROOT}" "${AGENT_DIR}" 0 \
     || error "创建/校正 .agents 软链失败"
 fi
-rewrite_docs_agent_paths "${DOC_ROOT}" "${_upgrade_mode}"
+rewrite_docs_agent_paths "${doc_abs}" "${_upgrade_mode}"
 info "agent 路径重写完成（模式=${_upgrade_mode}；与 docs-install 同实现）。"

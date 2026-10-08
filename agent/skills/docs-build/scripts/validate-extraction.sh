@@ -19,11 +19,12 @@ _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 source "$_AGENT_HOME/scripts/lib/docsconfig.sh"
 docsconfig_bootstrap_validate
 
-DOC_ROOT="$(docsconfig_resolve_doc_root)"
-cd "$REPO_ROOT" || exit 1
+doc_abs="$(docsconfig_doc_abs)"
+repo_abs="$(docsconfig_repo_abs)"
+cd "$repo_abs" || exit 1
 
-KNOWLEDGE_DIR="${REPO_ROOT}/${DOC_DIR}/knowledge"
-INDEX_FILE="${REPO_ROOT}/${DOC_DIR}/INDEX-GUIDE.md"
+KNOWLEDGE_DIR="${repo_abs}/${DOC_DIR}/knowledge"
+INDEX_FILE="${repo_abs}/${DOC_DIR}/INDEX-GUIDE.md"
 
 info()    { echo "[INFO]  $1"; }
 warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
@@ -44,8 +45,8 @@ _is_entity_concept_file() {
 }
 
 echo "=== docs-build 校验 ==="
-echo "REPO_ROOT: ${REPO_ROOT}"
-echo "DOC_ROOT: ${DOC_ROOT}"
+echo "repo_abs: ${repo_abs}"
+echo "doc_abs: ${doc_abs}"
 echo "DOC_DIR:  ${DOC_DIR}"
 echo "KNOWLEDGE_DIR: ${KNOWLEDGE_DIR}"
 echo ""

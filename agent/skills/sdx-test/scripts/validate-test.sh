@@ -23,8 +23,9 @@ _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 source "$_AGENT_HOME/scripts/lib/docsconfig.sh"
 docsconfig_bootstrap_validate
 
-DOC_ROOT="$(docsconfig_resolve_doc_root)"
-cd "$REPO_ROOT" || exit 1
+doc_abs="$(docsconfig_doc_abs)"
+repo_abs="$(docsconfig_repo_abs)"
+cd "$repo_abs" || exit 1
 
 TEMPLATE="${SCRIPT_DIR}/../assets/tdd-template.md"
 
@@ -34,7 +35,7 @@ error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
 
 echo "=== TDD 结构校验 ==="
-echo "DOC_ROOT: ${DOC_ROOT}"
+echo "doc_abs: ${doc_abs}"
 echo ""
 
 if [[ -f "${TEMPLATE}" ]]; then
@@ -54,7 +55,7 @@ if [[ -n "${TARGET_FILE}" ]]; then
 else
   while IFS= read -r -d '' f; do
     FILES+=("$f")
-  done < <(find "${DOC_ROOT}" -name "TDD-*.md" -print0 2>/dev/null)
+  done < <(find "${doc_abs}" -name "TDD-*.md" -print0 2>/dev/null)
 fi
 
 if [[ ${#FILES[@]} -eq 0 ]]; then

@@ -14,8 +14,8 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
 import okf_lib  # noqa: E402
 
-REPO_ROOT = okf_lib.find_repo_root(Path(__file__).resolve())
-KNOWLEDGE = REPO_ROOT / "application" / "knowledge"
+REPO_ABS = okf_lib.find_repo_root(Path(__file__).resolve())
+KNOWLEDGE = REPO_ABS / "application" / "knowledge"
 
 # 旧 bundle-relative 路径前缀 → 新前缀（用于全文链接替换）
 LINK_REWRITES: List[Tuple[str, str]] = [
@@ -149,7 +149,7 @@ def rewrite_all_concepts(dry_run: bool) -> None:
         text = path.read_text(encoding="utf-8")
         new_text = rewrite_links(text)
         if new_text != text:
-            print(f"rewrite links in {path.relative_to(REPO_ROOT)}")
+            print(f"rewrite links in {path.relative_to(REPO_ABS)}")
             if not dry_run:
                 path.write_text(new_text, encoding="utf-8")
         if not dry_run:
@@ -171,9 +171,9 @@ def remove_empty_nested(dry_run: bool) -> None:
             # only remove if no concept files left
             concepts = list(okf_lib.scan_concepts(d))
             if concepts:
-                print(f"skip remove {d.relative_to(REPO_ROOT)} (still has concepts)")
+                print(f"skip remove {d.relative_to(REPO_ABS)} (still has concepts)")
                 continue
-            print(f"remove dir {d.relative_to(REPO_ROOT)}")
+            print(f"remove dir {d.relative_to(REPO_ABS)}")
             if not dry_run:
                 shutil.rmtree(d)
 

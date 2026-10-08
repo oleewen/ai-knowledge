@@ -9,8 +9,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/../lib/docsconfig.sh"
 docsconfig_bootstrap_validate
-
-REPO_ROOT="${REPO_ROOT:?docsconfig_bootstrap_validate 未注入 REPO_ROOT}"
+repo_abs="$(docsconfig_repo_abs)"
 
 readonly EXIT_VIOLATION=1
 readonly EXIT_MISSING_TOOL=2
@@ -61,7 +60,7 @@ run_scan() {
 
 main() {
   require_ripgrep
-  cd "$REPO_ROOT"
+  cd "$repo_abs"
 
   run_scan "具名 superpowers 路径字面量" "$PATTERN_LITERAL"
   run_scan "Markdown 链接指向具名 superpowers 文件" "$PATTERN_MD_LINK"

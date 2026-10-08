@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # validate-link-reachable.sh — 校验 agent 下 Markdown 链接：agent 内互链须存在；跨出 agent 须落在
-# REPO_ROOT 或 DOC_ROOT 下（且非 .git），落实 link-reachability §1.1 强校验。
+# 仓库路径或文档路径下（且非 .git），落实 link-reachability §1.1 强校验。
 # 在仓库根执行：bash agent/scripts/tools/validate-link-reachable.sh
-# 文档根路径来自目标仓库根 .docsconfig（见 lib/docsconfig.sh；§2.2.2 不向子进程 export，仅前缀传参）。
+# 文档路径来自 .docsconfig 与工作区文件（见 lib/docsconfig.sh；不向子进程 export，仅前缀传参）。
 
 set -euo pipefail
 
@@ -11,29 +11,29 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../lib/docsconfig.sh"
 docsconfig_bootstrap_validate
 
-REPO_ROOT="${REPO_ROOT:?docsconfig_bootstrap_validate 未注入 REPO_ROOT}"
-DOC_ROOT="${DOC_ROOT:?docsconfig_bootstrap_validate 未注入 DOC_ROOT}"
-AGENT_DIR="$REPO_ROOT/agent"
+repo_abs="$(docsconfig_repo_abs)"
+doc_abs="$(docsconfig_doc_abs)"
+AGENT_TREE="$repo_abs/agent"
 
 readonly EXIT_FAIL=1
 
 require_agent_dir() {
-  [[ -d "$AGENT_DIR" ]] || {
-    echo "[ERROR] 未找到 ${AGENT_DIR}（REPO_ROOT=$REPO_ROOT）" >&2
+  [[ -d "$AGENT_TREE" ]] || {
+    echo "[ERROR] 未找到 ${AGENT_TREE}（仓库路径=$repo_abs）" >&2
     exit "$EXIT_FAIL"
   }
 }
 
 # §2.2.2：不 export；仅对本次 python3 进程传入环境变量
 run_link_check() {
-  DOC_ROOT="$DOC_ROOT" REPO_ROOT="$REPO_ROOT" AGENT_DIR="$AGENT_DIR" python3 <<'PY'
+  DOC_ABS="$doc_abs" REPO_ABS="$repo_abs" AGENT_TREE="$AGENT_TREE" python3 <<'PY'
 import os
 import re
 import sys
 
-repo = os.environ["REPO_ROOT"]
-agent = os.environ["AGENT_DIR"]
-doc_root = os.environ["DOC_ROOT"]
+repo = os.environ["REPO_ABS"]
+agent = os.environ["AGENT_TREE"]
+doc_abs = os.environ["DOC_ABS"]
 git_dir = os.path.join(repo, ".git")
 
 link_re = re.compile(r"\]\(([^)]+)\)")
@@ -70,9 +70,9 @@ def missing_target_err(rel_md: str, target: str) -> str:
 
 
 def check_cross_agent_link(rel_md: str, target: str, joined: str) -> None:
-    if not (is_under(joined, repo) or is_under(joined, doc_root)):
+    if not (is_under(joined, repo) or is_under(joined, doc_abs)):
         errs.append(
-            f"{rel_md}: 跨出 agent 的链接须指向 REPO_ROOT 或 DOC_ROOT 下路径 → ({target})"
+            f"{rel_md}: 跨出 agent 的链接须指向仓库路径或文档路径 → ({target})"
         )
         return
     if is_under(joined, git_dir):
@@ -131,7 +131,7 @@ def report() -> int:
     if not errs:
         print(
             "[OK] agent Markdown 链接检查通过"
-            f"（agent 内互链 + 跨边界须 REPO_ROOT/DOC_ROOT；DOC_ROOT={doc_root}）"
+            f"（agent 内互链 + 跨边界须落在仓库路径或文档路径；文档路径={doc_abs}）"
         )
         return 0
     print(f"校验失败（{len(errs)}）:", file=sys.stderr)

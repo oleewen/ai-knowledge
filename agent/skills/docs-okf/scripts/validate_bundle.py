@@ -351,7 +351,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 1
 
     print("=== OKF v1 bundle 校验 ===")
-    print(f"REPO_ROOT: {repo}")
+    print(f"仓库路径: {repo}")
     print(f"BUNDLE:    {args.bundle}")
     print(f"BUNDLE_ROOT: {bundle_root}")
     print("")

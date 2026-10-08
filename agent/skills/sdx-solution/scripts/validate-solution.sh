@@ -3,7 +3,7 @@ set -euo pipefail
 
 # SOLUTION 结构校验（七章模板；不承担写前门禁）。
 # 用法：validate-solution.sh [--file <path>]
-# 文档根：docsconfig_resolve_doc_root（.docsconfig）；先 source docsconfig.sh
+# 文档根：docsconfig_doc_abs（.docsconfig）；先 source docsconfig.sh
 #
 # 要点：文首 frontmatter、`id`、`## 1`–`## 7`、小节标题、空节标注、编号、正文技术词筛查；
 #       不校验会话 spec、CONFIRMED、HTML gate 或写前 hook。
@@ -30,10 +30,11 @@ if [[ "${KNOWLEDGE_TYPE:-}" != "solution" && "${KNOWLEDGE_TYPE:-}" != "sln" ]]; 
   exit 1
 fi
 
-DOC_ROOT="$(docsconfig_resolve_doc_root)"
-cd "$REPO_ROOT" || exit 1
+doc_abs="$(docsconfig_doc_abs)"
+repo_abs="$(docsconfig_repo_abs)"
+cd "$repo_abs" || exit 1
 
-SOLUTIONS_DIR="${DOC_ROOT}/solutions"
+SOLUTIONS_DIR="${doc_abs}/solutions"
 _TEMPLATE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TEMPLATE="${_TEMPLATE_DIR}/assets/solution-template.md"
 
@@ -43,7 +44,7 @@ error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
 
 echo "=== 解决方案文档结构校验 ==="
-echo "DOC_ROOT: ${DOC_ROOT}"
+echo "doc_abs: ${doc_abs}"
 echo ""
 
 # 0. 模板文件

@@ -10,14 +10,15 @@ _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 source "$_AGENT_HOME/scripts/lib/docsconfig.sh"
 docsconfig_bootstrap_validate
 
-DOC_ROOT="$(docsconfig_resolve_doc_root)"
-cd "$REPO_ROOT" || exit 1
+doc_abs="$(docsconfig_doc_abs)"
+repo_abs="$(docsconfig_repo_abs)"
+cd "$repo_abs" || exit 1
 
-# cwd=仓库根；路径见 .docsconfig / docsconfig_resolve_doc_root
-DEFAULT_OUTPUT="${DOC_ROOT}/INDEX-GUIDE.md"
-LOG_FILE="${DOC_ROOT}/changelogs/INDEXING-LOG.md"
+# cwd=仓库根；路径见 .docsconfig / docsconfig_doc_abs
+DEFAULT_OUTPUT="${doc_abs}/INDEX-GUIDE.md"
+LOG_FILE="${doc_abs}/changelogs/INDEXING-LOG.md"
 INDEXING_LOG_PY="${SCRIPT_DIR}/indexing_log.py"
-mkdir -p "${DOC_ROOT}/changelogs"
+mkdir -p "${doc_abs}/changelogs"
 
 now_ms() {
     python3 - <<'PY'
@@ -150,21 +151,21 @@ echo "Generating change index..."
 # 执行扫描（根据深度级别）
 echo "Starting scan with mode: $DATA_MODE, depth: $READ_MODE"
 
-# 枚举 DOC_ROOT 内待扫描文件；不进入隐藏目录或软链
+# 枚举 doc_abs 内待扫描文件；不进入隐藏目录或软链
 collect_all_files() {
     ALL_FILES=()
     local dir file rel
     while IFS= read -r dir; do
         for file in "$dir"/*; do
             [[ -e "$file" && ! -L "$file" && -f "$file" ]] || continue
-            rel="${file#"$REPO_ROOT"/}"
+            rel="${file#"$repo_abs"/}"
             case "${rel##*/}" in
                 .DS_Store|viz.html) continue ;;
             esac
             ALL_FILES+=("$rel")
         done
     done < <(
-        find "$DOC_ROOT" \
+        find "$doc_abs" \
             \( -type d \( -name '.*' -o -name .git -o -name node_modules -o -name target -o -name build \) -prune \) \
             -o \( -type d ! -type l -print \)
     )
@@ -225,8 +226,8 @@ if [[ -z "$TOP_FILES" ]]; then
     TOP_FILES="- 无"
 fi
 
-REL_LOG="./${LOG_FILE#"$REPO_ROOT"/}"
-REL_DEFAULT_OUT="./${DEFAULT_OUTPUT#"$REPO_ROOT"/}"
+REL_LOG="./${LOG_FILE#"$repo_abs"/}"
+REL_DEFAULT_OUT="./${DEFAULT_OUTPUT#"$repo_abs"/}"
 REL_LOG="${REL_LOG//.\/././}"
 REL_DEFAULT_OUT="${REL_DEFAULT_OUT//.\/././}"
 
@@ -325,8 +326,8 @@ FINISHED_TIME_MS=$(now_ms)
 DURATION_MS=$((FINISHED_TIME_MS - CURRENT_TIME_MS))
 TIMESTAMP_ISO="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 REL_OUTPUT=$(
-    REPO_ROOT="${REPO_ROOT}" OUT="${OUTPUT}" python3 -c \
-        "import os, os.path as p; r=os.environ['REPO_ROOT']; o=os.environ['OUT']; \
+    repo_abs="${repo_abs}" OUT="${OUTPUT}" python3 -c \
+        "import os, os.path as p; r=os.environ['repo_abs']; o=os.environ['OUT']; \
 print(p.relpath(p.abspath(o), p.abspath(r)))" 2>/dev/null || echo "$OUTPUT"
 )
 SUMMARY="${DATA_MODE} d${READ_MODE}"

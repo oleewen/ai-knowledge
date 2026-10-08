@@ -46,7 +46,7 @@ ISO8601_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+08:00$")
 
 def find_repo_root(start: Path) -> Path:
     """向上查找仓库根；调用方可传提示路径，软链入口优先。"""
-    hint_value = os.environ.get("DOCS_OKF_REPO_ROOT")
+    hint_value = os.environ.get("DOCS_OKF_REPO_ABS")
     hint = Path(hint_value).expanduser() if hint_value else None
     physical = start.resolve()
     if hint is not None and hint.is_dir():
