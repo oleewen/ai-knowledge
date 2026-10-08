@@ -4,7 +4,7 @@ title: 技术视角元数据（company/knowledge/technical）
 ---
 # 技术视角元数据（company/knowledge/technical）
 
-**结论**：TPL 视角元数据 SSOT。无 APP↔TPL 直连。实例：[index.md](../index.md)。
+**结论**：TPL 视角元数据 SSOT。无 APP↔TPL 直连。实例：[README.md](README.md#实体)。
 
 ## 1. 概览
 
@@ -44,6 +44,6 @@ Frontmatter 9 必填 + 正文四段见 okf-spec §2；`layer_scope` = `company`�
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 叙事索引 |
-| [index.md](../index.md) | TPL 实例 SSOT |
+| [README.md](README.md#实体) | TPL 实例台账 |
 | knowledge-governance | 公司级实体定义 |
 | naming-conventions | ID 命名 |

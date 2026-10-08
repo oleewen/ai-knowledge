@@ -16,10 +16,10 @@
 
 1. [README.md](README.md) — 视角范围  
 2. [chapters/index.md](chapters/index.md) — chapters  
-3. [technical-meta.md](technical-meta.md) — 元数据（按需）  
-4. [TPL-EXAMPLE.md](TPL-EXAMPLE.md) — 实体样例（按需）
+3. [TPL-EXAMPLE.md](TPL-EXAMPLE.md) — 实体样例（按需）  
+4. [technical-meta.md](technical-meta.md) — 元数据（按需）
 
 ## 关联索引
 
-* 上一级索引：[index.md](../index.md)
-* 上一级说明：[README.md](../README.md)
+* 上一级索引：[../index.md](../index.md)
+* 上一级说明：[../README.md](../README.md)

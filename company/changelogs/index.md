@@ -19,4 +19,4 @@
 ## 关联索引
 
 * [../index.md](../index.md)
-* 仓库根 [index.md](../../index.md)（按需）
+* 仓库根 [../../index.md](../../index.md)（按需）

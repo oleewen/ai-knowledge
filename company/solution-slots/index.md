@@ -1,7 +1,3 @@
----
-type: Directory Index
-title: solution-slots 目录索引
----
 # solution-slots
 
 目录说明：[README.md](README.md)。

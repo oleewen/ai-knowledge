@@ -25,7 +25,7 @@ title: company INDEX-GUIDE
 * **角色**: 公司知识库；`knowledge/` = VC/BD/BSD-L1/CAP/BL/TPL SSOT；`solution-slots/solution-{NAME}` = 解决方案联邦槽位（软链）
 * **栈**: Markdown、YAML  
 * **范围**: `knowledge/` · `domains/` · `adr/` · `solution-slots/` · `changelogs/`  
-* **规模**（本轮 full/d3，排除 `.agents`）：约 **83** 文件（`.md` 80 · `.yaml` 1 · `viz.html` 1）  
+* **规模**（本轮 full/d3，排除 `.agents`）：**75** 文件（`.md` 74 · `.yaml` 1；`viz.html` 1 不计入）  
 
 ---
 
@@ -47,7 +47,7 @@ company/
 ### 2.2 依赖关系
 
 * `knowledge/` ↔ `solution/knowledge/`：公司实体参照（禁止直指系统槽位）
-* `domains/` → 各解决方案 `solutions/` → 各系统 `analysis/` → `features/` → `requirements/`
+* `domains/` → 各解决方案 `solutions/`
 * `knowledge-links.yaml` → `solution-slots/solution-{NAME}/`  
 
 门禁与同步：[DESIGN.md](DESIGN.md) § 同步与门禁。
@@ -96,7 +96,7 @@ company/
 
 | 聚合 | 职责 | 关键落点 |
 |------|------|----------|
-| 公司级实体 | VC / BD / BSD-L1 / CAP / PL / TPL | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
+| 公司级实体 | VC / BD / BSD-L1 / CAP / BL / TPL | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
 | overview 缓冲 | distill / extract / archive / tag | [knowledge/overview/](knowledge/overview/README.md) |
 | SDD 上游 | 域架构 | `domains/`（无 solutions/analysis/requirements） |
 | 联邦槽位 | 解决方案 文档目录 软链 | `solution-slots/solution-{NAME}/` · [knowledge-links.yaml](knowledge-links.yaml) |
@@ -114,7 +114,7 @@ company/
 <!-- docs-build:entity-index:begin -->
 > 本块由 `/docs-build` 写入；实体台账 ∈ 各视角 README；正文 ∈ per-entity `{ID}.md`；九章骨架 ∈ `/docs-indexing`。
 
-> 本层登记 **VC / BD / BSD-L1 / CAP / PL / TPL**。
+> 本层登记 **VC / BD / BSD-L1 / CAP / BL / TPL**。无 PL/SLN/PD/BSD-L2/MDG/TSD/SYS（见解决方案/系统）。
 
 ### 视角入口
 
@@ -184,7 +184,7 @@ company/
 
 ### 8.1 覆盖范围
 
-本轮 **full / depth 3** 覆盖 `company/` 可读文本（约 83 文件）。九章已消减 `[未索引]`；实体台账仍以各视角 README 与 per-entity 为准，不在此贴全表。
+本轮 **full / depth 3** 覆盖 `company/` 可读文本（75 文件）。九章已消减 `[未索引]`；实体台账仍以各视角 README 与 per-entity 为准，不在此贴全表。
 
 ### 8.2 排除列表
 

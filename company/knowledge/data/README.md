@@ -6,7 +6,9 @@ title: 数据架构
 
 [返回 · 企业架构](../README.md)
 
-**本层 SSOT**：无实体。本视角只留企业数据架构标准。字段 [data-meta.md](data-meta.md)；索引 [../index.md](../index.md) §4（空表）。
+**本层 SSOT**：无实体。本视角只留企业数据架构标准。字段 [data-meta.md](data-meta.md)；说明见 [实体](#实体)。
+
+目录与阅读顺序见 [index.md](index.md)。
 
 ## 章节
 

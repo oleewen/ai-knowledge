@@ -10,7 +10,7 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [ARCHIVE-LOG.md](ARCHIVE-LOG.md)
 
 ## 关联索引
 

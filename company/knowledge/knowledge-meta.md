@@ -4,7 +4,7 @@ title: 知识树元数据（company/knowledge）
 ---
 # 知识树元数据（company/knowledge）
 
-**结论**：公司层五视角知识树元数据 SSOT。实例：[index.md](index.md)。
+**结论**：公司层五视角知识树元数据 SSOT。实例见各视角 README「实体」。
 
 ## 1. 概览
 
@@ -18,11 +18,11 @@ title: 知识树元数据（company/knowledge）
 
 | 目录 | 视角 | meta | 实例索引 |
 | --- | --- | --- | --- |
-| business/ | 业务 | [business-meta.md](business/business-meta.md) | [index.md](index.md) §1 |
-| product/ | 产品 | [product-meta.md](product/product-meta.md) | [index.md](index.md) §2 |
-| application/ | 应用 | [application-meta.md](application/application-meta.md) | [index.md](index.md) §3 |
-| data/ | 数据 | [data-meta.md](data/data-meta.md) | [index.md](index.md) §4 |
-| technical/ | 技术 | [technical-meta.md](technical/technical-meta.md) | [index.md](index.md) §5 |
+| business/ | 业务 | [business-meta.md](business/business-meta.md) | [README](business/README.md#实体) |
+| product/ | 产品 | [product-meta.md](product/product-meta.md) | [README](product/README.md#实体) |
+| application/ | 应用 | [application-meta.md](application/application-meta.md) | [README](application/README.md#实体) |
+| data/ | 数据 | [data-meta.md](data/data-meta.md) | [README](data/README.md#实体) |
+| technical/ | 技术 | [technical-meta.md](technical/technical-meta.md) | [README](technical/README.md#实体) |
 
 **子文件**：[README.md](README.md) · [overview/](overview/README.md)
 
@@ -39,7 +39,7 @@ title: 知识树元数据（company/knowledge）
 | 类型 | 路径 |
 | --- | --- |
 | company_index | index.md（库外） |
-| entity_index | [index.md](index.md) |
+| entity_index | 各视角 README「实体」 |
 | design / governance | knowledge-governance |
 
 ## 5. 公司层 BD 落盘

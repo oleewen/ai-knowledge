@@ -14,9 +14,9 @@ mapped_by:
 ---
 ## 关系
 
-- implements_to: VC-EXAMPLE
+- implements_to: [VC-EXAMPLE](VC-EXAMPLE.md)
 - mapped_by:
-  - BSD-EXAMPLE
+  - [BSD-EXAMPLE](../BD-EXAMPLE/BSD-EXAMPLE.md)
 
 ## 跨视角
 
@@ -28,4 +28,4 @@ mapped_by:
 
 ## 依据与证据
 
-chapters/business-capability.md（示例）
+[business-capability.md](../chapters/business-capability.md)（示例）

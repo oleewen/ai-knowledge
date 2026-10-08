@@ -16,9 +16,9 @@ implemented_by:
 ## 关系
 
 - supported_by:
-  - BD-EXAMPLE
+  - [BD-EXAMPLE](../BD-EXAMPLE/BD-EXAMPLE.md)
 - implemented_by:
-  - CAP-EXAMPLE
+  - [CAP-EXAMPLE](CAP-EXAMPLE.md)
 
 ## 跨视角
 
@@ -30,4 +30,4 @@ implemented_by:
 
 ## 依据与证据
 
-chapters/business-value-chain.md（示例）
+[business-value-chain.md](../chapters/business-value-chain.md)（示例）

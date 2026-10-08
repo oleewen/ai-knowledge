@@ -1,7 +1,3 @@
----
-type: Directory Index
-title: company/domains 目录索引
----
 # company/domains
 
 1. [README.md](README.md)

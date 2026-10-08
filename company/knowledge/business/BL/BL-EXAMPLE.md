@@ -14,7 +14,7 @@ mapped_by:
 ---
 ## 关系
 
-- maps_to: BSD-EXAMPLE
+- maps_to: [BSD-EXAMPLE](../BD-EXAMPLE/BSD-EXAMPLE.md)
 - mapped_by:
   - PL-EXAMPLE
 

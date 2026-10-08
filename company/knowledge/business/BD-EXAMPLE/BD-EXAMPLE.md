@@ -14,9 +14,9 @@ children:
 ---
 ## 关系
 
-- supports_to: VC-EXAMPLE
+- supports_to: [VC-EXAMPLE](../VC-EXAMPLE/VC-EXAMPLE.md)
 - children:
-  - BSD-EXAMPLE
+  - [BSD-EXAMPLE](BSD-EXAMPLE.md)
 
 ## 跨视角
 
@@ -29,4 +29,4 @@ children:
 
 ## 依据与证据
 
-chapters/business-domain-division.md（示例）
+[business-domain-division.md](../chapters/business-domain-division.md)（示例）

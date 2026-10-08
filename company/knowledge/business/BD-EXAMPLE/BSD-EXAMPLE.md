@@ -18,12 +18,12 @@ children:
 ---
 ## 关系
 
-- parent: BD-EXAMPLE
+- parent: [BD-EXAMPLE](BD-EXAMPLE.md)
 - children:
   - BSD-EXAMPLE-L2
-- maps_to: CAP-EXAMPLE
+- maps_to: [CAP-EXAMPLE](../VC-EXAMPLE/CAP-EXAMPLE.md)
 - mapped_by:
-  - BL-EXAMPLE
+  - [BL-EXAMPLE](../BL/BL-EXAMPLE.md)
 
 ## 跨视角
 
@@ -35,4 +35,4 @@ children:
 
 ## 依据与证据
 
-示例数据
+[business-domain-division.md](../chapters/business-domain-division.md#业务子域)（示例）

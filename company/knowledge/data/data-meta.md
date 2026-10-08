@@ -4,7 +4,7 @@ title: 数据视角元数据（company/knowledge/data）
 ---
 # 数据视角元数据（company/knowledge/data）
 
-**结论**：本层无实体。企业数据架构标准。实例：[index.md](../index.md) §4（空表）。
+**结论**：本层无实体。企业数据架构标准。实例：[README.md](README.md#实体)（无实体）。
 
 ## 1. 概览
 
@@ -40,5 +40,5 @@ title: 数据视角元数据（company/knowledge/data）
 | 路径 | 说明 |
 | --- | --- |
 | [README.md](README.md) | 叙事索引 |
-| [index.md](../index.md) | 公司实体索引（§4 无行） |
+| [README.md](README.md#实体) | 本视角无实体 |
 | naming-conventions | ID 命名 |

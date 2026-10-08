@@ -6,7 +6,11 @@ title: 产品架构
 
 [返回 · 企业架构](../README.md)
 
-**本层 SSOT**：无实体。本视角只留企业产品标准。字段 [product-meta.md](product-meta.md)；索引 [../index.md](../index.md)。
+**本层 SSOT**：无实体。本视角只留企业产品标准。字段 [product-meta.md](product-meta.md)。
+
+目录与阅读顺序见 [index.md](index.md)。
+
+上一级索引：[../index.md](../index.md)。
 
 ## 章节
 

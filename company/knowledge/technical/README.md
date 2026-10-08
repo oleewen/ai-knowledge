@@ -6,7 +6,9 @@ title: 技术架构
 
 [返回 · 企业架构](../README.md)
 
-**本层 SSOT**：TPL。台账见库根 INDEX-GUIDE §4（留字去链）；字段 [technical-meta.md](technical-meta.md)。
+**本层 SSOT**：TPL。台账 [实体](#实体)；字段 [technical-meta.md](technical-meta.md)。
+
+目录与阅读顺序见 [index.md](index.md)。
 
 六章是企业标准；方案同名 overview / infrastructure / observability 是落地，不是本层副本。
 

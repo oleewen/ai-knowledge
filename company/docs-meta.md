@@ -6,7 +6,7 @@ title: company 目录元数据
 # company/ 根目录元数据（导航与 SSOT 指针）
 id: "DIR-COMPANY"
 name: "公司知识库根（company）"
-description: "公司层治理与导航根。契约见 DESIGN.md；knowledge/=实体 SSOT；solution-slots/=解决方案软链。"
+description: "公司层治理与导航根。契约见 DESIGN.md；knowledge/=VC/BD/CAP/BSD-L1/BL/TPL SSOT；solution-slots/=解决方案软链。"
 
 role:
   kind: "documentation_root"
@@ -41,7 +41,7 @@ child_files:
 
 inputs:
   - path: "(from-repository-and-delivery)"
-    description: "仓库治理、跨系统方案/分析产出与归档回写"
+    description: "仓库治理、公司层域架构与联邦槽位同步"
 
 outputs:
   primary_artifact:
@@ -58,10 +58,10 @@ integration:
     - path: "../agent/"
       description: "规范、模板与 Agent 技能"
   downstream:
-    - path: "../system/"
-      description: "下游引用公司 BD/BL/TPL"
+    - path: "../solution/"
+      description: "下游引用公司 VC/BD/CAP/BSD-L1/BL/TPL"
   traceability:
-    description: "domains → 各解决方案 solutions/ → 各系统 analysis/features/requirements/"
+    description: "domains → 各解决方案 solutions/"
 
 references:
   - path: "./README.md"
