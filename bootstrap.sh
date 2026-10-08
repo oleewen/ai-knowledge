@@ -207,7 +207,7 @@ EOF
   -h, --help                 显示此帮助
 
 环境变量
-  GIT_REPO_URL   覆盖中央库 Git 地址（可为本地路径）
+  GIT_REPO_URL   覆盖元库 Git 地址（可为本地路径）
   GIT_REF        覆盖克隆分支/标签
 
 示例
@@ -486,7 +486,7 @@ bs_run_docs_install() {
   log ''
   info '>>> 执行 docs-install.sh...'
   # 仅前缀传参，不 export（与 lib/docsconfig §禁止 export 一致）
-  REPO_ROOT="$BS_CLONE_DIR" "${BASH:-$(command -v bash)}" "$docs_install" --target "$BS_DOC_TARGET" \
+  "${BASH:-$(command -v bash)}" "$docs_install" --meta "$BS_CLONE_DIR" --target "$BS_DOC_TARGET" \
     || error "docs-install 执行失败，已中止"
 }
 

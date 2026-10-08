@@ -165,9 +165,9 @@ source_docs_core_from_layout() {
     return 1
   fi
 
-  local _layout_ar='' _layout_kt='' _layout_ad='' _cfg_dr='' _cfg_rr='' _cfg_dd=''
+  local _layout_ar='' _layout_kt='' _layout_ad='' _cfg_rd='' _cfg_dd=''
   if declare -f docsconfig_read_into >/dev/null 2>&1; then
-    docsconfig_read_into "$cfg" _cfg_dr _cfg_rr _cfg_dd _layout_ar _layout_kt _layout_ad || return 1
+    docsconfig_read_into "$cfg" _cfg_rd _cfg_dd _layout_ar _layout_kt _layout_ad || return 1
   else
     printf '错误: docsconfig_read_into 不可用，无法解析 %s\n' "$cfg" >&2
     return 1

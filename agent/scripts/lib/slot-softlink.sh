@@ -44,28 +44,21 @@ _slot_emit_actions() {
   printf '%s' "${_fed_acts[*]}"
 }
 
-# 解析槽位软链目标：有 .docsconfig 用 DOC_ROOT，否则 {path}/{doc_dir}
+# 解析槽位软链目标：有 .docsconfig 则拼文档路径；没有文件时回退 {path}/{doc_dir}
 # Usage: slot_resolve_doc_root <repo_path> <doc_dir> → stdout abs path
 slot_resolve_doc_root() {
   local repo_path="${1:?}" doc_dir="${2:-}"
-  local cfg t_doc_root='' t_repo_root='' t_doc_dir='' t_agent_root='' t_ktype=''
-  local saved_pwd fallback=''
+  local cfg t_repo_abs='' t_doc_abs='' t_doc_dir=''
+  local fallback=''
 
   repo_path="$(strip_trailing_slash "$(abs_path "$repo_path")")"
   [[ -n "$doc_dir" ]] && fallback="$(_slot_abs_under "$repo_path" "$doc_dir")"
 
   cfg="${repo_path}/.docsconfig"
   if [[ -f "$cfg" ]]; then
-    saved_pwd="$PWD"
-    if cd "$repo_path" && docsconfig_read_into "$cfg" t_doc_root t_repo_root t_doc_dir t_agent_root t_ktype; then
-      cd "$saved_pwd" || true
-      if [[ -n "$t_doc_root" ]]; then
-        _slot_abs_under "$repo_path" "$t_doc_root"
-        return 0
-      fi
-    else
-      cd "$saved_pwd" || true
-    fi
+    docsconfig_abs_for_config "$cfg" t_repo_abs t_doc_abs t_doc_dir || return 1
+    printf '%s' "$t_doc_abs"
+    return 0
   fi
 
   [[ -n "$fallback" ]] || return 1
