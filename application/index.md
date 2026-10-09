@@ -19,7 +19,6 @@
 * [INDEX-GUIDE.md](INDEX-GUIDE.md)
 * [README-c.md](README-c.md)
 * [README-s.md](README-s.md)
-* [docs-meta.md](docs-meta.md)
 * [knowledge-links.yaml](knowledge-links.yaml)
 * [manifest.md](manifest.md)
 * [viz.html](viz.html)

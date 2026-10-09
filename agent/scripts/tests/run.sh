@@ -16,14 +16,13 @@ suite_runner() {
     agent-install) printf '%s\n' 'agent/skills/agent-install/tests/run.sh' ;;
     bootstrap) printf '%s\n' 'agent/scripts/tests/bootstrap/run.sh' ;;
     okf) printf '%s\n' 'agent/scripts/tests/okf/run.sh' ;;
-    docs-meta-naming) printf '%s\n' 'agent/scripts/tests/docs-meta-naming/run.sh' ;;
     forbidden-file-refs) printf '%s\n' 'agent/scripts/tests/forbidden-file-refs/run.sh' ;;
     *) return 1 ;;
   esac
 }
 
-QUICK_SUITES=(forbidden-file-refs docs-link docs-pull okf docs-okf agent-install bootstrap docs-meta-naming)
-FULL_SUITES=(forbidden-file-refs docs-link docs-pull okf docs-okf agent-install bootstrap docs-meta-naming docs-install docs-push)
+QUICK_SUITES=(forbidden-file-refs docs-link docs-pull okf docs-okf agent-install bootstrap)
+FULL_SUITES=(forbidden-file-refs docs-link docs-pull okf docs-okf agent-install bootstrap docs-install docs-push)
 
 MODE='quick'
 SUITE=''

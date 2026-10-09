@@ -26,5 +26,3 @@ agent/knowledge（治理 / 命名）
 | 治理基线 | [agent/knowledge](../agent/knowledge/README.md) | 术语、原则、命名、ADR |
 | 知识基线 | [knowledge](knowledge/README.md) | 五视角与实现级实体 |
 | 变更留痕 | [changelogs](changelogs/README.md) | `INDEXING-LOG`；变更溯源 git |
-
-机器元数据：[docs-meta.md](docs-meta.md)

@@ -17,7 +17,6 @@
 
 * [DESIGN.md](DESIGN.md)
 * [INDEX-GUIDE.md](INDEX-GUIDE.md)
-* [docs-meta.md](docs-meta.md)
 * [knowledge-links.yaml](knowledge-links.yaml)
 * [viz.html](viz.html)
 
@@ -54,7 +53,6 @@
 
 * [DESIGN.md](DESIGN.md)
 * [INDEX-GUIDE.md](INDEX-GUIDE.md)
-* [docs-meta.md](docs-meta.md)
 * [knowledge-links.yaml](knowledge-links.yaml)
 * [viz.html](viz.html)
 

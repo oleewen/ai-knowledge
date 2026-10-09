@@ -21,7 +21,6 @@ EXACT_GOVERNANCE: Dict[str, Dict[str, Any]] = {
     "DESIGN.md": {"type": "Design Document"},
     "CONTRIBUTING.md": {"type": "Contributing Guide"},
     "knowledge/README.md": {"type": "Documentation"},
-    "knowledge/knowledge-meta.md": {"type": "Perspective Tree Meta"},
     # knowledge/index.md：OKF §6 保留名，禁止注入 frontmatter（目录导航）
     # INDEX-GUIDE.md：docs-indexing 九章 + docs-build 第四章视角导航块；禁止当 concept 注入
     "knowledge/technical-debt.md": {"type": "Documentation", "tags": ["technical-debt"]},
@@ -31,7 +30,6 @@ EXACT_GOVERNANCE: Dict[str, Dict[str, Any]] = {
     "adr/README.md": {"type": "Documentation"},
     "changelogs/README.md": {"type": "Documentation"},
     "changelogs/INDEXING-LOG.md": {"type": "Indexing Log"},
-    "docs-meta.md": {"type": "Directory Meta"},
     "application-APPNAME/README.md": {"type": "Documentation", "tags": ["federation"]},
     "requirements/REQUIREMENT-EXAMPLE/README.md": {"type": "Requirement Package"},
 }

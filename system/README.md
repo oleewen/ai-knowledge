@@ -13,7 +13,6 @@ title: "系统知识库（顶层 `system/`）"
 | 目录索引 | [index.md](index.md) |
 | 本层设计入口 | [DESIGN.md](DESIGN.md) |
 | 五视角入口 | [knowledge/README.md](knowledge/README.md) |
-| 机器元数据 | [docs-meta.md](docs-meta.md) |
 
 按需：`knowledge-links.yaml` · [application-slots/](application-slots/README.md) · [changelogs/](changelogs/README.md) · [analysis/](analysis/README.md) · [features/](features/README.md) · [requirements/](requirements/README.md) · [adr/](adr/README.md)
 

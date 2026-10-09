@@ -13,7 +13,6 @@ title: "应用知识库（顶层 `application/`）"
 | 目录索引 | [index.md](index.md) |
 | 本层设计入口 | [DESIGN.md](DESIGN.md) |
 | 五视角入口 | [knowledge/README.md](knowledge/README.md) |
-| 机器元数据 | [docs-meta.md](docs-meta.md) |
 
 初始化模式：`mode=s` → [README-s.md](README-s.md)；`mode=c` → [README-c.md](README-c.md)
 

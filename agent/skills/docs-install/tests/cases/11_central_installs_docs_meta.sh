@@ -22,9 +22,10 @@ git -C "$PROJECT_DIR" init -q
   --type=application \
   --target "$DOCS_DIR" >/dev/null 2>&1
 
-assert_file_exists "$DOCS_DIR/docs-meta.md"
+assert_file_not_exists "$DOCS_DIR/docs-meta.md"
 assert_file_not_exists "$DOCS_DIR/docs_meta.md"
+assert_file_not_exists "$DOCS_DIR/knowledge/knowledge-meta.md"
 assert_file_exists "$DOCS_DIR/DESIGN.md"
 assert_file_exists "$DOCS_DIR/CONTRIBUTING.md"
 
-pass "central 子集安装 docs-meta.md 与根级 CONTRIBUTING.md / DESIGN.md"
+pass "central 子集不安装 docs-meta.md / knowledge-meta.md，仍安装根级 CONTRIBUTING.md / DESIGN.md"

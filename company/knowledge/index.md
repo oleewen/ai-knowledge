@@ -15,7 +15,7 @@
 
 ## 目录文件
 
-* [knowledge-meta.md](knowledge-meta.md)
+（无）
 
 ## 阅读顺序
 

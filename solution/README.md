@@ -13,7 +13,6 @@ title: "解决方案知识库（顶层 `solution/`）"
 | 目录索引 | [index.md](index.md) |
 | 本层设计入口 | [DESIGN.md](DESIGN.md) |
 | 五视角入口 | [knowledge/README.md](knowledge/README.md) |
-| 机器元数据 | [docs-meta.md](docs-meta.md) |
 
 按需：`knowledge-links.yaml` · [system-slots/](system-slots/README.md) · [changelogs/](changelogs/README.md) · [adr/](adr/README.md)
 

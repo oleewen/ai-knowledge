@@ -24,7 +24,6 @@ def test_classify_perspective_meta():
 
 def test_skip_entity_concept():
     assert inject_frontmatter.is_entity_concept("knowledge/business/BD-EXAMPLE.md")
-    assert not inject_frontmatter.is_entity_concept("knowledge/knowledge-meta.md")
 
 
 def test_inject_design_md():
@@ -61,9 +60,9 @@ def test_inject_readme_governance_tag():
     assert meta["tags"] == ["governance"]
 
 
-def test_classify_docs_meta():
-    meta = inject_frontmatter.classify_governance("docs-meta.md")
-    assert meta == {"type": "Directory Meta"}
+def test_retired_directory_meta_paths():
+    assert inject_frontmatter.classify_governance("docs-meta.md") is None
+    assert inject_frontmatter.classify_governance("knowledge/knowledge-meta.md") is None
 
 
 def main() -> None:
@@ -75,7 +74,7 @@ def main() -> None:
         test_skip_existing_frontmatter,
         test_should_skip_reserved_and_entity,
         test_inject_readme_governance_tag,
-        test_classify_docs_meta,
+        test_retired_directory_meta_paths,
     ]
     for fn in tests:
         fn()

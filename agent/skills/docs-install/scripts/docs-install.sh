@@ -223,7 +223,7 @@ install_application_subset_to_docs() {
   done
 
   local base
-  for base in index.md docs-meta.md manifest.md knowledge-links.yaml CONTRIBUTING.md DESIGN.md; do
+  for base in index.md manifest.md knowledge-links.yaml CONTRIBUTING.md DESIGN.md; do
     [[ -f "$src_root/$base" ]] || continue
     io_copy_file "$src_root/$base" "$dst_root/$base" || return 0
   done
