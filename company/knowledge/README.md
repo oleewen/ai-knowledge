@@ -1,8 +1,8 @@
 ---
 type: Documentation
-title: 企业架构
+title: 公司知识库
 ---
-# 企业架构
+# 公司知识库
 
 公司层五视角入口；治理叙事，不写系统实现。分型见 okf-spec。
 

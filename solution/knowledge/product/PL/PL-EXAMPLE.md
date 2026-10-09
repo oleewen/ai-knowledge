@@ -8,29 +8,20 @@ id: PL-EXAMPLE
 perspective: product
 hierarchy: PL
 layer_scope: solution
-maps_to: BL-EXAMPLE
-mapped_by:
-  - SLN-EXAMPLE
-implemented_by:
-  - PD-EXAMPLE
 ---
 ## 关系
 
-- maps_to: BL-EXAMPLE
-- mapped_by:
-  - [SLN-EXAMPLE](../../application/SLN-EXAMPLE.md)
-- implemented_by:
-  - [PD-EXAMPLE](PD-EXAMPLE.md)
+- implemented_by: [PD-EXAMPLE](PD-EXAMPLE.md)
 
 ## 跨视角
 
-- 对标业务线：BL-EXAMPLE
+- maps_to: BL-EXAMPLE
+- mapped_by: SLN-EXAMPLE
 
 ## 详细说明
 
-- target_users: [内部运营, 业务方]
 - definition_scope: local
-- 一条 SLN 对标一条 PL。多个 PD 用 `implements_to` 挂在这条 PL 上。
+- 产品线；解决方案首次定义；maps_to BL 一对一。
 
 ## 依据与证据
 

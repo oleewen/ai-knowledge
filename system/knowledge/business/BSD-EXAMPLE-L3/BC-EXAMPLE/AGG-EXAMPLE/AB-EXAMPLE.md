@@ -1,7 +1,7 @@
 ---
 type: Ability
 title: 示例能力
-description: 示例业务实体。
+description: 领域能力。
 tags: [business, AB]
 timestamp: "2026-06-21T00:00:00+08:00"
 id: AB-EXAMPLE
@@ -15,12 +15,12 @@ layer_scope: system
 
 ## 跨视角
 
-- mapped_by:
-  - [UC-EXAMPLE](../../../../product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md)
+- mapped_by: [UC-EXAMPLE](../../../../product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md)
 
 ## 详细说明
 
-- capability: 示例能力描述
+- definition_scope: local
+- 领域能力。
 
 ## 依据与证据
 

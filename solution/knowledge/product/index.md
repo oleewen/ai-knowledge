@@ -10,7 +10,7 @@
 
 ## 目录文件
 
-* [product-meta.md](product-meta.md)
+* [product-meta.md](../../../agent/knowledge/product-meta.md)
 
 ## 阅读顺序
 
@@ -18,7 +18,7 @@
 2. [chapters](chapters/index.md)
 3. [PL](PL/index.md)
 4. [BP](BP/index.md)
-5. [product-meta.md](product-meta.md)
+5. [product-meta.md](../../../agent/knowledge/product-meta.md)
 
 ## 关联索引
 

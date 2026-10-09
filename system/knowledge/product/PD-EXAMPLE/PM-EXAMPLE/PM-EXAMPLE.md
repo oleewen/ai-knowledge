@@ -1,7 +1,7 @@
 ---
 type: Product Module
 title: 示例产品模块
-description: null
+description: 产品模块。
 tags: [product, PM]
 timestamp: "2026-09-13T00:00:00+08:00"
 id: PM-EXAMPLE
@@ -12,7 +12,6 @@ layer_scope: system
 ## 关系
 
 - implements_to: PD-EXAMPLE
-- depends_to: []
 
 ## 跨视角
 
@@ -20,7 +19,8 @@ layer_scope: system
 
 ## 详细说明
 
-- 上游产品服务 SSOT：解决方案 `PD-EXAMPLE`（纯 ID）
+- definition_scope: local
+- 产品模块。
 
 ## 依据与证据
 

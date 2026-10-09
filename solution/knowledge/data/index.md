@@ -10,14 +10,14 @@
 
 * [示例主数据域](MDG-EXAMPLE.md) - 解决方案层数据主权与逻辑模型。
 
-* [data-meta.md](data-meta.md)
+* [data-meta.md](../../../agent/knowledge/data-meta.md)
 
 ## 阅读顺序
 
 1. [README.md](README.md)
 2. [chapters](chapters/index.md)
 3. [MDG-EXAMPLE.md](MDG-EXAMPLE.md)
-4. [data-meta.md](data-meta.md)
+4. [data-meta.md](../../../agent/knowledge/data-meta.md)
 
 ## 关联索引
 

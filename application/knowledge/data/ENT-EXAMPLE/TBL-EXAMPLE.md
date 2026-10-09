@@ -1,7 +1,7 @@
 ---
 type: Data Table
 title: 示例数据表
-description: null
+description: 数据表，物理锚点。
 tags: [data, TBL]
 timestamp: "2026-06-24T08:00:00+08:00"
 id: TBL-EXAMPLE
@@ -19,8 +19,9 @@ layer_scope: application
 
 ## 详细说明
 
-- physical_name: example_table
+- definition_scope: local
+- 数据表，物理锚点。
 
 ## 依据与证据
 
-- [../chapters/data-model.md](../chapters/data-model.md#数据表)（示例）
+[../chapters/data-model.md](../chapters/data-model.md#数据表)（示例）

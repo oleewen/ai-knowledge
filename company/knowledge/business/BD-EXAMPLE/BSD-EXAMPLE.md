@@ -8,22 +8,12 @@ id: BSD-EXAMPLE
 perspective: business
 hierarchy: BSD
 layer_scope: company
-level: 1
-parent: BD-EXAMPLE
-maps_to: CAP-EXAMPLE
-mapped_by:
-  - BL-EXAMPLE
-children:
-  - BSD-EXAMPLE-L2
 ---
 ## 关系
 
 - parent: [BD-EXAMPLE](BD-EXAMPLE.md)
-- children:
-  - BSD-EXAMPLE-L2
 - maps_to: [CAP-EXAMPLE](../VC-EXAMPLE/CAP-EXAMPLE.md)
-- mapped_by:
-  - [BL-EXAMPLE](../BL/BL-EXAMPLE.md)
+- mapped_by: [BL-EXAMPLE](../BL/BL-EXAMPLE.md)
 
 ## 跨视角
 
@@ -32,6 +22,8 @@ children:
 ## 详细说明
 
 - definition_scope: local
+- level: 1
+- 公司层 BSD-L1；挂 BD；由 BL 一对一映射；maps_to CAP。
 
 ## 依据与证据
 

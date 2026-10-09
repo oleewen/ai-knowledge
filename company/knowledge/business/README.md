@@ -4,9 +4,9 @@ title: 业务架构
 ---
 # 业务架构
 
-[返回 · 企业架构](../README.md)
+[返回 · 公司知识库](../README.md)
 
-**本层 SSOT**：VC / BD / BL / BSD-L1 / CAP。台账 [实体](#实体)；字段 [business-meta.md](business-meta.md)。
+**本层 SSOT**：VC / BD / BL / BSD-L1 / CAP。台账 [实体](#实体)；字段 [business-meta.md](../../../agent/knowledge/business-meta.md)。
 
 目录与阅读顺序见 [index.md](index.md)。
 
@@ -23,10 +23,10 @@ title: 业务架构
 
 ## 实体
 
-| 链 | 链序 | 层级 | ID | 名称 | 文件/目录 |
-|----|------|------|----|------|-----------|
-| 能力目录 | 1 | VC | VC-EXAMPLE | 示例价值链 | [VC-EXAMPLE/VC-EXAMPLE.md](VC-EXAMPLE/VC-EXAMPLE.md) |
-| 能力目录 | 2 | CAP | CAP-EXAMPLE | 示例业务能力 | [VC-EXAMPLE/CAP-EXAMPLE.md](VC-EXAMPLE/CAP-EXAMPLE.md) |
-| 域模型 | 1 | BD | BD-EXAMPLE | 示例业务域 | [BD-EXAMPLE/BD-EXAMPLE.md](BD-EXAMPLE/BD-EXAMPLE.md) |
-| 域模型 | 2 | BSD-L1 | BSD-EXAMPLE | 示例一级业务子域 | [BD-EXAMPLE/BSD-EXAMPLE.md](BD-EXAMPLE/BSD-EXAMPLE.md) |
-| — | — | BL | BL-EXAMPLE | 示例业务线 | [BL/BL-EXAMPLE.md](BL/BL-EXAMPLE.md) |
+| 链序 | 层级 | ID | 名称 | 文件/目录 |
+|------|------|----|------|-----------|
+| L1 | VC | VC-EXAMPLE | 示例价值链 | [VC-EXAMPLE/VC-EXAMPLE.md](VC-EXAMPLE/VC-EXAMPLE.md) |
+| L2 | CAP | CAP-EXAMPLE | 示例业务能力 | [VC-EXAMPLE/CAP-EXAMPLE.md](VC-EXAMPLE/CAP-EXAMPLE.md) |
+| L1 | BD | BD-EXAMPLE | 示例业务域 | [BD-EXAMPLE/BD-EXAMPLE.md](BD-EXAMPLE/BD-EXAMPLE.md) |
+| L2 | BSD-L1 | BSD-EXAMPLE | 示例一级业务子域 | [BD-EXAMPLE/BSD-EXAMPLE.md](BD-EXAMPLE/BSD-EXAMPLE.md) |
+| — | BL | BL-EXAMPLE | 示例业务线 | [BL/BL-EXAMPLE.md](BL/BL-EXAMPLE.md) |

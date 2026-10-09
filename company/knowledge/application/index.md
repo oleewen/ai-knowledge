@@ -8,13 +8,13 @@
 
 ## 目录文件
 
-* [application-meta.md](application-meta.md)
+* [application-meta.md](../../../agent/knowledge/application-meta.md)
 
 ## 阅读顺序
 
 1. [README.md](README.md) — 视角范围  
 2. [chapters/index.md](chapters/index.md) — chapters  
-3. [application-meta.md](application-meta.md) — 元数据（本层无实体）
+3. [application-meta.md](../../../agent/knowledge/application-meta.md) — 元数据（本层无实体）
 
 ## 关联索引
 

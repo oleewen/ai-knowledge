@@ -8,15 +8,11 @@ id: CAP-EXAMPLE
 perspective: business
 hierarchy: CAP
 layer_scope: company
-implements_to: VC-EXAMPLE
-mapped_by:
-  - BSD-EXAMPLE
 ---
 ## 关系
 
 - implements_to: [VC-EXAMPLE](VC-EXAMPLE.md)
-- mapped_by:
-  - [BSD-EXAMPLE](../BD-EXAMPLE/BSD-EXAMPLE.md)
+- mapped_by: [BSD-EXAMPLE](../BD-EXAMPLE/BSD-EXAMPLE.md)
 
 ## 跨视角
 
@@ -25,6 +21,7 @@ mapped_by:
 ## 详细说明
 
 - definition_scope: local
+- 演示公司级 CAP；实现 VC；由 BSD-L1 一对一映射。
 
 ## 依据与证据
 

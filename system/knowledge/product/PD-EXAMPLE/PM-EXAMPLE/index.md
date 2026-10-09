@@ -2,7 +2,7 @@
 
 ## 子目录
 
-* [FT-EXAMPLE](FT-EXAMPLE/index.md) - 示例产品实体。
+* [FT-EXAMPLE](FT-EXAMPLE/index.md) - 功能点。
 
 ## 目录文件
 

@@ -1,7 +1,7 @@
 ---
 type: Entity
 title: 示例实体
-description: null
+description: 数据实体，表或集合。
 tags: [data, ENT]
 timestamp: "2026-06-21T00:00:00+08:00"
 id: ENT-EXAMPLE
@@ -19,8 +19,8 @@ layer_scope: system
 
 ## 详细说明
 
-- logical_name: ExampleEntity
-- physical_table: example_table
+- definition_scope: local
+- 数据实体，表或集合。
 
 ## 依据与证据
 

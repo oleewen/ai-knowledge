@@ -35,7 +35,7 @@ title: system INDEX-GUIDE
 
 ```text
 system/
-├── README.md / DESIGN.md / INDEX-GUIDE.md / index.md / docs-meta.md
+├── README.md / DESIGN.md / INDEX-GUIDE.md / index.md
 ├── knowledge-links.yaml
 ├── knowledge/ · analysis/ · features/ · requirements/ · adr/
 ├── application-slots/
@@ -46,7 +46,7 @@ system/
 
 ### 2.2 依赖关系
 
-* `knowledge/` ↔ `solution/knowledge/`：解决方案实体 reference  
+* `knowledge/` ↔ `solution/knowledge/`：解决方案实体只写纯 ID  
 * `knowledge/` ↔ `application/knowledge/`：系统 SSOT / 应用实现映射  
 * `analysis/` → `features/` → `requirements/`  
 * `knowledge-links.yaml` → `application-slots/application-{NAME}/`  
@@ -114,7 +114,7 @@ system/
 <!-- docs-build:entity-index:begin -->
 > 本块由 `/docs-build` 写入；实体台账 ∈ 各视角 README；正文 ∈ per-entity `{ID}.md`；九章骨架 ∈ `/docs-indexing`。
 
-> 公司级与解决方案级首次定义不在本层登记。本层 **SYS / BSD-L3 / BC / AGG / AB / PM / FT / FR / UC / BR / APP / MS / DS / ENT**。
+> 本层登记 **SYS / BSD-L3 / BC / AGG / AB / PM / FT / FR / UC / BR / APP / MS / DS / ENT**。
 
 ### 视角入口
 
@@ -163,7 +163,7 @@ system/
 
 ### 6.3 关系映射
 
-跨视角以 ID + 关系动词维护；入口 [knowledge/README.md](knowledge/README.md) · [glossary.md](../agent/knowledge/glossary.md)。公司层实体以 reference / 纯 ID 上指。
+跨视角以 ID + 关系动词维护；入口 [knowledge/README.md](knowledge/README.md) · [glossary.md](../agent/knowledge/glossary.md)。公司层实体只写纯 ID。
 
 ### 6.4 SQL 索引
 
@@ -178,7 +178,7 @@ system/
 | 项 | 落点 |
 |------|------|
 | 文档根 / 类型 | 仓库根 [`.docsconfig`](../.docsconfig)（当前 `DOC_DIR=company`；本层作并列 DOC_DIR `system`） |
-| 建联清单 | [knowledge-links.yaml](knowledge-links.yaml)（现 `links: []`） |
+| 建联清单 | [knowledge-links.yaml](knowledge-links.yaml)（现一条 `type: meta`，parent/child 未挂载） |
 | 装机 | `/docs-install` · `/docs-link` · `/docs-pull` |
 
 ---
@@ -223,7 +223,7 @@ system/
 
 | 关系 | 状态 |
 |------|------|
-| `knowledge-links.yaml` parent/child | **空**（`links: []`，合法未挂载态） |
+| `knowledge-links.yaml` parent/child | **空**（仅 `type: meta`，parent/child 未挂载） |
 | `application-slots/application-*` | **无**现成软链；仅有槽位 README / `changelogs/` |
 | 同仓邻层 | [company/](../company/README.md) · [application/](../application/README.md) |
 

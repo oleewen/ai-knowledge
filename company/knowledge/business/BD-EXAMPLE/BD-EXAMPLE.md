@@ -8,24 +8,19 @@ id: BD-EXAMPLE
 perspective: business
 hierarchy: BD
 layer_scope: company
-supports_to: VC-EXAMPLE
-children:
-  - BSD-EXAMPLE
 ---
 ## 关系
 
-- supports_to: [VC-EXAMPLE](../VC-EXAMPLE/VC-EXAMPLE.md)
-- children:
-  - [BSD-EXAMPLE](BSD-EXAMPLE.md)
+- children: [BSD-EXAMPLE](BSD-EXAMPLE.md)
 
 ## 跨视角
 
-- (none)
+- supports_to: [VC-EXAMPLE](../VC-EXAMPLE/VC-EXAMPLE.md)
 
 ## 详细说明
 
-- strategic_classification: core_domain（枚举值保留英文）
 - definition_scope: local
+- 演示公司级 BD；支撑 VC，并下挂 BSD-L1。
 
 ## 依据与证据
 

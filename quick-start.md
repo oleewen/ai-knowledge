@@ -57,7 +57,7 @@ flowchart LR
 | --- | --- | --- |
 | 1 | `/docs-install` 安装应用知识库（`--mode=standalone`，`--type=application`）+ `/agent-install` | 应用 `/docs` 骨架 + `.docsconfig` + Agent |
 | 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `index.md`、`README.md`、`AGENTS.md` |
-| 3 | `/docs-build` | 四视角实体、`index.md` |
+| 3 | `/docs-build` | 五视角实体、`index.md` |
 | 4 | 需求交付按需：`/sdx-analysis` → `/sdx-feature` → `/sdx-prd` → `/sdx-architect` → `/sdx-design` → `/sdx-test` | `ANALYSIS` / `FEATURE` / `PRD` / `ASD` / `DSD` / `TDD` |
 | 5 | `git log` / `git diff` + 定期 `/docs-indexing` | 变更可追溯 |
 
@@ -124,7 +124,7 @@ flowchart LR
 | 2 | `/docs-push` 推送概设规约（`spec-asd`）到应用库 | 应用仓 `requirements/**/specs/` |
 | 3 | 规约详细设计链路：`/sdx-design` → `/sdx-test` | `DSD`、`TDD` |
 | 4 | 规约开发实现链路：`brainstorming` → `opsx:*` → `superpowers:sdd` | 代码实现 + 规格归档 |
-| 5 | `/docs-build`（按需） | 四视角实体、`index.md` |
+| 5 | `/docs-build`（按需） | 五视角实体、`index.md` |
 
 应用库 **mode**：**standalone** = 单应用全量模板；**central** = 仅同步 `knowledge/`、`changelogs/` 等子集并 `docs-link` 建联（见 [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)）。
 
@@ -220,7 +220,7 @@ flowchart LR
 | 1 | 各现存应用 `/docs-install` 安装知识库（`--mode=standalone` 或 `central`）+ `/agent-install` | 应用 `/docs` 骨架 + `.docsconfig` + Agent |
 | 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `index.md`、`README.md`、`AGENTS.md` |
 | 3 | `/docs-extract` 从 Wiki / 协作文档 / 代码注释等 legacy 源提炼（按需） | 应用侧结构化草稿或 overview 素材 |
-| 4 | `/docs-build` | 各应用四视角实体、`index.md` |
+| 4 | `/docs-build` | 各应用五视角实体、`index.md` |
 | 5 | `git log` / `git diff` | 各应用仓变更历史 |
 
 ### 阶段二：元库 — 三跳登记、拉取、蒸馏、归档

@@ -4,9 +4,9 @@ title: 技术架构
 ---
 # 技术架构
 
-[返回 · 企业架构](../README.md)
+[返回 · 公司知识库](../README.md)
 
-**本层 SSOT**：TPL。台账 [实体](#实体)；字段 [technical-meta.md](technical-meta.md)。
+**本层 SSOT**：TPL。台账 [实体](#实体)；字段 [technical-meta.md](../../../agent/knowledge/technical-meta.md)。
 
 目录与阅读顺序见 [index.md](index.md)。
 

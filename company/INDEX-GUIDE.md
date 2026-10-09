@@ -35,7 +35,7 @@ title: company INDEX-GUIDE
 
 ```text
 company/
-├── README.md / DESIGN.md / INDEX-GUIDE.md / index.md / docs-meta.md
+├── README.md / DESIGN.md / INDEX-GUIDE.md / index.md
 ├── knowledge-links.yaml
 ├── knowledge/ · domains/ · adr/
 ├── solution-slots/
@@ -114,7 +114,7 @@ company/
 <!-- docs-build:entity-index:begin -->
 > 本块由 `/docs-build` 写入；实体台账 ∈ 各视角 README；正文 ∈ per-entity `{ID}.md`；九章骨架 ∈ `/docs-indexing`。
 
-> 本层登记 **VC / BD / BSD-L1 / CAP / BL / TPL**。无 PL/SLN/PD/BSD-L2/MDG/TSD/SYS（见解决方案/系统）。
+> 本层登记 **VC / BD / BSD-L1 / CAP / BL / TPL**。
 
 ### 视角入口
 
@@ -175,7 +175,7 @@ company/
 | 项 | 落点 |
 |------|------|
 | 文档根 / 类型 | 仓库根 [`.docsconfig`](../.docsconfig)（`DOC_DIR=company`，`KNOWLEDGE_TYPE=meta`） |
-| 建联清单 | [knowledge-links.yaml](knowledge-links.yaml)（现 `links: []`） |
+| 建联清单 | [knowledge-links.yaml](knowledge-links.yaml)（现一条 `type: meta`，child 未挂载） |
 | 装机 | `/docs-install` · `/docs-link` |
 
 ---
@@ -219,7 +219,7 @@ company/
 
 | 关系 | 状态 |
 |------|------|
-| `knowledge-links.yaml` child | **空**（`links: []`，合法未挂载态） |
+| `knowledge-links.yaml` child | **空**（仅 `type: meta`，child 未挂载） |
 | `solution-slots/solution-*` | **无**现成软链；仅有槽位 README / `changelogs/` |
 | 同仓邻层 | [solution/](../solution/README.md) · [system/](../system/README.md) · [application/](../application/README.md)（非联邦 path，开发元库并列） |
 

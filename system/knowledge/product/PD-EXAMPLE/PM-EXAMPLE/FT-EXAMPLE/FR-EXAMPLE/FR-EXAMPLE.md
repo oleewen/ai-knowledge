@@ -1,7 +1,7 @@
 ---
 type: Functional Requirement
 title: 示例功能需求
-description: 示例产品实体。
+description: 功能需求。
 tags: [product, FR]
 timestamp: "2026-06-26T00:00:00+08:00"
 id: FR-EXAMPLE
@@ -9,7 +9,6 @@ perspective: product
 hierarchy: FR
 layer_scope: system
 ---
-
 ## 关系
 
 - implements_to: [FT-EXAMPLE](../FT-EXAMPLE.md)
@@ -23,7 +22,8 @@ layer_scope: system
 
 ## 详细说明
 
-- (none)
+- definition_scope: local
+- 功能需求。
 
 ## 依据与证据
 

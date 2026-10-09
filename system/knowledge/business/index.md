@@ -9,14 +9,14 @@
 
 ## 目录文件
 
-* [business-meta.md](business-meta.md)
+* [business-meta.md](../../../agent/knowledge/business-meta.md)
 
 ## 阅读顺序
 
 1. [README.md](README.md)
 2. [chapters/index.md](chapters/index.md)
 3. [BSD-EXAMPLE-L3/index.md](BSD-EXAMPLE-L3/index.md)
-4. [business-meta.md](business-meta.md)
+4. [business-meta.md](../../../agent/knowledge/business-meta.md)
 
 ## 关联索引
 

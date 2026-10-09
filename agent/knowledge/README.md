@@ -16,6 +16,7 @@
 | [glossary.md](glossary.md) | 词义 + 实体缩写登记 + 映射字段语义 SSOT |
 | [naming-conventions.md](naming-conventions.md) | 实体 ID / IDEA-ID 字面语法 |
 | [okf-spec.md](okf-spec.md) | 四层共享知识规范 SSOT |
+| [business-meta.md](business-meta.md) · [product-meta.md](product-meta.md) · [application-meta.md](application-meta.md) · [data-meta.md](data-meta.md) · [technical-meta.md](technical-meta.md) | 五视角四层实体字段 SSOT |
 | [architecture-principles.md](architecture-principles.md) | 架构原则条目 |
 | [adr-template.md](adr-template.md) · [adr-guidelines.md](adr-guidelines.md) | 命名/落盘（template）· 章节/状态（guidelines） |
 | [sdx-adr-protocol.md](../references/sdx-adr-protocol.md) | SDX 写 SOLUTION/ANALYSIS 时落 ADR / CONTEXT |

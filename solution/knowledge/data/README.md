@@ -4,9 +4,9 @@ title: 数据架构
 ---
 # 数据架构
 
-[返回 · 解决方案知识库 — 架构文档](../README.md)
+[返回 · 解决方案知识库](../README.md)
 
-**本层 SSOT**：MDG（一 SLN 可多条）。DS/ENT ∈ 系统；TBL ∈ 应用。企业标准只引用公司 data。章节见 [chapters/index.md](chapters/index.md)。字段 [data-meta.md](data-meta.md)。
+**本层 SSOT**：MDG（一 SLN 可多条）。下层实体不涉及。企业标准只引用公司 data。章节见 [chapters/index.md](chapters/index.md)。字段 [data-meta.md](../../../agent/knowledge/data-meta.md)。
 
 目录与阅读顺序见 [index.md](index.md)。
 
@@ -19,6 +19,6 @@ title: 数据架构
 
 ## 实体
 
-| ID | 名称 | 文件 |
-|----|------|------|
-| MDG-EXAMPLE | 示例主数据域 | [MDG-EXAMPLE.md](MDG-EXAMPLE.md) |
+| 链序 | 层级 | ID | 名称 | 文件/目录 |
+|------|------|----|------|-----------|
+| L1 | MDG | MDG-EXAMPLE | 示例主数据域 | [MDG-EXAMPLE.md](MDG-EXAMPLE.md) |

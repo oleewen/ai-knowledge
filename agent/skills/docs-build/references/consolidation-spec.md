@@ -32,14 +32,8 @@ graph TD
 
 ### 3. concept 文件形状
 
-每个实体 concept 为独立 `{ID}.md`，frontmatter 至少含 `id`、`perspective`、`hierarchy`、`type`、`title`；跨视角引用写在 `# Cross-perspective` 与 bundle-relative 链接。跨 `DOC_DIR` 守 [knowledge-governance.md](../../../knowledge/knowledge-governance.md) 引用边界。路径规则见 [naming-conventions.md](../../../knowledge/naming-conventions.md) §OKF concept 路径与 type 映射。
-
-| 视角 | 落盘 |
-|------|------|
-| application | SYS/APP/MS/API 各一 concept；锚点目录见 naming-conventions |
-| data / business / product | 锚点目录 + 叶子 `{ID}.md` |
-| technical | 扁平 `technical/{ID}.md` |
+每个实体 concept 为独立 `{ID}.md`。frontmatter 与四段正文以 [okf-spec.md](../../../knowledge/okf-spec.md) 为准：9 个字段（`type`、`title`、`description`、`tags`、`timestamp`、`id`、`perspective`、`hierarchy`、`layer_scope`），正文四个中文 H2（`## 关系`、`## 跨视角`、`## 详细说明`、`## 依据与证据`）。同层用 bundle-relative 链，跨层守 [knowledge-governance.md](../../../knowledge/knowledge-governance.md) 引用边界。路径见 [knowledge-layout.md](../../../references/knowledge-layout.md)。
 
 详 [knowledge-schema-template.json](../assets/knowledge-schema-template.json)（字段语义仍适用，载体改为 per-entity 文件）。
 
-**生成方式**：调用 `python3 agent/skills/docs-build/scripts/generate_knowledge_index.py --bundle {application|system|company}`。产物：`{DOC_DIR}/INDEX-GUIDE.md` 第四章标记块（九章骨架由 `/docs-indexing` 维护）。目录导航仍是 `knowledge/index.md`；实体台账仍是各视角 README。
+**生成方式**：调用 `python3 agent/skills/docs-build/scripts/generate_knowledge_index.py --bundle {application|system|solution|company}`。产物：`{DOC_DIR}/INDEX-GUIDE.md` 第四章标记块（九章骨架由 `/docs-indexing` 维护）。目录导航仍是 `knowledge/index.md`；实体台账仍是各视角 README。

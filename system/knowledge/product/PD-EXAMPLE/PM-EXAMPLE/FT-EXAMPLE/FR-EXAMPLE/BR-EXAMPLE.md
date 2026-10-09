@@ -1,7 +1,7 @@
 ---
 type: Business Rule
 title: 示例规则
-description: 示例产品实体。
+description: 业务规则。
 tags: [product, BR]
 timestamp: "2026-06-26T00:00:00+08:00"
 id: BR-EXAMPLE
@@ -9,7 +9,6 @@ perspective: product
 hierarchy: BR
 layer_scope: system
 ---
-
 ## 关系
 
 - implements_to: [FR-EXAMPLE](FR-EXAMPLE.md)
@@ -20,9 +19,8 @@ layer_scope: system
 
 ## 详细说明
 
-### BR-001
-
-- (none)
+- definition_scope: local
+- 业务规则。
 
 ## 依据与证据
 

@@ -4,9 +4,9 @@ title: 数据架构
 ---
 # 数据架构
 
-[返回 · knowledge](../README.md)
+[返回 · 应用知识库](../README.md)
 
-应用侧数据入口：TBL SSOT；MDG 解决方案首次定义，DS/ENT 系统首次定义。实体台账见下方「实体」表。reference 不落本层文件，只写纯 ID。归档目标章 ∈ `chapters/`。存储类型与分片在系统层 data · 数据存储。
+应用侧数据入口：TBL SSOT；MDG 解决方案首次定义，DS/ENT 系统首次定义。实体台账见下方「实体」表。上游实体不建本层文件，只写纯 ID。归档目标章 ∈ `chapters/`。存储类型与分片在系统层 data · 数据存储。
 
 目录与阅读顺序见 [index.md](index.md)。
 

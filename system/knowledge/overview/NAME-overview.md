@@ -19,12 +19,12 @@ title: "{域名称}架构概览（{slug}-overview）"
 | 主标题 | 副标题 | 归档业务知识 |
 | --- | --- | --- |
 | [业务概述](../business/chapters/business-overview.md) | [系统范围](../business/chapters/business-overview.md#系统范围) | — |
+| [业务术语](../business/chapters/business-glossary.md) | [概念模型](../business/chapters/business-glossary.md#概念模型) | — |
+| [业务术语](../business/chapters/business-glossary.md) | [业务术语](../business/chapters/business-glossary.md#业务术语) | — |
 | [能力地图](../business/chapters/business-capability-map.md) | [三级子域](../business/chapters/business-capability-map.md#三级子域) | — |
 | [能力地图](../business/chapters/business-capability-map.md) | [限界上下文](../business/chapters/business-capability-map.md#限界上下文) | — |
 | [能力地图](../business/chapters/business-capability-map.md) | [聚合](../business/chapters/business-capability-map.md#聚合) | — |
 | [能力地图](../business/chapters/business-capability-map.md) | [领域能力](../business/chapters/business-capability-map.md#领域能力) | — |
-| [业务术语](../business/chapters/business-glossary.md) | [概念模型](../business/chapters/business-glossary.md#概念模型) | — |
-| [业务术语](../business/chapters/business-glossary.md) | [业务术语](../business/chapters/business-glossary.md#业务术语) | — |
 
 ## [产品架构](../product/README.md)
 

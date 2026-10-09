@@ -2,11 +2,11 @@
 
 ## 子目录
 
-* [AGG-EXAMPLE](AGG-EXAMPLE/index.md) - 示例业务实体。
+* [AGG-EXAMPLE](AGG-EXAMPLE/index.md) - 聚合根。
 
 ## 目录文件
 
-* [示例限界上下文](BC-EXAMPLE.md) - 示例业务实体。
+* [示例限界上下文](BC-EXAMPLE.md) - 限界上下文。
 
 ## 阅读顺序
 

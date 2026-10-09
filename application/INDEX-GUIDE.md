@@ -35,7 +35,7 @@ title: application INDEX-GUIDE
 
 ```text
 application/
-├── README.md / DESIGN.md / INDEX-GUIDE.md / index.md / docs-meta.md
+├── README.md / DESIGN.md / INDEX-GUIDE.md / index.md
 ├── knowledge/（含 overview/） · analysis/ · features/ · requirements/ · adr/
 └── changelogs/
 ```
@@ -43,7 +43,7 @@ application/
 ### 2.2 依赖关系
 
 * `knowledge/` 含 `overview/{NAME}-overview.md`（extract / archive）；上行 pull → distill（系统 overview）
-* 上层公司/解决方案实体走 parent 链 reference，禁止直链槽位
+* 上层公司/解决方案/系统实体只写纯 ID；有 parent 则可 HTTP 指向上层首次定义。禁止直链槽位
 * `analysis/` → `features/` → `requirements/`（mode=s）
 
 ### 2.3 包结构
@@ -107,7 +107,7 @@ application/
 <!-- docs-build:entity-index:begin -->
 > 本块由 `/docs-build` 写入；实体台账 ∈ 各视角 README；正文 ∈ per-entity `{ID}.md`；九章骨架 ∈ `/docs-indexing`。
 
-> 本层仅登记 **API / TBL / MW / CMP**。BL 见公司；SLN/PL/PD/BP/BSP/BSD-L2/BS/MDG/TSD 见解决方案；SYS 链见系统。
+> 本层仅登记 **API / TBL / MW / CMP**。
 
 ### 视角入口
 
@@ -170,7 +170,7 @@ OpenAPI/DDL 全文不在九章展开（实体可链外部）。
 
 ### 7.1 配置项
 
-不适用运行时配置中心键值表。装机相关：仓库根 [`.docsconfig`](../.docsconfig)；本层 [knowledge-links.yaml](knowledge-links.yaml)（现 `links: []`）；mode 入口 [README-s.md](README-s.md) · [README-c.md](README-c.md)。
+不适用运行时配置中心键值表。装机相关：仓库根 [`.docsconfig`](../.docsconfig)；本层 [knowledge-links.yaml](knowledge-links.yaml)（现一条 `type: meta`，parent 未挂载）；mode 入口 [README-s.md](README-s.md) · [README-c.md](README-c.md)。
 
 ### 7.2 环境差异（接入模式）
 
@@ -220,7 +220,7 @@ standalone / central 差异与安装约定见仓库根 [INDEX-GUIDE.md](../INDEX
 
 | 关系 | 状态 |
 |------|------|
-| 本层 `knowledge-links.yaml` | **空**（`links: []`；可挂 `type: parent` → system） |
+| 本层 `knowledge-links.yaml` | 已有 `type: meta`；parent 未挂（可挂 `type: parent` → system） |
 | 联邦槽位 | **无**本层槽位目录；登记在公司/系统 `knowledge-links.yaml` |
 | 同仓邻层 | [system/](../system/README.md) · [company/](../company/README.md) |
 

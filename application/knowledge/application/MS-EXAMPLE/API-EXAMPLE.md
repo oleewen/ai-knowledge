@@ -1,7 +1,7 @@
 ---
 type: API Endpoint
 title: 示例 API：创建
-description: null
+description: 接口端点。
 tags: [application, API]
 timestamp: "2026-06-21T08:00:00+08:00"
 id: API-EXAMPLE
@@ -20,11 +20,8 @@ layer_scope: application
 
 ## 详细说明
 
-- alias: ExampleService.create
-- api_type: HTTP
-- host_class: ExampleApiImpl
-- host_module: example-module
-- method_signature: create(ExampleReq req)
+- definition_scope: local
+- 接口端点。
 
 ## 依据与证据
 

@@ -11,8 +11,7 @@ layer_scope: company
 ---
 ## 关系
 
-- implemented_by:
-  - TSD-EXAMPLE
+- (none)
 
 ## 跨视角
 
@@ -20,8 +19,8 @@ layer_scope: company
 
 ## 详细说明
 
-- domain: 云基础设施
 - definition_scope: local
+- 演示公司级 TPL 结构。
 
 ## 依据与证据
 

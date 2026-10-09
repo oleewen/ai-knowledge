@@ -36,7 +36,7 @@ title: solution INDEX-GUIDE
 
 ```text
 solution/
-├── README.md / DESIGN.md / INDEX-GUIDE.md / index.md / docs-meta.md
+├── README.md / DESIGN.md / INDEX-GUIDE.md / index.md
 ├── knowledge-links.yaml
 ├── knowledge/ · solutions/ · adr/
 ├── system-slots/system-{NAME}/
@@ -81,7 +81,7 @@ parent：`application → system → solution → company`。
 <!-- docs-build:entity-index:begin -->
 > 本块由 `/docs-build` 写入；实体台账 ∈ 各视角 README；正文 ∈ per-entity `{ID}.md`；九章骨架 ∈ `/docs-indexing`。
 
-> 本层登记 **SLN / PL / PD / BP / BSP / BSD-L2 / BS / MDG / TSD**。公司 VC/BD/L1/BL/TPL 与系统 SYS 链不在本层登记。
+> 本层登记 **SLN / PL / PD / BP / BSP / BSD-L2 / BS / MDG / TSD**。
 
 ### 视角入口
 

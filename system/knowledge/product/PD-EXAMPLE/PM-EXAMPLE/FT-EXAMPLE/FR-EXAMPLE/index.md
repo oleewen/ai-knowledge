@@ -6,9 +6,9 @@
 
 ## 目录文件
 
-* [示例规则](BR-EXAMPLE.md) - 示例产品实体。
-* [示例功能需求](FR-EXAMPLE.md) - 示例产品实体。
-* [示例用例](UC-EXAMPLE.md) - 示例产品实体。
+* [示例规则](BR-EXAMPLE.md) - 业务规则。
+* [示例功能需求](FR-EXAMPLE.md) - 功能需求。
+* [示例用例](UC-EXAMPLE.md) - 用例。
 
 ## 阅读顺序
 

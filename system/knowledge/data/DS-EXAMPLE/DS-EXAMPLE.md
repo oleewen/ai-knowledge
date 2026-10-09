@@ -19,7 +19,8 @@ layer_scope: system
 
 ## 详细说明
 
-- config_key: example_config_key
+- definition_scope: local
+- 示例数据源。
 
 ## 依据与证据
 

@@ -57,4 +57,19 @@ assert_not_contains "IDE 软链目录" "$ROOT_README"
 
 [[ -L "$DOCS_DIR/.agents" ]] || fail "应存在 .agents 软链"
 
+META_REPO="$TMP_DIR/meta-repo"
+mkdir -p "$META_REPO/agent/knowledge" "$META_REPO/company/knowledge/business"
+printf '%s\n' '../../../agent/knowledge/business-meta.md' >"$META_REPO/company/knowledge/business/paths.md"
+printf '%s\n' '../../agent/knowledge/business-meta.md' >"$META_REPO/company/knowledge/business/short.md"
+printf '%s\n' '../agent/knowledge/glossary.md' >"$META_REPO/company/INDEX-GUIDE.md"
+(
+  source "$ROOT_DIR/agent/scripts/lib/rewrite.sh"
+  rewrite_agent_path_segment_in_file "$META_REPO/company/knowledge/business/paths.md" "$META_REPO/company" meta
+  rewrite_agent_path_segment_in_file "$META_REPO/company/knowledge/business/short.md" "$META_REPO/company" meta
+  rewrite_agent_path_segment_in_file "$META_REPO/company/INDEX-GUIDE.md" "$META_REPO/company" meta
+)
+assert_contains "../../../agent/knowledge/business-meta.md" "$META_REPO/company/knowledge/business/paths.md"
+assert_contains "../../../agent/knowledge/business-meta.md" "$META_REPO/company/knowledge/business/short.md"
+assert_contains "../agent/knowledge/glossary.md" "$META_REPO/company/INDEX-GUIDE.md"
+
 pass "knowledge 安装后将 agent/ 重写为深度相对 .agents/，建软链，并注入 README 注记"

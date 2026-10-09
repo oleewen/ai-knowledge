@@ -63,21 +63,19 @@ else
   error "INDEX-GUIDE.md 不存在: ${INDEX_FILE}"
 fi
 
-# 2. knowledge-meta.md
-META_ROOT="${KNOWLEDGE_DIR}/knowledge-meta.md"
-if [[ -f "${META_ROOT}" ]]; then
-  success "knowledge-meta.md 存在"
-else
-  warn "knowledge-meta.md 未找到（可选）"
-fi
-
-# 3. 各视角 per-entity concept / meta / 废弃 entities
+# 2. 各视角 per-entity concept / meta / 废弃 entities
 PERSPECTIVES=("application" "data" "business" "product" "technical")
 TOTAL_ENTITIES=0
 
 for p in "${PERSPECTIVES[@]}"; do
   PERSPECTIVE_DIR="${KNOWLEDGE_DIR}/${p}"
-  META_FILE="${PERSPECTIVE_DIR}/${p}-meta.md"
+  if [[ -f "${repo_abs}/agent/knowledge/${p}-meta.md" ]]; then
+    META_FILE="${repo_abs}/agent/knowledge/${p}-meta.md"
+  elif [[ -f "${doc_abs}/.agents/knowledge/${p}-meta.md" ]]; then
+    META_FILE="${doc_abs}/.agents/knowledge/${p}-meta.md"
+  else
+    META_FILE="${PERSPECTIVE_DIR}/${p}-meta.md"
+  fi
   ENTITIES_FILE="${PERSPECTIVE_DIR}/${p}-entities.md"
   ENTITY_COUNT=0
 

@@ -11,7 +11,7 @@ title: 贡献指南 — application/
 1. [README.md](README.md) — 定位与 mode
 2. [knowledge-governance](../agent/knowledge/knowledge-governance.md) — 原则、首次定义、映射
 3. [AGENTS.md](../AGENTS.md) — 仓库级禁止项
-4. 目标目录 `README.md` + `{perspective}-meta.md` — 落盘与命名
+4. 目标目录 `README.md` + `agent/knowledge/{perspective}-meta.md` — 落盘与命名
 
 九章 / 目录：[INDEX-GUIDE.md](INDEX-GUIDE.md) · [index.md](index.md)
 

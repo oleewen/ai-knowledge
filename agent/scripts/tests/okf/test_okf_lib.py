@@ -27,18 +27,44 @@ def test_hierarchy_to_type():
 
 
 def test_entity_relpath_business_bd():
-    path = okf_lib.entity_relpath("business", "BD-EXAMPLE")
-    assert path == "knowledge/business/BD-EXAMPLE.md"
+    try:
+        okf_lib.entity_relpath("business", "BD-EXAMPLE")
+    except ValueError as exc:
+        assert "does not land BD" in str(exc)
+    else:
+        raise AssertionError("expected ValueError when application bundle gets BD")
+    assert (
+        okf_lib.entity_relpath("business", "BD-EXAMPLE", bundle="company")
+        == "knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md"
+    )
 
 
 def test_entity_relpath_application_sys():
-    path = okf_lib.entity_relpath("application", "SYS-EXAMPLE")
-    assert path == "knowledge/application/SYS-EXAMPLE.md"
+    try:
+        okf_lib.entity_relpath("application", "SYS-EXAMPLE")
+    except ValueError as exc:
+        assert "does not land SYS" in str(exc)
+    else:
+        raise AssertionError("expected ValueError when application bundle gets SYS")
+    assert (
+        okf_lib.entity_relpath("application", "SYS-EXAMPLE", bundle="system")
+        == "knowledge/application/SYS-EXAMPLE.md"
+    )
 
 
 def test_entity_relpath_application_api():
-    path = okf_lib.entity_relpath("application", "API-EXAMPLE")
-    assert path == "knowledge/application/MS-EXAMPLE/API-EXAMPLE.md"
+    try:
+        okf_lib.entity_relpath("application", "API-EXAMPLE")
+    except ValueError as exc:
+        assert "API requires path_parent" in str(exc)
+    else:
+        raise AssertionError("expected ValueError when API has no path_parent")
+    assert (
+        okf_lib.entity_relpath(
+            "application", "API-EXAMPLE", path_parent="MS-EXAMPLE"
+        )
+        == "knowledge/application/MS-EXAMPLE/API-EXAMPLE.md"
+    )
 
 
 def test_parse_frontmatter_list():
@@ -57,8 +83,24 @@ def test_parse_frontmatter_null():
 
 
 def test_entity_relpath_ent_with_parent():
-    path = okf_lib.entity_relpath("data", "ENT-T_BILLING", path_parent="DS-BILLING")
-    assert path == "knowledge/data/ENT-EXAMPLE/ENT-T_BILLING.md"
+    try:
+        okf_lib.entity_relpath("data", "ENT-T_BILLING", path_parent="DS-BILLING")
+    except ValueError as exc:
+        assert "does not land ENT" in str(exc)
+    else:
+        raise AssertionError("expected ValueError when application bundle gets ENT")
+    try:
+        okf_lib.entity_relpath("data", "ENT-T_BILLING", bundle="system")
+    except ValueError as exc:
+        assert "ENT requires path_parent" in str(exc)
+    else:
+        raise AssertionError("expected ValueError when ENT has no path_parent")
+    assert (
+        okf_lib.entity_relpath(
+            "data", "ENT-T_BILLING", path_parent="DS-BILLING", bundle="system"
+        )
+        == "knowledge/data/DS-BILLING/ENT-T_BILLING.md"
+    )
 
 
 def test_bundle_link():
@@ -120,8 +162,12 @@ def test_entity_relpath_company_bsd_nested():
 
 
 def test_entity_relpath_company_bsd_default_parent():
-    path = okf_lib.entity_relpath("business", "BSD-EXAMPLE", bundle="company")
-    assert path == "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE.md"
+    try:
+        okf_lib.entity_relpath("business", "BSD-EXAMPLE", bundle="company")
+    except ValueError as exc:
+        assert "BSD requires path_parent" in str(exc)
+    else:
+        raise AssertionError("expected ValueError when BSD has no path_parent")
 
 
 def test_entity_relpath_company_cap_with_parent():
@@ -132,8 +178,18 @@ def test_entity_relpath_company_cap_with_parent():
 
 
 def test_entity_relpath_company_cap():
-    path = okf_lib.entity_relpath("business", "CAP-EXAMPLE", bundle="company")
-    assert path == "knowledge/business/VC-EXAMPLE/CAP-EXAMPLE.md"
+    try:
+        okf_lib.entity_relpath("business", "CAP-EXAMPLE", bundle="company")
+    except ValueError as exc:
+        assert "CAP requires path_parent" in str(exc)
+    else:
+        raise AssertionError("expected ValueError when CAP has no path_parent")
+    assert (
+        okf_lib.entity_relpath(
+            "business", "CAP-EXAMPLE", path_parent="VC-EXAMPLE", bundle="company"
+        )
+        == "knowledge/business/VC-EXAMPLE/CAP-EXAMPLE.md"
+    )
 
 
 def test_entity_relpath_company_bl():
@@ -150,10 +206,18 @@ def test_entity_relpath_company_tpl():
 
 
 def test_entity_relpath_company_pl_and_sln():
-    assert (
+    try:
         okf_lib.entity_relpath("application", "SLN-EXAMPLE", bundle="company")
-        == "knowledge/application/SLN-EXAMPLE.md"
-    )
+    except ValueError as exc:
+        assert "does not land SLN" in str(exc)
+    else:
+        raise AssertionError("expected ValueError when company bundle gets SLN")
+    try:
+        okf_lib.entity_relpath("data", "MDG-EXAMPLE", bundle="company")
+    except ValueError as exc:
+        assert "does not land MDG" in str(exc)
+    else:
+        raise AssertionError("expected ValueError when company bundle gets MDG")
     assert (
         okf_lib.entity_relpath("product", "PL-EXAMPLE", bundle="solution")
         == "knowledge/product/PL/PL-EXAMPLE.md"
@@ -177,16 +241,35 @@ def test_entity_relpath_company_pl_and_sln():
 
 
 def test_entity_relpath_system_pd_and_pm():
-    assert (
+    try:
         okf_lib.entity_relpath("product", "PD-EXAMPLE", bundle="system")
-        == "knowledge/product/PD-EXAMPLE/PD-EXAMPLE.md"
-    )
+    except ValueError as exc:
+        assert "does not land PD" in str(exc)
+    else:
+        raise AssertionError("expected ValueError when system PD is requested")
+    for prefix, entity_id, perspective in (
+        ("PL", "PL-EXAMPLE", "product"),
+        ("MDG", "MDG-EXAMPLE", "data"),
+        ("TSD", "TSD-EXAMPLE", "technical"),
+    ):
+        try:
+            okf_lib.entity_relpath(perspective, entity_id, bundle="system")
+        except ValueError as exc:
+            assert f"does not land {prefix}" in str(exc)
+        else:
+            raise AssertionError(f"expected ValueError when system bundle gets {prefix}")
     assert (
         okf_lib.entity_relpath(
             "product", "PM-EXAMPLE", path_parent="PD-EXAMPLE", bundle="system"
         )
         == "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE.md"
     )
+    try:
+        okf_lib.entity_relpath("product", "PM-EXAMPLE", bundle="system")
+    except ValueError as exc:
+        assert "PM requires path_parent" in str(exc)
+    else:
+        raise AssertionError("expected ValueError when PM has no path_parent")
 
 
 def test_hierarchy_first_layer_pd_sys():
@@ -196,7 +279,9 @@ def test_hierarchy_first_layer_pd_sys():
     assert okf_lib.hierarchy_first_layer("BS") == "solution"
     assert okf_lib.hierarchy_first_layer("BSP") == "solution"
     assert okf_lib.hierarchy_first_layer("SYS") == "system"
-    assert okf_lib.hierarchy_first_layer("SLN") == "company"
+    assert okf_lib.hierarchy_first_layer("SLN") == "solution"
+    assert okf_lib.hierarchy_first_layer("MDG") == "solution"
+    assert okf_lib.hierarchy_first_layer("TSD") == "solution"
     assert okf_lib.hierarchy_to_perspective("SLN") == "application"
     assert okf_lib.hierarchy_first_layer("VC") == "company"
     assert okf_lib.hierarchy_first_layer("BSD") == "system"
@@ -216,9 +301,47 @@ def test_entity_relpath_system_ms_and_mw():
         okf_lib.entity_relpath("application", "APP-EXAMPLE", bundle="system")
         == "knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md"
     )
-    assert (
+    try:
         okf_lib.entity_relpath("technical", "MW-EXAMPLE", bundle="system")
+    except ValueError as exc:
+        assert "does not land MW" in str(exc)
+    else:
+        raise AssertionError("expected ValueError when system bundle gets MW")
+    try:
+        okf_lib.entity_relpath("technical", "CMP-EXAMPLE", bundle="system")
+    except ValueError as exc:
+        assert "does not land CMP" in str(exc)
+    else:
+        raise AssertionError("expected ValueError when system bundle gets CMP")
+    assert (
+        okf_lib.entity_relpath("technical", "MW-EXAMPLE", bundle="application")
         == "knowledge/technical/MW-EXAMPLE/MW-EXAMPLE.md"
+    )
+    try:
+        okf_lib.entity_relpath("technical", "CMP-EXAMPLE", bundle="application")
+    except ValueError as exc:
+        assert "CMP requires path_parent" in str(exc)
+    else:
+        raise AssertionError("expected ValueError when CMP has no path_parent")
+    assert (
+        okf_lib.entity_relpath(
+            "technical", "CMP-EXAMPLE", path_parent="MW-EXAMPLE", bundle="application"
+        )
+        == "knowledge/technical/MW-EXAMPLE/CMP-EXAMPLE.md"
+    )
+    assert (
+        okf_lib.entity_relpath("data", "DS-EXAMPLE", bundle="system")
+        == "knowledge/data/DS-EXAMPLE/DS-EXAMPLE.md"
+    )
+    try:
+        okf_lib.entity_relpath("data", "TBL-EXAMPLE")
+    except ValueError as exc:
+        assert "TBL requires path_parent" in str(exc)
+    else:
+        raise AssertionError("expected ValueError when TBL has no path_parent")
+    assert (
+        okf_lib.entity_relpath("data", "TBL-EXAMPLE", path_parent="ENT-EXAMPLE")
+        == "knowledge/data/ENT-EXAMPLE/TBL-EXAMPLE.md"
     )
     assert okf_lib.hierarchy_to_type("FR") == "Functional Requirement"
 
@@ -268,10 +391,22 @@ def test_entity_relpath_solution_bsd_l2_flat():
         okf_lib.entity_relpath("business", "BSD-EXAMPLE-L2", bundle="solution")
         == "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md"
     )
+    assert (
+        okf_lib.entity_relpath("application", "SLN-EXAMPLE", bundle="solution")
+        == "knowledge/application/SLN-EXAMPLE.md"
+    )
+    assert (
+        okf_lib.entity_relpath("data", "MDG-EXAMPLE", bundle="solution")
+        == "knowledge/data/MDG-EXAMPLE.md"
+    )
+    assert (
+        okf_lib.entity_relpath("technical", "TSD-EXAMPLE", bundle="solution")
+        == "knowledge/technical/TSD-EXAMPLE.md"
+    )
     try:
         okf_lib.entity_relpath("business", "BSD-EXAMPLE-L3", bundle="solution")
     except ValueError as exc:
-        assert "lands BSD-L2 only" in str(exc)
+        assert "does not land BSD" in str(exc)
         return
     raise AssertionError("expected ValueError when solution bundle gets non-L2 BSD")
 
@@ -302,9 +437,72 @@ def test_entity_relpath_system_bsd_l1_l2_not_landed():
                 "business", entity_id, path_parent=parent, bundle="system"
             )
         except ValueError as exc:
-            assert "does not land BSD-L1 or BSD-L2" in str(exc)
+            assert "does not land BSD" in str(exc)
             continue
         raise AssertionError(f"expected ValueError for {entity_id}")
+
+
+def test_entity_relpath_system_nested_chain():
+    assert (
+        okf_lib.entity_relpath(
+            "business", "BC-EXAMPLE", path_parent="BSD-EXAMPLE-L3", bundle="system"
+        )
+        == "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md"
+    )
+    assert (
+        okf_lib.entity_relpath(
+            "business",
+            "AGG-EXAMPLE",
+            path_parent="BSD-EXAMPLE-L3/BC-EXAMPLE",
+            bundle="system",
+        )
+        == "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md"
+    )
+    assert (
+        okf_lib.entity_relpath(
+            "business",
+            "AB-EXAMPLE",
+            path_parent="BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE",
+            bundle="system",
+        )
+        == "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md"
+    )
+    assert (
+        okf_lib.entity_relpath(
+            "product",
+            "FT-EXAMPLE",
+            path_parent="PD-EXAMPLE/PM-EXAMPLE",
+            bundle="system",
+        )
+        == "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FT-EXAMPLE.md"
+    )
+    assert (
+        okf_lib.entity_relpath(
+            "product",
+            "FR-EXAMPLE",
+            path_parent="PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE",
+            bundle="system",
+        )
+        == "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/FR-EXAMPLE.md"
+    )
+    for entity_id in ("UC-EXAMPLE", "BR-EXAMPLE"):
+        assert (
+            okf_lib.entity_relpath(
+                "product",
+                entity_id,
+                path_parent="PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE",
+                bundle="system",
+            )
+            == f"knowledge/product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/{entity_id}.md"
+        )
+    try:
+        okf_lib.entity_relpath(
+            "business", "AGG-EXAMPLE", path_parent="BC-EXAMPLE", bundle="system"
+        )
+    except ValueError as exc:
+        assert "parent directory chain" in str(exc)
+    else:
+        raise AssertionError("expected ValueError when AGG has only one parent id")
 
 
 def main() -> None:
@@ -340,6 +538,7 @@ def main() -> None:
         test_entity_relpath_solution_bsd_l2_flat,
         test_entity_relpath_system_bsd_l3_flat,
         test_entity_relpath_system_bsd_l1_l2_not_landed,
+        test_entity_relpath_system_nested_chain,
     ]
     for fn in tests:
         fn()

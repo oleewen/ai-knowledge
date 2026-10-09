@@ -62,12 +62,12 @@ timestamp: "2026-06-25T00:00:00+08:00"
 
 目录、规则、链接、日志或治理元信息。
 
-- 典型：`*-meta.md`、`docs-meta.md`、`knowledge-links.yaml`、`INDEXING-LOG.md`；层设计 SSOT 见 [knowledge-governance.md](knowledge-governance.md)
+- 典型：`agent/knowledge/{视角}-meta.md`、`knowledge-links.yaml`、`INDEXING-LOG.md`。层根契约是各层 `DESIGN.md`，知识树入口是 `knowledge/README.md`。不设 `docs-meta.md` / `knowledge-meta.md`。层设计 SSOT 见 [knowledge-governance.md](knowledge-governance.md)
 - MUST：不按实体 Profile；字段/职责与规范引用一致
 
 ### 1.5 分型优先级
 
-多类特征并存时：concept → 索引入口 → 元数据 → 叙事文件。`README.md` / `index.md` 默认索引入口；`*-meta.md` / `docs-meta.md` / `knowledge-links.yaml` / 变更日志默认元数据。
+多类特征并存时：concept → 索引入口 → 元数据 → 叙事文件。`README.md` / `index.md` 默认索引入口；`agent/knowledge/{视角}-meta.md` / `knowledge-links.yaml` / 变更日志默认元数据。层根契约是 `DESIGN.md`，知识树入口是 `knowledge/README.md`。不设 `docs-meta.md` / `knowledge-meta.md`。
 
 ---
 
@@ -82,14 +82,14 @@ timestamp: "2026-06-25T00:00:00+08:00"
 
 | 分类 | 字段 | 类型 | 必填 | 说明 | 举例 |
 | ------ | ------ | ------ | ------ | ------ | ------ |
-| 核心键 + 观测键 | `type` | 枚举 | ✅（实体概念） / -（其他文档） | 对 per-entity 而言是 OKF Core 唯一必填字段；在其他文档中用于标识文件类别 | 实体概念：`Business Domain` / `API Endpoint` / `Component`；索引入口：`Documentation Root` / `Documentation` / `Agent Index Guide` / `Knowledge Index`；叙事文件：`Architecture Chapter` / `Architecture Overview Buffer`；元数据：`Directory Meta` / `Perspective Meta` / `Perspective Tree Meta` / `Change Log` / `Indexing Log` / `Requirement Package` / `Solution Document` / `Analysis Document` / `Design Document` / `Manifest` / `Contributing Guide` |
+| 核心键 + 观测键 | `type` | 枚举 | ✅（实体概念） / -（其他文档） | 对 per-entity 而言是 OKF Core 唯一必填字段；在其他文档中用于标识文件类别 | 实体概念：`Business Domain` / `API Endpoint` / `Component`；索引入口：`Documentation Root` / `Documentation` / `Agent Index Guide` / `Knowledge Index`；叙事文件：`Architecture Chapter` / `Architecture Overview Buffer`；元数据：`Perspective Meta` / `Change Log` / `Indexing Log` / `Requirement Package` / `Solution Document` / `Analysis Document` / `Design Document` / `Manifest` / `Contributing Guide` |
 | 实体概念核心键 | `title` | 字符串 | ✅ | 中文名（实体显示名）；非实体文档中也广泛使用 | `计费业务域` / `应用知识库` |
 | 实体概念核心键 | `description` | 字符串 \| null | ✅ | 业务定义短句；无定义时填 `null` | `统一管理主数据定义。` / `null` |
 | 实体概念核心键 | `tags` | 字符串数组 | ✅ | per-entity 必含 `[<perspective>, <hierarchy>]`；其他文档可按用途扩展 | `[business, BD]` / `[okf, governance, shared-spec]` |
 | 实体概念核心键 | `timestamp` | ISO8601 字符串 | ✅ | 形如 `2026-06-25T00:00:00+08:00` | `"2026-06-25T00:00:00+08:00"` |
 | 实体概念核心键 | `id` | 字符串 | ✅ | 全局唯一 ID，格式：`<hierarchy>-<name>` | `BD-EXAMPLE` / `API-EXAMPLE` |
 | 实体概念核心键 | `perspective` | 枚举 | ✅ | 与实体所属视角一致 | `business` / `product` / `application` / `data` / `technical` |
-| 实体概念核心键 | `hierarchy` | 枚举 | ✅ | 与 `type` 一一对应 | `VC` / `BD` / `BL` / `CAP` / `PL` / `SLN` / `PD` / `SYS` / `MDG` / `TPL` / `BSD` / `BC` / `AGG` / `AB` / `PM` / `BP` / `FT` / `UC` / `BR` / `APP` / `MS` / `DS` / `ENT` / `TSD` / `API` / `TBL` / `MW` / `CMP` |
+| 实体概念核心键 | `hierarchy` | 枚举 | ✅ | 与 `type` 一一对应 | `VC` / `BD` / `BL` / `BS` / `CAP` / `PL` / `SLN` / `PD` / `SYS` / `MDG` / `TPL` / `BSD` / `BC` / `AGG` / `AB` / `PM` / `BP` / `BSP` / `FT` / `FR` / `UC` / `BR` / `APP` / `MS` / `DS` / `ENT` / `TSD` / `API` / `TBL` / `MW` / `CMP` |
 | 实体概念核心键 | `layer_scope` | 枚举 | ✅ | 与知识库路径前缀对应 | `company` / `solution` / `system` / `application` |
 | 非实体文档键 | `okf_version` | 字符串 | - | 当前只出现在 bundle 根 `index.md` | `"0.1"` / `"1.0"` |
 | 非实体文档键 | `status` | 字符串 | - | 当前只出现在公司层示例方案/分析文档 | `draft` / `"draft"` |
@@ -103,7 +103,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 
 ## 3. type 与 hierarchy 映射表
 
-28 行精确映射。`type` 与 `hierarchy` 必须一一对应。
+31 行精确映射。`type` 与 `hierarchy` 必须一一对应。
 
 | hierarchy | type | perspective | 首次定义层 |
 | ----------- | ------ | ------------- | ----------- |
@@ -111,18 +111,21 @@ timestamp: "2026-06-25T00:00:00+08:00"
 | BD | `Business Domain` | business | company |
 | CAP | `Business Capability` | business | company |
 | BL | `Business Line` | business | company |
+| BS | `Business Service` | business | solution |
 | PL | `Product Line` | product | solution |
 | SLN | `Solution` | application | solution |
 | MDG | `Master Data Domain` | data | solution |
 | TPL | `Technical Platform` | technical | company |
-| BSD | `Business Subdomain` | business | company（一级）/ solution（二级） |
+| BSD | `Business Subdomain` | business | company（一级）/ solution（二级）/ system（三级） |
 | BC | `Bounded Context` | business | system |
 | AGG | `Aggregate` | business | system |
 | AB | `Ability` | business | system |
 | PD | `Product` | product | solution |
 | PM | `Product Module` | product | system |
 | BP | `Business Process` | product | solution |
+| BSP | `Business Subprocess` | product | solution |
 | FT | `Feature` | product | system |
+| FR | `Functional Requirement` | product | system |
 | UC | `Use Case` | product | system |
 | BR | `Business Rule` | product | system |
 | SYS | `System` | application | system |
@@ -130,7 +133,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 | MS | `Microservice` | application | system |
 | DS | `Data Store` | data | system |
 | ENT | `Entity` | data | system |
-| TSD | `Technical Subdomain` | technical | solution |
+| TSD | `Technical Domain` | technical | solution |
 | API | `API Endpoint` | application | application |
 | TBL | `Data Table` | data | application |
 | MW | `Middleware Binding` | technical | application |
@@ -139,7 +142,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 说明：
 
 - “首次定义层”表示该概念的治理语义与模板首次出现在哪一层。
-- 下游层允许做投影、实例登记、实现映射或物理锚点，不等于“只允许在该层出现”。
+- 下游层可写纯 ID，或在宿主目录下落本层首次定义实体。不建上层实体的 reference 文件。不等于“只允许在首次定义层被提到”。
 
 ---
 
@@ -158,7 +161,7 @@ MUST：
 SHOULD：
 
 - `description` 保持“一句话可复述”的短句；更长说明放 `## 详细说明`。
-- 知识内证据优先用同层 bundle-relative 链，或上层首次定义层 HTTP（有 `knowledge-parent.yaml`）/ 纯 ID（无 parent）；库外证据用 URI/资产名（见治理边界），变更时同步。
+- 知识内证据优先用同层 bundle-relative 链，或上层首次定义层 HTTP（有 `knowledge-links.yaml` 的 `type: parent`）/ 纯 ID（无 parent）；库外证据用 URI/资产名（见治理边界），变更时同步。
 - 扩展字段（OKF extensions）仅用于“确需机器消费且跨文件共享”的字段；否则下沉到正文以降低耦合。
 
 MAY：
@@ -187,32 +190,34 @@ MAY：
 | 层级 | 必含子段 | 选含子段 |
 | ------ | --------- | --------- |
 | BD | `children: [...]` | `parent: null`；跨视角 `supports_to` |
-| BSD | `parent: [...]` | `children`（L1→L2）；`implemented_by`（L2→BC）；`maps_to`（L1→CAP）；`mapped_by`（L1←BL，L2←BS） |
+| BSD | `parent: [...]` | `implemented_by`（L3→BC）；`maps_to`（L1→CAP）；`mapped_by`（L1←BL，L2←BS） |
 | BC | `implements_to: [...]` + `implemented_by: [...]` | 跨视角 `supported_by`（APP） |
 | AGG | `implements_to: [...]` + `implemented_by: [...]` | 跨视角 `mapped_by`（ENT\|MS） |
 | AB | `implements_to: [...]` | 跨视角 `mapped_by`（UC） |
 | VC | — | `supported_by`、`implemented_by` |
-| CAP | `implements_to: [...]` + `maps_to: [...]` | — |
-| BL | `maps_to: [...]`（→BSD-L1） | `mapped_by`（PL） |
+| CAP | `implements_to: [...]` | `mapped_by`（BSD-L1） |
+| BL | `maps_to: [...]`（→BSD-L1） | — |
 | BS | `maps_to: [...]`（→BSD-L2） | `mapped_by`（PD） |
 | PL | `maps_to: [...]`（→BL） | `implemented_by`（PD）；`mapped_by`（SLN） |
-| PD | `implements_to: [...]`（→PL） + `maps_to: [...]`（→BS） | `implemented_by`（PM\|BSP）；`mapped_by`（SYS） |
+| PD | `implements_to: [...]`（→PL） + `maps_to: [...]`（→BS） | `implemented_by`（BSP） |
 | BP | `implements_to: [...]`（→SLN） | `children`（BSP） |
-| BSP | `parent`（→BP） + `implements_to: [...]`（→PD） | `kind`：core / branch / exception |
+| BSP | `parent`（→BP） + `implements_to: [...]`（→PD） | — |
 | PM | `implements_to: [...]` + `implemented_by: [...]` | `maps_to`（BC）；`depends_to` |
-| FT | `implements_to: [...]` + `implemented_by: [...]` | `supported_by`（API） |
+| FT | `implements_to: [...]` + `implemented_by: [...]` | — |
 | FR | `implements_to: [...]` + `implemented_by: [...]` | — |
-| UC | `implements_to: [...]` | `maps_to`（AB）；`mapped_by`（API） |
-| SLN | `maps_to: [...]` | `implemented_by`（SYS\|BP） |
-| SYS | `implements_to: [...]` + `implemented_by: [...]` | `uses_to`（MDG\|TSD） |
-| APP | `implements_to: [...]` + `implemented_by: [...]` | `supports_to`（BC）；`uses_to`（DS\|MW） |
-| MS | `implements_to: [...]` + `implemented_by: [...]` | `maps_to`（AGG）；`uses_to`（ENT\|TBL\|CMP） |
+| UC | `implements_to: [...]` | `maps_to`（AB） |
+| BR | `implements_to: [...]`（→FR） | — |
+| SLN | `maps_to: [...]` | `implemented_by`（BP） |
+| SYS | `implements_to: [...]` + `implemented_by: [...]` | `maps_to`（PD）；`uses_to`（MDG\|TSD） |
+| APP | `implements_to: [...]` + `implemented_by: [...]` | `supports_to`（BC）；`uses_to`（DS） |
+| MS | `implements_to: [...]` | `maps_to`（AGG）；`uses_to`（ENT） |
 | API | `implements_to: [...]` | `supports_to`（FT）；`maps_to`（UC） |
-| MDG | — | `implemented_by`（DS） |
+| MDG | — | — |
 | DS | `implements_to: [...]` | `implemented_by`（ENT）；`used_by`（APP） |
 | ENT | `implements_to: [...]` | `maps_to`（AGG） |
 | TBL | `implements_to: [...]` | — |
-| TSD | `implements_to: [...]` | `implemented_by`（MW） |
+| TPL | — | — |
+| TSD | `implements_to: [...]` | — |
 | MW | `implements_to: [...]` | `implemented_by`（CMP）；`used_by`（APP）；`uses_to`（DS） |
 | CMP | `implements_to: [...]` | — |
 
@@ -289,7 +294,7 @@ SHOULD：区分约定/枚举字段与解释性文字；运维留痕遵循各目�
 
 MAY：工具链 extensions 字段可加，须可控长期维护。
 
-模式：`{DOC_DIR}/docs-meta.md`、`knowledge/knowledge-meta.md`、`knowledge/<perspective>/*-meta.md`；`knowledge-links.yaml`；`INDEXING-LOG.md`（`changelogs/`）；变更溯源 `git log` / `git diff`。
+模式：`agent/knowledge/{business,product,application,data,technical}-meta.md`；`knowledge-links.yaml`；`INDEXING-LOG.md`（`changelogs/`）；变更溯源 `git log` / `git diff`。层根契约是 `{DOC_DIR}/DESIGN.md`，知识树入口是 `knowledge/README.md`。不设 `docs-meta.md` / `knowledge-meta.md`。
 
 ---
 

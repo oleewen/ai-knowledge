@@ -13,7 +13,7 @@ title: 数据模型
 
 ## 主数据
 
-关系动词见 glossary 与 `data-meta`，SYS `uses_to` MDG，DS `implements_to` MDG。
+关系动词见 glossary 与 [data-meta](../../../../agent/knowledge/data-meta.md)，SYS `uses_to` MDG，DS `implements_to` MDG。
 
 ### 逻辑模型
 

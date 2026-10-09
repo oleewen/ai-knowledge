@@ -10,14 +10,14 @@
 
 * [示例技术域](TSD-EXAMPLE.md) - 本方案技术选用；implements_to 公司 TPL。
 
-* [technical-meta.md](technical-meta.md)
+* [technical-meta.md](../../../agent/knowledge/technical-meta.md)
 
 ## 阅读顺序
 
 1. [README.md](README.md)
 2. [chapters](chapters/index.md)
 3. [TSD-EXAMPLE.md](TSD-EXAMPLE.md)
-4. [technical-meta.md](technical-meta.md)
+4. [technical-meta.md](../../../agent/knowledge/technical-meta.md)
 
 ## 关联索引
 

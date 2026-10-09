@@ -13,8 +13,8 @@
 ## 阅读顺序
 
 1. [business-overview.md](business-overview.md)
-2. [business-capability-map.md](business-capability-map.md)
-3. [business-glossary.md](business-glossary.md)
+2. [business-glossary.md](business-glossary.md)
+3. [business-capability-map.md](business-capability-map.md)
 
 ## 关联索引
 

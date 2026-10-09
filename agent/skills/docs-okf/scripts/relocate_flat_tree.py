@@ -8,7 +8,7 @@ import re
 import shutil
 import sys
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
@@ -57,47 +57,6 @@ FILE_MOVES: List[Tuple[str, str]] = [
     ("technical/CMP-EXAMPLE.md", "technical/MW-EXAMPLE/CMP-EXAMPLE.md"),
 ]
 
-REFERENCE_META: Dict[str, Dict[str, str]] = {
-    "BD-EXAMPLE": {"definition_scope": "reference", "ssot_layer": "company"},
-    "PL-EXAMPLE": {"definition_scope": "reference", "ssot_layer": "company"},
-    "SYS-EXAMPLE": {"definition_scope": "local", "ssot_layer": "system"},
-    "APP-EXAMPLE": {"definition_scope": "reference", "ssot_layer": "system"},
-    "MS-EXAMPLE": {"definition_scope": "reference", "ssot_layer": "system"},
-    "DS-EXAMPLE": {"definition_scope": "reference", "ssot_layer": "system"},
-    "ENT-EXAMPLE": {"definition_scope": "reference", "ssot_layer": "system"},
-}
-
-SSOT_BODY: Dict[str, str] = {
-    "BD-EXAMPLE": (
-        "# SSOT\n\n"
-        "上游主定义：`company/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md`（公司层 OKF SSOT）。\n"
-    ),
-    "PL-EXAMPLE": (
-        "# SSOT\n\n"
-        "上游主定义：`company/knowledge/product/PL-EXAMPLE.md`（公司层 OKF SSOT）。\n"
-    ),
-    "SYS-EXAMPLE": (
-        "# SSOT\n\n"
-        "上游主定义：`company/knowledge/application/SYS-EXAMPLE.md`（公司层 OKF SSOT）。\n"
-    ),
-    "APP-EXAMPLE": (
-        "# SSOT\n\n"
-        "上游主定义：`system/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md`（系统层 OKF SSOT）。\n"
-    ),
-    "MS-EXAMPLE": (
-        "# SSOT\n\n"
-        "上游主定义：`system/knowledge/application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md`（系统层 OKF SSOT）。\n"
-    ),
-    "DS-EXAMPLE": (
-        "# SSOT\n\n"
-        "上游主定义：`system/knowledge/data/DS-EXAMPLE/DS-EXAMPLE.md`（系统层 OKF SSOT）。\n"
-    ),
-    "ENT-EXAMPLE": (
-        "# SSOT\n\n"
-        "上游主定义：`system/knowledge/data/DS-EXAMPLE/ENT-EXAMPLE.md`（系统层 OKF SSOT）。\n"
-    ),
-}
-
 REMOVE_DIRS = [
     "business/BD-EXAMPLE",
     "business/BSD-EXAMPLE",  # old nested only if empty - careful BC was in BSD
@@ -114,20 +73,6 @@ def rewrite_links(text: str) -> str:
     for old, new in LINK_REWRITES:
         text = text.replace(old, new)
     return text
-
-
-def apply_reference_meta(path: Path) -> None:
-    text = path.read_text(encoding="utf-8")
-    meta, body = okf_lib.parse_frontmatter(text)
-    fid = meta.get("id")
-    if not fid or fid not in REFERENCE_META:
-        return
-    for k, v in REFERENCE_META[fid].items():
-        meta[k] = v
-    ssot = SSOT_BODY.get(fid, "")
-    if ssot and "# SSOT" not in body:
-        body = ssot + "\n" + body.lstrip()
-    path.write_text(okf_lib.format_frontmatter(meta) + rewrite_links(body), encoding="utf-8")
 
 
 def move_files(dry_run: bool) -> None:
@@ -152,8 +97,6 @@ def rewrite_all_concepts(dry_run: bool) -> None:
             print(f"rewrite links in {path.relative_to(REPO_ABS)}")
             if not dry_run:
                 path.write_text(new_text, encoding="utf-8")
-        if not dry_run:
-            apply_reference_meta(path)
 
 
 def remove_empty_nested(dry_run: bool) -> None:

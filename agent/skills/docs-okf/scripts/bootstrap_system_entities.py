@@ -27,22 +27,21 @@ id: BSD-EXAMPLE-L3
 perspective: business
 hierarchy: BSD
 layer_scope: system
-level: 3
 ---
 ## 关系
 
-- parent: BSD-EXAMPLE-L2（解决方案 BSD-L2，示例 ID）
-- implemented_by:
-  - [BC-EXAMPLE](BC-EXAMPLE/BC-EXAMPLE.md)
+- parent: BSD-EXAMPLE-L2
+- implemented_by: [BC-EXAMPLE](BC-EXAMPLE/BC-EXAMPLE.md)
 
 ## 跨视角
 
-- 上级方案子域：BSD-EXAMPLE-L2
+- (none)
 
 ## 详细说明
 
 - definition_scope: local
 - level: 3
+- BSD-L3；parent→解决方案 BSD-L2。
 
 ## 依据与证据
 
@@ -54,7 +53,7 @@ level: 3
         """---
 type: Bounded Context
 title: 示例限界上下文
-description: 示例业务实体。
+description: 限界上下文。
 tags: [business, BC]
 timestamp: "%s"
 id: BC-EXAMPLE
@@ -65,18 +64,17 @@ layer_scope: system
 ## 关系
 
 - implements_to: [BSD-EXAMPLE-L3](../BSD-EXAMPLE-L3.md)
-- implemented_by:
-  - [AGG-EXAMPLE](AGG-EXAMPLE/AGG-EXAMPLE.md)
+- implemented_by: [AGG-EXAMPLE](AGG-EXAMPLE/AGG-EXAMPLE.md)
 
 ## 跨视角
 
+- mapped_by: [PM-EXAMPLE](../../../product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE.md)
 - supported_by: [APP-EXAMPLE](../../../application/APP-EXAMPLE/APP-EXAMPLE.md)
-- mapped_by:
-  - [PM-EXAMPLE](../../../product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE.md)
 
 ## 详细说明
 
-- (none)
+- definition_scope: local
+- 限界上下文。
 
 ## 依据与证据
 
@@ -88,7 +86,7 @@ layer_scope: system
         """---
 type: Aggregate
 title: 示例聚合
-description: 示例业务实体。
+description: 聚合根。
 tags: [business, AGG]
 timestamp: "%s"
 id: AGG-EXAMPLE
@@ -99,8 +97,7 @@ layer_scope: system
 ## 关系
 
 - implements_to: [BC-EXAMPLE](../BC-EXAMPLE.md)
-- implemented_by:
-  - [AB-EXAMPLE](AB-EXAMPLE.md)
+- implemented_by: [AB-EXAMPLE](AB-EXAMPLE.md)
 
 ## 跨视角
 
@@ -110,7 +107,8 @@ layer_scope: system
 
 ## 详细说明
 
-- (none)
+- definition_scope: local
+- 聚合根。
 
 ## 依据与证据
 
@@ -122,7 +120,7 @@ layer_scope: system
         """---
 type: Ability
 title: 示例能力
-description: 示例业务实体。
+description: 领域能力。
 tags: [business, AB]
 timestamp: "%s"
 id: AB-EXAMPLE
@@ -136,59 +134,25 @@ layer_scope: system
 
 ## 跨视角
 
-- mapped_by:
-  - [UC-EXAMPLE](../../../../product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md)
+- mapped_by: [UC-EXAMPLE](../../../../product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md)
 
 ## 详细说明
 
-- capability: 示例能力描述
+- definition_scope: local
+- 领域能力。
 
 ## 依据与证据
 
 [../../../chapters/business-capability-map.md](../../../chapters/business-capability-map.md#领域能力)（示例）
 """,
     ),
-    (
-        "knowledge/product/PD-EXAMPLE/PD-EXAMPLE.md",
-        """---
-type: Product
-title: 示例产品服务
-description: 系统层薄 reference。首次定义在解决方案。
-tags: [product, PD]
-timestamp: "%s"
-id: PD-EXAMPLE
-perspective: product
-hierarchy: PD
-layer_scope: system
----
-## 关系
 
-- implements_to: PL-EXAMPLE
-- maps_to: BS-EXAMPLE
-- implemented_by:
-  - [PM-EXAMPLE](PM-EXAMPLE/PM-EXAMPLE.md)
-- mapped_by:
-  - [SYS-EXAMPLE](../../application/SYS-EXAMPLE.md)
-
-## 跨视角
-
-- 首次定义：PD-EXAMPLE（解决方案）
-
-## 详细说明
-
-- definition_scope: reference
-
-## 依据与证据
-
-[../chapters/product-architecture.md](../chapters/product-architecture.md)（示例）
-""",
-    ),
     (
         "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE.md",
         """---
 type: Product Module
 title: 示例产品模块
-description: null
+description: 产品模块。
 tags: [product, PM]
 timestamp: "%s"
 id: PM-EXAMPLE
@@ -199,7 +163,6 @@ layer_scope: system
 ## 关系
 
 - implements_to: PD-EXAMPLE
-- depends_to: []
 
 ## 跨视角
 
@@ -207,7 +170,8 @@ layer_scope: system
 
 ## 详细说明
 
-- 上游产品服务 SSOT：解决方案 `PD-EXAMPLE`（纯 ID）
+- definition_scope: local
+- 产品模块。
 
 ## 依据与证据
 
@@ -219,7 +183,7 @@ layer_scope: system
         """---
 type: Feature
 title: 示例功能
-description: 示例产品实体。
+description: 功能点。
 tags: [product, FT]
 timestamp: "%s"
 id: FT-EXAMPLE
@@ -230,16 +194,16 @@ layer_scope: system
 ## 关系
 
 - implements_to: [PM-EXAMPLE](../PM-EXAMPLE.md)
-- implemented_by:
-  - [FR-EXAMPLE](FR-EXAMPLE/FR-EXAMPLE.md)
+- implemented_by: [FR-EXAMPLE](FR-EXAMPLE/FR-EXAMPLE.md)
 
 ## 跨视角
 
-- supported_by: API-EXAMPLE
+- (none)
 
 ## 详细说明
 
-- acceptance_criteria: 示例验收标准A; 示例验收标准B
+- definition_scope: local
+- 功能点。
 
 ## 依据与证据
 
@@ -251,7 +215,7 @@ layer_scope: system
         """---
 type: Functional Requirement
 title: 示例功能需求
-description: 示例产品实体。
+description: 功能需求。
 tags: [product, FR]
 timestamp: "%s"
 id: FR-EXAMPLE
@@ -259,7 +223,6 @@ perspective: product
 hierarchy: FR
 layer_scope: system
 ---
-
 ## 关系
 
 - implements_to: [FT-EXAMPLE](../FT-EXAMPLE.md)
@@ -273,7 +236,8 @@ layer_scope: system
 
 ## 详细说明
 
-- (none)
+- definition_scope: local
+- 功能需求。
 
 ## 依据与证据
 
@@ -285,7 +249,7 @@ layer_scope: system
         """---
 type: Business Rule
 title: 示例规则
-description: 示例产品实体。
+description: 业务规则。
 tags: [product, BR]
 timestamp: "%s"
 id: BR-EXAMPLE
@@ -293,7 +257,6 @@ perspective: product
 hierarchy: BR
 layer_scope: system
 ---
-
 ## 关系
 
 - implements_to: [FR-EXAMPLE](FR-EXAMPLE.md)
@@ -304,9 +267,8 @@ layer_scope: system
 
 ## 详细说明
 
-### BR-001
-
-- (none)
+- definition_scope: local
+- 业务规则。
 
 ## 依据与证据
 
@@ -318,7 +280,7 @@ layer_scope: system
         """---
 type: Use Case
 title: 示例用例
-description: 示例产品实体。
+description: 用例。
 tags: [product, UC]
 timestamp: "%s"
 id: UC-EXAMPLE
@@ -333,14 +295,11 @@ layer_scope: system
 ## 跨视角
 
 - maps_to: [AB-EXAMPLE](../../../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md)
-- mapped_by:
-  - API-EXAMPLE
 
 ## 详细说明
 
-### UC-001
-
-- (none)
+- definition_scope: local
+- 用例。
 
 ## 依据与证据
 
@@ -363,8 +322,7 @@ layer_scope: system
 ## 关系
 
 - implements_to: SLN-EXAMPLE
-- implemented_by:
-  - [APP-EXAMPLE](APP-EXAMPLE/APP-EXAMPLE.md)
+- implemented_by: [APP-EXAMPLE](APP-EXAMPLE/APP-EXAMPLE.md)
 
 ## 跨视角
 
@@ -376,10 +334,7 @@ layer_scope: system
 ## 详细说明
 
 - definition_scope: local
-- architecture:
-  - apps: [APP-EXAMPLE](APP-EXAMPLE/APP-EXAMPLE.md)
-  - external_dependencies: [ExternalExample/HTTP]
-  - ddd_layers: [interface, application, domain, infrastructure]
+- 系统（别名应用服务）；implements_to 解决方案 SLN；maps_to PD。
 
 ## 依据与证据
 
@@ -391,7 +346,7 @@ layer_scope: system
         """---
 type: Application
 title: 示例应用
-description: null
+description: 应用，代码仓库与部署单元。
 tags: [application, APP]
 timestamp: "%s"
 id: APP-EXAMPLE
@@ -402,21 +357,18 @@ layer_scope: system
 ## 关系
 
 - implements_to: [SYS-EXAMPLE](../SYS-EXAMPLE.md)
-- implemented_by:
-  - [MS-EXAMPLE](MS-EXAMPLE/MS-EXAMPLE.md)
+- implemented_by: [MS-EXAMPLE](MS-EXAMPLE/MS-EXAMPLE.md)
 
 ## 跨视角
 
 - supports_to: [BC-EXAMPLE](../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)
 - uses_to:
   - [DS-EXAMPLE](../../data/DS-EXAMPLE/DS-EXAMPLE.md)
-  - MW-EXAMPLE
 
 ## 详细说明
 
-- startup_class: ExampleApp
-- maven_module: example-module
-- repo_url: `git@example.com:org/example.git`
+- definition_scope: local
+- 应用，代码仓库与部署单元。
 
 ## 依据与证据
 
@@ -428,7 +380,7 @@ layer_scope: system
         """---
 type: Microservice
 title: 示例微服务
-description: null
+description: 微服务，入口能力簇。
 tags: [application, MS]
 timestamp: "%s"
 id: MS-EXAMPLE
@@ -443,16 +395,11 @@ layer_scope: system
 ## 跨视角
 
 - maps_to: [AGG-EXAMPLE](../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)
-- uses_to: []
-- cross_references:
-  - [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)
-  - [PM-EXAMPLE](../../../product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE.md)
 
 ## 详细说明
 
-- host_class: ExampleApiImpl
-- host_module: example-module
-- protocol: HTTP
+- definition_scope: local
+- 微服务，入口能力簇。
 
 ## 依据与证据
 
@@ -482,7 +429,8 @@ layer_scope: system
 
 ## 详细说明
 
-- config_key: example_config_key
+- definition_scope: local
+- 示例数据源。
 
 ## 依据与证据
 
@@ -494,7 +442,7 @@ layer_scope: system
         """---
 type: Entity
 title: 示例实体
-description: null
+description: 数据实体，表或集合。
 tags: [data, ENT]
 timestamp: "%s"
 id: ENT-EXAMPLE
@@ -512,8 +460,8 @@ layer_scope: system
 
 ## 详细说明
 
-- logical_name: ExampleEntity
-- physical_table: example_table
+- definition_scope: local
+- 数据实体，表或集合。
 
 ## 依据与证据
 

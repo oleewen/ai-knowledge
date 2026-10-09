@@ -130,7 +130,7 @@ HIERARCHY_TO_TYPE: Dict[str, str] = {
     "MDG": "Master Data Domain",
     "MW": "Middleware Binding",
     "CMP": "Component",
-    "TSD": "Technical Subdomain",
+    "TSD": "Technical Domain",
     "CAP": "Business Capability",
     "BL": "Business Line",
     "BS": "Business Service",
@@ -140,60 +140,6 @@ HIERARCHY_TO_TYPE: Dict[str, str] = {
     "BR": "Business Rule",
     "TBL": "Data Table",
 }
-
-APPLICATION_PERSPECTIVE_DOMAIN_ANCHOR: Dict[str, str] = {
-    "business": "BSD-EXAMPLE",
-    "product": "PM-EXAMPLE",
-    "application": "MS-EXAMPLE",
-    "data": "ENT-EXAMPLE",
-    "technical": "MW-EXAMPLE",
-}
-
-SYSTEM_PERSPECTIVE_DOMAIN_ANCHOR: Dict[str, str] = {
-    "business": "BSD-EXAMPLE",
-    "product": "PD-EXAMPLE",
-    "application": "MS-EXAMPLE",
-    "data": "DS-EXAMPLE",
-    "technical": "MW-EXAMPLE",
-}
-
-COMPANY_PERSPECTIVE_DOMAIN_ANCHOR: Dict[str, str] = {
-    "business": "VC-EXAMPLE",
-    "product": "PL-EXAMPLE",
-    "application": "SLN-EXAMPLE",
-    "data": "MDG-EXAMPLE",
-    "technical": "TPL-EXAMPLE",
-}
-
-# 默认 application bundle 锚点（向后兼容）
-PERSPECTIVE_DOMAIN_ANCHOR = APPLICATION_PERSPECTIVE_DOMAIN_ANCHOR
-
-# legacy：嵌套锚点规则（迁移前）；新落盘见 entity_relpath + PERSPECTIVE_DOMAIN_ANCHOR
-PERSPECTIVE_ANCHOR_RULES: Dict[str, str] = {
-    "business": "BD",
-    "product": "PL",
-    "application": "SYS",
-    "data": "DS",
-}
-
-# application 层 reference concept（非本层 SSOT）
-REFERENCE_FULL_IDS = frozenset(
-    {
-        "BD-EXAMPLE",
-        "PL-EXAMPLE",
-        "SYS-EXAMPLE",
-        "APP-EXAMPLE",
-        "MS-EXAMPLE",
-        "DS-EXAMPLE",
-        "ENT-EXAMPLE",
-    }
-)
-
-_DEFAULT_PRODUCT_PL = "PL-EXAMPLE"
-_DEFAULT_PRODUCT_PD = "PD-EXAMPLE"
-_DEFAULT_PRODUCT_PM = "PM-EXAMPLE"
-_DEFAULT_BUSINESS_VC = "VC-EXAMPLE"
-_DEFAULT_DATA_DS = "DS-EXAMPLE"
 
 
 def _id_prefix(id: str) -> str:
@@ -315,8 +261,8 @@ HIERARCHY_FIRST_LAYER: Dict[str, str] = {
     "CAP": "company",
     "BL": "company",
     "PL": "solution",
-    "SLN": "company",
-    "MDG": "company",
+    "SLN": "solution",
+    "MDG": "solution",
     "TPL": "company",
     "BSD": "system",
     "BC": "system",
@@ -336,7 +282,7 @@ HIERARCHY_FIRST_LAYER: Dict[str, str] = {
     "MS": "system",
     "DS": "system",
     "ENT": "system",
-    "TSD": "system",
+    "TSD": "solution",
     "API": "application",
     "TBL": "application",
     "MW": "application",
@@ -358,20 +304,11 @@ def hierarchy_to_perspective(hierarchy: str) -> Optional[str]:
     return HIERARCHY_TO_PERSPECTIVE.get(hierarchy)
 
 
-def perspective_domain_anchor(
-    perspective: str,
-    id: Optional[str] = None,
-    bundle: str = "application",
-) -> str:
-    """域扁平树：返回 perspective 下域文件夹名。"""
-    anchor_map = (
-        COMPANY_PERSPECTIVE_DOMAIN_ANCHOR
-        if bundle == "company"
-        else SYSTEM_PERSPECTIVE_DOMAIN_ANCHOR
-        if bundle == "system"
-        else APPLICATION_PERSPECTIVE_DOMAIN_ANCHOR
-    )
-    return anchor_map.get(perspective, id or "")
+def _require_single_parent(prefix: str, path_parent: Optional[str], role: str) -> str:
+    parent = (path_parent or "").strip()
+    if not parent or "/" in parent:
+        raise ValueError(f"entity_relpath: {prefix} requires path_parent ({role})")
+    return parent
 
 
 _REL_ID_RE = re.compile(r"[A-Z][A-Z0-9]*-[A-Za-z0-9_-]+")
@@ -403,17 +340,82 @@ def relation_path_parent(body: str, local_ids: Optional[set] = None) -> Optional
     return pick("parent") or pick("implements_to")
 
 
+# 系统层嵌套：宿主目录要 {父链}/{id}/{id}.md；叶子文件是 {父链}/{id}.md。
+_SYSTEM_HOST_PARENT_PARTS = {"BC": 1, "AGG": 2, "FT": 2, "FR": 3}
+_SYSTEM_LEAF_PARENT_PARTS = {"AB": 3, "UC": 4, "BR": 4}
+
+
+def _system_nested_relpath(
+    perspective: str,
+    id: str,
+    prefix: str,
+    path_parent: Optional[str],
+) -> str:
+    """系统层嵌套实体：path_parent 是父目录链，不是单个锚点名。"""
+    host = prefix in _SYSTEM_HOST_PARENT_PARTS
+    need = (
+        _SYSTEM_HOST_PARENT_PARTS[prefix]
+        if host
+        else _SYSTEM_LEAF_PARENT_PARTS[prefix]
+    )
+    parts = [part for part in (path_parent or "").split("/") if part]
+    if len(parts) != need:
+        raise ValueError(
+            f"entity_relpath: system {prefix} requires a parent directory chain of {need}"
+        )
+    chain = "/".join(parts)
+    if host:
+        return f"knowledge/{perspective}/{chain}/{id}/{id}.md"
+    return f"knowledge/{perspective}/{chain}/{id}.md"
+
+
+def system_nested_parent_count(prefix: str) -> Optional[int]:
+    """系统层该前缀的父目录段数。不需要目录链时返回 None。"""
+    if prefix in _SYSTEM_HOST_PARENT_PARTS:
+        return _SYSTEM_HOST_PARENT_PARTS[prefix]
+    if prefix in _SYSTEM_LEAF_PARENT_PARTS:
+        return _SYSTEM_LEAF_PARENT_PARTS[prefix]
+    return None
+
+
+# 只要一个父目录、且不在系统嵌套表里的前缀
+_SINGLE_PARENT_COUNT = {
+    ("company", "BSD"): 1,
+    ("company", "CAP"): 1,
+    ("system", "PM"): 1,
+    ("system", "ENT"): 1,
+    ("system", "MS"): 1,
+    ("application", "API"): 1,
+    ("application", "TBL"): 1,
+    ("application", "CMP"): 1,
+}
+
+
+def relpath_parent_count(prefix: str, bundle: str) -> Optional[int]:
+    """该层落盘所需的父目录段数。不需要父目录时返回 None。"""
+    if bundle == "system":
+        nested = system_nested_parent_count(prefix)
+        if nested:
+            return nested
+    return _SINGLE_PARENT_COUNT.get((bundle, prefix))
+
+
 def entity_relpath(
     perspective: str,
     id: str,
     path_parent: Optional[str] = None,
     bundle: str = "application",
 ) -> str:
-    """相对 bundle 根的 concept 路径（域扁平树）。
+    """相对 bundle 根的 concept 路径。
 
     path_parent 来自 relation_path_parent，不读 frontmatter。
+    请求的 bundle 必须是该 ID 的首次定义层，否则拒绝落路径。
+    叶子文件缺父级时拒绝，不用 EXAMPLE 锚点回退。
     """
     prefix = _id_prefix(id)
+    layer = hierarchy_first_layer(prefix, id)
+    if layer != bundle:
+        raise ValueError(f"entity_relpath: {bundle} does not land {prefix} files")
     if bundle == "company":
         if perspective == "business" and prefix == "VC":
             return f"knowledge/business/{id}/{id}.md"
@@ -422,25 +424,16 @@ def entity_relpath(
         if perspective == "business" and prefix == "BL":
             return f"knowledge/business/BL/{id}.md"
         if perspective == "business" and prefix == "BSD":
-            bd = path_parent or "BD-EXAMPLE"
+            bd = _require_single_parent(prefix, path_parent, "BD id")
             return f"knowledge/business/{bd}/{id}.md"
         if perspective == "business" and prefix == "CAP":
-            vc = path_parent or _DEFAULT_BUSINESS_VC
+            vc = _require_single_parent(prefix, path_parent, "VC id")
             return f"knowledge/business/{vc}/{id}.md"
-        if perspective == "application" and prefix == "SLN":
-            return f"knowledge/application/{id}.md"
-        if perspective == "data" and prefix == "MDG":
-            return f"knowledge/data/{id}.md"
         if perspective == "technical" and prefix == "TPL":
             return f"knowledge/technical/{id}.md"
-        anchor = perspective_domain_anchor(perspective, id, bundle)
-        if not anchor:
-            return f"knowledge/{perspective}/{id}.md"
-        return f"knowledge/{perspective}/{anchor}/{id}.md"
+        raise ValueError(f"entity_relpath: company does not land {prefix} files")
 
     if bundle == "system":
-        if perspective == "business" and prefix == "BD":
-            raise ValueError("entity_relpath: system does not land BD files")
         if perspective == "business" and prefix == "BSD":
             # 系统层只落 L3。L2 的 parent 跨层，不参与路径。
             if id.endswith("-L3"):
@@ -448,12 +441,8 @@ def entity_relpath(
             raise ValueError(
                 "entity_relpath: system does not land BSD-L1 or BSD-L2 files"
             )
-        if perspective == "product" and prefix == "PL":
-            return f"knowledge/product/{id}.md"
-        if perspective == "product" and prefix == "PD":
-            return f"knowledge/product/{id}/{id}.md"
         if perspective == "product" and prefix == "PM":
-            pd = path_parent or _DEFAULT_PRODUCT_PD
+            pd = _require_single_parent(prefix, path_parent, "PD id")
             return f"knowledge/product/{pd}/{id}/{id}.md"
         if perspective == "application" and prefix == "SYS":
             return f"knowledge/application/{id}.md"
@@ -465,16 +454,20 @@ def entity_relpath(
                     "entity_relpath: system MS requires path_parent (APP id)"
                 )
             return f"knowledge/application/{path_parent}/{id}/{id}.md"
-        if perspective == "data" and prefix == "MDG":
-            return f"knowledge/data/{id}.md"
-        if perspective == "technical" and prefix == "TSD":
-            return f"knowledge/technical/{id}.md"
-        if perspective == "technical" and prefix == "MW":
-            return f"knowledge/technical/{id}/{id}.md"
-        anchor = perspective_domain_anchor(perspective, id, bundle)
-        if not anchor:
-            return f"knowledge/{perspective}/{id}.md"
-        return f"knowledge/{perspective}/{anchor}/{id}.md"
+        if perspective == "business" and prefix in (
+            _SYSTEM_HOST_PARENT_PARTS.keys() | _SYSTEM_LEAF_PARENT_PARTS.keys()
+        ):
+            return _system_nested_relpath(perspective, id, prefix, path_parent)
+        if perspective == "product" and prefix in (
+            _SYSTEM_HOST_PARENT_PARTS.keys() | _SYSTEM_LEAF_PARENT_PARTS.keys()
+        ):
+            return _system_nested_relpath(perspective, id, prefix, path_parent)
+        if perspective == "data" and prefix == "DS":
+            return f"knowledge/data/{id}/{id}.md"
+        if perspective == "data" and prefix == "ENT":
+            parent = _require_single_parent(prefix, path_parent, "DS id")
+            return f"knowledge/data/{parent}/{id}.md"
+        raise ValueError(f"entity_relpath: system does not land {prefix} files")
 
     if bundle == "solution":
         if perspective == "business" and prefix == "BSD":
@@ -487,19 +480,26 @@ def entity_relpath(
             return f"knowledge/product/BP/{id}.md"
         if perspective == "business" and prefix == "BS":
             return f"knowledge/business/BS/{id}.md"
+        if perspective == "application" and prefix == "SLN":
+            return f"knowledge/application/{id}.md"
+        if perspective == "data" and prefix == "MDG":
+            return f"knowledge/data/{id}.md"
+        if perspective == "technical" and prefix == "TSD":
+            return f"knowledge/technical/{id}.md"
+        raise ValueError(f"entity_relpath: solution does not land {prefix} files")
 
-    if perspective == "application" and prefix in ("SYS", "APP"):
-        return f"knowledge/application/{id}.md"
-    if perspective == "business" and prefix == "BD":
-        return f"knowledge/business/{id}.md"
-    if perspective == "data" and prefix == "DS":
-        return f"knowledge/data/{id}.md"
-    if perspective == "product" and prefix == "PL":
-        return f"knowledge/product/{id}.md"
-    anchor = perspective_domain_anchor(perspective, id, bundle)
-    if not anchor:
-        return f"knowledge/{perspective}/{id}.md"
-    return f"knowledge/{perspective}/{anchor}/{id}.md"
+    if perspective == "application" and prefix == "API":
+        parent = _require_single_parent(prefix, path_parent, "MS id")
+        return f"knowledge/application/{parent}/{id}.md"
+    if perspective == "data" and prefix == "TBL":
+        parent = _require_single_parent(prefix, path_parent, "ENT id")
+        return f"knowledge/data/{parent}/{id}.md"
+    if perspective == "technical" and prefix == "MW":
+        return f"knowledge/technical/{id}/{id}.md"
+    if perspective == "technical" and prefix == "CMP":
+        parent = _require_single_parent(prefix, path_parent, "MW id")
+        return f"knowledge/technical/{parent}/{id}.md"
+    raise ValueError(f"entity_relpath: application does not land {prefix} files")
 
 
 def to_bundle_link(relpath: str) -> str:

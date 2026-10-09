@@ -8,25 +8,19 @@ id: VC-EXAMPLE
 perspective: business
 hierarchy: VC
 layer_scope: company
-supported_by:
-  - BD-EXAMPLE
-implemented_by:
-  - CAP-EXAMPLE
 ---
 ## 关系
 
-- supported_by:
-  - [BD-EXAMPLE](../BD-EXAMPLE/BD-EXAMPLE.md)
-- implemented_by:
-  - [CAP-EXAMPLE](CAP-EXAMPLE.md)
+- implemented_by: [CAP-EXAMPLE](CAP-EXAMPLE.md)
 
 ## 跨视角
 
-- (none)
+- supported_by: [BD-EXAMPLE](../BD-EXAMPLE/BD-EXAMPLE.md)
 
 ## 详细说明
 
 - definition_scope: local
+- 演示公司级 VC；由 BD 支撑，并由 CAP 实现。
 
 ## 依据与证据
 

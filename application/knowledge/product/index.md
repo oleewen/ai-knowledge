@@ -8,12 +8,12 @@
 
 ## 目录文件
 
-* [product-meta.md](product-meta.md)
+* [product-meta.md](../../../agent/knowledge/product-meta.md)
 
 ## 阅读顺序
 
 1. [README.md](README.md)
-2. [product-meta.md](product-meta.md)
+2. [product-meta.md](../../../agent/knowledge/product-meta.md)
 3. 上游：解决方案 `PL-*` / `PD-*` / `BP-*` 与系统 `PM-*` 只写纯 ID（本层不落 EXAMPLE）
 
 ## 关联索引

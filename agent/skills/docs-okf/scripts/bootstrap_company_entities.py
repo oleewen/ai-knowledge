@@ -27,24 +27,19 @@ id: BD-EXAMPLE
 perspective: business
 hierarchy: BD
 layer_scope: company
-supports_to: VC-EXAMPLE
-children:
-  - BSD-EXAMPLE
 ---
 ## 关系
 
-- supports_to: [VC-EXAMPLE](../VC-EXAMPLE/VC-EXAMPLE.md)
-- children:
-  - [BSD-EXAMPLE](BSD-EXAMPLE.md)
+- children: [BSD-EXAMPLE](BSD-EXAMPLE.md)
 
 ## 跨视角
 
-- (none)
+- supports_to: [VC-EXAMPLE](../VC-EXAMPLE/VC-EXAMPLE.md)
 
 ## 详细说明
 
-- strategic_classification: core_domain（枚举值保留英文）
 - definition_scope: local
+- 演示公司级 BD；支撑 VC，并下挂 BSD-L1。
 
 ## 依据与证据
 
@@ -63,22 +58,12 @@ id: BSD-EXAMPLE
 perspective: business
 hierarchy: BSD
 layer_scope: company
-level: 1
-parent: BD-EXAMPLE
-maps_to: CAP-EXAMPLE
-mapped_by:
-  - BL-EXAMPLE
-children:
-  - BSD-EXAMPLE-L2
 ---
 ## 关系
 
 - parent: [BD-EXAMPLE](BD-EXAMPLE.md)
-- children:
-  - BSD-EXAMPLE-L2
 - maps_to: [CAP-EXAMPLE](../VC-EXAMPLE/CAP-EXAMPLE.md)
-- mapped_by:
-  - [BL-EXAMPLE](../BL/BL-EXAMPLE.md)
+- mapped_by: [BL-EXAMPLE](../BL/BL-EXAMPLE.md)
 
 ## 跨视角
 
@@ -87,6 +72,8 @@ children:
 ## 详细说明
 
 - definition_scope: local
+- level: 1
+- 公司层 BSD-L1；挂 BD；由 BL 一对一映射；maps_to CAP。
 
 ## 依据与证据
 
@@ -105,25 +92,19 @@ id: VC-EXAMPLE
 perspective: business
 hierarchy: VC
 layer_scope: company
-supported_by:
-  - BD-EXAMPLE
-implemented_by:
-  - CAP-EXAMPLE
 ---
 ## 关系
 
-- supported_by:
-  - [BD-EXAMPLE](../BD-EXAMPLE/BD-EXAMPLE.md)
-- implemented_by:
-  - [CAP-EXAMPLE](CAP-EXAMPLE.md)
+- implemented_by: [CAP-EXAMPLE](CAP-EXAMPLE.md)
 
 ## 跨视角
 
-- (none)
+- supported_by: [BD-EXAMPLE](../BD-EXAMPLE/BD-EXAMPLE.md)
 
 ## 详细说明
 
 - definition_scope: local
+- 演示公司级 VC；由 BD 支撑，并由 CAP 实现。
 
 ## 依据与证据
 
@@ -142,15 +123,11 @@ id: CAP-EXAMPLE
 perspective: business
 hierarchy: CAP
 layer_scope: company
-implements_to: VC-EXAMPLE
-mapped_by:
-  - BSD-EXAMPLE
 ---
 ## 关系
 
 - implements_to: [VC-EXAMPLE](VC-EXAMPLE.md)
-- mapped_by:
-  - [BSD-EXAMPLE](../BD-EXAMPLE/BSD-EXAMPLE.md)
+- mapped_by: [BSD-EXAMPLE](../BD-EXAMPLE/BSD-EXAMPLE.md)
 
 ## 跨视角
 
@@ -159,6 +136,7 @@ mapped_by:
 ## 详细说明
 
 - definition_scope: local
+- 演示公司级 CAP；实现 VC；由 BSD-L1 一对一映射。
 
 ## 依据与证据
 
@@ -177,15 +155,10 @@ id: BL-EXAMPLE
 perspective: business
 hierarchy: BL
 layer_scope: company
-maps_to: BSD-EXAMPLE
-mapped_by:
-  - PL-EXAMPLE
 ---
 ## 关系
 
 - maps_to: [BSD-EXAMPLE](../BD-EXAMPLE/BSD-EXAMPLE.md)
-- mapped_by:
-  - PL-EXAMPLE
 
 ## 跨视角
 
@@ -194,10 +167,11 @@ mapped_by:
 ## 详细说明
 
 - definition_scope: local
+- 演示公司级 BL；无 parent；与 BSD-L1 一对一映射。
 
 ## 依据与证据
 
-示例数据
+[../chapters/business-roles-and-organization.md](../chapters/business-roles-and-organization.md)（示例）
 """,
     ),
     (
@@ -215,8 +189,7 @@ layer_scope: company
 ---
 ## 关系
 
-- implemented_by:
-  - TSD-EXAMPLE
+- (none)
 
 ## 跨视角
 
@@ -224,8 +197,8 @@ layer_scope: company
 
 ## 详细说明
 
-- domain: 云基础设施
 - definition_scope: local
+- 演示公司级 TPL 结构。
 
 ## 依据与证据
 

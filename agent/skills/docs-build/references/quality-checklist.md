@@ -8,25 +8,23 @@
 
 ## 顺序与结构
 
-- [ ] 技术→数据→业务→产品
-- [ ] 技术 `entities` 分类；他视角扁平
+- [ ] 应用→数据→业务→产品→技术
+- [ ] `entities` 为扁平数组，不按 systems/applications 分组
 
 ## API
 
 - [ ] Dubbo、HTTP、MQ Consumer、Job 全覆盖
-- [ ] 每条 `api_type`：`DUBBO`/`HTTP`/`MQ_CONSUMER`/`JOB`
+- [ ] 入口类型可写入详细说明，缺了不算失败
 - [ ] Dubbo 仅 Provider
-- [ ] MQ 多 Tag → 多条 API
-- [ ] Job 含 `job_handler`
+- [ ] MQ 多 Tag → 一条 API
+- [ ] 处理器名可写入详细说明，缺了不算失败
 - [ ] MQ/Job 归 MS-ID
 
 ## 实体
 
-- [ ] `evidence_chain` 完整
+- [ ] 证据写在「依据与证据」
 - [ ] MS 按宿主聚类 ≠ Maven 模块
 - [ ] 一物理表一 ENT
-- [ ] AGG 有 MS
-- [ ] FT/UC 各有 API
 
 ## README（阶段 3）
 

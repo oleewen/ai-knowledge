@@ -11,7 +11,7 @@
 
 ## 目录文件
 
-* [business-meta.md](business-meta.md)
+* [business-meta.md](../../../agent/knowledge/business-meta.md)
 
 ## 阅读顺序
 
@@ -20,7 +20,7 @@
 3. [VC-EXAMPLE/index.md](VC-EXAMPLE/index.md) — 实体样例（按需）  
 4. [BD-EXAMPLE/index.md](BD-EXAMPLE/index.md) — BD/BSD 样例（按需）
 5. [BL/index.md](BL/index.md) — BL 样例（按需）
-6. [business-meta.md](business-meta.md) — 元数据（按需）
+6. [business-meta.md](../../../agent/knowledge/business-meta.md) — 元数据（按需）
 
 ## 关联索引
 

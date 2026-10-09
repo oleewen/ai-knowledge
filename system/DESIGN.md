@@ -18,7 +18,7 @@ title: 系统知识库设计
 
 | 目录 | 职责 |
 | --- | --- |
-| `knowledge/` | SYS 与实现链 SSOT + 五视角；上层实体可薄 reference；[`overview/`](knowledge/overview/NAME-overview.md) = 蒸馏缓冲区 |
+| `knowledge/` | SYS 与实现链 SSOT + 五视角；上层实体只写纯 ID，不建 reference 文件；[`overview/`](knowledge/overview/NAME-overview.md) = 蒸馏缓冲区 |
 | `analysis/` → `features/` → `requirements/` | 系统 SDD；交付 ∈ `REQUIREMENT-{IDEA-ID}/` |
 | `adr/` | 系统层决策 + `CONTEXT.md` |
 | `application-slots/application-{NAME}/` | 应用镜像软链入口 |

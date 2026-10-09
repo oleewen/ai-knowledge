@@ -8,22 +8,21 @@ id: BSD-EXAMPLE-L3
 perspective: business
 hierarchy: BSD
 layer_scope: system
-level: 3
 ---
 ## 关系
 
-- parent: BSD-EXAMPLE-L2（解决方案 BSD-L2，示例 ID）
-- implemented_by:
-  - [BC-EXAMPLE](BC-EXAMPLE/BC-EXAMPLE.md)
+- parent: BSD-EXAMPLE-L2
+- implemented_by: [BC-EXAMPLE](BC-EXAMPLE/BC-EXAMPLE.md)
 
 ## 跨视角
 
-- 上级方案子域：BSD-EXAMPLE-L2
+- (none)
 
 ## 详细说明
 
 - definition_scope: local
 - level: 3
+- BSD-L3；parent→解决方案 BSD-L2。
 
 ## 依据与证据
 

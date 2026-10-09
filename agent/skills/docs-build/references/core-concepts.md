@@ -1,11 +1,5 @@
 # 核心概念
 
-| 视角 | 层级 | SSOT 载体 |
-| --- | --- | --- |
-| application | SYS/APP/MS/API | 各实体 per-entity `{ID}.md`（OKF concept + frontmatter；schema 2.1 字段语义） |
-| data | DS、ENT | 锚点目录 + 叶子 `{ID}.md` |
-| business | BD→AB | 锚点目录 + 叶子 `{ID}.md` |
-| product | PL→UC | 锚点目录 + 叶子 `{ID}.md` |
-| technical | MW/CMP | 扁平 `technical/{ID}.md` |
+首次定义见 [knowledge-governance.md](../../../knowledge/knowledge-governance.md)「各层聚焦摘要」。路径见 [knowledge-layout.md](../../../references/knowledge-layout.md)。
 
-层级与必填字段见各视角 `{perspective}-meta.md`；聚合索引由扫描写入 `{DOC_DIR}/INDEX-GUIDE.md` 第四章（非 SSOT）。
+层级与必填字段见 `agent/knowledge/{perspective}-meta.md`；聚合索引由扫描写入 `{DOC_DIR}/INDEX-GUIDE.md` 第四章（非 SSOT）。

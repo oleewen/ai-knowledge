@@ -1,7 +1,7 @@
 ---
 type: Microservice
 title: 示例微服务
-description: null
+description: 微服务，入口能力簇。
 tags: [application, MS]
 timestamp: "2026-06-21T00:00:00+08:00"
 id: MS-EXAMPLE
@@ -16,16 +16,11 @@ layer_scope: system
 ## 跨视角
 
 - maps_to: [AGG-EXAMPLE](../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)
-- uses_to: []
-- cross_references:
-  - [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)
-  - [PM-EXAMPLE](../../../product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE.md)
 
 ## 详细说明
 
-- host_class: ExampleApiImpl
-- host_module: example-module
-- protocol: HTTP
+- definition_scope: local
+- 微服务，入口能力簇。
 
 ## 依据与证据
 

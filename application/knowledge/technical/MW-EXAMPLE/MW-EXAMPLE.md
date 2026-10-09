@@ -12,8 +12,7 @@ layer_scope: application
 ## 关系
 
 - implements_to: TSD-EXAMPLE
-- implemented_by:
-  - [CMP-EXAMPLE](CMP-EXAMPLE.md)
+- implemented_by: [CMP-EXAMPLE](CMP-EXAMPLE.md)
 
 ## 跨视角
 
@@ -21,8 +20,8 @@ layer_scope: application
 
 ## 详细说明
 
-- binding_type: kafka
-- config_key: example.kafka.topic
+- definition_scope: local
+- 演示技术视角 MW 数据结构（示例）。
 
 ## 依据与证据
 

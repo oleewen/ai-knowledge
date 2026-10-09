@@ -4,9 +4,9 @@ title: 应用架构
 ---
 # 应用架构
 
-[返回 · 解决方案知识库 — 架构文档](../README.md)
+[返回 · 解决方案知识库](../README.md)
 
-**本层 SSOT**：SLN（一仓一 SLN）。SYS ∈ 系统（`maps_to` PD，`implements_to` SLN）。企业标准只引用公司 application。章节见 [chapters/index.md](chapters/index.md)。字段 [application-meta.md](application-meta.md)。
+**本层 SSOT**：SLN（一仓一 SLN）。下层实体不涉及。企业标准只引用公司 application。章节见 [chapters/index.md](chapters/index.md)。字段 [application-meta.md](../../../agent/knowledge/application-meta.md)。
 
 目录与阅读顺序见 [index.md](index.md)。
 
@@ -19,6 +19,6 @@ title: 应用架构
 
 ## 实体
 
-| ID | 名称 | 文件 |
-|----|------|------|
-| SLN-EXAMPLE | 示例解决方案 | [SLN-EXAMPLE.md](SLN-EXAMPLE.md) |
+| 链序 | 层级 | ID | 名称 | 文件/目录 |
+|------|------|----|------|-----------|
+| L1 | SLN | SLN-EXAMPLE | 示例解决方案 | [SLN-EXAMPLE.md](SLN-EXAMPLE.md) |

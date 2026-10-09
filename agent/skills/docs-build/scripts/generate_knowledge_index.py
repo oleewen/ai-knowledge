@@ -25,22 +25,12 @@ _LEAD = (
 )
 
 _SCOPE_NOTE = {
-    "company": (
-        "> 本层登记 **VC / BD / BSD-L1 / CAP / BL / TPL**。"
-        "无 PL/SLN/PD/BSD-L2/MDG/TSD/SYS（见解决方案/系统）。"
-    ),
-    "solution": (
-        "> 本层登记 **SLN / PL / PD / BP / BSP / BSD-L2 / BS / MDG / TSD**。"
-        "公司 VC/BD/L1/BL/TPL 与系统 SYS 链不在本层登记。"
-    ),
+    "company": "> 本层登记 **VC / BD / BSD-L1 / CAP / BL / TPL**。",
+    "solution": "> 本层登记 **SLN / PL / PD / BP / BSP / BSD-L2 / BS / MDG / TSD**。",
     "system": (
-        "> 公司级与解决方案级首次定义不在本层登记。"
-        "本层 **SYS / BSD-L3 / BC / AGG / AB / PM / FT / FR / UC / BR / APP / MS / DS / ENT**。"
+        "> 本层登记 **SYS / BSD-L3 / BC / AGG / AB / PM / FT / FR / UC / BR / APP / MS / DS / ENT**。"
     ),
-    "application": (
-        "> 本层仅登记 **API / TBL / MW / CMP**。"
-        "BL 见公司；SLN/PL/PD/BP/BSP/BSD-L2/BS/MDG/TSD 见解决方案；SYS 链见系统。"
-    ),
+    "application": "> 本层仅登记 **API / TBL / MW / CMP**。",
 }
 
 _NAV_LINKS = """### 视角入口

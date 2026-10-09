@@ -58,7 +58,7 @@
 ├── application/                # 应用层 SSOT + SDD
 │   ├── knowledge/              # 五视角 + overview/{NAME}-overview.md
 │   ├── analysis/ · features/ · requirements/ · adr/
-│   ├── knowledge-links.yaml · viz.html · docs-meta.md
+│   ├── knowledge-links.yaml · viz.html
 │   └── changelogs/
 ├── system/                     # 系统层 + overview + 联邦槽位
 │   ├── knowledge/ · overview/
@@ -284,8 +284,8 @@ stateDiagram-v2
 | 数据源 | 类型 | 用途 |
 | -------- | ------ | ------ |
 | `{ID}.md`（OKF concept） | Markdown + YAML frontmatter | 五视角实体 SSOT；各 bundle `knowledge/index.md` |
-| `*-meta.md` / `docs-meta.md` | Markdown | 视角/目录机器契约 |
-| `knowledge-links.yaml` | YAML | 联邦 path / repository / doc_dir / 层相关 name 字段（application/system/solution/company 各一） |
+| `agent/knowledge/{视角}-meta.md` | Markdown | 视角字段契约 |
+| `knowledge-links.yaml` | YAML | 联邦 path / repository / dir / name / label；type 必写（parent、child、meta） |
 | `viz.html` | HTML | OKF 可视化（四层 application/system/solution/company） |
 | Git 仓库 | 文本与脚本 | 版本与协作真相源 |
 

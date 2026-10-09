@@ -4,7 +4,7 @@ title: overview
 ---
 # overview
 
-[返回 · knowledge](../README.md)
+[返回 · 应用知识库](../README.md)
 
 应用层五视角 overview 缓冲（表行 ↔ 视角章节 `##`）。**非** `docs-distill` 目标。供本库 `docs-extract` / `docs-archive` / `docs-tag`。
 

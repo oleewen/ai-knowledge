@@ -8,24 +8,20 @@ id: BP-EXAMPLE
 perspective: product
 hierarchy: BP
 layer_scope: solution
-implements_to: SLN-EXAMPLE
-children:
-  - BSP-EXAMPLE
 ---
 ## 关系
 
-- implements_to: [SLN-EXAMPLE](../../application/SLN-EXAMPLE.md)
-- children:
-  - [BSP-EXAMPLE](BSP-EXAMPLE.md)
+- children: [BSP-EXAMPLE](BSP-EXAMPLE.md)
+- implements_to: SLN-EXAMPLE
 
 ## 跨视角
 
-（none）
+- (none)
 
 ## 详细说明
 
 - definition_scope: local
-- 一个 SLN 一条 BP。与 PD 之间无 `maps_to`。
+- 一个 SLN 一条业务流程；implements_to SLN。
 
 ## 依据与证据
 

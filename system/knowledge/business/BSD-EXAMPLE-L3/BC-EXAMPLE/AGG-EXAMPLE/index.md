@@ -6,8 +6,8 @@
 
 ## 目录文件
 
-* [示例能力](AB-EXAMPLE.md) - 示例业务实体。
-* [示例聚合](AGG-EXAMPLE.md) - 示例业务实体。
+* [示例能力](AB-EXAMPLE.md) - 领域能力。
+* [示例聚合](AGG-EXAMPLE.md) - 聚合根。
 
 ## 阅读顺序
 

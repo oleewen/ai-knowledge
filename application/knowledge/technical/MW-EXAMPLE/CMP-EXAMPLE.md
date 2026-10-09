@@ -19,7 +19,9 @@ layer_scope: application
 
 ## 详细说明
 
+- definition_scope: local
 - maven_coordinates: org.example:example-client:1.0.0
+- 演示技术视角 CMP 数据结构（示例）。
 
 ## 依据与证据
 

@@ -121,6 +121,8 @@ def test_system_knowledge_index_scope_and_nav():
             bundle, bundle="system"
         )
         assert "SYS / BSD-L3 / BC / AGG / AB" in rendered
+        assert "不在本层登记" not in rendered
+        assert "见应用" not in rendered
         assert "BSD-L2 / PD / SYS / MDG" not in rendered
         assert "### 视角入口" in rendered
         assert "[技术](knowledge/technical/README.md)" in rendered
@@ -136,8 +138,9 @@ def test_application_knowledge_index_scope_and_nav():
             bundle, bundle="application"
         )
         assert "API / TBL / MW / CMP" in rendered
-        assert "BL 见公司" in rendered
-        assert "SLN/PL/PD/BP/BSP/BSD-L2/BS/MDG/TSD 见解决方案" in rendered
+        assert "见公司" not in rendered
+        assert "见解决方案" not in rendered
+        assert "见系统" not in rendered
         assert "PL/SLN** 见公司" not in rendered
         assert "### 视角入口" in rendered
         assert "[数据](knowledge/data/README.md)" in rendered
@@ -154,7 +157,8 @@ def test_company_knowledge_index_scope_and_nav():
         )
         assert "VC / BD / BSD-L1 / CAP / BL / TPL" in rendered
         assert "### 视角入口" in rendered
-        assert "无 PL/SLN/PD/BSD-L2/MDG/TSD/SYS" in rendered
+        assert "无 SLN" not in rendered
+        assert "无 API" not in rendered
         assert "SLN ∈ application" not in rendered
 
 
@@ -185,7 +189,7 @@ def test_solution_knowledge_index_scope_and_nav():
             bundle, bundle="solution"
         )
         assert "SLN / PL / PD / BP / BSP / BSD-L2 / BS / MDG / TSD" in rendered
-        assert "公司 VC/BD/L1/BL/TPL" in rendered
+        assert "不在本层登记" not in rendered
         assert "### 视角入口" in rendered
         assert "[应用](knowledge/application/README.md)" in rendered
 

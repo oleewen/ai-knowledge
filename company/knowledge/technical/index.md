@@ -10,14 +10,14 @@
 
 * [示例技术平台能力](TPL-EXAMPLE.md) - 演示公司级 TPL 结构。
 
-* [technical-meta.md](technical-meta.md)
+* [technical-meta.md](../../../agent/knowledge/technical-meta.md)
 
 ## 阅读顺序
 
 1. [README.md](README.md) — 视角范围  
 2. [chapters/index.md](chapters/index.md) — chapters  
 3. [TPL-EXAMPLE.md](TPL-EXAMPLE.md) — 实体样例（按需）  
-4. [technical-meta.md](technical-meta.md) — 元数据（按需）
+4. [technical-meta.md](../../../agent/knowledge/technical-meta.md) — 元数据（按需）
 
 ## 关联索引
 

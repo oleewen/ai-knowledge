@@ -4,9 +4,9 @@ title: 业务架构
 ---
 # 业务架构
 
-[返回 · 解决方案知识库 — 架构文档](../README.md)
+[返回 · 解决方案知识库](../README.md)
 
-**本层 SSOT**：BSD-L2（`parent`→公司 L1，`mapped_by`→BS）；BS（无 parent，`maps_to`→BSD-L2 1:1）。BC 链 ∈ 系统。企业标准只引用公司 business。台账本页；字段 [business-meta.md](business-meta.md)。章节见 [chapters/index.md](chapters/index.md)。
+**本层 SSOT**：BSD-L2（`parent`→公司 L1，`mapped_by`→BS）；BS（无 parent，`maps_to`→BSD-L2 1:1）。下层实体不涉及。企业标准只引用公司 business。台账本页；字段 [business-meta.md](../../../agent/knowledge/business-meta.md)。章节见 [chapters/index.md](chapters/index.md)。
 
 目录与阅读顺序见 [index.md](index.md)。
 
@@ -20,7 +20,7 @@ title: 业务架构
 
 ## 实体
 
-| 链序 | 层级 | ID | 名称 | 文件 |
-|------|------|----|------|------|
-| 3 | BSD-L2 | BSD-EXAMPLE-L2 | 示例二级子域 | [BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md](BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md) |
+| 链序 | 层级 | ID | 名称 | 文件/目录 |
+|------|------|----|------|-----------|
+| L3 | BSD-L2 | BSD-EXAMPLE-L2 | 示例二级子域 | [BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md](BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md) |
 | — | BS | BS-EXAMPLE | 示例业务服务 | [BS/BS-EXAMPLE.md](BS/BS-EXAMPLE.md) |

@@ -11,7 +11,7 @@ title: 业务域划分
 
 ## 核心域
 
-直接实现价值环节的一级域。本示例仅 BD-EXAMPLE（`strategic_classification: core_domain`）。
+直接实现价值环节的一级域。本示例仅 BD-EXAMPLE。
 
 | 业务域 | 职责 | 边界 | 能力 |
 |---|---|---|---|
