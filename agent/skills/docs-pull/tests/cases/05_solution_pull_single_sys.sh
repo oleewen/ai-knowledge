@@ -53,11 +53,12 @@ mkdir -p "$SOLUTION/docs/system-slots"
 
 cat >"$SOLUTION/docs/knowledge-links.yaml" <<EOF
 links:
-  - repository: "$BARE"
+  - type: child
+    repository: "$BARE"
     path: "$SYS"
-    doc_dir: "docs"
-    sys_name: "sys-foo"
-    sys_label: "sys-foo"
+    dir: "docs"
+    name: "sys-foo"
+    label: "sys-foo"
 EOF
 
 set +e

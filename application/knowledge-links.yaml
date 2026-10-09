@@ -1,16 +1,20 @@
 # 知识库建联清单（docs-link.sh / docs-install.sh 维护）
-# application：可含 type: parent（上级 system）、type: meta（装机源元库）；缺省无 type 的条目视为 child。
-# meta.doc_dir = 本库 KNOWLEDGE_TYPE（application），指向元仓内模板子树，非 DOC_DIR。
+# application：可含 type: parent（上级 system）、type: meta（装机源元库）。每条必须写 type。
+# dir：meta 的值 = 本库 KNOWLEDGE_TYPE（application），指向元仓模板子树；parent 的值 = 对方 DOC_DIR。空则省略。
 # 样例：
 # links:
 #   - type: meta
 #     repository: "git@github.com:example/ai-knowledge.git"
 #     path: "~/workspaces/ai-knowledge"
-#     doc_dir: "application"
+#     dir: "application"
 #   - type: parent
 #     repository: "git@github.com:example/sys-foo.git"
 #     path: "~/workspaces/sys-foo"
-#     doc_dir: "docs"
-#     sys_name: "sys-foo"
-#     sys_label: "订单中台"
-links: []
+#     dir: "docs"
+#     name: "sys-foo"
+#     label: "订单中台"
+links:
+  - type: meta
+    repository: "git@github.com:oleewen/ai-knowledge.git"
+    path: "~/workspaces/ai-knowledge"
+    dir: "application"

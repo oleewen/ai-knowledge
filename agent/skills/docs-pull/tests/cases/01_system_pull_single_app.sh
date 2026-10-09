@@ -56,11 +56,12 @@ echo "# old archive" >"$SYSTEM/docs/application-slots/application-app-foo/change
 
 cat >"$SYSTEM/docs/knowledge-links.yaml" <<EOF
 links:
-  - repository: "$BARE"
+  - type: child
+    repository: "$BARE"
     path: "$APP"
-    doc_dir: "docs"
-    app_name: "app-foo"
-    app_label: "app-foo"
+    dir: "docs"
+    name: "app-foo"
+    label: "app-foo"
 EOF
 
 set +e

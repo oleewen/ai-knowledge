@@ -65,7 +65,7 @@ run_link || fail "docs-link --link 应成功"
 grep -Fq 'type: parent' "$SOLUTION/docs/knowledge-links.yaml" \
   || fail "link 后目标应含 type: parent"
 assert_file_exists "$COMPANY/docs/knowledge-links.yaml"
-grep -Fq 'solution_name: "sln-foo"' "$COMPANY/docs/knowledge-links.yaml" \
+grep -Fq 'name: "sln-foo"' "$COMPANY/docs/knowledge-links.yaml" \
   || fail "link 后清单应含 sln-foo"
 
 mkdir -p "$(dirname "$STUB")"
@@ -82,7 +82,7 @@ grep -Fq 'type: parent' "$SOLUTION/docs/knowledge-links.yaml" \
   && fail "unlink 后不应残留 type: parent"
 grep -Fq "$HREF" "$STUB" || fail "unlink 不应改正文跨层 HTTP"
 
-if grep -Fq 'solution_name: "sln-foo"' "$COMPANY/docs/knowledge-links.yaml"; then
+if grep -Fq 'name: "sln-foo"' "$COMPANY/docs/knowledge-links.yaml"; then
   fail "源仓 child 登记应已移除"
 fi
 

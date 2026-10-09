@@ -30,7 +30,7 @@
    - 未传 `--ref`：**不 fetch**；`git archive HEAD`（当前检出分支 tip）
    - path 非 git 但含 `application|system|company` → 直接用该目录
    - path 无效 → 有 `repository` 则临时 clone（`--ref` 或默认 `main`）
-5. 结构源根 = `{meta_root}/{doc_dir}/`，其中 `doc_dir` 优先 meta 条，否则 `KNOWLEDGE_TYPE`
+5. 结构源根 = `{meta_root}/{dir}/`，其中 `dir` 优先 meta 条，否则 `KNOWLEDGE_TYPE`
 
 ## 执行循环：整树
 

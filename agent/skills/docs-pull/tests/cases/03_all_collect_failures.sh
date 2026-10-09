@@ -57,16 +57,18 @@ mkdir -p "$SYSTEM/docs/application-slots"
 
 cat >"$SYSTEM/docs/knowledge-links.yaml" <<EOF
 links:
-  - repository: "$BARE_OK"
+  - type: child
+    repository: "$BARE_OK"
     path: "$APP_OK"
-    doc_dir: "docs"
-    app_name: "app-ok"
-    app_label: "app-ok"
-  - repository: "https://example.com/org/app-bad.git"
+    dir: "docs"
+    name: "app-ok"
+    label: "app-ok"
+  - type: child
+    repository: "https://example.com/org/app-bad.git"
     path: "$APP_BAD"
-    doc_dir: "docs"
-    app_name: "app-bad"
-    app_label: "app-bad"
+    dir: "docs"
+    name: "app-bad"
+    label: "app-bad"
 EOF
 
 set +e

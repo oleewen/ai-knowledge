@@ -37,7 +37,10 @@ pin_workspace_for_repo "$SRC" "$ROOT_DIR" agent
 cat >"$SRC/docs/knowledge-links.yaml" <<'EOF'
 # 知识库建联清单（可由 docs-link.sh 维护）
 links:
-  - path: "https://evil.example/repo.git"
+  - type: child
+    repository: "https://example.com/org/app.git"
+    path: "https://evil.example/repo.git"
+    name: "app"
 EOF
 
 set +e

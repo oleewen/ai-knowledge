@@ -47,7 +47,7 @@ bash agent/skills/docs-pull/scripts/pull-slots.sh --all
 
 - path 不存在 → `git clone <repository> <path>`
 - path 已存在 → `origin` 须匹配 `repository`；脏工作区拒绝；否则 `git pull --ff-only`（远端默认分支）
-- 软链目标：有 `.docsconfig` 用其 `文档目录`，否则 `{path}/{doc_dir}`
+- 软链目标：有 `.docsconfig` 用其 `文档目录`，否则 `{path}/{dir}`
 - 旧真目录槽位：合并旧 `ARCHIVE-LOG` 进共用文件后删除，再建软链（静默）；不再维护 CHANGE-LOG
 - 追溯：`SYNC_OK` 含 commit / source / action；变更看下级仓 git
 

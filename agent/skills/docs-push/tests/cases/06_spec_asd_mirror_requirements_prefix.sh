@@ -18,9 +18,10 @@ printf '# mirror\n' >"${SRC}/${rel}"
 
 cat >"${TMP}/knowledge-links.yaml" <<EOF
 links:
-  - path: "${TARGET}"
-    doc_dir: docs
-    app_name: myapp
+  - type: child
+    path: "${TARGET}"
+    dir: docs
+    name: myapp
 EOF
 
 out="$("${BASH:-bash}" "$PUSH" copy \

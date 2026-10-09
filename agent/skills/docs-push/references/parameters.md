@@ -28,7 +28,7 @@
 
 | 子命令 | 作用 |
 |--------|------|
-| `copy` | 匹配文件复制到 `{path}/{doc_dir}/…` |
+| `copy` | 匹配文件复制到 `{path}/{dir}/…` |
 | `git` | 在目标仓库根执行四档之一 |
 
 ---
@@ -59,16 +59,16 @@
 
 ### Legacy：`spec-{yyMMdd}-{n}-{app}.md`
 
-- 正则：`^spec-([0-9]{6})-([0-9]+)-([a-zA-Z0-9_.-]+)\.md$`；组 3 = **`app_name`**，须与 YAML **大小写一致**。
-- 目标：`{path}/{doc_dir}/specs/<basename>`（仅顶层）。
+- 正则：`^spec-([0-9]{6})-([0-9]+)-([a-zA-Z0-9_.-]+)\.md$`；组 3 须与 YAML **`name`** 大小写一致。
+- 目标：`{path}/{dir}/specs/<basename>`（仅顶层）。
 - 顶层若存在 `spec-asd-*.md`，legacy 轨**静默跳过**该文件。
 
 ### spec-asd：`spec-asd-{IDEA-ID}-{MVP-PHASE}-{app-name}.md`
 
 - 自右向左解析 `app-name`、数字 Phase、`IDEA-ID`（`IDEA-ID` 可含 `-`）。
-- **`app-name`** 须命中登记 **`app_name`**。
+- **`app-name`** 须命中登记 **`name`**。
 - **`rel`** = 相对 `--specs-dir`：
-  - **`rel` 以 `requirements/` 开头**：镜像 → `{path}/{doc_dir}/<rel>`；`dirname(rel)` 须匹配 `requirements/REQUIREMENT-*/MVP-Phase-*/specs(/…)?`。
+  - **`rel` 以 `requirements/` 开头**：镜像 → `{path}/{dir}/<rel>`；`dirname(rel)` 须匹配 `requirements/REQUIREMENT-*/MVP-Phase-*/specs(/…)?`。
   - **否则**：归位 → `…/requirements/REQUIREMENT-{IDEA}/MVP-Phase-{PHASE}/specs/<basename>`。
 - `rel` 含独立 `..`：跳过；**`--strict` 整批失败**。
 

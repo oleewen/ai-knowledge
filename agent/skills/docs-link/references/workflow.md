@@ -45,7 +45,7 @@ bash agent/skills/docs-link/scripts/docs-link.sh --link|--unlink --target <目�
 
 去掉 `--dry-run` 重跑同一参数集。脚本负责：
 
-- 源 links：向下 child（缺省无 type）；合并同 target，不追加重复行
+- 源 links：向下 `type: child`；合并同 target，不追加重复行
 - 子仓 links：唯一 `type:parent`；`type:meta` 保活
 - 槽位：`application-{NAME}` / `system-{NAME}` → 下级 `文档目录`；unlink 删软链，共用日志保留
 - `--rewrite-http`：仅显式开启时改目标 `knowledge/**` 跨层 HTTP 前缀

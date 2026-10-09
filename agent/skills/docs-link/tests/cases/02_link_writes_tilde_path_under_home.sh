@@ -59,23 +59,23 @@ grep -Fq 'path: "~/ws/sln-foo"' "$COMPANY/docs/knowledge-links.yaml" \
   || fail "path 应为 ~/ 前缀的 \$HOME 相对路径"
 grep -Fq 'repository: "https://example.com/org/sln-foo.git"' "$COMPANY/docs/knowledge-links.yaml" \
   || fail "repository 应写入 target remote URL"
-grep -Fq 'doc_dir: "docs"' "$COMPANY/docs/knowledge-links.yaml" \
-  || fail "doc_dir 应为目标 .docsconfig 的 DOC_DIR"
-grep -Fq 'solution_name: "sln-foo"' "$COMPANY/docs/knowledge-links.yaml" \
-  || fail "solution_name 应写入"
-grep -Fq 'solution_label: "sln-foo"' "$COMPANY/docs/knowledge-links.yaml" \
-  || fail "solution_label 应写入"
+grep -Fq 'dir: "docs"' "$COMPANY/docs/knowledge-links.yaml" \
+  || fail "dir 应为目标 .docsconfig 的 DOC_DIR"
+grep -Fq 'name: "sln-foo"' "$COMPANY/docs/knowledge-links.yaml" \
+  || fail "name 应写入"
+grep -Fq 'label: "sln-foo"' "$COMPANY/docs/knowledge-links.yaml" \
+  || fail "label 应写入"
 assert_dir_exists "$COMPANY/docs/solution-slots/solution-sln-foo"
 
 assert_file_exists "$SOLUTION/docs/knowledge-links.yaml"
 grep -Fq 'type: parent' "$SOLUTION/docs/knowledge-links.yaml" \
   || fail "目标 links 应含 type: parent"
-grep -Fq 'company_name: "company-repo"' "$SOLUTION/docs/knowledge-links.yaml" \
-  || fail "parent.company_name 应为源仓目录名"
+grep -Fq 'name: "company-repo"' "$SOLUTION/docs/knowledge-links.yaml" \
+  || fail "parent.name 应为源仓目录名"
 grep -Fq 'repository: "https://github.com/example/company-ea.git"' \
   "$SOLUTION/docs/knowledge-links.yaml" \
   || fail "parent.repository 应为源仓 origin"
-grep -Fq 'doc_dir: "docs"' "$SOLUTION/docs/knowledge-links.yaml" \
-  || fail "parent.doc_dir 应为源 DOC_DIR"
+grep -Fq 'dir: "docs"' "$SOLUTION/docs/knowledge-links.yaml" \
+  || fail "parent.dir 应为源 DOC_DIR"
 
 pass "link 写出 ~/ path、槽位，并在目标 links 写入 type:parent"

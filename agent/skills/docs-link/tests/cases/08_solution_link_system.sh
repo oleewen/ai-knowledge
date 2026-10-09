@@ -54,12 +54,12 @@ pin_workspace_for_repo "$SYSTEM" "$ROOT_DIR" agent
 ( cd "$SOLUTION" && HOME="$FAKEHOME" "${BASH:-bash}" "$DOCS_LINK" --link --target "$SYSTEM" ) \
   || fail "docs-link --link 应成功"
 
-grep -Fq 'sys_name: "sys-foo"' "$SOLUTION/docs/knowledge-links.yaml" \
-  || fail "源仓应写 sys_name"
+grep -Fq 'name: "sys-foo"' "$SOLUTION/docs/knowledge-links.yaml" \
+  || fail "源仓应写 name"
 assert_dir_exists "$SOLUTION/docs/system-slots/system-sys-foo"
 grep -Fq 'type: parent' "$SYSTEM/docs/knowledge-links.yaml" \
   || fail "目标应含 type: parent"
-grep -Fq 'solution_name: "sln-kb"' "$SYSTEM/docs/knowledge-links.yaml" \
-  || fail "parent.solution_name 应为源仓目录名"
+grep -Fq 'name: "sln-kb"' "$SYSTEM/docs/knowledge-links.yaml" \
+  || fail "parent.name 应为源仓目录名"
 
-pass "solution→system 建联写 sys_* 与 solution_* parent"
+pass "solution→system 建联写 child name 与 parent name"

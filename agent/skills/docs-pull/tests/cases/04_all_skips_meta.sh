@@ -56,12 +56,13 @@ links:
   - type: meta
     repository: "https://example.com/org/ai-knowledge.git"
     path: "~/workspaces/ai-knowledge"
-    doc_dir: "system"
-  - repository: "$BARE_OK"
+    dir: "system"
+  - type: child
+    repository: "$BARE_OK"
     path: "$APP_OK"
-    doc_dir: "docs"
-    app_name: "app-ok"
-    app_label: "app-ok"
+    dir: "docs"
+    name: "app-ok"
+    label: "app-ok"
 EOF
 
 ( cd "$SYSTEM" && "${BASH:-bash}" "$PULL" --all ) || fail "--all 含 meta 时应成功"

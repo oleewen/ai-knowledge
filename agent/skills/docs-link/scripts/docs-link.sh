@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # docs-link.sh — 在源知识库登记 / 注销目标知识库（双边 knowledge-links.yaml）
-# 源仓 links：向下 child（缺省无 type）；子仓 links：一条 type:parent（1:1）
-# application 建联时 app_name：--app-name > 登记文件已有 > Git 仓库根目录名推断
-# app_label：新登记或条目中尚无 app_label 时默认等于 app_name；重复 link 且已有 app_label 则保留不覆盖
+# 源仓 links：向下 type: child；子仓 links：一条 type: parent（1:1）
+# application 建联时 name：--app-name > 登记文件已有 name > Git 仓库根目录名推断
+# label：新登记或条目中尚无 label 时默认等于 name；重复 link 且已有 label 则保留不覆盖
 # 同一 target 重复 link：合并更新同一条记录，不追加重复行
 # 用法: bash agent/skills/docs-link/scripts/docs-link.sh --link|--unlink --target <目标仓库根> [--app-name=名] [--rewrite-http] [--dry-run]
 # 须在源 Git 仓库内执行；link 需校验源、目标 .docsconfig 与 KNOWLEDGE_TYPE；
 # 目标须已有 knowledge-links.yaml（application 由 docs-install 落盘）；缺则失败。
 # unlink 支持目标失联场景（按登记 identity 注销）；注销时移除槽位软链（共用 changelogs 保留）。
-# 登记值：repository 存 Git remote URL；path 存本机路径（$HOME 下 ~/…）；doc_dir=对方 DOC_DIR。
-# type:meta（docs-install 写入）写回时保活；meta.doc_dir=目标 KNOWLEDGE_TYPE。pull/push 跳过 meta。
+# 登记值：repository 存 Git remote URL；path 存本机路径（$HOME 下 ~/…）；dir=对方 DOC_DIR。
+# type:meta（docs-install 写入）写回时保活；meta.dir=目标 KNOWLEDGE_TYPE。pull/push 跳过 meta。
 # 不再读写 knowledge-parent.yaml；跨层 HTTP 前缀替换仅当 --rewrite-http。
 # 槽位：solution-slots/solution-{NAME}、system-slots/system-{NAME}、application-slots/application-{NAME} 为指向下级文档目录的软链。
 set -euo pipefail
@@ -337,9 +337,9 @@ docs_link_usage() {
   --target        目标知识库仓库根（或已登记的 remote URL）；兼容旧参数 --path（已弃用）。
   --app-name      仅 system→application 建联有效。
 
-  源仓 links：向下 child（不写 type；缺省=child）；doc_dir=目标 DOC_DIR；
-    company→solution 用 solution_*，solution→system 用 sys_*，system→application 用 app_*。
-  子仓 links：恰好一条 type:parent（repository/path/doc_dir + company_* / solution_* / sys_*）；HTTP ref 固定 main。
+  源仓 links：向下 type: child；dir=目标 DOC_DIR；name / label（label 缺省等于 name）。
+  子仓 links：恰好一条 type: parent（repository/path/dir + name/label）；HTTP ref 固定 main。
+  type: meta 只写 repository/path/dir（dir=本库 KNOWLEDGE_TYPE）。
   槽位：solution-slots/solution-{NAME}、system-slots/system-{NAME}、application-slots/application-{NAME}。
   不再读写 knowledge-parent.yaml。unlink 删除子仓 parent 条与槽位软链，不改正文 HTTP，共用日志保留。
 
