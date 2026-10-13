@@ -10,7 +10,7 @@
 
 | 场景 | 适用 | 一句话 |
 | --- | --- | --- |
-| **A** | 单一应用，无联邦 | 应用仓 standalone，建 SSOT + 按需 SDD（无 `/sdx-solution`） |
+| **A** | 单一应用，无联邦 | 应用仓 standalone，建 SSOT + 按需 SDD（无 `/sdx-analysis`） |
 | **B** | 新交付（多应用）+ 元库 | 先解决方案/系统需求与概设，再应用库详设 |
 | **C** | 老系统（多应用）+ 元库 | 先各应用 SSOT，再三跳 pull/distill/archive |
 | **D** | 仅有 Wiki/协作文档等 legacy | overview 缓冲区 → archive → build |
@@ -65,7 +65,7 @@ flowchart LR
 
 ## 场景 B：新交付（多应用）+ 中央知识库
 
-**目标**：公司 `domains/`、解决方案 `solutions/`、系统 `analysis/`→`features/`→`requirements/` 分层写；应用库承接详设。`/sdx-solution` **只**在解决方案库。
+**目标**：公司 `domains/`、解决方案 `solutions/`、系统 `analysis/`→`features/`→`requirements/` 分层写；应用库承接详设。七章需求分析由 `/sdx-analysis` 写在系统/应用。
 
 ```mermaid
 flowchart LR
@@ -77,8 +77,8 @@ flowchart LR
         S2["/docs-indexing<br/>产出：知识库索引"]
         S3["/docs-agent<br/>生成 AGENTS｜README"]
         S4["/docs-build<br/>产出：五视角实体"]
-        S5["/sdx-solution（仅解决方案库）"]
-        S6["/sdx-analysis · /sdx-feature"]
+        S5["/sdx-solution"]
+        S6["/sdx-analysis → /sdx-feature"]
         S7["/sdx-prd<br/>产出：产品设计文档"]
         S8["/sdx-architect<br/>产出：概要设计文档"]
         S9["git log / git diff<br/>变更溯源"]
@@ -114,7 +114,7 @@ flowchart LR
 | --- | --- | --- |
 | 1 | `/docs-install` 按层 `--type=company` / `solution` / `system` + `/agent-install` | `/docs` 骨架 + `.docsconfig` |
 | 2 | `/docs-indexing` + `/docs-agent` | `index.md`、`README.md`、`AGENTS.md` |
-| 3 | 公司：`/sdx-domains`。解决方案：`/sdx-solution`。系统：`/sdx-analysis` → `/sdx-feature` → `/sdx-prd` → `/sdx-architect` | `DOMAIN-*` / `SOLUTION` / `ANALYSIS` / `FEATURE` / `PRD` / `ASD` |
+| 3 | 公司：`/sdx-domains`。解决方案：`/sdx-solution`。系统/应用：`/sdx-analysis` → `/sdx-feature` → `/sdx-prd` → `/sdx-architect` | `DOMAIN-*` / `SOLUTION` / `ANALYSIS` / `FEATURE` / `PRD` / `ASD` |
 
 ### 阶段二：应用库 — 同步概设、详设与开发
 
@@ -238,7 +238,7 @@ flowchart LR
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
-| 1 | 解决方案 `/sdx-solution`；系统 `/sdx-analysis` → `/sdx-feature` → `/sdx-prd` → `/sdx-architect`；公司仅 `/sdx-domains` | `SOLUTION` / `ANALYSIS` / `FEATURE` / `PRD` / `ASD` / `DOMAIN-*` |
+| 1 | 解决方案 `/sdx-solution`；系统/应用 `/sdx-analysis` → `/sdx-feature` → `/sdx-prd` → `/sdx-architect`；公司仅 `/sdx-domains` | `SOLUTION` / `ANALYSIS` / `FEATURE` / `PRD` / `ASD` / `DOMAIN-*` |
 
 ### 阶段四：应用库详设、开发与变更
 
@@ -317,7 +317,7 @@ flowchart LR
 | --- | --- | --- |
 | 1 | `git log` / `git diff` | 变更历史（仓内 commit） |
 | 2 | `/docs-indexing`（增量，完成 gate 确认） | `index.md` 与 `INDEXING-LOG` 对齐 |
-| 3 | 按层交付：解决方案 `/sdx-solution`；系统/应用 `/sdx-analysis` → … → `/sdx-test`；公司 `/sdx-domains` | 对应阶段文档 |
+| 3 | 按层交付：解决方案 `/sdx-solution`；系统/应用 `/sdx-analysis` → `/sdx-feature` → … → `/sdx-test`；公司 `/sdx-domains` | 对应阶段文档 |
 
 ---
 
