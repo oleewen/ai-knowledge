@@ -1,3 +1,7 @@
+---
+okf_version: "0.1"
+---
+
 <!-- okf:begin -->
 ## OKF 渐进披露
 
