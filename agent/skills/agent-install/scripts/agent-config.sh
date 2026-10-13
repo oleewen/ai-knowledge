@@ -8,6 +8,8 @@ fi
 readonly _AGENT_CONFIG_SH_LOADED=1
 
 readonly AGENT_CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=../../../scripts/lib/bash.sh
+source "${AGENT_CONFIG_DIR}/../../../scripts/lib/bash.sh"
 # shellcheck source=../../../scripts/docs-core.sh
 source "${AGENT_CONFIG_DIR}/../../../scripts/docs-core.sh"
 

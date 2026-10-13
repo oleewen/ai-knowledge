@@ -18,6 +18,8 @@ done
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck disable=SC1091
+source "$_AGENT_HOME/scripts/lib/bash.sh"
+# shellcheck disable=SC1091
 source "$_AGENT_HOME/scripts/lib/docsconfig.sh"
 docsconfig_bootstrap_validate
 

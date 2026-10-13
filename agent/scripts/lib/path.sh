@@ -4,6 +4,9 @@
 # 无加载哨兵：docs-core 重 source 时须刷新路径函数
 #
 
+# shellcheck source=bash.sh
+source "${BASH_SOURCE[0]%/*}/bash.sh"
+
 expand_tilde() {
   local p="${1:-}"
   if [[ "$p" == '~' ]]; then

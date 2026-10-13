@@ -6,6 +6,8 @@
 set -euo pipefail
 
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=../../../scripts/lib/bash.sh
+source "${SCRIPT_DIR}/../../../scripts/lib/bash.sh"
 # shellcheck source=agent-config.sh
 source "${SCRIPT_DIR}/agent-config.sh"
 # shellcheck source=../../../scripts/lib/path.sh

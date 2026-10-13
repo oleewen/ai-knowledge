@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # docs-indexing 辅助脚本（技能契约见 agent/skills/docs-indexing）
 

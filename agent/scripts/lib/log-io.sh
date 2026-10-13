@@ -14,16 +14,8 @@ fi
 # 不可 readonly：docs-core 换根重载时须 unset 后重新加载
 _LIB_LOG_IO_LOADED=1
 
-# 不可 readonly：换根重 source 时会再次赋值
-MIN_BASH_VERSION=5
-
-require_bash5() {
-  if (( BASH_VERSINFO[0] < MIN_BASH_VERSION )); then
-    printf '[FATAL] 需要 Bash %s+，当前版本: %s\n' "$MIN_BASH_VERSION" "$BASH_VERSION" >&2
-    exit 1
-  fi
-}
-require_bash5
+# shellcheck source=bash.sh
+source "${_LIB_DIR}/bash.sh"
 
 log()   { printf '%s\n'       "$*" >&2; }
 info()  { printf '信息: %s\n'  "$*" >&2; }

@@ -15,6 +15,9 @@ if [[ -n "${_LIB_KNOWLEDGE_LINKS_LOADED:-}" ]]; then
 fi
 _LIB_KNOWLEDGE_LINKS_LOADED=1
 
+# shellcheck source=bash.sh
+source "${_LIB_DIR}/bash.sh"
+
 _yaml_unquote() {
   local v="${1:-}"
   v="${v#\"}"; v="${v%\"}"

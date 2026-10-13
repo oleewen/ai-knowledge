@@ -4,6 +4,9 @@
 set -euo pipefail
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# shellcheck source=../../../scripts/lib/bash.sh
+source "$SCRIPT_DIR/../../../scripts/lib/bash.sh"
+
 # 配置层与 .docsconfig 工具统一下沉到 docs-config.sh
 # shellcheck source=./docs-config.sh
 source "$SCRIPT_DIR/docs-config.sh"

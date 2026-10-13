@@ -9,6 +9,10 @@ fi
 _LIB_SLOT_SOFTLINK_LOADED=1
 
 _SLOT_LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# shellcheck source=bash.sh
+source "${_SLOT_LIB_DIR}/bash.sh"
+
 if ! declare -f abs_path >/dev/null 2>&1 || ! declare -f docsconfig_read_into >/dev/null 2>&1; then
   # shellcheck source=docsconfig.sh
   source "${_SLOT_LIB_DIR}/docsconfig.sh"

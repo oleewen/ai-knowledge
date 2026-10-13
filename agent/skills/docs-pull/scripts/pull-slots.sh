@@ -4,6 +4,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck source=/dev/null
+source "$_AGENT_HOME/scripts/lib/bash.sh"
+# shellcheck source=/dev/null
 source "$_AGENT_HOME/scripts/lib/docsconfig.sh"
 # shellcheck source=/dev/null
 source "$_AGENT_HOME/scripts/lib/knowledge-links.sh"
