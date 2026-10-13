@@ -612,11 +612,16 @@ docs_link_upsert_target_parent() {
 docs_link_remove_target_parent() {
   local -a trepos=() tpaths=() tdirs=() tapps=() tlabels=() ttypes=()
   local -a nrepos=() npaths=() ndirs=() napps=() nlabels=() ntypes=()
-  local i
+  local i removed=0 source_key=''
+  source_key="$(knowledge_link_git_remote_url_prefer_origin "$SRC_ROOT" || true)"
   [[ -n "${TGT_LINKS:-}" && -f "$TGT_LINKS" ]] || return 0
   knowledge_links_load_into_arrays "$TGT_LINKS" tpaths trepos tdirs tapps tlabels ttypes
   for i in "${!tpaths[@]}"; do
-    [[ "${ttypes[i]:-child}" == "parent" ]] && continue
+    [[ "${ttypes[i]:-child}" == "parent" ]] || continue
+    if [[ "$(knowledge_link_identity_from_stored_entry "${trepos[i]:-}" "${tpaths[i]}")" == "$source_key" ]]; then
+      removed=$((removed + 1))
+      continue
+    fi
     nrepos+=("${trepos[i]:-}")
     npaths+=("${tpaths[i]}")
     ndirs+=("${tdirs[i]:-}")
@@ -624,6 +629,7 @@ docs_link_remove_target_parent() {
     nlabels+=("${tlabels[i]:-}")
     ntypes+=("${ttypes[i]:-child}")
   done
+  [[ "$removed" -gt 0 ]] || return 0
   knowledge_links_write_entries "$TGT_LINKS" nrepos npaths ndirs napps nlabels ntypes \
     "$TGT_CHILD_KIND" "$TGT_PARENT_KIND"
 }
