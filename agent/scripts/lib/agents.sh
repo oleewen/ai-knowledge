@@ -14,10 +14,12 @@ SUPPORTED_AGENTS=(cursor codex claude trae kiro)
 
 agents_normalize() {
   local agents_str="${1:-}"
-  if [[ "$agents_str" == 'all' ]]; then
-    printf '%s' "${SUPPORTED_AGENTS[*]}"
-    return 0
-  fi
+  case "$agents_str" in
+    a|all)
+      printf '%s' "${SUPPORTED_AGENTS[*]}"
+      return 0
+      ;;
+  esac
   local -a agents normalized
   local -A seen
   IFS=', ' read -ra agents <<< "$agents_str"
@@ -38,7 +40,9 @@ agents_validate() {
   local agent
   for agent in "${agents[@]}"; do
     [[ -z "$agent" ]] && continue
-    [[ "$agent" == 'all' ]] && return 0
+    case "$agent" in
+      a|all) return 0 ;;
+    esac
     [[ " ${SUPPORTED_AGENTS[*]} " == *" $agent "* ]] || return 1
   done
   return 0

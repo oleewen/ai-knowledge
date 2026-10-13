@@ -22,7 +22,7 @@ declare -A AGENT_DIR_MAP=(
 )
 
 readonly DEFAULT_AGENT_SCOPE='a'
-readonly DEFAULT_AGENTS_OPT='cursor'
+readonly DEFAULT_AGENTS_OPT='a'
 
 # scope=a：hooks + rules + scripts + skills + knowledge + references
 # scope=k|knowledge：仅 knowledge/ + references/

@@ -10,7 +10,7 @@
 
 ## 参数确认
 
-至少收口：`--agents`、`--target`、`--scope`、是否 dry-run 后真写。
+至少按书写序收口：`--scope`、`--target`、`--agents`、`--workspace`（或可推断）、是否 dry-run 后真写（`--meta` 按需）。
 
 宣称完成前须写后 **A/B**。
 
@@ -22,14 +22,17 @@
 - `--target $HOME` 或 `agent-scope=home` 写 Agent 树
 - 工程级 `--target` 覆盖已有 Agent 链接
 - 目标无 `.docsconfig`
+- 未传 `--workspace` 且无法从 configs 推断 `WORK_SPACE`
 
 推荐会话格式：
 
 ```text
 即将执行 /agent-install，当前参数如下：
-- agents: <list>
-- target: <路径>
+- meta: <路径|默认>
 - scope: <a|r|s|h|sh|k>
+- target: <路径>
+- agents: <list>
+- workspace: <路径|推断自 configs>
 - dry-run: <yes|no>
 
 C 确认 / M 修改 / S 跳过 / F 补齐
