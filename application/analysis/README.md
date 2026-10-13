@@ -4,6 +4,6 @@ title: analysis（应用分析）
 ---
 # analysis
 
-应用层 SDD 第一段：`ANALYSIS-{IDEA-ID}.md`。上游 `solution/solutions/`。下游 [../features](../features/README.md)。
+应用层 SDD 第一段：`ANALYSIS-{IDEA-ID}.md`（七章需求分析）。从原始输入开写。下游 [../features](../features/README.md)。
 
 样例：[ANALYSIS-EXAMPLE.md](ANALYSIS-EXAMPLE.md)。新写走 `/sdx-analysis`。

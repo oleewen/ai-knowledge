@@ -12,7 +12,7 @@ layer_scope: solution
 ## 关系
 
 - children: [BSP-EXAMPLE](BSP-EXAMPLE.md)
-- implements_to: SLN-EXAMPLE
+- implements_to: [SLN-EXAMPLE](../../application/SLN-EXAMPLE.md)
 
 ## 跨视角
 
@@ -20,7 +20,6 @@ layer_scope: solution
 
 ## 详细说明
 
-- definition_scope: local
 - 一个 SLN 一条业务流程；implements_to SLN。
 
 ## 依据与证据

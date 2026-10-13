@@ -9,7 +9,7 @@
 
 ## 目录文件
 
-* [示例系统](SYS-EXAMPLE.md) - 系统（别名应用服务）；implements_to→解决方案 SLN；与 PD、BSD-L2 同建。
+* [示例系统](SYS-EXAMPLE.md) - 系统（别名应用服务）；implements_to→解决方案 SLN；maps_to PD。
 
 * [application-meta.md](../../../agent/knowledge/application-meta.md)
 
@@ -25,4 +25,4 @@
 
 - 上一级索引：[../index.md](../index.md)
 - 上一级说明：[../README.md](../README.md)
-- 上游 SYS SSOT：本层 `SYS-*`（implements_to 解决方案 SLN；API ∈ 应用层）
+- 上游 SYS SSOT：本层 `SYS-*`（implements_to 解决方案 SLN；maps_to PD；API ∈ 应用层）

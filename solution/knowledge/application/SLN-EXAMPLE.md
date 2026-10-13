@@ -11,16 +11,16 @@ layer_scope: solution
 ---
 ## 关系
 
+- maps_to: [PL-EXAMPLE](../product/PL/PL-EXAMPLE.md)
 - implemented_by:
   - [BP-EXAMPLE](../product/BP/BP-EXAMPLE.md)
 
 ## 跨视角
 
-- maps_to: [PL-EXAMPLE](../product/PL/PL-EXAMPLE.md)
+- (none)
 
 ## 详细说明
 
-- definition_scope: local
 - 交付包锚点；一仓一 SLN；maps_to→PL 一对一。
 
 ## 依据与证据

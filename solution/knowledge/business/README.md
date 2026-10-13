@@ -6,7 +6,7 @@ title: 业务架构
 
 [返回 · 解决方案知识库](../README.md)
 
-**本层 SSOT**：BSD-L2（`parent`→公司 L1，`mapped_by`→BS）；BS（无 parent，`maps_to`→BSD-L2 1:1）。下层实体不涉及。企业标准只引用公司 business。台账本页；字段 [business-meta.md](../../../agent/knowledge/business-meta.md)。章节见 [chapters/index.md](chapters/index.md)。
+**本层 SSOT**：BSD-L2（`parent`→公司 L1，`mapped_by`→BS）；BS（无 parent，`maps_to`→BSD-L2 1:1）。下层不建实体文件。反向边只写纯 ID。企业标准只引用公司 business。台账本页；字段 [business-meta.md](../../../agent/knowledge/business-meta.md)。章节见 [chapters/index.md](chapters/index.md)。
 
 目录与阅读顺序见 [index.md](index.md)。
 

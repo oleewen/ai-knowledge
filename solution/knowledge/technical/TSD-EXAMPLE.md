@@ -12,14 +12,14 @@ layer_scope: solution
 ## 关系
 
 - implements_to: TPL-EXAMPLE
+- implemented_by: MW-EXAMPLE
 
 ## 跨视角
 
-- (none)
+- used_by: [PD-EXAMPLE](../product/PL/PD-EXAMPLE.md)
 
 ## 详细说明
 
-- definition_scope: local
 - 本方案技术选用；implements_to 公司 TPL。
 
 ## 依据与证据

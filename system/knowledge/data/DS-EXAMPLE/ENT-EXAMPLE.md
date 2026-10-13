@@ -12,6 +12,7 @@ layer_scope: system
 ## 关系
 
 - implements_to: [DS-EXAMPLE](DS-EXAMPLE.md)
+- implemented_by: TBL-EXAMPLE
 
 ## 跨视角
 
@@ -19,7 +20,6 @@ layer_scope: system
 
 ## 详细说明
 
-- definition_scope: local
 - 数据实体，表或集合。
 
 ## 依据与证据

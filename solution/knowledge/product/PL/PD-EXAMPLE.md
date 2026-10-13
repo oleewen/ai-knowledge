@@ -12,16 +12,19 @@ layer_scope: solution
 ## 关系
 
 - implements_to: [PL-EXAMPLE](PL-EXAMPLE.md)
+- maps_to: [BS-EXAMPLE](../../business/BS/BS-EXAMPLE.md)
 - implemented_by:
   - [BSP-EXAMPLE](../BP/BSP-EXAMPLE.md)
+  - PM-EXAMPLE
 
 ## 跨视角
 
-- maps_to: [BS-EXAMPLE](../../business/BS/BS-EXAMPLE.md)
+- uses_to:
+  - [MDG-EXAMPLE](../../data/MDG-EXAMPLE.md)
+  - [TSD-EXAMPLE](../../technical/TSD-EXAMPLE.md)
 
 ## 详细说明
 
-- definition_scope: local
 - 解决方案层 PD；implements_to PL；maps_to BS 一对一。
 
 ## 依据与证据

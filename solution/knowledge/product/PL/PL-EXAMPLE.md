@@ -11,16 +11,15 @@ layer_scope: solution
 ---
 ## 关系
 
+- maps_to: BL-EXAMPLE
 - implemented_by: [PD-EXAMPLE](PD-EXAMPLE.md)
 
 ## 跨视角
 
-- maps_to: BL-EXAMPLE
-- mapped_by: SLN-EXAMPLE
+- mapped_by: [SLN-EXAMPLE](../../application/SLN-EXAMPLE.md)
 
 ## 详细说明
 
-- definition_scope: local
 - 产品线；解决方案首次定义；maps_to BL 一对一。
 
 ## 依据与证据

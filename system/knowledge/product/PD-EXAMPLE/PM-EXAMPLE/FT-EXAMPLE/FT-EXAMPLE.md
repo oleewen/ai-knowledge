@@ -13,6 +13,7 @@ layer_scope: system
 
 - implements_to: [PM-EXAMPLE](../PM-EXAMPLE.md)
 - implemented_by: [FR-EXAMPLE](FR-EXAMPLE/FR-EXAMPLE.md)
+- supported_by: API-EXAMPLE
 
 ## 跨视角
 
@@ -20,7 +21,6 @@ layer_scope: system
 
 ## 详细说明
 
-- definition_scope: local
 - 功能点。
 
 ## 依据与证据

@@ -18,7 +18,7 @@ title: 应用知识库设计
 
 | 目录 | 职责 |
 | --- | --- |
-| `knowledge/` | 五视角；本层首次实体 **API / TBL / MW / CMP**；`knowledge/overview/{NAME}-overview.md`；可 stub 系统/解决方案/公司实体 |
+| `knowledge/` | 五视角；本层首次实体 **API / TBL / MW / CMP**；`knowledge/overview/{NAME}-overview.md`；宿主目录可留，不建 reference 文件 |
 | `analysis/` → `features/` → `requirements/` | 应用 SDD；交付 ∈ `REQUIREMENT-{IDEA-ID}/` |
 | `adr/` | 应用层 ADR + `CONTEXT.md` |
 | `changelogs/` | INDEXING-LOG（可选）；变更溯源 git |

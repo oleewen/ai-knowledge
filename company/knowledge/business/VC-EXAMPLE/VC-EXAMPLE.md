@@ -12,14 +12,14 @@ layer_scope: company
 ## 关系
 
 - implemented_by: [CAP-EXAMPLE](CAP-EXAMPLE.md)
+- supported_by: [BD-EXAMPLE](../BD-EXAMPLE/BD-EXAMPLE.md)
 
 ## 跨视角
 
-- supported_by: [BD-EXAMPLE](../BD-EXAMPLE/BD-EXAMPLE.md)
+- (none)
 
 ## 详细说明
 
-- definition_scope: local
 - 演示公司级 VC；由 BD 支撑，并由 CAP 实现。
 
 ## 依据与证据

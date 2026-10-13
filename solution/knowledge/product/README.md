@@ -6,7 +6,7 @@ title: 产品架构
 
 [返回 · 解决方案知识库](../README.md)
 
-**本层 SSOT**：PL、PD、BP、BSP。下层实体不涉及。企业标准只引用公司 product。章节见 [chapters/index.md](chapters/index.md)。字段 [product-meta.md](../../../agent/knowledge/product-meta.md)。
+**本层 SSOT**：PL、PD、BP、BSP。下层不建实体文件。反向边只写纯 ID。企业标准只引用公司 product。章节见 [chapters/index.md](chapters/index.md)。字段 [product-meta.md](../../../agent/knowledge/product-meta.md)。
 
 目录与阅读顺序见 [index.md](index.md)。
 

@@ -19,7 +19,6 @@ layer_scope: application
 
 ## 详细说明
 
-- definition_scope: local
 - 数据表，物理锚点。
 
 ## 依据与证据

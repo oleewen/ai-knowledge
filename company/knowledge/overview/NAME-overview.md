@@ -1,6 +1,6 @@
 ---
 type: Architecture Overview Buffer
-tags: [overview, buffer]
+tags: [overview, distill]
 title: "{域名称}架构概览（{slug}-overview）"
 ---
 # {域名称}架构概览（{slug}-overview）

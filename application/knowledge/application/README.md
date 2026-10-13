@@ -18,7 +18,7 @@ title: 应用架构
 |------|------|------|
 | 接口管理 | [chapters/application-interface-management.md](chapters/application-interface-management.md) | API 目录、命名、认证、错误、版本 |
 
-应用层决策见 [adr/](../../adr/README.md)，不进 chapters。
+架构决策不进 chapters。adr/ 尚无决策要点。
 
 ## 实体
 

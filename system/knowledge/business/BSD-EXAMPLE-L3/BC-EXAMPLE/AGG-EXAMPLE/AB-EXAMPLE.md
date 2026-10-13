@@ -19,7 +19,6 @@ layer_scope: system
 
 ## 详细说明
 
-- definition_scope: local
 - 领域能力。
 
 ## 依据与证据

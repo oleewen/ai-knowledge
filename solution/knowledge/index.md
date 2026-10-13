@@ -1,3 +1,6 @@
+---
+okf_version: "0.1"
+---
 # knowledge
 
 目录说明见 [README.md](README.md)。

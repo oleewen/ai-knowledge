@@ -17,14 +17,10 @@ layer_scope: system
 ## 跨视角
 
 - maps_to: PD-EXAMPLE
-- uses_to:
-  - MDG-EXAMPLE
-  - TSD-EXAMPLE
 
 ## 详细说明
 
-- definition_scope: local
-- 系统（别名应用服务）；implements_to 解决方案 SLN；maps_to PD。
+- 系统（别名应用服务）；implements_to 解决方案 SLN（纯 ID）；maps_to PD。解决方案层不回写这条边。
 
 ## 依据与证据
 

@@ -20,7 +20,6 @@ layer_scope: system
 
 ## 详细说明
 
-- definition_scope: local
 - level: 3
 - BSD-L3；parent→解决方案 BSD-L2。
 

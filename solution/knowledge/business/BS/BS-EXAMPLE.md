@@ -19,7 +19,6 @@ layer_scope: solution
 
 ## 详细说明
 
-- definition_scope: local
 - 业务服务；无 parent；maps_to BSD-L2 一对一。
 
 ## 依据与证据

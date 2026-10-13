@@ -20,7 +20,6 @@ layer_scope: company
 
 ## 详细说明
 
-- definition_scope: local
 - 演示公司级 CAP；实现 VC；由 BSD-L1 一对一映射。
 
 ## 依据与证据

@@ -16,10 +16,10 @@ layer_scope: system
 ## 跨视角
 
 - maps_to: [AB-EXAMPLE](../../../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md)
+- mapped_by: API-EXAMPLE
 
 ## 详细说明
 
-- definition_scope: local
 - 用例。
 
 ## 依据与证据

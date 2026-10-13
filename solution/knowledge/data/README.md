@@ -6,7 +6,7 @@ title: 数据架构
 
 [返回 · 解决方案知识库](../README.md)
 
-**本层 SSOT**：MDG（一 SLN 可多条）。下层实体不涉及。企业标准只引用公司 data。章节见 [chapters/index.md](chapters/index.md)。字段 [data-meta.md](../../../agent/knowledge/data-meta.md)。
+**本层 SSOT**：MDG（一 SLN 可多条）。下层不建实体文件。反向边只写纯 ID。企业标准只引用公司 data。章节见 [chapters/index.md](chapters/index.md)。字段 [data-meta.md](../../../agent/knowledge/data-meta.md)。
 
 目录与阅读顺序见 [index.md](index.md)。
 

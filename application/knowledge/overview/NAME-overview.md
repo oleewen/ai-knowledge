@@ -20,7 +20,7 @@ title: "{域名称}架构概览（{slug}-overview）"
 
 ## [产品架构](../product/README.md)
 
-本视角无章。标准在上游。API 对 FT 的绑定写在 API 实体。
+本视角无章。标准在上游。API 写 `supports_to`，FT 写 `supported_by`；应用层只写 API 侧。
 
 ## [应用架构](../application/README.md)
 
@@ -30,22 +30,23 @@ title: "{域名称}架构概览（{slug}-overview）"
 | [接口管理](../application/chapters/application-interface-management.md) | [开放 API](../application/chapters/application-interface-management.md#开放-api) | — |
 | [接口管理](../application/chapters/application-interface-management.md) | [版本策略](../application/chapters/application-interface-management.md#版本策略) | — |
 | [接口管理](../application/chapters/application-interface-management.md) | [变更日志](../application/chapters/application-interface-management.md#变更日志) | — |
-| ADR | 应用层决策见 ADR | — |
+
+架构决策不进 chapters。adr/ 尚无决策要点。
 
 ## [技术架构](../technical/README.md)
 
 | 主标题 | 副标题 | 归档业务知识 |
 | --- | --- | --- |
-| [中间件与基础组件](../technical/chapters/technical-middleware.md) | [消息队列](../technical/chapters/technical-middleware.md#消息队列) | — |
-| [中间件与基础组件](../technical/chapters/technical-middleware.md) | [缓存](../technical/chapters/technical-middleware.md#缓存) | — |
-| [中间件与基础组件](../technical/chapters/technical-middleware.md) | [搜索引擎](../technical/chapters/technical-middleware.md#搜索引擎) | — |
-| [中间件与基础组件](../technical/chapters/technical-middleware.md) | [配置注册](../technical/chapters/technical-middleware.md#配置注册) | — |
-| [中间件与基础组件](../technical/chapters/technical-middleware.md) | [任务调度](../technical/chapters/technical-middleware.md#任务调度) | — |
-| [中间件与基础组件](../technical/chapters/technical-middleware.md) | [对象存储](../technical/chapters/technical-middleware.md#对象存储) | — |
-| [性能与扩展性](../technical/chapters/technical-performance-scalability.md) | [性能基线](../technical/chapters/technical-performance-scalability.md#性能基线) | — |
-| [性能与扩展性](../technical/chapters/technical-performance-scalability.md) | [容量规划](../technical/chapters/technical-performance-scalability.md#容量规划) | — |
-| [性能与扩展性](../technical/chapters/technical-performance-scalability.md) | [扩展策略](../technical/chapters/technical-performance-scalability.md#扩展策略) | — |
-| [性能与扩展性](../technical/chapters/technical-performance-scalability.md) | [性能测试](../technical/chapters/technical-performance-scalability.md#性能测试) | — |
+| [中间件](../technical/chapters/technical-middleware.md) | [消息队列](../technical/chapters/technical-middleware.md#消息队列) | — |
+| [中间件](../technical/chapters/technical-middleware.md) | [缓存](../technical/chapters/technical-middleware.md#缓存) | — |
+| [中间件](../technical/chapters/technical-middleware.md) | [搜索引擎](../technical/chapters/technical-middleware.md#搜索引擎) | — |
+| [中间件](../technical/chapters/technical-middleware.md) | [配置注册](../technical/chapters/technical-middleware.md#配置注册) | — |
+| [中间件](../technical/chapters/technical-middleware.md) | [任务调度](../technical/chapters/technical-middleware.md#任务调度) | — |
+| [中间件](../technical/chapters/technical-middleware.md) | [对象存储](../technical/chapters/technical-middleware.md#对象存储) | — |
+| [性能扩展](../technical/chapters/technical-performance-scalability.md) | [性能基线](../technical/chapters/technical-performance-scalability.md#性能基线) | — |
+| [性能扩展](../technical/chapters/technical-performance-scalability.md) | [容量规划](../technical/chapters/technical-performance-scalability.md#容量规划) | — |
+| [性能扩展](../technical/chapters/technical-performance-scalability.md) | [扩展策略](../technical/chapters/technical-performance-scalability.md#扩展策略) | — |
+| [性能扩展](../technical/chapters/technical-performance-scalability.md) | [性能测试](../technical/chapters/technical-performance-scalability.md#性能测试) | — |
 
 ## [数据架构](../data/README.md)
 

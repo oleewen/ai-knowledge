@@ -12,15 +12,14 @@ layer_scope: application
 ## 关系
 
 - implements_to: MS-EXAMPLE
+- supports_to: FT-EXAMPLE
 
 ## 跨视角
 
 - maps_to: UC-EXAMPLE
-- supports_to: FT-EXAMPLE
 
 ## 详细说明
 
-- definition_scope: local
 - 接口端点。
 
 ## 依据与证据

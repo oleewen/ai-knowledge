@@ -12,14 +12,14 @@ layer_scope: company
 ## 关系
 
 - children: [BSD-EXAMPLE](BSD-EXAMPLE.md)
+- supports_to: [VC-EXAMPLE](../VC-EXAMPLE/VC-EXAMPLE.md)
 
 ## 跨视角
 
-- supports_to: [VC-EXAMPLE](../VC-EXAMPLE/VC-EXAMPLE.md)
+- (none)
 
 ## 详细说明
 
-- definition_scope: local
 - 演示公司级 BD；支撑 VC，并下挂 BSD-L1。
 
 ## 依据与证据

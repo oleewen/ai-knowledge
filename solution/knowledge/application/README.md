@@ -6,7 +6,7 @@ title: 应用架构
 
 [返回 · 解决方案知识库](../README.md)
 
-**本层 SSOT**：SLN（一仓一 SLN）。下层实体不涉及。企业标准只引用公司 application。章节见 [chapters/index.md](chapters/index.md)。字段 [application-meta.md](../../../agent/knowledge/application-meta.md)。
+**本层 SSOT**：SLN（一仓一 SLN）。下层不建实体文件。反向边只写纯 ID。企业标准只引用公司 application。章节见 [chapters/index.md](chapters/index.md)。字段 [application-meta.md](../../../agent/knowledge/application-meta.md)。
 
 目录与阅读顺序见 [index.md](index.md)。
 

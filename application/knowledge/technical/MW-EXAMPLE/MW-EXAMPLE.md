@@ -20,7 +20,6 @@ layer_scope: application
 
 ## 详细说明
 
-- definition_scope: local
 - 演示技术视角 MW 数据结构（示例）。
 
 ## 依据与证据

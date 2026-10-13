@@ -5,7 +5,7 @@ title: "系统知识库（顶层 `system/`）"
 ---
 # 系统知识库（顶层 `system/`）
 
-系统层治理根。契约与门禁见 [DESIGN.md](DESIGN.md)；语义见 [knowledge-governance](../agent/knowledge/knowledge-governance.md)。parent = 解决方案（`solution_*`）。
+系统层治理根。契约与门禁见 [DESIGN.md](DESIGN.md)；语义见 [knowledge-governance](../agent/knowledge/knowledge-governance.md)。parent 是解决方案；键为 `name` / `label`，不写层前缀。
 
 | 读什么 | 文件 |
 |--------|------|

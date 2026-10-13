@@ -12,6 +12,7 @@ layer_scope: system
 ## 关系
 
 - implements_to: [APP-EXAMPLE](../APP-EXAMPLE.md)
+- implemented_by: API-EXAMPLE
 
 ## 跨视角
 
@@ -19,7 +20,6 @@ layer_scope: system
 
 ## 详细说明
 
-- definition_scope: local
 - 微服务，入口能力簇。
 
 ## 依据与证据

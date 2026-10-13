@@ -22,7 +22,7 @@ title: 系统知识库设计
 | `analysis/` → `features/` → `requirements/` | 系统 SDD；交付 ∈ `REQUIREMENT-{IDEA-ID}/` |
 | `adr/` | 系统层决策 + `CONTEXT.md` |
 | `application-slots/application-{NAME}/` | 应用镜像软链入口 |
-| `knowledge-links.yaml` | parent = 解决方案（`solution_*`）；child 应用用 `app_*` |
+| `knowledge-links.yaml` | parent 一条，为解决方案；child 为应用；键均为 `name` / `label`，不写层前缀 |
 | `changelogs/` | INDEXING-LOG；变更溯源 git |
 
 路径总则：[knowledge-layout § 四层文档根](../agent/references/knowledge-layout.md#四层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ overview](../agent/references/knowledge-layout.md#overview) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。

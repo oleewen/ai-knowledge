@@ -19,7 +19,6 @@ layer_scope: system
 
 ## 详细说明
 
-- definition_scope: local
 - 业务规则。
 
 ## 依据与证据

@@ -21,7 +21,6 @@ layer_scope: solution
 
 ## 详细说明
 
-- definition_scope: local
 - level: 2
 - BSD-L2；parent→公司 L1；mapped_by → BS 一对一。
 

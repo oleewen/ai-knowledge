@@ -11,7 +11,7 @@ layer_scope: company
 ---
 ## 关系
 
-- (none)
+- implemented_by: TSD-EXAMPLE
 
 ## 跨视角
 
@@ -19,7 +19,6 @@ layer_scope: company
 
 ## 详细说明
 
-- definition_scope: local
 - 演示公司级 TPL 结构。
 
 ## 依据与证据

@@ -22,7 +22,6 @@ layer_scope: system
 
 ## 详细说明
 
-- definition_scope: local
 - 功能需求。
 
 ## 依据与证据

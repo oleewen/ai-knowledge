@@ -6,7 +6,7 @@ title: 产品架构
 
 [返回 · 应用知识库](../README.md)
 
-应用侧产品入口：无本层章，无本层实体。PL / PD / BP / BSP 解决方案首次定义（本层不落）。PM→FT→FR→UC/BR 系统首次定义。API 对 FT 的绑定写在 API 实体。此处只写纯 ID。
+应用侧产品入口：无本层章，无本层实体。PL / PD / BP / BSP 解决方案首次定义（本层不落）。PM→FT→FR→UC/BR 系统首次定义。API 写 `supports_to`，FT 写 `supported_by`；应用层只写 API 侧。此处只写纯 ID。
 
 目录与阅读顺序见 [index.md](index.md)。
 

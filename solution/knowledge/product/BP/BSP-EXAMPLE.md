@@ -20,7 +20,6 @@ layer_scope: solution
 
 ## 详细说明
 
-- definition_scope: local
 - kind: core
 - 业务子流程；parent → BP；implements_to PD；kind = core。
 

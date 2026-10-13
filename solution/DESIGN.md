@@ -19,10 +19,10 @@ title: 解决方案知识库设计
 | 目录 | 职责 |
 | --- | --- |
 | `knowledge/` | SLN/PL/PD/BP/BSP/BSD-L2/BS/MDG/TSD 首次定义；五视角同构；`overview/{NAME}-overview.md` = 蒸馏缓冲区 |
-| `solutions/` | 仅本层 `/sdx-solution`；SA 第五至八章；**无** analysis/features/requirements |
+| `solutions/` | `/sdx-solution` 写 `SOLUTION-*.md`（交付包切分叙事）。**无** analysis/features/requirements。七章需求分析不在本层 |
 | `adr/` | 解决方案层决策 + `CONTEXT.md` |
 | `system-slots/system-{NAME}/` | 系统联邦槽位（软链） |
-| `knowledge-links.yaml` | parent = 公司（`company_*`）；child 系统用 `sys_*` |
+| `knowledge-links.yaml` | parent 一条，为公司；child 为系统；键均为 `name` / `label`，不写层前缀 |
 | `changelogs/` | INDEXING-LOG；变更溯源 git |
 
 路径总则：[knowledge-layout § 四层文档根](../agent/references/knowledge-layout.md#四层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。

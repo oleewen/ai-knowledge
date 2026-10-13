@@ -12,6 +12,7 @@ layer_scope: company
 ## 关系
 
 - parent: [BD-EXAMPLE](BD-EXAMPLE.md)
+- children: BSD-EXAMPLE-L2
 - maps_to: [CAP-EXAMPLE](../VC-EXAMPLE/CAP-EXAMPLE.md)
 - mapped_by: [BL-EXAMPLE](../BL/BL-EXAMPLE.md)
 
@@ -21,7 +22,6 @@ layer_scope: company
 
 ## 详细说明
 
-- definition_scope: local
 - level: 1
 - 公司层 BSD-L1；挂 BD；由 BL 一对一映射；maps_to CAP。
 

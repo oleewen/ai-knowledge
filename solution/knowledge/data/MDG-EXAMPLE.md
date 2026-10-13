@@ -15,11 +15,10 @@ layer_scope: solution
 
 ## 跨视角
 
-- (none)
+- used_by: [PD-EXAMPLE](../product/PL/PD-EXAMPLE.md)
 
 ## 详细说明
 
-- definition_scope: local
 - 解决方案层数据主权与逻辑模型。
 
 ## 依据与证据

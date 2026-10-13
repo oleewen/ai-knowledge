@@ -12,6 +12,7 @@ layer_scope: system
 ## 关系
 
 - implements_to: PD-EXAMPLE
+- implemented_by: [FT-EXAMPLE](FT-EXAMPLE/FT-EXAMPLE.md)
 
 ## 跨视角
 
@@ -19,7 +20,6 @@ layer_scope: system
 
 ## 详细说明
 
-- definition_scope: local
 - 产品模块。
 
 ## 依据与证据
