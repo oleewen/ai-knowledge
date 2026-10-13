@@ -9,6 +9,9 @@ perspective: technical
 hierarchy: TSD
 layer_scope: solution
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例技术域
+
 ## 关系
 
 - implements_to: TPL-EXAMPLE

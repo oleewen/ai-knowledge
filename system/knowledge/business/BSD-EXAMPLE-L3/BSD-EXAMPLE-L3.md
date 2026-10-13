@@ -9,6 +9,9 @@ perspective: business
 hierarchy: BSD
 layer_scope: system
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例三级业务子域
+
 ## 关系
 
 - parent: BSD-EXAMPLE-L2

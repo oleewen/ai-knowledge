@@ -9,6 +9,9 @@ perspective: business
 hierarchy: BC
 layer_scope: system
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例限界上下文
+
 ## 关系
 
 - implements_to: [BSD-EXAMPLE-L3](../BSD-EXAMPLE-L3.md)

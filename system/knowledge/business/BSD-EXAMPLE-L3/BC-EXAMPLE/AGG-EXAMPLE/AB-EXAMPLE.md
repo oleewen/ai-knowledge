@@ -9,6 +9,9 @@ perspective: business
 hierarchy: AB
 layer_scope: system
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例能力
+
 ## 关系
 
 - implements_to: [AGG-EXAMPLE](AGG-EXAMPLE.md)

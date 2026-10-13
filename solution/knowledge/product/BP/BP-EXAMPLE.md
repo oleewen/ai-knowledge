@@ -9,6 +9,9 @@ perspective: product
 hierarchy: BP
 layer_scope: solution
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例解决方案业务流程
+
 ## 关系
 
 - children: [BSP-EXAMPLE](BSP-EXAMPLE.md)

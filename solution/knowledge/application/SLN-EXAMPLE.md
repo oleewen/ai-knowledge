@@ -9,6 +9,9 @@ perspective: application
 hierarchy: SLN
 layer_scope: solution
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例解决方案
+
 ## 关系
 
 - maps_to: [PL-EXAMPLE](../product/PL/PL-EXAMPLE.md)

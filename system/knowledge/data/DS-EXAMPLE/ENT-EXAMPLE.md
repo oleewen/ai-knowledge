@@ -9,6 +9,9 @@ perspective: data
 hierarchy: ENT
 layer_scope: system
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例实体
+
 ## 关系
 
 - implements_to: [DS-EXAMPLE](DS-EXAMPLE.md)

@@ -9,6 +9,9 @@ perspective: product
 hierarchy: PL
 layer_scope: solution
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例产品线
+
 ## 关系
 
 - maps_to: BL-EXAMPLE

@@ -9,6 +9,9 @@ perspective: data
 hierarchy: DS
 layer_scope: system
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例数据源
+
 ## 关系
 
 - implements_to: MDG-EXAMPLE

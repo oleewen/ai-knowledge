@@ -9,6 +9,9 @@ perspective: data
 hierarchy: TBL
 layer_scope: application
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例数据表
+
 ## 关系
 
 - implements_to: ENT-EXAMPLE

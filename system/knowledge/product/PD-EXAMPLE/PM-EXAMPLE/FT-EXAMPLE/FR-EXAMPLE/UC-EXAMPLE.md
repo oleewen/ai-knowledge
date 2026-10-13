@@ -9,6 +9,9 @@ perspective: product
 hierarchy: UC
 layer_scope: system
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例用例
+
 ## 关系
 
 - implements_to: [FR-EXAMPLE](FR-EXAMPLE.md)

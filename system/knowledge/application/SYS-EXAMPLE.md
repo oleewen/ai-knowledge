@@ -9,6 +9,9 @@ perspective: application
 hierarchy: SYS
 layer_scope: system
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例系统
+
 ## 关系
 
 - implements_to: SLN-EXAMPLE

@@ -9,6 +9,9 @@ perspective: product
 hierarchy: PD
 layer_scope: solution
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例产品服务
+
 ## 关系
 
 - implements_to: [PL-EXAMPLE](PL-EXAMPLE.md)

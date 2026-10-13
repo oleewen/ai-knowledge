@@ -9,6 +9,9 @@ perspective: application
 hierarchy: API
 layer_scope: application
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例 API：创建
+
 ## 关系
 
 - implements_to: MS-EXAMPLE

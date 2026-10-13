@@ -9,6 +9,9 @@ perspective: technical
 hierarchy: MW
 layer_scope: application
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例中间件绑定
+
 ## 关系
 
 - implements_to: TSD-EXAMPLE

@@ -9,6 +9,9 @@ perspective: technical
 hierarchy: TPL
 layer_scope: company
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例技术平台能力
+
 ## 关系
 
 - implemented_by: TSD-EXAMPLE

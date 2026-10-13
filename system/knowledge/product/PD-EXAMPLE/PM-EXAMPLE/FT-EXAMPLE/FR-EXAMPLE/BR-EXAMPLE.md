@@ -9,6 +9,9 @@ perspective: product
 hierarchy: BR
 layer_scope: system
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例规则
+
 ## 关系
 
 - implements_to: [FR-EXAMPLE](FR-EXAMPLE.md)

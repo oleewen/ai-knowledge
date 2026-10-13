@@ -174,7 +174,7 @@ MAY：
 - 落点模式见 [knowledge-layout.md](../references/knowledge-layout.md)；EXAMPLE 见各层 `knowledge/` 样例树
 - ID 语法见 [naming-conventions.md](naming-conventions.md)；缩写见 [glossary.md](glossary.md)；`type` 见本文 §3
 
-每个 per-entity 文件必须包含 4 个二级标题，标题统一使用中文：
+每个 per-entity 文件的标题从 H1 起编：正文第一个标题是一级标题，文本与 frontmatter `title` 相同。H1 上一行写 `<!-- markdownlint-disable-next-line MD025 -->`（`title` 与可见 H1 双留）。其下必须有 4 个二级标题，标题统一使用中文：
 
 | 顺序 | 标题 | 内容 |
 | ------ | ------ | ------ |

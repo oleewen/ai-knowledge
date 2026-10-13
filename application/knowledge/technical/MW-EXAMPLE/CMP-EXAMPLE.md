@@ -9,6 +9,9 @@ perspective: technical
 hierarchy: CMP
 layer_scope: application
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例组件
+
 ## 关系
 
 - implements_to: [MW-EXAMPLE](MW-EXAMPLE.md)

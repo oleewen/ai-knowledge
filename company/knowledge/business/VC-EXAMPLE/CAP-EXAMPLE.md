@@ -9,6 +9,9 @@ perspective: business
 hierarchy: CAP
 layer_scope: company
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例业务能力
+
 ## 关系
 
 - implements_to: [VC-EXAMPLE](VC-EXAMPLE.md)

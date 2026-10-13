@@ -9,6 +9,9 @@ perspective: product
 hierarchy: FR
 layer_scope: system
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例功能需求
+
 ## 关系
 
 - implements_to: [FT-EXAMPLE](../FT-EXAMPLE.md)

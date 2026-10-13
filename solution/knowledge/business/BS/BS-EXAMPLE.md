@@ -9,6 +9,9 @@ perspective: business
 hierarchy: BS
 layer_scope: solution
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例业务服务
+
 ## 关系
 
 - maps_to: [BSD-EXAMPLE-L2](../BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md)
