@@ -31,14 +31,14 @@ layer_scope: company
 ## 关系
 
 - children: [BSD-EXAMPLE](BSD-EXAMPLE.md)
+- supports_to: [VC-EXAMPLE](../VC-EXAMPLE/VC-EXAMPLE.md)
 
 ## 跨视角
 
-- supports_to: [VC-EXAMPLE](../VC-EXAMPLE/VC-EXAMPLE.md)
+- (none)
 
 ## 详细说明
 
-- definition_scope: local
 - 演示公司级 BD；支撑 VC，并下挂 BSD-L1。
 
 ## 依据与证据
@@ -71,7 +71,6 @@ layer_scope: company
 
 ## 详细说明
 
-- definition_scope: local
 - level: 1
 - 公司层 BSD-L1；挂 BD；由 BL 一对一映射；maps_to CAP。
 
@@ -96,14 +95,14 @@ layer_scope: company
 ## 关系
 
 - implemented_by: [CAP-EXAMPLE](CAP-EXAMPLE.md)
+- supported_by: [BD-EXAMPLE](../BD-EXAMPLE/BD-EXAMPLE.md)
 
 ## 跨视角
 
-- supported_by: [BD-EXAMPLE](../BD-EXAMPLE/BD-EXAMPLE.md)
+- (none)
 
 ## 详细说明
 
-- definition_scope: local
 - 演示公司级 VC；由 BD 支撑，并由 CAP 实现。
 
 ## 依据与证据
@@ -135,7 +134,6 @@ layer_scope: company
 
 ## 详细说明
 
-- definition_scope: local
 - 演示公司级 CAP；实现 VC；由 BSD-L1 一对一映射。
 
 ## 依据与证据
@@ -166,7 +164,6 @@ layer_scope: company
 
 ## 详细说明
 
-- definition_scope: local
 - 演示公司级 BL；无 parent；与 BSD-L1 一对一映射。
 
 ## 依据与证据
@@ -197,7 +194,6 @@ layer_scope: company
 
 ## 详细说明
 
-- definition_scope: local
 - 演示公司级 TPL 结构。
 
 ## 依据与证据

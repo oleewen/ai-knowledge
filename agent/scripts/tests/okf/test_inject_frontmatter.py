@@ -60,11 +60,6 @@ def test_inject_readme_governance_tag():
     assert meta["tags"] == ["governance"]
 
 
-def test_retired_directory_meta_paths():
-    assert inject_frontmatter.classify_governance("docs-meta.md") is None
-    assert inject_frontmatter.classify_governance("knowledge/knowledge-meta.md") is None
-
-
 def main() -> None:
     tests = [
         test_classify_governance_readme,
@@ -74,7 +69,6 @@ def main() -> None:
         test_skip_existing_frontmatter,
         test_should_skip_reserved_and_entity,
         test_inject_readme_governance_tag,
-        test_retired_directory_meta_paths,
     ]
     for fn in tests:
         fn()

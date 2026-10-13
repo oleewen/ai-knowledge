@@ -62,12 +62,12 @@ timestamp: "2026-06-25T00:00:00+08:00"
 
 目录、规则、链接、日志或治理元信息。
 
-- 典型：`agent/knowledge/{视角}-meta.md`、`knowledge-links.yaml`、`INDEXING-LOG.md`。层根契约是各层 `DESIGN.md`，知识树入口是 `knowledge/README.md`。不设 `docs-meta.md` / `knowledge-meta.md`。层设计 SSOT 见 [knowledge-governance.md](knowledge-governance.md)
+- 典型：`agent/knowledge/{视角}-meta.md`、`knowledge-links.yaml`、`INDEXING-LOG.md`。层根契约是各层 `DESIGN.md`，知识树入口是 `knowledge/README.md`。层设计 SSOT 见 [knowledge-governance.md](knowledge-governance.md)
 - MUST：不按实体 Profile；字段/职责与规范引用一致
 
 ### 1.5 分型优先级
 
-多类特征并存时：concept → 索引入口 → 元数据 → 叙事文件。`README.md` / `index.md` 默认索引入口；`agent/knowledge/{视角}-meta.md` / `knowledge-links.yaml` / 变更日志默认元数据。层根契约是 `DESIGN.md`，知识树入口是 `knowledge/README.md`。不设 `docs-meta.md` / `knowledge-meta.md`。
+多类特征并存时：concept → 索引入口 → 元数据 → 叙事文件。`README.md` / `index.md` 默认索引入口；`agent/knowledge/{视角}-meta.md` / `knowledge-links.yaml` / 变更日志默认元数据。
 
 ---
 
@@ -92,7 +92,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 | 实体概念核心键 | `hierarchy` | 枚举 | ✅ | 与 `type` 一一对应 | `VC` / `BD` / `BL` / `BS` / `CAP` / `PL` / `SLN` / `PD` / `SYS` / `MDG` / `TPL` / `BSD` / `BC` / `AGG` / `AB` / `PM` / `BP` / `BSP` / `FT` / `FR` / `UC` / `BR` / `APP` / `MS` / `DS` / `ENT` / `TSD` / `API` / `TBL` / `MW` / `CMP` |
 | 实体概念核心键 | `layer_scope` | 枚举 | ✅ | 与知识库路径前缀对应 | `company` / `solution` / `system` / `application` |
 | 非实体文档键 | `okf_version` | 字符串 | - | 当前只出现在 bundle 根 `index.md` | `"0.1"` / `"1.0"` |
-| 非实体文档键 | `status` | 字符串 | - | 当前只出现在公司层示例方案/分析文档 | `draft` / `"draft"` |
+| 非实体文档键 | `status` | 字符串 | - | 出现在各层 SDD 示例（SOLUTION、ANALYSIS、FEATURE、PRD、ASD、DSD、TDD） | `draft` / `"draft"` |
 
 规则：
 
@@ -155,7 +155,7 @@ MUST：
 - 文件为 `{ID}.md` 且在四层 `*/knowledge/<perspective>/...` 下，可被其他文件以链接引用。
 - frontmatter 满足实体概念 Profile 的 9 字段必填（见 §2），并保持 `type`/`hierarchy`/`perspective`/`layer_scope` 一致。
 - 正文包含 4 个中文 H2（见本节），用于承载关系、跨视角、说明与证据。
-- 关系与跨视角引用使用可解析链接；同一文件内链接风格保持一致。
+- 同层引用使用可解析链接。指向更低层的反向边只写纯 ID。同一文件内，同层链接风格保持一致。
 - 业务四层 `*/knowledge/**` 的跨文件引用方向与形态遵守 [knowledge-governance.md](knowledge-governance.md)「业务 knowledge 引用边界」（同层 bundle-relative；向上有 parent 则 HTTP 到首次定义层 SSOT，无 parent 则纯 ID；禁下层/槽位/爬层；依据段不链库外文档路径）。
 
 SHOULD：
@@ -189,35 +189,35 @@ MAY：
 
 | 层级 | 必含子段 | 选含子段 |
 | ------ | --------- | --------- |
-| BD | `children: [...]` | `parent: null`；跨视角 `supports_to` |
-| BSD | `parent: [...]` | `implemented_by`（L3→BC）；`maps_to`（L1→CAP）；`mapped_by`（L1←BL，L2←BS） |
-| BC | `implements_to: [...]` + `implemented_by: [...]` | 跨视角 `supported_by`（APP） |
+| BD | `children: [...]` | `parent: null`；`supports_to`（VC） |
+| BSD | `parent: [...]` | `children`（L1→L2、L2→L3；对端 `parent` 存在时必填）；`implemented_by`（L3→BC）；`maps_to`（L1→CAP）；`mapped_by`（L1←BL，L2←BS） |
+| BC | `implements_to: [...]` + `implemented_by: [...]` | `supported_by`（APP）；跨视角 `mapped_by`（PM） |
 | AGG | `implements_to: [...]` + `implemented_by: [...]` | 跨视角 `mapped_by`（ENT\|MS） |
 | AB | `implements_to: [...]` | 跨视角 `mapped_by`（UC） |
 | VC | — | `supported_by`、`implemented_by` |
 | CAP | `implements_to: [...]` | `mapped_by`（BSD-L1） |
-| BL | `maps_to: [...]`（→BSD-L1） | — |
+| BL | `maps_to: [...]`（→BSD-L1） + `mapped_by: [...]`（←PL） | — |
 | BS | `maps_to: [...]`（→BSD-L2） | `mapped_by`（PD） |
 | PL | `maps_to: [...]`（→BL） | `implemented_by`（PD）；`mapped_by`（SLN） |
-| PD | `implements_to: [...]`（→PL） + `maps_to: [...]`（→BS） | `implemented_by`（BSP） |
+| PD | `implements_to: [...]`（→PL） + `maps_to: [...]`（→BS） + `implemented_by: [...]`（←BSP、←PM） | `uses_to`（MDG\|TSD） |
 | BP | `implements_to: [...]`（→SLN） | `children`（BSP） |
 | BSP | `parent`（→BP） + `implements_to: [...]`（→PD） | — |
-| PM | `implements_to: [...]` + `implemented_by: [...]` | `maps_to`（BC）；`depends_to` |
-| FT | `implements_to: [...]` + `implemented_by: [...]` | — |
+| PM | `implements_to: [...]` + `implemented_by: [...]` | `maps_to`（BC）；`depends_to` / `depended_by`（对端 `depends_to` 存在时必填） |
+| FT | `implements_to: [...]` + `implemented_by: [...]` | `supported_by`（←API） |
 | FR | `implements_to: [...]` + `implemented_by: [...]` | — |
-| UC | `implements_to: [...]` | `maps_to`（AB） |
+| UC | `implements_to: [...]` | `maps_to`（AB）；`mapped_by`（←API） |
 | BR | `implements_to: [...]`（→FR） | — |
-| SLN | `maps_to: [...]` | `implemented_by`（BP） |
-| SYS | `implements_to: [...]` + `implemented_by: [...]` | `maps_to`（PD）；`uses_to`（MDG\|TSD） |
-| APP | `implements_to: [...]` + `implemented_by: [...]` | `supports_to`（BC）；`uses_to`（DS） |
-| MS | `implements_to: [...]` | `maps_to`（AGG）；`uses_to`（ENT） |
+| SLN | `maps_to: [...]` + `implemented_by: [...]`（←BP） | — |
+| SYS | `implements_to: [...]`（→SLN，纯 ID） + `implemented_by: [...]` | `maps_to`（PD） |
+| APP | `implements_to: [...]` + `implemented_by: [...]` | `supports_to`（BC）；`uses_to`（DS\|MW） |
+| MS | `implements_to: [...]` + `implemented_by: [...]`（←API） | `maps_to`（AGG）；`uses_to`（ENT） |
 | API | `implements_to: [...]` | `supports_to`（FT）；`maps_to`（UC） |
-| MDG | — | — |
-| DS | `implements_to: [...]` | `implemented_by`（ENT）；`used_by`（APP） |
-| ENT | `implements_to: [...]` | `maps_to`（AGG） |
+| MDG | `implemented_by: [...]`（←DS） | `used_by`（←PD） |
+| DS | `implements_to: [...]` + `implemented_by: [...]`（←ENT） | `used_by`（APP\|MW） |
+| ENT | `implements_to: [...]` + `implemented_by: [...]`（←TBL） | `maps_to`（AGG）；`used_by`（MS） |
 | TBL | `implements_to: [...]` | — |
-| TPL | — | — |
-| TSD | `implements_to: [...]` | — |
+| TPL | `implemented_by: [...]`（←TSD） | — |
+| TSD | `implements_to: [...]` + `implemented_by: [...]`（←MW） | `used_by`（←PD） |
 | MW | `implements_to: [...]` | `implemented_by`（CMP）；`used_by`（APP）；`uses_to`（DS） |
 | CMP | `implements_to: [...]` | — |
 
@@ -225,7 +225,7 @@ MAY：
 
 - 同目录：`[X-XXX](X-XXX.md)` 写作示例（非本文件可点链）；或目录锚点 `X-XXX/X-XXX.md`
 - 跨 perspective（同 bundle）：相对路径示例 `../../{other-perspective}/X-XXX/X-XXX.md`，或 `/knowledge/...`
-- 跨层：遵守 [knowledge-governance.md](knowledge-governance.md)（生成函数 HTTP 或纯 ID）；禁止手写跨 `DOC_DIR` 相对路径。
+- 跨层：指向上层时，有 parent 则 HTTP，无 parent 则纯 ID。指向更低层的反向边只写纯 ID，禁止 Markdown 链与 HTTP。禁止手写跨 `DOC_DIR` 相对路径。见 [knowledge-governance.md](knowledge-governance.md)。
 
 ### 4.2 跨视角段
 
@@ -294,7 +294,7 @@ SHOULD：区分约定/枚举字段与解释性文字；运维留痕遵循各目�
 
 MAY：工具链 extensions 字段可加，须可控长期维护。
 
-模式：`agent/knowledge/{business,product,application,data,technical}-meta.md`；`knowledge-links.yaml`；`INDEXING-LOG.md`（`changelogs/`）；变更溯源 `git log` / `git diff`。层根契约是 `{DOC_DIR}/DESIGN.md`，知识树入口是 `knowledge/README.md`。不设 `docs-meta.md` / `knowledge-meta.md`。
+模式：`agent/knowledge/{business,product,application,data,technical}-meta.md`；`knowledge-links.yaml`；`INDEXING-LOG.md`（`changelogs/`）；变更溯源 `git log` / `git diff`。
 
 ---
 
@@ -316,8 +316,8 @@ MAY：工具链 extensions 字段可加，须可控长期维护。
 | --------- | ------ | ------ |
 | 同类树 | `## 关系` | `parent:` / `children:` |
 | 组成链 | `## 关系` | `implements_to:` / `implemented_by:` |
-| 同级对标 | `## 关系` 或 `## 跨视角` | `maps_to:` |
-| 支撑 | `## 跨视角` | `supports_to:` / `supported_by:` |
+| 同级对标 | 必填在 `## 关系`；选填的跨 perspective 可在 `## 跨视角` | `maps_to:` / `mapped_by:` |
+| 支撑 | `## 关系` | `supports_to:` / `supported_by:` |
 | 使用 | `## 跨视角` | `uses_to:` / `used_by:` |
 | 模块依赖 | `## 关系` | `depends_to:` / `depended_by:` |
 | 跨 perspective 组织 | `## 跨视角` | `business:` / `product:` / `application:` / `data:` / `technical:` |
@@ -325,6 +325,8 @@ MAY：工具链 extensions 字段可加，须可控长期维护。
 
 补充规则：
 
+- 必填 `maps_to` / `mapped_by` 写在 `## 关系`。选填且跨 perspective 的对标可留在 `## 跨视角`
+- `supports_to` / `supported_by` 写在 `## 关系`
 - 同 perspective 内引用优先走 `## 关系`
 - 跨层但同实体的“上游主定义”说明优先放在 `## 详细说明`
 - 不要求在 frontmatter 中表达跨视角链路

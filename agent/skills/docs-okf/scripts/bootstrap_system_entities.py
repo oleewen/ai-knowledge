@@ -39,7 +39,6 @@ layer_scope: system
 
 ## 详细说明
 
-- definition_scope: local
 - level: 3
 - BSD-L3；parent→解决方案 BSD-L2。
 
@@ -65,15 +64,14 @@ layer_scope: system
 
 - implements_to: [BSD-EXAMPLE-L3](../BSD-EXAMPLE-L3.md)
 - implemented_by: [AGG-EXAMPLE](AGG-EXAMPLE/AGG-EXAMPLE.md)
+- supported_by: [APP-EXAMPLE](../../../application/APP-EXAMPLE/APP-EXAMPLE.md)
 
 ## 跨视角
 
 - mapped_by: [PM-EXAMPLE](../../../product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE.md)
-- supported_by: [APP-EXAMPLE](../../../application/APP-EXAMPLE/APP-EXAMPLE.md)
 
 ## 详细说明
 
-- definition_scope: local
 - 限界上下文。
 
 ## 依据与证据
@@ -107,7 +105,6 @@ layer_scope: system
 
 ## 详细说明
 
-- definition_scope: local
 - 聚合根。
 
 ## 依据与证据
@@ -138,7 +135,6 @@ layer_scope: system
 
 ## 详细说明
 
-- definition_scope: local
 - 领域能力。
 
 ## 依据与证据
@@ -170,7 +166,6 @@ layer_scope: system
 
 ## 详细说明
 
-- definition_scope: local
 - 产品模块。
 
 ## 依据与证据
@@ -202,7 +197,6 @@ layer_scope: system
 
 ## 详细说明
 
-- definition_scope: local
 - 功能点。
 
 ## 依据与证据
@@ -236,7 +230,6 @@ layer_scope: system
 
 ## 详细说明
 
-- definition_scope: local
 - 功能需求。
 
 ## 依据与证据
@@ -267,7 +260,6 @@ layer_scope: system
 
 ## 详细说明
 
-- definition_scope: local
 - 业务规则。
 
 ## 依据与证据
@@ -298,7 +290,6 @@ layer_scope: system
 
 ## 详细说明
 
-- definition_scope: local
 - 用例。
 
 ## 依据与证据
@@ -327,14 +318,10 @@ layer_scope: system
 ## 跨视角
 
 - maps_to: PD-EXAMPLE
-- uses_to:
-  - MDG-EXAMPLE
-  - TSD-EXAMPLE
 
 ## 详细说明
 
-- definition_scope: local
-- 系统（别名应用服务）；implements_to 解决方案 SLN；maps_to PD。
+- 系统（别名应用服务）；implements_to 解决方案 SLN（纯 ID）；maps_to PD。解决方案层不回写这条边。
 
 ## 依据与证据
 
@@ -358,16 +345,15 @@ layer_scope: system
 
 - implements_to: [SYS-EXAMPLE](../SYS-EXAMPLE.md)
 - implemented_by: [MS-EXAMPLE](MS-EXAMPLE/MS-EXAMPLE.md)
+- supports_to: [BC-EXAMPLE](../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)
 
 ## 跨视角
 
-- supports_to: [BC-EXAMPLE](../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)
 - uses_to:
   - [DS-EXAMPLE](../../data/DS-EXAMPLE/DS-EXAMPLE.md)
 
 ## 详细说明
 
-- definition_scope: local
 - 应用，代码仓库与部署单元。
 
 ## 依据与证据
@@ -398,7 +384,6 @@ layer_scope: system
 
 ## 详细说明
 
-- definition_scope: local
 - 微服务，入口能力簇。
 
 ## 依据与证据
@@ -429,7 +414,6 @@ layer_scope: system
 
 ## 详细说明
 
-- definition_scope: local
 - 示例数据源。
 
 ## 依据与证据
@@ -460,7 +444,6 @@ layer_scope: system
 
 ## 详细说明
 
-- definition_scope: local
 - 数据实体，表或集合。
 
 ## 依据与证据
