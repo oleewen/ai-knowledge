@@ -6,7 +6,7 @@
 
 **最后更新**: 2026-10-07
 
-> **阶段目录**：公司只 `domains/`（BD/BSD-L1 如何支撑 VC，不放 SLN，不建 `solutions/`）。解决方案只 `solutions/`（SA 第五至八章在此，第一至四章进 `knowledge/`）。系统与应用同构：`analysis/` → `features/` → `requirements/`，不建 `solutions/`。联邦三跳：公司 `solution-slots/` → 解决方案 `system-slots/` → 系统 `application-slots/`。
+> **阶段目录**：公司只 `domains/`（BD/BSD-L1 如何支撑 VC，不放 SLN，不建 `solutions/`）。解决方案只 `solutions/`（`/sdx-solution` 写切分叙事 `SOLUTION-*.md`）。系统与应用同构：`analysis/`（七章需求分析，`/sdx-analysis`）→ `features/`（六章功能特性，`/sdx-feature`）→ `requirements/`，不建 `solutions/`。联邦三跳：公司 `solution-slots/` → 解决方案 `system-slots/` → 系统 `application-slots/`。
 
 ---
 
@@ -30,8 +30,8 @@
 - **目录**：与实体 ID 一致，或以 ID 为准在索引中查找。
 - **实体定义文件**：应用注册等可为 `{id}.yaml`；字段模板见 `agent/knowledge/{perspective}-meta.md` §2；实体正文默认 OKF per-entity `{ID}.md`（见 [okf-spec.md](../knowledge/okf-spec.md)）。
 - **元数据 / 索引**：
-  - **层根契约**：`{DOC_DIR}/DESIGN.md`（人读短表）。不设 `docs-meta.md`。
-  - **知识树入口**：`{DOC_DIR}/knowledge/README.md`。不设 `knowledge-meta.md`。
+  - **层根契约**：`{DOC_DIR}/DESIGN.md`（人读短表）。
+  - **知识树入口**：`{DOC_DIR}/knowledge/README.md`。
   - **Agent 治理 SSOT**：`agent/knowledge/`（见该目录 [README.md](../knowledge/README.md)）
   - **阶段目录**：约定在各目录 `README.md`
   - **五视角**：字段 SSOT ∈ `agent/knowledge/{perspective}-meta.md`；视角目录留 per-entity `{ID}.md` 与 README。`knowledge/index.md` 目录导航（docs-okf）；实体台账 ∈ 各视角 README；视角导航 ∈ `{DOC_DIR}/INDEX-GUIDE.md` 第四章（docs-build）
@@ -57,7 +57,7 @@
   | 库 | 目录 |
   | --- | --- |
   | 公司 | `domains/`（`/sdx-domains`：总图 + `DOMAIN-{BD-ID}.md`；只写 BD/BSD-L1 如何支撑 VC，不放 SLN）；`adr/`；**无** solutions/analysis/features/requirements |
-  | 解决方案 | `solutions/`（仅 `/sdx-solution`）；`adr/`；**无** analysis/features/requirements |
+  | 解决方案 | `solutions/`（`/sdx-solution`）；`adr/`；**无** analysis/features/requirements |
   | 系统、应用 | `analysis/`（原 solutions）→ `features/`（原 analysis）→ `requirements/REQUIREMENT-{IDEA-ID}/`；`adr/` |
   | 迁徙样例 | 系统/应用 `analysis/ANALYSIS-EXAMPLE.md`、`features/FEATURE-EXAMPLE.md`（目录改名后文件已对齐） |
 - **IDEA-ID 字面格式**：见 [naming-conventions.md § IDEA-ID](../knowledge/naming-conventions.md#2-idea-id)
@@ -106,7 +106,7 @@
 - 技术：中间件 → 性能扩展
 - 数据：数据模型
 
-解决方案 overview 行序对齐 SA 第一至四章落 knowledge 的视角：业务范围、应用与集成、数据主权、技术选型。公司库行序见 `company/knowledge/overview/` 与同层 README。
+解决方案 overview 行序：业务范围、应用与集成、数据主权、技术选型。公司库行序见 `company/knowledge/overview/` 与同层 README。
 
 ---
 
@@ -143,9 +143,9 @@ company/knowledge/overview/{NAME}-overview.md
 | --- | --- | --- | --- |
 | `application` | `{DOC_DIR}/analysis/`、`features/` | 应用上下文 | `{DOC_DIR}/requirements/**/` |
 | `system` | `system/analysis/`、`system/features/` | [system/knowledge/](../../system/knowledge/README.md) | 联邦 ASD 概要；详设 → 应用库 `/sdx-design` |
-| `solution` | `solution/solutions/` 仅此 | [solution knowledge](../../solution/DESIGN.md) | 本层不落 PRD/DSD；拆到各 SYS 的 `system/requirements/` |
+| `solution` | `solution/solutions/` 仅此 | [solution knowledge](../../solution/DESIGN.md) | 本层不落 PRD/DSD |
 | `company` | `company/domains/`（`/sdx-domains`） | [company/knowledge/](../../company/knowledge/README.md) | 域架构拆到哪个 SLN；不直拆系统 PRD |
 
-`/sdx-solution` 仅 `KNOWLEDGE_TYPE=solution`。`/sdx-prd` `/sdx-architect` `/sdx-design` `/sdx-test` 仍写系统/应用 `requirements/`。
+`/sdx-analysis` 仅 `KNOWLEDGE_TYPE=system|application`，写七章 `analysis/ANALYSIS-*.md`。`/sdx-feature` 写同库六章 `features/FEATURE-*.md`。`/sdx-prd` `/sdx-architect` `/sdx-design` `/sdx-test` 仍写系统/应用 `requirements/`。
 
 详见 [sdx-architect/references/knowledge-type-modes.md](../skills/sdx-architect/references/knowledge-type-modes.md)。

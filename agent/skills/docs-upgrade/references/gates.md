@@ -38,7 +38,7 @@
 ```text
 即将执行 /docs-upgrade（整树），当前参数如下：
 - 文档目录: <路径>
-- KNOWLEDGE_TYPE: <application|system|company>
+- KNOWLEDGE_TYPE: <application|system|solution|company>
 - meta: <path 或 repository>
 - ref: <未传=HEAD / 或显式 --ref>
 - dry-run: <yes|no>
@@ -56,7 +56,7 @@ S 跳过 / F 在已确认前提下补齐同类计划
 ```text
 即将执行 /docs-upgrade（指定路径强制对齐），当前参数如下：
 - 文档目录: <路径>
-- KNOWLEDGE_TYPE: <application|system|company>
+- KNOWLEDGE_TYPE: <application|system|solution|company>
 - meta: <path 或 repository>
 - ref: <未传=HEAD / 或显式 --ref>
 - 备份: 不强制 .docs-init（依赖 git）

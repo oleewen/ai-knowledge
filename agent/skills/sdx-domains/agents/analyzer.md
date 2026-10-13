@@ -28,7 +28,7 @@
 ## 修复策略（P0/P1/P2）
 
 - **P0**：误路由、参数向导/意图澄清/段落协议遗漏、`F` 语义误解（先修）  
-- **P1**：边界不清、结构不全、与 sdx-analysis 衔接弱  
+- **P1**：边界不清、结构不全、与 sdx-feature 衔接弱  
 - **P2**：表述与样本覆盖优化  
 
 每条须含：目标、最小变更（文件/段）、预期影响、≥1 条回归用例。
@@ -36,5 +36,5 @@
 ## 回归
 
 1. 先跑 P0 相关样本，零回归再全量  
-2. 边界样本成对验：`/sdx-domains` vs `/sdx-analysis`、`/sdx-prd`、`/sdx-architect`、docs-*  
+2. 边界样本成对验：`/sdx-domains` vs `/sdx-feature`、`/sdx-prd`、`/sdx-architect`、docs-*  
 3. 同模式连续两轮失败 → 考虑规则级重写  

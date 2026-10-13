@@ -182,7 +182,7 @@
       "id": "merge-audience-001",
       "category": "should-trigger",
       "prompt": "继续 /docs-merge 烤干：刚才把源全文糊在文末，还把 adr 相对路径链写进 knowledge 正文了。请按受众质检处理。",
-      "expected_output": "检出落位/引用违例；应收口为章节落位与留字去链；未过不得宣称收敛。",
+      "expected_output": "检出落位/引用违例；应收口为章节落位，以及 adr 不链、只摘录决策要点（无要点则写尚无）；未过不得宣称收敛。",
       "assertions": [
         {
           "id": "audience-violation-visible",

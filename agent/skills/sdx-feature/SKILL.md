@@ -1,33 +1,36 @@
 ---
 name: sdx-feature
 description: >
-  在已共识 ANALYSIS 上按六章分段「澄清 → 生成 → 烤干」细化特性/FR/MVP，
-  并直写 FEATURE-{IDEA-ID}.md；每段写前意图澄清，写入后自动 grilling 至收敛。
-  用户提到 /sdx-feature、写 features/、特性拆解且可对齐上游 ANALYSIS 时，使用本技能。
-  分流：无 ANALYSIS → /sdx-analysis；PRD/ASD/DSD/TDD 或 docs-* → 对应技能。
+  在已共识 ANALYSIS 上按六章分段「澄清 → 生成 → 烤干」细化 FR/MVP/依赖/风险，
+  并直写 FEATURE-{IDEA-ID}.md；每段写前意图澄清，写入后自动 grilling 至收敛，用户确认后再推进下一段。
+  用户提到 /sdx-feature、拆 MVP、功能特性、细化 FR 且可对齐上游 ANALYSIS 时，使用本技能。
+  分流：无 ANALYSIS、只要其他 SDX 阶段或 docs-* 主路径 → 对应技能，不以本技能代跑。
   推进见 references/gates.md。
-compatibility: Bash 5+；校验脚本 agent/skills/sdx-feature/scripts/validate-feature.sh。
+compatibility: Bash 5+；校验脚本 agent/skills/sdx-feature/scripts/validate-feature.sh（仅结构/内容校验）。
 ---
 
 # sdx-feature
 
 ## 输出硬门禁（P0）
 
-- 对象=当前段；一次一段（除非 `F` 且已批确认意图）。
+- 对象=当前段（`§2` 先独立确认 `### 概览`，再可细到单个 `FR`）；一次一段（除非 `F` 且已批确认意图；概览段 `F` 不得跳过写后确认）。
 - 写前澄清 / 推进环 `C/M/G/F`（无 `S`）/ 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[simplify-principles.md](../../references/simplify-principles.md)、[sdx-adr-protocol.md](../../references/sdx-adr-protocol.md)；细节 [gates.md](references/gates.md)。
-- 无已共识 ANALYSIS → 引导 [sdx-analysis](../sdx-analysis/SKILL.md)，不以本技能代写。
-- 仅 `KNOWLEDGE_TYPE=system|application`。公司 → `/sdx-domains`；解决方案 → `/sdx-solution`。
+- 无已共识 ANALYSIS（同库七章需求分析）→ 引导 [sdx-analysis](../sdx-analysis/SKILL.md)，不以本技能代写。
+- 仅 `KNOWLEDGE_TYPE=system|application`。公司 → `/sdx-domains`。解决方案层不写本技能。
+- 上游 §6.1 里程碑不可用 → 硬停回 `/sdx-analysis`；概览按里程碑范围拆 FR（可独立验收 ∧ 一 FR 一模块）；§4 再划 `MVP{n}`（与里程碑不硬对齐）。
 
 ## 边界
 
 | 负责 | 不负责 |
 | --- | --- |
-| `{DOC_DIR}/features/FEATURE-{IDEA-ID}.md` | SOLUTION；PRD/ASD/DSD/TDD；docs-*；公司/解决方案仓 |
+| `FEATURE-{IDEA-ID}.md` 功能特性、参数向导、意图澄清、分段生成、段内烤干、段落推进 | `ANALYSIS`；`PRD/ASD/DSD/TDD`；docs-*；实现级设计 |
 
 ## 不这样用
 
-- 不在 `company/` 或 `solution/` 写 `features/`
-- 不把本技能偷换成 `/sdx-analysis` 或 `/sdx-prd`
+- 不走前置草稿 + 集中收口；默认参数向导后分段推进
+- 不把整篇集中回炉或整份重生成当默认路径
+- 不把写前意图澄清当成完整 grilling Skill 深挖
+- 不把 `FEATURE` 阶段偷换成 `PRD/ASD/DSD/TDD` 或 docs-* 主路径
 
 ## 路由
 
@@ -35,12 +38,17 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-feature/scripts/validate-
 | --- | --- |
 | 流程 / 推进 binding | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
 | IDEA-ID / depth | [core-concepts.md](references/core-concepts.md) |
+| 原则 / 反模式 | [design-principles.md](references/design-principles.md)、[anti-patterns.md](references/anti-patterns.md) |
+| 易错 / 受众 / 终检 | [gotchas.md](gotchas.md)、[audience-and-language.md](references/audience-and-language.md)、[quality-checklist.md](references/quality-checklist.md) |
+| 技术决策 ADR | [sdx-adr-protocol.md](../../references/sdx-adr-protocol.md) |
 | 模板 | [feature-template.md](assets/feature-template.md) |
 
 ## 最少输入
 
-- 可对齐的 **`ANALYSIS-{IDEA-ID}.md`**
+- 可对齐的 **`ANALYSIS-{IDEA-ID}.md`**（同库，IDEA-ID 相同）
+- 可确定的主题或标题线索
 - `{DOC_DIR}/features/` 可写
+- 若已给 `IDEA-ID`、章节范围、深度，则直接进入参数向导确认
 
 ## 产出与校验
 
@@ -48,4 +56,9 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-feature/scripts/validate-
 
 ```bash
 agent/skills/sdx-feature/scripts/validate-feature.sh
+agent/skills/sdx-feature/scripts/validate-feature.sh --file path/to/FEATURE-xxx.md
 ```
+
+## 评测
+
+`evals/evals.json`、[grader.md](agents/grader.md)。聚焦：意图澄清、当前段推进、边界分流。

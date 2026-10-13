@@ -36,9 +36,9 @@
 | `/docs-archive` | overview 表行 → 四层视角章节；冲突策略；方案确认书=意图澄清 |
 | `/docs-okf` | OKF refresh / validate / viz；须 `.docsconfig` 的 `DOC_DIR`+`AGENT_DIR`+`KNOWLEDGE_TYPE`；脚本走 `{DOC_DIR}/{AGENT_DIR}/`；轻流程 |
 | `/sdx-domains` | → `company/domains/DOMAIN-MAP.md`、`DOMAIN-{BD-ID}.md` |
-| `/sdx-solution` | → 仅 solution 库 `{DOC_DIR}/solutions/SOLUTION-*.md` |
-| `/sdx-analysis` | → 系统/应用 `{DOC_DIR}/analysis/ANALYSIS-*.md` |
-| `/sdx-feature` | → 系统/应用 `{DOC_DIR}/features/FEATURE-*.md` |
+| `/sdx-solution` | 解决方案库 `solutions/SOLUTION-*.md`（交付包切分叙事） |
+| `/sdx-analysis` | 系统/应用 `{DOC_DIR}/analysis/ANALYSIS-*.md`（七章需求分析） |
+| `/sdx-feature` | 系统/应用 `{DOC_DIR}/features/FEATURE-*.md`（六章功能特性） |
 | `/sdx-prd` | 基于 ANALYSIS 当前 MVP → `PRD-*.md` |
 | `/sdx-architect` | 基于 PRD → `ASD-*.md`（§1–§3）；可选 `spec-asd-*.md` |
 | `/sdx-design` | 基于 PRD + ASD/spec-asd → `DSD-*.md`（实现在 §2）；上游可含 `{DOC_DIR}/specs/spec-asd-*.md` |

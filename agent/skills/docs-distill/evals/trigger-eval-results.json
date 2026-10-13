@@ -69,7 +69,7 @@
       "pass": true
     },
     {
-      "query": "需求模糊，先写 SOLUTION-ORDER-1.md 共识方案，走 /sdx-solution",
+      "query": "需求模糊，先写 SOLUTION-ORDER-1.md 共识方案，走 /sdx-analysis",
       "should_trigger": false,
       "trigger_rate": 0.0,
       "triggers": 0,
@@ -77,7 +77,7 @@
       "pass": true
     },
     {
-      "query": "SOLUTION 已有，接着 /sdx-analysis 拆 MVP 写进 ANALYSIS-CRM-1.md",
+      "query": "SOLUTION 已有，接着 /sdx-feature 拆 MVP 写进 ANALYSIS-CRM-1.md",
       "should_trigger": false,
       "trigger_rate": 0.0,
       "triggers": 0,

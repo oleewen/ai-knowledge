@@ -96,8 +96,8 @@
 | 阶段 | 规则 globs（Cursor） | 终稿 / 写入范围 | 辅助工作稿 | 推进协议 | 环境变量例外 | Skill |
 | --- | --- | --- | --- | --- | --- | --- |
 | sdx-solution | `solution/solutions/**/*` | `{DOC_DIR}/solutions/SOLUTION-*.md`（仅 solution） | 可选工作稿 | 语义 | 无 | [sdx-solution/SKILL.md](../skills/sdx-solution/SKILL.md) |
-| sdx-analysis | `application/analysis/**/*`、`system/analysis/**/*` | `{DOC_DIR}/analysis/ANALYSIS-*.md` | 可选工作稿 | 语义 | 无 | [sdx-analysis/SKILL.md](../skills/sdx-analysis/SKILL.md) |
-| sdx-feature | `application/features/**/*`、`system/features/**/*` | `{DOC_DIR}/features/FEATURE-*.md` | 可选工作稿 | 语义 | 无 | [sdx-feature/SKILL.md](../skills/sdx-feature/SKILL.md) |
+| sdx-analysis | `application/analysis/**/*`、`system/analysis/**/*` | `{DOC_DIR}/analysis/ANALYSIS-*.md`（七章；仅 system\|application） | 可选工作稿 | 语义 | 无 | [sdx-analysis/SKILL.md](../skills/sdx-analysis/SKILL.md) |
+| sdx-feature | `application/features/**/*`、`system/features/**/*` | `{DOC_DIR}/features/FEATURE-*.md`（六章） | 可选工作稿 | 语义 | 无 | [sdx-feature/SKILL.md](../skills/sdx-feature/SKILL.md) |
 | sdx-domains | `company/domains/**/*` | `company/domains/DOMAIN-MAP.md`、`DOMAIN-{BD-ID}.md` | 可选工作稿 | 语义 | 无 | [sdx-domains/SKILL.md](../skills/sdx-domains/SKILL.md) |
 | sdx-architect | `application/requirements/**/ASD-*.md` | `application/requirements/**/ASD-*.md` | 可选工作稿 | 语义 | 无 | [sdx-architect/SKILL.md](../skills/sdx-architect/SKILL.md) |
 | sdx-design | `application/requirements/**/DSD-*.md` | `application/requirements/**/DSD-*.md` | 可选工作稿 | 语义 | 无 | [sdx-design/SKILL.md](../skills/sdx-design/SKILL.md) |

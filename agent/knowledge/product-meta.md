@@ -33,7 +33,7 @@ title: 产品视角元数据
 | 层 | 解决方案 |
 | id_pattern | `PL-{NAME}` |
 | 落盘 | 标准 `{ID}.md` |
-| 字段 | `maps_to` → 公司 BL，1:1 |
+| 字段 | `maps_to` → 公司 BL，1:1；`implemented_by` → PD；`mapped_by` → SLN |
 
 ### PD
 
@@ -42,7 +42,7 @@ title: 产品视角元数据
 | 层 | 解决方案 |
 | id_pattern | `PD-{NAME}` |
 | 落盘 | 标准 `{ID}.md`。系统层宿主目录 `PD-{NAME}/` 可留，其下 `PM-{NAME}/` 树。不建 `PD-{NAME}.md` |
-| 字段 | `implements_to` → PL；`maps_to` → BS，1:1 |
+| 字段 | `implements_to` → PL；`maps_to` → BS，1:1；`implemented_by` 必须 → BSP、PM（PM 为纯 ID）；`mapped_by` 可选 → SYS（纯 ID） |
 
 ### BP
 
@@ -51,7 +51,7 @@ title: 产品视角元数据
 | 层 | 解决方案 |
 | id_pattern | `BP-{NAME}` |
 | 落盘 | 标准 `{ID}.md` |
-| 字段 | `implements_to` → SLN |
+| 字段 | `implements_to` → SLN；`children` → BSP |
 
 ### BSP
 
@@ -69,7 +69,7 @@ title: 产品视角元数据
 | 层 | 系统 |
 | id_pattern | `PM-{NAME}` |
 | 落盘 | `PD-{NAME}/PM-{NAME}/` 树。不建 `PD-{NAME}.md` |
-| 字段 | `implements_to`、`implemented_by` 必须；`maps_to`、`depends_to` 可选 |
+| 字段 | `implements_to`、`implemented_by` 必须；`maps_to`、`depends_to` 可选；`depended_by` 可选（对端 `depends_to` 存在时必须） |
 
 **硬约束**：`SYS.maps_to` PD 与 `PD.maps_to` BS **成对填写**；禁跨系统 `PM→PD`。组成链用 `implements_to` / `implemented_by`（非同类树 `parent`）。BSP→BP 使用 `parent`。
 
@@ -80,7 +80,7 @@ title: 产品视角元数据
 | 层 | 系统 |
 | id_pattern | `FT-{NAME}` |
 | 落盘 | PM 目录之下 |
-| 字段 | `implements_to`、`implemented_by` 必须 |
+| 字段 | `implements_to`、`implemented_by` 必须；`supported_by` 可选 → API（纯 ID） |
 
 ### FR
 
@@ -98,7 +98,7 @@ title: 产品视角元数据
 | 层 | 系统 |
 | id_pattern | `UC-{NAME}` |
 | 落盘 | PM 目录之下 |
-| 字段 | `implements_to` 必须；`maps_to` 可选 |
+| 字段 | `implements_to` 必须；`maps_to` 可选；`mapped_by` 可选 → API（纯 ID） |
 
 ### BR
 
@@ -111,16 +111,19 @@ title: 产品视角元数据
 
 ## 3. 跨视角出边
 
-应用：不在本文件写 PM / FT / UC 字段。API 对 FT 的绑定写在 API 实体。
+应用层不落 PM / FT / UC 文件。API 写 `supports_to`，FT 写 `supported_by`；API 写 `maps_to`，UC 写 `mapped_by`。指向 API 的目标为纯 ID。
 
 | 源.字段 | 目标 | 层 | 说明 |
 | --- | --- | --- | --- |
 | PL.maps_to | 公司 BL.id | 解决方案 | 1:1 |
+| PL.mapped_by | SLN.id | 解决方案 | 对端 SLN.maps_to |
 | PD.maps_to | BS.id | 解决方案 | 1:1 |
-| PD.implements_to | 解决方案 PL.id | 系统 | 归属产品线 |
-| PD.maps_to | 解决方案 BS.id | 系统 | 对标业务服务（glossary） |
+| PD.mapped_by | SYS.id | 解决方案 | 对端 SYS.maps_to；可选；纯 ID |
+| BP.implements_to | SLN.id | 解决方案 | 流程归属解决方案 |
 | PM.maps_to | BC.id | 系统 | 模块对标限界上下文；可选 |
 | UC.maps_to | AB.id | 系统 | 用例对标能力；可选 |
+| FT.supported_by | API.id | 系统 | 对端 API.supports_to；可选；纯 ID |
+| UC.mapped_by | API.id | 系统 | 对端 API.maps_to；可选；纯 ID |
 
 ## 4. 层入口
 

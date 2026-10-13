@@ -7,6 +7,6 @@
   {"query": "从 design/ 目录按关键词提炼段落写进 payment-overview 第三列，跑 docs-extract", "should_trigger": false},
   {"query": "把 overview 表行归档到 system/knowledge 视角章节，执行 /docs-archive", "should_trigger": false},
   {"query": "目录变动大，更新仓库 INDEX-GUIDE.md，跑 /docs-indexing", "should_trigger": false},
-  {"query": "需求模糊，先写 SOLUTION-ORDER-1.md 共识方案，走 /sdx-solution", "should_trigger": false},
-  {"query": "SOLUTION 已有，接着 /sdx-analysis 拆 MVP 写进 ANALYSIS-CRM-1.md", "should_trigger": false}
+  {"query": "需求模糊，先写 SOLUTION-ORDER-1.md 共识方案，走 /sdx-analysis", "should_trigger": false},
+  {"query": "SOLUTION 已有，接着 /sdx-feature 拆 MVP 写进 ANALYSIS-CRM-1.md", "should_trigger": false}
 ]

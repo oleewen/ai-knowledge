@@ -16,13 +16,13 @@
   "passed": true,
   "evidence": [
     "parameter-guidance：体现逐项确认或快捷组合。",
-    "section-cycle：体现分段直写 ANALYSIS 终稿与当前段收口。",
+    "section-cycle：体现分段直写 FEATURE 终稿与当前段收口。",
     "intent-clarify：体现写前意图澄清。",
     "grilling-loop：体现当前段烤干与用户动作协议。",
     "audience-check：烤干含受众维 A/B/C/E。",
     "single-section-stop：明确一次只处理当前段并等待用户动作。",
     "semantic-change-gated：语义变更先推荐与数字选项。",
-    "upstream-solution：体现基于 SOLUTION 承接细化。"
+    "upstream-solution：体现基于 ANALYSIS 承接细化。"
   ]
 }
 ```
@@ -35,7 +35,7 @@
   "passed": true,
   "evidence": [
     "correct-downstream：点名下游技能或产物。",
-    "no-false-analysis-primary：未框成参数向导 + 分段直写 ANALYSIS 的主路径。"
+    "no-false-analysis-primary：未框成参数向导 + 分段直写 FEATURE 的主路径。"
   ]
 }
 ```
@@ -51,10 +51,10 @@
    - **受众质检**：烤干须跑 A/B/C/E；全过可静默；违例须可见短表；未过不得标已烤干
    - **`G`/`F`**：`G`=收敛后深挖当前段；`F`=须先批确认剩余意图再补齐
    - **语义变更**（目标/范围/承诺/口径/取舍/风险/MVP 与里程碑对齐/优先级/概览清单/术语/技术选型等）：先推荐 + 数字选项，未选不得直接改当前段
-   - **上游**：基于 `SOLUTION-{IDEA-ID}.md` 或等价共识方案承接
-   - **技术决策**：实现向可新建 ADR；改边界回 SOLUTION；§6.2 链 CONTEXT（见 [sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)）
+   - **上游**：基于 `ANALYSIS-{IDEA-ID}.md` 或等价共识方案承接
+   - **技术决策**：实现向可新建 ADR；改边界回 ANALYSIS；§6.2 链 CONTEXT（见 [sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)）
    - **禁止**：前置草稿 + 集中收口；已删除的 HTML gate / `PENDING→CONFIRMED` / 会话 spec / 写前 hook
-4. **should-not-trigger**：须拒绝以 sdx-feature 为主路径，或明确分流至用户要的技能/产物；不得用「先参数向导再分段写 ANALYSIS」框下游请求；不得把 `F` 整篇重写认作合法主路径
+4. **should-not-trigger**：须拒绝以 sdx-feature 为主路径，或明确分流至用户要的技能/产物；不得用「先参数向导再分段写 FEATURE」框下游请求；不得把 `F` 整篇重写认作合法主路径
 5. **P0** 任一失败 → `passed: false`
 6. 不输出实现方案；仅评判
 

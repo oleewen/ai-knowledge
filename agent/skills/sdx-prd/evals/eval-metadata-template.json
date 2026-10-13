@@ -47,7 +47,7 @@
       "id": "correct-downstream",
       "name": "正确下游",
       "type": "must_include",
-      "check": "须点名与 prompt 一致的下游技能或产物（如 sdx-analysis + ANALYSIS、sdx-architect + ASD、docs-distill 等），不得以 sdx-prd 为唯一主路径。",
+      "check": "须点名与 prompt 一致的下游技能或产物（如 sdx-feature + ANALYSIS、sdx-architect + ASD、docs-distill 等），不得以 sdx-prd 为唯一主路径。",
       "priority": "P0"
     },
     {

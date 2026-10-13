@@ -20,7 +20,7 @@
 | [architecture-principles.md](architecture-principles.md) | 架构原则条目 |
 | [adr-template.md](adr-template.md) · [adr-guidelines.md](adr-guidelines.md) | 命名/落盘（template）· 章节/状态（guidelines） |
 | [sdx-adr-protocol.md](../references/sdx-adr-protocol.md) | SDX 写 SOLUTION/ANALYSIS 时落 ADR / CONTEXT |
-| [application/adr/](../../application/adr/README.md) · [system/adr/](../../system/adr/README.md) · [company/adr/](../../company/adr/README.md) | ADR 正文目录（按决策范围分域；含 `CONTEXT.md`）。`solution/adr/` 随模板树补齐 |
+| [company/adr/](../../company/adr/README.md) · [solution/adr/](../../solution/adr/README.md) · [system/adr/](../../system/adr/README.md) · [application/adr/](../../application/adr/README.md) | ADR 正文目录（按决策范围分域；含 `CONTEXT.md`） |
 
 ## 使用顺序
 

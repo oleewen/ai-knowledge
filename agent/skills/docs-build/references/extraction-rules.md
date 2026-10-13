@@ -61,8 +61,7 @@
 #### SLN（解决方案层级）
 
 - 提取自解决方案边界；解决方案层首次定义；一仓一条
-- **必须字段**：`id`、`description`、`maps_to`（PL，一对一）
-- **可选关系**：`implemented_by`（BP）
+- **必须字段**：`id`、`description`、`maps_to`（PL，一对一）、`implemented_by`（BP、SYS；SYS 为纯 ID）
 
 #### SYS（系统层级）
 
@@ -80,7 +79,7 @@
   - 调用 `Main.run()` 或 `SpringApplication.run()`
   - 配置 `spring-boot-maven-plugin`
 - **必须字段**：`id`、`description`、`implements_to`（所属 SYS）、`implemented_by`（MS）
-- **可选关系**：`supports_to`（BC）、`uses_to`（DS）
+- **可选关系**：`supports_to`（BC）、`uses_to`（DS|MW；MW 为纯 ID）
 - **详细说明可选**：启动类、Maven 模块、MQ 消费者、定时任务、仓库地址。缺了不算提取失败
 
 #### MS（微服务层级）
@@ -98,7 +97,7 @@
 | `…Controller` | 宿主类 SimpleName（如 `FeeAppealTaskController` → `FeeAppealTask`） |
 
 - **同名合并**：相同宿主类或同义宿主类二选一（如 BillingAppeal、Appeal，选择 BillingAppeal）
-- **必须字段**：`id`、`description`、`implements_to`（所属 APP）
+- **必须字段**：`id`、`description`、`implements_to`（所属 APP）、`implemented_by`（API，纯 ID）
 - **可选关系**：`maps_to`（AGG）、`uses_to`（ENT）
 - **详细说明可选**：宿主类、宿主模块、协议、合并说明。缺了不算提取失败
 - **禁止**：使用 Maven 模块名作为 MS-ID、单模块对应多个 MS-ID、使用包名尾段作为显示名
@@ -173,21 +172,22 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 #### MDG（主数据域层级）
 
 - 提取自解决方案主数据划分；解决方案层首次定义；一个 SLN 可有多条
-- **必须字段**：`id`、`description`
+- **必须字段**：`id`、`description`、`implemented_by`（DS，纯 ID）
+- **可选关系**：`used_by`（SYS，纯 ID）
 - **禁止**：用 MDG 代替 DS 或 ENT
 
 #### DS（数据源层级）
 
 - 提取自 `application.yml/properties` 多数据源配置
-- **必须字段**：`id`（如 `DS-BILLING-APPEAL-TIDB`）、`description`、`implements_to`（所属 MDG）
-- **可选关系**：`implemented_by`（ENT）、`used_by`（APP）
+- **必须字段**：`id`（如 `DS-BILLING-APPEAL-TIDB`）、`description`、`implements_to`（所属 MDG）、`implemented_by`（ENT）
+- **可选关系**：`used_by`（APP|MW）
 - **详细说明可选**：存储类型、配置键、事务注解。缺了不算提取失败
 
 #### ENT（实体层级）
 
 - 提取自 @Table 注解的实体类
-- **必须字段**：`id`、`description`、`implements_to`（所属 DS）
-- **可选关系**：`maps_to`（AGG）
+- **必须字段**：`id`、`description`、`implements_to`（所属 DS）、`implemented_by`（TBL，纯 ID）
+- **可选关系**：`maps_to`（AGG）、`used_by`（MS）
 - **详细说明可选**：类名、物理表名。缺了不算提取失败
 - **同表合并**：相同表名对应的实体类合并为一个 ENT-ID
 - **禁止**：使用包名作为 ENT-ID、单表对应多个 ENT-ID、使用 Mapper 类名作为显示名
@@ -235,16 +235,16 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 #### BSD（业务子域层级）
 
-- 一级提取自公司业务版图：`level: 1`、`parent` 所属 BD，公司层落盘；可选 `maps_to`（CAP）
-- 二级提取自解决方案业务服务：`level: 2`、`parent` 所属 BSD-L1，解决方案层落盘；可选 `mapped_by`（BS）
+- 一级提取自公司业务版图：`level: 1`、`parent` 所属 BD，公司层落盘；可选 `maps_to`（CAP）；`children`→BSD-L2（对端 `parent` 存在时必须，纯 ID）
+- 二级提取自解决方案业务服务：`level: 2`、`parent` 所属 BSD-L1，解决方案层落盘；可选 `mapped_by`（BS）；`children`→BSD-L3（对端 `parent` 存在时必须，纯 ID）
 - 三级提取自系统限界上下文之上：`level: 3`、`parent` 所属 BSD-L2，系统层落盘；可选 `implemented_by`（BC）
-- **必须字段**：`id`、`level`、`parent`、`description`；可选：一级 `maps_to`（CAP）、二级 `mapped_by`（BS）、三级 `implemented_by`（BC）
+- **必须字段**：`id`、`level`、`parent`、`description`；可选：一级 `maps_to`（CAP）、二级 `mapped_by`（BS）、三级 `implemented_by`（BC）。一级、二级的 `children` 在对端 `parent` 存在时必须
 - **禁止**：四级及以下 BSD、将 BC 直接作为 BSD、跨 BSD-L1 合并 BSD-L2、BC 挂到 BSD-L2
 
 #### BL（业务线层级）
 
 - 提取自公司业务线；公司层首次定义
-- **必须字段**：`id`、`description`、`maps_to`（BSD-L1，一对一）
+- **必须字段**：`id`、`description`、`maps_to`（BSD-L1，一对一）、`mapped_by`（PL，纯 ID）
 - 落 `business/BL/{id}.md`
 
 #### BS（业务服务层级）
@@ -257,7 +257,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 #### BC（限界上下文层级）
 
 - 提取自宿主类父包名、限界上下文包路径
-- **必须字段**：`id`（如 `BC-BILLING-APPEAL-CORE`）、`description`、`implements_to`（所属 BSD-L3）、`implemented_by`（AGG id 列表）；可选 `supported_by`（APP）
+- **必须字段**：`id`（如 `BC-BILLING-APPEAL-CORE`）、`description`、`implements_to`（所属 BSD-L3）、`implemented_by`（AGG id 列表）；可选 `supported_by`（APP）、`mapped_by`（PM）
 - **详细说明可选**：通用语言。缺了不算提取失败
 - **禁止**：使用 Maven 模块名作为 BC-ID、单包对应多个 BC-ID
 
@@ -294,12 +294,14 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 - 提取自解决方案产品线章；解决方案层首次定义
 - **必须字段**：`id`（如 `PL-BILLING-APPEAL`）、`description`、`maps_to`（BL，一对一）
+- **可选关系**：`implemented_by`（PD）、`mapped_by`（SLN）
 - **详细说明可选**：目标用户。缺了不算提取失败
 
 #### PD（产品服务层级）
 
 - 提取自产品架构、解决方案边界；`implements_to` 所属 PL；`maps_to` BS（一对一）；**PD 解决方案层首次定义**
-- **必须字段**：`id`（如 `PD-BILLING-APPEAL`）、`description`、`implements_to`（所属 PL）、`maps_to`（BS）
+- **必须字段**：`id`（如 `PD-BILLING-APPEAL`）、`description`、`implements_to`（所属 PL）、`maps_to`（BS）、`implemented_by`（BSP、PM；PM 为纯 ID）
+- **可选关系**：`mapped_by`（SYS，纯 ID）
 - 公司/系统/应用不落 PD 首次定义；`PM.implements_to` 引用解决方案 `PD-*`（有联邦 parent 则 HTTP，否则纯 ID）
 
 #### BP（业务流程层级）
@@ -319,13 +321,14 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 #### PM（产品模块层级）
 
 - 提取自产品功能分解；系统层首次定义。`implements_to` 所属解决方案 PD
-- **必须字段**：`id`（如 `PM-BILLING-APPEAL-CORE`）、`description`、`implements_to`（所属 PD）、`implemented_by`（FT）；可选 `maps_to`（BC）、`depends_to`（其它 PM）
+- **必须字段**：`id`（如 `PM-BILLING-APPEAL-CORE`）、`description`、`implements_to`（所属 PD）、`implemented_by`（FT）；可选 `maps_to`（BC）、`depends_to`（其它 PM）、`depended_by`（对端 `depends_to` 存在时必须）
 - **禁止**：`implements_to` 直挂 PL
 
 #### FT（功能特性层级）
 
 - 提取自用户操作提炼、API-* 接口分析
 - **必须字段**：`id`、`description`、`implements_to`（所属 PM）、`implemented_by`（FR）
+- **可选关系**：`supported_by`（API，纯 ID）
 - **详细说明可选**：验收标准。缺了不算提取失败
 - **禁止**：技术实现细节作为功能特性；FT↔UC 直连
 
@@ -343,7 +346,8 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 #### UC（用例层级）
 
 - 提取自 PRD 文档、用户场景文档、README.md 核心业务
-- **必须字段**：`id`、`description`、`implements_to`（所属 FR）；可选 `maps_to`（AB）
+- **必须字段**：`id`、`description`、`implements_to`（所属 FR）
+- **可选关系**：`maps_to`（AB）、`mapped_by`（API，纯 ID）
 - **禁止**：单一技术操作作为用例
 
 ### 输出结构
@@ -368,20 +372,21 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 #### TPL（技术平台层级）
 
 - 提取自公司技术平台准入；公司层首次定义
-- **必须字段**：`id`、`description`
+- **必须字段**：`id`、`description`、`implemented_by`（TSD，纯 ID）
 - 落 `technical/{id}.md`
 - **禁止**：APP↔TPL 直连
 
 #### TSD（技术域层级）
 
 - 提取自解决方案技术选用与例外；解决方案层首次定义
-- **必须字段**：`id`、`description`、`implements_to`（所属 TPL）
+- **必须字段**：`id`、`description`、`implements_to`（所属 TPL）、`implemented_by`（MW，纯 ID）
+- **可选关系**：`used_by`（SYS，纯 ID）
 - 落 `technical/{id}.md`
 
 #### MW（中间件绑定）
 
 - 提取自配置与部署绑定：数据源、缓存、MQ Topic/Group、注册配置等
-- **必须字段**：`id`、`description`、`implements_to`（TSD）；可选 `used_by`（APP）、`uses_to`（DS）
+- **必须字段**：`id`、`description`、`implements_to`（TSD）；可选 `implemented_by`（CMP）、`used_by`（APP）、`uses_to`（DS）
 - **详细说明可选**：绑定类型、配置键。缺了不算提取失败
 - **禁止**：将 MS/API 宿主类登记为 MW；Consumer 类仍在 API 层；APP↔TPL 直连
 

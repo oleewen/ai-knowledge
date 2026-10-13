@@ -28,7 +28,7 @@ title: 应用视角元数据
 | 层 | 解决方案 |
 | id_pattern | `SLN-{NAME}` |
 | 落盘 | 标准 `{ID}.md`。系统不登记。应用不落盘，纯 ID |
-| 字段 | `maps_to` 必须，→ PL，1:1；`implemented_by` 可选，→ BP |
+| 字段 | `maps_to` 必须，→ PL，1:1；`implemented_by` 必须 → BP、SYS（SYS 为纯 ID） |
 
 ### SYS
 
@@ -37,7 +37,7 @@ title: 应用视角元数据
 | 层 | 系统 |
 | id_pattern | `SYS-{NAME}` |
 | 落盘 | `SYS-{NAME}.md` 单文件。应用不落盘，纯 ID |
-| 字段 | `implements_to`、`implemented_by` 必须，→ SLN、← APP；`uses_to` 可选，→ MDG\|TSD |
+| 字段 | `implements_to`、`implemented_by` 必须，→ SLN、← APP；`maps_to` → PD；`uses_to` → MDG\|TSD |
 
 ### APP
 
@@ -46,7 +46,7 @@ title: 应用视角元数据
 | 层 | 系统 |
 | id_pattern | `APP-{NAME}` |
 | 落盘 | `APP-{NAME}/` 平铺（不强制收进 SYS 目录）。应用不落盘，纯 ID |
-| 字段 | `implements_to`、`implemented_by` 必须，→ SYS、← MS；`supports_to`、`uses_to` 可选 |
+| 字段 | `implements_to`、`implemented_by` 必须，→ SYS、← MS；`supports_to` → BC；`uses_to` → DS\|MW（MW 为纯 ID） |
 
 ### MS
 
@@ -55,9 +55,9 @@ title: 应用视角元数据
 | 层 | 系统 |
 | id_pattern | `MS-{NAME}` |
 | 落盘 | 系统 `APP-{NAME}/MS-{NAME}/`。应用不落 MS 实体；`MS-{NAME}/` 可作 API 宿主目录 |
-| 字段 | `implements_to` 必须，→ APP；`maps_to`、`uses_to` 可选 |
+| 字段 | `implements_to` 必须，→ APP；`implemented_by` 必须 → API（纯 ID）；`maps_to` → AGG；`uses_to` → ENT |
 
-对端镜像：`BC.supported_by`、`AGG.mapped_by`（MS）、`DS.used_by` 须与上表双向同步。
+对端镜像：`BC.supported_by`、`AGG.mapped_by`（MS）、`DS.used_by`、`ENT.used_by` 须与上表双向同步。
 
 ### API
 
@@ -75,14 +75,16 @@ title: 应用视角元数据
 | 源.字段 | 目标 | 层 | 说明 |
 | --- | --- | --- | --- |
 | SLN.maps_to | PL.id | 解决方案 | 1:1 |
+| SLN.implemented_by | BP.id | 解决方案 | 对端 BP.implements_to |
 | SYS.uses_to | MDG.id \| TSD.id | 系统 | 声明使用的主数据域 / 技术域；可选 |
 | SYS.maps_to | PD.id | 系统 | 系统对标产品服务（glossary）；可选 |
 | APP.supports_to | BC.id | 系统 | 应用支撑限界上下文；可选 |
+| APP.uses_to | DS.id \| MW.id | 系统 | 应用使用数据源或中间件（对端 DS.used_by / MW.used_by）；MW 为纯 ID |
 | MS.maps_to | AGG.id | 系统 | 入口簇对标聚合；可选 |
-| BC.supported_by | APP.id | 应用 | 业务上下文由应用支撑；可选 |
+| MS.uses_to | ENT.id | 系统 | 入口簇使用实体（对端 ENT.used_by） |
+| BC.supported_by | APP.id | 系统 | 业务上下文由应用支撑；可选 |
 | API.maps_to | UC.id | 应用 | 接口对标用例。用例再对标能力（UC → AB）；可选 |
 | API.supports_to | FT.id | 应用 | 接口支撑功能点；可选 |
-| DS.used_by | APP.id | 应用 | 数据源被应用使用；可选 |
 
 ## 4. 层入口
 

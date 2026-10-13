@@ -113,7 +113,7 @@ flowchart TD
     end
     subgraph RD["需求交付链 sdx-*"]
         direction LR
-        RD1["/sdx-solution → /sdx-analysis"] --> RD2["/sdx-prd → /sdx-architect"] --> RD3["/sdx-design → /sdx-test"]
+        RD1["/sdx-analysis → /sdx-feature"] --> RD2["/sdx-prd → /sdx-architect"] --> RD3["/sdx-design → /sdx-test"]
     end
     subgraph SDD["SDD 实现链"]
         direction LR

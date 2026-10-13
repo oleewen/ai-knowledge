@@ -3,7 +3,7 @@ name: sdx-domains
 description: >
   仅公司库：按「澄清 → 生成 → 烤干」写域架构总图 DOMAIN-MAP.md 与 DOMAIN-{BD-ID}.md（哪条 BD 支撑 VC）。
   用户提到 /sdx-domains、写 company/domains、域架构总图时，使用本技能。
-  分流：SOLUTION → /sdx-solution（仅解决方案库）；系统/应用分析 → /sdx-analysis；docs-* → 对应技能。
+  分流：SOLUTION → /sdx-solution（仅解决方案库）；系统/应用需求分析 → /sdx-analysis；功能特性 → /sdx-feature；docs-* → 对应技能。
   推进见 references/gates.md。
 compatibility: Bash 5+；校验脚本 agent/skills/sdx-domains/scripts/validate-domains.sh。
 ---

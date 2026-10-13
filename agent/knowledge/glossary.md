@@ -53,7 +53,7 @@ tags: ["glossary", "terminology", "governance"]
 | PA | UC | Use Case | 用例 | — |
 | PA | BR | Business Rule | 业务规则 | — |
 | AA | SLN | Solution | 解决方案 | 交付包锚点；一仓一 SLN；`maps_to` PL |
-| AA | SYS | System | 系统 | 别名：应用服务；系统层 SSOT；`maps_to` PD 且 `implements_to` SLN |
+| AA | SYS | System | 系统 | 别名：应用服务；系统层 SSOT；`maps_to` PD 1:1；`implements_to` SLN（纯 ID，解决方案层不回写） |
 | AA | APP | Application | 应用 | 代码仓库/部署单元 |
 | AA | MS | Microservice | 微服务 | 入口能力簇；非 MW 替代 |
 | AA | API | API Endpoint | 接口端点 | — |
@@ -71,32 +71,32 @@ ID 前缀写作 `VC-` / `BD-` 等，语法见 [naming-conventions.md](naming-con
 ## 映射关系（常用）
 
 > 本表为关系字段语义 **SSOT**。字段名短化；目标类型靠 ID 前缀。边类方向见 [knowledge-governance.md § 核心映射](knowledge-governance.md#核心映射5a方向)。他处（governance / `agent/knowledge/{视角}-meta.md`）只引用，不复制全文。  
-> **总则**：不设单侧 SSOT；关系两边均必填（树根省略 `parent` 除外）。混列目标靠前缀辨型。
+> **总则**：不设单侧 SSOT；关系两边均必填（树根省略 `parent` 除外），含跨层。关系可以没有；一侧写了，另一侧必须写。指向更低层的目标只写纯 ID，不写 Markdown 链，不写 HTTP。混列目标靠前缀辨型。
 
 ### 动词族
 
 | 动词对 | 场景 |
 | --- | --- |
-| `parent` / `children` | 同类树。children 同层：BD→BSD-L1、BP→BSP。parent：BSD-L2→BSD-L1、BSD-L3→BSD-L2、BSP→BP |
-| `implements_to` / `implemented_by` | 同视角不同类上下级（组成链）。跨层只由下层写向上：SYS→SLN、TSD→TPL、MW→TSD。同层如 CMP↔MW |
-| `maps_to` / `mapped_by` | 同级对标（出边 / 对端列表；含同视角） |
-| `supports_to` / `supported_by` | 支撑（BD↔VC；APP↔BC；API→FT） |
-| `uses_to` / `used_by` | 使用（第五动词） |
+| `parent` / `children` | 同类树。两边都写，含跨层。children 同层：BD→BSD-L1、BP→BSP。children 跨层：BSD-L1→BSD-L2、BSD-L2→BSD-L3。parent：BSD-L2→BSD-L1、BSD-L3→BSD-L2、BSP→BP |
+| `implements_to` / `implemented_by` | 同视角不同类上下级（组成链）。两边都写，含跨层。下层写 `implements_to`，上层写 `implemented_by`。同层如 CMP↔MW |
+| `maps_to` / `mapped_by` | 同级对标。两边都写，含跨层。下层写 `maps_to`，上层写 `mapped_by` |
+| `supports_to` / `supported_by` | 支撑。两边都写，含跨层（BD↔VC；APP↔BC；API→FT，对端 FT.`supported_by`） |
+| `uses_to` / `used_by` | 使用。两边都写，含跨层。关系可无；有则两侧都写。SYS→MDG\|TSD；APP→DS；APP→MW；MS→ENT；MW→DS |
 | `depends_to` / `depended_by` | PM↔PM 依赖（第六动词） |
 
 ### 允许边（宿主 → 目标）
 
 | 字段（出边） | 宿主 → 目标（摘要） |
 | --- | --- |
-| `parent` / `children` | BD→BSD-L1；BP→BSP（children，同层）。BSD-L2→BSD-L1；BSD-L3→BSD-L2；BSP→BP（parent） |
+| `parent` / `children` | BD→BSD-L1；BP→BSP（children，同层）。BSD-L1→BSD-L2；BSD-L2→BSD-L3（children，跨层，纯 ID）。BSD-L2→BSD-L1；BSD-L3→BSD-L2；BSP→BP（parent） |
 | `implements_to` | CAP→VC；AGG→BC；AB→AGG；BC→BSD-L3；PD→PL；PM→PD；FT→PM；FR→FT；UC\|BR→FR；BP→SLN；BSP→PD；APP→SYS；MS→APP；API→MS；DS→MDG；ENT→DS；TBL→ENT；SYS→SLN；TSD→TPL；MW→TSD；CMP→MW |
-| `implemented_by` | 同层对端。跨层由下层写 `implements_to`，上层不写 `implemented_by` |
+| `implemented_by` | 对端，含跨层。同层如 VC←CAP、MW←CMP。跨层：TPL←TSD；PD←PM；MDG←DS；TSD←MW；MS←API；ENT←TBL。跨层目标为纯 ID |
 | `maps_to` | BL→BSD-L1 1:1；BSD-L1→CAP；PL→BL 1:1；SLN→PL 1:1；PD→BS 1:1；BS→BSD-L2 1:1；SYS→PD 1:1；PM→BC；API→UC；UC→AB；MS→AGG；ENT→AGG |
-| `mapped_by` | 同层对端。跨层由下层写 `maps_to` |
+| `mapped_by` | 对端，含跨层。同层如 BSD-L1←BL。跨层：BL←PL；UC←API。不写 PD←SYS。跨层目标为纯 ID |
 | `supports_to` | BD→VC；APP→BC；API→FT |
-| `supported_by` | VC→BD；BC→APP |
-| `uses_to` | SYS→MDG\|TSD；APP→DS；MS→ENT；MW→DS。同层可空仍双写 |
-| `used_by` | 同层对端。另 MW→APP（下层写向上） |
+| `supported_by` | VC→BD；BC→APP（同层）。跨层：FT←API。跨层目标为纯 ID |
+| `uses_to` | PD→MDG\|TSD；APP→DS；APP→MW；MS→ENT；MW→DS。关系可无；有则两侧都写 |
+| `used_by` | 对端，含跨层。同层如 DS←APP、MDG←PD、TSD←PD。跨层：DS←MW。另 MW.`used_by`→APP（对端 APP.`uses_to`）。指向下层的目标为纯 ID |
 | `depends_to` / `depended_by` | PM↔PM |
 
 ### 非边属性

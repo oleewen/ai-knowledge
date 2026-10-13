@@ -27,9 +27,7 @@ title: 技术视角元数据
 | 层 | 公司 |
 | id_pattern | `TPL-{NAME}` |
 | 落盘 | 标准 `{ID}.md` |
-| 字段 | `domain`：能力域为云基础设施 / DevOps / 安全 / 开发环境 / 可观测 |
-
-本层不写非公司实体的字段。入边由对端在其首次定义层书写。
+| 字段 | `domain`：能力域为云基础设施 / DevOps / 安全 / 开发环境 / 可观测。`implemented_by` 必须 → TSD（纯 ID） |
 
 ### TSD
 
@@ -38,7 +36,7 @@ title: 技术视角元数据
 | 层 | 解决方案 |
 | id_pattern | `TSD-{NAME}` |
 | 落盘 | 标准 `{ID}.md` |
-| 字段 | `implements_to` → 公司 TPL |
+| 字段 | `implements_to` → 公司 TPL；`implemented_by` 必须 → MW（纯 ID）；`used_by` 可选 → SYS（纯 ID） |
 
 组成边写在关系段。
 
@@ -49,7 +47,7 @@ title: 技术视角元数据
 | 层 | 应用 |
 | id_pattern | `MW-{NAME}` |
 | 落盘 | 标准 `{ID}.md`。实体 `{ID}.md` |
-| 字段 | `implements_to` 必须；`used_by`、`uses_to` 可选 |
+| 字段 | `implements_to` 必须 → TSD；`implemented_by` → CMP；`used_by` → APP；`uses_to` → DS |
 
 绑定类型、配置键写入 MW 的详细说明，缺了不算失败。
 
@@ -64,13 +62,13 @@ title: 技术视角元数据
 
 ## 3. 跨视角出边
 
-解决方案：组成边写在关系段，不在此表。系统：不写 TSD 的边。边在其首次定义层书写。
+解决方案：组成边写在关系段，不在此表。系统层不落 TSD 文件；`used_by` 写在解决方案 TSD 上。边在其首次定义层书写。
 
 | 源.字段 | 目标 | 层 | 说明 |
 | --- | --- | --- | --- |
-| MW.used_by | APP.id | 应用 | 被应用使用（对端 APP.uses_to）；可选 |
+| TSD.used_by | SYS.id | 解决方案 | 对端 SYS.uses_to；可选；纯 ID |
+| MW.used_by | APP.id | 应用 | 被应用使用 |
 | MW.uses_to | DS.id | 应用 | 中间件使用数据源（可选） |
-| MS.uses_to | CMP.id | 应用 | 入口簇使用组件；可选 |
 
 ## 4. 层入口
 

@@ -26,7 +26,7 @@
 
 ### 最小可写条件
 
-- 上游 `ANALYSIS-{IDEA-ID}.md` 已明确，或已有等价分析材料
+- 上游 `FEATURE-{IDEA-ID}.md` 已明确，或已有等价功能特性材料
 - `IDEA-ID` 与 `N` 已给出或可按规则生成
 - `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/` 可写
 - 至少能确定本轮起始章节，或默认从 `§1` 开始

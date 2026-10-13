@@ -45,7 +45,7 @@ title: 业务视角元数据
 | 层 | 公司 |
 | id_pattern | `CAP-{NAME}` |
 | 落盘 | `VC-{NAME}/CAP-*.md` |
-| 字段 | `implements_to` 必须；`mapped_by` 可选 |
+| 字段 | `implements_to` 必须；`mapped_by` → BSD-L1 |
 
 ### BD
 
@@ -63,7 +63,7 @@ title: 业务视角元数据
 | 层 | 公司 |
 | id_pattern | `BSD-{NAME}` |
 | 落盘 | `BD-{NAME}/BSD-*.md` |
-| 字段 | `level` 固定 `1`，必须；`parent` 必须；`maps_to`、`mapped_by` 可选 |
+| 字段 | `level` 固定 `1`，必须；`parent` 必须；`children` → BSD-L2（对端 `parent` 存在时必须，纯 ID）；`maps_to` → CAP；`mapped_by` → BL |
 
 ### BL
 
@@ -72,7 +72,7 @@ title: 业务视角元数据
 | 层 | 公司 |
 | id_pattern | `BL-{NAME}` |
 | 落盘 | `BL/BL-{NAME}.md`（单文件） |
-| 字段 | `maps_to` 必须，一对一 |
+| 字段 | `maps_to` 必须，一对一；`mapped_by` 必须 → PL（纯 ID） |
 
 ### BSD-L2
 
@@ -81,7 +81,7 @@ title: 业务视角元数据
 | 层 | 解决方案 |
 | id_pattern | `BSD-{NAME}-L2` |
 | 落盘 | 标准 `{ID}.md` |
-| 字段 | `parent`、`mapped_by` 写在关系段。`parent` 必须，→ 公司 BSD-L1；`mapped_by` 可选，→ BS |
+| 字段 | `parent`、`children`、`mapped_by` 写在关系段。`parent` 必须，→ 公司 BSD-L1；`children` → BSD-L3（对端 `parent` 存在时必须，纯 ID）；`mapped_by` 可选，→ BS |
 
 ### BS
 
@@ -90,7 +90,7 @@ title: 业务视角元数据
 | 层 | 解决方案 |
 | id_pattern | `BS-{NAME}` |
 | 落盘 | 标准 `{ID}.md` |
-| 字段 | `maps_to` 写在关系段，→ BSD-L2，1:1 |
+| 字段 | `maps_to` 写在关系段，→ BSD-L2，1:1；`mapped_by` → PD |
 
 ### BSD-L3
 
@@ -108,7 +108,7 @@ title: 业务视角元数据
 | 层 | 系统 |
 | id_pattern | `BC-{NAME}` |
 | 落盘 | BSD-L3 目录之下 |
-| 字段 | `implements_to`、`implemented_by` 必须；`supported_by` 可选 |
+| 字段 | `implements_to`、`implemented_by` 必须；`supported_by` → APP；`mapped_by` → PM |
 
 ### AGG
 
@@ -136,7 +136,10 @@ title: 业务视角元数据
 
 | 源.字段 | 目标 | 层 | 说明 |
 | --- | --- | --- | --- |
+| BL.mapped_by | PL.id | 公司 | 对端 PL.maps_to；必须；纯 ID |
+| BS.mapped_by | PD.id | 解决方案 | 对端 PD.maps_to |
 | BC.supported_by | APP.id | 系统 | 上下文由应用支撑（对端 APP.supports_to）；可选 |
+| BC.mapped_by | PM.id | 系统 | 对端 PM.maps_to |
 | AGG.mapped_by | ENT.id \| MS.id | 系统 | 对端 ENT.maps_to / MS.maps_to；可选 |
 | AB.mapped_by | UC.id | 系统 | 对端 UC.maps_to；可选 |
 

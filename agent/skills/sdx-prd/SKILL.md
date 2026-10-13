@@ -1,10 +1,10 @@
 ---
 name: sdx-prd
 description: >
-  在已共识 ANALYSIS 当前 MVP 上按十一章分段「澄清 → 生成 → 烤干」直写 PRD-{IDEA-ID}-{N}.md；
+  在已共识 FEATURE 当前 MVP 上按十一章分段「澄清 → 生成 → 烤干」直写 PRD-{IDEA-ID}-{N}.md；
   每段写前意图澄清，写入后自动 grilling 至收敛，再由用户确认推进。
-  用户提到 /sdx-prd、写 PRD、细化用户故事/业务流程且可对齐上游 ANALYSIS 时，使用本技能。
-  分流：无 ANALYSIS、只要其他 SDX 阶段或 docs-* 主路径 → 对应技能，不以本技能代跑。
+  用户提到 /sdx-prd、写 PRD、细化用户故事/业务流程且可对齐上游 FEATURE 时，使用本技能。
+  分流：无 FEATURE、只要其他 SDX 阶段或 docs-* 主路径 → 对应技能，不以本技能代跑。
   推进见 references/gates.md。
 compatibility: Bash 5+；校验脚本 agent/skills/sdx-prd/scripts/validate-prd.sh（仅结构/内容校验）。
 ---
@@ -15,20 +15,20 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-prd/scripts/validate-prd.
 
 - 对象=当前段（章节 / `UC` / `US`）；一次一段（除非 `F` 且已批确认意图）。
 - 写前澄清 / 推进环 `C/M/G/F`（无 `S`）/ 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[simplify-principles.md](../../references/simplify-principles.md)；细节 [gates.md](references/gates.md)。
-- 上游须可对齐 `ANALYSIS-{IDEA-ID}.md` 与目标 `MVP-Phase-{N}`；否则引导 `sdx-analysis`。
+- 上游须可对齐 `FEATURE-{IDEA-ID}.md` 的当前 `MVP` 与目标 `MVP-Phase-{N}`；否则引导 `sdx-feature`。
 
 ## 边界
 
 | 负责 | 不负责 |
 | --- | --- |
-| `PRD-{IDEA-ID}-{N}.md` 共识级产品需求、参数向导、意图澄清、分段生成、段内烤干、十一章用户故事/用例/流程/验收 | `SOLUTION/ANALYSIS` 初稿；`ASD/DSD/TDD`；docs-* 主路径；实现级接口/DDL/中间件设计 |
+| `PRD-{IDEA-ID}-{N}.md` 共识级产品需求、参数向导、意图澄清、分段生成、段内烤干、十一章用户故事/用例/流程/验收 | `FEATURE/ANALYSIS` 初稿；`ASD/DSD/TDD`；docs-* 主路径；实现级接口/DDL/中间件设计 |
 
 ## 不这样用
 
 - 不走前置草稿 + 集中收口；默认参数向导后分段推进
 - 不把整篇集中回炉或整份重生成当默认路径
 - 不把写前意图澄清当成完整 grilling Skill 深挖
-- 不把 `PRD` 偷换成 `ANALYSIS/ASD/DSD/TDD` 或 docs-* 主路径
+- 不把 `PRD` 偷换成 `FEATURE/ASD/DSD/TDD` 或 docs-* 主路径
 
 ## 路由
 
@@ -42,7 +42,7 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-prd/scripts/validate-prd.
 
 ## 最少输入
 
-- 可对齐的 **`ANALYSIS-{IDEA-ID}.md`** 与目标 **`MVP-Phase-{N}`**
+- 可对齐的 **`FEATURE-{IDEA-ID}.md`** 与目标 **`MVP-Phase-{N}`**
 - 可确定的主题或标题线索
 - `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/` 可写
 - 若已给 `IDEA-ID`、`N`、章节范围、深度，则直接进入参数向导确认
@@ -58,4 +58,4 @@ agent/skills/sdx-prd/scripts/validate-prd.sh --file path/to/PRD-xxx.md
 
 ## 评测
 
-`evals/evals.json`、[grader.md](agents/grader.md)。聚焦：意图澄清、当前段推进、上游 ANALYSIS/MVP、边界分流。
+`evals/evals.json`、[grader.md](agents/grader.md)。聚焦：意图澄清、当前段推进、上游 FEATURE/MVP、边界分流。

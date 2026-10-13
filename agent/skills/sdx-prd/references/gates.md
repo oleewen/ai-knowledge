@@ -27,7 +27,7 @@
 
 ## 技能追加澄清字段
 
-- 上游 `ANALYSIS-{IDEA-ID}` 对齐点
+- 上游 `FEATURE-{IDEA-ID}` 的当前 `MVP` 对齐点
 - `IDEA-ID`、`N` / `MVP-Phase-{N}`
 - `depth`：`quick | standard | deep`
 - 本轮起始章节 / 范围（含是否细化到单个 `US` / `UC`）

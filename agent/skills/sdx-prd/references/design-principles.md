@@ -59,7 +59,7 @@ US/流程/BR 须锚定 ANALYSIS 的 FR-n、BR-n 与 `knowledge/` 事实。
 
 | 场景 | 处理 |
 |------|------|
-| 无 ANALYSIS | 停；先 `sdx-analysis` |
+| 无 FEATURE | 停；先 `sdx-feature` |
 | 无 MVP 节 | 停；对齐 `--mvp` |
 | ANALYSIS 结构缺 | 警告；继续则标风险 |
 | 无 knowledge | 警告；标缺基线 |

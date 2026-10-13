@@ -59,7 +59,10 @@
         "id": "ENT-BILLING-APPEAL",
         "description": "申诉单表",
         "implements_to": "DS-BILLING-APPEAL-TIDB",
-        "maps_to": "AGG-BILLING-APPEAL"
+        "maps_to": "AGG-BILLING-APPEAL",
+        "used_by": [
+          "MS-BILLING-APPEAL-SERVICE"
+        ]
       }
     ],
     "metadata": {

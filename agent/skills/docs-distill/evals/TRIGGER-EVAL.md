@@ -7,6 +7,6 @@
 | 技能 | 分数 | 备注 |
 | --- | --- | --- |
 | docs-distill | **10/10**（边缘句套件内曾 flake，隔离 3 跑复核后通过） | `trigger-eval-results.json` |
-| sdx-solution | **16/16** | 含「一口气整篇 / F 补齐 / 非法 F 重写」 |
+| sdx-analysis | **16/16** | 含「一口气整篇 / F 补齐 / 非法 F 重写」 |
 
 脚本：`/tmp/run_installed_trigger_eval.py`
