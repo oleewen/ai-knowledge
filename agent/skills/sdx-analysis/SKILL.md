@@ -1,10 +1,11 @@
 ---
 name: sdx-analysis
 description: >
-  在已共识 SOLUTION 上按六章分段「澄清 → 生成 → 烤干」细化 FR/MVP/依赖/风险，
-  并直写 ANALYSIS-{IDEA-ID}.md；每段写前意图澄清，写入后自动 grilling 至收敛，用户确认后再推进下一段。
-  用户提到 /sdx-analysis、拆 MVP、需求分析、细化方案且可对齐上游 SOLUTION 时，使用本技能。
-  分流：无 SOLUTION、只要其他 SDX 阶段或 docs-* 主路径 → 对应技能，不以本技能代跑。
+  逐步确认参数，按模板分段「澄清 → 生成 → 烤干」直写 ANALYSIS-{IDEA-ID}.md；
+  每段写前意图澄清，写入后自动 grilling 至收敛，再由用户确认推进。
+  用户提到 /sdx-analysis、写需求分析、整理业务目标、把材料收成七章需求分析、
+  写 ANALYSIS-*.md / 七章需求分析、一口气写完整版、选 F 补齐剩余章节时，务必使用本技能（分段协议与 F 门禁；非法整篇覆盖也须加载本技能以拒绝）。
+  分流：FEATURE/PRD/ASD/DSD/TDD、解决方案层 SOLUTION → /sdx-solution，或 docs-* 主路径 → 对应技能，不以本技能代跑。
   推进见 references/gates.md。
 compatibility: Bash 5+；校验脚本 agent/skills/sdx-analysis/scripts/validate-analysis.sh（仅结构/内容校验）。
 ---
@@ -13,24 +14,21 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-analysis/scripts/validate
 
 ## 输出硬门禁（P0）
 
-- 对象=当前段（`§2` 先独立确认 `### 概览`，再可细到单个 `FR`）；一次一段（除非 `F` 且已批确认意图；概览段 `F` 不得跳过写后确认）。
+- 对象=当前段；一次一段（除非 `F` 且已批确认意图）。
 - 写前澄清 / 推进环 `C/M/G/F`（无 `S`）/ 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[simplify-principles.md](../../references/simplify-principles.md)、[sdx-adr-protocol.md](../../references/sdx-adr-protocol.md)；细节 [gates.md](references/gates.md)。
-- 无已共识 SOLUTION（解决方案层）→ 引导 [sdx-solution](../sdx-solution/SKILL.md)，不以本技能代写。
-- 仅 `KNOWLEDGE_TYPE=system|application`。公司 → `/sdx-domains`。
-- 上游 §6.1 里程碑不可用 → 硬停回补；概览按里程碑范围拆 FR（可独立验收 ∧ 一 FR 一模块）；§4 再划 `MVP{n}`（与里程碑不硬对齐）。
 
 ## 边界
 
 | 负责 | 不负责 |
 | --- | --- |
-| `ANALYSIS-{IDEA-ID}.md` 分析生成与推进、参数向导、意图澄清、分段生成、段内烤干、段落推进 | `SOLUTION`；`PRD/ASD/DSD/TDD`；docs-*；实现级设计 |
+| `ANALYSIS-{IDEA-ID}.md` 需求分析、参数向导、意图澄清、分段生成、段内烤干、段落推进 | `FEATURE/PRD/ASD/DSD/TDD`；`SOLUTION`；docs-* 主路径；实现级接口/表结构/中间件设计 |
 
 ## 不这样用
 
 - 不走前置草稿 + 集中收口；默认参数向导后分段推进
 - 不把整篇集中回炉或整份重生成当默认路径
 - 不把写前意图澄清当成完整 grilling Skill 深挖
-- 不把 `ANALYSIS` 阶段偷换成 `PRD/ASD/DSD/TDD` 或 docs-* 主路径
+- 不把 `ANALYSIS` 偷换成 `FEATURE/PRD/ASD/DSD/TDD` 或 docs-* 主路径
 
 ## 路由
 
@@ -42,12 +40,14 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-analysis/scripts/validate
 | 易错 / 受众 / 终检 | [gotchas.md](gotchas.md)、[audience-and-language.md](references/audience-and-language.md)、[quality-checklist.md](references/quality-checklist.md) |
 | 技术决策 ADR | [sdx-adr-protocol.md](../../references/sdx-adr-protocol.md) |
 | 模板 | [analysis-template.md](assets/analysis-template.md) |
+| sdx 族结构 | [sdx-skill-skeleton.md](references/sdx-skill-skeleton.md) |
 
 ## 最少输入
 
-- 可对齐的 **`SOLUTION-{IDEA-ID}.md`** 或等价已共识方案材料
+- 原始业务描述或待整理材料
 - 可确定的主题或标题线索
 - `{DOC_DIR}/analysis/` 可写
+- `KNOWLEDGE_TYPE=system|application`
 - 若已给 `IDEA-ID`、章节范围、深度，则直接进入参数向导确认
 
 ## 产出与校验

@@ -1,38 +1,36 @@
 # sdx-analysis 操作层陷阱
 
-概念反模式：[references/anti-patterns.md](references/anti-patterns.md)。原则：[references/design-principles.md](references/design-principles.md)。
+概念反模式：[references/anti-patterns.md](references/anti-patterns.md)。原则表：[references/design-principles.md](references/design-principles.md)。
 
 ## 参数向导
 
-- 支持逐项确认与快捷组合。
+- 参数可逐项确认，也可走快捷组合；勿强制一次性抛全。
+- IDEA-ID：主题以中文为主；若用 ASCII slug，本行备注中文题名。
+- 快捷组合只是起点；用户仍可改单项，勿把预设当硬锁。
 - 禁止退回已删除的 HTML gate / `PENDING→CONFIRMED` / 会话 spec 写前主线；主线=参数向导 + 「澄清 → 生成 → 烤干」（见 [unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)）。
-- `IDEA-ID` 须与 `SOLUTION-{IDEA-ID}.md` 同链。
-- 用户若已给 `IDEA-ID`、章节范围、深度，直接确认缺口，不重复追问已知信息。
 
 ## 推进环（澄清 → 生成 → 烤干）
 
 协议正文见 [unit-cycle-protocol.md](../../references/unit-cycle-protocol.md) 与 [intent-clarify.md](../../references/intent-clarify.md)（sdx 无 `S`）。本文件只补技能特有陷阱。
 
-- 一次只处理一个当前段；`§2` 先独立确认 `### 概览`，再可细到单个 `FR`。
-- 概览未写后 `C` 前不得写 FR 正文；概览段 `F` 不能跳过该确认。
-- 当前段若有 `>=2` 条真实路径，先在当前段内完成方案比选。
-- 技术决策：实现向可新建 ADR；改边界回 SOLUTION；引用进 §6.2；见 [sdx-adr-protocol.md](../../references/sdx-adr-protocol.md)。
+- 当前段若存在 ≥2 条真实路径，须在**本段**内比选收口。
+- **业务**取舍 → §5.2 Q-n；**技术/架构** → ADR + CONTEXT（不入 Q-n）；见 [sdx-adr-protocol.md](../../references/sdx-adr-protocol.md)。
 - 选 **C** 前清 `ADR-待定`；写前查 CONTEXT，冲突停问。
 
 ## 输入与歧义
 
-- 无 `SOLUTION-{ID}`：终止并指向 `sdx-solution`。
-- 上游 §6.1 里程碑空/过粗无法落到能力：硬停，回补 SOLUTION 或用户提供等价里程碑清单；勿自拟阶段骨架。
-- 方案其他结构不全：警告并列缺失，正文标“基于不完整方案，存在分析盲区”。
-- 无 `knowledge/`：`§1.3` 标“缺少知识库基线，以下仅基于方案”。
+- 无原始描述不开写；过短则补背景。
+- 歧义优先在当前段内通过追问、grilling 或局部比选收口；勿默认升级为整篇阻塞。
 
-## 文档内容
+## 影响面与冲突
 
-- 概览拆 FR：主料 = §6.1 覆盖范围；场景/In Scope 补漏；可独立验收 ∧ 一 FR 一模块；横跨模块须拆 ≥2 FR；支撑项并入消费方。
-- 所属模块 = 业务能力域短名（非工程分层）；禁空、禁逗号多模块、禁工程名；优先 `knowledge/` / overview，无则边拆边共拟、烤干归一；名称/概要/FR 正文不越模块职责（仅概览列写模块）。
-- 概览表须含「需求概要」「所属模块」「所属里程碑」；需求名称 ≤30 字、需求概要 ≤60 字（Unicode 码点，含空格/标点）；`### FR-n:` 标题 = 概览名称且 ≤30；超限或越权烤干须改，不过写后 C。「所属里程碑」原样抄 §6.1（`M{n}（短名）`；非空、禁 `MVP{n}`、一 FR 一里程碑）；FR→`MVP{n}` 到 §4 再划。
-- 优先级按成功标准 / In Scope 关键性（与里程碑序解耦）；`P0` FR 通常仍落在首个可交付里程碑。
-- 基础依赖随首个消费方 MVP；§4 写作 `MVP{n}（{短名}）`；与里程碑不硬对齐；每 FR 恰好一 MVP；个数建议 ≈ 里程碑数，偏离须说明。
-- FR 段可改概览对应行；§2 整章收口强制对齐。
-- `§1–§5`、`§6.1–§6.2`：技术词转需求分析语言；线索收 `§6.3` “待研发确认”。
-- `§6.4`：对照 [references/quality-checklist.md](references/quality-checklist.md) 逐项勾选。
+- 影响面至少覆盖：功能、数据、接口/对外承诺、下游协作。
+- `--depth=quick` 可压缩但不得整块省略；须保留高影响项。
+- 每项 C-n 须有化解策略、成本档（高/中/低）、残余风险。
+
+## 收尾验证
+
+- 每个 G-n 须可度量（表「度量」列）或标「待澄清」；预期收益不可空。
+- §6.1 里程碑写作 `M{n}（{短名}）`，须有验收与退出；覆盖范围须可落到用户可感知能力；需切换者在 §6.2 建行。阶段骨架在本文；FEATURE 概览抄整串，§4 再划 `MVP{n}`（不硬对齐）、阶段内拆 FR。
+- §1–§6 / §7.1–§7.2：技术名词转业务表述；确需保留的线索放 §7.3。
+- §7.4：须对照 [references/quality-checklist.md](references/quality-checklist.md) 逐项勾选，勿未核全选。
