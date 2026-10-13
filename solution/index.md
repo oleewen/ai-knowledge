@@ -22,7 +22,7 @@
 
 1. [DESIGN.md](DESIGN.md) — 本层契约与治理引用
 2. [knowledge/README.md](knowledge/README.md) — 五视角
-3. [solutions/README.md](solutions/README.md) — 本层 SA 第五至八章
+3. [solutions/README.md](solutions/README.md) — 本层 `SOLUTION-*.md`（`/sdx-solution`）
 
 与公司 [`../company/knowledge/`](../company/knowledge/README.md)、系统 [`../system/knowledge/`](../system/knowledge/README.md) 对照。
 
