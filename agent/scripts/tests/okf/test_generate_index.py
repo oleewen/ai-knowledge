@@ -71,7 +71,8 @@ def test_preserve_bundle_root_okf_version():
         meta, body = okf_lib.parse_frontmatter(written)
         assert meta["okf_version"] == "0.1"
         assert body.lstrip().startswith("<!-- okf:begin -->")
-        assert "## OKF 渐进披露" in body
+        assert "# OKF 渐进披露" in body
+        assert "## 子目录" in body
         assert "# Root" in body
 
 
