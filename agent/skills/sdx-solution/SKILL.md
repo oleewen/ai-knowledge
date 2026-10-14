@@ -39,7 +39,7 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-solution/scripts/validate
 
 ## 最少输入
 
-- 当时最新的 knowledge（`PD` / `BP` / `BSP` / `MDG` / `TSD`）
+- 当时最新的 knowledge（`PD` / `BP` / `BSP` / `MDG` / `TS`）
 - 主题或标题线索
 - `{DOC_DIR}/solutions/` 可写
 - 若已给 `IDEA-ID`、上一份 ID、章节范围，则直接进入参数向导确认

@@ -91,13 +91,13 @@ ENT 的路径父级取自关系段同层 `parent`，否则同层 `implements_to`
 
 |列|取值|
 |----|------|
-|链序|`L1`…`L4` 对应 TPL → TSD → MW → CMP|
-|层级|`TPL` / `TSD` / `MW` / `CMP`|
+|链序|`L1`…`L4` 对应 TPL → TS → MW → CMP|
+|层级|`TPL` / `TS` / `MW` / `CMP`|
 |ID|`id`|
 |名称|frontmatter `title`|
-|文件/目录|相对链接至 concept（示例：`TPL-EXAMPLE.md`、`TSD-EXAMPLE.md`、`MW-EXAMPLE/MW-EXAMPLE.md`）|
+|文件/目录|相对链接至 concept（示例：`TPL-EXAMPLE.md`、`TS-EXAMPLE.md`、`MW-EXAMPLE/MW-EXAMPLE.md`）|
 
-各层只登记本层首次定义：公司 TPL、解决方案 TSD、应用 MW/CMP。上游不建本层文件，只写纯 ID。
+各层只登记本层首次定义：公司 TPL、解决方案 TS、应用 MW/CMP。上游不建本层文件，只写纯 ID。
 
 ---
 

@@ -53,7 +53,7 @@
 | 2 | 数据 | MDG/DS/ENT/TBL | INDEX、主数据划分、数据源、实体、DDL、Mapper XML |
 | 3 | 业务 | VC/CAP/BD/BSD/BL/BS/BC/AGG/AB | INDEX、公司/解决方案叙事、AGENTS、FQCN |
 | 4 | 产品 | PL/PD/BP/BSP/PM/FT/FR/UC/BR | INDEX、README、PRD、前述 ID |
-| 5 | 技术 | TPL/TSD/MW/CMP | INDEX、公司平台、解决方案技术选用、配置、依赖 allowlist |
+| 5 | 技术 | TPL/TS/MW/CMP | INDEX、公司平台、解决方案技术选用、配置、依赖 allowlist |
 
 API：**Dubbo / HTTP / MQ Consumer / Job**。入口类型可写入详细说明，缺了不算失败。
 

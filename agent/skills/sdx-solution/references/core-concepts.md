@@ -7,7 +7,7 @@
 | 产物 | 路径 |
 | --- | --- |
 | 切分叙事 | `{DOC_DIR}/solutions/SOLUTION-{IDEA-ID}.md` |
-| 事实 | 同库 `knowledge/` 的 `PD`、`BP`、`BSP`、`MDG`、`TSD` |
+| 事实 | 同库 `knowledge/` 的 `PD`、`BP`、`BSP`、`MDG`、`TS` |
 
 ## 多份与现行
 

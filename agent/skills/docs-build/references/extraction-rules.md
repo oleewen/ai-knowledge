@@ -39,7 +39,7 @@
   - [UC（用例层级）](#uc用例层级)
 - [5. 技术视角（Technical）](#5-技术视角technical)
   - [TPL（技术平台层级）](#tpl技术平台层级)
-  - [TSD（技术域层级）](#tsd技术域层级)
+  - [TS（技术服务层级）](#ts技术服务层级)
   - [MW（中间件绑定）](#mw中间件绑定)
   - [CMP（组件）](#cmp组件)
 - [跨视角依赖](#跨视角依赖)
@@ -68,7 +68,7 @@
 - 提取自 README.md 项目结构描述（若存在）
 - 一个仓库通常对应一个 SYS-ID
 - **必须字段**：`id`（目录风格，如 `SYS-BILLING-APPEAL`）、`description`、`implements_to`（所属 SLN）、`implemented_by`（APP）
-- **可选关系**：`maps_to`（PD）、`uses_to`（MDG\|TSD）
+- **可选关系**：`maps_to`（PD）、`uses_to`（MDG\|TS）
 - **详细说明可选**：架构（应用、外部依赖、分层）。缺了不算提取失败
 
 #### APP（应用层级）
@@ -362,21 +362,21 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 - 主 Index Guide
 - 公司平台（TPL）
-- 解决方案技术选用（TSD）
+- 解决方案技术选用（TS）
 - `application.yml` / Nacos 等配置（数据源、Redis、Kafka、MQ）
 - `pom.xml` / `build.gradle`（关键依赖 allowlist）
-- 解决方案层已登记的 **TSD-***（引用）
+- 解决方案层已登记的 **TS-***（引用）
 
 ### 提取规则
 
 #### TPL（技术平台层级）
 
 - 提取自公司技术平台准入；公司层首次定义
-- **必须字段**：`id`、`description`、`implemented_by`（TSD，纯 ID）
+- **必须字段**：`id`、`description`、`implemented_by`（TS，纯 ID）
 - 落 `technical/{id}.md`
 - **禁止**：APP↔TPL 直连
 
-#### TSD（技术域层级）
+#### TS（技术服务层级）
 
 - 提取自解决方案技术选用与例外；解决方案层首次定义
 - **必须字段**：`id`、`description`、`implements_to`（所属 TPL）、`implemented_by`（MW，纯 ID）
@@ -386,7 +386,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 #### MW（中间件绑定）
 
 - 提取自配置与部署绑定：数据源、缓存、MQ Topic/Group、注册配置等
-- **必须字段**：`id`、`description`、`implements_to`（TSD）；可选 `implemented_by`（CMP）、`used_by`（APP）、`uses_to`（DS）
+- **必须字段**：`id`、`description`、`implements_to`（TS）；可选 `implemented_by`（CMP）、`used_by`（APP）、`uses_to`（DS）
 - **详细说明可选**：绑定类型、配置键。缺了不算提取失败
 - **禁止**：将 MS/API 宿主类登记为 MW；Consumer 类仍在 API 层；APP↔TPL 直连
 
@@ -398,7 +398,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 ### 输出结构
 
-技术视角：公司层 TPL 落 `technical/{id}.md`；解决方案层 TSD 落 `technical/{id}.md`；应用层 MW 落 `technical/{id}/{id}.md`，CMP 落 `technical/{MW}/{id}.md`（缺 MW 父级不落盘）。
+技术视角：公司层 TPL 落 `technical/{id}.md`；解决方案层 TS 落 `technical/{id}.md`；应用层 MW 落 `technical/{id}/{id}.md`，CMP 落 `technical/{MW}/{id}.md`（缺 MW 父级不落盘）。
 
 ---
 
@@ -412,7 +412,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 业务  BD → BSD-L1 → BSD-L2 → BSD-L3 → BC → AGG → AB
 产品  BL ↔ PL → PD → PM → FT → FR → UC/BR
       BP → BSP
-技术  TPL → TSD → MW → CMP
+技术  TPL → TS → MW → CMP
 ```
 
 ---
