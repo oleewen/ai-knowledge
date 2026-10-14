@@ -133,7 +133,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 | MS | `Microservice` | application | system |
 | DS | `Data Store` | data | system |
 | ENT | `Entity` | data | system |
-| TSD | `Technical Domain` | technical | solution |
+| TSD | `Technical Subdomain` | technical | solution |
 | API | `API Endpoint` | application | application |
 | TBL | `Data Table` | data | application |
 | MW | `Middleware Binding` | technical | application |
@@ -143,6 +143,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 
 - “首次定义层”表示该概念的治理语义与模板首次出现在哪一层。
 - 下游层可写纯 ID，或在宿主目录下落本层首次定义实体。不建上层实体的 reference 文件。不等于“只允许在首次定义层被提到”。
+- `BSD` 须结合 `layer_scope`（及正文 `level` 或 ID 后缀如 `-L2`/`-L3`）区分 L1→`company`、L2→`solution`、L3→`system`；单看 `hierarchy: BSD` 不能推断首次定义层。
 
 ---
 
