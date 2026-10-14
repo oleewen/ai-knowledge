@@ -330,7 +330,7 @@ aside {
         "business",
         "BD"
       ],
-      "body": "## 关系\n\n- children: [BSD-EXAMPLE](BSD-EXAMPLE.md)\n- supports_to: [VC-EXAMPLE](../VC-EXAMPLE/VC-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 演示公司级 BD；支撑 VC，并下挂 BSD-L1。\n\n## 依据与证据\n\n[business-domain-division.md](../chapters/business-domain-division.md)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例业务域\n\n## 关系\n\n- children: [BSD-EXAMPLE](BSD-EXAMPLE.md)\n- supports_to: [VC-EXAMPLE](../VC-EXAMPLE/VC-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 演示公司级 BD；支撑 VC，并下挂 BSD-L1。\n\n## 依据与证据\n\n[business-domain-division.md](../chapters/business-domain-division.md)（示例）",
       "backlinks": [
         "domains/DOMAIN-EXAMPLE",
         "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE",
@@ -348,7 +348,7 @@ aside {
         "business",
         "BSD"
       ],
-      "body": "## 关系\n\n- parent: [BD-EXAMPLE](BD-EXAMPLE.md)\n- children: BSD-EXAMPLE-L2\n- maps_to: [CAP-EXAMPLE](../VC-EXAMPLE/CAP-EXAMPLE.md)\n- mapped_by: [BL-EXAMPLE](../BL/BL-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- level: 1\n- 公司层 BSD-L1；挂 BD；由 BL 一对一映射；maps_to CAP。\n\n## 依据与证据\n\n[business-domain-division.md](../chapters/business-domain-division.md#业务子域)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例一级业务子域\n\n## 关系\n\n- parent: [BD-EXAMPLE](BD-EXAMPLE.md)\n- children: BSD-EXAMPLE-L2\n- maps_to: [CAP-EXAMPLE](../VC-EXAMPLE/CAP-EXAMPLE.md)\n- mapped_by: [BL-EXAMPLE](../BL/BL-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- level: 1\n- 公司层 BSD-L1；挂 BD；由 BL 一对一映射；maps_to CAP。\n\n## 依据与证据\n\n[business-domain-division.md](../chapters/business-domain-division.md#业务子域)（示例）",
       "backlinks": [
         "domains/DOMAIN-EXAMPLE",
         "knowledge/business/BD-EXAMPLE/BD-EXAMPLE",
@@ -367,7 +367,7 @@ aside {
         "business",
         "BL"
       ],
-      "body": "## 关系\n\n- maps_to: [BSD-EXAMPLE](../BD-EXAMPLE/BSD-EXAMPLE.md)\n- mapped_by: PL-EXAMPLE\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 演示公司级 BL；无 parent；与 BSD-L1 一对一映射。\n\n## 依据与证据\n\n[../chapters/business-roles-and-organization.md](../chapters/business-roles-and-organization.md)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例业务线\n\n## 关系\n\n- maps_to: [BSD-EXAMPLE](../BD-EXAMPLE/BSD-EXAMPLE.md)\n- mapped_by: PL-EXAMPLE\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 演示公司级 BL；无 parent；与 BSD-L1 一对一映射。\n\n## 依据与证据\n\n[../chapters/business-roles-and-organization.md](../chapters/business-roles-and-organization.md)（示例）",
       "backlinks": [
         "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE",
         "knowledge/business/README"
@@ -382,7 +382,7 @@ aside {
         "business",
         "CAP"
       ],
-      "body": "## 关系\n\n- implements_to: [VC-EXAMPLE](VC-EXAMPLE.md)\n- mapped_by: [BSD-EXAMPLE](../BD-EXAMPLE/BSD-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 演示公司级 CAP；实现 VC；由 BSD-L1 一对一映射。\n\n## 依据与证据\n\n[business-capability.md](../chapters/business-capability.md)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例业务能力\n\n## 关系\n\n- implements_to: [VC-EXAMPLE](VC-EXAMPLE.md)\n- mapped_by: [BSD-EXAMPLE](../BD-EXAMPLE/BSD-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 演示公司级 CAP；实现 VC；由 BSD-L1 一对一映射。\n\n## 依据与证据\n\n[business-capability.md](../chapters/business-capability.md)（示例）",
       "backlinks": [
         "domains/DOMAIN-EXAMPLE",
         "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE",
@@ -400,7 +400,7 @@ aside {
         "business",
         "VC"
       ],
-      "body": "## 关系\n\n- implemented_by: [CAP-EXAMPLE](CAP-EXAMPLE.md)\n- supported_by: [BD-EXAMPLE](../BD-EXAMPLE/BD-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 演示公司级 VC；由 BD 支撑，并由 CAP 实现。\n\n## 依据与证据\n\n[business-value-chain.md](../chapters/business-value-chain.md)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例价值链\n\n## 关系\n\n- implemented_by: [CAP-EXAMPLE](CAP-EXAMPLE.md)\n- supported_by: [BD-EXAMPLE](../BD-EXAMPLE/BD-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 演示公司级 VC；由 BD 支撑，并由 CAP 实现。\n\n## 依据与证据\n\n[business-value-chain.md](../chapters/business-value-chain.md)（示例）",
       "backlinks": [
         "domains/DOMAIN-EXAMPLE",
         "knowledge/business/BD-EXAMPLE/BD-EXAMPLE",
@@ -698,7 +698,7 @@ aside {
         "technical",
         "TPL"
       ],
-      "body": "## 关系\n\n- implemented_by: TSD-EXAMPLE\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 演示公司级 TPL 结构。\n\n## 依据与证据\n\n[technical-overview.md](chapters/technical-overview.md)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例技术平台能力\n\n## 关系\n\n- implemented_by: TS-EXAMPLE\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 演示公司级 TPL 结构。\n\n## 依据与证据\n\n[technical-overview.md](chapters/technical-overview.md)（示例）",
       "backlinks": [
         "knowledge/technical/README"
       ]

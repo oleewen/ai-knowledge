@@ -346,7 +346,7 @@ aside {
       "title": "应用知识库",
       "description": null,
       "tags": [],
-      "body": "# 应用知识库\n\n五视角实体 SSOT；本层首次：**API / TBL / MW / CMP**。目录 [index.md](index.md) · 视角导航 INDEX-GUIDE 第四章 · 首次定义见 knowledge-governance。overview：[overview/README.md](overview/README.md)（extract / archive / tag；非 distill）。\n\n| 文件 | 视角 | 概述 |\n|------|------|------|\n| [business/README.md](business/README.md) | 业务 | 无本层实体。上游只写纯 ID |\n| [product/README.md](product/README.md) | 产品 | 无本层实体。上游只写纯 ID |\n| [application/README.md](application/README.md) | 应用 | **API** 首次定义。SLN / SYS / APP / MS 只写纯 ID |\n| [data/README.md](data/README.md) | 数据 | **TBL** 首次定义。MDG / DS / ENT 只写纯 ID |\n| [technical/README.md](technical/README.md) | 技术 | **MW / CMP** 首次定义。TPL / TSD 只写纯 ID |\n\n命名规范（Agent 元知识，库外） · 上层实体只写纯 ID。链与字段见 [业务](../../agent/knowledge/business-meta.md#1-实体总表)、[产品](../../agent/knowledge/product-meta.md#1-实体总表)、[应用](../../agent/knowledge/application-meta.md#1-实体总表)、[数据](../../agent/knowledge/data-meta.md#1-实体总表)、[技术](../../agent/knowledge/technical-meta.md#1-实体总表)",
+      "body": "# 应用知识库\n\n五视角实体 SSOT；本层首次：**API / TBL / MW / CMP**。目录 [index.md](index.md) · 视角导航 INDEX-GUIDE 第四章 · 首次定义见 knowledge-governance。overview：[overview/README.md](overview/README.md)（extract / archive / tag；非 distill）。\n\n| 文件 | 视角 | 概述 |\n|------|------|------|\n| [business/README.md](business/README.md) | 业务 | 无本层实体。上游只写纯 ID |\n| [product/README.md](product/README.md) | 产品 | 无本层实体。上游只写纯 ID |\n| [application/README.md](application/README.md) | 应用 | **API** 首次定义。SLN / SYS / APP / MS 只写纯 ID |\n| [data/README.md](data/README.md) | 数据 | **TBL** 首次定义。MDG / DS / ENT 只写纯 ID |\n| [technical/README.md](technical/README.md) | 技术 | **MW / CMP** 首次定义。TPL / TS 只写纯 ID |\n\n命名规范（Agent 元知识，库外） · 上层实体只写纯 ID。链与字段见 [业务](../../agent/knowledge/business-meta.md#1-实体总表)、[产品](../../agent/knowledge/product-meta.md#1-实体总表)、[应用](../../agent/knowledge/application-meta.md#1-实体总表)、[数据](../../agent/knowledge/data-meta.md#1-实体总表)、[技术](../../agent/knowledge/technical-meta.md#1-实体总表)",
       "backlinks": [
         "DESIGN",
         "README",
@@ -393,7 +393,7 @@ aside {
         "application",
         "API"
       ],
-      "body": "## 关系\n\n- implements_to: MS-EXAMPLE\n- supports_to: FT-EXAMPLE\n\n## 跨视角\n\n- maps_to: UC-EXAMPLE\n\n## 详细说明\n\n- 接口端点。\n\n## 依据与证据\n\n[../chapters/application-interface-management.md](../chapters/application-interface-management.md)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例 API：创建\n\n## 关系\n\n- implements_to: MS-EXAMPLE\n- supports_to: FT-EXAMPLE\n\n## 跨视角\n\n- maps_to: UC-EXAMPLE\n\n## 详细说明\n\n- 接口端点。\n\n## 依据与证据\n\n[../chapters/application-interface-management.md](../chapters/application-interface-management.md)（示例）",
       "backlinks": [
         "knowledge/application/README"
       ]
@@ -448,7 +448,7 @@ aside {
         "data",
         "TBL"
       ],
-      "body": "## 关系\n\n- implements_to: ENT-EXAMPLE\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 数据表，物理锚点。\n\n## 依据与证据\n\n[../chapters/data-model.md](../chapters/data-model.md#数据表)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例数据表\n\n## 关系\n\n- implements_to: ENT-EXAMPLE\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 数据表，物理锚点。\n\n## 依据与证据\n\n[../chapters/data-model.md](../chapters/data-model.md#数据表)（示例）",
       "backlinks": [
         "knowledge/data/README"
       ]
@@ -511,7 +511,7 @@ aside {
       "title": "技术架构",
       "description": null,
       "tags": [],
-      "body": "# 技术架构\n\n[返回 · 应用知识库](../README.md)\n\n应用侧技术入口：MW/CMP SSOT；TPL 公司、TSD 解决方案首次定义。实体台账见下方「实体」表。上游实体不建本层文件，只写纯 ID。归档目标章 ∈ `chapters/`。选型、高可用、可观测在上游。\n\n目录与阅读顺序见 [index.md](index.md)。\n\n上一级索引：[../index.md](../index.md)。\n\n## 章节\n\n| 章节 | 文件 | 概述 |\n|------|------|------|\n| 中间件 | [chapters/technical-middleware.md](chapters/technical-middleware.md) | 集群、TTL、索引、配置 |\n| 性能扩展 | [chapters/technical-performance-scalability.md](chapters/technical-performance-scalability.md) | 只填本应用数字 |\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n| L3 | MW | MW-EXAMPLE | 示例中间件绑定 | [MW-EXAMPLE/MW-EXAMPLE.md](MW-EXAMPLE/MW-EXAMPLE.md) |\n| L4 | CMP | CMP-EXAMPLE | 示例组件 | [MW-EXAMPLE/CMP-EXAMPLE.md](MW-EXAMPLE/CMP-EXAMPLE.md) |",
+      "body": "# 技术架构\n\n[返回 · 应用知识库](../README.md)\n\n应用侧技术入口：MW/CMP SSOT；TPL 公司、TS 解决方案首次定义。实体台账见下方「实体」表。上游实体不建本层文件，只写纯 ID。归档目标章 ∈ `chapters/`。选型、高可用、可观测在上游。\n\n目录与阅读顺序见 [index.md](index.md)。\n\n上一级索引：[../index.md](../index.md)。\n\n## 章节\n\n| 章节 | 文件 | 概述 |\n|------|------|------|\n| 中间件 | [chapters/technical-middleware.md](chapters/technical-middleware.md) | 集群、TTL、索引、配置 |\n| 性能扩展 | [chapters/technical-performance-scalability.md](chapters/technical-performance-scalability.md) | 只填本应用数字 |\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n| L3 | MW | MW-EXAMPLE | 示例中间件绑定 | [MW-EXAMPLE/MW-EXAMPLE.md](MW-EXAMPLE/MW-EXAMPLE.md) |\n| L4 | CMP | CMP-EXAMPLE | 示例组件 | [MW-EXAMPLE/CMP-EXAMPLE.md](MW-EXAMPLE/CMP-EXAMPLE.md) |",
       "backlinks": [
         "knowledge/README",
         "knowledge/overview/NAME-overview",
@@ -528,7 +528,7 @@ aside {
         "technical",
         "CMP"
       ],
-      "body": "## 关系\n\n- implements_to: [MW-EXAMPLE](MW-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- maven_coordinates: org.example:example-client:1.0.0\n- 演示技术视角 CMP 数据结构（示例）。\n\n## 依据与证据\n\n[../chapters/technical-middleware.md](../chapters/technical-middleware.md)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例组件\n\n## 关系\n\n- implements_to: [MW-EXAMPLE](MW-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- maven_coordinates: org.example:example-client:1.0.0\n- 演示技术视角 CMP 数据结构（示例）。\n\n## 依据与证据\n\n[../chapters/technical-middleware.md](../chapters/technical-middleware.md)（示例）",
       "backlinks": [
         "knowledge/technical/MW-EXAMPLE/MW-EXAMPLE",
         "knowledge/technical/README"
@@ -543,7 +543,7 @@ aside {
         "technical",
         "MW"
       ],
-      "body": "## 关系\n\n- implements_to: TSD-EXAMPLE\n- implemented_by: [CMP-EXAMPLE](CMP-EXAMPLE.md)\n\n## 跨视角\n\n- used_by: APP-EXAMPLE\n\n## 详细说明\n\n- 演示技术视角 MW 数据结构（示例）。\n\n## 依据与证据\n\n[../chapters/technical-middleware.md](../chapters/technical-middleware.md)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例中间件绑定\n\n## 关系\n\n- implements_to: TS-EXAMPLE\n- implemented_by: [CMP-EXAMPLE](CMP-EXAMPLE.md)\n\n## 跨视角\n\n- used_by: APP-EXAMPLE\n\n## 详细说明\n\n- 演示技术视角 MW 数据结构（示例）。\n\n## 依据与证据\n\n[../chapters/technical-middleware.md](../chapters/technical-middleware.md)（示例）",
       "backlinks": [
         "knowledge/technical/MW-EXAMPLE/CMP-EXAMPLE",
         "knowledge/technical/README"
@@ -558,7 +558,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 中间件与基础组件\n\n[返回 · 技术架构](../README.md)\n\n本应用 MW / CMP 的集群、TTL、索引与配置。\n\n> **本章口径**：选型清单在系统层 technical · 中间件与基础组件。本章不重复选型。TSD 在解决方案层，TPL 在公司层。样例 `MW-EXAMPLE`、`CMP-EXAMPLE`。\n\n## 消息队列\n\n写集群划分、主题/队列命名、保留策略与事件流对齐。\n\n## 缓存\n\n写部署模式、淘汰策略、穿透/击穿/雪崩防护与 TTL 约定。\n\n## 搜索引擎\n\n写集群角色、索引生命周期、分片副本与安全隔离。\n\n## 配置注册\n\n写配置分层、敏感处理、灰度回滚与服务发现。\n\n## 任务调度\n\n写批处理/定时平台、幂等、重试与告警。\n\n## 对象存储\n\n写桶命名、生命周期、预签名 URL 与权限策略。",
+      "body": "# 中间件与基础组件\n\n[返回 · 技术架构](../README.md)\n\n本应用 MW / CMP 的集群、TTL、索引与配置。\n\n> **本章口径**：选型清单在系统层 technical · 中间件与基础组件。本章不重复选型。TS 在解决方案层，TPL 在公司层。样例 `MW-EXAMPLE`、`CMP-EXAMPLE`。\n\n## 消息队列\n\n写集群划分、主题/队列命名、保留策略与事件流对齐。\n\n## 缓存\n\n写部署模式、淘汰策略、穿透/击穿/雪崩防护与 TTL 约定。\n\n## 搜索引擎\n\n写集群角色、索引生命周期、分片副本与安全隔离。\n\n## 配置注册\n\n写配置分层、敏感处理、灰度回滚与服务发现。\n\n## 任务调度\n\n写批处理/定时平台、幂等、重试与告警。\n\n## 对象存储\n\n写桶命名、生命周期、预签名 URL 与权限策略。",
       "backlinks": [
         "knowledge/overview/NAME-overview",
         "knowledge/technical/MW-EXAMPLE/CMP-EXAMPLE",
