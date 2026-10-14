@@ -22,4 +22,4 @@
 
 - 上一级索引：[../index.md](../index.md)
 - 上一级说明：[../README.md](../README.md)
-- 上游 TSD：解决方案 SSOT（不建本层文件，只写纯 ID）
+- 上游 TS：解决方案 SSOT（不建本层文件，只写纯 ID）

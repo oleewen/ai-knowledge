@@ -14,7 +14,7 @@ layer_scope: application
 
 ## 关系
 
-- implements_to: TSD-EXAMPLE
+- implements_to: TS-EXAMPLE
 - implemented_by: [CMP-EXAMPLE](CMP-EXAMPLE.md)
 
 ## 跨视角

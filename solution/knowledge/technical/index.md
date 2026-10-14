@@ -8,7 +8,7 @@
 
 ## 目录文件
 
-* [示例技术域](TSD-EXAMPLE.md) - 本方案技术选用；implements_to 公司 TPL。
+* [示例技术服务](TS-EXAMPLE.md) - 方案级技术服务选用；implements_to 公司 TPL。
 
 * [technical-meta.md](../../../agent/knowledge/technical-meta.md)
 
@@ -16,7 +16,7 @@
 
 1. [README.md](README.md)
 2. [chapters](chapters/index.md)
-3. [TSD-EXAMPLE.md](TSD-EXAMPLE.md)
+3. [TS-EXAMPLE.md](TS-EXAMPLE.md)
 4. [technical-meta.md](../../../agent/knowledge/technical-meta.md)
 
 ## 关联索引

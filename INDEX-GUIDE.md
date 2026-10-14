@@ -300,7 +300,7 @@ stateDiagram-v2
 
 映射字段 SSOT：[knowledge-governance.md](agent/knowledge/knowledge-governance.md)、[glossary.md](agent/knowledge/glossary.md)。**禁止**未同步引用链时改实体 ID。
 
-系统侧样例含 `APP-EXAMPLE`、`BSD-EXAMPLE`、`DS-EXAMPLE`、`PM-EXAMPLE` 等；解决方案侧含 `SLN-EXAMPLE`、`PL-EXAMPLE`、`PD-EXAMPLE`、`BS-EXAMPLE`、`BSD-EXAMPLE-L2`、`MDG-EXAMPLE`、`TSD-EXAMPLE`、`BP-EXAMPLE`、`BSP-EXAMPLE`；公司侧含 `BD-EXAMPLE`、`BL-EXAMPLE` 等（路径在对应 `knowledge/`）。
+系统侧样例含 `APP-EXAMPLE`、`BSD-EXAMPLE`、`DS-EXAMPLE`、`PM-EXAMPLE` 等；解决方案侧含 `SLN-EXAMPLE`、`PL-EXAMPLE`、`PD-EXAMPLE`、`BS-EXAMPLE`、`BSD-EXAMPLE-L2`、`MDG-EXAMPLE`、`TS-EXAMPLE`、`BP-EXAMPLE`、`BSP-EXAMPLE`；公司侧含 `BD-EXAMPLE`、`BL-EXAMPLE` 等（路径在对应 `knowledge/`）。
 
 ### 6.3 关系映射
 

@@ -15,4 +15,4 @@ title: 系统知识库
 | 技术 | [technical/](technical/README.md) |
 | overview 缓冲 | [overview/](overview/README.md) |
 
-导航：[index.md](index.md) · INDEX-GUIDE 第四章。上层只写纯 ID：公司 VC/BD/BSD-L1/CAP/BL/TPL + 解决方案 SLN/PL/PD/BP/BSP/BSD-L2/BS/MDG/TSD。本层 SSOT：SYS / BSD-L3 / BC / AGG / AB / PM / FT / FR / UC / BR / APP / MS / DS / ENT。
+导航：[index.md](index.md) · INDEX-GUIDE 第四章。上层只写纯 ID：公司 VC/BD/BSD-L1/CAP/BL/TPL + 解决方案 SLN/PL/PD/BP/BSP/BSD-L2/BS/MDG/TS。本层 SSOT：SYS / BSD-L3 / BC / AGG / AB / PM / FT / FR / UC / BR / APP / MS / DS / ENT。

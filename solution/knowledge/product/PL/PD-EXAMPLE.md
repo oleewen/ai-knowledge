@@ -24,7 +24,7 @@ layer_scope: solution
 
 - uses_to:
   - [MDG-EXAMPLE](../../data/MDG-EXAMPLE.md)
-  - [TSD-EXAMPLE](../../technical/TSD-EXAMPLE.md)
+  - [TS-EXAMPLE](../../technical/TS-EXAMPLE.md)
 
 ## 详细说明
 

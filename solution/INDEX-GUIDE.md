@@ -22,7 +22,7 @@ title: solution INDEX-GUIDE
 
 ### 1.2 元信息
 
-* **角色**: 解决方案知识库；一仓一 SLN；`knowledge/` = SLN/PL/PD/BP/BSP/BSD-L2/BS/MDG/TSD SSOT；`system-slots/system-{NAME}` = 系统联邦槽位
+* **角色**: 解决方案知识库；一仓一 SLN；`knowledge/` = SLN/PL/PD/BP/BSP/BSD-L2/BS/MDG/TS SSOT；`system-slots/system-{NAME}` = 系统联邦槽位
 * **栈**: Markdown、YAML
 * **范围**: `knowledge/` · `solutions/` · `adr/` · `system-slots/` · `changelogs/`
 * **装机**: `KNOWLEDGE_TYPE=solution`
@@ -63,7 +63,7 @@ parent：`application → system → solution → company`。
 
 | 聚合 | 职责 | 关键落点 |
 |------|------|----------|
-| 本层首次实体 | SLN / PL / PD / BP / BSP / BSD-L2 / BS / MDG / TSD | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
+| 本层首次实体 | SLN / PL / PD / BP / BSP / BSD-L2 / BS / MDG / TS | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
 | overview 缓冲 | extract / archive / tag；distill 来自系统槽位 | [knowledge/overview/](knowledge/overview/README.md) |
 | SDD | 仅方案正文 | `solutions/`（`/sdx-solution`） |
 | 联邦槽位 | 系统 文档目录 软链 | `system-slots/system-{NAME}/` · [knowledge-links.yaml](knowledge-links.yaml) |
@@ -81,7 +81,7 @@ parent：`application → system → solution → company`。
 <!-- docs-build:entity-index:begin -->
 > 本块由 `/docs-build` 写入；实体台账 ∈ 各视角 README；正文 ∈ per-entity `{ID}.md`；九章骨架 ∈ `/docs-indexing`。
 
-> 本层登记 **SLN / PL / PD / BP / BSP / BSD-L2 / BS / MDG / TSD**。
+> 本层登记 **SLN / PL / PD / BP / BSP / BSD-L2 / BS / MDG / TS**。
 
 ### 视角入口
 

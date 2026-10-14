@@ -189,7 +189,7 @@ def test_solution_knowledge_index_scope_and_nav():
         rendered = generate_knowledge_index.render_knowledge_index(
             bundle, bundle="solution"
         )
-        assert "SLN / PL / PD / BP / BSP / BSD-L2 / BS / MDG / TSD" in rendered
+        assert "SLN / PL / PD / BP / BSP / BSD-L2 / BS / MDG / TS" in rendered
         assert "不在本层登记" not in rendered
         assert "### 视角入口" in rendered
         assert "[应用](knowledge/application/README.md)" in rendered

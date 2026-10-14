@@ -18,7 +18,7 @@ tags: [example]
 
 ## 这次改了什么
 
-首份。以当时 knowledge 里已登记的产品线、产品服务、流程、主数据域和技术域写出这道切分。
+首份。以当时 knowledge 里已登记的产品线、产品服务、流程、主数据域和技术服务写出这道切分。
 
 ## 为什么这样切
 
@@ -39,4 +39,4 @@ tags: [example]
 
 ## 技术例外
 
-[TSD-EXAMPLE](../knowledge/technical/TSD-EXAMPLE.md) 相对公司技术模板的选用与例外，只作用于包内的产品服务。无额外例外时以该技术域已登记的选用为准。
+[TS-EXAMPLE](../knowledge/technical/TS-EXAMPLE.md) 相对公司技术模板的选用与例外，只作用于包内的产品服务。无额外例外时以该技术服务已登记的选用为准。

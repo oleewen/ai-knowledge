@@ -6,7 +6,7 @@ title: 技术架构
 
 [返回 · 解决方案知识库](../README.md)
 
-**本层 SSOT**：TSD（`implements_to` 公司 TPL）。下层不建实体文件。反向边只写纯 ID。企业标准只引用公司 technical。章节见 [chapters/index.md](chapters/index.md)。字段 [technical-meta.md](../../../agent/knowledge/technical-meta.md)。
+**本层 SSOT**：TS（`implements_to` 公司 TPL）。下层不建实体文件。反向边只写纯 ID。企业标准只引用公司 technical。章节见 [chapters/index.md](chapters/index.md)。字段 [technical-meta.md](../../../agent/knowledge/technical-meta.md)。
 
 目录与阅读顺序见 [index.md](index.md)。
 
@@ -22,4 +22,4 @@ title: 技术架构
 
 | 链序 | 层级 | ID | 名称 | 文件/目录 |
 |------|------|----|------|-----------|
-| L2 | TSD | TSD-EXAMPLE | 示例技术域 | [TSD-EXAMPLE.md](TSD-EXAMPLE.md) |
+| L2 | TS | TS-EXAMPLE | 示例技术服务 | [TS-EXAMPLE.md](TS-EXAMPLE.md) |

@@ -26,7 +26,7 @@ _LEAD = (
 
 _SCOPE_NOTE = {
     "company": "> 本层登记 **VC / BD / BSD-L1 / CAP / BL / TPL**。",
-    "solution": "> 本层登记 **SLN / PL / PD / BP / BSP / BSD-L2 / BS / MDG / TSD**。",
+    "solution": "> 本层登记 **SLN / PL / PD / BP / BSP / BSD-L2 / BS / MDG / TS**。",
     "system": (
         "> 本层登记 **SYS / BSD-L3 / BC / AGG / AB / PM / FT / FR / UC / BR / APP / MS / DS / ENT**。"
     ),

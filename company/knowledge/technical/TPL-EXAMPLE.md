@@ -14,7 +14,7 @@ layer_scope: company
 
 ## 关系
 
-- implemented_by: TSD-EXAMPLE
+- implemented_by: TS-EXAMPLE
 
 ## 跨视角
 
