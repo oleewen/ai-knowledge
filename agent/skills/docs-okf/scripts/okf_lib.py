@@ -314,8 +314,8 @@ HIERARCHY_FIRST_LAYER: Dict[str, str] = {
     "CAP": "company",
     "BL": "company",
     "PL": "solution",
-    "SLN": "company",
-    "MDG": "company",
+    "SLN": "solution",
+    "MDG": "solution",
     "TPL": "company",
     "BSD": "system",
     "BC": "system",
@@ -335,7 +335,7 @@ HIERARCHY_FIRST_LAYER: Dict[str, str] = {
     "MS": "system",
     "DS": "system",
     "ENT": "system",
-    "TSD": "system",
+    "TSD": "solution",
     "API": "application",
     "TBL": "application",
     "MW": "application",
@@ -343,7 +343,11 @@ HIERARCHY_FIRST_LAYER: Dict[str, str] = {
 }
 
 
-def hierarchy_first_layer(hierarchy: str) -> Optional[str]:
+def hierarchy_first_layer(
+    hierarchy: str, layer_scope: Optional[str] = None
+) -> Optional[str]:
+    if hierarchy == "BSD" and layer_scope in ("company", "solution", "system"):
+        return layer_scope
     return HIERARCHY_FIRST_LAYER.get(hierarchy)
 
 

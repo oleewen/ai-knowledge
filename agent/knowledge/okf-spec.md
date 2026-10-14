@@ -89,7 +89,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 | 实体概念核心键 | `timestamp` | ISO8601 字符串 | ✅ | 形如 `2026-06-25T00:00:00+08:00` | `"2026-06-25T00:00:00+08:00"` |
 | 实体概念核心键 | `id` | 字符串 | ✅ | 全局唯一 ID，格式：`<hierarchy>-<name>` | `BD-EXAMPLE` / `API-EXAMPLE` |
 | 实体概念核心键 | `perspective` | 枚举 | ✅ | 与实体所属视角一致 | `business` / `product` / `application` / `data` / `technical` |
-| 实体概念核心键 | `hierarchy` | 枚举 | ✅ | 与 `type` 一一对应 | `VC` / `BD` / `BL` / `CAP` / `PL` / `SLN` / `PD` / `SYS` / `MDG` / `TPL` / `BSD` / `BC` / `AGG` / `AB` / `PM` / `BP` / `FT` / `UC` / `BR` / `APP` / `MS` / `DS` / `ENT` / `TSD` / `API` / `TBL` / `MW` / `CMP` |
+| 实体概念核心键 | `hierarchy` | 枚举 | ✅ | 与 `type` 一一对应 | `VC` / `BD` / `BL` / `CAP` / `BS` / `PL` / `SLN` / `PD` / `SYS` / `MDG` / `TPL` / `BSD` / `BC` / `AGG` / `AB` / `PM` / `BP` / `BSP` / `FT` / `UC` / `BR` / `APP` / `MS` / `DS` / `ENT` / `TSD` / `API` / `TBL` / `MW` / `CMP` |
 | 实体概念核心键 | `layer_scope` | 枚举 | ✅ | 与知识库路径前缀对应 | `company` / `solution` / `system` / `application` |
 | 非实体文档键 | `okf_version` | 字符串 | - | 当前只出现在 bundle 根 `index.md` | `"0.1"` / `"1.0"` |
 | 非实体文档键 | `status` | 字符串 | - | 当前只出现在公司层示例方案/分析文档 | `draft` / `"draft"` |
@@ -103,7 +103,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 
 ## 3. type 与 hierarchy 映射表
 
-28 行精确映射。`type` 与 `hierarchy` 必须一一对应。
+30 行精确映射。`type` 与 `hierarchy` 必须一一对应。
 
 | hierarchy | type | perspective | 首次定义层 |
 | ----------- | ------ | ------------- | ----------- |
@@ -111,7 +111,8 @@ timestamp: "2026-06-25T00:00:00+08:00"
 | BD | `Business Domain` | business | company |
 | CAP | `Business Capability` | business | company |
 | BL | `Business Line` | business | company |
-| PL | `Product Line` | product | company |
+| BS | `Business Service` | business | solution |
+| PL | `Product Line` | product | solution |
 | SLN | `Solution` | application | solution |
 | MDG | `Master Data Domain` | data | solution |
 | TPL | `Technical Platform` | technical | company |
@@ -122,6 +123,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 | PD | `Product` | product | solution |
 | PM | `Product Module` | product | system |
 | BP | `Business Process` | product | solution |
+| BSP | `Business Subprocess` | product | solution |
 | FT | `Feature` | product | system |
 | UC | `Use Case` | product | system |
 | BR | `Business Rule` | product | system |
@@ -140,6 +142,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 
 - “首次定义层”表示该概念的治理语义与模板首次出现在哪一层。
 - 下游层允许做投影、实例登记、实现映射或物理锚点，不等于“只允许在该层出现”。
+- `BSD` 按 `layer_scope`（及正文 `level`）区分：L1 → `company`，L2 → `solution`，L3 → `system`；单看 `hierarchy: BSD` 不能推断首次定义层。
 
 ---
 
@@ -158,7 +161,7 @@ MUST：
 SHOULD：
 
 - `description` 保持“一句话可复述”的短句；更长说明放 `## 详细说明`。
-- 知识内证据优先用同层 bundle-relative 链，或上层首次定义层 HTTP（有 `knowledge-parent.yaml`）/ 纯 ID（无 parent）；库外证据用 URI/资产名（见治理边界），变更时同步。
+- 知识内证据优先用同层 bundle-relative 链，或上层首次定义层 HTTP（下级 `knowledge-links.yaml` 含 `type: parent`）/ 纯 ID（无 parent）；库外证据用 URI/资产名（见治理边界），变更时同步。
 - 扩展字段（OKF extensions）仅用于“确需机器消费且跨文件共享”的字段；否则下沉到正文以降低耦合。
 
 MAY：
