@@ -27,6 +27,7 @@ tags: ["glossary", "terminology", "governance"]
 | 应用架构 | AA (Application Architecture) | 解决方案/系统/应用/入口簇/接口；对应五视角 `application/`。 |
 | 数据架构 | DA (Data Architecture) | 主数据域/存储/实体/表；对应五视角 `data/`。 |
 | 技术架构 | TA (Technology Architecture) | 平台能力/技术域/中间件绑定/组件；对应五视角 `technical/`。 |
+| 五视角 | Five Perspectives | 业务 / 产品 / 应用 / 数据 / 技术 五个 `knowledge/<perspective>/` 目录；[INDEX-GUIDE.md](../../INDEX-GUIDE.md) §4.1 亦称 **五架构视角**（同义，偏目录组织语境）。 |
 
 ## 实体缩写登记
 
@@ -62,7 +63,7 @@ tags: ["glossary", "terminology", "governance"]
 | DA | ENT | Entity | 数据实体 | 表/集合 |
 | DA | TBL | Data Table | 数据表 | 物理锚点 |
 | TA | TPL | Technology Platform | 技术平台能力 | 公司级企业准入 |
-| TA | TSD | Technical Domain | 技术域 | 解决方案级选用与例外；`implements_to` TPL |
+| TA | TSD | Technical Subdomain | 技术域 | OKF `type` 为 `Technical Subdomain`；解决方案级选用与例外；`implements_to` TPL |
 | TA | MW | Middleware Binding | 中间件绑定 | 实例级；非 MS/API 替代 |
 | TA | CMP | Component | 关键组件 | Maven / 共享运行时 |
 

@@ -319,9 +319,10 @@ def cross_layer_href(
     *,
     path_parent: Optional[str] = None,
     hierarchy: Optional[str] = None,
+    layer_scope: Optional[str] = None,
 ) -> Optional[str]:
     prefix = hierarchy or okf_lib._id_prefix(id)
-    layer = okf_lib.hierarchy_first_layer(prefix)
+    layer = okf_lib.hierarchy_first_layer(prefix, layer_scope=layer_scope)
     perspective = okf_lib.hierarchy_to_perspective(prefix)
     if not layer or not perspective:
         return None

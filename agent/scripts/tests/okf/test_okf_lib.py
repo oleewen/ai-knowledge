@@ -196,7 +196,12 @@ def test_hierarchy_first_layer_pd_sys():
     assert okf_lib.hierarchy_first_layer("BS") == "solution"
     assert okf_lib.hierarchy_first_layer("BSP") == "solution"
     assert okf_lib.hierarchy_first_layer("SYS") == "system"
-    assert okf_lib.hierarchy_first_layer("SLN") == "company"
+    assert okf_lib.hierarchy_first_layer("SLN") == "solution"
+    assert okf_lib.hierarchy_first_layer("MDG") == "solution"
+    assert okf_lib.hierarchy_first_layer("TSD") == "solution"
+    assert okf_lib.hierarchy_first_layer("BSD", layer_scope="company") == "company"
+    assert okf_lib.hierarchy_first_layer("BSD", layer_scope="solution") == "solution"
+    assert okf_lib.hierarchy_first_layer("BSD", layer_scope="system") == "system"
     assert okf_lib.hierarchy_to_perspective("SLN") == "application"
     assert okf_lib.hierarchy_first_layer("VC") == "company"
 
