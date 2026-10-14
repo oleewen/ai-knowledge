@@ -130,7 +130,7 @@ HIERARCHY_TO_TYPE: Dict[str, str] = {
     "MDG": "Master Data Domain",
     "MW": "Middleware Binding",
     "CMP": "Component",
-    "TSD": "Technical Domain",
+    "TS": "Technical Service",
     "CAP": "Business Capability",
     "BL": "Business Line",
     "BS": "Business Service",
@@ -248,7 +248,7 @@ HIERARCHY_TO_PERSPECTIVE: Dict[str, str] = {
     "ENT": "data",
     "TBL": "data",
     "TPL": "technical",
-    "TSD": "technical",
+    "TS": "technical",
     "MW": "technical",
     "CMP": "technical",
 }
@@ -282,7 +282,7 @@ HIERARCHY_FIRST_LAYER: Dict[str, str] = {
     "MS": "system",
     "DS": "system",
     "ENT": "system",
-    "TSD": "solution",
+    "TS": "solution",
     "API": "application",
     "TBL": "application",
     "MW": "application",
@@ -484,7 +484,7 @@ def entity_relpath(
             return f"knowledge/application/{id}.md"
         if perspective == "data" and prefix == "MDG":
             return f"knowledge/data/{id}.md"
-        if perspective == "technical" and prefix == "TSD":
+        if perspective == "technical" and prefix == "TS":
             return f"knowledge/technical/{id}.md"
         raise ValueError(f"entity_relpath: solution does not land {prefix} files")
 

@@ -42,7 +42,7 @@
   | product | PL、PD、BP、BSP 本层 SSOT |
   | application | SLN 本层 SSOT；不落 SYS 正文 |
   | data | MDG 本层 SSOT |
-  | technical | TSD 本层 SSOT（`implements_to`→公司 TPL） |
+  | technical | TS 本层 SSOT（`implements_to`→公司 TPL） |
 - **系统层五视角**（`system/knowledge/{perspective}/`）：
   | 视角 | 落点要点 |
   | --- | --- |
@@ -50,8 +50,8 @@
   | product | PM→FT→FR→UC/BR 本层 SSOT；PL/PD/BP/BSP 不建本层文件，只写纯 ID |
   | application | SYS 本层 SSOT（`maps_to`→PD，`implements_to`→SLN）；APP/MS |
   | data | DS/ENT 本层 SSOT；MDG 不建本层文件，只写纯 ID |
-  | technical | 本层无首次定义实体。TSD/MW/CMP 不建本层文件，只写纯 ID |
-- **公司层五视角**（`company/knowledge/{perspective}/`）：VC、BD、BL、BSD-L1、CAP、TPL；产品视角无实体（概述、度量、体验）；**无** SLN/PD/PL/SYS/BSD-L2/MDG/TSD
+  | technical | 本层无首次定义实体。TS/MW/CMP 不建本层文件，只写纯 ID |
+- **公司层五视角**（`company/knowledge/{perspective}/`）：VC、BD、BL、BSD-L1、CAP、TPL；产品视角无实体（概述、度量、体验）；**无** SLN/PD/PL/SYS/BSD-L2/MDG/TS
 - **应用层**：API/TBL/MW/CMP 本层 SSOT；其余不建本层文件，只写纯 ID。宿主目录可留
 - **阶段目录（目标态）**：
   | 库 | 目录 |

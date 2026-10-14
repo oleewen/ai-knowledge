@@ -250,7 +250,7 @@ def test_entity_relpath_system_pd_and_pm():
     for prefix, entity_id, perspective in (
         ("PL", "PL-EXAMPLE", "product"),
         ("MDG", "MDG-EXAMPLE", "data"),
-        ("TSD", "TSD-EXAMPLE", "technical"),
+        ("TS", "TS-EXAMPLE", "technical"),
     ):
         try:
             okf_lib.entity_relpath(perspective, entity_id, bundle="system")
@@ -281,7 +281,7 @@ def test_hierarchy_first_layer_pd_sys():
     assert okf_lib.hierarchy_first_layer("SYS") == "system"
     assert okf_lib.hierarchy_first_layer("SLN") == "solution"
     assert okf_lib.hierarchy_first_layer("MDG") == "solution"
-    assert okf_lib.hierarchy_first_layer("TSD") == "solution"
+    assert okf_lib.hierarchy_first_layer("TS") == "solution"
     assert okf_lib.hierarchy_to_perspective("SLN") == "application"
     assert okf_lib.hierarchy_first_layer("VC") == "company"
     assert okf_lib.hierarchy_first_layer("BSD") == "system"
@@ -367,12 +367,12 @@ def test_relation_path_parent_prefers_parent_and_skips_cross_layer():
     body = """## 关系
 
 - implements_to: TPL-EXAMPLE
-- implements_to: TSD-EXAMPLE
+- implements_to: TS-EXAMPLE
 
 ## 详细说明
 """
     assert (
-        okf_lib.relation_path_parent(body, local_ids={"TSD-EXAMPLE"}) == "TSD-EXAMPLE"
+        okf_lib.relation_path_parent(body, local_ids={"TS-EXAMPLE"}) == "TS-EXAMPLE"
     )
     assert okf_lib.relation_path_parent(body, local_ids={"OTHER"}) is None
 
@@ -400,8 +400,8 @@ def test_entity_relpath_solution_bsd_l2_flat():
         == "knowledge/data/MDG-EXAMPLE.md"
     )
     assert (
-        okf_lib.entity_relpath("technical", "TSD-EXAMPLE", bundle="solution")
-        == "knowledge/technical/TSD-EXAMPLE.md"
+        okf_lib.entity_relpath("technical", "TS-EXAMPLE", bundle="solution")
+        == "knowledge/technical/TS-EXAMPLE.md"
     )
     try:
         okf_lib.entity_relpath("business", "BSD-EXAMPLE-L3", bundle="solution")

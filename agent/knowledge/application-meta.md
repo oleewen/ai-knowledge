@@ -37,7 +37,7 @@ title: 应用视角元数据
 | 层 | 系统 |
 | id_pattern | `SYS-{NAME}` |
 | 落盘 | `SYS-{NAME}.md` 单文件。应用不落盘，纯 ID |
-| 字段 | `implements_to`、`implemented_by` 必须，→ SLN、← APP；`maps_to` → PD；`uses_to` → MDG\|TSD |
+| 字段 | `implements_to`、`implemented_by` 必须，→ SLN、← APP；`maps_to` → PD；`uses_to` → MDG\|TS |
 
 ### APP
 
@@ -76,7 +76,7 @@ title: 应用视角元数据
 | --- | --- | --- | --- |
 | SLN.maps_to | PL.id | 解决方案 | 1:1 |
 | SLN.implemented_by | BP.id | 解决方案 | 对端 BP.implements_to |
-| SYS.uses_to | MDG.id \| TSD.id | 系统 | 声明使用的主数据域 / 技术域；可选 |
+| SYS.uses_to | MDG.id \| TS.id | 系统 | 声明使用的主数据域 / 技术服务；可选 |
 | SYS.maps_to | PD.id | 系统 | 系统对标产品服务（glossary）；可选 |
 | APP.supports_to | BC.id | 系统 | 应用支撑限界上下文；可选 |
 | APP.uses_to | DS.id \| MW.id | 系统 | 应用使用数据源或中间件（对端 DS.used_by / MW.used_by）；MW 为纯 ID |

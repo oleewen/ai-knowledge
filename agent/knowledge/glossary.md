@@ -26,7 +26,7 @@ tags: ["glossary", "terminology", "governance"]
 | 产品架构 | PA (Product Architecture) | 产品线/服务/模块等；对应五视角 `product/`。 |
 | 应用架构 | AA (Application Architecture) | 解决方案/系统/应用/入口簇/接口；对应五视角 `application/`。 |
 | 数据架构 | DA (Data Architecture) | 主数据域/存储/实体/表；对应五视角 `data/`。 |
-| 技术架构 | TA (Technology Architecture) | 平台能力/技术域/中间件绑定/组件；对应五视角 `technical/`。 |
+| 技术架构 | TA (Technology Architecture) | 平台能力/技术服务/中间件绑定/组件；对应五视角 `technical/`。 |
 | 五视角 | Five Perspectives | 业务 / 产品 / 应用 / 数据 / 技术 五个 `knowledge/<perspective>/` 目录；[INDEX-GUIDE.md](../../INDEX-GUIDE.md) §4.1 亦称 **五架构视角**（同义，偏目录组织语境）。 |
 
 ## 实体缩写登记
@@ -63,7 +63,7 @@ tags: ["glossary", "terminology", "governance"]
 | DA | ENT | Entity | 数据实体 | 表/集合 |
 | DA | TBL | Data Table | 数据表 | 物理锚点 |
 | TA | TPL | Technical Platform | 技术平台能力 | 公司级企业准入 |
-| TA | TSD | Technical Subdomain | 技术域 | OKF `type` 为 `Technical Subdomain`（映射表亦写 `Technical Domain`，与实体 frontmatter 以 Subdomain 为准）；解决方案级选用与例外；`implements_to` TPL |
+| TA | TS | Technical Service | 技术服务 | 方案级技术服务选用；`implements_to` TPL |
 | TA | MW | Middleware Binding | 中间件绑定 | 实例级；非 MS/API 替代 |
 | TA | CMP | Component | 关键组件 | Maven / 共享运行时 |
 
@@ -82,7 +82,7 @@ ID 前缀写作 `VC-` / `BD-` 等，语法见 [naming-conventions.md](naming-con
 | `implements_to` / `implemented_by` | 同视角不同类上下级（组成链）。两边都写，含跨层。下层写 `implements_to`，上层写 `implemented_by`。同层如 CMP↔MW |
 | `maps_to` / `mapped_by` | 同级对标。两边都写，含跨层。下层写 `maps_to`，上层写 `mapped_by` |
 | `supports_to` / `supported_by` | 支撑。两边都写，含跨层（BD↔VC；APP↔BC；API→FT，对端 FT.`supported_by`） |
-| `uses_to` / `used_by` | 使用。两边都写，含跨层。关系可无；有则两侧都写。SYS→MDG\|TSD；APP→DS；APP→MW；MS→ENT；MW→DS |
+| `uses_to` / `used_by` | 使用。两边都写，含跨层。关系可无；有则两侧都写。SYS→MDG\|TS；APP→DS；APP→MW；MS→ENT；MW→DS |
 | `depends_to` / `depended_by` | PM↔PM 依赖（第六动词） |
 
 ### 允许边（宿主 → 目标）
@@ -90,14 +90,14 @@ ID 前缀写作 `VC-` / `BD-` 等，语法见 [naming-conventions.md](naming-con
 | 字段（出边） | 宿主 → 目标（摘要） |
 | --- | --- |
 | `parent` / `children` | BD→BSD-L1；BP→BSP（children，同层）。BSD-L1→BSD-L2；BSD-L2→BSD-L3（children，跨层，纯 ID）。BSD-L2→BSD-L1；BSD-L3→BSD-L2；BSP→BP（parent） |
-| `implements_to` | CAP→VC；AGG→BC；AB→AGG；BC→BSD-L3；PD→PL；PM→PD；FT→PM；FR→FT；UC\|BR→FR；BP→SLN；BSP→PD；APP→SYS；MS→APP；API→MS；DS→MDG；ENT→DS；TBL→ENT；SYS→SLN；TSD→TPL；MW→TSD；CMP→MW |
-| `implemented_by` | 对端，含跨层。同层如 VC←CAP、MW←CMP。跨层：TPL←TSD；PD←PM；MDG←DS；TSD←MW；MS←API；ENT←TBL。跨层目标为纯 ID |
+| `implements_to` | CAP→VC；AGG→BC；AB→AGG；BC→BSD-L3；PD→PL；PM→PD；FT→PM；FR→FT；UC\|BR→FR；BP→SLN；BSP→PD；APP→SYS；MS→APP；API→MS；DS→MDG；ENT→DS；TBL→ENT；SYS→SLN；TS→TPL；MW→TS；CMP→MW |
+| `implemented_by` | 对端，含跨层。同层如 VC←CAP、MW←CMP。跨层：TPL←TS；PD←PM；MDG←DS；TS←MW；MS←API；ENT←TBL。跨层目标为纯 ID |
 | `maps_to` | BL→BSD-L1 1:1；BSD-L1→CAP；PL→BL 1:1；SLN→PL 1:1；PD→BS 1:1；BS→BSD-L2 1:1；SYS→PD 1:1；PM→BC；API→UC；UC→AB；MS→AGG；ENT→AGG |
 | `mapped_by` | 对端，含跨层。同层如 BSD-L1←BL。跨层：BL←PL；UC←API。不写 PD←SYS。跨层目标为纯 ID |
 | `supports_to` | BD→VC；APP→BC；API→FT |
 | `supported_by` | VC→BD；BC→APP（同层）。跨层：FT←API。跨层目标为纯 ID |
-| `uses_to` | PD→MDG\|TSD；APP→DS；APP→MW；MS→ENT；MW→DS。关系可无；有则两侧都写 |
-| `used_by` | 对端，含跨层。同层如 DS←APP、MDG←PD、TSD←PD。跨层：DS←MW。另 MW.`used_by`→APP（对端 APP.`uses_to`）。指向下层的目标为纯 ID |
+| `uses_to` | PD→MDG\|TS；APP→DS；APP→MW；MS→ENT；MW→DS。关系可无；有则两侧都写 |
+| `used_by` | 对端，含跨层。同层如 DS←APP、MDG←PD、TS←PD。跨层：DS←MW。另 MW.`used_by`→APP（对端 APP.`uses_to`）。指向下层的目标为纯 ID |
 | `depends_to` / `depended_by` | PM↔PM |
 
 ### 非边属性

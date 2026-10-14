@@ -89,7 +89,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 | 实体概念核心键 | `timestamp` | ISO8601 字符串 | ✅ | 形如 `2026-06-25T00:00:00+08:00` | `"2026-06-25T00:00:00+08:00"` |
 | 实体概念核心键 | `id` | 字符串 | ✅ | 全局唯一 ID，格式：`<hierarchy>-<name>` | `BD-EXAMPLE` / `API-EXAMPLE` |
 | 实体概念核心键 | `perspective` | 枚举 | ✅ | 与实体所属视角一致 | `business` / `product` / `application` / `data` / `technical` |
-| 实体概念核心键 | `hierarchy` | 枚举 | ✅ | 与 `type` 一一对应 | `VC` / `BD` / `BL` / `BS` / `CAP` / `PL` / `SLN` / `PD` / `SYS` / `MDG` / `TPL` / `BSD` / `BC` / `AGG` / `AB` / `PM` / `BP` / `BSP` / `FT` / `FR` / `UC` / `BR` / `APP` / `MS` / `DS` / `ENT` / `TSD` / `API` / `TBL` / `MW` / `CMP` |
+| 实体概念核心键 | `hierarchy` | 枚举 | ✅ | 与 `type` 一一对应 | `VC` / `BD` / `BL` / `BS` / `CAP` / `PL` / `SLN` / `PD` / `SYS` / `MDG` / `TPL` / `BSD` / `BC` / `AGG` / `AB` / `PM` / `BP` / `BSP` / `FT` / `FR` / `UC` / `BR` / `APP` / `MS` / `DS` / `ENT` / `TS` / `API` / `TBL` / `MW` / `CMP` |
 | 实体概念核心键 | `layer_scope` | 枚举 | ✅ | 与知识库路径前缀对应 | `company` / `solution` / `system` / `application` |
 | 非实体文档键 | `okf_version` | 字符串 | - | 当前只出现在 bundle 根 `index.md` | `"0.1"` / `"1.0"` |
 | 非实体文档键 | `status` | 字符串 | - | 出现在各层 SDD 示例（SOLUTION、ANALYSIS、FEATURE、PRD、ASD、DSD、TDD） | `draft` / `"draft"` |
@@ -133,7 +133,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 | MS | `Microservice` | application | system |
 | DS | `Data Store` | data | system |
 | ENT | `Entity` | data | system |
-| TSD | `Technical Subdomain` | technical | solution |
+| TS | `Technical Service` | technical | solution |
 | API | `API Endpoint` | application | application |
 | TBL | `Data Table` | data | application |
 | MW | `Middleware Binding` | technical | application |
@@ -200,7 +200,7 @@ MAY：
 | BL | `maps_to: [...]`（→BSD-L1） + `mapped_by: [...]`（←PL） | — |
 | BS | `maps_to: [...]`（→BSD-L2） | `mapped_by`（PD） |
 | PL | `maps_to: [...]`（→BL） | `implemented_by`（PD）；`mapped_by`（SLN） |
-| PD | `implements_to: [...]`（→PL） + `maps_to: [...]`（→BS） + `implemented_by: [...]`（←BSP、←PM） | `uses_to`（MDG\|TSD） |
+| PD | `implements_to: [...]`（→PL） + `maps_to: [...]`（→BS） + `implemented_by: [...]`（←BSP、←PM） | `uses_to`（MDG\|TS） |
 | BP | `implements_to: [...]`（→SLN） | `children`（BSP） |
 | BSP | `parent`（→BP） + `implements_to: [...]`（→PD） | — |
 | PM | `implements_to: [...]` + `implemented_by: [...]` | `maps_to`（BC）；`depends_to` / `depended_by`（对端 `depends_to` 存在时必填） |
@@ -217,8 +217,8 @@ MAY：
 | DS | `implements_to: [...]` + `implemented_by: [...]`（←ENT） | `used_by`（APP\|MW） |
 | ENT | `implements_to: [...]` + `implemented_by: [...]`（←TBL） | `maps_to`（AGG）；`used_by`（MS） |
 | TBL | `implements_to: [...]` | — |
-| TPL | `implemented_by: [...]`（←TSD） | — |
-| TSD | `implements_to: [...]` + `implemented_by: [...]`（←MW） | `used_by`（←PD） |
+| TPL | `implemented_by: [...]`（←TS） | — |
+| TS | `implements_to: [...]` + `implemented_by: [...]`（←MW） | `used_by`（←PD） |
 | MW | `implements_to: [...]` | `implemented_by`（CMP）；`used_by`（APP）；`uses_to`（DS） |
 | CMP | `implements_to: [...]` | — |
 
@@ -344,7 +344,7 @@ MAY：工具链 extensions 字段可加，须可控长期维护。
 
 ### 10.2 solution
 
-一仓一 SLN；跨 SYS 共性实体（PD/L2/MDG/TSD/BP）+ SA 叙事；company 语义 → system 实现的中间层。
+一仓一 SLN；跨 SYS 共性实体（PD/L2/MDG/TS/BP）+ SA 叙事；company 语义 → system 实现的中间层。
 
 ### 10.3 system
 
