@@ -18,13 +18,12 @@ title: solution INDEX-GUIDE
 * [DESIGN.md](DESIGN.md) — 本层设计入口
 * [knowledge/README.md](knowledge/README.md) — 五视角
 * [knowledge-links.yaml](knowledge-links.yaml) — 建联清单
-* [changelogs/README.md](changelogs/README.md) — 变更/索引
 
 ### 1.2 元信息
 
 * **角色**: 解决方案知识库；一仓一 SLN；`knowledge/` = SLN/PL/PD/BP/BSP/BSD-L2/BS/MDG/TS SSOT；`system-slots/system-{NAME}` = 系统联邦槽位
 * **栈**: Markdown、YAML
-* **范围**: `knowledge/` · `solutions/` · `adr/` · `system-slots/` · `changelogs/`
+* **范围**: `knowledge/` · `solutions/` · `adr/` · `system-slots/`
 * **装机**: `KNOWLEDGE_TYPE=solution`
 * **规模**（本轮 full/d3，排除 `.agents`）：**73** 文件（`.md` 72 · `.yaml` 1；`viz.html` 1 不计入）
 
@@ -40,7 +39,6 @@ solution/
 ├── knowledge-links.yaml
 ├── knowledge/ · solutions/ · adr/
 ├── system-slots/system-{NAME}/
-└── changelogs/
 ```
 
 parent：`application → system → solution → company`。
@@ -74,7 +72,7 @@ parent：`application → system → solution → company`。
 
 ### 4.4 领域事件
 
-不适用运行时事件：索引运行见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)。
+不适用运行时事件：索引运行见 [INDEX-GUIDE 增量锚点](INDEX-GUIDE 增量锚点)。
 
 ### 4.5 视角导航
 
@@ -116,10 +114,12 @@ parent：`application → system → solution → company`。
 
 ## 八、变更与发布
 
-[changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)
+[INDEX-GUIDE 增量锚点](INDEX-GUIDE 增量锚点)
 
 ---
 
 ## 九、附录
 
 治理：[knowledge-governance](../agent/knowledge/knowledge-governance.md) · 布局：[knowledge-layout](../agent/references/knowledge-layout.md)
+
+<!-- sdx-indexing:indexing_finished_ms=1791430229875 -->

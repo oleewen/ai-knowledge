@@ -8,7 +8,6 @@
 * [adr](adr/README.md)
 * [analysis](analysis/README.md)
 * [application-slots](application-slots/README.md) - application-slots 目录索引
-* [changelogs](changelogs/README.md)
 * [features](features/README.md)
 * [knowledge](knowledge/README.md)
 * [requirements](requirements/README.md)

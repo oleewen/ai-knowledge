@@ -29,4 +29,3 @@ analysis ──→ features ──→ requirements
 | 特性 | [features](features/README.md) | `FEATURE-{IDEA-ID}.md` |
 | 交付 | [requirements](requirements/README.md) | `REQUIREMENT-{IDEA-ID}/MVP-Phase-*` |
 
-按需：[changelogs/README.md](changelogs/README.md)

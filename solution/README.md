@@ -14,7 +14,7 @@ title: "解决方案知识库（顶层 `solution/`）"
 | 本层设计入口 | [DESIGN.md](DESIGN.md) |
 | 五视角入口 | [knowledge/README.md](knowledge/README.md) |
 
-按需：`knowledge-links.yaml` · [system-slots/](system-slots/README.md) · [changelogs/](changelogs/README.md) · [adr/](adr/README.md)
+按需：`knowledge-links.yaml` · [system-slots/](system-slots/README.md) · [adr/](adr/README.md)
 
 模板占位：`knowledge/overview/NAME-overview.md`（拷为 `{NAME}-overview.md`）、`*-EXAMPLE`（可替换）。
 

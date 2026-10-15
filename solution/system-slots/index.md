@@ -4,7 +4,6 @@
 
 ## 子目录
 
-* [changelogs](changelogs/index.md)
 
 实例槽为软链 `system-{NAME}` → 下级系统 `文档目录`。
 
@@ -19,7 +18,6 @@
 ## 阅读顺序
 
 1. [README.md](README.md)
-2. [changelogs](changelogs/index.md)
 
 ## 关联索引
 

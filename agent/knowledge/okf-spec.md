@@ -62,7 +62,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 
 目录、规则、链接、日志或治理元信息。
 
-- 典型：`agent/knowledge/{视角}-meta.md`、`knowledge-links.yaml`、`INDEXING-LOG.md`。层根契约是各层 `DESIGN.md`，知识树入口是 `knowledge/README.md`。层设计 SSOT 见 [knowledge-governance.md](knowledge-governance.md)
+- 典型：`agent/knowledge/{视角}-meta.md`、`knowledge-links.yaml`、`INDEX-GUIDE 锚点`。层根契约是各层 `DESIGN.md`，知识树入口是 `knowledge/README.md`。层设计 SSOT 见 [knowledge-governance.md](knowledge-governance.md)
 - MUST：不按实体 Profile；字段/职责与规范引用一致
 
 ### 1.5 分型优先级
@@ -294,8 +294,6 @@ MUST：保持规则 / 目录元信息 / 链接编排 / 运维日志职责；不�
 SHOULD：区分约定/枚举字段与解释性文字；运维留痕遵循各目录 README，避免多处定义同一条规则。
 
 MAY：工具链 extensions 字段可加，须可控长期维护。
-
-模式：`agent/knowledge/{business,product,application,data,technical}-meta.md`；`knowledge-links.yaml`；`INDEXING-LOG.md`（`changelogs/`）；变更溯源 `git log` / `git diff`。
 
 ---
 

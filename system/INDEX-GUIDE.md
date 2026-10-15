@@ -18,13 +18,12 @@ title: system INDEX-GUIDE
 * [DESIGN.md](DESIGN.md) — 本层设计入口（契约短表 + 治理引用）  
 * [knowledge/README.md](knowledge/README.md) — 五视角  
 * [knowledge-links.yaml](knowledge-links.yaml) — 建联清单  
-* [changelogs/README.md](changelogs/README.md) — 变更/索引  
 
 ### 1.2 元信息
 
 * **角色**: 系统知识库；`knowledge/` = 系统层实体 SSOT + 五视角；`application-slots/application-{NAME}` = 软链槽位  
 * **栈**: Markdown、YAML  
-* **范围**: `knowledge/` · `analysis/` · `features/` · `requirements/` · `application-slots/` · `adr/` · `changelogs/`  
+* **范围**: `knowledge/` · `analysis/` · `features/` · `requirements/` · `application-slots/` · `adr/`  
 * **规模**（本轮 full/d3，排除 `.agents`）：**104** 文件（`.md` 103 · `.yaml` 1；`viz.html` 1 不计入）  
 
 ---
@@ -40,8 +39,6 @@ system/
 ├── knowledge/ · analysis/ · features/ · requirements/ · adr/
 ├── application-slots/
 │   ├── application-{NAME}      # 软链 → 应用 文档目录
-│   └── changelogs/             # 层共用 ARCHIVE-LOG；同步追溯 git / SYNC_OK
-└── changelogs/
 ```
 
 ### 2.2 依赖关系
@@ -106,8 +103,6 @@ system/
 不适用运行时服务：协作能力见根 [INDEX-GUIDE.md](../INDEX-GUIDE.md) §4.3 与本层 Skill 入口（§3.2 / §9.3）。
 
 ### 4.4 领域事件
-
-不适用运行时事件：索引运行见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)；归档见 `application-slots/changelogs/`。
 
 ### 4.5 视角导航
 
@@ -200,8 +195,6 @@ system/
 
 ### 8.3 维护规则
 
-* [changelogs/](changelogs/README.md)：`INDEXING-LOG.md`；溯源 git  
-* 槽位日志 ∈ `application-slots/changelogs/ARCHIVE-LOG.md`  
 * 大目录或契约变更后跑 `/docs-indexing`；索引后按需 `/docs-okf`
 
 ---
@@ -216,7 +209,7 @@ system/
 | 目录索引 | [index.md](index.md) | OKF 渐进披露 |
 | 设计入口 | [DESIGN.md](DESIGN.md) | 契约与门禁 |
 | OKF 可视化 | [viz.html](viz.html) | 图视图 |
-| 索引运行日志 | [INDEXING-LOG.md](changelogs/INDEXING-LOG.md) | docs-indexing 基线 |
+| 索引运行日志 | [INDEXING-LOG.md](INDEX-GUIDE 增量锚点) | docs-indexing 基线 |
 | 公司对照 | [../company/INDEX-GUIDE.md](../company/INDEX-GUIDE.md) | 上层九章 |
 
 ### 9.2 相关项目
@@ -224,7 +217,7 @@ system/
 | 关系 | 状态 |
 |------|------|
 | `knowledge-links.yaml` parent/child | **空**（仅 `type: meta`，parent/child 未挂载） |
-| `application-slots/application-*` | **无**现成软链；仅有槽位 README / `changelogs/` |
+| `application-slots/application-*` | **无**现成软链；仅有槽位 README |
 | 同仓邻层 | [company/](../company/README.md) · [application/](../application/README.md) |
 
 ### 9.3 工具链
@@ -235,3 +228,5 @@ system/
 | `/docs-indexing` | 九章骨架（须保留 entity-index 标记块） |
 | `/docs-build` | 刷新 §4.5 标记块 |
 | `/docs-distill` · `/docs-archive` · `/docs-pull` | overview 上行与槽位拉取 |
+
+<!-- sdx-indexing:indexing_finished_ms=1791431315870 -->

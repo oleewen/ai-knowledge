@@ -85,7 +85,6 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/bootstrap.
 ```text
 ./
 ├── README.md / AGENTS.md / INDEX-GUIDE.md / index.md / quick-start.md
-├── changelogs/           # 根输出组 INDEXING-LOG
 ├── application/          # 应用层 SSOT + SDD
 ├── system/               # 系统库：knowledge/ + overview、application-slots/application-{NAME}/
 ├── solution/             # 解决方案库：knowledge/ + overview、system-slots/system-{NAME}/
@@ -136,7 +135,7 @@ flowchart TD
 | 四层语义 SSOT | [knowledge-governance.md](agent/knowledge/knowledge-governance.md) |
 | 初始化脚本 | [bootstrap.sh](bootstrap.sh)、[agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)、[agent/skills/agent-install/SKILL.md](agent/skills/agent-install/SKILL.md) |
 | 共享推进契约 | [agent/references/](agent/references/) |
-| 根索引运行日志 | [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md) |
+| 根索引运行日志 | [INDEX-GUIDE 增量锚点](INDEX-GUIDE 增量锚点) |
 | OKF / Skill 清单（25） | [docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) · [agent/skills/README.md](agent/skills/README.md) |
 
 ---

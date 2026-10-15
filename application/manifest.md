@@ -10,11 +10,10 @@ template_id: app-APPNAME
 description: 联邦单元目录布局与元库 application/ 对照
 
 mirrors_system_paths:
-  - application/changelogs/README.md → changelogs/README.md
-  - application/knowledge/** → knowledge/**
-  - application/requirements/README.md → requirements/README.md
+ - application/knowledge/** → knowledge/**
+ - application/requirements/README.md → requirements/README.md
 
 central_library:
-  system_root: ../../application/
-  repository_root: ../../
+ system_root: ../../application/
+ repository_root: ../../
 ```

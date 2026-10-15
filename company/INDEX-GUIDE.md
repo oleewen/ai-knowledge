@@ -18,13 +18,12 @@ title: company INDEX-GUIDE
 * [DESIGN.md](DESIGN.md) — 本层设计入口  
 * [knowledge/README.md](knowledge/README.md) — 五视角  
 * [knowledge-links.yaml](knowledge-links.yaml) — 建联清单  
-* [changelogs/README.md](changelogs/README.md) — 变更/索引  
 
 ### 1.2 元信息
 
 * **角色**: 公司知识库；`knowledge/` = VC/BD/BSD-L1/CAP/BL/TPL SSOT；`solution-slots/solution-{NAME}` = 解决方案联邦槽位（软链）
 * **栈**: Markdown、YAML  
-* **范围**: `knowledge/` · `domains/` · `adr/` · `solution-slots/` · `changelogs/`  
+* **范围**: `knowledge/` · `domains/` · `adr/` · `solution-slots/`  
 * **规模**（本轮 full/d3，排除 `.agents`）：**75** 文件（`.md` 74 · `.yaml` 1；`viz.html` 1 不计入）  
 
 ---
@@ -40,8 +39,6 @@ company/
 ├── knowledge/ · domains/ · adr/
 ├── solution-slots/
 │   ├── solution-{NAME}         # 软链 → 解决方案 文档目录
-│   └── changelogs/
-└── changelogs/
 ```
 
 ### 2.2 依赖关系
@@ -107,7 +104,7 @@ company/
 
 ### 4.4 领域事件
 
-不适用运行时事件：索引运行见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)；归档见 `solution-slots/changelogs/`。
+不适用运行时事件：索引运行见 [INDEX-GUIDE 增量锚点](INDEX-GUIDE 增量锚点)。
 
 ### 4.5 视角导航
 
@@ -197,8 +194,6 @@ company/
 
 ### 8.3 维护规则
 
-* [changelogs/](changelogs/README.md)：`INDEXING-LOG`；溯源 git  
-* 槽位日志 ∈ `solution-slots/changelogs/ARCHIVE-LOG.md`  
 * 大目录或契约变更后跑 `/docs-indexing`；索引后按需 `/docs-okf`
 
 ---
@@ -213,14 +208,14 @@ company/
 | 目录索引 | [index.md](index.md) | OKF 渐进披露 |
 | 设计入口 | [DESIGN.md](DESIGN.md) | 契约与门禁 |
 | OKF 可视化 | [viz.html](viz.html) | 图视图 |
-| 索引运行日志 | [INDEXING-LOG.md](changelogs/INDEXING-LOG.md) | docs-indexing 基线 |
+| 索引运行日志 | [INDEXING-LOG.md](INDEX-GUIDE 增量锚点) | docs-indexing 基线 |
 
 ### 9.2 相关项目
 
 | 关系 | 状态 |
 |------|------|
 | `knowledge-links.yaml` child | **空**（仅 `type: meta`，child 未挂载） |
-| `solution-slots/solution-*` | **无**现成软链；仅有槽位 README / `changelogs/` |
+| `solution-slots/solution-*` | **无**现成软链；仅有槽位 README |
 | 同仓邻层 | [solution/](../solution/README.md) · [system/](../system/README.md) · [application/](../application/README.md)（非联邦 path，开发元库并列） |
 
 ### 9.3 工具链
@@ -230,3 +225,5 @@ company/
 | `/docs-okf` | [docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md) |
 | `/docs-indexing` | 九章骨架（须保留 entity-index 标记块） |
 | `/docs-build` | 刷新 §4.5 标记块 |
+
+<!-- sdx-indexing:indexing_finished_ms=1791428119711 -->

@@ -23,7 +23,7 @@ title: 解决方案知识库设计
 | `adr/` | 解决方案层决策 + `CONTEXT.md` |
 | `system-slots/system-{NAME}/` | 系统联邦槽位（软链） |
 | `knowledge-links.yaml` | parent 一条，为公司；child 为系统；键均为 `name` / `label`，不写层前缀 |
-| `changelogs/` | INDEXING-LOG；变更溯源 git |
+| 变更溯源 | git；烤干代办见仓根 `TODO-LIST.md` |
 
 路径总则：[knowledge-layout § 四层文档根](../agent/references/knowledge-layout.md#四层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。
 

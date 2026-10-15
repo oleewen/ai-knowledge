@@ -16,7 +16,7 @@ title: "应用知识库（顶层 `application/`）"
 
 初始化模式：`mode=s` → [README-s.md](README-s.md)；`mode=c` → [README-c.md](README-c.md)
 
-按需：[CONTRIBUTING.md](CONTRIBUTING.md) · [adr/](adr/README.md) · [changelogs/](changelogs/README.md) · [analysis/](analysis/README.md) · [features/](features/README.md) · [requirements/](requirements/README.md)
+按需：[CONTRIBUTING.md](CONTRIBUTING.md) · [adr/](adr/README.md) · [analysis/](analysis/README.md) · [features/](features/README.md) · [requirements/](requirements/README.md)
 
 模板占位：`*-EXAMPLE`（最小演示链，可替换）。
 

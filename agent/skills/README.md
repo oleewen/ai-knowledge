@@ -17,7 +17,7 @@
 
 | 命令 | 差异要点 |
 | ---- | ---- |
-| `/docs-indexing` | 参数 `mode/depth/output/since`；产出九章 `INDEX-GUIDE.md` + `changelogs/INDEXING-LOG.md`（须列完整仓库根相对路径） |
+| `/docs-indexing` | 参数 `mode/depth/output/since`；产出九章 `INDEX-GUIDE.md` + `INDEX-GUIDE` 增量锚点注释（须列完整仓库根相对路径） |
 | `/docs-tag` | 四层 `{NAME}-overview.md` 关键词：候选附录、表行 ✅、架构摘录；`--scan-dir` 默认同层 `knowledge/`。轻流程。见 [workflow.md](docs-tag/references/workflow.md) |
 | `/docs-revise` | 术语/路径链式同步 + 定向纠错；烤干修订后走协议 simplify 遍；整篇结构交 `/docs-simplify` |
 | `/docs-simplify` | 金字塔结构 + 激进精简 + SSOT 去重引用；原则见 [simplify-principles.md](../references/simplify-principles.md) |
@@ -49,4 +49,4 @@
 - 由 Agent 按对应 `SKILL.md` 执行并落盘。
 - **`git commit` / `git push`**：须 [git-guidelines.md](../rules/coding/git-guidelines.md)「提交前用户确认」；步骤中「Commit」= 确认后再提交。
 - 装机脚本在 `agent/skills/docs-install/scripts/`、`agent/skills/agent-install/scripts/`；仓根 `bootstrap.sh` 编排双轨；`agent/scripts/` = 共享 Bash 库。
-- 索引类产物路径以约定为准（`INDEX-GUIDE.md`、`index.md`、`{DOC_DIR}/changelogs/INDEXING-LOG.md`）；变更溯源用 `git log` / `git diff`。
+- 索引类产物路径以约定为准（`INDEX-GUIDE.md`、`index.md`、`{DOC_DIR}/`INDEX-GUIDE` 增量锚点注释）；变更溯源用 `git log` / `git diff`。

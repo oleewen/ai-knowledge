@@ -18,13 +18,12 @@ title: application INDEX-GUIDE
 * [DESIGN.md](DESIGN.md) — 本层设计入口（契约短表 + 治理引用）
 * [knowledge/README.md](knowledge/README.md) — 五视角
 * [CONTRIBUTING.md](CONTRIBUTING.md) — 贡献约定
-* [changelogs/README.md](changelogs/README.md) — 变更/索引
 
 ### 1.2 元信息
 
 * **角色**: 应用知识库；实现级实体（API/TBL/MW/CMP）SSOT + 五视角映射
 * **栈**: Markdown、YAML
-* **范围**: `knowledge/` · `analysis/` · `features/` · `requirements/` · `adr/` · `changelogs/`
+* **范围**: `knowledge/` · `analysis/` · `features/` · `requirements/` · `adr/`
 * **规模**（本轮 full/d3，排除 `.agents`）：**70** 文件（`.md` 69 · `.yaml` 1；`viz.html` 1 不计入）
 
 ---
@@ -37,7 +36,6 @@ title: application INDEX-GUIDE
 application/
 ├── README.md / DESIGN.md / INDEX-GUIDE.md / index.md
 ├── knowledge/（含 overview/） · analysis/ · features/ · requirements/ · adr/
-└── changelogs/
 ```
 
 ### 2.2 依赖关系
@@ -100,7 +98,7 @@ application/
 
 ### 4.4 领域事件
 
-不适用运行时事件：索引运行见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)。
+不适用运行时事件：索引运行见 [INDEX-GUIDE 增量锚点](INDEX-GUIDE 增量锚点)。
 
 ### 4.5 视角导航
 
@@ -198,7 +196,6 @@ standalone / central 差异与安装约定见仓库根 [INDEX-GUIDE.md](../INDEX
 
 ### 8.3 维护规则
 
-* [changelogs/](changelogs/README.md)：`INDEXING-LOG.md`；溯源 git  
 * 大目录或契约变更后跑 `/docs-indexing`；索引后按需 `/docs-okf`
 
 ---
@@ -231,3 +228,5 @@ standalone / central 差异与安装约定见仓库根 [INDEX-GUIDE.md](../INDEX
 | `/docs-okf` | [docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md) |
 | `/docs-indexing` | 九章骨架（须保留 entity-index 标记块） |
 | `/docs-build` | 刷新 §4.5 标记块 |
+
+<!-- sdx-indexing:indexing_finished_ms=1791431236005 -->

@@ -6,7 +6,6 @@
 ## 子目录
 
 * [adr](adr/README.md)
-* [changelogs](changelogs/README.md)
 * [domains](domains/README.md) - company/domains 目录索引
 * [knowledge](knowledge/README.md)
 * [solution-slots](solution-slots/README.md) - solution-slots 目录索引

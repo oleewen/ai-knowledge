@@ -3,23 +3,23 @@
 > **定位**：跨 skill 复用的 `grilling`（写后**烤干**）能力唯一真源。已装 `grilling` Skill 则优先调用，否则走本文 fallback。  
 > **分工**：写前澄清见 [intent-clarify.md](intent-clarify.md)；推进环/动作/重开见 [unit-cycle-protocol.md](unit-cycle-protocol.md)；受众维见 [audience-and-language.md](audience-and-language.md)。本文不定义写前门禁、动作字母、写入权限或前文回改。
 
-**最后更新**: 2026-09-15
+**最后更新**: 2026-10-15
 
 ---
 
-## GRILL-LOG
+## TODO-LIST
 
-根路径 [`changelogs/GRILL-LOG.md`](../../changelogs/GRILL-LOG.md) 是烤干**未闭合代办**清单，不是决策日志或运行史。
+仓根 [`TODO-LIST.md`](../../TODO-LIST.md)（元库全书一份）是烤干**未闭合代办**清单，不是决策日志或运行史。下游文档根为 `{DOC_DIR}/TODO-LIST.md`（常 `docs/TODO-LIST.md`）。
 
 | 项 | 约定 |
 | --- | --- |
 | 职责 | 只记可执行、未勾销的烤干代办 |
 | 格式 | 顶层 `- [ ]` 动作句 + 可选依赖；明细用子 checkbox |
 | 写入 | 烤干收敛后，若仍有未执行动作，Agent 自动落盘/更新；纯问答不成动作则不写 |
-| 勾销 | 用户确认已完成后**即删条**；不留已完成史（落痕用 git / 域 `INDEXING-LOG`） |
+| 勾销 | 用户确认已完成后**即删条**；不留已完成史（落痕用 git） |
 | 空壳 | 无开放代办时保留文件：标题 + 导语 +「当前无开放代办」 |
 
-不替代 git 变更溯源 / `INDEXING-LOG`。
+不替代 git 变更溯源。索引增量锚点 ∈ 目标 `INDEX-GUIDE.md` 内 `<!-- sdx-indexing:indexing_finished_ms=... -->`（见 docs-indexing）。
 
 ---
 

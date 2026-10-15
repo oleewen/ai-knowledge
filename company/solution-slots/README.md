@@ -10,7 +10,6 @@ title: solution-slots（解决方案联邦槽位根）
 | 读什么 | 文件 |
 |--------|------|
 | 本层索引 | [index.md](index.md) |
-| 蒸馏日志 | [changelogs/ARCHIVE-LOG.md](changelogs/ARCHIVE-LOG.md) |
 | 建联清单 | [../knowledge-links.yaml](../knowledge-links.yaml) |
 | 布局契约 | [../../agent/references/knowledge-layout.md](../../agent/references/knowledge-layout.md) |
 

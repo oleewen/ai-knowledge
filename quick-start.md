@@ -126,14 +126,14 @@ flowchart LR
 | 4 | 规约开发实现链路：`brainstorming` → `opsx:*` → `superpowers:sdd` | 代码实现 + 规格归档 |
 | 5 | `/docs-build`（按需） | 五视角实体、`index.md` |
 
-应用库 **mode**：**standalone** = 单应用全量模板；**central** = 仅同步 `knowledge/`、`changelogs/` 等子集并 `docs-link` 建联（见 [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)）。
+应用库 **mode**：**standalone** = 单应用全量模板；**central** = 仅同步 `knowledge/` 等子集并 `docs-link` 建联（见 [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)）。
 
 ### 阶段三：变更溯源与索引
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
 | 1 | `git log` / `git diff` | 变更历史（仓内 commit） |
-| 2 | `/docs-indexing`（增量，完成 gate 确认） | `index.md` 与 `INDEXING-LOG` 对齐、可追溯 |
+| 2 | `/docs-indexing`（增量，完成 gate 确认） | `index.md` 与 INDEX-GUIDE 锚点 对齐、可追溯 |
 
 ---
 
@@ -316,7 +316,7 @@ flowchart LR
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
 | 1 | `git log` / `git diff` | 变更历史（仓内 commit） |
-| 2 | `/docs-indexing`（增量，完成 gate 确认） | `index.md` 与 `INDEXING-LOG` 对齐 |
+| 2 | `/docs-indexing`（增量，完成 gate 确认） | `index.md` 与 INDEX-GUIDE 锚点 对齐 |
 | 3 | 按层交付：解决方案 `/sdx-solution`；系统/应用 `/sdx-analysis` → `/sdx-feature` → … → `/sdx-test`；公司 `/sdx-domains` | 对应阶段文档 |
 
 ---

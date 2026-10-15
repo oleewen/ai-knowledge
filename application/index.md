@@ -11,7 +11,6 @@ okf_version: "0.1"
 
 * [adr](adr/README.md)
 * [analysis](analysis/README.md)
-* [changelogs](changelogs/README.md)
 * [features](features/README.md)
 * [knowledge](knowledge/README.md)
 * [requirements](requirements/README.md)

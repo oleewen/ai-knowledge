@@ -14,6 +14,6 @@ title: "系统知识库（顶层 `system/`）"
 | 本层设计入口 | [DESIGN.md](DESIGN.md) |
 | 五视角入口 | [knowledge/README.md](knowledge/README.md) |
 
-按需：`knowledge-links.yaml` · [application-slots/](application-slots/README.md) · [changelogs/](changelogs/README.md) · [analysis/](analysis/README.md) · [features/](features/README.md) · [requirements/](requirements/README.md) · [adr/](adr/README.md)
+按需：`knowledge-links.yaml` · [application-slots/](application-slots/README.md) · [analysis/](analysis/README.md) · [features/](features/README.md) · [requirements/](requirements/README.md) · [adr/](adr/README.md)
 
-模板占位：`knowledge/overview/NAME-overview.md`、`*-EXAMPLE`（可替换）。联邦槽位：`docs-link` 建软链；日志 `application-slots/changelogs/`。
+模板占位：`knowledge/overview/NAME-overview.md`、`*-EXAMPLE`（可替换）。联邦槽位：`docs-link` 建软链；追溯 git / SYNC_OK。
