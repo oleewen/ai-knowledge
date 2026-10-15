@@ -49,7 +49,7 @@
   | business | BSD-L3→BC→AGG→AB 本层 SSOT；落盘 `BSD-{L2}/BSD-{L3}/…`（L2 目录宿主）；BD/L1 不建本层文件；样例不落 L2 实体 |
   | product | PM→FT→FR→UC/BR 本层 SSOT；PL/PD/BP/BSP 不建本层文件，只写纯 ID |
   | application | SYS 本层 SSOT（`maps_to`→PD，`implements_to`→SLN）；落盘 `SYS-{NAME}/`，其下 APP/MS |
-  | data | DS/ENT 本层 SSOT；MDG 不建本层文件，只写纯 ID |
+  | data | DS/ENT 本层 SSOT；落盘 `MDG-{NAME}/DS-{NAME}/…`（MDG 目录宿主）；样例不落 MDG 实体 |
   | technical | 本层无首次定义实体。TS/MW/CMP 不建本层文件，只写纯 ID |
 - **公司层五视角**（`company/knowledge/{perspective}/`）：VC、BD、BL、BSD-L1、CAP、TPL；产品视角无实体（概述、度量、体验）；**无** SLN/PD/PL/SYS/BSD-L2/MDG/TS
 - **应用层**：API/TBL/MW/CMP 本层 SSOT；其余不建本层文件，只写纯 ID。宿主目录可留

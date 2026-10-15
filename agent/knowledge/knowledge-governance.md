@@ -78,7 +78,7 @@
 | 业务 | BSD-L3→BC→AGG→AB（`parent`→解决方案 BSD-L2；盘面挂 L2 **目录宿主** 下）。不落 BSD-L1；样例不落 BSD-L2 实体（业务仓可留 L2 实体作聚合） |
 | 产品 | PM→FT→FR→UC/BR（整链 `implements_to`）；PD/BP 不建本层文件，只写纯 ID；PM `implements_to`→PD |
 | 应用 | SYS 本层 SSOT（`maps_to`→解决方案 PD 1:1；`implements_to`→SLN，纯 ID）。不 `uses_to` MDG\|TS。APP→MS（`implements_to`）；MS `implemented_by`→API（纯 ID） |
-| 数据 | DS→ENT（`implements_to` MDG）；ENT `implemented_by`→TBL（纯 ID）；MDG 不建本层文件，只写纯 ID；TBL ∈ application |
+| 数据 | DS→ENT（`implements_to` MDG；盘面挂 MDG **目录宿主** 下）；ENT `implemented_by`→TBL（纯 ID）；样例不落 MDG 实体；TBL ∈ application |
 | 技术 | MW/CMP ∈ application；TS 不建本层文件，只写纯 ID |
 
 - 上层实体不建本层文件，正文只写纯 ID：`SLN/PL/PD/BP/BSP/BSD-L2/BS/MDG/TS` 及公司层实体。有 `type: parent` 时，关系段或依据段可 HTTP 指向上层首次定义 SSOT。不重复字段语义。宿主目录可留

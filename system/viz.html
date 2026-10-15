@@ -340,12 +340,12 @@ aside {
         "application",
         "APP"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例应用\n\n## 关系\n\n- implements_to: [SYS-EXAMPLE](../SYS-EXAMPLE.md)\n- implemented_by: [MS-EXAMPLE](MS-EXAMPLE/MS-EXAMPLE.md)\n- supports_to: [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)\n\n## 跨视角\n\n- uses_to:\n  - [DS-EXAMPLE](../../../data/DS-EXAMPLE/DS-EXAMPLE.md)\n  - MW-EXAMPLE\n\n## 详细说明\n\n- 应用，代码仓库与部署单元。\n\n## 依据与证据\n\n[../../chapters/application-architecture.md](../../chapters/application-architecture.md#应用)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例应用\n\n## 关系\n\n- implements_to: [SYS-EXAMPLE](../SYS-EXAMPLE.md)\n- implemented_by: [MS-EXAMPLE](MS-EXAMPLE/MS-EXAMPLE.md)\n- supports_to: [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)\n\n## 跨视角\n\n- uses_to:\n  - [DS-EXAMPLE](../../../data/MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE.md)\n  - MW-EXAMPLE\n\n## 详细说明\n\n- 应用，代码仓库与部署单元。\n\n## 依据与证据\n\n[../../chapters/application-architecture.md](../../chapters/application-architecture.md#应用)（示例）",
       "backlinks": [
         "knowledge/application/README",
         "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE",
         "knowledge/application/SYS-EXAMPLE/SYS-EXAMPLE",
-        "knowledge/data/DS-EXAMPLE/DS-EXAMPLE"
+        "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE"
       ]
     },
     "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE": {
@@ -512,12 +512,12 @@ aside {
         "business",
         "AGG"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例聚合\n\n## 关系\n\n- implements_to: [BC-EXAMPLE](../BC-EXAMPLE.md)\n- implemented_by: [AB-EXAMPLE](AB-EXAMPLE.md)\n\n## 跨视角\n\n- mapped_by:\n  - [MS-EXAMPLE](../../../../application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md)\n  - [ENT-EXAMPLE](../../../../data/DS-EXAMPLE/ENT-EXAMPLE.md)\n\n## 详细说明\n\n- 聚合根。\n\n## 依据与证据\n\n[../../../chapters/business-capability-map.md](../../../chapters/business-capability-map.md#聚合)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例聚合\n\n## 关系\n\n- implements_to: [BC-EXAMPLE](../BC-EXAMPLE.md)\n- implemented_by: [AB-EXAMPLE](AB-EXAMPLE.md)\n\n## 跨视角\n\n- mapped_by:\n  - [MS-EXAMPLE](../../../../application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md)\n  - [ENT-EXAMPLE](../../../../../data/MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE.md)\n\n## 详细说明\n\n- 聚合根。\n\n## 依据与证据\n\n[../../../chapters/business-capability-map.md](../../../chapters/business-capability-map.md#聚合)（示例）",
       "backlinks": [
         "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE",
         "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE",
         "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE",
-        "knowledge/data/DS-EXAMPLE/ENT-EXAMPLE"
+        "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE"
       ]
     },
     "knowledge/business/chapters/business-capability-map": {
@@ -572,7 +572,7 @@ aside {
       "title": "数据架构",
       "description": null,
       "tags": [],
-      "body": "# 数据架构\n\n[返回 · 系统知识库](../README.md)\n\n**本层 SSOT**：DS/ENT。MDG 不落文件，纯 ID `MDG-EXAMPLE`（解决方案首次定义）。下层不建实体文件。反向边只写纯 ID。企业标准只引用公司 data。方案 SSOT 只引用解决方案 data。字段 [data-meta.md](../../../agent/knowledge/data-meta.md)。\n\n目录与阅读顺序见 [index.md](index.md)。\n\n上一级索引：[../index.md](../index.md)。\n\n## 章节\n\n| 章节 | 文件 | 概述 |\n|------|------|------|\n| 数据模型 | [chapters/data-model.md](chapters/data-model.md) | 数据源与数据实体。主数据见方案。下层不建实体文件。反向边只写纯 ID。 |\n| 数据存储 | [chapters/data-storage.md](chapters/data-storage.md) | 存储类型与数据分片 |\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n| L2 | DS | DS-EXAMPLE | 示例数据源 | [DS-EXAMPLE/DS-EXAMPLE.md](DS-EXAMPLE/DS-EXAMPLE.md) |\n| L3 | ENT | ENT-EXAMPLE | 示例实体 | [DS-EXAMPLE/ENT-EXAMPLE.md](DS-EXAMPLE/ENT-EXAMPLE.md) |",
+      "body": "# 数据架构\n\n[返回 · 系统知识库](../README.md)\n\n**本层 SSOT**：DS/ENT。MDG 正文在解决方案；本层仅 **目录宿主** `MDG-EXAMPLE/`（不落 MDG 实体）。下层不建实体文件。反向边只写纯 ID。企业标准只引用公司 data。方案 SSOT 只引用解决方案 data。字段 [data-meta.md](../../../agent/knowledge/data-meta.md)。\n\n目录与阅读顺序见 [index.md](index.md)。\n\n上一级索引：[../index.md](../index.md)。\n\n## 章节\n\n| 章节 | 文件 | 概述 |\n|------|------|------|\n| 数据模型 | [chapters/data-model.md](chapters/data-model.md) | 数据源与数据实体。主数据见方案。下层不建实体文件。反向边只写纯 ID。 |\n| 数据存储 | [chapters/data-storage.md](chapters/data-storage.md) | 存储类型与数据分片 |\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n| L2 | DS | DS-EXAMPLE | 示例数据源 | [MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE.md](MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE.md) |\n| L3 | ENT | ENT-EXAMPLE | 示例实体 | [MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE.md](MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE.md) |",
       "backlinks": [
         "knowledge/README",
         "knowledge/data/chapters/data-model",
@@ -580,8 +580,8 @@ aside {
         "knowledge/overview/NAME-overview"
       ]
     },
-    "knowledge/data/DS-EXAMPLE/DS-EXAMPLE": {
-      "id": "knowledge/data/DS-EXAMPLE/DS-EXAMPLE",
+    "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE": {
+      "id": "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE",
       "type": "Data Store",
       "title": "示例数据源",
       "description": "示例数据源。",
@@ -589,15 +589,15 @@ aside {
         "data",
         "DS"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例数据源\n\n## 关系\n\n- implements_to: MDG-EXAMPLE\n- implemented_by: [ENT-EXAMPLE](ENT-EXAMPLE.md)\n\n## 跨视角\n\n- used_by: [APP-EXAMPLE](../../application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE.md)\n\n## 详细说明\n\n- 示例数据源。\n\n## 依据与证据\n\n[../chapters/data-model.md](../chapters/data-model.md#数据源)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例数据源\n\n## 关系\n\n- implements_to: MDG-EXAMPLE\n- implemented_by: [ENT-EXAMPLE](ENT-EXAMPLE.md)\n\n## 跨视角\n\n- used_by: [APP-EXAMPLE](../../../application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE.md)\n\n## 详细说明\n\n- 示例数据源。\n\n## 依据与证据\n\n[../../chapters/data-model.md](../../chapters/data-model.md#数据源)（示例）",
       "backlinks": [
         "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE",
-        "knowledge/data/DS-EXAMPLE/ENT-EXAMPLE",
+        "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE",
         "knowledge/data/README"
       ]
     },
-    "knowledge/data/DS-EXAMPLE/ENT-EXAMPLE": {
-      "id": "knowledge/data/DS-EXAMPLE/ENT-EXAMPLE",
+    "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE": {
+      "id": "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE",
       "type": "Entity",
       "title": "示例实体",
       "description": "数据实体，表或集合。",
@@ -605,9 +605,10 @@ aside {
         "data",
         "ENT"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例实体\n\n## 关系\n\n- implements_to: [DS-EXAMPLE](DS-EXAMPLE.md)\n- implemented_by: TBL-EXAMPLE\n\n## 跨视角\n\n- maps_to: [AGG-EXAMPLE](../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)\n\n## 详细说明\n\n- 数据实体，表或集合。\n\n## 依据与证据\n\n[../chapters/data-model.md](../chapters/data-model.md#数据实体)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例实体\n\n## 关系\n\n- implements_to: [DS-EXAMPLE](DS-EXAMPLE.md)\n- implemented_by: TBL-EXAMPLE\n\n## 跨视角\n\n- maps_to: [AGG-EXAMPLE](../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)\n\n## 详细说明\n\n- 数据实体，表或集合。\n\n## 依据与证据\n\n[../../chapters/data-model.md](../../chapters/data-model.md#数据实体)（示例）",
       "backlinks": [
-        "knowledge/data/DS-EXAMPLE/DS-EXAMPLE",
+        "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
+        "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE",
         "knowledge/data/README"
       ]
     },
@@ -622,8 +623,8 @@ aside {
       ],
       "body": "# 数据模型\n\n[返回 · 数据架构](../README.md)\n\n本系统的数据源与数据实体。\n\n> **数据模型 SSOT**：主数据逻辑模型与黄金记录见解决方案层 data · data-model。原则、全景、生命周期见公司层 data · data-overview。\n\n## 数据源\n\n写 DS 的编号、名称，各 `implements_to` 哪条 MDG，`used_by` 哪个 APP。存储类型不写在这里。\n\n## 数据实体\n\n写 ENT 的编号、名称，各 `implements_to` 哪个 DS，`maps_to` 哪个 AGG。",
       "backlinks": [
-        "knowledge/data/DS-EXAMPLE/DS-EXAMPLE",
-        "knowledge/data/DS-EXAMPLE/ENT-EXAMPLE",
+        "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE",
+        "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE",
         "knowledge/data/README",
         "knowledge/overview/NAME-overview"
       ]
@@ -1195,7 +1196,7 @@ aside {
     },
     {
       "source": "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE",
-      "target": "knowledge/data/DS-EXAMPLE/DS-EXAMPLE"
+      "target": "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE"
     },
     {
       "source": "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE",
@@ -1335,7 +1336,7 @@ aside {
     },
     {
       "source": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
-      "target": "knowledge/business/data/DS-EXAMPLE/ENT-EXAMPLE"
+      "target": "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE"
     },
     {
       "source": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
@@ -1375,34 +1376,34 @@ aside {
     },
     {
       "source": "knowledge/data/README",
-      "target": "knowledge/data/DS-EXAMPLE/DS-EXAMPLE"
+      "target": "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE"
     },
     {
       "source": "knowledge/data/README",
-      "target": "knowledge/data/DS-EXAMPLE/ENT-EXAMPLE"
+      "target": "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE"
     },
     {
-      "source": "knowledge/data/DS-EXAMPLE/DS-EXAMPLE",
-      "target": "knowledge/data/DS-EXAMPLE/ENT-EXAMPLE"
+      "source": "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE",
+      "target": "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE"
     },
     {
-      "source": "knowledge/data/DS-EXAMPLE/DS-EXAMPLE",
+      "source": "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE",
       "target": "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE"
     },
     {
-      "source": "knowledge/data/DS-EXAMPLE/DS-EXAMPLE",
+      "source": "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE",
       "target": "knowledge/data/chapters/data-model"
     },
     {
-      "source": "knowledge/data/DS-EXAMPLE/ENT-EXAMPLE",
-      "target": "knowledge/data/DS-EXAMPLE/DS-EXAMPLE"
+      "source": "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE",
+      "target": "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE"
     },
     {
-      "source": "knowledge/data/DS-EXAMPLE/ENT-EXAMPLE",
+      "source": "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE",
       "target": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE"
     },
     {
-      "source": "knowledge/data/DS-EXAMPLE/ENT-EXAMPLE",
+      "source": "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE",
       "target": "knowledge/data/chapters/data-model"
     },
     {

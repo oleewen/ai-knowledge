@@ -101,7 +101,7 @@ layer_scope: system
 
 - mapped_by:
   - [MS-EXAMPLE](../../../../application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md)
-  - [ENT-EXAMPLE](../../../../data/DS-EXAMPLE/ENT-EXAMPLE.md)
+  - [ENT-EXAMPLE](../../../../data/MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE.md)
 
 ## 详细说明
 
@@ -350,7 +350,7 @@ layer_scope: system
 ## 跨视角
 
 - uses_to:
-  - [DS-EXAMPLE](../../../data/DS-EXAMPLE/DS-EXAMPLE.md)
+  - [DS-EXAMPLE](../../../data/MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE.md)
 
 ## 详细说明
 
@@ -392,7 +392,7 @@ layer_scope: system
 """,
     ),
     (
-        "knowledge/data/DS-EXAMPLE/DS-EXAMPLE.md",
+        "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE.md",
         """---
 type: Data Store
 title: 示例数据源
@@ -422,7 +422,7 @@ layer_scope: system
 """,
     ),
     (
-        "knowledge/data/DS-EXAMPLE/ENT-EXAMPLE.md",
+        "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE.md",
         """---
 type: Entity
 title: 示例实体

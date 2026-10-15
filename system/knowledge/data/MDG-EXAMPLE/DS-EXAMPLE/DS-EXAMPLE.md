@@ -19,7 +19,7 @@ layer_scope: system
 
 ## 跨视角
 
-- used_by: [APP-EXAMPLE](../../application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE.md)
+- used_by: [APP-EXAMPLE](../../../application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE.md)
 
 ## 详细说明
 
@@ -27,4 +27,4 @@ layer_scope: system
 
 ## 依据与证据
 
-[../chapters/data-model.md](../chapters/data-model.md#数据源)（示例）
+[../../chapters/data-model.md](../../chapters/data-model.md#数据源)（示例）

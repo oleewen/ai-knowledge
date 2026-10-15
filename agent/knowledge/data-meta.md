@@ -12,7 +12,7 @@ title: 数据视角元数据
 | --- | --- | --- | --- | --- |
 | — | 公司 | — | — | 企业数据架构标准。本层无首次定义。下层实体不涉及 |
 | MDG | 解决方案 | L1 | `MDG-{NAME}` | 无 parent。一 SLN 可多条 |
-| DS | 系统 | L2 | `DS-{NAME}` | parent MDG（逻辑归属，`implements_to`）。MDG 不建本层文件，只写纯 ID |
+| DS | 系统 | L2 | `DS-{NAME}` | parent MDG（逻辑归属，`implements_to`）。系统可有 MDG **目录宿主**（样例不落 MDG 实体）；MDG 正文 SSOT 在解决方案 |
 | ENT | 系统 | L3 | `ENT-{NNN}` 或 `ENT-{NAME}` | parent DS |
 | TBL | 应用 | L4 | `TBL-{NAME}` | parent ENT（`implements_to`）。MDG、DS、ENT 不建本层文件，只写纯 ID |
 
@@ -35,7 +35,7 @@ title: 数据视角元数据
 | --- | --- |
 | 层 | 系统 |
 | id_pattern | `DS-{NAME}` |
-| 落盘 | `DS-{NAME}/` 含 DS/ENT |
+| 落盘 | `MDG-{NAME}/DS-{NAME}/` 含 DS/ENT（MDG 段为目录宿主） |
 | 字段 | `implements_to` 必须 → MDG；`implemented_by` 必须 → ENT；`used_by` 可选 → APP\|MW |
 
 存储类型、配置键写入 DS 的详细说明，缺了不算失败。
@@ -46,7 +46,7 @@ title: 数据视角元数据
 | --- | --- |
 | 层 | 系统 |
 | id_pattern | `ENT-{NNN}` 或 `ENT-{NAME}` |
-| 落盘 | `DS-{NAME}/` 之下 |
+| 落盘 | `MDG-{NAME}/DS-{NAME}/` 之下 |
 | 字段 | `implements_to` 必须 → DS；`implemented_by` 必须 → TBL（纯 ID）；`maps_to` → AGG；`used_by` → MS |
 
 类名、物理表名写入 ENT 的详细说明，缺了不算失败。

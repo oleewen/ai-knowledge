@@ -21,7 +21,7 @@ layer_scope: system
 ## 跨视角
 
 - uses_to:
-  - [DS-EXAMPLE](../../../data/DS-EXAMPLE/DS-EXAMPLE.md)
+  - [DS-EXAMPLE](../../../data/MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE.md)
   - MW-EXAMPLE
 
 ## 详细说明

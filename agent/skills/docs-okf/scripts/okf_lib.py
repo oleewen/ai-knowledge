@@ -384,10 +384,11 @@ _SINGLE_PARENT_COUNT = {
     ("company", "BSD"): 1,
     ("company", "CAP"): 1,
     ("system", "PM"): 1,
-    ("system", "ENT"): 1,
+    ("system", "ENT"): 2,  # MDG host / DS
     ("system", "APP"): 1,
     ("system", "MS"): 2,
     ("system", "BSD"): 1,  # L3 落盘需 L2 目录宿主 id
+    ("system", "DS"): 1,  # MDG 目录宿主 id
     ("application", "API"): 1,
     ("application", "TBL"): 1,
     ("application", "CMP"): 1,
@@ -470,10 +471,16 @@ def entity_relpath(
         ):
             return _system_nested_relpath(perspective, id, prefix, path_parent)
         if perspective == "data" and prefix == "DS":
-            return f"knowledge/data/{id}/{id}.md"
+            host = _require_single_parent(prefix, path_parent, "MDG host id")
+            return f"knowledge/data/{host}/{id}/{id}.md"
         if perspective == "data" and prefix == "ENT":
-            parent = _require_single_parent(prefix, path_parent, "DS id")
-            return f"knowledge/data/{parent}/{id}.md"
+            parts = [part for part in (path_parent or "").split("/") if part]
+            if len(parts) != 2:
+                raise ValueError(
+                    "entity_relpath: system ENT requires path_parent (MDG/DS)"
+                )
+            chain = "/".join(parts)
+            return f"knowledge/data/{chain}/{id}.md"
         raise ValueError(f"entity_relpath: system does not land {prefix} files")
 
     if bundle == "solution":

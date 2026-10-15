@@ -97,9 +97,12 @@ def test_entity_relpath_ent_with_parent():
         raise AssertionError("expected ValueError when ENT has no path_parent")
     assert (
         okf_lib.entity_relpath(
-            "data", "ENT-T_BILLING", path_parent="DS-BILLING", bundle="system"
+            "data",
+            "ENT-T_BILLING",
+            path_parent="MDG-BILLING/DS-BILLING",
+            bundle="system",
         )
-        == "knowledge/data/DS-BILLING/ENT-T_BILLING.md"
+        == "knowledge/data/MDG-BILLING/DS-BILLING/ENT-T_BILLING.md"
     )
 
 
@@ -338,9 +341,17 @@ def test_entity_relpath_system_ms_and_mw():
         == "knowledge/technical/MW-EXAMPLE/CMP-EXAMPLE.md"
     )
     assert (
-        okf_lib.entity_relpath("data", "DS-EXAMPLE", bundle="system")
-        == "knowledge/data/DS-EXAMPLE/DS-EXAMPLE.md"
+        okf_lib.entity_relpath(
+            "data", "DS-EXAMPLE", path_parent="MDG-EXAMPLE", bundle="system"
+        )
+        == "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE.md"
     )
+    try:
+        okf_lib.entity_relpath("data", "DS-EXAMPLE", bundle="system")
+    except ValueError as exc:
+        assert "MDG host" in str(exc) or "path_parent" in str(exc)
+    else:
+        raise AssertionError("expected ValueError when system DS has no MDG host")
     try:
         okf_lib.entity_relpath("data", "TBL-EXAMPLE")
     except ValueError as exc:
