@@ -19,7 +19,6 @@ EXACT_GOVERNANCE: Dict[str, Dict[str, Any]] = {
     "README-c.md": {"type": "Documentation"},
     "index.md": {"type": "Agent Index Guide"},
     "DESIGN.md": {"type": "Design Document"},
-    "CONTRIBUTING.md": {"type": "Contributing Guide"},
     "knowledge/README.md": {"type": "Documentation"},
     # knowledge/index.md：OKF §6 保留名，禁止注入 frontmatter（目录导航）
     # INDEX-GUIDE.md：docs-indexing 九章 + docs-build 第四章视角导航块；禁止当 concept 注入

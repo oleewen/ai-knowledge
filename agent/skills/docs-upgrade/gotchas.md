@@ -11,7 +11,7 @@
 - **把未落位静默写入**：禁止。`C` 后须出策略三档（批量文件并入 / 单文件批量并入 / 逐项并入）。并入=原父级（同标题并入、层级递增；父消失→追加文末）。勿把轻流程 `S` 当成全跳过未落位。
 - **正文标题平移溢出**：相对元库标题级平移后级 **封顶 H6**；不写 H7+（见 merge-rules §5）。
 - **总览/单文件漏出并入三档**：有未落位时总览与单文件 `C` 后都必须提供三档，不得只给逐项。
-- **覆盖 knowledge-links.yaml**：禁止；会丢 parent/child/meta。根级 `CONTRIBUTING.md` 已按普通 md 升级（与 install 整文件覆盖不同）。根级 `DESIGN.md` 已改为**整文件覆盖**特例（与 CONTRIBUTING 不同）。
+- **覆盖 knowledge-links.yaml**：禁止；会丢 parent/child/meta。根级 `DESIGN.md` 为**整文件覆盖**特例（普通 md 走结构重填）。
 - **`DESIGN.md` 手改**：upgrade 会冲掉；改契约短表先改元库模板再 upgrade。
 - **联邦槽位根**：`application-slots` / `system-slots` 下**真文件**可升级；**软链一律跳过**。勿跟随实例软链改下级仓（实例同步用 `/docs-pull`）。
 - **顶层遗留**：文档目录 顶层 `application-*` / `system-*`（非 `*-slots`）仍忽略。

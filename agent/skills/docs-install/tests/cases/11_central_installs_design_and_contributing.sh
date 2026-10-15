@@ -23,6 +23,7 @@ git -C "$PROJECT_DIR" init -q
   --target "$DOCS_DIR" >/dev/null 2>&1
 
 assert_file_exists "$DOCS_DIR/DESIGN.md"
-assert_file_exists "$DOCS_DIR/CONTRIBUTING.md"
+[[ ! -e "$DOCS_DIR/CONTRIBUTING.md" ]] || fail "central 子集不应再种 CONTRIBUTING.md"
+[[ ! -e "$DOCS_DIR/manifest.md" ]] || fail "central 子集不应再种 manifest.md"
 
-pass "central 子集安装根级 CONTRIBUTING.md 与 DESIGN.md"
+pass "central 子集安装根级 DESIGN.md（不含 CONTRIBUTING/manifest）"

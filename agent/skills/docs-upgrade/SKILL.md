@@ -27,7 +27,7 @@ description: >
 - **禁止**调用会清空 `DOC_DIR` 的 `docs-install.sh --scope=knowledge` 主路径。
 - **路径重写（同 docs-install）**：`--apply-scaffold` 收尾：非 meta 建/修 `DOC_DIR/.agents` → `$AGENT_ROOT/$AGENT_DIR`；将裸 `agent/`、`../agent/`、`~/.agents/` 按深度重写为相对 `.agents/`（meta→相对 `agent/`）；不重写 IDE 段；幂等更新 README「Agent 路径」注记。`--dry-run` 不建链不重写。空骨架桶亦跑。结构重填 / 文件模式**不**强制再跑（已知缝）。
 - 合并契约：结构/模板=元库；正文=本库；已改判定=规范化后与元库同路径内容不等；已改 md=同标题（不比层级）填入元库骨架，正文标题相对元库标题级统一平移（级封顶 H6）；未落位=策略确认后才落（原父级并入 / 改挂 / 追加 / 跳过）；本库独有路径永不删。
-- 根级 `CONTRIBUTING.md` 按普通 md 进清单与文件模式（本无 scaffold；指定路径破跳过强制重填）。未落位策略与普通 md **同规则**。轻流程 `S` 不表示全跳过未落位。
+- 普通 md 进清单与文件模式（本无 scaffold；指定路径破跳过强制重填）。未落位策略与普通 md **同规则**。轻流程 `S` 不表示全跳过未落位。
 - 根级 `DESIGN.md`：本无 → 新增骨架；已改 → **整文件覆盖**（`--apply-scaffold` 以元库为准；不走 H2 结构重填）。文件模式指定该路径时同样整文件覆盖。
 - `knowledge-links.yaml` 永不被元库模板覆盖。
 - **槽位根放开**：`application-slots/`、`system-slots/` 下**非软链真文件**进四桶 / 重填 / 文件模式（与普通路径同）。**凡软链一律跳过**（不跟随）。顶层遗留 `application-*` / `system-*`（不含上述两 slots 名）仍硬忽略。槽位**实例**同步仍归 `/docs-pull`。
@@ -85,4 +85,4 @@ bash /path/to/ai-knowledge/agent/skills/docs-upgrade/scripts/docs-upgrade.sh --a
 
 ## 评测
 
-`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。重点：禁清空 install、meta 解析、清单闸门、未落位策略三档（批量文件/单文件批量/逐项并入）、写后 A/B、与 docs-install 分流、`--apply-scaffold` 后路径重写、文件模式互斥与两侧并集展开、根级 CONTRIBUTING.md 进普通 md、根级 DESIGN.md 整文件覆盖。
+`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。重点：禁清空 install、meta 解析、清单闸门、未落位策略三档（批量文件/单文件批量/逐项并入）、写后 A/B、与 docs-install 分流、`--apply-scaffold` 后路径重写、文件模式互斥与两侧并集展开、根级 DESIGN.md 整文件覆盖。

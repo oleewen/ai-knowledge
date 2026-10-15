@@ -97,7 +97,7 @@ bash agent/skills/docs-upgrade/scripts/docs-upgrade.sh --dry-run [--meta-path PA
 
 1. 展示该文件预览（将 scaffold / 强制重填摘要；`.md` 可含未落位预告）
 2. 该文件 `C`：与总览 `C` 同语义（范围=该文件；有未落位则出策略三档）；`S` 跳过本文件；`M` 改本文件参数或预览；已写盘不回滚
-3. `.md` 强制重填：契约同整树结构重填与未落位策略（含 `CONTRIBUTING.md`）
+3. `.md` 强制重填：契约同整树结构重填与未落位策略
 4. 本缺元有：Agent 复制元库该相对路径到目标
 5. 非 md 两边都有：不覆盖（总览已标跳过则本步可略）
 6. **不**写 `{仓库路径}/.docs-init/`（依赖 git）
