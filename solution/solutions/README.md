@@ -12,6 +12,6 @@ title: solutions（解决方案）文档
 |------|------|------|
 | [SOLUTION-EXAMPLE](SOLUTION-EXAMPLE.md) | 示例解决方案 | draft |
 
-规范：[sdx-solution](../../agent/skills/sdx-solution/SKILL.md) · 归档 [archive/](archive/README.md)
+规范：[sdx-solution](../../agent/skills/sdx-solution/SKILL.md)。superseded 方案追溯用 git。
 
 目录与阅读顺序见 [index.md](index.md)。

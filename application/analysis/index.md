@@ -2,10 +2,6 @@
 
 目录说明见 [README.md](README.md)。
 
-## 子目录
-
-* [archive](archive/README.md)
-
 ## 目录文件
 
 * [示例应用分析](ANALYSIS-EXAMPLE.md)

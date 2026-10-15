@@ -2,10 +2,6 @@
 
 目录说明见 [README.md](README.md)。
 
-## 子目录
-
-* [archive](archive/index.md)
-
 ## 目录文件
 
 * [SOLUTION-EXAMPLE.md](SOLUTION-EXAMPLE.md)
@@ -13,7 +9,7 @@
 ## 阅读顺序
 
 1. [README.md](README.md)
-2. [archive](archive/index.md)
+2. `SOLUTION-*.md`
 
 ## 关联索引
 
