@@ -6,7 +6,7 @@
 
 ## 目录文件
 
-* [示例 API：创建](API-EXAMPLE.md)
+* [示例 API：创建](API-EXAMPLE.md) - 接口端点。
 
 ## 阅读顺序
 

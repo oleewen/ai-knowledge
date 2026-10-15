@@ -9,7 +9,7 @@
 
 ## 目录文件
 
-* [technical-meta.md](../../../agent/knowledge/technical-meta.md)
+（无）
 
 ## 阅读顺序
 

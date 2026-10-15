@@ -8,7 +8,7 @@
 
 ## 目录文件
 
-* [示例应用特性拆解](FEATURE-EXAMPLE.md)
+* [示例应用功能特性](FEATURE-EXAMPLE.md)
 
 ## 阅读顺序
 

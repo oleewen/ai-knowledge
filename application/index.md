@@ -1,7 +1,6 @@
 ---
 okf_version: "0.1"
 ---
-
 <!-- okf:begin -->
 # OKF 渐进披露
 
@@ -17,13 +16,11 @@ okf_version: "0.1"
 
 ## 目录文件
 
-* [CONTRIBUTING.md](CONTRIBUTING.md)
 * [DESIGN.md](DESIGN.md)
 * [INDEX-GUIDE.md](INDEX-GUIDE.md)
 * [README-c.md](README-c.md)
 * [README-s.md](README-s.md)
 * [knowledge-links.yaml](knowledge-links.yaml)
-* [manifest.md](manifest.md)
 * [viz.html](viz.html)
 
 ## 阅读顺序

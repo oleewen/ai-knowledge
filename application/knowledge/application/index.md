@@ -9,7 +9,7 @@
 
 ## 目录文件
 
-* [application-meta.md](../../../agent/knowledge/application-meta.md)
+（无）
 
 ## 阅读顺序
 
