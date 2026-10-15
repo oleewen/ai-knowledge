@@ -50,9 +50,9 @@ git clone --bare "$APP" "$BARE" -q
 git -C "$APP" remote add origin "$BARE"
 
 mkdir -p "$SYSTEM/docs/application-slots"
-# 旧真目录槽位：应被静默迁移为软链
-mkdir -p "$SYSTEM/docs/application-slots/application-app-foo/changelogs"
-echo "# old archive" >"$SYSTEM/docs/application-slots/application-app-foo/changelogs/ARCHIVE-LOG.md"
+# 旧真目录槽位：应被静默删除后改建软链
+mkdir -p "$SYSTEM/docs/application-slots/application-app-foo"
+echo "# old" >"$SYSTEM/docs/application-slots/application-app-foo/legacy.txt"
 
 cat >"$SYSTEM/docs/knowledge-links.yaml" <<EOF
 links:
@@ -77,8 +77,7 @@ printf '%s\n' "$out" | grep -Eq 'commit=[0-9a-f]+' || fail "SYNC_OK 应含 commi
 [[ -L "$SYSTEM/docs/application-slots/application-app-foo" ]] \
   || fail "槽位应为软链"
 assert_file_exists "$SYSTEM/docs/application-slots/application-app-foo/sync-me.md"
-assert_file_exists "$SYSTEM/docs/application-slots/changelogs/ARCHIVE-LOG.md"
-grep -Fq 'migrated_from: app-foo' "$SYSTEM/docs/application-slots/changelogs/ARCHIVE-LOG.md" \
-  || fail "应合并旧槽位 ARCHIVE-LOG"
+[[ ! -e "$SYSTEM/docs/application-slots/changelogs" ]] \
+  || fail "不应再创建 application-slots/changelogs"
 
 pass "system: pull single app symlink + git trace"

@@ -12,7 +12,7 @@ DOCS_DIR="$PROJECT_DIR/docs"
 OUT_FILE="$TMP_DIR/case09.out"
 
 cleanup() {
-  rm -rf "$TMP_DIR"
+ rm -rf "$TMP_DIR"
 }
 trap cleanup EXIT
 
@@ -23,9 +23,9 @@ git -C "$PROJECT_DIR" init -q
 
 assert_file_exists "$DOCS_DIR/README.md"
 assert_file_exists "$DOCS_DIR/knowledge/README.md"
-assert_file_exists "$DOCS_DIR/changelogs/README.md"
 assert_file_exists "$DOCS_DIR/DESIGN.md"
 assert_file_exists "$DOCS_DIR/CONTRIBUTING.md"
+[[ ! -e "$DOCS_DIR/changelogs" ]] || fail "不应再安装 changelogs/"
 
 printf '\n%s\n' 'LOCAL-CONTRIB-CUSTOM-MARKER' >>"$DOCS_DIR/CONTRIBUTING.md"
 printf '\n%s\n' 'LOCAL-DESIGN-CUSTOM-MARKER' >>"$DOCS_DIR/DESIGN.md"

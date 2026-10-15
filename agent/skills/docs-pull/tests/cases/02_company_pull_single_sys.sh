@@ -74,6 +74,7 @@ printf '%s\n' "$out" | grep -Fq 'SYNC_OK:' || fail "应输出 SYNC_OK"
 assert_file_exists "$COMPANY/docs/solution-slots/solution-sln-foo/sync-me.md"
 printf '%s\n' "$out" | grep -Fq "source=$BARE" || fail "SYNC_OK 应含 source"
 printf '%s\n' "$out" | grep -Eq 'commit=[0-9a-f]+' || fail "SYNC_OK 应含 commit"
-assert_file_exists "$COMPANY/docs/solution-slots/changelogs/ARCHIVE-LOG.md"
+[[ ! -e "$COMPANY/docs/solution-slots/changelogs" ]] \
+  || fail "不应再创建 solution-slots/changelogs"
 
 pass "company: pull single solution symlink + git trace"

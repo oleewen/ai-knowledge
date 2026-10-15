@@ -69,65 +69,31 @@ slot_resolve_doc_root() {
   printf '%s' "$fallback"
 }
 
+# 兼容旧调用：不再创建 *-slots/changelogs 或 ARCHIVE-LOG（追溯 git / SYNC_OK）
 slot_ensure_shared_changelogs() {
-  local slots_parent="${1:?}" # .../application-slots 或 .../system-slots
-  local log_dir archive_log
-  log_dir="${slots_parent%/}/changelogs"
-  archive_log="${log_dir}/ARCHIVE-LOG.md"
-  mkdir -p "$log_dir"
-  # 变更溯源改用 git；不再维护 CHANGE-LOG.md
-  if [[ ! -f "$archive_log" ]]; then
-    cat >"$archive_log" <<'EOF'
----
-type: Change Log
-title: ARCHIVE-LOG（联邦槽位蒸馏锚点）
----
-<!-- markdownlint-disable-next-line MD025 -->
-# ARCHIVE-LOG（联邦槽位蒸馏锚点）
-
-层内共用蒸馏归档锚点。按应用/系统分节维护。
-EOF
-  fi
-}
-
-# 将旧槽位 changelogs 正文追加进共用日志（跳过 front matter 与首个 H1）
-slot_merge_old_slot_changelog() {
-  local old_file="${1:?}" shared_file="${2:?}" slot_name="${3:?}" kind="${4:-legacy-changelog}"
-  [[ -f "$old_file" ]] || return 0
-  [[ -f "$shared_file" ]] || return 0
-  {
-    printf '\n\n## migrated_from: %s (%s)\n\n' "$slot_name" "$kind"
-    awk '
-      BEGIN { in_fm=0; fm_done=0; skip_h1=1 }
-      /^---$/ && !fm_done { if (!in_fm) { in_fm=1; next } else { in_fm=0; fm_done=1; next } }
-      in_fm { next }
-      skip_h1 && /^# / { skip_h1=0; next }
-      { print }
-    ' "$old_file"
-  } >>"$shared_file"
+  :
 }
 
 slot_migrate_real_slot_dir() {
-  local slot_dir="${1:?}" shared_log_dir="${2:?}" slot_name="${3:?}"
-  local old_archive
+  local slot_dir="${1:?}"
+  # 兼容旧签名：忽略 shared_log_dir / slot_name
+  shift || true
   [[ -d "$slot_dir" && ! -L "$slot_dir" ]] || return 0
-  old_archive="${slot_dir%/}/changelogs/ARCHIVE-LOG.md"
-  slot_merge_old_slot_changelog "$old_archive" "${shared_log_dir%/}/ARCHIVE-LOG.md" "$slot_name" "ARCHIVE-LOG"
   rm -rf "$slot_dir"
 }
 
-# 确保 slot_dir 为指向 target_abs 的绝对路径软链；真目录则先迁移
+# 确保 slot_dir 为指向 target_abs 的绝对路径软链；真目录则先删除再建链
 # stdout: action 片段（空|migrate|link-fix）
+# 第 3/4 参 shared_log_dir、slot_name 保留兼容，忽略
 slot_ensure_slot_symlink() {
-  local slot_dir="${1:?}" target_abs="${2:?}" shared_log_dir="${3:?}" slot_name="${4:?}"
+  local slot_dir="${1:?}" target_abs="${2:?}"
   local actions=() current parent
   target_abs="$(strip_trailing_slash "$(abs_path "$target_abs")")"
   parent="$(dirname "$slot_dir")"
   mkdir -p "$parent"
-  slot_ensure_shared_changelogs "$parent"
 
   if [[ -d "$slot_dir" && ! -L "$slot_dir" ]]; then
-    slot_migrate_real_slot_dir "$slot_dir" "$shared_log_dir" "$slot_name"
+    slot_migrate_real_slot_dir "$slot_dir"
     actions+=("migrate")
   fi
 

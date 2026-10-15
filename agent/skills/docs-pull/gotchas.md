@@ -5,5 +5,4 @@
 - 软链目标：有 `.docsconfig` 用 `WORK_SPACE/REPO_DIR/DOC_DIR`，否则 `{path}/{dir}`。缺 `type` 或出现旧键（`doc_dir`、`*_name`、`*_label`）则失败，不读旧键
 - `knowledge-links.yaml` 字段合同为强约束：缺字段直接失败
 - `origin` 必须与 `repository` 匹配（规范化比较）；脏工作区拒绝 `git pull`
-- 旧真目录槽位会静默迁移（合并旧日志进共用 `changelogs/` 后删除）
 - 追溯在下级仓 `git log` / `SYNC_OK` 的 `commit` 字段，不写 `CHANGE-LOG.md`

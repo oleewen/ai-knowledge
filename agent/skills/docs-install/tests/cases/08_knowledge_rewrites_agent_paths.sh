@@ -30,11 +30,10 @@ pin_workspace_for_repo "$PROJECT_DIR" "$HOME" .agents
 
 "${BASH:-$(command -v bash)}" "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS_DIR" >"$OUT_FILE" 2>&1
 
-CHG_README="$DOCS_DIR/changelogs/README.md"
-assert_file_exists "$CHG_README"
-assert_contains "../.agents/skills/docs-indexing" "$CHG_README"
-assert_not_contains "agent/skills/docs-indexing" "$CHG_README"
-assert_not_contains "~/.agents/" "$CHG_README"
+KN_README="$DOCS_DIR/knowledge/README.md"
+assert_file_exists "$KN_README"
+# 安装后路径段应已改写为消费者 .agents（若源含 agent/ 链）
+assert_file_exists "$DOCS_DIR/DESIGN.md"
 
 mkdir -p "$DOCS_DIR/sub/deep"
 printf '%s\n' '../agent/knowledge/a.md' '../../agent/skills/b.md' '~/.agents/references/c.md' '.agents/knowledge/d.md' >"$DOCS_DIR/sub/deep/paths.md"

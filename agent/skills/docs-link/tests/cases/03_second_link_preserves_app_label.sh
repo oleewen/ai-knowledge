@@ -71,6 +71,7 @@ run_link || fail "第二次 link 应成功"
 grep -Fq 'label: "保留测签"' "$LIST" || fail "再次 link 应保留已有 label"
 [[ -L "$SYS_SRC/docs/application-slots/application-my-application-repo" ]] \
   || fail "建联后槽位应为软链"
-assert_file_exists "$SYS_SRC/docs/application-slots/changelogs/ARCHIVE-LOG.md"
+[[ ! -e "$SYS_SRC/docs/application-slots/changelogs" ]] \
+  || fail "不应再创建 application-slots/changelogs"
 
 pass "再次 link 保留已有 app_label"

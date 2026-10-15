@@ -214,7 +214,7 @@ install_application_subset_to_docs() {
   info "    目标: $dst_root"
 
   local d rel src_f dst_f
-  for d in changelogs knowledge specs; do
+  for d in knowledge specs; do
     [[ -d "$src_root/$d" ]] || { warn "§2.1 子集：跳过缺失目录 application/$d"; continue; }
     while IFS= read -r -d '' rel; do
       rel="${rel#./}"
