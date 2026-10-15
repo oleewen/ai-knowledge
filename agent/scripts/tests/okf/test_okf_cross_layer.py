@@ -104,7 +104,13 @@ def test_rewrite_to_id() -> None:
 def test_href_walks_same_layer_parent_chain(tmp_path: Path) -> None:
     system = tmp_path / "sysrepo"
     doc = system / "system"
-    bsd = doc / "knowledge" / "business" / "BSD-EXAMPLE-L3"
+    bsd = (
+        doc
+        / "knowledge"
+        / "business"
+        / "BSD-EXAMPLE-L2"
+        / "BSD-EXAMPLE-L3"
+    )
     bc = bsd / "BC-EXAMPLE"
     agg = bc / "AGG-EXAMPLE"
     agg.mkdir(parents=True)
@@ -149,7 +155,7 @@ def test_href_walks_same_layer_parent_chain(tmp_path: Path) -> None:
     base = "https://github.com/org/sys/blob/main/system/"
     agg_href = x.cross_layer_href(app, "AGG-EXAMPLE")
     assert agg_href == (
-        base + "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/"
+        base + "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/"
         "AGG-EXAMPLE/AGG-EXAMPLE.md"
     )
     ft_href = x.cross_layer_href(app, "FT-EXAMPLE")

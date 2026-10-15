@@ -4,7 +4,7 @@
 
 ## 子目录
 
-* [BSD-EXAMPLE-L3](BSD-EXAMPLE-L3/index.md) - BSD-L3；parent→解决方案 BSD-L2。
+* [BSD-EXAMPLE-L2](BSD-EXAMPLE-L2/index.md)
 * [chapters](chapters/index.md)
 
 ## 目录文件
@@ -15,7 +15,7 @@
 
 1. [README.md](README.md)
 2. [chapters/index.md](chapters/index.md)
-3. [BSD-EXAMPLE-L3/index.md](BSD-EXAMPLE-L3/index.md)
+3. [BSD-EXAMPLE-L2/index.md](BSD-EXAMPLE-L2/index.md)
 4. [business-meta.md](../../../agent/knowledge/business-meta.md)
 
 ## 关联索引

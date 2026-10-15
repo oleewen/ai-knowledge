@@ -75,7 +75,7 @@
 
 | 视角 | 系统层聚焦 |
 | --- | --- |
-| 业务 | BSD-L3→BC→AGG→AB（`parent`→解决方案 BSD-L2；`implements_to`/`implemented_by`）。不落 BSD-L1、BSD-L2 文件 |
+| 业务 | BSD-L3→BC→AGG→AB（`parent`→解决方案 BSD-L2；盘面挂 L2 **目录宿主** 下）。不落 BSD-L1；样例不落 BSD-L2 实体（业务仓可留 L2 实体作聚合） |
 | 产品 | PM→FT→FR→UC/BR（整链 `implements_to`）；PD/BP 不建本层文件，只写纯 ID；PM `implements_to`→PD |
 | 应用 | SYS 本层 SSOT（`maps_to`→解决方案 PD 1:1；`implements_to`→SLN，纯 ID）。不 `uses_to` MDG\|TS。APP→MS（`implements_to`）；MS `implemented_by`→API（纯 ID） |
 | 数据 | DS→ENT（`implements_to` MDG）；ENT `implemented_by`→TBL（纯 ID）；MDG 不建本层文件，只写纯 ID；TBL ∈ application |

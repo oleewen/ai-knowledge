@@ -341,8 +341,9 @@ def relation_path_parent(body: str, local_ids: Optional[set] = None) -> Optional
 
 
 # 系统层嵌套：宿主目录要 {父链}/{id}/{id}.md；叶子文件是 {父链}/{id}.md。
-_SYSTEM_HOST_PARENT_PARTS = {"BC": 1, "AGG": 2, "FT": 2, "FR": 3}
-_SYSTEM_LEAF_PARENT_PARTS = {"AB": 3, "UC": 4, "BR": 4}
+# business：L2 目录宿主段计入父链（例 BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/…）
+_SYSTEM_HOST_PARENT_PARTS = {"BC": 2, "AGG": 3, "FT": 2, "FR": 3}
+_SYSTEM_LEAF_PARENT_PARTS = {"AB": 4, "UC": 4, "BR": 4}
 
 
 def _system_nested_relpath(
@@ -386,6 +387,7 @@ _SINGLE_PARENT_COUNT = {
     ("system", "ENT"): 1,
     ("system", "APP"): 1,
     ("system", "MS"): 2,
+    ("system", "BSD"): 1,  # L3 落盘需 L2 目录宿主 id
     ("application", "API"): 1,
     ("application", "TBL"): 1,
     ("application", "CMP"): 1,
@@ -436,9 +438,10 @@ def entity_relpath(
 
     if bundle == "system":
         if perspective == "business" and prefix == "BSD":
-            # 系统层只落 L3。L2 的 parent 跨层，不参与路径。
+            # 系统层只落 L3 实体；L2 可为目录宿主（不落 L2 实体文件）。
             if id.endswith("-L3"):
-                return f"knowledge/business/{id}/{id}.md"
+                host = _require_single_parent(prefix, path_parent, "BSD-L2 host id")
+                return f"knowledge/business/{host}/{id}/{id}.md"
             raise ValueError(
                 "entity_relpath: system does not land BSD-L1 or BSD-L2 files"
             )

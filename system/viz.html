@@ -305,7 +305,7 @@ aside {
       "title": "应用架构",
       "description": null,
       "tags": [],
-      "body": "# 应用架构\n\n[返回 · 系统知识库](../README.md)\n\n**本层 SSOT**：SYS→APP→MS（SYS.`implements_to`→解决方案 SLN）。下层不建实体文件。反向边只写纯 ID。企业标准只引用公司 application。方案 SSOT 只引用解决方案 application。字段 [application-meta.md](../../../agent/knowledge/application-meta.md)。\n\n目录与阅读顺序见 [index.md](index.md)。\n\n上一级索引：[../index.md](../index.md)。\n\n## 章节\n\n| 章节 | 文件 | 概述 |\n|------|------|------|\n| 系统概述 | [chapters/application-overview.md](chapters/application-overview.md) | 相对方案的使命、场景、范围差异。SYS 登记在系统范围 |\n| 应用架构 | [chapters/application-architecture.md](chapters/application-architecture.md) | 应用与微服务。上下文与分层见公司，职责边界、能力矩阵、演进见方案 |\n| 领域模型 | [chapters/application-domain-model.md](chapters/application-domain-model.md) | APP/MS 如何使用已登记的 BC、AGG |\n| 服务设计 | [chapters/application-service-design.md](chapters/application-service-design.md) | 拆分、契约与 C4。MS 编号以应用架构为准 |\n| 集成架构 | [chapters/application-integration.md](chapters/application-integration.md) | 本系统外部对接 |\n\n架构决策不进 chapters。adr/ 尚无决策要点。\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n| L2 | SYS | SYS-EXAMPLE | 示例系统 | [SYS-EXAMPLE.md](SYS-EXAMPLE.md) |\n| L3 | APP | APP-EXAMPLE | 示例应用 | [APP-EXAMPLE/APP-EXAMPLE.md](APP-EXAMPLE/APP-EXAMPLE.md) |\n| L4 | MS | MS-EXAMPLE | 示例微服务 | [APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md](APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md) |",
+      "body": "# 应用架构\n\n[返回 · 系统知识库](../README.md)\n\n**本层 SSOT**：SYS→APP→MS（SYS.`implements_to`→解决方案 SLN）。下层不建实体文件。反向边只写纯 ID。企业标准只引用公司 application。方案 SSOT 只引用解决方案 application。字段 [application-meta.md](../../../agent/knowledge/application-meta.md)。\n\n目录与阅读顺序见 [index.md](index.md)。\n\n上一级索引：[../index.md](../index.md)。\n\n## 章节\n\n| 章节 | 文件 | 概述 |\n|------|------|------|\n| 系统概述 | [chapters/application-overview.md](chapters/application-overview.md) | 相对方案的使命、场景、范围差异。SYS 登记在系统范围 |\n| 应用架构 | [chapters/application-architecture.md](chapters/application-architecture.md) | 应用与微服务。上下文与分层见公司，职责边界、能力矩阵、演进见方案 |\n| 领域模型 | [chapters/application-domain-model.md](chapters/application-domain-model.md) | APP/MS 如何使用已登记的 BC、AGG |\n| 服务设计 | [chapters/application-service-design.md](chapters/application-service-design.md) | 拆分、契约与 C4。MS 编号以应用架构为准 |\n| 集成架构 | [chapters/application-integration.md](chapters/application-integration.md) | 本系统外部对接 |\n\n架构决策不进 chapters。adr/ 尚无决策要点。\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n| L2 | SYS | SYS-EXAMPLE | 示例系统 | [SYS-EXAMPLE/SYS-EXAMPLE.md](SYS-EXAMPLE/SYS-EXAMPLE.md) |\n| L3 | APP | APP-EXAMPLE | 示例应用 | [SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE.md](SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE.md) |\n| L4 | MS | MS-EXAMPLE | 示例微服务 | [SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md](SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md) |",
       "backlinks": [
         "knowledge/README",
         "knowledge/application/chapters/application-architecture",
@@ -327,6 +327,7 @@ aside {
       ],
       "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例系统\n\n## 关系\n\n- implements_to: SLN-EXAMPLE\n- implemented_by: [APP-EXAMPLE](APP-EXAMPLE/APP-EXAMPLE.md)\n\n## 跨视角\n\n- maps_to: PD-EXAMPLE\n\n## 详细说明\n\n- 系统（别名应用服务）；implements_to 解决方案 SLN（纯 ID）；maps_to PD。解决方案层不回写这条边。\n\n## 依据与证据\n\n[../chapters/application-overview.md](../chapters/application-overview.md)（示例）",
       "backlinks": [
+        "knowledge/application/README",
         "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE"
       ]
     },
@@ -339,11 +340,11 @@ aside {
         "application",
         "APP"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例应用\n\n## 关系\n\n- implements_to: [SYS-EXAMPLE](../SYS-EXAMPLE.md)\n- implemented_by: [MS-EXAMPLE](MS-EXAMPLE/MS-EXAMPLE.md)\n- supports_to: [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)\n\n## 跨视角\n\n- uses_to:\n  - [DS-EXAMPLE](../../../data/DS-EXAMPLE/DS-EXAMPLE.md)\n  - MW-EXAMPLE\n\n## 详细说明\n\n- 应用，代码仓库与部署单元。\n\n## 依据与证据\n\n[../../chapters/application-architecture.md](../../chapters/application-architecture.md#应用)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例应用\n\n## 关系\n\n- implements_to: [SYS-EXAMPLE](../SYS-EXAMPLE.md)\n- implemented_by: [MS-EXAMPLE](MS-EXAMPLE/MS-EXAMPLE.md)\n- supports_to: [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)\n\n## 跨视角\n\n- uses_to:\n  - [DS-EXAMPLE](../../../data/DS-EXAMPLE/DS-EXAMPLE.md)\n  - MW-EXAMPLE\n\n## 详细说明\n\n- 应用，代码仓库与部署单元。\n\n## 依据与证据\n\n[../../chapters/application-architecture.md](../../chapters/application-architecture.md#应用)（示例）",
       "backlinks": [
+        "knowledge/application/README",
         "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE",
         "knowledge/application/SYS-EXAMPLE/SYS-EXAMPLE",
-        "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE",
         "knowledge/data/DS-EXAMPLE/DS-EXAMPLE"
       ]
     },
@@ -356,10 +357,10 @@ aside {
         "application",
         "MS"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例微服务\n\n## 关系\n\n- implements_to: [APP-EXAMPLE](../APP-EXAMPLE.md)\n- implemented_by: API-EXAMPLE\n\n## 跨视角\n\n- maps_to: [AGG-EXAMPLE](../../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)\n\n## 详细说明\n\n- 微服务，入口能力簇。\n\n## 依据与证据\n\n[../../../chapters/application-architecture.md](../../../chapters/application-architecture.md#微服务)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例微服务\n\n## 关系\n\n- implements_to: [APP-EXAMPLE](../APP-EXAMPLE.md)\n- implemented_by: API-EXAMPLE\n\n## 跨视角\n\n- maps_to: [AGG-EXAMPLE](../../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)\n\n## 详细说明\n\n- 微服务，入口能力簇。\n\n## 依据与证据\n\n[../../../chapters/application-architecture.md](../../../chapters/application-architecture.md#微服务)（示例）",
       "backlinks": [
-        "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE",
-        "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE"
+        "knowledge/application/README",
+        "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE"
       ]
     },
     "knowledge/application/chapters/application-architecture": {
@@ -456,8 +457,8 @@ aside {
         "knowledge/overview/NAME-overview"
       ]
     },
-    "knowledge/business/BSD-EXAMPLE-L3/BSD-EXAMPLE-L3": {
-      "id": "knowledge/business/BSD-EXAMPLE-L3/BSD-EXAMPLE-L3",
+    "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BSD-EXAMPLE-L3": {
+      "id": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BSD-EXAMPLE-L3",
       "type": "Business Subdomain",
       "title": "示例三级业务子域",
       "description": "BSD-L3；parent→解决方案 BSD-L2。",
@@ -467,12 +468,11 @@ aside {
       ],
       "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例三级业务子域\n\n## 关系\n\n- parent: BSD-EXAMPLE-L2\n- implemented_by: [BC-EXAMPLE](BC-EXAMPLE/BC-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- level: 3\n- BSD-L3；parent→解决方案 BSD-L2。\n\n## 依据与证据\n\n[../chapters/business-capability-map.md](../chapters/business-capability-map.md#三级子域)（示例）",
       "backlinks": [
-        "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE",
-        "knowledge/business/README"
+        "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE"
       ]
     },
-    "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE": {
-      "id": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE",
+    "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE": {
+      "id": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE",
       "type": "Bounded Context",
       "title": "示例限界上下文",
       "description": "限界上下文。",
@@ -483,14 +483,13 @@ aside {
       "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例限界上下文\n\n## 关系\n\n- implements_to: [BSD-EXAMPLE-L3](../BSD-EXAMPLE-L3.md)\n- implemented_by: [AGG-EXAMPLE](AGG-EXAMPLE/AGG-EXAMPLE.md)\n- supported_by: [APP-EXAMPLE](../../../application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE.md)\n\n## 跨视角\n\n- mapped_by: [PM-EXAMPLE](../../../product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE.md)\n\n## 详细说明\n\n- 限界上下文。\n\n## 依据与证据\n\n[../../chapters/business-capability-map.md](../../chapters/business-capability-map.md#限界上下文)（示例）",
       "backlinks": [
         "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE",
-        "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
-        "knowledge/business/BSD-EXAMPLE-L3/BSD-EXAMPLE-L3",
-        "knowledge/business/README",
+        "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
+        "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BSD-EXAMPLE-L3",
         "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE"
       ]
     },
-    "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE": {
-      "id": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE",
+    "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE": {
+      "id": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE",
       "type": "Ability",
       "title": "示例能力",
       "description": "领域能力。",
@@ -500,13 +499,12 @@ aside {
       ],
       "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例能力\n\n## 关系\n\n- implements_to: [AGG-EXAMPLE](AGG-EXAMPLE.md)\n\n## 跨视角\n\n- mapped_by: [UC-EXAMPLE](../../../../product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md)\n\n## 详细说明\n\n- 领域能力。\n\n## 依据与证据\n\n[../../../chapters/business-capability-map.md](../../../chapters/business-capability-map.md#领域能力)（示例）",
       "backlinks": [
-        "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
-        "knowledge/business/README",
+        "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
         "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE"
       ]
     },
-    "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE": {
-      "id": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
+    "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE": {
+      "id": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
       "type": "Aggregate",
       "title": "示例聚合",
       "description": "聚合根。",
@@ -517,9 +515,8 @@ aside {
       "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例聚合\n\n## 关系\n\n- implements_to: [BC-EXAMPLE](../BC-EXAMPLE.md)\n- implemented_by: [AB-EXAMPLE](AB-EXAMPLE.md)\n\n## 跨视角\n\n- mapped_by:\n  - [MS-EXAMPLE](../../../../application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md)\n  - [ENT-EXAMPLE](../../../../data/DS-EXAMPLE/ENT-EXAMPLE.md)\n\n## 详细说明\n\n- 聚合根。\n\n## 依据与证据\n\n[../../../chapters/business-capability-map.md](../../../chapters/business-capability-map.md#聚合)（示例）",
       "backlinks": [
         "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE",
-        "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE",
-        "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE",
-        "knowledge/business/README",
+        "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE",
+        "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE",
         "knowledge/data/DS-EXAMPLE/ENT-EXAMPLE"
       ]
     },
@@ -535,10 +532,6 @@ aside {
       "body": "# 能力地图\n\n[返回 · 业务架构](../README.md)\n\n本系统的三级子域、限界上下文、聚合与领域能力。\n\n> **能力地图 SSOT**：公司级能力框架与成熟度见公司层 business · business-capability。\n\n## 三级子域\n\n写 BSD-L3 的编号、名称，各 `parent` 哪条解决方案 BSD-L2。\n\n## 限界上下文\n\n写 BC 的编号、名称，各 `implements_to` 本层 BSD-L3，`mapped_by` 哪个 PM。\n\n## 聚合\n\n写 AGG 的编号、名称，各 `implements_to` 哪个 BC。\n\n## 领域能力\n\n写 AB 的编号、名称，各 `implements_to` 哪个 AGG。",
       "backlinks": [
         "knowledge/application/chapters/application-domain-model",
-        "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE",
-        "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
-        "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE",
-        "knowledge/business/BSD-EXAMPLE-L3/BSD-EXAMPLE-L3",
         "knowledge/business/README",
         "knowledge/overview/NAME-overview"
       ]
@@ -612,9 +605,8 @@ aside {
         "data",
         "ENT"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例实体\n\n## 关系\n\n- implements_to: [DS-EXAMPLE](DS-EXAMPLE.md)\n- implemented_by: TBL-EXAMPLE\n\n## 跨视角\n\n- maps_to: [AGG-EXAMPLE](../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)\n\n## 详细说明\n\n- 数据实体，表或集合。\n\n## 依据与证据\n\n[../chapters/data-model.md](../chapters/data-model.md#数据实体)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例实体\n\n## 关系\n\n- implements_to: [DS-EXAMPLE](DS-EXAMPLE.md)\n- implemented_by: TBL-EXAMPLE\n\n## 跨视角\n\n- maps_to: [AGG-EXAMPLE](../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)\n\n## 详细说明\n\n- 数据实体，表或集合。\n\n## 依据与证据\n\n[../chapters/data-model.md](../chapters/data-model.md#数据实体)（示例）",
       "backlinks": [
-        "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
         "knowledge/data/DS-EXAMPLE/DS-EXAMPLE",
         "knowledge/data/README"
       ]
@@ -704,9 +696,8 @@ aside {
         "product",
         "PM"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例产品模块\n\n## 关系\n\n- implements_to: PD-EXAMPLE\n- implemented_by: [FT-EXAMPLE](FT-EXAMPLE/FT-EXAMPLE.md)\n\n## 跨视角\n\n- maps_to: [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)\n\n## 详细说明\n\n- 产品模块。\n\n## 依据与证据\n\n[../../chapters/product-architecture.md](../../chapters/product-architecture.md#产品模块)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例产品模块\n\n## 关系\n\n- implements_to: PD-EXAMPLE\n- implemented_by: [FT-EXAMPLE](FT-EXAMPLE/FT-EXAMPLE.md)\n\n## 跨视角\n\n- maps_to: [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)\n\n## 详细说明\n\n- 产品模块。\n\n## 依据与证据\n\n[../../chapters/product-architecture.md](../../chapters/product-architecture.md#产品模块)（示例）",
       "backlinks": [
-        "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE",
         "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FT-EXAMPLE",
         "knowledge/product/README"
       ]
@@ -768,9 +759,8 @@ aside {
         "product",
         "UC"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例用例\n\n## 关系\n\n- implements_to: [FR-EXAMPLE](FR-EXAMPLE.md)\n\n## 跨视角\n\n- maps_to: [AB-EXAMPLE](../../../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md)\n- mapped_by: API-EXAMPLE\n\n## 详细说明\n\n- 用例。\n\n## 依据与证据\n\n[../../../../chapters/product-user-journeys.md](../../../../chapters/product-user-journeys.md#场景用例)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例用例\n\n## 关系\n\n- implements_to: [FR-EXAMPLE](FR-EXAMPLE.md)\n\n## 跨视角\n\n- maps_to: [AB-EXAMPLE](../../../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md)\n- mapped_by: API-EXAMPLE\n\n## 详细说明\n\n- 用例。\n\n## 依据与证据\n\n[../../../../chapters/product-user-journeys.md](../../../../chapters/product-user-journeys.md#场景用例)（示例）",
       "backlinks": [
-        "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE",
         "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/FR-EXAMPLE",
         "knowledge/product/README"
       ]
@@ -1173,15 +1163,15 @@ aside {
     },
     {
       "source": "knowledge/application/README",
-      "target": "knowledge/application/SYS-EXAMPLE"
+      "target": "knowledge/application/SYS-EXAMPLE/SYS-EXAMPLE"
     },
     {
       "source": "knowledge/application/README",
-      "target": "knowledge/application/APP-EXAMPLE/APP-EXAMPLE"
+      "target": "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE"
     },
     {
       "source": "knowledge/application/README",
-      "target": "knowledge/application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE"
+      "target": "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE"
     },
     {
       "source": "knowledge/application/SYS-EXAMPLE/SYS-EXAMPLE",
@@ -1201,7 +1191,7 @@ aside {
     },
     {
       "source": "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE",
-      "target": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE"
+      "target": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE"
     },
     {
       "source": "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE",
@@ -1217,7 +1207,7 @@ aside {
     },
     {
       "source": "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE",
-      "target": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE"
+      "target": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE"
     },
     {
       "source": "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE",
@@ -1292,64 +1282,64 @@ aside {
       "target": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE"
     },
     {
-      "source": "knowledge/business/BSD-EXAMPLE-L3/BSD-EXAMPLE-L3",
-      "target": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE"
+      "source": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BSD-EXAMPLE-L3",
+      "target": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE"
     },
     {
-      "source": "knowledge/business/BSD-EXAMPLE-L3/BSD-EXAMPLE-L3",
-      "target": "knowledge/business/chapters/business-capability-map"
+      "source": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BSD-EXAMPLE-L3",
+      "target": "knowledge/business/BSD-EXAMPLE-L2/chapters/business-capability-map"
     },
     {
-      "source": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE",
-      "target": "knowledge/business/BSD-EXAMPLE-L3/BSD-EXAMPLE-L3"
+      "source": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE",
+      "target": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BSD-EXAMPLE-L3"
     },
     {
-      "source": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE",
-      "target": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE"
+      "source": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE",
+      "target": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE"
     },
     {
-      "source": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE",
-      "target": "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE"
+      "source": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE",
+      "target": "knowledge/business/application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE"
     },
     {
-      "source": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE",
-      "target": "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE"
+      "source": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE",
+      "target": "knowledge/business/product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE"
     },
     {
-      "source": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE",
-      "target": "knowledge/business/chapters/business-capability-map"
+      "source": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE",
+      "target": "knowledge/business/BSD-EXAMPLE-L2/chapters/business-capability-map"
     },
     {
-      "source": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE",
-      "target": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE"
+      "source": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE",
+      "target": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE"
     },
     {
-      "source": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE",
-      "target": "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE"
+      "source": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE",
+      "target": "knowledge/business/product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE"
     },
     {
-      "source": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE",
-      "target": "knowledge/business/chapters/business-capability-map"
+      "source": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE",
+      "target": "knowledge/business/BSD-EXAMPLE-L2/chapters/business-capability-map"
     },
     {
-      "source": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
-      "target": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE"
+      "source": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
+      "target": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE"
     },
     {
-      "source": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
-      "target": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE"
+      "source": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
+      "target": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE"
     },
     {
-      "source": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
-      "target": "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE"
+      "source": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
+      "target": "knowledge/business/application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE"
     },
     {
-      "source": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
-      "target": "knowledge/data/DS-EXAMPLE/ENT-EXAMPLE"
+      "source": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
+      "target": "knowledge/business/data/DS-EXAMPLE/ENT-EXAMPLE"
     },
     {
-      "source": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
-      "target": "knowledge/business/chapters/business-capability-map"
+      "source": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
+      "target": "knowledge/business/BSD-EXAMPLE-L2/chapters/business-capability-map"
     },
     {
       "source": "knowledge/business/chapters/business-capability-map",
@@ -1409,7 +1399,7 @@ aside {
     },
     {
       "source": "knowledge/data/DS-EXAMPLE/ENT-EXAMPLE",
-      "target": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE"
+      "target": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE"
     },
     {
       "source": "knowledge/data/DS-EXAMPLE/ENT-EXAMPLE",
@@ -1585,7 +1575,7 @@ aside {
     },
     {
       "source": "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE",
-      "target": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE"
+      "target": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE"
     },
     {
       "source": "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE",
@@ -1633,7 +1623,7 @@ aside {
     },
     {
       "source": "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE",
-      "target": "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE"
+      "target": "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE"
     },
     {
       "source": "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE",

@@ -419,7 +419,7 @@ def test_entity_relpath_solution_bsd_l2_flat():
     raise AssertionError("expected ValueError when solution bundle gets non-L2 BSD")
 
 
-def test_entity_relpath_system_bsd_l3_flat():
+def test_entity_relpath_system_bsd_l3_under_l2_host():
     assert (
         okf_lib.entity_relpath(
             "business",
@@ -427,12 +427,14 @@ def test_entity_relpath_system_bsd_l3_flat():
             path_parent="BSD-EXAMPLE-L2",
             bundle="system",
         )
-        == "knowledge/business/BSD-EXAMPLE-L3/BSD-EXAMPLE-L3.md"
+        == "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BSD-EXAMPLE-L3.md"
     )
-    assert (
+    try:
         okf_lib.entity_relpath("business", "BSD-EXAMPLE-L3", bundle="system")
-        == "knowledge/business/BSD-EXAMPLE-L3/BSD-EXAMPLE-L3.md"
-    )
+    except ValueError as exc:
+        assert "BSD-L2 host" in str(exc) or "path_parent" in str(exc)
+    else:
+        raise AssertionError("expected ValueError when system L3 has no L2 host")
 
 
 def test_entity_relpath_system_bsd_l1_l2_not_landed():
@@ -453,27 +455,30 @@ def test_entity_relpath_system_bsd_l1_l2_not_landed():
 def test_entity_relpath_system_nested_chain():
     assert (
         okf_lib.entity_relpath(
-            "business", "BC-EXAMPLE", path_parent="BSD-EXAMPLE-L3", bundle="system"
+            "business",
+            "BC-EXAMPLE",
+            path_parent="BSD-EXAMPLE-L2/BSD-EXAMPLE-L3",
+            bundle="system",
         )
-        == "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md"
+        == "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md"
     )
     assert (
         okf_lib.entity_relpath(
             "business",
             "AGG-EXAMPLE",
-            path_parent="BSD-EXAMPLE-L3/BC-EXAMPLE",
+            path_parent="BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE",
             bundle="system",
         )
-        == "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md"
+        == "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md"
     )
     assert (
         okf_lib.entity_relpath(
             "business",
             "AB-EXAMPLE",
-            path_parent="BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE",
+            path_parent="BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE",
             bundle="system",
         )
-        == "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md"
+        == "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md"
     )
     assert (
         okf_lib.entity_relpath(

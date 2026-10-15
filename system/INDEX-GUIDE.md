@@ -134,7 +134,7 @@ system/
 | [features/FEATURE-EXAMPLE.md](features/FEATURE-EXAMPLE.md) | 特性样例 |
 | [requirements/REQUIREMENT-EXAMPLE/](requirements/REQUIREMENT-EXAMPLE/) | 需求样例目录 |
 | [adr/CONTEXT.md](adr/CONTEXT.md) | ADR 索引入口 |
-| `knowledge/business/BSD-EXAMPLE-L3/` 下 BSD-L3/BC/AGG/AB · `SYS-EXAMPLE` | 本层首次定义样例 |
+| `knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/` 下 BSD-L3/BC/AGG/AB · `SYS-EXAMPLE` | 本层首次定义样例 |
 | `PD-EXAMPLE` · `BP-EXAMPLE` · `MDG-EXAMPLE` · `TS-EXAMPLE` · `BSD-EXAMPLE-L2` | 解决方案首次；本层不落文件，纯 ID |
 
 流程叙事章 ∈ 各视角 `knowledge/*/chapters/`；不在九章展开正文。

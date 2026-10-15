@@ -98,7 +98,7 @@ title: 业务视角元数据
 | --- | --- |
 | 层 | 系统 |
 | id_pattern | `BSD-{NAME}-L3` |
-| 落盘 | `knowledge/business/BSD-{L3}/BSD-{L3}.md`（例：`BSD-EXAMPLE-L3/`）；其下 BC→AGG→AB。公司 BD 落 `BD-{NAME}.md`。解决方案不落 BD、BSD-L1。系统不落 BD、BSD-L1、BSD-L2 文件 |
+| 落盘 | `knowledge/business/BSD-{L2}/BSD-{L3}/BSD-{L3}.md`（例：`BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/`）；其下 BC→AGG→AB。L2 段为**目录宿主**（样例不落 `BSD-*-L2.md` 实体；业务仓可保留 L2 实体作聚合导航）。公司 BD 落 `BD-{NAME}.md`。解决方案不落 BD、BSD-L1。系统**不落** BSD-L1；**不强制**落 BSD-L2 实体文件 |
 | 字段 | `level` 固定 `3`，与 `parent` 必须；`implemented_by` 可选 |
 
 ### BC

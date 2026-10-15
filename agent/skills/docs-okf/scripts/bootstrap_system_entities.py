@@ -16,7 +16,7 @@ TS = "2026-06-21T00:00:00+08:00"
 
 ENTITIES: list[tuple[str, str]] = [
     (
-        "knowledge/business/BSD-EXAMPLE-L3/BSD-EXAMPLE-L3.md",
+        "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BSD-EXAMPLE-L3.md",
         """---
 type: Business Subdomain
 title: 示例三级业务子域
@@ -48,7 +48,7 @@ layer_scope: system
 """,
     ),
     (
-        "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md",
+        "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md",
         """---
 type: Bounded Context
 title: 示例限界上下文
@@ -80,7 +80,7 @@ layer_scope: system
 """,
     ),
     (
-        "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md",
+        "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md",
         """---
 type: Aggregate
 title: 示例聚合
@@ -113,7 +113,7 @@ layer_scope: system
 """,
     ),
     (
-        "knowledge/business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md",
+        "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md",
         """---
 type: Ability
 title: 示例能力
@@ -162,7 +162,7 @@ layer_scope: system
 
 ## 跨视角
 
-- maps_to: [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)
+- maps_to: [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)
 
 ## 详细说明
 
@@ -286,7 +286,7 @@ layer_scope: system
 
 ## 跨视角
 
-- maps_to: [AB-EXAMPLE](../../../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md)
+- maps_to: [AB-EXAMPLE](../../../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md)
 
 ## 详细说明
 
@@ -345,7 +345,7 @@ layer_scope: system
 
 - implements_to: [SYS-EXAMPLE](../SYS-EXAMPLE.md)
 - implemented_by: [MS-EXAMPLE](MS-EXAMPLE/MS-EXAMPLE.md)
-- supports_to: [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)
+- supports_to: [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)
 
 ## 跨视角
 
@@ -380,7 +380,7 @@ layer_scope: system
 
 ## 跨视角
 
-- maps_to: [AGG-EXAMPLE](../../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)
+- maps_to: [AGG-EXAMPLE](../../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)
 
 ## 详细说明
 
@@ -440,7 +440,7 @@ layer_scope: system
 
 ## 跨视角
 
-- maps_to: [AGG-EXAMPLE](../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)
+- maps_to: [AGG-EXAMPLE](../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)
 
 ## 详细说明
 

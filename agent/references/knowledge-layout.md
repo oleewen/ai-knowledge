@@ -46,7 +46,7 @@
 - **系统层五视角**（`system/knowledge/{perspective}/`）：
   | 视角 | 落点要点 |
   | --- | --- |
-  | business | BSD-L3→BC→AGG→AB 本层 SSOT；BD/L1/L2 不建本层文件，只写纯 ID |
+  | business | BSD-L3→BC→AGG→AB 本层 SSOT；落盘 `BSD-{L2}/BSD-{L3}/…`（L2 目录宿主）；BD/L1 不建本层文件；样例不落 L2 实体 |
   | product | PM→FT→FR→UC/BR 本层 SSOT；PL/PD/BP/BSP 不建本层文件，只写纯 ID |
   | application | SYS 本层 SSOT（`maps_to`→PD，`implements_to`→SLN）；落盘 `SYS-{NAME}/`，其下 APP/MS |
   | data | DS/ENT 本层 SSOT；MDG 不建本层文件，只写纯 ID |

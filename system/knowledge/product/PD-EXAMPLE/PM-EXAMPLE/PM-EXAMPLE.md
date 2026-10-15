@@ -19,7 +19,7 @@ layer_scope: system
 
 ## 跨视角
 
-- maps_to: [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)
+- maps_to: [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)
 
 ## 详细说明
 

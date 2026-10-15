@@ -16,7 +16,7 @@ layer_scope: system
 
 - implements_to: [SYS-EXAMPLE](../SYS-EXAMPLE.md)
 - implemented_by: [MS-EXAMPLE](MS-EXAMPLE/MS-EXAMPLE.md)
-- supports_to: [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)
+- supports_to: [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)
 
 ## 跨视角
 
