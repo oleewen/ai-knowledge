@@ -114,7 +114,7 @@ flowchart LR
   dl --> sys
   dl --> sln
   dl --> co
-  app -->|"CONTRIBUTING"| app
+  app -->|"DESIGN + governance"| app
   sys -->|"overview + application-slots"| sys
   sln -->|"overview + system-slots"| sln
   co -->|"overview + solution-slots"| co
@@ -139,7 +139,7 @@ flowchart LR
 - **仓库根九章索引指南**: 本文件 [INDEX-GUIDE.md](INDEX-GUIDE.md)
 - **根目录索引页**: [index.md](index.md)
 - **根索引运行日志**: [INDEX-GUIDE 增量锚点](INDEX-GUIDE 增量锚点)
-- **应用知识库**: [application/](application/) — [README](application/README.md) · [index](application/index.md) · [INDEX-GUIDE](application/INDEX-GUIDE.md) · [CONTRIBUTING](application/CONTRIBUTING.md)
+- **应用知识库**: [application/](application/) — [README](application/README.md) · [index](application/index.md) · [INDEX-GUIDE](application/INDEX-GUIDE.md) · [DESIGN](application/DESIGN.md)
 - **系统知识库树**: [system/](system/) — [README](system/README.md) · [index](system/index.md) · [INDEX-GUIDE](system/INDEX-GUIDE.md)
 - **解决方案知识库树**: [solution/](solution/) — [README](solution/README.md) · [index](solution/index.md) · [INDEX-GUIDE](solution/INDEX-GUIDE.md)
 - **公司知识库树**: [company/](company/) — [README](company/README.md) · [index](company/index.md) · [INDEX-GUIDE](company/INDEX-GUIDE.md)
@@ -237,7 +237,7 @@ stateDiagram-v2
     Test --> [*]: 交付与归档
 ```
 
-推进协议与写作约束见各 `sdx-*` Skill 与 [application/CONTRIBUTING.md](application/CONTRIBUTING.md)。
+推进协议与写作约束见各 `sdx-*` Skill 与 [knowledge-governance.md](agent/knowledge/knowledge-governance.md)。
 
 ### 5.2 核心流程
 
@@ -254,7 +254,7 @@ stateDiagram-v2
 | 规则来源 | 描述 |
 | ---------- | ------ |
 | [AGENTS.md](AGENTS.md) | 禁止擅自改实体 ID、未确认不 `git commit`、文档产出闸门、会话启动 `/caveman` |
-| [application/CONTRIBUTING.md](application/CONTRIBUTING.md) | 贡献流程与阶段规则 |
+| [knowledge-governance.md](agent/knowledge/knowledge-governance.md) | 贡献与治理门禁（语义 SSOT） |
 | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md) | 全局命名与交付约定；artifact gates；禁止库外引用 superpowers 具名文件 |
 | [intent-clarify.md](agent/references/intent-clarify.md) / [unit-cycle-protocol.md](agent/references/unit-cycle-protocol.md) / [audience-and-language.md](agent/references/audience-and-language.md) | 语义族写前澄清、`C/M/G/S/F`、烤干受众维 |
 | [light-flow-actions.md](agent/references/light-flow-actions.md) | 轻流程 `C/M/S/F`（无 `G`） |
@@ -396,7 +396,7 @@ stateDiagram-v2
 | 解决方案九章 | [solution/INDEX-GUIDE.md](solution/INDEX-GUIDE.md) | solution 文档根 |
 | 公司侧九章 | [company/INDEX-GUIDE.md](company/INDEX-GUIDE.md) | company 文档根 |
 | 设计原则 | [knowledge-governance.md](agent/knowledge/knowledge-governance.md) | 四层语义设计 |
-| 贡献流程 | [application/CONTRIBUTING.md](application/CONTRIBUTING.md) | 阶段与模板指针 |
+| 贡献与治理 | [knowledge-governance.md](agent/knowledge/knowledge-governance.md) | 语义 SSOT 与门禁 |
 | 布局契约 | [agent/references/knowledge-layout.md](agent/references/knowledge-layout.md) | 四层路径 / 联邦 / overview |
 | OKF 规范 | [agent/knowledge/okf-spec.md](agent/knowledge/okf-spec.md) | OKF SSOT |
 | 术语表 | [agent/knowledge/glossary.md](agent/knowledge/glossary.md) | 统一语言 |

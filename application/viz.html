@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>OKF Bundle</title>
+<title>application OKF</title>
 <script src="https://unpkg.com/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
 <script src="https://unpkg.com/marked/marked.min.js"></script>
 <style>
@@ -146,7 +146,7 @@ aside {
 </head>
 <body>
 <header>
-  <h1>OKF Bundle</h1>
+  <h1>application OKF</h1>
   <div class="controls">
     <input type="search" id="search" placeholder="搜索 title / id / tags…" autocomplete="off">
     <select id="typeFilter">
@@ -164,28 +164,15 @@ aside {
 </main>
 <script id="okf-bundle-data" type="application/json">
 {
-  "name": "OKF Bundle",
+  "name": "application OKF",
   "concepts": {
-    "CONTRIBUTING": {
-      "id": "CONTRIBUTING",
-      "type": "Contributing Guide",
-      "title": "贡献指南 — application/",
-      "description": null,
-      "tags": [],
-      "body": "# 贡献指南 — application/\n\n最小贡献规则；结构/字段/模板一律链权威入口，不复写。\n\n## 先读\n\n1. [README.md](README.md) — 定位与 mode\n2. [knowledge-governance](../agent/knowledge/knowledge-governance.md) — 原则、首次定义、映射\n3. [AGENTS.md](../AGENTS.md) — 仓库级禁止项\n4. 目标目录 `README.md` + `agent/knowledge/{perspective}-meta.md` — 落盘与命名\n\n九章 / 目录：[INDEX-GUIDE.md](INDEX-GUIDE.md) · [index.md](index.md)\n\n## 必须遵守\n\n1. **引用优先**：能链权威就不复写。\n2. **ID 稳定**：改已有 ID 须同步全链路引用。\n3. **仅写 ID**：跨文件/跨视角关联只写 ID，不复制目标正文。\n4. **变更可检索**：改文档后更新目标目录 README 索引表；按需同步 INDEX-GUIDE / index。\n5. **提交规范**：Conventional Commits；跨目录/规则变更建议补 ADR。\n\n## 最小清单\n\n定范围 → 读目标 README + meta → 落盘 → 回链索引 → 搜受影响 ID/字段自检。\n\n模板与技能：[README.md](README.md) · [INDEX-GUIDE.md](INDEX-GUIDE.md)",
-      "backlinks": [
-        "DESIGN",
-        "README",
-        "README-c"
-      ]
-    },
     "DESIGN": {
       "id": "DESIGN",
       "type": "Design Document",
       "title": "应用知识库设计",
       "description": null,
       "tags": [],
-      "body": "# 应用知识库设计\n\n`application/`：实现级实体与应用 SDD。本库 `{NAME}-overview.md` 供 extract / archive；上行 distill **只**写系统 overview。本文件 = 层根人类入口（契约短表 + 引用）；语义 SSOT ∈ `agent/knowledge/`。\n\n## 阅读顺序\n\n1. [README.md](README.md) — 定位与 mode 路由  \n2. 本文 — 本层契约、同步门禁、治理引用  \n3. [knowledge/README.md](knowledge/README.md) — 五视角；字段见 [agent/knowledge](../agent/knowledge/README.md) 五份 `*-meta.md`  \n\n索引：[INDEX-GUIDE.md](INDEX-GUIDE.md) · [index.md](index.md) · [CONTRIBUTING.md](CONTRIBUTING.md) · [knowledge-links.yaml](knowledge-links.yaml)\n\n## 本层契约\n\n| 目录 | 职责 |\n| --- | --- |\n| `knowledge/` | 五视角；本层首次实体 **API / TBL / MW / CMP**；`knowledge/overview/{NAME}-overview.md`；宿主目录可留，不建 reference 文件 |\n| `analysis/` → `features/` → `requirements/` | 应用 SDD；交付 ∈ `REQUIREMENT-{IDEA-ID}/` |\n| `adr/` | 应用层 ADR + `CONTEXT.md` |\n| `changelogs/` | INDEXING-LOG（可选）；变更溯源 git |\n| `CONTRIBUTING.md` | 贡献约定（与本文分工：贡献流程 vs 设计入口） |\n| `manifest.md` | 应用仓清单（协同目标态） |\n\n路径总则：[knowledge-layout § 四层文档根](../agent/references/knowledge-layout.md#四层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。无联邦槽位（槽位在 system）。\n\n## 同步与门禁\n\n1. 本库维护文档树与实体 SSOT  \n2. 系统侧 docs-link / docs-pull 建应用槽位（本库为源）  \n3. 本库：`docs-extract` / `docs-archive` 写 `knowledge/overview/{NAME}-overview.md` 与视角 `chapters/`  \n4. 上行：pull → distill（**仅**系统 overview）→ 系统 archive；distill **不**写本库 overview  \n5. 术语/目录/链接与 README、INDEX-GUIDE、index 一致；跨层无双份主定义  \n\n全图：[knowledge-layout § 知识流水线](../agent/references/knowledge-layout.md#知识流水线)。改目录语义先改**本元库模板**再 upgrade。\n\n## 治理引用\n\n| 主题 | 链 |\n| --- | --- |\n| 本层聚焦 / 首次定义 | [knowledge-governance § 应用层](../agent/knowledge/knowledge-governance.md#应用层) |\n| 引用边界 | [knowledge-governance § 业务 knowledge 引用边界](../agent/knowledge/knowledge-governance.md#业务-knowledge-引用边界) |\n| 本层 OKF 模板要点 | [okf-spec § 10.4 application](../agent/knowledge/okf-spec.md#104-application) |\n| 其余语义 | [knowledge-governance](../agent/knowledge/knowledge-governance.md)（四层 · 5A）· [glossary](../agent/knowledge/glossary.md) · [naming-conventions](../agent/knowledge/naming-conventions.md) · [okf-spec](../agent/knowledge/okf-spec.md) · [adr-guidelines](../agent/knowledge/adr-guidelines.md) |",
+      "body": "# 应用知识库设计\n\n`application/`：实现级实体与应用 SDD。本库 `{NAME}-overview.md` 供 extract / archive；上行 distill **只**写系统 overview。本文件 = 层根人类入口（契约短表 + 引用）；语义 SSOT ∈ `agent/knowledge/`。\n\n## 阅读顺序\n\n1. [README.md](README.md) — 定位与 mode 路由  \n2. 本文 — 本层契约、同步门禁、治理引用  \n3. [knowledge/README.md](knowledge/README.md) — 五视角；字段见 [agent/knowledge](../agent/knowledge/README.md) 五份 `*-meta.md`  \n\n索引：[INDEX-GUIDE.md](INDEX-GUIDE.md) · [index.md](index.md) · [knowledge-links.yaml](knowledge-links.yaml)\n\n## 本层契约\n\n| 目录 | 职责 |\n| --- | --- |\n| `knowledge/` | 五视角；本层首次实体 **API / TBL / MW / CMP**；`knowledge/overview/{NAME}-overview.md`；宿主目录可留，不建 reference 文件 |\n| `analysis/` → `features/` → `requirements/` | 应用 SDD；交付 ∈ `REQUIREMENT-{IDEA-ID}/` |\n| `adr/` | 应用层 ADR + `CONTEXT.md` |\n| 变更溯源 | git；烤干代办见仓根 `TODO-LIST.md` |\n\n贡献门禁：[knowledge-governance](../agent/knowledge/knowledge-governance.md)（与本文分工：治理/贡献 vs 设计入口）。\n\n路径总则：[knowledge-layout § 四层文档根](../agent/references/knowledge-layout.md#四层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。无联邦槽位（槽位在 system）。\n\n## 同步与门禁\n\n1. 本库维护文档树与实体 SSOT  \n2. 系统侧 docs-link / docs-pull 建应用槽位（本库为源）  \n3. 本库：`docs-extract` / `docs-archive` 写 `knowledge/overview/{NAME}-overview.md` 与视角 `chapters/`  \n4. 上行：pull → distill（**仅**系统 overview）→ 系统 archive；distill **不**写本库 overview  \n5. 术语/目录/链接与 README、INDEX-GUIDE、index 一致；跨层无双份主定义  \n\n全图：[knowledge-layout § 知识流水线](../agent/references/knowledge-layout.md#知识流水线)。改目录语义先改**本元库模板**再 upgrade。\n\n## 治理引用\n\n| 主题 | 链 |\n| --- | --- |\n| 本层聚焦 / 首次定义 | [knowledge-governance § 应用层](../agent/knowledge/knowledge-governance.md#应用层) |\n| 引用边界 | [knowledge-governance § 业务 knowledge 引用边界](../agent/knowledge/knowledge-governance.md#业务-knowledge-引用边界) |\n| 本层 OKF 模板要点 | [okf-spec § 10.4 application](../agent/knowledge/okf-spec.md#104-application) |\n| 其余语义 | [knowledge-governance](../agent/knowledge/knowledge-governance.md)（四层 · 5A）· [glossary](../agent/knowledge/glossary.md) · [naming-conventions](../agent/knowledge/naming-conventions.md) · [okf-spec](../agent/knowledge/okf-spec.md) · [adr-guidelines](../agent/knowledge/adr-guidelines.md) |",
       "backlinks": [
         "README",
         "README-c"
@@ -197,7 +184,7 @@ aside {
       "title": "application（mode=c · central）",
       "description": null,
       "tags": [],
-      "body": "# application（mode=c · central）\n\n中央挂载建联：本树以 **knowledge** 与 **changelogs** 为主。共享入口 [README.md](README.md)；安装差异 [INDEX-GUIDE.md](../INDEX-GUIDE.md) §7.2。\n\n## 维护主线\n\n```text\nagent/knowledge（治理 / 命名）\n  ├──→ knowledge（五视角 + 实现级实体 SSOT）\n  └──→ changelogs（变更 / 索引运维）\n```\n\n**落地顺序**：核 [DESIGN.md](DESIGN.md)（→ [knowledge-governance](../agent/knowledge/knowledge-governance.md)）→ 补 knowledge ID（[CONTRIBUTING.md](CONTRIBUTING.md)）→ changelogs 留痕。\n\n本库：`docs-extract` / `docs-archive` 写 `knowledge/overview/{NAME}-overview.md`。上行：`docs-pull` 入系统槽位；**docs-distill 只写 system overview**。\n\n## 主线目录\n\n| 主线 | 目录 | 内容 |\n|------|------|------|\n| 本层设计入口 | [DESIGN.md](DESIGN.md) | 契约短表 + 治理引用；语义 SSOT → [knowledge-governance](../agent/knowledge/knowledge-governance.md) |\n| 治理基线 | [agent/knowledge](../agent/knowledge/README.md) | 术语、原则、命名、ADR |\n| 知识基线 | [knowledge](knowledge/README.md) | 五视角与实现级实体 |\n| 变更留痕 | [changelogs](changelogs/README.md) | `INDEXING-LOG`；变更溯源 git |",
+      "body": "# application（mode=c · central）\n\n## 维护主线\n\n```text\nagent/knowledge（治理 / 命名）\n  ├──→ knowledge（五视角 + 实现级实体 SSOT）\n```\n\n**落地顺序**：核 [DESIGN.md](DESIGN.md)（→ [knowledge-governance](../agent/knowledge/knowledge-governance.md)）→ 补 knowledge ID → git 溯源。\n\n本库：`docs-extract` / `docs-archive` 写 `knowledge/overview/{NAME}-overview.md`。上行：`docs-pull` 入系统槽位；**docs-distill 只写 system overview**。\n\n## 主线目录\n\n| 主线 | 目录 | 内容 |\n|------|------|------|\n| 本层设计入口 | [DESIGN.md](DESIGN.md) | 契约短表 + 治理引用；语义 SSOT → [knowledge-governance](../agent/knowledge/knowledge-governance.md) |\n| 治理基线 | [agent/knowledge](../agent/knowledge/README.md) | 术语、原则、命名、ADR |\n| 知识基线 | [knowledge](knowledge/README.md) | 五视角与实现级实体 |\n| 变更溯源 | git | 变更溯源 git |",
       "backlinks": [
         "README"
       ]
@@ -208,7 +195,7 @@ aside {
       "title": "application（mode=s · standalone）",
       "description": null,
       "tags": [],
-      "body": "# application（mode=s · standalone）\n\n独立安装：本树同时承载 **knowledge SSOT** 与完整 **SDD**。共享入口 [README.md](README.md)；安装差异 [INDEX-GUIDE.md](../INDEX-GUIDE.md) §7.2。\n\n## SDD 文档流\n\n```text\nknowledge（实体 SSOT；本层首次：API / TBL / MW / CMP）\n    │ 本库：docs-extract / docs-archive → knowledge/overview/{NAME}-overview.md\n    │ 上行：docs-pull → system 槽位 → docs-distill → system overview\n    │       （distill 不写本库 overview）\n    │\nanalysis ──→ features ──→ requirements\n    └──────────────┴──────────────┴──→ 规约：需求包 specs/ 或 knowledge/application/\n```\n\n**落地顺序**：补 knowledge ID → 写 analysis / features → 建 requirements（`IDEA-ID` 对齐）。\n\n## 阶段目录\n\n| 阶段 | 目录 | 主要产物 |\n|------|------|----------|\n| 知识基线 | [knowledge](knowledge/README.md) | 五视角实体；治理 [agent/knowledge](../agent/knowledge/README.md) |\n| 分析 | [analysis](analysis/README.md) | `ANALYSIS-{IDEA-ID}.md` |\n| 特性 | [features](features/README.md) | `FEATURE-{IDEA-ID}.md` |\n| 交付 | [requirements](requirements/README.md) | `REQUIREMENT-{IDEA-ID}/MVP-Phase-*` |\n\n按需：[changelogs/README.md](changelogs/README.md)",
+      "body": "# application（mode=s · standalone）\n\n独立安装：本树同时承载 **knowledge SSOT** 与完整 **SDD**。共享入口 [README.md](README.md)；安装差异 [INDEX-GUIDE.md](../INDEX-GUIDE.md) §7.2。\n\n## SDD 文档流\n\n```text\nknowledge（实体 SSOT；本层首次：API / TBL / MW / CMP）\n    │ 本库：docs-extract / docs-archive → knowledge/overview/{NAME}-overview.md\n    │ 上行：docs-pull → system 槽位 → docs-distill → system overview\n    │       （distill 不写本库 overview）\n    │\nanalysis ──→ features ──→ requirements\n    └──────────────┴──────────────┴──→ 规约：需求包 specs/ 或 knowledge/application/\n```\n\n**落地顺序**：补 knowledge ID → 写 analysis / features → 建 requirements（`IDEA-ID` 对齐）。\n\n## 阶段目录\n\n| 阶段 | 目录 | 主要产物 |\n|------|------|----------|\n| 知识基线 | [knowledge](knowledge/README.md) | 五视角实体；治理 [agent/knowledge](../agent/knowledge/README.md) |\n| 分析 | [analysis](analysis/README.md) | `ANALYSIS-{IDEA-ID}.md` |\n| 特性 | [features](features/README.md) | `FEATURE-{IDEA-ID}.md` |\n| 交付 | [requirements](requirements/README.md) | `REQUIREMENT-{IDEA-ID}/MVP-Phase-*` |",
       "backlinks": [
         "README"
       ]
@@ -221,22 +208,11 @@ aside {
       "tags": [
         "governance"
       ],
-      "body": "# 应用知识库（顶层 `application/`）\n\n应用层治理与导航根：`knowledge/` = 实现级实体 SSOT（API/TBL/MW/CMP）+ 五视角映射；SDD = `analysis/` → `features/` → `requirements/`。\n\n| 读什么 | 文件 |\n|--------|------|\n| 九章地图 | [INDEX-GUIDE.md](INDEX-GUIDE.md) |\n| 目录索引 | [index.md](index.md) |\n| 本层设计入口 | [DESIGN.md](DESIGN.md) |\n| 五视角入口 | [knowledge/README.md](knowledge/README.md) |\n\n初始化模式：`mode=s` → [README-s.md](README-s.md)；`mode=c` → [README-c.md](README-c.md)\n\n按需：[CONTRIBUTING.md](CONTRIBUTING.md) · [adr/](adr/README.md) · [changelogs/](changelogs/README.md) · [analysis/](analysis/README.md) · [features/](features/README.md) · [requirements/](requirements/README.md)\n\n模板占位：`*-EXAMPLE`（最小演示链，可替换）。\n\n规范：[okf-spec](../agent/knowledge/okf-spec.md) · [knowledge-layout](../agent/references/knowledge-layout.md)；语义 SSOT 经 [DESIGN.md](DESIGN.md) → [knowledge-governance](../agent/knowledge/knowledge-governance.md)",
+      "body": "# 应用知识库（顶层 `application/`）\n\n应用层治理与导航根：`knowledge/` = 实现级实体 SSOT（API/TBL/MW/CMP）+ 五视角映射；SDD = `analysis/` → `features/` → `requirements/`。\n\n| 读什么 | 文件 |\n|--------|------|\n| 九章地图 | [INDEX-GUIDE.md](INDEX-GUIDE.md) |\n| 目录索引 | [index.md](index.md) |\n| 本层设计入口 | [DESIGN.md](DESIGN.md) |\n| 五视角入口 | [knowledge/README.md](knowledge/README.md) |\n\n初始化模式：`mode=s` → [README-s.md](README-s.md)；`mode=c` → [README-c.md](README-c.md)\n\n按需：[adr/](adr/README.md) · [analysis/](analysis/README.md) · [features/](features/README.md) · [requirements/](requirements/README.md)；贡献门禁见 [knowledge-governance](../agent/knowledge/knowledge-governance.md)\n\n模板占位：`*-EXAMPLE`（最小演示链，可替换）。\n\n规范：[okf-spec](../agent/knowledge/okf-spec.md) · [knowledge-layout](../agent/references/knowledge-layout.md)；语义 SSOT 经 [DESIGN.md](DESIGN.md) → [knowledge-governance](../agent/knowledge/knowledge-governance.md)",
       "backlinks": [
-        "CONTRIBUTING",
         "DESIGN",
-        "README-c",
         "README-s"
       ]
-    },
-    "manifest": {
-      "id": "manifest",
-      "type": "Manifest",
-      "title": "application 目录清单",
-      "description": null,
-      "tags": [],
-      "body": "```yaml\n# 机器可读目录清单\nschema_version: \"1.1\"\ntemplate_id: app-APPNAME\ndescription: 联邦单元目录布局与元库 application/ 对照\n\nmirrors_system_paths:\n  - application/changelogs/README.md → changelogs/README.md\n  - application/knowledge/** → knowledge/**\n  - application/requirements/README.md → requirements/README.md\n\ncentral_library:\n  system_root: ../../application/\n  repository_root: ../../\n```",
-      "backlinks": []
     },
     "adr/CONTEXT": {
       "id": "adr/CONTEXT",
@@ -286,30 +262,7 @@ aside {
       "backlinks": [
         "README",
         "README-s",
-        "analysis/archive/README",
         "features/README"
-      ]
-    },
-    "analysis/archive/README": {
-      "id": "analysis/archive/README",
-      "type": "Documentation",
-      "title": "archive",
-      "description": null,
-      "tags": [],
-      "body": "# archive\n\n已完结或 superseded 的 `ANALYSIS-*` 归档于此。现行分析：[../](../README.md)。",
-      "backlinks": []
-    },
-    "changelogs/README": {
-      "id": "changelogs/README",
-      "type": "Documentation",
-      "title": "changelogs — 变更留痕与索引运维",
-      "description": null,
-      "tags": [],
-      "body": "# changelogs — 变更留痕与索引运维\n\n应用侧运维日志入口：约定 `INDEXING-LOG.md` 为索引运行产物。阶段约定 SSOT = 本 README。\n\n| 产物 / 溯源 | 说明 |\n|-------|------|\n| `INDEXING-LOG.md` | [docs-indexing](../../agent/skills/docs-indexing/SKILL.md) 主表插入一行（最新在上） |\n| 变更历史 | `git log` / `git diff`（本仓或挂载应用仓） |\n\n九章 / 目录索引：[../INDEX-GUIDE.md](../INDEX-GUIDE.md) · [index.md](index.md)。技能总表：[../../agent/skills/README.md](../../agent/skills/README.md)。",
-      "backlinks": [
-        "README",
-        "README-c",
-        "README-s"
       ]
     },
     "features/FEATURE-EXAMPLE": {
@@ -654,18 +607,6 @@ aside {
   },
   "edges": [
     {
-      "source": "CONTRIBUTING",
-      "target": "README"
-    },
-    {
-      "source": "CONTRIBUTING",
-      "target": "INDEX-GUIDE"
-    },
-    {
-      "source": "CONTRIBUTING",
-      "target": "index"
-    },
-    {
       "source": "DESIGN",
       "target": "README"
     },
@@ -680,14 +621,6 @@ aside {
     {
       "source": "DESIGN",
       "target": "index"
-    },
-    {
-      "source": "DESIGN",
-      "target": "CONTRIBUTING"
-    },
-    {
-      "source": "README-c",
-      "target": "README"
     },
     {
       "source": "README-c",
@@ -695,15 +628,7 @@ aside {
     },
     {
       "source": "README-c",
-      "target": "CONTRIBUTING"
-    },
-    {
-      "source": "README-c",
       "target": "knowledge/README"
-    },
-    {
-      "source": "README-c",
-      "target": "changelogs/README"
     },
     {
       "source": "README-s",
@@ -724,10 +649,6 @@ aside {
     {
       "source": "README-s",
       "target": "requirements/README"
-    },
-    {
-      "source": "README-s",
-      "target": "changelogs/README"
     },
     {
       "source": "README",
@@ -755,15 +676,7 @@ aside {
     },
     {
       "source": "README",
-      "target": "CONTRIBUTING"
-    },
-    {
-      "source": "README",
       "target": "adr/README"
-    },
-    {
-      "source": "README",
-      "target": "changelogs/README"
     },
     {
       "source": "README",
@@ -808,18 +721,6 @@ aside {
     {
       "source": "analysis/README",
       "target": "analysis/ANALYSIS-EXAMPLE"
-    },
-    {
-      "source": "analysis/archive/README",
-      "target": "analysis/README"
-    },
-    {
-      "source": "changelogs/README",
-      "target": "INDEX-GUIDE"
-    },
-    {
-      "source": "changelogs/README",
-      "target": "changelogs/index"
     },
     {
       "source": "features/FEATURE-EXAMPLE",
@@ -1060,13 +961,11 @@ aside {
     "Architecture Chapter",
     "Architecture Overview Buffer",
     "Component",
-    "Contributing Guide",
     "DSD",
     "Data Table",
     "Design Document",
     "Documentation",
     "Documentation Root",
-    "Manifest",
     "Middleware Binding",
     "PRD",
     "Requirement Package",
@@ -1078,17 +977,15 @@ aside {
     "Architecture Chapter": "#e15759",
     "Architecture Overview Buffer": "#76b7b2",
     "Component": "#499894",
-    "Contributing Guide": "#edc948",
-    "DSD": "#b07aa1",
-    "Data Table": "#ff9da7",
-    "Design Document": "#9c755f",
-    "Documentation": "#bab0ac",
-    "Documentation Root": "#4e79a7",
-    "Manifest": "#f28e2b",
+    "DSD": "#edc948",
+    "Data Table": "#b07aa1",
+    "Design Document": "#ff9da7",
+    "Documentation": "#9c755f",
+    "Documentation Root": "#bab0ac",
     "Middleware Binding": "#8cd17d",
-    "PRD": "#76b7b2",
-    "Requirement Package": "#59a14f",
-    "TDD": "#edc948"
+    "PRD": "#f28e2b",
+    "Requirement Package": "#e15759",
+    "TDD": "#76b7b2"
   }
 }
 </script>

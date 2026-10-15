@@ -17,7 +17,7 @@ title: application INDEX-GUIDE
 * [index.md](index.md) — OKF 目录索引
 * [DESIGN.md](DESIGN.md) — 本层设计入口（契约短表 + 治理引用）
 * [knowledge/README.md](knowledge/README.md) — 五视角
-* [CONTRIBUTING.md](CONTRIBUTING.md) — 贡献约定
+* [knowledge-governance](../agent/knowledge/knowledge-governance.md) — 贡献与治理门禁
 
 ### 1.2 元信息
 
@@ -148,7 +148,6 @@ OpenAPI/DDL 全文不在九章展开（实体可链外部）。
 |--------|------|------|
 | `{ID}.md` | Markdown + YAML | 应用实体 SSOT（含 API/TBL/MW/CMP） |
 | `viz.html` | HTML | OKF 可视化 |
-| `manifest.md` | Markdown | 应用清单 |
 
 ### 6.2 实体映射
 
@@ -210,7 +209,6 @@ standalone / central 差异与安装约定见仓库根 [INDEX-GUIDE.md](../INDEX
 | 目录索引 | [index.md](index.md) | OKF 渐进披露 |
 | 设计入口 | [DESIGN.md](DESIGN.md) | 契约与门禁 |
 | OKF 可视化 | [viz.html](viz.html) | 图视图 |
-| 应用清单 | [manifest.md](manifest.md) | 清单 |
 | 系统对照 | [../system/INDEX-GUIDE.md](../system/INDEX-GUIDE.md) | 上层九章 |
 
 ### 9.2 相关项目

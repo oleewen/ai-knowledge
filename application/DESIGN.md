@@ -12,7 +12,7 @@ title: 应用知识库设计
 2. 本文 — 本层契约、同步门禁、治理引用  
 3. [knowledge/README.md](knowledge/README.md) — 五视角；字段见 [agent/knowledge](../agent/knowledge/README.md) 五份 `*-meta.md`  
 
-索引：[INDEX-GUIDE.md](INDEX-GUIDE.md) · [index.md](index.md) · [CONTRIBUTING.md](CONTRIBUTING.md) · [knowledge-links.yaml](knowledge-links.yaml)
+索引：[INDEX-GUIDE.md](INDEX-GUIDE.md) · [index.md](index.md) · [knowledge-links.yaml](knowledge-links.yaml)
 
 ## 本层契约
 
@@ -22,8 +22,8 @@ title: 应用知识库设计
 | `analysis/` → `features/` → `requirements/` | 应用 SDD；交付 ∈ `REQUIREMENT-{IDEA-ID}/` |
 | `adr/` | 应用层 ADR + `CONTEXT.md` |
 | 变更溯源 | git；烤干代办见仓根 `TODO-LIST.md` |
-| `CONTRIBUTING.md` | 贡献约定（与本文分工：贡献流程 vs 设计入口） |
-| `manifest.md` | 应用仓清单（协同目标态） |
+
+贡献门禁：[knowledge-governance](../agent/knowledge/knowledge-governance.md)（与本文分工：治理/贡献 vs 设计入口）。
 
 路径总则：[knowledge-layout § 四层文档根](../agent/references/knowledge-layout.md#四层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。无联邦槽位（槽位在 system）。
 

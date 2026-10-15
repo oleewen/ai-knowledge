@@ -4,7 +4,7 @@
 
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/oleewen/ai-knowledge/graphs/commit-activity)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](application/CONTRIBUTING.md)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](agent/knowledge/knowledge-governance.md)
 
 **结论**：纯文档型底座——无业务运行时；用 Bash 注入任意工程，建立 SDD 协作环境。Agent 契约见 [AGENTS.md](AGENTS.md)；九章地图 [INDEX-GUIDE.md](INDEX-GUIDE.md)；目录索引 [index.md](index.md)。
 
@@ -144,7 +144,7 @@ flowchart TD
 
 1. [INDEX-GUIDE.md](INDEX-GUIDE.md) — 路径地图  
 2. [application/DESIGN.md](application/DESIGN.md)（或 company/solution/system 同名）— 层设计入口  
-3. [knowledge-governance.md](agent/knowledge/knowledge-governance.md) — 四层语义与首次定义  
-4. [application/CONTRIBUTING.md](application/CONTRIBUTING.md) — 贡献流程与门禁  
+3. [knowledge-governance.md](agent/knowledge/knowledge-governance.md) — 四层语义、首次定义与贡献门禁  
+4. [AGENTS.md](AGENTS.md) — 仓库级禁止项与查阅顺序  
 
 **许可**：Apache-2.0（根目录暂无 `LICENSE` 文件；badge 链 OSI 条文）。

@@ -11,7 +11,7 @@ agent/knowledge（治理 / 命名）
   ├──→ knowledge（五视角 + 实现级实体 SSOT）
 ```
 
-**落地顺序**：核 [DESIGN.md](DESIGN.md)（→ [knowledge-governance](../agent/knowledge/knowledge-governance.md)）→ 补 knowledge ID（[CONTRIBUTING.md](CONTRIBUTING.md)）→ git 溯源。
+**落地顺序**：核 [DESIGN.md](DESIGN.md)（→ [knowledge-governance](../agent/knowledge/knowledge-governance.md)）→ 补 knowledge ID → git 溯源。
 
 本库：`docs-extract` / `docs-archive` 写 `knowledge/overview/{NAME}-overview.md`。上行：`docs-pull` 入系统槽位；**docs-distill 只写 system overview**。
 
