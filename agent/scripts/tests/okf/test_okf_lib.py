@@ -48,7 +48,7 @@ def test_entity_relpath_application_sys():
         raise AssertionError("expected ValueError when application bundle gets SYS")
     assert (
         okf_lib.entity_relpath("application", "SYS-EXAMPLE", bundle="system")
-        == "knowledge/application/SYS-EXAMPLE.md"
+        == "knowledge/application/SYS-EXAMPLE/SYS-EXAMPLE.md"
     )
 
 
@@ -293,13 +293,21 @@ def test_hierarchy_first_layer_pd_sys():
 def test_entity_relpath_system_ms_and_mw():
     assert (
         okf_lib.entity_relpath(
-            "application", "MS-EXAMPLE", path_parent="APP-EXAMPLE", bundle="system"
+            "application",
+            "MS-EXAMPLE",
+            path_parent="SYS-EXAMPLE/APP-EXAMPLE",
+            bundle="system",
         )
-        == "knowledge/application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md"
+        == "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md"
     )
     assert (
-        okf_lib.entity_relpath("application", "APP-EXAMPLE", bundle="system")
-        == "knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md"
+        okf_lib.entity_relpath(
+            "application",
+            "APP-EXAMPLE",
+            path_parent="SYS-EXAMPLE",
+            bundle="system",
+        )
+        == "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE.md"
     )
     try:
         okf_lib.entity_relpath("technical", "MW-EXAMPLE", bundle="system")

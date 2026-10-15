@@ -48,7 +48,7 @@
   | --- | --- |
   | business | BSD-L3→BC→AGG→AB 本层 SSOT；BD/L1/L2 不建本层文件，只写纯 ID |
   | product | PM→FT→FR→UC/BR 本层 SSOT；PL/PD/BP/BSP 不建本层文件，只写纯 ID |
-  | application | SYS 本层 SSOT（`maps_to`→PD，`implements_to`→SLN）；APP/MS |
+  | application | SYS 本层 SSOT（`maps_to`→PD，`implements_to`→SLN）；落盘 `SYS-{NAME}/`，其下 APP/MS |
   | data | DS/ENT 本层 SSOT；MDG 不建本层文件，只写纯 ID |
   | technical | 本层无首次定义实体。TS/MW/CMP 不建本层文件，只写纯 ID |
 - **公司层五视角**（`company/knowledge/{perspective}/`）：VC、BD、BL、BSD-L1、CAP、TPL；产品视角无实体（概述、度量、体验）；**无** SLN/PD/PL/SYS/BSD-L2/MDG/TS

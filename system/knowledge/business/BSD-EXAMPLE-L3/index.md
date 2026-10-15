@@ -2,7 +2,7 @@
 
 ## 子目录
 
-* [BC-EXAMPLE](BC-EXAMPLE/index.md) - 限界上下文样例
+* [BC-EXAMPLE](BC-EXAMPLE/index.md) - 限界上下文。
 
 ## 目录文件
 

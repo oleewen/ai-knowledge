@@ -1,18 +1,14 @@
 # application-slots
 
-目录说明：[README.md](README.md)。
+目录说明见 [README.md](README.md)。
 
 ## 子目录
 
-（实例槽为软链 `application-{NAME}` → 下级应用 `文档目录`；由 `docs-link` / `/docs-pull` 维护。）
-
-## 已登记槽
-
-（当前无业务实例槽；`docs-link` 建槽后在此人手追加链接。）
+（无）
 
 ## 目录文件
 
-* [README.md](README.md)
+（无）
 
 ## 阅读顺序
 

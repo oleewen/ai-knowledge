@@ -8,7 +8,7 @@
 
 ## 目录文件
 
-* [示例系统需求分析](FEATURE-EXAMPLE.md)
+* [示例系统功能特性](FEATURE-EXAMPLE.md)
 
 ## 阅读顺序
 

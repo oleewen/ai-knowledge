@@ -1,10 +1,12 @@
 # PD-EXAMPLE
 
-宿主目录。PD-EXAMPLE 首次定义在解决方案，本层不建实体文件，正文只写纯 ID。
-
 ## 子目录
 
-* [PM-EXAMPLE](PM-EXAMPLE/index.md) - `implements_to` → `PD-EXAMPLE`
+* [PM-EXAMPLE](PM-EXAMPLE/index.md) - 产品模块。
+
+## 目录文件
+
+（无）
 
 ## 阅读顺序
 

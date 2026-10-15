@@ -20,7 +20,7 @@ layer_scope: system
 ## 跨视角
 
 - mapped_by:
-  - [MS-EXAMPLE](../../../../application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md)
+  - [MS-EXAMPLE](../../../../application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md)
   - [ENT-EXAMPLE](../../../../data/DS-EXAMPLE/ENT-EXAMPLE.md)
 
 ## 详细说明

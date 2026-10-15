@@ -19,7 +19,7 @@ layer_scope: system
 
 ## 跨视角
 
-- maps_to: [AGG-EXAMPLE](../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)
+- maps_to: [AGG-EXAMPLE](../../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)
 
 ## 详细说明
 
@@ -27,4 +27,4 @@ layer_scope: system
 
 ## 依据与证据
 
-[../../chapters/application-architecture.md](../../chapters/application-architecture.md#微服务)（示例）
+[../../../chapters/application-architecture.md](../../../chapters/application-architecture.md#微服务)（示例）

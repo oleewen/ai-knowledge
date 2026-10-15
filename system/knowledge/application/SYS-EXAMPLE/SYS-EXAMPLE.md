@@ -27,4 +27,4 @@ layer_scope: system
 
 ## 依据与证据
 
-[chapters/application-overview.md](chapters/application-overview.md)（示例）
+[../chapters/application-overview.md](../chapters/application-overview.md)（示例）

@@ -64,7 +64,7 @@ layer_scope: system
 
 - implements_to: [BSD-EXAMPLE-L3](../BSD-EXAMPLE-L3.md)
 - implemented_by: [AGG-EXAMPLE](AGG-EXAMPLE/AGG-EXAMPLE.md)
-- supported_by: [APP-EXAMPLE](../../../application/APP-EXAMPLE/APP-EXAMPLE.md)
+- supported_by: [APP-EXAMPLE](../../../application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE.md)
 
 ## 跨视角
 
@@ -100,7 +100,7 @@ layer_scope: system
 ## 跨视角
 
 - mapped_by:
-  - [MS-EXAMPLE](../../../../application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md)
+  - [MS-EXAMPLE](../../../../application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md)
   - [ENT-EXAMPLE](../../../../data/DS-EXAMPLE/ENT-EXAMPLE.md)
 
 ## 详细说明
@@ -298,7 +298,7 @@ layer_scope: system
 """,
     ),
     (
-        "knowledge/application/SYS-EXAMPLE.md",
+        "knowledge/application/SYS-EXAMPLE/SYS-EXAMPLE.md",
         """---
 type: System
 title: 示例系统
@@ -325,11 +325,11 @@ layer_scope: system
 
 ## 依据与证据
 
-[chapters/application-overview.md](chapters/application-overview.md)（示例）
+[../chapters/application-overview.md](../chapters/application-overview.md)（示例）
 """,
     ),
     (
-        "knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md",
+        "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE.md",
         """---
 type: Application
 title: 示例应用
@@ -345,12 +345,12 @@ layer_scope: system
 
 - implements_to: [SYS-EXAMPLE](../SYS-EXAMPLE.md)
 - implemented_by: [MS-EXAMPLE](MS-EXAMPLE/MS-EXAMPLE.md)
-- supports_to: [BC-EXAMPLE](../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)
+- supports_to: [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)
 
 ## 跨视角
 
 - uses_to:
-  - [DS-EXAMPLE](../../data/DS-EXAMPLE/DS-EXAMPLE.md)
+  - [DS-EXAMPLE](../../../data/DS-EXAMPLE/DS-EXAMPLE.md)
 
 ## 详细说明
 
@@ -358,11 +358,11 @@ layer_scope: system
 
 ## 依据与证据
 
-[../chapters/application-architecture.md](../chapters/application-architecture.md#应用)（示例）
+[../../chapters/application-architecture.md](../../chapters/application-architecture.md#应用)（示例）
 """,
     ),
     (
-        "knowledge/application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md",
+        "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md",
         """---
 type: Microservice
 title: 示例微服务
@@ -380,7 +380,7 @@ layer_scope: system
 
 ## 跨视角
 
-- maps_to: [AGG-EXAMPLE](../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)
+- maps_to: [AGG-EXAMPLE](../../../../business/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)
 
 ## 详细说明
 
@@ -388,7 +388,7 @@ layer_scope: system
 
 ## 依据与证据
 
-[../../chapters/application-architecture.md](../../chapters/application-architecture.md#微服务)（示例）
+[../../../chapters/application-architecture.md](../../../chapters/application-architecture.md#微服务)（示例）
 """,
     ),
     (
@@ -410,7 +410,7 @@ layer_scope: system
 
 ## 跨视角
 
-- used_by: [APP-EXAMPLE](../../application/APP-EXAMPLE/APP-EXAMPLE.md)
+- used_by: [APP-EXAMPLE](../../application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE.md)
 
 ## 详细说明
 

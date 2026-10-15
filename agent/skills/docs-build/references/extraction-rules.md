@@ -152,7 +152,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 
 ### 输出结构
 
-应用视角：解决方案层 SLN 落 `application/{id}.md`；系统层每个 SYS/APP/MS 各一 `{ID}.md`；应用层每个 API 落 `application/{MS}/{id}.md`（缺 MS 父级不落盘）。frontmatter 用 okf-spec 的 9 个字段。宿主类、协议等分类说明写入详细说明。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)。
+应用视角：解决方案层 SLN 落 `application/{id}.md`；系统层 SYS 落 `application/{SYS}/{SYS}.md`，APP/MS 落其下 `APP/{APP}.md`、`APP/MS/…`；应用层每个 API 落 `application/{MS}/{id}.md`（缺 MS 父级不落盘）。frontmatter 用 okf-spec 的 9 个字段。宿主类、协议等分类说明写入详细说明。详见 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 与 [consolidation-spec.md](consolidation-spec.md)。
 
 ---
 

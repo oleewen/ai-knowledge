@@ -19,7 +19,7 @@ layer_scope: system
 
 ## 跨视角
 
-- used_by: [APP-EXAMPLE](../../application/APP-EXAMPLE/APP-EXAMPLE.md)
+- used_by: [APP-EXAMPLE](../../application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE.md)
 
 ## 详细说明
 

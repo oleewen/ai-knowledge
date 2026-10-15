@@ -4,12 +4,12 @@
 
 ## 子目录
 
-* [PD-EXAMPLE](PD-EXAMPLE/index.md) - PD-EXAMPLE 索引
+* [PD-EXAMPLE](PD-EXAMPLE/index.md)
 * [chapters](chapters/index.md)
 
 ## 目录文件
 
-* [product-meta.md](../../../agent/knowledge/product-meta.md)
+（无）
 
 ## 阅读顺序
 

@@ -384,7 +384,8 @@ _SINGLE_PARENT_COUNT = {
     ("company", "CAP"): 1,
     ("system", "PM"): 1,
     ("system", "ENT"): 1,
-    ("system", "MS"): 1,
+    ("system", "APP"): 1,
+    ("system", "MS"): 2,
     ("application", "API"): 1,
     ("application", "TBL"): 1,
     ("application", "CMP"): 1,
@@ -445,15 +446,18 @@ def entity_relpath(
             pd = _require_single_parent(prefix, path_parent, "PD id")
             return f"knowledge/product/{pd}/{id}/{id}.md"
         if perspective == "application" and prefix == "SYS":
-            return f"knowledge/application/{id}.md"
-        if perspective == "application" and prefix == "APP":
             return f"knowledge/application/{id}/{id}.md"
+        if perspective == "application" and prefix == "APP":
+            parent = _require_single_parent(prefix, path_parent, "SYS id")
+            return f"knowledge/application/{parent}/{id}/{id}.md"
         if perspective == "application" and prefix == "MS":
-            if not path_parent:
+            parts = [part for part in (path_parent or "").split("/") if part]
+            if len(parts) != 2:
                 raise ValueError(
-                    "entity_relpath: system MS requires path_parent (APP id)"
+                    "entity_relpath: system MS requires path_parent (SYS/APP)"
                 )
-            return f"knowledge/application/{path_parent}/{id}/{id}.md"
+            chain = "/".join(parts)
+            return f"knowledge/application/{chain}/{id}/{id}.md"
         if perspective == "business" and prefix in (
             _SYSTEM_HOST_PARENT_PARTS.keys() | _SYSTEM_LEAF_PARENT_PARTS.keys()
         ):

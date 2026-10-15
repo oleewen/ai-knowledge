@@ -18,7 +18,7 @@
 
 |视角|README 路径|数据来源|
 |------|-------------|-----------|
-|application|`{DOC_DIR}/knowledge/application/README.md`|`application/{ID}.md`（含子目录 MS/API）|
+|application|`{DOC_DIR}/knowledge/application/README.md`|`application/{SYS}/{ID}.md`（系统层）或 `application/{ID}.md`（方案 SLN；应用层含子目录 MS/API）|
 |data|`{DOC_DIR}/knowledge/data/README.md`|`data/**/{ID}.md`|
 |business|`{DOC_DIR}/knowledge/business/README.md`|`business/**/{ID}.md`|
 |product|`{DOC_DIR}/knowledge/product/README.md`|`product/**/{ID}.md`|
@@ -37,7 +37,7 @@
 |类型|解决方案 / 系统 / 应用 / 微服务（MS）/ 接口（与 `hierarchy` 一致的中文）|
 |名称|frontmatter `title`|
 |ID (INDEX-GUIDE)|SLN/SYS/APP：`id`；MS/API：`id`|
-|路径 / 说明|相对链接至 concept 文件（示例路径：`SLN-EXAMPLE.md`、`SYS-EXAMPLE.md`、`MS-EXAMPLE/MS-EXAMPLE.md`）|
+|路径 / 说明|相对链接至 concept 文件（示例路径：`SLN-EXAMPLE.md`、`SYS-EXAMPLE/SYS-EXAMPLE.md`、`SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md`）|
 
 按 `hierarchy` 分组遍历：`SLN` → `SYS` → `APP` → `MS` → `API`。链序 `L1`…`L5` 对应这条链。各层只登记本层首次定义。
 

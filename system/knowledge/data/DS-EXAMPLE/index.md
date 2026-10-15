@@ -7,7 +7,7 @@
 ## 目录文件
 
 * [示例数据源](DS-EXAMPLE.md) - 示例数据源。
-* [示例实体](ENT-EXAMPLE.md)
+* [示例实体](ENT-EXAMPLE.md) - 数据实体，表或集合。
 
 ## 阅读顺序
 

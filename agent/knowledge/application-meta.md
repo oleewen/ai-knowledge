@@ -36,7 +36,7 @@ title: 应用视角元数据
 | --- | --- |
 | 层 | 系统 |
 | id_pattern | `SYS-{NAME}` |
-| 落盘 | `SYS-{NAME}.md` 单文件。应用不落盘，纯 ID |
+| 落盘 | `SYS-{NAME}/SYS-{NAME}.md`。应用不落盘，纯 ID |
 | 字段 | `implements_to`、`implemented_by` 必须，→ SLN、← APP；`maps_to` → PD；`uses_to` → MDG\|TS |
 
 ### APP
@@ -45,7 +45,7 @@ title: 应用视角元数据
 | --- | --- |
 | 层 | 系统 |
 | id_pattern | `APP-{NAME}` |
-| 落盘 | `APP-{NAME}/` 平铺（不强制收进 SYS 目录）。应用不落盘，纯 ID |
+| 落盘 | `SYS-{NAME}/APP-{NAME}/`（收进所属 SYS 目录）。应用不落盘，纯 ID |
 | 字段 | `implements_to`、`implemented_by` 必须，→ SYS、← MS；`supports_to` → BC；`uses_to` → DS\|MW（MW 为纯 ID） |
 
 ### MS
@@ -54,7 +54,7 @@ title: 应用视角元数据
 | --- | --- |
 | 层 | 系统 |
 | id_pattern | `MS-{NAME}` |
-| 落盘 | 系统 `APP-{NAME}/MS-{NAME}/`。应用不落 MS 实体；`MS-{NAME}/` 可作 API 宿主目录 |
+| 落盘 | 系统 `SYS-{NAME}/APP-{NAME}/MS-{NAME}/`（或仓内既有扁平 `MS-*.md` 形态）。应用不落 MS 实体；`MS-{NAME}/` 可作 API 宿主目录 |
 | 字段 | `implements_to` 必须，→ APP；`implemented_by` 必须 → API（纯 ID）；`maps_to` → AGG；`uses_to` → ENT |
 
 对端镜像：`BC.supported_by`、`AGG.mapped_by`（MS）、`DS.used_by`、`ENT.used_by` 须与上表双向同步。

@@ -4,22 +4,19 @@
 
 ## 子目录
 
-* [APP-EXAMPLE](APP-EXAMPLE/index.md) - 示例应用
+* [SYS-EXAMPLE](SYS-EXAMPLE/index.md) - 系统（别名应用服务）；implements_to 解决方案 SLN；maps_to PD。
 * [chapters](chapters/index.md)
 
 ## 目录文件
 
-* [示例系统](SYS-EXAMPLE.md) - 系统（别名应用服务）；implements_to→解决方案 SLN；maps_to PD。
-
-* [application-meta.md](../../../agent/knowledge/application-meta.md)
+（无）
 
 ## 阅读顺序
 
 1. [README.md](README.md)
 2. [chapters/index.md](chapters/index.md)
-3. [SYS-EXAMPLE.md](SYS-EXAMPLE.md)
-4. [APP-EXAMPLE/index.md](APP-EXAMPLE/index.md)
-5. [application-meta.md](../../../agent/knowledge/application-meta.md)
+3. [SYS-EXAMPLE/index.md](SYS-EXAMPLE/index.md)
+4. [application-meta.md](../../../agent/knowledge/application-meta.md)
 
 ## 关联索引
 
