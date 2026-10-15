@@ -11,7 +11,7 @@ DOCS="$PROJECT/docs"
 cleanup() { rm -rf "$TMP_DIR"; }
 trap cleanup EXIT
 
-mkdir -p "$DOCS/knowledge" "$DOCS/changelogs" "$PROJECT/agent/scripts" "$DOCS/.agents"
+mkdir -p "$DOCS/knowledge" "$PROJECT/agent/scripts" "$DOCS/.agents"
 git -C "$PROJECT" init -q
 
 {
@@ -48,8 +48,9 @@ if grep -q 'docs-indexing:begin' "$DOCS/INDEX-GUIDE.md"; then
 fi
 grep -q '| 999 |' "$DOCS/INDEX-GUIDE.md" || fail "未启用 rewrite 时不应改既有统计"
 
-base=$(python3 "$ROOT_DIR/agent/skills/docs-indexing/scripts/indexing_log.py" read-baseline "$DOCS/changelogs/INDEXING-LOG.md")
-[[ "$base" != 0 ]] || fail "INDEX 成功后应写 LOG"
+base=$(python3 "$ROOT_DIR/agent/skills/docs-indexing/scripts/indexing_log.py" read-baseline "$DOCS/INDEX-GUIDE.md")
+[[ "$base" != 0 ]] || fail "INDEX 成功后应写 INDEX-GUIDE HTML 锚点"
+grep -q 'sdx-indexing:indexing_finished_ms=' "$DOCS/INDEX-GUIDE.md" || fail "缺少增量锚点注释"
 
 (cd "$PROJECT" && "$INDEXING_SCRIPT" --mode full --depth 3 --rewrite)
 

@@ -11,7 +11,7 @@
 | 核对项 | 说明 |
 | ----- | ---- |
 | 仓库根与 `文档目录` | 索引输出相对文档根；若有多套约定，列出解析结果供用户确认 |
-| `changelogs/INDEXING-LOG.md` | 是否存在；若存在，**主表第一行**是否有可解析的 `indexing_finished_ms`（或迁移期旧 HTML 回退；仅作展示） |
+| `INDEX-GUIDE` 增量锚点注释 | 是否存在；若存在，**主表第一行**是否有可解析的 `indexing_finished_ms`（或迁移期旧 HTML 回退；仅作展示） |
 | 增量前提 | 无有效基线时，增量不可用，须在步骤 2 说明并请用户选全量或中止 |
 | 用户意图（可选问一句） | 首次建索引 / 大改后重扫 / 日常跟进变更 |
 
@@ -78,13 +78,13 @@ python3 -c "from datetime import datetime; from zoneinfo import ZoneInfo; ms=171
 ```markdown
 请确认本次文档索引参数（确认后我才会执行扫描）：
 
-- **mode**：full / incremental  
-  - （说明：若选 incremental，需 INDEXING-LOG 有效基线；当前：[有/无]）
-- **depth**：1 / 2 / 3  
-- **output**：[默认路径说明] 或你指定的路径  
-- **since**（仅 incremental 需要）：[日志候选须 §2.0，如 `2024-04-26 13:20:00 +08`（`1714108800000`）] 或你指定的 epoch ms  
+- **mode**：full / incremental 
+ - （说明：若选 incremental，需 索引锚点 有效基线；当前：[有/无]）
+- **depth**：1 / 2 / 3 
+- **output**：[默认路径说明] 或你指定的路径 
+- **since**（仅 incremental 需要）：[日志候选须 §2.0，如 `2024-04-26 13:20:00 +08`（`1714108800000`）] 或你指定的 epoch ms 
 
-**便捷选项**（回复字母即可，我仍会复述完整参数请你最终确认）：  
+**便捷选项**（回复字母即可，我仍会复述完整参数请你最终确认）： 
 A 首次摸底 full+1 · B 结构全量 full+2 · C 全量精读 full+3 · …（按需列出）
 
 你也可以直接写出：`mode=... depth=... output=... since=...`（since 仍可用纯数字；我复述时会按 §2.0 双写）

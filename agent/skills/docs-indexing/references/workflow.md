@@ -12,7 +12,7 @@
 
 - 必需：仓库根、`mode`、`depth`（用户确认）
 - 可选：`output`、`since`；基线候选为 LOG **主表首行** `indexing_finished_ms`（对人只展示；须 [scan-config-onboarding.md §2.0](scan-config-onboarding.md) 双写；HTML 回退见 [indexing-log-spec.md](indexing-log-spec.md)）
-- 产出：索引指南（仓库根或各 DOC_DIR 的 `INDEX-GUIDE.md`）、`changelogs/INDEXING-LOG.md`（新行在表顶）
+- 产出：索引指南（仓库根或各 DOC_DIR 的 `INDEX-GUIDE.md`）、`INDEX-GUIDE` 增量锚点注释（新行在表顶）
 - 不产出：知识实体；不改 README/AGENTS；无 CHANGELOG
 
 ## 参数
@@ -40,13 +40,13 @@
 
 ## 当前单元
 
-单个索引输出组（INDEX-GUIDE + 对应 INDEXING-LOG）。一次只处理一个。定义与路径约束见 [gates.md](gates.md)。
+单个索引输出组（INDEX-GUIDE + 对应 索引锚点）。一次只处理一个。定义与路径约束见 [gates.md](gates.md)。
 
 ## 写后默认表
 
 | 对象 | 默认烤干 | 强制升级 |
 | --- | --- | --- |
-| 单个索引输出组（INDEX-GUIDE + INDEXING-LOG） | **必须** | 导航路径/索引路径变更；未确认决策写入；跨单元依赖变更 |
+| 单个索引输出组（INDEX-GUIDE + 索引锚点） | **必须** | 导航路径/索引路径变更；未确认决策写入；跨单元依赖变更 |
 
 启发式只可升级为必须，不可把默认「必须」降为跳过。
 
@@ -55,14 +55,14 @@
 推进环（澄清 → 生成 → 烤干 → 用户动作）见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)；本技能只补索引特有步骤：
 
 1. 选定当前单元（单个输出组）
-2. **意图澄清**：公共六项 + [gates.md](gates.md) 追加字段；第 6 项须列出本轮 `INDEX-GUIDE.md` 与 `*/changelogs/INDEXING-LOG.md` 的**完整仓库根相对路径**；写前 `C` 后方可写入
-3. 环境与基线：读 `INDEXING-LOG` 主表首行或旧 HTML → 候选 `indexing_finished_ms`；向用户展示时按 [scan-config-onboarding.md §2.0](scan-config-onboarding.md) 双写（Asia/Shanghai）。对齐 文档目录、基线与输出路径
+2. **意图澄清**：公共六项 + [gates.md](gates.md) 追加字段；第 6 项须列出本轮 `INDEX-GUIDE.md` 与 `*/`INDEX-GUIDE` 增量锚点注释 的**完整仓库根相对路径**；写前 `C` 后方可写入
+3. 环境与基线：读 `索引锚点` 主表首行或旧 HTML → 候选 `indexing_finished_ms`；向用户展示时按 [scan-config-onboarding.md §2.0](scan-config-onboarding.md) 双写（Asia/Shanghai）。对齐 文档目录、基线与输出路径
 4. 增量：Agent 按锚点（主表首行 `indexing_finished_ms`，或显式 `--since` epoch ms）用 git 列 **`DOC_DIR` 下**变更（已提交 + 工作区）；full：跳过。对人解释基线时同样 §2.0。可复制流程（仓库根执行；将 `SINCE_MS`、`DOC_DIR` 换成本轮值）：
 
 ```bash
 # 1) epoch ms → UTC ISO（供 --since）
-SINCE_MS=1714108800000   # 例：INDEXING-LOG 首行或 --since
-DOC_DIR=application      # 例：.docsconfig 的 DOC_DIR
+SINCE_MS=1714108800000 # 例：索引锚点 首行或 --since
+DOC_DIR=application # 例：.docsconfig 的 DOC_DIR
 SINCE_ISO="$(python3 -c "from datetime import datetime, timezone; print(datetime.fromtimestamp(${SINCE_MS}/1000, tz=timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'))")"
 
 # 2) 锚点以来已提交变更（仅 DOC_DIR）
@@ -74,9 +74,9 @@ git ls-files --others --exclude-standard -- "$DOC_DIR"
 
 # 4) 合并去重（示例：写入临时列表供扫描）
 {
-  git log --since="$SINCE_ISO" --name-only --pretty=format: -- "$DOC_DIR"
-  git diff --name-only -- "$DOC_DIR"
-  git ls-files --others --exclude-standard -- "$DOC_DIR"
+ git log --since="$SINCE_ISO" --name-only --pretty=format: -- "$DOC_DIR"
+ git diff --name-only -- "$DOC_DIR"
+ git ls-files --others --exclude-standard -- "$DOC_DIR"
 } | sed '/^$/d' | sort -u
 ```
 
@@ -87,7 +87,7 @@ agent/skills/docs-indexing/scripts/indexing.sh --mode <mode> --depth <depth> [--
 ```
 
 6. 生成并写入：脚本先 scan-only 统计并写 LOG；Agent 按 [nine-chapter-spec.md](nine-chapter-spec.md)、[index-guide-template.md](../assets/index-guide-template.md) 维护九章。需要刷新脚本运行块时加 `--rewrite`；若目标已有 `<!-- docs-build:entity-index:begin/end -->`，须原样保留，不得清空。
-7. **烤干**：按写后默认表；检查覆盖面与 `mode/depth`、路径、增量基线解释、`INDEXING-LOG` 是否仅在指南成功后追加
+7. **烤干**：按写后默认表；检查覆盖面与 `mode/depth`、路径、增量基线解释、`索引锚点` 是否仅在指南成功后追加
 8. 用户动作：`C/M/G/S/F` 见 unit-cycle-protocol
 
 **OKF 索引（建议，非阻断）**：索引指南落盘后：
@@ -110,6 +110,6 @@ bash agent/skills/docs-okf/scripts/okf-validate.sh --bundle application
 
 ## 依赖
 
-- 前置：增量时 Agent 用 git 定变更范围（锚点见 INDEXING-LOG）
+- 前置：增量时 Agent 用 git 定变更范围（锚点见 索引锚点）
 - 下游：docs-build
 - 关联：docs-agent

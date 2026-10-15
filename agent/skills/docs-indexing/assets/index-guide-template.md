@@ -28,49 +28,48 @@
 
 ```
 {project}/
-├── {module-1}/    # {描述}
-├── {module-2}/    # {描述}
-└── {module-n}/    # {描述}
+├── {module-1}/ # {描述}
+├── {module-2}/ # {描述}
+└── {module-n}/ # {描述}
 ```
 
 ### 2.2 依赖关系
 
 ```mermaid
 flowchart TD
-    boot["{project-name}-boot"]
-    service["{project-name}-service"]
-    client["{project-name}-client"]
-    api["{project-name}-api"]
-    application["{project-name}-application"]
-    domain["{project-name}-domain"]
-    common["{project-name}-common"]
-    infrastructure["{project-name}-infrastructure"]
+ boot["{project-name}-boot"]
+ service["{project-name}-service"]
+ client["{project-name}-client"]
+ api["{project-name}-api"]
+ application["{project-name}-application"]
+ domain["{project-name}-domain"]
+ common["{project-name}-common"]
+ infrastructure["{project-name}-infrastructure"]
 
-    client --> api
-    service --> api --> common
-    boot --> service --> application --> domain --> common
-    boot --> infrastructure
-    infrastructure ---> domain
-  
+ client --> api
+ service --> api --> common
+ boot --> service --> application --> domain --> common
+ boot --> infrastructure
+ infrastructure ---> domain
+ 
 ```
 
 ### 2.3 包结构
 
 ```
 {root.package}
-├── {layer-1}/    # {描述}
-├── {layer-2}/    # {描述}
-└── {layer-n}/    # {描述}
+├── {layer-1}/ # {描述}
+├── {layer-2}/ # {描述}
+└── {layer-n}/ # {描述}
 ```
 
 ### 2.4 文档目录
 
 ```
 {DOC_DIR}/
-├── INDEX-GUIDE.md    # 九章索引指南（本文件）
-├── index.md          # 目录索引与 OKF 渐进披露入口
-├── knowledge/        # 知识库
-└── changelogs/       # 变更日志
+├── INDEX-GUIDE.md # 九章索引指南（本文件）
+├── index.md # 目录索引与 OKF 渐进披露入口
+├── knowledge/ # 知识库
 ```
 
 ---
@@ -137,17 +136,17 @@ flowchart TD
 
 ```mermaid
 stateDiagram-v2
-    [*] --> {STATE_1} : {action}
-    {STATE_1} --> {STATE_2} : {action}
-    {STATE_2} --> [*]
+ [*] --> {STATE_1} : {action}
+ {STATE_1} --> {STATE_2} : {action}
+ {STATE_2} --> [*]
 ```
 
 ### 5.2 核心流程
 
 1. **{流程名称}**
-   - {步骤 1}
-   - {步骤 2}
-   - {步骤 n}
+ - {步骤 1}
+ - {步骤 2}
+ - {步骤 n}
 
 ### 5.3 业务规则
 
@@ -159,8 +158,8 @@ stateDiagram-v2
 
 ```java
 public enum {EnumName} {
-    {VALUE_1},    // {描述}
-    {VALUE_2},    // {描述}
+ {VALUE_1}, // {描述}
+ {VALUE_2}, // {描述}
 }
 ```
 

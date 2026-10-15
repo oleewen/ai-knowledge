@@ -16,9 +16,7 @@ cd "$repo_abs" || exit 1
 
 # cwd=仓库根；路径见 .docsconfig / docsconfig_doc_abs
 DEFAULT_OUTPUT="${doc_abs}/INDEX-GUIDE.md"
-LOG_FILE="${doc_abs}/changelogs/INDEXING-LOG.md"
 INDEXING_LOG_PY="${SCRIPT_DIR}/indexing_log.py"
-mkdir -p "${doc_abs}/changelogs"
 
 now_ms() {
     python3 - <<'PY'
@@ -35,7 +33,7 @@ show_help() {
     echo "  --depth 1|2|3"
     echo "  --output PATH   (默认文档根 INDEX-GUIDE.md；文件名固定)"
   echo "  --since MS      增量 epoch ms"
-  echo "  --rewrite       重建 INDEX-GUIDE；默认只刷新扫描统计并写 LOG"
+  echo "  --rewrite       更新 INDEX-GUIDE 运行块；默认 scan-only，仍写增量锚点注释"
     echo "  -h, --help"
 }
 
@@ -119,30 +117,25 @@ if [[ "$(basename "$OUTPUT")" != "INDEX-GUIDE.md" ]]; then
     exit 1
 fi
 
-# 获取上次索引时间（用于增量模式）；主表首行，否则回退文内 HTML 注释（见 indexing-log-spec）
+# 增量基线：目标 INDEX-GUIDE 内 HTML 锚点（见 indexing-log-spec）
 BASE_INDEXING_TIME_MS=0
-SINCE_MS_FOR_LOG=0
 if [[ "$DATA_MODE" == "incremental" ]]; then
     if [[ -n "$SINCE" ]]; then
         BASE_INDEXING_TIME_MS="$SINCE"
-        SINCE_MS_FOR_LOG="$SINCE"
-    elif [[ -f "$LOG_FILE" ]]; then
+    elif [[ -f "$OUTPUT" ]]; then
         BASE_INDEXING_TIME_MS=$(
-            python3 "$INDEXING_LOG_PY" read-baseline "$LOG_FILE" 2>/dev/null || echo "0"
+            python3 "$INDEXING_LOG_PY" read-baseline "$OUTPUT" 2>/dev/null || echo "0"
         )
-        SINCE_MS_FOR_LOG="$BASE_INDEXING_TIME_MS"
     fi
 
     if [[ "$BASE_INDEXING_TIME_MS" == "0" ]] || [[ -z "$BASE_INDEXING_TIME_MS" ]]; then
-        echo "[ERROR] incremental 需要有效基线：主表第一行 indexing_finished_ms，"
-        echo "  或显式 \`--since <epoch ms>\`。"
-        echo "  可改 \`--mode full\`，或先补全 ${LOG_FILE} 见 agent/skills/docs-indexing/references/indexing-log-spec.md" >&2
+        echo "[ERROR] incremental 需要有效基线：INDEX-GUIDE 内" >&2
+        echo "  <!-- sdx-indexing:indexing_finished_ms=... -->，或显式 \`--since <epoch ms>\`。" >&2
+        echo "  可改 \`--mode full\`。见 agent/skills/docs-indexing/references/indexing-log-spec.md" >&2
         exit 1
     else
         echo "Using incremental mode with baseline (since) $BASE_INDEXING_TIME_MS"
     fi
-else
-    SINCE_MS_FOR_LOG=0
 fi
 
 # 生成变更索引（简版元数据）
@@ -226,9 +219,7 @@ if [[ -z "$TOP_FILES" ]]; then
     TOP_FILES="- 无"
 fi
 
-REL_LOG="./${LOG_FILE#"$repo_abs"/}"
 REL_DEFAULT_OUT="./${DEFAULT_OUTPUT#"$repo_abs"/}"
-REL_LOG="${REL_LOG//.\/././}"
 REL_DEFAULT_OUT="${REL_DEFAULT_OUT//.\/././}"
 
 TMP_OUT="$(mktemp)"
@@ -240,7 +231,7 @@ cat > "$TMP_OUT" << EOF
 | mode / depth | \`${DATA_MODE} / ${READ_MODE}\` |
 | 文件总数 | \`${INDEXED_FILES}\` |
 | 输出路径 | \`${REL_DEFAULT_OUT}\` |
-| 运行日志 | \`${REL_LOG}\` |
+| 增量锚点 | \`INDEX-GUIDE\` 内 HTML 注释 |
 
 <details>
 <summary>扫描目录</summary>
@@ -313,34 +304,14 @@ if rewrite:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text((fm + body).rstrip() + "\n", encoding="utf-8")
 else:
-    print("scan-only: INDEX-GUIDE 未修改；使用 --rewrite 才更新运行块")
-
-out_path.parent.mkdir(parents=True, exist_ok=True)
-out_path.write_text((fm + body).rstrip() + "\n", encoding="utf-8")
+    print("scan-only: 不改运行块；仍更新增量锚点注释。使用 --rewrite 才更新运行块")
 PY
 
 rm -f "$TMP_OUT"
 
-# 写入索引运行日志（主表、最新在上；见 indexing_log.py / indexing-log-spec）
+# 写入 INDEX-GUIDE 增量锚点（见 indexing_log.py / indexing-log-spec）
 FINISHED_TIME_MS=$(now_ms)
-DURATION_MS=$((FINISHED_TIME_MS - CURRENT_TIME_MS))
-TIMESTAMP_ISO="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-REL_OUTPUT=$(
-    repo_abs="${repo_abs}" OUT="${OUTPUT}" python3 -c \
-        "import os, os.path as p; r=os.environ['repo_abs']; o=os.environ['OUT']; \
-print(p.relpath(p.abspath(o), p.abspath(r)))" 2>/dev/null || echo "$OUTPUT"
-)
-SUMMARY="${DATA_MODE} d${READ_MODE}"
-python3 "$INDEXING_LOG_PY" append "$LOG_FILE" \
-    --finished-ms "$FINISHED_TIME_MS" \
-    --indexed-at "$TIMESTAMP_ISO" \
-    --mode "$DATA_MODE" \
-    --depth "$READ_MODE" \
-    --since-ms "$SINCE_MS_FOR_LOG" \
-    --output-path "$REL_OUTPUT" \
-    --file-count "$INDEXED_FILES" \
-    --duration-ms "$DURATION_MS" \
-    --summary "$SUMMARY"
+python3 "$INDEXING_LOG_PY" write-anchor "$OUTPUT" --finished-ms "$FINISHED_TIME_MS"
 
 # 完成时间
 END_TIME=$(date '+%Y-%m-%d %H:%M:%S')
@@ -351,4 +322,4 @@ echo "   - Depth: $READ_MODE"
 echo "   - Output: $OUTPUT"
 echo "   - Started: $START_TIME"
 echo "   - Finished: $END_TIME"
-echo "   - Log: $LOG_FILE"
+echo "   - Anchor: $OUTPUT (sdx-indexing:indexing_finished_ms)"

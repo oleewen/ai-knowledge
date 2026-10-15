@@ -1,7 +1,7 @@
 ---
 name: docs-indexing
 description: >
-  生成九章索引指南（各文档根固定为 INDEX-GUIDE.md），维护各 DOC_DIR 下 changelogs/INDEXING-LOG.md 主表（最新在上）。
+  生成九章索引指南（各文档根固定为 INDEX-GUIDE.md），并在该文件内维护增量锚点 HTML 注释。
   用户提到 /docs-indexing、建/更索引、文档地图、Onboarding、整理 INDEX 时，使用本技能。
   分流：实体/INDEX-GUIDE 第四章 → docs-build；overview → docs-distill/extract；SDD → 对应技能，勿单跑本技能吞下游。
   推进见 references/gates.md。
@@ -11,17 +11,18 @@ description: >
 
 ## 输出硬约束（P0）
 
-- 当前单元：单个索引输出组（如根或某 `DOC_DIR` 的 `INDEX-GUIDE.md` + 对应 `INDEXING-LOG.md`）。
+- 当前单元：单个索引输出组（如根或某 `DOC_DIR` 的 `INDEX-GUIDE.md`；增量锚点写在同一文件内）。
 - 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[simplify-principles.md](../../references/simplify-principles.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写入；收敛后停等用户，不得自动推进下一输出组。
-- 意图澄清第 6 项须列出本轮双路径（仓库根相对）：`INDEX-GUIDE.md` 与对应 `changelogs/INDEXING-LOG.md`。
+- 意图澄清第 6 项须列出本轮路径（仓库根相对）：目标 `INDEX-GUIDE.md`（含锚点注释）。
 - 无基线且请求 incremental 时，须先确认 full/中止/补 since，不得静默继续。
-- 对人展示 `since` / `indexing_finished_ms` / `since_ms`：须 `yyyy-MM-dd HH:mm:ss +08`（`{epoch_ms}`），时区 Asia/Shanghai；表与 `--since` 仍纯数字。见 [scan-config-onboarding.md §2.0](references/scan-config-onboarding.md)。
+- 对人展示 `since` / `indexing_finished_ms` / `since_ms`：须 `yyyy-MM-dd HH:mm:ss +08`（`{epoch_ms}`），时区 Asia/Shanghai；锚点与 `--since` 仍纯数字。见 [scan-config-onboarding.md §2.0](references/scan-config-onboarding.md)。
 
 ## 边界
 
-- 负责：各文档根 `INDEX-GUIDE.md`（九章骨架）、`INDEXING-LOG.md`、full/incremental、深度 1–3。重写 `INDEX-GUIDE.md` 时**必须保留** `<!-- docs-build:entity-index:begin/end -->` 块。
+- 负责：各文档根 `INDEX-GUIDE.md`（九章骨架）、文内增量锚点、full/incremental、深度 1–3。重写 `INDEX-GUIDE.md` 时**必须保留** `<!-- docs-build:entity-index:begin/end -->` 块。
 - 不负责：第四章视角导航块（docs-build）；OKF（docs-okf）；SDD；overview（distill/extract）
-- 脚本边界：`indexing.sh` 默认 scan-only，只统计 `DOC_DIR` 并写 `INDEXING-LOG`；`--rewrite` 只更新 `docs-indexing` 运行块。九章正文与基线由 Agent 按规范维护，脚本不得覆盖。
+- 脚本边界：`indexing.sh` 默认 scan-only，只统计 `DOC_DIR` 并写锚点注释；`--rewrite` 更新 `docs-indexing` 运行块。九章正文由 Agent 按规范维护，脚本不得覆盖。
+- **不**落盘 `INDEXING-LOG.md` / `changelogs/`。
 
 ## 不这样用
 
@@ -50,7 +51,7 @@ description: >
 
 ## 产出与脚本
 
-- 正式：索引指南（固定为 `INDEX-GUIDE.md`）、`INDEXING-LOG.md`
+- 正式：索引指南（固定为 `INDEX-GUIDE.md`，含增量锚点注释）
 - 收敛后动作见 [unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)（本技能有 `S`）
 - INDEX 落盘后建议刷新 OKF：见 [docs-okf/references/workflow.md](../docs-okf/references/workflow.md)
 

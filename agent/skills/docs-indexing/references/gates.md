@@ -18,8 +18,8 @@
 
 **当前单元** = 单个索引输出组：
 
-- 目标 `INDEX-GUIDE.md` + 对应 `changelogs/INDEXING-LOG.md`
-- 例：根 `INDEX-GUIDE.md` + 根 `changelogs/INDEXING-LOG.md`；或 `{DOC_DIR}/INDEX-GUIDE.md` + `{DOC_DIR}/changelogs/INDEXING-LOG.md`
+- 目标 `INDEX-GUIDE.md` + 对应 `INDEX-GUIDE` 增量锚点注释
+- 例：根 `INDEX-GUIDE.md` + 根 `INDEX-GUIDE` 增量锚点注释；或 `{DOC_DIR}/INDEX-GUIDE.md` + `{DOC_DIR}/`INDEX-GUIDE` 增量锚点注释
 
 一次只处理一个输出组。
 
@@ -33,7 +33,7 @@
 第 6 项「写入路径/容器」**必须**列出本轮将写入的**完整仓库根相对路径**（区分多域同名文件）：
 
 - 目标 `INDEX-GUIDE.md`（如 `INDEX-GUIDE.md` 或 `application/INDEX-GUIDE.md`）
-- 对应 `changelogs/INDEXING-LOG.md`（如 `application/changelogs/INDEXING-LOG.md`）
+- 对应 `INDEX-GUIDE` 增量锚点注释（如 `application/`INDEX-GUIDE` 增量锚点注释）
 
 ## 写后默认
 
@@ -64,12 +64,12 @@
 ## 原子性 / 失败停顿
 
 - 当前单元写入失败时，不得继续写后续输出组
-- 索引指南落盘失败时，禁止追加 `INDEXING-LOG`
+- 索引指南落盘失败时，禁止追加 `索引锚点`
 - 当前单元未收敛前，不得自动推进下一输出组
 
 ## 典型语义问题（烤干）
 
 - `mode` / `depth` / `output` / `since` / 基线策略变化
 - 导航路径或索引路径变化
-- 是否补写 `INDEXING-LOG`
+- 是否补写 `索引锚点`
 - 扫描范围或增量策略变化
