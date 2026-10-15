@@ -32,7 +32,7 @@ title: 产品视角元数据
 | --- | --- |
 | 层 | 解决方案 |
 | id_pattern | `PL-{NAME}` |
-| 落盘 | 标准 `{ID}.md` |
+| 落盘 | `knowledge/product/{ID}/{ID}.md`（实体目录宿主） |
 | 字段 | `maps_to` → 公司 BL，1:1；`implemented_by` → PD；`mapped_by` → SLN |
 
 ### PD
@@ -41,7 +41,7 @@ title: 产品视角元数据
 | --- | --- |
 | 层 | 解决方案 |
 | id_pattern | `PD-{NAME}` |
-| 落盘 | 标准 `{ID}.md`。系统层宿主目录 `PD-{NAME}/` 可留，其下 `PM-{NAME}/` 树。不建 `PD-{NAME}.md` |
+| 落盘 | `knowledge/product/{PL-ID}/{ID}.md`（跟所属 PL 实体目录）。系统层宿主目录 `PD-{NAME}/` 可留，其下 `PM-{NAME}/` 树。不建 `PD-{NAME}.md` |
 | 字段 | `implements_to` → PL；`maps_to` → BS，1:1；`implemented_by` 必须 → BSP、PM（PM 为纯 ID）；`mapped_by` 可选 → SYS（纯 ID） |
 
 ### BP

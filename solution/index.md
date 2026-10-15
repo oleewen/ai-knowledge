@@ -8,7 +8,7 @@
 * [adr](adr/README.md)
 * [knowledge](knowledge/README.md)
 * [solutions](solutions/README.md)
-* [system-slots](system-slots/README.md) - system-slots 目录索引
+* [system-slots](system-slots/README.md)
 
 ## 目录文件
 

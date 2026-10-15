@@ -389,10 +389,18 @@ _SINGLE_PARENT_COUNT = {
     ("system", "MS"): 2,
     ("system", "BSD"): 1,  # L3 落盘需 L2 目录宿主 id
     ("system", "DS"): 1,  # MDG 目录宿主 id
+    ("solution", "PD"): 1,  # PL 实体目录宿主 id
     ("application", "API"): 1,
     ("application", "TBL"): 1,
     ("application", "CMP"): 1,
 }
+
+
+def _bsd_l2_to_l1_host(l2_id: str) -> str:
+    """方案层 L2 外包 L1 目录宿主：*-L2 → *-L1（不读 parent 实体 id）。"""
+    if not l2_id.endswith("-L2"):
+        raise ValueError(f"expected BSD-L2 id, got {l2_id}")
+    return l2_id.removesuffix("-L2") + "-L1"
 
 
 def relpath_parent_count(prefix: str, bundle: str) -> Optional[int]:
@@ -486,10 +494,14 @@ def entity_relpath(
     if bundle == "solution":
         if perspective == "business" and prefix == "BSD":
             if id.endswith("-L2"):
-                return f"knowledge/business/{id}/{id}.md"
+                l1 = _bsd_l2_to_l1_host(id)
+                return f"knowledge/business/{l1}/{id}/{id}.md"
             raise ValueError("entity_relpath: solution lands BSD-L2 only")
-        if perspective == "product" and prefix in ("PL", "PD"):
-            return f"knowledge/product/PL/{id}.md"
+        if perspective == "product" and prefix == "PL":
+            return f"knowledge/product/{id}/{id}.md"
+        if perspective == "product" and prefix == "PD":
+            pl = _require_single_parent(prefix, path_parent, "PL id")
+            return f"knowledge/product/{pl}/{id}.md"
         if perspective == "product" and prefix in ("BP", "BSP"):
             return f"knowledge/product/BP/{id}.md"
         if perspective == "business" and prefix == "BS":
@@ -499,7 +511,7 @@ def entity_relpath(
         if perspective == "data" and prefix == "MDG":
             return f"knowledge/data/{id}.md"
         if perspective == "technical" and prefix == "TS":
-            return f"knowledge/technical/{id}.md"
+            return f"knowledge/technical/TS/{id}.md"
         raise ValueError(f"entity_relpath: solution does not land {prefix} files")
 
     if perspective == "application" and prefix == "API":

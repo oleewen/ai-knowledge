@@ -2,9 +2,13 @@
 
 目录说明见 [README.md](README.md)。
 
+## 子目录
+
+（无）
+
 ## 目录文件
 
-* [SOLUTION-EXAMPLE.md](SOLUTION-EXAMPLE.md)
+* [示例交付包切分](SOLUTION-EXAMPLE.md)
 
 ## 阅读顺序
 

@@ -22,11 +22,11 @@ tags: [example]
 
 ## 为什么这样切
 
-一条交付包只对一条产品线负责。[PL-EXAMPLE](../knowledge/product/PL/PL-EXAMPLE.md) 是这包要交付的产品线。把办理路径收成一个包，是为了让范围内外可以指回已登记的产品服务，而不是靠口头补边界。
+一条交付包只对一条产品线负责。[PL-EXAMPLE](../knowledge/product/PL-EXAMPLE/PL-EXAMPLE.md) 是这包要交付的产品线。把办理路径收成一个包，是为了让范围内外可以指回已登记的产品服务，而不是靠口头补边界。
 
 ## 范围内外
 
-- 包内：[PD-EXAMPLE](../knowledge/product/PL/PD-EXAMPLE.md)
+- 包内：[PD-EXAMPLE](../knowledge/product/PL-EXAMPLE/PD-EXAMPLE.md)
 - 包外：未登记到这条产品线的产品服务
 
 ## 流程怎么串
@@ -35,8 +35,8 @@ tags: [example]
 
 ## 主数据主权
 
-[MDG-EXAMPLE](../knowledge/data/MDG-EXAMPLE.md) 由 [PD-EXAMPLE](../knowledge/product/PL/PD-EXAMPLE.md) 使用。权威落在该主数据域，不在这份叙事里重写字段。
+[MDG-EXAMPLE](../knowledge/data/MDG-EXAMPLE.md) 由 [PD-EXAMPLE](../knowledge/product/PL-EXAMPLE/PD-EXAMPLE.md) 使用。权威落在该主数据域，不在这份叙事里重写字段。
 
 ## 技术例外
 
-[TS-EXAMPLE](../knowledge/technical/TS-EXAMPLE.md) 相对公司技术模板的选用与例外，只作用于包内的产品服务。无额外例外时以该技术服务已登记的选用为准。
+[TS-EXAMPLE](../knowledge/technical/TS/TS-EXAMPLE.md) 相对公司技术模板的选用与例外，只作用于包内的产品服务。无额外例外时以该技术服务已登记的选用为准。

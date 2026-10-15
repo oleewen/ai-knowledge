@@ -22,4 +22,4 @@ title: 技术架构
 
 | 链序 | 层级 | ID | 名称 | 文件/目录 |
 |------|------|----|------|-----------|
-| L2 | TS | TS-EXAMPLE | 示例技术服务 | [TS-EXAMPLE.md](TS-EXAMPLE.md) |
+| L2 | TS | TS-EXAMPLE | 示例技术服务 | [TS-EXAMPLE.md](TS/TS-EXAMPLE.md) |

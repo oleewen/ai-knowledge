@@ -223,12 +223,20 @@ def test_entity_relpath_company_pl_and_sln():
         raise AssertionError("expected ValueError when company bundle gets MDG")
     assert (
         okf_lib.entity_relpath("product", "PL-EXAMPLE", bundle="solution")
-        == "knowledge/product/PL/PL-EXAMPLE.md"
+        == "knowledge/product/PL-EXAMPLE/PL-EXAMPLE.md"
     )
     assert (
-        okf_lib.entity_relpath("product", "PD-EXAMPLE", bundle="solution")
-        == "knowledge/product/PL/PD-EXAMPLE.md"
+        okf_lib.entity_relpath(
+            "product", "PD-EXAMPLE", path_parent="PL-EXAMPLE", bundle="solution"
+        )
+        == "knowledge/product/PL-EXAMPLE/PD-EXAMPLE.md"
     )
+    try:
+        okf_lib.entity_relpath("product", "PD-EXAMPLE", bundle="solution")
+    except ValueError as exc:
+        assert "PL id" in str(exc) or "path_parent" in str(exc)
+    else:
+        raise AssertionError("expected ValueError when solution PD has no PL parent")
     assert (
         okf_lib.entity_relpath("product", "BP-EXAMPLE", bundle="solution")
         == "knowledge/product/BP/BP-EXAMPLE.md"
@@ -408,7 +416,7 @@ def test_entity_relpath_system_bd_not_landed():
 def test_entity_relpath_solution_bsd_l2_flat():
     assert (
         okf_lib.entity_relpath("business", "BSD-EXAMPLE-L2", bundle="solution")
-        == "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md"
+        == "knowledge/business/BSD-EXAMPLE-L1/BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md"
     )
     assert (
         okf_lib.entity_relpath("application", "SLN-EXAMPLE", bundle="solution")
@@ -420,7 +428,7 @@ def test_entity_relpath_solution_bsd_l2_flat():
     )
     assert (
         okf_lib.entity_relpath("technical", "TS-EXAMPLE", bundle="solution")
-        == "knowledge/technical/TS-EXAMPLE.md"
+        == "knowledge/technical/TS/TS-EXAMPLE.md"
     )
     try:
         okf_lib.entity_relpath("business", "BSD-EXAMPLE-L3", bundle="solution")
@@ -560,7 +568,7 @@ def main() -> None:
         test_relation_path_parent_prefers_parent_and_skips_cross_layer,
         test_entity_relpath_system_bd_not_landed,
         test_entity_relpath_solution_bsd_l2_flat,
-        test_entity_relpath_system_bsd_l3_flat,
+        test_entity_relpath_system_bsd_l3_under_l2_host,
         test_entity_relpath_system_bsd_l1_l2_not_landed,
         test_entity_relpath_system_nested_chain,
     ]

@@ -18,7 +18,7 @@ layer_scope: solution
 
 ## 跨视角
 
-- used_by: [PD-EXAMPLE](../product/PL/PD-EXAMPLE.md)
+- used_by: [PD-EXAMPLE](../product/PL-EXAMPLE/PD-EXAMPLE.md)
 
 ## 详细说明
 

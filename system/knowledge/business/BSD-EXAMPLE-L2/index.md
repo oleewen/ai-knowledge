@@ -16,4 +16,4 @@
 
 - 上一级索引：[../index.md](../index.md)
 - 上一级说明：[../README.md](../README.md)
-- 解决方案 L2 SSOT：`solution/knowledge/business/BSD-EXAMPLE-L2/`
+- 解决方案 L2 SSOT：`solution/knowledge/business/BSD-EXAMPLE-L1/BSD-EXAMPLE-L2/`

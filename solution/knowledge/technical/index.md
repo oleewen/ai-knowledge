@@ -4,19 +4,18 @@
 
 ## 子目录
 
+* [TS](TS/index.md)
 * [chapters](chapters/index.md)
 
 ## 目录文件
 
-* [示例技术服务](TS-EXAMPLE.md) - 方案级技术服务选用；implements_to 公司 TPL。
-
-* [technical-meta.md](../../../agent/knowledge/technical-meta.md)
+（无）
 
 ## 阅读顺序
 
 1. [README.md](README.md)
 2. [chapters](chapters/index.md)
-3. [TS-EXAMPLE.md](TS-EXAMPLE.md)
+3. [TS-EXAMPLE.md](TS/TS-EXAMPLE.md)
 4. [technical-meta.md](../../../agent/knowledge/technical-meta.md)
 
 ## 关联索引

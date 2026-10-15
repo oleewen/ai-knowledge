@@ -35,7 +35,7 @@ title: 技术视角元数据
 | --- | --- |
 | 层 | 解决方案 |
 | id_pattern | `TS-{NAME}` |
-| 落盘 | 标准 `{ID}.md` |
+| 落盘 | `knowledge/technical/TS/{ID}.md`（类型桶 `TS/`） |
 | 字段 | `implements_to` → 公司 TPL；`implemented_by` 必须 → MW（纯 ID）；`used_by` 可选 → SYS（纯 ID） |
 
 组成边写在关系段。

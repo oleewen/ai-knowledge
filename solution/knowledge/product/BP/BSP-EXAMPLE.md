@@ -15,7 +15,7 @@ layer_scope: solution
 ## 关系
 
 - parent: [BP-EXAMPLE](BP-EXAMPLE.md)
-- implements_to: [PD-EXAMPLE](../PL/PD-EXAMPLE.md)
+- implements_to: [PD-EXAMPLE](../PL-EXAMPLE/PD-EXAMPLE.md)
 
 ## 跨视角
 

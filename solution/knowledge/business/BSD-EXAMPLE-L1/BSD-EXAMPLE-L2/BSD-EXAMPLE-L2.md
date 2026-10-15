@@ -16,7 +16,7 @@ layer_scope: solution
 
 - parent: BSD-EXAMPLE
 - children: BSD-EXAMPLE-L3
-- mapped_by: [BS-EXAMPLE](../BS/BS-EXAMPLE.md)
+- mapped_by: [BS-EXAMPLE](../../BS/BS-EXAMPLE.md)
 
 ## 跨视角
 
@@ -29,4 +29,4 @@ layer_scope: solution
 
 ## 依据与证据
 
-[../chapters/business-domain-division.md](../chapters/business-domain-division.md#二级子域)（示例）
+[../../chapters/business-domain-division.md](../../chapters/business-domain-division.md#二级子域)（示例）

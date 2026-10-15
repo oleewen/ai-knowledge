@@ -95,7 +95,7 @@ ENT 的路径父级取自关系段同层 `parent`，否则同层 `implements_to`
 |层级|`TPL` / `TS` / `MW` / `CMP`|
 |ID|`id`|
 |名称|frontmatter `title`|
-|文件/目录|相对链接至 concept（示例：`TPL-EXAMPLE.md`、`TS-EXAMPLE.md`、`MW-EXAMPLE/MW-EXAMPLE.md`）|
+|文件/目录|相对链接至 concept（示例：`TPL-EXAMPLE.md`、`TS/TS-EXAMPLE.md`、`MW-EXAMPLE/MW-EXAMPLE.md`）|
 
 各层只登记本层首次定义：公司 TPL、解决方案 TS、应用 MW/CMP。上游不建本层文件，只写纯 ID。
 

@@ -14,11 +14,11 @@ layer_scope: solution
 
 ## 关系
 
-- maps_to: [BSD-EXAMPLE-L2](../BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md)
+- maps_to: [BSD-EXAMPLE-L2](../BSD-EXAMPLE-L1/BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md)
 
 ## 跨视角
 
-- mapped_by: [PD-EXAMPLE](../../product/PL/PD-EXAMPLE.md)
+- mapped_by: [PD-EXAMPLE](../../product/PL-EXAMPLE/PD-EXAMPLE.md)
 
 ## 详细说明
 

@@ -38,11 +38,11 @@
 - **解决方案层五视角**（`solution/knowledge/{perspective}/`）：
   | 视角 | 落点要点 |
   | --- | --- |
-  | business | BSD-L2 本层 SSOT（`parent`→公司 L1）；BS 本层 SSOT（无 parent，`maps_to`→BSD-L2） |
-  | product | PL、PD、BP、BSP 本层 SSOT |
+  | business | BSD-L2 本层 SSOT（`parent`→公司 L1）；落盘 `BSD-*-L1/BSD-*-L2/`（L1 仅目录宿主，不落 L1 实体）；BS 本层 SSOT（无 parent，`maps_to`→BSD-L2） |
+  | product | PL、PD、BP、BSP 本层 SSOT；PL/PD 落 `product/{PL-ID}/`；BP/BSP 仍类型桶 `BP/` |
   | application | SLN 本层 SSOT；不落 SYS 正文 |
   | data | MDG 本层 SSOT |
-  | technical | TS 本层 SSOT（`implements_to`→公司 TPL） |
+  | technical | TS 本层 SSOT（`implements_to`→公司 TPL）；落盘 `technical/TS/{ID}.md` |
 - **系统层五视角**（`system/knowledge/{perspective}/`）：
   | 视角 | 落点要点 |
   | --- | --- |

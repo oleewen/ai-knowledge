@@ -10,8 +10,6 @@
 
 * [示例解决方案](SLN-EXAMPLE.md) - 交付包锚点；一仓一 SLN；maps_to→PL 一对一。
 
-* [application-meta.md](../../../agent/knowledge/application-meta.md)
-
 ## 阅读顺序
 
 1. [README.md](README.md)

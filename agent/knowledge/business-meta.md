@@ -17,7 +17,7 @@ title: 业务视角元数据
 | BD | 公司 | 域模型 L1 | `BD-{NAME}` | 无 parent |
 | BSD-L1 | 公司 | 域模型 L2 | `BSD-{NAME}` | `level: 1`；parent BD |
 | BL | 公司 | 不进链 | `BL-{NAME}` | 无 parent；`maps_to` BSD-L1 一对一 |
-| BSD-L2 | 解决方案 | 域模型 L3 | `BSD-{NAME}-L2` | parent 公司 BSD-L1；`level: 2`。BD、BSD-L1 不建本层文件，只写纯 ID |
+| BSD-L2 | 解决方案 | 域模型 L3 | `BSD-{NAME}-L2` | parent 公司 BSD-L1；`level: 2`。BD、BSD-L1 **实体**不建本层文件（只写纯 ID）；允许 `BSD-*-L1/` **目录宿主**包住 L2 |
 | BS | 解决方案 | 不进域模型链 | `BS-{NAME}` | 无 parent；`maps_to` BSD-L2，1:1 |
 | BSD-L3 | 系统 | 域模型 L4 | `BSD-{NAME}-L3` | parent BSD-L2；`level: 3`。BD、BSD-L1、BSD-L2 不建本层文件，只写纯 ID |
 | BC | 系统 | L5 | `BC-{NAME}` | parent BSD-L3 |
@@ -53,7 +53,7 @@ title: 业务视角元数据
 | --- | --- |
 | 层 | 公司 |
 | id_pattern | `BD-{NAME}` |
-| 落盘 | `BD-{NAME}/BD-{NAME}.md`，其下 `BSD-*.md`。解决方案不落 BD、BSD-L1。系统不落 BD、BSD-L1、BSD-L2 文件 |
+| 落盘 | `BD-{NAME}/BD-{NAME}.md`，其下 `BSD-*.md`。解决方案不落 BD、BSD-L1 **实体**（可有 L1 目录宿主）。系统不落 BD、BSD-L1、BSD-L2 文件 |
 | 字段 | `children` 必须，仅 BSD-L1；`supports_to` 可选 |
 
 ### BSD-L1
@@ -80,7 +80,7 @@ title: 业务视角元数据
 | --- | --- |
 | 层 | 解决方案 |
 | id_pattern | `BSD-{NAME}-L2` |
-| 落盘 | 标准 `{ID}.md` |
+| 落盘 | `knowledge/business/{*-L1}/{ID}/{ID}.md`（`*-L2` 后缀替换得 L1 **目录宿主**；不落 L1 实体 md）。例：`BSD-EXAMPLE-L1/BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md` |
 | 字段 | `parent`、`children`、`mapped_by` 写在关系段。`parent` 必须，→ 公司 BSD-L1；`children` → BSD-L3（对端 `parent` 存在时必须，纯 ID）；`mapped_by` 可选，→ BS |
 
 ### BS
@@ -98,7 +98,7 @@ title: 业务视角元数据
 | --- | --- |
 | 层 | 系统 |
 | id_pattern | `BSD-{NAME}-L3` |
-| 落盘 | `knowledge/business/BSD-{L2}/BSD-{L3}/BSD-{L3}.md`（例：`BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/`）；其下 BC→AGG→AB。L2 段为**目录宿主**（样例不落 `BSD-*-L2.md` 实体；业务仓可保留 L2 实体作聚合导航）。公司 BD 落 `BD-{NAME}.md`。解决方案不落 BD、BSD-L1。系统**不落** BSD-L1；**不强制**落 BSD-L2 实体文件 |
+| 落盘 | `knowledge/business/BSD-{L2}/BSD-{L3}/BSD-{L3}.md`（例：`BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/`）；其下 BC→AGG→AB。L2 段为**目录宿主**（样例不落 `BSD-*-L2.md` 实体；业务仓可保留 L2 实体作聚合导航）。公司 BD 落 `BD-{NAME}.md`。解决方案**不落** BD、BSD-L1 **实体文件**，但允许 L1 **目录宿主**包住 L2（例 `BSD-EXAMPLE-L1/BSD-EXAMPLE-L2/`）。系统**不落** BSD-L1；**不强制**落 BSD-L2 实体文件；系统盘面 L2 仍为顶层宿主（不加 L1 段） |
 | 字段 | `level` 固定 `3`，与 `parent` 必须；`implemented_by` 可选 |
 
 ### BC

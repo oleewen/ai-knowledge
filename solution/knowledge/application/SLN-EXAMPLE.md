@@ -14,7 +14,7 @@ layer_scope: solution
 
 ## 关系
 
-- maps_to: [PL-EXAMPLE](../product/PL/PL-EXAMPLE.md)
+- maps_to: [PL-EXAMPLE](../product/PL-EXAMPLE/PL-EXAMPLE.md)
 - implemented_by:
   - [BP-EXAMPLE](../product/BP/BP-EXAMPLE.md)
 

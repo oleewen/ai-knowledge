@@ -6,7 +6,7 @@
 
 ## 目录文件
 
-* [示例业务服务](BS-EXAMPLE.md) - 无 parent；maps_to → BSD-L2 一对一
+* [示例业务服务](BS-EXAMPLE.md) - 业务服务；无 parent；maps_to BSD-L2 一对一。
 
 ## 阅读顺序
 

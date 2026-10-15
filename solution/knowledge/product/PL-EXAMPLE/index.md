@@ -1,4 +1,4 @@
-# PL
+# PL-EXAMPLE
 
 ## 子目录
 
@@ -6,8 +6,8 @@
 
 ## 目录文件
 
-* [示例产品线](PL-EXAMPLE.md) - 解决方案首次定义；maps_to → BL 一对一
-* [示例产品服务](PD-EXAMPLE.md) - implements_to → PL；maps_to → BS 一对一
+* [示例产品服务](PD-EXAMPLE.md) - 解决方案层 PD；implements_to PL；maps_to BS 一对一。
+* [示例产品线](PL-EXAMPLE.md) - 产品线；解决方案首次定义；maps_to BL 一对一。
 
 ## 阅读顺序
 
