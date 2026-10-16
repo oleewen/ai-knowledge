@@ -14,8 +14,8 @@ layer_scope: company
 
 ## 关系
 
-- implements_to: [VC-EXAMPLE](VC-EXAMPLE.md)
-- mapped_by: [BSD-EXAMPLE](../BD-EXAMPLE/BSD-EXAMPLE.md)
+- implements_to: [VC-EXAMPLE](../VC-EXAMPLE.md)
+- mapped_by: [BSD-EXAMPLE](../../BD-EXAMPLE/BSD-EXAMPLE.md)
 
 ## 跨视角
 
@@ -27,4 +27,4 @@ layer_scope: company
 
 ## 依据与证据
 
-[business-capability.md](../chapters/business-capability.md)（示例）
+[business-capability.md](../../chapters/business-capability.md)（示例）

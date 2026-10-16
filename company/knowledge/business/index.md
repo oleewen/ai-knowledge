@@ -4,14 +4,14 @@
 
 ## 子目录
 
-* [BD-EXAMPLE](BD-EXAMPLE/index.md) - BD-EXAMPLE 索引
-* [BL](BL/index.md) - 业务线；无 parent；maps_to BSD-L1 一对一
-* [VC-EXAMPLE](VC-EXAMPLE/index.md) - VC-EXAMPLE 索引
+* [BD-EXAMPLE](BD-EXAMPLE/index.md) - 演示公司级 BD；支撑 VC，并下挂 BSD-L1。
+* [BL](BL/index.md)
+* [VC-EXAMPLE](VC-EXAMPLE/index.md) - 演示公司级 VC；由 BD 支撑，并由 CAP 实现。
 * [chapters](chapters/index.md)
 
 ## 目录文件
 
-* [business-meta.md](../../../agent/knowledge/business-meta.md)
+（无）
 
 ## 阅读顺序
 

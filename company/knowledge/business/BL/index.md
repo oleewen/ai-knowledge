@@ -6,7 +6,7 @@
 
 ## 目录文件
 
-* [示例业务线](BL-EXAMPLE.md) — 无 parent；maps_to → BSD-L1 一对一
+* [示例业务线](BL-EXAMPLE.md) - 演示公司级 BL；无 parent；与 BSD-L1 一对一映射。
 
 ## 阅读顺序
 

@@ -8,7 +8,7 @@
 
 ## 目录文件
 
-* [product-meta.md](../../../agent/knowledge/product-meta.md)
+（无）
 
 ## 阅读顺序
 

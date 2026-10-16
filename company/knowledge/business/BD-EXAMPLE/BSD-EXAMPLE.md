@@ -16,7 +16,7 @@ layer_scope: company
 
 - parent: [BD-EXAMPLE](BD-EXAMPLE.md)
 - children: BSD-EXAMPLE-L2
-- maps_to: [CAP-EXAMPLE](../VC-EXAMPLE/CAP-EXAMPLE.md)
+- maps_to: [CAP-EXAMPLE](../VC-EXAMPLE/CAP/CAP-EXAMPLE.md)
 - mapped_by: [BL-EXAMPLE](../BL/BL-EXAMPLE.md)
 
 ## 跨视角

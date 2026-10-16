@@ -15,7 +15,7 @@ title: 业务域划分
 
 | 业务域 | 职责 | 边界 | 能力 |
 |---|---|---|---|
-| [BD-EXAMPLE](../BD-EXAMPLE/BD-EXAMPLE.md) | 支撑 [VC-EXAMPLE](../VC-EXAMPLE/VC-EXAMPLE.md) | 下挂 BSD-EXAMPLE | [CAP-EXAMPLE](../VC-EXAMPLE/CAP-EXAMPLE.md) |
+| [BD-EXAMPLE](../BD-EXAMPLE/BD-EXAMPLE.md) | 支撑 [VC-EXAMPLE](../VC-EXAMPLE/VC-EXAMPLE.md) | 下挂 BSD-EXAMPLE | [CAP-EXAMPLE](../VC-EXAMPLE/CAP/CAP-EXAMPLE.md) |
 
 ## 支撑域
 
@@ -35,7 +35,7 @@ title: 业务域划分
 
 | 业务域 | 业务子域 | 职责 | 边界 | 能力 |
 |---|---|---|---|---|
-| [BD-EXAMPLE](../BD-EXAMPLE/BD-EXAMPLE.md) | [BSD-EXAMPLE](../BD-EXAMPLE/BSD-EXAMPLE.md) | 对标 CAP-EXAMPLE | 挂在 BD-EXAMPLE 下 | [CAP-EXAMPLE](../VC-EXAMPLE/CAP-EXAMPLE.md) |
+| [BD-EXAMPLE](../BD-EXAMPLE/BD-EXAMPLE.md) | [BSD-EXAMPLE](../BD-EXAMPLE/BSD-EXAMPLE.md) | 对标 CAP-EXAMPLE | 挂在 BD-EXAMPLE 下 | [CAP-EXAMPLE](../VC-EXAMPLE/CAP/CAP-EXAMPLE.md) |
 
 ## 业务域关系图
 

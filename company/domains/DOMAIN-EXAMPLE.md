@@ -19,7 +19,7 @@ title: 示例业务域架构
 | --- | --- | --- |
 | 业务域 | [BD-EXAMPLE](../knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md) | `supports_to` VC-EXAMPLE；`children` BSD-EXAMPLE |
 | 一级子域 | [BSD-EXAMPLE](../knowledge/business/BD-EXAMPLE/BSD-EXAMPLE.md) | `parent` BD-EXAMPLE；`maps_to` CAP-EXAMPLE |
-| 能力 | [CAP-EXAMPLE](../knowledge/business/VC-EXAMPLE/CAP-EXAMPLE.md) | `implements_to` VC-EXAMPLE |
+| 能力 | [CAP-EXAMPLE](../knowledge/business/VC-EXAMPLE/CAP/CAP-EXAMPLE.md) | `implements_to` VC-EXAMPLE |
 
 ## 3. 范围 / 非范围
 

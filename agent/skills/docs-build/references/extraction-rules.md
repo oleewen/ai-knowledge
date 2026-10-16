@@ -226,7 +226,7 @@ API 层级统一抽取四类入口：**Dubbo 接口、HTTP 接口、MQ 消息监
 - 提取自公司业务能力；公司层首次定义
 - **必须字段**：`id`、`description`、`implements_to`（所属 VC）
 - **可选关系**：`mapped_by`（BSD-L1）
-- 落 `business/{VC}/{id}.md`（缺 VC 父级不落盘）
+- 落 `business/{VC}/CAP/{id}.md`（缺 VC 父级不落盘）
 
 #### BD（业务域层级）
 

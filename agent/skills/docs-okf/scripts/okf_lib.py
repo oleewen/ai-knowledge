@@ -440,7 +440,7 @@ def entity_relpath(
             return f"knowledge/business/{bd}/{id}.md"
         if perspective == "business" and prefix == "CAP":
             vc = _require_single_parent(prefix, path_parent, "VC id")
-            return f"knowledge/business/{vc}/{id}.md"
+            return f"knowledge/business/{vc}/CAP/{id}.md"
         if perspective == "technical" and prefix == "TPL":
             return f"knowledge/technical/{id}.md"
         raise ValueError(f"entity_relpath: company does not land {prefix} files")

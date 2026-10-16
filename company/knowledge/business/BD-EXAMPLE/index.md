@@ -6,8 +6,8 @@
 
 ## 目录文件
 
-* [示例业务域](BD-EXAMPLE.md) — 公司级 BD
-* [示例一级业务子域](BSD-EXAMPLE.md) — 公司层 BSD-L1；mapped_by → BL；maps_to → CAP
+* [示例业务域](BD-EXAMPLE.md) - 演示公司级 BD；支撑 VC，并下挂 BSD-L1。
+* [示例一级业务子域](BSD-EXAMPLE.md) - 公司层 BSD-L1；挂 BD；由 BL 一对一映射；maps_to CAP。
 
 ## 阅读顺序
 

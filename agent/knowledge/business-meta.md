@@ -35,7 +35,7 @@ title: 业务视角元数据
 | --- | --- |
 | 层 | 公司 |
 | id_pattern | `VC-{NAME}` |
-| 落盘 | `VC-{NAME}/VC-{NAME}.md`，其下 `CAP-*.md` |
+| 落盘 | `VC-{NAME}/VC-{NAME}.md`，其下 `CAP/CAP-*.md` |
 | 字段 | `supported_by`、`implemented_by` 可选 |
 
 ### CAP
@@ -44,7 +44,7 @@ title: 业务视角元数据
 | --- | --- |
 | 层 | 公司 |
 | id_pattern | `CAP-{NAME}` |
-| 落盘 | `VC-{NAME}/CAP-*.md` |
+| 落盘 | `VC-{NAME}/CAP/CAP-*.md` |
 | 字段 | `implements_to` 必须；`mapped_by` → BSD-L1 |
 
 ### BD

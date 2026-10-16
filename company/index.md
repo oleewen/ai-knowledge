@@ -6,14 +6,15 @@
 ## 子目录
 
 * [adr](adr/README.md)
-* [domains](domains/README.md) - company/domains 目录索引
+* [domains](domains/README.md)
 * [knowledge](knowledge/README.md)
-* [solution-slots](solution-slots/README.md) - solution-slots 目录索引
+* [solution-slots](solution-slots/README.md)
 
 ## 目录文件
 
 * [DESIGN.md](DESIGN.md)
 * [INDEX-GUIDE.md](INDEX-GUIDE.md)
+* [TODO-LIST.md](TODO-LIST.md)
 * [knowledge-links.yaml](knowledge-links.yaml)
 * [viz.html](viz.html)
 

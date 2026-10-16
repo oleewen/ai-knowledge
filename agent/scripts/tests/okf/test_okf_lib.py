@@ -177,7 +177,7 @@ def test_entity_relpath_company_cap_with_parent():
     path = okf_lib.entity_relpath(
         "business", "CAP-ORDER", path_parent="VC-EXPRESS", bundle="company"
     )
-    assert path == "knowledge/business/VC-EXPRESS/CAP-ORDER.md"
+    assert path == "knowledge/business/VC-EXPRESS/CAP/CAP-ORDER.md"
 
 
 def test_entity_relpath_company_cap():
@@ -191,7 +191,7 @@ def test_entity_relpath_company_cap():
         okf_lib.entity_relpath(
             "business", "CAP-EXAMPLE", path_parent="VC-EXAMPLE", bundle="company"
         )
-        == "knowledge/business/VC-EXAMPLE/CAP-EXAMPLE.md"
+        == "knowledge/business/VC-EXAMPLE/CAP/CAP-EXAMPLE.md"
     )
 
 

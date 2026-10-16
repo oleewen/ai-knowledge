@@ -62,7 +62,7 @@ layer_scope: company
 ## 关系
 
 - parent: [BD-EXAMPLE](BD-EXAMPLE.md)
-- maps_to: [CAP-EXAMPLE](../VC-EXAMPLE/CAP-EXAMPLE.md)
+- maps_to: [CAP-EXAMPLE](../VC-EXAMPLE/CAP/CAP-EXAMPLE.md)
 - mapped_by: [BL-EXAMPLE](../BL/BL-EXAMPLE.md)
 
 ## 跨视角
@@ -94,7 +94,7 @@ layer_scope: company
 ---
 ## 关系
 
-- implemented_by: [CAP-EXAMPLE](CAP-EXAMPLE.md)
+- implemented_by: [CAP-EXAMPLE](CAP/CAP-EXAMPLE.md)
 - supported_by: [BD-EXAMPLE](../BD-EXAMPLE/BD-EXAMPLE.md)
 
 ## 跨视角
@@ -111,7 +111,7 @@ layer_scope: company
 """,
     ),
     (
-        "knowledge/business/VC-EXAMPLE/CAP-EXAMPLE.md",
+        "knowledge/business/VC-EXAMPLE/CAP/CAP-EXAMPLE.md",
         """---
 type: Business Capability
 title: 示例业务能力
@@ -125,8 +125,8 @@ layer_scope: company
 ---
 ## 关系
 
-- implements_to: [VC-EXAMPLE](VC-EXAMPLE.md)
-- mapped_by: [BSD-EXAMPLE](../BD-EXAMPLE/BSD-EXAMPLE.md)
+- implements_to: [VC-EXAMPLE](../VC-EXAMPLE.md)
+- mapped_by: [BSD-EXAMPLE](../../BD-EXAMPLE/BSD-EXAMPLE.md)
 
 ## 跨视角
 

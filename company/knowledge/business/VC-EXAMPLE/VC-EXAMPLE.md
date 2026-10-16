@@ -14,7 +14,7 @@ layer_scope: company
 
 ## 关系
 
-- implemented_by: [CAP-EXAMPLE](CAP-EXAMPLE.md)
+- implemented_by: [CAP-EXAMPLE](CAP/CAP-EXAMPLE.md)
 - supported_by: [BD-EXAMPLE](../BD-EXAMPLE/BD-EXAMPLE.md)
 
 ## 跨视角
