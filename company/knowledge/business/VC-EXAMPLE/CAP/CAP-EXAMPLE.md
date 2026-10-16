@@ -15,7 +15,7 @@ layer_scope: company
 ## 关系
 
 - implements_to: [VC-EXAMPLE](../VC-EXAMPLE.md)
-- mapped_by: [BSD-EXAMPLE](../../BD-EXAMPLE/BSD-EXAMPLE.md)
+- mapped_by: [BSD-EXAMPLE](../../BD/BD-EXAMPLE/BSD-EXAMPLE.md)
 
 ## 跨视角
 

@@ -4,7 +4,7 @@
 > **不分管**：文件四类分型、per-entity Profile、frontmatter/正文结构 → [okf-spec.md](../knowledge/okf-spec.md)；ID **语法** / IDEA-ID 字面 → [naming-conventions.md](../knowledge/naming-conventions.md)；缩写/短义/映射字段 → [glossary.md](../knowledge/glossary.md)；首次定义 / 引用边界 → [knowledge-governance.md](../knowledge/knowledge-governance.md)。  
 > 会话工作稿见 [session-spec-path.md](session-spec-path.md)；闸门总表见 [CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates)；推进环见 [unit-cycle-protocol.md](unit-cycle-protocol.md)。写前 hook 已空；技能清单见 [skills/README.md](../skills/README.md)。
 
-**最后更新**: 2026-10-07
+**最后更新**: 2026-10-16
 
 > **阶段目录**：公司只 `domains/`（BD/BSD-L1 如何支撑 VC，不放 SLN，不建 `solutions/`）。解决方案只 `solutions/`（`/sdx-solution` 写切分叙事 `SOLUTION-*.md`）。系统与应用同构：`analysis/`（七章需求分析，`/sdx-analysis`）→ `features/`（六章功能特性，`/sdx-feature`）→ `requirements/`，不建 `solutions/`。联邦三跳：公司 `solution-slots/` → 解决方案 `system-slots/` → 系统 `application-slots/`。
 
@@ -52,6 +52,7 @@
   | data | DS/ENT 本层 SSOT；落盘 `MDG-{NAME}/DS-{NAME}/…`（MDG 目录宿主）；样例不落 MDG 实体 |
   | technical | 本层无首次定义实体。TS/MW/CMP 不建本层文件，只写纯 ID |
 - **公司层五视角**（`company/knowledge/{perspective}/`）：VC、BD、BL、BSD-L1、CAP、TPL；产品视角无实体（概述、度量、体验）；**无** SLN/PD/PL/SYS/BSD-L2/MDG/TS
+  - 业务落盘：`business/BD/{BD-ID}/`（BSD-L1 同域目录）；`business/BL/{BL-ID}.md`；`business/{VC-ID}/`（CAP 可在同 VC 目录或 `CAP/` 子目录）；技术 `technical/TPL/{TPL-ID}.md`
 - **应用层**：API/TBL/MW/CMP 本层 SSOT；其余不建本层文件，只写纯 ID。宿主目录可留
 - **阶段目录（目标态）**：
   | 库 | 目录 |

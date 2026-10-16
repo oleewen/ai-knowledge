@@ -14,7 +14,7 @@ layer_scope: company
 
 ## 关系
 
-- maps_to: [BSD-EXAMPLE](../BD-EXAMPLE/BSD-EXAMPLE.md)
+- maps_to: [BSD-EXAMPLE](../BD/BD-EXAMPLE/BSD-EXAMPLE.md)
 - mapped_by: PL-EXAMPLE
 
 ## 跨视角
