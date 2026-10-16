@@ -78,7 +78,7 @@ bash agent/skills/docs-upgrade/scripts/docs-upgrade.sh --dry-run [--meta-path PA
 
 ### 1 解析指定路径
 
-1. 收集会话/附件中的文件与目录；文件路径入名单，目录路径取**本库与元库同相对路径并集**（必须反向扫描元库，防漏 `BD-EXAMPLE/**` 这类 `meta-only` scaffold）
+1. 收集会话/附件中的文件与目录；文件路径入名单，目录路径取**本库与元库同相对路径并集**（必须反向扫描元库，防漏 `BD/BD-EXAMPLE/**` 这类 `meta-only` scaffold）
 2. 校验：`文档目录` 内路径规范化为相对路径；软链 / 顶层遗留槽位名拒绝；`文档目录` 外路径拒绝；`*-slots` 根真文件允许
 3. 去重后分类：`meta-only` → scaffold 候选、`local-only` → 元缺拒绝候选、`both` → 按 [merge-rules.md](merge-rules.md) §7 判定动作；动作数断言须覆盖并集总数
 4. fetch/解析 meta（与整树同源规则）

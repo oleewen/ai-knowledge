@@ -27,4 +27,4 @@ title: 技术架构
 
 | 链序 | 层级 | ID | 名称 | 文件/目录 |
 |------|------|----|------|-----------|
-| L1 | TPL | TPL-EXAMPLE | 示例技术平台能力 | [TPL-EXAMPLE.md](TPL-EXAMPLE.md) |
+| L1 | TPL | TPL-EXAMPLE | 示例技术平台能力 | [TPL/TPL-EXAMPLE.md](TPL/TPL-EXAMPLE.md) |

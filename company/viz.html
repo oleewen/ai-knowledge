@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>meta OKF</title>
+<title>company OKF</title>
 <script src="https://unpkg.com/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
 <script src="https://unpkg.com/marked/marked.min.js"></script>
 <style>
@@ -146,7 +146,7 @@ aside {
 </head>
 <body>
 <header>
-  <h1>meta OKF</h1>
+  <h1>company OKF</h1>
   <div class="controls">
     <input type="search" id="search" placeholder="搜索 title / id / tags…" autocomplete="off">
     <select id="typeFilter">
@@ -164,7 +164,7 @@ aside {
 </main>
 <script id="okf-bundle-data" type="application/json">
 {
-  "name": "meta OKF",
+  "name": "company OKF",
   "concepts": {
     "DESIGN": {
       "id": "DESIGN",
@@ -228,7 +228,7 @@ aside {
       "title": "示例业务域架构",
       "description": null,
       "tags": [],
-      "body": "# DOMAIN-EXAMPLE\n\n对应 knowledge 实体 **BD-EXAMPLE**。不在此定义新 ID。\n\n## 1. 支撑的价值链\n\n- [VC-EXAMPLE](../knowledge/business/VC-EXAMPLE/VC-EXAMPLE.md)\n\n## 2. BSD-L1 如何支撑\n\n示例链，不新造 ID。BD-EXAMPLE 支撑 VC-EXAMPLE；其下 BSD-EXAMPLE 对标 CAP-EXAMPLE，CAP-EXAMPLE 实现该 VC。\n\n| 角色 | ID | 关系 |\n| --- | --- | --- |\n| 业务域 | [BD-EXAMPLE](../knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md) | `supports_to` VC-EXAMPLE；`children` BSD-EXAMPLE |\n| 一级子域 | [BSD-EXAMPLE](../knowledge/business/BD-EXAMPLE/BSD-EXAMPLE.md) | `parent` BD-EXAMPLE；`maps_to` CAP-EXAMPLE |\n| 能力 | [CAP-EXAMPLE](../knowledge/business/VC-EXAMPLE/CAP/CAP-EXAMPLE.md) | `implements_to` VC-EXAMPLE |\n\n## 3. 范围 / 非范围\n\n- 范围：该 BD 及其 BSD-L1 的公司级能力归属\n- 非范围：方案正文、系统需求\n\n## 4. 拆到哪条产品线 PL\n\n- PL-EXAMPLE",
+      "body": "# DOMAIN-EXAMPLE\n\n对应 knowledge 实体 **BD-EXAMPLE**。不在此定义新 ID。\n\n## 1. 支撑的价值链\n\n- [VC-EXAMPLE](../knowledge/business/VC-EXAMPLE/VC-EXAMPLE.md)\n\n## 2. BSD-L1 如何支撑\n\n示例链，不新造 ID。BD-EXAMPLE 支撑 VC-EXAMPLE；其下 BSD-EXAMPLE 对标 CAP-EXAMPLE，CAP-EXAMPLE 实现该 VC。\n\n| 角色 | ID | 关系 |\n| --- | --- | --- |\n| 业务域 | [BD-EXAMPLE](../knowledge/business/BD/BD-EXAMPLE/BD-EXAMPLE.md) | `supports_to` VC-EXAMPLE；`children` BSD-EXAMPLE |\n| 一级子域 | [BSD-EXAMPLE](../knowledge/business/BD/BD-EXAMPLE/BSD-EXAMPLE.md) | `parent` BD-EXAMPLE；`maps_to` CAP-EXAMPLE |\n| 能力 | [CAP-EXAMPLE](../knowledge/business/VC-EXAMPLE/CAP/CAP-EXAMPLE.md) | `implements_to` VC-EXAMPLE |\n\n## 3. 范围 / 非范围\n\n- 范围：该 BD 及其 BSD-L1 的公司级能力归属\n- 非范围：方案正文、系统需求\n\n## 4. 拆到哪条产品线 PL\n\n- PL-EXAMPLE",
       "backlinks": [
         "domains/DOMAIN-MAP"
       ]
@@ -307,7 +307,7 @@ aside {
       "title": "业务架构",
       "description": null,
       "tags": [],
-      "body": "# 业务架构\n\n[返回 · 公司知识库](../README.md)\n\n**本层 SSOT**：VC / BD / BL / BSD-L1 / CAP。台账 [实体](#实体)；字段 [business-meta.md](../../../agent/knowledge/business-meta.md)。\n\n目录与阅读顺序见 [index.md](index.md)。\n\n## 章节\n\n| 章节 | 文件 | 概述 |\n|------|------|------|\n| 业务概述 | [chapters/business-overview.md](chapters/business-overview.md) | 背景、目标与范围 |\n| 业务域划分 | [chapters/business-domain-division.md](chapters/business-domain-division.md) | BD 与 BSD-L1 |\n| 商业模式 | [chapters/business-model.md](chapters/business-model.md) | 画布与收支 |\n| 价值链 | [chapters/business-value-chain.md](chapters/business-value-chain.md) | 价值创造与壁垒 |\n| 组织角色 | [chapters/business-roles-and-organization.md](chapters/business-roles-and-organization.md) | 干系人与协作 |\n| 业务能力 | [chapters/business-capability.md](chapters/business-capability.md) | 能力框架与成熟度 |\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n| L1 | VC | VC-EXAMPLE | 示例价值链 | [VC-EXAMPLE/VC-EXAMPLE.md](VC-EXAMPLE/VC-EXAMPLE.md) |\n| L2 | CAP | CAP-EXAMPLE | 示例业务能力 | [VC-EXAMPLE/CAP/CAP-EXAMPLE.md](VC-EXAMPLE/CAP/CAP-EXAMPLE.md) |\n| L1 | BD | BD-EXAMPLE | 示例业务域 | [BD-EXAMPLE/BD-EXAMPLE.md](BD-EXAMPLE/BD-EXAMPLE.md) |\n| L2 | BSD-L1 | BSD-EXAMPLE | 示例一级业务子域 | [BD-EXAMPLE/BSD-EXAMPLE.md](BD-EXAMPLE/BSD-EXAMPLE.md) |\n| — | BL | BL-EXAMPLE | 示例业务线 | [BL/BL-EXAMPLE.md](BL/BL-EXAMPLE.md) |",
+      "body": "# 业务架构\n\n[返回 · 公司知识库](../README.md)\n\n**本层 SSOT**：VC / BD / BL / BSD-L1 / CAP。台账 [实体](#实体)；字段 [business-meta.md](../../../agent/knowledge/business-meta.md)。\n\n目录与阅读顺序见 [index.md](index.md)。\n\n## 章节\n\n| 章节 | 文件 | 概述 |\n|------|------|------|\n| 业务概述 | [chapters/business-overview.md](chapters/business-overview.md) | 背景、目标与范围 |\n| 业务域划分 | [chapters/business-domain-division.md](chapters/business-domain-division.md) | BD 与 BSD-L1 |\n| 商业模式 | [chapters/business-model.md](chapters/business-model.md) | 画布与收支 |\n| 价值链 | [chapters/business-value-chain.md](chapters/business-value-chain.md) | 价值创造与壁垒 |\n| 组织角色 | [chapters/business-roles-and-organization.md](chapters/business-roles-and-organization.md) | 干系人与协作 |\n| 业务能力 | [chapters/business-capability.md](chapters/business-capability.md) | 能力框架与成熟度 |\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n| L1 | VC | VC-EXAMPLE | 示例价值链 | [VC-EXAMPLE/VC-EXAMPLE.md](VC-EXAMPLE/VC-EXAMPLE.md) |\n| L2 | CAP | CAP-EXAMPLE | 示例业务能力 | [VC-EXAMPLE/CAP/CAP-EXAMPLE.md](VC-EXAMPLE/CAP/CAP-EXAMPLE.md) |\n| L1 | BD | BD-EXAMPLE | 示例业务域 | [BD-EXAMPLE/BD-EXAMPLE.md](BD/BD-EXAMPLE/BD-EXAMPLE.md) |\n| L2 | BSD-L1 | BSD-EXAMPLE | 示例一级业务子域 | [BD-EXAMPLE/BSD-EXAMPLE.md](BD/BD-EXAMPLE/BSD-EXAMPLE.md) |\n| — | BL | BL-EXAMPLE | 示例业务线 | [BL/BL-EXAMPLE.md](BL/BL-EXAMPLE.md) |",
       "backlinks": [
         "knowledge/README",
         "knowledge/business/chapters/business-capability",
@@ -319,8 +319,8 @@ aside {
         "knowledge/overview/NAME-overview"
       ]
     },
-    "knowledge/business/BD-EXAMPLE/BD-EXAMPLE": {
-      "id": "knowledge/business/BD-EXAMPLE/BD-EXAMPLE",
+    "knowledge/business/BD/BD-EXAMPLE/BD-EXAMPLE": {
+      "id": "knowledge/business/BD/BD-EXAMPLE/BD-EXAMPLE",
       "type": "Business Domain",
       "title": "示例业务域",
       "description": "演示公司级 BD；支撑 VC，并下挂 BSD-L1。",
@@ -328,17 +328,17 @@ aside {
         "business",
         "BD"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例业务域\n\n## 关系\n\n- children: [BSD-EXAMPLE](BSD-EXAMPLE.md)\n- supports_to: [VC-EXAMPLE](../VC-EXAMPLE/VC-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 演示公司级 BD；支撑 VC，并下挂 BSD-L1。\n\n## 依据与证据\n\n[business-domain-division.md](../chapters/business-domain-division.md)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例业务域\n\n## 关系\n\n- children: [BSD-EXAMPLE](BSD-EXAMPLE.md)\n- supports_to: [VC-EXAMPLE](../../VC-EXAMPLE/VC-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 演示公司级 BD；支撑 VC，并下挂 BSD-L1。\n\n## 依据与证据\n\n[business-domain-division.md](../../chapters/business-domain-division.md)（示例）",
       "backlinks": [
         "domains/DOMAIN-EXAMPLE",
-        "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE",
+        "knowledge/business/BD/BD-EXAMPLE/BSD-EXAMPLE",
         "knowledge/business/README",
         "knowledge/business/VC-EXAMPLE/VC-EXAMPLE",
         "knowledge/business/chapters/business-domain-division"
       ]
     },
-    "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE": {
-      "id": "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE",
+    "knowledge/business/BD/BD-EXAMPLE/BSD-EXAMPLE": {
+      "id": "knowledge/business/BD/BD-EXAMPLE/BSD-EXAMPLE",
       "type": "Business Subdomain",
       "title": "示例一级业务子域",
       "description": "公司层 BSD-L1；挂 BD；由 BL 一对一映射；maps_to CAP。",
@@ -346,10 +346,10 @@ aside {
         "business",
         "BSD"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例一级业务子域\n\n## 关系\n\n- parent: [BD-EXAMPLE](BD-EXAMPLE.md)\n- children: BSD-EXAMPLE-L2\n- maps_to: [CAP-EXAMPLE](../VC-EXAMPLE/CAP/CAP-EXAMPLE.md)\n- mapped_by: [BL-EXAMPLE](../BL/BL-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- level: 1\n- 公司层 BSD-L1；挂 BD；由 BL 一对一映射；maps_to CAP。\n\n## 依据与证据\n\n[business-domain-division.md](../chapters/business-domain-division.md#业务子域)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例一级业务子域\n\n## 关系\n\n- parent: [BD-EXAMPLE](BD-EXAMPLE.md)\n- children: BSD-EXAMPLE-L2\n- maps_to: [CAP-EXAMPLE](../../VC-EXAMPLE/CAP/CAP-EXAMPLE.md)\n- mapped_by: [BL-EXAMPLE](../../BL/BL-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- level: 1\n- 公司层 BSD-L1；挂 BD；由 BL 一对一映射；maps_to CAP。\n\n## 依据与证据\n\n[business-domain-division.md](../../chapters/business-domain-division.md#业务子域)（示例）",
       "backlinks": [
         "domains/DOMAIN-EXAMPLE",
-        "knowledge/business/BD-EXAMPLE/BD-EXAMPLE",
+        "knowledge/business/BD/BD-EXAMPLE/BD-EXAMPLE",
         "knowledge/business/BL/BL-EXAMPLE",
         "knowledge/business/README",
         "knowledge/business/VC-EXAMPLE/CAP/CAP-EXAMPLE",
@@ -365,9 +365,9 @@ aside {
         "business",
         "BL"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例业务线\n\n## 关系\n\n- maps_to: [BSD-EXAMPLE](../BD-EXAMPLE/BSD-EXAMPLE.md)\n- mapped_by: PL-EXAMPLE\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 演示公司级 BL；无 parent；与 BSD-L1 一对一映射。\n\n## 依据与证据\n\n[../chapters/business-roles-and-organization.md](../chapters/business-roles-and-organization.md)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例业务线\n\n## 关系\n\n- maps_to: [BSD-EXAMPLE](../BD/BD-EXAMPLE/BSD-EXAMPLE.md)\n- mapped_by: PL-EXAMPLE\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 演示公司级 BL；无 parent；与 BSD-L1 一对一映射。\n\n## 依据与证据\n\n[../chapters/business-roles-and-organization.md](../chapters/business-roles-and-organization.md)（示例）",
       "backlinks": [
-        "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE",
+        "knowledge/business/BD/BD-EXAMPLE/BSD-EXAMPLE",
         "knowledge/business/README"
       ]
     },
@@ -380,10 +380,10 @@ aside {
         "business",
         "VC"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例价值链\n\n## 关系\n\n- implemented_by: [CAP-EXAMPLE](CAP/CAP-EXAMPLE.md)\n- supported_by: [BD-EXAMPLE](../BD-EXAMPLE/BD-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 演示公司级 VC；由 BD 支撑，并由 CAP 实现。\n\n## 依据与证据\n\n[business-value-chain.md](../chapters/business-value-chain.md)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例价值链\n\n## 关系\n\n- implemented_by: [CAP-EXAMPLE](CAP/CAP-EXAMPLE.md)\n- supported_by: [BD-EXAMPLE](../BD/BD-EXAMPLE/BD-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 演示公司级 VC；由 BD 支撑，并由 CAP 实现。\n\n## 依据与证据\n\n[business-value-chain.md](../chapters/business-value-chain.md)（示例）",
       "backlinks": [
         "domains/DOMAIN-EXAMPLE",
-        "knowledge/business/BD-EXAMPLE/BD-EXAMPLE",
+        "knowledge/business/BD/BD-EXAMPLE/BD-EXAMPLE",
         "knowledge/business/README",
         "knowledge/business/VC-EXAMPLE/CAP/CAP-EXAMPLE",
         "knowledge/business/chapters/business-domain-division"
@@ -398,10 +398,10 @@ aside {
         "business",
         "CAP"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例业务能力\n\n## 关系\n\n- implements_to: [VC-EXAMPLE](../VC-EXAMPLE.md)\n- mapped_by: [BSD-EXAMPLE](../../BD-EXAMPLE/BSD-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 演示公司级 CAP；实现 VC；由 BSD-L1 一对一映射。\n\n## 依据与证据\n\n[business-capability.md](../../chapters/business-capability.md)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例业务能力\n\n## 关系\n\n- implements_to: [VC-EXAMPLE](../VC-EXAMPLE.md)\n- mapped_by: [BSD-EXAMPLE](../../BD/BD-EXAMPLE/BSD-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 演示公司级 CAP；实现 VC；由 BSD-L1 一对一映射。\n\n## 依据与证据\n\n[business-capability.md](../../chapters/business-capability.md)（示例）",
       "backlinks": [
         "domains/DOMAIN-EXAMPLE",
-        "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE",
+        "knowledge/business/BD/BD-EXAMPLE/BSD-EXAMPLE",
         "knowledge/business/README",
         "knowledge/business/VC-EXAMPLE/VC-EXAMPLE",
         "knowledge/business/chapters/business-domain-division"
@@ -434,10 +434,10 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 业务域划分\n\n[返回 · 业务架构](../README.md)\n\n**结论**：公司级 BD 与 BSD-L1 按价值链与能力定界。能力见 [业务能力](business-capability.md)；价值链见 [价值链](business-value-chain.md)。\n\n## 核心域\n\n直接实现价值环节的一级域。本示例仅 BD-EXAMPLE。\n\n| 业务域 | 职责 | 边界 | 能力 |\n|---|---|---|---|\n| [BD-EXAMPLE](../BD-EXAMPLE/BD-EXAMPLE.md) | 支撑 [VC-EXAMPLE](../VC-EXAMPLE/VC-EXAMPLE.md) | 下挂 BSD-EXAMPLE | [CAP-EXAMPLE](../VC-EXAMPLE/CAP/CAP-EXAMPLE.md) |\n\n## 支撑域\n\n横跨价值环节的一级域。本示例无支撑域。\n\n| 业务域 | 职责 | 边界 | 能力 |\n|---|---|---|---|\n\n## 通用域\n\n跨业务复用的一级域。本示例无通用域。\n\n| 业务域 | 职责 | 边界 | 能力 |\n|---|---|---|---|\n\n## 业务子域\n\n| 业务域 | 业务子域 | 职责 | 边界 | 能力 |\n|---|---|---|---|---|\n| [BD-EXAMPLE](../BD-EXAMPLE/BD-EXAMPLE.md) | [BSD-EXAMPLE](../BD-EXAMPLE/BSD-EXAMPLE.md) | 对标 CAP-EXAMPLE | 挂在 BD-EXAMPLE 下 | [CAP-EXAMPLE](../VC-EXAMPLE/CAP/CAP-EXAMPLE.md) |\n\n## 业务域关系图\n\n```mermaid\ngraph TB\n    subgraph 核心域[\"核心域\"]\n        BD_EXAMPLE[\"BD-EXAMPLE\"]\n    end\n    BD_EXAMPLE --> BSD_EXAMPLE[\"BSD-EXAMPLE\"]\n```",
+      "body": "# 业务域划分\n\n[返回 · 业务架构](../README.md)\n\n**结论**：公司级 BD 与 BSD-L1 按价值链与能力定界。能力见 [业务能力](business-capability.md)；价值链见 [价值链](business-value-chain.md)。\n\n## 核心域\n\n直接实现价值环节的一级域。本示例仅 BD-EXAMPLE。\n\n| 业务域 | 职责 | 边界 | 能力 |\n|---|---|---|---|\n| [BD-EXAMPLE](../BD/BD-EXAMPLE/BD-EXAMPLE.md) | 支撑 [VC-EXAMPLE](../VC-EXAMPLE/VC-EXAMPLE.md) | 下挂 BSD-EXAMPLE | [CAP-EXAMPLE](../VC-EXAMPLE/CAP/CAP-EXAMPLE.md) |\n\n## 支撑域\n\n横跨价值环节的一级域。本示例无支撑域。\n\n| 业务域 | 职责 | 边界 | 能力 |\n|---|---|---|---|\n\n## 通用域\n\n跨业务复用的一级域。本示例无通用域。\n\n| 业务域 | 职责 | 边界 | 能力 |\n|---|---|---|---|\n\n## 业务子域\n\n| 业务域 | 业务子域 | 职责 | 边界 | 能力 |\n|---|---|---|---|---|\n| [BD-EXAMPLE](../BD/BD-EXAMPLE/BD-EXAMPLE.md) | [BSD-EXAMPLE](../BD/BD-EXAMPLE/BSD-EXAMPLE.md) | 对标 CAP-EXAMPLE | 挂在 BD-EXAMPLE 下 | [CAP-EXAMPLE](../VC-EXAMPLE/CAP/CAP-EXAMPLE.md) |\n\n## 业务域关系图\n\n```mermaid\ngraph TB\n    subgraph 核心域[\"核心域\"]\n        BD_EXAMPLE[\"BD-EXAMPLE\"]\n    end\n    BD_EXAMPLE --> BSD_EXAMPLE[\"BSD-EXAMPLE\"]\n```",
       "backlinks": [
-        "knowledge/business/BD-EXAMPLE/BD-EXAMPLE",
-        "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE",
+        "knowledge/business/BD/BD-EXAMPLE/BD-EXAMPLE",
+        "knowledge/business/BD/BD-EXAMPLE/BSD-EXAMPLE",
         "knowledge/business/README",
         "knowledge/business/chapters/business-capability",
         "knowledge/business/chapters/business-value-chain",
@@ -675,7 +675,7 @@ aside {
       "title": "技术架构",
       "description": null,
       "tags": [],
-      "body": "# 技术架构\n\n[返回 · 公司知识库](../README.md)\n\n**本层 SSOT**：TPL。台账 [实体](#实体)；字段 [technical-meta.md](../../../agent/knowledge/technical-meta.md)。\n\n目录与阅读顺序见 [index.md](index.md)。\n\n六章是企业标准；方案同名 overview / infrastructure / observability 是落地，不是本层副本。\n\n## 章节\n\n| 章节 | 文件 | 概述 |\n|------|------|------|\n| 技术概述 | [chapters/technical-overview.md](chapters/technical-overview.md) | 选型、雷达与决策 |\n| 云基础设施 | [chapters/technical-infrastructure.md](chapters/technical-infrastructure.md) | 云部署、网络与资源 |\n| DevOps | [chapters/technical-devops.md](chapters/technical-devops.md) | CI/CD、分支与发布 |\n| 技术安全 | [chapters/technical-security.md](chapters/technical-security.md) | 认证、加密与合规 |\n| 开发环境 | [chapters/technical-dev-environment.md](chapters/technical-dev-environment.md) | 本地环境与工具链 |\n| 可观测性 | [chapters/technical-observability.md](chapters/technical-observability.md) | 指标、日志、链路、告警 |\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n| L1 | TPL | TPL-EXAMPLE | 示例技术平台能力 | [TPL-EXAMPLE.md](TPL-EXAMPLE.md) |",
+      "body": "# 技术架构\n\n[返回 · 公司知识库](../README.md)\n\n**本层 SSOT**：TPL。台账 [实体](#实体)；字段 [technical-meta.md](../../../agent/knowledge/technical-meta.md)。\n\n目录与阅读顺序见 [index.md](index.md)。\n\n六章是企业标准；方案同名 overview / infrastructure / observability 是落地，不是本层副本。\n\n## 章节\n\n| 章节 | 文件 | 概述 |\n|------|------|------|\n| 技术概述 | [chapters/technical-overview.md](chapters/technical-overview.md) | 选型、雷达与决策 |\n| 云基础设施 | [chapters/technical-infrastructure.md](chapters/technical-infrastructure.md) | 云部署、网络与资源 |\n| DevOps | [chapters/technical-devops.md](chapters/technical-devops.md) | CI/CD、分支与发布 |\n| 技术安全 | [chapters/technical-security.md](chapters/technical-security.md) | 认证、加密与合规 |\n| 开发环境 | [chapters/technical-dev-environment.md](chapters/technical-dev-environment.md) | 本地环境与工具链 |\n| 可观测性 | [chapters/technical-observability.md](chapters/technical-observability.md) | 指标、日志、链路、告警 |\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n| L1 | TPL | TPL-EXAMPLE | 示例技术平台能力 | [TPL/TPL-EXAMPLE.md](TPL/TPL-EXAMPLE.md) |",
       "backlinks": [
         "knowledge/README",
         "knowledge/overview/NAME-overview",
@@ -687,8 +687,8 @@ aside {
         "knowledge/technical/chapters/technical-security"
       ]
     },
-    "knowledge/technical/TPL-EXAMPLE": {
-      "id": "knowledge/technical/TPL-EXAMPLE",
+    "knowledge/technical/TPL/TPL-EXAMPLE": {
+      "id": "knowledge/technical/TPL/TPL-EXAMPLE",
       "type": "Technical Platform",
       "title": "示例技术平台能力",
       "description": "演示公司级 TPL 结构。",
@@ -696,7 +696,7 @@ aside {
         "technical",
         "TPL"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例技术平台能力\n\n## 关系\n\n- implemented_by: TS-EXAMPLE\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 演示公司级 TPL 结构。\n\n## 依据与证据\n\n[technical-overview.md](chapters/technical-overview.md)（示例）",
+      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例技术平台能力\n\n## 关系\n\n- implemented_by: TS-EXAMPLE\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 演示公司级 TPL 结构。\n\n## 依据与证据\n\n[../chapters/technical-overview.md](../chapters/technical-overview.md)（示例）",
       "backlinks": [
         "knowledge/technical/README"
       ]
@@ -774,7 +774,7 @@ aside {
       "backlinks": [
         "knowledge/overview/NAME-overview",
         "knowledge/technical/README",
-        "knowledge/technical/TPL-EXAMPLE"
+        "knowledge/technical/TPL/TPL-EXAMPLE"
       ]
     },
     "knowledge/technical/chapters/technical-security": {
@@ -877,11 +877,11 @@ aside {
     },
     {
       "source": "domains/DOMAIN-EXAMPLE",
-      "target": "knowledge/business/BD-EXAMPLE/BD-EXAMPLE"
+      "target": "knowledge/business/BD/BD-EXAMPLE/BD-EXAMPLE"
     },
     {
       "source": "domains/DOMAIN-EXAMPLE",
-      "target": "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE"
+      "target": "knowledge/business/BD/BD-EXAMPLE/BSD-EXAMPLE"
     },
     {
       "source": "domains/DOMAIN-EXAMPLE",
@@ -989,47 +989,47 @@ aside {
     },
     {
       "source": "knowledge/business/README",
-      "target": "knowledge/business/BD-EXAMPLE/BD-EXAMPLE"
+      "target": "knowledge/business/BD/BD-EXAMPLE/BD-EXAMPLE"
     },
     {
       "source": "knowledge/business/README",
-      "target": "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE"
+      "target": "knowledge/business/BD/BD-EXAMPLE/BSD-EXAMPLE"
     },
     {
       "source": "knowledge/business/README",
       "target": "knowledge/business/BL/BL-EXAMPLE"
     },
     {
-      "source": "knowledge/business/BD-EXAMPLE/BD-EXAMPLE",
-      "target": "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE"
+      "source": "knowledge/business/BD/BD-EXAMPLE/BD-EXAMPLE",
+      "target": "knowledge/business/BD/BD-EXAMPLE/BSD-EXAMPLE"
     },
     {
-      "source": "knowledge/business/BD-EXAMPLE/BD-EXAMPLE",
+      "source": "knowledge/business/BD/BD-EXAMPLE/BD-EXAMPLE",
       "target": "knowledge/business/VC-EXAMPLE/VC-EXAMPLE"
     },
     {
-      "source": "knowledge/business/BD-EXAMPLE/BD-EXAMPLE",
+      "source": "knowledge/business/BD/BD-EXAMPLE/BD-EXAMPLE",
       "target": "knowledge/business/chapters/business-domain-division"
     },
     {
-      "source": "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE",
-      "target": "knowledge/business/BD-EXAMPLE/BD-EXAMPLE"
+      "source": "knowledge/business/BD/BD-EXAMPLE/BSD-EXAMPLE",
+      "target": "knowledge/business/BD/BD-EXAMPLE/BD-EXAMPLE"
     },
     {
-      "source": "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE",
+      "source": "knowledge/business/BD/BD-EXAMPLE/BSD-EXAMPLE",
       "target": "knowledge/business/VC-EXAMPLE/CAP/CAP-EXAMPLE"
     },
     {
-      "source": "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE",
+      "source": "knowledge/business/BD/BD-EXAMPLE/BSD-EXAMPLE",
       "target": "knowledge/business/BL/BL-EXAMPLE"
     },
     {
-      "source": "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE",
+      "source": "knowledge/business/BD/BD-EXAMPLE/BSD-EXAMPLE",
       "target": "knowledge/business/chapters/business-domain-division"
     },
     {
       "source": "knowledge/business/BL/BL-EXAMPLE",
-      "target": "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE"
+      "target": "knowledge/business/BD/BD-EXAMPLE/BSD-EXAMPLE"
     },
     {
       "source": "knowledge/business/BL/BL-EXAMPLE",
@@ -1041,7 +1041,7 @@ aside {
     },
     {
       "source": "knowledge/business/VC-EXAMPLE/VC-EXAMPLE",
-      "target": "knowledge/business/BD-EXAMPLE/BD-EXAMPLE"
+      "target": "knowledge/business/BD/BD-EXAMPLE/BD-EXAMPLE"
     },
     {
       "source": "knowledge/business/VC-EXAMPLE/VC-EXAMPLE",
@@ -1053,7 +1053,7 @@ aside {
     },
     {
       "source": "knowledge/business/VC-EXAMPLE/CAP/CAP-EXAMPLE",
-      "target": "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE"
+      "target": "knowledge/business/BD/BD-EXAMPLE/BSD-EXAMPLE"
     },
     {
       "source": "knowledge/business/VC-EXAMPLE/CAP/CAP-EXAMPLE",
@@ -1081,7 +1081,7 @@ aside {
     },
     {
       "source": "knowledge/business/chapters/business-domain-division",
-      "target": "knowledge/business/BD-EXAMPLE/BD-EXAMPLE"
+      "target": "knowledge/business/BD/BD-EXAMPLE/BD-EXAMPLE"
     },
     {
       "source": "knowledge/business/chapters/business-domain-division",
@@ -1093,7 +1093,7 @@ aside {
     },
     {
       "source": "knowledge/business/chapters/business-domain-division",
-      "target": "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE"
+      "target": "knowledge/business/BD/BD-EXAMPLE/BSD-EXAMPLE"
     },
     {
       "source": "knowledge/business/chapters/business-model",
@@ -1341,10 +1341,10 @@ aside {
     },
     {
       "source": "knowledge/technical/README",
-      "target": "knowledge/technical/TPL-EXAMPLE"
+      "target": "knowledge/technical/TPL/TPL-EXAMPLE"
     },
     {
-      "source": "knowledge/technical/TPL-EXAMPLE",
+      "source": "knowledge/technical/TPL/TPL-EXAMPLE",
       "target": "knowledge/technical/chapters/technical-overview"
     },
     {

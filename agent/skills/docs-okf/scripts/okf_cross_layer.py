@@ -20,6 +20,8 @@ KNOWN_BLOB: Dict[str, str] = {
     "www.gitlab.com": "/-/blob/{ref}/",
     "gitee.com": "/blob/{ref}/",
     "www.gitee.com": "/blob/{ref}/",
+    # 中通自建 GitLab
+    "git.ztosys.com": "/-/blob/{ref}/",
 }
 
 

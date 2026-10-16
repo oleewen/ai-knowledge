@@ -2,11 +2,12 @@
 
 ## 子目录
 
-* [CAP](CAP/index.md)
+* [CAP/](CAP/) — 业务能力实体
 
 ## 目录文件
 
-* [示例价值链](VC-EXAMPLE.md) - 演示公司级 VC；由 BD 支撑，并由 CAP 实现。
+* [示例价值链](VC-EXAMPLE.md) — 公司级 VC
+* [示例业务能力](CAP/CAP-EXAMPLE.md) — implements_to → VC；mapped_by → BSD-L1
 
 ## 阅读顺序
 

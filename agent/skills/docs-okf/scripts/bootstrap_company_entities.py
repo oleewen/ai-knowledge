@@ -16,7 +16,7 @@ TS = "2026-06-21T00:00:00+08:00"
 
 ENTITIES: list[tuple[str, str]] = [
     (
-        "knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md",
+        "knowledge/business/BD/BD-EXAMPLE/BD-EXAMPLE.md",
         """---
 type: Business Domain
 title: 示例业务域
@@ -31,7 +31,7 @@ layer_scope: company
 ## 关系
 
 - children: [BSD-EXAMPLE](BSD-EXAMPLE.md)
-- supports_to: [VC-EXAMPLE](../VC-EXAMPLE/VC-EXAMPLE.md)
+- supports_to: [VC-EXAMPLE](../../VC-EXAMPLE/VC-EXAMPLE.md)
 
 ## 跨视角
 
@@ -43,11 +43,11 @@ layer_scope: company
 
 ## 依据与证据
 
-[business-domain-division.md](../chapters/business-domain-division.md)（示例）
+[business-domain-division.md](../../chapters/business-domain-division.md)（示例）
 """,
     ),
     (
-        "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE.md",
+        "knowledge/business/BD/BD-EXAMPLE/BSD-EXAMPLE.md",
         """---
 type: Business Subdomain
 title: 示例一级业务子域
@@ -62,8 +62,8 @@ layer_scope: company
 ## 关系
 
 - parent: [BD-EXAMPLE](BD-EXAMPLE.md)
-- maps_to: [CAP-EXAMPLE](../VC-EXAMPLE/CAP/CAP-EXAMPLE.md)
-- mapped_by: [BL-EXAMPLE](../BL/BL-EXAMPLE.md)
+- maps_to: [CAP-EXAMPLE](../../VC-EXAMPLE/CAP/CAP-EXAMPLE.md)
+- mapped_by: [BL-EXAMPLE](../../BL/BL-EXAMPLE.md)
 
 ## 跨视角
 
@@ -76,7 +76,7 @@ layer_scope: company
 
 ## 依据与证据
 
-[business-domain-division.md](../chapters/business-domain-division.md#业务子域)（示例）
+[business-domain-division.md](../../chapters/business-domain-division.md#业务子域)（示例）
 """,
     ),
     (
@@ -95,7 +95,7 @@ layer_scope: company
 ## 关系
 
 - implemented_by: [CAP-EXAMPLE](CAP/CAP-EXAMPLE.md)
-- supported_by: [BD-EXAMPLE](../BD-EXAMPLE/BD-EXAMPLE.md)
+- supported_by: [BD-EXAMPLE](../BD/BD-EXAMPLE/BD-EXAMPLE.md)
 
 ## 跨视角
 
@@ -126,7 +126,7 @@ layer_scope: company
 ## 关系
 
 - implements_to: [VC-EXAMPLE](../VC-EXAMPLE.md)
-- mapped_by: [BSD-EXAMPLE](../../BD-EXAMPLE/BSD-EXAMPLE.md)
+- mapped_by: [BSD-EXAMPLE](../../BD/BD-EXAMPLE/BSD-EXAMPLE.md)
 
 ## 跨视角
 
@@ -156,7 +156,7 @@ layer_scope: company
 ---
 ## 关系
 
-- maps_to: [BSD-EXAMPLE](../BD-EXAMPLE/BSD-EXAMPLE.md)
+- maps_to: [BSD-EXAMPLE](../BD/BD-EXAMPLE/BSD-EXAMPLE.md)
 
 ## 跨视角
 
@@ -172,7 +172,7 @@ layer_scope: company
 """,
     ),
     (
-        "knowledge/technical/TPL-EXAMPLE.md",
+        "knowledge/technical/TPL/TPL-EXAMPLE.md",
         """---
 type: Technical Platform
 title: 示例技术平台能力
@@ -198,7 +198,7 @@ layer_scope: company
 
 ## 依据与证据
 
-[technical-overview.md](chapters/technical-overview.md)（示例）
+[../chapters/technical-overview.md](../chapters/technical-overview.md)（示例）
 """,
     ),
 ]

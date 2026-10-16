@@ -10,7 +10,7 @@ title: 技术视角元数据
 
 | 实体 | 首次定义层 | 链 | id_pattern | 说明 |
 | --- | --- | --- | --- | --- |
-| TPL | 公司 | L1 | `TPL-{NAME}` | 无 parent。公司级平台能力目录（云 / DevOps / 安全 / 开发环境 / 可观测） |
+| TPL | 公司 | L1 | `TPL-{NAME}` | 无 parent。公司级平台能力目录（云 / DevOps / 安全 / 开发环境 / 可观测 / 地图 / 人工智能） |
 | TS | 解决方案 | L2 | `TS-{NAME}` | `implements_to` 公司 TPL，非 parent。TPL 不建本层文件，只写纯 ID |
 | — | 系统 | — | — | 本层无首次定义。TPL、TS 不建本层文件，只写纯 ID。本层不写 TS 的边。下层实体不涉及 |
 | MW | 应用 | L3 | `MW-{NAME}` | parent TS（逻辑归属，`implements_to`）。TPL、TS 不建本层文件，只写纯 ID |
@@ -26,8 +26,8 @@ title: 技术视角元数据
 | --- | --- |
 | 层 | 公司 |
 | id_pattern | `TPL-{NAME}` |
-| 落盘 | 标准 `{ID}.md` |
-| 字段 | `domain`：能力域为云基础设施 / DevOps / 安全 / 开发环境 / 可观测。`implemented_by` 必须 → TS（纯 ID） |
+| 落盘 | `TPL/{ID}.md`（类型桶 `TPL/`） |
+| 字段 | `domain`：能力域为云基础设施 / DevOps / 安全 / 开发环境 / 可观测 / 地图 / 人工智能。`implemented_by` 必须 → TS（纯 ID） |
 
 ### TS
 

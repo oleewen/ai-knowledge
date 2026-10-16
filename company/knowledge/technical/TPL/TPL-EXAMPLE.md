@@ -26,4 +26,4 @@ layer_scope: company
 
 ## 依据与证据
 
-[technical-overview.md](chapters/technical-overview.md)（示例）
+[../chapters/technical-overview.md](../chapters/technical-overview.md)（示例）

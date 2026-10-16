@@ -35,7 +35,7 @@ def test_entity_relpath_business_bd():
         raise AssertionError("expected ValueError when application bundle gets BD")
     assert (
         okf_lib.entity_relpath("business", "BD-EXAMPLE", bundle="company")
-        == "knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md"
+        == "knowledge/business/BD/BD-EXAMPLE/BD-EXAMPLE.md"
     )
 
 
@@ -149,19 +149,19 @@ def test_hierarchy_to_type_cap():
 
 def test_entity_relpath_company_bd_nested():
     path = okf_lib.entity_relpath("business", "BD-EXAMPLE", bundle="company")
-    assert path == "knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md"
+    assert path == "knowledge/business/BD/BD-EXAMPLE/BD-EXAMPLE.md"
 
 
 def test_entity_relpath_company_bd_uses_id():
     path = okf_lib.entity_relpath("business", "BD-CHARGING", bundle="company")
-    assert path == "knowledge/business/BD-CHARGING/BD-CHARGING.md"
+    assert path == "knowledge/business/BD/BD-CHARGING/BD-CHARGING.md"
 
 
 def test_entity_relpath_company_bsd_nested():
     path = okf_lib.entity_relpath(
         "business", "BSD-EXAMPLE", path_parent="BD-EXAMPLE", bundle="company"
     )
-    assert path == "knowledge/business/BD-EXAMPLE/BSD-EXAMPLE.md"
+    assert path == "knowledge/business/BD/BD-EXAMPLE/BSD-EXAMPLE.md"
 
 
 def test_entity_relpath_company_bsd_default_parent():
@@ -205,7 +205,7 @@ def test_entity_relpath_company_bl():
 
 def test_entity_relpath_company_tpl():
     path = okf_lib.entity_relpath("technical", "TPL-EXAMPLE", bundle="company")
-    assert path == "knowledge/technical/TPL-EXAMPLE.md"
+    assert path == "knowledge/technical/TPL/TPL-EXAMPLE.md"
 
 
 def test_entity_relpath_company_pl_and_sln():

@@ -15,7 +15,7 @@ layer_scope: company
 ## 关系
 
 - children: [BSD-EXAMPLE](BSD-EXAMPLE.md)
-- supports_to: [VC-EXAMPLE](../VC-EXAMPLE/VC-EXAMPLE.md)
+- supports_to: [VC-EXAMPLE](../../VC-EXAMPLE/VC-EXAMPLE.md)
 
 ## 跨视角
 
@@ -27,4 +27,4 @@ layer_scope: company
 
 ## 依据与证据
 
-[business-domain-division.md](../chapters/business-domain-division.md)（示例）
+[business-domain-division.md](../../chapters/business-domain-division.md)（示例）

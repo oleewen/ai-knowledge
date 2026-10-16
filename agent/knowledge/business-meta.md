@@ -53,7 +53,7 @@ title: 业务视角元数据
 | --- | --- |
 | 层 | 公司 |
 | id_pattern | `BD-{NAME}` |
-| 落盘 | `BD-{NAME}/BD-{NAME}.md`，其下 `BSD-*.md`。解决方案不落 BD、BSD-L1 **实体**（可有 L1 目录宿主）。系统不落 BD、BSD-L1、BSD-L2 文件 |
+| 落盘 | `BD/BD-{NAME}/BD-{NAME}.md`，其下 `BSD-*.md`。解决方案不落 BD、BSD-L1 **实体**（可有 L1 目录宿主）。系统不落 BD、BSD-L1、BSD-L2 文件 |
 | 字段 | `children` 必须，仅 BSD-L1；`supports_to` 可选 |
 
 ### BSD-L1
@@ -62,7 +62,7 @@ title: 业务视角元数据
 | --- | --- |
 | 层 | 公司 |
 | id_pattern | `BSD-{NAME}` |
-| 落盘 | `BD-{NAME}/BSD-*.md` |
+| 落盘 | `BD/BD-{NAME}/BSD-*.md` |
 | 字段 | `level` 固定 `1`，必须；`parent` 必须；`children` → BSD-L2（对端 `parent` 存在时必须，纯 ID）；`maps_to` → CAP；`mapped_by` → BL |
 
 ### BL
@@ -98,7 +98,7 @@ title: 业务视角元数据
 | --- | --- |
 | 层 | 系统 |
 | id_pattern | `BSD-{NAME}-L3` |
-| 落盘 | `knowledge/business/BSD-{L2}/BSD-{L3}/BSD-{L3}.md`（例：`BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/`）；其下 BC→AGG→AB。L2 段为**目录宿主**（样例不落 `BSD-*-L2.md` 实体；业务仓可保留 L2 实体作聚合导航）。公司 BD 落 `BD-{NAME}.md`。解决方案**不落** BD、BSD-L1 **实体文件**，但允许 L1 **目录宿主**包住 L2（例 `BSD-EXAMPLE-L1/BSD-EXAMPLE-L2/`）。系统**不落** BSD-L1；**不强制**落 BSD-L2 实体文件；系统盘面 L2 仍为顶层宿主（不加 L1 段） |
+| 落盘 | `knowledge/business/BSD-{L2}/BSD-{L3}/BSD-{L3}.md`（例：`BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/`）；其下 BC→AGG→AB。L2 段为**目录宿主**（样例不落 `BSD-*-L2.md` 实体；业务仓可保留 L2 实体作聚合导航）。公司 BD 落 `BD/BD-{NAME}/BD-{NAME}.md`。解决方案**不落** BD、BSD-L1 **实体文件**，但允许 L1 **目录宿主**包住 L2（例 `BSD-EXAMPLE-L1/BSD-EXAMPLE-L2/`）。系统**不落** BSD-L1；**不强制**落 BSD-L2 实体文件；系统盘面 L2 仍为顶层宿主（不加 L1 段） |
 | 字段 | `level` 固定 `3`，与 `parent` 必须；`implemented_by` 可选 |
 
 ### BC

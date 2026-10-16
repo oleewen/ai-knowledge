@@ -74,7 +74,7 @@ def test_href_and_validate(tmp_path: Path) -> None:
     href = x.cross_layer_href(sys_root, "BD-EXAMPLE")
     assert href == (
         "https://github.com/org/ea/blob/main/company/"
-        "knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md"
+        "knowledge/business/BD/BD-EXAMPLE/BD-EXAMPLE.md"
     )
     assert x.validate_http_href(sys_root, href) is None
 
@@ -84,7 +84,7 @@ def test_http_without_parent_errors(tmp_path: Path) -> None:
     doc.mkdir(parents=True)
     err = x.validate_http_href(
         doc,
-        "https://github.com/org/ea/blob/main/company/knowledge/business/BD-X/BD-X.md",
+        "https://github.com/org/ea/blob/main/company/knowledge/business/BD/BD-X/BD-X.md",
     )
     assert err and "type: parent" in err
 
@@ -92,7 +92,7 @@ def test_http_without_parent_errors(tmp_path: Path) -> None:
 def test_rewrite_to_id() -> None:
     text = (
         "见 [BD-EXAMPLE](https://github.com/org/ea/blob/main/company/"
-        "knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md) 与本地。"
+        "knowledge/business/BD/BD-EXAMPLE/BD-EXAMPLE.md) 与本地。"
     )
     old = "https://github.com/org/ea/blob/main/company"
     new_text, n = x._rewrite_text(text, old, None)
