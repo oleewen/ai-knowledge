@@ -21,7 +21,7 @@ title: 应用知识库设计
 | `knowledge/` | 五视角；本层首次实体 **API / TBL / MW / CMP**；`knowledge/overview/{NAME}-overview.md`；宿主目录可留，不建 reference 文件 |
 | `analysis/` → `features/` → `requirements/` | 应用 SDD；交付 ∈ `REQUIREMENT-{IDEA-ID}/` |
 | `adr/` | 应用层 ADR + `CONTEXT.md` |
-| 变更溯源 | git；烤干代办见仓根 `TODO-LIST.md` |
+| `TODO-LIST.md` | 烤干未闭合代办（本目录 = `{DOC_DIR}`）；变更溯源用 git。元仓全书仍在仓根 |
 
 贡献门禁：[knowledge-governance](../agent/knowledge/knowledge-governance.md)（与本文分工：治理/贡献 vs 设计入口）。
 

@@ -23,7 +23,7 @@ title: 系统知识库设计
 | `adr/` | 系统层决策 + `CONTEXT.md` |
 | `application-slots/application-{NAME}/` | 应用镜像软链入口 |
 | `knowledge-links.yaml` | parent 一条，为解决方案；child 为应用；键均为 `name` / `label`，不写层前缀 |
-| 变更溯源 | git；烤干代办见仓根 `TODO-LIST.md` |
+| `TODO-LIST.md` | 烤干未闭合代办（本目录 = `{DOC_DIR}`）；变更溯源用 git。元仓全书仍在仓根 |
 
 路径总则：[knowledge-layout § 四层文档根](../agent/references/knowledge-layout.md#四层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ overview](../agent/references/knowledge-layout.md#overview) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。
 

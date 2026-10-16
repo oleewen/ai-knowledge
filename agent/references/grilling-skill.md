@@ -9,7 +9,10 @@
 
 ## TODO-LIST
 
-仓根 [`TODO-LIST.md`](../../TODO-LIST.md)（元库全书一份）是烤干**未闭合代办**清单，不是决策日志或运行史。下游文档根为 `{DOC_DIR}/TODO-LIST.md`（常 `docs/TODO-LIST.md`）。
+烤干**未闭合代办**清单（不是决策日志或运行史）：
+
+- **元仓**（`ai-knowledge`）：仓根 [`TODO-LIST.md`](../../TODO-LIST.md)（全书一份）
+- **下游四层**（application / system / solution / company）：`{DOC_DIR}/TODO-LIST.md`（常 `docs/TODO-LIST.md`；与层内 `DESIGN.md` 同目录）
 
 | 项 | 约定 |
 | --- | --- |
