@@ -30,7 +30,7 @@
 
 ```json
 {
-  "text": "通过。主路径指向 sdx-analysis / ANALYSIS，未把当前请求错误框成 sdx-domains 的分段写作流程。",
+  "text": "通过。主路径指向 sdx-feature / ANALYSIS，未把当前请求错误框成 sdx-domains 的分段写作流程。",
   "passed": true,
   "evidence": [
     "correct-downstream：点名下游技能或产物。",

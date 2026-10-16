@@ -32,7 +32,7 @@
 | 初始化编排 | [bootstrap.sh](bootstrap.sh)、[agent/skills/README.md](agent/skills/README.md) | `/docs-install`、`/agent-install`、`/docs-link`；升级 `/docs-upgrade`；生态 skills 追新 `/skill-upgrade` |
 | 规范与 Slash | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/skills/README.md](agent/skills/README.md) | 全局约定与 Skill 清单（**26** 个） |
 | 共享推进契约 | [agent/references/](agent/references/) | 意图澄清 / 单元推进 / 烤干 / 轻流程 / 布局 / 会话路径 |
-| 根索引运行日志 | [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md) | 根输出组增量基线（本单元） |
+| 根索引运行日志 | [INDEX-GUIDE 增量锚点](INDEX-GUIDE 增量锚点) | 根输出组增量基线（本单元） |
 | OKF bundle 与校验 | [agent/skills/docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) | OKF refresh、validate-okf、viz；与九章 INDEX 双索引并存 |
 
 ### 1.2 元信息
@@ -42,7 +42,7 @@
 - **技术栈**: Markdown、YAML；Bash 5+；Git；可选 `curl`、`rsync`（脚本可回退 `cp`）；Python 3（Skill 辅助脚本）
 - **语言/构建**: 不适用传统应用「启动类」；可运行项为 Bash 脚本与 `agent/scripts/tests/run.sh`、各 Skill `tests/run.sh`
 - **仓库规模（git 已跟踪）**: 共 **854** 个文件；扩展名约 **659** `.md`、**110** `.sh`、**45** `.json`、**27** `.py`、**7** `.yaml`、**3** `.html`（统计来源：`git ls-files`，2026-10-05）
-- **顶层文件分布**: `agent/` 493 · `system/` 127 · `company/` 86 · `solution/` 77 · `application/` 61 · `changelogs/` 2 · 根跟踪文件若干（含 `.gitignore` / `.githooks`）
+- **顶层文件分布**: `agent/` 493 · `system/` 127 · `company/` 86 · `solution/` 77 · `application/` 61 · 根跟踪文件若干（含 `.gitignore` / `.githooks`）
 - **本仓 `.docsconfig`**: `DOC_DIR=docs`、`KNOWLEDGE_TYPE=company`；磁盘上 **无** `docs/` 目录（会话稿根约定，通常未入库）
 
 ---
@@ -54,33 +54,28 @@
 ```text
 ./
 ├── README.md / AGENTS.md / INDEX-GUIDE.md / index.md / quick-start.md
-├── changelogs/                 # 根输出组 INDEXING-LOG
 ├── application/                # 应用层 SSOT + SDD
 │   ├── knowledge/              # 五视角 + overview/{NAME}-overview.md
 │   ├── analysis/ · features/ · requirements/ · adr/
-│   ├── knowledge-links.yaml · viz.html · docs-meta.md
-│   └── changelogs/
+│   ├── knowledge-links.yaml · viz.html
 ├── system/                     # 系统层 + overview + 联邦槽位
 │   ├── knowledge/ · overview/
 │   ├── application-slots/           # 应用联邦槽位根
-│   │   ├── application-{NAME}/      # 软链 → 应用 DOC_ROOT（当前未挂载）
-│   │   └── changelogs/
+│   │   ├── application-{NAME}/      # 软链 → 应用 文档目录（当前未挂载）
 │   ├── knowledge-links.yaml · viz.html
-│   └── analysis/ · features/ · requirements/ · adr/ · changelogs/
+│   └── analysis/ · features/ · requirements/ · adr/
 ├── solution/                   # 解决方案层 + overview + 系统槽位
 │   ├── knowledge/ · overview/
 │   ├── system-slots/                # 系统联邦槽位根
-│   │   ├── system-{NAME}/           # 软链 → 系统 DOC_ROOT（当前未挂载）
-│   │   └── changelogs/
+│   │   ├── system-{NAME}/           # 软链 → 系统 文档目录（当前未挂载）
 │   ├── knowledge-links.yaml · viz.html
-│   └── solutions/ · adr/ · changelogs/
+│   └── solutions/ · adr/
 ├── company/                    # 公司层 + overview + 解决方案槽位
 │   ├── knowledge/ · overview/
 │   ├── solution-slots/              # 解决方案联邦槽位根
-│   │   ├── solution-{NAME}/         # 软链 → 解决方案 DOC_ROOT（当前未挂载）
-│   │   └── changelogs/
+│   │   ├── solution-{NAME}/         # 软链 → 解决方案 文档目录（当前未挂载）
 │   ├── knowledge-links.yaml · viz.html
-│   └── domains/ · adr/ · changelogs/
+│   └── domains/ · adr/
 ├── bootstrap.sh                # 远程/本地双轨装机编排
 ├── agent/                      # Agent 树：skills / rules / knowledge / references / scripts
 │   ├── skills/                 # 26 个 Slash Skill（装机脚本亦在对应 skills/*/scripts/）
@@ -97,7 +92,7 @@
 
 ```mermaid
 flowchart LR
-  subgraph central["中央库 ai-knowledge"]
+  subgraph central["元库 ai-knowledge"]
     app["application/"]
     ag["agent/"]
     sys["system/"]
@@ -119,7 +114,7 @@ flowchart LR
   dl --> sys
   dl --> sln
   dl --> co
-  app -->|"CONTRIBUTING"| app
+  app -->|"DESIGN + governance"| app
   sys -->|"overview + application-slots"| sys
   sln -->|"overview + system-slots"| sln
   co -->|"overview + solution-slots"| co
@@ -143,12 +138,12 @@ flowchart LR
 
 - **仓库根九章索引指南**: 本文件 [INDEX-GUIDE.md](INDEX-GUIDE.md)
 - **根目录索引页**: [index.md](index.md)
-- **根索引运行日志**: [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)
-- **应用知识库**: [application/](application/) — [README](application/README.md) · [index](application/index.md) · [INDEX-GUIDE](application/INDEX-GUIDE.md) · [CONTRIBUTING](application/CONTRIBUTING.md)
+- **根索引运行日志**: [INDEX-GUIDE 增量锚点](INDEX-GUIDE 增量锚点)
+- **应用知识库**: [application/](application/) — [README](application/README.md) · [index](application/index.md) · [INDEX-GUIDE](application/INDEX-GUIDE.md) · [DESIGN](application/DESIGN.md)
 - **系统知识库树**: [system/](system/) — [README](system/README.md) · [index](system/index.md) · [INDEX-GUIDE](system/INDEX-GUIDE.md)
 - **解决方案知识库树**: [solution/](solution/) — [README](solution/README.md) · [index](solution/index.md) · [INDEX-GUIDE](solution/INDEX-GUIDE.md)
 - **公司知识库树**: [company/](company/) — [README](company/README.md) · [index](company/index.md) · [INDEX-GUIDE](company/INDEX-GUIDE.md)
-- **子域运维日志**: `application|system|solution|company/changelogs/`（各域自管 `INDEXING-LOG`）；变更溯源用 `git log` / `git diff`
+- **子域运维日志**: `各层 INDEX-GUIDE`（各域自管 INDEX-GUIDE 锚点）；变更溯源用 `git log` / `git diff`
 - **会话工作稿根**（`.docsconfig` `DOC_DIR=docs`）: 约定 `docs/superpowers/specs/`；**当前工作树无 `docs/`**（通常未跟踪）
 - **布局 SSOT**: [agent/references/knowledge-layout.md](agent/references/knowledge-layout.md)
 
@@ -202,7 +197,7 @@ flowchart LR
 | 聚合 | 职责 | 关键落点 |
 | ------ | ------ | ---------- |
 | 治理规则 | 四层边界；术语、原则、命名、ADR | [agent/knowledge/knowledge-governance.md](agent/knowledge/knowledge-governance.md)、[agent/knowledge/README.md](agent/knowledge/README.md) |
-| 应用五视角实体 | BC/AGG、PM/FT/UC、SYS/APP/MS/API、DS/ENT/TBL、MW/CMP 等 | [application/knowledge/](application/knowledge/)（[index](application/knowledge/index.md)）；现盘 EXAMPLE：`MS-EXAMPLE`、`DS-EXAMPLE`、`MW-EXAMPLE` |
+| 应用五视角实体 | BC/AGG、PM/FT/UC、SYS/APP/MS/API、DS/ENT/TBL、MW/CMP 等 | [application/knowledge/](application/knowledge/)（[index](application/knowledge/index.md)）；现盘 EXAMPLE：`MS-EXAMPLE`、`ENT-EXAMPLE`、`MW-EXAMPLE` |
 | 系统/解决方案/公司架构实体 | 解决方案 PL/PD/BP/BSP/BS；公司 BL；视角章节 + overview 第三列 | `system/knowledge/`、`solution/knowledge/`、`company/knowledge/`、`*/overview/` |
 | 阶段产物 | SOLUTION / ANALYSIS / FEATURE / DOMAIN / REQUIREMENT | `solution/solutions/`；`system|application` 的 `analysis/` · `features/` · `requirements/`；`company/domains/` |
 | Skill 契约 | 参数向导 → 澄清 → 生成 → 烤干（语义族） | `agent/skills/*/SKILL.md` + `agent/references/` |
@@ -221,10 +216,10 @@ flowchart LR
 
 | 日志 | 路径 | 维护方 |
 | ------ | ------ | -------- |
-| 根索引运行 | [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md) | docs-indexing（本单元） |
+| 根索引运行 | [INDEX-GUIDE 增量锚点](INDEX-GUIDE 增量锚点) | docs-indexing（本单元） |
 | 应用变更溯源 | `git log` / `git diff`（application 仓） | git |
-| 应用索引运行 | [application/changelogs/INDEXING-LOG.md](application/changelogs/INDEXING-LOG.md) | docs-indexing（application 单元） |
-| 系统/解决方案/公司索引 | `system|solution|company/changelogs/INDEXING-LOG.md` | docs-indexing（对应单元） |
+| 应用索引运行 | [application/INDEX-GUIDE 增量锚点](application/INDEX-GUIDE 增量锚点) | docs-indexing（application 单元） |
+| 系统/解决方案/公司索引 | `system|solution|company/INDEX-GUIDE 增量锚点` | docs-indexing（对应单元） |
 
 ---
 
@@ -242,7 +237,7 @@ stateDiagram-v2
     Test --> [*]: 交付与归档
 ```
 
-推进协议与写作约束见各 `sdx-*` Skill 与 [application/CONTRIBUTING.md](application/CONTRIBUTING.md)。
+推进协议与写作约束见各 `sdx-*` Skill 与 [knowledge-governance.md](agent/knowledge/knowledge-governance.md)。
 
 ### 5.2 核心流程
 
@@ -250,7 +245,7 @@ stateDiagram-v2
 2. **目标工程接入知识库**: `git clone` 或 `bootstrap.sh` → `agent/skills/docs-install/scripts/docs-install.sh --target=...`（可选 `--mode=central`、`--scope`、`--type`）。
 3. **仅安装 Agent 配置**: `agent/skills/agent-install/scripts/agent-install.sh`（`--target`、`--agents`、`--scope` 等）。
 4. **联邦登记**: `docs-link.sh` 维护 `application|system|solution|company/knowledge-links.yaml`（边：company→solution、solution→system、system→application）。
-5. **维护索引与变更**: `/docs-indexing` 更新对应 `INDEX-GUIDE.md` + `changelogs/INDEXING-LOG.md`；变更溯源用 `git log` / `git diff`（联邦同步见 `/docs-pull` 的 `SYNC_OK` commit）。
+5. **维护索引与变更**: `/docs-indexing` 更新对应 `INDEX-GUIDE.md` + `INDEX-GUIDE 增量锚点`；变更溯源用 `git log` / `git diff`（联邦同步见 `/docs-pull` 的 `SYNC_OK` commit）。
 6. **OKF refresh 与校验**: `/docs-okf`（须 `.docsconfig` 的 `DOC_DIR`+`KNOWLEDGE_TYPE`）。
 7. **知识工程**: `/docs-build`、`/docs-distill`、`/docs-extract`、`/docs-merge`、`/docs-archive`、`/docs-revise`、`/docs-simplify` 等按 [agent/skills/README.md](agent/skills/README.md)。
 
@@ -259,7 +254,7 @@ stateDiagram-v2
 | 规则来源 | 描述 |
 | ---------- | ------ |
 | [AGENTS.md](AGENTS.md) | 禁止擅自改实体 ID、未确认不 `git commit`、文档产出闸门、会话启动 `/caveman` |
-| [application/CONTRIBUTING.md](application/CONTRIBUTING.md) | 贡献流程与阶段规则 |
+| [knowledge-governance.md](agent/knowledge/knowledge-governance.md) | 贡献与治理门禁（语义 SSOT） |
 | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md) | 全局命名与交付约定；artifact gates；禁止库外引用 superpowers 具名文件 |
 | [intent-clarify.md](agent/references/intent-clarify.md) / [unit-cycle-protocol.md](agent/references/unit-cycle-protocol.md) / [audience-and-language.md](agent/references/audience-and-language.md) | 语义族写前澄清、`C/M/G/S/F`、烤干受众维 |
 | [light-flow-actions.md](agent/references/light-flow-actions.md) | 轻流程 `C/M/S/F`（无 `G`） |
@@ -284,8 +279,8 @@ stateDiagram-v2
 | 数据源 | 类型 | 用途 |
 | -------- | ------ | ------ |
 | `{ID}.md`（OKF concept） | Markdown + YAML frontmatter | 五视角实体 SSOT；各 bundle `knowledge/index.md` |
-| `*-meta.md` / `docs-meta.md` | Markdown | 视角/目录机器契约 |
-| `knowledge-links.yaml` | YAML | 联邦 path / repository / doc_dir / 层相关 name 字段（application/system/solution/company 各一） |
+| `agent/knowledge/{视角}-meta.md` | Markdown | 视角字段契约 |
+| `knowledge-links.yaml` | YAML | 联邦 path / repository / dir / name / label；type 必写（parent、child、meta） |
 | `viz.html` | HTML | OKF 可视化（四层 application/system/solution/company） |
 | Git 仓库 | 文本与脚本 | 版本与协作真相源 |
 
@@ -294,13 +289,13 @@ stateDiagram-v2
 | 视角 | 示例 ID 链 | 路径前缀 |
 | ------ | ----------- | ---------- |
 | application | MS → API | `application/knowledge/application/MS-EXAMPLE/` |
-| data | DS → TBL | `application/knowledge/data/DS-EXAMPLE/` |
+| data | ENT → TBL | `application/knowledge/data/ENT-EXAMPLE/` |
 | technical | MW → CMP | `application/knowledge/technical/MW-EXAMPLE/` |
 | business / product | [未索引样例目录] | 现盘无 `*-EXAMPLE` 实体目录；术语与前缀见 knowledge-governance / glossary |
 
 映射字段 SSOT：[knowledge-governance.md](agent/knowledge/knowledge-governance.md)、[glossary.md](agent/knowledge/glossary.md)。**禁止**未同步引用链时改实体 ID。
 
-系统侧样例含 `APP-EXAMPLE`、`BSD-EXAMPLE`、`DS-EXAMPLE`、`PM-EXAMPLE` 等；解决方案侧含 `SLN-EXAMPLE`、`PL-EXAMPLE`、`PD-EXAMPLE`、`BS-EXAMPLE`、`BSD-EXAMPLE-L2`、`MDG-EXAMPLE`、`TSD-EXAMPLE`、`BP-EXAMPLE`、`BSP-EXAMPLE`；公司侧含 `BD-EXAMPLE`、`BL-EXAMPLE` 等（路径在对应 `knowledge/`）。
+系统侧样例含 `APP-EXAMPLE`、`BSD-EXAMPLE`、`DS-EXAMPLE`、`PM-EXAMPLE` 等；解决方案侧含 `SLN-EXAMPLE`、`PL-EXAMPLE`、`PD-EXAMPLE`、`BS-EXAMPLE`、`BSD-EXAMPLE-L2`、`MDG-EXAMPLE`、`TS-EXAMPLE`、`BP-EXAMPLE`、`BSP-EXAMPLE`；公司侧含 `BD-EXAMPLE`、`BL-EXAMPLE` 等（路径在对应 `knowledge/`）。
 
 ### 6.3 关系映射
 
@@ -319,10 +314,12 @@ stateDiagram-v2
 | 配置项/参数 | 所在位置 | 说明 |
 | ------------- | ---------- | ------ |
 | `GIT_REPO_URL` / `GIT_REF` | [bootstrap.sh](bootstrap.sh) / [agent/scripts/lib/docsconfig.sh](agent/scripts/lib/docsconfig.sh) | bootstrap 克隆地址与引用 |
-| `REPO_ROOT`（环境变量） | `docs-install.sh` 等 | 指向本中央库根 |
+| `--meta` | `docs-install.sh` / `agent-install.sh` | 元库根。默认本脚本所在仓库 |
+| `--workspace` | `agent-install.sh` | 必填。写入 `$AGENT_ROOT/$AGENT_DIR/configs` 的 `WORK_SPACE` |
 | `--target` / `--mode` / `--scope` / `--type` / `--force` / `--dry-run` | `docs-install.sh` | 见 [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md) |
-| `.docsconfig` 键 | 目标工程或本仓根 | `DOC_ROOT`、`REPO_ROOT`、`DOC_DIR`、`KNOWLEDGE_TYPE`；可选 `AGENT_*` |
-| 本仓 `.docsconfig` | `.docsconfig` | 当前：`DOC_DIR=docs`、`KNOWLEDGE_TYPE=company`（**索引根单元**仍写仓根 `INDEX-GUIDE.md`，勿与 DOC_DIR 默认输出混淆） |
+| `.docsconfig` 键 | 目标工程或本仓根 | `AGENT_ROOT`、`AGENT_DIR`、`REPO_DIR`、`DOC_DIR`、`KNOWLEDGE_TYPE` |
+| 工作区文件 | `$AGENT_ROOT/$AGENT_DIR/configs` | 只读 `WORK_SPACE`。文件不存在则提示 `/agent-install` |
+| 本仓 `.docsconfig` | `.docsconfig` | 当前：`REPO_DIR=ai-knowledge`、`DOC_DIR=company`、`KNOWLEDGE_TYPE=meta`（**索引根单元**仍写仓根 `INDEX-GUIDE.md`，勿与 DOC_DIR 默认输出混淆） |
 | Hooks SSOT | [agent/hooks.json](agent/hooks.json) | `preToolUse` 为空；旧 gate 脚本已删 |
 | OKF 路径解析 | `agent/skills/docs-okf/scripts/` | 依赖 `.docsconfig` |
 
@@ -361,7 +358,6 @@ stateDiagram-v2
 | company/ | 86 | `company/knowledge/` 57 |
 | solution/ | 77 | `solution/knowledge/` 60 |
 | application/ | 61 | `application/knowledge/` 26 |
-| changelogs/ | 2 | 根 INDEXING-LOG 等 |
 | 根 | 8 | README/AGENTS/INDEX/index/quick-start/bootstrap + ignore/hooks 跟踪项 |
 
 精读口径：`scan-spec` depth=3；本轮 **incremental** 只改四层联邦路径与规模计数，未对 659 个 `.md` 全文重摘（见 §8.2）。
@@ -380,9 +376,8 @@ stateDiagram-v2
 ### 8.3 维护规则
 
 - **触发**: 大目录调整、Skill/脚本契约变更、联邦路径变更后执行 `/docs-indexing`。
-- **本单元增量基线**: [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md) 主表**第一行** `indexing_finished_ms`；显式 `--since` 优先。
-- **子域单元**: 各自 `{DOC_DIR}/changelogs/INDEXING-LOG.md`（application/system/solution/company），与根 LOG **分文件**。
-- **注意**: 辅助脚本 `indexing.sh` 默认跟 `.docsconfig` 的 `DOC_DIR`（本仓为 `docs/`）；根单元须显式 `--output INDEX-GUIDE.md` 并把 LOG 落到根 `changelogs/`，勿静默写到不存在的 `docs/`。
+- **本单元增量基线**: [INDEX-GUIDE 增量锚点](INDEX-GUIDE 增量锚点) 主表**第一行** `indexing_finished_ms`；显式 `--since` 优先。
+- **子域单元**: 各自 `{DOC_DIR}/INDEX-GUIDE 增量锚点`（application/system/solution/company），与根 LOG **分文件**。
 - **联动**: 变更溯源见 `git log` / `git diff`；索引后建议按需 `/docs-okf` refresh（非阻断）。
 
 ---
@@ -401,7 +396,7 @@ stateDiagram-v2
 | 解决方案九章 | [solution/INDEX-GUIDE.md](solution/INDEX-GUIDE.md) | solution 文档根 |
 | 公司侧九章 | [company/INDEX-GUIDE.md](company/INDEX-GUIDE.md) | company 文档根 |
 | 设计原则 | [knowledge-governance.md](agent/knowledge/knowledge-governance.md) | 四层语义设计 |
-| 贡献流程 | [application/CONTRIBUTING.md](application/CONTRIBUTING.md) | 阶段与模板指针 |
+| 贡献与治理 | [knowledge-governance.md](agent/knowledge/knowledge-governance.md) | 语义 SSOT 与门禁 |
 | 布局契约 | [agent/references/knowledge-layout.md](agent/references/knowledge-layout.md) | 四层路径 / 联邦 / overview |
 | OKF 规范 | [agent/knowledge/okf-spec.md](agent/knowledge/okf-spec.md) | OKF SSOT |
 | 术语表 | [agent/knowledge/glossary.md](agent/knowledge/glossary.md) | 统一语言 |
@@ -412,7 +407,7 @@ stateDiagram-v2
 
 | 项目 | 关系 | 描述 |
 | ------ | ------ | ------ |
-| oleewen/ai-knowledge | 上游/本仓 | 中央库 |
+| oleewen/ai-knowledge | 上游/本仓 | 元库 |
 | 目标工程 `docs/` | 下游 | 由 `docs-install` 注入 |
 
 ### 9.3 工具链与 Skill 清单
@@ -440,8 +435,8 @@ stateDiagram-v2
 | `/docs-merge` | [agent/skills/docs-merge/SKILL.md](agent/skills/docs-merge/SKILL.md) |
 | `/docs-archive` | [agent/skills/docs-archive/SKILL.md](agent/skills/docs-archive/SKILL.md) |
 | `/sdx-domains` | [agent/skills/sdx-domains/SKILL.md](agent/skills/sdx-domains/SKILL.md) |
-| `/sdx-solution` | [agent/skills/sdx-solution/SKILL.md](agent/skills/sdx-solution/SKILL.md) |
 | `/sdx-analysis` | [agent/skills/sdx-analysis/SKILL.md](agent/skills/sdx-analysis/SKILL.md) |
+| `/sdx-feature` | [agent/skills/sdx-feature/SKILL.md](agent/skills/sdx-feature/SKILL.md) |
 | `/sdx-feature` | [agent/skills/sdx-feature/SKILL.md](agent/skills/sdx-feature/SKILL.md) |
 | `/sdx-prd` | [agent/skills/sdx-prd/SKILL.md](agent/skills/sdx-prd/SKILL.md) |
 | `/sdx-architect` | [agent/skills/sdx-architect/SKILL.md](agent/skills/sdx-architect/SKILL.md) |
@@ -464,4 +459,6 @@ stateDiagram-v2
 
 ---
 
-**索引元数据**: incremental d3 根单元四层联邦回写 **2026-10-05**；基线见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)。
+**索引元数据**: incremental d3 根单元四层联邦回写 **2026-10-05**；基线见 [INDEX-GUIDE 增量锚点](INDEX-GUIDE 增量锚点)。
+
+<!-- sdx-indexing:indexing_finished_ms=1791192152607 -->

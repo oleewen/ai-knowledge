@@ -6,14 +6,14 @@
 
 | 条件 | 行为 |
 | ---- | ---- |
-| 无 `.docsconfig` | **中止** → `docs-install --scope=config --target <DOC_ROOT>` |
-| 缺 `DOC_ROOT` / `REPO_ROOT` / `DOC_DIR` | **中止**（docsconfig 标准文案） |
-| `.docsconfig` 所在目录与 `REPO_ROOT` 不一致 | **中止** → 视为配置漂移，重新执行 `docs-install` 修复 |
-| 缺 `KNOWLEDGE_TYPE` | **中止** → `docs-install --scope=knowledge --target <DOC_ROOT>` |
-| 缺 `AGENT_DIR` | **中止** → `docs-install --scope=config` 补齐；脚本不回退 `$REPO_ROOT/agent/` |
+| 无 `.docsconfig` | **中止** → `docs-install --scope=config --target <文档目录>` |
+| 缺 `REPO_DIR` / `DOC_DIR` | **中止**（docsconfig 标准文案） |
+| 拼出的仓库路径与 `.docsconfig` 所在目录不一致 | **中止** → 视为配置漂移，重新执行 `docs-install` 修复 |
+| 缺 `KNOWLEDGE_TYPE` | **中止** → `docs-install --scope=knowledge --target <文档目录>` |
+| 缺 `AGENT_ROOT` / `AGENT_DIR`，或工作区文件不存在 | **中止**。缺键走 `docs-install`；缺 `$AGENT_ROOT/$AGENT_DIR/configs` 则提示 `/agent-install --workspace`。脚本不回退仓库内 `agent/` |
 | `{DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts` 不存在 | **中止** → 先 `docs-install` 建软链或 `/agent-install` |
 
-禁止无 config 时默认 `application` 或 git 根回退；禁止硬编码 `$REPO_ROOT/agent/`。
+禁止无 config 时默认 `application` 或 git 根回退；禁止硬编码仓库内 `agent/`。
 
 运行前先 `cd` 到目标工程目录；运行时只解析当前工作目录所属工程的 `.docsconfig`。
 

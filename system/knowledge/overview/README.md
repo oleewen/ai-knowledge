@@ -4,7 +4,7 @@ title: overview
 ---
 # overview
 
-[返回 · 系统知识库 — 架构文档](../README.md)
+[返回 · 系统知识库](../README.md)
 
 系统层五视角 overview 缓冲（表行 ↔ 视角章节 `##`）。**是** `docs-distill` 目标。
 

@@ -18,29 +18,28 @@
 
 ## 视角顺序与依赖
 
-- **乱序提取** → 固定 技术→数据→业务→产品（产品依赖 MS/API，业务依赖 MS）
+- **乱序提取** → 固定 应用→数据→业务→产品→技术（后序只引用前序已有 ID）
 - **后序改前序 per-entity** → 后序只读前序 ID；修前序单跑该视角
 
 ## 实体 ID
 
 - **MS-ID 用 Maven 模块名** → 按宿主类聚类；别名 SimpleName 去后缀
-- **一表多 ENT** → 同 `physical_table` 合并一个 ENT
-- **AGG 无 MS** → 无根则不造 AGG；标待补充
-- **FT/UC 无 API** → 须绑 API；无则标待补充
+- **一表多 ENT** → 同物理表名合并一个 ENT
+- **AGG 无聚合根** → 不造 AGG；标待补充
 - **未读文件造 ID** → 零幻觉；未读勿写已核实 evidence；可 `confidence: low` 并述因
 - **concept 缺 id** → 每个 per-entity `{ID}.md` frontmatter 须非空 `id`；否则扫描无法纳入 INDEX-GUIDE 第四章
 
 ## API 四类
 
-- **只提 Dubbo/HTTP** → 须含 MQ Consumer、Job；`api_type` 每条必填
-- **Consumer 当 Provider** → 只提 Provider；Consumer 进 `external_dependencies`
-- **MQ 多 Tag 不拆** → 一 Consumer 多 Tag → 多条 API，各 `tag`
-- **Job 无 handler** → `job_handler` 必填；cron 拿不到可 `confidence: medium`
-- **MQ/Job 无 MS** → 须归 MS；新 MS 或就近域并在 `merge_note` 说明
+- **只提 Dubbo/HTTP** → 须含 MQ Consumer、Job；入口类型可写入详细说明，缺了不算失败
+- **Consumer 当 Provider** → 只提 Provider，不提取 Consumer
+- **MQ 多 Tag 不拆** → 一 Consumer 多 Tag → 一条 API。Tag 可写入详细说明，缺了不算失败
+- **Job 无 handler** → 处理器名、Cron 可写入详细说明，缺了不算失败
+- **MQ/Job 无 MS** → 须归 MS（`implements_to`）；新 MS 或就近域。合并说明可写入详细说明，缺了不算失败
 
 ## 字段
 
-- **无 evidence_chain** → 每实体 ≥1 条 `{source, confidence, type}`；high 须代码/配置直证
+- **无证据** → 写入「依据与证据」，不要求 `evidence_chain` 数组
 - **应用层仍写聚合表** → 须一 concept 一文件；`hierarchy` 写在 frontmatter，勿回退 `{perspective}-entities.md`
 - **手写 INDEX 当 SSOT** → 第四章是视角导航（非实体台账）；改实体先改 per-entity + 视角 README，再跑 [consolidation-spec.md](references/consolidation-spec.md) 或 `docs-build/scripts/generate_knowledge_index.py` 刷新导航块
 
@@ -60,10 +59,10 @@
 
 - [ ] INDEX 已就绪，未盲扫全仓
 - [ ] 写前意图澄清六项 + knowledge 批次路径
-- [ ] 顺序 技术→数据→业务→产品
-- [ ] API 四类 + `api_type`；仅 Dubbo Provider
+- [ ] 顺序 应用→数据→业务→产品→技术
+- [ ] API 四类；入口类型可写入详细说明；仅 Dubbo Provider
 - [ ] 每实体一 `{ID}.md`；frontmatter 含 `id`
-- [ ] 每实体有 evidence_chain
+- [ ] 证据写在「依据与证据」
 - [ ] 先 README 后 INDEX（扫描/regen）
 - [ ] validate 通过后再烤干
 - [ ] 写后烤干收敛再 C/M/G/S/F

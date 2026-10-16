@@ -17,7 +17,7 @@ usage() {
 
 校验 OKF bundle（frontmatter、id、链接、index 条目）。
 bundle 与默认 viz 输出取自 .docsconfig 的 DOC_DIR；KNOWLEDGE_TYPE、AGENT_DIR 必填。
-脚本路径取自 {DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts（不依赖 \$REPO_ROOT/agent/）。
+脚本路径取自 {DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts（不依赖 \$repo_abs/agent/）。
 
 环境变量:
   BUNDLE   覆盖 .docsconfig 推导的 bundle（DOC_DIR）
@@ -51,6 +51,7 @@ done
 # shellcheck disable=SC1091
 source "$RESOLVE"
 resolve_okf_paths
+repo_abs="$(docsconfig_repo_abs)"
 
 if [[ "$BUNDLE_OVERRIDE" -eq 0 ]]; then
   BUNDLE="$OKF_BUNDLE"
@@ -69,11 +70,11 @@ if [[ ! -f "$OKF_DIR/validate_bundle.py" ]]; then
   exit 1
 fi
 
-cd "$REPO_ROOT" || exit 1
-export DOCS_OKF_REPO_ROOT="$REPO_ROOT"
+cd "$repo_abs" || exit 1
+export DOCS_OKF_REPO_ABS="$repo_abs"
 
 echo "=== validate-okf ==="
-echo "REPO_ROOT:      ${REPO_ROOT}"
+echo "repo_abs:      ${repo_abs}"
 echo "DOC_DIR:        ${DOC_DIR}"
 echo "AGENT_DIR:      ${AGENT_DIR}"
 echo "OKF_SCRIPTS:    ${OKF_DIR}"
@@ -82,4 +83,4 @@ echo "BUNDLE:         ${BUNDLE}"
 echo "OKF_VIZ_OUT:    ${OKF_VIZ_OUT}"
 echo ""
 
-python3 "$OKF_DIR/validate_bundle.py" --bundle "$BUNDLE" --repo "$REPO_ROOT"
+python3 "$OKF_DIR/validate_bundle.py" --bundle "$BUNDLE" --repo "$repo_abs"

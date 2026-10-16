@@ -136,7 +136,7 @@ def test_validator_http_without_parent_errors() -> None:
             "## 跨视角\n\n- (none)\n\n"
             "## 详细说明\n\n"
             "- 上游：[BD-EXAMPLE](https://github.com/org/ea/blob/main/company/"
-            "knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md)\n\n"
+            "knowledge/business/BD/BD-EXAMPLE/BD-EXAMPLE.md)\n\n"
             "## 依据与证据\n\n示例\n",
             encoding="utf-8",
         )

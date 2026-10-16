@@ -1,8 +1,11 @@
+---
+okf_version: "0.1"
+---
 # knowledge
 
 目录说明见 [README.md](README.md)。
 
-视角导航见 INDEX-GUIDE 第四章；实体台账 ∈ 各视角 README。
+视角导航见 [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 第四章；实体台账 ∈ 各视角 README。
 
 ## 子目录
 
@@ -15,7 +18,6 @@
 
 ## 目录文件
 
-* [knowledge-meta.md](knowledge-meta.md)
 * [technical-debt.md](technical-debt.md)
 
 ## 阅读顺序
@@ -23,7 +25,7 @@
 1. [README.md](README.md)
 2. INDEX-GUIDE 第四章 — 视角 README 导航
 3. 五视角 README：business → product → application → data → technical
-4. 各 `*-meta.md`（字段 SSOT）
+4. 五份视角 meta（字段 SSOT）：[业务](../../agent/knowledge/business-meta.md) · [产品](../../agent/knowledge/product-meta.md) · [应用](../../agent/knowledge/application-meta.md) · [数据](../../agent/knowledge/data-meta.md) · [技术](../../agent/knowledge/technical-meta.md)
 
 ## 关联索引
 

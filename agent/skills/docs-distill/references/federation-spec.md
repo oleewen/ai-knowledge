@@ -90,7 +90,7 @@
 
 ### 解决方案库（`solution/knowledge/overview/`）
 
-行序对齐 SA 第一至四章落 knowledge 的视角：业务范围、应用与集成、数据主权、技术选型（以同层 README 表行为准）。
+行序：业务范围、应用与集成、数据主权、技术选型（以同层 README 表行为准）。
 
 ### 公司库（`company/knowledge/overview/`）
 

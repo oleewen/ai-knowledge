@@ -17,15 +17,14 @@ title: application INDEX-GUIDE
 * [index.md](index.md) — OKF 目录索引
 * [DESIGN.md](DESIGN.md) — 本层设计入口（契约短表 + 治理引用）
 * [knowledge/README.md](knowledge/README.md) — 五视角
-* [CONTRIBUTING.md](CONTRIBUTING.md) — 贡献约定
-* [changelogs/README.md](changelogs/README.md) — 变更/索引
+* [knowledge-governance](../agent/knowledge/knowledge-governance.md) — 贡献与治理门禁
 
 ### 1.2 元信息
 
 * **角色**: 应用知识库；实现级实体（API/TBL/MW/CMP）SSOT + 五视角映射
 * **栈**: Markdown、YAML
-* **范围**: `knowledge/` · `analysis/` · `features/` · `requirements/` · `adr/` · `changelogs/`
-* **规模**（本轮 full/d3，排除 `.agents`）：约 **62** 文件（`.md` 59 · `.yaml` 1 · `viz.html` 1）
+* **范围**: `knowledge/` · `analysis/` · `features/` · `requirements/` · `adr/`
+* **规模**（本轮 full/d3，排除 `.agents`）：**70** 文件（`.md` 69 · `.yaml` 1；`viz.html` 1 不计入）
 
 ---
 
@@ -35,15 +34,14 @@ title: application INDEX-GUIDE
 
 ```text
 application/
-├── README.md / DESIGN.md / INDEX-GUIDE.md / index.md / docs-meta.md
+├── README.md / DESIGN.md / INDEX-GUIDE.md / index.md
 ├── knowledge/（含 overview/） · analysis/ · features/ · requirements/ · adr/
-└── changelogs/
 ```
 
 ### 2.2 依赖关系
 
 * `knowledge/` 含 `overview/{NAME}-overview.md`（extract / archive）；上行 pull → distill（系统 overview）
-* 上层公司/解决方案实体走 parent 链 reference，禁止直链槽位
+* 上层公司/解决方案/系统实体只写纯 ID；有 parent 则可 HTTP 指向上层首次定义。禁止直链槽位
 * `analysis/` → `features/` → `requirements/`（mode=s）
 
 ### 2.3 包结构
@@ -91,7 +89,7 @@ application/
 | 聚合 | 职责 | 关键落点 |
 |------|------|----------|
 | 本层首次实体 | API / TBL / MW / CMP | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
-| 上游引用 | 纯 ID 或 parent HTTP；PL∈公司，SLN/PD∈解决方案，SYS 链∈系统 | 不重复字段语义 |
+| 上游引用 | 纯 ID 或 parent HTTP；SLN/PL/PD∈解决方案，SYS 链∈系统 | 不重复字段语义 |
 | SDD | 分析 → 特性 → 需求（mode=s） | `analysis/` · `features/` · `requirements/` |
 
 ### 4.3 领域服务
@@ -100,14 +98,14 @@ application/
 
 ### 4.4 领域事件
 
-不适用运行时事件：索引运行见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)。
+不适用运行时事件：索引运行见 [INDEX-GUIDE 增量锚点](INDEX-GUIDE 增量锚点)。
 
 ### 4.5 视角导航
 
 <!-- docs-build:entity-index:begin -->
 > 本块由 `/docs-build` 写入；实体台账 ∈ 各视角 README；正文 ∈ per-entity `{ID}.md`；九章骨架 ∈ `/docs-indexing`。
 
-> 本层仅登记 **API / TBL / MW / CMP**。BL 见公司；SLN/PL/PD/BP/BSP/BSD-L2/BS/MDG/TSD 见解决方案；SYS 链见系统。
+> 本层仅登记 **API / TBL / MW / CMP**。
 
 ### 视角入口
 
@@ -135,7 +133,7 @@ application/
 | [requirements/REQUIREMENT-EXAMPLE/](requirements/REQUIREMENT-EXAMPLE/) | 需求样例目录 |
 | [adr/](adr/README.md) | ADR |
 | `knowledge/application/MS-EXAMPLE/API-EXAMPLE.md` | API SSOT 样例 |
-| `knowledge/data/DS-EXAMPLE/TBL-EXAMPLE.md` | TBL 样例 |
+| `knowledge/data/ENT-EXAMPLE/TBL-EXAMPLE.md` | TBL 样例 |
 | `knowledge/technical/MW-EXAMPLE/` · `CMP-EXAMPLE` | MW/CMP 样例 |
 
 OpenAPI/DDL 全文不在九章展开（实体可链外部）。
@@ -150,7 +148,6 @@ OpenAPI/DDL 全文不在九章展开（实体可链外部）。
 |--------|------|------|
 | `{ID}.md` | Markdown + YAML | 应用实体 SSOT（含 API/TBL/MW/CMP） |
 | `viz.html` | HTML | OKF 可视化 |
-| `manifest.md` | Markdown | 应用清单 |
 
 ### 6.2 实体映射
 
@@ -170,7 +167,7 @@ OpenAPI/DDL 全文不在九章展开（实体可链外部）。
 
 ### 7.1 配置项
 
-不适用运行时配置中心键值表。装机相关：仓库根 [`.docsconfig`](../.docsconfig)；本层 [knowledge-links.yaml](knowledge-links.yaml)（现 `links: []`）；mode 入口 [README-s.md](README-s.md) · [README-c.md](README-c.md)。
+不适用运行时配置中心键值表。装机相关：仓库根 [`.docsconfig`](../.docsconfig)；本层 [knowledge-links.yaml](knowledge-links.yaml)（现一条 `type: meta`，parent 未挂载）；mode 入口 [README-s.md](README-s.md) · [README-c.md](README-c.md)。
 
 ### 7.2 环境差异（接入模式）
 
@@ -186,7 +183,7 @@ standalone / central 差异与安装约定见仓库根 [INDEX-GUIDE.md](../INDEX
 
 ### 8.1 覆盖范围
 
-本轮 **full / depth 3** 覆盖 `application/` 可读文本（约 62 文件）。九章已消减 `[未索引]`；实体台账仍以各视角 README 与 per-entity 为准。
+本轮 **full / depth 3** 覆盖 `application/` 可读文本（70 文件）。九章已消减 `[未索引]`；实体台账仍以各视角 README 与 per-entity 为准。
 
 ### 8.2 排除列表
 
@@ -198,7 +195,6 @@ standalone / central 差异与安装约定见仓库根 [INDEX-GUIDE.md](../INDEX
 
 ### 8.3 维护规则
 
-* [changelogs/](changelogs/README.md)：`INDEXING-LOG.md`；溯源 git  
 * 大目录或契约变更后跑 `/docs-indexing`；索引后按需 `/docs-okf`
 
 ---
@@ -213,14 +209,13 @@ standalone / central 差异与安装约定见仓库根 [INDEX-GUIDE.md](../INDEX
 | 目录索引 | [index.md](index.md) | OKF 渐进披露 |
 | 设计入口 | [DESIGN.md](DESIGN.md) | 契约与门禁 |
 | OKF 可视化 | [viz.html](viz.html) | 图视图 |
-| 应用清单 | [manifest.md](manifest.md) | 清单 |
 | 系统对照 | [../system/INDEX-GUIDE.md](../system/INDEX-GUIDE.md) | 上层九章 |
 
 ### 9.2 相关项目
 
 | 关系 | 状态 |
 |------|------|
-| 本层 `knowledge-links.yaml` | **空**（`links: []`；可挂 `type: parent` → system） |
+| 本层 `knowledge-links.yaml` | 已有 `type: meta`；parent 未挂（可挂 `type: parent` → system） |
 | 联邦槽位 | **无**本层槽位目录；登记在公司/系统 `knowledge-links.yaml` |
 | 同仓邻层 | [system/](../system/README.md) · [company/](../company/README.md) |
 
@@ -231,3 +226,5 @@ standalone / central 差异与安装约定见仓库根 [INDEX-GUIDE.md](../INDEX
 | `/docs-okf` | [docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md) |
 | `/docs-indexing` | 九章骨架（须保留 entity-index 标记块） |
 | `/docs-build` | 刷新 §4.5 标记块 |
+
+<!-- sdx-indexing:indexing_finished_ms=1791431236005 -->

@@ -24,13 +24,14 @@ mkdir -p "$TMP/repo/application"
 ln -sfn ../.agents "$TMP/repo/application/.agents"
 
 cat > "$TMP/repo/.docsconfig" <<EOF
-DOC_ROOT=$TMP/repo/application
-REPO_ROOT=$TMP/repo
+REPO_DIR=$(basename "$TMP/repo")
 DOC_DIR=application
 KNOWLEDGE_TYPE=application
 AGENT_ROOT=$TMP/repo
 AGENT_DIR=.agents
 EOF
+mkdir -p "$TMP/repo/.agents"
+printf 'WORK_SPACE=%s\n' "$TMP" >"$TMP/repo/.agents/configs"
 
 mkdir -p "$TMP/repo/application/knowledge/business"
 cat > "$TMP/repo/application/index.md" <<'EOF'

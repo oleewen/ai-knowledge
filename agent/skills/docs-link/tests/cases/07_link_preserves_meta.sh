@@ -20,6 +20,7 @@ SOLUTION="$FAKEHOME/ws/sln-foo"
 
 cleanup() {
   rm -rf "$TMP_DIR"
+  rm -f "$ROOT_DIR/agent/configs"
 }
 trap cleanup EXIT
 
@@ -36,7 +37,7 @@ links:
   - type: meta
     repository: "https://example.com/org/ai-knowledge.git"
     path: "~/workspaces/ai-knowledge"
-    doc_dir: "company"
+    dir: "company"
 EOF
 
 cat >"$SOLUTION/docs/knowledge-links.yaml" <<'EOF'
@@ -44,42 +45,42 @@ links:
   - type: meta
     repository: "https://example.com/org/ai-knowledge.git"
     path: "~/workspaces/ai-knowledge"
-    doc_dir: "solution"
+    dir: "solution"
 EOF
 
 cat >"$COMPANY/.docsconfig" <<EOF
-DOC_ROOT=docs
-REPO_ROOT=$COMPANY
+REPO_DIR=$(basename "$COMPANY")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=company
 AGENT_ROOT=$ROOT_DIR
 AGENT_DIR=agent
 EOF
+pin_workspace_for_repo "$COMPANY" "$ROOT_DIR" agent
 
 cat >"$SOLUTION/.docsconfig" <<EOF
-DOC_ROOT=docs
-REPO_ROOT=$SOLUTION
+REPO_DIR=$(basename "$SOLUTION")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=solution
 AGENT_ROOT=$ROOT_DIR
 AGENT_DIR=agent
 EOF
+pin_workspace_for_repo "$SOLUTION" "$ROOT_DIR" agent
 
 ( cd "$COMPANY" && HOME="$FAKEHOME" "${BASH:-bash}" "$DOCS_LINK" --link --target "$SOLUTION" ) \
   || fail "docs-link --link 应成功"
 
 grep -Fq 'type: meta' "$COMPANY/docs/knowledge-links.yaml" \
   || fail "源仓 links 写回后应保留 type: meta"
-grep -Fq 'doc_dir: "company"' "$COMPANY/docs/knowledge-links.yaml" \
-  || fail "源仓 meta.doc_dir 应仍为 company"
-grep -Fq 'solution_name: "sln-foo"' "$COMPANY/docs/knowledge-links.yaml" \
+grep -Fq 'dir: "company"' "$COMPANY/docs/knowledge-links.yaml" \
+  || fail "源仓 meta.dir 应仍为 company"
+grep -Fq 'name: "sln-foo"' "$COMPANY/docs/knowledge-links.yaml" \
   || fail "源仓应同时含 child sln-foo"
 
 grep -Fq 'type: meta' "$SOLUTION/docs/knowledge-links.yaml" \
   || fail "目标 links 写回后应保留 type: meta"
 grep -Fq 'type: parent' "$SOLUTION/docs/knowledge-links.yaml" \
   || fail "目标应含 type: parent"
-grep -Fq 'doc_dir: "solution"' "$SOLUTION/docs/knowledge-links.yaml" \
-  || fail "目标 meta.doc_dir 应仍为 solution"
+grep -Fq 'dir: "solution"' "$SOLUTION/docs/knowledge-links.yaml" \
+  || fail "目标 meta.dir 应仍为 solution"
 
 pass "link 写回保活 type:meta"

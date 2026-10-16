@@ -17,7 +17,7 @@
 
 | 命令 | 差异要点 |
 | ---- | ---- |
-| `/docs-indexing` | 参数 `mode/depth/output/since`；产出九章 `INDEX-GUIDE.md` + `changelogs/INDEXING-LOG.md`（须列完整仓库根相对路径） |
+| `/docs-indexing` | 参数 `mode/depth/output/since`；产出九章 `INDEX-GUIDE.md` + `INDEX-GUIDE` 增量锚点注释（须列完整仓库根相对路径） |
 | `/docs-tag` | 四层 `{NAME}-overview.md` 关键词：候选附录、表行 ✅、架构摘录；`--scan-dir` 默认同层 `knowledge/`。轻流程。见 [workflow.md](docs-tag/references/workflow.md) |
 | `/docs-revise` | 术语/路径链式同步 + 定向纠错；烤干修订后走协议 simplify 遍；整篇结构交 `/docs-simplify` |
 | `/docs-simplify` | 金字塔结构 + 激进精简 + SSOT 去重引用；原则见 [simplify-principles.md](../references/simplify-principles.md) |
@@ -36,9 +36,9 @@
 | `/docs-archive` | overview 表行 → 四层视角章节；冲突策略；方案确认书=意图澄清 |
 | `/docs-okf` | OKF refresh / validate / viz；须 `.docsconfig` 的 `DOC_DIR`+`AGENT_DIR`+`KNOWLEDGE_TYPE`；脚本走 `{DOC_DIR}/{AGENT_DIR}/`；轻流程 |
 | `/sdx-domains` | → `company/domains/DOMAIN-MAP.md`、`DOMAIN-{BD-ID}.md` |
-| `/sdx-solution` | → 仅 solution 库 `{DOC_DIR}/solutions/SOLUTION-*.md` |
-| `/sdx-analysis` | → 系统/应用 `{DOC_DIR}/analysis/ANALYSIS-*.md` |
-| `/sdx-feature` | → 系统/应用 `{DOC_DIR}/features/FEATURE-*.md` |
+| `/sdx-solution` | 解决方案库 `solutions/SOLUTION-*.md`（交付包切分叙事） |
+| `/sdx-analysis` | 系统/应用 `{DOC_DIR}/analysis/ANALYSIS-*.md`（七章需求分析） |
+| `/sdx-feature` | 系统/应用 `{DOC_DIR}/features/FEATURE-*.md`（六章功能特性） |
 | `/sdx-prd` | 基于 ANALYSIS 当前 MVP → `PRD-*.md` |
 | `/sdx-architect` | 基于 PRD → `ASD-*.md`（§1–§3）；可选 `spec-asd-*.md` |
 | `/sdx-design` | 基于 PRD + ASD/spec-asd → `DSD-*.md`（实现在 §2）；上游可含 `{DOC_DIR}/specs/spec-asd-*.md` |
@@ -49,4 +49,4 @@
 - 由 Agent 按对应 `SKILL.md` 执行并落盘。
 - **`git commit` / `git push`**：须 [git-guidelines.md](../rules/coding/git-guidelines.md)「提交前用户确认」；步骤中「Commit」= 确认后再提交。
 - 装机脚本在 `agent/skills/docs-install/scripts/`、`agent/skills/agent-install/scripts/`；仓根 `bootstrap.sh` 编排双轨；`agent/scripts/` = 共享 Bash 库。
-- 索引类产物路径以约定为准（`INDEX-GUIDE.md`、`index.md`、`{DOC_DIR}/changelogs/INDEXING-LOG.md`）；变更溯源用 `git log` / `git diff`。
+- 索引类产物路径以约定为准（`INDEX-GUIDE.md`、`index.md`、`{DOC_DIR}/`INDEX-GUIDE` 增量锚点注释）；变更溯源用 `git log` / `git diff`。

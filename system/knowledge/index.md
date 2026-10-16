@@ -1,3 +1,6 @@
+---
+okf_version: "0.1"
+---
 # knowledge
 
 目录说明见 [README.md](README.md)。
@@ -15,7 +18,7 @@
 
 ## 目录文件
 
-* [knowledge-meta.md](knowledge-meta.md)
+（无）
 
 ## 阅读顺序
 

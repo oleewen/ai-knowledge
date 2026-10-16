@@ -4,9 +4,11 @@ title: 技术架构
 ---
 # 技术架构
 
-[返回 · 企业架构](../README.md)
+[返回 · 公司知识库](../README.md)
 
-**本层 SSOT**：TPL。台账见库根 INDEX-GUIDE §4（留字去链）；字段 [technical-meta.md](technical-meta.md)。
+**本层 SSOT**：TPL。台账 [实体](#实体)；字段 [technical-meta.md](../../../agent/knowledge/technical-meta.md)。
+
+目录与阅读顺序见 [index.md](index.md)。
 
 六章是企业标准；方案同名 overview / infrastructure / observability 是落地，不是本层副本。
 
@@ -25,4 +27,4 @@ title: 技术架构
 
 | 链序 | 层级 | ID | 名称 | 文件/目录 |
 |------|------|----|------|-----------|
-| L1 | TPL | TPL-EXAMPLE | 示例技术平台能力 | [TPL-EXAMPLE.md](TPL-EXAMPLE.md) |
+| L1 | TPL | TPL-EXAMPLE | 示例技术平台能力 | [TPL/TPL-EXAMPLE.md](TPL/TPL-EXAMPLE.md) |

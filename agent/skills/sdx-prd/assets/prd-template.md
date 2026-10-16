@@ -7,7 +7,7 @@ created: "{YYYY-MM-DD}"
 updated: "{YYYY-MM-DD}"
 author: "product-designer"
 reviewers: []
-parent: "ANALYSIS-{IDEA-ID}"
+parent: "FEATURE-{IDEA-ID}"
 mvp_phase: "MVP-Phase-{N}"
 ---
 
@@ -23,7 +23,7 @@ mvp_phase: "MVP-Phase-{N}"
 ### 1.1 产品目标
 
 - 关联解决方案：`{DOC_DIR}/solutions/SOLUTION-{IDEA-ID}.md`
-- 关联需求分析：`{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md`
+- 关联功能特性：`{DOC_DIR}/features/FEATURE-{IDEA-ID}.md`
 - MVP阶段：MVP-Phase-{N}
 
 ### 1.2 成功标准

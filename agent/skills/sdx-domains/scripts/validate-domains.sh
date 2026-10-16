@@ -23,8 +23,8 @@ if [[ "${KNOWLEDGE_TYPE:-}" != "company" ]]; then
   exit 1
 fi
 
-DOC_ROOT="$(docsconfig_resolve_doc_root)"
-DOMAINS_DIR="${DOC_ROOT}/domains"
+doc_abs="$(docsconfig_doc_abs)"
+DOMAINS_DIR="${doc_abs}/domains"
 error() { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
 

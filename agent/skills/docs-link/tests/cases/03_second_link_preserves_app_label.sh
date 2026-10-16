@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 同一 target 再次 link 时保留已有 app_label；无 app_label 时默认 app_name
+# 同一 target 再次 link 时保留已有 label；无 label 时默认 name
 set -euo pipefail
 
 TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -20,6 +20,7 @@ APP_TGT="$FAKEHOME/ws/my-application-repo"
 LIST="$SYS_SRC/docs/knowledge-links.yaml"
 cleanup() {
   rm -rf "$TMP_DIR"
+  rm -f "$ROOT_DIR/agent/configs"
 }
 trap cleanup EXIT
 
@@ -31,22 +32,22 @@ git -C "$SYS_SRC" remote add origin "https://example.com/org/system-kb.git"
 git -C "$APP_TGT" remote add origin "https://example.com/org/my-application-repo.git"
 
 cat >"$SYS_SRC/.docsconfig" <<EOF
-DOC_ROOT=docs
-REPO_ROOT=$SYS_SRC
+REPO_DIR=$(basename "$SYS_SRC")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=system
 AGENT_ROOT=$ROOT_DIR
 AGENT_DIR=agent
 EOF
+pin_workspace_for_repo "$SYS_SRC" "$ROOT_DIR" agent
 
 cat >"$APP_TGT/.docsconfig" <<EOF
-DOC_ROOT=docs
-REPO_ROOT=$APP_TGT
+REPO_DIR=$(basename "$APP_TGT")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=application
 AGENT_ROOT=$ROOT_DIR
 AGENT_DIR=agent
 EOF
+pin_workspace_for_repo "$APP_TGT" "$ROOT_DIR" agent
 
 run_link() {
   ( cd "$SYS_SRC" && HOME="$FAKEHOME" "${BASH:-bash}" "$DOCS_LINK" --link --target "$APP_TGT" )
@@ -55,21 +56,22 @@ run_link() {
 run_link || fail "首次 link 应成功"
 assert_file_exists "$LIST"
 
-# 将 app_label 改为与 app_name 不同，第二次 link 后应仍保留
-if grep -q '^[[:space:]]*app_label:' "$LIST"; then
+# 将 label 改为与 name 不同，第二次 link 后应仍保留
+if grep -q '^[[:space:]]*label:' "$LIST"; then
   if [[ "$(uname -s)" == 'Darwin' ]]; then
-    sed -i '' 's/^\([[:space:]]*app_label:\).*/\1 "保留测签"/' "$LIST"
+    sed -i '' 's/^\([[:space:]]*label:\).*/\1 "保留测签"/' "$LIST"
   else
-    sed -i 's/^\([[:space:]]*app_label:\).*/\1 "保留测签"/' "$LIST"
+    sed -i 's/^\([[:space:]]*label:\).*/\1 "保留测签"/' "$LIST"
   fi
 else
-  fail "首次 link 后应写出 app_label 行"
+  fail "首次 link 后应写出 label 行"
 fi
 
 run_link || fail "第二次 link 应成功"
-grep -Fq 'app_label: "保留测签"' "$LIST" || fail "再次 link 应保留已有 app_label"
+grep -Fq 'label: "保留测签"' "$LIST" || fail "再次 link 应保留已有 label"
 [[ -L "$SYS_SRC/docs/application-slots/application-my-application-repo" ]] \
   || fail "建联后槽位应为软链"
-assert_file_exists "$SYS_SRC/docs/application-slots/changelogs/ARCHIVE-LOG.md"
+[[ ! -e "$SYS_SRC/docs/application-slots/changelogs" ]] \
+  || fail "不应再创建 application-slots/changelogs"
 
 pass "再次 link 保留已有 app_label"

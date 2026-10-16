@@ -14,7 +14,7 @@
 - 写后烤干：[grilling-skill.md](../../../references/grilling-skill.md)
 - 技术决策落 ADR / CONTEXT：[sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)
 
-**仅系统库 / 应用库**：上游 `{DOC_DIR}/analysis/ANALYSIS-*.md`；交付物 `{DOC_DIR}/features/FEATURE-*.md`。禁止 company / solution。
+**仅系统库 / 应用库**（`KNOWLEDGE_TYPE=system|application`）：上游为同库 `ANALYSIS-*.md`（IDEA-ID 相同）；交付物 `{DOC_DIR}/features/FEATURE-*.md`。公司 → `/sdx-domains`。解决方案层不写 `features/`。
 
 ---
 
@@ -27,7 +27,7 @@
 
 ### 最小可写条件
 
-- 上游 `ANALYSIS-{IDEA-ID}.md` 已明确
+- 上游 `ANALYSIS-{IDEA-ID}.md` 已明确，或已有等价共识材料
 - `IDEA-ID` 已给出或可按规则生成
 - `{DOC_DIR}/features/` 可写
 - 至少能确定本轮起始章节，或默认从 `§1` 开始
@@ -66,7 +66,7 @@
 | 项 | 路径 |
 | --- | --- |
 | 终稿 | `{DOC_DIR}/features/FEATURE-{IDEA-ID}.md` |
-| 公司库终稿 | `company/analysis/FEATURE-{IDEA-ID}.md` |
+| 公司库终稿 | `company/features/FEATURE-{IDEA-ID}.md` |
 | 技术决策 | `{DOC_DIR}/adr/ADR-*.md` + `CONTEXT.md`（见 [sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)） |
 | 结构校验 | `../scripts/validate-feature.sh` |
 
@@ -89,7 +89,7 @@
 本技能附加：
 
 - `§2`：**`### 概览` 为独立当前段**（须写后 `C` 后才可写各 `### FR-xxx`）；之后可细化到单个 `FR`
-- 概览生成：主料 = 上游 SOLUTION §6.1「覆盖范围」；§2.1 场景 / §2.3 In Scope 只补漏；粒度 = **可独立验收** ∧ **一 FR 一模块**（业务能力域）；横跨模块 → 拆 ≥2 FR；冲突时先按模块拆、再按可验收继续拆
+- 概览生成：主料 = 上游 ANALYSIS §6.1「覆盖范围」；§2.1 场景 / §2.3 In Scope 只补漏；粒度 = **可独立验收** ∧ **一 FR 一模块**（业务能力域）；横跨模块 → 拆 ≥2 FR；冲突时先按模块拆、再按可验收继续拆
 - 所属模块：业务能力域短名（非工程分层）；禁空、禁逗号多模块、禁工程名；清单优先 `knowledge/` / overview，无则边拆边共拟、烤干归一；名称/概要/FR 正文均不越该模块职责（SSOT 仅概览列，正文不重复写模块）
 - 概览表列：`需求编号 | 需求名称 | 需求概要 | 优先级 | 所属模块 | 所属里程碑 | 关联目标`；需求名称 ≤30、需求概要 ≤60（Unicode 码点）；`### FR-n:` 标题 = 概览名称且 ≤30；所属里程碑 = 原样抄 §6.1（`M{n}（短名）`；非空、禁 `MVP{n}`、一 FR 一里程碑）；FR→`MVP{n}` 到 §4 再划
 - 优先级按成功标准 / In Scope 关键性推导（与里程碑序解耦）；概览确认时可改
@@ -97,7 +97,7 @@
 - FR 段可同步改对应概览行；**§2 整章收口**须强制对齐概览与 FR 正文
 - §4：按实情写成 `MVP{n}（{短名}）` 并挂 FR（可跨里程碑拆/并）；与里程碑不硬对齐；每 FR 恰好一 MVP；个数建议 ≈ 里程碑数，偏离须说明
 - 当前段存在 `>=2` 条真实分析路径时，先段内比选再收敛
-- **技术/架构**选型按 [sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)：实现向可新建 ADR；改边界/集成硬停回 SOLUTION；引用落 §6.2
+- **技术/架构**选型按 [sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)：实现向可新建 ADR；改边界/集成硬停回 ANALYSIS；引用落 §6.2
 - 烤干收敛后、选 **C** 前：本段新技术决策须已落盘且占位已清
 - 动作字母仅 `C/M/G/F`（无 `S`）
 - grilling fallback 见 [grilling-skill.md](../../../references/grilling-skill.md)
@@ -106,6 +106,6 @@
 
 ## 整体验证与质量基线
 
-至少检查：章节完整性、术语一致、编号连续（`G-n` / `FR-n` / `BR-n` / `R-n` / `MVP{n}`）、跨段无未解释矛盾、frontmatter 完整、特性拆解可读且不混入实现级细节。
+至少检查：章节完整性、术语一致、编号连续（`G-n` / `FR-n` / `BR-n` / `R-n` / `MVP{n}`）、跨段无未解释矛盾、frontmatter 完整、需求分析可读且不混入实现级细节。
 
 终检对齐 [quality-checklist.md](quality-checklist.md)；收口前跑 `validate-feature.sh`。

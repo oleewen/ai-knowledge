@@ -9,6 +9,8 @@ readonly _DOCS_CONFIG_SH_LOADED=1
 if ! declare -p DOCS_CONFIG_DIR >/dev/null 2>&1; then
   readonly DOCS_CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 fi
+# shellcheck source=../../../scripts/lib/bash.sh
+source "${DOCS_CONFIG_DIR}/../../../scripts/lib/bash.sh"
 # shellcheck source=../../../scripts/docs-core.sh
 source "${DOCS_CONFIG_DIR}/../../../scripts/docs-core.sh"
 

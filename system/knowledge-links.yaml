@@ -1,21 +1,26 @@
 # 知识库建联清单（可由 docs-link.sh / docs-install.sh 维护）
-# 可含一条 type: parent（上级 company）、一条 type: meta（装机源元库）与若干向下 application child。
-# 缺省无 type 的条目视为 child。字段约定见 scripts/README.md。
-# meta.doc_dir = 本库 KNOWLEDGE_TYPE（system），指向元仓内模板子树，非 DOC_DIR。
+# 可含一条 type: parent（上级 solution）、一条 type: meta（装机源元库）与若干 type: child。
+# 每条必须写 type：parent、child 或 meta。字段约定见 agent/knowledge/knowledge-governance.md。
+# dir：meta 的值 = 本库 KNOWLEDGE_TYPE（system），指向元仓模板子树；parent/child 的值 = 对方 DOC_DIR。空则省略。
 # 示例：
 #   - type: meta
 #     repository: "git@github.com:example/ai-knowledge.git"
 #     path: "~/workspaces/ai-knowledge"
-#     doc_dir: "system"
+#     dir: "system"
 #   - type: parent
-#     repository: "git@github.com:example/company-ea.git"
-#     path: "~/workspaces/company-ea"
-#     doc_dir: "docs"
-#     company_name: "company-ea"
-#     company_label: "company-ea"
-#   - repository: "https://example.com/org/app-foo.git"
+#     repository: "git@github.com:example/sln-foo.git"
+#     path: "~/workspaces/sln-foo"
+#     dir: "docs"
+#     name: "sln-foo"
+#     label: "sln-foo"
+#   - type: child
+#     repository: "https://example.com/org/app-foo.git"
 #     path: "~/workspaces/app-foo"
-#     doc_dir: "docs"
-#     app_name: "app-foo"
-#     app_label: "app-foo"
-links: []
+#     dir: "docs"
+#     name: "app-foo"
+#     label: "app-foo"
+links:
+  - type: meta
+    repository: "git@github.com:oleewen/ai-knowledge.git"
+    path: "~/workspaces/ai-knowledge"
+    dir: "system"

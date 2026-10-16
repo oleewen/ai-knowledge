@@ -28,22 +28,22 @@ git -C "$APP_OK" init -q
 git -C "$APP_BAD" init -q
 
 cat >"$SYSTEM/.docsconfig" <<EOF
-DOC_ROOT=docs
-REPO_ROOT=$SYSTEM
+REPO_DIR=$(basename "$SYSTEM")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=system
-AGENT_ROOT=$ROOT_DIR
-AGENT_DIR=agent
+AGENT_ROOT=$TMP_DIR/agent-home
+AGENT_DIR=.agents
 EOF
+pin_workspace_for_repo "$SYSTEM" "$TMP_DIR/agent-home" .agents
 
 cat >"$APP_OK/.docsconfig" <<EOF
-DOC_ROOT=docs
-REPO_ROOT=$APP_OK
+REPO_DIR=$(basename "$APP_OK")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=application
-AGENT_ROOT=$ROOT_DIR
-AGENT_DIR=agent
+AGENT_ROOT=$TMP_DIR/agent-home
+AGENT_DIR=.agents
 EOF
+pin_workspace_for_repo "$APP_OK" "$TMP_DIR/agent-home" .agents
 
 echo "content" >"$APP_OK/docs/sync-me.md"
 git -C "$APP_OK" add . && git -C "$APP_OK" commit -m "ok" -q
@@ -57,16 +57,18 @@ mkdir -p "$SYSTEM/docs/application-slots"
 
 cat >"$SYSTEM/docs/knowledge-links.yaml" <<EOF
 links:
-  - repository: "$BARE_OK"
+  - type: child
+    repository: "$BARE_OK"
     path: "$APP_OK"
-    doc_dir: "docs"
-    app_name: "app-ok"
-    app_label: "app-ok"
-  - repository: "https://example.com/org/app-bad.git"
+    dir: "docs"
+    name: "app-ok"
+    label: "app-ok"
+  - type: child
+    repository: "https://example.com/org/app-bad.git"
     path: "$APP_BAD"
-    doc_dir: "docs"
-    app_name: "app-bad"
-    app_label: "app-bad"
+    dir: "docs"
+    name: "app-bad"
+    label: "app-bad"
 EOF
 
 set +e

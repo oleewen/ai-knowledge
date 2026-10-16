@@ -9,9 +9,12 @@ perspective: technical
 hierarchy: CMP
 layer_scope: application
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例组件
+
 ## 关系
 
-- implements_to: MW-EXAMPLE
+- implements_to: [MW-EXAMPLE](MW-EXAMPLE.md)
 
 ## 跨视角
 
@@ -20,7 +23,8 @@ layer_scope: application
 ## 详细说明
 
 - maven_coordinates: org.example:example-client:1.0.0
+- 演示技术视角 CMP 数据结构（示例）。
 
 ## 依据与证据
 
-pom.xml（示例）
+[../chapters/technical-middleware.md](../chapters/technical-middleware.md)（示例）

@@ -76,7 +76,7 @@
       "pass": true
     },
     {
-      "query": "SOLUTION 已经有了，请接着做 /sdx-analysis，把 MVP 拆细、依赖和风险写进 ANALYSIS-CRM-1.md。",
+      "query": "SOLUTION 已经有了，请接着做 /sdx-feature，把 MVP 拆细、依赖和风险写进 ANALYSIS-CRM-1.md。",
       "should_trigger": false,
       "trigger_rate": 0.0,
       "triggers": 0,

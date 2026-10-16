@@ -13,10 +13,10 @@
 ## 阅读顺序
 
 1. [business-overview.md](business-overview.md)
-2. [business-capability-map.md](business-capability-map.md)
-3. [business-glossary.md](business-glossary.md)
+2. [business-glossary.md](business-glossary.md)
+3. [business-capability-map.md](business-capability-map.md)
 
 ## 关联索引
 
-- 上一级索引：[index.md](../index.md)
-- 上一级说明：[README.md](../README.md)
+- 上一级索引：[../index.md](../index.md)
+- 上一级说明：[../README.md](../README.md)

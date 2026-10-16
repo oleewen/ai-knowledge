@@ -13,11 +13,10 @@ title: "应用知识库（顶层 `application/`）"
 | 目录索引 | [index.md](index.md) |
 | 本层设计入口 | [DESIGN.md](DESIGN.md) |
 | 五视角入口 | [knowledge/README.md](knowledge/README.md) |
-| 机器元数据 | [docs-meta.md](docs-meta.md) |
 
 初始化模式：`mode=s` → [README-s.md](README-s.md)；`mode=c` → [README-c.md](README-c.md)
 
-按需：[CONTRIBUTING.md](CONTRIBUTING.md) · [adr/](adr/README.md) · [changelogs/](changelogs/README.md)
+按需：[adr/](adr/README.md) · [analysis/](analysis/README.md) · [features/](features/README.md) · [requirements/](requirements/README.md)；贡献门禁见 [knowledge-governance](../agent/knowledge/knowledge-governance.md)
 
 模板占位：`*-EXAMPLE`（最小演示链，可替换）。
 

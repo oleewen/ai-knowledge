@@ -1,42 +1,4 @@
----
-type: Directory Index
-title: company 目录索引（index）
-okf_version: 0.1
----
 <!-- okf:begin -->
-## OKF 渐进披露
-
-目录说明见 [README.md](README.md)。
-
-### 子目录
-
-* [adr](adr/README.md)
-* [changelogs](changelogs/README.md)
-* [domains](domains/README.md) - company/domains 目录索引
-* [knowledge](knowledge/README.md)
-* [solution-slots](solution-slots/README.md) - solution-slots 目录索引
-
-### 目录文件
-
-* [DESIGN.md](DESIGN.md)
-* [INDEX-GUIDE.md](INDEX-GUIDE.md)
-* [docs-meta.md](docs-meta.md)
-* [knowledge-links.yaml](knowledge-links.yaml)
-* [viz.html](viz.html)
-
-### 阅读顺序
-
-1. [README.md](README.md) — 定位与导航  
-2. [DESIGN.md](DESIGN.md) — 本层契约与治理引用  
-3. [knowledge/README.md](knowledge/README.md) — 五视角
-
-### 关联索引
-
-* 上一级说明：[../README.md](../README.md)
-<!-- okf:end -->
-
-
-
 # OKF 渐进披露
 
 目录说明见 [README.md](README.md)。
@@ -45,7 +7,6 @@ okf_version: 0.1
 
 * [adr](adr/README.md)
 * [domains](domains/README.md)
-* [changelogs](changelogs/README.md)
 * [knowledge](knowledge/README.md)
 * [solution-slots](solution-slots/README.md)
 
@@ -53,7 +14,7 @@ okf_version: 0.1
 
 * [DESIGN.md](DESIGN.md)
 * [INDEX-GUIDE.md](INDEX-GUIDE.md)
-* [docs-meta.md](docs-meta.md)
+* [TODO-LIST.md](TODO-LIST.md)
 * [knowledge-links.yaml](knowledge-links.yaml)
 * [viz.html](viz.html)
 
@@ -66,3 +27,4 @@ okf_version: 0.1
 ## 关联索引
 
 * 上一级说明：[../README.md](../README.md)
+<!-- okf:end -->

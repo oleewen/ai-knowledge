@@ -7,13 +7,11 @@ timestamp: "2026-06-21T00:00:00+08:00"
 id: BD-EXAMPLE
 perspective: business
 hierarchy: BD
-strategic_classification: supporting_domain
-definition_scope: reference
 layer_scope: system
 ---
 # SSOT
 
-上游主定义：`company/knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md`（公司层 OKF SSOT）。
+上游主定义：`company/knowledge/business/BD/BD-EXAMPLE/BD-EXAMPLE.md`（公司层 OKF SSOT）。
 
 # Relations
 

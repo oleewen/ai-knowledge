@@ -2,7 +2,7 @@
 #
 # lib/docsconfig.sh — .docsconfig 读写校验、bootstrap 注入当前 shell、Git 默认常量
 # 依赖：仅 lib/path.sh（轻量；tools 可只 source 本文件，不拖入 log-io / docs-core）
-# 禁止 export DOC_ROOT / REPO_ROOT / DOC_DIR / AGENT_*（仅当前 shell 赋值）
+# 禁止 export WORK_SPACE / REPO_DIR / DOC_DIR / AGENT_*（仅当前 shell 赋值）
 #
 
 _DOCSCONFIG_LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -72,15 +72,15 @@ docsconfig_normalize_root_value() {
   printf '%s' "$(abs_path "$v")"
 }
 
-docsconfig_repo_root_from_doc_root() {
-  local doc_root="${1:?doc_root}" dr gr
-  dr="$(cd -P "$doc_root" 2>/dev/null && pwd)" || return 0
+docsconfig_repo_from_doc() {
+  local doc_abs="${1:?doc_abs}" dr gr
+  dr="$(cd -P "$doc_abs" 2>/dev/null && pwd)" || return 0
   gr="$(git -C "$dr" rev-parse --show-toplevel 2>/dev/null || true)"
   if [[ -n "$gr" && "$(dirname "$dr")" == "$gr" ]]; then
     printf '%s\n' "$gr"
     return 0
   fi
-  cd -P "$(dirname "$doc_root")" 2>/dev/null && pwd || true
+  cd -P "$(dirname "$doc_abs")" 2>/dev/null && pwd || true
 }
 
 docsconfig_find_repo_root() {
@@ -106,15 +106,15 @@ docsconfig_find_path() {
   printf '%s/.docsconfig' "$repo_root"
 }
 
-docsconfig_validate_owner_matches_repo_root() {
+docsconfig_validate_owner_matches_repo() {
   local config_owner_root="${1:?config_owner_root}"
-  local repo_root="${2:?repo_root}"
+  local repo_abs_in="${2:?repo_abs}"
   local owner_abs repo_abs
 
   owner_abs="$(cd -P "$config_owner_root" 2>/dev/null && pwd)" || return 1
-  repo_abs="$(cd -P "$repo_root" 2>/dev/null && pwd)" || return 1
+  repo_abs="$(cd -P "$repo_abs_in" 2>/dev/null && pwd)" || return 1
   if [[ "$owner_abs" != "$repo_abs" ]]; then
-    printf '[docsconfig] 配置漂移：.docsconfig 位于 %s，但 REPO_ROOT=%s\n' \
+    printf '[docsconfig] 配置漂移：.docsconfig 位于 %s，但仓库路径为 %s\n' \
       "$owner_abs" "$repo_abs" >&2
     return 1
   fi
@@ -124,18 +124,18 @@ docsconfig_doc_dir_from_roots() {
   local repo_root="${1:?repo_root}" doc_root="${2:?doc_root}"
   local rr dr
   rr="$(cd -P "$repo_root" 2>/dev/null && pwd)" || {
-    printf '[docsconfig] 无法解析 REPO_ROOT: %s\n' "$repo_root" >&2
+    printf '[docsconfig] 无法解析仓库路径: %s\n' "$repo_root" >&2
     return 1
   }
   dr="$(cd -P "$doc_root" 2>/dev/null && pwd)" || {
-    printf '[docsconfig] 无法解析 DOC_ROOT: %s\n' "$doc_root" >&2
+    printf '[docsconfig] 无法解析文档路径: %s\n' "$doc_root" >&2
     return 1
   }
   case "$dr" in
     "$rr") printf '.\n' ;;
     "$rr"/*) printf '%s\n' "${dr#"$rr"/}" ;;
     *)
-      printf '[docsconfig] DOC_ROOT 不在 REPO_ROOT 下: %s vs %s\n' "$dr" "$rr" >&2
+      printf '[docsconfig] 文档路径不在仓库路径下: %s vs %s\n' "$dr" "$rr" >&2
       return 1
       ;;
   esac
@@ -189,17 +189,46 @@ docsconfig_validate_knowledge_type() {
   return 1
 }
 
-# 打印 .docsconfig 正文键值；参数：dr rr doc_dir knowledge_type agent_root agent_dir
+docsconfig_validate_repo_dir() {
+  local v="${1:-}"
+  if [[ -z "$v" || "$v" == "." || "$v" == ".." || "$v" == /* || "$v" == "~" || "$v" == "~/"* || "$v" == *"/"* ]]; then
+    _docsconfig_err "[docsconfig] REPO_DIR 须为单段目录名: ${v:-空}"
+    return 1
+  fi
+}
+
+docsconfig_validate_doc_dir() {
+  local v="${1:-}" seg
+  local -a segs=()
+  if [[ -z "$v" || "$v" == "." || "$v" == /* || "$v" == "~" || "$v" == "~/"* ]]; then
+    _docsconfig_err "[docsconfig] DOC_DIR 须为仓库下的相对子路径: ${v:-空}"
+    return 1
+  fi
+  IFS='/' read -ra segs <<< "$v"
+  for seg in "${segs[@]}"; do
+    if [[ -z "$seg" || "$seg" == "." || "$seg" == ".." ]]; then
+      _docsconfig_err "[docsconfig] DOC_DIR 含非法段: $v"
+      return 1
+    fi
+  done
+}
+
+# 打印 .docsconfig 正文。键序：AGENT_ROOT、AGENT_DIR、REPO_DIR、DOC_DIR、KNOWLEDGE_TYPE
+# 参数：repo_dir doc_dir knowledge_type agent_root agent_dir
 docsconfig_print_kv_block() {
-  local dr="$1" rr="$2" doc_dir="$3" knowledge_type="$4" agent_root="$5" agent_dir="${6:-}"
+  local repo_dir="$1" doc_dir="$2" knowledge_type="$3" agent_root="$4" agent_dir="${5:-}"
   local ar
-  printf 'DOC_ROOT=%s\nREPO_ROOT=%s\nDOC_DIR=%s\n' "$dr" "$rr" "$doc_dir"
-  [[ -n "$knowledge_type" ]] && printf 'KNOWLEDGE_TYPE=%s\n' "$knowledge_type"
   if [[ -n "$agent_root" ]]; then
     ar="$(docsconfig_format_root_for_write "$agent_root")"
     printf 'AGENT_ROOT=%s\n' "$ar"
   fi
-  [[ -n "$agent_dir" ]] && printf 'AGENT_DIR=%s\n' "$agent_dir"
+  if [[ -n "$agent_dir" ]]; then
+    printf 'AGENT_DIR=%s\n' "$agent_dir"
+  fi
+  printf 'REPO_DIR=%s\nDOC_DIR=%s\n' "$repo_dir" "$doc_dir"
+  if [[ -n "$knowledge_type" ]]; then
+    printf 'KNOWLEDGE_TYPE=%s\n' "$knowledge_type"
+  fi
 }
 
 # Usage: docsconfig_write <repo_root> <doc_root> <doc_dir> [dry] [agent_root] [knowledge_type] [agent_dir]
@@ -222,10 +251,16 @@ docsconfig_write() {
     esac
   fi
 
-  local out rr dr
+  local out repo_dir computed_dd
   out="$(strip_trailing_slash "$(abs_path "$repo_root")")/.docsconfig"
-  rr="$(docsconfig_format_root_for_write "$repo_root")"
-  dr="$(docsconfig_format_root_for_write "$doc_root")"
+  repo_dir="$(basename "$(strip_trailing_slash "$(abs_path "$repo_root")")")"
+  docsconfig_validate_repo_dir "$repo_dir" || return 1
+  docsconfig_validate_doc_dir "$doc_dir" || return 1
+  computed_dd="$(docsconfig_doc_dir_from_roots "$repo_root" "$doc_root")" || return 1
+  if [[ "$computed_dd" != "$doc_dir" ]]; then
+    _docsconfig_err "[docsconfig] DOC_DIR 与文档路径不一致: ${doc_dir} vs ${computed_dd}"
+    return 1
+  fi
 
   if [[ -n "$knowledge_type_in" ]]; then
     docsconfig_validate_knowledge_type "$knowledge_type_in" || return 1
@@ -245,21 +280,20 @@ docsconfig_write() {
 
   if [[ "$dry" == '1' ]]; then
     printf 'Would write %s:\n' "$out"
-    docsconfig_print_kv_block "$dr" "$rr" "$doc_dir" "$knowledge_type_in" "$agent_root_in" "$agent_dir_in"
+    docsconfig_print_kv_block "$repo_dir" "$doc_dir" "$knowledge_type_in" "$agent_root_in" "$agent_dir_in"
     return 0
   fi
 
   umask 022
   {
-    docsconfig_print_kv_block "$dr" "$rr" "$doc_dir" "$knowledge_type_in" "$agent_root_in" "$agent_dir_in"
+    docsconfig_print_kv_block "$repo_dir" "$doc_dir" "$knowledge_type_in" "$agent_root_in" "$agent_dir_in"
   } >"$out"
 }
 
-# Usage: docsconfig_read_into <path> <doc_var> <repo_var> <ddir_var> [aroot_var [ktype_var [adir_var]]]
+# Usage: docsconfig_read_into <path> <repo_dir_var> <ddir_var> [aroot_var [ktype_var [adir_var]]]
 docsconfig_read_into() {
   local path="${1:?path}"
-  local doc_out repo_out ddir_out
-  doc_out=''; repo_out=''; ddir_out=''
+  local repo_dir_out='' ddir_out=''
   local reset_name
   for reset_name in "${@:2}"; do
     [[ "$reset_name" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]] || return 2
@@ -268,58 +302,163 @@ docsconfig_read_into() {
   [[ -f "$path" ]] || return 1
 
   # 局部名须避开调用方输出变量目标（如 raw_ar / AGENT_ROOT），否则 Bash 会写空调用方变量。
-  local _dc_raw_doc='' _dc_raw_repo='' _dc_raw_ddir='' _dc_raw_ar='' _dc_raw_kt='' _dc_raw_adir=''
+  local _dc_raw_rd='' _dc_raw_ddir='' _dc_raw_ar='' _dc_raw_kt='' _dc_raw_adir=''
   local line k v
   while IFS= read -r line || [[ -n "$line" ]]; do
     [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
     case "$line" in
-      DOC_ROOT=*|REPO_ROOT=*|DOC_DIR=*|AGENT_ROOT=*|AGENT_DIR=*|KNOWLEDGE_TYPE=*)
+      REPO_DIR=*|DOC_DIR=*|AGENT_ROOT=*|AGENT_DIR=*|KNOWLEDGE_TYPE=*)
         k="${line%%=*}"
         v="${line#*=}"
         v="${v%$'\r'}"
-        # 去掉 AGENT_DIR 可能带的引号
         v="${v#\"}"
         v="${v%\"}"
         v="${v#\'}"
         v="${v%\'}"
         case "$k" in
-          DOC_ROOT) _dc_raw_doc="$v" ;;
-          REPO_ROOT) _dc_raw_repo="$v" ;;
+          REPO_DIR) _dc_raw_rd="$v" ;;
           DOC_DIR) _dc_raw_ddir="$v" ;;
           AGENT_ROOT) _dc_raw_ar="$v" ;;
           AGENT_DIR) _dc_raw_adir="$v" ;;
           KNOWLEDGE_TYPE) _dc_raw_kt="$v" ;;
         esac
         ;;
-      AGENT_DIRS=*)
-        # 遗留键：忽略（不再读写 IDE 列表）
-        ;;
     esac
   done <"$path"
 
-  [[ -n "$_dc_raw_doc" ]] && doc_out="$(docsconfig_normalize_root_value "$_dc_raw_doc")"
-  [[ -n "$_dc_raw_repo" ]] && repo_out="$(docsconfig_normalize_root_value "$_dc_raw_repo")"
+  repo_dir_out="$_dc_raw_rd"
   ddir_out="$_dc_raw_ddir"
 
-  if (( $# >= 5 )); then
+  if (( $# >= 4 )); then
     local aroot_out=''
     [[ -n "$_dc_raw_ar" ]] && aroot_out="$(docsconfig_normalize_root_value "$_dc_raw_ar")"
-    eval "${5:?}=\$aroot_out"
+    eval "${4:?}=\$aroot_out"
+  fi
+  if (( $# >= 5 )); then
+    eval "${5:?}=\$_dc_raw_kt"
   fi
   if (( $# >= 6 )); then
-    eval "${6:?}=\$_dc_raw_kt"
+    eval "${6:?}=\$_dc_raw_adir"
   fi
-  if (( $# >= 7 )); then
-    eval "${7:?}=\$_dc_raw_adir"
-  fi
-  eval "${2:?}=\$doc_out"
-  eval "${3:?}=\$repo_out"
-  eval "${4:?}=\$ddir_out"
+  eval "${2:?}=\$repo_dir_out"
+  eval "${3:?}=\$ddir_out"
   return 0
 }
 
-docsconfig_resolve_doc_root() {
-  printf '%s' "${DOC_ROOT:-}"
+docsconfig_configs_file() {
+  local agent_root="${1:?}" agent_dir="${2:?}"
+  local root
+  root="$(strip_trailing_slash "$(docsconfig_normalize_root_value "$agent_root")")"
+  printf '%s/%s/configs' "$root" "$agent_dir"
+}
+
+docsconfig_read_workspace_raw() {
+  local path="${1:?}" line v
+  [[ -f "$path" ]] || return 1
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
+    [[ "$line" == WORK_SPACE=* ]] || continue
+    v="${line#*=}"
+    v="${v%$'\r'}"
+    v="${v#\"}"
+    v="${v%\"}"
+    v="${v#\'}"
+    v="${v%\'}"
+    printf '%s' "$v"
+    return 0
+  done <"$path"
+  return 1
+}
+
+docsconfig_workspace_fail() {
+  local msg="${1:-[config] 未找到工作区文件。}"
+  printf '%s\n' "$msg" >&2
+  cat >&2 <<'EOF'
+[config] 请执行 /agent-install，并传入 --workspace <工作区目录>。例如：
+  bash agent/skills/agent-install/scripts/agent-install.sh --workspace ~/workspaces
+EOF
+  if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    exit 1
+  fi
+  return 1
+}
+
+docsconfig_load_workspace_abs() {
+  local agent_root="${1:?}" agent_dir="${2:?}"
+  local path raw
+  path="$(docsconfig_configs_file "$agent_root" "$agent_dir")"
+  if [[ ! -f "$path" ]]; then
+    docsconfig_workspace_fail "[config] 未找到工作区文件: ${path}"
+    return 1
+  fi
+  raw="$(docsconfig_read_workspace_raw "$path" || true)"
+  if [[ -z "$raw" ]]; then
+    docsconfig_workspace_fail "[config] 工作区文件缺少 WORK_SPACE: ${path}"
+    return 1
+  fi
+  docsconfig_normalize_root_value "$raw"
+}
+
+docsconfig_compose_repo_abs() {
+  local ws="${1:?}" repo_dir="${2:?}"
+  docsconfig_normalize_root_value "${ws%/}/${repo_dir}"
+}
+
+docsconfig_compose_doc_abs() {
+  local ws="${1:?}" repo_dir="${2:?}" doc_dir="${3:?}"
+  local repo_abs
+  repo_abs="$(docsconfig_compose_repo_abs "$ws" "$repo_dir")"
+  docsconfig_normalize_root_value "${repo_abs%/}/${doc_dir}"
+}
+
+docsconfig_repo_abs() {
+  docsconfig_compose_repo_abs "${WORK_SPACE:?WORK_SPACE 未注入}" "${REPO_DIR:?REPO_DIR 未注入}"
+}
+
+docsconfig_doc_abs() {
+  docsconfig_compose_doc_abs "${WORK_SPACE:?WORK_SPACE 未注入}" "${REPO_DIR:?REPO_DIR 未注入}" "${DOC_DIR:?DOC_DIR 未注入}"
+}
+
+# 从一份 .docsconfig 拼出仓库路径与文档路径。不改当前 shell 的 WORK_SPACE。
+# Usage: docsconfig_abs_for_config <cfg> <repo_var> <doc_var> <ddir_var> [aroot_var [ktype_var [adir_var]]]
+docsconfig_abs_for_config() {
+  local path="${1:?}"
+  local rd='' dd='' ar='' kt='' ad=''
+  local ws repo_abs doc_abs
+  docsconfig_read_into "$path" rd dd ar kt ad || return 1
+  if [[ -z "$rd" || -z "$dd" ]]; then
+    _docsconfig_err "[config] .docsconfig 缺少 REPO_DIR 或 DOC_DIR: ${path}"
+    _docsconfig_err "[config] 请重新执行 docs-install。"
+    return 1
+  fi
+  docsconfig_validate_repo_dir "$rd" || return 1
+  docsconfig_validate_doc_dir "$dd" || return 1
+  if [[ -z "$ar" || -z "$ad" ]]; then
+    _docsconfig_err "[config] .docsconfig 缺少 AGENT_ROOT 或 AGENT_DIR，无法定位工作区文件: ${path}"
+    return 1
+  fi
+  ws="$(docsconfig_load_workspace_abs "$ar" "$ad")" || return 1
+  repo_abs="$(docsconfig_compose_repo_abs "$ws" "$rd")"
+  doc_abs="$(docsconfig_compose_doc_abs "$ws" "$rd" "$dd")"
+  printf -v "${2:?}" '%s' "$repo_abs"
+  printf -v "${3:?}" '%s' "$doc_abs"
+  printf -v "${4:?}" '%s' "$dd"
+  if (( $# >= 5 )); then printf -v "${5:?}" '%s' "$ar"; fi
+  if (( $# >= 6 )); then printf -v "${6:?}" '%s' "$kt"; fi
+  if (( $# >= 7 )); then printf -v "${7:?}" '%s' "$ad"; fi
+}
+
+docsconfig_write_workspace() {
+  local store="${1:?}" workspace="${2:?}" dry="${3:-0}"
+  local formatted path
+  formatted="$(docsconfig_format_root_for_write "$workspace")"
+  path="$(strip_trailing_slash "$(abs_path "$store")")/configs"
+  if [[ "$dry" == '1' ]]; then
+    printf 'Would write %s:\nWORK_SPACE=%s\n' "$path" "$formatted"
+    return 0
+  fi
+  umask 022
+  printf 'WORK_SPACE=%s\n' "$formatted" >"$path"
 }
 
 docsconfig_bootstrap_fail() {
@@ -337,9 +476,9 @@ EOF
 }
 
 # Usage: docsconfig_bootstrap_validate
-# 自 cwd 上溯查找 .docsconfig，注入 DOC_ROOT / REPO_ROOT / DOC_DIR（及可选字段）到当前 shell。
+# 自 cwd 上溯查找 .docsconfig，注入 WORK_SPACE / REPO_DIR / DOC_DIR（及 AGENT_*、KNOWLEDGE_TYPE）。
 docsconfig_bootstrap_validate() {
-  local cfg_path config_owner_root
+  local cfg_path config_owner_root repo_abs
 
   cfg_path="$(docsconfig_find_path)" || {
     docsconfig_bootstrap_fail "[config] 未找到当前工程的 .docsconfig。"
@@ -349,32 +488,46 @@ docsconfig_bootstrap_validate() {
 
   KNOWLEDGE_TYPE=""
   AGENT_DIR=""
+  AGENT_ROOT=""
+  REPO_DIR=""
+  DOC_DIR=""
+  WORK_SPACE=""
   DOCSCONFIG_PATH="$cfg_path"
   CONFIG_OWNER_ROOT="$config_owner_root"
-  docsconfig_read_into "$cfg_path" DOC_ROOT REPO_ROOT DOC_DIR AGENT_ROOT KNOWLEDGE_TYPE AGENT_DIR || {
+  docsconfig_read_into "$cfg_path" REPO_DIR DOC_DIR AGENT_ROOT KNOWLEDGE_TYPE AGENT_DIR || {
     docsconfig_bootstrap_fail "[config] 解析 .docsconfig 失败。"
     return 1
   }
 
-  if [[ -z "${DOC_ROOT:-}" || -z "${REPO_ROOT:-}" || -z "${DOC_DIR:-}" ]]; then
-    docsconfig_bootstrap_fail "[config] .docsconfig 缺少必需的 DOC_ROOT、REPO_ROOT 或 DOC_DIR。"
+  if [[ -z "${REPO_DIR:-}" || -z "${DOC_DIR:-}" ]]; then
+    docsconfig_bootstrap_fail "[config] .docsconfig 缺少必需的 REPO_DIR 或 DOC_DIR。"
+    return 1
+  fi
+  docsconfig_validate_repo_dir "$REPO_DIR" || {
+    docsconfig_bootstrap_fail "[config] REPO_DIR 非法。"
+    return 1
+  }
+  docsconfig_validate_doc_dir "$DOC_DIR" || {
+    docsconfig_bootstrap_fail "[config] DOC_DIR 非法。"
+    return 1
+  }
+
+  if [[ -z "${AGENT_ROOT:-}" || -z "${AGENT_DIR:-}" ]]; then
+    docsconfig_bootstrap_fail "[config] .docsconfig 缺少 AGENT_ROOT 或 AGENT_DIR，无法定位工作区文件。"
     return 1
   fi
 
-  if [[ -n "${AGENT_ROOT:-}" && -z "${AGENT_DIR:-}" ]]; then
-    docsconfig_bootstrap_fail "[config] .docsconfig 已设 AGENT_ROOT 但缺少 AGENT_DIR。请补充 AGENT_DIR=.agents（或探测到的目录名）。"
-    return 1
-  fi
-
-  if [[ -n "${AGENT_ROOT:-}" ]] && declare -F docsconfig_agent_root_looks_like_entity_tree >/dev/null 2>&1; then
+  if declare -F docsconfig_agent_root_looks_like_entity_tree >/dev/null 2>&1; then
     if docsconfig_agent_root_looks_like_entity_tree "$AGENT_ROOT"; then
       docsconfig_bootstrap_fail "[config] AGENT_ROOT 不能指向实体树。请改为 ~（或家目录）并设置 AGENT_DIR。"
       return 1
     fi
   fi
 
-  docsconfig_validate_owner_matches_repo_root "$config_owner_root" "$REPO_ROOT" || {
-    docsconfig_bootstrap_fail "[config] .docsconfig 与 REPO_ROOT 不一致。请重新执行 docs-install。"
+  WORK_SPACE="$(docsconfig_load_workspace_abs "$AGENT_ROOT" "$AGENT_DIR")" || return 1
+  repo_abs="$(docsconfig_repo_abs)"
+  docsconfig_validate_owner_matches_repo "$config_owner_root" "$repo_abs" || {
+    docsconfig_bootstrap_fail "[config] .docsconfig 与仓库路径不一致。请重新执行 docs-install。"
     return 1
   }
 }

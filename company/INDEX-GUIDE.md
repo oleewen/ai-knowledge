@@ -18,14 +18,13 @@ title: company INDEX-GUIDE
 * [DESIGN.md](DESIGN.md) — 本层设计入口  
 * [knowledge/README.md](knowledge/README.md) — 五视角  
 * [knowledge-links.yaml](knowledge-links.yaml) — 建联清单  
-* [changelogs/README.md](changelogs/README.md) — 变更/索引  
 
 ### 1.2 元信息
 
 * **角色**: 公司知识库；`knowledge/` = VC/BD/BSD-L1/CAP/BL/TPL SSOT；`solution-slots/solution-{NAME}` = 解决方案联邦槽位（软链）
 * **栈**: Markdown、YAML  
-* **范围**: `knowledge/` · `domains/` · `adr/` · `solution-slots/` · `changelogs/`  
-* **规模**（本轮 full/d3，排除 `.agents`）：约 **83** 文件（`.md` 80 · `.yaml` 1 · `viz.html` 1）  
+* **范围**: `knowledge/` · `domains/` · `adr/` · `solution-slots/`  
+* **规模**（本轮 full/d3，排除 `.agents`）：**75** 文件（`.md` 74 · `.yaml` 1；`viz.html` 1 不计入）  
 
 ---
 
@@ -35,19 +34,17 @@ title: company INDEX-GUIDE
 
 ```text
 company/
-├── README.md / DESIGN.md / INDEX-GUIDE.md / index.md / docs-meta.md
+├── README.md / DESIGN.md / INDEX-GUIDE.md / index.md
 ├── knowledge-links.yaml
 ├── knowledge/ · domains/ · adr/
 ├── solution-slots/
-│   ├── solution-{NAME}         # 软链 → 解决方案 DOC_ROOT
-│   └── changelogs/
-└── changelogs/
+│   ├── solution-{NAME}         # 软链 → 解决方案 文档目录
 ```
 
 ### 2.2 依赖关系
 
 * `knowledge/` ↔ `solution/knowledge/`：公司实体参照（禁止直指系统槽位）
-* `domains/` → 各解决方案 `solutions/` → 各系统 `analysis/` → `features/` → `requirements/`
+* `domains/` → 各解决方案 `solutions/`
 * `knowledge-links.yaml` → `solution-slots/solution-{NAME}/`  
 
 门禁与同步：[DESIGN.md](DESIGN.md) § 同步与门禁。
@@ -96,10 +93,10 @@ company/
 
 | 聚合 | 职责 | 关键落点 |
 |------|------|----------|
-| 公司级实体 | VC / BD / BSD-L1 / CAP / PL / TPL | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
+| 公司级实体 | VC / BD / BSD-L1 / CAP / BL / TPL | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
 | overview 缓冲 | distill / extract / archive / tag | [knowledge/overview/](knowledge/overview/README.md) |
 | SDD 上游 | 域架构 | `domains/`（无 solutions/analysis/requirements） |
-| 联邦槽位 | 解决方案 DOC_ROOT 软链 | `solution-slots/solution-{NAME}/` · [knowledge-links.yaml](knowledge-links.yaml) |
+| 联邦槽位 | 解决方案 文档目录 软链 | `solution-slots/solution-{NAME}/` · [knowledge-links.yaml](knowledge-links.yaml) |
 
 ### 4.3 领域服务
 
@@ -107,14 +104,14 @@ company/
 
 ### 4.4 领域事件
 
-不适用运行时事件：索引运行见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)；归档见 `solution-slots/changelogs/`。
+不适用运行时事件：索引运行见 [INDEX-GUIDE 增量锚点](INDEX-GUIDE 增量锚点)。
 
 ### 4.5 视角导航
 
 <!-- docs-build:entity-index:begin -->
 > 本块由 `/docs-build` 写入；实体台账 ∈ 各视角 README；正文 ∈ per-entity `{ID}.md`；九章骨架 ∈ `/docs-indexing`。
 
-> 本层登记 **VC / BD / BSD-L1 / CAP / PL / TPL**。
+> 本层登记 **VC / BD / BSD-L1 / CAP / BL / TPL**。
 
 ### 视角入口
 
@@ -175,7 +172,7 @@ company/
 | 项 | 落点 |
 |------|------|
 | 文档根 / 类型 | 仓库根 [`.docsconfig`](../.docsconfig)（`DOC_DIR=company`，`KNOWLEDGE_TYPE=meta`） |
-| 建联清单 | [knowledge-links.yaml](knowledge-links.yaml)（现 `links: []`） |
+| 建联清单 | [knowledge-links.yaml](knowledge-links.yaml)（现一条 `type: meta`，child 未挂载） |
 | 装机 | `/docs-install` · `/docs-link` |
 
 ---
@@ -184,7 +181,7 @@ company/
 
 ### 8.1 覆盖范围
 
-本轮 **full / depth 3** 覆盖 `company/` 可读文本（约 83 文件）。九章已消减 `[未索引]`；实体台账仍以各视角 README 与 per-entity 为准，不在此贴全表。
+本轮 **full / depth 3** 覆盖 `company/` 可读文本（75 文件）。九章已消减 `[未索引]`；实体台账仍以各视角 README 与 per-entity 为准，不在此贴全表。
 
 ### 8.2 排除列表
 
@@ -197,8 +194,6 @@ company/
 
 ### 8.3 维护规则
 
-* [changelogs/](changelogs/README.md)：`INDEXING-LOG`；溯源 git  
-* 槽位日志 ∈ `solution-slots/changelogs/ARCHIVE-LOG.md`  
 * 大目录或契约变更后跑 `/docs-indexing`；索引后按需 `/docs-okf`
 
 ---
@@ -213,14 +208,14 @@ company/
 | 目录索引 | [index.md](index.md) | OKF 渐进披露 |
 | 设计入口 | [DESIGN.md](DESIGN.md) | 契约与门禁 |
 | OKF 可视化 | [viz.html](viz.html) | 图视图 |
-| 索引运行日志 | [INDEXING-LOG.md](changelogs/INDEXING-LOG.md) | docs-indexing 基线 |
+| 索引运行日志 | [INDEXING-LOG.md](INDEX-GUIDE 增量锚点) | docs-indexing 基线 |
 
 ### 9.2 相关项目
 
 | 关系 | 状态 |
 |------|------|
-| `knowledge-links.yaml` child | **空**（`links: []`，合法未挂载态） |
-| `solution-slots/solution-*` | **无**现成软链；仅有槽位 README / `changelogs/` |
+| `knowledge-links.yaml` child | **空**（仅 `type: meta`，child 未挂载） |
+| `solution-slots/solution-*` | **无**现成软链；仅有槽位 README |
 | 同仓邻层 | [solution/](../solution/README.md) · [system/](../system/README.md) · [application/](../application/README.md)（非联邦 path，开发元库并列） |
 
 ### 9.3 工具链
@@ -230,3 +225,5 @@ company/
 | `/docs-okf` | [docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md) |
 | `/docs-indexing` | 九章骨架（须保留 entity-index 标记块） |
 | `/docs-build` | 刷新 §4.5 标记块 |
+
+<!-- sdx-indexing:indexing_finished_ms=1791428119711 -->

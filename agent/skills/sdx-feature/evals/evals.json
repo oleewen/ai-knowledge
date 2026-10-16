@@ -6,7 +6,7 @@
     {
       "id": "analysis-trigger-001",
       "category": "should-trigger",
-      "prompt": "SOLUTION-BILL-01.md 已经评审过了，请走 /sdx-feature：先逐步确认参数，再一段一段写进 FEATURE-BILL-01.md，每段先意图澄清再写，写完再 grill，重点补 FR、MVP、依赖和风险。",
+      "prompt": "ANALYSIS-BILL-01.md 已经评审过了，请走 /sdx-feature：先逐步确认参数，再一段一段写进 FEATURE-BILL-01.md，每段先意图澄清再写，写完再 grill，重点补 FR、MVP、依赖和风险。",
       "expected_output": "以 /sdx-feature 为主路径：先走参数向导，再按模板分段「澄清 → 生成 → 烤干」直写 FEATURE-BILL-01.md；每段写前意图澄清、写入后自动 grilling 至收敛，再由用户确认后推进下一段。",
       "assertions": [
         {
@@ -60,9 +60,9 @@
         },
         {
           "id": "upstream-solution",
-          "name": "上游 SOLUTION",
+          "name": "上游 ANALYSIS",
           "type": "must_include",
-          "check": "须体现 ANALYSIS 基于已共识 SOLUTION 承接细化。",
+          "check": "须体现 ANALYSIS 基于已共识 ANALYSIS 承接细化。",
           "priority": "P0"
         },
         {
@@ -76,7 +76,7 @@
           "id": "adr-tech-gate",
           "name": "技术决策 ADR",
           "type": "must_include",
-          "check": "若涉及技术/架构选型，须体现落 ADR + CONTEXT（§6.2 引用），实现向可新建、改边界回 SOLUTION；或引用 sdx-adr-protocol。",
+          "check": "若涉及技术/架构选型，须体现落 ADR + CONTEXT（§6.2 引用），实现向可新建、改边界回 ANALYSIS；或引用 sdx-adr-protocol。",
           "priority": "P1"
         }
       ]
@@ -84,7 +84,7 @@
     {
       "id": "analysis-trigger-002",
       "category": "should-trigger",
-      "prompt": "我们要在 {DOC_DIR}/features/ 写特性拆解文档，按六章模板，先确认参数，再只写一个当前段并自动 grill 到收敛，不要先写会话 spec。",
+      "prompt": "我们要在 {DOC_DIR}/features/ 写功能特性文档，按六章模板，先确认参数，再只写一个当前段并自动 grill 到收敛，不要先写会话 spec。",
       "expected_output": "明确采用 sdx-feature：先参数确认，再分段直写终稿，并说明不得要求已删除的 HTML gate / CONFIRMED / 会话 spec；主线是澄清→生成→烤干。",
       "assertions": [
         {
@@ -156,8 +156,8 @@
     {
       "id": "analysis-trigger-003b",
       "category": "should-trigger",
-      "prompt": "SOLUTION-CRM-01 已共识且 §6.1 有里程碑（形如 M1（短名））。请 /sdx-feature 只写 `### 概览`：从方案拆 FR 清单供我确认，表要有需求概要与所属模块（业务能力域、一 FR 一模块），所属里程碑写成 §6.1 整串（不要写 MVP{n}）。",
-      "expected_output": "以 /sdx-feature 为主路径：当前段为独立 `### 概览`；按 SOLUTION §6.1 覆盖范围拆 FR（可独立验收 ∧ 一 FR 一模块）；概览含需求概要、所属模块与所属里程碑（M{n}（短名）、禁 MVP{n}）；写后烤干并等待写后 C；不得跳过概览确认去写 FR 正文；不得在概览划 MVP。",
+      "prompt": "ANALYSIS-CRM-01 已共识且 §6.1 有里程碑（形如 M1（短名））。请 /sdx-feature 只写 `### 概览`：从方案拆 FR 清单供我确认，表要有需求概要与所属模块（业务能力域、一 FR 一模块），所属里程碑写成 §6.1 整串（不要写 MVP{n}）。",
+      "expected_output": "以 /sdx-feature 为主路径：当前段为独立 `### 概览`；按 ANALYSIS §6.1 覆盖范围拆 FR（可独立验收 ∧ 一 FR 一模块）；概览含需求概要、所属模块与所属里程碑（M{n}（短名）、禁 MVP{n}）；写后烤干并等待写后 C；不得跳过概览确认去写 FR 正文；不得在概览划 MVP。",
       "assertions": [
         {
           "id": "overview-as-section",
@@ -170,7 +170,7 @@
           "id": "fr-from-milestone",
           "name": "按里程碑拆 FR",
           "type": "must_include",
-          "check": "须体现 FR 清单主料来自 SOLUTION §6.1 覆盖范围，所属里程碑原样承接上游 `M{n}（短名）`（一 FR 一里程碑）；拆分同时满足一 FR 一模块。",
+          "check": "须体现 FR 清单主料来自 ANALYSIS §6.1 覆盖范围，所属里程碑原样承接上游 `M{n}（短名）`（一 FR 一里程碑）；拆分同时满足一 FR 一模块。",
           "priority": "P0"
         },
         {
@@ -199,7 +199,7 @@
     {
       "id": "analysis-trigger-004",
       "category": "should-trigger",
-      "prompt": "请按 SDX 进入特性拆解阶段：当前段写完后不要每一轮 grill 都停下来问我，要自动连续 grill 到这部分内容烤干，再统一给我 C/M/G/F 选项。",
+      "prompt": "请按 SDX 进入需求分析阶段：当前段写完后不要每一轮 grill 都停下来问我，要自动连续 grill 到这部分内容烤干，再统一给我 C/M/G/F 选项。",
       "expected_output": "以 /sdx-feature 为主路径：明确当前段写入后进入自动连续 grilling，直到当前段收敛才回到用户动作菜单；不得把 G 当作每轮继续 grill 的必选按钮。",
       "assertions": [
         {
@@ -279,21 +279,21 @@
     {
       "id": "analysis-not-trigger-001",
       "category": "should-not-trigger",
-      "prompt": "只有会议纪要没有成文方案，先帮我写一版共识级 SOLUTION-OPS-1.md，走 /sdx-solution。",
-      "expected_output": "主路径为 /sdx-solution 与 SOLUTION-OPS-1.md；不以 sdx-feature 的参数向导 + 分段直写流程写 ANALYSIS 为终点。",
+      "prompt": "只有会议纪要没有成文方案，先帮我写一版共识级 ANALYSIS-OPS-1.md，走 /sdx-analysis。",
+      "expected_output": "主路径为 /sdx-analysis 与 ANALYSIS-OPS-1.md；不以 sdx-feature 的参数向导 + 分段直写流程写 FEATURE 为终点。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "须明确 /sdx-solution 或 SOLUTION-OPS-1.md（或 SOLUTION）为当前主任务。",
+          "check": "须明确 /sdx-analysis 或 ANALYSIS-OPS-1.md（或 ANALYSIS）为当前主任务。",
           "priority": "P0"
         },
         {
           "id": "no-false-analysis-primary",
-          "name": "勿假主特性拆解",
+          "name": "勿假主需求分析",
           "type": "must_not_conflict",
-          "check": "不得将本请求表述为“仍需先做参数向导、再分段写 ANALYSIS”作为主要答案。",
+          "check": "不得将本请求表述为“仍需先做参数向导、再分段写 FEATURE”作为主要答案。",
           "priority": "P0"
         }
       ]
@@ -313,9 +313,9 @@
         },
         {
           "id": "no-false-analysis-primary",
-          "name": "勿假主特性拆解",
+          "name": "勿假主需求分析",
           "type": "must_not_conflict",
-          "check": "不得将本请求框成以 sdx-feature 与 ANALYSIS 六章为主路径。",
+          "check": "不得将本请求框成以 sdx-feature 与 FEATURE 六章为主路径。",
           "priority": "P0"
         }
       ]
@@ -324,7 +324,7 @@
       "id": "analysis-not-trigger-003",
       "category": "should-not-trigger",
       "prompt": "请用 /sdx-architect 基于 PRD 画服务边界，生成 ASD-ORDER-1.md。",
-      "expected_output": "主路径为 sdx-architect 与 ASD；不以 ANALYSIS 为当前主产物。",
+      "expected_output": "主路径为 sdx-architect 与 ASD；不以 FEATURE 为当前主产物。",
       "assertions": [
         {
           "id": "correct-downstream",
@@ -335,9 +335,9 @@
         },
         {
           "id": "no-false-analysis-primary",
-          "name": "勿假主特性拆解",
+          "name": "勿假主需求分析",
           "type": "must_not_conflict",
-          "check": "不得将本请求描述为默认先写 ANALYSIS 再过门禁。",
+          "check": "不得将本请求描述为默认先写 FEATURE 再过门禁。",
           "priority": "P0"
         }
       ]
@@ -357,7 +357,7 @@
         },
         {
           "id": "no-false-analysis-primary",
-          "name": "勿假主特性拆解",
+          "name": "勿假主需求分析",
           "type": "must_not_conflict",
           "check": "不得用“先出 ANALYSIS 六章”作为完成本请求的主方案。",
           "priority": "P0"
@@ -379,7 +379,7 @@
         },
         {
           "id": "no-false-analysis-primary",
-          "name": "勿假主特性拆解",
+          "name": "勿假主需求分析",
           "type": "must_not_conflict",
           "check": "不得将本请求框成 ANALYSIS 分段直写主线。",
           "priority": "P0"
@@ -389,7 +389,7 @@
     {
       "id": "analysis-not-trigger-006",
       "category": "should-not-trigger",
-      "prompt": "我已经确认过前两章了。现在别按当前段流程，直接用 F 把整份 FEATURE-ORDER-1.md 从头到尾重写一遍，前面已确认内容也一起覆盖掉。",
+      "prompt": "我已经确认过前两章了。现在别按当前段流程，直接用 F 把整份 ANALYSIS-ORDER-1.md 从头到尾重写一遍，前面已确认内容也一起覆盖掉。",
       "expected_output": "不得把该请求解释为当前 `sdx-feature` 协议下合法的 F 动作；应明确指出 F 只用于保留已确认前文并补齐剩余未完成章节。",
       "assertions": [
         {

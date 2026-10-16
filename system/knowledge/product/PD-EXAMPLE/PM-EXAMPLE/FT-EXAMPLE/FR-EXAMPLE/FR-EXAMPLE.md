@@ -1,7 +1,7 @@
 ---
 type: Functional Requirement
 title: 示例功能需求
-description: 示例产品实体。
+description: 功能需求。
 tags: [product, FR]
 timestamp: "2026-06-26T00:00:00+08:00"
 id: FR-EXAMPLE
@@ -9,13 +9,15 @@ perspective: product
 hierarchy: FR
 layer_scope: system
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例功能需求
 
 ## 关系
 
-- parent: FT-EXAMPLE
-- children:
-  - UC-EXAMPLE
-  - BR-EXAMPLE
+- implements_to: [FT-EXAMPLE](../FT-EXAMPLE.md)
+- implemented_by:
+  - [UC-EXAMPLE](UC-EXAMPLE.md)
+  - [BR-EXAMPLE](BR-EXAMPLE.md)
 
 ## 跨视角
 
@@ -23,8 +25,8 @@ layer_scope: system
 
 ## 详细说明
 
-- (none)
+- 功能需求。
 
 ## 依据与证据
 
-chapters/product-feature.md（示例）
+[../../../../chapters/product-feature.md](../../../../chapters/product-feature.md#功能需求)（示例）

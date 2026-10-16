@@ -7,7 +7,7 @@
 | 原则 | 要求 |
 | ---- | ---- |
 | 模板驱动 | 六章与 [feature-template.md](../assets/feature-template.md) 一致；无内容标「不适用/待补充」 |
-| 证据优先 | FR/BR/风险须有 SOLUTION 与 `knowledge/` 依据 |
+| 证据优先 | FR/BR/风险须有 ANALYSIS 与 `knowledge/` 依据 |
 | 业务可读 | §1–§5、§6.1–§6.2 无工程标识；§6.3 可收线索并标「待研发确认」 |
 | 歧义标注 | Q-n 单题澄清 |
 | 按需加载 | 禁通扫 `knowledge/**` |
@@ -27,11 +27,11 @@
 
 | 场景 | 处理 |
 | ---- | ---- |
-| 无 SOLUTION | 终止 → `sdx-solution` |
-| §6.1 里程碑不可用 | 硬停：回补 SOLUTION 或等价里程碑清单；不自拟阶段 |
-| SOLUTION 其他结构不全 | 警告列缺失；正文标分析盲区 |
+| 无 ANALYSIS | 终止 → `sdx-analysis` |
+| §6.1 里程碑不可用 | 硬停：回补 ANALYSIS 或等价里程碑清单；不自拟阶段 |
+| ANALYSIS 其他结构不全 | 警告列缺失；正文标分析盲区 |
 | 无 `knowledge/` | 警告；§1.3 标缺基线 |
 | 无模板文件 | 终止：需 `assets/feature-template.md` |
 | 另起无价值 MVP / 依赖成环 | 终止：业务价值问句 + `§4.3` 验环；个数相对里程碑偏离须说明 |
 | MVP 成环 | 终止：出依赖图请用户调 |
-| 无 `features/` | 可建 `{DOC_DIR}/features/` |
+| 无 `analysis/` | 可建 `{DOC_DIR}/features/` |

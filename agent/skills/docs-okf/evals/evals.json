@@ -14,7 +14,7 @@
           "id": "docsconfig-hard-stop",
           "name": "docsconfig 硬门",
           "type": "must_include",
-          "check": "须先读 .docsconfig；缺失、解析失败或缺 AGENT_DIR 须中止，不得猜路径或回退 \$REPO_ROOT/agent/。",
+          "check": "须先读 .docsconfig；缺失、解析失败或缺 AGENT_DIR 须中止，不得猜路径或回退 \$仓库路径/agent/。",
           "priority": "P0"
         },
         {

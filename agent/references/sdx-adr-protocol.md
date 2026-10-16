@@ -1,10 +1,10 @@
 # SDX ↔ ADR 协议
 
-> **定位**：`sdx-solution` / `sdx-analysis` 运行时如何落技术决策到 `{DOC_DIR}/adr/`。  
+> **定位**：`sdx-analysis` / `sdx-feature` 运行时如何落技术决策到 `{DOC_DIR}/adr/`。  
 > **命名/落盘 SSOT**：[adr-template.md](../knowledge/adr-template.md)。  
 > **必备章节/状态 SSOT**：[adr-guidelines.md](../knowledge/adr-guidelines.md)。  
 > **不负责**：业务/范围/优先级决策（仍用 SOLUTION §5.2 Q-n 等）。  
-> **技能挂接**：[sdx-solution](../skills/sdx-solution/references/workflow.md) · [gates](../skills/sdx-solution/references/gates.md)；[sdx-analysis](../skills/sdx-analysis/references/workflow.md) · [gates](../skills/sdx-analysis/references/gates.md)。
+> **技能挂接**：[sdx-analysis](../skills/sdx-analysis/references/workflow.md) · [gates](../skills/sdx-analysis/references/gates.md)；[sdx-feature](../skills/sdx-feature/references/workflow.md) · [gates](../skills/sdx-feature/references/gates.md)。
 
 **最后更新**: 2026-09-15
 
@@ -60,7 +60,7 @@
 5. **结论一致** → 复用，只补引用。  
 6. **冲突** → 停问用户：复用旧结论 / 修订旧 ADR / 新建并 `Superseded` 关系。禁止静默平行两份同主题 Accepted。
 
-**校验（轻量）**：出现 `ADR-*` / `ADR-待定` 时，`validate-solution.sh` / `validate-analysis.sh` 检查 CONTEXT 链、对应文件存在、CONTEXT 有登记行；残留占位给警告。无 ADR 引用时不强制空链。
+**校验（轻量）**：出现 `ADR-*` / `ADR-待定` 时，`validate-analysis.sh` / `validate-feature.sh` 检查 CONTEXT 链、对应文件存在、CONTEXT 有登记行；残留占位给警告。无 ADR 引用时不强制空链。
 
 ---
 
@@ -69,4 +69,4 @@
 | 情况 | 做法 |
 | --- | --- |
 | 实现向、**不改**业务边界 / 集成边界 | 允许在本层新建 ADR + CONTEXT；§6.2 补链 |
-| 改变范围、系统边界、跨系统集成方式 | **禁止**仅在 ANALYSIS 落盘；硬停回 `/sdx-solution` |
+| 改变范围、系统边界、跨系统集成方式 | **禁止**仅在 FEATURE 落盘；硬停回 `/sdx-analysis`（改七章 ANALYSIS） |

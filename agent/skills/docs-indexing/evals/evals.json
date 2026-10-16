@@ -107,7 +107,7 @@
     {
       "id": "indexing-not-trigger-001",
       "category": "should-not-trigger",
-      "prompt": "主 INDEX 有了，帮我把四视角实体从代码里抽一遍，更新 INDEX-GUIDE 第四章",
+      "prompt": "主 INDEX 有了，帮我把五视角实体从代码里抽一遍，更新 INDEX-GUIDE 第四章",
       "expected_output": "分流至 docs-build；勿以 docs-indexing 为主路径写 knowledge 实体。",
       "assertions": [
         {

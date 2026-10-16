@@ -93,9 +93,25 @@ test_collect_case_scripts() {
   printf '%s\n' "${cases[@]}"
 }
 
+test_bash5_command() {
+  local candidate
+  for candidate in "${BASH:-}" /opt/homebrew/bin/bash /usr/local/bin/bash bash; do
+    [[ -n "$candidate" ]] || continue
+    candidate="$(command -v "$candidate" 2>/dev/null)" || continue
+    [[ -x "$candidate" ]] || continue
+    "$candidate" -c '((BASH_VERSINFO[0] >= 5))' >/dev/null 2>&1 || continue
+    printf '%s\n' "$candidate"
+    return 0
+  done
+  return 1
+}
+
 test_run_case_suite() {
   local title="${1:?title is required}"
-  local runner_bin="${2:-${BASH:-$(command -v bash)}}"
+  local runner_bin="${2:-}"
+  if [[ -z "$runner_bin" ]]; then
+    runner_bin="$(test_bash5_command)" || test_fail "未找到 Bash 5+ 运行器"
+  fi
   shift 2
 
   local -a cases=("$@")

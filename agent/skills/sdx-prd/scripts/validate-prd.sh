@@ -3,7 +3,7 @@ set -euo pipefail
 
 # PRD 结构校验（十一章模板；不承担写前门禁）。
 # 用法：validate-prd.sh [--file <path>]
-# 文档根：docsconfig_resolve_doc_root（.docsconfig）；先 source docsconfig.sh
+# 文档根：docsconfig_doc_abs（.docsconfig）；先 source docsconfig.sh
 #
 # 要点：文首 frontmatter、`id`、`## 1`-`## 11`、关键小节标题、编号、ANALYSIS 关联、Mermaid 自检提示；
 #       不校验会话 spec、CONFIRMED、HTML gate 或写前 hook。
@@ -25,10 +25,11 @@ _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 source "$_AGENT_HOME/scripts/lib/docsconfig.sh"
 docsconfig_bootstrap_validate
 
-DOC_ROOT="$(docsconfig_resolve_doc_root)"
-cd "$REPO_ROOT" || exit 1
+doc_abs="$(docsconfig_doc_abs)"
+repo_abs="$(docsconfig_repo_abs)"
+cd "$repo_abs" || exit 1
 
-REQUIREMENTS_DIR="${DOC_ROOT}/requirements"
+REQUIREMENTS_DIR="${doc_abs}/requirements"
 _TEMPLATE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TEMPLATE="${_TEMPLATE_DIR}/assets/prd-template.md"
 
@@ -38,7 +39,7 @@ error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
 
 echo "=== PRD 文档结构校验 ==="
-echo "DOC_ROOT: ${DOC_ROOT}"
+echo "doc_abs: ${doc_abs}"
 echo ""
 
 if [[ -f "${TEMPLATE}" ]]; then

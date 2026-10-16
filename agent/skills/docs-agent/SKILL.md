@@ -50,7 +50,7 @@ compatibility: Bash 5+；校验脚本 agent/skills/docs-agent/scripts/validate-g
 
 ## 产出与校验
 
-- 正式：默认 `{REPO_ROOT}` 下 README.md、AGENTS.md（`--output` 可只其一）
+- 正式：默认 `{仓库路径}` 下 README.md、AGENTS.md（`--output` 可只其一）
 - 收敛后动作见 [unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)（本技能有 `S`）
 
 ```bash

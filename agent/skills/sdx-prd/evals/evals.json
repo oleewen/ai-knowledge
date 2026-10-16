@@ -215,14 +215,14 @@
     {
       "id": "prd-not-trigger-001",
       "category": "should-not-trigger",
-      "prompt": "只有会议纪要没有成文分析，先帮我写一版 ANALYSIS-OPS-1.md，走 /sdx-analysis。",
-      "expected_output": "主路径为 /sdx-analysis 与 ANALYSIS-OPS-1.md；不以 sdx-prd 的参数向导 + 分段直写流程写 PRD 为终点。",
+      "prompt": "只有会议纪要没有成文分析，先帮我写一版 ANALYSIS-OPS-1.md，走 /sdx-feature。",
+      "expected_output": "主路径为 /sdx-feature 与 ANALYSIS-OPS-1.md；不以 sdx-prd 的参数向导 + 分段直写流程写 PRD 为终点。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "须明确 /sdx-analysis 或 ANALYSIS-OPS-1.md（或 ANALYSIS）为当前主任务。",
+          "check": "须明确 /sdx-feature 或 ANALYSIS-OPS-1.md（或 ANALYSIS）为当前主任务。",
           "priority": "P0"
         },
         {

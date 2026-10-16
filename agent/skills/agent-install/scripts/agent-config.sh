@@ -8,6 +8,8 @@ fi
 readonly _AGENT_CONFIG_SH_LOADED=1
 
 readonly AGENT_CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=../../../scripts/lib/bash.sh
+source "${AGENT_CONFIG_DIR}/../../../scripts/lib/bash.sh"
 # shellcheck source=../../../scripts/docs-core.sh
 source "${AGENT_CONFIG_DIR}/../../../scripts/docs-core.sh"
 
@@ -22,7 +24,7 @@ declare -A AGENT_DIR_MAP=(
 )
 
 readonly DEFAULT_AGENT_SCOPE='a'
-readonly DEFAULT_AGENTS_OPT='cursor'
+readonly DEFAULT_AGENTS_OPT='a'
 
 # scope=a：hooks + rules + scripts + skills + knowledge + references
 # scope=k|knowledge：仅 knowledge/ + references/

@@ -22,5 +22,10 @@ assert_file_exists "$STORE/knowledge/glossary.md"
 assert_file_exists "$STORE/references/session-spec-path.md"
 assert_symlink_points_to "$CURSOR/knowledge" "$STORE/knowledge"
 assert_symlink_points_to "$CURSOR/references" "$STORE/references"
+assert_file_exists "$STORE/configs"
+assert_contains "WORK_SPACE=" "$STORE/configs"
+if [[ -e "$CURSOR/configs" || -L "$CURSOR/configs" ]]; then
+  fail "链接 IDE 时不应带上 configs: $CURSOR/configs"
+fi
 
 pass "scope=a 安装 knowledge/ 与 references/ 并建立软链"

@@ -3,10 +3,10 @@ set -euo pipefail
 
 # ANALYSIS 结构校验（六章模板；不承担写前门禁）。
 # 用法：validate-feature.sh [--file <path>]
-# DOC_ROOT：docsconfig_resolve_doc_root（.docsconfig）；先 docsconfig.sh
+# doc_abs：docsconfig_doc_abs（.docsconfig）；先 docsconfig.sh
 #
 # 要点：文首 frontmatter、六章、`### FR-`、小节标题、FR/BR/R/MVP、概览「需求概要」、
-#       概览列「所属模块」「所属里程碑」（非「所属 MVP」）、需求名称≤30 / 概要≤60、与 SOLUTION 关联；
+#       概览列「所属模块」「所属里程碑」（非「所属 MVP」）、需求名称≤30 / 概要≤60、与 ANALYSIS 关联；
 #       所属模块：非空、禁逗号多值（语义越权不验）；MVP{n}（…）属 §4，不作概览通过条件；
 #       不校验会话 spec、CONFIRMED、HTML gate 或写前 hook。
 
@@ -27,10 +27,11 @@ _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 source "$_AGENT_HOME/scripts/lib/docsconfig.sh"
 docsconfig_bootstrap_validate
 
-DOC_ROOT="$(docsconfig_resolve_doc_root)"
-cd "$REPO_ROOT" || exit 1
+doc_abs="$(docsconfig_doc_abs)"
+repo_abs="$(docsconfig_repo_abs)"
+cd "$repo_abs" || exit 1
 
-ANALYSIS_DIR="${DOC_ROOT}/analysis"
+FEATURE_DIR="${doc_abs}/features"
 TEMPLATE="${SCRIPT_DIR}/../assets/feature-template.md"
 
 info()    { echo "[INFO]  $1"; }
@@ -38,8 +39,8 @@ warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
 error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
 
-echo "=== 特性拆解文档结构校验 ==="
-echo "DOC_ROOT: ${DOC_ROOT}"
+echo "=== 功能特性文档结构校验 ==="
+echo "doc_abs: ${doc_abs}"
 echo ""
 
 if [[ -f "${TEMPLATE}" ]]; then
@@ -60,11 +61,11 @@ if [[ -n "${TARGET_FILE}" ]]; then
     exit 1
   fi
 else
-  if [[ -d "${ANALYSIS_DIR}" ]]; then
-    FILE_COUNT=$(find "${ANALYSIS_DIR}" -name "FEATURE-*.md" 2>/dev/null | wc -l | tr -d ' ')
-    success "analysis/ 目录存在 (${FILE_COUNT} 个特性拆解文档)"
+  if [[ -d "${FEATURE_DIR}" ]]; then
+    FILE_COUNT=$(find "${FEATURE_DIR}" -name "FEATURE-*.md" 2>/dev/null | wc -l | tr -d ' ')
+    success "analysis/ 目录存在 (${FILE_COUNT} 个功能特性文档)"
   else
-    warn "analysis/ 目录不存在: ${ANALYSIS_DIR}"
+    warn "analysis/ 目录不存在: ${FEATURE_DIR}"
     echo ""
     echo "=== 校验结果 ==="
     echo "错误: ${ERRORS}  警告: ${WARNINGS}"
@@ -73,11 +74,11 @@ else
 
   while IFS= read -r -d '' f; do
     FILES+=("$f")
-  done < <(find "${ANALYSIS_DIR}" -name "FEATURE-*.md" -print0 2>/dev/null)
+  done < <(find "${FEATURE_DIR}" -name "FEATURE-*.md" -print0 2>/dev/null)
 fi
 
 if [[ ${#FILES[@]} -eq 0 ]]; then
-  info "未找到特性拆解文档"
+  info "未找到功能特性文档"
   echo ""
   echo "=== 校验结果 ==="
   echo "错误: ${ERRORS}  警告: ${WARNINGS}"
@@ -108,7 +109,7 @@ for file in "${FILES[@]}"; do
 
       ID_LINE=$(echo "${FRONTMATTER_CONTENT}" | grep -E '^id:' 2>/dev/null | head -1 || true)
       if [[ -n "${ID_LINE}" ]]; then
-        if echo "${ID_LINE}" | grep -qE 'FEATURE-'; then
+        if echo "${ID_LINE}" | grep -qE 'ANALYSIS-'; then
           success "${BASENAME}: id 含 FEATURE- 前缀"
         else
           warn "${BASENAME}: id 建议符合 FEATURE-{IDEA-ID}，实际: ${ID_LINE}"
@@ -116,10 +117,10 @@ for file in "${FILES[@]}"; do
       fi
 
       PARENT_LINE=$(echo "${FRONTMATTER_CONTENT}" | grep -E '^parent:' 2>/dev/null | head -1 || true)
-      if echo "${PARENT_LINE}" | grep -q 'SOLUTION-'; then
-        success "${BASENAME}: parent 已关联 SOLUTION-*"
+      if echo "${PARENT_LINE}" | grep -q 'ANALYSIS-'; then
+        success "${BASENAME}: parent 已关联 ANALYSIS-*"
       else
-        warn "${BASENAME}: parent 建议关联 SOLUTION-{IDEA-ID}，实际: ${PARENT_LINE}"
+        warn "${BASENAME}: parent 建议关联 ANALYSIS-{IDEA-ID}，实际: ${PARENT_LINE}"
       fi
     fi
   fi
@@ -215,7 +216,7 @@ for file in "${FILES[@]}"; do
     if grep -qE 'M[0-9]+（[^）]+）|M[0-9]+\([^)]+\)' "${file}" 2>/dev/null; then
       success "${BASENAME}: 发现所属里程碑形如 M{n}（短名）"
     else
-      warn "${BASENAME}: 未发现 M{n}（短名）写法（建议对齐 SOLUTION §6.1）"
+      warn "${BASENAME}: 未发现 M{n}（短名）写法（建议对齐 ANALYSIS §6.1）"
     fi
 
     # 需求名称 ≤30、需求概要 ≤60；所属模块非空且无逗号多值（Unicode 码点；优先 python3）
@@ -303,10 +304,10 @@ for file in "${FILES[@]}"; do
     fi
   fi
 
-  if grep -q 'SOLUTION-' "${file}"; then
-    success "${BASENAME}: 关联解决方案文档"
+  if grep -q 'ANALYSIS-' "${file}"; then
+    success "${BASENAME}: 关联需求分析文档"
   else
-    warn "${BASENAME}: 未发现关联解决方案编号 (SOLUTION-*)"
+    warn "${BASENAME}: 未发现关联需求分析编号 (ANALYSIS-*)"
   fi
 
   # 轻量 ADR / CONTEXT（有 ADR 引用或占位才验）

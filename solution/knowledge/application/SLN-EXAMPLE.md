@@ -8,22 +8,24 @@ id: SLN-EXAMPLE
 perspective: application
 hierarchy: SLN
 layer_scope: solution
-maps_to: PL-EXAMPLE
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例解决方案
+
 ## 关系
 
-- maps_to: PL-EXAMPLE
-- implemented_by: SYS-EXAMPLE（系统库）；BP-EXAMPLE
+- maps_to: [PL-EXAMPLE](../product/PL-EXAMPLE/PL-EXAMPLE.md)
+- implemented_by:
+  - [BP-EXAMPLE](../product/BP/BP-EXAMPLE.md)
 
 ## 跨视角
 
-- 产品服务：PD-EXAMPLE（1:1 SYS-EXAMPLE）
+- (none)
 
 ## 详细说明
 
-- definition_scope: local
-- 一仓一 SLN；一 SLN 多个 PD
+- 交付包锚点；一仓一 SLN；maps_to→PL 一对一。
 
 ## 依据与证据
 
-chapters/application-architecture.md（示例）
+[chapters/application-architecture.md](chapters/application-architecture.md)（示例）

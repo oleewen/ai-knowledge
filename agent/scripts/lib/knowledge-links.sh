@@ -15,6 +15,9 @@ if [[ -n "${_LIB_KNOWLEDGE_LINKS_LOADED:-}" ]]; then
 fi
 _LIB_KNOWLEDGE_LINKS_LOADED=1
 
+# shellcheck source=bash.sh
+source "${_LIB_DIR}/bash.sh"
+
 _yaml_unquote() {
   local v="${1:-}"
   v="${v#\"}"; v="${v%\"}"
@@ -60,25 +63,26 @@ _knowledge_link_yaml_escape_dq() {
   printf '%s' "$s"
 }
 
-# 打印条目公共字段；first_prefix 为首行前缀（如 '  - ' 或 '    '），续行固定四空格
+# 打印 repository/path/dir；first_prefix 为首行前缀，续行固定四空格。dir 空则省略。
 _knowledge_links_print_repo_path_docdir() {
   local first_prefix="${1:?}" repo="${2:?}" path="${3:?}" doc_dir="${4:-}"
   printf '%srepository: "%s"\n' "$first_prefix" "$(_knowledge_link_yaml_escape_dq "$repo")"
   printf '    path: "%s"\n' "$(_knowledge_link_yaml_escape_dq "$path")"
   if [[ -n "$doc_dir" ]]; then
-    printf '    doc_dir: "%s"\n' "$(_knowledge_link_yaml_escape_dq "$doc_dir")"
+    printf '    dir: "%s"\n' "$(_knowledge_link_yaml_escape_dq "$doc_dir")"
   fi
 }
 
 _knowledge_links_print_name_label() {
-  local kind="${1:?}" name="${2:?}" label="${3:?}"
-  printf '    %s_name: "%s"\n' "$kind" "$(_knowledge_link_yaml_escape_dq "$name")"
-  printf '    %s_label: "%s"\n' "$kind" "$(_knowledge_link_yaml_escape_dq "$label")"
+  local name="${1:?}" label="${2:?}"
+  printf '    name: "%s"\n' "$(_knowledge_link_yaml_escape_dq "$name")"
+  printf '    label: "%s"\n' "$(_knowledge_link_yaml_escape_dq "$label")"
 }
 
-# 覆盖写出 knowledge-links.yaml（可含 type:parent / type:meta + child）
-# child_kind: sys|app|solution；parent_kind: company|solution|sys|none（仅 type=parent 条使用）
-# type:meta：只写 repository/path/doc_dir（doc_dir=目标 KNOWLEDGE_TYPE，无 name/label）
+# 覆盖写出 knowledge-links.yaml（type: parent / child / meta）
+# child_kind: sys|app|solution；parent_kind: company|solution|sys|none（调用方层别，不写入键名）
+# 每条都写 type。type:meta 只写 repository/path/dir（dir=目标 KNOWLEDGE_TYPE，无 name/label）。
+# parent/child 再写 name（必填）与 label（缺省等于 name）。dir 空则省略。
 # DRY=1 时只打印将写入条数，不落盘
 knowledge_links_write_entries() {
   local f="${1:?}"
@@ -90,7 +94,7 @@ knowledge_links_write_entries() {
   local -n _types="${7:?}"
   local child_kind="${8:?}"
   local parent_kind="${9:?}"
-  local d i n lab t name_kind
+  local d i n lab t
   d="$(dirname "$f")"
   n="${#_paths[@]}"
   case "$child_kind" in
@@ -114,34 +118,25 @@ knowledge_links_write_entries() {
         [[ -n "${_repos[i]:-}" ]] || error "knowledge-links.yaml 条目缺少 repository（必填）: $f"
         [[ -n "${_paths[i]:-}" ]] || error "knowledge-links.yaml 条目缺少 path（必填）: $f"
         t="${_types[i]:-child}"
-        if [[ "$t" == 'parent' ]]; then
-          printf '  - type: parent\n'
-          _knowledge_links_print_repo_path_docdir '    ' "${_repos[i]}" "${_paths[i]}" "${_dirs[i]:-}"
-          [[ -n "${_apps[i]:-}" ]] || error "knowledge-links.yaml(parent) 条目缺少 name（必填）: $f"
+        case "$t" in
+          parent|child|meta) ;;
+          *) error "knowledge-links.yaml 条目 type 非法: ${t}（仅 parent、child、meta）: $f" ;;
+        esac
+        printf '  - type: %s\n' "$t"
+        _knowledge_links_print_repo_path_docdir '    ' "${_repos[i]}" "${_paths[i]}" "${_dirs[i]:-}"
+        if [[ "$t" != 'meta' ]]; then
+          [[ -n "${_apps[i]:-}" ]] || error "knowledge-links.yaml(${t}) 条目缺少 name（必填）: $f"
           lab="${_labels[i]:-${_apps[i]}}"
-          name_kind='sys'
-          [[ "$parent_kind" == 'company' ]] && name_kind='company'
-          [[ "$parent_kind" == 'solution' ]] && name_kind='solution'
-          _knowledge_links_print_name_label "$name_kind" "${_apps[i]}" "$lab"
-        elif [[ "$t" == 'meta' ]]; then
-          printf '  - type: meta\n'
-          _knowledge_links_print_repo_path_docdir '    ' "${_repos[i]}" "${_paths[i]}" "${_dirs[i]:-}"
-        else
-          _knowledge_links_print_repo_path_docdir '  - ' "${_repos[i]}" "${_paths[i]}" "${_dirs[i]:-}"
-          [[ -n "${_apps[i]:-}" ]] || error "knowledge-links.yaml(child) 条目缺少 name（必填）: $f"
-          lab="${_labels[i]:-${_apps[i]}}"
-          name_kind='app'
-          [[ "$child_kind" == 'sys' ]] && name_kind='sys'
-          [[ "$child_kind" == 'solution' ]] && name_kind='solution'
-          _knowledge_links_print_name_label "$name_kind" "${_apps[i]}" "$lab"
+          _knowledge_links_print_name_label "${_apps[i]}" "$lab"
         fi
       done
     fi
   } >"$f"
 }
 
-# 读入 knowledge-links.yaml 填入数组（下标对齐）；非法旧形态 path=URL 时报错退出。
-# 第 7 参 types：每条 type（缺省 child）；parent / meta / child 均载入，调用方自行过滤。
+# 读入 knowledge-links.yaml 填入数组（下标对齐）；path=URL 或旧键/缺 type/非法 type 时报错退出。
+# 第 7 参 types：每条 type（parent / child / meta）。缺 type 拒绝，不默认 child。
+# 旧键 doc_dir、*_name、*_label 整文件收集后一次报错。其他未知键跳过。
 knowledge_links_load_into_arrays() {
   local f="${1:?}"
   local -n _paths="${2:?}"
@@ -150,8 +145,9 @@ knowledge_links_load_into_arrays() {
   local -n _apps="${5:?}"
   local -n _labels="${6:?}"
   local -n _types="${7:?}"
-  local line key val path="" repo="" doc_dir="" app_name="" app_label="" sys_name="" sys_label=""
-  local company_name="" company_label="" solution_name="" solution_label="" entry_type=""
+  local line key val path="" repo="" doc_dir="" link_name="" link_label="" entry_type=""
+  local -a _errs=()
+  local err_text err_line
 
   _paths=()
   _repos=()
@@ -163,57 +159,50 @@ knowledge_links_load_into_arrays() {
   [[ -f "$f" ]] || return 0
 
   flush_pending() {
-    if [[ -n "$path" ]]; then
+    local bad=0
+    if [[ -z "$path$repo$doc_dir$link_name$link_label$entry_type" ]]; then
+      path='' repo='' doc_dir='' link_name='' link_label='' entry_type=''
+      return 0
+    fi
+    if [[ -z "$entry_type" ]]; then
+      _errs+=("条目缺少 type（须为 parent、child 或 meta）")
+      bad=1
+    elif [[ "$entry_type" != 'parent' && "$entry_type" != 'child' && "$entry_type" != 'meta' ]]; then
+      _errs+=("type 非法: ${entry_type}（仅 parent、child、meta）")
+      bad=1
+    fi
+    if [[ -z "$path" ]]; then
+      _errs+=("条目缺少 path")
+      bad=1
+    fi
+    if [[ "$bad" -eq 0 ]]; then
       knowledge_links_validate_stored_path_field "$path" "$f"
       _paths+=("$path")
       _repos+=("${repo:-}")
       _dirs+=("${doc_dir:-}")
-      _types+=("${entry_type:-child}")
-      if [[ "${entry_type:-child}" == 'parent' ]]; then
-        if [[ -n "${company_name}${company_label}" ]]; then
-          _apps+=("${company_name:-}")
-          _labels+=("${company_label:-}")
-        elif [[ -n "${solution_name}${solution_label}" ]]; then
-          _apps+=("${solution_name:-}")
-          _labels+=("${solution_label:-}")
-        else
-          _apps+=("${sys_name:-}")
-          _labels+=("${sys_label:-}")
-        fi
-      elif [[ "${entry_type:-child}" == 'meta' ]]; then
+      _types+=("$entry_type")
+      if [[ "$entry_type" == 'meta' ]]; then
         _apps+=('')
         _labels+=('')
-      elif [[ -n "${solution_name}${solution_label}" ]]; then
-        _apps+=("${solution_name:-}")
-        _labels+=("${solution_label:-}")
-      elif [[ -n "${sys_name}${sys_label}" ]]; then
-        _apps+=("${sys_name:-}")
-        _labels+=("${sys_label:-}")
       else
-        _apps+=("${app_name:-}")
-        _labels+=("${app_label:-}")
+        _apps+=("${link_name:-}")
+        _labels+=("${link_label:-}")
       fi
-    elif [[ -n "$repo$doc_dir$app_name$app_label$sys_name$sys_label$company_name$company_label$solution_name$solution_label$entry_type" ]]; then
-      error "knowledge-links.yaml 中存在未写完的条目（有字段但缺少 path）: $f"
     fi
-    path='' repo='' doc_dir='' app_name='' app_label='' sys_name='' sys_label=''
-    company_name='' company_label='' solution_name='' solution_label='' entry_type=''
+    path='' repo='' doc_dir='' link_name='' link_label='' entry_type=''
   }
 
   set_kv() {
     case "${1:?}" in
       path) path="$2" ;;
       repository) repo="$2" ;;
-      doc_dir) doc_dir="$2" ;;
+      dir) doc_dir="$2" ;;
       type) entry_type="$2" ;;
-      app_name) app_name="$2" ;;
-      app_label) app_label="$2" ;;
-      sys_name) sys_name="$2" ;;
-      sys_label) sys_label="$2" ;;
-      company_name) company_name="$2" ;;
-      company_label) company_label="$2" ;;
-      solution_name) solution_name="$2" ;;
-      solution_label) solution_label="$2" ;;
+      name) link_name="$2" ;;
+      label) link_label="$2" ;;
+      doc_dir) _errs+=("doc_dir → dir") ;;
+      app_name|sys_name|company_name|solution_name) _errs+=("$1 → name") ;;
+      app_label|sys_label|company_label|solution_label) _errs+=("$1 → label") ;;
       *) ;;
     esac
   }
@@ -233,4 +222,11 @@ knowledge_links_load_into_arrays() {
     fi
   done <"$f"
   flush_pending
+  if [[ ${#_errs[@]} -gt 0 ]]; then
+    err_text="knowledge-links.yaml 拒绝旧键或非法 type: $f"
+    for err_line in "${_errs[@]}"; do
+      err_text+=$'\n'"  ${err_line}"
+    done
+    error "$err_text"
+  fi
 }

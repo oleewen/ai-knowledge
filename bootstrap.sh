@@ -85,6 +85,7 @@ BS_DOC_TARGET=''      # --doc-target
 BS_AGENTS=''          # --agents（规范化后逗号分隔）
 BS_AGENT_SCOPE='home' # --agent-scope: home | project
 BS_AGENT_TARGET=''
+BS_WORKSPACE=''
 
 bs_want_docs() {
   case "$BS_COMPONENTS" in
@@ -204,10 +205,13 @@ EOF
   --agent-scope=home|project Agent 安装位置（默认 home）
                              home    → 安装到 $HOME
                              project → 安装到 dirname(--doc-target)
+  --workspace PATH           Agent 配置使用的工作区目录
+                             home    → 默认 $HOME/workspaces
+                             project → 默认 dirname(--doc-target) 的父目录
   -h, --help                 显示此帮助
 
 环境变量
-  GIT_REPO_URL   覆盖中央库 Git 地址（可为本地路径）
+  GIT_REPO_URL   覆盖元库 Git 地址（可为本地路径）
   GIT_REF        覆盖克隆分支/标签
 
 示例
@@ -302,6 +306,16 @@ bs_parse_args() {
         shift
         bs_require_value "--agent-scope" "${1:-}"
         BS_AGENT_SCOPE="$1"
+        shift
+        ;;
+      --workspace=*)
+        BS_WORKSPACE="${1#*=}"
+        shift
+        ;;
+      --workspace)
+        shift
+        bs_require_value "--workspace" "${1:-}"
+        BS_WORKSPACE="$1"
         shift
         ;;
       -h|--help)
@@ -411,6 +425,23 @@ bs_resolve_agent_target() {
   esac
 }
 
+bs_resolve_agent_workspace() {
+  if [[ -n "$BS_WORKSPACE" ]]; then
+    BS_WORKSPACE="${BS_WORKSPACE/#\~/$HOME}"
+    return 0
+  fi
+
+  case "$BS_AGENT_SCOPE" in
+    home)
+      [[ -n "${HOME:-}" ]] || error "需要 HOME 环境变量"
+      BS_WORKSPACE="$HOME/workspaces"
+      ;;
+    project)
+      BS_WORKSPACE="$(dirname "$(dirname "$BS_DOC_TARGET")")"
+      ;;
+  esac
+}
+
 # 展示汇总并请求确认
 bs_confirm_plan() {
   local step=1
@@ -422,7 +453,7 @@ bs_confirm_plan() {
     step=$((step + 1))
   fi
   if bs_want_agent; then
-    log "  ${step}. agent-install --agents=${BS_AGENTS} --target ${BS_AGENT_TARGET}"
+    log "  ${step}. agent-install --agents=${BS_AGENTS} --target ${BS_AGENT_TARGET} --workspace ${BS_WORKSPACE}"
   fi
   log "  components: ${BS_COMPONENTS}"
   log '=========================================='
@@ -469,6 +500,7 @@ bs_collect_params() {
       fi
     fi
     bs_resolve_agent_target
+    bs_resolve_agent_workspace
   fi
 
   # 汇总确认（仅交互环境）
@@ -486,7 +518,7 @@ bs_run_docs_install() {
   log ''
   info '>>> 执行 docs-install.sh...'
   # 仅前缀传参，不 export（与 lib/docsconfig §禁止 export 一致）
-  REPO_ROOT="$BS_CLONE_DIR" "${BASH:-$(command -v bash)}" "$docs_install" --target "$BS_DOC_TARGET" \
+  "${BASH:-$(command -v bash)}" "$docs_install" --meta "$BS_CLONE_DIR" --target "$BS_DOC_TARGET" \
     || error "docs-install 执行失败，已中止"
 }
 
@@ -494,7 +526,7 @@ bs_run_agent_install() {
   local agent_install="${1:?agent_install}"
   log ''
   info '>>> 执行 agent-install.sh...'
-  "${BASH:-$(command -v bash)}" "$agent_install" --agents="$BS_AGENTS" --target "$BS_AGENT_TARGET" \
+  "${BASH:-$(command -v bash)}" "$agent_install" --agents="$BS_AGENTS" --target "$BS_AGENT_TARGET" --workspace "$BS_WORKSPACE" \
     || error "agent-install 执行失败"
 }
 
@@ -525,6 +557,7 @@ bs_main() {
   if bs_want_agent; then
     info "Agents:      $BS_AGENTS"
     info "Agent 安装:  $BS_AGENT_TARGET"
+    info "工作区:      $BS_WORKSPACE"
   fi
   log '=========================================='
   log ''

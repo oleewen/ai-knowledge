@@ -42,7 +42,6 @@ evidence:
   repo_facts:
     - "pom.xml"
     - "AGENTS.md"
-    - "docs-meta.md"
     - "manifest.md"
     - "manifest.yaml"
     - "Mapper/XML 表名（data 视角，已读范围内）"
@@ -72,7 +71,7 @@ symmetry:
 | 1 | 证据优先 | high=代码/配置；medium=文档推；low=间接 |
 | 2 | 视角分离 | 后序可引前序 ID，不改前序产物 |
 | 3 | 按需加载 | 不为「完整」通读全仓 |
-| 4 | 契约驱动 | 本文件为硬约束；`knowledge-meta.md` 只可补不可盖 |
+| 4 | 契约驱动 | 本文件为硬约束 |
 | 5 | 幂等 | 断点续跑；失败视角标记 |
 | 6 | 边界 | 只提取+归并；无锚点/CHANGELOG/目录树 |
 
@@ -86,7 +85,7 @@ symmetry:
 | 破引用 | 单改旧 ID 不断链 |
 | 跳验证 | 无前缀/对称检查就写索引 |
 | 模板冒充 | 非本应用模板当唯一内容 |
-| 无证据写 | 缺 evidence_chain |
+| 无证据写 | 证据未写入「依据与证据」 |
 
 ---
 

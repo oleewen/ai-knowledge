@@ -14,7 +14,7 @@
 | ---- | ---- |
 | 硬输入 | 落盘 `INDEX-GUIDE.md`；无则不编造 |
 | 必需参数 | `output`、`mode` |
-| 固定输出 | `{REPO_ROOT}/README.md`、`AGENTS.md` |
+| 固定输出 | `{仓库路径}/README.md`、`AGENTS.md` |
 | 不产出 | 不替代 `INDEX-GUIDE.md`；不把索引指南全文并入 AGENTS |
 
 ## 参数
@@ -39,16 +39,16 @@
 
 ## 步骤 1：Index 解析
 
-`source` `agent/scripts/lib/docsconfig.sh`，`docsconfig_bootstrap_validate` 解析 `.docsconfig` 得 **`REPO_ROOT`**、**`DOC_ROOT`**（及可选 `AGENT_*`）。
+`source` `agent/scripts/lib/docsconfig.sh`，`docsconfig_bootstrap_validate` 注入 `WORK_SPACE`、`REPO_DIR`、`DOC_DIR` 与 `AGENT_*`。仓库路径与文档路径用 `docsconfig_repo_abs`、`docsconfig_doc_abs`。
 
 ```bash
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-source "$REPO_ROOT/agent/scripts/lib/docsconfig.sh"
+source agent/scripts/lib/docsconfig.sh
 docsconfig_bootstrap_validate
-DOC_ROOT="$(docsconfig_resolve_doc_root)"
+repo_abs="$(docsconfig_repo_abs)"
+doc_abs="$(docsconfig_doc_abs)"
 ```
 
-按序查找落盘 Index Guide，命中即停并记录相对路径：`REPO_ROOT/INDEX-GUIDE.md`，再 `DOC_ROOT/INDEX-GUIDE.md`。未命中 → 终止并提示 `/docs-indexing`。细则与降级见 [execution-spec.md](execution-spec.md)。
+按序查找落盘 Index Guide，命中即停并记录相对路径：仓库根 `INDEX-GUIDE.md`，再文档目录 `INDEX-GUIDE.md`。未命中 → 终止并提示 `/docs-indexing`。细则与降级见 [execution-spec.md](execution-spec.md)。
 
 ## 步骤 2：探索
 

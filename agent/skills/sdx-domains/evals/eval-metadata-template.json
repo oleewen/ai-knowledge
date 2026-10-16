@@ -2,7 +2,7 @@
   "skill_name": "sdx-domains",
   "eval_id": "REPLACE_WITH_EVAL_ID",
   "expected_category": "should-trigger | should-not-trigger",
-  "expected_route": "/sdx-domains | （not-trigger：主分流目标，如 /sdx-analysis）",
+  "expected_route": "/sdx-domains | （not-trigger：主分流目标，如 /sdx-feature）",
   "expected_output": "与同 id 条一致：模型应表现出的路由与要点摘要。",
   "notes": "复制为 `<eval-id>-metadata.json` 或流水线内联；断言须与 agents/grader.md 对齐。",
   "assertions_should_trigger_example": [
@@ -47,7 +47,7 @@
       "id": "correct-downstream",
       "name": "正确下游",
       "type": "must_include",
-      "check": "点名与 prompt 一致的下游技能或产物（如 sdx-analysis + ANALYSIS-*）。",
+      "check": "点名与 prompt 一致的下游技能或产物（如 sdx-feature + ANALYSIS-*）。",
       "priority": "P0"
     },
     {

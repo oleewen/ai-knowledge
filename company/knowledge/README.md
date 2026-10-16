@@ -1,8 +1,8 @@
 ---
 type: Documentation
-title: 企业架构
+title: 公司知识库
 ---
-# 企业架构
+# 公司知识库
 
 公司层五视角入口；治理叙事，不写系统实现。分型见 okf-spec。
 
@@ -15,6 +15,6 @@ title: 企业架构
 | 技术 | [technical/](technical/README.md) |
 | overview 缓冲 | [overview/](overview/README.md) |
 
-本层 ID：VC-* / BD-* / BL-* / BSD-L1-* / CAP-* / TPL-*。产品视角无实体。
+本层 ID：VC-* / BD-* / BL-* / BSD-*（`level: 1`）/ CAP-* / TPL-*。产品视角无实体。
 
 导航：[index.md](index.md) · 库根 INDEX-GUIDE 第四章。

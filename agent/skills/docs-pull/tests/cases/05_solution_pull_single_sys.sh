@@ -26,22 +26,22 @@ git -C "$SOLUTION" init -q
 git -C "$SYS" init -q
 
 cat >"$SOLUTION/.docsconfig" <<EOF
-DOC_ROOT=docs
-REPO_ROOT=$SOLUTION
+REPO_DIR=$(basename "$SOLUTION")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=solution
-AGENT_ROOT=$ROOT_DIR
-AGENT_DIR=agent
+AGENT_ROOT=$TMP_DIR/agent-home
+AGENT_DIR=.agents
 EOF
+pin_workspace_for_repo "$SOLUTION" "$TMP_DIR/agent-home" .agents
 
 cat >"$SYS/.docsconfig" <<EOF
-DOC_ROOT=docs
-REPO_ROOT=$SYS
+REPO_DIR=$(basename "$SYS")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=system
-AGENT_ROOT=$ROOT_DIR
-AGENT_DIR=agent
+AGENT_ROOT=$TMP_DIR/agent-home
+AGENT_DIR=.agents
 EOF
+pin_workspace_for_repo "$SYS" "$TMP_DIR/agent-home" .agents
 
 echo "content" >"$SYS/docs/sync-me.md"
 git -C "$SYS" add .
@@ -53,11 +53,12 @@ mkdir -p "$SOLUTION/docs/system-slots"
 
 cat >"$SOLUTION/docs/knowledge-links.yaml" <<EOF
 links:
-  - repository: "$BARE"
+  - type: child
+    repository: "$BARE"
     path: "$SYS"
-    doc_dir: "docs"
-    sys_name: "sys-foo"
-    sys_label: "sys-foo"
+    dir: "docs"
+    name: "sys-foo"
+    label: "sys-foo"
 EOF
 
 set +e

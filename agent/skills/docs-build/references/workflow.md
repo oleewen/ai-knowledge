@@ -49,12 +49,13 @@
 
 | 序 | 视角 | 前缀 | 输入概要 |
 | --- | --- | --- | --- |
-| 1 | 技术 | SYS/APP/MS/API | INDEX、源码、接口 |
-| 2 | 数据 | DS、ENT | INDEX、数据源、实体、Mapper XML |
-| 3 | 业务 | BD→AB | INDEX、FQCN、MS-* |
-| 4 | 产品 | PL→UC | INDEX、README、PRD、前述 ID |
+| 1 | 应用 | SLN/SYS/APP/MS/API | INDEX、解决方案边界、源码、接口 |
+| 2 | 数据 | MDG/DS/ENT/TBL | INDEX、主数据划分、数据源、实体、DDL、Mapper XML |
+| 3 | 业务 | VC/CAP/BD/BSD/BL/BS/BC/AGG/AB | INDEX、公司/解决方案叙事、AGENTS、FQCN |
+| 4 | 产品 | PL/PD/BP/BSP/PM/FT/FR/UC/BR | INDEX、README、PRD、前述 ID |
+| 5 | 技术 | TPL/TS/MW/CMP | INDEX、公司平台、解决方案技术选用、配置、依赖 allowlist |
 
-API：**Dubbo / HTTP / MQ Consumer / Job**，`api_type` 必填。
+API：**Dubbo / HTTP / MQ Consumer / Job**。入口类型可写入详细说明，缺了不算失败。
 
 ## 写后默认表
 

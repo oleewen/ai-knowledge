@@ -40,12 +40,12 @@
 - **文档先判类**：A/B/C 后再定 `title` / H1 / MD025。见 [document-guidelines.md](agent/rules/document/document-guidelines.md)
 - **OKF RAG**（`application/`）：先 `index.md` 下钻，勿默认全树加载；按 `type`/`tags` 再开 concept；跨概念用 bundle-relative 链
 - **文档产出**：语义族 = 参数向导 → **澄清 → 生成 → 烤干** → `C/M/G/S/F`（见 [intent-clarify.md](agent/references/intent-clarify.md)、[unit-cycle-protocol.md](agent/references/unit-cycle-protocol.md)）；轻流程 = `C/M/S/F`（见 [light-flow-actions.md](agent/references/light-flow-actions.md)）。总闸门 [CONVENTIONS.md §3](agent/rules/CONVENTIONS.md#artifact-gates)；命令清单仅 [agent/skills/README.md](agent/skills/README.md)
-- **会话结束**：新规则经确认后写入对应库或本文件；根索引运行记 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)；子域运维按需记各层 `changelogs/`
+- **会话结束**：新规则经确认后写入对应库或本文件；烤干未闭合代办记 [TODO-LIST.md](TODO-LIST.md)；索引增量锚点 ∈ 各 `INDEX-GUIDE.md` HTML 注释；变更溯源 git
 
 ### 禁止事项
 
 - 禁止随意改 `application/knowledge/` 实体 **ID** 或破坏跨视角 ID 引用（除非同步全部引用）
-- 禁止未读 [knowledge-governance.md](agent/knowledge/knowledge-governance.md)、应用层 CONTRIBUTING.md 即新增 knowledge 实体或 ADR
+- 禁止未读 [knowledge-governance.md](agent/knowledge/knowledge-governance.md) 即新增 knowledge 实体或 ADR
 - 禁止无约定变更即删改 `agent/rules/`、`agent/skills/` 核心结构
 - 禁止未评估影响即改导航表导致断链
 - **不在本文粘贴** INDEX §3 级接口全表，或 [index.md](index.md) 渐进披露全表；**不复制** INDEX §9.3 Skill 长表
@@ -63,12 +63,12 @@
 | 九章地图 / Skill 路径 | [INDEX-GUIDE.md](INDEX-GUIDE.md) |
 | 目录索引与渐进披露 | [index.md](index.md) |
 | 应用 / 系统 / 解决方案 / 公司 | [application/README.md](application/README.md)、[system/README.md](system/README.md)、[solution/README.md](solution/README.md)、[company/README.md](company/README.md) |
-| 元模型与贡献 | [knowledge-governance.md](agent/knowledge/knowledge-governance.md)、[application/CONTRIBUTING.md](application/CONTRIBUTING.md) |
+| 元模型与贡献 | [knowledge-governance.md](agent/knowledge/knowledge-governance.md)、[application/DESIGN.md](application/DESIGN.md) |
 | 约定与 Slash 技能 | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/skills/README.md](agent/skills/README.md) |
 | 布局 / 澄清 / 推进 / 轻流程 / 烤干 / 受众 / 精简 / SDX-ADR | [knowledge-layout.md](agent/references/knowledge-layout.md)、[intent-clarify.md](agent/references/intent-clarify.md)、[unit-cycle-protocol.md](agent/references/unit-cycle-protocol.md)、[light-flow-actions.md](agent/references/light-flow-actions.md)、[grilling-skill.md](agent/references/grilling-skill.md)、[audience-and-language.md](agent/references/audience-and-language.md)、[simplify-principles.md](agent/references/simplify-principles.md)、[sdx-adr-protocol.md](agent/references/sdx-adr-protocol.md) |
-| 烤干未闭合代办 | [changelogs/GRILL-LOG.md](changelogs/GRILL-LOG.md)（契约见 [grilling-skill.md § GRILL-LOG](agent/references/grilling-skill.md#grill-log)） |
+| 烤干未闭合代办 | [TODO-LIST.md](TODO-LIST.md)（契约见 [grilling-skill.md § TODO-LIST](agent/references/grilling-skill.md#todo-list)） |
 | 初始化与 `.docsconfig` | `/docs-install`、`/agent-install`（见 [agent/skills/README.md](agent/skills/README.md)）；自动化 [bootstrap.sh](bootstrap.sh) |
-| 根索引运行日志 | [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md) |
+| 索引增量锚点 | 各 `INDEX-GUIDE.md` 内 `<!-- sdx-indexing:indexing_finished_ms=... -->`（docs-indexing） |
 | OKF | [docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) |
 
 **技术栈**：Markdown、YAML；Bash 5+；Git；可选 `rsync` / Python 3。详 [INDEX-GUIDE.md](INDEX-GUIDE.md) §1.2。

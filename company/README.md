@@ -13,8 +13,7 @@ title: "公司知识库（顶层 `company/`）"
 | 目录索引 | [index.md](index.md) |
 | 本层设计入口 | [DESIGN.md](DESIGN.md) |
 | 五视角入口 | [knowledge/README.md](knowledge/README.md) |
-| 机器元数据 | [docs-meta.md](docs-meta.md) |
 
-按需：`knowledge-links.yaml`（可空）· [solution-slots/](solution-slots/README.md) · [domains/](domains/README.md) · [changelogs/](changelogs/README.md)
+按需：`knowledge-links.yaml`（可空）· [solution-slots/](solution-slots/README.md) · [domains/](domains/README.md) · [adr/](adr/README.md)
 
 模板占位：`knowledge/overview/NAME-overview.md`（拷为 `{NAME}-overview.md`）、`*-EXAMPLE`（可替换）。

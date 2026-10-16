@@ -11,9 +11,10 @@
 
 ## 阅读顺序
 
-（待补充）
+1. [MW-EXAMPLE.md](MW-EXAMPLE.md)
+2. [CMP-EXAMPLE.md](CMP-EXAMPLE.md)
 
 ## 关联索引
 
-- 上一级索引：[index.md](../index.md)
-- 上一级说明：[README.md](../README.md)
+- 上一级索引：[../index.md](../index.md)
+- 上一级说明：[../README.md](../README.md)

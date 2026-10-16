@@ -13,7 +13,7 @@
 | --- | --- | --- | --- | --- |
 | A 人类入口 | `README.md`、`AGENTS.md`、`INDEX-GUIDE.md`、`index.md`、导航型 README | 仅生成链/读取约束需要时保留 | 默认保留（读者首标题） | — |
 | B 机器规约 | per-entity `{ID}.md`、`SOLUTION-*`/`ANALYSIS-*`/`PRD-*`/`ASD-*`/`DSD-*`/`TDD-*`、模板/样例/规约 | 默认保留（机器消费） | 按规约 | **不得**只为消 MD025 而删 `title` |
-| C 元数据/混合 | `docs-meta.md`、`knowledge-meta.md`、`INDEXING-LOG.md`、兼具阅读与规则消费的说明 | 边界未拆清前可阶段性双留 | 可双留 | 可配单行 `MD025` 豁免 |
+| C 元数据/混合 | `INDEX-GUIDE 锚点`、兼具阅读与规则消费的说明 | 边界未拆清前可阶段性双留 | 可双留 | 可配单行 `MD025` 豁免 |
 
 ### `MD025` 使用规则
 

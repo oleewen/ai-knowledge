@@ -7,9 +7,9 @@ if [[ "${BASH_VERSINFO[0]:-0}" -lt 5 ]]; then
 fi
 
 TEST_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$TEST_ROOT/../../../.." && pwd)"
+META_ROOT="$(cd "$TEST_ROOT/../../../.." && pwd)"
 CASE_DIR="$TEST_ROOT/cases"
-source "$REPO_ROOT/agent/scripts/test-core.sh"
+source "$META_ROOT/agent/scripts/test-core.sh"
 
 CASES=()
 while IFS= read -r case_file; do CASES+=("$case_file"); done < <(test_collect_case_scripts "$CASE_DIR")

@@ -1,0 +1,29 @@
+---
+type: Ability
+title: 示例能力
+description: 领域能力。
+tags: [business, AB]
+timestamp: "2026-06-21T00:00:00+08:00"
+id: AB-EXAMPLE
+perspective: business
+hierarchy: AB
+layer_scope: system
+---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例能力
+
+## 关系
+
+- implements_to: [AGG-EXAMPLE](AGG-EXAMPLE.md)
+
+## 跨视角
+
+- mapped_by: [UC-EXAMPLE](../../../../product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md)
+
+## 详细说明
+
+- 领域能力。
+
+## 依据与证据
+
+[../../../chapters/business-capability-map.md](../../../chapters/business-capability-map.md#领域能力)（示例）

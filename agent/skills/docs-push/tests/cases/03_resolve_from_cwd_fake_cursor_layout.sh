@@ -10,8 +10,10 @@ cleanup() { rm -rf "$TMP"; }
 trap cleanup EXIT
 
 FAKE_SCRIPTS="${TMP}/.cursor/skills/docs-push/scripts"
-mkdir -p "$FAKE_SCRIPTS"
+mkdir -p "$FAKE_SCRIPTS" "${TMP}/.cursor/scripts"
 cp "$REAL_PUSH" "${FAKE_SCRIPTS}/push-specs.sh"
+cp "${ROOT_DIR}/agent/scripts/docs-core.sh" "${TMP}/.cursor/scripts/docs-core.sh"
+cp -R "${ROOT_DIR}/agent/scripts/lib" "${TMP}/.cursor/scripts/lib"
 
 TARGET="${TMP}/target-app"
 SRC="${TMP}/specs-src"
@@ -20,9 +22,10 @@ printf '# x\n' >"${SRC}/spec-250504-1-myapp.md"
 
 cat >"${TMP}/knowledge-links.yaml" <<EOF
 links:
-  - path: "${TARGET}"
-    doc_dir: docs
-    app_name: myapp
+  - type: child
+    path: "${TARGET}"
+    dir: docs
+    name: myapp
 EOF
 
 # 在中央库根下调用「伪 Cursor 路径」脚本，应通过 cwd 上溯解析 _AIK_ROOT

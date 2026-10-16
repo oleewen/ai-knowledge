@@ -5,20 +5,18 @@ title: application-slots（应用联邦槽位根）
 ---
 # application-slots
 
-系统层**应用联邦槽位根**。`application-{NAME}` → 应用库 `DOC_ROOT` 软链；**不是** `knowledge/` SSOT。
+系统层**应用联邦槽位根**。`application-{NAME}` → 应用库 `文档目录` 软链；**不是** `knowledge/` SSOT。
 
 | 读什么 | 文件 |
 |--------|------|
 | 本层索引 | [index.md](index.md) |
-| 蒸馏日志 | [changelogs/ARCHIVE-LOG.md](changelogs/ARCHIVE-LOG.md) |
 | 建联清单 | [../knowledge-links.yaml](../knowledge-links.yaml) |
 | 布局契约 | [../../agent/references/knowledge-layout.md](../../agent/references/knowledge-layout.md) |
 
 ## 约定
 
-- 路径：`system/application-slots/application-{NAME}` → 应用仓 `DOC_ROOT`
+- 路径：`system/application-slots/application-{NAME}` → 应用仓 `文档目录`
 - 建槽：`docs-link`（yaml + 软链；允许悬空，待 `/docs-pull` 补仓）
 - 同步：`/docs-pull --app <slug>`（校验软链；失效则按 `repository` clone/pull；**脏工作区拒绝 pull**）
-- 追溯：`SYNC_OK`（含 commit）；`git log` / `git diff`；蒸馏锚点 [changelogs/ARCHIVE-LOG.md](changelogs/ARCHIVE-LOG.md)
 
-下游对称：[solution/system-slots](../../solution/system-slots/README.md) · [company/solution-slots](../../company/solution-slots/README.md)。
+上游：[solution/system-slots](../../solution/system-slots/README.md) · [company/solution-slots](../../company/solution-slots/README.md)。

@@ -10,9 +10,9 @@
 
 | 场景 | 适用 | 一句话 |
 | --- | --- | --- |
-| **A** | 单一应用，无联邦 | 应用仓 standalone，建 SSOT + 按需 SDD（无 `/sdx-solution`） |
-| **B** | 新交付（多应用）+ 中央库 | 先解决方案/系统需求与概设，再应用库详设 |
-| **C** | 老系统（多应用）+ 中央库 | 先各应用 SSOT，再三跳 pull/distill/archive |
+| **A** | 单一应用，无联邦 | 应用仓 standalone，建 SSOT + 按需 SDD（无 `/sdx-analysis`） |
+| **B** | 新交付（多应用）+ 元库 | 先解决方案/系统需求与概设，再应用库详设 |
+| **C** | 老系统（多应用）+ 元库 | 先各应用 SSOT，再三跳 pull/distill/archive |
 | **D** | 仅有 Wiki/协作文档等 legacy | overview 缓冲区 → archive → build |
 
 脚本参数与 mode 见 [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)；双轨自动化见 [bootstrap.sh](bootstrap.sh)。
@@ -57,7 +57,7 @@ flowchart LR
 | --- | --- | --- |
 | 1 | `/docs-install` 安装应用知识库（`--mode=standalone`，`--type=application`）+ `/agent-install` | 应用 `/docs` 骨架 + `.docsconfig` + Agent |
 | 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `index.md`、`README.md`、`AGENTS.md` |
-| 3 | `/docs-build` | 四视角实体、`index.md` |
+| 3 | `/docs-build` | 五视角实体、`index.md` |
 | 4 | 需求交付按需：`/sdx-analysis` → `/sdx-feature` → `/sdx-prd` → `/sdx-architect` → `/sdx-design` → `/sdx-test` | `ANALYSIS` / `FEATURE` / `PRD` / `ASD` / `DSD` / `TDD` |
 | 5 | `git log` / `git diff` + 定期 `/docs-indexing` | 变更可追溯 |
 
@@ -65,20 +65,20 @@ flowchart LR
 
 ## 场景 B：新交付（多应用）+ 中央知识库
 
-**目标**：公司 `domains/`、解决方案 `solutions/`、系统 `analysis/`→`features/`→`requirements/` 分层写；应用库承接详设。`/sdx-solution` **只**在解决方案库。
+**目标**：公司 `domains/`、解决方案 `solutions/`、系统 `analysis/`→`features/`→`requirements/` 分层写；应用库承接详设。七章需求分析由 `/sdx-analysis` 写在系统/应用。
 
 ```mermaid
 flowchart LR
     S((开始))
 
-    subgraph SYS["系统/中央库先行"]
+    subgraph SYS["系统/元库先行"]
         direction LR
         S0["bootstrap<br/>安装知识库"]
         S2["/docs-indexing<br/>产出：知识库索引"]
         S3["/docs-agent<br/>生成 AGENTS｜README"]
         S4["/docs-build<br/>产出：五视角实体"]
-        S5["/sdx-solution（仅解决方案库）"]
-        S6["/sdx-analysis · /sdx-feature"]
+        S5["/sdx-solution"]
+        S6["/sdx-analysis → /sdx-feature"]
         S7["/sdx-prd<br/>产出：产品设计文档"]
         S8["/sdx-architect<br/>产出：概要设计文档"]
         S9["git log / git diff<br/>变更溯源"]
@@ -108,13 +108,13 @@ flowchart LR
     A6 --> Z((结束))
 ```
 
-### 阶段一：中央库 — 分层需求分析设计
+### 阶段一：元库 — 分层需求分析设计
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
 | 1 | `/docs-install` 按层 `--type=company` / `solution` / `system` + `/agent-install` | `/docs` 骨架 + `.docsconfig` |
 | 2 | `/docs-indexing` + `/docs-agent` | `index.md`、`README.md`、`AGENTS.md` |
-| 3 | 公司：`/sdx-domains`。解决方案：`/sdx-solution`。系统：`/sdx-analysis` → `/sdx-feature` → `/sdx-prd` → `/sdx-architect` | `DOMAIN-*` / `SOLUTION` / `ANALYSIS` / `FEATURE` / `PRD` / `ASD` |
+| 3 | 公司：`/sdx-domains`。解决方案：`/sdx-solution`。系统/应用：`/sdx-analysis` → `/sdx-feature` → `/sdx-prd` → `/sdx-architect` | `DOMAIN-*` / `SOLUTION` / `ANALYSIS` / `FEATURE` / `PRD` / `ASD` |
 
 ### 阶段二：应用库 — 同步概设、详设与开发
 
@@ -124,16 +124,16 @@ flowchart LR
 | 2 | `/docs-push` 推送概设规约（`spec-asd`）到应用库 | 应用仓 `requirements/**/specs/` |
 | 3 | 规约详细设计链路：`/sdx-design` → `/sdx-test` | `DSD`、`TDD` |
 | 4 | 规约开发实现链路：`brainstorming` → `opsx:*` → `superpowers:sdd` | 代码实现 + 规格归档 |
-| 5 | `/docs-build`（按需） | 四视角实体、`index.md` |
+| 5 | `/docs-build`（按需） | 五视角实体、`index.md` |
 
-应用库 **mode**：**standalone** = 单应用全量模板；**central** = 仅同步 `knowledge/`、`changelogs/` 等子集并 `docs-link` 建联（见 [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)）。
+应用库 **mode**：**standalone** = 单应用全量模板；**central** = 仅同步 `knowledge/` 等子集并 `docs-link` 建联（见 [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)）。
 
 ### 阶段三：变更溯源与索引
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
 | 1 | `git log` / `git diff` | 变更历史（仓内 commit） |
-| 2 | `/docs-indexing`（增量，完成 gate 确认） | `index.md` 与 `INDEXING-LOG` 对齐、可追溯 |
+| 2 | `/docs-indexing`（增量，完成 gate 确认） | `index.md` 与 INDEX-GUIDE 锚点 对齐、可追溯 |
 
 ---
 
@@ -220,10 +220,10 @@ flowchart LR
 | 1 | 各现存应用 `/docs-install` 安装知识库（`--mode=standalone` 或 `central`）+ `/agent-install` | 应用 `/docs` 骨架 + `.docsconfig` + Agent |
 | 2 | `/docs-indexing`（完成 spec 与 gate 确认）+ `/docs-agent` | `index.md`、`README.md`、`AGENTS.md` |
 | 3 | `/docs-extract` 从 Wiki / 协作文档 / 代码注释等 legacy 源提炼（按需） | 应用侧结构化草稿或 overview 素材 |
-| 4 | `/docs-build` | 各应用四视角实体、`index.md` |
+| 4 | `/docs-build` | 各应用五视角实体、`index.md` |
 | 5 | `git log` / `git diff` | 各应用仓变更历史 |
 
-### 阶段二：中央库 — 三跳登记、拉取、蒸馏、归档
+### 阶段二：元库 — 三跳登记、拉取、蒸馏、归档
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
@@ -238,7 +238,7 @@ flowchart LR
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
-| 1 | 解决方案 `/sdx-solution`；系统 `/sdx-analysis` → `/sdx-feature` → `/sdx-prd` → `/sdx-architect`；公司仅 `/sdx-domains` | `SOLUTION` / `ANALYSIS` / `FEATURE` / `PRD` / `ASD` / `DOMAIN-*` |
+| 1 | 解决方案 `/sdx-solution`；系统/应用 `/sdx-analysis` → `/sdx-feature` → `/sdx-prd` → `/sdx-architect`；公司仅 `/sdx-domains` | `SOLUTION` / `ANALYSIS` / `FEATURE` / `PRD` / `ASD` / `DOMAIN-*` |
 
 ### 阶段四：应用库详设、开发与变更
 
@@ -316,8 +316,8 @@ flowchart LR
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
 | 1 | `git log` / `git diff` | 变更历史（仓内 commit） |
-| 2 | `/docs-indexing`（增量，完成 gate 确认） | `index.md` 与 `INDEXING-LOG` 对齐 |
-| 3 | 按层交付：解决方案 `/sdx-solution`；系统/应用 `/sdx-analysis` → … → `/sdx-test`；公司 `/sdx-domains` | 对应阶段文档 |
+| 2 | `/docs-indexing`（增量，完成 gate 确认） | `index.md` 与 INDEX-GUIDE 锚点 对齐 |
+| 3 | 按层交付：解决方案 `/sdx-solution`；系统/应用 `/sdx-analysis` → `/sdx-feature` → … → `/sdx-test`；公司 `/sdx-domains` | 对应阶段文档 |
 
 ---
 

@@ -217,26 +217,13 @@ _RE_OKF_BLOCK = re.compile(
 )
 
 
-def _demote_headings(text: str) -> str:
-    lines: List[str] = []
-    for line in text.splitlines():
-        m = re.match(r"^(#{1,6})\s+(.*)$", line)
-        if m:
-            level = min(len(m.group(1)) + 1, 6)
-            lines.append("#" * level + " " + m.group(2))
-        else:
-            lines.append(line)
-    return "\n".join(lines).rstrip() + "\n"
-
-
 def _render_okf_root_block(directory: Path) -> str:
     body = render_index_body(directory)
     lines = body.splitlines()
     if lines and lines[0].startswith("# "):
         lines = lines[1:]
     body_wo_h1 = "\n".join(lines).lstrip("\n").rstrip() + "\n"
-    demoted = _demote_headings(body_wo_h1)
-    return "## OKF 渐进披露\n\n" + demoted
+    return "# OKF 渐进披露\n\n" + body_wo_h1
 
 
 def _split_frontmatter(text: str) -> tuple[str, str]:

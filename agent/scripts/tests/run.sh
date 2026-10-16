@@ -2,12 +2,14 @@
 set -euo pipefail
 
 TEST_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$TEST_ROOT/../../.." && pwd)"
-source "$REPO_ROOT/agent/scripts/test-core.sh"
+META_ROOT="$(cd "$TEST_ROOT/../../.." && pwd)"
+source "$META_ROOT/agent/scripts/lib/bash.sh"
+source "$META_ROOT/agent/scripts/test-core.sh"
 
 # 短名 → 相对仓库根的 runner；含路径者按仓库根解析
 suite_runner() {
   case "$1" in
+    bash-guard) printf '%s\n' 'agent/scripts/tests/bash-guard/run.sh' ;;
     docs-link) printf '%s\n' 'agent/skills/docs-link/tests/run.sh' ;;
     docs-pull) printf '%s\n' 'agent/skills/docs-pull/tests/run.sh' ;;
     docs-push) printf '%s\n' 'agent/skills/docs-push/tests/run.sh' ;;
@@ -16,14 +18,13 @@ suite_runner() {
     agent-install) printf '%s\n' 'agent/skills/agent-install/tests/run.sh' ;;
     bootstrap) printf '%s\n' 'agent/scripts/tests/bootstrap/run.sh' ;;
     okf) printf '%s\n' 'agent/scripts/tests/okf/run.sh' ;;
-    docs-meta-naming) printf '%s\n' 'agent/scripts/tests/docs-meta-naming/run.sh' ;;
     forbidden-file-refs) printf '%s\n' 'agent/scripts/tests/forbidden-file-refs/run.sh' ;;
     *) return 1 ;;
   esac
 }
 
-QUICK_SUITES=(forbidden-file-refs docs-link docs-pull okf docs-okf agent-install bootstrap docs-meta-naming)
-FULL_SUITES=(forbidden-file-refs docs-link docs-pull okf docs-okf agent-install bootstrap docs-meta-naming docs-install docs-push)
+QUICK_SUITES=(bash-guard forbidden-file-refs docs-link docs-pull okf docs-okf agent-install bootstrap)
+FULL_SUITES=(bash-guard forbidden-file-refs docs-link docs-pull okf docs-okf agent-install bootstrap docs-install docs-push)
 
 MODE='quick'
 SUITE=''
@@ -57,16 +58,16 @@ run_suite() {
   local name="${1:?suite name is required}"
   local runner
   if runner_rel="$(suite_runner "$name")"; then
-    runner="$REPO_ROOT/$runner_rel"
+    runner="$META_ROOT/$runner_rel"
   elif [[ "$name" == */* ]]; then
-    runner="$REPO_ROOT/$name"
+    runner="$META_ROOT/$name"
   else
     runner="$TEST_ROOT/$name/run.sh"
   fi
   [[ -f "$runner" ]] || test_fail "未找到套件 runner: $runner"
   printf '\n'
   printf '########## suite: %s ##########\n' "$name"
-  (cd "$REPO_ROOT" && "${BASH:-$(command -v bash)}" "$runner")
+  (cd "$META_ROOT" && "$(test_bash5_command)" "$runner")
 }
 
 main() {

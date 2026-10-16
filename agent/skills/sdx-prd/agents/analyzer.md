@@ -34,5 +34,5 @@
 ## 回归
 
 1. 先跑 P0 样本，再跑全量
-2. 成对验证：`/sdx-prd` vs `/sdx-analysis`、`/sdx-solution`、`/sdx-architect`、docs-*
+2. 成对验证：`/sdx-prd` vs `/sdx-feature`、`/sdx-analysis`、`/sdx-architect`、docs-*
 3. 同模式两轮失败，优先考虑协议级重写而非堆补丁

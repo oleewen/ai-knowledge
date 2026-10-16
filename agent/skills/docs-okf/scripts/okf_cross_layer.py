@@ -20,6 +20,8 @@ KNOWN_BLOB: Dict[str, str] = {
     "www.gitlab.com": "/-/blob/{ref}/",
     "gitee.com": "/blob/{ref}/",
     "www.gitee.com": "/blob/{ref}/",
+    # 中通自建 GitLab
+    "git.ztosys.com": "/-/blob/{ref}/",
 }
 
 
@@ -59,8 +61,40 @@ def _yaml_quote_dq(s: str) -> str:
     return '"' + s.replace("\\", "\\\\").replace('"', '\\"') + '"'
 
 
+_PARENT_LAYER = {
+    "application": "system",
+    "system": "solution",
+    "solution": "company",
+}
+
+
+def _read_knowledge_type(root: Path) -> str:
+    cfg = root / ".docsconfig"
+    if not cfg.is_file():
+        return ""
+    for line in cfg.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if line.startswith("KNOWLEDGE_TYPE="):
+            return line.split("=", 1)[1].strip().strip('"').strip("'")
+    return ""
+
+
+def _parent_layer(doc_root: Path, parent_path: str) -> str:
+    """父层取自父仓 .docsconfig；父仓不在本机时，由当前仓 KNOWLEDGE_TYPE 上推一层。"""
+    expanded = Path(parent_path).expanduser()
+    if expanded.is_dir():
+        kt = _read_knowledge_type(expanded)
+        if kt:
+            return kt
+    for base in (doc_root, doc_root.parent):
+        host = _read_knowledge_type(base)
+        if host:
+            return _PARENT_LAYER.get(host, "")
+    return ""
+
+
 def _entry_type(ent: Dict[str, str]) -> str:
-    return (ent.get("type") or "child").strip() or "child"
+    return (ent.get("type") or "").strip()
 
 
 def _parse_link_entries(text: str) -> List[Dict[str, str]]:
@@ -99,21 +133,14 @@ def load_parent(doc_root: Path) -> Optional[Parent]:
             continue
         repo = (ent.get("repository") or "").strip()
         stored_path = (ent.get("path") or "").strip()
-        doc_dir = (ent.get("doc_dir") or "").strip()
-        if not stored_path or not doc_dir:
+        doc_dir = (ent.get("dir") or "").strip()
+        pname = (ent.get("name") or "").strip()
+        plabel = (ent.get("label") or "").strip() or pname
+        if not stored_path or not doc_dir or not pname:
             return None
-        company_name = (ent.get("company_name") or "").strip()
-        company_label = (ent.get("company_label") or "").strip()
-        sys_name = (ent.get("sys_name") or "").strip()
-        sys_label = (ent.get("sys_label") or "").strip()
-        if company_name or company_label:
-            kt = "company"
-            pname = company_name
-            plabel = company_label or company_name
-        else:
-            kt = "system"
-            pname = sys_name
-            plabel = sys_label or sys_name
+        kt = _parent_layer(doc_root, stored_path)
+        if not kt:
+            return None
         return Parent(
             knowledge_type=kt,
             repository=repo,
@@ -132,16 +159,16 @@ def dump_parent_entry(parent: Parent) -> List[str]:
         "  - type: parent",
         f"    repository: {q(parent.repository)}",
         f"    path: {q(parent.path)}",
-        f"    doc_dir: {q(parent.doc_dir)}",
+        f"    dir: {q(parent.doc_dir)}",
     ]
     name = parent.parent_name or Path(parent.path).expanduser().name
     label = parent.parent_label or name
-    if parent.knowledge_type == "company":
-        lines.append(f"    company_name: {q(name)}")
-        lines.append(f"    company_label: {q(label)}")
-    else:
-        lines.append(f"    sys_name: {q(name)}")
-        lines.append(f"    sys_label: {q(label)}")
+    if parent.knowledge_type not in ("company", "solution", "system"):
+        raise ValueError(
+            f"parent knowledge_type 无法写入 knowledge-links: {parent.knowledge_type}"
+        )
+    lines.append(f"    name: {q(name)}")
+    lines.append(f"    label: {q(label)}")
     return lines
 
 
@@ -149,26 +176,46 @@ def _format_child_entry(ent: Dict[str, str]) -> List[str]:
     """测试/CLI 重建 child 条（docs-link 正式写出以 bash 为准）。"""
     q = _yaml_quote_dq
     block = [
-        f"  - repository: {q(ent.get('repository', ''))}",
+        "  - type: child",
+        f"    repository: {q(ent.get('repository', ''))}",
         f"    path: {q(ent.get('path', ''))}",
     ]
-    if ent.get("doc_dir"):
-        block.append(f"    doc_dir: {q(ent['doc_dir'])}")
-    if ent.get("app_name"):
-        block.append(f"    app_name: {q(ent['app_name'])}")
-        block.append(f"    app_label: {q(ent.get('app_label') or ent['app_name'])}")
-    elif ent.get("sys_name"):
-        block.append(f"    sys_name: {q(ent['sys_name'])}")
-        block.append(f"    sys_label: {q(ent.get('sys_label') or ent['sys_name'])}")
+    if ent.get("dir"):
+        block.append(f"    dir: {q(ent['dir'])}")
+    name = (ent.get("name") or "").strip()
+    label = (ent.get("label") or "").strip() or name
+    if name:
+        block.append(f"    name: {q(name)}")
+        block.append(f"    label: {q(label)}")
+    return block
+
+
+def _format_meta_entry(ent: Dict[str, str]) -> List[str]:
+    """type:meta 只留 repository、path、dir。"""
+    q = _yaml_quote_dq
+    block = [
+        "  - type: meta",
+        f"    repository: {q(ent.get('repository', ''))}",
+        f"    path: {q(ent.get('path', ''))}",
+    ]
+    if ent.get("dir"):
+        block.append(f"    dir: {q(ent['dir'])}")
     return block
 
 
 def _child_blocks_from_entries(entries: List[Dict[str, str]]) -> List[List[str]]:
-    return [
-        _format_child_entry(ent)
-        for ent in entries
-        if _entry_type(ent) != "parent"
-    ]
+    blocks: List[List[str]] = []
+    for ent in entries:
+        kind = _entry_type(ent)
+        if kind == "parent":
+            continue
+        if kind == "meta":
+            blocks.append(_format_meta_entry(ent))
+        elif kind == "child":
+            blocks.append(_format_child_entry(ent))
+        else:
+            raise ValueError(f"knowledge-links 条目缺少或非法 type: {kind!r}")
+    return blocks
 
 
 def _render_links_document(
@@ -313,17 +360,90 @@ def collect_web_bases(start_doc_root: Path) -> List[Tuple[Parent, str]]:
     return out
 
 
+def _index_concepts(doc_root: Path) -> Dict[str, Tuple[Path, str]]:
+    knowledge = Path(doc_root) / "knowledge"
+    found: Dict[str, Tuple[Path, str]] = {}
+    if not knowledge.is_dir():
+        return found
+    for path in knowledge.rglob("*.md"):
+        if not okf_lib.is_concept_file(path):
+            continue
+        text = path.read_text(encoding="utf-8")
+        meta, body = okf_lib.parse_frontmatter(text)
+        fid = meta.get("id") or path.stem
+        found[str(fid)] = (path, body)
+    return found
+
+
+def _disk_parent_chain(
+    doc_root: Path,
+    file_path: Path,
+    perspective: str,
+    entity_id: str,
+    need: int,
+) -> Optional[str]:
+    """文件所在目录。宿主文件 `{id}/{id}.md` 去掉自身目录名。"""
+    persp_root = Path(doc_root) / "knowledge" / perspective
+    try:
+        rel_dir = file_path.parent.relative_to(persp_root)
+    except ValueError:
+        return None
+    parts = [part for part in rel_dir.parts if part and part != "."]
+    if parts and parts[-1] == entity_id:
+        parts = parts[:-1]
+    if len(parts) == need:
+        return "/".join(parts)
+    return None
+
+
+def directory_chain_for_entity(
+    doc_root: Path, entity_id: str, perspective: str, need: int
+) -> Optional[str]:
+    """沿同层 parent / implements_to 向上收集父 ID。
+
+    段数不够时用直接父文件的目录。同层走不到时，用本文件所在父目录。
+    跨层 ID 不在本 bundle，relation_path_parent 会跳过。
+    """
+    by_id = _index_concepts(doc_root)
+    if entity_id not in by_id:
+        return None
+    file_path = by_id[entity_id][0]
+    local_ids = set(by_id)
+    ancestors: List[str] = []
+    seen = {entity_id}
+    current = entity_id
+    while len(ancestors) < need:
+        parent_id = okf_lib.relation_path_parent(by_id[current][1], local_ids)
+        if not parent_id or parent_id in seen or parent_id not in by_id:
+            break
+        seen.add(parent_id)
+        ancestors.append(parent_id)
+        current = parent_id
+    if len(ancestors) == need:
+        return "/".join(reversed(ancestors))
+    if ancestors:
+        parent_path = by_id[ancestors[0]][0]
+        persp_root = Path(doc_root) / "knowledge" / perspective
+        try:
+            rel_dir = parent_path.parent.relative_to(persp_root).as_posix()
+        except ValueError:
+            rel_dir = ""
+        parts = [part for part in rel_dir.split("/") if part and part != "."]
+        if len(parts) == need:
+            return "/".join(parts)
+    return _disk_parent_chain(doc_root, file_path, perspective, entity_id, need)
+
+
 def cross_layer_href(
     start_doc_root: Path,
     id: str,
     *,
     path_parent: Optional[str] = None,
     hierarchy: Optional[str] = None,
-    layer_scope: Optional[str] = None,
 ) -> Optional[str]:
-    prefix = hierarchy or okf_lib._id_prefix(id)
-    layer = okf_lib.hierarchy_first_layer(prefix, layer_scope=layer_scope)
-    perspective = okf_lib.hierarchy_to_perspective(prefix)
+    code = hierarchy or okf_lib._id_prefix(id)
+    layer = okf_lib.hierarchy_first_layer(code, id)
+    perspective = okf_lib.hierarchy_to_perspective(code)
     if not layer or not perspective:
         return None
     parent = parent_for_layer(start_doc_root, layer)
@@ -332,9 +452,23 @@ def cross_layer_href(
     wb = parent_web_base(parent)
     if not wb:
         return None
-    rel = okf_lib.entity_relpath(
-        perspective, id, path_parent=path_parent, bundle=layer
-    )
+    chain = path_parent
+    local = parent.local_doc_root()
+    need = okf_lib.relpath_parent_count(code, layer)
+    if need:
+        given = [part for part in (path_parent or "").split("/") if part]
+        if len(given) == need:
+            chain = "/".join(given)
+        elif not local.is_dir():
+            return None
+        else:
+            chain = directory_chain_for_entity(local, id, perspective, need)
+    try:
+        rel = okf_lib.entity_relpath(
+            perspective, id, path_parent=chain, bundle=layer
+        )
+    except ValueError:
+        return None
     return f"{wb}/{rel}"
 
 
@@ -438,19 +572,24 @@ def validate_http_href(
     perspective = okf_lib.hierarchy_to_perspective(prefix)
     if not perspective:
         return f"跨层 HTTP 无法识别实体 ID: {id}"
+    local_root = parent.local_doc_root()
+    need = okf_lib.relpath_parent_count(prefix, parent.knowledge_type)
+    chain = None
+    if need and local_root.is_dir():
+        chain = directory_chain_for_entity(local_root, id, perspective, need)
+        if not chain:
+            return f"跨层 HTTP 路径不足：{id} 缺少父目录链"
     try:
         expected = okf_lib.entity_relpath(
-            perspective, id, bundle=parent.knowledge_type
+            perspective, id, path_parent=chain, bundle=parent.knowledge_type
         )
     except ValueError:
         expected = None
     if expected and rel != expected:
-        if not rel.endswith(f"/{name}") and rel != expected:
-            return (
-                f"跨层 HTTP 路径与目标层 entity_relpath 不一致: "
-                f"得 {rel} 期望 {expected}"
-            )
-    local_root = parent.local_doc_root()
+        return (
+            f"跨层 HTTP 路径与目标层 entity_relpath 不一致: "
+            f"得 {rel} 期望 {expected}"
+        )
     if local_root.is_dir():
         target = local_root / rel
         if not target.is_file():

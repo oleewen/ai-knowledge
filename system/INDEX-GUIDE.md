@@ -18,14 +18,13 @@ title: system INDEX-GUIDE
 * [DESIGN.md](DESIGN.md) — 本层设计入口（契约短表 + 治理引用）  
 * [knowledge/README.md](knowledge/README.md) — 五视角  
 * [knowledge-links.yaml](knowledge-links.yaml) — 建联清单  
-* [changelogs/README.md](changelogs/README.md) — 变更/索引  
 
 ### 1.2 元信息
 
 * **角色**: 系统知识库；`knowledge/` = 系统层实体 SSOT + 五视角；`application-slots/application-{NAME}` = 软链槽位  
 * **栈**: Markdown、YAML  
-* **范围**: `knowledge/` · `analysis/` · `features/` · `requirements/` · `application-slots/` · `adr/` · `changelogs/`  
-* **规模**（本轮 full/d3，排除 `.agents`）：约 **128** 文件（`.md` 124 · `.yaml` 1 · `viz.html` 1）  
+* **范围**: `knowledge/` · `analysis/` · `features/` · `requirements/` · `application-slots/` · `adr/`  
+* **规模**（本轮 full/d3，排除 `.agents`）：**104** 文件（`.md` 103 · `.yaml` 1；`viz.html` 1 不计入）  
 
 ---
 
@@ -35,18 +34,16 @@ title: system INDEX-GUIDE
 
 ```text
 system/
-├── README.md / DESIGN.md / INDEX-GUIDE.md / index.md / docs-meta.md
+├── README.md / DESIGN.md / INDEX-GUIDE.md / index.md
 ├── knowledge-links.yaml
 ├── knowledge/ · analysis/ · features/ · requirements/ · adr/
 ├── application-slots/
-│   ├── application-{NAME}      # 软链 → 应用 DOC_ROOT
-│   └── changelogs/             # 层共用 ARCHIVE-LOG；同步追溯 git / SYNC_OK
-└── changelogs/
+│   ├── application-{NAME}      # 软链 → 应用 文档目录
 ```
 
 ### 2.2 依赖关系
 
-* `knowledge/` ↔ `solution/knowledge/`：解决方案实体 reference  
+* `knowledge/` ↔ `solution/knowledge/`：解决方案实体只写纯 ID  
 * `knowledge/` ↔ `application/knowledge/`：系统 SSOT / 应用实现映射  
 * `analysis/` → `features/` → `requirements/`  
 * `knowledge-links.yaml` → `application-slots/application-{NAME}/`  
@@ -99,7 +96,7 @@ system/
 | 系统级实体 | SYS / BSD-L3 / BC / AGG / AB / PM / FT / FR / UC / BR / APP / MS / DS / ENT | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
 | overview 缓冲 | distill / extract / archive / tag | [knowledge/overview/](knowledge/overview/README.md) |
 | SDD | 分析 → 特性 → 需求 | `analysis/` · `features/` · `requirements/` |
-| 联邦槽位 | 应用 DOC_ROOT 软链 | `application-slots/application-{NAME}/` · [knowledge-links.yaml](knowledge-links.yaml) |
+| 联邦槽位 | 应用 文档目录 软链 | `application-slots/application-{NAME}/` · [knowledge-links.yaml](knowledge-links.yaml) |
 
 ### 4.3 领域服务
 
@@ -107,14 +104,12 @@ system/
 
 ### 4.4 领域事件
 
-不适用运行时事件：索引运行见 [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)；归档见 `application-slots/changelogs/`。
-
 ### 4.5 视角导航
 
 <!-- docs-build:entity-index:begin -->
 > 本块由 `/docs-build` 写入；实体台账 ∈ 各视角 README；正文 ∈ per-entity `{ID}.md`；九章骨架 ∈ `/docs-indexing`。
 
-> 公司级与解决方案级首次定义不在本层登记。本层 **SYS / BSD-L3 / BC / AGG / AB / PM / FT / FR / UC / BR / APP / MS / DS / ENT**。
+> 本层登记 **SYS / BSD-L3 / BC / AGG / AB / PM / FT / FR / UC / BR / APP / MS / DS / ENT**。
 
 ### 视角入口
 
@@ -139,8 +134,8 @@ system/
 | [features/FEATURE-EXAMPLE.md](features/FEATURE-EXAMPLE.md) | 特性样例 |
 | [requirements/REQUIREMENT-EXAMPLE/](requirements/REQUIREMENT-EXAMPLE/) | 需求样例目录 |
 | [adr/CONTEXT.md](adr/CONTEXT.md) | ADR 索引入口 |
-| `knowledge/business/BSD-EXAMPLE-L3/` 下 BSD-L3/BC/AGG/AB · `SYS-EXAMPLE` | 本层首次定义样例 |
-| `PD-EXAMPLE` · `BP-EXAMPLE` · `MDG-EXAMPLE` · `TSD-EXAMPLE` · `BSD-EXAMPLE-L2` | 解决方案首次；本层不落文件，纯 ID |
+| `knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/` 下 BSD-L3/BC/AGG/AB · `SYS-EXAMPLE` | 本层首次定义样例 |
+| `PD-EXAMPLE` · `BP-EXAMPLE` · `MDG-EXAMPLE` · `TS-EXAMPLE` · `BSD-EXAMPLE-L2` | 解决方案首次；本层不落文件，纯 ID |
 
 流程叙事章 ∈ 各视角 `knowledge/*/chapters/`；不在九章展开正文。
 
@@ -163,7 +158,7 @@ system/
 
 ### 6.3 关系映射
 
-跨视角以 ID + 关系动词维护；入口 [knowledge/README.md](knowledge/README.md) · [glossary.md](../agent/knowledge/glossary.md)。公司层实体以 reference / 纯 ID 上指。
+跨视角以 ID + 关系动词维护；入口 [knowledge/README.md](knowledge/README.md) · [glossary.md](../agent/knowledge/glossary.md)。公司层实体只写纯 ID。
 
 ### 6.4 SQL 索引
 
@@ -178,7 +173,7 @@ system/
 | 项 | 落点 |
 |------|------|
 | 文档根 / 类型 | 仓库根 [`.docsconfig`](../.docsconfig)（当前 `DOC_DIR=company`；本层作并列 DOC_DIR `system`） |
-| 建联清单 | [knowledge-links.yaml](knowledge-links.yaml)（现 `links: []`） |
+| 建联清单 | [knowledge-links.yaml](knowledge-links.yaml)（现一条 `type: meta`，parent/child 未挂载） |
 | 装机 | `/docs-install` · `/docs-link` · `/docs-pull` |
 
 ---
@@ -187,7 +182,7 @@ system/
 
 ### 8.1 覆盖范围
 
-本轮 **full / depth 3** 覆盖 `system/` 可读文本（约 128 文件）。九章已消减 `[未索引]`；实体台账仍以各视角 README 与 per-entity 为准。
+本轮 **full / depth 3** 覆盖 `system/` 可读文本（104 文件）。九章已消减 `[未索引]`；实体台账仍以各视角 README 与 per-entity 为准。
 
 ### 8.2 排除列表
 
@@ -200,8 +195,6 @@ system/
 
 ### 8.3 维护规则
 
-* [changelogs/](changelogs/README.md)：`INDEXING-LOG.md`；溯源 git  
-* 槽位日志 ∈ `application-slots/changelogs/ARCHIVE-LOG.md`  
 * 大目录或契约变更后跑 `/docs-indexing`；索引后按需 `/docs-okf`
 
 ---
@@ -216,15 +209,15 @@ system/
 | 目录索引 | [index.md](index.md) | OKF 渐进披露 |
 | 设计入口 | [DESIGN.md](DESIGN.md) | 契约与门禁 |
 | OKF 可视化 | [viz.html](viz.html) | 图视图 |
-| 索引运行日志 | [INDEXING-LOG.md](changelogs/INDEXING-LOG.md) | docs-indexing 基线 |
+| 索引运行日志 | [INDEXING-LOG.md](INDEX-GUIDE 增量锚点) | docs-indexing 基线 |
 | 公司对照 | [../company/INDEX-GUIDE.md](../company/INDEX-GUIDE.md) | 上层九章 |
 
 ### 9.2 相关项目
 
 | 关系 | 状态 |
 |------|------|
-| `knowledge-links.yaml` parent/child | **空**（`links: []`，合法未挂载态） |
-| `application-slots/application-*` | **无**现成软链；仅有槽位 README / `changelogs/` |
+| `knowledge-links.yaml` parent/child | **空**（仅 `type: meta`，parent/child 未挂载） |
+| `application-slots/application-*` | **无**现成软链；仅有槽位 README |
 | 同仓邻层 | [company/](../company/README.md) · [application/](../application/README.md) |
 
 ### 9.3 工具链
@@ -235,3 +228,5 @@ system/
 | `/docs-indexing` | 九章骨架（须保留 entity-index 标记块） |
 | `/docs-build` | 刷新 §4.5 标记块 |
 | `/docs-distill` · `/docs-archive` · `/docs-pull` | overview 上行与槽位拉取 |
+
+<!-- sdx-indexing:indexing_finished_ms=1791431315870 -->

@@ -18,12 +18,12 @@ title: 系统知识库设计
 
 | 目录 | 职责 |
 | --- | --- |
-| `knowledge/` | SYS 与实现链 SSOT + 五视角；上层实体可薄 reference；[`overview/`](knowledge/overview/NAME-overview.md) = 蒸馏缓冲区 |
+| `knowledge/` | SYS 与实现链 SSOT + 五视角；上层实体只写纯 ID，不建 reference 文件；[`overview/`](knowledge/overview/NAME-overview.md) = 蒸馏缓冲区 |
 | `analysis/` → `features/` → `requirements/` | 系统 SDD；交付 ∈ `REQUIREMENT-{IDEA-ID}/` |
 | `adr/` | 系统层决策 + `CONTEXT.md` |
 | `application-slots/application-{NAME}/` | 应用镜像软链入口 |
-| `knowledge-links.yaml` | parent = 解决方案（`solution_*`）；child 应用用 `app_*` |
-| `changelogs/` | INDEXING-LOG；变更溯源 git |
+| `knowledge-links.yaml` | parent 一条，为解决方案；child 为应用；键均为 `name` / `label`，不写层前缀 |
+| `TODO-LIST.md` | 烤干未闭合代办（本目录 = `{DOC_DIR}`）；变更溯源用 git。元仓全书仍在仓根 |
 
 路径总则：[knowledge-layout § 四层文档根](../agent/references/knowledge-layout.md#四层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ overview](../agent/references/knowledge-layout.md#overview) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。
 
@@ -32,7 +32,7 @@ title: 系统知识库设计
 1. **docs-pull** → 校验/修复 `application-slots/application-{NAME}` 软链  
 2. 校核 `knowledge/` 与治理约定  
 3. **docs-distill / docs-archive** 上行解决方案 overview（不再直蒸公司）  
-4. `application-slots/changelogs/` 蒸馏锚点；同步追溯 git / `SYNC_OK`  
+4. 同步追溯 git / `SYNC_OK`  
 
 全图：[knowledge-layout § 知识流水线](../agent/references/knowledge-layout.md#知识流水线)。跨层无双份主定义；脏工作区不得 pull；改目录语义先改**本元库模板**再 upgrade。
 

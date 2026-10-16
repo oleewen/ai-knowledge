@@ -1,0 +1,5 @@
+AGENT_ROOT=~
+AGENT_DIR=.agents
+REPO_DIR=ai-knowledge
+DOC_DIR=company
+KNOWLEDGE_TYPE=meta

@@ -11,17 +11,17 @@ DOCS="$PROJECT/docs"
 cleanup() { rm -rf "$TMP_DIR"; }
 trap cleanup EXIT
 
-mkdir -p "$DOCS/knowledge" "$DOCS/changelogs" "$PROJECT/agent/scripts" "$DOCS/.agents"
+mkdir -p "$DOCS/knowledge" "$PROJECT/agent/scripts" "$DOCS/.agents"
 git -C "$PROJECT" init -q
 
 {
-  printf 'DOC_ROOT=%s\n' "$DOCS"
-  printf 'REPO_ROOT=%s\n' "$PROJECT"
+  printf 'REPO_DIR=%s\n' "$(basename "$PROJECT")"
   printf 'DOC_DIR=docs\n'
   printf 'KNOWLEDGE_TYPE=company\n'
-  printf 'AGENT_ROOT=~\n'
+  printf 'AGENT_ROOT=%s\n' "$TMP_DIR/agent-home"
   printf 'AGENT_DIR=.agents\n'
 } >"$PROJECT/.docsconfig"
+pin_workspace_for_repo "$PROJECT" "$TMP_DIR/agent-home" .agents
 
 printf 'root-agent\n' >"$PROJECT/agent/scripts/should-not-index.txt"
 printf 'docs-agent\n' >"$DOCS/.agents/should-not-index.txt"
@@ -48,8 +48,9 @@ if grep -q 'docs-indexing:begin' "$DOCS/INDEX-GUIDE.md"; then
 fi
 grep -q '| 999 |' "$DOCS/INDEX-GUIDE.md" || fail "未启用 rewrite 时不应改既有统计"
 
-base=$(python3 "$ROOT_DIR/agent/skills/docs-indexing/scripts/indexing_log.py" read-baseline "$DOCS/changelogs/INDEXING-LOG.md")
-[[ "$base" != 0 ]] || fail "INDEX 成功后应写 LOG"
+base=$(python3 "$ROOT_DIR/agent/skills/docs-indexing/scripts/indexing_log.py" read-baseline "$DOCS/INDEX-GUIDE.md")
+[[ "$base" != 0 ]] || fail "INDEX 成功后应写 INDEX-GUIDE HTML 锚点"
+grep -q 'sdx-indexing:indexing_finished_ms=' "$DOCS/INDEX-GUIDE.md" || fail "缺少增量锚点注释"
 
 (cd "$PROJECT" && "$INDEXING_SCRIPT" --mode full --depth 3 --rewrite)
 
@@ -60,4 +61,4 @@ if grep -q 'should-not-index.txt' "$DOCS/INDEX-GUIDE.md"; then
   fail "根外或隐藏目录被索引"
 fi
 
-pass "默认保护既有九章；rewrite 保留实体块并只扫 DOC_ROOT"
+pass "默认保护既有九章；rewrite 保留实体块并只扫文档目录"

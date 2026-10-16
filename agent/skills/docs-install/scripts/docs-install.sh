@@ -4,6 +4,9 @@
 set -euo pipefail
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# shellcheck source=../../../scripts/lib/bash.sh
+source "$SCRIPT_DIR/../../../scripts/lib/bash.sh"
+
 # 配置层与 .docsconfig 工具统一下沉到 docs-config.sh
 # shellcheck source=./docs-config.sh
 source "$SCRIPT_DIR/docs-config.sh"
@@ -16,7 +19,7 @@ source "$SCRIPT_DIR/../../../scripts/lib/log-io.sh"
 
 # 主配置关联数组（单一事实源）
 declare -A CFG=(
-  [repo_root]="${REPO_ROOT:-}"
+  [repo_root]=""
   [docs_abs]=""
   [target_dir]=""
   [target_opt]=""
@@ -144,8 +147,8 @@ docs_install_rewrite_agent_paths() {
   local cfg="$repo_target/.docsconfig"
   [[ -f "$cfg" ]] || { warn "未找到 $cfg，跳过 agent 路径重写"; return 0; }
 
-  local _dr _rr _ddir ar ad kt
-  docsconfig_read_into "$cfg" _dr _rr _ddir ar kt ad || {
+  local _rd _ddir ar ad kt
+  docsconfig_read_into "$cfg" _rd _ddir ar kt ad || {
     warn "无法解析 $cfg，跳过 agent 路径重写"
     return 0
   }
@@ -184,7 +187,7 @@ install_application_full_to_docs() {
     rel="${rel#./}"
     [[ -z "$rel" ]] && continue
     # 仅排除 application/ 根部多版本 README（子目录 README.md 须照常同步）
-    # 根级 CONTRIBUTING.md / DESIGN.md 随源树整文件覆盖同步（DESIGN = 层设计入口模板）
+    # 根级 DESIGN.md 随源树整文件覆盖同步（DESIGN = 层设计入口模板）
     [[ "$rel" == 'README.md' || "$rel" == 'README-s.md' || "$rel" == 'README-c.md' ]] && continue
 
     src_f="$src_root/$rel"
@@ -211,7 +214,7 @@ install_application_subset_to_docs() {
   info "    目标: $dst_root"
 
   local d rel src_f dst_f
-  for d in changelogs knowledge specs; do
+  for d in knowledge specs; do
     [[ -d "$src_root/$d" ]] || { warn "§2.1 子集：跳过缺失目录 application/$d"; continue; }
     while IFS= read -r -d '' rel; do
       rel="${rel#./}"
@@ -223,7 +226,7 @@ install_application_subset_to_docs() {
   done
 
   local base
-  for base in index.md docs-meta.md manifest.md knowledge-links.yaml CONTRIBUTING.md DESIGN.md; do
+  for base in index.md knowledge-links.yaml DESIGN.md; do
     [[ -f "$src_root/$base" ]] || continue
     io_copy_file "$src_root/$base" "$dst_root/$base" || return 0
   done
@@ -279,7 +282,7 @@ docs_install_restore_knowledge_links() {
   _DOCS_INSTALL_LINKS_STASH=""
 }
 
-# 在 DOC_ROOT/knowledge-links.yaml upsert 恰好一条 type:meta（指向装机源仓）
+# 在文档目录/knowledge-links.yaml upsert 恰好一条 type:meta（指向装机源仓）
 # doc_dir = 目标 KNOWLEDGE_TYPE（= CFG[type]）；多条时保留第一条并覆盖，丢弃其余 meta
 docs_install_upsert_knowledge_meta() {
   local links_file meta_repo meta_path child_kind parent_kind
@@ -383,20 +386,13 @@ docs_install_resolve_docsconfig_roots() {
 
   if [[ -n "${CFG[docs_abs]}" ]]; then
     _dr="${CFG[docs_abs]}"
-    _rt="$(docsconfig_repo_root_from_doc_root "$_dr")"
-    if [[ -z "$_rt" ]]; then
-      _rt="$(docsconfig_repo_root_from_doc_root "$_dr")"
-      [[ -n "$_rt" ]] \
-        || error "无法写入 .docsconfig：DOC_ROOT 父目录不可解析: $_dr"
-      warn "未检测到 DOC_ROOT 所在 Git 仓库，已回退使用父目录作为 REPO_ROOT: $_rt"
-    fi
+    _rt="$(docsconfig_repo_from_doc "$_dr")"
+    [[ -n "$_rt" ]] || error "无法写入 .docsconfig：文档目录的父目录不可解析: $_dr"
     _dd="$(docsconfig_doc_dir_from_roots "$_rt" "$_dr")" \
-      || error "无法计算 DOC_DIR（DOC_ROOT 须位于 REPO_ROOT 目录下）"
+      || error "无法计算 DOC_DIR（文档目录须位于仓库目录下）"
+    [[ "$_dd" != "." ]] || error "文档目录不能是仓库根。--target 须为仓库下的子目录: $_dr"
   else
-    [[ -n "${CFG[home_abs]}" ]] || error "无法写入 .docsconfig：HOME 未就绪"
-    _dr="${CFG[home_abs]}"
-    _rt="${CFG[home_abs]}"
-    _dd='.'
+    error "无法写入 .docsconfig：缺少目标文档目录"
   fi
 }
 
@@ -428,11 +424,11 @@ install_agent_path() {
     || error "无法补全 AGENT_ROOT/AGENT_DIR（请先 /agent-install 或修正 .docsconfig）"
 }
 
-# 写入目标工程仓库根 .docsconfig（DOC_*、KNOWLEDGE_TYPE、AGENT_ROOT、AGENT_DIR）
+# 写入目标工程仓库根 .docsconfig（AGENT_ROOT、AGENT_DIR、REPO_DIR、DOC_DIR、KNOWLEDGE_TYPE）
 # dry-run 时仅预览，不写入
 docs_install_write_docsconfig() {
   local doc_root='' repo_target='' dd=''
-  local old_doc_root='' old_repo_root='' old_doc_dir=''
+  local _old_rd='' old_doc_dir=''
   local old_agent_root='' old_agent_dir=''
   local old_knowledge_type=''
   local cfg_file existed=0
@@ -444,7 +440,7 @@ docs_install_write_docsconfig() {
   cfg_file="$repo_target/.docsconfig"
   if [[ -f "$cfg_file" ]]; then
     existed=1
-    docsconfig_read_into "$cfg_file" old_doc_root old_repo_root old_doc_dir \
+    docsconfig_read_into "$cfg_file" _old_rd old_doc_dir \
       old_agent_root old_knowledge_type old_agent_dir || true
   fi
 
@@ -506,11 +502,11 @@ docs_install_usage() {
   --mode=MODE     standalone(s) | central(c)  [默认: s]
   -r              允许工程根目录不存在时自动创建
   --force         强制覆盖，不提示
+  --meta PATH     元库根目录（默认：本脚本所在仓库）
   --dry-run       预览模式，不写入任何文件
   -h, --help      显示此帮助
 
 环境变量
-  REPO_ROOT             本仓库（中央库）根目录（默认自动探测）
   HOME                  用户主目录
   CREATE_PROJECT_ROOT   1=允许自动创建工程根（等同 -r）
   SCOPE                 未传 --scope 时的默认值
@@ -542,6 +538,13 @@ docs_install_parse_args() {
       --scope)    shift; cli_require_value "--scope" "${1:-}"; CFG[scope]="${1:-}"; shift ;;
       --type=*)   CFG[type]="${1#*=}"; CFG[type_explicit]=1;  shift ;;
       --type)     shift; cli_require_value "--type" "${1:-}"; CFG[type]="${1:-}"; CFG[type_explicit]=1; shift ;;
+      --meta=*)   CFG[repo_root]="${1#*=}";                   shift ;;
+      --meta)
+        shift
+        cli_require_value "--meta" "${1:-}"
+        CFG[repo_root]="$1"
+        shift
+        ;;
       --dry-run)  CFG[dry_run]=1;                             shift ;;
       --force)    CFG[force]=1;                               shift ;;
       -r)         CFG[create_project_root]=1;                 shift ;;
@@ -562,7 +565,7 @@ docs_install_parse_args() {
 # § 10  初始化与校验
 # =============================================================================
 
-# 初始化并校验 REPO_ROOT
+# 初始化并校验元库根
 docs_install_init_repo_root() {
   if [[ -z "${CFG[repo_root]}" ]]; then
     CFG[repo_root]="$(abs_path "$SCRIPT_DIR/../../../..")"
@@ -590,7 +593,7 @@ docs_install_validate_docs_target() {
       error "工程根目录不存在: ${target_dir}（请先创建，或使用 -r 自动创建）"
     fi
   fi
-  # DOC_ROOT 须为已存在目录，否则 .docsconfig 推导失败
+  # 文档目录须已存在，否则 .docsconfig 推导失败
   if [[ ! -d "${CFG[docs_abs]}" ]]; then
     run_or_dry mkdir -p "${CFG[docs_abs]}"
   fi

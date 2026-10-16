@@ -9,6 +9,12 @@ new_tmp_dir() {
   mktemp -d "${TMPDIR:-/tmp}/docs-upgrade-tests.XXXXXX"
 }
 
+pin_workspace_for_repo() {
+  local repo="${1:?}" agent_root="${2:?}" agent_dir="${3:-.agents}"
+  mkdir -p "${agent_root}/${agent_dir}"
+  printf 'WORK_SPACE=%s\n' "$(dirname "$repo")" >"${agent_root}/${agent_dir}/configs"
+}
+
 ensure_test_agent_home() {
   local tmp="${1:?}"
   local home="${tmp}/fake-home"

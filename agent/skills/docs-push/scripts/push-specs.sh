@@ -6,6 +6,9 @@ set -euo pipefail
 readonly _INVOCATION_PWD="$(pwd -P)"
 readonly _PS_SCRIPT_DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 
+# shellcheck source=/dev/null
+source "${_PS_SCRIPT_DIR}/../../../scripts/lib/bash.sh"
+
 _ps_bootstrap_error() {
   printf '%s\n' "$*" >&2
   exit 1

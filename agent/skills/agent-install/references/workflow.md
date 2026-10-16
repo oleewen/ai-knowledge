@@ -2,12 +2,14 @@
 
 ## 参数向导
 
-按序收口；用户已明确时可跳过：
+按书写序收口；用户已明确时可跳过：
 
-1. `--agents`（探测已有 IDE 目录；空则 `cursor`）
-2. `--target`（默认 `$HOME`；工程级须已有 `.docsconfig`）
-3. `--scope` 子树勾选（`a`/`r`/`s`/`h`/`sh`/`k`）
-4. 是否先 `--dry-run`（默认是）
+1. `--meta`（可选；默认本脚本所在元库）
+2. `--scope` 子树勾选（`a`/`r`/`s`/`h`/`sh`/`k`；可默认 `a`）
+3. `--target`（默认 `$HOME`；工程级须已有 `.docsconfig`）
+4. `--agents`（探测已有 IDE 目录；空则 `a`＝全量）
+5. `--workspace`（可省略：cwd 上溯 `.docsconfig` 的 `AGENT_ROOT`/`AGENT_DIR` → `configs` 内 `WORK_SPACE`；缺则须显式）
+6. 是否先 `--dry-run`（默认是）
 
 参数未收口前，不进入执行。
 
@@ -19,7 +21,7 @@
 
 ### 1 准备
 
-- Bash 5+；本仓或已 clone 的中央库树
+- Bash 5+；本仓或已 clone 的元库树
 - 工程级 `--target` 时：目标须有 `.docsconfig`（否则先 docs-install）
 
 ### 2 dry-run

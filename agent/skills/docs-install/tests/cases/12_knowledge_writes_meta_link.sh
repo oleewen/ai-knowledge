@@ -30,7 +30,7 @@ META_REPO="$(git -C "$ROOT_DIR" remote get-url origin 2>/dev/null || true)"
 assert_file_exists "$LINKS"
 grep -Fq 'type: meta' "$LINKS" || fail "应写入 type: meta"
 grep -Fq "repository: \"$META_REPO\"" "$LINKS" || fail "meta.repository 应为装机源仓 origin"
-grep -Fq 'doc_dir: "application"' "$LINKS" || fail "meta.doc_dir 应为 application"
+grep -Fq 'dir: "application"' "$LINKS" || fail "meta.dir 应为 application"
 
 # 手改 meta 后重装应覆盖回当前源仓
 cat >"$LINKS" <<EOF
@@ -38,11 +38,11 @@ links:
   - type: meta
     repository: "https://example.com/old-meta.git"
     path: "~/old-meta"
-    doc_dir: "application"
+    dir: "application"
   - type: meta
     repository: "https://example.com/extra-meta.git"
     path: "~/extra-meta"
-    doc_dir: "application"
+    dir: "application"
 EOF
 
 "${BASH:-$(command -v bash)}" "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --force --target "$DOCS_DIR" \

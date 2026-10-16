@@ -1,13 +1,13 @@
 {
   "skill_name": "agent-install",
   "version": "1.0.0",
-  "description": "评测 agent-install：轻流程；dry-run；home/target 高风险；与 docs-install 分流。",
+  "description": "评测 agent-install：轻流程；dry-run；home/target 高风险；workspace 推断；与 docs-install 分流。",
   "evals": [
     {
       "id": "agent-install-trigger-001",
       "category": "should-trigger",
       "prompt": "把 cursor 的 agent 树装到 home，先预览。",
-      "expected_output": "agent-install：--agents=cursor --target $HOME；先 --dry-run；等 C/M/S/F。",
+      "expected_output": "agent-install：书写序 meta→scope→target→agents→workspace→dry-run；默认 --agents=a；--target $HOME；先 --dry-run；等 C/M/S/F。",
       "assertions": [
         {
           "id": "dry-run-first",

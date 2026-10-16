@@ -105,7 +105,7 @@
           "id": "analysis-deferred",
           "name": "下游衔接",
           "type": "should_include",
-          "check": "可提及定稿 SOLUTION 后再进入 sdx-analysis 等下游（非本轮主路径）。",
+          "check": "可提及定稿 SOLUTION 后再进入 sdx-feature 等下游（非本轮主路径）。",
           "priority": "P1"
         }
       ]
@@ -358,14 +358,14 @@
     {
       "id": "solution-not-trigger-001",
       "category": "should-not-trigger",
-      "prompt": "SOLUTION 已经有了，请接着做 /sdx-analysis，把 MVP 拆细、依赖和风险写进 ANALYSIS-CRM-1.md。",
-      "expected_output": "主路径为 sdx-analysis：产出或迭代 ANALYSIS-CRM-1.md；不以 sdx-domains 的参数向导 + 分段直写流程写新 SOLUTION 为终点。",
+      "prompt": "SOLUTION 已经有了，请接着做 /sdx-feature，把 MVP 拆细、依赖和风险写进 ANALYSIS-CRM-1.md。",
+      "expected_output": "主路径为 sdx-feature：产出或迭代 ANALYSIS-CRM-1.md；不以 sdx-domains 的参数向导 + 分段直写流程写新 SOLUTION 为终点。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "须明确 /sdx-analysis 或 ANALYSIS-CRM-1.md（或 ANALYSIS）为当前主任务，而非以 sdx-domains 为唯一主路径。",
+          "check": "须明确 /sdx-feature 或 ANALYSIS-CRM-1.md（或 ANALYSIS）为当前主任务，而非以 sdx-domains 为唯一主路径。",
           "priority": "P0"
         },
         {

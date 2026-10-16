@@ -8,15 +8,14 @@ id: BL-EXAMPLE
 perspective: business
 hierarchy: BL
 layer_scope: company
-maps_to: BSD-EXAMPLE
-mapped_by:
-  - PL-EXAMPLE
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例业务线
+
 ## 关系
 
-- maps_to: BSD-EXAMPLE
-- mapped_by:
-  - PL-EXAMPLE
+- maps_to: [BSD-EXAMPLE](../BD/BD-EXAMPLE/BSD-EXAMPLE.md)
+- mapped_by: PL-EXAMPLE
 
 ## 跨视角
 
@@ -24,8 +23,8 @@ mapped_by:
 
 ## 详细说明
 
-- definition_scope: local
+- 演示公司级 BL；无 parent；与 BSD-L1 一对一映射。
 
 ## 依据与证据
 
-示例数据
+[../chapters/business-roles-and-organization.md](../chapters/business-roles-and-organization.md)（示例）

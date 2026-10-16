@@ -8,25 +8,22 @@ id: BS-EXAMPLE
 perspective: business
 hierarchy: BS
 layer_scope: solution
-maps_to: BSD-EXAMPLE-L2
-mapped_by:
-  - PD-EXAMPLE
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例业务服务
+
 ## 关系
 
-- maps_to: BSD-EXAMPLE-L2
-- mapped_by:
-  - PD-EXAMPLE
+- maps_to: [BSD-EXAMPLE-L2](../BSD-EXAMPLE-L1/BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md)
 
 ## 跨视角
 
-- 对端产品服务：PD-EXAMPLE
+- mapped_by: [PD-EXAMPLE](../../product/PL-EXAMPLE/PD-EXAMPLE.md)
 
 ## 详细说明
 
-- definition_scope: local
-- 无 parent，不进 BD 树。与 PD、BSD-L2 均为一对一。
+- 业务服务；无 parent；maps_to BSD-L2 一对一。
 
 ## 依据与证据
 
-chapters/business-domain-division.md（示例）
+[../chapters/business-domain-division.md](../chapters/business-domain-division.md)（示例）

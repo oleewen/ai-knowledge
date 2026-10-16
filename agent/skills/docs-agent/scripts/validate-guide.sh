@@ -10,7 +10,8 @@ _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 source "$_AGENT_HOME/scripts/lib/docsconfig.sh"
 docsconfig_bootstrap_validate
 
-DOC_ROOT="$(docsconfig_resolve_doc_root)"
+doc_abs="$(docsconfig_doc_abs)"
+repo_abs="$(docsconfig_repo_abs)"
 
 ROOT=""
 while [[ $# -gt 0 ]]; do
@@ -21,7 +22,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ -z "$ROOT" ]]; then
-    ROOT="$REPO_ROOT"
+    ROOT="$repo_abs"
 else
     ROOT="$(cd "$ROOT" && pwd)"
 fi
@@ -33,9 +34,9 @@ log_error() { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 log_warn()  { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
 log_ok()    { echo "[OK]    $1"; }
 
-# --- 1. INDEX-GUIDE 落盘检测（REPO_ROOT 优先，再 DOC_ROOT）---
+# --- 1. INDEX-GUIDE 落盘检测（repo_abs 优先，再 doc_abs）---
 
-DOC_SEG="${DOC_ROOT#"$REPO_ROOT"/}"
+DOC_SEG="${doc_abs#"$repo_abs"/}"
 INDEX_PATH=""
 for candidate in \
     "INDEX-GUIDE.md" \

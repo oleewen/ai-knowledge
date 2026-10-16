@@ -23,8 +23,7 @@ git -C "$PROJECT_DIR" init -q
 
 DOCS_CONFIG_PATH="$PROJECT_DIR/.docsconfig"
 assert_file_exists "$DOCS_CONFIG_PATH"
-assert_contains "DOC_ROOT=" "$DOCS_CONFIG_PATH"
-assert_contains "REPO_ROOT=" "$DOCS_CONFIG_PATH"
+assert_contains "REPO_DIR=" "$DOCS_CONFIG_PATH"
 assert_contains "DOC_DIR=" "$DOCS_CONFIG_PATH"
 assert_contains "KNOWLEDGE_TYPE=application" "$DOCS_CONFIG_PATH"
 assert_contains "AGENT_ROOT=" "$DOCS_CONFIG_PATH"

@@ -33,11 +33,12 @@ resolve_okf_paths() {
 
   docsconfig_validate_knowledge_type "$KNOWLEDGE_TYPE" || exit 1
 
+  doc_abs="$(docsconfig_doc_abs)"
   OKF_BUNDLE="$DOC_DIR"
   OKF_VIZ_OUT="${DOC_DIR%/}/viz.html"
   OKF_VIZ_NAME="${KNOWLEDGE_TYPE} OKF"
-  # 脚本树：DOC_ROOT/AGENT_DIR（即 {DOC_DIR}/{AGENT_DIR}，通常为软链 .agents）
-  OKF_AGENT_TREE="${DOC_ROOT%/}/${AGENT_DIR}"
+  # 脚本树：doc_abs/AGENT_DIR（即 {DOC_DIR}/{AGENT_DIR}，通常为软链 .agents）
+  OKF_AGENT_TREE="${doc_abs%/}/${AGENT_DIR}"
   OKF_SCRIPTS="${OKF_AGENT_TREE}/skills/docs-okf/scripts"
 }
 

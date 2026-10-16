@@ -1,12 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# SOLUTION 结构校验（七章模板；不承担写前门禁）。
+# SOLUTION 切分叙事校验（六段；不承担写前门禁）。
 # 用法：validate-solution.sh [--file <path>]
-# 文档根：docsconfig_resolve_doc_root（.docsconfig）；先 source docsconfig.sh
-#
-# 要点：文首 frontmatter、`id`、`## 1`–`## 7`、小节标题、空节标注、编号、正文技术词筛查；
-#       不校验会话 spec、CONFIRMED、HTML gate 或写前 hook。
 
 TARGET_FILE=""
 ERRORS=0
@@ -22,6 +18,8 @@ done
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck disable=SC1091
+source "$_AGENT_HOME/scripts/lib/bash.sh"
+# shellcheck disable=SC1091
 source "$_AGENT_HOME/scripts/lib/docsconfig.sh"
 docsconfig_bootstrap_validate
 
@@ -30,278 +28,93 @@ if [[ "${KNOWLEDGE_TYPE:-}" != "solution" && "${KNOWLEDGE_TYPE:-}" != "sln" ]]; 
   exit 1
 fi
 
-DOC_ROOT="$(docsconfig_resolve_doc_root)"
-cd "$REPO_ROOT" || exit 1
+doc_abs="$(docsconfig_doc_abs)"
+repo_abs="$(docsconfig_repo_abs)"
+cd "$repo_abs" || exit 1
 
-SOLUTIONS_DIR="${DOC_ROOT}/solutions"
-_TEMPLATE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-TEMPLATE="${_TEMPLATE_DIR}/assets/solution-template.md"
+SOLUTIONS_DIR="${doc_abs}/solutions"
+TEMPLATE="${SCRIPT_DIR}/../assets/solution-template.md"
 
 info()    { echo "[INFO]  $1"; }
 warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
 error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
 success() { echo "[OK]    $1"; }
 
-echo "=== 解决方案文档结构校验 ==="
-echo "DOC_ROOT: ${DOC_ROOT}"
-echo ""
+echo "=== 解决方案切分叙事校验 ==="
+echo "doc_abs: ${doc_abs}"
 
-# 0. 模板文件
 if [[ -f "${TEMPLATE}" ]]; then
   success "solution-template.md 存在"
 else
   warn "solution-template.md 不存在: ${TEMPLATE}"
 fi
 
-# 收集要校验的文件
 FILES=()
 if [[ -n "${TARGET_FILE}" ]]; then
   if [[ -f "${TARGET_FILE}" ]]; then
     FILES=("${TARGET_FILE}")
   else
     error "指定文件不存在: ${TARGET_FILE}"
-    echo ""
-    echo "=== 校验结果 ==="
     echo "错误: ${ERRORS}  警告: ${WARNINGS}"
     exit 1
   fi
-else
-  # 1. 文档目录
-  if [[ -d "${SOLUTIONS_DIR}" ]]; then
-    FILE_COUNT=$(find "${SOLUTIONS_DIR}" -name "SOLUTION-*.md" 2>/dev/null | wc -l | tr -d ' ')
-    success "solutions/ 目录存在 (${FILE_COUNT} 个解决方案文档)"
-  else
-    warn "solutions/ 目录不存在: ${SOLUTIONS_DIR}"
-    echo ""
-    echo "=== 校验结果 ==="
-    echo "错误: ${ERRORS}  警告: ${WARNINGS}"
-    exit 0
-  fi
-
+elif [[ -d "${SOLUTIONS_DIR}" ]]; then
   while IFS= read -r -d '' f; do
     FILES+=("$f")
   done < <(find "${SOLUTIONS_DIR}" -name "SOLUTION-*.md" -print0 2>/dev/null)
-fi
-
-if [[ ${#FILES[@]} -eq 0 ]]; then
-  info "未找到解决方案文档"
-  echo ""
-  echo "=== 校验结果 ==="
+else
+  warn "solutions/ 目录不存在: ${SOLUTIONS_DIR}"
   echo "错误: ${ERRORS}  警告: ${WARNINGS}"
   exit 0
 fi
 
-# 校验每个文档
+REQUIRED=(
+  "## 这次改了什么"
+  "## 为什么这样切"
+  "## 范围内外"
+  "## 流程怎么串"
+  "## 主数据主权"
+  "## 技术例外"
+)
+
+declare -a IDS=()
+declare -a PARENTS=()
+
 for file in "${FILES[@]}"; do
-  BASENAME=$(basename "${file}")
-  echo "--- 校验: ${BASENAME} ---"
-
-  # 2. 文档元数据（文首 frontmatter）
-  FIRST_LINE=$(head -1 "${file}" 2>/dev/null || true)
-  if [[ "${FIRST_LINE}" != "---" ]]; then
-    error "${BASENAME}: 缺少文首 YAML frontmatter（首行应为 ---）"
-  else
-    FRONTMATTER_END_LINE=$(awk 'NR>1 && $0=="---"{print NR; exit}' "${file}" 2>/dev/null || true)
-    if [[ -z "${FRONTMATTER_END_LINE}" ]]; then
-      error "${BASENAME}: YAML frontmatter 未闭合（缺少第二个 ---）"
-    else
-      FRONTMATTER_CONTENT=$(sed -n "2,$((FRONTMATTER_END_LINE - 1))p" "${file}" 2>/dev/null || true)
-      success "${BASENAME}: YAML frontmatter 存在"
-      for field in "id:" "title:" "version:" "status:" "created:" "updated:" "author:" "parent:" "dependencies:" "tags:"; do
-        if echo "${FRONTMATTER_CONTENT}" | grep -qE "^${field}"; then
-          success "${BASENAME}: ${field} 字段存在"
-        else
-          warn "${BASENAME}: 缺少 ${field} 字段"
-        fi
-      done
-
-      ID_LINE=$(echo "${FRONTMATTER_CONTENT}" | grep -E '^id:' 2>/dev/null | head -1 || true)
-      if [[ -n "${ID_LINE}" ]]; then
-        if echo "${ID_LINE}" | grep -qE 'SOLUTION-'; then
-          success "${BASENAME}: id 含 SOLUTION- 前缀"
-        else
-          warn "${BASENAME}: id 建议符合 SOLUTION-{IDEA-ID}，实际: ${ID_LINE}"
-        fi
-      fi
-
-      STATUS_LINE=$(echo "${FRONTMATTER_CONTENT}" | grep -E '^status:' 2>/dev/null | head -1 || true)
-      if echo "${STATUS_LINE}" | grep -q "draft\|review\|approved"; then
-        success "${BASENAME}: status 值有效"
-      else
-        warn "${BASENAME}: status 值异常: ${STATUS_LINE}"
-      fi
-    fi
+  BASENAME="$(basename "${file}")"
+  if ! grep -q '^parent:' "${file}"; then
+    error "${BASENAME}: 缺少 frontmatter parent"
   fi
-
-  # 3. 七章结构检查（与当前 solution-template.md 一致）
-  REQUIRED_SECTIONS=(
-    "## 1. 背景与目标"
-    "## 2. 范围与约束"
-    "## 3. 影响与冲突"
-    "## 4. 思路与方案"
-    "## 5. 风险与待定"
-    "## 6. 交付计划"
-    "## 7. 附录"
-  )
-
-  SECTION_COUNT=0
-  for section in "${REQUIRED_SECTIONS[@]}"; do
-    if grep -qF "${section}" "${file}"; then
-      SECTION_COUNT=$((SECTION_COUNT + 1))
-    else
-      warn "${BASENAME}: 缺少章节 '${section}'"
+  for section in "${REQUIRED[@]}"; do
+    if ! grep -qF "${section}" "${file}"; then
+      error "${BASENAME}: 缺少 ${section}"
     fi
   done
-  info "${BASENAME}: ${SECTION_COUNT}/7 个必需章节"
-
-  # 3b. 模板小节标题（与 assets/solution-template.md 对齐）
-  REQUIRED_SUBHEADINGS=(
-    "### 1.1 业务现状"
-    "### 1.2 存在问题"
-    "### 1.3 业务目标"
-    "### 2.1 核心场景"
-    "### 2.2 涉及角色"
-    "### 2.3 范围边界"
-    "#### 范围内（In Scope）"
-    "#### 范围外（Out of Scope）"
-    "#### 成功标准"
-    "### 3.1 影响面"
-    "### 3.2 影响业务能力"
-    "### 3.3 影响传播路径"
-    "### 3.4 业务冲突"
-    "### 4.1 解决思路"
-    "### 4.2 关键约束"
-    "### 5.1 风险评估"
-    "### 5.2 问题决策"
-    "### 6.1 关键里程碑"
-    "### 6.2 切换方案"
-    "### 7.1 术语表"
-    "### 7.2 参考文档"
-    "### 7.3 内部参考（仅供研发接力）"
-    "### 7.4 质量自查表 (Self-Check)"
-  )
-  SUB_COUNT=0
-  SUB_TOTAL=${#REQUIRED_SUBHEADINGS[@]}
-  for h in "${REQUIRED_SUBHEADINGS[@]}"; do
-    if grep -qF "${h}" "${file}"; then
-      SUB_COUNT=$((SUB_COUNT + 1))
-    else
-      warn "${BASENAME}: 缺少小节标题 '${h}'"
-    fi
-  done
-  info "${BASENAME}: 模板小节 ${SUB_COUNT}/${SUB_TOTAL} 个标题命中"
-
-  if grep -qF '### 6.1 关键里程碑' "${file}" 2>/dev/null; then
-    if grep -qE 'M[0-9]+（[^）]+）|M[0-9]+\([^)]+\)' "${file}" 2>/dev/null; then
-      success "${BASENAME}: 发现里程碑形如 M{n}（短名）"
-    else
-      warn "${BASENAME}: 未发现 M{n}（短名）写法（§6.1 模板要求）"
-    fi
+  if grep -qE '(^|[^A-Za-z])SYS([^A-Za-z]|$)|SYS-[A-Za-z0-9]' "${file}"; then
+    error "${BASENAME}: 正文出现 SYS"
   fi
-
-  # 4. 空章节检测（有章节标题但无实质内容，且未标注「不适用」或「待补充」）
-  EMPTY_SECTION_COUNT=0
-  TOTAL_LINES=$(wc -l < "${file}" | tr -d ' ')
-
-  SECTION_LINES=()
-  SECTION_NAMES=()
-  LINE_NUM=0
-  while IFS= read -r line; do
-    LINE_NUM=$((LINE_NUM + 1))
-    if [[ "${line}" =~ ^##\  ]]; then
-      SECTION_LINES+=("${LINE_NUM}")
-      SECTION_NAMES+=("${line}")
-    fi
-  done < "${file}"
-
-  for i in "${!SECTION_LINES[@]}"; do
-    START=${SECTION_LINES[$i]}
-    if [[ $((i + 1)) -lt ${#SECTION_LINES[@]} ]]; then
-      END=$((SECTION_LINES[$((i + 1))] - 1))
-    else
-      END=${TOTAL_LINES}
-    fi
-    SECTION_CONTENT=$(sed -n "$((START + 1)),${END}p" "${file}" 2>/dev/null || true)
-    REAL_CONTENT=$(echo "${SECTION_CONTENT}" | grep -v "^[[:space:]]*$" | grep -v "^<!--" | grep -v "^-->" || true)
-    if [[ -z "${REAL_CONTENT}" ]]; then
-      warn "${BASENAME}: 章节 '${SECTION_NAMES[$i]}' 无内容且未标注「不适用」或「待补充」"
-      EMPTY_SECTION_COUNT=$((EMPTY_SECTION_COUNT + 1))
-    fi
-  done
-
-  if [[ ${EMPTY_SECTION_COUNT} -eq 0 ]]; then
-    success "${BASENAME}: 无空章节"
-  fi
-
-  # 5. 编号体系检查
-  G_COUNT=$(grep -c 'G-[0-9]' "${file}" 2>/dev/null || true)
-  Q_COUNT=$(grep -c 'Q-[0-9]' "${file}" 2>/dev/null || true)
-  C_COUNT=$(grep -c 'C-[0-9]' "${file}" 2>/dev/null || true)
-  R_COUNT=$(grep -c 'R-[0-9]' "${file}" 2>/dev/null || true)
-
-  info "${BASENAME}: G-n=${G_COUNT} Q-n=${Q_COUNT} C-n=${C_COUNT} R-n=${R_COUNT}"
-
-  if [[ ${G_COUNT} -eq 0 ]]; then
-    warn "${BASENAME}: 未发现业务目标编号 (G-n)"
-  fi
-
-  # 6. 技术语言检测（常见技术词混入正文）
-  TECH_TERMS=("Spring Boot" "Kafka" "Redis" "TiDB" "MySQL" "Dubbo" "RPC" "MQ" "MyBatis" "Docker" "Kubernetes")
-  TECH_WARN=0
-  for term in "${TECH_TERMS[@]}"; do
-    MATCH_COUNT=$(grep -v "^<!--" "${file}" | grep -c "${term}" 2>/dev/null || true)
-    if [[ ${MATCH_COUNT} -gt 0 ]]; then
-      warn "${BASENAME}: 正文中发现技术词「${term}」(${MATCH_COUNT} 处)，请确认是否已放入 §7.3 内部参考"
-      TECH_WARN=$((TECH_WARN + 1))
-    fi
-  done
-  if [[ ${TECH_WARN} -eq 0 ]]; then
-    success "${BASENAME}: 未发现明显技术语言"
-  fi
-
-  # 7. 轻量 ADR / CONTEXT（有 ADR 引用或占位才验）
-  if grep -qE 'ADR-[0-9]+|ADR-待定' "${file}" 2>/dev/null; then
-    LAYER_ROOT="$(cd "$(dirname "${file}")/.." && pwd)"
-    CONTEXT_FILE="${LAYER_ROOT}/adr/CONTEXT.md"
-    if grep -qE 'adr/CONTEXT\.md|CONTEXT\.md' "${file}" 2>/dev/null; then
-      success "${BASENAME}: 已引用 CONTEXT.md"
-    else
-      warn "${BASENAME}: 出现 ADR 引用/占位，但未链 adr/CONTEXT.md（§5.2 表后）"
-    fi
-    if [[ -f "${CONTEXT_FILE}" ]]; then
-      success "${BASENAME}: CONTEXT.md 存在"
-      while IFS= read -r adr_id; do
-        [[ -z "${adr_id}" ]] && continue
-        if grep -qF "${adr_id}" "${CONTEXT_FILE}" 2>/dev/null; then
-          success "${BASENAME}: CONTEXT 已登记 ${adr_id}"
-        else
-          warn "${BASENAME}: CONTEXT 未登记 ${adr_id}"
-        fi
-        ADR_HITS=$(find "${LAYER_ROOT}/adr" -maxdepth 1 -name "${adr_id}-*.md" 2>/dev/null | wc -l | tr -d ' ')
-        if [[ "${ADR_HITS}" -gt 0 ]]; then
-          success "${BASENAME}: 找到 ${adr_id}-*.md"
-        else
-          warn "${BASENAME}: 未找到 ${LAYER_ROOT}/adr/${adr_id}-*.md"
-        fi
-      done < <(grep -oE 'ADR-[0-9]+' "${file}" 2>/dev/null | sort -u || true)
-    else
-      warn "${BASENAME}: 缺少 ${CONTEXT_FILE}"
-    fi
-    if grep -q 'ADR-待定' "${file}" 2>/dev/null; then
-      warn "${BASENAME}: 仍有 ADR-待定 占位，推进前须落盘"
-    fi
-  fi
-
-  echo ""
+  id_line="$(grep -E '^id:' "${file}" | head -1 || true)"
+  parent_line="$(grep -E '^parent:' "${file}" | head -1 || true)"
+  IDS+=("${id_line}")
+  PARENTS+=("${parent_line}")
+  success "${BASENAME}: 六段已检查"
 done
 
-echo "=== 校验结果 ==="
-echo "错误: ${ERRORS}  警告: ${WARNINGS}"
+# 同一 parent 不能有两个后继（空 parent 除外）
+declare -A SEEN=()
+for parent_line in "${PARENTS[@]}"; do
+  value="$(echo "${parent_line}" | sed -E 's/^parent:[[:space:]]*//; s/^"//; s/"$//')"
+  if [[ -z "${value}" || "${value}" == "null" || "${value}" == "~" ]]; then
+    continue
+  fi
+  if [[ -n "${SEEN[${value}]+x}" ]]; then
+    error "parent ${value} 已有后继，不能再有第二份"
+  fi
+  SEEN["${value}"]=1
+done
 
+echo "错误: ${ERRORS}  警告: ${WARNINGS}"
 if [[ ${ERRORS} -gt 0 ]]; then
-  echo "校验失败，请修复以上错误。"
   exit 1
-else
-  echo "校验通过。"
-  exit 0
 fi
+exit 0

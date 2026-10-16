@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 # docs-link.sh — 在源知识库登记 / 注销目标知识库（双边 knowledge-links.yaml）
-# 源仓 links：向下 child（缺省无 type）；子仓 links：一条 type:parent（1:1）
-# application 建联时 app_name：--app-name > 登记文件已有 > Git 仓库根目录名推断
-# app_label：新登记或条目中尚无 app_label 时默认等于 app_name；重复 link 且已有 app_label 则保留不覆盖
+# 源仓 links：向下 type: child；子仓 links：一条 type: parent（1:1）
+# application 建联时 name：--app-name > 登记文件已有 name > Git 仓库根目录名推断
+# label：新登记或条目中尚无 label 时默认等于 name；重复 link 且已有 label 则保留不覆盖
 # 同一 target 重复 link：合并更新同一条记录，不追加重复行
 # 用法: bash agent/skills/docs-link/scripts/docs-link.sh --link|--unlink --target <目标仓库根> [--app-name=名] [--rewrite-http] [--dry-run]
 # 须在源 Git 仓库内执行；link 需校验源、目标 .docsconfig 与 KNOWLEDGE_TYPE；
 # 目标须已有 knowledge-links.yaml（application 由 docs-install 落盘）；缺则失败。
 # unlink 支持目标失联场景（按登记 identity 注销）；注销时移除槽位软链（共用 changelogs 保留）。
-# 登记值：repository 存 Git remote URL；path 存本机路径（$HOME 下 ~/…）；doc_dir=对方 DOC_DIR。
-# type:meta（docs-install 写入）写回时保活；meta.doc_dir=目标 KNOWLEDGE_TYPE。pull/push 跳过 meta。
+# 登记值：repository 存 Git remote URL；path 存本机路径（$HOME 下 ~/…）；dir=对方 DOC_DIR。
+# type:meta（docs-install 写入）写回时保活；meta.dir=目标 KNOWLEDGE_TYPE。pull/push 跳过 meta。
 # 不再读写 knowledge-parent.yaml；跨层 HTTP 前缀替换仅当 --rewrite-http。
-# 槽位：solution-slots/solution-{NAME}、system-slots/system-{NAME}、application-slots/application-{NAME} 为指向下级 DOC_ROOT 的软链。
+# 槽位：solution-slots/solution-{NAME}、system-slots/system-{NAME}、application-slots/application-{NAME} 为指向下级文档目录的软链。
 set -euo pipefail
 
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -35,7 +35,7 @@ docs_link_source_slot_helpers() {
       return 0
     fi
   done
-  error "未找到 slot-softlink.sh（请安装 Agent 或在中央库执行）"
+  error "未找到 slot-softlink.sh（请安装 Agent 或在元库执行）"
 }
 docs_link_source_slot_helpers
 
@@ -150,7 +150,7 @@ knowledge_link_identity_from_stored_entry() {
 }
 
 # -----------------------------------------------------------------------------
-# 应用槽位 application-slots/application-${NAME} = 指向下级 DOC_ROOT 的软链
+# 应用槽位 application-slots/application-${NAME} = 指向下级 文档目录 的软链
 # -----------------------------------------------------------------------------
 
 # 校验并规范化 app_name（小写）；非法则报错
@@ -176,8 +176,8 @@ knowledge_link_guess_app_name() {
   knowledge_link_validate_app_name "$base"
 }
 
-# 在源 DOC_ROOT/application-slots 下确保 application-${app} 软链 + 共用 changelogs
-# target_doc_root：下级 DOC_ROOT 绝对路径（可尚不存在 → 悬空软链）
+# 在源 文档目录/application-slots 下确保 application-${app} 软链 + 共用 changelogs
+# target_doc_root：下级 文档目录 绝对路径（可尚不存在 → 悬空软链）
 knowledge_link_ensure_kind_slot() {
   local doc_root="${1:?}" kind="${2:?}" name="${3:?}" target_doc_root="${4:?}"
   local dr slots dest shared
@@ -211,7 +211,7 @@ knowledge_link_ensure_solution_slot() {
 }
 
 # -----------------------------------------------------------------------------
-# 系统槽位 system-slots/system-${NAME} = 指向下级 DOC_ROOT 的软链
+# 系统槽位 system-slots/system-${NAME} = 指向下级 文档目录 的软链
 # -----------------------------------------------------------------------------
 
 knowledge_link_validate_sys_name() {
@@ -252,12 +252,11 @@ knowledge_link_app_name_from_register_key() {
   printf '%s\n' "$base"
 }
 
-# 解析工程根（与 docs-install 写入 .docsconfig 的 REPO_ROOT 推导一致，供 .docs-init 备份路径）
+# 解析工程根（与 docs-install 写入 .docsconfig 的仓库路径推导一致，供 .docs-init 备份路径）
 knowledge_link_repo_root_for_backup() {
-  local doc_root="${1:?}" dr rr
-  dr="$(_knowledge_link_doc_root_abs_ns "$doc_root")"
-  rr="$(docsconfig_repo_root_from_doc_root "$dr")"
-  [[ -n "$rr" ]] || rr="$(docsconfig_repo_root_from_doc_root "$dr")"
+  local doc_abs="${1:?}" dr rr
+  dr="$(_knowledge_link_doc_root_abs_ns "$doc_abs")"
+  rr="$(docsconfig_repo_from_doc "$dr")"
   [[ -n "$rr" ]] || return 1
   printf '%s\n' "$(strip_trailing_slash "$rr")"
 }
@@ -327,7 +326,7 @@ docs_link_usage() {
 
   --link / --unlink 二选一，不得同时出现。
 
-  须在「源」知识库 Git 仓库内执行（git rev-parse 取根）。登记文件：源 .docsconfig 的 DOC_ROOT/knowledge-links.yaml
+  须在「源」知识库 Git 仓库内执行（git rev-parse 取根）。登记文件：源文档目录下的 knowledge-links.yaml
 
   允许边：company→solution、solution→system、system→application（源/目标 .docsconfig 须含合法 KNOWLEDGE_TYPE）。
   目标须已有 knowledge-links.yaml（缺则失败；application 由 docs-install 落盘空清单）。
@@ -338,9 +337,9 @@ docs_link_usage() {
   --target        目标知识库仓库根（或已登记的 remote URL）；兼容旧参数 --path（已弃用）。
   --app-name      仅 system→application 建联有效。
 
-  源仓 links：向下 child（不写 type；缺省=child）；doc_dir=目标 DOC_DIR；
-    company→solution 用 solution_*，solution→system 用 sys_*，system→application 用 app_*。
-  子仓 links：恰好一条 type:parent（repository/path/doc_dir + company_* / solution_* / sys_*）；HTTP ref 固定 main。
+  源仓 links：向下 type: child；dir=目标 DOC_DIR；name / label（label 缺省等于 name）。
+  子仓 links：恰好一条 type: parent（repository/path/dir + name/label）；HTTP ref 固定 main。
+  type: meta 只写 repository/path/dir（dir=本库 KNOWLEDGE_TYPE）。
   槽位：solution-slots/solution-{NAME}、system-slots/system-{NAME}、application-slots/application-{NAME}。
   不再读写 knowledge-parent.yaml。unlink 删除子仓 parent 条与槽位软链，不改正文 HTTP，共用日志保留。
 
@@ -417,9 +416,8 @@ SRC_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || error "请在 Git 仓
 SRC_CFG="$SRC_ROOT/.docsconfig"
 [[ -f "$SRC_CFG" ]] || error "源仓库缺少 .docsconfig: $SRC_CFG"
 
-_sdoc='' _srepo='' _sdd='' _sar='' _skt=''
-docsconfig_read_into "$SRC_CFG" _sdoc _srepo _sdd _sar _skt || error "无法解析源 .docsconfig"
-[[ -n "$_sdoc" ]] || error "源 .docsconfig 缺少 DOC_ROOT"
+_srepo='' _sdoc='' _sdd='' _sar='' _skt=''
+docsconfig_abs_for_config "$SRC_CFG" _srepo _sdoc _sdd _sar _skt || error "无法解析源 .docsconfig"
 [[ -n "$_skt" ]] || error "源 .docsconfig 缺少 KNOWLEDGE_TYPE"
 docsconfig_validate_knowledge_type "$_skt" || exit 1
 
@@ -465,13 +463,12 @@ if [[ "$CMD" == 'link' ]]; then
   TGT_CFG="$TGT_ROOT/.docsconfig"
   [[ -f "$TGT_CFG" ]] || error "目标仓库缺少 .docsconfig: $TGT_CFG"
 
-  _tdoc='' _trepo='' _tdd='' _tar='' _tkt=''
-  docsconfig_read_into "$TGT_CFG" _tdoc _trepo _tdd _tar _tkt || error "无法解析目标 .docsconfig"
+  _trepo='' _tdoc='' _tdd='' _tar='' _tkt=''
+  docsconfig_abs_for_config "$TGT_CFG" _trepo _tdoc _tdd _tar _tkt || error "无法解析目标 .docsconfig"
   [[ -n "$_tkt" ]] || error "目标 .docsconfig 缺少 KNOWLEDGE_TYPE"
   docsconfig_validate_knowledge_type "$_tkt" || exit 1
   [[ "$_tkt" == "$expect_target" ]] || error "目标须为 ${expect_target} 知识库（KNOWLEDGE_TYPE=${_tkt}）"
   [[ -n "$_tdd" ]] || error "目标 .docsconfig 缺少 DOC_DIR"
-  [[ -n "$_tdoc" ]] || error "目标 .docsconfig 缺少 DOC_ROOT"
   TGT_LINKS="$(docs_link_abs_under_repo "$TGT_ROOT" "$_tdoc")/knowledge-links.yaml"
   [[ -f "$TGT_LINKS" ]] || error "目标缺少 knowledge-links.yaml（请先 docs-install）: $TGT_LINKS"
   REGISTER_KEY="$(knowledge_link_register_value_from_dir "$TGT_ROOT")"
@@ -488,9 +485,11 @@ else
   REGISTER_KEY="$(knowledge_link_identity_from_raw_target "$TARGET_RAW")" || error "目标路径非法: $TARGET_RAW"
   [[ -z "$CLI_APP_NAME" ]] || warn "--app-name 仅在 --link 时有效，已忽略"
   if [[ -d "$TARGET_KEY" ]]; then
-    _tdoc='' _trepo='' _tdd='' _tar='' _tkt=''
-    if [[ -f "$TARGET_KEY/.docsconfig" ]] && docsconfig_read_into "$TARGET_KEY/.docsconfig" _tdoc _trepo _tdd _tar _tkt; then
-      [[ -n "$_tdoc" ]] && TGT_LINKS="$(docs_link_abs_under_repo "$TARGET_KEY" "$_tdoc")/knowledge-links.yaml"
+    _trepo='' _tdoc='' _tdd='' _tar='' _tkt=''
+    if [[ -f "$TARGET_KEY/.docsconfig" ]]; then
+      docsconfig_abs_for_config "$TARGET_KEY/.docsconfig" _trepo _tdoc _tdd _tar _tkt \
+        || error "无法解析目标 .docsconfig: $TARGET_KEY/.docsconfig"
+      TGT_LINKS="$(docs_link_abs_under_repo "$TARGET_KEY" "$_tdoc")/knowledge-links.yaml"
     fi
   fi
 fi
@@ -519,8 +518,8 @@ if [[ "$CMD" == 'link' && "$expect_target" == 'application' ]]; then
   else
     TARGET_APP_NAME="$(knowledge_link_guess_app_name "$TGT_ROOT")" || exit 1
   fi
-  TARGET_SLOT_DOC_ROOT="$(docs_link_abs_under_repo "$TGT_ROOT" "$_tdoc")"
-  knowledge_link_ensure_application_slot "$_sdoc" "$TARGET_APP_NAME" "$TARGET_SLOT_DOC_ROOT"
+  TARGET_SLOT_DOC="$(docs_link_abs_under_repo "$TGT_ROOT" "$_tdoc")"
+  knowledge_link_ensure_application_slot "$_sdoc" "$TARGET_APP_NAME" "$TARGET_SLOT_DOC"
   if [[ "$have" -eq 1 && "$matched_idx" -ge 0 && -n "${app_labels[matched_idx]:-}" ]]; then
     TARGET_APP_LABEL="${app_labels[matched_idx]}"
   else
@@ -532,8 +531,8 @@ elif [[ "$CMD" == 'link' && "$expect_target" == 'system' ]]; then
   else
     TARGET_SYS_NAME="$(knowledge_link_guess_sys_name "$TGT_ROOT")" || exit 1
   fi
-  TARGET_SLOT_DOC_ROOT="$(docs_link_abs_under_repo "$TGT_ROOT" "$_tdoc")"
-  knowledge_link_ensure_system_slot "$_sdoc" "$TARGET_SYS_NAME" "$TARGET_SLOT_DOC_ROOT"
+  TARGET_SLOT_DOC="$(docs_link_abs_under_repo "$TGT_ROOT" "$_tdoc")"
+  knowledge_link_ensure_system_slot "$_sdoc" "$TARGET_SYS_NAME" "$TARGET_SLOT_DOC"
   if [[ "$have" -eq 1 && "$matched_idx" -ge 0 && -n "${app_labels[matched_idx]:-}" ]]; then
     TARGET_SYS_LABEL="${app_labels[matched_idx]}"
   else
@@ -545,8 +544,8 @@ elif [[ "$CMD" == 'link' && "$expect_target" == 'solution' ]]; then
   else
     TARGET_SOL_NAME="$(knowledge_link_guess_sys_name "$TGT_ROOT")" || exit 1
   fi
-  TARGET_SLOT_DOC_ROOT="$(docs_link_abs_under_repo "$TGT_ROOT" "$_tdoc")"
-  knowledge_link_ensure_solution_slot "$_sdoc" "$TARGET_SOL_NAME" "$TARGET_SLOT_DOC_ROOT"
+  TARGET_SLOT_DOC="$(docs_link_abs_under_repo "$TGT_ROOT" "$_tdoc")"
+  knowledge_link_ensure_solution_slot "$_sdoc" "$TARGET_SOL_NAME" "$TARGET_SLOT_DOC"
   if [[ "$have" -eq 1 && "$matched_idx" -ge 0 && -n "${app_labels[matched_idx]:-}" ]]; then
     TARGET_SOL_LABEL="${app_labels[matched_idx]}"
   else
@@ -613,11 +612,16 @@ docs_link_upsert_target_parent() {
 docs_link_remove_target_parent() {
   local -a trepos=() tpaths=() tdirs=() tapps=() tlabels=() ttypes=()
   local -a nrepos=() npaths=() ndirs=() napps=() nlabels=() ntypes=()
-  local i
+  local i removed=0 source_key=''
+  source_key="$(knowledge_link_git_remote_url_prefer_origin "$SRC_ROOT" || true)"
   [[ -n "${TGT_LINKS:-}" && -f "$TGT_LINKS" ]] || return 0
   knowledge_links_load_into_arrays "$TGT_LINKS" tpaths trepos tdirs tapps tlabels ttypes
   for i in "${!tpaths[@]}"; do
-    [[ "${ttypes[i]:-child}" == "parent" ]] && continue
+    [[ "${ttypes[i]:-child}" == "parent" ]] || continue
+    if [[ "$(knowledge_link_identity_from_stored_entry "${trepos[i]:-}" "${tpaths[i]}")" == "$source_key" ]]; then
+      removed=$((removed + 1))
+      continue
+    fi
     nrepos+=("${trepos[i]:-}")
     npaths+=("${tpaths[i]}")
     ndirs+=("${tdirs[i]:-}")
@@ -625,6 +629,7 @@ docs_link_remove_target_parent() {
     nlabels+=("${tlabels[i]:-}")
     ntypes+=("${ttypes[i]:-child}")
   done
+  [[ "$removed" -gt 0 ]] || return 0
   knowledge_links_write_entries "$TGT_LINKS" nrepos npaths ndirs napps nlabels ntypes \
     "$TGT_CHILD_KIND" "$TGT_PARENT_KIND"
 }

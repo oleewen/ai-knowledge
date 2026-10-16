@@ -61,4 +61,3 @@ C 确认当前单元 / M 修改参数 / S 跳过当前单元 / F 补齐剩余目
 
 - 脚本 SSOT：`agent/skills/docs-link/scripts/docs-link.sh`（及 `link-config.sh`）；下级仓不再拷贝；旧残留不自动删
 - 单目标单元；不静默批量
-- unlink 不改正文 HTTP；共用 `*-slots/changelogs/` 保留

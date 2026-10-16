@@ -28,5 +28,5 @@ EOF
 
 DOCS_CONFIG_PATH="$PROJECT_DIR/.docsconfig"
 assert_file_exists "$DOCS_CONFIG_PATH"
-assert_contains "DOC_ROOT=" "$DOCS_CONFIG_PATH"
+assert_contains "REPO_DIR=" "$DOCS_CONFIG_PATH"
 pass "two-token --target \"$DOCS_DIR\" 冒烟通过"

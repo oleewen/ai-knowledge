@@ -3,32 +3,35 @@
 
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-REPO = SCRIPT_DIR.parents[1]
+sys.path.insert(0, str(SCRIPT_DIR))
+import okf_lib
+
+REPO = okf_lib.find_repo_root(Path(__file__).resolve())
 BUNDLE = REPO / "system"
 TS = "2026-06-21T00:00:00+08:00"
 
 ENTITIES: list[tuple[str, str]] = [
     (
-        "knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md",
+        "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BSD-EXAMPLE-L3.md",
         """---
 type: Business Subdomain
-title: 示例业务子域
-description: 仅用于演示业务视角数据结构（示例）。
+title: 示例三级业务子域
+description: BSD-L3；parent→解决方案 BSD-L2。
 tags: [business, BSD]
 timestamp: "%s"
-id: BSD-EXAMPLE
+id: BSD-EXAMPLE-L3
 perspective: business
 hierarchy: BSD
 layer_scope: system
 ---
 ## 关系
 
-- parent: BD-EXAMPLE
-- bounded_contexts:
-  - [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md)
+- parent: BSD-EXAMPLE-L2
+- implemented_by: [BC-EXAMPLE](BC-EXAMPLE/BC-EXAMPLE.md)
 
 ## 跨视角
 
@@ -36,19 +39,20 @@ layer_scope: system
 
 ## 详细说明
 
-- (none)
+- level: 3
+- BSD-L3；parent→解决方案 BSD-L2。
 
 ## 依据与证据
 
-示例数据
+[../chapters/business-capability-map.md](../chapters/business-capability-map.md#三级子域)（示例）
 """,
     ),
     (
-        "knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md",
+        "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md",
         """---
 type: Bounded Context
 title: 示例限界上下文
-description: null
+description: 限界上下文。
 tags: [business, BC]
 timestamp: "%s"
 id: BC-EXAMPLE
@@ -58,29 +62,29 @@ layer_scope: system
 ---
 ## 关系
 
-- implements_to: [BSD-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE.md)
-- implemented_by:
-  - [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
+- implements_to: [BSD-EXAMPLE-L3](../BSD-EXAMPLE-L3.md)
+- implemented_by: [AGG-EXAMPLE](AGG-EXAMPLE/AGG-EXAMPLE.md)
+- supported_by: [APP-EXAMPLE](../../../application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE.md)
 
 ## 跨视角
 
-- (none)
+- mapped_by: [PM-EXAMPLE](../../../product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE.md)
 
 ## 详细说明
 
-- (none)
+- 限界上下文。
 
 ## 依据与证据
 
-示例数据
+[../../chapters/business-capability-map.md](../../chapters/business-capability-map.md#限界上下文)（示例）
 """,
     ),
     (
-        "knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md",
+        "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md",
         """---
 type: Aggregate
 title: 示例聚合
-description: null
+description: 聚合根。
 tags: [business, AGG]
 timestamp: "%s"
 id: AGG-EXAMPLE
@@ -90,29 +94,30 @@ layer_scope: system
 ---
 ## 关系
 
-- implements_to: [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md)
-- implemented_by:
-  - [AB-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AB-EXAMPLE.md)
+- implements_to: [BC-EXAMPLE](../BC-EXAMPLE.md)
+- implemented_by: [AB-EXAMPLE](AB-EXAMPLE.md)
 
 ## 跨视角
 
-- (none)
+- mapped_by:
+  - [MS-EXAMPLE](../../../../application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md)
+  - [ENT-EXAMPLE](../../../../data/MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE.md)
 
 ## 详细说明
 
-- (none)
+- 聚合根。
 
 ## 依据与证据
 
-示例数据
+[../../../chapters/business-capability-map.md](../../../chapters/business-capability-map.md#聚合)（示例）
 """,
     ),
     (
-        "knowledge/business/BSD-EXAMPLE/AB-EXAMPLE.md",
+        "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md",
         """---
 type: Ability
-title: 示例业务能力
-description: null
+title: 示例能力
+description: 领域能力。
 tags: [business, AB]
 timestamp: "%s"
 id: AB-EXAMPLE
@@ -122,27 +127,28 @@ layer_scope: system
 ---
 ## 关系
 
-- implements_to: [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
+- implements_to: [AGG-EXAMPLE](AGG-EXAMPLE.md)
 
 ## 跨视角
 
-- (none)
+- mapped_by: [UC-EXAMPLE](../../../../product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md)
 
 ## 详细说明
 
-- (none)
+- 领域能力。
 
 ## 依据与证据
 
-示例数据
+[../../../chapters/business-capability-map.md](../../../chapters/business-capability-map.md#领域能力)（示例）
 """,
     ),
+
     (
-        "knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md",
+        "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE.md",
         """---
 type: Product Module
 title: 示例产品模块
-description: null
+description: 产品模块。
 tags: [product, PM]
 timestamp: "%s"
 id: PM-EXAMPLE
@@ -152,28 +158,27 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: PD-EXAMPLE
-- depends_to: []
+- implements_to: PD-EXAMPLE
 
 ## 跨视角
 
-- (none)
+- maps_to: [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)
 
 ## 详细说明
 
-- 上游产品 SSOT：公司层 `PD-EXAMPLE`（有 parent 则 HTTP，否则纯 ID；本层不落 PD 文件）
+- 产品模块。
 
 ## 依据与证据
 
-示例数据
+[../../chapters/product-architecture.md](../../chapters/product-architecture.md#产品模块)（示例）
 """,
     ),
     (
-        "knowledge/product/PM-EXAMPLE/FT-EXAMPLE/FT-EXAMPLE.md",
+        "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FT-EXAMPLE.md",
         """---
 type: Feature
 title: 示例功能
-description: 仅用于演示产品视角数据结构（示例）。
+description: 功能点。
 tags: [product, FT]
 timestamp: "%s"
 id: FT-EXAMPLE
@@ -183,30 +188,91 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: [PM-EXAMPLE](/knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md)
-- children:
-  - [FR-EXAMPLE](/knowledge/product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/FR-EXAMPLE.md)
+- implements_to: [PM-EXAMPLE](../PM-EXAMPLE.md)
+- implemented_by: [FR-EXAMPLE](FR-EXAMPLE/FR-EXAMPLE.md)
 
 ## 跨视角
 
-- supported_by: [API-EXAMPLE](/knowledge/application/MS-EXAMPLE/API-EXAMPLE.md)
-- realizes_use_case_ids: [UC-EXAMPLE](/knowledge/product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md)
+- (none)
 
 ## 详细说明
 
-- acceptance_criteria: 示例验收标准A; 示例验收标准B
+- 功能点。
 
 ## 依据与证据
 
-示例数据
+[../../../chapters/product-feature.md](../../../chapters/product-feature.md#功能点)（示例）
 """,
     ),
     (
-        "knowledge/product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md",
+        "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/FR-EXAMPLE.md",
+        """---
+type: Functional Requirement
+title: 示例功能需求
+description: 功能需求。
+tags: [product, FR]
+timestamp: "%s"
+id: FR-EXAMPLE
+perspective: product
+hierarchy: FR
+layer_scope: system
+---
+## 关系
+
+- implements_to: [FT-EXAMPLE](../FT-EXAMPLE.md)
+- implemented_by:
+  - [UC-EXAMPLE](UC-EXAMPLE.md)
+  - [BR-EXAMPLE](BR-EXAMPLE.md)
+
+## 跨视角
+
+- (none)
+
+## 详细说明
+
+- 功能需求。
+
+## 依据与证据
+
+[../../../../chapters/product-feature.md](../../../../chapters/product-feature.md#功能需求)（示例）
+""",
+    ),
+    (
+        "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/BR-EXAMPLE.md",
+        """---
+type: Business Rule
+title: 示例规则
+description: 业务规则。
+tags: [product, BR]
+timestamp: "%s"
+id: BR-EXAMPLE
+perspective: product
+hierarchy: BR
+layer_scope: system
+---
+## 关系
+
+- implements_to: [FR-EXAMPLE](FR-EXAMPLE.md)
+
+## 跨视角
+
+- (none)
+
+## 详细说明
+
+- 业务规则。
+
+## 依据与证据
+
+[../../../../chapters/product-user-journeys.md](../../../../chapters/product-user-journeys.md#业务规则清单)（示例）
+""",
+    ),
+    (
+        "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md",
         """---
 type: Use Case
 title: 示例用例
-description: 仅用于演示产品视角数据结构（示例）。
+description: 用例。
 tags: [product, UC]
 timestamp: "%s"
 id: UC-EXAMPLE
@@ -216,64 +282,91 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: [FR-EXAMPLE](/knowledge/product/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/FR-EXAMPLE.md)
+- implements_to: [FR-EXAMPLE](FR-EXAMPLE.md)
 
 ## 跨视角
 
-- maps_to: [API-EXAMPLE](/knowledge/application/MS-EXAMPLE/API-EXAMPLE.md)
+- maps_to: [AB-EXAMPLE](../../../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md)
 
 ## 详细说明
 
-### UC-001
-
-- (none)
+- 用例。
 
 ## 依据与证据
 
-示例数据
+[../../../../chapters/product-user-journeys.md](../../../../chapters/product-user-journeys.md#场景用例)（示例）
 """,
     ),
     (
-        "knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md",
+        "knowledge/application/SYS-EXAMPLE/SYS-EXAMPLE.md",
+        """---
+type: System
+title: 示例系统
+description: 系统（别名应用服务）；implements_to 解决方案 SLN；maps_to PD。
+tags: [application, SYS]
+timestamp: "%s"
+id: SYS-EXAMPLE
+perspective: application
+hierarchy: SYS
+layer_scope: system
+---
+## 关系
+
+- implements_to: SLN-EXAMPLE
+- implemented_by: [APP-EXAMPLE](APP-EXAMPLE/APP-EXAMPLE.md)
+
+## 跨视角
+
+- maps_to: PD-EXAMPLE
+
+## 详细说明
+
+- 系统（别名应用服务）；implements_to 解决方案 SLN（纯 ID）；maps_to PD。解决方案层不回写这条边。
+
+## 依据与证据
+
+[../chapters/application-overview.md](../chapters/application-overview.md)（示例）
+""",
+    ),
+    (
+        "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE.md",
         """---
 type: Application
 title: 示例应用
-description: null
+description: 应用，代码仓库与部署单元。
 tags: [application, APP]
 timestamp: "%s"
 id: APP-EXAMPLE
 perspective: application
 hierarchy: APP
-startup_class: ExampleApp
-maven_module: example-module
-repo_url: "git@example.com:org/example.git"
 layer_scope: system
 ---
 ## 关系
 
-- parent: SYS-EXAMPLE
-- service_ids:
-  - [MS-EXAMPLE](/knowledge/application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md)
+- implements_to: [SYS-EXAMPLE](../SYS-EXAMPLE.md)
+- implemented_by: [MS-EXAMPLE](MS-EXAMPLE/MS-EXAMPLE.md)
+- supports_to: [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)
 
 ## 跨视角
 
-- (none)
+- uses_to:
+  - [DS-EXAMPLE](../../../data/MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE.md)
 
 ## 详细说明
 
-- (none)
+- 应用，代码仓库与部署单元。
 
 ## 依据与证据
 
-示例数据
+[../../chapters/application-architecture.md](../../chapters/application-architecture.md#应用)（示例）
 """,
     ),
     (
-        "knowledge/application/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md",
+        "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md",
         """---
 type: Microservice
 title: 示例微服务
-description: null
+description: 微服务，入口能力簇。
 tags: [application, MS]
 timestamp: "%s"
 id: MS-EXAMPLE
@@ -283,60 +376,57 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
+- implements_to: [APP-EXAMPLE](../APP-EXAMPLE.md)
 
 ## 跨视角
 
-- cross_references:
-  - [BC-EXAMPLE](/knowledge/business/BSD-EXAMPLE/BC-EXAMPLE.md)
-  - [PM-EXAMPLE](/knowledge/product/PM-EXAMPLE/PM-EXAMPLE.md)
+- maps_to: [AGG-EXAMPLE](../../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)
 
 ## 详细说明
 
-- (none)
+- 微服务，入口能力簇。
 
 ## 依据与证据
 
-示例数据
+[../../../chapters/application-architecture.md](../../../chapters/application-architecture.md#微服务)（示例）
 """,
     ),
     (
-        "knowledge/data/DS-EXAMPLE/DS-EXAMPLE.md",
+        "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE.md",
         """---
 type: Data Store
 title: 示例数据源
-description: 仅用于演示数据视角数据结构（示例）。
+description: 示例数据源。
 tags: [data, DS]
 timestamp: "%s"
 id: DS-EXAMPLE
 perspective: data
 hierarchy: DS
-config_key: example_config_key
 layer_scope: system
 ---
 ## 关系
 
-- parent: MDG-EXAMPLE
+- implements_to: MDG-EXAMPLE
 
 ## 跨视角
 
-- used_by: [APP-EXAMPLE](/knowledge/application/APP-EXAMPLE/APP-EXAMPLE.md)
+- used_by: [APP-EXAMPLE](../../application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE.md)
 
 ## 详细说明
 
-- (none)
+- 示例数据源。
 
 ## 依据与证据
 
-示例数据
+[../chapters/data-model.md](../chapters/data-model.md#数据源)（示例）
 """,
     ),
     (
-        "knowledge/data/DS-EXAMPLE/ENT-EXAMPLE.md",
+        "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE.md",
         """---
 type: Entity
 title: 示例实体
-description: null
+description: 数据实体，表或集合。
 tags: [data, ENT]
 timestamp: "%s"
 id: ENT-EXAMPLE
@@ -346,19 +436,19 @@ layer_scope: system
 ---
 ## 关系
 
-- parent: [DS-EXAMPLE](/knowledge/data/DS-EXAMPLE/DS-EXAMPLE.md)
+- implements_to: [DS-EXAMPLE](DS-EXAMPLE.md)
 
 ## 跨视角
 
-- maps_to: [AGG-EXAMPLE](/knowledge/business/BSD-EXAMPLE/AGG-EXAMPLE.md)
+- maps_to: [AGG-EXAMPLE](../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)
 
 ## 详细说明
 
-- (none)
+- 数据实体，表或集合。
 
 ## 依据与证据
 
-示例数据
+[../chapters/data-model.md](../chapters/data-model.md#数据实体)（示例）
 """,
     ),
 ]

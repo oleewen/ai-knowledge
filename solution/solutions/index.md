@@ -4,15 +4,16 @@
 
 ## 子目录
 
-* [archive](archive/README.md)
+（无）
 
 ## 目录文件
 
-（无）
+* [示例交付包切分](SOLUTION-EXAMPLE.md)
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md)
+2. `SOLUTION-*.md`
 
 ## 关联索引
 

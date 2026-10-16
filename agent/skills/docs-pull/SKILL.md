@@ -46,7 +46,7 @@ description: >
 
 ## 产出与脚本
 
-- 正式：指向下级 `DOC_ROOT` 的槽位软链；`SYNC_OK` 行含 `commit`/`source`/`action`（git 追溯）
+- 正式：指向下级 `文档目录` 的槽位软链；`SYNC_OK` 行含 `commit`/`source`/`action`（git 追溯）
 - 收敛后动作见 [light-flow-actions.md](../../references/light-flow-actions.md)（本技能有 `S`，无 `G`）
 
 ```bash

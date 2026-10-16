@@ -22,7 +22,7 @@
 
 ### 1 准备
 
-- Bash 5+；本仓或已 clone 的中央库树
+- Bash 5+；本仓或已 clone 的元库树
 - 目标父目录存在（或用户确认 `-r` 创建）
 
 ### 2 dry-run
@@ -39,7 +39,7 @@ bash agent/skills/docs-install/scripts/docs-install.sh --target <PATH> [选项] 
 
 ### 4 写后停顿
 
-1. 校核 `DOC_ROOT`、`.docsconfig`、`knowledge-links.yaml`（若新建）
+1. 校核 `文档目录`、`.docsconfig`、`knowledge-links.yaml`（若新建）
 2. 受众维 **A/B**
 3. 停下等待 `C/M/S/F`
 

@@ -71,7 +71,7 @@
 示例：
 
 ```text
-docs(sdx-solution): 补充工作流说明与易错点
+docs(sdx-analysis): 补充工作流说明与易错点
 
 - 同步 audience 与 workflow 章节
 - 明确用户确认闸门表述

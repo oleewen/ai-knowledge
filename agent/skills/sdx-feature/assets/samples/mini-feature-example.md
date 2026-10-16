@@ -7,7 +7,7 @@
 
 ## §1（节选）
 
-- **§1.2 G-n**：对齐 `SOLUTION-DEMO-01.md`——订单审核首轮分派目标由 2 工作日缩至 4 小时内。
+- **§1.2 G-n**：对齐 `ANALYSIS-DEMO-01.md`——订单审核首轮分派目标由 2 工作日缩至 4 小时内。
 - **§1.3**：**In**：待办列表、分派口径；**Out**：支付签约、物流回写。
 
 ## §2（节选）
@@ -35,10 +35,10 @@
   逐项对照勾选。
 
 ```yaml
-id: FEATURE-DEMO-01
+id: ANALYSIS-DEMO-01
 title: 订单审核提效（示意）
 version: "0.1"
 status: draft
-parent: SOLUTION-DEMO-01
+parent: ANALYSIS-DEMO-01
 tags: [sdx-feature, demo]
 ```

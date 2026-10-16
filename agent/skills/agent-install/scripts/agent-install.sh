@@ -6,10 +6,14 @@
 set -euo pipefail
 
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=../../../scripts/lib/bash.sh
+source "${SCRIPT_DIR}/../../../scripts/lib/bash.sh"
 # shellcheck source=agent-config.sh
 source "${SCRIPT_DIR}/agent-config.sh"
 # shellcheck source=../../../scripts/lib/path.sh
 source "${SCRIPT_DIR}/../../../scripts/lib/path.sh"
+# shellcheck source=../../../scripts/lib/docsconfig.sh
+source "${SCRIPT_DIR}/../../../scripts/lib/docsconfig.sh"
 # shellcheck source=../../../scripts/lib/log-io.sh
 source "${SCRIPT_DIR}/../../../scripts/lib/log-io.sh"
 
@@ -18,10 +22,11 @@ source "${SCRIPT_DIR}/../../../scripts/lib/log-io.sh"
 # =============================================================================
 
 declare -A CFG=(
-  [repo_root]="${REPO_ROOT:-}"
+  [repo_root]=""
   [target_abs]=""
   [home_abs]=""
   [store_abs]=""
+  [workspace]=""
   [scope]="${DEFAULT_AGENT_SCOPE}"
   [agents_opt]=""
   [dry_run]="0"
@@ -144,7 +149,7 @@ link_store_into_agent_root() {
     for item in "${store}"/*; do
       base="${item##*/}"
       case "$base" in
-        hooks|rules|scripts|skills) continue ;;
+        hooks|rules|scripts|skills|configs) continue ;;
       esac
       ensure_symlink "$item" "${agent_dir}/${base}"
     done
@@ -213,7 +218,7 @@ agent_install_apply_agents() {
   local ao="${CFG[agents_opt]:-}"
   [[ -n "$ao" ]] || ao="${AGENTS_OPT:-$DEFAULT_AGENTS_OPT}"
   validate_agents "$ao" \
-    || error "无效 --agents: ${ao}（仅支持 cursor、claude、codex、trae、kiro）"
+    || error "无效 --agents: ${ao}（支持 cursor、claude、codex、trae、kiro、a|all）"
   read -ra ENABLED_AGENTS <<< "$(normalize_agents "$ao")"
   (( ${#ENABLED_AGENTS[@]} > 0 )) || error "未解析到任何 Agent"
 }
@@ -324,30 +329,73 @@ agent_install_usage() {
   scripts 阶段会从本仓库复制 agent/scripts（含 docs-core.sh 聚合入口与 lib/）到 $HOME/.agents/scripts/。
   不安装 README。
   不写回工程 .docsconfig（AGENT_ROOT/AGENT_DIR 由 /docs-install 写入）。
+  实跑时把 WORK_SPACE 写入 $HOME/.agents/configs（或 .docsconfig 中 AGENT_ROOT/AGENT_DIR 对应树）。链接 IDE 时跳过 configs。
 
-选项
-  --scope=SCOPE   a=全部 | r=rules | s=skills | h=hooks | sh=scripts | k|knowledge=knowledge+references  [默认: a]
-  --target PATH   安装根父目录，其下仅为选中的 agent 创建对应目录  [默认: $HOME；仍兼容 --target=PATH]
-  --agents=LIST   cursor | codex | claude | trae | kiro | all；逗号或空格分隔多选  [默认: cursor]
-  --dry-run       仅打印将执行的操作
-  -h, --help      显示此帮助
+选项（书写序）
+  --meta PATH       元库根目录（默认：本脚本所在仓库）
+  --scope=SCOPE     a=全部 | r=rules | s=skills | h=hooks | sh=scripts | k|knowledge=knowledge+references  [默认: a]
+  --target PATH     安装根父目录，其下仅为选中的 agent 创建对应目录  [默认: $HOME；仍兼容 --target=PATH]
+  --agents=LIST     cursor | codex | claude | trae | kiro | a|all；逗号或空格分隔多选  [默认: a]
+  --workspace PATH  工作区目录。写入 configs 的 WORK_SPACE。
+                    未传时：读 cwd 上溯 .docsconfig 的 AGENT_ROOT/AGENT_DIR，再读
+                    AGENT_ROOT/AGENT_DIR/configs 内 WORK_SPACE；缺 AGENT_* 或 WORK_SPACE 则必须显式传入。
+  --dry-run         仅打印将执行的操作
+  -h, --help        显示此帮助
 
 环境变量
-  REPO_ROOT       本仓库（中央库）根目录（默认：本脚本所在仓库根）
   AGENTS_OPT      未传 --agents 时作为默认值（否则以命令行 --agents 为准）
 
 示例
-  bash agent/skills/agent-install/scripts/agent-install.sh
-  bash agent/skills/agent-install/scripts/agent-install.sh --agents=cursor,claude
+  bash agent/skills/agent-install/scripts/agent-install.sh --scope=a --target "$HOME" --agents=cursor --workspace ~/workspaces --dry-run
+  bash agent/skills/agent-install/scripts/agent-install.sh --agents=cursor,claude --workspace ~/workspaces
   bash agent/skills/agent-install/scripts/agent-install.sh --scope=sh --dry-run
   bash agent/skills/agent-install/scripts/agent-install.sh --scope=k --dry-run
-  bash agent/skills/agent-install/scripts/agent-install.sh --target ~/workspace/my-repo --agents=all
+  bash agent/skills/agent-install/scripts/agent-install.sh --target ~/workspace/my-repo --agents=all --workspace ~/workspaces
 EOF
+}
+
+# 未传 --workspace 时：.docsconfig 的 AGENT_ROOT/AGENT_DIR → configs → WORK_SPACE
+agent_install_resolve_workspace() {
+  if [[ -n "${CFG[workspace]:-}" ]]; then
+    CFG[workspace]="$(strip_trailing_slash "$(abs_path "${CFG[workspace]}")")"
+    return 0
+  fi
+
+  local cfg_path rd dd ar kt ad configs_path raw
+  cfg_path="$(docsconfig_find_path 2>/dev/null || true)"
+  if [[ -z "${cfg_path}" || ! -f "${cfg_path}" ]]; then
+    error "缺少 --workspace <工作区目录>（未找到 .docsconfig，无法推断 WORK_SPACE）"
+  fi
+
+  rd='' dd='' ar='' kt='' ad=''
+  docsconfig_read_into "${cfg_path}" rd dd ar kt ad || error "解析 .docsconfig 失败: ${cfg_path}"
+  if [[ -z "${ar}" || -z "${ad}" ]]; then
+    error "缺少 --workspace <工作区目录>（.docsconfig 无 AGENT_ROOT/AGENT_DIR: ${cfg_path}）"
+  fi
+
+  configs_path="$(docsconfig_configs_file "${ar}" "${ad}")"
+  raw="$(docsconfig_read_workspace_raw "${configs_path}" 2>/dev/null || true)"
+  if [[ -z "${raw}" ]]; then
+    error "缺少 --workspace <工作区目录>（${configs_path} 无 WORK_SPACE）"
+  fi
+
+  CFG[workspace]="$(strip_trailing_slash "$(docsconfig_normalize_root_value "${raw}")")"
+  info "未传 --workspace，沿用 ${configs_path} 的 WORK_SPACE=${CFG[workspace]}"
 }
 
 agent_install_parse_args() {
   while (( $# > 0 )); do
     case "$1" in
+      --meta=*)
+        CFG[repo_root]="${1#*=}"
+        shift
+        ;;
+      --meta)
+        shift
+        cli_require_value "--meta" "${1:-}"
+        CFG[repo_root]="$1"
+        shift
+        ;;
       --scope=*)
         CFG[scope]="${1#*=}"
         shift
@@ -378,8 +426,18 @@ agent_install_parse_args() {
         while (( $# > 0 )); do
           case "$1" in -*) break ;; *) parts+=("$1"); shift ;; esac
         done
-        (( ${#parts[@]} > 0 )) || error "缺少 --agents 值（如 cursor,trae 或 cursor trae）"
+        (( ${#parts[@]} > 0 )) || error "缺少 --agents 值（如 a / cursor,trae 或 cursor trae）"
         CFG[agents_opt]="$(IFS=','; printf '%s' "${parts[*]}")"
+        ;;
+      --workspace=*)
+        CFG[workspace]="${1#*=}"
+        shift
+        ;;
+      --workspace)
+        shift
+        cli_require_value "--workspace" "${1:-}"
+        CFG[workspace]="$1"
+        shift
         ;;
       --dry-run)
         CFG[dry_run]=1
@@ -390,7 +448,7 @@ agent_install_parse_args() {
         exit 0
         ;;
       *)
-        cli_unknown_arg "$1" "支持 --scope / --target / --agents / --dry-run"
+        cli_unknown_arg "$1" "支持 --meta / --scope / --target / --agents / --workspace / --dry-run"
         ;;
     esac
   done
@@ -410,6 +468,9 @@ agent_install_run() {
   fi
 
   ensure_dir "$(agent_store_root)"
+
+  agent_install_resolve_workspace
+  docsconfig_write_workspace "$(agent_store_root)" "${CFG[workspace]}" "${CFG[dry_run]}"
 
   agent_install_apply_scope
   agent_install_apply_agents

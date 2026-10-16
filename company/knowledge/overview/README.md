@@ -4,7 +4,7 @@ title: overview
 ---
 # overview
 
-[返回 · 企业架构](../README.md)
+[返回 · 公司知识库](../README.md)
 
 公司层五视角 overview 缓冲（表行 ↔ 视角章节 `##`）。
 

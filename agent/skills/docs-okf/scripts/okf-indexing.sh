@@ -26,7 +26,7 @@ usage() {
 视角导航块 {DOC_DIR}/INDEX-GUIDE.md 第四章 → /docs-build（generate_knowledge_index.py）。
 
 须有效 .docsconfig（含 KNOWLEDGE_TYPE、AGENT_DIR）。bundle 与默认 viz 输出取自 DOC_DIR；页面名称取自 KNOWLEDGE_TYPE。
-脚本路径取自 {DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts（不依赖 \$REPO_ROOT/agent/）。
+脚本路径取自 {DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts（不依赖 \$repo_abs/agent/）。
 
 环境变量:
   BUNDLE   覆盖 .docsconfig 推导的 bundle（DOC_DIR）
@@ -53,6 +53,7 @@ done
 # shellcheck disable=SC1091
 source "$RESOLVE"
 resolve_okf_paths
+repo_abs="$(docsconfig_repo_abs)"
 
 if [[ "$BUNDLE_OVERRIDE" -eq 0 ]]; then
   BUNDLE="$OKF_BUNDLE"
@@ -82,11 +83,11 @@ run_cmd() {
   fi
 }
 
-export DOCS_OKF_REPO_ROOT="$REPO_ROOT"
-cd "$REPO_ROOT"
+export DOCS_OKF_REPO_ABS="$repo_abs"
+cd "$repo_abs"
 
 echo "=== okf-refresh ==="
-echo "REPO_ROOT:      ${REPO_ROOT}"
+echo "repo_abs:      ${repo_abs}"
 echo "DOC_DIR:        ${DOC_DIR}"
 echo "AGENT_DIR:      ${AGENT_DIR}"
 echo "OKF_SCRIPTS:    ${OKF_DIR}"

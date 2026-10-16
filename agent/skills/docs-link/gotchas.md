@@ -7,5 +7,5 @@
 - `type:meta`（docs-install 写入）写回时保活；pull/push 跳过 meta
 - `--rewrite-http` 默认关；仅换父改正文；unlink **不**改 HTTP
 - 槽位软链可悬空；正文回拉/修复走 `/docs-pull`，不要把 pull 收成本技能
-- 建联脚本仅在 `agent/skills/docs-link/scripts/`；目标仓 `scripts/docs-link.sh` 为旧残留，不自动删，登记仍可用中央库脚本路径调用
+- 建联脚本仅在 `agent/skills/docs-link/scripts/`；目标仓 `scripts/docs-link.sh` 为旧残留，不自动删，登记仍可用元库脚本路径调用
 - Bash 5+；依赖 `link-config.sh` 与 Agent 侧 `slot-softlink.sh`（联邦布局）

@@ -22,8 +22,8 @@ title: 公司知识库设计
 | `domains/` | 域架构（`/sdx-domains`：只写 BD/BSD-L1 如何支撑 VC，不放方案正文）；**无** `solutions/` / `analysis/` / `features/` / `requirements/` |
 | `adr/` | 公司层决策 + `CONTEXT.md` |
 | `solution-slots/solution-{NAME}/` | 解决方案联邦槽位入口（软链）。公司不挂 `system-slots` |
-| `knowledge-links.yaml` | 建联与同步编排（可空）；child 用 `solution_*` |
-| `changelogs/` | INDEXING-LOG；变更溯源 git |
+| `knowledge-links.yaml` | 建联与同步编排（可空）；child 为解决方案；键为 `name` / `label`，不写层前缀 |
+| `TODO-LIST.md` | 烤干未闭合代办（本目录 = `{DOC_DIR}`）；变更溯源用 git。元仓全书仍在仓根 |
 
 路径总则：[knowledge-layout § 四层文档根](../agent/references/knowledge-layout.md#四层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。
 

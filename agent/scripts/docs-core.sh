@@ -22,6 +22,7 @@ _AGENT_SHARED_DOCS_CONFIG_LOADED=1
 
 # 换根重载时允许子模块再次执行
 unset \
+  _LIB_BASH_GUARD_LOADED \
   _LIB_LOG_IO_LOADED \
   _LIB_GIT_REMOTE_LOADED \
   _LIB_DOCSCONFIG_LOADED \
@@ -33,6 +34,8 @@ unset \
   _LIB_SLOT_SOFTLINK_LOADED \
   2>/dev/null || true
 
+# shellcheck source=lib/bash.sh
+source "${_LIB_DIR}/bash.sh"
 # shellcheck source=lib/log-io.sh
 source "${_LIB_DIR}/log-io.sh"
 # shellcheck source=lib/git-remote.sh

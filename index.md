@@ -11,7 +11,6 @@
 - [quick-start.md](quick-start.md)
 - [bootstrap.sh](bootstrap.sh)
 - [agent/skills/README.md](agent/skills/README.md)
-- [changelogs/INDEXING-LOG.md](changelogs/INDEXING-LOG.md)
 
 ## 子目录
 

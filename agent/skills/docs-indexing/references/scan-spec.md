@@ -39,7 +39,7 @@
 
 ### incremental（增量）
 
-基于 `INDEXING-LOG.md` **主表第一行**的 `indexing_finished_ms` 作为时间锚点（**最新在上**；迁移期可回退文内最后一条 `<!-- sdx-indexing:indexing_finished_ms=... -->`），仅处理变更文件。详见 [indexing-log-spec.md](indexing-log-spec.md)。
+基于 `INDEX-GUIDE 锚点` **主表第一行**的 `indexing_finished_ms` 作为时间锚点（**最新在上**；迁移期可回退文内最后一条 `<!-- sdx-indexing:indexing_finished_ms=... -->`），仅处理变更文件。详见 [indexing-log-spec.md](indexing-log-spec.md)。
 
 1. 从主表取锚点，或回退到 HTML 注释
 2. 仅扫描基线时间之后变更的文件
@@ -72,13 +72,13 @@
 | `*.class`、`*.jar` | 二进制文件 |
 | `.idea/`、`.vscode/` | IDE 配置 |
 
-脚本扫描以 `.docsconfig` 的 `DOC_ROOT` 为根；不进入隐藏目录或软链（含 `.agents` 与系统槽位），默认排除 `viz.html` 与 `.DS_Store`。
+脚本扫描以 `.docsconfig` 的 `文档目录` 为根；不进入隐藏目录或软链（含 `.agents` 与系统槽位），默认排除 `viz.html` 与 `.DS_Store`。
 
 ---
 
 ## 日志
 
-INDEX 成功后向 `INDEXING-LOG` **主表**插顶行（[indexing-log-spec.md](indexing-log-spec.md)、`indexing_log.py`；`indexing.sh` 调 append）。
+INDEX 成功后向 `索引锚点` **主表**插顶行（[indexing-log-spec.md](indexing-log-spec.md)、`indexing_log.py`；`indexing.sh` 调 append）。
 
 ---
 

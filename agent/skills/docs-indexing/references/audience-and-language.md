@@ -4,7 +4,7 @@
 
 ## 主读者
 
-**INDEX-GUIDE**：Onboarding 人类 + AI 检索；**INDEXING-LOG**：维护者审计。
+**INDEX-GUIDE**：Onboarding 人类 + AI 检索；**索引锚点**：维护者审计。
 
 ## 宜写 / 宜弱化
 

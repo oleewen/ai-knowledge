@@ -1,6 +1,6 @@
 ---
 type: Architecture Overview Buffer
-tags: [overview, buffer]
+tags: [overview, distill]
 title: "{域名称}架构概览（{slug}-overview）"
 ---
 # {域名称}架构概览（{slug}-overview）
@@ -20,9 +20,10 @@ title: "{域名称}架构概览（{slug}-overview）"
 | [业务概述](../business/chapters/business-overview.md) | [背景与愿景](../business/chapters/business-overview.md#背景与愿景) | — |
 | [业务概述](../business/chapters/business-overview.md) | [业务目标](../business/chapters/business-overview.md#业务目标) | — |
 | [业务概述](../business/chapters/business-overview.md) | [业务范围](../business/chapters/business-overview.md#业务范围) | — |
-| [业务域划分](../business/chapters/business-domain-division.md) | [业务域清单](../business/chapters/business-domain-division.md#业务域清单) | — |
-| [业务域划分](../business/chapters/business-domain-division.md) | [业务域职责](../business/chapters/business-domain-division.md#业务域职责) | — |
-| [业务域划分](../business/chapters/business-domain-division.md) | [核心域 / 支撑域 / 通用域](../business/chapters/business-domain-division.md#核心域--支撑域--通用域) | — |
+| [业务域划分](../business/chapters/business-domain-division.md) | [核心域](../business/chapters/business-domain-division.md#核心域) | — |
+| [业务域划分](../business/chapters/business-domain-division.md) | [支撑域](../business/chapters/business-domain-division.md#支撑域) | — |
+| [业务域划分](../business/chapters/business-domain-division.md) | [通用域](../business/chapters/business-domain-division.md#通用域) | — |
+| [业务域划分](../business/chapters/business-domain-division.md) | [业务子域](../business/chapters/business-domain-division.md#业务子域) | — |
 | [业务域划分](../business/chapters/business-domain-division.md) | [业务域关系图](../business/chapters/business-domain-division.md#业务域关系图) | — |
 | [商业模式](../business/chapters/business-model.md) | [商业画布](../business/chapters/business-model.md#商业画布) | — |
 | [商业模式](../business/chapters/business-model.md) | [收支模型](../business/chapters/business-model.md#收支模型) | — |
@@ -33,7 +34,6 @@ title: "{域名称}架构概览（{slug}-overview）"
 | [组织角色](../business/chapters/business-roles-and-organization.md) | [组织架构](../business/chapters/business-roles-and-organization.md#组织架构) | — |
 | [业务能力](../business/chapters/business-capability.md) | [能力清单](../business/chapters/business-capability.md#能力清单) | — |
 | [业务能力](../business/chapters/business-capability.md) | [成熟度评估](../business/chapters/business-capability.md#成熟度评估) | — |
-| [业务能力](../business/chapters/business-capability.md) | [系统映射](../business/chapters/business-capability.md#系统映射) | — |
 
 ## [产品架构](../product/README.md)
 
@@ -119,9 +119,9 @@ title: "{域名称}架构概览（{slug}-overview）"
 
 ### 文档关键词
 
-`yaml
+```yaml
 keywords:
-  - COMPANY
-  - 示例术语A
-  - 示例术语B
-`
+- COMPANY
+- 示例术语A
+- 示例术语B
+```

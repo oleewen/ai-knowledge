@@ -2,10 +2,10 @@
 
 ## IDEA-ID
 
-定义见 [sdx-solution：IDEA-ID](../../sdx-solution/references/core-concepts.md#idea-id)。
+定义见 [sdx-analysis：IDEA-ID](../../sdx-analysis/references/core-concepts.md#idea-id)。
 
 **本阶段**：PRD **`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`**  
-**上游**：`{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md`  
+**上游**：`{DOC_DIR}/features/FEATURE-{IDEA-ID}.md`  
 
 目录、文件名、`mvp_phase`、`--mvp` 须共用同一 **IDEA-ID** 与 **`N`**。
 

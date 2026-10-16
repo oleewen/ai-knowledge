@@ -6,7 +6,7 @@
 
 - 支持逐项确认与快捷组合。
 - 禁止退回已删除的 HTML gate / `PENDING→CONFIRMED` / 会话 spec 写前主线；主线=参数向导 + 「澄清 → 生成 → 烤干」（见 [unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)）。
-- `IDEA-ID` / `N` 须与 `ANALYSIS-{IDEA-ID}.md` 及 `MVP-Phase-{N}` 同链。
+- `IDEA-ID` / `N` 须与 `FEATURE-{IDEA-ID}.md` 及 `MVP-Phase-{N}` 同链。
 - 用户若已给 `IDEA-ID`、`N`、章节范围、深度，直接确认缺口，不重复追问已知信息。
 
 ## 推进环（澄清 → 生成 → 烤干）
@@ -18,7 +18,7 @@
 
 ## 输入与歧义
 
-- 无 `ANALYSIS-{ID}`：终止并指向 `sdx-analysis`。
+- 无 `ANALYSIS-{ID}`：终止并指向 `sdx-feature`。
 - 未锁 MVP：只写 `MVP-Phase-{N}` 内 FR；混后续阶段 → 范围失控。
 - ANALYSIS 结构残：警告并列缺失，正文标「基于不完整基线」。
 

@@ -6,8 +6,8 @@
 
 **路径（命中即停）**，记下相对路径为「当前 INDEX-GUIDE」：
 
-1. `REPO_ROOT/INDEX-GUIDE.md`
-2. `DOC_ROOT/INDEX-GUIDE.md`
+1. `仓库路径/INDEX-GUIDE.md`
+2. `文档目录/INDEX-GUIDE.md`
 
 **命中后**：仅以该文件为地图；不调 docs-indexing；不以用户粘贴替换磁盘（磁盘优先）。
 
@@ -27,7 +27,7 @@
 | §6 | 未索引 | 写某路径则只读该路径；否则「详见 §6」 |
 | §7 | 查阅指北 | AGENTS 与此一致 |
 
-**轻量对照**：`agent/rules/CONVENTIONS.md`；已有根 README 在 `update` 时合并；`DOC_ROOT/knowledge/` 只读各层 README/INDEX。
+**轻量对照**：`agent/rules/CONVENTIONS.md`；已有根 README 在 `update` 时合并；`文档目录/knowledge/` 只读各层 README/INDEX。
 
 ## 3. 错误处理
 

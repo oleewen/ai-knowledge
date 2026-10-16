@@ -26,9 +26,10 @@ mkdir -p "$TARGET"
 
 cat >"${CENTRAL}/system/knowledge-links.yaml" <<EOF
 links:
-  - path: "${TARGET}"
-    doc_dir: docs
-    app_name: myapp
+  - type: child
+    path: "${TARGET}"
+    dir: docs
+    name: myapp
 EOF
 
 out="$(cd "${CENTRAL}/system" && "${BASH:-bash}" "${STORE}/skills/docs-push/scripts/push-specs.sh" copy \

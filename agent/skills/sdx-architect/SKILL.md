@@ -45,7 +45,7 @@ compatibility: Bash 5+；校验脚本 agent/skills/sdx-architect/scripts/validat
 ## 最少输入
 
 - 可对齐的 **`PRD-{IDEA-ID}-{N}.md`**
-- 可选但推荐的 `ANALYSIS-{IDEA-ID}.md`
+- 可选但推荐的 `ANALYSIS-{IDEA-ID}.md`（七章需求分析）
 - `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/` 可写
 - 若已给 `IDEA-ID`、`N`、章节范围、深度、`KNOWLEDGE_TYPE`，则直接进入参数向导确认
 

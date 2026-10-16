@@ -10,20 +10,20 @@ title: 应用知识库设计
 
 1. [README.md](README.md) — 定位与 mode 路由  
 2. 本文 — 本层契约、同步门禁、治理引用  
-3. [knowledge/README.md](knowledge/README.md) — 五视角；字段见各 `*-meta.md`  
+3. [knowledge/README.md](knowledge/README.md) — 五视角；字段见 [agent/knowledge](../agent/knowledge/README.md) 五份 `*-meta.md`  
 
-索引：[INDEX-GUIDE.md](INDEX-GUIDE.md) · [index.md](index.md) · [CONTRIBUTING.md](CONTRIBUTING.md) · [knowledge-links.yaml](knowledge-links.yaml)
+索引：[INDEX-GUIDE.md](INDEX-GUIDE.md) · [index.md](index.md) · [knowledge-links.yaml](knowledge-links.yaml)
 
 ## 本层契约
 
 | 目录 | 职责 |
 | --- | --- |
-| `knowledge/` | 五视角；本层首次实体 **API / TBL / MW / CMP**；`knowledge/overview/{NAME}-overview.md`；可 stub 系统/解决方案/公司实体 |
+| `knowledge/` | 五视角；本层首次实体 **API / TBL / MW / CMP**；`knowledge/overview/{NAME}-overview.md`；宿主目录可留，不建 reference 文件 |
 | `analysis/` → `features/` → `requirements/` | 应用 SDD；交付 ∈ `REQUIREMENT-{IDEA-ID}/` |
 | `adr/` | 应用层 ADR + `CONTEXT.md` |
-| `changelogs/` | INDEXING-LOG（可选）；变更溯源 git |
-| `CONTRIBUTING.md` | 贡献约定（与本文分工：贡献流程 vs 设计入口） |
-| `manifest.md` | 应用仓清单（协同目标态） |
+| `TODO-LIST.md` | 烤干未闭合代办（本目录 = `{DOC_DIR}`）；变更溯源用 git。元仓全书仍在仓根 |
+
+贡献门禁：[knowledge-governance](../agent/knowledge/knowledge-governance.md)（与本文分工：治理/贡献 vs 设计入口）。
 
 路径总则：[knowledge-layout § 四层文档根](../agent/references/knowledge-layout.md#四层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。无联邦槽位（槽位在 system）。
 

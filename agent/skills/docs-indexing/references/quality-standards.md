@@ -32,7 +32,7 @@
 
 ## 可追溯性
 
-- [ ] 主表行已写入 `INDEXING-LOG.md`（`indexing_log.py` / 技能等效；最新在上）
+- [ ] 主表行已写入 `INDEX-GUIDE 锚点`（`indexing_log.py` / 技能等效；最新在上）
 - [ ] 主表行包含 `indexing_finished_ms`、模式、深度、文件数、耗时、输出路径等（见 [indexing-log-spec.md](indexing-log-spec.md)）
 - [ ] 增量模式在日志中可识别本次采用的 `since_ms`（全量为 `0`）
 

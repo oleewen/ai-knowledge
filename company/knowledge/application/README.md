@@ -1,12 +1,16 @@
 ---
 type: Documentation
-title: 公司应用视角
+title: 应用架构
 ---
-# 应用视角（公司）
+# 应用架构
 
-[返回 · 企业架构](../README.md)
+[返回 · 公司知识库](../README.md)
 
-**本层 SSOT**：无实体。本视角只留企业应用架构标准。字段 [application-meta.md](application-meta.md)；索引 [../index.md](../index.md)。
+**本层 SSOT**：无实体。本视角只留企业应用架构标准。字段 [application-meta.md](../../../agent/knowledge/application-meta.md)。
+
+目录与阅读顺序见 [index.md](index.md)。
+
+上一级索引：[../index.md](../index.md)。
 
 ## 章节
 

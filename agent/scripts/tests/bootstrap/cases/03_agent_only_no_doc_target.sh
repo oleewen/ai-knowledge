@@ -7,6 +7,7 @@ source "$TEST_DIR/../test-lib.sh"
 
 FAKE_HOME="$(new_fake_home)"
 OUT_FILE="$FAKE_HOME/out.txt"
+EXPECTED_WORKSPACE="$FAKE_HOME/workspaces"
 cleanup() { rm -rf "$FAKE_HOME"; }
 trap cleanup EXIT
 
@@ -22,5 +23,8 @@ grep -q '执行 agent-install' "$OUT_FILE" || fail "应执行 agent-install"
 
 assert_dir_exists "$FAKE_HOME/.agents/skills"
 assert_dir_exists "$FAKE_HOME/.cursor/skills"
+assert_file_exists "$FAKE_HOME/.agents/configs"
+assert_contains 'WORK_SPACE=~/workspaces' "$FAKE_HOME/.agents/configs"
+assert_contains "工作区:      $EXPECTED_WORKSPACE" "$OUT_FILE"
 
-pass "components=agent 无 doc-target 可装 Agent"
+pass "components=agent 无 doc-target 可装 Agent（默认 workspace）"

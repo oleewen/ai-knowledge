@@ -4,6 +4,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck source=/dev/null
+source "$_AGENT_HOME/scripts/lib/bash.sh"
+# shellcheck source=/dev/null
 source "$_AGENT_HOME/scripts/lib/docsconfig.sh"
 # shellcheck source=/dev/null
 source "$_AGENT_HOME/scripts/lib/knowledge-links.sh"
@@ -57,7 +59,9 @@ MODE="${KNOWLEDGE_TYPE:-}"
 [[ "$MODE" == "system" || "$MODE" == "solution" || "$MODE" == "company" ]] \
   || { printf '不支持的 KNOWLEDGE_TYPE: %s\n' "$MODE" >&2; exit 1; }
 
-LINKS_FILE="${DOC_ROOT%/}/knowledge-links.yaml"
+doc_abs="$(docsconfig_doc_abs)"
+repo_abs="$(docsconfig_repo_abs)"
+LINKS_FILE="${doc_abs%/}/knowledge-links.yaml"
 [[ -f "$LINKS_FILE" ]] || { printf '缺少 knowledge-links.yaml: %s\n' "$LINKS_FILE" >&2; exit 1; }
 
 declare -a paths=() repos=() doc_dirs=() names=() labels=() types=()
@@ -195,15 +199,14 @@ pull_one() {
   local repo path_expanded name label
   local source_dir slot_dir slots_dir shared_log_dir
   local commit action git_action link_action
-  local target_cfg t_doc_root='' t_repo_root='' t_doc_dir='' t_agent_root='' t_ktype=''
-  local saved_pwd
+  local target_cfg t_repo_abs='' t_doc_abs='' t_doc_dir='' t_agent_root='' t_ktype=''
 
   repo="${repos[idx]}"
   path_expanded="$(knowledge_link_expand_stored_path "${paths[idx]}")"
   name="${names[idx]}"
   label="${labels[idx]}"
 
-  slots_dir="${DOC_ROOT%/}/${slot_parent}"
+  slots_dir="${doc_abs%/}/${slot_parent}"
   slot_dir="${slots_dir}/${slot_prefix}-${name}"
   shared_log_dir="${slots_dir}/changelogs"
   slot_ensure_shared_changelogs "$slots_dir"
@@ -213,13 +216,10 @@ pull_one() {
   target_cfg="${path_expanded%/}/.docsconfig"
   [[ -f "$target_cfg" ]] || { printf '目标仓库缺少 .docsconfig: %s\n' "$target_cfg" >&2; return 1; }
 
-  saved_pwd="$PWD"
-  cd "$path_expanded"
-  docsconfig_read_into "$target_cfg" t_doc_root t_repo_root t_doc_dir t_agent_root t_ktype \
-    || { cd "$saved_pwd"; printf '无法解析目标 .docsconfig: %s\n' "$target_cfg" >&2; return 1; }
-  cd "$saved_pwd"
-  [[ -n "$t_doc_root" && -n "$t_doc_dir" && -n "$t_ktype" ]] \
-    || { printf '目标 .docsconfig 缺少 DOC_ROOT/DOC_DIR/KNOWLEDGE_TYPE: %s\n' "$target_cfg" >&2; return 1; }
+  docsconfig_abs_for_config "$target_cfg" t_repo_abs t_doc_abs t_doc_dir t_agent_root t_ktype \
+    || { printf '无法解析目标 .docsconfig: %s\n' "$target_cfg" >&2; return 1; }
+  [[ -n "$t_doc_dir" && -n "$t_ktype" ]] \
+    || { printf '目标 .docsconfig 缺少 DOC_DIR 或 KNOWLEDGE_TYPE: %s\n' "$target_cfg" >&2; return 1; }
 
   if [[ "$expected_target_type" == "application" ]]; then
     [[ "$t_ktype" == "application" ]] || { printf '目标 KNOWLEDGE_TYPE 不匹配（应为 application）: %s\n' "$t_ktype" >&2; return 1; }
@@ -230,7 +230,7 @@ pull_one() {
   fi
 
   source_dir="$(slot_resolve_doc_root "$path_expanded" "${doc_dirs[idx]}")" \
-    || { printf '无法解析下级 DOC_ROOT: path=%s doc_dir=%s\n' "$path_expanded" "${doc_dirs[idx]}" >&2; return 1; }
+    || { printf '无法解析下级文档目录: path=%s doc_dir=%s\n' "$path_expanded" "${doc_dirs[idx]}" >&2; return 1; }
   [[ -d "$source_dir" ]] || { printf '源目录不存在: %s\n' "$source_dir" >&2; return 1; }
 
   link_action="$(slot_ensure_slot_symlink "$slot_dir" "$source_dir" "$shared_log_dir" "$name")"

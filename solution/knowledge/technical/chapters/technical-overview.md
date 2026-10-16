@@ -13,7 +13,7 @@ title: 技术概述
 
 ## 技术选用
 
-写本方案有哪些 TSD，各 `implements_to` 哪条公司 TPL。
+写本方案有哪些 TS，各 `implements_to` 哪条公司 TPL。
 
 ## 技术例外
 

@@ -3,7 +3,7 @@ name: docs-okf
 description: >
   OKF bundle refresh、校验与可视化：刷新 index.md、validate-okf、viz.html 与产物校验。
   须先读 .docsconfig：DOC_DIR→默认 bundle 与 viz，AGENT_DIR→脚本树 {DOC_DIR}/{AGENT_DIR}/，KNOWLEDGE_TYPE→viz 名称；BUNDLE/--bundle 覆盖时 viz 跟随 bundle 目录名；无 config 或缺 KNOWLEDGE_TYPE/AGENT_DIR 硬中止。
-  用户提到 /docs-okf、OKF refresh、刷新 viz、DOC_DIR、AGENT_DIR、DOC_ROOT、KNOWLEDGE_TYPE、目标工程 OKF 时，使用本技能。
+  用户提到 /docs-okf、OKF refresh、刷新 viz、DOC_DIR、AGENT_DIR、文档目录、KNOWLEDGE_TYPE、目标工程 OKF 时，使用本技能。
   分流：用户只要 docs-build 提取或 docs-indexing 九章为主路径 → 对应技能。
   推进见 references/workflow.md。
 ---
@@ -14,7 +14,7 @@ description: >
 
 - 无有效 `.docsconfig` 时立即中止；不得猜测 bundle 路径继续。
 - 缺 `KNOWLEDGE_TYPE` 时立即中止；不得生成默认 `viz.html` 路径继续。
-- 缺 `AGENT_DIR` 时立即中止；脚本路径只认 `{DOC_DIR}/{AGENT_DIR}/skills/docs-okf/`，**不得**回退 `$REPO_ROOT/agent/`。
+- 缺 `AGENT_DIR` 时立即中止；脚本路径只认 `{DOC_DIR}/{AGENT_DIR}/skills/docs-okf/`，**不得**回退 `$仓库路径/agent/`。
 - `--dry-run` 只预览，不写盘。
 - `validate` 出现 **ERROR** 时不得静默继续后续步骤；必须汇报错误并停下。
 - 轻量运维技能：参数向导 → refresh / validate / viz → 结果摘要或失败分流；**不**引入当前单元循环或 `grilling` 协议。结果摘要出口须做受众 **A/B**（见 [audience-and-language.md](../../references/audience-and-language.md)、[light-flow-actions.md](../../references/light-flow-actions.md)）。
@@ -29,7 +29,7 @@ description: >
 ## 不这样用
 
 - 不在无 `.docsconfig` 或缺 `KNOWLEDGE_TYPE` / `AGENT_DIR` 时启发式猜路径继续
-- 不硬编码 `$REPO_ROOT/agent/`；脚本入口一律 `{DOC_DIR}/{AGENT_DIR}/skills/docs-okf/`
+- 不硬编码 `$仓库路径/agent/`；脚本入口一律 `{DOC_DIR}/{AGENT_DIR}/skills/docs-okf/`
 - 不把 validate ERROR 当 WARN 静默跳过
 - 不把九章 INDEX 重建或实体提取收成 `docs-okf`
 - 不引入意图澄清 / 单元循环 / grilling 作为本技能主线

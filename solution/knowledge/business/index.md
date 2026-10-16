@@ -4,17 +4,21 @@
 
 ## 子目录
 
-* [BSD-EXAMPLE-L2](BSD-EXAMPLE-L2/index.md) - BSD-L2；parent→公司 L1；mapped_by → BS。
-* [BS](BS/index.md) - 业务服务；无 parent；maps_to → BSD-L2 一对一。
+* [BS](BS/index.md)
+* [BSD-EXAMPLE-L1](BSD-EXAMPLE-L1/index.md)
 * [chapters](chapters/index.md)
 
 ## 目录文件
 
-* [business-meta.md](business-meta.md)
+（无）
 
 ## 阅读顺序
 
-（待补充）
+1. [README.md](README.md)
+2. [chapters](chapters/index.md)
+3. [BSD-EXAMPLE-L2](BSD-EXAMPLE-L1/BSD-EXAMPLE-L2/index.md)
+4. [BS](BS/index.md)
+5. [business-meta.md](../../../agent/knowledge/business-meta.md)
 
 ## 关联索引
 

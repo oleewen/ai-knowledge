@@ -26,22 +26,22 @@ git -C "$SYSTEM" init -q
 git -C "$APP" init -q
 
 cat >"$SYSTEM/.docsconfig" <<EOF
-DOC_ROOT=docs
-REPO_ROOT=$SYSTEM
+REPO_DIR=$(basename "$SYSTEM")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=system
-AGENT_ROOT=$ROOT_DIR
-AGENT_DIR=agent
+AGENT_ROOT=$TMP_DIR/agent-home
+AGENT_DIR=.agents
 EOF
+pin_workspace_for_repo "$SYSTEM" "$TMP_DIR/agent-home" .agents
 
 cat >"$APP/.docsconfig" <<EOF
-DOC_ROOT=docs
-REPO_ROOT=$APP
+REPO_DIR=$(basename "$APP")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=application
-AGENT_ROOT=$ROOT_DIR
-AGENT_DIR=agent
+AGENT_ROOT=$TMP_DIR/agent-home
+AGENT_DIR=.agents
 EOF
+pin_workspace_for_repo "$APP" "$TMP_DIR/agent-home" .agents
 
 echo "content" >"$APP/docs/sync-me.md"
 git -C "$APP" add .
@@ -50,17 +50,18 @@ git clone --bare "$APP" "$BARE" -q
 git -C "$APP" remote add origin "$BARE"
 
 mkdir -p "$SYSTEM/docs/application-slots"
-# 旧真目录槽位：应被静默迁移为软链
-mkdir -p "$SYSTEM/docs/application-slots/application-app-foo/changelogs"
-echo "# old archive" >"$SYSTEM/docs/application-slots/application-app-foo/changelogs/ARCHIVE-LOG.md"
+# 旧真目录槽位：应被静默删除后改建软链
+mkdir -p "$SYSTEM/docs/application-slots/application-app-foo"
+echo "# old" >"$SYSTEM/docs/application-slots/application-app-foo/legacy.txt"
 
 cat >"$SYSTEM/docs/knowledge-links.yaml" <<EOF
 links:
-  - repository: "$BARE"
+  - type: child
+    repository: "$BARE"
     path: "$APP"
-    doc_dir: "docs"
-    app_name: "app-foo"
-    app_label: "app-foo"
+    dir: "docs"
+    name: "app-foo"
+    label: "app-foo"
 EOF
 
 set +e
@@ -76,8 +77,7 @@ printf '%s\n' "$out" | grep -Eq 'commit=[0-9a-f]+' || fail "SYNC_OK 应含 commi
 [[ -L "$SYSTEM/docs/application-slots/application-app-foo" ]] \
   || fail "槽位应为软链"
 assert_file_exists "$SYSTEM/docs/application-slots/application-app-foo/sync-me.md"
-assert_file_exists "$SYSTEM/docs/application-slots/changelogs/ARCHIVE-LOG.md"
-grep -Fq 'migrated_from: app-foo' "$SYSTEM/docs/application-slots/changelogs/ARCHIVE-LOG.md" \
-  || fail "应合并旧槽位 ARCHIVE-LOG"
+[[ ! -e "$SYSTEM/docs/application-slots/changelogs" ]] \
+  || fail "不应再创建 application-slots/changelogs"
 
 pass "system: pull single app symlink + git trace"

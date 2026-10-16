@@ -20,13 +20,17 @@ if [[ ! -f "$DOCS_CONFIG" ]]; then
   DOCS_CONFIG_CREATED=1
   trap cleanup_docsconfig EXIT
   cat >"$DOCS_CONFIG" <<EOF
-DOC_ROOT=$ROOT/application
-REPO_ROOT=$ROOT
+REPO_DIR=$(basename "$ROOT")
 DOC_DIR=application
 KNOWLEDGE_TYPE=application
 AGENT_ROOT=~
 AGENT_DIR=.agents
 EOF
+fi
+
+if [[ ! -f "${HOME:-}/.agents/configs" ]]; then
+  echo "跳过：未找到工作区文件，先执行 /agent-install --workspace" >&2
+  exit 0
 fi
 
 if [[ ! -x "$VALIDATE_SCRIPT" ]] && [[ ! -f "$VALIDATE_SCRIPT" ]]; then

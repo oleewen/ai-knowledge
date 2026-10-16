@@ -4,7 +4,7 @@
 # 依赖：lib/log-io.sh（info / have_*）
 #
 # 消费库：收敛为相对 DOC_DIR/.agents 的深度相对路径
-# 云库 meta：收敛为相对 DOC_DIR 视角下深度相对的 agent/
+# 云库 meta：以仓库根为锚（含 agent/ 的目录：DOC_DIR 自身或其父级），收敛为深度相对的 agent/
 #
 
 _LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -63,21 +63,44 @@ rewrite_docs_rel_prefix() {
   printf '%s' "$prefix"
 }
 
+# meta 锚点：优先 DOC_DIR 内的 agent/，否则取其父级（仓库根与 DOC_DIR 并列时）
+rewrite_meta_anchor() {
+  local docs_abs="${1:?}"
+  local docs_n parent
+  docs_n="$(cd -P "$docs_abs" 2>/dev/null && pwd -P)" || docs_n="$(abs_path "$docs_abs")"
+  if [[ -d "$docs_n/agent" ]]; then
+    printf '%s' "$docs_n"
+    return 0
+  fi
+  parent="$(cd -P "$docs_n/.." 2>/dev/null && pwd -P)" || parent="$(abs_path "$docs_n/..")"
+  if [[ -d "$parent/agent" ]]; then
+    printf '%s' "$parent"
+    return 0
+  fi
+  printf '%s' "$docs_n"
+}
+
 # mode=consumer|meta；段名 consumer→.agents/ meta→agent/
 rewrite_agent_path_segment_in_file() {
   local file="$1"
   local docs_abs="$2"
   local mode="${3:-consumer}"
-  local seg prefix target
+  local seg prefix target anchor
   [[ -f "$file" ]] && is_text_file "$file" || return 0
   grep -qE 'agent/|~/\.agents/' "$file" 2>/dev/null || return 0
   have_cmd perl || return 0
 
   case "$mode" in
-    meta) seg='agent/' ;;
-    *) seg='.agents/' ;;
+    meta)
+      seg='agent/'
+      anchor="$(rewrite_meta_anchor "$docs_abs")"
+      prefix="$(rewrite_docs_rel_prefix "$anchor" "$file")"
+      ;;
+    *)
+      seg='.agents/'
+      prefix="$(rewrite_docs_rel_prefix "$docs_abs" "$file")"
+      ;;
   esac
-  prefix="$(rewrite_docs_rel_prefix "$docs_abs" "$file")"
   target="${prefix}${seg}"
 
   if ! AGENT_SLASH="$target" \

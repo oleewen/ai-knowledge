@@ -9,20 +9,21 @@ perspective: data
 hierarchy: MDG
 layer_scope: solution
 ---
+<!-- markdownlint-disable-next-line MD025 -->
+# 示例主数据域
+
 ## 关系
 
-- implemented_by: DS-EXAMPLE（系统库）
+- implemented_by: DS-EXAMPLE
 
 ## 跨视角
 
-- 使用方：SYS-EXAMPLE `uses_to`（系统库）
+- used_by: [PD-EXAMPLE](../product/PL-EXAMPLE/PD-EXAMPLE.md)
 
 ## 详细说明
 
-- definition_scope: local
-- 一 SLN 可多条 MDG
-- governance_owner: 示例：数据治理委员会
+- 解决方案层数据主权与逻辑模型。
 
 ## 依据与证据
 
-chapters/data-model.md（示例）
+[chapters/data-model.md](chapters/data-model.md#主数据)（示例）

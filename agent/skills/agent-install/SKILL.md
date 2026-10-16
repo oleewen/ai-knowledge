@@ -2,7 +2,9 @@
 name: agent-install
 description: >
   安装整棵 Agent 树到 $HOME/.agents/ 并按 --agents 链接 IDE 目录；不写回工程 .docsconfig。
-  薄封装 agent/skills/agent-install/scripts/agent-install.sh（--agents/--target/--scope/--dry-run）。
+  薄封装 agent/skills/agent-install/scripts/agent-install.sh
+  （书写序：--meta/--scope/--target/--agents/--workspace/--dry-run）。
+  未传 --workspace 时：读 .docsconfig 的 AGENT_ROOT/AGENT_DIR，再读其 configs 内 WORK_SPACE；缺则须显式传入。
   用户提到 /agent-install、装 agent、更新 ~/.agents、安装 rules/skills/hooks 时，使用本技能。
   分流：知识库骨架 → docs-install；双轨 → 先 docs-install 后本技能；生态 skills 追新 → skill-upgrade；
   元库对齐 → docs-upgrade；联邦登记 → docs-link。
@@ -13,7 +15,7 @@ description: >
 
 ## 输出硬约束（P0）
 
-- 当前单元：单次 agent-install 计划（含 `--agents`、`--target`、`--scope` 等全部参数）。
+- 当前单元：单次 agent-install 计划（含 `--meta`、`--scope`、`--target`、`--agents`、`--workspace`、`--dry-run`）。
 - 轻流程：参数向导 → 风险校核 → `C/M/S/F`（无 `G`、不绑意图澄清）→ [light-flow-actions.md](../../references/light-flow-actions.md)；细节 [gates.md](references/gates.md)。参数未收口前不得实跑写盘。
 - 默认先 **--dry-run**；dry-run 摘要未确认前，不得静默实跑。
 - 写 `$HOME` / `~/.agents` 或工程级 `--target` 须用户明示；未确认不得默认实跑。
@@ -31,6 +33,8 @@ description: >
 - 不在未确认时对 `$HOME` 或工程级 target 静默写盘
 - 不把 docs-install / skill-upgrade 主路径收成本技能
 - 工程级 target 只链 IDE 目录；**不**写回 `.docsconfig`（AGENT_* 归 docs-install）
+- 未传 `--workspace` 且无法从 `.docsconfig`→`configs` 推断时，不假装可跑
+- 不把 `--target` 与 `--workspace` 合并为一参（职责不同：IDE 软链父目录 vs `WORK_SPACE`）
 
 ## 路由
 
@@ -43,20 +47,23 @@ description: >
 
 ## 最少输入
 
-- `--agents`（可探测或默认 `cursor`）
+书写序收口：`meta → scope → target → agents → workspace → dry-run`（见 [parameters.md](references/parameters.md)）。
+
+- `--scope`（可默认 `a`）
 - `--target`（默认 `$HOME`）
-- `--scope`（子树勾选，可默认 `a`）
+- `--agents`（可探测或默认 `a`＝全量 IDE）
+- `--workspace`（可省略：见推断规则；首次须显式）
 - 是否 dry-run 已收口
 
 ## 产出与脚本
 
-- 正式：`~/.agents/` 实体树 + 各 IDE 目录软链；**不**更新目标 `.docsconfig`
+- 正式：`~/.agents/` 实体树 + 各 IDE 目录软链 + `configs` 内 `WORK_SPACE`；**不**更新目标 `.docsconfig`
 - 收敛后：产物校核 + 受众 A/B → [light-flow-actions.md](../../references/light-flow-actions.md)
 
 ```bash
-bash agent/skills/agent-install/scripts/agent-install.sh --agents=cursor --target "$HOME" --dry-run
+bash agent/skills/agent-install/scripts/agent-install.sh --scope=a --target "$HOME" --agents=a --workspace ~/workspaces --dry-run
 ```
 
 ## 评测
 
-`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。重点：dry-run 闸门、home/target 高风险确认、与 docs-install 分流。
+`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。重点：dry-run 闸门、home/target 高风险确认、workspace 推断、与 docs-install 分流。
