@@ -4,6 +4,8 @@
 
 ## 与 CONVENTIONS
 
+版本增量门禁：dry-run 必须展示当前版本、目标版本和两个 commit；缺少发布基线时不得执行增量升级。
+
 按 [agent/rules/CONVENTIONS.md](../../../rules/CONVENTIONS.md#artifact-gates)，docs-upgrade 为**低风险工程同步**族中的升级编排：副作用写 `文档目录`（文件模式另可写允许的建联脚本），闸门从严。
 
 非 dry-run / 非总览确认的写盘前，须在对话取得用户明确同意（轻流程 `C`）。

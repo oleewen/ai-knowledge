@@ -2,6 +2,8 @@
 
 ## 参数向导
 
+进入扫描前自动解析版本边界：当前 `DESIGN.md` 版本到 Git log 最新 `docs-publish` 版本。输出 `from..to` 与 commit；无法解析时停止，不猜测。
+
 按序收口；用户已明确时可跳过对应项：
 
 1. 当前工程（含 `.docsconfig`；通常即 cwd 所属工程）

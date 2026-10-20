@@ -1,5 +1,7 @@
 # docs-upgrade 陷阱
 
+- **版本基线**：只有 Git log 中存在当前版本与目标 `docs-publish` 版本提交时才能计算区间；缺基线硬停，不按时间或 HEAD 猜测。
+
 - **误跑 docs-install knowledge**：会清空 DOC_DIR。升级只用 `docs-upgrade.sh` + Agent 重填（文件模式亦禁清空 install）。
 - **路径重写挂点**：仅 `--apply-scaffold` 末尾（软链 + `rewrite_docs_agent_paths` → 深度相对 `.agents/` 或 meta 的 `agent/`）。结构重填 / 文件模式若再写入裸 `agent/`，本技能不强制再扫——接受缝；勿误以为整单结束必已重写。
 - **路径重写目标**：按文件相对 `DOC_DIR` 深度写 `.agents/`（或 meta 的 `agent/`）；覆盖裸 `agent/`、多层上跳 `../agent/`、`~/.agents/`；**不**改 IDE 段。

@@ -29,6 +29,7 @@
 | `/agent-install` | 整棵 Agent 树；`--agents`/`--target`/`--scope`；默认 dry-run；轻流程 |
 | `/skill-upgrade` | 生态 skills 追新（`npx skills update`）；无源经确认走 find-skills 补源；本仓 Agent 树 → `/agent-install`；轻流程 |
 | `/docs-upgrade` | 读 `.docsconfig` + `type: meta` 对齐最新元库结构；正文保本库；H2至H6 元库结构重填；未落位 C 后三档（批量文件/单文件批量/逐项并入）；指定路径强制对齐（与整树互斥）；禁清空式 install |
+| `/docs-publish` | 按四层 DESIGN 版本规则生成 `YYYY.MMdd.patch`；记录 `docs-publish` Git 提交；rebase、推送、快进合并 main，并创建下一 feature 分支 |
 | `/docs-link` | `--link`/`--unlink` + `--target`〔`--app-name`〕〔`--rewrite-http`〕→ 双边 `knowledge-links.yaml` + 槽位软链；脚本 `agent/skills/docs-link/scripts/`；默认 dry-run；轻流程 |
 | `/docs-pull` | 按 `knowledge-links.yaml` 本地 path → 联邦槽位；`SYNC_OK` 含 commit；变更溯源 git；无远端 clone；轻流程 |
 | `/docs-push` | 中央规约 → 各应用 `path×doc_dir`（legacy / spec-asd）；轻流程 |

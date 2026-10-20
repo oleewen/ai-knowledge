@@ -8,6 +8,7 @@ readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../../../scripts/lib/bash.sh"
 # shellcheck source=../../../scripts/lib/docsconfig.sh
 source "$SCRIPT_DIR/../../../scripts/lib/docsconfig.sh"
+source "$SCRIPT_DIR/../../../scripts/lib/version.sh"
 # knowledge-links / rewrite 等不在轻量 bootstrap 内
 # shellcheck source=../../../scripts/docs-core.sh
 source "$SCRIPT_DIR/../../../scripts/docs-core.sh"
@@ -23,6 +24,25 @@ META_ROOT=""
 META_SRC=""
 META_DOC_DIR=""
 META_CLEANUP=""
+VERSION_FROM=""
+VERSION_TO=""
+
+detect_version_range() {
+ local design_file="${doc_abs%/}/DESIGN.md" current latest from_sha to_sha
+ [[ -f "$design_file" ]] || return 0
+ current="$(sed -n 's/^version:[[:space:]]*\([^[:space:]]*\).*/\1/p' "$design_file" | head -1)"
+ [[ -n "$current" ]] || return 0
+ latest="$(version_latest_from_log "$repo_abs" || true)"
+ [[ -n "$latest" ]] || return 0
+ current="$(version_normalize "$current")" || error "DESIGN.md 版本格式无效: $current"
+ to_sha="$(version_commit_sha "$repo_abs" "$latest" || true)"
+ from_sha="$(version_commit_sha "$repo_abs" "$current" || true)"
+ [[ -n "$to_sha" ]] || error "找不到目标版本提交: $latest"
+ [[ -n "$from_sha" ]] || error "找不到当前版本提交: $current"
+ VERSION_FROM="$current"
+ VERSION_TO="$latest"
+ info "版本增量: $VERSION_FROM -> $VERSION_TO (${from_sha}..${to_sha})"
+}
 
 usage() {
  cat <<'EOF'
@@ -285,6 +305,7 @@ docsconfig_bootstrap_validate
 repo_abs="$(docsconfig_repo_abs)"
 doc_abs="$(docsconfig_doc_abs)"
 [[ -n "${KNOWLEDGE_TYPE:-}" ]] || error ".docsconfig 缺少 KNOWLEDGE_TYPE"
+detect_version_range
 
 LINKS_FILE="${doc_abs%/}/knowledge-links.yaml"
 resolve_meta_root "$LINKS_FILE"

@@ -67,6 +67,7 @@ description: >
 - `{文档目录}/knowledge-links.yaml` 恰好一条 `type: meta`（或本次 `--meta-path`）
 - 整树：是否 dry-run（默认是）已收口
 - 文件模式：≥1 个可解析的真实文件或目录（解析后须有可处理项或明确拒绝项清单）
+- 若目标 `DESIGN.md` 含 `version`，自动读取当前版本与 Git log 最新 `docs-publish: version ...` 提交，输出版本增量边界；缺少任一版本提交时硬停，不猜测区间。
 
 ## 产出与脚本
 

@@ -2,6 +2,8 @@
 
 脚本 SSOT：`bash agent/skills/docs-upgrade/scripts/docs-upgrade.sh -h`。本文列技能编排层。
 
+若目标 `DESIGN.md` 含 `version`，脚本自动读取当前版本，并用 `docs-publish: version YYYY.MMdd.patch` commit 查找最新发布边界；缺少当前或目标 commit 时硬停。
+
 ## 技能层
 
 | 参数 | 必选 | 说明 |
