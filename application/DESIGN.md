@@ -1,8 +1,13 @@
 ---
 type: Design Document
 title: 应用知识库设计
+version: 2026.1020.0
 ---
 # 应用知识库设计
+
+## 版本
+
+版本号表示四层知识库的统一内容发布版本，格式为 `YYYY.MMdd.patch`。版本由维护者人工发布；发布时，四层 `DESIGN.md` 的 `version` 必须同步为同一值。
 
 `application/`：实现级实体与应用 SDD。本库 `{NAME}-overview.md` 供 extract / archive；上行 distill **只**写系统 overview。本文件 = 层根人类入口（契约短表 + 引用）；语义 SSOT ∈ `agent/knowledge/`。
 

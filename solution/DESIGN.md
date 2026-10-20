@@ -1,8 +1,13 @@
 ---
 type: Design Document
 title: 解决方案知识库设计
+version: 2026.1020.0
 ---
 # 解决方案知识库设计
+
+## 版本
+
+版本号表示四层知识库的统一内容发布版本，格式为 `YYYY.MMdd.patch`。版本由维护者人工发布；发布时，四层 `DESIGN.md` 的 `version` 必须同步为同一值。
 
 `solution/`：一个交付包（一仓一 SLN）的共性知识与 SA。本文件 = 层根契约短表 + 引用；语义 SSOT ∈ `agent/knowledge/`。
 

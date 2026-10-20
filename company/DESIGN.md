@@ -1,8 +1,13 @@
 ---
 type: Design Document
 title: 公司知识库设计
+version: 2026.1020.0
 ---
 # 公司知识库设计
+
+## 版本
+
+版本号表示四层知识库的统一内容发布版本，格式为 `YYYY.MMdd.patch`。版本由维护者人工发布；发布时，四层 `DESIGN.md` 的 `version` 必须同步为同一值。
 
 本文件 = `company/` 层契约短表 + 治理引用；不写系统实现。定位见 [README](README.md)；语义 SSOT ∈ `agent/knowledge/`。
 

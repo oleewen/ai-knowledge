@@ -35,6 +35,7 @@ git checkout "$MAIN"
 git pull --ff-only origin "$MAIN"
 git merge --ff-only "$branch"
 git push origin "$MAIN"
-next="feature-$version"
+next_patch=$((10#${version##*.} + 1))
+next="feature-${version%.*}.${next_patch}"
 git checkout -b "$next"
 echo "Published $version; switched to $next"
