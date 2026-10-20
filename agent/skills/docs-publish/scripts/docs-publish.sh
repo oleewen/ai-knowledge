@@ -26,6 +26,8 @@ for file in "${files[@]}"; do git add "$file"; done
 git diff --cached --quiet && { echo 'no publish changes'; exit 1; }
 git fetch origin "$MAIN"
 git rebase --autostash "origin/$MAIN"
+for file in "${files[@]}"; do git add "$file"; done
+[[ -f TODO-LIST.md ]] && git add TODO-LIST.md
 git commit -m "docs-publish: version $version" -m "Previous version: ${old:-none}\nPublished files: ${files[*]}"
 git push -u origin "$branch"
 git fetch origin "$MAIN"
