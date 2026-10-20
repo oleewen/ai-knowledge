@@ -7,8 +7,13 @@ DRY_RUN=0
 while (($#)); do case "$1" in --dry-run) DRY_RUN=1; shift;; -h|--help) sed -n '1,80p' "$0"; exit 0;; *) echo "unknown option: $1" >&2; exit 1;; esac; done
 MAIN="$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null | sed 's#^origin/##' || true)"; MAIN="${MAIN:-main}"
 branch="$(git branch --show-current)"; [[ -n "$branch" ]] || { echo 'detached HEAD is not supported' >&2; exit 1; }
+[[ "$branch" != "$MAIN" ]] || { echo "cannot publish from main; checkout a feature branch first" >&2; exit 1; }
 files=(application/DESIGN.md system/DESIGN.md solution/DESIGN.md company/DESIGN.md)
 allowed=("${files[@]}" TODO-LIST.md)
+for file in "${files[@]}"; do
+  [[ -f "$file" ]] || { echo "missing required file: $file" >&2; exit 1; }
+  grep -q '^version:[[:space:]]*' "$file" || { echo "missing version field: $file" >&2; exit 1; }
+done
 for changed in $(git status --porcelain=v1 | sed -E 's/^.. //'); do
   ok=0; for file in "${allowed[@]}"; do [[ "$changed" == "$file" ]] && ok=1; done
   ((ok)) || { echo "unrelated working-tree change: $changed" >&2; exit 1; }
@@ -28,7 +33,7 @@ git fetch origin "$MAIN"
 git rebase --autostash "origin/$MAIN"
 for file in "${files[@]}"; do git add "$file"; done
 [[ -f TODO-LIST.md ]] && git add TODO-LIST.md
-git commit -m "docs-publish: version $version" -m "Previous version: ${old:-none}\nPublished files: ${files[*]}"
+git commit -m "docs-publish: version $version" -m $'Previous version: '"${old:-none}"$'\nPublished files: '"${files[*]}"
 git push -u origin "$branch"
 git fetch origin "$MAIN"
 git checkout "$MAIN"

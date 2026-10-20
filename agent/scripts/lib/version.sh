@@ -6,6 +6,9 @@ version_normalize() {
   if [[ "$raw" =~ ^[0-9]{2}\.[0-9]{2}\.[0-9]{2}$ ]]; then
     printf '20%s.%s%s.0\n' "${raw:0:2}" "${raw:3:2}" "${raw:6:2}"
   elif [[ "$raw" =~ ^[0-9]{4}\.[0-9]{4}\.[0-9]+$ ]]; then
+    local md month day
+    md="${raw#*.}"; month="${md:0:2}"; day="${md:2:2}"
+    ((10#$month >= 1 && 10#$month <= 12 && 10#$day >= 1 && 10#$day <= 31)) || return 1
     printf '%s\n' "$raw"
   else
     return 1

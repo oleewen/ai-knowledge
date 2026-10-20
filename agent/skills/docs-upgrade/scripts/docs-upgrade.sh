@@ -26,6 +26,9 @@ META_DOC_DIR=""
 META_CLEANUP=""
 VERSION_FROM=""
 VERSION_TO=""
+VERSION_FROM_SHA=""
+VERSION_TO_SHA=""
+DOC_REL_ROOT=""
 
 detect_version_range() {
  local design_file="${doc_abs%/}/DESIGN.md" current latest from_sha to_sha
@@ -41,7 +44,16 @@ detect_version_range() {
  [[ -n "$from_sha" ]] || error "找不到当前版本提交: $current"
  VERSION_FROM="$current"
  VERSION_TO="$latest"
+ VERSION_FROM_SHA="$from_sha"
+ VERSION_TO_SHA="$to_sha"
+ DOC_REL_ROOT="${doc_abs#"$repo_abs"/}"
  info "版本增量: $VERSION_FROM -> $VERSION_TO (${from_sha}..${to_sha})"
+}
+
+version_path_changed() {
+ local rel="$1"
+ [[ -z "$VERSION_FROM_SHA" ]] && return 0
+ git -C "$repo_abs" diff --quiet "$VERSION_FROM_SHA..$VERSION_TO_SHA" -- "$DOC_REL_ROOT/$rel"
 }
 
 usage() {
@@ -342,6 +354,7 @@ while IFS= read -r -d '' rel; do
  is_excluded_meta_rel "$rel" && continue
 
  local_rel="$rel"
+ version_path_changed "$local_rel" || continue
  src_f="$META_SRC/$rel"
  dst_f="${doc_abs%/}/$local_rel"
 
