@@ -10,6 +10,7 @@ source "$META_ROOT/agent/scripts/test-core.sh"
 suite_runner() {
   case "$1" in
     bash-guard) printf '%s\n' 'agent/scripts/tests/bash-guard/run.sh' ;;
+    refresh-codex) printf '%s\n' 'agent/scripts/tests/refresh-codex/run.sh' ;;
     docs-link) printf '%s\n' 'agent/skills/docs-link/tests/run.sh' ;;
     docs-pull) printf '%s\n' 'agent/skills/docs-pull/tests/run.sh' ;;
     docs-push) printf '%s\n' 'agent/skills/docs-push/tests/run.sh' ;;
@@ -23,8 +24,8 @@ suite_runner() {
   esac
 }
 
-QUICK_SUITES=(bash-guard forbidden-file-refs docs-link docs-pull okf docs-okf agent-install bootstrap)
-FULL_SUITES=(bash-guard forbidden-file-refs docs-link docs-pull okf docs-okf agent-install bootstrap docs-install docs-push)
+QUICK_SUITES=(bash-guard refresh-codex forbidden-file-refs docs-link docs-pull okf docs-okf agent-install bootstrap)
+FULL_SUITES=(bash-guard refresh-codex forbidden-file-refs docs-link docs-pull okf docs-okf agent-install bootstrap docs-install docs-push)
 
 MODE='quick'
 SUITE=''
