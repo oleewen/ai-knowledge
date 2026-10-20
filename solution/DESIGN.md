@@ -1,7 +1,7 @@
 ---
 type: Design Document
 title: 解决方案知识库设计
-version: 2026.1020.0
+version: 2026.1020.1
 ---
 # 解决方案知识库设计
 
