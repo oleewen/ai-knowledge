@@ -23,7 +23,7 @@
 
 ### 1 准备
 
-- `knowledge-links.yaml` 中 **`path`** 为本机已存在目录（多为已 clone 的应用根）
+- `knowledge-links.yaml` 中 **`path`** 按所属库 `WORK_SPACE` 展开后须为本机已存在目录（多为已 clone 的应用根）
 - `app_name` 与文件名末段一致：legacy → `spec-…-{app}`；asd → `spec-asd-{IDEA}-{PHASE}-{app}` 最后一段
 - **`--specs-dir`**：asd **递归**，通常取 `{DOC_DIR}` 根（非仅单层 `specs/`），除非你确定所有 `spec-asd` 都在该树下
 

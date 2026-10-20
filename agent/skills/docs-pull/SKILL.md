@@ -12,6 +12,7 @@ description: >
 
 ## 输出硬约束（P0）
 
+- `knowledge-links.yaml` 的 `path` 统一使用 `${WORK_SPACE}/…`；按文件所属库配置展开，缺配置、旧格式或越界即停止。读写与迁移细则见 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「knowledge-links 路径契约」。
 - 当前单元：单个 `application-slots/application-{NAME}`、`system-slots/system-{NAME}` 或 `solution-slots/solution-{NAME}` 槽位（软链）。
 - 轻流程：参数向导 → 风险校核 → `C/M/S/F`（无 `G`、不绑意图澄清）→ [light-flow-actions.md](../../references/light-flow-actions.md)；细节 [gates.md](references/gates.md)。参数未收口前不得执行同步。
 - `--all` 也须先处理并校核一个当前槽位；未收敛前不得静默推进后续槽位。

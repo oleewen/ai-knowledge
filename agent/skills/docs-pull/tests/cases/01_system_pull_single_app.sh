@@ -58,7 +58,7 @@ cat >"$SYSTEM/docs/knowledge-links.yaml" <<EOF
 links:
   - type: child
     repository: "$BARE"
-    path: "$APP"
+    path: "\${WORK_SPACE}/$(basename "$APP")"
     dir: "docs"
     name: "app-foo"
     label: "app-foo"

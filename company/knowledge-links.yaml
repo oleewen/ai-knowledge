@@ -8,16 +8,16 @@
 # 样例：
 #   - type: meta
 #     repository: "git@github.com:example/ai-knowledge.git"
-#     path: "~/workspaces/ai-knowledge"
+#     path: "${WORK_SPACE}/ai-knowledge"
 #     dir: "company"
 #   - type: child
 #     repository: "git@github.com:example/sln-foo.git"
-#     path: "~/workspaces/sln-foo"
+#     path: "${WORK_SPACE}/sln-foo"
 #     dir: "docs"
 #     name: "sln-foo"
 #     label: "示例解决方案"
 links:
   - type: meta
     repository: "git@github.com:oleewen/ai-knowledge.git"
-    path: "~/workspaces/ai-knowledge"
+    path: "${WORK_SPACE}/ai-knowledge"
     dir: "company"

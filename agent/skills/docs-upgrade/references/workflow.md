@@ -21,7 +21,7 @@
 
 ## 源解析
 
-优先级：**`--ref`（若传）> 有效 path > clone**。`--meta-path` 与 yaml `path` 同规则。
+优先级：**`--ref`（若传）> 有效 path > clone**。YAML `path` 只接受 `${WORK_SPACE}/…`；`--meta-path` 也可传本机路径，但必须位于所属库工作区内。
 
 1. `docsconfig_bootstrap_validate`（或等价）读 `.docsconfig`
 2. 缺 config → 硬停，提示 `/docs-install`

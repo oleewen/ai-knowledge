@@ -5,22 +5,22 @@
 # 示例：
 #   - type: meta
 #     repository: "git@github.com:example/ai-knowledge.git"
-#     path: "~/workspaces/ai-knowledge"
+#     path: "${WORK_SPACE}/ai-knowledge"
 #     dir: "system"
 #   - type: parent
 #     repository: "git@github.com:example/sln-foo.git"
-#     path: "~/workspaces/sln-foo"
+#     path: "${WORK_SPACE}/sln-foo"
 #     dir: "docs"
 #     name: "sln-foo"
 #     label: "sln-foo"
 #   - type: child
 #     repository: "https://example.com/org/app-foo.git"
-#     path: "~/workspaces/app-foo"
+#     path: "${WORK_SPACE}/app-foo"
 #     dir: "docs"
 #     name: "app-foo"
 #     label: "app-foo"
 links:
   - type: meta
     repository: "git@github.com:oleewen/ai-knowledge.git"
-    path: "~/workspaces/ai-knowledge"
+    path: "${WORK_SPACE}/ai-knowledge"
     dir: "system"

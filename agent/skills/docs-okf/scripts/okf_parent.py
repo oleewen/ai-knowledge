@@ -37,8 +37,8 @@ def _cmd_write(args: argparse.Namespace) -> int:
 
 def _cmd_unlink(args: argparse.Namespace) -> int:
     doc_root = Path(args.doc_root)
+    x.delete_parent(doc_root, dry_run=args.dry_run)
     if not args.dry_run:
-        x.delete_parent(doc_root)
         print(f"已删除 type:parent → {x.links_yaml_path(doc_root)}")
     else:
         print(f"[dry-run] 将删除 type:parent → {x.links_yaml_path(doc_root)}")
@@ -113,7 +113,11 @@ def main(argv: Optional[list] = None) -> int:
     h.set_defaults(func=_cmd_href)
 
     args = parser.parse_args(argv)
-    return int(args.func(args))
+    try:
+        return int(args.func(args))
+    except (ValueError, OSError, RuntimeError) as exc:
+        print(f"[error] {exc}", file=sys.stderr)
+        return 1
 
 
 if __name__ == "__main__":

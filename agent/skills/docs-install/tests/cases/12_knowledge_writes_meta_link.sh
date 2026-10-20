@@ -37,11 +37,11 @@ cat >"$LINKS" <<EOF
 links:
   - type: meta
     repository: "https://example.com/old-meta.git"
-    path: "~/old-meta"
+    path: "\${WORK_SPACE}/old-meta"
     dir: "application"
   - type: meta
     repository: "https://example.com/extra-meta.git"
-    path: "~/extra-meta"
+    path: "\${WORK_SPACE}/extra-meta"
     dir: "application"
 EOF
 

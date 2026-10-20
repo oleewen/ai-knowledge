@@ -20,10 +20,14 @@ SRC="${TMP}/specs-src"
 mkdir -p "$TARGET" "$SRC"
 printf '# x\n' >"${SRC}/spec-250504-1-myapp.md"
 
+mkdir -p "$TMP/agent"
+printf 'AGENT_ROOT=%s\nAGENT_DIR=agent\n' "$TMP" > "$TMP/.docsconfig"
+printf 'WORK_SPACE=%s\n' "$TMP" > "$TMP/agent/configs"
+
 cat >"${TMP}/knowledge-links.yaml" <<EOF
 links:
   - type: child
-    path: "${TARGET}"
+    path: "\${WORK_SPACE}/$(basename "$TARGET")"
     dir: docs
     name: myapp
 EOF

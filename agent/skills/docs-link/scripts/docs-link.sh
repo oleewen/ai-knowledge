@@ -8,7 +8,7 @@
 # 须在源 Git 仓库内执行；link 需校验源、目标 .docsconfig 与 KNOWLEDGE_TYPE；
 # 目标须已有 knowledge-links.yaml（application 由 docs-install 落盘）；缺则失败。
 # unlink 支持目标失联场景（按登记 identity 注销）；注销时移除槽位软链（共用 changelogs 保留）。
-# 登记值：repository 存 Git remote URL；path 存本机路径（$HOME 下 ~/…）；dir=对方 DOC_DIR。
+# 登记值：repository 存 Git remote URL；path 存工作区路径（${WORK_SPACE}/…）；dir=对方 DOC_DIR。
 # type:meta（docs-install 写入）写回时保活；meta.dir=目标 KNOWLEDGE_TYPE。pull/push 跳过 meta。
 # 不再读写 knowledge-parent.yaml；跨层 HTTP 前缀替换仅当 --rewrite-http。
 # 槽位：solution-slots/solution-{NAME}、system-slots/system-{NAME}、application-slots/application-{NAME} 为指向下级文档目录的软链。
@@ -135,13 +135,13 @@ knowledge_link_identity_from_raw_target() {
 
 # 将「已登记的一条 repository + path」规范为身份串（与 REGISTER_KEY / --target 比对）
 knowledge_link_identity_from_stored_entry() {
-  local repo="${1:-}" stored_path="${2:?}"
+  local repo="${1:-}" stored_path="${2:?}" links_file="${3:?}"
   local exp
   if [[ -n "$repo" ]]; then
     printf '%s\n' "$(strip_trailing_slash "$repo")"
     return 0
   fi
-  exp="$(knowledge_link_expand_stored_path "$stored_path")"
+  exp="$(knowledge_link_expand_stored_path "$stored_path" "$links_file")"
   if [[ -d "$exp" ]]; then
     knowledge_link_register_value_from_dir "$exp"
   else
@@ -475,7 +475,7 @@ if [[ "$CMD" == 'link' ]]; then
   REGISTER_REPO="$(knowledge_link_git_remote_url_prefer_origin "$TGT_ROOT" || true)"
   [[ -n "$REGISTER_REPO" ]] || error "目标仓库缺少 Git remote URL（repository 必填）。请为目标仓库配置 origin（或任一 remote）后重试: $TGT_ROOT"
   TARGET_DOC_DIR="$_tdd"
-  REGISTER_PATH_STORED="$(knowledge_link_stored_path_from_absolute "$TGT_ROOT")"
+  REGISTER_PATH_STORED="$(knowledge_link_stored_path_from_absolute "$TGT_ROOT" "$LIST_FILE")"
   SRC_DOC_DIR="$_sdd"
   [[ -n "$SRC_DOC_DIR" ]] || SRC_DOC_DIR="$(docsconfig_doc_dir_from_roots "$SRC_ROOT" "$(docs_link_abs_under_repo "$SRC_ROOT" "$_sdoc")")" \
     || error "无法计算源 DOC_DIR"
@@ -497,13 +497,22 @@ fi
 declare -a repos=() paths=() doc_dirs=() app_names=() app_labels=() types=()
 knowledge_links_load_into_arrays "$LIST_FILE" paths repos doc_dirs app_names app_labels types
 
+# 双边路径与现有清单须在创建槽位、写源清单之前全部通过校验。
+if [[ "$CMD" == link ]]; then
+  knowledge_link_stored_path_from_absolute "$SRC_ROOT" "$TGT_LINKS" >/dev/null
+  (
+    declare -a pre_paths=() pre_repos=() pre_dirs=() pre_names=() pre_labels=() pre_types=()
+    knowledge_links_load_into_arrays "$TGT_LINKS" pre_paths pre_repos pre_dirs pre_names pre_labels pre_types
+  )
+fi
+
 have=0
 new_identity="${REGISTER_KEY}"
 for i in "${!paths[@]}"; do
   case "${types[i]:-child}" in
     parent|meta) continue ;;
   esac
-  if [[ "$(knowledge_link_identity_from_stored_entry "${repos[i]:-}" "${paths[i]}")" == "$new_identity" ]]; then
+  if [[ "$(knowledge_link_identity_from_stored_entry "${repos[i]:-}" "${paths[i]}" "$LIST_FILE")" == "$new_identity" ]]; then
     have=1
     matched_idx=$i
     break
@@ -564,7 +573,7 @@ docs_link_upsert_target_parent() {
 
   src_repo="$(knowledge_link_git_remote_url_prefer_origin "$SRC_ROOT" || true)"
   [[ -n "$src_repo" ]] || error "源仓库缺少 Git remote URL（parent.repository 必填）: $SRC_ROOT"
-  src_path="$(knowledge_link_stored_path_from_absolute "$SRC_ROOT")"
+  src_path="$(knowledge_link_stored_path_from_absolute "$SRC_ROOT" "$TGT_LINKS")"
 
   knowledge_links_load_into_arrays "$TGT_LINKS" tpaths trepos tdirs tapps tlabels ttypes
   for i in "${!tpaths[@]}"; do
@@ -618,7 +627,7 @@ docs_link_remove_target_parent() {
   knowledge_links_load_into_arrays "$TGT_LINKS" tpaths trepos tdirs tapps tlabels ttypes
   for i in "${!tpaths[@]}"; do
     [[ "${ttypes[i]:-child}" == "parent" ]] || continue
-    if [[ "$(knowledge_link_identity_from_stored_entry "${trepos[i]:-}" "${tpaths[i]}")" == "$source_key" ]]; then
+    if [[ "$(knowledge_link_identity_from_stored_entry "${trepos[i]:-}" "${tpaths[i]}" "$TGT_LINKS")" == "$source_key" ]]; then
       removed=$((removed + 1))
       continue
     fi
@@ -704,7 +713,7 @@ docs_link_execute_unlink() {
       if [[ -n "${repos[matched_idx]:-}" ]]; then
         unlink_name="$(knowledge_link_app_name_from_register_key "${repos[matched_idx]}")" || unlink_name=''
       else
-        exp="$(knowledge_link_expand_stored_path "${paths[matched_idx]}")"
+        exp="$(knowledge_link_expand_stored_path "${paths[matched_idx]}" "$LIST_FILE")"
         unlink_name="$(knowledge_link_app_name_from_register_key "$exp")" || unlink_name=''
       fi
     fi
@@ -715,7 +724,7 @@ docs_link_execute_unlink() {
       meta) ;; # 保活 type:meta
       parent) ;;
       *)
-        if [[ "$(knowledge_link_identity_from_stored_entry "${repos[i]:-}" "${paths[i]}")" == "$new_identity" ]]; then
+        if [[ "$(knowledge_link_identity_from_stored_entry "${repos[i]:-}" "${paths[i]}" "$LIST_FILE")" == "$new_identity" ]]; then
           continue
         fi
         ;;

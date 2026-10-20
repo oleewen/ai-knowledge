@@ -24,10 +24,13 @@ printf '# x\n' >"${SRC}/spec-250504-1-myapp.md"
 TARGET="${TMP}/target-app"
 mkdir -p "$TARGET"
 
+printf 'AGENT_ROOT=%s\nAGENT_DIR=.agents\n' "$TMP" > "$CENTRAL/.docsconfig"
+printf 'WORK_SPACE=%s\n' "$TMP" > "$STORE/configs"
+
 cat >"${CENTRAL}/system/knowledge-links.yaml" <<EOF
 links:
   - type: child
-    path: "${TARGET}"
+    path: "\${WORK_SPACE}/$(basename "$TARGET")"
     dir: docs
     name: myapp
 EOF

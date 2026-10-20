@@ -36,7 +36,7 @@ cat >"$COMPANY/docs/knowledge-links.yaml" <<'EOF'
 links:
   - type: meta
     repository: "https://example.com/org/ai-knowledge.git"
-    path: "~/workspaces/ai-knowledge"
+    path: "${WORK_SPACE}/ai-knowledge"
     dir: "company"
 EOF
 
@@ -44,7 +44,7 @@ cat >"$SOLUTION/docs/knowledge-links.yaml" <<'EOF'
 links:
   - type: meta
     repository: "https://example.com/org/ai-knowledge.git"
-    path: "~/workspaces/ai-knowledge"
+    path: "${WORK_SPACE}/ai-knowledge"
     dir: "solution"
 EOF
 

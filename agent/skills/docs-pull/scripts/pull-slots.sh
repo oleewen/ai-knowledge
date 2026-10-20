@@ -202,7 +202,7 @@ pull_one() {
   local target_cfg t_repo_abs='' t_doc_abs='' t_doc_dir='' t_agent_root='' t_ktype=''
 
   repo="${repos[idx]}"
-  path_expanded="$(knowledge_link_expand_stored_path "${paths[idx]}")"
+  path_expanded="$(knowledge_link_expand_stored_path "${paths[idx]}" "$LINKS_FILE")"
   name="${names[idx]}"
   label="${labels[idx]}"
 

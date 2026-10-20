@@ -4,12 +4,132 @@
 from __future__ import annotations
 
 import sys
+import os
+import subprocess
+from dataclasses import replace
 import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(ROOT / "agent" / "skills" / "docs-okf" / "scripts"))
 import okf_cross_layer as x  # noqa: E402
+
+
+def configure(doc: Path, workspace: Path, kind: str = "application") -> None:
+    doc.mkdir(parents=True, exist_ok=True)
+    agent = doc / "agent-config"
+    agent.mkdir(exist_ok=True)
+    (agent / "configs").write_text(f'WORK_SPACE="{workspace}"\n')
+    (doc / ".docsconfig").write_text(
+        f'AGENT_ROOT="{doc}"\nAGENT_DIR=agent-config\nKNOWLEDGE_TYPE={kind}\n'
+    )
+
+
+def rejects(action) -> None:
+    try:
+        action()
+    except ValueError:
+        return
+    raise AssertionError("应拒绝无效工作区路径或缺失配置")
+
+
+def test_workspace_contract(tmp_path: Path) -> None:
+    doc = tmp_path / "host"
+    configure(doc, tmp_path)
+    parent = x.Parent("system", "https://github.com/org/sys.git", str(tmp_path / "target"), "docs", parent_name="sys")
+    previous_workspace = os.environ.get("WORK_SPACE")
+    os.environ["WORK_SPACE"] = "/wrong-environment"
+    try:
+        x.write_parent(doc, replace(parent, path=str(tmp_path)))
+        assert 'path: "${WORK_SPACE}"' in (doc / "knowledge-links.yaml").read_text()
+        x.write_parent(doc, parent)
+        text = (doc / "knowledge-links.yaml").read_text()
+        assert 'path: "${WORK_SPACE}/target"' in text
+        loaded = x.load_parent(doc)
+        assert loaded is not None and loaded.expanded_path() == (tmp_path / "target").resolve()
+        for bad in (str(tmp_path / "target"), "~/target", "${WORK_SPACE}/../escape", "${WORK_SPACE_BAD}/target"):
+            (doc / "knowledge-links.yaml").write_text(text.replace("${WORK_SPACE}/target", bad))
+            rejects(lambda: x.load_parent(doc))
+        (doc / "knowledge-links.yaml").write_text(text)
+        escape = tmp_path / "escape-link"
+        escape.symlink_to(tmp_path.parent, target_is_directory=True)
+        rejects(lambda: x.write_parent(doc, replace(parent, path="${WORK_SPACE}/escape-link/outside")))
+        for kind in ("child", "meta"):
+            (doc / "knowledge-links.yaml").write_text(text + f'  - type: {kind}\n    path: "/outside"\n')
+            rejects(lambda: x.load_parent(doc))
+            rejects(lambda: x.write_parent(doc, parent, dry_run=True))
+            rejects(lambda: x.delete_parent(doc, dry_run=True))
+        (doc / "knowledge-links.yaml").write_text(text)
+        (doc / "agent-config" / "configs").write_text("# WORK_SPACE missing\n")
+        rejects(lambda: x.load_parent(doc))
+        rejects(lambda: x.write_parent(doc, parent))
+    finally:
+        if previous_workspace is None:
+            os.environ.pop("WORK_SPACE", None)
+        else:
+            os.environ["WORK_SPACE"] = previous_workspace
+
+
+def test_nested_document_root_uses_owner_layer(tmp_path: Path) -> None:
+    owner = tmp_path / "nested-owner"
+    configure(owner, tmp_path)
+    doc = owner / "docs" / "application"
+    x.write_parent(doc, x.Parent("system", "", str(tmp_path / "offline-system"), ".", parent_name="sys"))
+    parent = x.load_parent(doc)
+    assert parent is not None and parent.knowledge_type == "system"
+
+
+def test_parent_cli_missing_config_fails_cleanly(tmp_path: Path) -> None:
+    result = subprocess.run([
+        sys.executable, str(ROOT / "agent/skills/docs-okf/scripts/okf_parent.py"),
+        "write", "--doc-root", str(tmp_path / "no-config"),
+        "--knowledge-type", "system", "--path", str(tmp_path / "sys"),
+        "--doc-dir", "system",
+    ], capture_output=True, text=True)
+    assert result.returncode != 0
+    assert ".docsconfig" in result.stderr
+    assert "Traceback" not in result.stderr
+
+
+def test_parent_cli_symlink_loop_fails_cleanly(tmp_path: Path) -> None:
+    doc = tmp_path / "loop-owner"
+    configure(doc, tmp_path)
+    (tmp_path / "loop").symlink_to("loop")
+    result = subprocess.run([
+        sys.executable, str(ROOT / "agent/skills/docs-okf/scripts/okf_parent.py"),
+        "write", "--doc-root", str(doc), "--knowledge-type", "system",
+        "--path", "${WORK_SPACE}/loop", "--doc-dir", "system",
+    ], capture_output=True, text=True)
+    assert result.returncode != 0
+    assert "loop" in result.stderr
+    assert "Traceback" not in result.stderr
+    assert not (doc / "knowledge-links.yaml").exists()
+
+
+def test_workspace_repeated_slashes_stay_relative(tmp_path: Path) -> None:
+    doc = tmp_path / "slash-owner"
+    configure(doc, tmp_path)
+    for value in ("${WORK_SPACE}//repo", "${WORK_SPACE}///repo", "${WORK_SPACE}//"):
+        expected = (tmp_path / "repo").resolve() if value.endswith("repo") else tmp_path.resolve()
+        assert x.resolve_link_path(doc, value) == expected
+        x.write_parent(doc, x.Parent("system", "", value, ".", parent_name="sys"))
+        stored = (doc / "knowledge-links.yaml").read_text()
+        expected_stored = "${WORK_SPACE}/repo" if value.endswith("repo") else "${WORK_SPACE}"
+        assert f'path: "{expected_stored}"' in stored
+
+
+def test_parent_chain_uses_each_owner_workspace(tmp_path: Path) -> None:
+    first = tmp_path / "first"
+    second = tmp_path / "second"
+    app = first / "app"
+    system = first / "sys"
+    company = second / "co"
+    configure(app, first)
+    configure(system, second, "system")
+    configure(company, second, "company")
+    x.write_parent(app, x.Parent("system", "", str(system), ".", parent_name="sys"))
+    x.write_parent(system, x.Parent("company", "", str(company), ".", parent_name="co"))
+    assert [p.expanded_path() for p in x.walk_parents(app)] == [system.resolve(), company.resolve()]
 
 
 def test_https_repo_home_ssh_and_https() -> None:
@@ -59,6 +179,7 @@ def test_href_and_validate(tmp_path: Path) -> None:
     (bd_dir / "BD-EXAMPLE.md").write_text("# bd\n", encoding="utf-8")
     sys_root = tmp_path / "sys" / "system"
     sys_root.mkdir(parents=True)
+    configure(sys_root, tmp_path)
     x.write_parent(
         sys_root,
         x.Parent(
@@ -140,6 +261,7 @@ def test_href_walks_same_layer_parent_chain(tmp_path: Path) -> None:
     )
     app = tmp_path / "app" / "application"
     app.mkdir(parents=True)
+    configure(app, tmp_path)
     x.write_parent(
         app,
         x.Parent(
@@ -208,6 +330,7 @@ def test_single_parent_uses_disk_dir(tmp_path: Path) -> None:
     )
     child = tmp_path / "child"
     child.mkdir()
+    configure(child, tmp_path)
     x.write_parent(
         child,
         x.Parent(
@@ -240,6 +363,7 @@ def test_single_parent_uses_disk_dir(tmp_path: Path) -> None:
 
     ghost = tmp_path / "ghost"
     ghost.mkdir()
+    configure(ghost, tmp_path)
     x.write_parent(
         ghost,
         x.Parent(
@@ -262,13 +386,14 @@ def test_load_parent_uses_name_field(tmp_path: Path) -> None:
     (sln / ".docsconfig").write_text("KNOWLEDGE_TYPE=solution\n", encoding="utf-8")
     doc = tmp_path / "system-parent"
     doc.mkdir()
+    configure(doc, tmp_path)
     (doc / "knowledge-links.yaml").write_text(
         "\n".join(
             [
                 "links:",
                 "  - type: parent",
                 '    repository: "git@github.com:org/sln.git"',
-                f'    path: "{sln}"',
+                '    path: "${WORK_SPACE}/sln-repo"',
                 '    dir: "docs"',
                 '    name: "sln-kb"',
                 '    label: "sln-kb"',
@@ -283,13 +408,14 @@ def test_load_parent_uses_name_field(tmp_path: Path) -> None:
     assert parent.parent_name == "sln-kb"
     bare = tmp_path / "bare"
     bare.mkdir()
+    configure(bare, tmp_path)
     (bare / "knowledge-links.yaml").write_text(
         "\n".join(
             [
                 "links:",
                 "  - type: parent",
                 '    repository: "git@github.com:org/x.git"',
-                '    path: "/tmp/x"',
+                '    path: "${WORK_SPACE}/x"',
                 '    dir: "docs"',
                 "",
             ]
@@ -298,6 +424,7 @@ def test_load_parent_uses_name_field(tmp_path: Path) -> None:
     )
     assert x.load_parent(bare) is None
     written = tmp_path / "out"
+    configure(written, tmp_path)
     x.write_parent(
         written,
         x.Parent(
@@ -318,36 +445,37 @@ def test_load_parent_uses_name_field(tmp_path: Path) -> None:
     assert again is not None and again.knowledge_type == "solution"
     mixed = tmp_path / "mixed"
     mixed.mkdir()
+    configure(mixed, tmp_path)
     (mixed / "knowledge-links.yaml").write_text(
         "\n".join(
             [
                 "links:",
                 "  - type: parent",
                 '    repository: "git@github.com:org/co.git"',
-                '    path: "/tmp/co"',
+                '    path: "${WORK_SPACE}/co"',
                 '    dir: "docs"',
                 '    name: "co"',
                 '    label: "co"',
                 "  - type: meta",
                 '    repository: "git@github.com:org/meta.git"',
-                '    path: "/tmp/meta"',
+                '    path: "${WORK_SPACE}/meta"',
                 '    dir: "company"',
                 '    name: "should-drop"',
                 "  - type: child",
                 '    repository: "git@github.com:org/sln.git"',
-                '    path: "/tmp/sln"',
+                '    path: "${WORK_SPACE}/sln"',
                 '    dir: "docs"',
                 '    name: "sln-child"',
                 '    label: "方案"',
                 "  - type: child",
                 '    repository: "git@github.com:org/sys.git"',
-                '    path: "/tmp/sys"',
+                '    path: "${WORK_SPACE}/sys"',
                 '    dir: "docs"',
                 '    name: "sys-child"',
                 '    label: "系统"',
                 "  - type: child",
                 '    repository: "git@github.com:org/app.git"',
-                '    path: "/tmp/app"',
+                '    path: "${WORK_SPACE}/app"',
                 '    dir: "docs"',
                 '    name: "app-child"',
                 '    label: "应用"',
@@ -361,7 +489,7 @@ def test_load_parent_uses_name_field(tmp_path: Path) -> None:
         x.Parent(
             knowledge_type="company",
             repository="https://github.com/org/co.git",
-            path="/tmp/co",
+            path=str(tmp_path / "co"),
             doc_dir="docs",
             parent_name="co",
             parent_label="co",
@@ -379,6 +507,19 @@ def test_load_parent_uses_name_field(tmp_path: Path) -> None:
 
 
 def main() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        test_parent_cli_symlink_loop_fails_cleanly(Path(tmp))
+        print("PASS test_parent_cli_symlink_loop_fails_cleanly")
+        test_workspace_repeated_slashes_stay_relative(Path(tmp))
+        print("PASS test_workspace_repeated_slashes_stay_relative")
+        test_parent_cli_missing_config_fails_cleanly(Path(tmp))
+        print("PASS test_parent_cli_missing_config_fails_cleanly")
+        test_nested_document_root_uses_owner_layer(Path(tmp))
+        print("PASS test_nested_document_root_uses_owner_layer")
+        test_workspace_contract(Path(tmp))
+        print("PASS test_workspace_contract")
+        test_parent_chain_uses_each_owner_workspace(Path(tmp))
+        print("PASS test_parent_chain_uses_each_owner_workspace")
     test_https_repo_home_ssh_and_https()
     print("PASS test_https_repo_home_ssh_and_https")
     test_parent_web_base_github()

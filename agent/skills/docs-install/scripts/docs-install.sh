@@ -282,6 +282,24 @@ docs_install_restore_knowledge_links() {
   _DOCS_INSTALL_LINKS_STASH=""
 }
 
+# 模板复制前校验工作区，避免缺配置或源仓越界时留下半成品。
+docs_install_prepare_link_workspace() {
+  local repo_target='' doc_root='' dd='' rd='' old_dd='' ar='' kt='' ad=''
+  local selected_ar='' selected_ad='' ws
+  docs_install_resolve_docsconfig_roots repo_target doc_root dd
+  if [[ -f "$repo_target/.docsconfig" ]]; then
+    docsconfig_read_into "$repo_target/.docsconfig" rd old_dd ar kt ad || return 1
+  fi
+  install_agent_path selected_ar selected_ad "$ar" "$ad"
+  ws="$(docsconfig_load_workspace_abs "$selected_ar" "$selected_ad")" || return 1
+  _knowledge_link_relative_to_workspace "$repo_target" "$ws" >/dev/null || return 1
+  CFG[meta_path_stored]="$(_knowledge_link_store_with_workspace "${CFG[repo_root]}" "$ws")" || return 1
+  if [[ -f "$doc_root/knowledge-links.yaml" ]]; then
+    local -a pre_paths=() pre_repos=() pre_dirs=() pre_names=() pre_labels=() pre_types=()
+    knowledge_links_load_into_arrays "$doc_root/knowledge-links.yaml" pre_paths pre_repos pre_dirs pre_names pre_labels pre_types || return 1
+  fi
+}
+
 # 在文档目录/knowledge-links.yaml upsert 恰好一条 type:meta（指向装机源仓）
 # doc_dir = 目标 KNOWLEDGE_TYPE（= CFG[type]）；多条时保留第一条并覆盖，丢弃其余 meta
 docs_install_upsert_knowledge_meta() {
@@ -296,7 +314,7 @@ docs_install_upsert_knowledge_meta() {
   meta_repo="$(knowledge_link_git_remote_url_prefer_origin "${CFG[repo_root]}" || true)"
   [[ -n "$meta_repo" ]] \
     || error "元知识库缺少 Git remote URL（type:meta.repository 必填）。请为装机源仓配置 origin（或任一 remote）后重试: ${CFG[repo_root]}"
-  meta_path="$(knowledge_link_stored_path_from_absolute "${CFG[repo_root]}")"
+  meta_path="${CFG[meta_path_stored]}"
 
   case "${CFG[type]}" in
     application) child_kind='app'; parent_kind='sys' ;;
@@ -733,6 +751,8 @@ docs_install_run() {
 
   have_perl || warn "未检测到 perl：文件内容替换将被跳过，建议安装 perl。"
 
+  docs_install_prepare_link_workspace
+
   # ── 步骤 1：知识库同步 ────────────────────────────────────────────────────
   docs_install_stash_knowledge_links
   if should_reset_docs_dir_before_sync; then
@@ -742,8 +762,8 @@ docs_install_run() {
   if [[ -n "${CFG[docs_abs]}" && "${CFG[scope]}" == 'knowledge' ]]; then
     docs_install_copy_templates
     docs_install_restore_knowledge_links
-    docs_install_upsert_knowledge_meta
     docs_install_write_docsconfig
+    docs_install_upsert_knowledge_meta
     docs_install_rewrite_agent_paths
   fi
 

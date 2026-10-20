@@ -19,6 +19,7 @@ description: >
 
 ## 输出硬约束（P0）
 
+- `knowledge-links.yaml` 的 `path` 统一使用 `${WORK_SPACE}/…`；按文件所属库配置展开，缺配置、旧格式或越界即停止。读写与迁移细则见 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「knowledge-links 路径契约」。
 - 当前单元：单个工程 `文档目录` 的一次升级计划（文档树；不含 Agent）。
 - **两模式互斥**：调用带 ≥1 个可解析为 `文档目录` 内真实文件/目录的路径（含 IDE 附件解析出的路径）→ **指定路径强制对齐**；无此类路径 → **整树**。同一次调用不混用。不依赖 `@` 前缀；模糊像路径但无法解析 → 先澄清，不默整树也不默文件模式。
 - 轻流程：参数向导 → 风险校核 → `C/M/S/F`（无 `G`、不绑意图澄清）→ [light-flow-actions.md](../../references/light-flow-actions.md)；细节 [gates.md](references/gates.md)。参数未收口前不得写盘。

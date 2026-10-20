@@ -13,6 +13,7 @@ description: >
 
 ## 输出硬约束（P0）
 
+- `knowledge-links.yaml` 的 `path` 统一使用 `${WORK_SPACE}/…`；按文件所属库配置展开，缺配置、旧格式或越界即停止。读写与迁移细则见 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「knowledge-links 路径契约」。
 - 当前单元：单个 `--target` 的一次 docs-install 计划（含全部已收口参数）。
 - 轻流程：参数向导 → 风险校核 → `C/M/S/F`（无 `G`、不绑意图澄清）→ [light-flow-actions.md](../../references/light-flow-actions.md)；细节 [gates.md](references/gates.md)。参数未收口前不得实跑写盘。
 - 默认先 **--dry-run**；dry-run 摘要未确认前，不得静默实跑。

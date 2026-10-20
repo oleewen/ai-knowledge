@@ -9,7 +9,7 @@
 | 参数 | 必选 | 说明 |
 | --- | --- | --- |
 | （工程根） | 是 | 含 `.docsconfig`；脚本从 cwd 向上解析 |
-| `--meta-path PATH` | 否 | 覆盖 links 中 meta 的本机 path（仅本次；不改 yaml；规则同 yaml path） |
+| `--meta-path PATH` | 否 | 覆盖 links 中 meta 的本机 path（仅本次；不改 yaml；可传工作区内本机路径或 `${WORK_SPACE}/…`，均校验工作区边界） |
 | `--ref REF` | 否 | 显式对齐的 git ref；**默认不传**。有则优先于 path 当前 HEAD；仅 path 无效走 clone 且未传时默认 `main`（yaml meta 条暂无 `ref` 字段） |
 | `--dry-run` | 否 | 整树：只出清单（脚本默认模式之一） |
 | `--apply-scaffold` | 否 | 整树：备份并将「新增骨架」写入本库（须已 `C`） |

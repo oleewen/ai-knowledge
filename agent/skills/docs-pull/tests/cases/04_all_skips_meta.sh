@@ -55,11 +55,11 @@ cat >"$SYSTEM/docs/knowledge-links.yaml" <<EOF
 links:
   - type: meta
     repository: "https://example.com/org/ai-knowledge.git"
-    path: "~/workspaces/ai-knowledge"
+    path: "\${WORK_SPACE}/ai-knowledge"
     dir: "system"
   - type: child
     repository: "$BARE_OK"
-    path: "$APP_OK"
+    path: "\${WORK_SPACE}/$(basename "$APP_OK")"
     dir: "docs"
     name: "app-ok"
     label: "app-ok"

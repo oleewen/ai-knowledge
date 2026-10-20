@@ -26,5 +26,6 @@ ensure_test_agent_home() {
   mkdir -p "${home}/.agents/scripts"
   # 探测只要求存在 docs-core.sh；内容可空桩
   printf '%s\n' '#!/usr/bin/env bash' '# test stub' >"${home}/.agents/scripts/docs-core.sh"
+  printf 'WORK_SPACE=/\n' >"${home}/.agents/configs"
   export HOME="$home"
 }

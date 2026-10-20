@@ -12,6 +12,7 @@ description: >
 
 ## 输出硬约束（P0）
 
+- `knowledge-links.yaml` 的 `path` 统一使用 `${WORK_SPACE}/…`；按文件所属库配置展开，缺配置、旧格式或越界即停止。读写与迁移细则见 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「knowledge-links 路径契约」。
 - 无有效 `.docsconfig` 时立即中止；不得猜测 bundle 路径继续。
 - 缺 `KNOWLEDGE_TYPE` 时立即中止；不得生成默认 `viz.html` 路径继续。
 - 缺 `AGENT_DIR` 时立即中止；脚本路径只认 `{DOC_DIR}/{AGENT_DIR}/skills/docs-okf/`，**不得**回退 `$仓库路径/agent/`。

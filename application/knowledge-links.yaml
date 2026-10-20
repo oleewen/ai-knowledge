@@ -5,16 +5,16 @@
 # links:
 #   - type: meta
 #     repository: "git@github.com:example/ai-knowledge.git"
-#     path: "~/workspaces/ai-knowledge"
+#     path: "${WORK_SPACE}/ai-knowledge"
 #     dir: "application"
 #   - type: parent
 #     repository: "git@github.com:example/sys-foo.git"
-#     path: "~/workspaces/sys-foo"
+#     path: "${WORK_SPACE}/sys-foo"
 #     dir: "docs"
 #     name: "sys-foo"
 #     label: "订单中台"
 links:
   - type: meta
     repository: "git@github.com:oleewen/ai-knowledge.git"
-    path: "~/workspaces/ai-knowledge"
+    path: "${WORK_SPACE}/ai-knowledge"
     dir: "application"

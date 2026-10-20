@@ -148,6 +148,8 @@
 
 **parent（1:1）**：`docs-link` 在下级 `knowledge-links.yaml` 写入恰好一条 `type: parent`：`repository`、`path`、`dir`（=上级 DOC_DIR）、`name`、`label`（label 缺省等于 name）。HTTP `ref` 固定 `main`。上级清单向下登记 `type: child`，字段同为 `name` / `label`。层别由该文件所在库的 `KNOWLEDGE_TYPE` 与该条 `type` 决定，键上不写层前缀。`type` 必写，仅 `parent`、`child`、`meta`。`type: meta` 只写 `repository`、`path`、`dir`（dir = 本库 `KNOWLEDGE_TYPE`，指向元仓模板子树）。一个 application 只对应一个 system parent，一个 system 只对应一个 solution parent，一个 solution 只对应一个 company parent；换上级且传 `--rewrite-http` 时才替换旧 HTTP 前缀。`docs-install` 重装保留已有 `knowledge-links.yaml`。不再读写 `knowledge-parent.yaml`（旧文件可留盘，读忽略）。company 无 parent 条。
 
+**knowledge-links 路径契约**：所有 `parent` / `child` / `meta` 的 `path` 只保存字面量 `${WORK_SPACE}/仓库相对路径`（工作区根可写 `${WORK_SPACE}`）。读取时从该 YAML 所属库的 `.docsconfig` 取得 `AGENT_ROOT`、`AGENT_DIR`，再读取对应 `configs` 的 `WORK_SPACE`；不使用同名环境变量覆盖，不执行 `eval` 或任意变量展开。配置缺失、旧 `~/…` / 绝对路径或展开后越界（含 `..`、符号链接）均报错停止。写入接口接收的本机路径须先校验工作区边界，再转成占位符；双边建联分别使用各自库的配置。旧清单迁移时，将工作区前缀替换为 `${WORK_SPACE}`，保留其余字段；越界项不迁移。Bash 路径边界校验需要 Python 3。升级顺序为读取器与已授权清单一起迁移；未迁移清单不再兼容。
+
 **HTTP 生成（唯一函数；技能 / docs-link / 校验共用）**：输入 `id` 与首次定义层。沿 parent 链走到该层，解析根优先 `{repository}/{dir}`，否则 `{path}/{dir}`。`repository`：SSH→HTTPS、去 `.git`；GitHub `/blob/{ref}/`，GitLab `/-/blob/{ref}/`，Gitee `/blob/{ref}/`；未知宿主不写 HTTP，只用 `path`+`dir`（本机不存在则正文保持 ID）。文件相对路径用 **目标层** `entity_relpath`，不链中间层路径。禁止手写与推导不同的 href。`docs-link` 变更 `repository`/`ref`/`dir` 时扫描下级 `*/knowledge/**` 替换旧 web_base；`unlink` 能改为纯 ID 则改，否则停并列清单。
 
 **下层不建 reference 文件**：首次定义在上层的实体，下层不建同 `id` 的实体文件，正文只写纯 ID。宿主目录可留。路径父级取自关系段同层 `parent`，否则同层 `implements_to`。有 knowledge-links 的 `type: parent` 时，关系段或依据段可用 HTTP 指向上层 SSOT 文件，不链中间层。无 parent 则纯 ID。不重复字段语义。

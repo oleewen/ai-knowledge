@@ -26,7 +26,8 @@ AGENT_ROOT=~
 AGENT_DIR=.agents
 KNOWLEDGE_TYPE=application
 EOF
-pin_workspace_for_repo "$PROJECT_DIR" "$HOME" .agents
+# 此集成用例同时读取真实元库和临时目标，共同工作区为文件系统根。
+printf 'WORK_SPACE=/\n' >"$HOME/.agents/configs"
 
 "${BASH:-$(command -v bash)}" "$DOCS_INSTALL_SCRIPT" --scope=knowledge --type=application --target "$DOCS_DIR" >"$OUT_FILE" 2>&1
 

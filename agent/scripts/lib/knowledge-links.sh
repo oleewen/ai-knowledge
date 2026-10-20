@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # lib/knowledge-links.sh — knowledge-links.yaml 读写
-# 依赖：lib/path.sh、lib/log-io.sh、lib/docsconfig.sh（format_root）、lib/git-remote.sh
+# 依赖：Python 3、lib/path.sh、lib/log-io.sh、lib/docsconfig.sh、lib/git-remote.sh
 #
 
 _LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -30,30 +30,71 @@ knowledge_link_value_looks_like_git_remote() {
   [[ "${1:-}" =~ ^(git@|ssh://|https://|http://) ]]
 }
 
-# path 字段禁止为远程 URL 形态（须写在 repository）
+# 每份清单从所属库配置解析工作区；不读取环境中的 WORK_SPACE。
+knowledge_links_workspace_for_file() {
+  local f="${1:?}" owner cfg rd='' dd='' ar='' kt='' ad=''
+  owner="$(dirname "$(abs_path "$f")")"
+  while [[ ! -f "$owner/.docsconfig" ]]; do
+    [[ "$owner" != / ]] || { error "knowledge-links 缺少所属库 .docsconfig: $f"; return 1; }
+    owner="$(dirname "$owner")"
+  done
+  cfg="$owner/.docsconfig"
+  docsconfig_read_into "$cfg" rd dd ar kt ad || return 1
+  [[ -n "$ar" && -n "$ad" ]] || { error "knowledge-links 配置缺少 AGENT_ROOT/AGENT_DIR: $cfg"; return 1; }
+  docsconfig_load_workspace_abs "$ar" "$ad"
+}
+
+# 规范化真实路径（含尚不存在的 clone 目标），校验目录边界和符号链接。
+_knowledge_link_relative_to_workspace() {
+  python3 - "$1" "$2" "${3:-relative}" <<'PY_PATH'
+import sys
+from pathlib import Path
+try:
+    target = Path(sys.argv[1]).expanduser().resolve()
+    workspace = Path(sys.argv[2]).expanduser().resolve()
+    relative = target.relative_to(workspace)
+    print(target if sys.argv[3] == "absolute" else relative.as_posix())
+except (ValueError, OSError, RuntimeError) as exc:
+    print(f"knowledge-links: path 必须位于 WORK_SPACE 内: {sys.argv[1]} ({exc})", file=sys.stderr)
+    sys.exit(1)
+PY_PATH
+}
+
 knowledge_links_validate_stored_path_field() {
   local p="${1:?}" src="${2:?}"
-  [[ -n "$p" ]] || error "knowledge-links.yaml 条目缺少 path 或 path 为空: $src"
   if knowledge_link_value_looks_like_git_remote "$p"; then
-    error "knowledge-links.yaml: path 不得为远程 URL（已废弃）。请将远端写入 repository，path 改为 ~/…、~/ 或本机绝对路径（兼容旧：无 ~ 的 \$HOME 相对片段）: $src"
+    error "knowledge-links.yaml: path 不得为远程 URL；远端请写入 repository: $src"
+    return 1
   fi
+  case "$p" in
+    '${WORK_SPACE}'|'${WORK_SPACE}/'*) ;;
+    *) error "knowledge-links.yaml: path 必须使用字面量 \${WORK_SPACE}/…，请迁移旧路径: $src"; return 1 ;;
+  esac
 }
 
-# 将登记 path 展开为绝对路径（~/…、~、/ 绝对路径走 abs_path；否则视为相对 $HOME 的旧形态并拼 $HOME）
 knowledge_link_expand_stored_path() {
-  local p="${1:?}" home
-  if [[ "$p" == /* || "$p" == '~' || "$p" =~ ^~/ ]]; then
-    abs_path "$p"
-    return 0
-  fi
-  home="${HOME:-}"
-  [[ -n "$home" ]] || error "未设置 HOME，无法展开相对 path: $p"
-  abs_path "${home%/}/$p"
+  local p="${1:?}" f="${2:?knowledge-links 文件路径必填}" ws suffix
+  knowledge_links_validate_stored_path_field "$p" "$f" || return 1
+  ws="$(knowledge_links_workspace_for_file "$f")" || return 1
+  suffix="${p#'${WORK_SPACE}'}"
+  _knowledge_link_relative_to_workspace "${ws%/}/${suffix#/}" "$ws" absolute
 }
 
-# 本机绝对路径 → 登记 path（$HOME 下写成 ~/…）
+_knowledge_link_store_with_workspace() {
+  local rel
+  rel="$(_knowledge_link_relative_to_workspace "${1:?}" "${2:?}")" || return 1
+  if [[ "$rel" == . ]]; then
+    printf '%s\n' '${WORK_SPACE}'
+  else
+    printf '${WORK_SPACE}/%s\n' "$rel"
+  fi
+}
+
+# 写入只生成 WORK_SPACE 占位符；第二参数为接收此 path 的清单。
 knowledge_link_stored_path_from_absolute() {
-  docsconfig_format_root_for_write "${1:?}"
+  local ws
+  ws="$(knowledge_links_workspace_for_file "${2:?knowledge-links 文件路径必填}")" || return 1
+  _knowledge_link_store_with_workspace "${1:?}" "$ws"
 }
 
 _knowledge_link_yaml_escape_dq() {
@@ -105,6 +146,11 @@ knowledge_links_write_entries() {
     company|solution|sys|none) ;;
     *) error "knowledge_links_write_entries: parent_kind 须为 company|solution|sys|none（收到: ${parent_kind})" ;;
   esac
+  # path 验证后才打开目标文件，避免越界路径留下半份清单。
+  knowledge_links_workspace_for_file "$f" >/dev/null || return 1
+  for ((i = 0; i < n; i++)); do
+    knowledge_link_expand_stored_path "${_paths[i]}" "$f" >/dev/null || return 1
+  done
   [[ "${DRY:-0}" == '1' ]] && { printf '[dry-run] 将写入 %s（%d 条 links）\n' "$f" "$n" >&2; return 0; }
   mkdir -p "$d"
   umask 022
@@ -157,6 +203,7 @@ knowledge_links_load_into_arrays() {
   _types=()
 
   [[ -f "$f" ]] || return 0
+  knowledge_links_workspace_for_file "$f" >/dev/null || return 1
 
   flush_pending() {
     local bad=0
@@ -176,7 +223,7 @@ knowledge_links_load_into_arrays() {
       bad=1
     fi
     if [[ "$bad" -eq 0 ]]; then
-      knowledge_links_validate_stored_path_field "$path" "$f"
+      knowledge_link_expand_stored_path "$path" "$f" >/dev/null || return 1
       _paths+=("$path")
       _repos+=("${repo:-}")
       _dirs+=("${doc_dir:-}")
@@ -213,7 +260,7 @@ knowledge_links_load_into_arrays() {
     if [[ "$line" =~ ^[[:space:]]*-[[:space:]]+([a-z_]+):[[:space:]]*(.*)$ ]]; then
       key="${BASH_REMATCH[1]}"
       val="$(_yaml_unquote "${BASH_REMATCH[2]}")"
-      flush_pending
+      flush_pending || return 1
       set_kv "$key" "$val"
     elif [[ "$line" =~ ^[[:space:]]{4}([a-z_]+):[[:space:]]*(.*)$ ]]; then
       key="${BASH_REMATCH[1]}"
@@ -221,7 +268,7 @@ knowledge_links_load_into_arrays() {
       set_kv "$key" "$val"
     fi
   done <"$f"
-  flush_pending
+  flush_pending || return 1
   if [[ ${#_errs[@]} -gt 0 ]]; then
     err_text="knowledge-links.yaml 拒绝旧键或非法 type: $f"
     for err_line in "${_errs[@]}"; do

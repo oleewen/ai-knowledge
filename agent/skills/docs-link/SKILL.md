@@ -13,6 +13,7 @@ description: >
 
 ## 输出硬约束（P0）
 
+- `knowledge-links.yaml` 的 `path` 统一使用 `${WORK_SPACE}/…`；按文件所属库配置展开，缺配置、旧格式或越界即停止。读写与迁移细则见 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「knowledge-links 路径契约」。
 - 当前单元：一对**源仓** × 一个 `--target` 的 `--link` 或 `--unlink`（单目标；多目标须逐个确认）。
 - 轻流程：参数向导 → 风险校核 → `C/M/S/F`（无 `G`、不绑意图澄清）→ [light-flow-actions.md](../../references/light-flow-actions.md)；细节 [gates.md](references/gates.md)。参数未收口前不得实跑写盘。
 - **源仓 cwd 闸门**：当前工作区须为合法源边 Git 根（`.docsconfig` 的 `KNOWLEDGE_TYPE` 为 `company`、`solution` 或 `system`）。否则**停**，要求切换到源仓工作区后再跑；不代 `cd`、不发明 `--source-root`。

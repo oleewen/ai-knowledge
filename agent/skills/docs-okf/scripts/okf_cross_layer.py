@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Dict, Iterator, List, Optional, Tuple
 from urllib.parse import urlparse
@@ -35,8 +35,12 @@ class Parent:
     parent_name: str = ""
     parent_label: str = ""
 
+    owner_doc_root: Optional[Path] = None
+
     def expanded_path(self) -> Path:
-        return Path(self.path).expanduser()
+        if self.owner_doc_root is None:
+            raise ValueError("parent 缺少所属知识库配置上下文")
+        return resolve_link_path(self.owner_doc_root, self.path)
 
     def local_doc_root(self) -> Path:
         base = self.expanded_path()
@@ -51,6 +55,63 @@ def _yaml_scalar(val: str) -> str:
     if len(val) >= 2 and val[0] == val[-1] and val[0] in ('"', "'"):
         return val[1:-1]
     return val
+
+
+def _config_values(path: Path) -> Dict[str, str]:
+    if not path.is_file():
+        raise ValueError(f"缺少配置文件: {path}")
+    values = {}
+    for line in path.read_text(encoding="utf-8").splitlines():
+        match = re.match(r"^([A-Z_]+)=(.*)$", line.strip())
+        if match:
+            values[match[1]] = _yaml_scalar(match[2])
+    return values
+
+
+def workspace_for(doc_root: Path) -> Path:
+    """从 YAML 所属库上溯配置；不读取环境中的 WORK_SPACE。"""
+    start = Path(doc_root).resolve()
+    owner = next((p for p in (start, *start.parents) if (p / ".docsconfig").is_file()), None)
+    if owner is None:
+        raise ValueError(f"缺少所属库 .docsconfig: {doc_root}")
+    config = _config_values(owner / ".docsconfig")
+    root, directory = config.get("AGENT_ROOT", ""), config.get("AGENT_DIR", "")
+    if not root or not directory:
+        raise ValueError(f".docsconfig 缺少 AGENT_ROOT / AGENT_DIR: {owner}")
+    agent_root = Path(root).expanduser()
+    if not agent_root.is_absolute() or Path(directory).is_absolute():
+        raise ValueError("AGENT_ROOT 必须是绝对路径或 ~/ 路径，AGENT_DIR 必须是相对路径")
+    configs = agent_root / directory / "configs"
+    workspace = _config_values(configs).get("WORK_SPACE", "")
+    if not workspace:
+        raise ValueError(f"配置缺少 WORK_SPACE: {configs}")
+    base = Path(workspace).expanduser()
+    if not base.is_absolute():
+        raise ValueError(f"WORK_SPACE 必须是绝对路径或 ~/ 路径: {configs}")
+    return base.resolve()
+
+
+def resolve_link_path(doc_root: Path, value: str, *, writing: bool = False) -> Path:
+    workspace = workspace_for(doc_root)
+    token = "${WORK_SPACE}"
+    if value == token:
+        target = workspace
+    elif value.startswith(token + "/"):
+        target = workspace / value[len(token):].lstrip("/")
+    elif writing and (value.startswith("/") or value.startswith("~/")):
+        target = Path(value).expanduser()
+    else:
+        raise ValueError(f"knowledge-links path 必须使用 ${{WORK_SPACE}} 占位符: {value!r}")
+    resolved = target.resolve()
+    if not resolved.is_relative_to(workspace):
+        raise ValueError(f"knowledge-links path 越出 WORK_SPACE: {value!r}")
+    return resolved
+
+
+def _validate_entries(doc_root: Path, entries: List[Dict[str, str]]) -> None:
+    workspace_for(doc_root)
+    for entry in entries:
+        resolve_link_path(doc_root, entry.get("path", ""))
 
 
 def links_yaml_path(doc_root: Path) -> Path:
@@ -81,15 +142,15 @@ def _read_knowledge_type(root: Path) -> str:
 
 def _parent_layer(doc_root: Path, parent_path: str) -> str:
     """父层取自父仓 .docsconfig；父仓不在本机时，由当前仓 KNOWLEDGE_TYPE 上推一层。"""
-    expanded = Path(parent_path).expanduser()
+    expanded = resolve_link_path(doc_root, parent_path)
     if expanded.is_dir():
         kt = _read_knowledge_type(expanded)
         if kt:
             return kt
-    for base in (doc_root, doc_root.parent):
-        host = _read_knowledge_type(base)
-        if host:
-            return _PARENT_LAYER.get(host, "")
+    start = Path(doc_root).resolve()
+    for base in (start, *start.parents):
+        if (base / ".docsconfig").is_file():
+            return _PARENT_LAYER.get(_read_knowledge_type(base), "")
     return ""
 
 
@@ -128,7 +189,9 @@ def load_parent(doc_root: Path) -> Optional[Parent]:
     if not path.is_file():
         return None
     text = path.read_text(encoding="utf-8")
-    for ent in _parse_link_entries(text):
+    entries = _parse_link_entries(text)
+    _validate_entries(doc_root, entries)
+    for ent in entries:
         if _entry_type(ent) != "parent":
             continue
         repo = (ent.get("repository") or "").strip()
@@ -149,6 +212,7 @@ def load_parent(doc_root: Path) -> Optional[Parent]:
             ref="main",
             parent_name=pname,
             parent_label=plabel,
+            owner_doc_root=Path(doc_root).resolve(),
         )
     return None
 
@@ -239,11 +303,15 @@ def _render_links_document(
 def write_parent(doc_root: Path, parent: Parent, *, dry_run: bool = False) -> Path:
     """Upsert 唯一 type:parent；保留其它 child 条（测试/CLI；正式路径用 docs-link）。"""
     dest = links_yaml_path(doc_root)
+    resolved = resolve_link_path(doc_root, parent.path, writing=True)
+    relative = resolved.relative_to(workspace_for(doc_root)).as_posix()
+    stored = "${WORK_SPACE}" + ("/" + relative if relative != "." else "")
+    parent = replace(parent, path=stored, owner_doc_root=Path(doc_root).resolve())
     child_blocks: List[List[str]] = []
     if dest.is_file():
-        child_blocks = _child_blocks_from_entries(
-            _parse_link_entries(dest.read_text(encoding="utf-8"))
-        )
+        entries = _parse_link_entries(dest.read_text(encoding="utf-8"))
+        _validate_entries(doc_root, entries)
+        child_blocks = _child_blocks_from_entries(entries)
     out = _render_links_document(parent=parent, child_blocks=child_blocks)
     if dry_run:
         return dest
@@ -257,9 +325,9 @@ def delete_parent(doc_root: Path, *, dry_run: bool = False) -> None:
     dest = links_yaml_path(doc_root)
     if not dest.is_file():
         return
-    child_blocks = _child_blocks_from_entries(
-        _parse_link_entries(dest.read_text(encoding="utf-8"))
-    )
+    entries = _parse_link_entries(dest.read_text(encoding="utf-8"))
+    _validate_entries(doc_root, entries)
+    child_blocks = _child_blocks_from_entries(entries)
     if dry_run:
         return
     dest.write_text(_render_links_document(child_blocks=child_blocks), encoding="utf-8")
@@ -333,7 +401,7 @@ def walk_parents(start_doc_root: Path) -> Iterator[Parent]:
     seen: set[str] = set()
     current = load_parent(start_doc_root)
     while current is not None:
-        key = f"{current.knowledge_type}|{current.path}|{current.doc_dir}"
+        key = str(current.local_doc_root().resolve())
         if key in seen:
             return
         seen.add(key)

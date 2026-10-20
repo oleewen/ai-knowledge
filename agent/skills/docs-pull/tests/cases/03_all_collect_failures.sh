@@ -59,13 +59,13 @@ cat >"$SYSTEM/docs/knowledge-links.yaml" <<EOF
 links:
   - type: child
     repository: "$BARE_OK"
-    path: "$APP_OK"
+    path: "\${WORK_SPACE}/$(basename "$APP_OK")"
     dir: "docs"
     name: "app-ok"
     label: "app-ok"
   - type: child
     repository: "https://example.com/org/app-bad.git"
-    path: "$APP_BAD"
+    path: "\${WORK_SPACE}/$(basename "$APP_BAD")"
     dir: "docs"
     name: "app-bad"
     label: "app-bad"

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# link 写入的 path 在 $HOME 下为 ~/ 前缀（集成：company → solution）；子仓 links 写 type:parent
+# link 写入的 path 使用 WORK_SPACE 占位符（集成：company → solution）；子仓 links 写 type:parent
 set -euo pipefail
 
 TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -55,8 +55,8 @@ pin_workspace_for_repo "$SOLUTION" "$ROOT_DIR" agent
   || fail "docs-link --link 应成功"
 
 assert_file_exists "$COMPANY/docs/knowledge-links.yaml"
-grep -Fq 'path: "~/ws/sln-foo"' "$COMPANY/docs/knowledge-links.yaml" \
-  || fail "path 应为 ~/ 前缀的 \$HOME 相对路径"
+grep -Fq 'path: "${WORK_SPACE}/sln-foo"' "$COMPANY/docs/knowledge-links.yaml" \
+  || fail "path 应为 WORK_SPACE 占位符路径"
 grep -Fq 'repository: "https://example.com/org/sln-foo.git"' "$COMPANY/docs/knowledge-links.yaml" \
   || fail "repository 应写入 target remote URL"
 grep -Fq 'dir: "docs"' "$COMPANY/docs/knowledge-links.yaml" \
@@ -78,4 +78,4 @@ grep -Fq 'repository: "https://github.com/example/company-ea.git"' \
 grep -Fq 'dir: "docs"' "$SOLUTION/docs/knowledge-links.yaml" \
   || fail "parent.dir 应为源 DOC_DIR"
 
-pass "link 写出 ~/ path、槽位，并在目标 links 写入 type:parent"
+pass "link 写出 WORK_SPACE path、槽位，并在目标 links 写入 type:parent"

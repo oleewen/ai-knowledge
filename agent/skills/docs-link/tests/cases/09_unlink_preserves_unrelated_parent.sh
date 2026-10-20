@@ -39,7 +39,7 @@ cat >"$SOLUTION/docs/knowledge-links.yaml" <<EOF
 links:
   - type: child
     repository: "https://example.com/org/sys-foo.git"
-    path: "~/ws/sys-foo"
+    path: "\${WORK_SPACE}/sys-foo"
     dir: "docs"
     name: "sys-foo"
     label: "sys-foo"
@@ -67,13 +67,13 @@ cat >"$SYSTEM/docs/knowledge-links.yaml" <<EOF
 links:
   - type: parent
     repository: "https://example.com/org/other-sln.git"
-    path: "~/ws/other-solution"
+    path: "\${WORK_SPACE}/other-solution"
     dir: "docs"
     name: "other-solution"
     label: "other-solution"
   - type: meta
     repository: "git@github.com:oleewen/ai-knowledge.git"
-    path: "~/ai-knowledge"
+    path: "\${WORK_SPACE}/ai-knowledge"
     dir: "system"
 EOF
 

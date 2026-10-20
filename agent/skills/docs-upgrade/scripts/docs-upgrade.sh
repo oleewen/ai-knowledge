@@ -263,7 +263,13 @@ resolve_meta_root() {
  local meta_path meta_repo meta_doc_dir ref
 
  if [[ -n "$META_PATH_OVERRIDE" ]]; then
- meta_path="$(abs_path "$META_PATH_OVERRIDE")"
+ if [[ "$META_PATH_OVERRIDE" == '${WORK_SPACE}' || "$META_PATH_OVERRIDE" == '${WORK_SPACE}/'* ]]; then
+ meta_path="$(knowledge_link_expand_stored_path "$META_PATH_OVERRIDE" "$links_file")"
+ else
+ local stored_override
+ stored_override="$(knowledge_link_stored_path_from_absolute "$META_PATH_OVERRIDE" "$links_file")"
+ meta_path="$(knowledge_link_expand_stored_path "$stored_override" "$links_file")"
+ fi
  meta_repo=""
  meta_doc_dir="${KNOWLEDGE_TYPE}"
  ref="${REF_OVERRIDE:-}"
@@ -277,7 +283,7 @@ resolve_meta_root() {
  fi
  done
  [[ "$meta_count" -eq 1 ]] || error "须恰好一条 type: meta（当前 ${meta_count}）。可 --meta-path 覆盖，或修复 links / 重跑 docs-install upsert"
- meta_path="$(knowledge_link_expand_stored_path "${paths[meta_idx]}")"
+ meta_path="$(knowledge_link_expand_stored_path "${paths[meta_idx]}" "$links_file")"
  meta_repo="${repos[meta_idx]}"
  meta_doc_dir="${doc_dirs[meta_idx]:-$KNOWLEDGE_TYPE}"
  ref="${REF_OVERRIDE:-}"
