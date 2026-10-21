@@ -1,6 +1,4 @@
 interface:
   display_name: "知识库升级"
-  short_description: >
-    按 .docsconfig 与 type:meta 对齐最新元库结构；正文保本库；
-    H2至H6 元库结构重填（同标题；正文级相对平移）；未落位 C 后三档并入策略；可选指定路径强制对齐；默认 dry-run。
-  default_prompt: "/docs-upgrade 先 dry-run，把当前知识库对齐最新元库结构，不丢已有正文。"
+  short_description: "按元库模板升级已有知识库，保留业务正文；支持整树预览与指定路径对齐。"
+  default_prompt: "使用 $docs-upgrade 先预览当前知识库的升级清单，对齐元库模板并保留已有正文。"

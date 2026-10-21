@@ -1,91 +1,47 @@
 ---
 name: docs-upgrade
 description: >
- 将当前工程知识库（读 .docsconfig）对齐最新元库结构：结构/模板以元库为准，
- 正文以本库为准；已改 md 按元库 H2至H6 结构重填（同标题不比层级；正文标题相对元库标题级平移）；
- 未落位在 C 之后出策略三档（批量文件并入 / 单文件批量并入 / 逐项并入；并入=原父级，同标题合并，层级递增）。
- --apply-scaffold 收尾建 DOC_DIR/.agents 软链（非 meta）并将 agent 路径按深度重写为 .agents/ 或 agent/（同 docs-install）。
- 指定文件/目录则只强制对齐那些路径（与整树互斥；破跳过；C=可处理项+未落位策略；M 下钻单文件）。
- 元库来自文档目录下 knowledge-links.yaml 的唯一 type: meta（path 优先：无 --ref 用当前 HEAD；
- 有 --ref 则限定该 ref；有版本号时固定到所选 ref 可达的最新发布快照；git path 脏则硬停；path 无效再 clone）。
- 用户提到 /docs-upgrade、升级知识库、对齐元库模板、从 meta 刷新骨架、不丢已有知识升级、
- 指定文件/目录对齐元库、只升某路径时，使用本技能。
- 分流：首次装机 → docs-install / agent-install；本仓 Agent 树追新 → agent-install；生态 skills 追新 → skill-upgrade；
- 联邦登记 → docs-link；联邦槽位 → docs-pull；规约下发 → docs-push。
- 推进见 light-flow-actions（C/M/S/F，无 G）与 references/gates.md。
+ 将已有知识库按元库模板升级，保留本库正文；支持整树预览与指定文件、目录对齐。
+ 用户要求升级知识库、刷新骨架、对齐 meta 模板或只升级某路径时使用。
+ 首次初始化、Agent 安装及生态技能追新分别用 docs-install、agent-install、skill-upgrade。
 ---
 
 # docs-upgrade
 
-## 输出硬约束（P0）
+**结构与模板跟元库，业务正文留本库。**一次处理一个工程的 `文档目录`，先预览、确认后写盘。
 
-- `knowledge-links.yaml` 的 `path` 统一使用 `${WORK_SPACE}/…`；按文件所属库配置展开，缺配置、旧格式或越界即停止。读写与迁移细则见 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「knowledge-links 路径契约」。
-- 当前单元：单个工程 `文档目录` 的一次升级计划（文档树；不含 Agent）。
-- **两模式互斥**：调用带 ≥1 个可解析为 `文档目录` 内真实文件/目录的路径（含 IDE 附件解析出的路径）→ **指定路径强制对齐**；无此类路径 → **整树**。同一次调用不混用。不依赖 `@` 前缀；模糊像路径但无法解析 → 先澄清，不默整树也不默文件模式。
-- 轻流程：参数向导 → 风险校核 → `C/M/S/F`（无 `G`、不绑意图澄清）→ [light-flow-actions.md](../../references/light-flow-actions.md)；细节 [gates.md](references/gates.md)。参数未收口前不得写盘。
-- 整树：默认先 **dry-run 清单**；清单未 `C` 前不得实跑。文件模式：先 **解析总览**，总览未 `C` 前不得写盘。
-- **确认粒度**：清单/总览 `C` 与单文件 `C` **同语义**——执行全部可处理项；对齐节按元库结构重填；**有未落位则 `C` 之后出策略三档**（批量文件并入 / 单文件批量并入 / 逐项并入）。并入=本库原父级（同标题并入、层级递增、父消失则追加文末；见 merge-rules）。`M` = 改参数/名单或下钻单文件。
-- **禁止**调用会清空 `DOC_DIR` 的 `docs-install.sh --scope=knowledge` 主路径。
-- **路径重写（同 docs-install）**：`--apply-scaffold` 收尾：非 meta 建/修 `DOC_DIR/.agents` → `$AGENT_ROOT/$AGENT_DIR`；将裸 `agent/`、`../agent/`、`~/.agents/` 按深度重写为相对 `.agents/`（meta→相对 `agent/`）；不重写 IDE 段；幂等更新 README「Agent 路径」注记。`--dry-run` 不建链不重写。空骨架桶亦跑。结构重填 / 文件模式**不**强制再跑（已知缝）。
-- 合并契约：结构/模板=元库；正文=本库；已改判定=规范化后与元库同路径内容不等；已改 md=同标题（不比层级）填入元库骨架，正文标题相对元库标题级统一平移（级封顶 H6）；未落位=策略确认后才落（原父级并入 / 改挂 / 追加 / 跳过）；本库独有路径永不删。
-- 普通 md 进清单与文件模式（本无 scaffold；指定路径破跳过强制重填）。未落位策略与普通 md **同规则**。轻流程 `S` 不表示全跳过未落位。
-- 根级 `DESIGN.md`：本无 → 新增骨架；已改 → **整文件覆盖**（`--apply-scaffold` 以元库为准；不走 H2 结构重填）。增量执行时保留当前 `version`，整单重填、未落位处理与校核成功后才更新为目标版本；中断或跳过待处理项时不推进。文件模式仅强制对齐指定路径，不推进整库版本。
-- `knowledge-links.yaml` 永不被元库模板覆盖。
-- **槽位根放开**：`application-slots/`、`system-slots/` 下**非软链真文件**进四桶 / 重填 / 文件模式（与普通路径同）。**凡软链一律跳过**（不跟随）。顶层遗留 `application-*` / `system-*`（不含上述两 slots 名）仍硬忽略。槽位**实例**同步仍归 `/docs-pull`。
-- 文件模式**不强制** `{仓库路径}/.docs-init/` 备份（依赖 git）。整树 scaffold 仍按脚本备份。
-- 文件模式由 Skill/Agent 编排写盘；脚本暂不加 `--path`。
-- 宣称单元完成前须按 [audience-and-language.md](../../references/audience-and-language.md) 轻流程默认读者表做写后 **A/B**（文件模式：整单结束一次）。
+## 选择模式
 
-## 边界
-
-| 负责 | 不负责 |
+| 输入 | 模式与执行者 |
 | --- | --- |
-| 读 `.docsconfig` + `type: meta`；解析元库（`--ref` > 有效 path/`HEAD` > clone）；出变更清单；备份（整树）；新增骨架；编排 H2至H6 结构重填与未落位确认；指定路径强制对齐 | 首次装机（→ docs-install / agent-install）；Agent 树追新（→ agent-install）；生态 skills（→ skill-upgrade）；docs-link **登记操作**（→ `/docs-link`）；docs-pull/push；语义改文；脚本 `--path` 过滤（暂无） |
+| 未指定文件或目录 | 整树：脚本扫描、备份、写骨架；Agent 重填正文 |
+| 指定可解析的文件或目录（含 IDE 附件路径） | 指定路径：Agent 只对齐名单；目录须取两侧文件并集，含 `meta-only` |
+| 像路径但无法解析 | 先澄清；不得默选整树 |
 
-## 不这样用
+两模式互斥，不要求 `@` 前缀。脚本没有 `--path`。
 
-- 不把升级写成「清空 DOC_DIR 再 docs-install」
-- 不在未确认时覆盖已改正文或丢弃未落位节
-- 不把 Agent / 槽位实例同步（docs-pull）/ 首次装机收成本技能
-- 缺少 `.docsconfig` 或唯一 `type: meta` 时不得猜测元库
-- 不把整树与文件模式混在同一单元
-- 不跟随软链写入或重填（含 `*-slots` 下实例软链）
-- 不以技能文档里的 `@` 前缀作为路径触发条件（IDE 附件解析出的真实路径仍算指定）
+## 执行入口
 
-## 路由
+1. 读 [parameters.md](references/parameters.md) 收口工程、元库、ref 与指定路径；缺配置不得猜测。
+2. 按 [workflow.md「源解析」](references/workflow.md#源解析) 校验本层来源，再进入对应模式。整树有版本号时只读取目标发布快照，发布后的 HEAD 内容不入范围。
+3. 按 [merge-rules.md](references/merge-rules.md) 分类并生成预览；写盘前执行 [gates.md](references/gates.md) 的 `C/M/S/F` 确认。有未落位时，`C` 后再选并入策略。
+4. 完成写后校核与受众 A/B；整单成功才按 workflow 推进版本。
 
-| 目的 | 文件 |
+## 必守边界
+
+- 不调用会清空 `DOC_DIR` 的 `docs-install.sh --scope=knowledge`，不删除本库独有文件，不用元库覆盖 `knowledge-links.yaml`。
+- 两模式均只升级本库 `KNOWLEDGE_TYPE` 对应层；`meta.dir` 错配须在快照解析、目录展开和写盘前停止。
+- 软链及其下路径不跟随；槽位真文件可按普通路径升级，实例同步用 [docs-pull](../docs-pull/SKILL.md)。
+- 整树缺失示例按 [真实实例规则](references/merge-rules.md#31-整树缺失示例与真实实例) 去重；指定路径模式仍补齐缺失示例。
+- 根级 `DESIGN.md` 是整文件覆盖特例；版本推进独立于 scaffold。结构重填与未落位处理由 Agent 完成，脚本不自动合正文。
+
+首次装机用 [docs-install](../docs-install/SKILL.md)；Agent 树用 [agent-install](../agent-install/SKILL.md)；生态技能用 [skill-upgrade](../skill-upgrade/SKILL.md)。联邦登记与规约下发分别用 [docs-link](../docs-link/SKILL.md)、[docs-push](../docs-push/SKILL.md)，不纳入本技能。
+
+## 按需查阅
+
+| 当前工作 | 读取 |
 | --- | --- |
-| 流程 / 风险 | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
-| 参数 / 合并规则 | [parameters.md](references/parameters.md)、[merge-rules.md](references/merge-rules.md) |
-| 轻流程动作 | [light-flow-actions.md](../../references/light-flow-actions.md) |
-| 脚本说明 | [scripts/docs-upgrade.sh](scripts/docs-upgrade.sh) |
-| 易错 | [gotchas.md](gotchas.md) |
-
-## 最少输入
-
-- 当前工程可读的 `.docsconfig`（含 `文档目录` / `仓库路径` / `DOC_DIR` / `KNOWLEDGE_TYPE`）
-- `{文档目录}/knowledge-links.yaml` 恰好一条 `type: meta`（或本次 `--meta-path`）
-- 整树：是否 dry-run（默认是）已收口
-- 文件模式：≥1 个可解析的真实文件或目录（解析后须有可处理项或明确拒绝项清单）
-- 整树且目标 `DESIGN.md` 含 `version`：在**元库**所选 `--ref`（未传则 HEAD）的可达历史中查找当前版本与最新 `docs-publish: version ...` 发布提交；当前发布点须为目标发布点祖先。缺任一基线或元库无 Git 历史即停止，不降级全量。无 `version` 的旧库保留原整树模式。
-- 增量清单仅处理元库两个发布点间变化的模板路径；内容固定为目标发布快照，不混入发布后 HEAD 内容。应用 `README-s.md` 映射到 `README.md`，按源路径过滤；删除项仍保留本库文件。原有 scaffold 后全树 Agent 路径重写仍执行，不受模板差异过滤限制。
-
-## 产出与脚本
-
-- 正式（整树）：对齐后的 `文档目录`（新骨架 + `agent/`/IDE 段→`~/.agents/` + README 注记 + 已确认重填 + 已确认未落位）；备份在 `{仓库路径}/.docs-init/upgrade-{stamp}/`
-- 正式（文件）：已 `C` 的指定路径（强制重填 / scaffold）；无强制 `.docs-init` 备份
-- 预览（整树）：清单（新增骨架 / 跳过 / 结构重填 / 整文件覆盖 / 本库独有）+ 后续未落位节清单
-- 预览（文件）：指定路径按两侧路径并集展开去重后的动作总览（强制重填 / scaffold / DESIGN 整文件覆盖 / 非 md 跳过覆盖 / 元缺拒绝 / 软链拒绝 / 遗留槽位拒绝 / changelogs 本库胜；须显式列出 `meta-only` scaffold 文件）
-- 收敛后：产物校核 + 受众 A/B → [light-flow-actions.md](../../references/light-flow-actions.md)
-
-```bash
-# 整树：在目标工程根（含 .docsconfig）执行；脚本位于元库本技能
-bash /path/to/ai-knowledge/agent/skills/docs-upgrade/scripts/docs-upgrade.sh --dry-run
-bash /path/to/ai-knowledge/agent/skills/docs-upgrade/scripts/docs-upgrade.sh --apply-scaffold
-# 文件模式：无脚本 --path；由 Skill 按会话指定路径编排（见 workflow / parameters）
-```
-
-## 评测
-
-`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。重点：禁清空 install、meta 解析、清单闸门、未落位策略三档（批量文件/单文件批量/逐项并入）、写后 A/B、与 docs-install 分流、`--apply-scaffold` 后路径重写、文件模式互斥与两侧并集展开、根级 DESIGN.md 整文件覆盖。
+| 执行整树命令、核对参数 | [脚本帮助](scripts/docs-upgrade.sh)：Bash 5+ 执行 `-h`；在目标工程运行 |
+| 重填 md、处置未落位 | [merge-rules.md §5–§6](references/merge-rules.md#5-结构重填agent) |
+| 处理版本、备份、路径重写或重试 | [workflow.md](references/workflow.md)；异常定位见 [gotchas.md](gotchas.md) |
+| 维护或评测技能 | [evals.json](evals/evals.json)、[grader.md](agents/grader.md)、[测试入口](tests/run.sh) |

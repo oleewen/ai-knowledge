@@ -1,12 +1,18 @@
 # docs-upgrade Grader
 
-据 **evals/evals.json** 输出 JSON：`text`、`passed`、`evidence`。
+依据 [evals.json](../evals/evals.json) 评估一次实际执行；输出 JSON 字段 `text`（判定摘要）、`passed`（布尔）、`evidence`（按 `assertions[].id` 对应证据）。
 
 ## 判定
 
-1. 读 `category`：`should-trigger` / `should-not-trigger`
-2. **硬门**：以本 eval 的 `assertions`（按 `priority`）为准；`evidence` 映射 `assertions[].id`
-3. **协议释义**（assertions 覆盖时强制）：轻流程 → 整树 dry-run 清单或文件总览 → `C/M/S/F`；`C`=可处理项（对齐节按 H2至H6 元库结构重填；根级 `DESIGN.md` 整文件覆盖），有未落位则 `C` 后出策略三档（批量文件并入 / 单文件批量并入 / 逐项并入），`M` 可下钻单文件；禁清空式 `docs-install --scope=knowledge`；`--apply-scaffold` 收尾须体现 `.agents` 软链 + `agent/`→深度相对 `.agents/` 路径重写（同 docs-install；不改 IDE 段；dry-run 不做）；结构重填=同标题不比层级、正文相对元库标题级平移（级封顶 H6）；并入=原父级（同标题并入、层级递增；父消失→追加文末）；写后受众维 A/B（见 [audience-and-language.md](../../../references/audience-and-language.md)）；整树与指定路径文件模式互斥（不依赖 `@` 前缀）；根级 `DESIGN.md` 整文件覆盖；`*-slots` 根真文件可升级、软链跳过、顶层遗留槽位名仍忽略。见 [light-flow-actions.md](../../../references/light-flow-actions.md)、[gates.md](../references/gates.md)、[merge-rules.md](../references/merge-rules.md)
-3.1 指定目录协议硬断言：总览名单必须来自本库与元库同相对路径并集；显式列出 `meta-only` scaffold 文件，并断言动作数覆盖并集总数。只扫描 `文档目录` 判错。
+1. 按 `category` 判断应触发或应分流；只检查本场景适用的 assertions，不要求每次回答复述完整协议。
+2. 以工具轨迹、预览清单和实际产物为证据。仅声称“已执行 / 已验证”不足以通过；未执行的步骤标明未验证。
+3. 业务含义查 [SKILL.md](../SKILL.md) 的规则入口，不在 grader 另建协议。版本 / 源范围见 [workflow.md](../references/workflow.md)，内容分类见 [merge-rules.md](../references/merge-rules.md)，授权时机见 [gates.md](../references/gates.md)。
+4. 任一适用 P0 失败，`passed` 为 `false`；不得用总体描述抵消失败断言。
 
-4. **P0** 任一失败 → `passed: false`
+## 指定目录行为评测
+
+使用 [file-mode-directory.sh](../tests/fixtures/file-mode-directory.sh) 建立真实两侧目录；只在临时工作区评测。
+
+- 预览轮：读取实际目录，核对两侧并集、每项动作与显式 `meta-only` scaffold；确认前目标文件应保持原字节。
+- 执行轮：提供测试范围的 `C` 后，检查 scaffold 字节、元库标题结构与本库正文；确认本库独有及选区外文件、links、版本未被改动，且没有整树 apply 或 `.docs-init`。
+- shell case 只验证 fixture；它的 PASS 不能代替 Agent 的预览与写盘行为结果。

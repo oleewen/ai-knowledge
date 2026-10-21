@@ -1,32 +1,17 @@
 # docs-upgrade 陷阱
 
-- **版本基线**：使用元库所选 ref 可达历史中的当前/目标 `docs-publish` 提交，不用目标工程历史。缺基线硬停；无版本号旧库才保留整树扫描。
-- **差异与读取一致**：按元库模板路径过滤，内容固定为目标发布快照；不可把发布后 HEAD 内容混进增量。应用 README 按 `README-s.md` 源路径过滤。
-- **提前推进版本**：scaffold 完成不等于整单完成；保留原 `version`，全部重填、未落位处理与校核完成后才更新，避免重试漏项。指定路径模式不推进整库版本。
+遇到下列现象，先核对对应规则；不要临时改分类或扩大升级范围。
 
-- **误跑 docs-install knowledge**：会清空 DOC_DIR。升级只用 `docs-upgrade.sh` + Agent 重填（文件模式亦禁清空 install）。
-- **路径重写挂点**：仅 `--apply-scaffold` 末尾（软链 + `rewrite_docs_agent_paths` → 深度相对 `.agents/` 或 meta 的 `agent/`）。结构重填 / 文件模式若再写入裸 `agent/`，本技能不强制再扫——接受缝；勿误以为整单结束必已重写。
-- **路径重写目标**：按文件相对 `DOC_DIR` 深度写 `.agents/`（或 meta 的 `agent/`）；覆盖裸 `agent/`、多层上跳 `../agent/`、`~/.agents/`；**不**改 IDE 段。
-- **dry-run 无路径副作用**：`--dry-run` 不 rewrite、不改 README。
-- **缺 type:meta**：装机未完成或 links 被手改。硬停；用 install upsert 或 `--meta-path`，勿猜。
-- **多条 type:meta**：非法；硬停至剩一条。
-- **git path 脏**：`porcelain` 非空（含未跟踪）一律硬停，**即使已传 `--ref`**。先提交或清理。
-- **误以为默认 main**：未传 `--ref` 且 path 为 git 时用**当前 HEAD**，不 fetch、不对齐 `origin/main`。要对齐远端/指定 tip → 显式 `--ref`。
-- **把未落位静默写入**：禁止。`C` 后须出策略三档（批量文件并入 / 单文件批量并入 / 逐项并入）。并入=原父级（同标题并入、层级递增；父消失→追加文末）。勿把轻流程 `S` 当成全跳过未落位。
-- **正文标题平移溢出**：相对元库标题级平移后级 **封顶 H6**；不写 H7+（见 merge-rules §5）。
-- **总览/单文件漏出并入三档**：有未落位时总览与单文件 `C` 后都必须提供三档，不得只给逐项。
-- **覆盖 knowledge-links.yaml**：禁止；会丢 parent/child/meta。根级 `DESIGN.md` 为**整文件覆盖**特例（普通 md 走结构重填）。
-- **`DESIGN.md` 手改**：upgrade 会冲掉；改契约短表先改元库模板再 upgrade。
-- **联邦槽位根**：`application-slots` / `system-slots` 下**真文件**可升级；**软链一律跳过**。勿跟随实例软链改下级仓（实例同步用 `/docs-pull`）。
-- **顶层遗留**：文档目录 顶层 `application-*` / `system-*`（非 `*-slots`）仍忽略。
-- **`*-slots/changelogs`**：本有整文件本库胜；勿对其强制结构重填。
-- **建联脚本**：不在本技能同步；登记走 `/docs-link`（`agent/skills/docs-link/scripts/`）。
-- **整树与文件模式混用**：禁止同单元；有可解析指定路径只走文件强制对齐。
-- **文件模式无脚本 `--path`**：scaffold/重填由 Agent 写；勿臆造 CLI 过滤。
-- **文件模式无强制备份**：依赖 git；勿假设已有 `upgrade-{stamp}`。
-- **指定目录只扫本库**：禁止。必须取本库与元库同相对路径**并集**；否则会漏 `BD/BD-EXAMPLE/**` 等 `meta-only` scaffold。总览显式列 scaffold 文件，并断言动作数覆盖两侧并集。
-- **指定目录展开过大**：总览未 `C` 前不写盘；注意两侧并集后非 md 仅可 scaffold。
-- **勿把 `@` 当技能语法**：路径触发看可解析真实路径（含 IDE 附件），不要求消息里写 `@`。
-- **Agent 树 / 生态技能追新**：本技能不管；本仓树走 `/agent-install`，生态走 `/skill-upgrade`。
-- **Bash 5+**、Git 必需（整树脚本路径）。
-- **中央脚本路径**：整树在目标工程执行时须指向元库/元库的 `agent/skills/docs-upgrade/scripts/docs-upgrade.sh`。
+| 易错假设 | 核对位置 |
+| --- | --- |
+| 未传 ref 就是 main；传了 ref 可忽略脏工作区 | [源解析](references/workflow.md#源解析) |
+| 当前版本号等于 HEAD；全仓新发布意味着全层文件升级 | [版本范围与推进](references/workflow.md#版本范围与推进) |
+| scaffold 成功即可推进 version；指定 DESIGN 也可推进整库 | [版本最后更新](references/workflow.md#版本范围与推进) |
+| 重填后一定已重写 Agent 路径；IDE 段也应改 | [路径收尾的执行边界](references/workflow.md#路径收尾) |
+| 备份只含实际改动文件；指定模式也有 scaffold 备份 | [整树执行](references/workflow.md#整树执行)、[指定路径执行](references/workflow.md#指定路径执行) |
+| 槽位真文件全部排除；changelogs 有单独保留策略 | [分类与排除](references/merge-rules.md#3-清单桶脚本) |
+| 任意同前缀目录都是真实例；指定模式也跳示例 | [实例判定](references/merge-rules.md#31-整树缺失示例与真实实例) |
+| 指定目录只扫描本库；附件必须带 @；脚本可传 --path | [路径展开](references/parameters.md#指定路径展开) |
+| 未落位只需逐项菜单；轻流程 S 可跳过全部未落位 | [未落位策略](references/gates.md#未落位策略) |
+
+根级 DESIGN 的本地契约修改会被元库模板覆盖；需要保留的模板契约应先更新元库。安装、Agent 更新与联邦操作分流见 [SKILL.md](SKILL.md)。

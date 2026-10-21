@@ -1,7 +1,7 @@
 {
   "skill_name": "docs-upgrade",
-  "version": "1.8.0",
-  "description": "评测 docs-upgrade：轻流程；meta 解析；禁清空 install；apply-scaffold 后 agent/ 路径重写；H2至H6 元库结构重填与正文平移（级封顶 H6）；未落位 C 后策略三档（批量文件并入/单文件批量并入/逐项并入；原父级同标题并入、层级递增）；根级 DESIGN.md 整文件覆盖；与 bootstrap 分流；指定路径强制对齐（无 @、目录取两侧并集）；*-slots 根可升级与软链跳过。",
+  "version": "1.9.0",
+  "description": "评测整树与指定路径升级：发布快照、本层范围、正文保留、确认与写后产物。指定目录使用真实 fixture 验证两侧并集。",
   "evals": [
     {
       "id": "upgrade-trigger-001",
@@ -71,7 +71,7 @@
           "id": "file-mode-mutex",
           "name": "文件模式互斥",
           "type": "must_include",
-          "check": "须走指定路径强制对齐，不得同时跑整树四桶 dry-run/apply-scaffold 主路径。",
+          "check": "须走指定路径强制对齐，不得同时跑整树 dry-run/apply-scaffold 主路径。",
           "priority": "P0"
         },
         {
@@ -108,13 +108,6 @@
           "type": "must_include",
           "check": "须体现全部预定文件处理完后整单一次受众维 A/B，方可宣称单元完成。",
           "priority": "P0"
-        },
-        {
-          "id": "file-mode-directory-union",
-          "name": "指定目录两侧并集",
-          "type": "must_include",
-          "check": "指定目录时须取本库与元库同相对路径并集；总览显式列出 meta-only scaffold 文件，并断言动作数覆盖并集总数，不得只扫描 文档目录。",
-          "priority": "P0"
         }
       ],
       "files": []
@@ -138,7 +131,7 @@
     {
       "id": "upgrade-trigger-006",
       "category": "should-trigger",
-      "prompt": "对公司库做整树 /docs-upgrade dry-run，确认 system-slots/README.md 会进清单而不是整段忽略 system-slots。",
+      "prompt": "对解决方案库做整树 /docs-upgrade dry-run，确认 system-slots/README.md 会进清单而不是整段忽略 system-slots。",
       "expected_output": "system-slots 根真文件可进新增/跳过/重填桶；软链实例在跳过软链；顶层遗留 system-* 仍忽略。",
       "assertions": [
         {
@@ -215,13 +208,13 @@
       "id": "upgrade-not-trigger-001",
       "category": "should-not-trigger",
       "prompt": "给新工程 ~/ws/new-app/docs 初始化知识库并安装 cursor。",
-      "expected_output": "主路径 docs-bootstrap，不是 docs-upgrade。",
+      "expected_output": "先 docs-install 初始化知识库，再 agent-install 安装 Agent 树与 IDE 链接；不走 docs-upgrade。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "须指向 docs-bootstrap 或装机，不得主路径写成 docs-upgrade。",
+          "check": "应分流 docs-install / agent-install 装机链，不得以 docs-upgrade 为初始化主路径。",
           "priority": "P0"
         }
       ],
@@ -254,6 +247,125 @@
           "name": "缺 meta 硬停",
           "type": "must_include",
           "check": "须硬停并给出修复选项，不得猜测元库路径或继续写盘。",
+          "priority": "P0"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": "upgrade-trigger-008",
+      "category": "should-trigger",
+      "prompt": "整树 /docs-upgrade dry-run，未指定路径。元库有 BL/BL-EXAMPLE.md、BL/README.md 和 BD/BD-EXAMPLE/{BD-EXAMPLE.md,index.md}；本库这些文件均缺失，但已有 BL/BL-RETAIL.md、BD/BD-SALES/BD-SALES.md，均为普通文件。请列动作。",
+      "expected_output": "跳过 BL 示例及 BD 示例目录下全部缺失文件，并指出真实实例路径；BL/README.md 仍列新增骨架。仅预览，等待 C/M/S/F。",
+      "assertions": [
+        {
+          "id": "tree-example-instance-skip",
+          "name": "已有真实实例跳过缺失示例",
+          "type": "must_include",
+          "check": "BL-EXAMPLE.md 及 BD-EXAMPLE 下实体和 index.md 均归跳过，列出命中实例依据；不得再列新增骨架。",
+          "priority": "P0"
+        },
+        {
+          "id": "ordinary-scaffold-preserved",
+          "name": "普通骨架仍补齐",
+          "type": "must_include",
+          "check": "BL/README.md 仍归新增骨架；不删除已有真实实例或示例文件。",
+          "priority": "P0"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": "upgrade-trigger-009",
+      "category": "should-trigger",
+      "prompt": "整树 /docs-upgrade dry-run，本库缺 BL/BL-EXAMPLE.md 和 BD/BD-EXAMPLE/index.md。BL 下只有 BL-EXAMPLE-OLD.md、指向真实文件的 BL-LINK.md 软链，真实 BL-REAL.md 只存在 BL/subdir/。BD 下只有空的 BD-REAL 目录和指向真实目录的 BD-LINK 软链。配置有效、这些模板属于本次升级范围，请分类。",
+      "expected_output": "两个缺失模板仍列新增骨架；其他 EXAMPLE、软链、子目录文件和空目录不构成对应父目录真实实例。",
+      "assertions": [
+        {
+          "id": "same-parent-real-instance-only",
+          "name": "只认同父目录真实实例",
+          "type": "must_include",
+          "check": "两个缺失示例均为新增骨架；不能用其他 EXAMPLE、软链、下级目录实例或空目录触发跳过。",
+          "priority": "P0"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": "upgrade-trigger-010",
+      "category": "should-trigger",
+      "prompt": "用 tests/fixtures/file-mode-directory.sh 在隔离目录创建真实工作区。对该工作区执行 $docs-upgrade，明确指定 project/docs/knowledge/business/，先给总览，等确认后再写盘。必须读取实际配置与两侧目录，不要使用口述的假想文件清单。",
+      "expected_output": "指定目录总览为五项：README.md 强制重填；BL/BL-EXAMPLE.md、BD/BD-EXAMPLE/BD-EXAMPLE.md、BD/BD-EXAMPLE/index.md 三项 meta-only scaffold；BL/BL-RETAIL.md 元缺拒绝并保留。总览未 C 不写盘。后续获 C 后，README 使用元库标题层级、保留本库正文，三个 scaffold 与元库一致；本库实例、选区外文件、links 与 DESIGN 版本保持原字节；无强制 .docs-init 备份。",
+      "assertions": [
+        {
+          "id": "file-mode-keeps-examples",
+          "name": "指定路径仍强制补示例",
+          "type": "must_include",
+          "check": "BL-EXAMPLE.md、BD-EXAMPLE/BD-EXAMPLE.md、BD-EXAMPLE/index.md 均列 meta-only scaffold；不得因已有同类实例而跳过。",
+          "priority": "P0"
+        },
+        {
+          "id": "file-mode-directory-union",
+          "name": "指定目录两侧并集",
+          "type": "must_include",
+          "check": "指定目录时须取本库与元库同相对路径并集；总览显式列出 meta-only scaffold 文件，并断言动作数覆盖并集总数，不得只扫描 文档目录。",
+          "priority": "P0"
+        }
+      ],
+      "files": [
+        "tests/fixtures/file-mode-directory.sh"
+      ]
+    },
+    {
+      "id": "upgrade-trigger-011",
+      "category": "should-trigger",
+      "prompt": "当前本库 KNOWLEDGE_TYPE=application，唯一 type: meta 的 dir 写成 company，元库两个目录均存在且 Git 干净。分别说明整树 /docs-upgrade 和明确指定本库 knowledge/ 目录时如何处理；如果 dir 改成 agent 呢？没有传 --meta-path。",
+      "expected_output": "两种模式都在源解析、扫描或写盘前硬停，报告 dir 与 KNOWLEDGE_TYPE 错配并提示修正配置。dir: agent 同样拒绝，不能只按目录存在或用户已指定路径继续。",
+      "assertions": [
+        {
+          "id": "meta-dir-layer-hard-stop",
+          "name": "源层级错配硬停",
+          "type": "must_include",
+          "check": "整树与指定路径模式均因 company/agent 与 application 错配而停止，报告生效 dir 与本库 KNOWLEDGE_TYPE，提示修正配置；不得继续读取错层模板或写盘。",
+          "priority": "P0"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": "upgrade-trigger-012",
+      "category": "should-trigger",
+      "prompt": "整树升级，本库 DESIGN.md version 为 2026.1020.1，元库 HEAD 在最新已发布版本 2026.1020.1 后还有 application/ 模板提交，配置层级正确。它们进入范围吗？如果随后发布 2026.1021.0，但这次发布与前次相比只修改 company/ 和 agent/，application/ 未变呢？",
+      "expected_output": "未发布的 HEAD 模板不进入有版本号整树范围，同发布号时模板增量为空。全仓新发布可以成为目标版本，但只改 company/agent 时，application 模板动作桶仍为空；不得把全仓版本选择等同全仓文件升级。",
+      "assertions": [
+        {
+          "id": "published-snapshot-only",
+          "name": "保持已发布快照",
+          "type": "must_include",
+          "check": "不将发布后的 HEAD 模板纳入有版本整树升级；当前与最新发布相同时模板增量为空。",
+          "priority": "P0"
+        },
+        {
+          "id": "global-version-local-scope",
+          "name": "全仓版本与本层范围分离",
+          "type": "must_include",
+          "check": "新发布号可以成为目标版本，其他层及 agent 的文件不进入 application 文件清单；application 未变则模板动作桶为空。",
+          "priority": "P0"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": "upgrade-trigger-013",
+      "category": "should-trigger",
+      "prompt": "整树升级，本库 DESIGN.md version 为 2026.1020.1，元库所选 ref 可达历史里只有 2026.1021.0 的 docs-publish 发布提交，找不到 2026.1020.1。元库 HEAD 干净、模板目录与本库层级一致。请执行升级预览。",
+      "expected_output": "停止并报告缺少当前版本发布基线；不降级为整树全量，不读取 HEAD 代替发布快照，不写目标文件或推进版本。",
+      "assertions": [
+        {
+          "id": "missing-release-baseline-hard-stop",
+          "name": "缺发布基线硬停",
+          "type": "must_include",
+          "check": "缺少当前版本发布提交时停止；不得转全量或使用 HEAD 内容继续，目标文件与 version 保持不变。",
           "priority": "P0"
         }
       ],

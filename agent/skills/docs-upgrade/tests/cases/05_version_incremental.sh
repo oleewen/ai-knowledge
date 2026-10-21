@@ -3,7 +3,6 @@
 set -euo pipefail
 TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$TEST_DIR/../test-lib.sh"
-DOCS_UPGRADE_SCRIPT="${DOCS_UPGRADE_TEST_SCRIPT:-$DOCS_UPGRADE_SCRIPT}"
 TMP_DIR="$(new_tmp_dir)"
 trap 'rm -rf "$TMP_DIR"' EXIT
 
@@ -96,6 +95,37 @@ resume_pending_refill() {
   assert_contains ' changed.md' "$OUT_FILE"
 }
 
+existing_instance_in_release() {
+  setup_case existing-instance
+  mkdir -p "$META_ROOT/application/analysis" "$DOCS_DIR/analysis"
+  printf '%s\n' '# Released example' >"$META_ROOT/application/analysis/ANALYSIS-EXAMPLE.md"
+  printf '%s\n' '# Real analysis' >"$DOCS_DIR/analysis/ANALYSIS-ORDER.md"
+  snapshot "$META_ROOT" 'docs-publish: version 2026.1021.1'
+  run_upgrade --dry-run || { cat "$OUT_FILE"; return 1; }
+  assert_contains 'analysis/ANALYSIS-EXAMPLE.md (同类实例已存在: analysis/ANALYSIS-ORDER.md)' "$OUT_FILE"
+  run_upgrade --apply-scaffold || { cat "$OUT_FILE"; return 1; }
+  assert_file_not_exists "$DOCS_DIR/analysis/ANALYSIS-EXAMPLE.md"
+  assert_contains '# Real analysis' "$DOCS_DIR/analysis/ANALYSIS-ORDER.md"
+  assert_contains '# Released new' "$DOCS_DIR/new.md"
+  assert_contains 'version: 2026.1020.0' "$DOCS_DIR/DESIGN.md"
+}
+
+other_layer_release() {
+  setup_case other-layer-release
+  printf '%s\n' 'version: 2026.1021.0' >"$DOCS_DIR/DESIGN.md"
+  mkdir -p "$META_ROOT/company" "$META_ROOT/agent"
+  printf '%s\n' '# Company change' >"$META_ROOT/company/outside-company.md"
+  printf '%s\n' '# Agent change' >"$META_ROOT/agent/outside-agent.md"
+  snapshot "$META_ROOT" 'docs-publish: version 2026.1021.1'
+  run_upgrade --dry-run || { cat "$OUT_FILE"; return 1; }
+  assert_contains '版本增量: 2026.1021.0 -> 2026.1021.1' "$OUT_FILE"
+  assert_contains '== 新增骨架 (0)' "$OUT_FILE"
+  assert_contains '== 结构重填 (0)' "$OUT_FILE"
+  assert_contains '== 整文件覆盖 (0)' "$OUT_FILE"
+  assert_not_contains 'outside-company.md' "$OUT_FILE"
+  assert_not_contains 'outside-agent.md' "$OUT_FILE"
+}
+
 missing_baseline() {
   setup_case missing-baseline
   printf '%s\n' 'version: 2026.1019.0' >"$DOCS_DIR/DESIGN.md"
@@ -158,7 +188,7 @@ non_git_source() {
 }
 
 failed=0
-for scenario in changed_only readme_mapping release_snapshot resume_pending_refill missing_baseline missing_release same_version selected_ref clone_history non_git_source; do
+for scenario in changed_only readme_mapping release_snapshot resume_pending_refill existing_instance_in_release other_layer_release missing_baseline missing_release same_version selected_ref clone_history non_git_source; do
   if (set -e; "$scenario"); then
     pass "版本增量: $scenario"
   else

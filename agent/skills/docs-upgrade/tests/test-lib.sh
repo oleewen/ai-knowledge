@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
-DOCS_UPGRADE_SCRIPT="$ROOT_DIR/agent/skills/docs-upgrade/scripts/docs-upgrade.sh"
-source "$ROOT_DIR/agent/scripts/test-core.sh"
+DOCS_UPGRADE_SKILL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+DOCS_UPGRADE_AGENT_DIR="$(cd "$DOCS_UPGRADE_SKILL_DIR/../.." && pwd)"
+DOCS_UPGRADE_SCRIPT="${DOCS_UPGRADE_TEST_SCRIPT:-$DOCS_UPGRADE_SKILL_DIR/scripts/docs-upgrade.sh}"
+source "$DOCS_UPGRADE_AGENT_DIR/scripts/test-core.sh"
 
 new_tmp_dir() {
   mktemp -d "${TMPDIR:-/tmp}/docs-upgrade-tests.XXXXXX"

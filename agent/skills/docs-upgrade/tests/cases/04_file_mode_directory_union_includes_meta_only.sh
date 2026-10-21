@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 文件模式指定目录必须取本库/元库相对路径并集；meta-only 不得漏出 scaffold 总览
+# 校验 Agent 文件模式评测 fixture；此用例不替代 Agent 的预览/写盘行为评测。
 set -euo pipefail
 
 TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -7,44 +7,39 @@ TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$TEST_DIR/../test-lib.sh"
 
 TMP_DIR="$(new_tmp_dir)"
-ensure_test_agent_home "$TMP_DIR"
-PROTOCOL="$TMP_DIR/protocol.md"
-SKILL_DOCS=(
-  "$ROOT_DIR/agent/skills/docs-upgrade/SKILL.md"
-  "$ROOT_DIR/agent/skills/docs-upgrade/references/parameters.md"
-  "$ROOT_DIR/agent/skills/docs-upgrade/references/workflow.md"
-  "$ROOT_DIR/agent/skills/docs-upgrade/agents/grader.md"
-)
 
 cleanup() {
   rm -rf "$TMP_DIR"
 }
 trap cleanup EXIT
 
-mkdir -p "$TMP_DIR"
+FIXTURE_ROOT="$TMP_DIR/fixture"
+"$BASH" "$TEST_DIR/../fixtures/file-mode-directory.sh" "$FIXTURE_ROOT" >/dev/null
+LOCAL_ROOT="$FIXTURE_ROOT/project/docs/knowledge/business"
+META_ROOT="$FIXTURE_ROOT/meta/company/knowledge/business"
+(cd "$LOCAL_ROOT" && find . -type f | sort) >"$TMP_DIR/local-files"
+(cd "$META_ROOT" && find . -type f | sort) >"$TMP_DIR/meta-files"
+comm -12 "$TMP_DIR/local-files" "$TMP_DIR/meta-files" >"$TMP_DIR/both"
+comm -23 "$TMP_DIR/local-files" "$TMP_DIR/meta-files" >"$TMP_DIR/local-only"
+comm -13 "$TMP_DIR/local-files" "$TMP_DIR/meta-files" >"$TMP_DIR/meta-only"
+cat "$TMP_DIR/local-files" "$TMP_DIR/meta-files" | sort -u >"$TMP_DIR/union"
+[[ "$(wc -l <"$TMP_DIR/union" | tr -d ' ')" == 5 ]] || fail 'fixture 应含 5 项并集'
+printf '%s\n' './README.md' >"$TMP_DIR/expected-both"
+printf '%s\n' './BL/BL-RETAIL.md' >"$TMP_DIR/expected-local"
+printf '%s\n' './BD/BD-EXAMPLE/BD-EXAMPLE.md' './BD/BD-EXAMPLE/index.md' './BL/BL-EXAMPLE.md' >"$TMP_DIR/expected-meta"
+cmp -s "$TMP_DIR/expected-both" "$TMP_DIR/both" || fail '两侧共有 fixture 不正确'
+cmp -s "$TMP_DIR/expected-local" "$TMP_DIR/local-only" || fail '本库独有 fixture 不正确'
+cmp -s "$TMP_DIR/expected-meta" "$TMP_DIR/meta-only" || fail '元库独有 fixture 不正确'
+assert_contains '### 能力边界' "$LOCAL_ROOT/README.md"
+assert_contains '## 能力边界' "$META_ROOT/README.md"
+assert_file_exists "$FIXTURE_ROOT/project/docs/knowledge/product/outside.md"
+assert_contains 'version: 2026.1020.1' "$FIXTURE_ROOT/project/docs/DESIGN.md"
+assert_contains 'dir: company' "$FIXTURE_ROOT/project/docs/knowledge-links.yaml"
+cp "$LOCAL_ROOT/README.md" "$TMP_DIR/before-retry"
+if "$BASH" "$TEST_DIR/../fixtures/file-mode-directory.sh" "$FIXTURE_ROOT" >"$TMP_DIR/retry-output" 2>&1; then
+  fail 'fixture 生成器不得覆盖非空目录'
+fi
+cmp -s "$TMP_DIR/before-retry" "$LOCAL_ROOT/README.md" || fail '拒绝覆盖后已有文件应不变'
+assert_dir_not_exists "$FIXTURE_ROOT/project/.docs-init"
 
-cat >"$PROTOCOL" <<'EOF'
-# File-mode directory overview
-
-Selected: docs/knowledge/business/
-
-Path matrix:
-- both: knowledge/business/README.md -> force refill
-- local-only: knowledge/business/BSD-LOCAL.md -> meta missing reject
-- meta-only: knowledge/business/BD-EXAMPLE/BD-EXAMPLE.md -> scaffold
-- meta-only: knowledge/business/BD-EXAMPLE/index.md -> scaffold
-
-Union count: 4; action count: 4.
-C execute all processable items / M change scope / S cancel / F no tree expansion.
-EOF
-
-for doc in "${SKILL_DOCS[@]}"; do
-  assert_contains "并集" "$doc"
-  assert_contains "meta-only" "$doc"
-done
-
-assert_contains "meta-only" "$PROTOCOL"
-assert_contains "Union count: 4; action count: 4" "$PROTOCOL"
-assert_contains "BD-EXAMPLE/BD-EXAMPLE.md -> scaffold" "$PROTOCOL"
-
-pass "文件模式指定目录扫描两侧并集，meta-only scaffold 不漏项"
+pass '文件模式 fixture：5 项真实并集，含 3 项 meta-only；Agent 行为需独立评测'
