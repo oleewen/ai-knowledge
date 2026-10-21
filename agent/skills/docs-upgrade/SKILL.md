@@ -7,7 +7,7 @@ description: >
  --apply-scaffold 收尾建 DOC_DIR/.agents 软链（非 meta）并将 agent 路径按深度重写为 .agents/ 或 agent/（同 docs-install）。
  指定文件/目录则只强制对齐那些路径（与整树互斥；破跳过；C=可处理项+未落位策略；M 下钻单文件）。
  元库来自文档目录下 knowledge-links.yaml 的唯一 type: meta（path 优先：无 --ref 用当前 HEAD；
- 有 --ref 才对齐该 ref；git path 脏则硬停；path 无效再 clone）。
+ 有 --ref 则限定该 ref；有版本号时固定到所选 ref 可达的最新发布快照；git path 脏则硬停；path 无效再 clone）。
  用户提到 /docs-upgrade、升级知识库、对齐元库模板、从 meta 刷新骨架、不丢已有知识升级、
  指定文件/目录对齐元库、只升某路径时，使用本技能。
  分流：首次装机 → docs-install / agent-install；本仓 Agent 树追新 → agent-install；生态 skills 追新 → skill-upgrade；
@@ -29,7 +29,7 @@ description: >
 - **路径重写（同 docs-install）**：`--apply-scaffold` 收尾：非 meta 建/修 `DOC_DIR/.agents` → `$AGENT_ROOT/$AGENT_DIR`；将裸 `agent/`、`../agent/`、`~/.agents/` 按深度重写为相对 `.agents/`（meta→相对 `agent/`）；不重写 IDE 段；幂等更新 README「Agent 路径」注记。`--dry-run` 不建链不重写。空骨架桶亦跑。结构重填 / 文件模式**不**强制再跑（已知缝）。
 - 合并契约：结构/模板=元库；正文=本库；已改判定=规范化后与元库同路径内容不等；已改 md=同标题（不比层级）填入元库骨架，正文标题相对元库标题级统一平移（级封顶 H6）；未落位=策略确认后才落（原父级并入 / 改挂 / 追加 / 跳过）；本库独有路径永不删。
 - 普通 md 进清单与文件模式（本无 scaffold；指定路径破跳过强制重填）。未落位策略与普通 md **同规则**。轻流程 `S` 不表示全跳过未落位。
-- 根级 `DESIGN.md`：本无 → 新增骨架；已改 → **整文件覆盖**（`--apply-scaffold` 以元库为准；不走 H2 结构重填）。文件模式指定该路径时同样整文件覆盖。
+- 根级 `DESIGN.md`：本无 → 新增骨架；已改 → **整文件覆盖**（`--apply-scaffold` 以元库为准；不走 H2 结构重填）。增量执行时保留当前 `version`，整单重填、未落位处理与校核成功后才更新为目标版本；中断或跳过待处理项时不推进。文件模式仅强制对齐指定路径，不推进整库版本。
 - `knowledge-links.yaml` 永不被元库模板覆盖。
 - **槽位根放开**：`application-slots/`、`system-slots/` 下**非软链真文件**进四桶 / 重填 / 文件模式（与普通路径同）。**凡软链一律跳过**（不跟随）。顶层遗留 `application-*` / `system-*`（不含上述两 slots 名）仍硬忽略。槽位**实例**同步仍归 `/docs-pull`。
 - 文件模式**不强制** `{仓库路径}/.docs-init/` 备份（依赖 git）。整树 scaffold 仍按脚本备份。
@@ -68,7 +68,8 @@ description: >
 - `{文档目录}/knowledge-links.yaml` 恰好一条 `type: meta`（或本次 `--meta-path`）
 - 整树：是否 dry-run（默认是）已收口
 - 文件模式：≥1 个可解析的真实文件或目录（解析后须有可处理项或明确拒绝项清单）
-- 若目标 `DESIGN.md` 含 `version`，自动读取当前版本与 Git log 最新 `docs-publish: version ...` 提交，输出版本增量边界；缺少任一版本提交时硬停，不猜测区间。
+- 整树且目标 `DESIGN.md` 含 `version`：在**元库**所选 `--ref`（未传则 HEAD）的可达历史中查找当前版本与最新 `docs-publish: version ...` 发布提交；当前发布点须为目标发布点祖先。缺任一基线或元库无 Git 历史即停止，不降级全量。无 `version` 的旧库保留原整树模式。
+- 增量清单仅处理元库两个发布点间变化的模板路径；内容固定为目标发布快照，不混入发布后 HEAD 内容。应用 `README-s.md` 映射到 `README.md`，按源路径过滤；删除项仍保留本库文件。原有 scaffold 后全树 Agent 路径重写仍执行，不受模板差异过滤限制。
 
 ## 产出与脚本
 

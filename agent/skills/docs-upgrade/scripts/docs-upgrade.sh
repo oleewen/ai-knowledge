@@ -24,36 +24,46 @@ META_ROOT=""
 META_SRC=""
 META_DOC_DIR=""
 META_CLEANUP=""
+META_CLONE_CLEANUP=""
+META_GIT_REPO=""
+META_REVISION=""
 VERSION_FROM=""
 VERSION_TO=""
 VERSION_FROM_SHA=""
 VERSION_TO_SHA=""
-DOC_REL_ROOT=""
 
 detect_version_range() {
  local design_file="${doc_abs%/}/DESIGN.md" current latest from_sha to_sha
  [[ -f "$design_file" ]] || return 0
  current="$(sed -n 's/^version:[[:space:]]*\([^[:space:]]*\).*/\1/p' "$design_file" | head -1)"
  [[ -n "$current" ]] || return 0
- latest="$(version_latest_from_log "$repo_abs" || true)"
- [[ -n "$latest" ]] || return 0
  current="$(version_normalize "$current")" || error "DESIGN.md 版本格式无效: $current"
- to_sha="$(version_commit_sha "$repo_abs" "$latest" || true)"
- from_sha="$(version_commit_sha "$repo_abs" "$current" || true)"
+ [[ -n "$META_GIT_REPO" ]] || error "版本增量需要元库 Git 发布历史；当前元库不是 Git 仓库"
+ latest="$(version_latest_from_log "$META_GIT_REPO" "$META_REVISION" || true)"
+ [[ -n "$latest" ]] || error "元库所选 ref 缺少目标版本发布提交: $META_REVISION"
+ to_sha="$(version_commit_sha "$META_GIT_REPO" "$latest" "$META_REVISION" || true)"
+ from_sha="$(version_commit_sha "$META_GIT_REPO" "$current" "$META_REVISION" || true)"
  [[ -n "$to_sha" ]] || error "找不到目标版本提交: $latest"
  [[ -n "$from_sha" ]] || error "找不到当前版本提交: $current"
+ git -C "$META_GIT_REPO" merge-base --is-ancestor "$from_sha" "$to_sha" \
+ || error "当前版本不是目标版本的祖先，拒绝增量升级: $current -> $latest"
  VERSION_FROM="$current"
  VERSION_TO="$latest"
  VERSION_FROM_SHA="$from_sha"
  VERSION_TO_SHA="$to_sha"
- DOC_REL_ROOT="${doc_abs#"$repo_abs"/}"
  info "版本增量: $VERSION_FROM -> $VERSION_TO (${from_sha}..${to_sha})"
 }
 
 version_path_changed() {
  local rel="$1"
  [[ -z "$VERSION_FROM_SHA" ]] && return 0
- git -C "$repo_abs" diff --quiet "$VERSION_FROM_SHA..$VERSION_TO_SHA" -- "$DOC_REL_ROOT/$rel"
+ local rc=0
+ git -C "$META_GIT_REPO" diff --quiet "$VERSION_FROM_SHA" "$VERSION_TO_SHA" -- "$META_DOC_DIR/$rel" || rc=$?
+ case "$rc" in
+ 0) return 1 ;;
+ 1) return 0 ;;
+ *) error "无法计算元库版本差异: $rel (git diff=$rc)" ;;
+ esac
 }
 
 usage() {
@@ -69,6 +79,11 @@ Usage: docs-upgrade.sh [--dry-run | --apply-scaffold] [--meta-path PATH] [--ref 
  --ref REF 显式 git ref（优先于 path 当前 HEAD）；不传则：有效 git path 用当前 HEAD；
  path 无效再 clone 时默认 main
  -h, --help 本帮助
+
+目标 DESIGN.md 有 version 时，从元库所选 ref 的发布历史解析当前/目标版本，
+只扫描两个发布提交间变化的模板文件，读取内容固定为目标发布快照。
+缺发布基线即停止；无 version 的旧库保留整树扫描。
+增量 scaffold 保留当前 version；Agent 完成整单重填与校核后才写入目标版本。
 
 禁止：不会调用 docs-install 清空 DOC_DIR；不会覆盖 knowledge-links.yaml；
 不会把 README-s.md / README-c.md 当作目标文件名写入（README.md 映射除外）。
@@ -213,7 +228,7 @@ resolve_meta_tree() {
  local ref="$3"
  local work archive_ref clone_ref
 
- if [[ -d "$meta_path/.git" ]]; then
+ if [[ -e "$meta_path/.git" ]]; then
  if meta_git_is_dirty "$meta_path"; then
  error "meta path 工作区有未提交改动，拒绝升级: ${meta_path}（请先提交或清理）"
  fi
@@ -232,25 +247,33 @@ resolve_meta_tree() {
  error "meta path 找不到 ref（origin/${ref} 与本地 ${ref} 均无）: ${meta_path}"
  fi
  info ">>> meta 结构源: git archive ${archive_ref} @ ${meta_path}"
- git -C "$meta_path" archive "$archive_ref" | tar -x -C "$work"
  else
+ archive_ref=HEAD
  info ">>> meta 结构源: git archive HEAD @ ${meta_path} (当前分支，未传 --ref)"
- git -C "$meta_path" archive HEAD | tar -x -C "$work"
  fi
  META_ROOT="$work"
  META_CLEANUP="$work"
+ META_GIT_REPO="$meta_path"
+ META_REVISION="$(git -C "$meta_path" rev-parse --verify "${archive_ref}^{commit}")"
+ detect_version_range
+ git -C "$meta_path" archive "${VERSION_TO_SHA:-$META_REVISION}" | tar -x -C "$work"
  elif [[ -d "$meta_path" && ( -d "$meta_path/application" || -d "$meta_path/system" || -d "$meta_path/company" ) ]]; then
  META_ROOT="$meta_path"
  META_CLEANUP=""
+ detect_version_range
  elif [[ -n "$meta_repo" ]]; then
  clone_ref="${ref:-main}"
  work="$(mktemp -d "${TMPDIR:-/tmp}/docs-upgrade-clone.XXXXXX")"
  info ">>> clone ${meta_repo} @ ${clone_ref} -> ${work}"
- if ! git clone --depth 1 --branch "$clone_ref" "$meta_repo" "$work" 2>/dev/null; then
- git clone --depth 1 "$meta_repo" "$work"
- fi
- META_ROOT="$work"
- META_CLEANUP="$work"
+ META_CLONE_CLEANUP="$work"
+ git clone --branch "$clone_ref" "$meta_repo" "$work" \
+ || error "无法 clone 元库指定 ref: $clone_ref"
+ META_GIT_REPO="$work"
+ META_REVISION="$(git -C "$work" rev-parse HEAD)"
+ detect_version_range
+ META_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/docs-upgrade-meta.XXXXXX")"
+ META_CLEANUP="$META_ROOT"
+ git -C "$work" archive "${VERSION_TO_SHA:-$META_REVISION}" | tar -x -C "$META_ROOT"
  else
  error "meta path 不可用且无 repository: path=${meta_path}"
  fi
@@ -289,9 +312,8 @@ resolve_meta_root() {
  ref="${REF_OVERRIDE:-}"
  fi
 
- resolve_meta_tree "$meta_path" "$meta_repo" "$ref"
-
  META_DOC_DIR="$meta_doc_dir"
+ resolve_meta_tree "$meta_path" "$meta_repo" "$ref"
  META_SRC="${META_ROOT%/}/${META_DOC_DIR}"
  [[ -d "$META_SRC" ]] || error "元库缺少模板目录: $META_SRC"
  info "结构源: $META_SRC"
@@ -316,6 +338,9 @@ cleanup() {
  if [[ -n "${META_CLEANUP:-}" && -d "$META_CLEANUP" ]]; then
  rm -rf "$META_CLEANUP"
  fi
+ if [[ -n "${META_CLONE_CLEANUP:-}" && -d "$META_CLONE_CLEANUP" ]]; then
+ rm -rf "$META_CLONE_CLEANUP"
+ fi
 }
 trap cleanup EXIT
 
@@ -323,7 +348,6 @@ docsconfig_bootstrap_validate
 repo_abs="$(docsconfig_repo_abs)"
 doc_abs="$(docsconfig_doc_abs)"
 [[ -n "${KNOWLEDGE_TYPE:-}" ]] || error ".docsconfig 缺少 KNOWLEDGE_TYPE"
-detect_version_range
 
 LINKS_FILE="${doc_abs%/}/knowledge-links.yaml"
 resolve_meta_root "$LINKS_FILE"
@@ -357,10 +381,15 @@ while IFS= read -r -d '' rel; do
  note_ignored_legacy_slot_dir "$rel"
  continue
  fi
- is_excluded_meta_rel "$rel" && continue
-
  local_rel="$rel"
- version_path_changed "$local_rel" || continue
+ if [[ "$KNOWLEDGE_TYPE" == application && "$rel" == README-s.md ]]; then
+ local_rel=README.md
+ elif [[ "$KNOWLEDGE_TYPE" == application && "$rel" == README.md && -f "$META_SRC/README-s.md" ]]; then
+ continue
+ else
+ is_excluded_meta_rel "$rel" && continue
+ fi
+ version_path_changed "$rel" || continue
  src_f="$META_SRC/$rel"
  dst_f="${doc_abs%/}/$local_rel"
 
@@ -391,25 +420,6 @@ while IFS= read -r -d '' rel; do
  fi
  fi
 done < <(cd "$META_SRC" && find . -type f -print0)
-
-if [[ "$KNOWLEDGE_TYPE" == 'application' ]]; then
- map_src="$(meta_src_for_local_rel "$META_SRC" 'README.md' || true)"
- if [[ -n "$map_src" && -f "${doc_abs%/}/README.md" ]]; then
- already=0
- for x in "${RESTRUCTURE_LIST[@]+"${RESTRUCTURE_LIST[@]}"}" "${SKIP_LIST[@]+"${SKIP_LIST[@]}"}" "${ADD_LIST[@]+"${ADD_LIST[@]}"}"; do
- [[ "$x" == 'README.md' || "$x" == README.md* ]] && already=1
- done
- if [[ "$already" -eq 0 ]]; then
- if files_equal_normalized "$map_src" "${doc_abs%/}/README.md"; then
- SKIP_LIST+=('README.md')
- else
- RESTRUCTURE_LIST+=('README.md')
- fi
- fi
- elif [[ -n "$map_src" && ! -e "${doc_abs%/}/README.md" ]]; then
- ADD_LIST+=('README.md')
- fi
-fi
 
 declare -A META_RELS=()
 while IFS= read -r -d '' rel; do
@@ -493,7 +503,12 @@ for rel in "${ADD_LIST[@]+"${ADD_LIST[@]}"}" "${OVERWRITE_LIST[@]+"${OVERWRITE_L
  backup_file_to_stamp "$dst" "$rel"
  fi
  mkdir -p "$(dirname "$dst")"
+ if is_root_design_rel "$rel" && [[ -n "$VERSION_FROM" ]]; then
+ # scaffold 不是整单完成；保留基线，避免重试时漏掉尚未完成的正文重填。
+ awk -v version="$VERSION_FROM" '/^version:/ { print "version: " version; next } { print }' "$src" >"$dst"
+ else
  cp "$src" "$dst"
+ fi
  if is_root_design_rel "$rel"; then
  info "整文件覆盖: $rel"
  else
@@ -515,3 +530,6 @@ if [[ "$_upgrade_mode" != 'meta' ]]; then
 fi
 rewrite_docs_agent_paths "${doc_abs}" "${_upgrade_mode}"
 info "agent 路径重写完成（模式=${_upgrade_mode}；与 docs-install 同实现）。"
+if [[ -n "$VERSION_TO" ]]; then
+ info "当前版本基线保留为 ${VERSION_FROM}；Agent 完成全部重填、未落位处理与校核后，才可将 DESIGN.md version 更新为 ${VERSION_TO}。"
+fi

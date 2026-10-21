@@ -2,7 +2,7 @@
 
 ## 参数向导
 
-进入扫描前自动解析版本边界：当前 `DESIGN.md` 版本到 Git log 最新 `docs-publish` 版本。输出 `from..to` 与 commit；无法解析时停止，不猜测。
+整树且目标 `DESIGN.md` 有 `version` 时，在元库所选 ref 的可达历史中解析当前版本和最新 `docs-publish` 发布提交，输出 `from..to` 与两个 commit。缺基线、非 Git 源或当前点不是目标祖先即停止，不猜测、不降级全量；无版本号的旧库保留整树模式。文件模式仍强制对齐指定路径，不以版本差异缩小名单、不推进整库版本。
 
 按序收口；用户已明确时可跳过对应项：
 
@@ -29,10 +29,11 @@
 4. 展开 `path`（或 `--meta-path`）：
    - 为 git 仓：`git status --porcelain` 非空 → **硬停**（含已传 `--ref`）
    - 已传 `--ref`：`fetch` 后 `git archive origin/$ref`，否则本地 `$ref`，都无 → 硬停
-   - 未传 `--ref`：**不 fetch**；`git archive HEAD`（当前检出分支 tip）
+   - 未传 `--ref`：**不 fetch**；以当前 HEAD 作为历史边界。无版本模式读取 HEAD；增量模式读取该历史内最新发布提交快照
    - path 非 git 但含 `application|system|solution|company` → 直接用该目录
-   - path 无效 → 有 `repository` 则临时 clone（`--ref` 或默认 `main`）
+   - path 无效 → 有 `repository` 则临时 clone 完整历史（`--ref` 或默认 `main`）；指定分支不存在即停止，不回退其他分支
 5. 结构源根 = `{meta_root}/{dir}/`，其中 `dir` 优先 meta 条，否则 `KNOWLEDGE_TYPE`
+6. 整树增量：当前/目标提交均来自元库所选 ref 的可达历史，所有模板读取固定到目标发布提交（含显式 `--ref`）；按 `{dir}/相对路径` 的差异筛选动作。`README-s.md` 先按元库源路径过滤，再映射到本库 `README.md`。不得改用目标工程的 Git diff 或未发布的 HEAD 内容
 
 ## 执行循环：整树
 
@@ -72,7 +73,8 @@ bash agent/skills/docs-upgrade/scripts/docs-upgrade.sh --dry-run [--meta-path PA
 
 1. 校核：`文档目录` 仍在、links 未丢、备份目录存在（若有写入）
 2. 受众维 **A/B**
-3. 停下等待 `C/M/S/F`
+3. 增量整单全部可处理项完成、未落位处理闭合且校核通过后，才将本库 `DESIGN.md` 的 `version` 更新为清单中的目标版本；再次核对落盘值。`--apply-scaffold` 只保留当前基线；失败、中断或跳过待处理项时不得推进版本，后续重试继续使用原区间。重填必须读取本次已固定的目标发布 commit
+4. 停下等待 `C/M/S/F`
 
 未过 A/B → 不得宣称单元完成。
 

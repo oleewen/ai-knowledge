@@ -2,7 +2,9 @@
 
 脚本 SSOT：`bash agent/skills/docs-upgrade/scripts/docs-upgrade.sh -h`。本文列技能编排层。
 
-若目标 `DESIGN.md` 含 `version`，脚本自动读取当前版本，并用 `docs-publish: version YYYY.MMdd.patch` commit 查找最新发布边界；缺少当前或目标 commit 时硬停。
+整树且目标 `DESIGN.md` 含 `version` 时，脚本在元库所选 ref 的可达历史中，用 `docs-publish: version YYYY.MMdd.patch` commit 查找当前基线和最新目标发布点。缺少任一提交、元库非 Git 或当前发布点不是目标祖先时硬停；无 `version` 的旧库保留整树扫描。目标工程自身的发布历史不参与此计算。
+
+增量范围按元库模板目录下两个发布提交的文件差异计算；读取固定为目标发布快照。应用 README 按 `README-s.md` 源路径过滤后映射为 `README.md`；未变化文件不进动作桶，元库删除项保留为本库独有。scaffold 后的全树 Agent 路径重写仍按原契约执行。`--apply-scaffold` 保留原版本号，整单成功后由 Agent 更新；文件模式不推进整库版本。
 
 ## 技能层
 

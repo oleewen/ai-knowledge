@@ -1,6 +1,8 @@
 # docs-upgrade 陷阱
 
-- **版本基线**：只有 Git log 中存在当前版本与目标 `docs-publish` 版本提交时才能计算区间；缺基线硬停，不按时间或 HEAD 猜测。
+- **版本基线**：使用元库所选 ref 可达历史中的当前/目标 `docs-publish` 提交，不用目标工程历史。缺基线硬停；无版本号旧库才保留整树扫描。
+- **差异与读取一致**：按元库模板路径过滤，内容固定为目标发布快照；不可把发布后 HEAD 内容混进增量。应用 README 按 `README-s.md` 源路径过滤。
+- **提前推进版本**：scaffold 完成不等于整单完成；保留原 `version`，全部重填、未落位处理与校核完成后才更新，避免重试漏项。指定路径模式不推进整库版本。
 
 - **误跑 docs-install knowledge**：会清空 DOC_DIR。升级只用 `docs-upgrade.sh` + Agent 重填（文件模式亦禁清空 install）。
 - **路径重写挂点**：仅 `--apply-scaffold` 末尾（软链 + `rewrite_docs_agent_paths` → 深度相对 `.agents/` 或 meta 的 `agent/`）。结构重填 / 文件模式若再写入裸 `agent/`，本技能不强制再扫——接受缝；勿误以为整单结束必已重写。

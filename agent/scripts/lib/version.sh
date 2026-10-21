@@ -53,8 +53,8 @@ version_next_from_files() {
 }
 
 version_commit_sha() {
-  local repo="$1" version="$2" subject
-  git -C "$repo" log --format='%H%x09%s' --all --grep='^docs-publish: version ' |
+  local repo="$1" version="$2" revision="${3:---all}" subject
+  git -C "$repo" log --format='%H%x09%s' "$revision" --grep='^docs-publish: version ' |
     while IFS=$'\t' read -r sha subject; do
       [[ "$subject" == "docs-publish: version $version" ]] && { printf '%s\n' "$sha"; return 0; }
     done
@@ -68,13 +68,13 @@ version_previous_commit_sha() {
 }
 
 version_latest_from_log() {
-  local repo="$1" line subject version best=""
+  local repo="$1" revision="${2:---all}" line subject version best=""
   while IFS= read -r line; do
     subject="${line#*$'\t'}"
     version="${subject#docs-publish: version }"
     [[ "$subject" == docs-publish:\ version\ * ]] || continue
     version_normalize "$version" >/dev/null 2>&1 || continue
     if [[ -z "$best" ]] || version_compare "$version" "$best"; then best="$(version_normalize "$version")"; fi
-  done < <(git -C "$repo" log --format='%H%x09%s' --all --grep='^docs-publish: version ')
+  done < <(git -C "$repo" log --format='%H%x09%s' "$revision" --grep='^docs-publish: version ')
   [[ -n "$best" ]] && printf '%s\n' "$best"
 }
