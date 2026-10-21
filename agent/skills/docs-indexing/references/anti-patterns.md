@@ -1,13 +1,11 @@
-# docs-indexing 反模式
+# 行为反例
 
-| 问题 | 说明 |
+| 误判 | 应对 |
 | --- | --- |
-| 参数未收口即写 INDEX/LOG | 先收口 `mode/depth/output/since` 与当前输出组，再意图澄清后写 INDEX/LOG |
-| 跳过写前意图澄清 | 须六项清单 + 写前 `C`；见 [intent-clarify.md](../../../references/intent-clarify.md) |
-| 路径/容器缺 索引锚点 | 第 6 项须同时列出 `INDEX-GUIDE.md` 与 `INDEX-GUIDE` 增量锚点注释 |
-| spec 只有 basename | 须写 **`application/...` 级**根相对路径 |
-| depth 3 少读 | 违 [scan-spec.md](scan-spec.md) |
-| 无基线静默 full | 须用户 explicit full 或中止 |
-| 写前 grilling 混名 | 写前=意图澄清；写后=烤干 |
+| 用户只要第四章视角导航，就重写九章 | 转入 docs-build，保留现有指南 |
+| 用户只要 OKF `index.md`，却生成 `INDEX-GUIDE.md` | 转入 docs-okf |
+| 给出一套参数后要求重复选预设 | 采用已明确值，只问剩余缺口 |
+| 把运行块或文件数当作索引成果 | 读取证据、维护九章并核验覆盖范围 |
+| 将同文件的不同事实强行归到一章 | 按事实职责组织，避免重复正文 |
 
-操作：[gotchas.md](../gotchas.md)。
+操作异常与补救见 [gotchas.md](../gotchas.md)。

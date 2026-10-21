@@ -1,27 +1,25 @@
 # 受众与语言（docs-indexing）
 
-> 公共维与烤干门禁：[audience-and-language.md](../../../references/audience-and-language.md)
+共享受众维 A/B/C/E 见 [audience-and-language.md](../../../references/audience-and-language.md)。
 
 ## 主读者
 
-**INDEX-GUIDE**：Onboarding 人类 + AI 检索；**索引锚点**：维护者审计。
+新加入的开发者与检索信息的 Agent：先给入口和路径，再链接细节。
 
 ## 宜写 / 宜弱化
 
 | 宜写 | 宜弱化 |
 | --- | --- |
-| 九章地图、路径精要、未索引声明 | 长教程、重复命令百科 |
-| LOG 增量说明与基线解释 | 指南失败仍追加 LOG |
-| 与仓库实况一致的导航 | 臆造路径/Skill |
+| 九章地图、职责、可达路径 | 长教程、整份命令手册、重复正文 |
+| 已读范围与缺口原因 | 无证据的覆盖率或“全量完成”声明 |
+| 本轮模式与基线解释 | 独立日志表和无关运行细节 |
 
 ## 反例
 
 | 避免 | 推荐 |
 | --- | --- |
-| INDEX 写成操作手册 | 地图 + 链到 README/Skill |
-| LOG 与指南不同步 | 指南成功后再记 LOG |
-| 对话里只甩 `1714108800000` | `2024-04-26 13:20:00 +08`（`1714108800000`）；见 [scan-config-onboarding.md §2.0](scan-config-onboarding.md) |
+| 把锚点当审计日志 | 锚点仅用于增量定位；时间展示遵循 [参数规范](scan-config-onboarding.md#20-对人展示时间锚agent-输出) |
 
 ## 特殊允许区
 
-无。深度/mode 以参数与 scan 规范为准。
+无。

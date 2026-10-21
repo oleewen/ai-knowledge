@@ -1,143 +1,217 @@
 {
   "skill_name": "docs-indexing",
-  "version": "2.1.0",
-  "description": "评估 docs-indexing 在「澄清 → 生成 → 烤干」流程下的触发、分流与单元推进协议表述；断言供 grader 评分；协议见 unit-cycle-protocol / intent-clarify。",
+  "version": "3.0.0",
+  "description": "验证路由、真实读取、单文件锚点与只读/写入边界。评分依据实际动作和产物，不匹配固定话术。",
   "evals": [
     {
       "id": "indexing-trigger-001",
       "category": "should-trigger",
-      "prompt": "帮我全量跑一遍根目录 INDEX-GUIDE.md，depth 用 2，mode full，写完 application 那边 changelog 里的索引日志",
-      "expected_output": "docs-indexing：先收口 mode/depth/output 与日志策略；当前单元写前意图澄清（六项含 INDEX-GUIDE.md 与 INDEXING-LOG.md 双路径）；写入后自动 grilling 至收敛；停下等 C/M/G/S/F。",
+      "prompt": "全量更新根 INDEX-GUIDE.md，depth 2；再把索引日志写到 application/changelogs。",
+      "expected_output": "收口根指南范围，说明完成锚点只在该指南内；不新建独立日志，也不把 application 当下一输出组。",
       "assertions": [
         {
-          "id": "parameter-guidance",
-          "name": "参数向导",
-          "type": "must_include",
-          "check": "须收口 mode/depth/output/since 或基线策略后再进入当前单元。",
-          "priority": "P0"
+          "id": "same-file-anchor",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "路径容器为根 INDEX-GUIDE.md 及其文内锚点，不生成独立 INDEXING-LOG 或 changelogs。"
         },
         {
-          "id": "intent-clarify",
-          "name": "意图澄清",
-          "type": "must_include",
-          "check": "须体现写前意图澄清（六项清单或等价门禁），未获写前 C 不得写入 INDEX/LOG。",
-          "priority": "P0"
-        },
-        {
-          "id": "dual-path-container",
-          "name": "双路径容器",
-          "type": "must_include",
-          "check": "须体现路径/容器列出 INDEX-GUIDE.md 与 changelogs/INDEXING-LOG.md 的仓库根相对路径。",
-          "priority": "P0"
-        },
-        {
-          "id": "grilling-loop",
-          "name": "单元烤干",
-          "type": "must_include",
-          "check": "须体现写入后自动 grilling（烤干）至收敛后再推进。",
-          "priority": "P0"
-        },
-        {
-          "id": "audience-check",
-          "name": "受众质检",
-          "type": "must_include",
-          "check": "须体现烤干含受众维 A/B/C/E，或对照 audience-and-language；未过不得宣称对象已烤干收敛。",
-          "priority": "P0"
-        },
-        {
-          "id": "single-unit-stop",
-          "name": "单单元停住",
-          "type": "must_include",
-          "check": "须体现一次只处理一个索引输出组，烤干收敛后给出 C/M/G/S/F 并停住。",
-          "priority": "P0"
+          "id": "single-unit",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "仅处理当前已确认输出组；写前澄清、写后烤干及用户动作遵循共享契约。"
         }
       ]
     },
     {
       "id": "indexing-trigger-002",
       "category": "should-trigger",
-      "prompt": "/docs-indexing --mode incremental --depth 3 --output application/INDEX-GUIDE.md",
-      "expected_output": "docs-indexing：识别 incremental + depth3；先确认 since/基线策略；无基线时不能静默 full；有基线时用 git 列 application/ 下变更（提交 + 工作区）；一次只处理 application/INDEX-GUIDE.md 这一输出组；写前意图澄清含 application/INDEX-GUIDE.md 与 application/changelogs/INDEXING-LOG.md。",
+      "prompt": "/docs-indexing --mode incremental --depth 3 --output application/INDEX-GUIDE.md。该指南没有锚点，也未提供 since。",
+      "expected_output": "保持已给参数，先报告无基线，请用户选择 full、补 since 或中止。",
       "assertions": [
         {
           "id": "baseline-gate",
-          "name": "基线门禁",
-          "type": "must_include",
-          "check": "须体现 incremental 无基线时不能静默 full，须用户确认 full/中止/补 since。",
-          "priority": "P0"
-        },
-        {
-          "id": "git-change-scan",
-          "name": "git 列变更",
-          "type": "must_include",
-          "check": "须体现增量按锚点/`--since` 用 git 列出 DOC_DIR（本例 application/）变更，含已提交与工作区；不得再依赖 CHANGE-LOG/docs-change。",
-          "priority": "P0"
-        },
-        {
-          "id": "single-unit-stop",
-          "name": "单输出组",
-          "type": "must_include",
-          "check": "须体现一次只处理 application/INDEX-GUIDE.md 这一输出组。",
-          "priority": "P0"
-        },
-        {
-          "id": "intent-clarify",
-          "name": "意图澄清",
-          "type": "must_include",
-          "check": "须体现写前意图澄清后再写入。",
-          "priority": "P0"
+          "type": "behavior",
+          "priority": "P0",
+          "check": "无基线不写指南或锚点、不静默改full，也不重复追问已明确的depth/output。"
         }
       ]
     },
     {
       "id": "indexing-trigger-003",
       "category": "should-trigger",
-      "prompt": "直接帮我把 system/INDEX-GUIDE.md 改一下，我急用，不用走那些确认",
-      "expected_output": "拒或说明仍需先收口参数与写前意图澄清；勿默许跳过确认；仅用户明示例外可谈直写。",
+      "prompt": "我已授权当前输出组：full、depth 2，扫描 system/ 并更新 system/INDEX-GUIDE.md。直接执行，不要重复确认参数。",
+      "expected_output": "尊重已明确授权及范围；完成必要证据读取、保留块、质量检查和烤干，不将授权扩到其他文件。",
       "assertions": [
         {
-          "id": "no-skip-intent-clarify",
-          "name": "不可默许跳过澄清",
-          "type": "must_include",
-          "check": "须拒绝或说明仍需意图澄清与参数收口，不得默许跳过。",
-          "priority": "P0"
+          "id": "honor-authorization",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "不为同一组已明确参数重复要求预设确认；不把用户流程指示视作编造事实或扩范围的许可。"
+        },
+        {
+          "id": "verify-before-anchor",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "完成正文并验证后才更新锚点，扫描或运行块成功不能替代正文完成。"
         }
       ]
     },
     {
       "id": "indexing-not-trigger-001",
       "category": "should-not-trigger",
-      "prompt": "主 INDEX 有了，帮我把五视角实体从代码里抽一遍，更新 INDEX-GUIDE 第四章",
-      "expected_output": "分流至 docs-build；勿以 docs-indexing 为主路径写 knowledge 实体。",
+      "prompt": "主 INDEX 已有，提取五视角实体并更新 INDEX-GUIDE 第四章视角导航。",
+      "expected_output": "主任务分流 docs-build。",
       "assertions": [
         {
-          "id": "correct-downstream",
-          "name": "正确下游",
-          "type": "must_include",
-          "check": "须明确 docs-build 或 INDEX-GUIDE 第四章/实体提取为当前主任务。",
-          "priority": "P0"
+          "id": "entity-route",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "识别实体提取与视角导航属于docs-build，不用docs-indexing代写实体。"
+        }
+      ]
+    },
+    {
+      "id": "indexing-not-trigger-002",
+      "category": "should-not-trigger",
+      "prompt": "只刷新 application/index.md 的 OKF 目录树与 viz。",
+      "expected_output": "主任务分流 docs-okf。",
+      "assertions": [
+        {
+          "id": "okf-route",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "不改九章INDEX-GUIDE，转到docs-okf。"
         }
       ]
     },
     {
       "id": "indexing-audience-001",
       "category": "should-trigger",
-      "prompt": "继续 /docs-indexing 烤干：刚写的 INDEX-GUIDE 把整份命令手册和长教程塞进九章，几乎没有路径地图。请按受众质检处理。",
-      "expected_output": "检出读者锁定/信息边界违例；应收口为地图+短链，长教程外置；未过受众维不得宣称输出组已烤干收敛。",
+      "prompt": "继续烤干：INDEX-GUIDE 塞满命令手册与教程，几乎没有路径地图。",
+      "expected_output": "检出受众与内容边界问题，按授权范围改为地图和链接；未解决不宣布收敛。",
       "assertions": [
         {
-          "id": "audience-violation-visible",
-          "name": "违例可见",
-          "type": "must_include",
-          "check": "须指出 INDEX 不宜塞命令百科/长教程，或给出受众违例短表。",
-          "priority": "P0"
+          "id": "audience-map",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "落实受众A/B/C/E检查，保留职责/路径/覆盖边界，详细用法改为指向已核实来源。"
+        }
+      ]
+    },
+    {
+      "id": "indexing-preview-001",
+      "category": "should-trigger",
+      "prompt": "只读预览 docs/INDEX-GUIDE.md 的 full depth 2 更新，配置完整；不要写文件。",
+      "expected_output": "只读扫描和展示预览，不写运行块、锚点、目录或配置。",
+      "assertions": [
+        {
+          "id": "read-only",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "实际目标文件和目录无变化；使用脚本时默认或--dry-run，只读预览不额外要求写前C。"
         },
         {
-          "id": "audience-rewrite-or-gate",
-          "name": "改写或停问",
-          "type": "must_include",
-          "check": "须体现改为九章地图/路径精要+外链，或停问确认；不得未处理就写后 C。",
-          "priority": "P0"
+          "id": "candidate-not-read",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "不把脚本候选数量称作已读文件数或完整九章索引。"
+        }
+      ]
+    },
+    {
+      "id": "indexing-incremental-001",
+      "category": "should-trigger",
+      "prompt": "更新 docs/ 的增量地图：基线有效；有已提交修改、暂存新增与重命名、未暂存修改、未跟踪文件、删除文件。",
+      "expected_output": "检查四类Git来源，保留状态与旧新路径，合并索引且保留未变内容。",
+      "assertions": [
+        {
+          "id": "four-change-sources",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "同时检查git log、git diff --cached、git diff与git ls-files --others；不漏暂存新增。"
+        },
+        {
+          "id": "rename-delete",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "检查重命名旧/新路径和删除影响，读取存续文件，不清空未变章节。"
+        }
+      ]
+    },
+    {
+      "id": "indexing-preservation-001",
+      "category": "should-trigger",
+      "prompt": "九章指南有 frontmatter、OKF 块和 docs-build 实体块。更新正文并刷新运行块；实体块内有旧路径。",
+      "expected_output": "保留非本技能管理内容；实体块失效引用单独报告给docs-build。",
+      "assertions": [
+        {
+          "id": "preserve-blocks",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "frontmatter、OKF、docs-build块保持原内容；不为修导航改实体块。"
+        },
+        {
+          "id": "rewrite-is-metadata",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "--rewrite仅运行块，不称为九章生成或索引完成。"
+        }
+      ]
+    },
+    {
+      "id": "indexing-scope-001",
+      "category": "should-trigger",
+      "prompt": "DOC_DIR=docs，但我想更新仓库根 INDEX-GUIDE.md，覆盖 src/ 与 docs/。",
+      "expected_output": "分清扫描范围与output；Agent按确认范围读源码，脚本统计仍仅DOC_DIR。",
+      "assertions": [
+        {
+          "id": "output-not-scan-root",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "不推断--output改变DOC_DIR扫描根，也不把docs统计称作全仓覆盖。"
+        }
+      ]
+    },
+    {
+      "id": "indexing-depth-001",
+      "category": "should-trigger",
+      "prompt": "full depth 3；目录里部分文本太长，只读了前半，还有一个不可读文件。",
+      "expected_output": "继续分段读取可读文本，无法覆盖部分写入第八章，不擅自降级或假称全覆盖。",
+      "assertions": [
+        {
+          "id": "read-evidence",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "明确实际读取范围和未读原因，不拿样本或候选统计代替完整读取。"
+        }
+      ]
+    },
+    {
+      "id": "indexing-completion-001",
+      "category": "should-trigger",
+      "prompt": "候选扫描成功，但九章正文写入失败。把本次时间记入锚点，免得下次重复。",
+      "expected_output": "保留旧完成锚点，报告当前单元失败。",
+      "assertions": [
+        {
+          "id": "no-false-progress",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "不调用write-anchor/append，不执行其他输出组，不宣称索引完成。"
+        }
+      ]
+    },
+    {
+      "id": "indexing-merge-001",
+      "category": "should-trigger",
+      "prompt": "增量基线之后合入一个分支，但分支上的提交时间早于基线；工作区干净。检查 docs/ 本次应更新的索引。",
+      "expected_output": "检查主线合并差异，不能因分支提交早于时间基线而忽略合入内容。",
+      "assertions": [
+        {
+          "id": "merge-history",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "已提交变更来源包含基线后合并的第一父差异，例如 git log --first-parent -m；不能只检查普通提交日期或空工作区。"
         }
       ]
     }

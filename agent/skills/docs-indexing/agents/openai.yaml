@@ -1,0 +1,4 @@
+interface:
+  display_name: "九章文档索引"
+  short_description: "创建和维护九章文档地图，核实全量或增量范围并保留实体导航"
+  default_prompt: "使用 $docs-indexing 更新当前仓库的 INDEX-GUIDE.md，先核对扫描范围和增量基线。"

@@ -1,105 +1,46 @@
-# 扫描配置引导（步骤 2 前）
+# 参数与基线
 
-一条消息汇总参数 + **便捷预设**；**不替代** SKILL — 影响行为的值须用户**明确确认**后再进步骤 3。
+先采用用户给定值；仅对缺失或冲突项提问。可以一次汇总参数，用户选定后复述最终值；同一组明确参数无需反复确认。
 
----
+## 1. 参数
 
-## 1. 步骤 1：上下文探索（建议核对）
+| 参数 | 规则 |
+| --- | --- |
+| `mode` | `full` 全量；`incremental` 增量。CLI 兼容 `f` / `i` |
+| `depth` | `1` 拓扑、`2` 结构、`3` 精读；含义见 [scan-spec.md](scan-spec.md) |
+| `output` | 文件名固定为 `INDEX-GUIDE.md`；相对路径从仓库根解析 |
+| `since` | incremental 的正整数 epoch 毫秒；显式值优先，否则读目标指南锚点 |
 
-在进入汇总提问前，Agent 宜快速对齐事实（只读展示，不据此自动定参）：
+Agent 的默认文档根依 [session-spec-path.md](../../../references/session-spec-path.md) 解析：优先 `.docsconfig` 的 `DOC_DIR`，缺失或无效则建议 `docs`。输出默认为该根下的 `INDEX-GUIDE.md`；不按现存目录静默切换到 `doc/` 或仓库根。
 
-| 核对项 | 说明 |
-| ----- | ---- |
-| 仓库根与 `文档目录` | 索引输出相对文档根；若有多套约定，列出解析结果供用户确认 |
-| `INDEX-GUIDE` 增量锚点注释 | 是否存在；若存在，**主表第一行**是否有可解析的 `indexing_finished_ms`（或迁移期旧 HTML 回退；仅作展示） |
-| 增量前提 | 无有效基线时，增量不可用，须在步骤 2 说明并请用户选全量或中止 |
-| 用户意图（可选问一句） | 首次建索引 / 大改后重扫 / 日常跟进变更 |
+脚本依赖共享 `docsconfig.sh` 的完整配置，解析失败会停止。该依赖不等于 Agent 可以自动补写配置。`--output` 只覆盖输出位置，脚本仍扫描配置解析出的 `DOC_DIR`；目录不存在时不创建空扫描根。
 
-对人展示上述时间锚时，**禁止只甩纯数字**；须用 §2.0 双写格式（表内仍存 epoch ms）。
+参数未给出时可推荐 `full + depth 2`；首次只看目录可选 `full + depth 1`。已有有效基线时可选 `incremental + depth 2`。深度 3 的成本与范围须说明，不能自行降级。
 
----
+## 2. 增量基线
 
-## 2. 步骤 2：一次性汇总提问（推荐形态）
+基线来源及格式以 [indexing-log-spec.md](indexing-log-spec.md) 为准。缺失或无效时，请用户选择：
 
-将 **mode、depth** 以及本流程需要的 **--output、--since** 放在**同一条消息**中列出；每项附简短说明与可选字面量。
-
-**须同时满足：**
-
-- 展示 **便捷预设**（见下节），用户可回复「用预设 A」或逐字段给出字面量；
-- 用户确认后，Agent **复述**最终定参（mode / depth / output / since）再进入步骤 3；复述中的时间锚须符合 §2.0；
-- 禁止因用户选了预设而省略复述与确认。
+1. 改用 full，并保留已选深度与目标路径。
+2. 补充有效 since，继续 incremental。
+3. 中止。
 
 ### 2.0 对人展示时间锚（Agent 输出）
 
-**落盘 / CLI / 表字段不变**：`indexing_finished_ms`、`since_ms`、`--since` 仍为 epoch 毫秒纯数字。
-
-**凡 Agent 对人说出**这些时间锚（含日志候选、复述 `since`、烤干里解释基线），一律双写，禁止只输出纯数字：
-
-```text
-yyyy-MM-dd HH:mm:ss +08（{epoch_ms}）
-```
-
-- 时区固定 **Asia/Shanghai（UTC+8）**，墙钟后带 `+08`（勿跟机器本地时区漂，勿与 LOG 的 UTC `indexed_at` 混读）。
-- 例：`2024-04-26 13:20:00 +08`（`1714108800000`）
-- 全量 `since_ms=0`：对人说「全量（无 since）」即可，不必硬套日期。
-
-换算（只用于展示；写入仍用 ms）：
+`since`、`since_ms`、`indexing_finished_ms` 对人展示均使用 Asia/Shanghai：`yyyy-MM-dd HH:mm:ss +08（epoch_ms）`。CLI 和 HTML 注释仍存纯数字。全量可写“全量（无 since）”。
 
 ```bash
-python3 -c "from datetime import datetime; from zoneinfo import ZoneInfo; ms=1714108800000; print(datetime.fromtimestamp(ms/1000, tz=ZoneInfo('Asia/Shanghai')).strftime('%Y-%m-%d %H:%M:%S +08') + f'（{ms}）')"
+python3 - 1714108800000 <<'TIME'
+from datetime import datetime, timedelta, timezone
+import sys
+ms = int(sys.argv[1])
+wall = datetime.fromtimestamp(ms / 1000, timezone(timedelta(hours=8)))
+print(wall.strftime('%Y-%m-%d %H:%M:%S +08') + f'（{ms}）')
+TIME
 ```
 
-### 2.1 参数说明（嵌入汇总表时可复用）
+## 3. 收口示例
 
-| 参数 | 含义 | 用户可选 |
-| ---- | ---- | -------- |
-| mode | `full` 全量扫描；`incremental` 仅基于变更（须增量前提满足） | `full` / `incremental` |
-| depth | `1` 拓扑；`2` 结构；`3` 精读（应读尽读，见 scan-spec） | `1` / `2` / `3` |
-| --output | 索引指南输出路径（固定文件名 `INDEX-GUIDE.md`；默认指向当前文档根）；默认须展示并确认 | 路径或「采用下列默认」 |
-| --since | 增量用 epoch ms（内部）；对人展示须 §2.0 双写；可从日志展示候选，**以用户确认为准** | 数字或「采用日志候选」 |
+“本轮：`mode=full`、`depth=2`、扫描 `docs/`、输出 `docs/INDEX-GUIDE.md`、无 since；先只读预览。”
 
-### 2.2 便捷预设（可改文案）
-
-预设=打包；选中后仍须 **最终确认**。
-
-| 预设 | mode | depth | 适用场景 |
-| ---- | ---- | ----- | -------- |
-| A · 首次摸底 | full | 1 | 新仓库、先建拓扑级地图 |
-| B · 结构全量 | full | 2 | 需要模块/目录级说明，尚不精读每文件 |
-| C · 全量精读 | full | 3 | 审计、迁移前、必须最大化覆盖（成本高） |
-| D · 日常增量浅扫 | incremental | 1 | 有有效基线、只跟进变更、控制范围 |
-| E · 日常增量结构 | incremental | 2 | 有有效基线、变更处需要结构级更新 |
-| F · 增量精读 | incremental | 3 | 有有效基线、变更相关路径需精读 |
-
-**增量前提不满足时**：不展示 D/E/F，或展示时标注「当前不可用」，并请用户在「full（并选深度）」与「中止」间确认。
-
-### 2.3 汇总消息模板（可直接套用）
-
-```markdown
-请确认本次文档索引参数（确认后我才会执行扫描）：
-
-- **mode**：full / incremental 
- - （说明：若选 incremental，需 索引锚点 有效基线；当前：[有/无]）
-- **depth**：1 / 2 / 3 
-- **output**：[默认路径说明] 或你指定的路径 
-- **since**（仅 incremental 需要）：[日志候选须 §2.0，如 `2024-04-26 13:20:00 +08`（`1714108800000`）] 或你指定的 epoch ms 
-
-**便捷选项**（回复字母即可，我仍会复述完整参数请你最终确认）： 
-A 首次摸底 full+1 · B 结构全量 full+2 · C 全量精读 full+3 · …（按需列出）
-
-你也可以直接写出：`mode=... depth=... output=... since=...`（since 仍可用纯数字；我复述时会按 §2.0 双写）
-```
-
----
-
-## 3. 与「分步提问」的关系
-
-- **允许**一条消息问完多参数并附预设；**也允许**用户要求拆成多轮——以用户习惯为准。
-- **不允许**因「便捷」跳过参数收口：**进入步骤 3 前**，影响行为的参数必须均已由用户确认（见 `SKILL.md` 与 `gates.md`）。
-
----
-
-## 4. 参考
-
-- 深度与扫描规则：[scan-spec.md](scan-spec.md)
-- 风险控制与陷阱：[../gotchas.md](../gotchas.md)
+进入实际写入时，再按 [gates.md](gates.md) 完成当前单元六项清单；不把参数复述当作隐含写入授权。

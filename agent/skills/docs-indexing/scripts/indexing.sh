@@ -1,325 +1,76 @@
 #!/usr/bin/env bash
-
-# docs-indexing 辅助脚本（技能契约见 agent/skills/docs-indexing）
-
+# docs-indexing 候选扫描入口；完成锚点由 Agent 在指南完成后显式写入。
 set -euo pipefail
+
+show_help() {
+    cat <<HELP
+Usage: $0 [options]
+索引指南候选扫描；默认只读，不生成九章或写入完成锚点。
+
+  --mode f|full|i|incremental
+  --depth 1|2|3
+  --output PATH   默认 DOC_DIR/INDEX-GUIDE.md；相对路径基于仓库根
+  --since MS      正整数 epoch ms；增量模式优先使用此基线
+  --rewrite       仅更新 docs-indexing:begin/end 运行块
+  --dry-run       只读预览，优先于 --rewrite，不创建输出目录
+  -h, --help
+HELP
+}
+
+fail() { printf '[ERROR] %s\n' "$*" >&2; exit 1; }
+require_value() {
+    [[ $# -ge 2 && -n "$2" && "$2" != --* ]] || fail "$1 缺少参数值"
+}
+
+MODE=""
+DEPTH=""
+OUTPUT=""
+SINCE=""
+REWRITE=0
+DRY_RUN=0
+
+# help 与参数校验须先于配置加载，使错误不被配置缺失掩盖。
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --mode) require_value "$@"; MODE="$2"; shift 2 ;;
+        --depth) require_value "$@"; DEPTH="$2"; shift 2 ;;
+        --output) require_value "$@"; OUTPUT="$2"; shift 2 ;;
+        --since) require_value "$@"; SINCE="$2"; shift 2 ;;
+        --rewrite) REWRITE=1; shift ;;
+        --dry-run) DRY_RUN=1; shift ;;
+        -h|--help) show_help; exit 0 ;;
+        *) fail "未知参数: $1" ;;
+    esac
+done
+
+case "$MODE" in
+    f|full) MODE=full ;;
+    i|incremental) MODE=incremental ;;
+    *) fail "--mode 须为 f/full/i/incremental" ;;
+esac
+case "$DEPTH" in
+    1|2|3) ;;
+    *) fail "--depth 须为 1、2 或 3" ;;
+esac
+if [[ -n "$SINCE" ]] && { [[ ! "$SINCE" =~ ^[0-9]+$ ]] || [[ "$SINCE" =~ ^0+$ ]]; }; then
+    fail "--since 须为正整数 epoch ms"
+fi
+if [[ -n "$OUTPUT" && "${OUTPUT##*/}" != INDEX-GUIDE.md ]]; then
+    fail "--output 文件名固定为 INDEX-GUIDE.md"
+fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 # shellcheck disable=SC1091
 source "$_AGENT_HOME/scripts/lib/docsconfig.sh"
 docsconfig_bootstrap_validate
-
-doc_abs="$(docsconfig_doc_abs)"
 repo_abs="$(docsconfig_repo_abs)"
-cd "$repo_abs" || exit 1
+doc_abs="$(docsconfig_doc_abs)"
+[[ -n "$OUTPUT" ]] || OUTPUT="$doc_abs/INDEX-GUIDE.md"
 
-# cwd=仓库根；路径见 .docsconfig / docsconfig_doc_abs
-DEFAULT_OUTPUT="${doc_abs}/INDEX-GUIDE.md"
-INDEXING_LOG_PY="${SCRIPT_DIR}/indexing_log.py"
-
-now_ms() {
-    python3 - <<'PY'
-import time
-print(int(time.time() * 1000))
-PY
-}
-
-show_help() {
-    echo "Usage: $0 [options]"
-    echo "索引指南辅助脚本；参数须与技能会话确认一致"
-    echo ""
-    echo "  --mode f|full|i|incremental"
-    echo "  --depth 1|2|3"
-    echo "  --output PATH   (默认文档根 INDEX-GUIDE.md；文件名固定)"
-  echo "  --since MS      增量 epoch ms"
-  echo "  --rewrite       更新 INDEX-GUIDE 运行块；默认 scan-only，仍写增量锚点注释"
-    echo "  -h, --help"
-}
-
-# 解析命令行参数
-MODE=""
-DEPTH=""
-OUTPUT="$DEFAULT_OUTPUT"
-SINCE=""
-REWRITE=0
-
-while [[ $# -gt 0 ]]; do
-    case $1 in
-        --mode)
-            MODE="$2"
-            shift 2
-            ;;
-        --depth)
-            DEPTH="$2"
-            shift 2
-            ;;
-        --output)
-            OUTPUT="$2"
-            shift 2
-            ;;
-        --since)
-            SINCE="$2"
-            shift 2
-            ;;
-        --rewrite)
-            REWRITE=1
-            shift
-            ;;
-        -h|--help)
-            show_help
-            exit 0
-            ;;
-        *)
-            echo "Unknown option: $1"
-            show_help
-            exit 1
-            ;;
-    esac
-done
-
-# 验证必需参数
-if [[ -z "$MODE" ]] || [[ -z "$DEPTH" ]]; then
-    echo "Error: --mode and --depth are required parameters"
-    show_help
-    exit 1
-fi
-
-# 转换模式参数
-case $MODE in
-    f|full) DATA_MODE="full" ;;
-    i|incremental) DATA_MODE="incremental" ;;
-    *)
-        echo "Error: Invalid mode '$MODE'. Use 'f'/'full' or 'i'/'incremental'"
-        exit 1
-        ;;
-esac
-
-# 转换深度参数
-case $DEPTH in
-    1|2|3) READ_MODE=$DEPTH ;;
-    *)
-        echo "Error: Invalid depth '$DEPTH'. Use 1, 2, or 3"
-        exit 1
-        ;;
-esac
-
-# 获取当前时间戳
-CURRENT_TIME_MS=$(now_ms)
-START_TIME=$(date '+%Y-%m-%d %H:%M:%S')
-
-# 检查输出目录
-OUTPUT_DIR=$(dirname "$OUTPUT")
-mkdir -p "$OUTPUT_DIR"
-
-if [[ "$(basename "$OUTPUT")" != "INDEX-GUIDE.md" ]]; then
-    echo "Error: docs-indexing 输出文件名固定为 INDEX-GUIDE.md，当前为 '$(basename "$OUTPUT")'" >&2
-    exit 1
-fi
-
-# 增量基线：目标 INDEX-GUIDE 内 HTML 锚点（见 indexing-log-spec）
-BASE_INDEXING_TIME_MS=0
-if [[ "$DATA_MODE" == "incremental" ]]; then
-    if [[ -n "$SINCE" ]]; then
-        BASE_INDEXING_TIME_MS="$SINCE"
-    elif [[ -f "$OUTPUT" ]]; then
-        BASE_INDEXING_TIME_MS=$(
-            python3 "$INDEXING_LOG_PY" read-baseline "$OUTPUT" 2>/dev/null || echo "0"
-        )
-    fi
-
-    if [[ "$BASE_INDEXING_TIME_MS" == "0" ]] || [[ -z "$BASE_INDEXING_TIME_MS" ]]; then
-        echo "[ERROR] incremental 需要有效基线：INDEX-GUIDE 内" >&2
-        echo "  <!-- sdx-indexing:indexing_finished_ms=... -->，或显式 \`--since <epoch ms>\`。" >&2
-        echo "  可改 \`--mode full\`。见 agent/skills/docs-indexing/references/indexing-log-spec.md" >&2
-        exit 1
-    else
-        echo "Using incremental mode with baseline (since) $BASE_INDEXING_TIME_MS"
-    fi
-fi
-
-# 生成变更索引（简版元数据）
-echo "Generating change index..."
-
-# 执行扫描（根据深度级别）
-echo "Starting scan with mode: $DATA_MODE, depth: $READ_MODE"
-
-# 枚举 doc_abs 内待扫描文件；不进入隐藏目录或软链
-collect_all_files() {
-    ALL_FILES=()
-    local dir file rel
-    while IFS= read -r dir; do
-        for file in "$dir"/*; do
-            [[ -e "$file" && ! -L "$file" && -f "$file" ]] || continue
-            rel="${file#"$repo_abs"/}"
-            case "${rel##*/}" in
-                .DS_Store|viz.html) continue ;;
-            esac
-            ALL_FILES+=("$rel")
-        done
-    done < <(
-        find "$doc_abs" \
-            \( -type d \( -name '.*' -o -name .git -o -name node_modules -o -name target -o -name build \) -prune \) \
-            -o \( -type d ! -type l -print \)
-    )
-}
-
-# 扫描函数
-scan_project() {
-    local depth=$1
-    local mode=$2
-    collect_all_files
-    INDEXED_FILES=0
-    SCANNED_FILES=()
-    case $depth in
-        1)
-            echo "# Topology Scan Mode"
-            for f in "${ALL_FILES[@]}"; do
-                case "$f" in
-                    *.md|*.yml|*.yaml|*.json|*.sh) SCANNED_FILES+=("$f") ;;
-                esac
-            done
-            ;;
-        2)
-            echo "# Structure Analysis Mode"
-            for f in "${ALL_FILES[@]}"; do
-                case "$f" in
-                    *.md|*.yml|*.yaml|*.json|*.sh|*.py|*.js|*.ts|*.tsx|*.java) SCANNED_FILES+=("$f") ;;
-                esac
-            done
-            ;;
-        3)
-            echo "# Deep Reading Mode"
-            echo "Extracting business logic..."
-            SCANNED_FILES=("${ALL_FILES[@]}")
-            ;;
-    esac
-    INDEXED_FILES=${#SCANNED_FILES[@]}
-    return 0
-}
-
-# 执行扫描
-scan_project $READ_MODE $DATA_MODE
-
-# 生成扫描运行元数据；默认不改既有 INDEX-GUIDE
-echo "Generating scan metadata..."
-PROJECT_NAME="$(basename "$(pwd)")"
-ISO_TIME="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-TOP_DIRS="$(
-    printf '%s\n' "${SCANNED_FILES[@]}" \
-        | sed "s#^${DOC_DIR}/##;s#/[^/]*\$##;s#^\$#.#" | sort -u \
-        | sed 's#^#- `#;s#$#`#'
-)"
-if [[ -z "$TOP_DIRS" ]]; then
-    TOP_DIRS="- 无"
-fi
-
-TOP_FILES="$(printf '%s\n' "${SCANNED_FILES[@]}" | head -n 20 | sed 's#^#- `./#;s#$#`#' || true)"
-if [[ -z "$TOP_FILES" ]]; then
-    TOP_FILES="- 无"
-fi
-
-REL_DEFAULT_OUT="./${DEFAULT_OUTPUT#"$repo_abs"/}"
-REL_DEFAULT_OUT="${REL_DEFAULT_OUT//.\/././}"
-
-TMP_OUT="$(mktemp)"
-cat > "$TMP_OUT" << EOF
-### 扫描运行（${ISO_TIME}）
-
-| 项 | 值 |
-|----|----|
-| mode / depth | \`${DATA_MODE} / ${READ_MODE}\` |
-| 文件总数 | \`${INDEXED_FILES}\` |
-| 输出路径 | \`${REL_DEFAULT_OUT}\` |
-| 增量锚点 | \`INDEX-GUIDE\` 内 HTML 注释 |
-
-<details>
-<summary>扫描目录</summary>
-
-${TOP_DIRS}
-
-</details>
-EOF
-
-python3 - "$OUTPUT" "$TMP_OUT" "$REWRITE" <<'PY'
-from __future__ import annotations
-
-import re
-import sys
-from pathlib import Path
-
-out_path = Path(sys.argv[1])
-gen_path = Path(sys.argv[2])
-generated = gen_path.read_text(encoding="utf-8").rstrip() + "\n"
-rewrite = sys.argv[3] == "1"
-
-RE_OKF = re.compile(r"<!--\s*okf:begin\s*-->.*?<!--\s*okf:end\s*-->", re.DOTALL)
-RE_IDX = re.compile(
-    r"<!--\s*docs-indexing:begin\s*-->.*?<!--\s*docs-indexing:end\s*-->",
-    re.DOTALL,
-)
-
-def split_frontmatter(text: str) -> tuple[str, str]:
-    if not text.lstrip().startswith("---"):
-        return "", text
-    lines = text.splitlines(keepends=True)
-    start = None
-    for i, line in enumerate(lines):
-        if line.strip() == "---":
-            start = i
-            break
-        if line.strip():
-            return "", text
-    if start is None:
-        return "", text
-    for j in range(start + 1, len(lines)):
-        if lines[j].strip() == "---":
-            fm = "".join(lines[: j + 1]).rstrip() + "\n"
-            body = "".join(lines[j + 1 :]).lstrip("\n")
-            return fm, body
-    return "", text
-
-existing = out_path.read_text(encoding="utf-8") if out_path.is_file() else ""
-fm, body = split_frontmatter(existing)
-
-idx_wrapped = (
-    "<!-- docs-indexing:begin -->\n"
-    + generated
-    + "<!-- docs-indexing:end -->\n"
-)
-
-if rewrite:
-    if RE_IDX.search(body):
-        body = RE_IDX.sub(idx_wrapped, body, count=1)
-    else:
-        if not body.strip():
-            body = (
-                f"# {out_path.parent.name} INDEX-GUIDE\n\n"
-                "> 由 docs-indexing 生成扫描运行块；九章内容由 Agent 按契约维护。\n\n"
-                + idx_wrapped
-            )
-        else:
-            body = body.rstrip() + "\n\n" + idx_wrapped
-
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text((fm + body).rstrip() + "\n", encoding="utf-8")
-else:
-    print("scan-only: 不改运行块；仍更新增量锚点注释。使用 --rewrite 才更新运行块")
-PY
-
-rm -f "$TMP_OUT"
-
-# 写入 INDEX-GUIDE 增量锚点（见 indexing_log.py / indexing-log-spec）
-FINISHED_TIME_MS=$(now_ms)
-python3 "$INDEXING_LOG_PY" write-anchor "$OUTPUT" --finished-ms "$FINISHED_TIME_MS"
-
-# 完成时间
-END_TIME=$(date '+%Y-%m-%d %H:%M:%S')
-
-echo "Document indexing completed successfully!"
-echo "   - Mode: $DATA_MODE"
-echo "   - Depth: $READ_MODE"
-echo "   - Output: $OUTPUT"
-echo "   - Started: $START_TIME"
-echo "   - Finished: $END_TIME"
-echo "   - Anchor: $OUTPUT (sdx-indexing:indexing_finished_ms)"
+args=(--repo "$repo_abs" --doc-root "$doc_abs" --mode "$MODE" --depth "$DEPTH" --output "$OUTPUT")
+[[ -z "$SINCE" ]] || args+=(--since "$SINCE")
+(( REWRITE == 0 )) || args+=(--rewrite)
+(( DRY_RUN == 0 )) || args+=(--dry-run)
+# -B 防止只读扫描在脚本目录创建 __pycache__。
+exec python3 -B "$SCRIPT_DIR/indexing.py" "${args[@]}"

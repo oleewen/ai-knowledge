@@ -1,75 +1,34 @@
 # docs-indexing 推进协议（binding）
 
-主干：[SKILL.md](../SKILL.md)。流程：[workflow.md](workflow.md)。
+共享契约：
 
-## 定位
+- [intent-clarify.md](../../../references/intent-clarify.md)：写前意图澄清。
+- [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)：单元推进与 `C/M/G/S/F`。
+- [grilling-skill.md](../../../references/grilling-skill.md)：写后烤干。
 
-本文件只做 `docs-indexing` 对共享契约的 **binding**，不复制协议正文。
+## 当前单元与写前条件
 
-契约：
+当前单元是一个 `INDEX-GUIDE.md` 及其文内锚点；一次只处理一个输出组。
 
-- [intent-clarify.md](../../../references/intent-clarify.md) — 写前意图澄清
-- [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) — 单元推进、`C/M/G/S/F`、重开与前文回改
-- [grilling-skill.md](../../../references/grilling-skill.md) — 写后烤干能力
+写前六项清单按共享契约列出，补充 `mode/depth/output/since`、扫描范围与变更来源。第 6 项填写完整仓库根相对路径，例如 `application/INDEX-GUIDE.md（含文内锚点）`。
 
-主线口令：`澄清 → 生成 → 烤干`。用户动作与状态机见 unit-cycle-protocol（含 docs 语义族 `S`）。
+写入前须满足：
 
-## 单元定义
+1. 仓库根、扫描范围和目标路径可解析，文件名为 `INDEX-GUIDE.md`。
+2. mode、depth、output 已收口；incremental 有有效基线或用户已选择新的基线策略。
+3. 已完成当前单元写前意图澄清并取得 `C`；此前只能只读检查或预览。
 
-**当前单元** = 单个索引输出组：
+## 需要重新决策的情形
 
-- 目标 `INDEX-GUIDE.md` + 对应 `INDEX-GUIDE` 增量锚点注释
-- 例：根 `INDEX-GUIDE.md` + 根 `INDEX-GUIDE` 增量锚点注释；或 `{DOC_DIR}/INDEX-GUIDE.md` + `{DOC_DIR}/`INDEX-GUIDE` 增量锚点注释
+缺少增量基线、多个同名输出组无法区分、扫描范围或输出路径发生变化时，先说明影响，给出推荐与数字选项。不要重复确认已有明确授权的同一参数。
 
-一次只处理一个输出组。
+用户明确调整流程时遵循其指示；仍须取得执行所需事实，不能用流程豁免猜测基线或扩大写入范围。
 
-## 技能追加澄清字段
+## 写后与失败
 
-在公共六项之外可追加（不可删减公共项）：
+写后默认见 [workflow.md](workflow.md)。指南、导航和基线解释验证通过后，才可收敛并等待写后动作；不得自动切换下一输出组。
 
-- `mode` / `depth` / `since` 或基线策略摘要
-- 本轮扫描范围或增量变更来源摘要
-
-第 6 项「写入路径/容器」**必须**列出本轮将写入的**完整仓库根相对路径**（区分多域同名文件）：
-
-- 目标 `INDEX-GUIDE.md`（如 `INDEX-GUIDE.md` 或 `application/INDEX-GUIDE.md`）
-- 对应 `INDEX-GUIDE` 增量锚点注释（如 `application/`INDEX-GUIDE` 增量锚点注释）
-
-## 写后默认
-
-见 [workflow.md](workflow.md)「写后默认表」。本技能各索引输出组默认必须烤干。
-
-## 当前单元执行条件
-
-参数向导收口后，进入单元推进前至少满足：
-
-1. 仓库根可解析
-2. `mode`、`depth` 已收口
-3. `output` 已收口
-4. 若为 incremental，`since` 或基线策略已收口
-5. **输出根 `{DOC_DIR}`**：优先读目标工程 `.docsconfig` 的 `DOC_DIR=`；无配置或无效时默认为 `docs`（见 [session-spec-path.md](../../../references/session-spec-path.md)）
-6. 意图澄清第 6 项已列出本轮双路径的完整仓库根相对路径
-
-## 高风险场景
-
-须先给结论、推荐与数字选项，确认后再执行：
-
-- 请求 incremental 但无可用基线
-- 同时涉及多个输出组且路径易混淆
-- `output` 指向不常见位置
-- depth 较深、扫描面明显扩大
-- 要求跳过意图澄清或参数确认直接写索引
-- 本轮将改导航路径或索引路径
-
-## 原子性 / 失败停顿
-
-- 当前单元写入失败时，不得继续写后续输出组
-- 索引指南落盘失败时，禁止追加 `索引锚点`
-- 当前单元未收敛前，不得自动推进下一输出组
-
-## 典型语义问题（烤干）
-
-- `mode` / `depth` / `output` / `since` / 基线策略变化
-- 导航路径或索引路径变化
-- 是否补写 `索引锚点`
-- 扫描范围或增量策略变化
+- 只读请求不写指南、目录、配置或锚点。
+- 当前单元失败则停在当前单元，保留原有完成锚点。
+- 脚本运行成功仅证明候选统计完成；锚点只能在指南正文完成后显式更新。
+- 重写须保留已有 docs-build 实体块；如其中引用需变更，报告给对应维护流程。

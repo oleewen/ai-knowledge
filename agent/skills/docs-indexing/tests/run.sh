@@ -19,4 +19,6 @@ for f in "${sorted[@]}"; do
   "${BASH:-$(command -v bash)}" "$f"
 done
 
+INDEXING_TEST_BASH="$BASH" python3 -B -m unittest discover -s "$TEST_ROOT" -p 'test_*.py' -v
+
 echo "[OK] docs-indexing tests passed"

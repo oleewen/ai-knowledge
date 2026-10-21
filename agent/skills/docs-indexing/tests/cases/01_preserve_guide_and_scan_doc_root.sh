@@ -37,8 +37,11 @@ printf 'ds\n' >"$DOCS/.DS_Store"
   printf '<!-- docs-build:entity-index:begin -->\n### 视角入口\n\n- [业务](knowledge/business/README.md)\n<!-- docs-build:entity-index:end -->\n\n'
   printf '## 八、索引边界\n\n| 项 | 值 |\n|----|----|\n| 文件总数 | 999 |\n'
 } >"$DOCS/INDEX-GUIDE.md"
+cp "$DOCS/INDEX-GUIDE.md" "$TMP_DIR/original.md"
 
-(cd "$PROJECT" && "$INDEXING_SCRIPT" --mode full --depth 3)
+(cd "$PROJECT" && "$BASH" "$INDEXING_SCRIPT" --mode full --depth 3)
+
+cmp "$TMP_DIR/original.md" "$DOCS/INDEX-GUIDE.md" || fail "默认扫描须保持指南逐字节不变"
 
 grep -q '^# company INDEX-GUIDE$' "$DOCS/INDEX-GUIDE.md" || fail "既有 H1 被冲掉"
 grep -q 'docs-build:entity-index:begin' "$DOCS/INDEX-GUIDE.md" || fail "docs-build 块被冲掉"
@@ -48,17 +51,17 @@ if grep -q 'docs-indexing:begin' "$DOCS/INDEX-GUIDE.md"; then
 fi
 grep -q '| 999 |' "$DOCS/INDEX-GUIDE.md" || fail "未启用 rewrite 时不应改既有统计"
 
-base=$(python3 "$ROOT_DIR/agent/skills/docs-indexing/scripts/indexing_log.py" read-baseline "$DOCS/INDEX-GUIDE.md")
-[[ "$base" != 0 ]] || fail "INDEX 成功后应写 INDEX-GUIDE HTML 锚点"
-grep -q 'sdx-indexing:indexing_finished_ms=' "$DOCS/INDEX-GUIDE.md" || fail "缺少增量锚点注释"
+base=$(python3 "$INDEXING_LOG_PY" read-baseline "$DOCS/INDEX-GUIDE.md")
+[[ "$base" == 0 ]] || fail "扫描不得写入完成锚点"
 
-(cd "$PROJECT" && "$INDEXING_SCRIPT" --mode full --depth 3 --rewrite)
+(cd "$PROJECT" && "$BASH" "$INDEXING_SCRIPT" --mode full --depth 3 --rewrite)
 
 grep -q 'docs-indexing:begin' "$DOCS/INDEX-GUIDE.md" || fail "rewrite 未写入生成块"
 grep -q 'docs-build:entity-index:begin' "$DOCS/INDEX-GUIDE.md" || fail "rewrite 冲掉 docs-build 块"
 grep -q 'okf:begin' "$DOCS/INDEX-GUIDE.md" || fail "rewrite 冲掉 OKF 块"
-if grep -q 'should-not-index.txt' "$DOCS/INDEX-GUIDE.md"; then
-  fail "根外或隐藏目录被索引"
+grep -Fq '| 文件总数 | `2` |' "$DOCS/INDEX-GUIDE.md" || fail "候选集应仅包含指南与知识文档"
+if grep -q 'sdx-indexing:indexing_finished_ms=' "$DOCS/INDEX-GUIDE.md"; then
+  fail "rewrite 不得写入完成锚点"
 fi
 
 pass "默认保护既有九章；rewrite 保留实体块并只扫文档目录"

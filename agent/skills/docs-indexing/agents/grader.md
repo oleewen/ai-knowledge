@@ -1,24 +1,13 @@
-# docs-indexing Grader
+# docs-indexing 行为评分
 
-据 **evals/evals.json** 输出 JSON：`text`、`passed`、`evidence`。
+用 [evals.json](../evals/evals.json) 的当前场景与 assertions 评分，不根据措辞或固定标题匹配通过。
 
-## 判定
+- should-trigger：是否完成索引职责或准确说明执行所需缺口。
+- should-not-trigger：是否识别实际产物并转入对应流程。
+- 检查实际命令、文件差异与回复；计划不能代替已发生的行为证据。
+- P0 任一失败则整例失败；未执行或无证据的断言标记未验证，不伪造通过。
+- 共享门禁仅在场景进入相应阶段时检查；只读预览不要求写后烤干。
 
-1. 读 `category`：`should-trigger` / `should-not-trigger`
-2. **硬门**：以本 eval 的 `assertions`（按 `priority`）为准；`evidence` 映射 `assertions[].id`
-3. **协议释义**（仅当 assertions / prompt 覆盖时强制）：参数向导 → 写前意图澄清 → 「澄清 → 生成 → 烤干」→ `C/M/G/S/F`；双路径含 `INDEX-GUIDE.md` 与 `INDEX-GUIDE 锚点`；烤干须含受众维 A/B/C/E（见 [audience-and-language.md](../../../references/audience-and-language.md)）。见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)
-4. **P0** 任一失败 → `passed: false`
+输出 `text`、`passed`、`evidence`；evidence 逐项包含断言 id、结果及可定位证据。独立评测使用临时工作区，避免污染仓库或真实指南。
 
-### should-not-trigger P0 摘要
-
-- `correct-downstream`：点名下游技能/产物（如 docs-build / INDEX-GUIDE 第四章）
-
-**例**（对齐 `indexing-trigger-001`）
-
-```json
-{
-  "text": "通过。参数向导、意图澄清、双路径与单单元停顿正确。",
-  "passed": true,
-  "evidence": ["parameter-guidance", "intent-clarify", "dual-path-container", "grilling-loop", "audience-check", "single-unit-stop"]
-}
-```
+脚本行为另跑 [tests/run.sh](../tests/run.sh)。无需为验证文档重新执行完整技能安装。

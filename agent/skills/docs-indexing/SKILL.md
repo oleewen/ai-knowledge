@@ -1,64 +1,36 @@
 ---
 name: docs-indexing
 description: >
-  生成九章索引指南（各文档根固定为 INDEX-GUIDE.md），并在该文件内维护增量锚点 HTML 注释。
-  用户提到 /docs-indexing、建/更索引、文档地图、Onboarding、整理 INDEX 时，使用本技能。
-  分流：实体/INDEX-GUIDE 第四章 → docs-build；overview → docs-distill/extract；SDD → 对应技能，勿单跑本技能吞下游。
-  推进见 references/gates.md。
+  创建或更新九章 INDEX-GUIDE.md 文档地图，支持全量、增量与文内时间锚点。
+  用于 /docs-indexing、建索引、更新索引指南或仓库 Onboarding 地图。
+  实体提取及第四章视角导航由 docs-build 负责；OKF index.md 由 docs-okf 负责。
 ---
 
 # docs-indexing
 
-## 输出硬约束（P0）
+把已核实的仓库内容整理成可导航的九章地图。当前单元是一个 `INDEX-GUIDE.md`，增量锚点位于同一文件内。
 
-- 当前单元：单个索引输出组（如根或某 `DOC_DIR` 的 `INDEX-GUIDE.md`；增量锚点写在同一文件内）。
-- 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[simplify-principles.md](../../references/simplify-principles.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写入；收敛后停等用户，不得自动推进下一输出组。
-- 意图澄清第 6 项须列出本轮路径（仓库根相对）：目标 `INDEX-GUIDE.md`（含锚点注释）。
-- 无基线且请求 incremental 时，须先确认 full/中止/补 since，不得静默继续。
-- 对人展示 `since` / `indexing_finished_ms` / `since_ms`：须 `yyyy-MM-dd HH:mm:ss +08`（`{epoch_ms}`），时区 Asia/Shanghai；锚点与 `--since` 仍纯数字。见 [scan-config-onboarding.md §2.0](references/scan-config-onboarding.md)。
+## 执行
 
-## 边界
+1. 读 [workflow.md](references/workflow.md) 与 [gates.md](references/gates.md)，收口范围、参数和增量基线；已明确的参数不重复询问。
+2. 按 [scan-spec.md](references/scan-spec.md) 读取证据；incremental 同时核实变更集合与基线，无有效基线时按 [参数规范](references/scan-config-onboarding.md#2-增量基线) 重新决策。
+3. 写前完成意图澄清；按 [九章规范](references/nine-chapter-spec.md) 更新正文，原样保留 `docs-build:entity-index:begin/end` 块。仅已读内容可写成已核实事实，阅读缺口列入第八章。
+4. 按 [质量标准](references/quality-standards.md) 验证；指南成功后按 [锚点规范](references/indexing-log-spec.md) 写入完成时间，烤干收敛后等待用户动作。
 
-- 负责：各文档根 `INDEX-GUIDE.md`（九章骨架）、文内增量锚点、full/incremental、深度 1–3。重写 `INDEX-GUIDE.md` 时**必须保留** `<!-- docs-build:entity-index:begin/end -->` 块。
-- 不负责：第四章视角导航块（docs-build）；OKF（docs-okf）；SDD；overview（distill/extract）
-- 脚本边界：`indexing.sh` 默认 scan-only，只统计 `DOC_DIR` 并写锚点注释；`--rewrite` 更新 `docs-indexing` 运行块。九章正文由 Agent 按规范维护，脚本不得覆盖。
-- **不**落盘 `INDEXING-LOG.md` / `changelogs/`。
+## 脚本职责
 
-## 不这样用
+`scripts/indexing.sh` 只枚举候选文件和统计数量，不阅读正文，也不计算 Git 增量集合。默认与 `--dry-run` 都只读；`--rewrite` 只刷新 `docs-indexing:begin/end` 运行块。完成锚点由 Agent 在指南成功后显式调用 `indexing_log.py write-anchor`。
 
-- 不把写前意图澄清当成完整 grilling Skill 深挖
-- 不把本技能偷换成 `docs-build`、overview 或 SDD 主路径
+从目标仓库运行本技能目录下的脚本，路径随安装位置解析；CLI 详见 `--help`。脚本依赖 Bash 5+、Python 3.9+ 及随 Agent 树安装的共享配置库。配置不满足时报告原因，可在已确认范围内由 Agent 直接只读检查，不代改全局配置。
 
-## 路由
+本技能不生成独立 `INDEXING-LOG.md` 或 `changelogs/`，不自动改写实体、overview、SDD、README、AGENTS 或 OKF 产物。
 
-| 目的 | 文件 |
+## 按需读取
+
+| 场景 | 资源 |
 | --- | --- |
-| 流程 / 推进 binding | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
-| 受众与语言 | [audience-and-language.md](references/audience-and-language.md) |
-| 参数与基线 | [scan-config-onboarding.md](references/scan-config-onboarding.md) |
-| 扫描规范 | [scan-spec.md](references/scan-spec.md) |
-| 质量与九章 | [quality-standards.md](references/quality-standards.md)、[nine-chapter-spec.md](references/nine-chapter-spec.md) |
-| 日志规范 | [indexing-log-spec.md](references/indexing-log-spec.md) |
-| 易错 / 反模式 | [anti-patterns.md](references/anti-patterns.md)、[gotchas.md](gotchas.md) |
-| 模板 | [index-guide-template.md](assets/index-guide-template.md) |
-
-## 最少输入
-
-- 仓库根可解析
-- `mode`、`depth` 已收口
-- `output` 与 `since` 策略已收口
-- 若增量模式，已确认基线策略；Agent 将用 git 列 `DOC_DIR` 变更（提交 + 工作区）
-
-## 产出与脚本
-
-- 正式：索引指南（固定为 `INDEX-GUIDE.md`，含增量锚点注释）
-- 收敛后动作见 [unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)（本技能有 `S`）
-- INDEX 落盘后建议刷新 OKF：见 [docs-okf/references/workflow.md](../docs-okf/references/workflow.md)
-
-```bash
-agent/skills/docs-indexing/scripts/indexing.sh --mode <mode> --depth <depth> [--rewrite]
-```
-
-## 评测
-
-`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。
+| 参数缺口、输出路径、时间展示 | [scan-config-onboarding.md](references/scan-config-onboarding.md) |
+| 新建指南 | [index-guide-template.md](assets/index-guide-template.md) |
+| 读者与表达取舍 | [audience-and-language.md](references/audience-and-language.md) |
+| 失败或结果异常 | [gotchas.md](gotchas.md) |
+| 维护技能、验证行为 | [evals.json](evals/evals.json)、[grader.md](agents/grader.md)、[tests/run.sh](tests/run.sh) |

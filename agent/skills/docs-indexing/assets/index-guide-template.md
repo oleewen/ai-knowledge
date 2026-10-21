@@ -1,6 +1,6 @@
 # {项目名称} 索引指南
 
-> 更新 {YYYY-MM-DD} · Agent/开发者导航 · MECE
+> 更新 {YYYY-MM-DD} · 已核实内容导航；未读、部分读取及排除项见第八章。
 
 ---
 
@@ -36,22 +36,8 @@
 ### 2.2 依赖关系
 
 ```mermaid
-flowchart TD
- boot["{project-name}-boot"]
- service["{project-name}-service"]
- client["{project-name}-client"]
- api["{project-name}-api"]
- application["{project-name}-application"]
- domain["{project-name}-domain"]
- common["{project-name}-common"]
- infrastructure["{project-name}-infrastructure"]
-
- client --> api
- service --> api --> common
- boot --> service --> application --> domain --> common
- boot --> infrastructure
- infrastructure ---> domain
- 
+flowchart LR
+    source["{实际模块}"] --> target["{实际依赖模块}"]
 ```
 
 ### 2.3 包结构
@@ -127,6 +113,12 @@ flowchart TD
 | 事件 | 触发条件 | 处理逻辑 |
 |------|----------|----------|
 | {Event} | {trigger} | {handler} |
+
+### 4.5 视角导航
+
+<!-- 已有 docs-build 实体导航块须原样保留；没有块时标注未索引，不复制空标记。 -->
+
+[未索引]：尚无 docs-build 视角导航。
 
 ---
 
@@ -249,7 +241,7 @@ public enum {EnumName} {
 
 ### 9.3 工具链
 
-<!-- §9.3：仅路径/命令索引（命令 | 目录）；不写 Skill 长描述。用法 SSOT：agent/skills/README.md -->
+<!-- 仅列实际工具与入口；详细用法链接到目标仓库现有说明。 -->
 
 | 工具 | 版本 | 用途 |
 |------|------|------|

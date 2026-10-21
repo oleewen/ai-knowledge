@@ -1,66 +1,11 @@
 {
   "skill_name": "docs-indexing",
-  "eval_id": "REPLACE_WITH_EVAL_ID",
-  "expected_category": "should-trigger | should-not-trigger",
-  "expected_route": "/docs-indexing | （not-trigger 时填主分流目标）",
-  "expected_output": "与同 id evals.json 对齐。",
-  "notes": "复制 <eval-id>-metadata.json；断言同 grader。",
-  "assertions_should_trigger_example": [
-    {
-      "id": "intent-clarify",
-      "name": "意图澄清",
-      "type": "must_include",
-      "check": "写前须完成六项清单 + 写前 C；主线含澄清 → 生成 → 烤干。",
-      "priority": "P0"
-    },
-    {
-      "id": "dual-path-container",
-      "name": "双路径容器",
-      "type": "must_include",
-      "check": "路径/容器须列出 INDEX-GUIDE.md 与 changelogs/INDEXING-LOG.md 的仓库根相对路径。",
-      "priority": "P0"
-    },
-    {
-      "id": "single-unit-stop",
-      "name": "单单元停顿",
-      "type": "must_include",
-      "check": "一次只推进一个索引输出组，烤干收敛后停下等待 C/M/G/S/F。",
-      "priority": "P0"
-    },
-    {
-      "id": "grilling-after-write",
-      "name": "写后烤干",
-      "type": "must_include",
-      "check": "写入后默认必须自动 grilling 至收敛。",
-      "priority": "P0"
-    },
-    {
-      "id": "semantic-change-needs-confirmation",
-      "name": "语义变更先确认",
-      "type": "must_include",
-      "check": "mode、depth、output、since、导航路径或基线策略变化时，先给结论、推荐方案与数字选项。",
-      "priority": "P0"
-    },
-    {
-      "id": "no-silent-full-on-missing-baseline",
-      "name": "无基线不静默全量",
-      "type": "must_include",
-      "check": "请求 incremental 且无有效基线时，必须停下确认 full、补 since 或中止。",
-      "priority": "P0"
-    }
-  ],
-  "assertions_should_not_trigger_example": [
-    {
-      "id": "no-blind-write",
-      "name": "禁止默许直写",
-      "type": "must_include",
-      "check": "拒绝跳过意图澄清或参数收口直接写索引；或仅在用户明示例外时说明直写条件。",
-      "priority": "P0"
-    }
-  ],
-  "scoring": {
-    "pass_rule_should_trigger": "P0 全部通过",
-    "pass_rule_should_not_trigger": "P0 全部通过",
-    "fail_rule": "任一 P0 断言失败即判定不通过"
-  }
+  "eval_id": null,
+  "category": null,
+  "workspace": null,
+  "assertions_source": "evals.json：按 eval_id 读取对应 assertions，不复制维护第二套断言。",
+  "observations": [],
+  "passed": null,
+  "evidence": [],
+  "notes": "复制为本次运行记录；记录实际命令、产物差异及每条断言证据。未执行项标记未验证。"
 }
