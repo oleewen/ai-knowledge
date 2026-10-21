@@ -70,6 +70,35 @@ def test_validator_rejects_missing_section() -> None:
         assert code == 1
 
 
+def test_todo_list_is_not_a_concept() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = _write_bundle(
+            tmp,
+            ["## 关系", "## 跨视角", "## 详细说明", "## 依据与证据"],
+        )
+        todo = root / "TODO-LIST.md"
+        todo.write_text("# TODO-LIST\n\n- [ ] 待处理事项\n", encoding="utf-8")
+        validator = validate_bundle.Validator(root, "application")
+        assert validator.run() == 0
+        assert validator.warnings == 0
+        concepts = list(validate_bundle.okf_lib.scan_concepts(root))
+        assert todo.resolve() not in concepts
+        assert (root / "knowledge/business/BD-EXAMPLE.md").resolve() in concepts
+
+
+def test_concept_without_frontmatter_still_fails() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        root = _write_bundle(
+            tmp,
+            ["## 关系", "## 跨视角", "## 详细说明", "## 依据与证据"],
+        )
+        (root / "knowledge/business/BD-EXAMPLE.md").write_text(
+            "# 没有 frontmatter 的实体\n", encoding="utf-8"
+        )
+        validator = validate_bundle.Validator(root, "application")
+        assert validator.run() == 1
+
+
 def test_validator_no_downstream_bundle_fallback() -> None:
     """system 不得把 /knowledge/… 回退到 application（禁止引下层）。"""
     with tempfile.TemporaryDirectory() as tmp:
@@ -187,6 +216,8 @@ def main() -> None:
         test_validator_accepts_legacy_english_h1_sections,
         test_validator_accepts_target_chinese_h2_sections,
         test_validator_rejects_missing_section,
+        test_todo_list_is_not_a_concept,
+        test_concept_without_frontmatter_still_fails,
         test_validator_no_downstream_bundle_fallback,
         test_validator_cross_bundle_missing_still_warns,
         test_validator_http_without_parent_errors,

@@ -8,7 +8,9 @@ import os
 from pathlib import Path
 from typing import Any, Dict, Iterator, List, Optional, Tuple
 
-OKF_RESERVED_NAMES = frozenset({"index.md", "log.md", "INDEX-GUIDE.md", "KNOWLEDGE-INDEX.md"})
+OKF_RESERVED_NAMES = frozenset({
+    "index.md", "log.md", "INDEX-GUIDE.md", "KNOWLEDGE-INDEX.md", "TODO-LIST.md",
+})
 FRONTMATTER_RE = re.compile(r"\A---\r?\n(.*?)\r?\n---\r?\n?", re.DOTALL)
 
 # OKF v1 frontmatter 必填 9 字段（SSOT：agent/knowledge/okf-spec.md §2）
