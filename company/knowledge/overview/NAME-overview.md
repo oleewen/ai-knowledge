@@ -20,9 +20,7 @@ title: "{域名称}架构概览（{slug}-overview）"
 | [业务概述](../business/chapters/business-overview.md) | [背景与愿景](../business/chapters/business-overview.md#背景与愿景) | — |
 | [业务概述](../business/chapters/business-overview.md) | [业务目标](../business/chapters/business-overview.md#业务目标) | — |
 | [业务概述](../business/chapters/business-overview.md) | [业务范围](../business/chapters/business-overview.md#业务范围) | — |
-| [业务域划分](../business/chapters/business-domain-division.md) | [核心域](../business/chapters/business-domain-division.md#核心域) | — |
-| [业务域划分](../business/chapters/business-domain-division.md) | [支撑域](../business/chapters/business-domain-division.md#支撑域) | — |
-| [业务域划分](../business/chapters/business-domain-division.md) | [通用域](../business/chapters/business-domain-division.md#通用域) | — |
+| [业务域划分](../business/chapters/business-domain-division.md) | [域分类与入口](../business/chapters/business-domain-division.md#域分类与入口) | — |
 | [业务域划分](../business/chapters/business-domain-division.md) | [业务子域](../business/chapters/business-domain-division.md#业务子域) | — |
 | [业务域划分](../business/chapters/business-domain-division.md) | [业务域关系图](../business/chapters/business-domain-division.md#业务域关系图) | — |
 | [商业模式](../business/chapters/business-model.md) | [商业画布](../business/chapters/business-model.md#商业画布) | — |
