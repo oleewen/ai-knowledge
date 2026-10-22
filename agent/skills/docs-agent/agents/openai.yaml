@@ -1,0 +1,4 @@
+interface:
+  display_name: "根入口同步"
+  short_description: "按索引对齐仓库 README 与 AGENTS 根入口"
+  default_prompt: "使用 $docs-agent 对齐仓库根 README.md 和 AGENTS.md；先收口当前文件、写入策略与 INDEX-GUIDE.md 路径。"

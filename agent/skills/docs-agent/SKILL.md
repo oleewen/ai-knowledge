@@ -1,62 +1,45 @@
 ---
 name: docs-agent
 description: >
-  维护或初始化仓库根目录 README.md 与 AGENTS.md。
-  用户提到 /docs-agent、入口与 INDEX 不同步、口述「写 README」「更新 AGENTS」时，使用本技能。
-  分流：用户只要 docs-indexing/docs-build/docs-revise 或 SDD/distill/extract → 对应技能。
-  推进见 references/gates.md。
-compatibility: Bash 5+；校验脚本 agent/skills/docs-agent/scripts/validate-guide.sh。
+  维护仓库根 README.md 与 AGENTS.md，并按已落盘 INDEX-GUIDE.md 对齐入口信息。
+  适用于 /docs-agent、写 README/AGENTS、根入口与索引不同步；先收口 output、mode、写入策略和当前单元，再按“澄清→生成→烤干”推进。
+  不重写 INDEX-GUIDE.md、index.md、knowledge 实体或 SDD 产物；这些任务分别转 docs-indexing、docs-build、docs-revise 或 sdx-*。
 ---
 
 # docs-agent
 
-## 输出硬约束（P0）
-
-- 当前单元：`README.md` 或 `AGENTS.md`（一次只其一）。
-- 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[simplify-principles.md](../../references/simplify-principles.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写入；收敛后停等用户，不得自动推进下一入口文件。
-- **INDEX 锚点**：须已落盘 `INDEX-GUIDE.md`（例外见 execution-spec）；不在本技能内重写 INDEX。
-- `both` 默认先 README 后 AGENTS；前一单元未收敛前不得静默写后一单元。
+维护仓库根 `README.md` 与 `AGENTS.md`。入口只保留职责、约束和下钻路径，细节按需读取参考文件。
 
 ## 边界
 
 | 负责 | 不负责 |
-| ---- | ------ |
-| 根 README.md、AGENTS.md；`--output` / `--mode`；与 `INDEX-GUIDE.md` 对齐 | index（docs-indexing）；实体（docs-build）；术语批量（docs-revise）；SDD / distill / extract 主流程 |
+| --- | --- |
+| 根 `README.md`、`AGENTS.md`；`output` / `mode`；按 `INDEX-GUIDE.md` 对齐 | `INDEX-GUIDE.md`、`index.md`、knowledge 实体、术语链式修订、SDD / overview 主流程 |
 
-## 不这样用
+分流：索引重建用 `docs-indexing`，实体构建用 `docs-build`，术语或事实修订用 `docs-revise`，SDD 产物用对应 `sdx-*`。
 
-- 不走前置草稿 + 集中收口；默认参数向导后「澄清 → 生成 → 烤干」
-- 不把写前意图澄清当成完整 grilling Skill 深挖
-- 不在本技能内重写或替代 `INDEX-GUIDE.md`；INDEX 主路径仍是 `docs-indexing`
-- 不把术语链式替换、overview 维护、实体索引等任务收成 `docs-agent`
+## 最短路径
 
-## 路由
+1. [references/README.md](references/README.md)：按场景选参考文件。
+2. [references/gates.md](references/gates.md)：收口参数、写入策略和停顿条件。
+3. [references/workflow.md](references/workflow.md)：解析 Index、选择当前单元、生成与校验。
+4. 按需读取 [references/execution-spec.md](references/execution-spec.md)、[references/three-file-spec.md](references/three-file-spec.md) 和模板。
 
-| 目的 | 文件 |
-| ---- | ---- |
-| 流程 / 推进 binding | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
-| 受众与语言 | [audience-and-language.md](references/audience-and-language.md) |
-| 执行细则 | [execution-spec.md](references/execution-spec.md)、[three-file-spec.md](references/three-file-spec.md) |
-| 质量 / 易错 | [quality-standards.md](references/quality-standards.md)、[gotchas.md](gotchas.md) |
-| 模板 | [readme-skeleton.md](assets/readme-skeleton.md)、[agents-skeleton.md](assets/agents-skeleton.md) |
-| docs 族结构 | [docs-skill-skeleton.md](references/docs-skill-skeleton.md) |
+## 硬约束
 
-## 最少输入
-
-- 已落盘的 `INDEX-GUIDE.md`
-- `output`、`mode` 已收口
-- 根入口文件目标路径可解析
-- 若涉及覆盖/合并边界，已确认风险策略
+- 仅消费已落盘 `INDEX-GUIDE.md`；本技能不替代 `docs-indexing`。
+- `output` 为 `readme`、`agents` 或 `both`；`mode` 为 `create` 或 `update`。
+- 当前单元只有一个根入口文件；`both` 默认 `README.md` 后 `AGENTS.md`，前者未收敛不推进后者。
+- 写前完成公共六项澄清与技能追加字段，获得写前 `C` 后才写入；写后必须烤干并等待 `C/M/G/S/F`。
+- `update` 合并已有正文；覆盖边界、职责分工或保留策略不清时先给选项并停下。
 
 ## 产出与校验
 
-- 正式：默认 `{仓库路径}` 下 README.md、AGENTS.md（`--output` 可只其一）
-- 收敛后动作见 [unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)（本技能有 `S`）
+正式产出是目标仓库根的 `README.md`、`AGENTS.md`（按 `output` 可只写一个）。
 
 ```bash
-bash agent/skills/docs-agent/scripts/validate-guide.sh --root .
+bash agent/skills/docs-agent/scripts/validate-guide.sh --root <repo>
+bash agent/skills/docs-agent/scripts/test-validate-guide.sh
 ```
 
-## 评测
-
-`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。聚焦：意图澄清、当前单元推进、INDEX 驱动边界。
+骨架见 [assets/readme-skeleton.md](assets/readme-skeleton.md) 和 [assets/agents-skeleton.md](assets/agents-skeleton.md)；质量清单见 [references/quality-standards.md](references/quality-standards.md)。
