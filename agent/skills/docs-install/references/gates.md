@@ -1,43 +1,22 @@
 # docs-install 风险控制与确认点
 
-命令细节见 [parameters.md](parameters.md)、[workflow.md](workflow.md)。
+本技能绑定 [CONVENTIONS 的工程同步门禁](../../../rules/CONVENTIONS.md#artifact-gates) 与 [轻流程 C/M/S/F](../../../references/light-flow-actions.md)，不进入语义族的意图澄清或 `G` 环。
 
-## 与 CONVENTIONS
+## 授权单元
 
-按 [agent/rules/CONVENTIONS.md](../../../rules/CONVENTIONS.md#artifact-gates)，docs-install 为**低风险工程同步**族中的装机步骤：按参数确认与风险校核推进（副作用大，闸门从严）。
+一个 `--target` 及其完整参数集是一单。默认先预览，摘要确认后实跑；已有授权明确覆盖该预览、目标与参数集时直接沿用。`F` 只涵盖已确认的同类计划，不能扩展目标或覆盖权限。
 
-非 `--dry-run` 写盘前，须在对话取得用户明确同意（轻流程 `C`）。
+预览摘要至少列：源、target、scope、type/mode（适用时）、`-r`、force、`.docsconfig` 写入位置，以及已有目标会被如何处理。需要决策时给结论、推荐和数字选项。
 
-## 参数确认
+## 特有风险
 
-参数向导至少收口：
+| 操作 | 写前确认内容 |
+| --- | --- |
+| knowledge 重装非空目标 | 备份并重置整个目标，根级 `DESIGN.md` 亦整文件替换；获明确覆盖授权后才带 `--force` |
+| `-r` 创建缺失工程根 | 确认实际绝对路径；预览只展示创建计划 |
+| config 重写 `.docsconfig` | 只写路径键与 `AGENT_*`；已有 `KNOWLEDGE_TYPE` 不保留。需要保留类型时先澄清配置目标，不能以 knowledge 重装代替局部修订 |
+| 计划改变或预览失败 | 报告差异或失败原因；重新收口后预览，不能静默改参数继续实跑 |
 
-- `--target`（必填）
-- `--scope`（`knowledge` | `config`）
-- knowledge 时：`--type` / `--mode` / `--force` / `--dry-run` 等
-- 是否已完成 dry-run 并授权真写
+脚本拒绝非法参数、无效前置和源目标重叠；`--force` 不能越过这些检查。CLI 标志表达执行选择，不代替会话授权。
 
-建议默认先 **--dry-run**。宣称完成前须写后 **A/B**（[audience-and-language.md](../../../references/audience-and-language.md) 轻流程默认读者表）。
-
-## 风险与动作
-
-须先给结论、推荐与数字/字母选项，确认后再执行：
-
-- dry-run 摘要与预期不一致
-- `--force` 覆盖已有目标文档树
-- `--scope=knowledge` 将重置 DOC_DIR 内容
-- 目标父目录不存在、`.docsconfig` 将被改写
-
-推荐会话格式（字母见 [light-flow-actions.md](../../../references/light-flow-actions.md)）：
-
-```text
-即将执行 /docs-install，当前参数如下：
-- target: <路径>
-- scope: <knowledge|config>
-- type: <application|system|solution|company 或 —>
-- mode: <standalone|central 或 —>
-- dry-run: <yes|no>
-- force: <yes|no>
-
-C 确认当前装机计划 / M 修改参数 / S 跳过 / F 在已确认前提下补齐同类计划
-```
+写后按 [workflow.md](workflow.md) 校核，再做 [受众 A/B](../../../references/audience-and-language.md)：摘要面向装机者，全过静默。完成后按轻流程等待下一动作。

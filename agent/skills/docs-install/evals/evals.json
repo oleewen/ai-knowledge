@@ -1,41 +1,41 @@
 {
   "skill_name": "docs-install",
-  "version": "1.1.0",
-  "description": "评测 docs-install：轻流程；dry-run 闸门；不写 link 脚本；与 agent-install 分流；根级 DESIGN.md 整文件覆盖同步。",
+  "version": "1.2.0",
+  "description": "验证路由、授权、预览零写入、配置隔离、安装源与失败结果；脚本回归检查文件状态。",
   "evals": [
     {
       "id": "docs-install-trigger-001",
       "category": "should-trigger",
-      "prompt": "给 ~/ws/my-app/docs 初始化应用知识库 standalone，先 dry-run。",
-      "expected_output": "docs-install：收口 --target --type=application --mode=standalone；先 --dry-run；展示计划后等 C/M/S/F。",
+      "prompt": "给 /workspace/my-app/docs 初始化应用知识库 standalone，先 dry-run。",
+      "expected_output": "使用 docs-install，运行只读预览，报告计划和退出状态后等待写入授权。",
       "assertions": [
         {
-          "id": "dry-run-first",
-          "name": "默认 dry-run",
-          "type": "must_include",
-          "check": "须体现先 --dry-run（或等价预览）再等确认，不得未确认真写。",
+          "id": "dry-run-only",
+          "name": "预览零写入",
+          "type": "behavior",
+          "check": "实际命令含 --dry-run；目标、配置、建联文件及备份目录均无变更。",
           "priority": "P0"
         },
         {
-          "id": "audience-check-ab",
-          "name": "受众 A/B",
-          "type": "must_include",
-          "check": "须体现写后或结果摘要出口跑受众维 A/B，或对照轻流程默认读者表。",
+          "id": "no-unapproved-apply",
+          "name": "授权边界",
+          "type": "behavior",
+          "check": "未获预览摘要确认前不执行实跑；结果摘要面向装机者，不夹带业务实体正文。",
           "priority": "P0"
         }
       ]
     },
     {
       "id": "docs-install-trigger-002",
-      "category": "should-trigger",
+      "category": "should-not-trigger",
       "prompt": "只要装 cursor agent 到 home，不要知识库。",
-      "expected_output": "主路径 agent-install，不是 docs-install。",
+      "expected_output": "主路径为 agent-install。",
       "assertions": [
         {
-          "id": "correct-downstream-agent",
+          "id": "agent-routing",
           "name": "Agent 分流",
-          "type": "must_include",
-          "check": "须指向 agent-install 或等价 Agent 装机，不得主路径写成 docs-install。",
+          "type": "behavior",
+          "check": "不运行 docs-install 或创建知识库；指向 agent-install。",
           "priority": "P0"
         }
       ]
@@ -43,14 +43,14 @@
     {
       "id": "docs-install-not-trigger-001",
       "category": "should-not-trigger",
-      "prompt": "把 ~/.agents 里技能和 Agent 树升到最新。",
-      "expected_output": "生态追新 skill-upgrade；本仓 Agent 树 agent-install。",
+      "prompt": "把已安装的生态 skills 升到最新。",
+      "expected_output": "主路径为 skill-upgrade。",
       "assertions": [
         {
-          "id": "correct-downstream-upgrade",
-          "name": "追新分流",
-          "type": "must_include",
-          "check": "须指向 skill-upgrade 或 agent-install，不得主路径写成首次 docs-install。",
+          "id": "skills-routing",
+          "name": "技能追新分流",
+          "type": "behavior",
+          "check": "不运行知识库初始化，使用 skill-upgrade。",
           "priority": "P0"
         }
       ]
@@ -58,14 +58,170 @@
     {
       "id": "docs-install-trigger-003",
       "category": "should-trigger",
-      "prompt": "给工程 docs 初始化 application 知识库，standalone 全量和 central 子集都要带上根级 DESIGN.md（语义 SSOT 仍见 knowledge-governance）。",
-      "expected_output": "docs-install knowledge 同步根级 DESIGN.md（整文件覆盖）；central 子集亦种；源无则不造。保正文重填走 docs-upgrade（DESIGN 为整文件覆盖特例）。",
+      "prompt": "已确认预览与覆盖计划，在隔离测试工程的 docs 重装 application central，保留已有联邦关系。",
+      "expected_output": "只执行已授权计划，验证模板子集、DESIGN 与建联关系。",
       "assertions": [
         {
-          "id": "install-design",
-          "name": "种 DESIGN",
-          "type": "must_include",
-          "check": "须体现 knowledge 同步含根级 DESIGN.md（standalone 全量与 central 子集均整文件覆盖）；不得再要求种 CONTRIBUTING.md / manifest.md。",
+          "id": "central-design",
+          "name": "central 设计入口",
+          "type": "behavior",
+          "check": "源有根级 DESIGN.md 时整文件同步；源无则不造，不要求已退役的 CONTRIBUTING.md 或 manifest.md。",
+          "priority": "P0"
+        },
+        {
+          "id": "links-preserved",
+          "name": "保留关系",
+          "type": "behavior",
+          "check": "已有 parent/child 关系保留，安装源登记为一条 type:meta；不向目标复制 docs-link.sh 或 link-config.sh。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-install-not-trigger-002",
+      "category": "should-not-trigger",
+      "prompt": "把现有知识库对齐新版元库模板，保留我的业务正文。",
+      "expected_output": "使用 docs-upgrade。",
+      "assertions": [
+        {
+          "id": "upgrade-routing",
+          "name": "升级分流",
+          "type": "behavior",
+          "check": "不以 --force 重装替代保正文升级。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-install-config-installed",
+      "category": "should-trigger",
+      "prompt": "从已安装的 docs-install 技能重建 /workspace/app/docs 的路径配置；没有元库，先预览。",
+      "expected_output": "使用 scope=config，不要求模板源。",
+      "assertions": [
+        {
+          "id": "config-no-source",
+          "name": "配置无源依赖",
+          "type": "behavior",
+          "check": "命令使用 --scope=config --dry-run；不因没有元库要求安装知识库。",
+          "priority": "P0"
+        },
+        {
+          "id": "config-boundary",
+          "name": "配置副作用",
+          "type": "behavior",
+          "check": "说明配置重写的键和 KNOWLEDGE_TYPE 不保留；不复制模板、不建 .agents、不重写正文。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-install-existing-target",
+      "category": "should-trigger",
+      "prompt": "docs 已有业务内容，给我先看初始化预览，别覆盖。",
+      "expected_output": "预览并说明重装影响；若要保正文则建议升级。",
+      "assertions": [
+        {
+          "id": "force-authorization",
+          "name": "覆盖须授权",
+          "type": "behavior",
+          "check": "不实跑、不添加未经授权的 --force；说明 knowledge 重装会备份并重置目标。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-install-missing-target",
+      "category": "should-trigger",
+      "prompt": "帮我初始化一个知识库。",
+      "expected_output": "先收口目标目录。",
+      "assertions": [
+        {
+          "id": "target-required",
+          "name": "不猜目标",
+          "type": "behavior",
+          "check": "在目标未确定时询问目标路径，不自行安装到当前目录、仓根或 HOME。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-install-invalid-mode",
+      "category": "should-trigger",
+      "prompt": "用 docs-install 给系统库做 central 安装。",
+      "expected_output": "说明该组合不受支持，收口模式后才执行。",
+      "assertions": [
+        {
+          "id": "type-mode-policy",
+          "name": "组合校验",
+          "type": "behavior",
+          "check": "指出 central 仅适用于 application；不静默改层级或模式后安装。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-install-new-directory-preview",
+      "category": "should-trigger",
+      "prompt": "目标 /workspace/new/project/docs 完全不存在，允许计划中用 -r，但这次仅 dry-run。",
+      "expected_output": "前置齐全则纯预览；缺 Agent 或 WORK_SPACE 则报告阻塞。",
+      "assertions": [
+        {
+          "id": "no-mkdir-workaround",
+          "name": "不预建目录",
+          "type": "behavior",
+          "check": "不运行 mkdir 等补建目标；-r --dry-run 不创建目标、工程、配置或备份。",
+          "priority": "P0"
+        },
+        {
+          "id": "accurate-result",
+          "name": "如实报告",
+          "type": "behavior",
+          "check": "只有命令退出零才称预览成功；错误不得解释为完整预览通过。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-install-installed-source",
+      "category": "should-trigger",
+      "prompt": "从 ~/.agents/skills/docs-install 安装 solution 知识库，元库在 /workspace/ai-knowledge，目标 /workspace/solution/docs，先预览。",
+      "expected_output": "通过已安装脚本与显式 --meta 预览。",
+      "assertions": [
+        {
+          "id": "explicit-meta",
+          "name": "定位安装源",
+          "type": "behavior",
+          "check": "使用实际技能入口并传 --meta /workspace/ai-knowledge，不把 HOME 当元库，不在安装副本内猜模板。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-install-failed-preflight",
+      "category": "should-trigger",
+      "prompt": "初始化知识库时提示 WORK_SPACE 缺失，先帮我看原因。",
+      "expected_output": "检查配置，说明缺失前置与下一步。",
+      "assertions": [
+        {
+          "id": "no-bypass",
+          "name": "不绕过前置",
+          "type": "behavior",
+          "check": "只读核实 Agent configs；不擅自修改全局配置，不改为绝对建联 path 或强制跳过校验。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-install-partial-failure",
+      "category": "should-trigger",
+      "prompt": "初始化复制到一半报错，但日志也有同步完成，算成功吗？",
+      "expected_output": "按退出状态和实际产物判断，报告失败和备份。",
+      "assertions": [
+        {
+          "id": "failure-propagation",
+          "name": "失败不得误报",
+          "type": "behavior",
+          "check": "不凭成功字样宣称完成；核实失败阶段、已写入范围与备份位置，不盲目 --force 重试。",
           "priority": "P0"
         }
       ]

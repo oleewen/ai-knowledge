@@ -1,50 +1,33 @@
 # docs-install 工作流
 
-## 参数向导
+## 执行前
 
-按序收口；用户已明确时可跳过对应项：
+参数选择见 [parameters.md](parameters.md)，授权与停止点见 [gates.md](gates.md)。先确认：
 
-1. `--target`（目标工程文档目录，必填）
-2. `--scope`（默认 `knowledge`；仅写 `.docsconfig` 时用 `config`）
-3. `--type` / `--mode`（scope=knowledge 时；application 可选 central）
-4. `--force` / `-r`（创建工程根等高风险项）
-5. 是否先 `--dry-run`（默认是）
+- **运行环境**：Bash 5+、Python 3、Git；Python 用于缺失路径与符号链接解析。技能须位于完整 Agent 树内，因为脚本复用 `scripts/docs-core.sh` 等共享库；安装后路径改写使用 Perl。
+- **目标**：`--target` 是文档目录，须为工程根的子目录；工程根缺失时确认 `-r`。源与目标不能重叠。
+- **Agent 路径**：已有有效 `AGENT_ROOT` + `AGENT_DIR` 则保留；否则依次探测 `.agents`、`.cursor`、`.codex`、`.claude`、`.trae`、`.kiro`。`AGENT_ROOT` 是父目录（如 `~`），不能直接指向实体树；全无则先解决 Agent 安装前置。
+- **knowledge 专有前置**：源层目录存在，源 Git remote 可读；Agent 树 `configs` 的 `WORK_SPACE` 能覆盖源仓与目标工程。已有建联路径必须通过 [路径契约](../../../knowledge/knowledge-governance.md) 校验。
 
-参数未收口前，不进入执行。
+从已安装技能调用时，按 [parameters.md](parameters.md) 指定 knowledge 的元库；config 不依赖元库。
 
-## 当前单元
+## 预览与执行
 
-**一次装机计划** = 一个 `--target` 的 docs-install（含全部参数）。
+1. 使用已收口参数运行 `--dry-run`，展示模板源、目标、配置键、备份与建联影响。只有退出码为零才称预览通过。
+2. 按 [gates.md](gates.md) 核对授权，去掉 `--dry-run` 执行同一计划。参数或目标状态发生实质变化时重新预览。
+3. 任一步失败即停，报告失败阶段、已写入范围与备份位置；修复原因后再决定重试，不能把局部完成当整单成功。
 
-一次只推进一个目标；多目标用 `F` 逐个补齐。
+## 产物校核
 
-## 执行循环
+| 范围 | 核对 |
+| --- | --- |
+| config | 仅工程根 `.docsconfig` 被重写；路径键与 `AGENT_*` 正确，不写 `KNOWLEDGE_TYPE`，不创建文档目录、软链或修改正文 |
+| knowledge | 模板符合层级与模式；`.docsconfig` 含对应 `KNOWLEDGE_TYPE`；已有关系保留，安装源更新为一条 `type:meta` |
+| knowledge 的设计入口 | 源有根级 `DESIGN.md` 时整文件同步，central 亦包含；源无则不造。语义真源仍为 `knowledge-governance.md` |
+| knowledge 的 Agent 引用 | 非 meta：`DOC_DIR/.agents` 链到 `$AGENT_ROOT/$AGENT_DIR`；裸 `agent/`、`../agent/`、`~/.agents/` 按文件深度改为相对 `.agents/`。meta：不建链，以含 `agent/` 的仓根为锚改为深度相对 `agent/`。不改 IDE 段 |
 
-### 1 准备
+只在 `--target` 同步文档；工程根的 `.docsconfig` 和备份目录是配套写入。不向目标安装 `docs-link.sh` / `link-config.sh`。
 
-- Bash 5+；本仓或已 clone 的元库树
-- 目标父目录存在（或用户确认 `-r` 创建）
+## 双轨装机
 
-### 2 dry-run
-
-```bash
-bash agent/skills/docs-install/scripts/docs-install.sh --target <PATH> [选项] --dry-run
-```
-
-展示将同步的路径、`.docsconfig` 变更摘要；停下等 `C/M/S/F`。
-
-### 3 实跑
-
-用户 `C` 后去掉 `--dry-run` 重跑同一参数集。失败则整单停。
-
-### 4 写后停顿
-
-1. 校核 `文档目录`、`.docsconfig`、`knowledge-links.yaml`（若新建）
-2. 受众维 **A/B**
-3. 停下等待 `C/M/S/F`
-
-未过 A/B → 不得宣称单元完成。
-
-## 与 agent-install 编排
-
-对话中「知识库 + Agent」双轨：**先** docs-install **后** agent-install。自动化用仓根 `bootstrap.sh`（`--components=both`）。
+已有可用 Agent 树与 `WORK_SPACE` 时，知识库与 Agent 双轨接入按 docs-install、agent-install 顺序执行；自动化入口为仓根 `bootstrap.sh`。若 Agent 前置缺失，先报告缺口并解决，不能直接套用双轨顺序。仅初始化知识库的授权不等于授权修改全局 Agent 环境。

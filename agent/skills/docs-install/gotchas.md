@@ -1,10 +1,12 @@
 # docs-install 陷阱
 
-- **dry-run 与尚未存在的 `--target`**：`--dry-run` 不建目录；若 docs 路径尚不存在，拷贝预览可能仍打印，但 `.docsconfig` 步会报文档目录的父目录不可解析。冒烟前先 `mkdir -p <target>`，或接受该步失败仍以拷贝预览为准。
-- **`--force` / 覆盖已有 docs**：默认交互冲突策略；会话须先确认再带 `--force`。`--scope=knowledge` 先备份清空再复制，根级 `DESIGN.md` 亦整文件来自模板（standalone 全量与 central 子集均种；源无则不造）。`DESIGN.md` 为层入口模板；语义 SSOT 在 `agent/knowledge/knowledge-governance.md`。保正文结构重填走 `/docs-upgrade`（根级 `DESIGN.md` 为整文件覆盖特例），不要用重装当升级。
-- **建联脚本不落盘**：`docs-link.sh` / `link-config.sh` 仅在 `agent/skills/docs-link/scripts/`；联邦登记走 `/docs-link`，勿期待 install 拷贝到目标 `scripts/`。
-- **`.docsconfig` 漂移**：装机后 `REPO_DIR`/`DOC_DIR` 与实际不一致 → 再跑 docs-install 修复（`--scope=config` 或 knowledge）。工作区在 `$AGENT_ROOT/$AGENT_DIR/configs`，不写进 `.docsconfig`。
-- **Agent 树**：本技能不管；走 `/agent-install` 或双轨时在其之后执行。
-- **路径重写**：knowledge 实跑：深度相对 `.agents/`（或 meta→`agent/`）+ `DOC_DIR/.agents` 软链；不重写 IDE 段；dry-run 不做。`--force` 清空时只删 `.agents` 链接、不跟随实体树。
-- **`.docsconfig` AGENT_***：写 `AGENT_ROOT`（家目录式，如 `~`）+ `AGENT_DIR`（如 `.agents`）；由探测补齐；agent-install **不**写回。
-- **Bash 5+** 必需。
+| 症状 | 处理 |
+| --- | --- |
+| 已安装技能找不到模板源 | knowledge 传 `--meta <元库根>`；config 无需模板。脚本共享依赖缺失则使用完整 Agent 树 |
+| 提示工程根不存在 | 核实路径与 `-r` 授权后重新预览；不为完成 dry-run 手动创建目标 |
+| `WORK_SPACE` 缺失、旧建联路径或越界 | 检查 Agent 树的 `configs` 与文件所属库配置，按 [路径契约](../../knowledge/knowledge-governance.md) 处理；不能把工作区塞进 `.docsconfig` 或绕过校验 |
+| `AGENT_ROOT` 指向实体树 | 改为父目录，配合 `AGENT_DIR`；缺失或失效时的探测规则见 [workflow.md](references/workflow.md)。agent-install 不替工程写回这些键 |
+| 已有正文需要保留 | 用 docs-upgrade；不要用 `--force` 重装来修补正文或路径 |
+| 复制或后处理失败 | 按 [失败处置](references/workflow.md#预览与执行) 核实退出状态与产物，不能只凭“同步完成”日志判成功 |
+
+重装备份 `DOC_DIR/.agents` 时只移动软链本身，不跟随实体树；[路径重写](references/workflow.md#产物校核) 与 [覆盖和配置风险](references/gates.md) 分别按对应契约处理。

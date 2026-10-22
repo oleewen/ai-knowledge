@@ -1,0 +1,4 @@
+interface:
+  display_name: "知识库初始化"
+  short_description: "初始化四层知识库或重建工程安装路径配置，先预览再按授权执行"
+  default_prompt: "使用 $docs-install 为指定工程规划知识库初始化，先检查前置并展示 dry-run 结果。"

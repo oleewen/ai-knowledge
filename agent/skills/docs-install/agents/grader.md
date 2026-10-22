@@ -1,10 +1,10 @@
 # docs-install Grader
 
-据 **evals/evals.json** 输出 JSON：`text`、`passed`、`evidence`。
+依据 [evals.json](../evals/evals.json) 检查真实行为，逐断言输出 `id`、`passed`、`evidence`，再给总体 `passed`。
 
 ## 判定
 
-1. 读 `category`：`should-trigger` / `should-not-trigger`
-2. **硬门**：以本 eval 的 `assertions`（按 `priority`）为准；`evidence` 映射 `assertions[].id`
-3. **协议释义**（assertions 覆盖时强制）：轻流程参数向导 → dry-run → `C/M/S/F`；写后受众维 A/B。knowledge 同步含根级 `DESIGN.md`（整文件覆盖；central 子集亦种；源无则不造）。见 [light-flow-actions.md](../../../references/light-flow-actions.md)、[gates.md](../references/gates.md)
-4. **P0** 任一失败 → `passed: false`
+1. `category` 判断是否应选本技能；明确点名但任务越界时，应正确分流。
+2. 优先检查工具调用、退出码、文件差异及停止点；口头承诺不能证明零写入或完成安装。需实跑的用例只在隔离临时目录中验证。
+3. 证据须对应断言 ID。任一 P0 失败则整体失败；缺工具或前置时注明未验证，不能据缺失证据判通过。
+4. 授权以 [gates.md](../references/gates.md) 为准。按 [共享 A/B](../../../references/audience-and-language.md) 检查摘要受众与信息边界，允许静默，不检查字母口令。

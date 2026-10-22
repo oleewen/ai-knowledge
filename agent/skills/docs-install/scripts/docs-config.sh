@@ -14,13 +14,6 @@ source "${DOCS_CONFIG_DIR}/../../../scripts/lib/bash.sh"
 # shellcheck source=../../../scripts/docs-core.sh
 source "${DOCS_CONFIG_DIR}/../../../scripts/docs-core.sh"
 
-readonly -a SUPPORTED_MODES=(standalone central)
-
-declare -A DEFAULTS=(
-  [docs_dir]='docs'
-  [mode]='standalone'
-)
-
 readonly KINIT_DEFAULT_SCOPE='k'
 readonly KINIT_DEFAULT_TYPE='application'
 readonly KINIT_DEFAULT_MODE='standalone'
@@ -31,11 +24,10 @@ normalize_mode() {
   case "${1:-}" in
     s|standalone) printf 'standalone' ;;
     c|central) printf 'central' ;;
-    *) printf 'standalone' ;;
+    *) printf '%s' "${1:-}" ;;
   esac
 }
-
-validate_type() { docsconfig_knowledge_type_is_valid "${1:-}"; }
+validate_type() { [[ "${1:-}" =~ ^(application|system|solution|company)$ ]]; }
 
 normalize_type() {
   case "${1,,}" in
@@ -55,17 +47,4 @@ normalize_scope() {
     c|config|cfg) printf 'config' ;;
     *) printf '%s' "${1:-}" ;;
   esac
-}
-
-cfg_default() { printf '%s' "${DEFAULTS[${1:-}]:-}"; }
-
-post_init_checklist() {
-  local docs_abs="${1:-}"
-  cat <<'CHECKLIST'
-
-================================================================================
-初始化完成！建议核对
-================================================================================
-CHECKLIST
-  [[ -n "$docs_abs" ]] && printf '  文档目录（绝对路径）: %s\n' "$docs_abs"
 }
