@@ -1,62 +1,53 @@
 ---
 name: docs-archive
 description: >
-  将 overview 知识按表格行内副标题链接归档到 application / system / solution / company 视角章节；
-  先收口方案确认书，再按当前单元落目标章并按策略回写 overview。
-  用户提到 /docs-archive、知识归档、overview 落盘、冲突检查、确认书归档时，使用本技能。
-  分流：任意源提炼 → docs-extract；应用蒸馏 → docs-distill；实体/INDEX-GUIDE 第四章 → docs-build；术语替换 → docs-revise；SDD → 对应技能。
-  推进见 references/gates.md。
-compatibility: Bash 5+；无专用校验脚本。
+  将四层 knowledge overview 的已确认内容归档到其行内副标题指向的视角章节，
+  再按策略回写 overview。适用于 /docs-archive、overview 行归档、冲突核对和索引壳回写。
+  不适用于第三列提炼（docs-extract）、联邦槽位上行（docs-distill）、实体/索引维护（docs-build）
+  或术语链式修订（docs-revise）。
 ---
 
 # docs-archive
 
-## 输出硬约束（P0）
+按 overview 第三列的 delta 更新行内副标题链接指向的章节，再按确认书回写该行。
 
-- 当前单元：单个目标章节，或单个 overview 行块。
-- 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[simplify-principles.md](../../references/simplify-principles.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得落盘或回写 overview；本技能默认必须烤干，收敛后停等用户。
-- **确认书 = 意图澄清门禁**：批次级确认书收口即完成写前澄清；单元落盘前不再重复六项全清单，仅摘取本单元目标与路径。
-- overview 回写须保留行内副标题链接；若改为索引壳，也不得承载新业务事实。
-- **第三列 delta**：消费 extract/distill 的 A/U/D；`[D]` 按删除说明改目标章。回写后第三列 `—`。见 [federation-spec.md](../docs-distill/references/federation-spec.md)。
-- **knowledge 引用边界**：写入 `*/knowledge/**` 须遵守 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「业务 knowledge 引用边界」。可读外源；落盘不链 knowledge 外文档、不链下层/槽位、禁手写爬层。有 parent 则上层实体用生成函数 HTTP，否则纯 ID。违规能修则修，不明则停。
+## 硬约束
 
-## 边界
+- 当前单元只有一个目标章节及其 overview 行块。
+- **确认书就是写前意图澄清**。收口并取得写前 `C` 前，不写目标，也不回写 overview。
+- 主线固定为：`澄清 → 目标章节 → overview 回写 → 烤干 → 停等动作`。
+- 目标章节先写，成功且自检通过后才回写 overview；失败时不回写。
+- 原始材料只读；作为归档入口的 overview 仅可回写确认书允许的行。归档写入范围限于确认书、目标章节和这些 overview 行。
+- 保留行内副标题链接。索引壳只保留导航，不承载业务事实。
+- 第三列 `[A]`/`[U]` 归档后回写 `—` 或索引壳；`[D]` 必须先落实目标章节删除，再回写 `—`。
+- 写入 `*/knowledge/**` 时遵守 [knowledge-governance.md](../../knowledge/knowledge-governance.md) 的引用边界。
+- 当前单元默认必须烤干；收敛后停下，等待 `C/M/G/S/F`，不得自动推进下一单元。
 
-- 负责：overview → 链接指向的视角章节；确认书（意图澄清）；冲突检查；overview 按策略回写
-- 不负责：docs-extract；docs-distill；docs-build；docs-revise；SDD 终稿
+## 执行
 
-## 不这样用
+1. 读 overview、目标章节和同级体例；从表格行内副标题链接解析目标。
+2. 填 [确认书模板](assets/archive-template.md)：公共六项、来源/目标/映射、冲突策略、overview 回写策略、方案推荐。
+3. 逐项核对缺链、断链、冲突和 `[D]`；把未决项留在确认书，不猜路径、ID 或裁决。
+4. 写前 `C` 后，只处理当前单元：先写目标章节，再按确认书回写 overview。
+5. 按 [quality-checklist.md](references/quality-checklist.md) 烤干，覆盖结构、链接、delta、索引壳、冲突和受众 A/B/C/E。
+6. 输出改动文件、每文件一句、待用户动作；停在当前单元。
 
-- 不把写前意图澄清与确认书拆成两套停顿
-- 不把写前步骤称作「写前 grilling」；`G` 仅写后深挖
-- 不把本技能偷换成 `docs-build`、`docs-revise` 或 `docs-extract`
+## 分流
 
-## 路由
+- 来源提炼到 overview 第三列：`docs-extract`
+- 槽位内容全量上行：`docs-distill`
+- 实体 ID、知识实体或 INDEX-GUIDE 第四章：`docs-build`
+- 术语/事实/链接定向修订：`docs-revise`
+- 整篇结构精简或 SSOT 去重：`docs-simplify`
 
-| 目的 | 文件 |
-| --- | --- |
-| 流程 / 推进 binding | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
-| 受众与语言 | [audience-and-language.md](references/audience-and-language.md) |
-| 链接与索引 | [links-and-index.md](references/links-and-index.md) |
-| 核心概念 | [core-concepts.md](references/core-concepts.md) |
-| 原则 / 反模式 | [design-principles.md](references/design-principles.md)、[anti-patterns.md](references/anti-patterns.md) |
-| 终检 / 易错 | [quality-checklist.md](references/quality-checklist.md)、[gotchas.md](gotchas.md) |
-| 确认书模板 | [archive-template.md](assets/archive-template.md) |
+## 按需参考
 
-## 最少输入
-
-- overview 来源路径或锚点
-- 可解析的目标章节或 overview 行内链接
-- 来源清理策略
-- 初始冲突策略
-
-## 产出
-
-- 工作产物：当前确认书（含意图澄清六项）
-- 正式：目标章节增补
-- 正式：overview 按策略回写
-- 收敛后动作见 [unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)（本技能有 `S`）
-
-## 评测
-
-`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。
+- 共享协议：[intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)
+- 流程与字段：[references/workflow.md](references/workflow.md)
+- 写入门禁：[references/gates.md](references/gates.md)
+- overview、锚点、delta：[references/core-concepts.md](references/core-concepts.md)
+- 链接与 Git：[references/links-and-index.md](references/links-and-index.md)
+- 原则/反模式：[references/design-principles.md](references/design-principles.md)、[references/anti-patterns.md](references/anti-patterns.md)
+- 验收/受众/陷阱：[references/quality-checklist.md](references/quality-checklist.md)、[references/audience-and-language.md](references/audience-and-language.md)、[gotchas.md](gotchas.md)
+- 评测维护：[evals/evals.json](evals/evals.json)、[agents/grader.md](agents/grader.md)
+- 运行评测时读：[references/evaluation.md](references/evaluation.md)（CLI、适配器与结果契约）。

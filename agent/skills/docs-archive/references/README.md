@@ -1,15 +1,16 @@
-# references 索引
+# 参考索引
 
-先读上级 [SKILL.md](../SKILL.md)，再按其「读序」打开本表。
+先读 [SKILL.md](../SKILL.md)，按任务读取下列文件。
 
-| 文件 | 用途 |
-| ------ | ------ |
-| [gates.md](gates.md) | 风险控制、确认规则、动作协议 |
-| [workflow.md](workflow.md) | 参数澄清、当前确认书、当前单元、自动 grilling |
-| [links-and-index.md](links-and-index.md) | INDEX、站内链、Git |
-| [core-concepts.md](core-concepts.md) | overview、`#锚`、链接、简写 |
-| [design-principles.md](design-principles.md) | 原则（短） |
-| [anti-patterns.md](anti-patterns.md) | 概念反模式 |
-| [quality-checklist.md](quality-checklist.md) | 步骤 5～6 |
+共享协议见 [intent-clarify.md](../../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../../references/grilling-skill.md)。
 
-实操细节：[gotchas.md](../gotchas.md)。
+| 文件 | 读取时机 |
+| --- | --- |
+| [gates.md](gates.md) | 判断授权、单元、原子性或高风险停顿 |
+| [workflow.md](workflow.md) | 需要完整步骤、参数向导或第三列处理 |
+| [core-concepts.md](core-concepts.md) | 解析 overview、锚点、行内链接和 delta |
+| [links-and-index.md](links-and-index.md) | 检查站内链、索引和 Git 边界 |
+| [quality-checklist.md](quality-checklist.md) | 写后验收 |
+| [audience-and-language.md](audience-and-language.md) | 烤干受众维 A/B/C/E |
+| [design-principles.md](design-principles.md) / [anti-patterns.md](anti-patterns.md) | 需要原则或失败纠正 |
+| [gotchas.md](../gotchas.md) | 处理常见陷阱 |

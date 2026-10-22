@@ -1,15 +1,7 @@
-# 索引与链接
+# 链接、索引与 Git
 
-闸门总述 [gates.md](gates.md)。
-
-## index
-
-根与子域 `index.md`：**按需**查路径权威、索引边界、是否要更导航。
-
-## 站内 Markdown
-
-显示文本宜**根相对路径**；目标须相对当前文件可点。细则 [AGENTS.md](../../../../AGENTS.md)「站内 Markdown 链接」。
-
-## Git
-
-未经用户同意勿自动 `git commit` / `git push`。[git-guidelines.md](../../../rules/coding/git-guidelines.md)。
+- 按需读取目标知识库根/子域的 `index.md`，只用其确认路径和边界。
+- 站内 Markdown 链接必须按当前文件解析为可点击的相对路径；回写 overview 必须保留行内副标题链接。
+- 缺链、断链或悬空半句属于当前单元未收敛。
+- 遵守目标工程 `AGENTS.md` 的站内链接规则。
+- 未经用户同意，不执行 git commit 或 git push。

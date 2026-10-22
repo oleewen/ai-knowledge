@@ -1,98 +1,39 @@
-# docs-archive 工作流
+# 工作流
 
-交付主线：**参数向导 → 澄清（确认书 = 意图澄清）→ 当前单元落盘 → 烤干 → 用户动作**。
+主线：探索 → 确认书 → 写目标 → 回写 overview → 烤干。
 
-契约：
+共享协议：[intent-clarify.md](../../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../../references/grilling-skill.md)。确认书承载写前意图澄清；烤干遵守共享受众和动作协议。
 
-- 写前澄清：[intent-clarify.md](../../../references/intent-clarify.md)（经确认书承载）
-- 单元推进 / `C/M/G/S/F`：[unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)
-- 写后烤干：[grilling-skill.md](../../../references/grilling-skill.md)
+## 1. 探索
 
-## 前置
+读取 overview 或指定锚点、目标章节、同级文件；路径不明时读取目标层 README/索引。写入 knowledge 时同时读取 [knowledge-layout.md](../../../references/knowledge-layout.md) 和 [knowledge-governance.md](../../../knowledge/knowledge-governance.md)。
 
-- 路径：[knowledge-layout.md](../../../references/knowledge-layout.md)
-- overview 路径（`{DOC_DIR}/knowledge/overview/{NAME}-overview.md`，四层；可选 `#锚点`）；目标由**表格行链接**解析
-- 若环境未安装 `grilling` Skill，则按 grilling-skill fallback
+标准路径中，目标只由 overview 表格的行内副标题链接决定。缺链、断链或手写目标与标准路径不一致时，列入冲突清单并停问。
 
-## 参数向导（含探索）
+## 2. 确认书
 
-先完成必要探索，再分步澄清；未明则问，**每次一维**；用户已说清则跳过。
+模板见 [archive-template.md](../assets/archive-template.md)。确认书标记“当前阶段：意图澄清”，承载[公共六项](../../../references/intent-clarify.md#公共六项清单)，追加来源、目标、映射、冲突策略、overview 回写策略和方案推荐。
 
-1. 「来源 {符} 目标」简写 → 先解析两端（陷阱见 [core-concepts.md](core-concepts.md)、[gotchas.md](../gotchas.md)）
-2. **读**来源（文件/目录/章标题/锚点）
-3. **读**目标及同级体例（标题级、表、术语表）；标准路径下目标仅由 overview **行内副标题链接**定
-4. 按需读 [gates.md](gates.md)、[links-and-index.md](links-and-index.md)
+批次确认书收口并取得写前 C 后，才进入单元落盘。
 
-| 维度 | 内容 |
-| ---- | ---- |
-| 来源范围 | 单文件 / 目录 / 指定章；附件、脚注、历史版 |
-| 目标形态 | 单文件节 / 多文件 / 新建+索引（overview 驱动时目标清单多已由当前轮探索得出） |
-| 抽象层级 | 摘录 / 要点 / 可对外 |
-| 术语风格 | 术语表、禁用词、语体 |
-| 冲突策略 | 以来源 / 以目标 / 并列待裁 |
-| 产出 | 仅 MD？是否更目录或 changelog |
-| 来源清理 | 删已归档 / **仅索引壳**（推荐）/ 不动 |
+## 3. 写目标章节
 
-参数/确认书未收口前，不进入落盘。
+提取业务含义，去掉来源噪声；正文服从目标章节体例。来源路径、审计信息和未决裁决留在确认书或冲突清单。
 
-## 当前单元
+第三列语义由 [federation-spec.md](../../docs-distill/references/federation-spec.md) 定义；本技能只消费 delta 并完成回写闭环：
 
-单个目标章节 + 对应 overview 行回写。定义与确认书门禁见 [gates.md](gates.md)。
-
-## 写后默认表
-
-| 对象 | 默认烤干 | 强制升级 |
+| delta | 目标章节 | overview 回写 |
 | --- | --- | --- |
-| 单个归档单元（目标章 + overview 回写） | **必须** | 未确认决策落盘；跨单元依赖/批次前提变更；overview 行内链接/目标章/索引路径变更；冲突或来源清理策略变更 |
+| A / U | 并入或更新对应章节 | — 或仅导航的索引壳 |
+| D | 先落实删除说明 | — |
+| — | 按确认书判断是否补档 | 保持原样 |
 
-启发式只可升级为必须，不可把默认「必须」降为跳过。
+## 4. 回写 overview
 
-## 技能步骤
+仅回写确认书允许的 overview 行，保留行内副标题链接；原始材料保持只读。索引壳只写章节导航，不复制业务正文。目标章节未成功写入时禁止回写。
 
-### 1. 澄清（确认书）
+## 5. 烤干与收尾
 
-确认书即写前意图澄清容器，须并入公共六项并标明「当前阶段：意图澄清」。公共六项在确认书中的落点：
+当前单元默认必须烤干，按 [quality-checklist.md](quality-checklist.md) 验收；受众检查遵守[共享 A/B/C/E](../../../references/audience-and-language.md)及[本地差额](audience-and-language.md)。未获用户明确认可的待确认冲突仍按未收敛处理。任一步失败都保持当前单元未收敛；回写失败时恢复本轮 overview 改动或明确标记待修复。收敛后输出变更摘要和待用户动作，停下等待 C/M/G/S/F。
 
-| 公共六项 | 在确认书中的落点 |
-| --- | --- |
-| 本段/单元目标 | 会话主题 + 本轮归档要达成什么 |
-| 范围 / 非范围 | 来源清单 + 不落盘清单 |
-| 已知缺口 | 探索中未决项；无则写「无」 |
-| 禁止臆测项 | 不得编造的路径、ID、冲突裁决、清理承诺 |
-| 写后烤干预判 | 按上表；当前单元默认必须烤干 |
-| 写入路径/容器 | 目标清单 + 映射表中的路径/节位 |
-
-archive 特有字段见 [archive-template.md](../assets/archive-template.md)。收口协议见 intent-clarify；未获写前 `C` 不得落盘。
-
-批次确认书收口后，各单元落盘前不再重复六项全清单；仅摘取本单元目标与写入路径。
-
-### 2. 落盘
-
-提取业务含义，去噪；多出处同一事实只留主述；句式与层级服从目标；最小 diff。  
-来源不入正文（无 `(来源：…)` 等；追溯留在确认书/冲突清单）。
-
-### 第三列 delta（overview 行）
-
-标记语义与去重 → [federation-spec.md](../../docs-distill/references/federation-spec.md)「规则（第三列）」。archive 消费要点：
-
-| 第三列 | 目标章 | 回写 overview |
-| --- | --- | --- |
-| `[A]`/`[U]` delta | 并入对应链接章节 | 第三列 `—` 或索引壳 |
-| `[D]` 删除说明 | 按说明删改目标章 | 第三列 `—`（勿留 `[D]`） |
-| 已 `—` / 无 delta | 按需补目标章或跳过 | 保持 |
-
-回写 overview（按行）：归档并自检后第三列恢复 `—`，或换「索引壳」（仅导航）；**保留行内副标题链接**。
-
-顺序固定：先落目标章节 → 再回写 overview。目标失败则禁止回写 overview。
-
-### 3. 烤干与用户动作
-
-按写后默认表进入烤干；检查体例、断链/悬空、索引壳是否只留导航、冲突是否按确认书处理。动作字母见 unit-cycle-protocol。
-
-## 收尾摘要
-
-列：**改动的文件**、**每文件一句**、**待用户事**。变更溯源靠 `git log` / `git diff`。不自动 `git commit` / `push`（[links-and-index.md](links-and-index.md)）。
-
-## 临时文件（可选）
-
-映射表、冲突清单可放用户于当前确认书指定的路径；无固定文件名要求。
+Git 变更只读；未经用户同意不 commit 或 push。

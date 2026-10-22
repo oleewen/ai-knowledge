@@ -1,66 +1,11 @@
 {
+  "kind": "eval-metadata-template",
   "skill_name": "docs-archive",
-  "eval_id": "REPLACE_WITH_EVAL_ID",
-  "expected_category": "should-trigger | should-not-trigger",
-  "expected_route": "/docs-archive | （not-trigger 填下游）",
-  "expected_output": "与同 id 条目一致的一两句。",
-  "notes": "复制为 `<eval-id>-metadata.json`；断言与 agents/grader.md 一致。",
-  "assertions_should_trigger_example": [
-    {
-      "id": "single-unit-stop",
-      "name": "单单元停顿",
-      "type": "must_include",
-      "check": "一次只处理一个目标章节或一个 overview 行块，并在当前单元收敛后停下等待动作。",
-      "priority": "P0"
-    },
-    {
-      "id": "confirmation-book-first",
-      "name": "确认书先收口",
-      "type": "must_include",
-      "check": "当前确认书未收口前，不得写目标章节或回写 overview。",
-      "priority": "P0"
-    },
-    {
-      "id": "semantic-change-needs-confirmation",
-      "name": "语义变更先确认",
-      "type": "must_include",
-      "check": "来源范围、目标章节、冲突策略、来源清理策略变化时，先给结论、推荐方案与数字选项。",
-      "priority": "P0"
-    },
-    {
-      "id": "overview-link-preserved",
-      "name": "回写保留链接",
-      "type": "must_include",
-      "check": "overview 回写后保留行内副标题链接，不得静默断链。",
-      "priority": "P0"
-    }
-  ],
-  "assertions_should_not_trigger_example": [
-    {
-      "id": "correct-downstream",
-      "name": "正确下游",
-      "type": "must_include",
-      "check": "点名与 prompt 一致的下游（如 docs-build、docs-revise、docs-extract）。",
-      "priority": "P0"
-    },
-    {
-      "id": "no-false-archive-primary",
-      "name": "勿假主 archive",
-      "type": "must_not_conflict",
-      "check": "不得描述为默认完整 archive 六步落目标而忽略用户指定下游。",
-      "priority": "P0"
-    },
-    {
-      "id": "optional-quality-hint",
-      "name": "可拒写目标",
-      "type": "should_include",
-      "check": "可加分：本对话不应写架构目标或应先走所列下游。",
-      "priority": "P1"
-    }
-  ],
-  "scoring": {
-    "pass_rule_should_trigger": "P0 全过；有 P1 则至少过 1，无 P1 则仅 P0",
-    "pass_rule_should_not_trigger": "P0 全过；P1 可选",
-    "fail_rule": "任一 P0 失败即不通过"
-  }
+  "suite": "evals.json",
+  "case_id": "archive-trigger-001",
+  "purpose": "按 case_id 引用用例，记录评测用途；提示词、期望与断言只维护在 suite 中。",
+  "executor_input": "仅含 eval_id、prompt、skill_path，不传期望或断言。",
+  "grader_input": "含完整 case、response、grader_path。",
+  "result_contract": "../references/evaluation.md",
+  "notes": "本文件是元数据模板，不是评分结果；不得作为 score --results 输入。真实结果由 run 生成，或按结果契约提供。"
 }

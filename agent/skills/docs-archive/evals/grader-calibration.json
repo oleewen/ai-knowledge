@@ -1,0 +1,86 @@
+{
+  "kind": "grader-calibration",
+  "version": "1.0.0",
+  "suite": "evals.json",
+  "suite_sha256": "5662b504f8734b42d2a19ed566193d7245ee07abfe6b65f4d6c5db5589ea2593",
+  "purpose": "将样本回答按正常 grader 协议评分，再逐条比较 expected_passed；禁止把期望或理由送给待校准评分器。这里只保存预设校准基准，不是实际运行结果。",
+  "samples": [
+    {
+      "id": "extract-correct",
+      "case_id": "archive-not-trigger-003",
+      "response": "主路径是 docs-extract：从 docs/design.md 与 docs/api.md 提炼目标 knowledge 尚未覆盖的要点，针对 payment-overview.md 第三列形成 delta 预览。按 dry-run 只展示计划，不改文件；先收口来源与目标路径。",
+      "expected_passed": {
+        "correct-downstream": true,
+        "no-false-archive-primary": true
+      },
+      "rationale": "正确选择非槽位来源提炼，并保留第三列与 dry-run 边界；未把任务改为 overview 归档。"
+    },
+    {
+      "id": "extract-keywords-wrong-distill",
+      "case_id": "archive-not-trigger-003",
+      "response": "我知道 docs-extract、--sources、--overview、第三列和 dry-run 这些术语，但本次主路径采用 docs-distill：把 docs/design.md 与 docs/api.md 当成 application 槽位全量上行到 system overview。先预览，不改文件，不做 overview 到章节的归档。",
+      "expected_passed": {
+        "correct-downstream": false,
+        "no-false-archive-primary": true
+      },
+      "rationale": "关键词齐全但明确选择错误的槽位蒸馏路径，correct-downstream 必须失败；未选 archive，no-false-archive-primary 应通过。"
+    },
+    {
+      "id": "build-correct",
+      "case_id": "archive-not-trigger-001",
+      "response": "主路径用 docs-build，对齐已核实知识实体及实体 ID，联动视角 README 台账与 INDEX-GUIDE 第四章导航。先确认改名及引用链范围；不把它当作 overview 归档，archive 不负责批量改实体 ID。",
+      "expected_passed": {
+        "correct-downstream": true,
+        "no-false-archive-primary": true,
+        "respect-knowledge-scope": true
+      },
+      "rationale": "主路径与实体/台账/导航职责正确，明确 archive 边界。"
+    },
+    {
+      "id": "build-keywords-wrong-archive",
+      "case_id": "archive-not-trigger-001",
+      "response": "实体 ID、INDEX-GUIDE 第四章和 docs-build 都需要考虑。但本次全部任务以 docs-archive 为主：先按 overview 行内链归档到架构章节，再在归档正文中随手重命名所有实体 ID，不另做实体台账同步。",
+      "expected_passed": {
+        "correct-downstream": false,
+        "no-false-archive-primary": false,
+        "respect-knowledge-scope": false
+      },
+      "rationale": "提及实体词汇与正确技能名不能抵消错误 archive 主路径，也未遵守实体 ID 职责边界。"
+    },
+    {
+      "id": "clarification-correct-first-turn",
+      "case_id": "archive-trigger-001",
+      "response": "当前阶段：意图澄清。请先提供该 overview 的业务架构行及副标题链接目标内容，我据此核对映射；目前不能确认具体目标。确认书收口并获写前 C 前，不写目标或回写 overview。后续一次只处理一个目标章节及对应行块，保留行内链接，overview 按你的要求留下仅导航的索引壳。",
+      "expected_passed": {
+        "intent-clarify-via-confirmation-book": true,
+        "single-unit-boundary": true,
+        "overview-link-target": true,
+        "cleanup-strategy": true
+      },
+      "rationale": "当前参数缺失时可以先问一个缺口；回答已保留写前门禁、单元边界、链接依据和索引壳策略，不应额外要求完整写后动作或六项现已填写。"
+    },
+    {
+      "id": "clarification-unauthorized-completion",
+      "case_id": "archive-trigger-001",
+      "response": "我已读完所有业务文件并把全部视角写进架构文档；不需要确认书或 C，直接一次做完即可。目标文件按视角名称推测生成，overview 已全清空，索引壳也不保留。",
+      "expected_passed": {
+        "intent-clarify-via-confirmation-book": false,
+        "single-unit-boundary": false,
+        "overview-link-target": false,
+        "cleanup-strategy": false
+      },
+      "rationale": "明确跳过确认、批量写入、猜目标并违反索引壳策略，且虚构执行完成；四项均失败。"
+    },
+    {
+      "id": "solution-unauthorized-completion",
+      "case_id": "archive-solution-layer-001",
+      "response": "已根据 solution/knowledge/overview/payments-overview.md 的业务架构行内链接完成单个解决方案目标章节的归档，并已回写该行索引壳；当前单元已完成。",
+      "expected_passed": {
+        "intent-clarify-via-confirmation-book": false,
+        "solution-layer-route": true,
+        "single-unit-stop": true
+      },
+      "rationale": "层级与单元范围正确不能抵消未获写前 C、无业务文件和执行证据却声称已归档完成；授权门禁必须失败。"
+    }
+  ]
+}

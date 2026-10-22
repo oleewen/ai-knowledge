@@ -1,28 +1,21 @@
 # 核心概念
 
-布局契约：[knowledge-layout.md](../../../references/knowledge-layout.md)。闸门 [gates.md](gates.md)；步骤 [workflow.md](workflow.md)。
+## 来源与目标
 
-## overview 语法
-
-`{overview}` 或 `{overview}#{章节或锚点}`
-
-| 字段 | 含义 | 例 |
-| ------ | ------ | --- |
-| overview | 必填，仓库内路径 | `{DOC_DIR}/knowledge/overview/{NAME}-overview.md` |
-| 锚 | 可选，只归档该范围 | `#支付域` |
-
-## 目标路径（overview 驱动）
-
-- 目标 = 表格**行内副标题链接**；**不**另接用户手写目标（非标准路径须在确认书写明）。
-- 表行范围与对应层 overview 文件名及各视角 **README 表行**一致；副标题锚点须与各章节 `##` 标题对齐。
-- 路径有空格加引号。
-- **缺链** → 写入冲突清单并请用户决策，勿猜；可先对照 README 表行与章节 H2 排查。
-- 解析结果写入确认书，不单靠口头。
+- 来源：overview 文件或 overview 加锚点。
+- 标准目标：overview 表格行内副标题链接。
+- 锚点只限制本轮读取范围，不改变目标解析规则。
+- 目标章节应与同层 README 和章节结构一致；不一致时停问。
 
 ## 第三列 delta
 
-overview **第三列**由 extract/distill 写入 delta 并标 A/U/D；archive **消费**后回写 `—`。`[D]` = 删除说明，须在目标章落实后再清空第三列。细则 [federation-spec.md](../../docs-distill/references/federation-spec.md)。
+- [A]：新增归档要点。
+- [U]：更新归档要点。
+- [D]：删除说明，必须先改目标章节。
+- —：无待归档 delta。
 
-## 「来源—目标」简写
+各类 delta 的回写规则见 [workflow.md](workflow.md#3-写目标章节)。
 
-先解析两端再读文件；`-`/空格/数字邻接易误切 → 用 `→`、`到` 或引号；详见 [gotchas.md](../gotchas.md)。
+## 简写与路径
+
+先解析来源和目标，再读文件。路径含空格时加引号；短横线、空格、数字相邻时使用“到”或箭头，避免误切。

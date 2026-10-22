@@ -1,0 +1,4 @@
+interface:
+  display_name: "知识归档"
+  short_description: "将 overview 行内链接内容归档到视角章节，并安全回写 overview"
+  default_prompt: "使用 $docs-archive 归档指定 overview 行或锚点：先生成确认书并取得写前 C，再处理一个目标章节，最后烤干并停等动作。"
