@@ -1,132 +1,70 @@
 # docs-tag 工作流
 
-[SKILL.md](../SKILL.md)；风险控制与动作协议 [gates.md](gates.md)。  
-动作字母：[light-flow-actions.md](../../../references/light-flow-actions.md)（`C/M/S/F`，无 `G`）。
-
-## 前置
-
-- `--file` 须存在（四层 `{NAME}-overview.md`，见 [knowledge-layout.md](../../../references/knowledge-layout.md)）
-- phase 含 1 时 keywords 齐备；Skill 用 `1-scan`+`1-write`+`2`+`3`
-- 脚本路径：`agent/skills/docs-tag/scripts/keyword_tag.py`（仓库根执行）
+单文件分阶段执行；授权与异常停顿见 [gates.md](gates.md)。以下命令从仓库根运行，路径参数用引号包裹。
 
 ## 参数
 
-| 参数 | 必需 | 默认 | 说明 |
-| ---- | ---- | ---- | ---- |
-| `--file` | 是 | — | 目标 MD |
-| `--phase` | 是 | — | `1`/交互、`2`、`3`/`excerpt`、`all`；Skill 用 `1-scan`/`1-write`/`2`/`3` |
-| `--keywords` | 1/all 时 | — | 种子词，空格分隔 |
-| `--scan-dir` | 否 | 按 `--file` 推断 `{DOC_DIR}/knowledge/` | 显式优先；无法推断时 `system/knowledge/` |
-| `--top-n` | 否 | `30` | Top 候选数 |
+| 参数 | 适用阶段 | 规则 |
+| --- | --- | --- |
+| `--file` | 全部 | 已存在的 overview Markdown 文件 |
+| `--phase` | 全部 | Agent 用 `1-scan` / `1-write` / `2` / `3` / `excerpt` |
+| `--keywords` | `1-scan`、`1-write`、本地 `1`/`all` | 空格分隔的种子词 |
+| `--scan-dir` | 扫描阶段 | 显式值优先；默认从 `knowledge/overview/` 推断父级 `knowledge/`，适用于四层模板和安装后的任意 DOC_DIR；无法推断则要求显式路径 |
+| `--top-n` | 扫描阶段 | 正整数，默认 30 |
+| `--selected` | `1-write` | 逗号分隔的非空选中词；不支持词内含逗号 |
 
-## 参数向导
+只收口当前阶段需要的参数，复述实际路径和默认值；用户已指定的值直接沿用。`2`、`3` 不依赖 scan-dir 或新传 keywords。
 
-按以下顺序收口参数；用户已明确时可跳过对应项：
-
-1. `--file`
-2. `--phase`
-3. `--keywords`（phase 含 `1` 或 `all` 时）
-4. `--scan-dir`
-5. `--top-n`
-
-参数未收口前，不进入执行。
-
-## 当前单元
-
-一个当前单元就是单个 overview 文件。
-
-一次只处理一个当前单元，不并行推进多个 overview 文件。phase 只是当前单元内部子阶段，不是独立当前单元。
-
-## 轻量校核（非 grilling）
-
-每个 phase 结果后，用短摘要做检查点即可，**不**调用 grilling Skill / unit-cycle 烤干：
-
-- 汇报脚本关键统计（候选数、✅ 行数、摘录行数等）
-- 对照 [gates.md](gates.md) 风险项：明显越义、缺附录、参数是否仍合适
-- 若触及语义风险：给结论、推荐与数字选项，确认后再继续
-
-## 执行循环
-
-### 1 选定当前单元
-
-基于 `--file` 确定本轮只处理一个 overview 文件。
-
-### 2 执行 phase 1-scan（phase 1 或 all 时）
-
-在仓库根 `{仓库路径}` 执行：
+## 1 扫描与选择
 
 ```bash
 python3 agent/skills/docs-tag/scripts/keyword_tag.py \
-  --file FILE --phase 1-scan \
-  --keywords KW1 KW2 ... \
-  --scan-dir SCAN_DIR \
-  --top-n TOP_N
+  --file "FILE" --phase 1-scan --keywords "计费" "结算" \
+  --scan-dir "SCAN_DIR" --top-n 30
 ```
 
-解析 stdout JSON，以编号列表展示候选词：
+stdout 是单个 JSON 对象：`{"candidates":[{"term":"Invoice","count":3}]}`。扫描只读，不写缓存；读取失败非零退出，不把失败当成零候选。
 
-```text
-=== 候选关键词列表（按共现频率排序，Top 30）===
+展示编号、词和频次，轻量校核候选范围后等待选择。编号或 `all` 表示选词，`q` 表示取消；空候选先报告，不自行写入。调参依据见 [algorithm.md](algorithm.md)。
 
-   1. [██████] (42次)  费用类型
-   2. [█████ ] (31次)  计费规则
-   3. [███   ] (18次)  PolicyType
-   ...
-```
-
-**轻量校核**：种子词是否够用；候选是否需缩窄/扩展；`scan-dir`、`top-n` 是否仍合适。
-
-### 3 用户选择并执行 phase 1-write（phase 1 或 all 时）
-
-| 输入 | 行为 |
-| ---- | ---- |
-| `1,3,5` 等 | 对应词 → `1-write` |
-| `all` | 全选 → `1-write` |
-| `q` | 退出，不写 |
-| 越界 | 重输 |
-| 空列表 | 提示调种子词 |
-
-写入命令（在 `{仓库路径}` 执行）：
+## 2 写入选词
 
 ```bash
 python3 agent/skills/docs-tag/scripts/keyword_tag.py \
-  --file FILE --phase 1-write \
-  --keywords KW1 KW2 ... \
-  --selected TERM1,TERM2,...
+  --file "FILE" --phase 1-write --keywords "计费" "结算" \
+  --selected "费用类型,Invoice"
 ```
 
-**轻量校核**：附录是否幂等；候选是否明显越义；是否继续 phase 2 或回调参数。
+本次种子与选中词稳定去重，种子优先；**替换**旧词，不累计旧列表。结果是 `## 附录` 下 `### 文档关键词` 的 YAML 列表；字符串加引号，其他附录正文保留。旧 `<!-- spec-tags … -->` 仅兼容读取，写入时迁移。
 
-### 4 执行 phase 2（phase 2 或 all 时）
+核对词列表与用户选择、重复块及无关正文是否保留。
+
+## 3 标记表行
 
 ```bash
-python3 agent/skills/docs-tag/scripts/keyword_tag.py --file FILE --phase 2
+python3 agent/skills/docs-tag/scripts/keyword_tag.py --file "FILE" --phase 2
 ```
 
-汇报脚本统计（✅ 行数、跳过行数）。判定章节相关性时**忽略 HTML 注释**（`<!-- … -->`），见 gotchas §6b。
+必须有非空的新式或旧式关键词附录。只处理以「主标题 / 副标题」开头的表，按副标题首个本地链接章节匹配；大小写不敏感，忽略 HTML 注释。仅刷新副标题列 ✅，保留其他列和架构摘录表。
 
-**轻量校核**：✅ 是否过宽/过窄；无附录是否应先回 phase 1；是否适合继续 phase 3。
+报告命中与未命中行数，抽查明显过宽/过窄的结果；无附录时提示先扫描选词，不自动代选或续跑。
 
-### 5 执行 phase 3（phase 3 / excerpt 或 all 时）
+## 4 刷新架构摘录
 
 ```bash
-python3 agent/skills/docs-tag/scripts/keyword_tag.py --file FILE --phase 3
+python3 agent/skills/docs-tag/scripts/keyword_tag.py --file "FILE" --phase 3
 ```
 
-从五视角表（如 H2「业务架构」等，副标题列含 ✅ 的行）按固定顺序写入 `## 架构摘录` 三列表。无 ✅ 时写入 `<!-- excerpt:empty -->` 占位行。
+`excerpt` 等价。前置：已有 `## 架构摘录` 及表头/分隔行，来源的视角 H2 必须是 Markdown 链接标题，例如「业务架构」。
 
-汇报摘录行数；**勿手改**摘录表数据行（gotchas §9）。
+固定顺序为业务、产品、应用、技术、数据。仅副标题列带 ✅ 的数据行入选；摘录不含第三列知识正文。脚本只替换摘录表数据，保留表前后说明；缺视角时警告，缺摘录表时失败。空集写 `<!-- excerpt:empty -->`，执行前核实空集是否符合意图。
 
-**轻量校核**：摘录是否与 ✅ 一致；无 ✅ 时是否正确空占位；当前单元是否可视为收敛。
+报告各视角计数，核对摘录与 ✅ 一致。摘录数据行由脚本维护，不手工补行。
 
-### 6 输出与动作停顿
+## 5 当前单元收口
 
-当前单元收敛后，停下等待用户动作（字母见 [light-flow-actions.md](../../../references/light-flow-actions.md)，`C/M/S/F`，无 `G`）。加深候选词/表行/摘录：`M` 或口述下一 phase。
+每阶段校核统计、范围与异常；结果摘要通过 [受众 A/B](../../../references/audience-and-language.md#轻流程-ab含-okf)，只报告关键词命中与产物变化，不扩写无依据业务正文。
 
-## 示例摘要
+`all` 是本文件完整流程的授权：Agent 依次调用各非交互阶段，选词和异常处等待。未授权的阶段及下一文件按 [轻流程动作](../../../references/light-flow-actions.md) 等待用户选择。
 
-| 场景 | 要点 |
-| ---- | ---- |
-| 仅 phase 1 | 参数向导 → `1-scan` → 轻量校核 → 选词 → `1-write` → 轻量校核 |
-| 仅 phase 2 | 参数向导 → `--phase 2` → 轻量校核 → 汇报 N✅ / M skip |
-| all | 参数向导 → `1-scan` → 校核 → `1-write` → 校核 → `2` → 校核 → `3` → 校核 → `C/M/S/F` |
+本地兼容命令 `--phase 1` / `--phase all` 含终端输入；取消、EOF 或零候选停止后续阶段。Agent 不调用这两个交互入口。

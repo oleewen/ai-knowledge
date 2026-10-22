@@ -1,40 +1,9 @@
 {
   "skill_name": "docs-tag",
-  "eval_id": "REPLACE_WITH_EVAL_ID",
-  "expected_category": "should-trigger | should-not-trigger",
-  "expected_route": "/docs-tag | （not-trigger 时填主分流目标）",
-  "expected_output": "与同 id evals.json 对齐。",
-  "notes": "复制 <eval-id>-metadata.json；断言同 grader。",
-  "assertions_should_trigger_example": [
-    {
-      "id": "param-gate",
-      "name": "参数门禁",
-      "type": "must_include",
-      "check": "脚本前确认并一次性复述全参。",
-      "priority": "P0"
-    },
-    {
-      "id": "subphase-path",
-      "name": "子阶段与路径",
-      "type": "must_include",
-      "check": "须有 1-scan、1-write、phase 2 与 `keyword_tag.py` 路径。",
-      "priority": "P0"
-    }
-  ],
-  "assertions_should_not_trigger_example": [
-    {
-      "id": "correct-downstream",
-      "name": "正确下游",
-      "type": "must_include",
-      "check": "须点与用户 prompt 一致的下游；≠ 唯 docs-tag。",
-      "priority": "P0"
-    },
-    {
-      "id": "no-scope-creep",
-      "name": "职责不扩张",
-      "type": "must_not_conflict",
-      "check": "勿将第三列提炼、全库术语、INDEX 默认归 tag。",
-      "priority": "P0"
-    }
-  ]
+  "eval_id": "<对应 evals.json 的 id>",
+  "expected_category": "<should-trigger 或 should-not-trigger>",
+  "expected_route": "<docs-tag 或实际分流技能>",
+  "status": "not-run",
+  "evidence": [],
+  "notes": "记录实际响应、命令及产物；断言仅引用 evals.json，不另存副本。"
 }

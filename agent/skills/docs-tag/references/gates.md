@@ -1,59 +1,23 @@
-# docs-tag 风险控制与确认点
+# docs-tag 授权与停顿
 
-[SKILL.md](../SKILL.md)；命令 [workflow.md](workflow.md)。  
-轻流程：参数确认 + phase **轻量校核**；不绑意图澄清 / unit-cycle / 强制 grilling。
+当前单元为一个 overview，phase 是子阶段。绑定 [轻流程动作](../../../references/light-flow-actions.md)：`C/M/S/F`，无 `G`；不绑定语义族意图澄清或强制 grilling。命令参数见 [workflow.md](workflow.md)。
 
-## 参数确认
+## 执行前
 
-参数向导至少收口以下内容：
+- 收口 file、阶段及该阶段所需参数，展示解析后的路径和默认值。用户已明确的值与授权沿用，不重复询问。
+- `all` 或明确列出的阶段序列授权正常衔接，但不授权 Agent 自选候选词，也不扩大到其他文件。
+- `1-write` 必须有用户选词；改变种子、扫描范围或 top-n 时先说明影响，再确认新值。
+- phase 3 前检查摘录表、视角标题与 ✅；空集若符合用户意图可生成占位，不明则停问。
 
-1. `--file`
-2. `--phase`
-3. `--keywords`（phase 含 `1` 或 `all` 时）
-4. `--scan-dir`
-5. `--top-n`
+## 必须停顿
 
-示例提示：
+| 情况 | 处理 |
+| --- | --- |
+| 候选未选择、取消或零候选 | 保持目标不变；给出调参或跳过选项 |
+| 无法推断扫描根、目录不存在或扫描读取失败 | 报告具体路径，不回退到别库或将失败当空结果 |
+| phase 2 无非空附录 | 提示先 `1-scan` + 选词 + `1-write` |
+| phase 3 缺摘录表、缺视角或空集不符合预期 | 报告缺口；由用户决定修正格式、接受空集或跳过 |
+| 关键词明显越义、引用违规且无法确定修法 | 给出结论、建议和数字选项 |
+| 未授权的下一阶段或下一 overview | 等待用户明确推进 |
 
-```text
---scan-dir 默认按 --file 推断同层 knowledge/（application|system|solution|company；回车确认或改路径）
---top-n 默认 30（回车确认或改数字）
-```
-
-然后一次性复述全部参数，再跑脚本或展示候选。
-
-## 风险确认
-
-以下情况属于语义性问题，必须先给出结论、推荐方案与动作选项，再等待用户确认：
-
-- 当前 overview 是否适合继续下一 phase
-- 候选词是否需要缩窄或扩展
-- `scan-dir`、`top-n` 是否需要调整
-- `phase 2` 无附录、`phase 3` 无 ✅、或结果明显越义
-
-推荐会话格式（字母见 [light-flow-actions.md](../../../references/light-flow-actions.md)）：
-
-```text
-即将执行 /docs-tag，当前参数如下：
-- file: <overview 路径>
-- phase: <1-scan|1-write|2|3|all>
-- keywords: <...|不需要>
-- scan-dir: <路径>
-- top-n: <数字>
-- 当前单元: <overview 文件>
-
-C 确认当前单元 / M 修改参数 / S 跳过当前单元或后续 phase / F 补齐剩余 overview 文件
-```
-
-加深候选词/表行/摘录：用 `M` 调参后重跑，或口述指定下一 phase；**无 `G`**。
-
-## 默认授权边界
-
-- 已收口参数下，可直接执行**非语义性修订**：排版、编号、幂等附录刷新、空摘录占位
-- 涉及是否继续下一 phase、是否调整关键词范围、是否处理下一 overview，按语义性处理
-
-## 约束
-
-- `phase 3` / `excerpt` 不需要 `keywords`
-- `phase 2` 缺 `<!-- spec-tags -->` 时，不得静默继续；应提示先 `1-scan` + `1-write`
-- 当前 overview 未收敛前，不得自动推进下一 overview 文件
+每阶段执行后做轻量校核；当前单元收敛后报告结果，按共享协议等待后续动作。`M` 用于调参重跑，`S` 跳过当前单元或剩余阶段，`F` 只覆盖已经确认的剩余文件。

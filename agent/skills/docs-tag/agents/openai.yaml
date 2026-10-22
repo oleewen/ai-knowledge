@@ -1,0 +1,3 @@
+interface:
+  display_name: "概览关键词标记"
+  short_description: "为四层知识库概览扫描关键词、标记相关表行并刷新架构摘录"

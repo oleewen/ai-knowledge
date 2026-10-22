@@ -1,7 +1,7 @@
 {
   "skill_name": "docs-tag",
-  "version": "2.1.0",
-  "description": "docs-tag 触发边界、参数向导、当前单元、phase 执行与轻量校核（轻流程，非语义族 grilling）；对齐 grader 断言。",
+  "version": "2.2.0",
+  "description": "触发边界、分阶段授权、安装布局、产物保留与异常停顿。",
   "evals": [
     {
       "id": "docs-tag-trigger-001",
@@ -13,7 +13,7 @@
           "id": "param-gate",
           "name": "参数门禁",
           "type": "must_include",
-          "check": "脚本前确认并一次性复述全参（file/phase/keywords/scan-dir/top-n 等）。",
+          "check": "执行前展示本阶段实际参数和默认值；已明确的参数与授权直接沿用，不重复确认。",
           "priority": "P0"
         },
         {
@@ -56,8 +56,8 @@
     {
       "id": "docs-tag-trigger-002",
       "category": "should-trigger",
-      "prompt": "YAML 里已经有 spec-tags 了，只要对同一文件跑表格打勾，/docs-tag phase 2。",
-      "expected_output": "确认 file/phase 2，只处理一个 overview 当前单元；`keyword_tag.py --phase 2` 后轻量校核 ✅ 质量；无附录会败；匹配时忽略 HTML 注释（gotchas §6b）。",
+      "prompt": "system/knowledge/overview/billing-overview.md 的附录已有 keywords YAML 列表，只跑 /docs-tag phase 2。文件没有旧 spec-tags 注释。",
+      "expected_output": "仅运行 phase 2，不要求旧标记、不重扫选词；校核副标题列 ✅，保留其他列及摘录。匹配忽略 HTML 注释。",
       "assertions": [
         {
           "id": "phase2-only",
@@ -86,6 +86,13 @@
           "type": "should_include",
           "check": "可提无附录须先阶段 1（gotchas）。",
           "priority": "P1"
+        },
+        {
+          "id": "modern-appendix",
+          "name": "正式附录格式",
+          "type": "must_not_conflict",
+          "check": "不能以缺少旧 spec-tags 注释为由拒绝或重建已有有效关键词附录。",
+          "priority": "P0"
         }
       ]
     },
@@ -217,6 +224,87 @@
           "name": "改写或停问",
           "type": "must_include",
           "check": "须改写为 phase/命中摘要或停问；不得未处理就宣称完成。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-tag-installed-001",
+      "category": "should-trigger",
+      "prompt": "给 /tmp/acme/docs/knowledge/overview/billing-overview.md 执行 docs-tag，phase all，种子计费，scan-dir 与 top-n 默认。只处理此文件，先展示候选让我选。",
+      "expected_output": "扫描 /tmp/acme/docs/knowledge/，top-n 30；首个命令为 1-scan，解析完整 stdout JSON；选词前不写入。正常阶段衔接已授权，异常仍停。",
+      "assertions": [
+        {
+          "id": "installed-layout",
+          "name": "installed-layout",
+          "type": "must_not_conflict",
+          "check": "不能回退 system/knowledge/，须扫描目标所属 DOC_DIR。",
+          "priority": "P0"
+        },
+        {
+          "id": "selection-boundary",
+          "name": "selection-boundary",
+          "type": "must_not_conflict",
+          "check": "候选未选择前不执行 1-write/2/3；不直接调用交互 all。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-redundant-approval",
+          "name": "no-redundant-approval",
+          "type": "must_not_conflict",
+          "check": "沿用已明确参数与阶段授权，不逐阶段重复请求批准。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-tag-empty-001",
+      "category": "should-trigger",
+      "prompt": "刷新该 overview 的 phase 3。检查发现没有任何 ✅，我还没有确认是否要清空已有摘录。",
+      "expected_output": "报告空集，给出保留/修正标记/接受空摘录选项，等待决定；不直接覆盖已有摘录。",
+      "assertions": [
+        {
+          "id": "empty-intent",
+          "name": "empty-intent",
+          "type": "must_not_conflict",
+          "check": "空集意图未明时不能擅自清空已有摘录。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-new-keywords",
+          "name": "no-new-keywords",
+          "type": "must_not_conflict",
+          "check": "不强制要求 keywords 或重新跑 1/2。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-tag-scan-error-001",
+      "category": "should-trigger",
+      "prompt": "docs-tag 1-scan 报某个 Markdown 无法读取，stdout 没有 JSON。能否按空候选继续写附录？",
+      "expected_output": "报告扫描失败和具体路径；先修正可读性或确认调整范围，不能当空候选续写。",
+      "assertions": [
+        {
+          "id": "scan-failure-visible",
+          "name": "scan-failure-visible",
+          "type": "must_not_conflict",
+          "check": "失败不可当零候选成功，不写入目标。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-tag-not-trigger-003",
+      "category": "should-not-trigger",
+      "prompt": "产品开发进入 phase 3，帮我写接口测试方案。",
+      "expected_output": "phase 3 单独出现不触发 docs-tag，先按接口测试需求澄清或使用适用测试技能。",
+      "assertions": [
+        {
+          "id": "no-generic-phase-trigger",
+          "name": "no-generic-phase-trigger",
+          "type": "must_not_conflict",
+          "check": "不将一般 phase 3 解释为 overview 架构摘录。",
           "priority": "P0"
         }
       ]

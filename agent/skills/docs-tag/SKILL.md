@@ -1,62 +1,43 @@
 ---
 name: docs-tag
 description: >
-  为四层 `{DOC_DIR}/knowledge/overview/{NAME}-overview.md` 做关键词相关度：候选词 → YAML 附录 → 表行 ✅ → 架构摘录（phase 3）。
-  用户提到 /docs-tag、扫描关键词、给概览打标签、phase 3 时，使用本技能。
-  分流：第三列提炼 / 全文术语 / INDEX → docs-extract、docs-revise、docs-indexing。
-  推进见 light-flow-actions（C/M/S/F，无 G）与 references/gates.md。
+  为四层知识库 overview 扫描候选关键词、维护关键词附录、标记相关表行并刷新架构摘录。
+  用于 /docs-tag、给概览打标签、关键词相关度扫描，或 overview 的 phase 3/excerpt 刷新。
+  第三列知识提炼用 docs-extract；全文术语修订用 docs-revise；索引重建用 docs-indexing。
 ---
 
 # docs-tag
 
-## 输出硬约束（P0）
+处理单个 `{DOC_DIR}/knowledge/overview/{NAME}-overview.md`；只执行用户选定的阶段。
 
-- 当前单元：单个 overview 文件（phase 为单元内子阶段，非独立单元）。
-- 轻流程：参数向导 → phase 执行 → 轻量校核 → `C/M/S/F`（无 `G`、不绑意图澄清 / 强制 grilling）→ [light-flow-actions.md](../../references/light-flow-actions.md)；细节 [gates.md](references/gates.md)。参数未收口前不得对 `--file` 写入。
-- 每个 phase 结果后做轻量校核；当前单元未收敛前不得自动推进下一 overview。
-- `--file` / `--phase` / `--keywords` / `--scan-dir` / `--top-n` / 是否续 phase 等语义项须先确认。
-- `phase 3` / `excerpt` 不需 `keywords`；`phase 2` 无附录时不得静默继续，须提示先 `1-scan` + `1-write`。自动化禁用 `--phase 1`（见 gotchas）。
-- **knowledge 引用边界**：写入 overview 须遵守 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「业务 knowledge 引用边界」。摘录可读外源；落盘不链 knowledge 外文档、不链下层、禁手写爬层。有 parent 则上层实体用生成函数 HTTP，否则纯 ID。违规能修则修，不明则停。
+## 执行契约
 
-## 边界
+- **单元是文件**，phase 是内部阶段。先收口相关参数，再执行；当前文件未收敛不推进其他 overview。
+- **轻流程**：每阶段报告统计、核对结果，再按已确认范围继续。动作 `C/M/S/F` 见 [轻流程协议](../../references/light-flow-actions.md)，无 `G`，不强制意图澄清或 grilling。
+- 自动化只调用 `1-scan`、`1-write`、`2`、`3`/`excerpt`。用户说 `all` 时由 Agent 分步执行，候选词须经用户选择。
+- 写入前核对 [knowledge 引用边界](../../knowledge/knowledge-governance.md#业务-knowledge-引用边界)：可读外源，不把外源文档链接、下层链接或手写爬层路径写进 overview；上层实体引用使用规定的生成函数，无 parent 时用纯 ID。脚本不替代引用审查。
 
-| 负责 | 不负责 |
-| --- | --- |
-| `--file`、`--phase`、附录、表行 ✅、架构摘录 | index；extract 第三列；upgrade 全库替换 |
+## 按阶段加载
 
-## 不这样用
+执行先读 [workflow.md](references/workflow.md) 的参数与对应阶段，以及 [gates.md](references/gates.md) 的授权和停顿条件。
 
-- 不把旧「步骤 1 参数确认」当唯一主线；主线是参数收口后处理当前单元
-- 不把单个 phase 当成独立当前单元
-- 不把第三列提炼、全库术语、INDEX 重建收成 `docs-tag`
-- 不写成语义族「澄清 → 生成 → 烤干」
+| 请求 | 所需输入 | 结果 |
+| --- | --- | --- |
+| 扫描候选 `1-scan` | file、keywords；scan-dir 默认同库 knowledge/，top-n 默认 30 | stdout JSON；不写文件 |
+| 写选词 `1-write` | file、keywords、用户选择的 selected | 替换关键词附录 |
+| 标记表行 `2` | file、已有非空关键词附录 | 刷新副标题列 ✅ |
+| 架构摘录 `3` / `excerpt` | file、已有摘录表和视角表 | 按 ✅ 行刷新摘录；不需 keywords |
 
-## 路由
+候选质量不佳时读 [algorithm.md](references/algorithm.md)；格式、锚点或执行异常查 [gotchas.md](gotchas.md)。
 
-| 目的 | 文件 |
-| --- | --- |
-| 流程 / 风险 | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
-| 轻流程动作 | [light-flow-actions.md](../../references/light-flow-actions.md) |
-| 算法 | [algorithm.md](references/algorithm.md) |
-| 易错 | [gotchas.md](gotchas.md) |
+## 脚本与验证
 
-## 最少输入
-
-- `--file`、`--phase`
-- 若 phase 含 `1` 或 `all`，`--keywords`
-- `--scan-dir`（省略则按 `--file` 推断同层 `knowledge/`）、`--top-n` 已展示默认或已收口
-
-## 产出与脚本
-
-- 正式：更新后的 overview（附录、表行、架构摘录）
-- 收敛后动作见 [light-flow-actions.md](../../references/light-flow-actions.md)（本技能有 `S`，无 `G`）
+从仓库根调用；安装环境按当前技能目录定位 `scripts/keyword_tag.py`，不假设安装目录仍叫 `agent/`。
 
 ```bash
-python3 agent/skills/docs-tag/scripts/keyword_tag.py ...
+python3 agent/skills/docs-tag/scripts/keyword_tag.py --help
+python3 -m pytest agent/skills/docs-tag/tests -q
 ```
 
-单测：`python3 -m pytest tests/ -q`（技能目录下）。
-
-## 评测
-
-`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。重点：参数收口、单单元停顿、phase 后轻量校核、不得静默推进、不得要求语义族 grilling。
+脚本仅依赖 Python 3 标准库；测试依赖 pytest、hypothesis、PyYAML。
+行为场景见 [evals.json](evals/evals.json)，评分见 [grader.md](agents/grader.md)，失败分析见 [analyzer.md](agents/analyzer.md)。

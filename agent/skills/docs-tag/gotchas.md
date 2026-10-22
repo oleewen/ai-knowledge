@@ -1,51 +1,51 @@
-# Gotchas
+# docs-tag 易错点
 
-[gates.md](references/gates.md)、[workflow.md](references/workflow.md)。
+执行命令见 [workflow.md](references/workflow.md)，异常停顿见 [gates.md](references/gates.md)。
 
 ## 1 锚点
 
-GitHub 去标点≠直觉；手动链易空。脚本双规则尝试。**查**：`/tmp/keyword_tag_cache.json`。
+phase 2 支持本地相对路径与章节锚点，不抓取 HTTP 页面。未匹配时检查目标文件、锚点和正文；不要凭空补 ✅。扫描结果不再写固定临时缓存。
 
 ## 2 YAML 附录
 
-勿叠多个 `<!-- spec-tags -->`。`write_tags_to_file` 先删旧块再写，幂等。
+正式格式与迁移见 workflow「写入选词」；旧 `<!-- spec-tags … -->` 不是必需条件。刷新后若有重复小节，先检查标题、列表和代码围栏是否符合格式。
 
 ## 2b 四层与 scan-dir
 
-`--file` 为四层 `{NAME}-overview.md`。省略 `--scan-dir` 时扫同层 `knowledge/`（排除 `overview/` 子目录）。显式 `--scan-dir` 覆盖推断。
+默认推断不依赖 DOC_DIR 的目录名；失败时显式传 `--scan-dir`。确认实际扫描路径，避免扫错知识库。
 
 ## 3 扫描排除
 
-须排除 `--file` 所在**直接子目录**，防目标污染共现。**注**：目标是 scan-dir **根下** md 时不排除子树。
+目标及其所属的扫描根直属子树不参与共现。具体范围和软链行为见 [algorithm.md](references/algorithm.md)。
 
 ## 4 `--selected`
 
-逗号分列；脚本 `strip()` 各词。
+词内逗号不受支持；只含逗号或空白的选择会报错。选词规则见 workflow，不把取消解释成接受全部候选。
 
 ## 5 无附录跑 phase 2
 
-缺 `<!-- spec-tags -->` 会报错。 Skill `all` 须先阶段 1；单跑 2 失败则提示先 `1-scan`+`1-write`。
+两种格式均无非空关键词时失败；先扫描、用户选词、写附录，不能以空关键词清除现有标记。
 
 ## 6 表格列
 
-行首 `\|`→空 `parts[0]`，副标题多在 `parts[2]`。列不足 3 跳过。
+phase 2 只认「主标题 / 副标题」表头。行首 `|` 使 `parts[0]` 为空，副标题是 `parts[2]`；只刷新该列，其他列 ✅ 保留。
 
 ## 6b phase 2 与 HTML 注释
 
-相关性只查链接章节**去掉 `<!-- … -->` 后**的文本。注释里的关键词（如模板「应写内容」占位）**不会**打 ✅；正文与代码块仍参与匹配。
+匹配前移除 `<!-- … -->`，模板占位注释不会触发 ✅；正文和代码块仍参与匹配。
 
 ## 7 TTY：`--phase 1`
 
-`input()` 在 CI 挂起。**Skill 只用** `1-scan`+`1-write`+`2`+`3`。`--phase 1`/`all` 留本地 CLI。
+`1` / `all` 是本地交互入口。Agent 拆为 `1-scan`、`1-write`、`2`、`3`；扫描 stdout 可整体解析 JSON。取消或 EOF 停止，不继续用旧关键词运行后续阶段。
 
 ## 8 架构摘录节边界
 
-五视角节止于下一 `##`、`---` 或 `## 附录`。缺某视角 H2 时 stderr 警告并跳过。
+来源仅认名称为五视角的 Markdown 链接式 H2；止于下一 H2 或 `---`。缺视角会警告，不应直接解释为业务空集。
 
 ## 9 勿手改摘录表
 
-`## 架构摘录` 下数据行由 `--phase 3` 生成；维护说明 blockquote 可手改。
+已有 `## 架构摘录` 和表头/分隔行是前置。脚本仅替换连续数据行，表前后说明保留；缺表时失败，不补建模板。
 
 ## 10 `3` 与 `excerpt`
 
-`--phase 3` 与 `--phase excerpt` 等价；`3` 不需 keywords 附录。
+两者等价。若零摘录，先区分无 ✅、缺视角、标题格式不符；是否接受空集见 gates。

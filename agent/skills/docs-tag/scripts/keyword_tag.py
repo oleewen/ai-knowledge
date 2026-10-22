@@ -17,8 +17,6 @@ import argparse
 import urllib.parse
 from collections import Counter
 
-CACHE_FILE = '/tmp/keyword_tag_cache.json'
-
 PERSPECTIVE_ORDER = (
     '业务架构', '产品架构', '应用架构', '技术架构', '数据架构',
 )
@@ -28,6 +26,13 @@ PERSPECTIVE_H2_RE = re.compile(
 )
 EXCERPT_HEADING = '架构摘录'
 EXCERPT_EMPTY_ROW = '| <!-- excerpt:empty --> | | |'
+KEYWORD_BLOCK_RE = re.compile(
+    r'^###[ \t]+文档关键词[ \t]*\n\s*```yaml[ \t]*\nkeywords:[ \t]*\n'
+    r'(?P<items>(?:[ \t]*-[ \t]+[^\n]+\n)*)\s*```[^\S\n]*\n?',
+    re.MULTILINE,
+)
+LEGACY_TAGS_RE = re.compile(r'<!--\s*spec-tags\s*\nkeywords:.*?-->', re.DOTALL)
+APPENDIX_RE = re.compile(r'^##[ \t]+附录[ \t]*\n.*?(?=^##[ \t]+|\Z)', re.MULTILINE | re.DOTALL)
 
 
 # ─────────────────────────────────────────────
@@ -55,7 +60,7 @@ def parse_args():
     parser.add_argument('--keywords', nargs='+', default=[],
                         help='种子词（phase 含 1/1-scan/1-write/all 时必填）')
     parser.add_argument('--scan-dir', default=None,
-                        help='共现扫描目录；省略时按 --file 推断 {DOC_DIR}/knowledge/（system|solution|company）；无法推断时 system/knowledge/')
+                        help='共现扫描目录；默认取 overview/ 的父级 knowledge/；无法推断时须显式指定')
     parser.add_argument('--top-n', type=positive_int, default=30,
                         help='Top-N 候选（正整数）')
     parser.add_argument('--selected', default=None,
@@ -64,21 +69,18 @@ def parse_args():
 
 
 def infer_knowledge_scan_dir(overview_file):
-    """overview 在 {application|system|solution|company}/knowledge/overview/ 时返回同层 knowledge/。"""
+    """从任意 {DOC_DIR}/knowledge/overview/ 推断同库扫描根。"""
     abs_dir = os.path.abspath(os.path.dirname(overview_file))
     if os.path.basename(abs_dir) != 'overview':
         return None
     knowledge_dir = os.path.dirname(abs_dir)
     if os.path.basename(knowledge_dir) != 'knowledge':
         return None
-    layer = os.path.basename(os.path.dirname(knowledge_dir))
-    if layer not in ('application', 'system', 'solution', 'company'):
-        return None
     return knowledge_dir + os.sep
 
 
 def resolve_scan_dir(scan_dir, overview_file):
-    """显式 --scan-dir 优先；否则推断；再否则 system/knowledge/。"""
+    """显式路径优先；无法推断时拒绝扫描其他知识库。"""
     if scan_dir:
         if not scan_dir.endswith(('/', '\\')):
             scan_dir = scan_dir + os.sep
@@ -86,7 +88,7 @@ def resolve_scan_dir(scan_dir, overview_file):
     inferred = infer_knowledge_scan_dir(overview_file)
     if inferred:
         return inferred
-    return 'system/knowledge/'
+    raise ValueError('无法推断扫描目录，请提供 --scan-dir')
 
 
 # ─────────────────────────────────────────────
@@ -127,18 +129,8 @@ def extract_terms(text):
 
 
 def find_relevant_sections(seed_keywords, scan_dir, target_file):
-    """
-    扫描 scan_dir 下所有 md 文件，找到包含任意种子关键词的章节，
-    返回这些章节的全部文本内容（合并）。
-    同时将扫描结果缓存到临时文件。
-
-    排除逻辑：计算 target_file 所在目录相对于 scan_dir 的直接子目录名，
-    在 os.walk 的 dirs 过滤中排除该子目录名。
-    示例：target_file=system/knowledge/overview/NAME-overview.md，
-          scan_dir=system/knowledge/，则排除 overview 子目录。
-    """
+    """只读扫描；排除目标及其所在的扫描根直属子树，读取失败则报错。"""
     matched_texts = []
-    cache = {}  # filepath -> sections
 
     # 动态计算需排除的子目录名
     exclude_subdir = None
@@ -154,39 +146,32 @@ def find_relevant_sections(seed_keywords, scan_dir, target_file):
         # Windows 跨盘符时 relpath 可能抛出 ValueError，忽略排除逻辑
         pass
 
-    for root, dirs, files in os.walk(scan_dir):
-        if exclude_subdir:
+    def raise_walk_error(error):
+        raise error
+
+    target_path = os.path.realpath(target_file)
+    for root, dirs, files in os.walk(abs_scan_dir, onerror=raise_walk_error):
+        if root == abs_scan_dir and exclude_subdir:
             dirs[:] = [d for d in dirs if d != exclude_subdir]
-        for fname in files:
+        dirs.sort()
+        for fname in sorted(files):
             if not fname.endswith('.md'):
                 continue
             fpath = os.path.join(root, fname)
+            if os.path.realpath(fpath) == target_path:
+                continue
             try:
                 with open(fpath, 'r', encoding='utf-8') as f:
                     content = f.read()
-            except Exception:
-                continue
+            except (OSError, UnicodeError) as error:
+                raise ValueError(f'无法读取扫描文档 {fpath}: {error}') from error
 
             sections = split_sections(content)
-            cache[fpath] = [(h, b[:200]) for h, b in sections]  # 缓存截断版本
 
             for heading, body in sections:
                 combined = heading + '\n' + body
                 if any(kw in combined for kw in seed_keywords):
                     matched_texts.append(combined)
-
-    # 写临时缓存文件（供调试）
-    try:
-        with open(CACHE_FILE, 'w', encoding='utf-8') as f:
-            json.dump({
-                'seed_keywords': seed_keywords,
-                'matched_section_count': len(matched_texts),
-                'file_count': len(cache),
-                'files': list(cache.keys()),
-            }, f, ensure_ascii=False, indent=2)
-        print(f'  [缓存] 扫描结果已写入 {CACHE_FILE}（匹配章节 {len(matched_texts)} 个）')
-    except Exception:
-        pass
 
     return matched_texts
 
@@ -200,7 +185,6 @@ def collect_candidates(seed_keywords, scan_dir, target_file, top_n):
     4. 排除种子词本身及过于通用的短词
     5. 返回按频率降序排列的 (term, count) 列表，最多 top_n 个
     """
-    print(f'  正在查找包含关键词的章节...')
     matched_texts = find_relevant_sections(seed_keywords, scan_dir, target_file)
 
     if not matched_texts:
@@ -306,14 +290,21 @@ def read_tags_from_file(filepath):
     except FileNotFoundError:
         return []
 
-    # 新格式：## 附录 / ### 文档关键词 / ```yaml ... ```
-    match = re.search(
-        r'## 附录\s*\n+###\s*文档关键词\s*\n+```yaml\s*\nkeywords:\s*\n((?:-\s+.+\n?)*)\s*```',
-        content
-    )
+    appendix = APPENDIX_RE.search(content)
+    match = KEYWORD_BLOCK_RE.search(appendix.group() if appendix else '')
     if match:
-        keywords = re.findall(r'^-\s+(.+)', match.group(1), re.MULTILINE)
-        return [k.strip() for k in keywords if k.strip()]
+        keywords = re.findall(r'^[ \t]*-[ \t]+(.+)', match.group('items'), re.MULTILINE)
+        decoded = []
+        for keyword in keywords:
+            keyword = keyword.strip()
+            if keyword.startswith('"'):
+                try:
+                    keyword = json.loads(keyword)
+                except json.JSONDecodeError:
+                    pass  # 旧版 writer 原样写入词，例如 '"API"模式'。
+            if keyword:
+                decoded.append(keyword)
+        return decoded
 
     # 兼容旧格式：<!-- spec-tags ... -->
     match_old = re.search(
@@ -332,28 +323,25 @@ def write_tags_to_file(filepath, keywords):
     with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
 
-    # 构建新的 Markdown 附录块
-    kw_lines = '\n'.join(f'- {k}' for k in keywords)
-    new_block = f'\n\n## 附录\n\n### 文档关键词\n\n```yaml\nkeywords:\n{kw_lines}\n```\n'
-
-    # 移除已有的新格式附录块
-    content = re.sub(
-        r'\n\n## 附录\n\n### 文档关键词\n\n```yaml\nkeywords:.*?```\n?',
-        '',
-        content,
-        flags=re.DOTALL
-    )
-
-    # 同时移除旧格式附录块（兼容迁移）
-    content = re.sub(
-        r'\n---\n\n<!--\s*spec-tags\s*\nkeywords:.*?-->\n?',
-        '',
-        content,
-        flags=re.DOTALL
-    )
-
-    # 追加新块
-    content = content.rstrip('\n') + new_block
+    # 只替换关键词小节；其他附录正文保持原位。
+    # JSON 字符串也是 YAML 字符串，避免 yes、数字、冒号等被解释为其他类型。
+    kw_lines = '\n'.join('- ' + json.dumps(k, ensure_ascii=False) for k in keywords)
+    new_block = f'### 文档关键词\n\n```yaml\nkeywords:\n{kw_lines}\n```\n'
+    content = LEGACY_TAGS_RE.sub('', content)
+    appendix = APPENDIX_RE.search(content)
+    if appendix:
+        block = appendix.group()
+        matches = list(KEYWORD_BLOCK_RE.finditer(block))
+        if matches:
+            # 首块原位替换，后续重复块移除。
+            for match in reversed(matches):
+                replacement = new_block if match == matches[0] else ''
+                block = block[:match.start()] + replacement + block[match.end():]
+        else:
+            block = block.rstrip('\n') + '\n\n' + new_block + '\n'
+        content = content[:appendix.start()] + block + content[appendix.end():]
+    else:
+        content = content.rstrip('\n') + '\n\n## 附录\n\n' + new_block
 
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(content)
@@ -371,13 +359,13 @@ def phase1(overview_file, seed_keywords, scan_dir, top_n):
 
     if not scored_candidates:
         print('未找到相关候选词，请尝试其他关键词。')
-        return
+        return False
 
     selected = interactive_select(scored_candidates, top_n)
 
     if not selected:
         print('未选择任何关键词，退出。')
-        return
+        return False
 
     # 构建选中词的分数映射（共现频率，用于排序写入）
     score_map = {c: count for c, count in scored_candidates}
@@ -394,6 +382,7 @@ def phase1(overview_file, seed_keywords, scan_dir, top_n):
     write_tags_to_file(overview_file, merged)
     print(f'\n已写入 {len(merged)} 个关键词到 {overview_file}（按相关性排序）')
     print('关键词列表：' + ', '.join(merged))
+    return True
 
 
 def phase1_scan(overview_file, scan_dir, seed_keywords, top_n):
@@ -409,19 +398,11 @@ def phase1_scan(overview_file, scan_dir, seed_keywords, top_n):
 
 
 def phase1_write(overview_file, seed_keywords, selected_str):
-    """阶段1写入：接收选中词列表，合并种子词，写入 Markdown 附录"""
+    """替换关键词附录：种子优先，选中词保持用户顺序，稳定去重。"""
     selected = [s.strip() for s in selected_str.split(',') if s.strip()]
-
-    # 构建分数映射（种子词优先级最高）
-    score_map = {}
-    for seed in seed_keywords:
-        score_map[seed] = 999999
-
-    # 合并种子词 + 选中词，去重
-    all_keywords = list(dict.fromkeys(seed_keywords + selected))
-
-    # 按分数降序排序
-    merged = sorted(all_keywords, key=lambda k: -score_map.get(k, 0))
+    if not selected:
+        raise ValueError('--selected 至少需要一个非空关键词')
+    merged = list(dict.fromkeys(seed_keywords + selected))
 
     write_tags_to_file(overview_file, merged)
     print(f'已写入 {len(merged)} 个关键词到 {overview_file}')
@@ -522,8 +503,11 @@ def extract_link_from_cell(cell):
 
 
 def strip_check_mark(line):
-    """移除行中已有的 ✅ 标记（幂等预处理）"""
-    return re.sub(r'\s*✅', '', line)
+    """只移除副标题列的 ✅，保留其他列的业务内容。"""
+    parts = line.split('|')
+    if len(parts) >= 4:
+        parts[2] = re.sub(r'\s*✅', '', parts[2])
+    return '|'.join(parts)
 
 
 def add_check_mark(line):
@@ -542,7 +526,7 @@ def phase2(overview_file):
 
     keywords = read_tags_from_file(overview_file)
     if not keywords:
-        print('错误：未找到关键词标签，请先执行 --phase 1', file=sys.stderr)
+        print('错误：未找到关键词附录，请先执行 --phase 1-scan 和 --phase 1-write', file=sys.stderr)
         sys.exit(1)
 
     print(f'读取到 {len(keywords)} 个关键词')
@@ -553,9 +537,17 @@ def phase2(overview_file):
     new_lines = []
     marked_count = 0
     skipped_count = 0
+    tag_table = False
 
     for line in lines:
-        if not is_table_data_row(line):
+        cells = line.strip().split('|')
+        if len(cells) >= 4 and cells[1].strip() == '主标题' and cells[2].strip() == '副标题':
+            tag_table = True
+            new_lines.append(line)
+            continue
+        if not line.strip().startswith('|'):
+            tag_table = False
+        if not tag_table or not is_table_data_row(line):
             new_lines.append(line)
             continue
 
@@ -712,7 +704,10 @@ def replace_excerpt_table(lines, excerpt_rows):
             new_lines.append(row if row.endswith('\n') else row + '\n')
     else:
         new_lines.append(EXCERPT_EMPTY_ROW + '\n')
-    new_lines.extend(lines[excerpt_end:])
+    data_end = data_start
+    while data_end < excerpt_end and lines[data_end].strip().startswith('|'):
+        data_end += 1
+    new_lines.extend(lines[data_end:])
     return new_lines
 
 
@@ -723,7 +718,7 @@ def phase3(overview_file):
     excerpt_rows, counts = collect_excerpt_rows(lines)
     new_lines = replace_excerpt_table(lines, excerpt_rows)
     if new_lines is None:
-        print(f'错误：未找到 ## {EXCERPT_HEADING}', file=sys.stderr)
+        print(f'错误：未找到 ## {EXCERPT_HEADING} 或其表格分隔行', file=sys.stderr)
         sys.exit(1)
 
     with open(overview_file, 'w', encoding='utf-8') as f:
@@ -745,17 +740,14 @@ def phase3(overview_file):
 def main():
     args = parse_args()
 
-    if not os.path.exists(args.file):
+    if not os.path.isfile(args.file):
         print(f'错误：文件不存在：{args.file}', file=sys.stderr)
         sys.exit(1)
 
-    args.scan_dir = resolve_scan_dir(args.scan_dir, args.file)
-
-    # 仅在实际扫描目录的阶段校验 scan_dir（1-write / 2 不依赖扫描目录）
-    _phases_need_scan_dir = ('1-scan', '1', 'all')
-    if args.phase in _phases_need_scan_dir and args.scan_dir and not os.path.exists(args.scan_dir):
-        print(f'错误：扫描目录不存在：{args.scan_dir}', file=sys.stderr)
-        sys.exit(1)
+    if args.phase in ('1-scan', '1', 'all'):
+        args.scan_dir = resolve_scan_dir(args.scan_dir, args.file)
+        if not os.path.isdir(args.scan_dir):
+            raise ValueError(f'扫描目录不存在：{args.scan_dir}')
 
     if args.phase == '1-scan':
         if not args.keywords:
@@ -776,8 +768,8 @@ def main():
         if not args.keywords:
             print('错误：--phase 1 或 --phase all 时必须提供 --keywords', file=sys.stderr)
             sys.exit(1)
-        phase1(args.file, args.keywords, args.scan_dir, args.top_n)
-        if args.phase == 'all':
+        written = phase1(args.file, args.keywords, args.scan_dir, args.top_n)
+        if args.phase == 'all' and written:
             phase2(args.file)
             phase3(args.file)
 
@@ -789,4 +781,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except (OSError, UnicodeError, ValueError) as error:
+        print(f'错误：{error}', file=sys.stderr)
+        sys.exit(1)

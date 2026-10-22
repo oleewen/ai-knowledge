@@ -1,31 +1,13 @@
-# docs-tag — analyzer
+# docs-tag 失败分析
 
-样本 → P0/P1/P2 修复项。
+输入：请求、实际响应/操作、[grader](grader.md) 证据和对应 eval。只分析已观察到的失败。
 
-## 输入
+| 失败类别 | 检查入口 |
+| --- | --- |
+| 误把提炼、术语修订、索引当 tag | [SKILL.md](../SKILL.md) 的触发边界 |
+| 重复确认、未经选词写入、擅自续阶段或扩文件 | [gates.md](../references/gates.md) |
+| 命令不可用、路径推断或产物格式不符 | [workflow.md](../references/workflow.md)、[脚本](../scripts/keyword_tag.py) |
+| 命中范围错误、正文丢失或兼容回归 | [gotchas.md](../gotchas.md)、[tests](../tests/) |
+| 无结果证据就宣称成功 | [grader.md](grader.md) |
 
-prompt、期望类、响应、grader 证据；`SKILL.md`、`gates.md`、`workflow.md`、`gotchas.md`。
-
-## 输出
-
-1. 模式  
-2. 根因 + 证据  
-3. 优先级修复  
-4. 回归建议  
-
-## 模式（多选）
-
-- F1 路由误判  
-- F2 与 extract/upgrade/indexing 混  
-- F3 未复述参数就开写  
-- F4 `--phase 1`/无 `1-scan`·`1-write`  
-- F5 旧路径 `skills/docs-tag/`  
-- F6 证据薄  
-
-## 修复条
-
-每条：目标 · 最小改动 · 影响 · ≥1 回归 eval。
-
-## 回归
-
-先 P0 再全 evals；`/docs-tag` vs extract vs upgrade；`cd agent/skills/docs-tag && python3 -m pytest tests/ -q`。
+每项输出：现象与证据、根因、P0/P1/P2 优先级、最小修复位置、对应回归场景。先复现失败，再验证修复；行为 eval 与脚本测试分别报告，不互相替代。
