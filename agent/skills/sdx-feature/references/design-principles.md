@@ -1,37 +1,13 @@
 # sdx-feature 设计原则
 
-终检：[quality-checklist.md](quality-checklist.md)。语言：[audience-and-language.md](audience-and-language.md)。
+FEATURE 回答「交付什么能力、如何验收、分几次交付」。实现设计留给下游；内容规则见 [core-concepts.md](core-concepts.md)。
 
-## 原则
+| 判断 | 做法 |
+| --- | --- |
+| 事实从何而来 | 先用 ANALYSIS，再按知识索引读取相关实体；引用文档章节或实体 ID |
+| 输入不完整 | 区分已知、假设和待确认；缺知识库基线时在 §1.3 说明，不能假装核实 |
+| 什么值得单列 FR | 能独立验收且属于一个业务能力域；纯支撑项并入消费方 |
+| 什么值得单列 MVP | 有可感知的交付价值；依赖顺序支持该价值兑现 |
+| 多条路径如何取舍 | 仅比较真实可行路径，说明对目标、范围和风险的影响 |
 
-| 原则 | 要求 |
-| ---- | ---- |
-| 模板驱动 | 六章与 [feature-template.md](../assets/feature-template.md) 一致；无内容标「不适用/待补充」 |
-| 证据优先 | FR/BR/风险须有 ANALYSIS 与 `knowledge/` 依据 |
-| 业务可读 | §1–§5、§6.1–§6.2 无工程标识；§6.3 可收线索并标「待研发确认」 |
-| 歧义标注 | Q-n 单题澄清 |
-| 按需加载 | 禁通扫 `knowledge/**` |
-| 可追溯 | FR→G-n；BR→FR；概览所属模块（一 FR 一）；所属里程碑 `M{n}`；§4 `MVP{n}`→FR（每 FR 恰好一 MVP）；R-n→依赖/影响 |
-| 概览先确认 | `### 概览` 独立成段；主料上游 §6.1；按模块∧可验收拆 FR；所属里程碑抄 `M{n}（短名）`（禁 `MVP{n}`）；未确认不写 FR 正文 |
-| 范围清晰 | 仅 ANALYSIS；不写 PRD/ASD/DSD/代码 |
-
-### 证据引用
-
-| 类型 | 格式 | 例 |
-| ---- | ---- | --- |
-| 目标 | `G-{N}` | `G-1 …` |
-| 实体 | `{视角}-{ID}` | `BC-001 …` |
-| 文档 | `{文件} §{节}` | `index.md §3.2` |
-
-## 异常处理
-
-| 场景 | 处理 |
-| ---- | ---- |
-| 无 ANALYSIS | 终止 → `sdx-analysis` |
-| §6.1 里程碑不可用 | 硬停：回补 ANALYSIS 或等价里程碑清单；不自拟阶段 |
-| ANALYSIS 其他结构不全 | 警告列缺失；正文标分析盲区 |
-| 无 `knowledge/` | 警告；§1.3 标缺基线 |
-| 无模板文件 | 终止：需 `assets/feature-template.md` |
-| 另起无价值 MVP / 依赖成环 | 终止：业务价值问句 + `§4.3` 验环；个数相对里程碑偏离须说明 |
-| MVP 成环 | 终止：出依赖图请用户调 |
-| 无 `analysis/` | 可建 `{DOC_DIR}/features/` |
+模板固定章节保留，无内容标「不适用」并说明，未完成标「待补充」。写法采用共享 [精简原则](../../../references/simplify-principles.md) 与本地 [受众要求](audience-and-language.md)；输入停点集中在 [gates.md](gates.md#输入停点)。

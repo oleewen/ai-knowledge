@@ -1,38 +1,26 @@
-# sdx-feature 评测失败分析（analyzer）
+# sdx-feature 评测失败分析
 
-将失败样本转为可执行修复清单。
+输入：[evals.json](../evals/evals.json) 中的用例、夹具状态、会话授权、真实执行证据及 [grader](grader.md) 结果。方法见 [evaluation.md](../references/evaluation.md)。
 
-## 输入
+先区分 `fail` 与 `not-run`：未执行、工具不可用、夹具不足属于证据缺口，不能统计为技能通过或行为失败。
 
-失败样本（prompt、分类、响应、grader 证据）；[SKILL.md](../SKILL.md)；[references/gates.md](../references/gates.md)、[references/workflow.md](../references/workflow.md)、[references/anti-patterns.md](../references/anti-patterns.md)、[gotchas.md](../gotchas.md)。
+## 输出
 
-## 输出（四段）
+| 项 | 内容 |
+| --- | --- |
+| 失败位置 | 用例 ID、断言 ID、可复核证据定位 |
+| 原因 | 路由、授权判断、内容约束、产物写入、停点或证据不足 |
+| 最小修订 | 需改的技能文件/段落；说明为何现有 SSOT 无法覆盖 |
+| 回归 | 重跑该用例及一个边界相反的用例；仍缺证据则列未执行项 |
 
-1. 失败模式归类
-2. 根因与证据
-3. 优先级修复
-4. 回归建议
+## 诊断重点
 
-## 失败类型（可多选）
+- 路由：FEATURE 与 ANALYSIS、PRD、ASD、docs-* 混淆；公司/解决方案层误写 features。
+- 授权：忽略已有确认、拒绝明确批量授权；或把普通 F 扩成未授权覆盖前文。
+- 上游：缺少分析基线/可拆里程碑仍自行编造。
+- 内容：跨模块 FR、概览与正文不一致、MVP 遗漏/重复、技术细节破坏业务可读性。
+- ADR：未确认决策成为 Accepted，或改变业务/集成边界却绕过 ANALYSIS。
+- 停点：默认概览结果未确认就写 FR；授权仅当前段却推进其它章节。
+- 证据：只复述流程或自称通过，没有真实差异、执行记录或校验输出。
 
-- **F1 路由**：should-trigger / should-not-trigger 误判
-- **F2 边界**：ANALYSIS、PRD、ASD、DSD、TDD 与 ANALYSIS 混淆
-- **F3 协议回退**：退回已删除的 HTML gate / CONFIRMED / 会话 spec / 写前 hook 主线
-- **F4 当前段协议缺失**：缺参数向导、意图澄清、Section Cycle「澄清 → 生成 → 烤干」、`C/M/G/F`、单段停住
-- **F5 语义越权**：语义性结论未确认就直接修订当前段或前文
-- **F6 证据**：断言难以复核或样本覆盖不足
-- **F7 意图澄清缺失**：跳过写前六项清单/写前 `C` 直接写正文
-
-## 修复（P0/P1/P2）
-
-- **P0**：误路由、协议回退、意图澄清/单段停住缺失、语义越权
-- **P1**：边界不清、结构不全、与 ANALYSIS 衔接弱
-- **P2**：文案与样本覆盖
-
-每条须含：目标、最小变更（文件/段）、预期影响、至少 1 个回归用例。
-
-## 回归
-
-1. 先跑 P0 样本，再跑全量
-2. 成对验证：`/sdx-feature` vs `/sdx-analysis`、`/sdx-prd`、`/sdx-architect`、docs-*
-3. 同模式两轮失败，优先考虑协议级重写而非堆补丁
+优先修复会导致错误写入、越权或虚报完成的问题。不要为了修复单例增加全局审批或额外菜单；保留用户授权与任务范围。

@@ -1,65 +1,40 @@
-# sdx-feature 评测裁判（grader）
+# sdx-feature 行为评测裁判
 
-据 `prompt`、模型响应与断言给出可审计结论。
+依据 [evaluation.md](../references/evaluation.md) 和当前用例断言评分。输入必须包含真实响应、工具记录、执行前后文件快照及相关校验日志；仅做路由的断言可只用会话证据。
 
-## 输出（仅 JSON）
+## 判定顺序
 
-- `text`：1–3 句结论  
-- `passed`：布尔  
-- `evidence`：数组，逐条对应断言或失败原因  
+1. 确认夹具与会话授权已准备。用户明确授权优先于技能默认确认方式；已有授权不重复索取。授权不允许编造上游事实，也不扩展未授权写入范围。
+2. 按当前用例的 `assertions` 逐条核验。用例 ID 仅用于关联；以 `category` 与输入状态决定预期，不从旧 `analysis-*` 前缀推断路由。
+3. 实际写入须有工具记录及文件差异；“将写入”“已通过”的口头陈述不能替代。断言要求未写入/未覆盖时，须有完整工具记录及前后快照，不能仅凭未展示差异判通过。
+4. 校验结论须有命令、目标、退出码和相关输出。脚本检查只证明其覆盖的结构或内容规则，不证明用户授权、业务共识、语义边界或受众质量。
+5. 无证据、夹具缺失、工具不可用或该步骤未运行，记 `not-run`。已观察到违例记 `fail`，不能以其它证据不足掩盖已知失败。
+6. 不要求模型背诵六项清单、动作字母或 A/B/C/E。检查它是否完成授权范围、保留边界并停在正确位置；受众全过可静默，有违例须可定位。
+7. 裁判不修改产物、不补做被测代理未完成的工作，也不编造运行结果。
 
-**should-trigger 示例**（对齐 `analysis-trigger-001` 的 P0）：
+## 结果结构
+
+仅输出 JSON；每条证据对应断言 ID，注明可复核定位：
 
 ```json
 {
-  "text": "通过。明确参数向导、意图澄清、分段「澄清 → 生成 → 烤干」与段内 grilling，未误回到集中式前置收口主线。",
-  "passed": true,
-  "evidence": [
-    "parameter-guidance：体现逐项确认或快捷组合。",
-    "section-cycle：体现分段直写 FEATURE 终稿与当前段收口。",
-    "intent-clarify：体现写前意图澄清。",
-    "grilling-loop：体现当前段烤干与用户动作协议。",
-    "audience-check：烤干含受众维 A/B/C/E。",
-    "single-section-stop：明确一次只处理当前段并等待用户动作。",
-    "semantic-change-gated：语义变更先推荐与数字选项。",
-    "upstream-solution：体现基于 ANALYSIS 承接细化。"
+  "eval_id": "analysis-trigger-005",
+  "status": "not-run",
+  "passed": null,
+  "text": "尚无真实运行记录，不能判定六章写入与校验是否完成。",
+  "assertion_results": [
+    {
+      "id": "honor-full-write",
+      "status": "not-run",
+      "evidence": [],
+      "missing_evidence": ["tool_trace", "file_diff"]
+    }
   ]
 }
 ```
 
-**should-not-trigger 示例**：
+证据对象使用 `source`（transcript / tool_trace / file_diff / validation_log）、`locator`（回合、工具调用、文件与行号）、`observation`（观察到的事实）。不要把预期结果填入 observation。
 
-```json
-{
-  "text": "通过。主路径指向 sdx-prd / PRD，未把当前请求错误框成 sdx-feature 的分段写作流程。",
-  "passed": true,
-  "evidence": [
-    "correct-downstream：点名下游技能或产物。",
-    "no-false-analysis-primary：未框成参数向导 + 分段直写 FEATURE 的主路径。"
-  ]
-}
-```
+整例结果：任一断言 `fail` 则 `status=fail, passed=false`；无失败但有 `not-run` 则 `status=not-run, passed=null`；全部断言有证据通过才是 `status=pass, passed=true`。不得用空断言数组计算通过。
 
-## 判定
-
-1. 读 `category`：`should-trigger` / `should-not-trigger`
-2. **硬门**：以本 eval 的 `assertions`（按 `priority`）为准；`evidence` 须可映射 `assertions[].id` 或 `check` 语义。
-3. **协议释义**（仅当 assertions 或 prompt 覆盖时强制；共通环见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)、[audience-and-language.md](../../../references/audience-and-language.md)）：
-   - 主路径 `/sdx-feature`；直写 `FEATURE-*.md`
-   - 参数向导 → 写前意图澄清 → 分段「澄清 → 生成 → 烤干」→ `C/M/G/F`（无 `S`）
-   - 一次只处理当前段；烤干收敛后输出动作等待用户
-   - **受众质检**：烤干须跑 A/B/C/E；全过可静默；违例须可见短表；未过不得标已烤干
-   - **`G`/`F`**：`G`=收敛后深挖当前段；`F`=须先批确认剩余意图再补齐
-   - **语义变更**（目标/范围/承诺/口径/取舍/风险/MVP 与里程碑对齐/优先级/概览清单/术语/技术选型等）：先推荐 + 数字选项，未选不得直接改当前段
-   - **上游**：基于 `ANALYSIS-{IDEA-ID}.md` 或等价共识方案承接
-   - **技术决策**：实现向可新建 ADR；改边界回 ANALYSIS；§6.2 链 CONTEXT（见 [sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)）
-   - **禁止**：前置草稿 + 集中收口；已删除的 HTML gate / `PENDING→CONFIRMED` / 会话 spec / 写前 hook
-4. **should-not-trigger**：须拒绝以 sdx-feature 为主路径，或明确分流至用户要的技能/产物；不得用「先参数向导再分段写 FEATURE」框下游请求；不得把 `F` 整篇重写认作合法主路径
-5. **P0** 任一失败 → `passed: false`
-6. 不输出实现方案；仅评判
-
-### should-not-trigger 的 P0（摘要）
-
-- **correct-downstream**：出现与 prompt 一致的下游技能或产物（可中文，须可映射）
-- **no-false-analysis-primary**：不得忽略用户已指定阶段而默认以 ANALYSIS 为终点
-- **no-false-f-rewrite**：不得把 `F` 解释为覆盖已确认前文的整篇重写
+默认 `F` 只补剩余内容；用户另行明确授权覆盖的请求，按该授权判断。普通概览 `F` 与明确授权一次写完全篇是不同输入，不能互套预期。

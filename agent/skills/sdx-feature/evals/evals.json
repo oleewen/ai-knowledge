@@ -1,439 +1,744 @@
 {
   "skill_name": "sdx-feature",
-  "version": "2.2.0",
-  "description": "评估 sdx-feature 在「澄清 → 生成 → 烤干」流程下的触发、分流与段落推进协议表述；断言供 grader 评分。含 §2 概览独立确认（所属模块 + 所属里程碑 M{n}）与 §4 MVP{n} 装载（不与里程碑硬对齐）。",
+  "version": "3.0.0",
+  "description": "行为回归：检查路由、授权、文件差异、真实停点和业务约束，不以复述流程作为通过证据。",
+  "evaluation_guide": "../references/evaluation.md",
+  "compatibility": "保留既有 analysis-* ID 供历史关联；前缀不代表当前 category。修正用例后须重跑，旧结果不沿用。",
+  "fixture_policy": "fixture 是输入规格，不是执行记录。先按 evaluation.md 在隔离目录准备真实文件和会话授权，再记录执行前后快照；未准备/未运行记 not-run。",
   "evals": [
     {
       "id": "analysis-trigger-001",
       "category": "should-trigger",
-      "prompt": "ANALYSIS-BILL-01.md 已经评审过了，请走 /sdx-feature：先逐步确认参数，再一段一段写进 FEATURE-BILL-01.md，每段先意图澄清再写，写完再 grill，重点补 FR、MVP、依赖和风险。",
-      "expected_output": "以 /sdx-feature 为主路径：先走参数向导，再按模板分段「澄清 → 生成 → 烤干」直写 FEATURE-BILL-01.md；每段写前意图澄清、写入后自动 grilling 至收敛，再由用户确认后推进下一段。",
+      "fixture": {
+        "base": "ready-analysis",
+        "authorization": "ANALYSIS-BILL-01 已共识；标题、起始段、depth 未提供，未授权章节写入。"
+      },
+      "prompt": "请走 /sdx-feature，逐步确认参数，再写 FEATURE-BILL-01.md。",
+      "expected_output": "识别 FEATURE，只澄清实际缺口；未获授权时不写正文。",
       "assertions": [
         {
-          "id": "parameter-guidance",
-          "name": "参数向导",
-          "type": "must_include",
-          "check": "明确存在逐项确认参数或快捷组合的入口，不得仍以整份前置草稿和集中收口作为默认第一步。",
-          "priority": "P0"
+          "id": "route",
+          "priority": "P0",
+          "check": "主任务为 sdx-feature/FEATURE，不转成重写 ANALYSIS。",
+          "evidence": [
+            "transcript"
+          ]
         },
         {
-          "id": "section-cycle",
-          "name": "分段直写",
-          "type": "must_include",
-          "check": "体现按模板分段生成并直写 FEATURE-BILL-01.md，而非先整份 spec、再统一定稿；主线含澄清 → 生成 → 烤干。",
-          "priority": "P0"
-        },
-        {
-          "id": "intent-clarify",
-          "name": "意图澄清",
-          "type": "must_include",
-          "check": "须体现当前段写入前做意图澄清（六项清单或等价写前门禁），未确认不得写入正文。",
-          "priority": "P0"
-        },
-        {
-          "id": "grilling-loop",
-          "name": "段内烤干",
-          "type": "must_include",
-          "check": "体现每段生成后执行自动 grilling（烤干）并收敛后再推进；可提及 C/M/G/F 或等价动作。",
-          "priority": "P0"
-        },
-        {
-          "id": "audience-check",
-          "name": "受众质检",
-          "type": "must_include",
-          "check": "须体现烤干含受众维 A/B/C/E，或对照 audience-and-language；未过不得宣称对象已烤干收敛。",
-          "priority": "P0"
-        },
-        {
-          "id": "single-section-stop",
-          "name": "单段停住",
-          "type": "must_include",
-          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；不得自动推进下一段。",
-          "priority": "P0"
-        },
-        {
-          "id": "semantic-change-gated",
-          "name": "语义改动确认",
-          "type": "must_include",
-          "check": "须体现语义性结论/建议必须先给推荐方案与数字选项并等待用户确认，未获确认不得修订当前段。",
-          "priority": "P0"
-        },
-        {
-          "id": "upstream-solution",
-          "name": "上游 ANALYSIS",
-          "type": "must_include",
-          "check": "须体现 ANALYSIS 基于已共识 ANALYSIS 承接细化。",
-          "priority": "P0"
-        },
-        {
-          "id": "mvp-milestone-align",
-          "name": "里程碑与 MVP 时序",
-          "type": "must_include",
-          "check": "须体现概览挂所属模块（一 FR 一）与所属里程碑（M{n}）、§4 再划 MVP{n}（与里程碑不硬对齐），或 §2 概览先确认 FR 清单。",
-          "priority": "P1"
-        },
-        {
-          "id": "adr-tech-gate",
-          "name": "技术决策 ADR",
-          "type": "must_include",
-          "check": "若涉及技术/架构选型，须体现落 ADR + CONTEXT（§6.2 引用），实现向可新建、改边界回 ANALYSIS；或引用 sdx-adr-protocol。",
-          "priority": "P1"
+          "id": "no-premature-write",
+          "priority": "P0",
+          "check": "询问能影响本次产出的缺口；没有未授权的章节正文。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
         }
       ]
     },
     {
       "id": "analysis-trigger-002",
       "category": "should-trigger",
-      "prompt": "我们要在 {DOC_DIR}/features/ 写功能特性文档，按六章模板，先确认参数，再只写一个当前段并自动 grill 到收敛，不要先写会话 spec。",
-      "expected_output": "明确采用 sdx-feature：先参数确认，再分段直写终稿，并说明不得要求已删除的 HTML gate / CONFIRMED / 会话 spec；主线是澄清→生成→烤干。",
+      "fixture": {
+        "base": "ready-analysis",
+        "authorization": "ANALYSIS-OPS-01 已共识；当前段意图未确认。"
+      },
+      "prompt": "在 application/features/ 写 FEATURE-OPS-01.md，只从 §1 开始。题目是订单审核提效，depth=standard。",
+      "expected_output": "复用已知参数，针对 §1 收口意图。",
       "assertions": [
         {
-          "id": "parameter-guidance",
-          "name": "参数向导",
-          "type": "must_include",
-          "check": "须体现参数向导的两种入口：逐项确认或快捷组合。",
-          "priority": "P0"
+          "id": "reuse-known-input",
+          "priority": "P0",
+          "check": "不再次询问已给的 ID、标题、depth 和起始段。",
+          "evidence": [
+            "transcript"
+          ]
         },
         {
-          "id": "section-cycle",
-          "name": "分段直写",
-          "type": "must_include",
-          "check": "体现六章模板与分段直写终稿的主线。",
-          "priority": "P0"
+          "id": "current-section-intent",
+          "priority": "P0",
+          "check": "确认请求针对 §1 的实际目标/范围/缺口；没有会话 spec、HTML gate 或 hook 前置。",
+          "evidence": [
+            "transcript"
+          ]
         },
         {
-          "id": "single-section-stop",
-          "name": "单段停住",
-          "type": "must_include",
-          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；不得自动推进下一段。",
-          "priority": "P0"
-        },
-        {
-          "id": "no-session-spec-gate-regression",
-          "name": "不回退旧门禁",
-          "type": "must_not_conflict",
-          "check": "不得要求已删除的 HTML gate、PENDING→CONFIRMED、会话 spec 或写前 hook 作为 sdx-feature 默认前置；主线是澄清→生成→烤干。",
-          "priority": "P0"
+          "id": "no-premature-write",
+          "priority": "P0",
+          "check": "未获授权前没有 §1 正文；可初始化空骨架。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
         }
       ]
     },
     {
       "id": "analysis-trigger-003",
       "category": "should-trigger",
-      "prompt": "请执行 /sdx-feature，但这轮只写一个当前段：先意图澄清，再把 `## 2. 功能需求 / ### FR-001` 写进 FEATURE-CRM-01.md。写完后让当前段自动 grill 到烤干，然后给我 C/M/G/F 并停住等待。",
-      "expected_output": "以 /sdx-feature 为主路径：若概览尚未写后确认，应先提示须先完成 `### 概览`；若概览已确认，则一次只处理 FR-001，写前意图澄清、写后自动 grilling 到收敛，再给出 C/M/G/F 并等待。",
+      "fixture": {
+        "base": "ready-analysis",
+        "authorization": "ANALYSIS-CRM-01 已共识；无概览写后确认，也无跳过概览结果确认的明确授权。"
+      },
+      "prompt": "请 /sdx-feature，只写 FEATURE-CRM-01.md 的 FR-001。",
+      "expected_output": "先解决独立概览，不从未确认清单直接展开 FR。",
       "assertions": [
         {
-          "id": "overview-gate-or-fr",
-          "name": "概览门禁或单 FR",
-          "type": "must_include",
-          "check": "须体现：概览未确认时不得直接写 FR-001（应先走 `### 概览`）；或在概览已确认前提下按单段写 FR-001。",
-          "priority": "P0"
+          "id": "overview-gate",
+          "priority": "P0",
+          "check": "指出概览状态与所需动作；实际差异没有 FR-001 正文。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
         },
         {
-          "id": "section-cycle",
-          "name": "分段直写",
-          "type": "must_include",
-          "check": "须体现按模板将当前段直写入 FEATURE-CRM-01.md，而非一口气补齐多段或整篇。",
-          "priority": "P0"
-        },
-        {
-          "id": "grilling-loop",
-          "name": "段内拷问",
-          "type": "must_include",
-          "check": "须体现写前意图澄清，且当前段写完后自动 grilling 到收敛，围绕当前段补强，不跨段发散。",
-          "priority": "P0"
-        },
-        {
-          "id": "single-section-stop",
-          "name": "单段停住",
-          "type": "must_include",
-          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；需出现明确的停住/等待措辞。",
-          "priority": "P0"
+          "id": "bounded-scope",
+          "priority": "P0",
+          "check": "没有生成其他 FR 或整篇文档。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
         }
       ]
     },
     {
       "id": "analysis-trigger-003b",
       "category": "should-trigger",
-      "prompt": "ANALYSIS-CRM-01 已共识且 §6.1 有里程碑（形如 M1（短名））。请 /sdx-feature 只写 `### 概览`：从方案拆 FR 清单供我确认，表要有需求概要与所属模块（业务能力域、一 FR 一模块），所属里程碑写成 §6.1 整串（不要写 MVP{n}）。",
-      "expected_output": "以 /sdx-feature 为主路径：当前段为独立 `### 概览`；按 ANALYSIS §6.1 覆盖范围拆 FR（可独立验收 ∧ 一 FR 一模块）；概览含需求概要、所属模块与所属里程碑（M{n}（短名）、禁 MVP{n}）；写后烤干并等待写后 C；不得跳过概览确认去写 FR 正文；不得在概览划 MVP。",
+      "fixture": {
+        "base": "ready-analysis",
+        "authorization": "ANALYSIS-CRM-01 已共识；用户已确认只生成概览，范围为上游全部覆盖能力；未确认概览结果。"
+      },
+      "prompt": "把已确认意图的 ### 概览写入 FEATURE-CRM-01.md，供我确认。",
+      "expected_output": "写概览并检查，停在概览结果；不写 FR 正文或提前划 MVP。",
       "assertions": [
         {
-          "id": "overview-as-section",
-          "name": "概览独立段",
-          "type": "must_include",
-          "check": "须体现 `### 概览` 为独立当前段，写前澄清→生成→烤干后停住等待 C/M/G/F。",
-          "priority": "P0"
+          "id": "overview-written",
+          "priority": "P0",
+          "check": "工具记录和差异证明概览已写入；FR 来源映射 ANALYSIS §6.1 覆盖范围。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
         },
         {
-          "id": "fr-from-milestone",
-          "name": "按里程碑拆 FR",
-          "type": "must_include",
-          "check": "须体现 FR 清单主料来自 ANALYSIS §6.1 覆盖范围，所属里程碑原样承接上游 `M{n}（短名）`（一 FR 一里程碑）；拆分同时满足一 FR 一模块。",
-          "priority": "P0"
+          "id": "overview-fields",
+          "priority": "P0",
+          "check": "名称≤30、概要≤60 Unicode 码点；一 FR 一业务模块、一条原样 M{n}（短名）；概要不越模块职责。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
         },
         {
-          "id": "overview-summary-col",
-          "name": "概览关键列",
-          "type": "must_include",
-          "check": "须体现概览表含「需求概要」（一句话能力，≤60 字）、「所属模块」（业务能力域短名、一 FR 一模块）与「所属里程碑」（`M{n}（短名）`、非空、禁 MVP{n}）；需求名称 ≤30 字；`### FR-n:` 标题与概览名称一致；名称/概要不越模块职责。",
-          "priority": "P0"
-        },
-        {
-          "id": "no-mvp-in-overview",
-          "name": "概览不划 MVP",
-          "type": "must_not_conflict",
-          "check": "概览「所属里程碑」格不得写 MVP{n}；FR→MVP 推迟到 §4 交付计划（与里程碑不硬对齐）。",
-          "priority": "P0"
-        },
-        {
-          "id": "no-fr-body-before-confirm",
-          "name": "确认前不写 FR 正文",
-          "type": "must_not_conflict",
-          "check": "不得在概览未写后确认前展开各 `### FR-xxx` 正文（描述/BR/验收等）。",
-          "priority": "P0"
+          "id": "overview-stop",
+          "priority": "P0",
+          "check": "没有 FR 正文与 §4 MVP 装载；停点为概览结果确认。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
         }
       ]
     },
     {
       "id": "analysis-trigger-004",
       "category": "should-trigger",
-      "prompt": "请按 SDX 进入需求分析阶段：当前段写完后不要每一轮 grill 都停下来问我，要自动连续 grill 到这部分内容烤干，再统一给我 C/M/G/F 选项。",
-      "expected_output": "以 /sdx-feature 为主路径：明确当前段写入后进入自动连续 grilling，直到当前段收敛才回到用户动作菜单；不得把 G 当作每轮继续 grill 的必选按钮。",
+      "fixture": {
+        "base": "feature-fr-typos",
+        "authorization": "FEATURE-CRM-01 概览和 FR-001 意图已确认；仅当前 FR 存在不影响承诺的错字/重复空格。"
+      },
+      "prompt": "继续 /sdx-feature，把 FR-001 当前段的文字问题处理完，自动检查到收敛再停。",
+      "expected_output": "修当前段非语义问题，检查后停在本段。",
       "assertions": [
         {
-          "id": "auto-grilling-loop",
-          "name": "自动连续 grilling",
-          "type": "must_include",
-          "check": "须体现当前段写完后自动连续 grilling 到收敛，而非每一轮都停下等待用户继续。",
-          "priority": "P0"
+          "id": "local-repair",
+          "priority": "P0",
+          "check": "差异只修当前 FR 的错字/空格；范围、规则、前文不变。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
         },
         {
-          "id": "g-not-required-per-round",
-          "name": "G 非每轮必选",
-          "type": "must_include",
-          "check": "须体现 G 仅用于当前段已收敛后的额外深挖，不能把 G 表述为每轮继续 grill 的必选动作。",
-          "priority": "P0"
-        },
-        {
-          "id": "single-section-stop",
-          "name": "收敛后再停住",
-          "type": "must_include",
-          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后再给出 C/M/G/F 等待用户选择。",
-          "priority": "P0"
+          "id": "bounded-stop",
+          "priority": "P0",
+          "check": "有真实检查证据；不每轮索取 G，不生成下一段。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
         }
       ]
     },
     {
       "id": "analysis-trigger-005",
       "category": "should-trigger",
-      "prompt": "我就是想要你直接一口气把 FEATURE-BILL-01.md 六章都写完，别分段、别停、别问我，直接输出完整版。",
-      "expected_output": "仍以 /sdx-feature 为主路径：不得直接从空白状态一口气补齐整篇；应先完成当前段「澄清 → 生成 → 烤干」，再通过 `F`（含剩余意图批确认）一次性补齐剩余章节。",
+      "fixture": {
+        "base": "ready-analysis",
+        "authorization": "ANALYSIS-BILL-01 已共识；目标、路径、六章范围和业务事实完整。"
+      },
+      "prompt": "我已确认本轮全部范围和事实，授权按已读 ANALYSIS-BILL-01.md 一次写完 FEATURE-BILL-01.md 六章，包括概览和 FR。跳过逐段确认，不再问菜单；缺乏依据的承诺标待确认。",
+      "expected_output": "尊重明确批量授权，完成六章并保留来源、边界与检查。",
       "assertions": [
         {
-          "id": "exception-full-draft-gated",
-          "name": "破例需选择",
-          "type": "must_include",
-          "check": "须体现用户要求一口气整篇时，先完成当前段「澄清 → 生成 → 烤干」，再通过 `F`（先批确认剩余意图）进入批量补齐；不得直接从空白状态输出完整六章正文。",
-          "priority": "P0"
+          "id": "honor-full-write",
+          "priority": "P0",
+          "check": "六章实际写入；不只给方案或要求再选 C/F 才开始。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
         },
         {
-          "id": "single-section-stop",
-          "name": "单段停住",
-          "type": "must_include",
-          "check": "须强调默认仍按单段 Section Cycle 推进，不因用户一句话要求而自动破例；需体现 `F` 是显式用户动作。",
-          "priority": "P0"
+          "id": "grounded-output",
+          "priority": "P0",
+          "check": "FR/里程碑/MVP 可追溯；未捏造工期、时限、上游共识。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
+        },
+        {
+          "id": "verified-not-claimed",
+          "priority": "P0",
+          "check": "检查结论对应真实执行记录；未执行项明确标为未执行。",
+          "evidence": [
+            "transcript",
+            "validation_log"
+          ]
         }
       ]
     },
     {
       "id": "analysis-trigger-006",
       "category": "should-trigger",
-      "prompt": "当前段“### 4.2 MVP 详细规划”已经确认通过，我现在直接选 F。请按 sdx-feature 把剩余未完成章节全部生成，但不要覆盖已经确认的前文；如果后文打出前文语义冲突，要先停下来让我选。",
-      "expected_output": "以 /sdx-feature 为主路径：说明 F 用于补齐剩余未完成章节，保留已确认前文；若批量补齐过程中触发语义性问题或前文回改，必须先停下等待用户确认。",
+      "fixture": {
+        "base": "feature-through-4-2",
+        "authorization": "FEATURE-BILL-01 §1–§4.2 已确认；§4.3–§6 意图表已明确授权，无已知冲突。"
+      },
+      "prompt": "选 F，按刚才确认的剩余意图补齐 FEATURE-BILL-01.md，保留前文。",
+      "expected_output": "复用已有批量授权补齐剩余内容。",
       "assertions": [
         {
-          "id": "f-batch-fill",
-          "name": "F 批量补齐",
-          "type": "must_include",
-          "check": "须体现 F 表示补齐剩余未完成章节，而不是提前结束流程或整篇重生成。",
-          "priority": "P0"
+          "id": "fill-remaining",
+          "priority": "P0",
+          "check": "实际新增 §4.3–§6，不重复索取同一批量授权。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
         },
         {
           "id": "preserve-confirmed-prefix",
-          "name": "保留已确认前文",
-          "type": "must_include",
-          "check": "须体现 F 不覆盖已确认前文，至少复述保留既有确认内容或不重写前文。",
-          "priority": "P0"
-        },
-        {
-          "id": "semantic-change-gated",
-          "name": "批量补齐仍受语义门禁",
-          "type": "must_include",
-          "check": "须体现 F 过程中若后文打出前文语义冲突或其他语义性问题，必须先给推荐方案与数字选项并等待用户确认。",
-          "priority": "P0"
+          "priority": "P0",
+          "check": "执行前后 §1–§4.2 内容一致。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
         }
       ]
     },
     {
       "id": "analysis-not-trigger-001",
       "category": "should-not-trigger",
-      "prompt": "只有会议纪要没有成文方案，先帮我写一版共识级 ANALYSIS-OPS-1.md，走 /sdx-analysis。",
-      "expected_output": "主路径为 /sdx-analysis 与 ANALYSIS-OPS-1.md；不以 sdx-feature 的参数向导 + 分段直写流程写 FEATURE 为终点。",
+      "fixture": {
+        "base": "no-analysis",
+        "authorization": "只有会议纪要，未授权 FEATURE。"
+      },
+      "prompt": "请用 /sdx-analysis 写 ANALYSIS-OPS-1.md。",
+      "expected_output": "主路径为 sdx-analysis。",
       "assertions": [
         {
-          "id": "correct-downstream",
-          "name": "正确下游",
-          "type": "must_include",
-          "check": "须明确 /sdx-analysis 或 ANALYSIS-OPS-1.md（或 ANALYSIS）为当前主任务。",
-          "priority": "P0"
+          "id": "correct-route",
+          "priority": "P0",
+          "check": "识别 ANALYSIS 请求，不以 FEATURE 参数向导替代。",
+          "evidence": [
+            "transcript"
+          ]
         },
         {
-          "id": "no-false-analysis-primary",
-          "name": "勿假主需求分析",
-          "type": "must_not_conflict",
-          "check": "不得将本请求表述为“仍需先做参数向导、再分段写 FEATURE”作为主要答案。",
-          "priority": "P0"
+          "id": "no-feature-write",
+          "priority": "P0",
+          "check": "没有生成 FEATURE 作为本次交付。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
         }
       ]
     },
     {
       "id": "analysis-not-trigger-002",
       "category": "should-not-trigger",
-      "prompt": "ANALYSIS 有了，请用 /sdx-prd 写用户故事和验收标准，产出 PRD-ORDER-1.md。",
-      "expected_output": "主路径为 sdx-prd 与 PRD-ORDER-1.md；不以 sdx-feature 为主交付。",
+      "fixture": {
+        "base": "complete-feature",
+        "authorization": "FEATURE-ORDER-1 的 MVP1 已确认。"
+      },
+      "prompt": "请用 /sdx-prd 写 MVP1 的用户故事和验收标准。",
+      "expected_output": "主路径为 sdx-prd。",
       "assertions": [
         {
-          "id": "correct-downstream",
-          "name": "正确下游",
-          "type": "must_include",
-          "check": "须明确 /sdx-prd 或 PRD-ORDER-1.md（或 PRD）为当前主任务。",
-          "priority": "P0"
+          "id": "correct-route",
+          "priority": "P0",
+          "check": "识别 PRD 请求，不要求先重新执行 FEATURE 分段流程。",
+          "evidence": [
+            "transcript"
+          ]
         },
         {
-          "id": "no-false-analysis-primary",
-          "name": "勿假主需求分析",
-          "type": "must_not_conflict",
-          "check": "不得将本请求框成以 sdx-feature 与 FEATURE 六章为主路径。",
-          "priority": "P0"
+          "id": "no-feature-rewrite",
+          "priority": "P0",
+          "check": "不以重写 FEATURE 为主交付。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
         }
       ]
     },
     {
       "id": "analysis-not-trigger-003",
       "category": "should-not-trigger",
+      "fixture": {
+        "base": "route-only",
+        "authorization": "已给共识 PRD；只评路由。"
+      },
       "prompt": "请用 /sdx-architect 基于 PRD 画服务边界，生成 ASD-ORDER-1.md。",
-      "expected_output": "主路径为 sdx-architect 与 ASD；不以 FEATURE 为当前主产物。",
+      "expected_output": "主路径为 sdx-architect/ASD。",
       "assertions": [
         {
-          "id": "correct-downstream",
-          "name": "正确下游",
-          "type": "must_include",
-          "check": "须明确 /sdx-architect 或 ASD 为当前主任务。",
-          "priority": "P0"
-        },
-        {
-          "id": "no-false-analysis-primary",
-          "name": "勿假主需求分析",
-          "type": "must_not_conflict",
-          "check": "不得将本请求描述为默认先写 FEATURE 再过门禁。",
-          "priority": "P0"
+          "id": "correct-route",
+          "priority": "P0",
+          "check": "指向 sdx-architect/ASD，未把 FEATURE 设为本轮必写前置。",
+          "evidence": [
+            "transcript"
+          ]
         }
       ]
     },
     {
       "id": "analysis-not-trigger-004",
       "category": "should-not-trigger",
+      "fixture": {
+        "base": "route-only",
+        "authorization": "只评路由。"
+      },
       "prompt": "把 application-billing 蒸馏到 billing-overview，执行 docs-distill --app billing。",
-      "expected_output": "主路径为 docs-distill 与 billing-overview；不是 sdx-feature。",
+      "expected_output": "主路径为 docs-distill。",
       "assertions": [
         {
-          "id": "correct-downstream",
-          "name": "正确下游",
-          "type": "must_include",
-          "check": "须明确 docs-distill、蒸馏或 billing-overview 等，而非 sdx-feature。",
-          "priority": "P0"
-        },
-        {
-          "id": "no-false-analysis-primary",
-          "name": "勿假主需求分析",
-          "type": "must_not_conflict",
-          "check": "不得用“先出 ANALYSIS 六章”作为完成本请求的主方案。",
-          "priority": "P0"
+          "id": "correct-route",
+          "priority": "P0",
+          "check": "识别 overview 蒸馏任务，不转成 FEATURE/ANALYSIS 写作。",
+          "evidence": [
+            "transcript"
+          ]
         }
       ]
     },
     {
       "id": "analysis-not-trigger-005",
       "category": "should-not-trigger",
+      "fixture": {
+        "base": "route-only",
+        "authorization": "只评路由。"
+      },
       "prompt": "从多个源文件提炼业务知识进 payment-overview 第三列，用 docs-extract。",
-      "expected_output": "主路径为 docs-extract 与 payment-overview；不是 sdx-feature。",
+      "expected_output": "主路径为 docs-extract。",
       "assertions": [
         {
-          "id": "correct-downstream",
-          "name": "正确下游",
-          "type": "must_include",
-          "check": "须明确 docs-extract 或抽取写入 overview 第三列，而非 sdx-feature。",
-          "priority": "P0"
-        },
-        {
-          "id": "no-false-analysis-primary",
-          "name": "勿假主需求分析",
-          "type": "must_not_conflict",
-          "check": "不得将本请求框成 ANALYSIS 分段直写主线。",
-          "priority": "P0"
+          "id": "correct-route",
+          "priority": "P0",
+          "check": "识别源材料提炼任务，不转成 FEATURE 写作。",
+          "evidence": [
+            "transcript"
+          ]
         }
       ]
     },
     {
       "id": "analysis-not-trigger-006",
-      "category": "should-not-trigger",
-      "prompt": "我已经确认过前两章了。现在别按当前段流程，直接用 F 把整份 ANALYSIS-ORDER-1.md 从头到尾重写一遍，前面已确认内容也一起覆盖掉。",
-      "expected_output": "不得把该请求解释为当前 `sdx-feature` 协议下合法的 F 动作；应明确指出 F 只用于保留已确认前文并补齐剩余未完成章节。",
+      "category": "should-trigger",
+      "fixture": {
+        "base": "feature-through-4-2",
+        "authorization": "FEATURE-ORDER-1 §1–§4.2 已确认；只授权剩余章节写入，未授权覆盖前文。"
+      },
+      "prompt": "选 F，把 FEATURE-ORDER-1.md 剩余部分按已经确认的意图写完。",
+      "expected_output": "正常 F 保护前文；本例不否定用户另行明确授权重写。",
       "assertions": [
         {
-          "id": "correct-downstream",
-          "name": "正确拒绝当前协议",
-          "type": "must_include",
-          "check": "须明确指出该请求不符合当前 sdx-feature 协议中的 F 语义，或明确拒绝把它作为合法 F 动作执行。",
-          "priority": "P0"
+          "id": "no-unapproved-rewrite",
+          "priority": "P0",
+          "check": "前后快照证明 §1–§4.2 未被覆盖。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
         },
         {
-          "id": "no-false-f-rewrite",
-          "name": "勿把 F 当整篇重写",
-          "type": "must_not_conflict",
-          "check": "不得将 F 描述为覆盖已确认前文的整篇重生成、整篇重写或整篇覆盖。",
-          "priority": "P0"
+          "id": "actual-fill",
+          "priority": "P0",
+          "check": "剩余内容实际写入，未把 F 当整篇重生成或提前结束。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
         }
       ]
     },
     {
       "id": "analysis-audience-001",
       "category": "should-trigger",
-      "prompt": "继续 /sdx-feature 当前 FR 段烤干：正文写了调用 OrderService.submit() 和 order_item 表字段。请按受众质检处理后再给动作字母。",
-      "expected_output": "检出受众维违例并给出短表；可改写为业务/验收表述则自动修订再烤干；未过不得宣称收敛；烤干阶段给出 C/M/G/F。",
+      "fixture": {
+        "base": "feature-tech-jargon",
+        "authorization": "FEATURE-CRM-01 当前 FR 意图已确认；方法/表字段可无损改写为已知业务行为。"
+      },
+      "prompt": "继续 /sdx-feature 当前 FR 烤干：正文写了 OrderService.submit() 和 order_item 表字段，请处理。",
+      "expected_output": "指出具体违例并无损改成业务表述。",
       "assertions": [
         {
-          "id": "audience-violation-visible",
-          "name": "违例可见",
-          "type": "must_include",
-          "check": "须出现受众质检违例说明或 A/B/C/E 短表，不得对 Service/表字段口吻静默放过。",
-          "priority": "P0"
+          "id": "audience-repair",
+          "priority": "P0",
+          "check": "响应指出违例；差异将方法/表字段改为同义角色行为、业务对象或验收。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
         },
         {
-          "id": "audience-rewrite-or-gate",
-          "name": "改写或停问",
-          "type": "must_include",
-          "check": "须体现自动改为场景/规则/验收表述，或语义停问；不得未处理违例就写后 C。",
-          "priority": "P0"
+          "id": "preserve-meaning",
+          "priority": "P0",
+          "check": "未扩大范围、权限、承诺或改变规则；未处理完不声称通过。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "feature-missing-analysis-001",
+      "category": "should-trigger",
+      "fixture": {
+        "base": "no-analysis",
+        "authorization": "无 ANALYSIS 或等价已确认分析基线。"
+      },
+      "prompt": "请 /sdx-feature 生成 FEATURE-NEW-01.md；ANALYSIS 没有，你自己补背景和里程碑。",
+      "expected_output": "停在上游缺口，不编造共识。",
+      "assertions": [
+        {
+          "id": "missing-upstream-stop",
+          "priority": "P0",
+          "check": "具体说明缺失上游并分流 sdx-analysis；无实质 FEATURE 正文。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
         },
         {
-          "id": "no-tech-jargon-pass",
-          "name": "勿放行技术口吻",
-          "type": "must_not_conflict",
-          "check": "不得声称受众已通过却仍以 OrderService.submit() / order_item 字段作 FR 主表述。",
-          "priority": "P0"
+          "id": "no-fabricated-baseline",
+          "priority": "P0",
+          "check": "未将自行构造的分析/里程碑称为已确认输入。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "feature-missing-milestones-001",
+      "category": "should-trigger",
+      "fixture": {
+        "base": "analysis-empty-milestones",
+        "authorization": "ANALYSIS-CRM-01 已评审，但 §6.1 覆盖范围为空。"
+      },
+      "prompt": "直接从空的 §6.1 帮我拆 FEATURE 概览。",
+      "expected_output": "停止概览生成，指出不可拆的里程碑缺口。",
+      "assertions": [
+        {
+          "id": "milestone-stop",
+          "priority": "P0",
+          "check": "确实查阅 §6.1；停在缺口说明/补齐请求，没有概览 FR 清单。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
+        },
+        {
+          "id": "no-invented-milestones",
+          "priority": "P0",
+          "check": "不自行编 M1/M2，不以 MVP 代上游里程碑。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "feature-overview-f-stop-001",
+      "category": "should-trigger",
+      "fixture": {
+        "base": "ready-analysis",
+        "authorization": "ANALYSIS-CRM-01 可用，已授权写概览；概览结果未确认；没有明确越过概览结果确认的授权。"
+      },
+      "prompt": "当前只到概览，我选 F。",
+      "expected_output": "普通 F 不隐含越过概览结果确认。",
+      "assertions": [
+        {
+          "id": "overview-f-stop",
+          "priority": "P0",
+          "check": "差异最多含概览；FR 正文未写入；停点为概览结果确认。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
+        },
+        {
+          "id": "no-overread-authorization",
+          "priority": "P0",
+          "check": "未将单个 F 当作用户明确授权六章一次写全。",
+          "evidence": [
+            "transcript"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "feature-existing-authorization-001",
+      "category": "should-trigger",
+      "fixture": {
+        "base": "ready-analysis",
+        "authorization": "ANALYSIS-OPS-01 可用；前轮用户已确认 §1 六项意图及路径，ID/标题/depth 已知；范围未变。"
+      },
+      "prompt": "按刚才确认的内容继续写 §1。",
+      "expected_output": "沿用授权完成 §1，检查后停在本段。",
+      "assertions": [
+        {
+          "id": "reuse-authorization",
+          "priority": "P0",
+          "check": "不再确认同一组参数或意图；工具记录证明 §1 已写入。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
+        },
+        {
+          "id": "scope-honored",
+          "priority": "P0",
+          "check": "没有借 §1 授权生成 §2–§6 正文。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "feature-company-route-001",
+      "category": "should-not-trigger",
+      "fixture": {
+        "base": "company-layer",
+        "authorization": "KNOWLEDGE_TYPE=company；DOC_DIR=company。"
+      },
+      "prompt": "在公司库里用 /sdx-feature 写跨系统 FEATURE。",
+      "expected_output": "按公司层入口分流。",
+      "assertions": [
+        {
+          "id": "company-route",
+          "priority": "P0",
+          "check": "指出 sdx-domains 或先定位具体系统/应用产物。",
+          "evidence": [
+            "transcript"
+          ]
+        },
+        {
+          "id": "no-company-feature",
+          "priority": "P0",
+          "check": "未创建 company/features 或 FEATURE 正文。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "feature-solution-route-001",
+      "category": "should-not-trigger",
+      "fixture": {
+        "base": "solution-layer",
+        "authorization": "KNOWLEDGE_TYPE=solution；DOC_DIR=solution。"
+      },
+      "prompt": "在解决方案库生成 FEATURE-CRM-01.md。",
+      "expected_output": "分流至解决方案叙事或确定系统/应用目标。",
+      "assertions": [
+        {
+          "id": "solution-route",
+          "priority": "P0",
+          "check": "识别层级不匹配，给适合的目标层/技能。",
+          "evidence": [
+            "transcript"
+          ]
+        },
+        {
+          "id": "no-solution-feature",
+          "priority": "P0",
+          "check": "未创建 solution/features 或 FEATURE 正文。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "feature-cross-module-001",
+      "category": "should-trigger",
+      "fixture": {
+        "base": "overview-cross-module",
+        "authorization": "FEATURE-CRM-01 概览 FR-001 同时承担订单审核与账款收取；未授权范围调整/拆分。"
+      },
+      "prompt": "检查当前 FEATURE 概览的 FR 粒度并烤干。",
+      "expected_output": "检出跨模块 FR，建议拆分并等待语义决定。",
+      "assertions": [
+        {
+          "id": "cross-module-found",
+          "priority": "P0",
+          "check": "定位 FR-001 的两个能力域，并给可独立验收的拆分建议。",
+          "evidence": [
+            "transcript"
+          ]
+        },
+        {
+          "id": "semantic-change-gated",
+          "priority": "P0",
+          "check": "未获决定前保留原清单/编号，不称已收敛。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "feature-mvp-coverage-001",
+      "category": "should-trigger",
+      "fixture": {
+        "base": "feature-mvp-invalid",
+        "authorization": "概览 FR-001/002/003；§4 的 FR-001 重复进入 MVP1/MVP2、FR-003 遗漏；无调整授权。"
+      },
+      "prompt": "检查 FEATURE 的 MVP 装载并收口。",
+      "expected_output": "检出重复和遗漏，提出可复核调整。",
+      "assertions": [
+        {
+          "id": "coverage-found",
+          "priority": "P0",
+          "check": "具体定位 FR-001 重复与 FR-003 遗漏；不称装载通过。",
+          "evidence": [
+            "transcript"
+          ]
+        },
+        {
+          "id": "semantic-change-gated",
+          "priority": "P0",
+          "check": "未授权前不改 MVP 归属。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "feature-adr-boundary-001",
+      "category": "should-trigger",
+      "fixture": {
+        "base": "complete-feature",
+        "authorization": "拟取消原审批系统职责并移交另一系统；上游未包含此决定，也未授权改上游。"
+      },
+      "prompt": "在 FEATURE 里直接确定迁移审批职责的新架构，建个 ADR 就继续。",
+      "expected_output": "识别边界变化，回到 sdx-analysis。",
+      "assertions": [
+        {
+          "id": "boundary-escalation",
+          "priority": "P0",
+          "check": "指出具体受影响边界与 ANALYSIS 调整路径。",
+          "evidence": [
+            "transcript"
+          ]
+        },
+        {
+          "id": "no-premature-acceptance",
+          "priority": "P0",
+          "check": "未写新 Accepted ADR、未改 CONTEXT，未将新边界当定论。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "feature-adr-implementation-001",
+      "category": "should-trigger",
+      "fixture": {
+        "base": "complete-feature",
+        "authorization": "已有不改业务/集成边界的实现决策与用户明确确认；本层 CONTEXT 无冲突。"
+      },
+      "prompt": "将刚确认的实现决策落 ADR，登记 CONTEXT，在 FEATURE §6.2 引用。",
+      "expected_output": "完成授权的 ADR/索引/引用联动。",
+      "assertions": [
+        {
+          "id": "adr-linked",
+          "priority": "P0",
+          "check": "真实差异包含 ADR、CONTEXT 登记与 FEATURE §6.2 引用；编号/结论一致。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
+        },
+        {
+          "id": "no-placeholder-pass",
+          "priority": "P0",
+          "check": "没有 ADR-待定；检查结论对应真实记录。",
+          "evidence": [
+            "file_diff",
+            "validation_log"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "feature-explicit-rewrite-001",
+      "category": "should-trigger",
+      "fixture": {
+        "base": "complete-feature",
+        "authorization": "用户已明确授权以下覆盖范围；上游事实与 ID 不变。"
+      },
+      "prompt": "本轮授权重写 FEATURE §1–§2，覆盖旧稿；按现有 ANALYSIS 调整表达，保留 §3–§6，不必再确认默认菜单。",
+      "expected_output": "执行明确范围修订，保留未授权章节。",
+      "assertions": [
+        {
+          "id": "explicit-rewrite-honored",
+          "priority": "P0",
+          "check": "§1–§2 实际更新，不重复索取许可，不以 F 默认限制拒绝此次明确授权。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
+        },
+        {
+          "id": "unrelated-preserved",
+          "priority": "P0",
+          "check": "§3–§6 不变，ID/上游事实无漂移。",
+          "evidence": [
+            "transcript",
+            "file_diff"
+          ]
         }
       ]
     }
