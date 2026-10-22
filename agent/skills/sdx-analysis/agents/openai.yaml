@@ -1,0 +1,4 @@
+interface:
+  display_name: "SDX 需求分析"
+  short_description: "整理业务材料并分段形成可评审的七章需求分析，保留范围与决策依据"
+  default_prompt: "使用 $sdx-analysis 将业务材料整理成七章需求分析，沿用已确认参数，从当前章节开始。"

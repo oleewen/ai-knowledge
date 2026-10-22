@@ -1,40 +1,14 @@
-# sdx-analysis 评测失败分析（analyzer）
+# sdx-analysis 评测失败分析
 
-将失败样本转成可执行修复清单（非仅描述现象）。
+根据失败案例、裁判证据与实际 diff 提出最小修复。先读 [evaluation.md](../references/evaluation.md)；再按失败点读取 [SKILL.md](../SKILL.md)、[workflow.md](../references/workflow.md) 或 [gates.md](../references/gates.md)。
 
-## 输入
+| 类型 | 检查重点 |
+| --- | --- |
+| 发现或路由 | 未加载、误触发、知识层或下游产物混淆 |
+| 授权或推进 | 重问已确认参数、未经授权写入、F 越界、回改后未重开 |
+| 产物 | 覆盖原文、章节缺失、来源失真、指标丢失、ADR 重复或断链 |
+| 评测本身 | 夹具缺失、证据不足、断言矛盾、历史结果冒充当前验证 |
 
-失败样本（含 prompt、期望分类、实际响应、grader 证据）；[SKILL.md](../SKILL.md)；[references/gates.md](../references/gates.md)、[references/workflow.md](../references/workflow.md)、[references/anti-patterns.md](../references/anti-patterns.md)、[gotchas.md](../gotchas.md)。
+每个问题只写：**观察证据 → 根因假设 → 最小改动位置 → 回归案例**。未证实根因标为假设；证据不足先补证据，不能把 incomplete 算失败来扩写规则。
 
-## 输出（四段）
-
-1. 失败模式归类  
-2. 根因假设与证据  
-3. 优先级修复策略  
-4. 回归评测建议  
-
-## 失败类型（可多选）
-
-- **F1 路由误判**：should-trigger 未触发或 should-not-trigger 误触发  
-- **F2 边界混淆**：ANALYSIS/PRD/ASD 与「仅 ANALYSIS」混淆  
-- **F3 协议回退**：退回已删除的 HTML gate / CONFIRMED / 会话 spec / 写前 hook 主线  
-- **F4 参数向导缺失**：未体现逐项确认或快捷组合入口  
-- **F5 段落循环缺失**：未体现意图澄清、分段「澄清 → 生成 → 烤干」、`C/M/G/F` 等协议  
-- **F6 回改规则缺失**：前文回改、当前段重开、再澄清与再 grill 等约束缺失  
-- **F7 证据不足**：结论难被断言复核  
-- **F8 F 语义误解**：把 `F` 错写为提前结束流程、整篇重生成、覆盖已确认前文重写，或跳过剩余意图批确认  
-- **F9 意图澄清缺失**：跳过写前六项清单/写前 `C` 直接写正文 
-
-## 修复策略（P0/P1/P2）
-
-- **P0**：误路由、参数向导/意图澄清/段落协议遗漏、`F` 语义误解（先修）  
-- **P1**：边界不清、结构不全、与 sdx-feature 衔接弱  
-- **P2**：表述与样本覆盖优化  
-
-每条须含：目标、最小变更（文件/段）、预期影响、≥1 条回归用例。
-
-## 回归
-
-1. 先跑 P0 相关样本，零回归再全量  
-2. 边界样本成对验：`/sdx-analysis` vs `/sdx-feature`、`/sdx-prd`、`/sdx-architect`、docs-*  
-3. 同模式连续两轮失败 → 考虑规则级重写  
+优先修复越界写入、事实失真与错误分流。先复跑相关案例，再按影响选回归；不为单例新增无关的普遍限制。

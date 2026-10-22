@@ -1,0 +1,351 @@
+{
+  "skill_name": "sdx-analysis",
+  "run_date": "2026-10-22",
+  "status": "passed_for_tested_scope",
+  "base_commit": "49cc15b59bc34052b1fecc3d56bb6a24e08d7dcf",
+  "working_tree_uncommitted": true,
+  "execution_model": null,
+  "source_run_root": "/private/tmp/sdx-analysis-forward-ljbb7ne9",
+  "scope": {
+    "run_root": "/private/tmp/sdx-analysis-forward-ljbb7ne9",
+    "evaluated_case_ids": [
+      "artifact-resume-001",
+      "artifact-f-001",
+      "artifact-layer-001",
+      "artifact-layer-002",
+      "artifact-metric-001",
+      "artifact-adr-001"
+    ],
+    "evaluated_cases": 6,
+    "passed_cases": 6,
+    "assertions_evaluated": 15,
+    "assertions_passed": 15,
+    "excluded_not_run_count": 17
+  },
+  "file_sha256": {
+    "SKILL.md": "106390b18b1bf99edb8aa5d799f52e36138ad035a50351830afcea89135e2a71",
+    "evals/evals.json": "61916ecca6136250d4c2ccffb3cc7385cc1cd9f2b495c980130413726beec510",
+    "scripts/validate-analysis.sh": "1cec84329a3fc0d7db19e4af996196353b7ed4261ffff1771bb952e608392faa",
+    "scripts/validate-analysis.awk": "fb6e5d5cb7eac56b9f591388ba0426e78e943098739b2f9705227e5a22865df5"
+  },
+  "cases": [
+    {
+      "id": "artifact-resume-001",
+      "status": "passed",
+      "passed": true,
+      "assertions": [
+        {
+          "id": "authorized-resume",
+          "priority": "P0",
+          "status": "passed",
+          "evidence": "沿用已确认参数与 §1.2 意图，直接写入；没有重复索参或写前确认。"
+        },
+        {
+          "id": "scoped-write",
+          "priority": "P0",
+          "status": "passed",
+          "evidence": "实际 diff 仅把 §1.2 占位换成两项问题；§1.1、§1.3 起全部后缀及元数据逐字不变。"
+        },
+        {
+          "id": "no-invented-target",
+          "priority": "P0",
+          "status": "passed",
+          "evidence": "仅写电话询问审核进度、看不到退回理由；没有金额、耗时、目标或承诺扩写。回复停在写后烤干。"
+        }
+      ],
+      "file_verification": {
+        "before_matches_materialized_fixture": true,
+        "changed_files": [
+          "docs/analysis/ANALYSIS-261022-退费审批.md"
+        ],
+        "file_hashes": {
+          ".docsconfig": {
+            "before_sha256": "685fe1ed9ff2609b7fd80f5d45bb7b3e6c2e9f19960539d2e36bf8e6f8a05b85",
+            "after_sha256": "685fe1ed9ff2609b7fd80f5d45bb7b3e6c2e9f19960539d2e36bf8e6f8a05b85",
+            "unchanged": true
+          },
+          "docs/analysis/ANALYSIS-261022-退费审批.md": {
+            "before_sha256": "432acc286c3abaa5ada155b156afed25121d05214c16a91eb1a9b0f68c0480b4",
+            "after_sha256": "2aeacd9fd08f501265a05d30df056c18751cd740e7764b88717968f582ab5246",
+            "unchanged": false
+          }
+        },
+        "recorded_hashes_match_actual": true,
+        "unified_diffs": {
+          "docs/analysis/ANALYSIS-261022-退费审批.md": "--- before/docs/analysis/ANALYSIS-261022-退费审批.md\n+++ after/docs/analysis/ANALYSIS-261022-退费审批.md\n@@ -21,7 +21,8 @@\n \n ### 1.2 存在问题\n \n-待补充。\n+1. 客服只能通过电话询问审核进度。\n+2. 退回申请看不到退回理由。\n \n ### 1.3 业务目标\n \n"
+        },
+        "directories": [
+          "docs",
+          "docs/analysis"
+        ]
+      }
+    },
+    {
+      "id": "artifact-f-001",
+      "status": "passed",
+      "passed": true,
+      "assertions": [
+        {
+          "id": "batch-write",
+          "priority": "P0",
+          "status": "passed",
+          "evidence": "§7.2 引用实际可达且内容一致的 materials/brief.md；§7.3 明示无新增技术线索；§7.4 共12项，9项未通过、3项有证据通过，没有全勾。"
+        },
+        {
+          "id": "confirmed-prefix-preserved",
+          "priority": "P0",
+          "status": "passed",
+          "evidence": "独立比较 ### 7.2 之前所有字节，§1–§6、§7.1、元数据全部保持原样。"
+        },
+        {
+          "id": "honest-completion",
+          "priority": "P0",
+          "status": "passed",
+          "evidence": "回复列明前文结构、目标度量、里程碑条件缺口；保留默认 exit 0/21警告及 strict exit 1/21警告，没有宣称全文完成。裁判独立复验结果一致。"
+        }
+      ],
+      "file_verification": {
+        "before_matches_materialized_fixture": true,
+        "changed_files": [
+          "docs/analysis/ANALYSIS-261022-批量收尾.md"
+        ],
+        "file_hashes": {
+          ".docsconfig": {
+            "before_sha256": "85ba6c15a3fce8dfaf185c3558607d39454044614f1c0fc54a9dad8f57177361",
+            "after_sha256": "85ba6c15a3fce8dfaf185c3558607d39454044614f1c0fc54a9dad8f57177361",
+            "unchanged": true
+          },
+          "docs/analysis/ANALYSIS-261022-批量收尾.md": {
+            "before_sha256": "02dc38ec4a614e70c1c046e47126bba7936c1ef4329a4ca1302a6c97e8a9aa52",
+            "after_sha256": "0f74b6e2268e3617fc1d90e22c7a8cbc86fd5e7e507f4514e18d3df41920b51a",
+            "unchanged": false
+          },
+          "materials/brief.md": {
+            "before_sha256": "849bf4c1c860be3fe3f4eefa00d42eb835bb6a7f48767b918b183a525cef9a25",
+            "after_sha256": "849bf4c1c860be3fe3f4eefa00d42eb835bb6a7f48767b918b183a525cef9a25",
+            "unchanged": true
+          }
+        },
+        "recorded_hashes_match_actual": true,
+        "unified_diffs": {
+          "docs/analysis/ANALYSIS-261022-批量收尾.md": "--- before/docs/analysis/ANALYSIS-261022-批量收尾.md\n+++ after/docs/analysis/ANALYSIS-261022-批量收尾.md\n@@ -45,12 +45,25 @@\n \n ### 7.2 参考文档\n \n-待补充。\n+- [业务材料](../../materials/brief.md)：客服查询审核状态和退回原因；仅覆盖已支付订单。\n \n ### 7.3 内部参考（仅供研发接力）\n \n-待补充。\n+本轮无新增技术线索，无新增技术决策。\n \n ### 7.4 质量自查表 (Self-Check)\n \n-待补充。\n+本轮仅补充 §7.2–§7.4。前文保持原文；以下未勾选项表示尚未满足交付条件。\n+\n+- [ ] **结构与占位**：七章标题已有，§1–§6 尚缺模板小节，不能认定结构齐全。\n+- [ ] **§1**：已有目标，尚缺业务现状、问题及 G-n 的度量、收益和来源。\n+- [ ] **§2**：已有已支付订单范围，尚缺完整场景、角色、范围外及成功标准。\n+- [ ] **§3**：已有相关角色与无已知冲突的说明，尚缺能力、影响程度和传播路径。\n+- [ ] **§4**：已有状态及退回原因可查的思路，尚缺业务、资源、技术和交付约束。\n+- [ ] **§5**：已有风险和应对方向，尚缺风险可能性、影响程度及待定问题核对。\n+- [ ] **§6**：已有 M1（状态可查）及覆盖范围，尚缺前置条件、验收、退出及切换适用性确认。\n+- [x] **业务可读**：现有正文面向客服、主管及产品人员；本轮无新增技术线索或数值承诺。\n+- [ ] **一致性**：已读材料支持查询内容及订单范围；其他前文事实没有独立材料佐证，仍有证据盲区。\n+- [ ] **可追溯**：现有目标、风险和里程碑尚未形成完整的来源与编号对应。\n+- [x] **术语与引用**：§7.1 已解释退费申请；§7.2 所列材料实际存在，链接可达。\n+- [x] **格式与元数据**：既有 frontmatter 字段齐全，id 与文件名一致，保留 draft 状态。\n"
+        },
+        "directories": [
+          "docs",
+          "docs/analysis",
+          "materials"
+        ]
+      }
+    },
+    {
+      "id": "artifact-layer-001",
+      "status": "passed",
+      "passed": true,
+      "assertions": [
+        {
+          "id": "layer-routing",
+          "priority": "P0",
+          "status": "passed",
+          "evidence": "识别实存 KNOWLEDGE_TYPE=company；响应推荐 sdx-domains，读取配置动作有记录。"
+        },
+        {
+          "id": "no-wrong-layer-write",
+          "priority": "P0",
+          "status": "passed",
+          "evidence": "文件枚举只有原 .docsconfig 与空 docs 目录；配置前后 hash 相同，没有 analysis 目录或 ANALYSIS。"
+        }
+      ],
+      "file_verification": {
+        "before_matches_materialized_fixture": true,
+        "changed_files": [],
+        "file_hashes": {
+          ".docsconfig": {
+            "before_sha256": "8f7d23cd93ac7d6771736dfd72b8f27b21f1afd043c4da56cd0750a1e0581177",
+            "after_sha256": "8f7d23cd93ac7d6771736dfd72b8f27b21f1afd043c4da56cd0750a1e0581177",
+            "unchanged": true
+          }
+        },
+        "recorded_hashes_match_actual": true,
+        "unified_diffs": {},
+        "directories": [
+          "docs"
+        ]
+      }
+    },
+    {
+      "id": "artifact-layer-002",
+      "status": "passed",
+      "passed": true,
+      "assertions": [
+        {
+          "id": "layer-routing",
+          "priority": "P0",
+          "status": "passed",
+          "evidence": "识别实存 KNOWLEDGE_TYPE=solution；响应推荐 sdx-solution，真实校验明确按层级拒绝。"
+        },
+        {
+          "id": "no-wrong-layer-write",
+          "priority": "P0",
+          "status": "passed",
+          "evidence": "文件枚举只有原 .docsconfig 与空 docs 目录；配置前后 hash 相同，没有 analysis 目录或 ANALYSIS。"
+        }
+      ],
+      "file_verification": {
+        "before_matches_materialized_fixture": true,
+        "changed_files": [],
+        "file_hashes": {
+          ".docsconfig": {
+            "before_sha256": "d6ab639797f5951b21e00ef1bac74cb6b89774db39cdc6a5a614e3ca72ab54ea",
+            "after_sha256": "d6ab639797f5951b21e00ef1bac74cb6b89774db39cdc6a5a614e3ca72ab54ea",
+            "unchanged": true
+          }
+        },
+        "recorded_hashes_match_actual": true,
+        "unified_diffs": {},
+        "directories": [
+          "docs"
+        ]
+      }
+    },
+    {
+      "id": "artifact-metric-001",
+      "status": "passed",
+      "passed": true,
+      "assertions": [
+        {
+          "id": "metric-fidelity",
+          "priority": "P0",
+          "status": "passed",
+          "evidence": "保留第99百分位/P99、严格小于200 ms、100并发、09:00–18:00、30分钟窗口和 materials/sla.md；新增按等待时间排序观察99%位置的解释。"
+        },
+        {
+          "id": "metric-not-decision",
+          "priority": "P0",
+          "status": "passed",
+          "evidence": "仅成功标准表达变化；目标、范围和其他章节逐字不变，未新增 ADR 或其他文件。"
+        }
+      ],
+      "file_verification": {
+        "before_matches_materialized_fixture": true,
+        "changed_files": [
+          "docs/analysis/ANALYSIS-261022-查询时效.md"
+        ],
+        "file_hashes": {
+          ".docsconfig": {
+            "before_sha256": "ee882532acab63a42284d653fadc8c69a8221505e34bb0d110cba7da58ed67de",
+            "after_sha256": "ee882532acab63a42284d653fadc8c69a8221505e34bb0d110cba7da58ed67de",
+            "unchanged": true
+          },
+          "docs/analysis/ANALYSIS-261022-查询时效.md": {
+            "before_sha256": "ddc4c28a20e0d05d7cd9587a8177060a73c91e53ae1841efdfbb685dc69e1af0",
+            "after_sha256": "ad4f5ad5f55e5f54220f6c1bb870b91b9a7cd8cdd66c606071142910c5b98a8e",
+            "unchanged": false
+          },
+          "materials/sla.md": {
+            "before_sha256": "6b6f8c6ab31dd110ea2e7b9aeadbe69133dc47a02dc2eb2304d3abad83f8a7c5",
+            "after_sha256": "6b6f8c6ab31dd110ea2e7b9aeadbe69133dc47a02dc2eb2304d3abad83f8a7c5",
+            "unchanged": true
+          }
+        },
+        "recorded_hashes_match_actual": true,
+        "unified_diffs": {
+          "docs/analysis/ANALYSIS-261022-查询时效.md": "--- before/docs/analysis/ANALYSIS-261022-查询时效.md\n+++ after/docs/analysis/ANALYSIS-261022-查询时效.md\n@@ -27,7 +27,9 @@\n \n #### 成功标准\n \n-每日 09:00–18:00，100 并发查询下 P99 < 200 ms；统计窗口 30 分钟，来源见 materials/sla.md。\n+每日 09:00–18:00，100 并发查询下，查询响应耗时的第 99 百分位（P99）低于 200 毫秒（P99 < 200 ms）；统计窗口 30 分钟，来源见 materials/sla.md。\n+\n+P99 可理解为：将窗口内每次查询的等待时间从短到长排列，观察 99% 位置对应的等待时间。\n \n ## 3. 影响与冲突\n \n"
+        },
+        "directories": [
+          "docs",
+          "docs/analysis",
+          "materials"
+        ]
+      }
+    },
+    {
+      "id": "artifact-adr-001",
+      "status": "passed",
+      "passed": true,
+      "assertions": [
+        {
+          "id": "adr-reused",
+          "priority": "P0",
+          "status": "passed",
+          "evidence": "执行记录列明先读取 CONTEXT/ADR；实际 ADR 文件集合未增加，Accepted 状态与追加式事件结论、CONTEXT 全部字节和 hash 不变。读动作先后以提交记录为证，实物另行核验。"
+        },
+        {
+          "id": "correct-link-and-boundary",
+          "priority": "P0",
+          "status": "passed",
+          "evidence": "§5.2 业务决策之后补 ../adr/CONTEXT.md 与既有 ADR 链接，目标均存在；无 Q-n。夹具本来是“业务问题决策：无。”段落，没有表格，保持该形式不扣分。"
+        },
+        {
+          "id": "scope-preserved",
+          "priority": "P0",
+          "status": "passed",
+          "evidence": "只增加授权引用一行和空行；移除唯一增量后与原稿逐字一致，无 ADR-待定。其他文件 hash 全部不变。"
+        }
+      ],
+      "file_verification": {
+        "before_matches_materialized_fixture": true,
+        "changed_files": [
+          "docs/analysis/ANALYSIS-261022-审批留痕.md"
+        ],
+        "file_hashes": {
+          ".docsconfig": {
+            "before_sha256": "2bf33bb7b0a9f38d1c73050a780ad0d9e09a9846c738544e91e0abef3cda05a4",
+            "after_sha256": "2bf33bb7b0a9f38d1c73050a780ad0d9e09a9846c738544e91e0abef3cda05a4",
+            "unchanged": true
+          },
+          "docs/adr/ADR-001-审批事件留痕.md": {
+            "before_sha256": "95d38f4b298ad37fa740c74bd650fcde543dbaa1c1a5a99470a8a70d7eb99f95",
+            "after_sha256": "95d38f4b298ad37fa740c74bd650fcde543dbaa1c1a5a99470a8a70d7eb99f95",
+            "unchanged": true
+          },
+          "docs/adr/CONTEXT.md": {
+            "before_sha256": "d59d2906c35f36bf43b3ac1c5340db684c38a5c0a767adcb0565c420ad2b2d4c",
+            "after_sha256": "d59d2906c35f36bf43b3ac1c5340db684c38a5c0a767adcb0565c420ad2b2d4c",
+            "unchanged": true
+          },
+          "docs/analysis/ANALYSIS-261022-审批留痕.md": {
+            "before_sha256": "fa1927bc36de9262cb6e130d7ec77fae39fafc960cb678eae5b513ee8cb14fa4",
+            "after_sha256": "39cbb14a6d20862d7bbfed8ecaf27791f2596c971f3fef476c863bbfcb3d3c10",
+            "unchanged": false
+          }
+        },
+        "recorded_hashes_match_actual": true,
+        "unified_diffs": {
+          "docs/analysis/ANALYSIS-261022-审批留痕.md": "--- before/docs/analysis/ANALYSIS-261022-审批留痕.md\n+++ after/docs/analysis/ANALYSIS-261022-审批留痕.md\n@@ -39,6 +39,8 @@\n \n 业务问题决策：无。\n \n+**技术决策索引**：[CONTEXT](../adr/CONTEXT.md)；复用已确认的 [ADR-001：审批事件留痕](../adr/ADR-001-审批事件留痕.md)。\n+\n ## 6. 交付计划\n \n 待补充。\n"
+        },
+        "directories": [
+          "docs",
+          "docs/adr",
+          "docs/analysis"
+        ]
+      }
+    }
+  ],
+  "not_run": [
+    "solution-trigger-001",
+    "solution-trigger-002",
+    "solution-trigger-003",
+    "solution-trigger-004",
+    "solution-trigger-005",
+    "solution-trigger-006",
+    "solution-trigger-007",
+    "solution-trigger-008",
+    "solution-trigger-009",
+    "solution-not-trigger-001",
+    "solution-not-trigger-002",
+    "solution-not-trigger-003",
+    "solution-not-trigger-004",
+    "solution-not-trigger-005",
+    "solution-not-trigger-006",
+    "solution-not-trigger-007",
+    "solution-audience-001"
+  ],
+  "discovery": {
+    "status": "not_run",
+    "case_count": 19
+  },
+  "limitations": [
+    "结果仅证明本次隔离运行；不代表17条未执行协议/路由用例或19条发现用例通过。",
+    "校验脚本仅覆盖有限Markdown/frontmatter，不代替业务共识或完整格式解析。"
+  ]
+}

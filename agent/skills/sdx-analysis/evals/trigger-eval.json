@@ -62,6 +62,19 @@
   {
     "query": "我已经确认过前两章了。现在别按当前段流程，直接用 F 把整份 ANALYSIS-ORDER-1.md 从头到尾重写一遍，前面已确认内容也一起覆盖掉。",
     "should_trigger": true,
-    "note": "description 须触发以便拒绝非法 F；行为断言仍见 evals.json should-not-trigger"
+    "note": "发现层须加载技能；执行层属于 protocol，不能把整篇覆盖当作合法 F。见 evals.json solution-not-trigger-007（保留历史 ID）。"
+  },
+  {
+    "query": "把退费审批会议纪要整理成七章需求分析，续写现有 ANALYSIS-261022-退费审批.md 的存在问题。",
+    "should_trigger": true
+  },
+  {
+    "query": "请执行 /sdx-analysis；当前 .docsconfig 的 KNOWLEDGE_TYPE=company，先建分析骨架。",
+    "should_trigger": true,
+    "note": "显式调用需加载后分流；加载不表示允许写 ANALYSIS。"
+  },
+  {
+    "query": "按解决方案库整理交付包，写 SOLUTION-261022-售后.md。",
+    "should_trigger": false
   }
 ]

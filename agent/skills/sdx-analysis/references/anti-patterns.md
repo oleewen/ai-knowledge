@@ -1,24 +1,14 @@
-# sdx-analysis 概念层反模式
+# sdx-analysis 反模式
 
-操作细节见 [../gotchas.md](../gotchas.md)。原则：[design-principles.md](design-principles.md)。
+用于识别误用；处置细节见所链事实源，不作为额外流程。
 
-| # | 反模式 | 纠正 |
-| --- | --- | --- |
-| 1 | 把集中式前置收口当默认起点 | [workflow.md](workflow.md)：先参数向导，再直写终稿 |
-| 2 | 把参数发散或段内比选搬出主流程 | 参数澄清留在参数向导；多方案比选留在当前段循环 |
-| 3 | 退回已删除 gate 主线（HTML gate / CONFIRMED / 会话 spec / 写前 hook） | 见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) |
-| 4 | 跳过写前意图澄清直接写正文 | 先六项清单 + 写前 `C`，再生成 |
-| 4b | 当前段初稿一写完就算完成 | 先烤干到收敛，再由用户用 `C/M/G/F` 收口 |
-| 5 | 当前段未收口就偷偷推进下一段 | [gates.md](gates.md)：当前段优先，除非用户显式 `F` 批量补齐余段 |
-| 6 | 回改前文后沿用当前段旧结论 | 前文一改，当前段必须 `reopened` 并再 grill 一轮 |
-| 7 | 用户给 `M` 后不复检 | 修改后至少再执行一轮 grilling |
-| 8 | 把 `G` 当成每轮必选动作，或用户给 `G` 却直接进入下一段 | `G` 只表示在当前段已收敛后继续深挖当前段 |
-| 9 | 业务章堆砌接口/表名/中间件 | 转业务语；线索收 §7.3 |
-| 10 | §7.4 未核全勾 | [quality-checklist.md](quality-checklist.md) 逐项 |
-| 11 | 无输入或瞒歧义 | 补足材料；优先在当前段内澄清 |
-| 12 | 影响面只写功能或 quick 整块空 | 四维相关项须覆盖；quick 保留高影响 |
-| 13 | C-n 无成本与残余风险 | 每项：策略 + 成本档 + 残余风险 |
-| 14 | 不可测目标或伪里程碑 | 能量化或标「待澄清」；里程碑须 `M{n}（短名）` 且覆盖范围可落到能力；勿在 ANALYSIS 写 `MVP{n}`/FR 清单（归 FEATURE） |
-| 15 | 未跑 `validate-analysis.sh` 即收口 | [SKILL.md](../SKILL.md) 校验 |
-| 16 | 未经用户显式选择 `F` 就一口气生成多段 | 一次只处理一个当前段；写完烤干后等待 `C/M/G/F`；`F` 须先批确认剩余意图 |
-| 17 | 技术选型只写进 §5.2 Q-n，或选 C 前残留 `ADR-待定` | [sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)：技术决策落 ADR + CONTEXT |
+| 反模式 | 处置入口 |
+| --- | --- |
+| 用户要 FEATURE/PRD/ASD 等，却强制先写 ANALYSIS | [SKILL 边界](../SKILL.md) |
+| 把参数向导变成反复确认，或用模板覆盖已有内容 | [workflow](workflow.md) |
+| 用 F 重写已确认前文，或回改后沿用旧确认 | [单元推进协议](../../../references/unit-cycle-protocol.md) |
+| 把业务 Q-n、技术 ADR 和研发线索混为一表 | [gates](gates.md) |
+| 为业务可读而丢失数值承诺，或把需求写成已有事实 | [受众要求](audience-and-language.md)、[写作原则](design-principles.md) |
+| 把「脚本退出 0」当业务共识，未核实便全勾 §7.4 | [质量清单](quality-checklist.md) |
+
+不恢复已移除的 HTML gate、CONFIRMED 或写前 hook 流程。

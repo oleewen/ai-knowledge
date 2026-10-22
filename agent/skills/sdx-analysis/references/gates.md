@@ -1,72 +1,40 @@
 # sdx-analysis 推进协议（binding）
 
-主干：[SKILL.md](../SKILL.md)。流程：[workflow.md](workflow.md)。
+本文件只定义七章 ANALYSIS 的本地绑定；步骤与路径见 [workflow.md](workflow.md)。
 
-## 定位
+## 共享协议
 
-本文件只定义 `sdx-analysis` 对共享协议的 **binding**（对象=段落）。  
-不复制状态机、动作字母全文、`F` 批确认细则或共通 mermaid 环。
+| 契约 | 用途 |
+| --- | --- |
+| [意图澄清](../../../references/intent-clarify.md) | 当前段写前公共六项与授权 |
+| [单元推进](../../../references/unit-cycle-protocol.md) | `C/M/G/F`、批确认、前文保护、回改重开；sdx 无 S |
+| [烤干](../../../references/grilling-skill.md) | 写后缺口检查与收敛 |
+| [SDX-ADR](../../../references/sdx-adr-protocol.md) | 技术决策生命周期、复用、冲突与登记 |
 
-契约：
+沿用用户对当前范围已明确的参数和授权；不因换工具或进入下一步而重复索取。`F` 本身仍不等于剩余意图已批确认，其行为以共享推进协议为准。
 
-- [intent-clarify.md](../../../references/intent-clarify.md) — 写前意图澄清
-- [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) — 段落推进环 / `C·M·G·F` / 重开 / 前文回改（**`sdx-*` 无 `S`**）
-- [grilling-skill.md](../../../references/grilling-skill.md) — 写后烤干能力
-- [sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md) — 技术决策落 ADR / CONTEXT
+## 对象与澄清差额
 
-主线口令：`澄清 → 生成 → 烤干`。
+当前段是一个章或子章；默认模板顺序，也可按用户指定跳转。写后默认表仅维护在 workflow。
 
----
+公共六项之外，按需补充 `depth`、章节范围、表达粒度及本段依赖的已确认前提。
 
-## 对象定义
+## 语义问题与停顿
 
-**当前段**：`ANALYSIS-{IDEA-ID}.md` 中的一个章节或子章节（七章模板）。  
-一次只打开一段；默认按模板顺序，也可跳转到用户指定段。
+以下发生变化时，先给结论、推荐与数字选项，获确认后再改：目标、范围、承诺、术语、业务取舍、风险、里程碑、切换方案及技术选型。前文回改导致当前段前提变化时，按共享协议重开。
 
-产物路径见 [workflow.md](workflow.md)。
+当前段未收敛，不自动推进。未提供的目标数值、时限、收益和职责必须显式标缺口；标注缺口不等于已通过验收。
 
----
+## 技术决策绑定
 
-## 技能追加澄清字段
+ADR 的创建、复用及冲突处理沿用共享协议；七章 ANALYSIS 的正文落点以本绑定与 [模板](../assets/analysis-template.md) 为准：
 
-在公共六项之外可追加（不可删减公共项）：
+| 类型 | 落点 |
+| --- | --- |
+| 业务、范围、优先级取舍 | §5.2 Q-n，区分待确认与已决策 |
+| 有持久后果的技术/架构选择 | ADR + CONTEXT；§5.2 表后链接真实 CONTEXT |
+| 尚未形成决策的技术线索 | §7.3，标「待研发确认」 |
 
-- `depth`：`quick | standard | deep`
-- 本轮起始章节 / 范围
-- 表达粒度与语言风格
-- 公司库时：跨系统功能边界归属摘要
+无新技术决策时不强建 ADR、空台账或悬空链接；已有适用决策可引用。
 
----
-
-## 语义问题清单（烤干须停）
-
-改变以下任一项时，须先给结论 / 推荐 / 数字选项，用户确认前不得修订：
-
-- 业务目标、范围 / 非范围、承诺口径
-- 取舍、风险、里程碑、切换方案（阶段骨架在 ANALYSIS：`M{n}（短名）`；FEATURE 概览抄整串，`MVP{n}`/FR 挂载归 §4）
-- **技术/架构选型**（落 ADR；见 [sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)）
-- 术语定义、冲突化解策略
-
----
-
-## 技术决策推进门禁
-
-烤干收敛后、用户选 **C** 前：本段涉及的新技术决策须已写 `{DOC_DIR}/adr/ADR-*.md`、已登记 `CONTEXT.md`，ANALYSIS §5.2 表后已链 CONTEXT；禁止残留 `ADR-待定`。业务取舍仍只写 §5.2 Q-n。
-
----
-
-## 前文回改触发例（技能特有）
-
-协议正文见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)。本技能常见触发：
-
-- 前文范围边界定义不准确
-- 业务目标与前文不一致
-- 术语定义冲突
-- 前文冲突化解策略已不足以支撑当前段
-
----
-
-## 失败停顿
-
-- 当前段未收敛前，不得自动推进到下一段
-- 语义问题或前文回改：立即停下，确认后再修订 / 重开
+写前查同层 CONTEXT 与相关 ADR；同结论复用，冲突先确认处置。涉及新技术决策的当前段推进前，须完成 ADR 落盘、CONTEXT 登记与正文引用，清除 `ADR-待定`。

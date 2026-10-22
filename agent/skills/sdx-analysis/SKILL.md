@@ -1,64 +1,39 @@
 ---
 name: sdx-analysis
 description: >
-  逐步确认参数，按模板分段「澄清 → 生成 → 烤干」直写 ANALYSIS-{IDEA-ID}.md；
-  每段写前意图澄清，写入后自动 grilling 至收敛，再由用户确认推进。
-  用户提到 /sdx-analysis、写需求分析、整理业务目标、把材料收成七章需求分析、
-  写 ANALYSIS-*.md / 七章需求分析、一口气写完整版、选 F 补齐剩余章节时，务必使用本技能（分段协议与 F 门禁；非法整篇覆盖也须加载本技能以拒绝）。
-  分流：FEATURE/PRD/ASD/DSD/TDD、解决方案层 SOLUTION → /sdx-solution，或 docs-* 主路径 → 对应技能，不以本技能代跑。
-  推进见 references/gates.md。
-compatibility: Bash 5+；校验脚本 agent/skills/sdx-analysis/scripts/validate-analysis.sh（仅结构/内容校验）。
+  创建或修订系统、应用知识库的七章需求分析 ANALYSIS-{IDEA-ID}.md。
+  用于把业务材料整理成目标、范围、影响、风险和里程碑，或续写、评审已有 ANALYSIS。
+  FEATURE、PRD、ASD、DSD、TDD 和解决方案层 SOLUTION 交由对应技能。
+metadata:
+  compatibility: Bash 5+；校验脚本仅做结构与内容检查。
 ---
 
 # sdx-analysis
 
-## 输出硬门禁（P0）
+把业务材料写成业务与产品可评审的需求分析，产物为 `{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md`。仅支持 `KNOWLEDGE_TYPE=system|application`；公司域架构用 `sdx-domains`，解决方案用 `sdx-solution`，MVP/FR 拆分用 `sdx-feature`。用户已指定其他交付阶段时，直接走对应技能。
 
-- 对象=当前段；一次一段（除非 `F` 且已批确认意图）。
-- 写前澄清 / 推进环 `C/M/G/F`（无 `S`）/ 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[simplify-principles.md](../../references/simplify-principles.md)、[sdx-adr-protocol.md](../../references/sdx-adr-protocol.md)；细节 [gates.md](references/gates.md)。
+## 执行
 
-## 边界
+1. 先读 [workflow.md](references/workflow.md) 与 [gates.md](references/gates.md)，核对材料、配置和已有文件；沿用已给参数与当前段授权，只问缺口。
+2. 按 [analysis-template.md](assets/analysis-template.md) 处理当前章或子章。默认一次一段，写前澄清、写后烤干，再等待 `C/M/G/F`；`F` 的批确认与前文保护见 gates。
+3. 收尾对照 [quality-checklist.md](references/quality-checklist.md) 并运行校验。脚本结果不能代替业务共识或写后确认。
 
-| 负责 | 不负责 |
+## 按需读取
+
+| 时机 | 资源 |
 | --- | --- |
-| `ANALYSIS-{IDEA-ID}.md` 需求分析、参数向导、意图澄清、分段生成、段内烤干、段落推进 | `FEATURE/PRD/ASD/DSD/TDD`；`SOLUTION`；docs-* 主路径；实现级接口/表结构/中间件设计 |
+| 确定 ID、深度、编号或下游衔接 | [core-concepts.md](references/core-concepts.md) |
+| 生成与审阅业务正文 | [design-principles.md](references/design-principles.md)、[audience-and-language.md](references/audience-and-language.md) |
+| 遇到输入不足、续写或校验问题 | [gotchas.md](gotchas.md)；误用辨别见 [anti-patterns.md](references/anti-patterns.md) |
+| 出现持久技术决策 | gates 中的 ADR 绑定与其共享协议 |
 
-## 不这样用
+## 校验
 
-- 不走前置草稿 + 集中收口；默认参数向导后分段推进
-- 不把整篇集中回炉或整份重生成当默认路径
-- 不把写前意图澄清当成完整 grilling Skill 深挖
-- 不把 `ANALYSIS` 偷换成 `FEATURE/PRD/ASD/DSD/TDD` 或 docs-* 主路径
-
-## 路由
-
-| 目的 | 文件 |
-| --- | --- |
-| 流程 / 推进 binding | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
-| IDEA-ID / depth | [core-concepts.md](references/core-concepts.md) |
-| 原则 / 反模式 | [design-principles.md](references/design-principles.md)、[anti-patterns.md](references/anti-patterns.md) |
-| 易错 / 受众 / 终检 | [gotchas.md](gotchas.md)、[audience-and-language.md](references/audience-and-language.md)、[quality-checklist.md](references/quality-checklist.md) |
-| 技术决策 ADR | [sdx-adr-protocol.md](../../references/sdx-adr-protocol.md) |
-| 模板 | [analysis-template.md](assets/analysis-template.md) |
-| sdx 族结构 | [sdx-skill-skeleton.md](references/sdx-skill-skeleton.md) |
-
-## 最少输入
-
-- 原始业务描述或待整理材料
-- 可确定的主题或标题线索
-- `{DOC_DIR}/analysis/` 可写
-- `KNOWLEDGE_TYPE=system|application`
-- 若已给 `IDEA-ID`、章节范围、深度，则直接进入参数向导确认
-
-## 产出与校验
-
-- 正式：`{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md`
+在目标工程运行，脚本从 `.docsconfig` 解析文档根。以下路径是元库位置；安装后使用实际技能路径。参数与退出码见 [workflow.md](references/workflow.md#校验)。
 
 ```bash
-agent/skills/sdx-analysis/scripts/validate-analysis.sh
-agent/skills/sdx-analysis/scripts/validate-analysis.sh --file path/to/ANALYSIS-xxx.md
+bash agent/skills/sdx-analysis/scripts/validate-analysis.sh --file docs/analysis/ANALYSIS-example.md
+bash agent/skills/sdx-analysis/scripts/validate-analysis.sh --strict
 ```
 
-## 评测
-
-`evals/evals.json`、[grader.md](agents/grader.md)。聚焦：意图澄清、当前段推进、边界分流。
+维护本技能时才读 [评测说明](references/evaluation.md)；技能结构参考 [sdx-skill-skeleton.md](references/sdx-skill-skeleton.md)。

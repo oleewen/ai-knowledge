@@ -1,102 +1,62 @@
 # sdx-analysis 工作流
 
-主干：[SKILL.md](../SKILL.md)。推进 binding：[gates.md](gates.md)。
-
-## 目标
-
-通过**参数向导 + 分段「澄清 → 生成 → 烤干」**，逐步形成可评审的 `ANALYSIS-{IDEA-ID}.md`（七章）。  
-单段收敛；不先攒整篇再集中收口。
-
-契约分工：
-
-- 写前意图澄清：[intent-clarify.md](../../../references/intent-clarify.md)
-- 段落推进环 / `C·M·G·F` / 重开 / 前文回改：[unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)（**无 `S`**）
-- 写后烤干：[grilling-skill.md](../../../references/grilling-skill.md)
-- 技术决策落 ADR / CONTEXT：[sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)
-
-**仅系统库或应用库**（`KNOWLEDGE_TYPE=system|application`）：从原始输入开写，不等 `SOLUTION`。交付物 `{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md`（七章全文 §1–§7）。公司 → `/sdx-domains`。解决方案层不写本技能。功能特性 → `/sdx-feature`。
-
----
+按当前段形成可评审的七章 ANALYSIS；权限与停顿见 [gates.md](gates.md)，结构见 [模板](../assets/analysis-template.md)。
 
 ## 参数向导
 
-### 模式
+先读目标工程 `.docsconfig`，核对 `DOC_DIR` 与 `KNOWLEDGE_TYPE`。仅支持 system/application；层级不符时说明分流，不修改配置来绕过限制。可从原始业务材料起步，不要求先有 SOLUTION。
 
-1. **逐项模式**：一次只确认一个参数。
-2. **快捷组合模式**：先选预设，再按需改单项。
+从请求与前文提取以下参数；已明确的直接沿用，只询问影响本轮写作的缺口。可逐项询问，也可提供组合建议，不强制重复选择预设。
 
-### 最小可写条件
-
-- 主题已明确，或可从材料中归纳出标题
-- `IDEA-ID` 已给出或可按规则生成
-- `{DOC_DIR}/analysis/` 可写且 `KNOWLEDGE_TYPE=system|application`
-- 至少能确定本轮起始章节或默认从 `§1` 开始
-
-### 推荐参数顺序
-
-1. `IDEA-ID`
-2. 标题 / 主题
-3. `depth`：`quick | standard | deep`
-4. 本轮起始章节 / 范围
-5. 表达粒度与语言风格
-
-### 快捷组合
-
-- `标准全篇`：`depth=standard`，从 `§1` 开始，默认完整七章
-- `快速补段`：`depth=quick`，只处理用户指定章节
-- `深度评审`：`depth=deep`，强化影响、冲突、风险与里程碑
-
-参数未收口时留在向导，不进入 Section Cycle。
-
----
+| 参数 | 处理 |
+| --- | --- |
+| 原始材料、主题 | 有可追溯业务事实即可写审阅稿；不足以确定目标时先补背景 |
+| IDEA-ID | 保留用户或既有文件的 ID；未给时按 [core-concepts.md](core-concepts.md#idea-id) 建议 |
+| depth | 默认 standard；quick/deep 的差异见 core-concepts |
+| 当前段、范围 | 默认 §1，也可指定章或子章；只写该范围 |
+| 表达 | 面向业务与产品；特殊语言、粒度要求沿用用户选择 |
 
 ## 终稿骨架初始化
 
-参数达标后立即创建：
+先检查 `{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md` 是否存在。
 
-- `{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md`
+- **新建**：目标明确后按模板建立 frontmatter、七章标题和必要表头，未写部分标「待补充」。用户仅要片段或聊天审阅稿时，按指定容器输出，不补写范围外正文。
+- **续写/修订**：先读已有内容与相关上下文，只改当前段；保留 ID、元数据、已确认前文和其他章节。不得用空模板覆盖已有文件。
+- 元数据只填已知值；无父文档用空值，不编造作者、日期、依赖或状态。骨架不代表各章正文已获授权。
 
-初始化：文档标题、七章标题与必要表头、文首 frontmatter 占位、未写章节占位说明。  
-骨架创建**不**替代各章写入前的意图澄清。
+## 当前段
 
----
-
-## 产物路径
-
-| 项 | 路径 |
-| --- | --- |
-| 终稿 | `{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md`（仅 system|application） |
-| 技术决策 | `{DOC_DIR}/adr/ADR-*.md` + `CONTEXT.md`（见 [sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md)） |
-| 结构校验 | `../scripts/validate-analysis.sh`（见 [SKILL.md](../SKILL.md)） |
-
----
+1. 按 gates 绑定的意图澄清协议列公共六项；当前段授权已明确则沿用。事实缺口可标「待确认」，但不能冒充目标值、承诺或决策。
+2. 生成前按 [精简原则](../../../references/simplify-principles.md) 组织内容；只读取与当前段有关的知识索引及命中材料。不存在知识库基线时，注明缺口，基于原始材料继续。
+3. 业务方案存在多条真实可行路径时，在当前段比较其收益、约束与代价；不要为凑数量编方案。业务决策与技术决策按 gates 分别落位。
+4. 写后按默认表审阅当前段，执行 [受众检查](audience-and-language.md)；缺口、语义变更、前文回改与用户动作按共享推进协议处理。
 
 ## 写后默认表
 
-| 对象 | 默认烤干 | 强制升级 |
+| 对象 | 默认烤干 | 检查重点 |
 | --- | --- | --- |
-| 各章节 | **必须** | 未确认决策写入；跨段依赖 / 前文前提变更；范围·目标·承诺口径变更 |
+| 章或子章，包括 F 批次中的每段 | 必须 | 证据、业务边界、承诺、跨段一致性、受众；技术决策还查 ADR 登记 |
 
-启发式只可升级为必须，不可降级跳过。
+## 产物路径
 
----
+| 产物 | 路径 |
+| --- | --- |
+| 需求分析 | `{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md` |
+| 本轮确有的技术决策 | `{DOC_DIR}/adr/ADR-*.md` 与 `CONTEXT.md` |
 
-## Section Cycle（指针）
+ANALYSIS §6.1 给出 `M{n}（短名）` 范围骨架；FEATURE 概览沿用整串，FEATURE §4 划分 MVP、挂载 FR。不要在 ANALYSIS 中替下游生成清单。
 
-选定当前段后，严格按 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) + [intent-clarify.md](../../../references/intent-clarify.md) 执行：`澄清 → 生成 → 烤干 → 用户动作`。
+## 校验
 
-本技能附加：
+完成全部段或 F 批次后，对照 [质量清单](quality-checklist.md) 检查跨段矛盾、编号、术语、元数据、引用和未决项，再运行 [validate-analysis.sh](../scripts/validate-analysis.sh)。
 
-- 当前段存在 `>=2` 条真实业务路径时，先在段内完成方案比选再收敛
-- **业务**多方案取舍写入 §5.2 Q-n；**技术/架构**选型按 [sdx-adr-protocol.md](../../../references/sdx-adr-protocol.md) 落 ADR + CONTEXT，不入 Q-n；表后须链 CONTEXT
-- 烤干收敛后、选 **C** 前：本段新技术决策须已落盘且占位已清（可先写 `ADR-待定`，推进前清除）
-- `grilling` 默认只烤当前段；fallback 见 [grilling-skill.md](../../../references/grilling-skill.md)
-- 动作字母仅 `C/M/G/F`（无 `S`）
+| 调用 | 用途 |
+| --- | --- |
+| `--file <path>` | 检查指定文件；相对路径从调用目录解析 |
+| 不带 `--file` | 递归检查 `{DOC_DIR}/analysis/ANALYSIS-*.md` |
+| `--strict` | 收尾检查；警告或未找到文档也返回非零 |
+| `--help` | 查看用法，不要求工程配置 |
 
----
+依赖 Bash 5+ 与共享 docsconfig 库。退出码：`0` 无错误（默认模式可能仍有警告）；`1` 校验失败；`2` 参数错误。分段草稿可运行默认检查，但缺章警告不代表整篇完成。
 
-## 整体验证与质量基线
-
-`F` 或全部段完成后，至少检查：章节完整性、术语一致、编号连续（`G-n` / `C-n` / `R-n` / `Q-n` / `M{n}`）、跨段无未解释矛盾、frontmatter 完整、正文业务可读且不混入实现级细节。§6.1 为范围骨架（`M{n}（短名）`；覆盖范围可落到能力）；FEATURE 概览抄 `M{n}`，`MVP{n}` 与 FR 挂载在 ANALYSIS §4（与里程碑不硬对齐）。
-
-终检对齐 [quality-checklist.md](quality-checklist.md)；收口前跑 `validate-analysis.sh`。
+脚本检查模板标题、有限 frontmatter 字段、空段、技术语言提示及 ADR 引用；不验证完整 YAML 语义、业务事实、授权或共识。逐条审阅警告，不能仅凭退出码勾选 §7.4。

@@ -1,59 +1,15 @@
-# sdx 族 SKILL 结构 SSOT
+# sdx 族 SKILL 结构参考
 
-供 `sdx-*` Slash 技能对齐 `SKILL.md` 骨架。docs 族见 [docs-agent/references/docs-skill-skeleton.md](../../docs-agent/references/docs-skill-skeleton.md)。
+本页供维护技能时参考，不是生成 ANALYSIS 的前置阅读。保留各技能的真实契约，不以统一行数或文件数代替可用性。
 
-## Markdown 骨架（≤60 行）
-
-```markdown
----
-name: <skill>
-description: >
-  <第三人称能力句>。
-  触发：/slash 与口述同义。
-  分流：docs vs sdx 一句。
-  推进协议：动作、写入约束与例外指针 gates.md。
-compatibility: Bash 5+；校验脚本或钩子指针。
----
-
-# <title>
-
-## 边界
-| 负责 | 不负责 |
-
-## 路由
-| 目的 | 文件 |
-
-## 最少输入
-（bullet ≤5）
-
-## 推进协议
-（链 gates.md；动作协议、写入约束、例外）
-
-## 产出与校验
-（路径 + validate-*.sh 或等价校验）
-
-## 评测 / 钩子
-（指针）
-```
-
-## description 规范
-
-1. 第三人称；触发 + 分流 + 推进协议/写入规则。
-2. 保留 `compatibility:` 一行（钩子/脚本/bootstrap/校验）。
-3. 不与边界表逐字重复。
-
-## 禁止出现在 SKILL.md
-
-- 「路由表」+「执行路由（先读后写）」双列表（合并为一张路由表）
-- 「技能包」表（`references/README.md` 为 SSOT）
-- 「阶段摘要」长段（进 workflow）
-- KNOWLEDGE_TYPE 正文（SSOT：`sdx-architect/references/knowledge-type-modes.md`，其余一行链）
-
-## references 分工
-
-| 文件 | SSOT |
+| 位置 | 内容 |
 | --- | --- |
-| `gates.md` | 动作协议、写入约束、例外 |
-| `workflow.md` | 阶段、状态机、参数、公司库等特殊路径 |
-| `agent/references/grilling-skill.md` | 公共 `grilling` 能力契约；Skill 优先、fallback 协议、统一输出 |
-| `knowledge-type-modes.md` | KNOWLEDGE_TYPE 正文（architect） |
+| frontmatter | name；简明说明能力与触发条件的 description；运行依赖放正文或 metadata |
+| SKILL.md | 目的、边界、最短执行路径、按需加载入口、校验方式 |
+| references/workflow.md | 参数、输入输出、操作步骤与写后默认表 |
+| references/gates.md | 绑定共享协议，补本技能对象、语义边界和失败停顿 |
+| assets/ | 产物模板；避免把维护说明带入生成正文 |
+| scripts/、tests/ | 有实际价值的确定性检查及行为回归 |
+| evals/、agents/ | 现实使用案例与证据判定；按需提供 UI 元数据 |
+
+共享状态机、意图澄清、烤干与精简原则保留在各自事实源，不复制到每个入口。description 不承载完整流程；无需为凑目录增加文件。docs 族结构参考见 [docs-skill-skeleton.md](../../docs-agent/references/docs-skill-skeleton.md)。

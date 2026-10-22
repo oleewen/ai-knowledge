@@ -1,308 +1,131 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ANALYSIS 结构校验（七章模板；不承担写前门禁）。
-# 用法：validate-analysis.sh [--file <path>]
-# 文档根：docsconfig_doc_abs（.docsconfig）；先 source docsconfig.sh
-#
-# 要点：文首 frontmatter、`id`、`## 1`–`## 7`、小节标题、空节标注、编号、正文技术词筛查；
-#       不校验会话 spec、CONFIRMED、HTML gate 或写前 hook。
-
-TARGET_FILE=""
+# 只读结构检查；默认警告不阻断，--strict 将警告视为失败。
+# frontmatter 只检查模板字段与标量，不承担完整 YAML 解析或语义审批。
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+TEMPLATE="$SCRIPT_DIR/../assets/analysis-template.md"
+TARGET_FILE=''
+STRICT=0
 ERRORS=0
 WARNINGS=0
 
+usage() {
+  cat <<'HELP'
+用法: validate-analysis.sh [--file <path>] [--strict]
+  --file <path>  只检查指定文件；相对路径以调用目录为准
+  --strict       任一警告或没有文档时退出 1
+  -h, --help     显示帮助；无需 .docsconfig
+退出码: 0 成功（默认允许警告），1 校验失败，2 参数错误。
+HELP
+}
+cli_error() { printf '[ERROR] %s\n' "$1" >&2; exit 2; }
 while [[ $# -gt 0 ]]; do
-  case $1 in
-    --file) TARGET_FILE="$2"; shift 2 ;;
-    *) echo "未知参数: $1"; exit 1 ;;
+  case "$1" in
+    --file)
+      [[ $# -ge 2 && -n "$2" && "$2" != --* ]] || cli_error '缺少 --file 路径'
+      [[ -z "$TARGET_FILE" ]] || cli_error '--file 只能指定一次'
+      TARGET_FILE="$2"; shift 2 ;;
+    --strict) STRICT=1; shift ;;
+    -h|--help) usage; exit 0 ;;
+    *) cli_error "未知参数: $1" ;;
   esac
 done
+[[ -z "$TARGET_FILE" || "$TARGET_FILE" == /* ]] || TARGET_FILE="$PWD/$TARGET_FILE"
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-_AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
-# shellcheck disable=SC1091
-source "$_AGENT_HOME/scripts/lib/docsconfig.sh"
+# shellcheck source=../../../scripts/lib/docsconfig.sh
+source "$AGENT_HOME/scripts/lib/docsconfig.sh"
 docsconfig_bootstrap_validate
-
-if [[ "${KNOWLEDGE_TYPE:-}" != "system" && "${KNOWLEDGE_TYPE:-}" != "application" ]]; then
-  echo "[ERROR] /sdx-analysis 仅允许 KNOWLEDGE_TYPE=system|application；当前=${KNOWLEDGE_TYPE:-unset}"
+if [[ "$KNOWLEDGE_TYPE" != system && "$KNOWLEDGE_TYPE" != application ]]; then
+  printf '[ERROR] /sdx-analysis 仅允许 KNOWLEDGE_TYPE=system|application；当前=%s\n' "${KNOWLEDGE_TYPE:-unset}"
   exit 1
 fi
+DOC_ABS="$(docsconfig_doc_abs)"
+warn() { printf '[WARN]  %s\n' "$1"; WARNINGS=$((WARNINGS + 1)); }
+error() { printf '[ERROR] %s\n' "$1"; ERRORS=$((ERRORS + 1)); }
+summary() {
+  printf '\n=== 校验结果 ===\n错误: %s  警告: %s\n' "$ERRORS" "$WARNINGS"
+  if (( ERRORS > 0 || (STRICT && WARNINGS > 0) )); then
+    printf '校验失败，请处理以上问题。\n'
+    return 1
+  fi
+  if (( WARNINGS > 0 )); then
+    printf '检查完成，存在待处理警告；收尾请使用 --strict。\n'
+  else
+    printf '校验通过。\n'
+  fi
+}
 
-doc_abs="$(docsconfig_doc_abs)"
-repo_abs="$(docsconfig_repo_abs)"
-cd "$repo_abs" || exit 1
-
-ANALYSIS_DIR="${doc_abs}/analysis"
-_TEMPLATE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-TEMPLATE="${_TEMPLATE_DIR}/assets/analysis-template.md"
-
-info()    { echo "[INFO]  $1"; }
-warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
-error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
-success() { echo "[OK]    $1"; }
-
-echo "=== 需求分析文档结构校验 ==="
-echo "doc_abs: ${doc_abs}"
-echo ""
-
-# 0. 模板文件
-if [[ -f "${TEMPLATE}" ]]; then
-  success "analysis-template.md 存在"
-else
-  warn "analysis-template.md 不存在: ${TEMPLATE}"
-fi
-
-# 收集要校验的文件
+printf '=== 需求分析文档结构校验 ===\ndoc_abs: %s\n\n' "$DOC_ABS"
+[[ -r "$TEMPLATE" ]] || { error "模板不可读: $TEMPLATE"; summary; exit 1; }
 FILES=()
-if [[ -n "${TARGET_FILE}" ]]; then
-  if [[ -f "${TARGET_FILE}" ]]; then
-    FILES=("${TARGET_FILE}")
-  else
-    error "指定文件不存在: ${TARGET_FILE}"
-    echo ""
-    echo "=== 校验结果 ==="
-    echo "错误: ${ERRORS}  警告: ${WARNINGS}"
-    exit 1
-  fi
-else
-  # 1. 文档目录
-  if [[ -d "${ANALYSIS_DIR}" ]]; then
-    FILE_COUNT=$(find "${ANALYSIS_DIR}" -name "ANALYSIS-*.md" 2>/dev/null | wc -l | tr -d ' ')
-    success "analysis/ 目录存在 (${FILE_COUNT} 个需求分析文档)"
-  else
-    warn "analysis/ 目录不存在: ${ANALYSIS_DIR}"
-    echo ""
-    echo "=== 校验结果 ==="
-    echo "错误: ${ERRORS}  警告: ${WARNINGS}"
-    exit 0
-  fi
-
-  while IFS= read -r -d '' f; do
-    FILES+=("$f")
-  done < <(find "${ANALYSIS_DIR}" -name "ANALYSIS-*.md" -print0 2>/dev/null)
+if [[ -n "$TARGET_FILE" ]]; then
+  [[ -f "$TARGET_FILE" && -r "$TARGET_FILE" ]] || { error "指定文件不存在或不可读: $TARGET_FILE"; summary; exit 1; }
+  FILES=("$TARGET_FILE")
+elif [[ -d "$DOC_ABS/analysis" ]]; then
+  # 只遍历文件，使用 NUL 分隔，保留空格等合法路径字符。
+  # 单独保留进程替换的 PID；只检查 read 循环会漏掉 find 的遍历错误。
+  exec {SCAN_FD}< <(find "$DOC_ABS/analysis" -type f -name 'ANALYSIS-*.md' -print0)
+  SCAN_PID=$!
+  while IFS= read -r -d '' file; do FILES+=("$file"); done <&"$SCAN_FD"
+  exec {SCAN_FD}<&-
+  if ! wait "$SCAN_PID"; then error "目录扫描失败: $DOC_ABS/analysis"; fi
+fi
+if (( ${#FILES[@]} == 0 )); then
+  printf '[INFO]  未找到需求分析文档: %s/analysis\n' "$DOC_ABS"
+  (( STRICT == 0 )) || error '严格校验需要至少一个需求分析文档'
+  summary
+  exit $?
 fi
 
-if [[ ${#FILES[@]} -eq 0 ]]; then
-  info "未找到需求分析文档"
-  echo ""
-  echo "=== 校验结果 ==="
-  echo "错误: ${ERRORS}  警告: ${WARNINGS}"
-  exit 0
-fi
-
-# 校验每个文档
 for file in "${FILES[@]}"; do
-  BASENAME=$(basename "${file}")
-  echo "--- 校验: ${BASENAME} ---"
-
-  # 2. 文档元数据（文首 frontmatter）
-  FIRST_LINE=$(head -1 "${file}" 2>/dev/null || true)
-  if [[ "${FIRST_LINE}" != "---" ]]; then
-    error "${BASENAME}: 缺少文首 YAML frontmatter（首行应为 ---）"
-  else
-    FRONTMATTER_END_LINE=$(awk 'NR>1 && $0=="---"{print NR; exit}' "${file}" 2>/dev/null || true)
-    if [[ -z "${FRONTMATTER_END_LINE}" ]]; then
-      error "${BASENAME}: YAML frontmatter 未闭合（缺少第二个 ---）"
-    else
-      FRONTMATTER_CONTENT=$(sed -n "2,$((FRONTMATTER_END_LINE - 1))p" "${file}" 2>/dev/null || true)
-      success "${BASENAME}: YAML frontmatter 存在"
-      for field in "id:" "title:" "version:" "status:" "created:" "updated:" "author:" "parent:" "dependencies:" "tags:"; do
-        if echo "${FRONTMATTER_CONTENT}" | grep -qE "^${field}"; then
-          success "${BASENAME}: ${field} 字段存在"
-        else
-          warn "${BASENAME}: 缺少 ${field} 字段"
-        fi
-      done
-
-      ID_LINE=$(echo "${FRONTMATTER_CONTENT}" | grep -E '^id:' 2>/dev/null | head -1 || true)
-      if [[ -n "${ID_LINE}" ]]; then
-        if echo "${ID_LINE}" | grep -qE 'ANALYSIS-'; then
-          success "${BASENAME}: id 含 ANALYSIS- 前缀"
-        else
-          warn "${BASENAME}: id 建议符合 ANALYSIS-{IDEA-ID}，实际: ${ID_LINE}"
-        fi
-      fi
-
-      STATUS_LINE=$(echo "${FRONTMATTER_CONTENT}" | grep -E '^status:' 2>/dev/null | head -1 || true)
-      if echo "${STATUS_LINE}" | grep -q "draft\|review\|approved"; then
-        success "${BASENAME}: status 值有效"
-      else
-        warn "${BASENAME}: status 值异常: ${STATUS_LINE}"
-      fi
-    fi
+  BASENAME="${file##*/}"
+  printf '\n--- 校验: %s ---\n' "$BASENAME"
+  # macOS awk 的字节切片可能截断 UTF-8 字符；只为此子进程固定字节语义。
+  if ! REPORT="$(LC_ALL=C awk -v template="$TEMPLATE" -v name="$BASENAME" -f "$SCRIPT_DIR/validate-analysis.awk" "$file")"; then
+    error "$BASENAME: 无法完成文档检查"
+    continue
   fi
-
-  # 3. 七章结构检查（与当前 analysis-template.md 一致）
-  REQUIRED_SECTIONS=(
-    "## 1. 背景与目标"
-    "## 2. 范围与约束"
-    "## 3. 影响与冲突"
-    "## 4. 思路与方案"
-    "## 5. 风险与待定"
-    "## 6. 交付计划"
-    "## 7. 附录"
-  )
-
-  SECTION_COUNT=0
-  for section in "${REQUIRED_SECTIONS[@]}"; do
-    if grep -qF "${section}" "${file}"; then
-      SECTION_COUNT=$((SECTION_COUNT + 1))
-    else
-      warn "${BASENAME}: 缺少章节 '${section}'"
-    fi
-  done
-  info "${BASENAME}: ${SECTION_COUNT}/7 个必需章节"
-
-  # 3b. 模板小节标题（与 assets/analysis-template.md 对齐）
-  REQUIRED_SUBHEADINGS=(
-    "### 1.1 业务现状"
-    "### 1.2 存在问题"
-    "### 1.3 业务目标"
-    "### 2.1 核心场景"
-    "### 2.2 涉及角色"
-    "### 2.3 范围边界"
-    "#### 范围内（In Scope）"
-    "#### 范围外（Out of Scope）"
-    "#### 成功标准"
-    "### 3.1 影响面"
-    "### 3.2 影响业务能力"
-    "### 3.3 影响传播路径"
-    "### 3.4 业务冲突"
-    "### 4.1 解决思路"
-    "### 4.2 关键约束"
-    "### 5.1 风险评估"
-    "### 5.2 问题决策"
-    "### 6.1 关键里程碑"
-    "### 6.2 切换方案"
-    "### 7.1 术语表"
-    "### 7.2 参考文档"
-    "### 7.3 内部参考（仅供研发接力）"
-    "### 7.4 质量自查表 (Self-Check)"
-  )
-  SUB_COUNT=0
-  SUB_TOTAL=${#REQUIRED_SUBHEADINGS[@]}
-  for h in "${REQUIRED_SUBHEADINGS[@]}"; do
-    if grep -qF "${h}" "${file}"; then
-      SUB_COUNT=$((SUB_COUNT + 1))
-    else
-      warn "${BASENAME}: 缺少小节标题 '${h}'"
-    fi
-  done
-  info "${BASENAME}: 模板小节 ${SUB_COUNT}/${SUB_TOTAL} 个标题命中"
-
-  if grep -qF '### 6.1 关键里程碑' "${file}" 2>/dev/null; then
-    if grep -qE 'M[0-9]+（[^）]+）|M[0-9]+\([^)]+\)' "${file}" 2>/dev/null; then
-      success "${BASENAME}: 发现里程碑形如 M{n}（短名）"
-    else
-      warn "${BASENAME}: 未发现 M{n}（短名）写法（§6.1 模板要求）"
-    fi
-  fi
-
-  # 4. 空章节检测（有章节标题但无实质内容，且未标注「不适用」或「待补充」）
-  EMPTY_SECTION_COUNT=0
-  TOTAL_LINES=$(wc -l < "${file}" | tr -d ' ')
-
-  SECTION_LINES=()
-  SECTION_NAMES=()
-  LINE_NUM=0
+  ADR_IDS=()
+  CONTEXT_TARGETS=()
+  CONTEXT_LINK=0
+  ADR_PENDING=0
   while IFS= read -r line; do
-    LINE_NUM=$((LINE_NUM + 1))
-    if [[ "${line}" =~ ^##\  ]]; then
-      SECTION_LINES+=("${LINE_NUM}")
-      SECTION_NAMES+=("${line}")
-    fi
-  done < "${file}"
+    case "$line" in
+      $'ADR\t'*) ADR_IDS+=("${line#*$'\t'}") ;;
+      $'CONTEXT\t'*) CONTEXT_TARGETS+=("${line#*$'\t'}") ;;
+      $'PENDING\t'*) ADR_PENDING=1 ;;
+      '[WARN]'*) WARNINGS=$((WARNINGS + 1)); printf '%s\n' "$line" ;;
+      '[ERROR]'*) ERRORS=$((ERRORS + 1)); printf '%s\n' "$line" ;;
+      *) [[ -z "$line" ]] || printf '%s\n' "$line" ;;
+    esac
+  done <<< "$REPORT"
 
-  for i in "${!SECTION_LINES[@]}"; do
-    START=${SECTION_LINES[$i]}
-    if [[ $((i + 1)) -lt ${#SECTION_LINES[@]} ]]; then
-      END=$((SECTION_LINES[$((i + 1))] - 1))
-    else
-      END=${TOTAL_LINES}
-    fi
-    SECTION_CONTENT=$(sed -n "$((START + 1)),${END}p" "${file}" 2>/dev/null || true)
-    REAL_CONTENT=$(echo "${SECTION_CONTENT}" | grep -v "^[[:space:]]*$" | grep -v "^<!--" | grep -v "^-->" || true)
-    if [[ -z "${REAL_CONTENT}" ]]; then
-      warn "${BASENAME}: 章节 '${SECTION_NAMES[$i]}' 无内容且未标注「不适用」或「待补充」"
-      EMPTY_SECTION_COUNT=$((EMPTY_SECTION_COUNT + 1))
-    fi
-  done
-
-  if [[ ${EMPTY_SECTION_COUNT} -eq 0 ]]; then
-    success "${BASENAME}: 无空章节"
-  fi
-
-  # 5. 编号体系检查
-  G_COUNT=$(grep -c 'G-[0-9]' "${file}" 2>/dev/null || true)
-  Q_COUNT=$(grep -c 'Q-[0-9]' "${file}" 2>/dev/null || true)
-  C_COUNT=$(grep -c 'C-[0-9]' "${file}" 2>/dev/null || true)
-  R_COUNT=$(grep -c 'R-[0-9]' "${file}" 2>/dev/null || true)
-
-  info "${BASENAME}: G-n=${G_COUNT} Q-n=${Q_COUNT} C-n=${C_COUNT} R-n=${R_COUNT}"
-
-  if [[ ${G_COUNT} -eq 0 ]]; then
-    warn "${BASENAME}: 未发现业务目标编号 (G-n)"
-  fi
-
-  # 6. 技术语言检测（常见技术词混入正文）
-  TECH_TERMS=("Spring Boot" "Kafka" "Redis" "TiDB" "MySQL" "Dubbo" "RPC" "MQ" "MyBatis" "Docker" "Kubernetes")
-  TECH_WARN=0
-  for term in "${TECH_TERMS[@]}"; do
-    MATCH_COUNT=$(grep -v "^<!--" "${file}" | grep -c "${term}" 2>/dev/null || true)
-    if [[ ${MATCH_COUNT} -gt 0 ]]; then
-      warn "${BASENAME}: 正文中发现技术词「${term}」(${MATCH_COUNT} 处)，请确认是否已放入 §7.3 内部参考"
-      TECH_WARN=$((TECH_WARN + 1))
-    fi
-  done
-  if [[ ${TECH_WARN} -eq 0 ]]; then
-    success "${BASENAME}: 未发现明显技术语言"
-  fi
-
-  # 7. 轻量 ADR / CONTEXT（有 ADR 引用或占位才验）
-  if grep -qE 'ADR-[0-9]+|ADR-待定' "${file}" 2>/dev/null; then
-    LAYER_ROOT="$(cd "$(dirname "${file}")/.." && pwd)"
-    CONTEXT_FILE="${LAYER_ROOT}/adr/CONTEXT.md"
-    if grep -qE 'adr/CONTEXT\.md|CONTEXT\.md' "${file}" 2>/dev/null; then
-      success "${BASENAME}: 已引用 CONTEXT.md"
-    else
-      warn "${BASENAME}: 出现 ADR 引用/占位，但未链 adr/CONTEXT.md（§5.2 表后）"
-    fi
-    if [[ -f "${CONTEXT_FILE}" ]]; then
-      success "${BASENAME}: CONTEXT.md 存在"
-      while IFS= read -r adr_id; do
-        [[ -z "${adr_id}" ]] && continue
-        if grep -qF "${adr_id}" "${CONTEXT_FILE}" 2>/dev/null; then
-          success "${BASENAME}: CONTEXT 已登记 ${adr_id}"
-        else
-          warn "${BASENAME}: CONTEXT 未登记 ${adr_id}"
+  if (( ${#ADR_IDS[@]} > 0 || ADR_PENDING )); then
+    CONTEXT_FILE="$DOC_ABS/adr/CONTEXT.md"
+    for target in "${CONTEXT_TARGETS[@]}"; do
+      target="${target%%#*}"
+      target="${target//%20/ }"
+      [[ "$target" == /* ]] || target="${file%/*}/$target"
+      [[ "$target" -ef "$CONTEXT_FILE" ]] && CONTEXT_LINK=1
+    done
+    (( CONTEXT_LINK )) || warn "$BASENAME: 出现 ADR 引用/占位，但未有效链接本层 adr/CONTEXT.md"
+    if [[ -f "$CONTEXT_FILE" && -r "$CONTEXT_FILE" ]]; then
+      for adr_id in "${ADR_IDS[@]}"; do
+        if ! LC_ALL=C awk -v mode=context -v adr_id="$adr_id" -f "$SCRIPT_DIR/validate-analysis.awk" "$CONTEXT_FILE"; then
+          warn "$BASENAME: CONTEXT 未登记 $adr_id"
         fi
-        ADR_HITS=$(find "${LAYER_ROOT}/adr" -maxdepth 1 -name "${adr_id}-*.md" 2>/dev/null | wc -l | tr -d ' ')
-        if [[ "${ADR_HITS}" -gt 0 ]]; then
-          success "${BASENAME}: 找到 ${adr_id}-*.md"
-        else
-          warn "${BASENAME}: 未找到 ${LAYER_ROOT}/adr/${adr_id}-*.md"
-        fi
-      done < <(grep -oE 'ADR-[0-9]+' "${file}" 2>/dev/null | sort -u || true)
+        ADR_FOUND=0
+        for adr_file in "$DOC_ABS/adr/$adr_id-"*.md; do
+          [[ -f "$adr_file" ]] && ADR_FOUND=1
+        done
+        (( ADR_FOUND )) || warn "$BASENAME: 未找到 $DOC_ABS/adr/$adr_id-*.md"
+      done
     else
-      warn "${BASENAME}: 缺少 ${CONTEXT_FILE}"
+      warn "$BASENAME: 缺少或不可读 $CONTEXT_FILE"
     fi
-    if grep -q 'ADR-待定' "${file}" 2>/dev/null; then
-      warn "${BASENAME}: 仍有 ADR-待定 占位，推进前须落盘"
-    fi
+    (( ADR_PENDING == 0 )) || warn "$BASENAME: 仍有 ADR-待定 占位，推进前须落盘"
   fi
-
-  echo ""
 done
-
-echo "=== 校验结果 ==="
-echo "错误: ${ERRORS}  警告: ${WARNINGS}"
-
-if [[ ${ERRORS} -gt 0 ]]; then
-  echo "校验失败，请修复以上错误。"
-  exit 1
-else
-  echo "校验通过。"
-  exit 0
-fi
+summary
