@@ -1,12 +1,11 @@
 # docs-merge 反模式
 
-原则：[design-principles.md](design-principles.md)。操作陷阱：[../gotchas.md](../gotchas.md)。
+用于审查流程设计；操作异常见 [gotchas.md](../gotchas.md)。
 
-| 反模式 | 纠正 |
+| 误用 | 应回到的规则 |
 | --- | --- |
-| 参数未收口即改 target | 收口后再写；[gates.md](gates.md) |
-| 跳过写前澄清 | 六项 + 写前 C |
-| 落位不明仍写 / 冲突打包源胜 / 边决边写 / **跳过变更清单或批量抛项** | [merge-spec.md](merge-spec.md) §3–§7 |
-| 自动新建 target / 改源 | 中止新建；源只读 |
-| 第三列提炼当 merge | docs-extract |
-| dry-run 改文件 / knowledge 链出爬层 | 只出计划；引用边界 |
+| 看到 overview 文件名就改走第三列提炼 | 按用户要改的内容判断，[workflow.md](workflow.md#参数向导) |
+| 把清单展示、单元 C、逐项采纳当作同一种授权 | [gates.md](gates.md#授权与停顿) |
+| 仅凭标题相同就覆盖整节或再次追加原文 | [merge-spec.md §4](merge-spec.md#4-类似判定同节内) |
+| 为省时间边确认边写，失败后一律恢复旧全文 | [merge-spec.md §7](merge-spec.md#7-落盘) |
+| 仅回答“会遵守规则”便认定行为评测通过 | [evaluation.md](evaluation.md) |

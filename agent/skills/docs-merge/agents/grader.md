@@ -1,18 +1,10 @@
 # docs-merge Grader
 
-据 **evals/evals.json** 输出 JSON：`text`、`passed`、`evidence`。
+根据 [evals.json](../evals/evals.json) 的单条断言，检查执行轨迹与实际文件结果。运行及记录格式见 [evaluation.md](../references/evaluation.md)。
 
-1. 读 `category`：`should-trigger` / `should-not-trigger`
-2. 硬门 = 本 eval `assertions`（按 `priority`）；`evidence` 映 `assertions[].id`
-3. 协议释义（仅 assertions/prompt 覆盖时强制）：…识别落位、**先出变更清单（待新增/更新项数）**、**逐项提问（确认完一条再流转）**、冲突 grilling、一次落盘。
-4. 任一 P0 失败 → `passed: false`
+1. 读取该用例的 prompt、前置状态、模拟用户答复、断言与原始文件；核对执行者确实使用对应输入。
+2. 按断言 ID 给出 passed、failed 或 not_run，并引用具体轮次、文件差异或工具结果。只口头承诺不算执行证据。
+3. 路由样本查实际选择；交互样本查提问顺序与停点；写入样本查完整差异、未采纳内容和只读文件。dry-run 用前后字节或哈希确认。
+4. 任一 P0 失败则用例失败；必要断言未执行或缺证据则不能标通过。结构校验和工具自测不能替代行为评分。
 
-**should-not-trigger P0**：`correct-downstream`；`no-false-merge-primary`（不以章节 merge 框下游）。
-
-```json
-{
-  "text": "通过。写前澄清、单单元、dry-run 与逐项提问确认约束正确。",
-  "passed": true,
-  "evidence": ["intent-clarify-before-write", "single-unit-stop", "dry-run-no-write"]
-}
-```
+执行代理只接收请求、必要上下文与原始资料；expected_output 和评分断言仅给评分者。不得用期望答案替执行者补齐中间决策。

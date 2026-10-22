@@ -1,16 +1,13 @@
-# docs-merge 失败分析器（analyzer）
+# docs-merge 失败分析器
 
-输入：失败样本 + `SKILL.md` / `gates.md` / `workflow.md` / `merge-spec.md` / `intent-clarify.md` / `anti-patterns.md` / `gotchas.md`。
+输入失败用例、原始文件、执行轨迹、实际差异及 [评分结果](grader.md)。先复现，再判断问题位于技能、工具、样本还是执行过程。
 
-输出：失败模式 → 根因证据 → **P0/P1/P2**（目标、最小改动、影响、≥1 回归）→ 回归建议。
-
-| 模式 | 含义 |
+| 失败位置 | 核查依据 |
 | --- | --- |
-| F1 | 路由误判（extract / simplify / upgrade vs merge） |
-| F2 | 第三列提炼 vs 章节合入 |
-| F3 | 缺向导、跳过写前澄清或当前单元 |
-| F4 | 落位未确认仍写、冲突未决落盘、改源、未停动作选择 |
-| F5 | 语义变更未确认即宣称落盘 |
-| F6 | 证据不足 |
+| 路由、参数、重复询问 | [workflow.md](../references/workflow.md)、实际用户授权 |
+| 切块、落位、重复增量、链接 | [merge-spec.md](../references/merge-spec.md) 与输入/输出文件 |
+| 清点、逐项决议、越过停点 | 清单、对话顺序及 [gates.md](../references/gates.md) |
+| 越界写入、并发覆盖、错误恢复 | 基线、最终文件、工具日志 |
+| 断言误报或证据缺失 | [evaluation.md](../references/evaluation.md)、评测工具自测 |
 
-回归：先 P0；成对 `/docs-merge` vs `/docs-extract`、`/docs-simplify`；同模式连挂 2 轮考虑重写规则。
+输出：失败证据、影响与 P0/P1/P2、最小修复位置、对应回归用例。修复规则放回唯一真源；相同失败复发时重查根因，不叠加通用禁令。

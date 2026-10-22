@@ -1,54 +1,28 @@
 # docs-merge 推进协议（binding）
 
-主干：[SKILL.md](../SKILL.md)。流程：[workflow.md](workflow.md)。算法真源：[merge-spec.md](merge-spec.md)。
+## 共享契约
 
-本文件只做 binding，不复制协议正文。
+绑定 [写前意图澄清](../../../references/intent-clarify.md)、[单元推进](../../../references/unit-cycle-protocol.md) 与 [写后烤干](../../../references/grilling-skill.md)。本文件只补 docs-merge 差额；步骤见 [workflow.md](workflow.md)，合入规则见 [merge-spec.md](merge-spec.md)。
 
-契约：
+## 当前单元与追加字段
 
-- [intent-clarify.md](../../../references/intent-clarify.md)
-- [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) — `C/M/G/S/F`
-- [grilling-skill.md](../../../references/grilling-skill.md) — 写后烤干；**生成中每项变更以提问逐项确认**（一次只问一项）
+当前单元是一个已存在 target 与本批 source 的一次合入计划，含 dry-run 预览。公共六项外补：
 
-主线：`澄清 → 生成 → 烤干`。
+- source 类型及路径/正文，target 路径，正式或 dry-run 模式。
+- 落位摘要及未落位数；正式写前须为零。
+- 新增 A、更新 U、合计 N、无变更 D 与逐项决议状态。
+- 是否由 dry-run 转正式；源与目标是否仍匹配原计划基线。
 
-## 单元定义
+## 授权与停顿
 
-**当前单元** = 单个已存在 `<target>` + 本批 `<source>` 的一次合入计划（含 `--dry-run` 预览）。一次一个 target。
+逐项答复收口具体内容与冲突；决议齐备后，写前 `C` 授权将该版本计划写入当前单元。二者不能互相替代。已有有效确认沿用；dry-run 的 `C` 不能当作正式写入授权。
 
-## 技能追加澄清字段
+参数歧义、未落位、冲突未决、范围变化或基线改变时，先列结论、推荐与数字选项，解决当前问题再继续。清单中的逐项流转与项内冲突规则见 [合入规范 §6](merge-spec.md#6-逐项提问确认新增--更新)。
 
-公共六项之外追加：
+`F` 依共享协议批确认剩余意图，不能据此默认采纳尚无决议的合入项；`S` 暂存待写计划，不自动回滚已经写入的文件。当前单元收敛后停等，不能自动换 target 或追加 source。
 
-- `<source>` 口径（路径或内联；判定见 merge-spec §1）
-- `<target>`（已存在单个 `.md`）
-- 写入模式：正式 / `--dry-run`
-- 落位策略摘要：已对齐 / 已确认新建；**写前 `C`（正式写入）前未落位须为空**
-- **变更清单**：待新增 `<A>` / 待更新 `<U>` / 合计 `<N>`
-- **dry-run → 正式写入**：须**重新**写前 `C`，并证明未落位已空；禁止沿用 dry-run 次 C 直接落盘
+## 写后与失败
 
-## 写后默认
+唯一写后默认表见 [workflow.md](workflow.md#写后默认表)。预览与正式执行都必须烤干；语义问题按共享协议处理。
 
-见 [workflow.md](workflow.md)「写后默认表」。
-
-## 高风险场景
-
-先结论 + 推荐 + 数字选项：
-
-- 首次实质改 target；未落位需新建；合并/冲突面大
-- 目标在 `*/knowledge/**`；跳过预览直接写
-- source/target 歧义
-- dry-run 后请求「按预览直接写」而未重新澄清
-- 请求跳过逐项确认、批量写入全部新增/更新
-- 跳过变更清单（未识别项数）直接进入提问或落盘
-- 用决策表/清单一趟抛多项变更而不逐问
-
-`--dry-run` 推荐；**仍须写前澄清**。
-
-## 原子性 / 失败停顿
-
-见 merge-spec §7。补充：当前单元未收敛，不得推进下一 target / 下一批 source；dry-run 授权 ≠ 正式写入授权；**逐项未决完不得落盘**；**须先出变更清单再逐项提问**。
-
-## 典型语义问题（烤干）
-
-- source/target 与落位；新增/更新逐项是否已确认；冲突决议；knowledge 边界
+候选内容、并发修改、失败恢复和源只读按 [合入规范 §7](merge-spec.md#7-落盘) 执行。不得将“要求原子写回”表述成未经工具验证的原子性保证。

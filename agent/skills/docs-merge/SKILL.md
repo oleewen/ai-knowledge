@@ -1,58 +1,39 @@
 ---
 name: docs-merge
 description: >
-  将源文件或内联文本按目标 md 的 H2/H3 章节落位合入；先识别待新增/更新项数并出变更清单，再逐项提问与候选选项确认，确认完一条再流转下一条；冲突 grilling 逐条决策。
-  调用：/docs-merge <source> <target>〔--dry-run〕。source 为已存在路径则读文件，否则当内联文本；歧义或 target 不清则停问。
-  用户提到 /docs-merge、合并进文档、合入章节、把这段写进某 md、章节合并冲突时，使用本技能。
-  分流：overview 第三列关键词提炼 A/U/D → docs-extract；结构精简/SSOT → docs-simplify；术语替换 → docs-revise。
-  推进见 references/gates.md。
+  将源文件或内联文本合入已存在 Markdown 的 H2/H3 章节。
+  用于 /docs-merge、把材料合并进文档、合入指定章节及处理章节合并冲突。
+  overview 第三列关键词提炼用 docs-extract；正文精简用 docs-simplify；术语替换用 docs-revise。
 ---
 
 # docs-merge
 
-## 输出硬约束（P0）
+将材料放进目标文档合适的章节，只写经过确认的增量。
 
-- 当前单元：单个已存在 `<target>` + 本批 `<source>` 的一次合入计划。算法与落盘：[merge-spec.md](references/merge-spec.md)。
-- 写前澄清 / `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[simplify-principles.md](../../references/simplify-principles.md)；binding：[gates.md](references/gates.md)。未落位须在澄清收口；未获写前 `C` 不得写 target；`--dry-run` 只出计划仍须澄清。**dry-run 结束后若要正式写入，须重新写前 `C`，且证明未落位已空**（不得沿用 dry-run 那次 C）。执行/预览后须烤干，收敛后停等。
-- **落位**：仅 H2/H3；不明则停（候选节 + 新建）。**变更确认**：先识别并公布 **待新增 X 项 / 待更新 Y 项**（变更清单，见 merge-spec §5）→ 再 **逐项提问**（预览 + 问题 + 推荐 + 候选选项，进度 `i/N`）→ **确认完一条再流转下一条**；仅已确认项纳入落盘集。**冲突**（更新内）：同项内继续提问（`k/M`）→ 全部决完后一次落盘。
-- **源只读**；**target 必须已存在**（不新建）。
-- **knowledge**：写 `application|system|solution|company` 下 `*/knowledge/**` 须守 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「业务 knowledge 引用边界」；违规能修则修，不明则停。
+## 输入与边界
 
-## 边界
+`/docs-merge <source> <target> [--dry-run]`
 
-| 负责 | 不负责 |
+`source` 为文件或内联文本，`target` 为一个已存在的 `.md`。明确的位置参数按顺序解析；缺参或语义冲突才询问。源只读；本技能不新建目标文件。
+
+## 核心约束
+
+- 先公布新增、更新和未落位清单，再逐项确认；每项给预览、推荐和选项，答完当前项才问下一项。冲突在该项内逐条解决。
+- 正式写入须落位明确、写前 `C` 和逐项决议齐备；仅将已采纳项一次写回。完全重复的内容不算更新。
+- `--dry-run` 只预览；转正式须重新取得正式写入的写前 `C`，不能沿用预览授权。两种模式均须烤干并停等用户动作。
+- 写前复核源、目标与计划基线一致；有变化则重新核对受影响项，保留他人修改。
+
+## 按需读取
+
+| 时机 | 读取 |
 | --- | --- |
-| 已存在 md 章节合入；新增/更新逐项确认；冲突 grilling；dry-run 计划 | overview 第三列 A/U/D（docs-extract）；精简/SSOT（docs-simplify）；术语链（docs-revise）；新建 target |
+| 开始执行 | [workflow.md](references/workflow.md)：顺序；[gates.md](references/gates.md)：授权与共享协议 |
+| 切块、落位、清点、决策或写入 | [merge-spec.md](references/merge-spec.md)：合入规则唯一真源 |
+| 目标属于四层业务 knowledge | [knowledge-governance.md](../../knowledge/knowledge-governance.md) 的「业务 knowledge 引用边界」 |
+| 预览或写入后 | [quality-checklist.md](references/quality-checklist.md)、[audience-and-language.md](references/audience-and-language.md) |
+| 排查误用或理解术语 | [参考索引](references/README.md)、[gotchas.md](gotchas.md) |
+| 维护技能、运行评测 | [evaluation.md](references/evaluation.md)、[grader.md](agents/grader.md) |
 
-## 不这样用
+## 交付
 
-- 不把第三列提炼收成本技能
-- 不猜 source/target；不改源；不边决冲突边写
-- 不把写前澄清称作 grilling（写前走 intent-clarify；**每项变更以提问逐项确认**与冲突决策、写后烤干用 grilling）
-- 不用决策表/清单一次性抛多项变更；**一次只问一项**，等用户答后再问下一项
-
-## 路由
-
-| 目的 | 文件 |
-| --- | --- |
-| 流程 / binding | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
-| 合入规范 | [merge-spec.md](references/merge-spec.md) |
-| 概念 | [core-concepts.md](references/core-concepts.md) |
-| 受众 | [audience-and-language.md](references/audience-and-language.md) |
-| 原则 / 反模式 | [design-principles.md](references/design-principles.md)、[anti-patterns.md](references/anti-patterns.md) |
-| 终检 / 易错 | [quality-checklist.md](references/quality-checklist.md)、[gotchas.md](gotchas.md) |
-
-## 最少输入
-
-- `<source>`（已存在路径或内联文本）
-- 已存在单个 `<target>` md
-- 是否 `--dry-run`（唯一可选旗标）
-
-## 产出
-
-- 正式：一次落盘后的 `<target>`（仅已确认项）；预览：合入计划 + **变更清单**（待新增/更新项数；dry-run 不改文件）
-- 动作：[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)（有 `S`）
-
-## 评测
-
-`evals/evals.json`、[grader.md](agents/grader.md)（P0 为准）。
+预览交付合入计划与变更清单；正式交付目标差异、采纳/跳过结果及验证证据。无增量时报告无变更。评测工具只用于验证技能，不代替语义落位和用户决策。

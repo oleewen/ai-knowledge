@@ -1,10 +1,14 @@
 # docs-merge 验收清单
 
-收敛前核对。原则/反模式见同目录；算法见 [merge-spec.md](merge-spec.md)。
+以读取记录、逐项答复和实际差异为证据；不能只检查回答是否提到规则。
 
-- [ ] source / target / dry-run 已收口；target 已存在；source 判定无歧义
-- [ ] 高风险已确认（若适用）
-- [ ] **变更清单已出**（待新增 A / 待更新 U / 合计 N）；未落位已收口；写前澄清 + 写前 C（dry-run 亦同）
-- [ ] **逐项提问已答完**（确认完一条再流转下一条）；冲突逐条完；一次落盘或已回滚；源未改
-- [ ] knowledge 边界 OK（若适用）
-- [ ] 烤干受众维 A/B/C/E：[audience-and-language.md](../../../references/audience-and-language.md) + 本地 [audience-and-language.md](audience-and-language.md)
+- [ ] 参数与模式明确，target 已存在；source 可读且与 target 不是同一文件。
+- [ ] 章节切分符合 Markdown 结构；落位包含父路径；正式写入无未落位项。
+- [ ] A/U/N 与实际增量一致；重复内容排除；已公布清单。
+- [ ] 本模式写前 C 有效；正式流程每项及冲突均已决，仅采纳项进入候选。
+- [ ] 源与目标基线未失效；无边确认边写；失败恢复未覆盖他人修改。
+- [ ] dry-run、无增量或全跳过时文件未变；正式写入与确认差异一致，源保持不变。
+- [ ] 目标元数据、无关章节、表格、代码、锚点和链接含义保留；knowledge 目标已过治理检查。
+- [ ] 已按 [受众要求](audience-and-language.md) 烤干；未决问题如实报告，停等用户动作。
+
+行为评测与工具自测分开报告，见 [evaluation.md](evaluation.md)。

@@ -1,63 +1,41 @@
 # docs-merge 工作流
 
-主干：[SKILL.md](../SKILL.md)。binding：[gates.md](gates.md)。算法：[merge-spec.md](merge-spec.md)。
-
-契约链： [intent-clarify.md](../../../references/intent-clarify.md) · [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) · [grilling-skill.md](../../../references/grilling-skill.md) · [simplify-principles.md](../../../references/simplify-principles.md)
-
-## 目标
-
-`<source>` → 按 target H2/H3 落位合入；新增/更新逐项确认、冲突 grilling；一次落盘。
-
-## 与 docs-extract
-
-| 维度 | docs-extract | docs-merge |
-| --- | --- | --- |
-| 目标 | overview 第三列 | 任意已存在 md 章节 |
-| 过滤 | 关键词附录 | 章节落位 + 类似判定 |
-| 产物 | A/U/D delta | 新增 / 更新 / 冲突决议 |
-| 确认 | 关键词命中即写 delta | **每项变更以提问逐项确认**；冲突逐条提问 |
-
-「提炼 / 第三列 / A/U/D」→ extract；「合并 / 合入章节」→ merge。
+从材料得到可审阅的增量计划，再按已确认决议一次写回。规则见 [merge-spec.md](merge-spec.md)，共享协议绑定见 [gates.md](gates.md)。
 
 ## 参数向导
 
-未收口不执行。歧义停问。
+收口 source、已存在的单个 target 与正式/`--dry-run` 模式；已有明确输入直接沿用。参数判定按 [合入规范 §1](merge-spec.md#1-解析-source--target)。
 
-1. `<source>`
-2. `<target>`（已存在 `.md`）
-3. 是否 `--dry-run`
+overview 第三列关键词提炼交 `docs-extract`；正文精简交 `docs-simplify`；术语替换交 `docs-revise`。仅目标文件名含 overview 不构成分流依据。
 
-仅一个参且像已存在 md → candidate target，补收 source。
+## 执行顺序
 
-## 当前单元
+1. **检查输入**：读取源、目标并记录基线；按需读取 knowledge 治理规则。
+2. **拟定计划**：切块、落位、去重、标记冲突，公布变更清单。此时可以展示草案与缺口，不写文件。
+3. **意图澄清**：正式模式先收口落位，再按 [合入规范 §6](merge-spec.md#6-逐项提问确认新增--更新) 逐项决定新增、更新与冲突；决议齐备后，汇总 [共享六项](../../../references/intent-clarify.md) 及本地字段，取得正式写前 `C`。dry-run 只确认预览范围，可保留未落位和内容冲突供审阅。
+4. **生成**：按下表执行。正文遵循 [精简原则](../../../references/simplify-principles.md)，不改变未确认的含义。
+5. **烤干**：核对 [验收清单](quality-checklist.md) 与 [受众要求](audience-and-language.md)，报告实际结果、未决问题，按 [单元推进协议](../../../references/unit-cycle-protocol.md) 停等动作。
 
-见 [gates.md](gates.md)。
+| 模式 | 生成内容与停点 |
+| --- | --- |
+| dry-run | 完整计划与清单；无文件写入，进入烤干 |
+| 首次正式 | 逐项决议与正式写前 `C` 齐备后，一次写回 |
+| dry-run 转正式 | 重读基线，按正式模式收口落位与逐项决议，再取得正式写前 `C` 并写回 |
+| 无增量或全部跳过 | 报告无写入，核对文件未变后进入烤干 |
+
+首次正式执行不重复索取同一份写前 `C`。跨模式、新增材料或改变范围时，重核受影响计划与授权。
 
 ## 写后默认表
 
-| 对象 | 默认烤干 | 强制升级 |
+| 当前单元 | 默认烤干 | 检查重点 |
 | --- | --- | --- |
-| 单个合入单元（含 dry-run 预览） | **必须** | 首次实质改 target；新增/更新项多；冲突多；knowledge 路径；未确认决策写入 |
-
-只可升级，不可降为跳过。
-
-## 技能步骤
-
-推进环见 unit-cycle-protocol；本技能补：
-
-1. 收口 `<source>` / `<target>` / `--dry-run`
-2. 出合入计划 + **变更清单**（待新增 A / 待更新 U / 合计 N；merge-spec §5）
-3. 意图澄清 + **未落位收口** → 写前 `C`（dry-run 可展示含未落位计划；正式写入前须清零）
-4. `--dry-run` → 计划 + 变更清单 → 烤干 → 停等（此 C **不**授权落盘）
-5. 正式：未落位已空 → **重新**写前 `C` → 公布变更清单 → **逐项提问**（`i/N`；更新内冲突 `k/M`；**确认完一条再下一条**）→ 仅已确认项一次落盘；失败回滚；不改源
-6. knowledge 目标校验引用边界
-7. 烤干 → `C/M/G/S/F`
+| 单个 target 与本批 source 的计划或写入 | 必须 | 落位、计数、逐项决议、冲突、源只读、无关内容保留、引用与受众 |
 
 ## 命令示例
 
-```bash
+```text
 /docs-merge ./notes/snippet.md ./docs/guide.md --dry-run
-/docs-merge ./notes/snippet.md ./docs/guide.md
 /docs-merge "支持用户下单、支付、退款三个流程" ./docs/guide.md
-/docs-merge ./docs/guide.md
 ```
+
+正式合入使用同一组参数并省略 `--dry-run`；预览通过不自动授权正式写入。
