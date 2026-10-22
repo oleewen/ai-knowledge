@@ -10,6 +10,8 @@ description: >
 
 通过 [agent-install.sh](scripts/agent-install.sh) 安装。实体始终写入 `$HOME/.agents`；`--target` 只指定 IDE 软链父目录，`--workspace` 写入实体树 `configs` 的 `WORK_SPACE`。不创建或修改工程 `.docsconfig`。
 
+仅安装运行资源：排除研发测试、评测和缓存，保留技能运行时的产物校验。具体范围见 [安装过滤](references/parameters.md#安装过滤)。
+
 ## 执行
 
 1. 沿用用户已给参数，按 [parameters.md](references/parameters.md) 补齐缺口。用 Bash 5+；安装副本须提供 `--meta`。
@@ -27,4 +29,4 @@ bash agent/skills/agent-install/scripts/agent-install.sh \
 
 ## 诊断与维护
 
-执行异常查 [gotchas.md](gotchas.md)。维护时运行 [脚本回归](tests/run.sh)，再按 [评分规则](agents/grader.md) 检查 [行为评测](evals/evals.json)。
+执行异常查 [gotchas.md](gotchas.md)。维护须回到 `--meta` 元库的 `agent/skills/agent-install/`：运行 `tests/run.sh`，再按 `agents/grader.md` 检查 `evals/evals.json`；这些研发资源不随技能安装。

@@ -13,6 +13,18 @@
 
 有值选项均支持 `--key=value`。空值、缺值、未知参数及无效枚举必须在写盘前报错。
 
+## 安装过滤
+
+所有 scope 共用以下规则，rsync 与 cp 回退一致：
+
+- 排除各层 `README`、`README.md`、`readme.md`。
+- 排除研发资源：`tests`、`evals`、`test-core.sh`、`grader.md`，以及 `__pycache__`、`*.pyc`、`*.pyo` 缓存。
+- 保留运行脚本、共享库、`agents/openai.yaml` 和技能执行所需的 `validate-*` 等产物校验脚本；不按名称中的 `test` 或 `validate` 泛删。
+
+同步目录内旧的排除项会清理；顶层只清理元库同名研发资源，及所选 IDE 中指向对应实体的旧链接。hooks 按既有规则整树同步，也清理源端已移除的研发资源所遗留的 IDE 链接。未选 scope、hooks 以外的非元库同名资源和 IDE 自有文件不受此规则清理。预览报告过滤与清理范围，不写盘。
+
+研发资源留在元库，相关维护说明中的测试、评测路径须在元库执行。
+
 ## `--workspace` 推断
 
 未传 `--workspace` 时：

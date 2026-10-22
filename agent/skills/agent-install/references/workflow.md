@@ -7,7 +7,7 @@
 | 项 | 应展示 |
 | --- | --- |
 | 来源与选择 | 元库绝对路径、scope、IDE 列表；用户指定 IDE 优先于默认值 |
-| 实体树 | `$HOME/.agents` 下选中的资源、覆盖方式 |
+| 实体树 | `$HOME/.agents` 下选中的资源、覆盖方式及[安装过滤](parameters.md#安装过滤)清理范围 |
 | 链接 | target 下各 IDE 目录及链接目标；已有冲突项的备份计划 |
 | 工作区 | 最终 `WORK_SPACE` 值、显式输入或推断来源 |
 | 状态 | 仅预览 / 等待实跑授权 / 当前授权已覆盖计划 |
@@ -21,6 +21,7 @@
 - 选中资源存在于实体树，IDE 链接指向对应实体；未选 scope 不新增链接。
 - `configs` 的 `WORK_SPACE` 与计划一致，IDE 目录不链接 `configs`。
 - 冲突项备份可找到；原工程 `.docsconfig` 内容不变，无则仍不创建。
+- 同步资源不含研发测试、评测或缓存；运行时校验脚本仍可用。
 - 结果摘要包含实际 scope、IDE、target 和失败项；按 [轻流程受众 A/B](../../../references/audience-and-language.md#轻流程-ab含-okf) 检查后交付。
 
-维护脚本时，用 Bash 5+ 运行 [tests/run.sh](../tests/run.sh)，并检查仓根 `bootstrap.sh` 调用兼容性。技能决策用 [evals.json](../evals/evals.json) 验证。
+维护脚本时，在元库 `agent/skills/agent-install/` 用 Bash 5+ 运行 `tests/run.sh`，并检查仓根 `bootstrap.sh` 调用兼容性。技能决策用元库同目录的 `evals/evals.json` 验证；安装副本不提供这些研发资源。
