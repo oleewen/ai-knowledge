@@ -1,156 +1,111 @@
 {
   "skill_name": "sdx-architect",
-  "version": "3.1.0",
-  "description": "评估 sdx-architect 在「澄清 → 生成 → 烤干」流程下的触发、分流与段落推进协议表述；断言供 grader 评分。",
+  "version": "4.0.0",
+  "description": "以实际响应、读写记录、文件差异和校验输出评估路由、段落推进及 ASD 产物；运行与评分见 references/evaluation.md。",
   "evals": [
     {
       "id": "architect-trigger-001",
       "category": "should-trigger",
-      "prompt": "我已经有 PRD 文档了，帮我用 /sdx-architect 先产出 ASD，重点要画服务边界图和系统上下游关系。",
-      "expected_output": "主路径 /sdx-architect：基于 PRD 走参数向导，再按 §1-§3 分段「澄清 → 生成 → 烤干」直写 ASD；每段写前意图澄清、写入后自动 grilling 至收敛后再等用户动作。",
+      "setup": "application 临时库：DOC_DIR=docs；提供 PRD-ORDER-1-1.md（FR-001 查询订单、只读查询服务归 order 应用）与 ASD 同链骨架。保留既有会话中的参数与六项意图确认：仅写 §2.1、depth=standard、无缺口、不改写入服务，用户已回复 C。",
+      "prompt": "参数和 §2.1 意图刚才已确认，继续 /sdx-architect，完成当前段服务边界图和上下游关系。",
+      "expected_output": "复用已确认输入，读取 PRD 后只完成 §2.1；产物匹配上游边界，烤干收敛后等待用户动作。",
+      "evidence": [
+        "既有确认与本轮完整会话",
+        "PRD 读取记录",
+        "ASD 前后文件及 diff"
+      ],
       "assertions": [
         {
-          "id": "parameter-guidance",
-          "name": "参数向导",
-          "type": "must_include",
-          "check": "明确存在逐项确认参数或快捷组合入口。",
-          "priority": "P0"
-        },
-        {
-          "id": "section-cycle",
-          "name": "分段直写",
-          "type": "must_include",
-          "check": "体现分段直写 ASD-*.md，而非先整份 spec 再统一落盘；主线含澄清 → 生成 → 烤干。",
-          "priority": "P0"
-        },
-        {
-          "id": "intent-clarify",
-          "name": "意图澄清",
-          "type": "must_include",
-          "check": "须体现当前段写入前做意图澄清（六项清单或等价写前门禁），未确认不得写入正文。",
-          "priority": "P0"
-        },
-        {
-          "id": "grilling-loop",
-          "name": "段内烤干",
-          "type": "must_include",
-          "check": "体现每段生成后执行自动 grilling（烤干）并收敛后再推进；可提及 C/M/G/F 或等价动作。",
-          "priority": "P0"
-        },
-        {
-          "id": "audience-check",
-          "name": "受众质检",
-          "type": "must_include",
-          "check": "须体现烤干含受众维 A/B/C/E，或对照 audience-and-language；未过不得宣称对象已烤干收敛。",
-          "priority": "P0"
-        },
-        {
-          "id": "single-section-stop",
-          "name": "单段停住",
-          "type": "must_include",
-          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择。",
-          "priority": "P0"
+          "id": "reuse-confirmed-inputs",
+          "priority": "P0",
+          "check": "已有参数、六项意图和写前 C 被复用；不要求用户重复填写或确认无变化内容。"
         },
         {
           "id": "upstream-prd-boundary",
-          "name": "上游 PRD 与边界",
-          "type": "must_include",
-          "check": "须体现基于 PRD 承接，且主交付为 ASD 而非 DSD。",
-          "priority": "P0"
+          "priority": "P0",
+          "check": "实际读取同链 PRD；生成的边界、服务归属和上下游关系与原始材料相符，不扩写 API/DDL。"
+        },
+        {
+          "id": "single-section-stop",
+          "priority": "P0",
+          "check": "diff 仅涉及当前 §2.1 及必要元数据；完成后未擅自推进下一段，等待阶段明确的用户动作。"
         }
       ]
     },
     {
       "id": "architect-trigger-002",
       "category": "should-trigger",
-      "prompt": "这次是 KNOWLEDGE_TYPE=system，请你走 /sdx-architect 做联邦概要，只写当前段“### 2.1 系统架构设计”，重点补服务变更表和下游承接。",
-      "expected_output": "采用 sdx-architect：体现联邦概要、单段「澄清 → 生成 → 烤干」、system 模式下不写应用级详设。",
+      "setup": "system 临时库；提供同链 PRD、已有 ASD §1 与待写 §2.1。PRD 中 order 应用拥有订单查询，但现有 ASD §1 写成 billing 应用拥有；此前尚未决定如何消解。",
+      "prompt": "用 /sdx-architect 只补 §2.1 的服务变更表和下游承接，KNOWLEDGE_TYPE=system。",
+      "expected_output": "识别归属冲突，给出有依据的建议与选项；保持联邦概要粒度，等待归属决定。",
+      "evidence": [
+        "原始 PRD 与 ASD",
+        "读取记录和完整会话",
+        "工作树 diff"
+      ],
       "assertions": [
         {
-          "id": "section-cycle",
-          "name": "分段直写",
-          "type": "must_include",
-          "check": "须体现只处理 `### 2.1 系统架构设计` 当前段。",
-          "priority": "P0"
-        },
-        {
-          "id": "intent-clarify",
-          "name": "意图澄清",
-          "type": "must_include",
-          "check": "须体现写前意图澄清后再写入当前段。",
-          "priority": "P0"
-        },
-        {
-          "id": "single-section-stop",
-          "name": "单段停住",
-          "type": "must_include",
-          "check": "须体现当前段收敛后停在 C/M/G/F。",
-          "priority": "P0"
-        },
-        {
-          "id": "federated-mode",
-          "name": "联邦模式",
-          "type": "must_include",
-          "check": "须体现 system/company 只写联邦概要与下游承接，不写应用级 DSD 细节。",
-          "priority": "P0"
-        },
-        {
           "id": "semantic-change-gated",
-          "name": "语义改动确认",
-          "type": "must_include",
-          "check": "语义性问题必须先给推荐方案与数字选项。",
-          "priority": "P0"
+          "priority": "P0",
+          "check": "指出具体归属冲突、推荐方案及数字选项；用户选择前不静默改写冲突归属或已确认 §1。"
+        },
+        {
+          "id": "system-boundary",
+          "priority": "P0",
+          "check": "当前任务仍是 system ASD 概要与应用承接；未在 system 库创建 DSD 或填入实现级接口/DDL。"
         }
       ]
     },
     {
       "id": "architect-trigger-003",
       "category": "should-trigger",
-      "prompt": "请按 SDX 进入架构阶段：当前段写完后不要每轮 grill 都停下来问我，要自动连续 grill 到烤干，再统一给我 C/M/G/F。",
-      "expected_output": "以 /sdx-architect 为主路径：明确当前段写入后进入自动连续 grilling，直到收敛才回到用户动作菜单。",
+      "setup": "已写当前段 §1.3，含两个内容已确认、但重复编号 DD-001 的决策；PRD 与正文语义一致。会话处于写后烤干，其他章节已确认。",
+      "prompt": "继续 /sdx-architect 当前段烤干，不要每轮都让我按 G；把编号问题处理完再给动作。",
+      "expected_output": "修复当前段非语义问题并复查，收敛后再等待动作。",
+      "evidence": [
+        "烤干前后 ASD 与 diff",
+        "完整会话"
+      ],
       "assertions": [
         {
           "id": "auto-grilling-loop",
-          "name": "自动连续 grilling",
-          "type": "must_include",
-          "check": "须体现当前段写完后自动连续 grilling 到收敛。",
-          "priority": "P0"
+          "priority": "P0",
+          "check": "实际修正重复编号且复查后内容一致；未把每轮检查都变成用户必须选择 G。"
         },
         {
-          "id": "g-not-required-per-round",
-          "name": "G 非每轮必选",
-          "type": "must_include",
-          "check": "须体现 G 仅用于当前段已收敛后的额外深挖。",
-          "priority": "P0"
-        },
-        {
-          "id": "single-section-stop",
-          "name": "收敛后再停住",
-          "type": "must_include",
-          "check": "须体现自动收敛后再给出 C/M/G/F 等待用户选择。",
-          "priority": "P0"
+          "id": "bounded-repair",
+          "priority": "P0",
+          "check": "修订未改变已确认决策含义、其他章节或服务归属；收敛后才等待动作。"
         }
       ]
     },
     {
       "id": "architect-trigger-004",
       "category": "should-trigger",
-      "prompt": "我就是想让你直接把 ASD-ORDER-1-1.md 全写完，别分段。",
-      "expected_output": "仍以 /sdx-architect 为主路径：不得从空白状态一口气补齐整篇；应先完成当前段「澄清 → 生成 → 烤干」，再通过 F 批确认剩余意图后批量补齐。",
+      "setup": "同链 PRD 已提供；ASD §1 已确认，§2、§3 未完成。保存 §1 原文。会话刚完成当前段烤干，尚无剩余段的意图批确认。",
+      "prompt": "选 F，把这份 ASD 剩下的 §2、§3 补齐，保留已确认的 §1。",
+      "continuation": "收到剩余段意图表后，评测者只回复 C；若出现材料之外的语义取舍，记录停顿，不替用户选择。",
+      "expected_output": "先收口剩余段意图；批确认后补齐，保留 §1，执行整体校验。",
+      "evidence": [
+        "多轮会话与批确认",
+        "ASD 前后文件及 diff",
+        "validate-asd.sh 命令与输出"
+      ],
       "assertions": [
         {
-          "id": "exception-full-draft-gated",
-          "name": "破例需选择",
-          "type": "must_include",
-          "check": "须体现先完成当前段「澄清 → 生成 → 烤干」，再通过 F 批确认意图后进入剩余章节批量补齐。",
-          "priority": "P0"
+          "id": "batch-intent-before-write",
+          "priority": "P0",
+          "check": "剩余段正文在批确认后才写入；没有把 F 本身当作已完成全部意图确认。"
         },
         {
-          "id": "single-section-stop",
-          "name": "单段停住",
-          "type": "must_include",
-          "check": "须强调默认仍按单段 Section Cycle 推进。",
-          "priority": "P0"
+          "id": "preserve-confirmed-content",
+          "priority": "P0",
+          "check": "§1 已确认正文保持不变；剩余章节承接 PRD，无未说明的架构决策。"
+        },
+        {
+          "id": "finish-with-evidence",
+          "priority": "P0",
+          "check": "完成后针对目标 ASD 实际执行 validate-asd.sh --strict 并通过，保留命令、输出和退出码；若语义缺口未决则停下，未声称整份完成。"
         }
       ]
     },
@@ -158,21 +113,15 @@
       "id": "architect-not-trigger-001",
       "category": "should-not-trigger",
       "prompt": "我已经有 ASD 了，下一步请在 /sdx-design 下补齐 DSD：把 API、DDL、时序等实现级内容写进 DSD。",
-      "expected_output": "主路径 /sdx-design：单一 DSD 承载详设；不再以 sdx-architect 为主路径。",
+      "expected_output": "识别为 sdx-design / DSD 任务。",
+      "evidence": [
+        "首轮响应与工具记录"
+      ],
       "assertions": [
         {
           "id": "correct-downstream",
-          "name": "正确下游",
-          "type": "must_include",
-          "check": "须明确 /sdx-design 或 DSD 为当前主任务。",
-          "priority": "P0"
-        },
-        {
-          "id": "no-false-architect-primary",
-          "name": "勿假主架构阶段",
-          "type": "must_not_conflict",
-          "check": "不得将本请求描述为默认先写 ASD。",
-          "priority": "P0"
+          "priority": "P0",
+          "check": "主任务指向 sdx-design 或 DSD；没有把先生成 ASD 作为完成本请求的额外前置流程。"
         }
       ]
     },
@@ -180,72 +129,150 @@
       "id": "architect-not-trigger-002",
       "category": "should-not-trigger",
       "prompt": "把 billing 的 overview 第三列补成蒸馏结论，走 docs-distill。",
-      "expected_output": "主路径为 docs-distill；不是 sdx-architect。",
+      "expected_output": "识别为 docs-distill 任务。",
+      "evidence": [
+        "首轮响应与工具记录"
+      ],
       "assertions": [
         {
           "id": "correct-downstream",
-          "name": "正确下游",
-          "type": "must_include",
-          "check": "须明确 docs-distill 或 overview 蒸馏。",
-          "priority": "P0"
-        },
-        {
-          "id": "no-false-architect-primary",
-          "name": "勿假主架构阶段",
-          "type": "must_not_conflict",
-          "check": "不得用 ASD 作为完成本请求的主方案。",
-          "priority": "P0"
+          "priority": "P0",
+          "check": "主任务指向 docs-distill；没有新建 ASD 或要求进入架构参数向导。"
         }
       ]
     },
     {
-      "id": "architect-not-trigger-003",
-      "category": "should-not-trigger",
-      "prompt": "我已经确认过前两段了。现在别按当前段流程，直接用 F 把整份 ASD-ORDER-1-1.md 从头到尾重写一遍，前面已确认内容也一起覆盖掉。",
-      "expected_output": "不得把该请求解释为当前 sdx-architect 协议下合法的 F 动作；应明确指出 F 只用于保留已确认前文、批确认剩余意图并补齐未完成章节。",
+      "id": "architect-protocol-001",
+      "category": "should-trigger",
+      "setup": "ASD 前两段已确认，后文待写；保存已确认正文。用户没有说明前两段哪些架构决定要变化。",
+      "prompt": "前两段已确认。现在用 F 把整份 ASD-ORDER-1-1.md 从头重写，前面也覆盖；先告诉我哪些已确认的边界需要重开。",
+      "expected_output": "识别为 ASD 修改请求，说明 F 的补齐边界；收口已确认段需要重开的内容，不替用户决定架构变更。",
+      "evidence": [
+        "完整响应与工具记录",
+        "ASD 前后 diff"
+      ],
       "assertions": [
         {
-          "id": "correct-downstream",
-          "name": "正确拒绝当前协议",
-          "type": "must_include",
-          "check": "须明确指出该请求不符合当前 sdx-architect 协议中的 F 语义。",
-          "priority": "P0"
+          "id": "f-is-not-rewrite",
+          "priority": "P0",
+          "check": "未将 F 定义为覆盖已确认前文；仍承接 ASD 修改意图，没有误分流为无关任务或一律拒绝修订。"
         },
         {
-          "id": "no-false-f-rewrite",
-          "name": "勿把 F 当整篇重写",
-          "type": "must_not_conflict",
-          "check": "不得将 F 描述为覆盖已确认前文的整篇重生成或整篇重写。",
-          "priority": "P0"
+          "id": "reopen-without-inventing",
+          "priority": "P0",
+          "check": "对待变更的前文前提给出需明确的范围或选择；没有擅自决定边界并覆盖已确认正文。"
         }
       ]
     },
     {
       "id": "architect-audience-001",
       "category": "should-trigger",
-      "prompt": "继续 /sdx-architect 当前段烤干：ASD 正文大段粘贴 PRD 用户故事，并把完整 OpenAPI path 与 DDL 写进 ASD。请按受众质检处理后再给动作字母。",
-      "expected_output": "检出受众维违例（宜弱化：PRD 全文/DSD 级细节）；应收口为边界与协议级表述并引用 US-n/FR-n；细节指向 DSD；未过不得宣称收敛。",
+      "setup": "当前 ASD §2.2 粘贴 PRD 用户故事全文及完整 OpenAPI、DDL；相同实现细节已存于应用 DSD，PRD/DSD 的能力和字段口径一致。提供三份原始文件；会话处于烤干。",
+      "prompt": "继续 /sdx-architect 当前段烤干，处理 ASD 正文里的用户故事全文和实现细节。",
+      "expected_output": "报告受众边界问题，将当前段收为架构与协议摘要，引用上游条目及现有 DSD。",
+      "evidence": [
+        "PRD、ASD、DSD 原件",
+        "ASD diff 与引用目标",
+        "完整会话"
+      ],
       "assertions": [
         {
           "id": "audience-violation-visible",
-          "name": "违例可见",
-          "type": "must_include",
-          "check": "须出现受众违例短表或明确指出 ASD 不宜塞 PRD 全文/完整 API·DDL。",
-          "priority": "P0"
+          "priority": "P0",
+          "check": "指出具体信息边界违例；没有只打印通过结论。"
         },
         {
-          "id": "audience-rewrite-or-gate",
-          "name": "改写或停问",
-          "type": "must_include",
-          "check": "须体现改为架构边界表述并外置 DSD，或语义停问；不得未处理就写后 C。",
-          "priority": "P0"
+          "id": "lossless-audience-repair",
+          "priority": "P0",
+          "check": "修改后 ASD 保留职责范围内可评审内容，引用有效 US/FR 或原始条目和现有 DSD；未改承诺、丢约束或擅自新建 DSD。"
         },
         {
-          "id": "no-dsd-dump-pass",
-          "name": "勿放行 DSD 倾倒",
-          "type": "must_not_conflict",
-          "check": "不得声称受众已通过却仍把完整 OpenAPI/DDL 当 ASD 主正文。",
-          "priority": "P0"
+          "id": "no-premature-pass",
+          "priority": "P0",
+          "check": "未处理的受众违例仍存在时，不宣称当前段已收敛。"
+        }
+      ]
+    },
+    {
+      "id": "architect-mode-company",
+      "category": "should-not-trigger",
+      "setup": "company 临时库，.docsconfig 的 KNOWLEDGE_TYPE=company；没有系统或应用 PRD。",
+      "prompt": "在当前公司知识库运行 /sdx-architect，把域架构写成 ASD。",
+      "expected_output": "说明本层应走 sdx-domains。",
+      "evidence": [
+        "配置读取记录",
+        "响应与文件变更记录"
+      ],
+      "assertions": [
+        {
+          "id": "company-route",
+          "priority": "P0",
+          "check": "依据 company 层级分流 sdx-domains；未把 company 当作 system 联邦概要，也未创建本层 ASD/PRD/DSD。"
+        }
+      ]
+    },
+    {
+      "id": "architect-mode-solution",
+      "category": "should-not-trigger",
+      "setup": "solution 临时库，.docsconfig 的 KNOWLEDGE_TYPE=solution；提供本层 SOLUTION 摘要，尚未选择承接系统。",
+      "prompt": "用 /sdx-architect 在当前解决方案库写 ASD，说明接下来如何交给系统落地。",
+      "expected_output": "保留解决方案层范围，指向承接系统的 PRD/ASD，缺系统选择时明确该缺口。",
+      "evidence": [
+        "配置与 SOLUTION 读取记录",
+        "响应与文件变更记录"
+      ],
+      "assertions": [
+        {
+          "id": "solution-route",
+          "priority": "P0",
+          "check": "未在 solution 库创建 ASD/PRD/DSD；指出应由承接系统开展 PRD/ASD，没有编造系统或路径。"
+        }
+      ]
+    },
+    {
+      "id": "architect-missing-prd",
+      "category": "should-trigger",
+      "setup": "application 临时库只有 ANALYSIS-ORDER-1.md，没有 PRD、等价已确认 PRD 内容或 ASD。",
+      "prompt": "只有这份 ANALYSIS，帮我用 /sdx-architect 写 ASD-ORDER-1-1.md。",
+      "expected_output": "识别缺失的同链 PRD 输入，引导补齐或进入 sdx-prd。",
+      "evidence": [
+        "文件检索与读取记录",
+        "响应与文件变更记录"
+      ],
+      "assertions": [
+        {
+          "id": "missing-upstream-visible",
+          "priority": "P0",
+          "check": "明确指出缺 PRD 并给出补齐入口；没有将 ANALYSIS 自动当作已确认 PRD。"
+        },
+        {
+          "id": "no-invented-baseline",
+          "priority": "P0",
+          "check": "未凭空生成架构正文、服务归属或声称上游已共识。"
+        }
+      ]
+    },
+    {
+      "id": "architect-spec-path",
+      "category": "should-trigger",
+      "setup": "application 临时库 DOC_DIR=docs；已确认 ASD 位于 docs/requirements/REQUIREMENT-ORDER-1/MVP-Phase-1/ASD-ORDER-1-1.md。提供同链 PRD，以及现有 docs/specs/spec-asd-ORDER-1-1-order.md；app-name=order。§3 当前段意图及写前 C 已确认，只补摘要与该规约链接。",
+      "prompt": "继续 /sdx-architect §3，把已存在的 order 规约正确链接到 ASD 摘要表。",
+      "expected_output": "摘要承接 PRD，规约链接可从 ASD 所在目录解析到真实文件。",
+      "evidence": [
+        "原始目录与文件",
+        "ASD diff",
+        "链接解析结果"
+      ],
+      "assertions": [
+        {
+          "id": "spec-reference-resolves",
+          "priority": "P0",
+          "check": "最终 Markdown 链接从 ASD 目录解析到既有 docs/specs/spec-asd-ORDER-1-1-order.md；未误写成 MVP-Phase-1/specs/。"
+        },
+        {
+          "id": "spec-identity-consistent",
+          "priority": "P0",
+          "check": "IDEA-ID=ORDER-1、N=1、app-name=order 保持一致；没有搬移规约或额外生成 DSD。"
         }
       ]
     }

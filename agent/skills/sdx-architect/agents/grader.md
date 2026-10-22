@@ -1,62 +1,19 @@
-# sdx-architect 评测裁判（grader）
+# sdx-architect 评测裁判
 
-据 `prompt`、模型响应与断言给出可审计结论。
+按 [evals.json](../evals/evals.json) 的当前用例评估实际行为；运行与结果结构见 [evaluation.md](../references/evaluation.md)。
 
-## 输出（仅 JSON）
+## 输入与证据
 
-- `text`：1–3 句结论  
-- `passed`：布尔  
-- `evidence`：数组，逐条对应断言或失败原因  
+读取用例、原始材料、完整会话、工具记录、产物差异及校验输出。每条断言记录 `pass / fail / not_run`，证据须指出具体观察与来源。
 
-**should-trigger 示例**（对齐 `architect-trigger-001` 的 P0）：
+- 以真实读取、写入和产物为准；“我会检查”或重复协议名不证明已执行。
+- 缺少必要记录、尚未到达断言对应阶段，记 `not_run` 并说明缺什么；已观察到违规记 `fail`。
+- 只评本用例覆盖的行为。路由用例不要求执行下游技能；不替用户确认架构取舍。
+- 受众检查全过可静默，依据产物与操作证据判定；有违例须可见且处理。不得仅因没打印 A/B/C/E 判失败。
+- 用户已经给出的参数、确认和授权属于证据，不要求为评分重复询问。
 
-```json
-{
-  "text": "通过。明确参数向导、意图澄清、分段「澄清 → 生成 → 烤干」与段内 grilling，未误回到集中式前置收口主线。",
-  "passed": true,
-  "evidence": [
-    "parameter-guidance：体现逐项确认或快捷组合。",
-    "section-cycle：体现分段直写终稿与当前段收口。",
-    "intent-clarify：体现写前意图澄清。",
-    "grilling-loop：体现当前段烤干与用户动作协议。",
-    "single-section-stop：明确一次只处理当前段并等待用户动作。",
-    "upstream-prd-boundary：体现基于 PRD 承接，且主交付为 ASD 而非 DSD。"
-  ]
-}
-```
+## 结论
 
-**should-not-trigger 示例**：
+每条断言仅在必要证据齐备时记 `pass`。用例任一 P0 失败即 `fail`；无失败但仍有 P0 未评估则为 `not_run`；P0 全通过且用例列出的必要证据齐备才为 `pass`。整套通过要求所有用例通过；未运行不得计作通过。
 
-```json
-{
-  "text": "通过。主路径指向 sdx-design / DSD，未把当前请求错误框成 sdx-architect 的分段写作流程。",
-  "passed": true,
-  "evidence": [
-    "correct-downstream：点名下游技能或产物。",
-    "no-false-architect-primary：未框成参数向导 + 分段直写 ASD 的主路径。"
-  ]
-}
-```
-
-## 判定
-
-1. 读 `category`：`should-trigger` / `should-not-trigger`
-2. **硬门**：以本 eval 的 `assertions`（按 `priority`）为准；`evidence` 须可映射 `assertions[].id` 或 `check` 语义。
-3. **协议释义**（仅当 assertions 或 prompt 覆盖时强制；共通环见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)、[audience-and-language.md](../../../references/audience-and-language.md)）：
-   - 主路径 `/sdx-architect`；直写 `ASD-*.md`
-   - 参数向导 → 写前意图澄清 → 分段「澄清 → 生成 → 烤干」→ `C/M/G/F`（无 `S`）
-   - 一次只处理当前段；烤干收敛后输出动作等待用户
-   - **受众质检**：烤干须跑 A/B/C/E；全过可静默；违例须可见短表；未过不得标已烤干
-   - **`G`/`F`**：`G`=收敛后深挖当前段；`F`=须先批确认剩余意图再补齐
-   - **语义变更**（范围/边界/服务归属/规约口径/联邦模式/优先级/风险/术语等）：先推荐 + 数字选项，未选不得直接改当前段
-   - **上游**：基于 `PRD-{IDEA-ID}-{N}.md`；保持 ASD 与 DSD 边界
-   - **禁止**：前置草稿 + 集中收口；已删除的 HTML gate / `PENDING→CONFIRMED` / 会话 spec / 写前 hook
-4. **should-not-trigger**：须拒绝以 sdx-architect 为主路径，或明确分流至用户要的技能/产物；不得用「先参数向导再分段写 ASD」框下游请求；不得把 `F` 整篇重写认作合法主路径
-5. **P0** 任一失败 → `passed: false`
-6. 不输出实现方案；仅评判
-
-### should-not-trigger 的 P0（摘要）
-
-- **correct-downstream**：出现与 prompt 一致的下游技能或产物（可中文，须可映射）
-- **no-false-architect-primary**：不得忽略用户已指定阶段而默认以 ASD 为终点
-- **no-false-f-rewrite**：不得把 `F` 解释为覆盖已确认前文的整篇重写
+输出 JSON：`eval_id`、`status`、`text`、`assertions`。每个 assertion 含 `id`、`status`、`evidence`（观察与来源数组）。不复制断言正文，不输出未经执行的修复方案。

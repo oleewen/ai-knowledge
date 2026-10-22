@@ -1,103 +1,57 @@
 # sdx-architect 工作流
 
-主干：[SKILL.md](../SKILL.md)。推进 binding：[gates.md](gates.md)。
-
-## 目标
-
-通过**参数向导 + 分段「澄清 → 生成 → 烤干」**，逐步形成可评审的 `ASD-{IDEA-ID}-{N}.md`（`§1-§3`）。  
-单段收敛；不先攒整篇再集中收口。
-
-契约分工：
-
-- 写前意图澄清：[intent-clarify.md](../../../references/intent-clarify.md)
-- 段落推进环 / `C·M·G·F` / 重开 / 前文回改：[unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)（**无 `S`**）
-- 写后烤干：[grilling-skill.md](../../../references/grilling-skill.md)
-
-**公司库 / 系统库**（`KNOWLEDGE_TYPE=system|company`）：输出联邦概要架构，重点是能力归属、服务边界、变更方向与规约摘要；应用级实现级详设留给应用库 `/sdx-design`。粒度见 [knowledge-type-modes.md](knowledge-type-modes.md)。
-
----
+按当前段直写 ASD；推进权限见 [gates.md](gates.md)，输出粒度见 [类型模式](knowledge-type-modes.md)。
 
 ## 参数向导
 
-### 模式
+先复用请求和已读材料中的值，只补影响当前段的缺口；可逐项询问，也可一次确认组合。参数齐全不重复走问卷。
 
-1. **逐项模式**：一次只确认一个参数。
-2. **快捷组合模式**：先选预设，再按需改单项。
+| 参数 | 取值与约束 |
+| --- | --- |
+| `DOC_DIR`、`KNOWLEDGE_TYPE` | 读取 `.docsconfig`；类型检查先于创建目录/文件 |
+| PRD、`IDEA-ID`、`N` | 同一条已共识需求链；不能从主题臆造 ID 或用未确认基线替代 PRD |
+| 标题、起始段、范围 | 新建默认从 §1 开始；续写以用户指定段为准 |
+| `depth` | `quick` 补指定段；`standard` 默认；`deep` 加深方案取舍，均不越入 DSD |
+| `spec-asd-*` | 按需生成；仅需要摘要时不创建独立规约 |
 
-### 最小可写条件
-
-- 上游 `PRD-{IDEA-ID}-{N}.md` 已明确，或已有等价需求基线
-- `IDEA-ID` 与 `N` 已给出或可按规则生成
-- `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/` 可写
-- 至少能确定本轮起始章节，或默认从 `§1` 开始
-- `KNOWLEDGE_TYPE` 若已给出，则按对应模式约束输出粒度
-
-### 推荐参数顺序
-
-1. `IDEA-ID`
-2. `N` / `MVP-Phase-{N}`
-3. `KNOWLEDGE_TYPE`
-4. 标题 / 主题
-5. `depth`：`quick | standard | deep`
-6. 本轮起始章节 / 范围
-7. 是否需要联邦概要或 `spec-asd-*` 指针
-
-### 快捷组合
-
-- `标准全篇`：`depth=standard`，从 `§1` 开始，默认完整 `§1-§3`
-- `快速补段`：`depth=quick`，只处理用户指定章节、`DD`、服务变更项或规约摘要行
-- `联邦概要`：`KNOWLEDGE_TYPE=system|company`，聚焦服务边界、能力归属、下游承接
-- `深度规约`：`depth=deep`，强化 `§2` 服务交互与 `§3` 规约摘要的完整度
-
-参数未收口时留在向导，不进入 Section Cycle。
-
----
+最小可写条件：类型允许、PRD 可读取并对齐、当前段范围明确、目标可写。必要输入缺失时先补齐，不创建替代业务事实。
 
 ## 终稿骨架初始化
 
-参数达标后立即创建：
+新建任务参数收口后，用 [模板](../assets/asd-template.md) 初始化 frontmatter、三章标题和表头。保留未写标记；骨架不代表正文已确认。已有文件不重新初始化。
 
-- `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ASD-{IDEA-ID}-{N}.md`
-
-初始化：文档标题、`§1-§3` 标题与必要表头、文首 frontmatter 占位、未写章节占位说明。  
-骨架创建**不**替代各章写入前的意图澄清。
-
----
+正文按 [写前意图澄清](../../../references/intent-clarify.md) 与 [单元推进](../../../references/unit-cycle-protocol.md) 执行。模板示例须替换成已核实内容；未读的 ANALYSIS、overview 不写成已核实来源。
 
 ## 产物路径
 
-| 项 | 路径 |
+| 产物 | 路径 |
 | --- | --- |
-| 终稿 | `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ASD-{IDEA-ID}-{N}.md` |
-| 结构校验 | `../scripts/validate-asd.sh` |
+| ASD | `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ASD-{IDEA-ID}-{N}.md` |
+| 可选概设规约 | `{DOC_DIR}/specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md` |
 
----
-
-## 写后默认表
-
-| 对象 | 默认烤干 | 强制升级 |
-| --- | --- | --- |
-| 各 § / `DD` / 变更项 / 规约行 | **必须** | 未确认决策写入；边界·服务归属·联邦模式变更；规约口径变更 |
-
-启发式只可升级为必须，不可降级跳过。
-
----
+`{app-name}` 使用 `a-z0-9._-`，与 `knowledge-links.yaml` 对齐。从上述 ASD 位置引用概设规约，使用 `../../../specs/spec-asd-…md`；不要写成同级 `./specs/`。实际输出布局不同则按真实位置计算相对链接。`docs-push` 的下游复制位置由其自身契约决定。
 
 ## Section Cycle（指针）
 
-选定当前段后，严格按 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) + [intent-clarify.md](../../../references/intent-clarify.md) 执行。
+按 [gates.md](gates.md) 选定当前段。存在两条以上真实架构路径时，在段内比较约束、收益和代价，再由用户决定取舍。写后调用 [烤干能力](../../../references/grilling-skill.md)，不先攒整篇再集中收口。
 
-本技能附加：
+## 写后默认表
 
-- `§1.3 / §2 / §3` 可细化到单个 `DD`、服务变更项、交互链路、规约摘要行
-- 当前段存在 `>=2` 条真实架构路径时，先段内比选再收敛
-- 动作字母仅 `C/M/G/F`（无 `S`）
-- grilling fallback 见 [grilling-skill.md](../../../references/grilling-skill.md)
-
----
+| 对象 | 默认烤干 | 停顿条件 |
+| --- | --- | --- |
+| 章节、DD、服务变更项、交互链路、规约摘要行 | 必须 | 语义决策未确认，或触及前文边界、归属、模式、规约口径 |
 
 ## 整体验证与质量基线
 
-至少检查：章节完整性、术语一致、编号连续（`DD-n`、服务变更项、规约摘要行）、跨段无未解释矛盾、frontmatter 完整、架构摘要可读且不混入实现级 API/DDL 细节。
+当前段收口按 [质量清单](quality-checklist.md) 检查；全部完成或 `F` 补齐后，再查跨段一致性并执行严格校验。命令从目标工程内运行，脚本位置按安装后的 Agent 树替换：
 
-终检对齐 [quality-checklist.md](quality-checklist.md)；收口前跑 `validate-asd.sh`。
+```bash
+bash agent/skills/sdx-architect/scripts/validate-asd.sh --help
+bash agent/skills/sdx-architect/scripts/validate-asd.sh --strict --file path/to/ASD-ORDER-1.md
+# 扫描 DOC_DIR/requirements 下全部 ASD
+bash agent/skills/sdx-architect/scripts/validate-asd.sh --strict
+```
+
+使用 Bash 5+；`--file` 相对调用时目录。默认模式供草稿检查，警告不致退出失败；收尾用 `--strict`。无文件不代表已有 ASD 通过。
+
+脚本检查 frontmatter 边界/模板字段、同链标识和正文结构，不解析完整 YAML，也不证明引用目标存在、业务语义正确或用户已确认。上述项目仍须人工/Agent 对照来源验收。

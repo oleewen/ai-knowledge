@@ -1,64 +1,37 @@
 ---
 name: sdx-architect
 description: >
-  基于已共识 PRD 按 §1-§3 分段「澄清 → 生成 → 烤干」直写 ASD-{IDEA-ID}-{N}.md；
-  每段写前意图澄清，写入后自动 grilling 至收敛，再由用户确认推进。
-  用户提到 /sdx-architect、ASD、边界、变更、§3 规约摘要或 spec-asd-* 且可对齐上游 PRD 时，使用本技能。
-  分流：API/DDL/DSD → sdx-design；docs-* 或仅其他 SDX 阶段 → 对应技能，不以本技能代跑。
-  推进见 references/gates.md。
-compatibility: Bash 5+；校验脚本 agent/skills/sdx-architect/scripts/validate-asd.sh（仅结构/内容校验）。
+  基于已共识 PRD 创建或修订 ASD 架构设计，明确系统/应用边界、服务变更和需求规约摘要。
+  适用于 /sdx-architect、ASD 或 spec-asd 概设请求；实现级 API、DDL、DSD 使用 sdx-design。
 ---
 
 # sdx-architect
 
-## 输出硬门禁（P0）
+将已确认需求转成可评审的三章 ASD：设计概述、架构设计、需求规约。ASD 说明边界与取舍；实现级接口、DDL 和错误码正文交由 `sdx-design`。
 
-- 对象=当前段（章节 / `DD` / 服务变更项 / 规约摘要行）；一次一段（除非 `F` 且已批确认意图）。
-- 写前澄清 / 推进环 `C/M/G/F`（无 `S`）/ 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[simplify-principles.md](../../references/simplify-principles.md)；细节 [gates.md](references/gates.md)。
-- 上游须可对齐 `PRD-{IDEA-ID}-{N}.md`；否则引导 `sdx-prd`。**DSD 正文 → sdx-design**。
-- `KNOWLEDGE_TYPE` / 联邦模式约束见 [knowledge-type-modes.md](references/knowledge-type-modes.md)。
+## 开始前
 
-## 边界
+1. 读取 `.docsconfig`，按 [类型模式](references/knowledge-type-modes.md) 判断落点；只有系统/应用库可写 ASD，公司/解决方案库先分流。
+2. 核实同链 `PRD-{IDEA-ID}-{N}.md` 和本轮范围。缺 PRD 先补输入或转 `sdx-prd`；已有参数与授权沿用，只问缺项。ANALYSIS 为可选追溯材料。
+3. 读 [工作流](references/workflow.md) 与 [推进约束](references/gates.md)，再初始化或修改目标文件。已有 ASD 只改已授权段。
 
-| 负责 | 不负责 |
+## 执行约束
+
+- 默认一个当前段：写前澄清、生成、写后自动烤干；收敛后等待 `C/M/G/F`，无 `S`。
+- 公共协议只在 [意图澄清](../../references/intent-clarify.md)、[单元推进](../../references/unit-cycle-protocol.md)、[烤干](../../references/grilling-skill.md) 维护。`F` 须先批确认剩余意图，不能覆盖已确认前文。
+- 生成与修订遵循 [精简原则](../../references/simplify-principles.md)；烤干检查 [ASD 受众要求](references/audience-and-language.md)。
+
+## 按需读取
+
+| 时机 | 资源 |
 | --- | --- |
-| `ASD-{IDEA-ID}-{N}.md` 架构边界与变更、参数向导、意图澄清、分段生成、段内烤干、§1-§3 规约摘要、可选 `spec-asd-*` 指针 | `PRD/ANALYSIS/SOLUTION` 初稿；DSD 实现级 API/DDL；docs-* 主路径 |
+| 新建 ASD | [三章模板](assets/asd-template.md)；需要示例时看 [片段](assets/samples/mini-asd-example.md) |
+| 系统联邦概要 | [承接表片段](assets/asd-stub-sections-federated.md) |
+| 用户需要独立概设规约 | [spec-asd 模板](assets/asd-spec-template.md) |
+| 遇到模式、路径或内容混淆 | [操作陷阱](gotchas.md)、[概念反模式](references/anti-patterns.md) |
+| 当前段/整篇收口 | [质量清单](references/quality-checklist.md) |
+| 维护或评估本技能 | [评测说明](references/evaluation.md) |
 
-## 不这样用
+## 产物与校验
 
-- 不走前置草稿 + 集中收口；默认参数向导后分段推进
-- 不把整篇集中回炉或整份重生成当默认路径
-- 不把写前意图澄清当成完整 grilling Skill 深挖
-- 不把 `ASD` 偷换成 `DSD` 实现级设计或 docs-* 主路径
-
-## 路由
-
-| 目的 | 文件 |
-| --- | --- |
-| 流程 / 推进 binding | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
-| KNOWLEDGE_TYPE / 联邦模式 | [knowledge-type-modes.md](references/knowledge-type-modes.md) |
-| 原则 / 反模式 / 终检 | [anti-patterns.md](references/anti-patterns.md)、[quality-checklist.md](references/quality-checklist.md) |
-| 受众与语言 | [audience-and-language.md](references/audience-and-language.md) |
-| 易错 | [gotchas.md](gotchas.md) |
-| 模板 | [asd-template.md](assets/asd-template.md)、[asd-spec-template.md](assets/asd-spec-template.md) |
-
-## 最少输入
-
-- 可对齐的 **`PRD-{IDEA-ID}-{N}.md`**
-- 可选但推荐的 `ANALYSIS-{IDEA-ID}.md`（七章需求分析）
-- `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/` 可写
-- 若已给 `IDEA-ID`、`N`、章节范围、深度、`KNOWLEDGE_TYPE`，则直接进入参数向导确认
-
-## 产出与校验
-
-- 正式：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ASD-{IDEA-ID}-{N}.md`
-- 可选：`{DOC_DIR}/specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md`
-
-```bash
-agent/skills/sdx-architect/scripts/validate-asd.sh
-agent/skills/sdx-architect/scripts/validate-asd.sh --file path/to/ASD-xxx.md
-```
-
-## 评测
-
-`evals/evals.json`、[grader.md](agents/grader.md)。聚焦：意图澄清、当前段推进、上游 PRD/边界、联邦模式分流。
+产物路径与命令见 [工作流](references/workflow.md#产物路径)。校验需要 Bash 5+ 和随 Agent 树安装的 `scripts/lib/docsconfig.sh`。收尾使用 `validate-asd.sh --strict`；脚本只做结构检查，不证明架构正确、完整 YAML 合法或用户已确认。

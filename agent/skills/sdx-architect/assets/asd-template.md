@@ -16,6 +16,7 @@ tags: ["ASD"]
 
 > 读者：**架构师**（主笔与验收）；**分析、产品、研发**参评可行性与范围。
 > 写法：系统架构、接口协议、领域模型、数据架构、发布方案，不写内部调用细节。
+> 本模板用于系统/应用库；示意内容须替换为已核实方案。系统库按联邦概要粒度填写。
 
 ---
 
@@ -23,9 +24,10 @@ tags: ["ASD"]
 
 ### 1.1 设计目标
 
-- 关联需求分析：`{DOC_DIR}/analysis/ANALYSIS-{IDEA-ID}.md`
-- 关联产品需求：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`
+- 关联产品需求：`./PRD-{IDEA-ID}-{N}.md`
+- 关联需求分析（可选，读取后填写）：`../../../analysis/ANALYSIS-{IDEA-ID}.md`
 - MVP阶段：MVP-Phase-{N}
+- 设计目标：{本阶段要达成的架构结果及对应需求 ID}
 
 ### 1.2 设计约束
 <!-- 技术/架构/兼容约束 -->
@@ -34,7 +36,7 @@ tags: ["ASD"]
 
 | 决策编号 | 决策点 | 决策结果 | 决策理由 | 备选方案 |
 | --------- | ------- | --------- | --------- | --------- |
-| DD-001 | | | | |
+| DD-001 | {决策点} | {已确认结果} | {约束与依据} | {真实备选及取舍} |
 
 ## 2. 架构设计
 
@@ -43,46 +45,35 @@ tags: ["ASD"]
 #### 系统架构图
 
 ```mermaid
-architecture-beta
-    group system(cloud)["XX系统"]
-
-    service server1(server)["系统A"] in system
-    service server2(server)["系统B"] in system
-    service server3(server)["系统C"] 
-
-    server3:B --> T:server1
-    server1:R --> L:server2
+flowchart LR
+    Upstream["上游系统"] --> Boundary["本系统边界"]
+    Boundary --> Downstream["下游系统"]
 ```
 
 #### 服务变更
 
 | 服务名称  | 所属应用   | 变更类型 | 变更说明    |
 | ----------- | ------------ | ---------- | ------------- |
-| service-a | xx-service | 变更     | 新增xxx功能 |
-| service-b | yy-service | 新增     | 新服务      |
+| {服务名称} | {所属应用} | {新增/变更/移除} | {职责与影响} |
 
 #### 服务交互
 
 ```mermaid
 sequenceDiagram
-    participant Client
-    participant ServiceA
-    participant ServiceB
-    participant DB
-    
-    Client->>ServiceA: POST /api/xxx
-    ServiceA->>ServiceB: gRPC call
-    ServiceB->>DB: Query
-    DB-->>ServiceB: Result
-    ServiceB-->>ServiceA: Response
-    ServiceA-->>Client: 200 OK
+    participant Upstream as 上游
+    participant Service as 本服务
+    participant Downstream as 下游
+    Upstream->>Service: 发起业务请求
+    Service->>Downstream: 请求协作能力
+    Downstream-->>Service: 返回业务结果
+    Service-->>Upstream: 完成响应
 ```
 
 ### 2.2 接口协议设计
 
 | 接口名称 | 所属服务 | 能力说明 | 输入输出 |
 | --------------- | -------- | -------- | ------ |
-| XX接口 | service-a | 提供XX能力 | 输入：XX <br/> 输出：YY |
+| {接口名称} | {所属服务} | {协议级能力与责任} | {输入输出摘要；字段详设见 DSD} |
 
 ### 2.3 领域模型设计
 
@@ -98,43 +89,27 @@ erDiagram
 
 | 事件名称        | 触发条件 | 携带数据 | 消费者 |
 | --------------- | -------- | -------- | ------ |
-| XxxCreatedEvent |          |          |        |
+| {事件名称} | {业务触发条件} | {关键业务信息} | {消费者} |
 
 ### 2.4 数据架构设计
 
 #### 数据存储选型
 
-```mermaid
-flowchart LR
-    Start(["🚀 存储选型开始"]) --> Q1{"数据是否结构化<br/>且需要复杂事务？"}
-
-    Q1 -->|"是"| Q3{"<b>数据量大吗？</b>"}
-		Q3-->|"累计不超5千万，单表存储"|SQL["🗄️ <b>RDB</b><br/>MySQL<br/>PostgreSQL"]
-		Q3-->|"累计超5千万，分表存储"|SQL
-		Q3-->|"累计超5千万，不分表"|OB["🗄️ <b>RDB</b><br/>OceanBase<br/>TiDB"]
-
-    Q1 -->|"否"| Q2{"核心访问模式是什么？"}
-
-    Q2 -->|"高并发KV读写"| A_KV["⚡ <b>缓存/KV 存储</b><br/>KVRocks<br/>Redis<br/>Memcached"]
-    Q2 -->|"文档型灵活Schema"| A_DOC["📄 <b>文档数据库</b><br/>MongoDB"]
-    Q2 -->|"海量日志/全文检索"| A_LOG["🔍 <b>搜索引擎</b><br/>Elasticsearch"]
-    Q2 -->|"时序数据"| A_TS["⏱️ <b>时序数据库</b><br/>InfluxDB<br/>TDengine<br/>TimescaleDB"]
-    Q2 -->|"海量列式分析"| A_COL["📊 <b>列式存储/分析</b><br/>Doris<br/>ClickHouse<br/>HBase"]
-    Q2 -->|"图关系查询"| A_GRAPH["🕸️ <b>图数据库</b><br/>Neo4j<br/>JanusGraph"]
-    Q2 -->|"对象/文件存储"| A_OBJ["📦 <b>对象/文件存储</b><br/>MinIO<br/>S3<br/>HDFS"]
-    Q2 -->|"消息/事件流"| A_MSG["📨 <b>消息/事件流</b><br/>Kafka<br/>RocketMQ<br/>RabbitMQ"]
-```
+| 数据与访问模式 | 已核实约束 | 存储选择 | 理由与代价 |
+| --- | --- | --- | --- |
+| {数据类别、读写模式} | {规模、事务、一致性等依据} | {已确认方案} | {备选取舍；未知项标待确认} |
 
 #### 数据库表设计
 
-```mermaid
-erDiagram
-    table_name1（U）||--o{ table_name2（A）: 被引用
-```
+<!-- 仅列逻辑数据关系、归属和变更影响；物理字段、索引与 DDL 交由 DSD。 -->
 
 #### 数据分片设计
 
+<!-- 按实际需求写分片边界与理由；无需分片时说明依据。 -->
+
 #### 数据迁移方案
+
+<!-- 迁移范围、一致性约束、验证及回退条件；执行脚本留给下游。 -->
 
 ### 2.5 发布方案设计
 
@@ -144,24 +119,26 @@ erDiagram
 
 #### 发布检查
 
-- 变更窗口与影响面通知到位
-- 相关服务和依赖是否已完成升级/发布准备
-- 回滚/兜底策略是否有预案
-- 数据迁移是否有验证脚本
-- 三方验证、全链路验证是否已准备好
+- 变更窗口、影响面和依赖已确认
+- 迁移验证、三方/全链路验证有承接方
+- 回滚条件、责任人与兜底方案已明确
 
 #### 回滚方案
 
-- 回滚前需备份相关数据库与配置
-- 回滚步骤：逐步逆向操作（如数据库还原、容器回滚等），确保服务健康
-- 回滚注意事项：做好监控收敛，通知相关人员
+<!-- 记录回滚触发、数据/配置保护、执行边界和恢复验收；不能假定所有变更都能逆向操作。 -->
 
 ## 3. 需求规约
 
-<!-- 行内应用/服务对齐 spec-asd-*、INDEX-GUIDE 第四章；摘要级，详设见应用库 **DSD-*.md**（`/sdx-design`）。冲突以已确认 ASD+PRD。联邦可将规约标 N/A，须写服务边界。-->
+### 3.1 需求规约摘要
 
-<!-- `{app-name}`：`a-z0-9._-`，对齐 knowledge-links.yaml；勿用 `{service-name}` 替代 -->
+<!-- 摘要足以评审能力边界、需求 ID 和协议口径；实现正文交由应用库 DSD。 -->
+<!-- `{app-name}` 使用 a-z0-9._-，对齐 knowledge-links.yaml。以下相对路径以本模板约定的 MVP-Phase 目录为起点。 -->
+<!-- 写入终稿时，将已核实存在的 PRD/规约路径转为可点链接；模板占位与待建路径不伪装成有效链接。 -->
 
 | 应用 | 规约文件 | 规约描述 |
 | ---- | -------- | -------- |
-| `{APP-ID}` | `./specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md` | **Spec结构**：参照 `asd-spec-template.md`（第1-6节）<br/>**范围（1）**：能力边界 / 覆盖 FR-UC-BR-EX / SSOT 来源<br/>**术语（2）**：核心业务概念与字段口径<br/>**需求条目（3-4）**：FR-{n} / UC-{n}<br/>**接口定义（5）**：接口签名、入参、出参、BR、EX（message/suggestions）<br/>**元数据（6）**：id/title/version/status/created/updated/parent/refs/scope |
+| `{APP-ID}` | `../../../specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md` | {能力边界、覆盖需求 ID、关键协议约束} |
+
+<!-- 不生成独立 spec 时，在“规约文件”列标“不单列”，保留摘要及下游 DSD 承接；拟建文件须标“待建”，不得伪装成已存在链接。 -->
+
+下游承接：{负责应用及 DSD 路径/待建状态}。

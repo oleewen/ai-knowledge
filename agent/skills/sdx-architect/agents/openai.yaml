@@ -1,0 +1,4 @@
+interface:
+  display_name: "SDX 架构设计"
+  short_description: "从已确认 PRD 生成系统与应用架构设计，明确边界、变更与规约摘要"
+  default_prompt: "请用 $sdx-architect 基于已确认 PRD 处理当前 ASD 段，明确架构边界、服务变更与规约摘要。"

@@ -1,39 +1,12 @@
-# sdx-architect 评测失败分析（analyzer）
+# sdx-architect 评测失败分析
 
-将失败样本转为可执行修复清单。
+仅分析 [grader](grader.md) 记录的失败或证据缺口。输入为用例、原始材料、实际会话/工具记录、diff 与评分；需要核对行为时再读 [SKILL.md](../SKILL.md) 及对应引用。
 
-## 输入
+| 检查方向 | 证据锚点 |
+| --- | --- |
+| 路由与层级 | PRD/ASD/DSD 分工；system 概要；company/solution 的分流 |
+| 当前段与授权 | 已有确认是否复用；写入范围；语义停顿；F 与前文重开 |
+| 产物可用性 | 上游追溯、摘要粒度、命名与链接解析、校验结果 |
+| 评测自身缺口 | 原始材料、工具记录或阶段未覆盖；断言是否只查措辞 |
 
-失败样本（prompt、分类、响应、grader 证据）；[SKILL.md](../SKILL.md)；[references/gates.md](../references/gates.md)、[references/workflow.md](../references/workflow.md)、[references/anti-patterns.md](../references/anti-patterns.md)、[gotchas.md](../gotchas.md)。
-
-## 输出（四段）
-
-1. 失败模式归类
-2. 根因与证据
-3. 优先级修复
-4. 回归建议
-
-## 失败类型（可多选）
-
-- **F1 路由**：should-trigger / should-not-trigger 误判
-- **F2 边界**：PRD、ASD、DSD、docs-* 混淆
-- **F3 协议回退**：退回已删除的 HTML gate / CONFIRMED / 会话 spec / 写前 hook 主线
-- **F4 当前段协议缺失**：缺参数向导、意图澄清、Section Cycle、「澄清 → 生成 → 烤干」、自动 grilling、`C/M/G/F`、单段停住
-- **F5 语义越权**：语义性结论未确认就直接修订当前段或前文
-- **F6 联邦漂移**：`system/company` 被写成应用级详设
-- **F7 意图澄清缺失**：跳过写前六项清单或写前 `C` 直接写正文
-- **F8 F 批确认缺失**：`F` 跳过剩余段意图批确认
-
-## 修复（P0/P1/P2）
-
-- **P0**：误路由、协议回退、单段停住缺失、语义越权、跳过意图澄清
-- **P1**：边界不清、联邦模式漂移、与 PRD 衔接弱、F 批确认表述不清
-- **P2**：文案与样本覆盖
-
-每条须含：目标、最小变更（文件/段）、预期影响、至少 1 个回归用例。
-
-## 回归
-
-1. 先跑 P0 样本，再跑全量
-2. 成对验证：`/sdx-architect` vs `/sdx-design`、`/sdx-prd`、docs-*
-3. 同模式两轮失败，优先考虑协议级重写而非堆补丁
+输出每个已观察问题的：证据、根因、最小修改位置、回归用例 ID。证据不足列为未评估，先补证据；不据单次措辞差异新增通用门禁。修复后重跑受影响用例，跨模式变更再检查对应分流；不伪造回归结果。

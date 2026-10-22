@@ -1,10 +1,28 @@
-# {IDEA-ID} {APP-NAME} MVP-Phase-{n} 概设需求规约示例
+---
+id: "spec-asd-{IDEA-ID}-{N}-{app-name}"
+title: "{app-name} MVP-Phase-{N} 概设需求规约"
+version: "1.0.0"
+status: "draft"
+created: "{YYYY-MM-DD}"
+updated: "{YYYY-MM-DD}"
+parent: "ASD-{IDEA-ID}-{N}"
+refs:
+  - "{PRD-PATH}"
+  - "{ASD-PATH}"
+scope:
+  fr: ["FR-{n}"]
+  uc: ["UC-{n}"]
+  br: ["BR-{n}"]
+  ex: ["EX-{n}"]
+---
 
-> **spec-asd-*.md**：概设（本模板）。**详设**由应用库 **`DSD-*.md`**（`/sdx-design`，见 `sdx-design` 技能）承载。落 **`{DOC_DIR}/specs/spec-asd-{IDEA-ID}-{MVP-PHASE}-{app-name}.md`**，`id` 同文件名。
+# {IDEA-ID} {app-name} MVP-Phase-{N} 概设需求规约
+
+> 概设描述业务契约；实现详设由应用库 `DSD-*.md` 承载。保存到 `{DOC_DIR}/specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md`，`id` 同文件名。
 
 ## 1. 需求规约范围
 
-- 应用：{APP-NAME}
+- 应用：{app-name}
 - 能力：能力示例
 - 覆盖：FR/UC/BR/EX（按需列出）
 - SSOT：PRD/ASD 路径（按需列出）
@@ -29,9 +47,9 @@
 
 ### 示例接口
 
-- 接口签名：{示例签名}
-- **入参**：{示例入参}
-- **出参**：{示例出参}
+- 接口签名：{协议级签名；不展开实现方法}
+- **入参**：{业务输入摘要}
+- **出参**：{业务输出摘要}
 - **业务规则（BR）**
   - BR-001：{示例BR}
   - BR-002：{示例BR}
@@ -43,20 +61,4 @@
 
 ## 6. 元数据
 
-```yaml
-id: "spec-asd-{IDEA-ID}-{MVP-PHASE}-{APP-NAME}"
-title: "{app-name} MVP-Phase-{n} 需求规约"
-version: "1.0.0"
-status: "draft"
-created: "YYYY-MM-DD"
-updated: "YYYY-MM-DD"
-parent: "{ASD-ID}"
-refs:
-  - "{PRD-PATH}"
-  - "{ASD-PATH}"
-scope:
-  fr: ["FR-{n}"]
-  uc: ["UC-{n}"]
-  br: ["BR-{n}"]
-  ex: ["EX-{n}"]
-```
+元数据只在文首 frontmatter 维护；`parent` 指向同链 ASD，`refs` 填已核实来源，`scope` 与正文 ID 一致。未涉及的条目使用空数组，不另造编号。

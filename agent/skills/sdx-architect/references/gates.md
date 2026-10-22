@@ -1,58 +1,27 @@
 # sdx-architect 推进协议（binding）
 
-主干：[SKILL.md](../SKILL.md)。流程：[workflow.md](workflow.md)。
-
-## 定位
-
-本文件只定义 `sdx-architect` 对共享协议的 **binding**（对象=段落）。  
-不复制状态机、动作字母全文、`F` 批确认细则或共通 mermaid 环。
-
-契约：
-
-- [intent-clarify.md](../../../references/intent-clarify.md) — 写前意图澄清
-- [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) — 段落推进环 / `C·M·G·F` / 重开 / 前文回改（**`sdx-*` 无 `S`**）
-- [grilling-skill.md](../../../references/grilling-skill.md) — 写后烤干能力
-
-主线口令：`澄清 → 生成 → 烤干`。
-
----
+本技能绑定 [写前意图澄清](../../../references/intent-clarify.md)、[单元推进](../../../references/unit-cycle-protocol.md) 和 [写后烤干](../../../references/grilling-skill.md)。公共权限与动作仅在共享协议维护；本技能使用 `C/M/G/F`，无 `S`。
 
 ## 对象定义
 
-**当前段**：`ASD-{IDEA-ID}-{N}.md` 中的一个章节、子章节，或 `§1.3 / §2 / §3` 内单个 `DD`、服务变更项、交互链路、规约摘要行（`§1-§3`）。
-
-产物路径见 [workflow.md](workflow.md)。
-
----
+**当前段**：ASD 三章内的一个章节、子章节，或单个 `DD`、服务变更项、交互链路、规约摘要行。产物路径与写后默认表见 [workflow.md](workflow.md)。
 
 ## 技能追加澄清字段
 
-- 上游 `PRD-{IDEA-ID}-{N}` 对齐点
-- `IDEA-ID`、`N` / `MVP-Phase-{N}`
-- `KNOWLEDGE_TYPE`（影响输出粒度 / 联邦模式）
-- `depth`：`quick | standard | deep`
-- 是否需要联邦概要或 `spec-asd-*` 指针
-
----
+- PRD 对齐点及同链 `IDEA-ID`、`N`。
+- `KNOWLEDGE_TYPE`、`depth` 和本段输出粒度。
+- 涉及的服务/应用归属、下游承接及是否生成 `spec-asd-*`。
 
 ## 语义问题清单（烤干须停）
 
-- 目标、范围、边界、能力归属、服务拆分
-- 规约口径、风险、优先级
-- 联邦模式、术语
-
----
+目标/范围、服务拆分与归属、规约口径、风险/优先级、联邦模式或术语发生实质变化时，先给结论、推荐与数字选项，确认前不修改。
 
 ## 前文回改触发例（技能特有）
 
-- 边界漂移
-- 服务归属变化
-- 联邦模式切换
-- 规约口径 / 术语冲突
-
----
+当前段的边界、归属或协议选择推翻前文前提时，按共享协议重开受影响段；本段不能因此自动通过。
 
 ## 失败停顿
 
-- 当前段未收敛前，不得自动推进下一段
-- 语义问题或前文回改：立即停下确认
+- 未获当前段写前授权，不写正文；烤干未收敛，不推进下一段。
+- 语义问题或前文回改立即停顿；`F` 不能跳过这些停顿。
+- 类型不支持或 PRD 无法对齐时，停在路由/输入阶段，不创建 ASD 骨架。
