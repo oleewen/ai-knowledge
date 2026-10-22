@@ -1,68 +1,30 @@
 ---
 name: skill-upgrade
 description: >
-  已装环境生态 skills 追新：npx skills update -g（lock 内有源可更）；凡无可用源
-  （无 lock、lock 失联等）经用户确认后按 /find-skills 流程补源；不能自动抉择则待决策表问用户。
-  默认先 dry-run 清单勾选再实跑。
-  用户提到 /skill-upgrade、skills update、无源技能补登记、升级 ~/.agents/skills 生态包时，使用本技能。
-  分流：本仓 Agent 树 → agent-install；知识库模板对齐 → docs-upgrade；知识库装机 → docs-install；
-  纯发现/按需新装（非追新补源）→ find-skills。
-  推进见 light-flow-actions（C/M/S/F，无 G）与 references/gates.md。
+  升级已安装的第三方生态 skills，并为缺失或失效的来源整理补源候选。
+  用于 /skill-upgrade、skills update、已装技能追新或补登记来源。
+  本仓 Agent 树同步用 agent-install；知识库模板升级用 docs-upgrade；新技能发现用 find-skills。
 ---
 
 # skill-upgrade
 
-## 输出硬约束（P0）
+先预览已装生态技能的升级计划，经确认后执行并核验结果。一个计划为一个当前单元；动作采用 [轻流程 C/M/S/F](../../references/light-flow-actions.md)。
 
-- 当前单元：一次「生态 skills 追新」计划（可含无源补源栏）。
-- 轻流程：参数向导 → 风险校核 → `C/M/S/F`（无 `G`、不绑意图澄清）→ [light-flow-actions.md](../../references/light-flow-actions.md)；细节 [gates.md](references/gates.md)。参数与勾选未收口前不得写盘。
-- 默认先 **dry-run 清单**（update + 可选补源）；清单未 `C` 前不得实跑。
-- 写 `$HOME` / `~/.agents/skills` 须用户明示；未确认不得默认实跑。
-- **本仓 Agent 树**（rules/skills/hooks 等）**不在本技能**；须分流 `/agent-install`。
-- **无可用源**：列清单后问是否按 [find-skills](references/find-source.md) 查找；拒 → 本段跳过。搜后建议桶仍须确认才 `add`；多/零候选进待决策表，**不得擅自选源**。
-- 宣称单元完成前须按 [audience-and-language.md](../../references/audience-and-language.md) 轻流程默认读者表做写后 **A/B**。
+## 执行
+
+1. **盘点**：读取所选安装范围与 lock，区分有源、缺源、检查失败和本仓管理项。详见 [workflow.md](references/workflow.md)。
+2. **预览**：列出技能、来源、检查证据、拟执行动作与待决策项。默认只读；本地记录不等于远端存在更新。
+3. **补源（按需）**：仅在用户允许搜索时读 [find-source.md](references/find-source.md)。搜索许可不等于安装许可；候选须由用户确认。
+4. **执行与核验**：按 [gates.md](references/gates.md) 确认具体范围、命令和覆盖风险；只执行已确认项，报告成功、失败、跳过与未核实项。
 
 ## 边界
 
-| 负责 | 不负责 |
-| --- | --- |
-| 生态 `npx skills update`；无源时编排 find-skills 补源与决策闸门；dry-run 清单 | 本仓 `agent/` 树（→ agent-install）；知识库装机（→ docs-install）；知识库模板升级（→ docs-upgrade）；纯「找个 skill 做 X」发现（→ find-skills） |
+- 仅升级生态 skills；本仓 rules/skills/hooks 同步交给 [agent-install](../agent-install/SKILL.md)。
+- 不猜 CLI 参数。具名更新、global 范围与非交互能力须先核实，见 [parameters.md](references/parameters.md)。
+- 网络、认证或限流失败不证明来源失效；不据此替换来源。
+- 用户未确认前不写安装目录或 lock；未知来源、多候选、本地修改和额外写入目标均须在计划中明确。
+- 完成前做 [受众 A/B](../../references/audience-and-language.md#轻流程-ab含-okf)；全过可静默。
 
-## 不这样用
+## 维护与验证
 
-- 不把追新写成无清单流水线或默认静默写 `$HOME`
-- 不在用户拒绝 find 后仍搜；不在多候选时自动挑包
-- 不把无源补源做成免确认 `skills add`
-- 不把本仓 Agent 树安装/追新收成本技能（→ agent-install）
-- 不把 docs-install / docs-upgrade 主路径收成本技能
-
-## 路由
-
-| 目的 | 文件 |
-| --- | --- |
-| 流程 / 风险 | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
-| 参数 | [parameters.md](references/parameters.md) |
-| 无源补源 | [find-source.md](references/find-source.md) |
-| 轻流程动作 | [light-flow-actions.md](../../references/light-flow-actions.md) |
-| 易错 | [gotchas.md](gotchas.md) |
-
-## 最少输入
-
-- 生态：global（默认 `-g`）；可选具名 skills
-- 无源：是否允许 find（默认先问）；建议桶 / 待决策结果
-- 是否 dry-run（默认是）已收口
-
-## 产出与命令
-
-- 正式：更新后的生态 lock skills；经确认的 `npx skills add -g` 补源
-- 预览：update 清单 + 无源栏（建议桶 / 待决策 / 跳过）
-
-```bash
-npx skills update -g -y
-# 补源（仅建议桶确认后）
-npx skills add <owner/repo@skill> -g -y
-```
-
-## 评测
-
-`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。重点：无源 find 闸门、建议桶确认、待决策不擅自选、与 agent-install 分流、写后 A/B。
+易错处见 [gotchas.md](gotchas.md)；行为场景见 [evals/evals.json](evals/evals.json)，评分见 [grader.md](agents/grader.md)。本技能无自有执行脚本；命令由已核实的生态 CLI 提供。

@@ -1,34 +1,26 @@
-# skill-upgrade 风险控制与确认点
+# skill-upgrade 确认边界
 
-按 [agent/rules/CONVENTIONS.md](../../../rules/CONVENTIONS.md#artifact-gates)，本技能为低风险工程同步族中的**生态 skills 追新**编排：副作用在 `$HOME/.agents/skills`，闸门从严。
+遵循 [工程同步门禁](../../../rules/CONVENTIONS.md#artifact-gates) 与 [轻流程动作](../../../references/light-flow-actions.md)。本文件只定义本技能的授权范围。
 
-非 dry-run 写盘前须取得用户明确同意（轻流程 `C`）。
+| 动作 | 确认要求 |
+| --- | --- |
+| 本地盘点、生成计划 | 可直接执行；不写安装目录或 lock |
+| 补源搜索 | 用户明确允许；已有搜索授权无需重复询问 |
+| 更新或补源安装 | 用户确认具体清单、来源、安装目标与覆盖风险后执行 |
+| 扩大范围、换源、覆盖新增冲突 | 更新计划并重新确认对应变化 |
 
-## 参数确认
+同一清单已有明确授权可沿用；`C` 是快捷确认，不要求用户逐字输入。搜索许可不授权安装；`F` 不扩大已确认的范围。未决项保持跳过或阻塞，不替用户选择。
 
-至少收口：
-
-- 生态 global 与 lock 范围
-- 无源：是否 find；建议桶确认；待决策已决或明确跳过
-- dry-run 默认开启直至 `C`
-
-宣称完成前须写后 **A/B**。
-
-## 风险与动作
-
-须先给结论、推荐与选项：
-
-- 写 `$HOME` / 覆盖 `~/.agents/skills`
-- 生态 `npx skills update` / 补源 `npx skills add`
-- 全量无源 find（耗时与误匹配风险）——搜前须确认
-
-用户要更新本仓 `agent/` 树 → **停止**，分流 `/agent-install`。
+确认前展示：
 
 ```text
-即将执行 /skill-upgrade，当前参数如下：
-- ecosystem: <lock 更新 N；失败转无源摘要>
-- find-source: <skip | pending-confirm | suggested K + decide M>
-- dry-run: <yes|no>
-
-C 确认当前追新计划 / M 修改参数 / S 跳过 / F 在已确认前提下补齐同类计划
+当前单元：生态 skills 追新计划
+范围：<global / 项目路径；所选技能；实际写入目标>
+更新：<技能、来源、检查结果、准确命令>
+补源：<搜索许可；已选来源；未决项>
+覆盖：<本地修改及保留方案>
+模式：<只读预览 / 执行>
+C 确认 / M 修改 / S 跳过 / F 在已确认范围内补齐
 ```
+
+执行失败后的停顿与结果核验见 [workflow.md](workflow.md#执行与核验)；完成前须通过 [受众 A/B](../../../references/audience-and-language.md#轻流程-ab含-okf)。

@@ -1,26 +1,29 @@
-# skill-upgrade 参数
+# skill-upgrade 参数与 CLI 能力
 
-生态 CLI：`npx skills --help`。补源：[find-source.md](find-source.md)。本仓 Agent 树见 [agent-install/SKILL.md](../../agent-install/SKILL.md)。
+以下为会话参数，不是脚本选项；不得原样传给 `npx skills`。
 
-## 技能层
-
-| 参数 | 必选 | 说明 |
+| 参数 | 默认 | 含义 |
 | --- | --- | --- |
-| `--find-source` | 否 | `ask`（默认）\| `yes` \| `no`；`ask`=列无源后问；`no`=跳过 find |
-| `--dry-run` | 否 | 默认是（读 lock 出清单，不执行 update/add） |
-| 具名 skills | 否 | 仅更新列出的生态技能（默认 lock 内全部） |
+| scope | global | 安装位置及对应 lock；项目范围须明确根目录 |
+| skills | 所选范围全部 | 可限定具名技能；执行命令必须保持该集合 |
+| find-source | ask | ask：列缺源项后询问是否搜索；yes：允许搜索；no：跳过搜索 |
+| dry-run | yes | 仅盘点和预览，不执行 update/add |
 
-## 生态轨 / 补源
+## 核实命令
 
-| 命令 | 说明 |
+先查已安装 CLI 的版本、帮助或对应版本官方文档，再生成命令。无本地 CLI 时，不为本地预览强制安装依赖；需要远程检查或执行时说明运行依赖。
+
+须核实：更新命令的实际范围、是否接受具名选择、global/agent 目标、非交互选项，以及 add 是否会覆盖已有技能。不可将 `-g`、`-y`、技能名或 `--dry-run` 视作所有子命令通用参数。
+
+| 目的 | 命令入口（具体参数须核实） |
 | --- | --- |
-| `npx skills update -g -y` | 更新 global lock 技能 |
-| `npx skills find <dir-name>` | 无源检索（编排层走 find-skills 质量门） |
-| `npx skills add <owner/repo@skill> -g -y` | 仅建议桶/待决策确认后 |
+| 查帮助 | `npx skills --help` |
+| 检查 / 更新 | `npx skills check` / `npx skills update` |
+| 查找来源 | `npx skills find <query>` |
+| 安装所选来源 | `npx skills add <source>` |
 
-## 示例
+例如，帮助已确认支持具名 global 更新时，可生成 `npx skills update foo -g -y`；`foo` 必须来自已确认清单，不能据示例推定所有版本都支持。
 
-```bash
-npx skills update -g -y
-npx skills add vercel-labs/skills@find-skills -g -y
-```
+若当前版本只能全量更新，而用户仅选部分技能：不得执行全量更新。可提出使用原来源逐项安装的替代方案，列明覆盖差异并确认；无法保证范围时停在计划，不通过修改 lock 伪造选择。
+
+`npx` 可能下载并执行包；它不是零副作用的本地读取工具。执行时使用已核实的版本与参数，避免帮助检查和实跑之间静默换版。

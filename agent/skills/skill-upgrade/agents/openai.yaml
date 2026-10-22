@@ -1,6 +1,4 @@
 interface:
-  display_name: "技能与 Agent 追新"
-  short_description: >
-    双轨升级已装环境；无源时经确认按 find-skills 补源；
-    建议桶/待决策问人；默认 dry-run 清单后再实跑。
-  default_prompt: "/skill-upgrade 把 ~/.agents 升到最新；无源先列出并问是否 find，先 dry-run 清单。"
+  display_name: "生态技能升级"
+  short_description: "预览已装生态技能升级，核实来源与范围，经确认后更新或补源"
+  default_prompt: "使用 $skill-upgrade 预览已装生态 skills 的升级计划，列出缺源与检查失败项，确认后执行。"

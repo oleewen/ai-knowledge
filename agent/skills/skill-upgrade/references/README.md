@@ -1,12 +1,12 @@
-# references 索引
+# skill-upgrade 参考导航
 
-先读 [SKILL.md](../SKILL.md)，再按其读序打开。
+执行入口见 [SKILL.md](../SKILL.md)，按当前问题读取：
 
-| 文件 | 用途 |
+| 问题 | 参考 |
 | --- | --- |
-| [gates.md](gates.md) | 风险闸门、会话模板 |
-| [workflow.md](workflow.md) | 参数向导、双轨+补源执行环 |
-| [parameters.md](parameters.md) | 技能层 + 命令映射 |
-| [find-source.md](find-source.md) | 无源 → find-skills 编排与置信门槛 |
+| 如何盘点、预览和核验 | [workflow.md](workflow.md) |
+| 哪些动作需要确认 | [gates.md](gates.md) |
+| 参数怎样映射到 CLI | [parameters.md](parameters.md) |
+| 缺源或来源失效如何处理 | [find-source.md](find-source.md) |
 
-本仓 Agent 树：[../../agent-install/SKILL.md](../../agent-install/SKILL.md)。实操：[../gotchas.md](../gotchas.md)。
+常见误判见 [gotchas.md](../gotchas.md)。

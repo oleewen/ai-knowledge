@@ -1,10 +1,10 @@
-# skill-upgrade Grader
+# skill-upgrade 行为评分
 
-据 **evals/evals.json** 输出 JSON：`text`、`passed`、`evidence`。
+读取 [evals.json](../evals/evals.json)，按每个场景的 `assertions` 评估实际动作与输出，返回 `text`、`passed`、`evidence`；证据对应 assertion ID。
 
-## 判定
+- `should-trigger` 检查升级、范围和授权行为；`should-not-trigger` 检查是否分流。
+- P0 任一失败则该场景失败。未运行场景记「未执行」，不能当通过。
+- 判定行为，不要求复述固定标题、动作字母或质检术语；受众 A/B 全过可静默。
+- 预览场景不得执行真实 update/add。行为模拟须使用给定事实；缺少 CLI 能力证据时应保留待核实状态。
 
-1. 读 `category`：`should-trigger` / `should-not-trigger`
-2. **硬门**：以本 eval 的 `assertions`（按 `priority`）为准；`evidence` 映射 `assertions[].id`
-3. **协议释义**：轻流程参数向导 → dry-run 清单（含无源 find 闸门）→ `C/M/S/F`；写后受众维 A/B；本仓 Agent 树须分流 agent-install；多候选不擅自选；建议桶须确认。见 [light-flow-actions.md](../../../references/light-flow-actions.md)、[gates.md](../references/gates.md)、[find-source.md](../references/find-source.md)
-4. **P0** 任一失败 → `passed: false`
+执行边界见 [gates.md](../references/gates.md)，分类依据见 [workflow.md](../references/workflow.md)，候选规则见 [find-source.md](../references/find-source.md)。
