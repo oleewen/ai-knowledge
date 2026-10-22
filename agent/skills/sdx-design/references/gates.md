@@ -1,58 +1,26 @@
-# sdx-design 推进协议（binding）
+# sdx-design 推进绑定
 
-主干：[SKILL.md](../SKILL.md)。流程：[workflow.md](workflow.md)。
+共享协议：[写前意图澄清](../../../references/intent-clarify.md)、[单元推进](../../../references/unit-cycle-protocol.md)、[写后烤干](../../../references/grilling-skill.md)。参数、容器与写后默认表见 [workflow.md](workflow.md)。
 
-## 定位
+## 当前段
 
-本文件只定义 `sdx-design` 对共享协议的 **binding**（对象=段落）。  
-不复制状态机、动作字母全文、`F` 批确认细则或共通 mermaid 环。
+DSD §1–§3 中一个章节、子章节，或 §2 内单个 API、DDL/TBL、LOGIC、错误码组、幂等/事务/时序/安全块。动作使用 `C/M/G/F`，无 `S`；不在此复制共享状态机。
 
-契约：
+## 追加澄清字段
 
-- [intent-clarify.md](../../../references/intent-clarify.md) — 写前意图澄清
-- [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) — 段落推进环 / `C·M·G·F` / 重开 / 前文回改（**`sdx-*` 无 `S`**）
-- [grilling-skill.md](../../../references/grilling-skill.md) — 写后烤干能力
+在公共六项清单中补充：
 
-主线口令：`澄清 → 生成 → 烤干`。
+- `IDEA-ID`、MVP、`depth` 与当前段类型。
+- PRD/FR 与 ASD/spec-asd 的具体对齐点；缺失基线及影响。
+- 若存在多条真实实现路径，列出待决策的取舍。
 
----
+## 停顿与重开
 
-## 对象定义
-
-**当前段**：`DSD-{IDEA-ID}-{N}.md` 中的一个章节、子章节，或 `§2` 内单个 `API` / `DDL/TBL` / `LOGIC` / 错误码组 / 幂等·事务·时序·安全策略块（`§1-§3`）。
-
-产物路径见 [workflow.md](workflow.md)。
-
----
-
-## 技能追加澄清字段
-
-- 上游追溯：`PRD` / `ASD` / `spec-asd` / `FR` 对齐点
-- 当前段类型：`§1` 决策 / `API` / `DDL` / `LOGIC` / 错误码 / 幂等 / 时序 / 非功能
-- 实现路径预判：是否已有 `>=2` 条真实实现路径需段内比选
-- `IDEA-ID`、`N` / `MVP-Phase-{N}`、`depth`
-
----
-
-## 语义问题清单（烤干须停）
-
-- 接口语义、数据模型、事务边界
-- 错误码口径、幂等策略、服务归属
-- 非功能取舍、优先级、术语
-
----
-
-## 前文回改触发例（技能特有）
-
-- 接口语义漂移、DDL 调整
-- 错误码冲突
-- 上游追溯变化
-- 非功能口径变化
-
----
-
-## 失败停顿
-
-- 当前段（含单个 API/DDL/LOGIC 块）未收敛前，不得自动推进下一段
-- 语义问题或前文回改：立即停下确认
-- 收口前 `validate-dsd.sh` 失败时，不得宣称完成
+| 情况 | 约束 |
+| --- | --- |
+| 当前段意图未确认，或缺口影响语义 | 不写正文 |
+| 烤干未收敛 | 不推进下一段 |
+| 接口、模型、事务、错误码、幂等、归属或非功能取舍变化 | 先给结论、推荐与数字选项，确认后修订 |
+| 影响前文或上游追溯 | 按共享协议重开受影响对象，旧确认不自动继承 |
+| 用户选 `F` | 使用共享协议的剩余意图批确认；保留已确认前文 |
+| 结构校验失败、未运行或未找到文件 | 不宣称全篇校验通过 |

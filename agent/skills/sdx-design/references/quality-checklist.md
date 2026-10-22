@@ -1,29 +1,21 @@
-# DSD 质量验收（sdx-design）
+# DSD 质量验收
 
-## 1) 结构
+结构校验与人工语义审核分别报告。仅补当前段时审核该段及受影响引用，不把尚未完成的全篇报告为通过。
 
-- [ ] `§1 设计概述`、`§2 详细设计`、`§3 附录`
-- [ ] `§1`：目标、约束、关键决策（最小集）
-- [ ] `§2`：`§2.1-§2.5` 完整，且实现级契约集中在 `§2`
-- [ ] `§3`：附录、自查与必要补充齐备
-- [ ] 文首 frontmatter 合法
+## 脚本检查
 
-## 2) 追溯
+- [ ] 对实际目标运行 [validate-dsd.sh](../scripts/validate-dsd.sh)，已读取退出码和输出；未执行或空扫描不算通过。
+- [ ] frontmatter 与必需字段符合 [模板](../assets/dsd-template.md)，`id` 与文件名一致，`parent`、`architecture_ref`、`mvp_phase` 对齐同链。
+- [ ] §1–§3、§1.1–§1.3、§2.1–§2.5 为真实章节；不是注释或代码中的示例标题。
 
-- [ ] 与 `PRD`、`ASD`、`spec-asd` 一致可追溯
-- [ ] `API/LOGIC/TBL` 编号与上游口径一致
-- [ ] 无 DSD 外第二正文源
-- [ ] 术语与范围与上游一致
+## 人工审核
 
-## 3) 命名与路径
+- [ ] §3 变更历史与自查齐备；占位已替换，不适用项有理由，未决项未被写成结论。
+- [ ] 按 [内容契约](design-principles.md) 检查当前 API/LOGIC/TBL/DD；引用真实可读，条目级追溯完整，编号无冲突。
+- [ ] §1 对齐上游；§2 是唯一实现正文；术语、MVP、归属、事务与非功能跨段一致。
+- [ ] Mermaid 可渲染；DDL、示例与伪代码符合已确认技术栈和异常策略，模板示例未被误当事实。
+- [ ] [层级与路径](knowledge-type-modes.md) 正确；未增建错误阶段目录或改写上游。
+- [ ] 当前段写前意图已确认，语义变更与前文回改已处理；[受众质检](audience-and-language.md) A/B/C/E 通过。
+- [ ] 自动烤干收敛后停在 `C/M/G/F`；剩余范围与受限基线明确。
 
-- [ ] `DSD-{IDEA-ID}-{N}.md`；`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/`
-- [ ] `id`、`parent`、`architecture_ref` 与上游链路一致
-- [ ] `{IDEA-ID}`、`{N}`、`{app-name}` 等占位已替换、风格一致
-
-## 4) 当前段协议与校验
-
-- [ ] 自动 grilling 已收敛后再停在 `C/M/G/F`
-- [ ] 已按 [audience-and-language.md](../../../references/audience-and-language.md) + 本地 [audience-and-language.md](audience-and-language.md) 通过烤干受众维 A/B/C/E
-- [ ] 语义性改动已先确认，未越权直改
-- [ ] 已跑 `validate-dsd.sh` 并处理失败项
+脚本不证明完整 YAML 合法性、引用文件存在、编号连续、业务正确性、图可渲染或会话授权；以上均须单独核实。

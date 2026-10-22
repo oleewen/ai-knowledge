@@ -1,31 +1,13 @@
-# sdx-design 操作层陷阱
+# sdx-design 易错点
 
-概念反模式：[references/anti-patterns.md](references/anti-patterns.md)。
+| 现象 | 处理 |
+| --- | --- |
+| 从其他目录校验 `--file` 路径出错 | 路径按调用时的当前目录解释；必要时传绝对路径 |
+| 无参扫描找不到 DSD | 检查 `.docsconfig` 的 DOC_DIR；退出码 3 表示未校验，不是通过 |
+| 逐段草稿未通过全篇结构校验 | 报告未完成部分；不要补造上游或正文来消除错误 |
+| 旧文档使用“2.5 非功能设计” | 校验兼容该标题；新文档沿模板“2.5 非功能性设计” |
+| 直接复制模板导致错误的 API、数据库、缓存方案 | 替换示例并核对技术栈；未知项标待澄清 |
+| 把模板里的相对链接原样带进生成文档 | 按输出文档位置重建链接；上游只有 spec-asd 时使用它的真实路径 |
+| 批量接口设计出现循环 RPC/DB | 评估批量化、分页、调用量与失败恢复；依据实际负载决策 |
 
-## 参数向导
-
-- 支持逐项确认与快捷组合。
-- 禁止退回已删除的 HTML gate / `PENDING→CONFIRMED` / 会话 spec 写前主线；主线=参数向导 + 「澄清 → 生成 → 烤干」（见 [unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)）。
-- `IDEA-ID`、`N` 须与 `PRD-{IDEA-ID}-{N}.md`、`ASD-{IDEA-ID}-{N}.md` 或 `spec-asd-*` 同链。
-- 缺 `ASD/spec-asd` 时要么回 `sdx-architect`，要么显式记录受限基线，不要悄悄补全。
-
-## 推进环（澄清 → 生成 → 烤干）
-
-协议正文见 [unit-cycle-protocol.md](../../references/unit-cycle-protocol.md) 与 [intent-clarify.md](../../references/intent-clarify.md)（sdx 无 `S`）。本文件只补技能特有陷阱。
-
-- 一次只处理一个当前段；可细到单个 `API`、`LOGIC`、`DDL/TBL`、错误码组或幂等策略。
-- 当前段若有 `>=2` 条真实实现路径，先在当前段内完成方案比选。
-
-## 内容边界
-
-- `§1` 写目标、约束、关键决策与关联文档，不要把大量实现细节提前塞入。
-- `§2` 承接所有实现级契约，避免再拆第二正文源。
-- `§3` 写附录、自查、变更历史与必要补充，不要把 `§2` 的正文偷移到 `§3`。
-- 边界或能力归属变化应回 `ASD`，不要在 DSD 中暗改架构。
-
-## 详设质量
-
-- 每个 `API` 至少补齐签名、参数、响应、错误码、幂等或无需幂等的理由。
-- 新表设计至少说明主键、索引、审计字段和关键约束。
-- 时序或伪代码避免循环内 RPC/DB；优先批量化。
-- `§2.5` 的安全、可观测、性能要写实质约束，不要只写“参考通用方案”。
+内容门槛见 [design-principles.md](references/design-principles.md)；流程误用见 [anti-patterns.md](references/anti-patterns.md)。

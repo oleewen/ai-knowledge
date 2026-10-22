@@ -1,61 +1,27 @@
-# sdx-design 评测裁判（grader）
+# sdx-design 评测裁判
 
-据 `prompt`、模型响应与断言给出可审计结论。
-
-## 输出（仅 JSON）
-
-- `text`：1–3 句结论  
-- `passed`：布尔  
-- `evidence`：数组，逐条对应断言或失败原因  
-
-**should-trigger 示例**（对齐 `design-trigger-001` 的 P0）：
-
-```json
-{
-  "text": "通过。明确参数向导、意图澄清、分段「澄清 → 生成 → 烤干」与单段停住，未误回到集中式前置收口主线。",
-  "passed": true,
-  "evidence": [
-    "parameter-guidance：体现逐项确认或快捷组合。",
-    "section-cycle：体现分段直写终稿与当前段收口。",
-    "intent-clarify：体现写前意图澄清。",
-    "single-section-stop：明确一次只处理当前段并等待用户动作。",
-    "upstream-input：体现基于 PRD 与 ASD/spec-asd 承接。"
-  ]
-}
-```
-
-**should-not-trigger 示例**：
-
-```json
-{
-  "text": "通过。主路径指向 sdx-architect / ASD，未把当前请求错误框成 sdx-design 的分段写作流程。",
-  "passed": true,
-  "evidence": [
-    "correct-downstream：点名下游技能或产物。",
-    "no-false-design-primary：未框成参数向导 + 分段直写 DSD 的主路径。"
-  ]
-}
-```
+仅依据本次运行的工具轨迹、文件 diff、命令退出码和回答评分；结果格式见 [schemas.md](../references/schemas.md)。
 
 ## 判定
 
-1. 读 `category`：`should-trigger` / `should-not-trigger`
-2. **硬门**：以本 eval 的 `assertions`（按 `priority`）为准；`evidence` 须可映射 `assertions[].id` 或 `check` 语义。
-3. **协议释义**（仅当 assertions 或 prompt 覆盖时强制；共通环见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)、[audience-and-language.md](../../../references/audience-and-language.md)）：
-   - 主路径 `/sdx-design`；直写 `DSD-*.md`
-   - 参数向导 → 写前意图澄清 → 分段「澄清 → 生成 → 烤干」→ `C/M/G/F`（无 `S`）
-   - 一次只处理当前段；烤干收敛后输出动作等待用户
-   - **受众质检**：烤干须跑 A/B/C/E；全过可静默；违例须可见短表；未过不得标已烤干
-   - **`G`/`F`**：`G`=收敛后深挖当前段；`F`=须先批确认剩余意图再补齐
-   - **语义变更**（接口语义/数据模型/错误码口径/幂等策略/事务边界/非功能取舍/术语等）：先推荐 + 数字选项，未选不得直接改当前段
-   - **上游**：基于 `PRD-{IDEA-ID}-{N}.md` 与 `ASD/spec-asd`；保持 DSD 与 ASD/TDD/docs-* 边界
-   - **禁止**：前置草稿 + 集中收口；已删除的 HTML gate / `PENDING→CONFIRMED` / 会话 spec / 写前 hook
-4. **should-not-trigger**：须拒绝以 sdx-design 为主路径，或明确分流至用户要的技能/产物；不得用「先参数向导再分段写 DSD」框下游请求；不得把 `F` 整篇重写认作合法主路径
-5. **P0** 任一失败 → `passed: false`
-6. 不输出实现方案；仅评判
+1. 读取 eval 的 `category`、准备条件和断言；准备未完成或运行缺失时标为 `not-run`，不得记通过。
+2. 逐条核对断言。实际写入用 diff 证明；未写入用完整轨迹及前后快照证明；命令执行用参数、输出及退出码证明。回复中的承诺、菜单或关键词不能替代这些证据。
+3. `category` 只判是否应进入 sdx-design；协议错误仍是行为失败。历史 ID `design-not-trigger-004` 按其 `should-trigger` 分类评判，不当作路由负样本。
+4. 未提供后续用户确认时，只评到真实停止点；不得替用户补 `C`、`F` 或语义选项。已在历史中确认的输入不要求重复确认。只校验请求不要求写作参数向导。
+5. 任一 P0 为 `fail`、`not-run` 或证据不足，总结均为 `passed: false`；P0 全过且本次要求执行的 P1 全过才为 `true`。未执行断言不得改判 `pass`。
+6. 结构校验退出 0 只支持脚本检查范围内通过；语义冲突未解决时，不得据此判整份 DSD 完成。协议依据查 [gates.md](../references/gates.md)，不新增通用门禁。
 
-### should-not-trigger 的 P0（摘要）
+## 输出
 
-- **correct-downstream**：出现与 prompt 一致的下游技能或产物（可中文，须可映射）
-- **no-false-design-primary**：不得忽略用户已指定阶段而默认以 DSD 为终点
-- **no-false-f-rewrite**：不得把 `F` 解释为覆盖已确认前文的整篇重写
+仅输出 `text`、`passed`、`evidence`，逐条覆盖断言 ID。`evidence` 保持字符串数组，每项含状态、证据位置或缺失原因。
+
+```json
+{
+  "text": "未通过：校验未实际运行。",
+  "passed": false,
+  "evidence": [
+    "validate-file [not-run]：轨迹只有计划，没有 validate-dsd.sh 调用与退出码。",
+    "read-only [pass]：前后快照一致，完整工具轨迹未出现写操作。"
+  ]
+}
+```

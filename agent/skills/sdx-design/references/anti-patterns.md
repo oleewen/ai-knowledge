@@ -1,21 +1,12 @@
-# sdx-design 概念反模式
+# sdx-design 反模式
 
-操作细节：[../gotchas.md](../gotchas.md)。
-
-| # | 反模式 | 纠正 |
-| --- | --- | --- |
-| 1 | 未确认当前段就自动推进下一段 | [gates.md](gates.md)：烤干收敛后必须停在 `C/M/G/F` |
-| 1b | 跳过写前意图澄清直接写正文 | 先六项清单 + 写前 `C`，再生成 |
-| 2 | 无 PRD 硬写 DSD | 停并指 `sdx-prd`，或收窄并标注需求基线盲区 |
-| 3 | 退回已删除 gate 主线（HTML gate / CONFIRMED / 会话 spec / 写前 hook） | 见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) |
-| 4 | 当前段未收口就一口气补齐多段 | 一次只处理一个当前段；批量补齐仅能走 `F`（含意图批确认） |
-| 5 | `G` 被当成每轮继续 grill 的必选按钮或意图澄清 | 自动 grill 应连续收敛；`G` 仅表示额外深挖当前段 |
-| 6 | 语义性变更直接改文，不先确认 | 先给结论、推荐修订和数字选项 |
-| 7 | `F` 被当成覆盖前文的整篇重写或跳过意图批确认 | `F` 先批确认意图，再补齐剩余章节，保留已确认前文 |
-| 8 | 在 DSD 中重写 ASD 边界 | 边界变更回 `sdx-architect`；DSD 只承接实现级展开 |
-| 9 | 实现级契约散落在 DSD 外第二份 Markdown | 合并进 `DSD §2`，保持单一真相源 |
-| 10 | 无 ASD/spec-asd 仍宣称详设已完备 | 至少具备其一，或显式标注例外和风险 |
-| 11 | `§2` 无 API/DDL/LOGIC 追溯 | 在 `§2` 内对齐 `PRD/ASD/spec-asd/FR` |
-| 12 | 文首元数据缺失或 `id` 与路径不一致 | 要求文首 frontmatter；`id = DSD-{IDEA-ID}-{N}` |
-| 13 | `IDEA-ID` / `N` 与上游 PRD、ASD 脱节 | 参数向导阶段锁同链 |
-| 14 | 未跑 validate | [SKILL.md](../SKILL.md) 校验 |
+| 误用 | 正确入口或处理 |
+| --- | --- |
+| 普通 API 编码、SQL 修改也启动 DSD 向导 | 按用户的实现任务处理；只有 DSD 设计或校验才进入本技能 |
+| 用 DSD 代写 PRD、重定服务边界或生成 TDD | 分别回需求、架构、测试设计阶段 |
+| 把纯校验变成写作确认流程 | 运行只读校验，报告实际结果 |
+| 把 `F` 当作覆盖前文的整篇重写 | 按 [gates.md](gates.md) 处理批量补齐；全文修订须重新界定范围 |
+| 缺上游仍写成既定事实 | 按 [输入与缺口](workflow.md#输入与缺口) 停止或标注受限基线 |
+| 将实现契约拆成第二份正文 | 保持 [章节职责](design-principles.md#章节职责)；§2 维护唯一正文 |
+| 要求旧 HTML gate、CONFIRMED 文件或写前 hook | 使用 [共享推进协议](../../../references/unit-cycle-protocol.md)，不恢复已移除的机制 |
+| 只复述流程术语就视为验收通过 | 核对工具输出、实际修改范围和停止点，见 [评测契约](schemas.md) |

@@ -1,38 +1,26 @@
-# sdx-design 评测失败分析（analyzer）
+# sdx-design 失败分析
 
-将失败样本转为可执行修复清单。
+把失败归因到可观察行为，给出最小修复；证据格式见 [schemas.md](../references/schemas.md)。
 
-## 输入
+## 输入与分类
 
-失败样本（prompt、分类、响应、grader 证据）；[SKILL.md](../SKILL.md)；[references/gates.md](../references/gates.md)、[references/workflow.md](../references/workflow.md)、[references/anti-patterns.md](../references/anti-patterns.md)、[references/design-principles.md](../references/design-principles.md)、[gotchas.md](../gotchas.md)。
+读取失败 eval、准备记录、完整工具轨迹、前后文件 diff、命令退出码与 [grader](grader.md) 结论，再按需查 [SKILL.md](../SKILL.md) 及对应引用。
 
-## 输出（四段）
+| 分类 | 检查重点 |
+| --- | --- |
+| 路由 | DSD 与 ASD/TDD/docs-*、普通 API/SQL 编码是否混淆 |
+| 输入或布局 | 是否编造 PRD/ASD；是否忽略可用 spec-asd；是否误建 company/solution requirements |
+| 写入边界 | 未确认即写、跨段续写、F 覆盖已确认正文、实现契约出现第二正文 |
+| 语义决策 | 接口、数据、幂等或事务冲突是否未经选择就改写 |
+| 校验结论 | 未运行、空扫描或非零退出是否被称为通过；结构检查是否冒充语义验收 |
+| 评测本身 | fixture 缺失、准备错误、断言只查措辞、轨迹或 diff 不足 |
 
-1. 失败模式归类
-2. 根因与证据
-3. 优先级修复
-4. 回归建议
+证据缺失先修评测准备；不得据模型承诺推断实际写入或校验成功。
 
-## 失败类型（可多选）
+## 输出
 
-- **F1 路由**：should-trigger / should-not-trigger 误判
-- **F2 边界**：PRD、ASD、DSD、TDD、docs-* 混淆
-- **F3 协议回退**：退回已删除的 HTML gate / CONFIRMED / 会话 spec / 写前 hook 主线
-- **F4 当前段协议缺失**：缺参数向导、意图澄清、Section Cycle「澄清 → 生成 → 烤干」、`C/M/G/F`、单段停住
-- **F5 语义越权**：语义性结论未确认就直接修订当前段或前文
-- **F6 上游承接缺失**：PRD、ASD、spec-asd 或追溯关系被弱化
-- **F7 意图澄清缺失**：跳过写前六项清单/写前 `C` 直接写正文
+每条记录：`失败 eval / 断言 ID → 证据位置 → 根因 → 最小修改文件与段落 → 回归场景`。
 
-## 修复（P0/P1/P2）
-
-- **P0**：误路由、协议回退、意图澄清/单段停住缺失、语义越权
-- **P1**：边界不清、上游承接弱、DSD 单一正文被破坏
-- **P2**：文案与样本覆盖
-
-每条须含：目标、最小变更（文件/段）、预期影响、至少 1 个回归用例。
-
-## 回归
-
-1. 先跑 P0 样本，再跑全量
-2. 成对验证：`/sdx-design` vs `/sdx-architect`、`/sdx-prd`、`/sdx-test`、docs-*
-3. 同模式两轮失败，优先考虑协议级重写而非堆补丁
+- P0：越权写入、错误路由、编造基线、虚报通过。
+- P1：不影响硬约束的可用性问题；P2：文案。
+- 优先修共同根因，不为每个措辞变体追加规则；复测保留原 ID，并报告未运行项。

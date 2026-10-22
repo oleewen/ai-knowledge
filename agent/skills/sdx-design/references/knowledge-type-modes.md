@@ -1,16 +1,12 @@
 # KNOWLEDGE_TYPE 与 DSD
 
-**来源**：`.docsconfig` 的 `KNOWLEDGE_TYPE`。布局契约见 [knowledge-layout.md](../../../references/knowledge-layout.md)。
+先读取 `.docsconfig`。层级和阶段目录以 [knowledge-layout.md](../../../references/knowledge-layout.md) 为准。
 
-## 模式
-
-| `KNOWLEDGE_TYPE` | DSD |
+| `KNOWLEDGE_TYPE` | 执行落点 |
 | --- | --- |
-| `application` 或未设置 | `DSD-{IDEA-ID}-{N}.md` 为唯一正式详设正文 |
-| `system` / `company` | 原则上不在本层落 DSD；若用户显式要求，需先确认是否实际应回应用库执行 `/sdx-design` |
+| `application` 或未设置 | 沿应用模式，将 DSD 写入已确认文档根的 `requirements/` |
+| `system` | 系统层承接 PRD/ASD；确认负责应用及其路径，由应用库展开 DSD，不自动在系统库落详设 |
+| `solution` | 本层只有 `solutions/` 交付阶段；定位负责应用，不创建 `requirements/` |
+| `company` | 本层只有 `domains/` 交付阶段；定位负责应用，不创建 `requirements/` |
 
-## 约束
-
-- `sdx-design` 默认面向应用库详设正文
-- `system/company` 更常见的是停在 `ASD` 联邦概要，由应用库承接 DSD
-- 本层继续沿用参数向导 + 分段直写 + 当前段 `C/M/G/F` 推进
+用户指定的目标若与配置冲突，先确认实际执行库；不静默改配置或推断应用目录。只读校验用户点名的已有 DSD 不改变其落点。

@@ -1,27 +1,12 @@
-# 受众与语言（sdx-design）
+# DSD 受众与语言
 
-> 公共维与烤干门禁：[audience-and-language.md](../../../references/audience-and-language.md)
+主读者：架构师、研发负责人、实现工程师。业务意图通过 PRD 的 US/FR 追溯，正文回答“如何实现、失败时如何处理”。
 
-## 主读者
-
-**架构师、研发负责人、实现工程师**。DSD 用可实现的技术表述；业务意图靠 **US-n / FR-n** 追溯。
-
-## 宜写 / 宜弱化
-
-| 宜写入 DSD | 宜弱化或迁出 |
+| 保留 | 压缩或移出 |
 | --- | --- |
-| 边界、契约、错误码、幂等 | PRD 故事全文→引用编号 |
-| DDL、索引、缓存与一致性 | 未验证猜测→待澄清 |
-| Mermaid（架构/时序/状态/ER/类） | 源码与单测→开发 / sdx-test |
-| DD-n 备选与理由 | 与 MVP 无关的扩展 |
+| 接口、数据、错误码、幂等与一致性契约 | PRD 故事全文改为编号引用 |
+| DD 取舍及依据、必要架构/时序/状态图 | 与 MVP 无关的扩展、无证据选型 |
+| 必要设计伪代码与约束 | 完整源码、单元测试和内部调用流水账 |
+| 明确的待澄清项及影响 | 无依据的承诺与泛化“参考通用方案” |
 
-## 反例
-
-| 避免 | 推荐 |
-| --- | --- |
-| 长篇复述 PRD | 追溯 US-n / FR-n，写契约与数据 |
-| 把未证实选型写成既定事实 | 标待澄清或 DD-n |
-
-## 特殊允许区
-
-结构与占位以 [dsd-template.md](../assets/dsd-template.md) 为准。有 ASD → 架构级以 ASD 为准；**接口/表结构尽在 DSD §2**。PRD 读者见 [sdx-prd/audience-and-language.md](../../sdx-prd/references/audience-and-language.md)。
+烤干按 [公共受众质检](../../../references/audience-and-language.md) 检查 A/B/C/E；未过不得标已收敛。技术细节与模板占位的允许范围见 [内容契约](design-principles.md)。
