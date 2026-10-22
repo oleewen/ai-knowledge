@@ -3,10 +3,10 @@
 > **定位**：`sdx-analysis` / `sdx-feature` 运行时如何落技术决策到 `{DOC_DIR}/adr/`。  
 > **命名/落盘 SSOT**：[adr-template.md](../knowledge/adr-template.md)。  
 > **必备章节/状态 SSOT**：[adr-guidelines.md](../knowledge/adr-guidelines.md)。  
-> **不负责**：业务/范围/优先级决策（仍用 SOLUTION §5.2 Q-n 等）。  
+> **不负责**：业务/范围/优先级决策（仍用 ANALYSIS 或 SOLUTION §5.2 Q-n）。
 > **技能挂接**：[sdx-analysis](../skills/sdx-analysis/references/workflow.md) · [gates](../skills/sdx-analysis/references/gates.md)；[sdx-feature](../skills/sdx-feature/references/workflow.md) · [gates](../skills/sdx-feature/references/gates.md)。
 
-**最后更新**: 2026-09-15
+**最后更新**: 2026-10-22
 
 ---
 
@@ -14,7 +14,7 @@
 
 | 决策类型 | 落点 |
 | --- | --- |
-| 业务 / 范围 / 优先级 / 里程碑取舍 | SOLUTION §5.2 **Q-n**（ANALYSIS 无 Q-n 表） |
+| 业务 / 范围 / 优先级 / 里程碑取舍 | ANALYSIS 或 SOLUTION §5.2 **Q-n** |
 | **技术 / 架构选型**（有持久后果） | `{DOC_DIR}/adr/ADR-*.md` + 登记 `CONTEXT.md` |
 
 技术决策**不写入** Q-n 表行。
@@ -47,7 +47,8 @@
 | 产物 | 位置 |
 | --- | --- |
 | `SOLUTION-*.md` | §5.2 问题决策表**之后**一行，链 `{DOC_DIR}/adr/CONTEXT.md` |
-| `ANALYSIS-*.md` | **§6.2 参考文档** 列入 CONTEXT / 相关 ADR（不单开 §5.3） |
+| `ANALYSIS-*.md` | §5.2 问题决策表后链接 CONTEXT；§7.2 可汇总相关引用 |
+| `FEATURE-*.md` | §6.2 参考文档列入 CONTEXT / 相关 ADR |
 
 ---
 
@@ -68,5 +69,5 @@
 
 | 情况 | 做法 |
 | --- | --- |
-| 实现向、**不改**业务边界 / 集成边界 | 允许在本层新建 ADR + CONTEXT；§6.2 补链 |
+| 实现向、**不改**业务边界 / 集成边界 | 允许在本层新建 ADR + CONTEXT；按上表对应产物补链 |
 | 改变范围、系统边界、跨系统集成方式 | **禁止**仅在 FEATURE 落盘；硬停回 `/sdx-analysis`（改七章 ANALYSIS） |

@@ -27,9 +27,21 @@ for file in \
   agent/skills/docs-install/scripts/docs-install.sh \
   agent/skills/docs-pull/scripts/pull-slots.sh \
   agent/skills/docs-push/scripts/push-specs.sh \
-  agent/skills/docs-upgrade/scripts/docs-upgrade.sh \
   agent/skills/sdx-solution/scripts/validate-solution.sh; do
   assert_contains 'bash.sh' "$META_ROOT/$file"
 done
+
+# docs-upgrade 通过共享入口加载守卫，无须重复直接 source bash.sh。
+upgrade="$META_ROOT/agent/skills/docs-upgrade/scripts/docs-upgrade.sh"
+assert_contains 'docs-core.sh' "$upgrade"
+assert_contains 'bash.sh' "$META_ROOT/agent/scripts/docs-core.sh"
+if [[ -x /bin/bash ]] && (( $(/bin/bash -c 'printf "%s" "${BASH_VERSINFO[0]}"') < 5 )); then
+  if guard_output="$(/bin/bash "$upgrade" --help 2>&1)"; then
+    test_fail 'docs-upgrade 未拒绝 Bash 5 以下版本'
+  fi
+  [[ "$guard_output" == *'需要 Bash 5+'* ]] || test_fail "docs-upgrade 未通过版本守卫停止: $guard_output"
+else
+  printf '[SKIP] 无 /bin/bash 旧版本；已检查共享守卫加载链\n'
+fi
 
 printf '[OK] Bash 5+ 守卫检查通过\n'
