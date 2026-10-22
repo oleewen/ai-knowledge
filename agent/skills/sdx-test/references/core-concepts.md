@@ -1,30 +1,28 @@
-# sdx-test 核心概念
+# sdx-test 核心约定
 
-## IDEA-ID
+## 库类型与落点
 
-与 PRD/ASD/DSD 同链：`{YYMMDD}-{主题}`。
+`.docsconfig` 及 [knowledge-layout.md](../../../references/knowledge-layout.md) 决定文档根。
 
-| 产物 | 路径示例 |
+| `KNOWLEDGE_TYPE` | TDD 落点 |
 | --- | --- |
-| TDD | `{DOC_DIR}/requirements/REQUIREMENT-260412-审批提效/MVP-Phase-1/TDD-260412-审批提效-1.md` |
-| PRD/ASD/DSD | 同目录 `PRD-*`、`ASD-*`、`DSD-*` |
+| `system` | 系统库 `requirements/`；按本系统需求、集成与影响面设计测试 |
+| `application` 或未设置 | 应用库 `requirements/`；按本应用需求与实现契约设计测试 |
+| `solution` / `company` | 本层无 `requirements/`；先定位承接的系统或应用库，不新建错误阶段目录 |
 
-## 当前段粒度
+用户目标与配置冲突时确认实际库，不静默改配置。只读校验点名文件不改变其落点。
 
-支持混合粒度：
+## IDEA-ID 与路径
 
-- 章节或子章节
-- 单个功能用例组
-- 单个接口异常组
-- 单个业务规则组
-- 单个数据准备块
-- 单个环境块
-- 单个进出标准块
-- 单个回归范围块
+沿用 PRD 的 IDEA-ID 和 MVP；命名语法见 [naming-conventions.md](../../../knowledge/naming-conventions.md#2-idea-id)。
 
-## TC 编号（与模板一致）
+`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/TDD-{IDEA-ID}-{N}.md`
 
-| 前缀 | 含义 |
+文首元数据以 [模板](../assets/tdd-template.md) 为准；`id` 与文件名一致，`parent` 指同链 PRD，`mvp_phase` 与 N 一致。DSD/ASD 在 §1.1 引用实际位置，不要求伪造缺失文档或新增元数据字段。
+
+## TC 编号
+
+| 前缀 | 用途 |
 | --- | --- |
 | `TC-{NNN}` | 功能 |
 | `TC-API-{NNN}` | 接口 |
@@ -33,27 +31,16 @@
 | `TC-PERF-{NNN}` | 性能 |
 | `TC-REG-{NNN}` | 回归 |
 
-文档 `id` 形态以 **tdd-template** 文首 frontmatter 与落盘文件名为准（如 `TDD-{IDEA-ID}-{N}`）。
+保留已有 ID；新增按各序列分配。检查重复、引用与连续性，历史空号说明原因；编号数量不是覆盖率。
 
-## `--depth`
+## depth
+
+这是写作深度参数，不是校验脚本选项。
 
 | 值 | 含义 |
 | --- | --- |
-| `quick` | P0 功能 + 核心接口；异常/回归从简 |
-| `standard` | 六类用例（默认） |
-| `deep` | 性能、安全、并发加细 |
+| `quick` | 聚焦已选范围与关键风险；用例补段可用此值并在摘要说明 |
+| `standard` | 默认；按变更需要检查六类用例，不适用项写理由 |
+| `deep` | 对适用的性能、安全、并发和异常风险加细 |
 
-## TDD 六章
-
-对齐 [tdd-template.md](../assets/tdd-template.md)：
-
-| 章 | 内容 |
-| --- | --- |
-| §1 | 目标、范围、策略 |
-| §2 | §2.1–§2.6 用例 |
-| §3 | 测试数据 |
-| §4 | 环境 |
-| §5 | 进出标准、回归顺序 |
-| §6 | 变更历史、质量自查 |
-
-元数据：**要求**文首 `---` frontmatter；字段以模板为准。
+深度不改变已确认范围、验收条件或必需风险覆盖；六章结构见模板，当前段粒度见 [gates.md](gates.md)。

@@ -1,101 +1,51 @@
 # sdx-test 工作流
 
-主干：[SKILL.md](../SKILL.md)。推进 binding：[gates.md](gates.md)。
+写作只推进已确认的当前段；纯校验直接使用 [SKILL.md](../SKILL.md#校验) 的命令。
 
-## 目标
+## 输入与缺口
 
-通过**参数向导 + 分段「澄清 → 生成 → 烤干」**，逐步形成可评审的 `TDD-{IDEA-ID}-{N}.md`（六章）。  
-单段收敛；不先攒整篇再集中收口。不产出自动化代码与执行报告。
+先读 `.docsconfig`，按 [库类型与落点](core-concepts.md#库类型与落点) 定位目标。读取同链 PRD、相关 DSD/ASD 与现有 TDD 的当前段资料；其他证据按缺口补读。
 
-契约分工：
+沿用用户已确认的基线；共识状态未知且影响当前段时先澄清，不把文件存在当作已获共识。
 
-- 写前意图澄清：[intent-clarify.md](../../../references/intent-clarify.md)
-- 段落推进环 / `C·M·G·F` / 重开 / 前文回改：[unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)（**无 `S`**）
-- 写后烤干：[grilling-skill.md](../../../references/grilling-skill.md)
-
----
-
-## 参数向导
-
-### 模式
-
-1. **逐项模式**：一次只确认一个参数。
-2. **快捷组合模式**：先选预设，再按需改单项。
-
-### 最小可写条件
-
-- 上游 `PRD-{IDEA-ID}-{N}.md` 已明确
-- `IDEA-ID` 与 `N` 已给出或可按规则生成
-- `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/` 可写
-- 至少能确定本轮起始章节，或默认从 `§1` 开始
-- 若缺 `DSD`，需显式声明范围收窄或技术基线盲区
-
-### 推荐参数顺序
-
-1. `IDEA-ID`
-2. `N` / `MVP-Phase-{N}`
-3. 上游输入：`PRD`、`DSD`、`ASD`
-4. 标题 / 主题
-5. `depth`：`quick | standard | deep`
-6. 本轮起始章节 / 范围
-7. 是否优先展开 `功能 / 接口 / 业务规则 / 异常 / 性能 / 回归`
-
-### 快捷组合
-
-- `标准全篇`：`depth=standard`，从 `§1` 开始，默认完整六章
-- `用例补段`：`depth=quick`，只处理单个用例组、接口异常组或回归范围块
-- `回归收口`：`depth=quick`，只处理 `§1.2` 影响面、`§2.6` 和 `§5`
-- `深度测试`：`depth=deep`，强化并发、性能、安全和异常覆盖
-
-参数未收口时留在向导，不进入 Section Cycle。
-
----
-
-## 终稿骨架初始化
-
-参数达标后立即创建：
-
-- `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/TDD-{IDEA-ID}-{N}.md`
-
-初始化：文档标题、六章标题与必要表头、文首 frontmatter 占位、未写章节占位说明。  
-骨架创建**不**替代各章写入前的意图澄清。
-
----
-
-## 产物路径
-
-| 项 | 路径 |
+| 输入情况 | 处理 |
 | --- | --- |
-| 终稿 | `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/TDD-{IDEA-ID}-{N}.md` |
-| 结构校验 | `../scripts/validate-test.sh` |
+| PRD 与相关 DSD 可读 | 核对 IDEA-ID、MVP、验收条件和影响面后收口参数 |
+| PRD 缺失或无法读取 | 停止生成，指出缺失路径并引导补齐 PRD，不自行代写需求 |
+| DSD 缺失 | 可依据 PRD 收窄为需求行为、业务规则等已知测试；在 §1 记录技术基线盲区，接口/错误码/幂等细节待澄清 |
+| 仅有 ASD 或概要规约 | 可补充已确认边界；不能假定具备完整实现契约 |
+| PRD 验收不全或上下游冲突 | 记录缺口及受影响用例；先确认预期结果，不用猜测填满用例表 |
+| knowledge 缺失 | 以已读 PRD/DSD/ASD 为限，说明影响，不全树搜索代替基线 |
 
----
+## 参数收口
+
+复用用户已给定且核实的参数，只问缺项；支持逐项确认与快捷组合。
+
+| 参数 | 用途 |
+| --- | --- |
+| `IDEA-ID`、`N`、上游路径 | 从上游获取，保持需求链与 MVP 一致，不另造编号 |
+| 标题、目标路径、当前段/范围 | 新建默认从 §1 开始；补段沿用户指定位置 |
+| `depth`、优先展开面 | 按 [core-concepts.md](core-concepts.md#depth) 控制详略，不扩大范围 |
+
+快捷组合：**标准全篇**（standard，从 §1 逐段）、**用例补段**（quick，单用例/异常/回归块）、**回归收口**（quick，§1.2、§2.6 与 §5 逐段）、**深度测试**（deep，强化已选风险）。选择组合不等于批写授权。
+
+## 容器与当前段
+
+1. 参数收口后，按 [模板](../assets/tdd-template.md) 建立新稿元数据、六章与表头。来源与基线缺口先列入澄清清单，随已获确认的当前段或补记范围写入 §1。已有 TDD 原地修改，保留已确认正文。
+2. 按 [gates.md](gates.md) 与 [意图澄清契约](../../../references/intent-clarify.md) 确认当前段；骨架不代替正文写前确认。
+3. 按 [design-principles.md](design-principles.md) 写入。若存在两条以上真实测试策略，比较成本、覆盖与风险后确认选择，不为凑数量虚构方案。
+4. 写后按下表烤干。动作、`F` 批确认、语义停问和前文重开遵循 [单元推进协议](../../../references/unit-cycle-protocol.md)。
 
 ## 写后默认表
 
-| 对象 | 默认烤干 | 强制升级 |
+| 对象 | 默认 | 必须停下的情况 |
 | --- | --- | --- |
-| 各章节 / 用例组 / 异常组 / 回归块 / 进出标准 / 数据环境块 | **必须** | 未确认决策写入；测试范围·回归边界·进出标准变更；上游追溯变更 |
+| 章节、用例组、异常组、回归块、进出标准、数据/环境块 | 必须自动烤干，含 [受众质检](audience-and-language.md) A/B/C/E | 测试范围、预期行为、优先级、回归边界、环境/数据约束、进出标准或上游前提需变更 |
 
-启发式只可升级为必须，不可降级跳过。
+按 [grilling-skill.md](../../../references/grilling-skill.md) 检查缺口；修订后执行协议内 simplify 遍。收敛后给 `C/M/G/F` 等待选择。
 
----
+## 收口
 
-## Section Cycle（指针）
+全篇完成或 `F` 补齐后，检查 [quality-checklist.md](quality-checklist.md)，对实际 TDD 运行 `validate-test.sh --file`。失败项须处理；仅补当前段时报告本段结果和其余未完成范围。
 
-选定当前段后，严格按 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) + [intent-clarify.md](../../../references/intent-clarify.md) 执行。
-
-本技能附加：
-
-- 可细化到单个用例组 / 异常组 / 业务规则组 / 数据·环境·进出标准·回归块
-- 当前段存在 `>=2` 条真实测试策略路径时，先段内比选再收敛
-- 动作字母仅 `C/M/G/F`（无 `S`）
-- grilling fallback 见 [grilling-skill.md](../../../references/grilling-skill.md)
-
----
-
-## 整体验证与质量基线
-
-至少检查：章节完整性、术语一致、编号连续（`TC-*` / `TC-API-*` / `TC-BR-*` / `TC-EX-*` / `TC-REG-*`）、跨段无未解释矛盾、frontmatter 完整、TDD 保持测试设计正文（不混入自动化代码与执行报告）。
-
-终检对齐 [quality-checklist.md](quality-checklist.md)；收口前跑 `validate-test.sh`。
+交付说明分别列出：已设计范围、受限基线、结构校验结果。缺 DSD 的受限稿可报告其已确认范围，不能声称接口全覆盖；未运行产品测试，不填写实测覆盖率或勾选用例执行通过。

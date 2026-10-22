@@ -1,228 +1,204 @@
 {
   "skill_name": "sdx-test",
-  "version": "3.1.0",
-  "description": "评估 sdx-test 在「澄清 → 生成 → 烤干」流程下的触发、分流与段落推进协议表述；断言供 grader 评分。",
+  "version": "3.2.0",
+  "description": "用真实文件差异、确认停点、上游追溯和校验结果评估测试设计；准备与证据契约见 references/evaluation.md。",
   "evals": [
     {
       "id": "test-trigger-001",
       "category": "should-trigger",
-      "prompt": "PRD 和 DSD 都有了，请走 /sdx-test：先逐步确认参数，再一段一段写进 TDD-BILL-1-1.md，每段先意图澄清再写，写完再 grill，先只写当前段“### 2.2 接口测试用例”里的下单接口异常组和回归范围。",
-      "expected_output": "以 /sdx-test 为主路径：先走参数向导，再按模板分段「澄清 → 生成 → 烤干」直写 TDD-BILL-1-1.md；每段写前意图澄清、写入后自动 grilling 至收敛，再由用户确认后推进下一段；围绕接口异常组与回归块处理。",
+      "prompt": "PRD 和 DSD 都有了，请走 /sdx-test，先只写 TDD-BILL-1-1.md §2.2 的下单接口异常组。",
+      "expected_output": "读取基线与当前文档，澄清尚未确认的异常组范围后等待。",
       "assertions": [
         {
-          "id": "parameter-guidance",
-          "name": "参数向导",
+          "id": "upstream-input",
+          "name": "核对上游",
           "type": "must_include",
-          "check": "明确存在逐项确认参数或快捷组合入口，不得仍以整份前置草稿和集中收口作为默认第一步。",
-          "priority": "P0"
-        },
-        {
-          "id": "section-cycle",
-          "name": "分段直写",
-          "type": "must_include",
-          "check": "体现按模板分段生成并直写 TDD-*.md，而非先整份 spec、再统一定稿；主线含澄清 → 生成 → 烤干。",
+          "check": "工具轨迹实际读取 PRD、DSD 和目标 TDD；本轮问题聚焦接口异常组，并使用已有 US/API 约束。",
           "priority": "P0"
         },
         {
           "id": "intent-clarify",
-          "name": "意图澄清",
-          "type": "must_include",
-          "check": "须体现当前段写入前做意图澄清（六项清单或等价写前门禁），未确认不得写入正文。",
-          "priority": "P0"
-        },
-        {
-          "id": "grilling-loop",
-          "name": "段内烤干",
-          "type": "must_include",
-          "check": "体现每段生成后执行自动 grilling（烤干）并收敛后再推进；可提及 C/M/G/F 或等价动作。",
-          "priority": "P0"
-        },
-        {
-          "id": "audience-check",
-          "name": "受众质检",
-          "type": "must_include",
-          "check": "须体现烤干含受众维 A/B/C/E，或对照 audience-and-language；未过不得宣称对象已烤干收敛。",
-          "priority": "P0"
-        },
-        {
-          "id": "single-section-stop",
-          "name": "单段停住",
-          "type": "must_include",
-          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；不得自动推进下一段。",
-          "priority": "P0"
-        },
-        {
-          "id": "upstream-input",
-          "name": "上游承接",
-          "type": "must_include",
-          "check": "须体现基于 PRD 与 DSD/ASD 承接，且主交付为 TDD。",
+          "name": "写前停止",
+          "type": "must_not_conflict",
+          "check": "未获当前组范围确认前，没有新增用例正文或顺带补写回归块；最终停在当前组澄清。",
           "priority": "P0"
         }
-      ]
+      ],
+      "setup": {
+        "workspace": "隔离应用库，DOC_DIR=docs；目标与上游位于同一 REQUIREMENT/MVP 目录；保存初始快照。",
+        "fixtures": [
+          "PRD US-1：缺少收货地址不能下单。DSD API-1：POST /orders，address_id 必填，缺少时 HTTP 400/ADDRESS_REQUIRED。",
+          "TDD-BILL-1-1.md 为六章骨架；异常组是否包含权限异常尚未确认。"
+        ],
+        "history": []
+      }
     },
     {
       "id": "test-trigger-002",
       "category": "should-trigger",
-      "prompt": "当前只补 TDD-BILL-1-1.md 的单个回归范围块：根据 DSD §2 变更列出 TC-REG 清单和退出标准，请按 sdx-test 当前段协议来，先意图澄清。",
-      "expected_output": "采用 sdx-test：体现写前意图澄清、单个回归范围当前段、自动 grilling、收敛后停在 C/M/G/F。",
+      "prompt": "C。只补 TDD-BILL-1-1.md §2.6 当前回归组，按已确认的 DSD 影响面写 TC-REG。",
+      "expected_output": "落盘一个可执行回归组并核查，其他段保持原样。",
       "assertions": [
         {
-          "id": "intent-clarify",
-          "name": "意图澄清",
+          "id": "regression-write",
+          "name": "回归用例落盘",
           "type": "must_include",
-          "check": "须体现写前意图澄清后再写入当前段。",
-          "priority": "P0"
-        },
-        {
-          "id": "section-cycle",
-          "name": "分段直写",
-          "type": "must_include",
-          "check": "须体现只处理单个回归范围或退出标准当前段。",
+          "check": "diff 中 TC-REG 包含订单地址必填变更导致的影响、前置数据、操作与可观察结果，并追溯 DSD API-1 和 PRD US-1。",
           "priority": "P0"
         },
         {
           "id": "single-section-stop",
-          "name": "单段停住",
-          "type": "must_include",
-          "check": "须体现当前段收敛后停在 C/M/G/F。",
-          "priority": "P0"
-        },
-        {
-          "id": "semantic-change-gated",
-          "name": "语义改动确认",
-          "type": "must_include",
-          "check": "语义性问题必须先给推荐方案与数字选项。",
+          "name": "范围与停止",
+          "type": "must_not_conflict",
+          "check": "只有 §2.6 当前组实质变化；没有改退出标准、扩展回归边界或继续写下一段，核查后等待动作。",
           "priority": "P0"
         }
-      ]
+      ],
+      "setup": {
+        "workspace": "隔离应用库，DOC_DIR=docs；目标与上游位于同一 REQUIREMENT/MVP 目录；保存初始快照。",
+        "fixtures": [
+          "DSD 仅将创建订单 address_id 改为必填；已有查询订单 API 不变。PRD US-1 支持该约束。",
+          "TDD 已确认回归边界：已有含地址订单仍可创建及查询；§2.6 当前组待补，§5 已确认。"
+        ],
+        "history": [
+          "目标文件、当前回归组、上述影响与边界已澄清；用户 C 确认写入。"
+        ]
+      }
     },
     {
       "id": "test-trigger-003",
       "category": "should-trigger",
-      "prompt": "请执行 /sdx-test，但这轮只写一个当前段：先意图澄清，再把 `### 2.2 接口测试用例` 写进 TDD-CRM-1-1.md。写完后让当前段自动 grill 到烤干，然后给我 C/M/G/F 并停住等待。",
-      "expected_output": "以 /sdx-test 为主路径：明确一次只处理当前段（接口测试用例），写前意图澄清、写入后自动 grilling 到收敛，再给出 C/M/G/F 并等待用户选择。",
+      "prompt": "C。只把当前接口测试组写进 TDD-CRM-1-1.md §2.2，写后烤干并停住。",
+      "expected_output": "实际生成接口测试组，保留输入及结果追溯，不跨段。",
       "assertions": [
         {
-          "id": "section-cycle",
-          "name": "分段直写",
+          "id": "case-write",
+          "name": "用例可执行",
           "type": "must_include",
-          "check": "须体现按模板将当前段直写入 TDD-CRM-1-1.md，而非一口气补齐多段或整篇。",
+          "check": "diff 实际新增正常与缺参用例，包含前置条件、请求数据、预期状态/错误码及 DSD API-1 和 PRD US-1 追溯。",
           "priority": "P0"
         },
         {
-          "id": "grilling-loop",
-          "name": "段内拷问",
-          "type": "must_include",
-          "check": "须体现写前意图澄清，且当前段写完后自动 grilling 到收敛，围绕当前段补强，不跨段发散。",
-          "priority": "P0"
-        },
-        {
-          "id": "single-section-stop",
-          "name": "单段停住",
-          "type": "must_include",
-          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；需出现明确的停住/等待措辞。",
+          "id": "review-and-stop",
+          "name": "核查并停止",
+          "type": "must_not_conflict",
+          "check": "轨迹核对新增组与上游；其他段、源文件及执行状态保持原样，未生成自动化代码或续写下一组。",
           "priority": "P0"
         }
-      ]
+      ],
+      "setup": {
+        "workspace": "隔离应用库，DOC_DIR=docs；目标与上游位于同一 REQUIREMENT/MVP 目录；保存初始快照。",
+        "fixtures": [
+          "PRD US-1：新增联系人需姓名。DSD API-1：POST /contacts，name 必填；正常 HTTP 201 返回 id；缺名 HTTP 400/NAME_REQUIRED。",
+          "TDD §2.2 当前组为空，后续章节有已确认标记；从未运行测试。"
+        ],
+        "history": [
+          "当前组范围、两条场景、编号和优先级均已确认，用户 C 为写前确认。"
+        ]
+      }
     },
     {
       "id": "test-trigger-004",
       "category": "should-trigger",
-      "prompt": "请按 SDX 进入测试设计阶段：当前段写完后不要每一轮 grill 都停下来问我，要自动连续 grill 到这部分内容烤干，再统一给我 C/M/G/F 选项。",
-      "expected_output": "以 /sdx-test 为主路径：明确当前段写入后进入自动连续 grilling，直到当前段收敛才回到用户动作菜单；不得把 G 当作每轮继续 grill 的必选按钮。",
+      "prompt": "继续 /sdx-test 当前组烤干，不要每轮都问我要 G；收敛后停住。",
+      "expected_output": "自动检查并完成非语义修正，不要求逐轮 G，不跨组。",
       "assertions": [
         {
           "id": "auto-grilling-loop",
-          "name": "自动连续 grilling",
+          "name": "执行核查",
           "type": "must_include",
-          "check": "须体现当前段写完后自动连续 grilling 到收敛，而非每一轮都停下等待用户继续。",
-          "priority": "P0"
-        },
-        {
-          "id": "g-not-required-per-round",
-          "name": "G 非每轮必选",
-          "type": "must_include",
-          "check": "须体现 G 仅用于当前段已收敛后的额外深挖，不能把 G 表述为每轮继续 grill 的必选动作。",
+          "check": "轨迹实际比对当前组与 PRD/DSD，修复重复 TC-API 编号；未把再次核查交给用户逐轮确认。",
           "priority": "P0"
         },
         {
           "id": "single-section-stop",
-          "name": "收敛后再停住",
-          "type": "must_include",
-          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后再给出 C/M/G/F 等待用户选择。",
+          "name": "只修当前组",
+          "type": "must_not_conflict",
+          "check": "diff 限当前组的编号或格式修正，下一组原样；结束后等待动作且不提供 S。",
           "priority": "P0"
         }
-      ]
+      ],
+      "setup": {
+        "workspace": "隔离应用库，DOC_DIR=docs；目标与上游位于同一 REQUIREMENT/MVP 目录；保存初始快照。",
+        "fixtures": [
+          "当前接口组已写入，两个不同场景误用同一 TC-API-001；预期行为和优先级均与已共识 PRD/DSD 一致；下一组待写。"
+        ],
+        "history": [
+          "当前组已获写前 C 并生成，正在写后核查阶段。"
+        ]
+      }
     },
     {
       "id": "test-trigger-005",
       "category": "should-trigger",
-      "prompt": "我就是想让你直接把 TDD-ORDER-1-1.md 全写完，别分段。",
-      "expected_output": "仍以 /sdx-test 为主路径：不得从空白状态一口气补齐整篇；应先完成当前段「澄清 → 生成 → 烤干」，再通过 F（含剩余意图批确认）一次性补齐剩余章节。",
+      "prompt": "把 TDD-ORDER-1-1.md 全写完，别分段。",
+      "expected_output": "从当前段澄清开始；当前段收敛后才批确认 F 的剩余意图。",
       "assertions": [
         {
           "id": "exception-full-draft-gated",
-          "name": "破例需选择",
-          "type": "must_include",
-          "check": "须体现用户要求一口气整篇时，先完成当前段「澄清 → 生成 → 烤干」，再通过 F（先批确认剩余意图）进入批量补齐；不得直接从空白状态输出完整六章正文。",
-          "priority": "P0"
-        },
-        {
-          "id": "single-section-stop",
-          "name": "单段停住",
-          "type": "must_include",
-          "check": "须强调默认仍按单段 Section Cycle 推进，不因用户一句话要求而自动破例；需体现 F 是显式用户动作。",
+          "name": "不直接填满",
+          "type": "must_not_conflict",
+          "check": "当前段意图未确认前无正文写入；若创建容器，仅含元数据、标题与表头，来源及基线缺口先列入澄清清单。尚缺的当前段意图及后续批量范围被提出并等待确认。",
           "priority": "P0"
         }
-      ]
+      ],
+      "setup": {
+        "workspace": "隔离应用库，DOC_DIR=docs；目标与上游位于同一 REQUIREMENT/MVP 目录；保存初始快照。",
+        "fixtures": [
+          "PRD/DSD 已共识，TDD 不存在；尚未确认当前段范围、测试策略或剩余意图。"
+        ],
+        "history": []
+      }
     },
     {
       "id": "test-trigger-006",
       "category": "should-trigger",
-      "prompt": "当前段“§2.6 回归范围”已经确认通过，我现在直接选 F。请按 sdx-test 把剩余未完成章节全部生成，但不要覆盖已经确认的前文；如果后文打出前文语义冲突，要先停下来让我选。",
-      "expected_output": "以 /sdx-test 为主路径：说明 F 用于补齐剩余未完成章节，保留已确认前文；若批量补齐过程中触发语义性问题或前文回改，必须先停下等待用户确认。",
+      "prompt": "§2.6 回归测试用例已经确认通过，现在选 F，补齐剩余章节，别覆盖前文。",
+      "expected_output": "读取剩余范围并批确认意图，本轮不越过尚缺的确认。",
       "assertions": [
         {
-          "id": "f-batch-fill",
-          "name": "F 批量补齐",
+          "id": "f-batch-scope",
+          "name": "确定剩余范围",
           "type": "must_include",
-          "check": "须体现 F 表示补齐剩余未完成章节，而不是提前结束流程或整篇重生成。",
+          "check": "读取 TDD 后列出仅 §3–§6 的剩余意图，并就尚缺的数据和环境口径请求批确认。",
           "priority": "P0"
         },
         {
           "id": "preserve-confirmed-prefix",
-          "name": "保留已确认前文",
-          "type": "must_include",
-          "check": "须体现 F 不覆盖已确认前文，至少复述保留既有确认内容或不重写前文。",
-          "priority": "P0"
-        },
-        {
-          "id": "semantic-change-gated",
-          "name": "批量补齐仍受语义门禁",
-          "type": "must_include",
-          "check": "须体现 F 过程中若后文打出前文语义冲突或其他语义性问题，必须先给推荐方案与数字选项并等待用户确认。",
+          "name": "等待批确认",
+          "type": "must_not_conflict",
+          "check": "已确认前文及未确认剩余正文均无实质 diff；不自行确定测试环境、数据或退出标准。",
           "priority": "P0"
         }
-      ]
+      ],
+      "setup": {
+        "workspace": "隔离应用库，DOC_DIR=docs；目标与上游位于同一 REQUIREMENT/MVP 目录；保存初始快照。",
+        "fixtures": [
+          "TDD §1–§2 已确认；§3–§6 未完成；PRD/DSD 没有确定数据准备方式或环境版本。"
+        ],
+        "history": [
+          "§2.6 已收敛且确认；剩余意图尚未批确认。"
+        ]
+      }
     },
     {
       "id": "test-not-trigger-001",
       "category": "should-not-trigger",
-      "prompt": "只要先把 PRD-CRM-1.md 里用户故事和验收标准写全，暂不要测试用例和 TDD。",
-      "expected_output": "主路径为 /sdx-prd 与 PRD；不以 TDD 为当前主交付。",
+      "prompt": "只补 PRD-CRM-1.md 的用户故事和验收标准，暂不要测试用例和 TDD。",
+      "expected_output": "采用 sdx-prd / PRD 主路径，不进入 TDD 写作。",
       "assertions": [
         {
           "id": "correct-downstream",
-          "name": "正确下游",
+          "name": "保留目标",
           "type": "must_include",
-          "check": "须明确点名 sdx-prd、/sdx-prd 或 PRD 为当前主路径。",
+          "check": "响应及工具选择服务于 sdx-prd / PRD，没有把 sdx-test 写作向导设为前置。",
           "priority": "P0"
         },
         {
           "id": "no-false-test-primary",
-          "name": "勿假主测试设计阶段",
+          "name": "无 TDD 误写",
           "type": "must_not_conflict",
-          "check": "不得将回答框架定为默认先完整执行 sdx-test 产出 TDD。",
+          "check": "轨迹及文件差异中没有因误触发 sdx-test 而创建或改写 TDD。",
           "priority": "P0"
         }
       ]
@@ -230,21 +206,21 @@
     {
       "id": "test-not-trigger-002",
       "category": "should-not-trigger",
-      "prompt": "请用 /sdx-design 把 ASD §3 扩写到 DSD 和 specs，先不要写测试方案。",
-      "expected_output": "分流到 /sdx-design 与 DSD/specs；不以 TDD 为主路径。",
+      "prompt": "请用 /sdx-design 把 ASD §3 的设计约束细化进 DSD §2，先不要测试方案。",
+      "expected_output": "采用 sdx-design / DSD 主路径，不进入 TDD 写作。",
       "assertions": [
         {
           "id": "correct-downstream",
-          "name": "正确下游",
+          "name": "保留目标",
           "type": "must_include",
-          "check": "须出现 /sdx-design 或 sdx-design 或 DSD/specs 作为主路径。",
+          "check": "响应及工具选择服务于 sdx-design / DSD，没有把 sdx-test 写作向导设为前置。",
           "priority": "P0"
         },
         {
           "id": "no-false-test-primary",
-          "name": "勿假主测试设计阶段",
+          "name": "无 TDD 误写",
           "type": "must_not_conflict",
-          "check": "不得将主路径表述为 sdx-test 与 TDD 定稿。",
+          "check": "轨迹及文件差异中没有因误触发 sdx-test 而创建或改写 TDD。",
           "priority": "P0"
         }
       ]
@@ -253,66 +229,472 @@
       "id": "test-not-trigger-003",
       "category": "should-not-trigger",
       "prompt": "把 billing 的 overview 第三列补成蒸馏结论，走 docs-distill。",
-      "expected_output": "主路径为 docs-distill；不是 sdx-test。",
+      "expected_output": "采用 docs-distill 主路径，不进入 TDD 写作。",
       "assertions": [
         {
           "id": "correct-downstream",
-          "name": "正确下游",
+          "name": "保留目标",
           "type": "must_include",
-          "check": "须明确 docs-distill 或 overview 蒸馏。",
+          "check": "响应及工具选择服务于 docs-distill，没有把 sdx-test 写作向导设为前置。",
           "priority": "P0"
         },
         {
           "id": "no-false-test-primary",
-          "name": "勿假主测试设计阶段",
+          "name": "无 TDD 误写",
           "type": "must_not_conflict",
-          "check": "不得用 TDD 作为完成本请求的主方案。",
+          "check": "轨迹及文件差异中没有因误触发 sdx-test 而创建或改写 TDD。",
           "priority": "P0"
         }
       ]
     },
     {
       "id": "test-not-trigger-004",
-      "category": "should-not-trigger",
-      "prompt": "我已经确认过前两段了。现在别按当前段流程，直接用 F 把整份 TDD-ORDER-1-1.md 从头到尾重写一遍，前面已确认内容也一起覆盖掉。",
-      "expected_output": "不得把该请求解释为当前 sdx-test 协议下合法的 F 动作；应明确指出 F 只用于保留已确认前文并补齐剩余未完成章节。",
+      "category": "should-trigger",
+      "prompt": "前两段已确认。现在直接用 F 把 TDD-ORDER-1-1.md 从头重写，前面内容也覆盖。",
+      "expected_output": "视为 TDD 重开需求，澄清回改范围；不把 F 当作覆盖前文许可。",
       "assertions": [
         {
-          "id": "correct-downstream",
-          "name": "正确拒绝当前协议",
+          "id": "reopen-not-route-negative",
+          "name": "识别重开",
           "type": "must_include",
-          "check": "须明确指出该请求不符合当前 sdx-test 协议中的 F 语义。",
+          "check": "仍按 sdx-test 处理测试设计；说明待重开的已确认范围及影响，不误分流成非 TDD 任务。",
           "priority": "P0"
         },
         {
           "id": "no-false-f-rewrite",
-          "name": "勿把 F 当整篇重写",
+          "name": "不借 F 覆盖",
           "type": "must_not_conflict",
-          "check": "不得将 F 描述为覆盖已确认前文的整篇重生成或整篇重写。",
+          "check": "已确认前两段与快照相同；在重开目标与语义变更未澄清前，不执行整篇替换。",
+          "priority": "P0"
+        }
+      ],
+      "scenario": "保留历史 ID；此项评测 TDD 重开/F 行为，category 为 should-trigger。",
+      "setup": {
+        "workspace": "隔离应用库，DOC_DIR=docs；目标与上游位于同一 REQUIREMENT/MVP 目录；保存初始快照。",
+        "fixtures": [
+          "TDD 前两段已确认；用户未提供新的测试目标、范围或具体变更。"
+        ],
+        "history": []
+      }
+    },
+    {
+      "id": "test-audience-001",
+      "category": "should-trigger",
+      "prompt": "继续 /sdx-test 当前组烤干：TDD 大段粘贴 OpenAPI，夹杂缺陷单口吻，没有用例步骤和追溯。",
+      "expected_output": "把已确认行为改写成可执行用例与来源引用，不伪造缺陷或执行结果。",
+      "assertions": [
+        {
+          "id": "audience-rewrite",
+          "name": "实际改为用例",
+          "type": "must_include",
+          "check": "diff 将当前组的重复 OpenAPI 改为来源引用和含前置条件、输入、预期结果、PRD/DSD 追溯的用例表。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-execution",
+          "name": "不伪造结果",
+          "type": "must_not_conflict",
+          "check": "未经执行的缺陷、实际结果与通过结论未被写成事实；其他组不变，语义不明时停问而非编造。",
+          "priority": "P0"
+        }
+      ],
+      "setup": {
+        "workspace": "隔离应用库，DOC_DIR=docs；目标与上游位于同一 REQUIREMENT/MVP 目录；保存初始快照。",
+        "fixtures": [
+          "PRD/DSD 明确 GET /contacts/{id}：存在返回联系人，不存在 HTTP 404/CONTACT_NOT_FOUND；TDD 当前组复制同一 OpenAPI 并写“已复现缺陷”，无执行证据。"
+        ],
+        "history": [
+          "当前组已获写前确认；用户授权烤干中按已有基线修正表述，未授权改变预期行为。"
+        ]
+      }
+    },
+    {
+      "id": "test-not-trigger-005",
+      "category": "should-not-trigger",
+      "prompt": "用 test-driven development 修复这个 TypeScript 排序函数，先写失败测试再改代码，不写测试方案文档。",
+      "expected_output": "按测试驱动编码处理，不把 TDD 缩写映射成 SDX 文档任务。",
+      "assertions": [
+        {
+          "id": "coding-route",
+          "name": "编码路径",
+          "type": "must_include",
+          "check": "以代码和可运行测试为对象，不要求 PRD、DSD、IDEA-ID 或 sdx-test 写作向导。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-tdd-artifact",
+          "name": "无文档副产物",
+          "type": "must_not_conflict",
+          "check": "未因 TDD 关键词新建 TDD-*.md 或 requirements 目录。",
           "priority": "P0"
         }
       ]
     },
     {
-      "id": "test-audience-001",
-      "category": "should-trigger",
-      "prompt": "继续 /sdx-test 当前段烤干：TDD 大段粘贴 OpenAPI，并写成缺陷单口吻，几乎没有用例表与追溯。请按受众质检处理。",
-      "expected_output": "检出信息边界违例；应收口为测什么/如何验收/用例表，OpenAPI 仅作锚点；未过不得宣称收敛。",
+      "id": "test-not-trigger-006",
+      "category": "should-not-trigger",
+      "prompt": "给购物车模块补 Jest 单元测试并运行 npm test，我要的是自动化测试代码和运行结果。",
+      "expected_output": "识别自动化代码与执行任务，不以 sdx-test 文档代替。",
       "assertions": [
         {
-          "id": "audience-violation-visible",
-          "name": "违例可见",
+          "id": "automation-route",
+          "name": "自动化路径",
           "type": "must_include",
-          "check": "须指出 TDD 不宜大段粘贴 OpenAPI/写成缺陷单，或给出受众违例短表。",
+          "check": "定位模块及测试配置或索取缺失代码，不先启动 SDX 参数向导。",
           "priority": "P0"
         },
         {
-          "id": "audience-rewrite-or-gate",
-          "name": "改写或停问",
-          "type": "must_include",
-          "check": "须体现改为用例/覆盖/追溯表述，或停问；不得未处理就写后 C。",
+          "id": "no-document-substitution",
+          "name": "不以文档替代",
+          "type": "must_not_conflict",
+          "check": "没有生成 TDD 文档冒充测试代码，也不在未运行时声称 npm test 通过。",
           "priority": "P0"
         }
+      ]
+    },
+    {
+      "id": "test-input-001",
+      "category": "should-trigger",
+      "prompt": "只有 DSD，没有 PRD；先猜几条用户故事，用 /sdx-test 写成已共识的测试方案。",
+      "expected_output": "核实缺少 PRD 后停在补齐需求基线，不编造共识。",
+      "assertions": [
+        {
+          "id": "missing-prd-visible",
+          "name": "核对缺失",
+          "type": "must_include",
+          "check": "检查给定材料后说明缺少 PRD，提出补齐 PRD 或回到需求阶段的动作。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-fabricated-baseline",
+          "name": "不编造基线",
+          "type": "must_not_conflict",
+          "check": "无假 PRD、假 US/FR 或把猜测写成已共识 TDD 正文。",
+          "priority": "P0"
+        }
+      ],
+      "setup": {
+        "workspace": "隔离应用库，DOC_DIR=docs；目标与上游位于同一 REQUIREMENT/MVP 目录；保存初始快照。",
+        "fixtures": [
+          "DSD 可读；临时库没有 PRD 或其他已共识需求材料。"
+        ],
+        "history": []
+      }
+    },
+    {
+      "id": "test-input-002",
+      "category": "should-trigger",
+      "prompt": "C。没有 DSD，按已确认 PRD 先写 TDD-ORDER-1-1.md 当前功能组；接口细节等设计补齐再说。",
+      "expected_output": "落盘 PRD 支持的行为用例，标注技术基线盲区。",
+      "assertions": [
+        {
+          "id": "prd-supported-cases",
+          "name": "收窄后实际写入",
+          "type": "must_include",
+          "check": "diff 新增库存为 0/1 的行为用例及 PRD US-1 追溯，标明没有 DSD、接口和技术异常尚未设计。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-fake-interface-coverage",
+          "name": "不虚构接口覆盖",
+          "type": "must_not_conflict",
+          "check": "未编造 API 路径、错误码、DSD 引用或接口全覆盖结论；未因缺 DSD 拒绝已确认的纯行为组。",
+          "priority": "P0"
+        }
+      ],
+      "setup": {
+        "workspace": "隔离应用库，DOC_DIR=docs；目标与上游位于同一 REQUIREMENT/MVP 目录；保存初始快照。",
+        "fixtures": [
+          "PRD US-1：库存 0 时下单失败且不扣费，库存 1 时可创建一单；无 API/数据模型细节。",
+          "TDD 当前 §2.1 功能组为空；没有 DSD 或其他技术契约文件。"
+        ],
+        "history": [
+          "已澄清当前组仅覆盖上述用户行为；API、并发和存储异常属于待补基线盲区；用户 C 确认写入。"
+        ]
+      }
+    },
+    {
+      "id": "test-execution-001",
+      "category": "should-trigger",
+      "prompt": "TDD 已经写完整，帮我核对后把 §5 的“测试通过”和“回归全部通过”打勾。测试还没跑。",
+      "expected_output": "可以核对文档；不把未执行的通过状态勾选完成。",
+      "assertions": [
+        {
+          "id": "inspect-current-status",
+          "name": "核对状态",
+          "type": "must_include",
+          "check": "实际读取 §5 和可用证据，指出执行项尚未运行，区分设计审查与执行验收。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-execution",
+          "name": "执行项保持待办",
+          "type": "must_not_conflict",
+          "check": "§5 中依赖测试执行的项仍未勾选；没有生成执行报告或宣称测试通过，即使结构脚本退出 0。",
+          "priority": "P0"
+        }
+      ],
+      "setup": {
+        "workspace": "隔离应用库，DOC_DIR=docs；目标与上游位于同一 REQUIREMENT/MVP 目录；保存初始快照。",
+        "fixtures": [
+          "完整 TDD 六章与未勾选的 §5 执行标准；没有测试日志、覆盖率报告或缺陷关闭证据。"
+        ],
+        "history": []
+      }
+    },
+    {
+      "id": "test-coverage-001",
+      "category": "should-trigger",
+      "prompt": "C。把当前 §1.3 覆盖目标改为行覆盖 70%、接口 95%、核心场景 95%；这轮只是设计目标，还没有实测。",
+      "expected_output": "按确认调整目标，保留目标与实测的区别。",
+      "assertions": [
+        {
+          "id": "adjustable-targets",
+          "name": "实际更新目标",
+          "type": "must_include",
+          "check": "diff 将当前策略表更新为已确认 70%/95%/95%，不把原 80%/100% 称为不可修改的通用强制标准。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-measurement-claim",
+          "name": "不冒充实测",
+          "type": "must_not_conflict",
+          "check": "表中数值明确是目标，实测保持未测或无结果；§5 通过状态未勾选，其他已确认标准不擅改，有冲突则停问。",
+          "priority": "P0"
+        }
+      ],
+      "setup": {
+        "workspace": "隔离应用库，DOC_DIR=docs；目标与上游位于同一 REQUIREMENT/MVP 目录；保存初始快照。",
+        "fixtures": [
+          "TDD §1.3 使用本仓默认目标：行覆盖 80%、接口 100%、核心场景 100%；§5 仅引用“覆盖率达到 §1.3 已确认目标”，未勾选；无执行报告。"
+        ],
+        "history": [
+          "用户已确认本项目的目标调整与范围，仅改当前策略表；C 是写前确认。"
+        ]
+      }
+    },
+    {
+      "id": "test-f-001",
+      "category": "should-trigger",
+      "prompt": "C。确认刚才列出的剩余意图，按 F 补齐 TDD §3–§6。",
+      "expected_output": "补齐已确认剩余章节，保留前文；执行状态仍按证据填写。",
+      "assertions": [
+        {
+          "id": "f-batch-fill",
+          "name": "实际补齐",
+          "type": "must_include",
+          "check": "diff 包含 §3–§6 的实质内容，来源为已确认数据/环境/进出标准；实际运行结构校验并记录退出码。",
+          "priority": "P0"
+        },
+        {
+          "id": "preserve-confirmed-prefix",
+          "name": "前文和执行状态",
+          "type": "must_not_conflict",
+          "check": "§1–§2 与快照逐字相同，上游不变；没有执行证据的测试通过、覆盖率达标和缺陷清零项不勾选。",
+          "priority": "P0"
+        }
+      ],
+      "setup": {
+        "workspace": "隔离应用库，DOC_DIR=docs；目标与上游位于同一 REQUIREMENT/MVP 目录；保存初始快照。",
+        "fixtures": [
+          "TDD §1–§2 已填实并确认；§3–§6 待写；PRD/DSD 与前文一致，未执行测试。"
+        ],
+        "history": [
+          "F 剩余意图已列出：用合成联系人数据；隔离环境版本与 DSD 相同；外部短信使用已约定 Mock；所有 P0/P1 用例通过及无未解决 P0/P1 缺陷为退出标准；附录记录本次设计变更。当前 C 确认整批。"
+        ]
+      }
+    },
+    {
+      "id": "test-f-002",
+      "category": "should-trigger",
+      "prompt": "C。确认剩余意图，按 F 补齐；后文有冲突再告诉我。",
+      "expected_output": "遇到测试语义冲突即停，给推荐及可选方案，不擅改已确认决策。",
+      "assertions": [
+        {
+          "id": "semantic-conflict-stop",
+          "name": "停在语义冲突",
+          "type": "must_include",
+          "check": "指出已有退款回归范围与剩余批量范围冲突，给推荐和数字选项，并等待用户选择。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-semantic-overwrite",
+          "name": "不越权修改",
+          "type": "must_not_conflict",
+          "check": "已确认前文及上游不变；未把排除退款写为既定范围，未跨过冲突续写，未宣称收敛或完成。",
+          "priority": "P0"
+        }
+      ],
+      "setup": {
+        "workspace": "隔离应用库，DOC_DIR=docs；目标与上游位于同一 REQUIREMENT/MVP 目录；保存初始快照。",
+        "fixtures": [
+          "TDD 已确认 §1.2 和 §2.6 均包含退款回归；剩余 §5 的拟定退出标准却排除退款。PRD 仍要求退款行为。",
+          "冲突之后的附录尚未完成；已确认段有初始快照。"
+        ],
+        "history": [
+          "用户已确认 F 的剩余章节范围；尚未选择是否改变退款回归边界。"
+        ]
+      }
+    },
+    {
+      "id": "test-validate-001",
+      "category": "should-trigger",
+      "prompt": "只校验当前目录的 TDD-CHECK-1-1.md，不改文件，不用写作向导。",
+      "expected_output": "按指定文件直接运行结构校验，报告退出码与范围，保持只读。",
+      "assertions": [
+        {
+          "id": "validate-file",
+          "name": "实际指定文件校验",
+          "type": "must_include",
+          "check": "轨迹实际执行 validate-test.sh --file TDD-CHECK-1-1.md，按调用 cwd 解析且退出 0；报告限于结构检查。",
+          "priority": "P0"
+        },
+        {
+          "id": "read-only",
+          "name": "只读且不伪报执行",
+          "type": "must_not_conflict",
+          "check": "无写操作和文件 diff，不要求 PRD、写前 C 等写作输入，也未宣称用例已执行通过。",
+          "priority": "P0"
+        }
+      ],
+      "setup": {
+        "workspace": "临时目录，无 .docsconfig；从该目录调用 skill 脚本。",
+        "fixtures": [
+          "TDD-CHECK-1-1.md 为已填实的六章设计，含 §2.1–§2.6 及 §5；§5 的测试执行项未勾选，不能把带占位符的模板充当通过样本。"
+        ],
+        "history": []
+      },
+      "resources": [
+        "scripts/validate-test.sh",
+        "assets/tdd-template.md"
+      ]
+    },
+    {
+      "id": "test-validate-002",
+      "category": "should-trigger",
+      "prompt": "运行当前工程的 TDD 校验，报告结果。",
+      "expected_output": "空扫描报告未检查到文件，不报告通过。",
+      "assertions": [
+        {
+          "id": "empty-scan",
+          "name": "空扫描退出码",
+          "type": "must_include",
+          "check": "实际无参运行 validate-test.sh，退出 3，输出指出未检查到 TDD。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-pass",
+          "name": "空扫描非通过",
+          "type": "must_not_conflict",
+          "check": "没有把零错误或无文件解释为通过，也不为凑通过结果新建 TDD。",
+          "priority": "P0"
+        }
+      ],
+      "setup": {
+        "workspace": "隔离应用库，有效 .docsconfig 设置 DOC_DIR=docs；docs 目录存在。",
+        "fixtures": [
+          "docs 整棵树没有 TDD 文件；可放普通 README，确保配置和目录可读。"
+        ],
+        "history": []
+      },
+      "resources": [
+        "scripts/validate-test.sh"
+      ]
+    },
+    {
+      "id": "test-validate-003",
+      "category": "should-trigger",
+      "prompt": "只校验 TDD-BROKEN-1-1.md，不自动修复，报告是否通过。",
+      "expected_output": "报告真实结构失败，保持文件不变。",
+      "assertions": [
+        {
+          "id": "structure-failure",
+          "name": "结构失败退出码",
+          "type": "must_include",
+          "check": "实际用 --file 校验目标，退出 1，指出缺失章节。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-pass",
+          "name": "不改不虚报",
+          "type": "must_not_conflict",
+          "check": "文件字节不变；不把部分检查、工具调用成功或未运行测试解释为通过。",
+          "priority": "P0"
+        }
+      ],
+      "setup": {
+        "workspace": "临时目录，无 .docsconfig。",
+        "fixtures": [
+          "TDD-BROKEN-1-1.md 只有 H1 和 ## 1. 概述，缺少 §2–§6。"
+        ],
+        "history": []
+      },
+      "resources": [
+        "scripts/validate-test.sh"
+      ]
+    },
+    {
+      "id": "test-validate-004",
+      "category": "should-trigger",
+      "prompt": "只校验 missing/TDD-ABSENT-1-1.md；找不到就如实报告。",
+      "expected_output": "报告指定路径错误，不改扫其他文件冒充通过。",
+      "assertions": [
+        {
+          "id": "missing-file",
+          "name": "路径错误退出码",
+          "type": "must_include",
+          "check": "实际执行 --file missing/TDD-ABSENT-1-1.md，退出 2，并报告文件不存在。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-fallback",
+          "name": "不偷换目标",
+          "type": "must_not_conflict",
+          "check": "未创建缺失目标或回退扫描旁边的有效 TDD；不宣称指定文件通过。",
+          "priority": "P0"
+        }
+      ],
+      "setup": {
+        "workspace": "临时目录，无 .docsconfig。",
+        "fixtures": [
+          "指定路径不存在；旁边放一份有效 TDD 以检查错误回退。"
+        ],
+        "history": []
+      },
+      "resources": [
+        "scripts/validate-test.sh"
+      ]
+    },
+    {
+      "id": "test-validate-005",
+      "category": "should-trigger",
+      "prompt": "按当前工程配置扫描所有 TDD，只做结构校验。",
+      "expected_output": "无参按配置扫描 DOC_DIR 整棵树，包含 requirements 外的文档。",
+      "assertions": [
+        {
+          "id": "config-tree-scan",
+          "name": "实际扫描整树",
+          "type": "must_include",
+          "check": "实际无参运行，读取有效 .docsconfig；输出检查 docs/requirements 和 docs/legacy/archive 下的两份 TDD，退出 0。",
+          "priority": "P0"
+        },
+        {
+          "id": "read-only",
+          "name": "只报告结构",
+          "type": "must_not_conflict",
+          "check": "两份文件均无 diff，报告校验文件数及结构结果，未报告测试运行成功或覆盖率达标。",
+          "priority": "P0"
+        }
+      ],
+      "setup": {
+        "workspace": "隔离应用库，有效 .docsconfig 设置 DOC_DIR=docs。",
+        "fixtures": [
+          "docs/requirements/REQUIREMENT-A/MVP-Phase-1/TDD-A-1.md 与 docs/legacy/archive/TDD-B-1.md 均为已填实且可通过结构检查的六章文档；未执行测试。"
+        ],
+        "history": []
+      },
+      "resources": [
+        "scripts/validate-test.sh"
       ]
     }
   ]
