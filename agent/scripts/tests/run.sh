@@ -21,12 +21,13 @@ suite_runner() {
     bootstrap) printf '%s\n' 'agent/scripts/tests/bootstrap/run.sh' ;;
     okf) printf '%s\n' 'agent/scripts/tests/okf/run.sh' ;;
     forbidden-file-refs) printf '%s\n' 'agent/scripts/tests/forbidden-file-refs/run.sh' ;;
+    link-reachable) printf '%s\n' 'agent/scripts/tests/link-reachable/run.sh' ;;
     *) return 1 ;;
   esac
 }
 
-QUICK_SUITES=(bash-guard refresh-codex docs-publish forbidden-file-refs docs-link docs-pull okf docs-okf agent-install bootstrap)
-FULL_SUITES=(bash-guard refresh-codex docs-publish forbidden-file-refs docs-link docs-pull okf docs-okf agent-install bootstrap docs-install docs-push)
+QUICK_SUITES=(bash-guard refresh-codex docs-publish forbidden-file-refs link-reachable docs-link docs-pull okf docs-okf agent-install bootstrap)
+FULL_SUITES=(bash-guard refresh-codex docs-publish forbidden-file-refs link-reachable docs-link docs-pull okf docs-okf agent-install bootstrap docs-install docs-push)
 
 MODE='quick'
 SUITE=''

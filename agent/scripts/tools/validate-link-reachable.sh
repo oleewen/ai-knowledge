@@ -3,6 +3,7 @@
 # 仓库路径或文档路径下（且非 .git），落实 link-reachability §1.1 强校验。
 # 在仓库根执行：bash agent/scripts/tools/validate-link-reachable.sh
 # 文档路径来自 .docsconfig 与工作区文件（见 lib/docsconfig.sh；不向子进程 export，仅前缀传参）。
+# 只检查可点链接；测试夹具由所属测试校验，输出模板按最终文件位置解析。
 
 set -euo pipefail
 
@@ -42,6 +43,81 @@ bare_app_or_docs_re = re.compile(r"^(application|docs)/")
 errs: list[str] = []
 warns: list[str] = []
 exists_cache: dict[str, bool] = {}
+skipped_fixtures = 0
+checked_templates = 0
+
+# 模板中的链接相对生成文件，而非 assets 目录；只登记已核实的生成器契约。
+template_outputs = {
+    "skills/docs-build/assets/knowledge-index-template.md": [
+        f"{layer}/INDEX-GUIDE.md"
+        for layer in ("application", "system", "solution", "company")
+    ],
+}
+
+
+def strip_code_spans(paragraph: str) -> str:
+    """只配对完整且等长的反引号串；代码外的转义反引号不作为起点。"""
+    runs = list(re.finditer(r"`+", paragraph))
+    pieces = []
+    cursor = 0
+    index = 0
+    while index < len(runs):
+        opening = runs[index]
+        before = paragraph[:opening.start()]
+        backslashes = len(before) - len(before.rstrip("\\"))
+        if backslashes % 2:
+            index += 1
+            continue
+        closing = next(
+            (other for other in range(index + 1, len(runs))
+             if len(runs[other].group()) == len(opening.group())),
+            None,
+        )
+        if closing is None:
+            index += 1
+            continue
+        pieces.extend((paragraph[cursor:opening.start()], " "))
+        cursor = runs[closing].end()
+        index = closing + 1
+    pieces.append(paragraph[cursor:])
+    return "".join(pieces)
+
+
+def prose_only(text: str) -> str:
+    """排除 fenced code 与行内代码，避免将 Markdown 写法示例当作链接。"""
+    lines = []
+    fence = ""
+    for line in text.splitlines(keepends=True):
+        match = re.match(r"^ {0,3}(`{3,}|~{3,})(.*)$", line.rstrip())
+        if fence:
+            if match:
+                token, rest = match.groups()
+                if token[0] == fence[0] and len(token) >= len(fence) and not rest.strip():
+                    fence = ""
+            lines.append("\n")
+        elif match:
+            token, rest = match.groups()
+            if token[0] == "~" or "`" not in rest:
+                fence = token
+                lines.append("\n\n")
+            else:
+                lines.append(line)
+        else:
+            lines.append(line)
+    text = "".join(lines)
+    # 空行分隔 Markdown 段落，未闭合代码不能吞掉后续段落的链接。
+    return "\n\n".join(strip_code_spans(part) for part in re.split(r"\n[ \t]*\n", text))
+
+
+def is_test_fixture(relative: str) -> bool:
+    parts = relative.split(os.sep)
+    if parts[:2] == ["scripts", "tests"]:
+        remaining = parts[2:-1]
+    elif len(parts) > 3 and parts[0] == "skills" and parts[2] == "tests":
+        remaining = parts[3:-1]
+    else:
+        return False
+    return any(part == "fixtures" or part.startswith("fixtures-") for part in remaining)
 
 
 def norm(p: str) -> str:
@@ -109,23 +185,36 @@ def check_link(rel_md: str, md_path: str, raw_target: str) -> None:
 
 
 def scan_agent_markdown() -> None:
+    global skipped_fixtures, checked_templates
     for dirpath, _, files in os.walk(agent):
         for name in files:
             if not name.endswith(".md"):
                 continue
             path = os.path.join(dirpath, name)
             rel_md = os.path.relpath(path, repo)
+            rel_agent = os.path.relpath(path, agent)
+            if is_test_fixture(rel_agent):
+                skipped_fixtures += 1
+                continue
             try:
                 with open(path, encoding="utf-8") as f:
                     text = f.read()
             except (OSError, UnicodeDecodeError) as e:
                 warns.append(f"{rel_md}: 无法读取 ({e})")
                 continue
-            for m in link_re.finditer(text):
-                check_link(rel_md, path, m.group(1))
+            outputs = template_outputs.get(rel_agent.replace(os.sep, "/"))
+            if outputs:
+                checked_templates += 1
+            for m in link_re.finditer(prose_only(text)):
+                if outputs:
+                    for output in outputs:
+                        check_link(f"{rel_md}（输出 {output}）", os.path.join(repo, output), m.group(1))
+                else:
+                    check_link(rel_md, path, m.group(1))
 
 
 def report() -> int:
+    print(f"[INFO] 跳过测试夹具 {skipped_fixtures} 份；按产物位置校验模板 {checked_templates} 份")
     for w in warns:
         print("[WARN]", w, file=sys.stderr)
     if not errs:
