@@ -2,6 +2,6 @@
 
 | 文件 | 何时读 |
 | --- | --- |
-| [gates.md](gates.md) | 参数确认、风险边界 |
-| [workflow.md](workflow.md) | 主线步骤、与 docs-install 编排 |
-| [parameters.md](parameters.md) | CLI 参数与示例 |
+| [parameters.md](parameters.md) | 参数、workspace 推断、安装副本调用 |
+| [gates.md](gates.md) | 实跑授权、覆盖与失败边界 |
+| [workflow.md](workflow.md) | 预览摘要与产物验收 |

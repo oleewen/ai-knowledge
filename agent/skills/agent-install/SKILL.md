@@ -1,69 +1,30 @@
 ---
 name: agent-install
 description: >
-  安装整棵 Agent 树到 $HOME/.agents/ 并按 --agents 链接 IDE 目录；不写回工程 .docsconfig。
-  薄封装 agent/skills/agent-install/scripts/agent-install.sh
-  （书写序：--meta/--scope/--target/--agents/--workspace/--dry-run）。
-  未传 --workspace 时：读 .docsconfig 的 AGENT_ROOT/AGENT_DIR，再读其 configs 内 WORK_SPACE；缺则须显式传入。
-  用户提到 /agent-install、装 agent、更新 ~/.agents、安装 rules/skills/hooks 时，使用本技能。
-  分流：知识库骨架 → docs-install；双轨 → 先 docs-install 后本技能；生态 skills 追新 → skill-upgrade；
-  元库对齐 → docs-upgrade；联邦登记 → docs-link。
-  推进见 light-flow-actions（C/M/S/F，无 G）与 references/gates.md。
+  将 ai-knowledge 元库的 Agent 资源安装或更新到 ~/.agents，并为指定 IDE 建立软链。
+  用于 /agent-install、安装本仓 rules/skills/hooks 或配置 IDE 共享 Agent 树；
+  知识库初始化用 docs-install，第三方生态技能升级用 skill-upgrade。
 ---
 
 # agent-install
 
-## 输出硬约束（P0）
+通过 [agent-install.sh](scripts/agent-install.sh) 安装。实体始终写入 `$HOME/.agents`；`--target` 只指定 IDE 软链父目录，`--workspace` 写入实体树 `configs` 的 `WORK_SPACE`。不创建或修改工程 `.docsconfig`。
 
-- 当前单元：单次 agent-install 计划（含 `--meta`、`--scope`、`--target`、`--agents`、`--workspace`、`--dry-run`）。
-- 轻流程：参数向导 → 风险校核 → `C/M/S/F`（无 `G`、不绑意图澄清）→ [light-flow-actions.md](../../references/light-flow-actions.md)；细节 [gates.md](references/gates.md)。参数未收口前不得实跑写盘。
-- 默认先 **--dry-run**；dry-run 摘要未确认前，不得静默实跑。
-- 写 `$HOME` / `~/.agents` 或工程级 `--target` 须用户明示；未确认不得默认实跑。
-- 宣称单元完成前须按 [audience-and-language.md](../../references/audience-and-language.md) 轻流程默认读者表做写后 **A/B**。
+## 执行
 
-## 边界
-
-| 负责 | 不负责 |
-| --- | --- |
-| 编排 `agent-install.sh`；参数向导与写盘闸门；Agent 树 + `docs-core.sh` 分发 | 知识库同步（→ docs-install）；生态 `npx skills` 追新（→ skill-upgrade）；联邦登记（→ docs-link） |
-
-## 不这样用
-
-- 不把「先 dry-run 再实跑」写成无停顿流水线
-- 不在未确认时对 `$HOME` 或工程级 target 静默写盘
-- 不把 docs-install / skill-upgrade 主路径收成本技能
-- 工程级 target 只链 IDE 目录；**不**写回 `.docsconfig`（AGENT_* 归 docs-install）
-- 未传 `--workspace` 且无法从 `.docsconfig`→`configs` 推断时，不假装可跑
-- 不把 `--target` 与 `--workspace` 合并为一参（职责不同：IDE 软链父目录 vs `WORK_SPACE`）
-
-## 路由
-
-| 目的 | 文件 |
-| --- | --- |
-| 流程 / 风险 | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
-| 参数 | [parameters.md](references/parameters.md) |
-| 轻流程动作 | [light-flow-actions.md](../../references/light-flow-actions.md) |
-| 易错 | [gotchas.md](gotchas.md) |
-
-## 最少输入
-
-书写序收口：`meta → scope → target → agents → workspace → dry-run`（见 [parameters.md](references/parameters.md)）。
-
-- `--scope`（可默认 `a`）
-- `--target`（默认 `$HOME`）
-- `--agents`（可探测或默认 `a`＝全量 IDE）
-- `--workspace`（可省略：见推断规则；首次须显式）
-- 是否 dry-run 已收口
-
-## 产出与脚本
-
-- 正式：`~/.agents/` 实体树 + 各 IDE 目录软链 + `configs` 内 `WORK_SPACE`；**不**更新目标 `.docsconfig`
-- 收敛后：产物校核 + 受众 A/B → [light-flow-actions.md](../../references/light-flow-actions.md)
+1. 沿用用户已给参数，按 [parameters.md](references/parameters.md) 补齐缺口。用 Bash 5+；安装副本须提供 `--meta`。
+2. 先运行 `--dry-run`，汇总实体树、IDE 链接、覆盖范围和 `WORK_SPACE`。对照 [gates.md](references/gates.md) 核实实跑授权；仅预览请求到此结束。
+3. 对已确认计划去掉 `--dry-run` 执行。失败即停并报告已发生的改动；后续处理见 [失败边界](references/gates.md#失败边界)。
+4. 按 [workflow.md](references/workflow.md) 校核产物与链接，区分「预览完成」与「已安装」，通过受众 A/B 后交付结果。
 
 ```bash
-bash agent/skills/agent-install/scripts/agent-install.sh --scope=a --target "$HOME" --agents=a --workspace ~/workspaces --dry-run
+bash agent/skills/agent-install/scripts/agent-install.sh \
+  --scope=a --target "$HOME" --agents=codex \
+  --workspace "$HOME/workspaces" --dry-run
 ```
 
-## 评测
+双轨装机按用户要求先运行 `docs-install`，再运行本技能；仅配置 IDE 且已给 workspace 时，无须先初始化知识库。
 
-`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。重点：dry-run 闸门、home/target 高风险确认、workspace 推断、与 docs-install 分流。
+## 诊断与维护
+
+执行异常查 [gotchas.md](gotchas.md)。维护时运行 [脚本回归](tests/run.sh)，再按 [评分规则](agents/grader.md) 检查 [行为评测](evals/evals.json)。

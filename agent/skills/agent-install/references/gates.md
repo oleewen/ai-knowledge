@@ -1,39 +1,20 @@
 # agent-install 风险控制与确认点
 
-见 [parameters.md](parameters.md)、[workflow.md](workflow.md)。
+当前单元为一次安装计划。沿用 [轻流程 C/M/S/F](../../../references/light-flow-actions.md)，不增加 `G` 或意图澄清环；总契约见 [CONVENTIONS](../../../rules/CONVENTIONS.md#artifact-gates)。
 
-## 与 CONVENTIONS
+## 写盘授权
 
-按 [agent/rules/CONVENTIONS.md](../../../rules/CONVENTIONS.md#artifact-gates)，agent-install 为**低风险工程同步**族：写 `$HOME` 或工程树前须参数确认与风险校核。
+先完成 dry-run，再将 [预览摘要](workflow.md#预览摘要) 与用户授权逐项对照。尚未授权实跑时停等 `C`；已有明确授权且覆盖同一预览计划时不重复索要。仅要求预览不能推定为安装授权。
 
-非 `--dry-run` 写盘前，须在对话取得用户明确同意（轻流程 `C`）。
+以下情况须重新收口：计划与预期不符；改变元库、scope、IDE、target 或 workspace；增加覆盖范围。`F` 只补齐已确认范围。
 
-## 参数确认
+## 覆盖边界
 
-至少按书写序收口：`--scope`、`--target`、`--agents`、`--workspace`（或可推断）、是否 dry-run 后真写（`--meta` 按需）。
+- 即使 `--target` 为工程目录，也会更新 `$HOME/.agents` 和其中的 `configs`。
+- 元库同名资源会被覆盖；被同步的目录内，源端已移除的条目也可能删除。实体树更新不提供逐文件备份，先报告本地定制冲突。
+- IDE 同名冲突项移入 `--target/.docs-init/<时间戳>/` 后再建链接；这不是实体树备份。
+- 工程 `.docsconfig` 不在写入范围。缺少 workspace 推断依据时补参数，无须擅自初始化知识库。
 
-宣称完成前须写后 **A/B**。
+## 失败边界
 
-## 风险与动作
-
-须先确认再执行：
-
-- dry-run 摘要与预期不一致
-- `--target $HOME` 或 `agent-scope=home` 写 Agent 树
-- 工程级 `--target` 覆盖已有 Agent 链接
-- 目标无 `.docsconfig`
-- 未传 `--workspace` 且无法从 configs 推断 `WORK_SPACE`
-
-推荐会话格式：
-
-```text
-即将执行 /agent-install，当前参数如下：
-- meta: <路径|默认>
-- scope: <a|r|s|h|sh|k>
-- target: <路径>
-- agents: <list>
-- workspace: <路径|推断自 configs>
-- dry-run: <yes|no>
-
-C 确认 / M 修改 / S 跳过 / F 补齐
-```
+参数或源目录校验失败时不写盘。实跑失败可能留下部分同步结果；立即报告失败位置、已完成步骤及备份路径。重试前先查原因和当前状态，不自动回滚、扩范围或循环重试。

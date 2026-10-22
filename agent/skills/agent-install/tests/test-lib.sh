@@ -6,7 +6,9 @@ AGENT_INSTALL_SCRIPT="$ROOT_DIR/agent/skills/agent-install/scripts/agent-install
 source "$ROOT_DIR/agent/scripts/test-core.sh"
 
 new_fake_home() {
-  mktemp -d "${TMPDIR:-/tmp}/agent-install-tests.XXXXXX"
+  local fixture
+  fixture="$(mktemp -d "${TMPDIR:-/tmp}/agent-install-tests.XXXXXX")"
+  (cd "$fixture" && pwd -P)
 }
 
 run_agent_install() {
@@ -20,4 +22,19 @@ run_agent_install_infer_workspace() {
   local fake_home="$1"
   shift
   HOME="$fake_home" "${BASH:-$(command -v bash)}" "$AGENT_INSTALL_SCRIPT" "$@"
+}
+
+# Small source tree for behavioral tests; ordinary baseline cases use the repository.
+make_meta_fixture() {
+  local meta="$1" category
+  for category in rules skills hooks scripts knowledge references; do
+    mkdir -p "$meta/agent/$category"
+    printf '%s\n' "$category" >"$meta/agent/$category/item.txt"
+  done
+  printf '#!/usr/bin/env bash\n' >"$meta/agent/scripts/docs-core.sh"
+  printf '{}\n' >"$meta/agent/hooks.json"
+  mkdir -p "$meta/agent/skills/demo/nested"
+  printf 'payload\n' >"$meta/agent/skills/demo/nested/data.txt"
+  printf 'not installed\n' >"$meta/agent/skills/demo/README.md"
+  printf 'not installed\n' >"$meta/agent/skills/demo/nested/readme.md"
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# agent-config.sh — 仅供 agent-install.sh source（Agent CLI 默认值、校验、.docsconfig）
+# agent-config.sh — agent-install / bootstrap 共用默认值、枚举与共享库入口。
 # 依赖 Bash 5+；source agent/scripts/docs-core.sh
 
 if [[ -n "${_AGENT_CONFIG_SH_LOADED:-}" ]]; then
@@ -53,9 +53,29 @@ validate_agent_scope_token() {
   agent_scope_apply "${1:-}" _ir _is _ih _ish _ik
 }
 
-validate_agents() { agents_validate "${1:-}"; }
+validate_agents() {
+  local raw="${1:-}" agent
+  local -a agents=()
+  [[ "$raw" != *$'\n'* && "$raw" != *$'\r'* ]] || return 1
+  IFS=', ' read -ra agents <<< "$raw"
+  (( ${#agents[@]} > 0 )) || return 1
+  if (( ${#agents[@]} == 1 )) && [[ "${agents[0]}" == a || "${agents[0]}" == all ]]; then
+    return 0
+  fi
+  for agent in "${agents[@]}"; do
+    [[ -n "$agent" && -n "${AGENT_DIR_MAP[$agent]:-}" ]] || return 1
+  done
+}
 
-normalize_agents() { agents_normalize "${1:-}"; }
+normalize_agents() {
+  local -a agents=()
+  IFS=', ' read -ra agents <<< "${1:-}"
+  if (( ${#agents[@]} == 1 )) && [[ "${agents[0]}" == a || "${agents[0]}" == all ]]; then
+    agents_normalize all
+  else
+    agents_normalize "${1:-}"
+  fi
+}
 
 agent_dirs_space_separated_for() {
   local ag d out=''
@@ -67,5 +87,7 @@ agent_dirs_space_separated_for() {
 }
 
 get_agent_dir() {
-  printf '%s' "${AGENT_DIR_MAP[${1:-}]:-agent}"
+  local agent="${1:-}"
+  [[ -n "$agent" && -n "${AGENT_DIR_MAP[$agent]:-}" ]] || return 1
+  printf '%s' "${AGENT_DIR_MAP[$agent]}"
 }

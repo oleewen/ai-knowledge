@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-# agent-install.sh — 安装 Agent（scripts / rules / skills / hooks）并按需更新 .docsconfig 中的 AGENT_*
-#
-# 配置面：source 同目录 agent-config.sh。
-#
+# agent-install.sh — 安装 Agent 资源与 IDE 软链；不写工程 .docsconfig。
 set -euo pipefail
 
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -10,16 +7,6 @@ readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/../../../scripts/lib/bash.sh"
 # shellcheck source=agent-config.sh
 source "${SCRIPT_DIR}/agent-config.sh"
-# shellcheck source=../../../scripts/lib/path.sh
-source "${SCRIPT_DIR}/../../../scripts/lib/path.sh"
-# shellcheck source=../../../scripts/lib/docsconfig.sh
-source "${SCRIPT_DIR}/../../../scripts/lib/docsconfig.sh"
-# shellcheck source=../../../scripts/lib/log-io.sh
-source "${SCRIPT_DIR}/../../../scripts/lib/log-io.sh"
-
-# =============================================================================
-# 全局状态
-# =============================================================================
 
 declare -A CFG=(
   [repo_root]=""
@@ -40,7 +27,10 @@ INSTALL_HOOKS=0
 INSTALL_SCRIPTS=0
 INSTALL_KNOWLEDGE=0
 
-declare -a ENABLED_AGENTS=()
+declare -a ENABLED_AGENTS=() INSTALL_CATEGORIES=()
+
+# shellcheck source=agent-cli.sh
+source "${SCRIPT_DIR}/agent-cli.sh"
 
 is_agent_readme_basename() {
   local base="${1:?}"
@@ -55,6 +45,10 @@ sync_tree_excluding_readme() {
   sync_dir "$src" "$dst" \
     --delete-excluded \
     --exclude 'README' --exclude 'README.md' --exclude 'readme.md'
+  if ! dry_run_enabled && ! have_cmd rsync; then
+    # 共享 cp 回退不处理 exclude；本技能补齐与 rsync 相同的 README 排除。
+    find "$dst" -depth \( -name README -o -name README.md -o -name readme.md \) -exec rm -rf {} +
+  fi
 }
 
 copy_file_plain() {
@@ -114,6 +108,12 @@ backup_existing_target_path() {
 ensure_symlink() {
   local src="$1" dst="$2"
 
+  # IDE 根或分类目录可能已链接到实体树；不能搬走同一实体再创建自循环链接。
+  # 路径比较也覆盖 dry-run 中尚未复制、但父目录已指向同一位置的条目。
+  if [[ "$src" -ef "$dst" ]] || [[ "$(abs_path "$src")" == "$(abs_path "$dst")" ]]; then
+    return 0
+  fi
+
   if symlink_points_to "$dst" "$src"; then
     return 0
   fi
@@ -131,108 +131,45 @@ ensure_symlink() {
 }
 
 link_store_into_agent_root() {
-  local agent="$1"
-  local store agent_dir
+  local agent="$1" store agent_dir category item base source_dir
   store="$(agent_store_root)"
   agent_dir="$(agent_install_root "$agent")"
-
   info ">>> 链接 ${agent}：${store} -> ${agent_dir}"
   ensure_dir "$agent_dir"
 
-  local _nullglob_was_set=1
-  nullglob_enable _nullglob_was_set
-  local item base
-  local src_root
-  src_root="${CFG[repo_root]}/agent"
-
-  if [[ -d "${store}" ]]; then
-    for item in "${store}"/*; do
-      base="${item##*/}"
-      case "$base" in
-        hooks|rules|scripts|skills|configs) continue ;;
-      esac
-      ensure_symlink "$item" "${agent_dir}/${base}"
-    done
-  else
-    [[ "${CFG[dry_run]}" == '1' ]] || error "未找到 agent 存储目录: ${store}"
-    if (( INSTALL_HOOKS == 1 )) && [[ -f "${src_root}/hooks.json" ]]; then
-      ensure_symlink "${store}/hooks.json" "${agent_dir}/hooks.json"
-    fi
-  fi
-
-  local category
-  for category in hooks rules scripts skills; do
+  local nullglob_was_set=1
+  nullglob_enable nullglob_was_set
+  for category in "${INSTALL_CATEGORIES[@]}"; do
     case "$category" in
-      hooks)   (( INSTALL_HOOKS == 1 ))   || continue ;;
-      rules)   (( INSTALL_RULES == 1 ))   || continue ;;
-      scripts) (( INSTALL_SCRIPTS == 1 )) || continue ;;
-      skills)  (( INSTALL_SKILLS == 1 ))  || continue ;;
+      knowledge|references)
+        ensure_symlink "$store/$category" "$agent_dir/$category"
+        continue
+        ;;
     esac
-
-    ensure_dir "${agent_dir}/${category}"
-
-    if [[ -d "${store}/${category}" ]]; then
-      for item in "${store}/${category}"/*; do
-        base="${item##*/}"
-        ensure_symlink "$item" "${agent_dir}/${category}/${base}"
-      done
-      continue
-    fi
-
-    [[ "${CFG[dry_run]}" == '1' ]] || continue
-    [[ -d "${src_root}/${category}" ]] || continue
-    for item in "${src_root}/${category}"/*; do
+    ensure_dir "$agent_dir/$category"
+    source_dir="${CFG[repo_root]}/agent/$category"
+    local -A seen=()
+    local -a items=("$source_dir"/*)
+    # 顶层非元库条目被保留；hooks 整目录同步会删除旧条目。
+    [[ "$category" == hooks ]] || items+=("$store/$category"/*)
+    for item in "${items[@]}"; do
       base="${item##*/}"
       is_agent_readme_basename "$base" && continue
-      ensure_symlink "${store}/${category}/${base}" "${agent_dir}/${category}/${base}"
+      [[ -n "${seen[$base]:-}" ]] && continue
+      seen[$base]=1
+      ensure_symlink "$store/$category/$base" "$agent_dir/$category/$base"
     done
   done
-
-  nullglob_restore _nullglob_was_set
-}
-
-# =============================================================================
-# 初始化与校验
-# =============================================================================
-
-agent_install_init_repo_root() {
-  if [[ -z "${CFG[repo_root]}" ]]; then
-    CFG[repo_root]="$(abs_path "$SCRIPT_DIR/../../../..")"
+  if (( INSTALL_HOOKS == 1 )) && [[ -f "${CFG[repo_root]}/agent/hooks.json" ]]; then
+    ensure_symlink "$store/hooks.json" "$agent_dir/hooks.json"
   fi
-  local rr="${CFG[repo_root]}"
-  [[ -d "$rr/agent/rules"   ]] || error "未找到 agent/rules: $rr/agent/rules"
-  [[ -d "$rr/agent/skills"  ]] || error "未找到 agent/skills: $rr/agent/skills"
-  [[ -d "$rr/agent/hooks"   ]] || error "未找到 agent/hooks: $rr/agent/hooks"
-  [[ -d "$rr/agent/scripts" ]] || error "未找到 agent/scripts: $rr/agent/scripts"
-  [[ -f "$rr/agent/scripts/docs-core.sh" ]] || error "未找到 agent/scripts/docs-core.sh: $rr/agent/scripts/docs-core.sh"
+  nullglob_restore nullglob_was_set
 }
-
-agent_install_apply_scope() {
-  validate_agent_scope_token "${CFG[scope]}" \
-    || error "无效 --scope: ${CFG[scope]}（支持 a|r|s|h|sh|k|knowledge）"
-  agent_scope_apply "${CFG[scope]}" INSTALL_RULES INSTALL_SKILLS INSTALL_HOOKS INSTALL_SCRIPTS INSTALL_KNOWLEDGE \
-    || error "内部错误：无法应用 scope: ${CFG[scope]}"
-}
-
-agent_install_apply_agents() {
-  local ao="${CFG[agents_opt]:-}"
-  [[ -n "$ao" ]] || ao="${AGENTS_OPT:-$DEFAULT_AGENTS_OPT}"
-  validate_agents "$ao" \
-    || error "无效 --agents: ${ao}（支持 cursor、claude、codex、trae、kiro、a|all）"
-  read -ra ENABLED_AGENTS <<< "$(normalize_agents "$ao")"
-  (( ${#ENABLED_AGENTS[@]} > 0 )) || error "未解析到任何 Agent"
-}
-
-# =============================================================================
-# 安装各子树
-# =============================================================================
 
 install_agent_resource() {
   local label="$1" src_rel="$2" dst_rel="$3"
   local src_root="${CFG[repo_root]}/${src_rel}"
   local item base dst_dir
-
-  [[ -d "$src_root" ]] || { warn "未找到 ${src_root}，跳过 ${label}"; return 0; }
 
   dst_dir="$(agent_store_root)/${dst_rel}"
   info ">>> 安装：${label}"
@@ -244,7 +181,6 @@ install_agent_resource() {
   for item in "$src_root"/*; do
     base="${item##*/}"
     is_agent_readme_basename "$base" && continue
-    [[ "$label" == "scripts" && "$base" == "docs-core.sh" ]] && continue
 
     if [[ -d "$item" ]]; then
       sync_tree_excluding_readme "$item" "$dst_dir/$base"
@@ -255,243 +191,38 @@ install_agent_resource() {
   nullglob_restore _nullglob_was_set
 }
 
-install_agent_scripts() {
-  (( INSTALL_SCRIPTS == 1 )) || return 0
-  install_agent_resource "scripts" "agent/scripts" "scripts"
-
-  # 补充 docs-core.sh（聚合入口）/ slot-softlink.sh；lib/ 已由上一步目录同步
-  local src_docs_ssot="${CFG[repo_root]}/agent/scripts/docs-core.sh"
-  local src_fed_ssot="${CFG[repo_root]}/agent/scripts/lib/slot-softlink.sh"
-  local src_lib_ssot="${CFG[repo_root]}/agent/scripts/lib"
-  copy_file_plain "$src_docs_ssot" "$(agent_store_root)/scripts/docs-core.sh"
-  [[ -f "$src_fed_ssot" ]] && copy_file_plain "$src_fed_ssot" "$(agent_store_root)/scripts/lib/slot-softlink.sh"
-  if [[ -d "$src_lib_ssot" ]]; then
-    sync_tree_excluding_readme "$src_lib_ssot" "$(agent_store_root)/scripts/lib"
-  fi
-}
-
-install_agent_skills() {
-  (( INSTALL_SKILLS == 1 )) || return 0
-  install_agent_resource "skills" "agent/skills" "skills"
-}
-
-install_agent_rules() {
-  (( INSTALL_RULES == 1 )) || return 0
-  install_agent_resource "rules" "agent/rules" "rules"
-}
-
-install_agent_hooks() {
-  (( INSTALL_HOOKS == 1 )) || return 0
-  local hooks_src="${CFG[repo_root]}/agent/hooks"
-  local hooks_json="${CFG[repo_root]}/agent/hooks.json"
-  local store
-
-  [[ -d "$hooks_src" || -f "$hooks_json" ]] || { warn "未找到 agent/hooks 或 agent/hooks.json"; return 0; }
-
-  store="$(agent_store_root)"
-  info ">>> 安装：hooks"
-  [[ -d "$hooks_src" ]] && sync_tree_excluding_readme "$hooks_src" "${store}/hooks"
-  [[ -f "$hooks_json" ]] && copy_file_plain "$hooks_json" "${store}/hooks.json"
-}
-
-install_agent_knowledge_tree() {
-  (( INSTALL_KNOWLEDGE == 1 )) || return 0
-  install_agent_resource "knowledge" "agent/knowledge" "knowledge"
-  install_agent_resource "references" "agent/references" "references"
-}
-
 agent_install_install() {
-  install_agent_scripts
-  install_agent_rules
-  install_agent_skills
-  install_agent_hooks
-  install_agent_knowledge_tree
-
+  local category
+  for category in "${INSTALL_CATEGORIES[@]}"; do
+    if [[ "$category" == hooks ]]; then
+      sync_tree_excluding_readme "${CFG[repo_root]}/agent/hooks" "$(agent_store_root)/hooks"
+    else
+      install_agent_resource "$category" "agent/$category" "$category"
+    fi
+  done
+  if (( INSTALL_HOOKS == 1 )) && [[ -f "${CFG[repo_root]}/agent/hooks.json" ]]; then
+    copy_file_plain "${CFG[repo_root]}/agent/hooks.json" "$(agent_store_root)/hooks.json"
+  fi
   local agent
   for agent in "${ENABLED_AGENTS[@]}"; do
     link_store_into_agent_root "$agent"
   done
 }
 
-# =============================================================================
-# CLI
-# =============================================================================
-
-agent_install_usage() {
-  cat >&2 <<'EOF'
-用法
-  agent-install.sh [选项]
-
-说明
-  将本仓库 agent/ 树安装到 $HOME/.agents/（契约：AGENT_ROOT=~、AGENT_DIR=.agents），并按 --agents
-  在 ${TARGET}/.{.cursor|.codex|.claude|.trae|.kiro}/ 下建立软链（按条目链接，包含 $HOME/.agents/ 根文件与
-  hooks/rules/scripts/skills/knowledge/references 等子目录下的各文件/目录）。
-  scripts 阶段会从本仓库复制 agent/scripts（含 docs-core.sh 聚合入口与 lib/）到 $HOME/.agents/scripts/。
-  不安装 README。
-  不写回工程 .docsconfig（AGENT_ROOT/AGENT_DIR 由 /docs-install 写入）。
-  实跑时把 WORK_SPACE 写入 $HOME/.agents/configs（或 .docsconfig 中 AGENT_ROOT/AGENT_DIR 对应树）。链接 IDE 时跳过 configs。
-
-选项（书写序）
-  --meta PATH       元库根目录（默认：本脚本所在仓库）
-  --scope=SCOPE     a=全部 | r=rules | s=skills | h=hooks | sh=scripts | k|knowledge=knowledge+references  [默认: a]
-  --target PATH     安装根父目录，其下仅为选中的 agent 创建对应目录  [默认: $HOME；仍兼容 --target=PATH]
-  --agents=LIST     cursor | codex | claude | trae | kiro | a|all；逗号或空格分隔多选  [默认: a]
-  --workspace PATH  工作区目录。写入 configs 的 WORK_SPACE。
-                    未传时：读 cwd 上溯 .docsconfig 的 AGENT_ROOT/AGENT_DIR，再读
-                    AGENT_ROOT/AGENT_DIR/configs 内 WORK_SPACE；缺 AGENT_* 或 WORK_SPACE 则必须显式传入。
-  --dry-run         仅打印将执行的操作
-  -h, --help        显示此帮助
-
-环境变量
-  AGENTS_OPT      未传 --agents 时作为默认值（否则以命令行 --agents 为准）
-
-示例
-  bash agent/skills/agent-install/scripts/agent-install.sh --scope=a --target "$HOME" --agents=cursor --workspace ~/workspaces --dry-run
-  bash agent/skills/agent-install/scripts/agent-install.sh --agents=cursor,claude --workspace ~/workspaces
-  bash agent/skills/agent-install/scripts/agent-install.sh --scope=sh --dry-run
-  bash agent/skills/agent-install/scripts/agent-install.sh --scope=k --dry-run
-  bash agent/skills/agent-install/scripts/agent-install.sh --target ~/workspace/my-repo --agents=all --workspace ~/workspaces
-EOF
-}
-
-# 未传 --workspace 时：.docsconfig 的 AGENT_ROOT/AGENT_DIR → configs → WORK_SPACE
-agent_install_resolve_workspace() {
-  if [[ -n "${CFG[workspace]:-}" ]]; then
-    CFG[workspace]="$(strip_trailing_slash "$(abs_path "${CFG[workspace]}")")"
-    return 0
-  fi
-
-  local cfg_path rd dd ar kt ad configs_path raw
-  cfg_path="$(docsconfig_find_path 2>/dev/null || true)"
-  if [[ -z "${cfg_path}" || ! -f "${cfg_path}" ]]; then
-    error "缺少 --workspace <工作区目录>（未找到 .docsconfig，无法推断 WORK_SPACE）"
-  fi
-
-  rd='' dd='' ar='' kt='' ad=''
-  docsconfig_read_into "${cfg_path}" rd dd ar kt ad || error "解析 .docsconfig 失败: ${cfg_path}"
-  if [[ -z "${ar}" || -z "${ad}" ]]; then
-    error "缺少 --workspace <工作区目录>（.docsconfig 无 AGENT_ROOT/AGENT_DIR: ${cfg_path}）"
-  fi
-
-  configs_path="$(docsconfig_configs_file "${ar}" "${ad}")"
-  raw="$(docsconfig_read_workspace_raw "${configs_path}" 2>/dev/null || true)"
-  if [[ -z "${raw}" ]]; then
-    error "缺少 --workspace <工作区目录>（${configs_path} 无 WORK_SPACE）"
-  fi
-
-  CFG[workspace]="$(strip_trailing_slash "$(docsconfig_normalize_root_value "${raw}")")"
-  info "未传 --workspace，沿用 ${configs_path} 的 WORK_SPACE=${CFG[workspace]}"
-}
-
-agent_install_parse_args() {
-  while (( $# > 0 )); do
-    case "$1" in
-      --meta=*)
-        CFG[repo_root]="${1#*=}"
-        shift
-        ;;
-      --meta)
-        shift
-        cli_require_value "--meta" "${1:-}"
-        CFG[repo_root]="$1"
-        shift
-        ;;
-      --scope=*)
-        CFG[scope]="${1#*=}"
-        shift
-        ;;
-      --scope)
-        shift
-        cli_require_value "--scope" "${1:-}"
-        CFG[scope]="$1"
-        shift
-        ;;
-      --target=*)
-        CFG[target_abs]="${1#*=}"
-        shift
-        ;;
-      --target)
-        shift
-        cli_require_value "--target" "${1:-}"
-        CFG[target_abs]="$1"
-        shift
-        ;;
-      --agents=*)
-        CFG[agents_opt]="${1#*=}"
-        shift
-        ;;
-      --agents)
-        shift
-        local -a parts=()
-        while (( $# > 0 )); do
-          case "$1" in -*) break ;; *) parts+=("$1"); shift ;; esac
-        done
-        (( ${#parts[@]} > 0 )) || error "缺少 --agents 值（如 a / cursor,trae 或 cursor trae）"
-        CFG[agents_opt]="$(IFS=','; printf '%s' "${parts[*]}")"
-        ;;
-      --workspace=*)
-        CFG[workspace]="${1#*=}"
-        shift
-        ;;
-      --workspace)
-        shift
-        cli_require_value "--workspace" "${1:-}"
-        CFG[workspace]="$1"
-        shift
-        ;;
-      --dry-run)
-        CFG[dry_run]=1
-        shift
-        ;;
-      -h|--help)
-        agent_install_usage
-        exit 0
-        ;;
-      *)
-        cli_unknown_arg "$1" "支持 --meta / --scope / --target / --agents / --workspace / --dry-run"
-        ;;
-    esac
-  done
-}
-
-agent_install_run() {
-  agent_install_init_repo_root
-  [[ -n "${HOME:-}" ]] || error "需要 HOME 环境变量"
-  CFG[home_abs]="$(abs_path "$HOME")"
-  CFG[store_abs]="$(strip_trailing_slash "$(abs_path "${CFG[home_abs]}/.agents")")"
-  CFG[stamp]="$(date +%Y-%m-%d_%H-%M-%S)"
-
-  if [[ -z "${CFG[target_abs]:-}" ]]; then
-    CFG[target_abs]="${CFG[home_abs]}"
-  else
-    CFG[target_abs]="$(strip_trailing_slash "$(abs_path "${CFG[target_abs]}")")"
-  fi
-
-  ensure_dir "$(agent_store_root)"
-
-  agent_install_resolve_workspace
-  docsconfig_write_workspace "$(agent_store_root)" "${CFG[workspace]}" "${CFG[dry_run]}"
-
-  agent_install_apply_scope
-  agent_install_apply_agents
-
-  (( INSTALL_HOOKS == 1 )) && ensure_dir "$(agent_store_root)/hooks"
-  (( INSTALL_RULES == 1 )) && ensure_dir "$(agent_store_root)/rules"
-  (( INSTALL_SCRIPTS == 1 )) && ensure_dir "$(agent_store_root)/scripts"
-  (( INSTALL_SKILLS == 1 )) && ensure_dir "$(agent_store_root)/skills"
-  if (( INSTALL_KNOWLEDGE == 1 )); then
-    ensure_dir "$(agent_store_root)/knowledge"
-    ensure_dir "$(agent_store_root)/references"
-  fi
-
-  agent_install_install
-
-  info "完成：agent-install"
-}
-
 agent_install_main() {
   agent_install_parse_args "$@"
-  agent_install_run
+  # 共享库也读这两个变量；预览与实跑统一以本次 CLI 为准。
+  DRY_RUN="${CFG[dry_run]}"
+  IO_DRY_RUN="${CFG[dry_run]}"
+  agent_install_prepare
+  ensure_dir "$(agent_store_root)"
+  docsconfig_write_workspace "$(agent_store_root)" "${CFG[workspace]}" "${CFG[dry_run]}"
+  agent_install_install
+  if [[ "${CFG[dry_run]}" == 1 ]]; then
+    info "预览完成：agent-install（未写入）"
+  else
+    info "完成：agent-install"
+  fi
 }
 
 agent_install_main "$@"
