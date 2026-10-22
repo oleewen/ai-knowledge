@@ -1,0 +1,365 @@
+{
+  "skill_name": "docs-revise",
+  "results": [
+    {
+      "eval_id": "revise-trigger-001",
+      "assertions": [
+        {
+          "id": "intent-clarify",
+          "status": "pass",
+          "evidence": "响应明确“当前阶段：意图澄清”，列出本单元目标、范围/非范围、已知缺口、禁止臆测项、写后烤干预判、写入路径六项；以“C：确认主文件首批”等待确认，未声称已获授权。"
+        },
+        {
+          "id": "no-premature-write",
+          "status": "pass",
+          "evidence": "独立比较 evals.fixture_files 与实际 workspace：system/knowledge/overview/billing-overview.md 完整内容相同，业务句仍为“客户签约时支付订金。”；workspace 无新增或缺失文件。"
+        },
+        {
+          "id": "semantic-expansion-must-confirm",
+          "status": "pass",
+          "evidence": "响应写“推荐首批为主文件”“新增文件另确认”，已知缺口列出架构章节、全库注释路径，并提供“先补充架构章节和注释路径，调整批次”的 M 选项；未承诺直接写全部关联文件。"
+        },
+        {
+          "id": "boundary-routing",
+          "status": "pass",
+          "evidence": "响应明确“已按 docs-revise”，目标为“签约付款业务正文：订金 → 预付款”；没有改用归档或索引重建流程。"
+        }
+      ]
+    },
+    {
+      "eval_id": "revise-trigger-002",
+      "assertions": [
+        {
+          "id": "intent-clarify",
+          "status": "pass",
+          "evidence": "独立单例响应给出当前阶段和六项清单，明确仅第三段索隐→索引，不做全库或关联检索，停在写前确认。"
+        },
+        {
+          "id": "no-unapproved-write",
+          "status": "pass",
+          "evidence": "独立比较两个 fixture 的完整内容：application/README.md 仍为目录索隐见下文，other.md 逐字未变；没有新增任务文件。"
+        },
+        {
+          "id": "no-repository-search",
+          "status": "pass",
+          "evidence": "单例 actions 记录的任务文档读取只有 cat application/README.md；其他读取为技能、共享契约和不存在的 AGENTS.md，没有 rg、文件枚举或关联搜索。"
+        }
+      ]
+    },
+    {
+      "eval_id": "revise-trigger-003",
+      "assertions": [
+        {
+          "id": "structure-integrity",
+          "status": "pass",
+          "evidence": "响应将“XTerm - YTerm”解析为“XTerm → YTerm”，写入范围明确 docs/design.md 正文与 src/example.py 注释。"
+        },
+        {
+          "id": "semantic-expansion-must-confirm",
+          "status": "pass",
+          "evidence": "响应把 docs/design.md 与 src/example.py（仅注释）列为拟议批次并等待 C；明确保留 VALUE = \"XTerm\"，不发明英文同义词，未将近义词一概等同。"
+        },
+        {
+          "id": "no-premature-write",
+          "status": "pass",
+          "evidence": "独立字节比较主文件与代码均未变：docs/design.md 仍含“XTerm 表示待确认术语。”；src/example.py 仍为 # XTerm processing 和 VALUE = \"XTerm\"。"
+        }
+      ]
+    },
+    {
+      "eval_id": "revise-not-trigger-001",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "status": "pass",
+          "evidence": "响应直接选择“/docs-archive：按 overview 表格链接归档到目标章节并处理冲突”，只报告路由。"
+        },
+        {
+          "id": "no-false-revise-primary",
+          "status": "pass",
+          "evidence": "执行者准确 actions 仅记录 cat ../request.json 与 rg --files -g '!outcome.json' -g '!request.json'，未记录主改、替换或写入；独立检查 workspace 为空。证据为动作记录与最终状态，非原始工具日志。"
+        }
+      ]
+    },
+    {
+      "eval_id": "revise-not-trigger-002",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "status": "pass",
+          "evidence": "响应写“转由 Git diff/log 汇集变更清单；后续索引更新交给 docs-indexing”，符合版本变更收集路由。这里评估选择流程，不将未实际执行 Git 汇总冒充已完成。"
+        },
+        {
+          "id": "no-false-revise-primary",
+          "status": "pass",
+          "evidence": "actions 记录读取请求、读取 docs-revise/gotchas.md、报告 Git 及 docs-indexing 路由后停止；没有正文修订动作，实际 workspace 为空。依据准确动作记录与最终状态，未拿模型 changed_files 自述替代文件检查。"
+        }
+      ]
+    },
+    {
+      "eval_id": "revise-not-trigger-003",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "status": "pass",
+          "evidence": "响应选择“/docs-indexing：全量重建九章 INDEX-GUIDE.md，范围限定根索引”。"
+        },
+        {
+          "id": "no-false-revise-primary",
+          "status": "pass",
+          "evidence": "actions 仅记录读取请求和文件名枚举；没有术语同步或写入动作，独立检查 workspace 为空。准确动作记录支持未启动 docs-revise 主改；未声称下游已执行。"
+        }
+      ]
+    },
+    {
+      "eval_id": "revise-audience-001",
+      "assertions": [
+        {
+          "id": "audience-violation-visible",
+          "status": "pass",
+          "evidence": "响应指出“worker、deadline、settlement 使业务读者难以判断退款时限”，并说明已改为“退款将在三个工作日内到账。”"
+        },
+        {
+          "id": "audience-rewrite-or-gate",
+          "status": "pass",
+          "evidence": "按强化后的断言重新核对原有实际文件：正文已由“由异步补偿 worker 在 T+3 working-day deadline 内完成资金 settlement。”改为“退款将在三个工作日内到账。”，移除无关实现术语，保留已确认的三个工作日承诺；未增加角色、起算点或其他时限，例外段逐字保留。本次为既有产物复核，未新增任务执行。"
+        },
+        {
+          "id": "scope-preserved",
+          "status": "pass",
+          "evidence": "独立比较完整文件，唯一差异为退款时限句；“## 例外\n银行维护时按另行通知处理。”逐字保留，workspace 只有 docs/refund.md，无其他写入。"
+        }
+      ]
+    },
+    {
+      "eval_id": "revise-simplify-pass-001",
+      "assertions": [
+        {
+          "id": "simplify-pass-before-regrill",
+          "status": "pass",
+          "evidence": "actions 记录读取当前 hunk，精确替换首个退款套话句，打印 diff 并断言历史段不变，随后核对 A/B/C 与受众 A/B/C/E；实际文件有该精简结果。响应返回“当前阶段：烤干”，没有新增 docs-simplify 写前确认环。"
+        },
+        {
+          "id": "hunk-scoped",
+          "status": "pass",
+          "evidence": "独立实际 diff 仅第二段：-为了能够清楚说明退款情况，现明确说明：取消订单时应退还预付款。/+取消订单时应退还预付款。历史记录段含同样套话但逐字保留，退款条件及义务均在。"
+        }
+      ]
+    },
+    {
+      "eval_id": "revise-authorized-batch-001",
+      "assertions": [
+        {
+          "id": "reuse-authorization",
+          "status": "pass",
+          "evidence": "独立单例沿用前序 C；actions 先 cat README.md docs/payments.md，再 apply_patch 修改两文件，没有重复索要写前确认。"
+        },
+        {
+          "id": "batch-diff",
+          "status": "pass",
+          "evidence": "独立完整内容比对：README.md 签约时支付订金→签约时支付预付款；docs/payments.md 订金可抵扣货款→预付款可抵扣货款；unrelated.md 逐字不变。"
+        },
+        {
+          "id": "post-write-stop",
+          "status": "pass",
+          "evidence": "单例响应标明当前阶段烤干已收敛，列出两文件改动和实际diff核验，给 C/M/G；没有启动下一批。"
+        },
+        {
+          "id": "no-unscoped-discovery",
+          "status": "pass",
+          "evidence": "单例 actions 中首次任务读取为 cat README.md docs/payments.md，补丁和 Python 核验均仅这两个路径；其他读取限技能契约。无 rg --files、目录枚举或范围外文档检索。"
+        }
+      ]
+    },
+    {
+      "eval_id": "revise-discovery-only-001",
+      "assertions": [
+        {
+          "id": "main-change",
+          "status": "pass",
+          "evidence": "独立实际比对仅 README.md 的签约时支付订金改为签约时支付预付款；[付款规则](docs/design.md#付款规则) 完整保留。"
+        },
+        {
+          "id": "candidate-read-only",
+          "status": "pass",
+          "evidence": "独立字节比较 docs/design.md 与 docs/deep.md 均与原始 fixture 一致；关联文件没有写入。"
+        },
+        {
+          "id": "bounded-discovery",
+          "status": "pass",
+          "evidence": "按 4.0.2 强化的顺序要求复核既有单例动作记录：actions[5] 先 apply_patch 修改 README，actions[6] 再 cat README.md docs/design.md。其后入站检索为 rg -F README.md .，无命中；术语检索明确为 rg -n -F -e 订金 -e 预付款 -- README.md docs/design.md。未沿 design.md 的 deep.md 链接继续读取或检索术语。本次为既有记录复核，未新增任务执行。"
+        },
+        {
+          "id": "separate-read-write",
+          "status": "pass",
+          "evidence": "单例响应将 docs/design.md 的客户支付订金列为一层候选，并明确仅列候选、未写入；实际候选文件逐字未变。"
+        }
+      ]
+    },
+    {
+      "eval_id": "revise-semantic-boundary-001",
+      "assertions": [
+        {
+          "id": "same-concept-only",
+          "status": "pass",
+          "evidence": "独立实际 diff 仅将当前业务句改为“本协议中的预付款是可退还的预收款。”；历史引文“订金一经收取不退。”及语言学例句“订金”一词有两个汉字。逐字不变。"
+        },
+        {
+          "id": "contract-surface-preserved",
+          "status": "pass",
+          "evidence": "实际文件的 # 订金规则、<a id=\"deposit-rule\"></a> 以及 yaml 代码块 deposit: \"订金\" 与原 fixture 逐字一致；唯一 diff 是当前业务句。"
+        },
+        {
+          "id": "no-global-replace",
+          "status": "pass",
+          "evidence": "actions 中替换目标为完整句“本协议中的订金是可退还的预收款。”，使用 before.count(old)==1 与 before.replace(old,new,1)。独立 diff 也仅一处，标题、引文、例句、代码中的其余四处“订金”保留。"
+        }
+      ]
+    },
+    {
+      "eval_id": "revise-short-term-001",
+      "assertions": [
+        {
+          "id": "ambiguity-visible",
+          "status": "pass",
+          "evidence": "响应区分正文 Sign in、Python 成员运算符、字符串 \"in\"，并提出“仅正文 Sign in → Sign on，保留代码”或提供完整旧/新短语；同时明确保留 login 词内字符。"
+        },
+        {
+          "id": "no-blind-replacement",
+          "status": "pass",
+          "evidence": "独立字节比较 docs/design.md 完全不变：Sign in through the login form.、if user in members: 与 print(\"in\") 均保留。"
+        }
+      ]
+    },
+    {
+      "eval_id": "revise-same-filename-001",
+      "assertions": [
+        {
+          "id": "disambiguate-target",
+          "status": "pass",
+          "evidence": "响应列出 application/design.md 与 system/design.md 及各自付款句，要求“应修改哪一份”，未默认选定；另给出两份均纳入的显式选项。"
+        },
+        {
+          "id": "no-guess-write",
+          "status": "pass",
+          "evidence": "独立字节比较两份文件均未变：application/design.md 仍为“订金到账后发货。”；system/design.md 仍为“订金在结算服务登记。”"
+        }
+      ]
+    },
+    {
+      "eval_id": "revise-unverified-fact-001",
+      "assertions": [
+        {
+          "id": "evidence-gap",
+          "status": "pass",
+          "evidence": "响应写“三项均无已批准来源”“暂无可核实的最新值”，向用户索取可用性、负责人、生效日期的已批准 SLA 来源，未声称已核实。"
+        },
+        {
+          "id": "no-fabricated-facts",
+          "status": "pass",
+          "evidence": "独立字节比较 docs/sla.md 完全未变，三个字段仍分别为“可用性：待确认。”“负责人：待确认。”“生效日期：待确认。”，没有新增数字、人名或日期。"
+        }
+      ]
+    },
+    {
+      "eval_id": "revise-knowledge-boundary-001",
+      "assertions": [
+        {
+          "id": "pure-id-without-parent",
+          "status": "pass",
+          "evidence": "独立实际 diff：-implements_to：[PD-PAY](../../../solution/knowledge/product/PD-PAY.md)。/+implements_to：PD-PAY。原文件链接移除，PD-PAY 保留为纯 ID，完整文件没有 HTTP。"
+        },
+        {
+          "id": "knowledge-boundary",
+          "status": "pass",
+          "evidence": "独立比较唯一变动是将 implements_to 的跨层 Markdown 链接去链为 PD-PAY；完整新正文仅标题和该字段，没有 requirements、ADR、下层路径或其他正文文档链。"
+        },
+        {
+          "id": "no-invented-parent",
+          "status": "pass",
+          "evidence": "独立字节比较 application/knowledge-links.yaml 仍为 links: []\n；workspace 无新增文件，PM-PAY.md 也没有新 parent 配置或远程地址。"
+        }
+      ]
+    },
+    {
+      "eval_id": "revise-link-anchor-001",
+      "assertions": [
+        {
+          "id": "valid-link-target",
+          "status": "pass",
+          "evidence": "实际 README.md 链接为 [付款规则](docs/payments.md#付款规则)；独立读取同 workspace 的 docs/payments.md，文件存在且包含“## 付款规则”，相对路径及锚点匹配。"
+        },
+        {
+          "id": "single-link-change",
+          "status": "pass",
+          "evidence": "独立实际 diff 只有 README.md 链接目标中的 payment.md 改成 payments.md；链接文字“付款规则”与 #付款规则 锚点不变。docs/payments.md 完整内容与 fixture 一致。"
+        }
+      ]
+    },
+    {
+      "eval_id": "revise-not-trigger-004",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "status": "pass",
+          "evidence": "响应将“整篇金字塔重组、删除重复段落和 SSOT 去重引用”识别为 docs-simplify，并明确转交该技能。"
+        },
+        {
+          "id": "no-false-revise-primary",
+          "status": "pass",
+          "evidence": "准确 actions 记录读取请求、依据已读契约路由 docs-simplify 后停止；没有术语替换或写入动作，实际 workspace 为空。此处只判路由断言，不声称执行了整篇重组。"
+        }
+      ]
+    },
+    {
+      "eval_id": "revise-not-trigger-005",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "status": "pass",
+          "evidence": "响应选择“/docs-build：从五视角实体 ID 生成 per-entity 文件，并更新视角 README 与导航”。"
+        },
+        {
+          "id": "no-false-revise-primary",
+          "status": "pass",
+          "evidence": "准确 actions 仅有读取 request.json 和文件名枚举，未记录定向纠错、替换或实体生成动作；实际 workspace 为空。没有用 docs-revise 主改代替实体生成。"
+        }
+      ]
+    },
+    {
+      "eval_id": "revise-simplify-repeat-001",
+      "assertions": [
+        {
+          "id": "no-repeat-pass",
+          "status": "pass",
+          "evidence": "准确 actions 记录复用用户提供的本周期 simplify 次数，只读核对当前正文和 A/B/C/E，随后用 Python assert 验证现有内容；没有写入、第二次精简或完整 docs-simplify 流程。"
+        },
+        {
+          "id": "no-extra-diff",
+          "status": "pass",
+          "evidence": "独立字节比较 docs/payments.md 完全不变，仍为“取消订单时，应退还预付款。”；本轮没有因精简新增正文差异。"
+        },
+        {
+          "id": "resume-grilling",
+          "status": "pass",
+          "evidence": "响应明确“当前阶段：烤干”，报告表述、标点清晰及本轮无新增修订，并给 C 确认收尾、M 调整、G 深挖；不是空操作后结束。也明确前次标点 diff 无基线，未冒称验证历史差异。"
+        }
+      ]
+    },
+    {
+      "eval_id": "revise-batch-stop-001",
+      "assertions": [
+        {
+          "id": "next-batch-clarify",
+          "status": "pass",
+          "evidence": "响应给出 docs/payments.md 新批次六项意图：仅该句订金改预付款、保留抵扣规则，明确“本批映射与写入范围尚未确认”，C 选项为“授权第二批写入”。"
+        },
+        {
+          "id": "no-unconfirmed-batch-write",
+          "status": "pass",
+          "evidence": "独立字节比较两份 fixture 均未变：README.md 仍为“签约时支付预付款。”；docs/payments.md 仍为“订金可抵扣货款。”，未将继续视为第二批写入授权。"
+        }
+      ]
+    }
+  ]
+}

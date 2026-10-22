@@ -1,11 +1,7 @@
-# 设计原则
+# 修订原则
 
-反模式 [anti-patterns.md](anti-patterns.md)；实操 [gotchas.md](../gotchas.md)。
+- **按概念改**：依据上下文确认同义；检索命中只作候选，见 [引用链](related-doc-discovery.md) 与 [关键词](semantic-keyword-discovery.md)。
+- **按单元推进**：范围、许可、停顿集中于 [gates.md](gates.md)，操作集中于 [workflow.md](workflow.md)。
+- **按证据验收**：事实核实、实际 diff 和覆盖限制见 [quality-checklist.md](quality-checklist.md)。
 
-1. **先确认再扩面**：多文件/大目录 → [gates.md](gates.md)。  
-2. **主→链→词**：先主改，再引用链，再关键词；勿未读主文件全库替。  
-3. **概念边界**：只统一同术语/同列表项/复制段；勿硬并异义近邻。  
-4. **可验证**：指标/版本/日期/责任人无出处 → 编号选项。  
-5. **链可控**：默认一层入出；加深前提示风险。  
-6. **下游分工**：不做变更聚合（git）、不重建 INDEX；整篇结构交 `/docs-simplify`（见 gates 分流）。  
-7. **修订后 simplify 遍**：烤干中修订只改善本轮 hunk；不嵌套完整 simplify 技能环。
+整篇结构与去重由 docs-simplify 负责；本技能的 hunk 精简遵循共享推进协议。

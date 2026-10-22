@@ -1,18 +1,12 @@
-# references 索引
+# docs-revise 参考导航
 
-先读 [SKILL.md](../SKILL.md)，再按其读序打开。
+从 [SKILL.md](../SKILL.md) 按情形读取。维护时按职责定位：
 
-| 文件 | 用途 |
-| ------ | ------ |
-| [gates.md](gates.md) | 确认书、快路径、分流 |
-| [workflow.md](workflow.md) | 步骤 1–5 |
-| [brainstorming-integration.md](brainstorming-integration.md) | 预检、范围预检 |
-| [related-doc-discovery.md](related-doc-discovery.md) | 入站/出站 |
-| [semantic-keyword-discovery.md](semantic-keyword-discovery.md) | 关键词/语义 |
-| [core-concepts.md](core-concepts.md) | 简写、范围用语 |
-| [design-principles.md](design-principles.md) | 原则 |
-| [anti-patterns.md](anti-patterns.md) | 反模式 |
-| [audience-and-language.md](audience-and-language.md) | 本地 stub → 公共受众契约 |
-| [quality-checklist.md](quality-checklist.md) | 落盘核对 |
-
-模板：[../assets/docs-revise-scope-ack-template.md](../assets/docs-revise-scope-ack-template.md)。实操：[../gotchas.md](../gotchas.md)。
+| 职责 | 文件 |
+| --- | --- |
+| 范围与许可 | [gates.md](gates.md)、[范围预检](brainstorming-integration.md) |
+| 操作与验收 | [workflow.md](workflow.md)、[quality-checklist.md](quality-checklist.md) |
+| 候选发现 | [引用链](related-doc-discovery.md)、[关键词](semantic-keyword-discovery.md) |
+| 语义与读者 | [core-concepts.md](core-concepts.md)、[audience-and-language.md](audience-and-language.md) |
+| 复核 | [design-principles.md](design-principles.md)、[anti-patterns.md](anti-patterns.md)、[易错点](../gotchas.md) |
+| 技能评测 | [evaluation.md](evaluation.md) |

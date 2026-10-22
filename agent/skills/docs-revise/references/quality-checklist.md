@@ -1,10 +1,12 @@
-# 验证
+# 修订验收
 
-落盘后抽查；用户要求可跑仓内既有检查命令。
+收敛前核对实际文件与动作；未执行的检查明确标为未验证。
 
-- [ ] 相对链、`#anchor`、反引号路径可解析  
-- [ ] 表与 fence 完整  
-- [ ] 术语与主目标一致；关联处概念对齐  
-- [ ] 已按 [audience-and-language.md](../../../references/audience-and-language.md) + 本地 [audience-and-language.md](audience-and-language.md) 通过烤干受众维 A/B/C/E  
+- [ ] diff 只含已确认单元与改动；其余用户改动完整保留。
+- [ ] 同概念表述一致；异义、引文和契约字面量按确认范围保留或处理。
+- [ ] 事实有出处；无法核实项已标明待确认。
+- [ ] 受影响相对链接、目标锚点和文档路径可解析；Markdown 表格与 fence 完整。
+- [ ] 检索范围和链深符合授权；剩余候选、排除项及覆盖限制已交代。
+- [ ] 已按 [共享受众契约](../../../references/audience-and-language.md) 与 [本地受众](audience-and-language.md) 通过 A/B/C/E。
 
-细项复用 [gotchas.md](../gotchas.md) 文末自查。
+普通修订按任务风险选择现有检查命令；技能维护另按 [evaluation.md](evaluation.md) 验证，不将静态校验等同于行为通过。

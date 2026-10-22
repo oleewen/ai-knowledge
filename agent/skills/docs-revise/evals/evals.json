@@ -1,239 +1,686 @@
 {
   "skill_name": "docs-revise",
-  "version": "3.0.0",
-  "description": "评估触发、参数向导、当前单元「澄清→生成→烤干」、simplify 遍与 revise/simplify 分流；协议见 unit-cycle-protocol / intent-clarify。",
+  "version": "4.0.2",
+  "description": "基于响应、工具轨迹与文件差异评估路由、授权、语义边界及推进协议；数据完整性校验不代表行为通过。",
   "evals": [
     {
       "id": "revise-trigger-001",
       "category": "should-trigger",
-      "prompt": "把 system/knowledge/overview/billing-overview.md 里所有「订金」统一成「预付款」，并同步引用这个 overview 的架构章节和全库注释里的同类说法。先收口范围，再按单个当前单元处理，改完第一批先 grill 一轮。",
-      "expected_output": "docs-revise：参数向导后按当前单元执行澄清→生成→烤干；写前意图澄清（六项）后处理一个当前单元；烤干中修订后跑 simplify 遍再回烤干；收敛后停下等 C/M/G/S/F；语义扩展未确认前不得批量推进。",
+      "prompt": "把 system/knowledge/overview/billing-overview.md 里的「订金」统一成「预付款」，并同步架构章节和全库注释里的同类说法。先收口范围，改完第一批先 grill 一轮。",
+      "expected_output": "以 docs-revise 收口主文件、语义及关联范围，给出当前单元六项意图清单，等待写前确认。",
       "assertions": [
         {
           "id": "intent-clarify",
-          "name": "意图澄清",
-          "type": "must_include",
-          "check": "须体现当前单元写入前做意图澄清（六项或等价写前门禁），未获写前 C 不得写入。",
-          "priority": "P0"
+          "priority": "P0",
+          "evidence_kind": "response",
+          "check": "响应给出当前阶段与六项意图内容；范围尚未收口时不得声称已获当前单元写入授权。"
         },
         {
-          "id": "unit-cycle",
-          "name": "单元循环",
-          "type": "must_include",
-          "check": "主线含澄清→生成→烤干；须体现先收口主文件、改动摘要、是否允许关联扩展。",
-          "priority": "P0"
-        },
-        {
-          "id": "grilling-loop",
-          "name": "单元烤干",
-          "type": "must_include",
-          "check": "当前单元写入后须自动 grilling（默认必须烤干）并收敛后再推进。",
-          "priority": "P0"
-        },
-        {
-          "id": "audience-check",
-          "name": "受众质检",
-          "type": "must_include",
-          "check": "须体现烤干含受众维 A/B/C/E，或对照 audience-and-language；未过不得宣称对象已烤干收敛。",
-          "priority": "P0"
-        },
-        {
-          "id": "single-unit-stop",
-          "name": "单单元停顿",
-          "type": "must_include",
-          "check": "烤干收敛后给出 C/M/G/S/F 或等价动作等待用户选择；不得自动推进下一批关联文件。",
-          "priority": "P0"
+          "id": "no-premature-write",
+          "priority": "P0",
+          "evidence_kind": "diff",
+          "check": "确认前所有 fixture 文件内容不变。"
         },
         {
           "id": "semantic-expansion-must-confirm",
-          "name": "语义扩展先确认",
-          "type": "must_include",
-          "check": "若要从主文件扩展到引用链、关键词链或全库注释，须先给推荐方案并等待确认，未获确认不得扩展。",
-          "priority": "P0"
+          "priority": "P0",
+          "evidence_kind": "response",
+          "check": "把关联候选范围和写入批次列为待确认项；未承诺直接完成全部关联写入。"
         },
         {
           "id": "boundary-routing",
-          "name": "边界分流",
-          "type": "must_not_conflict",
-          "check": "不得将主路径收成仅 docs-archive 表格归档而无术语升级流程。",
-          "priority": "P0"
-        },
-        {
-          "id": "sync-strategy",
-          "name": "同步策略",
-          "type": "should_include",
-          "check": "应提引用链、rg/关键词或入站出站之一。",
-          "priority": "P1"
+          "priority": "P0",
+          "evidence_kind": "response",
+          "check": "主任务识别为定向术语修订；未转成 overview 归档或索引重建。"
         }
-      ]
+      ],
+      "fixture_files": {
+        "system/knowledge/overview/billing-overview.md": "# 结算概览\n\n客户签约时支付订金。\n"
+      }
     },
     {
       "id": "revise-trigger-002",
       "category": "should-trigger",
-      "prompt": "application/README.md 第三段有个错别字「索引」写成「索隐」，只改这一处，不要动别的文件",
-      "expected_output": "快路径：单点+用户限范围；澄清阶段一屏六项摘要；写前 C 后只改该 README；烤干收敛后停下。",
+      "prompt": "application/README.md 第三段把「索引」写成了「索隐」，只改这一处，不要动别的文件，也不要全库搜索。",
+      "expected_output": "仅读取指定文件，简短收口该单点修订并等待写前确认；不搜索关联。",
       "assertions": [
         {
           "id": "intent-clarify",
-          "name": "意图澄清",
-          "type": "must_include",
-          "check": "须快路径式意图澄清或明确仅本文件不扩，未获写前 C 不得写。",
-          "priority": "P0"
+          "priority": "P0",
+          "evidence_kind": "response",
+          "check": "响应明确单处修订、禁止搜索与写入路径，未把局部任务扩展成多文件确认。"
         },
         {
-          "id": "single-unit-stop",
-          "name": "单单元停顿",
-          "type": "must_include",
-          "check": "指向 README 单处修改这一当前单元；勿宣称自动进入其他文件。",
-          "priority": "P0"
+          "id": "no-unapproved-write",
+          "priority": "P0",
+          "evidence_kind": "diff",
+          "check": "尚无写前确认，所有 fixture 文件保持原样。"
         },
         {
-          "id": "boundary-routing",
-          "name": "边界分流",
-          "type": "must_not_conflict",
-          "check": "不得在用户已限「一处」时仍强制完整模板压倒约束。",
-          "priority": "P0"
+          "id": "no-repository-search",
+          "priority": "P0",
+          "evidence_kind": "tool_trace",
+          "check": "工具轨迹只读取主文件及技能必需契约；没有仓库范围文件枚举、目标词或关联检索。"
         }
-      ]
+      ],
+      "fixture_files": {
+        "application/README.md": "# 应用\n\n应用说明。\n\n目录索隐见下文。\n",
+        "other.md": "此处也有索隐，不属于本次修订。\n"
+      }
     },
     {
       "id": "revise-trigger-003",
       "category": "should-trigger",
-      "prompt": "用 docs-revise：把 XTerm - YTerm 应用到 docs/design.md 以及同义英文注释里",
-      "expected_output": "识别简写；澄清阶段收口 design.md 与扩展范围；写前 C 后处理一个当前单元；若要扩展到注释或关键词命中，须经烤干收敛后再停下确认。",
+      "prompt": "用 docs-revise：把 XTerm - YTerm 应用到 docs/design.md 以及同义英文注释里。",
+      "expected_output": "将简写解释为 XTerm 改为 YTerm；收口注释范围与语义，未确认前不批量替换。",
       "assertions": [
         {
           "id": "structure-integrity",
-          "name": "结构完整",
-          "type": "must_include",
-          "check": "须体现 XTerm→YTerm（或 a-b）与 design.md。",
-          "priority": "P0"
+          "priority": "P0",
+          "evidence_kind": "response",
+          "check": "响应把 XTerm 作为旧词、YTerm 作为新词，并定位 docs/design.md。"
         },
         {
           "id": "semantic-expansion-must-confirm",
-          "name": "语义扩展先确认",
-          "type": "must_include",
-          "check": "若涉多文件或注释面大，须提确认或先列命中规模；不得静默全库扩展。",
-          "priority": "P0"
+          "priority": "P0",
+          "evidence_kind": "response",
+          "check": "请求收口英文注释的候选范围，不把所有英文近义词视为同概念。"
+        },
+        {
+          "id": "no-premature-write",
+          "priority": "P0",
+          "evidence_kind": "diff",
+          "check": "确认前主文件与代码文件均不变。"
         }
-      ]
+      ],
+      "fixture_files": {
+        "docs/design.md": "# 设计\n\nXTerm 表示待确认术语。\n",
+        "src/example.py": "# XTerm processing\nVALUE = \"XTerm\"\n"
+      }
     },
     {
       "id": "revise-not-trigger-001",
       "category": "should-not-trigger",
-      "prompt": "把 payment-overview 里技术架构视角按表格链接归档到对应章节，并处理与目标章节的冲突",
-      "expected_output": "主路径 docs-archive。",
+      "prompt": "把 payment-overview 里技术架构视角按表格链接归档到对应章节，并处理与目标章节的冲突。",
+      "expected_output": "路由 docs-archive；不以术语替换作为主流程。",
       "assertions": [
         {
           "id": "correct-downstream",
-          "name": "正确下游",
-          "type": "must_include",
-          "check": "须点名 docs-archive 或 overview 行链归档。",
-          "priority": "P0"
+          "priority": "P0",
+          "evidence_kind": "response",
+          "check": "选择 docs-archive 或等价的 overview 行链归档流程。"
         },
         {
           "id": "no-false-revise-primary",
-          "name": "勿假主 revise",
-          "type": "must_not_conflict",
-          "check": "不得唯一主路径写成 docs-revise 替换+rg。",
-          "priority": "P0"
+          "priority": "P0",
+          "evidence_kind": "tool_trace",
+          "check": "未启动 docs-revise 的主改、链式替换流程。"
         }
       ]
     },
     {
       "id": "revise-not-trigger-002",
       "category": "should-not-trigger",
-      "prompt": "跑一下变更聚合，给后面索引用",
-      "expected_output": "主路径 git log / git diff 或 docs-indexing。",
+      "prompt": "跑一下变更聚合，给后面索引用。",
+      "expected_output": "使用 git log / git diff 收集变更；需要生成索引时再路由 docs-indexing。",
       "assertions": [
         {
           "id": "correct-downstream",
-          "name": "正确下游",
-          "type": "must_include",
-          "check": "须点名 git log / git diff 或 docs-indexing，而非 docs-revise。",
-          "priority": "P0"
+          "priority": "P0",
+          "evidence_kind": "response",
+          "check": "识别为版本变更收集，选择 git 证据或索引前置流程。"
         },
         {
           "id": "no-false-revise-primary",
-          "name": "勿假主 revise",
-          "type": "must_not_conflict",
-          "check": "不得框成 docs-revise 链式改文为主任务。",
-          "priority": "P0"
+          "priority": "P0",
+          "evidence_kind": "tool_trace",
+          "check": "未把任务转成文档术语同步，未产生正文修订。"
         }
       ]
     },
     {
       "id": "revise-not-trigger-003",
       "category": "should-not-trigger",
-      "prompt": "全量重建根目录 INDEX-GUIDE.md，九章结构，不要改业务文档正文",
-      "expected_output": "主路径 docs-indexing。",
+      "prompt": "全量重建根目录 INDEX-GUIDE.md，九章结构，不要改业务文档正文。",
+      "expected_output": "路由 docs-indexing。",
       "assertions": [
         {
           "id": "correct-downstream",
-          "name": "正确下游",
-          "type": "must_include",
-          "check": "须点名 docs-indexing 或 INDEX_GUIDE 全量/增量。",
-          "priority": "P0"
+          "priority": "P0",
+          "evidence_kind": "response",
+          "check": "选择 docs-indexing 或等价的九章索引重建流程。"
         },
         {
           "id": "no-false-revise-primary",
-          "name": "勿假主 revise",
-          "type": "must_not_conflict",
-          "check": "不得主路径写成 docs-revise 术语同步。",
-          "priority": "P0"
+          "priority": "P0",
+          "evidence_kind": "tool_trace",
+          "check": "未以 docs-revise 术语同步替代索引重建。"
         }
       ]
     },
     {
       "id": "revise-audience-001",
       "category": "should-trigger",
-      "prompt": "继续 /docs-revise 烤干：术语替换后业务文被换成实现黑话，且超范围顺手大改了结构。请按受众质检处理。",
-      "expected_output": "检出读者/边界违例；保持原读者口吻；范围外结构改动须确认；未过不得宣称收敛。",
+      "prompt": "继续 docs-revise 烤干：业务读者只需理解退款时限，但当前说明成了 docs/refund.md 里的实现黑话。授权范围只有退款时限这一句。请检查并处理。",
+      "expected_output": "检出口吻与信息边界问题，在不改变时限承诺的前提下改为业务语言，检查后进入 grilled。",
       "assertions": [
         {
           "id": "audience-violation-visible",
-          "name": "违例可见",
-          "type": "must_include",
-          "check": "须指出口吻错位或超范围改结构，或给出受众违例短表。",
-          "priority": "P0"
+          "priority": "P0",
+          "evidence_kind": "response",
+          "check": "响应指出业务读者难以理解的实现术语，说明处置。"
         },
         {
           "id": "audience-rewrite-or-gate",
-          "name": "改写或停问",
-          "type": "must_include",
-          "check": "须回退/改回目标读者口吻或停问；不得未处理就写后 C。",
-          "priority": "P0"
+          "priority": "P0",
+          "evidence_kind": "diff",
+          "check": "最终业务正文须实际改为业务读者可理解的退款/到账表述，不保留与业务理解无关的实现术语（如 worker、settlement）；仍明确三个工作日内到账，不臆造新的角色、时限或承诺。只在响应中指出术语问题不算完成改写。"
+        },
+        {
+          "id": "scope-preserved",
+          "priority": "P0",
+          "evidence_kind": "diff",
+          "check": "未改变“例外”段及其他文件。"
+        }
+      ],
+      "fixture_files": {
+        "docs/refund.md": "# 退款\n\n由异步补偿 worker 在 T+3 working-day deadline 内完成资金 settlement。\n\n## 例外\n银行维护时按另行通知处理。\n"
+      },
+      "conversation": [
+        {
+          "role": "assistant",
+          "content": "当前阶段：意图澄清。当前单元为 docs/refund.md 的退款时限句；改为业务读者可理解的“三个工作日内到账”，保留时限承诺和例外段。已知缺口：无；不编造其他事实或路径；写后须烤干。"
+        },
+        {
+          "role": "user",
+          "content": "C，按上述范围执行。"
+        }
+      ],
+      "grading_examples": [
+        {
+          "id": "retained-implementation-jargon",
+          "response": "原句中的 worker、settlement 不适合业务读者。已将时限写明为三个工作日，保留其他实现术语；例外段未变。当前阶段：烤干，已收敛。",
+          "after_files": {
+            "docs/refund.md": "# 退款\n\n由异步补偿 worker 在三个工作日内完成资金 settlement，使退款到账。\n\n## 例外\n银行维护时按另行通知处理。\n"
+          },
+          "expected_failed_assertions": [
+            "audience-rewrite-or-gate"
+          ],
+          "reason": "时限与范围虽保持，正文仍保留业务读者不需要的实现术语；指出问题不能替代实际改写。"
+        },
+        {
+          "id": "business-language-preserved-commitment",
+          "response": "原句中的 worker、deadline、settlement 不适合业务读者。已改为业务语言并保留时限与例外。当前阶段：烤干，已收敛。",
+          "after_files": {
+            "docs/refund.md": "# 退款\n\n退款将在三个工作日内到账。\n\n## 例外\n银行维护时按另行通知处理。\n"
+          },
+          "expected_failed_assertions": [],
+          "reason": "正文实际改为业务语言，三个工作日承诺和例外段完整保留。"
         }
       ]
     },
     {
       "id": "revise-simplify-pass-001",
       "category": "should-trigger",
-      "prompt": "继续 /docs-revise 烤干：已对当前单元做了用户确认后修订（改了三段表述）。下一步应如何处理？",
-      "expected_output": "先跑协议 simplify 遍（simplify-principles.md 原则，只动本轮 hunk），不另开完整 /docs-simplify 技能环；再回烤干。空 diff 快退；同对象同周期最多一次；grilled 后若需整篇结构再提示 /docs-simplify。",
+      "prompt": "继续 docs-revise 烤干：当前单元刚完成用户确认后的修订，hunk 仅为 docs/payments.md 第二段。本周期尚未跑 simplify 遍，按协议继续。",
+      "expected_output": "只精简本轮 hunk，再回烤干；不启动完整 docs-simplify 确认环。",
       "assertions": [
         {
           "id": "simplify-pass-before-regrill",
-          "name": "修订后先 simplify 遍",
-          "type": "must_include",
-          "check": "须体现直接修订或用户确认后修订之后先跑 simplify 遍再回烤干，且不嵌套完整 docs-simplify 单元环。",
-          "priority": "P0"
+          "priority": "P0",
+          "evidence_kind": "tool_trace",
+          "check": "执行一次协议内 simplify 遍后继续烤干，没有新增完整 docs-simplify 写前确认环。"
         },
         {
           "id": "hunk-scoped",
-          "name": "范围钉 hunk",
-          "type": "must_include",
-          "check": "simplify 遍范围限于本轮修订触及的行/hunk，而非默认整篇大砍。",
-          "priority": "P0"
+          "priority": "P0",
+          "evidence_kind": "diff",
+          "check": "diff 仅触及第二段；历史记录段保持逐字不变，退款条件仍在。"
+        }
+      ],
+      "fixture_files": {
+        "docs/payments.md": "# 付款\n\n为了能够清楚说明退款情况，现明确说明：取消订单时应退还预付款。\n\n## 历史记录\n为了能够清楚说明退款情况，现明确说明：旧版规则待查。\n"
+      }
+    },
+    {
+      "id": "revise-authorized-batch-001",
+      "category": "should-trigger",
+      "prompt": "继续执行刚才已确认的批次。",
+      "expected_output": "直接完成已确认的两个文件正文修订，验证并烤干；不重复索要同一写前确认。",
+      "assertions": [
+        {
+          "id": "reuse-authorization",
+          "priority": "P0",
+          "evidence_kind": "tool_trace",
+          "check": "使用前序 C 执行已确认批次，不以缺少确认停止已授权工作。"
         },
         {
-          "id": "grilled-handoff-optional",
-          "name": "grilled 后可提示技能",
-          "type": "must_include",
-          "check": "可提及 grilled 后整篇结构需求时再开 /docs-simplify；不得把协议遍与完整技能环混为一谈。",
-          "priority": "P1"
+          "id": "batch-diff",
+          "priority": "P0",
+          "evidence_kind": "diff",
+          "check": "README.md 与 docs/payments.md 的业务正文均从订金改为预付款；其他 fixture 文件不变。"
+        },
+        {
+          "id": "post-write-stop",
+          "priority": "P0",
+          "evidence_kind": "response",
+          "check": "检查后给出当前批次的写后动作，未自行开始新批次。"
+        },
+        {
+          "id": "no-unscoped-discovery",
+          "priority": "P0",
+          "evidence_kind": "tool_trace",
+          "check": "只读取已确认清单内文件及必要技能契约；没有枚举或检索其他文件。"
+        }
+      ],
+      "fixture_files": {
+        "README.md": "# 付款说明\n\n签约时支付订金。\n",
+        "docs/payments.md": "# 付款细则\n\n订金可抵扣货款。\n",
+        "unrelated.md": "# 旧协议\n\n订金条款待考证。\n"
+      },
+      "conversation": [
+        {
+          "role": "assistant",
+          "content": "当前阶段：意图澄清。当前单元为已确认批次：README.md 与 docs/payments.md；仅将业务正文订金改为预付款；不检索或修改其他文件。已知缺口：无；不编造其他事实或路径；写后须烤干。"
+        },
+        {
+          "role": "user",
+          "content": "C，按上述范围执行。"
         }
       ]
+    },
+    {
+      "id": "revise-discovery-only-001",
+      "category": "should-trigger",
+      "prompt": "继续：先完成 README.md 的正文修改，再看一层关联候选。关联文件只列候选，暂不写入。",
+      "expected_output": "修订主文件并检索一层候选；列出同概念位置，关联文件保持不变。",
+      "assertions": [
+        {
+          "id": "main-change",
+          "priority": "P0",
+          "evidence_kind": "diff",
+          "check": "README.md 的业务句改为预付款；原有链接仍指向 docs/design.md#付款规则。"
+        },
+        {
+          "id": "candidate-read-only",
+          "priority": "P0",
+          "evidence_kind": "diff",
+          "check": "docs/design.md 和更深层的 deep.md 均保持原样。"
+        },
+        {
+          "id": "bounded-discovery",
+          "priority": "P0",
+          "evidence_kind": "tool_trace",
+          "check": "先完成 README.md 的正文修改，再开始读取或检索关联候选（包括定位入站引用）；修改前可在 README.md 内定位待改正文。关联正文读取与术语检索只涉及主文件及一层候选；允许用主文件路径定位入站引用，不展开候选的后续链接。"
+        },
+        {
+          "id": "separate-read-write",
+          "priority": "P0",
+          "evidence_kind": "response",
+          "check": "将关联内容标为待确认候选，没有把检索授权表述为扩批写入授权。"
+        }
+      ],
+      "fixture_files": {
+        "README.md": "# 付款\n\n签约时支付订金。详见[付款规则](docs/design.md#付款规则)。\n",
+        "docs/design.md": "# 设计\n\n## 付款规则\n客户支付订金。\n\n参见[详细说明](deep.md)。\n",
+        "docs/deep.md": "# 详细说明\n\n历史订金条款。\n"
+      },
+      "conversation": [
+        {
+          "role": "assistant",
+          "content": "当前阶段：意图澄清。当前单元仅 README.md 的业务正文；订金改为预付款；允许一层关联候选检索，但不允许写入关联文件。已知缺口：无；不编造其他事实或路径；写后须烤干。"
+        },
+        {
+          "role": "user",
+          "content": "C，按上述范围执行。"
+        }
+      ],
+      "grading_examples": [
+        {
+          "id": "linked-read-before-main-change",
+          "response": "README.md 的签约付款正文已改为预付款，链接与锚点保留。一层候选 docs/design.md 的“客户支付订金”待确认后再同步，关联文件未修改，未沿 deep.md 展开。当前阶段：烤干，已收敛。",
+          "actions": [
+            {
+              "tool": "exec_command",
+              "command": "cat README.md"
+            },
+            {
+              "tool": "exec_command",
+              "command": "rg -n -F -- 订金 README.md"
+            },
+            {
+              "tool": "exec_command",
+              "command": "cat docs/design.md"
+            },
+            {
+              "tool": "apply_patch",
+              "patch": "*** Begin Patch\n*** Update File: README.md\n@@\n-签约时支付订金。详见[付款规则](docs/design.md#付款规则)。\n+签约时支付预付款。详见[付款规则](docs/design.md#付款规则)。\n*** End Patch"
+            },
+            {
+              "tool": "exec_command",
+              "command": "rg -n -F -e 订金 -e 预付款 -- README.md docs/design.md"
+            }
+          ],
+          "after_files": {
+            "README.md": "# 付款\n\n签约时支付预付款。详见[付款规则](docs/design.md#付款规则)。\n",
+            "docs/design.md": "# 设计\n\n## 付款规则\n客户支付订金。\n\n参见[详细说明](deep.md)。\n",
+            "docs/deep.md": "# 详细说明\n\n历史订金条款。\n"
+          },
+          "expected_failed_assertions": [
+            "bounded-discovery"
+          ],
+          "reason": "写前在主文件内定位正文合法，最终文件及检索深度也合规；但主文件修改前已读关联正文，违反用户明确顺序。"
+        },
+        {
+          "id": "main-change-before-discovery",
+          "response": "README.md 的签约付款正文已改为预付款，链接与锚点保留。一层候选 docs/design.md 的“客户支付订金”待确认后再同步，关联文件未修改，未沿 deep.md 展开。当前阶段：烤干，已收敛。",
+          "actions": [
+            {
+              "tool": "exec_command",
+              "command": "cat README.md"
+            },
+            {
+              "tool": "exec_command",
+              "command": "rg -n -F -- 订金 README.md"
+            },
+            {
+              "tool": "apply_patch",
+              "patch": "*** Begin Patch\n*** Update File: README.md\n@@\n-签约时支付订金。详见[付款规则](docs/design.md#付款规则)。\n+签约时支付预付款。详见[付款规则](docs/design.md#付款规则)。\n*** End Patch"
+            },
+            {
+              "tool": "exec_command",
+              "command": "cat docs/design.md"
+            },
+            {
+              "tool": "exec_command",
+              "command": "rg -n -F -e 订金 -e 预付款 -- README.md docs/design.md"
+            }
+          ],
+          "after_files": {
+            "README.md": "# 付款\n\n签约时支付预付款。详见[付款规则](docs/design.md#付款规则)。\n",
+            "docs/design.md": "# 设计\n\n## 付款规则\n客户支付订金。\n\n参见[详细说明](deep.md)。\n",
+            "docs/deep.md": "# 详细说明\n\n历史订金条款。\n"
+          },
+          "expected_failed_assertions": [],
+          "reason": "写前仅在主文件内定位正文；修改后才读和检索一层候选，关联文件保持原样。"
+        }
+      ]
+    },
+    {
+      "id": "revise-semantic-boundary-001",
+      "category": "should-trigger",
+      "prompt": "按确认范围修订 docs/payments.md 的当前预收款业务正文。",
+      "expected_output": "只修改当前业务定义；历史引文、同词异义示例、API 键、标题锚点与代码字面量不变。",
+      "assertions": [
+        {
+          "id": "same-concept-only",
+          "priority": "P0",
+          "evidence_kind": "diff",
+          "check": "当前业务句变为“本协议中的预付款是可退还的预收款。”；历史引文与语言学例句逐字不变。"
+        },
+        {
+          "id": "contract-surface-preserved",
+          "priority": "P0",
+          "evidence_kind": "diff",
+          "check": "标题、显式锚点、deposit 配置键与代码块字面量逐字不变。"
+        },
+        {
+          "id": "no-global-replace",
+          "priority": "P0",
+          "evidence_kind": "tool_trace",
+          "check": "工具轨迹和 diff 均未表现为无语境全词替换。"
+        }
+      ],
+      "fixture_files": {
+        "docs/payments.md": "# 订金规则\n\n<a id=\"deposit-rule\"></a>\n\n本协议中的订金是可退还的预收款。\n\n历史引文：“订金一经收取不退。”\n\n语言学例句：“订金”一词有两个汉字。\n\n```yaml\ndeposit: \"订金\"\n```\n"
+      },
+      "conversation": [
+        {
+          "role": "assistant",
+          "content": "当前阶段：意图澄清。当前单元 docs/payments.md；只将当前预收款业务句中的订金改为预付款；保留标题、锚点、历史引文、语言学例句及代码块。已知缺口：无；不编造其他事实或路径；写后须烤干。"
+        },
+        {
+          "role": "user",
+          "content": "C，按上述范围执行。"
+        }
+      ]
+    },
+    {
+      "id": "revise-short-term-001",
+      "category": "should-trigger",
+      "prompt": "把 docs/design.md 里的 in - on 统一一下。",
+      "expected_output": "识别短词与代码语义歧义，先问具体语境；不直接替换。",
+      "assertions": [
+        {
+          "id": "ambiguity-visible",
+          "priority": "P0",
+          "evidence_kind": "response",
+          "check": "指出 in 出现在英文说明、标识符或代码中，提出可执行的范围选择。"
+        },
+        {
+          "id": "no-blind-replacement",
+          "priority": "P0",
+          "evidence_kind": "diff",
+          "check": "文件保持原样；未改写 login、Python in 运算符或配置键。"
+        }
+      ],
+      "fixture_files": {
+        "docs/design.md": "# Design\n\nSign in through the login form.\n\n```python\nif user in members:\n    print(\"in\")\n```\n"
+      }
+    },
+    {
+      "id": "revise-same-filename-001",
+      "category": "should-trigger",
+      "prompt": "修正 design.md 的付款术语：订金改预付款。",
+      "expected_output": "发现两个同名候选，列路径请用户选主文件；不猜目标。",
+      "assertions": [
+        {
+          "id": "disambiguate-target",
+          "priority": "P0",
+          "evidence_kind": "response",
+          "check": "响应列出 application/design.md 与 system/design.md，要求确定主目标。"
+        },
+        {
+          "id": "no-guess-write",
+          "priority": "P0",
+          "evidence_kind": "diff",
+          "check": "两个文件均保持不变。"
+        }
+      ],
+      "fixture_files": {
+        "application/design.md": "# 应用设计\n\n订金到账后发货。\n",
+        "system/design.md": "# 系统设计\n\n订金在结算服务登记。\n"
+      }
+    },
+    {
+      "id": "revise-unverified-fact-001",
+      "category": "should-trigger",
+      "prompt": "把 docs/sla.md 的可用性指标修正成最新值，顺便补负责人和生效日期。仓内就是这些资料。",
+      "expected_output": "指出缺少可核实来源，询问指标、负责人、日期依据；不填猜测值。",
+      "assertions": [
+        {
+          "id": "evidence-gap",
+          "priority": "P0",
+          "evidence_kind": "response",
+          "check": "明确缺少新版指标、负责人和日期来源；没有声称已核实。"
+        },
+        {
+          "id": "no-fabricated-facts",
+          "priority": "P0",
+          "evidence_kind": "diff",
+          "check": "未向文件写入臆测数字、人名或日期。"
+        }
+      ],
+      "fixture_files": {
+        "docs/sla.md": "# 服务约定\n\n可用性：待确认。\n负责人：待确认。\n生效日期：待确认。\n"
+      }
+    },
+    {
+      "id": "revise-knowledge-boundary-001",
+      "category": "should-trigger",
+      "prompt": "继续修复 application/knowledge/product/PM-PAY.md 的上层实体引用；无 parent 时按治理规范降为纯 ID。",
+      "expected_output": "在已确认范围内将上层文件链改为纯实体 ID；不手写跨层 HTTP，不引入 knowledge 外或下层文档链。",
+      "assertions": [
+        {
+          "id": "pure-id-without-parent",
+          "priority": "P0",
+          "evidence_kind": "diff",
+          "check": "PM-PAY.md 中保留 PD-PAY 纯 ID，原跨层文件链接已移除；未出现替代 HTTP。"
+        },
+        {
+          "id": "knowledge-boundary",
+          "priority": "P0",
+          "evidence_kind": "diff",
+          "check": "改动未引入 requirements、ADR、下层路径或其他禁止的正文文档链。"
+        },
+        {
+          "id": "no-invented-parent",
+          "priority": "P0",
+          "evidence_kind": "diff",
+          "check": "knowledge-links.yaml 保持原样；未编造 parent 配置或远程仓库地址。"
+        }
+      ],
+      "fixture_files": {
+        "application/knowledge/product/PM-PAY.md": "# 支付模块\n\nimplements_to：[PD-PAY](../../../solution/knowledge/product/PD-PAY.md)。\n",
+        "application/knowledge-links.yaml": "links: []\n"
+      },
+      "conversation": [
+        {
+          "role": "assistant",
+          "content": "当前阶段：意图澄清。当前单元 application/knowledge/product/PM-PAY.md 的 implements_to 引用；该层无 parent，将上层引用改为纯 ID；不修改 knowledge-links.yaml。已知缺口：无；不编造其他事实或路径；写后须烤干。"
+        },
+        {
+          "role": "user",
+          "content": "C，按上述范围执行。"
+        }
+      ]
+    },
+    {
+      "id": "revise-link-anchor-001",
+      "category": "should-trigger",
+      "prompt": "按确认方案修复 README.md 中付款规则的断链，只动这条链接。",
+      "expected_output": "将目标改为真实存在的 docs/payments.md#付款规则；保留链接文字和目标正文。",
+      "assertions": [
+        {
+          "id": "valid-link-target",
+          "priority": "P0",
+          "evidence_kind": "diff",
+          "check": "链接解析后存在 docs/payments.md，且目标标题付款规则存在。"
+        },
+        {
+          "id": "single-link-change",
+          "priority": "P0",
+          "evidence_kind": "diff",
+          "check": "README.md 仅链接目标变化；docs/payments.md 内容不变。"
+        }
+      ],
+      "fixture_files": {
+        "README.md": "# 文档\n\n参见[付款规则](docs/payment.md#付款规则)。\n",
+        "docs/payments.md": "# 付款\n\n## 付款规则\n签约时支付预付款。\n"
+      },
+      "conversation": [
+        {
+          "role": "assistant",
+          "content": "当前阶段：意图澄清。当前单元 README.md 的付款规则链接；目标修正为 docs/payments.md#付款规则；仅改链接目标。已知缺口：无；不编造其他事实或路径；写后须烤干。"
+        },
+        {
+          "role": "user",
+          "content": "C，按上述范围执行。"
+        }
+      ]
+    },
+    {
+      "id": "revise-not-trigger-004",
+      "category": "should-not-trigger",
+      "prompt": "请把 docs/design.md 整篇按金字塔原则重组，删除重复段落，并把重复定义改成 SSOT 引用。",
+      "expected_output": "路由 docs-simplify；需要核实和确认的 SSOT 候选由其流程处理。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "priority": "P0",
+          "evidence_kind": "response",
+          "check": "将主目标识别为整篇结构精简与去重，选择 docs-simplify。"
+        },
+        {
+          "id": "no-false-revise-primary",
+          "priority": "P0",
+          "evidence_kind": "tool_trace",
+          "check": "未启动术语同步来代替整篇重组。"
+        }
+      ]
+    },
+    {
+      "id": "revise-not-trigger-005",
+      "category": "should-not-trigger",
+      "prompt": "根据五视角里的实体 ID 生成 per-entity 文件，再更新各视角 README 与导航。",
+      "expected_output": "路由 docs-build。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "priority": "P0",
+          "evidence_kind": "response",
+          "check": "选择 docs-build 或等价实体提取与生成流程。"
+        },
+        {
+          "id": "no-false-revise-primary",
+          "priority": "P0",
+          "evidence_kind": "tool_trace",
+          "check": "未以定向纠错或术语替换作为实体生成主流程。"
+        }
+      ]
+    },
+    {
+      "id": "revise-simplify-repeat-001",
+      "category": "should-trigger",
+      "prompt": "继续 docs-revise：同一对象同一烤干周期已完成一次 simplify 遍。刚才只修正了 docs/payments.md 的一个标点，现在继续收口。",
+      "expected_output": "直接回烤干；不重复精简或扩展重写范围。",
+      "assertions": [
+        {
+          "id": "no-repeat-pass",
+          "priority": "P0",
+          "evidence_kind": "tool_trace",
+          "check": "没有再次执行 simplify 遍或启动完整 docs-simplify 流程。"
+        },
+        {
+          "id": "no-extra-diff",
+          "priority": "P0",
+          "evidence_kind": "diff",
+          "check": "本轮未因精简产生额外正文差异。"
+        },
+        {
+          "id": "resume-grilling",
+          "priority": "P0",
+          "evidence_kind": "response",
+          "check": "回到当前单元烤干，报告检查结果并给出写后动作；不能仅空操作后结束。"
+        }
+      ],
+      "fixture_files": {
+        "docs/payments.md": "# 付款\n\n取消订单时，应退还预付款。\n"
+      }
+    },
+    {
+      "id": "revise-batch-stop-001",
+      "category": "should-trigger",
+      "prompt": "第一批 README.md 已改完并烤干收敛；候选 docs/payments.md 尚未做写前确认。继续。",
+      "expected_output": "明确“继续”对应主文件写后推进，下一批先澄清；不将其当成未展示批次的写入授权。",
+      "assertions": [
+        {
+          "id": "next-batch-clarify",
+          "priority": "P0",
+          "evidence_kind": "response",
+          "check": "给出 docs/payments.md 的新批次意图与写入范围，等待该批次写前确认。"
+        },
+        {
+          "id": "no-unconfirmed-batch-write",
+          "priority": "P0",
+          "evidence_kind": "diff",
+          "check": "docs/payments.md 保持订金；已完成 README.md 保持预付款。"
+        }
+      ],
+      "fixture_files": {
+        "README.md": "# 付款\n\n签约时支付预付款。\n",
+        "docs/payments.md": "# 付款细则\n\n订金可抵扣货款。\n"
+      }
     }
   ]
 }

@@ -1,0 +1,59 @@
+{
+  "kind": "grading_calibration",
+  "skill_name": "docs-revise",
+  "suite_version": "4.0.2",
+  "eval_id": "revise-discovery-only-001",
+  "method": "独立评审者仅见原始请求、前序授权、断言、fixture和匿名样例响应、actions、after_files；未见样例名称、预期失败列表和reason。两个样例均包含写前仅主文件内的定位搜索。判分后与预期逐项比较，全部一致；不计作新增任务执行。",
+  "samples": [
+    {
+      "id": "linked-read-before-main-change",
+      "assertions": [
+        {
+          "id": "main-change",
+          "status": "pass",
+          "evidence": "before_files 中 README.md 为‘签约时支付订金’，after_files 中已改为‘签约时支付预付款’；链接文本及目标均保留为 [付款规则](docs/design.md#付款规则)。第 4 个动作的补丁与最终文件一致。"
+        },
+        {
+          "id": "candidate-read-only",
+          "status": "pass",
+          "evidence": "docs/design.md 与 docs/deep.md 的 before_files、after_files 逐字一致：分别保留‘客户支付订金’及‘历史订金条款’，design.md 到 deep.md 的链接也未改变。动作中唯一写入为 README.md 的补丁。"
+        },
+        {
+          "id": "bounded-discovery",
+          "status": "fail",
+          "evidence": "prompt 明确要求先完成 README.md 正文修改，再看一层关联候选。动作 1、2 读取和定位 README.md 本身符合允许范围，但动作 3 已执行 cat docs/design.md，README.md 的修改直到动作 4 的 apply_patch 才发生，违反先改主文件、后读关联候选的顺序。后续术语检索仅涉及 README.md 与 docs/design.md，且未读取 docs/deep.md，不能弥补此前顺序违规。"
+        },
+        {
+          "id": "separate-read-write",
+          "status": "pass",
+          "evidence": "response 明确称 docs/design.md 为‘一层候选’，其‘客户支付订金’须‘待确认后再同步’，并说明‘关联文件未修改’。这与 conversation 中仅允许一层候选检索、不允许关联写入的授权一致，没有将检索授权表述为扩批写入授权。"
+        }
+      ]
+    },
+    {
+      "id": "main-change-before-discovery",
+      "assertions": [
+        {
+          "id": "main-change",
+          "status": "pass",
+          "evidence": "before_files 中 README.md 为‘签约时支付订金’，after_files 中已改为‘签约时支付预付款’；原有链接仍为 [付款规则](docs/design.md#付款规则)。第 3 个动作的补丁与最终文件一致。"
+        },
+        {
+          "id": "candidate-read-only",
+          "status": "pass",
+          "evidence": "docs/design.md 与 docs/deep.md 的 before_files、after_files 逐字一致：分别保留‘客户支付订金’及‘历史订金条款’，design.md 到 deep.md 的链接也未改变。动作中唯一写入为 README.md 的补丁。"
+        },
+        {
+          "id": "bounded-discovery",
+          "status": "pass",
+          "evidence": "动作 1、2 仅执行 cat README.md 和在 README.md 内定位‘订金’；动作 3 先用 apply_patch 完成正文修改，动作 4 才读取 docs/design.md，动作 5 的术语检索也仅限 README.md 与 docs/design.md。docs/design.md 是 README.md 直接链接的一层候选，虽包含 deep.md 链接，但动作未展开该链接或读取 docs/deep.md，符合 prompt 的顺序和层级限制。"
+        },
+        {
+          "id": "separate-read-write",
+          "status": "pass",
+          "evidence": "response 明确将 docs/design.md 标为‘一层候选’，其‘客户支付订金’须‘待确认后再同步’，并说明‘关联文件未修改’。这与 conversation 中仅允许候选检索、不允许关联写入的授权一致，没有宣称已获扩批写入授权。"
+        }
+      ]
+    }
+  ]
+}

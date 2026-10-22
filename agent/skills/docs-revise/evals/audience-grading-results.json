@@ -1,0 +1,49 @@
+{
+  "kind": "grading_calibration",
+  "skill_name": "docs-revise",
+  "suite_version": "4.0.1",
+  "eval_id": "revise-audience-001",
+  "method": "独立评审者仅见断言、原始 fixture、匿名样例响应及 after_files；未见样例名称、预期失败列表和 reason。判分后与预期逐项比较，全部一致；不计作新增任务执行。",
+  "samples": [
+    {
+      "id": "retained-implementation-jargon",
+      "assertions": [
+        {
+          "id": "audience-violation-visible",
+          "status": "pass",
+          "evidence": "响应明确指出“worker、settlement 不适合业务读者”，并说明处置为“已将时限写明为三个工作日，保留其他实现术语”。满足本条对指出问题及说明处置的要求；是否实际完成业务化改写另由正文断言判断。"
+        },
+        {
+          "id": "audience-rewrite-or-gate",
+          "status": "fail",
+          "evidence": "修改后正文为“由异步补偿 worker 在三个工作日内完成资金 settlement，使退款到账。”虽然写出了三个工作日及退款到账，但仍保留 worker、settlement 等与业务理解无关的实现术语，未满足正文实际改为业务语言的要求。响应中的“已收敛”不改变该文件证据。"
+        },
+        {
+          "id": "scope-preserved",
+          "status": "pass",
+          "evidence": "before_files 与 after_files 均仅包含 docs/refund.md；该文件仅退款正文变化。“## 例外\n银行维护时按另行通知处理。”在修改前后完全一致，给定文件快照没有显示其他文件变化。"
+        }
+      ]
+    },
+    {
+      "id": "business-language-preserved-commitment",
+      "assertions": [
+        {
+          "id": "audience-violation-visible",
+          "status": "pass",
+          "evidence": "响应明确指出“worker、deadline、settlement 不适合业务读者”，并说明“已改为业务语言并保留时限与例外”，同时提供术语问题及处置说明。"
+        },
+        {
+          "id": "audience-rewrite-or-gate",
+          "status": "pass",
+          "evidence": "修改后实际正文为“退款将在三个工作日内到账。”直接表述退款及到账，明确保留三个工作日内的时限，已移除 worker、deadline、settlement 及异步补偿等实现术语；未增加角色、额外时限或超出原退款到账内容的新承诺。"
+        },
+        {
+          "id": "scope-preserved",
+          "status": "pass",
+          "evidence": "before_files 与 after_files 均仅包含 docs/refund.md；该文件仅退款正文变化。“## 例外\n银行维护时按另行通知处理。”在修改前后完全一致，给定文件快照没有显示其他文件变化。"
+        }
+      ]
+    }
+  ]
+}
