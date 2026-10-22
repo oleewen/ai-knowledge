@@ -7,7 +7,8 @@ agent_install_usage() {
 
 将元库 agent/ 中选定资源写入 $HOME/.agents，并在 target 下链接所选 IDE。
 不写工程 .docsconfig；configs/WORK_SPACE 始终写入 $HOME/.agents，且不链接到 IDE。
-默认会实跑；预览须显式传 --dry-run。各层 README 不安装。
+默认会实跑；预览须显式传 --dry-run。各层 README、研发测试/评测及缓存不安装。
+同步范围内旧研发资源会清理；保留技能执行所需的产物校验脚本。
 
 选项（同时支持 --key=value）
   --meta PATH       元库根目录；仓库内默认本仓，已安装副本必须显式传入

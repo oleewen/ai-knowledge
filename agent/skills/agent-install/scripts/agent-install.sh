@@ -32,23 +32,42 @@ declare -a ENABLED_AGENTS=() INSTALL_CATEGORIES=()
 # shellcheck source=agent-cli.sh
 source "${SCRIPT_DIR}/agent-cli.sh"
 
-is_agent_readme_basename() {
-  local base="${1:?}"
-  [[ "$base" == 'README' || "$base" == 'README.md' || "$base" == 'readme.md' ]]
+# 按资源用途排除研发材料；validate-* 等运行时校验仍须安装。
+readonly -a AGENT_DEV_EXCLUDES=(tests evals __pycache__ '*.pyc' '*.pyo' test-core.sh grader.md)
+readonly -a AGENT_INSTALL_EXCLUDES=(README README.md readme.md "${AGENT_DEV_EXCLUDES[@]}")
+
+agent_matches_exclusion() {
+  local base="${1:?}" pattern
+  shift
+  for pattern in "$@"; do
+    [[ "$base" == $pattern ]] && return 0
+  done
+  return 1
 }
 
-# 同步目录树，排除各层 README / readme.md
-# 须带 --delete-excluded：否则接收端仅余被 exclude 的文件（如旧目录里的 README）时，
-# rsync 无法删空父目录，会报「not empty, cannot delete」（例如 reference/ 已改名为 references/）。
-sync_tree_excluding_readme() {
+# rsync 与 cp 回退共享同一排除表；更新时移除同步目录内的旧研发材料。
+sync_runtime_tree() {
   local src="$1" dst="$2"
-  sync_dir "$src" "$dst" \
-    --delete-excluded \
-    --exclude 'README' --exclude 'README.md' --exclude 'readme.md'
+  # rsync 会物化源根软链；cp 回退也须复制实体，避免过滤绕过或误删源树。
+  src="$(cd "$src" && pwd -P)"
+  local pattern
+  local -a rsync_args=(--delete-excluded) find_args=()
+  for pattern in "${AGENT_INSTALL_EXCLUDES[@]}"; do
+    rsync_args+=(--exclude "$pattern")
+    (( ${#find_args[@]} == 0 )) || find_args+=(-o)
+    find_args+=(-name "$pattern")
+  done
+  sync_dir "$src" "$dst" "${rsync_args[@]}"
   if ! dry_run_enabled && ! have_cmd rsync; then
-    # 共享 cp 回退不处理 exclude；本技能补齐与 rsync 相同的 README 排除。
-    find "$dst" -depth \( -name README -o -name README.md -o -name readme.md \) -exec rm -rf {} +
+    find "$dst" -depth \( "${find_args[@]}" \) -exec rm -rf {} +
   fi
+}
+
+remove_installed_development_resource() {
+  local path="$1"
+  [[ -e "$path" || -L "$path" ]] || return 0
+  info "移除旧研发资源：$path"
+  run_or_dry rm -rf -- "$path"
 }
 
 copy_file_plain() {
@@ -151,10 +170,24 @@ link_store_into_agent_root() {
     local -A seen=()
     local -a items=("$source_dir"/*)
     # 顶层非元库条目被保留；hooks 整目录同步会删除旧条目。
-    [[ "$category" == hooks ]] || items+=("$store/$category"/*)
+    if [[ "$category" == hooks ]]; then
+      # hooks 整树同步后旧实体可能已消失，仍须识别 IDE 中遗留的研发链接。
+      items+=("$agent_dir/$category"/*)
+    else
+      items+=("$store/$category"/*)
+    fi
     for item in "${items[@]}"; do
       base="${item##*/}"
-      is_agent_readme_basename "$base" && continue
+      if agent_matches_exclusion "$base" "${AGENT_INSTALL_EXCLUDES[@]}"; then
+        # 仅清理此前指向本实体树的研发链接，保留 IDE 自有文件及其他链接。
+        if [[ "$category" == hooks || -e "$source_dir/$base" || -L "$source_dir/$base" ]] \
+          && agent_matches_exclusion "$base" "${AGENT_DEV_EXCLUDES[@]}" \
+          && symlink_points_to "$agent_dir/$category/$base" "$store/$category/$base"; then
+          remove_installed_development_resource "$agent_dir/$category/$base"
+        fi
+        continue
+      fi
+      [[ "$category" != hooks || -e "$source_dir/$base" || -L "$source_dir/$base" ]] || continue
       [[ -n "${seen[$base]:-}" ]] && continue
       seen[$base]=1
       ensure_symlink "$store/$category/$base" "$agent_dir/$category/$base"
@@ -180,10 +213,15 @@ install_agent_resource() {
   nullglob_enable _nullglob_was_set
   for item in "$src_root"/*; do
     base="${item##*/}"
-    is_agent_readme_basename "$base" && continue
+    if agent_matches_exclusion "$base" "${AGENT_INSTALL_EXCLUDES[@]}"; then
+      if agent_matches_exclusion "$base" "${AGENT_DEV_EXCLUDES[@]}"; then
+        remove_installed_development_resource "$dst_dir/$base"
+      fi
+      continue
+    fi
 
     if [[ -d "$item" ]]; then
-      sync_tree_excluding_readme "$item" "$dst_dir/$base"
+      sync_runtime_tree "$item" "$dst_dir/$base"
     else
       copy_file_plain "$item" "$dst_dir/$base"
     fi
@@ -195,7 +233,7 @@ agent_install_install() {
   local category
   for category in "${INSTALL_CATEGORIES[@]}"; do
     if [[ "$category" == hooks ]]; then
-      sync_tree_excluding_readme "${CFG[repo_root]}/agent/hooks" "$(agent_store_root)/hooks"
+      sync_runtime_tree "${CFG[repo_root]}/agent/hooks" "$(agent_store_root)/hooks"
     else
       install_agent_resource "$category" "agent/$category" "$category"
     fi
@@ -215,6 +253,7 @@ agent_install_main() {
   DRY_RUN="${CFG[dry_run]}"
   IO_DRY_RUN="${CFG[dry_run]}"
   agent_install_prepare
+  info "安装过滤：排除 ${AGENT_INSTALL_EXCLUDES[*]}；保留运行时校验脚本。同步范围内旧研发资源会清理。"
   ensure_dir "$(agent_store_root)"
   docsconfig_write_workspace "$(agent_store_root)" "${CFG[workspace]}" "${CFG[dry_run]}"
   agent_install_install
