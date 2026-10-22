@@ -1,25 +1,12 @@
 # 核心概念
 
-联邦与细节：[federation-spec.md](federation-spec.md)。
+| 术语 | 定义 |
+| --- | --- |
+| `DOC_DIR` | 目标层：`system`、`solution` 或 `company`；`application` 不属于蒸馏目标 |
+| `{NAME}` | `system` 边为应用名，`solution` 边为系统名，`company` 边为解决方案名 |
+| 源槽位 | 与 `DOC_DIR` 对应的联邦槽位，见 [workflow.md](workflow.md) |
+| `{NAME}-overview.md` | 目标层 `knowledge/overview/` 下的单元文件 |
+| 全量 | 每次扫描槽位内全部已核实内容，再与第三列比对 |
+| delta | 只写目标第三列未覆盖或已变更的要点；规则见 [federation-spec.md](federation-spec.md) |
 
-## 路径与标识
-
-| 术语 | 含义 |
-| ------ | ------ |
-| `DOC_DIR` | 目标层：`system`、`solution` 或 `company`（蒸馏目标；非 application） |
-| `{NAME}` | system 边=应用名；solution 边=系统名；company 边=解决方案名 |
-| 源槽位 | `system/application-slots/application-{NAME}/`、`solution/system-slots/system-{NAME}/` 或 `company/solution-slots/solution-{NAME}/` |
-| `{NAME}-overview.md` | 目标层 `knowledge/overview/` 下产物 |
-
-## 模式
-
-- **仅全量**：整表扫描槽位源，按 federation-spec 写第三列 delta。
-- **不写 DISTILL-LOG**：无增量锚点；勿再依赖历史 DISTILL-LOG 文件。
-
-## 第三列语义
-
-相对链接段落的 **delta** 缓冲区；细则 [federation-spec.md](federation-spec.md)。表行随目标层（系统库 vs 公司库）。
-
-## 写前职责与粒度
-
-蒸馏前契约闭合见 [scope-clarity.md](scope-clarity.md)：目标/源职责、要点粒度、跨层收束；只信落盘契约。
+`DISTILL-LOG` 与 `--since` 已废止。职责和粒度不是从正文猜出的结论，必须来自 [scope-clarity.md](scope-clarity.md) 的落盘契约。

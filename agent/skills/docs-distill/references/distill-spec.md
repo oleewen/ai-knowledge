@@ -1,34 +1,19 @@
-# 蒸馏范围与变更发现
+# 蒸馏范围与产物
 
-**写目标**与表格体例：**[federation-spec.md](federation-spec.md)**。本节：源范围、产物清单。
+## 源与目标
 
-## 边
+只读取已 pull 的联邦槽位内 knowledge 与 SDD，目标为对应层 `knowledge/overview/{NAME}-overview.md`。边路径见 [workflow.md](workflow.md)。
 
-| `DOC_DIR` | 源（仅槽位） | 目标 |
-| --- | --- | --- |
-| `system` | `system/application-slots/application-{NAME}/` | `system/knowledge/overview/{NAME}-overview.md` |
-| `solution` | `solution/system-slots/system-{NAME}/` | `solution/knowledge/overview/{NAME}-overview.md` |
-| `company` | `company/solution-slots/solution-{NAME}/` | `company/knowledge/overview/{NAME}-overview.md` |
-
-目标不存在则用同层 `NAME-overview.md` 模板，**文件名与 `# {NAME} 架构概览` 同步替换**。
-
-以下内容**仅来源**，不单列作蒸馏终稿：各视角长篇、槽位内 knowledge、SDD 目录。
-
-**不写** `DISTILL-LOG`；无增量锚点。模式恒全量。
+目标不存在时，从同层 `NAME-overview.md` 创建；同步替换文件名和 `# {NAME} 架构概览`。目标已存在时只更新第三列。
 
 ## 变更发现
 
-本技能**仅全量**：读槽位内 knowledge + SDD 全量作源，与目标 overview 第三列按 federation-spec 去重后写 delta。
-
-可选辅助（不改变「仅全量」契约）：
-
-| 方式 | 说明 |
-| ---- | ---- |
-| 清单 | 用户给已改路径列表，作阅读优先提示 |
-| Git diff | 对槽位 path 的 diff，作阅读优先提示 |
+流程仍是全量扫描。用户提供的路径清单或槽位 Git diff 只能作为阅读顺序提示，不能改成增量模式，也不能替代全量比对。
 
 ## 产物
 
-| 产物 | 路径 | 内容 |
-| ---- | ----- | ----- |
-| overview | `{DOC_DIR}/knowledge/overview/{NAME}-overview.md` | 五视角表；第三列 + A/U/D |
+| 产物 | 约束 |
+| --- | --- |
+| overview | 五视角表；第三列写 delta 与 `A/U/D` |
+| dry-run 输出 | 将写入、跳过、无命中三分区；不改 overview |
+| 日志 | 不生成或更新 `DISTILL-LOG` |

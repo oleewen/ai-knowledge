@@ -1,113 +1,59 @@
-# 联邦与 overview 写入
+# 联邦与 overview 写入规范
 
-布局契约（路径、表行、流水线）：[knowledge-layout.md](../../../references/knowledge-layout.md)。
+布局、路径和表行真源：[knowledge-layout.md](../../../references/knowledge-layout.md)。本文件只定义槽位上行到 system、solution、company overview 的写法。
 
-## 目标
+## 目标边
 
-`docs-distill` 落盘（按 `DOC_DIR`）：
-
-| 边 | 源槽位 | 落盘 |
+| `DOC_DIR` | 源槽位 | 目标 |
 | --- | --- | --- |
-| system | `system/application-slots/application-{NAME}/` | `system/knowledge/overview/{NAME}-overview.md` |
-| solution | `solution/system-slots/system-{NAME}/` | `solution/knowledge/overview/{NAME}-overview.md` |
-| company | `company/solution-slots/solution-{NAME}/` | `company/knowledge/overview/{NAME}-overview.md` |
+| `system` | `system/application-slots/application-{NAME}/` | `system/knowledge/overview/{NAME}-overview.md` |
+| `solution` | `solution/system-slots/system-{NAME}/` | `solution/knowledge/overview/{NAME}-overview.md` |
+| `company` | `company/solution-slots/solution-{NAME}/` | `company/knowledge/overview/{NAME}-overview.md` |
 
-新建：从同层 `NAME-overview.md` 拷；**文件名 + 文内标题** `NAME` → 实际 `{NAME}`。
+目标不存在时，从同层 `NAME-overview.md` 创建，并同步替换文件名和标题。`application/knowledge/overview` 不属于本技能目标；非槽位源走 `docs-extract`。
 
-公司 / 解决方案 / 系统 / 应用 overview 亦供 `docs-extract` / `docs-archive` / `docs-tag` 写入；**槽位上行全量**归 distill（不含 application overview），**非槽位任意源**归 extract。
+槽位内 `knowledge` 与 SDD 正文中的已核实内容是事实来源，须读取并按目标表行提炼，不整段复制。槽位外正文和 legacy `architecture/`/`ea/` 路径不作为本次蒸馏来源。
 
-**非目标**（只当来源）：各层 `knowledge/` 下五视角长篇（含 chapters）、槽位外应用/系统正文、SDD 原文整段。legacy `architecture/` / `ea/` 路径已废弃。
+## 第三列规则
 
-## 联邦层级（摘要）
+第三列是待归档的 delta 区。逐行读取目标层模板和同层 README 表行，再读取槽位来源；禁止整段复制。
 
-| 层 | 适合 | 不适合 |
-| -- | ---- | ------ |
-| 应用库 | 规则细节、故事、接口/类图、部署、表结构 | 跨应用映射、系统级摘要 |
-| 解决方案库 | 跨 SYS 共性摘要、SLN/PD 边界 | 单 SYS 实现细节 |
-| 系统库 | 五视角**摘要**、ID 契约 | OpenAPI 全文、DDL、故事原文 |
-| 公司库 | 企业架构顶层、域支撑 VC | 解决方案实现细节、系统字段定义 |
+### 比对与相同判定
 
-## 规则（第三列）
+1. 优先读表行副标题链接的锚点小节；锚点不可读时读主标题整章。
+2. 目标层已有段落或实体已实质覆盖要点时，第三列写 `—` 或保持不动。
+3. 事实一致、只是表述不同，也视为已覆盖。
+4. 目标 overview 的旧第三列和其它列仅用于比对已有覆盖，不是新事实来源；源正文用于提炼事实，不能仅据此判定目标层已覆盖。
 
-逐行从 knowledge + SDD 提炼进第三列；**禁止整段粘贴**。第三列是待归档 **delta 区**：链接知识库段落已覆盖的要点**不写**。
+### A/U/D
 
-### 比对基准
+| 标记 | 用法 |
+| --- | --- |
+| `[A]` | 目标行没有覆盖，源侧有新增要点 |
+| `[U]` | 已有要点发生变化；默认只写变更 delta，无法拆分时停等「delta / 整段重摘要」选择 |
+| `[D]` | 删除说明，供 `docs-archive` 回写；归档完成后恢复 `—` |
+| 无标记 | 已覆盖、无命中或无变化；写 `—` 或保持原值 |
 
-| 优先 | 读哪里 | 何时 |
-| --- | --- | --- |
-| 1 | 副标题链 `](#…)` 锚点小节 | 锚点可读 |
-| 2 | 主标题链整章 | 无锚 / 断链 / 小节不可读 |
+### dry-run
 
-不参与去重：第三列旧内容、overview 其它列、源原文。先读「应填内容 + 产出建议」，再读比对段落。
+输出三分区：
 
-### 相同判定
+1. 将写入：A/U/D；超过 10 行时给统计与样例，用户要求后再展开。
+2. 跳过：已覆盖要点。
+3. 无命中：没有契约证据的表行写 `—`。
 
-1. **实质覆盖（主）**：比对段落已覆盖拟写要点 → `—`，不加标。
-2. **语义等价（辅）**：事实一致、表述不同 → 同上。
+`--dry-run` 不修改 overview，也不生成日志。
 
-### A/U/D 与 delta
+## 目标层表行
 
-| 标记 | 第三列 | 说明 |
-| --- | --- | --- |
-| `[A]` | 未覆盖的新增要点 | 段落空/`—` 且源有新增 |
-| `[U]` | 默认仅变更 delta | 大改难拆时 dry-run 停等选 delta / 整段重摘要 |
-| `[D]` | 删除说明 + `**[D]**` | 供 docs-archive；归档回写后恢复 `—` |
-| 无标 | `—` 或不动 | 已覆盖、无命中、无变化 |
+表行以当前 `DOC_DIR` 的 overview 模板和同层五视角 README 为唯一真源。逐行处理全部主标题及副标题，不用静态摘要替代表行，也不跨层套用。
 
-标记表本轮第三列操作；去重只决定写什么字。
-
-### dry-run 预览
-
-三分区（跳过 **>10** 行：统计 + 样例，`M` 展开全文）：
-
-1. 将写入（A/U/D）
-2. 跳过（已覆盖）
-3. 无命中
-
-### 每行步骤
-
-读应填 + 产出建议 → 读比对段落 → 提炼 → 去重落盘（见上表）→ 无证写 `—`。
-
-**顺序**（自上而下逐节，勿跳行；与各层 `overview/NAME-overview.md` 模板表行一致，以各视角 **README 表行**为准）：
-
-### 应用库（`application/knowledge/overview/`）
-
-行序与系统库分开。第三列只收本应用实现要点。归档入本层 `chapters/`；无章的视角不落章。
-
-- 业务：无章
-- 产品：无章
-- 应用：接口管理（ADR 在 `adr/`，不进 chapters）
-- 技术：中间件 → 性能扩展
-- 数据：数据模型
-
-### 系统库（`system/knowledge/overview/`）
-
-- 业务：概述 → 域划分 → 术语 → 流程 → 能力地图 → 业务规则与策略
-- 产品：概述 → 产品架构 → 信息架构 → 产品功能 → 用户旅程与场景 → 版本管理与发布 → 产品运营支撑 → 多端策略
-- 应用：系统概述 → 应用架构 → 领域模型 → 服务设计 → 领域能力 → 集成架构 → 服务间交互 → 接口管理 → 多租户多环境 → ADR
-- 技术：技术概述 → 基础设施 → 中间件 → 性能扩展 → 高可用 → 可观测性
-- 数据：数据概述 → 数据模型 → 数据存储 → 数据分析 → 数据流转
-
-### 解决方案库（`solution/knowledge/overview/`）
-
-行序：业务范围、应用与集成、数据主权、技术选型（以同层 README 表行为准）。
-
-### 公司库（`company/knowledge/overview/`）
-
-- 业务：概述 → 域划分 → 商业模式 → 价值链 → 组织角色 → 业务能力
-- 产品：概述 → 产品线（含产品 PD）→ 度量标准 → 体验设计
-- 应用：应用架构
-- 技术：技术概述 → 云基础设施 → DevOps → 技术安全 → 开发环境
-- 数据：数据概述 → 数据治理 → 数仓与湖 → 数据安全
-
-`docs-distill` 写哪一层，就用哪一层表行；勿跨层套用表行。
-
-**其它**：第三列可多段/列表/小表；无证写 `—`；不写 `(来源…)` 堆链。不写 DISTILL-LOG。
+第三列可用短段、列表或小表；无证据写 `—`。不得写 `(来源…)` 堆链、OpenAPI 全文、整段 DDL 或实现类名清单。
 
 ## 自检
 
-- [ ] 五行视角各行已处理（`—` 或 delta）  
-- [ ] 非原文搬运；已覆盖行无重复全文  
-- [ ] A/U/D 正确；`[D]` 为删除说明（归档前）  
-- [ ] 无 OpenAPI 全文 / 整段 DDL 等侵占  
-- [ ] 文件名与标题 `APPNAME` / `NAME` 一致  
+- [ ] 当前层全部表行已处理。
+- [ ] 已覆盖要点没有重复全文。
+- [ ] A/U/D 与目标层表行一致。
+- [ ] 文件名和标题中的 `{NAME}` 一致。
+- [ ] 未写 `DISTILL-LOG`。

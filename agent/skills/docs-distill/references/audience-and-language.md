@@ -1,26 +1,13 @@
-# 受众与语言（docs-distill）
+# 受众与语言
 
-> 公共维与烤干门禁：[audience-and-language.md](../../../references/audience-and-language.md)
+公共受众门禁见 [agent/references/audience-and-language.md](../../../references/audience-and-language.md)。本地补充如下：
 
-## 主读者
-
-系统库 / 公司库 overview 维护者；第三列供目标层视角读者核对下层已核实知识。
-
-## 宜写 / 宜弱化
-
-| 宜写 | 宜弱化 |
+| 目标读者 | 写法 |
 | --- | --- |
-| 已核实槽位知识的业务/能力表述同步 | 未核实猜测、本地未合并草稿 |
-| 与 overview 行对齐的全量 delta | 下层内部类名/接口当目标层正文 |
-| 边与 `{NAME}` 交待清楚 | 假装写了 DISTILL-LOG 作审计 |
+| 系统 overview 维护者 | 业务能力、系统边界、架构和可核对的约束 |
+| 解决方案 overview 维护者 | 交付范围、系统组合、数据主权、技术取舍 |
+| 公司 overview 维护者 | 组织能力、产品线、技术治理、数据治理 |
 
-## 反例
+保留已核实事实、表行对齐和 `{NAME}` 边界。弱化下层类名、内部接口、实现路径和未合并草稿；不得用来源脚注堆链，也不得声称写入 `DISTILL-LOG`。
 
-| 避免 | 推荐 |
-| --- | --- |
-| 把 application/system 实现细节原样上行 | 转成目标层 overview 可读表述 |
-| 声称追加 DISTILL-LOG | 只写第三列；日志已废止 |
-
-## 特殊允许区
-
-无。
+烤干时必须通过受众维 A/B/C/E；未通过则改写第三列或停问。

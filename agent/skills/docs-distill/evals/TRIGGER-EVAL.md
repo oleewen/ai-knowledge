@@ -1,12 +1,9 @@
 # Trigger eval harness note
 
-## 2026-07-19 复跑（网关恢复 + 检测器修复）
+`trigger-eval.json` 验证技能触发与分流；`trigger-eval-results.json` 保存最近一次结果。
 
-检测：已装 skill 真名；`Skill`/`Read` 路径含 `skills/<name>/` 算触发。勿在首条 `message_stop` 早退（模型常先 Bash 再读 SKILL）。
+判定重点：
 
-| 技能 | 分数 | 备注 |
-| --- | --- | --- |
-| docs-distill | **10/10**（边缘句套件内曾 flake，隔离 3 跑复核后通过） | `trigger-eval-results.json` |
-| sdx-analysis | **16/16** | 含「一口气整篇 / F 补齐 / 非法 F 重写」 |
-
-脚本：`/tmp/run_installed_trigger_eval.py`
+- 槽位上行、目标层 overview、全量同步应触发。
+- `docs-extract`、`docs-archive`、`docs-indexing`、`sdx-*` 明示时应分流。
+- `DISTILL-LOG`、`--since`、`--full` 只作为拒绝或纠偏信号，不改变技能边界。

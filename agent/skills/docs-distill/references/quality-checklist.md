@@ -1,25 +1,22 @@
-# 质量核对（阶段 4 末 / CLOSE）
+# 质量核对
 
-原则 [design-principles.md](design-principles.md)。
+## 写前
 
-## 参数与范围
+- [ ] `DOC_DIR`、`--name`、写入模式和单一目标已收口。
+- [ ] 槽位已 pull、非空，槽位根有 `README.md`。
+- [ ] 目标职责、源职责、表行粒度、跨层收束均有落盘契约依据。
+- [ ] 职责/粒度摘要已出示，写前 `C` 已获得。
 
-- [ ] `DOC_DIR`（`system|company`）、`--name`、`--dry-run` 已收口
-- [ ] 当前单元目标 `{NAME}-overview.md` 与边（槽位→overview）已明确
-- [ ] 槽位存在且非空
-- [ ] 职责/粒度契约闭合完成（必读清单 + 摘要 + 写前 C）；见 [scope-clarity.md](scope-clarity.md)
-- [ ] 高风险场景已给出推荐方案与确认结论（若适用）
+## 生成
 
-## overview / 第三列
+- [ ] 模式为全量；未使用 `--since`；未写 `DISTILL-LOG`。
+- [ ] 目标文件名和标题均已替换 `{NAME}`。
+- [ ] 目标层全部表行已处理；无命中写 `—`。
+- [ ] 第三列只保留 delta；`A/U/D` 与 [federation-spec.md](federation-spec.md) 一致。
+- [ ] 无 OpenAPI 全文、整段 DDL、槽位原文或来源脚注堆链。
 
-- [ ] 模式为全量（无增量锚点）
-- [ ] 文件名 **且** 文内标题已替换为 `{NAME}`
-- [ ] 目标层五行视角各行已处理（`—` 或 delta）
-- [ ] federation-spec 自检（去重、delta、A/U/D；表行正确）
-- [ ] 无 OpenAPI 全文 / 整段 DDL 侵占；无 `(来源…)` 堆链
+## 烤干
 
-## 日志与导航
-
-- [ ] **未**写入 DISTILL-LOG
-- [ ] 若影响目标层 `knowledge/index.md` 或视角 README → 评估同步（gotchas）
-- [ ] 已按 [audience-and-language.md](../../../references/audience-and-language.md) + 本地 [audience-and-language.md](audience-and-language.md) 通过烤干受众维 A/B/C/E
+- [ ] 已通过本地受众与公共 A/B/C/E 质检。
+- [ ] 导航或视角 README 受影响时，已评估是否需要同步。
+- [ ] 当前单元已收敛，并停等用户动作。

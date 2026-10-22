@@ -1,69 +1,38 @@
 # docs-distill 推进协议（binding）
 
-主干：[SKILL.md](../SKILL.md)。流程：[workflow.md](workflow.md)。
+主干：[SKILL.md](../SKILL.md)。本文件只声明本技能的单元、追加字段、风险和原子性；共通动作与状态机见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)。
 
-## 定位
+## 当前单元
 
-本文件只做 `docs-distill` 对共享契约的 **binding**，不复制协议正文。
+一个 `{NAME}-overview.md` 加一次全量范围。一次只处理一个源名称；收敛前不得自动切换另一源或另一边。
 
-契约：
+## 写前追加字段
 
-- [intent-clarify.md](../../../references/intent-clarify.md) — 写前意图澄清
-- [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) — 单元推进、`C/M/G/S/F`、重开与前文回改
-- [grilling-skill.md](../../../references/grilling-skill.md) — 写后烤干能力
+公共六项之外，澄清必须包含：
 
-主线口令：`澄清 → 生成 → 烤干`。用户动作与状态机见 unit-cycle-protocol（含 docs 语义族 `S`）。
+- `DOC_DIR`、`--name`、源槽位和目标 overview
+- 正式写入或 `--dry-run`
+- overview 是新建还是更新
+- 职责、表行粒度、跨层收束摘要及其契约锚点
 
-## 单元定义
+未获写前 `C`，不得写入或输出正式预览结论。
 
-**当前单元** = 单个 `{NAME}-overview.md` + 单次全量范围。
+## 高风险
 
-一次只处理一个源名；含 `--dry-run` 预览结果。
+先给结论、推荐项和数字选项，再执行：
 
-## 技能追加澄清字段
+- 首次创建 overview 或覆盖已有第三列
+- 跳过预览直接写入
+- 槽位缺失、为空、未 pull 或缺 README
+- 职责/粒度契约缺失、模糊或双边冲突
+- 目标层与槽位内容冲突且无法按既有规则消解
 
-在公共六项之外追加（不可删减公共项）：
+职责/粒度未闭合时必须先落盘契约；在此之前不得 dry-run。
 
-- **`DOC_DIR` / `--doc-dir`**：`system`、`solution` 或 `company`
-- **`--name`**：应用名（system 边）或系统名（company 边）
-- **写入模式**：正式写入 / `--dry-run` 预览
-- **overview 状态**：新建 / 更新
-- **职责与粒度闭合**：按 [scope-clarity.md](scope-clarity.md) 完成双边契约核验；澄清输出须含「职责与粒度摘要」；未闭合不算写前 `C`
+## 原子性
 
-意图澄清须写明边（源槽位 → 目标 overview）与 `--dry-run` 等关键参数摘要。模式恒为全量。
-
-写前可做契约级职责/粒度闭合，**不等于**写后 grilling。
-
-## 写后默认
-
-见 [workflow.md](workflow.md)「写后默认表」。本技能各 overview 单元默认必须烤干（含 dry-run 预览）。
-
-## 高风险场景
-
-须先给结论、推荐与数字选项，确认后再执行：
-
-- 全量覆盖已有第三列
-- 首次创建 `{NAME}-overview.md`
-- 未指定 `--name` 或多源候选
-- `DOC_DIR` 不明（非 `system|company`）
-- 槽位缺失或为空
-- 源侧与目标层知识冲突，且规则无法自动消解
-- 要求跳过预览直接写入
-- 职责/粒度契约缺失、模糊，或双边冲突（见 scope-clarity；**先落盘再蒸**，此情形下不得用 dry-run 绕过）
-
-除「职责/粒度未闭合」外，高风险写入场景下 `--dry-run` 是推荐方案；**仍须写前意图澄清**（含职责/粒度摘要）。
-
-## 原子性 / 失败停顿
-
-- 只写目标 overview 第三列；**不写** `DISTILL-LOG`
-- `--dry-run` 不写 overview
-- 槽位空/未 pull → 停，不写
-- 职责/粒度未闭合（缺契约、模糊、冲突未决策或未落盘）→ 停；不 dry-run、不写
-- 当前单元未收敛前，不得自动推进到下一源或另一边
-
-## 典型语义问题（烤干）
-
-- 边选择（system vs company）、全量覆盖口径、冲突处理
-- 已覆盖行与 `[U]` 整段重摘要口径
-- 首次建 overview；误把非槽位源当 distill（应 extract）
-- 第三列粒度与契约收束规则不一致（写前应已挡；仍出现则烤干升级）
+- 仅写目标 overview 第三列；新建时允许从模板复制并替换 `{NAME}`。
+- `--dry-run` 不写 overview。
+- 不写 `DISTILL-LOG`，不接受 `--since` 或 `--full`。
+- 槽位前置条件不满足就停，不用源仓直读绕过。
+- 写入或预览后必须烤干；未收敛不得宣称完成。

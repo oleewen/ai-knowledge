@@ -1,71 +1,62 @@
 ---
 name: docs-distill
 description: >
-  将联邦槽位已核实内容全量去重后以 delta 写入目标层 overview 第三列：
-  application-slots → system overview；system-slots → solution overview；solution-slots → company overview。
-  蒸馏前须契约级摸清目标/源职责范围与知识要点粒度，不清则硬停决策并先落盘；仅全量；不写 DISTILL-LOG。细则 federation-spec、scope-clarity。
-  用户提到 /docs-distill、知识蒸馏、槽位上行、联邦蒸馏、同步应用到系统 overview、同步系统到公司 overview、
-  更新系统库/公司库 overview、某应用或系统知识改了要同步、看看要同步哪些内容、蒸馏前职责边界/粒度不清时，务必使用本技能。
-  分流：任意非槽位源提炼 → docs-extract；overview 归档 → docs-archive；INDEX → docs-indexing；SDD → 对应技能。
-  推进见 references/gates.md。
+  将已 pull 的联邦槽位内容按目标层契约全量去重，写入 system、solution 或 company
+  overview 第三列。适用于 /docs-distill、槽位上行、同步应用/系统/解决方案到上层 overview。
+  仅处理联邦槽位；非槽位资料走 docs-extract，overview 归档走 docs-archive，索引走 docs-indexing。
+  仅全量，不写 DISTILL-LOG；职责或粒度契约未闭合时停止。
 ---
 
 # docs-distill
 
-## 输出硬约束（P0）
+把一个已核实、已 pull 的联邦槽位全量提炼到一个上层 `{NAME}-overview.md` 的第三列。Agent 负责正文蒸馏；脚本只做参数、路径和前置条件校验。
 
-- 当前单元：单个 `{NAME}-overview.md` + **仅全量**范围（可含 `--dry-run` 预览）。
-- 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[simplify-principles.md](../../references/simplify-principles.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写入或输出正式预览结论；写入或 `--dry-run` 预览后均须烤干，收敛后停等用户。
-- **职责/粒度闭合（写前 `C` 内）**：蒸馏前须按 [scope-clarity.md](references/scope-clarity.md) 摸清目标层与源槽位职责、要点粒度与跨层收束；只信落盘契约。缺失/模糊/双边冲突 → 硬停决策 → **先落盘契约** → 再出职责/粒度短摘要；未闭合不算写前 `C`，不得 dry-run / 写入。此为契约级闭合，**不等于**写后 grilling。
-- **边**：`DOC_DIR=system` → `application-slots/application-{NAME}/` → `system/knowledge/overview/{NAME}-overview.md`；`DOC_DIR=solution` → `system-slots/system-{NAME}/` → `solution/knowledge/overview/{NAME}-overview.md`；`DOC_DIR=company` → `solution-slots/solution-{NAME}/` → `company/knowledge/overview/{NAME}-overview.md`。应用 overview 存在，但**不作**蒸馏目标（走 extract / archive）。
-- **DOC_DIR**：优先 `.docsconfig` / 环境变量；须为 `system|solution|company`；否则参数向导必选。`--doc-dir` 可显式覆盖。
-- **模式**：仅全量；不写 `DISTILL-LOG`；无 `--since` / 增量锚点。`--dry-run`：三分区预览，不写 overview。
-- **第三列**：去重后仅写 delta；[federation-spec.md](references/federation-spec.md)（表行随目标层）。
-- **knowledge 引用边界**：写入 `system|solution|company/knowledge/**` 须遵守 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「业务 knowledge 引用边界」。可读槽位外源；落盘 overview 不链外源路径、不链下层/槽位、禁手写爬层。有 parent 则上层实体用生成函数 HTTP，否则纯 ID。违规能修则修，不明则停。
+## 适用边界
 
-## 边界
+| `DOC_DIR` | 源槽位 | 目标 overview |
+| --- | --- | --- |
+| `system` | `system/application-slots/application-{NAME}/` | `system/knowledge/overview/{NAME}-overview.md` |
+| `solution` | `solution/system-slots/system-{NAME}/` | `solution/knowledge/overview/{NAME}-overview.md` |
+| `company` | `company/solution-slots/solution-{NAME}/` | `company/knowledge/overview/{NAME}-overview.md` |
 
-- 负责：联邦槽位 → 目标层 overview 第三列（全量）；写前职责/粒度契约闭合；当前单元推进
-- 不负责：非槽位任意源（→ docs-extract）；docs-archive；docs-indexing；SDD 终稿代写；DISTILL-LOG；写后成品深挖（→ grilling）
+- 模式恒为全量；不支持 `--since`，不写 `DISTILL-LOG`。
+- `application/knowledge/overview` 不是本技能目标；请走 `docs-extract` 或 `docs-archive`。
+- 一次只处理一个目标 overview；`--dry-run` 只输出预览，不改文件。
 
-## 不这样用
+## 门禁
 
-- 不走前置草稿 + 集中收口；默认参数向导后「澄清 → 生成 → 烤干」
-- 不把写前职责/粒度闭合当成完整 grilling Skill 深挖；也不跳过契约清单去「猜」职责
-- 不把本技能偷换成 `docs-extract`、`docs-archive` 或 `docs-indexing`
-- 不用非槽位 path 直蒸；槽位空/未 pull 则停
-- 契约未闭合时不做 dry-run、不写第三列；人口头答复未落盘不当闭合
+1. 先收口 `DOC_DIR`、`--name`、写入或 `--dry-run`，确认目标是单一 overview。
+2. 按 [scope-clarity.md](references/scope-clarity.md) 读取落盘契约，闭合目标职责、源职责、表行粒度和跨层收束。契约缺失、模糊或冲突时硬停；结论先落盘，再继续。
+3. 输出公共六项澄清与职责/粒度摘要，获写前 `C` 后才能执行或预览。
+4. 全量读取槽位知识与 SDD，按 [federation-spec.md](references/federation-spec.md) 去重，只写第三列 delta（`A/U/D`）。
+5. 写入或预览后按本地写后规则烤干；受众维 A/B/C/E 未通过，不得宣称收敛。当前单元收敛后停等 `C/M/G/S/F`。
 
-## 路由
+落盘 overview 的 knowledge 引用遵守 [knowledge-governance.md](../../knowledge/knowledge-governance.md)：不链槽位或下层路径，不手写爬层关系；实体引用按既有 parent/ID 契约生成。
 
-| 目的 | 文件 |
-| --- | --- |
-| 流程 / 推进 binding | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
-| 职责与粒度闭合 | [scope-clarity.md](references/scope-clarity.md) |
-| 受众与语言 | [audience-and-language.md](references/audience-and-language.md) |
-| 核心概念 | [core-concepts.md](references/core-concepts.md) |
-| 蒸馏规范 | [distill-spec.md](references/distill-spec.md) |
-| 联邦规则 | [federation-spec.md](references/federation-spec.md) |
-| 原则 / 反模式 | [design-principles.md](references/design-principles.md)、[anti-patterns.md](references/anti-patterns.md) |
-| 终检 / 易错 | [quality-checklist.md](references/quality-checklist.md)、[gotchas.md](gotchas.md) |
+共享协议只在以下文件维护：
 
-## 最少输入
+- 写前与动作：`agent/references/intent-clarify.md`、`agent/references/unit-cycle-protocol.md`
+- 写后烤干：`agent/references/grilling-skill.md`
+- 精简原则：`agent/references/simplify-principles.md`
 
-- 可确定的 `DOC_DIR`（`system|company`）
-- 可定位的槽位与 `--name`
-- 是否只做 `--dry-run`
-- 目标层 `knowledge/overview/` 可写
-
-## 产出与脚本
-
-- 正式：目标层 `knowledge/overview/{NAME}-overview.md` 第三列
-- 不写任何 DISTILL-LOG
-- 收敛后动作见 [unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)（本技能有 `S`）
+## 脚本
 
 ```bash
-agent/skills/docs-distill/scripts/run-docs-distill.sh --help
+agent/skills/docs-distill/scripts/run-docs-distill.sh \
+  --root /path/to/repo --doc-dir system --name billing-appeal --dry-run
 ```
 
-## 评测
+脚本要求槽位存在且非空、槽位根有 `README.md`、目标层模板存在；通过后仍由 Agent 按契约生成正文。详见 [workflow.md](references/workflow.md)。
 
-`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。
+## 按需读取
+
+| 任务 | 文件 |
+| --- | --- |
+| 参数、步骤、I/O | [workflow.md](references/workflow.md) |
+| 风险、停顿、当前单元 | [gates.md](references/gates.md) |
+| 职责与粒度闭合 | [scope-clarity.md](references/scope-clarity.md) |
+| 第三列与 A/U/D | [federation-spec.md](references/federation-spec.md) |
+| 受众质检 | [audience-and-language.md](references/audience-and-language.md) |
+| 终检与易错 | [quality-checklist.md](references/quality-checklist.md)、[gotchas.md](gotchas.md) |
+
+评测入口：[evals/evals.json](evals/evals.json)、[agents/grader.md](agents/grader.md)。

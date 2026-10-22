@@ -1,45 +1,10 @@
 # 易错点
 
-正文：[SKILL.md](SKILL.md)；索引：[references/README.md](references/README.md)。
-
-## DOC_DIR 与边
-
-- **跳过写前意图澄清**：不得在未输出六项清单、未获写前 `C` 时写入或输出正式预览；见 [intent-clarify.md](../../references/intent-clarify.md)、[gates.md](references/gates.md)。
-- **跳过职责/粒度闭合**：未按 [scope-clarity.md](references/scope-clarity.md) 读契约清单、未出摘要、或缺口未落盘 → 不算写前 `C`；不得 dry-run / 写入。
-- **从 overview/槽位正文猜职责**：禁止；只信 knowledge-governance / overview 表行 / knowledge-layout / 槽位 README。
-- **dry-run 仍须澄清**：预览前也要意图澄清（含职责/粒度）；烤干可针对预览结果。职责未闭合时 dry-run 也不能开。
-- **DOC_DIR 非 system|solution|company**（含 application、monorepo 根）→ 向导或 `--doc-dir`，勿猜。application overview 走 extract。
-- **槽位空/缺失**→ 停；先 docs-link / docs-pull，勿直读源仓替代。
-- **误走 extract 源**：design/Wiki 等非槽位 → docs-extract，不是本技能。
-
-## 模式
-
-- **仅全量**；`--since` / DISTILL-LOG 锚点已废止。历史 DISTILL-LOG 文件可留作考古，本技能不读写。
-- 全量易盖第三列 → 可先 `dry-run`（职责已闭合后）。
-
-## overview
-
-- 新建：文件名 **`{NAME}-overview.md`** 与 `# {NAME} 架构概览` **同时**替换。 
-- 第三列 / A/U/D：[federation-spec.md](references/federation-spec.md)；**表行随目标层**。
-- **模板表全行扫描**（README 表行）；无证写 `—`
-- 不写槽位超长原文或 `(来源…)` 脚注
-- 粒度遵守已闭合的收束规则；源细目标粗时勿整段上抬
-
-## 联邦
-
-- 唯一上行目标：**overview 第三列**；不把 knowledge/SDD 当目标层终稿段落。 
-- 冲突：**代码/manifest** 或标待定，勿硬盖目标层权威；**职责边界冲突**写前硬停提问。 
-- 动到全局导航：**index** / 视角 **README** 须评估同步。
-
-## 多源
-
-- 无 `--name`：轻量列槽位目录名，**不深读全库**；收口单源后再蒸。
-
-## 自查
-
-- [ ] 写前意图澄清六项 + 职责/粒度摘要 + 写前 C；dry-run 亦同；烤干阶段横幅
-- [ ] 边与 DOC_DIR 正确；槽位非空；契约清单齐或已落盘补齐 
-- [ ] 文件名与标题 `{NAME}` 
-- [ ] 模板表每行：`—` 或内容 
-- [ ] 摘要+A/U/D；无大段侵占 
-- [ ] **未**写 DISTILL-LOG
+- `DOC_DIR` 只能是 `system|solution|company`；`application` overview 走 `docs-extract` 或 `docs-archive`。
+- 目标层由槽位边决定：应用槽位上行到 system，系统槽位上行到 solution，解决方案槽位上行到 company。
+- `--dry-run` 也要先完成职责/粒度闭合和写前 `C`；契约未闭合时不得预览。
+- 槽位缺失、为空或无 README 时停止；不从源仓直读绕过联邦契约。
+- `--since`、`--full`、`DISTILL-LOG` 已废止；全量比对是唯一模式。
+- 新建 overview 必须同时替换文件名和标题；第三列按目标层表行处理，不能跳行。
+- 目标层写能力摘要，不搬运下层类名、接口、OpenAPI、DDL 或来源脚注。
+- 一个当前单元只处理一个 `{NAME}-overview.md`；收敛前不自动切换源或边。

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Docs Distill"
+  short_description: "Distill federated slots into overview deltas"
+  default_prompt: "Use $docs-distill to distill one federated slot into an overview delta."

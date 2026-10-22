@@ -1,31 +1,23 @@
 # docs-distill Grader
 
-据 **evals/evals.json** 输出 JSON：`text`、`passed`、`evidence`。
+按 `evals/evals.json` 输出 JSON：`text`、`passed`、`evidence`。
 
 ## 判定
 
-1. 读 `category`：`should-trigger` / `should-not-trigger`
-2. **硬门**：以本 eval 的 `assertions`（按 `priority`）为准；`evidence` 映射 `assertions[].id`
-3. **协议释义**（仅当 assertions / prompt 覆盖时强制）：参数向导 → 写前意图澄清 → 「澄清 → 生成 → 烤干」→ `C/M/G/S/F`；烤干须含受众维 A/B/C/E（见 [audience-and-language.md](../../../references/audience-and-language.md)）。见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)
-4. **P0** 任一失败 → `passed: false`
+1. 按 `category` 区分 `should-trigger` 与 `should-not-trigger`。
+2. 逐条核对 `assertions`；`evidence` 只填实际支持断言的 id。
+3. 任一 P0 失败即 `passed: false`。
+4. `should-trigger` 需同时检查：参数与边、写前澄清、职责/粒度契约、全量、第三列 delta、dry-run 不写盘、写后烤干。
+5. `should-not-trigger` 需点名正确下游，并且不把槽位 distill 作为主路径。
 
-### should-not-trigger P0 摘要
+评测提示覆盖「契约缺失硬停」「双边冲突不偏边」「受众违例改写或停问」时，必须验证停顿、数字选项和落盘路径，不得只看技能名是否触发。
 
-- `correct-downstream`：点名下游技能/产物
-- `no-false-distill-primary`：不以槽位 distill 上行框下游请求
-
-### scope-clarity（eval 6–8）P0 摘要
-
-- `scope-summary-before-c` / `contract-only-sources` / `no-preview-before-c`：写前职责粒度摘要、只信契约、C 前无正式预览
-- `hard-stop-missing-contract` / `no-dry-run-when-open` / `land-before-continue`：缺槽位契约/README 硬停、禁 dry-run、先落盘
-- `conflict-hard-stop` / `no-auto-side` / `decision-options`：双边冲突硬停、不偏边、数字选项+落盘路径
-
-**例**（对齐 eval id 1）
+示例：
 
 ```json
 {
-  "text": "通过。写前澄清、系统边、全量无 DISTILL-LOG、dry-run 正确。",
+  "text": "通过。system 边，写前澄清，职责契约闭合，dry-run 不写盘。",
   "passed": true,
-  "evidence": ["intent-clarify-before-write", "system-edge", "full-only-no-distill-log", "dry-run-no-write", "single-unit-stop"]
+  "evidence": ["intent-clarify-before-write", "system-edge", "dry-run-no-write"]
 }
 ```

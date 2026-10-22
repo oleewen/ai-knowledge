@@ -1,95 +1,50 @@
 # docs-distill 工作流
 
-主干：[SKILL.md](../SKILL.md)。推进 binding：[gates.md](gates.md)。
+主干：参数向导 → 写前澄清 → 全量比对 → 预览或写入 → 烤干。共享协议见 [intent-clarify.md](../../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../../references/grilling-skill.md)。
 
-契约：
+## 参数与路径
 
-- 写前澄清：[intent-clarify.md](../../../references/intent-clarify.md)
-- 单元推进 / `C/M/G/S/F`：[unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)
-- 写后烤干：[grilling-skill.md](../../../references/grilling-skill.md)
+| 参数 | 要求 |
+| --- | --- |
+| `DOC_DIR` / `--doc-dir` | `system`、`solution` 或 `company`；优先显式参数，再读环境变量和 `.docsconfig` |
+| `--name` | 当前边的源名称；必须是单一安全标识 |
+| `--dry-run` | 三分区预览；不写 overview |
+| 当前单元 | 一个 `{NAME}-overview.md`，一次全量范围 |
 
-## 目标
+边路径：
 
-参数向导 +「澄清 → 生成 → 烤干」：写前按 [scope-clarity.md](scope-clarity.md) 闭合职责/粒度后，将联邦槽位已核实内容按 [federation-spec.md](federation-spec.md) **全量**去重后以 delta 写入目标层 overview 第三列。**不写** `DISTILL-LOG`。
-
-## 边与路径
-
-| `DOC_DIR` | 源槽位 | 目标 overview |
+| `DOC_DIR` | 源槽位 | 目标 |
 | --- | --- | --- |
 | `system` | `system/application-slots/application-{NAME}/` | `system/knowledge/overview/{NAME}-overview.md` |
 | `solution` | `solution/system-slots/system-{NAME}/` | `solution/knowledge/overview/{NAME}-overview.md` |
 | `company` | `company/solution-slots/solution-{NAME}/` | `company/knowledge/overview/{NAME}-overview.md` |
 
-`DOC_DIR`：`.docsconfig` / 环境变量优先；须为 `system|company`；否则向导必选。`--doc-dir` 可覆盖。
+前置条件：槽位已 pull、非空、根有 `README.md`；目标层有 `NAME-overview.md` 模板。缺任一项就停。
 
-## 前置
+## 执行顺序
 
-- 路径：[knowledge-layout.md](../../../references/knowledge-layout.md)
-- 源槽位已 pull 且非空
-- overview 目标路径可解析；模板 `NAME-overview.md` 存在
-- 若环境未安装 `grilling` Skill，则按 grilling-skill fallback
+1. 收口参数、目标状态（新建或更新）和写入模式。
+2. 读 [scope-clarity.md](scope-clarity.md) 的落盘契约；输出职责/粒度摘要。缺失、模糊或冲突时硬停，先落盘决策。
+3. 输出公共六项与技能追加字段，获写前 `C`。
+4. 运行脚本校验路径；脚本不写正文或日志。
+5. 全量读取槽位 knowledge 与 SDD，读取目标 overview 和同层表行。
+6. 按 [federation-spec.md](federation-spec.md) 逐行去重，形成 `A/U/D` delta；无证据写 `—`。
+7. `--dry-run` 时输出「将写入 / 跳过 / 无命中」，否则仅更新目标第三列；新建时同步替换文件名和标题。
+8. 按 [quality-checklist.md](quality-checklist.md) 烤干，确认受众维 A/B/C/E，通过后停等用户动作。
 
-## 参数向导
-
-按序收口；用户已明确时可跳过对应项：
-
-1. `DOC_DIR` / `--doc-dir`（`system|company`）
-2. `--name`
-3. 是否 `--dry-run`
-4. 当前 overview 是新建还是更新
-
-参数未收口前，不进入执行。模式恒为全量。
-
-## 当前单元
-
-单个 `{NAME}-overview.md` + 单次全量范围。定义见 [gates.md](gates.md)。
-
-## 写后默认表
+## 写后默认
 
 | 对象 | 默认烤干 | 强制升级 |
 | --- | --- | --- |
-| 单个 overview 蒸馏单元（含 `--dry-run` 预览） | **必须** | 首次建 overview；冲突消解；未确认决策写入；跳过预览直写 |
+| 单个 overview（含 dry-run） | 必须 | 首次创建、冲突消解、未确认决策写入、跳过预览直写 |
 
-启发式只可升级为必须，不可把默认「必须」降为跳过。
+职责/粒度契约未闭合时不得用 dry-run 绕过。
 
-## 技能步骤
-
-推进环见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)；本技能只补蒸馏特有步骤：
-
-1. 选定当前单元（边 + `--name`）
-2. **意图澄清**（含职责/粒度闭合）：
-   - 公共六项 + [gates.md](gates.md) 追加字段
-   - 按 [scope-clarity.md](scope-clarity.md) 读必读契约清单，双边对照；只信落盘契约
-   - 缺失 / 模糊 / 冲突 → 硬停一次一问 → 结论**先落盘契约** → 再出「职责与粒度摘要」
-   - 契约齐全也须输出该摘要；人确认写前 `C` 后，方可执行或预览
-3. 校验槽位非空；读槽位 knowledge/SDD 与目标 overview（全量）
-4. 按目标层表行 + federation-spec 去重、定 delta / A/U/D（遵守已闭合的粒度与收束）
-5. `--dry-run` → 三分区预览（跳过 >10 行折叠），不写 overview
-6. 写入第三列 delta（不写 DISTILL-LOG）
-7. **烤干**：按写后默认表（含预览结果）；不等于写前契约闭合
-8. 用户动作：`C/M/G/S/F` 见 unit-cycle-protocol
-
-## 命令示例
+## 脚本 I/O
 
 ```bash
-/docs-distill --doc-dir system --name billing-appeal --dry-run
-/docs-distill --doc-dir system --name billing-appeal
-/docs-distill --doc-dir company --name payment-platform --dry-run
+agent/skills/docs-distill/scripts/run-docs-distill.sh \
+  --root /path/to/repo --doc-dir system --name billing-appeal --dry-run
 ```
 
-校验壳：
-
-```bash
-agent/skills/docs-distill/scripts/run-docs-distill.sh --doc-dir system --name billing-appeal
-```
-
-## 脚本
-
-`scripts/run-docs-distill.sh`：**薄校验**（路径/槽位/模板），不代工正文、不写 LOG。
-
-## 执行摘要
-
-- 写前先职责/粒度契约闭合（scope-clarity）；未闭合不预览、不写
-- 仅全量；高风险写入时先 dry-run（职责未闭合除外）
-- 第三列：federation-spec（按目标层表行）；不写 `(来源…)`
-- 不写 DISTILL-LOG；单元结束须停等用户动作
+成功输出边路径、目标状态和 `dry_run` 状态；失败返回非零。脚本只校验，不写 overview、不生成 `DISTILL-LOG`。

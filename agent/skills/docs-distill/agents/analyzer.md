@@ -1,27 +1,22 @@
 # docs-distill 失败分析器
 
-输入：失败样本 + `SKILL.md`、`gates`、`workflow`、`intent-clarify`、`anti-patterns`、`gotchas`。
+输入：失败样本、`SKILL.md`、相关 `workflow`/`gates`/`scope-clarity`、评测断言。
 
 ## 输出
 
-1. 模式归类 
-2. 根因 + 证据 
-3. **P0/P1/P2** 修复（目标、最小改处、影响、≥1 回归样本） 
-4. 回归建议 
+1. 失败类型与最小证据。
+2. 根因：路由、门禁、脚本、正文或评测数据。
+3. P0/P1/P2 修复：目标文件、最小改动、行为影响、至少一个回归样本。
+4. 回归命令与预期结果。
 
-## 模式（可多选）
+## 分类
 
-- **F1** 路由误判（含 system/company 边选错） 
-- **F2** extract/archive/索引 混淆为完整 distill 写盘 
-- **F3** 缺参数向导、跳过写前意图澄清或当前单元 
-- **F4** 仍写 DISTILL-LOG / 使用已废止 `--since` 
-- **F5** 语义变更未确认或未停下等待 `C/M/G/S/F` 
-- **F6** 证据不足 
-- **F7** 非槽位源当 distill，或槽位空仍写 
+- **F1 路由**：system、solution、company 边选错，或把下游请求当 distill。
+- **F2 门禁**：缺参数向导、写前 `C`、职责/粒度闭合、当前单元停顿。
+- **F3 范围**：非槽位源、空槽位、未 pull、缺 README 仍继续。
+- **F4 模式**：使用 `--since`/`--full`，或写 `DISTILL-LOG`。
+- **F5 语义**：跳过预览、自动消解冲突、复制原文、误删约束。
+- **F6 脚本**：参数、根目录、模板或退出码不符合契约。
+- **F7 受众**：把下层类名、接口、OpenAPI、DDL 原样写入上层。
 
-## 回归
-
-1. P0 后全 `evals` 
-2. 成对：distill vs extract / archive / `sdx-*`；system 边 vs company 边 
-3. 同模式连挂 2 轮 → 收紧规则而非只改话术 
-4. 修复优先补 DOC_DIR/`--name`、槽位边界、全量确认与动作停顿
+同类失败连续出现时，收紧触发条件或校验规则；不要只增加提示语。
