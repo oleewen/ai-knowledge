@@ -8,8 +8,6 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RESOLVE="${SCRIPT_DIR}/resolve-okf-paths.sh"
 
 BUNDLE="${BUNDLE:-}"
-BUNDLE_OVERRIDE=0
-[[ -n "$BUNDLE" ]] && BUNDLE_OVERRIDE=1
 
 usage() {
   cat <<EOF
@@ -24,17 +22,19 @@ bundle 与默认 viz 输出取自 .docsconfig 的 DOC_DIR；KNOWLEDGE_TYPE、AGE
 EOF
 }
 
+# shellcheck disable=SC1091
+source "$RESOLVE"
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --bundle)
-      [[ $# -ge 2 ]] || { echo "缺少 --bundle 参数值" >&2; exit 1; }
+      okf_require_bundle_value "${2:-}"
       BUNDLE="$2"
-      BUNDLE_OVERRIDE=1
       shift 2
       ;;
     --bundle=*)
       BUNDLE="${1#*=}"
-      BUNDLE_OVERRIDE=1
+      okf_require_bundle_value "$BUNDLE"
       shift
       ;;
     -h | --help)
@@ -48,30 +48,11 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-# shellcheck disable=SC1091
-source "$RESOLVE"
-resolve_okf_paths
-repo_abs="$(docsconfig_repo_abs)"
-
-if [[ "$BUNDLE_OVERRIDE" -eq 0 ]]; then
-  BUNDLE="$OKF_BUNDLE"
-elif [[ "$BUNDLE" != "$OKF_BUNDLE" ]]; then
-  echo "[okf] BUNDLE 已由 CLI/环境变量覆盖为 ${BUNDLE}（.docsconfig DOC_DIR=${DOC_DIR}）" >&2
-  # 覆盖 bundle 时 viz 跟随 bundle 目录名（与 okf-indexing.sh 一致）
-  _okf_bundle_base="${BUNDLE##*/}"
-  OKF_VIZ_OUT="${_okf_bundle_base}/viz.html"
-  OKF_VIZ_NAME="${_okf_bundle_base} OKF"
-  echo "[okf] OKF_VIZ_OUT 跟随 bundle → ${OKF_VIZ_OUT}" >&2
-fi
-
-OKF_DIR="${OKF_SCRIPTS:?}"
-if [[ ! -f "$OKF_DIR/validate_bundle.py" ]]; then
-  echo "[okf] 未找到 validate_bundle.py: ${OKF_DIR}（须 {DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts）" >&2
-  exit 1
-fi
+resolve_okf_target "$BUNDLE"
 
 cd "$repo_abs" || exit 1
 export DOCS_OKF_REPO_ABS="$repo_abs"
+export PYTHONDONTWRITEBYTECODE=1
 
 echo "=== validate-okf ==="
 echo "repo_abs:      ${repo_abs}"

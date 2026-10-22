@@ -7,7 +7,7 @@ import argparse
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import AbstractSet, Dict, List, Optional, Tuple
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
@@ -57,23 +57,27 @@ def _subdir_description(subdir: Path) -> str:
     return ""
 
 
-def _subdir_link(subdir: Path) -> Optional[str]:
-    """子目录入口：优先 README.md，否则 index.md；都无则返回 None（不写死链）。"""
+def _subdir_link(
+    subdir: Path, planned_directories: AbstractSet[Path] = frozenset()
+) -> Optional[str]:
+    """子目录入口优先 README；index 可已存在或计划在本轮生成。"""
     readme = subdir / "README.md"
     if readme.is_file():
         return f"{subdir.name}/README.md"
     index = subdir / "index.md"
-    if index.is_file():
+    if index.is_file() or subdir in planned_directories:
         return f"{subdir.name}/index.md"
     return None
 
 
-def _subdir_entries(directory: Path) -> List[Tuple[str, str, str]]:
+def _subdir_entries(
+    directory: Path, planned_directories: AbstractSet[Path] = frozenset()
+) -> List[Tuple[str, str, str]]:
     entries: List[Tuple[str, str, str]] = []
     for path in sorted(directory.iterdir()):
         if not path.is_dir() or path.name.startswith("."):
             continue
-        link = _subdir_link(path)
+        link = _subdir_link(path, planned_directories)
         if link is None:
             print(
                 f"warn: 跳过无 README/index 的子目录: {path}",
@@ -127,10 +131,14 @@ def _sanitize_preserved_section(content: str) -> str:
     return "\n".join(lines).strip()
 
 
-def _render_related_indexes(directory: Path) -> str:
+def _render_related_indexes(
+    directory: Path, planned_directories: AbstractSet[Path] = frozenset()
+) -> str:
+    if directory.name == "knowledge":
+        return "（暂无）"
     parent = directory.parent
     lines: List[str] = []
-    if (parent / "index.md").exists():
+    if (parent / "index.md").exists() or parent in planned_directories:
         lines.append("- 上一级索引：[../index.md](../index.md)")
     if (parent / "README.md").exists():
         lines.append("- 上一级说明：[../README.md](../README.md)")
@@ -163,14 +171,18 @@ def _render_directory_files(directory: Path) -> str:
     return "\n".join(lines)
 
 
-def _render_subdirectories(directory: Path) -> str:
-    subdirs = _subdir_entries(directory)
+def _render_subdirectories(
+    directory: Path, planned_directories: AbstractSet[Path] = frozenset()
+) -> str:
+    subdirs = _subdir_entries(directory, planned_directories)
     if not subdirs:
         return "（无）"
     return "\n".join(_bullet(name, link, desc) for name, link, desc in subdirs)
 
 
-def render_index_body(directory: Path) -> str:
+def render_index_body(
+    directory: Path, planned_directories: AbstractSet[Path] = frozenset()
+) -> str:
     index_path = directory / "index.md"
     existing = {"阅读顺序": "", "关联索引": ""}
     if index_path.is_file():
@@ -181,18 +193,19 @@ def render_index_body(directory: Path) -> str:
     lines = [f"# {directory.name}", ""]
     if (directory / "README.md").is_file():
         lines.extend(["目录说明见 [README.md](README.md)。", ""])
-    parent_guide = directory.parent / "INDEX-GUIDE.md"
-    if directory.name == "knowledge" and parent_guide.is_file():
-        lines.extend(
-            [
-                "视角导航见 [../INDEX-GUIDE.md](../INDEX-GUIDE.md) 第四章；实体台账 ∈ 各视角 README。",
-                "",
-            ]
-        )
+    if directory.name == "knowledge":
+        # 只移除旧生成器的两条库外导航，保留用户维护的同层关联。
+        stale = {
+            "- 上一级索引：[../index.md](../index.md)",
+            "- 上一级说明：[../README.md](../README.md)",
+        }
+        existing["关联索引"] = "\n".join(
+            line for line in existing["关联索引"].splitlines() if line.strip() not in stale
+        ).strip()
 
     lines.append("## 子目录")
     lines.append("")
-    lines.append(_render_subdirectories(directory))
+    lines.append(_render_subdirectories(directory, planned_directories))
     lines.append("")
 
     lines.append("## 目录文件")
@@ -207,7 +220,7 @@ def render_index_body(directory: Path) -> str:
 
     lines.append("## 关联索引")
     lines.append("")
-    lines.append(existing["关联索引"] if existing["关联索引"] else _render_related_indexes(directory))
+    lines.append(existing["关联索引"] or _render_related_indexes(directory, planned_directories))
     lines.append("")
     return "\n".join(lines).rstrip() + "\n"
 
@@ -217,8 +230,10 @@ _RE_OKF_BLOCK = re.compile(
 )
 
 
-def _render_okf_root_block(directory: Path) -> str:
-    body = render_index_body(directory)
+def _render_okf_root_block(
+    directory: Path, planned_directories: AbstractSet[Path] = frozenset()
+) -> str:
+    body = render_index_body(directory, planned_directories)
     lines = body.splitlines()
     if lines and lines[0].startswith("# "):
         lines = lines[1:]
@@ -261,10 +276,15 @@ def _upsert_okf_block_in_index(index_path: Path, okf_block: str) -> str:
     return (fm + body).rstrip() + "\n"
 
 
-def write_index(directory: Path, bundle_root: Path, dry_run: bool = False) -> bool:
+def write_index(
+    directory: Path,
+    bundle_root: Path,
+    dry_run: bool = False,
+    planned_directories: AbstractSet[Path] = frozenset(),
+) -> bool:
     index_path = directory / "index.md"
     if _is_bundle_root(bundle_root, directory):
-        okf_block = _render_okf_root_block(directory)
+        okf_block = _render_okf_root_block(directory, planned_directories)
         merged = _upsert_okf_block_in_index(index_path, okf_block)
         if dry_run:
             return True
@@ -276,7 +296,7 @@ def write_index(directory: Path, bundle_root: Path, dry_run: bool = False) -> bo
         existing_meta, _ = okf_lib.parse_frontmatter(index_path.read_text(encoding="utf-8"))
         if existing_meta:
             return True
-    body = render_index_body(directory)
+    body = render_index_body(directory, planned_directories)
     if dry_run:
         return True
     index_path.write_text(body, encoding="utf-8")
@@ -328,10 +348,14 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 1
 
     directories = collect_directories(bundle_root, target, args.recursive)
+    # 本轮将生成的入口也可用于导航，避免首次运行漏子目录链接。
+    planned_directories = frozenset(directories)
     written = 0
     skipped = 0
     for directory in directories:
-        if write_index(directory, bundle_root, dry_run=args.dry_run):
+        if write_index(
+            directory, bundle_root, dry_run=args.dry_run, planned_directories=planned_directories
+        ):
             written += 1
         else:
             skipped += 1

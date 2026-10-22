@@ -3,18 +3,16 @@ set -euo pipefail
 
 # OKF refresh 编排：frontmatter → index → viz → 校验。
 # 实体分表 INDEX-GUIDE.md 第四章由 /docs-build 写入，本脚本不写。
-# 用法: bash {DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts/okf-indexing.sh [--dry-run]
+# 用法: bash {DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts/okf-indexing.sh [--bundle PATH] [--dry-run]
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RESOLVE="${SCRIPT_DIR}/resolve-okf-paths.sh"
 BUNDLE="${BUNDLE:-}"
-BUNDLE_OVERRIDE=0
-[[ -n "$BUNDLE" ]] && BUNDLE_OVERRIDE=1
 DRY_RUN=0
 
 usage() {
   cat <<EOF
-用法: bash {DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts/okf-indexing.sh [--dry-run]
+用法: bash {DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts/okf-indexing.sh [--bundle PATH] [--dry-run]
 
 按序执行 OKF refresh / validate（可重复运行）：
   1. inject_frontmatter
@@ -33,8 +31,21 @@ usage() {
 EOF
 }
 
+# shellcheck disable=SC1091
+source "$RESOLVE"
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --bundle)
+      okf_require_bundle_value "${2:-}"
+      BUNDLE="$2"
+      shift 2
+      ;;
+    --bundle=*)
+      BUNDLE="${1#*=}"
+      okf_require_bundle_value "$BUNDLE"
+      shift
+      ;;
     --dry-run)
       DRY_RUN=1
       shift
@@ -44,40 +55,22 @@ while [[ $# -gt 0 ]]; do
       exit 0
       ;;
     *)
-      echo "未知参数: $1（支持 --dry-run）" >&2
+      echo "未知参数: $1（支持 --bundle PATH、--dry-run）" >&2
       exit 1
       ;;
   esac
 done
 
-# shellcheck disable=SC1091
-source "$RESOLVE"
-resolve_okf_paths
-repo_abs="$(docsconfig_repo_abs)"
-
-if [[ "$BUNDLE_OVERRIDE" -eq 0 ]]; then
-  BUNDLE="$OKF_BUNDLE"
-elif [[ "$BUNDLE" != "$OKF_BUNDLE" ]]; then
-  echo "[okf] BUNDLE 已由环境变量覆盖为 ${BUNDLE}（.docsconfig DOC_DIR=${DOC_DIR}）" >&2
-  # 覆盖 bundle 时 viz 跟随 bundle 目录名，避免写到主 KNOWLEDGE_TYPE 路径
-  _okf_bundle_base="${BUNDLE##*/}"
-  OKF_VIZ_OUT="${_okf_bundle_base}/viz.html"
-  OKF_VIZ_NAME="${_okf_bundle_base} OKF"
-  echo "[okf] OKF_VIZ_OUT 跟随 bundle → ${OKF_VIZ_OUT}" >&2
-fi
-
-OKF_DIR="${OKF_SCRIPTS:?}"
-if [[ ! -d "$OKF_DIR" ]]; then
-  echo "[okf] 未找到 OKF 脚本目录: ${OKF_DIR}（须 {DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts；请 docs-install 建软链或 /agent-install）" >&2
-  exit 1
-fi
+resolve_okf_target "$BUNDLE"
 
 run_cmd() {
   local desc="$1"
   shift
   echo ""
   echo "=== ${desc} ==="
-  echo ">>> $*"
+  printf ">>> "
+  printf '%q ' "$@"
+  printf '\n'
   if [[ "$DRY_RUN" -eq 0 ]]; then
     "$@"
   fi
@@ -130,4 +123,8 @@ run_cmd "validate-viz-index" python3 \
   --viz "$OKF_VIZ_OUT"
 
 echo ""
-echo "=== okf-refresh 完成 ==="
+if [[ "$DRY_RUN" -eq 1 ]]; then
+  echo "=== okf-refresh 预览结束（未执行、未校验） ==="
+else
+  echo "=== okf-refresh 完成 ==="
+fi

@@ -92,6 +92,9 @@ class Validator:
             relpath = self.relpath(path)
             text = path.read_text(encoding="utf-8")
             meta, body = okf_lib.parse_frontmatter(text)
+            # index 是保留名，通常没有 concept 元数据，必须在筛选前检查。
+            if path.name == "index.md":
+                self._check_index_links(path, text)
             if not meta:
                 continue
             # 仅对 OKF concept（type 为 OKF 已知层级）做 4 段 + layer_scope 校验
@@ -102,8 +105,6 @@ class Validator:
                 continue
             self._check_sections(path, relpath, body)
             self._check_bundle_links(path, text)
-            if path.name == "index.md":
-                self._check_index_links(path, text)
             self._check_layer_scope(path, relpath, meta)
 
         for path in self._md_files:
@@ -304,15 +305,9 @@ class Validator:
             if link.startswith("#"):
                 continue
             if link.startswith(("http://", "https://", "mailto:")):
-                if relpath.startswith("knowledge/") and link.startswith(
-                    ("http://", "https://")
-                ):
-                    err = okf_cross_layer.validate_http_href(
-                        self.bundle_root, link
-                    )
-                    if err:
-                        self.error(f"{relpath}: {err}: {link}")
+                # knowledge HTTP 边界由 _check_cross_layer_http 统一检查。
                 continue
+            link = link.split("#", 1)[0]
             if link.startswith("/"):
                 if not self._absolute_bundle_link_exists(link):
                     self.warn(f"{relpath}: index 链接目标不存在 {link}")

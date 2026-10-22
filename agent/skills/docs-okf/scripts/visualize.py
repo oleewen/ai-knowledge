@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import html
 import json
 import re
 import sys
@@ -185,8 +186,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
-<script src="https://unpkg.com/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
-<script src="https://unpkg.com/marked/marked.min.js"></script>
+<script src="https://unpkg.com/cytoscape@3.28.1/dist/cytoscape.min.js" integrity="sha384-J7Q85oZE4GJ/e7+n2aOQsLXfDwwfnA8S2nZAL5BpFsfpCF84zQD7LroZ/dMnLgex" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/marked@18.1.1/lib/marked.umd.js" integrity="sha384-rATToyt6602Jnq8c7w8HZwmyOUgPL7mzxX01FBWoV48ns/EgkakGozpES+PnaYOI" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/dompurify@3.4.17/dist/purify.min.js" integrity="sha384-P0JNneQf81HOl9VwNXK76cQ9VMD6Nfsnepxb0cCOg8+UzEdzgPHAPV4wVQrvYQSx" crossorigin="anonymous"></script>
 <style>
 :root {{
   --bg: #0f1419;
@@ -354,6 +356,13 @@ aside {{
   let cy = null;
   let selectedId = null;
 
+  function textElement(tag, text, className) {{
+    const element = document.createElement(tag);
+    element.textContent = text;
+    if (className) element.className = className;
+    return element;
+  }}
+
   function normalizeLinkToId(href, baseId) {{
     if (!href) return null;
     let link = href.split('#')[0].trim();
@@ -397,11 +406,16 @@ aside {{
 
   function renderLegend() {{
     const el = document.getElementById('legend');
-    const items = (bundle.types || []).map(t => {{
-      const color = typeColors[t] || '#888';
-      return `<span class="legend-item"><span class="legend-swatch" style="background:${{color}}"></span>${{t}}</span>`;
-    }}).join('');
-    el.innerHTML = '<h3>类型图例</h3>' + (items || '<span class="empty-hint">无</span>');
+    el.replaceChildren(textElement('h3', '类型图例'));
+    const types = bundle.types || [];
+    if (!types.length) el.appendChild(textElement('span', '无', 'empty-hint'));
+    types.forEach(t => {{
+      const item = textElement('span', '', 'legend-item');
+      const swatch = textElement('span', '', 'legend-swatch');
+      swatch.style.backgroundColor = typeColors[t] || '#888';
+      item.append(swatch, document.createTextNode(t));
+      el.appendChild(item);
+    }});
   }}
 
   function populateTypeFilter() {{
@@ -514,42 +528,69 @@ aside {{
     const box = document.getElementById('backlinks');
     const c = concepts[id];
     const links = (c && c.backlinks) || [];
+    box.replaceChildren(textElement('h3', 'Cited by'));
     if (!links.length) {{
-      box.innerHTML = '<h3>Cited by</h3><p class="empty-hint">无引用</p>';
+      box.appendChild(textElement('p', '无引用', 'empty-hint'));
       return;
     }}
-    const items = links.map(src => {{
+    const list = document.createElement('ul');
+    links.forEach(src => {{
       const sc = concepts[src];
       const label = sc ? (sc.title || src) : src;
-      return `<li><a data-id="${{src}}">${{label}}</a> <span class="empty-hint">(${{src}})</span></li>`;
-    }}).join('');
-    box.innerHTML = '<h3>Cited by</h3><ul>' + items + '</ul>';
-    box.querySelectorAll('a[data-id]').forEach(a => {{
+      const item = document.createElement('li');
+      const a = textElement('a', label);
+      a.dataset.id = src;
       a.addEventListener('click', e => {{
         e.preventDefault();
-        selectConcept(a.getAttribute('data-id'));
+        selectConcept(src);
       }});
+      item.append(a, document.createTextNode(' '), textElement('span', `(${{src}})`, 'empty-hint'));
+      list.appendChild(item);
     }});
+    box.appendChild(list);
+  }}
+
+  function renderMarkdown(container, markdown) {{
+    // Fail closed: missing, unsupported or failed libraries leave literal text.
+    container.textContent = markdown;
+    if (!window.marked || typeof window.marked.parse !== 'function' ||
+        !window.DOMPurify || !window.DOMPurify.isSupported) return;
+    try {{
+      const fragment = window.DOMPurify.sanitize(window.marked.parse(markdown, {{ breaks: true }}), {{
+        USE_PROFILES: {{ html: true }},
+        RETURN_DOM_FRAGMENT: true,
+        SANITIZE_NAMED_PROPS: true,
+        FORBID_TAGS: ['style'],
+        FORBID_ATTR: ['style'],
+      }});
+      container.replaceChildren(fragment);
+    }} catch (error) {{
+      container.textContent = markdown;
+      console.warn('Markdown unavailable; displaying plain text.', error);
+    }}
   }}
 
   function renderDetail(id) {{
     const c = concepts[id];
     const detail = document.getElementById('detail');
     if (!c) {{
-      detail.innerHTML = '<p class="empty-hint">概念不存在</p>';
+      detail.replaceChildren(textElement('p', '概念不存在', 'empty-hint'));
       return;
     }}
     const desc = c.description != null && c.description !== '' ? String(c.description) : '—';
-    const tags = (c.tags || []).map(t => `<span>${{t}}</span>`).join('') || '<span class="empty-hint">—</span>';
-    const bodyHtml = marked.parse(c.body || '', {{ breaks: true }});
-    detail.innerHTML =
-      `<h2>${{c.title || c.id}}</h2>` +
-      `<div class="meta"><div><strong>ID:</strong> ${{c.id}}</div>` +
-      `<div><strong>Type:</strong> ${{c.type || '—'}}</div>` +
-      `<div><strong>Description:</strong> ${{desc}}</div></div>` +
-      `<div class="tags">${{tags}}</div>` +
-      `<div class="body">${{bodyHtml}}</div>`;
-    detail.querySelector('.body').addEventListener('click', e => {{
+    const meta = textElement('div', '', 'meta');
+    [['ID:', c.id], ['Type:', c.type || '—'], ['Description:', desc]].forEach(([label, value]) => {{
+      const row = document.createElement('div');
+      row.append(textElement('strong', label), document.createTextNode(' ' + value));
+      meta.appendChild(row);
+    }});
+    const tags = textElement('div', '', 'tags');
+    (c.tags || []).forEach(t => tags.appendChild(textElement('span', t)));
+    if (!tags.children.length) tags.appendChild(textElement('span', '—', 'empty-hint'));
+    const body = textElement('div', '', 'body');
+    renderMarkdown(body, c.body || '');
+    detail.replaceChildren(textElement('h2', c.title || c.id), meta, tags, body);
+    body.addEventListener('click', e => {{
       const a = e.target.closest('a');
       if (!a) return;
       const targetId = normalizeLinkToId(a.getAttribute('href'), id);
@@ -589,8 +630,11 @@ aside {{
 
 
 def render_html(data: Dict[str, Any]) -> str:
-    title = str(data.get("name") or "OKF Bundle")
+    title = html.escape(str(data.get("name") or "OKF Bundle"))
     json_data = json.dumps(data, ensure_ascii=False, indent=2)
+    # JSON script elements are still parsed as HTML raw text. Escape markup
+    # delimiters so even mixed-case </script> and <!-- remain JSON string data.
+    json_data = json_data.replace("&", "\\u0026").replace("<", "\\u003c").replace(">", "\\u003e")
     return HTML_TEMPLATE.format(title=title, json_data=json_data)
 
 
