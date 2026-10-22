@@ -1,0 +1,1 @@
+{"eval_id":"archive-not-trigger-003","judgments":[{"evidence":"回答明确主路径为“docs-extract”，从 docs/design.md、docs/api.md 提炼到 payment-overview.md 第三列，并生成 A/U/D 候选差异 dry-run 预览。","id":"correct-downstream","passed":true},{"evidence":"回答明确“不属于归档”，且说明“不归档目标章节”；未将按 overview 行链接写入视角文件作为主路径。","id":"no-false-archive-primary","passed":true}]}

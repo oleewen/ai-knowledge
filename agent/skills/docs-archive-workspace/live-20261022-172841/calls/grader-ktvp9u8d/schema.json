@@ -1,0 +1,43 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "eval_id": {
+      "type": "string",
+      "enum": [
+        "archive-not-trigger-002"
+      ]
+    },
+    "judgments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": [
+              "correct-downstream",
+              "no-false-archive-primary"
+            ]
+          },
+          "passed": {
+            "type": "boolean"
+          },
+          "evidence": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "passed",
+          "evidence"
+        ]
+      }
+    }
+  },
+  "required": [
+    "eval_id",
+    "judgments"
+  ]
+}

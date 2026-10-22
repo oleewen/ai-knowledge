@@ -1,0 +1,360 @@
+{
+  "skill_name": "docs-archive",
+  "suite_version": "3.0.0",
+  "suite_sha256": "7434c0d37a9b854e766464b7f532cff93fabe3963dade21a758dabf3f9388717",
+  "summary": {
+    "passed": 7,
+    "failed": 5,
+    "error": 0
+  },
+  "cases": [
+    {
+      "eval_id": "archive-trigger-001",
+      "status": "failed",
+      "failed_assertions": [
+        "intent-clarify-via-confirmation-book",
+        "grilling-loop",
+        "audience-check",
+        "single-unit-stop",
+        "overview-link-preserved"
+      ],
+      "p0_passed": false,
+      "p1_requirement_met": true
+    },
+    {
+      "eval_id": "archive-trigger-002",
+      "status": "failed",
+      "failed_assertions": [
+        "structure-integrity"
+      ],
+      "p0_passed": false,
+      "p1_requirement_met": true
+    },
+    {
+      "eval_id": "archive-trigger-003",
+      "status": "failed",
+      "failed_assertions": [
+        "structure-integrity"
+      ],
+      "p0_passed": false,
+      "p1_requirement_met": true
+    },
+    {
+      "eval_id": "archive-trigger-004",
+      "status": "passed",
+      "failed_assertions": [],
+      "p0_passed": true,
+      "p1_requirement_met": true
+    },
+    {
+      "eval_id": "archive-not-trigger-001",
+      "status": "passed",
+      "failed_assertions": [],
+      "p0_passed": true,
+      "p1_requirement_met": true
+    },
+    {
+      "eval_id": "archive-not-trigger-002",
+      "status": "passed",
+      "failed_assertions": [],
+      "p0_passed": true,
+      "p1_requirement_met": true
+    },
+    {
+      "eval_id": "archive-trigger-app-001",
+      "status": "passed",
+      "failed_assertions": [],
+      "p0_passed": true,
+      "p1_requirement_met": true
+    },
+    {
+      "eval_id": "archive-not-trigger-003",
+      "status": "passed",
+      "failed_assertions": [],
+      "p0_passed": true,
+      "p1_requirement_met": true
+    },
+    {
+      "eval_id": "archive-audience-001",
+      "status": "passed",
+      "failed_assertions": [],
+      "p0_passed": true,
+      "p1_requirement_met": true
+    },
+    {
+      "eval_id": "archive-atomicity-001",
+      "status": "failed",
+      "failed_assertions": [
+        "source-read-only"
+      ],
+      "p0_passed": false,
+      "p1_requirement_met": true
+    },
+    {
+      "eval_id": "archive-not-trigger-distill-001",
+      "status": "passed",
+      "failed_assertions": [],
+      "p0_passed": true,
+      "p1_requirement_met": true
+    },
+    {
+      "eval_id": "archive-solution-layer-001",
+      "status": "failed",
+      "failed_assertions": [
+        "single-unit-stop"
+      ],
+      "p0_passed": false,
+      "p1_requirement_met": true
+    }
+  ],
+  "results": [
+    {
+      "eval_id": "archive-trigger-001",
+      "response": "爸爸，本轮按 **docs-archive** 处理，归档后将 overview 对应部分替换为仅含导航的索引壳，保留行内副标题链接。\n\n**当前阶段：意图澄清**\n\n目前未提供业务正文，无法核实归档目标、冲突及章节体例；尚未进行任何文件操作。当前单元须限定为**一个目标章节及其对应 overview 行块**。\n\n1. 请先贴出 `system/knowledge/overview/billing-appeal-overview.md` 中“业务架构视角”的表格行，保留行内链接和第三列内容。\n\n收到后先解析目标，再核对对应章节与同级体例，形成归档确认书。按 [docs-archive 的写入门禁](references/gates.md)，取得写前 C 后，才能先写目标章节、自检，再回写 overview 索引壳；当前单元烤干收敛后停等确认。",
+      "judgments": [
+        {
+          "evidence": "回答提到“形成归档确认书”“取得写前 C 后”才写入，但未体现确认书承载六项或等价的写前意图澄清，也未明确确认书收口前禁止写入。",
+          "id": "intent-clarify-via-confirmation-book",
+          "passed": false
+        },
+        {
+          "evidence": "回答包含“意图澄清”、写目标及回写 overview、当前单元烤干，并限定为“一个目标章节及其对应 overview 行块”。",
+          "id": "unit-cycle",
+          "passed": true
+        },
+        {
+          "evidence": "仅称“当前单元烤干收敛后停等确认”，未说明落盘后须自动 grilling、默认必须烤干并循环至收敛。",
+          "id": "grilling-loop",
+          "passed": false
+        },
+        {
+          "evidence": "回答未体现受众维 A/B/C/E 或 audience-and-language 质检及未通过不得宣称收敛的要求。",
+          "id": "audience-check",
+          "passed": false
+        },
+        {
+          "evidence": "回答明确“当前单元烤干收敛后停等确认”，但未说明等待 C/M/G/S/F 指令。",
+          "id": "single-unit-stop",
+          "passed": false
+        },
+        {
+          "evidence": "回答明确按 docs-archive 解析目标、写目标章节并回写 overview，未转为仅 docs-extract 写第三列。",
+          "id": "boundary-routing",
+          "passed": true
+        },
+        {
+          "evidence": "回答明确“替换为仅含导航的索引壳”及“再回写 overview 索引壳”。",
+          "id": "cleanup-strategy",
+          "passed": true
+        },
+        {
+          "evidence": "回答明确“保留行内副标题链接”，但未体现断链或悬空半句时不得宣称收敛。",
+          "id": "overview-link-preserved",
+          "passed": false
+        }
+      ]
+    },
+    {
+      "eval_id": "archive-trigger-002",
+      "response": "爸爸，这项适用 `docs-archive`，先核对归档映射和冲突。\n\n**当前阶段：意图澄清**\n\n目前没有业务正文，尚不能判断具体冲突。`#技术架构` 只限定来源范围；目标章节须从该节表格的**行内副标题链接**解析，不能直接猜成某份架构文档。\n\n建议按冲突类型处理：\n\n| 情况 | 推荐处理 |\n| --- | --- |\n| 内容一致 | 去重，保留目标章节体例 |\n| 互为补充 | 合并事实，保留适用条件 |\n| 口径矛盾 | 列出双方表述、依据与影响，逐点裁决 |\n| 新旧替代关系不明 | 标为待确认，不默认来源更新 |\n\n下一步选 **1**：\n\n1. 贴出该节表格原文（含行内链接、第三列标记）；我先核对目标映射，再逐点分析冲突。\n2. 暂不提供正文，先看冲突清单与归档确认书的空白模板。\n\n按 [docs-archive 规则](SKILL.md)，“未获写前 C，不得写目标或回写 overview”。映射与冲突策略收口后，再提交确认书供你确认。",
+      "judgments": [
+        {
+          "evidence": "明确引用“未获写前 C，不得写目标或回写 overview”，并说明映射与冲突策略收口后提交确认书。",
+          "id": "intent-clarify-via-confirmation-book",
+          "passed": true
+        },
+        {
+          "evidence": "虽包含 #技术架构 锚点、行内副标题链接和冲突讨论，但未提供当前确认书，也未明确来源优先、目标优先、并列保留三类冲突策略。",
+          "id": "structure-integrity",
+          "passed": false
+        },
+        {
+          "evidence": "明确适用 docs-archive，并围绕归档映射、冲突与确认书推进，未分流为仅做 docs-revise 替换。",
+          "id": "boundary-routing",
+          "passed": true
+        },
+        {
+          "evidence": "对口径矛盾提出“列出双方表述、依据与影响，逐点裁决”，对替代关系不明提出标为待确认，体现不静默合并。",
+          "id": "conflict-clarify",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "eval_id": "archive-trigger-003",
+      "response": "爸爸，按 `docs-archive` 处理；多个视角须拆成“一个目标章节 + 对应 overview 行块”，逐单元归档。\n\n**当前阶段：意图澄清**\n\n目前没有业务文件正文，无法核实待归档内容、行内目标链接和冲突，尚未修改文件。请先贴出 order-service overview 的待归档行，保留行内副标题链接及第三列 `[A]/[U]/[D]`；据此确定首个单元，再补齐目标章节和同级体例。\n\n推荐保留行内导航，目标章节写入并检查成功后，才将对应第三列回写为 `—` 或仅含导航的索引壳；`[D]` 先落实目标删除。\n\n依据 [docs-archive 写入门禁](references/gates.md)，“未获写前 C，不得写目标或回写 overview”。因此需先形成可审阅的确认书，再由您确认写入；“全部归档”不能跳过该步骤。\n\n1. 贴出全部待归档行（推荐），先明确范围和首个单元。\n2. 先贴一个视角的待归档行，从该视角开始。",
+      "judgments": [
+        {
+          "evidence": "回答要求先提供待归档行以明确来源范围，再补齐目标章节；提出第三列回写及 [D] 清理策略，并明确“未获写前 C，不得写目标或回写 overview”，须形成确认书后确认写入。",
+          "id": "semantic-change-needs-confirmation",
+          "passed": true
+        },
+        {
+          "evidence": "回答明确按“一个目标章节 + 对应 overview 行块”拆分多视角单元且尚未修改文件，但仅承诺后续形成确认书，未提供当前确认书，也未概括多视角归档风险。",
+          "id": "structure-integrity",
+          "passed": false
+        },
+        {
+          "evidence": "未发现冲突；回答明确“全部归档”不能跳过确认步骤，并要求逐单元归档，没有主张无需确认即可写完全部架构文档。",
+          "id": "boundary-routing",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "eval_id": "archive-trigger-004",
+      "response": "爸爸，本轮使用 `docs-archive`，归档后 overview 保留仅含导航的索引壳。\n\n**当前阶段：意图澄清**\n\n| 项 | 本轮约定 |\n| --- | --- |\n| 单元目标 | 归档产品架构视角中的一个目标章节及对应 overview 行块 |\n| 范围 / 非范围 | 目标限于 `company/knowledge/product/`；不改其他视角或实体 ID |\n| 已知缺口 | 未提供 overview 行块、行内副标题链接及目标章节正文，尚无法核实映射与冲突 |\n| 禁止臆测项 | 不猜目标文件、锚点、业务事实或冲突裁决 |\n| 写后烤干 | 必须检查体例、链接、delta、索引壳及受众 A/B/C/E |\n| 写入路径 / 容器 | overview 为指定文件；具体目标章节须由行内副标题链接确定 |\n\n推荐按章节逐单元处理：先写目标并自检，再回写对应 overview 行；保留副标题链接，索引壳不复制业务正文。若有 `[D]`，须先落实目标章节删除。公司层产品视角应聚焦企业产品标准，不在本层首次定义 PL/PD。\n\n请先提供哪部分内容？\n\n1. **推荐：粘贴产品架构视角表格行块（含完整链接），以及对应目标章节正文和同级体例示例。**\n2. 先粘贴该视角表格行块，确认当前单元后再补目标正文。\n\n收到后可补齐来源映射、冲突策略与清理策略。按 [SKILL.md](SKILL.md) 要求：“未获写前 C，不写目标，也不回写 overview。”因此须在确认书收口后取得写前 C；当前未修改任何文件。",
+      "judgments": [
+        {
+          "evidence": "回答明确引用“未获写前 C，不写目标，也不回写 overview”，并说明“须在确认书收口后取得写前 C”，体现确认书收口前禁止两类写入。",
+          "id": "intent-clarify-via-confirmation-book",
+          "passed": true
+        },
+        {
+          "evidence": "回答将目标限定为 company/knowledge/product/，说明“overview 为指定文件”，并要求依据行内副标题链接确定目标章节，识别了指定 company/knowledge/overview/COMPANY-overview.md 到产品视角章节的归档关系。",
+          "id": "company-ea-path",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "eval_id": "archive-not-trigger-001",
+      "response": "爸爸，这项任务应分流到 **docs-build**（实体 ID 对齐）；INDEX-GUIDE.md 第四章视角导航也由它维护。若需刷新整份九章索引，再衔接 **docs-indexing**，不走 docs-archive。\n\n**当前阶段：意图澄清**\n\n目前未提供业务文件正文，无法核实实体映射或索引内容。\n\n1. 请先提供重构后的「旧 ID → 新 ID」映射，并标明新增、删除项；没有映射时，可提供相关重构 diff。\n\n据此明确受影响范围，再结合实体文件及索引正文形成可审阅的变更清单；路径、映射及写入范围确认后，才进入修改。",
+      "judgments": [
+        {
+          "evidence": "回答明确分流到“docs-build（实体 ID 对齐）”，并说明其维护“INDEX-GUIDE.md 第四章视角导航”。",
+          "id": "correct-downstream",
+          "passed": true
+        },
+        {
+          "evidence": "回答明确“不走 docs-archive”，未将请求框成 overview 行链归档到架构章。",
+          "id": "no-false-archive-primary",
+          "passed": true
+        },
+        {
+          "evidence": "回答将实体 ID 对齐归属 docs-build，并明确不走 docs-archive，体现实体 ID 批量调整不属于 archive 的职责。",
+          "id": "respect-knowledge-scope",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "eval_id": "archive-not-trigger-002",
+      "response": "爸爸，这项任务应走 **docs-revise**：统一术语并沿引用链、关键词链同步，不走 docs-archive。\n\n**当前阶段：意图澄清**\n\n| 项 | 本轮范围 |\n| --- | --- |\n| 单元目标 | 全仓 Markdown 中「订金」统一为「预付款」 |\n| 范围 / 非范围 | 覆盖正文、标题、表格、链接文字及受影响引用；非 Markdown 文件不改 |\n| 已知缺口 | 未提供仓库内容，无法核实命中位置、引用链和语义冲突 |\n| 禁止臆测项 | 不猜文件路径、锚点、引用关系或业务含义等价性 |\n| 写后检查 | 检查旧词残留、标题锚点与链接可达性，以及术语和业务口径一致性 |\n| 写入容器 | 仓库内实际命中的 Markdown 文件及受影响的 Markdown 引用，路径待核实 |\n\n推荐保留文件名；若文件名含旧词或替换涉及金额、退款等业务口径，列为待确认项。当前没有业务文件正文，也无法访问仓库，尚未执行替换或引用检查。\n\n1. 提供相关 Markdown 内容及路径，先核实命中与引用范围。\n2. 修改上述范围或补充例外。",
+      "judgments": [
+        {
+          "evidence": "回答明确指出“应走 docs-revise：统一术语并沿引用链、关键词链同步”。",
+          "id": "correct-downstream",
+          "passed": true
+        },
+        {
+          "evidence": "回答明确表示“不走 docs-archive”，且未将全库术语替换描述为 overview 到架构章的归档流程。",
+          "id": "no-false-archive-primary",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "eval_id": "archive-trigger-app-001",
+      "response": "爸爸，本轮按 docs-archive 处理。\n\n**当前阶段：意图澄清**\n\n| 项 | 本单元意图 |\n| --- | --- |\n| 目标 | 将 order-overview.md「接口管理」行归档到其行内副标题链接指向的应用视角章节 |\n| 范围 | 一个目标章节及对应 overview 行块；回写为仅含导航的索引壳，保留行内副标题链接 |\n| 已知缺口 | 未提供该行、目标章节和同级体例正文，无法核实链接、delta、映射与冲突 |\n| 禁止臆测 | 不猜目标路径、锚点、接口事实或冲突裁决 |\n| 写后检查 | 先写目标并自检，再回写 overview；随后检查链接、delta、索引壳及受众 A/B/C/E |\n| 写入容器 | 归档确认书、待核实的目标章节、application/knowledge/overview/order-overview.md 对应行块 |\n\n推荐保留 overview 的导航信息，将已归档业务事实移入目标章节；目前未执行读写。\n\n1. 请先贴出「接口管理」完整表格行（含行内链接和第三列），以便确定唯一目标；随后补齐目标正文与体例，收口确认书并取得写前 C 后再写入。\n\n依据 [SKILL.md](SKILL.md)：“收口并取得写前 C 前，不写目标，也不回写 overview。”当前尚缺正文核实，不能直接归档。",
+      "judgments": [
+        {
+          "evidence": "回答明确引用：“收口并取得写前 C 前，不写目标，也不回写 overview。”满足确认书收口前禁止写入的要求。",
+          "id": "intent-clarify-via-confirmation-book",
+          "passed": true
+        },
+        {
+          "evidence": "回答提到 application/knowledge/overview/order-overview.md，并明确归档到“行内副标题链接指向的应用视角章节”，满足须提 application/knowledge 或应用层 chapters 的要求。",
+          "id": "app-archive-target",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "eval_id": "archive-not-trigger-003",
+      "response": "爸爸，这项任务应走 **docs-extract**：从指定来源提炼到 overview 第三列，不属于归档。\n\n**当前阶段：意图澄清（dry-run）**\n\n| 项 | 本轮范围 |\n| --- | --- |\n| 目标 | 从 docs/design.md、docs/api.md 提炼业务要点 |\n| 输出 | payment-overview.md 第三列的 A/U/D 候选差异预览 |\n| 非范围 | 不归档目标章节，不修改任何文件 |\n| 已知缺口 | 未提供来源正文及目标表格，无法核对关键词、已有内容与重复项 |\n| 禁止臆测 | 不编造业务事实、目标行、路径或变更标记 |\n| 预览检查 | 核对业务含义、行映射、去重及信息边界 |\n\n1. 请提供两个来源文件的相关正文，以及 payment-overview.md 的目标表格；随后可生成逐行 dry-run，说明拟新增、更新或删除的内容及依据。",
+      "judgments": [
+        {
+          "evidence": "回答明确主路径为“docs-extract”，从 docs/design.md、docs/api.md 提炼到 payment-overview.md 第三列，并生成 A/U/D 候选差异 dry-run 预览。",
+          "id": "correct-downstream",
+          "passed": true
+        },
+        {
+          "evidence": "回答明确“不属于归档”，且说明“不归档目标章节”；未将按 overview 行链接写入视角文件作为主路径。",
+          "id": "no-false-archive-primary",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "eval_id": "archive-audience-001",
+      "response": "爸爸，按 /docs-archive 处理。\n\n**当前阶段：烤干（grilling）｜当前单元未收敛**\n\n依据你描述的问题，受众质检如下；文件正文未提供，其余项待核验。\n\n| 维度 | 结论 |\n| --- | --- |\n| A 读者锁定 | 待核验正文是否符合章节维护者需求 |\n| B 信息边界 | 违例：索引壳承载业务长文，应只保留导航 |\n| C 角色一致 | 待核验角色是否与上游一致 |\n| E 可评审性 | 未通过：确认书未收口即落盘，范围、映射与清理策略缺少确认依据 |\n\n另有写前门禁违例。依据 [gates.md](references/gates.md)「未获写前 C，不得写目标或回写 overview」，当前单元须**重开意图澄清**，不能补一次写后确认就算通过。\n\n**推荐**：先核对本轮差异，补齐确认书；取得写前 C 后修订目标章节，局部检查通过再将 overview 收为导航壳，保留行内副标题链接。业务长文须先核实已完整归入目标，不能直接清空。随后重新烤干。当前未执行任何修改或恢复。\n\n**当前阶段：意图澄清（重开）**\n\n本次修订涉及内容归属和清理策略，属于语义修订；可能影响已写目标，其他单元影响待核验。\n\n是否采用上述修复顺序？\n\n1. 采用推荐方案，提供确认书、本轮差异及对应 overview 行和目标章节正文，先核对当前单元。\n2. 调整修复方案，说明希望保留的内容与位置。\n3. 暂存当前单元，不继续写入。",
+      "judgments": [
+        {
+          "evidence": "回答明确指出“索引壳承载业务长文，应只保留导航”及“确认书未收口即落盘”，并在受众质检表中标为违例或未通过。",
+          "id": "audience-violation-visible",
+          "passed": true
+        },
+        {
+          "evidence": "回答要求“重开意图澄清”，先补齐确认书、取得写前 C，再修订目标并将 overview 收为导航壳；明确不能补一次写后确认就算通过，且当前单元未收敛。",
+          "id": "audience-rewrite-or-gate",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "eval_id": "archive-atomicity-001",
+      "response": "爸爸，按 `docs-archive` 处理：**当前单元未收敛，应先修复 overview，再继续归档。**目标写入失败时，不能继续清空第三列或推进下一单元。\n\n**当前阶段：意图澄清**\n\n建议先核对本轮差异，仅恢复误清空的 overview 内容，保留行内副标题链接和原有 delta，避免覆盖其他修改。随后排查目标写入失败；目标成功写入并自检通过后，才回写 overview，再完成烤干。\n\n目前没有文件正文、变更差异或失败日志，无法判断恢复内容，也尚未执行修复。\n\n1. **推荐：提供当前单元的 overview 本轮差异（含清空前内容）、对应目标章节及写入错误信息。**先据此明确恢复范围和归档确认书，取得写前 C 后再写入。\n2. 若没有清空前记录，请说明；缺失内容将标为待恢复，不凭空补写。",
+      "judgments": [
+        {
+          "evidence": "回答标记“当前单元未收敛”，要求“仅恢复误清空的 overview 内容”，并明确“目标成功写入并自检通过后，才回写 overview”。",
+          "id": "target-first-atomicity",
+          "passed": true
+        },
+        {
+          "evidence": "回答未明确来源文件只读，也未明确修改范围仅限确认书、目标章节及确认书允许的 overview 行；“避免覆盖其他修改”不足以体现该限制。",
+          "id": "source-read-only",
+          "passed": false
+        },
+        {
+          "evidence": "回答明确“不能继续清空第三列或推进下一单元”，并说明“尚未执行修复”，未宣称完成。",
+          "id": "failure-stop",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "eval_id": "archive-not-trigger-distill-001",
+      "response": "爸爸，这项任务应使用 **docs-distill**：将 application 槽位内容全量核对、去重，把 delta 写入 system overview 第三列；不走 docs-archive。\n\n**当前阶段：意图澄清**\n\n目前未提供业务正文，无法核实源/目标职责边界、知识粒度及已有内容，也尚未落盘。\n\n1. 请提供 application 槽位内容与目标 system overview 正文，附各自路径及职责说明。随后先核对范围与粒度、形成写前确认清单；确认后再进入落盘步骤。",
+      "judgments": [
+        {
+          "evidence": "回答明确使用“docs-distill”，并说明“application 槽位内容全量核对、去重，把 delta 写入 system overview 第三列”。",
+          "id": "correct-downstream",
+          "passed": true
+        },
+        {
+          "evidence": "回答明确“不走 docs-archive”，未将槽位全量上行描述为 overview 行内链接归档。",
+          "id": "no-false-archive-primary",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "eval_id": "archive-solution-layer-001",
+      "response": "爸爸，本轮使用 `docs-archive`；当前阶段：意图澄清。\n\n| 确认项 | 本轮方案 |\n| --- | --- |\n| 单元目标 | 归档 payments overview 的业务架构行 |\n| 范围 / 非范围 | 仅处理一个行内链接指向的目标章节及对应行块；不改其他章节 |\n| 已知缺口 | 未提供该行、目标章节和同级体例，无法核实链接、delta 与冲突 |\n| 禁止臆测 | 不猜目标路径、锚点、业务事实或冲突裁决 |\n| 写后烤干 | 必须检查体例、链接、delta、冲突及受众 A/B/C/E |\n| 写入路径 / 容器 | `solution/knowledge/overview/payments-overview.md` 的对应行块；目标章节待行内链接核实 |\n\n推荐清理策略：保留行内副标题链接，索引壳只留导航；先写目标章节并自检，通过后才回写 overview。来源审计信息留在确认书；遇冲突逐点确认。\n\n按 [SKILL.md](SKILL.md) 要求：“未收口并取得写前 C 前，不写目标，也不回写 overview。”目前尚缺正文，不能形成可授权的完整确认书。\n\n1. 请先粘贴业务架构行完整内容（含行内链接及第三列）；随后核对目标章节和同级体例，补齐确认书，再请你给出写前 C。",
+      "judgments": [
+        {
+          "evidence": "回答明确使用 docs-archive，并将来源定位为 solution/knowledge/overview/payments-overview.md，目标为该行业务架构行内链接指向的章节，未误分流为 docs-distill。",
+          "id": "solution-layer-route",
+          "passed": true
+        },
+        {
+          "evidence": "回答明确“仅处理一个行内链接指向的目标章节及对应行块”，但未说明该单元收敛后须停下等待用户动作；当前等待补充正文不能证明收敛后的停顿要求。",
+          "id": "single-unit-stop",
+          "passed": false
+        }
+      ]
+    }
+  ],
+  "mode": "score"
+}

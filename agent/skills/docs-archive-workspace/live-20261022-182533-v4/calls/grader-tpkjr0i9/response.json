@@ -1,0 +1,20 @@
+{
+  "eval_id": "archive-atomicity-001",
+  "judgments": [
+    {
+      "evidence": "回答明确“当前单元仍未收敛”，并要求先恢复误清空行，修复目标且通过局部检查后才回写对应 overview 行。",
+      "id": "target-first-atomicity",
+      "passed": true
+    },
+    {
+      "evidence": "回答限定“仅恢复本轮误清空的 overview 行”“不动原始材料”，并在缺少差异及授权范围时暂停执行，索取 diff、原确认书等依据核对恢复范围。",
+      "id": "source-read-only",
+      "passed": true
+    },
+    {
+      "evidence": "回答明确“目标写入失败期间停止归档推进”，未宣称完成或自动推进下一单元，并要求收敛后停等当前单元确认。",
+      "id": "failure-stop",
+      "passed": true
+    }
+  ]
+}

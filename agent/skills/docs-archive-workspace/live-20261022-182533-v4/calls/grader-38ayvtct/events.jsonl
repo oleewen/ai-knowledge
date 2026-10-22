@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a16325-b626-7881-b422-2106c2d9f776"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"eval_id\":\"archive-not-trigger-001\",\"judgments\":[{\"evidence\":\"回答明确“主路径用 docs-build”，并说明对齐知识实体及实体 ID，联动视角 README 台账与 INDEX-GUIDE 第四章导航。\",\"id\":\"correct-downstream\",\"passed\":true},{\"evidence\":\"回答明确“不把它当作 overview 归档”，未将 overview 行链归档安排为主路径。\",\"id\":\"no-false-archive-primary\",\"passed\":true},{\"evidence\":\"回答明确“archive 不负责批量改实体 ID”。\",\"id\":\"respect-knowledge-scope\",\"passed\":true}]}"}}
+{"type":"turn.completed","usage":{"input_tokens":20550,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":144,"reasoning_output_tokens":0}}

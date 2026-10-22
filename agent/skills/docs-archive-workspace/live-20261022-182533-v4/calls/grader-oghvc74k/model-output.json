@@ -1,0 +1,1 @@
+{"eval_id":"archive-not-trigger-003","judgments":[{"evidence":"回答明确选择“主路径是 docs-extract”，从指定两个文件提炼未覆盖要点，对 payment-overview.md 第三列形成 delta，并说明 dry-run 只预览、不改文件。","id":"correct-downstream","passed":true},{"evidence":"主路径明确为 docs-extract，未安排按 overview 行链写入视角文件的归档操作。","id":"no-false-archive-primary","passed":true}]}

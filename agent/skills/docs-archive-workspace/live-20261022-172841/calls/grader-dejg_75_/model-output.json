@@ -1,0 +1,1 @@
+{"eval_id":"archive-trigger-app-001","judgments":[{"evidence":"回答明确引用：“收口并取得写前 C 前，不写目标，也不回写 overview。”满足确认书收口前禁止写入的要求。","id":"intent-clarify-via-confirmation-book","passed":true},{"evidence":"回答提到 application/knowledge/overview/order-overview.md，并明确归档到“行内副标题链接指向的应用视角章节”，满足须提 application/knowledge 或应用层 chapters 的要求。","id":"app-archive-target","passed":true}]}

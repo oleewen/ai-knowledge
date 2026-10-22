@@ -1,0 +1,1 @@
+{"eval_id":"archive-not-trigger-003","judgments":[{"evidence":"回答明确说“本次主路径采用 docs-distill”，并将指定非槽位文件当作 application 槽位上行，未选择正确的 docs-extract 主路径。","id":"correct-downstream","passed":false},{"evidence":"回答明确“不做 overview 到章节的归档”，未将按 overview 行链写入视角文件设为主路径。","id":"no-false-archive-primary","passed":true}]}

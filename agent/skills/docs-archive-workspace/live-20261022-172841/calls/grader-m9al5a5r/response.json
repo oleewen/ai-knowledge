@@ -1,0 +1,20 @@
+{
+  "eval_id": "archive-atomicity-001",
+  "judgments": [
+    {
+      "evidence": "回答标记“当前单元未收敛”，要求“仅恢复误清空的 overview 内容”，并明确“目标成功写入并自检通过后，才回写 overview”。",
+      "id": "target-first-atomicity",
+      "passed": true
+    },
+    {
+      "evidence": "回答未明确来源文件只读，也未明确修改范围仅限确认书、目标章节及确认书允许的 overview 行；“避免覆盖其他修改”不足以体现该限制。",
+      "id": "source-read-only",
+      "passed": false
+    },
+    {
+      "evidence": "回答明确“不能继续清空第三列或推进下一单元”，并说明“尚未执行修复”，未宣称完成。",
+      "id": "failure-stop",
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "eval_id": {
+      "type": "string",
+      "enum": [
+        "archive-audience-role-001"
+      ]
+    },
+    "judgments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": [
+              "audience-role-consistency",
+              "audience-reviewability",
+              "unresolved-stop"
+            ]
+          },
+          "passed": {
+            "type": "boolean"
+          },
+          "evidence": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "passed",
+          "evidence"
+        ]
+      }
+    }
+  },
+  "required": [
+    "eval_id",
+    "judgments"
+  ]
+}

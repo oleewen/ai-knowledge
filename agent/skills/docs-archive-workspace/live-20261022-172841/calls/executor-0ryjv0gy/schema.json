@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "response": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "response"
+  ]
+}

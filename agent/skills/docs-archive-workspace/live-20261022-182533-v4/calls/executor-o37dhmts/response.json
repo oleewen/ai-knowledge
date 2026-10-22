@@ -1,0 +1,4 @@
+{
+  "response": "爸爸，这项应转用 **docs-build**：对齐实体 ID，并刷新 `INDEX-GUIDE.md` 第四章视角导航；不走 docs-archive。若要更新完整九章索引，再衔接 docs-indexing。\n\n**当前阶段：意图澄清**\n\n目前未提供文件正文，无法核实实体变化或生成准确改动清单。\n\n1. 请提供重构前后 ID 映射（或相关代码 diff）、受影响实体文档及 `INDEX-GUIDE.md` 相关章节。\n2. 若需刷新完整九章索引，请同时说明。\n\n拿到材料后，先核对实体所属层级、ID 与引用影响，形成写前确认清单；不猜测新 ID 或路径。",
+  "eval_id": "archive-not-trigger-001"
+}

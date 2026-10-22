@@ -1,0 +1,43 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "eval_id": {
+      "type": "string",
+      "enum": [
+        "archive-broken-link-001"
+      ]
+    },
+    "judgments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": [
+              "broken-link-stop",
+              "no-write-on-broken-link"
+            ]
+          },
+          "passed": {
+            "type": "boolean"
+          },
+          "evidence": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "passed",
+          "evidence"
+        ]
+      }
+    }
+  },
+  "required": [
+    "eval_id",
+    "judgments"
+  ]
+}

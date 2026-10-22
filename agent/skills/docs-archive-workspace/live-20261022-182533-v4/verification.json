@@ -1,0 +1,73 @@
+{
+  "checked_at": "2026-10-22T10:42:12.535167+00:00",
+  "python": "3.9.6 (default, Mar 12 2025, 20:22:46) \n[Clang 17.0.0 (clang-1700.0.13.3)]",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "unit_tests": {
+    "count": 59,
+    "seconds": 57.351,
+    "exit_code": 0,
+    "log": "unittest.log"
+  },
+  "static_commands": [
+    {
+      "command": [
+        "python3",
+        "-B",
+        "agent/skills/docs-archive/scripts/run_evals.py",
+        "validate"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"status\": \"validated\",\n  \"cases\": 19,\n  \"suite_sha256\": \"5662b504f8734b42d2a19ed566193d7245ee07abfe6b65f4d6c5db5589ea2593\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "/Users/only/.codex/skills/.system/skill-creator/scripts/quick_validate.py",
+        "agent/skills/docs-archive"
+      ],
+      "exit_code": 0,
+      "stdout": "Skill is valid!\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "agent/skills/docs-archive",
+        "agent/skills/docs-archive-workspace"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "local_markdown_targets": {
+    "checked": 66,
+    "broken": []
+  },
+  "python_ast_and_trailing_whitespace": {
+    "files": 6,
+    "errors": 0
+  },
+  "source_sha256": {
+    "agent/skills/docs-archive/scripts/run_evals.py": "281c3fa9b51e47f5e9594c05214afee816adec7aa0e6878afdb02bd796a9cc5e",
+    "agent/skills/docs-archive/scripts/codex_adapter.py": "ecef5a51930444ace6b5aadcdeb3b81af4c48fd3c4302700952692ad284a5dbb",
+    "agent/skills/docs-archive/tests/test_skill.py": "f13119aa4b91f15d9a951dd5665b7f7743c857c672c0e438927a12b8ab2ee903",
+    "agent/skills/docs-archive/tests/test_runner.py": "83f567275adbd419db16f62484334e23338db384350a8a425d269f7918d1b812",
+    "agent/skills/docs-archive/tests/test_codex_adapter.py": "b485c9daadfdee8a7094fbacab84c6465e09790b9353dd1b1da58d1b9f6a1fbd",
+    "agent/skills/docs-archive/tests/test_evaluation_contract.py": "dc374225681cae9d193e2c3eee800e6bb013de65cb1ac7b111ee1b097e6c44c7"
+  },
+  "pylint": {
+    "enabled": "E,F",
+    "exit_code": 0,
+    "log": "pylint.log"
+  },
+  "reviews": {
+    "contract_review": "APPROVE after solution authorization assertion fix",
+    "python_review": "APPROVE after preserving CLI symlink invocation name",
+    "final_code_review": "APPROVE after slow-start process-test fixes; injected 0.4s version delay passed"
+  }
+}

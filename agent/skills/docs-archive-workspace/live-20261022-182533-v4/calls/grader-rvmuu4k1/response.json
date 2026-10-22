@@ -1,0 +1,15 @@
+{
+  "eval_id": "archive-not-trigger-003",
+  "judgments": [
+    {
+      "evidence": "回答明确选择“应走 docs-extract”，从指定材料提炼到 overview 第三列，并说明“dry-run…仅预览…不写文件”，符合当前路由要求。",
+      "id": "correct-downstream",
+      "passed": true
+    },
+    {
+      "evidence": "回答明确说明“不属于 docs-archive 归档”，未安排按 overview 行链接写入视角文件。",
+      "id": "no-false-archive-primary",
+      "passed": true
+    }
+  ]
+}

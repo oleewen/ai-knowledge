@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a1632a-fe90-7d40-b7a7-ac6e9182238b"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"eval_id\":\"archive-not-trigger-003\",\"judgments\":[{\"evidence\":\"回答明确选择“应走 docs-extract”，从指定材料提炼到 overview 第三列，并说明“dry-run…仅预览…不写文件”，符合当前路由要求。\",\"id\":\"correct-downstream\",\"passed\":true},{\"evidence\":\"回答明确说明“不属于 docs-archive 归档”，未安排按 overview 行链接写入视角文件。\",\"id\":\"no-false-archive-primary\",\"passed\":true}]}"}}
+{"type":"turn.completed","usage":{"input_tokens":20561,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":120,"reasoning_output_tokens":0}}

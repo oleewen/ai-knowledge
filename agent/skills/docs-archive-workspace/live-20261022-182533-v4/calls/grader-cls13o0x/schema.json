@@ -1,0 +1,44 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "eval_id": {
+      "type": "string",
+      "enum": [
+        "archive-solution-layer-001"
+      ]
+    },
+    "judgments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": [
+              "intent-clarify-via-confirmation-book",
+              "solution-layer-route",
+              "single-unit-stop"
+            ]
+          },
+          "passed": {
+            "type": "boolean"
+          },
+          "evidence": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "passed",
+          "evidence"
+        ]
+      }
+    }
+  },
+  "required": [
+    "eval_id",
+    "judgments"
+  ]
+}

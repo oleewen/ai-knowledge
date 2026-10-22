@@ -1,0 +1,1 @@
+{"eval_id":"archive-not-trigger-001","judgments":[{"evidence":"回答明确“主路径用 docs-build”，并说明对齐知识实体及实体 ID，联动视角 README 台账与 INDEX-GUIDE 第四章导航。","id":"correct-downstream","passed":true},{"evidence":"回答明确“不把它当作 overview 归档”，未将 overview 行链归档安排为主路径。","id":"no-false-archive-primary","passed":true},{"evidence":"回答明确“archive 不负责批量改实体 ID”。","id":"respect-knowledge-scope","passed":true}]}

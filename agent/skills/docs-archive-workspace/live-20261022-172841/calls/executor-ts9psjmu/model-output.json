@@ -1,0 +1,1 @@
+{"response":"爸爸，这项任务应使用 **docs-distill**：将 application 槽位内容全量核对、去重，把 delta 写入 system overview 第三列；不走 docs-archive。\n\n**当前阶段：意图澄清**\n\n目前未提供业务正文，无法核实源/目标职责边界、知识粒度及已有内容，也尚未落盘。\n\n1. 请提供 application 槽位内容与目标 system overview 正文，附各自路径及职责说明。随后先核对范围与粒度、形成写前确认清单；确认后再进入落盘步骤。"}

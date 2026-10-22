@@ -1,0 +1,55 @@
+{
+  "audited_at": "2026-10-22T10:48:24.861501+00:00",
+  "reviewer": "independent quality-engineer agent audit_live_v4",
+  "verdict": "APPROVE",
+  "new_actionable_findings": [],
+  "calls": {
+    "total": 45,
+    "executor": 19,
+    "grader": 26
+  },
+  "suite": {
+    "cases": 19,
+    "passed": 19,
+    "failed": 0,
+    "error": 0,
+    "assertions": 51,
+    "passed_assertions": 51
+  },
+  "calibration": {
+    "samples": 7,
+    "matched_samples": 7,
+    "judgments": 21,
+    "expected_true": 12,
+    "expected_false": 9,
+    "expectation_provenance": "Agent-authored preset cases, independently agent-reviewed; not human gold labels."
+  },
+  "checks": {
+    "executor_inputs_exclude_case_ids_and_expected_answers": true,
+    "calibration_expectations_and_rationales_excluded_from_grader_inputs": true,
+    "prompt_adapter_and_context_hashes_match": true,
+    "events_last_message_matches_model_output_and_response": true,
+    "all_report_records_match_executor_and_grader_artifacts": true,
+    "independent_rescore_exit_code": 0,
+    "independent_rescore_matches_saved_rescore": true,
+    "readme_facts_and_limitations_match_evidence": true
+  },
+  "semantic_review": [
+    "build/extract routing",
+    "unauthorized-write and index-shell violations",
+    "partial failure recovery",
+    "full six-point confirmation and stop",
+    "Actor/role consistency and standalone reviewability",
+    "solution first-turn authorization",
+    "D failure retains pending deletion",
+    "D success restores dash and preserves links",
+    "missing/broken link stop",
+    "explicit target vs row-link mismatch"
+  ],
+  "wording_correction": "Changed current explanatory wording from human-authored expectations to preset expectations; historical input snapshot and scores retained.",
+  "limits": [
+    "Loaded-skill single-turn response semantics, not actual business-file execution.",
+    "Executor/grader use the same model in separate calls.",
+    "CLI global instructions and installed skill descriptions may participate."
+  ]
+}

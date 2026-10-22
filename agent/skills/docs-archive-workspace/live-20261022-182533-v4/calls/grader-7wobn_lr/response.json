@@ -1,0 +1,15 @@
+{
+  "eval_id": "archive-not-trigger-002",
+  "judgments": [
+    {
+      "evidence": "回答明确选择“docs-revise（术语与引用链修订）”，并安排全仓 Markdown 术语替换、受影响引用链同步及锚点链接检查，符合定向修订职责。",
+      "id": "correct-downstream",
+      "passed": true
+    },
+    {
+      "evidence": "回答明确说明“应从 docs-archive 分流”，实际写入对象为命中的 Markdown 文件，未安排 overview→架构章归档主流程。",
+      "id": "no-false-archive-primary",
+      "passed": true
+    }
+  ]
+}

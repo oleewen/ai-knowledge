@@ -1,0 +1,1 @@
+{"eval_id":"archive-solution-layer-001","judgments":[{"evidence":"回答明确使用 docs-archive，并将来源定位为 solution/knowledge/overview/payments-overview.md，目标为该行业务架构行内链接指向的章节，未误分流为 docs-distill。","id":"solution-layer-route","passed":true},{"evidence":"回答明确“仅处理一个行内链接指向的目标章节及对应行块”，但未说明该单元收敛后须停下等待用户动作；当前等待补充正文不能证明收敛后的停顿要求。","id":"single-unit-stop","passed":false}]}

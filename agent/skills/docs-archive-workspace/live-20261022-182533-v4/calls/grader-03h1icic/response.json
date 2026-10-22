@@ -1,0 +1,15 @@
+{
+  "eval_id": "archive-not-trigger-distill-001",
+  "judgments": [
+    {
+      "evidence": "回答明确选择“docs-distill”，并说明“application 槽位全量去重后，将 delta 写入 system overview 第三列；不走 docs-archive”。",
+      "id": "correct-downstream",
+      "passed": true
+    },
+    {
+      "evidence": "未发现将槽位全量上行描述成 overview 行内链接归档；回答明确以 docs-distill 为主路径。",
+      "id": "no-false-archive-primary",
+      "passed": true
+    }
+  ]
+}

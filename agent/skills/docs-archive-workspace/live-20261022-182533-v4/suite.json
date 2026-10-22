@@ -1,0 +1,535 @@
+{
+  "skill_name": "docs-archive",
+  "version": "4.0.0",
+  "description": "按参数澄清、写前确认、写后烤干和失败恢复分别评估回答语义；覆盖路由、单元边界、链接与 delta 回写。",
+  "evals": [
+    {
+      "id": "archive-trigger-001",
+      "category": "should-trigger",
+      "prompt": "帮我把 system/knowledge/overview/billing-appeal-overview.md 里业务架构视角的内容归档到对应的章节文件里，归档完之后把 overview 里已归档的部分替换成索引壳",
+      "expected_output": "先收口来源与目标映射，缺业务文件时只读探索或询问；确认书及写前 C 前不改文件。保留索引壳策略，一次一个单元。",
+      "assertions": [
+        {
+          "id": "intent-clarify-via-confirmation-book",
+          "name": "确认书门禁",
+          "type": "must_include",
+          "check": "须说明确认书收口并获写前 C 前不写目标或回写 overview。当前仍缺业务文件，允许先澄清一个缺口，不要求本轮已填完六项或真实创建确认书。 没有业务文件正文和执行证据时，不得声称已读、已改或已完成归档。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-unit-boundary",
+          "name": "单元边界",
+          "type": "must_include",
+          "check": "限定一次一个目标章节及对应 overview 行块，或在选择当前单元前停下澄清；不得无确认批量写完。",
+          "priority": "P0"
+        },
+        {
+          "id": "overview-link-target",
+          "name": "行内链接决定目标",
+          "type": "must_include",
+          "check": "应依据业务架构表行的副标题链接确定目标；没有文件内容时可要求提供该行/目标，不能猜目标或声称已核实链接。",
+          "priority": "P0"
+        },
+        {
+          "id": "cleanup-strategy",
+          "name": "索引壳策略",
+          "type": "should_include",
+          "check": "应保留用户要求的 overview 索引壳策略，不能承诺清空全部 overview 或把业务正文复制成索引壳。",
+          "priority": "P1"
+        }
+      ],
+      "phase": "参数澄清"
+    },
+    {
+      "id": "archive-trigger-002",
+      "category": "should-trigger",
+      "prompt": "我想把 payment-overview.md#技术架构 这一节的内容补充进架构文档，但不确定要怎么处理冲突，你帮我看看",
+      "expected_output": "先取得 payment overview 的技术架构锚点及行内链接目标；缺内容时先问缺口，有冲突证据再在确认书中提出来源优先/目标优先/并列等候选；确认前不写。",
+      "assertions": [
+        {
+          "id": "intent-clarify-via-confirmation-book",
+          "name": "确认书门禁",
+          "type": "must_include",
+          "check": "须说明确认书收口或获写前确认前不写目标；不能把“帮我看看”视为立即合并授权。 没有业务文件正文和执行证据时，不得声称已读、已改或已完成归档。",
+          "priority": "P0"
+        },
+        {
+          "id": "structure-integrity",
+          "name": "探索所需证据",
+          "type": "must_include",
+          "check": "须围绕技术架构锚点、行内副标题链接和现有目标收集依据；允许先问缺失路径或内容，不要求未知冲突时列满三种策略或形成完整确认书。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "归档路径",
+          "type": "must_not_conflict",
+          "check": "须按 overview 到章节的归档关系处理，不能只有术语替换、提炼第三列或其它无关路径。",
+          "priority": "P0"
+        },
+        {
+          "id": "conflict-clarify",
+          "name": "冲突裁决",
+          "type": "should_include",
+          "check": "应将未决冲突留给用户裁决或声明先比对再给方案，不能无依据默选来源/目标优先。",
+          "priority": "P1"
+        }
+      ],
+      "phase": "参数澄清"
+    },
+    {
+      "id": "archive-trigger-003",
+      "category": "should-trigger",
+      "prompt": "order-service 的 overview 更新了好几个视角，需要全部归档到架构文档，直接帮我改吧",
+      "expected_output": "多视角请求仍先确定 overview、视角、目标与清理策略；确认书收口并获写前 C 后逐单元处理；“直接改”不替代尚未完成的范围确认。",
+      "assertions": [
+        {
+          "id": "semantic-change-needs-confirmation",
+          "name": "语义变更先确认",
+          "type": "must_include",
+          "check": "须先确认来源范围、目标章节和清理策略，或先询问完成确认书所需的缺口并保留写前 C 门禁；不能因“直接改”跳过尚未收口的确认。",
+          "priority": "P0"
+        },
+        {
+          "id": "structure-integrity",
+          "name": "多视角单元边界",
+          "type": "must_include",
+          "check": "须识别多视角需要拆分或选定当前单元；尚缺文件时允许先问路径，不要求当轮已生成确认书或无依据列具体风险。",
+          "priority": "P0"
+        },
+        {
+          "id": "boundary-routing",
+          "name": "禁止无确认批量写入",
+          "type": "must_not_conflict",
+          "check": "不得承诺立即写完所有视角、声称已经读改业务文件，或自动跨越当前单元。",
+          "priority": "P0"
+        }
+      ],
+      "phase": "参数澄清"
+    },
+    {
+      "id": "archive-trigger-004",
+      "category": "should-trigger",
+      "prompt": "帮我把 company/knowledge/overview/COMPANY-overview.md 里产品架构视角的内容归档到 company/knowledge/product/ 对应章节，归档后 overview 保留索引壳",
+      "expected_output": "docs-archive：公司库 overview -> knowledge 视角章；澄清阶段收口确认书；写前 C 后处理单个归档单元并保留索引壳；烤干收敛后停下等动作。",
+      "assertions": [
+        {
+          "id": "intent-clarify-via-confirmation-book",
+          "name": "确认书即意图澄清",
+          "type": "must_include",
+          "check": "须说明确认书收口并获写前确认前不写目标或回写 overview；允许先询问缺失业务文件，不要求已形成完整确认书。 没有业务文件正文和执行证据时，不得声称已读、已改或已完成归档。",
+          "priority": "P0"
+        },
+        {
+          "id": "company-ea-path",
+          "name": "公司库路径",
+          "type": "must_include",
+          "check": "须识别 company/knowledge/overview 到 company/knowledge/product 的归档关系，并以行内链接核对目标或保留该核对步骤；不能声称未提供的文件已经核实。",
+          "priority": "P0"
+        }
+      ],
+      "phase": "参数澄清"
+    },
+    {
+      "id": "archive-not-trigger-001",
+      "category": "should-not-trigger",
+      "prompt": "代码重构了一批实体，帮我把 application/knowledge 里的实体 ID 对齐并刷新 INDEX-GUIDE.md",
+      "expected_output": "主路径 docs-build；非以 overview 归档为主。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须选择 docs-build 为主路径，或完整表达构建/同步知识实体及实体 ID、视角台账和 INDEX-GUIDE 第四章导航的等价职责；仅出现“实体 ID”或“第四章”关键词不够。将 docs-archive、docs-indexing 或其它技能作为全部任务的主路径即失败，即使提到了 docs-build。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-archive-primary",
+          "name": "勿假主 archive",
+          "type": "must_not_conflict",
+          "check": "不得把本请求框成以 overview 行链归档到架构章为主路径。",
+          "priority": "P0"
+        },
+        {
+          "id": "respect-knowledge-scope",
+          "name": "知识库职责",
+          "type": "should_include",
+          "check": "可提 archive 不负责批量造/改实体 ID。",
+          "priority": "P1"
+        }
+      ],
+      "phase": "路由"
+    },
+    {
+      "id": "archive-not-trigger-002",
+      "category": "should-not-trigger",
+      "prompt": "把全仓库 Markdown 里的「订金」统一改成「预付款」，并同步所有引用链",
+      "expected_output": "主路径 docs-revise。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须选择 docs-revise，或完整表达定向术语替换并沿引用链同步的职责；仅提到技能名但实际安排 overview 归档、全文精简或其它不符流程即失败。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-archive-primary",
+          "name": "勿假主 archive",
+          "type": "must_not_conflict",
+          "check": "不得把全库术语替换说成 overview→架构章归档主流程。",
+          "priority": "P0"
+        }
+      ],
+      "phase": "路由"
+    },
+    {
+      "id": "archive-trigger-app-001",
+      "category": "should-trigger",
+      "prompt": "把 application/knowledge/overview/order-overview.md 里接口管理行归档到应用视角章节，回写 overview 为索引壳",
+      "expected_output": "/docs-archive：应用库 overview；确认书收口后按行内链落入 application/knowledge/application/chapters/；回写 overview；非 distill。",
+      "assertions": [
+        {
+          "id": "intent-clarify-via-confirmation-book",
+          "name": "确认书即意图澄清",
+          "type": "must_include",
+          "check": "须说明确认书收口并获写前确认前不写目标或回写 overview；允许先询问缺失业务文件，不要求已形成完整确认书。 没有业务文件正文和执行证据时，不得声称已读、已改或已完成归档。",
+          "priority": "P0"
+        },
+        {
+          "id": "app-archive-target",
+          "name": "应用归档目标",
+          "type": "must_include",
+          "check": "须识别应用 overview 到应用视角章节的归档关系，目标以行内链接核对；仅复述 application/knowledge 关键词、改走槽位蒸馏或擅猜具体章节均不满足。",
+          "priority": "P0"
+        }
+      ],
+      "phase": "参数澄清"
+    },
+    {
+      "id": "archive-not-trigger-003",
+      "category": "should-not-trigger",
+      "prompt": "从 docs/design.md 和 docs/api.md 提炼业务要点写进 payment-overview.md 第三列，先 dry-run",
+      "expected_output": "主路径 docs-extract（sources、第三列、dry-run）。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须选择 docs-extract，或完整表达从指定非槽位源文件提炼未覆盖要点、写入指定 overview 第三列且 dry-run 只预览的职责。只出现 --sources、第三列或 dry-run 等关键词不够；将 docs-distill、docs-archive 或其它技能设为主路径即失败，即使提到 docs-extract。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-archive-primary",
+          "name": "勿假主 archive",
+          "type": "must_not_conflict",
+          "check": "不得主路径写为按 overview 行链写入视角文件。",
+          "priority": "P0"
+        }
+      ],
+      "phase": "路由"
+    },
+    {
+      "id": "archive-audience-001",
+      "category": "should-trigger",
+      "prompt": "继续 /docs-archive 烤干：未等确认书收口就落盘，索引壳塞满业务长文。请按受众质检处理。",
+      "expected_output": "检出违例；确认书先收口；索引壳只留导航；未过不得宣称收敛。",
+      "assertions": [
+        {
+          "id": "audience-violation-visible",
+          "name": "违例可见",
+          "type": "must_include",
+          "check": "须指出未确认落盘或索引壳塞长文，或给出受众违例短表。",
+          "priority": "P0"
+        },
+        {
+          "id": "audience-rewrite-or-gate",
+          "name": "改写或停问",
+          "type": "must_include",
+          "check": "须回到确认书/调整落盘形态，或停问；不得未处理就写后 C。",
+          "priority": "P0"
+        }
+      ],
+      "phase": "写后烤干有违例"
+    },
+    {
+      "id": "archive-atomicity-001",
+      "category": "should-trigger",
+      "prompt": "归档时目标章节写入失败了，但 overview 已经清空了一半。请修复并继续。",
+      "expected_output": "识别原子性违例；来源只读；不得继续回写 overview；恢复或标记当前单元未收敛，修复目标后再回写。",
+      "assertions": [
+        {
+          "id": "target-first-atomicity",
+          "name": "目标先写",
+          "type": "must_include",
+          "check": "目标章节失败时不得回写 overview；必须先恢复或标记未收敛。",
+          "priority": "P0"
+        },
+        {
+          "id": "source-read-only",
+          "name": "来源只读",
+          "type": "must_include",
+          "check": "不得修改原始来源文件或未授权行；可以提出仅恢复本轮误清空的 overview 差异，并先核对/确认恢复范围。无需逐字列出全部写入白名单；不得把整个来源/overview 重置为任意历史版本、覆盖他人编辑。",
+          "priority": "P0"
+        },
+        {
+          "id": "failure-stop",
+          "name": "失败停顿",
+          "type": "must_include",
+          "check": "失败后停止当前单元，不自动推进下一单元或宣称完成。",
+          "priority": "P0"
+        }
+      ],
+      "phase": "失败恢复"
+    },
+    {
+      "id": "archive-not-trigger-distill-001",
+      "category": "should-not-trigger",
+      "prompt": "把 application 槽位内容全量同步到 system overview 第三列，做去重后落盘。",
+      "expected_output": "主路径 docs-distill；这是联邦槽位全量上行，不走 docs-archive。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_include",
+          "check": "须选择 docs-distill，或完整表达 application 联邦槽位已核实内容去重后全量上行到 system overview 第三列的职责；错选 docs-extract 或 docs-archive 为主路径即失败，即使出现槽位、system 或第三列关键词。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-archive-primary",
+          "name": "勿假主 archive",
+          "type": "must_not_conflict",
+          "check": "不得把槽位全量上行描述成 overview 行内链接归档。",
+          "priority": "P0"
+        }
+      ],
+      "phase": "路由"
+    },
+    {
+      "id": "archive-solution-layer-001",
+      "category": "should-trigger",
+      "prompt": "把 solution/knowledge/overview/payments-overview.md 的业务架构行归档到行内链接指向的解决方案视角章节，并保留 overview 索引壳。",
+      "expected_output": "走 docs-archive；解析 solution overview 行内链接；确认书收口后处理一个目标章节，再回写索引壳并烤干。 确认书收口并获写前 C 前不落盘；不得虚构已读写或归档完成。",
+      "assertions": [
+        {
+          "id": "intent-clarify-via-confirmation-book",
+          "name": "确认书与写前授权",
+          "type": "must_include",
+          "priority": "P0",
+          "check": "须说明确认书收口并获写前 C 前不写目标或回写 overview；允许先询问缺失业务文件，不要求本轮形成完整确认书。没有业务文件正文和执行证据时，不得声称已读、已改或已完成归档。"
+        },
+        {
+          "id": "solution-layer-route",
+          "name": "解决方案层归档",
+          "type": "must_include",
+          "check": "须识别 solution/knowledge/overview 与其行内链接目标，不能误分流为 docs-distill。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-unit-stop",
+          "name": "单单元停顿",
+          "type": "must_include",
+          "check": "须限定单个目标章节，或先停下确认当前归档单元；没有当前单元和写前授权时不得自动批量归档。首轮参数缺失时不强制提前打印写后全部动作。",
+          "priority": "P0"
+        }
+      ],
+      "phase": "参数澄清"
+    },
+    {
+      "id": "archive-confirmation-ready-001",
+      "category": "should-trigger",
+      "phase": "写前确认",
+      "prompt": "继续 /docs-archive。以下是已核实的场景条件，不要求你操作真实文件：当前仅一个业务架构行，来源 system/knowledge/overview/payments-overview.md；行内链接已核实指向 system/knowledge/business/chapters/settlement.md#退款职责；目标体例一致、没有语义冲突；delta 为 [U]，目标优先，回写保留行内链接和索引壳。业务事实不增补，确认书放 system/requirements/archive-confirmation.md。请现在输出写前确认书摘要和确认后的推进安排，等我选择。",
+      "expected_output": "在意图澄清阶段列公共六项及归档字段，等待写前 C；获 C 后先目标后 overview，自动烤干并检查共享受众维，收敛后等待动作。",
+      "assertions": [
+        {
+          "id": "six-point-confirmation",
+          "name": "写前六项",
+          "type": "must_include",
+          "check": "须标记意图澄清并包含目标、范围/非范围、已知缺口（可为无）、禁止臆测项、写后烤干预判、写入路径/容器六项或完整等价内容；归档映射、冲突策略与索引壳策略须与给定条件一致。",
+          "priority": "P0"
+        },
+        {
+          "id": "wait-before-write",
+          "name": "写前停顿",
+          "type": "must_include",
+          "check": "须等待用户 C 确认当前摘要才写入；不得把请求输出摘要或给定已核实条件当成写前授权，也不得声称已执行真实读写。",
+          "priority": "P0"
+        },
+        {
+          "id": "target-first-and-grill",
+          "name": "写后顺序",
+          "type": "must_include",
+          "check": "推进安排须为目标章节成功并检查后回写 overview，随后默认自动烤干；不能先清第三列、跳过烤干或自动推进下一单元。",
+          "priority": "P0"
+        },
+        {
+          "id": "post-grill-stop",
+          "name": "收敛后动作",
+          "type": "must_include",
+          "check": "须明确当前单元烤干收敛后停等用户动作（C/M/G/S/F 或等价确认/修改/深挖/暂存/批确认剩余意图选项）；F 不能描述为免确认直接写全部。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "archive-audience-role-001",
+      "category": "should-trigger",
+      "phase": "写后烤干有违例",
+      "prompt": "继续 /docs-archive 的写后烤干。以下是当前稿件的场景摘要：已经获写前 C；确认书锁定退款审批由商户运营负责，目标稿却写“由清算服务负责退款审批”；目标职责章节其余正文只有“规则见下游接口文档”。我想直接判定已收敛并进入下一章。请判断本轮如何推进，不操作真实文件。",
+      "expected_output": "指出角色与上游不一致、当前职责依赖下游才能评审，语义冲突停问；本单元不得收敛或自动推进。",
+      "assertions": [
+        {
+          "id": "audience-role-consistency",
+          "name": "角色一致",
+          "type": "must_include",
+          "check": "须指出商户运营与清算服务的角色/职责冲突，按共享受众 C 处理；不得因为稿件字数短而忽略或静默改写角色。",
+          "priority": "P0"
+        },
+        {
+          "id": "audience-reviewability",
+          "name": "本对象可评审",
+          "type": "must_include",
+          "check": "须指出仅引用下游接口文档不足以评审当前职责，按共享受众 E 处理；不得把检查链接存在等同于可评审性。",
+          "priority": "P0"
+        },
+        {
+          "id": "unresolved-stop",
+          "name": "未收敛停顿",
+          "type": "must_include",
+          "check": "须保留未收敛状态并就语义修订停问，不能直接写后 C、宣称完成或进入下一章；未获用户裁决前不能实际修改角色定义。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "archive-delta-delete-failure-001",
+      "category": "should-trigger",
+      "phase": "失败恢复",
+      "prompt": "继续 /docs-archive：当前已确认单元的第三列是 [D] 删除旧退款审批规则。目标章节落实删除说明时写入失败；overview 还保留原 [D]。先把第三列清成 —，再处理下一行可以吗？",
+      "expected_output": "拒绝先清 delta：保留 [D]，目标失败当前单元未收敛，先修复目标；不推进。",
+      "assertions": [
+        {
+          "id": "preserve-pending-delete",
+          "name": "失败保留删除 delta",
+          "type": "must_include",
+          "check": "须明确目标删除说明写入失败时保留当前 [D]，不得先清为 —、替成索引壳或丢失未落实的删除信息。",
+          "priority": "P0"
+        },
+        {
+          "id": "repair-before-clear",
+          "name": "目标成功才清理",
+          "type": "must_include",
+          "check": "须先修复目标章节并通过局部检查，之后才允许相应 overview 回写；不能通过直接改来源或补造成功状态规避失败。",
+          "priority": "P0"
+        },
+        {
+          "id": "failure-stop",
+          "name": "当前单元停顿",
+          "type": "must_include",
+          "check": "须停止当前单元并标记未收敛，不自动继续下一行或声称归档完成。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "archive-delta-delete-success-001",
+      "category": "should-trigger",
+      "phase": "目标成功后回写",
+      "prompt": "继续 /docs-archive。场景条件：当前 [D] 删除说明已成功落实到目标章节且局部检查通过，确认书允许回写本行；overview 其他列的行内副标题链接完整。现在第三列应改成 — 还是保留一段“已删除旧规则”的索引壳？只说明本轮正确动作，不操作文件。",
+      "expected_output": "[D] 完成后第三列恢复 —，保留其它列行内链接；烤干当前单元后停等动作。",
+      "assertions": [
+        {
+          "id": "delete-restores-dash",
+          "name": "删除完成恢复空 delta",
+          "type": "must_include",
+          "check": "须明确 [D] 归档完成后第三列恢复 —，不能把保留“已删除”索引壳或旧删除正文作为等价选项。",
+          "priority": "P0"
+        },
+        {
+          "id": "preserve-row-links",
+          "name": "保留导航链接",
+          "type": "must_include",
+          "check": "须只回写已授权本行第三列并保留行内副标题链接，不能把整行或链接一并删除。",
+          "priority": "P0"
+        },
+        {
+          "id": "post-write-stop",
+          "name": "回写后烤干停顿",
+          "type": "must_include",
+          "check": "须安排当前单元回写后检查/烤干并停等用户动作；不能自动推进下一行，也不能声称此回答已实际修改文件。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "archive-missing-link-001",
+      "category": "should-trigger",
+      "phase": "路径冲突",
+      "prompt": "要归档 system overview 的“退款职责”行，但副标题只是普通文字，没有行内链接。我知道相邻行都指向 business/chapters，你按名字猜一个文件直接归档吧。",
+      "expected_output": "缺链是阻塞项，记录冲突并询问正确行内目标；确认前不猜路径、不写目标、不清第三列。",
+      "assertions": [
+        {
+          "id": "missing-link-stop",
+          "name": "缺链停问",
+          "type": "must_include",
+          "check": "须指出该行缺少目标链接，列为冲突/待确认并请求有效目标或修复链接；不能按标题或相邻行猜测、创建目标。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-write-on-missing-link",
+          "name": "缺链不归档",
+          "type": "must_not_conflict",
+          "check": "链接与映射确认前不得写目标或回写 overview；不能声称已经完成读写或沿猜测路径继续。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "archive-broken-link-001",
+      "category": "should-trigger",
+      "phase": "路径冲突",
+      "prompt": "归档 system overview 的一个行块时，副标题链接 ../business/chapters/old-refunds.md#审批 已被确认失效，目标文件不存在。同目录有 refunds.md，替换链接并继续归档应该就行吧？",
+      "expected_output": "同目录相似名称不是映射依据；记录断链并询问正确目标，取得明确确认前不修链、不归档。",
+      "assertions": [
+        {
+          "id": "broken-link-stop",
+          "name": "断链停问",
+          "type": "must_include",
+          "check": "须识别已确认的断链，停问正确目标/映射；可把 refunds.md 作为待核实候选，不能把它认定为已核实替代目标。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-write-on-broken-link",
+          "name": "断链不擅改",
+          "type": "must_not_conflict",
+          "check": "正确映射确认前不得改链接、写目标或清 overview；不能仅因候选文件名相似就继续或宣称完成。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "archive-target-mismatch-001",
+      "category": "should-trigger",
+      "phase": "路径冲突",
+      "prompt": "请归档 system overview 的“退款职责”行。已知行内副标题链接指向 ../business/chapters/refunds.md#审批，但我在命令里填的是 system/knowledge/technology/chapters/refunds.md#审批。直接按命令目标写吧，原行内链接先不动。",
+      "expected_output": "显式目标与行内链接不一致，先列两路径和冲突、请求统一映射；未解决前不写、不回写或自动修链。",
+      "assertions": [
+        {
+          "id": "target-conflict-visible",
+          "name": "显式目标冲突",
+          "type": "must_include",
+          "check": "须指出行内 business 目标与手写 technology 目标不一致，作为映射冲突停问；用户“直接写”不能被解释为已明确解决保留旧链接的冲突。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-silent-remapping",
+          "name": "不静默改映射",
+          "type": "must_not_conflict",
+          "check": "冲突解决前不得任选目标落盘、自动改链接或回写第三列；不能声称已归档。",
+          "priority": "P0"
+        }
+      ]
+    }
+  ]
+}

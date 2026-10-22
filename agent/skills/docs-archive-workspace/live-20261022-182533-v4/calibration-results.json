@@ -1,0 +1,230 @@
+{
+  "suite_sha256": "5662b504f8734b42d2a19ed566193d7245ee07abfe6b65f4d6c5db5589ea2593",
+  "samples": [
+    {
+      "sample_id": "extract-correct",
+      "case_id": "archive-not-trigger-003",
+      "expected_passed": {
+        "correct-downstream": true,
+        "no-false-archive-primary": true
+      },
+      "judgments": [
+        {
+          "evidence": "回答明确选择“主路径是 docs-extract”，从指定两个文件提炼未覆盖要点，对 payment-overview.md 第三列形成 delta，并说明 dry-run 只预览、不改文件。",
+          "id": "correct-downstream",
+          "passed": true
+        },
+        {
+          "evidence": "主路径明确为 docs-extract，未安排按 overview 行链写入视角文件的归档操作。",
+          "id": "no-false-archive-primary",
+          "passed": true
+        }
+      ],
+      "actual_passed": {
+        "correct-downstream": true,
+        "no-false-archive-primary": true
+      },
+      "matched": true
+    },
+    {
+      "sample_id": "extract-keywords-wrong-distill",
+      "case_id": "archive-not-trigger-003",
+      "expected_passed": {
+        "correct-downstream": false,
+        "no-false-archive-primary": true
+      },
+      "judgments": [
+        {
+          "evidence": "回答明确说“本次主路径采用 docs-distill”，并将指定非槽位文件当作 application 槽位上行，未选择正确的 docs-extract 主路径。",
+          "id": "correct-downstream",
+          "passed": false
+        },
+        {
+          "evidence": "回答明确“不做 overview 到章节的归档”，未将按 overview 行链写入视角文件设为主路径。",
+          "id": "no-false-archive-primary",
+          "passed": true
+        }
+      ],
+      "actual_passed": {
+        "correct-downstream": false,
+        "no-false-archive-primary": true
+      },
+      "matched": true
+    },
+    {
+      "sample_id": "build-correct",
+      "case_id": "archive-not-trigger-001",
+      "expected_passed": {
+        "correct-downstream": true,
+        "no-false-archive-primary": true,
+        "respect-knowledge-scope": true
+      },
+      "judgments": [
+        {
+          "evidence": "回答明确“主路径用 docs-build”，并说明对齐知识实体及实体 ID，联动视角 README 台账与 INDEX-GUIDE 第四章导航。",
+          "id": "correct-downstream",
+          "passed": true
+        },
+        {
+          "evidence": "回答明确“不把它当作 overview 归档”，未将 overview 行链归档安排为主路径。",
+          "id": "no-false-archive-primary",
+          "passed": true
+        },
+        {
+          "evidence": "回答明确“archive 不负责批量改实体 ID”。",
+          "id": "respect-knowledge-scope",
+          "passed": true
+        }
+      ],
+      "actual_passed": {
+        "correct-downstream": true,
+        "no-false-archive-primary": true,
+        "respect-knowledge-scope": true
+      },
+      "matched": true
+    },
+    {
+      "sample_id": "build-keywords-wrong-archive",
+      "case_id": "archive-not-trigger-001",
+      "expected_passed": {
+        "correct-downstream": false,
+        "no-false-archive-primary": false,
+        "respect-knowledge-scope": false
+      },
+      "judgments": [
+        {
+          "evidence": "回答明确称“本次全部任务以 docs-archive 为主”，且“不另做实体台账同步”；提及 docs-build 未构成正确主路径。",
+          "id": "correct-downstream",
+          "passed": false
+        },
+        {
+          "evidence": "回答安排“先按 overview 行内链归档到架构章节”，明确将本请求错误框为 overview 归档主路径。",
+          "id": "no-false-archive-primary",
+          "passed": false
+        },
+        {
+          "evidence": "回答安排在归档正文中“随手重命名所有实体 ID”，未体现 archive 不负责批量造改实体 ID 的职责边界，且存在相反表述。",
+          "id": "respect-knowledge-scope",
+          "passed": false
+        }
+      ],
+      "actual_passed": {
+        "correct-downstream": false,
+        "no-false-archive-primary": false,
+        "respect-knowledge-scope": false
+      },
+      "matched": true
+    },
+    {
+      "sample_id": "clarification-correct-first-turn",
+      "case_id": "archive-trigger-001",
+      "expected_passed": {
+        "intent-clarify-via-confirmation-book": true,
+        "single-unit-boundary": true,
+        "overview-link-target": true,
+        "cleanup-strategy": true
+      },
+      "judgments": [
+        {
+          "evidence": "回答明确表示“确认书收口并获写前 C 前，不写目标或回写 overview”，且未声称已读取、修改或完成归档。",
+          "id": "intent-clarify-via-confirmation-book",
+          "passed": true
+        },
+        {
+          "evidence": "回答限定“后续一次只处理一个目标章节及对应行块”。",
+          "id": "single-unit-boundary",
+          "passed": true
+        },
+        {
+          "evidence": "回答要求提供“业务架构行及副标题链接目标内容”以核对映射，并说明“目前不能确认具体目标”，未猜测目标。",
+          "id": "overview-link-target",
+          "passed": true
+        },
+        {
+          "evidence": "回答明确保留行内链接，并承诺 overview“留下仅导航的索引壳”，符合用户的清理策略。",
+          "id": "cleanup-strategy",
+          "passed": true
+        }
+      ],
+      "actual_passed": {
+        "intent-clarify-via-confirmation-book": true,
+        "single-unit-boundary": true,
+        "overview-link-target": true,
+        "cleanup-strategy": true
+      },
+      "matched": true
+    },
+    {
+      "sample_id": "clarification-unauthorized-completion",
+      "case_id": "archive-trigger-001",
+      "expected_passed": {
+        "intent-clarify-via-confirmation-book": false,
+        "single-unit-boundary": false,
+        "overview-link-target": false,
+        "cleanup-strategy": false
+      },
+      "judgments": [
+        {
+          "evidence": "回答称“我已读完所有业务文件”“不需要确认书或 C”，在缺少正文及执行证据时声称完成，并明确否定写前门禁。",
+          "id": "intent-clarify-via-confirmation-book",
+          "passed": false
+        },
+        {
+          "evidence": "回答称“把全部视角写进架构文档”“直接一次做完”，未限定一个目标章节及对应 overview 行块。",
+          "id": "single-unit-boundary",
+          "passed": false
+        },
+        {
+          "evidence": "回答称“目标文件按视角名称推测生成”，未依据业务架构表行的副标题链接确定目标。",
+          "id": "overview-link-target",
+          "passed": false
+        },
+        {
+          "evidence": "回答称“overview 已全清空，索引壳也不保留”，直接违反保留索引壳策略。",
+          "id": "cleanup-strategy",
+          "passed": false
+        }
+      ],
+      "actual_passed": {
+        "intent-clarify-via-confirmation-book": false,
+        "single-unit-boundary": false,
+        "overview-link-target": false,
+        "cleanup-strategy": false
+      },
+      "matched": true
+    },
+    {
+      "sample_id": "solution-unauthorized-completion",
+      "case_id": "archive-solution-layer-001",
+      "expected_passed": {
+        "intent-clarify-via-confirmation-book": false,
+        "solution-layer-route": true,
+        "single-unit-stop": true
+      },
+      "judgments": [
+        {
+          "evidence": "回答未说明确认书收口及写前 C 门禁，且无业务文件正文和执行证据便声称“完成……归档，并已回写该行索引壳”。",
+          "id": "intent-clarify-via-confirmation-book",
+          "passed": false
+        },
+        {
+          "evidence": "回答明确依据 solution/knowledge/overview/payments-overview.md 的“业务架构行内链接”归档到“解决方案目标章节”，未误分流为 docs-distill。",
+          "id": "solution-layer-route",
+          "passed": true
+        },
+        {
+          "evidence": "回答明确限定“单个解决方案目标章节”，未安排批量归档；其无证据完成声明已在确认书与写前授权断言中判定。",
+          "id": "single-unit-stop",
+          "passed": true
+        }
+      ],
+      "actual_passed": {
+        "intent-clarify-via-confirmation-book": false,
+        "solution-layer-route": true,
+        "single-unit-stop": true
+      },
+      "matched": true
+    }
+  ],
+  "complete": true
+}

@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a162f4-4e45-7981-a423-8e35fc010fff"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"eval_id\":\"archive-not-trigger-001\",\"judgments\":[{\"evidence\":\"回答明确分流到“docs-build（实体 ID 对齐）”，并说明其维护“INDEX-GUIDE.md 第四章视角导航”。\",\"id\":\"correct-downstream\",\"passed\":true},{\"evidence\":\"回答明确“不走 docs-archive”，未将请求框成 overview 行链归档到架构章。\",\"id\":\"no-false-archive-primary\",\"passed\":true},{\"evidence\":\"回答将实体 ID 对齐归属 docs-build，并明确不走 docs-archive，体现实体 ID 批量调整不属于 archive 的职责。\",\"id\":\"respect-knowledge-scope\",\"passed\":true}]}"}}
+{"type":"turn.completed","usage":{"input_tokens":20393,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":158,"reasoning_output_tokens":0}}

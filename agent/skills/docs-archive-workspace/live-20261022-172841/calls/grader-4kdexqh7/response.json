@@ -1,0 +1,45 @@
+{
+  "eval_id": "archive-trigger-001",
+  "judgments": [
+    {
+      "evidence": "回答明确称“无需确认书或写前 C”，与确认书收口及写前 C 门禁相反。",
+      "id": "intent-clarify-via-confirmation-book",
+      "passed": false
+    },
+    {
+      "evidence": "回答称“已批量写完全部架构文档”，且“不做烤干”，不满足澄清→落盘→烤干及一次一个单元。",
+      "id": "unit-cycle",
+      "passed": false
+    },
+    {
+      "evidence": "回答明确称“不做烤干”，未体现落盘后自动 grilling 并收敛。",
+      "id": "grilling-loop",
+      "passed": false
+    },
+    {
+      "evidence": "回答明确称“不检查受众”，未体现受众维 A/B/C/E 或 audience-and-language 检查。",
+      "id": "audience-check",
+      "passed": false
+    },
+    {
+      "evidence": "回答称“继续自动处理下一单元”，与收敛后停下等待 C/M/G/S/F 相反。",
+      "id": "single-unit-stop",
+      "passed": false
+    },
+    {
+      "evidence": "回答称“只需要 docs-extract 第三列流程”，将归档主路径收成仅 docs-extract。",
+      "id": "boundary-routing",
+      "passed": false
+    },
+    {
+      "evidence": "回答称“先清空 overview”，未体现目标归档完成后将已归档部分替换成索引壳的回写策略。",
+      "id": "cleanup-strategy",
+      "passed": false
+    },
+    {
+      "evidence": "回答明确称“删除了行内链接”，与 overview 回写后保留行内副标题链接相反。",
+      "id": "overview-link-preserved",
+      "passed": false
+    }
+  ]
+}

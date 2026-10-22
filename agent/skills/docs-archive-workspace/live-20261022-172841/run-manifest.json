@@ -1,0 +1,39 @@
+{
+  "started_at": "2026-10-22T09:28:41.829342+00:00",
+  "suite_sha256": "7434c0d37a9b854e766464b7f532cff93fabe3963dade21a758dabf3f9388717",
+  "model": "gpt-6.1-sol",
+  "effort": "low",
+  "executor": [
+    "python3",
+    "-B",
+    "/Users/only/workspaces/ai-knowledge/agent/skills/docs-archive/scripts/codex_adapter.py",
+    "executor",
+    "--model",
+    "gpt-6.1-sol",
+    "--effort",
+    "low",
+    "--base-url",
+    "http://127.0.0.1:15721/v1",
+    "--artifacts-dir",
+    "/Users/only/workspaces/ai-knowledge/agent/skills/docs-archive-workspace/live-20261022-172841/calls"
+  ],
+  "grader": [
+    "python3",
+    "-B",
+    "/Users/only/workspaces/ai-knowledge/agent/skills/docs-archive/scripts/codex_adapter.py",
+    "grader",
+    "--model",
+    "gpt-6.1-sol",
+    "--effort",
+    "low",
+    "--base-url",
+    "http://127.0.0.1:15721/v1",
+    "--artifacts-dir",
+    "/Users/only/workspaces/ai-knowledge/agent/skills/docs-archive-workspace/live-20261022-172841/calls"
+  ],
+  "kind": "loaded-skill single-turn response semantics",
+  "attempt_policy": "one first attempt per suite case; no retry to improve score",
+  "runtime_context_scope": "Explicit documents are allowlisted; Codex may additionally load global instructions and installed skill descriptions. This is not a blank-context or automatic-discovery evaluation.",
+  "finished_at": "2026-10-22T09:38:08.303497+00:00",
+  "exit_code": 1
+}

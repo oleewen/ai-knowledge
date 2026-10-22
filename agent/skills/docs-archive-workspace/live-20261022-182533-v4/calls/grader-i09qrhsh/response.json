@@ -1,0 +1,15 @@
+{
+  "eval_id": "archive-audience-001",
+  "judgments": [
+    {
+      "evidence": "回答明确指出“索引壳承载业务长文，应只保留导航”，并指出“未获确认书写前 C 就落盘”为门禁违例。",
+      "id": "audience-violation-visible",
+      "passed": true
+    },
+    {
+      "evidence": "回答声明“当前单元未收敛，暂停归档写入与推进”，要求“重开当前单元，先补齐确认书”，收口后再给写前 C；未在问题未处理时推进写后 C。",
+      "id": "audience-rewrite-or-gate",
+      "passed": true
+    }
+  ]
+}

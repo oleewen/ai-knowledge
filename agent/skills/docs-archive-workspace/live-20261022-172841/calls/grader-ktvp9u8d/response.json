@@ -1,0 +1,15 @@
+{
+  "eval_id": "archive-not-trigger-002",
+  "judgments": [
+    {
+      "evidence": "回答明确指出“应走 docs-revise：统一术语并沿引用链、关键词链同步”。",
+      "id": "correct-downstream",
+      "passed": true
+    },
+    {
+      "evidence": "回答明确表示“不走 docs-archive”，且未将全库术语替换描述为 overview 到架构章的归档流程。",
+      "id": "no-false-archive-primary",
+      "passed": true
+    }
+  ]
+}
