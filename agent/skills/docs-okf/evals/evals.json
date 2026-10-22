@@ -1,7 +1,7 @@
 {
   "skill_name": "docs-okf",
-  "version": "1.0.0",
-  "description": "冒烟样本：.docsconfig/KNOWLEDGE_TYPE 硬中止、dry-run、validate ERROR 停顿、与 docs-indexing/docs-build 分流。",
+  "version": "1.1.0",
+  "description": "行为样本：配置门禁、模式边界、bundle 覆盖、失败分流与结果证据。",
   "evals": [
     {
       "id": "okf-trigger-001",
@@ -14,7 +14,7 @@
           "id": "docsconfig-hard-stop",
           "name": "docsconfig 硬门",
           "type": "must_include",
-          "check": "须先读 .docsconfig；缺失、解析失败或缺 AGENT_DIR 须中止，不得猜路径或回退 \$仓库路径/agent/。",
+          "check": "须先读 .docsconfig；缺失、解析失败或缺 AGENT_DIR 须中止，不得猜路径或回退 $仓库路径/agent/。",
           "priority": "P0"
         },
         {
@@ -143,6 +143,82 @@
           "name": "改写或停问",
           "type": "must_include",
           "check": "须改写为工程可读结果摘要（路径/校验/viz/失败分流），或停问；不得未处理就宣称完成。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "okf-path-001",
+      "category": "should-trigger",
+      "prompt": "在当前已安装工程运行 /docs-okf --bundle docs/archive/ --dry-run；环境变量 BUNDLE=old-docs。只预览。",
+      "expected_output": "CLI 优先；viz 位于完整 docs/archive/viz.html，脚本树仍取配置；无产物写入，不声称校验通过。",
+      "files": [],
+      "assertions": [
+        {
+          "id": "cli-over-env",
+          "name": "cli-over-env",
+          "type": "must_not_conflict",
+          "check": "预览使用 docs/archive，不能使用 old-docs。",
+          "priority": "P0"
+        },
+        {
+          "id": "full-viz-path",
+          "name": "full-viz-path",
+          "type": "must_not_conflict",
+          "check": "viz 位于目标工程 docs/archive/viz.html，不丢失父路径，不写 /viz.html。",
+          "priority": "P0"
+        },
+        {
+          "id": "preview-only",
+          "name": "preview-only",
+          "type": "must_not_conflict",
+          "check": "工具轨迹及产物证明仅预览，不能声称刷新完成或校验通过。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "okf-validate-001",
+      "category": "should-trigger",
+      "prompt": "只运行 docs-okf 的 validate 模式，检查现有 index 和 viz；不要刷新文件。",
+      "expected_output": "解析目标工程后依次运行 bundle 校验和产物校验，第一步失败即停，报告每项真实结果。",
+      "files": [],
+      "assertions": [
+        {
+          "id": "two-validations",
+          "name": "two-validations",
+          "type": "must_not_conflict",
+          "check": "bundle 校验成功后运行 validate_viz_index；单独 okf-validate.sh 成功不代表 viz 通过。",
+          "priority": "P0"
+        },
+        {
+          "id": "validate-read-only",
+          "name": "validate-read-only",
+          "type": "must_not_conflict",
+          "check": "不得通过 refresh、补元数据、生成索引或重建 viz 来掩盖缺失产物。",
+          "priority": "P0"
+        },
+        {
+          "id": "consumer-root",
+          "name": "consumer-root",
+          "type": "must_not_conflict",
+          "check": "独立 Python 校验使用已解析工程根，不能误查技能安装仓。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "okf-not-trigger-003",
+      "category": "should-not-trigger",
+      "prompt": "解释 .docsconfig 中 DOC_DIR 与 AGENT_DIR 的含义，不需要修改或刷新知识库。",
+      "expected_output": "解释配置，不因配置键名误启用 OKF refresh。",
+      "files": [],
+      "assertions": [
+        {
+          "id": "no-generic-trigger",
+          "name": "no-generic-trigger",
+          "type": "must_not_conflict",
+          "check": "不把单纯配置解释当作 OKF 运维任务执行，不生成任何产物。",
           "priority": "P0"
         }
       ]

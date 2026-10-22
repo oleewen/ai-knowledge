@@ -1,66 +1,43 @@
 ---
 name: docs-okf
 description: >
-  OKF bundle refresh、校验与可视化：刷新 index.md、validate-okf、viz.html 与产物校验。
-  须先读 .docsconfig：DOC_DIR→默认 bundle 与 viz，AGENT_DIR→脚本树 {DOC_DIR}/{AGENT_DIR}/，KNOWLEDGE_TYPE→viz 名称；BUNDLE/--bundle 覆盖时 viz 跟随 bundle 目录名；无 config 或缺 KNOWLEDGE_TYPE/AGENT_DIR 硬中止。
-  用户提到 /docs-okf、OKF refresh、刷新 viz、DOC_DIR、AGENT_DIR、文档目录、KNOWLEDGE_TYPE、目标工程 OKF 时，使用本技能。
-  分流：用户只要 docs-build 提取或 docs-indexing 九章为主路径 → 对应技能。
-  推进见 references/workflow.md。
+  刷新 OKF bundle 的目录 index.md、生成 viz.html 并校验产物。
+  用于 /docs-okf、OKF refresh、validate-okf 或 OKF 可视化更新。
+  九章 INDEX-GUIDE 重建用 docs-indexing；实体提取及第四章视角导航用 docs-build。
 ---
 
 # docs-okf
 
-## 输出硬约束（P0）
+维护已有 OKF bundle。先确定目标工程、模式及可选 bundle；已有明确输入直接使用，缺项才询问。
 
-- `knowledge-links.yaml` 的 `path` 统一使用 `${WORK_SPACE}/…`；按文件所属库配置展开，缺配置、旧格式或越界即停止。读写与迁移细则见 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「knowledge-links 路径契约」。
-- 无有效 `.docsconfig` 时立即中止；不得猜测 bundle 路径继续。
-- 缺 `KNOWLEDGE_TYPE` 时立即中止；不得生成默认 `viz.html` 路径继续。
-- 缺 `AGENT_DIR` 时立即中止；脚本路径只认 `{DOC_DIR}/{AGENT_DIR}/skills/docs-okf/`，**不得**回退 `$仓库路径/agent/`。
-- `--dry-run` 只预览，不写盘。
-- `validate` 出现 **ERROR** 时不得静默继续后续步骤；必须汇报错误并停下。
-- 轻量运维技能：参数向导 → refresh / validate / viz → 结果摘要或失败分流；**不**引入当前单元循环或 `grilling` 协议。结果摘要出口须做受众 **A/B**（见 [audience-and-language.md](../../references/audience-and-language.md)、[light-flow-actions.md](../../references/light-flow-actions.md)）。
-- **knowledge 引用边界**：刷新/改写 `*/knowledge/**` 索引或产物时须遵守 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「业务 knowledge 引用边界」；不得引入爬层路径、下层链或 knowledge 外文档链。跨层 HTTP 仅能由约定生成函数写出。
+## 执行
 
-## 边界
+1. 读取目标工程 `.docsconfig`，按 [路径解析](references/path-resolution.md) 定位 bundle 与脚本树。配置无效或缺键即停止，不猜路径、不回退仓库内 `agent/`。
+2. 按 [工作流](references/workflow.md) 运行所选模式：
 
-| 负责 | 不负责 |
-| ------ | -------- |
-| OKF refresh 编排、目录 `index.md`、validate-okf、viz、产物校验 | 九章骨架（docs-indexing）；实体提取与第四章视角导航块（docs-build）；SDD |
+   | 模式 | 结果 |
+   | --- | --- |
+   | `refresh` | 补治理文档 frontmatter，刷新目录索引、生成 viz，再校验 |
+   | `validate` | 校验 bundle 与 index/viz 产物 |
+   | `viz` | 仅重建可视化 |
+   | `dry-run` | 仅打印 refresh 命令，不写盘、不执行校验 |
 
-## 不这样用
+3. 任一步失败即停，报告失败阶段及已产生的文件；校验 ERROR 不得降为 WARN 后继续。摘要列 bundle、index/viz 写入情况、两类校验结果及第四章导航块状态；未执行的检查明确标注。
 
-- 不在无 `.docsconfig` 或缺 `KNOWLEDGE_TYPE` / `AGENT_DIR` 时启发式猜路径继续
-- 不硬编码 `$仓库路径/agent/`；脚本入口一律 `{DOC_DIR}/{AGENT_DIR}/skills/docs-okf/`
-- 不把 validate ERROR 当 WARN 静默跳过
-- 不把九章 INDEX 重建或实体提取收成 `docs-okf`
-- 不引入意图澄清 / 单元循环 / grilling 作为本技能主线
+这是轻量运维流程，不引入单元循环或 grilling。交付摘要前按 [受众 A/B](../../references/audience-and-language.md#轻流程-ab含-okf) 检查工程维护者所需信息。
 
-## 路由
+## 约束
 
-| 目的 | 文件 |
+- `generate_index.py` 更新根 `index.md` 的 OKF 标记块；子目录索引写入规则见工作流。九章骨架与实体导航分别由 [docs-indexing](../docs-indexing/SKILL.md)、[docs-build](../docs-build/SKILL.md) 维护。
+- `knowledge-links.yaml` 的 `path` 使用 `${WORK_SPACE}/…`，按所属库配置展开；缺配置、旧格式或越界即停。详见 [知识治理](../../knowledge/knowledge-governance.md)「knowledge-links 路径契约」。
+- 修改 knowledge 索引或产物须遵守同一治理文件的「业务 knowledge 引用边界」：不得引入爬层、下层或 knowledge 外文档链；跨层 HTTP 仅由约定生成函数产生。
+
+## 按需查阅
+
+| 需要 | 资料 |
 | --- | --- |
-| 流程 / 参数 / 失败分流 | [workflow.md](references/workflow.md) |
-| 路径解析 | [path-resolution.md](references/path-resolution.md) |
-| 命名（OKF） | [naming-conventions.md](../../knowledge/naming-conventions.md) §OKF |
-| 九章 INDEX（协作） | [docs-indexing/SKILL.md](../docs-indexing/SKILL.md) 产出节 |
-
-## 最少输入
-
-- 目标工程目录
-- 有效 `.docsconfig`
-- 可解析的 `KNOWLEDGE_TYPE`、`AGENT_DIR`
-- 模式：`refresh` / `validate` / `viz` / `dry-run`
-
-## 产出与脚本
-
-- 正式：刷新后的 bundle、`{DOC_DIR}/viz.html`、校验报告（参数见 [workflow.md](references/workflow.md)）
-- 脚本树：`{DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts/`（`DOC_DIR` 下通常为 `.agents` 软链）
-
-```bash
-bash "${DOC_DIR}/${AGENT_DIR}/skills/docs-okf/scripts/okf-indexing.sh" [--dry-run]
-bash "${DOC_DIR}/${AGENT_DIR}/skills/docs-okf/scripts/okf-validate.sh" [--bundle "${DOC_DIR}"]
-```
-
-## 评测
-
-`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。
+| 命令、写入范围、失败分流 | [workflow.md](references/workflow.md) |
+| 配置门禁、覆盖优先级、嵌套路径 | [path-resolution.md](references/path-resolution.md) |
+| 维护脚本、兼容入口与测试 | [scripts.md](references/scripts.md) |
+| OKF 格式与命名 | [okf-spec.md](../../knowledge/okf-spec.md)、[naming-conventions.md](../../knowledge/naming-conventions.md) §OKF |
+| 行为评测 | [evals.json](evals/evals.json)、[grader.md](agents/grader.md) |

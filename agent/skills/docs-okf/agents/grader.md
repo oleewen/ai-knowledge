@@ -1,25 +1,10 @@
-# docs-okf Grader
+# docs-okf 评测
 
-据 **evals/evals.json** 输出 JSON：`text`、`passed`、`evidence`。
+读取 [evals.json](../evals/evals.json) 中当前样本的 `category` 与 `assertions`，核对回答、工具轨迹及实际产物。未执行的操作不得判作通过；权限或环境阻断须在证据中说明。
 
-## 判定
+- `should-trigger`：检查所选模式、配置门禁、写入范围与失败处理。
+- `should-not-trigger`：检查是否转交正确任务，且未误跑 OKF。
+- 每条断言用其 `id` 记录可核实证据；任一 P0 失败，整体 `passed` 为 `false`。未覆盖的断言标「未验证」。
+- 摘要按 [受众 A/B](../../../references/audience-and-language.md#轻流程-ab含-okf) 检查；纯机器输出可跳过。运行契约见 [工作流](../references/workflow.md)，不另写第二套规则。
 
-1. 读 `category`：`should-trigger` / `should-not-trigger`
-2. **硬门**：以本 eval 的 `assertions`（按 `priority`）为准；`evidence` 映射 `assertions[].id`
-3. **协议释义**（仅当 assertions / prompt 覆盖时强制）：轻量参数向导 → refresh/validate/viz → 结果摘要；摘要出口受众 **A/B**（纯机器输出可跳过）；无 `.docsconfig` 或缺 `KNOWLEDGE_TYPE` 硬中止；validate ERROR 须停下；不引入单元循环/grilling。见 [audience-and-language.md](../../../references/audience-and-language.md)
-4. **P0** 任一失败 → `passed: false`
-
-### should-not-trigger P0 摘要
-
-- `correct-downstream`：点名下游技能/产物
-- `no-false-okf-primary`：不以 OKF refresh 框九章 INDEX 或实体提取
-
-**例**（对齐 `okf-trigger-001`）
-
-```json
-{
-  "text": "通过。先读 .docsconfig，硬中止条件与 dry-run 不写盘表述正确。",
-  "passed": true,
-  "evidence": ["docsconfig-hard-stop", "knowledge-type-required", "dry-run-no-write"]
-}
-```
+输出 JSON：`text` 为结论，`passed` 为整体判断，`evidence` 为各断言的证据记录。

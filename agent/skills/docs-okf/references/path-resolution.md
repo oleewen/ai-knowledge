@@ -1,51 +1,35 @@
-# OKF 路径解析（.docsconfig）
+# OKF 路径解析
 
-入口：[SKILL.md](../SKILL.md)。
+先进入目标工程。解析器从当前目录上溯查找 `.docsconfig`，不以技能安装目录推断目标工程。
 
 ## 硬门禁
 
-| 条件 | 行为 |
-| ---- | ---- |
-| 无 `.docsconfig` | **中止** → `docs-install --scope=config --target <文档目录>` |
-| 缺 `REPO_DIR` / `DOC_DIR` | **中止**（docsconfig 标准文案） |
-| 拼出的仓库路径与 `.docsconfig` 所在目录不一致 | **中止** → 视为配置漂移，重新执行 `docs-install` 修复 |
-| 缺 `KNOWLEDGE_TYPE` | **中止** → `docs-install --scope=knowledge --target <文档目录>` |
-| 缺 `AGENT_ROOT` / `AGENT_DIR`，或工作区文件不存在 | **中止**。缺键走 `docs-install`；缺 `$AGENT_ROOT/$AGENT_DIR/configs` 则提示 `/agent-install --workspace`。脚本不回退仓库内 `agent/` |
-| `{DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts` 不存在 | **中止** → 先 `docs-install` 建软链或 `/agent-install` |
+| 条件 | 处理 |
+| --- | --- |
+| `.docsconfig` 缺失、不可解析，或缺 `REPO_DIR` / `DOC_DIR` | 停止；用 `docs-install --scope=config` 修复 |
+| 配置推导的仓库根与 `.docsconfig` 所在目录不一致 | 停止；按配置漂移处理 |
+| 缺 `KNOWLEDGE_TYPE` 或值非法 | 停止；用 `docs-install --scope=knowledge` 修复 |
+| 缺 `AGENT_ROOT` / `AGENT_DIR` | 停止；补齐配置 |
+| `$AGENT_ROOT/$AGENT_DIR/configs` 不存在或 `WORK_SPACE` 无效 | 停止；提示 `/agent-install --workspace` |
+| bundle 或 `{DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts` 不存在 | 停止；核对目标路径与安装软链 |
 
-禁止无 config 时默认 `application` 或 git 根回退；禁止硬编码仓库内 `agent/`。
+不得回退到默认 `application`、git 根或仓库内 `agent/`。
 
-运行前先 `cd` 到目标工程目录；运行时只解析当前工作目录所属工程的 `.docsconfig`。
+## 映射与覆盖
 
-## 映射
+两个 Shell 入口共用 [resolve-okf-paths.sh](../scripts/resolve-okf-paths.sh)：
 
-| 参数 | 来源 |
-| ---- | ---- |
-| `--bundle` | `{DOC_DIR}`（默认可被覆盖） |
-| `--out` | `{DOC_DIR}/viz.html`（**未**覆盖 bundle 时） |
-| `--name` | `"{KNOWLEDGE_TYPE} OKF"`（**未**覆盖 bundle 时） |
-| OKF 脚本树 | `{DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts`（`OKF_SCRIPTS`） |
+| 值 | 规则 |
+| --- | --- |
+| `BUNDLE` | CLI `--bundle PATH` / `--bundle=PATH` 优先，其次非空环境变量 `BUNDLE`，最后配置 `DOC_DIR` |
+| 相对 bundle | 相对目标工程根；绝对路径保持绝对语义 |
+| `OKF_VIZ_OUT` | 完整 bundle 路径下的 `viz.html`；移除 bundle 末尾多余 `/` |
+| `OKF_VIZ_NAME` | 与默认 bundle 指向同一目录时为 `{KNOWLEDGE_TYPE} OKF`；否则为 `{bundle_basename} OKF` |
+| `OKF_SCRIPTS` / `OKF_DIR` | `{DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts` 的绝对路径；不随 bundle 覆盖变化 |
+| `repo_abs` | 经配置与工作区文件核验的工程根 |
 
-`DOC_DIR=docs` + `KNOWLEDGE_TYPE=application` 时：默认 bundle 扫描 `docs/`，viz 写入 `docs/viz.html`；脚本经 `docs/.agents/...`（`AGENT_DIR=.agents`）解析。
+显式 CLI bundle 不得为空；指向不同目录的覆盖会输出提示。例如 `--bundle docs/archive/` 写入 `docs/archive/viz.html`，不是 `archive/viz.html`。
 
-## Agent 步骤
+`resolve_okf_paths` 只解析配置映射；`resolve_okf_target` 再应用 bundle 覆盖、核对目录并设置上述运行变量。二者不生成知识产物；后者接受一个可选 bundle 参数。
 
-1. 进入目标工程目录，确认 `.docsconfig` 与 `KNOWLEDGE_TYPE`、`AGENT_DIR`；或由入口脚本调用 `resolve-okf-paths.sh`
-2. 复述 `DOC_DIR` → 默认 bundle、`AGENT_DIR` → 脚本树、`KNOWLEDGE_TYPE` → 默认 viz
-3. 执行 [workflow.md](workflow.md) 对应命令
-
-## 覆盖
-
-CLI/env `--bundle` / `BUNDLE` 可覆盖 `DOC_DIR`。覆盖且与 config 推导值不同时：
-
-- stderr 警告覆盖
-- **viz 跟随 bundle 目录名**：`--out` → `{bundle_basename}/viz.html`，`--name` → `"{bundle_basename} OKF"`
-- 例：`BUNDLE=company` → `company/viz.html`
-
-未覆盖时 viz 仍跟 `{DOC_DIR}`。脚本树仍跟 `{DOC_DIR}/{AGENT_DIR}`，不随 `BUNDLE` 改。
-
-## 脚本
-
-`{DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts/resolve-okf-paths.sh` — 与 `docs-build` 同源 bootstrap，按 `PWD` 解析当前工程 `.docsconfig`；导出 `OKF_SCRIPTS`。
-
-OKF refresh / 校验实现位于 `{DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts/`（含 `okf-indexing.sh`、`okf-validate.sh` 与相关 `*.py`）。
+独立运行 Python 脚本前须完成相同解析，并将 `DOCS_OKF_REPO_ABS` 设为 `repo_abs`，避免从安装目录寻找工程。完整命令见 [工作流](workflow.md)。
