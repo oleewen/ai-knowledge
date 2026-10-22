@@ -1,40 +1,30 @@
-# Index 解析、探索与错误处理
+# Index 解析与错误处理
 
-参数确认与风险边界见 [gates.md](gates.md)。分工：[three-file-spec.md](three-file-spec.md)。验收：[quality-standards.md](quality-standards.md)。
+参数与风险见 [gates.md](gates.md)，职责分工见 [three-file-spec.md](three-file-spec.md)。
 
-## 1. Index Guide 解析
+## Index 路径
 
-**路径（命中即停）**，记下相对路径为「当前 INDEX-GUIDE」：
+按以下顺序命中即停：
 
 1. `仓库路径/INDEX-GUIDE.md`
 2. `文档目录/INDEX-GUIDE.md`
 
-**命中后**：仅以该文件为地图；不调 docs-indexing；不以用户粘贴替换磁盘（磁盘优先）。
+只以命中的落盘文件为地图；用户粘贴内容不能替代磁盘文件。两处都没有时，默认停止并转 `/docs-indexing`。只有用户明确允许“无 Index 的极简双文件”时，才可继续，并声明建议补索引；不得编造模块细节。
 
-**未命中**：默认终止 → `/docs-indexing`。  
-**例外**：用户**明确**授权「无 Index Guide、仅用根 README/顶层摸底」→ 可写**极简**双文件并声明「建议补 indexing」；仍禁止捏造模块细节。
+## 最小探索
 
-## 2. 探索
+| Index 章节 | 读取 | 入口写入 |
+| --- | --- | --- |
+| §1 | 技术栈、入口、命令 | README 简介与 Quick start；AGENTS 短链 |
+| §2 | 拓扑 | README 唯一详写目录树 |
+| §3 | 仅按需 | AGENTS 只指向 Index §3 |
+| §4–§5 | 仅当入口需运行/环境说明 | 必要摘要 |
+| §6 | 只读用户点名路径 | 不写死未读结论 |
+| §7 | 查阅指北 | AGENTS 查阅顺序 |
 
-以 INDEX 导航；只开与 README 首屏 / AGENTS 契约相关文件。**禁止通读全仓**。
+## 错误处理
 
-| 章节 | 探索 | 写入（摘要） |
-| ---- | ---- | ------------ |
-| §1 | 技术栈、入口、命令 | README 简介+Qstart；AGENTS ≤3 行+指针 |
-| §2 | 拓扑 | README **唯一详写树**；AGENTS 短列表 |
-| §3 | ⭐⭐⭐ 按需打开 | **不**贴进 AGENTS；一句「见当前 INDEX §3」 |
-| §4–§5 | 组件/配置 | 仅 README 要写运行/环境时再读 |
-| §6 | 未索引 | 写某路径则只读该路径；否则「详见 §6」 |
-| §7 | 查阅指北 | AGENTS 与此一致 |
-
-**轻量对照**：`agent/rules/CONVENTIONS.md`；已有根 README 在 `update` 时合并；`文档目录/knowledge/` 只读各层 README/INDEX。
-
-## 3. 错误处理
-
-| 场景 | 处理 |
-| ---- | ---- |
-| 无落盘 Index | 终止 → docs-indexing |
-| Index 空或结构异常 | 警告，仅取可用节 |
-| README 已有内容 | diff 合并，留有效命令块 |
-| 模板缺失 | 警告，用内置骨架 |
-| AGENTS 链失效 | 脚本标出；可标 `[TODO: 路径待确认]` |
+- Index 为空或结构异常：报告问题，只使用可用章节。
+- README 已有内容：`update` 合并，保留有效命令块。
+- 模板缺失：报告并使用内置最小骨架。
+- AGENTS 链失效：校验脚本报告；不能确认的路径标为待确认。

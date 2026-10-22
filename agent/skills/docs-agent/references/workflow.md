@@ -1,97 +1,44 @@
 # docs-agent 工作流
 
-主干：[SKILL.md](../SKILL.md)。推进 binding：[gates.md](gates.md)。
-
-契约：
-
-- 写前澄清：[intent-clarify.md](../../../references/intent-clarify.md)
-- 单元推进 / `C/M/G/S/F`：[unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)
-- 写后烤干：[grilling-skill.md](../../../references/grilling-skill.md)
-
-## 输入输出
-
-| 类型 | 内容 |
-| ---- | ---- |
-| 硬输入 | 落盘 `INDEX-GUIDE.md`；无则不编造 |
-| 必需参数 | `output`、`mode` |
-| 固定输出 | `{仓库路径}/README.md`、`AGENTS.md` |
-| 不产出 | 不替代 `INDEX-GUIDE.md`；不把索引指南全文并入 AGENTS |
+主线：参数收口 → Index 解析 → 当前单元澄清 → 生成 → 烤干 → 校验。
 
 ## 参数
 
-| 参数 | 默认 | 说明 |
-| ---- | ---- | ---- |
-| `--output` | `both` | `readme` / `agents` / `both` |
-| `--mode` | `update` | `create` 初始化；`update` 合并 |
-
-## 参数向导
-
-按序收口；用户已明确时可跳过对应项：
-
-1. `output`
-2. `mode`
-3. 覆盖还是合并策略
-4. 当前轮起始单元（默认 `README.md`；若 `output=agents` 则直接从 `AGENTS.md` 开始）
-
-满足任一时，先澄清再写：未说明输出范围；未说明 `create` / `update`；指令过宽可能越出根入口双文件。
-
-参数未收口前，不进入执行。
-
-## 步骤 1：Index 解析
-
-`source` `agent/scripts/lib/docsconfig.sh`，`docsconfig_bootstrap_validate` 注入 `WORK_SPACE`、`REPO_DIR`、`DOC_DIR` 与 `AGENT_*`。仓库路径与文档路径用 `docsconfig_repo_abs`、`docsconfig_doc_abs`。
-
-```bash
-source agent/scripts/lib/docsconfig.sh
-docsconfig_bootstrap_validate
-repo_abs="$(docsconfig_repo_abs)"
-doc_abs="$(docsconfig_doc_abs)"
-```
-
-按序查找落盘 Index Guide，命中即停并记录相对路径：仓库根 `INDEX-GUIDE.md`，再文档目录 `INDEX-GUIDE.md`。未命中 → 终止并提示 `/docs-indexing`。细则与降级见 [execution-spec.md](execution-spec.md)。
-
-## 步骤 2：探索
-
-以 INDEX 为地图，最小阅读集；禁止为 AGENTS 通读全仓。章节 → 去向见 [execution-spec.md](execution-spec.md) §2。
-
-## 当前单元
-
-单个根入口文档（`README.md` 或 `AGENTS.md`）。定义见 [gates.md](gates.md)。
-
-## 写后默认表
-
-| 对象 | 默认烤干 | 强制升级 |
+| 参数 | 值 | 说明 |
 | --- | --- | --- |
-| 单个入口文档（README 或 AGENTS） | **必须** | 未确认决策写入；职责边界/覆盖策略变更；跨入口前文前提变更 |
+| `output` | `readme` / `agents` / `both` | 目标入口；默认 `both` |
+| `mode` | `create` / `update` | 初始化或合并；默认 `update` |
+| 写入策略 | `merge` / `overwrite` | 与 `mode` 不一致时先停下确认 |
+| 当前单元 | `README.md` / `AGENTS.md` | 默认 README；`output=agents` 时从 AGENTS 开始 |
 
-启发式只可升级为必须，不可把默认「必须」降为跳过。
+用户已明确参数时不重复询问。未收口前不写入。
 
-## 技能步骤
+## 1. 解析 Index
 
-推进环见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)；本技能只补入口文档特有步骤：
+按 [execution-spec.md](execution-spec.md) 查找并记录落盘 `INDEX-GUIDE.md` 的相对路径。仓库根优先，其次文档目录。缺失时停止并提示 `/docs-indexing`。
 
-1. 选定当前单元
-2. **意图澄清**：公共六项 + [gates.md](gates.md) 追加字段（写入策略、INDEX 锚点）；写前 `C` 后方可写入
-3. 按模板生成并写入终稿：
-   - README：`assets/readme-skeleton.md`；30 秒内「是什么、下一步」；目录树唯一起源 INDEX §2
-   - AGENTS：`assets/agents-skeleton.md`；去重 [three-file-spec.md](three-file-spec.md)；概述 ≤3 行；命令块只在 README
-4. **烤干**：按写后默认表；语义问题或跨入口前文回改须停下确认（回改协议见 unit-cycle-protocol）
-5. 用户动作：`C/M/G/S/F` 见 unit-cycle-protocol
+## 2. 最小阅读
 
-## 验证
+以 Index 为地图，仅打开当前入口需要的 §1、§2、§7 及明确点名的路径。README 的目录树只取 Index §2；AGENTS 不复制 Index §3 接口表。
+
+## 3. 处理当前单元
+
+1. 输出公共六项澄清、写入策略和 Index 锚点，标明“当前阶段：意图澄清”。
+2. 获写前 `C` 后，按对应模板生成；`update` 合并有效正文和命令。
+3. 标明“当前阶段：烤干”，按 [quality-standards.md](quality-standards.md) 与受众矩阵检查。
+4. 运行校验脚本，报告链接、Index 和重复度结果。
+5. 当前单元收敛后等待 `C/M/G/S/F`；只有用户推进才开始下一单元。
+
+## 4. 产物分工
+
+- README 面向人类：一句定位、Quick start、项目结构、导航和必要命令。
+- AGENTS 面向 AI：角色、约束、查阅顺序和短链；命令事实源留在 README。
+- INDEX 面向检索：九章地图与路径精要；不在本技能内改写。
+
+## 5. 校验
 
 ```bash
-bash agent/skills/docs-agent/scripts/validate-guide.sh --root .
+bash agent/skills/docs-agent/scripts/validate-guide.sh --root <repo>
 ```
 
-清单与反模式：[quality-standards.md](quality-standards.md)。
-
-## 约束摘要
-
-| 项 | 要求 |
-| -- | ---- |
-| 零幻觉 | 无落盘 INDEX 不编造；未读不写死 |
-| 单单元推进 | 一次只处理一个入口文档，收敛后再进入下一文档 |
-| 单一事实 | 命令在 README；AGENTS ≤3 行；不复制 INDEX §3 表 |
-| INDEX | 本技能内不调 docs-indexing；只消费已落盘 `INDEX-GUIDE.md` |
-| update | `update` 合并，不全量覆盖 |
+脚本默认报告警告并以错误数作为退出码；需要把警告也视为失败时加 `--strict`。

@@ -1,61 +1,33 @@
-# docs-agent 推进协议（binding）
+# docs-agent 推进协议
 
-主干：[SKILL.md](../SKILL.md)。流程：[workflow.md](workflow.md)。
+共享契约：
 
-## 定位
+- [intent-clarify.md](../../../references/intent-clarify.md)：写前六项澄清。
+- [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)：`C/M/G/S/F`、单元推进与重开。
+- [grilling-skill.md](../../../references/grilling-skill.md)：写后烤干。
 
-本文件只做 `docs-agent` 对共享契约的 **binding**，不复制协议正文。
+## 当前单元
 
-契约：
+当前单元是单个根入口文件：`README.md` 或 `AGENTS.md`。`output=both` 默认按 README、AGENTS 顺序处理，一次只处理一个。
 
-- [intent-clarify.md](../../../references/intent-clarify.md) — 写前意图澄清
-- [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) — 单元推进、`C/M/G/S/F`、重开与前文回改
-- [grilling-skill.md](../../../references/grilling-skill.md) — 写后烤干能力
+## 写前追加字段
 
-主线口令：`澄清 → 生成 → 烤干`。用户动作与状态机见 unit-cycle-protocol（含 docs 语义族 `S`）。
+公共六项之外，必须收口：
 
-## 单元定义
+- 写入策略：`merge`、`overwrite` 或待确认。
+- Index 锚点：本轮使用的 `INDEX-GUIDE.md` 相对路径。
 
-**当前单元** = 单个根入口文档：
+未获写前 `C` 不得写入。当前单元烤干收敛后，等待 `C/M/G/S/F`；不得自动推进第二文件。
 
-- `README.md`
-- `AGENTS.md`
+## 必须停下的情况
 
-`output=both` 时默认顺序：README → AGENTS。一次只处理一个入口文件。
+先给结论、推荐和数字选项，再等待确认：
 
-## 技能追加澄清字段
+- `create` / `update` 或覆盖边界不清。
+- README 与 AGENTS 的职责分工需要改变。
+- `output=both` 但用户只明确一个文件。
+- 保留现有正文、链接或命令的口径不清。
 
-在公共六项之外追加（不可删减公共项）：
+## Index 边界
 
-- **写入策略**：`merge` / `overwrite` / 待确认
-- **INDEX 锚点**：本轮依赖的 `INDEX-GUIDE.md` 相对路径
-
-## 写后默认
-
-见 [workflow.md](workflow.md)「写后默认表」。本技能各入口文档单元默认必须烤干。
-
-## 高风险场景
-
-须先给结论、推荐与数字选项，确认后再执行：
-
-- `update` 与覆盖边界不清
-- README 与 AGENTS 职责边界需要调整
-- 已有内容是否保留存在歧义
-- `output=both` 但用户只明确了一个文件
-
-## 原子性 / 失败停顿
-
-- 未获写前 `C`，不得写入当前单元正文
-- 当前单元未收敛前，不默认推进下一入口文件
-- 烤干默认只拷当前单元；另一入口文件属前文，回改须走 unit-cycle-protocol 前文回改（回改后当前单元 `reopened` → 再澄清）
-
-## 与 INDEX 的关系
-
-- INDEX 须已落盘；无 INDEX 不编造
-- 本技能不替代 `docs-indexing`
-- INDEX 落盘约束见 [execution-spec.md](execution-spec.md)，独立生效
-
-## 典型语义问题（烤干）
-
-- 职责边界、覆盖策略、保留口径、INDEX 对齐口径
-- 跨入口文件的术语/职责冲突（触发前文回改）
+按 [execution-spec.md](execution-spec.md) 查找落盘 Index；找不到时停止并转 `/docs-indexing`。本技能只消费 Index，不重写其正文。
