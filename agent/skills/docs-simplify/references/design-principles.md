@@ -1,7 +1,3 @@
 # 设计原则（docs-simplify）
 
-**SSOT**：[simplify-principles.md](../../../references/simplify-principles.md)（A 结构 / B 简明 / C 真源）。
-
-本文件不复制原则正文。执行改写与生成落笔前读 SSOT。
-
-反模式：[anti-patterns.md](anti-patterns.md)。
+写作原则只维护在 [simplify-principles.md](../../../references/simplify-principles.md)。本页保留为原链接入口；执行改写读真源，失误示例见 [anti-patterns.md](anti-patterns.md)。

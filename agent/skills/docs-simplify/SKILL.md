@@ -1,60 +1,52 @@
 ---
 name: docs-simplify
 description: >
- 就地优化 Markdown：金字塔结构、激进精简、SSOT 去重改引用。
- 用户提到 /docs-simplify、精简文档、去啰嗦、金字塔、去重引用、结构化改写、压缩正文时，使用本技能。
- 分流：术语统一 / 定向纠错 → docs-revise；INDEX/归档/实体主路径 → 对应技能；变更溯源 git。
- 亦可承接 docs-revise `grilled` 后的整篇结构/去重；写前 C 可将范围钉在改动 hunk。
- 写作原则 SSOT：[agent/references/simplify-principles.md](../../references/simplify-principles.md)。推进见 references/gates.md。
+  用于就地精简 Markdown、按金字塔重组正文或将重复定义改为 SSOT 引用。
+  适用 /docs-simplify、删冗余、压缩正文，以及 docs-revise 后的整篇或指定 hunk 改善。
+  术语统一与定向纠错用 docs-revise；重建索引用 docs-indexing。
 ---
 
 # docs-simplify
 
 ## 输出硬约束（P0）
 
-- 当前单元：单个主文件，或单个已确认扩批。
-- 原则：[simplify-principles.md](../../references/simplify-principles.md)（A 结构 / B 简明 / C 真源）。
-- 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[simplify-principles.md](../../references/simplify-principles.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写入或扩批；写入后须烤干，收敛后停等用户。
-- 疑似 SSOT 重复：全仓语义相似可扫，**未确认不得**改成链接或删段。
-- 模板硬结构（SDD 固定章、编号表）：主砍散文，不拆章刷短；表密文档不以行数 KPI 判失败。见 [simplify-principles.md](../../references/simplify-principles.md)「模板硬结构」。
-- **knowledge 引用边界**：改写 `application|system|solution|company` 下 `*/knowledge/**` 时须遵守 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「业务 knowledge 引用边界」。去重改引用不得链出 knowledge 外 / 下层 / 爬层；跨层 HTTP 仅生成函数，无 parent 则纯 ID。违规能修则修，不明则停。
+在确认范围内改善可读性，保留约束、例外和验收条件。写作原则唯一真源为 [simplify-principles.md](../../references/simplify-principles.md)。
+
+- 当前单元为一个文件、指定 hunk 或已确认的多文件批次；不得静默扩围。
+- 写前输出六项澄清并获 `C`；写后必须烤干，收敛后停等用户。绑定见 [gates.md](references/gates.md)。
+- 疑似跨文件重复须确认具体真源和处置后才能删段或改引用；默认不改真源正文。
+- 保留模板章号、编号实体及必要表行；不以行数降幅判断成功。
+- 默认保护 ID、frontmatter 契约字段、稳定锚点、代码/命令字面量和扫描列；日期可刷新。其他契约变更须用户明示。
 
 ## 边界
 
-| 负责 | 不负责 |
-| ---- | ------ |
-| 点名 MD 的结构重组、激进精简、去重改引用；意图澄清与范围收口；承接 revise `grilled` 后整篇改善 | 术语链式替换 / 定向纠错主路径（docs-revise）；协议内 simplify 遍（非本技能完整环）；INDEX/归档/实体索引主流程；变更溯源 git |
+本技能处理正文结构、冗余和去重引用。术语链式替换交 `docs-revise`，索引重建、归档、实体索引交对应技能；变更溯源用 git。双目标未定顺序时才询问，已有明确顺序则沿用。
+
+协议内 simplify 遍只改善烤干修订的 hunk，不另开本技能完整环；revise 已 `grilled` 后，可独立启动本技能并限定 hunk。
 
 ## 不这样用
 
-- 不跳过意图澄清直接改写
-- 不在用户未确认时静默扩批第二份文件
-- 不把术语统一主路径收成本技能
-- 不把写前意图澄清称作 grilling；`G` 仅写后深挖
-- 不砍约束 / 例外 / 验收条件
+不把精简变成业务承诺调整、默认全仓改写或无条件全仓扫描。发现范围外重复不构成扩围授权。
 
 ## 路由
 
-| 目的 | 文件 |
+| 时机 | 读取 |
 | --- | --- |
-| 原则 SSOT | [simplify-principles.md](../../references/simplify-principles.md) |
-| 流程 / 推进 binding | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
-| 受众与语言 | [audience-and-language.md](references/audience-and-language.md) |
-| 范围模板 | [docs-simplify-scope-ack-template.md](assets/docs-simplify-scope-ack-template.md) |
-| 原则摘要 / 反模式 | [design-principles.md](references/design-principles.md)、[anti-patterns.md](references/anti-patterns.md) |
-| 终检 / 易错 | [quality-checklist.md](references/quality-checklist.md)、[gotchas.md](gotchas.md) |
+| 执行改写 | [workflow.md](references/workflow.md)：范围、澄清、改写与交付 |
+| 确认权限、停顿或重开 | [gates.md](references/gates.md)：共享协议绑定与本地边界 |
+| 改写四层业务 knowledge | [knowledge-governance.md](../../knowledge/knowledge-governance.md) 的「业务 knowledge 引用边界」；不得因去重越出允许边界，跨层 HTTP 用生成函数，无 parent 用纯 ID |
+| 写后检查 | [quality-checklist.md](references/quality-checklist.md)、[audience-and-language.md](references/audience-and-language.md) |
+| 需要确认书 | [范围模板](assets/docs-simplify-scope-ack-template.md) |
+| 排查常见失误 | [gotchas.md](gotchas.md)、[anti-patterns.md](references/anti-patterns.md) |
 
 ## 最少输入
 
-- 主目标文件（或可确认的候选）
-- 是否允许扩批 / 是否包含默认排除类文件
-- 精简力度确认（默认激进，约束必留）
+目标路径或候选范围；缺失时先查找再列选项。默认激进精简、排除未点名索引/日志/生成物、不扩批；已有明确参数和授权不重复询问。
 
 ## 产出
 
-- 正式：已改主文件（及已确认扩批）；清单见 [quality-checklist.md](references/quality-checklist.md)
-- 收敛后动作见 [unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)（本技能有 `S`）
+已确认范围内的文件修改，以及变更摘要、验证结果和未决问题。hunk 模式须核对范围外内容未变；收敛后按 [单元推进协议](../../references/unit-cycle-protocol.md) 等待写后动作。
 
 ## 评测
 
-`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。
+套件：[evals.json](evals/evals.json)。运行方式与证据要求见 [evaluation.md](references/evaluation.md)，判分见 [grader.md](agents/grader.md)。结构校验不能替代行为实测。

@@ -1,134 +1,150 @@
 {
   "skill_name": "docs-simplify",
-  "version": "1.0.0",
-  "description": "评估触发、参数向导、当前单元「澄清→生成→烤干」、A/B/C 原则与 docs-revise 分流；协议见 unit-cycle-protocol / intent-clarify / docs-simplify。",
+  "version": "2.1.1",
+  "description": "26 个行为场景覆盖路由、写前授权、文件/hunk/批次、约束与契约、SSOT、knowledge 引用边界和写后动作；decision 只评决策，rewrite/multi-turn 必须观察实际轨迹与文件差异。",
   "evals": [
     {
       "id": "simplify-trigger-001",
       "category": "should-trigger",
-      "prompt": "用 /docs-simplify 把 system/knowledge/product/PM-EXAMPLE/FT-EXAMPLE/FT-EXAMPLE.md 按金字塔精简：删啰嗦、结论先行，并扫全仓看有没有重复定义要改成引用。先收口再改，改完 grill。",
-      "expected_output": "docs-simplify：参数向导后澄清→生成→烤干；写前六项；生成遵循 A/B/C；疑似重复须确认；烤干后停等 C/M/G/S/F。",
+      "mode": "multi-turn",
+      "prompt": "用 /docs-simplify 精简 docs/feature.md，结论先行、删啰嗦，并检查 docs/rules.md 是否可以作为重复规则的真源。先收口再改，改完烤干；本轮只允许修改 feature.md。",
+      "expected_output": "先澄清并核实候选；确认后只精简 feature.md 并链接已确认规则；保留本文件特有例外和验收，完成烤干后停等动作。",
       "assertions": [
         {
           "id": "intent-clarify",
-          "name": "意图澄清",
-          "type": "must_include",
-          "check": "须体现当前单元写入前做意图澄清（六项或等价），未获写前 C 不得写入。",
-          "priority": "P0"
-        },
-        {
-          "id": "unit-cycle",
-          "name": "单元循环",
-          "type": "must_include",
-          "check": "主线含澄清→生成→烤干；须体现目标文件与精简/去重目标。",
-          "priority": "P0"
-        },
-        {
-          "id": "principles-abc",
-          "name": "ABC原则",
-          "type": "must_include",
-          "check": "须体现结构（结论/金字塔/MECE）、简明、SSOT/引用中至少两方面，或显式引用 docs-simplify 原则。",
+          "name": "写前澄清",
+          "type": "must_not_conflict",
+          "check": "首轮输出当前单元六项或等价范围确认，阶段可识别为写前澄清；首轮全部夹具字节不变。",
           "priority": "P0"
         },
         {
           "id": "ssot-confirm",
           "name": "疑似须确认",
-          "type": "must_include",
-          "check": "若做全仓重复扫描或去重，须说明疑似候选需人确认，未确认不得删段/改引用。",
+          "type": "must_not_conflict",
+          "check": "具体真源与处置尚未确认的首轮不得删重复段或新增替代链接；轨迹须提出 feature.md 与 rules.md 的候选关系。",
+          "priority": "P0"
+        },
+        {
+          "id": "principles-abc",
+          "name": "改写效果",
+          "type": "must_not_conflict",
+          "check": "确认后 feature.md 实际压缩重复叙述，结论前置；特有的紧急发布审批记录及健康检查三次通过仍可判断。",
+          "priority": "P0"
+        },
+        {
+          "id": "single-file",
+          "name": "仅改授权方",
+          "type": "must_not_conflict",
+          "check": "rules.md 和 other.md 与夹具字节一致；feature.md 的规则引用指向真实存在的 rules.md。",
           "priority": "P0"
         },
         {
           "id": "grilling-loop",
-          "name": "单元烤干",
-          "type": "must_include",
-          "check": "当前单元写入后须自动 grilling（默认必须烤干）并收敛后再推进。",
+          "name": "写后烤干",
+          "type": "must_not_conflict",
+          "check": "确认后有实际改写与对照检查，收敛后提供写后动作并停止；不能只输出计划。",
           "priority": "P0"
         },
         {
           "id": "audience-check",
-          "name": "受众质检",
-          "type": "must_include",
-          "check": "须体现烤干含受众维 A/B/C/E，或对照 audience-and-language；未过不得宣称对象已烤干收敛。",
-          "priority": "P0"
-        },
-        {
-          "id": "single-unit-stop",
-          "name": "单单元停顿",
-          "type": "must_include",
-          "check": "烤干收敛后给出 C/M/G/S/F 或等价等待；不得自动扩批。",
+          "name": "可评审性",
+          "type": "must_not_conflict",
+          "check": "改写产物仍能让运维人员判定何时发布、失败如何处置、如何验收；不要求打印全部受众维。",
           "priority": "P0"
         }
+      ],
+      "fixtures": {
+        "docs/feature.md": "# 运维说明\n\n## 执行\n\n为了确保执行过程能够顺利执行，请在开始执行前先确认已经获得审批。必须先获得负责人审批，才能执行发布。\n\n发布失败时应立即回滚；回滚完成后验证健康检查连续三次通过。紧急修复也必须保留审批记录。\n",
+        "docs/rules.md": "# 发布规则\n\n发布必须经负责人审批；失败立即回滚。\n",
+        "docs/other.md": "# 范围外文件\n\n本文件不得变化。审批规则在此重复记录，但尚未确认它是真源。\n"
+      },
+      "turns": [
+        "C。确认只改 docs/feature.md；docs/rules.md 是审批与回滚规则的真源，批准把对应重复定义改为指向 rules.md 的引用；保留 feature.md 的紧急发布记录和健康检查验收。"
       ]
     },
     {
       "id": "simplify-trigger-002",
       "category": "should-trigger",
-      "prompt": "精简 application/README.md，只要更短更好读，只改这一个文件，不要动别的",
-      "expected_output": "快路径：仅本文件；澄清六项；激进精简但保留约束类内容；烤干后停。",
+      "mode": "rewrite",
+      "prompt": "精简 application/README.md，只要更短更好读，只改这一个文件，不要动别的。",
+      "expected_output": "写前澄清后等待 C；确认后仅改 README，约束与例外可执行。",
       "assertions": [
         {
           "id": "intent-clarify",
-          "name": "意图澄清",
-          "type": "must_include",
-          "check": "须快路径式意图澄清或明确仅本文件不扩，未获写前 C 不得写。",
+          "name": "写前澄清",
+          "type": "must_not_conflict",
+          "check": "首轮输出当前单元六项或等价范围确认，阶段可识别为写前澄清；首轮全部夹具字节不变。",
           "priority": "P0"
         },
         {
           "id": "single-file",
           "name": "仅本文件",
-          "type": "must_include",
-          "check": "须尊重只改 application/README.md，不宣称自动改其他文件。",
+          "type": "must_not_conflict",
+          "check": "C 后 application/README.md 有实质精简；application/notes.md 字节不变。",
           "priority": "P0"
         },
         {
           "id": "keep-constraints",
           "name": "保留约束",
-          "type": "should_include",
-          "check": "应提及保留约束/关键可执行信息，或 B3 可执行底线。",
-          "priority": "P1"
+          "type": "must_not_conflict",
+          "check": "C 后仍明确先审批再发布、失败回滚、健康检查连续三次通过、紧急修复保留审批记录。",
+          "priority": "P0"
         }
+      ],
+      "fixtures": {
+        "application/README.md": "# 运维说明\n\n## 执行\n\n为了确保执行过程能够顺利执行，请在开始执行前先确认已经获得审批。必须先获得负责人审批，才能执行发布。\n\n发布失败时应立即回滚；回滚完成后验证健康检查连续三次通过。紧急修复也必须保留审批记录。\n",
+        "application/notes.md": "# 范围外文件\n\n本文件不得变化。审批规则在此重复记录，但尚未确认它是真源。\n"
+      },
+      "turns": [
+        "C。仅改 application/README.md，按已列范围执行。"
       ]
     },
     {
       "id": "simplify-trigger-003",
       "category": "should-trigger",
-      "prompt": "把这段又啰嗦又和别处重复的设计说明按金字塔改短，同时把「订金」统一成「预付款」",
-      "expected_output": "先问主目标或确认串行顺序（simplify 与 revise）；不得静默单技能吞并术语链。",
+      "mode": "decision",
+      "prompt": "把 docs/design.md 按金字塔改短，同时把「订金」统一成「预付款」，还要同步其他文件中的术语；我还没决定执行顺序。",
+      "expected_output": "先确认 docs-revise 与 docs-simplify 的主目标或串行顺序，不静默双跑。",
       "assertions": [
         {
           "id": "routing-dual",
           "name": "双目标分流",
-          "type": "must_include",
-          "check": "须体现与 docs-revise 分流、问主目标或串行顺序确认。",
+          "type": "must_not_conflict",
+          "check": "响应区分术语链式替换和结构精简，并对尚未决定的顺序提出可选择方案。",
           "priority": "P0"
         },
         {
           "id": "no-silent-merge",
-          "name": "勿静默合并",
+          "name": "不静默合并",
           "type": "must_not_conflict",
-          "check": "不得宣称一次改写同时静默完成全库术语链且无需确认顺序。",
+          "check": "本轮所有夹具字节不变；不得宣称已完成全库替换或直接进入结构重写。",
           "priority": "P0"
         }
-      ]
+      ],
+      "fixtures": {
+        "docs/design.md": "# 支付说明\n\n订金在支付前需要确认。为了完成订金支付，支付前还应完成订金确认。\n",
+        "docs/terms.md": "# 术语\n\n订金：订单预付金额。\n"
+      }
     },
     {
       "id": "simplify-not-trigger-001",
       "category": "should-not-trigger",
-      "prompt": "把 system/knowledge/overview 里所有「订金」统一成「预付款」，并同步引用链和注释",
+      "mode": "decision",
+      "prompt": "把 system/knowledge/overview 里所有「订金」统一成「预付款」，并同步引用链和注释；本轮先判断主路径。",
       "expected_output": "主路径 docs-revise。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
-          "type": "must_include",
-          "check": "须点名 docs-revise 或术语/链式替换。",
+          "type": "must_not_conflict",
+          "check": "主路径明确转交 docs-revise，保留用户要求的交付物与范围。",
           "priority": "P0"
         },
         {
           "id": "no-false-simplify-primary",
-          "name": "勿假主 simplify",
+          "name": "不误触发",
           "type": "must_not_conflict",
-          "check": "不得唯一主路径写成 docs-simplify 金字塔精简。",
+          "check": "不发起 docs-simplify 的写前确认或精简改写；本例只评路由。",
           "priority": "P0"
         }
       ]
@@ -136,21 +152,22 @@
     {
       "id": "simplify-not-trigger-002",
       "category": "should-not-trigger",
-      "prompt": "全量重建根目录 INDEX-GUIDE.md，九章结构，不要改业务文档正文",
+      "mode": "decision",
+      "prompt": "全量重建根目录 INDEX-GUIDE.md，九章结构，不要改业务文档正文；本轮先判断主路径。",
       "expected_output": "主路径 docs-indexing。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
-          "type": "must_include",
-          "check": "须点名 docs-indexing 或 INDEX-GUIDE。",
+          "type": "must_not_conflict",
+          "check": "主路径明确转交 docs-indexing，保留用户要求的交付物与范围。",
           "priority": "P0"
         },
         {
           "id": "no-false-simplify-primary",
-          "name": "勿假主 simplify",
+          "name": "不误触发",
           "type": "must_not_conflict",
-          "check": "不得主路径写成 docs-simplify。",
+          "check": "不发起 docs-simplify 的写前确认或精简改写；本例只评路由。",
           "priority": "P0"
         }
       ]
@@ -158,23 +175,733 @@
     {
       "id": "simplify-audience-001",
       "category": "should-trigger",
-      "prompt": "继续 /docs-simplify 烤干：精简后只剩口号，验收与约束被删光，还复制出第二真源。请按受众质检处理。",
-      "expected_output": "检出可评审性/信息边界违例；恢复可执行要点并去重改引用；未过不得宣称收敛。",
+      "mode": "decision",
+      "prompt": "继续 /docs-simplify 烤干 docs/current.md。docs/before.md 是已经确认的改写前内容；当前版本被改成口号，还复制了规则。请找出问题，涉及规则变化先给选项。",
+      "expected_output": "依据原文指出被删约束/例外/验收与重复来源；未获语义处置确认不得宣称收敛。",
       "assertions": [
         {
           "id": "audience-violation-visible",
-          "name": "违例可见",
-          "type": "must_include",
-          "check": "须指出精简过度丢失验收/约束或双真源，或给出受众违例短表。",
+          "name": "违例有证据",
+          "type": "must_not_conflict",
+          "check": "指出 current.md 缺失审批、失败回滚、三次健康检查或紧急记录中的具体信息，并指出未经确认重复 rules.md。",
           "priority": "P0"
         },
         {
           "id": "audience-rewrite-or-gate",
-          "name": "改写或停问",
-          "type": "must_include",
-          "check": "须恢复要点并 SSOT 去重，或停问；不得未处理就写后 C。",
+          "name": "语义停问",
+          "type": "must_not_conflict",
+          "check": "保留规则恢复/真源处置的未决状态，给出推荐与选择；不得直接把本对象标为已收敛，也不修改 before.md 或 rules.md。",
           "priority": "P0"
         }
+      ],
+      "fixtures": {
+        "docs/before.md": "# 运维说明\n\n## 执行\n\n为了确保执行过程能够顺利执行，请在开始执行前先确认已经获得审批。必须先获得负责人审批，才能执行发布。\n\n发布失败时应立即回滚；回滚完成后验证健康检查连续三次通过。紧急修复也必须保留审批记录。\n",
+        "docs/current.md": "# 运维说明\n\n高效发布，保障稳定。\n\n发布必须经负责人审批。\n",
+        "docs/rules.md": "# 发布规则\n\n发布必须经负责人审批。\n"
+      }
+    },
+    {
+      "id": "simplify-not-trigger-003",
+      "category": "should-not-trigger",
+      "mode": "decision",
+      "prompt": "把 system/knowledge/overview 的新知识归档到各视角章节，并按表行链接回写 overview；本轮先判断主路径。",
+      "expected_output": "主路径 docs-archive。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_not_conflict",
+          "check": "明确将任务交给 docs-archive，而不是把归档或实体生成改成正文精简。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-simplify-primary",
+          "name": "不误触发",
+          "type": "must_not_conflict",
+          "check": "不启动 docs-simplify 的改写环；本例仅评主路径决策。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "simplify-not-trigger-004",
+      "category": "should-not-trigger",
+      "mode": "decision",
+      "prompt": "根据现有五视角章节提取实体 ID，生成 per-entity 文件和视角 README，再更新 INDEX-GUIDE 第四章；本轮先判断主路径。",
+      "expected_output": "主路径 docs-build。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确下游",
+          "type": "must_not_conflict",
+          "check": "明确将任务交给 docs-build，而不是把归档或实体生成改成正文精简。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-false-simplify-primary",
+          "name": "不误触发",
+          "type": "must_not_conflict",
+          "check": "不启动 docs-simplify 的改写环；本例仅评主路径决策。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "simplify-scope-001",
+      "category": "should-trigger",
+      "mode": "decision",
+      "prompt": "帮我精简发布说明，我还不确定该改哪个文件。",
+      "expected_output": "先搜索候选并列出选择，不自选文件写入。",
+      "assertions": [
+        {
+          "id": "find-before-ask",
+          "name": "先查候选",
+          "type": "must_not_conflict",
+          "check": "实际读取或搜索夹具，列出 docs/release.md 与 handbook/release.md 的差异或用途，向用户收口目标。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-guess-write",
+          "name": "不猜路径写入",
+          "type": "must_not_conflict",
+          "check": "两个候选文件均保持原样；不得因同名或位置先后擅自选定正式目标。",
+          "priority": "P0"
+        }
+      ],
+      "fixtures": {
+        "docs/release.md": "# 发布说明\n\n面向开发者的发布步骤。\n",
+        "handbook/release.md": "# 发布说明\n\n面向运营的发布检查。\n"
+      }
+    },
+    {
+      "id": "simplify-scope-002",
+      "category": "should-trigger",
+      "mode": "decision",
+      "prompt": "用 /docs-simplify 激进精简 docs/guide.md，只改这个文件。",
+      "expected_output": "范围明确仍需完成本单元写前六项并等待 C。",
+      "assertions": [
+        {
+          "id": "intent-clarify",
+          "name": "写前澄清",
+          "type": "must_not_conflict",
+          "check": "首轮输出当前单元六项或等价范围确认，阶段可识别为写前澄清；首轮全部夹具字节不变。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-premature-completion",
+          "name": "不冒称已完成",
+          "type": "must_not_conflict",
+          "check": "无 C 时不得输出已改写或已烤干的完成声明。",
+          "priority": "P0"
+        }
+      ],
+      "fixtures": {
+        "docs/guide.md": "# 运维说明\n\n## 执行\n\n为了确保执行过程能够顺利执行，请在开始执行前先确认已经获得审批。必须先获得负责人审批，才能执行发布。\n\n发布失败时应立即回滚；回滚完成后验证健康检查连续三次通过。紧急修复也必须保留审批记录。\n"
+      }
+    },
+    {
+      "id": "simplify-scope-003",
+      "category": "should-trigger",
+      "mode": "rewrite",
+      "prompt": "docs-revise 已 grilled。请独立用 /docs-simplify 精简 docs/guide.md 中 <!-- simplify-start --> 与 <!-- simplify-end --> 之间的新段落，两个标记也保持原样；旧段落不要改。",
+      "expected_output": "新技能先确认 hunk，C 后仅精简标记内部。",
+      "assertions": [
+        {
+          "id": "intent-clarify",
+          "name": "写前澄清",
+          "type": "must_not_conflict",
+          "check": "首轮输出当前单元六项或等价范围确认，阶段可识别为写前澄清；首轮全部夹具字节不变。",
+          "priority": "P0"
+        },
+        {
+          "id": "hunk-only",
+          "name": "精确范围",
+          "type": "must_not_conflict",
+          "check": "C 后两个标记之间有实质精简；标记及其前后全部字节不变，即使旧段存在重复。",
+          "priority": "P0"
+        },
+        {
+          "id": "hunk-constraints",
+          "name": "保留片段约束",
+          "type": "must_not_conflict",
+          "check": "新段落仍规定失败回滚并验证健康检查三次通过；不改成只剩泛泛要求。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-scope-creep",
+          "name": "不扩大扫描任务",
+          "type": "must_not_conflict",
+          "check": "范围外重复不得引发未经授权改写或强制扩围确认；可在结果中简述。",
+          "priority": "P0"
+        }
+      ],
+      "fixtures": {
+        "docs/guide.md": "# 发布手册\n\n旧段：审批后发布。审批通过之后才发布。\n\n<!-- simplify-start -->\n为了确保系统能够保持健康，发布失败时应立即回滚；回滚完成之后，需要验证健康检查连续三次通过，以确保系统的健康状态。\n<!-- simplify-end -->\n\n旧例外：周末维护仍走原审批。\n"
+      },
+      "turns": [
+        "C。仅精简两个标记之间的片段。"
+      ]
+    },
+    {
+      "id": "simplify-scope-004",
+      "category": "should-trigger",
+      "mode": "rewrite",
+      "prompt": "继续已确认的 /docs-simplify 批次：前轮已输出六项并收到我的写前 C。目标为精简 docs/a.md、docs/b.md、docs/c.md，三文件是一个当前单元；只删冗余，保留原约束，不做跨文件去重，不扩批，缺口为无，写后必须烤干。现在执行。",
+      "expected_output": "沿用已确认批次授权，一次完成三文件，不重复逐文件索要 C。",
+      "assertions": [
+        {
+          "id": "reuse-authorization",
+          "name": "沿用授权",
+          "type": "must_not_conflict",
+          "check": "轨迹未把该批次拆为三个需重新 C 的单元，实际精简三份指定文件。",
+          "priority": "P0"
+        },
+        {
+          "id": "batch-boundary",
+          "name": "批次边界",
+          "type": "must_not_conflict",
+          "check": "docs/outside.md 字节不变；a/b/c 中各自数值与约束均保留。",
+          "priority": "P0"
+        },
+        {
+          "id": "batch-review",
+          "name": "批次烤干",
+          "type": "must_not_conflict",
+          "check": "完成批次检查后停等写后动作，不自动修改第四文件。",
+          "priority": "P0"
+        }
+      ],
+      "fixtures": {
+        "docs/a.md": "# 审批\n\n在执行发布之前，需要先完成审批，审批完成之后才能开始发布。\n",
+        "docs/b.md": "# 验收\n\n为了完成验收，需要健康检查连续三次通过，连续三次通过才能判为验收成功。\n",
+        "docs/c.md": "# 失败\n\n在发布失败的情况下，应立即回滚；失败时必须立即执行回滚。\n",
+        "docs/outside.md": "# 范围外文件\n\n本文件不得变化。审批规则在此重复记录，但尚未确认它是真源。\n"
+      }
+    },
+    {
+      "id": "simplify-routing-001",
+      "category": "should-trigger",
+      "mode": "rewrite",
+      "prompt": "执行顺序已确定为先 docs-revise 再 docs-simplify，术语替换已经完成并确认。现在只精简 docs/payment.md。前轮 simplify 六项也已确认：仅该文件、目标压缩重复、无缺口、不改业务承诺或术语、写后烤干、原路径写回；我的写前 C 已给出，请继续。",
+      "expected_output": "沿用既定顺序与授权，直接精简当前文件，不重问已决顺序。",
+      "assertions": [
+        {
+          "id": "reuse-order",
+          "name": "沿用顺序",
+          "type": "must_not_conflict",
+          "check": "不再询问 revise 与 simplify 的顺序，不重新执行全库术语替换。",
+          "priority": "P0"
+        },
+        {
+          "id": "actual-rewrite",
+          "name": "实际改写",
+          "type": "must_not_conflict",
+          "check": "payment.md 实际压缩重复，保留预付款术语和退款后五个工作日到账的承诺。",
+          "priority": "P0"
+        }
+      ],
+      "fixtures": {
+        "docs/payment.md": "# 预付款\n\n预付款是订单预付金额。订单预付金额即预付款。退款将在五个工作日内到账。\n"
+      }
+    },
+    {
+      "id": "simplify-preserve-001",
+      "category": "should-trigger",
+      "mode": "rewrite",
+      "prompt": "精简 docs/plan.md，保持模板固定章节和编号表；主要删散文，表格里的约束、例外、验收必须保留。",
+      "expected_output": "C 后压缩散文，保留章号、表头和所有编号行，不以行数降幅定成败。",
+      "assertions": [
+        {
+          "id": "intent-clarify",
+          "name": "写前澄清",
+          "type": "must_not_conflict",
+          "check": "首轮输出当前单元六项或等价范围确认，阶段可识别为写前澄清；首轮全部夹具字节不变。",
+          "priority": "P0"
+        },
+        {
+          "id": "template-skeleton",
+          "name": "固定结构",
+          "type": "must_not_conflict",
+          "check": "改后全部七个二级章标题及顺序与原文相同；G-01、C-01、R-01、Q-01 行及其必要字段仍在。",
+          "priority": "P0"
+        },
+        {
+          "id": "information-preserved",
+          "name": "约束和验收",
+          "type": "must_not_conflict",
+          "check": "不得删除双人审批、故障时冻结、紧急修复补登记、三次健康检查的要求。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-line-kpi",
+          "name": "不设行数门槛",
+          "type": "must_not_conflict",
+          "check": "即使行数变化不大，只要散文已精简且信息可执行，不因降幅不足继续删表或拆章。",
+          "priority": "P0"
+        }
+      ],
+      "fixtures": {
+        "docs/plan.md": "# 发布方案\n\n## 1 目标\n\n为了实现稳定发布这一目标，本方案的目标是实现稳定发布。\n\n| ID | 目标 |\n| --- | --- |\n| G-01 | 稳定发布 |\n\n## 2 范围\n\n仅生产发布。\n\n## 3 约束\n\n| ID | 条件 |\n| --- | --- |\n| C-01 | 必须双人审批 |\n\n## 4 风险\n\n| ID | 处置 |\n| --- | --- |\n| R-01 | 故障时冻结发布 |\n\n## 5 例外\n\n紧急修复允许先处置，但必须补登记。\n\n## 6 验收\n\n| ID | 条件 |\n| --- | --- |\n| Q-01 | 健康检查连续三次通过 |\n\n## 7 自查\n\n- [ ] 审批与验收记录完整。\n"
+      },
+      "turns": [
+        "C。按上述固定模板范围精简。"
+      ]
+    },
+    {
+      "id": "simplify-preserve-002",
+      "category": "should-trigger",
+      "mode": "rewrite",
+      "prompt": "精简 docs/api.md 的散文，契约字段、实体 ID、已有锚点、命令、代码块和标记为扫描结果的表列保持原样。",
+      "expected_output": "仅压缩散文，契约面逐项保持原值。",
+      "assertions": [
+        {
+          "id": "intent-clarify",
+          "name": "写前澄清",
+          "type": "must_not_conflict",
+          "check": "首轮输出当前单元六项或等价范围确认，阶段可识别为写前澄清；首轮全部夹具字节不变。",
+          "priority": "P0"
+        },
+        {
+          "id": "contract-fields",
+          "name": "契约字段",
+          "type": "must_not_conflict",
+          "check": "id/type/title 的 YAML 值不变；API-ORDER 及显式锚点 order-api 保留。",
+          "priority": "P0"
+        },
+        {
+          "id": "literal-preservation",
+          "name": "字面量",
+          "type": "must_not_conflict",
+          "check": "所有 fenced code 内容和行内命令字面量逐字不变；不把 --dry-run 改为其他参数。",
+          "priority": "P0"
+        },
+        {
+          "id": "scan-columns",
+          "name": "扫描列",
+          "type": "must_not_conflict",
+          "check": "扫描结果表的表头、单元格值和编号不变。",
+          "priority": "P0"
+        },
+        {
+          "id": "real-concision",
+          "name": "确有精简",
+          "type": "must_not_conflict",
+          "check": "重复散文实际压缩，不能以保护契约为由只给计划不修改。",
+          "priority": "P0"
+        }
+      ],
+      "fixtures": {
+        "docs/api.md": "---\nid: API-ORDER\ntype: api\ntitle: 订单接口\n---\n\n# 订单接口\n\n<a id=\"order-api\"></a>\n\n该接口用于创建订单，创建订单是该接口所承担的职责。\n\n运行 `deploy --dry-run --target order` 进行预览。\n\n```json\n{\"id\":\"API-ORDER\",\"retry\":false}\n```\n\n<!-- 扫描结果：以下表列由扫描器维护 -->\n| ID | method | path |\n| --- | --- | --- |\n| API-ORDER | POST | /orders |\n"
+      },
+      "turns": [
+        "C。仅精简散文，保护已列契约面。"
+      ]
+    },
+    {
+      "id": "simplify-preserve-003",
+      "category": "should-trigger",
+      "mode": "rewrite",
+      "prompt": "精简 docs/review.md，并把 updated 和 last_reviewed 刷新为 2026-10-22；其余元数据不改。",
+      "expected_output": "日期按指定值刷新，其他契约保持，正文更简明。",
+      "assertions": [
+        {
+          "id": "intent-clarify",
+          "name": "写前澄清",
+          "type": "must_not_conflict",
+          "check": "首轮输出当前单元六项或等价范围确认，阶段可识别为写前澄清；首轮全部夹具字节不变。",
+          "priority": "P0"
+        },
+        {
+          "id": "date-update",
+          "name": "日期可刷新",
+          "type": "must_not_conflict",
+          "check": "C 后 updated 和 last_reviewed 均为 2026-10-22；id、type 不变。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-extra-metadata",
+          "name": "不附加改动",
+          "type": "must_not_conflict",
+          "check": "不新增未请求的元数据字段或改变 ID；正文重复句有实际压缩。",
+          "priority": "P0"
+        }
+      ],
+      "fixtures": {
+        "docs/review.md": "---\nid: GUIDE-01\ntype: guide\nupdated: 2026-09-01\nlast_reviewed: 2026-09-15\n---\n\n# 审阅\n\n审阅需要保留记录，审阅结束之后应当保留本次审阅的记录。\n"
+      },
+      "turns": [
+        "C。日期按 2026-10-22 更新，其他字段保持。"
+      ]
+    },
+    {
+      "id": "simplify-ssot-001",
+      "category": "should-trigger",
+      "mode": "decision",
+      "prompt": "用 /docs-simplify 检查 docs/process.md 与 docs/policy.md 的重复规则，考虑把 process.md 的规则改成引用。我还没有确认它们语义相同，也没确认真源。",
+      "expected_output": "发现条件不同，列出候选差异及选项，确认前不删段或改引用。",
+      "assertions": [
+        {
+          "id": "semantic-difference",
+          "name": "识别差异",
+          "type": "must_not_conflict",
+          "check": "指出 process 的紧急发布可先执行与 policy 的全部发布先审批并非完全同义。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-unconfirmed-dedup",
+          "name": "未确认不去重",
+          "type": "must_not_conflict",
+          "check": "两个文件字节不变，未以文字相似直接删 process 规则或换链接。",
+          "priority": "P0"
+        },
+        {
+          "id": "actionable-question",
+          "name": "可决策问题",
+          "type": "must_not_conflict",
+          "check": "给推荐与数字选项，明确需确认哪项口径或真源，不能只泛泛说需要确认。",
+          "priority": "P0"
+        }
+      ],
+      "fixtures": {
+        "docs/process.md": "# 发布流程\n\n普通发布必须先审批；紧急发布允许先执行，24 小时内补审批。\n",
+        "docs/policy.md": "# 发布政策\n\n全部发布都必须先审批，审批前不得执行。\n"
+      }
+    },
+    {
+      "id": "simplify-ssot-002",
+      "category": "should-trigger",
+      "mode": "rewrite",
+      "prompt": "精简 docs/process.md。docs/policy.md 已确认为审批规则唯一真源，批准删除 process.md 中同义审批定义并换成相对链接；其他本地验收保留，只改 process.md。本轮先列写前清单，等我回复 C 再改。",
+      "expected_output": "写前确认后，已明确的真源选择不再重复询问；只改引用方。",
+      "assertions": [
+        {
+          "id": "intent-clarify",
+          "name": "写前澄清",
+          "type": "must_not_conflict",
+          "check": "首轮输出当前单元六项或等价范围确认，阶段可识别为写前澄清；首轮全部夹具字节不变。",
+          "priority": "P0"
+        },
+        {
+          "id": "confirmed-source",
+          "name": "已确认处置",
+          "type": "must_not_conflict",
+          "check": "C 后 process.md 使用可解析的相对链接指向 policy.md，重复审批定义被压缩为引用或必要摘要。",
+          "priority": "P0"
+        },
+        {
+          "id": "source-unchanged",
+          "name": "真源不改",
+          "type": "must_not_conflict",
+          "check": "policy.md 字节不变；process.md 仍保留健康检查连续三次通过的本地验收。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-repeat-source-question",
+          "name": "不重复询问",
+          "type": "must_not_conflict",
+          "check": "不再次以“疑似真源未定”为由要求用户重选已经明确的 policy.md；本单元写前六项确认仍允许。",
+          "priority": "P0"
+        }
+      ],
+      "fixtures": {
+        "docs/process.md": "# 发布流程\n\n发布前必须经负责人审批。审批负责人批准后才能发布。\n\n发布后健康检查连续三次通过才验收。\n",
+        "docs/policy.md": "# 审批规则\n\n发布前必须经负责人审批。\n"
+      },
+      "turns": [
+        "C。按已确认真源处置执行。"
+      ]
+    },
+    {
+      "id": "simplify-ssot-003",
+      "category": "should-trigger",
+      "mode": "rewrite",
+      "prompt": "精简 docs/guide.md，顺便检查当前工作区有无相同定义可以引用；没有就只压缩本文件，不要编造真源。",
+      "expected_output": "查无其他定义后，只做文件内去重，不造外链。",
+      "assertions": [
+        {
+          "id": "intent-clarify",
+          "name": "写前澄清",
+          "type": "must_not_conflict",
+          "check": "首轮输出当前单元六项或等价范围确认，阶段可识别为写前澄清；首轮全部夹具字节不变。",
+          "priority": "P0"
+        },
+        {
+          "id": "search-evidence",
+          "name": "查重有依据",
+          "type": "must_not_conflict",
+          "check": "轨迹有实际候选检索，未把当前文件的自重复当作发现外部真源。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-invented-source",
+          "name": "无候选不造真源",
+          "type": "must_not_conflict",
+          "check": "C 后只保留本文件的等价定义，不新增不存在路径、HTTP 或声称未读文件为 SSOT。",
+          "priority": "P0"
+        }
+      ],
+      "fixtures": {
+        "docs/guide.md": "# 重试\n\n重试上限为三次。失败之后可以重试，最多允许三次重试。每次重试前必须记录错误码。\n"
+      },
+      "turns": [
+        "C。查无其他真源时，仅压缩本文件复述。"
+      ]
+    },
+    {
+      "id": "simplify-knowledge-001",
+      "category": "should-trigger",
+      "mode": "rewrite",
+      "prompt": "精简 system/knowledge/product/PM-DEMO/PM-DEMO.md。文中的规则说明和 system/requirements/release.md 重复，请按知识治理边界处理已有引用；只改 PM-DEMO.md，保留必要决策要点。",
+      "expected_output": "不得用 knowledge 外文档链接替代正文；可摘录必要要点或对不明处停问。",
+      "assertions": [
+        {
+          "id": "intent-clarify",
+          "name": "写前澄清",
+          "type": "must_not_conflict",
+          "check": "首轮输出当前单元六项或等价范围确认，阶段可识别为写前澄清；首轮全部夹具字节不变。",
+          "priority": "P0"
+        },
+        {
+          "id": "knowledge-boundary",
+          "name": "knowledge 边界",
+          "type": "must_not_conflict",
+          "check": "C 后 PM-DEMO.md 不包含指向 system/requirements 的 Markdown 链接或文档路径字面量，也不新增到下层 application 的链接。",
+          "priority": "P0"
+        },
+        {
+          "id": "knowledge-content",
+          "name": "保留要点",
+          "type": "must_not_conflict",
+          "check": "本文件审批后发布的必要要点仍可评审；requirements/release.md 字节不变。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-unsafe-ssot",
+          "name": "去重不越界",
+          "type": "must_not_conflict",
+          "check": "不因 requirements 存在同义文本，就把 knowledge 正文清空并只留越界引用。",
+          "priority": "P0"
+        }
+      ],
+      "fixtures": {
+        "system/knowledge/product/PM-DEMO/PM-DEMO.md": "---\nid: PM-DEMO\ntype: product-module\n---\n\n# 发布模块\n\n模块承担发布管理职责，发布管理是本模块的职责。发布必须经审批。\n\n依据：[发布说明](../../../requirements/release.md)。\n",
+        "system/requirements/release.md": "# 发布说明\n\n发布必须经审批。\n",
+        "system/knowledge-links.yaml": "links: []\n"
+      },
+      "turns": [
+        "C。只改 PM-DEMO.md，按边界修复引用并保留已知要点。"
+      ]
+    },
+    {
+      "id": "simplify-knowledge-002",
+      "category": "should-trigger",
+      "mode": "rewrite",
+      "prompt": "精简 application/knowledge/application/APP-DEMO/MS-DEMO/API-DEMO.md，修复已知引用形式。application/knowledge-links.yaml 没有 parent；MS-DEMO 是系统层实体，只改 API 文件，不新增 reference 实体。",
+      "expected_output": "无 parent 的上层实体引用改纯 ID，不猜跨层 URL，不新建实体。",
+      "assertions": [
+        {
+          "id": "intent-clarify",
+          "name": "写前澄清",
+          "type": "must_not_conflict",
+          "check": "首轮输出当前单元六项或等价范围确认，阶段可识别为写前澄清；首轮全部夹具字节不变。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-parent-id-only",
+          "name": "无 parent 用 ID",
+          "type": "must_not_conflict",
+          "check": "C 后 MS-DEMO 以纯 ID 出现，无指向 system 的相对路径、逻辑前缀或跨层 HTTP。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-reference-file",
+          "name": "不建影子实体",
+          "type": "must_not_conflict",
+          "check": "工作区未新增 MS-DEMO.md 或其他 reference 文件；knowledge-links.yaml 字节不变。",
+          "priority": "P0"
+        },
+        {
+          "id": "identity-preserved",
+          "name": "本体身份",
+          "type": "must_not_conflict",
+          "check": "API-DEMO 的 id/type 及 POST /orders 字面量保持。",
+          "priority": "P0"
+        }
+      ],
+      "fixtures": {
+        "application/knowledge/application/APP-DEMO/MS-DEMO/API-DEMO.md": "---\nid: API-DEMO\ntype: api\n---\n\n# 订单 API\n\n本 API 提供创建订单功能，创建订单是本 API 提供的能力。入口为 `POST /orders`。\n\nimplements_to: [MS-DEMO](/system/knowledge/application/APP-DEMO/MS-DEMO/MS-DEMO.md)\n",
+        "application/knowledge-links.yaml": "links: []\n"
+      },
+      "turns": [
+        "C。按无 parent 规则修复引用并精简本文件。"
+      ]
+    },
+    {
+      "id": "simplify-protocol-001",
+      "category": "should-not-trigger",
+      "mode": "decision",
+      "prompt": "docs-revise 当前还在烤干：我刚确认修订本轮 hunk，已写入。现在按共享推进协议跑 simplify 遍，再回烤干；没有要求启动独立 /docs-simplify，也不做全文重排。本轮 hunk 是“发布前需要先完成审批，审批完成后再发布”。请说明下一步。",
+      "expected_output": "执行协议内 hunk 精简并回烤干，不另开完整技能确认环。",
+      "assertions": [
+        {
+          "id": "no-nested-loop",
+          "name": "不嵌套技能环",
+          "type": "must_not_conflict",
+          "check": "下一步限定本轮 hunk 的 simplify 遍，没有要求另起独立技能写前六项/C。",
+          "priority": "P0"
+        },
+        {
+          "id": "return-to-grilling",
+          "name": "回到烤干",
+          "type": "must_not_conflict",
+          "check": "说明简化该句后回到当前 docs-revise 烤干；不宣称整篇 docs-simplify 已完成。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "simplify-protocol-002",
+      "category": "should-trigger",
+      "mode": "decision",
+      "prompt": "当前 docs/a.md 已烤干。F：剩余 docs/b.md、docs/c.md 想批量精简，之前没有确认这两个文件的意图或范围。",
+      "expected_output": "先汇总剩余意图并等写前批确认，F 本身不授权直接改写。",
+      "assertions": [
+        {
+          "id": "batch-intent-first",
+          "name": "F 先批确认",
+          "type": "must_not_conflict",
+          "check": "响应提供 b/c 的六项意图摘要或等价批确认表，等待用户写前 C。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-premature-batch",
+          "name": "确认前不写",
+          "type": "must_not_conflict",
+          "check": "a/b/c 夹具均字节不变，尤其不把 F 当成立即写入 b/c 的许可。",
+          "priority": "P0"
+        }
+      ],
+      "fixtures": {
+        "docs/a.md": "# 已完成\n\n已确认的简明正文。\n",
+        "docs/b.md": "# 运维说明\n\n## 执行\n\n为了确保执行过程能够顺利执行，请在开始执行前先确认已经获得审批。必须先获得负责人审批，才能执行发布。\n\n发布失败时应立即回滚；回滚完成后验证健康检查连续三次通过。紧急修复也必须保留审批记录。\n",
+        "docs/c.md": "# 验收\n\n健康检查必须通过，只有通过健康检查才算验收通过。\n"
+      }
+    },
+    {
+      "id": "simplify-protocol-003",
+      "category": "should-trigger",
+      "mode": "multi-turn",
+      "prompt": "用 /docs-simplify 精简 docs/a.md，只改这一份。",
+      "expected_output": "先以 C 完成 a 的实际改写；M 改为 b 后重做澄清，旧 C 不授权 b，新的 C 才写 b；a 保持其已写后基线。",
+      "assertions": [
+        {
+          "id": "intent-clarify",
+          "name": "写前澄清",
+          "type": "must_not_conflict",
+          "check": "首轮输出当前单元六项或等价范围确认，阶段可识别为写前澄清；首轮全部夹具字节不变。",
+          "priority": "P0"
+        },
+        {
+          "id": "prior-authorization-exercised",
+          "name": "旧授权已生效",
+          "type": "must_not_conflict",
+          "check": "第一条 C 后 a.md 已实际精简，并保留审批前置、失败立即回滚、健康检查连续三次通过和紧急修复审批记录；b.md 与原始夹具字节一致。保存此时 a.md 的写后快照，作为后续 M/C 的比较基线。",
+          "priority": "P0"
+        },
+        {
+          "id": "reopen-after-m",
+          "name": "M 后重开",
+          "type": "must_not_conflict",
+          "check": "收到 M 后重做 b 的意图澄清；新 C 前 b 与原始夹具字节一致，a 与第一条 C 完成后的快照字节一致。",
+          "priority": "P0"
+        },
+        {
+          "id": "new-scope-only",
+          "name": "按新范围写",
+          "type": "must_not_conflict",
+          "check": "最后 C 后 b.md 有实质精简且仍要求每次重试前记录错误码；a.md 与第一条 C 完成后的快照字节一致。",
+          "priority": "P0"
+        },
+        {
+          "id": "new-intent-visible",
+          "name": "新意图可见",
+          "type": "must_not_conflict",
+          "check": "M 后明确仅 b.md 为待写目标，并等待针对 b 的新 C；不能把此前已生效的 a.md 写前 C 沿用为 b.md 授权。",
+          "priority": "P0"
+        }
+      ],
+      "fixtures": {
+        "docs/a.md": "# 运维说明\n\n## 执行\n\n为了确保执行过程能够顺利执行，请在开始执行前先确认已经获得审批。必须先获得负责人审批，才能执行发布。\n\n发布失败时应立即回滚；回滚完成后验证健康检查连续三次通过。紧急修复也必须保留审批记录。\n",
+        "docs/b.md": "# 操作\n\n重试前必须记录错误码；每一次重试之前都需要先记录本次错误码。\n"
+      },
+      "turns": [
+        "C。确认本轮只精简 docs/a.md，保留审批前置、失败回滚、健康检查连续三次通过和紧急修复审批记录；请完成改写与烤干，docs/b.md 不在本轮授权范围。",
+        "M。现在改为只精简 docs/b.md，docs/a.md 保持刚才完成改写后的内容；新目标只压缩重复，保留每次重试前记录错误码的要求。先按新目标重新澄清。",
+        "C。确认新的 docs/b.md 单文件范围，保留每次重试前记录错误码的要求；docs/a.md 保持第一次 C 后的结果。"
+      ]
+    },
+    {
+      "id": "simplify-protocol-004",
+      "category": "should-trigger",
+      "mode": "decision",
+      "prompt": "继续烤干 docs/current.md。docs/approved.md 是已确认原文；这次改写把重试上限从三次改成五次，我没有批准数字变化。请审查并给处置选项，先不要改正文。",
+      "expected_output": "识别语义变化、停止自动修订，给推荐与选项，不宣称收敛。",
+      "assertions": [
+        {
+          "id": "semantic-drift",
+          "name": "识别语义漂移",
+          "type": "must_not_conflict",
+          "check": "明确指出三次被改成五次，属于承诺/约束变化而非措辞精简。",
+          "priority": "P0"
+        },
+        {
+          "id": "semantic-stop",
+          "name": "语义停问",
+          "type": "must_not_conflict",
+          "check": "所有夹具字节不变；给出恢复原值等可执行选项，待用户决定，不标为已收敛。",
+          "priority": "P0"
+        }
+      ],
+      "fixtures": {
+        "docs/approved.md": "# 重试\n\n最多重试三次，每次记录错误码。\n",
+        "docs/current.md": "# 重试\n\n最多重试五次，并记录错误码。\n"
+      }
+    },
+    {
+      "id": "simplify-scope-005",
+      "category": "should-trigger",
+      "mode": "rewrite",
+      "prompt": "仅精简 INDEX-GUIDE.md 的“使用说明”正文，保留章节、导航表及索引内容；我明确把这个索引文件纳入本轮，不要重建索引。",
+      "expected_output": "接受点名索引的正文精简任务，不误路由到重建索引。",
+      "assertions": [
+        {
+          "id": "intent-clarify",
+          "name": "写前澄清",
+          "type": "must_not_conflict",
+          "check": "首轮输出当前单元六项或等价范围确认，阶段可识别为写前澄清；首轮全部夹具字节不变。",
+          "priority": "P0"
+        },
+        {
+          "id": "explicit-index-opt-in",
+          "name": "点名纳入",
+          "type": "must_not_conflict",
+          "check": "本轮按正文精简处理，不以默认排除索引为由拒绝，也不执行 docs-indexing 重建。",
+          "priority": "P0"
+        },
+        {
+          "id": "index-boundary",
+          "name": "索引边界",
+          "type": "must_not_conflict",
+          "check": "C 后只有使用说明段落有实质变化；全部标题、导航表、链接和正文外字节保持。",
+          "priority": "P0"
+        }
+      ],
+      "fixtures": {
+        "INDEX-GUIDE.md": "# 项目索引\n\n## 使用说明\n\n为了查找所需文档，请使用下面的导航表进行查找；下面的导航表能够帮助读者找到所需文档。\n\n## 导航\n\n| 内容 | 入口 |\n| --- | --- |\n| 发布 | [release.md](docs/release.md) |\n\n## 覆盖范围\n\n仅发布模块。\n",
+        "docs/release.md": "# 发布\n\n发布说明。\n"
+      },
+      "turns": [
+        "C。仅精简使用说明正文，保留其余字节。"
       ]
     }
   ]
