@@ -20,6 +20,25 @@ if not Path(BASH).exists():
 SCRIPT = SKILL / "scripts/indexing.sh"
 ANCHOR = SKILL / "scripts/indexing_log.py"
 
+LIST_FENCE_ANCHOR_EXAMPLES = (
+    ("ordered continuation", b"1. Example\n\n    ```html\n"
+     b"    <!-- sdx-indexing:indexing_finished_ms=90 -->\n    ```\n\n"),
+    ("lazy paragraph continuation", b"1. Example\ncontinuation\n\n    ```html\n"
+     b"    <!-- sdx-indexing:indexing_finished_ms=90 -->\n    ```\n\n"),
+    ("inline bullet", b"- ```html\n"
+     b"  <!-- sdx-indexing:indexing_finished_ms=90 -->\n  ```\n\n"),
+    ("multidigit ordered", b"123. ```html\n"
+     b"     <!-- sdx-indexing:indexing_finished_ms=90 -->\n     ```\n\n"),
+    ("nested list", b"- Outer\n\n  - Inner\n\n    ```html\n"
+     b"    <!-- sdx-indexing:indexing_finished_ms=90 -->\n    ```\n\n"),
+    ("quoted list", b"> 10. Example\n>\n>     ```html\n"
+     b">     <!-- sdx-indexing:indexing_finished_ms=90 -->\n>     ```\n\n"),
+    ("quoted lazy paragraph continuation", b"> 1. Example\n> continuation\n>\n>     ```html\n"
+     b">     <!-- sdx-indexing:indexing_finished_ms=90 -->\n>     ```\n\n"),
+    ("list ends before fence closes", b"1. Example\n\n    ```html\n"
+     b"    <!-- sdx-indexing:indexing_finished_ms=90 -->\n\n"),
+)
+
 
 class IndexingTest(unittest.TestCase):
     def setUp(self):
@@ -285,6 +304,33 @@ class IndexingTest(unittest.TestCase):
                 self.assert_ok(self.anchor("write-anchor", self.guide, "--finished-ms", "123"))
                 self.assertEqual(self.guide.read_bytes(), example + body.replace(b"=11", b"=123"))
 
+    def test_read_baseline_ignores_list_fence_examples(self):
+        for kind, example in LIST_FENCE_ANCHOR_EXAMPLES:
+            with self.subTest(kind=kind):
+                self.guide.write_bytes(b"# Guide\n\n" + example
+                                       + b"<!-- sdx-indexing:indexing_finished_ms=11 -->\n")
+                result = self.anchor("read-baseline", self.guide)
+                self.assert_ok(result)
+                self.assertEqual(result.stdout, "11\n")
+
+    def test_write_anchor_preserves_list_fence_examples(self):
+        for kind, example in LIST_FENCE_ANCHOR_EXAMPLES:
+            with self.subTest(kind=kind):
+                before = b"# Guide\n\n" + example
+                self.guide.write_bytes(before + b"<!-- sdx-indexing:indexing_finished_ms=11 -->\n")
+                self.assert_ok(self.anchor("write-anchor", self.guide, "--finished-ms", "123"))
+                self.assertEqual(self.guide.read_bytes(),
+                                 before + b"<!-- sdx-indexing:indexing_finished_ms=123 -->\n")
+
+    def test_read_baseline_accepts_body_anchor_after_list_ends(self):
+        for prefix in (b"1. Example\n\n", b"1. # Example\n",
+                       b"1. Example\ncontinuation\n\n"):
+            with self.subTest(prefix=prefix):
+                self.guide.write_bytes(prefix + b"<!-- sdx-indexing:indexing_finished_ms=11 -->\n")
+                result = self.anchor("read-baseline", self.guide)
+                self.assert_ok(result)
+                self.assertEqual(result.stdout, "11\n")
+
     def test_indented_yaml_delimiters_remain_inside_frontmatter(self):
         for delimiter in (b"---", b"..."):
             with self.subTest(delimiter=delimiter):
@@ -311,6 +357,19 @@ class IndexingTest(unittest.TestCase):
                 self.assert_error(self.scan("--mode", "f", "--depth", "1", "--rewrite"))
                 self.assertEqual(self.guide.read_bytes(), original)
 
+    def test_unclosed_list_fence_rejects_appends_without_writes(self):
+        for original in (b"1. Example\n\n    ```html\n    example\n",
+                         b"- ```html\n  example\n"):
+            for operation in ("anchor", "runtime"):
+                with self.subTest(original=original, operation=operation):
+                    self.guide.write_bytes(original)
+                    if operation == "anchor":
+                        result = self.anchor("write-anchor", self.guide, "--finished-ms", "123")
+                    else:
+                        result = self.scan("--mode", "f", "--depth", "1", "--rewrite")
+                    self.assert_error(result)
+                    self.assertEqual(self.guide.read_bytes(), original)
+
     def test_rewrite_skips_runtime_examples_in_frontmatter_and_quotes(self):
         frontmatter = (b"---\nexample: |\n  <!-- docs-indexing:begin -->\n"
                        b"  yaml example\n  <!-- docs-indexing:end -->\n---\n")
@@ -321,6 +380,27 @@ class IndexingTest(unittest.TestCase):
         self.assert_ok(self.scan("--mode", "f", "--depth", "1", "--rewrite"))
         self.assertTrue(self.guide.read_bytes().startswith(original))
         self.assertIn(b"| mode / depth |", self.guide.read_bytes()[len(original):])
+
+    def test_rewrite_preserves_runtime_examples_in_list_fences(self):
+        examples = (
+            b"1. Example\r\n\r\n    ```html\r\n    <!-- docs-indexing:begin -->\r\n"
+            b"    example content  \r\n    <!-- docs-indexing:end -->\r\n    ```\r\n\r\n",
+            b"- ```html\r\n  <!-- docs-indexing:begin -->\r\n"
+            b"  example content  \r\n  <!-- docs-indexing:end -->\r\n  ```\r\n\r\n",
+        )
+        for example in examples:
+            with self.subTest(example=example):
+                before = b"# Guide\r\n\r\n" + example + b"## Runtime\r\n"
+                after = b"\r\n## Keep\r\nTrailing spaces  "
+                self.guide.write_bytes(before + b"<!-- docs-indexing:begin -->\r\n"
+                                       b"old runtime\r\n<!-- docs-indexing:end -->" + after)
+                self.assert_ok(self.scan("--mode", "f", "--depth", "1", "--rewrite"))
+                result = self.guide.read_bytes()
+                self.assertTrue(result.startswith(before))
+                self.assertTrue(result.endswith(after))
+                runtime = result[len(before):-len(after)]
+                self.assertIn(b"| mode / depth |", runtime)
+                self.assertNotIn(b"old runtime", runtime)
 
     def test_rewrite_rejects_ambiguous_runtime_marker_sequences(self):
         begin = b"<!-- docs-indexing:begin -->\n"

@@ -17,6 +17,17 @@ RE_HTML_MS = re.compile(rb"<!--\s*sdx-indexing:indexing_finished_ms=([0-9]+)\s*-
 ANCHOR_FMT = "<!-- sdx-indexing:indexing_finished_ms={ms} -->"
 RE_FENCE = re.compile(rb"^ {0,3}(`{3,}|~{3,})([^\r\n]*)\r?\n?$")
 RE_QUOTE_PREFIX = re.compile(rb"^ {0,3}>[ \t]?")
+RE_LIST_PREFIX = re.compile(rb"^( {0,3}(?:[-+*]|[0-9]{1,9}[.)]))( +|(?=\r?\n?$))")
+RE_PARAGRAPH_BREAK = re.compile(
+    rb"^ {0,3}(?:#{1,6}(?:[ \t]|$)|(?:=+|-+)[ \t]*$|"
+    rb"(?:\*[ \t]*){3,}$|(?:_[ \t]*){3,}$|(?:-[ \t]*){3,}$|"
+    rb"<(?:!--|\?|![A-Z]|!\[CDATA\[)|"
+    rb"</?(?:address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|"
+    rb"dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|"
+    rb"h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|nav|noframes|ol|"
+    rb"optgroup|option|p|param|pre|script|search|section|style|summary|table|tbody|td|textarea|"
+    rb"tfoot|th|thead|title|tr|track|ul)(?:[ \t/>]|$))", re.IGNORECASE,
+)
 
 
 def positive_ms(value: str) -> int:
@@ -32,12 +43,31 @@ def display_time(milliseconds: int) -> str:
     return f"{instant:%Y-%m-%d %H:%M:%S} +08（{milliseconds}）"
 
 
+def is_paragraph_line(line: bytes) -> bool:
+    """Identify text that can lazily continue a list or blockquote paragraph."""
+    line = line.rstrip(b"\r\n")
+    if not line.strip() or RE_PARAGRAPH_BREAK.match(line) or RE_QUOTE_PREFIX.match(line):
+        return False
+    if match := RE_FENCE.match(line):
+        ticks, remainder = match.groups()
+        if ticks[:1] != b"`" or b"`" not in remainder:
+            return False
+    if match := RE_LIST_PREFIX.match(line):
+        marker = match.group(1).lstrip()
+        # Only nonempty bullets and ordered items starting at 1 interrupt paragraphs.
+        if line[match.end():].strip() and (len(marker) == 1 or marker in (b"1.", b"1)")):
+            return False
+    return True
+
+
 def body_regions(content: bytes) -> tuple[list[tuple[int, int]], bool]:
     """Locate body bytes outside frontmatter/fences and report safe EOF appends."""
     offset = 0
     section_start = 0
     fence = None
-    fence_quotes = 0
+    # Zero denotes a blockquote; positive widths are list continuation indents.
+    containers: list[int] = []
+    paragraph_open = False
     in_frontmatter = False
     regions = []
     for line_number, line in enumerate(content.splitlines(keepends=True)):
@@ -53,14 +83,41 @@ def body_regions(content: bytes) -> tuple[list[tuple[int, int]], bool]:
             continue
 
         line_size = len(line)
-        quotes = 0
-        while prefix := RE_QUOTE_PREFIX.match(line):
-            quotes += 1
-            line = line[prefix.end():]
-        # Leaving a blockquote also ends its fenced example.
-        if fence is not None and quotes < fence_quotes:
+        line = line.expandtabs(4)
+        continued = []
+        for width in containers:
+            if width == 0:
+                prefix = RE_QUOTE_PREFIX.match(line)
+                if prefix is None:
+                    break
+                line = line[prefix.end():]
+            elif line.strip():
+                if not line.startswith(b" " * width):
+                    break
+                line = line[width:]
+            continued.append(width)
+        lazy = (fence is None and paragraph_open and len(continued) < len(containers)
+                and is_paragraph_line(line))
+        if lazy:
+            continued = containers
+        # Leaving any enclosing item or quote also ends its fenced example.
+        if fence is not None and len(continued) < len(containers):
             fence = None
             section_start = offset
+        containers = continued
+        if fence is None and not lazy:
+            while True:
+                if prefix := RE_QUOTE_PREFIX.match(line):
+                    containers.append(0)
+                    line = line[prefix.end():]
+                elif prefix := RE_LIST_PREFIX.match(line):
+                    marker, padding = prefix.groups()
+                    # Five or more spaces leave indented content after one separator.
+                    width = len(marker) + (len(padding) if 1 <= len(padding) <= 4 else 1)
+                    containers.append(width)
+                    line = line[width:]
+                else:
+                    break
         match = RE_FENCE.match(line)
         if match:
             ticks, remainder = match.groups()
@@ -68,11 +125,12 @@ def body_regions(content: bytes) -> tuple[list[tuple[int, int]], bool]:
                 if ticks[:1] != b"`" or b"`" not in remainder:
                     regions.append((section_start, offset))
                     fence = ticks
-                    fence_quotes = quotes
-            elif (quotes == fence_quotes and ticks[:1] == fence[:1]
+            elif (ticks[:1] == fence[:1]
                   and len(ticks) >= len(fence) and not remainder.strip()):
                 fence = None
                 section_start = offset + line_size
+        paragraph_open = (fence is None and is_paragraph_line(line)
+                          and (paragraph_open or not line.startswith(b"    ")))
         offset += line_size
     safe_append = fence is None and not in_frontmatter
     if safe_append:
