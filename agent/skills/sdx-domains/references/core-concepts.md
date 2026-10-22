@@ -1,51 +1,22 @@
 # sdx-domains 核心概念
 
-## IDEA-ID
+## 产物与身份
 
-格式：`{YYMMDD}-{主题}`
+`DOMAIN-MAP.md` 是 VC/BD/分域文档的导航总图。`DOMAIN-{BD-ID}.md` 解释一个已有业务域如何支撑价值链，不是新 knowledge 实体或交付包。
 
-- `YYMMDD`：日期，如 `260412`
-- `主题`：中文短名，2–6 字；若含 ASCII slug，正文同一处备注中文题名
+新建示例：已有 `BD-ORDER`，文件名与 `id` 为 `DOMAIN-BD-ORDER`。历史文档若已采用 `DOMAIN-EXAMPLE` 等命名，先核对其对应 BD 与总图引用，保留名称；不要自动迁移。
 
-| 产物 | 路径示例 |
+字段和章骨架以 [总图模板](../assets/domain-map-template.md)、[分域模板](../assets/domain-template.md) 为准。
+
+## 关系核对
+
+治理真源：[knowledge-governance.md](../../../knowledge/knowledge-governance.md)「公司层」与「核心映射」。本技能读取以下关系，不重新定义或写回它们：
+
+| 要回答的问题 | 读取的已有关系 |
 | --- | --- |
-| 解决方案 | `{DOC_DIR}/domains/DOMAIN-260412-审批提效.md` |
-| 下游分析 | `{DOC_DIR}/analysis/ANALYSIS-260412-审批提效.md` |
+| 哪条 BD 支撑 VC | BD `supports_to` VC |
+| 哪些一级子域承担能力 | BD `children` BSD-L1；BSD-L1 `parent` BD |
+| 子域怎样支撑价值链 | BSD-L1 `maps_to` CAP；CAP `implements_to` VC |
+| 对接哪条产品线 | 已有 BL/PL 映射或确认材料；PL 用纯 ID |
 
-## 编号
-
-| 前缀 | 含义 | 例 |
-| --- | --- | --- |
-| G-n | §1.3 业务目标 | `G-1 …` |
-| C-n | §3.4 冲突 | `C-1 …` |
-| R-n | §5 风险 | `R-1 …` |
-| Q-n | §5.2 问题决策（业务取舍；待确认或已决策） | `Q-1 …` |
-| M{n} | §6.1 关键里程碑 | `M1（最小闭环）` |
-| ADR-n | `{DOC_DIR}/adr/` 技术/架构决策（登记 CONTEXT） | `ADR-001 …` |
-
-`G-n`、`C-n`、`R-n`、`Q-n`、`M{n}` 均是终稿内的业务编号；技术决策编号见 ADR，不入 Q-n。本技能不再使用 `G{n}` 作为默认门禁编号主线。
-§6.1 关键里程碑写作 `M{n}（{短名}）`，是下游 ANALYSIS 的**范围骨架**：ANALYSIS 概览「所属里程碑」抄整串；§4 再按实情划 `MVP{n}（{短名}）` 并挂 FR（与里程碑**不**硬对齐；个数建议 ≈，偏离须说明）。SOLUTION 正文不写 `MVP{n}`/FR 清单。
-
-## `--depth`
-
-| 值 | 含义 |
-| --- | --- |
-| `quick` | 压缩 §3；高影响项不可缺 |
-| `standard` | 默认完整七章粒度 |
-| `deep` | 加强数据影响与约束；正文仍须业务表述 |
-
-## SOLUTION 七章
-
-对齐 [domain-template.md](../assets/domain-template.md)：
-
-| 章 | 内容 |
-| --- | --- |
-| §1 | 背景、问题、目标表（G-n：目标/度量/预期收益） |
-| §2 | 场景、角色、In/Out、成功标准 |
-| §3 | 影响面、冲突（C-n）与化解 |
-| §4 | 思路、关键约束表 |
-| §5 | 风险（R-n）、问题决策（Q-n 业务取舍；技术选型见 CONTEXT/ADR） |
-| §6 | 关键里程碑、切换方案（弱绑定） |
-| §7 | 术语、参考、内部参考（§7.3）、质量自查（§7.4） |
-
-元数据：**要求**文首 `---` frontmatter；字段以模板为准。
+BSD 的层级以实体 `level` 与关系核实，不从名称猜测。PL 的定义属于解决方案层；公司域文档不复制其正文。未核实关系标缺口，不从目录邻接或名字相似推导。

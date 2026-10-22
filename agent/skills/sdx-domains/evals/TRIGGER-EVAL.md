@@ -1,12 +1,17 @@
-# Trigger eval harness note
+# sdx-domains 触发评测
 
-## 2026-07-19 复跑（网关恢复 + 检测器修复）
+## 当前套件
 
-检测：已装 skill 真名；`Skill`/`Read` 路径含 `skills/<name>/` 算触发。勿在首条 `message_stop` 早退（模型常先 Bash 再读 SKILL）。
+[trigger-eval.json](trigger-eval.json) 含 12 个请求—标签对：6 个应触发、6 个不应触发。范围为公司域架构总图、分域关系、范围与续写；相邻负例为解决方案、需求、摘要与知识库维护。
 
-| 技能 | 分数 | 备注 |
-| --- | --- | --- |
-| docs-distill | **10/10**（边缘句套件内曾 flake，隔离 3 跑复核后通过） | `trigger-eval-results.json` |
-| sdx-domains | **16/16** | 含「一口气整篇 / F 补齐 / 非法 F 重写」 |
+当前套件状态：**未运行**。执行与证据口径见 [evaluation.md](../references/evaluation.md)。没有仓内固定触发执行器时，可由独立评测环境逐例运行并保留完整轨迹；不要依赖临时脚本路径。
 
-脚本：`/tmp/run_installed_trigger_eval.py`
+加载技能后在非公司库停止写入、阻止新建实体、纠正 F 的使用方式，属于 [evals.json](evals.json) 的行为评测。它们不是「不应触发」样本。
+
+## 历史证据
+
+[trigger-eval-results.json](trigger-eval-results.json) 保留旧描述、16 条逐项结果和原 summary；仅追加 `evaluation_metadata` 标明历史用途。
+
+旧说明记载 2026-07-19 复跑、16/16。原结果使用 SOLUTION 七章、IDEA-ID、里程碑等旧语义，且只检测当时已安装技能的加载；**不能证明当前公司域架构契约通过**。其临时执行脚本未作为可复现依赖保留。
+
+新结果须单独记录技能版本、套件版本、运行环境、加载轨迹与统计；不得覆盖、改写或复用旧 16/16 作为新分数。

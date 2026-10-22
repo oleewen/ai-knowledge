@@ -1,4 +1,11 @@
 {
+  "evaluation_metadata": {
+    "status": "historical",
+    "current_suite_applicable": false,
+    "superseded_by": "company-domains-2026-10-22",
+    "reason": "原始运行使用 SOLUTION/七章/IDEA-ID 语义的旧套件；结果仅证明当时的技能加载检测，不能代表当前公司域架构契约。",
+    "current_suite_status": "not_run"
+  },
   "skill_name": "sdx-domains",
   "description": "逐步确认参数，按模板分段「澄清 → 生成 → 烤干」直写 DOMAIN-{IDEA-ID}.md； 每段写前意图澄清，写入后自动 grilling 至收敛，再由用户确认推进。 用户提到 /sdx-domains、写方案、整理业务目标、需求模糊要结构化成共识级解决方案、 写 DOMAIN-*.md / 七章方案、一口气写完整版、选 F 补齐剩余章节时，务必使用本技能（分段协议与 F 门禁；非法整篇覆盖也须加载本技能以拒绝）。 分流：ANALYSIS/PRD/ASD/DSD/TDD 或 docs-* 主路径 → 对应技能，不以本技能代跑。 推进见 references/gates.md。",
   "mode": "installed-skill-name-detection",
