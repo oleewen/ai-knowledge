@@ -1,33 +1,19 @@
 # PRD 质量验收
 
-终稿 **§11.3** 须与本清单及 [../assets/prd-template.md](../assets/prd-template.md) §11.3 **通过标准**一致；达标改 `- [x]`，不达标保持 `- [ ]`，禁止假勾选。原则见 [design-principles.md](design-principles.md)。
+逐章通过标准唯一维护在 [prd-template.md §11.3](../assets/prd-template.md#113-质量自查表-self-check)。生成或重写 §11.3 时保留全部验收项及标准正文，检查结论另附其后，不用执行摘要替换标准。仅达标项勾选；合并项中任一必需条件待补充、待澄清或未检查，整项保持未勾选。
 
-## 结构与完整性
+「与上游一致」不等于「内容已明确」。例如 §1 的成功指标或 Growth/Vision 范围仍待确认时，即使如实沿用 FEATURE，也不能勾选 §1。
 
-- [ ] `## 1`–`## 11` 齐；Mermaid 可渲染；空章标「不适用/待补充」
+## 检查顺序
 
-## §1–§11（与 template 对齐）
+1. **基线与范围**：目标系统/应用库、FEATURE 当前 MVP、IDEA-ID 与阶段一致；本轮只改授权段。
+2. **逐章复核**：对照终稿 §11.3 查内容与证据；只评当前段时保留其余项原状态，不把局部完成说成全稿通过。
+3. **追溯与一致**：核对 [core-concepts.md](core-concepts.md#追溯关系)；当前 MVP 的 FR 均有 US，UC↔US、AC/NAC、EX 无断链；既有编号与已确认前文保持一致。
+4. **受众**：按共享 [受众质检](../../../references/audience-and-language.md) A/B/C/E 及本地 [受众与语言](audience-and-language.md) 检查；违例处理前不称已烤干。
+5. **机械校验**：运行 [validate-prd.sh](../scripts/validate-prd.sh)，记录实际所检文件、错误与告警；Mermaid 渲染、业务语义和上游共识另行验证。
 
-- [ ] §1.1–§1.4：路径/MVP、成功标准、范围与角色对齐 §4
-- [ ] §2：六要素主流程、EX-n、跨系统或「不适用」
-- [ ] §3：核心交互与校验
-- [ ] §4：用例图与 UC 要素；UC↔US
-- [ ] §5：FR→US；GWT；含异常场景
-- [ ] §6：业务域模块；映射 US
-- [ ] §7：BR 汇总完整；互斥有策略
-- [ ] §8：术语；状态与非法转换
-- [ ] §9：仅本 MVP NFR；可度量或待澄清
-- [ ] §10：AC 可测；NAC↔§9 或不适用
-- [ ] §11：原型/变更史/§11.3
+## 交付判定
 
-## 语言与一致
-
-- [ ] 已按 [audience-and-language.md](../../../references/audience-and-language.md) + 本地 [audience-and-language.md](audience-and-language.md) 通过烤干受众维 A/B/C/E
-- [ ] 产品/业务表述为主；少散落成堆技术名词
-- [ ] 与 ANALYSIS/SOLUTION 范围、MVP、目标无未解释冲突
-- [ ] 与引用的 knowledge 矛盾则有盲区说明
-
-## 可追溯与格式
-
-- [ ] US→FR；UC↔US；BR 与 ANALYSIS 一致；AC/NAC、EX 可指回；编号连贯
-- [ ] 文首 frontmatter 齐全；`id` 与路径一致
+- 有结构错误：在授权范围内修复并重跑；局部修订或只读评审发现范围外既有错误时，仅报告，不为取得整稿通过而扩大修改范围。
+- 有语义冲突或证据缺口：列出位置、影响与待决项，按 [gates.md](gates.md) 处理。
+- 只有脚本通过：报告结构检查结果，不替代产品验收或用户确认。

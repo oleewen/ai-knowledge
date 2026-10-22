@@ -1,61 +1,39 @@
 ---
 name: sdx-prd
 description: >
-  在已共识 FEATURE 当前 MVP 上按十一章分段「澄清 → 生成 → 烤干」直写 PRD-{IDEA-ID}-{N}.md；
-  每段写前意图澄清，写入后自动 grilling 至收敛，再由用户确认推进。
-  用户提到 /sdx-prd、写 PRD、细化用户故事/业务流程且可对齐上游 FEATURE 时，使用本技能。
-  分流：无 FEATURE、只要其他 SDX 阶段或 docs-* 主路径 → 对应技能，不以本技能代跑。
-  推进见 references/gates.md。
-compatibility: Bash 5+；校验脚本 agent/skills/sdx-prd/scripts/validate-prd.sh（仅结构/内容校验）。
+  基于已共识 FEATURE 的当前 MVP 编写、修订或评审十一章 PRD 产品需求。
+  用于系统或应用库的用户故事、用例、业务流程与验收细化；
+  功能拆分用 sdx-feature，架构与实现设计用 sdx-architect / sdx-design。
 ---
 
 # sdx-prd
 
-## 输出硬门禁（P0）
+将 `FEATURE-{IDEA-ID}.md` 的目标 `MVP-Phase-{N}` 细化为 `PRD-{IDEA-ID}-{N}.md`，供产品与业务方确认流程、故事和验收。
 
-- 对象=当前段（章节 / `UC` / `US`）；一次一段（除非 `F` 且已批确认意图）。
-- 写前澄清 / 推进环 `C/M/G/F`（无 `S`）/ 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[simplify-principles.md](../../references/simplify-principles.md)；细节 [gates.md](references/gates.md)。
-- 上游须可对齐 `FEATURE-{IDEA-ID}.md` 的当前 `MVP` 与目标 `MVP-Phase-{N}`；否则引导 `sdx-feature`。
+## 开始工作
 
-## 边界
+1. 读 [workflow.md](references/workflow.md) 与 [gates.md](references/gates.md)，区分新建、修订和只读评审；沿用已给参数与授权，只澄清缺口。
+2. 写作前核实目标系统或应用库、FEATURE 与 MVP；缺直接上游时转 [sdx-feature](../sdx-feature/SKILL.md)，ANALYSIS 只作背景。只读评审可先检查能核实的部分，并列明缺失依据。
+3. 按 [十一章模板](assets/prd-template.md) 处理当前段。写作默认走「澄清 → 生成 → 烤干」和 `C/M/G/F`（无 `S`）；局部修订保留其他段，只读评审仅报告证据与建议。
 
-| 负责 | 不负责 |
+## 按需读取
+
+| 时机 | 资源 |
 | --- | --- |
-| `PRD-{IDEA-ID}-{N}.md` 共识级产品需求、参数向导、意图澄清、分段生成、段内烤干、十一章用户故事/用例/流程/验收 | `FEATURE/ANALYSIS` 初稿；`ASD/DSD/TDD`；docs-* 主路径；实现级接口/DDL/中间件设计 |
+| 确定 IDEA-ID、阶段、深度与追溯关系 | [core-concepts.md](references/core-concepts.md) |
+| 写作取舍、业务表达 | [design-principles.md](references/design-principles.md)、[受众与语言](references/audience-and-language.md) |
+| 需要追溯和验收示意 | [节选样例](assets/samples/mini-prd-example.md)，不作完整终稿 |
+| 写后及交付前 | [quality-checklist.md](references/quality-checklist.md) |
+| 排查操作失败或边界误用 | [gotchas.md](gotchas.md)、[反模式](references/anti-patterns.md) |
+| 维护或评测技能 | [evaluation.md](references/evaluation.md) |
 
-## 不这样用
+## 校验
 
-- 不走前置草稿 + 集中收口；默认参数向导后分段推进
-- 不把整篇集中回炉或整份重生成当默认路径
-- 不把写前意图澄清当成完整 grilling Skill 深挖
-- 不把 `PRD` 偷换成 `FEATURE/ASD/DSD/TDD` 或 docs-* 主路径
-
-## 路由
-
-| 目的 | 文件 |
-| --- | --- |
-| 流程 / 推进 binding | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
-| IDEA-ID / MVP-Phase | [core-concepts.md](references/core-concepts.md) |
-| 原则 / 反模式 | [design-principles.md](references/design-principles.md)、[anti-patterns.md](references/anti-patterns.md) |
-| 易错 / 受众 / 终检 | [gotchas.md](gotchas.md)、[audience-and-language.md](references/audience-and-language.md)、[quality-checklist.md](references/quality-checklist.md) |
-| 模板 | [prd-template.md](assets/prd-template.md) |
-
-## 最少输入
-
-- 可对齐的 **`FEATURE-{IDEA-ID}.md`** 与目标 **`MVP-Phase-{N}`**
-- 可确定的主题或标题线索
-- `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/` 可写
-- 若已给 `IDEA-ID`、`N`、章节范围、深度，则直接进入参数向导确认
-
-## 产出与校验
-
-- 正式：`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`
+依赖 Bash 5+、Python 3.8+（标准库）。从技能安装位置运行 [validate-prd.sh](scripts/validate-prd.sh)：
 
 ```bash
-agent/skills/sdx-prd/scripts/validate-prd.sh
-agent/skills/sdx-prd/scripts/validate-prd.sh --file path/to/PRD-xxx.md
+bash agent/skills/sdx-prd/scripts/validate-prd.sh --file path/to/PRD-xxx.md
+bash agent/skills/sdx-prd/scripts/validate-prd.sh --help
 ```
 
-## 评测
-
-`evals/evals.json`、[grader.md](agents/grader.md)。聚焦：意图澄清、当前段推进、上游 FEATURE/MVP、边界分流。
+不传 `--file` 时按当前工程 `.docsconfig` 扫描 `requirements/`。退出码、检查范围与限制见 [workflow.md](references/workflow.md#结构校验)。脚本不判定业务语义、上游共识或用户授权；无目标不代表通过。

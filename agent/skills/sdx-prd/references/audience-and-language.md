@@ -1,6 +1,6 @@
 # 受众与语言（sdx-prd）
 
-> 公共维与烤干门禁：[audience-and-language.md](../../../references/audience-and-language.md)
+公共质检 A/B/C/E 与违例处理见 [audience-and-language.md](../../../references/audience-and-language.md)。
 
 ## 主读者
 
@@ -14,13 +14,6 @@
 | 信息架构、操作路径、校验反馈 | 表名字段、缓存队列选型 |
 | BR-n、数据字典（业务语义） | 框架、中间件、部署拆分 |
 | 跨系统业务边界与同步/异步语义 | 调优与实现方案 |
-
-## 反例
-
-| 避免 | 推荐 |
-| --- | --- |
-| 在故事里写 REST path / 类名 | 写角色能力、旅程与验收 |
-| 用表结构顶替数据语义 | 业务字段含义与约束 |
 
 ## 特殊允许区
 

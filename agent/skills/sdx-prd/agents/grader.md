@@ -1,64 +1,49 @@
-# sdx-prd 评测裁判（grader）
+# sdx-prd 行为评测裁判
 
-据 `prompt`、模型响应与断言给出可审计结论。
+依据 [evals.json](../evals/evals.json) 中对应 `eval_id` 的断言，核对真实对话、工具日志和文件快照。断言只在该文件维护；运行记录不复制断言。
 
-## 输出（仅 JSON）
+## 判定依据
 
-- `text`：1–3 句结论  
-- `passed`：布尔  
-- `evidence`：数组，逐条对应断言或失败原因  
+- **先看行为**：是否读到 FEATURE 当前 MVP、改了哪些文件和段落、在何处停问、是否保留已给授权。回复声称“已执行”“未修改”不能替代工具记录与 diff。
+- **不考背诵**：不要求出现“参数向导”“六项清单”“受众 A/B/C/E”等固定措辞。用例要求动作菜单时，核对 C/M/G/F 的实际用途，不以复述术语代替行为证据。
+- **负向断言也要证据**：证明“不写”需完整工作区前后对比；证明“未越界”需完整 diff，不能只看目标段。材料缺失不能推断没有修改。
+- **范围以用户为准**：明确的局部修改、只读评审、整篇批量授权和重开授权均须沿用。没有字母 C 不代表没有自然语言授权。
+- **证据可定位**：记录路径及行号、对话轮次、工具调用编号或 diff hunk。合成 fixture 是输入，不是执行结果；模型自述检查通过不是独立证据。
 
-**should-trigger 示例**（对齐 `prd-trigger-001` 的 P0）：
+## 状态与结论
 
-```json
-{
-  "text": "通过。明确参数向导、意图澄清、分段「澄清 → 生成 → 烤干」与段内 grilling，未误回到集中式前置收口主线。",
-  "passed": true,
-  "evidence": [
-    "parameter-guidance：体现逐项确认或快捷组合。",
-    "section-cycle：体现分段直写终稿与当前段收口。",
-    "intent-clarify：体现写前意图澄清。",
-    "grilling-loop：体现当前段烤干与用户动作协议。",
-    "audience-check：烤干含受众维 A/B/C/E。",
-    "single-section-stop：明确一次只处理当前段并等待用户动作。",
-    "semantic-change-gated：语义变更先推荐与数字选项。",
-    "upstream-analysis-mvp：体现基于 ANALYSIS 当前 MVP 承接细化。"
-  ]
-}
-```
+| 状态 | 含义 |
+| --- | --- |
+| `pass` | 已执行，且有充分证据满足断言 |
+| `fail` | 已执行，证据显示违反断言 |
+| `not_run` | 未执行用例或该检查 |
+| `skipped` | 明确跳过，须记录原因 |
+| `missing_evidence` | 声称执行或已有部分结果，但不足以复核 |
 
-**should-not-trigger 示例**：
+P0 必须全部为 `pass`，用例才可判通过。任一 P0 失败则用例失败；P0 有未执行、跳过或缺证据时，用例不完整，不可算通过。P1 单列质量发现，不以任意通过项数或比例改变 P0 结论。全量通过还要求所有计划用例已执行；静态 JSON 检查、脚本回归和产品验收不得相互替代。
+
+## 输出
+
+只输出 JSON，包含全部断言。`passed` 在通过时为 `true`，有已证实 P0 失败时为 `false`，其余不完整状态为 `null`。下面仅为未运行记录的格式示例，不是测试结果：
 
 ```json
 {
-  "text": "通过。主路径指向 sdx-architect / ASD，未把当前请求错误框成 sdx-prd 的分段写作流程。",
-  "passed": true,
-  "evidence": [
-    "correct-downstream：点名下游技能或产物。",
-    "no-false-prd-primary：未框成参数向导 + 分段直写 PRD 的主路径。"
-  ]
+  "eval_id": "prd-trigger-003",
+  "status": "not_run",
+  "passed": null,
+  "summary": "尚未运行，不能判断局部修改行为。",
+  "assertions": [
+    {
+      "id": "local-edit-only",
+      "priority": "P0",
+      "status": "not_run",
+      "evidence": [],
+      "reason": "尚无执行记录或前后快照。"
+    }
+  ],
+  "p1_findings": [],
+  "coverage_gaps": ["示例只列一条断言；实际评分须覆盖该用例全部断言。"]
 }
 ```
 
-## 判定
-
-1. 读 `category`：`should-trigger` / `should-not-trigger`
-2. **硬门**：以本 eval 的 `assertions`（按 `priority`）为准；`evidence` 须可映射 `assertions[].id` 或 `check` 语义。
-3. **协议释义**（仅当 assertions 或 prompt 覆盖时强制；共通环见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)、[audience-and-language.md](../../../references/audience-and-language.md)）：
-   - 主路径 `/sdx-prd`；直写 `PRD-*.md`
-   - 参数向导 → 写前意图澄清 → 分段「澄清 → 生成 → 烤干」→ `C/M/G/F`（无 `S`）
-   - 一次只处理当前段；烤干收敛后输出动作等待用户
-   - **受众质检**：烤干须跑 A/B/C/E；全过可静默；违例须可见短表；未过不得标已烤干
-   - **`G`/`F`**：`G`=收敛后深挖当前段；`F`=须先批确认剩余意图再补齐
-   - **语义变更**（目标/范围/承诺/口径/取舍/风险/MVP/优先级/角色/流程/验收/术语等）：先推荐 + 数字选项，未选不得直接改当前段
-   - **上游**：基于 `FEATURE-{IDEA-ID}.md` 的当前 `MVP` 与 `MVP-Phase-{N}`
-   - **禁止**：前置草稿 + 集中收口；已删除的 HTML gate / `PENDING→CONFIRMED` / 会话 spec / 写前 hook
-4. **should-not-trigger**：须拒绝以 sdx-prd 为主路径，或明确分流至用户要的技能/产物；不得用「先参数向导再分段写 PRD」框下游请求；不得把 `F` 整篇重写认作合法主路径
-5. **P0** 任一失败 → `passed: false`
-6. 不输出实现方案；仅评判
-
-### should-not-trigger 的 P0（摘要）
-
-- **correct-downstream**：出现与 prompt 一致的下游技能或产物（可中文，须可映射）
-- **no-false-prd-primary**：不得忽略用户已指定阶段而默认以 PRD 为终点
-- **no-false-f-rewrite**：不得把 `F` 解释为覆盖已确认前文的整篇重写
+实际 `evidence` 每项使用 `path`、`locator`、`observation`。发现违规时报告事实；不在评分中代改被测文件或提供完整实现方案。

@@ -1,57 +1,39 @@
 # sdx-prd 推进协议（binding）
 
-主干：[SKILL.md](../SKILL.md)。流程：[workflow.md](workflow.md)。
+本文件只绑定 PRD 特有对象与停点；参数、路径和写后默认表见 [workflow.md](workflow.md)。
 
-## 定位
+## 共享契约
 
-本文件只定义 `sdx-prd` 对共享协议的 **binding**（对象=段落）。  
-不复制状态机、动作字母全文、`F` 批确认细则或共通 mermaid 环。
+| 时机 | 真源 |
+| --- | --- |
+| 写前目标、范围、缺口与授权 | [intent-clarify.md](../../../references/intent-clarify.md) |
+| `C/M/G/F`（无 `S`）、批量补齐与前文重开 | [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) |
+| 写后烤干与受众质检 | [grilling-skill.md](../../../references/grilling-skill.md) |
 
-契约：
-
-- [intent-clarify.md](../../../references/intent-clarify.md) — 写前意图澄清
-- [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) — 段落推进环 / `C·M·G·F` / 重开 / 前文回改（**`sdx-*` 无 `S`**）
-- [grilling-skill.md](../../../references/grilling-skill.md) — 写后烤干能力
-
-主线口令：`澄清 → 生成 → 烤干`。
-
----
+沿用会话中已明确的参数、范围与授权；缺口和范围变化才需补充确认。只读评审不进入写入推进环。
 
 ## 对象定义
 
-**当前段**：`PRD-{IDEA-ID}-{N}.md` 中的一个章节、子章节，或 `§4/§5/§10` 内单个 `UC` / `US` / `AC/NAC`（十一章模板）。
-
-产物路径见 [workflow.md](workflow.md)。
-
----
+**当前段**：`PRD-{IDEA-ID}-{N}.md` 的一个章节、子章节，或 §4 / §5 / §10 内单个 `UC` / `US` / `AC/NAC`。
 
 ## 技能追加澄清字段
 
-- 上游 `FEATURE-{IDEA-ID}` 的当前 `MVP` 对齐点
-- `IDEA-ID`、`N` / `MVP-Phase-{N}`
-- `depth`：`quick | standard | deep`
-- 本轮起始章节 / 范围（含是否细化到单个 `US` / `UC`）
-
----
+- FEATURE 的目标 MVP 及本段所承接的 FR、BR。
+- 目标系统/应用库、`IDEA-ID`、`N` 和实际输出路径。
+- `depth`、本轮起始段与修改范围；已有文档须指出应保留内容。
 
 ## 语义问题清单（烤干须停）
 
-- 目标、范围、承诺、口径、取舍、风险、MVP、优先级
-- 角色、主流程、用例边界、故事拆分
-- 验收标准（`AC/NAC`）、术语
-
----
+| 问题 | 典型触发 |
+| --- | --- |
+| 产品承诺 | 目标、范围、MVP、优先级、风险或取舍变化 |
+| 角色与行为 | 角色冲突、流程主干变化、用例边界或故事拆分变化 |
+| 验收口径 | AC/NAC、指标、术语与上游或前文不一致 |
 
 ## 前文回改触发例（技能特有）
 
-- MVP 切分失真
-- 角色定义冲突
-- 流程主干变化
-- 验收口径变化
-
----
+MVP 切分失真、角色定义冲突、流程主干变化或验收口径变化影响已确认内容时，按共享重开协议处理，不把前文修复算作当前段自动通过。
 
 ## 失败停顿
 
-- 当前段（含单个 `US` / `UC` / `AC`）未收敛前，不得自动推进下一段
-- 语义问题或前文回改：立即停下确认
+写入前缺可对齐的 FEATURE/MVP、目标路径不明或当前段存在未决语义冲突时，先补证据；当前段未收敛不自动推进。`F` 默认保留已确认前文；用户明确要求重写时按实际授权重开，不改变 `F` 本身的含义。

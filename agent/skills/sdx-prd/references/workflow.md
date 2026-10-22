@@ -1,100 +1,80 @@
 # sdx-prd 工作流
 
-主干：[SKILL.md](../SKILL.md)。推进 binding：[gates.md](gates.md)。
+写作使用 [gates.md](gates.md) 绑定的段落协议。先定位目标和上游，再按用户请求选择操作。
 
-## 目标
+## 定位目标库
 
-通过**参数向导 + 分段「澄清 → 生成 → 烤干」**，逐步形成可评审的 `PRD-{IDEA-ID}-{N}.md`（十一章）。  
-单段收敛；不先攒整篇再集中收口。
+读取目标工程 `AGENTS.md`、`.docsconfig` 与索引，解析目标文档根 `{DOC_DIR}`；路径以目标工程为基准，不能套用技能安装仓配置。
 
-契约分工：
+| 目标库类型 | 处理 |
+| --- | --- |
+| `system` / `application` | 在本库 `requirements/` 写 PRD |
+| `company` / `solution` / `meta` | 先定位实际承接的系统或应用库，再读其配置；不在当前库推造 `system/requirements/` |
+| 路径、库类型未明 | 先从已有索引或建联查找；仍不明确时只询问缺失位置 |
 
-- 写前意图澄清：[intent-clarify.md](../../../references/intent-clarify.md)
-- 段落推进环 / `C·M·G·F` / 重开 / 前文回改：[unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)（**无 `S`**）
-- 写后烤干：[grilling-skill.md](../../../references/grilling-skill.md)
-
-**公司库**（`KNOWLEDGE_TYPE=company`）：上游为 `company/domains/`；本技能在对应 `system/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/` 写入 `PRD-*.md`（须已有解决方案层 SOLUTION 与系统 ANALYSIS/FEATURE）。系统/应用上游为 `{DOC_DIR}/features/`（`FEATURE-*` 或迁徙遗留 `ANALYSIS-*`）。
-
----
+层级约束见 [knowledge-layout.md](../../../references/knowledge-layout.md#sdd-与-knowledge_type)。跨库定位不自动授权安装、拉取或创建其他阶段产物。
 
 ## 参数向导
 
-### 模式
+逐项补缺口；用户希望快捷进入时可用预设。已明确的信息不重复询问。
 
-1. **逐项模式**：一次只确认一个参数。
-2. **快捷组合模式**：先选预设，再按需改单项。
+| 参数 | 确定方式 |
+| --- | --- |
+| 上游与 IDEA-ID | 读取已共识 `FEATURE-{IDEA-ID}.md`，核实本 MVP 的 FR、BR、优先级与排除范围 |
+| `N` / `MVP-Phase-{N}` | 对齐 FEATURE 的阶段划分；多阶段不能自行选定 |
+| 标题、当前段 | 用户指定优先；新建默认从 §1 开始 |
+| `depth` | 默认 `standard`；`quick` 聚焦补段，`deep` 深化流程、异常与验收，不扩大 MVP |
+| 操作与路径 | 新建、局部修订、显式重开或只读评审；核实实际目标文件及已有内容 |
 
-### 最小可写条件
-
-- 上游 `FEATURE-{IDEA-ID}.md` 已明确，或已有等价功能特性材料
-- `IDEA-ID` 与 `N` 已给出或可按规则生成
-- `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/` 可写
-- 至少能确定本轮起始章节，或默认从 `§1` 开始
-
-### 推荐参数顺序
-
-1. `IDEA-ID`
-2. `N` / `MVP-Phase-{N}`
-3. 标题 / 主题
-4. `depth`：`quick | standard | deep`
-5. 本轮起始章节 / 范围
-6. 表达粒度与语言风格
-
-### 快捷组合
-
-- `标准全篇`：`depth=standard`，从 `§1` 开始，默认完整十一章
-- `快速补段`：`depth=quick`，只处理用户指定章节、`US` 或 `UC`
-- `深度验收`：`depth=deep`，强化 `流程/故事/验收/NFR` 的细化力度
-
-参数未收口时留在向导，不进入 Section Cycle。
-
----
-
-## 终稿骨架初始化
-
-参数达标后立即创建：
-
-- `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`
-
-初始化：文档标题、十一章标题与必要表头、文首 frontmatter 占位、未写章节占位说明。  
-骨架创建**不**替代各章写入前的意图澄清。
-
----
+生成正文或修改上游相关决策前，须对齐 FEATURE 当前 MVP；缺失时先转 `sdx-feature`，不以历史 ANALYSIS 或功能列表替代。只读评审可继续检查已有正文的结构、表达与可测性，明确哪些覆盖或一致性结论因缺上游而无法核实。
 
 ## 产物路径
 
-| 项 | 路径 |
+`{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md`
+
+`id`、`parent`、`mvp_phase` 的对应关系见 [core-concepts.md](core-concepts.md)。目录不存在时仅创建已授权的目标目录。
+
+## 终稿骨架初始化
+
+| 请求 | 操作 |
 | --- | --- |
-| 终稿 | `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/PRD-{IDEA-ID}-{N}.md` |
-| 结构校验 | `../scripts/validate-prd.sh` |
+| 新建 | 参数达标且获新建授权后，从模板建立标题、元数据和十一章骨架；未写节标「待补充」，不填业务猜测 |
+| 局部修订 | 先读当前段与直接引用，只改确认范围；不重建骨架、不覆盖前文；旧稿缺章则报告影响 |
+| 显式重开 | 用户明确指定已确认内容重写时，沿用其目标、范围与授权，按共享重开协议处理；不再索要相同确认，也不把它当作 F 的默认含义 |
+| 只读评审 | 读取指定段及必要依据，输出位置、缺口、影响与建议；不改正文、自查勾选或其他文件，也不要求写前确认 |
 
----
-
-## 写后默认表
-
-| 对象 | 默认烤干 | 强制升级 |
-| --- | --- | --- |
-| 各章节 / `US` / `UC` / `AC` | **必须** | 未确认决策写入；跨段依赖 / 前文前提变更；角色·流程·验收口径变更 |
-
-启发式只可升级为必须，不可降级跳过。
-
----
+骨架不是产品共识，不替代各段的写前意图澄清；占位不会自动获得验收通过。
 
 ## Section Cycle（指针）
 
-选定当前段后，严格按 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) + [intent-clarify.md](../../../references/intent-clarify.md) 执行。
+当前段的澄清字段、语义停点见 [gates.md](gates.md)。写入前按 [simplify-principles.md](../../../references/simplify-principles.md) 组织内容；有两条以上真实产品路径时，在当前段内比选，不为凑方案虚构备选。
 
-本技能附加：
+## 写后默认表
 
-- `§4/§5/§10` 可细化到单个 `UC` / `US` / `AC/NAC`
-- 当前段存在 `>=2` 条真实产品路径时，先段内比选再收敛
-- 动作字母仅 `C/M/G/F`（无 `S`）
-- grilling fallback 见 [grilling-skill.md](../../../references/grilling-skill.md)
+| 对象 | 默认烤干 | 强制停点 |
+| --- | --- | --- |
+| 各章节、单个 UC / US / AC / NAC | 必须，含受众维 A/B/C/E | 未确认的业务决策、角色/流程/验收口径变化、跨段依赖或前文回改 |
 
----
+当前段收敛后，按共享协议给出 `C/M/G/F` 并停住；列出动作不代表自动推进。批量补齐仍遵守原有范围和前文保护。
 
 ## 整体验证与质量基线
 
-至少检查：章节完整性、术语一致、编号连续（`FR-n` / `BR-n` / `UC-n` / `US-n` / `EX-n` / `AC-n` / `NAC-n`）、跨段无未解释矛盾、frontmatter 完整、产品/业务可读且不混入实现级接口 / DDL / 选型细节。
+逐项核对 [quality-checklist.md](quality-checklist.md)，保留 §11.3 的验收标准，仅将全部条件已核实的条目勾选；证据和检查结论另附。区分当前段完成、全稿结构通过与产品验收通过，报告未写章节、未决问题和脚本告警。
 
-终检对齐 [quality-checklist.md](quality-checklist.md)；收口前跑 `validate-prd.sh`。
+## 结构校验
+
+从技能实际安装目录运行 `bash scripts/validate-prd.sh --help` 查看用法；仓内命令见 [SKILL.md](../SKILL.md#校验)。脚本只读，不承担写前门禁。
+
+- `--file <path>`：相对路径按调用目录解析；可校验仓外文件，不要求 `.docsconfig`。
+- 无参数：由共享 `docsconfig.sh` 解析当前工程，扫描 `{DOC_DIR}/requirements/PRD-*.md` 及子目录；没有目标时报告「未校验」。
+- 依赖：Bash 5+、Python 3.8+（标准库）。仅无参扫描加载共享配置库。
+
+| 退出码 | 含义 |
+| --- | --- |
+| `0` | 所检文件无结构错误；或扫描无目标，须结合结果区分 |
+| `1` | 文档结构错误，须修正后重跑 |
+| `2` | 参数、环境或读取失败，尚未完成校验 |
+
+校验文首必需字段、身份一致性、十一章与关键小节的存在和顺序；忽略引用、代码块中的伪标题。文件位于标准 `REQUIREMENT-*/MVP-Phase-*` 目录时核对目录身份；自由路径仅校验文件与元数据。
+
+frontmatter 仅支持模板所用的顶层标量与 `reviewers` 字符串列表，不是通用 YAML 解析器。内容告警提示人工复核；脚本不能证明 FEATURE 存在或已共识、FR 覆盖完整、验收可测、Mermaid 可渲染或用户已批准。

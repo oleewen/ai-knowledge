@@ -1,331 +1,591 @@
 {
   "skill_name": "sdx-prd",
-  "version": "3.1.0",
-  "description": "评估 sdx-prd 在「澄清 → 生成 → 烤干」流程下的触发、分流与段落推进协议表述；断言供 grader 评分。",
+  "schema_version": 2,
+  "description": "以隔离工作区、真实对话、工具记录与文件 diff 评估路由、范围、授权和停止行为；不要求背诵协议。",
+  "fixtures_file": "fixtures.json",
+  "execution_guide": "../references/evaluation.md",
   "evals": [
     {
       "id": "prd-trigger-001",
       "category": "should-trigger",
-      "prompt": "ANALYSIS-ORDER-01.md 已经评审过了，请走 /sdx-prd：先逐步确认参数，再一段一段写进 PRD-ORDER-01-1.md，每段先意图澄清再写，写完再 grill，重点补用户故事、主流程和验收标准。",
-      "expected_output": "以 /sdx-prd 为主路径：先走参数向导，再按模板分段「澄清 → 生成 → 烤干」直写 PRD-ORDER-01-1.md；每段写前意图澄清、写入后自动 grilling 至收敛，再由用户确认后推进下一段。",
+      "fixture": "feature",
+      "prompt": "请用 /sdx-prd 写 ORDER-01 的 MVP-Phase-1，资料在 docs/features/FEATURE-ORDER-01.md；目标是 docs/requirements/REQUIREMENT-ORDER-01/MVP-Phase-1/PRD-ORDER-01-1.md，深度 standard。本轮先与我确认 §1 的写作意图，确认后才写；还没有给当前段写前确认。",
+      "expected_behavior": "读取 FEATURE 当前 MVP，停在用户明确要求的 §1 写前确认；工作区不变。",
       "assertions": [
         {
-          "id": "parameter-guidance",
-          "name": "参数向导",
-          "type": "must_include",
-          "check": "明确存在逐项确认参数或快捷组合的入口，不得仍以整份前置草稿和集中收口作为默认第一步。",
-          "priority": "P0"
+          "id": "intent-clarify-before-write",
+          "priority": "P0",
+          "check": "先询问当前 §1 尚需决定的意图；用户确认前不创建 PRD 骨架或正文。",
+          "evidence": [
+            "完整对话",
+            "工具记录",
+            "整个工作区前后 diff"
+          ]
         },
         {
-          "id": "section-cycle",
-          "name": "分段直写",
-          "type": "must_include",
-          "check": "体现按模板分段生成并直写 PRD-ORDER-01-1.md，而非先整份 spec、再统一定稿；主线含澄清 → 生成 → 烤干。",
-          "priority": "P0"
+          "id": "reuse-known-inputs",
+          "priority": "P0",
+          "check": "沿用已给的 FEATURE、IDEA-ID、阶段、目标路径、深度与 §1 范围；不逐项要求重新确认这些参数。",
+          "evidence": [
+            "完整对话"
+          ]
         },
         {
-          "id": "intent-clarify",
-          "name": "意图澄清",
-          "type": "must_include",
-          "check": "须体现当前段写入前做意图澄清（六项清单或等价写前门禁），未确认不得写入正文。",
-          "priority": "P0"
-        },
-        {
-          "id": "grilling-loop",
-          "name": "段内烤干",
-          "type": "must_include",
-          "check": "体现每段生成后执行自动 grilling（烤干）并收敛后再推进；可提及 C/M/G/F 或等价动作。",
-          "priority": "P0"
-        },
-        {
-          "id": "audience-check",
-          "name": "受众质检",
-          "type": "must_include",
-          "check": "须体现烤干含受众维 A/B/C/E，或对照 audience-and-language；未过不得宣称段已烤干收敛。",
-          "priority": "P0"
-        },
-        {
-          "id": "single-section-stop",
-          "name": "单段停住",
-          "type": "must_include",
-          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；不得自动推进下一段。",
-          "priority": "P0"
-        },
-        {
-          "id": "semantic-change-gated",
-          "name": "语义改动确认",
-          "type": "must_include",
-          "check": "须体现语义性结论/建议必须先给推荐方案与数字选项并等待用户确认，未获确认不得修订当前段。",
-          "priority": "P0"
-        },
-        {
-          "id": "upstream-analysis-mvp",
-          "name": "上游 ANALYSIS 与 MVP",
-          "type": "must_include",
-          "check": "须体现 PRD 基于已共识 ANALYSIS 当前 MVP 承接细化。",
-          "priority": "P0"
+          "id": "upstream-feature-mvp",
+          "priority": "P0",
+          "check": "按 FEATURE 当前 MVP 澄清，不将背景 ANALYSIS 中的退款候选带入本期。",
+          "evidence": [
+            "实际读取记录",
+            "提问内容"
+          ]
         }
       ]
     },
     {
       "id": "prd-trigger-002",
       "category": "should-trigger",
-      "prompt": "我们要在 {DOC_DIR}/requirements/REQUIREMENT-BILL-01/MVP-Phase-1/ 写 PRD 文档，按十一章模板，先确认参数，再只写一个当前段并自动 grill 到收敛，不要先写会话 spec。",
-      "expected_output": "明确采用 sdx-prd：先参数确认，再分段直写终稿，并说明不得要求已删除的 HTML gate / CONFIRMED / 会话 spec；主线是澄清→生成→烤干。",
+      "fixture": "feature",
+      "prompt": "用 /sdx-prd。已确认 FEATURE-ORDER-01 的 MVP-Phase-1。直接在 docs/requirements/REQUIREMENT-ORDER-01/MVP-Phase-1/PRD-ORDER-01-1.md 新建十一章骨架，只填 §1 产品概述；其余章标待补充。§1 写清买家查询本人订单状态、FR-001、排除退款/导出/推送，数值指标写待确认。按 standard，这条消息已确认范围并授权写入，写后检查当前段并停住，不必重复询问上述信息。",
+      "expected_behavior": "按现有授权完成指定 §1，并保留未写章节占位。",
       "assertions": [
         {
-          "id": "parameter-guidance",
-          "name": "参数向导",
-          "type": "must_include",
-          "check": "须体现参数向导的两种入口：逐项确认或快捷组合。",
-          "priority": "P0"
+          "id": "write-authorized-section",
+          "priority": "P0",
+          "check": "实际创建指定 PRD 并完成 §1；保持十一章骨架，其余章没有新业务正文。",
+          "evidence": [
+            "目标文件",
+            "工作区 diff"
+          ]
         },
         {
-          "id": "section-cycle",
-          "name": "分段直写",
-          "type": "must_include",
-          "check": "体现十一章模板与分段直写终稿的主线。",
-          "priority": "P0"
+          "id": "feature-is-parent",
+          "priority": "P0",
+          "check": "parent 为 FEATURE-ORDER-01，阶段为 MVP-Phase-1；§1 以 FEATURE 当前 MVP 为范围，退款不成为本期承诺。",
+          "evidence": [
+            "目标文件 frontmatter 与 §1"
+          ]
+        },
+        {
+          "id": "authorization-persists",
+          "priority": "P0",
+          "check": "不因未收到字母 C 而阻止已明确授权的写入，不重新要求确认已给参数。",
+          "evidence": [
+            "完整对话",
+            "工具记录"
+          ]
         },
         {
           "id": "single-section-stop",
-          "name": "单段停住",
-          "type": "must_include",
-          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；不得自动推进下一段。",
-          "priority": "P0"
+          "priority": "P0",
+          "check": "完成并检查 §1 后停在当前段，提供继续、修改、深挖、批量补齐的 C/M/G/F 动作；没有自动补写 §2 正文。",
+          "evidence": [
+            "最终响应",
+            "工作区 diff"
+          ]
         },
         {
-          "id": "no-session-spec-gate-regression",
-          "name": "不回退旧门禁",
-          "type": "must_not_conflict",
-          "check": "不得要求已删除的 HTML gate、PENDING→CONFIRMED、会话 spec 或写前 hook 作为 sdx-prd 默认前置；主线是澄清→生成→烤干。",
-          "priority": "P0"
+          "id": "no-obsolete-gate",
+          "priority": "P0",
+          "check": "未创建会话 spec、HTML gate 或 hook 状态文件，也未把它们列为本次写入前置。",
+          "evidence": [
+            "完整对话",
+            "整个工作区 diff"
+          ]
         }
       ]
     },
     {
       "id": "prd-trigger-003",
       "category": "should-trigger",
-      "prompt": "请执行 /sdx-prd，但这轮只写一个当前段：先意图澄清，再把 `## 5. 用户故事 / US-001` 写进 PRD-CRM-01-1.md。写完后让当前段自动 grill 到烤干，然后给我 C/M/G/F 并停住等待。",
-      "expected_output": "以 /sdx-prd 为主路径：明确一次只处理当前段（US-001），写前意图澄清、写入后自动 grilling 到收敛，再给出 C/M/G/F 并等待用户选择。",
+      "fixture": "existing",
+      "prompt": "用 /sdx-prd 局部修改现有 docs/requirements/REQUIREMENT-ORDER-01/MVP-Phase-1/PRD-ORDER-01-1.md。只把 §5 US-001 的“作为会员”改成“作为买家”，与已确认 FEATURE-ORDER-01 保持一致。这就是本轮完整意图与写入授权；不要重建骨架，其余文字、编号、元数据保持原样。",
+      "expected_behavior": "完成一处已授权修改；保留现有文档。",
       "assertions": [
         {
-          "id": "section-cycle",
-          "name": "分段直写",
-          "type": "must_include",
-          "check": "须体现按模板将当前段（US-001）直写入 PRD-CRM-01-1.md，而非一口气补齐多段或整篇。",
-          "priority": "P0"
+          "id": "local-edit-only",
+          "priority": "P0",
+          "check": "实际 diff 仅把指定故事句的“会员”改为“买家”；其他文字、编号和元数据逐字不变。",
+          "evidence": [
+            "目标文件前后快照",
+            "完整 diff"
+          ]
         },
         {
-          "id": "grilling-loop",
-          "name": "段内拷问",
-          "type": "must_include",
-          "check": "须体现写前意图澄清，且当前段写完后自动 grilling 到收敛，围绕当前段补强，不跨段发散。",
-          "priority": "P0"
+          "id": "no-repeat-authorization",
+          "priority": "P0",
+          "check": "未再次索要当前修改的 C、参数向导选择或写入许可。",
+          "evidence": [
+            "完整对话"
+          ]
         },
         {
-          "id": "single-section-stop",
-          "name": "单段停住",
-          "type": "must_include",
-          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后给出 C/M/G/F 等待用户选择；需出现明确的停住/等待措辞。",
-          "priority": "P0"
+          "id": "existing-document-preserved",
+          "priority": "P0",
+          "check": "没有截断、重新初始化或重排现有十一章。",
+          "evidence": [
+            "目标文件前后快照"
+          ]
         }
       ]
     },
     {
       "id": "prd-trigger-004",
       "category": "should-trigger",
-      "prompt": "请按 SDX 进入 PRD 阶段：当前段写完后不要每一轮 grill 都停下来问我，要自动连续 grill 到这部分内容烤干，再统一给我 C/M/G/F 选项。",
-      "expected_output": "以 /sdx-prd 为主路径：明确当前段写入后进入自动连续 grilling，直到当前段收敛才回到用户动作菜单；不得把 G 当作每轮继续 grill 的必选按钮。",
+      "fixture": "wording",
+      "prompt": "继续 /sdx-prd 当前段检查，只处理现有 PRD-ORDER-01-1.md 的 §5 US-001。已授权自动修复不改变范围和验收口径的措辞问题。不要每轮检查都问我要 G；当前段无实质问题后给 C/M/G/F 并停住。若发现新的语义决定，再停问。",
+      "expected_behavior": "在已授权范围内修复措辞，当前段收敛后停住。",
       "assertions": [
         {
-          "id": "auto-grilling-loop",
-          "name": "自动连续 grilling",
-          "type": "must_include",
-          "check": "须体现当前段写完后自动连续 grilling 到收敛，而非每一轮都停下等待用户继续。",
-          "priority": "P0"
+          "id": "auto-current-section-check",
+          "priority": "P0",
+          "check": "修复当前故事里重复的“查询”，保留角色、价值、正常和异常条件；不在每轮措辞修复前索要 G。",
+          "evidence": [
+            "§5 前后快照",
+            "完整对话"
+          ]
         },
         {
-          "id": "g-not-required-per-round",
-          "name": "G 非每轮必选",
-          "type": "must_include",
-          "check": "须体现 G 仅用于当前段已收敛后的额外深挖，不能把 G 表述为每轮继续 grill 的必选动作。",
-          "priority": "P0"
+          "id": "bounded-check",
+          "priority": "P0",
+          "check": "检查和写入限制在当前 US-001，未自动改其他章节或声称完成整份产品验收。",
+          "evidence": [
+            "完整 diff",
+            "最终响应"
+          ]
         },
         {
-          "id": "single-section-stop",
-          "name": "收敛后再停住",
-          "type": "must_include",
-          "check": "须体现一次只处理一个当前段，并在自动 grilling 收敛后再给出 C/M/G/F 等待用户选择。",
-          "priority": "P0"
+          "id": "stop-after-check",
+          "priority": "P0",
+          "check": "处理当前段后停住并给 C/M/G/F 选择；G 不被用作普通检查循环的必选步骤。",
+          "evidence": [
+            "完整对话"
+          ]
         }
       ]
     },
     {
       "id": "prd-trigger-005",
       "category": "should-trigger",
-      "prompt": "我就是想要你直接一口气把 PRD-BILL-01-1.md 十一章都写完，别分段、别停、别问我，直接输出完整版。",
-      "expected_output": "仍以 /sdx-prd 为主路径：不得直接从空白状态一口气补齐整篇；应先完成当前段「澄清 → 生成 → 烤干」，再通过 `F`（含剩余意图批确认）一次性补齐剩余章节。",
+      "fixture": "feature",
+      "prompt": "用 /sdx-prd 一次生成 ORDER-01 / MVP-Phase-1 的完整十一章 PRD，路径按 docs 的标准 requirements 目录。本轮明确批准批量生成全部章节；只围绕 FEATURE-ORDER-01 的 FR-001 与已给角色、异常和验收方向，未确认数值标待确认，不新增退款/导出/推送。标准深度，不必为逐段 C 或 F 再问一遍。",
+      "expected_behavior": "沿用明示批量授权，一次生成限定范围的十一章草稿并如实标注缺口。",
       "assertions": [
         {
-          "id": "exception-full-draft-gated",
-          "name": "破例需选择",
-          "type": "must_include",
-          "check": "须体现用户要求一口气整篇时，先完成当前段「澄清 → 生成 → 烤干」，再通过 `F`（先批确认剩余意图）进入批量补齐；不得直接从空白状态输出完整十一章正文。",
-          "priority": "P0"
+          "id": "explicit-batch-scope",
+          "priority": "P0",
+          "check": "按照用户已明确的整篇授权生成十一章内容，不强制先单段确认再索要 F；仅当前 MVP 的 FR-001 被细化。",
+          "evidence": [
+            "目标文件",
+            "完整对话"
+          ]
         },
         {
-          "id": "single-section-stop",
-          "name": "单段停住",
-          "type": "must_include",
-          "check": "须强调默认仍按单段 Section Cycle 推进，不因用户一句话要求而自动破例；需体现 `F` 是显式用户动作。",
-          "priority": "P0"
+          "id": "unknowns-remain-visible",
+          "priority": "P0",
+          "check": "未给出的性能/容量数值仍为待确认，不编造已承诺阈值或已验收结论。",
+          "evidence": [
+            "§9、§10、完成说明"
+          ]
+        },
+        {
+          "id": "no-scope-expansion",
+          "priority": "P0",
+          "check": "生成目标 PRD，不创建或改写 FEATURE、ANALYSIS、ASD、DSD、TDD 等其他阶段产物。共享 grilling 契约要求的真实未闭合动作可记入 TODO-LIST；若用户明确限定单文件或只读，则不得额外写台账。本用例未禁止该台账，不能仅因其存在判越权。",
+          "evidence": [
+            "整个工作区 diff"
+          ]
+        },
+        {
+          "id": "self-check-standards-preserved",
+          "priority": "P0",
+          "check": "生成稿 §11.3 逐项保留十一章模板的验收对象与通过标准，不删除验收项或降低判定标准；不以只有“产品验收通过”一项或空白清单代替。",
+          "evidence": [
+            "当前 assets/prd-template.md 的 §11.3",
+            "生成稿 §11.3 及逐项对照"
+          ]
+        },
+        {
+          "id": "self-check-evidence-required",
+          "priority": "P0",
+          "check": "§11.3 仅勾选有实际证据支持的项；本 fixture 的性能阈值尚未确认，因此 §9 非功能需求与 §10 验收项保持未勾选。其他待补充、待澄清或未检查项也不勾选，不能仅凭结构校验或模型自述全部放行。",
+          "evidence": [
+            "FEATURE 中未确认指标的原文",
+            "生成稿 §9、§10、§11.3",
+            "实际检查记录与勾选项的对应证据"
+          ]
         }
       ]
     },
     {
       "id": "prd-trigger-006",
       "category": "should-trigger",
-      "prompt": "当前段“### 10.1 功能验收标准”已经确认通过，我现在直接选 F。请按 sdx-prd 把剩余未完成章节全部生成，但不要覆盖已经确认的前文；如果后文打出前文语义冲突，要先停下来让我选。",
-      "expected_output": "以 /sdx-prd 为主路径：说明 F 用于补齐剩余未完成章节，保留已确认前文；若批量补齐过程中触发语义性问题或前文回改，必须先停下等待用户确认。",
+      "fixture": "prefix",
+      "prompt": "当前 PRD-ORDER-01-1.md 的 §1、§2 已确认。我选 F；本条同时确认剩余 §3–§11 的批量意图：只细化 FEATURE-ORDER-01 当前 MVP 的 FR-001、买家查询本人订单及现有正常/异常场景，未知量标待确认。补齐剩余章节，保留 §1、§2 原文；发现与前文冲突时先停问，不重问已给范围。",
+      "expected_behavior": "按 F 补齐已授权的剩余章节，保留已确认前文。",
       "assertions": [
         {
-          "id": "f-batch-fill",
-          "name": "F 批量补齐",
-          "type": "must_include",
-          "check": "须体现 F 表示补齐剩余未完成章节，而不是提前结束流程或整篇重生成。",
-          "priority": "P0"
+          "id": "f-fills-remainder",
+          "priority": "P0",
+          "check": "实际补齐 §3–§11，不把 F 当结束动作或整篇重新生成。",
+          "evidence": [
+            "目标文件",
+            "完整 diff"
+          ]
         },
         {
           "id": "preserve-confirmed-prefix",
-          "name": "保留已确认前文",
-          "type": "must_include",
-          "check": "须体现 F 不覆盖已确认前文，至少复述保留既有确认内容或不重写前文。",
-          "priority": "P0"
+          "priority": "P0",
+          "check": "§1、§2 的原文逐字保留，FR-001、BR-001 与已有引用不变。",
+          "evidence": [
+            "§1、§2 前后快照"
+          ]
         },
         {
-          "id": "semantic-change-gated",
-          "name": "批量补齐仍受语义门禁",
-          "type": "must_include",
-          "check": "须体现 F 过程中若后文打出前文语义冲突或其他语义性问题，必须先给推荐方案与数字选项并等待用户确认。",
-          "priority": "P0"
+          "id": "reuse-batch-authorization",
+          "priority": "P0",
+          "check": "沿用已确认的剩余章节与意图，不再要求同一批量确认；没有跨范围新增功能。",
+          "evidence": [
+            "完整对话",
+            "目标文件"
+          ]
         }
       ]
     },
     {
       "id": "prd-not-trigger-001",
       "category": "should-not-trigger",
-      "prompt": "只有会议纪要没有成文分析，先帮我写一版 ANALYSIS-OPS-1.md，走 /sdx-feature。",
-      "expected_output": "主路径为 /sdx-feature 与 ANALYSIS-OPS-1.md；不以 sdx-prd 的参数向导 + 分段直写流程写 PRD 为终点。",
+      "fixture": "missing-feature",
+      "prompt": "只有会议纪要和一版背景分析。当前任务是用 /sdx-analysis 完善 ANALYSIS-ORDER-01.md 的业务问题与目标，不做 FEATURE 或 PRD。这里只判断应采用的技能和产物，不实际改文件。",
+      "expected_behavior": "识别需求分析阶段；不启动 PRD 写作。",
       "assertions": [
         {
-          "id": "correct-downstream",
-          "name": "正确下游",
-          "type": "must_include",
-          "check": "须明确 /sdx-feature 或 ANALYSIS-OPS-1.md（或 ANALYSIS）为当前主任务。",
-          "priority": "P0"
+          "id": "correct-route",
+          "priority": "P0",
+          "check": "把本次任务路由至 sdx-analysis / ANALYSIS，不把 ANALYSIS 说成 sdx-feature 的产物。",
+          "evidence": [
+            "最终响应"
+          ]
         },
         {
           "id": "no-false-prd-primary",
-          "name": "勿假主 PRD",
-          "type": "must_not_conflict",
-          "check": "不得将本请求表述为“仍需先做参数向导、再分段写 PRD”作为主要答案。",
-          "priority": "P0"
+          "priority": "P0",
+          "check": "未启动 PRD 生成或 PRD 写前参数流程；遵守只判断路径的范围，工作区无改动。",
+          "evidence": [
+            "完整对话",
+            "整个工作区 diff"
+          ]
         }
       ]
     },
     {
       "id": "prd-not-trigger-002",
       "category": "should-not-trigger",
-      "prompt": "请用 /sdx-architect 基于 PRD 画服务边界，生成 ASD-ORDER-1.md。",
-      "expected_output": "主路径为 sdx-architect 与 ASD；不以 PRD 为当前主产物。",
+      "fixture": "existing",
+      "prompt": "请用 /sdx-architect 基于现有 PRD-ORDER-01-1.md 规划服务边界，目标产物 ASD-ORDER-01-1.md。这里只确认应进入的阶段与产物，不实际生成或修改文件。",
+      "expected_behavior": "识别架构阶段；保留已有 PRD。",
       "assertions": [
         {
-          "id": "correct-downstream",
-          "name": "正确下游",
-          "type": "must_include",
-          "check": "须明确 /sdx-architect 或 ASD 为当前主任务。",
-          "priority": "P0"
+          "id": "correct-route",
+          "priority": "P0",
+          "check": "当前主路径为 sdx-architect / ASD，不要求先重新生成 PRD。",
+          "evidence": [
+            "最终响应"
+          ]
         },
         {
-          "id": "no-false-prd-primary",
-          "name": "勿假主 PRD",
-          "type": "must_not_conflict",
-          "check": "不得将本请求描述为默认先写 PRD 再过门禁。",
-          "priority": "P0"
+          "id": "no-prd-write",
+          "priority": "P0",
+          "check": "没有修改 PRD、初始化 PRD 骨架或代写其他阶段文件。",
+          "evidence": [
+            "工具记录",
+            "整个工作区 diff"
+          ]
         }
       ]
     },
     {
       "id": "prd-not-trigger-003",
       "category": "should-not-trigger",
-      "prompt": "把 application-billing 蒸馏到 billing-overview，执行 docs-distill --app billing。",
-      "expected_output": "主路径为 docs-distill 与 billing-overview；不是 sdx-prd。",
+      "fixture": "feature",
+      "prompt": "我要把应用槽位中的已核实知识蒸馏到系统 overview，使用 docs-distill。本轮只确认分流，不执行同步，不生成需求文档。",
+      "expected_behavior": "识别知识蒸馏任务；不写 PRD。",
       "assertions": [
         {
-          "id": "correct-downstream",
-          "name": "正确下游",
-          "type": "must_include",
-          "check": "须明确 docs-distill、蒸馏或 billing-overview 等，而非 sdx-prd。",
-          "priority": "P0"
+          "id": "correct-route",
+          "priority": "P0",
+          "check": "当前主路径为 docs-distill / overview 蒸馏，不进入 PRD 写作流程。",
+          "evidence": [
+            "最终响应"
+          ]
         },
         {
           "id": "no-false-prd-primary",
-          "name": "勿假主 PRD",
-          "type": "must_not_conflict",
-          "check": "不得用“先出 PRD 十一章”作为完成本请求的主方案。",
-          "priority": "P0"
+          "priority": "P0",
+          "check": "工作区无改动，也不把创建十一章 PRD 作为前置条件。",
+          "evidence": [
+            "完整对话",
+            "整个工作区 diff"
+          ]
         }
       ]
     },
     {
       "id": "prd-not-trigger-004",
-      "category": "should-not-trigger",
-      "prompt": "我已经确认过前两章了。现在别按当前段流程，直接用 F 把整份 PRD-ORDER-1-1.md 从头到尾重写一遍，前面已确认内容也一起覆盖掉。",
-      "expected_output": "不得把该请求解释为当前 `sdx-prd` 协议下合法的 F 动作；应明确指出 F 只用于保留已确认前文并补齐剩余未完成章节。",
+      "category": "should-trigger",
+      "fixture": "existing",
+      "prompt": "刚才我把 F 叫成了整篇重写。现在明确改为重开并重写 PRD-ORDER-01-1.md 全十一章，含已确认前文；这是本次完整授权。范围仍是 FEATURE-ORDER-01 的当前 MVP，只优化产品表达与一致性，未确认数值保留待确认。不需要为同一重写范围再问一次。",
+      "expected_behavior": "旧 ID 保留用于追溯；按用户明确重开范围执行，普通 F 语义不变。",
       "assertions": [
         {
-          "id": "correct-downstream",
-          "name": "正确拒绝当前协议",
-          "type": "must_include",
-          "check": "须明确指出该请求不符合当前 sdx-prd 协议中的 F 语义，或明确拒绝把它作为合法 F 动作执行。",
-          "priority": "P0"
+          "id": "explicit-reopen-honored",
+          "priority": "P0",
+          "check": "把本轮当用户明确授权的重开与重写，实际更新 PRD；不因 F 默认只补剩余而拒绝整个请求。",
+          "evidence": [
+            "完整对话",
+            "工作区 diff"
+          ]
         },
         {
-          "id": "no-false-f-rewrite",
-          "name": "勿把 F 当整篇重写",
-          "type": "must_not_conflict",
-          "check": "不得将 F 描述为覆盖已确认前文的整篇重生成、整篇重写或整篇覆盖。",
-          "priority": "P0"
+          "id": "rewrite-within-feature",
+          "priority": "P0",
+          "check": "重写后保留十一章及 FEATURE 当前 MVP 范围，不新增退款/导出/推送或虚构阈值。",
+          "evidence": [
+            "目标文件"
+          ]
+        },
+        {
+          "id": "f-semantics-not-redefined",
+          "priority": "P0",
+          "check": "未把普通 F 永久解释为覆盖已确认前文；本次覆盖的依据是用户这轮明确重开授权。",
+          "evidence": [
+            "完整对话"
+          ]
+        },
+        {
+          "id": "reopen-self-check-current-evidence",
+          "priority": "P0",
+          "check": "重开后依据当前正文重新核对 §11.3；§1 的成功指标或 Growth/Vision 范围仍待确认时，不勾选 §1。上游也未确认、如实标注缺口或已获重写授权，都不能替代验收通过证据。",
+          "evidence": [
+            "重开稿 §1 与 §11.3",
+            "当前 assets/prd-template.md 的 §11.3",
+            "实际检查记录"
+          ]
         }
       ]
     },
     {
       "id": "prd-audience-001",
       "category": "should-trigger",
-      "prompt": "继续 /sdx-prd 当前段烤干：用户故事里堆满 REST path、类名和表字段，产品读者看不懂。请按受众质检处理。",
-      "expected_output": "检出受众维违例；改为角色/旅程/验收表述，工程线索进允许区；未过不得宣称收敛。",
+      "fixture": "audience",
+      "prompt": "继续 /sdx-prd。现有 PRD-ORDER-01-1.md §5 US-001 用接口、类名和字段名写故事，产品读者看不懂。已授权把这一段改成买家任务和可见结果，保留原有权限与异常条件；只修这一段，检查后停住。",
+      "expected_behavior": "直接修复已授权的受众问题，保留业务含义。",
       "assertions": [
         {
-          "id": "audience-violation-visible",
-          "name": "违例可见",
-          "type": "must_include",
-          "check": "须出现受众违例短表或明确指出 PRD 正文不宜堆接口/类名/表字段。",
-          "priority": "P0"
+          "id": "audience-rewrite",
+          "priority": "P0",
+          "check": "实际将故事主句改为买家查询订单状态及业务价值，不再依靠 REST path、类名、字段名表达需求。",
+          "evidence": [
+            "§5 前后快照"
+          ]
         },
         {
-          "id": "audience-rewrite-or-gate",
-          "name": "改写或停问",
-          "type": "must_include",
-          "check": "须体现改为产品表述或停问；不得未处理就写后 C。",
-          "priority": "P0"
+          "id": "business-conditions-preserved",
+          "priority": "P0",
+          "check": "本人订单、无订单空态、未登录提示、他人订单不可见仍保留；没有把技术词删除当作删除业务条件的理由。",
+          "evidence": [
+            "目标段落"
+          ]
         },
         {
-          "id": "no-tech-jargon-pass",
-          "name": "勿放行技术口吻",
-          "type": "must_not_conflict",
-          "check": "不得声称受众已通过却仍以 REST path/类名作故事主表述。",
-          "priority": "P0"
+          "id": "audience-scope",
+          "priority": "P0",
+          "check": "修改仅限当前段；未擅自重写其他章节或新增实现设计。",
+          "evidence": [
+            "完整 diff"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prd-boundary-001",
+      "category": "should-trigger",
+      "fixture": "missing-feature",
+      "prompt": "请用 /sdx-prd 直接生成 ORDER-01 / MVP-Phase-1 的 §1，目标路径按 docs 的标准 requirements 目录。只有 docs/analysis/ANALYSIS-ORDER-01.md，没有 FEATURE；分析里的退款候选也先照写。",
+      "expected_behavior": "识别缺少唯一上游基线，停问且不写。",
+      "assertions": [
+        {
+          "id": "feature-required",
+          "priority": "P0",
+          "check": "发现没有已共识 FEATURE 当前 MVP 后，说明缺少功能特性基线并引导先明确 FEATURE；不把 ANALYSIS 自动认作 FEATURE。",
+          "evidence": [
+            "读取记录",
+            "最终响应"
+          ]
+        },
+        {
+          "id": "no-write-without-feature",
+          "priority": "P0",
+          "check": "未创建 PRD 骨架/正文，也未擅自创建 FEATURE 以绕过缺失条件。",
+          "evidence": [
+            "整个工作区 diff",
+            "工具记录"
+          ]
+        },
+        {
+          "id": "minimal-missing-input",
+          "priority": "P1",
+          "check": "只询问或指出 FEATURE / 当前 MVP 缺口，不重问已经给出的 IDEA-ID、阶段和目标目录。",
+          "evidence": [
+            "完整对话"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prd-review-001",
+      "category": "should-trigger",
+      "fixture": "review",
+      "prompt": "只读评审现有 docs/requirements/REQUIREMENT-ORDER-01/MVP-Phase-1/PRD-ORDER-01-1.md 的 §10。找出验收标准不能测试的地方，给原文位置、影响和建议；不要修改任何文件，也不要勾选自查表。",
+      "expected_behavior": "只读完成有原文证据的验收评审。",
+      "assertions": [
+        {
+          "id": "read-only-preserved",
+          "priority": "P0",
+          "check": "所有文件逐字不变，包括 PRD、TODO、自查表；不启动骨架初始化或自动修订。",
+          "evidence": [
+            "整个工作区 diff",
+            "工具记录"
+          ]
+        },
+        {
+          "id": "review-grounded",
+          "priority": "P0",
+          "check": "指出实际 AC-001 与 NAC-001 中不可测的措辞，并给可定位原文与建议；不编造缺陷。",
+          "evidence": [
+            "原文件 §10",
+            "评审输出"
+          ]
+        },
+        {
+          "id": "no-write-gate-for-review",
+          "priority": "P0",
+          "check": "直接进行只读评审，不要求写前 C 或补齐生成参数后才评审。",
+          "evidence": [
+            "完整对话"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prd-context-001",
+      "category": "should-trigger",
+      "fixture": "company",
+      "prompt": "公司仓的 .docsconfig 是 DOC_DIR=docs、KNOWLEDGE_TYPE=company。目标是 billing 系统 ORDER-01 / MVP-Phase-1 的现有 PRD，只改 US-001 的买家用语。系统 FEATURE 与当前 MVP 已共识，但我还没提供系统仓路径；不要用公司 docs 作为系统输出目录。",
+      "expected_behavior": "目标系统路径缺失时停问，不把公司文档根当输出根。",
+      "assertions": [
+        {
+          "id": "target-path-required",
+          "priority": "P0",
+          "check": "核对现有建联仍无法定位系统后，只请求目标系统仓或 PRD 实际路径；不猜造 system/requirements 或 company/docs 下的目标。",
+          "evidence": [
+            "读取记录",
+            "最终响应"
+          ]
+        },
+        {
+          "id": "no-company-write",
+          "priority": "P0",
+          "check": "工作区无写入，不在公司库创建 requirements、PRD 或替代 FEATURE。",
+          "evidence": [
+            "整个工作区 diff",
+            "工具记录"
+          ]
+        },
+        {
+          "id": "keep-known-scope",
+          "priority": "P1",
+          "check": "保留 billing、ORDER-01、MVP-Phase-1、US-001 与已给上游共识，不要求重做分析或重答参数。",
+          "evidence": [
+            "完整对话"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prd-conflict-001",
+      "category": "should-trigger",
+      "fixture": "conflict",
+      "prompt": "请 /sdx-prd 在现有 PRD-ORDER-01-1.md 中为 §10 增补“他人订单不可见”的验收项，依据 FEATURE-ORDER-01。本轮只授权 §10，§7 的旧决策不在修改范围；发现冲突先给推荐与数字选项，我选定前不要落盘这个决定。",
+      "expected_behavior": "在跨段语义冲突处停问，保留原文等待决定。",
+      "assertions": [
+        {
+          "id": "semantic-conflict-visible",
+          "priority": "P0",
+          "check": "读取直接依赖后指出 FEATURE/§1 的本人订单限制与 §7 允许所有订单的冲突，给具体推荐及数字选项。",
+          "evidence": [
+            "相关读取记录",
+            "最终响应"
+          ]
+        },
+        {
+          "id": "stop-before-semantic-write",
+          "priority": "P0",
+          "check": "用户选择前不改 §7，也不写入会固化未决冲突的 §10；工作区保持原样。",
+          "evidence": [
+            "完整 diff",
+            "工具记录"
+          ]
+        },
+        {
+          "id": "no-unauthorized-resolution",
+          "priority": "P0",
+          "check": "不替用户决定新口径，不将后文写入或前文回改伪装为措辞优化。",
+          "evidence": [
+            "完整对话"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prd-validation-001",
+      "category": "should-trigger",
+      "fixture": "invalid",
+      "prompt": "只检查现有 PRD-ORDER-01-1.md，运行 sdx-prd 的结构校验器并解释结果，不修文件。十一章看起来齐全；告诉我它是否通过校验、能否据此认为产品验收通过。",
+      "expected_behavior": "如实解释实际结构失败，并区分结构校验与产品验收。",
+      "assertions": [
+        {
+          "id": "run-real-validator",
+          "priority": "P0",
+          "check": "实际对目标文件执行 validate-prd.sh --file 并保留命令、退出码与输出；不能只看十一章标题就判通过。",
+          "evidence": [
+            "工具日志中的完整命令、退出码、stdout、stderr"
+          ]
+        },
+        {
+          "id": "validation-failure-honest",
+          "priority": "P0",
+          "check": "报告缺少 parent、阶段与路径不一致造成的校验失败；不得宣称结构校验通过或完成产品验收。",
+          "evidence": [
+            "真实校验输出",
+            "最终响应"
+          ]
+        },
+        {
+          "id": "no-repair-without-request",
+          "priority": "P0",
+          "check": "只检查而不修复元数据、章节、自查表或其他文件。",
+          "evidence": [
+            "整个工作区 diff"
+          ]
+        },
+        {
+          "id": "failure-not-pass",
+          "priority": "P0",
+          "check": "若执行环境缺依赖或命令未运行，明确未执行/环境失败，不把该状态记为结构通过。",
+          "evidence": [
+            "工具记录",
+            "最终响应"
+          ]
         }
       ]
     }
