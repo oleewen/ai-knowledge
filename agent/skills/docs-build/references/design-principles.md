@@ -1,11 +1,6 @@
 # docs-build 设计原则
 
-反模式 [anti-patterns.md](anti-patterns.md)；操作 [gotchas.md](../gotchas.md)。
-
-1. **INDEX 先行** — 无地图不提取
-2. **证据** — ID 可追溯已读片段
-3. **顺序** — 应用→数据→业务→产品→技术；后序只引用前序
-4. **README 与 JSON 一致** — 阶段 3/4 不打架
-5. **INDEX 四段同轮**
-6. **参数先于写盘** — 参数向导收口、当前单元确认后再写盘
-7. **可验证** — `validate-extraction.sh` + [quality-checklist.md](quality-checklist.md)
+1. 由 INDEX 定位已核实来源，按当前视角加载规则。
+2. 实体正文、README 台账、INDEX 导航各负其责，真源分工见 [builtin-config.md](builtin-config.md)。
+3. 以确认的当前单元限定写入与恢复范围，见 [gates.md](gates.md)。
+4. 脚本校验结构，人工核验语义与证据，见 [quality-checklist.md](quality-checklist.md)。

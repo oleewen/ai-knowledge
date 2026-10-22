@@ -1,18 +1,13 @@
 # docs-build 参考索引
 
-先 [SKILL.md](../SKILL.md)，再按下表打开。
+从 [SKILL.md](../SKILL.md) 开始，按任务读取；不要求预加载全部参考。
 
-| 文档 | 用途 | 何时 |
-|-----|------|------|
-| [gates.md](gates.md) | 风险控制、动作协议 | 写 `{DOC_DIR}/knowledge/` 前 |
-| [workflow.md](workflow.md) | 参数向导、当前单元、顺序、校验 | 每次跑前 |
-| [builtin-config.md](builtin-config.md) | 内置约束、错误处理 | 阶段 1 |
-| [extraction-rules.md](extraction-rules.md) | 五视角规则 | 阶段 2 |
-| [readme-fill-spec.md](readme-fill-spec.md) | README 映射 | 阶段 3 |
-| [consolidation-spec.md](consolidation-spec.md) | 归并 INDEX | 阶段 4 |
-| [quality-checklist.md](quality-checklist.md) | 验收 | 阶段 4 后 |
-| [core-concepts.md](core-concepts.md) | 术语 | 混淆时 |
-| [design-principles.md](design-principles.md) | 原则 | 定范围时 |
-| [anti-patterns.md](anti-patterns.md) | 反模式 | 收敛前 |
+| 任务 | 文档 |
+| --- | --- |
+| 执行、确认与恢复 | [workflow.md](workflow.md)、[gates.md](gates.md)、[builtin-config.md](builtin-config.md) |
+| 提取当前视角 | [extraction-rules.md](extraction-rules.md) |
+| 更新 README / INDEX | [readme-fill-spec.md](readme-fill-spec.md)、[consolidation-spec.md](consolidation-spec.md) |
+| 验收与排错 | [quality-checklist.md](quality-checklist.md)、[audience-and-language.md](audience-and-language.md)、[gotchas.md](../gotchas.md) |
+| 概念或设计理解 | [core-concepts.md](core-concepts.md)、[design-principles.md](design-principles.md)、[anti-patterns.md](anti-patterns.md) |
 
-资产：[knowledge-schema-template.json](../assets/knowledge-schema-template.json)、[knowledge-index-template.md](../assets/knowledge-index-template.md)、[validate-extraction.sh](../scripts/validate-extraction.sh)；坑：[gotchas.md](../gotchas.md)。
+产物模板：[entity-template.md](../assets/entity-template.md)、[knowledge-index-template.md](../assets/knowledge-index-template.md)。

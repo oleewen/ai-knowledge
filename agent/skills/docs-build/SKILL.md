@@ -1,61 +1,40 @@
 ---
 name: docs-build
 description: >
-  从五视角提取实体 ID，产出 per-entity {ID}.md、各视角 README、写入 INDEX-GUIDE.md 第四章视角导航块；依赖主 Index Guide。
-  用户提到 /docs-build、初始化/同步知识实体、对齐 ID、docs-indexing 下游要实体时，使用本技能。
-  分流：仅根 INDEX-GUIDE（九章）→ docs-indexing；overview → distill/extract；归档 → docs-archive；SDD → 对应技能。
-  推进见 references/gates.md。
+  从已核实资料构建或同步五视角知识实体、视角 README 与 INDEX-GUIDE 第四章导航。
+  用于 /docs-build、初始化知识实体、对齐实体 ID，或 docs-indexing 后的实体构建。
+  仅更新九章索引用 docs-indexing；overview 提炼与归档不属本技能。
 ---
 
 # docs-build
 
-## 输出硬约束（P0）
+把已核实事实写成每实体一个 `{ID}.md`，同步视角 README 台账，再更新 `{DOC_DIR}/INDEX-GUIDE.md` 第四章导航。脚本负责导航与结构校验，实体提取由 Agent 完成。
 
-- `knowledge-links.yaml` 的 `path` 统一使用 `${WORK_SPACE}/…`；按文件所属库配置展开，缺配置、旧格式或越界即停止。读写与迁移细则见 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「knowledge-links 路径契约」。
-- 当前单元：单个视角批次、单个路径组，或单批实体集合。
-- 写前澄清 / 推进环 `C/M/G/S/F` / 烤干 → [intent-clarify.md](../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)、[grilling-skill.md](../../references/grilling-skill.md)、[simplify-principles.md](../../references/simplify-principles.md)；细节 [gates.md](references/gates.md)。未获写前 `C` 不得写 `{DOC_DIR}/knowledge/`；收敛后停等用户，不得自动推进下一批。
-- 意图澄清第 6 项须写明当前批次及本轮 `{DOC_DIR}/knowledge/` 下仓库根相对路径，以及将写入的 `{DOC_DIR}/INDEX-GUIDE.md` 第四章视角导航块。
-- 校验失败、路径不明或规则未覆盖时须停下澄清，不得静默继续。
-- **knowledge 引用边界**：写入 `{DOC_DIR}/knowledge/**` 须遵守 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「业务 knowledge 引用边界」。可读外源；落盘不链 knowledge 外文档、不链下层/槽位、禁手写爬层。有 `knowledge-links.yaml` 的 `type: parent` 时上层实体用约定生成函数写 HTTP SSOT 链，否则纯 ID。违规能修则修，不明则停。
+## 开始前
 
-## 边界
+1. 从目标仓解析 `.docsconfig`，确认 `{DOC_DIR}`、知识层与主 `INDEX-GUIDE.md`。目录名不等于知识层；缺地图先转 `docs-indexing`。
+2. 读 [workflow.md](references/workflow.md) 的参数与执行步骤、[gates.md](references/gates.md) 的当前单元约束。
+3. 读 [knowledge-governance.md](../../knowledge/knowledge-governance.md) 的层职责与引用边界；按当前视角查 [extraction-rules.md](references/extraction-rules.md)，无需全量加载参考文件。
 
-- 负责：五视角 per-entity、README、`{DOC_DIR}/INDEX-GUIDE.md` 第四章视角导航块、`validate-extraction.sh`
-- 不负责：九章骨架（docs-indexing；须保留 `docs-build:entity-index` 标记块）；OKF 迁移（docs-okf）；distill/extract；docs-archive；SDD
+## 写入边界
 
-## 不这样用
+- 当前单元为一个视角批次、路径组或实体集合。写前澄清须列出实体/README 路径和层根 INDEX 导航块；获写前 `C` 后写入，写后校验、烤干并停等下一动作。
+- 只落本层首次定义实体；保留已有 ID。重命名须确认引用链；不可因证据不足补造父实体、关系或示例行。
+- `knowledge/**` 引用遵守治理规则：同层 knowledge 内互引；上层有 parent 时用约定函数生成 HTTP，否则纯 ID；下层仅纯 ID。读取联邦清单时校验 `${WORK_SPACE}` 路径契约。
+- 只更新 INDEX 第四章导航块；九章骨架、OKF 目录索引、overview、归档与 SDD 各走所属技能。导航刷新不删除旧文件。
+- 校验失败或路径/语义不明时停止当前单元，保留问题清单；不得继续下一批或宣称收敛。
 
-- 不把写前意图澄清当成完整 grilling Skill 深挖
-- 不把本技能偷换成 `docs-indexing`、overview、归档或 SDD 主路径
+## 按任务读取
 
-## 路由
-
-| 目的 | 文件 |
+| 当前工作 | 参考 |
 | --- | --- |
-| 流程 / 推进 binding | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
-| 受众与语言 | [audience-and-language.md](references/audience-and-language.md) |
-| 配置 / 规则 | [builtin-config.md](references/builtin-config.md)、[extraction-rules.md](references/extraction-rules.md) |
-| README / 归并 | [readme-fill-spec.md](references/readme-fill-spec.md)、[consolidation-spec.md](references/consolidation-spec.md) |
-| 核心概念 | [core-concepts.md](references/core-concepts.md) |
-| 原则 / 反模式 | [design-principles.md](references/design-principles.md)、[anti-patterns.md](references/anti-patterns.md) |
-| 终检 / 易错 | [quality-checklist.md](references/quality-checklist.md)、[gotchas.md](gotchas.md) |
+| 策略、证据不足、增量恢复 | [builtin-config.md](references/builtin-config.md) |
+| 实体提取与字段来源 | [extraction-rules.md](references/extraction-rules.md) |
+| 更新实体台账 | [readme-fill-spec.md](references/readme-fill-spec.md) |
+| 生成导航、脚本参数与兼容行为 | [consolidation-spec.md](references/consolidation-spec.md) |
+| 收敛检查 | [quality-checklist.md](references/quality-checklist.md)、[audience-and-language.md](references/audience-and-language.md) |
+| 排错 | [gotchas.md](gotchas.md) |
 
-## 最少输入
+## 维护与验证
 
-- 主 Index Guide 可用
-- `{DOC_DIR}` 可解析
-- 可确定的视角范围
-- `--skip-existing`、`--confidence-threshold`、`--emit-report` 等策略已收口
-
-## 产出与脚本
-
-- 正式：各视角 `{ID}.md`、README、`INDEX-GUIDE.md` 第四章视角导航块
-- 收敛后动作见 [unit-cycle-protocol.md](../../references/unit-cycle-protocol.md)（本技能有 `S`）
-
-```bash
-agent/skills/docs-build/scripts/validate-extraction.sh
-```
-
-## 评测
-
-`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。
+技能回归：`python3 -B -m unittest discover -s <技能目录>/tests -v`（Bash 5+ 在 PATH 中）。行为场景见 [evals.json](evals/evals.json)，评分见 [grader.md](agents/grader.md)。

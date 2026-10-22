@@ -1,106 +1,41 @@
-# 内置配置与错误处理
+# 提取策略与错误处理
 
-硬约束全文；摘要见 [SKILL.md](../SKILL.md)、[workflow.md](workflow.md)。
+## 真源分工
 
----
+| 决策 | 真源 |
+| --- | --- |
+| 层职责、跨层边、引用边界 | [knowledge-governance.md](../../../knowledge/knowledge-governance.md) |
+| 实体 ID 语法与别名 | [naming-conventions.md](../../../knowledge/naming-conventions.md) |
+| 字段与关系 | 当前视角 meta，入口见 [extraction-rules.md](extraction-rules.md) |
+| 文件落点 | [knowledge-layout.md](../../../references/knowledge-layout.md)；生成函数 `okf_lib.entity_relpath` |
+| frontmatter、正文分段 | [okf-spec.md](../../../knowledge/okf-spec.md) |
 
-## 内置配置
+治理语义以 governance 为准。已知旧 meta 中的 `SYS.uses_to MDG|TS`、`MDG/TS.used_by SYS`、方案层反向登记 SYS 与治理规则冲突：按治理的 `PD.uses_to MDG|TS`、SYS 映射 PD 执行；不在本技能重写外部真源。遇到其他无法判定的冲突先澄清。
 
-### 表头约定（table_schema）
+## 证据与置信度
 
-```yaml
-table_schema:
-  header: ["层级", "ID", "别名（英文名）", "名称", "证据链"]
-  semantics:
-    id: "唯一实体 ID（TYPE-NAME）"
-    alias: "英文编码（机器可读标识）"
-    name: "中文名称（面向业务/阅读）"
-  uniqueness:
-    - "层级+ID 全知识库唯一"
-    - "层级+别名（英文名） 全知识库唯一"
-```
+| 等级 | 依据 | 落盘规则 |
+| --- | --- | --- |
+| high | 已读代码、配置或明确的主定义事实 | 达到阈值且必需关系可核实时落盘 |
+| medium | 已读文档可支持的推导 | 达到阈值时注明推导依据 |
+| low | 间接或不完整依据 | 仅在用户选择 low 且存在可核依据时保留不确定性；不写成已确认事实 |
 
-### ID 前缀定义（contains_prefixes）
+未读路径、缺父级或无依据的候选，无论阈值均不生成正式实体；列待确认。协议、Topic、Cron 等可选细节缺失不自动判失败。证据写入「依据与证据」，遵守 knowledge 引用边界；不强制增加 JSON 或 frontmatter 证据数组。
 
-```yaml
-contains_prefixes:
-  application: ["SYS-", "APP-", "MS-", "API-"]
-  data:      ["DS-", "ENT-"]
-  business:  ["BD-", "BSD-", "BC-", "AGG-", "AB-"]
-  product:   ["PL-", "PM-", "FT-", "UC-"]
-```
+## 增量与一致性
 
-### 证据规则（evidence）
+- ID 复用优先；层级+ID、层级+别名唯一，OKF `id` 本身也须全局唯一。
+- 只跳过已核实来源未变的实体。重提时保留人工维护的有效内容，报告变化原因。
+- 关系对端在当前授权范围内则同步；范围外列依赖，重新确认后处理，不静默改前序批次或上层库。
+- README 行来自实体文件；INDEX 只写导航，不维护 §1–§4 实体扫描表。
 
-```yaml
-evidence:
-  primary_index_sections:
-    - { anchor: "§3",   use: "详细索引表 / 模块与文件" }
-    - { anchor: "§3.2", use: "关键实现标识速查" }
-    - { anchor: "§六",  use: "HTTP / Gateway 路径" }
-    - { anchor: "§七",  use: "定时任务 / Job" }
-  repo_facts:
-    - "pom.xml"
-    - "AGENTS.md"
-    - "manifest.md"
-    - "manifest.yaml"
-    - "Mapper/XML 表名（data 视角，已读范围内）"
-```
-
-### 对称规则（symmetry）
-
-```yaml
-symmetry:
-  rules:
-    - id: same_round_four_sections
-      text: "INDEX-GUIDE.md 的 §1～§4 同一轮维护"
-    - id: no_template_only
-      text: "禁止以非本应用模板 ID 作为 INDEX/README 唯一内容"
-    - id: index_over_template
-      text: "可登记 ID 时优先主 INDEX §3/§3.2/§六/§七 与工程事实"
-    - id: bc_agg_linkage
-      text: "§1 已登记 BC/AGG 时，§3 或 §4 至少一类有证据行，或显式待补充与原因"
-```
-
----
-
-## 设计原则
-
-| # | 原则 | 说明 |
-|---|------|------|
-| 1 | 证据优先 | high=代码/配置；medium=文档推；low=间接 |
-| 2 | 视角分离 | 后序可引前序 ID，不改前序产物 |
-| 3 | 按需加载 | 不为「完整」通读全仓 |
-| 4 | 契约驱动 | 本文件为硬约束 |
-| 5 | 幂等 | 断点续跑；失败视角标记 |
-| 6 | 边界 | 只提取+归并；无锚点/CHANGELOG/目录树 |
-
-### 禁止
-
-| 行为 | 含义 |
-|------|------|
-| 编造 ID | 未读路径或无依据 |
-| Maven→MS | MS 须宿主聚类 |
-| 通读全库 | 无 INDEX 导航的盲扫 |
-| 破引用 | 单改旧 ID 不断链 |
-| 跳验证 | 无前缀/对称检查就写索引 |
-| 模板冒充 | 非本应用模板当唯一内容 |
-| 无证据写 | 证据未写入「依据与证据」 |
-
----
-
-## 错误处理
+## 失败处理
 
 | 情形 | 处理 |
-|------|------|
-| 无主 INDEX | 停；先 docs-indexing |
-| 证据不足 | `confidence: low`，可继续 |
-| 前缀冲突 | 跳过并记日志 |
-| 不可写 | 停；权限 |
-| 无输出目录 | 自动建 |
-
-### 恢复
-
-- 部分成功：保留已成，标失败视角
-- 幂等：从阶段/视角续跑
-- 更 INDEX 前备份（若实现）
+| --- | --- |
+| 主 INDEX 缺失 | 停止提取，转 docs-indexing |
+| 输出路径不明或不可写 | 停止并报告具体路径；不回退到技能安装仓 |
+| 当前已确认目录尚不存在 | 在授权路径内创建 |
+| ID/别名冲突、必需关系缺失 | 列候选与影响，停止受影响实体；不自动改名 |
+| 当前单元部分成功 | 保留成功内容与失败清单，修复后重验，不推进下一批 |
+| 旧聚合文件存在 | 仅提示迁移；删除需单独确认 |

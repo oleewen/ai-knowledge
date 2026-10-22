@@ -1,45 +1,30 @@
-# 质量验证清单
+# docs-build 验收清单
 
-阶段 4 后与阶段 3 README 对照自检。
+结构校验通过后，再核对语义；不能仅凭退出码宣称收敛。
 
-## 初始化
+## 写入与来源
 
-- [ ] 主 Index Guide 可用
+- [ ] 主 INDEX、DOC_DIR、知识层与当前单元已明确，写前确认覆盖实际变更。
+- [ ] 每个 ID 有已读来源；达到选定置信度；缺父级/证据的候选未落正式实体。
+- [ ] 只写本层实体；实体 Profile、命名及路径遵各自真源。
+- [ ] 增量保留有效人工内容；旧 ID 未擅自重命名或删除。
 
-## 顺序与结构
+## 提取语义
 
-- [ ] 应用→数据→业务→产品→技术
-- [ ] `entities` 为扁平数组，不按 systems/applications 分组
+- [ ] 对选定来源检查 Dubbo Provider、HTTP、MQ Consumer、Job；不存在的类型说明未发现，不补造。
+- [ ] MS 按宿主类聚类，模块可有多个宿主；MQ 同一 Consumer 多 Tag 不拆多个 API。
+- [ ] ENT 按已核实物理表身份去重，不把不同数据源同名表混为一个。
+- [ ] 关系、证据与知识引用边界正确；范围外反向边列待办，未假称已闭环。
 
-## API
+## 台账与导航
 
-- [ ] Dubbo、HTTP、MQ Consumer、Job 全覆盖
-- [ ] 入口类型可写入详细说明，缺了不算失败
-- [ ] Dubbo 仅 Provider
-- [ ] MQ 多 Tag → 一条 API
-- [ ] 处理器名可写入详细说明，缺了不算失败
-- [ ] MQ/Job 归 MS-ID
+- [ ] README 行来自实体文件，链接有效；本层无实体时说明，无示例冒充。
+- [ ] 实体/README 预检通过后才归并；层根 INDEX 中仅更新第四章导航块。
+- [ ] 完整模式结构校验通过；输出中警告已解释，未静默删除旧文件。
+- [ ] ID 唯一性、文件名、字段映射、title/tags/timestamp、H1 与四段正文符合 Profile；所选视角一致。
 
-## 实体
+## 人工终检
 
-- [ ] 证据写在「依据与证据」
-- [ ] MS 按宿主聚类 ≠ Maven 模块
-- [ ] 一物理表一 ENT
-
-## README（阶段 3）
-
-- [ ] 沿用各视角 README 表头/章节，不臆造列
-- [ ] 索引行与 JSON 一致；无示例冒充（无实体则标待补充）
-- [ ] 静态说明段（层级、字段、跨视角、INDEX 链接）保留
-
-## 归并（阶段 4）
-
-- [ ] 前缀 ∈ `contains_prefixes`
-- [ ] `INDEX-GUIDE.md` 第四章视角导航块存在且链到各视角 README（实体台账 ∈ README，非本块贴表）
-- [ ] 旧 ID 无单独更名（引用完整）
-
-## metadata
-
-- [ ] 每 JSON 完整 `metadata`
-- [ ] 增量填 `changes_from_previous`
-- [ ] 已按 [audience-and-language.md](../../../references/audience-and-language.md) + 本地 [audience-and-language.md](audience-and-language.md) 通过烤干受众维 A/B/C/E
+- [ ] 完整关系合法性、对称、证据真实性及跨层 HTTP 另行核验；必要时运行现有 OKF 校验。
+- [ ] 按 [audience-and-language.md](audience-and-language.md) 通过受众维 A/B/C/E。
+- [ ] 报告变更、校验范围和未闭合项；烤干收敛后停等下一动作。

@@ -1,107 +1,41 @@
 # docs-build 工作流
 
-主干：[SKILL.md](../SKILL.md)。推进 binding：[gates.md](gates.md)。
+每个当前单元依次完成：确认范围、提取实体、同步 README、预检、归并导航、终检、烤干。[gates.md](gates.md) 绑定共享推进协议。
 
-契约：
+## 前置与参数
 
-- 写前澄清：[intent-clarify.md](../../../references/intent-clarify.md)
-- 单元推进 / `C/M/G/S/F`：[unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)
-- 写后烤干：[grilling-skill.md](../../../references/grilling-skill.md)
+从目标仓读取 `.docsconfig`，解析文档根、知识层及 Agent 树位置；主 `{DOC_DIR}/INDEX-GUIDE.md` 必须存在。元库 `KNOWLEDGE_TYPE=meta` 时仅以已选定的四层目录确定目标层；其他不明确情况先澄清。
 
-## 前置
+以下是 **Agent 会话选项**，不是实体提取 CLI；仅校验器另支持 `--perspectives`：
 
-- 主 Index Guide 可用（否则先 `/docs-indexing`）
-- `{DOC_DIR}/knowledge/` 可写
-- 若环境未安装 `grilling` Skill，则按 [grilling-skill.md](../../../references/grilling-skill.md) fallback
-
-## 术语
-
-**应用知识库**：`.docsconfig` 的 `DOC_DIR` → `{DOC_DIR}/`。
-
-## I/O
-
-| 类型 | 内容 |
-| --- | --- |
-| 必需 | 主 Index Guide（否则停，先 `/docs-indexing`） |
-| 可选 | README、AGENTS、PRD、源码 |
-| 固定输出 | `{DOC_DIR}/knowledge/{p}/` 下 per-entity `{ID}.md`、`README`、`INDEX-GUIDE.md` 第四章视角导航（静态） |
-| `--emit-report` | `{DOC_DIR}/knowledge/{p}/extraction_report.md` |
-| 不产出 | 锚点文档、CHANGELOG、目录树 |
-
-## 参数向导
-
-| 参数 | 默认 | 说明 |
+| 选项 | 默认 | 行为 |
 | --- | --- | --- |
-| `--perspectives` | `application,data,business,product` | 逗号分隔 |
-| `--skip-existing` | `true` | 未变跳过；变更文件仍重提 |
-| `--confidence-threshold` | `medium` | high / medium / low |
-| `--emit-report` | `false` | 提取报告 |
+| `--perspectives` | `application,data,business,product` | 可加 technical；按所选视角处理本层实体 |
+| `--skip-existing` | `true` | 仅跳过已确认来源未变的实体；来源变更或无法判断时重新核实 |
+| `--confidence-threshold` | `medium` | high / medium / low；证据处理见 [builtin-config.md](builtin-config.md) |
+| `--emit-report` | `false` | 开启时写当前视角 `extraction_report.md` |
 
-默认不逐项问。仅在：用户改参数或视角、`DOC_DIR` 不明、校验失败要选策略、规则未覆盖 — **每次只澄清一点**。
-
-参数未收口前，不进入单元推进。
+用户已明确的选项直接采用；默认值无需逐项追问。只有路径、范围或决策缺口影响结果时才问。技术视角未选中时不自动扩批；本层无实体的视角保留说明，不补造实体。
 
 ## 当前单元
 
-视角批次 / 路径组 / 实体批次；一次一个。定义见 [gates.md](gates.md)。
+1. **写前澄清**：按 gates 列公共六项、预期增删改 ID 与实际路径。当前单元可按视角、路径组或实体集合划分。
+2. **提取**：按 [extraction-rules.md](extraction-rules.md) 查询当前视角。默认顺序为应用、数据、业务、产品、技术；仅引用其他批次已有 ID，需要修改其他批次时回到范围确认。
+3. **同步 README**：遵 [readme-fill-spec.md](readme-fill-spec.md)，实体正文与台账同源。
+4. **归并前预检**：执行下列结构校验，并人工核对证据、关系与授权范围。失败先修当前单元，不写导航。
+5. **归并**：按 [consolidation-spec.md](consolidation-spec.md) 预览并更新层根 INDEX 导航块。
+6. **终检与烤干**：运行完整模式结构校验，再按 [quality-checklist.md](quality-checklist.md) 核验语义与受众；收敛后停等共享协议的 `C/M/G/S/F`。
 
-### 视角顺序
-
-| 序 | 视角 | 前缀 | 输入概要 |
-| --- | --- | --- | --- |
-| 1 | 应用 | SLN/SYS/APP/MS/API | INDEX、解决方案边界、源码、接口 |
-| 2 | 数据 | MDG/DS/ENT/TBL | INDEX、主数据划分、数据源、实体、DDL、Mapper XML |
-| 3 | 业务 | VC/CAP/BD/BSD/BL/BS/BC/AGG/AB | INDEX、公司/解决方案叙事、AGENTS、FQCN |
-| 4 | 产品 | PL/PD/BP/BSP/PM/FT/FR/UC/BR | INDEX、README、PRD、前述 ID |
-| 5 | 技术 | TPL/TS/MW/CMP | INDEX、公司平台、解决方案技术选用、配置、依赖 allowlist |
-
-API：**Dubbo / HTTP / MQ Consumer / Job**。入口类型可写入详细说明，缺了不算失败。
-
-## 写后默认表
-
-| 对象 | 默认烤干 | 强制升级 |
-| --- | --- | --- |
-| 单个视角批次 / 路径组 / 实体批次 | **必须** | 实体 ID 变更或重命名；未确认决策写入；跨批次依赖变更 |
-
-启发式只可升级为必须，不可把默认「必须」降为跳过。
-
-## 技能步骤
-
-推进环见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)；本技能只补提取特有步骤：
-
-1. 选定当前单元
-2. **意图澄清**：公共六项 + [gates.md](gates.md) 追加字段；第 6 项写明批次类型与 `{DOC_DIR}/knowledge/` 下仓库根相对路径；写前 `C` 后方可写入
-3. 按 [extraction-rules.md](extraction-rules.md) 提取实体
-4. 按 [readme-fill-spec.md](readme-fill-spec.md) 更新 README
-5. 按 [consolidation-spec.md](consolidation-spec.md) 归并 INDEX-GUIDE 第四章
-6. 运行校验：
+先将 `SKILL_DIR` 设为已核实的技能绝对目录，在目标仓执行；`application` 示例应替换为当前确认视角：
 
 ```bash
-agent/skills/docs-build/scripts/validate-extraction.sh
+bash "$SKILL_DIR/scripts/validate-extraction.sh" --entities-only --perspectives application
+# 按 consolidation-spec 生成导航后：
+bash "$SKILL_DIR/scripts/validate-extraction.sh" --perspectives application
 ```
 
-7. **烤干**：按写后默认表；校验失败则当前单元停止，不得继续后续批次，须先澄清修复策略或改参数
-8. 用户动作：`C/M/G/S/F` 见 unit-cycle-protocol
+校验器路径来自 `.docsconfig`；`--entities-only` 跳过导航块检查，完整模式检查当前版标记。跨视角重复 ID 始终检查；其余结构检查限定所选视角。完整 OKF 引用校验可按现有 docs-okf 校验入口执行，勿因此自动迁移或刷新目录索引。
 
-## 核心约束（摘要）
+## 交付
 
-| 约束 | 含义 |
-| --- | --- |
-| 证据优先 | ID 有可核来源 |
-| 零幻觉 | 仅已读文件 |
-| 前缀唯一 | 层级+ID、层级+别名 |
-| 对称 | INDEX §1–§4 同轮；README 与 per-entity 一致 |
-| 幂等 | 可断点续跑 |
-| API 四类 | 见上 |
-| 边界 | 无锚点/CHANGELOG |
-
-全文：[builtin-config.md](builtin-config.md)。
-
-## 命令示例
-
-```bash
-/docs-build
-/docs-build --perspectives application,data
-/docs-build --skip-existing false
-/docs-build --confidence-threshold high --emit-report
-```
+报告当前单元实际变更、校验结果及未闭合依赖。未开报告时在会话说明增量，不创建强制日志或改共享 meta。需要跨库反向边更新但无授权时列待办，不擅自写上层库，也不宣称关系已闭环。

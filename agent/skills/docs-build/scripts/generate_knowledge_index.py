@@ -10,19 +10,11 @@ from pathlib import Path
 from typing import Optional
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-OKF_SCRIPTS = SCRIPT_DIR.parent.parent / "docs-okf" / "scripts"
-sys.path.insert(0, str(OKF_SCRIPTS))
-import okf_lib  # noqa: E402
 
 ENTITY_BEGIN = "<!-- docs-build:entity-index:begin -->"
 ENTITY_END = "<!-- docs-build:entity-index:end -->"
 ENTITY_BEGIN_LEGACY = "<!-- docs-build:entity-index -->"
 ENTITY_END_LEGACY = "<!-- /docs-build:entity-index -->"
-
-_LEAD = (
-    "> 本块由 `/docs-build` 写入；实体台账 ∈ 各视角 README；"
-    "正文 ∈ per-entity `{ID}.md`；九章骨架 ∈ `/docs-indexing`。"
-)
 
 _SCOPE_NOTE = {
     "company": "> 本层登记 **VC / BD / BSD-L1 / CAP / BL / TPL**。",
@@ -33,27 +25,29 @@ _SCOPE_NOTE = {
     "application": "> 本层仅登记 **API / TBL / MW / CMP**。",
 }
 
-_NAV_LINKS = """### 视角入口
-
-- [知识库总说明](knowledge/README.md)
-- [目录索引](knowledge/index.md)
-- [业务](knowledge/business/README.md)
-- [产品](knowledge/product/README.md)
-- [应用](knowledge/application/README.md)
-- [数据](knowledge/data/README.md)
-- [技术](knowledge/technical/README.md)"""
-
-
 def _repo_root() -> Path:
-    return okf_lib.find_repo_root(Path(__file__).resolve())
+    """从调用目录定位消费仓，不跟随技能安装目录。"""
+    current = Path.cwd().resolve()
+    for candidate in (current, *current.parents):
+        if (candidate / ".docsconfig").is_file() or (candidate / ".git").exists():
+            return candidate
+    raise ValueError("当前目录上方未找到 .docsconfig/.git；请进入目标仓或传 --repo")
 
 
 def _bundle_root(repo: Path, bundle: str) -> Path:
-    return (repo / bundle).resolve()
+    relative = Path(bundle)
+    if relative.is_absolute() or ".." in relative.parts or not relative.parts:
+        raise ValueError("--bundle 须为仓库内相对目录")
+    root = (repo / relative).resolve()
+    if repo not in root.parents or not root.is_dir():
+        raise ValueError(f"bundle 不存在或越出仓库: {root}")
+    return root
 
 
 def _scope_note(bundle: str) -> str:
-    return _SCOPE_NOTE.get(bundle, _SCOPE_NOTE["application"])
+    if bundle not in _SCOPE_NOTE:
+        raise ValueError("非标准 bundle 名须通过 --layer-scope 指定知识层")
+    return _SCOPE_NOTE[bundle]
 
 
 def render_knowledge_index(
@@ -62,16 +56,9 @@ def render_knowledge_index(
 ) -> str:
     """渲染第四章视角导航正文（静态；实体台账 ∈ 各视角 README）。"""
     del bundle_root  # 静态块；保留参数供调用方/测试签名兼容
-    return "\n".join(
-        [
-            _LEAD,
-            "",
-            _scope_note(bundle),
-            "",
-            _NAV_LINKS,
-            "",
-        ]
-    )
+    template = (SCRIPT_DIR.parent / "assets" / "knowledge-index-template.md").read_text(encoding="utf-8")
+    inner = template.split(ENTITY_BEGIN, 1)[1].split(ENTITY_END, 1)[0].strip()
+    return inner.replace("> {层范围短注}", _scope_note(bundle)) + "\n"
 
 
 def render_entity_index_block(bundle_root: Path, bundle: str = "application") -> str:
@@ -79,79 +66,87 @@ def render_entity_index_block(bundle_root: Path, bundle: str = "application") ->
     return f"{ENTITY_BEGIN}\n{inner}\n{ENTITY_END}\n"
 
 
+def chapter_four_bounds(existing: str) -> tuple[int, int]:
+    """定位唯一第四章，防止错放标记吞掉相邻章节。"""
+    chapters = list(re.finditer(r"^##[ \t]+(?:四、|4[. 、])[^\r\n]*", existing, re.MULTILINE))
+    if len(chapters) != 1:
+        raise ValueError("INDEX-GUIDE.md 须有唯一第四章标题")
+    start = chapters[0].end()
+    next_chapter = re.search(r"^#{1,2}[ \t]+", existing[start:], re.MULTILINE)
+    end = start + next_chapter.start() if next_chapter else len(existing)
+    return start, end
+
+
+def entity_block_span(existing: str) -> Optional[tuple[int, int]]:
+    """返回唯一完整标记块；拒绝残缺、重复、倒置或混用标记。"""
+    pairs = ((ENTITY_BEGIN, ENTITY_END), (ENTITY_BEGIN_LEGACY, ENTITY_END_LEGACY))
+    present = [(begin, end) for begin, end in pairs if begin in existing or end in existing]
+    if not present:
+        return None
+    if len(present) != 1:
+        raise ValueError("实体导航混用新旧标记")
+    begin, end = present[0]
+    if existing.count(begin) != 1 or existing.count(end) != 1:
+        raise ValueError("实体导航标记残缺或重复")
+    start, finish = existing.index(begin), existing.index(end)
+    if finish < start:
+        raise ValueError("实体导航结束标记位于开始标记之前")
+    chapter_start, chapter_end = chapter_four_bounds(existing)
+    if start < chapter_start or finish + len(end) > chapter_end:
+        raise ValueError("实体导航标记须完整位于第四章内，禁止跨章替换")
+    return start, finish + len(end)
+
+
 def patch_index_guide(existing: str, block: str) -> str:
-    """替换 INDEX-GUIDE 第四章 §4.5 实体块；无标记则替换「### 4.5」至「## 五、」之间。"""
-    block = block.rstrip() + "\n"
-    if ENTITY_BEGIN in existing and ENTITY_END in existing:
-        pattern = re.compile(
-            re.escape(ENTITY_BEGIN) + r".*?" + re.escape(ENTITY_END),
-            re.DOTALL,
-        )
-        return pattern.sub(block.rstrip(), existing, count=1)
-
-    if ENTITY_BEGIN_LEGACY in existing and ENTITY_END_LEGACY in existing:
-        pattern = re.compile(
-            re.escape(ENTITY_BEGIN_LEGACY) + r".*?" + re.escape(ENTITY_END_LEGACY),
-            re.DOTALL,
-        )
-        return pattern.sub(block.rstrip(), existing, count=1)
-
-    chapter = re.search(
-        r"(### 4\.5[^\n]*\n)(.*?)(\n## 五、)",
-        existing,
-        flags=re.DOTALL,
-    )
-    if chapter:
-        return (
-            existing[: chapter.start()]
-            + chapter.group(1)
-            + "\n"
-            + block
-            + chapter.group(3)
-            + existing[chapter.end() :]
-        )
-    raise ValueError("INDEX-GUIDE.md 缺少「### 4.5」或实体块标记，无法写入")
+    """只替换标记块；无标记时替换 4.5 正文，保留下一同级或上级节。"""
+    newline = "\r\n" if "\r\n" in existing else "\n"
+    block = block.replace("\r\n", "\n").rstrip().replace("\n", newline) + newline
+    span = entity_block_span(existing)
+    if span:
+        start, end = span
+        return existing[:start] + block.rstrip() + existing[end:]
+    headings = list(re.finditer(r"^### 4\.5(?:[ \t]+[^\n]*)?\n", existing, re.MULTILINE))
+    if len(headings) != 1:
+        raise ValueError("INDEX-GUIDE.md 须有唯一「### 4.5」或实体块标记")
+    start = headings[0].end()
+    chapter_start, chapter_end = chapter_four_bounds(existing)
+    if not chapter_start <= headings[0].start() < chapter_end:
+        raise ValueError("4.5 标题须位于第四章内")
+    following = re.search(r"^#{1,3} ", existing[start:], re.MULTILINE)
+    end = start + following.start() if following else len(existing)
+    return existing[:start] + newline + block + newline + existing[end:]
 
 
 def main(argv: Optional[list[str]] = None) -> int:
-    parser = argparse.ArgumentParser(
-        description="将视角导航块写入 bundle/INDEX-GUIDE.md 第四章（docs-build）"
-    )
-    parser.add_argument("--bundle", required=True, help="bundle 名称，如 application")
-    parser.add_argument("--dry-run", action="store_true", help="仅输出实体块到 stdout")
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--bundle", required=True, help="仓库内文档目录，如 application 或 docs")
+    parser.add_argument("--repo", type=Path, help="目标仓库根；默认从当前目录上溯")
+    parser.add_argument("--layer-scope", choices=tuple(_SCOPE_NOTE), help="知识层；标准 bundle 名可省略")
+    parser.add_argument("--dry-run", action="store_true", help="校验目标并输出导航块，不写文件")
     args = parser.parse_args(argv)
-
-    repo = _repo_root()
-    bundle_root = _bundle_root(repo, args.bundle)
-    if not bundle_root.is_dir():
-        print(f"error: bundle 不存在: {bundle_root}", file=sys.stderr)
-        return 1
-
-    out_path = bundle_root / "INDEX-GUIDE.md"
-    block = render_entity_index_block(bundle_root, args.bundle)
-
-    if args.dry_run:
-        print(block)
+    try:
+        repo = args.repo.resolve() if args.repo else _repo_root()
+        bundle_root = _bundle_root(repo, args.bundle)
+        layer = args.layer_scope or args.bundle
+        block = render_entity_index_block(bundle_root, layer)
+        out_path = bundle_root / "INDEX-GUIDE.md"
+        if out_path.is_symlink():
+            raise ValueError("INDEX-GUIDE.md 不得为符号链接")
+        with out_path.open(encoding="utf-8", newline="") as stream:
+            existing = stream.read()
+        patched = patch_index_guide(existing, block)
+        if args.dry_run:
+            print(block, end="")
+        elif patched != existing:
+            with out_path.open("w", encoding="utf-8", newline="") as stream:
+                stream.write(patched)
+            print(f"patched {out_path.relative_to(repo)} 第四章")
+        else:
+            print(f"unchanged {out_path.relative_to(repo)}")
         return 0
-
-    if not out_path.is_file():
-        print(f"error: 缺少 INDEX-GUIDE.md（先 /docs-indexing）: {out_path}", file=sys.stderr)
+    except (OSError, UnicodeError, ValueError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
         return 1
-
-    patched = patch_index_guide(out_path.read_text(encoding="utf-8"), block)
-    if not patched.endswith("\n"):
-        patched += "\n"
-    out_path.write_text(patched, encoding="utf-8")
-    stale = bundle_root / "knowledge" / "KNOWLEDGE-INDEX.md"
-    if stale.is_file():
-        stale.unlink()
-        print(f"removed {stale.relative_to(repo)}")
-    stale_guide = bundle_root / "knowledge" / "INDEX-GUIDE.md"
-    if stale_guide.is_file():
-        stale_guide.unlink()
-        print(f"removed {stale_guide.relative_to(repo)}")
-    print(f"patched {out_path.relative_to(repo)} 第四章")
-    return 0
 
 
 if __name__ == "__main__":

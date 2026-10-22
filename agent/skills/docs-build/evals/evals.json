@@ -1,7 +1,7 @@
 {
   "skill_name": "docs-build",
-  "version": "2.1.0",
-  "description": "评估 docs-build 在「澄清 → 生成 → 烤干」流程下的触发、分流与单元推进协议表述；断言供 grader 评分；协议见 unit-cycle-protocol / intent-clarify。",
+  "version": "3.0.0",
+  "description": "用真实请求验证路由、单元边界、提取产物与脚本操作；应检查实际行为和文件，不以复述规则代替通过。",
   "evals": [
     {
       "id": "build-trigger-001",
@@ -137,6 +137,109 @@
           "name": "改写或停问",
           "type": "must_include",
           "check": "须调整产物形态或停问；不得未处理就写后 C。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "build-consumer-001",
+      "category": "should-trigger",
+      "prompt": "消费仓 DOC_DIR=docs、KNOWLEDGE_TYPE=application，主 INDEX 已存在。本轮 application 批次已确认，请从已读 HTTP 和 Kafka Consumer 源码同步 API，MS 已在系统库登记。给出产物与可运行命令。",
+      "expected_output": "生成命令 --bundle docs --layer-scope application；从消费仓运行或显式 --repo，不按技能安装位置写入。；每 API 一个九字段 frontmatter、四段正文 Markdown；README 链实体，不生成 JSON 聚合产物或重复 MS 文件。；提取 HTTP 和 MQ Consumer，缺失的入口类型不补造。；不因导航刷新删除旧文件或擅改上层 MS。",
+      "assertions": [
+        {
+          "id": "consumer-path",
+          "name": "consumer-path",
+          "type": "must_include",
+          "check": "生成命令 --bundle docs --layer-scope application；从消费仓运行或显式 --repo，不按技能安装位置写入。",
+          "priority": "P0"
+        },
+        {
+          "id": "modern-artifact",
+          "name": "modern-artifact",
+          "type": "must_include",
+          "check": "每 API 一个九字段 frontmatter、四段正文 Markdown；README 链实体，不生成 JSON 聚合产物或重复 MS 文件。",
+          "priority": "P0"
+        },
+        {
+          "id": "api-directions",
+          "name": "api-directions",
+          "type": "must_include",
+          "check": "提取 HTTP 和 MQ Consumer，缺失的入口类型不补造。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-implicit-delete",
+          "name": "no-implicit-delete",
+          "type": "must_include",
+          "check": "不因导航刷新删除旧文件或擅改上层 MS。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "build-low-confidence-001",
+      "category": "should-trigger",
+      "prompt": "仅从文件名猜到一张表，未读 DDL，也不知道 ENT 父级。请用 --confidence-threshold low 直接生成 TBL。",
+      "expected_output": "不把 low 当作免证据通行证；先定位并核实来源及 ENT，缺失时不落正式实体。",
+      "assertions": [
+        {
+          "id": "evidence-stop",
+          "name": "evidence-stop",
+          "type": "must_include",
+          "check": "不把 low 当作免证据通行证；先定位并核实来源及 ENT，缺失时不落正式实体。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "build-solution-001",
+      "category": "should-trigger",
+      "prompt": "在解决方案库同步技术服务 TS 与数据域 MDG，已有 PD 定义。旧 meta 示例写 used_by SYS，如何生成关系？",
+      "expected_output": "识别治理语义真源；使用 PD 与 MDG/TS 的关系，不在方案层登记 SYS 或让 SYS 绕过 PD。",
+      "assertions": [
+        {
+          "id": "governance-first",
+          "name": "governance-first",
+          "type": "must_include",
+          "check": "识别治理语义真源；使用 PD 与 MDG/TS 的关系，不在方案层登记 SYS 或让 SYS 绕过 PD。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "build-validation-001",
+      "category": "should-trigger",
+      "prompt": "当前批次实体已写好，INDEX 还没有导航块；README 有一个失效实体链接。请完成本批次。",
+      "expected_output": "先 --entities-only 预检，修复失效台账后才归并；归并后完整校验。；结构校验不替代证据、关系、跨层 HTTP 与受众核验，失败时不宣称收敛。",
+      "assertions": [
+        {
+          "id": "precheck-blocks-merge",
+          "name": "precheck-blocks-merge",
+          "type": "must_include",
+          "check": "先 --entities-only 预检，修复失效台账后才归并；归并后完整校验。",
+          "priority": "P0"
+        },
+        {
+          "id": "honest-completion",
+          "name": "honest-completion",
+          "type": "must_include",
+          "check": "结构校验不替代证据、关系、跨层 HTTP 与受众核验，失败时不宣称收敛。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "build-not-trigger-002",
+      "category": "should-not-trigger",
+      "prompt": "只把设计文档的新事实提炼进 overview 第三列，暂时不要建立实体文件。",
+      "expected_output": "以 docs-extract 为主路径，不创建实体或触发 docs-build 写入。",
+      "assertions": [
+        {
+          "id": "route-extract",
+          "name": "route-extract",
+          "type": "must_include",
+          "check": "以 docs-extract 为主路径，不创建实体或触发 docs-build 写入。",
           "priority": "P0"
         }
       ]

@@ -1,198 +1,30 @@
 {
-  "$comment": "per-entity {ID}.md 的字段样例（schema 2.1 语义）。落盘为 OKF concept，不是 {perspective}-entities.md，也不是 Markdown 表格。",
-  "application_knowledge_example": {
-    "schema_version": "2.1",
+  "$comment": "字段样例，非 JSON Schema、非正式聚合产物。正式模板见 entity-template.md；字段规范见 ../../../knowledge/okf-spec.md。",
+  "frontmatter": {
+    "type": "API Endpoint",
+    "title": "示例接口",
+    "description": "演示字段映射，不得用作真实提取结果。",
+    "tags": [
+      "application",
+      "API"
+    ],
+    "timestamp": "2026-10-22T00:00:00+08:00",
+    "id": "API-EXAMPLE-001",
     "perspective": "application",
-    "generated_at": "2026-03-27T00:00:00Z",
-    "entities": [
-      {
-        "hierarchy": "SYS",
-        "id": "SYS-BILLING-APPEAL",
-        "description": "XX公司快递费用申诉处理系统",
-        "implemented_by": [
-          "APP-BILLING-APPEAL-SERVICE"
-        ]
-      },
-      {
-        "hierarchy": "APP",
-        "id": "APP-BILLING-APPEAL-SERVICE",
-        "implements_to": "SYS-BILLING-APPEAL",
-        "description": "HTTP + Dubbo + MQ 主服务",
-        "implemented_by": [
-          "MS-BILLING-APPEAL-SERVICE",
-          "MS-BILLING-APPEAL-ITEM-SERVICE"
-        ]
-      },
-      {
-        "hierarchy": "MS",
-        "id": "MS-BILLING-APPEAL-SERVICE",
-        "description": "计费申诉服务",
-        "implements_to": "APP-BILLING-APPEAL-SERVICE"
-      }
-    ],
-    "metadata": {
-      "total_systems": 1,
-      "total_applications": 1,
-      "total_services": 1,
-      "total_apis": 0,
-      "total_entities": 3,
-      "extraction_basis": "INDEX-GUIDE.md + 源代码",
-      "schema_notes": "schema 2.1 扁平 entities 数组，hierarchy 区分层级",
-      "changes_from_previous": ""
-    }
+    "hierarchy": "API",
+    "layer_scope": "application"
   },
-  "data_knowledge_example": {
-    "schema_version": "2.1",
-    "perspective": "data",
-    "generated_at": "2026-03-27T00:00:00Z",
-    "entities": [
-      {
-        "hierarchy": "DS",
-        "id": "DS-BILLING-APPEAL-TIDB",
-        "description": "计费申诉系统主业务数据库",
-        "used_by": [
-          "APP-BILLING-APPEAL-SERVICE"
-        ]
-      },
-      {
-        "hierarchy": "ENT",
-        "id": "ENT-BILLING-APPEAL",
-        "description": "申诉单表",
-        "implements_to": "DS-BILLING-APPEAL-TIDB",
-        "maps_to": "AGG-BILLING-APPEAL",
-        "used_by": [
-          "MS-BILLING-APPEAL-SERVICE"
-        ]
-      }
+  "body": {
+    "关系": [
+      "implements_to: MS-EXAMPLE"
     ],
-    "metadata": {
-      "total_datasources": 1,
-      "total_entities": 1,
-      "total_items": 2,
-      "extraction_basis": "INDEX-GUIDE.md §6",
-      "schema_notes": "schema 2.1 扁平 entities 数组",
-      "changes_from_previous": ""
-    }
-  },
-  "business_knowledge_example": {
-    "schema_version": "2.1",
-    "perspective": "business",
-    "generated_at": "2026-03-27T00:00:00Z",
-    "confidence": "high",
-    "entities": [
-      {
-        "hierarchy": "VC",
-        "id": "VC-ORDER-FULFILLMENT",
-        "description": "端到端订单履约价值链",
-        "supported_by": [
-          "BD-CHARGING-APPEAL"
-        ],
-        "implemented_by": [
-          "CAP-ORDER-FULFILLMENT"
-        ]
-      },
-      {
-        "hierarchy": "BD",
-        "id": "BD-CHARGING-APPEAL",
-        "description": "顶层业务域",
-        "supports_to": "VC-ORDER-FULFILLMENT",
-        "children": [
-          "BSD-BILLING-APPEAL"
-        ]
-      },
-      {
-        "hierarchy": "AGG",
-        "id": "AGG-BILLING-APPEAL",
-        "description": "计费申诉核心聚合",
-        "implemented_by": [
-          "AB-APPEAL-LIFECYCLE"
-        ],
-        "mapped_by": [
-          "ENT-BILLING-APPEAL",
-          "ENT-BILLING-APPEAL-ITEM",
-          "ENT-BILLING-APPEAL-ITEM-DRAFT",
-          "MS-BILLING-APPEAL-SERVICE",
-          "MS-BILLING-APPEAL-ITEM-SERVICE"
-        ]
-      },
-      {
-        "hierarchy": "AB",
-        "id": "AB-APPEAL-LIFECYCLE",
-        "description": "提供计费申诉完整生命周期能力",
-        "implements_to": "AGG-BILLING-APPEAL"
-      }
-    ],
-    "metadata": {
-      "total_business_domains": 1,
-      "total_business_subdomains": 0,
-      "total_bounded_contexts": 0,
-      "total_aggregates": 1,
-      "total_abilities": 1,
-      "total_entities": 4,
-      "extraction_basis": "FQCN 包路径分析",
-      "schema_notes": "schema 2.1 扁平 entities 数组，hierarchy 区分层级",
-      "changes_from_previous": ""
-    }
-  },
-  "product_knowledge_example": {
-    "schema_version": "2.1",
-    "perspective": "product",
-    "generated_at": "2026-03-27T00:00:00Z",
-    "confidence": "high",
-    "entities": [
-      {
-        "hierarchy": "PL",
-        "id": "PL-BILLING-APPEAL",
-        "description": "XX公司快递费用申诉处理平台产品线"
-      },
-      {
-        "hierarchy": "PD",
-        "id": "PD-BILLING-APPEAL",
-        "description": "计费申诉产品线下的产品服务（解决方案层 PD）",
-        "implements_to": "PL-BILLING-APPEAL"
-      },
-      {
-        "hierarchy": "FT",
-        "id": "FT-BILLING-APPEAL-LIFECYCLE",
-        "description": "计费申诉主单的完整生命周期功能",
-        "implements_to": "PM-BILLING-APPEAL-CORE",
-        "implemented_by": [
-          "FR-BILLING-APPEAL-LIFECYCLE"
-        ]
-      },
-      {
-        "hierarchy": "FR",
-        "id": "FR-BILLING-APPEAL-LIFECYCLE",
-        "description": "功能点下的功能需求",
-        "implements_to": "FT-BILLING-APPEAL-LIFECYCLE",
-        "implemented_by": [
-          "UC-BILLING-APPEAL-CREATE",
-          "BR-BILLING-APPEAL-SUBMIT"
-        ]
-      },
-      {
-        "hierarchy": "BR",
-        "id": "BR-BILLING-APPEAL-SUBMIT",
-        "description": "功能需求上的业务规则",
-        "implements_to": "FR-BILLING-APPEAL-LIFECYCLE"
-      },
-      {
-        "hierarchy": "UC",
-        "id": "UC-BILLING-APPEAL-CREATE",
-        "description": "功能需求下的用例",
-        "implements_to": "FR-BILLING-APPEAL-LIFECYCLE"
-      }
-    ],
-    "metadata": {
-      "total_products": 1,
-      "total_product_deliveries": 1,
-      "total_modules": 0,
-      "total_features": 1,
-      "total_use_cases": 1,
-      "total_entities": 6,
-      "extraction_basis": "README 功能特性 + INDEX_GUIDE §3",
-      "schema_notes": "schema 2.1 扁平 entities 数组",
-      "changes_from_previous": ""
-    }
+    "跨视角": [],
+    "详细说明": {
+      "别名": "Example.query",
+      "入口类型": "HTTP"
+    },
+    "依据与证据": [
+      "仅为样例，真实实体须替换为已核实依据。"
+    ]
   }
 }

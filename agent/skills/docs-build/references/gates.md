@@ -1,74 +1,24 @@
 # docs-build 推进协议（binding）
 
-主干：[SKILL.md](../SKILL.md)。流程：[workflow.md](workflow.md)。
+本文件只绑定技能特有约束；公共六项与动作状态见 [intent-clarify.md](../../../references/intent-clarify.md)、[unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)。写后烤干见 [grilling-skill.md](../../../references/grilling-skill.md)，未安装 grilling 时用该文 fallback。
 
-## 定位
+## 单元与写前确认
 
-本文件只做 `docs-build` 对共享契约的 **binding**，不复制协议正文。
+当前单元是一个视角批次、路径组或实体集合。前置为可用主 INDEX、已解析 DOC_DIR/知识层、明确批次及提取策略。
 
-契约：
+公共六项中：
 
-- [intent-clarify.md](../../../references/intent-clarify.md) — 写前意图澄清
-- [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md) — 单元推进、`C/M/G/S/F`、重开与前文回改
-- [grilling-skill.md](../../../references/grilling-skill.md) — 写后烤干能力
+- 范围列出本轮视角、来源、预计新增/变更 ID；重命名另列全部引用影响。
+- 第 6 项列出仓库根相对的 `{DOC_DIR}/knowledge/{视角}/…/{ID}.md`、视角 `README.md`、可选报告，以及 **`{DOC_DIR}/INDEX-GUIDE.md` 第四章导航块**。INDEX 不位于 knowledge 内。
+- 参数变化、跨批次依赖或多种修复方案需要决策时，先给结论、推荐和数字选项。既有确认适用于相同范围，不重复索取。
 
-主线口令：`澄清 → 生成 → 烤干`。用户动作与状态机见 unit-cycle-protocol（含 docs 语义族 `S`）。
+未获写前 `C` 不写当前单元；扩大范围、改 ID 或改变重建策略须重新澄清。
 
-## 单元定义
+## 写后与失败停顿
 
-**当前单元**可以是：
+- 所有批次默认必须烤干，含受众维 A/B/C/E；具体顺序见 [workflow.md](workflow.md)。
+- 实体/README 预检失败，不归并导航；终检失败，不推进下一批。
+- 保留已写内容与失败清单，修复后重跑对应校验；不得用批量覆盖或删除消除错误。
+- 收敛后给共享协议 `C/M/G/S/F` 并停等用户。`S` 按 docs 语义族暂存当前单元。
 
-- 单个视角批次（如 technical / data / business / product）
-- 单个路径组
-- 单批实体集合
-
-一次只处理一个批次。写后完成前须 `validate-extraction.sh` 通过（或用户确认例外策略）。
-
-## 技能追加澄清字段
-
-在公共六项之外可追加：
-
-- `--perspectives` / `--skip-existing` / `--confidence-threshold` / `--emit-report` 摘要
-- 预计新增/变更实体 ID 列表摘要
-- 校验策略或修复预案摘要
-
-第 6 项「写入路径/容器」**必须**写明：
-
-- 当前单元类型：视角批次 / 路径组 / 实体批次
-- 本轮将写入的 `{DOC_DIR}/knowledge/` 下仓库根相对路径（如 `application/knowledge/technical/` 下 `{ID}.md`、`README.md`、`INDEX-GUIDE.md`）
-
-## 写后默认
-
-见 [workflow.md](workflow.md)「写后默认表」。本技能各视角/路径/实体批次默认必须烤干。
-
-## 当前单元执行条件
-
-参数向导收口后，进入单元推进前至少满足：
-
-1. 主 Index Guide 可用
-2. `{DOC_DIR}` 可解析
-3. 当前视角范围或当前批次已明确
-4. `--skip-existing`、`--confidence-threshold`、`--emit-report` 等策略已收口
-
-## 高风险场景
-
-须先给结论、推荐与数字选项，确认后再执行：
-
-- 主 Index Guide 缺失
-- `{DOC_DIR}` 或知识输出路径不明
-- 视角范围过大或需跨多批次重建
-- 校验失败且存在多种修复策略
-- 要求跳过意图澄清或参数确认直接批量重建 knowledge
-- 涉及实体 ID 变更、重命名或跨引用链更新
-
-## 原子性 / 失败停顿
-
-- 当前单元写入失败时，不得继续写后续批次
-- 当前单元校验失败时，不得继续归并或生成 `INDEX-GUIDE 第四章`
-- 当前单元未收敛前，不得自动推进下一视角或下一批实体
-
-## 典型语义问题（烤干）
-
-- 视角范围 / 输出路径 / 跳过策略 / 置信度策略变化
-- 实体 ID 变更或重命名
-- 是否生成 README / `INDEX-GUIDE 第四章`
+主 INDEX 缺失、输出路径不明或层职责冲突时，停止依赖写入并说明所缺信息。脚本通过不能替代关系语义与证据核验。

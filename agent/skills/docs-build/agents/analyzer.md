@@ -1,22 +1,14 @@
-# docs-build — analyzer
+# docs-build 失败分析
 
-失败样本 → P0/P1/P2 修复项。
+输入场景请求、实际响应/产物与 [grader](grader.md) 证据；沿 [SKILL.md](../SKILL.md) 按需查规则。
 
-## 输入
+| 失败类 | 检查点 |
+| --- | --- |
+| 路由 | build 是否吞掉 indexing、overview 或 SDD 请求 |
+| 范围 | 当前单元、写前授权、知识层与 DOC_DIR 是否对应 |
+| 提取 | 来源、父级、置信度、四类 API 是否按实际证据判断 |
+| 格式 | 是否误用旧聚合 JSON，或在 README 重复实体长正文 |
+| 脚本 | 是否写错仓库、覆盖块外内容、隐式删文件、漏报结构错误 |
+| 收敛 | 是否预检后归并、终检后烤干，是否隐瞒范围外依赖 |
 
-`SKILL.md`、`references/gates.md`、`workflow.md`、`anti-patterns.md`、`gotchas.md`
-
-## 模式（多选）
-
-- F1 路由误判
-- F2 build ↔ indexing/distill/extract 混
-- F3 缺参数向导、意图澄清或当前单元
-- F4 缺执行顺序/validate/动作停顿
-- F5 语义变更未确认或校验失败仍继续
-- F6 证据薄
-- F7 路径/容器缺 knowledge 批次信息
-- F8 写前 grilling 与意图澄清混名
-
-## 回归
-
-对照：`/docs-build` vs `/docs-indexing`；build vs `sdx-*`；与 intent-clarify 契约一致性。
+输出按 P0/P1/P2 排序的可复现问题、最小修复与复测场景；优先修实现或冲突规则，不为单个失败堆叠通用禁令。

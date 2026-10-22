@@ -1,24 +1,10 @@
-# docs-build Grader
+# docs-build 评测
 
-据 **evals/evals.json** 输出 JSON：`text`、`passed`、`evidence`。
+读取 [evals.json](../evals/evals.json) 对应场景，按 assertion ID 给出观察证据。只复述「应校验」不能证明已运行；只给命令不能证明文件未被误写。
 
-## 判定
+- `should-trigger`：检查实际产物、调用参数、当前单元边界及未闭合问题。
+- `should-not-trigger`：检查是否正确分流且没有额外 build 写入。
+- P0 任一失败则不通过；无法观察的断言标记未验证，不算通过。
+- 输出 `text`、`passed`、`evidence`；每条 evidence 含 assertion ID、观察结果与文件/命令证据。
 
-1. 读 `category`：`should-trigger` / `should-not-trigger`
-2. **硬门**：以本 eval 的 `assertions`（按 `priority`）为准；`evidence` 映射 `assertions[].id`
-3. **协议释义**（仅当 assertions / prompt 覆盖时强制）：参数向导 → 写前意图澄清 → 「澄清 → 生成 → 烤干」→ `C/M/G/S/F`；烤干须含受众维 A/B/C/E（见 [audience-and-language.md](../../../references/audience-and-language.md)）；路径/容器含 knowledge 批次；校验后再继续。见 [unit-cycle-protocol.md](../../../references/unit-cycle-protocol.md)、[intent-clarify.md](../../../references/intent-clarify.md)
-4. **P0** 任一失败 → `passed: false`
-
-### should-not-trigger P0 摘要
-
-- `correct-downstream`：点名下游技能/产物（如 docs-indexing / INDEX-GUIDE）
-
-**例**（对齐 `build-trigger-001`）
-
-```json
-{
-  "text": "通过。意图澄清、knowledge 路径、校验门禁与单单元停顿正确。",
-  "passed": true,
-  "evidence": ["parameter-guidance", "intent-clarify", "knowledge-path-container", "grilling-loop", "audience-check", "single-unit-stop", "validate-before-continue"]
-}
-```
+复测时使用隔离临时仓，只给评测者真实请求、技能与必要原始资料，不附预期答案。脚本回归见 [test_tools.py](../tests/test_tools.py)；完整行为评测不能由字符串匹配代替。

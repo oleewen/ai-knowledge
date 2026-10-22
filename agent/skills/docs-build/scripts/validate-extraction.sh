@@ -1,128 +1,31 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# 校验 docs-build 产物。无 CLI 参数；路径来自 .docsconfig（docsconfig.sh）
-# 检查：{DOC_DIR}/INDEX-GUIDE.md 含实体块；各视角至少一个含 id 的 per-entity .md；
-#       *-entities.md 若仍存在则 WARN（已废弃）
-
-ERRORS=0
-WARNINGS=0
-
-if [[ $# -gt 0 ]]; then
-  echo "未知参数: $*（本脚本不支持额外参数，路径仅来自 .docsconfig）"
-  exit 1
-fi
-
+# 路径只从当前消费仓的 .docsconfig 解析；Python 负责只读结构校验。
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-_AGENT_HOME="$(cd "$SCRIPT_DIR/../../.." && pwd)"
-# shellcheck disable=SC1091
-source "$_AGENT_HOME/scripts/lib/docsconfig.sh"
-docsconfig_bootstrap_validate
-
-doc_abs="$(docsconfig_doc_abs)"
-repo_abs="$(docsconfig_repo_abs)"
-cd "$repo_abs" || exit 1
-
-KNOWLEDGE_DIR="${repo_abs}/${DOC_DIR}/knowledge"
-INDEX_FILE="${repo_abs}/${DOC_DIR}/INDEX-GUIDE.md"
-
-info()    { echo "[INFO]  $1"; }
-warn()    { echo "[WARN]  $1"; WARNINGS=$((WARNINGS + 1)); }
-error()   { echo "[ERROR] $1"; ERRORS=$((ERRORS + 1)); }
-success() { echo "[OK]    $1"; }
-
-_is_entity_concept_file() {
-  local file="$1"
-  local base
-  base="$(basename "$file")"
-  case "$base" in
-    index.md | *-meta.md | *-entities.md | INDEX-GUIDE.md | KNOWLEDGE-INDEX.md)
-      return 1
-      ;;
-  esac
-  [[ "$base" == *.md ]] || return 1
-  grep -q '^id:' "$file" 2>/dev/null
-}
-
-echo "=== docs-build 校验 ==="
-echo "repo_abs: ${repo_abs}"
-echo "doc_abs: ${doc_abs}"
-echo "DOC_DIR:  ${DOC_DIR}"
-echo "KNOWLEDGE_DIR: ${KNOWLEDGE_DIR}"
-echo ""
-
-# 1. INDEX-GUIDE.md 第四章视角导航块
-if [[ -f "${INDEX_FILE}" ]]; then
-  if grep -q 'docs-build:entity-index:begin' "${INDEX_FILE}"; then
-    LINE_COUNT=$(wc -l < "${INDEX_FILE}" | tr -d ' ')
-    success "INDEX-GUIDE.md 含视角导航块 (${LINE_COUNT} 行)"
-  else
-    error "INDEX-GUIDE.md 缺少 docs-build 视角导航块: ${INDEX_FILE}"
-  fi
-else
-  error "INDEX-GUIDE.md 不存在: ${INDEX_FILE}"
-fi
-
-# 2. 各视角 per-entity concept / meta / 废弃 entities
-PERSPECTIVES=("application" "data" "business" "product" "technical")
-TOTAL_ENTITIES=0
-
-for p in "${PERSPECTIVES[@]}"; do
-  PERSPECTIVE_DIR="${KNOWLEDGE_DIR}/${p}"
-  if [[ -f "${repo_abs}/agent/knowledge/${p}-meta.md" ]]; then
-    META_FILE="${repo_abs}/agent/knowledge/${p}-meta.md"
-  elif [[ -f "${doc_abs}/.agents/knowledge/${p}-meta.md" ]]; then
-    META_FILE="${doc_abs}/.agents/knowledge/${p}-meta.md"
-  else
-    META_FILE="${PERSPECTIVE_DIR}/${p}-meta.md"
-  fi
-  ENTITIES_FILE="${PERSPECTIVE_DIR}/${p}-entities.md"
-  ENTITY_COUNT=0
-
-  if [[ -f "${META_FILE}" ]]; then
-    success "${p}-meta.md 存在"
-  else
-    warn "${p}-meta.md 未找到"
-  fi
-
-  if [[ -d "${PERSPECTIVE_DIR}" ]]; then
-    while IFS= read -r -d '' f; do
-      if _is_entity_concept_file "$f"; then
-        ENTITY_COUNT=$((ENTITY_COUNT + 1))
-      fi
-    done < <(find "${PERSPECTIVE_DIR}" -name "*.md" -print0 2>/dev/null || true)
-  fi
-
-  TOTAL_ENTITIES=$((TOTAL_ENTITIES + ENTITY_COUNT))
-  if [[ ${ENTITY_COUNT} -gt 0 ]]; then
-    success "${p}: ${ENTITY_COUNT} 个含 id 的 per-entity concept 文件"
-  else
-    warn "${p}: 未发现含 id 的 per-entity .md（OKF 目标态每视角至少一个）"
-  fi
-
-  if [[ -f "${ENTITIES_FILE}" ]]; then
-    warn "${p}-entities.md 仍存在（已废弃；SSOT 为 per-entity .md，请迁移后删除）"
-  fi
-done
-
-info "合计 ${TOTAL_ENTITIES} 个 per-entity concept 文件"
-
-# 4. 提取报告（可选）
-for p in "${PERSPECTIVES[@]}"; do
-  REPORT="${KNOWLEDGE_DIR}/${p}/extraction_report.md"
-  if [[ -f "${REPORT}" ]]; then
-    info "${p}/extraction_report.md 存在"
-  fi
-done
-
-echo ""
-echo "=== 验证结果 ==="
-echo "错误: ${ERRORS}  警告: ${WARNINGS}"
-
-if [[ ${ERRORS} -gt 0 ]]; then
-  echo "校验失败，请修正后重跑。"
-  exit 1
-else
-  echo "验证通过。"
+if [[ "${1:-}" == '-h' || "${1:-}" == '--help' ]]; then
+  echo '用法: bash validate-extraction.sh [--entities-only] [--perspectives application,data,...]'
+  echo '从当前目录上溯读取 .docsconfig；需要 Bash 5+、Python 3。'
   exit 0
 fi
+args=()
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --entities-only) args+=("$1"); shift ;;
+    --perspectives)
+      [[ $# -ge 2 ]] || { echo '缺少 --perspectives 值' >&2; exit 1; }
+      args+=("$1" "$2"); shift 2 ;;
+    --perspectives=*) args+=("$1"); shift ;;
+    *) echo "未知参数: $1" >&2; exit 1 ;;
+  esac
+done
+# shellcheck source=../../../scripts/lib/docsconfig.sh
+source "$SCRIPT_DIR/../../../scripts/lib/docsconfig.sh"
+docsconfig_bootstrap_validate
+layer="${KNOWLEDGE_TYPE:-}"
+# 元库可直接选择规范命名的四层目录；消费仓使用显式知识层。
+if [[ "$layer" == meta && "$DOC_DIR" =~ ^(application|system|solution|company)$ ]]; then
+  layer="$DOC_DIR"
+fi
+exec python3 "$SCRIPT_DIR/validate_extraction.py" \
+  --repo "$(docsconfig_repo_abs)" --bundle "$DOC_DIR" --layer-scope "$layer" "${args[@]}"
