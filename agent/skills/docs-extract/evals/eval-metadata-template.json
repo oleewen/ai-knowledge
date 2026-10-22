@@ -1,66 +1,22 @@
 {
   "skill_name": "docs-extract",
-  "eval_id": "REPLACE_WITH_EVAL_ID",
-  "expected_category": "should-trigger | should-not-trigger",
-  "expected_route": "/docs-extract | （not-trigger 填分流）",
-  "expected_output": "与同 id 的 evals.json 一致的一两句要点。",
-  "notes": "复制为 <eval-id>-metadata.json 或流水线内联；断言对齐 agents/grader.md。",
-  "assertions_should_trigger_example": [
-    {
-      "id": "single-unit-stop",
-      "name": "单单元停顿",
-      "type": "must_include",
-      "check": "一次只处理一个 overview 当前单元，并在当前单元收敛后停下等待动作。",
-      "priority": "P0"
-    },
-    {
-      "id": "semantic-change-needs-confirmation",
-      "name": "语义变更先确认",
-      "type": "must_include",
-      "check": "来源范围、overview 目标、关键词口径或写入策略变化时，先给结论、推荐方案与数字选项。",
-      "priority": "P0"
-    },
-    {
-      "id": "dry-run-no-write",
-      "name": "dry-run 只预览",
-      "type": "must_include",
-      "check": "`--dry-run` 只预览，不宣称已写第三列。",
-      "priority": "P0"
-    },
-    {
-      "id": "no-empty-write",
-      "name": "无命中不空写",
-      "type": "must_include",
-      "check": "4.1 无命中时不能进入写入，失败时需整体回滚。",
-      "priority": "P0"
-    }
-  ],
-  "assertions_should_not_trigger_example": [
-    {
-      "id": "correct-downstream",
-      "name": "下游",
-      "type": "must_include",
-      "check": "点名与 prompt 一致的下游（如 distill、sdx-*）。",
-      "priority": "P0"
-    },
-    {
-      "id": "no-false-extract-primary",
-      "name": "勿假主 extract",
-      "type": "must_not_conflict",
-      "check": "不得默认完整五阶段 extract 而忽略用户指定下游。",
-      "priority": "P0"
-    },
-    {
-      "id": "optional-quality-hint",
-      "name": "可拒写盘",
-      "type": "should_include",
-      "check": "可加分：本回合不写第三列或先进下游。",
-      "priority": "P1"
-    }
+  "eval_id": null,
+  "expected_category": null,
+  "expected_route": null,
+  "notes": "复制后填入对应 eval ID、category 与预期路由。实际观察由执行轨迹和文件差异提供，不能复制 expected_output。",
+  "result": {
+    "text": "",
+    "passed": null,
+    "evidence": [],
+    "unverified": []
+  },
+  "evidence_fields": [
+    "assertion_id",
+    "passed",
+    "observed"
   ],
   "scoring": {
-    "pass_rule_should_trigger": "P0 全过；有 P1 则至少过 1 项，否则仅 P0",
-    "pass_rule_should_not_trigger": "P0 全过；P1 可选",
-    "fail_rule": "任一 P0 失败即不通过"
+    "pass_rule": "所有 P0 有证据且通过；P1 单列改进项。",
+    "fail_rule": "任一 P0 失败，或必需证据缺失，均不得报告通过。"
   }
 }

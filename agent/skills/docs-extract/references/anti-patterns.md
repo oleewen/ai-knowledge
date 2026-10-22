@@ -1,16 +1,12 @@
 # docs-extract 反模式
 
-与 [design-principles.md](design-principles.md) 互补；细节见 [../gotchas.md](../gotchas.md)。
+| 反模式 | 正确处理 |
+| --- | --- |
+| 用标题猜关键词、为命中自动改附录 | 按 [extract-spec.md](extract-spec.md) 检查有效附录，缺失先澄清 |
+| 用旧第三列证明“知识正文已覆盖” | 读取行链接对应的知识正文 |
+| 新 delta 覆盖无关旧项，或无命中写 `—` | 保留待归档内容，只处理已确认变更 |
+| 来源没提到旧知识就写 `[D]` | 先取得废止依据或用户确认 |
+| dry-run 改文件或声称已归档 | 只输出 [workflow.md](workflow.md) 定义的预览 |
+| 宣称执行了 `/docs-extract` shell 命令 | Slash 是会话入口；不得虚构脚本执行证据 |
 
-| 反模式 | 纠正 |
-| ------ | ------ |
-| 参数未收口即写第三列 | 先收口 `--sources`、`--overview`、关键词口径与是否 `--dry-run`；[gates.md](gates.md) |
-| 跳过写前意图澄清 | 须六项清单 + 写前 C；[intent-clarify.md](../../../references/intent-clarify.md) |
-| 4.1 无命中仍 4.3 | 无命中则 CLOSE，不落盘；[workflow.md](workflow.md) |
-| overview 当 `--sources` | 只扫 sources；gotchas |
-| 关键词过宽、命中爆炸 | 收窄或分批；先 dry-run；gates |
-| 第三列贴原文或重复已覆盖要点 | [federation-spec.md](../../docs-distill/references/federation-spec.md) |
-| 4.3 失败留部分写入 | 回滚重试；workflow |
-| 无命中章节清空 | 保持原样；gotchas |
-| 第三列堆 `(来源：…)` | 删脚注，追溯放 spec；design-principles |
-| 「直接写」即跳预览与会话确认 | 仍须先给推荐方案与数字选项；gates |
+扫描异常与恢复见 [gotchas.md](../gotchas.md)，写前门禁见 [gates.md](gates.md)。

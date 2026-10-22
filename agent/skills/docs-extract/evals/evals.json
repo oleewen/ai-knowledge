@@ -1,7 +1,7 @@
 {
   "skill_name": "docs-extract",
-  "version": "3.1.0",
-  "description": "冒烟样本：参数向导、写前意图澄清、当前单元、dry-run 三分区、去重 delta、烤干、A/U/D 与语义确认；含 1 条负向分流。",
+  "version": "3.2.0",
+  "description": "路由与澄清样本，以及带原始文件的 dry-run、delta 保留、无命中、正文缺失和引用边界行为回放。按 grader 分阶段评分；新增用例不代表已执行。",
   "evals": [
     {
       "id": 1,
@@ -28,7 +28,7 @@
           "id": "audience-check",
           "name": "受众质检",
           "type": "must_include",
-          "check": "须体现烤干含受众维 A/B/C/E，或对照 audience-and-language；未过不得宣称对象已烤干收敛。",
+          "check": "已到烤干阶段时按实际产物核对受众 A/B/C/E；全过可静默，未过不能宣称收敛。未进入该阶段不要求提前输出检查结果。",
           "priority": "P0"
         },
         {
@@ -44,7 +44,7 @@
       "id": 2,
       "category": "should-trigger",
       "prompt": "/docs-extract --sources docs/ --overview system/knowledge/overview/payment-overview.md",
-      "expected_output": "docs-extract：识别来源规模偏大，需要先给结论与推荐方案；对 payment-overview 做写前意图澄清；写前 C 后方可执行；若直接写入则须先确认；写入失败时整体回滚。",
+      "expected_output": "检查目录实际规模后收口当前单元；写前确认后执行。不能仅因来源是目录就断言规模偏大；确有大量命中时给推荐与选项。",
       "files": [],
       "assertions": [
         {
@@ -58,7 +58,7 @@
           "id": "semantic-change-needs-confirmation",
           "name": "语义变更确认",
           "type": "must_include",
-          "check": "来源规模大或直接写入须先确认。",
+          "check": "据实际扫描范围决定是否收窄；首次实写等风险按 gates 确认，不凭目录形式臆测规模。",
           "priority": "P0"
         }
       ]
@@ -173,14 +173,14 @@
       "id": 7,
       "category": "should-not-trigger",
       "prompt": "把 billing-appeal 应用已核实变更蒸馏到系统 overview，并追加 DISTILL-LOG",
-      "expected_output": "主路径 docs-distill；不以 docs-extract + 第三列任意源提炼为终点。",
+      "expected_output": "主路径 docs-distill；指出当前流程不写 DISTILL-LOG，不承诺追加日志。",
       "files": [],
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "点名 docs-distill 或 DISTILL-LOG/应用上行。",
+          "check": "选择 docs-distill，说明槽位上行；不能把 DISTILL-LOG 本身视为正确路由证据。",
           "priority": "P0"
         },
         {
@@ -188,6 +188,13 @@
           "name": "勿假主 extract",
           "type": "must_not_conflict",
           "check": "不得以任意 sources 提炼 + A/U/D 为主路径框本请求。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-distill-log",
+          "name": "不追加废弃日志",
+          "type": "must_not_conflict",
+          "check": "不承诺创建或追加 DISTILL-LOG。",
           "priority": "P0"
         }
       ]
@@ -240,6 +247,211 @@
           "name": "改写或停问",
           "type": "must_include",
           "check": "须体现回滚或改为提炼摘要，或停问；不得未处理就写后 C。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "extract-delta-preview",
+      "category": "should-trigger",
+      "prompt": "使用临时副本内 sources/design.md 与 system/knowledge/overview/order-overview.md；该副本为系统库。C，写前六项已确认：本批来源和关键词不扩展，只做 --dry-run。请执行并给预览。",
+      "expected_output": "跳过正文已覆盖的退款审批，新增通知动作；保留旧双人复核和限额调整两项；旅游与代码不提炼；文件不变。",
+      "files": [
+        "tests/fixtures/system/knowledge/overview/order-overview.md",
+        "tests/fixtures/system/knowledge/business/process.md",
+        "tests/fixtures/sources/design.md"
+      ],
+      "assertions": [
+        {
+          "id": "dry-run-no-write",
+          "name": "预览不落盘",
+          "type": "must_not_conflict",
+          "check": "比较前后文件，目标和其他输入均不变。",
+          "priority": "P0"
+        },
+        {
+          "id": "covered-baseline",
+          "name": "正文去重",
+          "type": "must_include",
+          "check": "以 process.md 的退款审批小节判断已覆盖，不重复提炼“退款需审批”。",
+          "priority": "P0"
+        },
+        {
+          "id": "pending-delta",
+          "name": "旧项保留",
+          "type": "must_include",
+          "check": "预览明确保留双人复核和限额调整旧项，新增通知动作；不把旧第三列充当正文已覆盖依据。",
+          "priority": "P0"
+        },
+        {
+          "id": "source-filter",
+          "name": "过滤噪音",
+          "type": "must_not_conflict",
+          "check": "无旅游或 SQL 事实进入将写入区。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "extract-delta-write",
+      "category": "should-trigger",
+      "prompt": "使用临时副本内 sources/design.md 与 system/knowledge/overview/order-overview.md；该副本为系统库。C，已确认正式写入当前批次，仅补通知要点，保留旧待归档内容；请在临时副本执行并验收。",
+      "expected_output": "实际只修改业务流程第三列，保留双人复核并加入通知动作；其他内容字节不变，不写来源路径。",
+      "files": [
+        "tests/fixtures/system/knowledge/overview/order-overview.md",
+        "tests/fixtures/system/knowledge/business/process.md",
+        "tests/fixtures/sources/design.md"
+      ],
+      "assertions": [
+        {
+          "id": "actual-write",
+          "name": "实际写入",
+          "type": "must_include",
+          "check": "存在可核对 diff；新通知要点恰好写入一次，不以口头方案替代执行。",
+          "priority": "P0"
+        },
+        {
+          "id": "third-column-only",
+          "name": "只改命中第三列",
+          "type": "must_include",
+          "check": "仅业务流程第三列改变；业务规则行、前两列、附录、知识正文和来源文件均不变。",
+          "priority": "P0"
+        },
+        {
+          "id": "pending-preserved",
+          "name": "保留旧项",
+          "type": "must_include",
+          "check": "双人复核和限额调整旧项仍在；不生成 D。",
+          "priority": "P0"
+        },
+        {
+          "id": "knowledge-boundary",
+          "name": "引用边界",
+          "type": "must_not_conflict",
+          "check": "第三列不出现 sources/design.md、库外源文件链接或路径字面量。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "extract-no-hit",
+      "category": "should-trigger",
+      "prompt": "使用临时副本内 sources/design.md 与 system/knowledge/overview/order-overview.md；该副本为系统库。本轮 sources 改为内联“旅游攻略：雨天带伞。”。C，已确认仅处理此文本，正式模式，关键词和目标不变。",
+      "expected_output": "报告无命中，保留整个目标，不清空旧 delta。",
+      "files": [
+        "tests/fixtures/system/knowledge/overview/order-overview.md",
+        "tests/fixtures/system/knowledge/business/process.md",
+        "tests/fixtures/sources/design.md"
+      ],
+      "assertions": [
+        {
+          "id": "no-hit-no-write",
+          "name": "无命中不写",
+          "type": "must_not_conflict",
+          "check": "目标前后字节一致，无替换为空、横线或 D 的操作。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "extract-missing-source",
+      "category": "should-trigger",
+      "prompt": "使用临时副本内 sources/design.md 与 system/knowledge/overview/order-overview.md；该副本为系统库。把 --sources 设为 sources/desgin.md，先 dry-run。",
+      "expected_output": "指出路径不存在并澄清，不把拼错的文件名当内联正文。",
+      "files": [
+        "tests/fixtures/system/knowledge/overview/order-overview.md",
+        "tests/fixtures/system/knowledge/business/process.md",
+        "tests/fixtures/sources/design.md"
+      ],
+      "assertions": [
+        {
+          "id": "missing-is-not-text",
+          "name": "缺失路径澄清",
+          "type": "must_include",
+          "check": "明确指出缺失路径，不输出无命中结论，不修改目标。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "extract-unreadable-baseline",
+      "category": "should-trigger",
+      "prompt": "使用临时副本内 sources/design.md 与 system/knowledge/overview/order-overview.md；该副本为系统库。测试设置：移走临时副本 process.md 后，C，确认来源与目标不变、只 dry-run，请提炼。",
+      "expected_output": "小节和整章均不可读，不能判断覆盖关系；列为待核实，不生成可执行 A/U/D。",
+      "files": [
+        "tests/fixtures/system/knowledge/overview/order-overview.md",
+        "tests/fixtures/system/knowledge/business/process.md",
+        "tests/fixtures/sources/design.md"
+      ],
+      "assertions": [
+        {
+          "id": "no-false-new",
+          "name": "不能凭断链断定新增",
+          "type": "must_not_conflict",
+          "check": "不把不可读知识正文当空内容，不把通知要点标为已核实新增。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "extract-no-deletion-evidence",
+      "category": "should-trigger",
+      "prompt": "使用临时副本内 sources/design.md 与 system/knowledge/overview/order-overview.md；该副本为系统库。C，已确认只处理 sources/design.md，正式模式。源没有提支付限额，请保持按本技能处理。",
+      "expected_output": "不因新来源缺少支付限额而删除旧知识或待归档项。",
+      "files": [
+        "tests/fixtures/system/knowledge/overview/order-overview.md",
+        "tests/fixtures/system/knowledge/business/process.md",
+        "tests/fixtures/sources/design.md"
+      ],
+      "assertions": [
+        {
+          "id": "absence-not-deletion",
+          "name": "缺少来源不是删除",
+          "type": "must_not_conflict",
+          "check": "无 D、无限额旧项删除；业务规则行字节不变。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "extract-scan-boundary",
+      "category": "should-trigger",
+      "prompt": "使用临时副本内 sources/design.md 与 system/knowledge/overview/order-overview.md；该副本为系统库。测试设置：临时 sources/ 再加入 overview 的符号链接、指向父目录的符号链接、隐藏文件和二进制文件；C，已确认 --sources sources/，dry-run。",
+      "expected_output": "默认跳过隐藏、二进制和符号链接，报告排除；不扫描 overview 自身，不递归父目录。",
+      "files": [
+        "tests/fixtures/system/knowledge/overview/order-overview.md",
+        "tests/fixtures/system/knowledge/business/process.md",
+        "tests/fixtures/sources/design.md"
+      ],
+      "assertions": [
+        {
+          "id": "bounded-source-scan",
+          "name": "扫描有界",
+          "type": "must_not_conflict",
+          "check": "工具读取轨迹没有跟随符号链接或隐藏文件，没有把目标作为候选来源；排除项与无命中分开。",
+          "priority": "P0"
+        },
+        {
+          "id": "dry-run-no-write",
+          "name": "预览不落盘",
+          "type": "must_not_conflict",
+          "check": "包括目标在内的原始文件前后不变。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "extract-route-archive",
+      "category": "should-not-trigger",
+      "prompt": "把 order-overview.md 第三列已有的 A/U/D 归档进对应知识章节。",
+      "expected_output": "选择 docs-archive，不要求提供 sources 再提炼。",
+      "files": [],
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "归档分流",
+          "type": "must_include",
+          "check": "主路径 docs-archive，不以 extract 提炼替代归档。",
           "priority": "P0"
         }
       ]

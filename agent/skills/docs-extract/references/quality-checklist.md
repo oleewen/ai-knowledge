@@ -1,20 +1,23 @@
 # docs-extract 验收清单
 
-阶段 4 末与 CLOSE 前核对。原则见 [design-principles.md](design-principles.md)、[anti-patterns.md](anti-patterns.md)。
+检查实际预览、diff 和读取证据；流程口号不能代替结果。
 
-## 参数与范围
+## 范围与依据
 
-- [ ] `--sources`、`--overview`、关键词口径、`--dry-run` 已收口
-- [ ] 当前单元目标 `XX-overview.md` 已明确
-- [ ] `--sources` 可解析（路径或文本）；`--overview` 存在且含 `## 文档关键词`
-- [ ] 高风险场景已给出推荐方案与确认结论（若适用）
+- [ ] 参数、当前单元和写前确认符合 [gates.md](gates.md)；未授权范围未扩入。
+- [ ] 有效附录映射到实际目标章节；候选只来自已确认 sources，目标自身已排除。
+- [ ] 缺失/不可读/跳过项如实报告；标题、代码与二进制未变成业务事实。
+- [ ] 已读取行要求和比对正文；无法核实覆盖关系的内容未作为新增落盘。
 
-## 命中与写入
+## 产物
 
-- [ ] 4.1 有命中才进 4.2/4.3
-- [ ] 未把 overview 当源扫描
-- [ ] 命中量合理；代码块未当业务知识写入
-- [ ] 仅更新有命中章节；无命中保持原样
-- [ ] federation-spec 自检（去重、delta、A/U/D）
-- [ ] 失败已整体回滚
-- [ ] 已按 [audience-and-language.md](../../../references/audience-and-language.md) + 本地 [audience-and-language.md](audience-and-language.md) 通过烤干受众维 A/B/C/E
+- [ ] delta 与 A/U/D 符合 [extract-spec.md](extract-spec.md)；无删除依据不标 `[D]`。
+- [ ] 旧待归档项保留，无命中和无新 delta 的行不变；新旧冲突已确认。
+- [ ] 正式 diff 仅涉及本轮第三列；附录、其他列、知识正文及日志不变。
+- [ ] dry-run 为三分区预览，目标文件不变；失败没有遗留本轮部分写入。
+- [ ] 来源线索留会话，落盘链接/路径符合 knowledge 引用边界，无原文整段粘贴。
+
+## 收口
+
+- [ ] 按 [audience-and-language.md](audience-and-language.md) 与共享受众契约通过 A/B/C/E；无违例可静默。
+- [ ] 已烤干并停等当前单元动作，没有把自检通过说成用户已确认。

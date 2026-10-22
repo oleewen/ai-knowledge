@@ -1,0 +1,4 @@
+interface:
+  display_name: "知识提炼到 overview"
+  short_description: "从文件、目录或文本提炼未覆盖知识，写入四层 overview 第三列"
+  default_prompt: "使用 $docs-extract 从指定来源提炼知识到目标 overview，先以 dry-run 核对命中与 delta。"
