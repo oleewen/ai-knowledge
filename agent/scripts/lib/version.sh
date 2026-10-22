@@ -4,12 +4,15 @@ set -euo pipefail
 version_normalize() {
   local raw="${1:-}"
   if [[ "$raw" =~ ^[0-9]{2}\.[0-9]{2}\.[0-9]{2}$ ]]; then
-    printf '20%s.%s%s.0\n' "${raw:0:2}" "${raw:3:2}" "${raw:6:2}"
+    local month="${raw:3:2}" day="${raw:6:2}"
+    ((10#$month >= 1 && 10#$month <= 12 && 10#$day >= 1 && 10#$day <= 31)) || return 1
+    printf '20%s.%s%s.0\n' "${raw:0:2}" "$month" "$day"
   elif [[ "$raw" =~ ^[0-9]{4}\.[0-9]{4}\.[0-9]+$ ]]; then
-    local md month day
+    local md month day patch
     md="${raw#*.}"; month="${md:0:2}"; day="${md:2:2}"
     ((10#$month >= 1 && 10#$month <= 12 && 10#$day >= 1 && 10#$day <= 31)) || return 1
-    printf '%s\n' "$raw"
+    patch="${raw##*.}"
+    printf '%s.%d\n' "${raw%.*}" "$((10#$patch))"
   else
     return 1
   fi
@@ -46,7 +49,7 @@ version_next_from_files() {
   date_part="${current%.*}"
   if [[ "$date_part" == "$today" ]]; then
     max_patch="${current##*.}"
-    printf '%s.%d\n' "$date_part" "$((max_patch + 1))"
+    printf '%s.%d\n' "$date_part" "$((10#$max_patch + 1))"
   else
     printf '%s.0\n' "$today"
   fi
@@ -54,10 +57,13 @@ version_next_from_files() {
 
 version_commit_sha() {
   local repo="$1" version="$2" revision="${3:---all}" subject
-  git -C "$repo" log --format='%H%x09%s' "$revision" --grep='^docs-publish: version ' |
-    while IFS=$'\t' read -r sha subject; do
-      [[ "$subject" == "docs-publish: version $version" ]] && { printf '%s\n' "$sha"; return 0; }
-    done
+  while IFS=$'\t' read -r sha subject; do
+    if [[ "$subject" == "docs-publish: version $version" ]]; then
+      printf '%s\n' "$sha"
+      return 0
+    fi
+  done < <(git -C "$repo" log --format='%H%x09%s' "$revision" --grep='^docs-publish: version ')
+  return 1
 }
 
 version_previous_commit_sha() {
