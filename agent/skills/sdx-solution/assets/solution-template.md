@@ -6,23 +6,20 @@ status: "draft"
 created: "{YYYY-MM-DD}"
 updated: "{YYYY-MM-DD}"
 author: "{agent_name}"
-parent: "{上一份 SOLUTION-{IDEA-ID}；第一份留空}"
+parent: ""
 dependencies: []
 tags: []
 ---
 
-# 交付包切分标题
-
-> 读者：**架构与产品**。
-> 写法：取舍和边界。点到 `PD`、`BP`、`BSP`、`MDG`、`TS` 的 ID。不抄实体字段，不写需求条目，不写实现，不出现 `SYS`。
+# {交付包切分标题}
 
 ## 这次改了什么
 
-<!-- 第一份写：首份。后续只记相对 parent 的增量。旧文件不改。 -->
+<!-- 首份说明首次切分；后续填 parent ID，只写相对前驱的增量。 -->
 
 ## 为什么这样切
 
-<!-- 这个交付包为什么这样划。事实来自当时 knowledge。 -->
+<!-- 交付包切分的依据与取舍。 -->
 
 ## 范围内外
 
