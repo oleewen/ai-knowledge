@@ -1,1 +1,131 @@
-{"skill_name":"docs-publish","version":"1.0.0","description":"知识库版本发布与 Git 版本边界","evals":[]}
+{
+  "skill_name": "docs-publish",
+  "version": "2.0.0",
+  "description": "评测四层 DESIGN 版本发布的分流、版本不变量、dry-run 闸门与 Git 安全边界。",
+  "evals": [
+    {
+      "id": "publish-safety-001",
+      "category": "should-trigger",
+      "prompt": "用户：四层 DESIGN.md 都改好了，请发布今天的知识库版本并合并 main。",
+      "expected_output": "先运行 docs-publish --dry-run，展示版本、文件范围和 Git 计划；等待用户确认同一结果后才能执行 commit、rebase、push、快进合并和分支切换。",
+      "assertions": [
+        {
+          "id": "dry-run-first",
+          "name": "先预览",
+          "type": "must_include",
+          "check": "必须先安排 --dry-run，不能直接执行正式发布。",
+          "priority": "P0"
+        },
+        {
+          "id": "git-mutation-confirmation",
+          "name": "Git 写入确认",
+          "type": "must_include",
+          "check": "必须说明 commit、push、merge 等操作要在用户明确确认 dry-run 结果后执行。",
+          "priority": "P0"
+        },
+        {
+          "id": "release-scope-visible",
+          "name": "范围可见",
+          "type": "must_include",
+          "check": "必须明确四个 DESIGN.md 及可能纳入的根级或层内 TODO-LIST.md，而不是泛化为整个工作区。",
+          "priority": "P0"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": "version-rules-001",
+      "category": "should-trigger",
+      "prompt": "用户：四层 DESIGN.md 目前都是 26.10.20；今天是 2026 年 10 月 22 日。请告诉我发布版本。",
+      "expected_output": "旧 YY.MM.DD 格式迁移为当前日期 2026.1022.0；若当前版本已是 2026.1022.patch，则同日递增，否则跨日归零。",
+      "assertions": [
+        {
+          "id": "legacy-date-migration",
+          "name": "旧格式迁移",
+          "type": "must_include",
+          "check": "必须把 26.10.20 识别为旧格式，并迁移到当天 2026.1022.0。",
+          "priority": "P0"
+        },
+        {
+          "id": "same-day-cross-day",
+          "name": "patch 规则",
+          "type": "must_include",
+          "check": "必须说明同日 patch 加一、跨日归零。",
+          "priority": "P0"
+        },
+        {
+          "id": "all-layers-consistent",
+          "name": "四层一致",
+          "type": "must_include",
+          "check": "必须要求四层 DESIGN.md 版本解析后完全一致。",
+          "priority": "P0"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": "scope-stop-001",
+      "category": "should-trigger",
+      "prompt": "用户：发布版本时工作区还有 agent/skills/docs-publish/SKILL.md 的未提交改动，顺便一起提交。",
+      "expected_output": "因存在白名单外改动而停止；不得把 SKILL.md 静默并入发布提交，需先处理无关改动并重新预览。",
+      "assertions": [
+        {
+          "id": "unrelated-change-stop",
+          "name": "无关改动硬停",
+          "type": "must_include",
+          "check": "必须拒绝把白名单外文件并入发布提交，并说明需清理或另行处理后再 dry-run。",
+          "priority": "P0"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": "failure-preserves-state-001",
+      "category": "should-trigger",
+      "prompt": "用户：发布过程中 rebase 冲突或远端拒绝了 push，继续自动修好并重试。",
+      "expected_output": "立即停止并保留现场；报告阻塞点，不自动回滚、重试或改写冲突文件，等待用户决定后续处理。",
+      "assertions": [
+        {
+          "id": "failure-stop",
+          "name": "失败停顿",
+          "type": "must_include",
+          "check": "必须在冲突、认证、保护规则或非快进失败时停止，不得自动重试或回滚。",
+          "priority": "P0"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": "route-away-001",
+      "category": "should-not-trigger",
+      "prompt": "用户：把现有知识库按元库模板升级，保留业务正文，先做升级预览。",
+      "expected_output": "分流到 /docs-upgrade；不把模板对齐请求当成 docs-publish。",
+      "assertions": [
+        {
+          "id": "correct-downstream",
+          "name": "正确分流",
+          "type": "must_include",
+          "check": "必须明确这是 docs-upgrade，而不是版本发布。",
+          "priority": "P0"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": "route-simplify-001",
+      "category": "should-not-trigger",
+      "prompt": "用户：请把 docs-publish 的 Markdown 入口精简、去重并按金字塔结构重排。",
+      "expected_output": "按 docs-simplify 处理技能文档；不执行知识库版本发布。",
+      "assertions": [
+        {
+          "id": "correct-simplify-route",
+          "name": "精简分流",
+          "type": "must_include",
+          "check": "必须将结构精简和 SSOT 去重分流到 docs-simplify，不误触发 docs-publish 发布动作。",
+          "priority": "P0"
+        }
+      ],
+      "files": []
+    }
+  ]
+}

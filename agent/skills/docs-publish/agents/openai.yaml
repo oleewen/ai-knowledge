@@ -1,0 +1,4 @@
+interface:
+  display_name: "知识库版本发布"
+  short_description: "校验四层 DESIGN 版本，先预览，再按确认执行 Git 发布流程"
+  default_prompt: "使用 $docs-publish 先检查四层 DESIGN.md 并生成 dry-run；展示版本与 Git 计划，等待确认后再执行正式发布。"

@@ -1,36 +1,53 @@
 ---
 name: docs-publish
 description: >
-  按四层 DESIGN.md 版本规则发布知识库版本：自动计算 YYYY.MMdd.patch，记录 docs-publish commit，
-  rebase main、提交、推送、快进合并 main，并创建下一 feature 分支。
-  用户提到 /docs-publish、发布知识库版本、提交并推送版本、合并 main 时使用本技能。
+  发布四层知识库版本：校验四层 DESIGN.md、计算 YYYY.MMdd.patch，并先输出可审阅的 dry-run；
+  获用户明确确认后再执行 commit、rebase、push、快进合并和下一 feature 分支切换。
+  仅用于版本发布；文档升级、内容改写和一般 Git 发布请转到对应技能。
 ---
 
 # docs-publish
 
-## 版本规则
+发布四层知识库版本时，统一更新 `application/`、`system/`、`solution/`、`company/` 下的
+`DESIGN.md`。技能只负责版本发布与 Git 边界；文档正文升级走 `/docs-upgrade`，结构精简走
+`/docs-simplify`。
 
-- 四层 `DESIGN.md` 使用统一 `version: YYYY.MMdd.patch`。
-- 当前日期生成 `YYYY.MMdd`；同日从四层当前 patch 加一，否则 patch 为 `0`。
-- 旧格式 `YY.MM.DD` 首次直接迁移为当天 `.0`。
-- commit subject 固定为 `docs-publish: version YYYY.MMdd.patch`。
-- body 记录旧版本、新版本和发布文件，后续升级从 Git log 识别发布点。
+## 必守不变量
 
-## 流程
+- 四个 `DESIGN.md` 都必须存在，并且 `version` 解析后完全一致。
+- 正式版本为 `YYYY.MMdd.patch`：同日 patch 加一，跨日归零；旧 `YY.MM.DD` 首次迁移为当天 `.0`。
+- 发布提交 subject 固定为 `docs-publish: version YYYY.MMdd.patch`。
+- 允许发布的文件只有四个 `DESIGN.md`；根级或四层目录内的 `TODO-LIST.md` 只有在本次 dry-run 列出并经确认时才可随发布提交。
+- 版本发布提交是 `/docs-upgrade` 识别模板版本边界的依据；不要在其他技能中复制发布点规则。
 
-默认执行完整流程：检查工作区、更新四层版本、rebase 最新 `main`、提交、推送 feature、快进合并并推送 `main`，最后创建并切换 `feature-YYYY.MMdd.patch`。网络、认证、分支保护或非快进状态失败立即中止并保留现场。`--dry-run` 只展示版本和 diff。
+## 执行闸门
 
-允许发布清单：四层 `DESIGN.md` 与本任务已登记的 `TODO-LIST.md`；其他改动硬停。
+默认先预览。写入版本、提交、rebase、推送、快进合并和切换下一分支都属于外部或不可逆 Git 操作，必须在 dry-run 结果明确且得到用户确认后执行。
 
 ```bash
+# 预览：不改文件、不提交、不联网写入
 bash agent/skills/docs-publish/scripts/docs-publish.sh --dry-run
-bash agent/skills/docs-publish/scripts/docs-publish.sh
+
+# 用户确认同一预览结果后，才执行正式发布
+bash agent/skills/docs-publish/scripts/docs-publish.sh --publish
 ```
 
-## Git 版本识别
+正式执行按 [workflow.md](references/workflow.md) 的顺序进行。认证失败、分支保护、冲突、非快进或其他异常时立即停住并保留现场；不要自动重试、回滚或改写无关文件。
 
-共享解析实现位于 `agent/scripts/lib/version.sh`，提供版本规范化、比较、commit 查找和最新版本识别。`docs-upgrade` 使用 `docs-publish` commit 作为版本边界，并按两个发布点之间的 Git diff 执行现有升级流程。
+## 边界与分流
 
-## 评测
+| 请求 | 处理 |
+| --- | --- |
+| 发布四层 `DESIGN.md` 版本 | 本技能；先 dry-run，再等确认 |
+| 只改版本字段，不做发布 | 先确认是否真的是发布；否则转 `/docs-revise` |
+| 已有知识库对齐模板 | `/docs-upgrade` |
+| 精简或重组 Markdown | `/docs-simplify` |
+| 一般分支发布、普通 Git 提交或推送 | 按项目 Git 约定处理，不套用本技能 |
 
-`evals/evals.json` 与 `tests/run.sh` 覆盖版本计算、旧格式迁移、脏改动硬停、commit 标记与 dry-run。
+## 按需查阅
+
+- 版本计算、兼容格式与提交标记：[versioning.md](references/versioning.md)
+- 预览、确认、发布、失败停顿与完成校核：[workflow.md](references/workflow.md)
+- 常见阻塞与恢复边界：[gotchas.md](references/gotchas.md)
+- 脚本回归：`bash agent/skills/docs-publish/tests/run.sh`
+- 行为评测：[evals/evals.json](evals/evals.json)
