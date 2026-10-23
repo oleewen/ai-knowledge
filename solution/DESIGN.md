@@ -34,10 +34,10 @@ version: 2026.1020.1
 
 ## 同步与门禁
 
-1. **docs-pull** → 校验/修复 `system-slots/system-{NAME}`  
+1. **docs-link --check / --repair** → 校验/修复 `system-slots/system-{NAME}`
 2. 校核 `knowledge/` 与治理约定  
 3. **docs-distill / docs-archive** 上行公司 overview  
-4. 脏工作区不得 pull；改目录语义先改**本元库模板**再 upgrade  
+4. 内容更新按各仓 Git 工作流处理；改目录语义先改**本元库模板**再 upgrade
 
 全图：[knowledge-layout § 知识流水线](../agent/references/knowledge-layout.md#知识流水线)。
 

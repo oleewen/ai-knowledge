@@ -79,7 +79,7 @@ company/
 | `/docs-okf` | Slash | [docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md) | 刷新本层 `index.md` / `viz.html` |
 | `/docs-indexing` | Slash | [docs-indexing/SKILL.md](../agent/skills/docs-indexing/SKILL.md) | 九章骨架（须保留 entity-index） |
 | `/docs-build` | Slash | [docs-build/SKILL.md](../agent/skills/docs-build/SKILL.md) | 刷新 §4.5 视角导航块 |
-| `/docs-link` · `/docs-pull` | Slash | `agent/skills/docs-link` · `docs-pull` | 联邦建联与槽位同步 |
+| `/docs-link` | Slash | `agent/skills/docs-link` | 联邦建联与槽位检查/修复 |
 
 ---
 

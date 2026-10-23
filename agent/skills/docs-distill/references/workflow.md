@@ -19,7 +19,7 @@
 | `solution` | `solution/system-slots/system-{NAME}/` | `solution/knowledge/overview/{NAME}-overview.md` |
 | `company` | `company/solution-slots/solution-{NAME}/` | `company/knowledge/overview/{NAME}-overview.md` |
 
-前置条件：槽位已 pull、非空、根有 `README.md`；目标层有 `NAME-overview.md` 模板。缺任一项就停。
+前置条件：槽位已挂载、非空、根有 `README.md`；目标层有 `NAME-overview.md` 模板。缺任一项就停。
 
 ## 执行顺序
 

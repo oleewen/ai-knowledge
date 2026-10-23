@@ -215,7 +215,7 @@
     {
       "id": 7,
       "category": "should-trigger",
-      "prompt": "假设 system/application-slots/application-ghost-app/ 槽位已 pull 且非空，但槽位根没有 README.md；目标侧 knowledge-governance、overview 模板均在。请执行 /docs-distill --doc-dir system --name ghost-app --dry-run。",
+      "prompt": "假设 system/application-slots/application-ghost-app/ 槽位已挂载 且非空，但槽位根没有 README.md；目标侧 knowledge-governance、overview 模板均在。请执行 /docs-distill --doc-dir system --name ghost-app --dry-run。",
       "expected_output": "硬停：列缺失路径；不得执行 dry-run；给决策选项且要求先落盘契约。",
       "files": [],
       "assertions": [

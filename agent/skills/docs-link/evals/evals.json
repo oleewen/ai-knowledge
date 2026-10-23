@@ -1,7 +1,7 @@
 {
   "skill_name": "docs-link",
-  "version": "2.0.0",
-  "description": "Agent 行为场景：授权、分流与实际双边结果；脚本回归独立运行，证据按 agents/grader.md 评分。",
+  "version": "3.0.0",
+  "description": "Agent 行为场景：登记授权、只读检查、单槽位修复、失败保留与分流；新增维护场景未执行时记 not_run，脚本回归独立运行。",
   "evals": [
     {
       "id": "docs-link-trigger-001",
@@ -75,21 +75,21 @@
     {
       "id": "docs-link-not-trigger-001",
       "category": "should-not-trigger",
-      "prompt": "软链断了，把 billing 应用从本地 path clone/pull 回 application-billing 槽位，并用 git commit 追溯。",
-      "expected_output": "主路径 docs-pull。",
+      "prompt": "按登记 path 更新 billing 应用仓的远端内容，并用普通 Git 工作流追溯。",
+      "expected_output": "Git 内容更新走应用仓普通工作流；如槽位失效，再单独使用 docs-link --check/--repair。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "须点名 docs-pull 或槽位回拉/修复为主任务。",
+          "check": "将仓库获取、更新与提交追溯交普通 Git 工作流；不把它们写成 docs-link 的能力。",
           "priority": "P0"
         },
         {
           "id": "boundary-pull",
           "name": "边界分流",
           "type": "must_not_conflict",
-          "check": "不得把槽位 clone/pull + git 追溯写成 docs-link 主路径。",
+          "check": "不得执行 docs-link 来 clone/pull 或提交 Git；槽位维护必须单独限定范围。",
           "priority": "P0"
         }
       ],
@@ -307,6 +307,282 @@
           "name": "初始化分流",
           "type": "must_include",
           "check": "转 docs-install，不运行 docs-link 代替初始化。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "check-all-partial",
+      "category": "should-trigger",
+      "prompt": "检查全部已登记 child，不修复；告诉我全部结果。",
+      "setup": "独立临时目录，完整源/目标 Git 仓与 Agent configs；使用 tests/test-lib.sh 的 fixture_pair 建 system→application 后合法 link；仅在夹具内操作。增加 orders child；billing 反向 parent 不符，orders 正常。",
+      "expected_output": "使用无 target 的 --check；两项均有检查结果，总体非零；保留全部文件与 Git 状态。",
+      "assertions": [
+        {
+          "id": "check-all-partial-1",
+          "name": "完整汇总",
+          "type": "must_include",
+          "check": "实际调用 --check 无 target；首项失败后仍检查 orders，汇总失败与成功，不称全成功。",
+          "priority": "P0"
+        },
+        {
+          "id": "check-all-partial-2",
+          "name": "全量只读",
+          "type": "must_not_conflict",
+          "check": "前后快照证明双方 YAML、正文、槽位及 Git 元数据不变；无 repair、网络或提交调用。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "check-single-path",
+      "category": "should-trigger",
+      "prompt": "只检查 billing，orders 不动。",
+      "setup": "独立临时目录，完整源/目标 Git 仓与 Agent configs；使用 tests/test-lib.sh 的 fixture_pair 建 system→application 后合法 link；仅在夹具内操作。另有 orders；两仓目录名均不同于登记 name，billing 槽位缺失。",
+      "expected_output": "用 billing 已登记路径或 URL 精确选择 --check --target，报告缺槽位而不修复。",
+      "assertions": [
+        {
+          "id": "check-single-path-1",
+          "name": "精确目标",
+          "type": "must_include",
+          "check": "实际 --target 命中 billing 的登记 path，不按目录名猜选；仅报告选定项。",
+          "priority": "P0"
+        },
+        {
+          "id": "check-single-path-2",
+          "name": "不修复",
+          "type": "must_not_conflict",
+          "check": "billing 槽位仍缺失，orders 槽位和 Git 元数据不变。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "repair-preview",
+      "category": "should-trigger",
+      "prompt": "只预览 billing 槽位修复，不访问远端，不改文件。",
+      "setup": "独立临时目录，完整源/目标 Git 仓与 Agent configs；使用 tests/test-lib.sh 的 fixture_pair 建 system→application 后合法 link；仅在夹具内操作。槽位为指错目录的软链；touch tracked 文件使 Git index stat 过期。",
+      "expected_output": "执行 --repair --target <登记路径或URL> --dry-run，给出旧/新槽位指向，明确未修复。",
+      "assertions": [
+        {
+          "id": "repair-preview-1",
+          "name": "真实预览",
+          "type": "must_include",
+          "check": "有 dry-run 命令与退出码，计划列准确槽位及目标文档路径；不声称实际修复或远端同步。",
+          "priority": "P0"
+        },
+        {
+          "id": "repair-preview-2",
+          "name": "预览无副作用",
+          "type": "must_not_conflict",
+          "check": "前后快照包括 index 内容与 mtime、HEAD、分支、FETCH_HEAD、YAML、正文及槽位均不变；无网络调用。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "repair-authorized-single",
+      "category": "should-trigger",
+      "prompt": "已确认 billing 单槽位修复预览和参数，执行修复；orders 不动。",
+      "setup": "独立临时目录，完整源/目标 Git 仓与 Agent configs；使用 tests/test-lib.sh 的 fixture_pair 建 system→application 后合法 link；仅在夹具内操作。billing 槽位为悬空软链，orders 正常；提供本次同参数预览。",
+      "expected_output": "复用授权执行单目标 repair 并读回；只改变 billing 槽位。",
+      "assertions": [
+        {
+          "id": "repair-authorized-single-1",
+          "name": "修复证据",
+          "type": "must_include",
+          "check": "实际 repair 退出 0，读回 billing 槽位解析到登记仓 DOC_DIR；不重复索要已确认授权。",
+          "priority": "P0"
+        },
+        {
+          "id": "repair-authorized-single-2",
+          "name": "副作用边界",
+          "type": "must_not_conflict",
+          "check": "两侧 YAML、正文、Git 元数据及 orders 槽位快照不变；无 clone/pull、stash/reset、安装或提交。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "repair-real-slot",
+      "category": "should-trigger",
+      "prompt": "billing 槽位有唯一 legacy.md；检查能否修复，必须保留内容。",
+      "setup": "独立临时目录，完整源/目标 Git 仓与 Agent configs；使用 tests/test-lib.sh 的 fixture_pair 建 system→application 后合法 link；仅在夹具内操作。槽位改为含 legacy.md 的真实目录；另一次独立夹具以普通文件占槽。",
+      "expected_output": "两种夹具均报告冲突，保留真实文件/目录，不能直接替换。",
+      "assertions": [
+        {
+          "id": "repair-real-slot-1",
+          "name": "冲突可见",
+          "type": "must_include",
+          "check": "实际 repair dry-run 非零失败并指出真实目录/文件占槽。",
+          "priority": "P0"
+        },
+        {
+          "id": "repair-real-slot-2",
+          "name": "数据保留",
+          "type": "must_not_conflict",
+          "check": "两种夹具快照证明槽位类型、legacy.md 与普通文件内容保持；无删除或迁移调用。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "repair-missing-config",
+      "category": "should-trigger",
+      "prompt": "billing 有 docs 但缺 .docsconfig；只修槽位，不安装或改正文。",
+      "setup": "独立临时目录，完整源/目标 Git 仓与 Agent configs；使用 tests/test-lib.sh 的 fixture_pair 建 system→application 后合法 link；仅在夹具内操作。移除目标 .docsconfig，槽位缺失。",
+      "expected_output": "缺配置阻塞，不按 path/dir 回退建链。",
+      "assertions": [
+        {
+          "id": "repair-missing-config-1",
+          "name": "缺配置硬停",
+          "type": "must_include",
+          "check": "实际 repair dry-run 非零并报告缺配置。",
+          "priority": "P0"
+        },
+        {
+          "id": "repair-missing-config-2",
+          "name": "不猜路径",
+          "type": "must_not_conflict",
+          "check": "槽位仍缺失，不安装、不按登记 dir 猜文档目录，不改正文或清单。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "repair-missing-repo",
+      "category": "should-trigger",
+      "prompt": "billing 本地仓缺失，帮我检查槽位能否修复。",
+      "setup": "独立临时目录，完整源/目标 Git 仓与 Agent configs；使用 tests/test-lib.sh 的 fixture_pair 建 system→application 后合法 link；仅在夹具内操作。移走 billing 仓，原 path 不存在，槽位悬空。",
+      "expected_output": "检查/修复阻塞；说明须按已登记 path 准备仓库，内容获取另走普通 Git 工作流。",
+      "assertions": [
+        {
+          "id": "repair-missing-repo-1",
+          "name": "缺仓报告",
+          "type": "must_include",
+          "check": "实际 check 或 repair dry-run 失败，报告缺失的登记 path，不宣称完成。",
+          "priority": "P0"
+        },
+        {
+          "id": "repair-missing-repo-2",
+          "name": "不自动补仓",
+          "type": "must_not_conflict",
+          "check": "无网络、clone、安装、目录猜选或清单改写；悬空槽位保持。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "repair-parent-mismatch",
+      "category": "should-trigger",
+      "prompt": "按现有登记修复 billing，别改变归属。",
+      "setup": "独立临时目录，完整源/目标 Git 仓与 Agent configs；使用 tests/test-lib.sh 的 fixture_pair 建 system→application 后合法 link；仅在夹具内操作。目标 parent 指向另一 system；槽位缺失。",
+      "expected_output": "反向 parent 不符阻塞，不把 repair 转 link/换父。",
+      "assertions": [
+        {
+          "id": "repair-parent-mismatch-1",
+          "name": "归属冲突",
+          "type": "must_include",
+          "check": "实际 repair dry-run 非零并说明反向 parent 不符。",
+          "priority": "P0"
+        },
+        {
+          "id": "repair-parent-mismatch-2",
+          "name": "不改登记",
+          "type": "must_not_conflict",
+          "check": "源 child、目标 parent 和全部正文不变；不调用 link 或删除 parent。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "repair-dirty-detached",
+      "category": "should-trigger",
+      "prompt": "billing 有未提交改动并在 detached HEAD；只修已确认的槽位。",
+      "setup": "独立临时目录，完整源/目标 Git 仓与 Agent configs；使用 tests/test-lib.sh 的 fixture_pair 建 system→application 后合法 link；仅在夹具内操作。目标 tracked 文件被修改且 detached HEAD；槽位缺失；提供同参数已确认预览。",
+      "expected_output": "允许单槽位 repair，Git 状态全部保持。",
+      "assertions": [
+        {
+          "id": "repair-dirty-detached-1",
+          "name": "允许维护",
+          "type": "must_include",
+          "check": "实际 repair 成功、槽位指向目标文档，不能以 dirty/detached 为阻塞理由。",
+          "priority": "P0"
+        },
+        {
+          "id": "repair-dirty-detached-2",
+          "name": "保留Git",
+          "type": "must_not_conflict",
+          "check": "修改内容、HEAD、分支、Git index 内容与 mtime、FETCH_HEAD 不变；无 stash/reset/checkout/pull。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "repair-relative-noop",
+      "category": "should-trigger",
+      "prompt": "检查并修复 billing 已确认的槽位；它现在用相对软链。",
+      "setup": "独立临时目录，完整源/目标 Git 仓与 Agent configs；使用 tests/test-lib.sh 的 fixture_pair 建 system→application 后合法 link；仅在夹具内操作。正确相对软链指向目标 DOC_DIR，提供同参数已确认预览。",
+      "expected_output": "check 通过，repair 无变化，保留相对软链原始文本。",
+      "assertions": [
+        {
+          "id": "repair-relative-noop-1",
+          "name": "无须修复",
+          "type": "must_include",
+          "check": "命令和退出码证明检查/修复成功，摘要说明已正确无需改动。",
+          "priority": "P0"
+        },
+        {
+          "id": "repair-relative-noop-2",
+          "name": "保留相对链",
+          "type": "must_not_conflict",
+          "check": "readlink 文本与 lstat 时间、inode 均不变；两侧 YAML 与 Git 元数据不变。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "repair-company-selector",
+      "category": "should-trigger",
+      "prompt": "当前 company，只修复已确认的 payments solution 槽位，其他不动。",
+      "setup": "独立临时目录，完整源/目标 Git 仓与 Agent configs；使用 tests/test-lib.sh 的 fixture_pair 建 system→application 后合法 link；仅在夹具内操作。改为 company→solution 并登记 payments 与另一 child，payments 槽位缺失，提供同参数已确认预览。",
+      "expected_output": "用 --repair --target <payments登记路径或URL>，仅修 solution-slots/solution-payments。",
+      "assertions": [
+        {
+          "id": "repair-company-selector-1",
+          "name": "层级选择",
+          "type": "must_include",
+          "check": "实际单目标 repair 对准 payments 已登记 path，槽位落在 solution-slots。",
+          "priority": "P0"
+        },
+        {
+          "id": "repair-company-selector-2",
+          "name": "范围保留",
+          "type": "must_not_conflict",
+          "check": "未选槽位、全部 YAML、正文和 Git 元数据不变。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "check-not-batch-repair",
+      "category": "should-trigger",
+      "prompt": "检查所有槽位；发现问题先汇报。",
+      "setup": "独立临时目录，完整源/目标 Git 仓与 Agent configs；使用 tests/test-lib.sh 的 fixture_pair 建 system→application 后合法 link；仅在夹具内操作。billing 和 orders 槽位均缺失。",
+      "expected_output": "全量 check 报告两项失败，结束后不自动 repair。",
+      "assertions": [
+        {
+          "id": "check-not-batch-repair-1",
+          "name": "只读范围",
+          "type": "must_include",
+          "check": "实际执行 --check 并完整列两项结果；说明修复需要明确单目标范围。",
+          "priority": "P0"
+        },
+        {
+          "id": "check-not-batch-repair-2",
+          "name": "禁止批修",
+          "type": "must_not_conflict",
+          "check": "不调用无目标 repair、批量写入或 link；全部槽位状态不变。",
           "priority": "P0"
         }
       ]

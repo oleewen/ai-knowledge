@@ -1,14 +1,14 @@
 ---
 name: docs-distill
 description: >
-  将已 pull 的联邦槽位内容按目标层契约全量去重，写入 system、solution 或 company
+  将已挂载联邦槽位的核实内容按目标层契约全量去重，写入 system、solution 或 company
   overview 第三列。适用于 /docs-distill、槽位上行、同步应用/系统/解决方案到上层 overview。
   仅处理联邦槽位；非槽位资料走 docs-extract，overview 归档走 docs-archive，索引走 docs-indexing。
 ---
 
 # docs-distill
 
-把一个已核实、已 pull 的联邦槽位全量提炼到一个上层 `{NAME}-overview.md` 的第三列。Agent 负责正文蒸馏；脚本只做参数、路径和前置条件校验。
+把一个已挂载、内容已核实的联邦槽位全量提炼到一个上层 `{NAME}-overview.md` 的第三列。Agent 负责正文蒸馏；脚本只做参数、路径和前置条件校验。
 
 ## 适用边界
 
@@ -44,6 +44,8 @@ description: >
 bash agent/skills/docs-distill/scripts/run-docs-distill.sh \
   --root /path/to/repo --doc-dir system --name billing-appeal --dry-run
 ```
+
+槽位异常先用 [docs-link](../docs-link/SKILL.md) 检查/修复；缺仓或内容过旧按各仓普通 Git 工作流处理。
 
 脚本要求槽位存在且非空、槽位根有 `README.md`、目标层模板存在；通过后仍由 Agent 按契约生成正文。详见 [workflow.md](references/workflow.md)。
 

@@ -13,7 +13,7 @@ agent/knowledge（治理 / 命名）
 
 **落地顺序**：核 [DESIGN.md](DESIGN.md)（→ [knowledge-governance](../agent/knowledge/knowledge-governance.md)）→ 补 knowledge ID → git 溯源。
 
-本库：`docs-extract` / `docs-archive` 写 `knowledge/overview/{NAME}-overview.md`。上行：`docs-pull` 入系统槽位；**docs-distill 只写 system overview**。
+本库：`docs-extract` / `docs-archive` 写 `knowledge/overview/{NAME}-overview.md`。上行：`docs-link` 挂载系统槽位；**docs-distill 只写 system overview**。
 
 ## 主线目录
 

@@ -79,7 +79,7 @@ system/
 | `/docs-indexing` | Slash | [docs-indexing/SKILL.md](../agent/skills/docs-indexing/SKILL.md) | 九章骨架（须保留 entity-index） |
 | `/docs-build` | Slash | [docs-build/SKILL.md](../agent/skills/docs-build/SKILL.md) | 刷新 §4.5 视角导航块 |
 | `/docs-distill` · `/docs-archive` | Slash | 见 [agent/skills/README.md](../agent/skills/README.md) | overview 上行 |
-| `/docs-pull` · `/docs-link` | Slash | 见 [agent/skills/README.md](../agent/skills/README.md) | 槽位拉取 / 联邦建联 |
+| `/docs-link` | Slash | 见 [agent/skills/README.md](../agent/skills/README.md) | 联邦建联与槽位检查/修复 |
 
 ---
 
@@ -174,7 +174,7 @@ system/
 |------|------|
 | 文档根 / 类型 | 仓库根 [`.docsconfig`](../.docsconfig)（当前 `DOC_DIR=company`；本层作并列 DOC_DIR `system`） |
 | 建联清单 | [knowledge-links.yaml](knowledge-links.yaml)（现一条 `type: meta`，parent/child 未挂载） |
-| 装机 | `/docs-install` · `/docs-link` · `/docs-pull` |
+| 装机 | `/docs-install` · `/docs-link` |
 
 ---
 
@@ -227,6 +227,6 @@ system/
 | `/docs-okf` | [docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md) |
 | `/docs-indexing` | 九章骨架（须保留 entity-index 标记块） |
 | `/docs-build` | 刷新 §4.5 标记块 |
-| `/docs-distill` · `/docs-archive` · `/docs-pull` | overview 上行与槽位拉取 |
+| `/docs-distill` · `/docs-archive` | overview 上行；槽位维护见 `/docs-link` |
 
 <!-- sdx-indexing:indexing_finished_ms=1791431315870 -->

@@ -17,6 +17,7 @@ title: system-slots（系统联邦槽位根）
 
 - 路径：`solution/system-slots/system-{NAME}` → 系统仓 `文档目录`
 - 建槽：`docs-link`（yaml + 软链；company→solution、solution→system、system→application）
-- 同步：`/docs-pull`（脏工作区拒绝 pull）
+- 维护：`docs-link --check` 全量检查；`--repair --target <已登记路径或URL>` 单槽位修复，可先 `--dry-run`。
+- 内容更新：遵循系统仓普通 Git 工作流；缺仓先按已登记 `path` 准备本地仓。检查/修复不访问远端。
 
 解决方案不挂 `application-slots`。应用槽位在系统层 `application-slots`。上游：[company/solution-slots](../../company/solution-slots/README.md)。

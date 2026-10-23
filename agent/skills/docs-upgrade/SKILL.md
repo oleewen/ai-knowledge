@@ -31,7 +31,7 @@ description: >
 
 - 不调用会清空 `DOC_DIR` 的 `docs-install.sh --scope=knowledge`，不删除本库独有文件，不用元库覆盖 `knowledge-links.yaml`。
 - 两模式均只升级本库 `KNOWLEDGE_TYPE` 对应层；`meta.dir` 错配须在快照解析、目录展开和写盘前停止。
-- 软链及其下路径不跟随；槽位真文件可按普通路径升级，实例同步用 [docs-pull](../docs-pull/SKILL.md)。
+- 软链及其下路径不跟随；槽位真文件可按普通路径升级，槽位维护用 [docs-link](../docs-link/SKILL.md)，内容更新遵循目标仓普通 Git 工作流。
 - 整树缺失示例按 [真实实例规则](references/merge-rules.md#31-整树缺失示例与真实实例) 去重；指定路径模式仍补齐缺失示例。
 - 根级 `DESIGN.md` 是整文件覆盖特例；版本推进独立于 scaffold。结构重填与未落位处理由 Agent 完成，脚本不自动合正文。
 

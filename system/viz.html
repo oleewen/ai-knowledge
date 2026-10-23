@@ -4,8 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>system OKF</title>
-<script src="https://unpkg.com/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
-<script src="https://unpkg.com/marked/marked.min.js"></script>
+<script src="https://unpkg.com/cytoscape@3.28.1/dist/cytoscape.min.js" integrity="sha384-J7Q85oZE4GJ/e7+n2aOQsLXfDwwfnA8S2nZAL5BpFsfpCF84zQD7LroZ/dMnLgex" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/marked@18.1.1/lib/marked.umd.js" integrity="sha384-rATToyt6602Jnq8c7w8HZwmyOUgPL7mzxX01FBWoV48ns/EgkakGozpES+PnaYOI" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/dompurify@3.4.17/dist/purify.min.js" integrity="sha384-P0JNneQf81HOl9VwNXK76cQ9VMD6Nfsnepxb0cCOg8+UzEdzgPHAPV4wVQrvYQSx" crossorigin="anonymous"></script>
 <style>
 :root {
   --bg: #0f1419;
@@ -172,7 +173,7 @@ aside {
       "title": "系统知识库设计",
       "description": null,
       "tags": [],
-      "body": "# 系统知识库设计\n\n`system/`：系统层知识编排、架构聚合与应用槽位治理。本文件 = 层根人类入口（契约短表 + 引用）；语义 SSOT ∈ `agent/knowledge/`。\n\n## 阅读顺序\n\n1. [README.md](README.md) — 定位  \n2. 本文 — 本层契约、同步门禁、治理引用  \n3. [knowledge/README.md](knowledge/README.md) — 五视角  \n\n索引：[INDEX-GUIDE.md](INDEX-GUIDE.md) · [index.md](index.md) · [application-slots/](application-slots/README.md) · [knowledge-links.yaml](knowledge-links.yaml)\n\n## 本层契约\n\n| 目录 | 职责 |\n| --- | --- |\n| `knowledge/` | SYS 与实现链 SSOT + 五视角；上层实体只写纯 ID，不建 reference 文件；[`overview/`](knowledge/overview/NAME-overview.md) = 蒸馏缓冲区 |\n| `analysis/` → `features/` → `requirements/` | 系统 SDD；交付 ∈ `REQUIREMENT-{IDEA-ID}/` |\n| `adr/` | 系统层决策 + `CONTEXT.md` |\n| `application-slots/application-{NAME}/` | 应用镜像软链入口 |\n| `knowledge-links.yaml` | parent 一条，为解决方案；child 为应用；键均为 `name` / `label`，不写层前缀 |\n| 变更溯源 | git；烤干代办见仓根 `TODO-LIST.md` |\n\n路径总则：[knowledge-layout § 四层文档根](../agent/references/knowledge-layout.md#四层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ overview](../agent/references/knowledge-layout.md#overview) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。\n\n## 同步与门禁\n\n1. **docs-pull** → 校验/修复 `application-slots/application-{NAME}` 软链  \n2. 校核 `knowledge/` 与治理约定  \n3. **docs-distill / docs-archive** 上行解决方案 overview（不再直蒸公司）  \n4. 同步追溯 git / `SYNC_OK`  \n\n全图：[knowledge-layout § 知识流水线](../agent/references/knowledge-layout.md#知识流水线)。跨层无双份主定义；脏工作区不得 pull；改目录语义先改**本元库模板**再 upgrade。\n\n## 治理引用\n\n| 主题 | 链 |\n| --- | --- |\n| 本层聚焦 / 首次定义 | [knowledge-governance § 系统层](../agent/knowledge/knowledge-governance.md#系统层) |\n| 引用边界 | [knowledge-governance § 业务 knowledge 引用边界](../agent/knowledge/knowledge-governance.md#业务-knowledge-引用边界) |\n| 本层 OKF 模板要点 | [okf-spec § 10.3 system](../agent/knowledge/okf-spec.md#103-system) |\n| 其余语义 | [knowledge-governance](../agent/knowledge/knowledge-governance.md)（四层 · 5A）· [glossary](../agent/knowledge/glossary.md) · [naming-conventions](../agent/knowledge/naming-conventions.md) · [okf-spec](../agent/knowledge/okf-spec.md) · [adr-guidelines](../agent/knowledge/adr-guidelines.md) |",
+      "body": "# 系统知识库设计\n\n## 版本\n\n版本号表示四层知识库的统一内容发布版本，格式为 `YYYY.MMdd.patch`。版本由维护者人工发布；发布时，四层 `DESIGN.md` 的 `version` 必须同步为同一值。\n\n`system/`：系统层知识编排、架构聚合与应用槽位治理。本文件 = 层根人类入口（契约短表 + 引用）；语义 SSOT ∈ `agent/knowledge/`。\n\n## 阅读顺序\n\n1. [README.md](README.md) — 定位  \n2. 本文 — 本层契约、同步门禁、治理引用  \n3. [knowledge/README.md](knowledge/README.md) — 五视角  \n\n索引：[INDEX-GUIDE.md](INDEX-GUIDE.md) · [index.md](index.md) · [application-slots/](application-slots/README.md) · [knowledge-links.yaml](knowledge-links.yaml)\n\n## 本层契约\n\n| 目录 | 职责 |\n| --- | --- |\n| `knowledge/` | SYS 与实现链 SSOT + 五视角；上层实体只写纯 ID，不建 reference 文件；[`overview/`](knowledge/overview/NAME-overview.md) = 蒸馏缓冲区 |\n| `analysis/` → `features/` → `requirements/` | 系统 SDD；交付 ∈ `REQUIREMENT-{IDEA-ID}/` |\n| `adr/` | 系统层决策 + `CONTEXT.md` |\n| `application-slots/application-{NAME}/` | 应用镜像软链入口 |\n| `knowledge-links.yaml` | parent 一条，为解决方案；child 为应用；键均为 `name` / `label`，不写层前缀 |\n| `TODO-LIST.md` | 烤干未闭合代办（本目录 = `{DOC_DIR}`）；变更溯源用 git。元仓全书仍在仓根 |\n\n路径总则：[knowledge-layout § 四层文档根](../agent/references/knowledge-layout.md#四层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ overview](../agent/references/knowledge-layout.md#overview) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。\n\n## 同步与门禁\n\n1. **docs-link --check / --repair** → 校验/修复 `application-slots/application-{NAME}` 软链\n2. 校核 `knowledge/` 与治理约定  \n3. **docs-distill / docs-archive** 上行解决方案 overview（不再直蒸公司）  \n4. 内容更新遵循各仓 Git 工作流；溯源 `git log` / `git diff`\n\n全图：[knowledge-layout § 知识流水线](../agent/references/knowledge-layout.md#知识流水线)。跨层无双份主定义；内容更新按各仓 Git 工作流处理；改目录语义先改**本元库模板**再 upgrade。\n\n## 治理引用\n\n| 主题 | 链 |\n| --- | --- |\n| 本层聚焦 / 首次定义 | [knowledge-governance § 系统层](../agent/knowledge/knowledge-governance.md#系统层) |\n| 引用边界 | [knowledge-governance § 业务 knowledge 引用边界](../agent/knowledge/knowledge-governance.md#业务-knowledge-引用边界) |\n| 本层 OKF 模板要点 | [okf-spec § 10.3 system](../agent/knowledge/okf-spec.md#103-system) |\n| 其余语义 | [knowledge-governance](../agent/knowledge/knowledge-governance.md)（四层 · 5A）· [glossary](../agent/knowledge/glossary.md) · [naming-conventions](../agent/knowledge/naming-conventions.md) · [okf-spec](../agent/knowledge/okf-spec.md) · [adr-guidelines](../agent/knowledge/adr-guidelines.md) |",
       "backlinks": [
         "README"
       ]
@@ -185,7 +186,7 @@ aside {
       "tags": [
         "governance"
       ],
-      "body": "# 系统知识库（顶层 `system/`）\n\n系统层治理根。契约与门禁见 [DESIGN.md](DESIGN.md)；语义见 [knowledge-governance](../agent/knowledge/knowledge-governance.md)。parent 是解决方案；键为 `name` / `label`，不写层前缀。\n\n| 读什么 | 文件 |\n|--------|------|\n| 九章地图 | [INDEX-GUIDE.md](INDEX-GUIDE.md) |\n| 目录索引 | [index.md](index.md) |\n| 本层设计入口 | [DESIGN.md](DESIGN.md) |\n| 五视角入口 | [knowledge/README.md](knowledge/README.md) |\n\n按需：`knowledge-links.yaml` · [application-slots/](application-slots/README.md) · [analysis/](analysis/README.md) · [features/](features/README.md) · [requirements/](requirements/README.md) · [adr/](adr/README.md)\n\n模板占位：`knowledge/overview/NAME-overview.md`、`*-EXAMPLE`（可替换）。联邦槽位：`docs-link` 建软链；追溯 git / SYNC_OK。",
+      "body": "# 系统知识库（顶层 `system/`）\n\n系统层治理根。契约与门禁见 [DESIGN.md](DESIGN.md)；语义见 [knowledge-governance](../agent/knowledge/knowledge-governance.md)。parent 是解决方案；键为 `name` / `label`，不写层前缀。\n\n| 读什么 | 文件 |\n|--------|------|\n| 九章地图 | [INDEX-GUIDE.md](INDEX-GUIDE.md) |\n| 目录索引 | [index.md](index.md) |\n| 本层设计入口 | [DESIGN.md](DESIGN.md) |\n| 五视角入口 | [knowledge/README.md](knowledge/README.md) |\n\n按需：`knowledge-links.yaml` · [application-slots/](application-slots/README.md) · [analysis/](analysis/README.md) · [features/](features/README.md) · [requirements/](requirements/README.md) · [adr/](adr/README.md)\n\n模板占位：`knowledge/overview/NAME-overview.md`、`*-EXAMPLE`（可替换）。联邦槽位：`docs-link` 建联、检查与修复软链；内容更新及溯源用各仓 Git 工作流。",
       "backlinks": [
         "DESIGN"
       ]
@@ -222,7 +223,7 @@ aside {
       "tags": [
         "example"
       ],
-      "body": "# 示例系统分析\n\n> **结论**：在本系统内对齐「跨应用状态口径 + 运营异常定位入口」，不扩到公司级跨系统编排。  \n> 读者：业务与产品。路径：`system/analysis/`。  \n> 下游：[../features/FEATURE-EXAMPLE.md](../features/FEATURE-EXAMPLE.md)\n\n---\n\n## 1. 背景与目标\n\n### 1.1 业务现状\n\n本系统内多应用共担同一业务对象链路；运营在多应用间切换查状态，缺系统内统一的异常定位入口。\n\n### 1.2 存在问题\n\n应用间状态叫法不一 → 对内解释成本高；异常要跨应用拼证据 → 定位慢。\n\n### 1.3 业务目标\n\n| 目标编号 | 目标 | 度量 | 预期收益 |\n| -------- | ---- | ---- | -------- |\n| G-1 | 本系统内关键状态口径对齐并可追溯 | 高频状态无未解释歧义 | 少内部对账与扯皮 |\n| G-2 | 运营可在系统内单入口定位卡点 | 典型异常定位耗时下降 | 快响应、少跨应用切换 |\n\n---\n\n## 2. 范围与约束\n\n### 2.1 核心场景\n\n运营按业务对象查询 → 看到本系统内各应用关键状态与时间点 → 明确卡点与下一步协作方。\n\n### 2.2 涉及角色\n\n| 用户角色 | 角色描述 | 核心关注点 |\n| -------- | -------- | ---------- |\n| 运营人员 | 异常与时效 | 定位快、证据齐 |\n| 应用业务方 | 本应用环节处理 | 交接清晰、口径一致 |\n| 客服/对内解释 | 对内说明状态 | 话术与系统一致 |\n\n### 2.3 范围边界\n\n#### 范围内（In Scope）\n\n- 本系统内跨应用状态口径对齐与异常定位入口\n- 与本系统 knowledge 五视角可落地的能力边界\n\n#### 范围外（Out of Scope）\n\n- 公司级跨系统编排与统一视图（见 `company/domains/DOMAIN-EXAMPLE.md`）\n- 改各应用原处理规则（本轮只对齐口径与定位呈现）\n\n#### 成功标准\n\n- 运营可在系统内单入口完成典型异常定位\n- 高频状态解释口径一致（业务可验收）\n\n---\n\n## 3. 影响与冲突\n\n### 3.1 影响面\n\n- 运营：少跨应用切换\n- 各应用业务方：状态命名/判定须对齐\n- 对内解释：话术随口径收敛\n\n### 3.2 影响业务能力\n\n| 功能/业务能力 | 影响程度 | 影响类型 | 影响说明 |\n| ------------ | -------- | -------- | -------- |\n| 状态查询 | 高 | 口径调整 | 多应用拼盘 → 系统内统一入口 |\n| 异常定位 | 高 | 追溯增强 | 关键时间点与责任环节提示 |\n| 对内解释 | 中 | 承诺一致性 | 统一词典支撑话术 |\n\n### 3.3 影响传播路径\n\n```text\n[状态查询] → [异常定位] → [应用协作] → [对内解释]\n```\n\n### 3.4 业务冲突\n\n| 冲突编号 | 冲突描述 | 冲突类型 | 严重程度 | 化解方案 | 化解成本 |\n| -------- | -------- | -------- | -------- | -------- | -------- |\n| C-1 | 各应用对同一状态命名/判定不一致 | 规则/数据冲突 | 中 | 系统内统一词典 + 可追溯证据 | 中 |\n\n---\n\n## 4. 思路与方案\n\n### 4.1 解决思路\n\n**结论**：系统内先定状态词典与定位入口，再按高频链路扩展覆盖。跨系统统一视图不在本方案。取舍见 §5.2。\n\n### 4.2 关键约束\n\n| 约束类型 | 约束描述 | 影响 |\n| -------- | -------- | ---- |\n| 业务 | 系统内对外/对内解释须同一词典 | 冲突时以约定优先级 + 证据为准 |\n| 资源 | 优先高频链路与高价值对象 | 不全量一次铺开 |\n| 技术 | 正文不写实现栈；能力限制用业务话术 | 细节待研发确认 |\n| 交付 | 无外部硬截止；每阶段可独立验收 | 节奏由优先级驱动 |\n\n---\n\n## 5. 风险与待定\n\n### 5.1 风险评估\n\n| 风险编号 | 风险描述 | 可能性 | 影响程度 | 应对策略 |\n| -------- | -------- | ------ | -------- | -------- |\n| R-1 | 应用方对词典共识难 | 中 | 中 | 先高频状态，分批扩展 |\n| R-2 | 追溯项不全导致定位仍慢 | 中 | 高 | 明确必填追溯项，分阶段补齐 |\n\n### 5.2 问题决策\n\n| 决策编号 | 决策点 | 影响 | 决策要点 | 状态 |\n| -------- | ------ | ---- | -------- | ---- |\n| Q-1 | 本轮是否上探公司级跨系统统一视图 | 范围与成本 | 推荐：本轮止于系统内；公司级另开 SOLUTION | 已决策 |\n| Q-2 | 系统内状态词典的 owner 与变更流程 | 口径稳定性 | 待指定业务 owner 与变更节奏 | 待确认 |\n\n**技术决策索引**：见 [system/adr/CONTEXT.md](../adr/CONTEXT.md)（技术/架构选型不入上表）。\n\n---\n\n## 6. 交付计划\n\n### 6.1 关键里程碑\n\n| 里程碑 | 覆盖范围 | 前置条件 | 交付物 | 验收标准 | 退出条件 |\n| ------ | -------- | -------- | ------ | -------- | -------- |\n| 里程碑-1 | 高频链路状态词典 + 定位入口最小闭环 | Q-1 已决策 | 可验收定位入口 | 典型异常可单入口定位 | 高频状态无未决歧义 |\n| 里程碑-2 | 扩链路与追溯项 | 里程碑-1 退出 | 扩展覆盖 | 约定链路纳入且可验收 | 无阻塞性口径缺口 |\n\n### 6.2 切换方案\n\n| 里程碑 | 试点方式 | 通过标准 | 切换流程 | 回退条件 |\n| ------ | -------- | -------- | -------- | -------- |\n| 里程碑-1 | 选定高频链路试点运营组 | 定位耗时下降；口径争议可控 | 试点通过 → 宣布该链路主用系统入口 | 争议失控或定位不准 → 回退多应用并行查询 |\n\n---\n\n## 7. 附录\n\n### 7.1 术语表\n\n| 术语 | 定义 |\n| ---- | ---- |\n| 状态词典 | 本系统内对同一状态的统一定义与解释 |\n| 定位入口 | 运营在系统内查询业务对象卡点的主入口 |\n\n### 7.2 参考文档\n\n- `system/README.md`\n- `system/features/FEATURE-EXAMPLE.md`\n- `company/domains/DOMAIN-EXAMPLE.md`（域对照）\n\n### 7.3 内部参考（仅供研发接力）\n\n无（示例文档）。\n\n### 7.4 质量自查表 (Self-Check)\n\n- [ ] **结构与占位**：`## 1`–`## 7` 齐全；空节须标「不适用/待补充」\n- [ ] **§1**：§1.1–§1.3 有实质或「不适用」；**G-n** 表含目标/度量/预期收益\n- [ ] **§2**：主路径；§2.3 In/Out + 成功标准\n- [ ] **§3**：与 §3.2 一致；含功能/对外承诺/下游；§3.3 协作链；每 **C-n** 有化解与成本\n- [ ] **§4**：§4.1 可读；§4.2 约束表已填；多方案取舍在 §5.2\n- [ ] **§5**：每 **R-n** 有可能性、影响、应对；**Q-n** 更新（无则「无」）\n- [ ] **§6**：§6.1 含覆盖/前置/交付/验收/退出；§6.2 仅需切换节点；MVP 归 ANALYSIS\n- [ ] **业务可读**：正文无工程标识；技术线索仅 §7.3 且「待研发确认」\n- [ ] **一致性**：与需求、`knowledge/`、领域索引一致或已标盲区\n- [ ] **可追溯**：**G-n**/**C-n**/**R-n**/**Q-n** 可指回；编号连贯\n- [ ] **术语与引用**：§7.1 专用术语；§7.2 已引路径\n- [ ] **格式与元数据**：frontmatter 完整；`id` 与文件名一致",
+      "body": "# 示例系统分析\n\n\u003e **结论**：在本系统内对齐「跨应用状态口径 + 运营异常定位入口」，不扩到公司级跨系统编排。  \n\u003e 读者：业务与产品。路径：`system/analysis/`。  \n\u003e 下游：[../features/FEATURE-EXAMPLE.md](../features/FEATURE-EXAMPLE.md)\n\n---\n\n## 1. 背景与目标\n\n### 1.1 业务现状\n\n本系统内多应用共担同一业务对象链路；运营在多应用间切换查状态，缺系统内统一的异常定位入口。\n\n### 1.2 存在问题\n\n应用间状态叫法不一 → 对内解释成本高；异常要跨应用拼证据 → 定位慢。\n\n### 1.3 业务目标\n\n| 目标编号 | 目标 | 度量 | 预期收益 |\n| -------- | ---- | ---- | -------- |\n| G-1 | 本系统内关键状态口径对齐并可追溯 | 高频状态无未解释歧义 | 少内部对账与扯皮 |\n| G-2 | 运营可在系统内单入口定位卡点 | 典型异常定位耗时下降 | 快响应、少跨应用切换 |\n\n---\n\n## 2. 范围与约束\n\n### 2.1 核心场景\n\n运营按业务对象查询 → 看到本系统内各应用关键状态与时间点 → 明确卡点与下一步协作方。\n\n### 2.2 涉及角色\n\n| 用户角色 | 角色描述 | 核心关注点 |\n| -------- | -------- | ---------- |\n| 运营人员 | 异常与时效 | 定位快、证据齐 |\n| 应用业务方 | 本应用环节处理 | 交接清晰、口径一致 |\n| 客服/对内解释 | 对内说明状态 | 话术与系统一致 |\n\n### 2.3 范围边界\n\n#### 范围内（In Scope）\n\n- 本系统内跨应用状态口径对齐与异常定位入口\n- 与本系统 knowledge 五视角可落地的能力边界\n\n#### 范围外（Out of Scope）\n\n- 公司级跨系统编排与统一视图（见 `company/domains/DOMAIN-EXAMPLE.md`）\n- 改各应用原处理规则（本轮只对齐口径与定位呈现）\n\n#### 成功标准\n\n- 运营可在系统内单入口完成典型异常定位\n- 高频状态解释口径一致（业务可验收）\n\n---\n\n## 3. 影响与冲突\n\n### 3.1 影响面\n\n- 运营：少跨应用切换\n- 各应用业务方：状态命名/判定须对齐\n- 对内解释：话术随口径收敛\n\n### 3.2 影响业务能力\n\n| 功能/业务能力 | 影响程度 | 影响类型 | 影响说明 |\n| ------------ | -------- | -------- | -------- |\n| 状态查询 | 高 | 口径调整 | 多应用拼盘 → 系统内统一入口 |\n| 异常定位 | 高 | 追溯增强 | 关键时间点与责任环节提示 |\n| 对内解释 | 中 | 承诺一致性 | 统一词典支撑话术 |\n\n### 3.3 影响传播路径\n\n```text\n[状态查询] → [异常定位] → [应用协作] → [对内解释]\n```\n\n### 3.4 业务冲突\n\n| 冲突编号 | 冲突描述 | 冲突类型 | 严重程度 | 化解方案 | 化解成本 |\n| -------- | -------- | -------- | -------- | -------- | -------- |\n| C-1 | 各应用对同一状态命名/判定不一致 | 规则/数据冲突 | 中 | 系统内统一词典 + 可追溯证据 | 中 |\n\n---\n\n## 4. 思路与方案\n\n### 4.1 解决思路\n\n**结论**：系统内先定状态词典与定位入口，再按高频链路扩展覆盖。跨系统统一视图不在本方案。取舍见 §5.2。\n\n### 4.2 关键约束\n\n| 约束类型 | 约束描述 | 影响 |\n| -------- | -------- | ---- |\n| 业务 | 系统内对外/对内解释须同一词典 | 冲突时以约定优先级 + 证据为准 |\n| 资源 | 优先高频链路与高价值对象 | 不全量一次铺开 |\n| 技术 | 正文不写实现栈；能力限制用业务话术 | 细节待研发确认 |\n| 交付 | 无外部硬截止；每阶段可独立验收 | 节奏由优先级驱动 |\n\n---\n\n## 5. 风险与待定\n\n### 5.1 风险评估\n\n| 风险编号 | 风险描述 | 可能性 | 影响程度 | 应对策略 |\n| -------- | -------- | ------ | -------- | -------- |\n| R-1 | 应用方对词典共识难 | 中 | 中 | 先高频状态，分批扩展 |\n| R-2 | 追溯项不全导致定位仍慢 | 中 | 高 | 明确必填追溯项，分阶段补齐 |\n\n### 5.2 问题决策\n\n| 决策编号 | 决策点 | 影响 | 决策要点 | 状态 |\n| -------- | ------ | ---- | -------- | ---- |\n| Q-1 | 本轮是否上探公司级跨系统统一视图 | 范围与成本 | 推荐：本轮止于系统内；公司级另开 SOLUTION | 已决策 |\n| Q-2 | 系统内状态词典的 owner 与变更流程 | 口径稳定性 | 待指定业务 owner 与变更节奏 | 待确认 |\n\n**技术决策索引**：见 [system/adr/CONTEXT.md](../adr/CONTEXT.md)（技术/架构选型不入上表）。\n\n---\n\n## 6. 交付计划\n\n### 6.1 关键里程碑\n\n| 里程碑 | 覆盖范围 | 前置条件 | 交付物 | 验收标准 | 退出条件 |\n| ------ | -------- | -------- | ------ | -------- | -------- |\n| 里程碑-1 | 高频链路状态词典 + 定位入口最小闭环 | Q-1 已决策 | 可验收定位入口 | 典型异常可单入口定位 | 高频状态无未决歧义 |\n| 里程碑-2 | 扩链路与追溯项 | 里程碑-1 退出 | 扩展覆盖 | 约定链路纳入且可验收 | 无阻塞性口径缺口 |\n\n### 6.2 切换方案\n\n| 里程碑 | 试点方式 | 通过标准 | 切换流程 | 回退条件 |\n| ------ | -------- | -------- | -------- | -------- |\n| 里程碑-1 | 选定高频链路试点运营组 | 定位耗时下降；口径争议可控 | 试点通过 → 宣布该链路主用系统入口 | 争议失控或定位不准 → 回退多应用并行查询 |\n\n---\n\n## 7. 附录\n\n### 7.1 术语表\n\n| 术语 | 定义 |\n| ---- | ---- |\n| 状态词典 | 本系统内对同一状态的统一定义与解释 |\n| 定位入口 | 运营在系统内查询业务对象卡点的主入口 |\n\n### 7.2 参考文档\n\n- `system/README.md`\n- `system/features/FEATURE-EXAMPLE.md`\n- `company/domains/DOMAIN-EXAMPLE.md`（域对照）\n\n### 7.3 内部参考（仅供研发接力）\n\n无（示例文档）。\n\n### 7.4 质量自查表 (Self-Check)\n\n- [ ] **结构与占位**：`## 1`–`## 7` 齐全；空节须标「不适用/待补充」\n- [ ] **§1**：§1.1–§1.3 有实质或「不适用」；**G-n** 表含目标/度量/预期收益\n- [ ] **§2**：主路径；§2.3 In/Out + 成功标准\n- [ ] **§3**：与 §3.2 一致；含功能/对外承诺/下游；§3.3 协作链；每 **C-n** 有化解与成本\n- [ ] **§4**：§4.1 可读；§4.2 约束表已填；多方案取舍在 §5.2\n- [ ] **§5**：每 **R-n** 有可能性、影响、应对；**Q-n** 更新（无则「无」）\n- [ ] **§6**：§6.1 含覆盖/前置/交付/验收/退出；§6.2 仅需切换节点；MVP 归 ANALYSIS\n- [ ] **业务可读**：正文无工程标识；技术线索仅 §7.3 且「待研发确认」\n- [ ] **一致性**：与需求、`knowledge/`、领域索引一致或已标盲区\n- [ ] **可追溯**：**G-n**/**C-n**/**R-n**/**Q-n** 可指回；编号连贯\n- [ ] **术语与引用**：§7.1 专用术语；§7.2 已引路径\n- [ ] **格式与元数据**：frontmatter 完整；`id` 与文件名一致",
       "backlinks": [
         "analysis/README",
         "features/FEATURE-EXAMPLE"
@@ -248,7 +249,7 @@ aside {
       "tags": [
         "federation"
       ],
-      "body": "# application-slots\n\n系统层**应用联邦槽位根**。`application-{NAME}` → 应用库 `文档目录` 软链；**不是** `knowledge/` SSOT。\n\n| 读什么 | 文件 |\n|--------|------|\n| 本层索引 | [index.md](index.md) |\n| 建联清单 | [../knowledge-links.yaml](../knowledge-links.yaml) |\n| 布局契约 | [../../agent/references/knowledge-layout.md](../../agent/references/knowledge-layout.md) |\n\n## 约定\n\n- 路径：`system/application-slots/application-{NAME}` → 应用仓 `文档目录`\n- 建槽：`docs-link`（yaml + 软链；允许悬空，待 `/docs-pull` 补仓）\n- 同步：`/docs-pull --app <slug>`（校验软链；失效则按 `repository` clone/pull；**脏工作区拒绝 pull**）\n\n上游：[solution/system-slots](../../solution/system-slots/README.md) · [company/solution-slots](../../company/solution-slots/README.md)。",
+      "body": "# application-slots\n\n系统层**应用联邦槽位根**。`application-{NAME}` → 应用库 `文档目录` 软链；**不是** `knowledge/` SSOT。\n\n| 读什么 | 文件 |\n|--------|------|\n| 本层索引 | [index.md](index.md) |\n| 建联清单 | [../knowledge-links.yaml](../knowledge-links.yaml) |\n| 布局契约 | [../../agent/references/knowledge-layout.md](../../agent/references/knowledge-layout.md) |\n\n## 约定\n\n- 路径：`system/application-slots/application-{NAME}` → 应用仓 `文档目录`\n- 建槽：`docs-link --link --target \u003c应用仓库根\u003e`（双边清单 + 软链）\n- 维护：`docs-link --check` 检查全部 child；单槽位修复用 `--repair --target \u003c已登记路径或URL\u003e`，可先 `--dry-run`。\n- 内容更新：遵循应用仓普通 Git 工作流；缺仓先按已登记 `path` 准备本地仓。检查/修复不访问远端。\n\n上游：[solution/system-slots](../../solution/system-slots/README.md) · [company/solution-slots](../../company/solution-slots/README.md)。",
       "backlinks": [
         "DESIGN",
         "README"
@@ -262,7 +263,7 @@ aside {
       "tags": [
         "example"
       ],
-      "body": "# 示例系统功能特性\n\n> 读者：需求分析师与产品/架构。路径：`system/features/`。\n> 上游：[../analysis/ANALYSIS-EXAMPLE.md](../analysis/ANALYSIS-EXAMPLE.md) §6.1。下游：[../requirements/REQUIREMENT-EXAMPLE/](../requirements/REQUIREMENT-EXAMPLE/README.md)。\n\n## 1. 背景目标\n\n### 1.1 需求背景\n\n- 关联需求分析：`system/analysis/ANALYSIS-EXAMPLE.md`\n- 本系统要收口高频链路的状态口径，并给出运营可单入口定位的能力。\n\n### 1.2 需求目标\n\n| 目标编号 | 目标描述 |\n| -------- | -------- |\n| G-1 | 高频链路状态可按同一口径解释 |\n\n### 1.3 范围约束\n\n#### 范围与边界\n\n- 范围内：本系统高频链路的状态词典与定位入口\n- 范围外：公司级跨系统编排\n\n#### 假设与约束\n\n- 上游 §6.1 的「里程碑-1」覆盖高频链路最小闭环\n\n#### 研究与分析\n\n- 状态歧义来自多应用并行查询；本特性只收本系统入口\n\n## 2. 功能需求\n\n### 概览\n\n本样例上游 §6.1 的里程碑列写的是「里程碑-1」，此处原样抄入。技能常态写法是 `M{n}（短名）`。\n\n| 需求编号 | 需求名称 | 需求概要 | 优先级 | 所属模块 | 所属里程碑 | 关联目标 |\n| -------- | -------- | -------- | ------ | -------- | ---------- | -------- |\n| FR-001 | 统一状态口径 | 同一业务对象在本系统内按同一状态解释 | P0 | 状态口径 | 里程碑-1 | G-1 |\n\n### FR-001: 统一状态口径\n\n**描述**：运营查看高频链路对象时，本系统给出唯一状态解释。\n\n**输入**：业务对象标识，以及该对象已进入高频链路。\n\n**处理逻辑**：\n\n| 规则编号 | 规则名称 | 触发条件 | 执行逻辑 |\n| -------- | -------- | -------- | -------- |\n| BR-001 | 口径唯一 | 同一对象存在多条状态说法 | 以本系统状态词典为准展示 |\n\n**业务对象**：\n\n| 业务对象 | 操作类型 | 变更说明 | 一致性 / 时效期望 |\n| -------- | -------- | -------- | ----------------- |\n| 链路状态 | 变更 | 展示口径收成一条 | 查询时可见 |\n\n**输出**：运营看到唯一状态解释。\n\n**异常与边界**：词典未覆盖的状态标明待补，不另开入口。\n\n**验收标准**：\n\n1. 典型异常可从本系统单入口定位\n2. 高频状态无未决歧义\n\n## 3. 非功能需求\n\n### 3.1 体验与性能\n\n| 维度 | 业务描述 | 备注 |\n| ---- | -------- | ---- |\n| 响应 / 等待感知 | 常规定位查询在可接受等待内可见 | 具体数值由研发共拟 |\n\n### 3.2 可用性与连续性\n\n| 维度 | 业务描述 |\n| ---- | -------- |\n| 服务可用承诺 | 运营值班时段定位入口可用 |\n\n### 3.3 安全与合规\n\n定位结果只给有权查看该业务对象的运营角色。\n\n### 3.4 可追溯与问题定位\n\n状态口径的变更留操作者与时间。\n\n### 3.5 兼容与升级\n\n旧的多应用并行查询在试点通过前可回退。\n\n## 4. 交付计划\n\n### 4.1 MVP 总览\n\n| MVP 阶段 | 核心目标 | 包含需求 | 交付价值 | 预估工期 | 前置依赖 |\n| -------- | -------- | -------- | -------- | -------- | -------- |\n| MVP1（定位入口） | 高频链路可单入口定位 | FR-001 | 典型异常可定位 | 待共拟 | 无 |\n\n### 4.2 MVP 详细规划\n\n#### MVP1（定位入口）\n\n**目标**：高频链路状态词典与定位入口可验收。\n\n**范围**：\n\n- 功能需求：FR-001\n- 涉及业务流程 / 能力域：状态口径\n- 涉及业务对象：链路状态\n\n**验收标准**：\n\n1. 典型异常可单入口定位\n\n**依赖项**：\n\n- 与运营值班口径在试点前对齐\n\n### 4.3 MVP 依赖关系\n\n```text\nMVP1（定位入口）\n```\n\n## 5. 依赖与风险\n\n### 5.1 依赖关系\n\n| 依赖项 | 依赖类型 | 依赖方 | 提供方 | 状态 |\n| ------ | -------- | ------ | ------ | ---- |\n| 高频链路清单 | 功能 | 本系统 | 运营 | 已有 |\n\n### 5.2 风险评估\n\n| 风险编号 | 风险描述 | 类型 | 可能性 | 影响 | 应对策略 |\n| -------- | -------- | ---- | ------ | ---- | -------- |\n| R-1 | 试点链路外仍有口径分歧 | 业务 | 中 | 中 | 未覆盖状态标明待补 |\n\n## 6. 附录\n\n### 6.1 术语表\n\n| 术语 | 定义 |\n| ---- | ---- |\n| 状态词典 | 本系统内对同一状态的统一定义与解释 |\n\n### 6.2 参考文档\n\n- 上游：`system/analysis/ANALYSIS-EXAMPLE.md`\n- 技术决策索引：`system/adr/CONTEXT.md`\n\n### 6.3 变更历史\n\n| 日期 | 说明 |\n| ---- | ---- |\n| 2026-10-12 | 按六章功能特性模板重写 |\n\n### 6.4 质量自查表 (Self-Check)\n\n- [x] 所属里程碑抄上游 §6.1 原文「里程碑-1」\n- [x] FR-001 只挂 MVP1（定位入口）",
+      "body": "# 示例系统功能特性\n\n\u003e 读者：需求分析师与产品/架构。路径：`system/features/`。\n\u003e 上游：[../analysis/ANALYSIS-EXAMPLE.md](../analysis/ANALYSIS-EXAMPLE.md) §6.1。下游：[../requirements/REQUIREMENT-EXAMPLE/](../requirements/REQUIREMENT-EXAMPLE/README.md)。\n\n## 1. 背景目标\n\n### 1.1 需求背景\n\n- 关联需求分析：`system/analysis/ANALYSIS-EXAMPLE.md`\n- 本系统要收口高频链路的状态口径，并给出运营可单入口定位的能力。\n\n### 1.2 需求目标\n\n| 目标编号 | 目标描述 |\n| -------- | -------- |\n| G-1 | 高频链路状态可按同一口径解释 |\n\n### 1.3 范围约束\n\n#### 范围与边界\n\n- 范围内：本系统高频链路的状态词典与定位入口\n- 范围外：公司级跨系统编排\n\n#### 假设与约束\n\n- 上游 §6.1 的「里程碑-1」覆盖高频链路最小闭环\n\n#### 研究与分析\n\n- 状态歧义来自多应用并行查询；本特性只收本系统入口\n\n## 2. 功能需求\n\n### 概览\n\n本样例上游 §6.1 的里程碑列写的是「里程碑-1」，此处原样抄入。技能常态写法是 `M{n}（短名）`。\n\n| 需求编号 | 需求名称 | 需求概要 | 优先级 | 所属模块 | 所属里程碑 | 关联目标 |\n| -------- | -------- | -------- | ------ | -------- | ---------- | -------- |\n| FR-001 | 统一状态口径 | 同一业务对象在本系统内按同一状态解释 | P0 | 状态口径 | 里程碑-1 | G-1 |\n\n### FR-001: 统一状态口径\n\n**描述**：运营查看高频链路对象时，本系统给出唯一状态解释。\n\n**输入**：业务对象标识，以及该对象已进入高频链路。\n\n**处理逻辑**：\n\n| 规则编号 | 规则名称 | 触发条件 | 执行逻辑 |\n| -------- | -------- | -------- | -------- |\n| BR-001 | 口径唯一 | 同一对象存在多条状态说法 | 以本系统状态词典为准展示 |\n\n**业务对象**：\n\n| 业务对象 | 操作类型 | 变更说明 | 一致性 / 时效期望 |\n| -------- | -------- | -------- | ----------------- |\n| 链路状态 | 变更 | 展示口径收成一条 | 查询时可见 |\n\n**输出**：运营看到唯一状态解释。\n\n**异常与边界**：词典未覆盖的状态标明待补，不另开入口。\n\n**验收标准**：\n\n1. 典型异常可从本系统单入口定位\n2. 高频状态无未决歧义\n\n## 3. 非功能需求\n\n### 3.1 体验与性能\n\n| 维度 | 业务描述 | 备注 |\n| ---- | -------- | ---- |\n| 响应 / 等待感知 | 常规定位查询在可接受等待内可见 | 具体数值由研发共拟 |\n\n### 3.2 可用性与连续性\n\n| 维度 | 业务描述 |\n| ---- | -------- |\n| 服务可用承诺 | 运营值班时段定位入口可用 |\n\n### 3.3 安全与合规\n\n定位结果只给有权查看该业务对象的运营角色。\n\n### 3.4 可追溯与问题定位\n\n状态口径的变更留操作者与时间。\n\n### 3.5 兼容与升级\n\n旧的多应用并行查询在试点通过前可回退。\n\n## 4. 交付计划\n\n### 4.1 MVP 总览\n\n| MVP 阶段 | 核心目标 | 包含需求 | 交付价值 | 预估工期 | 前置依赖 |\n| -------- | -------- | -------- | -------- | -------- | -------- |\n| MVP1（定位入口） | 高频链路可单入口定位 | FR-001 | 典型异常可定位 | 待共拟 | 无 |\n\n### 4.2 MVP 详细规划\n\n#### MVP1（定位入口）\n\n**目标**：高频链路状态词典与定位入口可验收。\n\n**范围**：\n\n- 功能需求：FR-001\n- 涉及业务流程 / 能力域：状态口径\n- 涉及业务对象：链路状态\n\n**验收标准**：\n\n1. 典型异常可单入口定位\n\n**依赖项**：\n\n- 与运营值班口径在试点前对齐\n\n### 4.3 MVP 依赖关系\n\n```text\nMVP1（定位入口）\n```\n\n## 5. 依赖与风险\n\n### 5.1 依赖关系\n\n| 依赖项 | 依赖类型 | 依赖方 | 提供方 | 状态 |\n| ------ | -------- | ------ | ------ | ---- |\n| 高频链路清单 | 功能 | 本系统 | 运营 | 已有 |\n\n### 5.2 风险评估\n\n| 风险编号 | 风险描述 | 类型 | 可能性 | 影响 | 应对策略 |\n| -------- | -------- | ---- | ------ | ---- | -------- |\n| R-1 | 试点链路外仍有口径分歧 | 业务 | 中 | 中 | 未覆盖状态标明待补 |\n\n## 6. 附录\n\n### 6.1 术语表\n\n| 术语 | 定义 |\n| ---- | ---- |\n| 状态词典 | 本系统内对同一状态的统一定义与解释 |\n\n### 6.2 参考文档\n\n- 上游：`system/analysis/ANALYSIS-EXAMPLE.md`\n- 技术决策索引：`system/adr/CONTEXT.md`\n\n### 6.3 变更历史\n\n| 日期 | 说明 |\n| ---- | ---- |\n| 2026-10-12 | 按六章功能特性模板重写 |\n\n### 6.4 质量自查表 (Self-Check)\n\n- [x] 所属里程碑抄上游 §6.1 原文「里程碑-1」\n- [x] FR-001 只挂 MVP1（定位入口）",
       "backlinks": [
         "analysis/ANALYSIS-EXAMPLE",
         "features/README",
@@ -325,7 +326,7 @@ aside {
         "application",
         "SYS"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例系统\n\n## 关系\n\n- implements_to: SLN-EXAMPLE\n- implemented_by: [APP-EXAMPLE](APP-EXAMPLE/APP-EXAMPLE.md)\n\n## 跨视角\n\n- maps_to: PD-EXAMPLE\n\n## 详细说明\n\n- 系统（别名应用服务）；implements_to 解决方案 SLN（纯 ID）；maps_to PD。解决方案层不回写这条边。\n\n## 依据与证据\n\n[../chapters/application-overview.md](../chapters/application-overview.md)（示例）",
+      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# 示例系统\n\n## 关系\n\n- implements_to: SLN-EXAMPLE\n- implemented_by: [APP-EXAMPLE](APP-EXAMPLE/APP-EXAMPLE.md)\n\n## 跨视角\n\n- maps_to: PD-EXAMPLE\n\n## 详细说明\n\n- 系统（别名应用服务）；implements_to 解决方案 SLN（纯 ID）；maps_to PD。解决方案层不回写这条边。\n\n## 依据与证据\n\n[../chapters/application-overview.md](../chapters/application-overview.md)（示例）",
       "backlinks": [
         "knowledge/application/README",
         "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE"
@@ -340,7 +341,7 @@ aside {
         "application",
         "APP"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例应用\n\n## 关系\n\n- implements_to: [SYS-EXAMPLE](../SYS-EXAMPLE.md)\n- implemented_by: [MS-EXAMPLE](MS-EXAMPLE/MS-EXAMPLE.md)\n- supports_to: [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)\n\n## 跨视角\n\n- uses_to:\n  - [DS-EXAMPLE](../../../data/MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE.md)\n  - MW-EXAMPLE\n\n## 详细说明\n\n- 应用，代码仓库与部署单元。\n\n## 依据与证据\n\n[../../chapters/application-architecture.md](../../chapters/application-architecture.md#应用)（示例）",
+      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# 示例应用\n\n## 关系\n\n- implements_to: [SYS-EXAMPLE](../SYS-EXAMPLE.md)\n- implemented_by: [MS-EXAMPLE](MS-EXAMPLE/MS-EXAMPLE.md)\n- supports_to: [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)\n\n## 跨视角\n\n- uses_to:\n  - [DS-EXAMPLE](../../../data/MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE.md)\n  - MW-EXAMPLE\n\n## 详细说明\n\n- 应用，代码仓库与部署单元。\n\n## 依据与证据\n\n[../../chapters/application-architecture.md](../../chapters/application-architecture.md#应用)（示例）",
       "backlinks": [
         "knowledge/application/README",
         "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE",
@@ -357,7 +358,7 @@ aside {
         "application",
         "MS"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例微服务\n\n## 关系\n\n- implements_to: [APP-EXAMPLE](../APP-EXAMPLE.md)\n- implemented_by: API-EXAMPLE\n\n## 跨视角\n\n- maps_to: [AGG-EXAMPLE](../../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)\n\n## 详细说明\n\n- 微服务，入口能力簇。\n\n## 依据与证据\n\n[../../../chapters/application-architecture.md](../../../chapters/application-architecture.md#微服务)（示例）",
+      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# 示例微服务\n\n## 关系\n\n- implements_to: [APP-EXAMPLE](../APP-EXAMPLE.md)\n- implemented_by: API-EXAMPLE\n\n## 跨视角\n\n- maps_to: [AGG-EXAMPLE](../../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)\n\n## 详细说明\n\n- 微服务，入口能力簇。\n\n## 依据与证据\n\n[../../../chapters/application-architecture.md](../../../chapters/application-architecture.md#微服务)（示例）",
       "backlinks": [
         "knowledge/application/README",
         "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE"
@@ -372,7 +373,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 应用架构\n\n[返回 · 应用架构](../README.md)\n\n本系统的应用与微服务。\n\n> **应用架构 SSOT**：系统上下文与分层结构见公司层 application · application-architecture。职责边界、服务能力矩阵、演进路线见解决方案层 application · application-architecture。\n\n## 应用\n\n写 APP 的编号、名称，各 `implements_to` 哪个 SYS。\n\n## 微服务\n\n写 MS 的编号、名称，各 `implements_to` 哪个 APP，`maps_to` 哪个 AGG。",
+      "body": "# 应用架构\n\n[返回 · 应用架构](../README.md)\n\n本系统的应用与微服务。\n\n\u003e **应用架构 SSOT**：系统上下文与分层结构见公司层 application · application-architecture。职责边界、服务能力矩阵、演进路线见解决方案层 application · application-architecture。\n\n## 应用\n\n写 APP 的编号、名称，各 `implements_to` 哪个 SYS。\n\n## 微服务\n\n写 MS 的编号、名称，各 `implements_to` 哪个 APP，`maps_to` 哪个 AGG。",
       "backlinks": [
         "knowledge/application/README",
         "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE",
@@ -390,7 +391,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 领域模型\n\n[返回 · 应用架构](../README.md)\n\n本系统 APP/MS 使用的对象边界。\n\n> **领域模型 SSOT**：BC、AGG 的登记见系统 business · [能力地图](../../business/chapters/business-capability-map.md)。本层不新编号。\n\n## 领域模型\n\n写本系统用到哪些已登记的 BC、AGG。不新编号。\n\n## 对象模型\n\n写这些对象在本系统的依赖方向。不新编号。\n\n## 对象定义\n\n写本系统关心的属性。不新编号。",
+      "body": "# 领域模型\n\n[返回 · 应用架构](../README.md)\n\n本系统 APP/MS 使用的对象边界。\n\n\u003e **领域模型 SSOT**：BC、AGG 的登记见系统 business · [能力地图](../../business/chapters/business-capability-map.md)。本层不新编号。\n\n## 领域模型\n\n写本系统用到哪些已登记的 BC、AGG。不新编号。\n\n## 对象模型\n\n写这些对象在本系统的依赖方向。不新编号。\n\n## 对象定义\n\n写本系统关心的属性。不新编号。",
       "backlinks": [
         "knowledge/application/README",
         "knowledge/overview/NAME-overview"
@@ -405,7 +406,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 集成架构\n\n[返回 · 应用架构](../README.md)\n\n本系统的外部对接。\n\n> **集成架构 SSOT**：方案级外部依赖见解决方案层 application · application-overview。\n\n## 集成清单\n\n写外部系统、用途与敏感度。\n\n## 集成协议\n\n写协议与认证。\n\n## 集成数据流\n\n写流向、频率与权威源。\n\n## 防腐层\n\n写 ACL 的位置与错误隔离。",
+      "body": "# 集成架构\n\n[返回 · 应用架构](../README.md)\n\n本系统的外部对接。\n\n\u003e **集成架构 SSOT**：方案级外部依赖见解决方案层 application · application-overview。\n\n## 集成清单\n\n写外部系统、用途与敏感度。\n\n## 集成协议\n\n写协议与认证。\n\n## 集成数据流\n\n写流向、频率与权威源。\n\n## 防腐层\n\n写 ACL 的位置与错误隔离。",
       "backlinks": [
         "knowledge/application/README",
         "knowledge/overview/NAME-overview"
@@ -420,7 +421,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 系统概述\n\n[返回 · 应用架构](../README.md)\n\n本系统相对方案设定的差异。\n\n> **系统概述 SSOT**：方案级使命、场景、范围、外部依赖与技术摘要见解决方案层 application · application-overview。\n\n## 系统使命\n\n写相对方案同名节的差异。无差异写「无」。\n\n## 用户场景\n\n写相对方案同名节的差异。无差异写「无」。\n\n## 系统范围\n\n写相对方案同名节的差异，并写 SYS，`implements_to` 哪条 SLN，`maps_to` 哪条 PD。无差异写「无」。",
+      "body": "# 系统概述\n\n[返回 · 应用架构](../README.md)\n\n本系统相对方案设定的差异。\n\n\u003e **系统概述 SSOT**：方案级使命、场景、范围、外部依赖与技术摘要见解决方案层 application · application-overview。\n\n## 系统使命\n\n写相对方案同名节的差异。无差异写「无」。\n\n## 用户场景\n\n写相对方案同名节的差异。无差异写「无」。\n\n## 系统范围\n\n写相对方案同名节的差异，并写 SYS，`implements_to` 哪条 SLN，`maps_to` 哪条 PD。无差异写「无」。",
       "backlinks": [
         "knowledge/application/README",
         "knowledge/application/SYS-EXAMPLE/SYS-EXAMPLE",
@@ -436,7 +437,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 服务设计\n\n[返回 · 应用架构](../README.md)\n\n本系统的拆分与容器。\n\n> **服务设计 SSOT**：MS 编号见 [应用架构](application-architecture.md)。\n\n## 设计原则\n\n写可检验的非功能原则。\n\n## 服务拆分\n\n写拆分维度。MS 编号以应用架构为准。\n\n## 服务设计\n\n写契约与状态机。\n\n## 服务容器图\n\n写 C4 L2。\n\n## 组件图\n\n写 C4 L3。",
+      "body": "# 服务设计\n\n[返回 · 应用架构](../README.md)\n\n本系统的拆分与容器。\n\n\u003e **服务设计 SSOT**：MS 编号见 [应用架构](application-architecture.md)。\n\n## 设计原则\n\n写可检验的非功能原则。\n\n## 服务拆分\n\n写拆分维度。MS 编号以应用架构为准。\n\n## 服务设计\n\n写契约与状态机。\n\n## 服务容器图\n\n写 C4 L2。\n\n## 组件图\n\n写 C4 L3。",
       "backlinks": [
         "knowledge/application/README",
         "knowledge/overview/NAME-overview"
@@ -466,7 +467,7 @@ aside {
         "business",
         "BSD"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例三级业务子域\n\n## 关系\n\n- parent: BSD-EXAMPLE-L2\n- implemented_by: [BC-EXAMPLE](BC-EXAMPLE/BC-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- level: 3\n- BSD-L3；parent→解决方案 BSD-L2。\n\n## 依据与证据\n\n[../chapters/business-capability-map.md](../chapters/business-capability-map.md#三级子域)（示例）",
+      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# 示例三级业务子域\n\n## 关系\n\n- parent: BSD-EXAMPLE-L2\n- implemented_by: [BC-EXAMPLE](BC-EXAMPLE/BC-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- level: 3\n- BSD-L3；parent→解决方案 BSD-L2。\n\n## 依据与证据\n\n[../chapters/business-capability-map.md](../chapters/business-capability-map.md#三级子域)（示例）",
       "backlinks": [
         "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE"
       ]
@@ -480,7 +481,7 @@ aside {
         "business",
         "BC"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例限界上下文\n\n## 关系\n\n- implements_to: [BSD-EXAMPLE-L3](../BSD-EXAMPLE-L3.md)\n- implemented_by: [AGG-EXAMPLE](AGG-EXAMPLE/AGG-EXAMPLE.md)\n- supported_by: [APP-EXAMPLE](../../../application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE.md)\n\n## 跨视角\n\n- mapped_by: [PM-EXAMPLE](../../../product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE.md)\n\n## 详细说明\n\n- 限界上下文。\n\n## 依据与证据\n\n[../../chapters/business-capability-map.md](../../chapters/business-capability-map.md#限界上下文)（示例）",
+      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# 示例限界上下文\n\n## 关系\n\n- implements_to: [BSD-EXAMPLE-L3](../BSD-EXAMPLE-L3.md)\n- implemented_by: [AGG-EXAMPLE](AGG-EXAMPLE/AGG-EXAMPLE.md)\n- supported_by: [APP-EXAMPLE](../../../application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE.md)\n\n## 跨视角\n\n- mapped_by: [PM-EXAMPLE](../../../product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE.md)\n\n## 详细说明\n\n- 限界上下文。\n\n## 依据与证据\n\n[../../chapters/business-capability-map.md](../../chapters/business-capability-map.md#限界上下文)（示例）",
       "backlinks": [
         "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE",
         "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
@@ -497,7 +498,7 @@ aside {
         "business",
         "AB"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例能力\n\n## 关系\n\n- implements_to: [AGG-EXAMPLE](AGG-EXAMPLE.md)\n\n## 跨视角\n\n- mapped_by: [UC-EXAMPLE](../../../../product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md)\n\n## 详细说明\n\n- 领域能力。\n\n## 依据与证据\n\n[../../../chapters/business-capability-map.md](../../../chapters/business-capability-map.md#领域能力)（示例）",
+      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# 示例能力\n\n## 关系\n\n- implements_to: [AGG-EXAMPLE](AGG-EXAMPLE.md)\n\n## 跨视角\n\n- mapped_by: [UC-EXAMPLE](../../../../product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE.md)\n\n## 详细说明\n\n- 领域能力。\n\n## 依据与证据\n\n[../../../chapters/business-capability-map.md](../../../chapters/business-capability-map.md#领域能力)（示例）",
       "backlinks": [
         "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
         "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE"
@@ -512,7 +513,7 @@ aside {
         "business",
         "AGG"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例聚合\n\n## 关系\n\n- implements_to: [BC-EXAMPLE](../BC-EXAMPLE.md)\n- implemented_by: [AB-EXAMPLE](AB-EXAMPLE.md)\n\n## 跨视角\n\n- mapped_by:\n  - [MS-EXAMPLE](../../../../application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md)\n  - [ENT-EXAMPLE](../../../../../data/MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE.md)\n\n## 详细说明\n\n- 聚合根。\n\n## 依据与证据\n\n[../../../chapters/business-capability-map.md](../../../chapters/business-capability-map.md#聚合)（示例）",
+      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# 示例聚合\n\n## 关系\n\n- implements_to: [BC-EXAMPLE](../BC-EXAMPLE.md)\n- implemented_by: [AB-EXAMPLE](AB-EXAMPLE.md)\n\n## 跨视角\n\n- mapped_by:\n  - [MS-EXAMPLE](../../../../application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md)\n  - [ENT-EXAMPLE](../../../../../data/MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE.md)\n\n## 详细说明\n\n- 聚合根。\n\n## 依据与证据\n\n[../../../chapters/business-capability-map.md](../../../chapters/business-capability-map.md#聚合)（示例）",
       "backlinks": [
         "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE",
         "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE",
@@ -529,7 +530,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 能力地图\n\n[返回 · 业务架构](../README.md)\n\n本系统的三级子域、限界上下文、聚合与领域能力。\n\n> **能力地图 SSOT**：公司级能力框架与成熟度见公司层 business · business-capability。\n\n## 三级子域\n\n写 BSD-L3 的编号、名称，各 `parent` 哪条解决方案 BSD-L2。\n\n## 限界上下文\n\n写 BC 的编号、名称，各 `implements_to` 本层 BSD-L3，`mapped_by` 哪个 PM。\n\n## 聚合\n\n写 AGG 的编号、名称，各 `implements_to` 哪个 BC。\n\n## 领域能力\n\n写 AB 的编号、名称，各 `implements_to` 哪个 AGG。",
+      "body": "# 能力地图\n\n[返回 · 业务架构](../README.md)\n\n本系统的三级子域、限界上下文、聚合与领域能力。\n\n\u003e **能力地图 SSOT**：公司级能力框架与成熟度见公司层 business · business-capability。\n\n## 三级子域\n\n写 BSD-L3 的编号、名称，各 `parent` 哪条解决方案 BSD-L2。\n\n## 限界上下文\n\n写 BC 的编号、名称，各 `implements_to` 本层 BSD-L3，`mapped_by` 哪个 PM。\n\n## 聚合\n\n写 AGG 的编号、名称，各 `implements_to` 哪个 BC。\n\n## 领域能力\n\n写 AB 的编号、名称，各 `implements_to` 哪个 AGG。",
       "backlinks": [
         "knowledge/application/chapters/application-domain-model",
         "knowledge/business/README",
@@ -560,7 +561,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 业务概述\n\n[返回 · 业务架构](../README.md)\n\n本系统纳入的三级子域。\n\n> **业务概述 SSOT**：背景、目标、范围、商业模式、价值链、组织见公司层 business · business-overview、business-model、business-value-chain、business-roles-and-organization。方案范围与二级子域见解决方案层 business · business-overview、business-domain-division。\n\n## 系统范围\n\n写本系统有哪些 BSD-L3，各 `parent` 哪条解决方案 BSD-L2。",
+      "body": "# 业务概述\n\n[返回 · 业务架构](../README.md)\n\n本系统纳入的三级子域。\n\n\u003e **业务概述 SSOT**：背景、目标、范围、商业模式、价值链、组织见公司层 business · business-overview、business-model、business-value-chain、business-roles-and-organization。方案范围与二级子域见解决方案层 business · business-overview、business-domain-division。\n\n## 系统范围\n\n写本系统有哪些 BSD-L3，各 `parent` 哪条解决方案 BSD-L2。",
       "backlinks": [
         "knowledge/business/README",
         "knowledge/overview/NAME-overview"
@@ -589,7 +590,7 @@ aside {
         "data",
         "DS"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例数据源\n\n## 关系\n\n- implements_to: MDG-EXAMPLE\n- implemented_by: [ENT-EXAMPLE](ENT-EXAMPLE.md)\n\n## 跨视角\n\n- used_by: [APP-EXAMPLE](../../../application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE.md)\n\n## 详细说明\n\n- 示例数据源。\n\n## 依据与证据\n\n[../../chapters/data-model.md](../../chapters/data-model.md#数据源)（示例）",
+      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# 示例数据源\n\n## 关系\n\n- implements_to: MDG-EXAMPLE\n- implemented_by: [ENT-EXAMPLE](ENT-EXAMPLE.md)\n\n## 跨视角\n\n- used_by: [APP-EXAMPLE](../../../application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE.md)\n\n## 详细说明\n\n- 示例数据源。\n\n## 依据与证据\n\n[../../chapters/data-model.md](../../chapters/data-model.md#数据源)（示例）",
       "backlinks": [
         "knowledge/application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE",
         "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE",
@@ -605,7 +606,7 @@ aside {
         "data",
         "ENT"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例实体\n\n## 关系\n\n- implements_to: [DS-EXAMPLE](DS-EXAMPLE.md)\n- implemented_by: TBL-EXAMPLE\n\n## 跨视角\n\n- maps_to: [AGG-EXAMPLE](../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)\n\n## 详细说明\n\n- 数据实体，表或集合。\n\n## 依据与证据\n\n[../../chapters/data-model.md](../../chapters/data-model.md#数据实体)（示例）",
+      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# 示例实体\n\n## 关系\n\n- implements_to: [DS-EXAMPLE](DS-EXAMPLE.md)\n- implemented_by: TBL-EXAMPLE\n\n## 跨视角\n\n- maps_to: [AGG-EXAMPLE](../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE.md)\n\n## 详细说明\n\n- 数据实体，表或集合。\n\n## 依据与证据\n\n[../../chapters/data-model.md](../../chapters/data-model.md#数据实体)（示例）",
       "backlinks": [
         "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AGG-EXAMPLE",
         "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE",
@@ -621,7 +622,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 数据模型\n\n[返回 · 数据架构](../README.md)\n\n本系统的数据源与数据实体。\n\n> **数据模型 SSOT**：主数据逻辑模型与黄金记录见解决方案层 data · data-model。原则、全景、生命周期见公司层 data · data-overview。\n\n## 数据源\n\n写 DS 的编号、名称，各 `implements_to` 哪条 MDG，`used_by` 哪个 APP。存储类型不写在这里。\n\n## 数据实体\n\n写 ENT 的编号、名称，各 `implements_to` 哪个 DS，`maps_to` 哪个 AGG。",
+      "body": "# 数据模型\n\n[返回 · 数据架构](../README.md)\n\n本系统的数据源与数据实体。\n\n\u003e **数据模型 SSOT**：主数据逻辑模型与黄金记录见解决方案层 data · data-model。原则、全景、生命周期见公司层 data · data-overview。\n\n## 数据源\n\n写 DS 的编号、名称，各 `implements_to` 哪条 MDG，`used_by` 哪个 APP。存储类型不写在这里。\n\n## 数据实体\n\n写 ENT 的编号、名称，各 `implements_to` 哪个 DS，`maps_to` 哪个 AGG。",
       "backlinks": [
         "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/DS-EXAMPLE",
         "knowledge/data/MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE",
@@ -638,7 +639,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 数据存储方案\n\n[返回 · 数据架构](../README.md)\n\n本系统的存储类型与数据分片。\n\n> **数据存储 SSOT**：归档见公司层 data · data-overview。跨系统交接见解决方案层 data · data-overview。\n\n## 存储类型\n\n写每条 DS 的存储类型。\n\n## 数据分片\n\n写哪条 DS、分片键、覆盖哪些 ENT。",
+      "body": "# 数据存储方案\n\n[返回 · 数据架构](../README.md)\n\n本系统的存储类型与数据分片。\n\n\u003e **数据存储 SSOT**：归档见公司层 data · data-overview。跨系统交接见解决方案层 data · data-overview。\n\n## 存储类型\n\n写每条 DS 的存储类型。\n\n## 数据分片\n\n写哪条 DS、分片键、覆盖哪些 ENT。",
       "backlinks": [
         "knowledge/data/README",
         "knowledge/overview/NAME-overview",
@@ -654,7 +655,7 @@ aside {
         "overview",
         "distill"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# {域名称}架构概览（{slug}-overview）\n\n> **维护**：`docs-tag` phase 2（✅）→ phase 3（架构摘录，勿手改摘录行）。表行 ↔ 视角章节 `##`。系统 overview **是** docs-distill 目标。占位 `{域名称}`/`{slug}` 实例化时替换。\n\n## 架构摘录\n\n| 架构视角 | 主标题 | 副标题 |\n| --- | --- | --- |\n| _（运行 `--phase 3` 后填充）_ | | |\n\n## [业务架构](../business/README.md)\n\n| 主标题 | 副标题 | 归档业务知识 |\n| --- | --- | --- |\n| [业务概述](../business/chapters/business-overview.md) | [系统范围](../business/chapters/business-overview.md#系统范围) | — |\n| [业务术语](../business/chapters/business-glossary.md) | [概念模型](../business/chapters/business-glossary.md#概念模型) | — |\n| [业务术语](../business/chapters/business-glossary.md) | [业务术语](../business/chapters/business-glossary.md#业务术语) | — |\n| [能力地图](../business/chapters/business-capability-map.md) | [三级子域](../business/chapters/business-capability-map.md#三级子域) | — |\n| [能力地图](../business/chapters/business-capability-map.md) | [限界上下文](../business/chapters/business-capability-map.md#限界上下文) | — |\n| [能力地图](../business/chapters/business-capability-map.md) | [聚合](../business/chapters/business-capability-map.md#聚合) | — |\n| [能力地图](../business/chapters/business-capability-map.md) | [领域能力](../business/chapters/business-capability-map.md#领域能力) | — |\n\n## [产品架构](../product/README.md)\n\n| 主标题 | 副标题 | 归档业务知识 |\n| --- | --- | --- |\n| [产品概述](../product/chapters/product-overview.md) | [系统产品](../product/chapters/product-overview.md#系统产品) | — |\n| [产品架构](../product/chapters/product-architecture.md) | [产品模块](../product/chapters/product-architecture.md#产品模块) | — |\n| [信息架构](../product/chapters/product-information-architecture.md) | [导航结构](../product/chapters/product-information-architecture.md#导航结构) | — |\n| [信息架构](../product/chapters/product-information-architecture.md) | [页面层级](../product/chapters/product-information-architecture.md#页面层级) | — |\n| [产品功能](../product/chapters/product-feature.md) | [功能点](../product/chapters/product-feature.md#功能点) | — |\n| [产品功能](../product/chapters/product-feature.md) | [功能需求](../product/chapters/product-feature.md#功能需求) | — |\n| [用户旅程与场景](../product/chapters/product-user-journeys.md) | [用户旅程地图](../product/chapters/product-user-journeys.md#用户旅程地图) | — |\n| [用户旅程与场景](../product/chapters/product-user-journeys.md) | [用户故事地图](../product/chapters/product-user-journeys.md#用户故事地图) | — |\n| [用户旅程与场景](../product/chapters/product-user-journeys.md) | [场景用例](../product/chapters/product-user-journeys.md#场景用例) | — |\n| [用户旅程与场景](../product/chapters/product-user-journeys.md) | [用户故事清单](../product/chapters/product-user-journeys.md#用户故事清单) | — |\n| [用户旅程与场景](../product/chapters/product-user-journeys.md) | [业务规则清单](../product/chapters/product-user-journeys.md#业务规则清单) | — |\n\n## [应用架构](../application/README.md)\n\n| 主标题 | 副标题 | 归档业务知识 |\n| --- | --- | --- |\n| [系统概述](../application/chapters/application-overview.md) | [系统使命](../application/chapters/application-overview.md#系统使命) | — |\n| [系统概述](../application/chapters/application-overview.md) | [用户场景](../application/chapters/application-overview.md#用户场景) | — |\n| [系统概述](../application/chapters/application-overview.md) | [系统范围](../application/chapters/application-overview.md#系统范围) | — |\n| [应用架构](../application/chapters/application-architecture.md) | [应用](../application/chapters/application-architecture.md#应用) | — |\n| [应用架构](../application/chapters/application-architecture.md) | [微服务](../application/chapters/application-architecture.md#微服务) | — |\n| [领域模型](../application/chapters/application-domain-model.md) | [领域模型](../application/chapters/application-domain-model.md#领域模型) | — |\n| [领域模型](../application/chapters/application-domain-model.md) | [对象模型](../application/chapters/application-domain-model.md#对象模型) | — |\n| [领域模型](../application/chapters/application-domain-model.md) | [对象定义](../application/chapters/application-domain-model.md#对象定义) | — |\n| [服务设计](../application/chapters/application-service-design.md) | [设计原则](../application/chapters/application-service-design.md#设计原则) | — |\n| [服务设计](../application/chapters/application-service-design.md) | [服务拆分](../application/chapters/application-service-design.md#服务拆分) | — |\n| [服务设计](../application/chapters/application-service-design.md) | [服务设计](../application/chapters/application-service-design.md#服务设计) | — |\n| [服务设计](../application/chapters/application-service-design.md) | [服务容器图](../application/chapters/application-service-design.md#服务容器图) | — |\n| [服务设计](../application/chapters/application-service-design.md) | [组件图](../application/chapters/application-service-design.md#组件图) | — |\n| [集成架构](../application/chapters/application-integration.md) | [集成清单](../application/chapters/application-integration.md#集成清单) | — |\n| [集成架构](../application/chapters/application-integration.md) | [集成协议](../application/chapters/application-integration.md#集成协议) | — |\n| [集成架构](../application/chapters/application-integration.md) | [集成数据流](../application/chapters/application-integration.md#集成数据流) | — |\n| [集成架构](../application/chapters/application-integration.md) | [防腐层](../application/chapters/application-integration.md#防腐层) | — |\n\n## [技术架构](../technical/README.md)\n\n| 主标题 | 副标题 | 归档业务知识 |\n| --- | --- | --- |\n| [中间件](../technical/chapters/technical-middleware.md) | [中间件选型](../technical/chapters/technical-middleware.md#中间件选型) | — |\n| [性能扩展](../technical/chapters/technical-performance-scalability.md) | [性能基线](../technical/chapters/technical-performance-scalability.md#性能基线) | — |\n| [性能扩展](../technical/chapters/technical-performance-scalability.md) | [容量规划](../technical/chapters/technical-performance-scalability.md#容量规划) | — |\n| [性能扩展](../technical/chapters/technical-performance-scalability.md) | [扩展策略](../technical/chapters/technical-performance-scalability.md#扩展策略) | — |\n| [性能扩展](../technical/chapters/technical-performance-scalability.md) | [性能测试](../technical/chapters/technical-performance-scalability.md#性能测试) | — |\n| [高可用与容灾](../technical/chapters/technical-ha-and-dr.md) | [高可用设计](../technical/chapters/technical-ha-and-dr.md#高可用设计) | — |\n| [高可用与容灾](../technical/chapters/technical-ha-and-dr.md) | [容灾方案](../technical/chapters/technical-ha-and-dr.md#容灾方案) | — |\n| [高可用与容灾](../technical/chapters/technical-ha-and-dr.md) | [熔断降级](../technical/chapters/technical-ha-and-dr.md#熔断降级) | — |\n| [高可用与容灾](../technical/chapters/technical-ha-and-dr.md) | [混沌工程](../technical/chapters/technical-ha-and-dr.md#混沌工程) | — |\n\n## [数据架构](../data/README.md)\n\n| 主标题 | 副标题 | 归档业务知识 |\n| --- | --- | --- |\n| [数据模型](../data/chapters/data-model.md) | [数据源](../data/chapters/data-model.md#数据源) | — |\n| [数据模型](../data/chapters/data-model.md) | [数据实体](../data/chapters/data-model.md#数据实体) | — |\n| [数据存储](../data/chapters/data-storage.md) | [存储类型](../data/chapters/data-storage.md#存储类型) | — |\n| [数据存储](../data/chapters/data-storage.md) | [数据分片](../data/chapters/data-storage.md#数据分片) | — |\n\n---\n\n## 附录\n\n### 文档关键词\n\n```yaml\nkeywords:\n- SYSNAME\n- 示例术语A\n- 示例术语B\n```",
+      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# {域名称}架构概览（{slug}-overview）\n\n\u003e **维护**：`docs-tag` phase 2（✅）→ phase 3（架构摘录，勿手改摘录行）。表行 ↔ 视角章节 `##`。系统 overview **是** docs-distill 目标。占位 `{域名称}`/`{slug}` 实例化时替换。\n\n## 架构摘录\n\n| 架构视角 | 主标题 | 副标题 |\n| --- | --- | --- |\n| _（运行 `--phase 3` 后填充）_ | | |\n\n## [业务架构](../business/README.md)\n\n| 主标题 | 副标题 | 归档业务知识 |\n| --- | --- | --- |\n| [业务概述](../business/chapters/business-overview.md) | [系统范围](../business/chapters/business-overview.md#系统范围) | — |\n| [业务术语](../business/chapters/business-glossary.md) | [概念模型](../business/chapters/business-glossary.md#概念模型) | — |\n| [业务术语](../business/chapters/business-glossary.md) | [业务术语](../business/chapters/business-glossary.md#业务术语) | — |\n| [能力地图](../business/chapters/business-capability-map.md) | [三级子域](../business/chapters/business-capability-map.md#三级子域) | — |\n| [能力地图](../business/chapters/business-capability-map.md) | [限界上下文](../business/chapters/business-capability-map.md#限界上下文) | — |\n| [能力地图](../business/chapters/business-capability-map.md) | [聚合](../business/chapters/business-capability-map.md#聚合) | — |\n| [能力地图](../business/chapters/business-capability-map.md) | [领域能力](../business/chapters/business-capability-map.md#领域能力) | — |\n\n## [产品架构](../product/README.md)\n\n| 主标题 | 副标题 | 归档业务知识 |\n| --- | --- | --- |\n| [产品概述](../product/chapters/product-overview.md) | [系统产品](../product/chapters/product-overview.md#系统产品) | — |\n| [产品架构](../product/chapters/product-architecture.md) | [产品模块](../product/chapters/product-architecture.md#产品模块) | — |\n| [信息架构](../product/chapters/product-information-architecture.md) | [导航结构](../product/chapters/product-information-architecture.md#导航结构) | — |\n| [信息架构](../product/chapters/product-information-architecture.md) | [页面层级](../product/chapters/product-information-architecture.md#页面层级) | — |\n| [产品功能](../product/chapters/product-feature.md) | [功能点](../product/chapters/product-feature.md#功能点) | — |\n| [产品功能](../product/chapters/product-feature.md) | [功能需求](../product/chapters/product-feature.md#功能需求) | — |\n| [用户旅程与场景](../product/chapters/product-user-journeys.md) | [用户旅程地图](../product/chapters/product-user-journeys.md#用户旅程地图) | — |\n| [用户旅程与场景](../product/chapters/product-user-journeys.md) | [用户故事地图](../product/chapters/product-user-journeys.md#用户故事地图) | — |\n| [用户旅程与场景](../product/chapters/product-user-journeys.md) | [场景用例](../product/chapters/product-user-journeys.md#场景用例) | — |\n| [用户旅程与场景](../product/chapters/product-user-journeys.md) | [用户故事清单](../product/chapters/product-user-journeys.md#用户故事清单) | — |\n| [用户旅程与场景](../product/chapters/product-user-journeys.md) | [业务规则清单](../product/chapters/product-user-journeys.md#业务规则清单) | — |\n\n## [应用架构](../application/README.md)\n\n| 主标题 | 副标题 | 归档业务知识 |\n| --- | --- | --- |\n| [系统概述](../application/chapters/application-overview.md) | [系统使命](../application/chapters/application-overview.md#系统使命) | — |\n| [系统概述](../application/chapters/application-overview.md) | [用户场景](../application/chapters/application-overview.md#用户场景) | — |\n| [系统概述](../application/chapters/application-overview.md) | [系统范围](../application/chapters/application-overview.md#系统范围) | — |\n| [应用架构](../application/chapters/application-architecture.md) | [应用](../application/chapters/application-architecture.md#应用) | — |\n| [应用架构](../application/chapters/application-architecture.md) | [微服务](../application/chapters/application-architecture.md#微服务) | — |\n| [领域模型](../application/chapters/application-domain-model.md) | [领域模型](../application/chapters/application-domain-model.md#领域模型) | — |\n| [领域模型](../application/chapters/application-domain-model.md) | [对象模型](../application/chapters/application-domain-model.md#对象模型) | — |\n| [领域模型](../application/chapters/application-domain-model.md) | [对象定义](../application/chapters/application-domain-model.md#对象定义) | — |\n| [服务设计](../application/chapters/application-service-design.md) | [设计原则](../application/chapters/application-service-design.md#设计原则) | — |\n| [服务设计](../application/chapters/application-service-design.md) | [服务拆分](../application/chapters/application-service-design.md#服务拆分) | — |\n| [服务设计](../application/chapters/application-service-design.md) | [服务设计](../application/chapters/application-service-design.md#服务设计) | — |\n| [服务设计](../application/chapters/application-service-design.md) | [服务容器图](../application/chapters/application-service-design.md#服务容器图) | — |\n| [服务设计](../application/chapters/application-service-design.md) | [组件图](../application/chapters/application-service-design.md#组件图) | — |\n| [集成架构](../application/chapters/application-integration.md) | [集成清单](../application/chapters/application-integration.md#集成清单) | — |\n| [集成架构](../application/chapters/application-integration.md) | [集成协议](../application/chapters/application-integration.md#集成协议) | — |\n| [集成架构](../application/chapters/application-integration.md) | [集成数据流](../application/chapters/application-integration.md#集成数据流) | — |\n| [集成架构](../application/chapters/application-integration.md) | [防腐层](../application/chapters/application-integration.md#防腐层) | — |\n\n## [技术架构](../technical/README.md)\n\n| 主标题 | 副标题 | 归档业务知识 |\n| --- | --- | --- |\n| [中间件](../technical/chapters/technical-middleware.md) | [中间件选型](../technical/chapters/technical-middleware.md#中间件选型) | — |\n| [性能扩展](../technical/chapters/technical-performance-scalability.md) | [性能基线](../technical/chapters/technical-performance-scalability.md#性能基线) | — |\n| [性能扩展](../technical/chapters/technical-performance-scalability.md) | [容量规划](../technical/chapters/technical-performance-scalability.md#容量规划) | — |\n| [性能扩展](../technical/chapters/technical-performance-scalability.md) | [扩展策略](../technical/chapters/technical-performance-scalability.md#扩展策略) | — |\n| [性能扩展](../technical/chapters/technical-performance-scalability.md) | [性能测试](../technical/chapters/technical-performance-scalability.md#性能测试) | — |\n| [高可用与容灾](../technical/chapters/technical-ha-and-dr.md) | [高可用设计](../technical/chapters/technical-ha-and-dr.md#高可用设计) | — |\n| [高可用与容灾](../technical/chapters/technical-ha-and-dr.md) | [容灾方案](../technical/chapters/technical-ha-and-dr.md#容灾方案) | — |\n| [高可用与容灾](../technical/chapters/technical-ha-and-dr.md) | [熔断降级](../technical/chapters/technical-ha-and-dr.md#熔断降级) | — |\n| [高可用与容灾](../technical/chapters/technical-ha-and-dr.md) | [混沌工程](../technical/chapters/technical-ha-and-dr.md#混沌工程) | — |\n\n## [数据架构](../data/README.md)\n\n| 主标题 | 副标题 | 归档业务知识 |\n| --- | --- | --- |\n| [数据模型](../data/chapters/data-model.md) | [数据源](../data/chapters/data-model.md#数据源) | — |\n| [数据模型](../data/chapters/data-model.md) | [数据实体](../data/chapters/data-model.md#数据实体) | — |\n| [数据存储](../data/chapters/data-storage.md) | [存储类型](../data/chapters/data-storage.md#存储类型) | — |\n| [数据存储](../data/chapters/data-storage.md) | [数据分片](../data/chapters/data-storage.md#数据分片) | — |\n\n---\n\n## 附录\n\n### 文档关键词\n\n```yaml\nkeywords:\n- SYSNAME\n- 示例术语A\n- 示例术语B\n```",
       "backlinks": [
         "DESIGN",
         "knowledge/overview/README"
@@ -697,7 +698,7 @@ aside {
         "product",
         "PM"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例产品模块\n\n## 关系\n\n- implements_to: PD-EXAMPLE\n- implemented_by: [FT-EXAMPLE](FT-EXAMPLE/FT-EXAMPLE.md)\n\n## 跨视角\n\n- maps_to: [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)\n\n## 详细说明\n\n- 产品模块。\n\n## 依据与证据\n\n[../../chapters/product-architecture.md](../../chapters/product-architecture.md#产品模块)（示例）",
+      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# 示例产品模块\n\n## 关系\n\n- implements_to: PD-EXAMPLE\n- implemented_by: [FT-EXAMPLE](FT-EXAMPLE/FT-EXAMPLE.md)\n\n## 跨视角\n\n- maps_to: [BC-EXAMPLE](../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/BC-EXAMPLE.md)\n\n## 详细说明\n\n- 产品模块。\n\n## 依据与证据\n\n[../../chapters/product-architecture.md](../../chapters/product-architecture.md#产品模块)（示例）",
       "backlinks": [
         "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FT-EXAMPLE",
         "knowledge/product/README"
@@ -712,7 +713,7 @@ aside {
         "product",
         "FT"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例功能\n\n## 关系\n\n- implements_to: [PM-EXAMPLE](../PM-EXAMPLE.md)\n- implemented_by: [FR-EXAMPLE](FR-EXAMPLE/FR-EXAMPLE.md)\n- supported_by: API-EXAMPLE\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 功能点。\n\n## 依据与证据\n\n[../../../chapters/product-feature.md](../../../chapters/product-feature.md#功能点)（示例）",
+      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# 示例功能\n\n## 关系\n\n- implements_to: [PM-EXAMPLE](../PM-EXAMPLE.md)\n- implemented_by: [FR-EXAMPLE](FR-EXAMPLE/FR-EXAMPLE.md)\n- supported_by: API-EXAMPLE\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 功能点。\n\n## 依据与证据\n\n[../../../chapters/product-feature.md](../../../chapters/product-feature.md#功能点)（示例）",
       "backlinks": [
         "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/FR-EXAMPLE",
         "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE",
@@ -728,7 +729,7 @@ aside {
         "product",
         "BR"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例规则\n\n## 关系\n\n- implements_to: [FR-EXAMPLE](FR-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 业务规则。\n\n## 依据与证据\n\n[../../../../chapters/product-user-journeys.md](../../../../chapters/product-user-journeys.md#业务规则清单)（示例）",
+      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# 示例规则\n\n## 关系\n\n- implements_to: [FR-EXAMPLE](FR-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 业务规则。\n\n## 依据与证据\n\n[../../../../chapters/product-user-journeys.md](../../../../chapters/product-user-journeys.md#业务规则清单)（示例）",
       "backlinks": [
         "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/FR-EXAMPLE",
         "knowledge/product/README"
@@ -743,7 +744,7 @@ aside {
         "product",
         "FR"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例功能需求\n\n## 关系\n\n- implements_to: [FT-EXAMPLE](../FT-EXAMPLE.md)\n- implemented_by:\n  - [UC-EXAMPLE](UC-EXAMPLE.md)\n  - [BR-EXAMPLE](BR-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 功能需求。\n\n## 依据与证据\n\n[../../../../chapters/product-feature.md](../../../../chapters/product-feature.md#功能需求)（示例）",
+      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# 示例功能需求\n\n## 关系\n\n- implements_to: [FT-EXAMPLE](../FT-EXAMPLE.md)\n- implemented_by:\n  - [UC-EXAMPLE](UC-EXAMPLE.md)\n  - [BR-EXAMPLE](BR-EXAMPLE.md)\n\n## 跨视角\n\n- (none)\n\n## 详细说明\n\n- 功能需求。\n\n## 依据与证据\n\n[../../../../chapters/product-feature.md](../../../../chapters/product-feature.md#功能需求)（示例）",
       "backlinks": [
         "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/BR-EXAMPLE",
         "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/UC-EXAMPLE",
@@ -760,7 +761,7 @@ aside {
         "product",
         "UC"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例用例\n\n## 关系\n\n- implements_to: [FR-EXAMPLE](FR-EXAMPLE.md)\n\n## 跨视角\n\n- maps_to: [AB-EXAMPLE](../../../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md)\n- mapped_by: API-EXAMPLE\n\n## 详细说明\n\n- 用例。\n\n## 依据与证据\n\n[../../../../chapters/product-user-journeys.md](../../../../chapters/product-user-journeys.md#场景用例)（示例）",
+      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# 示例用例\n\n## 关系\n\n- implements_to: [FR-EXAMPLE](FR-EXAMPLE.md)\n\n## 跨视角\n\n- maps_to: [AB-EXAMPLE](../../../../../business/BSD-EXAMPLE-L2/BSD-EXAMPLE-L3/BC-EXAMPLE/AGG-EXAMPLE/AB-EXAMPLE.md)\n- mapped_by: API-EXAMPLE\n\n## 详细说明\n\n- 用例。\n\n## 依据与证据\n\n[../../../../chapters/product-user-journeys.md](../../../../chapters/product-user-journeys.md#场景用例)（示例）",
       "backlinks": [
         "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/FT-EXAMPLE/FR-EXAMPLE/FR-EXAMPLE",
         "knowledge/product/README"
@@ -775,7 +776,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 产品架构\n\n[返回 · 产品架构](../README.md)\n\n本系统的产品模块。\n\n> **SSOT**：PL、PD 首次在解决方案。本层不建 PL、PD 文件，只写纯 ID。\n\n## 产品模块\n\n写 PM 的编号、名称，各 `implements_to` 哪条解决方案 PD，`maps_to` 哪个 BC。",
+      "body": "# 产品架构\n\n[返回 · 产品架构](../README.md)\n\n本系统的产品模块。\n\n\u003e **SSOT**：PL、PD 首次在解决方案。本层不建 PL、PD 文件，只写纯 ID。\n\n## 产品模块\n\n写 PM 的编号、名称，各 `implements_to` 哪条解决方案 PD，`maps_to` 哪个 BC。",
       "backlinks": [
         "knowledge/overview/NAME-overview",
         "knowledge/product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE",
@@ -808,7 +809,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 信息架构\n\n[返回 · 产品架构](../README.md)\n\n本系统的导航与页面层级。\n\n> **信息架构 SSOT**：设计规范、页面原型、交互流程与无障碍见公司层 product · product-ux。\n\n## 导航结构\n\n写全局与局部菜单、路由命名与角色可见性。\n\n## 页面层级\n\n写列表、详情、编辑的层级、面包屑与关键路径步数。",
+      "body": "# 信息架构\n\n[返回 · 产品架构](../README.md)\n\n本系统的导航与页面层级。\n\n\u003e **信息架构 SSOT**：设计规范、页面原型、交互流程与无障碍见公司层 product · product-ux。\n\n## 导航结构\n\n写全局与局部菜单、路由命名与角色可见性。\n\n## 页面层级\n\n写列表、详情、编辑的层级、面包屑与关键路径步数。",
       "backlinks": [
         "knowledge/overview/NAME-overview",
         "knowledge/product/README"
@@ -823,7 +824,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 产品概述\n\n[返回 · 产品架构](../README.md)\n\n本系统纳入的产品模块。\n\n> **产品概述 SSOT**：公司定位、用户与路线见公司层 product · product-overview；度量见 product-metrics；体验见 product-ux。方案范围见解决方案层 product · product-overview；产品线见 product-line；产品服务与流程见 product-architecture。\n\n## 系统产品\n\n写本系统有哪些 PM，各 `implements_to` 哪条解决方案 PD。",
+      "body": "# 产品概述\n\n[返回 · 产品架构](../README.md)\n\n本系统纳入的产品模块。\n\n\u003e **产品概述 SSOT**：公司定位、用户与路线见公司层 product · product-overview；度量见 product-metrics；体验见 product-ux。方案范围见解决方案层 product · product-overview；产品线见 product-line；产品服务与流程见 product-architecture。\n\n## 系统产品\n\n写本系统有哪些 PM，各 `implements_to` 哪条解决方案 PD。",
       "backlinks": [
         "knowledge/overview/NAME-overview",
         "knowledge/product/README"
@@ -870,7 +871,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 高可用与容灾\n\n[返回 · 技术架构](../README.md)\n\n本系统的可用性与容灾。\n\n> **高可用与容灾 SSOT**：部署与流量标准见公司层 technical · technical-infrastructure。基础设施选用见解决方案层 technical · technical-infrastructure。\n\n## 高可用设计\n\n写同城双活、异地多活或主备，复制方向与 RTO/RPO。\n\n## 容灾方案\n\n写灾难场景、恢复目标、备份异地复制与演练频率。\n\n## 熔断降级\n\n写网关、服务、依赖三层的限流、熔断条件与降级预案。\n\n## 混沌工程\n\n写实验范围、安全护栏、回滚与结论沉淀。",
+      "body": "# 高可用与容灾\n\n[返回 · 技术架构](../README.md)\n\n本系统的可用性与容灾。\n\n\u003e **高可用与容灾 SSOT**：部署与流量标准见公司层 technical · technical-infrastructure。基础设施选用见解决方案层 technical · technical-infrastructure。\n\n## 高可用设计\n\n写同城双活、异地多活或主备，复制方向与 RTO/RPO。\n\n## 容灾方案\n\n写灾难场景、恢复目标、备份异地复制与演练频率。\n\n## 熔断降级\n\n写网关、服务、依赖三层的限流、熔断条件与降级预案。\n\n## 混沌工程\n\n写实验范围、安全护栏、回滚与结论沉淀。",
       "backlinks": [
         "knowledge/overview/NAME-overview",
         "knowledge/technical/README"
@@ -885,7 +886,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 中间件与基础组件\n\n[返回 · 技术架构](../README.md)\n\n本系统的中间件选型。\n\n> **中间件 SSOT**：MW/CMP 实体在应用层。TS 见解决方案层 technical · technical-overview。\n\n## 中间件选型\n\n写本系统选用哪些中间件，各 `implements_to` 哪条方案 TS。不写集群、TTL、索引、配置。",
+      "body": "# 中间件与基础组件\n\n[返回 · 技术架构](../README.md)\n\n本系统的中间件选型。\n\n\u003e **中间件 SSOT**：MW/CMP 实体在应用层。TS 见解决方案层 technical · technical-overview。\n\n## 中间件选型\n\n写本系统选用哪些中间件，各 `implements_to` 哪条方案 TS。不写集群、TTL、索引、配置。",
       "backlinks": [
         "knowledge/overview/NAME-overview",
         "knowledge/technical/README"
@@ -900,7 +901,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 性能与扩展性\n\n[返回 · 技术架构](../README.md)\n\n本系统的性能目标、容量与扩展。\n\n> **性能与扩展 SSOT**：分片见系统 data · [数据存储](../../data/chapters/data-storage.md#数据分片)。基础设施选用见解决方案层 technical · technical-infrastructure。部署标准见公司层 technical · technical-infrastructure。\n\n## 性能基线\n\n写核心链路的延迟、吞吐、错误率基线与测量口径。\n\n## 容量规划\n\n写业务指标到资源的换算、评估节奏与扩容触发。\n\n## 扩展策略\n\n写无状态与有状态的扩展方式。分片键不写在这里。\n\n## 性能测试\n\n写压测场景、通过标准、报告归档与 CI 门禁关系。",
+      "body": "# 性能与扩展性\n\n[返回 · 技术架构](../README.md)\n\n本系统的性能目标、容量与扩展。\n\n\u003e **性能与扩展 SSOT**：分片见系统 data · [数据存储](../../data/chapters/data-storage.md#数据分片)。基础设施选用见解决方案层 technical · technical-infrastructure。部署标准见公司层 technical · technical-infrastructure。\n\n## 性能基线\n\n写核心链路的延迟、吞吐、错误率基线与测量口径。\n\n## 容量规划\n\n写业务指标到资源的换算、评估节奏与扩容触发。\n\n## 扩展策略\n\n写无状态与有状态的扩展方式。分片键不写在这里。\n\n## 性能测试\n\n写压测场景、通过标准、报告归档与 CI 门禁关系。",
       "backlinks": [
         "knowledge/overview/NAME-overview",
         "knowledge/technical/README"
@@ -925,7 +926,7 @@ aside {
       "title": "REQUIREMENT-EXAMPLE — 需求包结构示例",
       "description": null,
       "tags": [],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# REQUIREMENT-EXAMPLE — 需求包结构示例\n\n结构占位：`REQUIREMENT-{IDEA-ID}/MVP-Phase-*/` + PRD/ASD/DSD/TDD。非生产。\n\n上游：[../../features/FEATURE-EXAMPLE.md](../../features/FEATURE-EXAMPLE.md) · 约定：[../README.md](../README.md)\n\n```text\nREQUIREMENT-EXAMPLE/\n└── MVP-Phase-1/\n    ├── PRD-EXAMPLE.md\n    ├── ASD-EXAMPLE-1.md\n    ├── DSD-EXAMPLE-1.md\n    ├── TDD-EXAMPLE.md\n    └── specs/\n```",
+      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# REQUIREMENT-EXAMPLE — 需求包结构示例\n\n结构占位：`REQUIREMENT-{IDEA-ID}/MVP-Phase-*/` + PRD/ASD/DSD/TDD。非生产。\n\n上游：[../../features/FEATURE-EXAMPLE.md](../../features/FEATURE-EXAMPLE.md) · 约定：[../README.md](../README.md)\n\n```text\nREQUIREMENT-EXAMPLE/\n└── MVP-Phase-1/\n    ├── PRD-EXAMPLE.md\n    ├── ASD-EXAMPLE-1.md\n    ├── DSD-EXAMPLE-1.md\n    ├── TDD-EXAMPLE.md\n    └── specs/\n```",
       "backlinks": [
         "features/FEATURE-EXAMPLE",
         "requirements/README"
@@ -939,7 +940,7 @@ aside {
       "tags": [
         "example"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例 ASD（占位）\n\n结构演示。详设见同阶段 DSD。",
+      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# 示例 ASD（占位）\n\n结构演示。详设见同阶段 DSD。",
       "backlinks": []
     },
     "requirements/REQUIREMENT-EXAMPLE/MVP-Phase-1/DSD-EXAMPLE-1": {
@@ -950,7 +951,7 @@ aside {
       "tags": [
         "example"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例 DSD（占位）\n\n结构演示。应用库详设可经 `/sdx-design` 另落。",
+      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# 示例 DSD（占位）\n\n结构演示。应用库详设可经 `/sdx-design` 另落。",
       "backlinks": []
     },
     "requirements/REQUIREMENT-EXAMPLE/MVP-Phase-1/PRD-EXAMPLE": {
@@ -961,7 +962,7 @@ aside {
       "tags": [
         "example"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例 PRD（占位）\n\n结构演示：`REQUIREMENT-EXAMPLE/MVP-Phase-1/PRD-EXAMPLE.md`。无业务扩写。",
+      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# 示例 PRD（占位）\n\n结构演示：`REQUIREMENT-EXAMPLE/MVP-Phase-1/PRD-EXAMPLE.md`。无业务扩写。",
       "backlinks": []
     },
     "requirements/REQUIREMENT-EXAMPLE/MVP-Phase-1/README": {
@@ -970,7 +971,7 @@ aside {
       "title": "MVP-Phase-1",
       "description": null,
       "tags": [],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# MVP-Phase-1\n\n示例阶段目录。产物：PRD / ASD / DSD / TDD；规约见 `specs/`。",
+      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# MVP-Phase-1\n\n示例阶段目录。产物：PRD / ASD / DSD / TDD；规约见 `specs/`。",
       "backlinks": []
     },
     "requirements/REQUIREMENT-EXAMPLE/MVP-Phase-1/TDD-EXAMPLE": {
@@ -981,7 +982,7 @@ aside {
       "tags": [
         "example"
       ],
-      "body": "<!-- markdownlint-disable-next-line MD025 -->\n# 示例 TDD（占位）\n\n结构演示。不产出自动化代码。",
+      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# 示例 TDD（占位）\n\n结构演示。不产出自动化代码。",
       "backlinks": []
     }
   },
@@ -1767,6 +1768,13 @@ aside {
   let cy = null;
   let selectedId = null;
 
+  function textElement(tag, text, className) {
+    const element = document.createElement(tag);
+    element.textContent = text;
+    if (className) element.className = className;
+    return element;
+  }
+
   function normalizeLinkToId(href, baseId) {
     if (!href) return null;
     let link = href.split('#')[0].trim();
@@ -1810,11 +1818,16 @@ aside {
 
   function renderLegend() {
     const el = document.getElementById('legend');
-    const items = (bundle.types || []).map(t => {
-      const color = typeColors[t] || '#888';
-      return `<span class="legend-item"><span class="legend-swatch" style="background:${color}"></span>${t}</span>`;
-    }).join('');
-    el.innerHTML = '<h3>类型图例</h3>' + (items || '<span class="empty-hint">无</span>');
+    el.replaceChildren(textElement('h3', '类型图例'));
+    const types = bundle.types || [];
+    if (!types.length) el.appendChild(textElement('span', '无', 'empty-hint'));
+    types.forEach(t => {
+      const item = textElement('span', '', 'legend-item');
+      const swatch = textElement('span', '', 'legend-swatch');
+      swatch.style.backgroundColor = typeColors[t] || '#888';
+      item.append(swatch, document.createTextNode(t));
+      el.appendChild(item);
+    });
   }
 
   function populateTypeFilter() {
@@ -1927,42 +1940,69 @@ aside {
     const box = document.getElementById('backlinks');
     const c = concepts[id];
     const links = (c && c.backlinks) || [];
+    box.replaceChildren(textElement('h3', 'Cited by'));
     if (!links.length) {
-      box.innerHTML = '<h3>Cited by</h3><p class="empty-hint">无引用</p>';
+      box.appendChild(textElement('p', '无引用', 'empty-hint'));
       return;
     }
-    const items = links.map(src => {
+    const list = document.createElement('ul');
+    links.forEach(src => {
       const sc = concepts[src];
       const label = sc ? (sc.title || src) : src;
-      return `<li><a data-id="${src}">${label}</a> <span class="empty-hint">(${src})</span></li>`;
-    }).join('');
-    box.innerHTML = '<h3>Cited by</h3><ul>' + items + '</ul>';
-    box.querySelectorAll('a[data-id]').forEach(a => {
+      const item = document.createElement('li');
+      const a = textElement('a', label);
+      a.dataset.id = src;
       a.addEventListener('click', e => {
         e.preventDefault();
-        selectConcept(a.getAttribute('data-id'));
+        selectConcept(src);
       });
+      item.append(a, document.createTextNode(' '), textElement('span', `(${src})`, 'empty-hint'));
+      list.appendChild(item);
     });
+    box.appendChild(list);
+  }
+
+  function renderMarkdown(container, markdown) {
+    // Fail closed: missing, unsupported or failed libraries leave literal text.
+    container.textContent = markdown;
+    if (!window.marked || typeof window.marked.parse !== 'function' ||
+        !window.DOMPurify || !window.DOMPurify.isSupported) return;
+    try {
+      const fragment = window.DOMPurify.sanitize(window.marked.parse(markdown, { breaks: true }), {
+        USE_PROFILES: { html: true },
+        RETURN_DOM_FRAGMENT: true,
+        SANITIZE_NAMED_PROPS: true,
+        FORBID_TAGS: ['style'],
+        FORBID_ATTR: ['style'],
+      });
+      container.replaceChildren(fragment);
+    } catch (error) {
+      container.textContent = markdown;
+      console.warn('Markdown unavailable; displaying plain text.', error);
+    }
   }
 
   function renderDetail(id) {
     const c = concepts[id];
     const detail = document.getElementById('detail');
     if (!c) {
-      detail.innerHTML = '<p class="empty-hint">概念不存在</p>';
+      detail.replaceChildren(textElement('p', '概念不存在', 'empty-hint'));
       return;
     }
     const desc = c.description != null && c.description !== '' ? String(c.description) : '—';
-    const tags = (c.tags || []).map(t => `<span>${t}</span>`).join('') || '<span class="empty-hint">—</span>';
-    const bodyHtml = marked.parse(c.body || '', { breaks: true });
-    detail.innerHTML =
-      `<h2>${c.title || c.id}</h2>` +
-      `<div class="meta"><div><strong>ID:</strong> ${c.id}</div>` +
-      `<div><strong>Type:</strong> ${c.type || '—'}</div>` +
-      `<div><strong>Description:</strong> ${desc}</div></div>` +
-      `<div class="tags">${tags}</div>` +
-      `<div class="body">${bodyHtml}</div>`;
-    detail.querySelector('.body').addEventListener('click', e => {
+    const meta = textElement('div', '', 'meta');
+    [['ID:', c.id], ['Type:', c.type || '—'], ['Description:', desc]].forEach(([label, value]) => {
+      const row = document.createElement('div');
+      row.append(textElement('strong', label), document.createTextNode(' ' + value));
+      meta.appendChild(row);
+    });
+    const tags = textElement('div', '', 'tags');
+    (c.tags || []).forEach(t => tags.appendChild(textElement('span', t)));
+    if (!tags.children.length) tags.appendChild(textElement('span', '—', 'empty-hint'));
+    const body = textElement('div', '', 'body');
+    renderMarkdown(body, c.body || '');
+    detail.replaceChildren(textElement('h2', c.title || c.id), meta, tags, body);
+    body.addEventListener('click', e => {
       const a = e.target.closest('a');
       if (!a) return;
       const targetId = normalizeLinkToId(a.getAttribute('href'), id);

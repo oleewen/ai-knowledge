@@ -37,9 +37,9 @@ version: 2026.1020.1
 冲突以下游事实源为准；company 只修映射与导航。
 
 1. 下游 `solution/` 整理可同步内容  
-2. docs-pull → 校验/修复 `solution-slots/solution-{NAME}` 软链  
+2. docs-link --check / --repair → 校验/修复 `solution-slots/solution-{NAME}` 软链
 3. 校核 `knowledge/` 与 `knowledge-links.yaml`  
-4. 可记 `SYNC_OK`（含 commit）；溯源 `git log` / `git diff`  
+4. 内容更新遵循各仓 Git 工作流；溯源 `git log` / `git diff`
 
 禁止实现细节入 company 正文；改目录语义先改**本元库模板**再 upgrade。全图：[knowledge-layout § 知识流水线](../agent/references/knowledge-layout.md#知识流水线)。
 

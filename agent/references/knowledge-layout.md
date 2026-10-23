@@ -118,7 +118,7 @@
 系统库（本地 path，HEAD） ──docs-link──► solution/knowledge-links.yaml
 解决方案库（本地 path，HEAD） ──docs-link──► company/knowledge-links.yaml
          │
-         ▼ docs-pull
+         ▼ docs-link --check（只读）；异常槽位单项 --repair
 system/application-slots/application-{NAME}/
 solution/system-slots/system-{NAME}/
 company/solution-slots/solution-{NAME}/
@@ -133,6 +133,8 @@ company/knowledge/overview/{NAME}-overview.md
          ▼ docs-archive
 各层 knowledge/{business,product,application,data,technical}/
 ```
+
+内容更新遵循各下级仓普通 Git 工作流；槽位维护不访问远端、不改 Git 状态。检查/修复边界见 [docs-link](../skills/docs-link/SKILL.md)。
 
 允许边：`company→solution`、`solution→system`、`system→application`。禁止公司直连系统。
 

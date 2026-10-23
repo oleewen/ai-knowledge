@@ -2,7 +2,7 @@
 
 ## 源与目标
 
-只读取已 pull 的联邦槽位内 knowledge 与 SDD，目标为对应层 `knowledge/overview/{NAME}-overview.md`。边路径见 [workflow.md](workflow.md)。
+只读取已挂载且内容已核实的联邦槽位内 knowledge 与 SDD，目标为对应层 `knowledge/overview/{NAME}-overview.md`。边路径见 [workflow.md](workflow.md)。
 
 目标不存在时，从同层 `NAME-overview.md` 创建；同步替换文件名和 `# {NAME} 架构概览`。目标已存在时只更新第三列。
 

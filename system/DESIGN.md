@@ -34,12 +34,12 @@ version: 2026.1020.1
 
 ## 同步与门禁
 
-1. **docs-pull** → 校验/修复 `application-slots/application-{NAME}` 软链  
+1. **docs-link --check / --repair** → 校验/修复 `application-slots/application-{NAME}` 软链
 2. 校核 `knowledge/` 与治理约定  
 3. **docs-distill / docs-archive** 上行解决方案 overview（不再直蒸公司）  
-4. 同步追溯 git / `SYNC_OK`  
+4. 内容更新遵循各仓 Git 工作流；溯源 `git log` / `git diff`
 
-全图：[knowledge-layout § 知识流水线](../agent/references/knowledge-layout.md#知识流水线)。跨层无双份主定义；脏工作区不得 pull；改目录语义先改**本元库模板**再 upgrade。
+全图：[knowledge-layout § 知识流水线](../agent/references/knowledge-layout.md#知识流水线)。跨层无双份主定义；内容更新按各仓 Git 工作流处理；改目录语义先改**本元库模板**再 upgrade。
 
 ## 治理引用
 

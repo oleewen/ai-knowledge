@@ -148,10 +148,10 @@ target="$overview_dir/$name-overview.md"
 errors=0
 
 if [[ ! -d "$slot_dir" ]]; then
-  echo "[ERROR] 槽位不存在: ${slot_dir#$root_dir/}（请先 docs-link / docs-pull）" >&2
+  echo "[ERROR] 槽位不存在: ${slot_dir#$root_dir/}（先用普通 Git 工作流准备下级仓，再运行 docs-link --check / --repair --target）" >&2
   errors=$((errors + 1))
 elif [[ -z "$(find -H "$slot_dir" -mindepth 1 -maxdepth 1 -print -quit 2>/dev/null)" ]]; then
-  echo "[ERROR] 槽位为空: ${slot_dir#$root_dir/}（请先 docs-pull）" >&2
+  echo "[ERROR] 槽位为空: ${slot_dir#$root_dir/}（先检查下级文档目录内容，再运行 docs-link --check）" >&2
   errors=$((errors + 1))
 elif [[ ! -f "$slot_dir/README.md" ]]; then
   echo "[ERROR] 槽位契约缺失: ${slot_dir#$root_dir/}/README.md（先补职责/粒度契约）" >&2

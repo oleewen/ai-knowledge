@@ -16,7 +16,7 @@
 | --- | --- |
 | SSOT | 五视角唯一事实源，跨文件仅 **ID** 引用 |
 | Skills 链 | `docs-*` 构建 × `sdx-*` 交付；产物上行归并 |
-| 联邦 | 公司 → 解决方案 → 系统 → 应用；link / pull / distill 三跳 |
+| 联邦 | 公司 → 解决方案 → 系统 → 应用；link 建联与检查 / Git 更新 / distill 上行 |
 | Agent 友好 | Rules + Skills；Markdown + YAML + Git |
 
 ### 为何需要
@@ -44,7 +44,7 @@ Agent = LLM + Harness。平台给模型与工具，**工程知识**须由团队�
 
 ## 从零选型
 
-**口诀**：有应用仓 → bootstrap + build；有多应用 → 系统 link + pull/distill；有多系统 → 解决方案层再 hop；只有 legacy → extract → archive → build。
+**口诀**：有应用仓 → bootstrap + build；有多应用 → 系统 link + Git 更新 + distill；有多系统 → 解决方案层再 hop；只有 legacy → extract → archive → build。
 
 场景 A–D 逐步操作见 [quick-start.md](quick-start.md)。
 
@@ -97,7 +97,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/bootstrap.
 ├── solution/             # 解决方案库：knowledge/ + overview、system-slots/system-{NAME}/
 ├── company/              # 公司库：knowledge/ + overview、solution-slots/solution-{NAME}/
 ├── bootstrap.sh          # 远程/本地双轨装机编排（agent-install → docs-install）
-├── agent/                # skills/（26）、rules/、knowledge/、references/、scripts/、hooks.json
+├── agent/                # skills/（25）、rules/、knowledge/、references/、scripts/、hooks.json
 ├── .docsconfig           # DOC_DIR=docs（目录可缺席）· KNOWLEDGE_TYPE=company
 └── .gitignore
 ```
@@ -115,7 +115,7 @@ flowchart TD
     subgraph KB["知识库构建链 docs-*"]
         direction LR
         KB_APP["application"] -. 只读引用 .-> KB_SYS["system"] -. 只读引用 .-> KB_SLN["solution"] -. 只读引用 .-> KB_CO["company"]
-        KB_APP -. pull .-> KB_SYS -. pull .-> KB_SLN -. pull .-> KB_CO
+        KB_APP -. distill .-> KB_SYS -. distill .-> KB_SLN -. distill .-> KB_CO
     end
     subgraph RD["需求交付链 sdx-*"]
         direction LR
@@ -143,7 +143,7 @@ flowchart TD
 | 初始化脚本 | [bootstrap.sh](bootstrap.sh)、[agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)、[agent/skills/agent-install/SKILL.md](agent/skills/agent-install/SKILL.md) |
 | 共享推进契约 | [agent/references/](agent/references/) |
 | 根索引运行日志 | [INDEX-GUIDE 增量锚点](INDEX-GUIDE 增量锚点) |
-| OKF / Skill 清单（26） | [docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) · [agent/skills/README.md](agent/skills/README.md) |
+| OKF / Skill 清单（25） | [docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) · [agent/skills/README.md](agent/skills/README.md) |
 
 ---
 

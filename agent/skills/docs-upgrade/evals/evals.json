@@ -116,13 +116,13 @@
       "id": "upgrade-trigger-005",
       "category": "should-trigger",
       "prompt": "/docs-upgrade 时指定了一个 application-slots 下指向应用仓的软链路径里的 md，要求对齐元库。",
-      "expected_output": "拒绝该软链路径；提示 docs-pull；不 scaffold、不重填。若指定的是 application-slots/README.md 等真文件则允许升级。",
+      "expected_output": "拒绝该软链路径；提示在目标仓执行内容升级；槽位维护用 docs-link --check/--repair；不 scaffold、不重填。若指定的是 application-slots/README.md 等真文件则允许升级。",
       "assertions": [
         {
           "id": "file-mode-reject-symlink",
           "name": "软链拒绝",
           "type": "must_include",
-          "check": "须拒绝软链（或软链下）路径并提示 docs-pull，不得对该路径 scaffold 或结构重填。",
+          "check": "须拒绝软链（或软链下）路径并提示在目标仓执行内容升级；槽位维护用 docs-link --check/--repair，不得对该路径 scaffold 或结构重填。",
           "priority": "P0"
         }
       ],
@@ -224,13 +224,13 @@
       "id": "upgrade-not-trigger-002",
       "category": "should-not-trigger",
       "prompt": "按 knowledge-links 把应用仓内容拉回系统槽位。",
-      "expected_output": "主路径 docs-pull，不是 docs-upgrade。",
+      "expected_output": "内容更新走应用仓普通 Git 工作流；槽位维护走 docs-link --check/--repair，不以 docs-upgrade 执行回拉。",
       "assertions": [
         {
           "id": "correct-pull",
           "name": "正确下游 pull",
           "type": "must_include",
-          "check": "须指向 docs-pull，不得主路径写成升级元库。",
+          "check": "须区分应用仓 Git 更新与 docs-link 槽位维护，不得主路径写成升级元库。",
           "priority": "P0"
         }
       ],

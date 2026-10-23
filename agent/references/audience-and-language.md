@@ -73,9 +73,8 @@
 
 | 技能 | 主读者 | 宜写 | 宜弱化 |
 | --- | --- | --- | --- |
-| docs-pull | 联邦维护者 | 槽位、同步结果、commit / `SYNC_OK` 要点 | 应用内部实现细节 |
 | docs-tag | overview 维护者 | phase 结果、关键词命中摘要 | 无依据扩写业务正文 |
-| docs-link | 联邦维护者 | link/unlink 结果、槽位软链、风险确认 | 改正文当知识更新 |
+| docs-link | 联邦维护者 | 登记/检查/修复结果、槽位状态、失败与授权范围 | 改正文当知识更新 |
 | docs-install | 知识库装机者 | target/scope/mode、dry-run 与写入结果 | 业务实体正文 |
 | agent-install | Agent 装机者 | agents/target/scope、同步结果与风险 | 把 hooks/rules 当业务知识讲解 |
 | docs-upgrade | 知识库升级者 | 升级清单、四桶/未落位结论、路径重写要点 | 元库全文粘贴、清空式重装叙事 |

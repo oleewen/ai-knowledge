@@ -26,7 +26,6 @@ for file in \
   agent/skills/agent-install/scripts/agent-install.sh \
   agent/skills/docs-install/scripts/docs-config.sh \
   agent/skills/docs-install/scripts/docs-install.sh \
-  agent/skills/docs-pull/scripts/pull-slots.sh \
   agent/skills/sdx-solution/scripts/validate-solution.sh; do
   assert_contains 'bash.sh' "$META_ROOT/$file"
 done

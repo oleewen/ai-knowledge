@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# lib/slot-softlink.sh — 联邦槽位软链与共用日志辅助（docs-link / docs-pull）
+# lib/slot-softlink.sh — 联邦槽位软链与共用日志辅助（联邦技能共用）
 # 依赖：lib/path.sh、lib/docsconfig.sh、lib/git-remote.sh；未加载时自动 source
 
 if [[ -n "${_LIB_SLOT_SOFTLINK_LOADED:-}" ]]; then
@@ -69,7 +69,7 @@ slot_resolve_doc_root() {
   printf '%s' "$fallback"
 }
 
-# 兼容旧调用：不再创建 *-slots/changelogs 或 ARCHIVE-LOG（追溯 git / SYNC_OK）
+# 兼容旧调用：不再创建 *-slots/changelogs 或 ARCHIVE-LOG（追溯各仓 Git 历史）
 slot_ensure_shared_changelogs() {
   :
 }

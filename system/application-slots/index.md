@@ -14,7 +14,7 @@
 
 1. [README.md](README.md) — 职责与软链约定
 3. [../knowledge-links.yaml](../knowledge-links.yaml) — 建联
-4. 同步追溯：`git log` / `git diff` 或 `/docs-pull` 的 `SYNC_OK` commit
+4. 同步追溯：各仓普通 Git 工作流及 `git log` / `git diff`
 
 ## 关联索引
 

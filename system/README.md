@@ -16,4 +16,4 @@ title: "系统知识库（顶层 `system/`）"
 
 按需：`knowledge-links.yaml` · [application-slots/](application-slots/README.md) · [analysis/](analysis/README.md) · [features/](features/README.md) · [requirements/](requirements/README.md) · [adr/](adr/README.md)
 
-模板占位：`knowledge/overview/NAME-overview.md`、`*-EXAMPLE`（可替换）。联邦槽位：`docs-link` 建软链；追溯 git / SYNC_OK。
+模板占位：`knowledge/overview/NAME-overview.md`、`*-EXAMPLE`（可替换）。联邦槽位：`docs-link` 建联、检查与修复软链；内容更新及溯源用各仓 Git 工作流。

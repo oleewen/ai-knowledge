@@ -13,7 +13,6 @@ suite_runner() {
     docs-publish) printf '%s\n' 'agent/skills/docs-publish/tests/run.sh' ;;
     refresh-codex) printf '%s\n' 'agent/scripts/tests/refresh-codex/run.sh' ;;
     docs-link) printf '%s\n' 'agent/skills/docs-link/tests/run.sh' ;;
-    docs-pull) printf '%s\n' 'agent/skills/docs-pull/tests/run.sh' ;;
     docs-okf) printf '%s\n' 'agent/skills/docs-okf/tests/run.sh' ;;
     docs-install) printf '%s\n' 'agent/skills/docs-install/tests/run.sh' ;;
     agent-install) printf '%s\n' 'agent/skills/agent-install/tests/run.sh' ;;
@@ -25,8 +24,8 @@ suite_runner() {
   esac
 }
 
-QUICK_SUITES=(bash-guard refresh-codex docs-publish forbidden-file-refs link-reachable docs-link docs-pull okf docs-okf agent-install bootstrap)
-FULL_SUITES=(bash-guard refresh-codex docs-publish forbidden-file-refs link-reachable docs-link docs-pull okf docs-okf agent-install bootstrap docs-install)
+QUICK_SUITES=(bash-guard refresh-codex docs-publish forbidden-file-refs link-reachable docs-link okf docs-okf agent-install bootstrap)
+FULL_SUITES=(bash-guard refresh-codex docs-publish forbidden-file-refs link-reachable docs-link okf docs-okf agent-install bootstrap docs-install)
 
 MODE='quick'
 SUITE=''

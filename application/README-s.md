@@ -11,7 +11,7 @@ title: application（mode=s · standalone）
 ```text
 knowledge（实体 SSOT；本层首次：API / TBL / MW / CMP）
     │ 本库：docs-extract / docs-archive → knowledge/overview/{NAME}-overview.md
-    │ 上行：docs-pull → system 槽位 → docs-distill → system overview
+    │ 上行：docs-link 挂载 → system 槽位 → docs-distill → system overview
     │       （distill 不写本库 overview）
     │
 analysis ──→ features ──→ requirements

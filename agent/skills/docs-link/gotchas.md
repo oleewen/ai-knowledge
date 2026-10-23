@@ -7,7 +7,9 @@
 | URL 未登记 | 首次建联用本地目标 Git 根；URL 不触发 clone |
 | path 为 `~/…`、绝对路径或越界 | 按[路径契约](../../knowledge/knowledge-governance.md)授权迁移后再试，不自动改清单 |
 | 清单 name/repository/dir 缺失或重复 | 先核对原登记；不能补猜后直接覆盖 |
-| 槽位失效 | 已登记槽位回拉/修复用 docs-pull；真实目录冲突须用户处置 |
+| 槽位失效 | 先 `--check`，再对已登记 target 预览 `--repair`；真实文件/目录保留 |
+| 缺仓、配置或反向 parent 不符 | 停止维护；按登记 path 准备仓库或定向纠正登记，不自动 clone、安装或改 YAML |
+| dirty/detached | 允许槽位检查/修复；内容更新另走该仓 Git 工作流，不 stash/reset/切分支 |
 | 下级仓残留旧 scripts/docs-link.sh | 使用元库或已安装技能脚本；不自动删除残留 |
 
 行为与授权以 [工作流](references/workflow.md)、[gates](references/gates.md) 为准。

@@ -4,18 +4,21 @@ set -euo pipefail
 
 usage() {
   cat <<'EOF'
-用法: bash docs-link.sh --link|--unlink --target <仓库根或已登记 remote URL> [选项]
+用法: bash docs-link.sh --link|--unlink|--check|--repair [--target <仓库根或已登记 remote URL>] [选项]
 
 在源 Git 根执行；允许 company→solution、solution→system、system→application。
-  --dry-run       只预览；省略此参数会写入，调用方须先取得授权。
+  --check         只读检查；无 target 时逐项检查全部 child。
+  --repair        修复一个已登记槽位；必须指定 target，不支持 --all。
+  --dry-run       只预览；repair 预览不创建目录或软链。
   --app-name 名   link 的槽位名称（三种目标层通用）；默认已有 name，再取目录名。
   --rewrite-http  仅 link：显式换父时改写目标 knowledge 中的旧 HTTP 前缀。
   --path          --target 的弃用别名；一次只能传一个目标。
   -h, --help      显示帮助，不读取工作区配置。
 
-双边更新 knowledge-links.yaml；path 使用字面量 ${WORK_SPACE}/…。
+link/unlink 双边更新 knowledge-links.yaml；path 使用字面量 ${WORK_SPACE}/…。
+check/repair 仅使用既有登记，不改清单、正文和 Git 状态；缺仓或身份不符时停止。
 只管理槽位软链，普通目录/文件冲突时停止；unlink 不改正文 HTTP。
-失联目标仅注销源登记及槽位，并报告目标侧未更新。无 clone/pull/提交动作。
+unlink 失联目标仅注销源登记及槽位，并报告目标侧未更新。无 clone/pull/提交动作。
 依赖 Bash 5+、Git、Python 3，以及元库或已安装 Agent 的 docs-core.sh。
 EOF
 }
@@ -26,8 +29,8 @@ DRY=0 CMD='' TARGET_RAW='' CLI_NAME='' REWRITE_HTTP=0
 seen_target=0 seen_name=0
 while (($#)); do
   case "$1" in
-    --link|--unlink)
-      [[ -z "$CMD" ]] || die '只能指定一次 --link 或 --unlink'
+    --link|--unlink|--check|--repair)
+      [[ -z "$CMD" ]] || die '只能指定一次 --link、--unlink、--check 或 --repair'
       CMD="${1#--}"; shift ;;
     --dry-run) DRY=1; shift ;;
     --rewrite-http) REWRITE_HTTP=1; shift ;;
@@ -51,7 +54,8 @@ while (($#)); do
     *) die "未知参数: $1" ;;
   esac
 done
-[[ -n "$CMD" && -n "$TARGET_RAW" ]] || die '请指定 --link|--unlink 和 --target'
+[[ -n "$CMD" ]] || die '请指定 --link|--unlink|--check|--repair'
+[[ "$CMD" == check || -n "$TARGET_RAW" ]] || die '此动作必须指定单个 --target'
 [[ "$CMD" == link || ( "$REWRITE_HTTP" == 0 && "$seen_name" == 0 ) ]] \
   || die '--app-name / --rewrite-http 仅用于 --link'
 
@@ -124,6 +128,12 @@ sdoc="$(doc_root_in_repo "$SRC_ROOT" "$sdoc")"
 LIST_FILE="$sdoc/knowledge-links.yaml"
 declare -a sr=() sp=() sd=() sn=() sl=() st=()
 declare -a tr=() tp=() td=() tn=() tl=() tt=()
+if [[ "$CMD" == check || "$CMD" == repair ]]; then
+  # 维护只读既有登记；独立分流，不进入双边清单写出流程。
+  source "$SCRIPT_DIR/link-maintenance.sh"
+  maintenance_main
+  exit $?
+fi
 load_entries "$LIST_FILE" s
 
 # URL 只定位既有登记；实际访问仍用该条在源工作区展开的 path。

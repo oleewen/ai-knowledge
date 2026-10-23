@@ -6,13 +6,13 @@
 
 ## 选型
 
-**口诀**（与 [README 从零选型](README.md#从零选型) 同口径）：有应用仓 → bootstrap + build；有多应用 → 系统 link + pull/distill；有多系统 → 解决方案层再 hop；只有 legacy → extract → archive → build。
+**口诀**（与 [README 从零选型](README.md#从零选型) 同口径）：有应用仓 → bootstrap + build；有多应用 → 系统 link + Git 更新 + distill；有多系统 → 解决方案层再 hop；只有 legacy → extract → archive → build。
 
 | 场景 | 适用 | 一句话 |
 | --- | --- | --- |
 | **A** | 单一应用，无联邦 | 应用仓 standalone，建 SSOT + 按需 SDD（无 `/sdx-analysis`） |
 | **B** | 新交付（多应用）+ 元库 | 先解决方案/系统需求与概设，再应用库详设 |
-| **C** | 老系统（多应用）+ 元库 | 先各应用 SSOT，再三跳 pull/distill/archive |
+| **C** | 老系统（多应用）+ 元库 | 先各应用 SSOT，再三跳 link/distill/archive |
 | **D** | 仅有 Wiki/协作文档等 legacy | overview 缓冲区 → archive → build |
 
 脚本参数与 mode 见 [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)；双轨自动化见 [bootstrap.sh](bootstrap.sh)。全新环境先安装 Agent 并配置 `WORK_SPACE`，再初始化知识库；已有 Agent 前置时可直接初始化。bootstrap 的 `--meta PATH` 可复用已有元库，未指定时将元库保留在 `WORK_SPACE/ai-knowledge`。
@@ -178,7 +178,7 @@ flowchart LR
             C1["/docs-indexing<br/>产出：知识库索引"]
             C2["/docs-agent<br/>生成 AGENTS｜README"]
             C3["/docs-link<br/>知识库建联"]
-            C4["/docs-pull<br/>拉取应用文档"]
+            C4["各仓 Git 更新<br/>docs-link --check 检查槽位"]
             C6["/docs-distill<br/>知识蒸馏"]
             C7["/docs-archive<br/>知识归档"]
 
@@ -223,14 +223,14 @@ flowchart LR
 | 4 | `/docs-build` | 各应用五视角实体、`index.md` |
 | 5 | `git log` / `git diff` | 各应用仓变更历史 |
 
-### 阶段二：元库 — 三跳登记、拉取、蒸馏、归档
+### 阶段二：元库 — 三跳登记、检查、蒸馏、归档
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
 | 1 | `/docs-install` `--type=system` / `solution` / `company` + `/agent-install` | 各层 `/docs` + `.docsconfig` |
 | 2 | `/docs-indexing` + `/docs-agent` | 各层索引入口 |
 | 3 | `/docs-link`：系统←应用、解决方案←系统、公司←解决方案 | `knowledge-links.yaml` + 对应槽位 |
-| 4 | `/docs-pull`：`--app` / `--sys-name` / `--sln-name` | `application-slots` / `system-slots` / `solution-slots` |
+| 4 | 各下级仓按普通 Git 工作流更新；`/docs-link --check`，异常槽位用 `--repair --target <已登记路径或URL>` | 本地内容已核实、槽位可达 |
 | 5 | `/docs-distill`：`--doc-dir system` 再 `solution` 再 `company` | 各层 `{NAME}-overview.md` 第三列 |
 | 6 | `/docs-archive`（核实后） | 落入该层 `knowledge/` 视角章节 |
 
@@ -247,7 +247,7 @@ flowchart LR
 | 1 | 按 [只读消费契约](agent/skills/sdx-design/references/central-spec-source.md) 确认各应用的中央规约来源 | HTTP 来源链接与确认内容基线 |
 | 2 | 规约详细设计链路：`/sdx-design` → `/sdx-test` | `DSD`、`TDD` |
 | 3 | 规约开发实现链路：`brainstorming` → `opsx:*` → `superpowers:sdd` | 代码实现 + 规格归档 |
-| 4 | `git log` / `git diff` + 定期 `/docs-pull` + 三跳 `/docs-distill` | 联邦镜像与各层 overview 全量对齐 |
+| 4 | 各仓 Git 更新与溯源 + `/docs-link --check` + 三跳 `/docs-distill` | 联邦镜像与各层 overview 全量对齐 |
 | 5 | `/docs-indexing`（增量，完成 gate 确认） | 中央与应用 `index.md` 一致 |
 
 ---

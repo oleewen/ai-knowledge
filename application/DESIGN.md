@@ -35,9 +35,9 @@ version: 2026.1020.1
 ## 同步与门禁
 
 1. 本库维护文档树与实体 SSOT  
-2. 系统侧 docs-link / docs-pull 建应用槽位（本库为源）  
+2. 系统侧 docs-link 建应用槽位；检查/修复见 docs-link（本库为下级仓）
 3. 本库：`docs-extract` / `docs-archive` 写 `knowledge/overview/{NAME}-overview.md` 与视角 `chapters/`  
-4. 上行：pull → distill（**仅**系统 overview）→ 系统 archive；distill **不**写本库 overview  
+4. 上行：各仓 Git 更新 → 检查槽位 → distill（**仅**系统 overview）→ 系统 archive；distill **不**写本库 overview
 5. 术语/目录/链接与 README、INDEX-GUIDE、index 一致；跨层无双份主定义  
 
 全图：[knowledge-layout § 知识流水线](../agent/references/knowledge-layout.md#知识流水线)。改目录语义先改**本元库模板**再 upgrade。
