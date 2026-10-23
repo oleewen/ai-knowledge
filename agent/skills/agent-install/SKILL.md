@@ -25,7 +25,7 @@ bash agent/skills/agent-install/scripts/agent-install.sh \
   --workspace "$HOME/workspaces" --dry-run
 ```
 
-双轨装机按用户要求先运行 `docs-install`，再运行本技能；仅配置 IDE 且已给 workspace 时，无须先初始化知识库。
+双轨装机先满足 Agent 安装树与 `WORK_SPACE` 前置，再运行 `docs-install`；仓根 `bootstrap.sh` 选择 both 时先运行本技能脚本；已有元库可用 `--meta PATH` 复用。仅配置 IDE 且已给 workspace 时，无须初始化知识库。
 
 ## 诊断与维护
 

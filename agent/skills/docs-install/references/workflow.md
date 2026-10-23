@@ -30,4 +30,6 @@
 
 ## 双轨装机
 
-已有可用 Agent 树与 `WORK_SPACE` 时，知识库与 Agent 双轨接入按 docs-install、agent-install 顺序执行；自动化入口为仓根 `bootstrap.sh`。若 Agent 前置缺失，先报告缺口并解决，不能直接套用双轨顺序。仅初始化知识库的授权不等于授权修改全局 Agent 环境。
+先核实可用 Agent 树与 `WORK_SPACE`。缺失时，须在获得 Agent 安装授权后先运行 `agent-install`，再运行 `docs-install`；已有前置时可直接初始化知识库，无须为凑顺序重装 Agent。仓根 `bootstrap.sh` 选择 both 时先安装 Agent、再初始化知识库，Agent 失败即停；单选 docs 不补装 Agent。仅初始化知识库的授权不等于授权修改全局 Agent 环境。
+
+bootstrap 的 `--meta PATH` 复用已有元库，不克隆、不更新或清理它。未指定时，docs/both 将克隆的元库保留到 `WORK_SPACE/ai-knowledge`，作为 `type:meta` 的持久来源；已有该目录则停止，须显式选择 `--meta`。agent-only 未指定元库时仍使用临时克隆。docs-only 从已有 Agent 配置读取工作区；手动调用 docs-install 的 `--meta`、路径和授权规则不变。

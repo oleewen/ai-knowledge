@@ -151,6 +151,36 @@
           "priority": "P0"
         }
       ]
+    },
+    {
+      "id": "agent-install-both-fresh-001",
+      "category": "should-trigger",
+      "prompt": "全新电脑没有 Agent 树和 configs。元库 /tmp/team/meta-ai，workspace=/tmp/team；要同时给 Codex 装 Agent 并初始化 /tmp/team/app/docs，先给计划，不实跑。",
+      "expected_output": "先规划 Agent 安装及 WORK_SPACE，再初始化知识库；可用 bootstrap both，不能先初始化知识库。",
+      "assertions": [
+        {
+          "id": "fresh-order",
+          "name": "装机前置与授权边界",
+          "type": "behavior",
+          "check": "在计划中先满足 Agent 树与 WORK_SPACE 前置，再运行 docs-install；只预览，不修改全局环境。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "agent-install-both-existing-001",
+      "category": "should-not-trigger",
+      "prompt": "已有可用 ~/.agents 和 WORK_SPACE=/tmp/team，只要初始化 /tmp/team/app/docs，不需要更新 Agent。",
+      "expected_output": "直接转 docs-install 检查前置并预览，不为满足顺序重装 Agent。",
+      "assertions": [
+        {
+          "id": "no-reinstall",
+          "name": "装机前置与授权边界",
+          "type": "behavior",
+          "check": "不执行 agent-install 或 bootstrap both；已有前置允许直接进入 docs-install。",
+          "priority": "P0"
+        }
+      ]
     }
   ]
 }

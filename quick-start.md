@@ -15,7 +15,7 @@
 | **C** | 老系统（多应用）+ 元库 | 先各应用 SSOT，再三跳 pull/distill/archive |
 | **D** | 仅有 Wiki/协作文档等 legacy | overview 缓冲区 → archive → build |
 
-脚本参数与 mode 见 [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)；双轨自动化见 [bootstrap.sh](bootstrap.sh)。
+脚本参数与 mode 见 [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)；双轨自动化见 [bootstrap.sh](bootstrap.sh)。全新环境先安装 Agent 并配置 `WORK_SPACE`，再初始化知识库；已有 Agent 前置时可直接初始化。bootstrap 的 `--meta PATH` 可复用已有元库，未指定时将元库保留在 `WORK_SPACE/ai-knowledge`。
 
 ---
 

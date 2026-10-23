@@ -59,16 +59,23 @@ Agent = LLM + Harness。平台给模型与工具，**工程知识**须由团队�
 ```bash
 git clone https://github.com/oleewen/ai-knowledge.git
 cd ai-knowledge
-bash agent/skills/docs-install/scripts/docs-install.sh --target=/path/to/your-project/docs --dry-run
-bash agent/skills/agent-install/scripts/agent-install.sh --agents=cursor --dry-run
+bash agent/skills/agent-install/scripts/agent-install.sh --agents=cursor --workspace "$HOME/workspaces" --dry-run
+```
+
+核对计划并完成 Agent 安装后，再预览知识库安装。元库和目标工程都须位于同一 `WORK_SPACE` 内；已有可用 Agent 树和工作区配置时可直接执行这一步。
+
+```bash
+bash agent/skills/docs-install/scripts/docs-install.sh --target "$HOME/workspaces/your-project/docs" --dry-run
 ```
 
 ### 2. 远程 Bootstrap（无需克隆）
 
 ```bash
-cd /path/to/your-project
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/bootstrap.sh" | bash -s -- --doc-target /path/to/your-project/docs --agents cursor,trae
+cd "$HOME/workspaces/your-project"
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/bootstrap.sh" | bash -s -- --doc-target "$HOME/workspaces/your-project/docs" --agents cursor,trae
 ```
+
+双轨按 Agent → 知识库执行；元库保留在 `WORK_SPACE/ai-knowledge` 供后续更新。已有元库时传 `--meta PATH` 直接复用；默认目标目录已存在则停止，不覆盖。仅装 Agent 可用 `--components=agent`，仅初始化知识库可用 `--components=docs`（需已有 Agent 前置）。
 
 ### 3. Agent 自动化安装
 
@@ -89,7 +96,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/bootstrap.
 ├── system/               # 系统库：knowledge/ + overview、application-slots/application-{NAME}/
 ├── solution/             # 解决方案库：knowledge/ + overview、system-slots/system-{NAME}/
 ├── company/              # 公司库：knowledge/ + overview、solution-slots/solution-{NAME}/
-├── bootstrap.sh          # 远程/本地双轨装机编排（docs-install → agent-install）
+├── bootstrap.sh          # 远程/本地双轨装机编排（agent-install → docs-install）
 ├── agent/                # skills/（27）、rules/、knowledge/、references/、scripts/、hooks.json
 ├── .docsconfig           # DOC_DIR=docs（目录可缺席）· KNOWLEDGE_TYPE=company
 └── .gitignore

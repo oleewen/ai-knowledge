@@ -23,6 +23,8 @@
 #
 # 参数：
 #   --components=docs|agent|both  装机范围（默认 both）
+#   --meta PATH                复用已有元库；不指定时，docs/both 将元库保留在 WORK_SPACE/ai-knowledge
+#                             该目录已存在则停止，要求显式 --meta；agent-only 仍用临时克隆
 #   --doc-target PATH          目标工程文档目录（components 含 docs 时必填或交互询问；仍兼容 --doc-target=PATH）
 #   --agents=LIST              要安装的 Agent，/ 或 , 分隔（components 含 agent 时；缺省交互询问，默认 cursor）
 #   --agent-scope=home|project Agent 安装位置（默认 home=$HOME；project 需 --doc-target 以推导工程根）
@@ -80,6 +82,8 @@ fi
 # =============================================================================
 
 BS_CLONE_DIR=''
+BS_META=''           # --meta：复用已有元库，不清理
+BS_SOURCE_TEMP=0     # 仅清理本次临时克隆
 BS_COMPONENTS='both'  # --components: docs | agent | both
 BS_DOC_TARGET=''      # --doc-target
 BS_AGENTS=''          # --agents（规范化后逗号分隔）
@@ -138,21 +142,23 @@ bs_check_deps() {
 bs_clone_repo() {
   local repo_url="$1" ref="$2" dest_dir="$3"
 
-  if [[ -d "$dest_dir" ]]; then
-    info "清理已存在的临时目录: $dest_dir"
-    rm -rf "$dest_dir"
-  fi
+  [[ ! -e "$dest_dir" && ! -L "$dest_dir" ]] || error "来源目标已存在，拒绝覆盖: $dest_dir"
+  BS_SOURCE_TEMP=1
 
   # 本地路径：镜像工作区（含未提交文件），便于本仓测与本地 GIT_REPO_URL
   if [[ -d "$repo_url" ]]; then
     info "同步本地仓库工作区: $repo_url → $dest_dir"
-    mkdir -p "$dest_dir"
+    # 保留 Git remote / HEAD，供 knowledge 安装登记与后续升级追溯。
+    git clone --local --no-checkout "$repo_url" "$dest_dir" || error "本地克隆失败: $repo_url"
+    git -C "$dest_dir" read-tree HEAD || error "无法建立元库索引: $dest_dir"
     if command -v rsync >/dev/null 2>&1; then
       rsync -a --delete --exclude '.git' "${repo_url%/}/" "${dest_dir}/" \
         || error "本地同步失败: $repo_url"
     else
-      cp -R "${repo_url%/}/." "$dest_dir/" || error "本地复制失败: $repo_url"
-      rm -rf "${dest_dir}/.git"
+      local item
+      while IFS= read -r -d '' item; do
+        cp -R "$item" "$dest_dir/" || error "本地复制失败: $item"
+      done < <(find "$repo_url" -mindepth 1 -maxdepth 1 ! -name .git -print0)
     fi
     return 0
   fi
@@ -170,10 +176,39 @@ bs_clone_repo() {
 }
 
 bs_cleanup() {
-  if [[ -n "$BS_CLONE_DIR" && -d "$BS_CLONE_DIR" ]]; then
+  if [[ "$BS_SOURCE_TEMP" == 1 && -n "$BS_CLONE_DIR" && -d "$BS_CLONE_DIR" ]]; then
     info "清理临时目录: $BS_CLONE_DIR"
     rm -rf "$BS_CLONE_DIR"
   fi
+}
+
+# knowledge-links 的元库来源须留在 WORK_SPACE 内，不能指向退出即删的临时树。
+bs_retain_docs_source() {
+  local workspace="$BS_WORKSPACE" destination
+  if [[ -z "$workspace" ]]; then
+    workspace="$(
+      source "$BS_CLONE_DIR/agent/scripts/docs-core.sh"
+      rd='' dd='' ar='' kt='' ad='' root='' dir=''
+      cfg="$(dirname "$BS_DOC_TARGET")/.docsconfig"
+      if [[ -f "$cfg" ]]; then
+        docsconfig_read_into "$cfg" rd dd ar kt ad
+      fi
+      docsconfig_fill_agent_fields root dir "$ar" "$ad" "$HOME" || exit 1
+      docsconfig_load_workspace_abs "$root" "$dir"
+    )" || error '无法确定知识库 WORK_SPACE，请先 /agent-install 或指定 --meta'
+  fi
+  workspace="$(
+    source "$BS_CLONE_DIR/agent/scripts/docs-core.sh"
+    abs_path "${workspace/#\~/$HOME}"
+  )"
+  destination="${workspace%/}/ai-knowledge"
+  [[ ! -e "$destination" && ! -L "$destination" ]] \
+    || error "元库目标已存在: ${destination}；请用 --meta PATH 显式选择已有元库"
+  mkdir -p "$workspace"
+  mv "$BS_CLONE_DIR" "$destination" || error "无法保留元库: $destination"
+  BS_CLONE_DIR="$destination"
+  BS_SOURCE_TEMP=0
+  info "保留元库（后续更新来源）: $BS_CLONE_DIR"
 }
 
 # =============================================================================
@@ -189,7 +224,10 @@ bs_usage() {
   --components=docs|agent|both  装机范围（默认 both）
                              docs  → 仅 docs-install
                              agent → 仅 agent-install
-                             both  → 二者依次执行
+                             both  → 先 agent-install，再 docs-install
+  --meta PATH                复用已有元库，不克隆、不清理；须位于完整元库根目录
+                             未指定时 docs/both 保留元库到 WORK_SPACE/ai-knowledge
+                             目标已存在则停止，要求显式 --meta；agent-only 使用临时克隆
   --doc-target PATH          目标工程文档目录（components 含 docs 时必填，或交互询问；
                              agent-scope=project 时亦需，用于推导工程根；仍兼容 --doc-target=PATH）
   --agents=LIST              要安装的 Agent，支持 / 或 , 分隔
@@ -276,6 +314,17 @@ bs_parse_args() {
         shift
         bs_require_value "--components" "${1:-}"
         BS_COMPONENTS="$1"
+        shift
+        ;;
+      --meta=*)
+        BS_META="${1#*=}"
+        bs_require_value "--meta" "$BS_META"
+        shift
+        ;;
+      --meta)
+        shift
+        bs_require_value "--meta" "${1:-}"
+        BS_META="$1"
         shift
         ;;
       --doc-target=*)
@@ -448,12 +497,17 @@ bs_confirm_plan() {
   log ''
   log '=========================================='
   log '即将执行以下操作：'
-  if bs_want_docs; then
-    log "  ${step}. docs-install  --target ${BS_DOC_TARGET}"
-    step=$((step + 1))
-  fi
   if bs_want_agent; then
     log "  ${step}. agent-install --agents=${BS_AGENTS} --target ${BS_AGENT_TARGET} --workspace ${BS_WORKSPACE}"
+    step=$((step + 1))
+  fi
+  if bs_want_docs; then
+    log "  ${step}. docs-install  --target ${BS_DOC_TARGET}"
+  fi
+  if [[ -n "$BS_META" ]]; then
+    log "  元库: $BS_META（复用）"
+  elif bs_want_docs; then
+    log '  元库: 保留在 WORK_SPACE/ai-knowledge；已有目录不覆盖'
   fi
   log "  components: ${BS_COMPONENTS}"
   log '=========================================='
@@ -526,7 +580,7 @@ bs_run_agent_install() {
   local agent_install="${1:?agent_install}"
   log ''
   info '>>> 执行 agent-install.sh...'
-  "${BASH:-$(command -v bash)}" "$agent_install" --agents="$BS_AGENTS" --target "$BS_AGENT_TARGET" --workspace "$BS_WORKSPACE" \
+  "${BASH:-$(command -v bash)}" "$agent_install" --meta "$BS_CLONE_DIR" --agents="$BS_AGENTS" --target "$BS_AGENT_TARGET" --workspace "$BS_WORKSPACE" \
     || error "agent-install 执行失败"
 }
 
@@ -542,7 +596,6 @@ bs_main() {
   ref="$(docsconfig_bootstrap_get_ref)"
   tmpdir="$(docsconfig_bootstrap_get_tmpdir)"
 
-  BS_CLONE_DIR="$(docsconfig_bootstrap_gen_clone_dir "$tmpdir")"
   trap bs_cleanup EXIT
 
   log ''
@@ -562,7 +615,18 @@ bs_main() {
   log '=========================================='
   log ''
 
-  bs_clone_repo "$repo_url" "$ref" "$BS_CLONE_DIR"
+  if [[ -n "$BS_META" ]]; then
+    BS_META="${BS_META/#\~/$HOME}"
+    [[ -d "$BS_META" ]] || error "--meta 目录不存在: $BS_META"
+    BS_CLONE_DIR="$(cd "$BS_META" && pwd -P)"
+    info "复用元库: $BS_CLONE_DIR"
+  else
+    BS_CLONE_DIR="$(docsconfig_bootstrap_gen_clone_dir "$tmpdir")"
+    bs_clone_repo "$repo_url" "$ref" "$BS_CLONE_DIR"
+    if bs_want_docs; then
+      bs_retain_docs_source
+    fi
+  fi
 
   local docs_install="${BS_CLONE_DIR}/agent/skills/docs-install/scripts/docs-install.sh"
   local agent_install="${BS_CLONE_DIR}/agent/skills/agent-install/scripts/agent-install.sh"
@@ -583,11 +647,12 @@ bs_main() {
   log ''
   info "已加载共享配置（agent/scripts/docs-core.sh）"
 
-  if bs_want_docs; then
-    bs_run_docs_install "$docs_install"
-  fi
+  # docs-install 依赖 Agent 安装树及其 WORK_SPACE；单选 docs 不补装 Agent。
   if bs_want_agent; then
     bs_run_agent_install "$agent_install"
+  fi
+  if bs_want_docs; then
+    bs_run_docs_install "$docs_install"
   fi
 
   log ''

@@ -225,6 +225,51 @@
           "priority": "P0"
         }
       ]
+    },
+    {
+      "id": "docs-install-missing-agent-001",
+      "category": "should-trigger",
+      "prompt": "只预览给 /tmp/team/app/docs 初始化知识库；本机没有 Agent 安装树，没有 configs。不要改全局环境。",
+      "expected_output": "报告缺少 Agent 前置并停止，说明须单独授权安装；不绕过失败或自动安装 Agent。",
+      "assertions": [
+        {
+          "id": "missing-agent-stop",
+          "name": "装机前置与授权边界",
+          "type": "behavior",
+          "check": "不实跑 docs-install，不安装全局 Agent，不创建 configs 或 .docsconfig；明确前置缺口。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-install-both-fresh-001",
+      "category": "should-trigger",
+      "prompt": "全新环境同时安装 Codex Agent 和 /tmp/team/app/docs 知识库，元库 /tmp/team/meta-ai，workspace=/tmp/team。先预览两个步骤。",
+      "expected_output": "先预览 Agent 计划；Agent 树未建立时不能宣称 docs-install 完整预览通过，后者待前置实际满足后验证。",
+      "assertions": [
+        {
+          "id": "dependency-preview",
+          "name": "装机前置与授权边界",
+          "type": "behavior",
+          "check": "顺序为 Agent 前置再知识库；不因预览请求写入 Agent 树，不伪造知识库预览成功。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-install-bootstrap-meta-001",
+      "category": "should-trigger",
+      "prompt": "用 bootstrap 给 /tmp/team/app/docs 初始化知识库，Agent 已装好且 WORK_SPACE=/tmp/team。元库已有 /tmp/team/meta-ai；只给预览计划，不更新 Agent，也不要重新 clone。",
+      "expected_output": "计划使用 --components=docs --meta /tmp/team/meta-ai；检查已有前置和元库路径，保留元库，不执行写入。",
+      "assertions": [
+        {
+          "id": "persistent-meta",
+          "name": "复用持久元库",
+          "type": "behavior",
+          "check": "使用 --meta 与 docs-only，既不 clone 元库、不清理原元库，也不安装 Agent；不在预览阶段执行 bootstrap 实跑。",
+          "priority": "P0"
+        }
+      ]
     }
   ]
 }
