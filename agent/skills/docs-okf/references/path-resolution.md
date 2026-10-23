@@ -8,7 +8,7 @@
 | --- | --- |
 | `.docsconfig` 缺失、不可解析，或缺 `REPO_DIR` / `DOC_DIR` | 停止；用 `docs-install --scope=config` 修复 |
 | 配置推导的仓库根与 `.docsconfig` 所在目录不一致 | 停止；按配置漂移处理 |
-| 缺 `KNOWLEDGE_TYPE` 或值非法 | 停止；用 `docs-install --scope=knowledge` 修复 |
+| 缺 `KNOWLEDGE_TYPE` 或值非法 | 停止；核实目标层级后定向修订 `.docsconfig`。不得为补键重装 knowledge（会重置文档树） |
 | 缺 `AGENT_ROOT` / `AGENT_DIR` | 停止；补齐配置 |
 | `$AGENT_ROOT/$AGENT_DIR/configs` 不存在或 `WORK_SPACE` 无效 | 停止；提示 `/agent-install --workspace` |
 | bundle 或 `{DOC_DIR}/{AGENT_DIR}/skills/docs-okf/scripts` 不存在 | 停止；核对目标路径与安装软链 |

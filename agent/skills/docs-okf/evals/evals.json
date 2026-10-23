@@ -222,6 +222,21 @@
           "priority": "P0"
         }
       ]
+    },
+    {
+      "id": "okf-missing-type-preserve",
+      "category": "should-trigger",
+      "prompt": "当前工程 docs 已有正式业务正文，.docsconfig 缺 KNOWLEDGE_TYPE；请校验 OKF，不允许重装。",
+      "expected_output": "停止校验并核实层级，建议定向补配置。",
+      "assertions": [
+        {
+          "id": "okf-missing-type-preserve",
+          "name": "行为边界",
+          "type": "must_not_conflict",
+          "check": "不运行 docs-install --scope=knowledge，不备份重置正文。",
+          "priority": "P0"
+        }
+      ]
     }
   ]
 }

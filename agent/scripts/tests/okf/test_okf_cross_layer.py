@@ -95,15 +95,34 @@ def test_parent_cli_symlink_loop_fails_cleanly(tmp_path: Path) -> None:
     doc = tmp_path / "loop-owner"
     configure(doc, tmp_path)
     (tmp_path / "loop").symlink_to("loop")
+    (tmp_path / "safe").mkdir()
+    for value in ("${WORK_SPACE}/loop", "${WORK_SPACE}/loop/missing-child",
+                  "${WORK_SPACE}/missing/../loop",
+                  "${WORK_SPACE}/missing/../loop/../safe",
+                  "${WORK_SPACE}/missing/../loop/../other-missing"):
+        result = subprocess.run([
+            sys.executable, str(ROOT / "agent/skills/docs-okf/scripts/okf_parent.py"),
+            "write", "--doc-root", str(doc), "--knowledge-type", "system",
+            "--path", value, "--doc-dir", "system",
+        ], capture_output=True, text=True)
+        assert result.returncode != 0
+        assert "loop" in result.stderr
+        assert "Traceback" not in result.stderr
+        assert not (doc / "knowledge-links.yaml").exists()
+
+
+def test_parent_cli_offline_symlink_path(tmp_path: Path) -> None:
+    doc = tmp_path / "offline-owner"
+    configure(doc, tmp_path)
+    (tmp_path / "offline-link").symlink_to("future/deep")
     result = subprocess.run([
         sys.executable, str(ROOT / "agent/skills/docs-okf/scripts/okf_parent.py"),
         "write", "--doc-root", str(doc), "--knowledge-type", "system",
-        "--path", "${WORK_SPACE}/loop", "--doc-dir", "system",
+        "--path", "${WORK_SPACE}/offline-link/../pending", "--doc-dir", "system",
     ], capture_output=True, text=True)
-    assert result.returncode != 0
-    assert "loop" in result.stderr
-    assert "Traceback" not in result.stderr
-    assert not (doc / "knowledge-links.yaml").exists()
+    assert result.returncode == 0, result.stderr
+    assert 'path: "${WORK_SPACE}/future/pending"' in (doc / "knowledge-links.yaml").read_text()
+    assert not (tmp_path / "future").exists()
 
 
 def test_workspace_repeated_slashes_stay_relative(tmp_path: Path) -> None:
@@ -508,6 +527,8 @@ def test_load_parent_uses_name_field(tmp_path: Path) -> None:
 
 def main() -> None:
     with tempfile.TemporaryDirectory() as tmp:
+        test_parent_cli_offline_symlink_path(Path(tmp))
+        print("PASS test_parent_cli_offline_symlink_path")
         test_parent_cli_symlink_loop_fails_cleanly(Path(tmp))
         print("PASS test_parent_cli_symlink_loop_fails_cleanly")
         test_workspace_repeated_slashes_stay_relative(Path(tmp))

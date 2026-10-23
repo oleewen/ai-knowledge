@@ -3,7 +3,10 @@
 
 from __future__ import annotations
 
+import errno
+import os
 import re
+import stat
 from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Dict, Iterator, List, Optional, Tuple
@@ -91,6 +94,30 @@ def workspace_for(doc_root: Path) -> Path:
     return base.resolve()
 
 
+def _resolve_allow_missing(path: Path, active_links=frozenset()) -> Path:
+    """按物理路径逐段展开；允许离线缺失，不忽略循环、权限等错误。"""
+    resolved = Path(path.anchor)
+    for part in path.parts[1:]:
+        if part == "..":
+            resolved = resolved.parent
+            continue
+        candidate = resolved / part
+        try:
+            mode = candidate.lstat().st_mode
+        except FileNotFoundError:
+            resolved = candidate
+            continue
+        if stat.S_ISLNK(mode):
+            if candidate in active_links:
+                raise OSError(errno.ELOOP, "Symlink loop", str(candidate))
+            link = Path(os.readlink(candidate))
+            target = link if link.is_absolute() else resolved / link
+            resolved = _resolve_allow_missing(target, active_links | {candidate})
+        else:
+            resolved = candidate
+    return resolved
+
+
 def resolve_link_path(doc_root: Path, value: str, *, writing: bool = False) -> Path:
     workspace = workspace_for(doc_root)
     token = "${WORK_SPACE}"
@@ -102,7 +129,7 @@ def resolve_link_path(doc_root: Path, value: str, *, writing: bool = False) -> P
         target = Path(value).expanduser()
     else:
         raise ValueError(f"knowledge-links path 必须使用 ${{WORK_SPACE}} 占位符: {value!r}")
-    resolved = target.resolve()
+    resolved = _resolve_allow_missing(target)
     if not resolved.is_relative_to(workspace):
         raise ValueError(f"knowledge-links path 越出 WORK_SPACE: {value!r}")
     return resolved
