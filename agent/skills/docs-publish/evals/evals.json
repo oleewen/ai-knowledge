@@ -6,7 +6,7 @@
     {
       "id": "publish-safety-001",
       "category": "should-trigger",
-      "prompt": "用户：四层 DESIGN.md 都改好了，请发布今天的知识库版本并合并 main。",
+      "prompt": "用户：四层 DESIGN.md 都改好了，请发布今天的知识库版本并合并 main。先说明允许发布的文件白名单，以及预览和 Git 写入的确认边界。",
       "expected_output": "先运行 docs-publish --dry-run，展示版本、文件范围和 Git 计划；等待用户确认同一结果后才能执行 commit、rebase、push、快进合并和分支切换。",
       "assertions": [
         {
@@ -36,7 +36,7 @@
     {
       "id": "version-rules-001",
       "category": "should-trigger",
-      "prompt": "用户：四层 DESIGN.md 目前都是 26.10.20；今天是 2026 年 10 月 22 日。请告诉我发布版本。",
+      "prompt": "用户：四层 DESIGN.md 目前都是 26.10.20；今天是 2026 年 10 月 22 日。请告诉我发布版本，并说明同日和跨日的 patch 规则，以及四层 DESIGN.md 版本一致性前提。",
       "expected_output": "旧 YY.MM.DD 格式迁移为当前日期 2026.1022.0；若当前版本已是 2026.1022.patch，则同日递增，否则跨日归零。",
       "assertions": [
         {

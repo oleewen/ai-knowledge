@@ -28,8 +28,8 @@ bash agent/skills/docs-publish/scripts/docs-publish.sh --publish
 
 正式流程由脚本按以下顺序完成：
 
-1. 更新四层 `DESIGN.md` 的版本字段并暂存允许文件。
-2. 获取远端主分支并 rebase 当前 feature 分支。
+1. 获取远端主分支并核对预览基线；远端变化则停止，重新预览。
+2. rebase 当前 feature 分支，通过分支和工作区范围校验后，更新四层 `DESIGN.md` 的版本字段并暂存允许文件。
 3. 创建固定 subject 的 `docs-publish` 提交。
 4. 推送当前 feature 分支。
 5. 快进合并到主分支并推送主分支。
