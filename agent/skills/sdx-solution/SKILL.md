@@ -32,3 +32,5 @@ bash /path/to/sdx-solution/scripts/validate-solution.sh --help
 ```
 
 扫描范围、退出码与验收边界见 [workflow.md](references/workflow.md#校验与交付)。
+
+仅维护或评估技能时读取 [评测说明](references/evaluation.md)。
