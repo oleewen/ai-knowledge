@@ -12,7 +12,7 @@
 ## 模式（可多选）
 
 - **F1** 路由误判  
-- **F2** 与 docs-indexing / docs-build / sdx-analysis / docs-revise 混淆  
+- **F2** 与 docs-indexing / docs-build / sdx-solution / sdx-analysis / docs-revise 混淆
 - **F3** 协议执行：缺参数向导、跳过写前意图澄清、未按当前单元停顿、未做烤干  
 - **F4** 结构：顺序/三文件校验/缺失  
 - **F5** INDEX 幻觉  
@@ -21,5 +21,5 @@
 ## 回归
 
 1. P0 后跑全 `evals/evals.json`  
-2. 成对：`/docs-agent` vs indexing、sdx-analysis  
+2. 成对：`/docs-agent` vs indexing、sdx-solution（解决方案库 SOLUTION）、sdx-analysis（需求分析）
 3. 同模式连挂 2 轮 → 收紧 `description` 或 `gates.md`

@@ -15,7 +15,7 @@ metadata:
 ## 执行
 
 1. 先读 [workflow.md](references/workflow.md) 与 [gates.md](references/gates.md)，核对材料、配置和已有文件；沿用已给参数与当前段授权，只问缺口。
-2. 按 [analysis-template.md](assets/analysis-template.md) 处理当前章或子章。默认一次一段，写前澄清、写后烤干，再等待 `C/M/G/F`；`F` 的批确认与前文保护见 gates。
+2. 按 [analysis-template.md](assets/analysis-template.md) 处理当前章或子章。默认一次一段，写前澄清、写后烤干，再等待 `C/M/G/F`；`F` 的批确认与前文保护见 gates。整篇请求不等于剩余意图已确认；材料不足时先给当前单元的意图与具体材料缺口，不用整篇占位稿替代下一步。
 3. 收尾对照 [quality-checklist.md](references/quality-checklist.md) 并运行校验。脚本结果不能代替业务共识或写后确认。
 
 ## 按需读取

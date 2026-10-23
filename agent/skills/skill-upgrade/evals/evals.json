@@ -50,7 +50,7 @@
           "id": "find-before-confirm",
           "name": "搜前确认",
           "type": "must_include",
-          "check": "须列出无源并询问是否按 find-skills 查找；拒绝则跳过；同意前不得批量搜索或 add。",
+          "check": "先核对所选安装范围与统一 lock；只有已证实缺源时，才列无源清单并询问是否搜索，已有搜索授权可沿用。拒绝则跳过；未授权不得搜索或 add。统一 lock 已覆盖来源时不得误判缺源或强制询问补源。",
           "priority": "P0"
         }
       ],

@@ -2,7 +2,7 @@
 name: docs-agent
 description: >
   维护仓库根 README.md 与 AGENTS.md，并按已落盘 INDEX-GUIDE.md 对齐入口信息。
-  适用于 /docs-agent、写 README/AGENTS、根入口与索引不同步；先收口 output、mode、写入策略和当前单元，再按“澄清→生成→烤干”推进。
+  适用于 /docs-agent、写 README/AGENTS、根入口与索引不同步。
   不重写 INDEX-GUIDE.md、index.md、knowledge 实体或 SDD 产物；这些任务分别转 docs-indexing、docs-build、docs-revise 或 sdx-*。
 ---
 

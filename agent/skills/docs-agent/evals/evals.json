@@ -121,14 +121,14 @@
     {
       "id": "docs-agent-not-trigger-002",
       "category": "should-not-trigger",
-      "prompt": "我们要在 {DOC_DIR}/solutions/ 写 SOLUTION-FOO.md，按七章模板先过门禁，不要写 README。",
-      "expected_output": "主路径 sdx-analysis（或等价 SDD 方案阶段）；非 docs-agent。",
+      "prompt": "我们在解决方案知识库，要在 {DOC_DIR}/solutions/ 写 SOLUTION-FOO.md，按变更摘要加五段切分叙事的六段骨架先过门禁，不要写 README。",
+      "expected_output": "主路径 sdx-solution；解决方案库 SOLUTION 按变更摘要及五段切分叙事成文；非 docs-agent。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "点名 sdx-analysis 或 SOLUTION 门禁；不得以 docs-agent 为主路径。",
+          "check": "点名 sdx-solution 为 SOLUTION 成文主路径；不得路由到 sdx-analysis 或以 docs-agent 为主路径。",
           "priority": "P0"
         },
         {
