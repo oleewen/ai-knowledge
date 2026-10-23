@@ -8,7 +8,7 @@ updated: "{YYYY-MM-DD}"
 author: "architect"
 reviewers: []
 parent: "PRD-{IDEA-ID}-{N}"
-architecture_ref: "{ASD 或 spec-asd 的真实 ID/路径}"
+architecture_ref: "{主 ASD/spec-asd 的 Git HTTP 文件链接}"
 mvp_phase: "MVP-Phase-{N}"
 tags: ["DSD"]
 ---
@@ -32,9 +32,16 @@ tags: ["DSD"]
 
 - 关联需求分析：{ANALYSIS 的真实路径；缺失则说明影响}
 - 关联产品需求：{PRD 的真实路径}
-- 架构设计说明书 / 概要需求规约：{ASD 和/或 spec-asd 的真实路径与章节}
+- 架构设计说明书 / 概要需求规约：{ASD 和/或 spec-asd 的 Git HTTP 文件链接与章节}
 - MVP 阶段：MVP-Phase-{N}
 - 本次设计目标：{目标与范围；若摘要承接 ASD，说明差异}
+
+<!-- 中央来源逐份记录；SHA-256 对确认时原始文件字节计算。HTTP 仅用于定位，不证明与基线相同。
+开始设计及验收时核对摘要，变化重确认；一致性只能填 一致 / 存在差异 / 未核实，并写依据。 -->
+
+| 规约 ID | Git HTTP 文件链接 | 确认内容 SHA-256 | 确认时间 | 链接一致性及依据 |
+| --- | --- | --- | --- | --- |
+| {真实 ID} | {真实文件链接} | {64 位摘要} | {含时区时间} | {状态、差异或未核实原因} |
 
 ### 1.2 设计约束
 

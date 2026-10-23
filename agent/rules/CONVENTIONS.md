@@ -76,7 +76,7 @@
  - 烤干提问：[grilling-skill.md](../references/grilling-skill.md)
  - 受众质检：[audience-and-language.md](../references/audience-and-language.md)（烤干 A/B/C/E；轻流程写后 A/B）
  - 生成步原则：[simplify-principles.md](../references/simplify-principles.md)（默认强制；用户明示可豁免）；烤干修订后另有 **simplify 遍**（见 unit-cycle-protocol）
-4. **绑定**：全部 `/sdx-*` 与语义族 docs-*（含 indexing/build/agent/simplify）绑意图澄清；`docs-okf` / `docs-link` / `docs-pull` / `docs-push` / `docs-tag` / `docs-install` / `agent-install` / `docs-upgrade` / `skill-upgrade` 维持轻流程。
+4. **绑定**：全部 `/sdx-*` 与语义族 docs-*（含 indexing/build/agent/simplify）绑意图澄清；`docs-okf` / `docs-link` / `docs-pull` / `docs-tag` / `docs-install` / `agent-install` / `docs-upgrade` / `skill-upgrade` 维持轻流程。
 5. **动作**：烤干收敛（或合法跳过）后，用户以 `C/M/G/F`（docs 另有 `S`）推进；`C` 同符异义，靠阶段横幅区分。
 6. **语义变更**：先结论、推荐与数字选项，确认后再改。
 7. **技能特有**：校验或确认书以该技能 `SKILL.md` / `gates.md` 为准。
@@ -121,7 +121,7 @@
 | --- | --- | --- | --- |
 | **中高风险** | sdx-*、docs-distill、docs-extract、docs-archive、docs-build、docs-indexing、docs-revise、docs-simplify | 语义 / 语义-docs | ❌ |
 | **中等风险** | docs-agent | 语义-docs | ❌ |
-| **低风险** | docs-tag、docs-pull、docs-okf、docs-push、docs-install、agent-install、docs-upgrade、skill-upgrade | 轻 | ❌ |
+| **低风险** | docs-tag、docs-pull、docs-okf、docs-install、agent-install、docs-upgrade、skill-upgrade | 轻 | ❌ |
 
 ---
 

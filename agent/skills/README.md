@@ -8,7 +8,7 @@
 - 命令名约定：目录名即 Slash 命令（如 `docs-indexing` → `/docs-indexing`）
 - 调用方式：Chat 输入 `/` 选择，或 `@<skill-name>` 附加上下文
 - **共通协议**（重闸门族）：参数向导 → **澄清 → 生成 → 烤干** → `C/M/G/F`（docs 另有 `S`）；语义性变更先确认。契约：[intent-clarify.md](../references/intent-clarify.md)、[unit-cycle-protocol.md](../references/unit-cycle-protocol.md)、[grilling-skill.md](../references/grilling-skill.md)、[CONVENTIONS.md §3](../rules/CONVENTIONS.md#artifact-gates)
-- **轻流程**（不绑意图澄清）：`docs-okf` / `docs-link` / `docs-pull` / `docs-push` / `docs-tag` / `docs-install` / `agent-install` / `docs-upgrade` / `skill-upgrade`；动作 `C/M/S/F` 见 [light-flow-actions.md](../references/light-flow-actions.md)（无 `G`）
+- **轻流程**（不绑意图澄清）：`docs-okf` / `docs-link` / `docs-pull` / `docs-tag` / `docs-install` / `agent-install` / `docs-upgrade` / `skill-upgrade`；动作 `C/M/S/F` 见 [light-flow-actions.md](../references/light-flow-actions.md)（无 `G`）
 - **知识库布局**：[knowledge-layout.md](../references/knowledge-layout.md)
 
 下表**只写差异**（产物、关键参数、特殊产物）；协议不逐行复述。
@@ -43,7 +43,6 @@
 | 需求交付 | `/sdx-test` | 基于 PRD + DSD/ASD → `TDD-*.md`（策略/用例/数据/环境；不产出自动化代码） |
 | 联邦协作 | `/docs-link` | `--link`/`--unlink` + `--target`〔`--app-name`〕〔`--rewrite-http`〕→ 双边 `knowledge-links.yaml` + 槽位软链；脚本 `agent/skills/docs-link/scripts/`；默认 dry-run；轻流程 |
 | 联邦协作 | `/docs-pull` | 按 `knowledge-links.yaml` 的 child repository/path 校验联邦槽位并 clone/pull；`SYNC_OK` 含 commit；轻流程 |
-| 联邦协作 | `/docs-push` | 中央规约 → 各应用 `path×doc_dir`（legacy / spec-asd）；轻流程 |
 
 ## 使用说明
 

@@ -35,7 +35,7 @@ description: >
 - 整树缺失示例按 [真实实例规则](references/merge-rules.md#31-整树缺失示例与真实实例) 去重；指定路径模式仍补齐缺失示例。
 - 根级 `DESIGN.md` 是整文件覆盖特例；版本推进独立于 scaffold。结构重填与未落位处理由 Agent 完成，脚本不自动合正文。
 
-首次装机用 [docs-install](../docs-install/SKILL.md)；Agent 树用 [agent-install](../agent-install/SKILL.md)；生态技能用 [skill-upgrade](../skill-upgrade/SKILL.md)。联邦登记与规约下发分别用 [docs-link](../docs-link/SKILL.md)、[docs-push](../docs-push/SKILL.md)，不纳入本技能。
+首次装机用 [docs-install](../docs-install/SKILL.md)；Agent 树用 [agent-install](../agent-install/SKILL.md)；生态技能用 [skill-upgrade](../skill-upgrade/SKILL.md)。联邦登记用 [docs-link](../docs-link/SKILL.md)；规约设计由 [sdx-design](../sdx-design/SKILL.md) 只读引用中央来源，不提供跨仓下发。
 
 ## 按需查阅
 

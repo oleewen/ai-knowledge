@@ -24,6 +24,7 @@ metadata:
 ## 核心约束
 
 - 当前段可以是章节，或一个 API、DDL/TBL、LOGIC、错误码组、幂等/事务/时序/安全块。写作按「澄清 → 生成 → 烤干」与 `C/M/G/F` 推进，无 `S`；具体绑定见 [gates.md](references/gates.md)。
+- 中央 ASD/spec-asd 按 [只读消费契约](references/central-spec-source.md) 定位、确认内容基线并记录 Git HTTP 链接；支持限定范围的模糊文件名匹配，不创建下发副本。
 - 读取同一 `IDEA-ID`、MVP 的 PRD 与 ASD 或 spec-asd；缺口处理见 [workflow.md](references/workflow.md#输入与缺口)。不编造上游，也不在 DSD 中暗改架构。
 - 保留 [模板](assets/dsd-template.md) §1–§3；全部实现级契约与追溯放在 §2，不建第二份详设正文。
 - DSD 默认落应用库；先核对 [层级约束](references/knowledge-type-modes.md)，不因当前目录可写就新建阶段目录。

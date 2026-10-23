@@ -6,6 +6,8 @@
 
 先读 `.docsconfig`，按 [knowledge-type-modes.md](knowledge-type-modes.md) 确认应用文档根。定位同一需求链的 PRD、ASD/spec-asd 和现有 DSD；只加载当前段涉及的章节。ANALYSIS、knowledge、代码与 ADR 按追溯缺口补读。
 
+中央 ASD/spec-asd 的路径、模糊匹配、parent 兜底、SHA-256 基线与 HTTP 来源链接统一遵循 [只读消费契约](central-spec-source.md)。
+
 沿用用户已确认的基线；共识状态未知且影响当前段时先澄清，不把文件存在当作已获共识。
 
 | 输入情况 | 处理 |

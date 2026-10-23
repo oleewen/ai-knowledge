@@ -11,6 +11,7 @@ assert_file_exists "$META_ROOT/agent/scripts/lib/bash.sh"
 assert_contains 'require_bash5' "$META_ROOT/agent/scripts/lib/bash.sh"
 
 while IFS= read -r file; do
+  [[ -f "$file" ]] || continue
   if [[ "$(head -n 1 "$file")" == '#!/bin/bash' ]]; then
     test_fail "禁止硬编码系统 Bash shebang: $file"
   fi
@@ -26,7 +27,6 @@ for file in \
   agent/skills/docs-install/scripts/docs-config.sh \
   agent/skills/docs-install/scripts/docs-install.sh \
   agent/skills/docs-pull/scripts/pull-slots.sh \
-  agent/skills/docs-push/scripts/push-specs.sh \
   agent/skills/sdx-solution/scripts/validate-solution.sh; do
   assert_contains 'bash.sh' "$META_ROOT/$file"
 done

@@ -29,7 +29,7 @@
 | ASD | `{DOC_DIR}/requirements/REQUIREMENT-{IDEA-ID}/MVP-Phase-{N}/ASD-{IDEA-ID}-{N}.md` |
 | 可选概设规约 | `{DOC_DIR}/specs/spec-asd-{IDEA-ID}-{N}-{app-name}.md` |
 
-`{app-name}` 使用 `a-z0-9._-`，与 `knowledge-links.yaml` 对齐。从上述 ASD 位置引用概设规约，使用 `../../../specs/spec-asd-…md`；不要写成同级 `./specs/`。实际输出布局不同则按真实位置计算相对链接。`docs-push` 的下游复制位置由其自身契约决定。
+`{app-name}` 使用 `a-z0-9._-`，与 `knowledge-links.yaml` 对齐。从上述 ASD 位置引用概设规约，使用 `../../../specs/spec-asd-…md`；不要写成同级 `./specs/`。实际输出布局不同则按真实位置计算相对链接。应用侧由 [sdx-design](../../sdx-design/references/central-spec-source.md) 只读消费中央规约；本流程不下发副本或操作目标仓 Git。
 
 ## Section Cycle（指针）
 

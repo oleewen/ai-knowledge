@@ -67,7 +67,7 @@ find_upward_with_file() {
   return 1
 }
 
-# 解析 docs-core.sh 绝对路径（不 source）；顺序见 agent/skills/docs-push/references/parameters.md
+# 解析 docs-core.sh 绝对路径（不 source）；依次检查显式路径、当前布局、用户安装树、上溯仓库和 AIK_ROOT。
 resolve_docs_core_path() {
   local hint="${1:-${PWD}}" d found
 

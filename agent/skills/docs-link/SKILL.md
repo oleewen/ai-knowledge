@@ -3,7 +3,7 @@ name: docs-link
 description: >
   登记或注销上下级知识库，更新双边 knowledge-links.yaml 与联邦槽位软链。
   用于 /docs-link、知识库建联、换父或注销登记。
-  已登记槽位的回拉与修复用 docs-pull；中央规约下发用 docs-push。
+  已登记槽位的回拉与修复用 docs-pull；规约设计由 sdx-design 只读引用中央来源，不提供跨仓下发。
 ---
 
 # docs-link

@@ -123,6 +123,16 @@ sed 's/^architecture_ref:.*/architecture_ref: "spec-asd-TEST-1-payments"/' "$FIX
 check 'matching spec-asd is accepted' 0 "$TEST_TMP/project" '校验通过' --file "$DOCUMENT"
 sed 's|^architecture_ref:.*|architecture_ref: "specs/spec-asd-TEST-1-payments.md"|; s|^parent:.*|parent: "../PRD-TEST-1.md"|' "$FIXTURE" > "$DOCUMENT"
 check 'local reference paths are accepted' 0 "$TEST_TMP/project" '校验通过' --file "$DOCUMENT"
+
+# HTTP 文件定位允许 query/fragment；这些片段不能伪装成同链文件名。
+sed 's|^architecture_ref:.*|architecture_ref: "https://git.example/team/repo/blob/main/specs/spec-asd-TEST-1-payments.md?raw=1#section-2"|' "$FIXTURE" > "$DOCUMENT"
+check 'HTTP spec-asd query and fragment are accepted' 0 "$TEST_TMP/project" '校验通过' --file "$DOCUMENT"
+sed 's|^architecture_ref:.*|architecture_ref: "https://git.example/team/repo/blob/main/ASD-TEST-1.md#scope"|' "$FIXTURE" > "$DOCUMENT"
+check 'HTTP ASD fragment is accepted' 0 "$TEST_TMP/project" '校验通过' --file "$DOCUMENT"
+sed 's|^architecture_ref:.*|architecture_ref: "https://git.example/team/repo/blob/main/ASD-WRONG-1.md?file=/ASD-TEST-1.md"|' "$FIXTURE" > "$DOCUMENT"
+check 'query cannot repair a wrong source identity' 1 "$TEST_TMP/project" 'architecture_ref' --file "$DOCUMENT"
+sed 's|^architecture_ref:.*|architecture_ref: "https://git.example/team/repo/blob/main/ASD-TEST-2.md#ASD-TEST-1"|' "$FIXTURE" > "$DOCUMENT"
+check 'HTTP wrong phase remains invalid' 1 "$TEST_TMP/project" 'architecture_ref' --file "$DOCUMENT"
 sed 's/^architecture_ref:.*/architecture_ref: ""/' "$FIXTURE" > "$DOCUMENT"
 printf '\nASD-TEST-1 PRD-TEST-1\n' >> "$DOCUMENT"
 check 'body cannot repair empty reference' 1 "$TEST_TMP/project" 'architecture_ref' --file "$DOCUMENT"

@@ -52,13 +52,13 @@
 
 ---
 
-## 与 spec-asd / docs-push 区分
+## 与架构规约区分
 
 | 类型 | 路径示例 | 用途 |
 | --- | --- | --- |
 | 会话工作稿 / 设计备忘 | `{DOC_DIR}/superpowers/specs/YYYY-MM-DD-<topic>-*.md` | 可选暂存；非正式 SSOT |
-| 规约 spec-asd | `application/requirements/…/specs/spec-asd-*.md` 或 `{DOC_DIR}/specs/spec-asd-*.md` | 架构规约；docs-push |
-| legacy spec | `application/specs/spec-{yyMMdd}-*.md` | docs-push legacy |
+| 规约 spec-asd | `application/requirements/…/specs/spec-asd-*.md` 或 `{DOC_DIR}/specs/spec-asd-*.md` | 架构规约；[sdx-design 只读消费](../skills/sdx-design/references/central-spec-source.md) |
+| legacy spec | `application/specs/spec-{yyMMdd}-*.md` | 历史规约输入；不再自动跨仓复制 |
 
 ---
 

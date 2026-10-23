@@ -97,7 +97,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/bootstrap.
 ├── solution/             # 解决方案库：knowledge/ + overview、system-slots/system-{NAME}/
 ├── company/              # 公司库：knowledge/ + overview、solution-slots/solution-{NAME}/
 ├── bootstrap.sh          # 远程/本地双轨装机编排（agent-install → docs-install）
-├── agent/                # skills/（27）、rules/、knowledge/、references/、scripts/、hooks.json
+├── agent/                # skills/（26）、rules/、knowledge/、references/、scripts/、hooks.json
 ├── .docsconfig           # DOC_DIR=docs（目录可缺席）· KNOWLEDGE_TYPE=company
 └── .gitignore
 ```
@@ -114,7 +114,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/bootstrap.
 flowchart TD
     subgraph KB["知识库构建链 docs-*"]
         direction LR
-        KB_CO["company"] -. push .-> KB_SLN["solution"] -. push .-> KB_SYS["system"] -. push .-> KB_APP["application"]
+        KB_APP["application"] -. 只读引用 .-> KB_SYS["system"] -. 只读引用 .-> KB_SLN["solution"] -. 只读引用 .-> KB_CO["company"]
         KB_APP -. pull .-> KB_SYS -. pull .-> KB_SLN -. pull .-> KB_CO
     end
     subgraph RD["需求交付链 sdx-*"]
@@ -143,7 +143,7 @@ flowchart TD
 | 初始化脚本 | [bootstrap.sh](bootstrap.sh)、[agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)、[agent/skills/agent-install/SKILL.md](agent/skills/agent-install/SKILL.md) |
 | 共享推进契约 | [agent/references/](agent/references/) |
 | 根索引运行日志 | [INDEX-GUIDE 增量锚点](INDEX-GUIDE 增量锚点) |
-| OKF / Skill 清单（27） | [docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) · [agent/skills/README.md](agent/skills/README.md) |
+| OKF / Skill 清单（26） | [docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) · [agent/skills/README.md](agent/skills/README.md) |
 
 ---
 

@@ -82,7 +82,7 @@ flowchart LR
         S7["/sdx-prd<br/>产出：产品设计文档"]
         S8["/sdx-architect<br/>产出：概要设计文档"]
         S9["git log / git diff<br/>变更溯源"]
-        S10["/docs-push<br/>推送：概设规约"]
+        S10["中央概设规约<br/>供应用只读引用"]
 
         S0 --> S2 --> S3 --> S4 --> S5 --> S6 --> S7 --> S8 --> S9 -.-> S2
         S8 --> S10
@@ -116,12 +116,12 @@ flowchart LR
 | 2 | `/docs-indexing` + `/docs-agent` | `index.md`、`README.md`、`AGENTS.md` |
 | 3 | 公司：`/sdx-domains`。解决方案：`/sdx-solution`。系统/应用：`/sdx-analysis` → `/sdx-feature` → `/sdx-prd` → `/sdx-architect` | `DOMAIN-*` / `SOLUTION` / `ANALYSIS` / `FEATURE` / `PRD` / `ASD` |
 
-### 阶段二：应用库 — 同步概设、详设与开发
+### 阶段二：应用库 — 引用概设、详设与开发
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
 | 1 | `/docs-install` 安装应用知识库 + `/agent-install` + `/docs-link`（系统→应用） | 应用 `/docs` + `application-slots` |
-| 2 | `/docs-push` 推送概设规约（`spec-asd`）到应用库 | 应用仓 `requirements/**/specs/` |
+| 2 | 按 [只读消费契约](agent/skills/sdx-design/references/central-spec-source.md) 定位并确认中央 ASD/spec-asd | HTTP 来源链接与确认内容基线 |
 | 3 | 规约详细设计链路：`/sdx-design` → `/sdx-test` | `DSD`、`TDD` |
 | 4 | 规约开发实现链路：`brainstorming` → `opsx:*` → `superpowers:sdd` | 代码实现 + 规格归档 |
 | 5 | `/docs-build`（按需） | 五视角实体、`index.md` |
@@ -188,7 +188,7 @@ flowchart LR
         subgraph CEN_SDX["需求分析设计"]
             direction LR
             S0["/sdx-*<br/>需求分析设计"]
-            S1["/docs-push<br/>概设规约推送"]
+            S1["中央概设规约<br/>供应用只读引用"]
 
             S0 --> S1
         end
@@ -244,7 +244,7 @@ flowchart LR
 
 | 步骤 | 动作 | 产出 |
 | --- | --- | --- |
-| 1 | `/docs-push` 推送概设规约（`spec-asd`）到各应用库 | 应用仓 `requirements/**/specs/` |
+| 1 | 按 [只读消费契约](agent/skills/sdx-design/references/central-spec-source.md) 确认各应用的中央规约来源 | HTTP 来源链接与确认内容基线 |
 | 2 | 规约详细设计链路：`/sdx-design` → `/sdx-test` | `DSD`、`TDD` |
 | 3 | 规约开发实现链路：`brainstorming` → `opsx:*` → `superpowers:sdd` | 代码实现 + 规格归档 |
 | 4 | `git log` / `git diff` + 定期 `/docs-pull` + 三跳 `/docs-distill` | 联邦镜像与各层 overview 全量对齐 |

@@ -3,7 +3,7 @@ name: docs-pull
 description: >
   按 knowledge-links.yaml 拉取 child 仓库并校验或修复联邦槽位软链。
   用于 /docs-pull、同步已登记的应用、系统或解决方案槽位；结果包含下级仓 commit。
-  新建联邦登记用 docs-link；中央规约下发用 docs-push。
+  新建联邦登记用 docs-link；规约设计由 sdx-design 只读引用中央来源，不提供跨仓下发。
 ---
 
 # docs-pull
@@ -21,11 +21,11 @@ description: >
 
 | 负责 | 不负责 |
 | --- | --- |
-| 软链校验/修复；child clone/pull（已有仓当前分支）；经删除授权替换旧真目录；SYNC 输出含 git commit | docs-push 中央规约下发；docs-distill / docs-archive / SDD 正文；docs-link 建联写 yaml（→ `/docs-link`） |
+| 软链校验/修复；child clone/pull（已有仓当前分支）；经删除授权替换旧真目录；SYNC 输出含 git commit | 中央规约复制；docs-distill / docs-archive / SDD 正文；docs-link 建联写 yaml（→ `/docs-link`） |
 
 ## 不这样用
 
-- 不把 `docs-push` 中央规约复制主路径收成 `docs-pull`
+- 不复制中央规约；应用设计按 `sdx-design` 只读中央 ASD/spec-asd
 - 不在 `--all` 下一口气静默同步所有槽位
 - 不在脏工作区上强制 pull / reset
 

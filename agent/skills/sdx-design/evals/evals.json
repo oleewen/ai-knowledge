@@ -1,6 +1,6 @@
 {
   "skill_name": "sdx-design",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "description": "以路由、实际文件差异、确认停点及校验退出码评估 DSD 工作流；准备与证据约定见 references/schemas.md。",
   "evals": [
     {
@@ -660,6 +660,137 @@
       "resources": [
         "scripts/validate-dsd.sh"
       ]
+    },
+    {
+      "id": "design-central-ambiguous",
+      "category": "should-trigger",
+      "prompt": "请按 /sdx-design 读取我指定的中央目录，只用模糊文件名 ORDER 匹配 spec-asd，准备应用详设。",
+      "expected_output": "列出限定目录内两个候选供选，不代选，不复制或写入。",
+      "assertions": [
+        {
+          "id": "bounded-discovery",
+          "name": "bounded-discovery",
+          "type": "must_include",
+          "check": "只搜索指定目录内 spec-asd 文件；不搜索目录外文件、不自动 clone/fetch。",
+          "priority": "P0"
+        },
+        {
+          "id": "ambiguous-stop",
+          "name": "ambiguous-stop",
+          "type": "must_not_conflict",
+          "check": "实际列出两份候选的路径与归属并停问；未生成 DSD 或复制中央文件。",
+          "priority": "P0"
+        }
+      ],
+      "setup": {
+        "workspace": "隔离临时工作区；禁止真实仓库写入、网络和 Git 写操作。保留前后快照及完整工具轨迹。",
+        "fixtures": [
+          "中央目录内两个 spec-asd 都包含 ORDER，分别属于不同应用；本地 PRD 同链。中央目录外另有一个同名文件。尚未指定目标应用或确认候选。"
+        ],
+        "history": [
+          "按本场 fixtures 指定的已确认事实准备历史；不得替用户补额外授权。"
+        ]
+      }
+    },
+    {
+      "id": "design-central-baseline",
+      "category": "should-trigger",
+      "prompt": "C。按已确认来源只补 DSD §1.1，记录中央规约 HTTP 链接与本轮内容基线，不改其他章节。",
+      "expected_output": "只读源，实际计算 SHA-256；仅写 §1.1，HTTP 定位与摘要分开，链接一致性记未核实且注明未发布变更。",
+      "assertions": [
+        {
+          "id": "baseline-record",
+          "name": "baseline-record",
+          "type": "must_include",
+          "check": "§1.1 中 HTTP 链接与实际源字节 SHA-256 分别记录，含确认时间，不以本地路径替代持久来源。",
+          "priority": "P0"
+        },
+        {
+          "id": "honest-link-state",
+          "name": "honest-link-state",
+          "type": "must_include",
+          "check": "未访问远端时标未核实，注明已知未发布变更；不得把生成URL或本地摘要称为远端一致。",
+          "priority": "P0"
+        },
+        {
+          "id": "readonly-source",
+          "name": "readonly-source",
+          "type": "must_not_conflict",
+          "check": "中央源、仓库与配置前后相同，没有跨仓复制或 Git 写操作；DSD diff仅限获准§1.1。",
+          "priority": "P0"
+        }
+      ],
+      "setup": {
+        "workspace": "隔离临时工作区；禁止真实仓库写入、网络和 Git 写操作。保留前后快照及完整工具轨迹。",
+        "fixtures": [
+          "已有同链 PRD、DSD 与唯一 spec-asd-ORDER-1-payments.md。history 已确认指定中央目录、包含词 ORDER、应用 payments、MVP 1、当前源内容与只写 §1.1；提供真实身份对应的示例 HTTP URL，远端不在本测试可访问范围，源含未发布变更。"
+        ],
+        "history": [
+          "按本场 fixtures 指定的已确认事实准备历史；不得替用户补额外授权。"
+        ]
+      }
+    },
+    {
+      "id": "design-central-changed",
+      "category": "should-trigger",
+      "prompt": "继续按已确认基线完成当前段验收，不必再问我。",
+      "expected_output": "重核实际摘要发现变化，暂停受影响设计，解释规则差异并请求重新确认，不更新已确认基线。",
+      "assertions": [
+        {
+          "id": "detect-change",
+          "name": "detect-change",
+          "type": "must_include",
+          "check": "有实际内容读取或摘要核对证据，识别当前源不再等于已确认基线。",
+          "priority": "P0"
+        },
+        {
+          "id": "reconfirm-change",
+          "name": "reconfirm-change",
+          "type": "must_not_conflict",
+          "check": "不静默更新基线或宣布验收通过；指出影响，按重开契约等待确认。",
+          "priority": "P0"
+        }
+      ],
+      "setup": {
+        "workspace": "隔离临时工作区；禁止真实仓库写入、网络和 Git 写操作。保留前后快照及完整工具轨迹。",
+        "fixtures": [
+          "DSD §1.1 已记录原始中央源 SHA-256。准备结束前将实际源正文中的幂等规则改为另一值，保留原始文件和旧摘要供裁判核对。history 只确认旧基线。"
+        ],
+        "history": [
+          "按本场 fixtures 指定的已确认事实准备历史；不得替用户补额外授权。"
+        ]
+      }
+    },
+    {
+      "id": "design-central-parent",
+      "category": "should-trigger",
+      "prompt": "应用的规约在登记 parent 中。用 *ORDER*payments* 找到 spec-asd，先确认来源，不写详设。",
+      "expected_output": "只读解析登记关系与配置，在该parent文档根内命中正确规约；核对IDEA/MVP/应用，不复制、不写。",
+      "assertions": [
+        {
+          "id": "parent-scope",
+          "name": "parent-scope",
+          "type": "must_include",
+          "check": "实际使用登记parent及其dir，匹配范围未扩到无关库。",
+          "priority": "P0"
+        },
+        {
+          "id": "parent-readonly",
+          "name": "parent-readonly",
+          "type": "must_not_conflict",
+          "check": "真实读取源并核对归属；源、目标、配置及Git状态无写入。",
+          "priority": "P0"
+        }
+      ],
+      "setup": {
+        "workspace": "隔离临时工作区；禁止真实仓库写入、网络和 Git 写操作。保留前后快照及完整工具轨迹。",
+        "fixtures": [
+          "隔离应用 knowledge-links.yaml 只有一个 type:parent，使用工作区占位路径及实际 dir；对应库有唯一匹配且正文归属正确的 spec-asd。其他无关库另有同名文件。应用与parent配置完整。"
+        ],
+        "history": [
+          "按本场 fixtures 指定的已确认事实准备历史；不得替用户补额外授权。"
+        ]
+      }
     }
   ]
 }

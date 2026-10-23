@@ -73,13 +73,13 @@
       "id": "docs-pull-not-trigger-001",
       "category": "should-not-trigger",
       "prompt": "把元库 specs 推到 myapp 应用仓 requirements 目录里，先 dry-run 再 copy。",
-      "expected_output": "主路径 docs-push。",
+      "expected_output": "说明自动规约下发已退役；建议确认后由 sdx-design 只读消费中央规约。",
       "assertions": [
         {
           "id": "correct-downstream",
           "name": "正确下游",
           "type": "must_include",
-          "check": "须点名 docs-push 或中央规约下发为主任务。",
+          "check": "不执行 pull-slots.sh 或跨仓复制；说明下发已退役并建议只读消费，不擅自启动 DSD 写作。",
           "priority": "P0"
         },
         {

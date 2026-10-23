@@ -74,7 +74,6 @@
 | 技能 | 主读者 | 宜写 | 宜弱化 |
 | --- | --- | --- | --- |
 | docs-pull | 联邦维护者 | 槽位、同步结果、commit / `SYNC_OK` 要点 | 应用内部实现细节 |
-| docs-push | 应用库维护者 | 目标 path×doc_dir、复制结果、风险确认 | 中央规约全文粘贴 |
 | docs-tag | overview 维护者 | phase 结果、关键词命中摘要 | 无依据扩写业务正文 |
 | docs-link | 联邦维护者 | link/unlink 结果、槽位软链、风险确认 | 改正文当知识更新 |
 | docs-install | 知识库装机者 | target/scope/mode、dry-run 与写入结果 | 业务实体正文 |

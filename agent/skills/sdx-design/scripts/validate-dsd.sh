@@ -124,6 +124,8 @@ validate_file() {
       return value
     }
     function reference_id(value) {
+      # URL 的 query/fragment 不属于文件身份，必须先去除再取 basename。
+      if (value ~ /^https?:\/\//) sub(/[?#].*$/, "", value)
       sub(/^.*\//, "", value)
       sub(/\.md$/, "", value)
       return value
