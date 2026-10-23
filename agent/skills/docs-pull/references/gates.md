@@ -6,15 +6,15 @@
 
 参数向导至少收口以下内容：
 
-- 运行模式：system 或 company
-- `--app` / `--sys-name` / `--all`
+- 运行模式：system、solution 或 company
+- `--app` / `--sys-name` / `--sln-name` / `--all`
 - 当前轮是否只处理一个槽位还是准备批量继续
 
 满足任一时，先澄清再执行：
 
 - 用户只说“同步一下”但未说明 app/sys 范围
 - `--all` 是否真要批量继续不清
-- 当前运行模式（system 或 company）不清
+- 当前运行模式（system、solution 或 company）不清
 
 ## 风险确认
 
@@ -32,9 +32,9 @@
 
 ```text
 即将执行 /docs-pull，当前参数如下：
-- mode: <system|company>
-- selector: <--app X|--sys-name Y|--all>
-- 当前槽位单元: <application-slots/application-{NAME}|system-slots/system-{NAME}>
+- mode: <system|solution|company>
+- selector: <--app X|--sys-name Y|--sln-name Z|--all>
+- 当前槽位单元: <application-slots/application-{NAME}|system-slots/system-{NAME}|solution-slots/solution-{NAME}>
 
 C 确认当前槽位单元 / M 修改参数 / S 跳过当前槽位 / F 补齐剩余槽位
 ```

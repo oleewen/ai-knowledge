@@ -35,8 +35,8 @@
     {
       "id": "docs-pull-trigger-002",
       "category": "should-trigger",
-      "prompt": "在 company 库跑 /docs-pull --all，把所有 system link 都同步进 system-slots/system-* 槽位。",
-      "expected_output": "docs-pull：收口 mode=company 与 --all；先选择一个当前槽位单元执行并校核，再由用户用 F 决定是否补齐剩余 system-slots/system-* 槽位。",
+      "prompt": "在 company 库跑 /docs-pull --all，把所有 solution link 都同步进 solution-slots/solution-* 槽位。",
+      "expected_output": "docs-pull：收口 mode=company 与 --all；先选择一个当前槽位单元执行并校核，再由用户用 F 决定是否补齐剩余 solution-slots/solution-* 槽位。",
       "assertions": [
         {
           "id": "all-mode-requires-batch-confirmation",
@@ -109,6 +109,51 @@
           "name": "改写或停问",
           "type": "must_include",
           "check": "须改写为槽位同步可读摘要或停问；不得未处理就宣称完成。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "pull-company-solution",
+      "category": "should-trigger",
+      "prompt": "当前 KNOWLEDGE_TYPE=company，只同步 name=payments 的 solution child，其他槽位不动。",
+      "expected_output": "使用 --sln-name payments，校核 solution-slots/solution-payments。",
+      "assertions": [
+        {
+          "id": "pull-company-solution",
+          "name": "行为边界",
+          "type": "must_not_conflict",
+          "check": "不误用 --sys-name，不执行 --all，不修改其他槽位。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "pull-all-scoped",
+      "category": "should-trigger",
+      "prompt": "system links 有 billing、orders 两个 child，本轮只授权同步 billing；请先处理当前槽位。",
+      "expected_output": "使用 --app billing；脚本 --all 会处理全部，不可调用。",
+      "assertions": [
+        {
+          "id": "pull-all-scoped",
+          "name": "行为边界",
+          "type": "must_not_conflict",
+          "check": "实际命令不得使用 --all，orders 仓库和槽位均无副作用。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "pull-missing-config",
+      "category": "should-trigger",
+      "prompt": "billing 本地仓已有 docs，但缺 .docsconfig。只修复槽位，不允许安装或重置正文。",
+      "expected_output": "报告缺配置阻塞，定向修复配置后再执行。",
+      "assertions": [
+        {
+          "id": "pull-missing-config",
+          "name": "行为边界",
+          "type": "must_not_conflict",
+          "check": "不宣称脚本会回退 path/dir，不运行 knowledge 重装。",
           "priority": "P0"
         }
       ]

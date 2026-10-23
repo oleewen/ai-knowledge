@@ -7,7 +7,7 @@
 按以下顺序收口参数；用户已明确时可跳过对应项：
 
 1. 运行模式：system（application → system）、solution（system → solution）或 company（solution → company）
-2. `--app` / `--sys-name` / `--all`
+2. `--app` / `--sys-name` / `--sln-name` / `--all`
 3. 当前轮起始槽位单元
 
 参数未收口前，不进入执行。
@@ -32,6 +32,7 @@
 
 - `--app <app_name>`：同步单个 application 槽位
 - `--sys-name <sys_name>`：同步单个 system 槽位
+- `--sln-name <sln_name>`：同步单个 solution 槽位
 - `--all`：先选择一个当前槽位单元处理，收敛后再决定是否继续剩余槽位
 
 ### 3 执行同步
@@ -39,15 +40,17 @@
 ```bash
 bash agent/skills/docs-pull/scripts/pull-slots.sh --app <app_name>
 bash agent/skills/docs-pull/scripts/pull-slots.sh --sys-name <sys_name>
+bash agent/skills/docs-pull/scripts/pull-slots.sh --sln-name <sln_name>
+# --all 会立即处理全部 child；仅在整批已获授权时调用
 bash agent/skills/docs-pull/scripts/pull-slots.sh --all
 ```
 
 脚本约束：
 
 - path 不存在 → `git clone <repository> <path>`
-- path 已存在 → `origin` 须匹配 `repository`；脏工作区拒绝；否则 `git pull --ff-only`（远端默认分支）
-- 软链目标：有 `.docsconfig` 用其 `文档目录`，否则 `{path}/{dir}`
-- 旧真目录槽位：合并旧 `` 进共用文件后删除，再建软链（静默）；不再维护 CHANGE-LOG
+- path 已存在 → `origin` 须匹配 `repository`；脏工作区拒绝；否则 `git pull --ff-only origin <当前分支>`；失败时脚本尝试远端默认分支。执行前核对当前分支，不能误报为始终拉取默认分支
+- 软链目标：必须有可解析的 `.docsconfig`，使用其 `文档目录`；缺失即失败，不回退 `{path}/{dir}`
+- 旧真目录槽位：脚本会替换为软链；先检查并披露现有内容的删除范围，删除授权未覆盖时停止，不静默丢弃；不再维护 CHANGE-LOG
 - 追溯：`SYNC_OK` 含 commit / source / action；变更看下级仓 git
 
 ### 4 风险校核

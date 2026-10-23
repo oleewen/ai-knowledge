@@ -37,7 +37,7 @@
       "id": 2,
       "category": "should-trigger",
       "prompt": "用户：strict 模式下如果有一个 spec 的 app_name 未登记，整批应失败且目标库不应被部分写入。",
-      "expected_output": "用 --strict 并说明整批中止；当前目标单元不收敛前不推进后续目标；可指 scripts/tests/docs-push/cases/02_strict_missing_app.sh",
+      "expected_output": "用 --strict 并说明整批中止；当前目标单元不收敛前不推进后续目标；可指 agent/skills/docs-push/tests/cases/02_strict_missing_app.sh",
       "assertions": [
         {
           "id": "single-target-stop",
@@ -115,6 +115,36 @@
           "name": "改写或停问",
           "type": "must_include",
           "check": "须改写为 path×doc_dir/结果/风险摘要或停问；不得未处理就宣称完成。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "push-not-trigger-pull",
+      "category": "should-not-trigger",
+      "prompt": "修复 application-billing 槽位软链，更新已登记 child 仓；不要下发 spec。",
+      "expected_output": "选择 docs-pull。",
+      "assertions": [
+        {
+          "id": "push-not-trigger-pull",
+          "name": "行为边界",
+          "type": "must_not_conflict",
+          "check": "不调用 push-specs，不复制中央规约。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "push-not-trigger-design",
+      "category": "should-not-trigger",
+      "prompt": "依据已确认 PRD 和 ASD 编写 DSD API 详设，不涉及应用同步。",
+      "expected_output": "选择 sdx-design。",
+      "assertions": [
+        {
+          "id": "push-not-trigger-design",
+          "name": "行为边界",
+          "type": "must_not_conflict",
+          "check": "不因 API/规约字样启用 docs-push 或复制到其他仓库。",
           "priority": "P0"
         }
       ]

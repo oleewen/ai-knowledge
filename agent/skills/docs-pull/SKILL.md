@@ -1,11 +1,9 @@
 ---
 name: docs-pull
 description: >
-  按 knowledge-links.yaml 校验/修复联邦槽位软链（application-slots / system-slots / solution-slots），
-  软链失效时按 type=child 的 repository clone/pull 到 path；变更溯源用下级仓 git commit。
-  用户提到 /docs-pull、从应用/系统本地仓回拉到联邦槽位、同步槽位、按 knowledge-links 拉取时，使用本技能。
-  分流：推送中央规约到应用库 → docs-push；联邦建联 → docs-link；overview 蒸馏 / 归档 / SDD → 对应技能。
-  推进见 light-flow-actions（C/M/S/F，无 G）与 references/gates.md。
+  按 knowledge-links.yaml 拉取 child 仓库并校验或修复联邦槽位软链。
+  用于 /docs-pull、同步已登记的应用、系统或解决方案槽位；结果包含下级仓 commit。
+  新建联邦登记用 docs-link；中央规约下发用 docs-push。
 ---
 
 # docs-pull
@@ -23,7 +21,7 @@ description: >
 
 | 负责 | 不负责 |
 | --- | --- |
-| 软链校验/修复；child clone/pull（默认分支）；旧真目录静默迁移；SYNC 输出含 git commit | docs-push 中央规约下发；docs-distill / docs-archive / SDD 正文；docs-link 建联写 yaml（→ `/docs-link`） |
+| 软链校验/修复；child clone/pull（已有仓当前分支）；经删除授权替换旧真目录；SYNC 输出含 git commit | docs-push 中央规约下发；docs-distill / docs-archive / SDD 正文；docs-link 建联写 yaml（→ `/docs-link`） |
 
 ## 不这样用
 
