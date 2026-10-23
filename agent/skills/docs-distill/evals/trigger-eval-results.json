@@ -89,5 +89,7 @@
     "total": 10,
     "passed": 10,
     "failed": 0
-  }
+  },
+  "validation_status": "historical-stale",
+  "limitations": "历史触发结果保留原始 query 与计分，未重跑当前 trigger-eval.json；旧 SOLUTION/ANALYSIS 路由及旧 description 不能作为现行契约通过证据。"
 }

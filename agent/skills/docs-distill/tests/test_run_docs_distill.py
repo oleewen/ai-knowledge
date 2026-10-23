@@ -59,6 +59,17 @@ class RunDocsDistillTest(unittest.TestCase):
         self.assertIn("dry_run  : true", result.stdout)
         self.assertFalse((self.root / "system/knowledge/overview/billing-appeal-overview.md").exists())
 
+    def test_federated_slot_symlink_is_not_mistaken_for_empty(self) -> None:
+        slot = self.make_layer("system")
+        source = self.root / "linked-application"
+        slot.rename(source)
+        slot.symlink_to(source, target_is_directory=True)
+        before = {p.relative_to(source): p.read_bytes() for p in source.rglob("*") if p.is_file()}
+        result = self.run_script("--doc-dir", "system", "--name", "billing-appeal", "--dry-run")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(before, {p.relative_to(source): p.read_bytes() for p in source.rglob("*") if p.is_file()})
+        self.assertFalse((self.root / "system/knowledge/overview/billing-appeal-overview.md").exists())
+
     def test_non_dry_run_still_never_writes(self) -> None:
         self.make_layer("system")
         result = self.run_script("--doc-dir", "system", "--name", "billing-appeal")

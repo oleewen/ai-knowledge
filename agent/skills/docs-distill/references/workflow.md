@@ -43,7 +43,7 @@
 ## 脚本 I/O
 
 ```bash
-agent/skills/docs-distill/scripts/run-docs-distill.sh \
+bash agent/skills/docs-distill/scripts/run-docs-distill.sh \
   --root /path/to/repo --doc-dir system --name billing-appeal --dry-run
 ```
 

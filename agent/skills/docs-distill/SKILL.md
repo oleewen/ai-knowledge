@@ -4,7 +4,6 @@ description: >
   将已 pull 的联邦槽位内容按目标层契约全量去重，写入 system、solution 或 company
   overview 第三列。适用于 /docs-distill、槽位上行、同步应用/系统/解决方案到上层 overview。
   仅处理联邦槽位；非槽位资料走 docs-extract，overview 归档走 docs-archive，索引走 docs-indexing。
-  仅全量，不写 DISTILL-LOG；职责或粒度契约未闭合时停止。
 ---
 
 # docs-distill
@@ -42,7 +41,7 @@ description: >
 ## 脚本
 
 ```bash
-agent/skills/docs-distill/scripts/run-docs-distill.sh \
+bash agent/skills/docs-distill/scripts/run-docs-distill.sh \
   --root /path/to/repo --doc-dir system --name billing-appeal --dry-run
 ```
 

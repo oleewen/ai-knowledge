@@ -150,7 +150,7 @@ errors=0
 if [[ ! -d "$slot_dir" ]]; then
   echo "[ERROR] 槽位不存在: ${slot_dir#$root_dir/}（请先 docs-link / docs-pull）" >&2
   errors=$((errors + 1))
-elif [[ -z "$(find "$slot_dir" -mindepth 1 -maxdepth 1 -print -quit 2>/dev/null)" ]]; then
+elif [[ -z "$(find -H "$slot_dir" -mindepth 1 -maxdepth 1 -print -quit 2>/dev/null)" ]]; then
   echo "[ERROR] 槽位为空: ${slot_dir#$root_dir/}（请先 docs-pull）" >&2
   errors=$((errors + 1))
 elif [[ ! -f "$slot_dir/README.md" ]]; then

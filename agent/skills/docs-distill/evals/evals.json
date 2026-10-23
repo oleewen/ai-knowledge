@@ -51,7 +51,7 @@
       "id": 2,
       "category": "should-trigger",
       "prompt": "/docs-distill --doc-dir company --name payment-platform --dry-run",
-      "expected_output": "识别 company 边：system-slots → company overview；写前澄清后只预览，不写 overview / DISTILL-LOG。",
+      "expected_output": "识别 company 边：solution-slots → company overview；写前澄清后只预览，不写 overview / DISTILL-LOG。",
       "files": [],
       "assertions": [
         {
@@ -65,7 +65,7 @@
           "id": "company-edge",
           "name": "公司边路径",
           "type": "must_include",
-          "check": "须体现 company/system-slots → company/knowledge/overview。",
+          "check": "须体现 company/solution-slots/solution-{NAME} → company/knowledge/overview。",
           "priority": "P0"
         },
         {
@@ -80,8 +80,8 @@
     {
       "id": 3,
       "category": "should-trigger",
-      "prompt": "公司库 overview 要更新了，payment-platform 系统槽位知识改了不少，帮我全量同步看看差哪些",
-      "expected_output": "澄清 DOC_DIR=company 与 `--name=payment-platform`；单当前单元；未确认不宣称已写完。",
+      "prompt": "公司库 overview 要更新了，payment-platform 解决方案槽位知识改了不少，帮我全量同步看看差哪些",
+      "expected_output": "澄清 DOC_DIR=company 与 `--name=payment-platform`；读取 company/solution-slots/solution-payment-platform；单当前单元；未确认不宣称已写完。",
       "files": [],
       "assertions": [
         {
@@ -95,7 +95,7 @@
           "id": "company-edge",
           "name": "公司边",
           "type": "must_include",
-          "check": "须走 system 槽 → 公司 overview，而非只谈系统边。",
+          "check": "须走 company/solution-slots/solution-payment-platform → 公司 overview，不套用 solution/system-slots 系统槽位路径。",
           "priority": "P0"
         },
         {
