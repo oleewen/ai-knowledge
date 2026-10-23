@@ -43,13 +43,13 @@
       "id": "docs-link-trigger-002",
       "category": "should-trigger",
       "prompt": "当前工作区是 application 仓 billing-app，帮我 /docs-link 挂到上级 system。",
-      "expected_output": "docs-link：识别非法源边（application）；停止并要求切换到 system/company 源仓工作区；不代跑脚本。",
+      "expected_output": "docs-link：识别非法源边（application）；停止并要求切换到 system/solution/company 源仓工作区；不代跑脚本。",
       "assertions": [
         {
           "id": "source-cwd-gate",
           "name": "源仓闸门",
           "type": "must_include",
-          "check": "须体现当前仓非 company/system 时停止，要求切换源仓工作区，不得静默代 cd 执行。",
+          "check": "须体现当前仓非 company/solution/system 时停止，要求切换源仓工作区，不得静默代 cd 执行。",
           "priority": "P0"
         }
       ]
@@ -57,7 +57,7 @@
     {
       "id": "docs-link-trigger-003",
       "category": "should-trigger",
-      "prompt": "换父了，link 时把目标 knowledge 里旧跨层 HTTP 前缀一并改掉。",
+      "prompt": "换父了，link 时把目标 knowledge 里旧跨层 HTTP 前缀一并改掉。先说明 --rewrite-http 的默认行为和明示、二次确认边界。",
       "expected_output": "docs-link：识别 --rewrite-http 为高风险改正文；默认关；仅在用户明示后二次确认再加旗标。",
       "assertions": [
         {
@@ -124,6 +124,21 @@
           "name": "改写或停问",
           "type": "must_include",
           "check": "须改写为建联可读摘要或停问；不得未处理就宣称完成。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "link-solution-source",
+      "category": "should-trigger",
+      "prompt": "当前工作区 KNOWLEDGE_TYPE=solution，登记 system billing；目标和名称均已给，先预览。",
+      "expected_output": "接受 solution 源边，运行单目标 dry-run。",
+      "assertions": [
+        {
+          "id": "link-solution-source",
+          "name": "行为边界",
+          "type": "must_not_conflict",
+          "check": "不将 solution 判为非法源，不要求 company 或 system 才能执行预览。",
           "priority": "P0"
         }
       ]

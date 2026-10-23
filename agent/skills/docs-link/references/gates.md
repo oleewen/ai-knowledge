@@ -12,7 +12,7 @@
 
 参数向导至少收口以下内容：
 
-- 源仓 `KNOWLEDGE_TYPE`（须 company 或 system）
+- 源仓 `KNOWLEDGE_TYPE`（须 company、solution 或 system）
 - `--link` / `--unlink`
 - `--target`
 - 名称（`app_name` 或系统名；可预填，须确认）
@@ -29,7 +29,7 @@
 
 以下情况属于风险项，必须先给出结论、推荐方案与动作选项，再等待用户确认：
 
-- 当前仓非 company/system（须切换工作区）
+- 当前仓非 company/solution/system（须切换工作区）
 - 目标缺 `knowledge-links.yaml` 或 `.docsconfig`
 - 重复 link（将合并更新，不追加）
 - unlink（删 parent 条 + 槽位软链）
@@ -41,7 +41,7 @@
 
 ```text
 即将执行 /docs-link，当前参数如下：
-- source KNOWLEDGE_TYPE: <company|system>
+- source KNOWLEDGE_TYPE: <company|solution|system>
 - action: <--link|--unlink>
 - target: <路径或 URL>
 - app-name / sys-name: <名或 n/a>

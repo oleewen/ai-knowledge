@@ -190,7 +190,7 @@ knowledge_link_ensure_kind_slot() {
   dest="${slots}/${kind}-${name}"
   shared="${slots}/changelogs"
   if [[ "$DRY" == '1' ]]; then
-    log "[dry-run] 将确保软链: %s → %s" "$dest" "$target_doc_root"
+    log "[dry-run] 将确保软链: ${dest} → ${target_doc_root}"
     return 0
   fi
   mkdir -p "$slots"

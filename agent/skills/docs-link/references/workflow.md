@@ -9,7 +9,7 @@
 1. 源仓闸门：当前工作区 `.docsconfig` → `KNOWLEDGE_TYPE` 须为 `company`、`solution` 或 `system`
 2. 动作：`--link` 或 `--unlink`
 3. `--target`（目标仓库根或已登记 remote URL）
-4. 名称：system→application 时确认 `app_name`（可预填推断）；company→system 时确认系统名（脚本登记字段同源）
+4. 名称：system→application 时确认 `app_name`（可预填推断）；company→solution 时确认解决方案名，solution→system 时确认系统名（脚本登记字段同源）
 5. 是否 `--rewrite-http`（默认否；仅明示换父时讨论）
 
 参数未收口前，不进入执行。
@@ -47,7 +47,7 @@ bash agent/skills/docs-link/scripts/docs-link.sh --link|--unlink --target <目�
 
 - 源 links：向下 `type: child`；合并同 target，不追加重复行
 - 子仓 links：唯一 `type:parent`；`type:meta` 保活
-- 槽位：`application-{NAME}` / `system-{NAME}` → 下级 `文档目录`；unlink 删软链，共用日志保留
+- 槽位：`application-{NAME}` / `system-{NAME}` / `solution-{NAME}` → 下级 `文档目录`；unlink 删软链，共用日志保留
 - `--rewrite-http`：仅显式开启时改目标 `knowledge/**` 跨层 HTTP 前缀
 
 ### 5 风险校核与停顿

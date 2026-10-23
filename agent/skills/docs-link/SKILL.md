@@ -1,12 +1,9 @@
 ---
 name: docs-link
 description: >
-  在源知识库登记/注销目标知识库：双边 knowledge-links.yaml（源 child、子仓唯一 type:parent），
-  并维护联邦槽位软链（application-slots / system-slots / solution-slots）。
-  薄封装 agent/skills/docs-link/scripts/docs-link.sh（--link|--unlink --target … [--app-name] [--rewrite-http] [--dry-run]）。
-  用户提到 /docs-link、知识库建联、联邦登记、link/unlink knowledge-links、建槽位软链、注销应用/系统链路时，使用本技能。
-  分流：槽位回拉/修复 → docs-pull；中央规约下发 → docs-push；装机 → docs-install / agent-install；元库骨架对齐 → docs-upgrade。
-  推进见 light-flow-actions（C/M/S/F，无 G）与 references/gates.md。
+  登记或注销上下级知识库的双边 knowledge-links.yaml，并维护联邦槽位软链。
+  用于 /docs-link、知识库建联、联邦登记或注销链路。
+  已登记槽位的回拉与修复用 docs-pull；中央规约下发用 docs-push。
 ---
 
 # docs-link
