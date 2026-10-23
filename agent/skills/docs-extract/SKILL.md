@@ -17,7 +17,7 @@ description: >
 | --- | --- |
 | `--sources` | 文件、目录列表或内联文本；疑似路径但不存在时先澄清 |
 | `--overview` | 已存在的单个 `{DOC_DIR}/knowledge/overview/{NAME}-overview.md`；四层均可 |
-| 关键词 | 读取目标的 `## 文档关键词` 附录，不能用标题猜词 |
+| 关键词 | 读取目标的 关键词附录（格式见 [extract-spec.md](references/extract-spec.md)），不能用标题猜词 |
 | `--dry-run` | 可选；只预览，不改目标文件 |
 
 联邦槽位全量上行、overview 归档分别交给 `docs-distill`、`docs-archive`；索引和 SDD 终稿不在本技能范围。

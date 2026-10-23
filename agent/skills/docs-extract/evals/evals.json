@@ -455,6 +455,40 @@
           "priority": "P0"
         }
       ]
+    },
+    {
+      "id": "extract-tagged-keywords",
+      "category": "should-trigger",
+      "prompt": "在临时副本中使用 sources/design.md 为来源，system/knowledge/overview/order-tagged-overview.md 为目标；该 overview 刚完成 docs-tag。C，已确认本批来源和目标，只 dry-run。请执行提炼。",
+      "expected_output": "直接消费 docs-tag 的 YAML 全局词表；以目标行要求定位退款审批，读正文去重并预览通知动作；保留旧待归档项，不因缺少章节映射表要求重选词。",
+      "files": [
+        "tests/fixtures/system/knowledge/overview/order-tagged-overview.md",
+        "tests/fixtures/system/knowledge/business/process.md",
+        "tests/fixtures/sources/design.md"
+      ],
+      "assertions": [
+        {
+          "id": "tagged-keywords-compatible",
+          "name": "标准词表兼容",
+          "type": "must_include",
+          "check": "读取实际 YAML keywords，不误报关键词缺失或强制用户改成章节映射表；按行要求将通知动作归入退款审批。",
+          "priority": "P0"
+        },
+        {
+          "id": "covered-baseline",
+          "name": "正文去重",
+          "type": "must_include",
+          "check": "读取 process.md，已覆盖的退款审批不重复新增，通知动作形成候选。",
+          "priority": "P0"
+        },
+        {
+          "id": "dry-run-no-write",
+          "name": "预览不落盘",
+          "type": "must_not_conflict",
+          "check": "比较所有输入前后字节不变，旧双人复核与限额调整保持。",
+          "priority": "P0"
+        }
+      ]
     }
   ]
 }
