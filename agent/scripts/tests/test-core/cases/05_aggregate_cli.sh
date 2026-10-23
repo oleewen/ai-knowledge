@@ -13,7 +13,7 @@ cp "$SCRIPTS/tests/run.sh" "$fixture/agent/scripts/tests/run.sh"
 
 # 替代套件仅记录编排顺序，避免测试聚合器时执行实际安装或刷新工作。
 skill_suites=(docs-upgrade docs-indexing sdx-analysis sdx-feature sdx-prd sdx-architect sdx-design sdx-test sdx-solution sdx-domains docs-archive docs-build docs-distill docs-merge docs-revise docs-simplify docs-tag)
-for name in bash-guard shared-config shared-io shared-runtime test-core refresh-codex docs-publish forbidden-file-refs link-reachable docs-link okf docs-okf agent-install bootstrap docs-install "${skill_suites[@]}" docs-okf-browser; do
+for name in bash-guard shared-config shared-io shared-runtime test-core codex-daemon-watch refresh-codex docs-publish forbidden-file-refs link-reachable docs-link okf docs-okf agent-install bootstrap docs-install "${skill_suites[@]}" docs-okf-browser; do
   case "$name" in
     docs-okf-browser)
       runner="$fixture/agent/skills/docs-okf/tests/run-browser.sh" ;;
@@ -27,7 +27,7 @@ done
 
 aggregate="$fixture/agent/scripts/tests/run.sh"
 export SUITE_TRACE="$fixture/trace"
-expected_quick=$'bash-guard\nshared-config\nshared-io\nshared-runtime\ntest-core\nrefresh-codex\ndocs-publish\nforbidden-file-refs\nlink-reachable\ndocs-link\nokf\ndocs-okf\nagent-install\nbootstrap'
+expected_quick=$'bash-guard\nshared-config\nshared-io\nshared-runtime\ntest-core\ncodex-daemon-watch\nrefresh-codex\ndocs-publish\nforbidden-file-refs\nlink-reachable\ndocs-link\nokf\ndocs-okf\nagent-install\nbootstrap'
 "$BASH" "$aggregate" --help >"$fixture/help"
 [[ ! -e "$SUITE_TRACE" ]] || fail '帮助调用执行了套件'
 assert_contains 'shared-config shared-io shared-runtime test-core' "$fixture/help"

@@ -4,10 +4,12 @@ set -euo pipefail
 
 if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
   cat <<'EOF'
-Usage: refresh-codex.sh
+Usage: refresh-codex.sh [--catalog-only]
 
 Wait for Codex requests to become idle, refresh the CC Switch model catalog,
 restart Codex, confirm its process starts, then verify route configuration.
+
+--catalog-only refreshes the catalog without waiting for idle or restarting Codex.
 
 Environment overrides:
   CODEX_HOME                       Codex config directory
@@ -18,6 +20,14 @@ Environment overrides:
 EOF
   exit 0
 fi
+
+catalog_only=false
+case "${1:-}" in
+  --catalog-only) catalog_only=true ;;
+  "") ;;
+  *) printf 'Unknown argument: %s\n' "$1" >&2; exit 2 ;;
+esac
+[[ $# -le 1 ]] || { printf 'Too many arguments\n' >&2; exit 2; }
 
 codex_home="${CODEX_HOME:-$HOME/.codex}"
 cc_switch_home="${CC_SWITCH_HOME:-$HOME/.cc-switch}"
@@ -50,9 +60,11 @@ codex_running() {
 
 command -v curl >/dev/null 2>&1 || die "curl is required"
 command -v jq >/dev/null 2>&1 || die "jq is required"
+if ! "$catalog_only"; then
 command -v osascript >/dev/null 2>&1 || die "osascript is required on macOS"
 command -v open >/dev/null 2>&1 || die "open is required on macOS"
 command -v pgrep >/dev/null 2>&1 || die "pgrep is required"
+fi
 
 [[ -f "$config_file" ]] || die "Codex config not found: $config_file"
 [[ -f "$live_state_file" ]] || die "CC Switch live state not found: $live_state_file"
@@ -65,7 +77,9 @@ route_id="$(jq -r '.apps.codex.proxy_route // empty' "$live_state_file")"
 log "Current model: $model"
 log "Current CC Switch route: $route_id"
 
-if command -v sqlite3 >/dev/null 2>&1 && [[ -f "$cc_switch_home/cc-switch.db" ]]; then
+if "$catalog_only"; then
+  log "Catalog-only mode; skipping activity wait and desktop restart"
+elif command -v sqlite3 >/dev/null 2>&1 && [[ -f "$cc_switch_home/cc-switch.db" ]]; then
   deadline=$((SECONDS + max_wait_seconds))
   idle_count=0
   while (( SECONDS < deadline )); do
@@ -86,7 +100,7 @@ else
   log "CC Switch database unavailable; skipping activity wait"
 fi
 
-temp_catalog="$(mktemp "${TMPDIR:-/tmp}/codex-model-catalog.XXXXXX")"
+temp_catalog="$(mktemp "$codex_home/.codex-model-catalog.XXXXXX")"
 backup_catalog="${catalog_file}.backup.$(date +%Y%m%d-%H%M%S)"
 trap 'rm -f "$temp_catalog"' EXIT
 
@@ -104,6 +118,7 @@ fi
 mv "$temp_catalog" "$catalog_file"
 trap - EXIT
 
+if ! "$catalog_only"; then
 log "Stopping Codex"
 osascript -e 'tell application id "com.openai.codex" to quit' >/dev/null \
   || die "Codex quit request failed"
@@ -124,6 +139,7 @@ for _ in {1..30}; do
   sleep 1
 done
 codex_running || die "Codex process did not start within 30s"
+fi
 new_model="$(sed -n 's/^model[[:space:]]*=[[:space:]]*"\([^"]*\)"/\1/p' "$config_file" | head -1)"
 new_route_id="$(jq -r '.apps.codex.proxy_route // empty' "$live_state_file")"
 catalog_models="$(jq -r '[.models[] | .slug // .id] | join(", ")' "$catalog_file")"
@@ -133,7 +149,9 @@ catalog_models="$(jq -r '[.models[] | .slug // .id] | join(", ")' "$catalog_file
 [[ -n "$catalog_models" ]] || die "Refreshed model catalog is empty"
 
 log "Refresh complete"
-log "Codex process detected; service readiness was not checked"
+if ! "$catalog_only"; then
+  log "Codex process detected; service readiness was not checked"
+fi
 log "Model: $new_model"
 log "Route: $new_route_id"
 log "Catalog models: $catalog_models"

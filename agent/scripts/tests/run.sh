@@ -14,6 +14,7 @@ SUITE_REGISTRY=(
   'shared-io|agent/scripts/tests/shared-io/run.sh|quick'
   'shared-runtime|agent/scripts/tests/shared-runtime/run.sh|quick'
   'test-core|agent/scripts/tests/test-core/run.sh|quick'
+  'codex-daemon-watch|agent/scripts/tests/codex-daemon-watch/run.sh|quick'
   'refresh-codex|agent/scripts/tests/refresh-codex/run.sh|quick'
   'docs-publish|agent/skills/docs-publish/tests/run.sh|quick'
   'forbidden-file-refs|agent/scripts/tests/forbidden-file-refs/run.sh|quick'

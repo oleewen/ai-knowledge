@@ -46,7 +46,7 @@ for command in sqlite3 curl cp osascript pgrep open sleep; do
 done
 
 failures=0
-for scenario in no-db db-error curl-error empty-catalog invalid-entry backup-error quit-error stop-timeout process-error start-timeout model-changed route-changed success; do
+for scenario in no-db db-error curl-error empty-catalog invalid-entry backup-error quit-error stop-timeout process-error start-timeout model-changed route-changed success catalog-only; do
   case_dir="$TEST_TMP/$scenario"
   mkdir -p "$case_dir/codex" "$case_dir/switch"
   printf 'model = "test-model"\n' > "$case_dir/codex/config.toml"
@@ -59,13 +59,15 @@ for scenario in no-db db-error curl-error empty-catalog invalid-entry backup-err
     invalid-entry) printf '{"models":[{"slug":42}]}\n' ;;
     *) printf '{"models":[{"slug":"test-model"},{"id":"other-model"}]}\n' ;;
   esac > "$case_dir/response.json"
+  arg=""
+  [[ "$scenario" != catalog-only ]] || arg=--catalog-only
   status=0
   env PATH="$TEST_TMP/bin:$PATH" CODEX_HOME="$case_dir/codex" \
     CC_SWITCH_HOME="$case_dir/switch" TMPDIR="$case_dir" \
     SCENARIO="$scenario" CASE_DIR="$case_dir" REAL_CP="$(command -v cp)" \
-    bash "$SCRIPT" > "$case_dir/output" 2>&1 || status=$?
+    bash "$SCRIPT" "$arg" > "$case_dir/output" 2>&1 || status=$?
   passed=true
-  if [[ "$scenario" == success || "$scenario" == no-db ]]; then
+  if [[ "$scenario" == success || "$scenario" == no-db || "$scenario" == catalog-only ]]; then
     [[ "$status" == 0 ]] || passed=false
     cmp -s "$case_dir/response.json" "$case_dir/codex/cc-switch-model-catalog.json" || passed=false
     grep -q 'Refresh complete' "$case_dir/output" || passed=false
@@ -85,6 +87,8 @@ for scenario in no-db db-error curl-error empty-catalog invalid-entry backup-err
   case "$scenario" in
     db-error|curl-error|empty-catalog|invalid-entry|backup-error)
       [[ ! -e "$case_dir/actions" ]] || passed=false ;;
+    catalog-only)
+      [[ ! -e "$case_dir/actions" && ! -e "$case_dir/sqlite.calls" ]] || passed=false ;;
     quit-error|stop-timeout|process-error)
       [[ "$(cat "$case_dir/actions")" == quit ]] || passed=false ;;
     *) [[ "$(cat "$case_dir/actions")" == $'quit\nopen' ]] || passed=false ;;
@@ -99,7 +103,7 @@ for scenario in no-db db-error curl-error empty-catalog invalid-entry backup-err
     route-changed) grep -q 'Route changed unexpectedly: changed-route' "$case_dir/output" || passed=false ;;
   esac
   shopt -s nullglob
-  leftover_catalogs=("$case_dir"/codex-model-catalog.*)
+  leftover_catalogs=("$case_dir"/codex-model-catalog.* "$case_dir/codex"/.codex-model-catalog.*)
   backups=("$case_dir/codex"/*.backup.*)
   shopt -u nullglob
   [[ "${#leftover_catalogs[@]}" == 0 ]] || passed=false
