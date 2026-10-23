@@ -12,8 +12,12 @@ excluded=(
   skills/demo/agents/grader.md
   skills/demo/scripts/__pycache__/run.pyc
   skills/demo/scripts/run.pyc
+  skills/demo/.pytest_cache/v/cache/nodeids
+  skills/demo/nested/.hypothesis/examples/example
   scripts/tests/run.sh
   scripts/test-core.sh
+  scripts/.pytest_cache/v/cache/nodeids
+  scripts/.hypothesis/examples/example
 )
 retained=(skills/demo/scripts/validate-output.sh skills/demo/agents/openai.yaml scripts/lib/runtime.sh)
 for item in "${excluded[@]}" "${retained[@]}"; do
@@ -47,6 +51,9 @@ for mode in native fallback; do
       ln -s "$home_dir/.agents/hooks/tests" "$home_dir/.codex/hooks/tests"
       ln -s "$home_dir/.agents/scripts/tests" "$home_dir/.codex/scripts/tests"
       ln -s "$home_dir/.agents/scripts/test-core.sh" "$home_dir/.codex/scripts/test-core.sh"
+      for cache in .pytest_cache .hypothesis; do
+        ln -s "$home_dir/.agents/scripts/$cache" "$home_dir/.codex/scripts/$cache"
+      done
     fi
     if [[ "$mode" == fallback ]]; then export PATH="$FIXTURE/bin"; else export PATH="$original_path"; fi
     if [[ "$phase" == upgrade ]]; then
@@ -57,6 +64,7 @@ for mode in native fallback; do
     if [[ "$phase" == upgrade ]]; then
       for item in "${excluded[@]}"; do assert_file_exists "$home_dir/.agents/$item"; done
       assert_symlink_points_to "$home_dir/.codex/scripts/tests" "$home_dir/.agents/scripts/tests"
+      assert_contains "[dry-run] 链接: $home_dir/.codex/skills/third-party -> $home_dir/.agents/skills/third-party" "$home_dir/preview"
     else
       assert_dir_not_exists "$home_dir/.agents"
     fi
@@ -70,10 +78,14 @@ for mode in native fallback; do
     [[ ! -e "$home_dir/.codex/scripts/tests" && ! -L "$home_dir/.codex/scripts/tests" ]] || fail '残留测试目录链接'
     [[ ! -e "$home_dir/.codex/scripts/test-core.sh" && ! -L "$home_dir/.codex/scripts/test-core.sh" ]] || fail '残留测试工具链接'
     [[ ! -e "$home_dir/.codex/hooks/tests" && ! -L "$home_dir/.codex/hooks/tests" ]] || fail '源端已移除的 hooks 测试目录残留链接'
+    for cache in .pytest_cache .hypothesis; do
+      [[ ! -e "$home_dir/.codex/scripts/$cache" && ! -L "$home_dir/.codex/scripts/$cache" ]] || fail '顶层缓存残留 IDE 链接'
+    done
     assert_contains 'IDE-owned' "$home_dir/.claude/scripts/test-core.sh"
     assert_symlink_points_to "$home_dir/.claude/scripts/tests" "$home_dir/private-tests"
     if [[ "$phase" == upgrade ]]; then
       assert_file_exists "$home_dir/.agents/skills/third-party/tests/private.sh"
+      assert_symlink_points_to "$home_dir/.codex/skills/third-party" "$home_dir/.agents/skills/third-party"
       assert_file_exists "$home_dir/.agents/rules/tests/private.sh"
       assert_symlink_points_to "$home_dir/.codex/rules/tests" "$home_dir/.agents/rules/tests"
     fi

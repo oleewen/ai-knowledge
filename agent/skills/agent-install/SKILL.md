@@ -15,7 +15,7 @@ description: >
 ## 执行
 
 1. 沿用用户已给参数，按 [parameters.md](references/parameters.md) 补齐缺口。用 Bash 5+；安装副本须提供 `--meta`。
-2. 先运行 `--dry-run`，汇总实体树、IDE 链接、覆盖范围和 `WORK_SPACE`。对照 [gates.md](references/gates.md) 核实实跑授权；仅预览请求到此结束。
+2. 先运行 `--dry-run`，汇总实体树、IDE 链接（含所选分类内已有第三方资源）、覆盖范围和 `WORK_SPACE`。对照 [gates.md](references/gates.md) 核实实跑授权；推断工作区与既有全局值冲突时先让用户选择，不能自行改传显式参数绕过。仅预览请求到此结束。
 3. 对已确认计划去掉 `--dry-run` 执行。失败即停并报告已发生的改动；后续处理见 [失败边界](references/gates.md#失败边界)。
 4. 按 [workflow.md](references/workflow.md) 校核产物与链接，区分「预览完成」与「已安装」，通过受众 A/B 后交付结果。
 
@@ -29,4 +29,4 @@ bash agent/skills/agent-install/scripts/agent-install.sh \
 
 ## 诊断与维护
 
-执行异常查 [gotchas.md](gotchas.md)。维护须回到 `--meta` 元库的 `agent/skills/agent-install/`：运行 `tests/run.sh`，再按 `agents/grader.md` 检查 `evals/evals.json`；这些研发资源不随技能安装。
+执行异常查 [gotchas.md](gotchas.md)。维护须回到 `--meta` 元库的 `agent/skills/agent-install/`：用 Bash 5+ 运行 `bash tests/run.sh`，再按 [评测说明](references/evaluation.md) 验证技能决策；研发测试和评测资源不随技能安装。

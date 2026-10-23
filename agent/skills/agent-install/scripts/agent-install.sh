@@ -33,7 +33,7 @@ declare -a ENABLED_AGENTS=() INSTALL_CATEGORIES=()
 source "${SCRIPT_DIR}/agent-cli.sh"
 
 # 按资源用途排除研发材料；validate-* 等运行时校验仍须安装。
-readonly -a AGENT_DEV_EXCLUDES=(tests evals __pycache__ '*.pyc' '*.pyo' test-core.sh grader.md)
+readonly -a AGENT_DEV_EXCLUDES=(tests evals __pycache__ .pytest_cache .hypothesis '*.pyc' '*.pyo' test-core.sh grader.md)
 readonly -a AGENT_INSTALL_EXCLUDES=(README README.md readme.md "${AGENT_DEV_EXCLUDES[@]}")
 
 agent_matches_exclusion() {
@@ -43,6 +43,21 @@ agent_matches_exclusion() {
     [[ "$base" == $pattern ]] && return 0
   done
   return 1
+}
+
+# 顶层 * 不含隐藏缓存；仅补入已列名的研发材料，不扩大普通资源的同步范围。
+append_hidden_development_items() {
+  local -n result_items="${1:?}"
+  shift
+  local root pattern
+  for root in "$@"; do
+    for pattern in "${AGENT_DEV_EXCLUDES[@]}"; do
+      [[ "$pattern" == .* ]] || continue
+      if [[ -e "$root/$pattern" || -L "$root/$pattern" ]]; then
+        result_items+=("$root/$pattern")
+      fi
+    done
+  done
 }
 
 # rsync 与 cp 回退共享同一排除表；更新时移除同步目录内的旧研发材料。
@@ -178,6 +193,7 @@ link_store_into_agent_root() {
     else
       items+=("$store/$category"/*)
     fi
+    append_hidden_development_items items "$source_dir" "$store/$category" "$agent_dir/$category"
     for item in "${items[@]}"; do
       base="${item##*/}"
       if agent_matches_exclusion "$base" "${AGENT_INSTALL_EXCLUDES[@]}"; then
@@ -213,7 +229,9 @@ install_agent_resource() {
 
   local _nullglob_was_set=1
   nullglob_enable _nullglob_was_set
-  for item in "$src_root"/*; do
+  local -a items=("$src_root"/*)
+  append_hidden_development_items items "$src_root"
+  for item in "${items[@]}"; do
     base="${item##*/}"
     if agent_matches_exclusion "$base" "${AGENT_INSTALL_EXCLUDES[@]}"; then
       if agent_matches_exclusion "$base" "${AGENT_DEV_EXCLUDES[@]}"; then

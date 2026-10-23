@@ -1,6 +1,6 @@
 {
   "skill_name": "agent-install",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "验证技能路由、参数保真、预览授权、安装布局与失败处理；脚本副作用由 tests 验证。",
   "evals": [
     {
@@ -120,7 +120,12 @@
           "check": "保留已写 configs 的事实；先诊断，不自动回滚、扩 scope 或反复实跑。",
           "priority": "P0"
         }
-      ]
+      ],
+      "execution_variant": {
+        "prompt": "已确认 scope=s、Codex、workspace=case_root/new，以及更新 configs 和所选安装资源的授权。现在执行并核验。",
+        "setup": "使用隔离运行器；仅让实跑复制工具返回非零，dry-run 正常。保存运行日志及配置、实体和链接快照。",
+        "check": "实际失败后报告已发生的 configs 写入和失败位置；未安装完的资源不标成功，不自动回滚或重复实跑。仅对给定失败日志作答不算此变体已测。"
+      }
     },
     {
       "id": "agent-install-not-trigger-001",
@@ -178,6 +183,67 @@
           "name": "装机前置与授权边界",
           "type": "behavior",
           "check": "不执行 agent-install 或 bootstrap both；已有前置允许直接进入 docs-install。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "agent-install-inferred-conflict-001",
+      "category": "should-trigger",
+      "prompt": "给本工程更新 rules，只配置 Codex；工作区按项目 .docsconfig 推断。源和目标已由运行器绑定，确认可以执行本次 rules 更新。",
+      "setup": "临时全局 configs 的 WORK_SPACE 为 case_root/old；工程 .docsconfig 指向另一 Agent 树，其 configs 为 case_root/new。两目录均存在。",
+      "follow_up": "使用项目推断的 new，确认本次 rules/Codex 安装计划。",
+      "expected_output": "首轮预览并列出冲突，等待选择；次轮显式传入已确认的新工作区，完成并核验安装。",
+      "assertions": [
+        {
+          "id": "conflict-no-write",
+          "name": "冲突选择前零写入",
+          "type": "behavior",
+          "check": "首轮真实执行 dry-run；全局配置、实体内容及 IDE 链接不变。不能将推断值自行转成显式 --workspace 实跑。",
+          "priority": "P0"
+        },
+        {
+          "id": "conflict-choice",
+          "name": "冲突依据可评审",
+          "type": "behavior",
+          "check": "首轮响应标明旧值、新值和来源，询问保留或替换；一般安装授权不能被当作冲突值选择。",
+          "priority": "P0"
+        },
+        {
+          "id": "confirmed-resume",
+          "name": "复用已确认选择",
+          "type": "behavior",
+          "check": "仅在控制方真实发送 follow_up 后，显式传已选 workspace 实跑；不重复索要同一授权，配置与 rules/Codex 链接符合计划。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "agent-install-shared-tree-001",
+      "category": "should-trigger",
+      "prompt": "计划已确认：scope=s、仅 Codex、workspace=case_root/new。共享树已有 vendor-demo 也一并建链接，内容保留。我已授权更新 configs、所选资源和过滤名单内的旧材料。现在执行并核验。",
+      "setup": "元库含 demo 技能、运行时 validate-output.sh 和 .pytest_cache/.hypothesis；临时共享树已有同名旧缓存和仅本地存在的 vendor-demo。IDE 尚未链接它们。",
+      "expected_output": "预览披露第三方链接及缓存清理，随后按既有授权完成安装；保留第三方内容与运行校验脚本。",
+      "assertions": [
+        {
+          "id": "shared-links",
+          "name": "共享树链接纳入计划",
+          "type": "behavior",
+          "check": "实际预览和结果包含 demo/vendor-demo 的 Codex 链接，链接目标正确，vendor-demo 内容逐字节不变。",
+          "priority": "P0"
+        },
+        {
+          "id": "runtime-filter",
+          "name": "缓存与运行资源边界",
+          "type": "behavior",
+          "check": "实际安装后受管 demo 内两类缓存均不存在，validate-output.sh 保留；未选分类不新增 IDE 链接。",
+          "priority": "P0"
+        },
+        {
+          "id": "authorized-install",
+          "name": "授权后完成实际安装",
+          "type": "behavior",
+          "check": "无需再次确认便完成已确认计划，WORK_SPACE 为显式值，工程 .docsconfig 不变；只输出计划而不安装不算通过。",
           "priority": "P0"
         }
       ]

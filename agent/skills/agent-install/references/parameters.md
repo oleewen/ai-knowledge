@@ -18,10 +18,10 @@
 所有 scope 共用以下规则，rsync 与 cp 回退一致：
 
 - 排除各层 `README`、`README.md`、`readme.md`。
-- 排除研发资源：`tests`、`evals`、`test-core.sh`、`grader.md`，以及 `__pycache__`、`*.pyc`、`*.pyo` 缓存。
+- 排除研发资源：`tests`、`evals`、`test-core.sh`、`grader.md`，以及 `__pycache__`、`.pytest_cache`、`.hypothesis`、`*.pyc`、`*.pyo` 缓存。
 - 保留运行脚本、共享库、`agents/openai.yaml` 和技能执行所需的 `validate-*` 等产物校验脚本；不按名称中的 `test` 或 `validate` 泛删。
 
-同步目录内旧的排除项会清理；顶层只清理元库同名研发资源，及所选 IDE 中指向对应实体的旧链接。hooks 按既有规则整树同步，也清理源端已移除的研发资源所遗留的 IDE 链接。未选 scope、hooks 以外的非元库同名资源和 IDE 自有文件不受此规则清理。预览报告过滤与清理范围，不写盘。
+同步目录内旧的排除项会清理；顶层只清理元库同名研发资源，及所选 IDE 中指向对应实体的旧链接。hooks 按既有规则整树同步，也清理源端已移除的研发资源所遗留的 IDE 链接。未选 scope、hooks 以外的非元库同名资源和 IDE 自有文件不受此规则清理。所选分类内保留的第三方资源也会建立 IDE 链接，但不因建立链接而清理其内容。预览报告过滤、清理和链接范围，不写盘。
 
 研发资源留在元库，相关维护说明中的测试、评测路径须在元库执行。
 
@@ -34,6 +34,8 @@
 3. 任一文件、字段缺失时，询问 `--workspace`；不猜路径。
 
 显式 `--workspace` 绕过上述推断，因此工程级 target 不要求 `.docsconfig`。推断源只用于读取；本次仍写入 `$HOME/.agents/configs`。
+
+若推断值与已有全局 `WORK_SPACE` 不同，dry-run 显示冲突，实跑在任何写入前退出。用户确认保留旧值或使用新值后，显式传入所选 `--workspace` 再执行。全局值缺失或与推断值相同则正常执行；已显式给值时无需再次确认同一参数。
 
 ## 安装副本调用
 

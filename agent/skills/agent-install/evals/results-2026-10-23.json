@@ -1,0 +1,230 @@
+{
+  "date": "2026-10-23",
+  "suite_version": "2.1.0",
+  "scope": "3 representative execution scenarios; not full-suite behavioral validation",
+  "cases": [
+    {
+      "id": "agent-install-inferred-conflict-001",
+      "status": "pass",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "medium",
+      "agent_task": "/root/install_eval_conflict",
+      "case_root": "/private/tmp/agent-install-review-kxh3rcq7/conflict",
+      "calls": [
+        {
+          "arguments": "--scope=r --agents=codex --dry-run ",
+          "exit_code": 0,
+          "output": "信息: 未传 --workspace，沿用 /private/tmp/agent-install-review-kxh3rcq7/conflict/source/agent-data/configs 的 WORK_SPACE=/private/tmp/agent-install-review-kxh3rcq7/conflict/new\n警告: WORK_SPACE 冲突：/private/tmp/agent-install-review-kxh3rcq7/conflict/home/.agents/configs 当前为 /private/tmp/agent-install-review-kxh3rcq7/conflict/old；/private/tmp/agent-install-review-kxh3rcq7/conflict/source/agent-data/configs 推断为 /private/tmp/agent-install-review-kxh3rcq7/conflict/new\n警告: 本次仅预览；实跑前须确认并用 --workspace 显式传入所选值\n信息: 安装过滤：排除 README README.md readme.md tests evals __pycache__ .pytest_cache .hypothesis *.pyc *.pyo test-core.sh grader.md；保留运行时校验脚本。同步范围内旧研发资源会清理。\n[dry-run] mkdir -p /private/tmp/agent-install-review-kxh3rcq7/conflict/home/.agents\nWould write /private/tmp/agent-install-review-kxh3rcq7/conflict/home/.agents/configs:\nWORK_SPACE=/private/tmp/agent-install-review-kxh3rcq7/conflict/new\n信息: >>> 安装：rules\n[dry-run] mkdir -p /private/tmp/agent-install-review-kxh3rcq7/conflict/home/.agents/rules\n信息:   同步 rules：/private/tmp/agent-install-review-kxh3rcq7/conflict/meta/agent/rules → /private/tmp/agent-install-review-kxh3rcq7/conflict/home/.agents/rules\n[dry-run] 拷贝: /private/tmp/agent-install-review-kxh3rcq7/conflict/meta/agent/rules/rule.md → /private/tmp/agent-install-review-kxh3rcq7/conflict/home/.agents/rules/rule.md\n信息: >>> 链接 codex：/private/tmp/agent-install-review-kxh3rcq7/conflict/home/.agents -> /private/tmp/agent-install-review-kxh3rcq7/conflict/ide/.codex\n[dry-run] mkdir -p /private/tmp/agent-install-review-kxh3rcq7/conflict/ide/.codex\n[dry-run] mkdir -p /private/tmp/agent-install-review-kxh3rcq7/conflict/ide/.codex/rules\n[dry-run] 链接: /private/tmp/agent-install-review-kxh3rcq7/conflict/ide/.codex/rules/rule.md -> /private/tmp/agent-install-review-kxh3rcq7/conflict/home/.agents/rules/rule.md\n信息: 预览完成：agent-install（未写入）\n"
+        },
+        {
+          "arguments": "--scope=r --agents=codex --workspace /private/tmp/agent-install-review-kxh3rcq7/conflict/new ",
+          "exit_code": 0,
+          "output": "信息: 安装过滤：排除 README README.md readme.md tests evals __pycache__ .pytest_cache .hypothesis *.pyc *.pyo test-core.sh grader.md；保留运行时校验脚本。同步范围内旧研发资源会清理。\n信息: >>> 安装：rules\n信息:   同步 rules：/private/tmp/agent-install-review-kxh3rcq7/conflict/meta/agent/rules → /private/tmp/agent-install-review-kxh3rcq7/conflict/home/.agents/rules\n信息: >>> 链接 codex：/private/tmp/agent-install-review-kxh3rcq7/conflict/home/.agents -> /private/tmp/agent-install-review-kxh3rcq7/conflict/ide/.codex\n信息: 完成：agent-install\n"
+        }
+      ],
+      "before_home": {
+        ".agents/configs": {
+          "kind": "file",
+          "sha256": "5a014d4779fd780d8fff5e93aef2488e88e6aaa767373759fad58e215c62574c"
+        },
+        ".agents/skills/demo/.pytest_cache/v/cache/nodeids": {
+          "kind": "file",
+          "sha256": "54f489eaa6003419f035a38f35f71e18f2d5f1429ad019650b9320505f372c6f"
+        },
+        ".agents/skills/demo/.hypothesis/examples/example": {
+          "kind": "file",
+          "sha256": "54f489eaa6003419f035a38f35f71e18f2d5f1429ad019650b9320505f372c6f"
+        },
+        ".agents/skills/vendor-demo/SKILL.md": {
+          "kind": "file",
+          "sha256": "5b08c8fd6de55c069d278251c24812eeee7f05adba18df596ce3413e1aebac65"
+        }
+      },
+      "after_home": {
+        ".agents/configs": {
+          "kind": "file",
+          "sha256": "08fd9377e0b77d49d890c4f8694ea0f6c8a88f9639fac39e930118b1e799e66d"
+        },
+        ".agents/rules/rule.md": {
+          "kind": "file",
+          "sha256": "d202ca6e4a75293a43c193f6fcfc382ff439b511e50dfd0e7d8422f41c81b559"
+        },
+        ".agents/skills/demo/.pytest_cache/v/cache/nodeids": {
+          "kind": "file",
+          "sha256": "54f489eaa6003419f035a38f35f71e18f2d5f1429ad019650b9320505f372c6f"
+        },
+        ".agents/skills/demo/.hypothesis/examples/example": {
+          "kind": "file",
+          "sha256": "54f489eaa6003419f035a38f35f71e18f2d5f1429ad019650b9320505f372c6f"
+        },
+        ".agents/skills/vendor-demo/SKILL.md": {
+          "kind": "file",
+          "sha256": "5b08c8fd6de55c069d278251c24812eeee7f05adba18df596ce3413e1aebac65"
+        }
+      },
+      "ide_links": {
+        ".codex/rules/rule.md": {
+          "kind": "link",
+          "target": "/private/tmp/agent-install-review-kxh3rcq7/conflict/home/.agents/rules/rule.md"
+        }
+      },
+      "observations": {
+        "first_turn_home_unchanged": true,
+        "first_turn_ide_absent": true,
+        "only_preview_before_choice": true,
+        "confirmed_new_workspace": true,
+        "rules_match_source": true,
+        "codex_rules_link": true,
+        "two_calls_no_repeat": true,
+        "project_config_unchanged": true
+      },
+      "responses": [
+        "爸爸，预览完成，尚未写入。rules 更新仅配置 Codex，但工作区存在冲突：\n\n| 来源 | WORK_SPACE |\n| --- | --- |\n| 现有配置 | `/private/tmp/agent-install-review-kxh3rcq7/conflict/old` |\n| 项目配置推断 | `/private/tmp/agent-install-review-kxh3rcq7/conflict/new` |\n\n请选择：\n\n1. 保留现有 `old`\n2. 使用项目推断的 `new`\n\n[agent-install 门禁](/private/tmp/agent-install-review-kxh3rcq7/runtime/agent/skills/agent-install/references/gates.md)要求：“预览展示来源、旧值与候选值，等待用户选择保留或替换”。此前授权未明确选择冲突值，因此需先确定这一项。",
+        "爸爸，本次 rules 更新已完成并核验通过：\n\n- 仅配置 Codex，rules 内容与绑定元库一致。\n- Codex 链接正确指向临时安装树。\n- `WORK_SPACE` 已设为确认的 `/private/tmp/agent-install-review-kxh3rcq7/conflict/new`。\n\n全部操作均在隔离 case 目录内完成。"
+      ],
+      "project_config": "REPO_DIR=project\nDOC_DIR=docs\nAGENT_ROOT=/private/tmp/agent-install-review-kxh3rcq7/conflict/source\nAGENT_DIR=agent-data\n",
+      "user_messages": [
+        "请给这个工程更新 rules，只配置 Codex；工作区按项目 .docsconfig 推断。源和目标已由运行器绑定，确认可以执行本次 rules 更新。工程位置是 /private/tmp/agent-install-review-kxh3rcq7/conflict/project/src。",
+        "2，使用项目推断的 new，确认本次 rules/Codex 安装计划。请继续执行并核验。"
+      ]
+    },
+    {
+      "id": "agent-install-shared-tree-001",
+      "status": "pass",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "medium",
+      "agent_task": "/root/install_eval_authorized",
+      "case_root": "/private/tmp/agent-install-review-kxh3rcq7/authorized",
+      "calls": [
+        {
+          "arguments": "--meta /private/tmp/agent-install-review-kxh3rcq7/authorized/meta --scope=s --agents=codex --target /private/tmp/agent-install-review-kxh3rcq7/authorized/ide --workspace /private/tmp/agent-install-review-kxh3rcq7/authorized/new --dry-run ",
+          "exit_code": 0,
+          "output": "信息: 安装过滤：排除 README README.md readme.md tests evals __pycache__ .pytest_cache .hypothesis *.pyc *.pyo test-core.sh grader.md；保留运行时校验脚本。同步范围内旧研发资源会清理。\n[dry-run] mkdir -p /private/tmp/agent-install-review-kxh3rcq7/authorized/home/.agents\nWould write /private/tmp/agent-install-review-kxh3rcq7/authorized/home/.agents/configs:\nWORK_SPACE=/private/tmp/agent-install-review-kxh3rcq7/authorized/new\n信息: >>> 安装：skills\n[dry-run] mkdir -p /private/tmp/agent-install-review-kxh3rcq7/authorized/home/.agents/skills\n信息:   同步 skills：/private/tmp/agent-install-review-kxh3rcq7/authorized/meta/agent/skills → /private/tmp/agent-install-review-kxh3rcq7/authorized/home/.agents/skills\n[dry-run] 同步目录: /private/tmp/agent-install-review-kxh3rcq7/authorized/meta/agent/skills/demo → /private/tmp/agent-install-review-kxh3rcq7/authorized/home/.agents/skills/demo\n信息: >>> 链接 codex：/private/tmp/agent-install-review-kxh3rcq7/authorized/home/.agents -> /private/tmp/agent-install-review-kxh3rcq7/authorized/ide/.codex\n[dry-run] mkdir -p /private/tmp/agent-install-review-kxh3rcq7/authorized/ide/.codex\n[dry-run] mkdir -p /private/tmp/agent-install-review-kxh3rcq7/authorized/ide/.codex/skills\n[dry-run] 链接: /private/tmp/agent-install-review-kxh3rcq7/authorized/ide/.codex/skills/demo -> /private/tmp/agent-install-review-kxh3rcq7/authorized/home/.agents/skills/demo\n[dry-run] 链接: /private/tmp/agent-install-review-kxh3rcq7/authorized/ide/.codex/skills/vendor-demo -> /private/tmp/agent-install-review-kxh3rcq7/authorized/home/.agents/skills/vendor-demo\n信息: 预览完成：agent-install（未写入）\n"
+        },
+        {
+          "arguments": "--meta /private/tmp/agent-install-review-kxh3rcq7/authorized/meta --scope=s --agents=codex --target /private/tmp/agent-install-review-kxh3rcq7/authorized/ide --workspace /private/tmp/agent-install-review-kxh3rcq7/authorized/new ",
+          "exit_code": 0,
+          "output": "信息: 安装过滤：排除 README README.md readme.md tests evals __pycache__ .pytest_cache .hypothesis *.pyc *.pyo test-core.sh grader.md；保留运行时校验脚本。同步范围内旧研发资源会清理。\n信息: >>> 安装：skills\n信息:   同步 skills：/private/tmp/agent-install-review-kxh3rcq7/authorized/meta/agent/skills → /private/tmp/agent-install-review-kxh3rcq7/authorized/home/.agents/skills\n信息: >>> 链接 codex：/private/tmp/agent-install-review-kxh3rcq7/authorized/home/.agents -> /private/tmp/agent-install-review-kxh3rcq7/authorized/ide/.codex\n信息: 完成：agent-install\n"
+        }
+      ],
+      "before_home": {
+        ".agents/configs": {
+          "kind": "file",
+          "sha256": "81ee39abc5ac0d769a2f040a5ad388de3926d1a399ca4477f020b2e1ba4aa639"
+        },
+        ".agents/skills/demo/.pytest_cache/v/cache/nodeids": {
+          "kind": "file",
+          "sha256": "54f489eaa6003419f035a38f35f71e18f2d5f1429ad019650b9320505f372c6f"
+        },
+        ".agents/skills/demo/.hypothesis/examples/example": {
+          "kind": "file",
+          "sha256": "54f489eaa6003419f035a38f35f71e18f2d5f1429ad019650b9320505f372c6f"
+        },
+        ".agents/skills/vendor-demo/SKILL.md": {
+          "kind": "file",
+          "sha256": "5b08c8fd6de55c069d278251c24812eeee7f05adba18df596ce3413e1aebac65"
+        }
+      },
+      "after_home": {
+        ".agents/configs": {
+          "kind": "file",
+          "sha256": "d4e22437d0f4d3fcba12e9a738e57dca801fc82479607fcfda7f4b461fad4825"
+        },
+        ".agents/skills/demo/SKILL.md": {
+          "kind": "file",
+          "sha256": "44c365d67f0ddd756db1bb6a66cf54002aee6f6d6f98df81e91e81bee9a7e865"
+        },
+        ".agents/skills/demo/scripts/validate-output.sh": {
+          "kind": "file",
+          "sha256": "fb99eae951f1adc14d1a4a9a186c21930db2786b3208c94c7d9af382bd1048e5"
+        },
+        ".agents/skills/vendor-demo/SKILL.md": {
+          "kind": "file",
+          "sha256": "5b08c8fd6de55c069d278251c24812eeee7f05adba18df596ce3413e1aebac65"
+        }
+      },
+      "ide_links": {
+        ".codex/skills/demo": {
+          "kind": "link",
+          "target": "/private/tmp/agent-install-review-kxh3rcq7/authorized/home/.agents/skills/demo"
+        },
+        ".codex/skills/vendor-demo": {
+          "kind": "link",
+          "target": "/private/tmp/agent-install-review-kxh3rcq7/authorized/home/.agents/skills/vendor-demo"
+        }
+      },
+      "observations": {
+        "two_calls_preview_then_install": true,
+        "calls_succeeded": true,
+        "explicit_workspace": true,
+        "vendor_unchanged": true,
+        "vendor_link": true,
+        "demo_link": true,
+        "filtered_caches": true,
+        "runtime_validator_retained": true,
+        "only_skills_linked": true,
+        "project_config_unchanged": true
+      },
+      "responses": [
+        "爸爸，已按确认计划完成安装并核验通过。\n\n- `scope=s`，仅配置 Codex；target 为本 case 的 `ide`。\n- `WORK_SPACE` 已更新为指定的 `authorized/new`。\n- demo、vendor-demo 链接正确，vendor-demo 内容保留。\n- 旧缓存已清理，运行时校验脚本保留。\n- 工程 `.docsconfig` 内容未变，未选 scope 未新增链接。\n\n1. 本次安装完成，无待处理项。"
+      ],
+      "project_config": "REPO_DIR=project\nDOC_DIR=docs\nAGENT_ROOT=/private/tmp/agent-install-review-kxh3rcq7/authorized/source\nAGENT_DIR=agent-data\n",
+      "user_messages": [
+        "安装计划已确认：元库为本case的 meta，scope=s，只配 Codex，target 是本case的 ide，workspace=/private/tmp/agent-install-review-kxh3rcq7/authorized/new。共享树里的 vendor-demo 也一并建立 Codex 链接，内容保留。我已授权更新 configs 和这个范围的资源、清理安装过滤名单中的旧材料。现在执行并核验结果。"
+      ]
+    },
+    {
+      "id": "agent-install-failure-001:execution_variant",
+      "status": "pass",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "medium",
+      "agent_task": "/root/install_eval_failure",
+      "case_root": "/private/tmp/agent-install-review-kxh3rcq7/failure",
+      "calls": [
+        {
+          "arguments": "--scope=s --agents=codex --workspace=/private/tmp/agent-install-review-kxh3rcq7/failure/new --dry-run ",
+          "exit_code": 0,
+          "output": "信息: 安装过滤：排除 README README.md readme.md tests evals __pycache__ .pytest_cache .hypothesis *.pyc *.pyo test-core.sh grader.md；保留运行时校验脚本。同步范围内旧研发资源会清理。\n[dry-run] mkdir -p /private/tmp/agent-install-review-kxh3rcq7/failure/home/.agents\nWould write /private/tmp/agent-install-review-kxh3rcq7/failure/home/.agents/configs:\nWORK_SPACE=/private/tmp/agent-install-review-kxh3rcq7/failure/new\n信息: >>> 安装：skills\n[dry-run] mkdir -p /private/tmp/agent-install-review-kxh3rcq7/failure/home/.agents/skills\n信息:   同步 skills：/private/tmp/agent-install-review-kxh3rcq7/failure/meta/agent/skills → /private/tmp/agent-install-review-kxh3rcq7/failure/home/.agents/skills\n[dry-run] 同步目录: /private/tmp/agent-install-review-kxh3rcq7/failure/meta/agent/skills/demo → /private/tmp/agent-install-review-kxh3rcq7/failure/home/.agents/skills/demo\n信息: >>> 链接 codex：/private/tmp/agent-install-review-kxh3rcq7/failure/home/.agents -> /private/tmp/agent-install-review-kxh3rcq7/failure/ide/.codex\n[dry-run] mkdir -p /private/tmp/agent-install-review-kxh3rcq7/failure/ide/.codex\n[dry-run] mkdir -p /private/tmp/agent-install-review-kxh3rcq7/failure/ide/.codex/skills\n[dry-run] 链接: /private/tmp/agent-install-review-kxh3rcq7/failure/ide/.codex/skills/demo -> /private/tmp/agent-install-review-kxh3rcq7/failure/home/.agents/skills/demo\n信息: 预览完成：agent-install（未写入）\n"
+        },
+        {
+          "arguments": "--scope=s --agents=codex --workspace=/private/tmp/agent-install-review-kxh3rcq7/failure/new ",
+          "exit_code": 42,
+          "output": "信息: 安装过滤：排除 README README.md readme.md tests evals __pycache__ .pytest_cache .hypothesis *.pyc *.pyo test-core.sh grader.md；保留运行时校验脚本。同步范围内旧研发资源会清理。\n信息: >>> 安装：skills\n信息:   同步 skills：/private/tmp/agent-install-review-kxh3rcq7/failure/meta/agent/skills → /private/tmp/agent-install-review-kxh3rcq7/failure/home/.agents/skills\nfixture: resource copy failed\n"
+        }
+      ],
+      "before_home": {
+        ".agents/configs": {
+          "kind": "file",
+          "sha256": "057cb8dceed169af6ed76f8b530902f83b8e7230d486e75dfa0acfcc7f0c3886"
+        }
+      },
+      "after_home": {
+        ".agents/configs": {
+          "kind": "file",
+          "sha256": "04dedec83bd14a4a19c875feb6fc11924053355ad2750f3feaa010bb660c3772"
+        }
+      },
+      "ide_links": {},
+      "observations": {
+        "preview_then_failed_install_no_retry": true,
+        "configs_already_written": true,
+        "empty_demo_created": true,
+        "no_ide_links": true,
+        "project_config_unchanged": true
+      },
+      "responses": [
+        "爸爸，**安装失败，已停止**。scope=s、Codex；资源复制时报 `fixture: resource copy failed`，退出码 **42**。\n\n| 核验项 | 当前状态 |\n| --- | --- |\n| configs | 已写入 `WORK_SPACE=/private/tmp/agent-install-review-kxh3rcq7/failure/new` |\n| skills/demo | 已创建空目录，技能未复制 |\n| Codex target | `/private/tmp/agent-install-review-kxh3rcq7/failure/ide` 未创建，链接未建立 |\n| 备份 | 未生成 |\n\n已查明 case 的 `bin/rsync` 固定返回 42。未回滚、未重试；实跑日志见 [安装日志](/private/tmp/agent-install-review-kxh3rcq7/failure/logs/call.GqEjbh.output)。\n\n依据 [gates.md「失败边界」](/private/tmp/agent-install-review-kxh3rcq7/runtime/agent/skills/agent-install/references/gates.md)：“实跑失败可能留下部分同步结果；立即报告失败位置、已完成步骤及备份路径。”\n\n1. 下一步：修复复制失败条件后，再按当前状态决定重试。"
+      ],
+      "project_config": "REPO_DIR=project\nDOC_DIR=docs\n",
+      "user_messages": [
+        "已确认 scope=s、Codex、workspace=/private/tmp/agent-install-review-kxh3rcq7/failure/new，以及更新 configs 和所选安装资源的授权。元库和target由本case运行器绑定。现在执行并核验。"
+      ]
+    }
+  ],
+  "limitations": [
+    "Final responses and runner logs are preserved verbatim; intermediate commentary and all reading tool calls are not captured.",
+    "Runner logs capture installation calls, not every reading tool call. File access was instruction-scoped, not OS sandboxed.",
+    "Behavior runs used runtime instructions copied before maintenance-reference edits; during these runs the top-level hidden-cache repair was applied to the working installer. Final script regressions separately verify that repair.",
+    "Other 10 eval scenarios were not model-run in this review."
+  ]
+}

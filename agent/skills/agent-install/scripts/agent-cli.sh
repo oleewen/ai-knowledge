@@ -9,6 +9,7 @@ agent_install_usage() {
 不写工程 .docsconfig；configs/WORK_SPACE 始终写入 $HOME/.agents，且不链接到 IDE。
 默认会实跑；预览须显式传 --dry-run。各层 README、研发测试/评测及缓存不安装。
 同步范围内旧研发资源会清理；保留技能执行所需的产物校验脚本。
+所选分类也会为共享树中已有的第三方资源建立 IDE 链接，不覆盖其内容（hooks 整树同步除外）。
 
 选项（同时支持 --key=value）
   --meta PATH       元库根目录；仓库内默认本仓，已安装副本必须显式传入
@@ -20,6 +21,7 @@ agent_install_usage() {
   --workspace PATH  工作区目录，写入 configs/WORK_SPACE
                     省略时从 cwd 上溯 .docsconfig 的 AGENT_ROOT/AGENT_DIR
                     读取对应 configs/WORK_SPACE；无法推断则必须显式传入
+                    推断值与既有全局值冲突时，仅预览；确认后显式传入所选值
   --dry-run         只读预览
   -h, --help        显示帮助
 
@@ -136,6 +138,21 @@ agent_install_resolve_workspace() {
 
   CFG[workspace]="$(strip_trailing_slash "$(docsconfig_normalize_root_value "${raw}")")"
   info "未传 --workspace，沿用 ${configs_path} 的 WORK_SPACE=${CFG[workspace]}"
+
+  # 推断只提供候选值，不能代替对既有全局工作区变更的确认。
+  local global_configs existing_raw existing
+  global_configs="${CFG[store_abs]}/configs"
+  existing_raw="$(docsconfig_read_workspace_raw "$global_configs" 2>/dev/null || true)"
+  if [[ -n "$existing_raw" ]]; then
+    existing="$(strip_trailing_slash "$(docsconfig_normalize_root_value "$existing_raw")")"
+    if [[ "$existing" != "${CFG[workspace]}" ]]; then
+      warn "WORK_SPACE 冲突：${global_configs} 当前为 ${existing}；${configs_path} 推断为 ${CFG[workspace]}"
+      if [[ "${CFG[dry_run]}" != 1 ]]; then
+        error '未写入：请确认工作区后用 --workspace 显式传入所选值'
+      fi
+      warn '本次仅预览；实跑前须确认并用 --workspace 显式传入所选值'
+    fi
+  fi
 }
 
 # 允许新目录；逐段解析才能检查 missing/../file，并保留已有软链后的 .. 语义。
