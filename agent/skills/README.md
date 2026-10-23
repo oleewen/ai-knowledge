@@ -8,7 +8,7 @@
 - 命令名约定：目录名即 Slash 命令（如 `docs-indexing` → `/docs-indexing`）
 - 调用方式：Chat 输入 `/` 选择，或 `@<skill-name>` 附加上下文
 - **共通协议**（重闸门族）：参数向导 → **澄清 → 生成 → 烤干** → `C/M/G/F`（docs 另有 `S`）；语义性变更先确认。契约：[intent-clarify.md](../references/intent-clarify.md)、[unit-cycle-protocol.md](../references/unit-cycle-protocol.md)、[grilling-skill.md](../references/grilling-skill.md)、[CONVENTIONS.md §3](../rules/CONVENTIONS.md#artifact-gates)
-- **轻流程**（不绑意图澄清）：`docs-okf` / `docs-link` / `docs-tag` / `docs-install` / `agent-install` / `docs-upgrade` / `skill-upgrade`；动作 `C/M/S/F` 见 [light-flow-actions.md](../references/light-flow-actions.md)（无 `G`）
+- **技能族名单与能力分工**：见 [workflow-routing.md](../references/workflow-routing.md)；轻流程动作见 [light-flow-actions.md](../references/light-flow-actions.md)。本入口只维护命令用途，不另定义协议绑定名单。
 - **知识库布局**：[knowledge-layout.md](../references/knowledge-layout.md)
 
 下表**只写差异**（产物、关键参数、特殊产物）；协议不逐行复述。

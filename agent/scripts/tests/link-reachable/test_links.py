@@ -3,6 +3,7 @@ from pathlib import Path
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -20,7 +21,8 @@ class LinkReachabilityTest(unittest.TestCase):
         scripts = self.agent / "scripts"
         (scripts / "tools").mkdir(parents=True)
         shutil.copytree(ROOT / "agent/scripts/lib", scripts / "lib")
-        shutil.copy2(ROOT / "agent/scripts/tools/validate-link-reachable.sh", scripts / "tools")
+        for tool in ("validate-link-reachable.sh", "validate_link_reachable.py"):
+            shutil.copy2(ROOT / "agent/scripts/tools" / tool, scripts / "tools")
         config_home = self.workspace / "settings"
         (config_home / ".agents").mkdir(parents=True)
         (config_home / ".agents/configs").write_text(f"WORK_SPACE={self.workspace}\n")
@@ -42,6 +44,23 @@ class LinkReachabilityTest(unittest.TestCase):
             [os.environ.get("TEST_BASH", "bash"), str(self.agent / "scripts/tools/validate-link-reachable.sh")],
             cwd=self.repo, capture_output=True, text=True,
         )
+
+    def test_import_does_not_require_config_or_scan(self):
+        environment = os.environ.copy()
+        for key in ("DOC_ABS", "REPO_ABS", "AGENT_TREE"):
+            environment.pop(key, None)
+        result = subprocess.run(
+            [sys.executable, "-B", "-c",
+             "import importlib.util, sys; "
+             "spec = importlib.util.spec_from_file_location('link_scanner', sys.argv[1]); "
+             "scanner = importlib.util.module_from_spec(spec); "
+             "spec.loader.exec_module(scanner)",
+             str(self.agent / "scripts/tools/validate_link_reachable.py")],
+            cwd=self.repo, env=environment, capture_output=True, text=True,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout, "")
+        self.assertEqual(result.stderr, "")
 
     def test_code_examples_are_not_links(self):
         self.write("agent/example.md", """# 文档

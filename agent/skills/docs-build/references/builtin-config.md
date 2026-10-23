@@ -4,13 +4,16 @@
 
 | 决策 | 真源 |
 | --- | --- |
-| 层职责、跨层边、引用边界 | [knowledge-governance.md](../../../knowledge/knowledge-governance.md) |
-| 实体 ID 语法与别名 | [naming-conventions.md](../../../knowledge/naming-conventions.md) |
-| 字段与关系 | 当前视角 meta，入口见 [extraction-rules.md](extraction-rules.md) |
+| 层职责、首次定义层 | [knowledge-governance.md](../../../knowledge/knowledge-governance.md) |
+| 关系字段、允许边 | [entity-relations.md](../../../knowledge/entity-relations.md) |
+| 引用边界与跨层链接 | [knowledge-reference-rules.md](../../../knowledge/knowledge-reference-rules.md) |
+| 实体 ID 语法 | [naming-conventions.md](../../../knowledge/naming-conventions.md) |
+| 实体缩写与别名 | [glossary.md](../../../knowledge/glossary.md) |
+| 字段必填性与视角细则 | 当前视角 meta，入口见 [extraction-rules.md](extraction-rules.md) |
 | 文件落点 | [knowledge-layout.md](../../../references/knowledge-layout.md)；生成函数 `okf_lib.entity_relpath` |
 | frontmatter、正文分段 | [okf-spec.md](../../../knowledge/okf-spec.md) |
 
-治理语义以 governance 为准。已知旧 meta 中的 `SYS.uses_to MDG|TS`、`MDG/TS.used_by SYS`、方案层反向登记 SYS 与治理规则冲突：按治理的 `PD.uses_to MDG|TS`、SYS 映射 PD 执行；不在本技能重写外部真源。遇到其他无法判定的冲突先澄清。
+层职责、关系与引用分别按上表真源执行，视角 meta 补充本视角字段。资源使用关系为 `PD.uses_to MDG|TS`，对端 `MDG/TS.used_by PD`；`SYS.maps_to PD`。方案层不反向登记 SYS。遇到无法判定的冲突先澄清。
 
 ## 证据与置信度
 

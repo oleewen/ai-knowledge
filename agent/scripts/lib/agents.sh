@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # lib/agents.sh — Agent 枚举规范化与校验
-# 依赖：无硬依赖（仅用数组常量）
+# 依赖：同目录 bash.sh（版本守卫）
 #
 
 if [[ -n "${_LIB_AGENTS_LOADED:-}" ]]; then
@@ -10,7 +10,7 @@ fi
 _LIB_AGENTS_LOADED=1
 
 # shellcheck source=bash.sh
-source "${_LIB_DIR}/bash.sh"
+source "${BASH_SOURCE[0]%/*}/bash.sh"
 
 # 与 agent-layout 探测 IDE 段顺序一致（.agents 另列）
 SUPPORTED_AGENTS=(cursor codex claude trae kiro)

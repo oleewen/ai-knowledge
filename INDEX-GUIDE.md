@@ -31,7 +31,7 @@
 | 公司侧九章索引 | [company/INDEX-GUIDE.md](company/INDEX-GUIDE.md) | `company/` 文档根九章索引指南 |
 | 初始化编排 | [bootstrap.sh](bootstrap.sh)、[agent/skills/README.md](agent/skills/README.md) | `/docs-install`、`/agent-install`、`/docs-link`；升级 `/docs-upgrade`；生态 skills 追新 `/skill-upgrade` |
 | 规范与 Slash | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/skills/README.md](agent/skills/README.md) | 全局约定与 Skill 清单（**25** 个） |
-| 共享推进契约 | [agent/references/](agent/references/) | 意图澄清 / 单元推进 / 烤干 / 轻流程 / 布局 / 会话路径 |
+| 共享推进契约 | [agent/references/README.md](agent/references/README.md) | 流程路由 / 意图澄清 / 单元推进 / 烤干 / 待办 / 路径 |
 | 根索引运行日志 | [INDEX-GUIDE 增量锚点](INDEX-GUIDE 增量锚点) | 根输出组增量基线（本单元） |
 | OKF bundle 与校验 | [agent/skills/docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) | OKF refresh、validate-okf、viz；与九章 INDEX 双索引并存 |
 
@@ -129,7 +129,7 @@ flowchart LR
 | ------ | ------ |
 | 应用五视角实体 SSOT | `application/knowledge/{business,product,application,data,technical}/` |
 | 系统/解决方案/公司架构 + overview | `system/knowledge/`、`solution/knowledge/`、`company/knowledge/`（含 `overview/`） |
-| 治理与命名 / OKF 规范 | `agent/knowledge/`（`glossary`、`naming-conventions`、`okf-spec`、`knowledge-governance` 等） |
+| 知识语义与格式 | `agent/knowledge/`（层职责、关系、引用、联邦配置、overview、命名与 OKF；见 [README](agent/knowledge/README.md)） |
 | 共享推进契约 | `agent/references/`（见 §9.1） |
 | 可执行初始化 | `agent/skills/docs-install/scripts/`、`agent/skills/agent-install/scripts/`、`bootstrap.sh` + `agent/scripts/*.sh` |
 | Slash 工作流 | `agent/skills/<name>/SKILL.md` |
@@ -173,7 +173,7 @@ flowchart LR
 | `/docs-upgrade` 脚本 | Bash | [agent/skills/docs-upgrade/scripts/docs-upgrade.sh](agent/skills/docs-upgrade/scripts/docs-upgrade.sh) | 已有库对齐元库清单/骨架（不清空） |
 | `/skill-upgrade` | Skill | [agent/skills/skill-upgrade/SKILL.md](agent/skills/skill-upgrade/SKILL.md) | 已装 Agent 树 + 生态 skills 追新 |
 | `/docs-*` · `/sdx-*` | Slash | [agent/skills/README.md](agent/skills/README.md) | 见 §9.3（25 个） |
-| 共享库 / 回归 | Bash | [agent/scripts/](agent/scripts/) · [agent/scripts/tests/run.sh](agent/scripts/tests/run.sh) | `docs-core`（聚合）· `lib/*` · `tools/*` · `test-core` 等 |
+| 共享库 / 回归 | Bash / Python | [agent/scripts/README.md](agent/scripts/README.md) · [agent/scripts/tests/run.sh](agent/scripts/tests/run.sh) | 兼容入口、职责模块、校验工具与测试路由 |
 
 ---
 
@@ -397,11 +397,17 @@ stateDiagram-v2
 | 公司侧九章 | [company/INDEX-GUIDE.md](company/INDEX-GUIDE.md) | company 文档根 |
 | 设计原则 | [knowledge-governance.md](agent/knowledge/knowledge-governance.md) | 四层语义设计 |
 | 贡献与治理 | [knowledge-governance.md](agent/knowledge/knowledge-governance.md) | 语义 SSOT 与门禁 |
+| 关系字段与允许边 | [entity-relations.md](agent/knowledge/entity-relations.md) | 关系动词、方向与双向规则 |
+| 知识引用边界 | [knowledge-reference-rules.md](agent/knowledge/knowledge-reference-rules.md) | 同层、跨层与外源引用 |
+| 联邦配置与链接 | [federation-config.md](agent/knowledge/federation-config.md) | knowledge-links 路径与 HTTP 生成 |
+| overview 结构 | [overview-spec.md](agent/knowledge/overview-spec.md) | 路径、行序、第三列与归档 |
 | 布局契约 | [agent/references/knowledge-layout.md](agent/references/knowledge-layout.md) | 四层路径 / 联邦 / overview |
 | OKF 规范 | [agent/knowledge/okf-spec.md](agent/knowledge/okf-spec.md) | OKF SSOT |
 | 术语表 | [agent/knowledge/glossary.md](agent/knowledge/glossary.md) | 统一语言 |
 | 意图澄清 / 推进 / 烤干 | [intent-clarify.md](agent/references/intent-clarify.md) · [unit-cycle-protocol.md](agent/references/unit-cycle-protocol.md) · [grilling-skill.md](agent/references/grilling-skill.md) | 语义族闸门 |
 | 轻流程动作 | [light-flow-actions.md](agent/references/light-flow-actions.md) | `C/M/S/F` |
+| 协作协议导航 | [references/README.md](agent/references/README.md) · [workflow-routing.md](agent/references/workflow-routing.md) | 按任务路由协议与技能族 |
+| 待办协议 | [todo-protocol.md](agent/references/todo-protocol.md) | 未闭合问题的记录与收敛 |
 
 ### 9.2 相关项目
 

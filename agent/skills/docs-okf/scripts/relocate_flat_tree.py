@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""将 application/knowledge 五视角嵌套锚点搬迁为域扁平树。路径见 naming-conventions.md §OKF business 行。"""
+"""将 application/knowledge 五视角嵌套锚点搬迁为域扁平树。格式见 agent/knowledge/okf-spec.md，路径见 agent/references/knowledge-layout.md。"""
 
 from __future__ import annotations
 

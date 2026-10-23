@@ -13,7 +13,7 @@
 | `--apply-scaffold` | 整树确认后：备份、新增骨架、根级 DESIGN 覆盖与路径收尾；不自动重填正文 |
 | 文件 / 目录路径 | 触发指定路径模式；由 Agent 编排，不传给脚本 |
 
-登记 `path` 使用 `${WORK_SPACE}/…`；`--meta-path` 也可用本机路径。均按文件所属库配置展开并校验工作区边界；缺配置、旧格式或越界即停止。完整契约见 [knowledge-governance.md](../../../knowledge/knowledge-governance.md)「knowledge-links 路径契约」。`dir` 校验先于目录展开，见 [workflow.md](workflow.md#源解析)。
+登记 `path` 使用 `${WORK_SPACE}/…`；`--meta-path` 也可用本机路径。均按文件所属库配置展开并校验工作区边界；缺配置、旧格式或越界即停止。完整契约见 [knowledge-links 路径契约](../../../knowledge/federation-config.md#knowledge-links-路径契约)。`dir` 校验先于目录展开，见 [workflow.md](workflow.md#源解析)。
 
 ## 指定路径展开
 

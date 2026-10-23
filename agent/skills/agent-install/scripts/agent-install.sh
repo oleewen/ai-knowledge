@@ -48,6 +48,8 @@ agent_matches_exclusion() {
 # rsync 与 cp 回退共享同一排除表；更新时移除同步目录内的旧研发材料。
 sync_runtime_tree() {
   local src="$1" dst="$2"
+  # 安装操作明确授权受管资源更新；局部变量不改变调用方覆盖策略。
+  local IO_FORCE=1
   # rsync 会物化源根软链；cp 回退也须复制实体，避免过滤绕过或误删源树。
   src="$(cd "$src" && pwd -P)"
   local pattern

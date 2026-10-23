@@ -681,6 +681,44 @@
         "README.md": "# 付款\n\n签约时支付预付款。\n",
         "docs/payments.md": "# 付款细则\n\n订金可抵扣货款。\n"
       }
+    },
+    {
+      "id": "revise-pause-resume-001",
+      "category": "should-trigger",
+      "prompt": "继续。",
+      "expected_output": "恢复 README.md 的待写后动作，保留现稿；不把暂停后的继续当写后 C，也不写尚未授权的关联候选。",
+      "assertions": [
+        {
+          "id": "resume-awaits-post-confirmation",
+          "priority": "P0",
+          "evidence_kind": "response",
+          "check": "明确当前 README.md 仍待写后确认；恢复烤干阶段的用户动作，不宣称已 confirmed 或自动开始下一批。"
+        },
+        {
+          "id": "preserve-written-and-candidate",
+          "priority": "P0",
+          "evidence_kind": "diff",
+          "check": "README.md 保持已写的预付款，docs/payments.md 保持未授权的订金；无回滚或关联扩批写入。"
+        }
+      ],
+      "fixture_files": {
+        "README.md": "# 付款\n\n签约时支付预付款。\n",
+        "docs/payments.md": "# 付款细则\n\n订金可抵扣货款。\n"
+      },
+      "conversation": [
+        {
+          "role": "assistant",
+          "content": "当前阶段：烤干。README.md 已按写前确认完成修订并烤干收敛，尚待写后 C。docs/payments.md 仅为关联候选，未获该批次写前授权。"
+        },
+        {
+          "role": "user",
+          "content": "S。"
+        },
+        {
+          "role": "assistant",
+          "content": "已暂停 README.md 当前单元，保留已写内容与 grilled 状态；恢复后等待写后动作。关联候选仍未授权。"
+        }
+      ]
     }
   ]
 }

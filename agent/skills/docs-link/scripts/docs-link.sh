@@ -102,7 +102,7 @@ load_entries() {
       ((++parents)); ((parents <= 1)) || die "清单存在多个 parent: $file"
     elif [[ "${entry_types[i]}" == child ]]; then
       validate_name "${entry_names[i]}" >/dev/null
-      local identity="${entry_repos[i]%/}"
+      local identity="$(git_remote_identity_key "${entry_repos[i]}")"
       [[ -z "${identities[$identity]:-}" && -z "${names[${entry_names[i],,}]:-}" ]] || die "child identity/name 重复: $file"
       identities[$identity]=1; names[${entry_names[i],,}]=1
     fi
@@ -141,7 +141,7 @@ matched=-1
 TGT_ROOT=''
 if knowledge_link_value_looks_like_git_remote "$TARGET_RAW"; then
   for i in "${!sp[@]}"; do
-    if [[ "${st[i]}" == child && "${sr[i]%/}" == "${TARGET_RAW%/}" ]]; then
+    if [[ "${st[i]}" == child && "$(git_remote_identity_key "${sr[i]}")" == "$(git_remote_identity_key "$TARGET_RAW")" ]]; then
       matched=$i
       TGT_ROOT="$(knowledge_link_expand_stored_path "${sp[i]}" "$LIST_FILE")"
       break
@@ -154,7 +154,7 @@ else
   for i in "${!sp[@]}"; do
     [[ "${st[i]}" == child ]] || continue
     stored_root="$(knowledge_link_expand_stored_path "${sp[i]}" "$LIST_FILE")"
-    if [[ "${sr[i]%/}" == "${target_remote%/}" || "$stored_root" == "$TGT_ROOT" ]]; then
+    if [[ "$(git_remote_identity_key "${sr[i]}")" == "$(git_remote_identity_key "$target_remote")" || "$stored_root" == "$TGT_ROOT" ]]; then
       matched=$i; break
     fi
   done
@@ -193,7 +193,7 @@ if [[ "$CMD" == link || "$target_available" == 1 ]]; then
 fi
 if [[ "$matched" != -1 && ( -d "$TGT_ROOT/.git" || -f "$TGT_ROOT/.git" ) ]]; then
   actual_remote="$(knowledge_link_git_remote_url_prefer_origin "$TGT_ROOT" || true)"
-  [[ "${actual_remote%/}" == "${sr[matched]%/}" ]] || die '目标本地仓 remote 与登记不符；先核对身份'
+  [[ "$(git_remote_identity_key "$actual_remote")" == "$(git_remote_identity_key "${sr[matched]}")" ]] || die '目标本地仓 remote 与登记不符；先核对身份'
 fi
 
 old_name='' old_slot='' old_doc=''
@@ -248,7 +248,7 @@ if ((target_available)); then
             --new-repository "$source_remote" --new-path "$(knowledge_link_stored_path_from_absolute "$SRC_ROOT" "$TGT_LINKS")" --new-doc-dir "$sdir")
         fi
         continue
-      elif [[ "${tr[i]%/}" == "${source_remote%/}" ]]; then
+      elif [[ "$(git_remote_identity_key "${tr[i]}")" == "$(git_remote_identity_key "$source_remote")" ]]; then
         continue
       fi
     fi

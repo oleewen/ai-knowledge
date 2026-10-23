@@ -37,4 +37,4 @@ tags: ["architecture", "principles", "governance"]
 
 | ID | 名称 | 分类 | 陈述 |
 | --- | --- | --- | --- |
-| KP-01 | 单一事实源 | knowledge-management | 知识实体单点定义，他处仅 ID 引用；映射写在源侧 meta 或 JSON。 |
+| KP-01 | 单一事实源 | knowledge-management | 知识实体单点定义；引用遵守 [引用规范](knowledge-reference-rules.md)，关系按 [实体关系模型](entity-relations.md)双向同步（含其明确例外）。 |

@@ -102,6 +102,7 @@ docs_install_plan_source() {
 
 docs_install_plan_links() {
   local workspace paths=() repos=() dirs=() names=() labels=() types=() i
+  knowledge_links_validate_file_target "${CFG[docs_abs]}/knowledge-links.yaml" || return 1
   workspace="$(docsconfig_load_workspace_abs "${CFG[agent_root]}" "${CFG[agent_dir]}")"
   _knowledge_link_relative_to_workspace "${CFG[target_dir]}" "$workspace" >/dev/null
   CFG[meta_path_stored]="$(_knowledge_link_store_with_workspace "${CFG[repo_root]}" "$workspace")"

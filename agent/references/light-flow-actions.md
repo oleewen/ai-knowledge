@@ -1,11 +1,11 @@
 # 轻流程用户动作（Agent SSOT）
 
 > **定位**：未绑定意图澄清 / 单元推进环的 docs 技能共用动作字母。  
-> **适用**：轻流程技能名单见 [intent-clarify.md](intent-clarify.md)「落地状态」未绑定行（及同类参数确认型技能）。  
+> **适用**：技能名单见 [workflow-routing.md](workflow-routing.md)（及同类参数确认型技能）。
 > **不适用**：语义族（见 [unit-cycle-protocol.md](unit-cycle-protocol.md) 的 `C/M/G/S/F`）；`docs-okf` 无当前单元循环、不强制本字母表（自有 workflow 推进）。  
-> **受众**：写后 **A/B** 见 [audience-and-language.md](audience-and-language.md)（轻流程默认读者表；okf 在结果摘要出口）。
+> **受众**：检查维与默认读者见 [audience-and-language.md](audience-and-language.md)；时机与完成条件见下文。
 
-**最后更新**: 2026-09-15
+**最后更新**: 2026-10-23
 
 ---
 
@@ -38,10 +38,6 @@ C 确认当前单元 / M 修改参数 / S 跳过当前单元 / F 补齐剩余单
 
 ## 边界
 
-宣称当前单元完成前：须已执行本技能写入或脚本步骤（或用户确认的 dry-run），且按 [audience-and-language.md § 轻流程 A/B](audience-and-language.md#轻流程-ab含-okf) 通过 A/B（或违例已分流处理完毕）。未过 A/B → 不得宣称单元完成。不新增动作字母。
+宣称当前单元完成前，须已执行本技能写入或脚本步骤（或用户确认的 dry-run），并通过 [受众质检](audience-and-language.md) **A/B**。全过静默；违例须举证并处理完毕，未过不得宣称完成。不新增动作字母，也不引入语义族推进环。
 
-| | 轻流程（本文） | 语义族 |
-| --- | --- | --- |
-| 写前 | 参数确认 / 风险校核 | [intent-clarify.md](intent-clarify.md) |
-| 写后 | 轻量校核或脚本结果摘要 + **A/B** | [unit-cycle-protocol.md](unit-cycle-protocol.md) + grilling（含 **A/B/C/E**） |
-| 动作 | `C/M/S/F` | `C/M/G/F`（docs 另有 `S`） |
+`docs-okf` 在结果摘要交用户前检查 A/B；纯校验 JSON / 退出码可跳过。它按自有 workflow 推进，不强制本字母表。

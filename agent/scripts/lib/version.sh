@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -euo pipefail
 
 version_normalize() {
   local raw="${1:-}"

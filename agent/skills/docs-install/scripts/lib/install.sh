@@ -161,8 +161,9 @@ install_org_template_to_docs() {
 _DOCS_INSTALL_LINKS_STASH=""
 
 docs_install_stash_knowledge_links() {
-  [[ "${CFG[dry_run]}" == 0 ]] || return 0
   local src="${CFG[docs_abs]}/knowledge-links.yaml"
+  knowledge_links_validate_file_target "$src" || return 1
+  [[ "${CFG[dry_run]}" == 0 ]] || return 0
   _DOCS_INSTALL_LINKS_STASH=""
   [[ -n "${CFG[docs_abs]}" && -f "$src" ]] || return 0
   _DOCS_INSTALL_LINKS_STASH="$(mktemp "${TMPDIR:-/tmp}/knowledge-links.XXXXXX")"
@@ -187,6 +188,7 @@ docs_install_upsert_knowledge_meta() {
 
   [[ -n "${CFG[docs_abs]:-}" ]] || return 0
   links_file="${CFG[docs_abs]}/knowledge-links.yaml"
+  knowledge_links_validate_file_target "$links_file" || return 1
 
   meta_repo="${CFG[meta_repo]}"
   meta_path="${CFG[meta_path_stored]}"
@@ -205,11 +207,6 @@ docs_install_upsert_knowledge_meta() {
     log "[dry-run]   path=${meta_path}"
     log "[dry-run]   doc_dir=${CFG[type]}"
     return 0
-  fi
-
-  if [[ ! -f "$links_file" ]]; then
-    mkdir -p "${CFG[docs_abs]}"
-    printf '%s\n' '# 知识库建联清单（可由 docs-link.sh / docs-install.sh 维护）' 'links: []' >"$links_file"
   fi
 
   knowledge_links_load_into_arrays "$links_file" paths repos doc_dirs apps labels types
@@ -243,7 +240,7 @@ docs_install_upsert_knowledge_meta() {
   fi
 
   DRY=0 knowledge_links_write_entries "$links_file" nrepos npaths ndirs napps nlabels ntypes \
-    "$child_kind" "$parent_kind"
+    "$child_kind" "$parent_kind" || return 1
   info "已登记 type:meta → ${links_file}（doc_dir=${CFG[type]}）"
 }
 

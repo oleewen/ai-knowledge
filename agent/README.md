@@ -8,8 +8,8 @@
 | 路径 | 用途 |
 | --- | --- |
 | [rules/CONVENTIONS.md](rules/CONVENTIONS.md) | 规则总入口与产出协议总表 |
-| [knowledge/README.md](knowledge/README.md) | 知识治理 SSOT |
-| [references/](references) | 跨 Skill 契约（澄清 / 推进 / 轻流程 / 烤干 / 布局 / 工作稿路径） |
+| [knowledge/README.md](knowledge/README.md) | 知识语义 SSOT：层职责、关系、引用、联邦配置、overview 与 OKF |
+| [references/README.md](references/README.md) | 协作执行 SSOT：流程路由、澄清、推进、烤干、待办与路径 |
 | [skills/README.md](skills/README.md) | Slash 命令清单（权威） |
-| [scripts/](scripts) | 共享 Bash 库（路径与 `.docsconfig` 解析等） |
+| [scripts/README.md](scripts/README.md) | 共享脚本职责、兼容入口、依赖与测试路由 |
 | [hooks.json](hooks.json) · [hooks/README.md](hooks/README.md) | Hooks 配置 SSOT；目录说明 |

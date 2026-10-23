@@ -11,7 +11,7 @@
 | `output` | 文件名固定为 `INDEX-GUIDE.md`；相对路径从仓库根解析 |
 | `since` | incremental 的正整数 epoch 毫秒；显式值优先，否则读目标指南锚点 |
 
-Agent 的默认文档根依 [session-spec-path.md](../../../references/session-spec-path.md) 解析：优先 `.docsconfig` 的 `DOC_DIR`，缺失或无效则建议 `docs`。输出默认为该根下的 `INDEX-GUIDE.md`；不按现存目录静默切换到 `doc/` 或仓库根。
+Agent 优先采用 `.docsconfig` 的 `DOC_DIR`；合法仓内相对子路径按 [docsconfig.sh](../../../scripts/lib/docsconfig.sh) 的通用配置校验判断。缺失或无效时建议 `docs`，经用户收口后作为输出根。输出默认为该根下的 `INDEX-GUIDE.md`；不按现存目录静默切换到 `doc/` 或仓库根。
 
 脚本依赖共享 `docsconfig.sh` 的完整配置，解析失败会停止。该依赖不等于 Agent 可以自动补写配置。`--output` 只覆盖输出位置，脚本仍扫描配置解析出的 `DOC_DIR`；目录不存在时不创建空扫描根。
 

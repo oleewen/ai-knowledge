@@ -4,21 +4,15 @@
 > **分工**：推进环 / 用户动作 / 重开 / 前文回改见 [unit-cycle-protocol.md](unit-cycle-protocol.md)；写后提问能力见 [grilling-skill.md](grilling-skill.md)。  
 > **主线口令**：`澄清 → 生成 → 烤干`。
 
-**最后更新**: 2026-09-15
+**最后更新**: 2026-10-23
 
-**落地状态**：全部 `/sdx-*` 与语义族 docs-*（`docs-agent` / `docs-extract` / `docs-merge` / `docs-distill` / `docs-archive` / `docs-revise` / `docs-simplify` / `docs-indexing` / `docs-build`）已绑定。**未绑定（轻流程）**：`docs-okf` / `docs-link` / `docs-tag` / `docs-install` / `agent-install` / `docs-upgrade` / `skill-upgrade`。未启用技能维持既有轻流程。
+**落地状态**：技能族名单与公共分工见 [workflow-routing.md](workflow-routing.md)。
 
 ---
 
 ## 与 grilling / 推进环的边界
 
-| 能力 | 时机 | 目的 | SSOT |
-| --- | --- | --- | --- |
-| **意图澄清**（本文） | 写入前 | 挡臆测、收口目标/范围/路径 | 本文 |
-| **单元推进** | 生成后全程 | 烤干授权、动作字母、重开 | [unit-cycle-protocol.md](unit-cycle-protocol.md) |
-| **grilling / 烤干** | 写入后 | 成品缺口、冲突、可评审性 | [grilling-skill.md](grilling-skill.md) |
-
-禁止：把写前步骤称作「写前 grilling」；用 `G` 表示意图澄清（`G` 仅写后深挖，见推进协议）。
+本文只管写前目标、范围、缺口与路径。缺口提问可复用 [grilling fallback](grilling-skill.md#fallback) 的格式，阶段仍是意图澄清，不称「写前 grilling」。动作与写入权限见 [单元推进协议](unit-cycle-protocol.md)；`G` 仅表示写后深挖。
 
 ---
 
@@ -49,21 +43,10 @@
 
 ## 写后「烤干」触发
 
-1. 各 skill 在本地 **workflow** 维护**写后默认表**（是否默认 grilling）。  
-2. 出现以下任一情况时，**强制升级为必须烤干**（不可降级跳过）：  
-   - 未确认决策写入正文  
-   - 跨段/跨单元依赖或前文前提变更  
-   - 实体 ID、导航路径、索引路径变更  
-   - 冲突消解、范围/目标/承诺口径变更  
-3. 启发式只可升级为必须，不可把默认「必须」降为跳过。  
-4. 烤干阶段输出须标明：**当前阶段：烤干（grilling）**。
-
-语义族默认：各章节/当前单元**默认必须烤干**（analysis 含单个 `FR`；design 含 §2 内 API/DDL 等块；prd 含 US/UC/AC；indexing 含 INDEX-GUIDE+LOG 输出组；build 含视角/实体批次）。细则以各 skill workflow 默认表为准。
+默认表、强制升级与阶段标记统一见 [单元推进协议](unit-cycle-protocol.md#写后烤干触发)；六项中的预判按该规则填写。
 
 ---
 
 ## 边界
 
-启用本契约的 skill 须在本地 `workflow.md` / `gates.md`：引用本文与 [unit-cycle-protocol.md](unit-cycle-protocol.md)（不复制全文）；声明写后默认表（建议仅 `workflow.md`）；推进遵循 `澄清 → 生成 → 烤干`；只补技能特有字段、路径、高风险与原子性；更新 SKILL.md / evals 中推进协议断言（若有）。
-
-本文不负责：取代参数向导（向导在首轮容器创建前；澄清在每段/单元写入前）；定义用户动作字母与状态机全文；取代 [grilling-skill.md](grilling-skill.md)；规定具体业务模板章节内容。
+技能绑定要求统一见 [单元推进协议](unit-cycle-protocol.md#技能-binding-要求)。参数向导在首轮容器创建前执行；本文在每段/单元写入前执行，不替代参数向导或业务模板。

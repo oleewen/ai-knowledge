@@ -5,7 +5,7 @@
 | macOS 默认 Bash 3.2 | 指定已安装的 Bash 5+；版本不足不是测试通过 |
 | 找不到 docs-core | 检查源 `.docsconfig` 的 `AGENT_ROOT/AGENT_DIR` 与安装树；可从元库技能路径调用，cwd 仍须为源 Git 根 |
 | URL 未登记 | 首次建联用本地目标 Git 根；URL 不触发 clone |
-| path 为 `~/…`、绝对路径或越界 | 按[路径契约](../../knowledge/knowledge-governance.md)授权迁移后再试，不自动改清单 |
+| path 为 `~/…`、绝对路径或越界 | 按[路径契约](../../knowledge/federation-config.md#knowledge-links-路径契约)授权迁移后再试，不自动改清单 |
 | 清单 name/repository/dir 缺失或重复 | 先核对原登记；不能补猜后直接覆盖 |
 | 槽位失效 | 先 `--check`，再对已登记 target 预览 `--repair`；真实文件/目录保留 |
 | 缺仓、配置或反向 parent 不符 | 停止维护；按登记 path 准备仓库或定向纠正登记，不自动 clone、安装或改 YAML |

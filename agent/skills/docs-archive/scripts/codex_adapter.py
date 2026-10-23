@@ -34,7 +34,10 @@ RUNTIME_FILES = (
     "references/audience-and-language.md", "references/links-and-index.md",
     "../../references/intent-clarify.md", "../../references/unit-cycle-protocol.md",
     "../../references/grilling-skill.md", "../../references/audience-and-language.md",
+    "../../references/workflow-routing.md", "../../references/todo-protocol.md",
     "../../knowledge/knowledge-governance.md",
+    "../../knowledge/entity-relations.md", "../../knowledge/knowledge-reference-rules.md",
+    "../../knowledge/federation-config.md", "../../knowledge/overview-spec.md",
 )
 CONFIG = (
     'approval_policy="never"', "project_doc_max_bytes=0",

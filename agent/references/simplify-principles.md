@@ -2,32 +2,17 @@
 
 > **定位**：跨 skill 复用的文档**结构 / 简明 / 真源**写作原则唯一真源。就地改写执行见 [docs-simplify/SKILL.md](../skills/docs-simplify/SKILL.md)。  
 > **边界**：不负责术语统一 / 定向纠错主路径（→ `docs-revise`）；不负责 A/B/C 判类（→ [document-guidelines.md](../rules/document/document-guidelines.md)）。  
-> **主线**：生成类产出在「生成」步须遵循本文；烤干中修订后另有 **simplify 遍**（见 [unit-cycle-protocol.md](unit-cycle-protocol.md)）；用户明示「跳过精简 / 草稿优先」等可临时豁免。
+> **分工**：本文只维护写作原则；生成与修订后的调用时机、范围、次数和豁免见 [unit-cycle-protocol.md](unit-cycle-protocol.md)。
 
-**最后更新**: 2026-09-15
+**最后更新**: 2026-10-23
 
 ---
 
 ## 适用与强制
 
-| 场景 | 要求 |
-| --- | --- |
-| `/docs-simplify` 就地改写 | 按本文三方面改写当前单元 |
-| 语义族 `sdx-*` / docs-* **生成**步 | 写前读本文；落笔按 A/B/C；豁免须用户明示 |
-| 语义族烤干中 **simplify 遍** | 只改善本轮 hunk；规则见 unit-cycle-protocol |
-| 轻流程 docs-* | 不强制；人类可读正文建议遵守 |
+`/docs-simplify` 按本文改写当前单元；绑定 [单元推进协议](unit-cycle-protocol.md) 的生成与修订按该协议调用本文。轻流程不强制，人类可读正文建议遵守。
 
-1. 绑定 [unit-cycle-protocol.md](unit-cycle-protocol.md) 的技能，在「生成并写入」前须读本文（或已缓存等价要点）。  
-2. 豁免口令示例：「跳过精简」「草稿优先」「先堆素材再精简」——仅对本轮/当前对象有效。  
-3. 原则正文只维护于此；各 Skill 仅短链，禁止复制整表。
-
-| 主目标 | 技能 / 步骤 |
-| --- | --- |
-| 结构重组 / 删冗余 / SSOT 去重引用 | `/docs-simplify` |
-| 统一术语 / 链式替换 / 定向纠错 | `docs-revise` |
-| 烤干中修订后的被改行 | 协议内 **simplify 遍**（本文原则；非完整技能环） |
-| `grilled` 后仍要整篇结构 | 再开 `/docs-simplify` |
-| 两者都要 | 先问主目标；串行顺序须确认（推荐：先 revise 再 simplify） |
+原则只维护于此，各 Skill 仅短链，禁止复制整表。结构重组、删冗余与SSOT去重由 `/docs-simplify` 执行；统一术语、链式替换与定向纠错由 `docs-revise` 执行。两者都要且顺序未明确时先确认主目标与顺序，推荐先 revise 再 simplify。
 
 ---
 

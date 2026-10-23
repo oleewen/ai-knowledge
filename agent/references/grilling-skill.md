@@ -3,26 +3,13 @@
 > **定位**：跨 skill 复用的 `grilling`（写后**烤干**）能力唯一真源。已装 `grilling` Skill 则优先调用，否则走本文 fallback。  
 > **分工**：写前澄清见 [intent-clarify.md](intent-clarify.md)；推进环/动作/重开见 [unit-cycle-protocol.md](unit-cycle-protocol.md)；受众维见 [audience-and-language.md](audience-and-language.md)。本文不定义写前门禁、动作字母、写入权限或前文回改。
 
-**最后更新**: 2026-10-15
+**最后更新**: 2026-10-23
 
 ---
 
 ## TODO-LIST
 
-烤干**未闭合代办**清单（不是决策日志或运行史）：
-
-- **元仓**（`ai-knowledge`）：仓根 [`TODO-LIST.md`](../../TODO-LIST.md)（全书一份）
-- **下游四层**（application / system / solution / company）：`{DOC_DIR}/TODO-LIST.md`（常 `docs/TODO-LIST.md`；与层内 `DESIGN.md` 同目录）
-
-| 项 | 约定 |
-| --- | --- |
-| 职责 | 只记可执行、未勾销的烤干代办 |
-| 格式 | 顶层 `- [ ]` 动作句 + 可选依赖；明细用子 checkbox |
-| 写入 | 烤干收敛后，若仍有未执行动作，Agent 自动落盘/更新；纯问答不成动作则不写 |
-| 勾销 | 用户确认已完成后**即删条**；不留已完成史（落痕用 git） |
-| 空壳 | 无开放代办时保留文件：标题 + 导语 +「当前无开放代办」 |
-
-不替代 git 变更溯源。索引增量锚点 ∈ 目标 `INDEX-GUIDE.md` 内 `<!-- sdx-indexing:indexing_finished_ms=... -->`（见 docs-indexing）。
+烤干未闭合动作按 [开放代办契约](todo-protocol.md) 自动落盘、更新与勾销；本文只交付问题、建议及影响范围。
 
 ---
 
@@ -61,18 +48,12 @@ Skill 与 fallback 至少须交付：当前问题或发现；推荐答案；数�
 
 ## 受众质检（烤干必跑）
 
-`sdx-*` 与语义族 docs-* 写后烤干**必须**按 [audience-and-language.md](audience-and-language.md) 跑 **A/B/C/E**。
-
-- 对照技能本地 audience（主读者 / 宜写宜弱化 / 特殊允许区）。
-- 违例分流与举证格式以该契约为准（全过静默；违例短表）。
-- 受众维未过 → 不得标为已烤干收敛。
-
-轻流程 A/B 不经本文；见 [light-flow-actions.md](light-flow-actions.md)。
+检查维、读者差额与举证格式见 [audience-and-language.md](audience-and-language.md)；调用时机与完成门禁分别由 [单元推进协议](unit-cycle-protocol.md#写后完成条件共通) 和 [轻流程动作](light-flow-actions.md#边界) 规定。
 
 ---
 
 ## 边界
 
-各 skill 本地定义、不在本文统一：是否直接修订当前对象；前文回改是否自动执行；`C/M/G/S/F` 如何衔接；何时进入下一段/阶段或整体验证。本地须链本文，不得复制整套 fallback。
+修订授权、语义停问、前文回改、动作与推进只按 [单元推进协议](unit-cycle-protocol.md)；本地技能仅补业务检查问题，须链本文，不复制整套 fallback，也不重定义公共权限。
 
-本文不负责：取代 `brainstorming`；为任意 skill 默认授予写权限；规定业务文档段落结构；替代各 skill 的 gates / workflow / integration。
+本文不取代 brainstorming，不授予写权限，不定义业务文档结构或技能特有 gates / workflow / integration。能力路由见 [workflow-routing.md](workflow-routing.md)。

@@ -235,7 +235,7 @@ check 'CRLF document passes' 0 '错误: 0  警告: 0'
 
 mkdir -p "$REPO/agent/skills/sdx-analysis" "$REPO/agent/scripts/lib"
 cp -R "$SKILL_DIR/scripts" "$SKILL_DIR/assets" "$REPO/agent/skills/sdx-analysis/"
-cp "$AGENT_HOME/scripts/lib/"{docsconfig,path,bash}.sh "$REPO/agent/scripts/lib/"
+cp "$AGENT_HOME/scripts/lib/"{docsconfig,docsconfig-fields,docsconfig-workspace,docsconfig-store,backup,path,bash}.sh "$REPO/agent/scripts/lib/"
 ORIGINAL_SCRIPT="$SCRIPT"
 SCRIPT='../agent/skills/sdx-analysis/scripts/validate-analysis.sh'
 run "$REPO/sub" --strict --file ../docs/analysis/ANALYSIS-BASE-1.md

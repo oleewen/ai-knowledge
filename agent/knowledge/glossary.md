@@ -4,14 +4,14 @@ title: "全局术语表"
 version: "0.4.0"
 status: "draft"
 created: "2025-03-13"
-updated: "2026-10-04"
+updated: "2026-10-23"
 tags: ["glossary", "terminology", "governance"]
 ---
 
 # 全局术语表
 
-> **定位**：词义、别名、易混区分、**实体缩写/类型登记**，以及**跨视角映射字段语义** SSOT。  
-> **不分管**：首次定义层 / 5A 边类 / 引用边界 → [knowledge-governance.md](knowledge-governance.md)；ID 语法 `{TYPE}-{NAME}` → [naming-conventions.md](naming-conventions.md)；路径树 → [knowledge-layout.md](../references/knowledge-layout.md)。
+> **定位**：词义、别名、易混区分与实体 `hierarchy` / `type` / `perspective` 登记的唯一真源。
+> **不分管**：首次定义层 → [knowledge-governance.md](knowledge-governance.md)；关系 → [entity-relations.md](entity-relations.md)；引用边界 → [knowledge-reference-rules.md](knowledge-reference-rules.md)；ID 语法 `{TYPE}-{NAME}` → [naming-conventions.md](naming-conventions.md)；路径树 → [knowledge-layout.md](../references/knowledge-layout.md)。
 
 ## 知识库术语
 
@@ -31,83 +31,44 @@ tags: ["glossary", "terminology", "governance"]
 
 ## 实体缩写登记
 
-仅登记可作 `{TYPE}-{NAME}` 的知识实体前缀（非 ADR/SSOT/5A 等术语）。按 5A：BA → PA → AA → DA → TA。
+本表唯一登记知识实体的 `hierarchy`、精确 `type`、`perspective` 与短义。仅实体缩写可作 ID 前缀；首次定义层见 [治理规则](knowledge-governance.md#各层聚焦摘要)，字面语法见 [命名规范](naming-conventions.md)。
 
-| 所属视角 | 缩写 | 英文全称 | 短义 | 说明 |
-| --- | --- | --- | --- | --- |
-| BA | VC | Value Chain | 价值链 | 能力目录根；下挂 CAP，并由 BD 支撑 |
-| BA | BD | Business Domain | 业务域 | 支撑 VC；下挂 BSD-L1；勿与 BSD 混淆 |
-| BA | BL | Business Line | 业务线 | 无 parent；`maps_to` BSD-L1 一对一 |
-| BA | BS | Business Service | 业务服务 | 无 parent；解决方案首次定义；`maps_to` BSD-L2 一对一 |
-| BA | CAP | Business Capability | 业务能力 | 实现价值链；由 BSD-L1 一对一映射 |
-| BA | BSD | Business Subdomain | 业务子域 | 三级。L1 公司，由 BL 一对一映射，并 `maps_to` CAP。L2 解决方案，由 BS 一对一映射。L3 系统，`parent`→BSD-L2 |
-| BA | BC | Bounded Context | 限界上下文 | — |
-| BA | AGG | Aggregate | 聚合根 | — |
-| BA | AB | Ability | 领域能力 | 能力边界 |
-| PA | PL | Product Line | 产品线 | 解决方案首次定义；`maps_to` BL 一对一 |
-| PA | PD | Product | 产品服务 | 解决方案层 SSOT；`implements_to` PL；`maps_to` BS 一对一 |
-| PA | PM | Product Module | 产品模块 | — |
-| PA | BP | Business Process | 业务流程 | 一个 SLN 一条；`implements_to` SLN；`children` 为 BSP |
-| PA | BSP | Business Subprocess | 业务子流程 | `parent`→BP；`implements_to` PD；`kind`：core / branch / exception |
-| PA | FT | Feature | 功能点 | — |
-| PA | FR | Functional Requirement | 功能需求 | — |
-| PA | UC | Use Case | 用例 | — |
-| PA | BR | Business Rule | 业务规则 | — |
-| AA | SLN | Solution | 解决方案 | 交付包锚点；一仓一 SLN；`maps_to` PL |
-| AA | SYS | System | 系统 | 别名：应用服务；系统层 SSOT；`maps_to` PD 1:1；`implements_to` SLN（纯 ID，解决方案层不回写） |
-| AA | APP | Application | 应用 | 代码仓库/部署单元 |
-| AA | MS | Microservice | 微服务 | 入口能力簇；非 MW 替代 |
-| AA | API | API Endpoint | 接口端点 | — |
-| DA | MDG | Master Data Domain | 主数据域 | 解决方案层 SSOT；一 SLN 可多条；非 DS/ENT 替代 |
-| DA | DS | Data Store | 数据存储 | — |
-| DA | ENT | Entity | 数据实体 | 表/集合 |
-| DA | TBL | Data Table | 数据表 | 物理锚点 |
-| TA | TPL | Technical Platform | 技术平台能力 | 公司级企业准入 |
-| TA | TS | Technical Service | 技术服务 | 方案级技术服务选用；`implements_to` TPL |
-| TA | MW | Middleware Binding | 中间件绑定 | 实例级；非 MS/API 替代 |
-| TA | CMP | Component | 关键组件 | Maven / 共享运行时 |
+| hierarchy | type | perspective | 短义 |
+| --- | --- | --- | --- |
+| VC | `Value Chain` | business | 价值链 |
+| BD | `Business Domain` | business | 业务域 |
+| CAP | `Business Capability` | business | 业务能力 |
+| BL | `Business Line` | business | 业务线 |
+| BS | `Business Service` | business | 业务服务 |
+| PL | `Product Line` | product | 产品线 |
+| SLN | `Solution` | application | 解决方案 |
+| MDG | `Master Data Domain` | data | 主数据域 |
+| TPL | `Technical Platform` | technical | 技术平台能力 |
+| BSD | `Business Subdomain` | business | 业务子域 |
+| BC | `Bounded Context` | business | 限界上下文 |
+| AGG | `Aggregate` | business | 聚合根 |
+| AB | `Ability` | business | 领域能力 |
+| PD | `Product` | product | 产品服务 |
+| PM | `Product Module` | product | 产品模块 |
+| BP | `Business Process` | product | 业务流程 |
+| BSP | `Business Subprocess` | product | 业务子流程 |
+| FT | `Feature` | product | 功能点 |
+| FR | `Functional Requirement` | product | 功能需求 |
+| UC | `Use Case` | product | 用例 |
+| BR | `Business Rule` | product | 业务规则 |
+| SYS | `System` | application | 系统 |
+| APP | `Application` | application | 应用 |
+| MS | `Microservice` | application | 微服务 |
+| DS | `Data Store` | data | 数据存储 |
+| ENT | `Entity` | data | 数据实体 |
+| TS | `Technical Service` | technical | 技术服务 |
+| API | `API Endpoint` | application | 接口端点 |
+| TBL | `Data Table` | data | 数据表 |
+| MW | `Middleware Binding` | technical | 中间件绑定 |
+| CMP | `Component` | technical | 关键组件 |
 
-ID 前缀写作 `VC-` / `BD-` 等，语法见 [naming-conventions.md](naming-conventions.md)。
+易混区分：`SYS` 又称应用服务；`APP` 是代码仓库/部署单元；`MS` 是业务入口能力簇；`MW` 是实例级基础设施绑定；`MDG` 是逻辑模型与数据主权边界；`ENT` 表示实体/集合，`TBL` 表示物理表锚点。`AGG` 在本库登记为聚合根。
 
 ## 映射关系（常用）
 
-> 本表为关系字段语义 **SSOT**。字段名短化；目标类型靠 ID 前缀。边类方向见 [knowledge-governance.md § 核心映射](knowledge-governance.md#核心映射5a方向)。他处（governance / `agent/knowledge/{视角}-meta.md`）只引用，不复制全文。  
-> **总则**：不设单侧 SSOT；关系两边均必填（树根省略 `parent` 除外），含跨层。关系可以没有；一侧写了，另一侧必须写。指向更低层的目标只写纯 ID，不写 Markdown 链，不写 HTTP。混列目标靠前缀辨型。
-
-### 动词族
-
-| 动词对 | 场景 |
-| --- | --- |
-| `parent` / `children` | 同类树。两边都写，含跨层。children 同层：BD→BSD-L1、BP→BSP。children 跨层：BSD-L1→BSD-L2、BSD-L2→BSD-L3。parent：BSD-L2→BSD-L1、BSD-L3→BSD-L2、BSP→BP |
-| `implements_to` / `implemented_by` | 同视角不同类上下级（组成链）。两边都写，含跨层。下层写 `implements_to`，上层写 `implemented_by`。同层如 CMP↔MW |
-| `maps_to` / `mapped_by` | 同级对标。两边都写，含跨层。下层写 `maps_to`，上层写 `mapped_by` |
-| `supports_to` / `supported_by` | 支撑。两边都写，含跨层（BD↔VC；APP↔BC；API→FT，对端 FT.`supported_by`） |
-| `uses_to` / `used_by` | 使用。两边都写，含跨层。关系可无；有则两侧都写。SYS→MDG\|TS；APP→DS；APP→MW；MS→ENT；MW→DS |
-| `depends_to` / `depended_by` | PM↔PM 依赖（第六动词） |
-
-### 允许边（宿主 → 目标）
-
-| 字段（出边） | 宿主 → 目标（摘要） |
-| --- | --- |
-| `parent` / `children` | BD→BSD-L1；BP→BSP（children，同层）。BSD-L1→BSD-L2；BSD-L2→BSD-L3（children，跨层，纯 ID）。BSD-L2→BSD-L1；BSD-L3→BSD-L2；BSP→BP（parent） |
-| `implements_to` | CAP→VC；AGG→BC；AB→AGG；BC→BSD-L3；PD→PL；PM→PD；FT→PM；FR→FT；UC\|BR→FR；BP→SLN；BSP→PD；APP→SYS；MS→APP；API→MS；DS→MDG；ENT→DS；TBL→ENT；SYS→SLN；TS→TPL；MW→TS；CMP→MW |
-| `implemented_by` | 对端，含跨层。同层如 VC←CAP、MW←CMP。跨层：TPL←TS；PD←PM；MDG←DS；TS←MW；MS←API；ENT←TBL。跨层目标为纯 ID |
-| `maps_to` | BL→BSD-L1 1:1；BSD-L1→CAP；PL→BL 1:1；SLN→PL 1:1；PD→BS 1:1；BS→BSD-L2 1:1；SYS→PD 1:1；PM→BC；API→UC；UC→AB；MS→AGG；ENT→AGG |
-| `mapped_by` | 对端，含跨层。同层如 BSD-L1←BL。跨层：BL←PL；UC←API。不写 PD←SYS。跨层目标为纯 ID |
-| `supports_to` | BD→VC；APP→BC；API→FT |
-| `supported_by` | VC→BD；BC→APP（同层）。跨层：FT←API。跨层目标为纯 ID |
-| `uses_to` | PD→MDG\|TS；APP→DS；APP→MW；MS→ENT；MW→DS。关系可无；有则两侧都写 |
-| `used_by` | 对端，含跨层。同层如 DS←APP、MDG←PD、TS←PD。跨层：DS←MW。另 MW.`used_by`→APP（对端 APP.`uses_to`）。指向下层的目标为纯 ID |
-| `depends_to` / `depended_by` | PM↔PM |
-
-### 非边属性
-
-| 字段 | 含义 |
-| --- | --- |
-| `maven_coordinates` | **CMP-*** 的 Maven 坐标 `groupId:artifactId:version` |
-
-### 已废（勿再用）
-
-`implements_*_ids`、`implements_to_vc`、`implemented_by_cap`、`implemented_by_app_id`、`implemented_by_service_ids`、`supports_to_vc`、`supported_by_bd`、`maps_to_*` 带后缀旧名、`uses_*_ids`、`apis`、`aggregates`、`abilities`、`persisted_as_*`、`owned_by_app_id`、`bound_app_id`、`parent_tsd_id` / `parent_tpl_id` / `parent_mw_id` / `parent_app_id`（关系语义改 `implements_to`）、`relies_on_context_ids`、`invokes_api_ids`、`depends_pm_ids`、`map_to_api_id`、`maps_to_cap_ids`、`authoritative_mdg_id`、`root_entity` / `entities`、`strategic_classification`、APP/SYS↔TPL 直连、APP↔CMP、FT↔UC 直连。
-
-路径父级不写 frontmatter。先取关系段里的同层 `parent`，没有则取同层 `implements_to`。跨层 `implements_to` 不参与路径。
+动词、允许边、双向要求与废弃字段统一见 [实体关系模型](entity-relations.md)。本节仅保留旧入口。

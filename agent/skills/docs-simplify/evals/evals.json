@@ -903,6 +903,84 @@
       "turns": [
         "C。仅精简使用说明正文，保留其余字节。"
       ]
+    },
+    {
+      "id": "simplify-pause-before-001",
+      "category": "should-trigger",
+      "mode": "rewrite",
+      "prompt": "用 docs-simplify 精简 docs/guide.md，仅当前文件；保留审批约束，等我写前 C 再改。",
+      "expected_output": "写前 S 后暂停；继续只恢复意图澄清，未获 C 不写入。最后明确 C 后执行同一单元。",
+      "assertions": [
+        {
+          "id": "pause-before-no-write",
+          "name": "写前暂停无写入",
+          "type": "must_not_conflict",
+          "check": "首轮、S 与随后裸继续三轮均保持全部夹具字节不变，未把继续当写前 C。",
+          "priority": "P0"
+        },
+        {
+          "id": "resume-before-stage",
+          "name": "恢复写前阶段",
+          "type": "must_not_conflict",
+          "check": "S 记录当前对象和写前停点；继续恢复意图澄清并等待写前确认。",
+          "priority": "P0"
+        },
+        {
+          "id": "confirmed-execution",
+          "name": "原单元正式执行",
+          "type": "must_not_conflict",
+          "check": "最后写前 C 后实际精简 guide.md 且保留审批前置约束；next.md 始终不变。",
+          "priority": "P0"
+        }
+      ],
+      "fixtures": {
+        "docs/guide.md": "# 发布说明\n\n发布前必须完成审批。发布前需要完成审批，审批完成后才可以发布。\n",
+        "docs/next.md": "# 下一批\n\n下一批内容保持原样。\n"
+      },
+      "turns": [
+        "S。",
+        "继续。",
+        "C，仅精简当前文件，保留审批前置约束。"
+      ]
+    },
+    {
+      "id": "simplify-pause-after-001",
+      "category": "should-trigger",
+      "mode": "rewrite",
+      "prompt": "用 docs-simplify 精简 docs/guide.md，仅当前文件；保留审批约束，等我写前 C 再改。",
+      "expected_output": "写前 C 后真实写入并烤干；S 保留现稿且不确认，继续恢复待写后动作，不重生成或写下一批。",
+      "assertions": [
+        {
+          "id": "written-before-pause",
+          "name": "先实际写入",
+          "type": "must_not_conflict",
+          "check": "写前 C 轮 guide.md 须有实际精简且保留审批约束，烤干收敛并等待写后动作；不能靠全程不写伪造暂停保留。",
+          "priority": "P0"
+        },
+        {
+          "id": "pause-keeps-bytes",
+          "name": "暂停保留现稿",
+          "type": "must_not_conflict",
+          "check": "S 与后续继续两轮的 guide.md 字节须等于 C 轮快照，next.md 始终不变；无回滚、重生成或 Git 暂存。",
+          "priority": "P0"
+        },
+        {
+          "id": "resume-after-stage",
+          "name": "恢复待确认阶段",
+          "type": "must_not_conflict",
+          "check": "S 后未宣称 confirmed；继续恢复 grilled 并等待写后动作，不把裸继续视为写后 C 或自动推进下一单元。",
+          "priority": "P0"
+        }
+      ],
+      "fixtures": {
+        "docs/guide.md": "# 发布说明\n\n发布前必须完成审批。发布前需要完成审批，审批完成后才可以发布。\n",
+        "docs/next.md": "# 下一批\n\n下一批内容保持原样。\n"
+      },
+      "turns": [
+        "C，仅精简当前文件，保留审批前置约束。",
+        "S。",
+        "继续。"
+      ]
     }
   ]
 }

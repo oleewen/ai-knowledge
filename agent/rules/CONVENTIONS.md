@@ -48,7 +48,7 @@
 
 `{docroot}/superpowers/` 为会话工作稿区，**不是**正式 SSOT。
 
-- **禁止**：除 `{application|system|company|docs}/superpowers/**` **内部**外，全仓不得引用 superpowers 下**具名文件**（路径含 `superpowers/(specs|plans)/YYYY-MM-DD-` 且指向 `.md`）。
+- **禁止**：除任意 `superpowers/` 目录**内部**外，全仓不得引用 superpowers 下**具名文件**（路径含 `superpowers/(specs|plans)/YYYY-MM-DD-` 且指向 `.md`），不按根名区分。内部豁免不代表该目录是合法工作稿落点。
 - **允许**：目录契约、占位模式、hooks 通用正则、无日期测试桩。
 - **验收**：`bash agent/scripts/tools/forbidden-ref-outer.sh`；套件：`bash agent/scripts/tests/forbidden-file-refs/run.sh`。
 - **细则**：[session-spec-path.md](../references/session-spec-path.md)。

@@ -17,18 +17,15 @@ if ! declare -f abs_path >/dev/null 2>&1 || ! declare -f docsconfig_read_into >/
   # shellcheck source=docsconfig.sh
   source "${_SLOT_LIB_DIR}/docsconfig.sh"
 fi
-if ! declare -f git_remote_url_prefer_origin >/dev/null 2>&1; then
+if ! declare -f git_remote_url_prefer_origin >/dev/null 2>&1 || ! declare -f git_remote_identity_key >/dev/null 2>&1; then
   # shellcheck source=git-remote.sh
   source "${_SLOT_LIB_DIR}/git-remote.sh"
 fi
 unset _SLOT_LIB_DIR
 
-# 规范化 remote URL 便于比较（去尾部 .git、统一小写 scheme/host 不做过度猜测）
+# 兼容旧 API：身份比较只去单个尾部 /，保留 .git、大小写和协议差异。
 slot_normalize_git_url() {
-  local u="${1:-}"
-  u="${u%.git}"
-  u="${u%/}"
-  printf '%s' "$u"
+  git_remote_identity_key "${1:-}"
 }
 
 # path 为绝对则直接 abs；否则相对 base 再 abs。stdout 无换行。
@@ -78,24 +75,23 @@ slot_migrate_real_slot_dir() {
   local slot_dir="${1:?}"
   # 兼容旧签名：忽略 shared_log_dir / slot_name
   shift || true
-  [[ -d "$slot_dir" && ! -L "$slot_dir" ]] || return 0
-  rm -rf "$slot_dir"
+  if [[ -e "$slot_dir" && ! -L "$slot_dir" ]]; then
+    printf '错误: 槽位存在非软链路径，保留原内容: %s\n' "$slot_dir" >&2
+    return 1
+  fi
+  return 0
 }
 
-# 确保 slot_dir 为指向 target_abs 的绝对路径软链；真目录则先删除再建链
-# stdout: action 片段（空|migrate|link-fix）
+# 确保 slot_dir 为指向 target_abs 的绝对路径软链；非软链实体报错保留。
+# stdout: action 片段（空|link-fix）
 # 第 3/4 参 shared_log_dir、slot_name 保留兼容，忽略
 slot_ensure_slot_symlink() {
   local slot_dir="${1:?}" target_abs="${2:?}"
   local actions=() current parent
+  slot_migrate_real_slot_dir "$slot_dir" || return $?
   target_abs="$(strip_trailing_slash "$(abs_path "$target_abs")")"
   parent="$(dirname "$slot_dir")"
   mkdir -p "$parent"
-
-  if [[ -d "$slot_dir" && ! -L "$slot_dir" ]]; then
-    slot_migrate_real_slot_dir "$slot_dir"
-    actions+=("migrate")
-  fi
 
   if [[ -L "$slot_dir" ]]; then
     current="$(readlink "$slot_dir" 2>/dev/null || true)"
@@ -104,9 +100,6 @@ slot_ensure_slot_symlink() {
       return 0
     fi
     rm -f "$slot_dir"
-    actions+=("link-fix")
-  elif [[ -e "$slot_dir" ]]; then
-    rm -rf "$slot_dir"
     actions+=("link-fix")
   fi
 
@@ -122,7 +115,7 @@ slot_remove_slot_path() {
     rm -f "$slot_dir"
     return 0
   fi
-  [[ -d "$slot_dir" ]] && rm -rf "$slot_dir"
+  slot_migrate_real_slot_dir "$slot_dir"
 }
 
 slot_git_origin_url() {

@@ -12,12 +12,13 @@ docsconfig_bootstrap_validate
 repo_abs="$(docsconfig_repo_abs)"
 
 readonly EXIT_VIOLATION=1
-readonly EXIT_MISSING_TOOL=2
+readonly EXIT_TOOL_ERROR=2
 
-# 具名文件路径公共段（specs|plans 下带日期前缀）
-readonly SUPERPOWERS_NAMED_PREFIX='(application|system|solution|company|docs)/superpowers/(specs|plans)/'
-readonly PATTERN_LITERAL="${SUPERPOWERS_NAMED_PREFIX}[0-9]{4}-[0-9]{2}-[0-9]{2}-"
-readonly PATTERN_MD_LINK="\]\([^)]*${SUPERPOWERS_NAMED_PREFIX}[0-9]{4}-"
+# 具名文件路径公共段与文档根无关；仅接受路径分隔符或明确的文本起始边界。
+# 支持行首、/、空白、反引号、单双引号、左圆/尖括号、等号、英文/中文冒号；非通用 Markdown 解析。
+readonly SUPERPOWERS_NAMED_PREFIX='superpowers/(specs|plans)/'
+readonly PATTERN_LITERAL="(^|[/[:space:]\`\"'(<=:：])${SUPERPOWERS_NAMED_PREFIX}[0-9]{4}-[0-9]{2}-[0-9]{2}-"
+readonly PATTERN_MD_LINK="\]\(([^)]*/)?${SUPERPOWERS_NAMED_PREFIX}[0-9]{4}-"
 
 GLOBS=(
   --glob '!**/superpowers/**'
@@ -32,7 +33,7 @@ violations=0
 require_ripgrep() {
   if ! command -v rg >/dev/null 2>&1; then
     echo "[ERROR] 需要 ripgrep (rg)" >&2
-    exit "$EXIT_MISSING_TOOL"
+    exit "$EXIT_TOOL_ERROR"
   fi
 }
 
@@ -47,14 +48,21 @@ count_nonempty_lines() {
 }
 
 run_scan() {
-  local label="$1"
-  local pattern="$2"
-  local out
-  out="$(rg -n "$pattern" "${GLOBS[@]}" . 2>/dev/null || true)"
+  local out status=0
+  # 一次扫描的两种模式不会重复报告重叠匹配；同一行的不同位置分别计数。
+  out="$(rg --with-filename --line-number --column --only-matching --color never \
+    -e "$PATTERN_LITERAL" -e "$PATTERN_MD_LINK" "${GLOBS[@]}" .)" || status=$?
+  case "$status" in
+    0|1) ;;
+    *)
+      printf '[ERROR] 引用扫描未完成（rg exit %s）\n' "$status" >&2
+      return "$EXIT_TOOL_ERROR"
+      ;;
+  esac
   if [[ -n "$out" ]]; then
-    echo "== $label ==" >&2
+    echo "== 具名 superpowers 引用（文件:行:列）==" >&2
     echo "$out" >&2
-    violations=$((violations + $(count_nonempty_lines "$out")))
+    violations="$(count_nonempty_lines "$out")"
   fi
 }
 
@@ -62,8 +70,7 @@ main() {
   require_ripgrep
   cd "$repo_abs"
 
-  run_scan "具名 superpowers 路径字面量" "$PATTERN_LITERAL"
-  run_scan "Markdown 链接指向具名 superpowers 文件" "$PATTERN_MD_LINK"
+  run_scan || exit "$EXIT_TOOL_ERROR"
 
   if [[ "$violations" -gt 0 ]]; then
     echo "[FAIL] 发现 ${violations} 处 superpowers 具名文件引用（库外）" >&2

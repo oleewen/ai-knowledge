@@ -13,7 +13,6 @@ maintenance_load() {
   paths=(); repos=(); dirs=(); names=(); types=(); errors=()
   local -A keys=()
   while IFS= read -r line || [[ -n "$line" ]]; do
-    line="${line%$'\r'}"
     [[ -z "${line//[[:space:]]/}" || "$line" =~ ^[[:space:]]*# ]] && continue
     if [[ "$line" =~ ^links:[[:space:]]*(\[\])?[[:space:]]*(#.*)?$ ]]; then
       ((header == 0)) || die "重复 links: $file"
@@ -44,7 +43,12 @@ maintenance_load() {
       errors[index]+="重复字段 ${key}；"
     fi
     keys[$key]=1
-    value="$(_yaml_unquote "$value")"
+    if ! value="$(_yaml_unquote "$value")"; then
+      # type 决定选取范围；解码失败必须全局拒绝，其余字段按条隔离。
+      [[ "$key" != type ]] || die "清单 type 标量非法: $file"
+      errors[index]+="字段 ${key} 标量非法；"
+      continue
+    fi
     case "$key" in
       path) paths[index]="$value" ;;
       repository) repos[index]="$value" ;;
@@ -78,14 +82,14 @@ maintenance_one() (
   name="$(validate_name "${sn[index]}")" || exit 1
   for other in "${!sp[@]}"; do
     [[ "$other" == "$index" || "${st[other]}" != child ]] && continue
-    [[ "${sr[other]%/}" != "${sr[index]%/}" && "${sn[other],,}" != "$name" ]] || die 'child identity/name 重复'
+    [[ "$(git_remote_identity_key "${sr[other]}")" != "$(git_remote_identity_key "${sr[index]}")" && "${sn[other],,}" != "$name" ]] || die 'child identity/name 重复'
   done
   root="$(knowledge_link_expand_stored_path "${sp[index]}" "$LIST_FILE")" || exit 1
   [[ -d "$root" ]] || die "登记仓库缺失: $root"
   top="$(git -C "$root" rev-parse --show-toplevel 2>/dev/null)" || die "目标不是 Git 仓库: $root"
   [[ "$(cd "$top" && pwd -P)" == "$root" ]] || die "登记 path 必须是目标 Git 根: $root"
   actual="$(knowledge_link_git_remote_url_prefer_origin "$root")" || die "目标缺少 remote: $root"
-  [[ "${actual%/}" == "${sr[index]%/}" ]] || die "目标 remote 与登记不符: $root"
+  [[ "$(git_remote_identity_key "$actual")" == "$(git_remote_identity_key "${sr[index]}")" ]] || die "目标 remote 与登记不符: $root"
   docsconfig_abs_for_config "$root/.docsconfig" trepo tdoc tdir tar tkt || die "无法解析目标 .docsconfig: $root"
   docsconfig_validate_owner_matches_repo "$root" "$trepo" || die "目标配置归属不符: $root"
   [[ "$tkt" == "$target_kind" ]] || die "目标须为 $target_kind（收到 $tkt）"
@@ -101,7 +105,7 @@ maintenance_one() (
   done
   ((parents == 1)) || die "目标须登记唯一 parent: $target_list"
   maintenance_entry t "$parent" "$target_list"
-  [[ "${tr[parent]%/}" == "${source_remote%/}" && "${td[parent]}" == "$sdir" ]] || die "parent repository/dir 未指向源库: $target_list"
+  [[ "$(git_remote_identity_key "${tr[parent]}")" == "$(git_remote_identity_key "$source_remote")" && "${td[parent]}" == "$sdir" ]] || die "parent repository/dir 未指向源库: $target_list"
   parent_root="$(knowledge_link_expand_stored_path "${tp[parent]}" "$target_list")" || exit 1
   [[ "$parent_root" == "$SRC_ROOT" ]] || die "parent path 未指向源库: $target_list"
   [[ ! -L "$slots" ]] || die "槽位父目录不能是软链: $slots"
@@ -156,7 +160,7 @@ maintenance_main() {
     if [[ -z "$TARGET_RAW" ]]; then
       selected+=("$index")
     elif [[ -z "$requested" ]]; then
-      [[ "${sr[index]%/}" != "${TARGET_RAW%/}" ]] || selected+=("$index")
+      [[ "$(git_remote_identity_key "${sr[index]}")" != "$(git_remote_identity_key "$TARGET_RAW")" ]] || selected+=("$index")
     else
       # 不读取候选 checkout remote；唯一合法匹配是登记 path。
       root="$(knowledge_link_expand_stored_path "${sp[index]}" "$LIST_FILE" 2>/dev/null)" || continue

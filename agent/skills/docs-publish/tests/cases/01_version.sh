@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../../.." && pwd)"
+"$BASH" -c '
+  set +e +u +o pipefail
+  before_flags=$- before_options=$SHELLOPTS
+  source "$1"
+  [[ "$-" == "$before_flags" && "$SHELLOPTS" == "$before_options" ]]
+' version-source "$ROOT/agent/scripts/lib/version.sh"
 source "$ROOT/agent/scripts/lib/version.sh"
 source "$ROOT/agent/scripts/test-core.sh"
 [[ "$(version_normalize 26.10.20)" == 2026.1020.0 ]]

@@ -1,8 +1,10 @@
 # ADR-XXX: {标题}
 
+> 命名、落盘、合法状态与台账见 [ADR 编写约定](adr-guidelines.md)。
+
 ## 状态
 
-- {状态} — 合法值见 [adr-guidelines.md](adr-guidelines.md)
+- {状态}
 
 ## 上下文
 
@@ -25,7 +27,3 @@
 ### 后续行动（可选）
 
 -
-
----
-
-*ADR 编号与文件名格式：`ADR-{序号}-{短标题}.md`；按范围落盘于 `company/adr/`、`solution/adr/`、`system/adr/` 或 `application/adr/`，例如 `ADR-002-api-versioning.md`。决策索引见同目录 `CONTEXT.md`；SDX 运行时见 [sdx-adr-protocol.md](../references/sdx-adr-protocol.md)。*

@@ -1567,6 +1567,70 @@
           "reply": "C，按已确认的5次、30秒正式写入。"
         }
       ]
+    },
+    {
+      "id": 32,
+      "category": "should-trigger",
+      "coverage": [
+        "pause-resume",
+        "dry-run"
+      ],
+      "prompt": "/docs-merge ./a.md ./b.md --dry-run，完成预览后停等。",
+      "expected_output": "dry-run 预览后 S 暂停，继续恢复原预览停点；未取得正式授权不得写目标。",
+      "files": [
+        {
+          "fixture": "one-add.md",
+          "path": "a.md",
+          "role": "source"
+        },
+        {
+          "fixture": "guide.md",
+          "path": "b.md",
+          "role": "target"
+        }
+      ],
+      "absent_paths": [],
+      "artifact_checks": [
+        {
+          "id": "target-unchanged",
+          "kind": "unchanged",
+          "path": "b.md"
+        }
+      ],
+      "assertions": [
+        {
+          "id": "preview-before-pause",
+          "name": "先完成预览",
+          "type": "behavior",
+          "check": "S 前真实完成当前合入计划的 dry-run 预览和烤干，未写 source 或 target；不能以从未执行预览替代暂停恢复验证。",
+          "priority": "P0"
+        },
+        {
+          "id": "preserve-preview-mode",
+          "name": "恢复保持预览模式",
+          "type": "behavior",
+          "check": "S 保留 dry-run 模式和原停点；裸继续不自动改为正式写入或确认，若转正式须重新取得相应写入授权。",
+          "priority": "P0"
+        }
+      ],
+      "driver_turns": [
+        {
+          "when": "询问新增项是否采纳",
+          "reply": "采纳当前新增项，仅用于 dry-run 预览。"
+        },
+        {
+          "when": "汇总预览模式的六项意图等待 C",
+          "reply": "C，仅预览，不正式写入。"
+        },
+        {
+          "when": "预览与烤干已完成，等待写后动作",
+          "reply": "S。"
+        },
+        {
+          "when": "已暂停预览单元",
+          "reply": "继续。"
+        }
+      ]
     }
   ]
 }

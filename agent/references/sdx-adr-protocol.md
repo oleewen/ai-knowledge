@@ -1,12 +1,11 @@
 # SDX ↔ ADR 协议
 
 > **定位**：`sdx-analysis` / `sdx-feature` 运行时如何落技术决策到 `{DOC_DIR}/adr/`。  
-> **命名/落盘 SSOT**：[adr-template.md](../knowledge/adr-template.md)。  
-> **必备章节/状态 SSOT**：[adr-guidelines.md](../knowledge/adr-guidelines.md)。  
+> **产物规范**：命名、目录、章节、状态与 CONTEXT 列见 [adr-guidelines.md](../knowledge/adr-guidelines.md)；内容骨架见 [adr-template.md](../knowledge/adr-template.md)。
 > **不负责**：业务/范围/优先级决策（仍用 ANALYSIS 或 SOLUTION §5.2 Q-n）。
 > **技能挂接**：[sdx-analysis](../skills/sdx-analysis/references/workflow.md) · [gates](../skills/sdx-analysis/references/gates.md)；[sdx-feature](../skills/sdx-feature/references/workflow.md) · [gates](../skills/sdx-feature/references/gates.md)。
 
-**最后更新**: 2026-10-22
+**最后更新**: 2026-10-23
 
 ---
 
@@ -23,24 +22,7 @@
 
 ## 落盘与引用
 
-| 层 | 目录 | 索引 |
-| --- | --- | --- |
-| 应用 | `application/adr/` | `CONTEXT.md`（决策台账）+ `index.md`（导航） |
-| 系统 | `system/adr/` | 同上 |
-| 解决方案 | `solution/adr/` | 同上 |
-| 公司 | `company/adr/` | 同上 |
-
-按 `.docsconfig` 的 `KNOWLEDGE_TYPE` / `DOC_DIR` 与决策范围选层。技能**只维护** `CONTEXT.md` 与 `ADR-*.md`；`index.md` 仅导航。
-
-**CONTEXT.md 列**
-
-| 列 | 定义 |
-| --- | --- |
-| 分类 | **优先按模块**（有 `PM-*` 等用 ID；否则方案内模块/能力短名） |
-| 决策编号 | `ADR-{序号}`（与文件名序号一致） |
-| 决策要点 | 一行结论 |
-| SSOT | 主要业务文档路径（发起/主引的 `SOLUTION-*.md` 或 `ANALYSIS-*.md`） |
-| ADR锚点 | 相对链接到 `ADR-*.md` |
+按 `.docsconfig` 的 `KNOWLEDGE_TYPE` / `DOC_DIR` 与决策范围选层，目录和 CONTEXT 五列以 [ADR产物规范](../knowledge/adr-guidelines.md) 为准。技能只维护 `CONTEXT.md` 与 `ADR-*.md`；`index.md` 仅导航。
 
 **正文引用**
 

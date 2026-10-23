@@ -1,23 +1,16 @@
 # 受众与语言（Agent SSOT）
 
 > **定位**：跨 skill 的**受众 / 语气 / 信息边界**唯一真源；烤干与轻流程写后质检的公共维。  
-> **分工**：烤干能力见 [grilling-skill.md](grilling-skill.md)；推进完成条件见 [unit-cycle-protocol.md](unit-cycle-protocol.md)；轻流程完成条件见 [light-flow-actions.md](light-flow-actions.md)。  
+> **分工**：本文定义检查标准与证据；调用时机、修订权限和完成门禁分别见 [单元推进](unit-cycle-protocol.md)、[轻流程动作](light-flow-actions.md)。
 > **本地覆盖**：各 skill `references/audience-and-language.md` 只写**差额**（主读者、宜写/宜弱化、反例、特殊允许区），不复制本文维表。
 
-**最后更新**: 2026-09-15
+**最后更新**: 2026-10-23
 
 ---
 
 ## 适用范围
 
-| 族 | 技能 | 强制维 | 本地 audience |
-| --- | --- | --- | --- |
-| `sdx-*` | 全部 | **A/B/C/E**（烤干内） | 必有；统一模板 |
-| 语义族 | docs-agent / docs-extract / docs-merge / docs-distill / docs-archive / docs-revise / docs-simplify / docs-indexing / docs-build | **A/B/C/E**（烤干内） | 必有；统一模板 |
-| 轻流程 | 见 [intent-clarify.md](intent-clarify.md)「落地状态」未绑定行（okf 除外） | **A/B**（写后、宣称完成前） | 无；用下文默认读者表 |
-| docs-okf | docs-okf | **A/B**（结果摘要出口；纯机器输出可跳过） | 无；用默认读者表 |
-
-语义族与轻流程名单均与 [intent-clarify.md](intent-clarify.md)「落地状态」对齐（okf 单独一行）；动作字母见 [light-flow-actions.md](light-flow-actions.md)。
+技能族名单见 [workflow-routing.md](workflow-routing.md)。语义族须有下文统一骨架的本地 audience；轻流程（含 docs-okf）不建本地文件，使用默认读者表。各流程决定必检维与检查时机。
 
 ---
 
@@ -36,19 +29,16 @@
 
 ## 烤干内强制（sdx + 语义族）
 
-进入写后烤干后，**必须**跑 A/B/C/E。未全部通过 → 不得进入 `grilled`，不得写后 `C`。
+语义族的 A/B/C/E 调用与完成门禁见 [单元推进协议](unit-cycle-protocol.md#写后完成条件共通)。
 
 ### 违例分流
 
-| 类型 | 处置 |
-| --- | --- |
-| **可无损改写**（口吻、术语降级、技术细节挪到允许区且不改承诺） | 非语义 → 自动修订 → 再烤干 |
-| **改则动承诺/范围/角色定义** | 语义 → 停问（结论/推荐/数字选项）；确认前不改 |
+检查结果须区分：可无损改写（口吻、术语降级、技术细节移到允许区且不改承诺），或改写会影响承诺、范围、角色定义。修订权限按 [自动 grilling 默认授权](unit-cycle-protocol.md#自动-grilling-默认授权) 执行，本文不另授写权限。
 
 ### 举证
 
-- **全过**：会话**静默**（不强制打印维表）
-- **有违例**：必须输出短表后再处置：
+- **全过**：会话静默，不强制打印维表。
+- **有违例**：先输出短表，给最短证据及处置分类，再按调用流程处理：
 
 ```text
 受众质检：
@@ -59,13 +49,13 @@
 处置：自动修订 | 语义停问
 ```
 
+轻流程只报告 A/B。
+
 ---
 
 ## 轻流程 A/B（含 okf）
 
-1. **时机**：写入或脚本完成后、宣称单元/本轮完成前。`docs-okf`：结果摘要交用户前；纯校验 JSON/退出码可跳过。
-2. **锚点**：下文默认读者表；不建本地 audience。
-3. **举证 / 门禁**：同烤干节（全过静默；违例报 A/B）。A/B 未过 → 不得宣称当前单元完成；不新增动作字母。动作字母见 [light-flow-actions.md](light-flow-actions.md)。
+检查使用下文默认读者表和上述举证格式；时机、完成门禁及 docs-okf 纯机器输出例外见 [轻流程动作](light-flow-actions.md#边界)。
 
 ---
 
@@ -91,7 +81,7 @@
 ```markdown
 # 受众与语言（<skill>）
 
-> 公共维与烤干/轻流程门禁：链到 `agent/references/audience-and-language.md`（相对路径按技能目录计算）
+> 公共检查维与举证：链到 `agent/references/audience-and-language.md`（相对路径按技能目录计算）
 
 ## 主读者
 
@@ -118,7 +108,5 @@
 
 ## 边界
 
-- **过程门 vs 终检**：烤干 / 轻流程写后跑本文维；`quality-checklist` 只勾「已按共享契约 + 本地 audience 通过」，细则不双写。
-- 不替代各 skill 模板结构或 quality-checklist 完整性项。
-- 不把轻流程升级为语义族推进环。
-- 不在本文维护各 skill 宜写表全文（只在本地差额）。
+- `quality-checklist` 只勾「已按共享契约 + 本地 audience 通过」，不复制检查维或读者差额。
+- 本文不替代技能模板和 quality-checklist 的完整性项；各技能宜写表全文只维护于本地。

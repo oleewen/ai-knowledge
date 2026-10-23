@@ -29,7 +29,7 @@ description: >
 ## 约束
 
 - `generate_index.py` 更新根 `index.md` 的 OKF 标记块；子目录索引写入规则见工作流。九章骨架与实体导航分别由 [docs-indexing](../docs-indexing/SKILL.md)、[docs-build](../docs-build/SKILL.md) 维护。
-- `knowledge-links.yaml` 的 `path` 使用 `${WORK_SPACE}/…`，按所属库配置展开；缺配置、旧格式或越界即停。详见 [知识治理](../../knowledge/knowledge-governance.md)「knowledge-links 路径契约」。
+- `knowledge-links.yaml` 的 `path` 使用 `${WORK_SPACE}/…`，按所属库配置展开；缺配置、旧格式或越界即停。详见 [knowledge-links 路径契约](../../knowledge/federation-config.md#knowledge-links-路径契约)。
 - 修改 knowledge 索引或产物须遵守同一治理文件的「业务 knowledge 引用边界」：不得引入爬层、下层或 knowledge 外文档链；跨层 HTTP 仅由约定生成函数产生。
 
 ## 按需查阅
@@ -39,5 +39,5 @@ description: >
 | 命令、写入范围、失败分流 | [workflow.md](references/workflow.md) |
 | 配置门禁、覆盖优先级、嵌套路径 | [path-resolution.md](references/path-resolution.md) |
 | 维护脚本、兼容入口与测试 | [scripts.md](references/scripts.md) |
-| OKF 格式与命名 | [okf-spec.md](../../knowledge/okf-spec.md)、[naming-conventions.md](../../knowledge/naming-conventions.md) §OKF |
+| OKF 格式与命名 | [okf-spec.md](../../knowledge/okf-spec.md)、[naming-conventions.md](../../knowledge/naming-conventions.md) |
 | 行为评测 | [evals.json](evals/evals.json)、[grader.md](agents/grader.md) |
