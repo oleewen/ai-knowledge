@@ -90,7 +90,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/bootstrap.
 ├── solution/             # 解决方案库：knowledge/ + overview、system-slots/system-{NAME}/
 ├── company/              # 公司库：knowledge/ + overview、solution-slots/solution-{NAME}/
 ├── bootstrap.sh          # 远程/本地双轨装机编排（docs-install → agent-install）
-├── agent/                # skills/（26）、rules/、knowledge/、references/、scripts/、hooks.json
+├── agent/                # skills/（27）、rules/、knowledge/、references/、scripts/、hooks.json
 ├── .docsconfig           # DOC_DIR=docs（目录可缺席）· KNOWLEDGE_TYPE=company
 └── .gitignore
 ```
@@ -136,7 +136,7 @@ flowchart TD
 | 初始化脚本 | [bootstrap.sh](bootstrap.sh)、[agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)、[agent/skills/agent-install/SKILL.md](agent/skills/agent-install/SKILL.md) |
 | 共享推进契约 | [agent/references/](agent/references/) |
 | 根索引运行日志 | [INDEX-GUIDE 增量锚点](INDEX-GUIDE 增量锚点) |
-| OKF / Skill 清单（25） | [docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) · [agent/skills/README.md](agent/skills/README.md) |
+| OKF / Skill 清单（27） | [docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) · [agent/skills/README.md](agent/skills/README.md) |
 
 ---
 

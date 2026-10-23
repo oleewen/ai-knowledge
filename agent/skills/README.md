@@ -37,12 +37,12 @@
 | 需求交付 | `/sdx-solution` | 解决方案库 `solutions/SOLUTION-*.md`（交付包切分叙事） |
 | 需求交付 | `/sdx-analysis` | 系统/应用 `{DOC_DIR}/analysis/ANALYSIS-*.md`（七章需求分析） |
 | 需求交付 | `/sdx-feature` | 系统/应用 `{DOC_DIR}/features/FEATURE-*.md`（六章功能特性） |
-| 需求交付 | `/sdx-prd` | 基于 ANALYSIS 当前 MVP → `PRD-*.md` |
+| 需求交付 | `/sdx-prd` | 基于已共识 FEATURE 当前 MVP → `PRD-*.md` |
 | 需求交付 | `/sdx-architect` | 基于 PRD → `ASD-*.md`（§1–§3）；可选 `spec-asd-*.md` |
 | 需求交付 | `/sdx-design` | 基于 PRD + ASD/spec-asd → `DSD-*.md`（实现在 §2）；上游可含 `{DOC_DIR}/specs/spec-asd-*.md` |
 | 需求交付 | `/sdx-test` | 基于 PRD + DSD/ASD → `TDD-*.md`（策略/用例/数据/环境；不产出自动化代码） |
 | 联邦协作 | `/docs-link` | `--link`/`--unlink` + `--target`〔`--app-name`〕〔`--rewrite-http`〕→ 双边 `knowledge-links.yaml` + 槽位软链；脚本 `agent/skills/docs-link/scripts/`；默认 dry-run；轻流程 |
-| 联邦协作 | `/docs-pull` | 按 `knowledge-links.yaml` 本地 path → 联邦槽位；`SYNC_OK` 含 commit；变更溯源 git；无远端 clone；轻流程 |
+| 联邦协作 | `/docs-pull` | 按 `knowledge-links.yaml` 的 child repository/path 校验联邦槽位并 clone/pull；`SYNC_OK` 含 commit；轻流程 |
 | 联邦协作 | `/docs-push` | 中央规约 → 各应用 `path×doc_dir`（legacy / spec-asd）；轻流程 |
 
 ## 使用说明
