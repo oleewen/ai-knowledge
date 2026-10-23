@@ -2,7 +2,7 @@
 
 > **契约定位**：角色、硬约束、必读索引；细则链向 SSOT，本文不抄全文。
 
-**最后更新**: 2026-10-05
+**最后更新**: 2026-10-23
 
 ---
 
@@ -10,9 +10,9 @@
 
 你是本项目的 AI 协作开发者，熟悉**文档工程与知识库治理**；先读后写、最小变更。
 
-人类概况与安装见 [README.md](README.md)；九章地图 [INDEX-GUIDE.md](INDEX-GUIDE.md)；目录索引 [index.md](index.md)。四层入口见各层 README。
+九章地图见 [INDEX-GUIDE.md](INDEX-GUIDE.md)；人类概况与安装见 [README.md](README.md)；目录索引见 [index.md](index.md)。四层入口见各层 README。
 
-**查阅顺序**：INDEX-GUIDE → README → 子域索引或 [agent/rules/](agent/rules/)。
+**查阅顺序**：读本文件后，按 [INDEX-GUIDE.md](INDEX-GUIDE.md) → [README.md](README.md) → 子域索引或 [agent/rules/](agent/rules/) 下钻。
 
 ---
 
@@ -22,7 +22,7 @@
 
 | 项 | 要求 |
 | --- | --- |
-| 先读后写 | 本文件 → [README.md](README.md) → [INDEX-GUIDE.md](INDEX-GUIDE.md) → 任务路径（渐进披露见 [index.md](index.md)） |
+| 先读后写 | 遵循上方查阅顺序，再读任务路径；渐进披露见 [index.md](index.md) |
 | 最小变更 | 只改任务直接相关文件；匹配现有 Markdown 体例 |
 | 零幻觉 | 无落盘 INDEX 或未读路径，不写死为已核实事实；未覆盖见 INDEX §8 |
 | 响应形态 | 优先图形/表格/HTML；重点突出；总是规划下一步行动；选项可点选择框优先，手输选项提供数字编号 |
@@ -36,10 +36,10 @@
 ### 工作约定
 
 - **地图**：九章以 [INDEX-GUIDE.md](INDEX-GUIDE.md) 为准；渐进披露以 [index.md](index.md) 为准
-- **会话开始**：读本文件与 [README.md](README.md)；路径细节查 INDEX-GUIDE；按需下钻子库 README / `agent/rules/`
+- **会话开始**：按上方查阅顺序加载入口；路径细节查 INDEX-GUIDE，按需下钻子库 README / `agent/rules/`
 - **文档先判类**：A/B/C 后再定 `title` / H1 / MD025。见 [document-guidelines.md](agent/rules/document/document-guidelines.md)
 - **OKF RAG**（`application/`）：先 `index.md` 下钻，勿默认全树加载；按 `type`/`tags` 再开 concept；跨概念用 bundle-relative 链
-- **文档产出**：语义族 = 参数向导 → **澄清 → 生成 → 烤干** → `C/M/G/S/F`（见 [intent-clarify.md](agent/references/intent-clarify.md)、[unit-cycle-protocol.md](agent/references/unit-cycle-protocol.md)）；轻流程 = `C/M/S/F`（见 [light-flow-actions.md](agent/references/light-flow-actions.md)）。总闸门 [CONVENTIONS.md §3](agent/rules/CONVENTIONS.md#artifact-gates)；命令清单仅 [agent/skills/README.md](agent/skills/README.md)
+- **文档产出**：先按 [workflow-routing.md](agent/references/workflow-routing.md) 判定技能族；语义族遵循 **澄清 → 生成 → 烤干**（见 [intent-clarify.md](agent/references/intent-clarify.md)、[unit-cycle-protocol.md](agent/references/unit-cycle-protocol.md)），轻流程见 [light-flow-actions.md](agent/references/light-flow-actions.md)。具体动作与特例以各 Skill 的 workflow / gates 为准，复用已有明确授权。总闸门 [CONVENTIONS.md §3](agent/rules/CONVENTIONS.md#artifact-gates)；命令清单仅 [agent/skills/README.md](agent/skills/README.md)
 - **会话结束**：新规则经确认后写入对应库或本文件；烤干未闭合代办记 [TODO-LIST.md](TODO-LIST.md)；索引增量锚点 ∈ 各 `INDEX-GUIDE.md` HTML 注释；变更溯源 git
 
 ### 禁止事项
@@ -59,16 +59,16 @@
 
 | 需求 | 去读 |
 | --- | --- |
-| 概况、快速启动 | [README.md](README.md) · [quick-start.md](quick-start.md) |
 | 九章地图 / Skill 路径 | [INDEX-GUIDE.md](INDEX-GUIDE.md) |
+| 概况、快速启动 | [README.md](README.md) · [quick-start.md](quick-start.md) |
 | 目录索引与渐进披露 | [index.md](index.md) |
 | 应用 / 系统 / 解决方案 / 公司 | [application/README.md](application/README.md)、[system/README.md](system/README.md)、[solution/README.md](solution/README.md)、[company/README.md](company/README.md) |
 | 元模型与贡献 | [knowledge-governance.md](agent/knowledge/knowledge-governance.md)、[application/DESIGN.md](application/DESIGN.md) |
 | 约定与 Slash 技能 | [agent/rules/CONVENTIONS.md](agent/rules/CONVENTIONS.md)、[agent/skills/README.md](agent/skills/README.md) |
 | 布局 / 澄清 / 推进 / 轻流程 / 烤干 / 受众 / 精简 / SDX-ADR | [knowledge-layout.md](agent/references/knowledge-layout.md)、[intent-clarify.md](agent/references/intent-clarify.md)、[unit-cycle-protocol.md](agent/references/unit-cycle-protocol.md)、[light-flow-actions.md](agent/references/light-flow-actions.md)、[grilling-skill.md](agent/references/grilling-skill.md)、[audience-and-language.md](agent/references/audience-and-language.md)、[simplify-principles.md](agent/references/simplify-principles.md)、[sdx-adr-protocol.md](agent/references/sdx-adr-protocol.md) |
 | 烤干未闭合代办 | [TODO-LIST.md](TODO-LIST.md)（契约见 [grilling-skill.md § TODO-LIST](agent/references/grilling-skill.md#todo-list)） |
-| 初始化与 `.docsconfig` | `/docs-install`、`/agent-install`（见 [agent/skills/README.md](agent/skills/README.md)）；自动化 [bootstrap.sh](bootstrap.sh) |
+| 初始化与 `.docsconfig` | 命令见 [README.md 快速开始](README.md#快速开始)；配置规则见 [INDEX-GUIDE.md §7](INDEX-GUIDE.md#七配置中心configuration-hub) |
 | 索引增量锚点 | 各 `INDEX-GUIDE.md` 内 `<!-- sdx-indexing:indexing_finished_ms=... -->`（docs-indexing） |
 | OKF | [docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) |
 
-**技术栈**：Markdown、YAML；Bash 5+；Git；可选 `rsync` / Python 3。详 [INDEX-GUIDE.md](INDEX-GUIDE.md) §1.2。
+**技术栈**：Markdown、YAML；Bash 5+、Git；索引、OKF 与校验工具使用 Python 3，`rsync` 可选。详 [INDEX-GUIDE.md §1.2](INDEX-GUIDE.md#12-元信息)。
