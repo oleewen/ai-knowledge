@@ -1,66 +1,40 @@
 ---
 name: docs-link
 description: >
-  登记或注销上下级知识库的双边 knowledge-links.yaml，并维护联邦槽位软链。
-  用于 /docs-link、知识库建联、联邦登记或注销链路。
+  登记或注销上下级知识库，更新双边 knowledge-links.yaml 与联邦槽位软链。
+  用于 /docs-link、知识库建联、换父或注销登记。
   已登记槽位的回拉与修复用 docs-pull；中央规约下发用 docs-push。
 ---
 
 # docs-link
 
-## 输出硬约束（P0）
+在源 Git 根处理一个目标：`company → solution`、`solution → system` 或 `system → application`。入口脚本为 [docs-link.sh](scripts/docs-link.sh)，依赖同目录 `link-config.sh` 与 Agent 的 `docs-core.sh`；需要 Bash 5+、Git、Python 3。
 
-- `knowledge-links.yaml` 的 `path` 统一使用 `${WORK_SPACE}/…`；按文件所属库配置展开，缺配置、旧格式或越界即停止。读写与迁移细则见 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「knowledge-links 路径契约」。
-- 当前单元：一对**源仓** × 一个 `--target` 的 `--link` 或 `--unlink`（单目标；多目标须逐个确认）。
-- 轻流程：参数向导 → 风险校核 → `C/M/S/F`（无 `G`、不绑意图澄清）→ [light-flow-actions.md](../../references/light-flow-actions.md)；细节 [gates.md](references/gates.md)。参数未收口前不得实跑写盘。
-- **源仓 cwd 闸门**：当前工作区须为合法源边 Git 根（`.docsconfig` 的 `KNOWLEDGE_TYPE` 为 `company`、`solution` 或 `system`）。否则**停**，要求切换到源仓工作区后再跑；不代 `cd`、不发明 `--source-root`。
-- 默认先 `--dry-run` 出变更预览；dry-run 摘要未确认前，不得静默真写。
-- `--rewrite-http` 默认关；仅用户明示「换父/改跨层 HTTP」才加，且单独二次确认。
-- `app_name` / 系统名：参数向导必问（可预填脚本推断值）；确认后再传 `--app-name`（或接受预填）。
-- 脚本 SSOT：`agent/skills/docs-link/scripts/docs-link.sh`（及同目录 `link-config.sh`）。宣称单元完成前须写后受众 **A/B**。
+## 执行
 
-## 边界
-
-| 负责 | 不负责 |
-| --- | --- |
-| 编排 `docs-link.sh` 的 link/unlink；参数向导与写盘闸门；双边 links + 槽位软链 | 槽位 clone/pull 与 git 追溯（→ docs-pull）；中央规约复制（→ docs-push）；装机（→ docs-install / agent-install）；改正文（除用户明示的 `--rewrite-http`） |
-
-## 不这样用
-
-- 不把「先 dry-run 再真写」写成无停顿流水线
-- 不在应用仓（`KNOWLEDGE_TYPE=application`）或其他非法源边静默代跑
-- 不默认开启 `--rewrite-http`
-- 不把 docs-pull / docs-push / docs-install / agent-install 主路径收成本技能
-- 不一次静默 link/unlink 多个 `--target`
-
-## 路由
-
-| 目的 | 文件 |
-| --- | --- |
-| 流程 / 风险 | [workflow.md](references/workflow.md)、[gates.md](references/gates.md) |
-| 轻流程动作 | [light-flow-actions.md](../../references/light-flow-actions.md) |
-| 易错 | [gotchas.md](gotchas.md) |
-
-## 最少输入
-
-- 合法源仓工作区（company → solution，solution → system，或 system → application）
-- `--link` 或 `--unlink`（二选一）
-- `--target`（目标知识库仓库根，或已登记 remote URL）
-- system→application 时的应用名（向导确认后的 `--app-name`）
-
-## 产出与脚本
-
-- 正式：源/目标 `knowledge-links.yaml` 更新；槽位软链创建或移除（unlink 保留层共用 changelogs）
-- 收敛后动作见 [light-flow-actions.md](../../references/light-flow-actions.md)（本技能有 `S`，无 `G`）
+1. 读取源 `.docsconfig` 和登记清单，确认动作、目标、名称。当前工作区不是合法源 Git 根时停止，要求切换工作区；不代 `cd`。用户已提供的信息直接采用。
+2. 按 [workflow.md](references/workflow.md) 解析本地目标或已登记 URL，执行单目标 `--dry-run`。展示双边清单、identity、名称、槽位及正文改写范围。
+3. 按 [gates.md](references/gates.md) 核对授权，再用同一组参数真写。`--rewrite-http` 默认关，仅用户明确要求改正文并单独确认后使用。
+4. 核对清单和软链；按联邦维护者的受众 A/B 输出结果。区分预览、双边完成、仅源侧完成和失败；推进动作见 [轻流程 C/M/S/F](../../references/light-flow-actions.md)。
 
 ```bash
-# 须在源 Git 仓库根执行（或从元库调用技能脚本路径）
-bash agent/skills/docs-link/scripts/docs-link.sh --link --target <目标仓库根> [--app-name=<名>] [--dry-run]
-bash agent/skills/docs-link/scripts/docs-link.sh --unlink --target <目标仓库根> [--dry-run]
-# 仅用户明示换父改正文时：
-bash agent/skills/docs-link/scripts/docs-link.sh --link --target <目标仓库根> --app-name=<名> --rewrite-http [--dry-run]
+# 将脚本路径替换为元库或已安装技能的实际位置；cwd 保持在源 Git 根。
+bash <技能目录>/scripts/docs-link.sh --link --target <目标仓库根> --app-name <名称> --dry-run
+bash <技能目录>/scripts/docs-link.sh --unlink --target <路径或已登记URL> --dry-run
 ```
 
-## 评测
+## 必守边界
 
-`evals/evals.json`、[grader.md](agents/grader.md)（P0 断言为准）。重点：源仓闸门、单目标停顿、默认 dry-run、`--rewrite-http` 须明示、与 pull/push/bootstrap 分流。
+- 一个当前单元是一对源仓 × target；多目标逐个处理，授权范围以用户明确选择为准。
+- `path` 只存 `${WORK_SPACE}/…`，分别按所属库配置展开。旧格式、缺配置或越界停止，不能用环境变量绕过；[路径契约](../../knowledge/knowledge-governance.md)是 SSOT。
+- 普通文件/目录占用槽位、槽位指向不符、名称冲突时停止；不代删数据。`unlink` 只移除匹配 parent 与源 child，保留其他条目、正文 HTTP 及共用日志。
+- 本技能不 clone/pull、不安装知识库、不提交 Git。失联注销、换父及中途失败的处理见工作流。
+
+## 按需查阅
+
+| 情况 | 参考 |
+| --- | --- |
+| 参数、执行与异常收口 | [workflow.md](references/workflow.md) |
+| 预览确认、批次与 HTTP 授权 | [gates.md](references/gates.md) |
+| 环境或旧数据异常 | [gotchas.md](gotchas.md) |
+| 修改或验收技能 | [评测方法](references/evaluation.md)、[行为场景](evals/evals.json)、[评分规则](agents/grader.md) |

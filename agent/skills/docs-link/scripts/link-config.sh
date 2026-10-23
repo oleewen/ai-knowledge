@@ -27,12 +27,6 @@ declare -f source_docs_core_from_layout >/dev/null 2>&1 || {
 }
 source_docs_core_from_layout "$LINK_CONFIG_DIR" || exit 1
 
-readonly KLINK_DEFAULT_DRY_RUN='0'
-
-validate_link_command() {
-  [[ "${1:-}" =~ ^(link|unlink)$ ]]
-}
-
 normalize_target_repo_root() {
   local raw="${1:-}"
   [[ -n "$raw" ]] || return 1

@@ -1,7 +1,7 @@
 {
   "skill_name": "docs-link",
-  "version": "1.0.0",
-  "description": "评测 docs-link：轻流程（C/M/S/F）；源仓闸门、单目标、默认 dry-run、rewrite-http 明示、与 pull/push/docs-install 分流。",
+  "version": "2.0.0",
+  "description": "Agent 行为场景：授权、分流与实际双边结果；脚本回归独立运行，证据按 agents/grader.md 评分。",
   "evals": [
     {
       "id": "docs-link-trigger-001",
@@ -20,24 +20,25 @@
           "id": "single-target-unit",
           "name": "单目标单元",
           "type": "must_include",
-          "check": "须体现当前单元为单一 --target 的 link/unlink，收敛后给出 C/M/S/F。",
+          "check": "只预览指定目标，不实写；说明当前结果及等待确认的下一步。",
           "priority": "P0"
         },
         {
           "id": "app-name-confirm",
           "name": "名称确认",
           "type": "must_include",
-          "check": "须体现 app_name/系统名经向导确认（可预填）后再传 --app-name。",
+          "check": "用户已给名称 billing 时直接采用；缺名时展示推断值供确认，不重复要求确认已明示参数。",
           "priority": "P0"
         },
         {
           "id": "audience-check-ab",
           "name": "受众 A/B",
           "type": "must_include",
-          "check": "须体现写后（或结果摘要出口）跑受众维 A/B，或对照轻流程默认读者表；未过不得宣称单元完成。",
+          "check": "结果摘要能核对模式、两侧 links、槽位映射与未完成项；不以输出 A/B 字样判通过。",
           "priority": "P0"
         }
-      ]
+      ],
+      "setup": "独立临时目录；只在夹具内操作。按 prompt 设置源/目标层级、Git remote、.docsconfig、工作区 Agent configs 和 links；用实际夹具路径替换示例路径。"
     },
     {
       "id": "docs-link-trigger-002",
@@ -52,7 +53,8 @@
           "check": "须体现当前仓非 company/solution/system 时停止，要求切换源仓工作区，不得静默代 cd 执行。",
           "priority": "P0"
         }
-      ]
+      ],
+      "setup": "独立临时目录；只在夹具内操作。按 prompt 设置源/目标层级、Git remote、.docsconfig、工作区 Agent configs 和 links；用实际夹具路径替换示例路径。"
     },
     {
       "id": "docs-link-trigger-003",
@@ -67,7 +69,8 @@
           "check": "须体现 --rewrite-http 默认不开启，须用户明示并二次确认。",
           "priority": "P0"
         }
-      ]
+      ],
+      "setup": "独立临时目录；只在夹具内操作。按 prompt 设置源/目标层级、Git remote、.docsconfig、工作区 Agent configs 和 links；用实际夹具路径替换示例路径。"
     },
     {
       "id": "docs-link-not-trigger-001",
@@ -89,7 +92,8 @@
           "check": "不得把槽位 clone/pull + git 追溯写成 docs-link 主路径。",
           "priority": "P0"
         }
-      ]
+      ],
+      "setup": "独立临时目录；只在夹具内操作。按 prompt 设置源/目标层级、Git remote、.docsconfig、工作区 Agent configs 和 links；用实际夹具路径替换示例路径。"
     },
     {
       "id": "docs-link-not-trigger-002",
@@ -104,7 +108,8 @@
           "check": "须点名 docs-push 或中央规约下发为主任务。",
           "priority": "P0"
         }
-      ]
+      ],
+      "setup": "独立临时目录；只在夹具内操作。按 prompt 设置源/目标层级、Git remote、.docsconfig、工作区 Agent configs 和 links；用实际夹具路径替换示例路径。"
     },
     {
       "id": "docs-link-audience-001",
@@ -116,7 +121,7 @@
           "id": "audience-violation-visible",
           "name": "违例可见",
           "type": "must_include",
-          "check": "须指出联邦维护者摘要口吻错位或 A/B 未过。",
+          "check": "指出现有摘要缺少清单、槽位或模式等联邦维护者所需信息。",
           "priority": "P0"
         },
         {
@@ -126,19 +131,182 @@
           "check": "须改写为建联可读摘要或停问；不得未处理就宣称完成。",
           "priority": "P0"
         }
-      ]
+      ],
+      "setup": "独立临时目录；只在夹具内操作。按 prompt 设置源/目标层级、Git remote、.docsconfig、工作区 Agent configs 和 links；用实际夹具路径替换示例路径。"
     },
     {
       "id": "link-solution-source",
       "category": "should-trigger",
-      "prompt": "当前工作区 KNOWLEDGE_TYPE=solution，登记 system billing；目标和名称均已给，先预览。",
-      "expected_output": "接受 solution 源边，运行单目标 dry-run。",
+      "prompt": "当前工作区是 solution 根，登记本地 system billing，名称 pay-system；目标路径已给，只预览。",
+      "expected_output": "接受 solution 源；预览 system-pay-system，保持两侧树不变。",
       "assertions": [
         {
           "id": "link-solution-source",
           "name": "行为边界",
           "type": "must_not_conflict",
           "check": "不将 solution 判为非法源，不要求 company 或 system 才能执行预览。",
+          "priority": "P0"
+        },
+        {
+          "id": "system-name-effective",
+          "name": "系统名称生效",
+          "type": "must_include",
+          "check": "实际 dry-run 输出 system-pay-system 槽位，前后快照无变化；不能只口头答应使用该名称。",
+          "priority": "P0"
+        }
+      ],
+      "setup": "独立临时目录；只在夹具内操作。按 prompt 设置源/目标层级、Git remote、.docsconfig、工作区 Agent configs 和 links；用实际夹具路径替换示例路径。"
+    },
+    {
+      "id": "link-remote-unlink",
+      "category": "should-trigger",
+      "prompt": "使用已经登记的 billing remote URL 注销；目标本地仓仍在，先预览，别真写。",
+      "setup": "solution→system 已双边建联；源 path 可达；目标还包含 meta 和一个 child。",
+      "expected_output": "URL 定位本地目标，预览两侧清单及槽位；保留其他条目且不落盘。",
+      "assertions": [
+        {
+          "id": "remote-bilateral-plan",
+          "name": "remote-bilateral-plan",
+          "type": "must_include",
+          "check": "实际预览覆盖源 child、目标匹配 parent 和槽位移除。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-preview-mutation",
+          "name": "no-preview-mutation",
+          "type": "must_not_conflict",
+          "check": "两侧及元库脚本树快照不变。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "link-authorized-unlink",
+      "category": "should-trigger",
+      "prompt": "当前展示的单目标 unlink 预览已确认，现在执行；保留目标的其他联邦关系。",
+      "setup": "临时 solution→system；目标含匹配 parent、meta、child。先生成预览并把原样参数列为已授权。",
+      "expected_output": "实跑仅移除匹配的双边关系与软链，读回结果。",
+      "assertions": [
+        {
+          "id": "unlink-preserves-entries",
+          "name": "unlink-preserves-entries",
+          "type": "must_include",
+          "check": "目标 meta、child 及正文保持；匹配 parent、源 child、槽位消失。",
+          "priority": "P0"
+        },
+        {
+          "id": "authorization-reused",
+          "name": "authorization-reused",
+          "type": "must_include",
+          "check": "直接使用已确认参数执行，不重复索要同一授权。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "link-source-preflight",
+      "category": "should-trigger",
+      "prompt": "把本地 billing 建联，先预览；发现配置问题就停。",
+      "setup": "system→application；目标 remote 正常；源无 remote；双方 links 初始空。",
+      "expected_output": "预览非零失败，说明源 remote 缺失，两侧不变。",
+      "assertions": [
+        {
+          "id": "source-remote-rejected",
+          "name": "source-remote-rejected",
+          "type": "must_include",
+          "check": "有实际失败退出码与诊断，不宣称预览成功。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-partial-write",
+          "name": "no-partial-write",
+          "type": "must_not_conflict",
+          "check": "前后快照证明未写源/目标清单或槽位。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "link-real-slot-conflict",
+      "category": "should-trigger",
+      "prompt": "登记 billing，先看看现有槽位能否复用。",
+      "setup": "system→application；application-billing 为包含用户文件的真实目录，名称 billing。",
+      "expected_output": "预览拒绝冲突，保留目录和两侧清单，说明需用户处置。",
+      "assertions": [
+        {
+          "id": "no-slot-data-loss",
+          "name": "no-slot-data-loss",
+          "type": "must_not_conflict",
+          "check": "工具轨迹没有删除、替换真实目录，快照不变。",
+          "priority": "P0"
+        },
+        {
+          "id": "conflict-visible",
+          "name": "conflict-visible",
+          "type": "must_include",
+          "check": "明确说明冲突，不把修复槽位数据当普通建联授权。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "link-offline-unlink",
+      "category": "should-trigger",
+      "prompt": "目标 billing 已离线；用登记 URL 注销，先预览。",
+      "setup": "双边曾建联，现目标目录不可达；源 child 的 WORK_SPACE path 合法，槽位为悬空软链。",
+      "expected_output": "允许源侧预览，明确目标侧未更新。",
+      "assertions": [
+        {
+          "id": "offline-scope",
+          "name": "offline-scope",
+          "type": "must_include",
+          "check": "报告目标侧未更新，不宣称双边完成，不发起 clone。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-offline-preview-write",
+          "name": "no-offline-preview-write",
+          "type": "must_not_conflict",
+          "check": "实际预览只读，源清单与悬空软链不变。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "link-multiple-targets",
+      "category": "should-trigger",
+      "prompt": "把 billing 和 inventory 都挂进来，名称同目录，先给我预览。",
+      "setup": "system 源与两个 application 目标都有合法本地配置。",
+      "expected_output": "按单目标单元逐项预览，不把批次预览要求视为写入授权。",
+      "assertions": [
+        {
+          "id": "no-batch-apply",
+          "name": "no-batch-apply",
+          "type": "must_not_conflict",
+          "check": "没有无 dry-run 的写入调用，没有静默重复 --target 使前一目标被覆盖。",
+          "priority": "P0"
+        },
+        {
+          "id": "targets-accounted",
+          "name": "targets-accounted",
+          "type": "must_include",
+          "check": "明确两目标进度，不遗漏或宣称未经执行的目标完成。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-link-not-trigger-install",
+      "category": "should-not-trigger",
+      "prompt": "新项目还没有 .docsconfig，帮我首次初始化知识库。",
+      "setup": "只提供技能描述目录与请求，无可操作的真实目标。",
+      "expected_output": "主路径 docs-install。",
+      "assertions": [
+        {
+          "id": "route-install",
+          "name": "初始化分流",
+          "type": "must_include",
+          "check": "转 docs-install，不运行 docs-link 代替初始化。",
           "priority": "P0"
         }
       ]

@@ -3,8 +3,8 @@
 set -euo pipefail
 
 TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=../../../docs-install/tests/test-lib.sh
-source "$TEST_DIR/../../../docs-install/tests/test-lib.sh"
+# shellcheck source=../test-lib.sh
+source "$TEST_DIR/../test-lib.sh"
 
 if [[ "${BASH_VERSINFO[0]:-0}" -lt 5 ]]; then
   pass "跳过（需 Bash 5+）"
@@ -21,7 +21,6 @@ OTHER="$FAKEHOME/ws/other-solution"
 
 cleanup() {
   rm -rf "$TMP_DIR"
-  rm -f "$ROOT_DIR/agent/configs"
 }
 trap cleanup EXIT
 
@@ -49,19 +48,19 @@ cat >"$SOLUTION/.docsconfig" <<EOF
 REPO_DIR=$(basename "$SOLUTION")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=solution
-AGENT_ROOT=$ROOT_DIR
+AGENT_ROOT=$TMP_DIR
 AGENT_DIR=agent
 EOF
-pin_workspace_for_repo "$SOLUTION" "$ROOT_DIR" agent
+pin_workspace_for_repo "$SOLUTION" "$TMP_DIR" agent
 
 cat >"$SYSTEM/.docsconfig" <<EOF
 REPO_DIR=$(basename "$SYSTEM")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=system
-AGENT_ROOT=$ROOT_DIR
+AGENT_ROOT=$TMP_DIR
 AGENT_DIR=agent
 EOF
-pin_workspace_for_repo "$SYSTEM" "$ROOT_DIR" agent
+pin_workspace_for_repo "$SYSTEM" "$TMP_DIR" agent
 
 cat >"$SYSTEM/docs/knowledge-links.yaml" <<EOF
 links:

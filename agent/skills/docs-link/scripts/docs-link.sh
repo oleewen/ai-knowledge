@@ -1,757 +1,322 @@
 #!/usr/bin/env bash
-# docs-link.sh — 在源知识库登记 / 注销目标知识库（双边 knowledge-links.yaml）
-# 源仓 links：向下 type: child；子仓 links：一条 type: parent（1:1）
-# application 建联时 name：--app-name > 登记文件已有 name > Git 仓库根目录名推断
-# label：新登记或条目中尚无 label 时默认等于 name；重复 link 且已有 label 则保留不覆盖
-# 同一 target 重复 link：合并更新同一条记录，不追加重复行
-# 用法: bash agent/skills/docs-link/scripts/docs-link.sh --link|--unlink --target <目标仓库根> [--app-name=名] [--rewrite-http] [--dry-run]
-# 须在源 Git 仓库内执行；link 需校验源、目标 .docsconfig 与 KNOWLEDGE_TYPE；
-# 目标须已有 knowledge-links.yaml（application 由 docs-install 落盘）；缺则失败。
-# unlink 支持目标失联场景（按登记 identity 注销）；注销时移除槽位软链（共用 changelogs 保留）。
-# 登记值：repository 存 Git remote URL；path 存工作区路径（${WORK_SPACE}/…）；dir=对方 DOC_DIR。
-# type:meta（docs-install 写入）写回时保活；meta.dir=目标 KNOWLEDGE_TYPE。pull/push 跳过 meta。
-# 不再读写 knowledge-parent.yaml；跨层 HTTP 前缀替换仅当 --rewrite-http。
-# 槽位：solution-slots/solution-{NAME}、system-slots/system-{NAME}、application-slots/application-{NAME} 为指向下级文档目录的软链。
+# 单目标联邦建联：解析与校验 → 内存计划 → 预览或写入。
 set -euo pipefail
 
-readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=./link-config.sh
-source "${SCRIPT_DIR}/link-config.sh"
+usage() {
+  cat <<'EOF'
+用法: bash docs-link.sh --link|--unlink --target <仓库根或已登记 remote URL> [选项]
 
-docs_link_source_slot_helpers() {
-  local c
-  for c in \
-    "${SCRIPT_DIR}/../../../scripts/lib/slot-softlink.sh" \
-    "${HOME}/.agents/scripts/lib/slot-softlink.sh" \
-    "${HOME}/.cursor/scripts/lib/slot-softlink.sh" \
-    "${HOME}/.trae/scripts/lib/slot-softlink.sh" \
-    "${HOME}/.claude/scripts/lib/slot-softlink.sh" \
-    "${HOME}/.kiro/scripts/lib/slot-softlink.sh" \
-    "${HOME}/.codex/scripts/lib/slot-softlink.sh"
-  do
-    if [[ -f "$c" ]]; then
-      # shellcheck source=/dev/null
-      source "$c"
-      return 0
-    fi
-  done
-  error "未找到 slot-softlink.sh（请安装 Agent 或在元库执行）"
-}
-docs_link_source_slot_helpers
+在源 Git 根执行；允许 company→solution、solution→system、system→application。
+  --dry-run       只预览；省略此参数会写入，调用方须先取得授权。
+  --app-name 名   link 的槽位名称（三种目标层通用）；默认已有 name，再取目录名。
+  --rewrite-http  仅 link：显式换父时改写目标 knowledge 中的旧 HTTP 前缀。
+  --path          --target 的弃用别名；一次只能传一个目标。
+  -h, --help      显示帮助，不读取工作区配置。
 
-
-REWRITE_HTTP=0
-
-docs_link_okf_parent_py() {
-  local c ar=''
-  if [[ -n "${_sar:-}" ]]; then
-    ar="$(abs_path "$_sar")" || ar="$_sar"
-  fi
-  for c in \
-    "${SCRIPT_DIR}/../../docs-okf/scripts/okf_parent.py" \
-    "${ar}/skills/docs-okf/scripts/okf_parent.py" \
-    "${HOME}/.agents/skills/docs-okf/scripts/okf_parent.py"
-  do
-    [[ -n "$c" && -f "$c" ]] && { printf '%s\n' "$c"; return 0; }
-  done
-  error "未找到 okf_parent.py（跨层 HTTP 改写）"
-}
-
-docs_link_run_okf_rewrite() {
-  local py
-  py="$(docs_link_okf_parent_py)"
-  if [[ "$DRY" == '1' ]]; then
-    python3 "$py" --dry-run "$@"
-  else
-    python3 "$py" "$@"
-  fi
-}
-
-docs_link_abs_under_repo() {
-  local repo="${1:?}" doc="${2:?}"
-  local repo_abs doc_abs
-  repo_abs="$(strip_trailing_slash "$(abs_path "$repo")")"
-  if [[ "$doc" == /* ]]; then
-    doc_abs="$(strip_trailing_slash "$(abs_path "$doc")")"
-    case "$doc_abs" in
-      "$repo_abs"|"$repo_abs"/*) printf '%s\n' "$doc_abs" ;;
-      *)
-        printf '%s\n' "$repo_abs/$(basename "$doc_abs")"
-        ;;
-    esac
-  else
-    strip_trailing_slash "$(abs_path "$repo_abs/$doc")"
-  fi
-}
-
-# =============================================================================
-# knowledge-links.yaml（解析/写出见 docs-core.sh；此处仅编排）
-# =============================================================================
-
-_knowledge_link_doc_root_abs_ns() {
-  strip_trailing_slash "$(abs_path "${1:?}")"
-}
-
-# -----------------------------------------------------------------------------
-# 登记 path：Git 优先 remote URL，否则仓库根路径 / 文件系统路径
-# -----------------------------------------------------------------------------
-
-# 给定已存在的本地目录：得到与 link 时一致的登记字符串（用于去重 / unlink）
-knowledge_link_register_value_from_dir() {
-  local dir="${1:?}" resolved top url
-  resolved="$(cd -P "$dir" 2>/dev/null && pwd)" || {
-    printf '%s\n' "$dir"
-    return 0
-  }
-  if [[ -d "$resolved/.git" || -f "$resolved/.git" ]]; then
-    top="$resolved"
-  else
-    printf '%s\n' "$resolved"
-    return 0
-  fi
-  url="$(knowledge_link_git_remote_url_prefer_origin "$top" || true)"
-  if [[ -n "$url" ]]; then
-    url="$(strip_trailing_slash "$url")"
-    printf '%s\n' "$url"
-    return 0
-  fi
-  printf '%s\n' "$(strip_trailing_slash "$top")"
-}
-
-# 将「用户传入的 --target」规范为与已登记项可比对的身份串
-knowledge_link_identity_from_raw_target() {
-  local raw="${1:?}" p
-  if knowledge_link_value_looks_like_git_remote "$raw"; then
-    printf '%s\n' "$(strip_trailing_slash "$raw")"
-    return 0
-  fi
-  p="$(normalize_target_repo_root "$raw")" || return 1
-  if [[ -d "$p" ]]; then
-    knowledge_link_register_value_from_dir "$p"
-  else
-    printf '%s\n' "$(strip_trailing_slash "$p")"
-  fi
-}
-
-# 将「已登记的一条 repository + path」规范为身份串（与 REGISTER_KEY / --target 比对）
-knowledge_link_identity_from_stored_entry() {
-  local repo="${1:-}" stored_path="${2:?}" links_file="${3:?}"
-  local exp
-  if [[ -n "$repo" ]]; then
-    printf '%s\n' "$(strip_trailing_slash "$repo")"
-    return 0
-  fi
-  exp="$(knowledge_link_expand_stored_path "$stored_path" "$links_file")"
-  if [[ -d "$exp" ]]; then
-    knowledge_link_register_value_from_dir "$exp"
-  else
-    printf '%s\n' "$(strip_trailing_slash "$exp")"
-  fi
-}
-
-# -----------------------------------------------------------------------------
-# 应用槽位 application-slots/application-${NAME} = 指向下级 文档目录 的软链
-# -----------------------------------------------------------------------------
-
-# 校验并规范化 app_name（小写）；非法则报错
-knowledge_link_validate_app_name() {
-  local raw="${1:?}" base
-  base="$(printf '%s' "$raw" | tr '[:upper:]' '[:lower:]')"
-  [[ -n "$base" ]] || {
-    printf '错误: app_name 不能为空\n' >&2
-    return 1
-  }
-  if [[ ! "$base" =~ ^[a-z0-9][a-z0-9_.-]*$ ]]; then
-    printf '错误: 非法 app_name: %s（仅允许 a-z0-9._-）\n' "$raw" >&2
-    return 1
-  fi
-  printf '%s\n' "$base"
-}
-
-# 从目标仓库根推断应用标识：优先 Git 仓库根目录名，否则为路径 basename（无用户指定时用）
-knowledge_link_guess_app_name() {
-  local root="${1:?}" top base
-  top="$(cd -P "$root" 2>/dev/null && pwd)" || top="$root"
-  base="$(basename "$top")"
-  knowledge_link_validate_app_name "$base"
-}
-
-# 在源 文档目录/application-slots 下确保 application-${app} 软链 + 共用 changelogs
-# target_doc_root：下级 文档目录 绝对路径（可尚不存在 → 悬空软链）
-knowledge_link_ensure_kind_slot() {
-  local doc_root="${1:?}" kind="${2:?}" name="${3:?}" target_doc_root="${4:?}"
-  local dr slots dest shared
-  case "$kind" in
-    application|system|solution) ;;
-    *) error "槽位 kind 须为 application|system|solution（收到: ${kind})" ;;
-  esac
-  dr="$(_knowledge_link_doc_root_abs_ns "$doc_root")"
-  slots="${dr}/${kind}-slots"
-  dest="${slots}/${kind}-${name}"
-  shared="${slots}/changelogs"
-  if [[ "$DRY" == '1' ]]; then
-    log "[dry-run] 将确保软链: ${dest} → ${target_doc_root}"
-    return 0
-  fi
-  mkdir -p "$slots"
-  slot_ensure_shared_changelogs "$slots"
-  slot_ensure_slot_symlink "$dest" "$target_doc_root" "$shared" "$name" >/dev/null
-}
-
-knowledge_link_ensure_application_slot() {
-  knowledge_link_ensure_kind_slot "$1" application "$2" "$3"
-}
-
-knowledge_link_ensure_system_slot() {
-  knowledge_link_ensure_kind_slot "$1" system "$2" "$3"
-}
-
-knowledge_link_ensure_solution_slot() {
-  knowledge_link_ensure_kind_slot "$1" solution "$2" "$3"
-}
-
-# -----------------------------------------------------------------------------
-# 系统槽位 system-slots/system-${NAME} = 指向下级 文档目录 的软链
-# -----------------------------------------------------------------------------
-
-knowledge_link_validate_sys_name() {
-  local raw="${1:?}" base
-  base="$(printf '%s' "$raw" | tr '[:upper:]' '[:lower:]')"
-  [[ -n "$base" ]] || {
-    printf '错误: sys_name 不能为空\n' >&2
-    return 1
-  }
-  if [[ ! "$base" =~ ^[a-z0-9][a-z0-9_.-]*$ ]]; then
-    printf '错误: 非法 sys_name: %s（仅允许 a-z0-9._-）\n' "$raw" >&2
-    return 1
-  fi
-  printf '%s\n' "$base"
-}
-
-knowledge_link_guess_sys_name() {
-  local root="${1:?}" top base
-  top="$(cd -P "$root" 2>/dev/null && pwd)" || top="$root"
-  base="$(basename "$top")"
-  knowledge_link_validate_sys_name "$base"
-}
-
-# 从登记 identity（repository URL 或已展开本地路径）推断 APPNAME，供旧数据或无 app_name 时 unlink 删槽位
-knowledge_link_app_name_from_register_key() {
-  local key="${1:?}" base
-  if [[ -d "$key" ]]; then
-    knowledge_link_guess_app_name "$key"
-    return
-  fi
-  base="${key##*/}"
-  base="${base%.git}"
-  base="${base%%\?*}"
-  base="${base%%#*}"
-  base="$(printf '%s' "$base" | tr '[:upper:]' '[:lower:]')"
-  [[ -n "$base" ]] || return 1
-  [[ "$base" =~ ^[a-z0-9][a-z0-9_.-]*$ ]] || return 1
-  printf '%s\n' "$base"
-}
-
-# 解析工程根（与 docs-install 写入 .docsconfig 的仓库路径推导一致，供 .docs-init 备份路径）
-knowledge_link_repo_root_for_backup() {
-  local doc_abs="${1:?}" dr rr
-  dr="$(_knowledge_link_doc_root_abs_ns "$doc_abs")"
-  rr="$(docsconfig_repo_from_doc "$dr")"
-  [[ -n "$rr" ]] || return 1
-  printf '%s\n' "$(strip_trailing_slash "$rr")"
-}
-
-# 移除槽位软链（或残留真目录）；共用 application-slots/changelogs 保留
-knowledge_link_remove_kind_slot() {
-  local doc_root="${1:?}" kind="${2:?}" name="${3:?}"
-  local dest reserved
-  [[ -n "$name" ]] || return 0
-  case "$kind" in
-    application) reserved='NAME|APPNAME' ;;
-    system) reserved='NAME|SYSNAME' ;;
-    solution) reserved='NAME|SLNNAME' ;;
-    *) error "槽位 kind 须为 application|system|solution（收到: ${kind})" ;;
-  esac
-  if [[ "$name" == 'NAME' || "$name" == 'APPNAME' || "$name" == 'SYSNAME' || "$name" == 'SLNNAME' ]]; then
-    warn "保留名，跳过删除槽位: $name"
-    return 0
-  fi
-  dest="$(_knowledge_link_doc_root_abs_ns "$doc_root")/${kind}-slots/${kind}-${name}"
-  if [[ ! -e "$dest" && ! -L "$dest" ]]; then
-    return 0
-  fi
-  if [[ "$DRY" == '1' ]]; then
-    log "[dry-run] 将删除槽位软链/目录: $dest"
-    return 0
-  fi
-  slot_remove_slot_path "$dest"
-  info "已删除槽位: $dest"
-}
-
-knowledge_link_remove_application_slot() {
-  knowledge_link_remove_kind_slot "$1" application "$2"
-}
-
-knowledge_link_remove_system_slot() {
-  knowledge_link_remove_kind_slot "$1" system "$2"
-}
-
-knowledge_link_remove_solution_slot() {
-  knowledge_link_remove_kind_slot "$1" solution "$2"
-}
-
-# =============================================================================
-# CLI
-# =============================================================================
-
-DRY="${KLINK_DEFAULT_DRY_RUN}"
-CMD=''
-TARGET_RAW=''
-CLI_APP_NAME=''
-
-docs_link_require_value() {
-  local flag="${1:?flag is required}"
-  local value="${2-}"
-  [[ -n "$value" ]] || error "缺少 ${flag} 值"
-}
-
-docs_link_unknown_arg() {
-  local arg="${1:?arg is required}"
-  error "未知参数: ${arg}"
-}
-
-docs_link_usage() {
-  cat >&2 <<'EOF'
-用法: bash agent/skills/docs-link/scripts/docs-link.sh --link|--unlink --target <目标知识库仓库根> [--app-name 名] [--rewrite-http] [--dry-run]
-
-  --link / --unlink 二选一，不得同时出现。
-
-  须在「源」知识库 Git 仓库内执行（git rev-parse 取根）。登记文件：源文档目录下的 knowledge-links.yaml
-
-  允许边：company→solution、solution→system、system→application（源/目标 .docsconfig 须含合法 KNOWLEDGE_TYPE）。
-  目标须已有 knowledge-links.yaml（缺则失败；application 由 docs-install 落盘空清单）。
-  unlink 支持目标失联（路径不存在或目标仓库配置缺失）时按登记 identity 注销。
-
-  --dry-run       仅打印将执行的操作，不写文件。
-  --rewrite-http  换父级时替换目标 knowledge/** 中旧跨层 HTTP 前缀（默认不改正文）。
-  --target        目标知识库仓库根（或已登记的 remote URL）；兼容旧参数 --path（已弃用）。
-  --app-name      仅 system→application 建联有效。
-
-  源仓 links：向下 type: child；dir=目标 DOC_DIR；name / label（label 缺省等于 name）。
-  子仓 links：恰好一条 type: parent（repository/path/dir + name/label）；HTTP ref 固定 main。
-  type: meta 只写 repository/path/dir（dir=本库 KNOWLEDGE_TYPE）。
-  槽位：solution-slots/solution-{NAME}、system-slots/system-{NAME}、application-slots/application-{NAME}。
-  不再读写 knowledge-parent.yaml。unlink 删除子仓 parent 条与槽位软链，不改正文 HTTP，共用日志保留。
-
-示例:
-  bash agent/skills/docs-link/scripts/docs-link.sh --target ~/workspaces/target-repo --link
-  bash agent/skills/docs-link/scripts/docs-link.sh --target ~/workspaces/target-repo --link --app-name=my-app --rewrite-http
-  bash agent/skills/docs-link/scripts/docs-link.sh --target ~/workspaces/target-repo --unlink --dry-run
+双边更新 knowledge-links.yaml；path 使用字面量 ${WORK_SPACE}/…。
+只管理槽位软链，普通目录/文件冲突时停止；unlink 不改正文 HTTP。
+失联目标仅注销源登记及槽位，并报告目标侧未更新。无 clone/pull/提交动作。
+依赖 Bash 5+、Git、Python 3，以及元库或已安装 Agent 的 docs-core.sh。
 EOF
 }
 
-docs_link_parse_args() {
-  while (( $# > 0 )); do
-    case "$1" in
-      --link)
-        [[ "$CMD" == 'unlink' ]] && error "不能同时指定 --link 与 --unlink"
-        [[ "$CMD" == 'link' ]] && error "重复指定 --link"
-        CMD='link'
-        shift
-        ;;
-      --unlink)
-        [[ "$CMD" == 'link' ]] && error "不能同时指定 --link 与 --unlink"
-        [[ "$CMD" == 'unlink' ]] && error "重复指定 --unlink"
-        CMD='unlink'
-        shift
-        ;;
-      --dry-run) DRY=1; shift ;;
-      --rewrite-http) REWRITE_HTTP=1; shift ;;
-      --app-name=*)
-        CLI_APP_NAME="${1#*=}"
-        shift
-        ;;
-      --app-name)
-        shift
-        docs_link_require_value "--app-name" "${1:-}"
-        CLI_APP_NAME="$1"
-        shift
-        ;;
-      --target=*) TARGET_RAW="${1#*=}"; shift ;;
-      --target)
-        shift
-        docs_link_require_value "--target" "${1:-}"
-        TARGET_RAW="$1"
-        shift
-        ;;
-      --path=*)
-        TARGET_RAW="${1#*=}"
-        warn "--path 已弃用，请改用 --target"
-        shift
-        ;;
-      --path)
-        shift
-        docs_link_require_value "--path" "${1:-}"
-        TARGET_RAW="$1"
-        warn "--path 已弃用，请改用 --target"
-        shift
-        ;;
-      -h|--help)
-        docs_link_usage
-        exit 0
-        ;;
-      *)
-        docs_link_unknown_arg "$1"
-        ;;
-    esac
+die() { printf '错误: %s\n' "$*" >&2; exit 1; }
+[[ "${BASH_VERSINFO[0]:-0}" -ge 5 ]] || die '需要 Bash 5+'
+DRY=0 CMD='' TARGET_RAW='' CLI_NAME='' REWRITE_HTTP=0
+seen_target=0 seen_name=0
+while (($#)); do
+  case "$1" in
+    --link|--unlink)
+      [[ -z "$CMD" ]] || die '只能指定一次 --link 或 --unlink'
+      CMD="${1#--}"; shift ;;
+    --dry-run) DRY=1; shift ;;
+    --rewrite-http) REWRITE_HTTP=1; shift ;;
+    --target|--path|--app-name|--target=*|--path=*|--app-name=*)
+      flag="${1%%=*}"
+      if [[ "$1" == *=* ]]; then value="${1#*=}"; shift
+      else
+        (($# >= 2)) || die "缺少 ${flag} 值"
+        value="$2"; shift 2
+      fi
+      [[ -n "$value" && "$value" != --* ]] || die "缺少 ${flag} 值"
+      if [[ "$flag" == --app-name ]]; then
+        ((seen_name == 0)) || die '重复指定 --app-name'
+        CLI_NAME="$value"; seen_name=1
+      else
+        ((seen_target == 0)) || die '一次只能指定一个 --target（含 --path 别名）'
+        TARGET_RAW="$value"; seen_target=1
+        [[ "$flag" != --path ]] || printf '警告: --path 已弃用，请改用 --target\n' >&2
+      fi ;;
+    -h|--help) usage; exit 0 ;;
+    *) die "未知参数: $1" ;;
+  esac
+done
+[[ -n "$CMD" && -n "$TARGET_RAW" ]] || die '请指定 --link|--unlink 和 --target'
+[[ "$CMD" == link || ( "$REWRITE_HTTP" == 0 && "$seen_name" == 0 ) ]] \
+  || die '--app-name / --rewrite-http 仅用于 --link'
+
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=link-config.sh
+source "$SCRIPT_DIR/link-config.sh"
+
+# DOC_DIR 必须真实落在本仓内；不能把外部目录悄悄改成同名本地目录。
+doc_root_in_repo() {
+  python3 -B - "$1" "$2" <<'PY'
+from pathlib import Path
+import sys
+try:
+    repo = Path(sys.argv[1]).resolve()
+    doc = (repo / sys.argv[2]).resolve()
+    doc.relative_to(repo)
+    print(doc)
+except (ValueError, OSError, RuntimeError) as exc:
+    sys.exit(f'DOC_DIR 必须位于所属仓库内: {exc}')
+PY
+}
+
+validate_name() {
+  local value="${1,,}"
+  [[ "$value" =~ ^[a-z0-9][a-z0-9_.-]*$ ]] || die "非法槽位 name: $1（仅 a-z0-9._-）"
+  printf '%s\n' "$value"
+}
+
+# 共享读取器容许缺 repository/name；写出器要求必填，因此在任何写入前补齐校验。
+load_entries() {
+  local file="$1" prefix="$2" i parents=0
+  [[ ! -L "$file" ]] || die "清单不能是软链: $file"
+  [[ ! -e "$file" || -f "$file" ]] || die "清单不是普通文件: $file"
+  knowledge_links_load_into_arrays "$file" "${prefix}p" "${prefix}r" "${prefix}d" "${prefix}n" "${prefix}l" "${prefix}t"
+  local -n entry_repos="${prefix}r" entry_paths="${prefix}p" entry_dirs="${prefix}d" entry_names="${prefix}n" entry_types="${prefix}t"
+  local -A identities=() names=()
+  for i in "${!entry_paths[@]}"; do
+    [[ -n "${entry_repos[i]}" ]] || die "清单条目缺少 repository: $file"
+    knowledge_link_value_looks_like_git_remote "${entry_repos[i]}" || die "repository 须为 Git remote URL: $file"
+    if [[ "${entry_types[i]}" != meta ]]; then
+      [[ -n "${entry_names[i]}" && -n "${entry_dirs[i]}" ]] || die "清单条目缺少 name/dir: $file"
+    fi
+    if [[ "${entry_types[i]}" == parent ]]; then
+      ((++parents)); ((parents <= 1)) || die "清单存在多个 parent: $file"
+    elif [[ "${entry_types[i]}" == child ]]; then
+      validate_name "${entry_names[i]}" >/dev/null
+      local identity="${entry_repos[i]%/}"
+      [[ -z "${identities[$identity]:-}" && -z "${names[${entry_names[i],,}]:-}" ]] || die "child identity/name 重复: $file"
+      identities[$identity]=1; names[${entry_names[i],,}]=1
+    fi
   done
 }
 
-docs_link_parse_args "$@"
+write_entries() {
+  knowledge_links_write_entries "$1" "${2}r" "${2}p" "${2}d" "${2}n" "${2}l" "${2}t" "$3" "$4"
+}
 
-validate_link_command "$CMD" || error "请指定 --link 或 --unlink（二选一）"
-[[ -n "$TARGET_RAW" ]] || error "请指定 --target <目标仓库根>（仍兼容 --target=PATH）"
-
-SRC_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || error "请在 Git 仓库内执行 docs-link"
-SRC_CFG="$SRC_ROOT/.docsconfig"
-[[ -f "$SRC_CFG" ]] || error "源仓库缺少 .docsconfig: $SRC_CFG"
-
-_srepo='' _sdoc='' _sdd='' _sar='' _skt=''
-docsconfig_abs_for_config "$SRC_CFG" _srepo _sdoc _sdd _sar _skt || error "无法解析源 .docsconfig"
-[[ -n "$_skt" ]] || error "源 .docsconfig 缺少 KNOWLEDGE_TYPE"
-docsconfig_validate_knowledge_type "$_skt" || exit 1
-
-expect_target=''
-LIST_FILE="$_sdoc/knowledge-links.yaml"
-case "$_skt" in
-  company)  expect_target='solution' ;;
-  solution) expect_target='system' ;;
-  system)   expect_target='application' ;;
-  *) error "源 KNOWLEDGE_TYPE=${_skt} 不支持建联（仅 company、solution 或 system 可作为源）" ;;
+SRC_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || die '请在源 Git 仓库根执行'
+SRC_ROOT="$(cd "$SRC_ROOT" && pwd -P)"
+[[ "$(pwd -P)" == "$SRC_ROOT" ]] || die '当前 cwd 必须是源 Git 仓库根'
+srepo='' sdoc='' sdir='' sar='' skt='' sad=''
+docsconfig_abs_for_config "$SRC_ROOT/.docsconfig" srepo sdoc sdir sar skt sad || die '无法解析源 .docsconfig'
+case "$skt" in
+  company) target_kind=solution; src_child=solution; src_parent=none; tgt_child=sys; tgt_parent=company ;;
+  solution) target_kind=system; src_child=sys; src_parent=company; tgt_child=app; tgt_parent=solution ;;
+  system) target_kind=application; src_child=app; src_parent=solution; tgt_child=app; tgt_parent=sys ;;
+  *) die "源 KNOWLEDGE_TYPE=$skt 不支持建联（仅 company、solution、system）" ;;
 esac
+sdoc="$(doc_root_in_repo "$SRC_ROOT" "$sdoc")"
+LIST_FILE="$sdoc/knowledge-links.yaml"
+declare -a sr=() sp=() sd=() sn=() sl=() st=()
+declare -a tr=() tp=() td=() tn=() tl=() tt=()
+load_entries "$LIST_FILE" s
 
-# 源仓写出 child 键族；目标仓 parent 键族
-case "$_skt" in
-  company)  SRC_CHILD_KIND='solution'; SRC_PARENT_KIND='none' ;;
-  solution) SRC_CHILD_KIND='sys'; SRC_PARENT_KIND='company' ;;
-  system)   SRC_CHILD_KIND='app'; SRC_PARENT_KIND='solution' ;;
-esac
-case "$expect_target" in
-  solution)    TGT_PARENT_KIND='company'; TGT_CHILD_KIND='sys' ;;
-  system)      TGT_PARENT_KIND='solution'; TGT_CHILD_KIND='app' ;;
-  application) TGT_PARENT_KIND='sys'; TGT_CHILD_KIND='app' ;;
-esac
-TARGET_KEY="$(normalize_target_repo_root "$TARGET_RAW")" || error "目标路径非法: $TARGET_RAW"
-REGISTER_KEY=''
-REGISTER_REPO=''
-REGISTER_PATH_STORED=''
-TARGET_DOC_DIR=''
-TARGET_APP_NAME=''
-TARGET_APP_LABEL=''
-TARGET_SYS_NAME=''
-TARGET_SYS_LABEL=''
-TARGET_SOL_NAME=''
-TARGET_SOL_LABEL=''
-matched_idx=-1
-TGT_LINKS=''
-PARENT_NAME=''
-PARENT_LABEL=''
-SRC_DOC_DIR=''
-
-if [[ "$CMD" == 'link' ]]; then
-  TGT_ROOT="$(cd -P "$TARGET_KEY" 2>/dev/null && pwd)" || error "目标路径不存在或不可进入: $TARGET_KEY"
-  TGT_CFG="$TGT_ROOT/.docsconfig"
-  [[ -f "$TGT_CFG" ]] || error "目标仓库缺少 .docsconfig: $TGT_CFG"
-
-  _trepo='' _tdoc='' _tdd='' _tar='' _tkt=''
-  docsconfig_abs_for_config "$TGT_CFG" _trepo _tdoc _tdd _tar _tkt || error "无法解析目标 .docsconfig"
-  [[ -n "$_tkt" ]] || error "目标 .docsconfig 缺少 KNOWLEDGE_TYPE"
-  docsconfig_validate_knowledge_type "$_tkt" || exit 1
-  [[ "$_tkt" == "$expect_target" ]] || error "目标须为 ${expect_target} 知识库（KNOWLEDGE_TYPE=${_tkt}）"
-  [[ -n "$_tdd" ]] || error "目标 .docsconfig 缺少 DOC_DIR"
-  TGT_LINKS="$(docs_link_abs_under_repo "$TGT_ROOT" "$_tdoc")/knowledge-links.yaml"
-  [[ -f "$TGT_LINKS" ]] || error "目标缺少 knowledge-links.yaml（请先 docs-install）: $TGT_LINKS"
-  REGISTER_KEY="$(knowledge_link_register_value_from_dir "$TGT_ROOT")"
-  REGISTER_REPO="$(knowledge_link_git_remote_url_prefer_origin "$TGT_ROOT" || true)"
-  [[ -n "$REGISTER_REPO" ]] || error "目标仓库缺少 Git remote URL（repository 必填）。请为目标仓库配置 origin（或任一 remote）后重试: $TGT_ROOT"
-  TARGET_DOC_DIR="$_tdd"
-  REGISTER_PATH_STORED="$(knowledge_link_stored_path_from_absolute "$TGT_ROOT" "$LIST_FILE")"
-  SRC_DOC_DIR="$_sdd"
-  [[ -n "$SRC_DOC_DIR" ]] || SRC_DOC_DIR="$(docsconfig_doc_dir_from_roots "$SRC_ROOT" "$(docs_link_abs_under_repo "$SRC_ROOT" "$_sdoc")")" \
-    || error "无法计算源 DOC_DIR"
-  PARENT_NAME="$(basename "$SRC_ROOT")"
-  PARENT_LABEL="$PARENT_NAME"
-else
-  REGISTER_KEY="$(knowledge_link_identity_from_raw_target "$TARGET_RAW")" || error "目标路径非法: $TARGET_RAW"
-  [[ -z "$CLI_APP_NAME" ]] || warn "--app-name 仅在 --link 时有效，已忽略"
-  if [[ -d "$TARGET_KEY" ]]; then
-    _trepo='' _tdoc='' _tdd='' _tar='' _tkt=''
-    if [[ -f "$TARGET_KEY/.docsconfig" ]]; then
-      docsconfig_abs_for_config "$TARGET_KEY/.docsconfig" _trepo _tdoc _tdd _tar _tkt \
-        || error "无法解析目标 .docsconfig: $TARGET_KEY/.docsconfig"
-      TGT_LINKS="$(docs_link_abs_under_repo "$TARGET_KEY" "$_tdoc")/knowledge-links.yaml"
-    fi
-  fi
-fi
-
-declare -a repos=() paths=() doc_dirs=() app_names=() app_labels=() types=()
-knowledge_links_load_into_arrays "$LIST_FILE" paths repos doc_dirs app_names app_labels types
-
-# 双边路径与现有清单须在创建槽位、写源清单之前全部通过校验。
-if [[ "$CMD" == link ]]; then
-  knowledge_link_stored_path_from_absolute "$SRC_ROOT" "$TGT_LINKS" >/dev/null
-  (
-    declare -a pre_paths=() pre_repos=() pre_dirs=() pre_names=() pre_labels=() pre_types=()
-    knowledge_links_load_into_arrays "$TGT_LINKS" pre_paths pre_repos pre_dirs pre_names pre_labels pre_types
-  )
-fi
-
-have=0
-new_identity="${REGISTER_KEY}"
-for i in "${!paths[@]}"; do
-  case "${types[i]:-child}" in
-    parent|meta) continue ;;
-  esac
-  if [[ "$(knowledge_link_identity_from_stored_entry "${repos[i]:-}" "${paths[i]}" "$LIST_FILE")" == "$new_identity" ]]; then
-    have=1
-    matched_idx=$i
-    break
-  fi
-done
-
-if [[ "$CMD" == 'link' && "$expect_target" == 'application' ]]; then
-  if [[ -n "$CLI_APP_NAME" ]]; then
-    TARGET_APP_NAME="$(knowledge_link_validate_app_name "$CLI_APP_NAME")" || exit 1
-  elif [[ "$have" -eq 1 && "$matched_idx" -ge 0 && -n "${app_names[matched_idx]:-}" ]]; then
-    TARGET_APP_NAME="$(knowledge_link_validate_app_name "${app_names[matched_idx]}")" || exit 1
-  else
-    TARGET_APP_NAME="$(knowledge_link_guess_app_name "$TGT_ROOT")" || exit 1
-  fi
-  TARGET_SLOT_DOC="$(docs_link_abs_under_repo "$TGT_ROOT" "$_tdoc")"
-  knowledge_link_ensure_application_slot "$_sdoc" "$TARGET_APP_NAME" "$TARGET_SLOT_DOC"
-  if [[ "$have" -eq 1 && "$matched_idx" -ge 0 && -n "${app_labels[matched_idx]:-}" ]]; then
-    TARGET_APP_LABEL="${app_labels[matched_idx]}"
-  else
-    [[ -n "$TARGET_APP_NAME" ]] && TARGET_APP_LABEL="$TARGET_APP_NAME"
-  fi
-elif [[ "$CMD" == 'link' && "$expect_target" == 'system' ]]; then
-  if [[ "$have" -eq 1 && "$matched_idx" -ge 0 && -n "${app_names[matched_idx]:-}" ]]; then
-    TARGET_SYS_NAME="$(knowledge_link_validate_sys_name "${app_names[matched_idx]}")" || exit 1
-  else
-    TARGET_SYS_NAME="$(knowledge_link_guess_sys_name "$TGT_ROOT")" || exit 1
-  fi
-  TARGET_SLOT_DOC="$(docs_link_abs_under_repo "$TGT_ROOT" "$_tdoc")"
-  knowledge_link_ensure_system_slot "$_sdoc" "$TARGET_SYS_NAME" "$TARGET_SLOT_DOC"
-  if [[ "$have" -eq 1 && "$matched_idx" -ge 0 && -n "${app_labels[matched_idx]:-}" ]]; then
-    TARGET_SYS_LABEL="${app_labels[matched_idx]}"
-  else
-    [[ -n "$TARGET_SYS_NAME" ]] && TARGET_SYS_LABEL="$TARGET_SYS_NAME"
-  fi
-elif [[ "$CMD" == 'link' && "$expect_target" == 'solution' ]]; then
-  if [[ "$have" -eq 1 && "$matched_idx" -ge 0 && -n "${app_names[matched_idx]:-}" ]]; then
-    TARGET_SOL_NAME="$(knowledge_link_validate_sys_name "${app_names[matched_idx]}")" || exit 1
-  else
-    TARGET_SOL_NAME="$(knowledge_link_guess_sys_name "$TGT_ROOT")" || exit 1
-  fi
-  TARGET_SLOT_DOC="$(docs_link_abs_under_repo "$TGT_ROOT" "$_tdoc")"
-  knowledge_link_ensure_solution_slot "$_sdoc" "$TARGET_SOL_NAME" "$TARGET_SLOT_DOC"
-  if [[ "$have" -eq 1 && "$matched_idx" -ge 0 && -n "${app_labels[matched_idx]:-}" ]]; then
-    TARGET_SOL_LABEL="${app_labels[matched_idx]}"
-  else
-    [[ -n "$TARGET_SOL_NAME" ]] && TARGET_SOL_LABEL="$TARGET_SOL_NAME"
-  fi
-elif [[ "$CMD" == 'link' && "$expect_target" != 'application' && -n "$CLI_APP_NAME" ]]; then
-  warn "--app-name 仅用于 system→application 建联，已忽略"
-fi
-
-# 在目标 links 中 upsert 唯一 type:parent；可选 --rewrite-http
-docs_link_upsert_target_parent() {
-  local src_repo src_path
-  local -a trepos=() tpaths=() tdirs=() tapps=() tlabels=() ttypes=()
-  local -a nrepos=() npaths=() ndirs=() napps=() nlabels=() ntypes=()
-  local i parent_idx=-1 old_repo='' old_path='' old_dir=''
-
-  src_repo="$(knowledge_link_git_remote_url_prefer_origin "$SRC_ROOT" || true)"
-  [[ -n "$src_repo" ]] || error "源仓库缺少 Git remote URL（parent.repository 必填）: $SRC_ROOT"
-  src_path="$(knowledge_link_stored_path_from_absolute "$SRC_ROOT" "$TGT_LINKS")"
-
-  knowledge_links_load_into_arrays "$TGT_LINKS" tpaths trepos tdirs tapps tlabels ttypes
-  for i in "${!tpaths[@]}"; do
-    if [[ "${ttypes[i]:-child}" == "parent" ]]; then
-      parent_idx=$i
-      old_repo="${trepos[i]:-}"
-      old_path="${tpaths[i]:-}"
-      old_dir="${tdirs[i]:-}"
+# URL 只定位既有登记；实际访问仍用该条在源工作区展开的 path。
+matched=-1
+TGT_ROOT=''
+if knowledge_link_value_looks_like_git_remote "$TARGET_RAW"; then
+  for i in "${!sp[@]}"; do
+    if [[ "${st[i]}" == child && "${sr[i]%/}" == "${TARGET_RAW%/}" ]]; then
+      matched=$i
+      TGT_ROOT="$(knowledge_link_expand_stored_path "${sp[i]}" "$LIST_FILE")"
       break
     fi
   done
-
-  if [[ "$REWRITE_HTTP" -eq 1 && "$parent_idx" -ge 0 ]]; then
-    docs_link_run_okf_rewrite rewrite-http \
-      --doc-root "$(docs_link_abs_under_repo "$TGT_ROOT" "$_tdoc")" \
-      --old-repository "$old_repo" \
-      --old-path "$old_path" \
-      --old-doc-dir "$old_dir" \
-      --new-repository "$src_repo" \
-      --new-path "$src_path" \
-      --new-doc-dir "$SRC_DOC_DIR"
-  fi
-
-  for i in "${!tpaths[@]}"; do
-    [[ "${ttypes[i]:-child}" == "parent" ]] && continue
-    nrepos+=("${trepos[i]:-}")
-    npaths+=("${tpaths[i]}")
-    ndirs+=("${tdirs[i]:-}")
-    napps+=("${tapps[i]:-}")
-    nlabels+=("${tlabels[i]:-}")
-    ntypes+=("${ttypes[i]:-child}")
+  [[ -n "$TGT_ROOT" ]] || die 'URL 未登记；首次建联请提供本地仓库根'
+else
+  TGT_ROOT="$(normalize_target_repo_root "$TARGET_RAW")"
+  target_remote="$(knowledge_link_git_remote_url_prefer_origin "$TGT_ROOT" 2>/dev/null || true)"
+  for i in "${!sp[@]}"; do
+    [[ "${st[i]}" == child ]] || continue
+    stored_root="$(knowledge_link_expand_stored_path "${sp[i]}" "$LIST_FILE")"
+    if [[ "${sr[i]%/}" == "${target_remote%/}" || "$stored_root" == "$TGT_ROOT" ]]; then
+      matched=$i; break
+    fi
   done
-  # parent 放最前
-  nrepos=("$src_repo" "${nrepos[@]}")
-  npaths=("$src_path" "${npaths[@]}")
-  ndirs=("$SRC_DOC_DIR" "${ndirs[@]}")
-  napps=("$PARENT_NAME" "${napps[@]}")
-  nlabels=("$PARENT_LABEL" "${nlabels[@]}")
-  ntypes=('parent' "${ntypes[@]}")
+fi
+if [[ "$CMD" == unlink && "$matched" == -1 ]]; then
+  printf '未找到登记项，跳过: %s\n' "$TARGET_RAW"
+  exit 0
+fi
 
-  knowledge_links_write_entries "$TGT_LINKS" nrepos npaths ndirs napps nlabels ntypes \
-    "$TGT_CHILD_KIND" "$TGT_PARENT_KIND"
+TGT_LINKS='' tdoc='' tdir='' target_available=0
+if [[ -f "$TGT_ROOT/.docsconfig" ]]; then
+  trepo='' tar='' tkt=''
+  docsconfig_abs_for_config "$TGT_ROOT/.docsconfig" trepo tdoc tdir tar tkt || die '无法解析目标 .docsconfig'
+  [[ "$tkt" == "$target_kind" ]] || die "目标须为 $target_kind（收到 $tkt）"
+  tdoc="$(doc_root_in_repo "$TGT_ROOT" "$tdoc")"
+  TGT_LINKS="$tdoc/knowledge-links.yaml"
+  if [[ -e "$TGT_LINKS" || -L "$TGT_LINKS" ]]; then
+    load_entries "$TGT_LINKS" t
+    target_available=1
+  fi
+fi
+if [[ "$CMD" == link ]]; then
+  ((target_available)) || die '目标缺少 .docsconfig 或 knowledge-links.yaml；请先 docs-install'
+  top="$(git -C "$TGT_ROOT" rev-parse --show-toplevel 2>/dev/null)" || die '目标不是 Git 仓库'
+  [[ "$(cd "$top" && pwd -P)" == "$TGT_ROOT" ]] || die 'target 必须是目标 Git 根'
+  target_remote="$(knowledge_link_git_remote_url_prefer_origin "$TGT_ROOT" || true)"
+  [[ -n "$target_remote" ]] || die '目标仓库缺少 Git remote URL（repository 必填）'
+  knowledge_link_value_looks_like_git_remote "$target_remote" || die '目标 repository 须为 Git remote URL'
+fi
+source_remote="$(knowledge_link_git_remote_url_prefer_origin "$SRC_ROOT" || true)"
+target_identity="${target_remote:-}"
+((matched < 0)) || target_identity="${sr[matched]}"
+if [[ "$CMD" == link || "$target_available" == 1 ]]; then
+  [[ -n "$source_remote" ]] || die '源仓库缺少 Git remote URL（parent.repository 必填）'
+  knowledge_link_value_looks_like_git_remote "$source_remote" || die '源 repository 须为 Git remote URL'
+fi
+if [[ "$matched" != -1 && ( -d "$TGT_ROOT/.git" || -f "$TGT_ROOT/.git" ) ]]; then
+  actual_remote="$(knowledge_link_git_remote_url_prefer_origin "$TGT_ROOT" || true)"
+  [[ "${actual_remote%/}" == "${sr[matched]%/}" ]] || die '目标本地仓 remote 与登记不符；先核对身份'
+fi
+
+old_name='' old_slot='' old_doc=''
+if ((matched >= 0)); then
+  old_name="${sn[matched]}"
+  old_root="$(knowledge_link_expand_stored_path "${sp[matched]}" "$LIST_FILE")"
+  old_doc="$(doc_root_in_repo "$old_root" "${sd[matched]}")"
+fi
+if [[ "$CMD" == link ]]; then
+  name="$(validate_name "${CLI_NAME:-${old_name:-$(basename "$TGT_ROOT")}}")"
+else
+  name="$(validate_name "$old_name")"
+fi
+slots="$sdoc/$target_kind-slots"
+slot="$slots/$target_kind-$name"
+[[ -z "$old_name" || "$old_name" == "$name" ]] || old_slot="$slots/$target_kind-$old_name"
+
+check_slot() {
+  local path="$1" expected="$2" actual
+  [[ ! -L "$slots" ]] || die "槽位父目录不能是软链: $slots"
+  [[ ! -e "$slots" || -d "$slots" ]] || die "槽位父路径不是目录: $slots"
+  if [[ -L "$path" ]]; then
+    actual="$(readlink "$path")"
+    [[ "$actual" == /* ]] || actual="$slots/$actual"
+    actual="$(abs_path "$actual")"
+    [[ "$actual" == "$expected" ]] || die "槽位指向另一目录，须先核对: $path"
+  elif [[ -e "$path" ]]; then
+    die "槽位被普通文件/目录占用，保留并停止: $path"
+  fi
 }
-
-docs_link_remove_target_parent() {
-  local -a trepos=() tpaths=() tdirs=() tapps=() tlabels=() ttypes=()
-  local -a nrepos=() npaths=() ndirs=() napps=() nlabels=() ntypes=()
-  local i removed=0 source_key=''
-  source_key="$(knowledge_link_git_remote_url_prefer_origin "$SRC_ROOT" || true)"
-  [[ -n "${TGT_LINKS:-}" && -f "$TGT_LINKS" ]] || return 0
-  knowledge_links_load_into_arrays "$TGT_LINKS" tpaths trepos tdirs tapps tlabels ttypes
-  for i in "${!tpaths[@]}"; do
-    [[ "${ttypes[i]:-child}" == "parent" ]] || continue
-    if [[ "$(knowledge_link_identity_from_stored_entry "${trepos[i]:-}" "${tpaths[i]}" "$TGT_LINKS")" == "$source_key" ]]; then
-      removed=$((removed + 1))
-      continue
-    fi
-    nrepos+=("${trepos[i]:-}")
-    npaths+=("${tpaths[i]}")
-    ndirs+=("${tdirs[i]:-}")
-    napps+=("${tapps[i]:-}")
-    nlabels+=("${tlabels[i]:-}")
-    ntypes+=("${ttypes[i]:-child}")
+if [[ "$CMD" == link ]]; then
+  for i in "${!sp[@]}"; do
+    [[ "${st[i]}" != child || "$i" == "$matched" || "${sn[i],,}" != "$name" ]] || die "槽位名称已被其他 child 使用: $name"
   done
-  [[ "$removed" -gt 0 ]] || return 0
-  knowledge_links_write_entries "$TGT_LINKS" nrepos npaths ndirs napps nlabels ntypes \
-    "$TGT_CHILD_KIND" "$TGT_PARENT_KIND"
-}
+  expected="$tdoc"
+  [[ "$name" != "$old_name" || -z "$old_doc" ]] || expected="$old_doc"
+  check_slot "$slot" "$expected"
+else
+  check_slot "$slot" "$old_doc"
+fi
+[[ -z "$old_slot" ]] || check_slot "$old_slot" "$old_doc"
 
-docs_link_execute_link() {
-  local link_is_update link_info='' link_loc='' link_verb='已登记'
-
-  link_is_update=$have
-  if [[ "$have" -eq 1 ]]; then
-    repos[matched_idx]="$REGISTER_REPO"
-    paths[matched_idx]="$REGISTER_PATH_STORED"
-    doc_dirs[matched_idx]="$TARGET_DOC_DIR"
-    types[matched_idx]='child'
-    if [[ "$expect_target" == 'system' ]]; then
-      app_names[matched_idx]="${TARGET_SYS_NAME:-}"
-      app_labels[matched_idx]="${TARGET_SYS_LABEL:-}"
-    elif [[ "$expect_target" == 'solution' ]]; then
-      app_names[matched_idx]="${TARGET_SOL_NAME:-}"
-      app_labels[matched_idx]="${TARGET_SOL_LABEL:-}"
-    else
-      app_names[matched_idx]="${TARGET_APP_NAME:-}"
-      app_labels[matched_idx]="${TARGET_APP_LABEL:-}"
-    fi
-  else
-    repos+=("$REGISTER_REPO")
-    paths+=("$REGISTER_PATH_STORED")
-    doc_dirs+=("$TARGET_DOC_DIR")
-    types+=('child')
-    if [[ "$expect_target" == 'system' ]]; then
-      app_names+=("${TARGET_SYS_NAME:-}")
-      app_labels+=("${TARGET_SYS_LABEL:-}")
-    elif [[ "$expect_target" == 'solution' ]]; then
-      app_names+=("${TARGET_SOL_NAME:-}")
-      app_labels+=("${TARGET_SOL_LABEL:-}")
-    else
-      app_names+=("${TARGET_APP_NAME:-}")
-      app_labels+=("${TARGET_APP_LABEL:-}")
-    fi
-  fi
-
-  knowledge_links_write_entries "$LIST_FILE" repos paths doc_dirs app_names app_labels types \
-    "$SRC_CHILD_KIND" "$SRC_PARENT_KIND"
-  docs_link_upsert_target_parent
-
-  [[ "$link_is_update" -eq 1 ]] && link_verb='已更新登记'
-  if [[ "$expect_target" == 'system' && -n "$TARGET_SYS_NAME" ]]; then
-    link_info=" (doc_dir=${TARGET_DOC_DIR}, system-${TARGET_SYS_NAME})"
-  elif [[ "$expect_target" == 'solution' && -n "$TARGET_SOL_NAME" ]]; then
-    link_info=" (doc_dir=${TARGET_DOC_DIR}, solution-${TARGET_SOL_NAME})"
-  elif [[ -n "$TARGET_APP_NAME" && -n "$TARGET_DOC_DIR" ]]; then
-    link_info=" (doc_dir=${TARGET_DOC_DIR}, application-${TARGET_APP_NAME})"
-  elif [[ -n "$TARGET_APP_NAME" ]]; then
-    link_info=" (application-${TARGET_APP_NAME})"
-  elif [[ -n "$TARGET_DOC_DIR" ]]; then
-    link_info=" (doc_dir=${TARGET_DOC_DIR})"
-  fi
-  [[ -n "$REGISTER_REPO" ]] && link_loc=" repository=${REGISTER_REPO}"
-  link_loc="${link_loc} path=${REGISTER_PATH_STORED}"
-  printf '%s: %s → identity=%s%s%s；目标 parent → %s\n' \
-    "$link_verb" "$LIST_FILE" "$REGISTER_KEY" "$link_loc" "$link_info" "$TGT_LINKS"
-}
-
-docs_link_execute_unlink() {
-  local unlink_name='' exp='' i
-  declare -a newr=() newp=() newd=() newa=() newl=() newt=()
-
-  [[ "$have" -eq 0 ]] && { printf '提示: 未找到登记项，跳过: %s\n' "$REGISTER_KEY" >&2; exit 0; }
-  docs_link_remove_target_parent
-  if [[ "$matched_idx" -ge 0 ]]; then
-    unlink_name="${app_names[matched_idx]:-}"
-    if [[ -z "$unlink_name" ]]; then
-      if [[ -n "${repos[matched_idx]:-}" ]]; then
-        unlink_name="$(knowledge_link_app_name_from_register_key "${repos[matched_idx]}")" || unlink_name=''
-      else
-        exp="$(knowledge_link_expand_stored_path "${paths[matched_idx]}" "$LIST_FILE")"
-        unlink_name="$(knowledge_link_app_name_from_register_key "$exp")" || unlink_name=''
+# 生成两侧输出；未命中的条目（含 meta、child、其他 parent）原字段保留。
+declare -a nr=() np=() nd=() nn=() nl=() nt=()
+rewrite_args=()
+if ((target_available)); then
+  for i in "${!tp[@]}"; do
+    if [[ "${tt[i]}" == parent ]]; then
+      if [[ "$CMD" == link ]]; then
+        if ((REWRITE_HTTP)); then
+          rewrite_args=(rewrite-http --doc-root "$tdoc" --old-repository "${tr[i]}" --old-path "${tp[i]}" --old-doc-dir "${td[i]}"
+            --new-repository "$source_remote" --new-path "$(knowledge_link_stored_path_from_absolute "$SRC_ROOT" "$TGT_LINKS")" --new-doc-dir "$sdir")
+        fi
+        continue
+      elif [[ "${tr[i]%/}" == "${source_remote%/}" ]]; then
+        continue
       fi
     fi
-  fi
-
-  for i in "${!paths[@]}"; do
-    case "${types[i]:-child}" in
-      meta) ;; # 保活 type:meta
-      parent) ;;
-      *)
-        if [[ "$(knowledge_link_identity_from_stored_entry "${repos[i]:-}" "${paths[i]}" "$LIST_FILE")" == "$new_identity" ]]; then
-          continue
-        fi
-        ;;
-    esac
-    newr+=("${repos[i]:-}")
-    newp+=("${paths[i]}")
-    newd+=("${doc_dirs[i]:-}")
-    newa+=("${app_names[i]:-}")
-    newl+=("${app_labels[i]:-}")
-    newt+=("${types[i]:-child}")
+    nr+=("${tr[i]}"); np+=("${tp[i]}"); nd+=("${td[i]}"); nn+=("${tn[i]}"); nl+=("${tl[i]}"); nt+=("${tt[i]}")
   done
-
-  knowledge_links_write_entries "$LIST_FILE" newr newp newd newa newl newt \
-    "$SRC_CHILD_KIND" "$SRC_PARENT_KIND"
-  if [[ -n "$unlink_name" ]]; then
-    if [[ "$_skt" == 'system' ]]; then
-      knowledge_link_remove_application_slot "$_sdoc" "$unlink_name"
-    elif [[ "$_skt" == 'solution' ]]; then
-      knowledge_link_remove_system_slot "$_sdoc" "$unlink_name"
-    elif [[ "$_skt" == 'company' ]]; then
-      knowledge_link_remove_solution_slot "$_sdoc" "$unlink_name"
-    fi
+  if [[ "$CMD" == link ]]; then
+    nr=("$source_remote" "${nr[@]}")
+    np=("$(knowledge_link_stored_path_from_absolute "$SRC_ROOT" "$TGT_LINKS")" "${np[@]}")
+    nd=("$sdir" "${nd[@]}"); nn=("$(basename "$SRC_ROOT")" "${nn[@]}")
+    nl=("$(basename "$SRC_ROOT")" "${nl[@]}"); nt=(parent "${nt[@]}")
   fi
-  printf '已注销: %s 中的 %s\n' "$LIST_FILE" "$REGISTER_KEY"
-}
+fi
+if [[ "$CMD" == link ]]; then
+  index=$matched
+  ((index >= 0)) || index=${#sp[@]}
+  sr[index]="$target_remote"
+  sp[index]="$(knowledge_link_stored_path_from_absolute "$TGT_ROOT" "$LIST_FILE")"
+  sd[index]="$tdir"; sn[index]="$name"; sl[index]="${sl[index]:-$name}"; st[index]=child
+else
+  unset 'sr[matched]' 'sp[matched]' 'sd[matched]' 'sn[matched]' 'sl[matched]' 'st[matched]'
+  # 共享写出器要求连续下标。
+  sr=("${sr[@]}"); sp=("${sp[@]}"); sd=("${sd[@]}"); sn=("${sn[@]}"); sl=("${sl[@]}"); st=("${st[@]}")
+fi
 
-case "$CMD" in
-  link) docs_link_execute_link ;;
-  unlink) docs_link_execute_unlink ;;
-esac
+# 同一计划同时用于预览与实跑预检；Python -B 保证预览不产生缓存。
+(DRY=1; write_entries "$LIST_FILE" s "$src_child" "$src_parent")
+if ((target_available)); then
+  (DRY=1; write_entries "$TGT_LINKS" n "$tgt_child" "$tgt_parent")
+else
+  printf '警告: 目标失联或缺少清单，仅处理源登记与槽位；目标侧未更新: %s\n' "$TGT_ROOT" >&2
+fi
+rewrite_py=''
+if ((${#rewrite_args[@]})); then
+  # HTTP helper 会跟随 Markdown 文件软链；先校验其真实路径仍在 knowledge 内。
+  python3 -B - "$tdoc" <<'PY'
+from pathlib import Path
+import sys
+try:
+    doc = Path(sys.argv[1]).resolve()
+    knowledge = doc / 'knowledge'
+    root = knowledge.resolve()
+    root.relative_to(doc)
+    for path in knowledge.rglob('*'):
+        path.resolve().relative_to(root)
+except (ValueError, OSError, RuntimeError) as exc:
+    sys.exit(f'HTTP 改写路径越界或无法解析: {exc}')
+PY
+  for candidate in "$SCRIPT_DIR/../../docs-okf/scripts/okf_parent.py" "$sar/$sad/skills/docs-okf/scripts/okf_parent.py" "$HOME/.agents/skills/docs-okf/scripts/okf_parent.py"; do
+    [[ -f "$candidate" ]] || continue
+    rewrite_py="$candidate"; break
+  done
+  [[ -n "$rewrite_py" ]] || die '未找到 okf_parent.py'
+  python3 -B "$rewrite_py" --dry-run "${rewrite_args[@]}"
+fi
+printf '[计划] identity=%s name=%s rewrite-http=%s\n' "$target_identity" "$name" "$REWRITE_HTTP"
+if [[ "$CMD" == link ]]; then
+  printf '[计划] 将确保软链: %s → %s\n' "$slot" "$tdoc"
+  [[ -z "$old_slot" ]] || printf '[计划] 将移除旧名称软链: %s\n' "$old_slot"
+else
+  printf '[计划] 将移除槽位软链（若存在）: %s\n' "$slot"
+fi
+if ((DRY)); then
+  printf '[dry-run] 预览完成，未写入: %s %s（name=%s）\n' "$CMD" "$TARGET_RAW" "$name"
+  exit 0
+fi
+
+# 预检排除参数/配置/槽位冲突；磁盘或进程中断仍须核对两侧，不能盲目重试。
+write_entries "$LIST_FILE" s "$src_child" "$src_parent"
+if ((target_available)); then write_entries "$TGT_LINKS" n "$tgt_child" "$tgt_parent"; fi
+if [[ "$CMD" == link ]]; then
+  mkdir -p "$slots"
+  if [[ ! -L "$slot" || "$(readlink "$slot")" != "$tdoc" ]]; then
+    [[ ! -L "$slot" ]] || rm "$slot"
+    ln -s "$tdoc" "$slot"
+  fi
+  [[ -z "$old_slot" || ! -L "$old_slot" ]] || rm "$old_slot"
+else
+  [[ ! -L "$slot" ]] || rm "$slot"
+fi
+[[ -z "$rewrite_py" ]] || python3 -B "$rewrite_py" "${rewrite_args[@]}"
+printf '已完成 %s: %s；槽位 %s\n' "$CMD" "$LIST_FILE" "$slot"

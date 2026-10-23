@@ -1,41 +1,23 @@
-# docs-link Grader
+# docs-link 评分规则
 
-据 **evals/evals.json** 输出 JSON：`text`、`passed`、`evidence`。
+输入：[evals.json](../evals/evals.json) 中一个场景，以及实际响应、工具轨迹、产物快照。评估者的自述或“将运行”不证明执行。
 
-## 判定
-
-1. 读 `category`：`should-trigger` / `should-not-trigger`
-2. **硬门**：以本 eval 的 `assertions`（按 `priority`）为准；`evidence` 逐条对应 `assertions[].id` 并包含可核对的实际证据
-3. **协议释义**（仅当 assertions / prompt 覆盖时强制）：轻流程参数向导 → 风险校核 → `C/M/S/F`（无 `G`、不绑意图澄清）。写后受众 A/B。见 [light-flow-actions.md](../../../references/light-flow-actions.md)、[audience-and-language.md](../../../references/audience-and-language.md)
-4. **P0** 任一失败 → `passed: false`
-
-## 证据要求
-
-保留 `text`、`passed`、`evidence` 字段；`evidence` 继续使用字符串数组，每条写明断言 id、`pass` / `fail` / `not_run` 及依据。逐条覆盖当前 eval 的全部 assertions，不能用样例中的子集替代本场断言。
-
-- 响应行为：引用实际响应短句，并标明响应或步骤位置。
-- 执行行为：给出实际工具调用、退出状态及关键输出；只说“将运行”不证明已执行。
-- 产物行为：给出实际文件路径与相关内容、差异或只读前后对照。
-- 未取得所需响应、工具轨迹或产物时标 `not_run`；缺证据不能推定通过。不存在实际执行时，不编造日志或文件。
-
-任一 P0 为 `fail` 或 `not_run`，`passed` 均为 `false`；`text` 区分失败和未评测。只有全部 P0 有证据通过才可填 `true`。P1 也须逐条报告实际状态，不隐去未执行项。`must_not_conflict` 应核对完整响应和相关工具轨迹，不能仅凭某句话未出现判通过。
-
-### should-not-trigger P0 摘要
-
-- `correct-downstream` / `correct-downstream-push`：点名 docs-pull / docs-push 等下游
-- `boundary-pull`：不以建联框槽位回拉
-
-**未运行例**（对齐 docs-link-trigger-001）
+逐条覆盖该场景全部 `assertions`，输出 JSON：
 
 ```json
 {
-  "text": "未评测。尚无该场景的实际响应、工具轨迹或产物，不能判断通过。",
+  "text": "结论与未测范围",
   "passed": false,
   "evidence": [
-    "dry-run-first | not_run | 未提供实际运行记录，暂无可核对证据。",
-    "single-target-unit | not_run | 未提供实际运行记录，暂无可核对证据。",
-    "app-name-confirm | not_run | 未提供实际运行记录，暂无可核对证据。",
-    "audience-check-ab | not_run | 未提供实际运行记录，暂无可核对证据。"
+    "<断言 id> | pass/fail/not_run | <命令、退出码、产物差异或响应位置>"
   ]
 }
 ```
+
+- `must_include` 检查实际决定、操作或结果，不要求复述某个标题或固定口令。
+- `must_not_conflict` 核对完整响应和工具轨迹；只凭没有出现某句话不能通过。
+- 副作用断言须有文件前后对照；执行断言须有命令及退出码。缺证据用 `not_run`，不编造日志。
+- 任一 P0 为 `fail` 或 `not_run`，`passed` 为 `false`；全部 P0 有证据通过才为 `true`。P1 也逐条报告。
+- should-not-trigger 以正确分流且未调用建联写入为准；受众检查以摘要是否足以核对 links、槽位、模式及未完成项为准，不强求输出“A/B”字样。
+
+执行与证据采集见 [评测方法](../references/evaluation.md)。

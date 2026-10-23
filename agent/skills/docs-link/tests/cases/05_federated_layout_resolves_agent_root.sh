@@ -3,8 +3,8 @@
 set -euo pipefail
 
 TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=../../../docs-install/tests/test-lib.sh
-source "$TEST_DIR/../../../docs-install/tests/test-lib.sh"
+# shellcheck source=../test-lib.sh
+source "$TEST_DIR/../test-lib.sh"
 
 if [[ "${BASH_VERSINFO[0]:-0}" -lt 5 ]]; then
   pass "跳过（需 Bash 5+）"

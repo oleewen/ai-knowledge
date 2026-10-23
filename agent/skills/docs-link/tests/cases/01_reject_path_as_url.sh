@@ -3,8 +3,8 @@
 set -euo pipefail
 
 TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=../../../docs-install/tests/test-lib.sh
-source "$TEST_DIR/../../../docs-install/tests/test-lib.sh"
+# shellcheck source=../test-lib.sh
+source "$TEST_DIR/../test-lib.sh"
 
 if [[ "${BASH_VERSINFO[0]:-0}" -lt 5 ]]; then
   pass "跳过（需 Bash 5+）"
@@ -18,7 +18,6 @@ DOCS_LINK="$ROOT_DIR/agent/skills/docs-link/scripts/docs-link.sh"
 
 cleanup() {
   rm -rf "$TMP_DIR"
-  rm -f "$ROOT_DIR/agent/configs"
 }
 trap cleanup EXIT
 
@@ -29,10 +28,10 @@ cat >"$SRC/.docsconfig" <<EOF
 REPO_DIR=$(basename "$SRC")
 DOC_DIR=docs
 KNOWLEDGE_TYPE=system
-AGENT_ROOT=$ROOT_DIR
+AGENT_ROOT=$TMP_DIR
 AGENT_DIR=agent
 EOF
-pin_workspace_for_repo "$SRC" "$ROOT_DIR" agent
+pin_workspace_for_repo "$SRC" "$TMP_DIR" agent
 
 cat >"$SRC/docs/knowledge-links.yaml" <<'EOF'
 # 知识库建联清单（可由 docs-link.sh 维护）
