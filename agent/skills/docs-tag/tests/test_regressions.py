@@ -177,6 +177,59 @@ def test_legacy_literal_starting_with_quote_remains_readable(tmp_path):
     assert keyword_tag.read_tags_from_file(str(target)) == ['"API"模式']
 
 
+def test_html_anchor_before_heading_keeps_relevant_checkmark(tmp_path):
+    (tmp_path / 'section.md').write_text(
+        '<a id="billing"></a>\n\n## 计费\n计费正文\n### 子节\n明细\n## 其他\n其他正文\n',
+        encoding='utf-8')
+    target = tmp_path / 'overview.md'
+    target.write_text('| 主标题 | 副标题 | 知识 |\n| --- | --- | --- |\n'
+                      '| 业务 | [计费](section.md#billing) ✅ | 保留 |\n\n'
+                      '## 附录\n### 文档关键词\n```yaml\nkeywords:\n- 计费\n```\n',
+                      encoding='utf-8')
+    result = run_cli(target, '--phase', '2')
+    assert result.returncode == 0, result.stderr
+    assert '[计费](section.md#billing) ✅' in target.read_text(encoding='utf-8')
+    section = keyword_tag.get_section_content(str(tmp_path / 'section.md'), 'billing')
+    assert '明细' in section and '其他正文' not in section
+
+
+def test_yaml_single_quoted_keywords_decode_and_match(tmp_path):
+    target = tmp_path / 'overview.md'
+    target.write_text('| 主标题 | 副标题 | 知识 |\n| --- | --- | --- |\n'
+                      '| 业务 | [计费](section.md) ✅ | 保留 |\n\n'
+                      '## 附录\n### 文档关键词\n```yaml\nkeywords:\n'
+                      "- '计费'\n- 'user''s' # 合法注释\n```\n", encoding='utf-8')
+    (tmp_path / 'section.md').write_text('计费正文', encoding='utf-8')
+    assert keyword_tag.read_tags_from_file(str(target)) == ['计费', "user's"]
+    result = run_cli(target, '--phase', '2')
+    assert result.returncode == 0, result.stderr
+    assert '[计费](section.md) ✅' in target.read_text(encoding='utf-8')
+
+
+def test_unclosed_single_quote_fails_before_mark_changes(tmp_path):
+    target = tmp_path / 'overview.md'
+    target.write_text('| 主标题 | 副标题 |\n| --- | --- |\n| 业务 | ✅ |\n\n'
+                      "## 附录\n### 文档关键词\n```yaml\nkeywords:\n- '计费\n```\n",
+                      encoding='utf-8')
+    before = target.read_bytes()
+    assert run_cli(target, '--phase', '2').returncode != 0
+    assert target.read_bytes() == before
+
+
+def test_excerpt_ignores_other_tables_in_perspective(tmp_path):
+    target = tmp_path / 'overview.md'
+    target.write_text('## 架构摘录\n| 架构视角 | 主标题 | 副标题 |\n| --- | --- | --- |\n\n'
+                      '## [业务架构](business.md)\n| 主标题 | 副标题 | 知识 |\n'
+                      '| --- | --- | --- |\n| 业务 | [计费](billing.md) ✅ | 事实 |\n\n'
+                      '| 检查项 | 状态 | 备注 |\n| --- | --- | --- |\n'
+                      '| 链接校验 | ✅ | 完成 |\n', encoding='utf-8')
+    result = run_cli(target, '--phase', '3')
+    assert result.returncode == 0, result.stderr
+    excerpt = target.read_text(encoding='utf-8').split('## [业务架构]')[0]
+    assert '[计费](billing.md)' in excerpt
+    assert '链接校验' not in excerpt
+
+
 def test_noninteractive_full_chain_preserves_generated_excerpt_on_retag(tmp_path):
     knowledge = tmp_path / 'docs' / 'knowledge'
     target = knowledge / 'overview' / 'billing-overview.md'

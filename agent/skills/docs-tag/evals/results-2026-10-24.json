@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-24",
+  "case": "tag-existing-yaml-anchor-excerpt",
+  "status": "pass",
+  "script_tests": 87,
+  "fixture": "/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-tag-audit-u71x28y7",
+  "files": {
+    "overview.md": {
+      "before": "# 计费概览\n\n## 架构摘录\n\n| 架构视角 | 主标题 | 副标题 |\n| --- | --- | --- |\n\n## [业务架构](billing.md)\n\n| 主标题 | 副标题 | 归档业务知识 |\n| --- | --- | --- |\n| 业务规则 | [计费](billing.md#billing) ✅ | 保留本列。 |\n\n| 检查项 | 状态 | 备注 |\n| --- | --- | --- |\n| 链接校验 | ✅ | 完成 |\n\n## 附录\n\n### 文档关键词\n\n```yaml\nkeywords:\n- '计费'\n```\n",
+      "after": "# 计费概览\n\n## 架构摘录\n\n| 架构视角 | 主标题 | 副标题 |\n| --- | --- | --- |\n| 业务架构 | 业务规则 | [计费](billing.md#billing) |\n\n## [业务架构](billing.md)\n\n| 主标题 | 副标题 | 归档业务知识 |\n| --- | --- | --- |\n| 业务规则 | [计费](billing.md#billing) ✅ | 保留本列。 |\n\n| 检查项 | 状态 | 备注 |\n| --- | --- | --- |\n| 链接校验 | ✅ | 完成 |\n\n## 附录\n\n### 文档关键词\n\n```yaml\nkeywords:\n- '计费'\n```\n",
+      "diff": "--- \n+++ \n@@ -4,6 +4,7 @@\n \n | 架构视角 | 主标题 | 副标题 |\n | --- | --- | --- |\n+| 业务架构 | 业务规则 | [计费](billing.md#billing) |\n \n ## [业务架构](billing.md)\n \n"
+    },
+    "billing.md": {
+      "before": "<a id=\"billing\"></a>\n## 计费\n计费规则按月结算。\n## 其他\n其他内容。\n",
+      "after": "<a id=\"billing\"></a>\n## 计费\n计费规则按月结算。\n## 其他\n其他内容。\n",
+      "diff": ""
+    }
+  },
+  "response_summary": "phase2命中1行；phase3生成1条业务架构摘录；来源、关键词、第三列保留。明确报告其余四视角缺失警告。",
+  "not_run": [
+    "docs-tag-trigger-001",
+    "docs-tag-trigger-002",
+    "docs-tag-trigger-003",
+    "docs-tag-not-trigger-001",
+    "docs-tag-trigger-004",
+    "docs-tag-trigger-005",
+    "docs-tag-not-trigger-002",
+    "docs-tag-audience-001",
+    "docs-tag-installed-001",
+    "docs-tag-empty-001",
+    "docs-tag-scan-error-001",
+    "docs-tag-not-trigger-003"
+  ],
+  "limitations": [
+    "单次实际执行，仅业务视角；不声明五视角完整。",
+    "模型操作依据响应摘要，文件差异由控制方核验；完整工具转录未保存。"
+  ]
+}

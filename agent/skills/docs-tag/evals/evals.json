@@ -308,6 +308,20 @@
           "priority": "P0"
         }
       ]
+    },
+    {
+      "id": "tag-existing-yaml-anchor-excerpt",
+      "category": "should-trigger",
+      "prompt": "已有选好的单引号关键词；只刷新当前overview的表行标记与架构摘录。",
+      "expected_output": "实际读取HTML锚点对应标题正文并保留匹配标记；架构摘录仅含主标题/副标题表的标记行，不收入验收状态表。",
+      "assertions": [
+        {
+          "id": "actual-tag-excerpt",
+          "priority": "P0",
+          "type": "behavior",
+          "check": "运行phase2、phase3后目标视角行保持✅，摘录含对应链接，无验收行；来源正文及关键词附录保持。"
+        }
+      ]
     }
   ]
 }

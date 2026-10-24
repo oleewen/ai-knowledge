@@ -302,6 +302,11 @@ def read_tags_from_file(filepath):
                     keyword = json.loads(keyword)
                 except json.JSONDecodeError:
                     pass  # 旧版 writer 原样写入词，例如 '"API"模式'。
+            elif keyword.startswith("'"):
+                quoted = re.fullmatch(r"'((?:[^']|'')*)'(?:[ \t]+#.*)?", keyword)
+                if not quoted:
+                    raise ValueError('关键词单引号字符串未闭合或含不支持的尾部语法')
+                keyword = quoted.group(1).replace("''", "'")
             if keyword:
                 decoded.append(keyword)
         return decoded
@@ -427,20 +432,28 @@ def get_section_content(filepath, anchor):
     section_lines = []
     in_section = False
     heading_level = 0
+    pending_html_heading = False
 
     for line in lines:
         h_match = re.match(r'^(#{1,6})\s+(.*)', line)
 
         if in_section:
+            if pending_html_heading and h_match:
+                heading_level = len(h_match.group(1))
+                pending_html_heading = False
+                continue
             if h_match and len(h_match.group(1)) <= heading_level:
                 break
             section_lines.append(line)
+            if line.strip():
+                pending_html_heading = False
         else:
             # HTML 锚点
             a_match = re.search(r'<a\s+id="([^"]+)"', line)
             if a_match and a_match.group(1) == anchor:
                 in_section = True
                 heading_level = 100
+                pending_html_heading = True
                 continue
 
             if h_match:
@@ -654,8 +667,15 @@ def collect_excerpt_rows(lines):
     counts = {p: 0 for p in PERSPECTIVE_ORDER}
 
     for perspective in PERSPECTIVE_ORDER:
+        tag_table = False
         for line in sections.get(perspective, []):
-            if not is_table_data_row(line):
+            cells = line.strip().split('|')
+            if len(cells) >= 4 and cells[1].strip() == '主标题' and cells[2].strip() == '副标题':
+                tag_table = True
+                continue
+            if not line.strip().startswith('|'):
+                tag_table = False
+            if not tag_table or not is_table_data_row(line):
                 continue
             if not row_has_check_in_subtitle(line):
                 continue
