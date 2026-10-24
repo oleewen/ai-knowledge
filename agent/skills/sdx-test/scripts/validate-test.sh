@@ -271,18 +271,28 @@ validate_file() {
         return
       }
       # 注释删除不能把普通文本变成 ATX 标题（例如 <!-- -->### ...）。
-      is_heading = (text ~ /^##[ \t]/ || text ~ /^###[ \t]/)
+      is_heading = (text ~ /^#{1,3}[ \t]/)
       text = visible(text)
       if (!is_heading) return
+      if (text ~ /^#[ \t]/) {
+        current_chapter = ""
+        return
+      }
       heading = text
       sub(/^#+[ \t]+/, "", heading)
       sub(/[ \t]+#+[ \t]*$/, "", heading)
       heading = trim(heading)
       level = (text ~ /^##[ \t]/) ? 2 : 3
-      headings[level SUBSEP heading] = 1
+      headings[level SUBSEP heading]++
+      if (level == 2) current_chapter = heading
+      else heading_parents[heading] = current_chapter
     }
-    function require_heading(level, heading) {
+    function require_heading(level, heading, parent) {
       if (!headings[level SUBSEP heading]) fail("缺少必需标题: " heading)
+      else {
+        if (headings[level SUBSEP heading] > 1) fail("必需标题重复: " heading)
+        if (level == 3 && heading_parents[heading] != parent) fail("小节须位于 " parent " 下: " heading)
+      }
     }
     BEGIN {
       single_quote = sprintf("%c", 39)
@@ -327,16 +337,16 @@ validate_file() {
       require_heading(2, "4. 测试环境")
       require_heading(2, "5. 测试进出标准")
       require_heading(2, "6. 附录")
-      require_heading(3, "1.1 测试目标")
-      require_heading(3, "1.2 测试范围")
-      require_heading(3, "1.3 测试策略")
-      require_heading(3, "2.1 功能测试用例")
-      require_heading(3, "2.2 接口测试用例")
-      require_heading(3, "2.3 业务规则测试用例")
-      require_heading(3, "2.4 异常场景测试用例")
-      require_heading(3, "2.6 回归测试用例")
-      require_heading(3, "5.1 进入标准")
-      require_heading(3, "5.2 退出标准")
+      require_heading(3, "1.1 测试目标", "1. 概述")
+      require_heading(3, "1.2 测试范围", "1. 概述")
+      require_heading(3, "1.3 测试策略", "1. 概述")
+      require_heading(3, "2.1 功能测试用例", "2. 测试用例")
+      require_heading(3, "2.2 接口测试用例", "2. 测试用例")
+      require_heading(3, "2.3 业务规则测试用例", "2. 测试用例")
+      require_heading(3, "2.4 异常场景测试用例", "2. 测试用例")
+      require_heading(3, "2.6 回归测试用例", "2. 测试用例")
+      require_heading(3, "5.1 进入标准", "5. 测试进出标准")
+      require_heading(3, "5.2 退出标准", "5. 测试进出标准")
       if (errors) exit 1
       printf "[OK] %s: 结构校验通过\n", filename
     }

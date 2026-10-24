@@ -90,6 +90,15 @@ printf '#!/bin/sh\nexit 2\n' > "$TEST_TMP/failing-tools/awk"
 chmod +x "$TEST_TMP/failing-tools/awk"
 PATH="$TEST_TMP/failing-tools:$PATH" check 'awk failure is operational' 2 "$TEST_TMP/standalone dir" '执行或读取失败' --file TDD-TEST-1.md
 
+# 必需小节必须隶属对应主章且不可重复。
+sed '/^### 1.1 测试目标$/d' "$FIXTURE" > "$DOCUMENT"
+printf '\n### 1.1 测试目标\n' >> "$DOCUMENT"
+check 'subsection under wrong chapter fails' 1 "$TEST_TMP/project" '1.1 测试目标' --file "$DOCUMENT"
+awk '{print; if ($0 == "### 1.1 测试目标") print}' "$FIXTURE" > "$DOCUMENT"
+check 'duplicate required subsection fails' 1 "$TEST_TMP/project" '1.1 测试目标' --file "$DOCUMENT"
+awk '{if ($0 == "### 1.1 测试目标") print "# 独立示例\n"; print}' "$FIXTURE" > "$DOCUMENT"
+check 'H1 breaks required subsection parent' 1 "$TEST_TMP/project" '1.1 测试目标' --file "$DOCUMENT"
+
 # metadata 必须来自文首顶层字段，正文、注释、块字符串都不能补齐。
 for field in id title version status created updated author reviewers parent mvp_phase; do
   sed "/^${field}:/d" "$FIXTURE" > "$DOCUMENT"

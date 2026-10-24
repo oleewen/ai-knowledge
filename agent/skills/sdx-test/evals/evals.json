@@ -696,6 +696,28 @@
       "resources": [
         "scripts/validate-test.sh"
       ]
+    },
+    {
+      "id": "test-subsection-parent",
+      "category": "should-trigger",
+      "prompt": "只校验当前TDD，不修复。",
+      "assertions": [
+        {
+          "id": "test-subsection-parent-actual",
+          "priority": "P0",
+          "check": "必需小节位于错误主章时真实校验退出1，不称结构通过，文件不变。",
+          "name": "实际结构校验与只读边界",
+          "type": "must_include"
+        }
+      ],
+      "expected_output": "实际结构校验失败并保留原文件。",
+      "setup": {
+        "workspace": "独立临时目录；允许只读结构校验，禁止写入、联网、Git。",
+        "fixtures": [
+          "从tests/fixtures/TDD-TEST-1.md复制，移除原1.1测试目标标题，追加到第六章末尾，其他内容保持。"
+        ],
+        "history": []
+      }
     }
   ]
 }
