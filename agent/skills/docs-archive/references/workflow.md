@@ -16,9 +16,13 @@
 
 批次确认书收口并取得写前 C 后，才进入单元落盘。
 
+已有同范围确认书与有效授权时直接复用；仅补缺项或重新确认实际变化的范围。
+
 ## 3. 写目标章节
 
 提取业务含义，去掉来源噪声；正文服从目标章节体例。来源路径、审计信息和未决裁决留在确认书或冲突清单。
+
+保存目标与 overview 的读取快照。按 [写入与失败保护](gates.md) 核对版本，再写当前目标章节；检测到其他编辑先停下核对。
 
 第三列语义由 [federation-spec.md](../../docs-distill/references/federation-spec.md) 定义；本技能只消费 delta 并完成回写闭环：
 
@@ -34,6 +38,6 @@
 
 ## 5. 烤干与收尾
 
-当前单元默认必须烤干，按 [quality-checklist.md](quality-checklist.md) 验收；受众检查遵守[共享 A/B/C/E](../../../references/audience-and-language.md)及[本地差额](audience-and-language.md)。未获用户明确认可的待确认冲突仍按未收敛处理。任一步失败都保持当前单元未收敛；回写失败时恢复本轮 overview 改动或明确标记待修复。收敛后输出变更摘要和待用户动作，停下等待 C/M/G/S/F。
+当前单元默认必须烤干，按 [quality-checklist.md](quality-checklist.md) 验收；受众检查遵守[共享 A/B/C/E](../../../references/audience-and-language.md)及[本地差额](audience-and-language.md)。未获用户明确认可的待确认冲突仍按未收敛处理。任一步失败都保持当前单元未收敛；恢复遵守 [版本检查与本轮差异边界](gates.md)，不得用旧快照覆盖后续编辑。收敛后输出变更摘要和待用户动作，停下等待 C/M/G/S/F。
 
 Git 变更只读；未经用户同意不 commit 或 push。

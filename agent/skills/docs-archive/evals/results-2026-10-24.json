@@ -1,0 +1,57 @@
+{
+  "fixture": "/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-archive-blind-omive_mu",
+  "script_tests": 59,
+  "records": [
+    {
+      "id": "archive-update-unit",
+      "status": "pass",
+      "changes": {
+        "system/knowledge/business/process.md": "--- \n+++ \n@@ -2,7 +2,7 @@\n \n ## 退款审批\n \n-退款审批完成后发送短信。\n+退款审批完成后仅发送站内通知，不再发送短信。\n \n ## 支付限额\n \n",
+        "system/knowledge/overview/order-overview.md": "--- \n+++ \n@@ -4,5 +4,5 @@\n \n | 主标题 | 副标题 | 归档业务知识 |\n | --- | --- | --- |\n-| [业务流程](../business/process.md) | [退款审批](../business/process.md#退款审批) | **[U]** 退款审批完成后仅发送站内通知，不再发送短信。 |\n+| [业务流程](../business/process.md) | [退款审批](../business/process.md#退款审批) | — |\n | [业务规则与策略](../business/process.md) | [支付限额](../business/process.md#支付限额) | **[A]** 限额调整需主管审批。 |\n"
+      },
+      "hashes": {
+        ".docsconfig": {
+          "before": "bd97dc05ce030914060630bff4d77bf96c47b4386143395fa6f42f4474786b25",
+          "after": "bd97dc05ce030914060630bff4d77bf96c47b4386143395fa6f42f4474786b25"
+        },
+        "system/knowledge/business/process.md": {
+          "before": "07e95dd11d67fc8eeb45caf20757cbb5594455d4e6f9e786136cb34c6d32381a",
+          "after": "57d1930cc403dd1cdece8dbe8dfb004f07a792bf5717b238a69d3209fd24caa3"
+        },
+        "system/knowledge/overview/order-overview.md": {
+          "before": "f483a1fbea15e75de24cae8ab1ac570de213a6a804dc789160118e4605316c08",
+          "after": "55a49d96f657227ca2137260443b45a0e37045319db33c877adce42f3974b711"
+        }
+      },
+      "response_summary": "只更新退款通知规则，再将对应第三列改为—；其他行和章节保持。"
+    },
+    {
+      "id": "archive-delete-target-failure",
+      "status": "pass",
+      "changes": {},
+      "hashes": {
+        ".docsconfig": {
+          "before": "bd97dc05ce030914060630bff4d77bf96c47b4386143395fa6f42f4474786b25",
+          "after": "bd97dc05ce030914060630bff4d77bf96c47b4386143395fa6f42f4474786b25"
+        },
+        "system/knowledge/business/process.md": {
+          "before": "07e95dd11d67fc8eeb45caf20757cbb5594455d4e6f9e786136cb34c6d32381a",
+          "after": "07e95dd11d67fc8eeb45caf20757cbb5594455d4e6f9e786136cb34c6d32381a"
+        },
+        "system/knowledge/overview/order-overview.md": {
+          "before": "b75248a80a76b6e828e20542a8c3cc1763f5504ff18ff2d6c4382a013df3a0cc",
+          "after": "b75248a80a76b6e828e20542a8c3cc1763f5504ff18ff2d6c4382a013df3a0cc"
+        }
+      },
+      "response_summary": "实际写入报PermissionError；重读确认目标与overview均未变，D保留；未改权限。"
+    }
+  ],
+  "not_run": [
+    "archive-concurrent-recovery"
+  ],
+  "limitations": [
+    "写入顺序与PermissionError依据执行者响应；文件差异由控制方独立核对。未导出完整工具转录。",
+    "现有回答语义suite本轮未运行模型；59项仅为运行器与协议回归。",
+    "并发恢复规则已静态核对，未实际注入并发恢复故障。"
+  ]
+}

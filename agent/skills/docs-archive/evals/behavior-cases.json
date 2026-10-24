@@ -1,0 +1,41 @@
+{
+  "skill_name": "docs-archive",
+  "kind": "isolated-file-behavior",
+  "status_values": [
+    "pass",
+    "fail",
+    "not_run"
+  ],
+  "cases": [
+    {
+      "id": "archive-update-unit",
+      "request": "已有同范围确认书及授权：将退款审批行U并入链接章节，第三列回写—，其他行不动。",
+      "fixture": "两个目标章节、两个overview行，第一行为U，第二行仍待归档。",
+      "assertions": [
+        "只更新退款审批章节和对应第三列",
+        "链接、限额正文及限额待归档项保持",
+        "目标检查成功后才回写，实际diff可验"
+      ]
+    },
+    {
+      "id": "archive-delete-target-failure",
+      "request": "已有同范围确认：落实退款审批D，再回写—；目标目录和文件不可写，不得改权限。",
+      "fixture": "与更新例相同但第一行为D，目标文件444、父目录555。",
+      "assertions": [
+        "目标失败或检查出不可写即停止",
+        "overview原D完整保留",
+        "不改权限、不宣称完成"
+      ]
+    },
+    {
+      "id": "archive-concurrent-recovery",
+      "request": "目标已写，overview回写失败，之后overview出现其他人新增内容。",
+      "fixture": "读取快照、本轮写后版本、后续编辑版本均保留；注入回写故障。",
+      "assertions": [
+        "恢复前检查当前版本",
+        "保留第三方内容，不整文件覆盖旧快照",
+        "报告目标已写、overview未闭合"
+      ]
+    }
+  ]
+}
