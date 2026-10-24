@@ -20,10 +20,9 @@ description: >
 
 ## 最短路径
 
-1. [references/README.md](references/README.md)：按场景选参考文件。
-2. [references/gates.md](references/gates.md)：收口参数、写入策略和停顿条件。
-3. [references/workflow.md](references/workflow.md)：解析 Index、选择当前单元、生成与校验。
-4. 按需读取 [references/execution-spec.md](references/execution-spec.md)、[references/three-file-spec.md](references/three-file-spec.md) 和模板。
+1. 读 [workflow.md](references/workflow.md) 与 [gates.md](references/gates.md)，确认已有参数、当前文件与写入策略。
+2. 按 [execution-spec.md](references/execution-spec.md) 定位落盘 Index；按当前文件需要读取证据、生成并校验。
+3. 去重时读 [three-file-spec.md](references/three-file-spec.md)，其他场景按 [参考索引](references/README.md) 下钻。
 
 ## 硬约束
 
@@ -38,8 +37,9 @@ description: >
 正式产出是目标仓库根的 `README.md`、`AGENTS.md`（按 `output` 可只写一个）。
 
 ```bash
-bash agent/skills/docs-agent/scripts/validate-guide.sh --root <repo>
-bash agent/skills/docs-agent/scripts/test-validate-guide.sh
+bash "$SKILL_DIR/scripts/validate-guide.sh" --root <repo> --output readme
 ```
+
+`SKILL_DIR` 为当前已加载技能的绝对目录，与目标工程分开解析；`--output` 传当前单元 `readme` 或 `agents`，两文件均完成后用 `both` 检查重复度。仅技能维护者运行 `scripts/test-validate-guide.sh`，普通入口更新无需运行技能自测。
 
 骨架见 [assets/readme-skeleton.md](assets/readme-skeleton.md) 和 [assets/agents-skeleton.md](assets/agents-skeleton.md)；质量清单见 [references/quality-standards.md](references/quality-standards.md)。

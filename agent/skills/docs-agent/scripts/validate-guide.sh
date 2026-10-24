@@ -4,13 +4,15 @@ set -euo pipefail
 
 ROOT=""
 STRICT=0
+OUTPUT=both
 
 usage() {
   cat <<'EOF'
 用法:
-  bash validate-guide.sh [--root PATH] [--strict]
+  bash validate-guide.sh [--root PATH] [--output readme|agents|both] [--strict]
 
 默认从当前 Git 仓库根或当前目录校验。未加 --strict 时，警告不使命令失败。
+output 默认 both；单文件单元只检查所选文件，双文件完成后再检查重复度。
 EOF
 }
 
@@ -29,6 +31,11 @@ while (($#)); do
     --strict)
       STRICT=1
       shift
+      ;;
+    --output)
+      [[ $# -ge 2 ]] || fail '--output 缺少值'
+      case "$2" in readme|agents|both) OUTPUT="$2";; *) fail '--output 须为 readme、agents 或 both';; esac
+      shift 2
       ;;
     -h|--help)
       usage
@@ -125,14 +132,14 @@ fi
 README="$ROOT/README.md"
 AGENTS="$ROOT/AGENTS.md"
 
-if [[ -f "$README" ]]; then
+if [[ "$OUTPUT" != agents && -f "$README" ]]; then
   log_ok "README.md 存在"
   check_links "$README" 'README.md'
-else
+elif [[ "$OUTPUT" != agents ]]; then
   log_error "README.md 不存在"
 fi
 
-if [[ -f "$AGENTS" ]]; then
+if [[ "$OUTPUT" != readme && -f "$AGENTS" ]]; then
   log_ok "AGENTS.md 存在"
   check_links "$AGENTS" 'AGENTS.md'
   if [[ -n "$INDEX_PATH" ]]; then
@@ -142,11 +149,11 @@ if [[ -f "$AGENTS" ]]; then
       log_warn "AGENTS.md 未引用当前 INDEX-GUIDE: $INDEX_PATH"
     fi
   fi
-else
+elif [[ "$OUTPUT" != readme ]]; then
   log_error "AGENTS.md 不存在"
 fi
 
-if [[ -f "$README" && -f "$AGENTS" ]]; then
+if [[ "$OUTPUT" == both && -f "$README" && -f "$AGENTS" ]]; then
   readme_lines="$(wc -l < "$README" | tr -d ' ')"
   agents_lines="$(wc -l < "$AGENTS" | tr -d ' ')"
   if (( readme_lines > 10 && agents_lines > 10 )); then

@@ -1,54 +1,21 @@
 {
   "skill_name": "docs-agent",
-  "eval_id": "REPLACE_WITH_EVAL_ID",
-  "expected_category": "should-trigger | should-not-trigger",
-  "expected_route": "/docs-agent | （not-trigger 时填分流目标）",
-  "expected_output": "与同 id eval 条目一致的一两句要点。",
-  "notes": "复制为 `<eval-id>-metadata.json` 或流水线内联；断言与 agents/grader.md 一致。",
-  "assertions_should_trigger_example": [
-    {
-      "id": "parameter-guidance",
-      "name": "参数向导",
-      "type": "must_include",
-      "check": "写根 README/AGENTS 前须先收口 output、mode 与风险边界。",
-      "priority": "P0"
-    },
-    {
-      "id": "index-driven",
-      "name": "INDEX 驱动",
-      "type": "must_include",
-      "check": "落盘 INDEX 为地图、最小阅读；本技能不调 docs-indexing 重建。",
-      "priority": "P0"
-    },
-    {
-      "id": "single-unit-stop",
-      "name": "单单元停顿",
-      "type": "must_include",
-      "check": "须体现一次只处理一个当前单元（README.md 或 AGENTS.md），收敛后等待动作推进。",
-      "priority": "P0"
-    },
-    {
-      "id": "validate-script",
-      "name": "校验命令",
-      "type": "should_include",
-      "check": "提及 validate-guide.sh 或等价链校验。",
-      "priority": "P1"
-    }
+  "eval_id": null,
+  "category": null,
+  "notes": "选定eval后填ID和类别；不复制断言或预期答案作为实际证据。",
+  "result": {
+    "text": "",
+    "status": "not_run",
+    "evidence": []
+  },
+  "evidence_fields": [
+    "assertion_id",
+    "status",
+    "observed"
   ],
-  "assertions_should_not_trigger_example": [
-    {
-      "id": "correct-downstream",
-      "name": "正确下游",
-      "type": "must_include",
-      "check": "点名与 prompt 一致的下游技能，不以 docs-agent 为唯一主路径。",
-      "priority": "P0"
-    },
-    {
-      "id": "no-scope-creep",
-      "name": "职责不扩张",
-      "type": "must_not_conflict",
-      "check": "不把 INDEX 全文维护、SOLUTION、实体构建说成本技能默认职责。",
-      "priority": "P0"
-    }
-  ]
+  "scoring": {
+    "pass": "全部适用断言有实际证据且通过。",
+    "fail": "任一适用断言失败。",
+    "not_run": "无失败但仍有未执行或缺证据断言。"
+  }
 }

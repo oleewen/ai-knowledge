@@ -26,7 +26,7 @@
 1. 输出公共六项澄清、写入策略和 Index 锚点，标明“当前阶段：意图澄清”。
 2. 获写前 `C` 后，按对应模板生成；`update` 合并有效正文和命令。
 3. 标明“当前阶段：烤干”，按 [quality-standards.md](quality-standards.md) 与受众矩阵检查。
-4. 运行校验脚本，报告链接、Index 和重复度结果。
+4. 从当前已加载技能目录运行校验脚本，`--root` 指目标工程，`--output` 指当前文件；报告链接与 Index 结果。两文件均完成后才用 `both` 检查重复度。
 5. 当前单元收敛后等待 `C/M/G/S/F`；只有用户推进才开始下一单元。
 
 ## 4. 产物分工
@@ -38,7 +38,9 @@
 ## 5. 校验
 
 ```bash
-bash agent/skills/docs-agent/scripts/validate-guide.sh --root <repo>
+bash "$SKILL_DIR/scripts/validate-guide.sh" --root <repo> --output readme
 ```
 
 脚本默认报告警告并以错误数作为退出码；需要把警告也视为失败时加 `--strict`。
+
+`SKILL_DIR` 为当前已加载技能的绝对目录；`--output` 可为 readme/agents/both，默认 both 兼容已有调用。单文件校验不要求另一文件存在，不检查其旧问题。

@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-24",
+  "fixture": "/private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-agent-blind-ismk79rk",
+  "id": "docs-agent-single-installed",
+  "status": "pass",
+  "unchanged_files": {
+    "README.md": "db8fc6237b12b7f5096c5150a333ead6a8654c0886e05dec3c9ec6e0f16f8cf0",
+    "INDEX-GUIDE.md": "69f62c72bedf44d5e1db452ff458d1aa528423c794104f229f2851fae54a7774"
+  },
+  "agents_created": false,
+  "independent_response": "README当前单元校验通过：退出0，0错误0警告。实际命令已安装validate-guide.sh --root consumer --output readme。找到Index和README，未创建AGENTS，未运行维护测试，未写报告。",
+  "root_confirmation": {
+    "command": [
+      "/opt/homebrew/bin/bash",
+      "/private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-agent-blind-ismk79rk/installed/.agents/skills/docs-agent/scripts/validate-guide.sh",
+      "--root",
+      "/private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-agent-blind-ismk79rk/consumer",
+      "--output",
+      "readme"
+    ],
+    "returncode": 0,
+    "stdout": "[OK]    INDEX-GUIDE 落盘路径: INDEX-GUIDE.md\n[OK]    README.md 存在\n\n验证完成: 0 错误, 0 警告\n",
+    "stderr": ""
+  },
+  "not_run": 5,
+  "limitation": "Independent response retained as summary; full model tool transcript not exported. Root separately reconfirmed real CLI and byte preservation."
+}

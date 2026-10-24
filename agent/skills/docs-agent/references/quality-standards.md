@@ -3,7 +3,7 @@
 ## 结构与受众
 
 - README 面向人类；含一句定位、Quick start、导航和唯一目录树。
-- AGENTS 面向 AI；概述不超过 3 行，首条参考是实际 Index 路径。
+- AGENTS 面向 AI；简述职责，以实际 Index 路径引导查阅。
 - README 与 AGENTS 不复制大段正文、命令手册或 Index §3 表。
 
 ## 事实与链接
@@ -15,7 +15,7 @@
 ## 校验
 
 ```bash
-bash agent/skills/docs-agent/scripts/validate-guide.sh --root <repo>
+bash "$SKILL_DIR/scripts/validate-guide.sh" --root <repo> --output readme
 ```
 
-烤干未通过时，不报告当前单元已收敛。
+从当前已加载技能定位 `SKILL_DIR`，`--output` 按当前文件选 readme/agents；两文件均完成后用 both 检查重复度。烤干未通过时，不报告当前单元已收敛。

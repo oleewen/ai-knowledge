@@ -1,6 +1,6 @@
 {
   "skill_name": "docs-agent",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "评估触发边界、参数向导、写前意图澄清、当前单元、烤干与动作停顿；供 grader 断言；协议见 unit-cycle-protocol / intent-clarify。",
   "evals": [
     {
@@ -159,6 +159,20 @@
           "type": "must_include",
           "check": "须体现按 three-file-spec 调整，或停问；不得未处理就写后 C。",
           "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-agent-single-installed",
+      "category": "should-trigger",
+      "prompt": "README当前单元已完成，只做校验；AGENTS尚未创建，不创建或改写它。使用当前加载的安装目录中的技能。",
+      "expected_output": "从加载技能定位校验器，对目标root传--output readme；不要求AGENTS存在，不运行维护自测，不改文件。",
+      "assertions": [
+        {
+          "id": "single-selected-file",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "真实校验仅选readme且通过，未创建AGENTS；安装路径不同于元库也可调用。"
         }
       ]
     }
