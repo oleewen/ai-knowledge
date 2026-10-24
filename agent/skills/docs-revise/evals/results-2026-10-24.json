@@ -1,0 +1,34 @@
+{
+  "skill_name": "docs-revise",
+  "suite_sha256": "ba1c313ec6c2d4574bed6c3359791d384b9a62d564df8f432d9e72f11c45c616",
+  "date": "2026-10-24",
+  "fixture": "/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-revise-audit-_gvxtfo7",
+  "script_tests": 11,
+  "results": [
+    {
+      "eval_id": "revise-semantic-boundary-001",
+      "assertions": [
+        {
+          "id": "same-concept-only",
+          "status": "pass",
+          "evidence": "独立对照实际文件，仅当前业务句订金→预付款；历史引文及语言学例句逐字未变。"
+        },
+        {
+          "id": "contract-surface-preserved",
+          "status": "pass",
+          "evidence": "原标题、deposit-rule锚点、YAML代码与deposit键完整未变。"
+        },
+        {
+          "id": "no-global-replace",
+          "status": "not_run",
+          "evidence": "实际diff排除全词替换；执行者报告未关联检索，但未保存完整工具轨迹，工具轨迹部分未验。"
+        }
+      ]
+    }
+  ],
+  "actual_diff": "--- \n+++ \n@@ -2,7 +2,7 @@\n \n <a id=\"deposit-rule\"></a>\n \n-本协议中的订金是可退还的预收款。\n+本协议中的预付款是可退还的预收款。\n \n 历史引文：“订金一经收取不退。”\n \n",
+  "limitations": [
+    "历史2026-10-22成绩保持原记录，不冒充本轮全套通过。",
+    "本轮单例真实写入，文件断言2项通过，工具轨迹断言未完整覆盖。"
+  ]
+}

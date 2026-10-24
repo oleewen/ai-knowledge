@@ -1,6 +1,7 @@
 """Verify evidence completeness and scoring, not the wording of model answers."""
 
 import importlib.util
+import hashlib
 import json
 from pathlib import Path
 import subprocess
@@ -36,7 +37,9 @@ class ScoreEvalsTests(unittest.TestCase):
         }
 
     def result(self, scope="pass", hint="not_run"):
-        return {"skill_name": "docs-revise", "results": [{
+        digest = hashlib.sha256(json.dumps(self.suite, sort_keys=True, ensure_ascii=False,
+                                          separators=(",", ":")).encode("utf-8")).hexdigest()
+        return {"skill_name": "docs-revise", "suite_sha256": digest, "results": [{
             "eval_id": "case-1", "assertions": [
                 {"id": "scope", "status": scope, "evidence": "trace:1 仅编辑 README"},
                 {"id": "hint", "status": hint, "evidence": "未执行"},
@@ -53,10 +56,27 @@ class ScoreEvalsTests(unittest.TestCase):
         self.assertEqual(report["summary"]["fail"], 1)
 
     def test_missing_run_and_missing_assertion_are_not_run(self):
-        self.assertEqual(self.module.score(self.suite, {"skill_name": "docs-revise", "results": []})["summary"]["not_run"], 1)
+        empty = self.result()
+        empty["results"] = []
+        self.assertEqual(self.module.score(self.suite, empty)["summary"]["not_run"], 1)
         result = self.result()
         result["results"][0]["assertions"] = []
         self.assertEqual(self.module.score(self.suite, result)["summary"]["not_run"], 1)
+
+    def test_missing_or_stale_suite_binding_is_rejected(self):
+        original = self.result()
+        missing = dict(original)
+        missing.pop("suite_sha256")
+        with self.assertRaisesRegex(ValueError, "suite_sha256"):
+            self.module.score(self.suite, missing)
+        self.suite["evals"][0]["assertions"][0]["check"] = "允许扩展多个文件"
+        with self.assertRaisesRegex(ValueError, "suite_sha256"):
+            self.module.score(self.suite, original)
+
+    def test_suite_binding_ignores_json_key_order(self):
+        reordered = dict(reversed(list(self.suite.items())))
+        report = self.module.score(reordered, self.result())
+        self.assertEqual(report["summary"]["pass"], 1)
 
     def test_claim_without_evidence_is_rejected(self):
         for status in ("pass", "fail"):

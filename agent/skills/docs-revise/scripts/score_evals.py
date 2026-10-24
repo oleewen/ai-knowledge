@@ -7,6 +7,7 @@ Exit codes: 0 = valid suite / all required checks pass, 1 = fail or not run,
 """
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 import sys
@@ -35,6 +36,12 @@ def unique_object(pairs):
 
 def read_json(path):
     return json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=unique_object)
+
+
+def suite_sha256(suite):
+    """Bind evidence to the entire definition, independent of JSON formatting."""
+    canonical = json.dumps(suite, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
 def indexed(items, key, context):
@@ -72,9 +79,13 @@ def score(suite, observations):
     cases = validate_suite(suite)
     require(isinstance(observations, dict), "results: expected an object")
     require(observations.get("skill_name") == suite["skill_name"], "results: wrong skill_name")
+    digest = suite_sha256(suite)
+    require(observations.get("suite_sha256") == digest,
+            "results: missing or mismatched suite_sha256; re-evaluate against this suite")
     runs = indexed(observations.get("results"), "eval_id", "results")
     require(not (runs.keys() - cases.keys()), "results: unknown eval_id")
-    report = {"skill_name": suite["skill_name"], "summary": {"pass": 0, "fail": 0, "not_run": 0}, "results": []}
+    report = {"skill_name": suite["skill_name"], "suite_sha256": digest,
+              "summary": {"pass": 0, "fail": 0, "not_run": 0}, "results": []}
     for identity, case in cases.items():
         definitions = indexed(case["assertions"], "id", identity)
         checks = indexed(runs.get(identity, {}).get("assertions", []), "id", identity)
@@ -104,7 +115,8 @@ def main():
         suite = read_json(args.suite)
         cases = validate_suite(suite)
         if args.results is None:
-            print(json.dumps({"valid": True, "cases": len(cases), "behavior_evaluated": False}))
+            print(json.dumps({"valid": True, "cases": len(cases),
+                              "suite_sha256": suite_sha256(suite), "behavior_evaluated": False}))
             return 0
         report = score(suite, read_json(args.results))
         print(json.dumps(report, ensure_ascii=False, indent=2))
