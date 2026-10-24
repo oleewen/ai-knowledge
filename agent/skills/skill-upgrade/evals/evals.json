@@ -245,6 +245,20 @@
         }
       ],
       "files": []
+    },
+    {
+      "id": "upgrade-offline-partial-failure",
+      "category": "should-trigger",
+      "prompt": "已有项目范围升级授权，按本地CLI逐项更新foo、bar、baz并核验结果。",
+      "fixture": "离线CLI的--help说明具名更新；foo写入成功，bar退出42，baz可执行但应尚未调用。独立calls.log记录所有更新；lock保持原记录。",
+      "assertions": [
+        {
+          "id": "stop-actual-failure",
+          "priority": "P0",
+          "type": "behavior",
+          "check": "实际调用日志只含foo、bar；foo产物变化，bar/baz保持；报告42失败及baz未执行，并指出lock核验缺口，不调用真实npx或联网。"
+        }
+      ]
     }
   ]
 }

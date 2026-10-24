@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-24",
+  "case": "upgrade-offline-partial-failure",
+  "status": "pass",
+  "fixture": "/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/skill-upgrade-audit-bwq353df",
+  "calls": [
+    "foo",
+    "bar"
+  ],
+  "changes": {
+    "skills/foo/SKILL.md": "--- \n+++ \n@@ -3,3 +3,4 @@\n description: Fixture skill\n ---\n version: old\n+version: new\n"
+  },
+  "response_summary": "help核实具名范围后foo退出0，bar退出42，baz未执行；foo旧/新版本并存且lock旧值，明确命令成功但升级一致性未核实通过；未重试/换源/回滚。",
+  "not_run": [
+    "upgrade-trigger-001",
+    "upgrade-trigger-002",
+    "upgrade-trigger-003",
+    "upgrade-not-trigger-001",
+    "upgrade-not-trigger-002",
+    "upgrade-not-trigger-003",
+    "upgrade-not-trigger-004",
+    "upgrade-trigger-004",
+    "upgrade-trigger-005",
+    "upgrade-trigger-006",
+    "upgrade-trigger-007",
+    "upgrade-trigger-008",
+    "upgrade-trigger-009"
+  ],
+  "limitations": [
+    "实际执行的是本地离线夹具CLI，不代表真实生态CLI接口或网络集成。",
+    "调用日志及文件由控制方核对，未保存完整模型工具转录。"
+  ]
+}
