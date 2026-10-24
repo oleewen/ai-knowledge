@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-24",
+  "case": "simplify-scope-004",
+  "status": "pass",
+  "script_tests": 14,
+  "files": {
+    "docs/a.md": {
+      "before": "# 审批\n\n在执行发布之前，需要先完成审批，审批完成之后才能开始发布。\n",
+      "after": "# 审批\n\n发布前须完成审批。\n",
+      "diff": "--- \n+++ \n@@ -1,3 +1,3 @@\n # 审批\n \n-在执行发布之前，需要先完成审批，审批完成之后才能开始发布。\n+发布前须完成审批。\n"
+    },
+    "docs/b.md": {
+      "before": "# 验收\n\n为了完成验收，需要健康检查连续三次通过，连续三次通过才能判为验收成功。\n",
+      "after": "# 验收\n\n健康检查连续三次通过，才能判为验收成功。\n",
+      "diff": "--- \n+++ \n@@ -1,3 +1,3 @@\n # 验收\n \n-为了完成验收，需要健康检查连续三次通过，连续三次通过才能判为验收成功。\n+健康检查连续三次通过，才能判为验收成功。\n"
+    },
+    "docs/c.md": {
+      "before": "# 失败\n\n在发布失败的情况下，应立即回滚；失败时必须立即执行回滚。\n",
+      "after": "# 失败\n\n发布失败时必须立即回滚。\n",
+      "diff": "--- \n+++ \n@@ -1,3 +1,3 @@\n # 失败\n \n-在发布失败的情况下，应立即回滚；失败时必须立即执行回滚。\n+发布失败时必须立即回滚。\n"
+    },
+    "docs/outside.md": {
+      "before": "# 范围外文件\n\n本文件不得变化。审批规则在此重复记录，但尚未确认它是真源。\n",
+      "after": "# 范围外文件\n\n本文件不得变化。审批规则在此重复记录，但尚未确认它是真源。\n",
+      "diff": ""
+    }
+  },
+  "response_summary": "爸爸，三文件已精简，整个批次写后烤干通过，待写后确认。\n\na.md：发布前须完成审批。\nb.md：健康检查连续三次通过，才能判为验收成功。\nc.md：发布失败时必须立即回滚。\n\n已对照原文、差异并回读验证：原标题和三项约束均保留，术语一致，无未决问题。仅修改授权三文件，未做跨文件去重、未生成额外文件、未操作Git。\n当前阶段：烤干。推荐确认本批次并收尾。\n1. C确认收尾\n2. M修改\n3. G继续深挖\n4. S暂停\n5. F提出剩余批次供确认\n",
+  "fixture": "/tmp/docs-simplify-audit-batch",
+  "not_run": [
+    "simplify-trigger-001",
+    "simplify-trigger-002",
+    "simplify-trigger-003",
+    "simplify-not-trigger-001",
+    "simplify-not-trigger-002",
+    "simplify-audience-001",
+    "simplify-not-trigger-003",
+    "simplify-not-trigger-004",
+    "simplify-scope-001",
+    "simplify-scope-002",
+    "simplify-scope-003",
+    "simplify-routing-001",
+    "simplify-preserve-001",
+    "simplify-preserve-002",
+    "simplify-preserve-003",
+    "simplify-ssot-001",
+    "simplify-ssot-002",
+    "simplify-ssot-003",
+    "simplify-knowledge-001",
+    "simplify-knowledge-002",
+    "simplify-protocol-001",
+    "simplify-protocol-002",
+    "simplify-protocol-003",
+    "simplify-protocol-004",
+    "simplify-scope-005",
+    "simplify-pause-before-001",
+    "simplify-pause-after-001"
+  ],
+  "limitations": [
+    "一项真实批次写入；暂停恢复及hunk场景本轮未测。",
+    "保留响应摘要与驱动快照，无完整工具转录；不声称操作系统沙箱。"
+  ]
+}
