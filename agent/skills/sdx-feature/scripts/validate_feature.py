@@ -53,6 +53,7 @@ def visible_lines(text: str) -> List[str]:
     comment = False
     fence = ""
     for raw in text.splitlines():
+        comment_at_start = comment
         if fence:
             if re.fullmatch(r" {0,3}" + re.escape(fence[0]) + "{" + str(len(fence)) + r",}[ \t]*", raw):
                 fence = ""
@@ -75,6 +76,11 @@ def visible_lines(text: str) -> List[str]:
                 visible += remainder[:start]
                 remainder = remainder[start + 4:]
                 comment = True
+        # Removing a comment must not turn trailing paragraph text into an ATX
+        # heading. A heading must already start a visible source line.
+        heading = r"^ {0,3}#{1,6}[ \t]+"
+        if re.match(heading, visible) and (comment_at_start or not re.match(heading, raw)):
+            visible = visible.replace("#", r"\#", 1)
         opening = re.match(r"^ {0,3}(`{3,}|~{3,})(.*)$", visible)
         if opening and not (opening[1][0] == "`" and "`" in opening[2]):
             fence = opening[1]
@@ -405,6 +411,9 @@ def validate(path: Path, report: Report) -> None:
         chapters.append(chapter)
         for subtitle in subtitles:
             sections[subtitle] = doc.section(subtitle, 3, chapter, path.name, report)
+    chapter_lines = [chapter.line for chapter in chapters if chapter is not None]
+    if chapter_lines != sorted(chapter_lines):
+        report.warn(f"{path.name}: 章节顺序须为 1–6，按模板依次排列")
     for title in ["范围与边界", "假设与约束", "研究与分析"]:
         doc.section(title, 4, sections["1.3 范围约束"], path.name, report)
     ids = check_overview(doc, chapters[1], sections["概览"], path.name, report)

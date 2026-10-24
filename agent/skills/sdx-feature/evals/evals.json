@@ -741,6 +741,23 @@
           ]
         }
       ]
+    },
+    {
+      "id": "feature-validate-chapter-order",
+      "category": "should-trigger",
+      "prompt": "只对当前FEATURE运行严格结构校验，不修文件，如实报告结果。",
+      "fixture": {
+        "base": "complete-feature",
+        "mutation": "将六个完整H2章节倒序排列，保持章内内容不变"
+      },
+      "assertions": [
+        {
+          "id": "actual-order-failure",
+          "priority": "P0",
+          "check": "实际运行严格校验，报告章节顺序告警和非零退出；文件字节不变，不声称结构通过。"
+        }
+      ],
+      "expected_output": "实际strict退出1并报告章节顺序警告，文件不变。"
     }
   ]
 }

@@ -1,6 +1,7 @@
 """Exercise the public shell command with complete documents and real files."""
 
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -76,6 +77,20 @@ class ValidateFeatureTests(unittest.TestCase):
 
     def test_valid_feature_has_no_warning_and_mvp_detail_is_not_double_counted(self):
         self.assert_clean(self.validate(strict=True))
+
+    def test_comments_do_not_promote_trailing_text_to_headings(self):
+        for prefix in ('<!-- example -->', '<!-- example\n-->'):
+            with self.subTest(prefix=prefix):
+                text = re.sub(r'(?m)^(## [1-6]\. )', lambda m: prefix + m[1], VALID)
+                self.assert_warning(text, '缺少章节')
+
+    def test_reversed_chapters_warn_and_fail_strict(self):
+        parts = re.split(r'(?m)(?=^## [1-6]\. )', VALID)
+        self.assertEqual(len(parts), 7)
+        self.assert_warning(parts[0] + ''.join(reversed(parts[1:])), '章节顺序')
+
+    def test_comment_prefix_does_not_hide_visible_adr_reference(self):
+        self.assert_warning(VALID + '\n<!-- 说明 -->## 决策 ADR-999\n', 'ADR-999')
 
     def test_wrong_id_and_unrelated_parent_are_content_warnings(self):
         for before, after, topic in [

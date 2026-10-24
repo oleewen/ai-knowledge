@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-24",
+  "case": "feature-validate-chapter-order",
+  "status": "pass",
+  "script_tests": 27,
+  "fixture": "/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/sdx-feature-audit-tw24qch7",
+  "command": "/opt/homebrew/bin/bash agent/skills/sdx-feature/scripts/validate-feature.sh --file FEATURE-261022-审批提效.md --strict",
+  "exit_code": 1,
+  "output": "[WARN] 章节顺序须为 1–6，按模板依次排列；错误0，警告1；严格校验失败。",
+  "files_unchanged": true,
+  "not_run": [
+    "analysis-trigger-001",
+    "analysis-trigger-002",
+    "analysis-trigger-003",
+    "analysis-trigger-003b",
+    "analysis-trigger-004",
+    "analysis-trigger-005",
+    "analysis-trigger-006",
+    "analysis-not-trigger-001",
+    "analysis-not-trigger-002",
+    "analysis-not-trigger-003",
+    "analysis-not-trigger-004",
+    "analysis-not-trigger-005",
+    "analysis-not-trigger-006",
+    "analysis-audience-001",
+    "feature-missing-analysis-001",
+    "feature-missing-milestones-001",
+    "feature-overview-f-stop-001",
+    "feature-existing-authorization-001",
+    "feature-company-route-001",
+    "feature-solution-route-001",
+    "feature-cross-module-001",
+    "feature-mvp-coverage-001",
+    "feature-adr-boundary-001",
+    "feature-adr-implementation-001",
+    "feature-explicit-rewrite-001"
+  ],
+  "limitations": [
+    "只验证真实结构校验与只读边界，不证明FEATURE写作质量或上游共识。",
+    "该盲测在ADR正文保留修复前执行；最终ADR改动由27项回归与独立复审验证，章节顺序逻辑未再变化。"
+  ]
+}
