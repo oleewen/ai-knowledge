@@ -1,0 +1,74 @@
+{
+  "date": "2026-10-24",
+  "case": "architect-unicode-chain",
+  "observed_result": "pass",
+  "script_tests": 68,
+  "fixture": "/private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/sdx-validation-recheck-uiykauv9/architect",
+  "exit_code": 0,
+  "response_summary": "严格校验错误0、警告0。",
+  "unchanged_hashes": {
+    "agent/configs": "81575bc99ba05c651426e1977e9b34e8f58ae13e09b14c596557ca50e6a07606",
+    "repo/ASD-261024-审批-v2-1.md": "34b43a552a5ad46e619253dbffbb42500196b76bcc728cfde49b081748299d33",
+    "repo/.docsconfig": "5c6847249c83c6780a411ba8ea25d5af59094edd5db6b57e3ae967ad09beeb80"
+  },
+  "not_run": [
+    "architect-trigger-001",
+    "architect-trigger-002",
+    "architect-trigger-003",
+    "architect-trigger-004",
+    "architect-not-trigger-001",
+    "architect-not-trigger-002",
+    "architect-protocol-001",
+    "architect-audience-001",
+    "architect-mode-company",
+    "architect-mode-solution",
+    "architect-missing-prd",
+    "architect-spec-path"
+  ],
+  "blind_protocol": "新独立代理；仅直接读取指定输入与技能/依赖，未枚举父目录，未读评测答案。",
+  "limitations": [
+    "未保存所有底层工具调用的独立转录；保留执行者提供的命令、完整stdout/stderr与动作清单，文件另行核对。",
+    "仅本地结构校验，不证明语义、远端来源或业务执行；目录约束不是操作系统沙箱。"
+  ],
+  "initial_run": {
+    "date": "2026-10-24",
+    "case": "architect-unicode-chain",
+    "observed_result": "pass",
+    "script_tests": 68,
+    "fixture": "/private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/sdx-validation-audit-1h8n6ul3/architect",
+    "exit_code": 0,
+    "response_summary": "严格校验错误0、警告0。",
+    "unchanged_hashes": {
+      "agent/configs": "e002aab40b680aef2f8ce000d160f16af1b5e21f1a439bbe1f06c1a085aefc6b",
+      "repo/ASD-261024-审批-v2-1.md": "34b43a552a5ad46e619253dbffbb42500196b76bcc728cfde49b081748299d33",
+      "repo/.docsconfig": "d5dc44e63bbe42992d522ef1fbfed00727268823884356dc5e5f8a4a3c095f7c"
+    },
+    "not_run": [
+      "architect-trigger-001",
+      "architect-trigger-002",
+      "architect-trigger-003",
+      "architect-trigger-004",
+      "architect-not-trigger-001",
+      "architect-not-trigger-002",
+      "architect-protocol-001",
+      "architect-audience-001",
+      "architect-mode-company",
+      "architect-mode-solution",
+      "architect-missing-prd",
+      "architect-spec-path"
+    ],
+    "blind_protocol": "deviation: 执行者首次枚举出现before目录路径名，未打开文件；不能称严格范围隔离盲测。",
+    "limitations": [
+      "实际命令与退出码依据执行者记录；控制方核对原始文件完全不变。",
+      "只验证本地结构校验，不证明语义正确、远端内容基线或业务执行。"
+    ]
+  },
+  "status": "pass",
+  "command": "/opt/homebrew/bin/bash /Users/only/workspaces/ai-knowledge/agent/skills/sdx-architect/scripts/validate-asd.sh --strict --file ASD-261024-审批-v2-1.md",
+  "stdout": "=== ASD 结构校验 ===\ndoc_abs: /private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/sdx-validation-recheck-uiykauv9/architect/repo/docs\nKNOWLEDGE_TYPE: application\n\n--- 校验: ASD-261024-审批-v2-1.md ---\n\n=== 校验结果 ===\n错误: 0  警告: 0\n[OK]    校验通过（仅上述结构检查范围）。\n",
+  "stderr": "",
+  "intermediate_run": {
+    "status": "restricted-environment-pass",
+    "note": "首次重测因“不Git”表述使用git函数返回1；澄清只读Git可用后，重新直接执行原校验器且通过，封装结果不作为最终结论。"
+  }
+}

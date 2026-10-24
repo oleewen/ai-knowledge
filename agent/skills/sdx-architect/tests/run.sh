@@ -259,5 +259,15 @@ write_valid
 ln -s missing.md "$CASE_REPO/docs/requirements/ASD-BROKEN-1.md"
 check '正常文件不能掩盖失效 ASD 文件软链' 1 '失效文件软链' --strict
 
+new_case unicode_id
+write_valid "$CASE_REPO/docs/original.md"
+for idea in '审批' '261024-审批-v2'; do
+  sed "s/CASE/$idea/g" "$CASE_REPO/docs/original.md" > "$CASE_REPO/docs/requirements/ASD-$idea-1.md"
+  check "同链中文ID $idea" 0 '错误: 0  警告: 0' --strict --file "$CASE_REPO/docs/requirements/ASD-$idea-1.md"
+done
+sed 's/parent: "PRD-审批-1"/parent: "PRD-其他-1"/' "$CASE_REPO/docs/requirements/ASD-审批-1.md" > "$CASE_REPO/docs/wrong.md"
+cp "$CASE_REPO/docs/wrong.md" "$CASE_REPO/docs/requirements/ASD-审批-1.md"
+check '中文ID仍检查parent同链' 1 'parent 应为 PRD-审批-1' --strict --file "$CASE_REPO/docs/requirements/ASD-审批-1.md"
+
 printf '\n结果: %s 通过，%s 失败；fixture: %s\n' "$PASSED" "$FAILED" "$TEST_ROOT"
 [[ "$FAILED" -eq 0 ]]

@@ -128,7 +128,7 @@ validate_metadata() {
   if [[ -n "${values[id]:-}" && "${values[id]}" != "${basename%.md}" ]]; then
     warn "${basename}: id 与文件名不一致，期望 ${basename%.md}，实际 ${values[id]}"
   fi
-  if [[ "$basename" =~ ^ASD-([A-Za-z0-9][A-Za-z0-9._-]*)-([0-9]+)\.md$ ]]; then
+  if [[ "$basename" =~ ^ASD-(.+)-([0-9]+)\.md$ ]]; then
     expected_parent="PRD-${BASH_REMATCH[1]}-${BASH_REMATCH[2]}"
     phase="MVP-Phase-${BASH_REMATCH[2]}"
     if [[ -n "${values[parent]:-}" && "${values[parent]}" != "$expected_parent" ]]; then
