@@ -1,0 +1,466 @@
+{
+  "date": "2026-10-24",
+  "case": "domains-legacy-name-007",
+  "status": "pass",
+  "script_tests": 45,
+  "fixture": "/private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/sdx-domains-audit-3fvwlxqg",
+  "changes": {
+    "corp/domains/DOMAIN-EXAMPLE.md": "--- \n+++ \n@@ -21,4 +21,4 @@\n \n | PL | 说明 |\n | --- | --- |\n-| 待确认 | 待补齐 |\n+| PL-EXAMPLE | 通过 BL-EXAMPLE 对接本域的 BSD-EXAMPLE。 |\n"
+  },
+  "file_hashes": {
+    ".docsconfig": {
+      "before": "d07061e647f66761c28140e31bc225c8842692cfd94e842fbebca25eb840b09e",
+      "after": "d07061e647f66761c28140e31bc225c8842692cfd94e842fbebca25eb840b09e"
+    },
+    "INDEX-GUIDE.md": {
+      "before": "807beb30d1a5ef545414c12dbbbde50dad6156ac396197e7cf6ffdfb8f89b946",
+      "after": "807beb30d1a5ef545414c12dbbbde50dad6156ac396197e7cf6ffdfb8f89b946"
+    },
+    "corp/knowledge-links.yaml": {
+      "before": "9e79f820308b22e6bbe979cad093a1f8e5f66aecc2a9387d718fdeea9b5a3851",
+      "after": "9e79f820308b22e6bbe979cad093a1f8e5f66aecc2a9387d718fdeea9b5a3851"
+    },
+    "corp/README.md": {
+      "before": "31d10bed51bb48e1f83c30af361454547fe36a8e9b8d21143092753147cd3d65",
+      "after": "31d10bed51bb48e1f83c30af361454547fe36a8e9b8d21143092753147cd3d65"
+    },
+    "corp/index.md": {
+      "before": "633454f475e789920bad557fc0cda8a980233e20a66915db85182adf872c4003",
+      "after": "633454f475e789920bad557fc0cda8a980233e20a66915db85182adf872c4003"
+    },
+    "corp/DESIGN.md": {
+      "before": "930464ba8934389e51ba5b7aaa437e5179ff8df382aa5ae57dbdf975aba87cb3",
+      "after": "930464ba8934389e51ba5b7aaa437e5179ff8df382aa5ae57dbdf975aba87cb3"
+    },
+    "corp/INDEX-GUIDE.md": {
+      "before": "757e3662b4ad86e08b559bb1c371ef14f7b7631e56c8947261b229d19eaf26d6",
+      "after": "757e3662b4ad86e08b559bb1c371ef14f7b7631e56c8947261b229d19eaf26d6"
+    },
+    "corp/domains/DOMAIN-MAP.md": {
+      "before": "31fa787a535bf10d0edba36c7f85bb8c430a2bb57040f5d45144a2f993c9321b",
+      "after": "31fa787a535bf10d0edba36c7f85bb8c430a2bb57040f5d45144a2f993c9321b"
+    },
+    "corp/domains/DOMAIN-EXAMPLE.md": {
+      "before": "a085086c03bf07af377bbd5b5b671e2685ebad61c673b06729040c97d448ee3c",
+      "after": "29f9f109f55134142892c0962dfa601523b936ed5041e31d692fbe7add4f6672"
+    },
+    "corp/knowledge/README.md": {
+      "before": "79cb2db48ed8bef3e2fd25d936379e3c876ccbb1d3275a3537cb0125fe408311",
+      "after": "79cb2db48ed8bef3e2fd25d936379e3c876ccbb1d3275a3537cb0125fe408311"
+    },
+    "corp/knowledge/index.md": {
+      "before": "5255f50e726b349756a5262ca4d95e4dd1a8a14f5325bba4b112f086fc1e4241",
+      "after": "5255f50e726b349756a5262ca4d95e4dd1a8a14f5325bba4b112f086fc1e4241"
+    },
+    "corp/knowledge/business/README.md": {
+      "before": "3b3ade861b7e178ce6c020d1e7711c3e3e2787f783e7e60f8dd6a6d865604dfc",
+      "after": "3b3ade861b7e178ce6c020d1e7711c3e3e2787f783e7e60f8dd6a6d865604dfc"
+    },
+    "corp/knowledge/business/index.md": {
+      "before": "cffd9e8cfec426042944af512a32f31fda84679f17153da90ce87a8ec89bbf64",
+      "after": "cffd9e8cfec426042944af512a32f31fda84679f17153da90ce87a8ec89bbf64"
+    },
+    "corp/knowledge/business/BL/BL-EXAMPLE.md": {
+      "before": "2658d9d84c0ffcbeb6c5ece89210430f11a78b0b9d676b3ce0115b67746c4cd9",
+      "after": "2658d9d84c0ffcbeb6c5ece89210430f11a78b0b9d676b3ce0115b67746c4cd9"
+    },
+    "corp/knowledge/business/BL/index.md": {
+      "before": "c9eca8ebba9524e71471e5628c4567bb251963e252c7628a19bd86f13e5faf5c",
+      "after": "c9eca8ebba9524e71471e5628c4567bb251963e252c7628a19bd86f13e5faf5c"
+    },
+    "corp/knowledge/business/BD/index.md": {
+      "before": "c104f6705d0f90c30616628441f45bade077f69f06d7571804898683cb60dee3",
+      "after": "c104f6705d0f90c30616628441f45bade077f69f06d7571804898683cb60dee3"
+    },
+    "corp/knowledge/business/BD/BD-EXAMPLE/BD-EXAMPLE.md": {
+      "before": "ad1510212f461a16a41d63bab6d1bb572fdfd255ea7a3307b05a21c1e11455f7",
+      "after": "ad1510212f461a16a41d63bab6d1bb572fdfd255ea7a3307b05a21c1e11455f7"
+    },
+    "corp/knowledge/business/BD/BD-EXAMPLE/BSD-EXAMPLE.md": {
+      "before": "8c8177847505f58a51176ca88c0a7d525194bb16b2e9e2023994416c504de122",
+      "after": "8c8177847505f58a51176ca88c0a7d525194bb16b2e9e2023994416c504de122"
+    },
+    "corp/knowledge/business/BD/BD-EXAMPLE/index.md": {
+      "before": "7d50f19724e4931eee840aba112be68c8f841dea9fdb637d0f8a39454bfac9a1",
+      "after": "7d50f19724e4931eee840aba112be68c8f841dea9fdb637d0f8a39454bfac9a1"
+    },
+    "corp/knowledge/business/chapters/business-model.md": {
+      "before": "7804059588f3f46bc9fcb65961c8c21acb75604da3edcb8ab0ca70e55ae72919",
+      "after": "7804059588f3f46bc9fcb65961c8c21acb75604da3edcb8ab0ca70e55ae72919"
+    },
+    "corp/knowledge/business/chapters/business-domain-division.md": {
+      "before": "146c803ede04fd59bcf97221948e623b6d6ddb3c0c23a37d401f3c95dfa2d781",
+      "after": "146c803ede04fd59bcf97221948e623b6d6ddb3c0c23a37d401f3c95dfa2d781"
+    },
+    "corp/knowledge/business/chapters/business-capability.md": {
+      "before": "7880c37c61748960550c184f169d5d6bb4bf3a9dbb7ebbfd7f39c3241b302f75",
+      "after": "7880c37c61748960550c184f169d5d6bb4bf3a9dbb7ebbfd7f39c3241b302f75"
+    },
+    "corp/knowledge/business/chapters/index.md": {
+      "before": "6dc486ea6e4d5c809cff6b2e5e7017c20e69f8ffb4648c18062b41cd3c0e49ee",
+      "after": "6dc486ea6e4d5c809cff6b2e5e7017c20e69f8ffb4648c18062b41cd3c0e49ee"
+    },
+    "corp/knowledge/business/chapters/business-overview.md": {
+      "before": "025713740cf794f9f11e053b2d8f370beffd606c1e7322fe9a84f59aa1e0d9e4",
+      "after": "025713740cf794f9f11e053b2d8f370beffd606c1e7322fe9a84f59aa1e0d9e4"
+    },
+    "corp/knowledge/business/chapters/business-roles-and-organization.md": {
+      "before": "bcdb40dafd8c40ee51919b8d55e01062a8efc948690ff057c4af40c011476f9c",
+      "after": "bcdb40dafd8c40ee51919b8d55e01062a8efc948690ff057c4af40c011476f9c"
+    },
+    "corp/knowledge/business/chapters/business-value-chain.md": {
+      "before": "bb4951297fde213bc2de76febb74203abf898df0a77608f2cd94188c53422f76",
+      "after": "bb4951297fde213bc2de76febb74203abf898df0a77608f2cd94188c53422f76"
+    },
+    "corp/knowledge/business/VC-EXAMPLE/index.md": {
+      "before": "ed5a1cf282ac4a736aa27f97a7ed02ad76b82f6b829da5c75ef091ec57b1d981",
+      "after": "ed5a1cf282ac4a736aa27f97a7ed02ad76b82f6b829da5c75ef091ec57b1d981"
+    },
+    "corp/knowledge/business/VC-EXAMPLE/VC-EXAMPLE.md": {
+      "before": "80b4ab041cd02e76d13f9ada1253736ddb2895ae5f9386cf1b1f6a68b03333d2",
+      "after": "80b4ab041cd02e76d13f9ada1253736ddb2895ae5f9386cf1b1f6a68b03333d2"
+    },
+    "corp/knowledge/business/VC-EXAMPLE/CAP/CAP-EXAMPLE.md": {
+      "before": "5f2a6be6572dbd8a5a35e1a2891c1d20b8c91b5c3f4b3450d9b28fac987854c1",
+      "after": "5f2a6be6572dbd8a5a35e1a2891c1d20b8c91b5c3f4b3450d9b28fac987854c1"
+    },
+    "corp/knowledge/business/VC-EXAMPLE/CAP/index.md": {
+      "before": "86f9f071df4bc278af16b21139818564d648f29e91e9e545c8c40f9ef4570e02",
+      "after": "86f9f071df4bc278af16b21139818564d648f29e91e9e545c8c40f9ef4570e02"
+    },
+    "corp/knowledge/product/README.md": {
+      "before": "8d7690b3deedf973d96f3ace9711a3e6807965f0b007062d08a1caea7c8137a8",
+      "after": "8d7690b3deedf973d96f3ace9711a3e6807965f0b007062d08a1caea7c8137a8"
+    },
+    "corp/knowledge/product/index.md": {
+      "before": "5ce25bdc5eef9bfff69f3333fc5ccbd471f89777425ed972031d9769bf16f231",
+      "after": "5ce25bdc5eef9bfff69f3333fc5ccbd471f89777425ed972031d9769bf16f231"
+    },
+    "corp/knowledge/product/chapters/product-overview.md": {
+      "before": "60f4e61cafa606073d6481e1c51a10fbfd1ad9a42f085f995108a8b5159215d7",
+      "after": "60f4e61cafa606073d6481e1c51a10fbfd1ad9a42f085f995108a8b5159215d7"
+    },
+    "corp/knowledge/product/chapters/product-metrics.md": {
+      "before": "855cd47c27738e2f851adb27a49a4760123393df1d28f7cf2371676d2ac7fe28",
+      "after": "855cd47c27738e2f851adb27a49a4760123393df1d28f7cf2371676d2ac7fe28"
+    },
+    "corp/knowledge/product/chapters/index.md": {
+      "before": "eaffc55961148260e7d778b7cebdd25dd914aa249d2909167f5ca2f842b37a27",
+      "after": "eaffc55961148260e7d778b7cebdd25dd914aa249d2909167f5ca2f842b37a27"
+    },
+    "corp/knowledge/product/chapters/product-ux.md": {
+      "before": "71809cc60798c2af4314aa88fea1fd1f8bcb6915d02b821e29d01f82087f7a5c",
+      "after": "71809cc60798c2af4314aa88fea1fd1f8bcb6915d02b821e29d01f82087f7a5c"
+    },
+    "corp/knowledge/application/README.md": {
+      "before": "a5ed549f5b8d2271045a0c22a706d8f8f0d2c280d01de8fdd2d66df8969aa4a0",
+      "after": "a5ed549f5b8d2271045a0c22a706d8f8f0d2c280d01de8fdd2d66df8969aa4a0"
+    },
+    "corp/knowledge/application/index.md": {
+      "before": "42a48cae5925110eee41d89ab9af4a7cd5f4dad8e3eaeaf45f7099d44d89a61a",
+      "after": "42a48cae5925110eee41d89ab9af4a7cd5f4dad8e3eaeaf45f7099d44d89a61a"
+    },
+    "corp/knowledge/application/chapters/index.md": {
+      "before": "4e8221ac29344584e88ec4d7928d722d0bc912fe6ca9aded526bf92d0e7cc8ed",
+      "after": "4e8221ac29344584e88ec4d7928d722d0bc912fe6ca9aded526bf92d0e7cc8ed"
+    },
+    "corp/knowledge/application/chapters/application-architecture.md": {
+      "before": "3cdfa991be5e8763b03a76122e5999fbedee1f1647b06f3c4ffb334db5b6d1c4",
+      "after": "3cdfa991be5e8763b03a76122e5999fbedee1f1647b06f3c4ffb334db5b6d1c4"
+    },
+    "corp/knowledge/overview/README.md": {
+      "before": "1b61c0dbbee9d52d2381dec20150897367c8017e42f8fb8a4da450989e68d827",
+      "after": "1b61c0dbbee9d52d2381dec20150897367c8017e42f8fb8a4da450989e68d827"
+    },
+    "corp/knowledge/overview/NAME-overview.md": {
+      "before": "cabce14096ae54704ad749df7c208072f0b2cf885196b34a867e6ae4b1e3ae2f",
+      "after": "cabce14096ae54704ad749df7c208072f0b2cf885196b34a867e6ae4b1e3ae2f"
+    },
+    "corp/knowledge/overview/index.md": {
+      "before": "77f6206c0a8f4e9bd09ceea9cac5c2e3a92e84540fb4ffc9532cd57f86fe0760",
+      "after": "77f6206c0a8f4e9bd09ceea9cac5c2e3a92e84540fb4ffc9532cd57f86fe0760"
+    },
+    "corp/knowledge/data/README.md": {
+      "before": "bc327200635cb941d4401ff51c2417ec554d8ea05bf0f2ff42c9b424586de8cb",
+      "after": "bc327200635cb941d4401ff51c2417ec554d8ea05bf0f2ff42c9b424586de8cb"
+    },
+    "corp/knowledge/data/index.md": {
+      "before": "c2845861c54f78406da3b0d5a68869429411892bbf7420f6db544bb5ca458da8",
+      "after": "c2845861c54f78406da3b0d5a68869429411892bbf7420f6db544bb5ca458da8"
+    },
+    "corp/knowledge/data/chapters/data-governance.md": {
+      "before": "37b0ef7f9b062612297ac021c85e71c7cc736fb1dfb8910c9fc6a542c1532d1a",
+      "after": "37b0ef7f9b062612297ac021c85e71c7cc736fb1dfb8910c9fc6a542c1532d1a"
+    },
+    "corp/knowledge/data/chapters/data-overview.md": {
+      "before": "96e27858d3dd84c5303dd805527cf70c65391ce7d8ff9820e91d838bc8f0365d",
+      "after": "96e27858d3dd84c5303dd805527cf70c65391ce7d8ff9820e91d838bc8f0365d"
+    },
+    "corp/knowledge/data/chapters/data-warehouse-lake.md": {
+      "before": "a63cfe59e31b34354ac6359afd26d75b4a08a57bfe0a89edbdabbbbc0e369fb0",
+      "after": "a63cfe59e31b34354ac6359afd26d75b4a08a57bfe0a89edbdabbbbc0e369fb0"
+    },
+    "corp/knowledge/data/chapters/data-security-privacy.md": {
+      "before": "fd9a5e78cbd6d16a1c0ce84a7c5a873be4a4e39f02831e36eb8daecb9b069268",
+      "after": "fd9a5e78cbd6d16a1c0ce84a7c5a873be4a4e39f02831e36eb8daecb9b069268"
+    },
+    "corp/knowledge/data/chapters/index.md": {
+      "before": "5c6ec9b1cab26c33233784bcccdea5c4619e501852aa989e0150225a7401089c",
+      "after": "5c6ec9b1cab26c33233784bcccdea5c4619e501852aa989e0150225a7401089c"
+    },
+    "corp/knowledge/technical/README.md": {
+      "before": "5e2193f93ab26cea0d49cf3e6093145d53b315f0a0e9557a2863b6f350d56e4c",
+      "after": "5e2193f93ab26cea0d49cf3e6093145d53b315f0a0e9557a2863b6f350d56e4c"
+    },
+    "corp/knowledge/technical/index.md": {
+      "before": "1016cb5b0801392cf69c69a2b510ae0ed86ac3885cae40c0db0f72db6e1f5402",
+      "after": "1016cb5b0801392cf69c69a2b510ae0ed86ac3885cae40c0db0f72db6e1f5402"
+    },
+    "corp/knowledge/technical/chapters/technical-dev-environment.md": {
+      "before": "755b80976a98d27784f7a047623663c55b6273339ec9984a353effea1cccd937",
+      "after": "755b80976a98d27784f7a047623663c55b6273339ec9984a353effea1cccd937"
+    },
+    "corp/knowledge/technical/chapters/technical-infrastructure.md": {
+      "before": "0732049f74dbc283d3df8dfe4bf163a19c30aba88bfa7f85e76a12a09581b0bb",
+      "after": "0732049f74dbc283d3df8dfe4bf163a19c30aba88bfa7f85e76a12a09581b0bb"
+    },
+    "corp/knowledge/technical/chapters/technical-security.md": {
+      "before": "0c06a8c0f5619a3881aaf5890ec92746b5661542493cb356cc6da756bcfc03c5",
+      "after": "0c06a8c0f5619a3881aaf5890ec92746b5661542493cb356cc6da756bcfc03c5"
+    },
+    "corp/knowledge/technical/chapters/technical-overview.md": {
+      "before": "2650349f030cca7f4cdd25a5b145397a0c9dafd2dd1c51e9cc685a3f06332a20",
+      "after": "2650349f030cca7f4cdd25a5b145397a0c9dafd2dd1c51e9cc685a3f06332a20"
+    },
+    "corp/knowledge/technical/chapters/index.md": {
+      "before": "2d44836eee0fc9ce46110a515edfd2b4a6f2fd8d84708acbe099f0d3ba6c6217",
+      "after": "2d44836eee0fc9ce46110a515edfd2b4a6f2fd8d84708acbe099f0d3ba6c6217"
+    },
+    "corp/knowledge/technical/chapters/technical-devops.md": {
+      "before": "5a636f8a324e38ba6f9943688d1ccd065cf5c1f0e133ede328d09b3835325e8e",
+      "after": "5a636f8a324e38ba6f9943688d1ccd065cf5c1f0e133ede328d09b3835325e8e"
+    },
+    "corp/knowledge/technical/chapters/technical-observability.md": {
+      "before": "2ffc37e311713f63d92ce56a7b54b0bbd92838470abdd23b56acfd1f7f2fb09f",
+      "after": "2ffc37e311713f63d92ce56a7b54b0bbd92838470abdd23b56acfd1f7f2fb09f"
+    },
+    "corp/knowledge/technical/TPL/TPL-EXAMPLE.md": {
+      "before": "ad2af29127a451ba811719505e4251b15a0d5ba5d8cdd99ee726580661029d76",
+      "after": "ad2af29127a451ba811719505e4251b15a0d5ba5d8cdd99ee726580661029d76"
+    },
+    "corp/knowledge/technical/TPL/index.md": {
+      "before": "5da205ffce9ff1844cbcc9e14bd66a6ba2d8e14267cd318c928a71b88a1817c4",
+      "after": "5da205ffce9ff1844cbcc9e14bd66a6ba2d8e14267cd318c928a71b88a1817c4"
+    },
+    "corp/solution-slots/solution-example/knowledge/README.md": {
+      "before": "dbd1073f7fe68acffa98fcc5a0a78f673c1aabff5ae99b35a0abc246623f284c",
+      "after": "dbd1073f7fe68acffa98fcc5a0a78f673c1aabff5ae99b35a0abc246623f284c"
+    },
+    "corp/solution-slots/solution-example/knowledge/index.md": {
+      "before": "115459316aaf5c9afa0e0e0b18b78a74fe7b61f5e2137ac9d71b96400f06be09",
+      "after": "115459316aaf5c9afa0e0e0b18b78a74fe7b61f5e2137ac9d71b96400f06be09"
+    },
+    "corp/solution-slots/solution-example/knowledge/business/README.md": {
+      "before": "f1f3cbc8186f8dbc3e84c717f03ece74e94fb6006534df0e54e3aa9c4832c465",
+      "after": "f1f3cbc8186f8dbc3e84c717f03ece74e94fb6006534df0e54e3aa9c4832c465"
+    },
+    "corp/solution-slots/solution-example/knowledge/business/index.md": {
+      "before": "8eab706d086d10e7384be378a4bf3d59803ea64bf99276e8c5b5c6475bfe4da1",
+      "after": "8eab706d086d10e7384be378a4bf3d59803ea64bf99276e8c5b5c6475bfe4da1"
+    },
+    "corp/solution-slots/solution-example/knowledge/business/chapters/business-domain-division.md": {
+      "before": "4ee0e3d0c431f99ca58c642122ab4cc02c04f3f534c705f20b0bda68612694b1",
+      "after": "4ee0e3d0c431f99ca58c642122ab4cc02c04f3f534c705f20b0bda68612694b1"
+    },
+    "corp/solution-slots/solution-example/knowledge/business/chapters/index.md": {
+      "before": "f1762cd10a62fcdce3e44b752572b2651d19d5f06f492770f3cad5a764fc359f",
+      "after": "f1762cd10a62fcdce3e44b752572b2651d19d5f06f492770f3cad5a764fc359f"
+    },
+    "corp/solution-slots/solution-example/knowledge/business/chapters/business-overview.md": {
+      "before": "c18c9fa4e3250e96bbd71d23958e0dd18b3987fc7b1e34d6df63082f2e16fa66",
+      "after": "c18c9fa4e3250e96bbd71d23958e0dd18b3987fc7b1e34d6df63082f2e16fa66"
+    },
+    "corp/solution-slots/solution-example/knowledge/business/chapters/business-glossary.md": {
+      "before": "fae6213a58848c832c8cd5710448dd10084e4205ccb6009d608a136bd69d73b2",
+      "after": "fae6213a58848c832c8cd5710448dd10084e4205ccb6009d608a136bd69d73b2"
+    },
+    "corp/solution-slots/solution-example/knowledge/business/BS/index.md": {
+      "before": "1cd4fd3262e242f0411e6d96cd1da1c0dc864f1ceb60179553805c6f8d31f909",
+      "after": "1cd4fd3262e242f0411e6d96cd1da1c0dc864f1ceb60179553805c6f8d31f909"
+    },
+    "corp/solution-slots/solution-example/knowledge/business/BS/BS-EXAMPLE.md": {
+      "before": "0b2cf66a9503cc1e12ffb7eaadfca30e1656ab5a20297dc4e80decbe29082ed1",
+      "after": "0b2cf66a9503cc1e12ffb7eaadfca30e1656ab5a20297dc4e80decbe29082ed1"
+    },
+    "corp/solution-slots/solution-example/knowledge/business/BSD-EXAMPLE-L1/index.md": {
+      "before": "207d358f836961416254beee68737dac2eed04e6323e2d21e019fcc2e3590c30",
+      "after": "207d358f836961416254beee68737dac2eed04e6323e2d21e019fcc2e3590c30"
+    },
+    "corp/solution-slots/solution-example/knowledge/business/BSD-EXAMPLE-L1/BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md": {
+      "before": "64469024eb253a15b2474c36a8c8bfdb3045ba25989d82068137165ae3bab056",
+      "after": "64469024eb253a15b2474c36a8c8bfdb3045ba25989d82068137165ae3bab056"
+    },
+    "corp/solution-slots/solution-example/knowledge/business/BSD-EXAMPLE-L1/BSD-EXAMPLE-L2/index.md": {
+      "before": "06353cb1ad302a62aa7665e6c5b6311312929c930c4d5e1af4c2495b1b95d674",
+      "after": "06353cb1ad302a62aa7665e6c5b6311312929c930c4d5e1af4c2495b1b95d674"
+    },
+    "corp/solution-slots/solution-example/knowledge/product/README.md": {
+      "before": "d34237a8e847557178ce17dee16f2a219bc5a499fe6881e4a76a71e1900eaec8",
+      "after": "d34237a8e847557178ce17dee16f2a219bc5a499fe6881e4a76a71e1900eaec8"
+    },
+    "corp/solution-slots/solution-example/knowledge/product/index.md": {
+      "before": "7f23d998f6829adf60b53a5436508618300d9518e0256814928cc5adef886d2f",
+      "after": "7f23d998f6829adf60b53a5436508618300d9518e0256814928cc5adef886d2f"
+    },
+    "corp/solution-slots/solution-example/knowledge/product/BP/BP-EXAMPLE.md": {
+      "before": "97f1261e22de183dfa494b238b7c8757f2fd82f80cd540f932626bd8ef0ec258",
+      "after": "97f1261e22de183dfa494b238b7c8757f2fd82f80cd540f932626bd8ef0ec258"
+    },
+    "corp/solution-slots/solution-example/knowledge/product/BP/index.md": {
+      "before": "5f23897a7b4821eb9698842e3fe33baec3e99672a02db8e931aadf0d33a100f8",
+      "after": "5f23897a7b4821eb9698842e3fe33baec3e99672a02db8e931aadf0d33a100f8"
+    },
+    "corp/solution-slots/solution-example/knowledge/product/BP/BSP-EXAMPLE.md": {
+      "before": "61eb969c2cbaa76d15730eea3430fc7cf2a7a8c52dfd9e2cd806363ed19800eb",
+      "after": "61eb969c2cbaa76d15730eea3430fc7cf2a7a8c52dfd9e2cd806363ed19800eb"
+    },
+    "corp/solution-slots/solution-example/knowledge/product/chapters/product-overview.md": {
+      "before": "5fdfe9e21e7ba460ccc130c0ee53d1b94a1caeeced0c829334d999fe4e5e9de7",
+      "after": "5fdfe9e21e7ba460ccc130c0ee53d1b94a1caeeced0c829334d999fe4e5e9de7"
+    },
+    "corp/solution-slots/solution-example/knowledge/product/chapters/product-line.md": {
+      "before": "c71e8adc29e93ad18ec3b98cc83b8d6fa09812b4ea9fb42a6b4098b2bae4bd1a",
+      "after": "c71e8adc29e93ad18ec3b98cc83b8d6fa09812b4ea9fb42a6b4098b2bae4bd1a"
+    },
+    "corp/solution-slots/solution-example/knowledge/product/chapters/index.md": {
+      "before": "136fb0e4507dec979419c08ebf04c5a946b8c5e9ddb35b0be2eba8c5e05faafb",
+      "after": "136fb0e4507dec979419c08ebf04c5a946b8c5e9ddb35b0be2eba8c5e05faafb"
+    },
+    "corp/solution-slots/solution-example/knowledge/product/chapters/product-architecture.md": {
+      "before": "6dd835a9e98bf4c562275f12abc3ba37b90270d7fee8b60b81e9e7502a3a0959",
+      "after": "6dd835a9e98bf4c562275f12abc3ba37b90270d7fee8b60b81e9e7502a3a0959"
+    },
+    "corp/solution-slots/solution-example/knowledge/product/PL-EXAMPLE/index.md": {
+      "before": "c7eeda2fecd1c0d05d0f5a51bf22b10d46ee6c8b67cc97b3d3bf871129e827e9",
+      "after": "c7eeda2fecd1c0d05d0f5a51bf22b10d46ee6c8b67cc97b3d3bf871129e827e9"
+    },
+    "corp/solution-slots/solution-example/knowledge/product/PL-EXAMPLE/PD-EXAMPLE.md": {
+      "before": "523b9291cd175125a1fe73e75e4225f7faa4bfe8032ac5b4bda49f45efe7b98f",
+      "after": "523b9291cd175125a1fe73e75e4225f7faa4bfe8032ac5b4bda49f45efe7b98f"
+    },
+    "corp/solution-slots/solution-example/knowledge/product/PL-EXAMPLE/PL-EXAMPLE.md": {
+      "before": "af7b0aacb85b917ba03612aa437978e978eba2279da0311e9d3b0117a5052aa2",
+      "after": "af7b0aacb85b917ba03612aa437978e978eba2279da0311e9d3b0117a5052aa2"
+    },
+    "corp/solution-slots/solution-example/knowledge/application/SLN-EXAMPLE.md": {
+      "before": "fa6b670563c7240196d8befea9adc709260051976fd566c14aaba7fd9db5a007",
+      "after": "fa6b670563c7240196d8befea9adc709260051976fd566c14aaba7fd9db5a007"
+    },
+    "corp/solution-slots/solution-example/knowledge/application/README.md": {
+      "before": "bf90005e0fd9b9932f83889891d667eca948f72d064e36ec2a17acd852e4155b",
+      "after": "bf90005e0fd9b9932f83889891d667eca948f72d064e36ec2a17acd852e4155b"
+    },
+    "corp/solution-slots/solution-example/knowledge/application/index.md": {
+      "before": "e04772a5d463dd58d72c815d78f183d2000fcf68a09d3a5b31c958784c5d7f7f",
+      "after": "e04772a5d463dd58d72c815d78f183d2000fcf68a09d3a5b31c958784c5d7f7f"
+    },
+    "corp/solution-slots/solution-example/knowledge/application/chapters/application-overview.md": {
+      "before": "c637067ad713542662190446501157b638c7c062acc00a7c8702312a4e1f02df",
+      "after": "c637067ad713542662190446501157b638c7c062acc00a7c8702312a4e1f02df"
+    },
+    "corp/solution-slots/solution-example/knowledge/application/chapters/index.md": {
+      "before": "0791e66492570b45d58956191fdf3e5e0347f0f8d1a237cabe0b7b147518b4d9",
+      "after": "0791e66492570b45d58956191fdf3e5e0347f0f8d1a237cabe0b7b147518b4d9"
+    },
+    "corp/solution-slots/solution-example/knowledge/application/chapters/application-architecture.md": {
+      "before": "4562b976c17d2e63ef4f9268155d1a8e5c3849228b620eeb786d87465a631a1a",
+      "after": "4562b976c17d2e63ef4f9268155d1a8e5c3849228b620eeb786d87465a631a1a"
+    },
+    "corp/solution-slots/solution-example/knowledge/overview/README.md": {
+      "before": "73193b3f2fb8dd5db5a40bce480fde38fff0404a209a3e9a6520ea853c01aa88",
+      "after": "73193b3f2fb8dd5db5a40bce480fde38fff0404a209a3e9a6520ea853c01aa88"
+    },
+    "corp/solution-slots/solution-example/knowledge/overview/NAME-overview.md": {
+      "before": "65e8ce48b6a57a596382ce77d8730d437913700e451d697025ffa40ca676ff51",
+      "after": "65e8ce48b6a57a596382ce77d8730d437913700e451d697025ffa40ca676ff51"
+    },
+    "corp/solution-slots/solution-example/knowledge/overview/index.md": {
+      "before": "3ac1efdc916b0953e3aba9138c180b09d96c1d97f143396b1c20891fee3316b9",
+      "after": "3ac1efdc916b0953e3aba9138c180b09d96c1d97f143396b1c20891fee3316b9"
+    },
+    "corp/solution-slots/solution-example/knowledge/data/MDG-EXAMPLE.md": {
+      "before": "56b50cad312f7c6b6a62051a670ddda2df8b97bfa938fe21bb5265759d09d930",
+      "after": "56b50cad312f7c6b6a62051a670ddda2df8b97bfa938fe21bb5265759d09d930"
+    },
+    "corp/solution-slots/solution-example/knowledge/data/README.md": {
+      "before": "83ced153e843b63aac8458ead86f373b510e1b1600d658c875e02356a2c9ab81",
+      "after": "83ced153e843b63aac8458ead86f373b510e1b1600d658c875e02356a2c9ab81"
+    },
+    "corp/solution-slots/solution-example/knowledge/data/index.md": {
+      "before": "48e5ce15c6fcaeee6c89d1cd50eb0e62a391b2c1ffe6b15d4474efd87dc380a0",
+      "after": "48e5ce15c6fcaeee6c89d1cd50eb0e62a391b2c1ffe6b15d4474efd87dc380a0"
+    },
+    "corp/solution-slots/solution-example/knowledge/data/chapters/data-overview.md": {
+      "before": "4c42180b2d0fc7b2ce824784be2dd7fc6fe8a265a90e2d09a23a9afde3d6f206",
+      "after": "4c42180b2d0fc7b2ce824784be2dd7fc6fe8a265a90e2d09a23a9afde3d6f206"
+    },
+    "corp/solution-slots/solution-example/knowledge/data/chapters/index.md": {
+      "before": "96c8334619f9115004d929c66dbd09447821d900b533d905daa32a5e54794f57",
+      "after": "96c8334619f9115004d929c66dbd09447821d900b533d905daa32a5e54794f57"
+    },
+    "corp/solution-slots/solution-example/knowledge/data/chapters/data-model.md": {
+      "before": "15072225db2a9186f7d90483ab37cbd41b8a72efcb2478ef05f60f99798cc0bf",
+      "after": "15072225db2a9186f7d90483ab37cbd41b8a72efcb2478ef05f60f99798cc0bf"
+    },
+    "corp/solution-slots/solution-example/knowledge/technical/README.md": {
+      "before": "402ca92ca0c7a53ad1495757973cd2b90524d34ed253c0b8c5e218dc75e77fe1",
+      "after": "402ca92ca0c7a53ad1495757973cd2b90524d34ed253c0b8c5e218dc75e77fe1"
+    },
+    "corp/solution-slots/solution-example/knowledge/technical/index.md": {
+      "before": "d9916e29674f8d7f958ce7e552040c1f5d24246bc944b61e0f6132d376d82f41",
+      "after": "d9916e29674f8d7f958ce7e552040c1f5d24246bc944b61e0f6132d376d82f41"
+    },
+    "corp/solution-slots/solution-example/knowledge/technical/chapters/technical-infrastructure.md": {
+      "before": "9b45ffd2d12f12a5198dca617d29e9a01e2f8eafb24e262b91b80c05b6d7ba50",
+      "after": "9b45ffd2d12f12a5198dca617d29e9a01e2f8eafb24e262b91b80c05b6d7ba50"
+    },
+    "corp/solution-slots/solution-example/knowledge/technical/chapters/technical-overview.md": {
+      "before": "c4a0bac698627854bc75239e778ef0c5f6962666ab38e9f5772dd52e36886fba",
+      "after": "c4a0bac698627854bc75239e778ef0c5f6962666ab38e9f5772dd52e36886fba"
+    },
+    "corp/solution-slots/solution-example/knowledge/technical/chapters/index.md": {
+      "before": "eb463b8a74a3bdad5b83e36deab946050aef59f939d181b0004e2d2122e22996",
+      "after": "eb463b8a74a3bdad5b83e36deab946050aef59f939d181b0004e2d2122e22996"
+    },
+    "corp/solution-slots/solution-example/knowledge/technical/chapters/technical-observability.md": {
+      "before": "a8abcf6d3e7819621fd0f4776b53b337a4d0517197c29c504e906f0c5204aea1",
+      "after": "a8abcf6d3e7819621fd0f4776b53b337a4d0517197c29c504e906f0c5204aea1"
+    },
+    "corp/solution-slots/solution-example/knowledge/technical/TS/index.md": {
+      "before": "eb0055b7944deccfa4cec4caa540b9097c7c5f08cc32d24c23f8dac6f53b6533",
+      "after": "eb0055b7944deccfa4cec4caa540b9097c7c5f08cc32d24c23f8dac6f53b6533"
+    },
+    "corp/solution-slots/solution-example/knowledge/technical/TS/TS-EXAMPLE.md": {
+      "before": "0e8aa601145241c61a6671f58ef09f04e34b46619adfd9c0ec61322485953441",
+      "after": "0e8aa601145241c61a6671f58ef09f04e34b46619adfd9c0ec61322485953441"
+    }
+  },
+  "response_summary": "根据BD/BSD/BL和槽位PL核实映射，只将旧三节稿第3节待确认行替换为PL-EXAMPLE通过BL-EXAMPLE对接BSD-EXAMPLE。单文件校验退出0；名字、id、总图链接、第1/2节保持。",
+  "not_run": [
+    "domains-map-001",
+    "domains-chain-002",
+    "domains-pl-003",
+    "domains-layer-004",
+    "domains-missing-id-005",
+    "domains-broken-chain-006",
+    "domains-f-fill-008",
+    "domains-explicit-rewrite-009",
+    "domains-no-new-entity-010",
+    "domains-unverified-pl-011",
+    "domains-clarify-first-012"
+  ],
+  "limitations": [
+    "真实续写一项；历史触发成绩仍不作为当前发现验证。",
+    "文件独立核对，操作读取与校验结果依据执行者摘要，无完整工具转录。"
+  ]
+}
