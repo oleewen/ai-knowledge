@@ -4,12 +4,13 @@ set -euo pipefail
 usage() {
   cat <<'USAGE'
 Usage:
-  run-docs-distill.sh --name NAME [--doc-dir system|solution|company]
+  run-docs-distill.sh --name NAME [--doc-dir RELATIVE_PATH] [--layer system|solution|company]
                       [--dry-run] [--root DIR]
 
 Options:
   --name NAME       源名称；必填。--app 为兼容别名
-  --doc-dir LAYER   目标层；优先级高于 DOC_DIR 和 .docsconfig
+  --doc-dir PATH    实际文档相对目录；优先级高于 DOC_DIR 和 .docsconfig
+  --layer LAYER     知识层；优先级高于 KNOWLEDGE_TYPE 和 .docsconfig
   --dry-run         只校验并输出预览模式，不写 overview
   --root DIR        目标仓根；默认从当前目录向上查找 .docsconfig 或 .git
   -h, --help        显示帮助
@@ -20,6 +21,7 @@ USAGE
 
 name=""
 doc_dir_arg=""
+layer_arg=""
 dry_run=false
 root_arg=""
 
@@ -33,6 +35,11 @@ while [[ $# -gt 0 ]]; do
     --doc-dir)
       [[ $# -ge 2 ]] || { echo "[ERROR] --doc-dir 缺少值" >&2; usage >&2; exit 2; }
       doc_dir_arg="$2"
+      shift 2
+      ;;
+    --layer)
+      [[ $# -ge 2 ]] || { echo "[ERROR] --layer 缺少值" >&2; exit 2; }
+      layer_arg="$2"
       shift 2
       ;;
     --dry-run)
@@ -101,47 +108,50 @@ if [[ ! -d "$root_dir" ]]; then
   exit 1
 fi
 
-read_doc_dir() {
-  local candidate=""
-  if [[ -n "$doc_dir_arg" ]]; then
-    candidate="$doc_dir_arg"
-  elif [[ -n "${DOC_DIR:-}" ]]; then
-    candidate="$DOC_DIR"
-  elif [[ -f "$root_dir/.docsconfig" ]]; then
-    candidate="$(awk -F= '$1 == "DOC_DIR" {gsub(/["'"'"' ]/, "", $2); sub(/\r$/, "", $2); print $2; exit}' "$root_dir/.docsconfig")"
-  fi
-  candidate="${candidate#./}"
-  candidate="${candidate%/}"
-  printf '%s' "$candidate"
-}
-
-doc_dir="$(read_doc_dir)"
-case "$doc_dir" in
-  system|solution|company) ;;
-  "")
-    echo "[ERROR] 无法解析 DOC_DIR；请传 --doc-dir system|solution|company，或设置 DOC_DIR / .docsconfig" >&2
-    exit 1
-    ;;
-  *)
-    echo "[ERROR] DOC_DIR 须为 system|solution|company（当前: ${doc_dir}）；application overview 请走 docs-extract" >&2
-    exit 1
-    ;;
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Shared parser reads values without executing configuration text.
+source "$SCRIPT_DIR/../../../scripts/lib/docsconfig.sh"
+config_repo='' config_doc='' config_agent='' config_type=''
+if [[ -f "$root_dir/.docsconfig" ]]; then
+  docsconfig_read_into "$root_dir/.docsconfig" config_repo config_doc config_agent config_type
+fi
+doc_dir="${doc_dir_arg:-${DOC_DIR:-$config_doc}}"
+doc_dir="${doc_dir#./}"
+doc_dir="${doc_dir%/}"
+docsconfig_validate_doc_dir "$doc_dir" || exit 1
+layer="${layer_arg:-${KNOWLEDGE_TYPE:-$config_type}}"
+# Legacy standard directory names, including explicit meta-repository layers.
+if [[ -z "$layer" || "$layer" == meta ]]; then
+  case "$doc_dir" in
+    system|solution|company) layer="$doc_dir" ;;
+    *) echo "[ERROR] 自定义 DOC_DIR 须提供 KNOWLEDGE_TYPE 或 --layer，不能从目录名猜层" >&2; exit 1 ;;
+  esac
+fi
+case "$layer" in
+  system) slot_kind=application ;;
+  solution) slot_kind=system ;;
+  company) slot_kind=solution ;;
+  *) echo "[ERROR] KNOWLEDGE_TYPE/--layer 须为 system|solution|company；DOC_DIR=$doc_dir" >&2; exit 1 ;;
 esac
-
-case "$doc_dir" in
-  system)
-    slot_dir="$root_dir/system/application-slots/application-$name"
-    overview_dir="$root_dir/system/knowledge/overview"
-    ;;
-  solution)
-    slot_dir="$root_dir/solution/system-slots/system-$name"
-    overview_dir="$root_dir/solution/knowledge/overview"
-    ;;
-  company)
-    slot_dir="$root_dir/company/solution-slots/solution-$name"
-    overview_dir="$root_dir/company/knowledge/overview"
-    ;;
+if [[ ! -d "$root_dir/$doc_dir" ]]; then
+  echo "[ERROR] DOC_DIR 目录不存在: $doc_dir" >&2
+  exit 1
+fi
+doc_root="$(cd "$root_dir/$doc_dir" && pwd -P)"
+case "$doc_root/" in
+  "$root_dir/"*) ;;
+  *) echo "[ERROR] DOC_DIR 越出目标仓: $doc_dir" >&2; exit 1 ;;
 esac
+slot_dir="$doc_root/$slot_kind-slots/$slot_kind-$name"
+overview_dir="$doc_root/knowledge/overview"
+# The source slot may be a federation symlink; the output tree may not escape.
+if [[ -d "$overview_dir" ]]; then
+  physical_overview="$(cd "$overview_dir" && pwd -P)"
+  case "$physical_overview/" in
+    "$doc_root/"*) ;;
+    *) echo "[ERROR] overview 目录越出文档根: $overview_dir" >&2; exit 1 ;;
+  esac
+fi
 
 template="$overview_dir/NAME-overview.md"
 target="$overview_dir/$name-overview.md"
@@ -167,7 +177,11 @@ else
   echo "[OK] 模板: ${template#$root_dir/}"
 fi
 
-if [[ -f "$target" ]]; then
+if [[ -L "$target" || ( -e "$target" && ! -f "$target" ) ]]; then
+  echo "[ERROR] 目标冲突（须为普通文件或不存在）: ${target#$root_dir/}" >&2
+  target_state="conflict"
+  errors=$((errors + 1))
+elif [[ -f "$target" ]]; then
   target_state="update"
   echo "[OK] 目标: ${target#$root_dir/}（更新）"
 else
@@ -178,6 +192,7 @@ fi
 printf '\n=== docs-distill 校验摘要 ===\n'
 printf ' root     : %s\n' "$root_dir"
 printf ' doc_dir  : %s\n' "$doc_dir"
+printf ' layer    : %s\n' "$layer"
 printf ' name     : %s\n' "$name"
 printf ' mode     : full\n'
 printf ' target   : %s\n' "${slot_dir#$root_dir/} -> ${target#$root_dir/}"

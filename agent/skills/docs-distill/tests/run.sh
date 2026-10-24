@@ -3,6 +3,7 @@ set -euo pipefail
 
 TEST_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export PYTHONDONTWRITEBYTECODE=1
+export DOCS_DISTILL_TEST_BASH="$BASH"
 # Fail closed when discovery collects no executable cases.
 python3 -B - "$TEST_ROOT" <<'PYTHON'
 import sys

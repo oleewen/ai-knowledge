@@ -27,7 +27,7 @@
 | 知识生成与构建 | `/docs-build` | 五视角实体 ID → per-entity `{ID}.md`、视角 README、`INDEX-GUIDE.md` 第四章视角导航块 |
 | 知识生成与构建 | `/docs-tag` | 四层 `{NAME}-overview.md` 关键词：候选附录、表行 ✅、架构摘录；`--scan-dir` 默认同层 `knowledge/`。轻流程。见 [workflow.md](docs-tag/references/workflow.md) |
 | 知识生成与构建 | `/docs-extract` | `--sources / --overview / --dry-run` → 非槽位源写四层 overview 第三列 |
-| 知识生成与构建 | `/docs-distill` | `--doc-dir system\|solution\|company` + `--name` + 可选 `--dry-run` → 槽位上行全量写目标层 `overview` 第三列（不写 DISTILL-LOG） |
+| 知识生成与构建 | `/docs-distill` | `--doc-dir` 为实际文档目录，知识层由 `--layer` / `KNOWLEDGE_TYPE` 确定；`--name` + 可选 `--dry-run` → 槽位上行全量写目标层 `overview` 第三列（不写 DISTILL-LOG） |
 | 知识生成与构建 | `/docs-archive` | overview 表行 → 四层视角章节；冲突策略；方案确认书=意图澄清 |
 | 知识库维护 | `/docs-revise` | 术语/路径链式同步 + 定向纠错；烤干修订后走协议 simplify 遍；整篇结构交 `/docs-simplify` |
 | 知识库维护 | `/docs-merge` | `<source> <target>`〔`--dry-run`〕→ 按目标 H2/H3 章节合入；新增确认、类似合并、冲突 grilling；源只读 |

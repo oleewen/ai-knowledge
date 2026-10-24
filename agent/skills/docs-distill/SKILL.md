@@ -12,11 +12,15 @@ description: >
 
 ## 适用边界
 
-| `DOC_DIR` | 源槽位 | 目标 overview |
-| --- | --- | --- |
-| `system` | `system/application-slots/application-{NAME}/` | `system/knowledge/overview/{NAME}-overview.md` |
-| `solution` | `solution/system-slots/system-{NAME}/` | `solution/knowledge/overview/{NAME}-overview.md` |
-| `company` | `company/solution-slots/solution-{NAME}/` | `company/knowledge/overview/{NAME}-overview.md` |
+`DOC_DIR` 是实际文档相对目录，`KNOWLEDGE_TYPE` 是知识层，不能互相代替。
+
+| 知识层 | 相对 DOC_DIR 的源槽位 |
+| --- | --- |
+| `system` | `application-slots/application-{NAME}/` |
+| `solution` | `system-slots/system-{NAME}/` |
+| `company` | `solution-slots/solution-{NAME}/` |
+
+目标均为 `{DOC_DIR}/knowledge/overview/{NAME}-overview.md`。路径覆盖、旧调用兼容见 [workflow.md](references/workflow.md)。
 
 - 模式恒为全量；不支持 `--since`，不写 `DISTILL-LOG`。
 - `application/knowledge/overview` 不是本技能目标；请走 `docs-extract` 或 `docs-archive`。
@@ -24,9 +28,9 @@ description: >
 
 ## 门禁
 
-1. 先收口 `DOC_DIR`、`--name`、写入或 `--dry-run`，确认目标是单一 overview。
+1. 先收口 `DOC_DIR`、知识层、`--name`、写入或 `--dry-run`，确认目标是单一 overview。
 2. 按 [scope-clarity.md](references/scope-clarity.md) 读取落盘契约，闭合目标职责、源职责、表行粒度和跨层收束。契约缺失、模糊或冲突时硬停；结论先落盘，再继续。
-3. 输出公共六项澄清与职责/粒度摘要，获写前 `C` 后才能执行或预览。
+3. 核对职责/粒度摘要；明确的只读预览可直接执行。正式写入完成公共六项澄清并核对授权，已有同范围有效授权沿用。
 4. 全量读取槽位知识与 SDD，按 [federation-spec.md](references/federation-spec.md) 去重，只写第三列 delta（`A/U/D`）。
 5. 写入或预览后按本地写后规则烤干；受众维 A/B/C/E 未通过，不得宣称收敛。当前单元收敛后停等 `C/M/G/S/F`。
 
@@ -34,20 +38,20 @@ description: >
 
 共享协议只在以下文件维护：
 
-- 写前与动作：`agent/references/intent-clarify.md`、`agent/references/unit-cycle-protocol.md`
-- 写后烤干：`agent/references/grilling-skill.md`
-- 精简原则：`agent/references/simplify-principles.md`
+- 写前与动作：[意图澄清](../../references/intent-clarify.md)、[单元推进](../../references/unit-cycle-protocol.md)
+- 写后烤干：[grilling](../../references/grilling-skill.md)
+- 精简原则：[精简原则](../../references/simplify-principles.md)
 
 ## 脚本
 
 ```bash
-bash agent/skills/docs-distill/scripts/run-docs-distill.sh \
-  --root /path/to/repo --doc-dir system --name billing-appeal --dry-run
+bash "$SKILL_DIR/scripts/run-docs-distill.sh" \
+  --root /path/to/repo --doc-dir docs --layer system --name billing-appeal --dry-run
 ```
 
 槽位异常先用 [docs-link](../docs-link/SKILL.md) 检查/修复；缺仓或内容过旧按各仓普通 Git 工作流处理。
 
-脚本要求槽位存在且非空、槽位根有 `README.md`、目标层模板存在；通过后仍由 Agent 按契约生成正文。详见 [workflow.md](references/workflow.md)。
+`SKILL_DIR` 为已加载技能的绝对目录。脚本需要 Bash 5+ 与整套 Agent 共享配置库；仅执行前置校验，不生成正文。要求槽位存在且非空、槽位根有 `README.md`、目标层模板存在；通过后仍由 Agent 按契约生成正文。详见 [workflow.md](references/workflow.md)。
 
 ## 按需读取
 

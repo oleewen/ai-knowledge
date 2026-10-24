@@ -1,0 +1,78 @@
+{
+  "date": "2026-10-24",
+  "fixture": "/private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-distill-blind-cg3isy4j",
+  "script_tests": {
+    "status": "pass",
+    "count": 12
+  },
+  "records": [
+    {
+      "case_id": "distill-custom-dir",
+      "status": "pass",
+      "response_summary": "真实前置脚本退出0，识别 nested/docs 与 system 层；未创建overview，明确仅路径检查。",
+      "file_hashes": {
+        "application-slots/application-billing-appeal/README.md": {
+          "before": "41ef2222c4bc5633eb4bc5b589b037312226b8474e0567dacb2f8f699af0ebc3",
+          "after": "41ef2222c4bc5633eb4bc5b589b037312226b8474e0567dacb2f8f699af0ebc3"
+        },
+        "application-slots/application-billing-appeal/knowledge/README.md": {
+          "before": "b0efda99d287d69079541d44f6d622755b52641b749a66eea3c8be2669db9560",
+          "after": "b0efda99d287d69079541d44f6d622755b52641b749a66eea3c8be2669db9560"
+        },
+        "knowledge/overview/NAME-overview.md": {
+          "before": "4d7caf6cc999063bbf5a61518a1e4b745d2f918003fe57b3a61902927cacbe4d",
+          "after": "4d7caf6cc999063bbf5a61518a1e4b745d2f918003fe57b3a61902927cacbe4d"
+        }
+      },
+      "logs": {
+        "custom/logs/call.1zBYEu.args": "--name billing-appeal --dry-run ",
+        "custom/logs/call.1zBYEu": "",
+        "custom/logs/call.1zBYEu.output": "[OK] 槽位: nested/docs/application-slots/application-billing-appeal\n[OK] 模板: nested/docs/knowledge/overview/NAME-overview.md\n[INFO] 目标: nested/docs/knowledge/overview/billing-appeal-overview.md（从模板创建）\n\n=== docs-distill 校验摘要 ===\n root     : /private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-distill-blind-cg3isy4j/custom\n doc_dir  : nested/docs\n layer    : system\n name     : billing-appeal\n mode     : full\n target   : nested/docs/application-slots/application-billing-appeal -> nested/docs/knowledge/overview/billing-appeal-overview.md\n state    : create\n dry_run  : true\n write    : 本脚本不写 overview / DISTILL-LOG；正文由 Agent 执行\n[DONE] 校验通过；请 Agent 按 scope-clarity 与 federation-spec 继续。\n",
+        "custom/logs/call.1zBYEu.status": "0\n"
+      },
+      "target_state": "absent"
+    },
+    {
+      "case_id": "distill-target-conflict",
+      "status": "pass",
+      "response_summary": "真实前置脚本退出1，报告目标目录冲突；未删除或覆盖对象，未声称蒸馏完成。",
+      "file_hashes": {
+        "application-slots/application-billing-appeal/README.md": {
+          "before": "41ef2222c4bc5633eb4bc5b589b037312226b8474e0567dacb2f8f699af0ebc3",
+          "after": "41ef2222c4bc5633eb4bc5b589b037312226b8474e0567dacb2f8f699af0ebc3"
+        },
+        "application-slots/application-billing-appeal/knowledge/README.md": {
+          "before": "b0efda99d287d69079541d44f6d622755b52641b749a66eea3c8be2669db9560",
+          "after": "b0efda99d287d69079541d44f6d622755b52641b749a66eea3c8be2669db9560"
+        },
+        "knowledge/overview/NAME-overview.md": {
+          "before": "4d7caf6cc999063bbf5a61518a1e4b745d2f918003fe57b3a61902927cacbe4d",
+          "after": "4d7caf6cc999063bbf5a61518a1e4b745d2f918003fe57b3a61902927cacbe4d"
+        }
+      },
+      "logs": {
+        "conflict/logs/call.0F6gBn.output": "[OK] 槽位: nested/docs/application-slots/application-billing-appeal\n[OK] 模板: nested/docs/knowledge/overview/NAME-overview.md\n[ERROR] 目标冲突（须为普通文件或不存在）: nested/docs/knowledge/overview/billing-appeal-overview.md\n\n=== docs-distill 校验摘要 ===\n root     : /private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-distill-blind-cg3isy4j/conflict\n doc_dir  : nested/docs\n layer    : system\n name     : billing-appeal\n mode     : full\n target   : nested/docs/application-slots/application-billing-appeal -> nested/docs/knowledge/overview/billing-appeal-overview.md\n state    : conflict\n dry_run  : true\n write    : 本脚本不写 overview / DISTILL-LOG；正文由 Agent 执行\n[FAIL] 校验未通过（1）\n",
+        "conflict/logs/call.0F6gBn.status": "1\n",
+        "conflict/logs/call.0F6gBn": "",
+        "conflict/logs/call.0F6gBn.args": "--name billing-appeal --dry-run "
+      },
+      "target_state": "directory"
+    }
+  ],
+  "not_run": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    "distill-audience-001",
+    6,
+    7,
+    8
+  ],
+  "limitations": [
+    "模型仅验证路径前置，不证明语义蒸馏、契约闭合或正文写入。",
+    "保留响应摘要与文件对照，未导出完整模型工具转录。",
+    "盲测后仅修正旧评测文案与已修订流程的一致性，生产脚本未再变。"
+  ]
+}

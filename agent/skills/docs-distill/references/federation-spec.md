@@ -4,11 +4,7 @@
 
 ## 目标边
 
-| `DOC_DIR` | 源槽位 | 目标 |
-| --- | --- | --- |
-| `system` | `system/application-slots/application-{NAME}/` | `system/knowledge/overview/{NAME}-overview.md` |
-| `solution` | `solution/system-slots/system-{NAME}/` | `solution/knowledge/overview/{NAME}-overview.md` |
-| `company` | `company/solution-slots/solution-{NAME}/` | `company/knowledge/overview/{NAME}-overview.md` |
+路径与知识层分开解析，见 [工作流参数与路径](workflow.md#参数与路径)。源槽位位于实际 DOC_DIR 下，按 system←application、solution←system、company←solution 选择前缀；目标为 `{DOC_DIR}/knowledge/overview/{NAME}-overview.md`。
 
 目标不存在时，从同层 `NAME-overview.md` 创建，并同步替换文件名和标题。`application/knowledge/overview` 不属于本技能目标；非槽位源走 `docs-extract`。
 
@@ -23,7 +19,7 @@
 1. 优先读表行副标题链接的锚点小节；锚点不可读时读主标题整章。
 2. 目标层已有段落或实体已实质覆盖要点时，第三列写 `—` 或保持不动。
 3. 事实一致、只是表述不同，也视为已覆盖。
-4. 目标 overview 的旧第三列和其它列仅用于比对已有覆盖，不是新事实来源；源正文用于提炼事实，不能仅据此判定目标层已覆盖。
+4. 目标 overview 的旧第三列用于核对待归档项，不是新事实来源，也不能单独证明知识正文已覆盖；覆盖结论必须来自上述目标正文。源正文用于提炼事实，不能仅据此判定目标层已覆盖。
 
 ### A/U/D
 
