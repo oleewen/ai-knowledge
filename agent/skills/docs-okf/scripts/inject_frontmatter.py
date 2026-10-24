@@ -12,6 +12,7 @@ from typing import Any, Dict, Iterator, Optional, Tuple
 SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
 import okf_lib  # noqa: E402
+from artifact_checks import check_output  # noqa: E402
 
 EXACT_GOVERNANCE: Dict[str, Dict[str, Any]] = {
     "README.md": {"type": "Documentation Root", "tags": ["governance"]},
@@ -123,6 +124,7 @@ def run_inject(bundle: str, dry_run: bool = False) -> Tuple[int, int, int]:
 
     injected = skipped = unchanged = 0
     for path in iter_markdown_files(bundle_root):
+        check_output(path, bundle_root)
         relpath = path.relative_to(bundle_root).as_posix()
         text = path.read_text(encoding="utf-8")
         if should_skip_injection(relpath, text):

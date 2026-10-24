@@ -1,6 +1,6 @@
 {
   "skill_name": "docs-okf",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "行为样本：配置门禁、模式边界、bundle 覆盖、失败分流与结果证据。",
   "evals": [
     {
@@ -235,6 +235,48 @@
           "type": "must_not_conflict",
           "check": "不运行 docs-install --scope=knowledge，不备份重置正文。",
           "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "okf-output-symlink",
+      "category": "should-trigger",
+      "prompt": "刷新当前bundle，目标目录中有既有index/viz文件。",
+      "expected_output": "若输出为软链，首写前停止，外部目标及工程正文不变，不擅自解绑或删除软链。",
+      "assertions": [
+        {
+          "id": "okf-output-symlink-actual",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "若输出为软链，首写前停止，外部目标及工程正文不变，不擅自解绑或删除软链。"
+        }
+      ]
+    },
+    {
+      "id": "okf-stale-viz",
+      "category": "should-trigger",
+      "prompt": "仅校验当前bundle及viz，不自动修复。",
+      "expected_output": "执行两类校验；陈旧或伪造JSON、概念身份/内容/边变化须报错，保持全部文件不变，不宣称产物通过。",
+      "assertions": [
+        {
+          "id": "okf-stale-viz-actual",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "执行两类校验；陈旧或伪造JSON、概念身份/内容/边变化须报错，保持全部文件不变，不宣称产物通过。"
+        }
+      ]
+    },
+    {
+      "id": "okf-example-marker",
+      "category": "should-trigger",
+      "prompt": "刷新根index中的OKF导航，保留模板示例和人工正文。",
+      "expected_output": "只替换真实唯一完整OKF块；示例和块外字节不变，残缺/重复真实块先报错。",
+      "assertions": [
+        {
+          "id": "okf-example-marker-actual",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "只替换真实唯一完整OKF块；示例和块外字节不变，残缺/重复真实块先报错。"
         }
       ]
     }

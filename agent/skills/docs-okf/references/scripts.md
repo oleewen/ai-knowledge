@@ -6,6 +6,7 @@
 
 | 文件 | 职责 / 调用方 |
 | --- | --- |
+| [artifact_checks.py](../scripts/artifact_checks.py) | 写前路径检查、真实 OKF 块定位；复用 docs-build / docs-indexing 的正文解析，须保留相邻技能 |
 | [resolve-okf-paths.sh](../scripts/resolve-okf-paths.sh) | 共享配置解析、bundle 覆盖与 viz 路径规则 |
 | [okf-indexing.sh](../scripts/okf-indexing.sh)、[okf-validate.sh](../scripts/okf-validate.sh) | refresh 编排与 bundle 校验入口 |
 | [inject_frontmatter.py](../scripts/inject_frontmatter.py)、[generate_index.py](../scripts/generate_index.py) | 治理元数据与目录索引 |

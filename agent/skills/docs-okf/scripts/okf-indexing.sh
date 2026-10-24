@@ -95,6 +95,7 @@ inject_args=(
   "$OKF_DIR/inject_frontmatter.py"
   --bundle "$BUNDLE"
 )
+run_cmd "output-preflight" python3 "$OKF_DIR/artifact_checks.py" --bundle "$BUNDLE" --viz "$OKF_VIZ_OUT"
 if [[ "$DRY_RUN" -eq 1 ]]; then
   inject_args+=(--dry-run)
 fi

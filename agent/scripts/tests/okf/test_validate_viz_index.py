@@ -10,6 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(ROOT / "agent" / "skills" / "docs-okf" / "scripts"))
 import validate_viz_index  # noqa: E402
+import visualize  # noqa: E402
 
 
 def test_validate_viz_index_passes_for_complete_bundle() -> None:
@@ -28,7 +29,7 @@ def test_validate_viz_index_passes_for_complete_bundle() -> None:
             encoding="utf-8",
         )
         (bundle / "INDEX-GUIDE.md").write_text(
-            "# INDEX-GUIDE\n\n"
+            "# INDEX-GUIDE\n\n## 四、领域模型\n"
             "<!-- docs-build:entity-index:begin -->\n"
             "### 视角入口\n"
             "- [business](knowledge/business/README.md)\n"
@@ -53,13 +54,7 @@ def test_validate_viz_index_passes_for_complete_bundle() -> None:
         )
 
         viz = bundle / "viz.html"
-        viz.write_text(
-            "<html><head><title>application OKF</title></head>"
-            "<body><script>"
-            'window.__OKF_DATA__ = {"name": "application OKF", "concepts": {"knowledge/business/BD-EXAMPLE": {}}, "edges": []};'
-            "</script></body></html>",
-            encoding="utf-8",
-        )
+        visualize.generate_visualization(bundle, viz, "application OKF")
 
         assert validate_viz_index.validate(bundle, viz) == 0
 

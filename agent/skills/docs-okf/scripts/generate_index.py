@@ -12,6 +12,7 @@ from typing import AbstractSet, Dict, List, Optional, Tuple
 SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
 import okf_lib  # noqa: E402
+from artifact_checks import check_output, okf_block_span  # noqa: E402
 
 
 def _repo_root() -> Path:
@@ -224,12 +225,6 @@ def render_index_body(
     lines.append("")
     return "\n".join(lines).rstrip() + "\n"
 
-_RE_OKF_BLOCK = re.compile(
-    r"<!--\s*okf:begin\s*-->.*?<!--\s*okf:end\s*-->",
-    flags=re.DOTALL,
-)
-
-
 def _render_okf_root_block(
     directory: Path, planned_directories: AbstractSet[Path] = frozenset()
 ) -> str:
@@ -241,39 +236,27 @@ def _render_okf_root_block(
     return "# OKF 渐进披露\n\n" + body_wo_h1
 
 
-def _split_frontmatter(text: str) -> tuple[str, str]:
-    if not text.lstrip().startswith("---"):
-        return "", text
-    lines = text.splitlines(keepends=True)
-    start = None
-    for i, line in enumerate(lines):
-        if line.strip() == "---":
-            start = i
-            break
-        if line.strip():
-            return "", text
-    if start is None:
-        return "", text
-    for j in range(start + 1, len(lines)):
-        if lines[j].strip() == "---":
-            fm = "".join(lines[: j + 1]).rstrip() + "\n"
-            body = "".join(lines[j + 1 :]).lstrip("\n")
-            return fm, body
-    return "", text
-
-
 def _upsert_okf_block_in_index(index_path: Path, okf_block: str) -> str:
     okf_block = okf_block.rstrip() + "\n"
     okf_wrapped = (
         "<!-- okf:begin -->\n" + okf_block + "<!-- okf:end -->\n"
     )
-    existing = index_path.read_text(encoding="utf-8") if index_path.is_file() else ""
-    fm, body = _split_frontmatter(existing)
-    if _RE_OKF_BLOCK.search(body):
-        body = _RE_OKF_BLOCK.sub(okf_wrapped, body, count=1)
-    else:
-        body = okf_wrapped + "\n" + body.lstrip("\n")
-    return (fm + body).rstrip() + "\n"
+    existing = ""
+    if index_path.is_file():
+        with index_path.open(encoding="utf-8", newline="") as stream:
+            existing = stream.read()
+    newline = "\r\n" if "\r\n" in existing else "\n"
+    okf_wrapped = okf_wrapped.replace("\n", newline)
+    span = okf_block_span(existing)
+    if span:
+        start, end = span
+        return existing[:start] + okf_wrapped.rstrip("\r\n") + existing[end:]
+    # Insert after metadata without normalizing any existing body bytes.
+    metadata = re.match(r"\A(?:\ufeff)?---[^\S\r\n]*\r?\n.*?^(?:---|\.\.\.)[^\S\r\n]*(?:\r?\n|$)",
+                        existing, re.DOTALL | re.MULTILINE)
+    offset = metadata.end() if metadata else 0
+    separator = newline if offset and not existing[:offset].endswith("\n") else ""
+    return existing[:offset] + separator + okf_wrapped + newline + existing[offset:]
 
 
 def write_index(
@@ -283,12 +266,14 @@ def write_index(
     planned_directories: AbstractSet[Path] = frozenset(),
 ) -> bool:
     index_path = directory / "index.md"
+    check_output(index_path, bundle_root)
     if _is_bundle_root(bundle_root, directory):
         okf_block = _render_okf_root_block(directory, planned_directories)
         merged = _upsert_okf_block_in_index(index_path, okf_block)
         if dry_run:
             return True
-        index_path.write_text(merged, encoding="utf-8")
+        with index_path.open("w", encoding="utf-8", newline="") as stream:
+            stream.write(merged)
         return True
 
     existing_meta: Dict[str, object] = {}

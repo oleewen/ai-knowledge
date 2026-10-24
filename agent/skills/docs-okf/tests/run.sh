@@ -27,6 +27,7 @@ done
 export BASH
 python3 -B "$TEST_ROOT/test_entrypoints.py"
 python3 -B "$TEST_ROOT/test_validation.py"
+python3 -B "$TEST_ROOT/test_artifact_safety.py"
 python3 -B "$TEST_ROOT/test_visualize_security.py"
 
 echo "[OK] docs-okf tests passed"

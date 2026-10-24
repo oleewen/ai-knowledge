@@ -1,0 +1,83 @@
+{
+  "date": "2026-10-24",
+  "fixture": "/private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-okf-blind-3tcshfv1",
+  "records": [
+    {
+      "case": "symlink",
+      "status": "pass",
+      "unchanged_files": {
+        "viz.html": {
+          "symlink": "/private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-okf-blind-3tcshfv1/symlink/outside.md"
+        },
+        ".agents": {
+          "symlink": "/private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-okf-blind-3tcshfv1/runtime/agent"
+        },
+        "agent": {
+          "symlink": "/private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-okf-blind-3tcshfv1/runtime/agent"
+        },
+        "index.md": {
+          "sha256": "0ba54f3d06d29bb55db6b06cbb92c95da162a3d5102e1deff4a1882e234dc3a2"
+        },
+        "INDEX-GUIDE.md": {
+          "sha256": "6ccd0544e13577a64c7b26bba2ca1f2479c683720d766ef7ebe742abda12375f"
+        },
+        "knowledge/index.md": {
+          "sha256": "267fd81790eaec1cb0c637cf1764ef6f5222cf935cb72fa04ab9cab1243672ef"
+        },
+        "knowledge/business/BD-EXAMPLE.md": {
+          "sha256": "0c7dab1a238829b417d0991fc974a662c6d46b4e9ab7113683d95f23e9d78113"
+        },
+        "knowledge/business/index.md": {
+          "sha256": "619e66e71eec5de725ffc2a7ac055d3a013d65e9ceec3405b964ceda4fb039f3"
+        }
+      },
+      "calls": {
+        "call.ZCmHam": "",
+        "call.ZCmHam.args": "refresh ",
+        "call.ZCmHam.output": "=== okf-refresh ===\nrepo_abs:      /private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-okf-blind-3tcshfv1/symlink\nDOC_DIR:        docs\nAGENT_DIR:      agent\nOKF_SCRIPTS:    /private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-okf-blind-3tcshfv1/symlink/docs/agent/skills/docs-okf/scripts\nKNOWLEDGE_TYPE: application\nBUNDLE:         docs\nOKF_VIZ_OUT:    docs/viz.html\n\n=== output-preflight ===\n>>> python3 /private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-okf-blind-3tcshfv1/symlink/docs/agent/skills/docs-okf/scripts/artifact_checks.py --bundle docs --viz docs/viz.html \nerror: refuse-output-symlink: docs/viz.html\n",
+        "call.ZCmHam.status": "1\n"
+      },
+      "response_summary": "刷新被预检阻止，退出1 refuse-output-symlink；确认viz指向bundle外outside.md，未写index/viz，后续两类校验未执行；未解绑、重试、改配置或外部文件。"
+    },
+    {
+      "case": "stale",
+      "status": "pass",
+      "unchanged_files": {
+        "viz.html": {
+          "sha256": "eecc96b32c93d6faea3ddb7e69b860d1ceb430ed126c5fa0670ed53a7db7c458"
+        },
+        ".agents": {
+          "symlink": "/private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-okf-blind-3tcshfv1/runtime/agent"
+        },
+        "agent": {
+          "symlink": "/private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-okf-blind-3tcshfv1/runtime/agent"
+        },
+        "index.md": {
+          "sha256": "0ba54f3d06d29bb55db6b06cbb92c95da162a3d5102e1deff4a1882e234dc3a2"
+        },
+        "INDEX-GUIDE.md": {
+          "sha256": "6ccd0544e13577a64c7b26bba2ca1f2479c683720d766ef7ebe742abda12375f"
+        },
+        "knowledge/index.md": {
+          "sha256": "267fd81790eaec1cb0c637cf1764ef6f5222cf935cb72fa04ab9cab1243672ef"
+        },
+        "knowledge/business/BD-EXAMPLE.md": {
+          "sha256": "e9c92335f4633f6d9d8d913e3653a29cffd47b1ce9a9dabbb941f53e02dbab5a"
+        },
+        "knowledge/business/index.md": {
+          "sha256": "619e66e71eec5de725ffc2a7ac055d3a013d65e9ceec3405b964ceda4fb039f3"
+        }
+      },
+      "calls": {
+        "call.wp6vMF": "",
+        "call.wp6vMF.args": "validate ",
+        "call.wp6vMF.output": "=== validate-okf ===\nrepo_abs:      /private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-okf-blind-3tcshfv1/stale\nDOC_DIR:        docs\nAGENT_DIR:      agent\nOKF_SCRIPTS:    /private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-okf-blind-3tcshfv1/stale/docs/agent/skills/docs-okf/scripts\nKNOWLEDGE_TYPE: application\nBUNDLE:         docs\nOKF_VIZ_OUT:    docs/viz.html\n\n=== OKF v1 bundle 校验 ===\n仓库路径: /private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-okf-blind-3tcshfv1/stale\nBUNDLE:    docs\nBUNDLE_ROOT: /private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-okf-blind-3tcshfv1/stale/docs\n\n\n=== OKF v1 校验结果 ===\nbundle: /private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-okf-blind-3tcshfv1/stale/docs\n扫到 .md 文件: 5\nid 总数: 1\n错误: 0  警告: 0\nOKF v1 schema 验证通过。\n[ERROR] viz-bundle-mismatch: concepts or edges differ from current bundle: /private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-okf-blind-3tcshfv1/stale/docs/viz.html\n",
+        "call.wp6vMF.status": "1\n"
+      },
+      "response_summary": "校验未通过，退出1；bundle通过5Markdown/1ID/0error，产物viz-bundle-mismatch；未刷新或修复，导航块未单独检查。"
+    }
+  ],
+  "not_run": 11,
+  "regression": "5 Bash + 22 Python initially (1 browser skip); final duplicate attribute fix adds one Python test, artifacts9/9 passed; shared OKF all passed",
+  "limitation": "Frozen model runtime precedes final duplicate HTML attribute guard and dead helper cleanup. Final guard independently reviewed and9/9 regression. No browser interaction changes; browser test not run. Access is instruction scoped, not OS sandbox."
+}

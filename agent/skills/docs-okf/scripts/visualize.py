@@ -643,6 +643,8 @@ def generate_visualization(
     out_path: Path,
     name: str,
 ) -> None:
+    from artifact_checks import check_output
+    check_output(out_path, bundle_root)
     data = build_bundle_data(bundle_root, name)
     html = render_html(data)
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -663,7 +665,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         print(f"error: bundle 不存在: {bundle_root}", file=sys.stderr)
         return 1
 
-    out_path = (repo / args.out).resolve()
+    out_path = repo / args.out
     generate_visualization(bundle_root, out_path, args.name)
     size = out_path.stat().st_size
     print(f"wrote {out_path} ({size} bytes, {len(list(okf_lib.scan_concepts(bundle_root)))} concepts)")

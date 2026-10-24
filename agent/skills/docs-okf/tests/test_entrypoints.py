@@ -43,7 +43,7 @@ class EntrypointTests(unittest.TestCase):
         business.mkdir(parents=True)
         (bundle / "index.md").write_text('---\nokf_version: "0.1"\n---\n# Root\n', encoding="utf-8")
         (bundle / "INDEX-GUIDE.md").write_text(
-            "# INDEX-GUIDE\n<!-- docs-build:entity-index:begin -->\n"
+            "# INDEX-GUIDE\n## 四、领域模型\n<!-- docs-build:entity-index:begin -->\n"
             "### 视角入口\n<!-- docs-build:entity-index:end -->\n", encoding="utf-8"
         )
         (business / "BD-EXAMPLE.md").write_text(
@@ -147,6 +147,26 @@ class EntrypointTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertNotIn("=== validate-viz-index ===", result.stdout)
         self.assertNotIn("okf-refresh 完成", result.stdout)
+
+    def test_output_preflight_stops_before_any_refresh_write(self):
+        for relative in ("index.md", "viz.html", "knowledge/business/index.md", "README.md"):
+            with self.subTest(relative=relative):
+                target = self.default / relative
+                saved = target.read_bytes() if target.exists() else None
+                if target.exists():
+                    target.unlink()
+                sentinel = self.workspace / "outside"
+                sentinel.write_text("KEEP")
+                target.symlink_to(sentinel)
+                before = self.snapshot()
+                result = self.run_entry("okf-indexing.sh")
+                self.assertNotEqual(result.returncode, 0)
+                self.assertNotIn("=== inject_frontmatter ===", result.stdout)
+                self.assertEqual(before, self.snapshot())
+                self.assertEqual(sentinel.read_text(), "KEEP")
+                target.unlink()
+                if saved is not None:
+                    target.write_bytes(saved)
 
 
 if __name__ == "__main__":

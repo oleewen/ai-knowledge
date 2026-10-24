@@ -4,15 +4,18 @@
 from __future__ import annotations
 
 import argparse
-import re
+from html.parser import HTMLParser
+import json
 import sys
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
 import okf_lib  # noqa: E402
+from artifact_checks import okf_block_span  # noqa: E402
+from generate_knowledge_index import entity_block_span, ENTITY_BEGIN  # noqa: E402
+from visualize import build_bundle_data  # noqa: E402
 
-ROOT_INDEX_MARKERS = ("<!-- okf:begin -->", "<!-- okf:end -->")
 KNOWLEDGE_NAV_MARKERS = ("## 子目录", "## 目录文件")
 KNOWLEDGE_ENTITY_MARKERS = (
     "### 视角入口",
@@ -20,7 +23,53 @@ KNOWLEDGE_ENTITY_MARKERS = (
     "knowledge/README.md",
 )
 VIZ_MARKERS = ('"concepts"', '"edges"', "<html")
-SKIP_VIZ_NAMES = frozenset({"INDEXING-LOG.md", "KNOWLEDGE-INDEX.md", "INDEX-GUIDE.md"})
+
+
+class BundleDataParser(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=False)
+        self.payloads = []
+        self.active = False
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "script" and ("id", "okf-bundle-data") in attrs:
+            for name in ("id", "type"):
+                if sum(key == name for key, _ in attrs) > 1:
+                    raise ValueError(f"duplicate viz data attribute: {name}")
+        attrs = dict(attrs)
+        if tag == "script" and attrs.get("id") == "okf-bundle-data":
+            if attrs.get("type") != "application/json":
+                raise ValueError("viz data script must use application/json")
+            self.payloads.append("")
+            self.active = True
+
+    def handle_data(self, data):
+        if self.active:
+            self.payloads[-1] += data
+
+    def handle_endtag(self, tag):
+        if tag == "script":
+            self.active = False
+
+
+def unique_object(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate JSON key: {key}")
+        result[key] = value
+    return result
+
+
+def embedded_bundle(text: str) -> dict:
+    parser = BundleDataParser()
+    parser.feed(text)
+    if len(parser.payloads) != 1 or parser.active:
+        raise ValueError("viz must contain one closed okf-bundle-data script")
+    value = json.loads(parser.payloads[0], object_pairs_hook=unique_object)
+    if not isinstance(value, dict) or not isinstance(value.get("concepts"), dict) or not isinstance(value.get("edges"), list):
+        raise ValueError("viz concepts/edges schema is invalid")
+    return value
 
 
 def _error(msg: str) -> int:
@@ -55,7 +104,11 @@ def validate(bundle_root: Path, viz_path: Path) -> int:
             return _error(f"missing-dir-index: {path / 'index.md'}")
 
     root_text = root_index.read_text(encoding="utf-8")
-    if not all(marker in root_text for marker in ROOT_INDEX_MARKERS):
+    try:
+        root_span = okf_block_span(root_text)
+    except ValueError as exc:
+        return _error(str(exc))
+    if root_span is None:
         return _error(f"missing-okf-block: {root_index}")
 
     nav_text = knowledge_nav.read_text(encoding="utf-8")
@@ -63,9 +116,13 @@ def validate(bundle_root: Path, viz_path: Path) -> int:
         return _error(f"missing-knowledge-nav-sections: {knowledge_nav}")
 
     guide_text = root_guide.read_text(encoding="utf-8")
-    if "docs-build:entity-index:begin" not in guide_text:
+    try:
+        span = entity_block_span(guide_text)
+    except ValueError as exc:
+        return _error(f"invalid-entity-index-block: {exc}")
+    if span is None or not guide_text[span[0]:span[1]].startswith(ENTITY_BEGIN):
         return _error(f"missing-entity-index-block: {root_guide}")
-    if not any(marker in guide_text for marker in KNOWLEDGE_ENTITY_MARKERS):
+    if not any(marker in guide_text[span[0]:span[1]] for marker in KNOWLEDGE_ENTITY_MARKERS):
         return _error(f"missing-knowledge-entity-sections: {root_guide}")
 
     if not viz_path.is_file():
@@ -77,14 +134,15 @@ def validate(bundle_root: Path, viz_path: Path) -> int:
     if not all(marker in viz_text for marker in VIZ_MARKERS):
         return _error(f"viz-missing-markers: {viz_path}")
 
-    concept_count = sum(
-        1 for path in okf_lib.scan_concepts(bundle_root) if path.name not in SKIP_VIZ_NAMES
-    )
-    embedded_count = len(re.findall(r'"knowledge/[^"]+"\s*:', viz_text))
-    if concept_count == 0:
-        return _error(f"viz-bundle-mismatch: no concepts under {bundle_root}")
-    if embedded_count == 0:
-        return _error(f"viz-bundle-mismatch: no embedded concepts in {viz_path}")
+    try:
+        embedded = embedded_bundle(viz_text)
+        expected = build_bundle_data(bundle_root, "validation")
+    except (OSError, ValueError) as exc:
+        return _error(f"viz-invalid-data: {exc}")
+    if embedded["concepts"] != expected["concepts"] or embedded["edges"] != expected["edges"]:
+        return _error(f"viz-bundle-mismatch: concepts or edges differ from current bundle: {viz_path}")
+    concept_count = len(expected["concepts"])
+    embedded_count = len(embedded["concepts"])
 
     print(
         f"OK: bundle={bundle_root} viz={viz_path} concepts={concept_count} embedded={embedded_count}"

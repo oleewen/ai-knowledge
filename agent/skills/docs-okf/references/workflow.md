@@ -16,13 +16,16 @@ refresh 按序调用；每步都使用解析后的 `BUNDLE`：
 
 | 步骤 | 行为 |
 | --- | --- |
+| `artifact_checks.py` | 首写前检查输出路径与根 OKF 标记；文件软链、越出 bundle 的父路径、非普通输出或残缺/重复真实块均停止 |
 | `inject_frontmatter.py` | 仅为匹配的治理文档补 frontmatter；跳过已有元数据、实体和保留名 |
 | `generate_index.py --recursive` | 根 `index.md` 更新 `okf:begin/end` 块；无 frontmatter 的子目录索引重建，并保留阅读顺序与关联索引；已有 frontmatter 的子目录索引跳过；knowledge 根索引不生成库外导航，并清理旧生成器的上一级索引/说明链接 |
 | `visualize.py` | 覆盖目标 bundle 内的 `viz.html` |
 | `okf-validate.sh` | 校验概念 frontmatter、ID、章节、链接与 index 条目 |
-| `validate_viz_index.py` | 检查目录索引、viz 与 `INDEX-GUIDE.md` 第四章实体导航块 |
+| `validate_viz_index.py` | 检查真实索引/导航标记，解析唯一 JSON 数据块；核对当前 bundle 的概念身份、内容和边，拒绝陈旧、缺失、多余、重复键或无效数据 |
 
 `dry-run` 仍核对配置与目录，但只打印上述命令；它不证明产物校验通过。目录遍历跳过隐藏目录与目录软链，避免进入安装树或联邦槽位。
+
+根索引仅更新真实正文中的唯一 OKF 块，排除元数据与代码示例，保留块外字节及换行。写入入口不跟随文件软链；遇到旧产物冲突时报告具体路径，不自动删除或替换软链。校验器也要求当前 JSON 格式，旧版内联 JavaScript 产物需在获得刷新授权后重建。
 
 ## validate / viz
 

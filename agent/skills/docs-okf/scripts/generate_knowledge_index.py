@@ -37,6 +37,8 @@ def _load_build_module():
 _build = _load_build_module()
 render_knowledge_index = _build.render_knowledge_index
 patch_index_guide = _build.patch_index_guide
+markdown_body = _build.markdown_body
+entity_block_span = _build.entity_block_span
 render_entity_index_block = _build.render_entity_index_block
 ENTITY_BEGIN = _build.ENTITY_BEGIN
 ENTITY_END = _build.ENTITY_END
