@@ -16,6 +16,8 @@
 
 ## 验证与报告
 
+同一 JSON 的 `discovery_cases` 独立验证自然语言发现：只给请求及可用技能目录，不预先指定或加载 sdx-solution。记录实际技能读取与文件操作；不得用显式 `$sdx-solution` 场景推定发现率。其状态与加载后的 `evals` 分开汇总，尚未运行保持 `not_run`。
+
 从仓库根以 Bash 5+ 运行 `bash agent/skills/sdx-solution/tests/run.sh`，检查校验器的参数、身份、版本链、正文禁区及只读性。此命令不执行自然语言行为用例。
 
 评测产物时，从临时 `repo/` 调用源仓库 `validate-solution.sh --file <产物路径>`；版本链检查仍覆盖整个 `solutions/`。空段可通过结构检查，须另外核实本轮授权段的实质内容。

@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-24",
+  "case": "solution-readonly",
+  "status": "pass",
+  "script_tests": 51,
+  "fixture": "/private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/sdx-solution-audit-gpho6v82",
+  "unchanged_hashes": {
+    ".docsconfig": "0daff160edcf4f516db1acd3f7c23a4c93f4b295fe5b15dd59725eaa37dc7bf7",
+    "docs/solutions/SOLUTION-261022-审批.md": "17e13d4db1629e0721c28e2484719d5b685ab16893c2036aefea450ae7f63200",
+    "docs/knowledge/MDG-CUSTOMER.md": "8ff198f5a7b544239996622ba5481608398dd8d7bcfe11f713feecc3c677ed1b",
+    "docs/knowledge/index.md": "4af6ffa37942a59f9d12a4e05abca385bc40142e9f7c0aa96513ea11cef31338",
+    "docs/knowledge/BP-APPROVE.md": "bd09e5b990da369aff9834e1f75e7fd291bafea46644df9e6f2a0f3931117f8a",
+    "docs/knowledge/PD-APPROVAL.md": "354c038e9556232e71e908d1c5812206520a84b0a5e91a0a54f561497c343e5d"
+  },
+  "response_summary": "指出第32行主数据主权为空；现有MDG-CUSTOMER明确公司客户中心维护、PD-APPROVAL只读。第34行技术例外为空且缺TS/技术基准，不能写成无例外。只读不运行写作向导、不改文件。",
+  "not_run": [
+    "solution-layer",
+    "solution-fork",
+    "solution-continue",
+    "solution-missing-entity",
+    "solution-unknown-baseline",
+    "solution-new"
+  ],
+  "discovery_not_run": [
+    "solution-discovery-positive",
+    "solution-discovery-negative"
+  ],
+  "limitations": [
+    "加载后行为验证1项；自然语言发现2项仅定义，未实测。",
+    "依据响应摘要和独立文件核验，不保留完整工具转录。"
+  ]
+}

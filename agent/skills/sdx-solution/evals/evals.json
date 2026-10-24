@@ -14,20 +14,36 @@
       "id": "solution-layer",
       "category": "boundary",
       "prompt": "使用 $sdx-solution 在当前库创建审批交付包方案。",
-      "files": {".docsconfig": "AGENT_ROOT={{EVAL_ROOT}}/agent-home\nAGENT_DIR=agents\nREPO_DIR=repo\nDOC_DIR=docs\nKNOWLEDGE_TYPE=application\n"},
+      "files": {
+        ".docsconfig": "AGENT_ROOT={{EVAL_ROOT}}/agent-home\nAGENT_DIR=agents\nREPO_DIR=repo\nDOC_DIR=docs\nKNOWLEDGE_TYPE=application\n"
+      },
       "assertions": [
-        {"id": "layer", "check": "读取配置后识别 application 层级不支持，说明承接方向。"},
-        {"id": "unchanged", "check": "不新增方案或需求文件，不修改配置；完整工作区无变化。"}
+        {
+          "id": "layer",
+          "check": "读取配置后识别 application 层级不支持，说明承接方向。"
+        },
+        {
+          "id": "unchanged",
+          "check": "不新增方案或需求文件，不修改配置；完整工作区无变化。"
+        }
       ]
     },
     {
       "id": "solution-fork",
       "category": "boundary",
       "prompt": "使用 $sdx-solution，以 SOLUTION-261022-审批 为前驱创建 SOLUTION-261024-新审批。",
-      "files": {"docs/solutions/SOLUTION-261023-审批二期.md": "---\nid: \"SOLUTION-261023-审批二期\"\ntitle: \"审批二期\"\nversion: \"1.0.0\"\nstatus: \"draft\"\ncreated: \"2026-10-22\"\nupdated: \"2026-10-22\"\nauthor: \"评测夹具\"\nparent: \"SOLUTION-261022-审批\"\ndependencies: []\ntags: []\n---\n\n# 审批二期\n\n## 这次改了什么\n\n补充审批协作说明。\n\n## 为什么这样切\n\n## 范围内外\n\n## 流程怎么串\n\n## 主数据主权\n\n## 技术例外\n"},
+      "files": {
+        "docs/solutions/SOLUTION-261023-审批二期.md": "---\nid: \"SOLUTION-261023-审批二期\"\ntitle: \"审批二期\"\nversion: \"1.0.0\"\nstatus: \"draft\"\ncreated: \"2026-10-22\"\nupdated: \"2026-10-22\"\nauthor: \"评测夹具\"\nparent: \"SOLUTION-261022-审批\"\ndependencies: []\ntags: []\n---\n\n# 审批二期\n\n## 这次改了什么\n\n补充审批协作说明。\n\n## 为什么这样切\n\n## 范围内外\n\n## 流程怎么串\n\n## 主数据主权\n\n## 技术例外\n"
+      },
       "assertions": [
-        {"id": "chain", "check": "核对版本链，发现前驱已有后继，停止新建。"},
-        {"id": "unchanged", "check": "没有生成新文件；前驱、后继和配置字节保持不变。"}
+        {
+          "id": "chain",
+          "check": "核对版本链，发现前驱已有后继，停止新建。"
+        },
+        {
+          "id": "unchanged",
+          "check": "没有生成新文件；前驱、后继和配置字节保持不变。"
+        }
       ]
     },
     {
@@ -36,9 +52,18 @@
       "prompt": "使用 $sdx-solution 续写当前草稿 docs/solutions/SOLUTION-261022-审批.md，仅补“主数据主权”当前段。前四段已确认并须保留。目标、范围和路径已确认，本轮直接写入授权等同写前 C：依据 knowledge 已有关系说明 PD-APPROVAL 只读 MDG-CUSTOMER，权威维护者为公司客户中心。该段之外不写；写后执行烤干并停在本段。",
       "files": {},
       "assertions": [
-        {"id": "authorization", "check": "读取原稿和知识文件后实际写入当前段，不重复索取同一授权。"},
-        {"id": "content", "check": "主数据主权写明读取关系与真实维护者；前四段及技术例外段原字节不变。"},
-        {"id": "scope", "check": "不另建版本、实体或改配置；写后评审本段，不继续补技术例外。"}
+        {
+          "id": "authorization",
+          "check": "读取原稿和知识文件后实际写入当前段，不重复索取同一授权。"
+        },
+        {
+          "id": "content",
+          "check": "主数据主权写明读取关系与真实维护者；前四段及技术例外段原字节不变。"
+        },
+        {
+          "id": "scope",
+          "check": "不另建版本、实体或改配置；写后评审本段，不继续补技术例外。"
+        }
       ]
     },
     {
@@ -47,8 +72,14 @@
       "prompt": "使用 $sdx-solution 续写当前草稿，仅补主数据主权，请写 PD-APPROVAL 使用 MDG-SECRET。本轮已授权写入。",
       "files": {},
       "assertions": [
-        {"id": "missing", "check": "检查现有知识后识别 MDG-SECRET 不存在，不将它写成已核实实体。"},
-        {"id": "unchanged", "check": "报告实体或关系证据缺口；完整工作区无变化。"}
+        {
+          "id": "missing",
+          "check": "检查现有知识后识别 MDG-SECRET 不存在，不将它写成已核实实体。"
+        },
+        {
+          "id": "unchanged",
+          "check": "报告实体或关系证据缺口；完整工作区无变化。"
+        }
       ]
     },
     {
@@ -57,8 +88,14 @@
       "prompt": "使用 $sdx-solution 续写当前草稿，仅补技术例外，直接写“没有技术例外”。我授权本轮写入。",
       "files": {},
       "assertions": [
-        {"id": "baseline", "check": "核实公司技术基准和 TS 未提供，指出不能由此推导无例外。"},
-        {"id": "unchanged", "check": "不将未知写成无例外，不生成虚构 TS 或实体；完整工作区无变化。"}
+        {
+          "id": "baseline",
+          "check": "核实公司技术基准和 TS 未提供，指出不能由此推导无例外。"
+        },
+        {
+          "id": "unchanged",
+          "check": "不将未知写成无例外，不生成虚构 TS 或实体；完整工作区无变化。"
+        }
       ]
     },
     {
@@ -67,20 +104,51 @@
       "prompt": "使用 $sdx-solution 只读审查当前审批方案的主数据主权与技术例外缺口，给建议。",
       "files": {},
       "assertions": [
-        {"id": "review", "check": "指出空段、可核实的主数据关系以及未提供的技术基准，不声称全篇完成。"},
-        {"id": "unchanged", "check": "完整工作区无文件变化，不启动写作或另建版本。"}
+        {
+          "id": "review",
+          "check": "指出空段、可核实的主数据关系以及未提供的技术基准，不声称全篇完成。"
+        },
+        {
+          "id": "unchanged",
+          "check": "完整工作区无文件变化，不启动写作或另建版本。"
+        }
       ]
     },
     {
       "id": "solution-new",
       "category": "write",
       "prompt": "使用 $sdx-solution，在当前库新建首份 SOLUTION-261024-审批，标题“审批交付包”。当前段仅“这次改了什么”，说明首次将 PD-APPROVAL 的申请审核职责切成单独交付包。目标、范围、路径 docs/solutions/SOLUTION-261024-审批.md 与依据已确认，本轮直接写入等同写前 C。写后烤干并停在当前段。",
-      "files": {"docs/solutions/SOLUTION-261022-审批.md": null},
+      "files": {
+        "docs/solutions/SOLUTION-261022-审批.md": null
+      },
       "assertions": [
-        {"id": "write", "check": "核实层级、版本链和 PD-APPROVAL 后，在指定位置实际新建。"},
-        {"id": "structure", "check": "沿用六段骨架，仅首段有正文；parent 为空、id 与文件名一致，真实运行结构校验。"},
-        {"id": "scope", "check": "knowledge 和配置字节不变，不创建额外实体、不推进下一段。"}
+        {
+          "id": "write",
+          "check": "核实层级、版本链和 PD-APPROVAL 后，在指定位置实际新建。"
+        },
+        {
+          "id": "structure",
+          "check": "沿用六段骨架，仅首段有正文；parent 为空、id 与文件名一致，真实运行结构校验。"
+        },
+        {
+          "id": "scope",
+          "check": "knowledge 和配置字节不变，不创建额外实体、不推进下一段。"
+        }
       ]
+    }
+  ],
+  "discovery_cases": [
+    {
+      "id": "solution-discovery-positive",
+      "prompt": "把现有审批交付包的范围、流程和主数据主权写成可评审方案，放在当前解决方案库。",
+      "expected": "选择并实际读取sdx-solution；只处理已授权范围。",
+      "status": "not_run"
+    },
+    {
+      "id": "solution-discovery-negative",
+      "prompt": "解释主数据主权是什么意思，给一个审批系统的例子；不要创建或修改文档。",
+      "expected": "直接解释概念，不启动方案写作或创建文件。",
+      "status": "not_run"
     }
   ]
 }
