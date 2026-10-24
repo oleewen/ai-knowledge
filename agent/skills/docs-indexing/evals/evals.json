@@ -1,6 +1,6 @@
 {
   "skill_name": "docs-indexing",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "验证路由、真实读取、单文件锚点与只读/写入边界。评分依据实际动作和产物，不匹配固定话术。",
   "evals": [
     {
@@ -212,6 +212,36 @@
           "type": "behavior",
           "priority": "P0",
           "check": "已提交变更来源包含基线后合并的第一父差异，例如 git log --first-parent -m；不能只检查普通提交日期或空工作区。"
+        }
+      ]
+    },
+    {
+      "id": "indexing-invalid-first-anchor",
+      "category": "should-trigger",
+      "setup": "指南含缩进代码中的456示例，正文首锚点-1，后有合法123；保存原文。",
+      "prompt": "请先只验证这个指南的增量基线，再报告能否继续；不要写文件。",
+      "expected_output": "忽略代码示例，首个真实锚点非法即停止，不取后条替代，不退回全量。",
+      "assertions": [
+        {
+          "id": "invalid-first-stops",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "真实read-baseline返回非零，模型说明基线无效；指南字节不变，无继续扫描或自动修锚点。"
+        }
+      ]
+    },
+    {
+      "id": "indexing-indented-anchor-write",
+      "category": "should-trigger",
+      "setup": "指南已完成，缩进代码含示例456，正文真实锚点123；保留全部原字节。",
+      "prompt": "指南正文已完成并核验，只把正文完成锚点更新为1714200000000；示例和其他正文原样保留。",
+      "expected_output": "显式写锚点只改正文123，所有代码示例保持原字节。",
+      "assertions": [
+        {
+          "id": "only-body-anchor-changes",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "真实写入成功，字节差异只为正文锚点值，缩进示例保持不变，读回基线为1714200000000。"
         }
       ]
     }

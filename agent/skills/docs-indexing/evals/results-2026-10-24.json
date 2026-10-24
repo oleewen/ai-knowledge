@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-24",
+  "fixture": "/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/indexing-blind-wk1xefta",
+  "records": [
+    {
+      "id": "indexing-invalid-first-anchor",
+      "status": "pass",
+      "before": "# Guide\n\n    <!-- sdx-indexing:indexing_finished_ms=456 -->\n\nparagraph\n>     <!-- sdx-indexing:indexing_finished_ms=567 -->\n\nparagraph\n-     <!-- sdx-indexing:indexing_finished_ms=678 -->\n\n## Verified content\n\nBusiness content preserved.\n\n<!-- sdx-indexing:indexing_finished_ms=-1 -->\n\n<!-- sdx-indexing:indexing_finished_ms=123 -->\n",
+      "after": "# Guide\n\n    <!-- sdx-indexing:indexing_finished_ms=456 -->\n\nparagraph\n>     <!-- sdx-indexing:indexing_finished_ms=567 -->\n\nparagraph\n-     <!-- sdx-indexing:indexing_finished_ms=678 -->\n\n## Verified content\n\nBusiness content preserved.\n\n<!-- sdx-indexing:indexing_finished_ms=-1 -->\n\n<!-- sdx-indexing:indexing_finished_ms=123 -->\n",
+      "calls": {
+        "call.3JyudE": "",
+        "call.3JyudE.args": "read-baseline /var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/indexing-blind-wk1xefta/invalid/INDEX-GUIDE.md ",
+        "call.3JyudE.output": "[ERROR] 时间须为正整数 epoch ms\n",
+        "call.3JyudE.status": "1\n"
+      },
+      "response_summary": "爸爸，增量基线无效，暂不能继续增量更新。未写任何文件。实际调用 read-baseline 退出码1，输出 [ERROR] 时间须为正整数 epoch ms。读取原文确认前面缩进代码示例不算基线，首个正文锚点为-1，不能跳用123。下一步：提供since/全量/停在只读核验。",
+      "before_sha256": "7f922851131b4569542dcf6d9e5684813f59e7b37756d82d640031915fefddbc",
+      "after_sha256": "7f922851131b4569542dcf6d9e5684813f59e7b37756d82d640031915fefddbc"
+    },
+    {
+      "id": "indexing-indented-anchor-write",
+      "status": "pass",
+      "before": "# Guide\n\n    <!-- sdx-indexing:indexing_finished_ms=456 -->\n\nparagraph\n>     <!-- sdx-indexing:indexing_finished_ms=567 -->\n\nparagraph\n-     <!-- sdx-indexing:indexing_finished_ms=678 -->\n\n## Verified content\n\nBusiness content preserved.\n\n<!-- sdx-indexing:indexing_finished_ms=123 -->\n",
+      "after": "# Guide\n\n    <!-- sdx-indexing:indexing_finished_ms=456 -->\n\nparagraph\n>     <!-- sdx-indexing:indexing_finished_ms=567 -->\n\nparagraph\n-     <!-- sdx-indexing:indexing_finished_ms=678 -->\n\n## Verified content\n\nBusiness content preserved.\n\n<!-- sdx-indexing:indexing_finished_ms=1714200000000 -->\n",
+      "calls": {
+        "call.OQ3Rbs": "",
+        "call.OQ3Rbs.args": "read-baseline /var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/indexing-blind-wk1xefta/write/INDEX-GUIDE.md ",
+        "call.OQ3Rbs.output": "123\n",
+        "call.OQ3Rbs.status": "0\n",
+        "call.tdWDbU": "",
+        "call.tdWDbU.args": "write-anchor /var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/indexing-blind-wk1xefta/write/INDEX-GUIDE.md --finished-ms 1714200000000 ",
+        "call.tdWDbU.output": "已写入完成锚点: 2024-04-27 14:40:00 +08（1714200000000）\n",
+        "call.tdWDbU.status": "0\n"
+      },
+      "response_summary": "爸爸，已将正文完成锚点从123更新为1714200000000，逐字核对确认示例和其他正文原样保留。实际调用：read-baseline返回123；write-anchor退出0；完整文件比对通过，仅正文锚点变化。",
+      "before_sha256": "02861b0413fb07cfc9d4d74b422763dfb4b451d11347ed39dc8762dca94ac084",
+      "after_sha256": "f33ddbac9dc1f9ce64bc1b2bc664bebefdefb3fbb2bd670faea35a5bef3ad210"
+    }
+  ],
+  "not_run": 13,
+  "regression": "43 Python + 1 Bash passed",
+  "limitation": "Model runtime predates final ordered sibling item fix; that fix was independently reviewed and regression tested. Response summaries preserve observed decisions; tool logs and file bytes are verbatim. Access restrictions are instructions, not OS sandbox."
+}

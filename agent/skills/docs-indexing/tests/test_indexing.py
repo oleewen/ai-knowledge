@@ -77,6 +77,41 @@ class IndexingTest(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertNotIn("completed successfully", result.stdout)
 
+    def test_invalid_first_anchor_never_falls_through(self):
+        for value in (b"-1", b"abc", b"1.5", b"", b"0"):
+            for later in (b"", b"\n<!-- sdx-indexing:indexing_finished_ms=123 -->\n"):
+                with self.subTest(value=value, later=bool(later)):
+                    original = b"# Guide\n\n<!-- sdx-indexing:indexing_finished_ms=" + value + b" -->" + later
+                    self.guide.write_bytes(original)
+                    self.assert_error(self.anchor("read-baseline", self.guide))
+                    self.assertEqual(self.guide.read_bytes(), original)
+
+    def test_indented_code_anchors_are_preserved(self):
+        for example in (
+            b"    <!-- sdx-indexing:indexing_finished_ms=456 -->\n",
+            b"\t<!-- sdx-indexing:indexing_finished_ms=456 -->\n",
+            b">     <!-- sdx-indexing:indexing_finished_ms=456 -->\n",
+            b"paragraph\n>     <!-- sdx-indexing:indexing_finished_ms=456 -->\n",
+            b"paragraph\n-     <!-- sdx-indexing:indexing_finished_ms=456 -->\n",
+            b"1. Item\n2.     <!-- sdx-indexing:indexing_finished_ms=456 -->\n",
+            b"- Item\n\n      <!-- sdx-indexing:indexing_finished_ms=456 -->\n",
+            b"1. Item\n\n       <!-- sdx-indexing:indexing_finished_ms=456 -->\n",
+        ):
+            with self.subTest(example=example):
+                original = b"# Guide\n\n" + example + b"\n<!-- sdx-indexing:indexing_finished_ms=123 -->\n"
+                self.guide.write_bytes(original)
+                result = self.anchor("read-baseline", self.guide)
+                self.assert_ok(result)
+                self.assertEqual(result.stdout.strip(), "123")
+                self.assert_ok(self.anchor("write-anchor", self.guide, "--finished-ms", "789"))
+                self.assertEqual(self.guide.read_bytes(), original.replace(b"ms=123", b"ms=789"))
+
+    def test_list_body_anchor_is_not_indented_code(self):
+        self.guide.write_bytes(b"# Guide\n\n- Item\n\n    <!-- sdx-indexing:indexing_finished_ms=123 -->\n")
+        result = self.anchor("read-baseline", self.guide)
+        self.assert_ok(result)
+        self.assertEqual(result.stdout.strip(), "123")
+
     def test_scan_only_preserves_every_existing_byte(self):
         original = b"---\r\ntitle: guide\r\n---\r\n\r\n# Guide\r\n  \r\n"
         self.guide.write_bytes(original)

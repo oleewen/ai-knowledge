@@ -13,7 +13,7 @@ import sys
 import tempfile
 
 
-RE_HTML_MS = re.compile(rb"<!--\s*sdx-indexing:indexing_finished_ms=([0-9]+)\s*-->")
+RE_HTML_MS = re.compile(rb"<!--\s*sdx-indexing:indexing_finished_ms=([^\r\n]*?)\s*-->")
 ANCHOR_FMT = "<!-- sdx-indexing:indexing_finished_ms={ms} -->"
 RE_FENCE = re.compile(rb"^ {0,3}(`{3,}|~{3,})([^\r\n]*)\r?\n?$")
 RE_QUOTE_PREFIX = re.compile(rb"^ {0,3}>[ \t]?")
@@ -61,13 +61,14 @@ def is_paragraph_line(line: bytes) -> bool:
 
 
 def body_regions(content: bytes) -> tuple[list[tuple[int, int]], bool]:
-    """Locate body bytes outside frontmatter/fences and report safe EOF appends."""
+    """Locate body bytes outside metadata and code; report safe EOF appends."""
     offset = 0
     section_start = 0
     fence = None
     # Zero denotes a blockquote; positive widths are list continuation indents.
     containers: list[int] = []
     paragraph_open = False
+    indented_code = False
     in_frontmatter = False
     regions = []
     for line_number, line in enumerate(content.splitlines(keepends=True)):
@@ -96,6 +97,13 @@ def body_regions(content: bytes) -> tuple[list[tuple[int, int]], bool]:
                     break
                 line = line[width:]
             continued.append(width)
+        # A sibling item may start at any number, unlike a new list interrupting
+        # an ordinary paragraph. It starts its own paragraph/code state.
+        sibling_item = (len(continued) < len(containers)
+                        and containers[len(continued)] > 0
+                        and RE_LIST_PREFIX.match(line) is not None)
+        if sibling_item:
+            paragraph_open = False
         lazy = (fence is None and paragraph_open and len(continued) < len(containers)
                 and is_paragraph_line(line))
         if lazy:
@@ -110,14 +118,30 @@ def body_regions(content: bytes) -> tuple[list[tuple[int, int]], bool]:
                 if prefix := RE_QUOTE_PREFIX.match(line):
                     containers.append(0)
                     line = line[prefix.end():]
+                    paragraph_open = False
                 elif prefix := RE_LIST_PREFIX.match(line):
+                    if paragraph_open and is_paragraph_line(line):
+                        break
                     marker, padding = prefix.groups()
                     # Five or more spaces leave indented content after one separator.
                     width = len(marker) + (len(padding) if 1 <= len(padding) <= 4 else 1)
                     containers.append(width)
                     line = line[width:]
+                    paragraph_open = False
                 else:
                     break
+        # Indented code cannot interrupt a paragraph. Container indentation has
+        # already been removed, so list continuation text remains body content.
+        if fence is None:
+            if (line.startswith(b"    ") and not paragraph_open
+                    or indented_code and not line.strip()):
+                regions.append((section_start, offset))
+                section_start = offset + line_size
+                indented_code = True
+                paragraph_open = False
+                offset += line_size
+                continue
+            indented_code = False
         match = RE_FENCE.match(line)
         if match:
             ticks, remainder = match.groups()
@@ -139,7 +163,7 @@ def body_regions(content: bytes) -> tuple[list[tuple[int, int]], bool]:
 
 
 def unfenced_matches(content: bytes, pattern: re.Pattern[bytes]):
-    """Find markers in body text, preserving metadata and fenced examples."""
+    """Find body markers, preserving metadata and all code examples."""
     regions, _ = body_regions(content)
     for start, end in regions:
         yield from pattern.finditer(content, start, end)
@@ -223,7 +247,7 @@ def write_anchor(path: str | Path, finished_ms: int) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description="INDEX-GUIDE 增量锚点读取与显式写入")
     sub = parser.add_subparsers(dest="cmd", required=True)
-    reader = sub.add_parser("read-baseline", help="输出首条非围栏锚点；无锚点输出 0，读取失败非 0 退出")
+    reader = sub.add_parser("read-baseline", help="输出首条非代码正文锚点；无锚点输出 0，读取失败非 0 退出")
     reader.add_argument("guide_file")
     writer = sub.add_parser("write-anchor", help="指南完成后写入/更新 HTML 锚点")
     writer.add_argument("guide_file")
