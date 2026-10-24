@@ -25,6 +25,7 @@ META_CLEANUP=""
 META_CLONE_CLEANUP=""
 META_GIT_REPO=""
 META_REVISION=""
+META_ORIGIN=""
 VERSION_FROM=""
 VERSION_TO=""
 VERSION_FROM_SHA=""
@@ -49,6 +50,8 @@ meta.dir 缺省为 KNOWLEDGE_TYPE；显式错配在扫描前停止。Git path �
 scaffold 保留当前版本；Agent 完成全部重填、未落位处理与校核后才推进版本。
 
 apply 前备份现有文本安全超集及待重填/覆盖文件到唯一 .docs-init/upgrade-* 目录。
+同次目录内保留 .source-*/templates 与 source.txt，供 Agent 重填和中断恢复；不自动清理。
+源文件与目标目录或非目录祖先冲突时，预览和实跑均在写入前失败。
 收尾将 agent 路径按深度重写为相对 .agents/（meta 为 agent/），不改 IDE 段；
 非 meta 建 DOC_DIR/.agents 软链，普通根 README 更新注记；空骨架桶也收尾。
 不清空 DOC_DIR、不用元库覆盖 knowledge-links.yaml、不删除本库独有文件、不跟随软链。
@@ -87,11 +90,13 @@ doc_abs="$(docsconfig_doc_abs)"
 LINKS_FILE="${doc_abs%/}/knowledge-links.yaml"
 declare -a ADD_LIST=() SKIP_LIST=() RESTRUCTURE_LIST=() OVERWRITE_LIST=() LOCAL_ONLY_LIST=()
 declare -a IGNORED_SLOT_DIRS=() SKIP_SYMLINK_LIST=()
+declare -a TYPE_CONFLICT_LIST=()
 declare -A IGNORED_SLOT_SEEN=() SKIP_SYMLINK_SEEN=()
 
 resolve_meta_root "$LINKS_FILE"
 scan_upgrade_tree
 print_upgrade_plan
+[[ ${#TYPE_CONFLICT_LIST[@]} -eq 0 ]] || error '路径类型冲突；请先决定迁移方案，本次未写入'
 
 if [[ "$APPLY_SCAFFOLD" != '1' ]]; then
   info "dry-run 完成；实跑骨架写入请用 --apply-scaffold（须 Skill 已取得 C；含根级 DESIGN 整文件覆盖）"

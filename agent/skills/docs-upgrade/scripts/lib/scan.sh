@@ -142,6 +142,18 @@ note_skip_symlink() {
   SKIP_SYMLINK_LIST+=("$rel")
 }
 
+# 软链由独立策略处理；普通文件不能作为父目录，目标叶子须为普通文件。
+path_type_conflict() {
+  local root="$1" rest="$2" part cur="$1"
+  while [[ "$rest" == */* ]]; do
+    part="${rest%%/*}"; rest="${rest#*/}"
+    cur="$cur/$part"
+    [[ ! -e "$cur" || -d "$cur" ]] || return 0
+  done
+  cur="$cur/$rest"
+  [[ -e "$cur" && ! -f "$cur" ]]
+}
+
 scan_upgrade_tree() {
   local rel local_rel src_f dst_f instance_rel
   # 本库软链清单（find 不跟随目录软链；另列 -type l）
@@ -179,6 +191,10 @@ scan_upgrade_tree() {
       continue
     fi
 
+    if path_type_conflict "$doc_abs" "$local_rel"; then
+      TYPE_CONFLICT_LIST+=("$local_rel")
+      continue
+    fi
     if [[ ! -e "$dst_f" ]]; then
       if instance_rel="$(existing_instance_for_example "${doc_abs%/}" "$local_rel")"; then
         SKIP_LIST+=("$local_rel (同类实例已存在: $instance_rel)")
@@ -248,6 +264,7 @@ print_upgrade_plan() {
   info "doc_abs=$doc_abs KNOWLEDGE_TYPE=$KNOWLEDGE_TYPE dry_run=$DRY_RUN apply_scaffold=$APPLY_SCAFFOLD"
   print_bucket '忽略遗留槽位' "${IGNORED_SLOT_DIRS[@]+"${IGNORED_SLOT_DIRS[@]}"}"
   print_bucket '跳过软链' "${SKIP_SYMLINK_LIST[@]+"${SKIP_SYMLINK_LIST[@]}"}"
+  print_bucket '路径类型冲突' "${TYPE_CONFLICT_LIST[@]+"${TYPE_CONFLICT_LIST[@]}"}"
   print_bucket '新增骨架' "${ADD_LIST[@]+"${ADD_LIST[@]}"}"
   print_bucket '跳过' "${SKIP_LIST[@]+"${SKIP_LIST[@]}"}"
   print_bucket '结构重填' "${RESTRUCTURE_LIST[@]+"${RESTRUCTURE_LIST[@]}"}"

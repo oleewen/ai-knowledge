@@ -46,10 +46,12 @@ bash /path/to/docs-upgrade/scripts/docs-upgrade.sh --apply-scaffold [--meta-path
 1. **预览**：脚本生成 [动作桶](merge-rules.md#3-清单桶脚本)；有版本号时展示 from/to 及两个 commit。校核清单后按 [gates.md](gates.md) 等待 `C/M/S/F`。
 2. **备份与 scaffold**：`C` 后运行 `--apply-scaffold`。写目标前将现有重填 / 覆盖项及路径重写的普通文本候选镜像备份到 `{仓库路径}/.docs-init/upgrade-{stamp}-<随机后缀>/`，根 README 也纳入；候选是安全超集，可能含未实际修改文件。备份保留原字节、同次不重复覆盖；备份失败不继续写目标。随后复制新增骨架并覆盖根 DESIGN。
 3. **路径收尾**：按下节执行；新增桶为空仍执行。
-4. **结构重填**：Agent 从本次固定快照读取元库文件，按 [merge-rules.md §5](merge-rules.md#5-结构重填agent) 重填并列出未落位。`C` 已覆盖可处理项；未落位另按 gates 选择策略再写入，`M` 可下钻单文件。
+4. **结构重填**：从脚本输出的 `重填交接` 目录读取 `source.txt` 和 `templates/`，按 [merge-rules.md §5](merge-rules.md#5-结构重填agent) 重填并列出未落位。该目录位于本次备份目录内，保留来源、固定提交、版本区间和重填清单；非 Git 源标为 `unversioned`，模板字节仍冻结。不要读取已清理的临时结构源，也不要改读后续 HEAD。中断时从同一交接目录与原文备份恢复，缺失则停止核实，不能猜测版本或重跑覆盖现场。交接资料不自动删除。`C` 已覆盖可处理项；未落位另按 gates 选择策略再写入，`M` 可下钻单文件。
 5. **验收**：检查文档目录、links、备份与产物，按 [audience-and-language.md](../../../references/audience-and-language.md) 轻流程默认读者表做 A/B；通过后按版本规则落盘并停等 `C/M/S/F`。
 
 失败时停止整单，不静默改分类重试；未过 A/B 不得宣称完成。
+
+源文件与本库同名目录、或源文件的本库父路径为普通文件时，清单列出路径类型冲突，预览和实跑均非零退出；在备份及目标写入前停止。先确定迁移方案再重新预览，不能删除本库目录或静默略过后推进版本。指定路径模式同样先检查类型冲突。
 
 ### 路径收尾
 

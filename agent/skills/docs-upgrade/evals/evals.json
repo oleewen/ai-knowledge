@@ -1,6 +1,6 @@
 {
   "skill_name": "docs-upgrade",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "description": "评测整树与指定路径升级：发布快照、本层范围、正文保留、确认与写后产物。指定目录使用真实 fixture 验证两侧并集。",
   "evals": [
     {
@@ -208,7 +208,7 @@
       "id": "upgrade-not-trigger-001",
       "category": "should-not-trigger",
       "prompt": "给新工程 ~/ws/new-app/docs 初始化知识库并安装 cursor。",
-      "expected_output": "先 docs-install 初始化知识库，再 agent-install 安装 Agent 树与 IDE 链接；不走 docs-upgrade。",
+      "expected_output": "分流装机链：先核实 Agent 树与 WORK_SPACE；缺失时先 agent-install，再 docs-install。已有前置不重复安装，不走 docs-upgrade。",
       "assertions": [
         {
           "id": "correct-downstream",
@@ -240,7 +240,7 @@
       "id": "upgrade-trigger-003",
       "category": "should-trigger",
       "prompt": "升级当前知识库，但 knowledge-links 里没有 type:meta。",
-      "expected_output": "硬停；提示补 meta / --meta-path / 重跑 install upsert；不猜测元库、不写盘。",
+      "expected_output": "停止，提示修复 type:meta 或显式 --meta-path；不猜源，不以重装清空已有正文来修登记。",
       "assertions": [
         {
           "id": "missing-meta-hard-stop",
@@ -370,6 +370,48 @@
         }
       ],
       "files": []
+    },
+    {
+      "id": "upgrade-snapshot-handoff",
+      "category": "should-trigger",
+      "setup": "真实临时元库和项目先执行已授权 scaffold，保留交接目录。随后源 HEAD 加入不同标题与正文；用户已确认重填范围。",
+      "prompt": "继续完成上次已确认的整树升级，scaffold 已执行；请使用本次交接资料完成重填，保留本库正文并核验。",
+      "expected_output": "从保留模板重填，不使用移动后的 HEAD；保留本库正文，未完成项阻止版本推进。",
+      "assertions": [
+        {
+          "id": "snapshot-after-exit",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "脚本退出后实际读取保留模板；目标结构符合原快照且无后续HEAD标记。"
+        },
+        {
+          "id": "body-preserved",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "原业务正文完整保留，未重复要求已经明确的同范围授权；校核完成前不推进版本。"
+        }
+      ]
+    },
+    {
+      "id": "upgrade-path-type-conflict",
+      "category": "should-trigger",
+      "setup": "临时元库有 collision.md 文件及 blocked/child.md；项目同路径分别为含业务正文的目录和普通文件，其他前置有效。",
+      "prompt": "请预览当前工程的整树知识库升级，保留现有业务内容。",
+      "expected_output": "明确报告路径类型冲突并停止，不能将其静默略过或实跑。",
+      "assertions": [
+        {
+          "id": "conflict-visible",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "真实预览非零并列出两个冲突路径；响应准确解释阻塞。"
+        },
+        {
+          "id": "conflict-read-only",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "目录、文件、配置、备份和版本状态与操作前相同；未删改目录或补force重试。"
+        }
+      ]
     }
   ]
 }

@@ -134,6 +134,7 @@ resolve_meta_root() {
   [[ "$meta_doc_dir" == "$KNOWLEDGE_TYPE" ]] \
   || error "元库模板目录与本库层级不一致: dir=${meta_doc_dir} KNOWLEDGE_TYPE=${KNOWLEDGE_TYPE}；请修正 knowledge-links.yaml 中 type: meta 条目的 dir"
   META_DOC_DIR="$meta_doc_dir"
+  META_ORIGIN="${meta_repo:-$meta_path}"
   resolve_meta_tree "$meta_path" "$meta_repo" "$ref"
   META_SRC="${META_ROOT%/}/${META_DOC_DIR}"
   [[ -d "$META_SRC" ]] || error "元库缺少模板目录: $META_SRC"

@@ -44,6 +44,20 @@ apply_scaffold() {
   ensure_backup_root
   # 全部备份成功后，才开始第一次目标写入。
   backup_existing_targets
+  # 与原文备份分开，随机目录避免占用本库合法文件名；失败后保留现场。
+  local handoff
+  handoff="$(mktemp -d "$BACKUP_ROOT/.source-XXXXXX")"
+  mkdir "$handoff/templates"
+  cp -R "$META_SRC/." "$handoff/templates/"
+  {
+    printf 'source=%s\n' "${META_GIT_REPO:-$META_ROOT}"
+    printf 'origin=%s\n' "$META_ORIGIN"
+    printf 'revision=%s\n' "${VERSION_TO_SHA:-${META_REVISION:-unversioned}}"
+    printf 'layer=%s\nfrom=%s\nto=%s\n' "$META_DOC_DIR" "$VERSION_FROM" "$VERSION_TO"
+    printf '\n[restructure]\n'
+    printf '%s\n' "${RESTRUCTURE_LIST[@]}"
+  } > "$handoff/source.txt"
+  info "重填交接: $handoff"
 
   for rel in "${ADD_LIST[@]+"${ADD_LIST[@]}"}" "${OVERWRITE_LIST[@]+"${OVERWRITE_LIST[@]}"}"; do
     if is_legacy_federal_slot_rel "$rel"; then
