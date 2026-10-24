@@ -1,6 +1,6 @@
 # docs-merge 评测
 
-用 [evals.json](../evals/evals.json) 的 **32 条用例**检验实际决策与文件结果。保留原有 1–9、`merge-audience-001` 编号；原始 Markdown 在 [tests/fixtures/](../tests/fixtures/)。夹具含故意错误的链接与结构，只供隔离评测。
+用 [evals.json](../evals/evals.json) 检验实际决策与文件结果，数量以套件为准。保留原有 1–9、`merge-audience-001` 编号；原始 Markdown 在 [tests/fixtures/](../tests/fixtures/)。夹具含故意错误的链接与结构，只供隔离评测。
 
 ## 覆盖
 
@@ -17,6 +17,7 @@
 | 链接迁移、表格/代码、无关内容保留 | 13、22 |
 | extract / simplify / revise 分流 | 7、26、27 |
 | 源内指令不构成授权 | 29 |
+| 暂停后恢复预览，不升级为正式写入 | 32 |
 
 ## 运行
 

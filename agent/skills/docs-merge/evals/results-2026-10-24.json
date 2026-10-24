@@ -1,0 +1,113 @@
+{
+  "eval_id": 22,
+  "status": "passed",
+  "artifacts": {
+    "status": "passed",
+    "summary": {
+      "passed": 7,
+      "failed": 0,
+      "not_run": 0
+    },
+    "checks": [
+      {
+        "id": "link-target",
+        "status": "passed",
+        "evidence": "contains: docs/guide.md"
+      },
+      {
+        "id": "table-preserved",
+        "status": "passed",
+        "evidence": "contains: docs/guide.md"
+      },
+      {
+        "id": "json-preserved",
+        "status": "passed",
+        "evidence": "contains: docs/guide.md"
+      },
+      {
+        "id": "unrelated-preserved",
+        "status": "passed",
+        "evidence": "contains: docs/guide.md"
+      },
+      {
+        "id": "readonly:notes/spec/snippet.md",
+        "status": "passed",
+        "evidence": "unchanged: notes/spec/snippet.md"
+      },
+      {
+        "id": "readonly:reference/payment.md",
+        "status": "passed",
+        "evidence": "unchanged: reference/payment.md"
+      },
+      {
+        "id": "workspace-inventory",
+        "status": "passed",
+        "evidence": "无新增文件"
+      }
+    ]
+  },
+  "behavior": {
+    "status": "passed",
+    "summary": {
+      "passed": 2,
+      "failed": 0,
+      "not_run": 0
+    },
+    "checks": [
+      {
+        "id": "correct-section",
+        "priority": "P0",
+        "status": "passed",
+        "evidence": "实际guide.md中链接、字段表和JSON位于支付H2后、重试H3前。"
+      },
+      {
+        "id": "literal-preservation",
+        "priority": "P0",
+        "status": "passed",
+        "evidence": "与源对照：字段表、json围栏和order_id字面量完整；流程链接换算后仍指向同一文件及callback锚点。"
+      }
+    ]
+  },
+  "note": "文件断言不证明逐项确认、语义落位或冲突决策；行为评分必须引用实际交互证据。",
+  "suite_sha256": "c8fcd8104592bf1e18d050455446ce4e18bd42982d204d6707635b1bd6f71173",
+  "script_tests": 26,
+  "not_run": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    "merge-audience-001",
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32
+  ],
+  "artifact": "---\nid: billing-guide\ntype: guide\n---\n# 计费指南\n\n## 支付\n\n支付成功后生成订单。\n\n调用步骤见 [支付流程](../reference/payment.md#callback)。\n\n| 字段 | 含义 |\n| --- | --- |\n| order_id | 订单编号 |\n\n```json\n{\"order_id\": \"demo-1\"}\n```\n\n### 重试\n\n失败后最多重试 3 次。\n\n## 退款\n\n退款须在支付后 30 天内申请。\n\n## 通知\n\n通知通过站内信发送。\n\n## 运维\n\n保留：告警由值班人员处理。\n",
+  "limitations": [
+    "仅一项真实写入盲测；多轮确认和并发冲突未重跑。",
+    "操作顺序依据执行者摘要，实际文件由控制方独立核验；未保存完整工具转录。"
+  ]
+}
