@@ -1,10 +1,9 @@
 ---
 name: docs-extract
 description: >
-  Use when a user asks to run /docs-extract: extract knowledge from --sources files,
-  directories, or inline text into a four-layer overview's third column, including
-  --dry-run previews or non-slot sources. Route federated slot roll-ups to docs-distill
-  and existing overview deltas to docs-archive.
+  从文件、目录或内联文本提炼未覆盖知识，预览或写入四层 overview 第三列。
+  用于 /docs-extract、从资料提炼 overview、按关键词筛选新 delta。
+  联邦槽位全量上行用 docs-distill；已有 overview delta 归档用 docs-archive。
 ---
 
 # docs-extract
@@ -24,7 +23,7 @@ description: >
 
 ## 执行顺序
 
-1. 按 [gates.md](references/gates.md) 收口参数与当前单元，完成写前意图澄清；取得写前 `C` 后才正式预览或写入。
+1. 按 [gates.md](references/gates.md) 核对参数与当前单元；明确的 dry-run 请求直接只读预览。正式写入完成写前澄清，沿用当前范围内的明确授权。
 2. 按 [extract-spec.md](references/extract-spec.md) 读取来源、筛选段落、比对正文；无命中结束，有命中只形成未覆盖的 delta。
 3. 按 [workflow.md](references/workflow.md) 预览或落盘，再做 [验收](references/quality-checklist.md) 与烤干；收敛后停等 `C/M/G/S/F`。
 

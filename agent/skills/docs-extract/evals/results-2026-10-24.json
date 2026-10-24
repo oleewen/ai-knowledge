@@ -1,0 +1,90 @@
+{
+  "date": "2026-10-24",
+  "fixture": "/private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-extract-blind-s6kqx77p",
+  "records": [
+    {
+      "case": "baseline",
+      "status": "fail",
+      "response_summary": "FAIL: 只命中退款，少于20词未达2关键词门槛，报告无候选；未读business/process.md，文件未改。",
+      "changes": {},
+      "file_hashes": {
+        "system/knowledge/business/process.md": {
+          "before": "74f9ecc1354e09858fa373433bce1944f7f68f5a2db18ede3ae5fcc5debbfcc5",
+          "after": "74f9ecc1354e09858fa373433bce1944f7f68f5a2db18ede3ae5fcc5debbfcc5"
+        },
+        "system/knowledge/overview/order-tagged-overview.md": {
+          "before": "642afa36fed666c5dcc3a7827684c1fcb2cf21a6849b654dacf93f5040ea424f",
+          "after": "642afa36fed666c5dcc3a7827684c1fcb2cf21a6849b654dacf93f5040ea424f"
+        },
+        "system/knowledge/overview/order-overview.md": {
+          "before": "ba54f20ff39bafd914efab85d19b421bc26c9781cb45bae1a0e540bc13d30cf8",
+          "after": "ba54f20ff39bafd914efab85d19b421bc26c9781cb45bae1a0e540bc13d30cf8"
+        },
+        "sources/design.md": {
+          "before": "b681122d6cd60563b4650fde0e38c15860e69423e3d670773851a6fcc45d3eaf",
+          "after": "b681122d6cd60563b4650fde0e38c15860e69423e3d670773851a6fcc45d3eaf"
+        }
+      }
+    },
+    {
+      "case": "preview",
+      "status": "pass",
+      "response_summary": "识别1条候选新增，已读正文无到账时限；仅有退款审批/支付限额行，落点不明，列候选并澄清，不生成确定A落点，不改文件。",
+      "changes": {},
+      "file_hashes": {
+        "system/knowledge/business/process.md": {
+          "before": "74f9ecc1354e09858fa373433bce1944f7f68f5a2db18ede3ae5fcc5debbfcc5",
+          "after": "74f9ecc1354e09858fa373433bce1944f7f68f5a2db18ede3ae5fcc5debbfcc5"
+        },
+        "system/knowledge/overview/order-tagged-overview.md": {
+          "before": "642afa36fed666c5dcc3a7827684c1fcb2cf21a6849b654dacf93f5040ea424f",
+          "after": "642afa36fed666c5dcc3a7827684c1fcb2cf21a6849b654dacf93f5040ea424f"
+        },
+        "system/knowledge/overview/order-overview.md": {
+          "before": "ba54f20ff39bafd914efab85d19b421bc26c9781cb45bae1a0e540bc13d30cf8",
+          "after": "ba54f20ff39bafd914efab85d19b421bc26c9781cb45bae1a0e540bc13d30cf8"
+        },
+        "sources/design.md": {
+          "before": "b681122d6cd60563b4650fde0e38c15860e69423e3d670773851a6fcc45d3eaf",
+          "after": "b681122d6cd60563b4650fde0e38c15860e69423e3d670773851a6fcc45d3eaf"
+        }
+      }
+    },
+    {
+      "case": "write",
+      "status": "pass",
+      "response_summary": "仅退款审批第三列新增[A]退款审批完成后自动通知申请人；保留双人复核、限额调整两项；正文已覆盖退款需审批而跳过，排除旅游和SQL；验收实际差异仅一行。",
+      "changes": {
+        "system/knowledge/overview/order-overview.md": {
+          "before": "# 订单系统概览\n\n## 业务架构\n\n| 主标题 | 副标题 | 归档业务知识 |\n| --- | --- | --- |\n| [业务流程](../business/process.md) | [退款审批](../business/process.md#退款审批) | **[A]** 线下退款需双人复核。 |\n| [业务规则与策略](../business/process.md) | [支付限额](../business/process.md#支付限额) | **[A]** 限额调整需主管审批。 |\n\n## 文档关键词\n\n| 章节 | 关键词 |\n| --- | --- |\n| 业务流程 | 审批, 退款 |\n| 业务规则与策略 | 限额, 支付 |\n",
+          "after": "# 订单系统概览\n\n## 业务架构\n\n| 主标题 | 副标题 | 归档业务知识 |\n| --- | --- | --- |\n| [业务流程](../business/process.md) | [退款审批](../business/process.md#退款审批) | **[A]** 线下退款需双人复核。<br>**[A]** 退款审批完成后自动通知申请人。 |\n| [业务规则与策略](../business/process.md) | [支付限额](../business/process.md#支付限额) | **[A]** 限额调整需主管审批。 |\n\n## 文档关键词\n\n| 章节 | 关键词 |\n| --- | --- |\n| 业务流程 | 审批, 退款 |\n| 业务规则与策略 | 限额, 支付 |\n",
+          "diff": "--- \n+++ \n@@ -4,7 +4,7 @@\n \n | 主标题 | 副标题 | 归档业务知识 |\n | --- | --- | --- |\n-| [业务流程](../business/process.md) | [退款审批](../business/process.md#退款审批) | **[A]** 线下退款需双人复核。 |\n+| [业务流程](../business/process.md) | [退款审批](../business/process.md#退款审批) | **[A]** 线下退款需双人复核。<br>**[A]** 退款审批完成后自动通知申请人。 |\n | [业务规则与策略](../business/process.md) | [支付限额](../business/process.md#支付限额) | **[A]** 限额调整需主管审批。 |\n \n ## 文档关键词\n"
+        }
+      },
+      "file_hashes": {
+        "system/knowledge/business/process.md": {
+          "before": "74f9ecc1354e09858fa373433bce1944f7f68f5a2db18ede3ae5fcc5debbfcc5",
+          "after": "74f9ecc1354e09858fa373433bce1944f7f68f5a2db18ede3ae5fcc5debbfcc5"
+        },
+        "system/knowledge/overview/order-tagged-overview.md": {
+          "before": "642afa36fed666c5dcc3a7827684c1fcb2cf21a6849b654dacf93f5040ea424f",
+          "after": "642afa36fed666c5dcc3a7827684c1fcb2cf21a6849b654dacf93f5040ea424f"
+        },
+        "system/knowledge/overview/order-overview.md": {
+          "before": "ba54f20ff39bafd914efab85d19b421bc26c9781cb45bae1a0e540bc13d30cf8",
+          "after": "e97883b6592f80b302b9c2602305f4d99c8885be0e7ee8df045df06576bc14c8"
+        },
+        "sources/design.md": {
+          "before": "b681122d6cd60563b4650fde0e38c15860e69423e3d670773851a6fcc45d3eaf",
+          "after": "b681122d6cd60563b4650fde0e38c15860e69423e3d670773851a6fcc45d3eaf"
+        }
+      }
+    }
+  ],
+  "not_run": 19,
+  "tested_ids": [
+    "extract-short-preview",
+    "extract-delta-write"
+  ],
+  "limitation": "Short-fact candidate accepted in revised run, but no confirmed row because the supplied target only names approval/limit rows. Correct ambiguity stop retained; no blind claim of completed placement. Baseline failure retained. Full model tool transcript not exported; responses summarized, files independently checked. Access constraints are instructions."
+}

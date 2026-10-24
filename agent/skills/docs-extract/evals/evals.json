@@ -1,20 +1,20 @@
 {
   "skill_name": "docs-extract",
-  "version": "3.2.0",
+  "version": "3.1.0",
   "description": "路由与澄清样本，以及带原始文件的 dry-run、delta 保留、无命中、正文缺失和引用边界行为回放。按 grader 分阶段评分；新增用例不代表已执行。",
   "evals": [
     {
       "id": 1,
       "category": "should-trigger",
       "prompt": "帮我从 docs/design.md 和 docs/adr/ 这两个来源提炼业务知识，写进 system/knowledge/overview/billing-overview.md，先 dry-run 看看会命中哪些内容",
-      "expected_output": "docs-extract：收口参数；写前澄清 + C 后 dry-run 三分区预览，不写第三列；federation-spec 去重；烤干后停等 C/M/G/S/F。",
+      "expected_output": "核实已给来源、目标和关键词；缺失或歧义才澄清，参数齐全则直接只读预览，不要求第二次确认；不写文件，按实际结果验收。",
       "files": [],
       "assertions": [
         {
           "id": "intent-clarify-before-write",
           "name": "写前意图澄清",
           "type": "must_include",
-          "check": "写前须意图澄清与写前 C。",
+          "check": "按实际缺口澄清；已明确的dry-run直接完成，不为只读预览额外索要C。",
           "priority": "P0"
         },
         {
@@ -67,7 +67,7 @@
       "id": 3,
       "category": "should-trigger",
       "prompt": "我们 order-service 有一批设计文档在 docs/specs/ 下，帮我把里面跟业务规则相关的内容整理进 order-service-overview.md，不需要 dry-run 直接写",
-      "expected_output": "仍走 docs-extract：把“直接写”识别为语义性高风险；先写前意图澄清再给结论、推荐方案和数字选项；未确认前不能宣称已写第三列。",
+      "expected_output": "核实来源、目标、关键词和写入范围；不因用户要求直接写便认定高风险。明确授权足够时沿用；缺口或冲突影响落盘时先澄清，不虚称已写。",
       "files": [],
       "assertions": [
         {
@@ -90,14 +90,14 @@
       "id": 4,
       "category": "should-trigger",
       "prompt": "从 company/knowledge/business/business-overview.md 提炼公司级业务背景，写进 company/knowledge/overview/COMPANY-overview.md 第三列，先 dry-run",
-      "expected_output": "docs-extract：对 COMPANY-overview 做写前意图澄清；写前 C 后 dry-run；不写 DISTILL-LOG；烤干收敛后停下等动作。",
+      "expected_output": "核实已给来源、目标和关键词；缺失或歧义才澄清，参数齐全则直接只读预览，不要求第二次确认；不写文件，按实际结果验收。",
       "files": [],
       "assertions": [
         {
           "id": "intent-clarify-before-write",
           "name": "写前意图澄清",
           "type": "must_include",
-          "check": "写前须意图澄清。",
+          "check": "按实际缺口澄清；已明确的dry-run直接完成，不为只读预览额外索要C。",
           "priority": "P0"
         },
         {
@@ -143,14 +143,14 @@
       "id": 6,
       "category": "should-trigger",
       "prompt": "/docs-extract --sources \"这是一段临时业务说明：支持用户下单、支付、退款三个流程，订单状态有 CREATED/PAID/REFUNDED\" --overview system/knowledge/overview/order-overview.md --dry-run",
-      "expected_output": "docs-extract：识别 --sources 为文本内容；写前意图澄清后对 order-overview dry-run 只输出命中摘要与 A/U/D 预览；烤干收敛后停下等 C/M/G/S/F。",
+      "expected_output": "核实已给来源、目标和关键词；缺失或歧义才澄清，参数齐全则直接只读预览，不要求第二次确认；不写文件，按实际结果验收。",
       "files": [],
       "assertions": [
         {
           "id": "intent-clarify-before-write",
           "name": "写前意图澄清",
           "type": "must_include",
-          "check": "写前须意图澄清。",
+          "check": "按实际缺口澄清；已明确的dry-run直接完成，不为只读预览额外索要C。",
           "priority": "P0"
         },
         {
@@ -203,14 +203,14 @@
       "id": "extract-trigger-app-001",
       "category": "should-trigger",
       "prompt": "从 docs/api.md 提炼接口要点，写进 application/knowledge/overview/order-overview.md 第三列，先 dry-run",
-      "expected_output": "docs-extract：应用库 overview；写前澄清 + C 后 dry-run；不走 docs-distill；烤干后停等。",
+      "expected_output": "核实已给来源、目标和关键词；缺失或歧义才澄清，参数齐全则直接只读预览，不要求第二次确认；不写文件，按实际结果验收。",
       "files": [],
       "assertions": [
         {
           "id": "intent-clarify-before-write",
           "name": "写前意图澄清",
           "type": "must_include",
-          "check": "写前须意图澄清与写前 C。",
+          "check": "按实际缺口澄清；已明确的dry-run直接完成，不为只读预览额外索要C。",
           "priority": "P0"
         },
         {
@@ -487,6 +487,48 @@
           "type": "must_not_conflict",
           "check": "比较所有输入前后字节不变，旧双人复核与限额调整保持。",
           "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "extract-short-preview",
+      "category": "should-trigger",
+      "prompt": "直接dry-run；唯一内联来源“退款到账应在三个工作日内完成。”，目标system/knowledge/overview/order-tagged-overview.md，系统库，参数齐全，不改文件。",
+      "expected_output": "单关键词短事实经语义核对形成候选；读正文去重，落点不明确时列候选并澄清，不额外索要预览C，保持文件字节。",
+      "assertions": [
+        {
+          "id": "extract-short-preview-actual",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "单关键词短事实经语义核对形成候选；读正文去重，落点不明确时列候选并澄清，不额外索要预览C，保持文件字节。"
+        }
+      ]
+    },
+    {
+      "id": "extract-incidental-keyword",
+      "category": "should-trigger",
+      "prompt": "dry-run：来源“退款二字共有多少笔画？”；目标同已给overview，仅核对是否有业务delta。",
+      "expected_output": "不把词语字面问题当退款业务规则；报告无业务delta，目标不变。",
+      "assertions": [
+        {
+          "id": "extract-incidental-keyword-actual",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "不把词语字面问题当退款业务规则；报告无业务delta，目标不变。"
+        }
+      ]
+    },
+    {
+      "id": "extract-ambiguous-row",
+      "category": "should-trigger",
+      "prompt": "dry-run：词表有支付、退款；两个目标行都涉及退款支付时效，来源未区分适用流程。请提炼。",
+      "expected_output": "展示归属歧义和需要的区分信息，不按密度或视角顺序机械选择，不写第三列。",
+      "assertions": [
+        {
+          "id": "extract-ambiguous-row-actual",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "展示归属歧义和需要的区分信息，不按密度或视角顺序机械选择，不写第三列。"
         }
       ]
     }

@@ -6,17 +6,18 @@
   "notes": "复制后填入对应 eval ID、category 与预期路由。实际观察由执行轨迹和文件差异提供，不能复制 expected_output。",
   "result": {
     "text": "",
-    "passed": null,
     "evidence": [],
-    "unverified": []
+    "unverified": [],
+    "status": "not_run"
   },
   "evidence_fields": [
     "assertion_id",
-    "passed",
+    "status",
     "observed"
   ],
   "scoring": {
-    "pass_rule": "所有 P0 有证据且通过；P1 单列改进项。",
-    "fail_rule": "任一 P0 失败，或必需证据缺失，均不得报告通过。"
+    "pass_rule": "全部适用断言有实际证据且通过。",
+    "fail_rule": "任一适用断言失败。",
+    "not_run_rule": "无失败但存在未执行或缺证据断言。"
   }
 }
