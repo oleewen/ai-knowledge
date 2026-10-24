@@ -1,6 +1,6 @@
 {
   "skill_name": "docs-link",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Agent 行为场景：登记授权、只读检查、单槽位修复、失败保留与分流；新增维护场景未执行时记 not_run，脚本回归独立运行。",
   "evals": [
     {
@@ -584,6 +584,36 @@
           "type": "must_not_conflict",
           "check": "不调用无目标 repair、批量写入或 link；全部槽位状态不变。",
           "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "link-case-normalization",
+      "category": "should-trigger",
+      "setup": "临时合法system→application登记，child name为TARGET、软链为application-TARGET；在大小写不敏感磁盘执行，并记录该磁盘语义。",
+      "prompt": "已确认只将这个 child 的槽位名称规范化为 target，按已确认范围执行并核验，不改正文。",
+      "expected_output": "link显式名称，槽位仍有效且双边登记一致。",
+      "assertions": [
+        {
+          "id": "case-slot-survives",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "真实操作退出0，application-target软链存在并指向目标docs；双边登记和正文核验准确。"
+        }
+      ]
+    },
+    {
+      "id": "link-invalid-yaml",
+      "category": "should-trigger",
+      "setup": "合法临时登记后，把源links头改为links: []，保留后续child条目；保存两侧文件快照。",
+      "prompt": "预览给已登记目标重新建联，现有正文和登记先不要改。",
+      "expected_output": "真实预览非零，报告非法清单并停止，不能自动重写或改repair绕过。",
+      "assertions": [
+        {
+          "id": "invalid-list-stops",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "真实dryrun非零并报告结构错误；两侧快照不变、无修清单或其他写入。"
         }
       ]
     }

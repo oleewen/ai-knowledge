@@ -62,6 +62,7 @@ done
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=link-config.sh
 source "$SCRIPT_DIR/link-config.sh"
+source "$SCRIPT_DIR/link-maintenance.sh"
 
 # DOC_DIR 必须真实落在本仓内；不能把外部目录悄悄改成同名本地目录。
 doc_root_in_repo() {
@@ -89,6 +90,13 @@ load_entries() {
   local file="$1" prefix="$2" i parents=0
   [[ ! -L "$file" ]] || die "清单不能是软链: $file"
   [[ ! -e "$file" || -f "$file" ]] || die "清单不是普通文件: $file"
+  if [[ -f "$file" ]]; then
+    local -a vp=() vr=() vd=() vn=() vt=() ve=()
+    maintenance_load "$file" v
+    for i in "${!ve[@]}"; do
+      [[ -z "${ve[i]}" ]] || die "清单条目非法: ${ve[i]} ($file)"
+    done
+  fi
   knowledge_links_load_into_arrays "$file" "${prefix}p" "${prefix}r" "${prefix}d" "${prefix}n" "${prefix}l" "${prefix}t"
   local -n entry_repos="${prefix}r" entry_paths="${prefix}p" entry_dirs="${prefix}d" entry_names="${prefix}n" entry_types="${prefix}t"
   local -A identities=() names=()
@@ -130,7 +138,6 @@ declare -a sr=() sp=() sd=() sn=() sl=() st=()
 declare -a tr=() tp=() td=() tn=() tl=() tt=()
 if [[ "$CMD" == check || "$CMD" == repair ]]; then
   # 维护只读既有登记；独立分流，不进入双边清单写出流程。
-  source "$SCRIPT_DIR/link-maintenance.sh"
   maintenance_main
   exit $?
 fi
@@ -324,7 +331,24 @@ if [[ "$CMD" == link ]]; then
     [[ ! -L "$slot" ]] || rm "$slot"
     ln -s "$tdoc" "$slot"
   fi
-  [[ -z "$old_slot" || ! -L "$old_slot" ]] || rm "$old_slot"
+  if [[ -n "$old_slot" && -L "$old_slot" ]]; then
+    # 同目标不代表同槽位；比较链接自身及真实目录项名称，兼容大小写别名。
+    same_entry="$(python3 -B - "$old_slot" "$slot" <<'PY'
+import os
+import sys
+a, b = sys.argv[1:]
+sa, sb = os.lstat(a), os.lstat(b)
+names = os.listdir(os.path.dirname(a))
+distinct_names = os.path.basename(a) != os.path.basename(b) and all(os.path.basename(p) in names for p in (a, b))
+same = not distinct_names and (sa.st_dev, sa.st_ino) == (sb.st_dev, sb.st_ino)
+if same:
+    os.rename(a, b)  # 同目录项的大小写更名；不要删除有效槽位。
+print('same' if same else 'different')
+PY
+)"
+    [[ "$same_entry" == same ]] || rm "$old_slot"
+  fi
+  [[ -L "$slot" && "$(readlink "$slot")" == "$tdoc" ]] || die "写后槽位校验失败: $slot"
 else
   [[ ! -L "$slot" ]] || rm "$slot"
 fi
