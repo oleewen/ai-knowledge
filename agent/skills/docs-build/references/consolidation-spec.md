@@ -24,12 +24,14 @@ python3 "$SKILL_DIR/scripts/generate_knowledge_index.py" --bundle application --
 
 Python 生成器不解析 `.docsconfig`；调用前从目标仓配置取得参数。Bash 校验入口自动读取该配置。两者均须指向同一目标仓，运行环境需要 Python 3；Bash 入口需要 Bash 5+。校验器复用相邻 docs-okf 的 `okf_lib.py` 与 Agent 树的 `docsconfig.sh`，不要单独复制技能脚本运行。
 
+导航定位复用相邻 docs-indexing 的正文区域解析器，排除 frontmatter、围栏与缩进代码；运行时须保留 Agent 树中的这两个技能。生成器和校验器共用导航定位，示例标记不满足真实导航要求。
+
 ## 更新边界
 
 1. 唯一完整的新标记块：仅替换块内内容。
 2. 唯一完整的旧标记块 `<!-- docs-build:entity-index -->` / `<!-- /docs-build:entity-index -->`：迁为新标记。
-3. 无标记：仅替换唯一 `### 4.5` 正文，保留下一同级/上级标题及内容。
-4. 残缺、重复、倒置、混用或跨章标记：报错且不写；4.5 与标记均须位于唯一第四章。缺主 INDEX 时先 docs-indexing。
+3. 无标记：仅替换唯一 `### 4.5` 正文，保留下一同级/上级标题及内容；标题空白支持空格与 Tab，替换终点不得越出第四章。
+4. 残缺、重复、倒置、混用或跨章标记，以及未闭合 frontmatter/代码围栏：报错且不写；4.5 与标记均须位于唯一第四章。缺主 INDEX 时先 docs-indexing。
 
 保留原文件换行方式与块外内容。生成器不删除 `knowledge/KNOWLEDGE-INDEX.md` 或 `knowledge/INDEX-GUIDE.md`。旧文件迁移另行确认。
 

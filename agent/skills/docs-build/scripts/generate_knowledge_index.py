@@ -10,6 +10,8 @@ from pathlib import Path
 from typing import Optional
 
 SCRIPT_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(SCRIPT_DIR.parents[1] / "docs-indexing" / "scripts"))
+from indexing_log import body_regions  # noqa: E402
 
 ENTITY_BEGIN = "<!-- docs-build:entity-index:begin -->"
 ENTITY_END = "<!-- docs-build:entity-index:end -->"
@@ -66,8 +68,25 @@ def render_entity_index_block(bundle_root: Path, bundle: str = "application") ->
     return f"{ENTITY_BEGIN}\n{inner}\n{ENTITY_END}\n"
 
 
+def markdown_body(existing: str) -> str:
+    """Mask metadata/code while retaining character offsets and line endings."""
+    raw = existing.encode("utf-8")
+    regions, safe_end = body_regions(raw)
+    if not safe_end:
+        raise ValueError("INDEX-GUIDE.md 存在未闭合的 frontmatter 或代码围栏，拒绝改写")
+    pieces = []
+    offset = 0
+    for start, end in regions:
+        pieces.append(re.sub(r"[^\r\n]", " ", raw[offset:start].decode("utf-8")))
+        pieces.append(raw[start:end].decode("utf-8"))
+        offset = end
+    pieces.append(re.sub(r"[^\r\n]", " ", raw[offset:].decode("utf-8")))
+    return "".join(pieces)
+
+
 def chapter_four_bounds(existing: str) -> tuple[int, int]:
     """定位唯一第四章，防止错放标记吞掉相邻章节。"""
+    existing = markdown_body(existing)
     chapters = list(re.finditer(r"^##[ \t]+(?:四、|4[. 、])[^\r\n]*", existing, re.MULTILINE))
     if len(chapters) != 1:
         raise ValueError("INDEX-GUIDE.md 须有唯一第四章标题")
@@ -79,6 +98,7 @@ def chapter_four_bounds(existing: str) -> tuple[int, int]:
 
 def entity_block_span(existing: str) -> Optional[tuple[int, int]]:
     """返回唯一完整标记块；拒绝残缺、重复、倒置或混用标记。"""
+    existing = markdown_body(existing)
     pairs = ((ENTITY_BEGIN, ENTITY_END), (ENTITY_BEGIN_LEGACY, ENTITY_END_LEGACY))
     present = [(begin, end) for begin, end in pairs if begin in existing or end in existing]
     if not present:
@@ -105,15 +125,16 @@ def patch_index_guide(existing: str, block: str) -> str:
     if span:
         start, end = span
         return existing[:start] + block.rstrip() + existing[end:]
-    headings = list(re.finditer(r"^### 4\.5(?:[ \t]+[^\n]*)?\n", existing, re.MULTILINE))
+    body = markdown_body(existing)
+    headings = list(re.finditer(r"^###[ \t]+4\.5(?:[ \t]+[^\r\n]*)?\r?\n", body, re.MULTILINE))
     if len(headings) != 1:
         raise ValueError("INDEX-GUIDE.md 须有唯一「### 4.5」或实体块标记")
     start = headings[0].end()
     chapter_start, chapter_end = chapter_four_bounds(existing)
     if not chapter_start <= headings[0].start() < chapter_end:
         raise ValueError("4.5 标题须位于第四章内")
-    following = re.search(r"^#{1,3} ", existing[start:], re.MULTILINE)
-    end = start + following.start() if following else len(existing)
+    following = re.search(r"^#{1,3}[ \t]+", body[start:chapter_end], re.MULTILINE)
+    end = start + following.start() if following else chapter_end
     return existing[:start] + newline + block + newline + existing[end:]
 
 

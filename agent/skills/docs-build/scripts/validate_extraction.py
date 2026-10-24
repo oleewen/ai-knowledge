@@ -132,7 +132,7 @@ def check_bundle(root: Path, layer: str, perspectives: list[str], entities_only:
             text = guide.read_text(encoding="utf-8")
             try:
                 span = entity_block_span(text)
-                if span is None or ENTITY_BEGIN not in text:
+                if span is None or not text[span[0]:span[1]].startswith(ENTITY_BEGIN):
                     errors.append("INDEX-GUIDE.md 缺少当前版完整导航标记块")
                 else:
                     local_targets(guide, root, errors, text[span[0]:span[1]])

@@ -81,6 +81,51 @@ class BuildToolsTest(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     generator.patch_index_guide(content, BLOCK)
 
+    def test_navigation_examples_are_preserved(self):
+        for example in (
+            "```markdown\n" + BLOCK + "```\n",
+            "~~~markdown\n## 四、示例\n### 4.5 示例\n" + BLOCK + "~~~\n",
+            "    " + BLOCK.replace("\n", "\n    ").rstrip() + "\n",
+            "---\nexample: |\n  " + BLOCK.replace("\n", "\n  ").rstrip() + "\n---\n",
+        ):
+            for real_block in ("old", BLOCK):
+                with self.subTest(example=example, real_block=real_block):
+                    original = example + GUIDE.replace("old", real_block)
+                    updated = generator.patch_index_guide(original, BLOCK.replace("new", "UPDATED"))
+                    self.assertTrue(updated.startswith(example))
+                    self.assertIn("UPDATED", updated[len(example):])
+                    self.assertIn("KEEP", updated)
+
+    def test_tab_headings_bound_navigation_replacement(self):
+        for following in ("###\t4.6 人工说明", "##\t五、业务"):
+            original = "## 四、领域模型\n###\t4.5 导航\nold\n" + following + "\nKEEP\n"
+            updated = generator.patch_index_guide(original, BLOCK)
+            self.assertTrue(updated.endswith(following + "\nKEEP\n"))
+            self.assertNotIn("\nold\n", updated)
+
+    def test_validator_ignores_example_markers(self):
+        self.entity()
+        guide = self.doc / "INDEX-GUIDE.md"
+        example = "```markdown\n" + BLOCK + "```\n\n"
+        guide.write_text(example + GUIDE)
+        self.assertNotEqual(self.validate().returncode, 0)
+        self.assertEqual(self.generate().returncode, 0)
+        self.assertEqual(self.validate().returncode, 0)
+        self.assertTrue(guide.read_text().startswith(example))
+
+    def test_unclosed_examples_reject_without_writes(self):
+        guide = self.doc / "INDEX-GUIDE.md"
+        for original in (
+            GUIDE.replace("old", "old\n```markdown\nexample"),
+            "---\nexample: |\n" + GUIDE,
+        ):
+            guide.write_text(original)
+            before = guide.read_bytes()
+            for args in (("--dry-run",), ()):
+                result = self.generate(*args)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertEqual(guide.read_bytes(), before)
+
     def test_generator_does_not_delete_legacy_files(self):
         # 旧 CLI 保持兼容；只替换仓库定位，全部写入发生在临时仓。
         legacy = self.doc / "knowledge" / "KNOWLEDGE-INDEX.md"

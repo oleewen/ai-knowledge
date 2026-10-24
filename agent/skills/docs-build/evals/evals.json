@@ -1,6 +1,6 @@
 {
   "skill_name": "docs-build",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "用真实请求验证路由、单元边界、提取产物与脚本操作；应检查实际行为和文件，不以复述规则代替通过。",
   "evals": [
     {
@@ -241,6 +241,34 @@
           "type": "must_include",
           "check": "以 docs-extract 为主路径，不创建实体或触发 docs-build 写入。",
           "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "build-navigation-examples",
+      "category": "should-trigger",
+      "prompt": "实体和台账已核验，只刷新第四章导航；指南含模板示例、Tab章节标题，保留其他内容。",
+      "expected_output": "仅真实导航被刷新；示例与后续章节逐字保留，预览不写；最终完整校验通过。",
+      "assertions": [
+        {
+          "id": "build-navigation-examples-actual",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "仅真实导航被刷新；示例与后续章节逐字保留，预览不写；最终完整校验通过。"
+        }
+      ]
+    },
+    {
+      "id": "build-navigation-unclosed",
+      "category": "should-trigger",
+      "prompt": "本批次已授权，只预览导航刷新；指南中的代码示例可能未闭合，先核验再决定能否写入。",
+      "expected_output": "预览报未闭合结构错误；不改写指南，不自行补闭合或扩大编辑范围。",
+      "assertions": [
+        {
+          "id": "build-navigation-unclosed-actual",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "预览报未闭合结构错误；不改写指南，不自行补闭合或扩大编辑范围。"
         }
       ]
     }

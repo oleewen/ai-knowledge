@@ -1,0 +1,123 @@
+{
+  "date": "2026-10-24",
+  "fixture": "/private/var/folders/gm/n52pf6px5316yltx551nmqvm0000gn/T/docs-build-blind-2k3gzi_8",
+  "records": [
+    {
+      "case": "write",
+      "changed": [
+        "INDEX-GUIDE.md"
+      ],
+      "files": {
+        "INDEX-GUIDE.md": {
+          "before_sha256": "f82d070ca5831a00261eedb554e5a4754e52599b6122b832dafa5b8204c61b7c",
+          "after_sha256": "f78c2c3a6eaddd3ecd8d8e85f0cc56de898f09abc1ca23e50db1446512e65e52"
+        },
+        "knowledge/README.md": {
+          "before_sha256": "4062f45ddd5724abd8c1d1bcee98102fc5e448c63ce94c09a536b20c59e3ebe6",
+          "after_sha256": "4062f45ddd5724abd8c1d1bcee98102fc5e448c63ce94c09a536b20c59e3ebe6"
+        },
+        "knowledge/index.md": {
+          "before_sha256": "4062f45ddd5724abd8c1d1bcee98102fc5e448c63ce94c09a536b20c59e3ebe6",
+          "after_sha256": "4062f45ddd5724abd8c1d1bcee98102fc5e448c63ce94c09a536b20c59e3ebe6"
+        },
+        "knowledge/business/README.md": {
+          "before_sha256": "3966b4dbb3b8f56fc1b93f9e3884515daf2d96885bc886959bab5f466a438a92",
+          "after_sha256": "3966b4dbb3b8f56fc1b93f9e3884515daf2d96885bc886959bab5f466a438a92"
+        },
+        "knowledge/product/README.md": {
+          "before_sha256": "3966b4dbb3b8f56fc1b93f9e3884515daf2d96885bc886959bab5f466a438a92",
+          "after_sha256": "3966b4dbb3b8f56fc1b93f9e3884515daf2d96885bc886959bab5f466a438a92"
+        },
+        "knowledge/application/README.md": {
+          "before_sha256": "3966b4dbb3b8f56fc1b93f9e3884515daf2d96885bc886959bab5f466a438a92",
+          "after_sha256": "3966b4dbb3b8f56fc1b93f9e3884515daf2d96885bc886959bab5f466a438a92"
+        },
+        "knowledge/data/README.md": {
+          "before_sha256": "3966b4dbb3b8f56fc1b93f9e3884515daf2d96885bc886959bab5f466a438a92",
+          "after_sha256": "3966b4dbb3b8f56fc1b93f9e3884515daf2d96885bc886959bab5f466a438a92"
+        },
+        "knowledge/technical/README.md": {
+          "before_sha256": "3966b4dbb3b8f56fc1b93f9e3884515daf2d96885bc886959bab5f466a438a92",
+          "after_sha256": "3966b4dbb3b8f56fc1b93f9e3884515daf2d96885bc886959bab5f466a438a92"
+        }
+      },
+      "before": "# Guide\n\n```markdown\n## 四、示例\n<!-- docs-build:entity-index:begin -->\nEXAMPLE\n<!-- docs-build:entity-index:end -->\n```\n\n## 四、领域模型\n\n###\t4.5 视角导航\nold\n\n##\t五、业务\nKEEP 中文 😀\n",
+      "after": "# Guide\n\n```markdown\n## 四、示例\n<!-- docs-build:entity-index:begin -->\nEXAMPLE\n<!-- docs-build:entity-index:end -->\n```\n\n## 四、领域模型\n\n###\t4.5 视角导航\n\n<!-- docs-build:entity-index:begin -->\n> 本块由 `/docs-build` 写入；实体台账 ∈ 各视角 README；正文 ∈ per-entity `{ID}.md`；九章骨架 ∈ `/docs-indexing`。\n\n> 本层仅登记 **API / TBL / MW / CMP**。\n\n### 视角入口\n\n- [知识库总说明](knowledge/README.md)\n- [目录索引](knowledge/index.md)\n- [业务](knowledge/business/README.md)\n- [产品](knowledge/product/README.md)\n- [应用](knowledge/application/README.md)\n- [数据](knowledge/data/README.md)\n- [技术](knowledge/technical/README.md)\n<!-- docs-build:entity-index:end -->\n\n##\t五、业务\nKEEP 中文 😀\n",
+      "calls": {
+        "call.7H1aP9": "",
+        "call.7H1aP9.args": "validate ",
+        "call.7H1aP9.output": "[INFO] application: 0 个实体；空视角不要求补造实体\n[INFO] data: 0 个实体；空视角不要求补造实体\n[INFO] business: 0 个实体；空视角不要求补造实体\n[INFO] product: 0 个实体；空视角不要求补造实体\n[INFO] technical: 0 个实体；空视角不要求补造实体\ndocs-build 结构校验：0 个错误；关系语义与跨层 HTTP 另行核验。\n",
+        "call.7H1aP9.status": "0\n",
+        "call.NZrvne": "",
+        "call.NZrvne.args": "generate ",
+        "call.NZrvne.output": "patched docs/INDEX-GUIDE.md 第四章\n",
+        "call.NZrvne.status": "0\n",
+        "call.hnXxdu": "",
+        "call.hnXxdu.args": "validate --entities-only ",
+        "call.hnXxdu.output": "[INFO] application: 0 个实体；空视角不要求补造实体\n[INFO] data: 0 个实体；空视角不要求补造实体\n[INFO] business: 0 个实体；空视角不要求补造实体\n[INFO] product: 0 个实体；空视角不要求补造实体\n[INFO] technical: 0 个实体；空视角不要求补造实体\ndocs-build 结构校验：0 个错误；关系语义与跨层 HTTP 另行核验。\n",
+        "call.hnXxdu.status": "0\n",
+        "call.yN4zwD": "",
+        "call.yN4zwD.args": "generate --dry-run ",
+        "call.yN4zwD.output": "<!-- docs-build:entity-index:begin -->\n> 本块由 `/docs-build` 写入；实体台账 ∈ 各视角 README；正文 ∈ per-entity `{ID}.md`；九章骨架 ∈ `/docs-indexing`。\n\n> 本层仅登记 **API / TBL / MW / CMP**。\n\n### 视角入口\n\n- [知识库总说明](knowledge/README.md)\n- [目录索引](knowledge/index.md)\n- [业务](knowledge/business/README.md)\n- [产品](knowledge/product/README.md)\n- [应用](knowledge/application/README.md)\n- [数据](knowledge/data/README.md)\n- [技术](knowledge/technical/README.md)\n<!-- docs-build:entity-index:end -->\n",
+        "call.yN4zwD.status": "0\n"
+      },
+      "status": "pass",
+      "response_summary": "爸爸，已仅刷新write/docs/INDEX-GUIDE.md第四章导航，示例及其他正文原样保留。validate --entities-only零错误；generate --dry-run预览；generate更新第四章；validate完整结构校验零错误。另核对围栏示例、原标题、第五章中文emoji未变。"
+    },
+    {
+      "case": "unclosed",
+      "changed": [],
+      "files": {
+        "INDEX-GUIDE.md": {
+          "before_sha256": "bef6ff275e037fa58f7f7b34f66ac60bce283252a82f3fc50b70da91b12ce2fc",
+          "after_sha256": "bef6ff275e037fa58f7f7b34f66ac60bce283252a82f3fc50b70da91b12ce2fc"
+        },
+        "knowledge/README.md": {
+          "before_sha256": "4062f45ddd5724abd8c1d1bcee98102fc5e448c63ce94c09a536b20c59e3ebe6",
+          "after_sha256": "4062f45ddd5724abd8c1d1bcee98102fc5e448c63ce94c09a536b20c59e3ebe6"
+        },
+        "knowledge/index.md": {
+          "before_sha256": "4062f45ddd5724abd8c1d1bcee98102fc5e448c63ce94c09a536b20c59e3ebe6",
+          "after_sha256": "4062f45ddd5724abd8c1d1bcee98102fc5e448c63ce94c09a536b20c59e3ebe6"
+        },
+        "knowledge/business/README.md": {
+          "before_sha256": "3966b4dbb3b8f56fc1b93f9e3884515daf2d96885bc886959bab5f466a438a92",
+          "after_sha256": "3966b4dbb3b8f56fc1b93f9e3884515daf2d96885bc886959bab5f466a438a92"
+        },
+        "knowledge/product/README.md": {
+          "before_sha256": "3966b4dbb3b8f56fc1b93f9e3884515daf2d96885bc886959bab5f466a438a92",
+          "after_sha256": "3966b4dbb3b8f56fc1b93f9e3884515daf2d96885bc886959bab5f466a438a92"
+        },
+        "knowledge/application/README.md": {
+          "before_sha256": "3966b4dbb3b8f56fc1b93f9e3884515daf2d96885bc886959bab5f466a438a92",
+          "after_sha256": "3966b4dbb3b8f56fc1b93f9e3884515daf2d96885bc886959bab5f466a438a92"
+        },
+        "knowledge/data/README.md": {
+          "before_sha256": "3966b4dbb3b8f56fc1b93f9e3884515daf2d96885bc886959bab5f466a438a92",
+          "after_sha256": "3966b4dbb3b8f56fc1b93f9e3884515daf2d96885bc886959bab5f466a438a92"
+        },
+        "knowledge/technical/README.md": {
+          "before_sha256": "3966b4dbb3b8f56fc1b93f9e3884515daf2d96885bc886959bab5f466a438a92",
+          "after_sha256": "3966b4dbb3b8f56fc1b93f9e3884515daf2d96885bc886959bab5f466a438a92"
+        }
+      },
+      "before": "# Guide\n\n```markdown\n## 四、示例\n<!-- docs-build:entity-index:begin -->\nEXAMPLE\n<!-- docs-build:entity-index:end -->\n```\n\n## 四、领域模型\n\n###\t4.5 视角导航\nold\n```markdown\nunfinished\n\n##\t五、业务\nKEEP 中文 😀\n",
+      "after": "# Guide\n\n```markdown\n## 四、示例\n<!-- docs-build:entity-index:begin -->\nEXAMPLE\n<!-- docs-build:entity-index:end -->\n```\n\n## 四、领域模型\n\n###\t4.5 视角导航\nold\n```markdown\nunfinished\n\n##\t五、业务\nKEEP 中文 😀\n",
+      "calls": {
+        "call.6xbrzV": "",
+        "call.6xbrzV.args": "generate --dry-run ",
+        "call.6xbrzV.output": "error: INDEX-GUIDE.md 存在未闭合的 frontmatter 或代码围栏，拒绝改写\n",
+        "call.6xbrzV.status": "1\n",
+        "call.ZetgoT": "",
+        "call.ZetgoT.args": "validate --entities-only ",
+        "call.ZetgoT.output": "[INFO] application: 0 个实体；空视角不要求补造实体\n[INFO] data: 0 个实体；空视角不要求补造实体\n[INFO] business: 0 个实体；空视角不要求补造实体\n[INFO] product: 0 个实体；空视角不要求补造实体\n[INFO] technical: 0 个实体；空视角不要求补造实体\ndocs-build 结构校验：0 个错误；关系语义与跨层 HTTP 另行核验。\n",
+        "call.ZetgoT.status": "0\n"
+      },
+      "status": "pass",
+      "response_summary": "爸爸，目前不能写入导航；未修改文件。validate --entities-only退出0，generate --dry-run退出1：存在未闭合frontmatter或代码围栏。确认old后围栏未闭合，示例内标记不算正文导航块；本次未获修复授权，停在核验。"
+    }
+  ],
+  "not_run": 10,
+  "regression": "21/21; independent shared OKF9/9",
+  "limitation": "Access scope is instructed, not OS sandbox. Responses summarized; call outputs and guide contents verbatim."
+}
