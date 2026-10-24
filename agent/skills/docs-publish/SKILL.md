@@ -29,8 +29,10 @@ description: >
 bash agent/skills/docs-publish/scripts/docs-publish.sh --dry-run
 
 # 用户确认同一预览结果后，才执行正式发布
-bash agent/skills/docs-publish/scripts/docs-publish.sh --publish
+bash agent/skills/docs-publish/scripts/docs-publish.sh --publish --expect-plan <预览的plan-id>
 ```
+
+计划标识只验证计划一致性，不代替用户授权；已有明确覆盖同一具体计划的授权可沿用。暂存区、工作区、版本日期或 Git 基线变化时重新预览。
 
 正式执行按 [workflow.md](references/workflow.md) 的顺序进行。认证失败、分支保护、冲突、非快进或其他异常时立即停住并保留现场；不要自动重试、回滚或改写无关文件。
 
@@ -50,4 +52,4 @@ bash agent/skills/docs-publish/scripts/docs-publish.sh --publish
 - 预览、确认、发布、失败停顿与完成校核：[workflow.md](references/workflow.md)
 - 常见阻塞与恢复边界：[gotchas.md](references/gotchas.md)
 - 脚本回归：`bash agent/skills/docs-publish/tests/run.sh`
-- 行为评测：[evals/evals.json](evals/evals.json)
+- 行为评测：[evals/evals.json](evals/evals.json)；执行与证据要求见 [evaluation.md](references/evaluation.md)

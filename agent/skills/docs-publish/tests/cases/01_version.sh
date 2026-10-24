@@ -44,4 +44,8 @@ date() {
 [[ "$(version_next_from_files "$TMP"/*/DESIGN.md)" == 2026.1020.4 ]]
 VERSION_TEST_DAY=2026.1021
 [[ "$(version_next_from_files "$TMP"/*/DESIGN.md)" == 2026.1021.0 ]]
+VERSION_TEST_DAY=2026.1019
+if version_next_from_files "$TMP"/*/DESIGN.md >/dev/null 2>&1; then fail '未来版本不得回退'; fi
+for layer in application system solution company; do printf 'version: 99.12.31\n' > "$TMP/$layer/DESIGN.md"; done
+if version_next_from_files "$TMP"/*/DESIGN.md >/dev/null 2>&1; then fail '旧格式未来版本也须核实'; fi
 pass '版本解析、同日 patch 递增与跨日归零'

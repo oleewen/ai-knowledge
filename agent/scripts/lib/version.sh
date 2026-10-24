@@ -44,8 +44,13 @@ version_next_from_files() {
     if [[ -z "$current" ]]; then current="$value"; else [[ "$current" == "$value" ]] || return 3; fi
   done
   today="$(date +%Y.%m%d)"
-  if [[ -z "$current" || "$legacy" == 1 ]]; then printf '%s.0\n' "$today"; return; fi
+  if [[ -z "$current" ]]; then printf '%s.0\n' "$today"; return; fi
   date_part="${current%.*}"
+  if [[ "$date_part" > "$today" ]]; then
+    printf '当前版本日期晚于系统日期，请核实版本或时钟\n' >&2
+    return 4
+  fi
+  if [[ "$legacy" == 1 ]]; then printf '%s.0\n' "$today"; return; fi
   if [[ "$date_part" == "$today" ]]; then
     max_patch="${current##*.}"
     printf '%s.%d\n' "$date_part" "$((10#$max_patch + 1))"

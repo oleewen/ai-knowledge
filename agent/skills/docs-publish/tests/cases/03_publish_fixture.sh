@@ -30,7 +30,8 @@ git -C "$fixture" switch -q -c feature-work
 printf 'follow-up\n' >>"$fixture/TODO-LIST.md"
 printf 'follow-up\n' >>"$fixture/application/TODO-LIST.md"
 
-output="$(cd "$fixture" && "$BASH5" agent/skills/docs-publish/scripts/docs-publish.sh --publish 2>&1)" \
+plan="$(cd "$fixture" && "$BASH5" agent/skills/docs-publish/scripts/docs-publish.sh --dry-run | sed -n 's/^plan-id: //p')"
+output="$(cd "$fixture" && "$BASH5" agent/skills/docs-publish/scripts/docs-publish.sh --publish --expect-plan "$plan" 2>&1)" \
   || test_fail "--publish fixture 失败: $output"
 assert_contains 'Published ' <(printf '%s\n' "$output")
 

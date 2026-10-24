@@ -23,6 +23,9 @@ make_fixture() {
   git -C "$fixture" config user.name 'Docs Publish Test'
   git -C "$fixture" add .
   git -C "$fixture" commit -qm initial
+  git -C "$TMP" init -q --bare remote.git
+  git -C "$fixture" remote add origin "$TMP/remote.git"
+  git -C "$fixture" push -q -u origin main
   git -C "$fixture" switch -q -c feature-work
   printf '%s\n' "$fixture"
 }

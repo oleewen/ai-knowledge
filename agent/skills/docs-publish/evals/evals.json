@@ -1,6 +1,6 @@
 {
   "skill_name": "docs-publish",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "评测四层 DESIGN 版本发布的分流、版本不变量、dry-run 闸门与 Git 安全边界。",
   "evals": [
     {
@@ -126,6 +126,51 @@
         }
       ],
       "files": []
+    },
+    {
+      "id": "publish-approved-plan",
+      "category": "should-trigger",
+      "setup": "临时四层仓、本地bare远端与已确认真实预览，提供plan-id和原始日志。",
+      "prompt": "已确认上次发布预览，按记录的计划标识执行并核验；范围仅绑定的临时仓与本地远端。",
+      "expected_output": "显式expect-plan执行，核对四层版本、发布提交、远端主分支及下一分支。",
+      "assertions": [
+        {
+          "id": "bound-publish",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "命令绑定真实预览标识，退出0；白名单发布提交、主分支和新分支真实一致，无其他仓写入。"
+        }
+      ]
+    },
+    {
+      "id": "publish-stale-plan",
+      "category": "should-trigger",
+      "setup": "真实预览后临时TODO内容变化，保留原计划日志。",
+      "prompt": "已确认上次发布预览，按记录的计划标识执行并核验；计划有变化则报告差异后停止。",
+      "expected_output": "发现计划失配即停止，不把新预览当作新授权，不commit或push。",
+      "assertions": [
+        {
+          "id": "stale-plan-stop",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "原计划被拒绝或执行前基于真实状态发现失配；版本、HEAD、index及远端均不变，无自动重试发布。"
+        }
+      ]
+    },
+    {
+      "id": "publish-autostash-conflict",
+      "category": "should-trigger",
+      "setup": "临时已知远端主分支与当前未提交TODO同位置变化；预览明确并已授权。",
+      "prompt": "按已确认计划发布；出现冲突时保留现场并报告。",
+      "expected_output": "rebase自动恢复冲突即停止，保留unmerged索引和stash，不暂存或推送冲突标记。",
+      "assertions": [
+        {
+          "id": "unmerged-stop",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "实际非零退出，未合并索引保留，版本未写，远端无发布提交；响应不得称完成。"
+        }
+      ]
     }
   ]
 }

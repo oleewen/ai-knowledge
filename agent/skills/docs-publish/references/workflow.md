@@ -14,23 +14,25 @@ bash agent/skills/docs-publish/scripts/docs-publish.sh --dry-run
 
 ## 2. 授权
 
-只有用户明确确认当前预览结果后，才可运行 `--publish`。确认失效条件包括：版本字段变化、工作树范围变化、分支变化、远端状态变化或预览失败后重新执行。
+先完成可审阅预览；已有明确授权覆盖同一具体计划时沿用，否则取得确认后才可运行 `--publish --expect-plan <plan-id>`。确认失效条件包括：版本字段变化、工作树范围变化、分支变化、远端状态变化或预览失败后重新执行。
 
-项目 Git 约定要求 commit/push 前获得用户确认；该确认不能由“用户最初说要发布”替代。
+项目 Git 约定要求 commit/push 前获得用户确认；笼统发布请求不自动覆盖尚未展示的文件、版本和 Git 操作，计划标识本身不能证明授权。
+
+预览输出的 `plan-id` 绑定分支/HEAD、主分支与远端跟踪提交、origin 读写地址、目标版本、四层内容、TODO 范围及暂存/未暂存差异。不绑定 FETCH_HEAD、index mtime 等易变元数据。
 
 ## 3. 执行
 
 用户确认后运行：
 
 ```bash
-bash agent/skills/docs-publish/scripts/docs-publish.sh --publish
+bash agent/skills/docs-publish/scripts/docs-publish.sh --publish --expect-plan <预览的plan-id>
 ```
 
 正式流程由脚本按以下顺序完成：
 
-1. 获取远端主分支并核对预览基线；远端变化则停止，重新预览。
-2. rebase 当前 feature 分支，通过分支和工作区范围校验后，更新四层 `DESIGN.md` 的版本字段并暂存允许文件。
-3. 创建固定 subject 的 `docs-publish` 提交。
+1. 在 fetch 前核对 plan-id；获取远端主分支后再次核对。内容、暂存状态、日期或 Git 基线变化均停止，重新预览。
+2. rebase 当前 feature 分支；即使退出为零，也检查未合并索引（autostash 恢复可能冲突）。有冲突保留现场并停止。核对分支、工作区与版本基线未变后，更新四层版本并暂存允许文件。
+3. 再次独立核对暂存区白名单，创建固定 subject 的 `docs-publish` 提交。
 4. 推送当前 feature 分支。
 5. 快进合并到主分支并推送主分支。
 6. 创建并切换到下一 `feature-YYYY.MMdd.patch` 分支。
