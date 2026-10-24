@@ -791,6 +791,28 @@
           "按本场 fixtures 指定的已确认事实准备历史；不得替用户补额外授权。"
         ]
       }
+    },
+    {
+      "id": "design-encoded-central-path",
+      "category": "should-trigger",
+      "prompt": "仅结构校验DSD，不联网验证中央来源，不修改文件。",
+      "assertions": [
+        {
+          "id": "design-encoded-central-path-actual",
+          "priority": "P0",
+          "check": "百分号编码的中文中央URL与当前DSD同链，实际退出0，明确结构通过不证明来源可达或内容基线一致。",
+          "name": "实际结构校验与只读边界",
+          "type": "must_include"
+        }
+      ],
+      "expected_output": "实际DSD结构校验通过，明确未验证远端内容基线。",
+      "setup": {
+        "workspace": "独立临时目录；允许只读结构校验，禁止写入、联网、Git。",
+        "fixtures": [
+          "从tests/fixtures/DSD-TEST-1.md构造DSD-审批-1.md，同链TEST替换为审批；architecture_ref使用https://git.example/repo/ASD-%E5%AE%A1%E6%89%B9-1.md?raw=1#scope。"
+        ],
+        "history": []
+      }
     }
   ]
 }

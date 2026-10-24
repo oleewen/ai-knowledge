@@ -81,7 +81,7 @@ validate_file() {
   local file="$1" basename="${1##*/}"
   # 受支持的模板格式由本检查器定义。字段是否真实、章节是否存在可静态校验；
   # 内容完整性、引用文件可达性、每项 PRD/ASD 追溯及定稿决定仍须人工审阅。
-  awk -v filename="$basename" '
+  LC_ALL=C awk -v filename="$basename" '
     function fail(message) {
       printf "[ERROR] %s: %s\n", filename, message
       errors++
@@ -123,10 +123,25 @@ validate_file() {
       if (value ~ /^[>|\[\]{&*!]/ || value ~ /:[ \t]/ || tolower(value) == "null" || value == "~") scalar_ok = 0
       return value
     }
-    function reference_id(value) {
+    function decode_url_component(value,    result,i,pair,high,low) {
+      result = ""
+      for (i = 1; i <= length(value); i++) {
+        pair = substr(value, i + 1, 2)
+        if (substr(value, i, 1) == "%" && pair ~ /^[0-9A-Fa-f][0-9A-Fa-f]$/) {
+          high = index("0123456789ABCDEF", toupper(substr(pair, 1, 1))) - 1
+          low = index("0123456789ABCDEF", toupper(substr(pair, 2, 1))) - 1
+          result = result sprintf("%c", high * 16 + low)
+          i += 2
+        } else result = result substr(value, i, 1)
+      }
+      return result
+    }
+    function reference_id(value,    is_url) {
       # URL 的 query/fragment 不属于文件身份，必须先去除再取 basename。
-      if (value ~ /^https?:\/\//) sub(/[?#].*$/, "", value)
+      is_url = (value ~ /^https?:\/\//)
+      if (is_url) sub(/[?#].*$/, "", value)
       sub(/^.*\//, "", value)
+      if (is_url) value = decode_url_component(value)
       sub(/\.md$/, "", value)
       return value
     }

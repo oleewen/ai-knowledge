@@ -133,6 +133,16 @@ sed 's|^architecture_ref:.*|architecture_ref: "https://git.example/team/repo/blo
 check 'query cannot repair a wrong source identity' 1 "$TEST_TMP/project" 'architecture_ref' --file "$DOCUMENT"
 sed 's|^architecture_ref:.*|architecture_ref: "https://git.example/team/repo/blob/main/ASD-TEST-2.md#ASD-TEST-1"|' "$FIXTURE" > "$DOCUMENT"
 check 'HTTP wrong phase remains invalid' 1 "$TEST_TMP/project" 'architecture_ref' --file "$DOCUMENT"
+# URL 路径百分号编码不改变同链文档身份。
+for idea in '审批' '旧 ID'; do
+  if [[ "$idea" == '审批' ]]; then encoded='%E5%AE%A1%E6%89%B9'; else encoded='旧%20ID'; fi
+  encoded_doc="$TEST_TMP/standalone dir/DSD-$idea-1.md"
+  sed "s/TEST/$idea/g; s|^architecture_ref:.*|architecture_ref: \"https://git.example/repo/ASD-$encoded-1.md?raw=1#scope\"|" "$FIXTURE" > "$encoded_doc"
+  check "encoded identity $idea" 0 "$TEST_TMP/standalone dir" '校验通过' --file "$encoded_doc"
+done
+sed 's/TEST/审批/g; s|^architecture_ref:.*|architecture_ref: "https://git.example/repo/ASD-%E5%AE%A1%E6%89%B9-2.md?x=/ASD-审批-1.md"|' "$FIXTURE" > "$TEST_TMP/standalone dir/DSD-审批-1.md"
+check 'encoded wrong phase still fails' 1 "$TEST_TMP/standalone dir" 'architecture_ref' --file "$TEST_TMP/standalone dir/DSD-审批-1.md"
+
 sed 's/^architecture_ref:.*/architecture_ref: ""/' "$FIXTURE" > "$DOCUMENT"
 printf '\nASD-TEST-1 PRD-TEST-1\n' >> "$DOCUMENT"
 check 'body cannot repair empty reference' 1 "$TEST_TMP/project" 'architecture_ref' --file "$DOCUMENT"
