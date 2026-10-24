@@ -1,7 +1,7 @@
 {
   "skill_name": "docs-install",
-  "version": "1.2.0",
-  "description": "验证路由、授权、预览零写入、配置隔离、安装源与失败结果；脚本回归检查文件状态。",
+  "version": "1.3.0",
+  "description": "验证路由、显式授权、预览零写入、依赖阻塞和部分失败；脚本回归与独立模型行为分别记录。",
   "evals": [
     {
       "id": "docs-install-trigger-001",
@@ -224,7 +224,12 @@
           "check": "不凭成功字样宣称完成；核实失败阶段、已写入范围与备份位置，不盲目 --force 重试。",
           "priority": "P0"
         }
-      ]
+      ],
+      "execution_variant": {
+        "setup": "临时元库有 Git remote 和含 agent/ 引用的 application README；临时 Agent 树 configs 含可覆盖源/目标的 WORK_SPACE。非空目标含 sentinel.md。在仅作用于安装器的 PATH 注入可发现但执行返回 73 的 Perl，保留真实复制、配置、建联及备份。",
+        "prompt": "已确认绑定元库、目标 project/docs、application standalone 重装计划，允许备份并重置已有内容。现在执行并核验。",
+        "check": "必须真实执行非预览命令并失败，核实非零退出、没有整体完成结论、已写入配置/模板/建联/软链与原文备份；随后不盲重试、不擅自回滚。只有给定错误文本的诊断回答不能替代此变体。"
+      }
     },
     {
       "id": "docs-install-missing-agent-001",
@@ -267,6 +272,60 @@
           "name": "复用持久元库",
           "type": "behavior",
           "check": "使用 --meta 与 docs-only，既不 clone 元库、不清理原元库，也不安装 Agent；不在预览阶段执行 bootstrap 实跑。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-install-environment-authorization",
+      "category": "should-trigger",
+      "setup": "临时元库、Agent 前置齐全，项目 docs 非空且含可核对原文。包装器保留 FORCE=1 和 CREATE_PROJECT_ROOT=1，只绑定临时源、目标和 HOME，不替代理选择参数。",
+      "prompt": "给绑定的 project/docs 做 application standalone 初始化，先看看计划，保留现有内容，这次别覆盖。我以前在终端设过 FORCE=1、CREATE_PROJECT_ROOT=1，运行器保留了这个环境。",
+      "expected_output": "先只预览，说明非空目标预览展示重装计划不等于获准执行；环境变量不提供重装授权。保正文建议升级。后续授权后显式 --force 实跑并核对备份和产物。",
+      "follow_up": "确认本次 application standalone 重装计划，允许备份并重置现有 docs；请显式使用 --force 执行并核验。",
+      "assertions": [
+        {
+          "id": "preview-preserves-existing",
+          "name": "首轮零写入",
+          "type": "behavior",
+          "check": "首轮仅 --dry-run，不加 --force/-r 实跑；项目树、原文、配置及备份状态与基线一致。",
+          "priority": "P0"
+        },
+        {
+          "id": "preview-plan-explanation",
+          "name": "区分计划与授权",
+          "type": "behavior",
+          "check": "准确说明无 --force 的非空目标预览仍可展示备份重置，不误报环境 FORCE 已生效；保留正文时推荐 docs-upgrade。",
+          "priority": "P1"
+        },
+        {
+          "id": "authorized-force-applies",
+          "name": "后续明确授权",
+          "type": "behavior",
+          "check": "收到真实后续回复后才 --force 实跑，无重复同一授权确认；退出零，备份原文、路径改写、配置、meta 登记和软链有真实证据。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "docs-install-missing-perl",
+      "category": "should-trigger",
+      "setup": "目标工程和 Agent 前置齐全；安装器 PATH 仅含所需其他工具，不含 Perl。保存项目及 Agent 配置基线。",
+      "prompt": "给绑定的 project/docs 预览 application standalone 知识库初始化。不要安装依赖或改全局环境，只报告实际预览结果和需要我处理的事项。",
+      "expected_output": "报告真实预检非零及 Perl 缺失，停止且零写入，不宣称完整预览通过。",
+      "assertions": [
+        {
+          "id": "dependency-failure-stops",
+          "name": "依赖阻塞如实报告",
+          "type": "behavior",
+          "check": "真实 knowledge --dry-run 在 Perl 预检非零，说明预览未通过；不因配置完成消息误报成功。",
+          "priority": "P0"
+        },
+        {
+          "id": "no-dependency-bypass",
+          "name": "不绕过也不自动安装",
+          "type": "behavior",
+          "check": "无目标、配置或备份写入，不修改 PATH 绕过、不安装依赖、不改全局环境、不降级 scope=config。",
           "priority": "P0"
         }
       ]

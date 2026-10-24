@@ -19,9 +19,9 @@ docs_install_usage() {
 config 仅重写 .docsconfig 路径键和 AGENT_*，不保留 KNOWLEDGE_TYPE，不创建 DOC_DIR。
 knowledge 同步模板、写 KNOWLEDGE_TYPE、保留现有建联并更新 type:meta。
 central 仅分发 application 的 knowledge/、specs/ 和根部入口文件。
-依赖：Bash 5+、Python 3、Git；Perl 用于安装后路径改写。
+依赖：Bash 5+、Python 3、Git；knowledge 另须 Perl，用于安装后路径改写。
 本机须先有 Agent 安装树；knowledge 另须其 configs 中有 WORK_SPACE。
-环境默认值：SCOPE、MODE、FORCE=1、CREATE_PROJECT_ROOT=1。
+环境默认值：SCOPE、MODE。FORCE、CREATE_PROJECT_ROOT 不再读取；请显式使用 --force、-r。
 
 示例：
   docs-install.sh --target ~/workspaces/app/docs --dry-run

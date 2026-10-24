@@ -1,0 +1,547 @@
+{
+  "skill": "docs-install",
+  "date": "2026-10-24",
+  "eval_version": "1.3.0",
+  "fixture_root": "/private/tmp/docs-install-review-jc77zo2_",
+  "method": "独立代理读取冻结运行副本，只通过绑定临时HOME/元库/工程的运行器调用安装器；不提供评测集、预期、评分器或未来消息。依赖访问约束，不是操作系统沙箱。",
+  "runtime_hashes": {
+    "runtime": {
+      "agent/skills/docs-install/SKILL.md": "d7d808f9640244dcaf1ebc4c63c8c58743fc12b0fd3ac3608bf76b7c918bbba7",
+      "agent/skills/docs-install/agents/openai.yaml": "359a481355ca1fb307b8fba632d5b1dff7fed8583153e5205ed9b75b82fd2b24",
+      "agent/skills/docs-install/gotchas.md": "f18f287e5fc2b44b5938e906e817009ad4a787da676f043773a5020e42f92381",
+      "agent/skills/docs-install/references/README.md": "b1052783b246b9f8ca8384d7539fdf173630c3a661eda3c4f5a0891de0cbdcd6",
+      "agent/skills/docs-install/references/gates.md": "e73e020323d0fc2c4559d5a954e499183aa1b484041f1bdaaf462cba90045b8c",
+      "agent/skills/docs-install/references/parameters.md": "ca1ba11dbcae8f6116d9b3c486cd795816d52c07e91ebe7eebe159484d388d2f",
+      "agent/skills/docs-install/references/workflow.md": "63d131581384b4f79b9ca56e0338faa9b4afb96496e2907886724e13d1c850c2",
+      "agent/skills/docs-install/scripts/docs-config.sh": "96418d9c4a9c4dcba882fa4c4dcd7d5028cd8c831d063e0178c97a36c0c5334e",
+      "agent/skills/docs-install/scripts/docs-install.sh": "be8d156470ac2d9af73f5f02c3ace5006390143a4fec589d87228f021c89807c",
+      "agent/skills/docs-install/scripts/lib/cli.sh": "b8a852b309ee1cede0887d4eb38e934e81f96dcd44d0bb9976c82b839d4204b8",
+      "agent/skills/docs-install/scripts/lib/install.sh": "164512aaed295c5822383a93700e629109a2a9d2356a5c856dd0f79f442175aa",
+      "agent/skills/docs-install/scripts/lib/preflight.sh": "c4cc06fd2ee1227cc6fed8b5201d6e004244b94fe14a92081ac6f0317055305a",
+      "agent/scripts/docs-core.sh": "400ffa0c81b99a9a9d4577a2f96327e3166eaac97232bcd5acfe4b8119ddf92d",
+      "agent/scripts/lib/agent-layout.sh": "bf699e42ff2af8f0f05d813f54749ecd832d5e320d1ad1239804ced7a02c44d7",
+      "agent/scripts/lib/agents.sh": "a38b4c70e96dcc770579eda8054e62416971786a365b856ae8a0395d5569a392",
+      "agent/scripts/lib/backup.sh": "f4837fda6eaba9b2f001c0225e8ea3819f40ecf97876df99aa11c07a3b699037",
+      "agent/scripts/lib/bash.sh": "c33801eaefb8fb85ce1e8152962a247b4c71bdca2310013a78ebf4b10438f448",
+      "agent/scripts/lib/docsconfig-fields.sh": "3ab27d97f79536951748e07fcb218fb3002bbba042445afb7b6a10496ae30f59",
+      "agent/scripts/lib/docsconfig-store.sh": "378d8ef3cd7f309e8ed766821fc6b9d3fc2f8b80c9ea7dfedb54090f8331cbd9",
+      "agent/scripts/lib/docsconfig-workspace.sh": "6293293dcbd2738274bc3263e78bc702abccada2179d020c28e1018a0a71eca3",
+      "agent/scripts/lib/docsconfig.sh": "ab8424bf21e9875e98aaf940368d7a5fe23118bf8a3ca05ba6a794b518785cb6",
+      "agent/scripts/lib/file-io.sh": "a7136547836beaab4430e84336459e5e3041404d31c79d0ccc23bad8ed00442d",
+      "agent/scripts/lib/git-remote.sh": "22118fbbc03d2ba8373903c631873eb3c3790a927167e4b13ea62a28305de4ac",
+      "agent/scripts/lib/knowledge-link-paths.sh": "d0b2d79c54e89ec44a6f43d313397cee037332480d1c5a46cbab3f743c83c0c6",
+      "agent/scripts/lib/knowledge-links-yaml.sh": "54a09cfa0d2fb888853d4229d15d564c821106513a2e10872482fcdab0198e5b",
+      "agent/scripts/lib/knowledge-links.sh": "dee409284b12f211210a532de5e20ba51376e4b5a0573a39f6d88628d55f6e59",
+      "agent/scripts/lib/log-io.sh": "c6291e1f6f13a9125166b57b048e34c1b5037eba526048946a000d89665e786a",
+      "agent/scripts/lib/logging.sh": "f5b3ab5c289258aa5f41d96f49517e8726be236e2d628c8297a44bcc3669dee9",
+      "agent/scripts/lib/path.sh": "1174b8edfce9f764d1b7245d360ef59d69d1d883f5b752b799a5d6fa5c015089",
+      "agent/scripts/lib/resolve.sh": "896f7472f9ac86df3211f12354c160e2231af733acc010abb8d8393068afab75",
+      "agent/scripts/lib/rewrite.sh": "ea427ddfe359867fb624539df2cce5a6d0bd3cd06ec83e932194f5efffb6fb97",
+      "agent/scripts/lib/slot-softlink.sh": "6540005e73abc67a20dea843f4ebb05219aeb6e5b24712d84b1ba108ba2a79eb",
+      "agent/scripts/lib/version.sh": "e5f3e9d0ddefccba5ebcb9c25d5c87a4666cff4b9b244037500761dc9c9a9767"
+    },
+    "runtime-v2": {
+      "agent/skills/docs-install/SKILL.md": "d7d808f9640244dcaf1ebc4c63c8c58743fc12b0fd3ac3608bf76b7c918bbba7",
+      "agent/skills/docs-install/agents/openai.yaml": "359a481355ca1fb307b8fba632d5b1dff7fed8583153e5205ed9b75b82fd2b24",
+      "agent/skills/docs-install/gotchas.md": "f18f287e5fc2b44b5938e906e817009ad4a787da676f043773a5020e42f92381",
+      "agent/skills/docs-install/references/README.md": "b1052783b246b9f8ca8384d7539fdf173630c3a661eda3c4f5a0891de0cbdcd6",
+      "agent/skills/docs-install/references/gates.md": "e73e020323d0fc2c4559d5a954e499183aa1b484041f1bdaaf462cba90045b8c",
+      "agent/skills/docs-install/references/parameters.md": "ca1ba11dbcae8f6116d9b3c486cd795816d52c07e91ebe7eebe159484d388d2f",
+      "agent/skills/docs-install/references/workflow.md": "029e26cb167f9bdbf97034c0aa097a92f75b948625371d6846c2e89c24a9ef46",
+      "agent/skills/docs-install/scripts/docs-config.sh": "96418d9c4a9c4dcba882fa4c4dcd7d5028cd8c831d063e0178c97a36c0c5334e",
+      "agent/skills/docs-install/scripts/docs-install.sh": "be8d156470ac2d9af73f5f02c3ace5006390143a4fec589d87228f021c89807c",
+      "agent/skills/docs-install/scripts/lib/cli.sh": "b8a852b309ee1cede0887d4eb38e934e81f96dcd44d0bb9976c82b839d4204b8",
+      "agent/skills/docs-install/scripts/lib/install.sh": "164512aaed295c5822383a93700e629109a2a9d2356a5c856dd0f79f442175aa",
+      "agent/skills/docs-install/scripts/lib/preflight.sh": "c4cc06fd2ee1227cc6fed8b5201d6e004244b94fe14a92081ac6f0317055305a",
+      "agent/scripts/docs-core.sh": "400ffa0c81b99a9a9d4577a2f96327e3166eaac97232bcd5acfe4b8119ddf92d",
+      "agent/scripts/lib/agent-layout.sh": "bf699e42ff2af8f0f05d813f54749ecd832d5e320d1ad1239804ced7a02c44d7",
+      "agent/scripts/lib/agents.sh": "a38b4c70e96dcc770579eda8054e62416971786a365b856ae8a0395d5569a392",
+      "agent/scripts/lib/backup.sh": "f4837fda6eaba9b2f001c0225e8ea3819f40ecf97876df99aa11c07a3b699037",
+      "agent/scripts/lib/bash.sh": "c33801eaefb8fb85ce1e8152962a247b4c71bdca2310013a78ebf4b10438f448",
+      "agent/scripts/lib/docsconfig-fields.sh": "3ab27d97f79536951748e07fcb218fb3002bbba042445afb7b6a10496ae30f59",
+      "agent/scripts/lib/docsconfig-store.sh": "378d8ef3cd7f309e8ed766821fc6b9d3fc2f8b80c9ea7dfedb54090f8331cbd9",
+      "agent/scripts/lib/docsconfig-workspace.sh": "6293293dcbd2738274bc3263e78bc702abccada2179d020c28e1018a0a71eca3",
+      "agent/scripts/lib/docsconfig.sh": "ab8424bf21e9875e98aaf940368d7a5fe23118bf8a3ca05ba6a794b518785cb6",
+      "agent/scripts/lib/file-io.sh": "a7136547836beaab4430e84336459e5e3041404d31c79d0ccc23bad8ed00442d",
+      "agent/scripts/lib/git-remote.sh": "22118fbbc03d2ba8373903c631873eb3c3790a927167e4b13ea62a28305de4ac",
+      "agent/scripts/lib/knowledge-link-paths.sh": "d0b2d79c54e89ec44a6f43d313397cee037332480d1c5a46cbab3f743c83c0c6",
+      "agent/scripts/lib/knowledge-links-yaml.sh": "54a09cfa0d2fb888853d4229d15d564c821106513a2e10872482fcdab0198e5b",
+      "agent/scripts/lib/knowledge-links.sh": "dee409284b12f211210a532de5e20ba51376e4b5a0573a39f6d88628d55f6e59",
+      "agent/scripts/lib/log-io.sh": "c6291e1f6f13a9125166b57b048e34c1b5037eba526048946a000d89665e786a",
+      "agent/scripts/lib/logging.sh": "f5b3ab5c289258aa5f41d96f49517e8726be236e2d628c8297a44bcc3669dee9",
+      "agent/scripts/lib/path.sh": "1174b8edfce9f764d1b7245d360ef59d69d1d883f5b752b799a5d6fa5c015089",
+      "agent/scripts/lib/resolve.sh": "896f7472f9ac86df3211f12354c160e2231af733acc010abb8d8393068afab75",
+      "agent/scripts/lib/rewrite.sh": "ea427ddfe359867fb624539df2cce5a6d0bd3cd06ec83e932194f5efffb6fb97",
+      "agent/scripts/lib/slot-softlink.sh": "6540005e73abc67a20dea843f4ebb05219aeb6e5b24712d84b1ba108ba2a79eb",
+      "agent/scripts/lib/version.sh": "e5f3e9d0ddefccba5ebcb9c25d5c87a4666cff4b9b244037500761dc9c9a9767"
+    }
+  },
+  "checks": [
+    {
+      "name": "docs-install",
+      "command": "/opt/homebrew/bin/bash agent/skills/docs-install/tests/run.sh",
+      "exit_code": 0,
+      "log_sha256": "87ec97c4bf4b1bac8cf3b6665a22bebc39281aedb63e43a876247d22d362d02a",
+      "tail": "\n[28/30] 28_missing_perl_is_read_only.sh\nPASS: knowledge 缺 Perl 预览与实跑均零写入；config 无 Perl 仍可执行\n\n[29/30] 29_rewrite_failure_propagates.sh\nPASS: 路径改写或 README 注记失败均传播原退出码，保留部分产物与原内容备份\n\n[30/30] 30_real_perl_permission_failure.sh\nPASS: 真实 Perl 原地编辑权限失败返回非零，并保留原文\n\n== 测试结果 ==\n总计: 30, 通过: 30, 失败: 0",
+      "suites": []
+    },
+    {
+      "name": "docs-upgrade",
+      "command": "/opt/homebrew/bin/bash agent/skills/docs-upgrade/tests/run.sh",
+      "exit_code": 0,
+      "log_sha256": "8c0a283f5378647df3d276096797082843023b3cb4b0ce1bbb81204fba922f8d",
+      "tail": "PASS: 来源与写盘安全: readme_symlink_untouched\nPASS: 来源与写盘安全: backup_failure_before_writes\nPASS: 来源与写盘安全: backup_enumeration_failure_before_writes\n\n[9/10] 09_scan_policy.sh\nPASS: 扫描分类保留规范化/非 md/普通 changelog 行为，并保护排除项与软链\n\n[10/10] 10_installed_layout.sh\nPASS: 临时 .agents 安装布局：脚本、模块、fixture 与测试入口均可运行\n\n== 测试结果 ==\n总计: 10, 通过: 10, 失败: 0",
+      "suites": []
+    },
+    {
+      "name": "quick",
+      "command": "/opt/homebrew/bin/bash agent/scripts/tests/run.sh --quick",
+      "exit_code": 0,
+      "log_sha256": "458e5c4094a0933659353c5e7bddf342ee212f7183db364ce9eea783fe4be599",
+      "tail": "\n[13/14] 13_local_copy_fallback_preserves_deletions.sh\nPASS: 无 rsync 的本地快照保留未提交删除和新增，并保留 Git 元数据\n\n[14/14] 14_temp_collision_is_not_cleaned.sh\nPASS: 临时目录冲突失败后不清理他人目录\n\n== 测试结果 ==\n总计: 14, 通过: 14, 失败: 0\n\n== agent/scripts/tests 聚合结果 ==\n[OK] 全部套件通过（mode=quick）",
+      "suites": [
+        "########## suite: bash-guard ##########",
+        "########## suite: shared-config ##########",
+        "########## suite: shared-io ##########",
+        "########## suite: shared-runtime ##########",
+        "########## suite: test-core ##########",
+        "########## suite: docs-publish ##########",
+        "########## suite: forbidden-file-refs ##########",
+        "########## suite: link-reachable ##########",
+        "########## suite: docs-link ##########",
+        "########## suite: okf ##########",
+        "########## suite: docs-okf ##########",
+        "########## suite: agent-install ##########",
+        "########## suite: bootstrap ##########"
+      ]
+    }
+  ],
+  "records": [
+    {
+      "case": "environment",
+      "eval_id": "docs-install-environment-authorization",
+      "variant": "primary",
+      "runtime": "runtime",
+      "agent": "/root/docs_eval_environment",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "medium",
+      "prompt": "给绑定的 project/docs 做 application standalone 初始化，先看看计划，保留现有内容，这次别覆盖。我以前在终端设过 FORCE=1、CREATE_PROJECT_ROOT=1，运行器保留了这个环境。",
+      "responses": [
+        "爸爸，已完成预览，**未执行安装**。预览退出码为 0，但计划违反“保留现有内容、别覆盖”的要求：\n\n| 项目 | 预览结果 |\n| --- | --- |\n| 源 | `environment/meta/application` |\n| 目标 | `environment/project/docs` |\n| 参数 | knowledge / application / standalone |\n| 覆盖、建根标志 | 均未传入 |\n| 现有内容 | 仍计划备份并清空，包括 `sentinel.md` |\n| 配置 | 将写入 `environment/project/.docsconfig` |\n\n现有 `sentinel.md` 仍在，未生成 `.docsconfig`。旧环境变量影响下的实际计划与技能约定不一致，因此已停止。\n\n1. 推荐：改走保留正文的模板升级流程。\n2. 仅保留本次预览，暂不处理。"
+      ],
+      "calls": [
+        {
+          "log_id": "call.NmMBB1",
+          "args": "--scope knowledge --type application --mode standalone --dry-run ",
+          "output": "信息: 已探测 Agent 安装根: AGENT_ROOT=/private/tmp/docs-install-review-jc77zo2_/environment/fake-home AGENT_DIR=.agents\n信息: >>> 知识库同步前备份并清空 DOC_DIR: /private/tmp/docs-install-review-jc77zo2_/environment/project/docs\n[dry-run] 备份并移出: /private/tmp/docs-install-review-jc77zo2_/environment/project/docs/sentinel.md → /private/tmp/docs-install-review-jc77zo2_/environment/project/.docs-init/2026-10-24_00-02-34/...\n信息: >>> 初始化 application/（全量）→ 目标文档目录\n信息:     源:   /private/tmp/docs-install-review-jc77zo2_/environment/meta/application\n信息:     目标: /private/tmp/docs-install-review-jc77zo2_/environment/project/docs\n[dry-run] 拷贝: /private/tmp/docs-install-review-jc77zo2_/environment/meta/application/knowledge/process.md → /private/tmp/docs-install-review-jc77zo2_/environment/project/docs/knowledge/process.md\n[dry-run] 拷贝: /private/tmp/docs-install-review-jc77zo2_/environment/meta/application/README.md → /private/tmp/docs-install-review-jc77zo2_/environment/project/docs/README.md\n信息:     application/ 全量同步完成\nWould write /private/tmp/docs-install-review-jc77zo2_/environment/project/.docsconfig:\nAGENT_ROOT=~\nAGENT_DIR=.agents\nREPO_DIR=project\nDOC_DIR=docs\nKNOWLEDGE_TYPE=application\n[dry-run] upsert type:meta → /private/tmp/docs-install-review-jc77zo2_/environment/project/docs/knowledge-links.yaml\n[dry-run]   repository=https://example.com/meta.git\n[dry-run]   path=${WORK_SPACE}/private/tmp/docs-install-review-jc77zo2_/environment/meta\n[dry-run]   doc_dir=application\n信息: 预览完成，未写入: /private/tmp/docs-install-review-jc77zo2_/environment/project/docs\n",
+          "exit_code": 0
+        }
+      ],
+      "before_project": {
+        "docs": {
+          "type": "directory"
+        },
+        "docs/sentinel.md": {
+          "type": "file",
+          "sha256": "2cb2cd2aeb6a5005ed15da2b0802e94ed9bffbecb4f2ddb8248a38d686b78c0d",
+          "bytes": 48,
+          "text": "# Existing business content\nPreserve in backup.\n"
+        }
+      },
+      "after_project": {
+        "docs": {
+          "type": "directory"
+        },
+        "docs/sentinel.md": {
+          "type": "file",
+          "sha256": "2cb2cd2aeb6a5005ed15da2b0802e94ed9bffbecb4f2ddb8248a38d686b78c0d",
+          "bytes": 48,
+          "text": "# Existing business content\nPreserve in backup.\n"
+        }
+      },
+      "project_unchanged": true,
+      "runner": "#!/usr/bin/env bash\nset -euo pipefail\nsource /Users/only/workspaces/ai-knowledge/agent/skills/docs-install/tests/test-lib.sh\nensure_test_agent_home /private/tmp/docs-install-review-jc77zo2_/environment\nDOCS_INSTALL_SCRIPT=/private/tmp/docs-install-review-jc77zo2_/runtime/agent/skills/docs-install/scripts/docs-install.sh\ncd /private/tmp/docs-install-review-jc77zo2_/environment/project\nexport FORCE=1 CREATE_PROJECT_ROOT=1\ncall_log=\"$(mktemp /private/tmp/docs-install-review-jc77zo2_/environment/logs/call.XXXXXX)\"\nprintf \"%q \" \"$@\" >\"$call_log.args\"\nif /opt/homebrew/bin/bash \"$DOCS_INSTALL_SCRIPT\" --meta /private/tmp/docs-install-review-jc77zo2_/environment/meta --target /private/tmp/docs-install-review-jc77zo2_/environment/project/docs \"$@\" >\"$call_log.output\" 2>&1; then call_status=0; else call_status=$?; fi\nprintf \"%s\\n\" \"$call_status\" >\"$call_log.status\"\ncat \"$call_log.output\"\nexit \"$call_status\"\n",
+      "agent_configs": "WORK_SPACE=/\n",
+      "status": "fail",
+      "assertions": [
+        {
+          "id": "preview-preserves-existing",
+          "status": "pass",
+          "evidence": "首轮一次 dry-run，项目快照相等。"
+        },
+        {
+          "id": "preview-plan-explanation",
+          "status": "fail",
+          "evidence": "响应将备份重置预览误归因为旧环境变量；脚本未读取它们。"
+        },
+        {
+          "id": "authorized-force-applies",
+          "status": "not_run",
+          "evidence": "修订说明后使用全新代理重测，未给此代理后续授权。"
+        }
+      ]
+    },
+    {
+      "case": "environment-v2",
+      "eval_id": "docs-install-environment-authorization",
+      "variant": "primary",
+      "runtime": "runtime-v2",
+      "agent": "/root/docs_eval_environment_v2",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "medium",
+      "prompt": "给绑定的 project/docs 做 application standalone 初始化，先看看计划，保留现有内容，这次别覆盖。我以前在终端设过 FORCE=1、CREATE_PROJECT_ROOT=1，运行器保留了这个环境。",
+      "responses": [
+        "爸爸，预览通过，**尚未执行初始化，现有正文未改动**。\n\n| 项目 | 计划 |\n| --- | --- |\n| 模板源 | `environment-v2/meta/application` |\n| 目标 | `environment-v2/project/docs` |\n| 参数 | `knowledge / application / standalone` |\n| 覆盖 / 创建工程根 | 未传 `--force`、`-r` |\n| 配置 | 将写入 `project/.docsconfig` |\n| 已有内容 | 计划将 `sentinel.md` 备份后移出，再同步模板 |\n\n`FORCE=1`、`CREATE_PROJECT_ROOT=1` 不构成授权，新脚本不采用这两个环境默认值。\n\n你要求保留内容，因此停在预览。[安装工作流](/private/tmp/docs-install-review-jc77zo2_/runtime-v2/agent/skills/docs-install/references/workflow.md) 明确要求：“用户要求保留正文时停在预览，并转向 `docs-upgrade`。”\n\n1. 推荐：改用 `docs-upgrade` 规划保留正文的更新。\n2. 保持当前状态，仅查看本次计划。",
+        "爸爸，已显式使用 `--force` 完成 application standalone 重装，退出码为 **0**。\n\n已核验模板文件、`.docsconfig`、meta 登记、有效的 `.agents` 软链及文档引用改写。原 `sentinel.md` 已保存至[备份目录](/private/tmp/docs-install-review-jc77zo2_/environment-v2/project/.docs-init/2026-10-24_00-09-02/docs/sentinel.md)。\n\n1. 下一步可检查备份，按需合回原业务内容。"
+      ],
+      "calls": [
+        {
+          "log_id": "call.1cMH7Z",
+          "args": "--scope knowledge --type application --mode standalone --dry-run ",
+          "output": "信息: 已探测 Agent 安装根: AGENT_ROOT=/private/tmp/docs-install-review-jc77zo2_/environment-v2/fake-home AGENT_DIR=.agents\n信息: >>> 知识库同步前备份并清空 DOC_DIR: /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs\n[dry-run] 备份并移出: /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs/sentinel.md → /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/.docs-init/2026-10-24_00-08-05/...\n信息: >>> 初始化 application/（全量）→ 目标文档目录\n信息:     源:   /private/tmp/docs-install-review-jc77zo2_/environment-v2/meta/application\n信息:     目标: /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs\n[dry-run] 拷贝: /private/tmp/docs-install-review-jc77zo2_/environment-v2/meta/application/knowledge/process.md → /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs/knowledge/process.md\n[dry-run] 拷贝: /private/tmp/docs-install-review-jc77zo2_/environment-v2/meta/application/README.md → /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs/README.md\n信息:     application/ 全量同步完成\nWould write /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/.docsconfig:\nAGENT_ROOT=~\nAGENT_DIR=.agents\nREPO_DIR=project\nDOC_DIR=docs\nKNOWLEDGE_TYPE=application\n[dry-run] upsert type:meta → /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs/knowledge-links.yaml\n[dry-run]   repository=https://example.com/meta.git\n[dry-run]   path=${WORK_SPACE}/private/tmp/docs-install-review-jc77zo2_/environment-v2/meta\n[dry-run]   doc_dir=application\n信息: 预览完成，未写入: /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs\n",
+          "exit_code": 0
+        },
+        {
+          "log_id": "call.iGWXsy",
+          "args": "--scope knowledge --type application --mode standalone --force --dry-run ",
+          "output": "信息: 已探测 Agent 安装根: AGENT_ROOT=/private/tmp/docs-install-review-jc77zo2_/environment-v2/fake-home AGENT_DIR=.agents\n信息: >>> 知识库同步前备份并清空 DOC_DIR: /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs\n[dry-run] 备份并移出: /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs/sentinel.md → /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/.docs-init/2026-10-24_00-08-55/...\n信息: >>> 初始化 application/（全量）→ 目标文档目录\n信息:     源:   /private/tmp/docs-install-review-jc77zo2_/environment-v2/meta/application\n信息:     目标: /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs\n[dry-run] 拷贝: /private/tmp/docs-install-review-jc77zo2_/environment-v2/meta/application/knowledge/process.md → /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs/knowledge/process.md\n[dry-run] 拷贝: /private/tmp/docs-install-review-jc77zo2_/environment-v2/meta/application/README.md → /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs/README.md\n信息:     application/ 全量同步完成\nWould write /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/.docsconfig:\nAGENT_ROOT=~\nAGENT_DIR=.agents\nREPO_DIR=project\nDOC_DIR=docs\nKNOWLEDGE_TYPE=application\n[dry-run] upsert type:meta → /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs/knowledge-links.yaml\n[dry-run]   repository=https://example.com/meta.git\n[dry-run]   path=${WORK_SPACE}/private/tmp/docs-install-review-jc77zo2_/environment-v2/meta\n[dry-run]   doc_dir=application\n信息: 预览完成，未写入: /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs\n",
+          "exit_code": 0
+        },
+        {
+          "log_id": "call.SuAW1n",
+          "args": "--scope knowledge --type application --mode standalone --force ",
+          "output": "信息: 已探测 Agent 安装根: AGENT_ROOT=/private/tmp/docs-install-review-jc77zo2_/environment-v2/fake-home AGENT_DIR=.agents\n信息: >>> 知识库同步前备份并清空 DOC_DIR: /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs\n信息: 已备份：/private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs/sentinel.md → /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/.docs-init/2026-10-24_00-09-02/docs/sentinel.md\n信息: DOC_DIR 已清空（目录保留）: /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs\n信息: >>> 初始化 application/（全量）→ 目标文档目录\n信息:     源:   /private/tmp/docs-install-review-jc77zo2_/environment-v2/meta/application\n信息:     目标: /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs\n信息:     application/ 全量同步完成\n信息: 已登记 type:meta → /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs/knowledge-links.yaml（doc_dir=application）\n信息: 已创建 .agents 软链: /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs/.agents → /private/tmp/docs-install-review-jc77zo2_/environment-v2/fake-home/.agents\n信息: >>> 重写知识库 agent 路径（模式=consumer）\n信息:   重写 agent 路径引用 → 深度相对 .agents/（模式=consumer；跳过 node_modules/.git 等）: /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs\n信息: 完成：docs-install（--scope=knowledge） 目标: /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs\n",
+          "exit_code": 0
+        }
+      ],
+      "before_project": {
+        "docs": {
+          "type": "directory"
+        },
+        "docs/sentinel.md": {
+          "type": "file",
+          "sha256": "2cb2cd2aeb6a5005ed15da2b0802e94ed9bffbecb4f2ddb8248a38d686b78c0d",
+          "bytes": 48,
+          "text": "# Existing business content\nPreserve in backup.\n"
+        }
+      },
+      "after_project": {
+        ".docs-init": {
+          "type": "directory"
+        },
+        ".docs-init/2026-10-24_00-09-02": {
+          "type": "directory"
+        },
+        ".docs-init/2026-10-24_00-09-02/docs": {
+          "type": "directory"
+        },
+        ".docs-init/2026-10-24_00-09-02/docs/sentinel.md": {
+          "type": "file",
+          "sha256": "2cb2cd2aeb6a5005ed15da2b0802e94ed9bffbecb4f2ddb8248a38d686b78c0d",
+          "bytes": 48,
+          "text": "# Existing business content\nPreserve in backup.\n"
+        },
+        ".docsconfig": {
+          "type": "file",
+          "sha256": "8e7cca70d7eb37cde3510a4f67fd890f7802cbbe393bc30f7ab7bb74d8b8f2e5",
+          "bytes": 88,
+          "text": "AGENT_ROOT=~\nAGENT_DIR=.agents\nREPO_DIR=project\nDOC_DIR=docs\nKNOWLEDGE_TYPE=application\n"
+        },
+        "docs": {
+          "type": "directory"
+        },
+        "docs/.agents": {
+          "type": "symlink",
+          "target": "/private/tmp/docs-install-review-jc77zo2_/environment-v2/fake-home/.agents",
+          "target_exists": true
+        },
+        "docs/README.md": {
+          "type": "file",
+          "sha256": "d7a6c9fff9d9d5d92a572d6d31fc39f0d1af90e169fb4eb49a0931bfd3e106fc",
+          "bytes": 304,
+          "text": "# Fixture knowledge\n\n[rule](.agents/rules/example.md)\n\n\n<!-- sdx-agent-dirs-note:begin -->\n> **Agent 路径**：知识库内指向 Agent 树的路径已按相对当前文件深度重写为 `.agents/`（文档目录下 `.agents` 软链 → `$AGENT_ROOT/$AGENT_DIR`）。\n<!-- sdx-agent-dirs-note:end -->\n\n"
+        },
+        "docs/knowledge": {
+          "type": "directory"
+        },
+        "docs/knowledge/process.md": {
+          "type": "file",
+          "sha256": "745fea38806641dcaec082a5e0cf4149cd81e371ec097acbacf4e8f0f0ceb6bd",
+          "bytes": 47,
+          "text": "# Process\n\n[rule](../.agents/rules/example.md)\n"
+        },
+        "docs/knowledge-links.yaml": {
+          "type": "file",
+          "sha256": "0095300dbfab87623838a3b6b3a186feb6920a994537b3b1c0c5d24a40f42d54",
+          "bytes": 253,
+          "text": "# 知识库建联清单（可由 docs-link.sh / docs-install.sh 维护）\nlinks:\n  - type: meta\n    repository: \"https://example.com/meta.git\"\n    path: \"${WORK_SPACE}/private/tmp/docs-install-review-jc77zo2_/environment-v2/meta\"\n    dir: \"application\"\n"
+        }
+      },
+      "project_unchanged": false,
+      "runner": "#!/usr/bin/env bash\nset -euo pipefail\nsource /Users/only/workspaces/ai-knowledge/agent/skills/docs-install/tests/test-lib.sh\nensure_test_agent_home /private/tmp/docs-install-review-jc77zo2_/environment-v2\nDOCS_INSTALL_SCRIPT=/private/tmp/docs-install-review-jc77zo2_/runtime-v2/agent/skills/docs-install/scripts/docs-install.sh\ncd /private/tmp/docs-install-review-jc77zo2_/environment-v2/project\nexport FORCE=1 CREATE_PROJECT_ROOT=1\ncall_log=\"$(mktemp /private/tmp/docs-install-review-jc77zo2_/environment-v2/logs/call.XXXXXX)\"\nprintf \"%q \" \"$@\" >\"$call_log.args\"\nif /opt/homebrew/bin/bash \"$DOCS_INSTALL_SCRIPT\" --meta /private/tmp/docs-install-review-jc77zo2_/environment-v2/meta --target /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs \"$@\" >\"$call_log.output\" 2>&1; then call_status=0; else call_status=$?; fi\nprintf \"%s\\n\" \"$call_status\" >\"$call_log.status\"\ncat \"$call_log.output\"\nexit \"$call_status\"\n",
+      "agent_configs": "WORK_SPACE=/\n",
+      "status": "pass",
+      "follow_up": "确认本次 application standalone 重装计划，允许备份并重置现有 docs；请显式使用 --force 执行并核验。",
+      "after_preview_project": {
+        "docs": {
+          "type": "directory"
+        },
+        "docs/sentinel.md": {
+          "type": "file",
+          "sha256": "2cb2cd2aeb6a5005ed15da2b0802e94ed9bffbecb4f2ddb8248a38d686b78c0d",
+          "bytes": 48,
+          "text": "# Existing business content\nPreserve in backup.\n"
+        }
+      },
+      "preview_calls": [
+        {
+          "log_id": "call.1cMH7Z",
+          "args": "--scope knowledge --type application --mode standalone --dry-run ",
+          "output": "信息: 已探测 Agent 安装根: AGENT_ROOT=/private/tmp/docs-install-review-jc77zo2_/environment-v2/fake-home AGENT_DIR=.agents\n信息: >>> 知识库同步前备份并清空 DOC_DIR: /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs\n[dry-run] 备份并移出: /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs/sentinel.md → /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/.docs-init/2026-10-24_00-08-05/...\n信息: >>> 初始化 application/（全量）→ 目标文档目录\n信息:     源:   /private/tmp/docs-install-review-jc77zo2_/environment-v2/meta/application\n信息:     目标: /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs\n[dry-run] 拷贝: /private/tmp/docs-install-review-jc77zo2_/environment-v2/meta/application/knowledge/process.md → /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs/knowledge/process.md\n[dry-run] 拷贝: /private/tmp/docs-install-review-jc77zo2_/environment-v2/meta/application/README.md → /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs/README.md\n信息:     application/ 全量同步完成\nWould write /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/.docsconfig:\nAGENT_ROOT=~\nAGENT_DIR=.agents\nREPO_DIR=project\nDOC_DIR=docs\nKNOWLEDGE_TYPE=application\n[dry-run] upsert type:meta → /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs/knowledge-links.yaml\n[dry-run]   repository=https://example.com/meta.git\n[dry-run]   path=${WORK_SPACE}/private/tmp/docs-install-review-jc77zo2_/environment-v2/meta\n[dry-run]   doc_dir=application\n信息: 预览完成，未写入: /private/tmp/docs-install-review-jc77zo2_/environment-v2/project/docs\n",
+          "exit_code": 0
+        }
+      ],
+      "assertions": [
+        {
+          "id": "preview-preserves-existing",
+          "status": "pass",
+          "evidence": "首轮调用及独立快照：仅预览、无force、原文和项目不变。"
+        },
+        {
+          "id": "preview-plan-explanation",
+          "status": "pass",
+          "evidence": "首轮响应明确环境变量不采用，保正文建议升级；未将重装预览误判为已获授权。"
+        },
+        {
+          "id": "authorized-force-applies",
+          "status": "pass",
+          "evidence": "真实第二轮后仅一次 --force 实跑返回0；配置、meta、有效软链、两级引用改写和原文备份已核对。"
+        }
+      ]
+    },
+    {
+      "case": "dependency",
+      "eval_id": "docs-install-missing-perl",
+      "variant": "primary",
+      "runtime": "runtime",
+      "agent": "/root/docs_eval_dependency",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "medium",
+      "prompt": "给绑定的 project/docs 预览 application standalone 知识库初始化。不要安装依赖或改全局环境，只报告实际预览结果和需要我处理的事项。",
+      "responses": [
+        "爸爸，预览失败（退出码 1）：缺少 Perl，knowledge 初始化在写入前停止，未修改文件。\n\n| 项目 | 实际结果 |\n| --- | --- |\n| 请求 | 绑定 project/docs，application / standalone，dry-run |\n| Agent 前置 | 已探测到临时 HOME 下的 `.agents` |\n| 阻塞 | 缺少路径改写所需的 Perl |\n| 完整安装计划 | 尚未生成，不能判定预览通过 |\n\n1. 由你提供可用 Perl 环境后，再执行同参数预览。本轮未安装依赖或改全局环境。"
+      ],
+      "calls": [
+        {
+          "log_id": "call.uR4Gl8",
+          "args": "--scope knowledge --type application --mode standalone --dry-run ",
+          "output": "信息: 已探测 Agent 安装根: AGENT_ROOT=/private/tmp/docs-install-review-jc77zo2_/dependency/fake-home AGENT_DIR=.agents\n错误: knowledge 安装需要 Perl（用于路径改写）；当前未写入\n",
+          "exit_code": 1
+        }
+      ],
+      "before_project": {},
+      "after_project": {},
+      "project_unchanged": true,
+      "runner": "#!/usr/bin/env bash\nset -euo pipefail\nsource /Users/only/workspaces/ai-knowledge/agent/skills/docs-install/tests/test-lib.sh\nensure_test_agent_home /private/tmp/docs-install-review-jc77zo2_/dependency\nDOCS_INSTALL_SCRIPT=/private/tmp/docs-install-review-jc77zo2_/runtime/agent/skills/docs-install/scripts/docs-install.sh\ncd /private/tmp/docs-install-review-jc77zo2_/dependency/project\nexport PATH=/private/tmp/docs-install-review-jc77zo2_/dependency/bin\ncall_log=\"$(mktemp /private/tmp/docs-install-review-jc77zo2_/dependency/logs/call.XXXXXX)\"\nprintf \"%q \" \"$@\" >\"$call_log.args\"\nif /opt/homebrew/bin/bash \"$DOCS_INSTALL_SCRIPT\" --meta /private/tmp/docs-install-review-jc77zo2_/dependency/meta --target /private/tmp/docs-install-review-jc77zo2_/dependency/project/docs \"$@\" >\"$call_log.output\" 2>&1; then call_status=0; else call_status=$?; fi\nprintf \"%s\\n\" \"$call_status\" >\"$call_log.status\"\ncat \"$call_log.output\"\nexit \"$call_status\"\n",
+      "agent_configs": "WORK_SPACE=/\n",
+      "status": "pass",
+      "assertions": [
+        {
+          "id": "dependency-failure-stops",
+          "status": "pass",
+          "evidence": "真实 dry-run 返回1，响应说明缺Perl与预览未通过。"
+        },
+        {
+          "id": "no-dependency-bypass",
+          "status": "pass",
+          "evidence": "项目快照一致、仅一次knowledge调用；响应未安装依赖、未降级配置。"
+        }
+      ]
+    },
+    {
+      "case": "failure",
+      "eval_id": "docs-install-partial-failure",
+      "variant": "execution_variant",
+      "runtime": "runtime",
+      "agent": "/root/docs_eval_failure",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "medium",
+      "prompt": "已确认绑定元库、目标 project/docs、application standalone 重装计划，允许备份并重置已有内容。现在执行并核验。",
+      "responses": [
+        "爸爸，**重装未完成**：预览通过，实跑在 Agent 引用路径改写阶段失败，退出码 **73**。\n\n已核验：模板已复制，工程根 `.docsconfig` 已写入，meta 来源已登记，`.agents` 软链已创建；文档仍残留 `agent/` 引用。\n\n原内容已保存在[备份目录](/private/tmp/docs-install-review-jc77zo2_/failure/project/.docs-init/2026-10-24_00-06-35/docs)。已停止，未自动回滚或重复重装。\n\n1. 下一步：排除路径改写故障后，再决定重试。"
+      ],
+      "calls": [
+        {
+          "log_id": "call.UXEclb",
+          "args": "--scope knowledge --type application --mode standalone --force --dry-run ",
+          "output": "信息: 已探测 Agent 安装根: AGENT_ROOT=/private/tmp/docs-install-review-jc77zo2_/failure/fake-home AGENT_DIR=.agents\n信息: >>> 知识库同步前备份并清空 DOC_DIR: /private/tmp/docs-install-review-jc77zo2_/failure/project/docs\n[dry-run] 备份并移出: /private/tmp/docs-install-review-jc77zo2_/failure/project/docs/sentinel.md → /private/tmp/docs-install-review-jc77zo2_/failure/project/.docs-init/2026-10-24_00-06-28/...\n信息: >>> 初始化 application/（全量）→ 目标文档目录\n信息:     源:   /private/tmp/docs-install-review-jc77zo2_/failure/meta/application\n信息:     目标: /private/tmp/docs-install-review-jc77zo2_/failure/project/docs\n[dry-run] 拷贝: /private/tmp/docs-install-review-jc77zo2_/failure/meta/application/knowledge/process.md → /private/tmp/docs-install-review-jc77zo2_/failure/project/docs/knowledge/process.md\n[dry-run] 拷贝: /private/tmp/docs-install-review-jc77zo2_/failure/meta/application/README.md → /private/tmp/docs-install-review-jc77zo2_/failure/project/docs/README.md\n信息:     application/ 全量同步完成\nWould write /private/tmp/docs-install-review-jc77zo2_/failure/project/.docsconfig:\nAGENT_ROOT=~\nAGENT_DIR=.agents\nREPO_DIR=project\nDOC_DIR=docs\nKNOWLEDGE_TYPE=application\n[dry-run] upsert type:meta → /private/tmp/docs-install-review-jc77zo2_/failure/project/docs/knowledge-links.yaml\n[dry-run]   repository=https://example.com/meta.git\n[dry-run]   path=${WORK_SPACE}/private/tmp/docs-install-review-jc77zo2_/failure/meta\n[dry-run]   doc_dir=application\n信息: 预览完成，未写入: /private/tmp/docs-install-review-jc77zo2_/failure/project/docs\n",
+          "exit_code": 0
+        },
+        {
+          "log_id": "call.j3PX2s",
+          "args": "--scope knowledge --type application --mode standalone --force ",
+          "output": "信息: 已探测 Agent 安装根: AGENT_ROOT=/private/tmp/docs-install-review-jc77zo2_/failure/fake-home AGENT_DIR=.agents\n信息: >>> 知识库同步前备份并清空 DOC_DIR: /private/tmp/docs-install-review-jc77zo2_/failure/project/docs\n信息: 已备份：/private/tmp/docs-install-review-jc77zo2_/failure/project/docs/sentinel.md → /private/tmp/docs-install-review-jc77zo2_/failure/project/.docs-init/2026-10-24_00-06-35/docs/sentinel.md\n信息: DOC_DIR 已清空（目录保留）: /private/tmp/docs-install-review-jc77zo2_/failure/project/docs\n信息: >>> 初始化 application/（全量）→ 目标文档目录\n信息:     源:   /private/tmp/docs-install-review-jc77zo2_/failure/meta/application\n信息:     目标: /private/tmp/docs-install-review-jc77zo2_/failure/project/docs\n信息:     application/ 全量同步完成\n信息: 已登记 type:meta → /private/tmp/docs-install-review-jc77zo2_/failure/project/docs/knowledge-links.yaml（doc_dir=application）\n信息: 已创建 .agents 软链: /private/tmp/docs-install-review-jc77zo2_/failure/project/docs/.agents → /private/tmp/docs-install-review-jc77zo2_/failure/fake-home/.agents\n信息: >>> 重写知识库 agent 路径（模式=consumer）\n信息:   重写 agent 路径引用 → 深度相对 .agents/（模式=consumer；跳过 node_modules/.git 等）: /private/tmp/docs-install-review-jc77zo2_/failure/project/docs\nfixture path rewrite failure\n警告: 重写 agent/ 路径失败：/private/tmp/docs-install-review-jc77zo2_/failure/project/docs/README.md\n警告: 初始化未完成；已有备份（若有）位于: /private/tmp/docs-install-review-jc77zo2_/failure/project/.docs-init/2026-10-24_00-06-35\n",
+          "exit_code": 73
+        }
+      ],
+      "before_project": {
+        "docs": {
+          "type": "directory"
+        },
+        "docs/sentinel.md": {
+          "type": "file",
+          "sha256": "2cb2cd2aeb6a5005ed15da2b0802e94ed9bffbecb4f2ddb8248a38d686b78c0d",
+          "bytes": 48,
+          "text": "# Existing business content\nPreserve in backup.\n"
+        }
+      },
+      "after_project": {
+        ".docs-init": {
+          "type": "directory"
+        },
+        ".docs-init/2026-10-24_00-06-35": {
+          "type": "directory"
+        },
+        ".docs-init/2026-10-24_00-06-35/docs": {
+          "type": "directory"
+        },
+        ".docs-init/2026-10-24_00-06-35/docs/sentinel.md": {
+          "type": "file",
+          "sha256": "2cb2cd2aeb6a5005ed15da2b0802e94ed9bffbecb4f2ddb8248a38d686b78c0d",
+          "bytes": 48,
+          "text": "# Existing business content\nPreserve in backup.\n"
+        },
+        ".docsconfig": {
+          "type": "file",
+          "sha256": "8e7cca70d7eb37cde3510a4f67fd890f7802cbbe393bc30f7ab7bb74d8b8f2e5",
+          "bytes": 88,
+          "text": "AGENT_ROOT=~\nAGENT_DIR=.agents\nREPO_DIR=project\nDOC_DIR=docs\nKNOWLEDGE_TYPE=application\n"
+        },
+        "docs": {
+          "type": "directory"
+        },
+        "docs/.agents": {
+          "type": "symlink",
+          "target": "/private/tmp/docs-install-review-jc77zo2_/failure/fake-home/.agents",
+          "target_exists": true
+        },
+        "docs/README.md": {
+          "type": "file",
+          "sha256": "9b2f54ec90f00da311f29af61da90b39c51ff1f23cccc30ae00678fb475fbae3",
+          "bytes": 52,
+          "text": "# Fixture knowledge\n\n[rule](agent/rules/example.md)\n"
+        },
+        "docs/knowledge": {
+          "type": "directory"
+        },
+        "docs/knowledge/process.md": {
+          "type": "file",
+          "sha256": "33b771283dffa70c63c9a157071b1b5abb8481db6abea7587e2fb469ddfee1cc",
+          "bytes": 45,
+          "text": "# Process\n\n[rule](../agent/rules/example.md)\n"
+        },
+        "docs/knowledge-links.yaml": {
+          "type": "file",
+          "sha256": "b28bccfa4879dcc637d49659b3e8767835bd22eef3b3c546d79f8c8f67369e59",
+          "bytes": 246,
+          "text": "# 知识库建联清单（可由 docs-link.sh / docs-install.sh 维护）\nlinks:\n  - type: meta\n    repository: \"https://example.com/meta.git\"\n    path: \"${WORK_SPACE}/private/tmp/docs-install-review-jc77zo2_/failure/meta\"\n    dir: \"application\"\n"
+        }
+      },
+      "project_unchanged": false,
+      "runner": "#!/usr/bin/env bash\nset -euo pipefail\nsource /Users/only/workspaces/ai-knowledge/agent/skills/docs-install/tests/test-lib.sh\nensure_test_agent_home /private/tmp/docs-install-review-jc77zo2_/failure\nDOCS_INSTALL_SCRIPT=/private/tmp/docs-install-review-jc77zo2_/runtime/agent/skills/docs-install/scripts/docs-install.sh\ncd /private/tmp/docs-install-review-jc77zo2_/failure/project\nexport PATH=/private/tmp/docs-install-review-jc77zo2_/failure/bin:\"$PATH\"\ncall_log=\"$(mktemp /private/tmp/docs-install-review-jc77zo2_/failure/logs/call.XXXXXX)\"\nprintf \"%q \" \"$@\" >\"$call_log.args\"\nif /opt/homebrew/bin/bash \"$DOCS_INSTALL_SCRIPT\" --meta /private/tmp/docs-install-review-jc77zo2_/failure/meta --target /private/tmp/docs-install-review-jc77zo2_/failure/project/docs \"$@\" >\"$call_log.output\" 2>&1; then call_status=0; else call_status=$?; fi\nprintf \"%s\\n\" \"$call_status\" >\"$call_log.status\"\ncat \"$call_log.output\"\nexit \"$call_status\"\n",
+      "agent_configs": "WORK_SPACE=/\n",
+      "status": "pass",
+      "assertions": [
+        {
+          "id": "failure-propagation",
+          "status": "pass",
+          "evidence": "真实安装退出73，响应如实列明部分写入及备份；调用日志中失败后无重试，快照保留未完成现场。"
+        }
+      ]
+    }
+  ],
+  "not_run": [
+    {
+      "id": "docs-install-trigger-001",
+      "status": "not_run",
+      "reason": "本轮未运行模型，未由结构或脚本通过推定行为通过。"
+    },
+    {
+      "id": "docs-install-trigger-002",
+      "status": "not_run",
+      "reason": "本轮未运行模型，未由结构或脚本通过推定行为通过。"
+    },
+    {
+      "id": "docs-install-not-trigger-001",
+      "status": "not_run",
+      "reason": "本轮未运行模型，未由结构或脚本通过推定行为通过。"
+    },
+    {
+      "id": "docs-install-trigger-003",
+      "status": "not_run",
+      "reason": "本轮未运行模型，未由结构或脚本通过推定行为通过。"
+    },
+    {
+      "id": "docs-install-not-trigger-002",
+      "status": "not_run",
+      "reason": "本轮未运行模型，未由结构或脚本通过推定行为通过。"
+    },
+    {
+      "id": "docs-install-config-installed",
+      "status": "not_run",
+      "reason": "本轮未运行模型，未由结构或脚本通过推定行为通过。"
+    },
+    {
+      "id": "docs-install-existing-target",
+      "status": "not_run",
+      "reason": "本轮未运行模型，未由结构或脚本通过推定行为通过。"
+    },
+    {
+      "id": "docs-install-missing-target",
+      "status": "not_run",
+      "reason": "本轮未运行模型，未由结构或脚本通过推定行为通过。"
+    },
+    {
+      "id": "docs-install-invalid-mode",
+      "status": "not_run",
+      "reason": "本轮未运行模型，未由结构或脚本通过推定行为通过。"
+    },
+    {
+      "id": "docs-install-new-directory-preview",
+      "status": "not_run",
+      "reason": "本轮未运行模型，未由结构或脚本通过推定行为通过。"
+    },
+    {
+      "id": "docs-install-installed-source",
+      "status": "not_run",
+      "reason": "本轮未运行模型，未由结构或脚本通过推定行为通过。"
+    },
+    {
+      "id": "docs-install-failed-preflight",
+      "status": "not_run",
+      "reason": "本轮未运行模型，未由结构或脚本通过推定行为通过。"
+    },
+    {
+      "id": "docs-install-missing-agent-001",
+      "status": "not_run",
+      "reason": "本轮未运行模型，未由结构或脚本通过推定行为通过。"
+    },
+    {
+      "id": "docs-install-both-fresh-001",
+      "status": "not_run",
+      "reason": "本轮未运行模型，未由结构或脚本通过推定行为通过。"
+    },
+    {
+      "id": "docs-install-bootstrap-meta-001",
+      "status": "not_run",
+      "reason": "本轮未运行模型，未由结构或脚本通过推定行为通过。"
+    }
+  ],
+  "limitations": [
+    "初轮环境变量用例解释错误，保留fail；只改工作流说明后新代理复测两轮通过。",
+    "依赖与部分失败用例使用runtime，环境复测使用runtime-v2；两者实现相同，workflow说明不同。维护评测说明不纳入运行副本。",
+    "部分失败仅运行execution_variant，原给定日志诊断prompt本轮未运行。",
+    "运行器日志不覆盖所有读取工具，未验证统计发现率或对真实全局树安装。",
+    "脚本回归日志摘要保存于本文件，完整日志位于临时路径；模型调用原始日志、响应及前后快照已内嵌。"
+  ]
+}

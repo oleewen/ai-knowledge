@@ -122,6 +122,7 @@ docs_install_preflight() {
   docs_install_plan_target
   docs_install_plan_config
   [[ "${CFG[scope]}" == knowledge ]] || return 0
+  have_perl || error 'knowledge 安装需要 Perl（用于路径改写）；当前未写入'
   docs_install_plan_source
   docs_install_plan_links
   if [[ -d "${CFG[docs_abs]}" && "${CFG[dry_run]}" == 0 && "${CFG[force]}" != 1 ]]; then

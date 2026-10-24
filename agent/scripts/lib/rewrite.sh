@@ -88,7 +88,7 @@ rewrite_agent_path_segment_in_file() {
   local seg prefix target anchor
   [[ -f "$file" ]] && is_text_file "$file" || return 0
   grep -qE 'agent/|~/\.agents/' "$file" 2>/dev/null || return 0
-  have_cmd perl || return 0
+  have_cmd perl || { warn "路径改写需要 Perl：$file"; return 1; }
 
   case "$mode" in
     meta)
@@ -103,9 +103,12 @@ rewrite_agent_path_segment_in_file() {
   esac
   target="${prefix}${seg}"
 
-  if ! AGENT_SLASH="$target" \
+  local status
+  if AGENT_SLASH="$target" \
     perl -CSD -i -pe '
       BEGIN {
+        # -i 的建临时文件等失败可能只警告并退出 0；改为失败，防止漏改后报完成。
+        $SIG{__WARN__} = sub { die @_ };
         die "AGENT_SLASH unset\n" unless defined $ENV{AGENT_SLASH} && length $ENV{AGENT_SLASH};
         our $upagent = qr/(?:\.\.\/)*agent\//;
         our $updotagents = qr/(?:\.\.\/)*\.agents\//;
@@ -116,8 +119,12 @@ rewrite_agent_path_segment_in_file() {
       s{$upagent}{$ENV{AGENT_SLASH}}g;
       # 行首/空白后裸 agent/（非 .agents 内）
       s{(?<!\.)\bagent/}{$ENV{AGENT_SLASH}}g;
-    ' "$file" 2>/dev/null; then
+    ' "$file"; then
+    return 0
+  else
+    status=$?
     warn "重写 agent/ 路径失败：$file"
+    return "$status"
   fi
 }
 
@@ -133,7 +140,7 @@ rewrite_agent_path_segment_in_tree() {
   info "  重写 agent 路径引用 → 深度相对 ${seg}（模式=${mode}；跳过 node_modules/.git 等）: ${root}"
   local f
   while IFS= read -r -d '' f; do
-    rewrite_agent_path_segment_in_file "$f" "$root" "$mode"
+    rewrite_agent_path_segment_in_file "$f" "$root" "$mode" || return $?
   done < <(
     find "$root" \
       \( -name node_modules -o -name .git -o -name __pycache__ -o -name .venv -o -name .cache -o -name dist -o -name build -o -name target \) \
@@ -150,10 +157,10 @@ inject_readme_agent_note() {
   local readme="$1"
   local mode="${2:-consumer}"
   [[ -f "$readme" ]] || return 0
-  have_perl || return 0
+  have_perl || { warn "README 注记需要 Perl：$readme"; return 1; }
 
-  local note_tmp note_line
-  note_tmp="$(mktemp "${TMPDIR:-/tmp}/sdx-agent-readme-note.XXXXXX")" || return 0
+  local note_tmp note_line status=0
+  note_tmp="$(mktemp "${TMPDIR:-/tmp}/sdx-agent-readme-note.XXXXXX")" || return $?
   if [[ "$mode" == 'meta' ]]; then
     note_line='> **Agent 路径**：云库（KNOWLEDGE_TYPE=meta）内指向 agent 树的路径已按相对当前文件深度重写为 `agent/`（相对文档根）。'
   else
@@ -170,11 +177,11 @@ inject_readme_agent_note() {
     use warnings;
     use utf8;
     my $path = $ARGV[0];
-    open my $fh, "<:encoding(UTF-8)", $path or exit 0;
+    open my $fh, "<:encoding(UTF-8)", $path or die "read $path: $!\n";
     local $/;
     my $t = <$fh>;
     close $fh;
-    open my $nf, "<:encoding(UTF-8)", $ENV{NOTE_FILE} or exit 0;
+    open my $nf, "<:encoding(UTF-8)", $ENV{NOTE_FILE} or die "read note: $!\n";
     my $nb = <$nf>;
     close $nf;
     chomp $nb;
@@ -185,11 +192,13 @@ inject_readme_agent_note() {
     } else {
       $t .= "\n\n" . $nb . "\n";
     }
-    open $fh, ">:encoding(UTF-8)", $path or exit 0;
-    print $fh $t;
-    close $fh;
-  ' "$readme" 2>/dev/null || true
+    open $fh, ">:encoding(UTF-8)", $path or die "write $path: $!\n";
+    print $fh $t or die "write $path: $!\n";
+    close $fh or die "close $path: $!\n";
+  ' "$readme" || status=$?
   rm -f "$note_tmp"
+  (( status == 0 )) || warn "README Agent 注记失败：$readme"
+  return "$status"
 }
 
 # 用法：rewrite_docs_agent_paths <docs_abs> [mode=consumer|meta]
@@ -199,7 +208,7 @@ rewrite_docs_agent_paths() {
   [[ -d "$docs_abs" ]] || return 0
 
   info ">>> 重写知识库 agent 路径（模式=${mode}）"
-  rewrite_agent_path_segment_in_tree "$docs_abs" "$mode"
+  rewrite_agent_path_segment_in_tree "$docs_abs" "$mode" || return $?
 
   local readme="${docs_abs%/}/README.md"
   if [[ -f "$readme" ]]; then

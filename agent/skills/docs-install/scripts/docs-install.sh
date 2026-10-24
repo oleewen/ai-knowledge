@@ -16,8 +16,8 @@ declare -A CFG=(
   [scope]="${SCOPE:-$KINIT_DEFAULT_SCOPE}"
   [type]="$KINIT_DEFAULT_TYPE" [type_explicit]=0
   [mode]="${MODE:-$KINIT_DEFAULT_MODE}"
-  [dry_run]=0 [force]="${FORCE:-0}"
-  [create_project_root]="${CREATE_PROJECT_ROOT:-0}"
+  [dry_run]=0 [force]=0
+  [create_project_root]=0
 )
 DOC_INIT_STAMP=''
 
@@ -39,7 +39,6 @@ docs_install_run() {
   else
     DOC_INIT_STAMP="$(date +%Y-%m-%d_%H-%M-%S)"
     export IO_DRY_RUN="${CFG[dry_run]}" IO_FORCE=1
-    have_perl || warn '未检测到 perl：将跳过文件内容替换，建议安装 perl。'
     docs_install_stash_knowledge_links
     reset_docs_dir_with_backup
     docs_install_copy_templates

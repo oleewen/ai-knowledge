@@ -19,6 +19,8 @@ system、solution、company 只支持 standalone。config 不同步模板，会�
 
 每个带值参数均支持 `--key VALUE` / `--key=VALUE`。缺值或无效值应先纠正，不能自动退回默认模式。
 
+环境默认值仅保留 `SCOPE`、`MODE`。旧调用中的 `FORCE=1`、`CREATE_PROJECT_ROOT=1` 不再生效，须分别迁移为显式 `--force`、`-r`；传标志前仍须满足对应授权。
+
 ## 示例
 
 ```bash
@@ -32,4 +34,4 @@ bash ~/.agents/skills/docs-install/scripts/docs-install.sh --meta /workspace/ai-
 bash ~/.agents/skills/docs-install/scripts/docs-install.sh --scope config --target /workspace/app/docs --dry-run
 ```
 
-以上 `bash` 须为 5+，并需 Python 3；macOS 默认 `/bin/bash` 可能不满足，先检查 `bash --version`。只拷贝单个技能目录时，共享脚本依赖可能缺失；使用完整 Agent 树或元库中的入口。
+以上 `bash` 须为 5+，并需 Python 3；knowledge 另须 Perl，缺失时预览和实跑均停止。config 不依赖 Perl。macOS 默认 `/bin/bash` 可能不满足，先检查 `bash --version`。只拷贝单个技能目录时，共享脚本依赖可能缺失；使用完整 Agent 树或元库中的入口。

@@ -20,6 +20,7 @@ description: >
 ## 边界
 
 - 默认只预览；`--force`、重置已有目标、创建缺失工程根须用户明示。预览期间不补建目标、不改文件来绕过错误。
+- 重装和创建工程根只用显式 `--force`、`-r`；不把环境变量当授权。knowledge 缺 Perl 时预检停止；路径改写失败表示安装未完成，须报告部分产物与备份。
 - `--scope=config` 只重写配置，不同步模板、建链或重写文档；已有 `KNOWLEDGE_TYPE` 不保留。
 - knowledge 保留已有建联关系，并登记安装源 `type:meta`。路径遵守 [knowledge-links 路径契约](../../knowledge/federation-config.md#knowledge-links-路径契约)；缺配置、旧格式或越界先停止。
 - Agent 树用 `agent-install`，联邦登记用 `docs-link`，生态技能追新用 `skill-upgrade`；本技能不向目标复制建联脚本。
