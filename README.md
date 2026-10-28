@@ -98,13 +98,15 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/bootstrap.
 ├── solution/             # knowledge/、solutions/、adr/、system-slots/
 ├── system/               # knowledge/、analysis/、features/、requirements/、adr/、application-slots/
 ├── application/          # knowledge/、analysis/、features/、requirements/、adr/
-├── agent/                # knowledge/、references/、rules/、skills/、scripts/、cli/docs/、hooks/
+├── agent/                # knowledge/、references/、rules/、skills/、scripts/、cli/baohe/proposals/、hooks/
 ├── docs/                 # 本地会话工作稿
 ├── .docsconfig           # 当前 DOC_DIR=company · KNOWLEDGE_TYPE=meta
 └── .githooks/pre-commit
 ```
 
 四层的 overview 均位于 `knowledge/overview/`。`docs/` 当前作为本地会话稿目录存在；`.docsconfig` 已被 Git 跟踪。配置约定见 [INDEX-GUIDE.md §7](INDEX-GUIDE.md#七配置中心configuration-hub)。
+
+[宝盒 CLI 提案](agent/cli/baohe/proposals/README.md) 保存设计与实施计划，仓内尚未实现，不属于当前可用命令。
 
 ---
 

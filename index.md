@@ -1,6 +1,6 @@
 # ai-knowledge 目录索引（index）
 
-> **最后更新**: 2026-10-05  
+> **最后更新**: 2026-10-25
 > **文档定位**: 面向人类与 Agent 的仓库根目录索引页；九章地图见 [INDEX-GUIDE.md](INDEX-GUIDE.md)。
 
 ## 目录文件
@@ -22,7 +22,7 @@
 - [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)
 - [agent/skills/agent-install/SKILL.md](agent/skills/agent-install/SKILL.md)
 
-约定会话稿根 `docs/`（`.docsconfig` 的 `DOC_DIR`）通常未入库；当前工作树可缺席。
+会话规格按有效 `DOC_DIR` 落盘，`docs` 仅为无配置时的默认值；计划与执行证据各按所属流程定位，见 [会话材料路径契约](agent/references/session-spec-path.md)。本仓通过 [.gitignore](.gitignore) 忽略约定的本地会话材料；这些目录不是正式知识入口，当前工作树可缺席。
 
 ## 阅读顺序
 

@@ -66,7 +66,7 @@
 │   ├── rules/                  # 通用及目标工程规范
 │   ├── skills/                 # 25 个 Skill；各自含引用、脚本、评测或测试
 │   ├── scripts/                # 共享库、tools/ 与 tests/
-│   ├── cli/docs/               # 宝盒 CLI 设计与计划，尚非已实现命令
+│   ├── cli/baohe/proposals/    # 宝盒 CLI 设计与计划提案，尚非已实现命令
 │   └── hooks.json / hooks/     # preToolUse 为空
 ├── docs/                       # 本地会话工作稿；不作为本轮事实源
 ├── .docsconfig
@@ -132,11 +132,11 @@ flowchart TD
 
 ### 3.2 HTTP 接口
 
-[未索引：不适用] 没有对外 REST 路由实现。`API-EXAMPLE.md` 为知识模板；[refresh-codex.sh](agent/scripts/refresh-codex.sh) 调用既有代理的 `/v1/models`，属于外部依赖，不是本仓提供的端点。
+[未索引：不适用] 没有对外 REST 路由实现；`API-EXAMPLE.md` 为知识模板。
 
 ### 3.3 定时任务
 
-[未索引：业务调度不适用] 本仓提供 [codex-daemon-watch.py](agent/scripts/codex-daemon-watch.py) 本地工具：轮询托管守护进程身份；首次观察仅建基线，后续实例变化时正常退出并重开已运行的桌面应用。用户级 LaunchAgent 的安装说明见 [共享脚本说明](agent/scripts/README.md)；本轮只读源码，不代表该服务已安装或正在运行。
+[未索引：不适用] 无内嵌业务调度；自动化由外部工具配置。
 
 ### 3.4 消息队列
 
@@ -159,7 +159,6 @@ flowchart TD
 | Markdown 链接 | [validate-link-reachable.sh](agent/scripts/tools/validate-link-reachable.sh) | 检查 Agent Markdown 本地链接与跨目录边界 |
 | 引用隔离 | [forbidden-ref-outer.sh](agent/scripts/tools/forbidden-ref-outer.sh) | 检查库外具名会话稿引用；区分违规与工具错误 |
 | 测试聚合 | [tests/run.sh](agent/scripts/tests/run.sh) | `--quick`、`--full`、`--suite`；浏览器套件需显式选择及现有依赖 |
-| 本地桌面工具 | [refresh-codex.sh](agent/scripts/refresh-codex.sh) · [监控器](agent/scripts/codex-daemon-watch.py) | 刷新脚本默认刷新目录并重开桌面应用，`--catalog-only` 跳过重开；监控器在守护进程实例变化时重开桌面；本轮未执行 |
 
 所有 Slash 名称见 §9.3；预览与确认按各 Skill 的入口契约执行，不代表对应底层 CLI 默认只读。
 
@@ -304,7 +303,6 @@ flowchart LR
 | 联邦来源 | 四层 `knowledge-links.yaml` | 当前各有一条 `meta`，没有有效 `parent/child` 登记 |
 | 工具钩子 | [agent/hooks.json](agent/hooks.json) · [.githooks/pre-commit](.githooks/pre-commit) | 前者 `preToolUse=[]`；后者调用引用隔离扫描器；不推断 Git 已启用该钩子 |
 | OKF 路径 | [path-resolution.md](agent/skills/docs-okf/references/path-resolution.md) | 完整配置、Agent 树、bundle 与输出解析规则 |
-| 本地刷新工具 | [refresh-codex.sh](agent/scripts/refresh-codex.sh) | `CODEX_HOME`、`CC_SWITCH_HOME`、代理地址与等待参数；不属于知识库配置 |
 
 ### 7.2 环境差异
 
@@ -347,12 +345,12 @@ flowchart LR
 
 | 范围 | 原因 |
 | --- | --- |
-| `agent/skills/docs-archive-workspace/live-20261022-172841/`、`live-20261022-182533-v4/` | 598 个评测运行产物；不作为当前工作流定义；Skill 的评测规格、源码和测试仍纳入精读 |
+| 已删除的评测运行产物 | 上次扫描排除 598 份；2026-10-24 按用户要求移除。Skill 的评测规格、源码和测试仍保留，不属于本次删除范围 |
 | 四层 `viz.html` | 4 个生成文件；读取生成器与测试，不以旧图证明实体状态 |
 | Git 元数据、忽略项、本地会话稿、缓存、依赖与构建目录 | 不作本轮知识事实源；本机 `docs/` 存在，不能写成缺席 |
 | 外部软链目标、用户安装树与外部仓库 | 不跨库扫描，不以本地模板证明实际部署或联邦状态 |
 
-`agent/cli/docs/` 已作为设计资料读取；其中命令与代码属于计划，不列为已实现 CLI。四层实体、overview 和阶段模板均按样例读取。读取测试源码不等于执行测试；本轮验证范围仅为目标索引。
+[宝盒 CLI 提案](agent/cli/baohe/proposals/README.md) 已作为设计资料读取；其中命令与代码属于计划，不列为已实现 CLI。四层实体、overview 和阶段模板均按样例读取。读取测试源码不等于执行测试；本轮验证范围仅为目标索引。
 
 本轮只维护根指南。已发现的其他文档历史问题包括子层指南的旧锚点伪链接、系统业务入口的实体宿主路径、解决方案 overview 的章节锚点，以及部分入口对配置与索引职责的旧描述；这些文件未在本轮改写，不能据本轮结果宣称全仓链接无误。
 
