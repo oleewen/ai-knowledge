@@ -4,7 +4,7 @@ title: system INDEX-GUIDE
 ---
 # system INDEX-GUIDE
 
-> **最后更新**: 2026-10-05  
+> **最后更新**: 2026-10-25
 > **定位**: `system/` 九章索引指南。目录索引见 [index.md](index.md)。
 
 ---
@@ -24,7 +24,7 @@ title: system INDEX-GUIDE
 * **角色**: 系统知识库；`knowledge/` = 系统层实体 SSOT + 五视角；`application-slots/application-{NAME}` = 软链槽位  
 * **栈**: Markdown、YAML  
 * **范围**: `knowledge/` · `analysis/` · `features/` · `requirements/` · `application-slots/` · `adr/`  
-* **规模**（本轮 full/d3，排除 `.agents`）：**104** 文件（`.md` 103 · `.yaml` 1；`viz.html` 1 不计入）  
+* **规模**（历史 full/d3 快照，排除 `.agents`）：**104** 文件（`.md` 103 · `.yaml` 1；`viz.html` 1 不计入）；非当前实时统计，见 §8.1。
 
 ---
 
@@ -78,7 +78,7 @@ system/
 | `/docs-okf` | Slash | [docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md) | 刷新本层 `index.md` / `viz.html` |
 | `/docs-indexing` | Slash | [docs-indexing/SKILL.md](../agent/skills/docs-indexing/SKILL.md) | 九章骨架（须保留 entity-index） |
 | `/docs-build` | Slash | [docs-build/SKILL.md](../agent/skills/docs-build/SKILL.md) | 刷新 §4.5 视角导航块 |
-| `/docs-distill` · `/docs-archive` | Slash | 见 [agent/skills/README.md](../agent/skills/README.md) | overview 上行 |
+| `/docs-distill` · `/docs-archive` | Slash | 见 [agent/skills/README.md](../agent/skills/README.md) | distill：下层槽位 → 接收方 overview；archive：本层 overview → 章节并回写 |
 | `/docs-link` | Slash | 见 [agent/skills/README.md](../agent/skills/README.md) | 联邦建联与槽位检查/修复 |
 
 ---
@@ -95,7 +95,7 @@ system/
 |------|------|----------|
 | 系统级实体 | SYS / BSD-L3 / BC / AGG / AB / PM / FT / FR / UC / BR / APP / MS / DS / ENT | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
 | overview 缓冲 | distill / extract / archive / tag | [knowledge/overview/](knowledge/overview/README.md) |
-| SDD | 分析 → 特性 → 需求 | `analysis/` · `features/` · `requirements/` |
+| SDD | 分析 → 特性 → PRD/ASD/TDD；系统 ASD 列应用承接，DSD 正文归应用 | `analysis/` · `features/` · [requirements/](requirements/README.md) |
 | 联邦槽位 | 应用 文档目录 软链 | `application-slots/application-{NAME}/` · [knowledge-links.yaml](knowledge-links.yaml) |
 
 ### 4.3 领域服务
@@ -182,7 +182,7 @@ system/
 
 ### 8.1 覆盖范围
 
-本轮 **full / depth 3** 覆盖 `system/` 可读文本（104 文件）。九章已消减 `[未索引]`；实体台账仍以各视角 README 与 per-entity 为准。
+历史 **full / depth 3** 记录覆盖 `system/` 可读文本（104 文件）。2026-10-25 已移除系统 DSD 占位样例并同步交付入口；本次未全量重建九章索引，历史规模不代表当前文件数。实体台账仍以各视角 README 与 per-entity 为准。
 
 ### 8.2 排除列表
 
@@ -227,6 +227,6 @@ system/
 | `/docs-okf` | [docs-okf/SKILL.md](../agent/skills/docs-okf/SKILL.md) |
 | `/docs-indexing` | 九章骨架（须保留 entity-index 标记块） |
 | `/docs-build` | 刷新 §4.5 标记块 |
-| `/docs-distill` · `/docs-archive` | overview 上行；槽位维护见 `/docs-link` |
+| `/docs-distill` · `/docs-archive` | 接收方蒸馏、本层归档，见 §3.2；槽位维护见 `/docs-link` |
 
 <!-- sdx-indexing:indexing_finished_ms=1791431315870 -->

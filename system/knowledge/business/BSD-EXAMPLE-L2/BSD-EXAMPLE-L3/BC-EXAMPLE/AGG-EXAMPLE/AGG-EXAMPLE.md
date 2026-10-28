@@ -20,7 +20,7 @@ layer_scope: system
 ## 跨视角
 
 - mapped_by:
-  - [MS-EXAMPLE](../../../../application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md)
+  - [MS-EXAMPLE](../../../../../application/SYS-EXAMPLE/APP-EXAMPLE/MS-EXAMPLE/MS-EXAMPLE.md)
   - [ENT-EXAMPLE](../../../../../data/MDG-EXAMPLE/DS-EXAMPLE/ENT-EXAMPLE.md)
 
 ## 详细说明
@@ -29,4 +29,4 @@ layer_scope: system
 
 ## 依据与证据
 
-[../../../chapters/business-capability-map.md](../../../chapters/business-capability-map.md#聚合)（示例）
+[../../../../chapters/business-capability-map.md](../../../../chapters/business-capability-map.md#聚合)（示例）

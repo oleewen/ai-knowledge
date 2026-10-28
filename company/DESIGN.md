@@ -34,7 +34,9 @@ version: 2026.1020.1
 
 ## 同步与门禁
 
-冲突以下游事实源为准；company 只修映射与导航。
+验收统一按 [知识校验](../agent/knowledge/knowledge-validation.md) 区分本地、跨库与事实状态；来源关联按 [知识证据](../agent/knowledge/knowledge-evidence.md) 保存。内容版本一致不代表真实实体已兼容，尚未接入的工具能力不得宣称已实现。
+
+实现现状与公司主定义分别保真，偏离须显式决策；见 [按事实所有权处理冲突](../agent/knowledge/knowledge-governance.md#按事实所有权处理冲突)。
 
 1. 下游 `solution/` 整理可同步内容  
 2. docs-link --check / --repair → 校验/修复 `solution-slots/solution-{NAME}` 软链

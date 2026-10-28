@@ -28,4 +28,4 @@ layer_scope: system
 
 ## 依据与证据
 
-[../chapters/business-capability-map.md](../chapters/business-capability-map.md#三级子域)（示例）
+[../../chapters/business-capability-map.md](../../chapters/business-capability-map.md#三级子域)（示例）

@@ -30,7 +30,7 @@ title: "{域名称}架构概览（{slug}-overview）"
 | 主标题 | 副标题 | 归档业务知识 |
 | --- | --- | --- |
 | [产品概述](../product/chapters/product-overview.md) | [方案产品](../product/chapters/product-overview.md#方案产品) | — |
-| [产品线](../product/chapters/product-line.md) | [产品线清单（PL）](../product/chapters/product-line.md#产品线清单（PL）) | — |
+| [产品线](../product/chapters/product-line.md) | [本方案产品线（PL）](../product/chapters/product-line.md#本方案产品线pl) | — |
 | [产品线](../product/chapters/product-line.md) | [产品线职责与边界](../product/chapters/product-line.md#产品线职责与边界) | — |
 | [产品线](../product/chapters/product-line.md) | [产品线关系图](../product/chapters/product-line.md#产品线关系图) | — |
 | [产品架构](../product/chapters/product-architecture.md) | [产品服务](../product/chapters/product-architecture.md#产品服务) | — |
@@ -67,7 +67,7 @@ title: "{域名称}架构概览（{slug}-overview）"
 | 主标题 | 副标题 | 归档业务知识 |
 | --- | --- | --- |
 | [数据概述](../data/chapters/data-overview.md) | [数据主权](../data/chapters/data-overview.md#数据主权) | — |
-| [数据概述](../data/chapters/data-overview.md) | [跨系统数据流](../data/chapters/data-overview.md#跨系统数据流) | — |
+| [数据概述](../data/chapters/data-overview.md) | [跨产品服务交接](../data/chapters/data-overview.md#跨产品服务交接) | — |
 | [数据模型](../data/chapters/data-model.md) | [主数据](../data/chapters/data-model.md#主数据) | — |
 
 ---

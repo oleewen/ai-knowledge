@@ -22,4 +22,4 @@
 
 - 上一级索引：[../index.md](../index.md)
 - 上一级说明：[../README.md](../README.md)
-- 上游 MDG：解决方案 SSOT；DS/ENT：系统 SSOT（不建本层文件，只写纯 ID）
+- 上游 MDG：解决方案 SSOT；DS/ENT：系统 SSOT；引用形式见[上游引用说明](../README.md#上游引用)

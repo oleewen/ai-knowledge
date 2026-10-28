@@ -300,15 +300,17 @@ aside {
       "title": "应用知识库",
       "description": null,
       "tags": [],
-      "body": "# 应用知识库\n\n五视角实体 SSOT；本层首次：**API / TBL / MW / CMP**。目录 [index.md](index.md) · 视角导航 INDEX-GUIDE 第四章 · 首次定义见 knowledge-governance。overview：[overview/README.md](overview/README.md)（extract / archive / tag；非 distill）。\n\n| 文件 | 视角 | 概述 |\n|------|------|------|\n| [business/README.md](business/README.md) | 业务 | 无本层实体。上游只写纯 ID |\n| [product/README.md](product/README.md) | 产品 | 无本层实体。上游只写纯 ID |\n| [application/README.md](application/README.md) | 应用 | **API** 首次定义。SLN / SYS / APP / MS 只写纯 ID |\n| [data/README.md](data/README.md) | 数据 | **TBL** 首次定义。MDG / DS / ENT 只写纯 ID |\n| [technical/README.md](technical/README.md) | 技术 | **MW / CMP** 首次定义。TPL / TS 只写纯 ID |\n\n命名规范（Agent 元知识，库外） · 上层实体只写纯 ID。链与字段见 [业务](../../agent/knowledge/business-meta.md#1-实体总表)、[产品](../../agent/knowledge/product-meta.md#1-实体总表)、[应用](../../agent/knowledge/application-meta.md#1-实体总表)、[数据](../../agent/knowledge/data-meta.md#1-实体总表)、[技术](../../agent/knowledge/technical-meta.md#1-实体总表)",
+      "body": "# 应用知识库\n\n五视角实体 SSOT；本层首次：**API / TBL / MW / CMP**。目录 [index.md](index.md) · 视角导航 INDEX-GUIDE 第四章 · 首次定义见 knowledge-governance。overview：[overview/README.md](overview/README.md)（extract / archive / tag；非 distill）。\n\n| 文件 | 视角 | 概述 |\n|------|------|------|\n| [business/README.md](business/README.md) | 业务 | 无本层实体；引用上游定义 |\n| [product/README.md](product/README.md) | 产品 | 无本层实体；引用上游定义 |\n| [application/README.md](application/README.md) | 应用 | **API** 首次定义；SLN / SYS / APP / MS 引用上游 |\n| [data/README.md](data/README.md) | 数据 | **TBL** 首次定义；MDG / DS / ENT 引用上游 |\n| [technical/README.md](technical/README.md) | 技术 | **MW / CMP** 首次定义；TPL / TS 引用上游 |\n\n## 上游引用\n\n上游实体不建本层同 ID 文件，不重复字段语义；目录宿主可保留。已登记有效 `parent` 链、能定位首次定义层且统一工具可生成时，使用生成的 HTTP。无 `parent` 或工具无可用结果时保持纯 ID，不手写跨层路径或猜 URL；配置无效、目标层或实体不明时，先核实再写入。\n\n关系特例仍按既有契约处理：系统侧 `SYS.implements_to`→SLN、`SYS.maps_to`→PD 固定纯 ID，不能推广为应用引用 SYS 的限制；指向下层的关系保持纯 ID。\n\n链与字段见 [业务](../../agent/knowledge/business-meta.md#1-实体总表)、[产品](../../agent/knowledge/product-meta.md#1-实体总表)、[应用](../../agent/knowledge/application-meta.md#1-实体总表)、[数据](../../agent/knowledge/data-meta.md#1-实体总表)、[技术](../../agent/knowledge/technical-meta.md#1-实体总表)。",
       "backlinks": [
         "DESIGN",
         "README",
         "README-c",
         "README-s",
         "knowledge/application/README",
+        "knowledge/application/chapters/application-interface-management",
         "knowledge/business/README",
         "knowledge/data/README",
+        "knowledge/overview/NAME-overview",
         "knowledge/overview/README",
         "knowledge/product/README",
         "knowledge/technical/README"
@@ -331,7 +333,7 @@ aside {
       "title": "应用架构",
       "description": null,
       "tags": [],
-      "body": "# 应用架构\n\n[返回 · 应用知识库](../README.md)\n\n应用侧应用入口：API SSOT；SYS/APP/MS 系统首次定义。SLN 解决方案首次定义。实体台账见下方「实体」表。上游实体不建本层文件，只写纯 ID。归档目标章 ∈ `chapters/`。\n\n目录与阅读顺序见 [index.md](index.md)。\n\n上一级索引：[../index.md](../index.md)。\n\n## 章节\n\n| 章节 | 文件 | 概述 |\n|------|------|------|\n| 接口管理 | [chapters/application-interface-management.md](chapters/application-interface-management.md) | API 目录、命名、认证、错误、版本 |\n\n架构决策不进 chapters。adr/ 尚无决策要点。\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n| L5 | API | API-EXAMPLE | 示例 API：创建 | [MS-EXAMPLE/API-EXAMPLE.md](MS-EXAMPLE/API-EXAMPLE.md) |",
+      "body": "# 应用架构\n\n[返回 · 应用知识库](../README.md)\n\n应用侧应用入口：API SSOT；SYS/APP/MS 系统首次定义。SLN 解决方案首次定义。实体台账见下方「实体」表。上游实体引用遵循[上游引用说明](../README.md#上游引用)。归档目标章 ∈ `chapters/`。\n\n目录与阅读顺序见 [index.md](index.md)。\n\n上一级索引：[../index.md](../index.md)。\n\n## 章节\n\n| 章节 | 文件 | 概述 |\n|------|------|------|\n| 接口管理 | [chapters/application-interface-management.md](chapters/application-interface-management.md) | API 目录、命名、认证、错误、版本 |\n\n架构决策不进 chapters。adr/ 尚无决策要点。\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n| L5 | API | API-EXAMPLE | 示例 API：创建 | [MS-EXAMPLE/API-EXAMPLE.md](MS-EXAMPLE/API-EXAMPLE.md) |",
       "backlinks": [
         "knowledge/README",
         "knowledge/application/chapters/application-interface-management",
@@ -361,7 +363,7 @@ aside {
         "architecture",
         "chapter"
       ],
-      "body": "# 接口管理\n\n[返回 · 应用架构](../README.md)\n\n本应用内外接口的发现、规范与演进。\n\n\u003e **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。\n\n## 内部 API\n\n写目录结构、命名、认证、错误约定与契约存放位置。本层 **API** 为 SSOT。\n\n## 开放 API\n\n列出对外 API、用途、SLA 与 DTO/脱敏差异。\n\n## 版本策略\n\n写兼容窗口、弃用公告与破坏性变更审批。\n\n## 变更日志\n\n按服务/API 聚合变更记录与消费者行动项。",
+      "body": "# 接口管理\n\n[返回 · 应用架构](../README.md)\n\n本应用内外接口的发现、规范与演进。\n\n\u003e **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体遵循[上游引用说明](../../README.md#上游引用)，不重复字段语义。\n\n## 内部 API\n\n写目录结构、命名、认证、错误约定与契约存放位置。本层 **API** 为 SSOT。\n\n## 开放 API\n\n列出对外 API、用途、SLA 与 DTO/脱敏差异。\n\n## 版本策略\n\n写兼容窗口、弃用公告与破坏性变更审批。\n\n## 变更日志\n\n按服务/API 聚合变更记录与消费者行动项。",
       "backlinks": [
         "knowledge/application/MS-EXAMPLE/API-EXAMPLE",
         "knowledge/application/README",
@@ -374,7 +376,7 @@ aside {
       "title": "业务架构",
       "description": null,
       "tags": [],
-      "body": "# 业务架构\n\n[返回 · 应用知识库](../README.md)\n\n应用侧业务入口：无本层章，无本层实体。BD/CAP/BSD-L1 公司首次定义，BSD-L2 解决方案首次定义，BC→AB 系统首次定义。此处只写纯 ID。台账见下方「实体」节。\n\n目录与阅读顺序见 [index.md](index.md)。\n\n## 章节\n\n本视角无章。\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n\n（本层无首次定义实体）",
+      "body": "# 业务架构\n\n[返回 · 应用知识库](../README.md)\n\n应用侧业务入口：无本层章，无本层实体。BD/CAP/BSD-L1 公司首次定义，BSD-L2 解决方案首次定义，BC→AB 系统首次定义。引用形式见[上游引用说明](../README.md#上游引用)。台账见下方「实体」节。\n\n目录与阅读顺序见 [index.md](index.md)。\n\n## 章节\n\n本视角无章。\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n\n（本层无首次定义实体）",
       "backlinks": [
         "knowledge/README",
         "knowledge/overview/NAME-overview"
@@ -386,7 +388,7 @@ aside {
       "title": "数据架构",
       "description": null,
       "tags": [],
-      "body": "# 数据架构\n\n[返回 · 应用知识库](../README.md)\n\n应用侧数据入口：TBL SSOT；MDG 解决方案首次定义，DS/ENT 系统首次定义。实体台账见下方「实体」表。上游实体不建本层文件，只写纯 ID。归档目标章 ∈ `chapters/`。存储类型与分片在系统层 data · 数据存储。\n\n目录与阅读顺序见 [index.md](index.md)。\n\n上一级索引：[../index.md](../index.md)。\n\n## 章节\n\n| 章节 | 文件 | 概述 |\n|------|------|------|\n| 数据模型 | [chapters/data-model.md](chapters/data-model.md) | 物理表与模型版本 |\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n| L4 | TBL | TBL-EXAMPLE | 示例数据表 | [ENT-EXAMPLE/TBL-EXAMPLE.md](ENT-EXAMPLE/TBL-EXAMPLE.md) |",
+      "body": "# 数据架构\n\n[返回 · 应用知识库](../README.md)\n\n应用侧数据入口：TBL SSOT；MDG 解决方案首次定义，DS/ENT 系统首次定义。实体台账见下方「实体」表。上游实体引用遵循[上游引用说明](../README.md#上游引用)。归档目标章 ∈ `chapters/`。存储类型与分片在系统层 data · 数据存储。\n\n目录与阅读顺序见 [index.md](index.md)。\n\n上一级索引：[../index.md](../index.md)。\n\n## 章节\n\n| 章节 | 文件 | 概述 |\n|------|------|------|\n| 数据模型 | [chapters/data-model.md](chapters/data-model.md) | 物理表与模型版本 |\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n| L4 | TBL | TBL-EXAMPLE | 示例数据表 | [ENT-EXAMPLE/TBL-EXAMPLE.md](ENT-EXAMPLE/TBL-EXAMPLE.md) |",
       "backlinks": [
         "knowledge/README",
         "knowledge/data/chapters/data-model",
@@ -431,7 +433,7 @@ aside {
       "tags": [
         "overview"
       ],
-      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# {域名称}架构概览（{slug}-overview）\n\n\u003e **维护**：`docs-tag` phase 2（✅）→ phase 3（架构摘录，勿手改摘录行）。表行 ↔ 视角章节 `##`。应用 overview **非** docs-distill 目标；供 `docs-extract` / `docs-archive`。占位 `{域名称}`/`{slug}` 实例化时替换。\n\n## 架构摘录\n\n| 架构视角 | 主标题 | 副标题 |\n| --- | --- | --- |\n| _（运行 `--phase 3` 后填充）_ | | |\n\n## [业务架构](../business/README.md)\n\n本视角无章。标准在上游。此处只写纯 ID。\n\n## [产品架构](../product/README.md)\n\n本视角无章。标准在上游。API 写 `supports_to`，FT 写 `supported_by`；应用层只写 API 侧。\n\n## [应用架构](../application/README.md)\n\n| 主标题 | 副标题 | 归档业务知识 |\n| --- | --- | --- |\n| [接口管理](../application/chapters/application-interface-management.md) | [内部 API](../application/chapters/application-interface-management.md#内部-api) | — |\n| [接口管理](../application/chapters/application-interface-management.md) | [开放 API](../application/chapters/application-interface-management.md#开放-api) | — |\n| [接口管理](../application/chapters/application-interface-management.md) | [版本策略](../application/chapters/application-interface-management.md#版本策略) | — |\n| [接口管理](../application/chapters/application-interface-management.md) | [变更日志](../application/chapters/application-interface-management.md#变更日志) | — |\n\n架构决策不进 chapters。adr/ 尚无决策要点。\n\n## [技术架构](../technical/README.md)\n\n| 主标题 | 副标题 | 归档业务知识 |\n| --- | --- | --- |\n| [中间件](../technical/chapters/technical-middleware.md) | [消息队列](../technical/chapters/technical-middleware.md#消息队列) | — |\n| [中间件](../technical/chapters/technical-middleware.md) | [缓存](../technical/chapters/technical-middleware.md#缓存) | — |\n| [中间件](../technical/chapters/technical-middleware.md) | [搜索引擎](../technical/chapters/technical-middleware.md#搜索引擎) | — |\n| [中间件](../technical/chapters/technical-middleware.md) | [配置注册](../technical/chapters/technical-middleware.md#配置注册) | — |\n| [中间件](../technical/chapters/technical-middleware.md) | [任务调度](../technical/chapters/technical-middleware.md#任务调度) | — |\n| [中间件](../technical/chapters/technical-middleware.md) | [对象存储](../technical/chapters/technical-middleware.md#对象存储) | — |\n| [性能扩展](../technical/chapters/technical-performance-scalability.md) | [性能基线](../technical/chapters/technical-performance-scalability.md#性能基线) | — |\n| [性能扩展](../technical/chapters/technical-performance-scalability.md) | [容量规划](../technical/chapters/technical-performance-scalability.md#容量规划) | — |\n| [性能扩展](../technical/chapters/technical-performance-scalability.md) | [扩展策略](../technical/chapters/technical-performance-scalability.md#扩展策略) | — |\n| [性能扩展](../technical/chapters/technical-performance-scalability.md) | [性能测试](../technical/chapters/technical-performance-scalability.md#性能测试) | — |\n\n## [数据架构](../data/README.md)\n\n| 主标题 | 副标题 | 归档业务知识 |\n| --- | --- | --- |\n| [数据模型](../data/chapters/data-model.md) | [物理模型](../data/chapters/data-model.md#物理模型) | — |\n| [数据模型](../data/chapters/data-model.md) | [模型版本](../data/chapters/data-model.md#模型版本) | — |\n\n---\n\n## 附录\n\n### 文档关键词\n\n```yaml\nkeywords:\n- APPNAME\n- 示例术语A\n- 示例术语B\n```",
+      "body": "\u003c!-- markdownlint-disable-next-line MD025 --\u003e\n# {域名称}架构概览（{slug}-overview）\n\n\u003e **维护**：`docs-tag` phase 2（✅）→ phase 3（架构摘录，勿手改摘录行）。表行 ↔ 视角章节 `##`。应用 overview **非** docs-distill 目标；供 `docs-extract` / `docs-archive`。占位 `{域名称}`/`{slug}` 实例化时替换。\n\n## 架构摘录\n\n| 架构视角 | 主标题 | 副标题 |\n| --- | --- | --- |\n| _（运行 `--phase 3` 后填充）_ | | |\n\n## [业务架构](../business/README.md)\n\n本视角无章。标准在上游，引用形式见[上游引用说明](../README.md#上游引用)。\n\n## [产品架构](../product/README.md)\n\n本视角无章。标准在上游。API 写 `supports_to`，FT 写 `supported_by`；应用层只写 API 侧。\n\n## [应用架构](../application/README.md)\n\n| 主标题 | 副标题 | 归档业务知识 |\n| --- | --- | --- |\n| [接口管理](../application/chapters/application-interface-management.md) | [内部 API](../application/chapters/application-interface-management.md#内部-api) | — |\n| [接口管理](../application/chapters/application-interface-management.md) | [开放 API](../application/chapters/application-interface-management.md#开放-api) | — |\n| [接口管理](../application/chapters/application-interface-management.md) | [版本策略](../application/chapters/application-interface-management.md#版本策略) | — |\n| [接口管理](../application/chapters/application-interface-management.md) | [变更日志](../application/chapters/application-interface-management.md#变更日志) | — |\n\n架构决策不进 chapters。adr/ 尚无决策要点。\n\n## [技术架构](../technical/README.md)\n\n| 主标题 | 副标题 | 归档业务知识 |\n| --- | --- | --- |\n| [中间件](../technical/chapters/technical-middleware.md) | [消息队列](../technical/chapters/technical-middleware.md#消息队列) | — |\n| [中间件](../technical/chapters/technical-middleware.md) | [缓存](../technical/chapters/technical-middleware.md#缓存) | — |\n| [中间件](../technical/chapters/technical-middleware.md) | [搜索引擎](../technical/chapters/technical-middleware.md#搜索引擎) | — |\n| [中间件](../technical/chapters/technical-middleware.md) | [配置注册](../technical/chapters/technical-middleware.md#配置注册) | — |\n| [中间件](../technical/chapters/technical-middleware.md) | [任务调度](../technical/chapters/technical-middleware.md#任务调度) | — |\n| [中间件](../technical/chapters/technical-middleware.md) | [对象存储](../technical/chapters/technical-middleware.md#对象存储) | — |\n| [性能扩展](../technical/chapters/technical-performance-scalability.md) | [性能基线](../technical/chapters/technical-performance-scalability.md#性能基线) | — |\n| [性能扩展](../technical/chapters/technical-performance-scalability.md) | [容量规划](../technical/chapters/technical-performance-scalability.md#容量规划) | — |\n| [性能扩展](../technical/chapters/technical-performance-scalability.md) | [扩展策略](../technical/chapters/technical-performance-scalability.md#扩展策略) | — |\n| [性能扩展](../technical/chapters/technical-performance-scalability.md) | [性能测试](../technical/chapters/technical-performance-scalability.md#性能测试) | — |\n\n## [数据架构](../data/README.md)\n\n| 主标题 | 副标题 | 归档业务知识 |\n| --- | --- | --- |\n| [数据模型](../data/chapters/data-model.md) | [物理模型](../data/chapters/data-model.md#物理模型) | — |\n| [数据模型](../data/chapters/data-model.md) | [模型版本](../data/chapters/data-model.md#模型版本) | — |\n\n---\n\n## 附录\n\n### 文档关键词\n\n```yaml\nkeywords:\n- APPNAME\n- 示例术语A\n- 示例术语B\n```",
       "backlinks": [
         "knowledge/overview/README"
       ]
@@ -453,7 +455,7 @@ aside {
       "title": "产品架构",
       "description": null,
       "tags": [],
-      "body": "# 产品架构\n\n[返回 · 应用知识库](../README.md)\n\n应用侧产品入口：无本层章，无本层实体。PL / PD / BP / BSP 解决方案首次定义（本层不落）。PM→FT→FR→UC/BR 系统首次定义。API 写 `supports_to`，FT 写 `supported_by`；应用层只写 API 侧。此处只写纯 ID。\n\n目录与阅读顺序见 [index.md](index.md)。\n\n## 章节\n\n本视角无章。\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n\n（本层无首次定义实体）",
+      "body": "# 产品架构\n\n[返回 · 应用知识库](../README.md)\n\n应用侧产品入口：无本层章，无本层实体。PL / PD / BP / BSP 解决方案首次定义（本层不落）。PM→FT→FR→UC/BR 系统首次定义。API 写 `supports_to`，FT 写 `supported_by`；应用层只写 API 侧。引用形式见[上游引用说明](../README.md#上游引用)。\n\n目录与阅读顺序见 [index.md](index.md)。\n\n## 章节\n\n本视角无章。\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n\n（本层无首次定义实体）",
       "backlinks": [
         "knowledge/README",
         "knowledge/overview/NAME-overview"
@@ -465,7 +467,7 @@ aside {
       "title": "技术架构",
       "description": null,
       "tags": [],
-      "body": "# 技术架构\n\n[返回 · 应用知识库](../README.md)\n\n应用侧技术入口：MW/CMP SSOT；TPL 公司、TS 解决方案首次定义。实体台账见下方「实体」表。上游实体不建本层文件，只写纯 ID。归档目标章 ∈ `chapters/`。选型、高可用、可观测在上游。\n\n目录与阅读顺序见 [index.md](index.md)。\n\n上一级索引：[../index.md](../index.md)。\n\n## 章节\n\n| 章节 | 文件 | 概述 |\n|------|------|------|\n| 中间件 | [chapters/technical-middleware.md](chapters/technical-middleware.md) | 集群、TTL、索引、配置 |\n| 性能扩展 | [chapters/technical-performance-scalability.md](chapters/technical-performance-scalability.md) | 只填本应用数字 |\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n| L3 | MW | MW-EXAMPLE | 示例中间件绑定 | [MW-EXAMPLE/MW-EXAMPLE.md](MW-EXAMPLE/MW-EXAMPLE.md) |\n| L4 | CMP | CMP-EXAMPLE | 示例组件 | [MW-EXAMPLE/CMP-EXAMPLE.md](MW-EXAMPLE/CMP-EXAMPLE.md) |",
+      "body": "# 技术架构\n\n[返回 · 应用知识库](../README.md)\n\n应用侧技术入口：MW/CMP SSOT；TPL 公司、TS 解决方案首次定义。实体台账见下方「实体」表。上游实体引用遵循[上游引用说明](../README.md#上游引用)。归档目标章 ∈ `chapters/`。选型、高可用、可观测在上游。\n\n目录与阅读顺序见 [index.md](index.md)。\n\n上一级索引：[../index.md](../index.md)。\n\n## 章节\n\n| 章节 | 文件 | 概述 |\n|------|------|------|\n| 中间件 | [chapters/technical-middleware.md](chapters/technical-middleware.md) | 集群、TTL、索引、配置 |\n| 性能扩展 | [chapters/technical-performance-scalability.md](chapters/technical-performance-scalability.md) | 只填本应用数字 |\n\n## 实体\n\n| 链序 | 层级 | ID | 名称 | 文件/目录 |\n|------|------|----|------|-----------|\n| L3 | MW | MW-EXAMPLE | 示例中间件绑定 | [MW-EXAMPLE/MW-EXAMPLE.md](MW-EXAMPLE/MW-EXAMPLE.md) |\n| L4 | CMP | CMP-EXAMPLE | 示例组件 | [MW-EXAMPLE/CMP-EXAMPLE.md](MW-EXAMPLE/CMP-EXAMPLE.md) |",
       "backlinks": [
         "knowledge/README",
         "knowledge/overview/NAME-overview",
@@ -800,6 +802,10 @@ aside {
       "target": "knowledge/application/README"
     },
     {
+      "source": "knowledge/application/chapters/application-interface-management",
+      "target": "knowledge/README"
+    },
+    {
       "source": "knowledge/business/README",
       "target": "knowledge/README"
     },
@@ -838,6 +844,10 @@ aside {
     {
       "source": "knowledge/overview/NAME-overview",
       "target": "knowledge/business/README"
+    },
+    {
+      "source": "knowledge/overview/NAME-overview",
+      "target": "knowledge/README"
     },
     {
       "source": "knowledge/overview/NAME-overview",

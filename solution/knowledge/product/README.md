@@ -14,8 +14,8 @@ title: 产品架构
 
 | 章节 | 文件 | 概述 |
 |------|------|------|
-| 产品概述 | [chapters/product-overview.md](chapters/product-overview.md) | 本方案纳入的 PL、PD、BP、BSP。公司定位、路线、度量、体验只引用 |
-| 产品线 | [chapters/product-line.md](chapters/product-line.md) | 产品线清单、职责边界与关系 |
+| 产品概述 | [chapters/product-overview.md](chapters/product-overview.md) | 本方案唯一 PL、一条 BP、多个 PD 及相关 BSP。公司定位、路线、度量、体验只引用 |
+| 产品线 | [chapters/product-line.md](chapters/product-line.md) | 本方案 PL 定位、职责与 PD 组合；外部方案协作单列 |
 | 产品架构 | [chapters/product-architecture.md](chapters/product-architecture.md) | 产品服务、业务流程与业务子流程。PM 以下不在本层 |
 
 ## 实体

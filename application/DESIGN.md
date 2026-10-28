@@ -9,7 +9,7 @@ version: 2026.1020.1
 
 版本号表示四层知识库的统一内容发布版本，格式为 `YYYY.MMdd.patch`。版本由维护者人工发布；发布时，四层 `DESIGN.md` 的 `version` 必须同步为同一值。
 
-`application/`：实现级实体与应用 SDD。本库 `{NAME}-overview.md` 供 extract / archive；上行 distill **只**写系统 overview。本文件 = 层根人类入口（契约短表 + 引用）；语义 SSOT ∈ `agent/knowledge/`。
+`application/`：实现级实体与应用 SDD。本库 `{NAME}-overview.md` 供 extract / archive；上行 distill 的业务正文只写系统 overview，来源另存治理证据。本文件 = 层根人类入口（契约短表 + 引用）；语义 SSOT ∈ `agent/knowledge/`。
 
 ## 阅读顺序
 
@@ -33,6 +33,8 @@ version: 2026.1020.1
 路径总则：[knowledge-layout § 四层文档根](../agent/references/knowledge-layout.md#四层文档根) · [§ 文件与目录落点](../agent/references/knowledge-layout.md#文件与目录落点) · [§ SDD 与 KNOWLEDGE_TYPE](../agent/references/knowledge-layout.md#sdd-与-knowledge_type)。无联邦槽位（槽位在 system）。
 
 ## 同步与门禁
+
+验收统一按 [知识校验](../agent/knowledge/knowledge-validation.md) 区分本地、跨库与事实状态；来源关联按 [知识证据](../agent/knowledge/knowledge-evidence.md) 保存。内容版本一致不代表真实实体已兼容，尚未接入的工具能力不得宣称已实现。
 
 1. 本库维护文档树与实体 SSOT  
 2. 系统侧 docs-link 建应用槽位；检查/修复见 docs-link（本库为下级仓）

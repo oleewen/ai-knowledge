@@ -13,8 +13,8 @@ title: 应用架构
 
 ## 应用
 
-写 APP 的编号、名称，各 `implements_to` 哪个 SYS。
+从 [应用实体台账](../README.md) 定位 APP 正文，说明各应用在本系统中的职责。编号、名称及 `implements_to` 关系仅作实体的派生摘要，关系变化先更新对应实体，再同步本章。
 
 ## 微服务
 
-写 MS 的编号、名称，各 `implements_to` 哪个 APP，`maps_to` 哪个 AGG。
+从 [微服务实体台账](../README.md) 定位 MS 正文，说明服务如何协作。`implements_to` 与 `maps_to` 以 MS 实体为准，本章引用并解释，不另维护关系定义。

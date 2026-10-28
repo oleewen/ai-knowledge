@@ -6,7 +6,7 @@ title: 应用架构
 
 [返回 · 应用知识库](../README.md)
 
-应用侧应用入口：API SSOT；SYS/APP/MS 系统首次定义。SLN 解决方案首次定义。实体台账见下方「实体」表。上游实体不建本层文件，只写纯 ID。归档目标章 ∈ `chapters/`。
+应用侧应用入口：API SSOT；SYS/APP/MS 系统首次定义。SLN 解决方案首次定义。实体台账见下方「实体」表。上游实体引用遵循[上游引用说明](../README.md#上游引用)。归档目标章 ∈ `chapters/`。
 
 目录与阅读顺序见 [index.md](index.md)。
 

@@ -16,7 +16,7 @@ title: "{域名称}架构概览（{slug}-overview）"
 
 ## [业务架构](../business/README.md)
 
-本视角无章。标准在上游。此处只写纯 ID。
+本视角无章。标准在上游，引用形式见[上游引用说明](../README.md#上游引用)。
 
 ## [产品架构](../product/README.md)
 

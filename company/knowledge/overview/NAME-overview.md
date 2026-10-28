@@ -75,7 +75,7 @@ title: "{域名称}架构概览（{slug}-overview）"
 | [DevOps](../technical/chapters/technical-devops.md) | [代码规范](../technical/chapters/technical-devops.md#代码规范) | — |
 | [DevOps](../technical/chapters/technical-devops.md) | [自动化测试](../technical/chapters/technical-devops.md#自动化测试) | — |
 | [DevOps](../technical/chapters/technical-devops.md) | [发布策略](../technical/chapters/technical-devops.md#发布策略) | — |
-| [DevOps](../technical/chapters/technical-devops.md) | [IaC](../technical/chapters/technical-devops.md#IaC) | — |
+| [DevOps](../technical/chapters/technical-devops.md) | [IaC](../technical/chapters/technical-devops.md#iac) | — |
 | [技术安全](../technical/chapters/technical-security.md) | [认证授权](../technical/chapters/technical-security.md#认证授权) | — |
 | [技术安全](../technical/chapters/technical-security.md) | [数据加密](../technical/chapters/technical-security.md#数据加密) | — |
 | [技术安全](../technical/chapters/technical-security.md) | [密钥管理](../technical/chapters/technical-security.md#密钥管理) | — |

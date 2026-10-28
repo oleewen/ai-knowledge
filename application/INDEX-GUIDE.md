@@ -41,7 +41,7 @@ application/
 ### 2.2 依赖关系
 
 * `knowledge/` 含 `overview/{NAME}-overview.md`（extract / archive）；上行 pull → distill（系统 overview）
-* 上层公司/解决方案/系统实体只写纯 ID；有 parent 则可 HTTP 指向上层首次定义。禁止直链槽位
+* 上层实体按[引用规范](../agent/knowledge/knowledge-reference-rules.md)处理：有效 parent 链且可生成时使用首次定义层 HTTP，无 parent 或无可用结果时保留纯 ID；不明项先核实，禁止直链槽位
 * `analysis/` → `features/` → `requirements/`（mode=s）
 
 ### 2.3 包结构
@@ -89,7 +89,7 @@ application/
 | 聚合 | 职责 | 关键落点 |
 |------|------|----------|
 | 本层首次实体 | API / TBL / MW / CMP | [knowledge/](knowledge/README.md)；台账 ∈ 各视角 README |
-| 上游引用 | 纯 ID 或 parent HTTP；SLN/PL/PD∈解决方案，SYS 链∈系统 | 不重复字段语义 |
+| 上游引用 | SLN/PL/PD∈解决方案，SYS 链∈系统；形式按[上游引用说明](knowledge/README.md#上游引用)及既有特例 | 不重复字段语义 |
 | SDD | 分析 → 特性 → 需求（mode=s） | `analysis/` · `features/` · `requirements/` |
 
 ### 4.3 领域服务
@@ -155,7 +155,7 @@ OpenAPI/DDL 全文不在九章展开（实体可链外部）。
 
 ### 6.3 关系映射
 
-跨视角以 ID + 关系动词维护；入口 [knowledge/README.md](knowledge/README.md)。上游实体纯 ID → 其首次定义层（公司 / 解决方案 / 系统）。
+跨视角以 ID + 关系动词维护；入口 [knowledge/README.md](knowledge/README.md)。上游实体归其首次定义层（公司 / 解决方案 / 系统），引用形式见[上游引用说明](knowledge/README.md#上游引用)。
 
 ### 6.4 SQL 索引
 

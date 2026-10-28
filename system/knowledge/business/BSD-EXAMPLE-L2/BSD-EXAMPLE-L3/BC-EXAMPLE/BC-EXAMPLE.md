@@ -16,11 +16,11 @@ layer_scope: system
 
 - implements_to: [BSD-EXAMPLE-L3](../BSD-EXAMPLE-L3.md)
 - implemented_by: [AGG-EXAMPLE](AGG-EXAMPLE/AGG-EXAMPLE.md)
-- supported_by: [APP-EXAMPLE](../../../application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE.md)
+- supported_by: [APP-EXAMPLE](../../../../application/SYS-EXAMPLE/APP-EXAMPLE/APP-EXAMPLE.md)
 
 ## 跨视角
 
-- mapped_by: [PM-EXAMPLE](../../../product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE.md)
+- mapped_by: [PM-EXAMPLE](../../../../product/PD-EXAMPLE/PM-EXAMPLE/PM-EXAMPLE.md)
 
 ## 详细说明
 
@@ -28,4 +28,4 @@ layer_scope: system
 
 ## 依据与证据
 
-[../../chapters/business-capability-map.md](../../chapters/business-capability-map.md#限界上下文)（示例）
+[../../../chapters/business-capability-map.md](../../../chapters/business-capability-map.md#限界上下文)（示例）

@@ -9,7 +9,7 @@ title: 接口管理
 
 本应用内外接口的发现、规范与演进。
 
-> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体用纯 ID 或 parent HTTP，不重复字段语义。
+> **本章口径**：本应用实现落地（`docs-extract` / `docs-archive`）。本层首次定义仅 **API / TBL / MW / CMP**。上游公司 / 解决方案 / 系统实体遵循[上游引用说明](../../README.md#上游引用)，不重复字段语义。
 
 ## 内部 API
 
