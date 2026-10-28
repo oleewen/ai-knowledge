@@ -2,7 +2,7 @@
 
 > **定位**：`sdx-analysis` / `sdx-feature` 运行时如何落技术决策到 `{DOC_DIR}/adr/`。  
 > **产物规范**：命名、目录、章节、状态与 CONTEXT 列见 [adr-guidelines.md](../knowledge/adr-guidelines.md)；内容骨架见 [adr-template.md](../knowledge/adr-template.md)。
-> **不负责**：业务/范围/优先级决策（仍用 ANALYSIS 或 SOLUTION §5.2 Q-n）。
+> **不负责**：业务/范围/优先级决策（仍用 ANALYSIS 或 SOLUTION §5.2 Qn）。
 > **技能挂接**：[sdx-analysis](../skills/sdx-analysis/references/workflow.md) · [gates](../skills/sdx-analysis/references/gates.md)；[sdx-feature](../skills/sdx-feature/references/workflow.md) · [gates](../skills/sdx-feature/references/gates.md)。
 
 **最后更新**: 2026-10-23
@@ -13,10 +13,10 @@
 
 | 决策类型 | 落点 |
 | --- | --- |
-| 业务 / 范围 / 优先级 / 里程碑取舍 | ANALYSIS 或 SOLUTION §5.2 **Q-n** |
+| 业务 / 范围 / 优先级 / 里程碑取舍 | ANALYSIS 或 SOLUTION §5.2 **Qn** |
 | **技术 / 架构选型**（有持久后果） | `{DOC_DIR}/adr/ADR-*.md` + 登记 `CONTEXT.md` |
 
-技术决策**不写入** Q-n 表行。
+技术决策**不写入** Qn 表行。
 
 ---
 

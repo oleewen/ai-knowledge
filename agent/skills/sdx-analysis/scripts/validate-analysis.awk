@@ -137,7 +137,7 @@ function add_content(s,    i, cell, cells, count, meaningful) {
         count = split(s, cells, "|"); meaningful = 0
         for (i = 1; i <= count; i++) {
             cell = trim(cells[i])
-            if (cell != "" && cell !~ /^:?-+:?$/ && cell !~ /^[GQCR]-[0-9]+$/) meaningful = 1
+            if (cell != "" && cell !~ /^:?-+:?$/ && cell !~ /^[GQCR][0-9]+$/) meaningful = 1
         }
         if (!meaningful) return
     } else table = 0
@@ -163,7 +163,7 @@ function inspect_text(s, is_code,    i, rest, token, before, after) {
         }
     }
     if (is_code) return
-    if (s ~ /(^|[^A-Za-z0-9_-])G-[0-9]+([^0-9]|$)/) goals++
+    if (s ~ /(^|[^A-Za-z0-9_-])G[0-9]+([^0-9]|$)/) goals++
     if (milestone_section && has_milestone(s)) milestones++
     collect_links(s)
     if (index(s, "ADR-待定")) pending = 1
@@ -263,7 +263,7 @@ END {
         if (!seen[h]) warning((h ~ /^## / ? "缺少章节: " : "缺少小节标题: ") h)
         else if (!content[h]) warning("章节/小节无内容且未标注「不适用」或「待补充」: " h)
     }
-    if (!goals) warning("未发现业务目标编号 (G-n)")
+    if (!goals) warning("未发现业务目标编号 (Gn)")
     if (!milestones) warning("§6.1 未发现 M{n}（短名）写法")
     for (i = 1; i <= term_count; i++) if (technical[terms[i]]) warning("业务正文中发现技术词「" terms[i] "」(" technical[terms[i]] " 处)")
     for (token in adrs) print "ADR\t" token

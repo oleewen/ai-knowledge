@@ -161,7 +161,7 @@ class ValidateFeatureTests(unittest.TestCase):
 
     def test_overview_columns_cannot_be_satisfied_by_other_sections(self):
         self.assert_warning(VALID.replace("| 所属模块 |", "| 模块 |", 1) + "\n所属模块\n", "所属模块")
-        self.assert_warning(VALID.replace("| G-1 |\n| FR-002", "| G-1 | 多余 |\n| FR-002", 1), "列数")
+        self.assert_warning(VALID.replace("| G1 |\n| FR-002", "| G1 | 多余 |\n| FR-002", 1), "列数")
 
     def test_row_cell_rules_are_checked_per_fr(self):
         for before, after, topic in [
@@ -171,7 +171,7 @@ class ValidateFeatureTests(unittest.TestCase):
             ("| M1（待办可见） |", "| MVP1（待办可见） |", "所属里程碑"),
             ("| M1（待办可见） |", "| M1（ ） |", "所属里程碑"),
             ("| M1（待办可见） |", "| M1（待办可见）, M2（审批闭环） |", "所属里程碑"),
-            ("| G-1 |\n| FR-002", "| 无 |\n| FR-002", "关联目标"),
+            ("| G1 |\n| FR-002", "| 无 |\n| FR-002", "关联目标"),
         ]:
             with self.subTest(after=after):
                 self.assert_warning(VALID.replace(before, after, 1), topic)
@@ -217,7 +217,7 @@ class ValidateFeatureTests(unittest.TestCase):
     def test_second_overview_table_cannot_hide_an_extra_requirement(self):
         extra = ("| 需求编号 | 需求名称 | 需求概要 | 优先级 | 所属模块 | 所属里程碑 | 关联目标 |\n"
                  "| --- | --- | --- | --- | --- | --- | --- |\n"
-                 "| FR-003 | 复查审批 | 复查已审批事项 | P2 | 审批管理 | M2（审批闭环） | G-1 |\n")
+                 "| FR-003 | 复查审批 | 复查已审批事项 | P2 | 审批管理 | M2（审批闭环） | G1 |\n")
         self.assert_warning(VALID.replace("### FR-001: 查看待办", extra + "\n### FR-001: 查看待办", 1), "FR-003")
 
     def test_adr_checks_real_reference_section_files_and_exact_context_id(self):

@@ -263,8 +263,8 @@ def check_overview(doc: Document, chapter: Optional[Heading], overview: Optional
         if row.get("优先级", "") not in ("P0", "P1", "P2", "P3"):
             report.warn(f"{prefix}: 优先级须为 P0/P1/P2/P3")
         goals = re.split(r"[,，、;；\s]+", row.get("关联目标", ""))
-        if not goals or not all(re.fullmatch(r"G-[1-9][0-9]*", goal) for goal in goals):
-            report.warn(f"{prefix}: 关联目标须填写 G-n")
+        if not goals or not all(re.fullmatch(r"G[1-9][0-9]*", goal) for goal in goals):
+            report.warn(f"{prefix}: 关联目标须填写 Gn")
     if not ids:
         report.warn(f"{label}: 概览至少需要一条 FR")
     for identifier, count in ids.items():

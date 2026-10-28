@@ -18,7 +18,7 @@
 
 | base | 准备内容 |
 | --- | --- |
-| ready-analysis | 从 [analysis-template.md](../../sdx-analysis/assets/analysis-template.md) 填成完整七章分析。G-1 为审核首轮分派由 2 工作日缩至 4 小时；角色为审核员、审核主管；In 为待办查看与授权分派，Out 为支付/物流。§6.1 含 M1（待办可见）：授权内待办列表；M2（分派闭环）：主管分派及审核员接收。各覆盖能力、验收和退出条件明确；不预设未确认工期。提供可追溯的业务模块“订单审核”。 |
+| ready-analysis | 从 [analysis-template.md](../../sdx-analysis/assets/analysis-template.md) 填成完整七章分析。G1 为审核首轮分派由 2 工作日缩至 4 小时；角色为审核员、审核主管；In 为待办查看与授权分派，Out 为支付/物流。§6.1 含 M1（待办可见）：授权内待办列表；M2（分派闭环）：主管分派及审核员接收。各覆盖能力、验收和退出条件明确；不预设未确认工期。提供可追溯的业务模块“订单审核”。 |
 | no-analysis | 只有会议纪要；不存在已确认 ANALYSIS 或等价分析基线。目标 FEATURE 不存在。 |
 | analysis-empty-milestones | ready-analysis 的 §6.1 保留表头，覆盖范围为空；其它章与状态不变。 |
 | complete-feature | 从 [feature-template.md](../assets/feature-template.md) 填完整六章。通常 FR-001=审核待办查看，FR-002=审核任务分派；各自单一模块/里程碑、完整规则与验收；每 FR 恰好装入一个 MVP。补齐 frontmatter，与上游同链。准备无冲突的本层 ADR/CONTEXT。 |

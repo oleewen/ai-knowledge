@@ -36,7 +36,7 @@ dependencies: []
 tags: []
 ---
 EOF
-awk '/^#{2,4} / { print; print "业务内容已确认。"; if ($0 ~ /^### 1[.]3 /) print "G-1 降低处理时长。"; if ($0 ~ /^### 6[.]1 /) print "M1（试点）" }' \
+awk '/^#{2,4} / { print; print "业务内容已确认。"; if ($0 ~ /^### 1[.]3 /) print "G1 降低处理时长。"; if ($0 ~ /^### 6[.]1 /) print "M1（试点）" }' \
   "$SKILL_DIR/assets/analysis-template.md" >> "$BASE"
 
 PASS=0
@@ -154,6 +154,13 @@ awk '/^### 1[.]1 / { print; print "| 原因 | 影响 |\n| --- | --- |\n| | |"; s
 cp "$FILE.tmp" "$FILE"
 run "$REPO" --file "$FILE"
 check 'empty table is not substantive content' 0 '无内容'
+for number_id in G1 C1 R1 Q1 G01 R001; do
+  variant "NUMBER-ONLY-$number_id"
+  awk -v id="$number_id" '/^### 1[.]1 / { print; print "| 编号 | 内容 |\n| --- | --- |\n| " id " | |"; skip=1; next } skip { skip=0; next } { print }' "$FILE" > "$FILE.tmp"
+  cp "$FILE.tmp" "$FILE"
+  run "$REPO" --file "$FILE"
+  check "number-only table is not substantive content: $number_id" 0 '无内容'
+done
 variant CODE-1
 awk '/^### 3[.]3 / { print; print "```text\n<!-- literal inside a code block\n```"; next } { print }' "$FILE" > "$FILE.tmp"
 cp "$FILE.tmp" "$FILE"
@@ -195,7 +202,7 @@ printf '\n**技术决策索引**：[CONTEXT](../adr/CONTEXT.md)；复用已确�
 printf '# ADR-1：审批事件留痕\n' > "$DOC/adr/ADR-1-审批事件留痕.md"
 run "$REPO" --strict --file "$FILE"
 check 'Chinese text around multiple ADR links does not crash awk' 0 '错误: 0  警告: 0'
-variant 中文里程碑-1
+variant 中文里程碑1
 sed 's/M1（试点）/M1（审批上线）/' "$FILE" > "$FILE.tmp"
 cp "$FILE.tmp" "$FILE"
 LC_ALL=C run "$REPO" --strict --file "$FILE"

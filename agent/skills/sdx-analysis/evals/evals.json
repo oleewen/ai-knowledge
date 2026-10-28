@@ -99,7 +99,7 @@
           "id": "decision-location",
           "name": "decision-location",
           "type": "must_include",
-          "check": "实际形成的业务取舍落 §5.2 Q-n；持久技术决策走 ADR/CONTEXT；没有技术决策不为过测创建 ADR。",
+          "check": "实际形成的业务取舍落 §5.2 Qn；持久技术决策走 ADR/CONTEXT；没有技术决策不为过测创建 ADR。",
           "priority": "P0",
           "evidence_source": "response,diff"
         }
@@ -662,7 +662,7 @@
       "evaluation_type": "artifact",
       "status": "not_run",
       "prompt": "C，仅补当前段技术决策引用；复用已确认的留痕结论。",
-      "expected_output": "检查并复用 ADR-001/CONTEXT；§5.2 表后补可解析引用，不混入 Q-n。",
+      "expected_output": "检查并复用 ADR-001/CONTEXT；§5.2 表后补可解析引用，不混入 Qn。",
       "fixture_files": [
         {
           "path": "docs/analysis/ANALYSIS-261022-审批留痕.md",
@@ -690,7 +690,7 @@
           "id": "correct-link-and-boundary",
           "name": "correct-link-and-boundary",
           "type": "must_include",
-          "check": "§5.2 表后链接到实际 ../adr/CONTEXT.md；可补既有 ADR 链接；技术选型不新增 Q-n 行。",
+          "check": "§5.2 表后链接到实际 ../adr/CONTEXT.md；可补既有 ADR 链接；技术选型不新增 Qn 行。",
           "priority": "P0",
           "evidence_source": "artifacts"
         },

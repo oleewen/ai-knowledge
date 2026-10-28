@@ -21,7 +21,7 @@ mvp_phase: "MVP-Phase-1"
 
 ## §1 产品概述（节选）
 
-直接上游 `FEATURE-DEMO-01.md`，本稿仅覆盖其 MVP-Phase-1 的 FR-001；ANALYSIS-DEMO-01 仅提供目标背景。成功标准：审核员平均处理首批待办 ≤ 4 小时（演示目标 G-1）。
+直接上游 `FEATURE-DEMO-01.md`，本稿仅覆盖其 MVP-Phase-1 的 FR-001；ANALYSIS-DEMO-01 仅提供目标背景。成功标准：审核员平均处理首批待办 ≤ 4 小时（演示目标 G1）。
 
 ## §4 / §5 用例与故事（节选）
 
