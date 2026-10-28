@@ -22,7 +22,7 @@ description: >
 
 目标均为 `{DOC_DIR}/knowledge/overview/{NAME}-overview.md`。路径覆盖、旧调用兼容见 [workflow.md](references/workflow.md)。
 
-- 模式恒为全量；不支持 `--since`，不写 `DISTILL-LOG`。
+- 模式恒为全量；不支持 `--since`，不写 `DISTILL-LOG` 或全量运行史；实际来源与目标映射须按 [知识证据登记](../../knowledge/knowledge-evidence.md) 持久保存，不以会话代替。
 - `application/knowledge/overview` 不是本技能目标；请走 `docs-extract` 或 `docs-archive`。
 - 一次只处理一个目标 overview；`--dry-run` 只输出预览，不改文件。
 
@@ -31,7 +31,7 @@ description: >
 1. 先收口 `DOC_DIR`、知识层、`--name`、写入或 `--dry-run`，确认目标是单一 overview。
 2. 按 [scope-clarity.md](references/scope-clarity.md) 读取落盘契约，闭合目标职责、源职责、表行粒度和跨层收束。契约缺失、模糊或冲突时硬停；结论先落盘，再继续。
 3. 核对职责/粒度摘要；明确的只读预览可直接执行。正式写入完成公共六项澄清并核对授权，已有同范围有效授权沿用。
-4. 全量读取槽位知识与 SDD，按 [federation-spec.md](references/federation-spec.md) 去重，只写第三列 delta（`A/U/D`）。
+4. 全量读取槽位知识与 SDD，按 [overview 共用语义](../../knowledge/overview-spec.md#第三列增量语义) 核实覆盖与删除依据，按 [federation-spec.md](references/federation-spec.md) 全量更新第三列，并按 [门禁](references/gates.md#原子性) 同批维护治理证据。
 5. 写入或预览后按本地写后规则烤干；受众维 A/B/C/E 未通过，不得宣称收敛。当前单元收敛后停等 `C/M/G/S/F`。
 
 落盘 overview 的 knowledge 引用遵守 [knowledge-governance.md](../../knowledge/knowledge-governance.md)：不链槽位或下层路径，不手写爬层关系；实体引用按既有 parent/ID 契约生成。
@@ -60,7 +60,7 @@ bash "$SKILL_DIR/scripts/run-docs-distill.sh" \
 | 参数、步骤、I/O | [workflow.md](references/workflow.md) |
 | 风险、停顿、当前单元 | [gates.md](references/gates.md) |
 | 职责与粒度闭合 | [scope-clarity.md](references/scope-clarity.md) |
-| 第三列与 A/U/D | [federation-spec.md](references/federation-spec.md) |
+| 共用增量语义 / 本技能全量写入 | [overview-spec.md](../../knowledge/overview-spec.md#第三列增量语义) / [federation-spec.md](references/federation-spec.md) |
 | 受众质检 | [audience-and-language.md](references/audience-and-language.md) |
 | 终检与易错 | [quality-checklist.md](references/quality-checklist.md)、[gotchas.md](gotchas.md) |
 

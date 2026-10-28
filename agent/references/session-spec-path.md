@@ -1,9 +1,21 @@
 # 会话工作稿路径契约（Agent SSOT）
 
 > **定位**：`{DOC_DIR}/superpowers/specs/` 的路径解析、合法落点与库外引用隔离。  
-> **本文职责**：可选工作稿与 brainstorming 备忘的路径规则；非默认推进协议。正式产物推进见 [CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates)，不要求 HTML gate / `CONFIRMED` / 写前 hook；旧目标工程配置迁移见 [agent-install](../skills/agent-install/SKILL.md)。
+> **本文职责**：定义可选工作稿与 brainstorming 备忘的路径规则，说明其与实现计划、执行证据的边界；非默认推进协议。正式产物推进见 [CONVENTIONS.md](../rules/CONVENTIONS.md#artifact-gates)，不要求 HTML gate / `CONFIRMED` / 写前 hook；旧目标工程配置迁移见 [agent-install](../skills/agent-install/SKILL.md)。
 
-**最后更新**: 2026-10-23
+**最后更新**: 2026-10-25
+
+---
+
+## 会话材料边界
+
+| 材料 | 路径来源 | 本文约束 |
+| --- | --- | --- |
+| 可选工作规格 / 设计备忘 | 下节解析的 `{DOC_DIR}/superpowers/specs/` | 本文定义合法落点；非正式 SSOT |
+| 实现计划 | 所属计划技能或用户已确认的路径约定 | 本文不统一 plans 落点，也不因现有计划与当前 DOC_DIR 不同而自动迁移 |
+| 执行证据 | 执行工具自行解析；`sdd-workspace` 使用仓根 `.superpowers/sdd/` | 不随 DOC_DIR 解析；移动计划可能改变工具记录的路径身份，迁移前须核对工具依赖 |
+
+忽略规则只控制 Git 收录，不证明路径合法，也不改变工具扫描范围。ai-knowledge 元仓由仓根 `.gitignore` 精确忽略规格、计划与上述执行证据目录；消费库的忽略配置由该仓维护。已有材料保持原路径，迁移另行核实；已跟踪文件不因新增忽略规则自动退出版本管理。
 
 ---
 
@@ -18,7 +30,7 @@
 | 配置不可读，或 `DOC_DIR` 缺失 / 无效 | 停止落盘，说明问题并收口有效配置；不静默回退 |
 
 - **DOC_DIR**：读取目标工程 **`.docsconfig`**，字段合法性复用 [docsconfig.sh](../scripts/lib/docsconfig.sh) 的 `docsconfig_validate_doc_dir`，不按知识层名称另设枚举。本文不补写配置；依赖完整配置的脚本仍执行自己的预检，无配置默认值不替代脚本配置。
-- **中间目录**：固定 **`superpowers/specs/`**（通常 `.gitignore`，不入库）。  
+- **中间目录**：固定 **`superpowers/specs/`**；版本管理边界见上节。
 - **阶段后缀**：可选（如 `-sdx-prd.md`、`-docs-indexing.md`、`-design.md`）；非闸门凭证。  
 - **跨域写入**：有效根为 `docs` 时，工作稿清单可列任意仓库根相对终稿路径；工作稿文件本身仍落在 `docs/superpowers/specs/`。  
 - 正式产物的输出根由各技能参数和通用配置解析决定；本文只定义会话稿落点。
@@ -34,7 +46,7 @@
 
 ## 合法性与禁止
 
-工作稿的仓库根相对落点须同时满足：
+工作规格 / 设计备忘的仓库根相对落点须同时满足：
 
 1. 形如 `{docroot}/superpowers/specs/...`，且 `{docroot}` 等于当前解析的 `DOC_DIR`。  
 2. 不含 `/requirements/`。  

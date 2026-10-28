@@ -12,7 +12,7 @@ title: 产品视角元数据
 
 ## 2. 实体细则
 
-下列“可选”仍受 [反向同步规则](entity-relations.md#动词与双向要求)约束：对端已声明关系时，反向字段必须填写。目标类型按关系模型；无值的可选属性不影响实体有效性。
+下列“可选”仍受 [反向同步规则](entity-relations.md#动词与双向要求)及其例外约束。目标类型按关系模型；无值的可选属性不影响实体有效性。
 
 ### PL
 
@@ -21,6 +21,8 @@ title: 产品视角元数据
 ### PD
 
 必填：`implements_to`、`maps_to`、`implemented_by`；后者包含 BSP、PM，跨层 PM 只写纯 ID。可选：`uses_to`。不写 `mapped_by` SYS。
+
+`uses_to` 可声明消费 SYS，采用 [共享系统消费](entity-relations.md#共享系统消费) 的单侧主定义及反向派生规则；使用 MDG/TS 仍按原双向规则。SLN 汇总产品消费，不重复维护另一份声明。
 
 ### BP
 

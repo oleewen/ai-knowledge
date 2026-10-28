@@ -455,7 +455,9 @@ def collect_web_bases(start_doc_root: Path) -> List[Tuple[Parent, str]]:
     return out
 
 
-def _index_concepts(doc_root: Path) -> Dict[str, Tuple[Path, str]]:
+def _index_concepts(
+    doc_root: Path, *, unique_id: Optional[str] = None
+) -> Dict[str, Tuple[Path, str]]:
     knowledge = Path(doc_root) / "knowledge"
     found: Dict[str, Tuple[Path, str]] = {}
     if not knowledge.is_dir():
@@ -465,8 +467,10 @@ def _index_concepts(doc_root: Path) -> Dict[str, Tuple[Path, str]]:
             continue
         text = path.read_text(encoding="utf-8")
         meta, body = okf_lib.parse_frontmatter(text)
-        fid = meta.get("id") or path.stem
-        found[str(fid)] = (path, body)
+        fid = str(meta.get("id") or path.stem)
+        if fid == unique_id and fid in found:
+            raise ValueError(f"实体 {fid} 存在重复落点: {found[fid][0]} / {path}")
+        found[fid] = (path, body)
     return found
 
 
@@ -494,15 +498,19 @@ def _disk_parent_chain(
 def directory_chain_for_entity(
     doc_root: Path, entity_id: str, perspective: str, need: int
 ) -> Optional[str]:
-    """沿同层 parent / implements_to 向上收集父 ID。
+    """BSD-L2 直接取实际宿主；其他实体沿同层 parent / implements_to 收集父 ID。
 
     段数不够时用直接父文件的目录。同层走不到时，用本文件所在父目录。
     跨层 ID 不在本 bundle，relation_path_parent 会跳过。
     """
-    by_id = _index_concepts(doc_root)
+    is_solution_bsd = entity_id.startswith("BSD-") and entity_id.endswith("-L2")
+    by_id = _index_concepts(doc_root, unique_id=entity_id if is_solution_bsd else None)
     if entity_id not in by_id:
         return None
     file_path = by_id[entity_id][0]
+    if is_solution_bsd:
+        # L1 是跨层宿主；已有实体以实际落点为准，不能由关系重定位。
+        return _disk_parent_chain(doc_root, file_path, perspective, entity_id, need)
     local_ids = set(by_id)
     ancestors: List[str] = []
     seen = {entity_id}
@@ -548,11 +556,22 @@ def cross_layer_href(
     if not wb:
         return None
     chain = path_parent
+    entity = None
     local = parent.local_doc_root()
     need = okf_lib.relpath_parent_count(code, layer)
     if need:
         given = [part for part in (path_parent or "").split("/") if part]
-        if len(given) == need:
+        entity = (
+            _index_concepts(local, unique_id=id).get(id)
+            if layer == "solution" and code == "BSD" and local.is_dir()
+            else None
+        )
+        if entity:
+            existing = _disk_parent_chain(local, entity[0], perspective, id, need)
+            if not existing or (path_parent is not None and path_parent != existing):
+                return None
+            chain = existing
+        elif len(given) == need:
             chain = "/".join(given)
         elif not local.is_dir():
             return None
@@ -563,6 +582,8 @@ def cross_layer_href(
             perspective, id, path_parent=chain, bundle=layer
         )
     except ValueError:
+        return None
+    if entity and local / rel != entity[0]:
         return None
     return f"{wb}/{rel}"
 
@@ -671,14 +692,25 @@ def validate_http_href(
     need = okf_lib.relpath_parent_count(prefix, parent.knowledge_type)
     chain = None
     if need and local_root.is_dir():
-        chain = directory_chain_for_entity(local_root, id, perspective, need)
+        try:
+            chain = directory_chain_for_entity(local_root, id, perspective, need)
+        except ValueError as exc:
+            return str(exc)
         if not chain:
             return f"跨层 HTTP 路径不足：{id} 缺少父目录链"
+    elif need and parent.knowledge_type == "solution" and prefix == "BSD":
+        # 离线只能验证结构，不能把 URL 中的宿主当作已核实 parent。
+        parts = rel.split("/")
+        if len(parts) != 5 or parts[:2] != ["knowledge", "business"] or parts[-2] != id:
+            return f"跨层 HTTP 路径不足：{id} 需要 L1 宿主及实体目录"
+        chain = parts[2]
     try:
         expected = okf_lib.entity_relpath(
             perspective, id, path_parent=chain, bundle=parent.knowledge_type
         )
-    except ValueError:
+    except ValueError as exc:
+        if parent.knowledge_type == "solution" and prefix == "BSD":
+            return f"跨层 HTTP 路径无效：{exc}"
         expected = None
     if expected and rel != expected:
         return (

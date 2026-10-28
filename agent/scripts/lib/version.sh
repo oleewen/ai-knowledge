@@ -60,9 +60,12 @@ version_next_from_files() {
 }
 
 version_commit_sha() {
-  local repo="$1" version="$2" revision="${3:---all}" subject
+  local repo="$1" version="$2" revision="${3:---all}" subject sha candidate
+  version="$(version_normalize "$version")" || return 1
   while IFS=$'\t' read -r sha subject; do
-    if [[ "$subject" == "docs-publish: version $version" ]]; then
+    [[ "$subject" == docs-publish:\ version\ * ]] || continue
+    candidate="$(version_normalize "${subject#docs-publish: version }")" || continue
+    if [[ "$candidate" == "$version" ]]; then
       printf '%s\n' "$sha"
       return 0
     fi

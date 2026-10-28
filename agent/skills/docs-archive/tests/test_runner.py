@@ -14,7 +14,7 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-RUNNER = ROOT / "scripts" / "run_evals.py"
+RUNNER = ROOT / "tests" / "run_evals.py"
 
 
 def case(case_id="case-1", category="should-trigger"):

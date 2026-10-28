@@ -76,7 +76,7 @@ def _subdir_entries(
 ) -> List[Tuple[str, str, str]]:
     entries: List[Tuple[str, str, str]] = []
     for path in sorted(directory.iterdir()):
-        if not path.is_dir() or path.name.startswith("."):
+        if not path.is_dir() or path.name.startswith(".") or okf_lib.is_session_excluded(path):
             continue
         link = _subdir_link(path, planned_directories)
         if link is None:
@@ -265,8 +265,12 @@ def write_index(
     dry_run: bool = False,
     planned_directories: AbstractSet[Path] = frozenset(),
 ) -> bool:
+    if okf_lib.is_session_excluded(directory):
+        return False
     index_path = directory / "index.md"
     check_output(index_path, bundle_root)
+    if okf_lib.has_session_drafts(directory) and index_path.is_file():
+        return True
     if _is_bundle_root(bundle_root, directory):
         okf_block = _render_okf_root_block(directory, planned_directories)
         merged = _upsert_okf_block_in_index(index_path, okf_block)
@@ -295,11 +299,13 @@ def collect_directories(
 ) -> List[Path]:
     if target is not None:
         base = target.resolve()
-        if not base.is_dir():
+        if not base.is_dir() or okf_lib.is_session_excluded(target):
             return []
         if recursive:
             return list(okf_lib.iter_bundle_directories(base))
         return [base]
+    if okf_lib.is_session_excluded(bundle_root):
+        return []
     if recursive:
         return list(okf_lib.iter_bundle_directories(bundle_root))
     return [bundle_root]
@@ -327,9 +333,15 @@ def main(argv: Optional[List[str]] = None) -> int:
         print(f"error: bundle 不存在: {bundle_root}", file=sys.stderr)
         return 1
 
-    target = (repo / args.dir).resolve() if args.dir else None
+    target = (repo / args.dir) if args.dir else None
     if target is not None and not target.is_dir():
         print(f"error: 目录不存在: {target}", file=sys.stderr)
+        return 1
+
+    if okf_lib.is_session_excluded(repo / args.bundle) or (
+        target is not None and okf_lib.is_session_excluded(target)
+    ):
+        print(f"error: 工作稿路径不生成 OKF 索引: {target or bundle_root}", file=sys.stderr)
         return 1
 
     directories = collect_directories(bundle_root, target, args.recursive)

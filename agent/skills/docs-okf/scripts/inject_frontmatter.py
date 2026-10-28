@@ -118,7 +118,7 @@ def iter_markdown_files(bundle_root: Path) -> Iterator[Path]:
 
 
 def run_inject(bundle: str, dry_run: bool = False) -> Tuple[int, int, int]:
-    bundle_root = (_repo_root() / bundle).resolve()
+    bundle_root = okf_lib.resolve_bundle_root(_repo_root() / bundle)
     if not bundle_root.is_dir():
         raise SystemExit(f"bundle 不存在: {bundle_root}")
 
@@ -155,7 +155,10 @@ def main() -> None:
     )
     parser.add_argument("--dry-run", action="store_true", help="仅打印将注入的文件")
     args = parser.parse_args()
-    injected, skipped, unchanged = run_inject(args.bundle, dry_run=args.dry_run)
+    try:
+        injected, skipped, unchanged = run_inject(args.bundle, dry_run=args.dry_run)
+    except ValueError as exc:
+        parser.exit(1, f"error: {exc}\n")
     print(f"done: injected={injected} skipped={skipped} unchanged={unchanged}")
 
 

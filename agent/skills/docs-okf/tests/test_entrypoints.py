@@ -6,6 +6,7 @@ from pathlib import Path
 import shutil
 import shlex
 import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -140,6 +141,34 @@ class EntrypointTests(unittest.TestCase):
                     self.assertNotEqual(result.returncode, 0)
                     self.assertEqual(before, self.snapshot())
 
+    def test_refresh_excludes_session_drafts_and_preserves_container_index(self):
+        drafts = []
+        for relative in ("superpowers/specs/draft.md", "superpowers/plans/deep/draft.md",
+                         "nested/superpowers/plans/draft.md", ".superpowers/sdd/evidence.md"):
+            path = self.default / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b"# SESSION-DRAFT-SENTINEL\r\nnot an OKF concept\r\n")
+            drafts.append(path)
+        before = {p: p.read_bytes() for p in drafts}
+        self.assert_success(self.run_entry("okf-indexing.sh"))
+        self.assertEqual(before, {p: p.read_bytes() for p in drafts})
+        self.assertFalse(list((self.default / "superpowers").rglob("index.md")))
+        self.assertFalse(list((self.default / "nested/superpowers").rglob("index.md")))
+        self.assertNotIn("superpowers/", (self.default / "index.md").read_text())
+        self.assertNotIn("SESSION-DRAFT-SENTINEL", (self.default / "viz.html").read_text())
+        self.assertIn("BD-EXAMPLE", (self.default / "viz.html").read_text())
+        manual = self.default / "superpowers/index.md"
+        manual.write_bytes(b"# Manual\r\nKeep custom prose.\r\n")
+        saved = manual.read_bytes()
+        self.assert_success(self.run_entry("okf-indexing.sh"))
+        self.assertEqual(manual.read_bytes(), saved)
+        self.assertEqual(before, {p: p.read_bytes() for p in drafts})
+        snapshot = self.snapshot()
+        self.assert_success(self.run_entry("okf-validate.sh"))
+        self.assertEqual(snapshot, self.snapshot())
+        (self.default / "knowledge/business/BD-EXAMPLE.md").write_text("# broken real concept\n")
+        self.assertNotEqual(self.run_entry("okf-validate.sh").returncode, 0)
+
     def test_validation_error_stops_remaining_refresh_steps(self):
         entity = self.default / "knowledge/business/BD-EXAMPLE.md"
         entity.write_text("# 没有 frontmatter 的实体\n", encoding="utf-8")
@@ -147,6 +176,84 @@ class EntrypointTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertNotIn("=== validate-viz-index ===", result.stdout)
         self.assertNotIn("okf-refresh 完成", result.stdout)
+
+    def test_all_explicit_session_bundle_entries_reject_without_writes(self):
+        self.assert_success(self.run_entry("okf-indexing.sh"))
+        # A governance file without metadata exposes writes before rejection.
+        (self.default / "README.md").write_bytes(b"# Manual\r\nKeep these bytes.\r\n")
+        entries = (
+            ("inject_frontmatter.py", ()),
+            ("inject_frontmatter.py", ("--dry-run",)),
+            ("generate_index.py", ("--recursive",)),
+            ("visualize.py", ("--out",)),
+            ("validate_bundle.py", ()),
+            ("validate_viz_index.py", ("--viz",)),
+            ("artifact_checks.py", ("--viz",)),
+            ("okf-indexing.sh", ()),
+            ("okf-validate.sh", ()),
+        )
+        for variant in ("lexical-specs", "lexical-plans", "physical", "container"):
+            for number, (script, extra) in enumerate(entries):
+                with self.subTest(variant=variant, script=script, extra=extra):
+                    case = self.project / "cases" / variant / str(number)
+                    actual = case / "actual"
+                    if variant == "physical":
+                        actual = case / "superpowers/plans"
+                    elif variant == "container":
+                        actual = case / "superpowers/specs"
+                    shutil.copytree(self.default, actual, symlinks=True)
+                    if variant.startswith("lexical"):
+                        target = case / "superpowers" / variant.split("-")[1]
+                    else:
+                        target = case / "alias"
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    target.symlink_to(actual.parent if variant == "container" else actual,
+                                      target_is_directory=True)
+                    args = ["--bundle", str(target), *extra]
+                    if extra and extra[-1] in ("--out", "--viz"):
+                        args.append(str(target / "viz.html"))
+                    before = self.snapshot()
+                    if script.endswith(".sh"):
+                        result = self.run_entry(script, *args)
+                    else:
+                        result = subprocess.run(
+                            [sys.executable, str(SCRIPTS / script), *args],
+                            cwd=self.project, env=self.env, text=True, capture_output=True,
+                        )
+                    self.assertEqual(before, self.snapshot(), result.stdout + result.stderr)
+                    self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+                    self.assertIn("工作稿", result.stdout + result.stderr)
+                    self.assertNotIn("Traceback", result.stderr)
+
+    def test_ordinary_bundle_alias_still_refreshes_and_validates(self):
+        target = self.make_bundle("ordinary/specs")
+        alias = self.project / "ordinary-alias"
+        alias.symlink_to(target, target_is_directory=True)
+        self.assert_success(self.run_entry("okf-indexing.sh", "--bundle", str(alias)))
+        self.assert_success(self.run_entry("okf-validate.sh", "--bundle", str(alias)))
+        self.assertTrue((target / "viz.html").is_file())
+
+    def test_repo_alias_cannot_hide_session_bundle_path(self):
+        self.assert_success(self.run_entry("okf-indexing.sh"))
+        for script, extra in (
+            ("visualize.py", ("--out", "viz.html")),
+            ("validate_bundle.py", ()),
+            ("validate_viz_index.py", ("--viz", "viz.html")),
+        ):
+            with self.subTest(script=script):
+                alias = self.project / script / "superpowers/specs"
+                alias.parent.mkdir(parents=True)
+                alias.symlink_to(self.default, target_is_directory=True)
+                before = self.snapshot()
+                result = subprocess.run(
+                    [sys.executable, str(SCRIPTS / script), "--repo", str(alias),
+                     "--bundle", ".", *extra],
+                    cwd=self.project, env=self.env, text=True, capture_output=True,
+                )
+                self.assertEqual(before, self.snapshot(), result.stdout + result.stderr)
+                self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertIn("工作稿", result.stdout + result.stderr)
+                self.assertNotIn("Traceback", result.stderr)
 
     def test_output_preflight_stops_before_any_refresh_write(self):
         for relative in ("index.md", "viz.html", "knowledge/business/index.md", "README.md"):

@@ -27,12 +27,15 @@ require_agent_dir() {
 
 # §2.2.2：不 export；仅对本次 python3 进程传入环境变量
 run_link_check() {
-  DOC_ABS="$doc_abs" REPO_ABS="$repo_abs" AGENT_TREE="$AGENT_TREE" python3 "$SCRIPT_DIR/validate_link_reachable.py"
+  DOC_ABS="$doc_abs" REPO_ABS="$repo_abs" AGENT_TREE="$AGENT_TREE" \
+    INSTALLED_AGENT="$(expand_tilde "$AGENT_ROOT")/$AGENT_DIR" \
+    python3 "$SCRIPT_DIR/validate_link_reachable.py" "$@"
 }
 
 main() {
-  require_agent_dir
-  run_link_check
+  # 默认模式沿用原预检；显式范围由 Python 参数解析器验证。
+  if (( $# == 0 )); then require_agent_dir; fi
+  run_link_check "$@"
 }
 
 main "$@"

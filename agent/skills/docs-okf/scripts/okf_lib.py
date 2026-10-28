@@ -66,16 +66,53 @@ def find_repo_root(start: Path) -> Path:
     raise RuntimeError(f"无法定位仓库根（未找到 .docsconfig/.git），start={p}")
 
 
+SESSION_DRAFT_DIRS = frozenset({"specs", "plans"})
+
+
+def has_session_drafts(directory: Path) -> bool:
+    """仅识别 superpowers 下真实的约定工作稿目录。"""
+    return directory.name == "superpowers" and any(
+        (directory / name).is_dir() and not (directory / name).is_symlink()
+        for name in SESSION_DRAFT_DIRS
+    )
+
+
+def is_session_excluded(path: Path) -> bool:
+    """排除固定工作稿子树及纯容器，不依赖 Git，也不猜测文件所有权。"""
+    for candidate in (Path(os.path.abspath(path)), path.resolve()):
+        parts = candidate.parts
+        if any(parent == "superpowers" and child in SESSION_DRAFT_DIRS
+               for parent, child in zip(parts, parts[1:])):
+            return True
+        if candidate.name != "superpowers" or not candidate.is_dir() or candidate.is_symlink():
+            continue
+        children = list(candidate.iterdir())
+        if children and all(
+            child.name in SESSION_DRAFT_DIRS and child.is_dir() and not child.is_symlink()
+            for child in children
+        ):
+            return True
+    return False
+
+
+def resolve_bundle_root(path: Path) -> Path:
+    """显式入口先核对词法和真实路径，再解析 bundle，避免丢失工作稿别名。"""
+    if is_session_excluded(path):
+        raise ValueError(f"工作稿路径不能作为 OKF bundle: {path}")
+    return path.resolve()
+
+
 def _bundle_walk(bundle_root: Path):
-    """遍历 bundle；不进入隐藏目录或软链（含 .agents 与系统槽位）。"""
+    """遍历 bundle；跳过会话工作稿、隐藏目录与目录软链。"""
     root = bundle_root.resolve()
-    if not root.is_dir():
+    if not root.is_dir() or is_session_excluded(bundle_root):
         return
     for current, dirnames, filenames in os.walk(root, followlinks=False):
         dirnames[:] = sorted(
             name
             for name in dirnames
             if not name.startswith(".") and not (Path(current) / name).is_symlink()
+            and not is_session_excluded(Path(current) / name)
         )
         for filename in sorted(filenames):
             if filename.endswith(".md"):
@@ -83,14 +120,14 @@ def _bundle_walk(bundle_root: Path):
 
 
 def iter_bundle_markdown_files(bundle_root: Path) -> Iterator[Path]:
-    """遍历 bundle Markdown；不进入隐藏目录或软链。"""
+    """遍历 bundle Markdown；跳过会话工作稿、隐藏目录与目录软链。"""
     return _bundle_walk(bundle_root)
 
 
 def iter_bundle_directories(bundle_root: Path) -> Iterator[Path]:
-    """遍历 bundle 目录；不进入隐藏目录或软链（含 .agents 与系统槽位）。"""
+    """遍历 bundle 目录；跳过会话工作稿、隐藏目录与目录软链。"""
     root = bundle_root.resolve()
-    if not root.is_dir():
+    if not root.is_dir() or is_session_excluded(bundle_root):
         return
     yield root
     for current, dirnames, _filenames in os.walk(root, followlinks=False):
@@ -98,6 +135,7 @@ def iter_bundle_directories(bundle_root: Path) -> Iterator[Path]:
             name
             for name in dirnames
             if not name.startswith(".") and not (Path(current) / name).is_symlink()
+            and not is_session_excluded(Path(current) / name)
         )
         for dirname in dirnames:
             yield Path(current) / dirname
@@ -392,18 +430,12 @@ _SINGLE_PARENT_COUNT = {
     ("system", "MS"): 2,
     ("system", "BSD"): 1,  # L3 落盘需 L2 目录宿主 id
     ("system", "DS"): 1,  # MDG 目录宿主 id
+    ("solution", "BSD"): 1,  # 已核实 L1 宿主；旧目录可保留原名
     ("solution", "PD"): 1,  # PL 实体目录宿主 id
     ("application", "API"): 1,
     ("application", "TBL"): 1,
     ("application", "CMP"): 1,
 }
-
-
-def _bsd_l2_to_l1_host(l2_id: str) -> str:
-    """方案层 L2 外包 L1 目录宿主：*-L2 → *-L1（不读 parent 实体 id）。"""
-    if not l2_id.endswith("-L2"):
-        raise ValueError(f"expected BSD-L2 id, got {l2_id}")
-    return l2_id.removesuffix("-L2") + "-L1"
 
 
 def relpath_parent_count(prefix: str, bundle: str) -> Optional[int]:
@@ -423,7 +455,8 @@ def entity_relpath(
 ) -> str:
     """相对 bundle 根的 concept 路径。
 
-    path_parent 来自 relation_path_parent，不读 frontmatter。
+    path_parent 来自已核实关系或既有宿主目录，不读 frontmatter。
+    solution/BSD-L2 新建时显式传 L1 parent；不从子 ID 猜宿主。
     请求的 bundle 必须是该 ID 的首次定义层，否则拒绝落路径。
     叶子文件缺父级时拒绝，不用 EXAMPLE 锚点回退。
     """
@@ -497,7 +530,12 @@ def entity_relpath(
     if bundle == "solution":
         if perspective == "business" and prefix == "BSD":
             if id.endswith("-L2"):
-                l1 = _bsd_l2_to_l1_host(id)
+                l1 = _require_single_parent(prefix, path_parent, "BSD-L1 host id")
+                if (
+                    not re.fullmatch(r"BSD-[A-Za-z0-9_-]+", l1)
+                    or hierarchy_first_layer("BSD", l1) != "company"
+                ):
+                    raise ValueError("entity_relpath: solution BSD requires a BSD-L1 host id")
                 return f"knowledge/business/{l1}/{id}/{id}.md"
             raise ValueError("entity_relpath: solution lands BSD-L2 only")
         if perspective == "product" and prefix == "PL":

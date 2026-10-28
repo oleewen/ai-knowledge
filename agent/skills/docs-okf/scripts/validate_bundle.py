@@ -36,7 +36,7 @@ class Validator:
         bundle_name: str = "",
         repo_root: Optional[Path] = None,
     ) -> None:
-        self.bundle_root = bundle_root.resolve()
+        self.bundle_root = okf_lib.resolve_bundle_root(bundle_root)
         self.bundle_name = bundle_name  # 例 "system" / "company" / "application"
         self.repo_root = (
             repo_root.resolve()
@@ -322,7 +322,7 @@ def _repo_root() -> Path:
 
 
 def _bundle_root(repo: Path, bundle: str) -> Path:
-    return (repo / bundle).resolve()
+    return okf_lib.resolve_bundle_root(repo / bundle)
 
 
 def main(argv: Optional[List[str]] = None) -> int:
@@ -339,8 +339,11 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     args = parser.parse_args(argv)
 
-    repo = Path(args.repo).resolve() if args.repo else _repo_root()
-    bundle_root = _bundle_root(repo, args.bundle)
+    repo = Path(args.repo).absolute() if args.repo else _repo_root()
+    try:
+        bundle_root = _bundle_root(repo, args.bundle)
+    except ValueError as exc:
+        parser.exit(1, f"error: {exc}\n")
     if not bundle_root.is_dir():
         print(f"[ERROR] bundle 不存在: {bundle_root}", file=sys.stderr)
         return 1

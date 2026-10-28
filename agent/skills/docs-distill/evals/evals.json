@@ -1,6 +1,6 @@
 {
   "skill_name": "docs-distill",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "冒烟：双边全量、DOC_DIR、槽位边界、dry-run、与 extract 分流；无 DISTILL-LOG。",
   "evals": [
     {
@@ -297,6 +297,38 @@
           "type": "behavior",
           "priority": "P0",
           "check": "目标为目录或软链时脚本失败，模型不把它当create，不删除冲突对象；源槽位软链仍可正常读取。"
+        }
+      ]
+    },
+    {
+      "id": "distill-deletion-evidence",
+      "category": "should-trigger",
+      "prompt": "仅讨论决策，不操作文件：全量蒸馏已授权，来源槽位不再提旧审批规则，目标正文仍保留；没有废止决议或明确删除确认。可以产出 [D] 吗？若后续取得明确废止依据又如何处理？",
+      "expected_output": "缺失不能推断删除；证据充分时才能形成待归档删除说明，不能由distill直接删除章节。",
+      "files": [],
+      "assertions": [
+        {
+          "id": "distill-deletion-evidence-contract",
+          "name": "共用语义与技能写入边界",
+          "type": "must_include",
+          "check": "不得仅凭来源缺失生成 [D]；须核实明确废止依据或针对具体要点的删除确认；取得证据后可提炼 [D]，章节由archive消费。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "distill-empty-row-policy",
+      "category": "should-trigger",
+      "prompt": "仅讨论决策：全量来源与目标正文均已读完，某行无契约证据，旧第三列有待办；覆盖本行的有效写入授权齐备、替换影响已确认。extract无命中会保留原值，distill是否也必须照做？",
+      "expected_output": "distill按本技能全量规则写 —；此操作不表示目标正文事实被删除，也不能产出无依据 [D]。",
+      "files": [],
+      "assertions": [
+        {
+          "id": "distill-empty-row-policy-contract",
+          "name": "共用语义与技能写入边界",
+          "type": "must_include",
+          "check": "须保留distill已授权全量无证据行写 — 的差额，不照搬extract；清第三列不等于删除目标正文。",
+          "priority": "P0"
         }
       ]
     }

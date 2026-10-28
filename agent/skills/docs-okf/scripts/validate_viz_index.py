@@ -85,7 +85,10 @@ def _resolve_path(repo_root: Path, candidate: str) -> Path:
 
 
 def validate(bundle_root: Path, viz_path: Path) -> int:
-    bundle_root = bundle_root.resolve()
+    try:
+        bundle_root = okf_lib.resolve_bundle_root(bundle_root)
+    except ValueError as exc:
+        return _error(str(exc))
     knowledge_root = bundle_root / "knowledge"
     root_index = bundle_root / "index.md"
     knowledge_nav = knowledge_root / "index.md"
@@ -169,8 +172,8 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    repo_root = Path(args.repo).resolve() if args.repo else okf_lib.find_repo_root(Path(__file__).resolve())
-    bundle_root = _resolve_path(repo_root, args.bundle)
+    repo_root = Path(args.repo).absolute() if args.repo else okf_lib.find_repo_root(Path(__file__).resolve())
+    bundle_root = repo_root / args.bundle
     viz_path = _resolve_path(repo_root, args.viz)
     raise SystemExit(validate(bundle_root, viz_path))
 

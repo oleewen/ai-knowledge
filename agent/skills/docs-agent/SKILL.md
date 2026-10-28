@@ -40,6 +40,6 @@ description: >
 bash "$SKILL_DIR/scripts/validate-guide.sh" --root <repo> --output readme
 ```
 
-`SKILL_DIR` 为当前已加载技能的绝对目录，与目标工程分开解析；`--output` 传当前单元 `readme` 或 `agents`，两文件均完成后用 `both` 检查重复度。仅技能维护者运行 `scripts/test-validate-guide.sh`，普通入口更新无需运行技能自测。
+`SKILL_DIR` 为当前已加载技能的绝对目录，与目标工程分开解析；`--output` 传当前单元 `readme` 或 `agents`，两文件均完成后用 `both` 检查重复度。元库维护者通过 `bash tests/run.sh`（相对技能目录）运行自测；tests 不随技能运行资源安装。
 
 骨架见 [assets/readme-skeleton.md](assets/readme-skeleton.md) 和 [assets/agents-skeleton.md](assets/agents-skeleton.md)；质量清单见 [references/quality-standards.md](references/quality-standards.md)。

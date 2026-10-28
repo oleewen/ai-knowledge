@@ -2,7 +2,7 @@
   "kind": "grader-calibration",
   "version": "1.0.0",
   "suite": "evals.json",
-  "suite_sha256": "5662b504f8734b42d2a19ed566193d7245ee07abfe6b65f4d6c5db5589ea2593",
+  "suite_sha256": "6511674a22105363b1a1f6ef6c0b21b1881e77be12b01b06b7371044cb983411",
   "purpose": "将样本回答按正常 grader 协议评分，再逐条比较 expected_passed；禁止把期望或理由送给待校准评分器。这里只保存预设校准基准，不是实际运行结果。",
   "samples": [
     {

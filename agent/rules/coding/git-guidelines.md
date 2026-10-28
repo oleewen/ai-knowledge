@@ -46,6 +46,10 @@
 - **type** 小写英文（下表）；**scope** 英文或项目缩写；subject/body/**列表用中文**
 - **禁止**：除 type 前缀外，仅用英文写 subject/body
 
+#### 正式发布标题例外
+
+仅 `docs-publish` 正式版本发布的 subject 使用[发布标记规定的精确格式](../../skills/docs-publish/references/versioning.md#发布标记)，供升级器识别发布边界。此例外不适用于普通提交或发布正文；body 仍用中文。发布仍须遵守用户确认门禁。
+
 ```text
 <type>(<scope>): <subject>
 

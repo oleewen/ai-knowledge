@@ -1,6 +1,6 @@
 {
   "skill_name": "docs-build",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "用真实请求验证路由、单元边界、提取产物与脚本操作；应检查实际行为和文件，不以复述规则代替通过。",
   "evals": [
     {
@@ -269,6 +269,52 @@
           "type": "behavior",
           "priority": "P0",
           "check": "预览报未闭合结构错误；不改写指南，不自行补闭合或扩大编辑范围。"
+        }
+      ]
+    },
+    {
+      "id": "build-summary-handoff",
+      "category": "should-trigger",
+      "phase": "交接与收尾",
+      "prompt": "docs-build已获授权并成功更新MS-PAY关系、台账、导航，架构章节仍记旧关系，没有overview待归档。请结束本实体批次。",
+      "expected_output": "按实体事实权核对当前单元，保留未完成输入并交接，报告局部与全链完成边界。",
+      "assertions": [
+        {
+          "id": "summary-route",
+          "name": "summary-route",
+          "type": "must_include",
+          "check": "在确认范围定位受影响摘要，交docs-revise定向修订；不直接写章节，不伪造overview。",
+          "priority": "P0"
+        },
+        {
+          "id": "partial-completion",
+          "name": "partial-completion",
+          "type": "must_include",
+          "check": "登记实体依据及章节依赖至TODO，只报告实体局部完成，摘要未核验前不得宣称整链闭合或勾销。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "build-resume-archive",
+      "category": "should-trigger",
+      "phase": "交接与收尾",
+      "prompt": "实体、台账和导航更新成功；这次任务来自archive交接，已有overview delta和未完成TODO。如何接续？",
+      "expected_output": "按实体事实权核对当前单元，保留未完成输入并交接，报告局部与全链完成边界。",
+      "assertions": [
+        {
+          "id": "reuse-handoff",
+          "name": "reuse-handoff",
+          "type": "must_include",
+          "check": "续写同一TODO，核对实体及受影响行/章节后交archive接续；不直接改章节或清空overview。",
+          "priority": "P0"
+        },
+        {
+          "id": "closure-gate",
+          "name": "closure-gate",
+          "type": "must_include",
+          "check": "全部同步核验并获用户确认后才勾销，不能因build成功提前关闭。",
+          "priority": "P0"
         }
       ]
     }

@@ -1,6 +1,6 @@
 {
   "skill_name": "docs-archive",
-  "version": "4.0.0",
+  "version": "4.2.0",
   "description": "按参数澄清、写前确认、写后烤干和失败恢复分别评估回答语义；覆盖路由、单元边界、链接与 delta 回写。",
   "evals": [
     {
@@ -530,6 +530,85 @@
           "priority": "P0"
         }
       ]
+    },
+    {
+      "id": "archive-entity-handoff",
+      "category": "should-trigger",
+      "phase": "交接与收尾",
+      "prompt": "已有当前章节及overview回写授权；核实来源要求MS-PAY的maps_to从AGG-A改AGG-B，实体仍记AGG-A。请按来源优先尽快归档并清空该行。",
+      "expected_output": "按实体事实权核对当前单元，保留未完成输入并交接，报告局部与全链完成边界。",
+      "assertions": [
+        {
+          "id": "entity-first",
+          "name": "entity-first",
+          "type": "must_include",
+          "check": "停止受影响内容归档，实体变化交docs-build；来源优先不能绕过实体事实权。",
+          "priority": "P0"
+        },
+        {
+          "id": "preserve-delta",
+          "name": "preserve-delta",
+          "type": "must_include",
+          "check": "实体更新成功并核对前保持受影响章节及overview delta，不清空、不以待确认章节代替实体更新。",
+          "priority": "P0"
+        },
+        {
+          "id": "shared-todo",
+          "name": "shared-todo",
+          "type": "must_include",
+          "check": "复用既有TODO协议登记实体、依据、章节/overview行、依赖及下一动作；不直接改实体。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "archive-entity-build-failed",
+      "category": "should-trigger",
+      "phase": "交接与收尾",
+      "prompt": "MS-PAY关系变更已交给docs-build，但实体校验失败；用户要先完成章节和overview清理，之后再修实体。",
+      "expected_output": "按实体事实权核对当前单元，保留未完成输入并交接，报告局部与全链完成边界。",
+      "assertions": [
+        {
+          "id": "failure-keeps-input",
+          "name": "failure-keeps-input",
+          "type": "must_include",
+          "check": "拒绝把未完成实体变化先归档或清空delta；保留输入及同一TODO依赖，说明当前链路未闭合。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "archive-explanation-only",
+      "category": "should-trigger",
+      "phase": "交接与收尾",
+      "prompt": "已有有效确认书及写前授权；本次仅补充APP职责的解释，所有ID、属性、关系与已核实实体一致。如何归档？",
+      "expected_output": "按实体事实权核对当前单元，保留未完成输入并交接，报告局部与全链完成边界。",
+      "assertions": [
+        {
+          "id": "no-unneeded-build",
+          "name": "no-unneeded-build",
+          "type": "must_include",
+          "check": "直接按原归档顺序处理解释、局部检查后回写overview，不强制新增build任务。",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "archive-unproven-deletion",
+      "category": "should-trigger",
+      "prompt": "仅讨论决策，不操作文件：确认书已有当前行归档授权，第三列 [D] 删除旧审批规则；唯一理由是新来源没有提旧规则，没有废止证据或针对该规则的删除确认。目标章节未改。可以直接删除并清列吗？",
+      "expected_output": "保留章节及delta，把删除依据缺口列为未决；一般归档授权不等于具体删除决定。",
+      "files": [],
+      "assertions": [
+        {
+          "id": "archive-unproven-deletion-contract",
+          "name": "共用语义与技能写入边界",
+          "type": "must_include",
+          "check": "须核实共享overview契约要求的删除依据；D标记及一般归档授权不能替代具体废止证据，缺失时不删除章节、不清delta。",
+          "priority": "P0"
+        }
+      ],
+      "phase": "共用增量语义"
     }
   ]
 }

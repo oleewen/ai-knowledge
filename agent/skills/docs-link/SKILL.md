@@ -10,12 +10,14 @@ description: >
 
 在源 Git 根处理相邻层：`company → solution`、`solution → system` 或 `system → application`。入口为 [docs-link.sh](scripts/docs-link.sh)，使用同目录脚本模块与 Agent 的 `docs-core.sh`；需要 Bash 5+、Git、Python 3。
 
+本技能维护唯一归属树。共享 SYS 消费由 PD 维护，外库定位按 [dependency 契约](../../knowledge/federation-config.md#消费定位)处理；不得以 link/child 登记消费关系。现有 CLI 不支持新清单格式、锁与恢复记录，使用边界见[联邦实现边界](../../knowledge/federation-config.md#实现边界)。
+
 ## 选择动作
 
 | 动作 | 范围与结果 |
 | --- | --- |
 | `--link --target` | 单目标建联或换父，更新双边清单与槽位；可用 `--app-name`，正文改写须另获授权 |
-| `--unlink --target` | 单目标注销登记与槽位；保留无关条目和正文 |
+| `--unlink --target` | 当前脚本仅注销登记与槽位；整体注销还须解除有效依赖、降级相关 HTTP 并校验 |
 | `--check [--target]` | 只读检查已登记 child；无目标检查全部，有目标检查单项，汇总全部结果 |
 | `--repair --target` | 只修复一个已登记槽位的软链；可用 `--dry-run` 预览 |
 
@@ -26,7 +28,7 @@ description: >
 1. 读取源 `.docsconfig` 和登记清单，确认动作与范围。当前工作区不是合法源 Git 根时停止，要求切换工作区；不代 `cd`。用户已提供的信息直接采用。
 2. 按 [workflow.md](references/workflow.md) 解析目标。check 直接只读执行；其余动作先 `--dry-run`，展示本次实际影响。
 3. 按 [gates.md](references/gates.md) 核对授权，再用同一组参数真写。`--rewrite-http` 默认关，仅用户明确要求改正文并单独确认后使用。
-4. 读回验证并汇总结果；区分检查、预览、已修复、双边完成、仅源侧完成和失败。推进动作见 [轻流程 C/M/S/F](../../references/light-flow-actions.md)。
+4. 读回验证并按 [统一校验](../../knowledge/knowledge-validation.md) 汇总结果；分别报告登记/槽位、引用与跨库状态。仅源侧完成、引用未处理或跨库待核实均不能称注销完成。推进动作见 [轻流程 C/M/S/F](../../references/light-flow-actions.md)。
 
 ```bash
 # 替换脚本路径；cwd 保持在源 Git 根。
@@ -43,7 +45,8 @@ bash <技能目录>/scripts/docs-link.sh --repair --target <已登记路径或UR
 - `path` 只存 `${WORK_SPACE}/…`，分别按所属库配置展开。旧格式、缺配置或越界停止，不能用环境变量绕过；[路径契约](../../knowledge/knowledge-governance.md)是 SSOT。
 - check/repair 依已有登记 `path` 精确定位；缺仓、配置/身份或反向 parent 不符均阻塞。不改清单、正文或 Git 元数据，不访问远端；dirty/detached 不阻塞槽位维护。
 - 普通文件/目录占用槽位必须保留。repair 只建缺失软链或替换失效/错误软链，正确相对软链保持原样；不能用修复代替登记更名或换父。
-- 内容更新遵循各仓普通 Git 工作流。失联注销、换父及中途失败见工作流。
+- 写入、冲突检测和失败续办遵守[联邦写入保障](../../knowledge/federation-config.md#并发与部分失败)；当前脚本不提供这些保障，不能仅凭退出码声称满足。
+- 内容更新遵循各仓普通 Git 工作流；集成后重做双边与消费关系校验。失联注销、换父及中途失败见工作流。
 
 ## 按需查阅
 

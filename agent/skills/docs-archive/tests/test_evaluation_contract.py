@@ -7,7 +7,7 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(ROOT / "tests"))
 from codex_adapter import prepare  # noqa: E402
 from run_evals import fingerprint, read_json, score_case, validate_suite  # noqa: E402
 

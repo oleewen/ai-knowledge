@@ -18,7 +18,7 @@
 
 ### SLN（解决方案层级）
 
-从解决方案边界识别一仓一 SLN，并核实 PL 与 BP。治理规则规定方案层不登记 SYS；不要沿用旧样例的 SYS 反向边。
+从解决方案边界识别一仓一 SLN，并核实 PL 与 BP。方案层不首次定义 SYS，也不回写其归属/对标反向边；PD 可单侧声明消费 SYS，SLN 只汇总，见 [共享系统消费](../../../knowledge/entity-relations.md#共享系统消费)。
 
 ### SYS（系统层级）
 
@@ -30,11 +30,11 @@
 
 ### MS（微服务层级）
 
-按 API 宿主类聚类，别名取 SimpleName 去业务无关后缀（如 Api、ApiImpl、Controller）。同义宿主合并须有实现对应证据；同模块可有多个宿主 MS。禁止直接用 Maven 模块名或包名尾段替代 MS 身份。应用库仅引用已登记 MS，并保留其 API 宿主目录。
+按 API 宿主类聚类，别名取 SimpleName 去业务无关后缀（如 Api、ApiImpl、Controller）。同义宿主合并须有实现对应证据；同模块可有多个宿主 MS。禁止直接用 Maven 模块名或包名尾段替代 MS 身份。每个 MS 的所属 APP 必须唯一且已核实；应用库仅引用已登记 MS，并保留其 API 宿主目录。
 
 ### API（接口层级）
 
-检查选定来源中实际存在的四类入口；未发现的类型如实说明，不补造。每条 API 的 `implements_to` 指向已核实 MS；别名以 `{MS别名}.` 开头。
+检查选定来源中实际存在的四类入口；未发现的类型如实说明，不补造。每条 API 的 `implements_to` 指向唯一已核实 MS，完整身份按 [APP/MS/API 规则](../../../knowledge/naming-conventions.md#身份范围与限定引用) 确定；别名以 `{MS别名}.` 开头，不能替代身份。
 
 | 类型 | 识别线索 | 边界与详细说明 |
 | --- | --- | --- |
@@ -43,7 +43,7 @@
 | MQ | RocketMQ/Kafka/Rabbit listener 注解、MessageListener 实现或 Consumer 注册 | 提 Consumer，不提 Producer；同一 Consumer 多 Tag 仍一条 API；别名 `{MS别名}.on{Topic简写}` |
 | Job | XxlJob、Scheduled、IJobHandler、Quartz Job 或调度平台注册 | 别名 `{MS别名}.job{HandlerAlias}`；handler、Cron 可写详细说明 |
 
-宿主、模块、方法签名与入口类型属于详细说明；可选字段缺失不自动判失败。缺 MS 归属则列待确认，不就近猜父级。
+宿主、模块、方法签名与入口类型属于详细说明；可选字段缺失不自动判失败。缺 MS 或其 APP 归属则列待确认，不就近猜父级。MS/API 的裸 ID 重名须按完整身份消歧；旧工具尚未支持时停止相关自动写入，不为了通过旧校验擅自改名。
 
 ## 2. 数据视角（Data）
 
@@ -84,6 +84,8 @@
 ### BSD（业务子域层级）
 
 按公司 L1、解决方案 L2、系统 L3 分层提取；核对 level 与 parent，不新增四级 BSD、不把 BC 当 BSD、不跨 L1 合并 L2。L1/L2 的 children 在对端 parent 已存在时须对应；下层反向边仅纯 ID。
+
+解决方案新建 BSD-L2 时，以已核实的 L1 `parent` 作为显式路径宿主；父子 NAME 可以不同。既有实体先核实实际目录链并沿用，不根据子 ID 或目录别名反推 parent。缺失或冲突时保留待确认，不新建猜测路径、不自动迁移旧目录；具体落点见 [布局规则](../../../references/knowledge-layout.md#各层路径差额)。
 
 ### BL（业务线层级）
 
@@ -169,12 +171,12 @@
 
 合法边与双向规则见 [knowledge-governance.md](../../../knowledge/knowledge-governance.md)、[glossary.md](../../../knowledge/glossary.md#映射关系常用)。同层链接留在 knowledge 内；范围外反向边只列依赖，不扩写。
 
-有 parent 的上层实体链接由相邻 docs-okf 的 `okf_cross_layer.cross_layer_href(start_doc_root, id, path_parent=...)` 生成；输入为当前文档根、已核实 ID 与必要父链。函数无可用结果时保留纯 ID；配置无效或层/实体不明时报错澄清，不手拼 URL。无 parent 与指向下层时均只写纯 ID。
+有 parent 的上层实体链接由相邻 docs-okf 的 `okf_cross_layer.cross_layer_href(start_doc_root, id, path_parent=...)` 生成；输入为当前文档根、已核实 ID 与必要父链。无可用 HTTP 时仅按引用规范允许的情形保留完整身份；配置无效或身份/层/实体不明时报错澄清，不手拼 URL。无 parent 与指向下层时均只写完整身份。该现有函数尚未接入限定身份时，不把含 `/` 的身份当作路径或已支持参数传入；受影响生成保持待实现，不降级为有歧义的裸 ID。
 
 ## 通用字段说明
 
 正式实体遵 [okf-spec.md](../../../knowledge/okf-spec.md) 的九字段 frontmatter、与 title 一致的 H1（前置 MD025 单行豁免）及四个中文 H2；关系、业务属性、证据分别进入对应正文。可用 [entity-template.md](../assets/entity-template.md)，替换全部占位并填写已核实内容。
 
-路径遵 [knowledge-layout.md](../../../references/knowledge-layout.md)，需要推导时用 `okf_lib.entity_relpath(perspective, id, path_parent=..., bundle=知识层)`；其结果相对文档根。父链来自已核实关系与宿主目录，不用 EXAMPLE 回退。
+路径遵 [knowledge-layout.md](../../../references/knowledge-layout.md)，现有形态需要推导时用 `okf_lib.entity_relpath(perspective, id, path_parent=..., bundle=知识层)`；其结果相对文档根。父链来自已核实关系与宿主目录，不用 EXAMPLE 回退。新增 APP/MS 分层路径须先核对工具兼容；不能把函数旧输出当成新身份的正确落点。
 
 [knowledge-schema-template.json](../assets/knowledge-schema-template.json) 仅保留可编程消费的字段样例，不是落盘 JSON schema，也不是批量实体集合模板。

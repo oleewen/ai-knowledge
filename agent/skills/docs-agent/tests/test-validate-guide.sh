@@ -3,7 +3,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
-VALIDATOR="$SCRIPT_DIR/validate-guide.sh"
+VALIDATOR="$SCRIPT_DIR/../scripts/validate-guide.sh"
 TMP_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/docs-agent-guide.XXXXXX")"
 VALID_OUTPUT="$TMP_ROOT/valid.out"
 WARNING_OUTPUT="$TMP_ROOT/warning.out"

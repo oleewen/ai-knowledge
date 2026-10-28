@@ -16,9 +16,10 @@ description: >
 - 当前单元只有一个目标章节及其 overview 行块。
 - **确认书就是写前意图澄清**。收口并取得写前 `C` 前，不写目标，也不回写 overview。
 - 主线固定为：`澄清 → 目标章节 → overview 回写 → 烤干 → 停等动作`。
-- 目标章节先写，成功且自检通过后才回写 overview；失败时不回写。
+- 涉及实体新增、ID/属性/关系变化（含删除）时，按 [实体交接](references/workflow.md#实体依赖与交接) 先交 docs-build，保留当前单元的章节与 overview delta；纯解释按原归档流程执行。
+- 实体依赖已解除后，先登记待落盘证据、再写目标章节；目标与证据一致且自检通过后才回写 overview，失败时不回写。证据遵 [知识证据登记](../../knowledge/knowledge-evidence.md)。
 - 每次写入与失败恢复前核对文件版本；发现并发编辑按 [门禁](references/gates.md) 保留现场，禁止旧快照覆盖。
-- 原始材料只读；作为归档入口的 overview 仅可回写确认书允许的行。归档写入范围限于确认书、目标章节和这些 overview 行。
+- 原始材料只读；作为归档入口的 overview 仅可回写确认书允许的行。归档正文写入范围限于确认书、目标章节和这些 overview 行；对应证据元数据同批维护，交接另按现有 TODO 协议记录，不扩写实体或其他业务正文。
 - 保留行内副标题链接。索引壳只保留导航，不承载业务事实。
 - 第三列 `[A]`/`[U]` 归档后回写 `—` 或索引壳；`[D]` 必须先落实目标章节删除，再回写 `—`。
 - 写入 `*/knowledge/**` 时遵守 [knowledge-governance.md](../../knowledge/knowledge-governance.md) 的引用边界。
@@ -28,8 +29,8 @@ description: >
 
 1. 读 overview、目标章节和同级体例；从表格行内副标题链接解析目标。
 2. 填 [确认书模板](assets/archive-template.md)：公共六项、来源/目标/映射、冲突策略、overview 回写策略、方案推荐。
-3. 逐项核对缺链、断链、冲突和 `[D]`；把未决项留在确认书，不猜路径、ID 或裁决。
-4. 写前 `C` 后，只处理当前单元：先写目标章节，再按确认书回写 overview。
+3. 按 [overview 共用语义](../../knowledge/overview-spec.md#第三列增量语义) 核对 `[D]` 依据，并逐项核对缺链、断链和冲突；把未决项留在确认书，不猜路径、ID 或裁决。
+4. 写前 `C` 后，只处理当前单元：按 [工作流](references/workflow.md) 保存证据并写目标章节，核验一致后按确认书回写 overview。
 5. 按 [quality-checklist.md](references/quality-checklist.md) 烤干，覆盖结构、链接、delta、索引壳、冲突和受众 A/B/C/E。
 6. 输出改动文件、每文件一句、待用户动作；停在当前单元。
 

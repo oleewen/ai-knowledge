@@ -29,6 +29,7 @@ def okf_block_span(text: str):
 
 def preflight(bundle_root: Path, viz_path: Path) -> None:
     # Check every planned output before the refresh pipeline's first write.
+    bundle_root = okf_lib.resolve_bundle_root(bundle_root)
     check_output(viz_path, bundle_root)
     for directory in okf_lib.iter_bundle_directories(bundle_root):
         check_output(directory / "index.md", bundle_root)

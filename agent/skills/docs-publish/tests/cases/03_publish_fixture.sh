@@ -3,6 +3,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../../.." && pwd)"
 source "$ROOT/agent/scripts/test-core.sh"
+source "$ROOT/agent/scripts/lib/version.sh"
 
 BASH5="$(test_bash5_command)" || test_fail '需要 Bash 5+ 执行 publish fixture'
 TMP="$(mktemp -d)"
@@ -44,9 +45,15 @@ subject="$(git -C "$fixture" log -1 --format=%s)"
 [[ "$subject" == "docs-publish: version $expected" ]] \
   || test_fail "commit subject 错误: $subject"
 body="$(git -C "$fixture" log -1 --format=%B)"
-assert_contains 'Previous version:' <(printf '%s\n' "$body")
+assert_contains "上一版本: $(date +%Y.%m%d).0" <(printf '%s\n' "$body")
+assert_contains "发布版本: $expected" <(printf '%s\n' "$body")
+assert_contains '发布文件:' <(printf '%s\n' "$body")
 assert_contains 'TODO-LIST.md' <(printf '%s\n' "$body")
 assert_contains 'application/TODO-LIST.md' <(printf '%s\n' "$body")
+[[ "$(version_latest_from_log "$fixture")" == "$expected" ]] \
+  || test_fail '发布产物必须可被升级器识别版本'
+[[ "$(version_commit_sha "$fixture" "$expected")" == "$(git -C "$fixture" rev-parse HEAD)" ]] \
+  || test_fail '发布版本必须定位到实际发布提交'
 git -C "$fixture" diff --quiet || test_fail '发布完成后工作树应干净'
 [[ "$(git -C "$fixture" branch --show-current)" == "feature-$next" ]] \
   || test_fail '发布后应切换到下一 feature 分支'

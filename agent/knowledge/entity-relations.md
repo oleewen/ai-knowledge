@@ -4,7 +4,7 @@
 
 ## 动词与双向要求
 
-关系可以没有；一侧存在时，对端必须填写反向关系，含跨层。树根省略 `parent`；SYS 的两条上游边按下节例外处理。混列目标用 ID 前缀辨型，不设单侧关系真源。
+是否必填由五视角 meta 决定；一侧存在时，对端须填写反向关系，含跨层，但 SYS 两条上游边及下文共享系统消费除外。树根省略 `parent`。混列目标按[完整身份](naming-conventions.md#身份范围与限定引用)的末段 ID 前缀辨型；除消费例外外，不设单侧关系真源。
 
 | 动词对 | 含义与方向 |
 | --- | --- |
@@ -29,9 +29,17 @@
 | `mapped_by` | `maps_to` 的对端，SYS→PD 例外 |
 | `supports_to` | BD→VC；APP→BC；API→FT |
 | `supported_by` | `supports_to` 的对端 |
-| `uses_to` | PD→MDG/TS；APP→DS/MW；MS→ENT；MW→DS |
+| `uses_to` | PD→MDG/TS/SYS；APP→DS/MW；MS→ENT；MW→DS |
 | `used_by` | `uses_to` 的对端 |
 | `depends_to` / `depended_by` | PM↔PM |
+
+## 共享系统消费
+
+`PD.uses_to SYS` 表示产品消费系统能力，可跨解决方案、多对多。该边由消费方 PD 单侧维护，SYS 的 `used_by` 消费视图由声明汇总，不作为人工回写的第二事实源；SLN 按其产品汇总。仅该消费边豁免双边维护，PD→MDG/TS 等既有边保持原规则。
+
+消费不改变 SYS 的治理 parent、`implements_to SLN` 或 `maps_to PD`。原 SYS→PD 对标边仍按 [治理基数](knowledge-governance.md#四层职责边界) 双方至多一个；消费边不计入该基数。声明消费不代表提供方承诺服务或授予访问权限。
+
+PD 正文写纯 SYS ID；跨库目标位置按 [联邦配置](federation-config.md) 登记，不手写下层 HTTP、不新增 child 槽位。反向视图必须标明覆盖范围，外库不可读时标待核实，不能将局部汇总当全量消费关系；校验见 [统一校验](knowledge-validation.md)。
 
 ## 例外与禁止
 

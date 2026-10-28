@@ -1,5 +1,7 @@
 # 技能评测
 
+本文供元库维护者使用；评测驱动、用例和评分依赖不随技能运行资源安装。
+
 [evals.json](../evals/evals.json) 定义行为用例；[grader](../agents/grader.md) 判证据；[analyzer](../agents/analyzer.md) 分析已观察到的失败。普通文档修订无需运行本评测。
 
 ## 执行行为用例
@@ -16,9 +18,9 @@
 从仓库根执行；Python 3 标准库即可：
 
 ```bash
-python3 agent/skills/docs-revise/scripts/score_evals.py
+python3 agent/skills/docs-revise/tests/score_evals.py
 python3 -B -m unittest discover -s agent/skills/docs-revise/tests -v
-python3 agent/skills/docs-revise/scripts/score_evals.py --results /tmp/docs-revise-results.json
+python3 agent/skills/docs-revise/tests/score_evals.py --results /tmp/docs-revise-results.json
 ```
 
 首条只校验用例定义，不运行模型。结果命令读取 JSON 并向 stdout 输出逐断言结果；缺失用例/断言计为未测。退出码：`0` 用例定义有效或全部 P0 通过，`1` 有失败/未测，`2` 输入无效。

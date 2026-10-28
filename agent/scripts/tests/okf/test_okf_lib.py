@@ -413,9 +413,9 @@ def test_entity_relpath_system_bd_not_landed():
     raise AssertionError("expected ValueError when system BD is requested")
 
 
-def test_entity_relpath_solution_bsd_l2_flat():
+def test_entity_relpath_solution_bsd_l2_explicit_host():
     assert (
-        okf_lib.entity_relpath("business", "BSD-EXAMPLE-L2", bundle="solution")
+        okf_lib.entity_relpath("business", "BSD-EXAMPLE-L2", path_parent="BSD-EXAMPLE-L1", bundle="solution")
         == "knowledge/business/BSD-EXAMPLE-L1/BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md"
     )
     assert (
@@ -537,8 +537,54 @@ def test_entity_relpath_system_nested_chain():
         raise AssertionError("expected ValueError when AGG has only one parent id")
 
 
+def test_session_drafts_excluded_at_any_scan_start():
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp).resolve()
+        kept = {"specs/real.md", "requirements/R/specs/real.md", "plans/real.md",
+                "nested/superpowers/other/real.md"}
+        excluded = {"superpowers/specs/draft.md", "superpowers/plans/deep/draft.md",
+                    "nested/superpowers/specs/draft.md", ".superpowers/sdd/evidence.md"}
+        for relative in kept | excluded:
+            path = root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("# content\n")
+        (root / "linked").symlink_to(root / "specs", target_is_directory=True)
+        found = {p.relative_to(root).as_posix() for p in okf_lib.iter_bundle_markdown_files(root)}
+        assert found == kept
+        for relative in ("superpowers/specs", "superpowers/plans/deep", "nested/superpowers/specs"):
+            assert list(okf_lib.iter_bundle_markdown_files(root / relative)) == []
+            assert list(okf_lib.iter_bundle_directories(root / relative)) == []
+        dirs = set(okf_lib.iter_bundle_directories(root))
+        assert root / "superpowers" not in dirs
+        assert root / "nested/superpowers" in dirs
+        assert root / "linked" not in dirs
+
+
+def test_session_container_keeps_any_other_content():
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp).resolve()
+        container = root / "superpowers"
+        (container / "specs").mkdir(parents=True)
+        assert container not in set(okf_lib.iter_bundle_directories(root))
+        for name in ("index.md", "README.md", "notes.txt"):
+            entry = container / name
+            entry.write_text("manual")
+            assert container in set(okf_lib.iter_bundle_directories(root))
+            entry.unlink()
+        (container / "other").mkdir()
+        assert container / "other" in set(okf_lib.iter_bundle_directories(root))
+        (container / "other").rmdir()
+        (container / "link").symlink_to(root / "missing")
+        assert container in set(okf_lib.iter_bundle_directories(root))
+        (container / "link").unlink()
+        (container / "specs").rmdir()
+        assert container in set(okf_lib.iter_bundle_directories(root))
+
+
 def main() -> None:
     tests = [
+        test_session_drafts_excluded_at_any_scan_start,
+        test_session_container_keeps_any_other_content,
         test_parse_frontmatter,
         test_hierarchy_to_type,
         test_entity_relpath_business_bd,
@@ -567,7 +613,7 @@ def main() -> None:
         test_entity_relpath_system_ms_requires_parent,
         test_relation_path_parent_prefers_parent_and_skips_cross_layer,
         test_entity_relpath_system_bd_not_landed,
-        test_entity_relpath_solution_bsd_l2_flat,
+        test_entity_relpath_solution_bsd_l2_explicit_host,
         test_entity_relpath_system_bsd_l3_under_l2_host,
         test_entity_relpath_system_bsd_l1_l2_not_landed,
         test_entity_relpath_system_nested_chain,

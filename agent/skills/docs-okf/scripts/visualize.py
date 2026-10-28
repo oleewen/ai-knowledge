@@ -56,7 +56,7 @@ def _repo_root() -> Path:
 
 
 def _bundle_root(repo: Path, bundle: str) -> Path:
-    return (repo / bundle).resolve()
+    return okf_lib.resolve_bundle_root(repo / bundle)
 
 
 def concept_id(bundle_root: Path, path: Path) -> str:
@@ -644,6 +644,7 @@ def generate_visualization(
     name: str,
 ) -> None:
     from artifact_checks import check_output
+    bundle_root = okf_lib.resolve_bundle_root(bundle_root)
     check_output(out_path, bundle_root)
     data = build_bundle_data(bundle_root, name)
     html = render_html(data)
@@ -659,8 +660,11 @@ def main(argv: Optional[List[str]] = None) -> int:
     parser.add_argument("--repo", default=None, help="仓库根目录（默认：脚本上两级）")
     args = parser.parse_args(argv)
 
-    repo = Path(args.repo).resolve() if args.repo else _repo_root()
-    bundle_root = _bundle_root(repo, args.bundle)
+    repo = Path(args.repo).absolute() if args.repo else _repo_root()
+    try:
+        bundle_root = _bundle_root(repo, args.bundle)
+    except ValueError as exc:
+        parser.exit(1, f"error: {exc}\n")
     if not bundle_root.is_dir():
         print(f"error: bundle 不存在: {bundle_root}", file=sys.stderr)
         return 1

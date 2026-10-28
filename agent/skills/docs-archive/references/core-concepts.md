@@ -9,12 +9,7 @@
 
 ## 第三列 delta
 
-- [A]：新增归档要点。
-- [U]：更新归档要点。
-- [D]：删除说明，必须先改目标章节。
-- —：无待归档 delta。
-
-各类 delta 的回写规则见 [workflow.md](workflow.md#3-写目标章节)。
+A/U/D、覆盖判定和删除证据要求统一见 [overview-spec.md](../../../knowledge/overview-spec.md#第三列增量语义)。本技能只消费已核实的待归档项；目标成功后才回写，具体动作见 [workflow.md](workflow.md#3-写目标章节)。
 
 ## 简写与路径
 

@@ -16,7 +16,7 @@ description: >
 
 - 四个 `DESIGN.md` 都必须存在，并且 `version` 解析后完全一致。
 - 正式版本为 `YYYY.MMdd.patch`：同日 patch 加一，跨日归零；旧 `YY.MM.DD` 首次迁移为当天 `.0`。
-- 发布提交 subject 固定为 `docs-publish: version YYYY.MMdd.patch`。
+- 发布提交 subject 遵循[发布标记](references/versioning.md#发布标记)的精确机器格式；仅此标题适用 [Git 规范窄例外](../../rules/coding/git-guidelines.md#正式发布标题例外)，发布正文使用中文。
 - 允许发布的文件只有四个 `DESIGN.md`；根级或四层目录内的 `TODO-LIST.md` 只有在本次 dry-run 列出并经确认时才可随发布提交。
 - 版本发布提交是 `/docs-upgrade` 识别模板版本边界的依据；不要在其他技能中复制发布点规则。
 

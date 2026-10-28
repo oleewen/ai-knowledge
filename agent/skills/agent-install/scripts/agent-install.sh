@@ -32,7 +32,7 @@ declare -a ENABLED_AGENTS=() INSTALL_CATEGORIES=()
 # shellcheck source=agent-cli.sh
 source "${SCRIPT_DIR}/agent-cli.sh"
 
-# 按资源用途排除研发材料；validate-* 等运行时校验仍须安装。
+# 按资源用途排除研发材料；references/README.md 与运行时校验仍须安装。
 readonly -a AGENT_DEV_EXCLUDES=(tests evals __pycache__ .pytest_cache .hypothesis '*.pyc' '*.pyo' test-core.sh grader.md)
 readonly -a AGENT_INSTALL_EXCLUDES=(README README.md readme.md "${AGENT_DEV_EXCLUDES[@]}")
 
@@ -65,10 +65,17 @@ sync_runtime_tree() {
   local src="$1" dst="$2"
   # 安装操作明确授权受管资源更新；局部变量不改变调用方覆盖策略。
   local IO_FORCE=1
+  local pattern
+  # openrsync 的 **/ 不匹配零层目录，因此首层与嵌套路径分别声明。
+  local -a rsync_args=(--delete-excluded --include 'references/README.md' --include '**/references/README.md') find_args=()
+  local -a readme_exceptions=(! -path '*/references/README.md')
+  # 同步根本身为 references 时，索引相对同步根只有 /README.md。
+  if [[ "$src" == */references ]]; then
+    rsync_args+=(--include /README.md)
+    readme_exceptions+=(! -path "$dst/README.md")
+  fi
   # rsync 会物化源根软链；cp 回退也须复制实体，避免过滤绕过或误删源树。
   src="$(cd "$src" && pwd -P)"
-  local pattern
-  local -a rsync_args=(--delete-excluded) find_args=()
   for pattern in "${AGENT_INSTALL_EXCLUDES[@]}"; do
     rsync_args+=(--exclude "$pattern")
     (( ${#find_args[@]} == 0 )) || find_args+=(-o)
@@ -76,7 +83,7 @@ sync_runtime_tree() {
   done
   sync_dir "$src" "$dst" "${rsync_args[@]}"
   if ! dry_run_enabled && ! have_cmd rsync; then
-    find "$dst" -depth \( "${find_args[@]}" \) -exec rm -rf {} +
+    find "$dst" -depth \( "${find_args[@]}" \) "${readme_exceptions[@]}" -exec rm -rf {} +
   fi
 }
 
@@ -196,7 +203,7 @@ link_store_into_agent_root() {
     append_hidden_development_items items "$source_dir" "$store/$category" "$agent_dir/$category"
     for item in "${items[@]}"; do
       base="${item##*/}"
-      if agent_matches_exclusion "$base" "${AGENT_INSTALL_EXCLUDES[@]}"; then
+      if [[ "$item" != */references/README.md ]] && agent_matches_exclusion "$base" "${AGENT_INSTALL_EXCLUDES[@]}"; then
         # 仅清理此前指向本实体树的研发链接，保留 IDE 自有文件及其他链接。
         if [[ "$category" == hooks || -e "$source_dir/$base" || -L "$source_dir/$base" ]] \
           && agent_matches_exclusion "$base" "${AGENT_DEV_EXCLUDES[@]}" \
@@ -233,7 +240,7 @@ install_agent_resource() {
   append_hidden_development_items items "$src_root"
   for item in "${items[@]}"; do
     base="${item##*/}"
-    if agent_matches_exclusion "$base" "${AGENT_INSTALL_EXCLUDES[@]}"; then
+    if [[ "$item" != */references/README.md ]] && agent_matches_exclusion "$base" "${AGENT_INSTALL_EXCLUDES[@]}"; then
       if agent_matches_exclusion "$base" "${AGENT_DEV_EXCLUDES[@]}"; then
         remove_installed_development_resource "$dst_dir/$base"
       fi
@@ -273,7 +280,7 @@ agent_install_main() {
   DRY_RUN="${CFG[dry_run]}"
   IO_DRY_RUN="${CFG[dry_run]}"
   agent_install_prepare
-  info "安装过滤：排除 ${AGENT_INSTALL_EXCLUDES[*]}；保留运行时校验脚本。同步范围内旧研发资源会清理。"
+  info "安装过滤：排除 ${AGENT_INSTALL_EXCLUDES[*]}；references/README.md 例外，保留运行时校验脚本。同步范围内旧研发资源会清理。"
   ensure_dir "$(agent_store_root)"
   docsconfig_write_workspace "$(agent_store_root)" "${CFG[workspace]}" "${CFG[dry_run]}"
   agent_install_install

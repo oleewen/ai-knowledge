@@ -13,6 +13,9 @@
 | 业务 knowledge 允许引用的目标与形式 | [knowledge-reference-rules.md](knowledge-reference-rules.md) |
 | 联邦清单、工作区路径、HTTP 生成与离线校验 | [federation-config.md](federation-config.md) |
 | 文件分型、实体 frontmatter 与正文结构 | [okf-spec.md](okf-spec.md) |
+| 本轮不兼容语义、采用基线与迁移边界 | [knowledge-profile-v2.md](knowledge-profile-v2.md) |
+| 结构、关系、引用的统一验收与待核实状态 | [knowledge-validation.md](knowledge-validation.md) |
+| 来源指纹、派生目标、复核与历史恢复边界 | [knowledge-evidence.md](knowledge-evidence.md) |
 | 业务实体字段必填性与属性 | [business-meta.md](business-meta.md) |
 | 产品实体字段必填性与属性 | [product-meta.md](product-meta.md) |
 | 应用实体字段必填性与属性 | [application-meta.md](application-meta.md) |
@@ -30,6 +33,7 @@
 3. 跨文件或跨层引用先查 [引用规范](knowledge-reference-rules.md)；需要 parent 解析或 HTTP 时再查 [联邦配置](federation-config.md)。
 4. 维护 overview 时查 [overview 规范](overview-spec.md)；确认目录、宿主、阶段与流水线时查 [知识布局](../references/knowledge-layout.md)。
 5. 持久架构决策使用 [ADR 规范](adr-guidelines.md)和 [模板](adr-template.md)；SDX 触发与推进见 [SDX ↔ ADR 协议](../references/sdx-adr-protocol.md)。
+6. 写入、迁移或升级后按 [统一校验](knowledge-validation.md) 分别报告结构、关系、引用与事实核验；来源变更按 [证据契约](knowledge-evidence.md) 定位受影响实体/章节。规范要求与当前工具覆盖须分开陈述。
 
 ## 相关入口
 

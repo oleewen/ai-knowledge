@@ -12,7 +12,7 @@
 - [ ] 模式为全量；未使用 `--since`；未写 `DISTILL-LOG`。
 - [ ] 目标文件名和标题均已替换 `{NAME}`。
 - [ ] 目标层全部表行已处理；无命中写 `—`。
-- [ ] 第三列只保留 delta；`A/U/D` 与 [federation-spec.md](federation-spec.md) 一致。
+- [ ] 第三列只保留 delta；覆盖与删除证据符合 [overview-spec.md](../../../knowledge/overview-spec.md#第三列增量语义)，全量写入符合 [federation-spec.md](federation-spec.md)。
 - [ ] 无 OpenAPI 全文、整段 DDL、槽位原文或来源脚注堆链。
 
 ## 烤干

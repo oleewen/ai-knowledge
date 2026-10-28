@@ -16,8 +16,8 @@ from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
-ADAPTER = ROOT / "scripts" / "codex_adapter.py"
-RUNNER = ROOT / "scripts" / "run_evals.py"
+ADAPTER = ROOT / "tests" / "codex_adapter.py"
+RUNNER = ROOT / "tests" / "run_evals.py"
 
 
 class CodexAdapterTests(unittest.TestCase):

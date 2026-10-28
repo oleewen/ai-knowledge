@@ -31,6 +31,30 @@ if version_commit_sha "$TMP" 2026.1020.3 >/dev/null 2>&1; then
 fi
 git -C "$TMP" commit --allow-empty -qm 'docs-publish: version 2026.1020.08'
 [[ "$(version_latest_from_log "$TMP")" == 2026.1020.8 ]] || fail '发布日志中的前导零 patch 应按十进制规范化'
+PADDED_SHA="$(git -C "$TMP" rev-parse HEAD)"
+[[ "$(version_commit_sha "$TMP" 2026.1020.8)" == "$PADDED_SHA" ]] || fail '规范版本须定位前导零发布'
+git -C "$TMP" commit --allow-empty -qm 'docs-publish: version 2026.1020.8'
+STANDARD_SHA="$(git -C "$TMP" rev-parse HEAD)"
+[[ "$(version_commit_sha "$TMP" 2026.1020.08)" == "$STANDARD_SHA" ]] || fail '查询前导零拼写也须选择同版本首项'
+git -C "$TMP" commit --allow-empty -qm 'docs-publish: version 2026.1020.008'
+NEWEST_SHA="$(git -C "$TMP" rev-parse HEAD)"
+for query in 2026.1020.8 2026.1020.08; do
+  [[ "$(version_commit_sha "$TMP" "$query")" == "$NEWEST_SHA" ]] || fail '不同拼写须定位同版本日志首项'
+  [[ "$(version_commit_sha "$TMP" "$query" "$PADDED_SHA")" == "$PADDED_SHA" ]] || fail '查询不得越过指定 revision'
+done
+git -C "$TMP" commit --allow-empty -qm 'docs-publish: version 2026.1020.9'
+HIGHEST_SHA="$(git -C "$TMP" rev-parse HEAD)"
+git -C "$TMP" commit --allow-empty -qm 'docs-publish: version 2026.1020.7'
+[[ "$(version_latest_from_log "$TMP")" == 2026.1020.9 ]] || fail '最高版本不取最后提交的版本'
+[[ "$(version_commit_sha "$TMP" "$(version_latest_from_log "$TMP")")" == "$HIGHEST_SHA" ]] || fail '最高版本须定位对应快照'
+for invalid in 2026.1301.0 garbage '2026.1020.9 extra'; do
+  git -C "$TMP" commit --allow-empty -qm "docs-publish: version $invalid"
+  if version_commit_sha "$TMP" "$invalid" >/dev/null 2>&1; then fail '非法版本不得匹配发布'; fi
+done
+[[ "$(version_latest_from_log "$TMP")" == 2026.1020.9 ]] || fail '非法标记不得影响最高版本'
+[[ "$(version_commit_sha "$TMP" 2026.1020.9)" == "$HIGHEST_SHA" ]] || fail '查找须跳过非法发布标记'
+if version_commit_sha "$TMP" 2026.1020.99 >/dev/null 2>&1; then fail '缺失版本必须返回失败'; fi
+if version_commit_sha "$TMP" 2026.1020.9 "$PADDED_SHA" >/dev/null 2>&1; then fail '指定历史外的版本不得命中'; fi
 
 # 只替换被测函数的时钟输入，避免测试结果依赖执行当天。
 VERSION_TEST_DAY=2026.1020

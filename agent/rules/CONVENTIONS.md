@@ -1,6 +1,6 @@
 # AI AGENTS 开发约定
 
-> **结论**：本文是 `agent/rules/` 总入口；产出走参数向导 + `澄清 → 生成 → 烤干`；闸门见 [#artifact-gates](#artifact-gates)。 
+> **结论**：本文是 `agent/rules/` 总入口；产出先判技能族，再按对应协议推进；闸门见 [#artifact-gates](#artifact-gates)。
 > **范围**：本仓 Markdown/YAML 知识库 + Bash 初始化；勿套无关业务代码约束。
 
 ## 适用范围
@@ -20,7 +20,7 @@
 | 设计（`design/`） | [design/design-guidelines.md](design/design-guidelines.md) | 设计规则总纲 |
 | 测试（`testing/`） | [testing/testing-guidelines.md](testing/testing-guidelines.md) | 测试策略总则 |
 | 文档（`document/`） | [document/document-guidelines.md](document/document-guidelines.md) | 文档写作与 A/B/C 分类（`title` / H1 / MD025） |
-| 文档产出协议 | 下文 [第三节](#artifact-gates) | 参数向导、共通模式、总表与闸门分层 |
+| 文档产出协议 | 下文 [第三节](#artifact-gates) | 协议路由与共享约束 |
 
 ---
 
@@ -66,62 +66,12 @@
 
 ### artifact-gates
 
-受管终稿或等价写入（含工具调用）前：
+先按 [工作流路由](../references/workflow-routing.md) 判定技能族；语义族遵循 **澄清 → 生成 → 烤干**，轻流程按对应契约执行。技能名单与共享能力分工只在路由中维护。
 
-1. **参数向导**：收口关键参数、目标范围、输出路径与批量策略。
-2. **一次一单元**：`sdx-*` 以章节/设计块为主；`docs-*` 以目标块/路径组/实体批次/归档块等为主。
-3. **主线** `澄清 → 生成 → 烤干`：
- - 写前澄清：[intent-clarify.md](../references/intent-clarify.md)
- - 生成 → 烤干 → 动作/重开：[unit-cycle-protocol.md](../references/unit-cycle-protocol.md)
- - 烤干提问：[grilling-skill.md](../references/grilling-skill.md)
- - 受众质检：[audience-and-language.md](../references/audience-and-language.md)（烤干 A/B/C/E；轻流程写后 A/B）
- - 生成步原则：[simplify-principles.md](../references/simplify-principles.md)（默认强制；用户明示可豁免）；烤干修订后另有 **simplify 遍**（见 unit-cycle-protocol）
-4. **绑定**：全部 `/sdx-*` 与语义族 docs-*（含 indexing/build/agent/simplify）绑意图澄清；`docs-okf` / `docs-link` / `docs-tag` / `docs-install` / `agent-install` / `docs-upgrade` / `skill-upgrade` 维持轻流程。
-5. **动作**：烤干收敛（或合法跳过）后，用户以 `C/M/G/F`（docs 另有 `S`）推进；`C` 同符异义，靠阶段横幅区分。
-6. **语义变更**：先结论、推荐与数字选项，确认后再改。
-7. **技能特有**：校验或确认书以该技能 `SKILL.md` / `gates.md` 为准。
-
-完整流程见各 `agent/skills/<...>/SKILL.md`。
-
-### 总表
-
-**推进协议短码**（全文见上文；无 HTML gate / 无写前 hook）：
-
-| 短码 | 含义 |
-| --- | --- |
-| **语义** | 意图澄清 + `澄清 → 生成 → 烤干` + `C/M/G/F`（`sdx-*`） |
-| **语义-docs** | 同上，动作含 `S` → `C/M/G/S/F` |
-| **轻** | 不绑意图澄清；`C/M/S/F` 见 [light-flow-actions.md](../references/light-flow-actions.md)（本表不列轻流程技能行） |
-
-| 阶段 | 规则 globs（Cursor） | 终稿 / 写入范围 | 辅助工作稿 | 推进协议 | 环境变量例外 | Skill |
-| --- | --- | --- | --- | --- | --- | --- |
-| sdx-solution | `solution/solutions/**/*` | `{DOC_DIR}/solutions/SOLUTION-*.md`（仅 solution） | 可选工作稿 | 语义 | 无 | [sdx-solution/SKILL.md](../skills/sdx-solution/SKILL.md) |
-| sdx-analysis | `application/analysis/**/*`、`system/analysis/**/*` | `{DOC_DIR}/analysis/ANALYSIS-*.md`（七章；仅 system\|application） | 可选工作稿 | 语义 | 无 | [sdx-analysis/SKILL.md](../skills/sdx-analysis/SKILL.md) |
-| sdx-feature | `application/features/**/*`、`system/features/**/*` | `{DOC_DIR}/features/FEATURE-*.md`（六章） | 可选工作稿 | 语义 | 无 | [sdx-feature/SKILL.md](../skills/sdx-feature/SKILL.md) |
-| sdx-domains | `company/domains/**/*` | `company/domains/DOMAIN-MAP.md`、`DOMAIN-{BD-ID}.md` | 可选工作稿 | 语义 | 无 | [sdx-domains/SKILL.md](../skills/sdx-domains/SKILL.md) |
-| sdx-architect | `application/requirements/**/ASD-*.md` | `application/requirements/**/ASD-*.md` | 可选工作稿 | 语义 | 无 | [sdx-architect/SKILL.md](../skills/sdx-architect/SKILL.md) |
-| sdx-design | `application/requirements/**/DSD-*.md` | `application/requirements/**/DSD-*.md` | 可选工作稿 | 语义 | 无 | [sdx-design/SKILL.md](../skills/sdx-design/SKILL.md) |
-| sdx-prd | `application/requirements/**/*` | `application/requirements/**/PRD-*.md` | 可选工作稿 | 语义 | 无 | [sdx-prd/SKILL.md](../skills/sdx-prd/SKILL.md) |
-| sdx-test | `application/requirements/**/TDD-*.md` | `application/requirements/**/TDD-*.md` | 可选工作稿 | 语义 | 无 | [sdx-test/SKILL.md](../skills/sdx-test/SKILL.md) |
-| docs-agent | `README.md`、`AGENTS.md`（仓库根） | 根 `README.md` / `AGENTS.md`（一次只其一） | 可选工作稿 | 语义-docs | 无 | [docs-agent/SKILL.md](../skills/docs-agent/SKILL.md) |
-| docs-distill | `system/knowledge/**/*`、`solution/knowledge/**/*`、`company/knowledge/**/*` | `system\|solution\|company/knowledge/overview/` 受管第三列 | 可选工作稿 | 语义-docs | 无 | [docs-distill/SKILL.md](../skills/docs-distill/SKILL.md) |
-| docs-extract | `application/knowledge/overview/**/*`、`system/knowledge/overview/**/*`、`solution/knowledge/overview/**/*`、`company/knowledge/overview/**/*` | `application\|system\|solution\|company/knowledge/overview/*.md` | 可选工作稿 | 语义-docs | 无 | [docs-extract/SKILL.md](../skills/docs-extract/SKILL.md) |
-| docs-archive | `application/knowledge/overview/**/*`、`system/knowledge/overview/**/*`、`solution/knowledge/overview/**/*`、`company/knowledge/overview/**/*` | `application\|system\|solution\|company/knowledge/overview/*.md` | 可选工作稿 | 语义-docs | 无 | [docs-archive/SKILL.md](../skills/docs-archive/SKILL.md) |
-| docs-build | `{DOC_DIR}/knowledge/**/*`、`{DOC_DIR}/INDEX-GUIDE.md` 第四章视角导航块 | `{DOC_DIR}/knowledge/` 下 JSON、README；根 `INDEX-GUIDE.md` 实体标记块 | 可选工作稿 | 语义-docs | 无 | [docs-build/SKILL.md](../skills/docs-build/SKILL.md) |
-| docs-indexing | `**/INDEX-GUIDE.md`、`**/`INDEX-GUIDE` 增量锚点注释 | 各文档根 `INDEX-GUIDE.md` 九章骨架与对应 `INDEX-GUIDE 锚点`（须保留 docs-build 实体块） | 可选工作稿 | 语义-docs | 无 | [docs-indexing/SKILL.md](../skills/docs-indexing/SKILL.md) |
-| docs-revise | 不固定（按用户确认范围） | 已确认范围内的 Markdown / 注释 / 配置文本 | 可选工作稿 | 语义-docs | 无 | [docs-revise/SKILL.md](../skills/docs-revise/SKILL.md) |
-| docs-simplify | 不固定（按用户确认范围） | 已确认范围内的 Markdown（默认排除索引/日志/生成物，点名则纳入） | 可选工作稿 | 语义-docs | 无 | [docs-simplify/SKILL.md](../skills/docs-simplify/SKILL.md) |
-
-**说明**：`sdx-prd` / `sdx-test` 的 globs 均覆盖 `application/requirements/**/*`，以文件名 `PRD-*.md` / `TDD-*.md` 区分。 
-技能专细则见各 skill `gates.md`，不在本文件展开。
-
-### 闸门分层说明
-
-| 层级 | 技能 | 推进协议 | hook |
-| --- | --- | --- | --- |
-| **中高风险** | sdx-*、docs-distill、docs-extract、docs-archive、docs-build、docs-indexing、docs-revise、docs-simplify | 语义 / 语义-docs | ❌ |
-| **中等风险** | docs-agent | 语义-docs | ❌ |
-| **低风险** | docs-tag、docs-link、docs-okf、docs-install、agent-install、docs-upgrade、skill-upgrade | 轻 | ❌ |
+- 写前收口目标、范围与输出，见 [意图澄清](../references/intent-clarify.md)。同范围且基线仍有效的明确授权沿用。
+- 单元、动作与重开见 [推进协议](../references/unit-cycle-protocol.md)；轻流程及特例见 [轻流程动作](../references/light-flow-actions.md) 和各技能工作流。
+- 写后检查见 [烤干](../references/grilling-skill.md)、[受众质检](../references/audience-and-language.md)；表达遵循 [精简原则](../references/simplify-principles.md)。
+- 技能独有输入、产物路径、校验与失败处理，查对应 `SKILL.md` 及其 workflow/gates；入口见 [技能清单](../skills/README.md)。
 
 ---
 

@@ -17,6 +17,8 @@ timestamp: "2026-06-25T00:00:00+08:00"
 
 先分型，再写入。只有实体概念强制使用本仓 per-entity Profile：九个 frontmatter 字段和四段中文 H2；索引、叙事、元数据各按自身职责组织。
 
+本轮身份、消费与验收语义归入独立的 [ai-knowledge/v2 Profile](knowledge-profile-v2.md)。它是待工具接入的规范基线，不等于已发布版本；既有消费库按该版本入口核实并迁移，不能自动视为已采用。
+
 ## 0. 规范定位
 
 适用于 company、solution、system、application 四层及其配套文件。OKF Core 仅要求 `type`，允许 extensions；本仓对实体概念加严，不将实体要求套到所有 Markdown。
@@ -27,7 +29,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 
 ### 1.1 实体概念（per-entity）
 
-有明确边界、唯一 `id`、可被引用的对象，通常为 `knowledge/<perspective>/…/{ID}.md`。MUST 遵守 §2–§4 的 Profile、§9 的关系位置及 §11 的校验；业务属性优先下沉正文。
+有明确边界、唯一完整身份、可被引用的对象，通常为 `knowledge/<perspective>/…/{ID}.md`。局部 `id` 与完整身份见 [命名规范](naming-conventions.md#身份范围与限定引用)。MUST 遵守 §2–§4 的 Profile、§9 的关系位置及 §11 的校验；业务属性优先下沉正文。
 
 ### 1.2 索引入口
 
@@ -45,6 +47,8 @@ timestamp: "2026-06-25T00:00:00+08:00"
 
 多类特征并存时：实体概念 > 索引入口 > 元数据 > 叙事文件。README / index 默认索引入口；五视角 meta、knowledge-links.yaml、变更日志默认元数据。
 
+判型须综合用途、文件名、实体树位置、`id` 和 `hierarchy`；不能仅因 `type` 拼错或缺失就降为叙事文件并跳过实体约束。合法索引、叙事与治理元数据仍按自身分型校验。
+
 ## 2. 实体概念 Profile：frontmatter（9 必填 + extensions）
 
 每个实体概念 MUST 包含下列九个字段；机器消费的 `title` 不得为消除 MD025 而删除。
@@ -56,7 +60,7 @@ timestamp: "2026-06-25T00:00:00+08:00"
 | `description` | 字符串或 null | 一句定义；暂无定义填 null |
 | `tags` | 字符串数组 | 必含 perspective 与 hierarchy，如 `[business, BD]` |
 | `timestamp` | ISO8601 字符串 | 北京时间格式 `YYYY-MM-DDTHH:MM:SS+08:00` |
-| `id` | 字符串 | 全局唯一，字面语法见 [命名规范](naming-conventions.md) |
+| `id` | 字符串 | 局部 ID，与文件名一致；唯一范围、完整身份与兼容规则见 [命名规范](naming-conventions.md#身份范围与限定引用) |
 | `perspective` | 枚举 | business / product / application / data / technical |
 | `hierarchy` | 枚举 | 见类型登记表；与 type、perspective 一致 |
 | `layer_scope` | 枚举 | company / solution / system / application；与所在知识库一致 |
@@ -108,7 +112,7 @@ BSD 还须结合 layer_scope 与正文 level 或 ID 的 `-L2` / `-L3` 后缀区�
 
 ### 4.4 依据与证据段
 
-在[允许的引用范围](knowledge-reference-rules.md)内写文件链接与章节锚点，或外部 URI/资产名；多源用换行或分号。无额外来源可保留 `示例数据`。来源变化时同步证据，不将库外文档路径写入本段。
+在[允许的引用范围](knowledge-reference-rules.md)内写文件链接与章节锚点、外部 URI/资产名或本库证据编号；多源用换行或分号。仅模板样例可标 `示例数据`，正式实体不能以此冒充已核实来源。持久来源指纹、目标实体/章节及复核状态保存到 [证据登记](knowledge-evidence.md)，不将库外文档路径写入本段。
 
 ## 5. 索引入口处理规则
 
@@ -122,7 +126,7 @@ MUST：保持主题说明角色，不伪装成实体；术语与实体一致，�
 
 ## 7. 元数据文件处理规则
 
-MUST：保持规则、目录元信息、链接编排或运维职责；不按实体 schema 改造。SHOULD：区分枚举/约束与解释文字，运维留痕遵对应目录 README。MAY 使用长期维护的工具扩展字段。引用本格式规范统一链接本文件。
+MUST：保持规则、目录元信息、链接编排或运维职责；不按实体 schema 改造。证据登记与联邦操作恢复记录属于治理元数据，不进入业务实体清单或实体关系图；路径见 [布局契约](../references/knowledge-layout.md#治理元数据)。SHOULD：区分枚举/约束与解释文字，运维留痕遵对应契约。MAY 使用长期维护的工具扩展字段。引用本格式规范统一链接本文件。
 
 ## 8. 目录哲学
 
@@ -184,8 +188,14 @@ layer_scope 必须与所属知识库层级一致。元库路径为 `{layer_scope
 
 ### 11.3 演进
 
-兼容增量在本文末尾追加附录；不兼容变更另起版本文件（如 `okf-spec-v2.md`）。扩展字段成为共享约定时必须同步更新本文。
+兼容增量可在本规范补充；不兼容变更须另起版本文件，明确语义真源、旧基线与采用条件。本轮版本入口为 [knowledge-profile-v2.md](knowledge-profile-v2.md)，共享正文同步说明目标语义；不以原地改文档代替消费库迁移。扩展字段成为共享约定时必须同步更新对应规范。
+
+`DESIGN.version` 表示内容发布版本，`okf_version` 表示 OKF 格式版本；两者都不单独证明本仓实体 Profile 兼容。规则基线、工具覆盖与业务实体迁移结果须按 [Profile 采用记录](knowledge-profile-v2.md#采用记录) 及 [统一校验](knowledge-validation.md) 记录。本轮不发布内容版本；虽未修改九个必填字段的存储类型，限定身份仍是不兼容语义变更。工具接入完成前，不用旧工具处理这些新形态，旧实体不自动迁移。
 
 ### 11.4 删除旧规范约束
 
 旧 system schema 规范不再是真源；不得恢复其引用。本文与明确链接的职责模块共同构成现行规范。
+
+### 11.5 统一验收
+
+结构、关系、必需本地引用及结果状态遵 [知识统一校验契约](knowledge-validation.md)。逻辑层取显式上下文，不从 `docs` 等目录名猜测；事实真实性与历史可恢复性单独报告。外库不可读或规则未执行不得计为通过，旧 CLI 的零退出码不代表新增契约已完整实现。

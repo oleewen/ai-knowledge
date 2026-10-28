@@ -216,9 +216,9 @@ while IFS= read -r file; do
 done <<< "$index_files"
 published_files="$index_files"
 [[ -n "$published_files" ]] || { echo 'no publish files staged' >&2; exit 1; }
-commit_body="Previous version: ${old:-none}
-New version: $version
-Published files:
+commit_body="上一版本: ${old:-无}
+发布版本: $version
+发布文件:
 $published_files"
 git commit -m "docs-publish: version $version" -m "$commit_body"
 git push -u origin "$branch"

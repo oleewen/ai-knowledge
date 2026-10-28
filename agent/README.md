@@ -12,4 +12,5 @@
 | [references/README.md](references/README.md) | 协作执行 SSOT：流程路由、澄清、推进、烤干、待办与路径 |
 | [skills/README.md](skills/README.md) | Slash 命令清单（权威） |
 | [scripts/README.md](scripts/README.md) | 共享脚本职责、兼容入口、依赖与测试路由 |
+| [cli/baohe/proposals/README.md](cli/baohe/proposals/README.md) | 宝盒 CLI 设计与实施计划提案；仓内尚未实现 |
 | [hooks.json](hooks.json) · [hooks/README.md](hooks/README.md) | Hooks 配置 SSOT；目录说明 |

@@ -7,7 +7,7 @@ import tempfile
 import unittest
 
 SKILL = Path(__file__).resolve().parents[1]
-SCRIPT = SKILL / 'scripts' / 'evaluate.py'
+SCRIPT = SKILL / 'tests' / 'evaluate.py'
 
 
 class HarnessTests(unittest.TestCase):

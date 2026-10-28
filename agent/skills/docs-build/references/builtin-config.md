@@ -12,8 +12,10 @@
 | 字段必填性与视角细则 | 当前视角 meta，入口见 [extraction-rules.md](extraction-rules.md) |
 | 文件落点 | [knowledge-layout.md](../../../references/knowledge-layout.md)；生成函数 `okf_lib.entity_relpath` |
 | frontmatter、正文分段 | [okf-spec.md](../../../knowledge/okf-spec.md) |
+| 校验上下文、分项状态与兼容证据 | [knowledge-validation.md](../../../knowledge/knowledge-validation.md) |
+| 持久来源、实际目标哈希与事实依赖 | [knowledge-evidence.md](../../../knowledge/knowledge-evidence.md) |
 
-层职责、关系与引用分别按上表真源执行，视角 meta 补充本视角字段。资源使用关系为 `PD.uses_to MDG|TS`，对端 `MDG/TS.used_by PD`；`SYS.maps_to PD`。方案层不反向登记 SYS。遇到无法判定的冲突先澄清。
+层职责、关系与引用分别按上表真源执行，视角 meta 补充本视角字段。资源使用关系包括 `PD.uses_to MDG|TS`；消费其他 SYS 由消费方 `PD.uses_to SYS` 单边声明，`SYS.used_by` 派生，不要求手工回写。SYS 归属映射仍按关系真源维护，不因多方消费增加 parent。遇到无法判定的冲突先澄清。
 
 ## 证据与置信度
 
@@ -23,13 +25,13 @@
 | medium | 已读文档可支持的推导 | 达到阈值时注明推导依据 |
 | low | 间接或不完整依据 | 仅在用户选择 low 且存在可核依据时保留不确定性；不写成已确认事实 |
 
-未读路径、缺父级或无依据的候选，无论阈值均不生成正式实体；列待确认。协议、Topic、Cron 等可选细节缺失不自动判失败。证据写入「依据与证据」，遵守 knowledge 引用边界；不强制增加 JSON 或 frontmatter 证据数组。
+未读路径、缺父级或无依据的候选，无论阈值均不生成正式实体；列待确认。协议、Topic、Cron 等可选细节缺失不自动判失败。业务正文「依据与证据」只写引用规范允许的链接、资产或本库证据编号；来源版本、实际目标哈希与事实依赖按证据规范登记在治理目录，不强制增加 JSON 或 frontmatter 证据数组。提取报告开关不控制持久证据登记。
 
 ## 增量与一致性
 
-- ID 复用优先；层级+ID、层级+别名唯一，OKF `id` 本身也须全局唯一。
+- ID 复用优先；按[命名规范](../../../knowledge/naming-conventions.md)核对完整身份：APP 在当前治理联邦内唯一、MS 在 APP 内唯一、API 在 MS 内唯一，其余实体全局唯一。别名不替代身份，宿主歧义先核实。
 - 只跳过已核实来源未变的实体。重提时保留人工维护的有效内容，报告变化原因。
-- 关系对端在当前授权范围内则同步；范围外列依赖，重新确认后处理，不静默改前序批次或上层库。
+- 应维护的反向关系在当前授权范围内则同步；消费方 PD→SYS 的反向按规则派生。范围外核验列依赖，重新确认后处理，不静默改前序批次或上层库。
 - README 行来自实体文件；INDEX 只写导航，不维护 §1–§4 实体扫描表。
 
 ## 失败处理

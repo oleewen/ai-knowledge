@@ -4,7 +4,7 @@ title: "全局术语表"
 version: "0.4.0"
 status: "draft"
 created: "2025-03-13"
-updated: "2026-10-23"
+updated: "2026-10-28"
 tags: ["glossary", "terminology", "governance"]
 ---
 
@@ -19,6 +19,8 @@ tags: ["glossary", "terminology", "governance"]
 | --- | --- | --- |
 | 单一事实源 | SSOT (Single Source of Truth) | 每个知识实体只在一处定义，其他地方通过 ID 引用。 |
 | 联邦治理 | Federated Governance | 四层 parent（application→system→solution→company）；下级实现、上级索引与共性，蒸馏按层上收。 |
+| 共享系统消费 | Shared System Consumption | PD 声明使用 SYS，治理归属保持唯一；语义与反向派生见 [关系模型](entity-relations.md#共享系统消费)。 |
+| 完整身份 | Qualified Identity | 区分局部 ID 与所属范围，按 [命名规范](naming-conventions.md#身份范围与限定引用) 解析；不是文件路径。 |
 | 限界上下文 | Bounded Context | DDD 中明确边界的业务上下文，拥有统一语言与领域模型。 |
 | 聚合根 | Aggregate Root | DDD 中聚合的根实体，保证聚合内一致性边界。 |
 | 架构决策记录 | ADR (Architecture Decision Record) | 记录架构决策的上下文、决定与后果的文档。 |
@@ -67,7 +69,7 @@ tags: ["glossary", "terminology", "governance"]
 | MW | `Middleware Binding` | technical | 中间件绑定 |
 | CMP | `Component` | technical | 关键组件 |
 
-易混区分：`SYS` 又称应用服务；`APP` 是代码仓库/部署单元；`MS` 是业务入口能力簇；`MW` 是实例级基础设施绑定；`MDG` 是逻辑模型与数据主权边界；`ENT` 表示实体/集合，`TBL` 表示物理表锚点。`AGG` 在本库登记为聚合根。
+易混区分：`SYS` 又称应用服务；`APP` 按可部署启动单元识别，不能直接等同仓名；`MS` 是业务入口能力簇；`MW` 是实例级基础设施绑定；`MDG` 是逻辑模型与数据主权边界；`ENT` 表示实体/集合，`TBL` 表示物理表锚点。`AGG` 在本库登记为聚合根。
 
 ## 映射关系（常用）
 

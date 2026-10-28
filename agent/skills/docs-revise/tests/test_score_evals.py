@@ -10,7 +10,7 @@ import tempfile
 import unittest
 
 
-SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "score_evals.py"
+SCRIPT = Path(__file__).resolve().parents[1] / "tests" / "score_evals.py"
 
 
 class ScoreEvalsTests(unittest.TestCase):

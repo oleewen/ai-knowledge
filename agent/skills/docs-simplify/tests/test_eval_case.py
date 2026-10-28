@@ -9,7 +9,7 @@ import tempfile
 import unittest
 
 
-SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "eval_case.py"
+SCRIPT = Path(__file__).resolve().parents[1] / "tests" / "eval_case.py"
 
 
 class EvalCaseTests(unittest.TestCase):

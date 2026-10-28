@@ -29,4 +29,12 @@ DOCS_CONFIG_PATH="$PROJECT_DIR/.docsconfig"
 assert_file_exists "$DOCS_CONFIG_PATH"
 assert_contains "KNOWLEDGE_TYPE=system" "$DOCS_CONFIG_PATH"
 
-pass "scope=knowledge + type=system 写 KNOWLEDGE_TYPE=system（不安装 link 脚本）"
+# 系统交付只安装 PRD/ASD/TDD；详设由 ASD 承接表交给应用库。
+PHASE_DIR="$SYSTEM_DIR/requirements/REQUIREMENT-EXAMPLE/MVP-Phase-1"
+assert_file_not_exists "$PHASE_DIR/DSD-EXAMPLE-1.md"
+assert_file_exists "$PHASE_DIR/PRD-EXAMPLE.md"
+assert_file_exists "$PHASE_DIR/TDD-EXAMPLE.md"
+assert_contains '应用承接' "$PHASE_DIR/ASD-EXAMPLE-1.md"
+assert_not_contains '](DSD-EXAMPLE-1.md)' "$PHASE_DIR/index.md"
+
+pass "系统安装写层级配置、保留 ASD 应用承接入口且不带系统 DSD 占位或 link 脚本"

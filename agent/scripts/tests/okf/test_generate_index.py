@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import sys
+import os
+import subprocess
 import tempfile
 from pathlib import Path
 
@@ -195,8 +197,70 @@ def test_solution_knowledge_index_scope_and_nav():
         assert "[应用](knowledge/application/README.md)" in rendered
 
 
+def test_session_navigation_and_existing_index():
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp).resolve()
+        container = root / "superpowers"
+        draft = container / "plans"
+        draft.mkdir(parents=True)
+        (draft / "README.md").write_text("draft")
+        assert "superpowers/" not in generate_index.render_index_body(root)
+        assert container not in generate_index.collect_directories(root, None, True)
+        assert generate_index.collect_directories(root, draft, False) == []
+        assert not generate_index.write_index(draft, root)
+        assert not (draft / "index.md").exists()
+        manual = b"# Manual\r\n\r\nKeep all custom text.\r\n"
+        (container / "index.md").write_bytes(manual)
+        assert "superpowers/index.md" in generate_index.render_index_body(root)
+        assert "plans/" not in generate_index.render_index_body(container)
+        generate_index.write_index(container, root)
+        assert (container / "index.md").read_bytes() == manual
+        (container / "index.md").unlink()
+        (container / "README.md").write_text("# Manual overview\n")
+        generate_index.write_index(container, root)
+        assert "plans/" not in (container / "index.md").read_text()
+        assert (container / "README.md").read_text() == "# Manual overview\n"
+
+
+def test_session_explicit_cli_rejected_without_writes():
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp).resolve()
+        draft = root / "bundle/superpowers/specs/deep"
+        draft.mkdir(parents=True)
+        (root / ".docsconfig").write_text("DOC_DIR=bundle\n")
+        script = ROOT / "agent/skills/docs-okf/scripts/generate_index.py"
+        for target in ("bundle/superpowers", "bundle/superpowers/specs", "bundle/superpowers/specs/deep"):
+            for flags in ([], ["--recursive"]):
+                result = subprocess.run(
+                    [sys.executable, str(script), "--bundle", "bundle", "--dir", target, *flags],
+                    env=dict(os.environ, DOCS_OKF_REPO_ABS=str(root)),
+                    capture_output=True, text=True,
+                )
+                assert result.returncode != 0, result.stdout + result.stderr
+                assert not list(root.rglob("index.md"))
+        real = root / "bundle/real"
+        real.mkdir()
+        alias = root / "bundle/alias/superpowers/specs"
+        alias.parent.mkdir(parents=True)
+        alias.symlink_to(real, target_is_directory=True)
+        container_alias = root / "bundle/container-alias"
+        container_alias.symlink_to(root / "bundle/superpowers", target_is_directory=True)
+        for args in (("--bundle", "bundle", "--dir", str(alias)), ("--bundle", str(alias)),
+                     ("--bundle", "bundle", "--dir", str(container_alias)),
+                     ("--bundle", str(container_alias))):
+            result = subprocess.run(
+                [sys.executable, str(script), *args],
+                env=dict(os.environ, DOCS_OKF_REPO_ABS=str(root)),
+                capture_output=True, text=True,
+            )
+            assert result.returncode != 0, result.stdout + result.stderr
+            assert not (real / "index.md").exists()
+
+
 def main() -> None:
     tests = [
+        test_session_navigation_and_existing_index,
+        test_session_explicit_cli_rejected_without_writes,
         test_render_index_lists_concepts_and_subdirs,
         test_preserve_bundle_root_okf_version,
         test_knowledge_index_nav_links,

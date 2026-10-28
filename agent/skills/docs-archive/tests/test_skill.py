@@ -9,7 +9,7 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-RUNNER = ROOT / "scripts" / "run_evals.py"
+RUNNER = ROOT / "tests" / "run_evals.py"
 
 
 class ShippedSuiteTests(unittest.TestCase):

@@ -3,6 +3,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../../../.." && pwd)"
 python3 "$ROOT/agent/scripts/tests/okf/test_okf_lib.py"
 python3 "$ROOT/agent/scripts/tests/okf/test_okf_cross_layer.py"
+python3 "$ROOT/agent/scripts/tests/okf/test_solution_bsd_paths.py"
 python3 "$ROOT/agent/scripts/tests/okf/test_inject_frontmatter.py"
 python3 "$ROOT/agent/scripts/tests/okf/test_generate_index.py"
 python3 "$ROOT/agent/scripts/tests/okf/test_visualize.py"

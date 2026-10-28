@@ -4,13 +4,13 @@
 > **分工**：本文定义检查标准与证据；调用时机、修订权限和完成门禁分别见 [单元推进](unit-cycle-protocol.md)、[轻流程动作](light-flow-actions.md)。
 > **本地覆盖**：各 skill `references/audience-and-language.md` 只写**差额**（主读者、宜写/宜弱化、反例、特殊允许区），不复制本文维表。
 
-**最后更新**: 2026-10-23
+**最后更新**: 2026-10-25
 
 ---
 
 ## 适用范围
 
-技能族名单见 [workflow-routing.md](workflow-routing.md)。语义族须有下文统一骨架的本地 audience；轻流程（含 docs-okf）不建本地文件，使用默认读者表。各流程决定必检维与检查时机。
+技能族名单见 [workflow-routing.md](workflow-routing.md)。语义族须有满足下文语义要求的本地 audience；轻流程（含 docs-okf）不建本地文件，使用默认读者表。各流程决定必检维与检查时机。
 
 ---
 
@@ -76,7 +76,9 @@
 
 ## 本地文件统一模板
 
-`sdx-*` 与语义族 docs-* 的 `references/audience-and-language.md` 须用下列骨架（字段名固定；差额可空写「无」）：
+`sdx-*` 与语义族 docs-* 的 `references/audience-and-language.md` 须链接本文，并能定位四类语义：**主读者、宜写 / 宜弱化、具体反例对照、特殊允许区**。可用导语、列表、表格或链接已有局部契约承载，不强制标题名称或排列顺序。
+
+无额外允许区时明确写「无」；有则说明章节/容器及标注要求，不为凑齐字段新增权限。反例只对照写法，不补造业务事实或承诺。下列四段骨架为推荐示例：
 
 ```markdown
 # 受众与语言（<skill>）

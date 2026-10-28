@@ -29,10 +29,10 @@ description: >
 
 ## 写入底线
 
-- 只改本轮命中行的第三列；无命中、无新 delta 的行保持原样。已有待归档要点不得被无关新内容覆盖。
-- 去重基准是链接指向的知识正文，不能拿旧第三列证明“已归档”。A/U/D 含义见 [federation-spec.md](../docs-distill/references/federation-spec.md)；缺少来源不等于删除证据。
+- 业务写入只改本轮命中行的第三列；无命中、无新 delta 的行保持原样。已有待归档要点不得被无关新内容覆盖。实际采用的来源与目标映射须按 [知识证据登记](../../knowledge/knowledge-evidence.md) 同批保存治理元数据，不以会话记录代替。
+- 去重基准是链接指向的知识正文，不能拿旧第三列证明“已归档”。A/U/D 与删除证据要求见 [overview-spec.md](../../knowledge/overview-spec.md#第三列增量语义)。
 - 可读 knowledge 外源；落盘必须符合 [knowledge-governance.md](../../knowledge/knowledge-governance.md)「业务 knowledge 引用边界」。第三列不留源文件路径、下层/槽位链接或手写爬层；上层实体有 parent 时用生成函数 HTTP，无 parent 用纯 ID。
-- 写入失败撤销本轮改动；不覆盖他人编辑。只读预览与正式写入都须烤干。
+- 写入失败按 [恢复边界](references/workflow.md#落盘与失败) 处理；无法安全撤销时保留现场、报告部分状态，不覆盖他人编辑。只读预览与正式写入都须烤干。
 
 ## 按需参考
 

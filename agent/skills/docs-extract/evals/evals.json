@@ -1,6 +1,6 @@
 {
   "skill_name": "docs-extract",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "路由与澄清样本，以及带原始文件的 dry-run、delta 保留、无命中、正文缺失和引用边界行为回放。按 grader 分阶段评分；新增用例不代表已执行。",
   "evals": [
     {
@@ -529,6 +529,22 @@
           "type": "behavior",
           "priority": "P0",
           "check": "展示归属歧义和需要的区分信息，不按密度或视角顺序机械选择，不写第三列。"
+        }
+      ]
+    },
+    {
+      "id": "extract-covered-pending",
+      "category": "should-trigger",
+      "prompt": "仅讨论决策：本轮候选与目标章节正文语义等价，旧第三列还保留同一待办及无关待办。没有其他新delta，可以因为正文已覆盖而把旧第三列清成 — 吗？",
+      "expected_output": "跳过已覆盖候选、不追加；无新delta保留原列，不清旧待办。",
+      "files": [],
+      "assertions": [
+        {
+          "id": "extract-covered-pending-contract",
+          "name": "共用语义与技能写入边界",
+          "type": "must_include",
+          "check": "覆盖以目标正文为证据；无新delta不改第三列，旧待办保留且不重复追加。",
+          "priority": "P0"
         }
       ]
     }

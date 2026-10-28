@@ -1,21 +1,23 @@
 # docs-archive 评测运行
 
-使用 Python 3 标准库 runner [run_evals.py](../scripts/run_evals.py) 校验用例、执行适配器或重算评分。[evals.json](../evals/evals.json) 是提示词、期望与断言的唯一事实源；[grader.md](../agents/grader.md) 定义逐条判断方式。
+本文供元库维护者使用；评测驱动、用例和评分依赖不随技能运行资源安装。
+
+使用 Python 3 标准库 runner [run_evals.py](../tests/run_evals.py) 校验用例、执行适配器或重算评分。[evals.json](../evals/evals.json) 是提示词、期望与断言的唯一事实源；[grader.md](../agents/grader.md) 定义逐条判断方式。
 
 ## 命令
 
 在技能目录运行：
 
 ```bash
-python3 scripts/run_evals.py validate
-python3 scripts/run_evals.py run \
+python3 tests/run_evals.py validate
+python3 tests/run_evals.py run \
   --executor '["python3","/abs/executor.py"]' \
   --grader '["python3","/abs/grader.py"]' \
   --timeout 60 > results.json
-python3 scripts/run_evals.py score --results results.json
+python3 tests/run_evals.py score --results results.json
 ```
 
-`run` 可使用下节内置 Codex 适配器，或将示例路径替换为自己的适配器。默认 suite 为技能内 `evals/evals.json`；自定义时把 `--suite PATH` 放在子命令前，例如 `python3 scripts/run_evals.py --suite /abs/evals.json validate`。
+`run` 可使用下节内置 Codex 适配器，或将示例路径替换为自己的适配器。默认 suite 为技能内 `evals/evals.json`；自定义时把 `--suite PATH` 放在子命令前，例如 `python3 tests/run_evals.py --suite /abs/evals.json validate`。
 
 | 模式 | 用途 |
 | --- | --- |
@@ -27,14 +29,14 @@ stdout 仅输出 UTF-8 JSON，进度写 stderr。`--timeout` 默认每次适配�
 
 ## 内置 Codex 适配器
 
-[codex_adapter.py](../scripts/codex_adapter.py) 调用已登录的 Codex CLI。先用 `codex login status` 核对登录状态，将 `MODEL_ID` 替换为账号可用模型，再在技能目录运行：
+[codex_adapter.py](../tests/codex_adapter.py) 调用已登录的 Codex CLI。先用 `codex login status` 核对登录状态，将 `MODEL_ID` 替换为账号可用模型，再在技能目录运行：
 
 ```bash
-python3 scripts/run_evals.py run \
-  --executor '["python3","scripts/codex_adapter.py","executor","--model","MODEL_ID","--effort","low","--artifacts-dir","eval-artifacts"]' \
-  --grader '["python3","scripts/codex_adapter.py","grader","--model","MODEL_ID","--effort","low","--artifacts-dir","eval-artifacts"]' \
+python3 tests/run_evals.py run \
+  --executor '["python3","tests/codex_adapter.py","executor","--model","MODEL_ID","--effort","low","--artifacts-dir","eval-artifacts"]' \
+  --grader '["python3","tests/codex_adapter.py","grader","--model","MODEL_ID","--effort","low","--artifacts-dir","eval-artifacts"]' \
   --timeout 240 > results.json
-python3 scripts/run_evals.py score --results results.json
+python3 tests/run_evals.py score --results results.json
 ```
 
 `--model`、`--artifacts-dir` 必填；`--effort` 可选 `low` / `medium` / `high`，省略时采用 CLI 默认值；`--codex-bin` 可指定可执行文件，含目录的相对路径按启动目录解析，纯命令名按 PATH 查找。执行器和评分器可配置不同模型，每次调用均使用新会话。

@@ -24,6 +24,7 @@ description: >
 - 术语相同不等于概念相同。标题锚点、ID、配置键、代码字面量和历史引文须单独判断，不能随正文批量替换。
 - 无法核实的事实、路径或承诺标为待确认，不补造。
 - 涉及四层 `knowledge/` 时，先读 [knowledge-governance.md](../../knowledge/knowledge-governance.md) 的业务引用边界；不得链接到 knowledge 外文档、下层文档或手写跨层爬链。跨层 HTTP 用规定生成函数，无 parent 则纯 ID；无法判断时停问。
+- 纯 ID 按 [命名规范](../../knowledge/naming-conventions.md#身份范围与限定引用) 解析；语义事实变更同步本库 [证据登记](../../knowledge/knowledge-evidence.md)。身份迁移、删除须先核实有效依赖；按 [统一校验](../../knowledge/knowledge-validation.md) 报告结果，旧工具退出码不覆盖尚未实现的规则。
 
 ## 按需读取
 

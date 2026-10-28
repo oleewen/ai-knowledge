@@ -12,7 +12,7 @@ title: 应用视角元数据
 
 ## 2. 实体细则
 
-下列“可选”仍受 [反向同步规则](entity-relations.md#动词与双向要求)约束：对端已声明关系时，反向字段必须填写。目标类型按关系模型；无值的可选属性不影响实体有效性。
+下列“可选”仍受 [反向同步规则](entity-relations.md#动词与双向要求)及其例外约束。目标类型按关系模型；无值的可选属性不影响实体有效性。
 
 ### SLN
 
@@ -22,6 +22,8 @@ title: 应用视角元数据
 
 必填：`implements_to`、`implemented_by`。可选：`maps_to`。两条上游边固定纯 ID，见 [关系例外](entity-relations.md#例外与禁止)。不写 `uses_to` MDG/TS。
 
+PD 消费本 SYS 的反向视图由 [消费声明](entity-relations.md#共享系统消费) 汇总；不新增必填的人工 `used_by`，不把消费方写成 `maps_to`。
+
 ### APP
 
 必填：`implements_to`、`implemented_by`。可选：`supports_to`、`uses_to`。
@@ -30,9 +32,13 @@ title: 应用视角元数据
 
 必填：`implements_to`、`implemented_by`。可选：`maps_to`、`uses_to`。
 
+`implements_to` 恰好一个 APP；`id` 在该 APP 内唯一，跨文件完整身份按 [命名规范](naming-conventions.md#身份范围与限定引用) 表达。
+
 ### API
 
 必填：`implements_to`。可选：`supports_to`、`maps_to`。API 为叶子；别名、方法签名、入口类型写详细说明，缺省不判失败。
+
+`implements_to` 恰好一个已核实 MS，并能确定其 APP；缺任一归属不落正式实体。局部 `id` 在该 MS 内唯一，文件名保持局部 ID；迁移归属按 [身份迁移](knowledge-governance.md#身份迁移与删除) 处理。
 
 ## 3. 跨视角出边
 

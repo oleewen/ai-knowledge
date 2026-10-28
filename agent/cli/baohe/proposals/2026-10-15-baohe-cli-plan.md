@@ -1,5 +1,7 @@
 # 宝盒lite 会话抽取 CLI Implementation Plan
 
+状态（2026-10-25 核对）：设计及计划已记录，仓内尚未实现；审批结论未核实。本文代码、测试、安装和提交命令均为拟实施步骤，不构成执行授权；库外数据与产物本轮未重新核实。入口见 [提案说明](README.md)。
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** 在 `ai-knowledge/agent/cli` 落地只读 Python CLI `baohe`，从本机 zbox-lite 缓存列出/点名导出/批量导出单聊与群聊为 JSON + Markdown 报告骨架。
@@ -8,7 +10,7 @@
 
 **Tech Stack:** Python 3.9+、stdlib（`argparse`, `json`, `base64`, `re`, `shutil`, `tempfile`, `pathlib`, `dataclasses`）、`pytest`（dev）。无编译扩展。
 
-**Spec:** `agent/cli/docs/2026-10-15-baohe-cli-design.md`
+**Spec:** [设计提案](2026-10-15-baohe-cli-design.md)
 
 ## Global Constraints
 
@@ -757,7 +759,7 @@ git commit -m "feat(baohe): list export recent CLI commands"
 
 **Files:**
 - Create: `agent/cli/README.md`
-- Modify: `agent/cli/docs/2026-10-15-baohe-cli-design.md` 状态行改为「已有实现计划」
+- Modify: `agent/cli/baohe/proposals/2026-10-15-baohe-cli-design.md` 按实际实现与验证结果更新状态；未完成不得标为已实现
 
 **Interfaces:** 无新代码 API
 
@@ -805,7 +807,7 @@ Expected: 非空输出；export 目录含 json+md。若本机无该群，用 `ba
 - [ ] **Step 3: Commit**
 
 ```bash
-git add agent/cli/README.md agent/cli/docs/2026-10-15-baohe-cli-design.md
+git add agent/cli/README.md agent/cli/baohe/proposals/2026-10-15-baohe-cli-design.md
 git commit -m "docs(baohe): README and mark design implemented-planned"
 ```
 
@@ -833,4 +835,4 @@ git commit -m "docs(baohe): README and mark design implemented-planned"
 
 ## Execution handoff
 
-Plan saved to `agent/cli/docs/2026-10-15-baohe-cli-plan.md`（因全局 `**/superpowers/*` ignore，未使用默认 `docs/superpowers/plans/`）。
+计划保存在本目录的 [实现计划](2026-10-15-baohe-cli-plan.md)，作为受管提案保留；拟实现代码仍位于 `agent/cli/`。实施前须重新核实设计、环境与审批状态。

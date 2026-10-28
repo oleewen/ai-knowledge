@@ -1,5 +1,7 @@
 # docs-merge 评测
 
+本文供元库维护者使用；评测驱动、用例和评分依赖不随技能运行资源安装。
+
 用 [evals.json](../evals/evals.json) 检验实际决策与文件结果，数量以套件为准。保留原有 1–9、`merge-audience-001` 编号；原始 Markdown 在 [tests/fixtures/](../tests/fixtures/)。夹具含故意错误的链接与结构，只供隔离评测。
 
 ## 覆盖
@@ -24,9 +26,9 @@
 以下命令从仓库根执行，仅依赖 Python 3 标准库：
 
 ```bash
-python3 agent/skills/docs-merge/scripts/evaluate.py validate
+python3 agent/skills/docs-merge/tests/evaluate.py validate
 python3 -m unittest discover -s agent/skills/docs-merge/tests -v
-python3 agent/skills/docs-merge/scripts/evaluate.py prepare --case 13 --output /tmp/docs-merge-case13
+python3 agent/skills/docs-merge/tests/evaluate.py prepare --case 13 --output /tmp/docs-merge-case13
 ```
 
 `prepare` 要求输出目录尚不存在，生成：
@@ -40,7 +42,7 @@ python3 agent/skills/docs-merge/scripts/evaluate.py prepare --case 13 --output /
 执行结束后，由独立评测员按 [grader.md](../agents/grader.md) 对每条行为断言评分，可复制 [评分结构](../evals/eval-metadata-template.json)，替换为当前用例 ID 与断言。随后执行：
 
 ```bash
-python3 agent/skills/docs-merge/scripts/evaluate.py verify --run /tmp/docs-merge-case13 --executed --review /tmp/docs-merge-case13-review.json
+python3 agent/skills/docs-merge/tests/evaluate.py verify --run /tmp/docs-merge-case13 --executed --review /tmp/docs-merge-case13-review.json
 ```
 
 `--executed` 只用于确实运行过的请求。首次执行仍在等待必要用户答复时，应继续用例或将未覆盖断言记为 `not_run`。同一用例重跑时使用全新目录，避免旧产物污染。

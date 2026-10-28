@@ -87,6 +87,21 @@ release_snapshot() {
   assert_contains '# Local stable body' "$DOCS_DIR/stable.md"
 }
 
+padded_release_snapshot() {
+  setup_case padded-release-snapshot
+  printf '%s\n' '---' 'version: 2026.1021.08' '---' '# Design' >"$META_ROOT/application/DESIGN.md"
+  printf '%s\n' '# Padded release' >"$META_ROOT/application/new.md"
+  snapshot "$META_ROOT" 'docs-publish: version 2026.1021.08'
+  TARGET_SHA="$(git -C "$META_ROOT" rev-parse HEAD)"
+  printf '%s\n' '# Unreleased overwrite' >"$META_ROOT/application/new.md"
+  snapshot "$META_ROOT" 'unreleased work after padded release'
+  run_upgrade --apply-scaffold || { cat "$OUT_FILE"; return 1; }
+  assert_contains '版本增量: 2026.1020.0 -> 2026.1021.8' "$OUT_FILE" || return 1
+  assert_contains "$BASE_SHA..$TARGET_SHA" "$OUT_FILE" || return 1
+  assert_contains '# Padded release' "$DOCS_DIR/new.md" || return 1
+  assert_not_contains '# Unreleased overwrite' "$DOCS_DIR/new.md" || return 1
+}
+
 resume_pending_refill() {
   setup_case resume-pending-refill
   run_upgrade --apply-scaffold || { cat "$OUT_FILE"; return 1; }
@@ -188,7 +203,7 @@ non_git_source() {
 }
 
 failed=0
-for scenario in changed_only readme_mapping release_snapshot resume_pending_refill existing_instance_in_release other_layer_release missing_baseline missing_release same_version selected_ref clone_history non_git_source; do
+for scenario in changed_only readme_mapping release_snapshot padded_release_snapshot resume_pending_refill existing_instance_in_release other_layer_release missing_baseline missing_release same_version selected_ref clone_history non_git_source; do
   if (set -e; "$scenario"); then
     pass "版本增量: $scenario"
   else

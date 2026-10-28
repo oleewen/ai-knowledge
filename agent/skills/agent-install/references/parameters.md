@@ -17,7 +17,7 @@
 
 所有 scope 共用以下规则，rsync 与 cp 回退一致：
 
-- 排除各层 `README`、`README.md`、`readme.md`。
+- 排除各层 `README`、`README.md`、`readme.md`；唯一例外是直接位于 `references/` 下的 `README.md`，包含共享契约与技能内的参考索引。例外不穿透 `tests`、`evals` 等目录排除规则。
 - 排除研发资源：`tests`、`evals`、`test-core.sh`、`grader.md`，以及 `__pycache__`、`.pytest_cache`、`.hypothesis`、`*.pyc`、`*.pyo` 缓存。
 - 保留运行脚本、共享库、`agents/openai.yaml` 和技能执行所需的 `validate-*` 等产物校验脚本；不按名称中的 `test` 或 `validate` 泛删。
 

@@ -3,6 +3,8 @@
 `docs-publish` 只维护四层 `DESIGN.md` 的发布版本。脚本通过共享库
 [`agent/scripts/lib/version.sh`](../../../scripts/lib/version.sh) 解析和比较版本；不要在技能正文或其他技能中复制解析实现。
 
+该版本表示四层统一内容发布点，不表示消费库真实实体已完成迁移，也不代替格式或工具兼容检查。消费库升级须按 [docs-upgrade 的分项状态](../../docs-upgrade/references/workflow.md#模板与实体兼容状态)报告；不能仅凭版本号相同认定整库兼容。
+
 ## 版本计算
 
 目标格式为 `YYYY.MMdd.patch`。
@@ -24,4 +26,8 @@
 docs-publish: version YYYY.MMdd.patch
 ```
 
-`/docs-upgrade` 用该 subject 识别模板发布边界，因此不要手工改 subject，也不要用普通提交替代发布提交。
+`/docs-upgrade` 通过共享版本库按该 subject 识别模板发布边界，因此不要手工改 subject，也不要用普通提交替代发布提交。此机器格式是 [Git 提交语言规则的窄例外](../../../rules/coding/git-guidelines.md#正式发布标题例外)，不扩展为普通英文提交许可。
+
+发布 body 使用中文，列出上一版本、发布版本和发布文件；版本号及文件路径保留原值。正文不参与发布点识别，语言调整不改变历史发布兼容性或发布授权门禁。
+
+查询和候选发布版本均经共享库规范化后比较，非法版本不匹配；例如 `.8` 与 `.08` 表示同一 patch。最高发布版本按版本号判断，不按提交先后判断。同一规范版本出现多个发布提交时，在指定 revision 的既有 Git 日志遍历顺序中取首项；未指定 revision 时沿用 `--all`，不另设精确拼写优先或排序规则，也不改写历史提交。
