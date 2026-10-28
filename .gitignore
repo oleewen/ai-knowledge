@@ -1,0 +1,4 @@
+# 本地会话材料；不泛化忽略受管隐藏文件。
+**/superpowers/specs/
+**/superpowers/plans/
+/.superpowers/sdd/
