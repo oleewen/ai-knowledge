@@ -2,7 +2,7 @@
 
 > **契约定位**：角色、硬约束、必读索引；细则链向 SSOT，本文不抄全文。
 
-**最后更新**: 2026-10-05
+**最后更新**: 2026-10-31
 
 ---
 
@@ -72,3 +72,34 @@
 | OKF | [docs-okf/SKILL.md](agent/skills/docs-okf/SKILL.md) |
 
 **技术栈**：Markdown、YAML；Bash 5+；Git；可选 `rsync` / Python 3。详 [INDEX-GUIDE.md](INDEX-GUIDE.md) §1.2。
+
+---
+
+## Cursor Cloud specific instructions
+
+本仓没有业务进程，也不需要在启动阶段常驻服务。可执行面是 Bash 装机链与 `agent/scripts/tests/run.sh`。
+
+Cloud Agent 默认镜像已有 Bash 5+、Git、Python 3。知识库同步需要 `rsync`（没有则退回 `cp`）。`docs-tag` 单测需要 `pytest` 与 `hypothesis`。`agent/scripts/tools/forbidden-ref-outer.sh`（以及 `.githooks/pre-commit`）需要 `rg`，并要求本机已有 Agent 树。
+
+根 `.docsconfig` 的 `REPO_DIR=ai-knowledge`。`docsconfig_bootstrap_validate` 把仓库路径拼成 `$WORK_SPACE/ai-knowledge`，且该路径解析后必须等于检出目录。Cloud Agent 检出在 `/workspace`，因此要用软链对齐，再执行 `/agent-install` 把 `WORK_SPACE` 写入 `~/.agents/configs`。
+
+在仓库根执行（可重复）：
+
+```bash
+sudo apt-get update
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y rsync ripgrep python3-pytest python3-hypothesis
+mkdir -p "$HOME/workspaces"
+ln -sfn "$(pwd)" "$HOME/workspaces/ai-knowledge"
+bash agent/skills/agent-install/scripts/agent-install.sh --agents=cursor --workspace "$HOME/workspaces"
+```
+
+分支上的 `agent/` 与快照里的 `~/.agents` 不一致时，重跑最后一条 `agent-install`。
+
+验证：
+
+- 配置：`bash agent/scripts/tools/forbidden-ref-outer.sh` 应打印 `[OK]`
+- 回归：`bash agent/scripts/tests/run.sh --quick`（全量加 `--full`）
+- `docs-tag`：在 `agent/skills/docs-tag` 下执行 `python3 -m pytest tests/ -q`
+- 产品动作：对**另一个 git 仓库的子目录**执行 `bash agent/skills/docs-install/scripts/docs-install.sh --target <repo>/docs --type=application --mode=standalone`。`--target` 不能是仓库根。空目录首次写入不必加 `--force`。
+
+`agent/skills/docs-publish/tests/cases/01_version.sh` 把「下一日版本」写成 `2026.1020.4`，而 `version_next_from_files` 在日期不是 2026-10-20 时会改用当天日期。这是用例与日历耦合，不是环境缺失。
