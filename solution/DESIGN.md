@@ -24,7 +24,7 @@ version: 2026.1020.1
 | 目录 | 职责 |
 | --- | --- |
 | `knowledge/` | SLN/PL/PD/BP/BSP/BSD-L2/BS/MDG/TS 首次定义；五视角同构；`overview/{NAME}-overview.md` = 蒸馏缓冲区 |
-| `solutions/` | `/sdx-solution` 写 `SOLUTION-*.md`（交付包切分叙事）。**无** analysis/features/requirements。七章需求分析不在本层 |
+| `solutions/` | `/sdx-solution` 写 `SOLUTION-*.md`（七章解决方案分析），覆盖业务目标、产品服务边界、跨系统协作与方案级交付计划。保留 solutions/；无 analysis/features/requirements，系统需求与实现详设由下游承接 |
 | `adr/` | 解决方案层决策 + `CONTEXT.md` |
 | `system-slots/system-{NAME}/` | 系统联邦槽位（软链） |
 | `knowledge-links.yaml` | parent 一条，为公司；child 为系统；键均为 `name` / `label`，不写层前缀 |

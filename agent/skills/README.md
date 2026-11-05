@@ -34,7 +34,7 @@
 | 知识库维护 | `/docs-simplify` | 金字塔结构 + 激进精简 + SSOT 去重引用；原则见 [simplify-principles.md](../references/simplify-principles.md) |
 | 知识库维护 | `/docs-okf` | OKF refresh / validate / viz；须 `.docsconfig` 的 `DOC_DIR`+`AGENT_DIR`+`KNOWLEDGE_TYPE`；脚本走 `{DOC_DIR}/{AGENT_DIR}/`；轻流程 |
 | 需求交付 | `/sdx-domains` | → `company/domains/DOMAIN-MAP.md`、`DOMAIN-{BD-ID}.md` |
-| 需求交付 | `/sdx-solution` | 解决方案库 `solutions/SOLUTION-*.md`（交付包切分叙事） |
+| 需求交付 | `/sdx-solution` | 解决方案库 `solutions/SOLUTION-*.md`（七章解决方案分析） |
 | 需求交付 | `/sdx-analysis` | 系统/应用 `{DOC_DIR}/analysis/ANALYSIS-*.md`（七章需求分析） |
 | 需求交付 | `/sdx-feature` | 系统/应用 `{DOC_DIR}/features/FEATURE-*.md`（六章功能特性） |
 | 需求交付 | `/sdx-prd` | 基于已共识 FEATURE 当前 MVP → `PRD-*.md` |

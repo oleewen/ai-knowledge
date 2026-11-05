@@ -24,7 +24,7 @@ EOF
 }
 
 body() {
-  printf '## %s\n\n' '这次改了什么' '为什么这样切' '范围内外' '流程怎么串' '主数据主权' '技术例外'
+  printf '## %s\n\n' '1. 背景与目标' '2. 范围与约束' '3. 影响与冲突' '4. 思路与方案' '5. 风险与待定' '6. 交付计划' '7. 附录'
 }
 
 document() {
@@ -252,14 +252,14 @@ case_indented_code_comment() {
   local indent
   for indent in '    ' $'\t' $'  \t'; do
     document SOLUTION-261022-a
-    printf '\n%s<!-- SYS-ORDER -->\n' "$indent" >>"$SOLUTIONS/SOLUTION-261022-a.md"
+    printf '\n%s<!-- FR-ORDER -->\n' "$indent" >>"$SOLUTIONS/SOLUTION-261022-a.md"
     check 1 "$REPO"
   done
   document SOLUTION-261022-a
-  printf '\n<!--\n    SYS-ORDER\n\tFR-001\n-->\n' >>"$SOLUTIONS/SOLUTION-261022-a.md"
+  printf '\n<!--\n    FR-ORDER\n\tFR-001\n-->\n' >>"$SOLUTIONS/SOLUTION-261022-a.md"
   check 0 "$REPO"
   document SOLUTION-261022-a
-  printf '\n正文继续\n    <!-- SYS-ORDER -->\n' >>"$SOLUTIONS/SOLUTION-261022-a.md"
+  printf '\n正文继续\n    <!-- FR-ORDER -->\n' >>"$SOLUTIONS/SOLUTION-261022-a.md"
   check 0 "$REPO"
 }
 
@@ -268,7 +268,7 @@ case_thematic_code_boundary() {
   local divider
   for divider in '---' '***' '* * *' '_ _ _' '- - -' '  ***' '   - - -'; do
     document SOLUTION-261022-a
-    printf '%s\n    <!-- SYS-ORDER -->\n' "$divider" >>"$SOLUTIONS/SOLUTION-261022-a.md"
+    printf '%s\n    <!-- FR-ORDER -->\n' "$divider" >>"$SOLUTIONS/SOLUTION-261022-a.md"
     check 1 "$REPO"
   done
 }
@@ -319,16 +319,16 @@ case_reference_definition_context() {
 case_reference_continuation() {
   new_repo
   document SOLUTION-261022-a
-  printf '%s\n' '[ref]: /path' '    <!-- SYS-ORDER -->' >>"$SOLUTIONS/SOLUTION-261022-a.md"
+  printf '%s\n' '[ref]: /path' '    <!-- FR-ORDER -->' >>"$SOLUTIONS/SOLUTION-261022-a.md"
   check 0 "$REPO"
   document SOLUTION-261022-a
   printf '%s\n' '[ref]: /path' '[next]: /next' '    <!-- MVP -->' '附加小结' '---' >>"$SOLUTIONS/SOLUTION-261022-a.md"
   check 1 "$REPO"
   assert_contains 'Setext H2' "$OUTPUT"
   document SOLUTION-261022-a
-  printf '%s\n' '[ref]: /path' '' '    <!-- SYS-ORDER -->' >>"$SOLUTIONS/SOLUTION-261022-a.md"
+  printf '%s\n' '[ref]: /path' '' '    <!-- FR-ORDER -->' >>"$SOLUTIONS/SOLUTION-261022-a.md"
   check 1 "$REPO"
-  assert_contains '正文出现 SYS' "$OUTPUT"
+  assert_contains '正文出现下游条目 FR' "$OUTPUT"
 }
 
 case_reference_empty_label() {
@@ -345,14 +345,14 @@ case_reference_empty_label() {
 case_inline_multiline_comment() {
   new_repo
   document SOLUTION-261022-a
-  printf '%s\n' '正文 <!--' 'comment -->' '    <!-- SYS-ORDER -->' >>"$SOLUTIONS/SOLUTION-261022-a.md"
+  printf '%s\n' '正文 <!--' 'comment -->' '    <!-- FR-ORDER -->' >>"$SOLUTIONS/SOLUTION-261022-a.md"
   check 0 "$REPO"
 }
 
 case_block_multiline_comment() {
   new_repo
   document SOLUTION-261022-a
-  printf '%s\n' '正文' '<!--' 'comment -->' '    <!-- SYS-ORDER -->' >>"$SOLUTIONS/SOLUTION-261022-a.md"
+  printf '%s\n' '正文' '<!--' 'comment -->' '    <!-- FR-ORDER -->' >>"$SOLUTIONS/SOLUTION-261022-a.md"
   check 1 "$REPO"
 }
 
@@ -373,7 +373,7 @@ case_inline_comment_boundaries() {
 case_body_tokens() {
   new_repo
   local token
-  for token in 'SYS-ORDER' 'FR-001' 'MVP' '里程碑'; do
+  for token in 'FR-ORDER' 'FR-001' 'MVP-1'; do
     document SOLUTION-261022-a
     printf '%s\n' "$token" >>"$SOLUTIONS/SOLUTION-261022-a.md"
     check 1 "$REPO"
@@ -385,7 +385,7 @@ case_body_selection() {
   new_repo
   document SOLUTION-261022-a
   document SOLUTION-261022-b '"SOLUTION-261022-a"'
-  printf 'MVP\n' >>"$SOLUTIONS/SOLUTION-261022-a.md"
+  printf 'MVP-1\n' >>"$SOLUTIONS/SOLUTION-261022-a.md"
   check 0 "$REPO" --file "$SOLUTIONS/SOLUTION-261022-b.md"
   check 1 "$REPO"
 }
@@ -399,13 +399,13 @@ case_body_scope() {
 case_inline_code_comments() {
   new_repo
   local content
-  for content in '`<!--` SYS-ORDER' '``<!--`` FR-001' '`<!-- SYS-ORDER -->`' '\<!-- SYS-ORDER' '``text ` <!--`` MVP'; do
+  for content in '`<!--` FR-ORDER' '``<!--`` FR-001' '`<!-- FR-ORDER -->`' '\<!-- FR-ORDER' '``text ` <!--`` MVP-1'; do
     document SOLUTION-261022-a
     printf '%s\n' "$content" >>"$SOLUTIONS/SOLUTION-261022-a.md"
     check 1 "$REPO"
   done
   document SOLUTION-261022-a
-  printf '%s\n' '`<!--` <!-- SYS-ORDER -->' '\` <!-- FR-001 -->' >>"$SOLUTIONS/SOLUTION-261022-a.md"
+  printf '%s\n' '`<!--` <!-- FR-ORDER -->' '\` <!-- FR-001 -->' >>"$SOLUTIONS/SOLUTION-261022-a.md"
   check 0 "$REPO"
 }
 
@@ -422,7 +422,7 @@ case_literal_backticks() {
 case_ambiguous_code_comment() {
   new_repo
   document SOLUTION-261022-a
-  printf '%s\n' 'text `code' '<!-- SYS-ORDER -->' 'end`' >>"$SOLUTIONS/SOLUTION-261022-a.md"
+  printf '%s\n' 'text `code' '<!-- FR-ORDER -->' 'end`' >>"$SOLUTIONS/SOLUTION-261022-a.md"
   check 1 "$REPO"
   assert_contains '歧义' "$OUTPUT"
 }
@@ -479,7 +479,7 @@ case_linked_target() {
   mkdir "$FIXTURE/aliases"
   ln -s "$SOLUTIONS/SOLUTION-261022-a.md" "$FIXTURE/aliases/SOLUTION-261022-a.md"
   check 0 "$REPO" --file "$FIXTURE/aliases/SOLUTION-261022-a.md"
-  printf 'SYS-ORDER\n' >>"$SOLUTIONS/SOLUTION-261022-a.md"
+  printf 'FR-ORDER\n' >>"$SOLUTIONS/SOLUTION-261022-a.md"
   check 1 "$REPO" --file "$FIXTURE/aliases/SOLUTION-261022-a.md"
 }
 
@@ -536,7 +536,26 @@ case_read_only() {
   [[ "$before" == "$after" ]] || test_fail '校验修改了工程文件'
 }
 
-CASES=(cli relative valid_roots empty fork scalar_quotes crlf orphan self_parent cycle duplicate_id identity frontmatter complex_scalar complex_continuations identity_key_syntax duplicate_key fenced_headings commented_headings comment_prefix heading_order heading_prefix empty_heading indented_code_comment thematic_code_boundary thematic_controls setext_heading reference_definition reference_definition_context reference_continuation reference_empty_label inline_multiline_comment block_multiline_comment inline_comment_boundaries body_tokens body_selection body_scope inline_code_comments literal_backticks ambiguous_code_comment mixed_fence valid_fences invalid_fence_info linked_solutions linked_successor linked_target linked_alias_identity link_cycle broken_links configuration read_only)
+case_analysis_and_legacy() {
+  new_repo
+  document SOLUTION-261022-a
+  printf '\nSYS-ORDER 承接审批；里程碑 M1：退出条件待确认。FR 和 MVP 留给下游。\n' >>"$SOLUTIONS/SOLUTION-261022-a.md"
+  check 0 "$REPO"
+  assert_not_contains '旧六段' "$OUTPUT"
+  {
+    printf '%s\nid: "SOLUTION-261022-b"\nparent: "SOLUTION-261022-a"\n%s\n' '---' '---'
+    printf '## %s\n\n' '这次改了什么' '为什么这样切' '范围内外' '流程怎么串' '主数据主权' '技术例外'
+  } >"$SOLUTIONS/SOLUTION-261022-b.md"
+  local before
+  before="$(cksum "$SOLUTIONS/SOLUTION-261022-b.md")"
+  check 0 "$REPO"
+  assert_contains '旧六段' "$OUTPUT"
+  [[ "$before" == "$(cksum "$SOLUTIONS/SOLUTION-261022-b.md")" ]] || test_fail '兼容校验不得迁移旧稿'
+  printf '## 7. 附录\n' >>"$SOLUTIONS/SOLUTION-261022-b.md"
+  check 1 "$REPO"
+}
+
+CASES=(analysis_and_legacy cli relative valid_roots empty fork scalar_quotes crlf orphan self_parent cycle duplicate_id identity frontmatter complex_scalar complex_continuations identity_key_syntax duplicate_key fenced_headings commented_headings comment_prefix heading_order heading_prefix empty_heading indented_code_comment thematic_code_boundary thematic_controls setext_heading reference_definition reference_definition_context reference_continuation reference_empty_label inline_multiline_comment block_multiline_comment inline_comment_boundaries body_tokens body_selection body_scope inline_code_comments literal_backticks ambiguous_code_comment mixed_fence valid_fences invalid_fence_info linked_solutions linked_successor linked_target linked_alias_identity link_cycle broken_links configuration read_only)
 if [[ "${1:-}" == --case ]]; then
   "case_${2:?case name}"
   test_pass "$2"

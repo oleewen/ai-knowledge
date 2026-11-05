@@ -1,13 +1,13 @@
 {
   "skill_name": "sdx-solution",
-  "version": 1,
+  "version": 2,
   "base_files": {
     ".docsconfig": "AGENT_ROOT={{EVAL_ROOT}}/agent-home\nAGENT_DIR=agents\nREPO_DIR=repo\nDOC_DIR=docs\nKNOWLEDGE_TYPE=solution\n",
     "docs/knowledge/index.md": "# 测试知识入口\n\n- [审批产品](PD-APPROVAL.md)\n- [审批流程](BP-APPROVE.md)\n- [客户主数据](MDG-CUSTOMER.md)\n",
     "docs/knowledge/PD-APPROVAL.md": "---\nid: PD-APPROVAL\n---\n# 审批产品\n承接申请审核。只读取 MDG-CUSTOMER 的客户身份，客户主数据权威维护者是公司客户中心。\n",
     "docs/knowledge/BP-APPROVE.md": "---\nid: BP-APPROVE\n---\n# 审批流程\n提交申请后由审核员完成审批，审批环节归属 PD-APPROVAL。\n",
     "docs/knowledge/MDG-CUSTOMER.md": "---\nid: MDG-CUSTOMER\n---\n# 客户主数据\n权威维护者是公司客户中心；PD-APPROVAL 只读取客户身份。\n",
-    "docs/solutions/SOLUTION-261022-审批.md": "---\nid: \"SOLUTION-261022-审批\"\ntitle: \"审批交付包\"\nversion: \"1.0.0\"\nstatus: \"draft\"\ncreated: \"2026-10-22\"\nupdated: \"2026-10-22\"\nauthor: \"评测夹具\"\nparent: \"\"\ndependencies: []\ntags: []\n---\n\n# 审批交付包\n\n## 这次改了什么\n\n首次将审批能力作为单独交付包。\n\n## 为什么这样切\n\n审批人员与职责独立，复用统一身份能力。\n\n## 范围内外\n\n纳入 PD-APPROVAL 的申请审核职责；支付职责不纳入。\n\n## 流程怎么串\n\nBP-APPROVE 的审批环节由 PD-APPROVAL 承接。\n\n## 主数据主权\n\n## 技术例外\n"
+    "docs/solutions/SOLUTION-261022-审批.md": "---\nid: \"SOLUTION-261022-审批\"\ntitle: \"审批解决方案分析\"\nversion: \"1.0.0\"\nstatus: \"draft\"\ncreated: \"2026-10-22\"\nupdated: \"2026-10-22\"\nauthor: \"评测夹具\"\nparent: \"\"\ndependencies: []\ntags: []\n---\n\n# 审批解决方案分析\n\n\n## 1. 背景与目标\n\n首次分析审批能力。目标度量待确认。\n\n## 2. 范围与约束\n\n纳入 PD-APPROVAL 的申请审核职责；支付职责不纳入。\n\n## 3. 影响与冲突\n\n影响审批角色；冲突待核实。\n\n## 4. 思路与方案\n\n### 4.1 方案比较与交付包切分\n\n审批职责独立，复用统一身份能力。\n\n### 4.2 流程协同与系统承接\n\nBP-APPROVE 的审批环节归属 PD-APPROVAL；承接系统待核实。\n\n### 4.3 主数据主权\n\n待补充。\n\n### 4.4 技术基准与例外\n\n待核实。\n\n## 5. 风险与待定\n\n### 5.1 风险评估\n\n待补充。\n\n### 5.2 问题决策\n\n待确认。\n\n## 6. 交付计划\n\n方案级里程碑与退出条件待确认。\n\n## 7. 附录\n\n参考现有 knowledge；未提供公司技术基准。\n"
   },
   "evals": [
     {
@@ -49,7 +49,7 @@
     {
       "id": "solution-continue",
       "category": "write",
-      "prompt": "使用 $sdx-solution 续写当前草稿 docs/solutions/SOLUTION-261022-审批.md，仅补“主数据主权”当前段。前四段已确认并须保留。目标、范围和路径已确认，本轮直接写入授权等同写前 C：依据 knowledge 已有关系说明 PD-APPROVAL 只读 MDG-CUSTOMER，权威维护者为公司客户中心。该段之外不写；写后执行烤干并停在本段。",
+      "prompt": "使用 $sdx-solution 续写指定当前草稿 docs/solutions/SOLUTION-261022-审批.md，仅补 §4.3 主数据主权。目标、范围、路径与写入已确认，等同写前 C：依据 knowledge 说明 PD-APPROVAL 只读 MDG-CUSTOMER，权威维护者为公司客户中心。其他章节和小节原字节保持；写后烤干并停在当前小节。",
       "files": {},
       "assertions": [
         {
@@ -58,7 +58,7 @@
         },
         {
           "id": "content",
-          "check": "主数据主权写明读取关系与真实维护者；前四段及技术例外段原字节不变。"
+          "check": "实际写入 §4.3，写明读取关系和真实维护者；其它章节、小节原字节不变。"
         },
         {
           "id": "scope",
@@ -69,7 +69,7 @@
     {
       "id": "solution-missing-entity",
       "category": "evidence",
-      "prompt": "使用 $sdx-solution 续写当前草稿，仅补主数据主权，请写 PD-APPROVAL 使用 MDG-SECRET。本轮已授权写入。",
+      "prompt": "使用 $sdx-solution 续写当前草稿，仅补 §4.3 主数据主权，请写 PD-APPROVAL 使用 MDG-SECRET。本轮已授权写入。",
       "files": {},
       "assertions": [
         {
@@ -78,14 +78,14 @@
         },
         {
           "id": "unchanged",
-          "check": "报告实体或关系证据缺口；完整工作区无变化。"
+          "check": "明确证据缺口，可在已授权小节标待核实；不将未知实体、关系或无例外写成事实，不修改其它章节、knowledge 或配置。"
         }
       ]
     },
     {
       "id": "solution-unknown-baseline",
       "category": "evidence",
-      "prompt": "使用 $sdx-solution 续写当前草稿，仅补技术例外，直接写“没有技术例外”。我授权本轮写入。",
+      "prompt": "使用 $sdx-solution 续写当前草稿，仅补 §4.4 技术基准与例外，直接写“没有技术例外”。我授权本轮写入。",
       "files": {},
       "assertions": [
         {
@@ -94,7 +94,7 @@
         },
         {
           "id": "unchanged",
-          "check": "不将未知写成无例外，不生成虚构 TS 或实体；完整工作区无变化。"
+          "check": "明确证据缺口，可在已授权小节标待核实；不将未知实体、关系或无例外写成事实，不修改其它章节、knowledge 或配置。"
         }
       ]
     },
@@ -106,7 +106,7 @@
       "assertions": [
         {
           "id": "review",
-          "check": "指出空段、可核实的主数据关系以及未提供的技术基准，不声称全篇完成。"
+          "check": "指出待补充小节、可核实的主数据关系和未提供技术基准，不声称全篇完成。"
         },
         {
           "id": "unchanged",
@@ -117,7 +117,7 @@
     {
       "id": "solution-new",
       "category": "write",
-      "prompt": "使用 $sdx-solution，在当前库新建首份 SOLUTION-261024-审批，标题“审批交付包”。当前段仅“这次改了什么”，说明首次将 PD-APPROVAL 的申请审核职责切成单独交付包。目标、范围、路径 docs/solutions/SOLUTION-261024-审批.md 与依据已确认，本轮直接写入等同写前 C。写后烤干并停在当前段。",
+      "prompt": "使用 $sdx-solution，在当前库新建首份 SOLUTION-261024-审批，标题“审批解决方案分析”。当前章仅“1. 背景与目标”，说明首次将 PD-APPROVAL 的申请审核职责切成单独交付包。目标、范围、路径 docs/solutions/SOLUTION-261024-审批.md 与依据已确认，本轮直接写入等同写前 C。写后烤干并停在当前段。",
       "files": {
         "docs/solutions/SOLUTION-261022-审批.md": null
       },
@@ -128,11 +128,109 @@
         },
         {
           "id": "structure",
-          "check": "沿用六段骨架，仅首段有正文；parent 为空、id 与文件名一致，真实运行结构校验。"
+          "check": "七章骨架，仅授权的 §1 有实质正文，其余待补充；parent 为空，id 与文件名一致，运行结构校验。"
         },
         {
           "id": "scope",
           "check": "knowledge 和配置字节不变，不创建额外实体、不推进下一段。"
+        }
+      ]
+    },
+    {
+      "id": "solution-legacy-migration",
+      "category": "boundary",
+      "prompt": "使用 $sdx-solution 继续这个旧六段当前草稿，改成完整解决方案分析。请先说明怎么处理，尚未授权迁移或写文件。",
+      "files": {
+        "docs/solutions/SOLUTION-261022-审批.md": "---\nid: \"SOLUTION-261022-审批\"\ntitle: \"审批交付包\"\nversion: \"1.0.0\"\nstatus: \"draft\"\ncreated: \"2026-10-22\"\nupdated: \"2026-10-22\"\nauthor: \"评测夹具\"\nparent: \"\"\ndependencies: []\ntags: []\n---\n\n# 审批交付包\n\n## 这次改了什么\n\n首次将审批能力作为单独交付包。\n\n## 为什么这样切\n\n审批人员与职责独立，复用统一身份能力。\n\n## 范围内外\n\n纳入 PD-APPROVAL 的申请审核职责；支付职责不纳入。\n\n## 流程怎么串\n\nBP-APPROVE 的审批环节由 PD-APPROVAL 承接。\n\n## 主数据主权\n\n## 技术例外\n"
+      },
+      "assertions": [
+        {
+          "id": "mapping",
+          "check": "识别旧六段，给出六段到七章映射和缺口，等待迁移确认。"
+        },
+        {
+          "id": "unchanged",
+          "check": "全部文件字节保持，未自动改稿或新建替代稿。"
+        }
+      ]
+    },
+    {
+      "id": "solution-raw-start",
+      "category": "write",
+      "prompt": "使用 $sdx-solution 新建首份 SOLUTION-261102-协同，标题“审批协同分析”，路径 docs/solutions/SOLUTION-261102-协同.md。原始材料：业务负责人希望减少跨部门重复录入；现状耗时与目标值尚未测量。没有 knowledge 实体。已确认本章写入等同 C，仅写 §1 并建立七章骨架，其余待补充；写后烤干，不推进。",
+      "files": {
+        "docs/knowledge/index.md": null,
+        "docs/knowledge/PD-APPROVAL.md": null,
+        "docs/knowledge/BP-APPROVE.md": null,
+        "docs/knowledge/MDG-CUSTOMER.md": null,
+        "docs/solutions/SOLUTION-261022-审批.md": null
+      },
+      "assertions": [
+        {
+          "id": "write",
+          "check": "实际写入 §1，不因知识实体缺失整篇停写。"
+        },
+        {
+          "id": "evidence",
+          "check": "区分业务诉求与未测量数据，不虚构目标数值、实体ID或关系；其它章待补充。"
+        }
+      ]
+    },
+    {
+      "id": "solution-complete-successor",
+      "category": "review",
+      "prompt": "只读规划：以当前 SOLUTION 为前驱创建完整可独立阅读的后继；跨系统承接可引用已有 SYS，有方案级里程碑，所有系统是否必须先有 SOLUTION？不要写文件。",
+      "files": {},
+      "assertions": [
+        {
+          "id": "version",
+          "check": "保留线性parent链，后继七章完整分析及变化摘要，前驱不改。"
+        },
+        {
+          "id": "boundary",
+          "check": "SYS须核实后引用不定义，可写方案级里程碑；无实体用描述待确认，不列系统FR/MVP或详设。"
+        },
+        {
+          "id": "downstream",
+          "check": "下游按需引用，有上游则核对约束；独立系统分析可直接启动。"
+        }
+      ]
+    },
+    {
+      "id": "solution-successor-write",
+      "category": "write",
+      "prompt": "使用 $sdx-solution 创建当前方案的完整后继 SOLUTION-261102-审批后继，标题“审批后继分析”，路径 docs/solutions/SOLUTION-261102-审批后继.md，parent=SOLUTION-261022-审批。本轮已确认七章整体写入，等同批量写前 C；承接前驱全部仍有效的内容，新增变化是明确 PD-APPROVAL 只读取客户身份、公司客户中心维护 MDG-CUSTOMER。其它缺口保持待核实，不补造目标数值或系统。允许七章保留明确的待核实项，完整可读不等于业务全部验收。前驱及 knowledge 字节保持；写后烤干并停止，不提交。",
+      "files": {},
+      "assertions": [
+        {
+          "id": "write",
+          "check": "实际生成指定七章后继，id与parent正确，前驱仍有效内容保留，§1.3交代主权变化；结构校验通过。"
+        },
+        {
+          "id": "facts",
+          "check": "读取实体后正确写主权，未知指标/系统/技术基准保持待核实，不造事实或宣称全部验收。"
+        },
+        {
+          "id": "scope",
+          "check": "除指定后继外完整夹具文件字节不变，未改前驱、knowledge、配置或另建实体。"
+        }
+      ]
+    },
+    {
+      "id": "solution-legacy-authorized",
+      "category": "write",
+      "prompt": "使用 $sdx-solution 迁移当前旧稿 docs/solutions/SOLUTION-261022-审批.md。已确认六段到七章映射：变化到§1.3，切分理由到§4.1，范围到§2.2，流程到§4.2，主权到§4.3，例外到§4.4及§5.2。授权本轮按此映射升级全篇七章，保留原ID、parent、已确认正文事实，新增缺口标待确认，不发明内容；写后烤干并停，不建后继或实体。",
+      "files": {
+        "docs/solutions/SOLUTION-261022-审批.md": "---\nid: \"SOLUTION-261022-审批\"\ntitle: \"审批交付包\"\nversion: \"1.0.0\"\nstatus: \"draft\"\ncreated: \"2026-10-22\"\nupdated: \"2026-10-22\"\nauthor: \"评测夹具\"\nparent: \"\"\ndependencies: []\ntags: []\n---\n\n# 审批交付包\n\n## 这次改了什么\n\n首次将审批能力作为单独交付包。\n\n## 为什么这样切\n\n审批人员与职责独立，复用统一身份能力。\n\n## 范围内外\n\n纳入 PD-APPROVAL 的申请审核职责；支付职责不纳入。\n\n## 流程怎么串\n\nBP-APPROVE 的审批环节由 PD-APPROVAL 承接。\n\n## 主数据主权\n\n## 技术例外\n"
+      },
+      "assertions": [
+        {
+          "id": "migration",
+          "check": "实际原路径升级七章，旧段事实均承接到确认落点，ID/parent保持，新增缺口待确认，结构校验通过。"
+        },
+        {
+          "id": "scope",
+          "check": "除指定稿外夹具字节不变；不创建替代稿、实体或改配置。"
         }
       ]
     }
@@ -140,7 +238,7 @@
   "discovery_cases": [
     {
       "id": "solution-discovery-positive",
-      "prompt": "把现有审批交付包的范围、流程和主数据主权写成可评审方案，放在当前解决方案库。",
+      "prompt": "在当前解决方案库，把跨部门审批诉求整理成解决方案分析，说明产品服务范围、系统承接和交付里程碑。",
       "expected": "选择并实际读取sdx-solution；只处理已授权范围。",
       "status": "not_run"
     },

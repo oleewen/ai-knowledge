@@ -1,0 +1,571 @@
+{
+  "skill_name": "sdx-solution",
+  "skill_revision": {
+    "SKILL.md": "c5a26c31fd381290fa32c885120f603e0580b60fe39179b4ef8e92a84486e545",
+    "evals/evals.json": "b10fdeafb561dcc1a9435aaddb12731dd59f624bc650a609887a9e8ffe9b7c6b",
+    "evals/eval-metadata-template.json": "a21be69a3a193af6e2512ef6700bdf821733e78b5e21c1ec7d869575e2ac018e",
+    "references/workflow.md": "49e7957b8d6cd0ffe31ad8deef390ad35aef806ddd592f81299ce24cede1e8a7",
+    "references/gates.md": "85e9c69659012b818a773fd704ef22bcd6024266f1596606f7e87b75eb81e720",
+    "references/audience-and-language.md": "329bc783367b234c314a49701b7f57f7c3fe96a44d9c16a58c3f24ea57a9651a",
+    "references/core-concepts.md": "9ee3c3a7b1910ba5e92ef3cd9d3574d359991e92d57958f50ec956210ec1226c",
+    "references/evaluation.md": "7c7a946b5d1797a09375d25150d610f04ce64653552d14bd7c45cafab2090b43",
+    "tests/run.sh": "e37170814cd1b2a57019de15d369f6b941d3deed9d23cb9ac18f0046448e8597",
+    "agents/grader.md": "3189e606a8b6be06cb2d68f0ab839feefddb89208dcd3626bd29b25527f044e6",
+    "scripts/validate-solution.sh": "b219b166664a0ef150e3231794932ca3aea7834a30eaee411df6f430012685b8",
+    "assets/solution-template.md": "bc3150e44264116794fbd598551756bf21048fb2315171910c9902e429a79769"
+  },
+  "model": "Codex继承会话模型（运行时未提供具体版本标识）",
+  "run_at": "2026-11-02T09:41:10.179591+08:00",
+  "workspace": "/tmp/solution-behavior-m3ofqxka",
+  "skill_content_summary": "七章分析；原始材料起步；事实/拟议/待核实分离；SYS仅引用；方案级里程碑；完整后继；六段迁移授权；系统分析按需引用",
+  "results": [
+    {
+      "eval_id": "solution-layer",
+      "status": "not_run",
+      "text": "本批未执行；不以脚本回归或其它场景代替。",
+      "assertions": [
+        {
+          "id": "layer",
+          "status": "not_run",
+          "evidence": {
+            "reason": "本批未执行"
+          }
+        },
+        {
+          "id": "unchanged",
+          "status": "not_run",
+          "evidence": {
+            "reason": "本批未执行"
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "solution-fork",
+      "status": "not_run",
+      "text": "本批未执行；不以脚本回归或其它场景代替。",
+      "assertions": [
+        {
+          "id": "chain",
+          "status": "not_run",
+          "evidence": {
+            "reason": "本批未执行"
+          }
+        },
+        {
+          "id": "unchanged",
+          "status": "not_run",
+          "evidence": {
+            "reason": "本批未执行"
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "solution-continue",
+      "status": "pass",
+      "text": "已执行且有工具记录、文件快照和差异证据。",
+      "assertions": [
+        {
+          "id": "authorization",
+          "status": "pass",
+          "evidence": {
+            "observation": "已读当前稿、PD与MDG原文，依明确C直接实际写入；未重复请求写前授权。",
+            "execution": "/tmp/solution-behavior-m3ofqxka/solution-continue.execution.md",
+            "snapshot": "/tmp/solution-behavior-m3ofqxka/solution-continue.snapshot.json",
+            "diff": "/tmp/solution-behavior-m3ofqxka/solution-continue.diff"
+          }
+        },
+        {
+          "id": "content",
+          "status": "pass",
+          "evidence": {
+            "observation": "仅§4.3由待补充替换为客户中心权威维护、PD-APPROVAL只读MDG-CUSTOMER；diff显示其余逐字节不变。",
+            "execution": "/tmp/solution-behavior-m3ofqxka/solution-continue.execution.md",
+            "snapshot": "/tmp/solution-behavior-m3ofqxka/solution-continue.snapshot.json",
+            "diff": "/tmp/solution-behavior-m3ofqxka/solution-continue.diff"
+          }
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "evidence": {
+            "observation": "只改变原稿一个小节，无新增版本/实体/配置变更；最终答复烤干并停当前小节，§4.4不变。",
+            "execution": "/tmp/solution-behavior-m3ofqxka/solution-continue.execution.md",
+            "snapshot": "/tmp/solution-behavior-m3ofqxka/solution-continue.snapshot.json",
+            "diff": "/tmp/solution-behavior-m3ofqxka/solution-continue.diff"
+          }
+        }
+      ],
+      "snapshot_summary": [
+        "repo/docs/solutions/SOLUTION-261022-审批.md"
+      ],
+      "validator": {
+        "command": [
+          "/opt/homebrew/bin/bash",
+          "/Users/only/workspaces/ai-knowledge/agent/skills/sdx-solution/scripts/validate-solution.sh",
+          "--file",
+          "docs/solutions/SOLUTION-261022-审批.md"
+        ],
+        "exit_code": 0,
+        "evidence": "/tmp/solution-behavior-m3ofqxka/solution-continue.validator.txt"
+      },
+      "snapshot_hashes": {
+        "changed": [
+          "repo/docs/solutions/SOLUTION-261022-审批.md"
+        ],
+        "before": {
+          "agent-home/agents/configs": "7770f6b9fd228f03566fd1d6c17edb3963dd252963db2af2876ca42ae3ad6819",
+          "repo/.docsconfig": "8765b10a37e97600b4327f5c0b8da207e5cad4e8dbd5271b78ad0ebd82dec507",
+          "repo/docs/solutions/SOLUTION-261022-审批.md": "0e9a99372d9ddc32b1fcea5160f29450e7181b96e7a8a2a2bb9843400282ffaf",
+          "repo/docs/knowledge/MDG-CUSTOMER.md": "8ff198f5a7b544239996622ba5481608398dd8d7bcfe11f713feecc3c677ed1b",
+          "repo/docs/knowledge/index.md": "4af6ffa37942a59f9d12a4e05abca385bc40142e9f7c0aa96513ea11cef31338",
+          "repo/docs/knowledge/BP-APPROVE.md": "bd09e5b990da369aff9834e1f75e7fd291bafea46644df9e6f2a0f3931117f8a",
+          "repo/docs/knowledge/PD-APPROVAL.md": "354c038e9556232e71e908d1c5812206520a84b0a5e91a0a54f561497c343e5d"
+        },
+        "after": {
+          "agent-home/agents/configs": "7770f6b9fd228f03566fd1d6c17edb3963dd252963db2af2876ca42ae3ad6819",
+          "repo/.docsconfig": "8765b10a37e97600b4327f5c0b8da207e5cad4e8dbd5271b78ad0ebd82dec507",
+          "repo/docs/solutions/SOLUTION-261022-审批.md": "8afcdd71bfffc5de0899806e41fd4fc24b19aca0b63424332246ab9b09f695df",
+          "repo/docs/knowledge/MDG-CUSTOMER.md": "8ff198f5a7b544239996622ba5481608398dd8d7bcfe11f713feecc3c677ed1b",
+          "repo/docs/knowledge/index.md": "4af6ffa37942a59f9d12a4e05abca385bc40142e9f7c0aa96513ea11cef31338",
+          "repo/docs/knowledge/BP-APPROVE.md": "bd09e5b990da369aff9834e1f75e7fd291bafea46644df9e6f2a0f3931117f8a",
+          "repo/docs/knowledge/PD-APPROVAL.md": "354c038e9556232e71e908d1c5812206520a84b0a5e91a0a54f561497c343e5d"
+        }
+      }
+    },
+    {
+      "eval_id": "solution-missing-entity",
+      "status": "not_run",
+      "text": "本批未执行；不以脚本回归或其它场景代替。",
+      "assertions": [
+        {
+          "id": "missing",
+          "status": "not_run",
+          "evidence": {
+            "reason": "本批未执行"
+          }
+        },
+        {
+          "id": "unchanged",
+          "status": "not_run",
+          "evidence": {
+            "reason": "本批未执行"
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "solution-unknown-baseline",
+      "status": "not_run",
+      "text": "本批未执行；不以脚本回归或其它场景代替。",
+      "assertions": [
+        {
+          "id": "baseline",
+          "status": "not_run",
+          "evidence": {
+            "reason": "本批未执行"
+          }
+        },
+        {
+          "id": "unchanged",
+          "status": "not_run",
+          "evidence": {
+            "reason": "本批未执行"
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "solution-readonly",
+      "status": "not_run",
+      "text": "本批未执行；不以脚本回归或其它场景代替。",
+      "assertions": [
+        {
+          "id": "review",
+          "status": "not_run",
+          "evidence": {
+            "reason": "本批未执行"
+          }
+        },
+        {
+          "id": "unchanged",
+          "status": "not_run",
+          "evidence": {
+            "reason": "本批未执行"
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "solution-new",
+      "status": "not_run",
+      "text": "本批未执行；不以脚本回归或其它场景代替。",
+      "assertions": [
+        {
+          "id": "write",
+          "status": "not_run",
+          "evidence": {
+            "reason": "本批未执行"
+          }
+        },
+        {
+          "id": "structure",
+          "status": "not_run",
+          "evidence": {
+            "reason": "本批未执行"
+          }
+        },
+        {
+          "id": "scope",
+          "status": "not_run",
+          "evidence": {
+            "reason": "本批未执行"
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "solution-legacy-migration",
+      "status": "pass",
+      "text": "已执行且有工具记录、文件快照和差异证据。",
+      "assertions": [
+        {
+          "id": "mapping",
+          "status": "pass",
+          "evidence": {
+            "observation": "最终答复完整展示六段到七章映射及度量/影响/风险/交付计划/技术基准缺口，等待迁移确认。",
+            "execution": "/tmp/solution-behavior-m3ofqxka/solution-legacy-migration.execution.md",
+            "snapshot": "/tmp/solution-behavior-m3ofqxka/solution-legacy-migration.snapshot.json",
+            "diff": "/tmp/solution-behavior-m3ofqxka/solution-legacy-migration.diff"
+          }
+        },
+        {
+          "id": "unchanged",
+          "status": "pass",
+          "evidence": {
+            "observation": "整个容器before/after文件路径与SHA256一致；diff为空，未建替代稿。",
+            "execution": "/tmp/solution-behavior-m3ofqxka/solution-legacy-migration.execution.md",
+            "snapshot": "/tmp/solution-behavior-m3ofqxka/solution-legacy-migration.snapshot.json",
+            "diff": "/tmp/solution-behavior-m3ofqxka/solution-legacy-migration.diff"
+          }
+        }
+      ],
+      "snapshot_summary": [],
+      "snapshot_hashes": {
+        "changed": [],
+        "before": {
+          "agent-home/agents/configs": "46ec2cc92f72112ff4abd5dcb2b62a53b0a4cb48ee1ca88f37ee73dec03fa1d3",
+          "repo/.docsconfig": "524716cc286a3198e22f466eadc6c44701ee3cb12e98a43c64c7e808c0bc7712",
+          "repo/docs/solutions/SOLUTION-261022-审批.md": "17e13d4db1629e0721c28e2484719d5b685ab16893c2036aefea450ae7f63200",
+          "repo/docs/knowledge/MDG-CUSTOMER.md": "8ff198f5a7b544239996622ba5481608398dd8d7bcfe11f713feecc3c677ed1b",
+          "repo/docs/knowledge/index.md": "4af6ffa37942a59f9d12a4e05abca385bc40142e9f7c0aa96513ea11cef31338",
+          "repo/docs/knowledge/BP-APPROVE.md": "bd09e5b990da369aff9834e1f75e7fd291bafea46644df9e6f2a0f3931117f8a",
+          "repo/docs/knowledge/PD-APPROVAL.md": "354c038e9556232e71e908d1c5812206520a84b0a5e91a0a54f561497c343e5d"
+        },
+        "after": {
+          "agent-home/agents/configs": "46ec2cc92f72112ff4abd5dcb2b62a53b0a4cb48ee1ca88f37ee73dec03fa1d3",
+          "repo/.docsconfig": "524716cc286a3198e22f466eadc6c44701ee3cb12e98a43c64c7e808c0bc7712",
+          "repo/docs/solutions/SOLUTION-261022-审批.md": "17e13d4db1629e0721c28e2484719d5b685ab16893c2036aefea450ae7f63200",
+          "repo/docs/knowledge/MDG-CUSTOMER.md": "8ff198f5a7b544239996622ba5481608398dd8d7bcfe11f713feecc3c677ed1b",
+          "repo/docs/knowledge/index.md": "4af6ffa37942a59f9d12a4e05abca385bc40142e9f7c0aa96513ea11cef31338",
+          "repo/docs/knowledge/BP-APPROVE.md": "bd09e5b990da369aff9834e1f75e7fd291bafea46644df9e6f2a0f3931117f8a",
+          "repo/docs/knowledge/PD-APPROVAL.md": "354c038e9556232e71e908d1c5812206520a84b0a5e91a0a54f561497c343e5d"
+        }
+      }
+    },
+    {
+      "eval_id": "solution-raw-start",
+      "status": "pass",
+      "text": "已执行且有工具记录、文件快照和差异证据。",
+      "assertions": [
+        {
+          "id": "write",
+          "status": "pass",
+          "evidence": {
+            "observation": "实际新增指定文件，完整七章骨架且仅§1有业务正文；容器其它文件字节不变。",
+            "execution": "/tmp/solution-behavior-m3ofqxka/solution-raw-start.execution.md",
+            "snapshot": "/tmp/solution-behavior-m3ofqxka/solution-raw-start.snapshot.json",
+            "diff": "/tmp/solution-behavior-m3ofqxka/solution-raw-start.diff"
+          }
+        },
+        {
+          "id": "evidence",
+          "status": "pass",
+          "evidence": {
+            "observation": "§1标明业务负责人原始诉求、现状耗时与目标值未测量、知识实体缺失；未虚构实体或数值，其它章保留占位。",
+            "execution": "/tmp/solution-behavior-m3ofqxka/solution-raw-start.execution.md",
+            "snapshot": "/tmp/solution-behavior-m3ofqxka/solution-raw-start.snapshot.json",
+            "diff": "/tmp/solution-behavior-m3ofqxka/solution-raw-start.diff"
+          }
+        }
+      ],
+      "snapshot_summary": [
+        "repo/docs/solutions/SOLUTION-261102-协同.md"
+      ],
+      "validator": {
+        "command": [
+          "/opt/homebrew/bin/bash",
+          "/Users/only/workspaces/ai-knowledge/agent/skills/sdx-solution/scripts/validate-solution.sh",
+          "--file",
+          "docs/solutions/SOLUTION-261102-协同.md"
+        ],
+        "exit_code": 0,
+        "evidence": "/tmp/solution-behavior-m3ofqxka/solution-raw-start.validator.txt"
+      },
+      "snapshot_hashes": {
+        "changed": [
+          "repo/docs/solutions/SOLUTION-261102-协同.md"
+        ],
+        "before": {
+          "agent-home/agents/configs": "918f93870d4856a26ff4c6c1037d8a09cfb1ec3b192ab09dad2cde76b4498674",
+          "repo/.docsconfig": "d53c0304b55c73dcf6abbaa3149aa7a17a47790c80e56bd2312d5d3c5474661c"
+        },
+        "after": {
+          "agent-home/agents/configs": "918f93870d4856a26ff4c6c1037d8a09cfb1ec3b192ab09dad2cde76b4498674",
+          "repo/.docsconfig": "d53c0304b55c73dcf6abbaa3149aa7a17a47790c80e56bd2312d5d3c5474661c",
+          "repo/docs/solutions/SOLUTION-261102-协同.md": "5f3d51e88cd6404f5d61135362f898f39bffae823f7876bfa72038d23f94bda3"
+        }
+      }
+    },
+    {
+      "eval_id": "solution-complete-successor",
+      "status": "pass",
+      "text": "已执行且有工具记录、文件快照和差异证据。",
+      "assertions": [
+        {
+          "id": "version",
+          "status": "pass",
+          "evidence": {
+            "observation": "最终规划保留线性parent、前驱不改，七章独立可读并§1.3记变化，明确不可只写差异。",
+            "execution": "/tmp/solution-behavior-m3ofqxka/solution-complete-successor.execution.md",
+            "snapshot": "/tmp/solution-behavior-m3ofqxka/solution-complete-successor.snapshot.json",
+            "diff": "/tmp/solution-behavior-m3ofqxka/solution-complete-successor.diff"
+          }
+        },
+        {
+          "id": "boundary",
+          "status": "pass",
+          "evidence": {
+            "observation": "最终规划要求SYS经核实后引用；允许方案级里程碑及验收退出条件，禁止系统FR/MVP或详设；当前承接系统待核实。",
+            "execution": "/tmp/solution-behavior-m3ofqxka/solution-complete-successor.execution.md",
+            "snapshot": "/tmp/solution-behavior-m3ofqxka/solution-complete-successor.snapshot.json",
+            "diff": "/tmp/solution-behavior-m3ofqxka/solution-complete-successor.diff"
+          }
+        },
+        {
+          "id": "downstream",
+          "status": "pass",
+          "evidence": {
+            "observation": "最终答复说明独立系统需求可直接启动，有上游则按需引用核对约束，不共用IDEA-ID、不以SOLUTION为系统PRD parent。",
+            "execution": "/tmp/solution-behavior-m3ofqxka/solution-complete-successor.execution.md",
+            "snapshot": "/tmp/solution-behavior-m3ofqxka/solution-complete-successor.snapshot.json",
+            "diff": "/tmp/solution-behavior-m3ofqxka/solution-complete-successor.diff"
+          }
+        }
+      ],
+      "snapshot_summary": [],
+      "snapshot_hashes": {
+        "changed": [],
+        "before": {
+          "agent-home/agents/configs": "7bde69c93786c91ceb920a5dd9e2ddf5a641824e0f9f6af3c86a98459a4b0954",
+          "repo/.docsconfig": "67a594eaa5e6273e96a6bab1c2f937b9fa265acb78ffeaea48dafe1d8a742749",
+          "repo/docs/solutions/SOLUTION-261022-审批.md": "0e9a99372d9ddc32b1fcea5160f29450e7181b96e7a8a2a2bb9843400282ffaf",
+          "repo/docs/knowledge/MDG-CUSTOMER.md": "8ff198f5a7b544239996622ba5481608398dd8d7bcfe11f713feecc3c677ed1b",
+          "repo/docs/knowledge/index.md": "4af6ffa37942a59f9d12a4e05abca385bc40142e9f7c0aa96513ea11cef31338",
+          "repo/docs/knowledge/BP-APPROVE.md": "bd09e5b990da369aff9834e1f75e7fd291bafea46644df9e6f2a0f3931117f8a",
+          "repo/docs/knowledge/PD-APPROVAL.md": "354c038e9556232e71e908d1c5812206520a84b0a5e91a0a54f561497c343e5d"
+        },
+        "after": {
+          "agent-home/agents/configs": "7bde69c93786c91ceb920a5dd9e2ddf5a641824e0f9f6af3c86a98459a4b0954",
+          "repo/.docsconfig": "67a594eaa5e6273e96a6bab1c2f937b9fa265acb78ffeaea48dafe1d8a742749",
+          "repo/docs/solutions/SOLUTION-261022-审批.md": "0e9a99372d9ddc32b1fcea5160f29450e7181b96e7a8a2a2bb9843400282ffaf",
+          "repo/docs/knowledge/MDG-CUSTOMER.md": "8ff198f5a7b544239996622ba5481608398dd8d7bcfe11f713feecc3c677ed1b",
+          "repo/docs/knowledge/index.md": "4af6ffa37942a59f9d12a4e05abca385bc40142e9f7c0aa96513ea11cef31338",
+          "repo/docs/knowledge/BP-APPROVE.md": "bd09e5b990da369aff9834e1f75e7fd291bafea46644df9e6f2a0f3931117f8a",
+          "repo/docs/knowledge/PD-APPROVAL.md": "354c038e9556232e71e908d1c5812206520a84b0a5e91a0a54f561497c343e5d"
+        }
+      }
+    },
+    {
+      "eval_id": "solution-successor-write",
+      "status": "pass",
+      "text": "已隔离执行、逐断言人工核对并独立快照比对。",
+      "assertions": [
+        {
+          "id": "write",
+          "status": "pass",
+          "evidence": {
+            "observation": "已实际新建指定七章完整后继，id/parent准确；前驱有效范围、切分和流程内容全文承接，§1.3说明主权变化；独立复验退出0。",
+            "execution": "/tmp/solution-behavior-m3ofqxka/solution-successor-write.execution.md",
+            "snapshot": "/tmp/solution-behavior-m3ofqxka/solution-successor-write.snapshot.json",
+            "diff": "/tmp/solution-behavior-m3ofqxka/solution-successor-write.diff"
+          }
+        },
+        {
+          "id": "facts",
+          "status": "pass",
+          "evidence": {
+            "observation": "已读PD/MDG/BP；主权写为公司客户中心维护、审批产品只读；未知目标/系统/技术基准继续待核实，末尾未勾选业务验收。",
+            "execution": "/tmp/solution-behavior-m3ofqxka/solution-successor-write.execution.md",
+            "snapshot": "/tmp/solution-behavior-m3ofqxka/solution-successor-write.snapshot.json",
+            "diff": "/tmp/solution-behavior-m3ofqxka/solution-successor-write.diff"
+          }
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "evidence": {
+            "observation": "全容器SHA256比对仅新增指定后继文件；前驱、knowledge、配置完全相同。",
+            "execution": "/tmp/solution-behavior-m3ofqxka/solution-successor-write.execution.md",
+            "snapshot": "/tmp/solution-behavior-m3ofqxka/solution-successor-write.snapshot.json",
+            "diff": "/tmp/solution-behavior-m3ofqxka/solution-successor-write.diff"
+          }
+        }
+      ],
+      "snapshot_summary": [
+        "repo/docs/solutions/SOLUTION-261102-审批后继.md"
+      ],
+      "validator": {
+        "command": [
+          "/opt/homebrew/bin/bash",
+          "/Users/only/workspaces/ai-knowledge/agent/skills/sdx-solution/scripts/validate-solution.sh",
+          "--file",
+          "docs/solutions/SOLUTION-261102-审批后继.md"
+        ],
+        "exit_code": 0,
+        "evidence": "/tmp/solution-behavior-m3ofqxka/solution-successor-write.validator.txt"
+      },
+      "snapshot_hashes": {
+        "changed": [
+          "repo/docs/solutions/SOLUTION-261102-审批后继.md"
+        ],
+        "before": {
+          "agent-home/agents/configs": "9e631b105e8e24aa6c4eb759b315ce48998834f31123ed7bc451bc4ef4c77bee",
+          "repo/.docsconfig": "eb0feb6c027c5f6d7932767ef3aecc55cfb53aa7bebda79bf1e5d3fead63e121",
+          "repo/docs/solutions/SOLUTION-261022-审批.md": "0e9a99372d9ddc32b1fcea5160f29450e7181b96e7a8a2a2bb9843400282ffaf",
+          "repo/docs/knowledge/MDG-CUSTOMER.md": "8ff198f5a7b544239996622ba5481608398dd8d7bcfe11f713feecc3c677ed1b",
+          "repo/docs/knowledge/index.md": "4af6ffa37942a59f9d12a4e05abca385bc40142e9f7c0aa96513ea11cef31338",
+          "repo/docs/knowledge/BP-APPROVE.md": "bd09e5b990da369aff9834e1f75e7fd291bafea46644df9e6f2a0f3931117f8a",
+          "repo/docs/knowledge/PD-APPROVAL.md": "354c038e9556232e71e908d1c5812206520a84b0a5e91a0a54f561497c343e5d"
+        },
+        "after": {
+          "agent-home/agents/configs": "9e631b105e8e24aa6c4eb759b315ce48998834f31123ed7bc451bc4ef4c77bee",
+          "repo/.docsconfig": "eb0feb6c027c5f6d7932767ef3aecc55cfb53aa7bebda79bf1e5d3fead63e121",
+          "repo/docs/solutions/SOLUTION-261022-审批.md": "0e9a99372d9ddc32b1fcea5160f29450e7181b96e7a8a2a2bb9843400282ffaf",
+          "repo/docs/solutions/SOLUTION-261102-审批后继.md": "9528855dff1365bf1735f506fa9ab564df9cde41c799de75a4faab109ff2a0d3",
+          "repo/docs/knowledge/MDG-CUSTOMER.md": "8ff198f5a7b544239996622ba5481608398dd8d7bcfe11f713feecc3c677ed1b",
+          "repo/docs/knowledge/index.md": "4af6ffa37942a59f9d12a4e05abca385bc40142e9f7c0aa96513ea11cef31338",
+          "repo/docs/knowledge/BP-APPROVE.md": "bd09e5b990da369aff9834e1f75e7fd291bafea46644df9e6f2a0f3931117f8a",
+          "repo/docs/knowledge/PD-APPROVAL.md": "354c038e9556232e71e908d1c5812206520a84b0a5e91a0a54f561497c343e5d"
+        }
+      }
+    },
+    {
+      "eval_id": "solution-legacy-authorized",
+      "status": "pass",
+      "text": "已隔离执行、逐断言人工核对并独立快照比对。",
+      "assertions": [
+        {
+          "id": "migration",
+          "status": "pass",
+          "evidence": {
+            "observation": "原路径实际升级七章，四条旧稿事实原句分别位于§1.3/§4.1/§2.2/§4.2，ID/parent保留，新增缺口待确认；独立复验退出0。",
+            "execution": "/tmp/solution-behavior-m3ofqxka/solution-legacy-authorized.execution.md",
+            "snapshot": "/tmp/solution-behavior-m3ofqxka/solution-legacy-authorized.snapshot.json",
+            "diff": "/tmp/solution-behavior-m3ofqxka/solution-legacy-authorized.diff"
+          }
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "evidence": {
+            "observation": "全容器SHA256比对仅修改指定原稿；无替代稿/新实体/配置变更。",
+            "execution": "/tmp/solution-behavior-m3ofqxka/solution-legacy-authorized.execution.md",
+            "snapshot": "/tmp/solution-behavior-m3ofqxka/solution-legacy-authorized.snapshot.json",
+            "diff": "/tmp/solution-behavior-m3ofqxka/solution-legacy-authorized.diff"
+          }
+        }
+      ],
+      "snapshot_summary": [
+        "repo/docs/solutions/SOLUTION-261022-审批.md"
+      ],
+      "validator": {
+        "command": [
+          "/opt/homebrew/bin/bash",
+          "/Users/only/workspaces/ai-knowledge/agent/skills/sdx-solution/scripts/validate-solution.sh",
+          "--file",
+          "docs/solutions/SOLUTION-261022-审批.md"
+        ],
+        "exit_code": 0,
+        "evidence": "/tmp/solution-behavior-m3ofqxka/solution-legacy-authorized.validator.txt"
+      },
+      "snapshot_hashes": {
+        "changed": [
+          "repo/docs/solutions/SOLUTION-261022-审批.md"
+        ],
+        "before": {
+          "agent-home/agents/configs": "f51fb42bad27388ec304d0deade7b24dfb9226a0e1b27759c8e2d4ed42315191",
+          "repo/.docsconfig": "5d1c0bd7f11fa8664bc15924167ad77ceba749b645d3896f7046690c831d8690",
+          "repo/docs/solutions/SOLUTION-261022-审批.md": "17e13d4db1629e0721c28e2484719d5b685ab16893c2036aefea450ae7f63200",
+          "repo/docs/knowledge/MDG-CUSTOMER.md": "8ff198f5a7b544239996622ba5481608398dd8d7bcfe11f713feecc3c677ed1b",
+          "repo/docs/knowledge/index.md": "4af6ffa37942a59f9d12a4e05abca385bc40142e9f7c0aa96513ea11cef31338",
+          "repo/docs/knowledge/BP-APPROVE.md": "bd09e5b990da369aff9834e1f75e7fd291bafea46644df9e6f2a0f3931117f8a",
+          "repo/docs/knowledge/PD-APPROVAL.md": "354c038e9556232e71e908d1c5812206520a84b0a5e91a0a54f561497c343e5d"
+        },
+        "after": {
+          "agent-home/agents/configs": "f51fb42bad27388ec304d0deade7b24dfb9226a0e1b27759c8e2d4ed42315191",
+          "repo/.docsconfig": "5d1c0bd7f11fa8664bc15924167ad77ceba749b645d3896f7046690c831d8690",
+          "repo/docs/solutions/SOLUTION-261022-审批.md": "bccd02b6c46879222055252c158acc348d1ba305d0263e1002cf51fb8d6f6733",
+          "repo/docs/knowledge/MDG-CUSTOMER.md": "8ff198f5a7b544239996622ba5481608398dd8d7bcfe11f713feecc3c677ed1b",
+          "repo/docs/knowledge/index.md": "4af6ffa37942a59f9d12a4e05abca385bc40142e9f7c0aa96513ea11cef31338",
+          "repo/docs/knowledge/BP-APPROVE.md": "bd09e5b990da369aff9834e1f75e7fd291bafea46644df9e6f2a0f3931117f8a",
+          "repo/docs/knowledge/PD-APPROVAL.md": "354c038e9556232e71e908d1c5812206520a84b0a5e91a0a54f561497c343e5d"
+        }
+      }
+    }
+  ],
+  "discovery_results": [
+    {
+      "eval_id": "solution-discovery-positive",
+      "status": "not_run",
+      "text": "未执行自然语言发现隔离测试"
+    },
+    {
+      "eval_id": "solution-discovery-negative",
+      "status": "not_run",
+      "text": "未执行自然语言发现隔离测试"
+    }
+  ],
+  "summary": {
+    "behavior": {
+      "run": 6,
+      "pass": 6,
+      "fail": 0,
+      "not_run": 6,
+      "assertions_pass": 15
+    },
+    "discovery": {
+      "run": 0,
+      "pass": 0,
+      "fail": 0,
+      "not_run": 2
+    },
+    "script_regression": {
+      "sdx_solution": {
+        "pass": 52,
+        "fail": 0
+      },
+      "sdx_analysis": {
+        "pass": 55,
+        "fail": 0
+      }
+    }
+  },
+  "execution_notes": [
+    "同一独立执行代理顺序执行六个独立容器；未传断言或预期结果，执行者禁止读取评测材料。",
+    "raw-start首次误用未安装脚本路径退出127，随后改用源技能脚本退出0；完整错误及恢复留execution.md，最终另行独立复验通过。",
+    "工具原始读取内容、命令及输出与完整最终答复保存在execution.md；全部容器前后完整快照和逐文件SHA256可复核。",
+    "原始工具转录保存在本机临时目录，可能被清理；本记录内嵌源码与文件快照哈希及逐断言观察，不能替代完整原始转录。"
+  ]
+}

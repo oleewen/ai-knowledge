@@ -15,8 +15,8 @@ usage() {
 frontmatter 须以 --- 包围；id / parent 仅支持单行简单标量，
 允许无引号、单引号、双引号及行尾注释，不支持转义、锚点或复杂 YAML。
 空 parent、null、~ 表示首份；允许多个首份。
-正文须有且仅有六个规定 H2，顺序固定；允许草稿段落为空。
-HTML 注释和代码围栏不能充当标题；正文（含代码）禁 SYS / FR / MVP / 里程碑。
+新稿须有且仅有七个规定 H2；旧六段识别后警告迁移，不自动改写；允许草稿段落为空。
+HTML 注释和代码围栏不能充当标题；正文允许 SYS 引用与方案级里程碑；禁止 FR-/MVP- 条目编号，语义粒度另行评审。
 行内代码中的注释标记按字面检查；跨行反引号与注释标记存在歧义时报告错误。
 块起点识别无标题、无转义的简单单行引用定义；跨行行内注释遇块边界时报歧义。
 不核验 knowledge 事实。无文件仅警告并返回 0；校验或参数错误返回 1。
@@ -96,7 +96,7 @@ check_linked_directory() {
   done
 }
 
-printf '=== 解决方案切分叙事校验 ===\ndoc_abs: %s\n' "$doc_abs"
+printf '=== 解决方案分析校验 ===\ndoc_abs: %s\n' "$doc_abs"
 
 if [[ -f "${TEMPLATE}" ]]; then
   success "solution-template.md 存在"
@@ -216,14 +216,11 @@ parse_document() {
       return output
     }
     function forbidden(s,    i, token) {
-      for (i = 1; i <= 3; i++) {
+      for (i = 1; i <= 2; i++) {
         token = banned[i]
-        if (!reported[token] && s ~ ("(^|[^A-Za-z])" token "([^A-Za-z]|$)")) {
-          fail("正文出现 " token); reported[token] = 1
+        if (!reported[token] && s ~ ("(^|[^A-Za-z])" token "-[A-Za-z0-9]")) {
+          fail("正文出现下游条目 " token); reported[token] = 1
         }
-      }
-      if (!reported["里程碑"] && index(s, "里程碑")) {
-        fail("正文出现 里程碑"); reported["里程碑"] = 1
       }
     }
     function thematic_break(s) {
@@ -250,7 +247,11 @@ parse_document() {
       required[1] = "这次改了什么"; required[2] = "为什么这样切"
       required[3] = "范围内外"; required[4] = "流程怎么串"
       required[5] = "主数据主权"; required[6] = "技术例外"
-      banned[1] = "SYS"; banned[2] = "FR"; banned[3] = "MVP"
+      modern[1] = "1. 背景与目标"; modern[2] = "2. 范围与约束"
+      modern[3] = "3. 影响与冲突"; modern[4] = "4. 思路与方案"
+      modern[5] = "5. 风险与待定"; modern[6] = "6. 交付计划"; modern[7] = "7. 附录"
+      required_count = 7
+      banned[1] = "FR"; banned[2] = "MVP"
       sub(/\.md$/, "", expected_id)
     }
     {
@@ -337,8 +338,14 @@ parse_document() {
       if (source_heading && line ~ /^ {0,3}##([ \t]+|$)/) {
         heading = line; sub(/^ {0,3}##[ \t]*/, "", heading)
         sub(/[ \t]+#+[ \t]*$/, "", heading); heading = trim(heading)
+        if (!count) {
+          legacy = heading == required[1]
+          required_count = legacy ? 6 : 7
+          if (!legacy) for (i = 1; i <= 7; i++) required[i] = modern[i]
+          else print "W\t旧六段格式：续写前确认映射并升级七章；未自动修改"
+        }
         count++
-        if (count > 6 || heading != required[count]) fail("H2 顺序或名称不符: " heading)
+        if (count > required_count || heading != required[count]) fail("H2 顺序或名称不符: " heading)
         headings[heading]++
       }
       if (source_block_heading || block_comment_line) {
@@ -358,7 +365,7 @@ parse_document() {
       if (!seen["parent"]) fail("缺少 frontmatter parent")
       if (values["id"] != "" && values["id"] != expected_id) fail("id 与文件名不一致")
       print "I\t" values["id"]; print "P\t" values["parent"]
-      if (check_body) for (i = 1; i <= 6; i++) {
+      if (check_body) for (i = 1; i <= required_count; i++) {
         if (headings[required[i]] != 1) fail("H2 须且仅出现一次: " required[i])
       }
     }
@@ -379,6 +386,7 @@ for file in "${FILES[@]}"; do
   while IFS=$'\t' read -r kind value; do
     case "$kind" in
       E) file_error "$file" "$value" ;;
+      W) warn "${file##*/}: $value" ;;
       I) id="$value" ;;
       P) parent="$value" ;;
     esac
@@ -437,7 +445,7 @@ for id in "${!ID_FILE[@]}"; do
 done
 
 for file in "${BODY_FILES[@]}"; do
-  if [[ -z "${FILE_ERRORS[$file]-}" ]]; then success "${file##*/}: 六段与父链已检查"; fi
+  if [[ -z "${FILE_ERRORS[$file]-}" ]]; then success "${file##*/}: 结构与父链已检查（业务事实与完成状态须另核实）"; fi
 done
 printf '错误: %d  警告: %d\n' "$ERRORS" "$WARNINGS"
 [[ "$ERRORS" -eq 0 ]]

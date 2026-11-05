@@ -4,7 +4,7 @@
 
 ## 参数向导
 
-先读目标工程 `.docsconfig`，核对 `DOC_DIR` 与 `KNOWLEDGE_TYPE`。仅支持 system/application；层级不符时说明分流，不修改配置来绕过限制。可从原始业务材料起步，不要求先有 SOLUTION。
+先读目标工程 `.docsconfig`，核对 `DOC_DIR` 与 `KNOWLEDGE_TYPE`。仅支持 system/application；层级不符时说明分流，不修改配置来绕过限制。可从原始业务材料起步，不要求先有 SOLUTION。已有上游 SOLUTION 时，核对其目标、承接边界、依赖与验收约束，并记录来源；不强行共用 IDEA-ID。
 
 从请求与前文提取以下参数；已明确的直接沿用，只询问影响本轮写作的缺口。可逐项询问，也可提供组合建议，不强制重复选择预设。
 

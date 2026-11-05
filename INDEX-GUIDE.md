@@ -17,7 +17,7 @@
 | 项目概况与接入 | [README.md](README.md) · [quick-start.md](quick-start.md) | 四层知识库、安装与场景 A–D |
 | 协作约定 | [AGENTS.md](AGENTS.md) | 角色、必读顺序、写入与提交边界 |
 | 公司知识库 | [company/README.md](company/README.md) · [设计](company/DESIGN.md) | 企业架构、域总图与解决方案槽位 |
-| 解决方案知识库 | [solution/README.md](solution/README.md) · [设计](solution/DESIGN.md) | 产品服务与系统组合、交付包叙事 |
+| 解决方案知识库 | [solution/README.md](solution/README.md) · [设计](solution/DESIGN.md) | 产品服务与系统组合、解决方案分析 |
 | 系统知识库 | [system/README.md](system/README.md) · [设计](system/DESIGN.md) | 业务与产品细化、应用及数据概设 |
 | 应用知识库 | [application/README.md](application/README.md) · [设计](application/DESIGN.md) | API、物理表、中间件与组件实现知识 |
 | Agent 资源 | [agent/README.md](agent/README.md) · [Skill 清单](agent/skills/README.md) | 知识语义、协作协议、规范与工作流 |
@@ -67,7 +67,7 @@
 │   ├── skills/                 # 25 个 Skill；各自含引用、脚本、评测或测试
 │   ├── scripts/                # 共享库、tools/ 与 tests/
 │   └── hooks.json / hooks/     # preToolUse 为空
-├── docs/                       # 本地会话工作稿；不作为本轮事实源
+├── .superpowers/               # 本地规格、计划与执行证据；Git 全局忽略
 ├── .docsconfig
 └── .githooks/pre-commit
 ```
@@ -193,7 +193,7 @@ flowchart TD
 | --- | --- | --- |
 | 知识治理 | 层级、实体关系、引用及字段约束 | [agent/knowledge/README.md](agent/knowledge/README.md) |
 | 知识构建 | 非槽位提炼、槽位上行、归档、实体化与导航 | [workflow-routing.md](agent/references/workflow-routing.md) |
-| 需求交付 | 公司域图、方案叙事、需求分析至测试设计 | [agent/skills/README.md](agent/skills/README.md) |
+| 需求交付 | 公司域图、解决方案分析、需求分析至测试设计 | [agent/skills/README.md](agent/skills/README.md) |
 | 安装与维护 | 初始化、联邦建联、模板升级、发布及生态技能更新 | [§3.5 CLI / Slash 入口](#35-cli--slash-入口) |
 
 ### 4.4 领域事件
@@ -209,7 +209,7 @@ flowchart TD
 ```mermaid
 flowchart LR
   company["公司"] --> domains["DOMAIN-MAP / DOMAIN"]
-  solution["解决方案"] --> sln["SOLUTION 交付包叙事"]
+  solution["解决方案"] --> sln["SOLUTION 解决方案分析"]
   sa["系统 / 应用"] --> analysis["ANALYSIS"]
   analysis --> feature["FEATURE"] --> prd["PRD 当前 MVP"]
   prd --> asd["ASD / spec-asd"]
@@ -315,7 +315,7 @@ flowchart LR
 
 ### 7.3 敏感信息
 
-本指南只记录配置键、仓内路径与必要的非秘密值，不读取或记录凭据。当前 `.docsconfig` 已被 Git 跟踪，根目录没有 `.gitignore`；不能沿用旧指南“点文件一律忽略、配置不入库”的描述。
+本指南只记录配置键、仓内路径与必要的非秘密值，不读取或记录凭据。`.docsconfig` 已被 Git 跟踪；根目录已移除 `.gitignore`，会话落点 `.superpowers/` 由本机 Git 全局忽略管理。不能以点文件名推断是否收录；会话路径见 [路径契约](agent/references/session-spec-path.md)。
 
 ---
 

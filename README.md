@@ -99,12 +99,12 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/bootstrap.
 ├── system/               # knowledge/、analysis/、features/、requirements/、adr/、application-slots/
 ├── application/          # knowledge/、analysis/、features/、requirements/、adr/
 ├── agent/                # knowledge/、references/、rules/、skills/、scripts/、hooks/
-├── docs/                 # 本地会话工作稿
+├── .superpowers/         # 本地规格、计划、执行证据；Git 全局忽略
 ├── .docsconfig           # 当前 DOC_DIR=company · KNOWLEDGE_TYPE=meta
 └── .githooks/pre-commit
 ```
 
-四层的 overview 均位于 `knowledge/overview/`。`docs/` 当前作为本地会话稿目录存在；`.docsconfig` 已被 Git 跟踪。配置约定见 [INDEX-GUIDE.md §7](INDEX-GUIDE.md#七配置中心configuration-hub)。
+四层的 overview 均位于 `knowledge/overview/`。会话材料统一位于工程根 `.superpowers/`，目录外不得引用其中具体文件；路径和迁移见 [会话材料契约](agent/references/session-spec-path.md)。`.docsconfig` 已被 Git 跟踪；配置约定见 [INDEX-GUIDE.md §7](INDEX-GUIDE.md#七配置中心configuration-hub)。
 
 ---
 
@@ -112,7 +112,7 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-knowledge/main/bootstrap.
 
 `docs-*` 维护知识库，`sdx-*` 产出规约；OKF 见 `/docs-okf`。推进口径与禁止事项见 [AGENTS.md](AGENTS.md)；Skill 清单仅 [agent/skills/README.md](agent/skills/README.md)。场景分步 [quick-start.md](quick-start.md)。
 
-公司域图使用 `/sdx-domains`，解决方案叙事使用 `/sdx-solution`；下图需求交付链面向系统/应用。DSD 属于应用详设；TDD 可面向系统或应用，缺少 DSD 时须确认仅设计 PRD 支持的业务行为用例。产物依赖见 [INDEX-GUIDE.md §5.1](INDEX-GUIDE.md#51-状态流转sdd-阶段)。
+公司域图使用 `/sdx-domains`，解决方案分析使用 `/sdx-solution`；下图需求交付链面向系统/应用。DSD 属于应用详设；TDD 可面向系统或应用，缺少 DSD 时须确认仅设计 PRD 支持的业务行为用例。产物依赖见 [INDEX-GUIDE.md §5.1](INDEX-GUIDE.md#51-状态流转sdd-阶段)。
 
 ```mermaid
 flowchart TD

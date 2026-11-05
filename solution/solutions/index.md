@@ -8,7 +8,7 @@
 
 ## 目录文件
 
-* [示例交付包切分](SOLUTION-EXAMPLE.md)
+* [示例解决方案分析](SOLUTION-EXAMPLE.md)
 
 ## 阅读顺序
 
