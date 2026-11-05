@@ -12,6 +12,7 @@ new_scan_fixture() {
   mkdir -p "$SCAN_REPO/$doc_dir" "$SCAN_TMP/agent" "$SCAN_REPO/agent/scripts/tools"
   cp -R "$TEST_SCRIPTS_ROOT/lib" "$SCAN_REPO/agent/scripts/lib"
   cp "$TEST_SCRIPTS_ROOT/tools/forbidden-ref-outer.sh" "$SCAN_REPO/agent/scripts/tools/"
+  cp "$TEST_SCRIPTS_ROOT/tools/forbidden_file_refs.py" "$SCAN_REPO/agent/scripts/tools/"
   printf 'WORK_SPACE=%s\n' "$SCAN_TMP/workspace" > "$SCAN_TMP/agent/configs"
   printf 'AGENT_ROOT=%s\nAGENT_DIR=agent\nREPO_DIR=project\nDOC_DIR=%s\nKNOWLEDGE_TYPE=application\n' \
     "$SCAN_TMP" "$doc_dir" > "$SCAN_REPO/.docsconfig"

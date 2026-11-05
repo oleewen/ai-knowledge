@@ -46,10 +46,10 @@
 
 #### superpowers-ref-isolation
 
-`{docroot}/superpowers/` 为会话工作稿区，**不是**正式 SSOT。
+工程根 `.superpowers/` 为会话材料区，规格、计划、执行证据分别放在 `specs/`、`plans/`、`sdd/`，不作为正式 SSOT。
 
-- **禁止**：除任意 `superpowers/` 目录**内部**外，全仓不得引用 superpowers 下**具名文件**（路径含 `superpowers/(specs|plans)/YYYY-MM-DD-` 且指向 `.md`），不按根名区分。内部豁免不代表该目录是合法工作稿落点。
-- **允许**：目录契约、占位模式、hooks 通用正则、无日期测试桩。
+- **禁止**：会话目录外不得引用 `.superpowers/` 或历史 `superpowers/` 下的任何具体文件，覆盖无日期、无扩展名及日志、JSON、diff。隐藏或被 Git 忽略的外部正文同样检查。知识库已有引用须先将必要结论整理至正式知识来源，再移除或改引。
+- **允许**：会话目录内部互引、目录契约、占位模式和通用正则。测试用例在隔离夹具中构造路径，不在源码中写死具体会话文件引用。历史目录的内部豁免不代表它是合法的新产物落点。
 - **验收**：`bash agent/scripts/tools/forbidden-ref-outer.sh`；套件：`bash agent/scripts/tests/forbidden-file-refs/run.sh`。
 - **细则**：[session-spec-path.md](../references/session-spec-path.md)。
 

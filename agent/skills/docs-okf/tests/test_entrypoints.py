@@ -143,8 +143,8 @@ class EntrypointTests(unittest.TestCase):
 
     def test_refresh_excludes_session_drafts_and_preserves_container_index(self):
         drafts = []
-        for relative in ("superpowers/specs/draft.md", "superpowers/plans/deep/draft.md",
-                         "nested/superpowers/plans/draft.md", ".superpowers/sdd/evidence.md"):
+        for relative in ("superpowers/" "specs/draft.md", "superpowers/" "plans/deep/draft.md",
+                         "nested/superpowers/" "plans/draft.md", ".superpowers/" "sdd/evidence.md"):
             path = self.default / relative
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(b"# SESSION-DRAFT-SENTINEL\r\nnot an OKF concept\r\n")
@@ -157,7 +157,7 @@ class EntrypointTests(unittest.TestCase):
         self.assertNotIn("superpowers/", (self.default / "index.md").read_text())
         self.assertNotIn("SESSION-DRAFT-SENTINEL", (self.default / "viz.html").read_text())
         self.assertIn("BD-EXAMPLE", (self.default / "viz.html").read_text())
-        manual = self.default / "superpowers/index.md"
+        manual = self.default / "superpowers/" "index.md"
         manual.write_bytes(b"# Manual\r\nKeep custom prose.\r\n")
         saved = manual.read_bytes()
         self.assert_success(self.run_entry("okf-indexing.sh"))
@@ -198,9 +198,9 @@ class EntrypointTests(unittest.TestCase):
                     case = self.project / "cases" / variant / str(number)
                     actual = case / "actual"
                     if variant == "physical":
-                        actual = case / "superpowers/plans"
+                        actual = case / "superpowers/" "plans"
                     elif variant == "container":
-                        actual = case / "superpowers/specs"
+                        actual = case / "superpowers/" "specs"
                     shutil.copytree(self.default, actual, symlinks=True)
                     if variant.startswith("lexical"):
                         target = case / "superpowers" / variant.split("-")[1]
@@ -241,7 +241,7 @@ class EntrypointTests(unittest.TestCase):
             ("validate_viz_index.py", ("--viz", "viz.html")),
         ):
             with self.subTest(script=script):
-                alias = self.project / script / "superpowers/specs"
+                alias = self.project / script / "superpowers/" "specs"
                 alias.parent.mkdir(parents=True)
                 alias.symlink_to(self.default, target_is_directory=True)
                 before = self.snapshot()

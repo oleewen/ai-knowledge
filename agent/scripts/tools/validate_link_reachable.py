@@ -412,6 +412,10 @@ class RootLayerCheck:
             else:
                 self.errors.append(f"配置文档根越界：{self.docs}")
         for base in bases:
+            if any(name in candidate.parts for candidate in (base, base.resolve())
+                   for name in ("superpowers", ".superpowers")):
+                self.excluded["会话材料文档根"] += 1
+                continue
             if base.is_symlink() or not base.is_dir():
                 self.excluded["缺失或软链层目录"] += 1
                 continue
@@ -422,13 +426,19 @@ class RootLayerCheck:
                 kept = []
                 for name in dirs:
                     path = Path(directory) / name
-                    if name in (".git", ".agents", "agent", "node_modules", "superpowers") or path.is_symlink():
+                    if name in (".git", ".agents", "agent", "node_modules", "superpowers", ".superpowers") or path.is_symlink():
                         self.excluded["Agent/工作稿/依赖/软链目录"] += 1
                     else:
                         kept.append(name)
                 dirs[:] = sorted(kept)
                 paths.extend(Path(directory) / name for name in names if name.endswith(".md"))
-        return sorted(paths)
+        kept_paths = []
+        for path in paths:
+            if any(name in path.resolve().parts for name in ("superpowers", ".superpowers")):
+                self.excluded["会话材料文件或别名"] += 1
+            else:
+                kept_paths.append(path)
+        return sorted(kept_paths)
 
     def slot_link(self, path: Path) -> bool:
         # 这里只识别槽位的词法位置；实际目标仍由原始路径 resolve，不能提前消去软链后的 ..。

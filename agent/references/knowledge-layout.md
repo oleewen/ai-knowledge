@@ -90,4 +90,4 @@
 
 系统/应用由 `/sdx-analysis` 从原始输入写七章 ANALYSIS（不等 SOLUTION），`/sdx-feature` 写六章 FEATURE；PRD/ASD/TDD 落 requirements。DSD 只落应用库；系统 ASD 内列应用承接清单。样例为 `analysis/ANALYSIS-EXAMPLE.md`、`features/FEATURE-EXAMPLE.md`。IDEA-ID 见[命名规范](../knowledge/naming-conventions.md#2-idea-id)。
 
-公司 domains 表达 BD/BSD-L1 如何支撑 VC，不放 SLN；解决方案 solutions 表达交付包切分。系统联邦 ASD 概要与应用详设的分工见 [knowledge-type-modes.md](../skills/sdx-architect/references/knowledge-type-modes.md)。可选会话稿另遵 [session-spec-path.md](session-spec-path.md)。
+公司 domains 表达 BD/BSD-L1 如何支撑 VC，不放 SLN；解决方案 solutions 承载七章解决方案分析，含交付包切分、跨系统承接和方案级交付计划。系统联邦 ASD 概要与应用详设的分工见 [knowledge-type-modes.md](../skills/sdx-architect/references/knowledge-type-modes.md)。可选会话稿另遵 [session-spec-path.md](session-spec-path.md)。

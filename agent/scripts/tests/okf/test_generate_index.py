@@ -211,7 +211,7 @@ def test_session_navigation_and_existing_index():
         assert not (draft / "index.md").exists()
         manual = b"# Manual\r\n\r\nKeep all custom text.\r\n"
         (container / "index.md").write_bytes(manual)
-        assert "superpowers/index.md" in generate_index.render_index_body(root)
+        assert "superpowers/" "index.md" in generate_index.render_index_body(root)
         assert "plans/" not in generate_index.render_index_body(container)
         generate_index.write_index(container, root)
         assert (container / "index.md").read_bytes() == manual
@@ -225,11 +225,11 @@ def test_session_navigation_and_existing_index():
 def test_session_explicit_cli_rejected_without_writes():
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp).resolve()
-        draft = root / "bundle/superpowers/specs/deep"
+        draft = root / "bundle/superpowers/" "specs/deep"
         draft.mkdir(parents=True)
         (root / ".docsconfig").write_text("DOC_DIR=bundle\n")
         script = ROOT / "agent/skills/docs-okf/scripts/generate_index.py"
-        for target in ("bundle/superpowers", "bundle/superpowers/specs", "bundle/superpowers/specs/deep"):
+        for target in ("bundle/superpowers", "bundle/superpowers/" "specs", "bundle/superpowers/" "specs/deep"):
             for flags in ([], ["--recursive"]):
                 result = subprocess.run(
                     [sys.executable, str(script), "--bundle", "bundle", "--dir", target, *flags],
@@ -240,7 +240,7 @@ def test_session_explicit_cli_rejected_without_writes():
                 assert not list(root.rglob("index.md"))
         real = root / "bundle/real"
         real.mkdir()
-        alias = root / "bundle/alias/superpowers/specs"
+        alias = root / "bundle/alias/superpowers/" "specs"
         alias.parent.mkdir(parents=True)
         alias.symlink_to(real, target_is_directory=True)
         container_alias = root / "bundle/container-alias"

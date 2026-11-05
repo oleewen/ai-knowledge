@@ -541,19 +541,30 @@ def test_session_drafts_excluded_at_any_scan_start():
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp).resolve()
         kept = {"specs/real.md", "requirements/R/specs/real.md", "plans/real.md",
-                "nested/superpowers/other/real.md"}
-        excluded = {"superpowers/specs/draft.md", "superpowers/plans/deep/draft.md",
-                    "nested/superpowers/specs/draft.md", ".superpowers/sdd/evidence.md"}
+                "nested/superpowers/" "other/real.md"}
+        excluded = {"superpowers/" "specs/draft.md", "superpowers/" "plans/deep/draft.md",
+                    "nested/superpowers/" "specs/draft.md", ".superpowers/" "sdd/evidence.md"}
         for relative in kept | excluded:
             path = root / relative
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text("# content\n")
         (root / "linked").symlink_to(root / "specs", target_is_directory=True)
+        (root / "leaked.md").symlink_to(root / ".superpowers" / "sdd/evidence.md")
         found = {p.relative_to(root).as_posix() for p in okf_lib.iter_bundle_markdown_files(root)}
         assert found == kept
-        for relative in ("superpowers/specs", "superpowers/plans/deep", "nested/superpowers/specs"):
+        for relative in ("superpowers/" "specs", "superpowers/" "plans/deep", "nested/superpowers/" "specs",
+                         ".superpowers", ".superpowers/" "specs", ".superpowers/" "sdd"):
             assert list(okf_lib.iter_bundle_markdown_files(root / relative)) == []
             assert list(okf_lib.iter_bundle_directories(root / relative)) == []
+            try:
+                okf_lib.resolve_bundle_root(root / relative)
+            except ValueError:
+                pass
+            else:
+                raise AssertionError(f"session bundle accepted: {relative}")
+        alias = root / "session-alias"
+        alias.symlink_to(root / ".superpowers", target_is_directory=True)
+        assert okf_lib.is_session_excluded(alias / "sdd")
         dirs = set(okf_lib.iter_bundle_directories(root))
         assert root / "superpowers" not in dirs
         assert root / "nested/superpowers" in dirs

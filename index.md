@@ -22,7 +22,7 @@
 - [agent/skills/docs-install/SKILL.md](agent/skills/docs-install/SKILL.md)
 - [agent/skills/agent-install/SKILL.md](agent/skills/agent-install/SKILL.md)
 
-会话规格按有效 `DOC_DIR` 落盘，`docs` 仅为无配置时的默认值；计划与执行证据各按所属流程定位，见 [会话材料路径契约](agent/references/session-spec-path.md)。本仓通过 [.gitignore](.gitignore) 忽略约定的本地会话材料；这些目录不是正式知识入口，当前工作树可缺席。
+会话规格、计划与执行证据统一位于工程根 `.superpowers/`，分别放在 `specs/`、`plans/`、`sdd/`，与 `DOC_DIR` 无关，见 [会话材料路径契约](agent/references/session-spec-path.md)。本机 Git 全局忽略 `.superpowers/`；这些目录不是正式知识入口，目录外不得引用其中具体文件。
 
 ## 阅读顺序
 

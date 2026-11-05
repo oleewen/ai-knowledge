@@ -81,6 +81,8 @@ def is_session_excluded(path: Path) -> bool:
     """排除固定工作稿子树及纯容器，不依赖 Git，也不猜测文件所有权。"""
     for candidate in (Path(os.path.abspath(path)), path.resolve()):
         parts = candidate.parts
+        if ".superpowers" in parts:
+            return True
         if any(parent == "superpowers" and child in SESSION_DRAFT_DIRS
                for parent, child in zip(parts, parts[1:])):
             return True
@@ -115,8 +117,9 @@ def _bundle_walk(bundle_root: Path):
             and not is_session_excluded(Path(current) / name)
         )
         for filename in sorted(filenames):
-            if filename.endswith(".md"):
-                yield Path(current) / filename
+            path = Path(current) / filename
+            if filename.endswith(".md") and not is_session_excluded(path):
+                yield path
 
 
 def iter_bundle_markdown_files(bundle_root: Path) -> Iterator[Path]:

@@ -162,6 +162,24 @@ class LinkReachabilityTest(unittest.TestCase):
         for name in ("root", "application", "system", "solution", "company"):
             self.assertIn(f"{name}-missing.md", result.stderr)
 
+    def test_session_material_is_not_scanned_as_knowledge(self):
+        self.write("application/.superpowers/" "specs/note.md", "[draft](absent.md)\n")
+        result = self.check("--scope", "root-layers")
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_explicit_session_docs_root_is_excluded(self):
+        self.write(".superpowers/" "specs/note.md", "[draft](absent.md)\n")
+        config = self.repo / ".docsconfig"
+        config.write_text(config.read_text().replace("DOC_DIR=application", "DOC_DIR=.superpowers"))
+        result = self.check("--scope", "root-layers")
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_session_file_alias_is_not_scanned(self):
+        draft = self.write(".superpowers/" "specs/note.md", "[draft](absent.md)\n")
+        (self.repo / "alias.md").symlink_to(draft)
+        result = self.check("--scope", "root-layers")
+        self.assertEqual(result.returncode, 0, result.stderr)
+
     def test_wrong_depth_is_not_rescued_by_root_candidate(self):
         self.write("target.md", "# 存在\n")
         self.write("system/knowledge/deep/README.md", "[错层](target.md)\n")

@@ -52,7 +52,7 @@
 | 工具 | 职责 |
 | --- | --- |
 | [validate-link-reachable.sh](tools/validate-link-reachable.sh) | 解析配置，调用 [Python 扫描器](tools/validate_link_reachable.py) 检查 Markdown 本地链接 |
-| [forbidden-ref-outer.sh](tools/forbidden-ref-outer.sh) | 单次扫描，按匹配位置计数；退出 `0/1/2` 表示清洁/违规/工具错误 |
+| [forbidden-ref-outer.sh](tools/forbidden-ref-outer.sh) | 解析配置，调用 [引用隔离扫描器](tools/forbidden_file_refs.py)；覆盖隐藏和忽略的外部正文，排除会话内部、Git、其他 worktree 与依赖目录；退出 `0/1/2` 表示清洁/违规/工具错误 |
 | [tests/lib/assertions.sh](tests/lib/assertions.sh) | 文件、目录、内容与软链断言 |
 | [tests/lib/runner.sh](tests/lib/runner.sh) | 用例收集、Bash 选择与运行统计 |
 | [tests/run.sh](tests/run.sh) | 单处登记聚合套件及 quick/full 分组 |
@@ -76,6 +76,6 @@ bash agent/scripts/tools/forbidden-ref-outer.sh
 
 链接检查默认 `--scope agent`，保留 Agent 内互链、测试夹具排除与已登记模板输出位置校验。`--scope root-layers` 检查仓根及 application/system/solution/company 的 Markdown（含 TODO）；消费库使用其他 DOC_DIR 时也纳入该配置文档根。按当前文件相对路径核对本地目标及 Markdown 锚点，不以仓根同名文件兜底；消费库 `.agents` 链接仅允许进入配置指定的安装树。
 
-新模式支持行内/引用式链接、URL 解码、ATX/Setext 标题、常用内联格式、重复标题后缀及显式 HTML ID。代码示例、frontmatter、注释和外部 URL 不作本地链接；不遍历 Agent、superpowers 工作稿、依赖目录或软链目录，不读取联邦槽位中的外仓内容。EXAMPLE 与 assets 正文照常检查；未登记的动态模板目标、非 Markdown 锚点列为“待判断”并返回失败，排除项单独统计。`link-reachable` 套件先跑隔离回归，再检查当前元仓；已接入 quick，不依赖个人 WORK_SPACE 定位该检出。
+新模式支持行内/引用式链接、URL 解码、ATX/Setext 标题、常用内联格式、重复标题后缀及显式 HTML ID。代码示例、frontmatter、注释和外部 URL 不作本地链接；不遍历 Agent、`.superpowers/` 会话材料、历史 `superpowers/`、依赖目录或软链目录，不读取联邦槽位中的外仓内容。显式会话材料文档根同样排除。EXAMPLE 与 assets 正文照常检查；未登记的动态模板目标、非 Markdown 锚点列为“待判断”并返回失败，排除项单独统计。`link-reachable` 套件先跑隔离回归，再检查当前元仓；已接入 quick，不依赖个人 WORK_SPACE 定位该检出。
 
 浏览器回归单独选择 `docs-okf-browser`，需要 Node、Playwright、可用 Chrome/Chromium 和与生产 SRI 匹配的固定资源；通过 `NODE_PATH`、`OKF_BROWSER_EXECUTABLE`、`OKF_VIZ_ASSETS` 指定本地依赖。入口只校验、不下载；默认 full 显式跳过浏览器用例。旧 [OKF 夹具](tests/okf/fixtures-v1/) 保留为历史格式样例，不表示一个可通过当前校验的完整 bundle。
