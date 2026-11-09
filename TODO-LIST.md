@@ -18,13 +18,16 @@
 
 ### 知识库治理契约的工具接入（2026-10-28）
 
-本轮已修订规范；以下实现与行为验证尚未执行，不属于本轮文档修订的完成声明。
+以下按条目状态推进；工具安装、消费库升级与真实实体迁移另行授权。
 
-- [ ] **统一实体校验入口与分项结果**：按 [统一校验规范](agent/knowledge/knowledge-validation.md) 接入结构、关系、引用、显式逻辑层和待核实状态；覆盖错 type/缺 id、任意 DOC_DIR、必需断链及外库不可读场景。
-- [ ] **接入 APP/MS/API 完整身份与消费关系**：按 [身份规范](agent/knowledge/naming-conventions.md#身份范围与限定引用) 更新共享解析、查重、路径生成、导航和可视化；验证跨 APP 的同名 MS/API、身份迁移、PD→SYS 单侧声明及反向派生；迁移真实实体前另行核实范围和授权。
-- [ ] **实现消费定位、并发与联邦恢复**：按 [联邦契约](agent/knowledge/federation-config.md) 支持 dependency 条目、本机锁、操作记录、冲突检测和部分失败续办；注销须验证引用降级，Git 集成后复核双边一致性。
-- [ ] **接入来源证据与升级兼容检查**：按 [证据登记](agent/knowledge/knowledge-evidence.md) 和 [升级流程](agent/skills/docs-upgrade/references/workflow.md) 验证来源变更定位、有效依赖解除、未提交来源可恢复性及真实实体规则迁移；不能用模板更新成功替代整体兼容通过。
 - [ ] **同步行为评测与消费环境**：工具接入后更新受影响评测/测试，验证旧格式兼容与新增契约；按授权再安装 Agent 资源、升级消费库及刷新索引/可视化。本轮未改这些产物或发布版本。
+  - 已新增 [10 组隔离行为场景](agent/scripts/tests/behavior-evals/README.md)，覆盖四层安装、旧格式、消费范围、恢复、证据生命周期、升级门禁和重装保护；采用临时 HOME、元库副本、工作区与独立评分。
+  - 2026-11-07 首次尝试全部 10 组超时，均为 `not_run`；2026-11-09 修正隔离执行与评分环境后重跑，[10 组均通过](agent/scripts/tests/behavior-evals/results-2026-11-09.json)。该结果仅覆盖临时夹具，不替代真实消费库安装、升级、索引/可视化刷新；两处模板数据问题与 docs-indexing 缓存污染保持独立待办。
+
+### 统一校验发现的后续问题（2026-11-07）
+
+- [ ] **核实并修订两处知识库数据问题**：解决方案 [BSD-EXAMPLE-L2](solution/knowledge/business/BSD-EXAMPLE-L1/BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md) 的目录宿主与正文 parent 不一致；应用 [knowledge/index.md](application/knowledge/index.md) 引用知识目录外的 INDEX-GUIDE。修订后重跑统一校验。
+- [ ] **处理 docs-indexing 安装测试的既有缓存污染**：测试复制了 2026-10-25 已有的 Python 缓存，导致安装树无缓存断言失败；隔离无缓存副本 43 项通过。核实夹具隔离方式后修复并重跑，删除既有缓存另需确认。
 
 ### 系统 MVP 验收与退出条件（2026-10-28）
 
