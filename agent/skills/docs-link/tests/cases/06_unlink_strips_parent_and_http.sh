@@ -75,14 +75,9 @@ cat >"$STUB" <<EOF
 - 其它：保留
 EOF
 
-run_unlink || fail "docs-link --unlink 应成功"
-
-grep -Fq 'type: parent' "$SOLUTION/docs/knowledge-links.yaml" \
-  && fail "unlink 后不应残留 type: parent"
-grep -Fq "$HREF" "$STUB" || fail "unlink 不应改正文跨层 HTTP"
-
-if grep -Fq 'name: "sln-foo"' "$COMPANY/docs/knowledge-links.yaml"; then
-  fail "源仓 child 登记应已移除"
-fi
-
-pass "unlink 删除目标 type:parent，且不改正文 HTTP"
+if run_unlink >"$TMP_DIR/unlink.out" 2>&1; then fail '未授权 HTTP 降级不能注销'; fi
+assert_contains 'downgrade-http' "$TMP_DIR/unlink.out"
+assert_contains 'type: parent' "$SOLUTION/docs/knowledge-links.yaml"
+assert_contains 'name: "sln-foo"' "$COMPANY/docs/knowledge-links.yaml"
+assert_contains "$HREF" "$STUB"
+pass '注销需要显式 HTTP 降级计划，未授权时保持清单和正文'

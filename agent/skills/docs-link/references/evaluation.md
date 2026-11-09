@@ -10,6 +10,7 @@
 
 ```bash
 bash agent/skills/docs-link/tests/run.sh
+bash agent/scripts/tests/federation-write/run.sh
 ```
 
 用例自建临时 Git 仓、Agent configs 和清单；只读复用共享库，不写元库 `agent/configs` 或全局配置。断言检查实际文件、软链、退出状态与用户可见计划，不 grep 生产源码。路径边界、check 与 dry-run 用前后快照核对。维护场景还须比较两侧清单、正文、槽位 readlink/lstat、HEAD、分支、Git index 内容与 mtime、FETCH_HEAD 及未选槽位；用隔离的 Git 包装器记录并拒绝网络/写入命令，证明没有远端访问或 Git 变更。
@@ -17,10 +18,10 @@ bash agent/skills/docs-link/tests/run.sh
 | 用例 | 行为覆盖 |
 | --- | --- |
 | 01–05 | 非法 path、占位符写入、label 保留、remote 必填、安装布局 |
-| 06–09、13 | 三层建联、unlink 不改 HTTP、保留 meta/child/无关 parent |
+| 06–09、13 | 三层建联、unlink 无授权拒绝 HTTP 降级、保留 meta/child/无关 parent |
 | 10–12、14 | WORK_SPACE、双边预检、只读预览、失败无提前写入 |
 | 15–17 | URL 本地解析、普通目录冲突、单目标 CLI 与 cwd |
-| 18–20 | 三层名称及改名、HTTP opt-in、失联注销、槽位父目录边界 |
+| 18–20 | 三层名称及改名、HTTP opt-in、失联注销保持待核实、槽位父目录边界 |
 | 21 | HTTP 改写拒绝越界软链，预览与实跑均不改外部文件 |
 | 22–26 | 全量只读检查、单槽位修复、精确选择、配置/路径/身份保护、CLI 互斥与建链失败 |
 | 27 | 拒绝 `links: []` 后继续列条目的非法混合清单；check/repair 均非零且零写入 |
@@ -31,6 +32,8 @@ bash agent/skills/docs-link/tests/run.sh
 
 新增缺陷先写可复现用例，记录修复前失败与修复后通过。不要把测试跳过当通过，也不要为了覆盖率测试措辞或内部函数结构。
 
+专项套件覆盖增量消费登记、清空、完整身份、跨进程锁、预览零写入、失败日志、外部编辑保护、显式续办、HTTP 降级与换父关联清理；安装兼容另见 docs-install 的第 31 项。
+
 ## 槽位维护验收
 
 在独立夹具中建联后注入故障，运行以下动作；记录真实退出码与前后快照，不能只检查响应措辞。
@@ -39,12 +42,12 @@ bash agent/skills/docs-link/tests/run.sh
 | --- | --- |
 | 全量含失败项 | `--check` 无 target；首项失败后仍覆盖其余 child，总体非零、逐项结果完整 |
 | 单项与三层映射 | `--check --target` / `--repair --target`；按登记 path 精确选择，未选项不变 |
-| 缺失、悬空或错误软链 | `--repair --target ... --dry-run` 无变化；在已确认范围实跑后仅槽位变化 |
+| 缺失、悬空或错误软链 | `--repair --target ... --dry-run` 无变化；在已确认范围实跑后仅槽位及操作记录变化 |
 | 正确相对软链 | repair 无操作；readlink、lstat 与 Git 元数据不变 |
 | 真文件/目录或父目录软链 | check/repair 非零，原内容与链接保留 |
 | 缺仓、配置/身份/反向 parent 不符 | 非零阻塞，不补 YAML、不猜路径、不 clone/install |
 | dirty/detached | 可检查/修复，用户改动、分支及全部 Git 元数据不变 |
-| CLI 与执行失败 | 四动作冲突、repair 缺目标、非 link 名称/改正文旗标均拒绝；注入 ln 失败须非零并保留失败证据 |
+| CLI 与执行失败 | 四动作冲突、repair 缺目标、非 link 名称/改正文旗标均拒绝；注入槽位目录不可写失败须非零并保留失败证据 |
 
 可重复执行的完整回归仍使用上节 `tests/run.sh`；行为评测按下节执行，不从回归成功推断 Agent 行为已通过。
 

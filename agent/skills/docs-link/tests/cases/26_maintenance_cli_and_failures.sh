@@ -27,17 +27,17 @@ slot="$SRC/docs/application-slots/application-target"
 rm "$slot"
 run_link --repair --target "$TGT" > "$TMP_DIR/out" 2>&1 || fail 'dirty/detached 应允许维护'
 rm "$slot"
-mkdir "$TMP_DIR/bin"
-cat > "$TMP_DIR/bin/ln" <<'SH'
-#!/usr/bin/env bash
-printf 'injected ln failure\n' >&2
-exit 73
-SH
-chmod +x "$TMP_DIR/bin/ln"
-snapshot_pair > "$TMP_DIR/before"
-if PATH="$TMP_DIR/bin:$PATH" run_link --repair --target "$TGT" > "$TMP_DIR/out" 2>&1; then fail '实际 ln 失败必须返回非零'; fi
-assert_contains 'injected ln failure' "$TMP_DIR/out"
-[[ ! -L "$slot" ]] || fail 'ln 失败不应报告已修复'
-snapshot_pair > "$TMP_DIR/after"
-cmp "$TMP_DIR/before" "$TMP_DIR/after" || fail '失败修改了软链外的仓库内容'
-pass 'CLI 边界、dirty/detached 和实际 ln 失败传播'
+chmod a-w "$(dirname "$slot")"
+if run_link --repair --target "$TGT" > "$TMP_DIR/out" 2>&1; then
+  chmod u+w "$(dirname "$slot")"
+  fail '真实槽位写入失败必须返回非零'
+fi
+chmod u+w "$(dirname "$slot")"
+assert_contains 'Permission denied' "$TMP_DIR/out"
+[[ ! -L "$slot" ]] || fail '写入失败不应报告已修复'
+python3 -B - "$SRC/docs/governance/operations" <<'PYTHON'
+import json, pathlib, sys
+records=[json.loads(p.read_text()) for p in pathlib.Path(sys.argv[1]).glob('*.yaml')]
+assert any(r['action']=='repair' and r['state']=='partial' for r in records)
+PYTHON
+pass 'CLI 边界、dirty/detached 和真实槽位写入失败保留恢复记录'

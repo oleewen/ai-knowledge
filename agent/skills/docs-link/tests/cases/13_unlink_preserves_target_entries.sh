@@ -15,6 +15,12 @@ cat >> "$TGT/docs/knowledge-links.yaml" <<'EOF'
     name: "billing"
     label: "账单应用"
 EOF
+# The retained child is readable, so unlink can verify its impact instead of
+# claiming completion over an unknown consumer subtree.
+mkdir -p "$(dirname "$TGT")/billing/docs"
+sed -e 's/REPO_DIR=target/REPO_DIR=billing/' -e 's/KNOWLEDGE_TYPE=system/KNOWLEDGE_TYPE=application/' \
+  "$TGT/.docsconfig" > "$(dirname "$TGT")/billing/.docsconfig"
+printf 'links: []\n' > "$(dirname "$TGT")/billing/docs/knowledge-links.yaml"
 run_link --unlink --target "$TGT" >> "$TMP_DIR/out" 2>&1
 assert_contains 'type: meta' "$TGT/docs/knowledge-links.yaml"
 assert_contains 'type: child' "$TGT/docs/knowledge-links.yaml"

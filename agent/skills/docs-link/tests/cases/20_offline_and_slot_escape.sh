@@ -13,7 +13,7 @@ cmp "$TMP_DIR/before" "$TMP_DIR/after"
 rm "$SRC/docs/application-slots"
 run_link --link --target "$TGT" > "$TMP_DIR/out" 2>&1
 mv "$TGT" "$TMP_DIR/offline-target"
-run_link --unlink --target https://github.com/example/target.git > "$TMP_DIR/out" 2>&1
+if run_link --unlink --target https://github.com/example/target.git > "$TMP_DIR/out" 2>&1; then fail '离线注销不能报告整体完成'; fi
 assert_not_contains 'type: child' "$SRC/docs/knowledge-links.yaml"
 [[ ! -L "$SRC/docs/application-slots/application-target" ]] || fail '离线注销残留软链'
 assert_contains '目标侧未更新' "$TMP_DIR/out"

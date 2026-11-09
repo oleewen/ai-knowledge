@@ -61,7 +61,7 @@ maintenance_load() {
   done < "$file"
   ((header)) || die "清单缺少 links: $file"
   for index in "${!types[@]}"; do
-    case "${types[index]}" in parent|child|meta) ;; *) die "清单 type 缺失或非法: $file" ;; esac
+    case "${types[index]}" in parent|child|meta|dependency) ;; *) die "清单 type 缺失或非法: $file" ;; esac
   done
 }
 
@@ -90,6 +90,8 @@ maintenance_one() (
   [[ "$(cd "$top" && pwd -P)" == "$root" ]] || die "登记 path 必须是目标 Git 根: $root"
   actual="$(knowledge_link_git_remote_url_prefer_origin "$root")" || die "目标缺少 remote: $root"
   [[ "$(git_remote_identity_key "$actual")" == "$(git_remote_identity_key "${sr[index]}")" ]] || die "目标 remote 与登记不符: $root"
+  local config_stamp
+  config_stamp="$(python3 -B "$FEDERATION_WRITE" fingerprint "$root/.docsconfig")" || exit 1
   docsconfig_abs_for_config "$root/.docsconfig" trepo tdoc tdir tar tkt || die "无法解析目标 .docsconfig: $root"
   docsconfig_validate_owner_matches_repo "$root" "$trepo" || die "目标配置归属不符: $root"
   [[ "$tkt" == "$target_kind" ]] || die "目标须为 $target_kind（收到 $tkt）"
@@ -98,6 +100,8 @@ maintenance_one() (
   [[ -d "$tdoc" ]] || die "目标文档目录缺失: $tdoc"
   local target_list="$tdoc/knowledge-links.yaml"
   local -a tr=() tp=() td=() tn=() tt=() te=()
+  local target_stamp
+  target_stamp="$(python3 -B "$FEDERATION_WRITE" fingerprint "$target_list")" || exit 1
   maintenance_load "$target_list" t
   for other in "${!tp[@]}"; do
     [[ "${tt[other]}" == parent ]] || continue
@@ -111,6 +115,8 @@ maintenance_one() (
   [[ ! -L "$slots" ]] || die "槽位父目录不能是软链: $slots"
   [[ ! -e "$slots" || -d "$slots" ]] || die "槽位父路径不是目录: $slots"
   slot="$slots/$target_kind-$name"
+  local slot_stamp
+  slot_stamp="$(python3 -B "$FEDERATION_WRITE" fingerprint "$slot")" || exit 1
   if [[ -L "$slot" ]]; then
     # resolve 跟随相对链与链式目标；正确的相对链保持原字节。
     actual="$(python3 -B - "$slot" <<'PY'
@@ -130,17 +136,12 @@ PY
     die "槽位被普通文件/目录占用，保留并停止: $slot"
   fi
   [[ "$CMD" == repair ]] || die "槽位缺失或指向不符: $slot → $tdoc"
-  if ((DRY)); then
-    printf '[dry-run] 将修复软链: %s → %s\n' "$slot" "$tdoc"
-    exit 0
-  fi
-  mkdir -p "$slots" || die "无法创建槽位目录: $slots"
-  # -n 防止跟随旧目录软链；-f 只用于已经确认是软链的路径。
-  if [[ -L "$slot" ]]; then
-    ln -sfn "$tdoc" "$slot" || die "修复软链失败: $slot"
-  else
-    ln -s "$tdoc" "$slot" || die "创建软链失败: $slot"
-  fi
+  local -a repair_args=(legacy --source "$sdoc" --target-doc "$tdoc" --action repair --slot "$slot"
+    --baseline "$LIST_FILE" "$source_stamp"
+    --baseline "$root/.docsconfig" "$config_stamp"
+    --baseline "$target_list" "$target_stamp" --baseline "$slot" "$slot_stamp" "${baseline_args[@]}")
+  ((DRY == 0)) || repair_args+=(--dry-run)
+  python3 -B "$FEDERATION_WRITE" "${repair_args[@]}" || exit 1
   printf '[已修复] %s → %s\n' "$slot" "$tdoc"
 )
 
@@ -151,6 +152,8 @@ maintenance_main() {
   knowledge_link_value_looks_like_git_remote "$source_remote" || die '源 repository 须为 Git remote URL'
   local -a se=() selected=()
   local index root requested='' failures=0
+  local source_stamp
+  source_stamp="$(python3 -B "$FEDERATION_WRITE" fingerprint "$LIST_FILE")" || return 1
   maintenance_load "$LIST_FILE" s
   if [[ -n "$TARGET_RAW" ]] && ! knowledge_link_value_looks_like_git_remote "$TARGET_RAW"; then
     requested="$(normalize_target_repo_root "$TARGET_RAW")" || die '无法解析 target'

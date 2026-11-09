@@ -29,8 +29,11 @@ import json, sys
 before, after = (json.load(open(path)) for path in sys.argv[1:3])
 allowed = {'docs/application-slots', 'docs/application-slots/application-target'}
 def immutable(rows):
-    return [row for row in rows if not (row[0] == sys.argv[3] and row[1] in allowed)]
-assert immutable(before) == immutable(after), 'repair changed data outside the selected slot'
+    return [row for row in rows if not (row[0] == sys.argv[3] and (row[1] in allowed or row[1].startswith('docs/governance')))]
+assert immutable(before) == immutable(after), 'repair changed data outside the selected slot and operation journal'
+from pathlib import Path
+records=[json.loads(p.read_text()) for p in Path(sys.argv[3], 'docs/governance/operations').glob('*.yaml')]
+assert any(r['action']=='repair' and r['state']=='complete' for r in records)
 CHECK
   cmp "$TMP_DIR/source-before" "$SRC/docs/knowledge-links.yaml"
   cmp "$TMP_DIR/target-before" "$TGT/docs/knowledge-links.yaml"

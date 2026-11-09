@@ -12,6 +12,7 @@
 | 槽位失效 | 先 `--check`，再对已登记 target 预览 `--repair`；真实文件/目录保留 |
 | 缺仓、配置或反向 parent 不符 | 停止维护；按登记 path 准备仓库或定向纠正登记，不自动 clone、安装或改 YAML |
 | dirty/detached | 允许槽位检查/修复；内容更新另走该仓 Git 工作流，不 stash/reset/切分支 |
+| 未完成操作 / 外部编辑冲突 | 保留现场，使用返回操作 ID 预览续办；不直接重跑、编辑日志或清锁。待复核操作允许关联单元改变只读来源，但写目标必须匹配原写后状态 |
 | 下级仓残留旧 scripts/docs-link.sh | 使用元库或已安装技能脚本；不自动删除残留 |
 
 行为与授权以 [工作流](references/workflow.md)、[gates](references/gates.md) 为准。

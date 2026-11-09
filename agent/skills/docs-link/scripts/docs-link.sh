@@ -12,20 +12,37 @@ usage() {
   --dry-run       只预览；repair 预览不创建目录或软链。
   --app-name 名   link 的槽位名称（三种目标层通用）；默认已有 name，再取目录名。
   --rewrite-http  仅 link：显式换父时改写目标 knowledge 中的旧 HTTP 前缀。
+  --downgrade-http 仅 unlink：将核实到唯一 SSOT 的 HTTP 降为完整身份。
+  --dependency-add|--dependency-remove --target <仓库根> --entity-id <完整ID>
+                  消费登记增量增删；可重复 --entity-id，不建立槽位。
+  --clear         仅 dependency-remove：明确清空目标登记，与 entity-id 互斥。
+  --consumer-root <文档根> 追加已知消费范围，可重复。
+  --resume <操作ID>         显式续办原计划，可搭配 --dry-run。
+  --operation-check <操作ID> Git 集成后只读复核当前状态。
   --path          --target 的弃用别名；一次只能传一个目标。
   -h, --help      显示帮助，不读取工作区配置。
 
 link/unlink 双边更新 knowledge-links.yaml；path 使用字面量 ${WORK_SPACE}/…。
 check/repair 仅使用既有登记，不改清单、正文和 Git 状态；缺仓或身份不符时停止。
-只管理槽位软链，普通目录/文件冲突时停止；unlink 不改正文 HTTP。
-unlink 失联目标仅注销源登记及槽位，并报告目标侧未更新。无 clone/pull/提交动作。
+只管理槽位软链，普通目录/文件冲突时停止；HTTP 降级须显式授权参数。
+写入持本机锁、核对指纹并记录操作；未完成操作须按 ID 续办，普通重跑停止。
+失联注销或引用未闭环返回非零并保留操作记录。无 clone/pull/提交动作。
 依赖 Bash 5+、Git、Python 3，以及元库或已安装 Agent 的 docs-core.sh。
 EOF
 }
 
 die() { printf '错误: %s\n' "$*" >&2; exit 1; }
 [[ "${BASH_VERSINFO[0]:-0}" -ge 5 ]] || die '需要 Bash 5+'
-DRY=0 CMD='' TARGET_RAW='' CLI_NAME='' REWRITE_HTTP=0
+readonly FEDERATION_WRITE="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../scripts/tools" && pwd)/federation-write.py"
+export KNOWLEDGE_VALIDATION_BASH="${BASH}" PYTHONDONTWRITEBYTECODE=1
+for arg in "$@"; do
+  case "$arg" in --dependency-add|--dependency-remove|--resume|--operation-check|--resume=*|--operation-check=*)
+    exec python3 -B "$FEDERATION_WRITE" direct "$@" ;;
+  esac
+done
+KNOWLEDGE_LINKS_V2=1
+DRY=0 CMD='' TARGET_RAW='' CLI_NAME='' REWRITE_HTTP=0 DOWNGRADE_HTTP=0
+baseline_args=() consumer_args=()
 seen_target=0 seen_name=0
 while (($#)); do
   case "$1" in
@@ -34,6 +51,10 @@ while (($#)); do
       CMD="${1#--}"; shift ;;
     --dry-run) DRY=1; shift ;;
     --rewrite-http) REWRITE_HTTP=1; shift ;;
+    --downgrade-http) DOWNGRADE_HTTP=1; shift ;;
+    --consumer-root)
+      (($# >= 2)) && [[ -n "$2" && "$2" != --* ]] || die '缺少 --consumer-root'
+      consumer_args+=(--consumer-root "$2"); shift 2 ;;
     --target|--path|--app-name|--target=*|--path=*|--app-name=*)
       flag="${1%%=*}"
       if [[ "$1" == *=* ]]; then value="${1#*=}"; shift
@@ -54,6 +75,7 @@ while (($#)); do
     *) die "未知参数: $1" ;;
   esac
 done
+[[ "$DOWNGRADE_HTTP" == 0 || "$CMD" == unlink ]] || die '--downgrade-http 仅用于 --unlink'
 [[ -n "$CMD" ]] || die '请指定 --link|--unlink|--check|--repair'
 [[ "$CMD" == check || -n "$TARGET_RAW" ]] || die '此动作必须指定单个 --target'
 [[ "$CMD" == link || ( "$REWRITE_HTTP" == 0 && "$seen_name" == 0 ) ]] \
@@ -88,6 +110,7 @@ validate_name() {
 # 共享读取器容许缺 repository/name；写出器要求必填，因此在任何写入前补齐校验。
 load_entries() {
   local file="$1" prefix="$2" i parents=0
+  baseline_args+=(--baseline "$file" "$(python3 -B "$FEDERATION_WRITE" fingerprint "$file")")
   [[ ! -L "$file" ]] || die "清单不能是软链: $file"
   [[ ! -e "$file" || -f "$file" ]] || die "清单不是普通文件: $file"
   if [[ -f "$file" ]]; then
@@ -102,7 +125,9 @@ load_entries() {
   local -A identities=() names=()
   for i in "${!entry_paths[@]}"; do
     [[ -n "${entry_repos[i]}" ]] || die "清单条目缺少 repository: $file"
-    knowledge_link_value_looks_like_git_remote "${entry_repos[i]}" || die "repository 须为 Git remote URL: $file"
+    if [[ "${entry_types[i]}" != meta ]]; then
+      knowledge_link_value_looks_like_git_remote "${entry_repos[i]}" || die "repository 须为 Git remote URL: $file"
+    fi
     if [[ "${entry_types[i]}" != meta ]]; then
       [[ -n "${entry_names[i]}" && -n "${entry_dirs[i]}" ]] || die "清单条目缺少 name/dir: $file"
     fi
@@ -124,6 +149,7 @@ write_entries() {
 SRC_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || die '请在源 Git 仓库根执行'
 SRC_ROOT="$(cd "$SRC_ROOT" && pwd -P)"
 [[ "$(pwd -P)" == "$SRC_ROOT" ]] || die '当前 cwd 必须是源 Git 仓库根'
+baseline_args+=(--baseline "$SRC_ROOT/.docsconfig" "$(python3 -B "$FEDERATION_WRITE" fingerprint "$SRC_ROOT/.docsconfig")")
 srepo='' sdoc='' sdir='' sar='' skt='' sad=''
 docsconfig_abs_for_config "$SRC_ROOT/.docsconfig" srepo sdoc sdir sar skt sad || die '无法解析源 .docsconfig'
 case "$skt" in
@@ -173,6 +199,7 @@ fi
 
 TGT_LINKS='' tdoc='' tdir='' target_available=0
 if [[ -f "$TGT_ROOT/.docsconfig" ]]; then
+  baseline_args+=(--baseline "$TGT_ROOT/.docsconfig" "$(python3 -B "$FEDERATION_WRITE" fingerprint "$TGT_ROOT/.docsconfig")")
   trepo='' tar='' tkt=''
   docsconfig_abs_for_config "$TGT_ROOT/.docsconfig" trepo tdoc tdir tar tkt || die '无法解析目标 .docsconfig'
   [[ "$tkt" == "$target_kind" ]] || die "目标须为 $target_kind（收到 $tkt）"
@@ -317,40 +344,17 @@ if [[ "$CMD" == link ]]; then
 else
   printf '[计划] 将移除槽位软链（若存在）: %s\n' "$slot"
 fi
-if ((DRY)); then
-  printf '[dry-run] 预览完成，未写入: %s %s（name=%s）\n' "$CMD" "$TARGET_RAW" "$name"
-  exit 0
+plan_args=(legacy --source "$sdoc" --action "$CMD" --slot "$slot" --old-slot "$old_slot" "${baseline_args[@]}" "${consumer_args[@]}")
+((target_available == 0)) || plan_args+=(--target-doc "$tdoc")
+for i in "${!sp[@]}"; do
+  plan_args+=(--source-entry "${st[i]}" "${sr[i]}" "${sp[i]}" "${sd[i]}" "${sn[i]}" "${sl[i]}")
+done
+if ((target_available)); then
+  for i in "${!np[@]}"; do
+    plan_args+=(--target-entry "${nt[i]}" "${nr[i]}" "${np[i]}" "${nd[i]}" "${nn[i]}" "${nl[i]}")
+  done
 fi
-
-# 预检排除参数/配置/槽位冲突；磁盘或进程中断仍须核对两侧，不能盲目重试。
-write_entries "$LIST_FILE" s "$src_child" "$src_parent"
-if ((target_available)); then write_entries "$TGT_LINKS" n "$tgt_child" "$tgt_parent"; fi
-if [[ "$CMD" == link ]]; then
-  mkdir -p "$slots"
-  if [[ ! -L "$slot" || "$(readlink "$slot")" != "$tdoc" ]]; then
-    [[ ! -L "$slot" ]] || rm "$slot"
-    ln -s "$tdoc" "$slot"
-  fi
-  if [[ -n "$old_slot" && -L "$old_slot" ]]; then
-    # 同目标不代表同槽位；比较链接自身及真实目录项名称，兼容大小写别名。
-    same_entry="$(python3 -B - "$old_slot" "$slot" <<'PY'
-import os
-import sys
-a, b = sys.argv[1:]
-sa, sb = os.lstat(a), os.lstat(b)
-names = os.listdir(os.path.dirname(a))
-distinct_names = os.path.basename(a) != os.path.basename(b) and all(os.path.basename(p) in names for p in (a, b))
-same = not distinct_names and (sa.st_dev, sa.st_ino) == (sb.st_dev, sb.st_ino)
-if same:
-    os.rename(a, b)  # 同目录项的大小写更名；不要删除有效槽位。
-print('same' if same else 'different')
-PY
-)"
-    [[ "$same_entry" == same ]] || rm "$old_slot"
-  fi
-  [[ -L "$slot" && "$(readlink "$slot")" == "$tdoc" ]] || die "写后槽位校验失败: $slot"
-else
-  [[ ! -L "$slot" ]] || rm "$slot"
-fi
-[[ -z "$rewrite_py" ]] || python3 -B "$rewrite_py" "${rewrite_args[@]}"
-printf '已完成 %s: %s；槽位 %s\n' "$CMD" "$LIST_FILE" "$slot"
+((REWRITE_HTTP == 0)) || plan_args+=(--rewrite-http)
+((DOWNGRADE_HTTP == 0)) || plan_args+=(--downgrade-http)
+((DRY == 0)) || plan_args+=(--dry-run)
+python3 -B "$FEDERATION_WRITE" "${plan_args[@]}"

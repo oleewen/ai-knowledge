@@ -1,7 +1,7 @@
 {
   "skill_name": "docs-link",
   "version": "3.1.0",
-  "description": "Agent 行为场景：登记授权、只读检查、单槽位修复、失败保留与分流；新增维护场景未执行时记 not_run，脚本回归独立运行。",
+  "description": "Agent 行为场景：登记授权、消费定位、只读检查、单槽位修复、失败续办与分流；未执行场景记 not_run，脚本回归独立运行。",
   "evals": [
     {
       "id": "docs-link-trigger-001",
@@ -559,7 +559,7 @@
           "id": "repair-company-selector-2",
           "name": "范围保留",
           "type": "must_not_conflict",
-          "check": "未选槽位、全部 YAML、正文和 Git 元数据不变。",
+          "check": "未选槽位、登记 YAML、正文和 Git 元数据不变；允许新增本次操作记录。",
           "priority": "P0"
         }
       ]
@@ -614,6 +614,51 @@
           "type": "behavior",
           "priority": "P0",
           "check": "真实dryrun非零并报告结构错误；两侧快照不变、无修清单或其他写入。"
+        }
+      ]
+    },
+    {
+      "id": "dependency-incremental",
+      "category": "should-trigger",
+      "prompt": "按已确认预览给这个外部 SYS 增加消费定位，仅新增 SYS-A，保留已有 ID。",
+      "setup": "临时 solution/system 仓，目标 SYS-A/SYS-B 合法且唯一；已有 dependency 含 SYS-B，提供新增 SYS-A 的已确认预览。",
+      "expected_output": "仅增量写入消费方，保留 SYS-B，不建槽位或改目标。",
+      "assertions": [
+        {
+          "id": "dependency-incremental-behavior",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "使用 dependency-add/entity-id；实际结果保留两 ID，目标与槽位不变，有完成操作记录，不重复索要授权。"
+        }
+      ]
+    },
+    {
+      "id": "operation-explicit-resume",
+      "category": "should-trigger",
+      "prompt": "刚才写入中断了，这是操作 ID；按原确认范围先预览续办。",
+      "setup": "临时双仓按已确认 link 计划注入第二步失败；提供真实操作 ID 与当前文件，另一次独立场景在已完成步骤注入外部编辑。",
+      "expected_output": "按原 ID dry-run；外部编辑时阻塞，不能重跑 link 或覆盖。",
+      "assertions": [
+        {
+          "id": "operation-explicit-resume-behavior",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "实际调用 resume/dry-run，零写入；外部编辑场景非零；不改日志、清锁、回滚或扩大范围。"
+        }
+      ]
+    },
+    {
+      "id": "unlink-http-authorized",
+      "category": "should-trigger",
+      "prompt": "按已确认注销预览执行，包含把列出的 HTTP 引用降级为完整身份。",
+      "setup": "临时已登记双仓，引用目标身份唯一且无有效消费/证据阻塞；提供含降级配方的已确认预览。",
+      "expected_output": "使用明确降级参数，完成后报告双边、正文与校验状态。",
+      "assertions": [
+        {
+          "id": "unlink-http-authorized-behavior",
+          "type": "behavior",
+          "priority": "P0",
+          "check": "实际 unlink/downgrade-http；正文改为核实的完整身份，双边与槽位一致，完成记录存在；未知身份变体在写前阻塞。"
         }
       ]
     }
