@@ -15,13 +15,14 @@
  {
   "id": "legacy-identity-read",
   "skill": "knowledge-validation",
-  "prompt": "在当前临时工程创建一个旧式平铺 MS 文件和一个带 implements_to 的旧式 API 文件；读取统一校验入口和命名规范，运行只读校验并在当前目录写 behavior.json，记录 status=passed、legacy_ms=true、legacy_api=true、migration_executable=false。不得修改实体正文。",
+  "prompt": "在临时元库中运行既有旧格式兼容与迁移只读测试：test_identity.py 的迁移预览/冲突与未知 owner 测试，以及 test_federation.py 的 test_verified_legacy_api_and_homonyms_in_new_layout；读取知识校验入口和命名规范。把命令、退出码和尾部输出保存到 legacy-read.txt，然后写 behavior.json，记录 status=passed、legacy_ms=true、legacy_api=true、migration_executable=false、read_only=true。不得修改实体正文或测试。",
   "marker": {
    "required": {
     "status": "passed",
     "legacy_ms": true,
     "legacy_api": true,
-    "migration_executable": false
+    "migration_executable": false,
+    "read_only": true
    }
   },
   "expected_status": "passed",
