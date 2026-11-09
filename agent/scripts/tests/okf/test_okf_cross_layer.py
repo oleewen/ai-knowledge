@@ -335,7 +335,7 @@ def test_single_parent_uses_disk_dir(tmp_path: Path) -> None:
     )
     assert (
         x.directory_chain_for_entity(app, "API-EXAMPLE", "application", 1)
-        == "MS-EXAMPLE"
+        is None  # 目录不能替代未读取的 APP/MS 归属链。
     )
 
     repo = tmp_path / "sysrepo-pm"

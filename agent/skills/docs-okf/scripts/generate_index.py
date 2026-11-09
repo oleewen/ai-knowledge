@@ -27,7 +27,7 @@ def _is_bundle_root(bundle_root: Path, directory: Path) -> bool:
     return directory.resolve() == bundle_root.resolve()
 
 
-def _concept_entries(directory: Path) -> List[Tuple[str, str, str]]:
+def _concept_entries(directory: Path, identities=None) -> List[Tuple[str, str, str]]:
     entries: List[Tuple[str, str, str]] = []
     for path in sorted(directory.iterdir()):
         if not path.is_file() or not okf_lib.is_concept_file(path):
@@ -36,6 +36,8 @@ def _concept_entries(directory: Path) -> List[Tuple[str, str, str]]:
         if not meta.get("id"):
             continue
         title = str(meta.get("title") or path.stem)
+        if str(meta.get('id','')).split('-')[0] in ('APP','MS','API') and identities is not None:
+            title += ' · '+identities.get(path.resolve(), str(meta['id'])+'（身份待核实）')
         desc = meta.get("description")
         desc_text = "" if desc is None else str(desc)
         entries.append((title, path.name, desc_text))
@@ -148,8 +150,8 @@ def _render_related_indexes(
     return "\n".join(lines)
 
 
-def _render_directory_files(directory: Path) -> str:
-    concept_files = {link for _, link, _ in _concept_entries(directory)}
+def _render_directory_files(directory: Path, identities=None) -> str:
+    concept_files = {link for _, link, _ in _concept_entries(directory, identities)}
     other: List[str] = []
     for path in sorted(directory.iterdir()):
         if not path.is_file():
@@ -160,7 +162,7 @@ def _render_directory_files(directory: Path) -> str:
             continue
         other.append(path.name)
     lines: List[str] = []
-    concepts = _concept_entries(directory)
+    concepts = _concept_entries(directory, identities)
     if concepts:
         lines.extend(_bullet(title, link, desc) for title, link, desc in concepts)
     if other:
@@ -182,7 +184,7 @@ def _render_subdirectories(
 
 
 def render_index_body(
-    directory: Path, planned_directories: AbstractSet[Path] = frozenset()
+    directory: Path, planned_directories: AbstractSet[Path] = frozenset(), identities=None
 ) -> str:
     index_path = directory / "index.md"
     existing = {"阅读顺序": "", "关联索引": ""}
@@ -211,7 +213,7 @@ def render_index_body(
 
     lines.append("## 目录文件")
     lines.append("")
-    lines.append(_render_directory_files(directory))
+    lines.append(_render_directory_files(directory, identities))
     lines.append("")
 
     lines.append("## 阅读顺序")
@@ -226,9 +228,9 @@ def render_index_body(
     return "\n".join(lines).rstrip() + "\n"
 
 def _render_okf_root_block(
-    directory: Path, planned_directories: AbstractSet[Path] = frozenset()
+    directory: Path, planned_directories: AbstractSet[Path] = frozenset(), identities=None
 ) -> str:
-    body = render_index_body(directory, planned_directories)
+    body = render_index_body(directory, planned_directories, identities)
     lines = body.splitlines()
     if lines and lines[0].startswith("# "):
         lines = lines[1:]
@@ -264,15 +266,20 @@ def write_index(
     bundle_root: Path,
     dry_run: bool = False,
     planned_directories: AbstractSet[Path] = frozenset(),
+    identities=None,
 ) -> bool:
     if okf_lib.is_session_excluded(directory):
         return False
+    if identities is None:
+        sys.path.insert(0, str(SCRIPT_DIR.parents[2]/'scripts/tools'))
+        from knowledge_validation.view import world_for_output, identity_labels
+        identities=identity_labels(world_for_output(bundle_root))
     index_path = directory / "index.md"
     check_output(index_path, bundle_root)
     if okf_lib.has_session_drafts(directory) and index_path.is_file():
         return True
     if _is_bundle_root(bundle_root, directory):
-        okf_block = _render_okf_root_block(directory, planned_directories)
+        okf_block = _render_okf_root_block(directory, planned_directories, identities)
         merged = _upsert_okf_block_in_index(index_path, okf_block)
         if dry_run:
             return True
@@ -285,7 +292,7 @@ def write_index(
         existing_meta, _ = okf_lib.parse_frontmatter(index_path.read_text(encoding="utf-8"))
         if existing_meta:
             return True
-    body = render_index_body(directory, planned_directories)
+    body = render_index_body(directory, planned_directories, identities)
     if dry_run:
         return True
     index_path.write_text(body, encoding="utf-8")
@@ -324,6 +331,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         action="store_true",
         help="递归处理 bundle 或 --dir 下全部子目录",
     )
+    parser.add_argument("--layer",default=None)
+    parser.add_argument("--consumer-root",action="append",default=[])
     parser.add_argument("--dry-run", action="store_true", help="仅统计，不写文件")
     args = parser.parse_args(argv)
 
@@ -347,11 +356,14 @@ def main(argv: Optional[List[str]] = None) -> int:
     directories = collect_directories(bundle_root, target, args.recursive)
     # 本轮将生成的入口也可用于导航，避免首次运行漏子目录链接。
     planned_directories = frozenset(directories)
+    sys.path.insert(0, str(SCRIPT_DIR.parents[2]/'scripts/tools'))
+    from knowledge_validation.view import world_for_output, identity_labels
+    identities=identity_labels(world_for_output(bundle_root,args.layer,args.consumer_root))
     written = 0
     skipped = 0
     for directory in directories:
         if write_index(
-            directory, bundle_root, dry_run=args.dry_run, planned_directories=planned_directories
+            directory, bundle_root, dry_run=args.dry_run, planned_directories=planned_directories, identities=identities
         ):
             written += 1
         else:

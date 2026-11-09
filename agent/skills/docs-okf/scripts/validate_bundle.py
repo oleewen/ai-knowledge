@@ -17,6 +17,8 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
 import okf_lib  # noqa: E402
 import okf_cross_layer  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "scripts/tools"))
+from knowledge_validation.core import validate, render
 
 BUNDLE_LINK_RE = re.compile(r"\]\((/(?:knowledge|application)/[^)]+)\)")
 INDEX_LINK_RE = re.compile(r"(?<!!)\[[^\]]*\]\(([^)]+)\)")
@@ -337,6 +339,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         default=None,
         help="仓库根目录（默认：脚本上两级）",
     )
+    parser.add_argument("--consumer-root",action="append",default=[])
+    parser.add_argument("--layer", help="元库必须显式选择逻辑层")
     args = parser.parse_args(argv)
 
     repo = Path(args.repo).absolute() if args.repo else _repo_root()
@@ -354,9 +358,14 @@ def main(argv: Optional[List[str]] = None) -> int:
     print(f"BUNDLE_ROOT: {bundle_root}")
     print("")
 
-    return Validator(
-        bundle_root, bundle_name=args.bundle, repo_root=repo
-    ).run()
+    result = validate(repo, args.bundle, args.layer, consumers=args.consumer_root)
+    print(render(result))
+    # Entity rules belong to the shared core. Preserve OKF's root-index metadata check.
+    validator = Validator(bundle_root, bundle_name=args.bundle, repo_root=repo)
+    index = bundle_root / "index.md"
+    if index.is_file() and not index.is_symlink():
+        validator._check_frontmatter(index, "index.md", index.read_text(encoding="utf-8"))
+    return 1 if result['summary']['FAIL'] or validator.errors else 0
 
 
 if __name__ == "__main__":

@@ -27,7 +27,7 @@ class EntrypointTests(unittest.TestCase):
             f"WORK_SPACE={self.workspace}\n", encoding="utf-8"
         )
         (self.project / ".docsconfig").write_text(
-            f"REPO_DIR=project\nDOC_DIR=docs\nKNOWLEDGE_TYPE=application\n"
+            f"REPO_DIR=project\nDOC_DIR=docs\nKNOWLEDGE_TYPE=company\n"
             f"AGENT_ROOT={self.agent_home}\nAGENT_DIR=.agents\n", encoding="utf-8"
         )
         self.default = self.make_bundle("docs")
@@ -47,11 +47,12 @@ class EntrypointTests(unittest.TestCase):
             "# INDEX-GUIDE\n## 四、领域模型\n<!-- docs-build:entity-index:begin -->\n"
             "### 视角入口\n<!-- docs-build:entity-index:end -->\n", encoding="utf-8"
         )
-        (business / "BD-EXAMPLE.md").write_text(
-            "---\ntype: Business Domain\ntitle: 示例业务域\ndescription: 示例\n"
-            'tags: [business, BD]\ntimestamp: "2026-06-16T00:00:00+08:00"\n'
-            "id: BD-EXAMPLE\nperspective: business\nhierarchy: BD\nlayer_scope: application\n---\n"
-            "## 关系\n\n- (none)\n\n## 跨视角\n\n- (none)\n\n"
+        (business / "VC-EXAMPLE").mkdir()
+        (business / "VC-EXAMPLE/VC-EXAMPLE.md").write_text(
+            "---\ntype: Value Chain\ntitle: 示例业务域\ndescription: 示例\n"
+            'tags: [business, VC]\ntimestamp: "2026-06-16T00:00:00+08:00"\n'
+            "id: VC-EXAMPLE\nperspective: business\nhierarchy: VC\nlayer_scope: company\n---\n"
+            "<!-- markdownlint-disable-next-line MD025 -->\n# 示例业务域\n\n## 关系\n\n- (none)\n\n## 跨视角\n\n- (none)\n\n"
             "## 详细说明\n\n示例\n\n## 依据与证据\n\n示例\n", encoding="utf-8"
         )
         return bundle
@@ -156,7 +157,7 @@ class EntrypointTests(unittest.TestCase):
         self.assertFalse(list((self.default / "nested/superpowers").rglob("index.md")))
         self.assertNotIn("superpowers/", (self.default / "index.md").read_text())
         self.assertNotIn("SESSION-DRAFT-SENTINEL", (self.default / "viz.html").read_text())
-        self.assertIn("BD-EXAMPLE", (self.default / "viz.html").read_text())
+        self.assertIn("VC-EXAMPLE", (self.default / "viz.html").read_text())
         manual = self.default / "superpowers/" "index.md"
         manual.write_bytes(b"# Manual\r\nKeep custom prose.\r\n")
         saved = manual.read_bytes()
@@ -166,11 +167,11 @@ class EntrypointTests(unittest.TestCase):
         snapshot = self.snapshot()
         self.assert_success(self.run_entry("okf-validate.sh"))
         self.assertEqual(snapshot, self.snapshot())
-        (self.default / "knowledge/business/BD-EXAMPLE.md").write_text("# broken real concept\n")
+        (self.default / "knowledge/business/VC-EXAMPLE/VC-EXAMPLE.md").write_text("# broken real concept\n")
         self.assertNotEqual(self.run_entry("okf-validate.sh").returncode, 0)
 
     def test_validation_error_stops_remaining_refresh_steps(self):
-        entity = self.default / "knowledge/business/BD-EXAMPLE.md"
+        entity = self.default / "knowledge/business/VC-EXAMPLE/VC-EXAMPLE.md"
         entity.write_text("# 没有 frontmatter 的实体\n", encoding="utf-8")
         result = self.run_entry("okf-indexing.sh")
         self.assertNotEqual(result.returncode, 0)

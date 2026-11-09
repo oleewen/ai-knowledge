@@ -435,7 +435,7 @@ _SINGLE_PARENT_COUNT = {
     ("system", "DS"): 1,  # MDG 目录宿主 id
     ("solution", "BSD"): 1,  # 已核实 L1 宿主；旧目录可保留原名
     ("solution", "PD"): 1,  # PL 实体目录宿主 id
-    ("application", "API"): 1,
+    ("application", "API"): 2,
     ("application", "TBL"): 1,
     ("application", "CMP"): 1,
 }
@@ -559,8 +559,10 @@ def entity_relpath(
         raise ValueError(f"entity_relpath: solution does not land {prefix} files")
 
     if perspective == "application" and prefix == "API":
-        parent = _require_single_parent(prefix, path_parent, "MS id")
-        return f"knowledge/application/{parent}/{id}.md"
+        parts = (path_parent or "").split("/")
+        if len(parts) != 2 or not re.fullmatch(r"APP-[A-Za-z0-9_-]+", parts[0]) or not re.fullmatch(r"MS-[A-Za-z0-9_-]+", parts[1]):
+            raise ValueError("entity_relpath: application API requires verified APP/MS path_parent")
+        return f"knowledge/application/{path_parent}/{id}/{id}.md"
     if perspective == "data" and prefix == "TBL":
         parent = _require_single_parent(prefix, path_parent, "ENT id")
         return f"knowledge/data/{parent}/{id}.md"

@@ -7,12 +7,14 @@ import errno
 import os
 import re
 import stat
+import sys
 from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Dict, Iterator, List, Optional, Tuple
 from urllib.parse import urlparse
 
 import okf_lib
+sys.path.insert(0, str(Path(__file__).resolve().parents[3]/"scripts/tools"))
 
 LINKS_FILENAME = "knowledge-links.yaml"
 MD_LINK_RE = re.compile(r"\[([^\]]+)\]\((https?://[^)\s]+)\)")
@@ -186,29 +188,9 @@ def _entry_type(ent: Dict[str, str]) -> str:
 
 
 def _parse_link_entries(text: str) -> List[Dict[str, str]]:
-    entries: List[Dict[str, str]] = []
-    current: Dict[str, str] = {}
-
-    def flush() -> None:
-        nonlocal current
-        if current.get("path") or current.get("repository") or current.get("type"):
-            entries.append(current)
-        current = {}
-
-    for raw in text.splitlines():
-        line = raw.rstrip()
-        if not line.strip() or line.lstrip().startswith("#"):
-            continue
-        m = re.match(r"^(\s*)-\s+([a-z_]+):\s*(.*)$", line)
-        if m:
-            flush()
-            current[m.group(2)] = _yaml_scalar(m.group(3))
-            continue
-        m2 = re.match(r"^(\s{2,})([a-z_]+):\s*(.*)$", line)
-        if m2:
-            current[m2.group(2)] = _yaml_scalar(m2.group(3))
-    flush()
-    return entries
+    sys.path.insert(0, str(Path(__file__).resolve().parents[3]/'scripts/tools'))
+    from knowledge_validation.federation import parse_entries
+    return parse_entries(text)
 
 
 def load_parent(doc_root: Path) -> Optional[Parent]:
@@ -458,19 +440,30 @@ def collect_web_bases(start_doc_root: Path) -> List[Tuple[Parent, str]]:
 def _index_concepts(
     doc_root: Path, *, unique_id: Optional[str] = None
 ) -> Dict[str, Tuple[Path, str]]:
-    knowledge = Path(doc_root) / "knowledge"
-    found: Dict[str, Tuple[Path, str]] = {}
-    if not knowledge.is_dir():
-        return found
-    for path in knowledge.rglob("*.md"):
-        if not okf_lib.is_concept_file(path):
+    from collections import defaultdict
+    sys.path.insert(0, str(Path(__file__).resolve().parents[3]/'scripts/tools'))
+    from knowledge_validation.federation import for_bundle
+    world=for_bundle(doc_root)
+    found={}; local=defaultdict(list)
+    for path in okf_lib.iter_bundle_markdown_files(Path(doc_root)/'knowledge'):
+        if path.is_symlink() or not okf_lib.is_concept_file(path): continue
+        meta,body=okf_lib.parse_frontmatter(path.read_text(encoding='utf-8'))
+        fid=str(meta.get('id') or path.stem)
+        local[fid].append((path,body))
+    for fid,rows in local.items():
+        if len(rows)>1 and fid==unique_id:
+            raise ValueError(f'实体 {fid} 存在重复落点: {[str(r[0]) for r in rows]}')
+        if fid.split('-')[0] not in ('MS','API') and len(rows)==1:
+            found[fid]=rows[0]
+    for identity,rows in world.catalog.full.items():
+        rows=[r for r in rows if r['root']==Path(doc_root).resolve()]
+        if len(rows)!=1:
+            if identity==unique_id: raise ValueError(f'完整身份 {identity} 存在重复落点')
             continue
-        text = path.read_text(encoding="utf-8")
-        meta, body = okf_lib.parse_frontmatter(text)
-        fid = str(meta.get("id") or path.stem)
-        if fid == unique_id and fid in found:
-            raise ValueError(f"实体 {fid} 存在重复落点: {found[fid][0]} / {path}")
-        found[fid] = (path, body)
+        row=rows[0]
+        found[identity]=(row['path'],row['body'])
+        if len(world.catalog.local[row['id']])==1:
+            found[row['id']]=(row['path'],row['body'])
     return found
 
 
@@ -544,7 +537,7 @@ def cross_layer_href(
     path_parent: Optional[str] = None,
     hierarchy: Optional[str] = None,
 ) -> Optional[str]:
-    code = hierarchy or okf_lib._id_prefix(id)
+    code = hierarchy or okf_lib._id_prefix(id.rsplit("/",1)[-1])
     layer = okf_lib.hierarchy_first_layer(code, id)
     perspective = okf_lib.hierarchy_to_perspective(code)
     if not layer or not perspective:
@@ -555,6 +548,16 @@ def cross_layer_href(
     wb = parent_web_base(parent)
     if not wb:
         return None
+    if code in ('APP','MS','API'):
+        local=parent.local_doc_root()
+        if not local.is_dir(): return None
+        from knowledge_validation.federation import for_bundle
+        world=for_bundle(local,parent.knowledge_type)
+        row,status,evidence=world.catalog.resolve(id)
+        if status!='PASS': raise ValueError(evidence)
+        if row['root']!=local.resolve(): raise ValueError('完整身份不在目标层登记库')
+        from urllib.parse import quote
+        return wb+'/'+quote(row['path'].relative_to(local).as_posix(),safe='/')
     chain = path_parent
     entity = None
     local = parent.local_doc_root()
@@ -689,6 +692,19 @@ def validate_http_href(
     if not perspective:
         return f"跨层 HTTP 无法识别实体 ID: {id}"
     local_root = parent.local_doc_root()
+    if prefix in ('APP','MS','API'):
+        from urllib.parse import unquote
+        target=(local_root/unquote(rel)).resolve()
+        if local_root.resolve() not in target.parents:
+            return '跨层 HTTP 路径越界'
+        if local_root.is_dir():
+            from knowledge_validation.federation import for_bundle
+            world=for_bundle(local_root,parent.knowledge_type)
+            row=next((r for r in world.records if r['path']==target),None)
+            if row is None: return f'本机上级文件不存在: {target}'
+            if row['identity_status']!='PASS': return row['identity_evidence']
+            if row['full_id'] in world.catalog.duplicates(): return '完整身份多个 SSOT'
+        return None
     need = okf_lib.relpath_parent_count(prefix, parent.knowledge_type)
     chain = None
     if need and local_root.is_dir():

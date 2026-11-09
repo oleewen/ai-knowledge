@@ -56,14 +56,14 @@ def test_entity_relpath_application_api():
     try:
         okf_lib.entity_relpath("application", "API-EXAMPLE")
     except ValueError as exc:
-        assert "API requires path_parent" in str(exc)
+        assert "API requires verified APP/MS path_parent" in str(exc)
     else:
         raise AssertionError("expected ValueError when API has no path_parent")
     assert (
         okf_lib.entity_relpath(
-            "application", "API-EXAMPLE", path_parent="MS-EXAMPLE"
+            "application", "API-EXAMPLE", path_parent="APP-EXAMPLE/MS-EXAMPLE"
         )
-        == "knowledge/application/MS-EXAMPLE/API-EXAMPLE.md"
+        == "knowledge/application/APP-EXAMPLE/MS-EXAMPLE/API-EXAMPLE/API-EXAMPLE.md"
     )
 
 

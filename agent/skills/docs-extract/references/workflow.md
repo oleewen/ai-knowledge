@@ -48,3 +48,5 @@
 /docs-extract --sources docs/design.md docs/adr/ --overview system/knowledge/overview/billing-overview.md --dry-run
 /docs-extract --sources "退款申请须先审批，审批完成后通知申请人。" --overview application/knowledge/overview/order-overview.md --dry-run
 ```
+
+证据元数据使用[共享生命周期工具](../../../knowledge/knowledge-evidence.md#工具生命周期)：先 `create` 登记待落盘，实际目标完成后 `update` 绑定字节哈希与人工结论，`check` 通过后才按当前单元规则推进。来源变化用 `refresh` 标记，版本变化新建并接续前序编号；部分元数据写入按原操作 ID `resume`。该工具不代写正文或 overview，也不以元数据操作完成替代当前单元验收。

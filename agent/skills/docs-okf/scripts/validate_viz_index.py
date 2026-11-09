@@ -84,7 +84,7 @@ def _resolve_path(repo_root: Path, candidate: str) -> Path:
     return (repo_root / path).resolve()
 
 
-def validate(bundle_root: Path, viz_path: Path) -> int:
+def validate(bundle_root: Path, viz_path: Path, consumers=(), layer=None) -> int:
     try:
         bundle_root = okf_lib.resolve_bundle_root(bundle_root)
     except ValueError as exc:
@@ -139,10 +139,10 @@ def validate(bundle_root: Path, viz_path: Path) -> int:
 
     try:
         embedded = embedded_bundle(viz_text)
-        expected = build_bundle_data(bundle_root, "validation")
+        expected = build_bundle_data(bundle_root, "validation", consumers, layer)
     except (OSError, ValueError) as exc:
         return _error(f"viz-invalid-data: {exc}")
-    if embedded["concepts"] != expected["concepts"] or embedded["edges"] != expected["edges"]:
+    if any(embedded.get(key)!=expected.get(key) for key in ("concepts","edges","coverage","consumption","issues")):
         return _error(f"viz-bundle-mismatch: concepts or edges differ from current bundle: {viz_path}")
     concept_count = len(expected["concepts"])
     embedded_count = len(embedded["concepts"])
@@ -170,12 +170,14 @@ def main() -> None:
         default=None,
         help="仓库根目录（默认：脚本上两级）",
     )
+    parser.add_argument("--layer",default=None)
+    parser.add_argument("--consumer-root",action="append",default=[])
     args = parser.parse_args()
 
     repo_root = Path(args.repo).absolute() if args.repo else okf_lib.find_repo_root(Path(__file__).resolve())
     bundle_root = repo_root / args.bundle
     viz_path = _resolve_path(repo_root, args.viz)
-    raise SystemExit(validate(bundle_root, viz_path))
+    raise SystemExit(validate(bundle_root, viz_path, args.consumer_root, args.layer))
 
 
 if __name__ == "__main__":

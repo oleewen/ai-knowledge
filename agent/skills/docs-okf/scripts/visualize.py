@@ -121,7 +121,7 @@ def _viz_concept_paths(bundle_root: Path) -> List[Path]:
     return [p for p in okf_lib.scan_concepts(bundle_root) if p.name not in skip_names]
 
 
-def build_bundle_data(bundle_root: Path, name: str) -> Dict[str, Any]:
+def build_bundle_data(bundle_root: Path, name: str, consumers=(), layer=None) -> Dict[str, Any]:
     concepts: Dict[str, Dict[str, Any]] = {}
     edges: List[Dict[str, str]] = []
     edge_keys: Set[Tuple[str, str]] = set()
@@ -168,10 +168,15 @@ def build_bundle_data(bundle_root: Path, name: str) -> Dict[str, Any]:
     for concept in concepts.values():
         concept["backlinks"] = sorted(set(concept["backlinks"]))
 
+    sys.path.insert(0, str(SCRIPT_DIR.parents[2]/'scripts/tools'))
+    from knowledge_validation.view import world_for_output, enrich_graph
+    world=world_for_output(bundle_root,layer,consumers)
+    extra=enrich_graph({'concepts':concepts,'edges':edges},bundle_root,world)
     types = sorted({c["type"] for c in concepts.values() if c["type"]})
     type_colors = {t: _type_color(t, i) for i, t in enumerate(types)}
 
     return {
+        **extra,
         "name": name,
         "concepts": concepts,
         "edges": edges,
@@ -297,6 +302,7 @@ aside {{
   overflow: auto;
 }}
 #backlinks h3 {{ margin: 0 0 8px; font-size: 0.9rem; }}
+#coverage {{ overflow-wrap: anywhere; max-height: 180px; overflow: auto; flex-shrink: 0; }}
 #backlinks ul {{ margin: 0; padding-left: 18px; }}
 #backlinks li {{ margin: 4px 0; }}
 #backlinks a {{ color: var(--accent); cursor: pointer; text-decoration: none; }}
@@ -340,6 +346,7 @@ aside {{
 <main>
   <div id="cy"></div>
   <aside>
+    <div id="coverage" style="padding:12px"></div>
     <div id="detail"><p class="empty-hint">点击节点查看概念详情</p></div>
     <div id="backlinks"><h3>Cited by</h3><p class="empty-hint">—</p></div>
     <div id="legend"><h3>类型图例</h3></div>
@@ -353,6 +360,10 @@ aside {{
   const bundle = JSON.parse(document.getElementById('okf-bundle-data').textContent);
   const concepts = bundle.concepts;
   const typeColors = bundle.typeColors || {{}};
+  const coverage = document.getElementById('coverage');
+  coverage.appendChild(textElement('p', bundle.coverageNote || ''));
+  (bundle.coverage || []).forEach(c => coverage.appendChild(textElement('div', c.status + ' · ' + (c.purpose === 'consumer' ? '声明扫描' : '目标定位') + ' · ' + c.root)));
+  (bundle.issues || []).forEach(i => coverage.appendChild(textElement('div', i.status + ' · ' + i.evidence)));
   let cy = null;
   let selectedId = null;
 
@@ -392,14 +403,14 @@ aside {{
         type: c.type || 'unknown',
         title: c.title,
         tags: (c.tags || []).join(' '),
-        searchText: [c.id, c.title, ...(c.tags || [])].join(' ').toLowerCase(),
+        searchText: [c.id, c.fullIdentity || "", c.title, ...(c.tags || [])].join(' ').toLowerCase(),
       }},
     }}));
     const nodeIds = new Set(nodes.map(n => n.data.id));
     const edges = bundle.edges
       .filter(e => nodeIds.has(e.source) && nodeIds.has(e.target))
       .map((e, i) => ({{
-        data: {{ id: 'e' + i, source: e.source, target: e.target }},
+        data: {{ id: 'e' + i, source: e.source, target: e.target, relation: e.derived ? '消费 · ' + e.status : (e.relation || '') }},
       }}));
     return nodes.concat(edges);
   }}
@@ -449,6 +460,11 @@ aside {{
         selector: 'edge',
         style: {{
           width: 1.2,
+          label: 'data(relation)',
+          color: '#c9d1d9',
+          'text-background-color': '#0d1117',
+          'text-background-opacity': 0.85,
+          'font-size': 9,
           'line-color': '#3d4f66',
           'target-arrow-color': '#3d4f66',
           'target-arrow-shape': 'triangle',
@@ -579,7 +595,7 @@ aside {{
     }}
     const desc = c.description != null && c.description !== '' ? String(c.description) : '—';
     const meta = textElement('div', '', 'meta');
-    [['ID:', c.id], ['Type:', c.type || '—'], ['Description:', desc]].forEach(([label, value]) => {{
+    [['Identity:', c.fullIdentity || '待核实'], ['Status:', c.identityStatus || '未执行'], ['ID:', c.id], ['Type:', c.type || '—'], ['Description:', desc]].forEach(([label, value]) => {{
       const row = document.createElement('div');
       row.append(textElement('strong', label), document.createTextNode(' ' + value));
       meta.appendChild(row);
@@ -590,6 +606,10 @@ aside {{
     const body = textElement('div', '', 'body');
     renderMarkdown(body, c.body || '');
     detail.replaceChildren(textElement('h2', c.title || c.id), meta, tags, body);
+    if (c.consumers && c.consumers.length) {{
+      detail.appendChild(textElement('h3', '已读取的消费方'));
+      c.consumers.forEach(x => detail.appendChild(textElement('p', x.identity + ' · ' + x.status + ' · ' + x.sourceRoot)));
+    }}
     body.addEventListener('click', e => {{
       const a = e.target.closest('a');
       if (!a) return;
@@ -642,11 +662,13 @@ def generate_visualization(
     bundle_root: Path,
     out_path: Path,
     name: str,
+    consumers=(),
+    layer=None,
 ) -> None:
     from artifact_checks import check_output
     bundle_root = okf_lib.resolve_bundle_root(bundle_root)
     check_output(out_path, bundle_root)
-    data = build_bundle_data(bundle_root, name)
+    data = build_bundle_data(bundle_root, name, consumers, layer)
     html = render_html(data)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(html, encoding="utf-8")
@@ -657,6 +679,8 @@ def main(argv: Optional[List[str]] = None) -> int:
     parser.add_argument("--bundle", required=True, help="bundle 名称，如 application")
     parser.add_argument("--out", required=True, help="输出 HTML 路径（相对仓库根）")
     parser.add_argument("--name", default="OKF Bundle", help="页面标题")
+    parser.add_argument("--layer", default=None)
+    parser.add_argument("--consumer-root", action="append", default=[])
     parser.add_argument("--repo", default=None, help="仓库根目录（默认：脚本上两级）")
     args = parser.parse_args(argv)
 
@@ -670,7 +694,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 1
 
     out_path = repo / args.out
-    generate_visualization(bundle_root, out_path, args.name)
+    generate_visualization(bundle_root, out_path, args.name, args.consumer_root, args.layer)
     size = out_path.stat().st_size
     print(f"wrote {out_path} ({size} bytes, {len(list(okf_lib.scan_concepts(bundle_root)))} concepts)")
     return 0
