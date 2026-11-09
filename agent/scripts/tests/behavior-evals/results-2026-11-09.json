@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "run_at": "2026-11-09T03:48:10.816077+00:00",
+  "scenario_count": 10,
+  "results": [
+    {
+      "eval_id": "install-isolated-all",
+      "status": "passed",
+      "failed": [],
+      "artifact": "behavior-install-isolated-all-5fvxvao8"
+    },
+    {
+      "eval_id": "legacy-identity-read",
+      "status": "passed",
+      "failed": [],
+      "artifact": "behavior-legacy-identity-read-9v63b393"
+    },
+    {
+      "eval_id": "federation-consumption",
+      "status": "passed",
+      "failed": [],
+      "artifact": "behavior-federation-consumption-dgd8pi89"
+    },
+    {
+      "eval_id": "operation-recovery",
+      "status": "passed",
+      "failed": [],
+      "artifact": "behavior-operation-recovery-l4vc7cxa"
+    },
+    {
+      "eval_id": "unlink-dependency-block",
+      "status": "passed",
+      "failed": [],
+      "artifact": "behavior-unlink-dependency-block-xndi7s_3"
+    },
+    {
+      "eval_id": "evidence-lifecycle",
+      "status": "passed",
+      "failed": [],
+      "artifact": "behavior-evidence-lifecycle-j_86zhqa"
+    },
+    {
+      "eval_id": "evidence-change-recovery",
+      "status": "passed",
+      "failed": [],
+      "artifact": "behavior-evidence-change-recovery-ohgs2wl_"
+    },
+    {
+      "eval_id": "upgrade-snapshot-preserve",
+      "status": "passed",
+      "failed": [],
+      "artifact": "behavior-upgrade-snapshot-preserve-_6ya9ezd"
+    },
+    {
+      "eval_id": "upgrade-compat-gate",
+      "status": "passed",
+      "failed": [],
+      "artifact": "behavior-upgrade-compat-gate-st8ubh4q"
+    },
+    {
+      "eval_id": "reinstall-history-safe",
+      "status": "passed",
+      "failed": [],
+      "artifact": "behavior-reinstall-history-safe-ahkpibsp"
+    }
+  ],
+  "limits": [
+    "行为评测仅覆盖临时夹具；未执行项为 not_run；不代表元仓四层模板全绿",
+    "本轮先修正执行环境后重跑：使用可用模型、Bash 5、完整命令事件与可写评分产物；最终 10 组均通过独立评分。"
+  ]
+}

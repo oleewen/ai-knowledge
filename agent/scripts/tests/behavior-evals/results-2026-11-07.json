@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "scenario_count": 10,
+  "results": [
+    {
+      "eval_id": "install-isolated-all",
+      "status": "not_run",
+      "error": "timeout after 45s",
+      "artifact": "isolated-temp/install-isolated-all"
+    },
+    {
+      "eval_id": "legacy-identity-read",
+      "status": "not_run",
+      "error": "timeout after 45s",
+      "artifact": "isolated-temp/legacy-identity-read"
+    },
+    {
+      "eval_id": "federation-consumption",
+      "status": "not_run",
+      "error": "timeout after 45s",
+      "artifact": "isolated-temp/federation-consumption"
+    },
+    {
+      "eval_id": "operation-recovery",
+      "status": "not_run",
+      "error": "timeout after 45s",
+      "artifact": "isolated-temp/operation-recovery"
+    },
+    {
+      "eval_id": "unlink-dependency-block",
+      "status": "not_run",
+      "error": "timeout after 45s",
+      "artifact": "isolated-temp/unlink-dependency-block"
+    },
+    {
+      "eval_id": "evidence-lifecycle",
+      "status": "not_run",
+      "error": "timeout after 45s",
+      "artifact": "isolated-temp/evidence-lifecycle"
+    },
+    {
+      "eval_id": "evidence-change-recovery",
+      "status": "not_run",
+      "error": "timeout after 45s",
+      "artifact": "isolated-temp/evidence-change-recovery"
+    },
+    {
+      "eval_id": "upgrade-snapshot-preserve",
+      "status": "not_run",
+      "error": "timeout after 45s",
+      "artifact": "isolated-temp/upgrade-snapshot-preserve"
+    },
+    {
+      "eval_id": "upgrade-compat-gate",
+      "status": "not_run",
+      "error": "timeout after 45s",
+      "artifact": "isolated-temp/upgrade-compat-gate"
+    },
+    {
+      "eval_id": "reinstall-history-safe",
+      "status": "not_run",
+      "error": "timeout after 45s",
+      "artifact": "isolated-temp/reinstall-history-safe"
+    }
+  ],
+  "limits": [
+    "隔离临时夹具；模型超时或环境缺失按 not_run；不代表元仓四层模板全绿"
+  ]
+}

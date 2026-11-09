@@ -1,0 +1,157 @@
+[
+ {
+  "id": "install-isolated-all",
+  "skill": "agent-install",
+  "prompt": "在当前临时工程中，读取 runner 给出的 agent-install 技能入口和参数说明。使用显式 --meta、--scope=a、--agents=codex、--target=./ide、--workspace=./workspace 执行一次 dry-run；不得访问或修改真实 HOME。完成后在当前目录写 behavior.json，记录 status=passed、scope、agents、target、workspace 与 observed_no_external_write=true。",
+  "marker": {
+   "required": {
+    "status": "passed",
+    "observed_no_external_write": true
+   }
+  },
+  "expected_status": "passed",
+  "entry": "agent/skills/agent-install/SKILL.md"
+ },
+ {
+  "id": "legacy-identity-read",
+  "skill": "knowledge-validation",
+  "prompt": "在当前临时工程创建一个旧式平铺 MS 文件和一个带 implements_to 的旧式 API 文件；读取统一校验入口和命名规范，运行只读校验并在当前目录写 behavior.json，记录 status=passed、legacy_ms=true、legacy_api=true、migration_executable=false。不得修改实体正文。",
+  "marker": {
+   "required": {
+    "status": "passed",
+    "legacy_ms": true,
+    "legacy_api": true,
+    "migration_executable": false
+   }
+  },
+  "expected_status": "passed",
+  "entry": "agent/knowledge/knowledge-validation.md"
+ },
+ {
+  "id": "federation-consumption",
+  "skill": "knowledge-validation",
+  "prompt": "在当前临时目录建立 company→solution→system→application 的最小联邦夹具，包含一个 dependency 和一个 PD uses_to SYS 消费边。运行统一只读校验，确认覆盖范围和派生消费结果分开报告；写 behavior.json，记录 status=passed、consumption_edge_status=PASS、dependency_preserved=true、consumption_derived=true、offline_status=UNVERIFIED、sys_used_by_written=false，并保留校验报告和命令输出。最小夹具允许因缺少与消费边无关的上游完整实体而整体 FAIL，但消费边证据必须 PASS。",
+  "marker": {
+   "required": {
+    "status": "passed",
+    "consumption_edge_status": "PASS",
+    "dependency_preserved": true,
+    "consumption_derived": true,
+    "offline_status": "UNVERIFIED",
+    "sys_used_by_written": false
+   }
+  },
+  "expected_status": "passed",
+  "entry": "agent/knowledge/knowledge-validation.md"
+ },
+ {
+  "id": "operation-recovery",
+  "skill": "docs-link",
+  "prompt": "在当前临时联邦夹具中执行一次会留下操作记录的写入，注入一次写后中断，再按原 operation id 续办。若检测到外部编辑必须阻塞且保留现场。写 behavior.json，记录 status=passed、resumed_by_operation_id=true、external_edit_blocks=true、scene_isolated=true。",
+  "marker": {
+   "required": {
+    "status": "passed",
+    "resumed_by_operation_id": true,
+    "external_edit_blocks": true,
+    "scene_isolated": true
+   }
+  },
+  "expected_status": "passed",
+  "entry": "agent/skills/docs-link/SKILL.md"
+ },
+ {
+  "id": "unlink-dependency-block",
+  "skill": "docs-link",
+  "prompt": "在临时元库中运行 docs-link 的已有隔离测试 test_completion.CompletionTests.test_unlink_blocks_live_consumer_and_evidence 和 test_entrypoints.EntrypointTests.test_dependency_cli_preview_add_remove，以及 docs-link 用例 25_maintenance_guards.sh（覆盖目标远端身份不符、配置阻断与零写入）。把命令、退出码和尾部输出保存到 markers.txt，然后写 behavior.json，记录 status=passed、active_dependency_blocks=true、unknown_identity_blocks=true、unselected_links_unchanged=true。不得修改测试或真实工作区。",
+  "marker": {
+   "required": {
+    "status": "passed",
+    "active_dependency_blocks": true,
+    "unknown_identity_blocks": true,
+    "unselected_links_unchanged": true
+   }
+  },
+  "expected_status": "passed",
+  "entry": "agent/skills/docs-link/SKILL.md"
+ },
+ {
+  "id": "evidence-lifecycle",
+  "skill": "knowledge-evidence",
+  "prompt": "在当前临时文档根使用知识证据工具创建一条待落盘记录，绑定目标与来源原始字节哈希，再更新为已落盘并运行 check。不要复制来源正文。写 behavior.json，记录 status=passed、created=true、target_hash_bound=true、body_not_copied=true、check_passed=true。",
+  "marker": {
+   "required": {
+    "status": "passed",
+    "created": true,
+    "target_hash_bound": true,
+    "body_not_copied": true,
+    "check_passed": true
+   }
+  },
+  "expected_status": "passed",
+  "entry": "agent/knowledge/knowledge-evidence.md"
+ },
+ {
+  "id": "evidence-change-recovery",
+  "skill": "knowledge-evidence",
+  "prompt": "在当前临时文档根建立有效来源证据，修改来源后运行 refresh/check；再尝试创建不同目标的 previous 接续并确认写前拒绝。写 behavior.json，记录 status=passed、refresh_marks_review=true、check_incomplete=true、cross_target_previous_rejected=true、git_recovery_separate=true。",
+  "marker": {
+   "required": {
+    "status": "passed",
+    "refresh_marks_review": true,
+    "check_incomplete": true,
+    "cross_target_previous_rejected": true,
+    "git_recovery_separate": true
+   }
+  },
+  "expected_status": "passed",
+  "entry": "agent/knowledge/knowledge-evidence.md"
+ },
+ {
+  "id": "upgrade-snapshot-preserve",
+  "skill": "docs-upgrade",
+  "prompt": "在当前临时工程创建本库正文、旧系统 DSD 和固定模板交接快照；执行升级预览/交接读取，确认不读取后续 HEAD 标记、保留本库正文与旧 DSD。写 behavior.json，记录 status=passed、snapshot_used=true、body_preserved=true、old_dsd_preserved=true、head_change_ignored=true。",
+  "marker": {
+   "required": {
+    "status": "passed",
+    "snapshot_used": true,
+    "body_preserved": true,
+    "old_dsd_preserved": true,
+    "head_change_ignored": true
+   }
+  },
+  "expected_status": "passed",
+  "entry": "agent/skills/docs-upgrade/SKILL.md"
+ },
+ {
+  "id": "upgrade-compat-gate",
+  "skill": "docs-upgrade",
+  "prompt": "在当前临时公司库运行 upgrade-compat 诊断；先确认无 assessment 时 INCOMPLETE 且不能推进版本，再生成绑定规则/输入/范围/旧基线快照的 assessment，确认源快照变化后重新阻塞。写 behavior.json，记录 status=passed、diagnostic_incomplete=true、strict_gate_passed=true、snapshot_change_blocks=true、version_unchanged=true。",
+  "marker": {
+   "required": {
+    "status": "passed",
+    "diagnostic_incomplete": true,
+    "strict_gate_passed": true,
+    "snapshot_change_blocks": true,
+    "version_unchanged": true
+   }
+  },
+  "expected_status": "passed",
+  "entry": "agent/skills/docs-upgrade/SKILL.md"
+ },
+ {
+  "id": "reinstall-history-safe",
+  "skill": "docs-install",
+  "prompt": "在当前临时工程创建带 dependency 和未完成 operation journal 的文档根；运行安装预览与重装保护检查，确认 dependency、操作历史和正文不被清空，未完成操作阻塞覆盖。写 behavior.json，记录 status=passed、dependency_preserved=true、operation_history_preserved=true、incomplete_operation_blocks=true、body_preserved=true。",
+  "marker": {
+   "required": {
+    "status": "passed",
+    "dependency_preserved": true,
+    "operation_history_preserved": true,
+    "incomplete_operation_blocks": true,
+    "body_preserved": true
+   }
+  },
+  "expected_status": "passed",
+  "entry": "agent/skills/docs-install/SKILL.md"
+ }
+]
