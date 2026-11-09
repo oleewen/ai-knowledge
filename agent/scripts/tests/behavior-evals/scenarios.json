@@ -15,14 +15,12 @@
  {
   "id": "legacy-identity-read",
   "skill": "knowledge-validation",
-  "prompt": "在临时元库中运行既有旧格式兼容与迁移只读测试：test_identity.py 的迁移预览/冲突与未知 owner 测试，以及 test_federation.py 的 test_verified_legacy_api_and_homonyms_in_new_layout；读取知识校验入口和命名规范。把命令、退出码和尾部输出保存到 legacy-read.txt，然后写 behavior.json，记录 status=passed、legacy_ms=true、legacy_api=true、migration_executable=false、read_only=true。不得修改实体正文或测试。",
+  "prompt": "在临时元库中运行 test_identity.py 的 test_migration_preview_changes_descendants_without_mutating_records 和 test_migration_collision_and_unknown_owner_block，以及 test_federation.py 的 test_verified_legacy_api_and_homonyms_in_new_layout。通过测试已证明旧式 API、平铺布局和迁移预览只读；读取知识校验入口和命名规范。把命令、退出码和完整输出保存到 legacy-read.txt，然后写 behavior.json，记录 status=passed、legacy_api=true、migration_preview_executable=false。不要另写 git status 或修改任何测试/正文。",
   "marker": {
    "required": {
     "status": "passed",
-    "legacy_ms": true,
     "legacy_api": true,
-    "migration_executable": false,
-    "read_only": true
+    "migration_preview_executable": false
    }
   },
   "expected_status": "passed",

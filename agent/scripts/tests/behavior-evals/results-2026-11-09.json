@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "run_at": "2026-11-09T03:48:10.816077+00:00",
+  "run_at": "2026-11-09T04:12:07.424523+00:00",
   "scenario_count": 10,
   "results": [
     {
@@ -13,7 +13,7 @@
       "eval_id": "legacy-identity-read",
       "status": "passed",
       "failed": [],
-      "artifact": "behavior-legacy-identity-read-9v63b393"
+      "artifact": "behavior-legacy-identity-read-kcy97vn6"
     },
     {
       "eval_id": "federation-consumption",
