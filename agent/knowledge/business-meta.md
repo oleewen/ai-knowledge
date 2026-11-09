@@ -36,7 +36,7 @@ title: 业务视角元数据
 
 ### BSD-L2
 
-必填：`parent`。可选：`children`、`mapped_by`；`children` 按对端 `parent` 同步。`level` 值为 `2`。关系字段写在关系段。
+必填：`parent`、`level: 2`。可选：`children`、`mapped_by`（目标为 PD）；`children` 按对端 `parent` 同步。`level` 字段是层级判定依据，ID 不强制带 `-L2` 后缀。关系字段写在关系段。
 
 ### BS
 
@@ -44,7 +44,7 @@ title: 业务视角元数据
 
 ### BSD-L3
 
-必填：`parent`、`level: 3`。可选：`implemented_by`。
+必填：`parent`、`level: 3`。可选：`implemented_by`。`level` 字段是层级判定依据，ID 不强制带 `-L3` 后缀。
 
 ### BC
 

@@ -20,7 +20,7 @@ title: 产品视角元数据
 
 ### PD
 
-必填：`implements_to`、`maps_to`、`implemented_by`；后者包含 BSP、PM，跨层 PM 只写纯 ID。可选：`uses_to`。不写 `mapped_by` SYS。
+必填：`implements_to`、`maps_to`、`implemented_by`；`maps_to` 目标为 BSD-L2，`implemented_by` 包含 BSP、PM（跨层 PM 只写纯 ID）。可选：`uses_to`。不写 `mapped_by` SYS。
 
 `uses_to` 可声明消费 SYS，采用 [共享系统消费](entity-relations.md#共享系统消费) 的单侧主定义及反向派生规则；使用 MDG/TS 仍按原双向规则。SLN 汇总产品消费，不重复维护另一份声明。
 

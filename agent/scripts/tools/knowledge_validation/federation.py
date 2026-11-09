@@ -153,7 +153,9 @@ class World:
                                 self.issue(doc,'FAIL',f'重复 dependency 身份映射: {eid}')
                             self.dependencies[key]=target
                             self.dependency_layers[key]=expected_layer
-                            if okf_lib.hierarchy_first_layer(eid.rsplit('/',1)[-1].split('-',1)[0],eid.rsplit('/',1)[-1])!=expected_layer:
+                            _leaf = eid.rsplit('/',1)[-1]
+                            _scope = next(((r.get('meta') or {}).get('layer_scope') for r in self.records if r['id']==_leaf), None)
+                            if okf_lib.hierarchy_first_layer(_leaf.split('-',1)[0],_leaf,_scope)!=expected_layer:
                                 self.bad_dependencies.add(key)
                                 self.issue(doc,'FAIL',f'{eid} 首次定义层与 target_layer 不一致')
                     if target in self.layers and self.layers[target]!=expected_layer:
@@ -201,7 +203,8 @@ class World:
             result=self.catalog.resolve(row.get('full_id') or identity)
             if result[1]=='PASS': return result
         if not candidates:
-            target_layer=okf_lib.hierarchy_first_layer(kind(identity),identity)
+            scope_by_id={r['id']:(r.get('meta') or {}).get('layer_scope') for r in self.catalog.records}
+            target_layer=okf_lib.hierarchy_first_layer(kind(identity, scope_by_id),identity,scope_by_id.get(identity.rsplit('/',1)[-1]))
             expected=self.dependencies.get(key)
             if expected and expected not in self.readable:
                 return None,'UNVERIFIED','登记目标库不可读或配置未核实'

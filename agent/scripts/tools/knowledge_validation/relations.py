@@ -7,7 +7,7 @@ INVERSE.update({v:k for k,v in list(INVERSE.items())})
 FORWARD = {
  'parent': [('BSD1','BD'),('BSD2','BSD1'),('BSD3','BSD2'),('BSP','BP')],
  'implements_to': [('CAP','VC'),('BC','BSD3'),('AGG','BC'),('AB','AGG'),('PD','PL'),('PM','PD'),('FT','PM'),('FR','FT'),('UC','FR'),('BR','FR'),('BP','SLN'),('BSP','PD'),('SYS','SLN'),('APP','SYS'),('MS','APP'),('API','MS'),('DS','MDG'),('ENT','DS'),('TBL','ENT'),('TS','TPL'),('MW','TS'),('CMP','MW')],
- 'maps_to': [('BL','BSD1'),('BSD1','CAP'),('PL','BL'),('SLN','PL'),('PD','BS'),('BS','BSD2'),('SYS','PD'),('PM','BC'),('API','UC'),('UC','AB'),('MS','AGG'),('ENT','AGG')],
+ 'maps_to': [('BL','BSD1'),('BSD1','CAP'),('PL','BL'),('SLN','PL'),('PD','BSD2'),('BS','BSD2'),('SYS','PD'),('PM','BC'),('API','UC'),('UC','AB'),('MS','AGG'),('ENT','AGG')],
  'supports_to': [('BD','VC'),('APP','BC'),('API','FT')],
  'uses_to': [('PD','MDG'),('PD','TS'),('PD','SYS'),('APP','DS'),('APP','MW'),('MS','ENT'),('MW','DS')],
  'depends_to': [('PM','PM')],
@@ -30,16 +30,26 @@ REQUIRED = {'VC':[], 'CAP':['implements_to'], 'BD':['children'], 'BSD1':['parent
  'ENT':['implements_to','implemented_by'],'TBL':['implements_to'],
  'TPL':['implemented_by'],'TS':['implements_to','implemented_by'],'MW':['implements_to'],'CMP':['implements_to']}
 ONE_TO_ONE = {('BL','maps_to','BSD1'),('BSD1','maps_to','CAP'),('PL','maps_to','BL'),
-              ('PD','maps_to','BS'),('BS','maps_to','BSD2'),('SYS','maps_to','PD'),
+              ('PD','maps_to','BSD2'),('BS','maps_to','BSD2'),('SYS','maps_to','PD'),
               ('SLN','maps_to','PL'),('BP','implements_to','SLN')}
 ID = re.compile(r'(?<![\w-])(?:[A-Z]+-[A-Za-z0-9_][A-Za-z0-9_-]*)(?:/[A-Z]+-[A-Za-z0-9_][A-Za-z0-9_-]*)*(?![\w-])')
 
 
-def kind(eid):
+_SCOPE_TO_BSD_KIND = {'company': 'BSD1', 'solution': 'BSD2', 'system': 'BSD3'}
+
+
+def kind(eid, scope_by_id=None):
+    """实体类型。BSD 层级按 ID 后缀 > layer_scope > 默认 L1。"""
     eid = eid.rsplit('/',1)[-1]
     prefix = eid.split('-',1)[0]
     if prefix == 'BSD':
-        return 'BSD3' if eid.endswith('-L3') else 'BSD2' if eid.endswith('-L2') else 'BSD1'
+        if eid.endswith('-L3'):
+            return 'BSD3'
+        if eid.endswith('-L2'):
+            return 'BSD2'
+        if scope_by_id and eid in scope_by_id:
+            return _SCOPE_TO_BSD_KIND.get(scope_by_id[eid], 'BSD1')
+        return 'BSD1'
     return prefix
 
 
@@ -74,8 +84,12 @@ def parse(body, prose):
 
 def check(report, entities, resolve_target, perspective):
     index = {}
+    scope_by_id = {}
     for e in entities:
         index.setdefault(e.get('full_id',e['id']),[]).append(e)
+        _scope = (e.get('meta') or {}).get('layer_scope')
+        if _scope:
+            scope_by_id[e['id']] = _scope
     incoming = {}
     for e in entities:
         if not e['selected']:
@@ -84,7 +98,7 @@ def check(report, entities, resolve_target, perspective):
         if not e['valid']:
             add('NOT_RUN','relations.dependencies','结构/身份字段错误，关系结论未执行')
             continue
-        src = kind(e['id'])
+        src = kind(e['id'], scope_by_id)
         edges = e['edges']
         for required in REQUIRED.get(src,[]):
             values = [t for v,t,s in edges if v==required]
@@ -96,7 +110,7 @@ def check(report, entities, resolve_target, perspective):
             add('UNVERIFIED','relations.scoped_identity','完整宿主身份未核实')
             continue
         for verb,target,section in edges:
-            dst = kind(target)
+            dst = kind(target, scope_by_id)
             if (src,dst) not in ALLOWED.get(verb,set()):
                 add('FAIL','relations.allowed',f'不允许 {src}.{verb} → {dst}')
                 continue
@@ -128,14 +142,14 @@ def check(report, entities, resolve_target, perspective):
         for sk,verb,tk in ONE_TO_ONE:
             if src != sk:
                 continue
-            targets = set(t for v,t,s in edges if v==verb and kind(t)==tk)
+            targets = set(t for v,t,s in edges if v==verb and kind(t, scope_by_id)==tk)
             add('FAIL' if len(targets)>1 else 'PASS','relations.cardinality',f'{verb} → {tk} 数量 {len(targets)}，上限 1')
     # Inspect all read entities for the reverse side of a 1:1 edge, even in a selected batch.
     for e in entities:
         if not e['valid']:
             continue
         for verb,target,section in e['edges']:
-            key=(kind(e['id']),verb,kind(target))
+            key=(kind(e['id'], scope_by_id),verb,kind(target, scope_by_id))
             if key in ONE_TO_ONE:
                 incoming.setdefault((key,target),set()).add(e.get('full_id',e['id']))
     for (key,target), sources in incoming.items():

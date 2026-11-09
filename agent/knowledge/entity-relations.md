@@ -25,7 +25,7 @@
 | `children` | `parent` 的对端 |
 | `implements_to` | CAP→VC；BC→BSD-L3；AGG→BC；AB→AGG；PD→PL；PM→PD；FT→PM；FR→FT；UC/BR→FR；BP→SLN；BSP→PD；SYS→SLN；APP→SYS；MS→APP；API→MS；DS→MDG；ENT→DS；TBL→ENT；TS→TPL；MW→TS；CMP→MW |
 | `implemented_by` | `implements_to` 的对端，SYS→SLN 例外 |
-| `maps_to` | BL→BSD-L1；BSD-L1→CAP；PL→BL；SLN→PL；PD→BS；BS→BSD-L2；SYS→PD；PM→BC；API→UC；UC→AB；MS→AGG；ENT→AGG |
+| `maps_to` | BL→BSD-L1；BSD-L1→CAP；PL→BL；SLN→PL；PD→BSD-L2；BS→BSD-L2；SYS→PD；PM→BC；API→UC；UC→AB；MS→AGG；ENT→AGG |
 | `mapped_by` | `maps_to` 的对端，SYS→PD 例外 |
 | `supports_to` | BD→VC；APP→BC；API→FT |
 | `supported_by` | `supports_to` 的对端 |
@@ -45,7 +45,7 @@ PD 正文写纯 SYS ID；跨库目标位置按 [联邦配置](federation-config.
 
 - 系统侧 `SYS.implements_to`→SLN、`SYS.maps_to`→PD 只写纯 ID；解决方案不回写 `SLN.implemented_by` SYS 或 `PD.mapped_by` SYS。
 - SYS 不 `uses_to` MDG/TS，由 PD 声明使用；禁止 SYS 绕过 PD 对标 PL。
-- 禁止跨系统 PM→PD；`SYS.maps_to` PD 与该 `PD.maps_to` BS 成对填写。
+- 禁止跨系统 PM→PD；`SYS.maps_to` PD 与该 `PD.maps_to` BSD-L2 成对填写。
 - 禁止 APP/SYS↔TPL、APP↔CMP、FT↔UC 直连；MW 不替代 MS/API。
 - 上层指向下层的目标只写纯 ID，其他引用形态见 [引用规范](knowledge-reference-rules.md)。
 

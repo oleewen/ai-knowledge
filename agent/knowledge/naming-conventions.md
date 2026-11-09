@@ -19,7 +19,7 @@
 | 实体 | 格式 |
 | --- | --- |
 | BSD-L1 | `BSD-{NAME}` |
-| BSD-L2 / BSD-L3 | `BSD-{NAME}-L2` / `BSD-{NAME}-L3` |
+| BSD-L2 / BSD-L3 | 推荐 `BSD-{NAME}-L2` / `BSD-{NAME}-L3`；`-L2` / `-L3` 后缀可选，层级以 frontmatter `level` 为准 |
 | API | `API-{NNN}` 或 `API-{NAME}-{NNN}` |
 | ENT | `ENT-{NNN}` 或 `ENT-{NAME}` |
 

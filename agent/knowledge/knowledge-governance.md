@@ -23,7 +23,7 @@
 
 治理归属与业务消费分开：PD 可消费其他解决方案治理的 SYS，唯一 parent 不变；消费声明由 PD 维护，SLN 汇总，反向消费视图派生。消费不赋予写权限，不复制 SYS，也不替代 SYS 原有对标关系。关系语义见 [实体关系模型](entity-relations.md#共享系统消费)，定位见 [联邦配置](federation-config.md)。
 
-**基数**：一仓一 SLN；一 SLN 一个 PL、一条 BP、多个 PD；BL→BSD-L1、BSD-L1→CAP、PL→BL、PD→BS→BSD-L2、SYS→PD 均 1:1；一 SLN 多个 MDG、多个 TS。
+**基数**：一仓一 SLN；一 SLN 一个 PL、一条 BP、多个 PD；BL→BSD-L1、BSD-L1→CAP、PL→BL、PD→BSD-L2、SYS→PD 均 1:1；一 SLN 多个 MDG、多个 TS。
 
 `1:1` 约束两端各至多一个，是否必须存在由五视角 meta 的必填规则决定；可选关系不因此变成必填。“多个”表示允许多条，不统一要求至少两个；最低数量仍按必填规则确定。初始化模板的占位不计为已核实业务实体。
 

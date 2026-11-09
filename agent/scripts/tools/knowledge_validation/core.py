@@ -99,7 +99,7 @@ def structure(report, path, root, layer, text, selected=True):
             fail('id、hierarchy 与文件名不一致')
         if perspective!=okf_lib.hierarchy_to_perspective(hierarchy) or path.relative_to(root).parts[1]!=perspective:
             fail('perspective 与 hierarchy/实体树位置不一致')
-        if isinstance(eid,str) and okf_lib.hierarchy_first_layer(hierarchy,eid)!=layer:
+        if isinstance(eid,str) and okf_lib.hierarchy_first_layer(hierarchy,eid,meta.get('layer_scope'))!=layer:
             fail('实体首次定义层与显式逻辑层不一致')
     if meta.get('layer_scope')!=layer:
         fail('layer_scope 与显式逻辑层不一致')
