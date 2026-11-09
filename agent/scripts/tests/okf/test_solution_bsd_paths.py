@@ -26,7 +26,7 @@ class SolutionBSDPathsTest(unittest.TestCase):
         self.base = "https://github.com/org/solution/blob/main/"
 
     def write_entity(self, host):
-        target = self.parent / "knowledge/business" / host / "BSD-PAYMENTS-L2/BSD-PAYMENTS-L2.md"
+        target = self.parent / "knowledge/business/BS" / host / "BSD-PAYMENTS-L2/BSD-PAYMENTS-L2.md"
         target.parent.mkdir(parents=True)
         target.write_text("---\nid: BSD-PAYMENTS-L2\n---\n## 关系\n- parent: BSD-FINANCE\n")
         return target
@@ -34,7 +34,7 @@ class SolutionBSDPathsTest(unittest.TestCase):
     def test_new_entity_uses_differently_named_parent(self):
         self.assertEqual(okf_lib.entity_relpath(
             "business", "BSD-PAYMENTS-L2", path_parent="BSD-FINANCE", bundle="solution"),
-            "knowledge/business/BSD-FINANCE/BSD-PAYMENTS-L2/BSD-PAYMENTS-L2.md")
+            "knowledge/business/BS/BSD-FINANCE/BSD-PAYMENTS-L2/BSD-PAYMENTS-L2.md")
 
     def test_new_entity_without_host_is_rejected(self):
         with self.assertRaises(ValueError):
@@ -47,7 +47,7 @@ class SolutionBSDPathsTest(unittest.TestCase):
 
     def test_existing_legacy_host_is_preserved_and_validated(self):
         target = self.write_entity("BSD-LEGACY-L1")
-        expected = self.base + "knowledge/business/BSD-LEGACY-L1/BSD-PAYMENTS-L2/BSD-PAYMENTS-L2.md"
+        expected = self.base + "knowledge/business/BS/BSD-LEGACY-L1/BSD-PAYMENTS-L2/BSD-PAYMENTS-L2.md"
         self.assertEqual(cross.cross_layer_href(self.child, "BSD-PAYMENTS-L2"), expected)
         self.assertIsNone(cross.validate_http_href(self.child, expected))
         self.assertTrue(target.is_file())
@@ -69,20 +69,20 @@ class SolutionBSDPathsTest(unittest.TestCase):
             with self.subTest(host=host), self.assertRaises(ValueError):
                 cross.cross_layer_href(self.child, "BSD-PAYMENTS-L2", path_parent=host)
         error = cross.validate_http_href(self.child, self.base +
-            "knowledge/business/BSD-ONE/BSD-PAYMENTS-L2/BSD-PAYMENTS-L2.md")
+            "knowledge/business/BS/BSD-ONE/BSD-PAYMENTS-L2/BSD-PAYMENTS-L2.md")
         self.assertIsNotNone(error)
         self.assertIn("BSD-ONE", error)
         self.assertIn("BSD-TWO", error)
 
     def test_explicit_host_cannot_relocate_existing_flat_entity(self):
-        target = self.parent / "knowledge/business/BSD-PAYMENTS-L2.md"
+        target = self.parent / "knowledge/business/BS/BSD-PAYMENTS-L2.md"
         target.parent.mkdir(parents=True)
         target.write_text("---\nid: BSD-PAYMENTS-L2\n---\n## 关系\n- parent: BSD-FINANCE\n")
         self.assertIsNone(cross.cross_layer_href(
             self.child, "BSD-PAYMENTS-L2", path_parent="BSD-FINANCE"))
 
     def test_existing_noncanonical_file_does_not_generate_missing_nested_path(self):
-        target = self.parent / "knowledge/business/BSD-FINANCE/BSD-PAYMENTS-L2.md"
+        target = self.parent / "knowledge/business/BS/BSD-FINANCE/BSD-PAYMENTS-L2.md"
         target.parent.mkdir(parents=True)
         target.write_text("---\nid: BSD-PAYMENTS-L2\n---\n## 关系\n- parent: BSD-FINANCE\n")
         self.assertIsNone(cross.cross_layer_href(self.child, "BSD-PAYMENTS-L2"))
@@ -94,22 +94,22 @@ class SolutionBSDPathsTest(unittest.TestCase):
         self.assertIsNone(cross.cross_layer_href(self.child, "BSD-PAYMENTS-L2"))
         self.assertEqual(cross.cross_layer_href(
             self.child, "BSD-PAYMENTS-L2", path_parent="BSD-FINANCE"),
-            self.base + "knowledge/business/BSD-FINANCE/BSD-PAYMENTS-L2/BSD-PAYMENTS-L2.md")
+            self.base + "knowledge/business/BS/BSD-FINANCE/BSD-PAYMENTS-L2/BSD-PAYMENTS-L2.md")
 
     def test_offline_validation_rejects_missing_or_invalid_host_structure(self):
         cross.write_parent(self.child, cross.Parent(
             "solution", "https://github.com/org/solution.git", str(self.root / "offline"),
             ".", parent_name="solution"))
         for path in (
-            "knowledge/business/BSD-PAYMENTS-L2.md",
+            "knowledge/business/BS/BSD-PAYMENTS-L2.md",
             "knowledge/business/A/B/C/BSD-PAYMENTS-L2.md",
-            "knowledge/business/BSD-FINANCE/OTHER/BSD-PAYMENTS-L2.md",
-            "knowledge/business/../BSD-PAYMENTS-L2/BSD-PAYMENTS-L2.md",
+            "knowledge/business/BS/BSD-FINANCE/OTHER/BSD-PAYMENTS-L2.md",
+            "knowledge/business/BS/../BSD-PAYMENTS-L2/BSD-PAYMENTS-L2.md",
         ):
             with self.subTest(path=path):
                 self.assertIsNotNone(cross.validate_http_href(self.child, self.base + path))
         self.assertIsNone(cross.validate_http_href(self.child, self.base +
-            "knowledge/business/BSD-FINANCE/BSD-PAYMENTS-L2/BSD-PAYMENTS-L2.md"))
+            "knowledge/business/BS/BSD-FINANCE/BSD-PAYMENTS-L2/BSD-PAYMENTS-L2.md"))
 
 
 if __name__ == "__main__":

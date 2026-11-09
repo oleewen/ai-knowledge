@@ -416,7 +416,7 @@ def test_entity_relpath_system_bd_not_landed():
 def test_entity_relpath_solution_bsd_l2_explicit_host():
     assert (
         okf_lib.entity_relpath("business", "BSD-EXAMPLE-L2", path_parent="BSD-EXAMPLE-L1", bundle="solution")
-        == "knowledge/business/BSD-EXAMPLE-L1/BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md"
+        == "knowledge/business/BS/BSD-EXAMPLE-L1/BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md"
     )
     assert (
         okf_lib.entity_relpath("application", "SLN-EXAMPLE", bundle="solution")

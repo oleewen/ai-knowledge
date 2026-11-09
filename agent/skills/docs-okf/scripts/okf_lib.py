@@ -467,7 +467,7 @@ def entity_relpath(
     """相对 bundle 根的 concept 路径。
 
     path_parent 来自已核实关系或既有宿主目录，不读 frontmatter。
-    solution/BSD-L2 新建时显式传 L1 parent；不从子 ID 猜宿主。
+    solution/BSD-L2 新建时显式传 L1 parent，落在 business/BS/{L1}/{ID}/；不从子 ID 猜宿主。
     请求的 bundle 必须是该 ID 的首次定义层，否则拒绝落路径。
     叶子文件缺父级时拒绝，不用 EXAMPLE 锚点回退。
     """

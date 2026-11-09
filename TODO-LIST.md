@@ -26,7 +26,7 @@
 
 ### 统一校验发现的后续问题（2026-11-07）
 
-- [ ] **核实并修订两处知识库数据问题**：解决方案 [BSD-EXAMPLE-L2](solution/knowledge/business/BSD-EXAMPLE/BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md) 的目录宿主已与正文 parent 对齐并补 `level`，定向校验无结构 `FAIL`；应用 [knowledge/index.md](application/knowledge/index.md) 引用知识目录外的 INDEX-GUIDE 仍待修订。全部修订后重跑统一校验。
+- [ ] **核实并修订两处知识库数据问题**：解决方案 [BSD-EXAMPLE-L2](solution/knowledge/business/BS/BSD-EXAMPLE/BSD-EXAMPLE-L2/BSD-EXAMPLE-L2.md) 的目录宿主已与正文 parent 对齐并补 `level`，定向校验无结构 `FAIL`；应用 [knowledge/index.md](application/knowledge/index.md) 引用知识目录外的 INDEX-GUIDE 仍待修订。全部修订后重跑统一校验。
 - [ ] **处理 docs-indexing 安装测试的既有缓存污染**：测试复制了 2026-10-25 已有的 Python 缓存，导致安装树无缓存断言失败；隔离无缓存副本 43 项通过。核实夹具隔离方式后修复并重跑，删除既有缓存另需确认。
 
 ### 系统 MVP 验收与退出条件（2026-10-28）

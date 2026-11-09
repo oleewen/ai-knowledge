@@ -485,6 +485,10 @@ def _disk_parent_chain(
         parts = parts[:-1]
     if len(parts) == need:
         return "/".join(parts)
+    # solution BSD-L2 的 L1 宿主位于 business/BS/ 类型桶下；
+    # 去掉固定类型桶后仍按一个 L1 宿主段返回。
+    if need == 1 and parts and parts[0] == "BS" and len(parts) == 2:
+        return parts[1]
     return None
 
 
@@ -725,9 +729,13 @@ def validate_http_href(
     elif need and parent.knowledge_type == "solution" and prefix == "BSD":
         # 离线只能验证结构，不能把 URL 中的宿主当作已核实 parent。
         parts = rel.split("/")
-        if len(parts) != 5 or parts[:2] != ["knowledge", "business"] or parts[-2] != id:
-            return f"跨层 HTTP 路径不足：{id} 需要 L1 宿主及实体目录"
-        chain = parts[2]
+        if (
+            len(parts) != 6
+            or parts[:3] != ["knowledge", "business", "BS"]
+            or parts[-2] != id
+        ):
+            return f"跨层 HTTP 路径不足：{id} 需要 BS/L1 宿主及实体目录"
+        chain = parts[3]
     try:
         expected = okf_lib.entity_relpath(
             perspective, id, path_parent=chain, bundle=parent.knowledge_type

@@ -43,7 +43,7 @@
 | --- | --- |
 | 公司 / 业务 | `business/BD/{BD-ID}/{BD-ID}.md`，BSD-L1 同域目录；`business/BL/{BL-ID}.md`；`business/{VC-ID}/`，CAP 可同 VC 目录或在 CAP/ 子目录 |
 | 公司 / 技术 | `technical/TPL/{TPL-ID}.md` |
-| 解决方案 / 业务 | BSD-L2：`business/{L1宿主}/{ID}/{ID}.md`；新建时从已核实 L1 `parent` 取得显式宿主，不从子 ID 换后缀猜名。既有实体沿用核实后的实际目录链（含旧 `BSD-*-L1` 宿主）；目录名不反推关系。缺宿主或显式宿主与既有落点冲突时停止生成并澄清 |
+| 解决方案 / 业务 | BSD-L2：`business/BS/{L1宿主}/{ID}/{ID}.md`；BS：`business/BS/{ID}.md`。BSD-L2 新建时从已核实 L1 `parent` 取得显式宿主，不从子 ID 换后缀猜名。既有实体沿用核实后的实际目录链（含旧 `BSD-*-L1` 宿主）；目录名不反推关系。缺宿主或显式宿主与既有落点冲突时停止生成并澄清 |
 | 解决方案 / 产品 | PL：`product/{PL-ID}/{PL-ID}.md`；PD：`product/{PL-ID}/{PD-ID}.md`；BP/BSP 保持 BP/ 类型桶 |
 | 解决方案 / 技术 | `technical/TS/{ID}.md` |
 | 系统 / 业务 | `business/BSD-{L2}/BSD-{L3}/BSD-{L3}.md`，其下 BC/AGG/AB；L2 仅宿主，不加 L1 段，不落 L2 实体；聚合使用普通 README/index |

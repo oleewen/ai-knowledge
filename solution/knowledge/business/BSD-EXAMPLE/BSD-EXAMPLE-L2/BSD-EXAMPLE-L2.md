@@ -1,7 +1,7 @@
 ---
 type: Business Subdomain
 title: 示例二级业务子域
-description: BSD-L2；parent→公司 L1；mapped_by → BS 一对一。
+description: BSD-L2；parent→公司 L1。
 tags: [business, BSD]
 timestamp: "2026-10-04T00:00:00+08:00"
 id: BSD-EXAMPLE-L2
@@ -17,7 +17,7 @@ level: 2
 
 - parent: BSD-EXAMPLE
 - children: BSD-EXAMPLE-L3
-- mapped_by: [BS-EXAMPLE](../../BS/BS-EXAMPLE.md)
+- mapped_by: [PD-EXAMPLE](../../../product/PL-EXAMPLE/PD-EXAMPLE.md)
 
 ## 跨视角
 
@@ -26,8 +26,8 @@ level: 2
 ## 详细说明
 
 - level: 2
-- BSD-L2；parent→公司 L1；mapped_by → BS 一对一。
+- BSD-L2；parent→公司 L1。
 
 ## 依据与证据
 
-[../../chapters/business-domain-division.md](../../chapters/business-domain-division.md#二级子域)（示例）
+[../../../chapters/business-domain-division.md](../../../chapters/business-domain-division.md#二级子域)（示例）

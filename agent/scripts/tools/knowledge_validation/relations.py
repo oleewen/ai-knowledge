@@ -112,6 +112,11 @@ def check(report, entities, resolve_target, perspective):
         for verb,target,section in edges:
             dst = kind(target, scope_by_id)
             if (src,dst) not in ALLOWED.get(verb,set()):
+                # BSD 层级依赖 layer_scope；目标不在已读范围时无法判层，不作 FAIL。
+                _leaf = target.rsplit('/',1)[-1]
+                if _leaf.startswith('BSD-') and _leaf not in scope_by_id:
+                    add('UNVERIFIED','relations.allowed',f'{verb} → {target}：目标 BSD 层级未核实（跨库）')
+                    continue
                 add('FAIL','relations.allowed',f'不允许 {src}.{verb} → {dst}')
                 continue
             add('PASS','relations.allowed',f'{verb} → {target}')
