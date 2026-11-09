@@ -457,8 +457,13 @@ def test_entity_relpath_system_bsd_l3_under_l2_host():
 
 
 def test_entity_relpath_system_bsd_l1_l2_not_landed():
+    assert (
+        okf_lib.entity_relpath(
+            "business", "BSD-EXAMPLE", path_parent="BSD-EXAMPLE-L2", bundle="system"
+        )
+        == "knowledge/business/BSD-EXAMPLE-L2/BSD-EXAMPLE/BSD-EXAMPLE.md"
+    )
     for entity_id, parent in (
-        ("BSD-EXAMPLE", "BD-EXAMPLE"),
         ("BSD-EXAMPLE-L2", "BSD-EXAMPLE"),
     ):
         try:

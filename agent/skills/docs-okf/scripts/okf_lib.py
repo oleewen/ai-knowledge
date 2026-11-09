@@ -298,7 +298,7 @@ HIERARCHY_TO_PERSPECTIVE: Dict[str, str] = {
 }
 
 # 首次定义层（SSOT：agent/knowledge/knowledge-governance.md「各层聚焦摘要」）
-# BSD 无 ID 时下表的 system 不够用：L1 在公司、L2 在解决方案、L3 在系统。有 ID 时按后缀，见 hierarchy_first_layer。
+# BSD 分三层：L1 公司、L2 解决方案、L3 系统。判定优先级：ID 后缀（-L2/-L3）> layer_scope > 默认 company。
 HIERARCHY_FIRST_LAYER: Dict[str, str] = {
     "VC": "company",
     "BD": "company",
@@ -334,13 +334,21 @@ HIERARCHY_FIRST_LAYER: Dict[str, str] = {
 }
 
 
-def hierarchy_first_layer(hierarchy: str, id: Optional[str] = None) -> Optional[str]:
-    if hierarchy == "BSD" and id:
-        if id.endswith("-L3"):
+def hierarchy_first_layer(
+    hierarchy: str,
+    id: Optional[str] = None,
+    layer_scope: Optional[str] = None,
+) -> Optional[str]:
+    if hierarchy == "BSD":
+        if id and id.endswith("-L3"):
             return "system"
-        if id.endswith("-L2"):
+        if id and id.endswith("-L2"):
             return "solution"
-        return "company"
+        if layer_scope:
+            return layer_scope
+        if id:
+            return "company"
+        return "system"
     return HIERARCHY_FIRST_LAYER.get(hierarchy)
 
 
@@ -465,6 +473,10 @@ def entity_relpath(
     """
     prefix = _id_prefix(id)
     layer = hierarchy_first_layer(prefix, id)
+    if prefix == "BSD" and layer == "company":
+        # 无层级后缀的 BSD 可在当前目标层由 frontmatter layer_scope 补充判定；
+        # 显式 -L2/-L3 仍以 ID 后缀为准，不能被目标目录覆盖。
+        layer = bundle
     if layer != bundle:
         raise ValueError(f"entity_relpath: {bundle} does not land {prefix} files")
     if bundle == "company":
@@ -486,13 +498,9 @@ def entity_relpath(
 
     if bundle == "system":
         if perspective == "business" and prefix == "BSD":
-            # 系统层只落 L3 实体；L2 可为目录宿主（不落 L2 实体文件）。
-            if id.endswith("-L3"):
-                host = _require_single_parent(prefix, path_parent, "BSD-L2 host id")
-                return f"knowledge/business/{host}/{id}/{id}.md"
-            raise ValueError(
-                "entity_relpath: system does not land BSD-L1 or BSD-L2 files"
-            )
+            # 系统层只落 L3 实体（层判定已由上一步 bundle 校验保证）；L2 仅目录宿主。
+            host = _require_single_parent(prefix, path_parent, "BSD-L2 host id")
+            return f"knowledge/business/{host}/{id}/{id}.md"
         if perspective == "product" and prefix == "PM":
             pd = _require_single_parent(prefix, path_parent, "PD id")
             return f"knowledge/product/{pd}/{id}/{id}.md"
@@ -532,15 +540,13 @@ def entity_relpath(
 
     if bundle == "solution":
         if perspective == "business" and prefix == "BSD":
-            if id.endswith("-L2"):
-                l1 = _require_single_parent(prefix, path_parent, "BSD-L1 host id")
-                if (
-                    not re.fullmatch(r"BSD-[A-Za-z0-9_-]+", l1)
-                    or hierarchy_first_layer("BSD", l1) != "company"
-                ):
-                    raise ValueError("entity_relpath: solution BSD requires a BSD-L1 host id")
-                return f"knowledge/business/{l1}/{id}/{id}.md"
-            raise ValueError("entity_relpath: solution lands BSD-L2 only")
+            l1 = _require_single_parent(prefix, path_parent, "BSD-L1 host id")
+            if (
+                not re.fullmatch(r"BSD-[A-Za-z0-9_-]+", l1)
+                or hierarchy_first_layer("BSD", l1) != "company"
+            ):
+                raise ValueError("entity_relpath: solution BSD requires a BSD-L1 host id")
+            return f"knowledge/business/{l1}/{id}/{id}.md"
         if perspective == "product" and prefix == "PL":
             return f"knowledge/product/{id}/{id}.md"
         if perspective == "product" and prefix == "PD":

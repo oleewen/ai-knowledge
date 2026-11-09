@@ -496,7 +496,15 @@ def directory_chain_for_entity(
     段数不够时用直接父文件的目录。同层走不到时，用本文件所在父目录。
     跨层 ID 不在本 bundle，relation_path_parent 会跳过。
     """
-    is_solution_bsd = entity_id.startswith("BSD-") and entity_id.endswith("-L2")
+    is_solution_bsd = False
+    if entity_id.startswith("BSD-"):
+        # L2 的身份以实体 layer_scope 为准；ID 后缀可省略，不再作为唯一依据。
+        _probe = _index_concepts(doc_root, unique_id=entity_id)
+        if entity_id in _probe:
+            _meta, _ = okf_lib.parse_frontmatter(
+                Path(_probe[entity_id][0]).read_text(encoding="utf-8")
+            )
+            is_solution_bsd = _meta.get("layer_scope") == "solution"
     by_id = _index_concepts(doc_root, unique_id=entity_id if is_solution_bsd else None)
     if entity_id not in by_id:
         return None
