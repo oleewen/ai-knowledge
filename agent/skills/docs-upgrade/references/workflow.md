@@ -45,11 +45,27 @@
 | 真实实体兼容 | 按目标规范核对本库真实实体的字段、身份、关系、引用及来源证据；本库独有或抑制示例的实体仍在检查范围 |
 | 跨库兼容 | 核对受影响外库身份、消费关系及引用；外库不可读记待核实，不假称通过 |
 
-模板可先报告已对齐；真实实体或适用跨库检查未通过时，整体升级保持未闭环。指定路径模式只报告已检查范围，不推定整库兼容。兼容问题需要实体迁移时，列出影响并交 docs-build 等所属流程；已有授权可沿用，未授权路径不得借升级静默扩写。现有升级脚本只提供模板处理与交接，不实现完整兼容检查。
+模板可先报告已对齐；真实实体或适用跨库检查未通过时，整体升级保持未闭环。指定路径模式只报告已检查范围，不推定整库兼容。兼容问题需要实体迁移时，列出影响并交 docs-build 等所属流程；已有授权可沿用，未授权路径不得借升级静默扩写。升级脚本在预览及 scaffold 后自动输出只读兼容诊断；最终验收须使用下列严格入口。
+
+### 兼容检查入口
+
+```bash
+# 在消费工程根运行；不读模板、不写文件
+bash /path/to/docs-upgrade/scripts/docs-upgrade.sh --check-compat
+bash /path/to/docs-upgrade/scripts/docs-upgrade.sh --check-compat --assessment /path/to/assessment.json
+```
+
+报告含 `assessment_template`，用于填写本次人工评估；无评估时列明未闭合项并非零退出。整树预览和 scaffold 后的自动诊断允许继续修复模板，不能据其退出零推进版本；指定路径流程也须主动运行诊断并按所选范围报告，不能当作整库验收。
+
+评估的 `schema/doc/target_rules` 绑定文档根及完整目标规则哈希。`scope` 保留报告提供的 roots、files、sources，人工逐项确认后填写 affected（仓根相对实体路径）、reviewer（name/带时区 at）、conclusion。`template` 保留 files 快照，填写计划、未落位及路径校核结论和 reviewer。`old_baseline` 指向本库 governance 内已保存的原始统一校验 JSON，含仓根相对 path、文件 sha256、reviewer 和基线核实结论；未知旧基线不可用当前规则猜补。报告文件的保存由已授权工作流执行，诊断本身不落盘。
+
+实体来源事实使用[证据工具](../../../knowledge/knowledge-evidence.md#工具生命周期)补核。受影响实体必须有当前核验；未受影响实体可继承可核实旧报告，但当前实现保守要求旧非规则输入全部仍被读取且哈希一致。范围、规则、证据或来源快照变化后旧评估失效，须重核；不能只把新哈希机械复制到旧人工结论。
+
+最终 `--check-compat --assessment ...` 只有无 FAIL/UNVERIFIED/NOT_RUN 且五个检查面均闭合时返回零，并给出 `can_advance_version: true`。该结果是 Agent 推进版本的必要门禁，仍须完成原有 A/B 与整单条件；命令不改版本、不迁移实体、不修改 Profile 采用记录。版本或 Git 集成发生后重新核对实际状态，不继承过期通过结论。
 
 ## 整树执行
 
-需要 Bash 5+、Git；在目标工程根调用本技能脚本（路径可来自源码或安装副本）：
+需要 Bash 5+、Git、Python 3；在目标工程根调用本技能脚本（路径可来自源码或安装副本）：
 
 ```bash
 bash /path/to/docs-upgrade/scripts/docs-upgrade.sh --dry-run [--meta-path PATH] [--ref REF]

@@ -3,6 +3,7 @@
 set -euo pipefail
 
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly FEDERATION_WRITE="$SCRIPT_DIR/../../../scripts/tools/federation-write.py"
 # shellcheck source=../../../scripts/docs-core.sh
 source "$SCRIPT_DIR/../../../scripts/docs-core.sh"
 # shellcheck source=../../../scripts/lib/version.sh
@@ -11,6 +12,9 @@ source "$SCRIPT_DIR/lib/source.sh"
 source "$SCRIPT_DIR/lib/scan.sh"
 source "$SCRIPT_DIR/lib/apply.sh"
 
+export PYTHONDONTWRITEBYTECODE=1 KNOWLEDGE_VALIDATION_BASH="${BASH}" KNOWLEDGE_LINKS_V2=1
+CHECK_COMPAT=0
+ASSESSMENT=""
 DRY_RUN=1
 APPLY_SCAFFOLD=0
 META_PATH_OVERRIDE=""
@@ -40,6 +44,8 @@ Usage: docs-upgrade.sh [--dry-run | --apply-scaffold] [--meta-path PATH] [--ref 
 
   --dry-run          只打印清单（默认）；不备份、不写盘、不建链、不重写路径
   --apply-scaffold   先备份，再复制新增骨架、整文件覆盖根 DESIGN.md；不自动合正文
+  --check-compat     独立只读最终兼容复核；未闭环返回非零，不推进版本
+  --assessment FILE  已核实旧基线、影响范围及模板完成记录 JSON（与 check-compat 使用）
   --meta-path PATH   本次覆盖 meta 路径，不修改登记；使用 KNOWLEDGE_TYPE 目录
   --ref REF          显式 Git ref；不传时有效 Git path 用当前 HEAD，回退 clone 用 main
   -h, --help         本帮助
@@ -61,6 +67,8 @@ EOF
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --check-compat) CHECK_COMPAT=1; shift ;;
+    --assessment) shift; [[ -n "${1:-}" ]] || error "缺少 --assessment 值"; ASSESSMENT="$1"; shift ;;
     --dry-run) DRY_RUN=1; APPLY_SCAFFOLD=0; shift ;;
     --apply-scaffold) APPLY_SCAFFOLD=1; DRY_RUN=0; shift ;;
     --meta-path)
@@ -87,6 +95,21 @@ repo_abs="$(docsconfig_repo_abs)"
 doc_abs="$(docsconfig_doc_abs)"
 [[ -n "${KNOWLEDGE_TYPE:-}" ]] || error ".docsconfig 缺少 KNOWLEDGE_TYPE"
 
+readonly COMPAT_TOOL="$SCRIPT_DIR/../../../scripts/tools/upgrade-compat.py"
+if [[ "$CHECK_COMPAT" == 1 ]]; then
+  [[ "$APPLY_SCAFFOLD" == 0 && -z "$META_PATH_OVERRIDE" && -z "$REF_OVERRIDE" ]] || error 'check-compat 不能与模板写入或来源选择混用'
+  compat_args=(--doc "$doc_abs")
+  [[ -z "$ASSESSMENT" ]] || compat_args+=(--assessment "$ASSESSMENT")
+  python3 -B "$COMPAT_TOOL" "${compat_args[@]}"
+  exit $?
+fi
+[[ -z "$ASSESSMENT" ]] || error '--assessment 仅用于 --check-compat'
+
+compat_diagnostic() {
+  info "兼容诊断（不等于模板或整体升级完成）"
+  python3 -B "$COMPAT_TOOL" --doc "$doc_abs" --diagnostic || warn '兼容诊断未完成；保留待核实，不推定通过'
+}
+
 LINKS_FILE="${doc_abs%/}/knowledge-links.yaml"
 declare -a ADD_LIST=() SKIP_LIST=() RESTRUCTURE_LIST=() OVERWRITE_LIST=() LOCAL_ONLY_LIST=()
 declare -a IGNORED_SLOT_DIRS=() SKIP_SYMLINK_LIST=()
@@ -96,6 +119,7 @@ declare -A IGNORED_SLOT_SEEN=() SKIP_SYMLINK_SEEN=()
 resolve_meta_root "$LINKS_FILE"
 scan_upgrade_tree
 print_upgrade_plan
+compat_diagnostic
 [[ ${#TYPE_CONFLICT_LIST[@]} -eq 0 ]] || error '路径类型冲突；请先决定迁移方案，本次未写入'
 
 if [[ "$APPLY_SCAFFOLD" != '1' ]]; then
@@ -105,3 +129,4 @@ fi
 
 apply_scaffold
 finish_scaffold
+compat_diagnostic

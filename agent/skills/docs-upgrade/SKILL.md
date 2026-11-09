@@ -25,7 +25,7 @@ description: >
 1. 读 [parameters.md](references/parameters.md) 收口工程、元库、ref 与指定路径；缺配置不得猜测。
 2. 按 [workflow.md「源解析」](references/workflow.md#源解析) 校验本层来源，再进入对应模式。整树有版本号时只读取目标发布快照，发布后的 HEAD 内容不入范围。
 3. 按 [merge-rules.md](references/merge-rules.md) 分类并生成预览；写盘前执行 [gates.md](references/gates.md) 的 `C/M/S/F` 确认。有未落位时，`C` 后再选并入策略。
-4. 完成写后校核与受众 A/B；整单成功才按 workflow 推进版本。
+4. 完成写后校核、严格 `--check-compat --assessment` 与受众 A/B；仅 `can_advance_version: true` 且整单成功才按 workflow 推进版本。
 
 ## 必守边界
 
