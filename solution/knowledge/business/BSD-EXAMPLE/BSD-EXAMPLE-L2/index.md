@@ -16,4 +16,4 @@
 
 - 上一级索引：[../../index.md](../../index.md)
 - 上一级说明：[../../README.md](../../README.md)
-- L1 目录宿主：`../`（`BSD-EXAMPLE-L1/`，无 L1 实体文件）
+- L1 目录宿主：`../`（`BSD-EXAMPLE/`，无 L1 实体文件）

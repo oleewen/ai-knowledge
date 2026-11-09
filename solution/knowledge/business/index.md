@@ -5,7 +5,7 @@
 ## 子目录
 
 * [BS](BS/index.md)
-* [BSD-EXAMPLE-L1](BSD-EXAMPLE-L1/index.md)
+* [BSD-EXAMPLE](BSD-EXAMPLE/index.md)
 * [chapters](chapters/index.md)
 
 ## 目录文件
@@ -16,7 +16,7 @@
 
 1. [README.md](README.md)
 2. [chapters](chapters/index.md)
-3. [BSD-EXAMPLE-L2](BSD-EXAMPLE-L1/BSD-EXAMPLE-L2/index.md)
+3. [BSD-EXAMPLE-L2](BSD-EXAMPLE/BSD-EXAMPLE-L2/index.md)
 4. [BS](BS/index.md)
 5. [business-meta.md](../../../agent/knowledge/business-meta.md)
 

@@ -1,4 +1,4 @@
-# BSD-EXAMPLE-L1
+# BSD-EXAMPLE
 
 ## 子目录
 

@@ -8,6 +8,7 @@ id: BSD-EXAMPLE-L2
 perspective: business
 hierarchy: BSD
 layer_scope: solution
+level: 2
 ---
 <!-- markdownlint-disable-next-line MD025 -->
 # 示例二级业务子域
