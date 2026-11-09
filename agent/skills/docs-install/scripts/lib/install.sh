@@ -22,6 +22,8 @@ reset_docs_dir_with_backup() {
   local -a entries=()
   local p
   while IFS= read -r -d '' p; do
+    # 治理记录是本库运行元数据，不参与模板重置。
+    [[ "$(basename "$p")" != governance && "$(basename "$p")" != knowledge-links.yaml ]] || continue
     entries+=("$p")
   done < <(find "$docs_dir" -mindepth 1 -maxdepth 1 -print0 2>/dev/null || true)
 
@@ -45,7 +47,7 @@ reset_docs_dir_with_backup() {
     backup_path "$e"
   done
   ensure_dir "$docs_dir"
-  info "DOC_DIR 已清空（目录保留）: $docs_dir"
+  info "DOC_DIR 模板内容已清空（保留目录与治理记录）: $docs_dir"
 }
 
 # 知识库安装并写入 .docsconfig 后：建 .agents 软链（非 meta）并按模式重写路径
@@ -75,6 +77,7 @@ install_application_full_to_docs() {
   while IFS= read -r -d '' rel; do
     rel="${rel#./}"
     [[ -z "$rel" ]] && continue
+    [[ "$rel" != knowledge-links.yaml ]] || continue
     # 仅排除 application/ 根部多版本 README（子目录 README.md 须照常同步）
     # 根级 DESIGN.md 随源树整文件覆盖同步（DESIGN = 层设计入口模板）
     [[ "$rel" == 'README.md' || "$rel" == 'README-s.md' || "$rel" == 'README-c.md' ]] && continue
@@ -117,7 +120,7 @@ install_application_subset_to_docs() {
   done
 
   local base
-  for base in index.md knowledge-links.yaml DESIGN.md; do
+  for base in index.md DESIGN.md; do
     [[ -f "$src_root/$base" ]] || continue
     io_copy_file "$src_root/$base" "$dst_root/$base"
   done
@@ -147,6 +150,7 @@ install_org_template_to_docs() {
   while IFS= read -r -d '' rel; do
     rel="${rel#./}"
     [[ -z "$rel" ]] && continue
+    [[ "$rel" != knowledge-links.yaml ]] || continue
     src_f="$src_root/$rel"
     dst_f="$dst_root/$rel"
     io_copy_file "$src_f" "$dst_f"
@@ -157,34 +161,29 @@ install_org_template_to_docs() {
 
 # 建联改由 /docs-link 技能（agent-install 已装技能树）；不再向目标仓拷贝 docs-link 脚本。
 
-# 步骤 1：重装时保留已有 knowledge-links.yaml（含 type:parent / type:meta 与向下 child）
-_DOCS_INSTALL_LINKS_STASH=""
+# 清单原位保留，模板复制不触碰；预读指纹贯穿安装阶段直至 meta 写入。
+_DOCS_INSTALL_LINKS_BASELINE=""
 
 docs_install_stash_knowledge_links() {
-  local src="${CFG[docs_abs]}/knowledge-links.yaml"
+  local src="${CFG[docs_abs]}/knowledge-links.yaml" write_tool
   knowledge_links_validate_file_target "$src" || return 1
   [[ "${CFG[dry_run]}" == 0 ]] || return 0
-  _DOCS_INSTALL_LINKS_STASH=""
-  [[ -n "${CFG[docs_abs]}" && -f "$src" ]] || return 0
-  _DOCS_INSTALL_LINKS_STASH="$(mktemp "${TMPDIR:-/tmp}/knowledge-links.XXXXXX")"
-  cp -p "$src" "$_DOCS_INSTALL_LINKS_STASH"
+  write_tool="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../../scripts/tools" && pwd)/federation-write.py"
+  _DOCS_INSTALL_LINKS_BASELINE="$(python3 -B "$write_tool" fingerprint "$src")" || return 1
 }
 
 docs_install_restore_knowledge_links() {
   [[ "${CFG[dry_run]}" == 0 ]] || return 0
-  [[ -n "${_DOCS_INSTALL_LINKS_STASH:-}" && -f "$_DOCS_INSTALL_LINKS_STASH" ]] || return 0
-  mkdir -p "${CFG[docs_abs]}"
-  mv "$_DOCS_INSTALL_LINKS_STASH" "${CFG[docs_abs]}/knowledge-links.yaml"
-  _DOCS_INSTALL_LINKS_STASH=""
+  local write_tool current
+  write_tool="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../../scripts/tools" && pwd)/federation-write.py"
+  current="$(python3 -B "$write_tool" fingerprint "${CFG[docs_abs]}/knowledge-links.yaml")" || return 1
+  [[ "$current" == "$_DOCS_INSTALL_LINKS_BASELINE" ]] || { warn '安装期间清单指纹变化，保留外部编辑并停止'; return 1; }
 }
 
 # 在文档目录/knowledge-links.yaml upsert 恰好一条 type:meta（指向装机源仓）
 # doc_dir = 目标 KNOWLEDGE_TYPE（= CFG[type]）；多条时保留第一条并覆盖，丢弃其余 meta
 docs_install_upsert_knowledge_meta() {
   local links_file meta_repo meta_path child_kind parent_kind
-  local -a repos=() paths=() doc_dirs=() apps=() labels=() types=()
-  local -a nrepos=() npaths=() ndirs=() napps=() nlabels=() ntypes=()
-  local i meta_seen=0
 
   [[ -n "${CFG[docs_abs]:-}" ]] || return 0
   links_file="${CFG[docs_abs]}/knowledge-links.yaml"
@@ -209,38 +208,12 @@ docs_install_upsert_knowledge_meta() {
     return 0
   fi
 
-  knowledge_links_load_into_arrays "$links_file" paths repos doc_dirs apps labels types
-  for i in "${!paths[@]}"; do
-    if [[ "${types[i]:-child}" == 'meta' ]]; then
-      if [[ "$meta_seen" -eq 0 ]]; then
-        nrepos+=("$meta_repo")
-        npaths+=("$meta_path")
-        ndirs+=("${CFG[type]}")
-        napps+=('')
-        nlabels+=('')
-        ntypes+=('meta')
-        meta_seen=1
-      fi
-      continue
-    fi
-    nrepos+=("${repos[i]:-}")
-    npaths+=("${paths[i]}")
-    ndirs+=("${doc_dirs[i]:-}")
-    napps+=("${apps[i]:-}")
-    nlabels+=("${labels[i]:-}")
-    ntypes+=("${types[i]:-child}")
-  done
-  if [[ "$meta_seen" -eq 0 ]]; then
-    nrepos+=("$meta_repo")
-    npaths+=("$meta_path")
-    ndirs+=("${CFG[type]}")
-    napps+=('')
-    nlabels+=('')
-    ntypes+=('meta')
-  fi
-
-  DRY=0 knowledge_links_write_entries "$links_file" nrepos npaths ndirs napps nlabels ntypes \
-    "$child_kind" "$parent_kind" || return 1
+  local write_tool
+  write_tool="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../../scripts/tools" && pwd)/federation-write.py"
+  local -a baseline=()
+  [[ -z "${_DOCS_INSTALL_LINKS_BASELINE:-}" ]] || baseline=(--baseline "$_DOCS_INSTALL_LINKS_BASELINE")
+  python3 -B "$write_tool" meta-upsert \
+    "${CFG[docs_abs]}" "$meta_repo" "$meta_path" "${CFG[type]}" "${baseline[@]}" || return 1
   info "已登记 type:meta → ${links_file}（doc_dir=${CFG[type]}）"
 }
 

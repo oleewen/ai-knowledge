@@ -107,11 +107,9 @@ docs_install_plan_links() {
   _knowledge_link_relative_to_workspace "${CFG[target_dir]}" "$workspace" >/dev/null
   CFG[meta_path_stored]="$(_knowledge_link_store_with_workspace "${CFG[repo_root]}" "$workspace")"
   if [[ -f "${CFG[docs_abs]}/knowledge-links.yaml" ]]; then
-    knowledge_links_load_into_arrays "${CFG[docs_abs]}/knowledge-links.yaml" paths repos dirs names labels types
-    for i in "${!paths[@]}"; do
-      [[ -n "${repos[i]}" ]] || error 'knowledge-links.yaml 条目缺少 repository'
-      [[ "${types[i]}" == meta || -n "${names[i]}" ]] || error 'knowledge-links.yaml 的 parent/child 条目缺少 name'
-    done
+    local write_tool
+    write_tool="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../../scripts/tools" && pwd)/federation-write.py"
+    python3 -B "$write_tool" verify-manifest "${CFG[docs_abs]}" || return 1
   fi
 }
 

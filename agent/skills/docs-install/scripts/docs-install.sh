@@ -21,12 +21,11 @@ declare -A CFG=(
 )
 DOC_INIT_STAMP=''
 
-# 已经开始写入时发生错误：保留旧文档备份，临时 links 文件也留给操作者恢复。
+# 已经开始写入时发生错误：保留旧文档备份与原位清单。
 docs_install_on_exit() {
   local status=$?
   if (( status != 0 )) && [[ -n "$DOC_INIT_STAMP" && "${CFG[dry_run]}" == 0 ]]; then
     warn "初始化未完成；已有备份（若有）位于: $(get_backup_root)"
-    [[ -z "${_DOCS_INSTALL_LINKS_STASH:-}" ]] || warn "暂存建联清单: $_DOCS_INSTALL_LINKS_STASH"
   fi
 }
 trap docs_install_on_exit EXIT
@@ -34,6 +33,17 @@ trap docs_install_on_exit EXIT
 docs_install_run() {
   docs_install_parse_args "$@"
   docs_install_preflight
+  local write_tool="$SCRIPT_DIR/../../../scripts/tools/federation-write.py"
+  export KNOWLEDGE_VALIDATION_BASH="${BASH}"
+  if [[ "${CFG[dry_run]}" == 0 ]]; then
+    if [[ -z "${KNOWLEDGE_INSTALL_GUARD:-}" ]]; then
+      python3 -B "$write_tool" guard-install "${CFG[docs_abs]}" -- "$BASH" "$SCRIPT_DIR/docs-install.sh" "$@"
+      return $?
+    fi
+    python3 -B "$write_tool" guard-check "${CFG[docs_abs]}" || return 1
+  else
+    python3 -B "$write_tool" guard-preview "${CFG[docs_abs]}" || return 1
+  fi
   if [[ "${CFG[scope]}" == config ]]; then
     docs_install_write_docsconfig
   else
