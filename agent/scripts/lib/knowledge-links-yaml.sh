@@ -167,6 +167,18 @@ knowledge_links_load_into_arrays() {
   local -n _apps="${5:?}"
   local -n _labels="${6:?}"
   local -n _types="${7:?}"
+  if [[ "${KNOWLEDGE_LINKS_V2:-0}" == 1 ]]; then
+    local rows row_path row_repo row_dir row_name row_label row_type
+    rows="$(python3 -B "$FEDERATION_WRITE" read-old "$f")" || return 1
+    _paths=(); _repos=(); _dirs=(); _apps=(); _labels=(); _types=()
+    [[ -n "$rows" ]] || return 0
+    while IFS=$'\x1f' read -r row_path row_repo row_dir row_name row_label row_type; do
+      knowledge_link_expand_stored_path "$row_path" "$f" >/dev/null || return 1
+      _paths+=("$row_path"); _repos+=("$row_repo"); _dirs+=("$row_dir")
+      _apps+=("$row_name"); _labels+=("$row_label"); _types+=("$row_type")
+    done <<< "$rows"
+    return 0
+  fi
   local line key val path="" repo="" doc_dir="" link_name="" link_label="" entry_type=""
   local -a _errs=()
   local err_text err_line

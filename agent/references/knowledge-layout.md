@@ -50,11 +50,11 @@
 | 系统 / 产品 | 可留 `product/PD-{NAME}/` 宿主，其下 PM 目录承载 FT/FR/UC/BR |
 | 系统 / 应用 | `application/SYS-{NAME}/APP-{NAME}/MS-{NAME}/`；既有扁平 MS-*.md 仅在完整身份能唯一解析且路径不冲突时保留 |
 | 系统 / 数据 | `data/MDG-{NAME}/DS-{NAME}/`，承载 DS/ENT；MDG 为宿主 |
-| 应用 / 接口 | 新建采用 `application/{APP-ID}/{MS-ID}/{API-ID}.md`，APP/MS 仅目录宿主。既有 `application/{MS-ID}/` 可在归属链核实且路径不冲突时保留，不自动迁移 |
+| 应用 / 接口 | 新建采用 `application/{APP-ID}/{MS-ID}/{API-ID}/{API-ID}.md`，APP/MS 仅目录宿主。既有 `application/{MS-ID}/` 可在归属链核实且路径不冲突时保留，不自动迁移 |
 
 未单列的实体遵通用落点及现有层模板；ID 字面规则见 [naming-conventions.md](../knowledge/naming-conventions.md)。
 
-身份与物理路径分开：限定身份不是 href，目录名不能替代归属证据；完整身份到已有文件须核对台账。旧路径生成器尚未接入限定身份时，不用它处理局部重名实体；新增 APP 宿主布局须待工具兼容后执行。
+身份与物理路径分开：限定身份不是 href，目录名不能替代归属证据；完整身份到已有文件须核对台账。共享解析器已支持限定身份与新 API 落点；新建须传已核实的 APP/MS 宿主链，不能把完整身份直接当路径。旧落点只读兼容；实际迁移另核范围与授权。
 
 ### 治理元数据
 
