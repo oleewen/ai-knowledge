@@ -539,7 +539,7 @@ case_read_only() {
 case_analysis_and_legacy() {
   new_repo
   document SOLUTION-261022-a
-  printf '\nSYS-ORDER 承接审批；里程碑 M1：退出条件待确认。FR 和 MVP 留给下游。\n' >>"$SOLUTIONS/SOLUTION-261022-a.md"
+  printf '\n产品能力承接审批；里程碑 M1：退出条件待确认。FR 和 MVP 留给下游。\n' >>"$SOLUTIONS/SOLUTION-261022-a.md"
   check 0 "$REPO"
   assert_not_contains '旧六段' "$OUTPUT"
   {
