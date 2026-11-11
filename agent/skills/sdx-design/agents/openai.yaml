@@ -1,0 +1,4 @@
+interface:
+  display_name: "sdx-design 详细设计"
+  short_description: "基于 PRD 与 ASD/spec-asd 编写、修订或校验 DSD 详细设计说明书"
+  default_prompt: "使用 $sdx-design 基于当前需求链的 PRD 与架构输入处理指定 DSD 段；先确认输入基线和当前单元范围。"

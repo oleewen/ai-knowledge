@@ -1,4 +1,4 @@
 interface:
-  display_name: "知识库升级"
-  short_description: "按元库模板升级已有知识库，保留业务正文；支持整树预览与指定路径对齐。"
-  default_prompt: "使用 $docs-upgrade 先预览当前知识库的升级清单，对齐元库模板并保留已有正文。"
+  display_name: "docs-upgrade 知识库升级"
+  short_description: "按元库模板升级知识库骨架，保留本库正文并支持整树或指定路径对齐"
+  default_prompt: "使用 $docs-upgrade 升级指定知识库；先预览整树或指定路径的模板差异，保留本库正文并等待写前确认。"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "docs-okf 索引与可视化"
+  short_description: "刷新 OKF 目录索引与 viz.html，校验 bundle 结构和产物"
+  default_prompt: "使用 $docs-okf 刷新或校验指定 OKF bundle；先读取 .docsconfig 并确认 refresh、validate、viz 或 dry-run 模式。"

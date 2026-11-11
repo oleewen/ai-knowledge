@@ -1,0 +1,4 @@
+interface:
+  display_name: "docs-link 联邦建联"
+  short_description: "登记、注销或检查联邦知识库关系，维护双边清单与槽位软链"
+  default_prompt: "使用 $docs-link 对指定上下级知识库执行建联、注销、检查或修复；先预览影响并在授权范围内写入。"

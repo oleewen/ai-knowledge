@@ -1,0 +1,4 @@
+interface:
+  display_name: "docs-build 知识实体构建"
+  short_description: "从已核实资料构建五视角实体、README 与 INDEX-GUIDE 导航"
+  default_prompt: "使用 $docs-build 从已核实资料构建指定视角的知识实体，并同步 README 与 INDEX-GUIDE 第四章导航。"

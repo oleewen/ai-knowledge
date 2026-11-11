@@ -1,0 +1,4 @@
+interface:
+  display_name: "sdx-solution 解决方案"
+  short_description: "创建或修订解决方案，明确业务目标、产品职责边界与跨产品协作"
+  default_prompt: "使用 $sdx-solution 创建或续写指定 SOLUTION；先确认模式、业务目标、职责边界与当前章节。"

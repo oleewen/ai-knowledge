@@ -1,0 +1,4 @@
+interface:
+  display_name: "sdx-domains 域架构"
+  short_description: "创建或修订公司域架构总图与分域文档，说明 BD/BSD-L1 如何支撑 VC"
+  default_prompt: "使用 $sdx-domains 处理指定公司域架构总图块或分域章节；先核对层级、实体证据与当前段范围。"

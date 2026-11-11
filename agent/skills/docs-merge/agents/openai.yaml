@@ -1,0 +1,4 @@
+interface:
+  display_name: "docs-merge 文档合入"
+  short_description: "按 H2/H3 章节把材料合入已存在 Markdown，逐项处理冲突与增量"
+  default_prompt: "使用 $docs-merge 将指定来源合入目标 Markdown；先列出新增、更新、冲突与未落位项，逐项确认后再写入。"

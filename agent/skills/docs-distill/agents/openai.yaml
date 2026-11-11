@@ -1,4 +1,4 @@
 interface:
-  display_name: "Docs Distill"
-  short_description: "Distill federated slots into overview deltas"
-  default_prompt: "Use $docs-distill to distill one federated slot into an overview delta."
+  display_name: "docs-distill 知识蒸馏"
+  short_description: "将已挂载槽位的核实内容全量蒸馏到上层 overview 第三列"
+  default_prompt: "使用 $docs-distill 将指定联邦槽位的已核实内容全量蒸馏到上层 overview 第三列；先收口来源、目标与写入模式。"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "sdx-feature 功能特性"
+  short_description: "基于已共识 ANALYSIS 编写或修订六章 FEATURE，细化 FR、MVP、依赖与风险"
+  default_prompt: "使用 $sdx-feature 将同库已共识 ANALYSIS 细化为六章 FEATURE；先确认当前段、里程碑证据与 MVP 范围。"

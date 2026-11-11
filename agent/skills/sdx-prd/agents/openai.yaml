@@ -1,0 +1,4 @@
+interface:
+  display_name: "sdx-prd 产品需求"
+  short_description: "基于已共识 FEATURE 当前 MVP 编写、修订或评审十一章 PRD 产品需求"
+  default_prompt: "使用 $sdx-prd 将当前 FEATURE MVP 细化为十一章 PRD；先确认新建、修订或评审模式、上游基线和当前段范围。"

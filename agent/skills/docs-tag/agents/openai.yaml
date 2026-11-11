@@ -1,3 +1,4 @@
 interface:
-  display_name: "概览关键词标记"
-  short_description: "为四层知识库概览扫描关键词、标记相关表行并刷新架构摘录"
+  display_name: "docs-tag 概览标记"
+  short_description: "扫描 overview 候选关键词，标记相关表行并刷新架构摘录"
+  default_prompt: "使用 $docs-tag 处理指定 overview 的扫描、选词、表行标记或架构摘录阶段；先确认阶段与参数。"

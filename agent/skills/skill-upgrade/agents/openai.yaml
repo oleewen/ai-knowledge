@@ -1,4 +1,4 @@
 interface:
-  display_name: "生态技能升级"
-  short_description: "预览已装生态技能升级，核实来源与范围，经确认后更新或补源"
+  display_name: "skill-upgrade 生态技能升级"
+  short_description: "升级已安装的第三方生态 skills，并为缺失或失效来源整理补源候选"
   default_prompt: "使用 $skill-upgrade 预览已装生态 skills 的升级计划，列出缺源与检查失败项，确认后执行。"

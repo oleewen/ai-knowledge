@@ -1,4 +1,4 @@
 interface:
-  display_name: "文档修订"
+  display_name: "docs-revise 定向修订"
   short_description: "定向纠正文档、注释和链接，按确认范围统一术语并同步关联表述"
-  default_prompt: "使用 $docs-revise 将 docs/example.md 中的术语 X 改为 Y，并列出需要同步的关联文档候选。"
+  default_prompt: "使用 $docs-revise 修订指定文件或术语映射；先收口改动范围与关联策略，再应用修改并报告验证结果。"

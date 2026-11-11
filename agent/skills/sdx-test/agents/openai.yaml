@@ -1,0 +1,4 @@
+interface:
+  display_name: "sdx-test 测试设计"
+  short_description: "基于 PRD 与 DSD/ASD 编写或校验 TDD 测试设计，覆盖策略、用例、数据与环境"
+  default_prompt: "使用 $sdx-test 将已共识 PRD 与设计输入转为六章测试设计；先确认当前段、测试范围与设计基线。"

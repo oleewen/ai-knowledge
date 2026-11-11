@@ -1,0 +1,4 @@
+interface:
+  display_name: "docs-simplify 精简改写"
+  short_description: "就地精简 Markdown、按金字塔重组正文，并将重复定义改为 SSOT 引用"
+  default_prompt: "使用 $docs-simplify 精简指定文件、hunk 或已确认批次；先收口范围与真源，再改写并校验约束与引用。"
