@@ -28,6 +28,10 @@ git -C "$TMP" init -q --bare remote.git
 git -C "$fixture" remote add origin "$TMP/remote.git"
 git -C "$fixture" push -q -u origin main
 git -C "$fixture" switch -q -c feature-work
+mkdir -p "$fixture/docs"
+printf 'content change\n' >"$fixture/docs/content.md"
+git -C "$fixture" add docs/content.md
+git -C "$fixture" commit -qm 'content: add release payload'
 printf 'follow-up\n' >>"$fixture/TODO-LIST.md"
 printf 'follow-up\n' >>"$fixture/application/TODO-LIST.md"
 

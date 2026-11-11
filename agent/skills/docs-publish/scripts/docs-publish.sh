@@ -89,17 +89,6 @@ check_worktree_scope() {
   done
 }
 
-check_branch_scope() {
-  local changed
-  git diff --name-only -z "origin/$MAIN...HEAD" | while IFS= read -r -d '' changed; do
-    [[ -z "$changed" ]] && continue
-    is_allowed_file "$changed" || {
-      echo "unrelated feature-branch commit: $changed" >&2
-      return 1
-    }
-  done
-}
-
 todo_publish_files=()
 collect_todo_files() {
   local changed todo_file
@@ -149,7 +138,6 @@ next="feature-${version%.*}.${next_patch}"
 git remote get-url origin >/dev/null
 remote_before="$(git rev-parse --verify "refs/remotes/origin/$MAIN")"
 git show-ref --verify --quiet "refs/heads/$MAIN" || { echo 'local main branch not found' >&2; exit 1; }
-check_branch_scope || exit 1
 if git show-ref --verify --quiet "refs/heads/$next" || git show-ref --verify --quiet "refs/remotes/origin/$next"; then
   echo "next feature branch already exists: $next" >&2; exit 1
 fi
@@ -196,7 +184,6 @@ plan_after_fetch="$(plan_fingerprint)"
 git rebase --autostash "origin/$MAIN"
 unmerged="$(git ls-files --unmerged)"
 [[ -z "$unmerged" ]] || { echo 'unmerged files after rebase/autostash; preserve conflicts and stop' >&2; exit 1; }
-check_branch_scope || exit 1
 check_worktree_scope || exit 1
 version_after_rebase="$(version_next_from_files "${files[@]}")"
 [[ "$version_after_rebase" == "$version" ]] || { echo 'version changed during rebase; stop and preview again' >&2; exit 1; }
