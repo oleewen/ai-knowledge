@@ -1,7 +1,7 @@
 ---
 type: Design Document
 title: 公司知识库设计
-version: 2026.1020.1
+version: 2026.1111.0
 ---
 # 公司知识库设计
 
