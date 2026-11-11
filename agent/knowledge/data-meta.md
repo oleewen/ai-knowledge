@@ -16,11 +16,13 @@ title: 数据视角元数据
 
 ### MDG
 
-必填：`implemented_by`。可选：`used_by`，目标为 PD。无 `parent`。
+必填：无。可选：`used_by`，目标为 PD。无 `parent`。
+
+MDG 定义阶段不要求已有 DS；可实现关系由系统层 DS 单侧声明，MDG 不回写 `implemented_by`。细则见 [关系模型 · MDG 实现边](entity-relations.md#mdg-实现边)。
 
 ### DS
 
-必填：`implements_to`、`implemented_by`。可选：`used_by`。存储类型、配置键写详细说明，缺省不判失败。
+必填：`implements_to`、`implemented_by`。可选：`used_by`。`implements_to` 必须指向已登记 MDG。存储类型、配置键写详细说明，缺省不判失败。
 
 ### ENT
 

@@ -264,6 +264,103 @@ Pending
 """)
         return upstream
 
+    def test_mdg_without_ds_is_valid(self):
+        self.config('solution')
+        self.put('knowledge/data/MDG-VAS.md', """---
+type: Master Data Domain
+title: VAS
+description: Test MDG
+tags: [data, MDG]
+timestamp: "2026-11-07T00:00:00+08:00"
+id: MDG-VAS
+perspective: data
+hierarchy: MDG
+layer_scope: solution
+---
+<!-- markdownlint-disable-next-line MD025 -->
+# VAS
+## 关系
+## 跨视角
+## 详细说明
+Test.
+## 依据与证据
+待核实。
+""")
+        data = self.run_cli()
+        self.assertFalse(any(x['rule'] == 'relations.required' and x['path'].endswith('MDG-VAS.md') for x in data['checks']))
+
+    def test_ds_requires_mdg_without_mdg_reverse(self):
+        self.config('system')
+        self.put('knowledge/data/MDG-VAS.md', """---
+type: Master Data Domain
+title: VAS
+description: Test MDG
+tags: [data, MDG]
+timestamp: "2026-11-07T00:00:00+08:00"
+id: MDG-VAS
+perspective: data
+hierarchy: MDG
+layer_scope: solution
+---
+<!-- markdownlint-disable-next-line MD025 -->
+# VAS
+## 关系
+## 跨视角
+## 详细说明
+Test.
+## 依据与证据
+待核实。
+""")
+        self.put('knowledge/data/MDG-VAS/DS-VAS/DS-VAS.md', """---
+type: Data Store
+title: VAS DS
+description: Test DS
+tags: [data, DS]
+timestamp: "2026-11-07T00:00:00+08:00"
+id: DS-VAS
+perspective: data
+hierarchy: DS
+layer_scope: system
+---
+<!-- markdownlint-disable-next-line MD025 -->
+# VAS DS
+## 关系
+- implements_to: MDG-VAS
+## 跨视角
+## 详细说明
+Test.
+## 依据与证据
+待核实。
+""")
+        data = self.run_cli()
+        self.assertTrue(any(x['rule'] == 'relations.reverse' and x['status'] == 'NOT_APPLICABLE' and 'DS→MDG' in x['evidence'] for x in data['checks']))
+        self.assertTrue(any(x['rule'] == 'relations.required' and x['status'] == 'FAIL' and 'implemented_by' in x['evidence'] for x in data['checks']))
+
+    def test_ds_missing_mdg_is_fail(self):
+        self.config('system')
+        self.put('knowledge/data/MDG-VAS/DS-VAS/DS-VAS.md', """---
+type: Data Store
+title: VAS DS
+description: Test DS
+tags: [data, DS]
+timestamp: "2026-11-07T00:00:00+08:00"
+id: DS-VAS
+perspective: data
+hierarchy: DS
+layer_scope: system
+---
+<!-- markdownlint-disable-next-line MD025 -->
+# VAS DS
+## 关系
+## 跨视角
+## 详细说明
+Test.
+## 依据与证据
+待核实。
+""")
+        data = self.run_cli()
+        self.assertTrue(any(x['rule'] == 'relations.required' and x['status'] == 'FAIL' and 'implements_to' in x['evidence'] for x in data['checks']))
+
     def test_readable_external_missing_entity_is_fail(self):
         self.parent_fixture()
         data=self.run_cli()

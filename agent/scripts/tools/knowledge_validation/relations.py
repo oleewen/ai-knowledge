@@ -26,7 +26,7 @@ REQUIRED = {'VC':[], 'CAP':['implements_to'], 'BD':['children'], 'BSD1':['parent
  'UC':['implements_to'],'BR':['implements_to'],'SLN':['maps_to','implemented_by'],
  'SYS':['implements_to','implemented_by'],'APP':['implements_to','implemented_by'],
  'MS':['implements_to','implemented_by'],'API':['implements_to'],
- 'MDG':['implemented_by'],'DS':['implements_to','implemented_by'],
+ 'MDG':[],'DS':['implements_to','implemented_by'],
  'ENT':['implements_to','implemented_by'],'TBL':['implements_to'],
  'TPL':['implemented_by'],'TS':['implements_to','implemented_by'],'MW':['implements_to'],'CMP':['implements_to']}
 ONE_TO_ONE = {('BL','maps_to','BSD1'),('BSD1','maps_to','CAP'),('PL','maps_to','BL'),
@@ -124,6 +124,13 @@ def check(report, entities, resolve_target, perspective):
             optional_map = verb in ('maps_to','mapped_by') and verb not in REQUIRED.get(src,[]) and perspective(src)!=perspective(dst)
             if section != wanted and not (optional_map and section=='跨视角'):
                 add('FAIL','relations.position',f'{verb} → {target} 应位于 {wanted}')
+            if (src,verb,dst) == ('DS','implements_to','MDG'):
+                add('NOT_APPLICABLE','relations.reverse','DS→MDG 实现边由 DS 单侧维护；MDG.implemented_by 为派生视图')
+                target_entity, status, evidence = resolve_target(target, index, e)
+                add(status,'relations.target',f'{target}: {evidence}')
+                if status != 'PASS':
+                    add('NOT_RUN' if status=='FAIL' else 'UNVERIFIED','relations.target',f'{target}: 依赖目标核验')
+                continue
             if (src,verb,dst) in (('PD','uses_to','SYS'),('SYS','used_by','PD')):
                 if src=='SYS':
                     add('UNVERIFIED','relations.consumption_legacy','已有 SYS.used_by 不作消费事实源；视图仅从已读 PD 声明派生')

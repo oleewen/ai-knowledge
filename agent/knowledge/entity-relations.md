@@ -4,7 +4,7 @@
 
 ## 动词与双向要求
 
-是否必填由五视角 meta 决定；一侧存在时，对端须填写反向关系，含跨层，但 SYS 两条上游边及下文共享系统消费除外。树根省略 `parent`。混列目标按[完整身份](naming-conventions.md#身份范围与限定引用)的末段 ID 前缀辨型；除消费例外外，不设单侧关系真源。
+是否必填由五视角 meta 决定；一侧存在时，对端须填写反向关系，含跨层，但 SYS 两条上游边、MDG 实现边及下文共享系统消费除外。树根省略 `parent`。混列目标按[完整身份](naming-conventions.md#身份范围与限定引用)的末段 ID 前缀辨型；除上述单侧例外外，不设单侧关系真源。
 
 | 动词对 | 含义与方向 |
 | --- | --- |
@@ -24,7 +24,7 @@
 | `parent` | BSD-L1→BD；BSD-L2→BSD-L1；BSD-L3→BSD-L2；BSP→BP |
 | `children` | `parent` 的对端 |
 | `implements_to` | CAP→VC；BC→BSD-L3；AGG→BC；AB→AGG；PD→PL；PM→PD；FT→PM；FR→FT；UC/BR→FR；BP→SLN；BSP→PD；SYS→SLN；APP→SYS；MS→APP；API→MS；DS→MDG；ENT→DS；TBL→ENT；TS→TPL；MW→TS；CMP→MW |
-| `implemented_by` | `implements_to` 的对端，SYS→SLN 例外 |
+| `implemented_by` | `implements_to` 的对端，SYS→SLN、MDG←DS 例外 |
 | `maps_to` | BL→BSD-L1；BSD-L1→CAP；PL→BL；SLN→PL；PD→BSD-L2；BS→BSD-L2；SYS→PD；PM→BC；API→UC；UC→AB；MS→AGG；ENT→AGG |
 | `mapped_by` | `maps_to` 的对端，SYS→PD 例外 |
 | `supports_to` | BD→VC；APP→BC；API→FT |
@@ -32,6 +32,12 @@
 | `uses_to` | PD→MDG/TS/SYS；APP→DS/MW；MS→ENT；MW→DS |
 | `used_by` | `uses_to` 的对端 |
 | `depends_to` / `depended_by` | PM↔PM |
+
+## MDG 实现边
+
+`DS.implements_to MDG` 由系统层 DS 单侧声明；MDG 定义阶段只表达主数据域边界与产品消费关系，不要求已有 DS，也不回写 `implemented_by`。系统侧 DS 的 `implements_to` 必填且必须指向已登记 MDG；反向 `MDG.implemented_by` 视为派生视图，不人工维护。
+
+该单侧例外仅覆盖 `DS → MDG` 实现边，不改变 `PD.uses_to MDG`、ENT 归属和其他双边规则。
 
 ## 共享系统消费
 
